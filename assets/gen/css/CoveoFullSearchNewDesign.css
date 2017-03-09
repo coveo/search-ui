@@ -8341,6 +8341,8 @@
   margin-right: -20px; }
   .coveo-card-layout.CoveoResult {
     overflow: hidden;
+    display: flex;
+    position: relative;
     font-size: 0.9em;
     width: 300px;
     -webkit-flex-grow: 1;
@@ -8365,7 +8367,9 @@
     .coveo-card-layout.CoveoResult .coveo-result-frame {
       display: flex;
       padding: 20px;
-      flex-direction: column; }
+      flex-direction: column;
+      width: auto;
+      height: auto; }
     .coveo-card-layout.CoveoResult .CoveoResultLink {
       font-size: 16px;
       line-height: 21px; }
@@ -10795,6 +10799,7 @@ body {
 .CoveoCardActionBar {
   display: flex;
   flex-wrap: wrap;
+  min-height: 44px;
   background-color: #263E55;
   color: #fff;
   margin: auto -20px -20px -20px;
@@ -10821,7 +10826,8 @@ body {
   bottom: 0;
   width: 100%;
   background-color: #263E55;
-  color: #fff; }
+  color: #fff;
+  left: 0; }
 
 .CoveoCardOverlay {
   cursor: pointer; }

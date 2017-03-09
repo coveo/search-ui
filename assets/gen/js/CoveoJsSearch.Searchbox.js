@@ -1540,8 +1540,8 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	"use strict";
 	exports.version = {
-	    'lib': '1.2359.3-beta',
-	    'product': '1.2359.3-beta',
+	    'lib': '1.2359.4-beta',
+	    'product': '1.2359.4-beta',
 	    'supportedApiVersion': 2
 	};
 
@@ -24507,6 +24507,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	     * For example, if your range is [ 0 , 100 ] and you specify 10 steps, then the end user can move the slider only to
 	     * the values [ 0, 10, 20, 30 ... , 100 ].
 	     *
+	     * For performance reasons, the maximum value for option is 1
+	     *
 	     * Default value is `undefined`, and the slider allows all values. Minimum value is `2`.
 	     */
 	    steps: ComponentOptions_1.ComponentOptions.buildNumberOption({ min: 2 }),
@@ -24678,6 +24680,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	var d3 = __webpack_require__(157);
 	var Globalize = __webpack_require__(28);
 	var _ = __webpack_require__(14);
+	var Logger_1 = __webpack_require__(11);
+	exports.MAX_NUMBER_OF_STEPS = 100;
 	var Slider = (function () {
 	    function Slider(element, options, root) {
 	        var _this = this;
@@ -24830,12 +24834,18 @@ return /******/ (function(modules) { // webpackBootstrap
 	            this.steps = this.options.getSteps(this.options.start, this.options.end);
 	        }
 	        else {
+	            if (this.options.steps > exports.MAX_NUMBER_OF_STEPS) {
+	                new Logger_1.Logger(this).warn("Maximum number of steps for slider is " + exports.MAX_NUMBER_OF_STEPS + " for performance reason");
+	                this.options.steps = exports.MAX_NUMBER_OF_STEPS;
+	            }
 	            var oneStep = (this.options.end - this.options.start) / Math.max(1, this.options.steps);
 	            if (oneStep > 0) {
 	                var currentStep = this.options.start;
-	                while (currentStep <= this.options.end) {
+	                var currentNumberOfSteps = 0;
+	                while (currentStep <= this.options.end && currentNumberOfSteps <= exports.MAX_NUMBER_OF_STEPS) {
 	                    this.steps.push(currentStep);
 	                    currentStep += oneStep;
+	                    currentNumberOfSteps++;
 	                }
 	            }
 	            else {

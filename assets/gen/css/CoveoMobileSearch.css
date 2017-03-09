@@ -5,35 +5,36 @@
 .coveo-sprites-people-no-thumbnail,
 .CoveoResult.coveo-people-result .CoveoThumbnail.coveo-no-thumbnail,
 .coveo-sprites-note,
-.coveo-sprites-subscription-manage,
-.coveo-settings-item.coveo-subscriptions-panel .coveo-icon,
+.coveo-sprites-common-star_placeholder,
 .coveo-sprites-facet-arrow_back,
 .coveo-mobile-device .coveo-facet-section > .CoveoToggleButton .coveo-icon,
 .coveo-facet-section > .CoveoToggleButton .coveo-icon,
 .coveo-sprites-answer,
-.coveo-sprites-common-settings,
-.CoveoSettings .coveo-settings-icon,
+.coveo-sprites-common-system,
+.coveo-omnibox .coveo-icon.source,
+.coveo-facet-header .coveo-icon.source,
+.coveo-page-settings-icon,
 .coveo-sprites-facet-clear_facet_state,
 .coveo-facet-settings-section-clear-state .coveo-icon,
 .coveo-sprites-common-coveo-cloud,
 .coveo-sprites-common-logo_light_large,
 .coveo-logo-light-large,
 .coveo-login-logo,
-.coveo-sprites-common-star_active,
-.coveo-sprites-searchButton-searchbutton,
-.ie8or9 .coveo-executing-query .CoveoSearchButton > .coveo-icon,
-.CoveoSearchButton > .coveo-icon,
+.coveo-sprites-common-tagging_tag,
+.coveo-result-tagging-add-tag-icon,
+.coveo-sprites-subscription-manage,
+.coveo-settings-item.coveo-subscriptions-panel .coveo-icon,
 .coveo-sprites-common-logo_light,
 .coveo-logo-light,
 .coveo-logo-section .coveo-logo,
-.coveo-sprites-common-lock,
-.coveo-password-icon,
+.coveo-sprites-common-login_user,
+.coveo-username-icon,
 .coveo-sprites-sort-sortby_bottom,
 .CoveoSort.coveo-selected .coveo-icon,
 .coveo-sprites-sort-sortby_top,
 .CoveoSort.coveo-selected.coveo-ascending .coveo-icon,
-.coveo-sprites-common-login_user,
-.coveo-username-icon,
+.coveo-sprites-common-lock,
+.coveo-password-icon,
 .coveo-sprites-box-settings_gray,
 .coveo-sprites-caseCreation-edit-picklist,
 .coveo-sprites-common-coveo,
@@ -42,8 +43,8 @@
 .coveo-sprites-audience,
 .coveo-sprites-youtube,
 .coveo-youtube-thumbnail-play-button,
+.coveo-sprites-common-small_x,
 .coveo-sprites-folding-email_sendto,
-.coveo-sprites-facet-showless,
 .coveo-sprites-author,
 .coveo-sprites-block,
 .coveo-sprites-blog,
@@ -51,43 +52,47 @@
 .coveo-subscriptions-messages-message:before,
 .coveo-sprites-box-settings,
 .coveo-sprites-bug-severity,
-.coveo-sprites-documentType-closed,
-.coveo-sprites-documentType-comment,
+.coveo-sprites-attachToCase-attach,
+.CoveoAttachToCase span.coveo-attach-to-case-attach:before,
+.coveo-sprites-common-checkmark_selected-on_dark_bg,
+.CoveoTab.coveo-selected:after,
+.coveo-selected.coveo-tab-section-spacer:after,
+.coveo-selected.coveo-demo-back-to-login:after,
+.coveo-selected.CoveoLogin:after,
 .coveo-sprites-campaign,
 .coveo-sprites-cancelled,
 .coveo-sprites-cant-reproduce,
-.coveo-sprites-common-star_placeholder,
+.coveo-sprites-common-thumbdown_inactive,
 .coveo-sprites-caseCreation-edit,
 .coveo-sprites-case,
 .coveo-sprites-chatter,
 .coveo-sprites-city,
-.coveo-sprites-common-system,
-.coveo-omnibox .coveo-icon.source,
-.coveo-facet-header .coveo-icon.source,
-.coveo-page-settings-icon,
-.coveo-sprites-box-icon_external,
-.coveo-sprites-closed,
-.coveo-sprites-comment,
-.coveo-sprites-company,
-.coveo-sprites-common-tagging_tag,
-.coveo-result-tagging-add-tag-icon,
+.coveo-sprites-common-thumbup_active,
 .coveo-sprites-common-clear-mobile,
 .CoveoBreadcrumb.coveo-small-display .coveo-breadcrumb-clear-all .coveo-icon,
 .CoveoBreadcrumb .coveo-breadcrumb-clear-all .coveo-icon,
+.coveo-sprites-closed,
+.coveo-sprites-comment,
+.coveo-sprites-company,
+.coveo-sprites-common-thumbup_inactive,
+.coveo-sprites-box-icon_external,
 .coveo-sprites-competition,
 .coveo-sprites-completed,
 .coveo-sprites-contact,
-.coveo-sprites-common-thumbdown_active,
+.coveo-sprites-common-settings,
+.CoveoSettings .coveo-settings-icon,
 .coveo-sprites-facet-checkmark_disabled,
 .coveo-sprites-contract,
 .coveo-sprites-crash,
 .coveo-sprites-database,
-.coveo-sprites-common-thumbdown_inactive,
+.coveo-sprites-searchButton-searchbutton,
+.ie8or9 .coveo-executing-query .CoveoSearchButton > .coveo-icon,
+.CoveoSearchButton > .coveo-icon,
 .coveo-sprites-facet-checkmark_disabled_hover,
 .coveo-sprites-default,
 .coveo-sprites-deferred,
 .coveo-sprites-disqualified,
-.coveo-sprites-common-thumbup_active,
+.coveo-sprites-common-star_active,
 .coveo-sprites-facet-checkmark_selected,
 .coveo-facet-value:hover .coveo-facet-value-checkbox > span,
 .coveo-facet-value.coveo-selected .coveo-facet-value-checkbox > span,
@@ -107,7 +112,12 @@
 .coveo-sprites-doc-dev,
 .coveo-sprites-doc-user,
 .coveo-sprites-draft,
-.coveo-sprites-common-thumbup_inactive,
+.coveo-sprites-common-star_inactive,
+.coveo-settings-item.coveo-follow-query .coveo-icon,
+.coveo-top-suggestion-header-icon,
+.coveo-top-field-suggestion-header .coveo-icon-top-field,
+.coveo-top-analytics-suggestion-header .coveo-icon-top-analytics,
+.coveo-omnibox-result-list-header .coveo-icon-omnibox-result-list,
 .coveo-sprites-facet-checkmark_unselected,
 .coveo-facet-value-checkbox > span,
 .coveo-mobile-device .coveo-facet-section .CoveoFacet .coveo-facet-values .coveo-facet-value .coveo-facet-value-checkbox > span,
@@ -121,183 +131,277 @@
 .coveo-sprites-escalated,
 .coveo-sprites-expert,
 .coveo-sprites-faq,
-.coveo-sprites-common-star_inactive,
-.coveo-settings-item.coveo-follow-query .coveo-icon,
-.coveo-top-suggestion-header-icon,
-.coveo-top-field-suggestion-header .coveo-icon-top-field,
-.coveo-top-analytics-suggestion-header .coveo-icon-top-analytics,
-.coveo-omnibox-result-list-header .coveo-icon-omnibox-result-list,
-.coveo-sprites-facet-child_selected,
-.CoveoHierarchicalFacet ul.coveo-facet-values .coveo-facet-value.coveo-has-childs.coveo-has-childs-selected .coveo-facet-value-checkbox > span,
+.coveo-sprites-common-thumbdown_active,
+.coveo-sprites-facet-resume_selected,
+.coveo-facet-breadcrumb-multi-icon.coveo-selected,
 .coveo-sprites-feature,
 .coveo-sprites-file,
 .coveo-sprites-fixed,
-.coveo-sprites-documentType-company,
-.coveo-sprites-documentType-competition,
-.coveo-omnibox .coveo-icon.sfopportunitycompetitionc,
-.coveo-facet-header .coveo-icon.sfopportunitycompetitionc,
+.coveo-sprites-fileType-sharepoint-textbox,
+.coveo-icon.filetype.sptextbox,
+.coveo-icon.sysfiletype.sptextbox,
+.coveo-icon.filetype.sptextboxlist,
+.coveo-icon.sysfiletype.sptextboxlist,
+.coveo-sprites-fileType-sharepoint-thingstobring,
+.coveo-icon.filetype.spthingstobring,
+.coveo-icon.sysfiletype.spthingstobring,
+.coveo-icon.filetype.spthingstobringlist,
+.coveo-icon.sysfiletype.spthingstobringlist,
 .coveo-sprites-folder,
 .coveo-sprites-from,
 .coveo-sprites-high,
-.coveo-sprites-documentType-completed,
-.coveo-sprites-documentType-contact,
-.coveo-omnibox .coveo-icon.sfcontactname,
-.coveo-facet-header .coveo-icon.sfcontactname,
+.coveo-sprites-common-clear,
+.coveo-breadcrumb-icon-clear-all,
+.coveo-preferences-panel-close .coveo-icon,
+.coveo-sprites-common-copy,
 .coveo-sprites-image,
 .coveo-sprites-immediate,
 .coveo-sprites-install,
-.coveo-sprites-documentType-contract,
-.coveo-sprites-documentType-crash,
+.coveo-sprites-attachToCase-attached,
+.CoveoAttachToCase span.coveo-attach-to-case-attached:before,
+.coveo-sprites-fileType-sharepoint-task,
+.coveo-icon.filetype.sptask,
+.coveo-icon.sysfiletype.sptask,
+.coveo-icon.filetype.sptasklist,
+.coveo-icon.sysfiletype.sptasklist,
+.coveo-icon.filetype.spadministratortask,
+.coveo-icon.sysfiletype.spadministratortask,
+.coveo-icon.filetype.spadministratortasklist,
+.coveo-icon.sysfiletype.spadministratortasklist,
 .coveo-sprites-intranet,
 .coveo-sprites-invalid,
 .coveo-sprites-jobtitle,
-.coveo-sprites-documentType-database,
-.coveo-sprites-documentType-default,
-.coveo-icon.filetype,
+.coveo-sprites-fileType-sharepoint-survey,
+.coveo-icon.filetype.spsurvey,
+.coveo-icon.sysfiletype.spsurvey,
+.coveo-icon.filetype.spsurveylist,
+.coveo-icon.sysfiletype.spsurveylist,
+.coveo-sprites-fileType-sharepoint-slidelibrary,
+.coveo-icon.filetype.spslidelibrarylist,
+.coveo-icon.sysfiletype.spslidelibrarylist,
 .coveo-sprites-journal-log,
 .coveo-sprites-kb,
 .coveo-sprites-language,
-.coveo-sprites-documentType-deferred,
-.coveo-sprites-documentType-disqualified,
+.coveo-sprites-fileType-sharepoint-workflowhistory,
+.coveo-icon.filetype.spworkflowhistory,
+.coveo-icon.sysfiletype.spworkflowhistory,
+.coveo-icon.filetype.spworkflowhistorylist,
+.coveo-icon.sysfiletype.spworkflowhistorylist,
+.coveo-sprites-common-datepicker,
 .coveo-sprites-lead,
 .coveo-sprites-link,
 .coveo-sprites-lost,
-.coveo-sprites-documentType-doc-admin,
-.coveo-sprites-documentType-doc-dev,
+.coveo-sprites-common-delete,
+.coveo-sprites-common-doritos,
+.coveo-new-to-coveo-section .coveo-demo-section-arrow-forward,
+.coveo-demo-section-arrow-backward,
 .coveo-sprites-mail-recall,
 .coveo-sprites-mail-reply,
 .coveo-sprites-mail-undeliverable,
-.coveo-sprites-documentType-doc-user,
-.coveo-sprites-documentType-draft,
+.coveo-sprites-fileType-sharepoint-wikipagelibrary,
+.coveo-icon.filetype.spwikipagelibrarylist,
+.coveo-icon.sysfiletype.spwikipagelibrarylist,
+.coveo-sprites-documentType-account-salesforce,
+.coveo-omnibox .coveo-icon.sfaccountname,
+.coveo-omnibox .coveo-icon.sfaccounttype,
+.coveo-facet-header .coveo-icon.sfaccountname,
+.coveo-facet-header .coveo-icon.sfaccounttype,
 .coveo-sprites-mail,
 .coveo-sprites-major,
 .coveo-sprites-manager,
-.coveo-sprites-documentType-escalated,
-.coveo-sprites-documentType-event,
+.coveo-sprites-documentType-account,
+.coveo-sprites-documentType-advanced-content,
 .coveo-sprites-minor,
 .coveo-sprites-music-file,
 .coveo-sprites-negociation,
-.coveo-sprites-documentType-expert,
-.coveo-sprites-documentType-faq,
+.coveo-sprites-documentType-all-content,
+.coveo-sprites-documentType-announcement,
 .coveo-sprites-new,
 .coveo-sprites-not-started,
 .coveo-sprites-account-salesforce,
-.coveo-sprites-documentType-feature,
-.coveo-sprites-documentType-file,
+.coveo-sprites-documentType-answer,
+.coveo-login-tab-icon,
+.coveo-sprites-documentType-approved,
 .coveo-sprites-open,
 .coveo-sprites-opportunity,
 .coveo-sprites-pdf,
-.coveo-sprites-documentType-filter,
-.coveo-sprites-documentType-fixed,
+.coveo-sprites-documentType-attachment,
+.coveo-sprites-documentType-audience,
 .coveo-sprites-pending,
 .coveo-sprites-planned,
 .coveo-sprites-poll,
-.coveo-sprites-documentType-folder,
-.coveo-omnibox .coveo-icon.emailfolders,
-.coveo-facet-header .coveo-icon.emailfolders,
-.coveo-sprites-documentType-from,
-.coveo-omnibox .coveo-icon.from,
-.coveo-omnibox .coveo-icon.displayfrom,
-.coveo-facet-header .coveo-icon.from,
-.coveo-facet-header .coveo-icon.displayfrom,
+.coveo-sprites-documentType-author,
+.coveo-sprites-documentType-block,
 .coveo-sprites-priority,
 .coveo-sprites-product,
 .coveo-sprites-project-name,
-.coveo-sprites-documentType-high,
-.coveo-sprites-documentType-how-to,
+.coveo-sprites-documentType-blog,
+.coveo-sprites-documentType-bug-severity,
 .coveo-sprites-renewed-not,
 .coveo-sprites-renewed,
 .coveo-sprites-report,
-.coveo-sprites-documentType-image,
-.coveo-sprites-documentType-immediate,
+.coveo-sprites-documentType-campaign,
+.coveo-sprites-documentType-cancelled,
 .coveo-sprites-resolved,
 .coveo-sprites-reviewed,
 .coveo-sprites-salesforce,
-.coveo-sprites-documentType-industry,
-.coveo-omnibox .coveo-icon.sfindustry,
-.coveo-facet-header .coveo-icon.sfindustry,
-.coveo-sprites-documentType-install,
+.coveo-sprites-documentType-cant-reproduce,
+.coveo-sprites-documentType-case,
 .coveo-sprites-secure,
 .coveo-sprites-slideshow,
 .coveo-sprites-source,
-.coveo-sprites-documentType-intranet,
-.coveo-omnibox .coveo-icon.displayparticipants,
-.coveo-facet-header .coveo-icon.displayparticipants,
-.coveo-sprites-documentType-invalid,
+.coveo-sprites-documentType-category,
+.coveo-omnibox .coveo-icon.Sfopportunityforecastcategory,
+.coveo-facet-header .coveo-icon.Sfopportunityforecastcategory,
+.coveo-sprites-documentType-chatter,
 .coveo-sprites-spreadsheet,
 .coveo-sprites-stage,
 .coveo-sprites-started,
-.coveo-sprites-documentType-jobtitle,
-.coveo-sprites-documentType-journal-log,
+.coveo-sprites-documentType-city,
+.coveo-omnibox .coveo-icon.sfcountry,
+.coveo-omnibox .coveo-icon.sfcity,
+.coveo-facet-header .coveo-icon.sfcountry,
+.coveo-facet-header .coveo-icon.sfcity,
+.coveo-omnibox .coveo-icon.sfstate,
+.coveo-facet-header .coveo-icon.sfstate,
+.coveo-sprites-documentType-closed,
 .coveo-sprites-status,
 .coveo-sprites-support,
 .coveo-sprites-suspended,
-.coveo-sprites-documentType-kb,
-.coveo-omnibox .coveo-icon.concepts,
-.coveo-facet-header .coveo-icon.concepts,
-.coveo-sprites-documentType-language,
-.coveo-omnibox .coveo-icon.language,
-.coveo-facet-header .coveo-icon.language,
+.coveo-sprites-documentType-comment,
+.coveo-sprites-documentType-company,
 .coveo-sprites-task,
 .coveo-sprites-text,
 .coveo-sprites-timeline,
-.coveo-sprites-documentType-lead,
-.coveo-omnibox .coveo-icon.sfleadsource,
-.coveo-facet-header .coveo-icon.sfleadsource,
-.coveo-sprites-documentType-link,
+.coveo-sprites-documentType-competition,
+.coveo-omnibox .coveo-icon.sfopportunitycompetitionc,
+.coveo-facet-header .coveo-icon.sfopportunitycompetitionc,
+.coveo-sprites-documentType-completed,
 .coveo-sprites-to,
 .coveo-sprites-topic,
 .coveo-sprites-troubleshooting,
-.coveo-sprites-documentType-lost,
-.coveo-sprites-documentType-mail-recall,
+.coveo-sprites-documentType-contact,
+.coveo-omnibox .coveo-icon.sfcontactname,
+.coveo-facet-header .coveo-icon.sfcontactname,
+.coveo-sprites-documentType-contract,
 .coveo-sprites-urgent,
 .coveo-sprites-user,
 .coveo-sprites-video,
-.coveo-sprites-documentType-mail-reply,
-.coveo-sprites-documentType-mail-undeliverable,
+.coveo-sprites-documentType-crash,
+.coveo-sprites-documentType-database,
 .coveo-sprites-webpage,
 .coveo-sprites-won,
 .coveo-sprites-year,
-.coveo-sprites-documentType-mail,
-.coveo-omnibox .coveo-icon.mailbox,
-.coveo-facet-header .coveo-icon.mailbox,
-.coveo-sprites-documentType-major,
-.coveo-sprites-common-poweredbycoveo,
-.coveo-powered-by,
+.coveo-sprites-documentType-default,
+.coveo-icon.filetype,
+.coveo-sprites-documentType-deferred,
+.coveo-sprites-RSS,
 .coveo-sprites-zip,
 .coveo-sprites-XML,
-.coveo-sprites-documentType-manager,
-.coveo-omnibox .coveo-icon.sfuserdivision,
-.coveo-facet-header .coveo-icon.sfuserdivision,
-.coveo-sprites-documentType-minor,
-.coveo-sprites-RSS,
-.coveo-sprites-documentType-msproject,
-.coveo-sprites-facet-spin_facet_search,
-.coveo-facet-search-wait-animation,
-.coveo-mobile-device .coveo-modalBox.coveo-mobile-facet-search > .coveo-wrapper > .coveo-body > .coveo-facet-search .coveo-facet-search-wait-animation,
-.coveo-modalBox.coveo-mobile-facet-search > .coveo-wrapper > .coveo-body > .coveo-facet-search .coveo-facet-search-wait-animation,
-.coveo-sprites-documentType-music-file,
+.coveo-sprites-documentType-disqualified,
+.coveo-sprites-documentType-doc-admin,
+.coveo-sprites-common-poweredbycoveo,
+.coveo-powered-by,
+.coveo-sprites-account,
+.coveo-sprites-advanced-content,
+.coveo-sprites-documentType-doc-dev,
+.coveo-sprites-documentType-doc-user,
+.coveo-sprites-all-content,
+.coveo-sprites-documentType-draft,
+.coveo-sprites-common-tagging-cancel_clear,
+.coveo-result-tagging-clear-icon span,
+.coveo-result-tagging-delete-icon,
+.coveo-sprites-documentType-escalated,
+.coveo-sprites-facet-clear_facetsearch,
+.coveo-facet-search-clear .coveo-icon,
+.coveo-sprites-announcement,
+.coveo-sprites-documentType-event,
+.coveo-sprites-documentType-expert,
+.coveo-sprites-documentType-faq,
+.coveo-sprites-common-tagging_ok,
+.coveo-result-tagging-add-tag-tick-icon span,
+.coveo-sprites-documentType-feature,
+.coveo-sprites-common-tagging-cancel_delete,
+.coveo-sprites-documentType-file,
 .coveo-sprites-facet-facetsearch,
 .coveo-facet-search-magnifier,
 .coveo-mobile-device .coveo-modalBox.coveo-mobile-facet-search > .coveo-wrapper > .coveo-body > .coveo-facet-search .coveo-facet-search-magnifier,
 .coveo-mobile-device .coveo-facet-search-button-mobile:before,
 .coveo-modalBox.coveo-mobile-facet-search > .coveo-wrapper > .coveo-body > .coveo-facet-search .coveo-facet-search-magnifier,
 .coveo-facet-search-button-mobile:before,
-.coveo-sprites-account,
+.coveo-sprites-facet-showmore,
+.coveo-sprites-common-poweredbycoveo_small,
+.coveo-sprites-common-checkbox_inactive,
+.coveo-sprites-documentType-filter,
+.coveo-sprites-common-checkbox_active,
+.coveo-sprites-documentType-fixed,
+.coveo-sprites-preferencesPanel-toggle_off,
+.CoveoResultsPreferences .coveo-input-icon,
+.CoveoResultsFiltersPreferences .coveo-input-icon,
+.CoveoPreferencePanelItem .coveo-input-icon,
+.coveo-sprites-documentType-folder,
+.coveo-omnibox .coveo-icon.emailfolders,
+.coveo-facet-header .coveo-icon.emailfolders,
+.coveo-sprites-preferencesPanel-toggle_on,
+.CoveoResultsPreferences .coveo-input-icon.coveo-selected,
+.CoveoResultsFiltersPreferences .coveo-input-icon.coveo-selected,
+.CoveoPreferencePanelItem .coveo-input-icon.coveo-selected,
+.coveo-sprites-facet-resume_disable,
+.coveo-facet-breadcrumb-multi-icon.coveo-excluded,
+.coveo-sprites-facet-child_selected,
+.CoveoHierarchicalFacet ul.coveo-facet-values .coveo-facet-value.coveo-has-childs.coveo-has-childs-selected .coveo-facet-value-checkbox > span,
+.coveo-sprites-facet-clear_activefilter,
+.coveo-facet-breadcrumb-clear,
+.coveo-facet-slider-breadcrumb-clear,
+.coveo-hidden-query-breadcrumb-clear,
+.coveo-sprites-documentType-from,
+.coveo-omnibox .coveo-icon.from,
+.coveo-omnibox .coveo-icon.displayfrom,
+.coveo-facet-header .coveo-icon.from,
+.coveo-facet-header .coveo-icon.displayfrom,
+.coveo-sprites-documentType-high,
+.coveo-sprites-documentType-how-to,
+.coveo-sprites-documentType-image,
+.coveo-sprites-documentType-immediate,
+.coveo-sprites-documentType-industry,
+.coveo-omnibox .coveo-icon.sfindustry,
+.coveo-facet-header .coveo-icon.sfindustry,
+.coveo-sprites-documentType-install,
+.coveo-sprites-documentType-intranet,
+.coveo-omnibox .coveo-icon.displayparticipants,
+.coveo-facet-header .coveo-icon.displayparticipants,
+.coveo-sprites-documentType-invalid,
+.coveo-sprites-documentType-jobtitle,
+.coveo-sprites-documentType-journal-log,
+.coveo-sprites-documentType-kb,
+.coveo-omnibox .coveo-icon.concepts,
+.coveo-facet-header .coveo-icon.concepts,
+.coveo-sprites-documentType-language,
+.coveo-omnibox .coveo-icon.language,
+.coveo-facet-header .coveo-icon.language,
+.coveo-sprites-documentType-lead,
+.coveo-omnibox .coveo-icon.sfleadsource,
+.coveo-facet-header .coveo-icon.sfleadsource,
+.coveo-sprites-documentType-link,
+.coveo-sprites-documentType-lost,
+.coveo-sprites-documentType-mail-recall,
+.coveo-sprites-documentType-mail-reply,
+.coveo-sprites-documentType-mail-undeliverable,
+.coveo-sprites-documentType-mail,
+.coveo-omnibox .coveo-icon.mailbox,
+.coveo-facet-header .coveo-icon.mailbox,
+.coveo-sprites-documentType-major,
+.coveo-sprites-documentType-manager,
+.coveo-omnibox .coveo-icon.sfuserdivision,
+.coveo-facet-header .coveo-icon.sfuserdivision,
+.coveo-sprites-documentType-minor,
+.coveo-sprites-documentType-msproject,
+.coveo-sprites-documentType-music-file,
 .coveo-sprites-documentType-need-feedback,
 .coveo-sprites-documentType-negociation,
 .coveo-sprites-documentType-new,
-.coveo-sprites-facet-clear_facetsearch,
-.coveo-facet-search-clear .coveo-icon,
 .coveo-sprites-documentType-not-started,
-.coveo-sprites-common-tagging_ok,
-.coveo-result-tagging-add-tag-tick-icon span,
 .coveo-sprites-documentType-note,
-.coveo-sprites-common-tagging-cancel_delete,
-.coveo-sprites-facet-email_sendto,
-.coveo-sprites-advanced-content,
-.coveo-sprites-all-content,
-.coveo-sprites-announcement,
 .coveo-sprites-documentType-open,
 .coveo-sprites-documentType-opportunity,
 .coveo-omnibox .coveo-icon.sfopportunityforecastcategory,
@@ -306,27 +410,13 @@
 .coveo-omnibox .coveo-icon.sfopportunitystagename,
 .coveo-facet-header .coveo-icon.sfopportunitytype,
 .coveo-facet-header .coveo-icon.sfopportunitystagename,
-.coveo-sprites-common-poweredbycoveo_small,
-.coveo-sprites-common-checkbox_inactive,
-.coveo-sprites-documentType-pdf,
-.coveo-sprites-preferencesPanel-toggle_on,
-.CoveoResultsPreferences .coveo-input-icon.coveo-selected,
-.CoveoResultsFiltersPreferences .coveo-input-icon.coveo-selected,
-.CoveoPreferencePanelItem .coveo-input-icon.coveo-selected,
+.coveo-sprites-fileType-sharepoint-whereabout,
+.coveo-icon.filetype.spwhereabout,
+.coveo-icon.sysfiletype.spwhereabout,
+.coveo-icon.filetype.spwhereaboutlist,
+.coveo-icon.sysfiletype.spwhereaboutlist,
 .coveo-sprites-documentType-pending,
-.coveo-sprites-preferencesPanel-toggle_off,
-.CoveoResultsPreferences .coveo-input-icon,
-.CoveoResultsFiltersPreferences .coveo-input-icon,
-.CoveoPreferencePanelItem .coveo-input-icon,
 .coveo-sprites-documentType-planned,
-.coveo-sprites-common-checkbox_active,
-.coveo-sprites-facet-clear_activefilter,
-.coveo-facet-breadcrumb-clear,
-.coveo-facet-slider-breadcrumb-clear,
-.coveo-hidden-query-breadcrumb-clear,
-.coveo-sprites-subscription-followed,
-.CoveoFollowItem.coveo-follow-item-followed:before,
-.coveo-sprites-facet-clear_facetsearch_mobile,
 .coveo-sprites-documentType-poll,
 .coveo-sprites-documentType-priority,
 .coveo-sprites-documentType-product,
@@ -375,9 +465,7 @@
 .coveo-facet-header .coveo-icon.sfuserdepartment,
 .coveo-sprites-documentType-video,
 .coveo-sprites-documentType-webpage,
-.coveo-sprites-fileType-youtube-youtube,
-.coveo-icon.filetype.youtube,
-.coveo-icon.sysfiletype.youtube,
+.coveo-sprites-documentType-won,
 .coveo-sprites-documentType-xml,
 .coveo-sprites-documentType-yammer,
 .coveo-sprites-documentType-year,
@@ -390,33 +478,6 @@
 .coveo-facet-header .coveo-icon.month,
 .coveo-facet-header .coveo-icon.date,
 .coveo-sprites-documentType-zip,
-.coveo-sprites-fileType-sharepoint-thingstobring,
-.coveo-icon.filetype.spthingstobring,
-.coveo-icon.sysfiletype.spthingstobring,
-.coveo-icon.filetype.spthingstobringlist,
-.coveo-icon.sysfiletype.spthingstobringlist,
-.coveo-sprites-fileType-sharepoint-textbox,
-.coveo-icon.filetype.sptextbox,
-.coveo-icon.sysfiletype.sptextbox,
-.coveo-icon.filetype.sptextboxlist,
-.coveo-icon.sysfiletype.sptextboxlist,
-.coveo-sprites-fileType-sharepoint-task,
-.coveo-icon.filetype.sptask,
-.coveo-icon.sysfiletype.sptask,
-.coveo-icon.filetype.sptasklist,
-.coveo-icon.sysfiletype.sptasklist,
-.coveo-icon.filetype.spadministratortask,
-.coveo-icon.sysfiletype.spadministratortask,
-.coveo-icon.filetype.spadministratortasklist,
-.coveo-icon.sysfiletype.spadministratortasklist,
-.coveo-sprites-fileType-sharepoint-survey,
-.coveo-icon.filetype.spsurvey,
-.coveo-icon.sysfiletype.spsurvey,
-.coveo-icon.filetype.spsurveylist,
-.coveo-icon.sysfiletype.spsurveylist,
-.coveo-sprites-fileType-sharepoint-slidelibrary,
-.coveo-icon.filetype.spslidelibrarylist,
-.coveo-icon.sysfiletype.spslidelibrarylist,
 .coveo-sprites-fileType-sharepoint-sitedirectory,
 .coveo-icon.filetype.spsitedirectory,
 .coveo-icon.sysfiletype.spsitedirectory,
@@ -427,11 +488,6 @@
 .coveo-icon.sysfiletype.spportal,
 .coveo-icon.filetype.spsite,
 .coveo-icon.sysfiletype.spsite,
-.coveo-sprites-facet-clear_facet,
-.coveo-facet-header-eraser .coveo-icon,
-.coveo-facet-settings-section-hide .coveo-icon,
-.coveo-share-query-summary-info-close span,
-.coveo-subscriptions-panel .coveo-subscriptions-panel-close span,
 .coveo-sprites-fileType-sharepoint-resource,
 .coveo-icon.filetype.spresource,
 .coveo-icon.sysfiletype.spresource,
@@ -443,11 +499,6 @@
 .coveo-sprites-fileType-sharepoint-recordlibrary,
 .coveo-icon.filetype.sprecordlibrarylist,
 .coveo-icon.sysfiletype.sprecordlibrarylist,
-.coveo-sprites-facet-collapsed,
-.coveo-facet-header-expand .coveo-icon,
-.coveo-mobile-device .CoveoFacet .coveo-facet-footer .coveo-facet-more:after,
-.CoveoHierarchicalFacet ul.coveo-facet-values .coveo-facet-value.coveo-has-childs .coveo-has-childs-toggle,
-.CoveoFacet .coveo-facet-footer .coveo-facet-more:after,
 .coveo-sprites-fileType-sharepoint-projecttask,
 .coveo-icon.filetype.spprojecttask,
 .coveo-icon.sysfiletype.spprojecttask,
@@ -456,22 +507,16 @@
 .coveo-sprites-fileType-sharepoint-picturelibrary,
 .coveo-icon.filetype.sppicturelibrarylist,
 .coveo-icon.sysfiletype.sppicturelibrarylist,
-.coveo-sprites-facet-expanded,
-.coveo-facet-header-collapse .coveo-icon,
-.coveo-mobile-device .CoveoFacet .coveo-facet-footer .coveo-facet-less:after,
-.CoveoHierarchicalFacet ul.coveo-facet-values .coveo-facet-value.coveo-has-childs.coveo-open .coveo-has-childs-toggle,
-.CoveoFacet .coveo-facet-footer .coveo-facet-less:after,
+.coveo-sprites-facet-clear_facet,
+.coveo-facet-header-eraser .coveo-icon,
+.coveo-facet-settings-section-hide .coveo-icon,
+.coveo-share-query-summary-info-close span,
+.coveo-subscriptions-panel .coveo-subscriptions-panel-close span,
 .coveo-sprites-fileType-sharepoint-phonecallmemo,
 .coveo-icon.filetype.spphonecallmemo,
 .coveo-icon.sysfiletype.spphonecallmemo,
 .coveo-icon.filetype.spphonecallmemolist,
 .coveo-icon.sysfiletype.spphonecallmemolist,
-.coveo-sprites-facet-modeand,
-.coveo-facet-header-operator .coveo-icon.coveo-and,
-.coveo-sprites-facet-modeor,
-.coveo-facet-header-operator .coveo-icon.coveo-or,
-.coveo-sprites-facet-moreoption,
-.coveo-facet-header-settings .coveo-icon,
 .coveo-sprites-fileType-sharepoint-performancepointcontent,
 .coveo-icon.filetype.spperformancepointcontent,
 .coveo-icon.sysfiletype.spperformancepointcontent,
@@ -482,12 +527,11 @@
 .coveo-icon.sysfiletype.spobjective,
 .coveo-icon.filetype.spobjectivelist,
 .coveo-icon.sysfiletype.spobjectivelist,
-.coveo-sprites-facet-openfacets,
-.coveo-search-section-facets-icon,
-.coveo-sprites-facet-openinterfaces,
-.coveo-search-section-tab-icon,
-.coveo-sprites-facet-show_facet,
-.coveo-facet-settings-section-show .coveo-icon,
+.coveo-sprites-facet-collapsed,
+.coveo-facet-header-expand .coveo-icon,
+.coveo-mobile-device .CoveoFacet .coveo-facet-footer .coveo-facet-more:after,
+.CoveoHierarchicalFacet ul.coveo-facet-values .coveo-facet-value.coveo-has-childs .coveo-has-childs-toggle,
+.CoveoFacet .coveo-facet-footer .coveo-facet-more:after,
 .coveo-sprites-fileType-sharepoint-meeting,
 .coveo-icon.filetype.spmeetingserie,
 .coveo-icon.sysfiletype.spmeetingserie,
@@ -496,8 +540,11 @@
 .coveo-sprites-fileType-sharepoint-listfolder,
 .coveo-icon.filetype.splistfolder,
 .coveo-icon.sysfiletype.splistfolder,
-.coveo-sprites-facet-spin,
-.coveo-facet-header-wait-animation,
+.coveo-sprites-facet-expanded,
+.coveo-facet-header-collapse .coveo-icon,
+.coveo-mobile-device .CoveoFacet .coveo-facet-footer .coveo-facet-less:after,
+.CoveoHierarchicalFacet ul.coveo-facet-values .coveo-facet-value.coveo-has-childs.coveo-open .coveo-has-childs-toggle,
+.CoveoFacet .coveo-facet-footer .coveo-facet-less:after,
 .coveo-sprites-fileType-sharepoint-link,
 .coveo-icon.filetype.splink,
 .coveo-icon.sysfiletype.splink,
@@ -505,12 +552,12 @@
 .coveo-icon.sysfiletype.splinklist,
 .coveo-icon.filetype.spdocumentlink,
 .coveo-icon.sysfiletype.spdocumentlink,
-.coveo-sprites-fileType-default,
-.coveo-icon.objecttype,
-.coveo-icon.filetype,
-.coveo-icon.sysfiletype,
-.coveo-icon.filetype.lithiumcommunity,
-.coveo-icon.sysfiletype.lithiumcommunity,
+.coveo-sprites-facet-modeand,
+.coveo-facet-header-operator .coveo-icon.coveo-and,
+.coveo-sprites-facet-modeor,
+.coveo-facet-header-operator .coveo-icon.coveo-or,
+.coveo-sprites-facet-moreoption,
+.coveo-facet-header-settings .coveo-icon,
 .coveo-sprites-fileType-sharepoint-languagesandtranslator,
 .coveo-icon.filetype.splanguagesandtranslator,
 .coveo-icon.sysfiletype.splanguagesandtranslator,
@@ -521,11 +568,46 @@
 .coveo-icon.sysfiletype.spkeyperformanceindicator,
 .coveo-icon.filetype.spkeyperformanceindicatorlist,
 .coveo-icon.sysfiletype.spkeyperformanceindicatorlist,
+.coveo-sprites-facet-openfacets,
+.coveo-search-section-facets-icon,
+.coveo-sprites-facet-openinterfaces,
+.coveo-search-section-tab-icon,
+.coveo-sprites-facet-show_facet,
+.coveo-facet-settings-section-show .coveo-icon,
 .coveo-sprites-fileType-sharepoint-issue,
 .coveo-icon.filetype.spissue,
 .coveo-icon.sysfiletype.spissue,
 .coveo-icon.filetype.spissuelist,
 .coveo-icon.sysfiletype.spissuelist,
+.coveo-sprites-fileType-sharepoint-ipfs,
+.coveo-icon.filetype.spipfslist,
+.coveo-icon.sysfiletype.spipfslist,
+.coveo-sprites-facet-spin,
+.coveo-facet-header-wait-animation,
+.coveo-sprites-fileType-sharepoint-imedictionary,
+.coveo-icon.filetype.spimedictionary,
+.coveo-icon.sysfiletype.spimedictionary,
+.coveo-icon.filetype.spimedictionarylist,
+.coveo-icon.sysfiletype.spimedictionarylist,
+.coveo-sprites-fileType-default,
+.coveo-icon.objecttype,
+.coveo-icon.filetype,
+.coveo-icon.sysfiletype,
+.coveo-icon.filetype.lithiumcommunity,
+.coveo-icon.sysfiletype.lithiumcommunity,
+.coveo-sprites-fileType-sharepoint-healthrule,
+.coveo-icon.filetype.sphealthrule,
+.coveo-icon.sysfiletype.sphealthrule,
+.coveo-icon.filetype.sphealthrulelist,
+.coveo-icon.sysfiletype.sphealthrulelist,
+.coveo-sprites-fileType-sharepoint-healthreport,
+.coveo-icon.filetype.sphealthreport,
+.coveo-icon.sysfiletype.sphealthreport,
+.coveo-icon.filetype.sphealthreportlist,
+.coveo-icon.sysfiletype.sphealthreportlist,
+.coveo-sprites-fileType-sharepoint-formlibrary,
+.coveo-icon.filetype.spformlibrarylist,
+.coveo-icon.sysfiletype.spformlibrarylist,
 .coveo-sprites-menu-menu_avancedsearch,
 .coveo-sprites-menu-menu_opencontactinfoin,
 .coveo-sprites-menu-menu_saveoption,
@@ -537,16 +619,21 @@
 .coveo-facet-settings-section-sort .coveo-icon,
 .coveo-sprites-menu-menu_sortdirection,
 .coveo-facet-settings-section-direction .coveo-icon,
-.coveo-sprites-fileType-sharepoint-ipfs,
-.coveo-icon.filetype.spipfslist,
-.coveo-icon.sysfiletype.spipfslist,
-.coveo-sprites-fileType-sharepoint-imedictionary,
-.coveo-icon.filetype.spimedictionary,
-.coveo-icon.sysfiletype.spimedictionary,
-.coveo-icon.filetype.spimedictionarylist,
-.coveo-icon.sysfiletype.spimedictionarylist,
-.coveo-sprites-attachToCase-attach,
-.CoveoAttachToCase span.coveo-attach-to-case-attach:before,
+.coveo-sprites-fileType-sharepoint-event,
+.coveo-icon.filetype.spevent,
+.coveo-icon.sysfiletype.spevent,
+.coveo-icon.filetype.speventlist,
+.coveo-icon.sysfiletype.speventlist,
+.coveo-sprites-fileType-sharepoint-documentset,
+.coveo-icon.filetype.spdocumentset,
+.coveo-icon.sysfiletype.spdocumentset,
+.coveo-sprites-fileType-sharepoint-user,
+.coveo-icon.filetype.spuserprofile,
+.coveo-icon.sysfiletype.spuserprofile,
+.coveo-icon.filetype.spuserinformation,
+.coveo-icon.sysfiletype.spuserinformation,
+.coveo-icon.filetype.spuserinformationlist,
+.coveo-icon.sysfiletype.spuserinformationlist,
 .coveo-sprites-preferencesPanel-menu_preferences,
 .coveo-settings-item.coveo-preferences-panel .coveo-icon,
 .coveo-sprites-preferencesPanel-table-apply,
@@ -557,98 +644,12 @@
 .CoveoResultsFiltersPreferences .coveo-delete .coveo-icon,
 .coveo-sprites-preferencesPanel-table-edit,
 .CoveoResultsFiltersPreferences .coveo-edit .coveo-icon,
-.coveo-sprites-attachToCase-attached,
-.CoveoAttachToCase span.coveo-attach-to-case-attached:before,
-.coveo-sprites-fileType-sharepoint-workflowhistory,
-.coveo-icon.filetype.spworkflowhistory,
-.coveo-icon.sysfiletype.spworkflowhistory,
-.coveo-icon.filetype.spworkflowhistorylist,
-.coveo-icon.sysfiletype.spworkflowhistorylist,
-.coveo-sprites-querybox-clear,
-.coveo-query-box-clear .coveo-icon,
-.coveo-sprites-fileType-sharepoint-healthrule,
-.coveo-icon.filetype.sphealthrule,
-.coveo-icon.sysfiletype.sphealthrule,
-.coveo-icon.filetype.sphealthrulelist,
-.coveo-icon.sysfiletype.sphealthrulelist,
-.coveo-sprites-quickview-quickview,
-.CoveoResultAttachments .coveo-thumbnail-icon,
-.coveo-feedItem-result .coveo-thumbnail-icon,
-.coveo-feedComment-result .coveo-thumbnail-icon,
-.coveo-sprites-quickview-quickview_next,
-.coveo-mobile-device .coveo-modalBox.coveo-mobile-facet-search > .coveo-wrapper > .coveo-body > .coveo-facet-search-results .coveo-facet-search-select-all .coveo-mobile-facet-search-select-all,
-.coveo-modalBox.coveo-mobile-facet-search > .coveo-wrapper > .coveo-body > .coveo-facet-search-results .coveo-facet-search-select-all .coveo-mobile-facet-search-select-all,
-.coveo-sprites-quickview-quickview_previous,
-.coveo-sprites-common-amount,
-.coveo-sprites-fileType-sharepoint-wikipagelibrary,
-.coveo-icon.filetype.spwikipagelibrarylist,
-.coveo-icon.sysfiletype.spwikipagelibrarylist,
-.coveo-sprites-fileType-sharepoint-whereabout,
-.coveo-icon.filetype.spwhereabout,
-.coveo-icon.sysfiletype.spwhereabout,
-.coveo-icon.filetype.spwhereaboutlist,
-.coveo-icon.sysfiletype.spwhereaboutlist,
-.coveo-sprites-common-checkmark_selected-on_dark_bg,
-.CoveoTab.coveo-selected:after,
-.coveo-selected.coveo-tab-section-spacer:after,
-.coveo-selected.coveo-demo-back-to-login:after,
-.coveo-selected.CoveoLogin:after,
-.coveo-sprites-fileType-sharepoint-healthreport,
-.coveo-icon.filetype.sphealthreport,
-.coveo-icon.sysfiletype.sphealthreport,
-.coveo-icon.filetype.sphealthreportlist,
-.coveo-icon.sysfiletype.sphealthreportlist,
-.coveo-sprites-common-clear,
-.coveo-breadcrumb-icon-clear-all,
-.coveo-preferences-panel-close .coveo-icon,
-.coveo-sprites-common-copy,
-.coveo-sprites-fileType-sharepoint-user,
-.coveo-icon.filetype.spuserprofile,
-.coveo-icon.sysfiletype.spuserprofile,
-.coveo-icon.filetype.spuserinformation,
-.coveo-icon.sysfiletype.spuserinformation,
-.coveo-icon.filetype.spuserinformationlist,
-.coveo-icon.sysfiletype.spuserinformationlist,
 .coveo-sprites-fileType-sharepoint-translationmanagementlibrary,
 .coveo-icon.filetype.sptranslationmanagementlibrarylist,
 .coveo-icon.sysfiletype.sptranslationmanagementlibrarylist,
-.coveo-sprites-common-datepicker,
-.coveo-sprites-common-delete,
-.coveo-sprites-common-doritos,
-.coveo-new-to-coveo-section .coveo-demo-section-arrow-forward,
-.coveo-demo-section-arrow-backward,
-.coveo-sprites-documentType-account-salesforce,
-.coveo-omnibox .coveo-icon.sfaccountname,
-.coveo-omnibox .coveo-icon.sfaccounttype,
-.coveo-facet-header .coveo-icon.sfaccountname,
-.coveo-facet-header .coveo-icon.sfaccounttype,
-.coveo-sprites-documentType-account,
-.coveo-sprites-documentType-advanced-content,
-.coveo-sprites-documentType-all-content,
-.coveo-sprites-documentType-announcement,
-.coveo-sprites-common-menu_reauthenticate,
-.coveo-settings-item.coveo-authentication-provider .coveo-icon,
-.coveo-sprites-common-menu_shareresult,
-.coveo-settings-item.coveo-share-query .coveo-icon,
-.coveo-sprites-documentType-answer,
-.coveo-login-tab-icon,
-.coveo-sprites-documentType-approved,
-.coveo-sprites-documentType-attachment,
-.coveo-sprites-fileType-sharepoint-formlibrary,
-.coveo-icon.filetype.spformlibrarylist,
-.coveo-icon.sysfiletype.spformlibrarylist,
-.coveo-sprites-documentType-audience,
-.coveo-sprites-documentType-author,
-.coveo-sprites-documentType-block,
-.coveo-sprites-documentType-blog,
-.coveo-sprites-fileType-sharepoint-event,
-.coveo-icon.filetype.spevent,
-.coveo-icon.sysfiletype.spevent,
-.coveo-icon.filetype.speventlist,
-.coveo-icon.sysfiletype.speventlist,
-.coveo-sprites-fileType-sharepoint-documentset,
-.coveo-icon.filetype.spdocumentset,
-.coveo-icon.sysfiletype.spdocumentset,
+.coveo-sprites-common-amount,
+.coveo-sprites-querybox-clear,
+.coveo-query-box-clear .coveo-icon,
 .coveo-sprites-fileType-sharepoint-documentlibrary,
 .coveo-icon.filetype.spdocumentlibrarylist,
 .coveo-icon.sysfiletype.spdocumentlibrarylist,
@@ -678,14 +679,16 @@
 .coveo-icon.sysfiletype.spsolutionslibrarylist,
 .coveo-icon.filetype.spwfpublibrarylist,
 .coveo-icon.sysfiletype.spwfpublibrarylist,
-.coveo-sprites-documentType-bug-severity,
-.coveo-sprites-documentType-campaign,
-.coveo-sprites-documentType-cancelled,
-.coveo-sprites-documentType-cant-reproduce,
-.coveo-sprites-documentType-case,
-.coveo-sprites-documentType-category,
-.coveo-omnibox .coveo-icon.Sfopportunityforecastcategory,
-.coveo-facet-header .coveo-icon.Sfopportunityforecastcategory,
+.coveo-sprites-quickview-quickview,
+.CoveoResultAttachments .coveo-thumbnail-icon,
+.coveo-feedItem-result .coveo-thumbnail-icon,
+.coveo-feedComment-result .coveo-thumbnail-icon,
+.coveo-sprites-quickview-quickview_next,
+.coveo-mobile-device .coveo-modalBox.coveo-mobile-facet-search > .coveo-wrapper > .coveo-body > .coveo-facet-search-results .coveo-facet-search-select-all .coveo-mobile-facet-search-select-all,
+.coveo-modalBox.coveo-mobile-facet-search > .coveo-wrapper > .coveo-body > .coveo-facet-search-results .coveo-facet-search-select-all .coveo-mobile-facet-search-select-all,
+.coveo-sprites-quickview-quickview_previous,
+.coveo-sprites-common-menu_reauthenticate,
+.coveo-settings-item.coveo-authentication-provider .coveo-icon,
 .coveo-sprites-searchButton-searchbutton_gray,
 .coveo-sprites-searchButton-spin,
 .coveo-executing-query .CoveoSearchButton > .coveo-icon,
@@ -712,14 +715,11 @@
 .coveo-sprites-fileType-sharepoint-dataconnectionlibraryforperfpoint,
 .coveo-icon.filetype.spdataconnectionforperformancepointlibrarylist,
 .coveo-icon.sysfiletype.spdataconnectionforperformancepointlibrarylist,
-.coveo-sprites-documentType-chatter,
-.coveo-sprites-documentType-city,
-.coveo-omnibox .coveo-icon.sfcountry,
-.coveo-omnibox .coveo-icon.sfcity,
-.coveo-facet-header .coveo-icon.sfcountry,
-.coveo-facet-header .coveo-icon.sfcity,
-.coveo-omnibox .coveo-icon.sfstate,
-.coveo-facet-header .coveo-icon.sfstate,
+.coveo-sprites-common-menu_shareresult,
+.coveo-settings-item.coveo-share-query .coveo-icon,
+.coveo-sprites-fileType-youtube-youtube,
+.coveo-icon.filetype.youtube,
+.coveo-icon.sysfiletype.youtube,
 .coveo-sprites-tab-all-content,
 .coveo-sprites-tab-attachedresults,
 .coveo-sprites-tab-dropbox,
@@ -993,30 +993,30 @@
 .coveo-sprites-fileType-sharepoint-dataconnectionlibrary,
 .coveo-icon.filetype.spdataconnectionlibrarylist,
 .coveo-icon.sysfiletype.spdataconnectionlibrarylist,
-.coveo-sprites-documentType-won,
+.coveo-sprites-documentType-pdf,
 .coveo-sprites-facet-disable,
 .coveo-facet-value-exclude,
-.coveo-sprites-facet-resume_selected,
-.coveo-facet-breadcrumb-multi-icon.coveo-selected,
-.coveo-sprites-facet-resume_disable,
-.coveo-facet-breadcrumb-multi-icon.coveo-excluded,
-.coveo-sprites-pager-next,
-.coveo-pager-next > a > span,
+.coveo-sprites-facet-clear_facetsearch_mobile,
 .coveo-sprites-pager-previous,
 .coveo-pager-previous > a > span,
-.coveo-sprites-folding-showmore,
-.coveo-more .coveo-folding-footer-icon,
-.coveo-folding-footer .coveo-more .coveo-folding-footer-icon,
+.coveo-sprites-pager-next,
+.coveo-pager-next > a > span,
 .coveo-sprites-folding-showless,
 .coveo-less .coveo-folding-footer-icon,
 .coveo-folding-footer .coveo-less .coveo-folding-footer-icon,
-.coveo-sprites-common-tagging-cancel_clear,
-.coveo-result-tagging-clear-icon span,
-.coveo-result-tagging-delete-icon,
-.coveo-sprites-facet-showmore,
-.coveo-sprites-common-small_x,
+.coveo-sprites-folding-showmore,
+.coveo-more .coveo-folding-footer-icon,
+.coveo-folding-footer .coveo-more .coveo-folding-footer-icon,
+.coveo-sprites-facet-spin_facet_search,
+.coveo-facet-search-wait-animation,
+.coveo-mobile-device .coveo-modalBox.coveo-mobile-facet-search > .coveo-wrapper > .coveo-body > .coveo-facet-search .coveo-facet-search-wait-animation,
+.coveo-modalBox.coveo-mobile-facet-search > .coveo-wrapper > .coveo-body > .coveo-facet-search .coveo-facet-search-wait-animation,
+.coveo-sprites-facet-showless,
+.coveo-sprites-facet-email_sendto,
 .coveo-sprites-subscription-follow,
 .CoveoFollowItem:before,
+.coveo-sprites-subscription-followed,
+.CoveoFollowItem.coveo-follow-item-followed:before,
 .coveo-sprites-quickview-close {
   background-image: url("../image/sprites.png");
   display: inline-block;
@@ -1042,7 +1042,7 @@
   height: 32px;
   text-indent: 32px; }
 
-.coveo-sprites-subscription-manage, .coveo-settings-item.coveo-subscriptions-panel .coveo-icon {
+.coveo-sprites-common-star_placeholder {
   background-position: -160px -96px;
   width: 18px;
   height: 18px;
@@ -1060,7 +1060,7 @@
   height: 32px;
   text-indent: 32px; }
 
-.coveo-sprites-common-settings, .CoveoSettings .coveo-settings-icon {
+.coveo-sprites-common-system, .coveo-omnibox .coveo-icon.source, .coveo-facet-header .coveo-icon.source, .coveo-page-settings-icon {
   background-position: -192px -96px;
   width: 18px;
   height: 18px;
@@ -1084,13 +1084,13 @@
   height: 37px;
   text-indent: 110px; }
 
-.coveo-sprites-common-star_active {
+.coveo-sprites-common-tagging_tag, .coveo-result-tagging-add-tag-icon {
   background-position: -334px -48px;
   width: 18px;
   height: 18px;
   text-indent: 18px; }
 
-.coveo-sprites-searchButton-searchbutton, .ie8or9 .coveo-executing-query .CoveoSearchButton > .coveo-icon, .CoveoSearchButton > .coveo-icon {
+.coveo-sprites-subscription-manage, .coveo-settings-item.coveo-subscriptions-panel .coveo-icon {
   background-position: -334px -66px;
   width: 18px;
   height: 18px;
@@ -1102,7 +1102,7 @@
   height: 26px;
   text-indent: 71px; }
 
-.coveo-sprites-common-lock, .coveo-password-icon {
+.coveo-sprites-common-login_user, .coveo-username-icon {
   background-position: -295px -85px;
   width: 24px;
   height: 24px;
@@ -1120,7 +1120,7 @@
   height: 6px;
   text-indent: 6px; }
 
-.coveo-sprites-common-login_user, .coveo-username-icon {
+.coveo-sprites-common-lock, .coveo-password-icon {
   background-position: -319px -85px;
   width: 24px;
   height: 24px;
@@ -1162,13 +1162,13 @@
   height: 17px;
   text-indent: 24px; }
 
-.coveo-sprites-folding-email_sendto {
+.coveo-sprites-common-small_x {
   background-position: -379px -98px;
   width: 8px;
   height: 8px;
   text-indent: 8px; }
 
-.coveo-sprites-facet-showless {
+.coveo-sprites-folding-email_sendto {
   background-position: -379px -106px;
   width: 8px;
   height: 8px;
@@ -1210,13 +1210,13 @@
   height: 32px;
   text-indent: 32px; }
 
-.coveo-sprites-documentType-closed {
+.coveo-sprites-attachToCase-attach, .CoveoAttachToCase span.coveo-attach-to-case-attach:before {
   background-position: -419px -98px;
   width: 16px;
   height: 16px;
   text-indent: 16px; }
 
-.coveo-sprites-documentType-comment {
+.coveo-sprites-common-checkmark_selected-on_dark_bg, .CoveoTab.coveo-selected:after, .coveo-selected.coveo-tab-section-spacer:after, .coveo-selected.coveo-demo-back-to-login:after, .coveo-selected.CoveoLogin:after {
   background-position: -435px -98px;
   width: 16px;
   height: 16px;
@@ -1240,7 +1240,7 @@
   height: 32px;
   text-indent: 32px; }
 
-.coveo-sprites-common-star_placeholder {
+.coveo-sprites-common-thumbdown_inactive {
   background-position: -452px -96px;
   width: 18px;
   height: 18px;
@@ -1270,17 +1270,17 @@
   height: 32px;
   text-indent: 32px; }
 
-.coveo-sprites-common-system, .coveo-omnibox .coveo-icon.source, .coveo-facet-header .coveo-icon.source, .coveo-page-settings-icon {
+.coveo-sprites-common-thumbup_active {
   background-position: -484px -96px;
   width: 18px;
   height: 18px;
   text-indent: 18px; }
 
-.coveo-sprites-box-icon_external {
+.coveo-sprites-common-clear-mobile, .CoveoBreadcrumb.coveo-small-display .coveo-breadcrumb-clear-all .coveo-icon, .CoveoBreadcrumb .coveo-breadcrumb-clear-all .coveo-icon {
   background-position: -502px -96px;
-  width: 13px;
+  width: 12px;
   height: 12px;
-  text-indent: 13px; }
+  text-indent: 12px; }
 
 .coveo-sprites-closed {
   background-position: -516px 0px;
@@ -1300,17 +1300,17 @@
   height: 32px;
   text-indent: 32px; }
 
-.coveo-sprites-common-tagging_tag, .coveo-result-tagging-add-tag-icon {
+.coveo-sprites-common-thumbup_inactive {
   background-position: -516px -96px;
   width: 18px;
   height: 18px;
   text-indent: 18px; }
 
-.coveo-sprites-common-clear-mobile, .CoveoBreadcrumb.coveo-small-display .coveo-breadcrumb-clear-all .coveo-icon, .CoveoBreadcrumb .coveo-breadcrumb-clear-all .coveo-icon {
+.coveo-sprites-box-icon_external {
   background-position: -534px -96px;
-  width: 12px;
+  width: 13px;
   height: 12px;
-  text-indent: 12px; }
+  text-indent: 13px; }
 
 .coveo-sprites-competition {
   background-position: -548px 0px;
@@ -1330,7 +1330,7 @@
   height: 32px;
   text-indent: 32px; }
 
-.coveo-sprites-common-thumbdown_active {
+.coveo-sprites-common-settings, .CoveoSettings .coveo-settings-icon {
   background-position: -548px -96px;
   width: 18px;
   height: 18px;
@@ -1360,7 +1360,7 @@
   height: 32px;
   text-indent: 32px; }
 
-.coveo-sprites-common-thumbdown_inactive {
+.coveo-sprites-searchButton-searchbutton, .ie8or9 .coveo-executing-query .CoveoSearchButton > .coveo-icon, .CoveoSearchButton > .coveo-icon {
   background-position: -580px -96px;
   width: 18px;
   height: 18px;
@@ -1390,7 +1390,7 @@
   height: 32px;
   text-indent: 32px; }
 
-.coveo-sprites-common-thumbup_active {
+.coveo-sprites-common-star_active {
   background-position: -612px -96px;
   width: 18px;
   height: 18px;
@@ -1420,7 +1420,7 @@
   height: 32px;
   text-indent: 32px; }
 
-.coveo-sprites-common-thumbup_inactive {
+.coveo-sprites-common-star_inactive, .coveo-settings-item.coveo-follow-query .coveo-icon, .coveo-top-suggestion-header-icon, .coveo-top-field-suggestion-header .coveo-icon-top-field, .coveo-top-analytics-suggestion-header .coveo-icon-top-analytics, .coveo-omnibox-result-list-header .coveo-icon-omnibox-result-list {
   background-position: -644px -96px;
   width: 18px;
   height: 18px;
@@ -1450,13 +1450,13 @@
   height: 32px;
   text-indent: 32px; }
 
-.coveo-sprites-common-star_inactive, .coveo-settings-item.coveo-follow-query .coveo-icon, .coveo-top-suggestion-header-icon, .coveo-top-field-suggestion-header .coveo-icon-top-field, .coveo-top-analytics-suggestion-header .coveo-icon-top-analytics, .coveo-omnibox-result-list-header .coveo-icon-omnibox-result-list {
+.coveo-sprites-common-thumbdown_active {
   background-position: -676px -96px;
   width: 18px;
   height: 18px;
   text-indent: 18px; }
 
-.coveo-sprites-facet-child_selected, .CoveoHierarchicalFacet ul.coveo-facet-values .coveo-facet-value.coveo-has-childs.coveo-has-childs-selected .coveo-facet-value-checkbox > span {
+.coveo-sprites-facet-resume_selected, .coveo-facet-breadcrumb-multi-icon.coveo-selected {
   background-position: -694px -96px;
   width: 12px;
   height: 12px;
@@ -1480,13 +1480,13 @@
   height: 32px;
   text-indent: 32px; }
 
-.coveo-sprites-documentType-company {
+.coveo-sprites-fileType-sharepoint-textbox, .coveo-icon.filetype.sptextbox, .coveo-icon.sysfiletype.sptextbox, .coveo-icon.filetype.sptextboxlist, .coveo-icon.sysfiletype.sptextboxlist {
   background-position: -708px -96px;
   width: 16px;
   height: 16px;
   text-indent: 16px; }
 
-.coveo-sprites-documentType-competition, .coveo-omnibox .coveo-icon.sfopportunitycompetitionc, .coveo-facet-header .coveo-icon.sfopportunitycompetitionc {
+.coveo-sprites-fileType-sharepoint-thingstobring, .coveo-icon.filetype.spthingstobring, .coveo-icon.sysfiletype.spthingstobring, .coveo-icon.filetype.spthingstobringlist, .coveo-icon.sysfiletype.spthingstobringlist {
   background-position: -724px -96px;
   width: 16px;
   height: 16px;
@@ -1510,13 +1510,13 @@
   height: 32px;
   text-indent: 32px; }
 
-.coveo-sprites-documentType-completed {
+.coveo-sprites-common-clear, .coveo-breadcrumb-icon-clear-all, .coveo-preferences-panel-close .coveo-icon {
   background-position: -740px -96px;
   width: 16px;
   height: 16px;
   text-indent: 16px; }
 
-.coveo-sprites-documentType-contact, .coveo-omnibox .coveo-icon.sfcontactname, .coveo-facet-header .coveo-icon.sfcontactname {
+.coveo-sprites-common-copy {
   background-position: -756px -96px;
   width: 16px;
   height: 16px;
@@ -1540,13 +1540,13 @@
   height: 32px;
   text-indent: 32px; }
 
-.coveo-sprites-documentType-contract {
+.coveo-sprites-attachToCase-attached, .CoveoAttachToCase span.coveo-attach-to-case-attached:before {
   background-position: -772px -96px;
   width: 16px;
   height: 16px;
   text-indent: 16px; }
 
-.coveo-sprites-documentType-crash {
+.coveo-sprites-fileType-sharepoint-task, .coveo-icon.filetype.sptask, .coveo-icon.sysfiletype.sptask, .coveo-icon.filetype.sptasklist, .coveo-icon.sysfiletype.sptasklist, .coveo-icon.filetype.spadministratortask, .coveo-icon.sysfiletype.spadministratortask, .coveo-icon.filetype.spadministratortasklist, .coveo-icon.sysfiletype.spadministratortasklist {
   background-position: -788px -96px;
   width: 16px;
   height: 16px;
@@ -1570,13 +1570,13 @@
   height: 32px;
   text-indent: 32px; }
 
-.coveo-sprites-documentType-database {
+.coveo-sprites-fileType-sharepoint-survey, .coveo-icon.filetype.spsurvey, .coveo-icon.sysfiletype.spsurvey, .coveo-icon.filetype.spsurveylist, .coveo-icon.sysfiletype.spsurveylist {
   background-position: -804px -96px;
   width: 16px;
   height: 16px;
   text-indent: 16px; }
 
-.coveo-sprites-documentType-default, .coveo-icon.filetype {
+.coveo-sprites-fileType-sharepoint-slidelibrary, .coveo-icon.filetype.spslidelibrarylist, .coveo-icon.sysfiletype.spslidelibrarylist {
   background-position: -820px -96px;
   width: 16px;
   height: 16px;
@@ -1600,13 +1600,13 @@
   height: 32px;
   text-indent: 32px; }
 
-.coveo-sprites-documentType-deferred {
+.coveo-sprites-fileType-sharepoint-workflowhistory, .coveo-icon.filetype.spworkflowhistory, .coveo-icon.sysfiletype.spworkflowhistory, .coveo-icon.filetype.spworkflowhistorylist, .coveo-icon.sysfiletype.spworkflowhistorylist {
   background-position: -836px -96px;
   width: 16px;
   height: 16px;
   text-indent: 16px; }
 
-.coveo-sprites-documentType-disqualified {
+.coveo-sprites-common-datepicker {
   background-position: -852px -96px;
   width: 16px;
   height: 16px;
@@ -1630,13 +1630,13 @@
   height: 32px;
   text-indent: 32px; }
 
-.coveo-sprites-documentType-doc-admin {
+.coveo-sprites-common-delete {
   background-position: -868px -96px;
   width: 16px;
   height: 16px;
   text-indent: 16px; }
 
-.coveo-sprites-documentType-doc-dev {
+.coveo-sprites-common-doritos, .coveo-new-to-coveo-section .coveo-demo-section-arrow-forward, .coveo-demo-section-arrow-backward {
   background-position: -884px -96px;
   width: 16px;
   height: 16px;
@@ -1660,13 +1660,13 @@
   height: 32px;
   text-indent: 32px; }
 
-.coveo-sprites-documentType-doc-user {
+.coveo-sprites-fileType-sharepoint-wikipagelibrary, .coveo-icon.filetype.spwikipagelibrarylist, .coveo-icon.sysfiletype.spwikipagelibrarylist {
   background-position: -900px -96px;
   width: 16px;
   height: 16px;
   text-indent: 16px; }
 
-.coveo-sprites-documentType-draft {
+.coveo-sprites-documentType-account-salesforce, .coveo-omnibox .coveo-icon.sfaccountname, .coveo-omnibox .coveo-icon.sfaccounttype, .coveo-facet-header .coveo-icon.sfaccountname, .coveo-facet-header .coveo-icon.sfaccounttype {
   background-position: -916px -96px;
   width: 16px;
   height: 16px;
@@ -1690,13 +1690,13 @@
   height: 32px;
   text-indent: 32px; }
 
-.coveo-sprites-documentType-escalated {
+.coveo-sprites-documentType-account {
   background-position: -932px -96px;
   width: 16px;
   height: 16px;
   text-indent: 16px; }
 
-.coveo-sprites-documentType-event {
+.coveo-sprites-documentType-advanced-content {
   background-position: -948px -96px;
   width: 16px;
   height: 16px;
@@ -1720,13 +1720,13 @@
   height: 32px;
   text-indent: 32px; }
 
-.coveo-sprites-documentType-expert {
+.coveo-sprites-documentType-all-content {
   background-position: -964px -96px;
   width: 16px;
   height: 16px;
   text-indent: 16px; }
 
-.coveo-sprites-documentType-faq {
+.coveo-sprites-documentType-announcement {
   background-position: -980px -96px;
   width: 16px;
   height: 16px;
@@ -1750,13 +1750,13 @@
   height: 32px;
   text-indent: 32px; }
 
-.coveo-sprites-documentType-feature {
+.coveo-sprites-documentType-answer, .coveo-login-tab-icon {
   background-position: -996px -96px;
   width: 16px;
   height: 16px;
   text-indent: 16px; }
 
-.coveo-sprites-documentType-file {
+.coveo-sprites-documentType-approved {
   background-position: -1012px -96px;
   width: 16px;
   height: 16px;
@@ -1780,13 +1780,13 @@
   height: 32px;
   text-indent: 32px; }
 
-.coveo-sprites-documentType-filter {
+.coveo-sprites-documentType-attachment {
   background-position: -1028px -96px;
   width: 16px;
   height: 16px;
   text-indent: 16px; }
 
-.coveo-sprites-documentType-fixed {
+.coveo-sprites-documentType-audience {
   background-position: -1044px -96px;
   width: 16px;
   height: 16px;
@@ -1810,13 +1810,13 @@
   height: 32px;
   text-indent: 32px; }
 
-.coveo-sprites-documentType-folder, .coveo-omnibox .coveo-icon.emailfolders, .coveo-facet-header .coveo-icon.emailfolders {
+.coveo-sprites-documentType-author {
   background-position: -1060px -96px;
   width: 16px;
   height: 16px;
   text-indent: 16px; }
 
-.coveo-sprites-documentType-from, .coveo-omnibox .coveo-icon.from, .coveo-omnibox .coveo-icon.displayfrom, .coveo-facet-header .coveo-icon.from, .coveo-facet-header .coveo-icon.displayfrom {
+.coveo-sprites-documentType-block {
   background-position: -1076px -96px;
   width: 16px;
   height: 16px;
@@ -1840,13 +1840,13 @@
   height: 32px;
   text-indent: 32px; }
 
-.coveo-sprites-documentType-high {
+.coveo-sprites-documentType-blog {
   background-position: -1092px -96px;
   width: 16px;
   height: 16px;
   text-indent: 16px; }
 
-.coveo-sprites-documentType-how-to {
+.coveo-sprites-documentType-bug-severity {
   background-position: -1108px -96px;
   width: 16px;
   height: 16px;
@@ -1870,13 +1870,13 @@
   height: 32px;
   text-indent: 32px; }
 
-.coveo-sprites-documentType-image {
+.coveo-sprites-documentType-campaign {
   background-position: -1124px -96px;
   width: 16px;
   height: 16px;
   text-indent: 16px; }
 
-.coveo-sprites-documentType-immediate {
+.coveo-sprites-documentType-cancelled {
   background-position: -1140px -96px;
   width: 16px;
   height: 16px;
@@ -1900,13 +1900,13 @@
   height: 32px;
   text-indent: 32px; }
 
-.coveo-sprites-documentType-industry, .coveo-omnibox .coveo-icon.sfindustry, .coveo-facet-header .coveo-icon.sfindustry {
+.coveo-sprites-documentType-cant-reproduce {
   background-position: -1156px -96px;
   width: 16px;
   height: 16px;
   text-indent: 16px; }
 
-.coveo-sprites-documentType-install {
+.coveo-sprites-documentType-case {
   background-position: -1172px -96px;
   width: 16px;
   height: 16px;
@@ -1930,13 +1930,13 @@
   height: 32px;
   text-indent: 32px; }
 
-.coveo-sprites-documentType-intranet, .coveo-omnibox .coveo-icon.displayparticipants, .coveo-facet-header .coveo-icon.displayparticipants {
+.coveo-sprites-documentType-category, .coveo-omnibox .coveo-icon.Sfopportunityforecastcategory, .coveo-facet-header .coveo-icon.Sfopportunityforecastcategory {
   background-position: -1188px -96px;
   width: 16px;
   height: 16px;
   text-indent: 16px; }
 
-.coveo-sprites-documentType-invalid {
+.coveo-sprites-documentType-chatter {
   background-position: -1204px -96px;
   width: 16px;
   height: 16px;
@@ -1960,13 +1960,13 @@
   height: 32px;
   text-indent: 32px; }
 
-.coveo-sprites-documentType-jobtitle {
+.coveo-sprites-documentType-city, .coveo-omnibox .coveo-icon.sfcountry, .coveo-omnibox .coveo-icon.sfcity, .coveo-facet-header .coveo-icon.sfcountry, .coveo-facet-header .coveo-icon.sfcity, .coveo-omnibox .coveo-icon.sfstate, .coveo-facet-header .coveo-icon.sfstate {
   background-position: -1220px -96px;
   width: 16px;
   height: 16px;
   text-indent: 16px; }
 
-.coveo-sprites-documentType-journal-log {
+.coveo-sprites-documentType-closed {
   background-position: -1236px -96px;
   width: 16px;
   height: 16px;
@@ -1990,13 +1990,13 @@
   height: 32px;
   text-indent: 32px; }
 
-.coveo-sprites-documentType-kb, .coveo-omnibox .coveo-icon.concepts, .coveo-facet-header .coveo-icon.concepts {
+.coveo-sprites-documentType-comment {
   background-position: -1252px -96px;
   width: 16px;
   height: 16px;
   text-indent: 16px; }
 
-.coveo-sprites-documentType-language, .coveo-omnibox .coveo-icon.language, .coveo-facet-header .coveo-icon.language {
+.coveo-sprites-documentType-company {
   background-position: -1268px -96px;
   width: 16px;
   height: 16px;
@@ -2020,13 +2020,13 @@
   height: 32px;
   text-indent: 32px; }
 
-.coveo-sprites-documentType-lead, .coveo-omnibox .coveo-icon.sfleadsource, .coveo-facet-header .coveo-icon.sfleadsource {
+.coveo-sprites-documentType-competition, .coveo-omnibox .coveo-icon.sfopportunitycompetitionc, .coveo-facet-header .coveo-icon.sfopportunitycompetitionc {
   background-position: -1284px -96px;
   width: 16px;
   height: 16px;
   text-indent: 16px; }
 
-.coveo-sprites-documentType-link {
+.coveo-sprites-documentType-completed {
   background-position: -1300px -96px;
   width: 16px;
   height: 16px;
@@ -2050,13 +2050,13 @@
   height: 32px;
   text-indent: 32px; }
 
-.coveo-sprites-documentType-lost {
+.coveo-sprites-documentType-contact, .coveo-omnibox .coveo-icon.sfcontactname, .coveo-facet-header .coveo-icon.sfcontactname {
   background-position: -1316px -96px;
   width: 16px;
   height: 16px;
   text-indent: 16px; }
 
-.coveo-sprites-documentType-mail-recall {
+.coveo-sprites-documentType-contract {
   background-position: -1332px -96px;
   width: 16px;
   height: 16px;
@@ -2080,13 +2080,13 @@
   height: 32px;
   text-indent: 32px; }
 
-.coveo-sprites-documentType-mail-reply {
+.coveo-sprites-documentType-crash {
   background-position: -1348px -96px;
   width: 16px;
   height: 16px;
   text-indent: 16px; }
 
-.coveo-sprites-documentType-mail-undeliverable {
+.coveo-sprites-documentType-database {
   background-position: -1364px -96px;
   width: 16px;
   height: 16px;
@@ -2110,23 +2110,23 @@
   height: 32px;
   text-indent: 32px; }
 
-.coveo-sprites-documentType-mail, .coveo-omnibox .coveo-icon.mailbox, .coveo-facet-header .coveo-icon.mailbox {
+.coveo-sprites-documentType-default, .coveo-icon.filetype {
   background-position: -1380px -96px;
   width: 16px;
   height: 16px;
   text-indent: 16px; }
 
-.coveo-sprites-documentType-major {
+.coveo-sprites-documentType-deferred {
   background-position: -1396px -96px;
   width: 16px;
   height: 16px;
   text-indent: 16px; }
 
-.coveo-sprites-common-poweredbycoveo, .coveo-powered-by {
+.coveo-sprites-RSS {
   background-position: -1412px 0px;
-  width: 90px;
+  width: 32px;
   height: 32px;
-  text-indent: 90px; }
+  text-indent: 32px; }
 
 .coveo-sprites-zip {
   background-position: -1412px -32px;
@@ -2140,137 +2140,137 @@
   height: 32px;
   text-indent: 32px; }
 
-.coveo-sprites-documentType-manager, .coveo-omnibox .coveo-icon.sfuserdivision, .coveo-facet-header .coveo-icon.sfuserdivision {
+.coveo-sprites-documentType-disqualified {
   background-position: -1412px -96px;
   width: 16px;
   height: 16px;
   text-indent: 16px; }
 
-.coveo-sprites-documentType-minor {
+.coveo-sprites-documentType-doc-admin {
   background-position: -1428px -96px;
   width: 16px;
   height: 16px;
   text-indent: 16px; }
 
-.coveo-sprites-RSS {
+.coveo-sprites-common-poweredbycoveo, .coveo-powered-by {
+  background-position: -1444px 0px;
+  width: 90px;
+  height: 32px;
+  text-indent: 90px; }
+
+.coveo-sprites-account {
   background-position: -1444px -32px;
   width: 32px;
   height: 32px;
   text-indent: 32px; }
 
-.coveo-sprites-documentType-msproject {
-  background-position: -1476px -32px;
-  width: 16px;
-  height: 16px;
-  text-indent: 16px; }
-
-.coveo-sprites-facet-spin_facet_search, .coveo-facet-search-wait-animation, .coveo-mobile-device .coveo-modalBox.coveo-mobile-facet-search > .coveo-wrapper > .coveo-body > .coveo-facet-search .coveo-facet-search-wait-animation, .coveo-modalBox.coveo-mobile-facet-search > .coveo-wrapper > .coveo-body > .coveo-facet-search .coveo-facet-search-wait-animation {
-  background-position: -1492px -32px;
-  width: 10px;
-  height: 10px;
-  text-indent: 10px; }
-
-.coveo-sprites-documentType-music-file {
-  background-position: -1476px -48px;
-  width: 16px;
-  height: 16px;
-  text-indent: 16px; }
-
-.coveo-sprites-facet-facetsearch, .coveo-facet-search-magnifier, .coveo-mobile-device .coveo-modalBox.coveo-mobile-facet-search > .coveo-wrapper > .coveo-body > .coveo-facet-search .coveo-facet-search-magnifier, .coveo-mobile-device .coveo-facet-search-button-mobile:before, .coveo-modalBox.coveo-mobile-facet-search > .coveo-wrapper > .coveo-body > .coveo-facet-search .coveo-facet-search-magnifier, .coveo-facet-search-button-mobile:before {
-  background-position: -1492px -48px;
-  width: 10px;
-  height: 10px;
-  text-indent: 10px; }
-
-.coveo-sprites-account {
+.coveo-sprites-advanced-content {
   background-position: -1444px -64px;
   width: 32px;
   height: 32px;
   text-indent: 32px; }
 
-.coveo-sprites-documentType-need-feedback {
+.coveo-sprites-documentType-doc-dev {
   background-position: -1444px -96px;
   width: 16px;
   height: 16px;
   text-indent: 16px; }
 
-.coveo-sprites-documentType-negociation {
+.coveo-sprites-documentType-doc-user {
   background-position: -1460px -96px;
   width: 16px;
   height: 16px;
   text-indent: 16px; }
 
-.coveo-sprites-documentType-new {
-  background-position: -1476px -64px;
+.coveo-sprites-all-content {
+  background-position: -1476px -32px;
+  width: 32px;
+  height: 32px;
+  text-indent: 32px; }
+
+.coveo-sprites-documentType-draft {
+  background-position: -1508px -32px;
+  width: 16px;
+  height: 16px;
+  text-indent: 16px; }
+
+.coveo-sprites-common-tagging-cancel_clear, .coveo-result-tagging-clear-icon span, .coveo-result-tagging-delete-icon {
+  background-position: -1524px -32px;
+  width: 10px;
+  height: 10px;
+  text-indent: 10px; }
+
+.coveo-sprites-documentType-escalated {
+  background-position: -1508px -48px;
   width: 16px;
   height: 16px;
   text-indent: 16px; }
 
 .coveo-sprites-facet-clear_facetsearch, .coveo-facet-search-clear .coveo-icon {
-  background-position: -1492px -64px;
+  background-position: -1524px -48px;
   width: 10px;
   height: 10px;
   text-indent: 10px; }
 
-.coveo-sprites-documentType-not-started {
-  background-position: -1476px -80px;
-  width: 16px;
-  height: 16px;
-  text-indent: 16px; }
+.coveo-sprites-announcement {
+  background-position: -1476px -64px;
+  width: 32px;
+  height: 32px;
+  text-indent: 32px; }
 
-.coveo-sprites-common-tagging_ok, .coveo-result-tagging-add-tag-tick-icon span {
-  background-position: -1492px -80px;
-  width: 10px;
-  height: 10px;
-  text-indent: 10px; }
-
-.coveo-sprites-documentType-note {
+.coveo-sprites-documentType-event {
   background-position: -1476px -96px;
   width: 16px;
   height: 16px;
   text-indent: 16px; }
 
-.coveo-sprites-common-tagging-cancel_delete {
+.coveo-sprites-documentType-expert {
   background-position: -1492px -96px;
+  width: 16px;
+  height: 16px;
+  text-indent: 16px; }
+
+.coveo-sprites-documentType-faq {
+  background-position: -1508px -64px;
+  width: 16px;
+  height: 16px;
+  text-indent: 16px; }
+
+.coveo-sprites-common-tagging_ok, .coveo-result-tagging-add-tag-tick-icon span {
+  background-position: -1524px -64px;
   width: 10px;
   height: 10px;
   text-indent: 10px; }
 
-.coveo-sprites-facet-email_sendto {
-  background-position: -1492px -106px;
+.coveo-sprites-documentType-feature {
+  background-position: -1508px -80px;
+  width: 16px;
+  height: 16px;
+  text-indent: 16px; }
+
+.coveo-sprites-common-tagging-cancel_delete {
+  background-position: -1524px -80px;
+  width: 10px;
+  height: 10px;
+  text-indent: 10px; }
+
+.coveo-sprites-documentType-file {
+  background-position: -1508px -96px;
+  width: 16px;
+  height: 16px;
+  text-indent: 16px; }
+
+.coveo-sprites-facet-facetsearch, .coveo-facet-search-magnifier, .coveo-mobile-device .coveo-modalBox.coveo-mobile-facet-search > .coveo-wrapper > .coveo-body > .coveo-facet-search .coveo-facet-search-magnifier, .coveo-mobile-device .coveo-facet-search-button-mobile:before, .coveo-modalBox.coveo-mobile-facet-search > .coveo-wrapper > .coveo-body > .coveo-facet-search .coveo-facet-search-magnifier, .coveo-facet-search-button-mobile:before {
+  background-position: -1524px -96px;
+  width: 10px;
+  height: 10px;
+  text-indent: 10px; }
+
+.coveo-sprites-facet-showmore {
+  background-position: -1524px -106px;
   width: 8px;
   height: 8px;
   text-indent: 8px; }
-
-.coveo-sprites-advanced-content {
-  background-position: -1502px 0px;
-  width: 32px;
-  height: 32px;
-  text-indent: 32px; }
-
-.coveo-sprites-all-content {
-  background-position: -1502px -32px;
-  width: 32px;
-  height: 32px;
-  text-indent: 32px; }
-
-.coveo-sprites-announcement {
-  background-position: -1502px -64px;
-  width: 32px;
-  height: 32px;
-  text-indent: 32px; }
-
-.coveo-sprites-documentType-open {
-  background-position: -1502px -96px;
-  width: 16px;
-  height: 16px;
-  text-indent: 16px; }
-
-.coveo-sprites-documentType-opportunity, .coveo-omnibox .coveo-icon.sfopportunityforecastcategory, .coveo-facet-header .coveo-icon.sfopportunityforecastcategory, .coveo-omnibox .coveo-icon.sfopportunitytype, .coveo-omnibox .coveo-icon.sfopportunitystagename, .coveo-facet-header .coveo-icon.sfopportunitytype, .coveo-facet-header .coveo-icon.sfopportunitystagename {
-  background-position: -1518px -96px;
-  width: 16px;
-  height: 16px;
-  text-indent: 16px; }
 
 .coveo-sprites-common-poweredbycoveo_small {
   background-position: -1534px 0px;
@@ -2284,19 +2284,19 @@
   height: 20px;
   text-indent: 42px; }
 
-.coveo-sprites-documentType-pdf {
+.coveo-sprites-documentType-filter {
   background-position: -1576px -21px;
   width: 16px;
   height: 16px;
   text-indent: 16px; }
 
-.coveo-sprites-preferencesPanel-toggle_on, .CoveoResultsPreferences .coveo-input-icon.coveo-selected, .CoveoResultsFiltersPreferences .coveo-input-icon.coveo-selected, .CoveoPreferencePanelItem .coveo-input-icon.coveo-selected {
+.coveo-sprites-common-checkbox_active {
   background-position: -1534px -41px;
   width: 42px;
   height: 20px;
   text-indent: 42px; }
 
-.coveo-sprites-documentType-pending {
+.coveo-sprites-documentType-fixed {
   background-position: -1576px -41px;
   width: 16px;
   height: 16px;
@@ -2308,793 +2308,793 @@
   height: 20px;
   text-indent: 42px; }
 
-.coveo-sprites-documentType-planned {
+.coveo-sprites-documentType-folder, .coveo-omnibox .coveo-icon.emailfolders, .coveo-facet-header .coveo-icon.emailfolders {
   background-position: -1576px -61px;
   width: 16px;
   height: 16px;
   text-indent: 16px; }
 
-.coveo-sprites-common-checkbox_active {
+.coveo-sprites-preferencesPanel-toggle_on, .CoveoResultsPreferences .coveo-input-icon.coveo-selected, .CoveoResultsFiltersPreferences .coveo-input-icon.coveo-selected, .CoveoPreferencePanelItem .coveo-input-icon.coveo-selected {
   background-position: -1534px -81px;
   width: 42px;
   height: 20px;
   text-indent: 42px; }
 
-.coveo-sprites-facet-clear_activefilter, .coveo-facet-breadcrumb-clear, .coveo-facet-slider-breadcrumb-clear, .coveo-hidden-query-breadcrumb-clear {
+.coveo-sprites-facet-resume_disable, .coveo-facet-breadcrumb-multi-icon.coveo-excluded {
   background-position: -1534px -101px;
   width: 12px;
   height: 12px;
   text-indent: 12px; }
 
-.coveo-sprites-subscription-followed, .CoveoFollowItem.coveo-follow-item-followed:before {
+.coveo-sprites-facet-child_selected, .CoveoHierarchicalFacet ul.coveo-facet-values .coveo-facet-value.coveo-has-childs.coveo-has-childs-selected .coveo-facet-value-checkbox > span {
   background-position: -1546px -101px;
-  width: 16px;
-  height: 12px;
-  text-indent: 16px; }
-
-.coveo-sprites-facet-clear_facetsearch_mobile {
-  background-position: -1562px -101px;
   width: 12px;
   height: 12px;
   text-indent: 12px; }
 
-.coveo-sprites-documentType-poll {
+.coveo-sprites-facet-clear_activefilter, .coveo-facet-breadcrumb-clear, .coveo-facet-slider-breadcrumb-clear, .coveo-hidden-query-breadcrumb-clear {
+  background-position: -1558px -101px;
+  width: 12px;
+  height: 12px;
+  text-indent: 12px; }
+
+.coveo-sprites-documentType-from, .coveo-omnibox .coveo-icon.from, .coveo-omnibox .coveo-icon.displayfrom, .coveo-facet-header .coveo-icon.from, .coveo-facet-header .coveo-icon.displayfrom {
   background-position: -1576px -81px;
   width: 16px;
   height: 16px;
   text-indent: 16px; }
 
-.coveo-sprites-documentType-priority {
+.coveo-sprites-documentType-high {
   background-position: -1576px -97px;
   width: 16px;
   height: 16px;
   text-indent: 16px; }
 
-.coveo-sprites-documentType-product {
+.coveo-sprites-documentType-how-to {
   background-position: -1594px 0px;
   width: 16px;
   height: 16px;
   text-indent: 16px; }
 
-.coveo-sprites-documentType-project-name {
+.coveo-sprites-documentType-image {
   background-position: -1594px -16px;
   width: 16px;
   height: 16px;
   text-indent: 16px; }
 
-.coveo-sprites-documentType-renewed-not {
+.coveo-sprites-documentType-immediate {
   background-position: -1594px -32px;
   width: 16px;
   height: 16px;
   text-indent: 16px; }
 
-.coveo-sprites-documentType-renewed {
+.coveo-sprites-documentType-industry, .coveo-omnibox .coveo-icon.sfindustry, .coveo-facet-header .coveo-icon.sfindustry {
   background-position: -1594px -48px;
   width: 16px;
   height: 16px;
   text-indent: 16px; }
 
-.coveo-sprites-documentType-report {
+.coveo-sprites-documentType-install {
   background-position: -1594px -64px;
   width: 16px;
   height: 16px;
   text-indent: 16px; }
 
-.coveo-sprites-documentType-resolved {
+.coveo-sprites-documentType-intranet, .coveo-omnibox .coveo-icon.displayparticipants, .coveo-facet-header .coveo-icon.displayparticipants {
   background-position: -1594px -80px;
   width: 16px;
   height: 16px;
   text-indent: 16px; }
 
-.coveo-sprites-documentType-reviewed {
+.coveo-sprites-documentType-invalid {
   background-position: -1594px -96px;
   width: 16px;
   height: 16px;
   text-indent: 16px; }
 
-.coveo-sprites-documentType-rss {
+.coveo-sprites-documentType-jobtitle {
   background-position: -1610px 0px;
   width: 16px;
   height: 16px;
   text-indent: 16px; }
 
-.coveo-sprites-documentType-salesforce {
+.coveo-sprites-documentType-journal-log {
   background-position: -1610px -16px;
   width: 16px;
   height: 16px;
   text-indent: 16px; }
 
-.coveo-sprites-documentType-secure {
+.coveo-sprites-documentType-kb, .coveo-omnibox .coveo-icon.concepts, .coveo-facet-header .coveo-icon.concepts {
   background-position: -1610px -32px;
   width: 16px;
   height: 16px;
   text-indent: 16px; }
 
-.coveo-sprites-documentType-setting {
+.coveo-sprites-documentType-language, .coveo-omnibox .coveo-icon.language, .coveo-facet-header .coveo-icon.language {
   background-position: -1610px -48px;
   width: 16px;
   height: 16px;
   text-indent: 16px; }
 
-.coveo-sprites-documentType-sharepoint {
+.coveo-sprites-documentType-lead, .coveo-omnibox .coveo-icon.sfleadsource, .coveo-facet-header .coveo-icon.sfleadsource {
   background-position: -1610px -64px;
   width: 16px;
   height: 16px;
   text-indent: 16px; }
 
-.coveo-sprites-documentType-slideshow {
+.coveo-sprites-documentType-link {
   background-position: -1610px -80px;
   width: 16px;
   height: 16px;
   text-indent: 16px; }
 
-.coveo-sprites-documentType-source {
+.coveo-sprites-documentType-lost {
   background-position: -1610px -96px;
   width: 16px;
   height: 16px;
   text-indent: 16px; }
 
-.coveo-sprites-documentType-spreadsheet {
+.coveo-sprites-documentType-mail-recall {
   background-position: -1626px 0px;
   width: 16px;
   height: 16px;
   text-indent: 16px; }
 
-.coveo-sprites-documentType-stage {
+.coveo-sprites-documentType-mail-reply {
   background-position: -1626px -16px;
   width: 16px;
   height: 16px;
   text-indent: 16px; }
 
-.coveo-sprites-documentType-started {
+.coveo-sprites-documentType-mail-undeliverable {
   background-position: -1626px -32px;
   width: 16px;
   height: 16px;
   text-indent: 16px; }
 
-.coveo-sprites-documentType-status, .coveo-omnibox .coveo-icon.sfcasestatus, .coveo-facet-header .coveo-icon.sfcasestatus, .coveo-omnibox .coveo-icon.Sfopportunitystagename, .coveo-facet-header .coveo-icon.Sfopportunitystagename {
+.coveo-sprites-documentType-mail, .coveo-omnibox .coveo-icon.mailbox, .coveo-facet-header .coveo-icon.mailbox {
   background-position: -1626px -48px;
   width: 16px;
   height: 16px;
   text-indent: 16px; }
 
-.coveo-sprites-documentType-support, .coveo-omnibox .coveo-icon.sfcasepriority, .coveo-facet-header .coveo-icon.sfcasepriority {
+.coveo-sprites-documentType-major {
   background-position: -1626px -64px;
   width: 16px;
   height: 16px;
   text-indent: 16px; }
 
-.coveo-sprites-documentType-suspended {
+.coveo-sprites-documentType-manager, .coveo-omnibox .coveo-icon.sfuserdivision, .coveo-facet-header .coveo-icon.sfuserdivision {
   background-position: -1626px -80px;
   width: 16px;
   height: 16px;
   text-indent: 16px; }
 
-.coveo-sprites-documentType-task {
+.coveo-sprites-documentType-minor {
   background-position: -1626px -96px;
   width: 16px;
   height: 16px;
   text-indent: 16px; }
 
-.coveo-sprites-documentType-text {
+.coveo-sprites-documentType-msproject {
   background-position: -1642px 0px;
   width: 16px;
   height: 16px;
   text-indent: 16px; }
 
-.coveo-sprites-documentType-timeline {
+.coveo-sprites-documentType-music-file {
   background-position: -1642px -16px;
   width: 16px;
   height: 16px;
   text-indent: 16px; }
 
-.coveo-sprites-documentType-to, .coveo-omnibox .coveo-icon.to, .coveo-omnibox .coveo-icon.displayrecipients, .coveo-facet-header .coveo-icon.to, .coveo-facet-header .coveo-icon.displayrecipients {
+.coveo-sprites-documentType-need-feedback {
   background-position: -1642px -32px;
   width: 16px;
   height: 16px;
   text-indent: 16px; }
 
-.coveo-sprites-documentType-topic {
+.coveo-sprites-documentType-negociation {
   background-position: -1642px -48px;
   width: 16px;
   height: 16px;
   text-indent: 16px; }
 
-.coveo-sprites-documentType-troubleshooting {
+.coveo-sprites-documentType-new {
   background-position: -1642px -64px;
   width: 16px;
   height: 16px;
   text-indent: 16px; }
 
-.coveo-sprites-documentType-urgent {
+.coveo-sprites-documentType-not-started {
   background-position: -1642px -80px;
   width: 16px;
   height: 16px;
   text-indent: 16px; }
 
-.coveo-sprites-documentType-user, .coveo-omnibox .coveo-icon.author, .coveo-omnibox .coveo-icon.sfownername, .coveo-facet-header .coveo-icon.author, .coveo-facet-header .coveo-icon.sfownername, .coveo-omnibox .coveo-icon.sfuserdepartment, .coveo-facet-header .coveo-icon.sfuserdepartment {
+.coveo-sprites-documentType-note {
   background-position: -1642px -96px;
   width: 16px;
   height: 16px;
   text-indent: 16px; }
 
-.coveo-sprites-documentType-video {
+.coveo-sprites-documentType-open {
   background-position: -1658px 0px;
   width: 16px;
   height: 16px;
   text-indent: 16px; }
 
-.coveo-sprites-documentType-webpage {
+.coveo-sprites-documentType-opportunity, .coveo-omnibox .coveo-icon.sfopportunityforecastcategory, .coveo-facet-header .coveo-icon.sfopportunityforecastcategory, .coveo-omnibox .coveo-icon.sfopportunitytype, .coveo-omnibox .coveo-icon.sfopportunitystagename, .coveo-facet-header .coveo-icon.sfopportunitytype, .coveo-facet-header .coveo-icon.sfopportunitystagename {
   background-position: -1658px -16px;
   width: 16px;
   height: 16px;
   text-indent: 16px; }
 
-.coveo-sprites-fileType-youtube-youtube, .coveo-icon.filetype.youtube, .coveo-icon.sysfiletype.youtube {
+.coveo-sprites-fileType-sharepoint-whereabout, .coveo-icon.filetype.spwhereabout, .coveo-icon.sysfiletype.spwhereabout, .coveo-icon.filetype.spwhereaboutlist, .coveo-icon.sysfiletype.spwhereaboutlist {
   background-position: -1658px -32px;
   width: 16px;
   height: 16px;
   text-indent: 16px; }
 
-.coveo-sprites-documentType-xml {
+.coveo-sprites-documentType-pending {
   background-position: -1658px -48px;
   width: 16px;
   height: 16px;
   text-indent: 16px; }
 
-.coveo-sprites-documentType-yammer {
+.coveo-sprites-documentType-planned {
   background-position: -1658px -64px;
   width: 16px;
   height: 16px;
   text-indent: 16px; }
 
-.coveo-sprites-documentType-year, .coveo-omnibox .coveo-icon.sfopportunityclosedquarterc, .coveo-facet-header .coveo-icon.sfopportunityclosedquarterc, .coveo-omnibox .coveo-icon.year, .coveo-omnibox .coveo-icon.month, .coveo-omnibox .coveo-icon.date, .coveo-facet-header .coveo-icon.year, .coveo-facet-header .coveo-icon.month, .coveo-facet-header .coveo-icon.date {
+.coveo-sprites-documentType-poll {
   background-position: -1658px -80px;
   width: 16px;
   height: 16px;
   text-indent: 16px; }
 
-.coveo-sprites-documentType-zip {
+.coveo-sprites-documentType-priority {
   background-position: -1658px -96px;
   width: 16px;
   height: 16px;
   text-indent: 16px; }
 
-.coveo-sprites-fileType-sharepoint-thingstobring, .coveo-icon.filetype.spthingstobring, .coveo-icon.sysfiletype.spthingstobring, .coveo-icon.filetype.spthingstobringlist, .coveo-icon.sysfiletype.spthingstobringlist {
+.coveo-sprites-documentType-product {
   background-position: -1674px 0px;
   width: 16px;
   height: 16px;
   text-indent: 16px; }
 
-.coveo-sprites-fileType-sharepoint-textbox, .coveo-icon.filetype.sptextbox, .coveo-icon.sysfiletype.sptextbox, .coveo-icon.filetype.sptextboxlist, .coveo-icon.sysfiletype.sptextboxlist {
+.coveo-sprites-documentType-project-name {
   background-position: -1674px -16px;
   width: 16px;
   height: 16px;
   text-indent: 16px; }
 
-.coveo-sprites-fileType-sharepoint-task, .coveo-icon.filetype.sptask, .coveo-icon.sysfiletype.sptask, .coveo-icon.filetype.sptasklist, .coveo-icon.sysfiletype.sptasklist, .coveo-icon.filetype.spadministratortask, .coveo-icon.sysfiletype.spadministratortask, .coveo-icon.filetype.spadministratortasklist, .coveo-icon.sysfiletype.spadministratortasklist {
+.coveo-sprites-documentType-renewed-not {
   background-position: -1674px -32px;
   width: 16px;
   height: 16px;
   text-indent: 16px; }
 
-.coveo-sprites-fileType-sharepoint-survey, .coveo-icon.filetype.spsurvey, .coveo-icon.sysfiletype.spsurvey, .coveo-icon.filetype.spsurveylist, .coveo-icon.sysfiletype.spsurveylist {
+.coveo-sprites-documentType-renewed {
   background-position: -1674px -48px;
   width: 16px;
   height: 16px;
   text-indent: 16px; }
 
-.coveo-sprites-fileType-sharepoint-slidelibrary, .coveo-icon.filetype.spslidelibrarylist, .coveo-icon.sysfiletype.spslidelibrarylist {
+.coveo-sprites-documentType-report {
   background-position: -1674px -64px;
   width: 16px;
   height: 16px;
   text-indent: 16px; }
 
-.coveo-sprites-fileType-sharepoint-sitedirectory, .coveo-icon.filetype.spsitedirectory, .coveo-icon.sysfiletype.spsitedirectory, .coveo-icon.filetype.spsitedirectorylist, .coveo-icon.sysfiletype.spsitedirectorylist {
+.coveo-sprites-documentType-resolved {
   background-position: -1674px -80px;
   width: 16px;
   height: 16px;
   text-indent: 16px; }
 
-.coveo-sprites-fileType-sharepoint-site, .coveo-icon.filetype.spportal, .coveo-icon.sysfiletype.spportal, .coveo-icon.filetype.spsite, .coveo-icon.sysfiletype.spsite {
+.coveo-sprites-documentType-reviewed {
   background-position: -1674px -96px;
   width: 16px;
   height: 16px;
   text-indent: 16px; }
 
-.coveo-sprites-facet-clear_facet, .coveo-facet-header-eraser .coveo-icon, .coveo-facet-settings-section-hide .coveo-icon, .coveo-share-query-summary-info-close span, .coveo-subscriptions-panel .coveo-subscriptions-panel-close span {
+.coveo-sprites-documentType-rss {
   background-position: -1690px 0px;
   width: 16px;
   height: 16px;
   text-indent: 16px; }
 
-.coveo-sprites-fileType-sharepoint-resource, .coveo-icon.filetype.spresource, .coveo-icon.sysfiletype.spresource, .coveo-icon.filetype.spresourcelist, .coveo-icon.sysfiletype.spresourcelist {
+.coveo-sprites-documentType-salesforce {
   background-position: -1690px -16px;
   width: 16px;
   height: 16px;
   text-indent: 16px; }
 
-.coveo-sprites-fileType-sharepoint-reportlibrary, .coveo-icon.filetype.spreportlibrarylist, .coveo-icon.sysfiletype.spreportlibrarylist {
+.coveo-sprites-documentType-secure {
   background-position: -1690px -32px;
   width: 16px;
   height: 16px;
   text-indent: 16px; }
 
-.coveo-sprites-fileType-sharepoint-recordlibrary, .coveo-icon.filetype.sprecordlibrarylist, .coveo-icon.sysfiletype.sprecordlibrarylist {
+.coveo-sprites-documentType-setting {
   background-position: -1690px -48px;
   width: 16px;
   height: 16px;
   text-indent: 16px; }
 
-.coveo-sprites-facet-collapsed, .coveo-facet-header-expand .coveo-icon, .coveo-mobile-device .CoveoFacet .coveo-facet-footer .coveo-facet-more:after, .CoveoHierarchicalFacet ul.coveo-facet-values .coveo-facet-value.coveo-has-childs .coveo-has-childs-toggle, .CoveoFacet .coveo-facet-footer .coveo-facet-more:after {
+.coveo-sprites-documentType-sharepoint {
   background-position: -1690px -64px;
   width: 16px;
   height: 16px;
   text-indent: 16px; }
 
-.coveo-sprites-fileType-sharepoint-projecttask, .coveo-icon.filetype.spprojecttask, .coveo-icon.sysfiletype.spprojecttask, .coveo-icon.filetype.spprojecttasklist, .coveo-icon.sysfiletype.spprojecttasklist {
+.coveo-sprites-documentType-slideshow {
   background-position: -1690px -80px;
   width: 16px;
   height: 16px;
   text-indent: 16px; }
 
-.coveo-sprites-fileType-sharepoint-picturelibrary, .coveo-icon.filetype.sppicturelibrarylist, .coveo-icon.sysfiletype.sppicturelibrarylist {
+.coveo-sprites-documentType-source {
   background-position: -1690px -96px;
   width: 16px;
   height: 16px;
   text-indent: 16px; }
 
-.coveo-sprites-facet-expanded, .coveo-facet-header-collapse .coveo-icon, .coveo-mobile-device .CoveoFacet .coveo-facet-footer .coveo-facet-less:after, .CoveoHierarchicalFacet ul.coveo-facet-values .coveo-facet-value.coveo-has-childs.coveo-open .coveo-has-childs-toggle, .CoveoFacet .coveo-facet-footer .coveo-facet-less:after {
+.coveo-sprites-documentType-spreadsheet {
   background-position: -1706px 0px;
   width: 16px;
   height: 16px;
   text-indent: 16px; }
 
-.coveo-sprites-fileType-sharepoint-phonecallmemo, .coveo-icon.filetype.spphonecallmemo, .coveo-icon.sysfiletype.spphonecallmemo, .coveo-icon.filetype.spphonecallmemolist, .coveo-icon.sysfiletype.spphonecallmemolist {
+.coveo-sprites-documentType-stage {
   background-position: -1706px -16px;
   width: 16px;
   height: 16px;
   text-indent: 16px; }
 
-.coveo-sprites-facet-modeand, .coveo-facet-header-operator .coveo-icon.coveo-and {
+.coveo-sprites-documentType-started {
   background-position: -1706px -32px;
   width: 16px;
   height: 16px;
   text-indent: 16px; }
 
-.coveo-sprites-facet-modeor, .coveo-facet-header-operator .coveo-icon.coveo-or {
+.coveo-sprites-documentType-status, .coveo-omnibox .coveo-icon.sfcasestatus, .coveo-facet-header .coveo-icon.sfcasestatus, .coveo-omnibox .coveo-icon.Sfopportunitystagename, .coveo-facet-header .coveo-icon.Sfopportunitystagename {
   background-position: -1706px -48px;
   width: 16px;
   height: 16px;
   text-indent: 16px; }
 
-.coveo-sprites-facet-moreoption, .coveo-facet-header-settings .coveo-icon {
+.coveo-sprites-documentType-support, .coveo-omnibox .coveo-icon.sfcasepriority, .coveo-facet-header .coveo-icon.sfcasepriority {
   background-position: -1706px -64px;
   width: 16px;
   height: 16px;
   text-indent: 16px; }
 
-.coveo-sprites-fileType-sharepoint-performancepointcontent, .coveo-icon.filetype.spperformancepointcontent, .coveo-icon.sysfiletype.spperformancepointcontent, .coveo-icon.filetype.spperformancepointcontentlist, .coveo-icon.sysfiletype.spperformancepointcontentlist {
+.coveo-sprites-documentType-suspended {
   background-position: -1706px -80px;
   width: 16px;
   height: 16px;
   text-indent: 16px; }
 
-.coveo-sprites-fileType-sharepoint-objective, .coveo-icon.filetype.spobjective, .coveo-icon.sysfiletype.spobjective, .coveo-icon.filetype.spobjectivelist, .coveo-icon.sysfiletype.spobjectivelist {
+.coveo-sprites-documentType-task {
   background-position: -1706px -96px;
   width: 16px;
   height: 16px;
   text-indent: 16px; }
 
-.coveo-sprites-facet-openfacets, .coveo-search-section-facets-icon {
+.coveo-sprites-documentType-text {
   background-position: -1722px 0px;
-  width: 23px;
+  width: 16px;
   height: 16px;
-  text-indent: 23px; }
+  text-indent: 16px; }
 
-.coveo-sprites-facet-openinterfaces, .coveo-search-section-tab-icon {
+.coveo-sprites-documentType-timeline {
   background-position: -1722px -16px;
-  width: 23px;
+  width: 16px;
   height: 16px;
-  text-indent: 23px; }
+  text-indent: 16px; }
 
-.coveo-sprites-facet-show_facet, .coveo-facet-settings-section-show .coveo-icon {
+.coveo-sprites-documentType-to, .coveo-omnibox .coveo-icon.to, .coveo-omnibox .coveo-icon.displayrecipients, .coveo-facet-header .coveo-icon.to, .coveo-facet-header .coveo-icon.displayrecipients {
   background-position: -1722px -32px;
   width: 16px;
   height: 16px;
   text-indent: 16px; }
 
-.coveo-sprites-fileType-sharepoint-meeting, .coveo-icon.filetype.spmeetingserie, .coveo-icon.sysfiletype.spmeetingserie, .coveo-icon.filetype.spmeetingserielist, .coveo-icon.sysfiletype.spmeetingserielist {
+.coveo-sprites-documentType-topic {
   background-position: -1722px -48px;
   width: 16px;
   height: 16px;
   text-indent: 16px; }
 
-.coveo-sprites-fileType-sharepoint-listfolder, .coveo-icon.filetype.splistfolder, .coveo-icon.sysfiletype.splistfolder {
+.coveo-sprites-documentType-troubleshooting {
   background-position: -1722px -64px;
   width: 16px;
   height: 16px;
   text-indent: 16px; }
 
-.coveo-sprites-facet-spin, .coveo-facet-header-wait-animation {
+.coveo-sprites-documentType-urgent {
   background-position: -1722px -80px;
   width: 16px;
   height: 16px;
   text-indent: 16px; }
 
-.coveo-sprites-fileType-sharepoint-link, .coveo-icon.filetype.splink, .coveo-icon.sysfiletype.splink, .coveo-icon.filetype.splinklist, .coveo-icon.sysfiletype.splinklist, .coveo-icon.filetype.spdocumentlink, .coveo-icon.sysfiletype.spdocumentlink {
+.coveo-sprites-documentType-user, .coveo-omnibox .coveo-icon.author, .coveo-omnibox .coveo-icon.sfownername, .coveo-facet-header .coveo-icon.author, .coveo-facet-header .coveo-icon.sfownername, .coveo-omnibox .coveo-icon.sfuserdepartment, .coveo-facet-header .coveo-icon.sfuserdepartment {
   background-position: -1722px -96px;
   width: 16px;
   height: 16px;
   text-indent: 16px; }
 
-.coveo-sprites-fileType-default, .coveo-icon.objecttype, .coveo-icon.filetype, .coveo-icon.sysfiletype, .coveo-icon.filetype.lithiumcommunity, .coveo-icon.sysfiletype.lithiumcommunity {
-  background-position: -1745px 0px;
+.coveo-sprites-documentType-video {
+  background-position: -1738px 0px;
+  width: 16px;
+  height: 16px;
+  text-indent: 16px; }
+
+.coveo-sprites-documentType-webpage {
+  background-position: -1738px -16px;
+  width: 16px;
+  height: 16px;
+  text-indent: 16px; }
+
+.coveo-sprites-documentType-won {
+  background-position: -1738px -32px;
+  width: 16px;
+  height: 16px;
+  text-indent: 16px; }
+
+.coveo-sprites-documentType-xml {
+  background-position: -1738px -48px;
+  width: 16px;
+  height: 16px;
+  text-indent: 16px; }
+
+.coveo-sprites-documentType-yammer {
+  background-position: -1738px -64px;
+  width: 16px;
+  height: 16px;
+  text-indent: 16px; }
+
+.coveo-sprites-documentType-year, .coveo-omnibox .coveo-icon.sfopportunityclosedquarterc, .coveo-facet-header .coveo-icon.sfopportunityclosedquarterc, .coveo-omnibox .coveo-icon.year, .coveo-omnibox .coveo-icon.month, .coveo-omnibox .coveo-icon.date, .coveo-facet-header .coveo-icon.year, .coveo-facet-header .coveo-icon.month, .coveo-facet-header .coveo-icon.date {
+  background-position: -1738px -80px;
+  width: 16px;
+  height: 16px;
+  text-indent: 16px; }
+
+.coveo-sprites-documentType-zip {
+  background-position: -1738px -96px;
+  width: 16px;
+  height: 16px;
+  text-indent: 16px; }
+
+.coveo-sprites-fileType-sharepoint-sitedirectory, .coveo-icon.filetype.spsitedirectory, .coveo-icon.sysfiletype.spsitedirectory, .coveo-icon.filetype.spsitedirectorylist, .coveo-icon.sysfiletype.spsitedirectorylist {
+  background-position: -1754px 0px;
+  width: 16px;
+  height: 16px;
+  text-indent: 16px; }
+
+.coveo-sprites-fileType-sharepoint-site, .coveo-icon.filetype.spportal, .coveo-icon.sysfiletype.spportal, .coveo-icon.filetype.spsite, .coveo-icon.sysfiletype.spsite {
+  background-position: -1754px -16px;
+  width: 16px;
+  height: 16px;
+  text-indent: 16px; }
+
+.coveo-sprites-fileType-sharepoint-resource, .coveo-icon.filetype.spresource, .coveo-icon.sysfiletype.spresource, .coveo-icon.filetype.spresourcelist, .coveo-icon.sysfiletype.spresourcelist {
+  background-position: -1754px -32px;
+  width: 16px;
+  height: 16px;
+  text-indent: 16px; }
+
+.coveo-sprites-fileType-sharepoint-reportlibrary, .coveo-icon.filetype.spreportlibrarylist, .coveo-icon.sysfiletype.spreportlibrarylist {
+  background-position: -1754px -48px;
+  width: 16px;
+  height: 16px;
+  text-indent: 16px; }
+
+.coveo-sprites-fileType-sharepoint-recordlibrary, .coveo-icon.filetype.sprecordlibrarylist, .coveo-icon.sysfiletype.sprecordlibrarylist {
+  background-position: -1754px -64px;
+  width: 16px;
+  height: 16px;
+  text-indent: 16px; }
+
+.coveo-sprites-fileType-sharepoint-projecttask, .coveo-icon.filetype.spprojecttask, .coveo-icon.sysfiletype.spprojecttask, .coveo-icon.filetype.spprojecttasklist, .coveo-icon.sysfiletype.spprojecttasklist {
+  background-position: -1754px -80px;
+  width: 16px;
+  height: 16px;
+  text-indent: 16px; }
+
+.coveo-sprites-fileType-sharepoint-picturelibrary, .coveo-icon.filetype.sppicturelibrarylist, .coveo-icon.sysfiletype.sppicturelibrarylist {
+  background-position: -1754px -96px;
+  width: 16px;
+  height: 16px;
+  text-indent: 16px; }
+
+.coveo-sprites-facet-clear_facet, .coveo-facet-header-eraser .coveo-icon, .coveo-facet-settings-section-hide .coveo-icon, .coveo-share-query-summary-info-close span, .coveo-subscriptions-panel .coveo-subscriptions-panel-close span {
+  background-position: -1770px 0px;
+  width: 16px;
+  height: 16px;
+  text-indent: 16px; }
+
+.coveo-sprites-fileType-sharepoint-phonecallmemo, .coveo-icon.filetype.spphonecallmemo, .coveo-icon.sysfiletype.spphonecallmemo, .coveo-icon.filetype.spphonecallmemolist, .coveo-icon.sysfiletype.spphonecallmemolist {
+  background-position: -1770px -16px;
+  width: 16px;
+  height: 16px;
+  text-indent: 16px; }
+
+.coveo-sprites-fileType-sharepoint-performancepointcontent, .coveo-icon.filetype.spperformancepointcontent, .coveo-icon.sysfiletype.spperformancepointcontent, .coveo-icon.filetype.spperformancepointcontentlist, .coveo-icon.sysfiletype.spperformancepointcontentlist {
+  background-position: -1770px -32px;
+  width: 16px;
+  height: 16px;
+  text-indent: 16px; }
+
+.coveo-sprites-fileType-sharepoint-objective, .coveo-icon.filetype.spobjective, .coveo-icon.sysfiletype.spobjective, .coveo-icon.filetype.spobjectivelist, .coveo-icon.sysfiletype.spobjectivelist {
+  background-position: -1770px -48px;
+  width: 16px;
+  height: 16px;
+  text-indent: 16px; }
+
+.coveo-sprites-facet-collapsed, .coveo-facet-header-expand .coveo-icon, .coveo-mobile-device .CoveoFacet .coveo-facet-footer .coveo-facet-more:after, .CoveoHierarchicalFacet ul.coveo-facet-values .coveo-facet-value.coveo-has-childs .coveo-has-childs-toggle, .CoveoFacet .coveo-facet-footer .coveo-facet-more:after {
+  background-position: -1770px -64px;
+  width: 16px;
+  height: 16px;
+  text-indent: 16px; }
+
+.coveo-sprites-fileType-sharepoint-meeting, .coveo-icon.filetype.spmeetingserie, .coveo-icon.sysfiletype.spmeetingserie, .coveo-icon.filetype.spmeetingserielist, .coveo-icon.sysfiletype.spmeetingserielist {
+  background-position: -1770px -80px;
+  width: 16px;
+  height: 16px;
+  text-indent: 16px; }
+
+.coveo-sprites-fileType-sharepoint-listfolder, .coveo-icon.filetype.splistfolder, .coveo-icon.sysfiletype.splistfolder {
+  background-position: -1770px -96px;
+  width: 16px;
+  height: 16px;
+  text-indent: 16px; }
+
+.coveo-sprites-facet-expanded, .coveo-facet-header-collapse .coveo-icon, .coveo-mobile-device .CoveoFacet .coveo-facet-footer .coveo-facet-less:after, .CoveoHierarchicalFacet ul.coveo-facet-values .coveo-facet-value.coveo-has-childs.coveo-open .coveo-has-childs-toggle, .CoveoFacet .coveo-facet-footer .coveo-facet-less:after {
+  background-position: -1786px 0px;
+  width: 16px;
+  height: 16px;
+  text-indent: 16px; }
+
+.coveo-sprites-fileType-sharepoint-link, .coveo-icon.filetype.splink, .coveo-icon.sysfiletype.splink, .coveo-icon.filetype.splinklist, .coveo-icon.sysfiletype.splinklist, .coveo-icon.filetype.spdocumentlink, .coveo-icon.sysfiletype.spdocumentlink {
+  background-position: -1786px -16px;
+  width: 16px;
+  height: 16px;
+  text-indent: 16px; }
+
+.coveo-sprites-facet-modeand, .coveo-facet-header-operator .coveo-icon.coveo-and {
+  background-position: -1786px -32px;
+  width: 16px;
+  height: 16px;
+  text-indent: 16px; }
+
+.coveo-sprites-facet-modeor, .coveo-facet-header-operator .coveo-icon.coveo-or {
+  background-position: -1786px -48px;
+  width: 16px;
+  height: 16px;
+  text-indent: 16px; }
+
+.coveo-sprites-facet-moreoption, .coveo-facet-header-settings .coveo-icon {
+  background-position: -1786px -64px;
   width: 16px;
   height: 16px;
   text-indent: 16px; }
 
 .coveo-sprites-fileType-sharepoint-languagesandtranslator, .coveo-icon.filetype.splanguagesandtranslator, .coveo-icon.sysfiletype.splanguagesandtranslator, .coveo-icon.filetype.splanguagesandtranslatorlist, .coveo-icon.sysfiletype.splanguagesandtranslatorlist {
-  background-position: -1745px -16px;
+  background-position: -1786px -80px;
   width: 16px;
   height: 16px;
   text-indent: 16px; }
 
 .coveo-sprites-fileType-sharepoint-keyperformanceindicator, .coveo-icon.filetype.spkeyperformanceindicator, .coveo-icon.sysfiletype.spkeyperformanceindicator, .coveo-icon.filetype.spkeyperformanceindicatorlist, .coveo-icon.sysfiletype.spkeyperformanceindicatorlist {
-  background-position: -1745px -32px;
+  background-position: -1786px -96px;
+  width: 16px;
+  height: 16px;
+  text-indent: 16px; }
+
+.coveo-sprites-facet-openfacets, .coveo-search-section-facets-icon {
+  background-position: -1802px 0px;
+  width: 23px;
+  height: 16px;
+  text-indent: 23px; }
+
+.coveo-sprites-facet-openinterfaces, .coveo-search-section-tab-icon {
+  background-position: -1802px -16px;
+  width: 23px;
+  height: 16px;
+  text-indent: 23px; }
+
+.coveo-sprites-facet-show_facet, .coveo-facet-settings-section-show .coveo-icon {
+  background-position: -1802px -32px;
   width: 16px;
   height: 16px;
   text-indent: 16px; }
 
 .coveo-sprites-fileType-sharepoint-issue, .coveo-icon.filetype.spissue, .coveo-icon.sysfiletype.spissue, .coveo-icon.filetype.spissuelist, .coveo-icon.sysfiletype.spissuelist {
-  background-position: -1745px -48px;
-  width: 16px;
-  height: 16px;
-  text-indent: 16px; }
-
-.coveo-sprites-menu-menu_avancedsearch {
-  background-position: -1745px -64px;
-  width: 16px;
-  height: 16px;
-  text-indent: 16px; }
-
-.coveo-sprites-menu-menu_opencontactinfoin {
-  background-position: -1745px -80px;
-  width: 16px;
-  height: 16px;
-  text-indent: 16px; }
-
-.coveo-sprites-menu-menu_saveoption, .coveo-facet-settings-section-save-state .coveo-icon, .coveo-settings-item.coveo-export-to-excel .coveo-icon {
-  background-position: -1745px -96px;
-  width: 16px;
-  height: 16px;
-  text-indent: 16px; }
-
-.coveo-sprites-menu-menu_searchin {
-  background-position: -1761px 0px;
-  width: 16px;
-  height: 16px;
-  text-indent: 16px; }
-
-.coveo-sprites-menu-menu_shareresult {
-  background-position: -1761px -16px;
-  width: 16px;
-  height: 16px;
-  text-indent: 16px; }
-
-.coveo-sprites-menu-menu_sortby, .coveo-facet-settings-section-sort .coveo-icon {
-  background-position: -1761px -32px;
-  width: 16px;
-  height: 16px;
-  text-indent: 16px; }
-
-.coveo-sprites-menu-menu_sortdirection, .coveo-facet-settings-section-direction .coveo-icon {
-  background-position: -1761px -48px;
+  background-position: -1802px -48px;
   width: 16px;
   height: 16px;
   text-indent: 16px; }
 
 .coveo-sprites-fileType-sharepoint-ipfs, .coveo-icon.filetype.spipfslist, .coveo-icon.sysfiletype.spipfslist {
-  background-position: -1761px -64px;
+  background-position: -1802px -64px;
+  width: 16px;
+  height: 16px;
+  text-indent: 16px; }
+
+.coveo-sprites-facet-spin, .coveo-facet-header-wait-animation {
+  background-position: -1802px -80px;
   width: 16px;
   height: 16px;
   text-indent: 16px; }
 
 .coveo-sprites-fileType-sharepoint-imedictionary, .coveo-icon.filetype.spimedictionary, .coveo-icon.sysfiletype.spimedictionary, .coveo-icon.filetype.spimedictionarylist, .coveo-icon.sysfiletype.spimedictionarylist {
-  background-position: -1761px -80px;
+  background-position: -1802px -96px;
   width: 16px;
   height: 16px;
   text-indent: 16px; }
 
-.coveo-sprites-attachToCase-attach, .CoveoAttachToCase span.coveo-attach-to-case-attach:before {
-  background-position: -1761px -96px;
-  width: 16px;
-  height: 16px;
-  text-indent: 16px; }
-
-.coveo-sprites-preferencesPanel-menu_preferences, .coveo-settings-item.coveo-preferences-panel .coveo-icon {
-  background-position: -1777px 0px;
-  width: 16px;
-  height: 16px;
-  text-indent: 16px; }
-
-.coveo-sprites-preferencesPanel-table-apply, .CoveoResultsFiltersPreferences .coveo-advanced-filters-builder .coveo-choice-container.coveo-close-and-save .coveo-save {
-  background-position: -1777px -16px;
-  width: 16px;
-  height: 16px;
-  text-indent: 16px; }
-
-.coveo-sprites-preferencesPanel-table-cancel, .CoveoResultsFiltersPreferences .coveo-advanced-filters-builder .coveo-choice-container.coveo-close-and-save .coveo-close {
-  background-position: -1777px -32px;
-  width: 16px;
-  height: 16px;
-  text-indent: 16px; }
-
-.coveo-sprites-preferencesPanel-table-delete, .CoveoResultsFiltersPreferences .coveo-delete .coveo-icon {
-  background-position: -1777px -48px;
-  width: 16px;
-  height: 16px;
-  text-indent: 16px; }
-
-.coveo-sprites-preferencesPanel-table-edit, .CoveoResultsFiltersPreferences .coveo-edit .coveo-icon {
-  background-position: -1777px -64px;
-  width: 16px;
-  height: 16px;
-  text-indent: 16px; }
-
-.coveo-sprites-attachToCase-attached, .CoveoAttachToCase span.coveo-attach-to-case-attached:before {
-  background-position: -1777px -80px;
-  width: 16px;
-  height: 16px;
-  text-indent: 16px; }
-
-.coveo-sprites-fileType-sharepoint-workflowhistory, .coveo-icon.filetype.spworkflowhistory, .coveo-icon.sysfiletype.spworkflowhistory, .coveo-icon.filetype.spworkflowhistorylist, .coveo-icon.sysfiletype.spworkflowhistorylist {
-  background-position: -1777px -96px;
-  width: 16px;
-  height: 16px;
-  text-indent: 16px; }
-
-.coveo-sprites-querybox-clear, .coveo-query-box-clear .coveo-icon {
-  background-position: -1793px 0px;
-  width: 16px;
-  height: 16px;
-  text-indent: 16px; }
-
-.coveo-sprites-fileType-sharepoint-healthrule, .coveo-icon.filetype.sphealthrule, .coveo-icon.sysfiletype.sphealthrule, .coveo-icon.filetype.sphealthrulelist, .coveo-icon.sysfiletype.sphealthrulelist {
-  background-position: -1793px -16px;
-  width: 16px;
-  height: 16px;
-  text-indent: 16px; }
-
-.coveo-sprites-quickview-quickview, .CoveoResultAttachments .coveo-thumbnail-icon, .coveo-feedItem-result .coveo-thumbnail-icon, .coveo-feedComment-result .coveo-thumbnail-icon {
-  background-position: -1793px -32px;
-  width: 16px;
-  height: 16px;
-  text-indent: 16px; }
-
-.coveo-sprites-quickview-quickview_next, .coveo-mobile-device .coveo-modalBox.coveo-mobile-facet-search > .coveo-wrapper > .coveo-body > .coveo-facet-search-results .coveo-facet-search-select-all .coveo-mobile-facet-search-select-all, .coveo-modalBox.coveo-mobile-facet-search > .coveo-wrapper > .coveo-body > .coveo-facet-search-results .coveo-facet-search-select-all .coveo-mobile-facet-search-select-all {
-  background-position: -1793px -48px;
-  width: 16px;
-  height: 16px;
-  text-indent: 16px; }
-
-.coveo-sprites-quickview-quickview_previous {
-  background-position: -1793px -64px;
-  width: 16px;
-  height: 16px;
-  text-indent: 16px; }
-
-.coveo-sprites-common-amount {
-  background-position: -1793px -80px;
-  width: 16px;
-  height: 16px;
-  text-indent: 16px; }
-
-.coveo-sprites-fileType-sharepoint-wikipagelibrary, .coveo-icon.filetype.spwikipagelibrarylist, .coveo-icon.sysfiletype.spwikipagelibrarylist {
-  background-position: -1793px -96px;
-  width: 16px;
-  height: 16px;
-  text-indent: 16px; }
-
-.coveo-sprites-fileType-sharepoint-whereabout, .coveo-icon.filetype.spwhereabout, .coveo-icon.sysfiletype.spwhereabout, .coveo-icon.filetype.spwhereaboutlist, .coveo-icon.sysfiletype.spwhereaboutlist {
-  background-position: -1809px 0px;
-  width: 16px;
-  height: 16px;
-  text-indent: 16px; }
-
-.coveo-sprites-common-checkmark_selected-on_dark_bg, .CoveoTab.coveo-selected:after, .coveo-selected.coveo-tab-section-spacer:after, .coveo-selected.coveo-demo-back-to-login:after, .coveo-selected.CoveoLogin:after {
-  background-position: -1809px -16px;
-  width: 16px;
-  height: 16px;
-  text-indent: 16px; }
-
-.coveo-sprites-fileType-sharepoint-healthreport, .coveo-icon.filetype.sphealthreport, .coveo-icon.sysfiletype.sphealthreport, .coveo-icon.filetype.sphealthreportlist, .coveo-icon.sysfiletype.sphealthreportlist {
-  background-position: -1809px -32px;
-  width: 16px;
-  height: 16px;
-  text-indent: 16px; }
-
-.coveo-sprites-common-clear, .coveo-breadcrumb-icon-clear-all, .coveo-preferences-panel-close .coveo-icon {
-  background-position: -1809px -48px;
-  width: 16px;
-  height: 16px;
-  text-indent: 16px; }
-
-.coveo-sprites-common-copy {
-  background-position: -1809px -64px;
-  width: 16px;
-  height: 16px;
-  text-indent: 16px; }
-
-.coveo-sprites-fileType-sharepoint-user, .coveo-icon.filetype.spuserprofile, .coveo-icon.sysfiletype.spuserprofile, .coveo-icon.filetype.spuserinformation, .coveo-icon.sysfiletype.spuserinformation, .coveo-icon.filetype.spuserinformationlist, .coveo-icon.sysfiletype.spuserinformationlist {
-  background-position: -1809px -80px;
-  width: 16px;
-  height: 16px;
-  text-indent: 16px; }
-
-.coveo-sprites-fileType-sharepoint-translationmanagementlibrary, .coveo-icon.filetype.sptranslationmanagementlibrarylist, .coveo-icon.sysfiletype.sptranslationmanagementlibrarylist {
-  background-position: -1809px -96px;
-  width: 16px;
-  height: 16px;
-  text-indent: 16px; }
-
-.coveo-sprites-common-datepicker {
+.coveo-sprites-fileType-default, .coveo-icon.objecttype, .coveo-icon.filetype, .coveo-icon.sysfiletype, .coveo-icon.filetype.lithiumcommunity, .coveo-icon.sysfiletype.lithiumcommunity {
   background-position: -1825px 0px;
   width: 16px;
   height: 16px;
   text-indent: 16px; }
 
-.coveo-sprites-common-delete {
+.coveo-sprites-fileType-sharepoint-healthrule, .coveo-icon.filetype.sphealthrule, .coveo-icon.sysfiletype.sphealthrule, .coveo-icon.filetype.sphealthrulelist, .coveo-icon.sysfiletype.sphealthrulelist {
   background-position: -1825px -16px;
   width: 16px;
   height: 16px;
   text-indent: 16px; }
 
-.coveo-sprites-common-doritos, .coveo-new-to-coveo-section .coveo-demo-section-arrow-forward, .coveo-demo-section-arrow-backward {
+.coveo-sprites-fileType-sharepoint-healthreport, .coveo-icon.filetype.sphealthreport, .coveo-icon.sysfiletype.sphealthreport, .coveo-icon.filetype.sphealthreportlist, .coveo-icon.sysfiletype.sphealthreportlist {
   background-position: -1825px -32px;
   width: 16px;
   height: 16px;
   text-indent: 16px; }
 
-.coveo-sprites-documentType-account-salesforce, .coveo-omnibox .coveo-icon.sfaccountname, .coveo-omnibox .coveo-icon.sfaccounttype, .coveo-facet-header .coveo-icon.sfaccountname, .coveo-facet-header .coveo-icon.sfaccounttype {
+.coveo-sprites-fileType-sharepoint-formlibrary, .coveo-icon.filetype.spformlibrarylist, .coveo-icon.sysfiletype.spformlibrarylist {
   background-position: -1825px -48px;
   width: 16px;
   height: 16px;
   text-indent: 16px; }
 
-.coveo-sprites-documentType-account {
+.coveo-sprites-menu-menu_avancedsearch {
   background-position: -1825px -64px;
   width: 16px;
   height: 16px;
   text-indent: 16px; }
 
-.coveo-sprites-documentType-advanced-content {
+.coveo-sprites-menu-menu_opencontactinfoin {
   background-position: -1825px -80px;
   width: 16px;
   height: 16px;
   text-indent: 16px; }
 
-.coveo-sprites-documentType-all-content {
+.coveo-sprites-menu-menu_saveoption, .coveo-facet-settings-section-save-state .coveo-icon, .coveo-settings-item.coveo-export-to-excel .coveo-icon {
   background-position: -1825px -96px;
   width: 16px;
   height: 16px;
   text-indent: 16px; }
 
-.coveo-sprites-documentType-announcement {
+.coveo-sprites-menu-menu_searchin {
   background-position: -1841px 0px;
   width: 16px;
   height: 16px;
   text-indent: 16px; }
 
-.coveo-sprites-common-menu_reauthenticate, .coveo-settings-item.coveo-authentication-provider .coveo-icon {
+.coveo-sprites-menu-menu_shareresult {
   background-position: -1841px -16px;
   width: 16px;
   height: 16px;
   text-indent: 16px; }
 
-.coveo-sprites-common-menu_shareresult, .coveo-settings-item.coveo-share-query .coveo-icon {
+.coveo-sprites-menu-menu_sortby, .coveo-facet-settings-section-sort .coveo-icon {
   background-position: -1841px -32px;
   width: 16px;
   height: 16px;
   text-indent: 16px; }
 
-.coveo-sprites-documentType-answer, .coveo-login-tab-icon {
+.coveo-sprites-menu-menu_sortdirection, .coveo-facet-settings-section-direction .coveo-icon {
   background-position: -1841px -48px;
   width: 16px;
   height: 16px;
   text-indent: 16px; }
 
-.coveo-sprites-documentType-approved {
+.coveo-sprites-fileType-sharepoint-event, .coveo-icon.filetype.spevent, .coveo-icon.sysfiletype.spevent, .coveo-icon.filetype.speventlist, .coveo-icon.sysfiletype.speventlist {
   background-position: -1841px -64px;
   width: 16px;
   height: 16px;
   text-indent: 16px; }
 
-.coveo-sprites-documentType-attachment {
+.coveo-sprites-fileType-sharepoint-documentset, .coveo-icon.filetype.spdocumentset, .coveo-icon.sysfiletype.spdocumentset {
   background-position: -1841px -80px;
   width: 16px;
   height: 16px;
   text-indent: 16px; }
 
-.coveo-sprites-fileType-sharepoint-formlibrary, .coveo-icon.filetype.spformlibrarylist, .coveo-icon.sysfiletype.spformlibrarylist {
+.coveo-sprites-fileType-sharepoint-user, .coveo-icon.filetype.spuserprofile, .coveo-icon.sysfiletype.spuserprofile, .coveo-icon.filetype.spuserinformation, .coveo-icon.sysfiletype.spuserinformation, .coveo-icon.filetype.spuserinformationlist, .coveo-icon.sysfiletype.spuserinformationlist {
   background-position: -1841px -96px;
   width: 16px;
   height: 16px;
   text-indent: 16px; }
 
-.coveo-sprites-documentType-audience {
+.coveo-sprites-preferencesPanel-menu_preferences, .coveo-settings-item.coveo-preferences-panel .coveo-icon {
   background-position: -1857px 0px;
   width: 16px;
   height: 16px;
   text-indent: 16px; }
 
-.coveo-sprites-documentType-author {
+.coveo-sprites-preferencesPanel-table-apply, .CoveoResultsFiltersPreferences .coveo-advanced-filters-builder .coveo-choice-container.coveo-close-and-save .coveo-save {
   background-position: -1857px -16px;
   width: 16px;
   height: 16px;
   text-indent: 16px; }
 
-.coveo-sprites-documentType-block {
+.coveo-sprites-preferencesPanel-table-cancel, .CoveoResultsFiltersPreferences .coveo-advanced-filters-builder .coveo-choice-container.coveo-close-and-save .coveo-close {
   background-position: -1857px -32px;
   width: 16px;
   height: 16px;
   text-indent: 16px; }
 
-.coveo-sprites-documentType-blog {
+.coveo-sprites-preferencesPanel-table-delete, .CoveoResultsFiltersPreferences .coveo-delete .coveo-icon {
   background-position: -1857px -48px;
   width: 16px;
   height: 16px;
   text-indent: 16px; }
 
-.coveo-sprites-fileType-sharepoint-event, .coveo-icon.filetype.spevent, .coveo-icon.sysfiletype.spevent, .coveo-icon.filetype.speventlist, .coveo-icon.sysfiletype.speventlist {
+.coveo-sprites-preferencesPanel-table-edit, .CoveoResultsFiltersPreferences .coveo-edit .coveo-icon {
   background-position: -1857px -64px;
   width: 16px;
   height: 16px;
   text-indent: 16px; }
 
-.coveo-sprites-fileType-sharepoint-documentset, .coveo-icon.filetype.spdocumentset, .coveo-icon.sysfiletype.spdocumentset {
+.coveo-sprites-fileType-sharepoint-translationmanagementlibrary, .coveo-icon.filetype.sptranslationmanagementlibrarylist, .coveo-icon.sysfiletype.sptranslationmanagementlibrarylist {
   background-position: -1857px -80px;
   width: 16px;
   height: 16px;
   text-indent: 16px; }
 
-.coveo-sprites-fileType-sharepoint-documentlibrary, .coveo-icon.filetype.spdocumentlibrarylist, .coveo-icon.sysfiletype.spdocumentlibrarylist, .coveo-icon.filetype.splisttemplatecataloglist, .coveo-icon.sysfiletype.splisttemplatecataloglist, .coveo-icon.filetype.spwebpartcataloglist, .coveo-icon.sysfiletype.spwebpartcataloglist, .coveo-icon.filetype.spwebtemplatecataloglist, .coveo-icon.sysfiletype.spwebtemplatecataloglist, .coveo-icon.filetype.spworkspacepagelist, .coveo-icon.sysfiletype.spworkspacepagelist, .coveo-icon.filetype.spareadocumentlibrarylist, .coveo-icon.sysfiletype.spareadocumentlibrarylist, .coveo-icon.filetype.spmasterpagescataloglist, .coveo-icon.sysfiletype.spmasterpagescataloglist, .coveo-icon.filetype.spnocodeworkflowlibrarylist, .coveo-icon.sysfiletype.spnocodeworkflowlibrarylist, .coveo-icon.filetype.sppublishingpageslibrarylist, .coveo-icon.sysfiletype.sppublishingpageslibrarylist, .coveo-icon.filetype.spreportdocumentlibrarylist, .coveo-icon.sysfiletype.spreportdocumentlibrarylist, .coveo-icon.filetype.spprocessdiagramslibrarylist, .coveo-icon.sysfiletype.spprocessdiagramslibrarylist, .coveo-icon.filetype.spsitethemeslibrarylist, .coveo-icon.sysfiletype.spsitethemeslibrarylist, .coveo-icon.filetype.spsolutionslibrarylist, .coveo-icon.sysfiletype.spsolutionslibrarylist, .coveo-icon.filetype.spwfpublibrarylist, .coveo-icon.sysfiletype.spwfpublibrarylist {
+.coveo-sprites-common-amount {
   background-position: -1857px -96px;
   width: 16px;
   height: 16px;
   text-indent: 16px; }
 
-.coveo-sprites-documentType-bug-severity {
+.coveo-sprites-querybox-clear, .coveo-query-box-clear .coveo-icon {
   background-position: -1873px 0px;
   width: 16px;
   height: 16px;
   text-indent: 16px; }
 
-.coveo-sprites-documentType-campaign {
+.coveo-sprites-fileType-sharepoint-documentlibrary, .coveo-icon.filetype.spdocumentlibrarylist, .coveo-icon.sysfiletype.spdocumentlibrarylist, .coveo-icon.filetype.splisttemplatecataloglist, .coveo-icon.sysfiletype.splisttemplatecataloglist, .coveo-icon.filetype.spwebpartcataloglist, .coveo-icon.sysfiletype.spwebpartcataloglist, .coveo-icon.filetype.spwebtemplatecataloglist, .coveo-icon.sysfiletype.spwebtemplatecataloglist, .coveo-icon.filetype.spworkspacepagelist, .coveo-icon.sysfiletype.spworkspacepagelist, .coveo-icon.filetype.spareadocumentlibrarylist, .coveo-icon.sysfiletype.spareadocumentlibrarylist, .coveo-icon.filetype.spmasterpagescataloglist, .coveo-icon.sysfiletype.spmasterpagescataloglist, .coveo-icon.filetype.spnocodeworkflowlibrarylist, .coveo-icon.sysfiletype.spnocodeworkflowlibrarylist, .coveo-icon.filetype.sppublishingpageslibrarylist, .coveo-icon.sysfiletype.sppublishingpageslibrarylist, .coveo-icon.filetype.spreportdocumentlibrarylist, .coveo-icon.sysfiletype.spreportdocumentlibrarylist, .coveo-icon.filetype.spprocessdiagramslibrarylist, .coveo-icon.sysfiletype.spprocessdiagramslibrarylist, .coveo-icon.filetype.spsitethemeslibrarylist, .coveo-icon.sysfiletype.spsitethemeslibrarylist, .coveo-icon.filetype.spsolutionslibrarylist, .coveo-icon.sysfiletype.spsolutionslibrarylist, .coveo-icon.filetype.spwfpublibrarylist, .coveo-icon.sysfiletype.spwfpublibrarylist {
   background-position: -1873px -16px;
   width: 16px;
   height: 16px;
   text-indent: 16px; }
 
-.coveo-sprites-documentType-cancelled {
+.coveo-sprites-quickview-quickview, .CoveoResultAttachments .coveo-thumbnail-icon, .coveo-feedItem-result .coveo-thumbnail-icon, .coveo-feedComment-result .coveo-thumbnail-icon {
   background-position: -1873px -32px;
   width: 16px;
   height: 16px;
   text-indent: 16px; }
 
-.coveo-sprites-documentType-cant-reproduce {
+.coveo-sprites-quickview-quickview_next, .coveo-mobile-device .coveo-modalBox.coveo-mobile-facet-search > .coveo-wrapper > .coveo-body > .coveo-facet-search-results .coveo-facet-search-select-all .coveo-mobile-facet-search-select-all, .coveo-modalBox.coveo-mobile-facet-search > .coveo-wrapper > .coveo-body > .coveo-facet-search-results .coveo-facet-search-select-all .coveo-mobile-facet-search-select-all {
   background-position: -1873px -48px;
   width: 16px;
   height: 16px;
   text-indent: 16px; }
 
-.coveo-sprites-documentType-case {
+.coveo-sprites-quickview-quickview_previous {
   background-position: -1873px -64px;
   width: 16px;
   height: 16px;
   text-indent: 16px; }
 
-.coveo-sprites-documentType-category, .coveo-omnibox .coveo-icon.Sfopportunityforecastcategory, .coveo-facet-header .coveo-icon.Sfopportunityforecastcategory {
+.coveo-sprites-common-menu_reauthenticate, .coveo-settings-item.coveo-authentication-provider .coveo-icon {
   background-position: -1873px -80px;
   width: 16px;
   height: 16px;
@@ -3148,13 +3148,13 @@
   height: 16px;
   text-indent: 16px; }
 
-.coveo-sprites-documentType-chatter {
+.coveo-sprites-common-menu_shareresult, .coveo-settings-item.coveo-share-query .coveo-icon {
   background-position: -1905px 0px;
   width: 16px;
   height: 16px;
   text-indent: 16px; }
 
-.coveo-sprites-documentType-city, .coveo-omnibox .coveo-icon.sfcountry, .coveo-omnibox .coveo-icon.sfcity, .coveo-facet-header .coveo-icon.sfcountry, .coveo-facet-header .coveo-icon.sfcity, .coveo-omnibox .coveo-icon.sfstate, .coveo-facet-header .coveo-icon.sfstate {
+.coveo-sprites-fileType-youtube-youtube, .coveo-icon.filetype.youtube, .coveo-icon.sysfiletype.youtube {
   background-position: -1905px -16px;
   width: 16px;
   height: 16px;
@@ -3646,7 +3646,7 @@
   height: 16px;
   text-indent: 16px; }
 
-.coveo-sprites-documentType-won {
+.coveo-sprites-documentType-pdf {
   background-position: -2081px -96px;
   width: 16px;
   height: 16px;
@@ -3658,56 +3658,50 @@
   height: 12px;
   text-indent: 12px; }
 
-.coveo-sprites-facet-resume_selected, .coveo-facet-breadcrumb-multi-icon.coveo-selected {
+.coveo-sprites-facet-clear_facetsearch_mobile {
   background-position: -2097px -12px;
   width: 12px;
   height: 12px;
   text-indent: 12px; }
 
-.coveo-sprites-facet-resume_disable, .coveo-facet-breadcrumb-multi-icon.coveo-excluded {
+.coveo-sprites-pager-previous, .coveo-pager-previous > a > span {
   background-position: -2097px -24px;
-  width: 12px;
-  height: 12px;
-  text-indent: 12px; }
+  width: 11px;
+  height: 11px;
+  text-indent: 11px; }
 
 .coveo-sprites-pager-next, .coveo-pager-next > a > span {
-  background-position: -2097px -36px;
-  width: 11px;
-  height: 11px;
-  text-indent: 11px; }
-
-.coveo-sprites-pager-previous, .coveo-pager-previous > a > span {
-  background-position: -2097px -47px;
-  width: 11px;
-  height: 11px;
-  text-indent: 11px; }
-
-.coveo-sprites-folding-showmore, .coveo-more .coveo-folding-footer-icon, .coveo-folding-footer .coveo-more .coveo-folding-footer-icon {
-  background-position: -2097px -58px;
+  background-position: -2097px -35px;
   width: 11px;
   height: 11px;
   text-indent: 11px; }
 
 .coveo-sprites-folding-showless, .coveo-less .coveo-folding-footer-icon, .coveo-folding-footer .coveo-less .coveo-folding-footer-icon {
-  background-position: -2097px -69px;
+  background-position: -2097px -46px;
   width: 11px;
   height: 11px;
   text-indent: 11px; }
 
-.coveo-sprites-common-tagging-cancel_clear, .coveo-result-tagging-clear-icon span, .coveo-result-tagging-delete-icon {
-  background-position: -2097px -80px;
+.coveo-sprites-folding-showmore, .coveo-more .coveo-folding-footer-icon, .coveo-folding-footer .coveo-more .coveo-folding-footer-icon {
+  background-position: -2097px -57px;
+  width: 11px;
+  height: 11px;
+  text-indent: 11px; }
+
+.coveo-sprites-facet-spin_facet_search, .coveo-facet-search-wait-animation, .coveo-mobile-device .coveo-modalBox.coveo-mobile-facet-search > .coveo-wrapper > .coveo-body > .coveo-facet-search .coveo-facet-search-wait-animation, .coveo-modalBox.coveo-mobile-facet-search > .coveo-wrapper > .coveo-body > .coveo-facet-search .coveo-facet-search-wait-animation {
+  background-position: -2097px -68px;
   width: 10px;
   height: 10px;
   text-indent: 10px; }
 
-.coveo-sprites-facet-showmore {
-  background-position: -2097px -90px;
+.coveo-sprites-facet-showless {
+  background-position: -2097px -78px;
   width: 8px;
   height: 8px;
   text-indent: 8px; }
 
-.coveo-sprites-common-small_x {
-  background-position: -2097px -98px;
+.coveo-sprites-facet-email_sendto {
+  background-position: -2097px -86px;
   width: 8px;
   height: 8px;
   text-indent: 8px; }
@@ -3718,8 +3712,14 @@
   height: 12px;
   text-indent: 16px; }
 
-.coveo-sprites-quickview-close {
+.coveo-sprites-subscription-followed, .CoveoFollowItem.coveo-follow-item-followed:before {
   background-position: -2109px -12px;
+  width: 16px;
+  height: 12px;
+  text-indent: 16px; }
+
+.coveo-sprites-quickview-close {
+  background-position: -2109px -24px;
   width: 14px;
   height: 10px;
   text-indent: 14px; }
