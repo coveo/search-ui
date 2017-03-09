@@ -28,6 +28,7 @@ import * as _ from 'underscore';
 import { exportGlobally } from '../../GlobalExports';
 
 import 'styling/_ResultList';
+import 'styling/_ResultFrame';
 import 'styling/_Result';
 
 export interface IResultListOptions {

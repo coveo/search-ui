@@ -9,7 +9,6 @@ import { Utils } from '../../utils/Utils';
 import { FileTypes, IFileTypeInfo } from '../Misc/FileTypes';
 import { $$ } from '../../utils/Dom';
 import { exportGlobally } from '../../GlobalExports';
-import 'styling/_Icons';
 
 /**
  * Available options for the {@link Icon} component.
