@@ -229,7 +229,7 @@ div.col-2.col-content {
 
 }
 
-div.col-2.col-content div {
+div.col-2.col-content > div, .container {
     padding: 0;
 }
 

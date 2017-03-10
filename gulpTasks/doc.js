@@ -22,7 +22,7 @@ gulp.task('doc', ['copyBinToDoc', 'buildPlayground'], function () {
   var project = app.convert(src);
   app.generateDocs(project, 'docgen');
   app.generateJson(project, './bin/docgen/docgen.json', 'https://coveo.github.io/search-ui/');
-  gulp.src('./readme.png').pipe(gulp.dest('./docgen'));
+  return gulp.src('./readme.png').pipe(gulp.dest('./docgen'));
 });
 
 gulp.task('copyBinToDoc', function () {
