@@ -188,8 +188,7 @@ export class FieldValue extends Component {
     if (this.options.helper != null) {
       this.options = ComponentOptions.initOptions(element, FieldValue.helperOptions, this.options);
       let toFilter = _.keys(FieldValue.options.helperOptions.subOptions);
-      let toKeep = _.chain(toFilter)
-        .filter((optionKey) => {
+      let toKeep = _.filter(toFilter, (optionKey) => {
           let optionDefinition = FieldValue.options.helperOptions.subOptions[optionKey];
           if (optionDefinition) {
             let helpers = optionDefinition.helpers;
