@@ -10524,8 +10524,8 @@ var playground =
 
 	"use strict";
 	exports.version = {
-	    'lib': '1.2359.6',
-	    'product': '1.2359.6',
+	    'lib': '1.2359.7',
+	    'product': '1.2359.7',
 	    'supportedApiVersion': 2
 	};
 
