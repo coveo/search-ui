@@ -7,6 +7,10 @@ import { $$ } from '../../src/utils/Dom';
 import { ResultListEvents } from '../../src/events/ResultListEvents';
 import { IResultListOptions } from '../../src/ui/ResultList/ResultList';
 import { UnderscoreTemplate } from '../../src/ui/Templates/UnderscoreTemplate';
+import { ResultLayoutEvents } from '../../src/events/ResultLayoutEvents';
+import { AdvancedComponentSetupOptions } from '../MockEnvironment';
+import { TemplateList } from '../../src/ui/Templates/TemplateList';
+import { QueryBuilder } from '../../src/ui/Base/QueryBuilder';
 
 export function ResultListTest() {
   describe('ResultList', () => {
@@ -116,6 +120,58 @@ export function ResultListTest() {
       expect(test.cmp.getDisplayedResultsElements().length).toBe(0);
     });
 
+    it('should add and remove a hidden css class on enable/disable', () => {
+      test.cmp.disable();
+      expect($$(test.cmp.element).hasClass('coveo-hidden')).toBe(true);
+      test.cmp.enable();
+      expect($$(test.cmp.element).hasClass('coveo-hidden')).toBe(false);
+    });
+
+    it('should hide and show specific css class correctly', () => {
+      let showIfQuery = $$('div', {
+        className: 'coveo-show-if-query'
+      });
+      let showIfNoQuery = $$('div', {
+        className: 'coveo-show-if-no-query'
+      });
+      let showIfResults = $$('div', {
+        className: 'coveo-show-if-results'
+      });
+      let showIfNoResults = $$('div', {
+        className: 'coveo-show-if-no-results'
+      });
+
+      test.cmp.element.appendChild(showIfQuery.el);
+      test.cmp.element.appendChild(showIfNoQuery.el);
+      test.cmp.element.appendChild(showIfResults.el);
+      test.cmp.element.appendChild(showIfNoResults.el);
+
+      let withAQuery = new QueryBuilder();
+      withAQuery.expression.add('foo');
+
+      Simulate.query(test.env, {
+        query: withAQuery.build()
+      });
+
+      expect(showIfQuery.el.style.display).toBe('block');
+      expect(showIfNoQuery.el.style.display).toBe('none');
+
+      Simulate.query(test.env, {
+        results: FakeResults.createFakeResults(0)
+      });
+
+      expect(showIfResults.el.style.display).toBe('none');
+      expect(showIfNoResults.el.style.display).toBe('block');
+
+      Simulate.query(test.env, {
+        results: FakeResults.createFakeResults(10)
+      });
+
+      expect(showIfResults.el.style.display).toBe('block');
+      expect(showIfNoResults.el.style.display).toBe('none');
+
+    });
+
     describe('exposes options', () => {
       it('resultContainer allow to specify where to render results', () => {
         let aNewContainer = document.createElement('div');
@@ -220,6 +276,82 @@ export function ResultListTest() {
         expect(simulation.queryBuilder.fieldsToInclude).toContain('field1');
         expect(simulation.queryBuilder.fieldsToInclude).toContain('field2');
         expect(simulation.queryBuilder.fieldsToInclude).toContain('field3');
+      });
+
+      describe('layout', () => {
+        it('should correctly listen to populateResultLayout', () => {
+          test = Mock.optionsComponentSetup<ResultList, IResultListOptions>(ResultList, {
+            layout: 'card'
+          });
+          let layoutsPopulated = [];
+          $$(test.env.root).trigger(ResultLayoutEvents.populateResultLayout, { layouts: layoutsPopulated });
+          expect(layoutsPopulated).toEqual(jasmine.arrayContaining(['card']));
+
+        });
+
+        it('should set the correct layout on each child template if it contains a TemplateList', () => {
+          let elem = $$('div', {
+            className: 'CoveoResultList'
+          });
+          let scriptOne = $$('script', {
+            className: 'result-template',
+            type: 'text/html'
+          });
+          let scriptTwo = $$('script', {
+            className: 'result-template',
+            type: 'text/html'
+          });
+          elem.append(scriptOne.el);
+          elem.append(scriptTwo.el);
+          test = Mock.advancedComponentSetup<ResultList>(ResultList, new AdvancedComponentSetupOptions(elem.el, {
+            layout: 'card'
+          }));
+
+          expect(test.cmp.options.resultTemplate instanceof TemplateList).toBe(true);
+          expect((<TemplateList>test.cmp.options.resultTemplate).templates[0].layout).toBe('card');
+          expect((<TemplateList>test.cmp.options.resultTemplate).templates[1].layout).toBe('card');
+        });
+
+        it('should add 3 empty div at the end of the results when it\'s a card template and infinite scroll is not enabled', () => {
+          test = Mock.optionsComponentSetup<ResultList, IResultListOptions>(ResultList, {
+            layout: 'card',
+            enableInfiniteScroll: false
+          });
+          Simulate.query(test.env);
+          let container = test.cmp.options.resultContainer;
+          expect(container.children.item(container.children.length - 1).innerHTML).toBe('');
+          expect(container.children.item(container.children.length - 2).innerHTML).toBe('');
+          expect(container.children.item(container.children.length - 3).innerHTML).toBe('');
+          expect(container.children.item(container.children.length - 4).innerHTML).not.toBe('');
+        });
+
+        it('should add 3 empty div at the end of the results when it\'s a card template and infinite scroll is enabled', () => {
+          test = Mock.optionsComponentSetup<ResultList, IResultListOptions>(ResultList, {
+            layout: 'card',
+            enableInfiniteScroll: true
+          });
+          Simulate.query(test.env);
+          let container = test.cmp.options.resultContainer;
+          expect(container.children.item(container.children.length - 1).innerHTML).not.toBe('');
+          expect(container.children.item(container.children.length - 2).innerHTML).not.toBe('');
+          expect(container.children.item(container.children.length - 3).innerHTML).not.toBe('');
+        });
+
+        it('should react to change layout event', () => {
+          test = Mock.optionsComponentSetup<ResultList, IResultListOptions>(ResultList, {
+            layout: 'card'
+          });
+          $$(test.env.root).trigger(ResultListEvents.changeLayout, {
+            layout: 'list',
+            results: FakeResults.createFakeResults()
+          });
+          expect($$(test.cmp.element).hasClass('coveo-hidden')).toBe(true);
+          $$(test.env.root).trigger(ResultListEvents.changeLayout, {
+            layout: 'card',
+            results: FakeResults.createFakeResults()
+          });
+          expect($$(test.cmp.element).hasClass('coveo-hidden')).toBe(false);
+        });
       });
     });
   });
