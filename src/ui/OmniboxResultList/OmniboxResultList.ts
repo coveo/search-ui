@@ -194,7 +194,7 @@ export class OmniboxResultList extends ResultList implements IComponentBindings 
   }
 
   private onRowSelection(result: IQueryResult, resultElement: HTMLElement, omniboxObject: IPopulateOmniboxEventArgs) {
-    this.usageAnalytics.logClickEvent(analyticsActionCauseList.documentOpen, { author: result.raw.author }, result, this.root);
+    this.usageAnalytics.logClickEvent(analyticsActionCauseList.documentOpen, { author: Utils.getFieldValue(result, 'author') }, result, this.root);
     window.location.href = result.clickUri;
   }
 }

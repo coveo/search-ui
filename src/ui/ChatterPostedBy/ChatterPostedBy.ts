@@ -38,25 +38,25 @@ export class ChatterPostedBy extends Component {
     super(element, ChatterPostedBy.ID, bindings);
     this.options = ComponentOptions.initComponentOptions(element, ChatterPostedBy, options);
 
-    if (result.raw.sfcreatedby != null) {
+    if (Utils.getFieldValue(this.result, 'sfcreatedby') != null) {
       let from = $$('span');
       from.text(`${this.options.useFromInstead ? l('From') : l('PostedBy')} `);
       $$(element).append(from.el);
-      $$(element).append(this.renderLink(result.raw.sfcreatedby, result.raw.sfcreatedbyid));
+      $$(element).append(this.renderLink(Utils.getFieldValue(this.result, 'sfcreatedby'), Utils.getFieldValue(this.result, 'sfcreatedbyid')));
 
-      if (this.options.enablePostedOn && !Utils.isNullOrUndefined(result.raw.sfparentname) && !Utils.isNullOrUndefined(result.raw.sfparentid)) {
+      if (this.options.enablePostedOn && !Utils.isNullOrUndefined(Utils.getFieldValue(this.result, 'sfparentname')) && !Utils.isNullOrUndefined(Utils.getFieldValue(this.result, 'sfparentid'))) {
         // Post on user's wall
-        if (!Utils.isNullOrUndefined(result.raw.sfuserid) && result.raw.sfuserid != result.raw.sfinsertedbyid) {
+        if (!Utils.isNullOrUndefined(Utils.getFieldValue(this.result, 'sfuserid')) && Utils.getFieldValue(this.result, 'sfuserid') != Utils.getFieldValue(this.result, 'sfinsertedbyid')) {
           let onFeed = $$('span');
-          let content = ` ${l('OnFeed', this.renderLink(result.raw.sfparentname, result.raw.sfparentid).outerHTML)}`;
+          let content = ` ${l('OnFeed', this.renderLink(Utils.getFieldValue(this.result, 'sfparentname'), Utils.getFieldValue(this.result, 'sfparentid')).outerHTML)}`;
           onFeed.el.innerHTML = content;
           $$(element).append(onFeed.el);
 
-        } else if (Utils.isNullOrUndefined(result.raw.sfuserid)) {
+        } else if (Utils.isNullOrUndefined(Utils.getFieldValue(this.result, 'sfuserid'))) {
           let onUser = $$('span');
           onUser.text(` ${l('On').toLowerCase()} `);
           $$(element).append(onUser.el);
-          $$(element).append(this.renderLink(result.raw.sfparentname, result.raw.sfparentid));
+          $$(element).append(this.renderLink(Utils.getFieldValue(this.result, 'sfparentname'), Utils.getFieldValue(this.result, 'sfparentid')));
         }
       }
     }
@@ -64,7 +64,7 @@ export class ChatterPostedBy extends Component {
 
   private renderLink(text: string, id: string): HTMLElement {
     let link = $$('a', {
-      href: ChatterUtils.buildURI(this.result.clickUri, this.result.raw.sffeeditemid, id)
+      href: ChatterUtils.buildURI(this.result.clickUri, Utils.getFieldValue(this.result, 'sffeeditemid'), id)
     });
     link.text(text);
     return ChatterUtils.bindClickEventToElement(link.el, this.options.openInPrimaryTab, this.options.openInSubTab);

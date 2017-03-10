@@ -13,6 +13,7 @@ import {
 } from '../Analytics/AnalyticsActionListMeta';
 import { QueryUtils } from '../../utils/QueryUtils';
 import _ = require('underscore');
+import { Utils } from '../../utils/Utils';
 
 
 export interface IFollowItemOptions {
@@ -210,7 +211,7 @@ export class FollowItem extends Component {
   }
 
   private getId() {
-    return this.result.raw.sysurihash || this.result.raw.urihash;
+    return Utils.getFieldValue(this.result, 'sysurihash') || Utils.getFieldValue(this.result, 'urihash');
   }
 
   private static buildFollowRequest(id: string, title: string, options: IFollowItemOptions): ISubscriptionRequest {
