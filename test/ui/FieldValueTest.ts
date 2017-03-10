@@ -154,6 +154,21 @@ export function FieldValueTest() {
         expect(test.cmp.renderOneValue('1337').textContent).toEqual('ham1337burger');
       });
 
+      it('helper should eliminate helperOptions that do not match the current helper', () => {
+        test = Mock.advancedResultComponentSetup<FieldValue>(FieldValue, FakeResults.createFakeResult(), <Mock.AdvancedComponentSetupOptions>{
+          element: element,
+          cmpOptions: <IFieldValueOptions>{
+            field: '@author',
+            helper: 'anchor',
+            htmlValue: true
+          }
+        });
+
+        let anchor = $$(test.cmp.element).find('a');
+
+        expect(anchor.outerHTML).toEqual('<a href="o.o">o.o</a>');
+      });
+
       it('textCaption should render a text value', () => {
         test = Mock.advancedResultComponentSetup<FieldValue>(FieldValue, FakeResults.createFakeResult(), <Mock.AdvancedComponentSetupOptions>{
           element: element,
@@ -186,28 +201,6 @@ export function FieldValueTest() {
           }
         });
         expect($$(test.cmp.element).hasClass('coveo-with-label')).toBe(true);
-      });
-
-      describe('helperOptions', () => {
-        it('should call helper with appropriate options', () => {
-          test = Mock.advancedResultComponentSetup<FieldValue>(FieldValue, FakeResults.createFakeResult(), <Mock.AdvancedComponentSetupOptions>{
-            element: element,
-            cmpOptions: <IFieldValueOptions>{
-              field: '@foobarde',
-              helper: 'myHelper',
-              helperOptions: {
-                myOption: '0002raboof'
-              }
-            }
-          });
-          TemplateHelpers.registerFieldHelper('myHelper', (_, options) => {
-            expect(options).toEqual(jasmine.objectContaining({
-              myOption: '0002raboof'
-            }));
-            return '';
-          });
-          test.cmp.renderOneValue('someValue');
-        });
       });
     });
 
