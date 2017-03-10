@@ -8368,7 +8368,7 @@
       display: flex;
       padding: 20px;
       flex-direction: column;
-      width: auto;
+      width: 100%;
       height: auto; }
     .coveo-card-layout.CoveoResult .CoveoResultLink {
       font-size: 16px;
@@ -10807,7 +10807,7 @@ body {
   font-size: 11px;
   box-shadow: 0px 0px 3px 2px rgba(0, 0, 0, 0.2);
   z-index: 1;
-  transform: translateY(calc(100% + 3px));
+  transform: translateY(100%);
   transition: transform 0.2s ease-in-out; }
   .CoveoCardActionBar.coveo-opened {
     transform: translateY(0); }
