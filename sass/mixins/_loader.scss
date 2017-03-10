@@ -75,6 +75,10 @@
   animation: coveo-loading-spinner-animation 1.1s infinite linear;
 }
 
+.coveo-loading-spinner-container {
+  width: 100%;
+}
+
 .ie8or9 .coveo-loading-spinner {
   background: url(../image/wait.gif) no-repeat;
   border: none;
