@@ -138,6 +138,9 @@ export class ResultList extends Component {
      * If {@link ResultList.options.enableInfiniteScroll} is `true`, specifies the element that triggers the fetching of
      * additional results when the end user scrolls down to its bottom.
      *
+     * You can change the container by specifying its selector (e.g.,
+     * `data-infinite-scroll-container-selector='#someCssSelector'`).
+     *
      * By default, the framework uses the first vertically scrollable parent element it finds, starting from the
      * ResultList element itself. A vertically scrollable element is an element whose CSS `overflow-y` attribute is
      * `scroll`.
@@ -307,7 +310,7 @@ export class ResultList extends Component {
         this.displayDecorations();
       }
 
-      if (this.options.layout === 'card') {
+      if (this.options.layout === 'card' && !this.options.enableInfiniteScroll) {
         // Used to prevent last card from spanning the grid's whole width
         _.times(3, () => this.options.resultContainer.appendChild($$('div').el));
       }
@@ -358,7 +361,7 @@ export class ResultList extends Component {
   /**
    * Executes a query to fetch new results. After the query returns, renders the new results.
    *
-   * Asserts that there are more results to display by verifying whether the last query has returned as many results as
+   * Asserts that there are more results to display by verifying whether t3he last query has returned as many results as
    * requested.
    *
    * Asserts that the ResultList is not currently fetching results.
@@ -653,7 +656,17 @@ export class ResultList extends Component {
   }
 
   private showWaitingAnimationForInfiniteScrolling() {
-    this.options.waitAnimationContainer.appendChild(DomUtils.getLoadingSpinner());
+    let spinner = DomUtils.getLoadingSpinner();
+    if (this.options.layout == 'card' && this.options.enableInfiniteScroll) {
+      let spinnerContainer = $$('div', {
+        className: 'coveo-loading-spinner-container'
+      });
+      spinnerContainer.append(spinner);
+      this.options.waitAnimationContainer.appendChild(spinnerContainer.el);
+    } else {
+      this.options.waitAnimationContainer.appendChild(DomUtils.getLoadingSpinner());
+    }
+
   }
 
   private hideWaitingAnimationForInfiniteScrolling() {

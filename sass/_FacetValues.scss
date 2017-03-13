@@ -204,6 +204,7 @@
   height: 13px;
   width: 13px;
   opacity: 0;
+  z-index: 10;
 
   .coveo-icon {
     @extend .coveo-sprites-exclusion-hover;

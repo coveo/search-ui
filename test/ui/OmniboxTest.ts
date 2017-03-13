@@ -4,6 +4,7 @@ import { analyticsActionCauseList } from '../../src/ui/Analytics/AnalyticsAction
 import { IOmniboxOptions, IOmniboxSuggestion } from '../../src/ui/Omnibox/Omnibox';
 import { Simulate } from '../Simulate';
 import { $$ } from '../../src/utils/Dom';
+import { l } from '../../src/strings/Strings';
 
 export function OmniboxTest() {
   describe('Omnibox', () => {
@@ -213,6 +214,13 @@ export function OmniboxTest() {
           placeholder: 'trololo'
         });
         expect(test.cmp.getInput().placeholder).toBe('trololo');
+      });
+
+      it('placeholder should use translated version', () => {
+        test = Mock.optionsComponentSetup<Omnibox, IOmniboxOptions>(Omnibox, {
+          placeholder: 'SearchFor'
+        });
+        expect(test.cmp.getInput().placeholder).toBe(l('SearchFor'));
       });
 
       it('enableSearchAsYouType + enableRevealQuerySuggestAddon should send correct analytics events', () => {
