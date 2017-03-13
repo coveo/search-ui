@@ -201,13 +201,13 @@ export class ResultList extends Component {
       required: true,
     }),
     /**
-     * Specifies if the table header is to be shown when layout is 'table'
+     * Specifies if the table header is to be displayed when layout is 'table'
      *
      * Default value is `true`.
      */
     displayTableHeader: ComponentOptions.buildBooleanOption({ defaultValue: true, depend: 'layout' }),
     /**
-     * Specifies if the table footer is to be shown when layout is 'table'
+     * Specifies if the table footer is to be displayed when layout is 'table'
      *
      * Default value is `false`.
      */
