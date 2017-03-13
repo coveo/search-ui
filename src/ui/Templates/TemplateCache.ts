@@ -13,14 +13,15 @@ export class TemplateCache {
   private static pageTemplateNames: string[] = [];
   private static defaultTemplates: { [templateName: string]: Template; } = {};
 
-  public static registerTemplate(name: string, template: Template, publicTemplate?: boolean, defaultTemplate?: boolean);
-  public static registerTemplate(name: string, template: (data: {}) => string, publicTemplate?: boolean, defaultTemplate?: boolean);
+  public static registerTemplate(name: string, template: Template, publicTemplate?: boolean, defaultTemplate?: boolean, pageTemplate?: boolean);
+  public static registerTemplate(name: string, template: (data: {}) => string, publicTemplate?: boolean, defaultTemplate?: boolean, pageTemplate?: boolean);
   /**
    * Register a new template in the framework, which will be available to render any results.
    * @param name
    * @param template
    * @param publicTemplate
    * @param defaultTemplate
+   * @param pageTemplate
    */
   public static registerTemplate(name: string, template: any, publicTemplate: boolean = true, defaultTemplate: boolean = false, pageTemplate: boolean = false) {
     Assert.isNonEmptyString(name);
@@ -43,6 +44,17 @@ export class TemplateCache {
     if (defaultTemplate) {
       TemplateCache.defaultTemplates[name] = template;
     }
+  }
+
+  /**
+   * Register a new page template in the framework. Equivalent to put script tags in the DOM.
+   * @param name
+   * @param template
+   */
+  public static registerPageTemplate(name: string, template: Template);
+  public static registerPageTemplate(name: string, template: (data: {}) => string);
+  public static registerPageTemplate(name: string, template: any) {
+    TemplateCache.registerTemplate(name, template, true, false, true);
   }
 
   /**
