@@ -15,8 +15,8 @@ export interface ICurrentTabOptions {
 }
 
 /**
- * This component is used to display the name of the currently selected tab.
- * If no tabs are selected, this component is hidden.
+ * The CurrentTab component displays the name of the currently selected {@link Tab}. If no Tab is selected, this
+ * component is not visible.
  */
 export class CurrentTab extends Component {
   static ID = 'CurrentTab';
@@ -26,13 +26,23 @@ export class CurrentTab extends Component {
    * @componentOptions
    */
   static options: ICurrentTabOptions = {
+
     /**
-     * Specifies the CSS selector to the section which contains the tab.
-     * Clicking this component will toggle between opening and closing this section.
+     * Specifies the CSS selector targeting the section which contains the {@link Tab}.
+     * Clicking the CurrentTab component toggles between opening and closing this section.
+     *
+     * Default value is `undefined`.
      */
     tabSectionToOpen: ComponentOptions.buildStringOption()
   };
 
+  /**
+   * Creates a new CurrentTab component.
+   * @param element The HTMLElement on which to instantiate the component.
+   * @param options The options for the CurrentTab component.
+   * @param bindings The bindings that the component requires to function normally. If not set, these will be
+   * automatically resolved (with a slower execution time).
+   */
   constructor(public element: HTMLElement, public options?: ICurrentTabOptions, bindings?: IComponentBindings) {
     super(element, CurrentTab.ID, bindings);
 
