@@ -240,8 +240,8 @@ export class FollowItem extends Component {
       documentLanguage: QueryUtils.getLanguage(this.result),
       documentSource: QueryUtils.getSource(this.result),
       documentTitle: this.result.title,
-      contentIDValue: QueryUtils.getUniqueId(this.result).fieldValue,
-      contentIDKey: QueryUtils.getUniqueId(this.result).fieldUsed
+      contentIDValue: QueryUtils.getPermanentId(this.result).fieldValue,
+      contentIDKey: QueryUtils.getPermanentId(this.result).fieldUsed
     }, this.element);
   }
 }

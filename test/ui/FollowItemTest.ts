@@ -108,7 +108,7 @@ export function FollowItemTest() {
             documentLanguage: QueryUtils.getLanguage(fake),
             documentSource: QueryUtils.getSource(fake),
             documentTitle: fake.title,
-            contentIDKey: QueryUtils.getUniqueId(fake).fieldUsed,
+            contentIDKey: QueryUtils.getPermanentId(fake).fieldUsed,
             contentIDValue: jasmine.any(String)
           }), test.cmp.element);
           done();
