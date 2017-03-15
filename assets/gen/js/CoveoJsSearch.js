@@ -1754,8 +1754,8 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	"use strict";
 	exports.version = {
-	    'lib': '1.2359.7',
-	    'product': '1.2359.7',
+	    'lib': '1.2359.8-beta',
+	    'product': '1.2359.8-beta',
 	    'supportedApiVersion': 2
 	};
 
@@ -17318,7 +17318,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	    TemplateFromAScriptTag.prototype.toHtmlElement = function () {
 	        var script = Dom_1.$$('script');
-	        script.setAttribute('data-condition', Dom_1.$$(this.scriptTag).getAttribute('data-condition'));
+	        var condition = Dom_1.$$(this.scriptTag).getAttribute('data-condition');
+	        if (condition) {
+	            script.setAttribute('data-condition', condition);
+	        }
 	        script.text(this.scriptTag.innerHTML);
 	        return script.el;
 	    };
@@ -17329,7 +17332,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            var match = key.match(/field([a-z0-9]*)/i);
 	            if (match) {
 	                var values = void 0;
-	                if (value != null && value != 'null') {
+	                if (value != null && value != 'null' && value != '') {
 	                    values = value.split(',');
 	                }
 	                return {
