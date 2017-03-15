@@ -324,7 +324,9 @@
     "fieldsToMatch": [
       {
         "field": "connectortype",
-        "value": "SlackCrawler"
+        "values": [
+          "SlackCrawler"
+        ]
       }
     ],
     "layout": "list"
@@ -342,3 +344,4 @@
     "layout": "list"
   }
 }
+
