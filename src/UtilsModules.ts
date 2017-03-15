@@ -5,7 +5,6 @@ export { DateUtils } from './utils/DateUtils';
 export { DeviceUtils } from './utils/DeviceUtils';
 export { Dom, $$ } from './utils/Dom';
 export { DomUtils } from './utils/DomUtils';
-export { EmailActionsUtils } from './utils/EmailActionsUtils';
 export { EmailUtils } from './utils/EmailUtils';
 export { HashUtils } from './utils/HashUtils';
 export { HighlightUtils, StringAndHoles } from './utils/HighlightUtils';

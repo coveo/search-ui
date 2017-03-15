@@ -100,7 +100,7 @@ export class QuickviewDocument extends Component {
       documentURL = this.result.clickUri;
     }
     this.usageAnalytics.logClickEvent(analyticsActionCauseList.documentQuickview, {
-      author: this.result.raw.author,
+      author: Utils.getFieldValue(this.result, 'author'),
       documentURL: documentURL,
       documentTitle: this.result.title
     }, this.result, this.queryController.element);

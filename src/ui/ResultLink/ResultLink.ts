@@ -369,7 +369,7 @@ export class ResultLink extends Component {
     this.usageAnalytics.logClickEvent(analyticsActionCauseList.documentOpen, {
       documentURL: documentURL,
       documentTitle: this.result.title,
-      author: this.result.raw.author
+      author: Utils.getFieldValue(this.result, 'author'),
     }, this.result, this.root);
     Defer.flush();
   }, 1500, true);
