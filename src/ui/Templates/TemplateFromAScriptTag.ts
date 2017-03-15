@@ -47,7 +47,10 @@ export class TemplateFromAScriptTag {
 
   toHtmlElement(): HTMLElement {
     var script = $$('script');
-    script.setAttribute('data-condition', $$(this.scriptTag).getAttribute('data-condition'));
+    let condition = $$(this.scriptTag).getAttribute('data-condition');
+    if (condition) {
+      script.setAttribute('data-condition', condition);
+    }
     script.text(this.scriptTag.innerHTML);
     return script.el;
   }
@@ -59,7 +62,7 @@ export class TemplateFromAScriptTag {
         let match = key.match(/field([a-z0-9]*)/i);
         if (match) {
           let values;
-          if (value != null && value != 'null') {
+          if (value != null && value != 'null' && value != '') {
             values = value.split(',');
           }
           return {

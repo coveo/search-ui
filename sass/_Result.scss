@@ -182,7 +182,7 @@
       margin-top: 0;
     }
 
-    .coveo-result-frame {
+    .coveo-result-frame, &.coveo-result-frame {
       display: flex;
       padding: 20px;
       flex-direction: column;
