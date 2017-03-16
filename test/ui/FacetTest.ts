@@ -330,8 +330,17 @@ export function FacetTest() {
           field: '@field',
           availableSorts: ['ChiSquare', 'NoSort']
         });
+        test.cmp.ensureDom();
+        expect(test.cmp.facetSort.activeSort.name.toLowerCase()).toBe('chisquare');
+      });
 
-        expect(test.cmp.options.sortCriteria).toBe('ChiSquare');
+      it('available sort with only no sorts should still work', ()=> {
+        test = Mock.optionsComponentSetup<Facet, IFacetOptions>(Facet, {
+          field: '@field',
+          availableSorts: ['nosort']
+        });
+        test.cmp.ensureDom();
+        expect(test.cmp.facetSort.activeSort.name.toLowerCase()).toBe('nosort');
       });
 
       it('sortCriteria should specify the sort group by request', () => {

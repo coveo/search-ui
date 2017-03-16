@@ -1277,6 +1277,10 @@
     "zh-cn": "无排序",
     "zh-tw": "無排序"
   },
+  "NosortDescription": {
+    "en": "Do not sort the values. The values will be returned in a random order.",
+    "fr": "Ne pas trier les valeurs. Les valeurs vont êtres retournées dans un ordre aléatoire"
+  },
   "RelativeFrequency": {
     "en": "Relative Frequency",
     "fr": "Fréquence relative",
