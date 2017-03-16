@@ -6,6 +6,7 @@ import { scaleBand, scaleLinear } from 'd3-scale';
 import { select as d3select, max as d3max } from 'd3';
 import * as Globalize from 'globalize';
 import * as _ from 'underscore';
+import { Logger } from '../../misc/Logger';
 
 export interface IStartSlideEventArgs {
   slider: Slider;
@@ -62,6 +63,8 @@ export interface ISliderOptions {
   dateField?: boolean;
   rounded?: number;
 }
+
+export const MAX_NUMBER_OF_STEPS = 100;
 
 export class Slider {
   public steps: number[] = [];
@@ -222,12 +225,18 @@ export class Slider {
     if (this.options.getSteps) {
       this.steps = this.options.getSteps(this.options.start, this.options.end);
     } else {
+      if (this.options.steps > MAX_NUMBER_OF_STEPS) {
+        new Logger(this).warn(`Maximum number of steps for slider is ${MAX_NUMBER_OF_STEPS} for performance reason`);
+        this.options.steps = MAX_NUMBER_OF_STEPS;
+      }
       var oneStep = (this.options.end - this.options.start) / Math.max(1, this.options.steps);
       if (oneStep > 0) {
         var currentStep = this.options.start;
-        while (currentStep <= this.options.end) {
+        let currentNumberOfSteps = 0;
+        while (currentStep <= this.options.end && currentNumberOfSteps <= MAX_NUMBER_OF_STEPS) {
           this.steps.push(currentStep);
           currentStep += oneStep;
+          currentNumberOfSteps++;
         }
       } else {
         this.steps.push(this.options.start);

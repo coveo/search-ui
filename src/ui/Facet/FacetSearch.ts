@@ -49,6 +49,7 @@ export class FacetSearch {
   private onResize: (...args: any[]) => void;
   private onDocumentClick: (e: Event) => void;
   private searchBarIsAnimating: boolean = false;
+  private lastSearchWasEmpty = true;
 
   constructor(public facet: Facet, public facetSearchValuesListKlass: IFacetSearchValuesListKlass, private root: HTMLElement) {
     this.searchResults = document.createElement('ul');
@@ -257,7 +258,7 @@ export class FacetSearch {
 
   private handleFacetSearchKeyUp(event: KeyboardEvent) {
     Assert.exists(event);
-    let isEmpty = this.input.value == '';
+    let isEmpty = this.input.value.trim() == '';
     this.showOrHideClearElement(isEmpty);
 
     if (!this.isMobileDevice()) {
@@ -276,7 +277,12 @@ export class FacetSearch {
   private handleFacetSearchFocus() {
     if (!this.isMobileDevice()) {
       if (this.facet.searchInterface.isNewDesign()) {
-        this.startNewSearchTimeout(this.buildParamsForExcludingCurrentlyDisplayedValues());
+        // Trigger a query only if the results are not already rendered.
+        // Protect against the case where user can "focus" out of the search box by clicking not directly on a search results
+        // Then re-focusing the search box
+        if (this.currentlyDisplayedResults == null) {
+          this.startNewSearchTimeout(this.buildParamsForExcludingCurrentlyDisplayedValues());
+        }
       } else {
         this.startNewSearchTimeout(this.buildParamsForNormalSearch());
       }
@@ -284,7 +290,7 @@ export class FacetSearch {
   }
 
   private handleClickElsewhere(event: Event) {
-    if (this.currentlyDisplayedResults && !this.isMobileDevice() && this.search != event.target && this.searchResults != event.target) {
+    if (this.currentlyDisplayedResults && !this.isMobileDevice() && this.search != event.target && this.searchResults != event.target && this.input != event.target) {
       this.completelyDismissSearch();
     }
   }
@@ -324,7 +330,18 @@ export class FacetSearch {
       default:
         this.moreValuesToFetch = true;
         this.highlightCurrentQueryWithinSearchResults();
-        this.startNewSearchTimeout(this.buildParamsForNormalSearch());
+        if (!isEmpty) {
+          this.lastSearchWasEmpty = false;
+          this.startNewSearchTimeout(this.buildParamsForNormalSearch());
+        } else if (!this.lastSearchWasEmpty) {
+          // This normally happen if a user delete the search box content to go back to "empty" state.
+          this.currentlyDisplayedResults = undefined;
+          $$(this.searchResults).empty();
+          this.lastSearchWasEmpty = true;
+          this.startNewSearchTimeout(this.buildParamsForFetchingMore());
+
+        }
+
         break;
     }
   }
@@ -598,7 +615,7 @@ export class FacetSearch {
   }
 
   public getValueInInputForFacetSearch() {
-    return this.input.value;
+    return this.input.value.trim();
   }
 
   protected selectAllValuesMatchingSearch() {

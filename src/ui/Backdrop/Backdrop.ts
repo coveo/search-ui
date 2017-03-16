@@ -1,15 +1,16 @@
 import { Component } from '../Base/Component';
-import { ComponentOptions } from '../Base/ComponentOptions';
+import { ComponentOptions, IFieldOption } from '../Base/ComponentOptions';
 import { IComponentBindings } from '../Base/ComponentBindings';
 import { Initialization, IInitializationParameters } from '../Base/Initialization';
 import { IResultsComponentBindings } from '../Base/ResultsComponentBindings';
 import { IQueryResult } from '../../rest/QueryResult';
 import * as _ from 'underscore';
+import { Utils } from '../../utils/Utils';
 import { exportGlobally } from '../../GlobalExports';
 
 export interface IBackdropOptions {
   imageUrl?: string;
-  imageField?: string;
+  imageField?: IFieldOption;
   overlayColor?: string;
   overlayGradient?: boolean;
 }
@@ -52,7 +53,7 @@ export class Backdrop extends Component {
      *
      * If {@link Backdrop.options.imageUrl} is specified, it will override this option.
      */
-    imageField: ComponentOptions.buildStringOption(),
+    imageField: ComponentOptions.buildFieldOption(),
 
     /**
      * Specifies the color that will be overlaid on top of the background image.
@@ -92,7 +93,7 @@ export class Backdrop extends Component {
         + (this.options.overlayGradient ? 'rgba(0,0,0,0)' : this.options.overlayColor) + '), ';
     }
 
-    const imageSource = this.options.imageUrl || result.raw[this.options.imageField];
+    const imageSource = this.options.imageUrl || Utils.getFieldValue(result, <string>this.options.imageField);
     background += `url('${imageSource}') center center`;
 
     this.element.style.background = background;

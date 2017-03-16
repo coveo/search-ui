@@ -110,16 +110,16 @@ export class QueryUtils {
     return result.raw['language'];
   }
 
-  static getUniqueId(result: IQueryResult): { fieldValue: string, fieldUsed: string } {
+  static getPermanentId(result: IQueryResult): { fieldValue: string, fieldUsed: string } {
     let fieldValue;
     let fieldUsed;
-    let uniqueId = result.raw['uniqueid'];
-    if (uniqueId) {
-      fieldUsed = 'uniqueid';
-      fieldValue = uniqueId;
+    let permanentId = Utils.getFieldValue(result, 'permanentid');
+    if (permanentId) {
+      fieldUsed = 'permanentid';
+      fieldValue = permanentId;
     } else {
       fieldUsed = 'urihash';
-      fieldValue = result.raw['urihash'];
+      fieldValue = Utils.getFieldValue(result, 'urihash');
     }
     return {
       fieldValue: fieldValue,

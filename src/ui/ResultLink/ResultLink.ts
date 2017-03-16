@@ -76,7 +76,7 @@ export class ResultLink extends Component {
      * </script>
      * ```
      *
-     * See also {@link ResultLink.options.hrefTemplate}, which can override this option.
+     * See also [hrefTemplate]{@link ResultLink.options.hrefTemplate}, which can override this option.
      */
     field: ComponentOptions.buildFieldOption(),
 
@@ -107,6 +107,12 @@ export class ResultLink extends Component {
      * If this option is `true`, clicking the ResultLink will call the {@link ResultLink.openLinkInNewWindow} method
      * instead of the {@link ResultLink.openLink} method.
      *
+     * **Note:**
+     * > If a search page contains a {@link ResultsPreferences} component whose
+     * > [enableOpenInNewWindow]{@link ResultsPreferences.options.enableOpenInNewWindow} option is `true`, and the end
+     * > user checks the <b>Always open results in new window</b> box, then ResultLink components will always open in
+     * > a new window when the user clicks them, no matter what the value of their alwaysOpenInNewWindow option is.
+     *
      * Default value is `false`.
      */
     alwaysOpenInNewWindow: ComponentOptions.buildBooleanOption({ defaultValue: false }),
@@ -115,7 +121,7 @@ export class ResultLink extends Component {
      * Specifies a template literal from which to generate the ResultLink `href` attribute (see
      * [Template literals](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Template_literals)).
      *
-     * This option overrides the value of {@link ResultLink.options.field}.
+     * This option overrides the value of the [field]{@link ResultLink.options.field} option.
      *
      * The template literal can reference any number of fields from the parent result. It can also reference global
      * scope properties.
@@ -362,7 +368,7 @@ export class ResultLink extends Component {
     this.usageAnalytics.logClickEvent(analyticsActionCauseList.documentOpen, {
       documentURL: documentURL,
       documentTitle: this.result.title,
-      author: this.result.raw.author
+      author: Utils.getFieldValue(this.result, 'author'),
     }, this.result, this.root);
     Defer.flush();
   }, 1500, true);

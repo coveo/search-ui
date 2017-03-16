@@ -276,7 +276,7 @@ export class LiveAnalyticsClient implements IAnalyticsClient {
     modifiedMeta['JSUIVersion'] = version.lib + ';' + version.product;
 
     if (result) {
-      let uniqueId = QueryUtils.getUniqueId(result);
+      let uniqueId = QueryUtils.getPermanentId(result);
       modifiedMeta['contentIDKey'] = uniqueId.fieldUsed;
       modifiedMeta['contentIDValue'] = uniqueId.fieldValue;
     }

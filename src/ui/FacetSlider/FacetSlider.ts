@@ -187,6 +187,8 @@ export class FacetSlider extends Component {
      * For example, if your range is [ 0 , 100 ] and you specify 10 steps, then the end user can move the slider only to
      * the values [ 0, 10, 20, 30 ... , 100 ].
      *
+     * For performance reasons, the maximum value for option is 1
+     *
      * Default value is `undefined`, and the slider allows all values. Minimum value is `2`.
      */
     steps: ComponentOptions.buildNumberOption({ min: 2 }),

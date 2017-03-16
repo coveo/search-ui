@@ -28,6 +28,7 @@ export class FacetSearchParameters {
   public setValueToSearch(value: string) {
     this.valueToSearch = value;
     if (Utils.isNonEmptyString(value)) {
+      this.valueToSearch = this.valueToSearch.trim();
       this.alwaysInclude = this.alwaysInclude.concat(FacetUtils.getValuesToUseForSearchInFacet(this.valueToSearch, this.facet));
     }
     return this;

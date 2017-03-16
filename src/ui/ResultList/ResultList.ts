@@ -300,7 +300,7 @@ export class ResultList extends Component {
       this.options.resultContainer.appendChild(resultElement);
       this.triggerNewResultDisplayed(Component.getResult(resultElement), resultElement);
     });
-    if (this.options.layout == 'card') {
+    if (this.options.layout == 'card' && !this.options.enableInfiniteScroll) {
       // Used to prevent last card from spanning the grid's whole width
       _.times(3, () => this.options.resultContainer.appendChild($$('div').el));
     }
@@ -658,7 +658,17 @@ export class ResultList extends Component {
   }
 
   private showWaitingAnimationForInfiniteScrolling() {
-    this.options.waitAnimationContainer.appendChild(DomUtils.getLoadingSpinner());
+    let spinner = DomUtils.getLoadingSpinner();
+    if (this.options.layout == 'card' && this.options.enableInfiniteScroll) {
+      let spinnerContainer = $$('div', {
+        className: 'coveo-loading-spinner-container'
+      });
+      spinnerContainer.append(spinner);
+      this.options.waitAnimationContainer.appendChild(spinnerContainer.el);
+    } else {
+      this.options.waitAnimationContainer.appendChild(DomUtils.getLoadingSpinner());
+    }
+
   }
 
   private hideWaitingAnimationForInfiniteScrolling() {

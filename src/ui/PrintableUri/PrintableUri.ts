@@ -42,7 +42,7 @@ export class PrintableUri extends Component {
 
     this.options = ComponentOptions.initComponentOptions(element, PrintableUri, options);
 
-    let parentsXml = result.raw.parents;
+    let parentsXml = Utils.getFieldValue(result, 'parents');
     if (parentsXml) {
       this.renderParentsXml(element, parentsXml);
     } else {
@@ -168,7 +168,7 @@ export class PrintableUri extends Component {
       this.usageAnalytics.logClickEvent(analyticsActionCauseList.documentOpen, {
         documentURL: url,
         documentTitle: title,
-        author: this.result.raw.author
+        author: Utils.getFieldValue(this.result, 'author')
       }, this.result, this.root);
     });
   }
