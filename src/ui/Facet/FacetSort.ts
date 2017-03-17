@@ -68,6 +68,12 @@ export class FacetSort {
       description: l('RelativeFrequencyDescription'),
       name: 'chisquare'
     },
+    nosort: {
+      label: l('Nosort'),
+      directionToggle: false,
+      description: l('NosortDescription'),
+      name: 'nosort'
+    },
     custom: {
       label: l('Custom'),
       directionToggle: true,

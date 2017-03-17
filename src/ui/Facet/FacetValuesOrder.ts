@@ -13,7 +13,7 @@ export class FacetValuesOrder {
   public reorderValues(facetValues: IIndexFieldValue[]): IIndexFieldValue[];
   public reorderValues(facetValues: FacetValue[]): FacetValue[];
   public reorderValues(facetValues: any[]): FacetValue[] | IIndexFieldValue[] {
-    if (this.facetSort) {
+    if (this.facetSort && this.facetSort.activeSort) {
       if (this.facetSort.activeSort.name == 'custom' && this.facet.options.customSort != undefined) {
         return this.reorderValuesWithCustomOrder(facetValues);
       } else if (this.facetSort.activeSort.name.indexOf('alpha') != -1) {
