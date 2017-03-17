@@ -6,6 +6,9 @@ import { FakeResults } from '../Fake';
 import { $$ } from '../../src/utils/Dom';
 import { analyticsActionCauseList } from '../../src/ui/Analytics/AnalyticsActionListMeta';
 import { QueryUtils } from '../../src/utils/QueryUtils';
+import { Simulate } from '../Simulate';
+import { KEYBOARD } from '../../src/utils/KeyboardUtils';
+import { SearchAlertsEvents } from '../../src/events/SearchAlertEvents';
 
 export function FollowItemTest() {
   describe('FollowItem', function () {
@@ -92,6 +95,38 @@ export function FollowItemTest() {
         });
       });
 
+      it('should follow the document on click', (done) => {
+        (<jasmine.Spy>endpointMock.follow).and.returnValue(Promise.resolve());
+        test = Mock.advancedResultComponentSetup<FollowItem>(FollowItem, result, new Mock.AdvancedComponentSetupOptions(null, null, (env) => {
+          return env.withEndpoint(endpointMock);
+        }));
+
+        Promise.resolve().then(() => {
+          $$(test.cmp.element).trigger('click');
+          expect(endpointMock.follow).toHaveBeenCalled();
+          done();
+        });
+      });
+
+      it('should follow the document when pressing enter', (done)=> {
+        if (Simulate.isPhantomJs()) {
+          // Keypress simulation doesn't work well in phantom js
+          expect(true).toBe(true);
+          done();
+        } else {
+          (<jasmine.Spy>endpointMock.follow).and.returnValue(Promise.resolve());
+          test = Mock.advancedResultComponentSetup<FollowItem>(FollowItem, result, new Mock.AdvancedComponentSetupOptions(null, null, (env) => {
+            return env.withEndpoint(endpointMock);
+          }));
+
+          Promise.resolve().then(() => {
+            Simulate.keyUp(test.cmp.element, KEYBOARD.ENTER);
+            expect(endpointMock.follow).toHaveBeenCalled();
+            done();
+          });
+        }
+      });
+
       it('should log an analytics event if the document is followed', (done) => {
 
         let fake = FakeResults.createFakeResult();
@@ -135,6 +170,43 @@ export function FollowItemTest() {
           done();
         });
       });
+
+      it('should not throw if delete subscription fails from the endpoint', (done)=> {
+        (<jasmine.Spy>endpointMock.listSubscriptions).and.returnValue(Promise.resolve([{
+          id: '123',
+          typeConfig: {id: result.raw.urihash}
+        }]));
+        (<jasmine.Spy>endpointMock.deleteSubscription).and.returnValue(Promise.reject('oh no it fails'));
+        test = Mock.advancedResultComponentSetup<FollowItem>(FollowItem, result, new Mock.AdvancedComponentSetupOptions(null, null, (env) => {
+          return env.withEndpoint(endpointMock);
+        }));
+
+        Promise.resolve().then(() => {
+          expect(()=> {
+            test.cmp.toggleFollow()
+          }).not.toThrow();
+          done();
+        });
+      });
+
+      it('should not throw if follow subscription fails from the endpoint', (done) => {
+        (<jasmine.Spy>endpointMock.follow).and.returnValue(Promise.reject('oh no it fails'));
+        test = Mock.advancedResultComponentSetup<FollowItem>(FollowItem, result, new Mock.AdvancedComponentSetupOptions(null, null, (env) => {
+          return env.withEndpoint(endpointMock);
+        }));
+
+        Promise.resolve().then(() => {
+          expect(()=> {
+            test.cmp.toggleFollow()
+          }).not.toThrow();
+          done();
+        });
+      });
+    });
+
+    it('should handle subscription delete from an event', ()=> {
+
+      $$(test.cmp.element).trigger(SearchAlertsEvents.searchAlertsCreated, )
     });
   });
 }
