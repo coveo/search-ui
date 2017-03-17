@@ -1,6 +1,7 @@
 import { Model, IModelSetOptions } from './Model';
 import { Assert } from '../misc/Assert';
 import { IStringMap } from '../rest/GenericParam';
+import * as _ from 'underscore';
 import { Utils } from '../utils/Utils';
 
 export const QUERY_STATE_ATTRIBUTES = {
