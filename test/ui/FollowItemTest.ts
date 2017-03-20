@@ -204,9 +204,19 @@ export function FollowItemTest() {
       });
     });
 
-    it('should handle subscription delete from an event', ()=> {
-
-      $$(test.cmp.element).trigger(SearchAlertsEvents.searchAlertsCreated, )
+    it('should handle subscription delete and follow from an event', ()=> {
+      let subscription = {
+        subscription: {
+          id: 'an id',
+          user: 'an user',
+          type: 'followDocument',
+          typeConfig: {id: result.raw['urihash']}
+        }
+      };
+      $$(test.env.root).trigger(SearchAlertsEvents.searchAlertsCreated, subscription);
+      expect($$(test.cmp.element).hasClass('coveo-follow-item-followed')).toBe(true);
+      $$(test.env.root).trigger(SearchAlertsEvents.searchAlertsDeleted, subscription);
+      expect($$(test.cmp.element).hasClass('coveo-follow-item-followed')).not.toBe(true);
     });
   });
 }
