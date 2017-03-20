@@ -939,6 +939,10 @@ export class FacetSlider extends Component {
     } else {
       $$(this.element).removeClass('coveo-disabled');
     }
+
+    if (this.isActive() && this.slider) {
+      this.slider.onMoving();
+    }
   }
 
   private handleNuke() {
