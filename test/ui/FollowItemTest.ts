@@ -108,7 +108,7 @@ export function FollowItemTest() {
         });
       });
 
-      it('should follow the document when pressing enter', (done)=> {
+      it('should follow the document when pressing enter', (done) => {
         if (Simulate.isPhantomJs()) {
           // Keypress simulation doesn't work well in phantom js
           expect(true).toBe(true);
@@ -171,10 +171,10 @@ export function FollowItemTest() {
         });
       });
 
-      it('should not throw if delete subscription fails from the endpoint', (done)=> {
+      it('should not throw if delete subscription fails from the endpoint', (done) => {
         (<jasmine.Spy>endpointMock.listSubscriptions).and.returnValue(Promise.resolve([{
           id: '123',
-          typeConfig: {id: result.raw.urihash}
+          typeConfig: { id: result.raw.urihash }
         }]));
         (<jasmine.Spy>endpointMock.deleteSubscription).and.returnValue(Promise.reject('oh no it fails'));
         test = Mock.advancedResultComponentSetup<FollowItem>(FollowItem, result, new Mock.AdvancedComponentSetupOptions(null, null, (env) => {
@@ -182,8 +182,8 @@ export function FollowItemTest() {
         }));
 
         Promise.resolve().then(() => {
-          expect(()=> {
-            test.cmp.toggleFollow()
+          expect(() => {
+            test.cmp.toggleFollow();
           }).not.toThrow();
           done();
         });
@@ -196,21 +196,21 @@ export function FollowItemTest() {
         }));
 
         Promise.resolve().then(() => {
-          expect(()=> {
-            test.cmp.toggleFollow()
+          expect(() => {
+            test.cmp.toggleFollow();
           }).not.toThrow();
           done();
         });
       });
     });
 
-    it('should handle subscription delete and follow from an event', ()=> {
+    it('should handle subscription delete and follow from an event', () => {
       let subscription = {
         subscription: {
           id: 'an id',
           user: 'an user',
           type: 'followDocument',
-          typeConfig: {id: result.raw['urihash']}
+          typeConfig: { id: result.raw['urihash'] }
         }
       };
       $$(test.env.root).trigger(SearchAlertsEvents.searchAlertsCreated, subscription);
