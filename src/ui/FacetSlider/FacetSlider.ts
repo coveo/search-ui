@@ -239,7 +239,7 @@ export class FacetSlider extends Component {
      *
      * Available options are:
      * - steps (`data-graph-steps`): number; specifies the number of steps/columns to display in your graph. Default
-     * value is `10`.
+     * value is `10`. Minimum value is `2`.
      */
     graph: ComponentOptions.buildObjectOption({
       subOptions: {
