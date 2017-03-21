@@ -186,6 +186,8 @@ export class FacetSlider extends Component {
      * For example, if your range is [ 0 , 100 ] and you specify 10 steps, then the end user can move the slider only to
      * the values [ 0, 10, 20, 30 ... , 100 ].
      *
+     * For performance reasons, the maximum value for option is 1
+     *
      * Default value is `undefined`, and the slider allows all values. Minimum value is `2`.
      */
     steps: ComponentOptions.buildNumberOption({ min: 2 }),
@@ -237,7 +239,7 @@ export class FacetSlider extends Component {
      *
      * Available options are:
      * - steps (`data-graph-steps`): number; specifies the number of steps/columns to display in your graph. Default
-     * value is `10`.
+     * value is `10`. Minimum value is `2`.
      */
     graph: ComponentOptions.buildObjectOption({
       subOptions: {
@@ -936,6 +938,10 @@ export class FacetSlider extends Component {
       $$(this.element).addClass('coveo-disabled');
     } else {
       $$(this.element).removeClass('coveo-disabled');
+    }
+
+    if (this.isActive() && this.slider) {
+      this.slider.onMoving();
     }
   }
 

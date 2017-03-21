@@ -43,7 +43,7 @@ gulp.task('dev', ['setup', 'prepareSass'], (done)=> {
     publicPath: '/js/',
     compress: true,
     headers: {
-      'Content-Security-Policy': "script-src 'self' 'unsafe-inline'"
+      'Content-Security-Policy': "script-src 'self' code.jquery.com static.cloud.coveo.com 'unsafe-inline'"
     }
   });
   server.listen(8080, 'localhost', ()=> {

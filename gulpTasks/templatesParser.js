@@ -83,7 +83,7 @@ function buildTemplateHtml(template) {
         if (fieldToMatch.values) {
           fieldsCondition += `="${fieldToMatch.values.join(',')}" `
         } else {
-          fieldsCondition += ' ';
+          fieldsCondition += '="" ';
         }
       });
     }

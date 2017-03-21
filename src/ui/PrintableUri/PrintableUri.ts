@@ -40,7 +40,7 @@ export class PrintableUri extends Component {
 
     this.options = ComponentOptions.initComponentOptions(element, PrintableUri, options);
 
-    let parentsXml = result.raw.parents;
+    let parentsXml = Utils.getFieldValue(result, 'parents');
     if (parentsXml) {
       this.renderParentsXml(element, parentsXml);
     } else {
@@ -156,12 +156,17 @@ export class PrintableUri extends Component {
 
   private bindLogOpenDocument(link: HTMLElement) {
     $$(link).on(['mousedown', 'touchend'], (e: Event) => {
+      // jQuery event != standard dom event for mouse events
+      // if we have access to the original event, use that.
+      if ((<any>e).originalEvent) {
+        e = (<any>e).originalEvent;
+      }
       let url = $$(<HTMLElement>e.srcElement).getAttribute('href');
       let title = $$(<HTMLElement>e.srcElement).text();
       this.usageAnalytics.logClickEvent(analyticsActionCauseList.documentOpen, {
         documentURL: url,
         documentTitle: title,
-        author: this.result.raw.author
+        author: Utils.getFieldValue(this.result, 'author')
       }, this.result, this.root);
     });
   }

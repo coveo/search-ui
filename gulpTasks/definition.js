@@ -48,6 +48,7 @@ gulp.task('externalDefs', function () {
       .pipe(replace(/\t[A-Za-z]+;$/gm, ''))
       .pipe(replace(/\n\t\s*(\n\t\s*)/g, '$1'))
       .pipe(replace(/never/gm, 'void'))
+      .pipe(replace(/undefined/g, 'any'))
       .pipe(gulp.dest('./bin/ts'));
 });
 

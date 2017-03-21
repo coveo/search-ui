@@ -180,9 +180,6 @@ export class Querybox extends Component {
      */
     triggerQueryOnClear: ComponentOptions.buildBooleanOption({ defaultValue: true }),
 
-    // Removed public doc; this option currently is of no use for this component.
-    placeholder: ComponentOptions.buildStringOption(),
-
     /**
      * Specifies whether the Querybox should get auto focus and selection upon initialization.
      *

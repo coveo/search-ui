@@ -123,7 +123,7 @@ export class SearchInterface extends RootComponent implements IComponentBindings
     /**
      * Specifies whether to enable automatic responsive mode (i.e., automatically placing {@link Facet} and {@link Tab}
      * components in dropdown menus under the search box when the width of the SearchInterface HTML element reaches or
-     * falls behind certain pixel thresholds).
+     * falls behind a certain pixel threshold).
      *
      * You might want to set this option to `false` if automatic responsive mode does not suit the specific design needs
      * of your implementation.
@@ -136,9 +136,6 @@ export class SearchInterface extends RootComponent implements IComponentBindings
      * >
      * > In addition, you can specify the label you wish to display on the dropdown buttons (see
      * > {@link Facet.options.dropdownHeaderLabel} and {@link Tab.options.dropdownHeaderLabel}).
-     * >
-     * > Furthermore, it is possible to specify the pixel threshold at which Facet components will go in responsive
-     * > mode (see {@link Facet.options.responsiveBreakpoint}.
      *
      * Default value is `true`.
      */
@@ -203,7 +200,7 @@ export class SearchInterface extends RootComponent implements IComponentBindings
      *
      * For more advanced features, see the {@link Folding} component.
      *
-     * Default value is `''`
+     * Default value is the empty string (`''`).
      */
     filterField: ComponentOptions.buildFieldOption({ defaultValue: '' }),
 
@@ -213,39 +210,53 @@ export class SearchInterface extends RootComponent implements IComponentBindings
      * **Note:**
      *
      * > If you do not set this options to `false`, the loading animation will still run until the first query
-     * > successfully returns even if {@link SearchInterface.options.autoTriggerQuery} is `false`.
+     * > successfully returns even if the [autoTriggerQuery]{@link SearchInterface.options.autoTriggerQuery} option is
+     * `false`.
+     *
+     * See also the [firstLoadingAnimation]{@link SearchInterface.options.firstLoadingAnimation} option.
      *
      * Default value is `true`.
      */
     hideUntilFirstQuery: ComponentOptions.buildBooleanOption({ defaultValue: true }),
 
     /**
-     * Specifies the animation that you wish to use for your interface.
+     * Specifies the animation that you wish to display while your interface is loading.
      *
-     * This can be a selector or an HTML element that matches the correct CSS class (`coveo-first-loading-animation`).
+     * You can either specify the CSS selector of an HTML element that matches the default CSS class
+     * (`coveo-first-loading-animation`), or add `-selector` to the markup attribute of this option to specify the CSS
+     * selector of an HTML element that matches any CSS class.
+     *
+     * See also the [hideUntilFirstQuery]{@link SearchInterface.options.hideUntilFirstQuery} option.
      *
      * **Examples:**
      *
-     * Specifying the animation using a CSS selector in the {@link init} call:
-     * ```javascript
-     * Coveo.init(document.querySelector('#search'), {
-     *   SearchInterface : {
-     *     firstLoadingAnimation : '.CustomFirstLoadingAnimation'
-     *   }
-     * }
+     * In this first case, the SearchInterface uses the HTML element whose `id` attribute is `MyAnimation` as the
+     * loading animation only if the `class` attribute of this element also matches `coveo-first-loading-animation`.
+     * Default loading animation CSS, which you can customize as you see fit, applies to this HTML element.
+     * ```html
+     * <div class='CoveoSearchInterface' data-first-loading-animation='#MyAnimation'>
+     *   <div id='MyAnimation' class='coveo-first-loading-animation'>
+     *     <!-- ... -->
+     *   </div>
+     *   <!-- ... -->
+     * </div>
      * ```
      *
-     * Specifying the animation using a CSS selector in the markup:
+     * In this second case, the SearchInterface uses the HTML element whose `id` attribute is `MyAnimation` as the
+     * loading animation no matter what CSS class it matches. However, if the `class` attribute of the HTML element does
+     * not match `coveo-first-loading-animation`, no default loading animation CSS applies to this HTML element.
+     * Normally, you should only use `data-first-loading-animation-selector` if you want to completely override the
+     * default loading animation CSS.
      * ```html
-     * <element id='search' class='CoveoSearchInterface data-first-loading-animation='.CustomFirstLoadingAnimation'>
+     * <div class='CoveoSearchInterface' data-first-loading-animation-selector='#MyAnimation'>
+     *   <div id='MyAnimation' class='my-custom-loading-animation-class'>
+     *     <!-- ... -->
+     *   </div>
+     *   <!-- ... -->
+     * </div>
      * ```
      *
-     * Specifying the animation using an HTML element matching the correct CSS class:
-     * ```html
-     *   <element id='search' class='CoveoSearchInterface'>
-     *     <element class='coveo-first-loading-animation'/>
-     *   </element>
-     * ```
+     * See [Branding Customization](https://developers.coveo.com/x/EoGfAQ).
      *
      * By default, the loading animation is a Coveo CSS animation (which you can customize with CSS).
      */
@@ -260,8 +271,9 @@ export class SearchInterface extends RootComponent implements IComponentBindings
      *
      * **Note:**
      *
-     * > If you set this option to `false` while {@link SearchInterface.options.hideUntilFirstQuery} is `true`, the
-     * > loading animation will still run until the first query successfully returns.
+     * > If you set this option to `false` while the
+     * > [hideUntilFirstQuery]{@link SearchInterface.options.hideUntilFirstQuery} option is `true`, the loading
+     * > animation will still run until the first query successfully returns.
      *
      * Default value is `true`.
      */
@@ -377,16 +389,16 @@ export class SearchInterface extends RootComponent implements IComponentBindings
   public componentOptionsModel: ComponentOptionsModel;
   public usageAnalytics: IAnalyticsClient;
   /**
-   * Allow to get and set the different breakpoint for mobile and tablet devices.
+   * Allows to get and set the different breakpoints for mobile and tablet devices.
    *
-   * This is useful, amongst other, for {@link Facet}, {@link Tab} and {@link ResultList}
+   * This is useful, among other things, for {@link Facet}, {@link Tab} and {@link ResultList} components.
    */
   public responsiveComponents: ResponsiveComponents;
 
   /**
    * Creates a new SearchInterface. Initialize various singletons for the interface (e.g., usage analytics, query
    * controller, state model, etc.). Binds events related to the query. Hides and shows the loading animation, if
-   * activated (see {@link SearchInterface.options.hideUntilFirstQuery}).
+   * activated (see the [hideUntilFirstQuery]{@link SearchInterface.options.hideUntilFirstQuery} option).
    * @param element The HTMLElement on which to instantiate the component. This cannot be an `HTMLInputElement` for
    * technical reasons.
    * @param options The options for the SearchInterface.
@@ -450,7 +462,8 @@ export class SearchInterface extends RootComponent implements IComponentBindings
   }
 
   /**
-   * Displays the first query animation (see {@link SearchInterface.options.firstLoadingAnimation}).
+   * Displays the first query animation (see the
+   * [firstLoadingAnimation]{@link SearchInterface.options.firstLoadingAnimation} option).
    *
    * By default, this is the Coveo logo with a CSS animation (which can be customized with options or CSS).
    */
@@ -461,7 +474,8 @@ export class SearchInterface extends RootComponent implements IComponentBindings
   }
 
   /**
-   * Hides the first query animation (see {@link SearchInterface.options.firstLoadingAnimation}).
+   * Hides the first query animation (see the
+   * [firstLoadingAnimation]{@link SearchInterface.options.firstLoadingAnimation} option).
    *
    * By default, this is the Coveo logo with a CSS animation (which can be customized with options or CSS).
    */

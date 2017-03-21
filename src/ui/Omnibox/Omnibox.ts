@@ -62,7 +62,7 @@ const MINIMUM_EXECUTABLE_CONFIDENCE = 0.8;
  * and customize the type-ahead and the suggestions it provides.
  *
  * The type-ahead is configurable by activating addons, which the Coveo JavaScript Search Framework provides OOTB
- * (facets, analytics suggestions, Reveal suggestions and advanced Coveo syntax suggestions).
+ * (facets, analytics suggestions, Coveo Machine Learning suggestions and advanced Coveo syntax suggestions).
  *
  * It is also possible for external code to provide type-ahead suggestions.
  *
@@ -83,7 +83,7 @@ export class Omnibox extends Component {
      * results.
      *
      * Set this option as well as {@link Omnibox.options.enableSearchAsYouType} and
-     * {@link Omnibox.options.RevealQuerySuggestAddon} to `true` for a cool effect!
+     * {@link Omnibox.options.enableRevealQuerySuggestAddon} to `true` for a cool effect!
      *
      * Default value is `false`.
      */
@@ -92,8 +92,8 @@ export class Omnibox extends Component {
     /**
      * Specifies whether to automatically trigger a new query whenever the end user types new text inside the Omnibox.
      *
-     * Set this option as well a {@link Omnibox.options.inline} and {@link Omnibox.options.RevealQuerySuggestAddon} to
-     * `true` for a cool effect!
+     * Set this option as well a {@link Omnibox.options.inline} and
+     * {@link Omnibox.options.enableRevealQuerySuggestAddon} to `true` for a cool effect!
      *
      * Default value is `false`.
      */
@@ -129,14 +129,14 @@ export class Omnibox extends Component {
     listOfFields: ComponentOptions.buildFieldsOption({ depend: 'enableFieldAddon' }),
 
     /**
-     * Specifies whether to enable the Reveal query suggestions.
+     * Specifies whether to enable the Coveo Machine Learning (Coveo ML) query suggestions.
      *
-     * This implies that you have a proper Reveal integration configured (see
-     * [Coveo Reveal](http://www.coveo.com/go?dest=cloudhelp&lcid=9&context=177)).
+     * This implies that you have a proper Coveo ML integration configured (see
+     * [Coveo Machine Learning](http://www.coveo.com/go?dest=cloudhelp&lcid=9&context=177)).
      *
-     * Default value is `false`.
+     * Default value is `true`.
      */
-    enableRevealQuerySuggestAddon: ComponentOptions.buildBooleanOption({ defaultValue: false, alias: 'enableTopQueryAddon' }),
+    enableRevealQuerySuggestAddon: ComponentOptions.buildBooleanOption({ defaultValue: true, alias: 'enableTopQueryAddon' }),
 
     /**
      * If {@link Querybox.options.enableQuerySyntax} is `true`, specifies whether to enable the `query extension` addon.

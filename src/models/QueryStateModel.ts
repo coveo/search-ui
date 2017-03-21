@@ -2,7 +2,6 @@ import { Model, IModelSetOptions } from './Model';
 import { Assert } from '../misc/Assert';
 import { IStringMap } from '../rest/GenericParam';
 import { Utils } from '../utils/Utils';
-import { defaultLayout } from '../ui/ResultLayout/ResultLayout';
 import _ = require('underscore');
 
 export const QUERY_STATE_ATTRIBUTES = {
@@ -49,7 +48,7 @@ export class QueryStateModel extends Model {
     hd: '',
     hq: '',
     sort: '',
-    layout: defaultLayout,
+    layout: 'list',
     tg: '',
     quickview: ''
   };

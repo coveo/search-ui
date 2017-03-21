@@ -15,8 +15,8 @@ export interface IFileTypeInfo {
 
 export class FileTypes {
   static get(result: IQueryResult): IFileTypeInfo {
-    var objecttype = <string>result.raw.objecttype;
-    var filetype = <string>result.raw.filetype;
+    var objecttype = <string>Utils.getFieldValue(result, 'objecttype');
+    var filetype = <string>Utils.getFieldValue(result, 'filetype');
 
     // When @objecttype is File we fallback on @filetype for icons and such
     if (Utils.isNonEmptyString(objecttype) && objecttype.toLowerCase() != 'file') {

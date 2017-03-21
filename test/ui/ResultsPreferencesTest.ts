@@ -6,6 +6,9 @@ import { Component } from '../../src/ui/Base/Component';
 import { PreferencesPanel } from '../../src/ui/PreferencesPanel/PreferencesPanel';
 import { l } from '../../src/strings/Strings';
 import { PreferencesPanelEvents } from '../../src/events/PreferencesPanelEvents';
+import { Defer } from '../../src/misc/Defer';
+import { Simulate } from '../Simulate';
+import { analyticsActionCauseList } from '../../src/ui/Analytics/AnalyticsActionListMeta';
 
 export function ResultsPreferencesTest() {
   describe('ResultsPreferences', function () {
@@ -20,6 +23,60 @@ export function ResultsPreferencesTest() {
 
     afterEach(() => {
       element = null;
+      localStorage.removeItem('coveo-ResultsPreferences');
+    });
+
+    describe('with incoherent configuration', ()=> {
+
+      it('will adjust the preferences for outlook correctly', (done) => {
+        localStorage.setItem('coveo-ResultsPreferences', JSON.stringify({openInOutlook: true}));
+        expect(() => test = Mock.advancedComponentSetup<ResultsPreferences>(ResultsPreferences, new Mock.AdvancedComponentSetupOptions(element.el, {enableOpenInOutlook: false}))).not.toThrow();
+        Defer.defer(()=> {
+          expect(JSON.parse(localStorage.getItem('coveo-ResultsPreferences')).openInOutlook).toBe(false);
+          done();
+        });
+      });
+
+      it('will adjust the preferences for open in new window correctly', (done) => {
+        localStorage.setItem('coveo-ResultsPreferences', JSON.stringify({alwaysOpenInNewWindow: true}));
+        expect(() => test = Mock.advancedComponentSetup<ResultsPreferences>(ResultsPreferences, new Mock.AdvancedComponentSetupOptions(element.el, {enableOpenInNewWindow: false}))).not.toThrow();
+        Defer.defer(()=> {
+          expect(JSON.parse(localStorage.getItem('coveo-ResultsPreferences')).alwaysOpenInNewWindow).toBe(false);
+          done();
+        });
+      });
+    });
+
+    describe('when an input changes', ()=> {
+      let input: HTMLInputElement;
+
+      beforeEach(()=> {
+        test = Mock.advancedComponentSetup<ResultsPreferences>(ResultsPreferences, new Mock.AdvancedComponentSetupOptions(element.el, {enableOpenInNewWindow: true}));
+        input = <HTMLInputElement>$$(test.cmp.element).find(`input[value='${l('AlwaysOpenInNewWindow')}']`);
+      });
+
+      afterEach(()=> {
+        input = null;
+      });
+
+      it('will log an analytics custom event', () => {
+        $$(input).trigger('change');
+        expect(test.env.usageAnalytics.logCustomEvent).toHaveBeenCalledWith(analyticsActionCauseList.preferencesChange, jasmine.objectContaining({
+          preferenceName: jasmine.any(String)
+        }), test.cmp.element);
+      });
+
+      it('will log an analytics search event', () => {
+        $$(input).trigger('change');
+        expect(test.env.usageAnalytics.logSearchEvent).toHaveBeenCalledWith(analyticsActionCauseList.preferencesChange, jasmine.objectContaining({
+          preferenceName: jasmine.any(String)
+        }));
+      });
+
+      it('will trigger a query when the input is changed', ()=> {
+        $$(input).trigger('change');
+        expect(test.env.queryController.executeQuery).toHaveBeenCalled();
+      });
     });
 
     describe('exposes enableOpenInOutlook', () => {

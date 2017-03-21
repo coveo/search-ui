@@ -604,9 +604,11 @@ export class ComponentOptions {
     }
     let numberValue = option.float === true ? Utils.parseFloatIfNotUndefined(attributeValue) : Utils.parseIntIfNotUndefined(attributeValue);
     if (option.min != null && option.min > numberValue) {
+      new Logger(element).info(`Value for option ${name} is less than the possible minimum (Value is ${numberValue}, minimum is ${option.min}). It has been forced to it\'s minimum value.`, option);
       numberValue = option.min;
     }
     if (option.max != null && option.max < numberValue) {
+      new Logger(element).info(`Value for option ${name} is higher than the possible maximum (Value is ${numberValue}, maximum is ${option.max}). It has been forced to it\'s maximum value.`, option);
       numberValue = option.max;
     }
     return numberValue;

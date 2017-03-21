@@ -33,7 +33,7 @@ export class TemplateFromAScriptTag {
     this.template.mobile = this.parseScreenSize('data-mobile');
     this.template.tablet = this.parseScreenSize('data-tablet');
     this.template.desktop = this.parseScreenSize('data-desktop');
-    this.template.fields = TemplateConditionEvaluator.getFieldFromString(scriptTag.innerHTML + ' ' + condition);
+    this.template.fields = TemplateConditionEvaluator.getFieldFromString(`${scriptTag.innerHTML} ${condition ? condition : ''}`);
 
     var additionalFields = ComponentOptions.loadFieldsOption(scriptTag, 'fields', <IComponentOptionsFieldsOption>{ includeInResults: true });
     if (additionalFields != null) {
@@ -47,7 +47,10 @@ export class TemplateFromAScriptTag {
 
   toHtmlElement(): HTMLElement {
     var script = $$('code');
-    script.setAttribute('data-condition', $$(this.scriptTag).getAttribute('data-condition'));
+    let condition = $$(this.scriptTag).getAttribute('data-condition');
+    if (condition) {
+      script.setAttribute('data-condition', condition);
+    }
     script.setHtml(this.scriptTag.innerHTML);
     return script.el;
   }
@@ -59,7 +62,7 @@ export class TemplateFromAScriptTag {
         let match = key.match(/field([a-z0-9]*)/i);
         if (match) {
           let values;
-          if (value != null && value != 'null') {
+          if (value != null && value != 'null' && value != '') {
             values = value.split(',');
           }
           return {
@@ -83,7 +86,7 @@ export class TemplateFromAScriptTag {
     return <ValidLayout>layout;
   }
 
-  static fromString(template: string, properties: ITemplateFromStringProperties): HTMLElement {
+  static fromString(template: string, properties: ITemplateFromStringProperties = {}): HTMLElement {
     var script = document.createElement('code');
     script.innerHTML = template;
     if (properties.condition != null) {

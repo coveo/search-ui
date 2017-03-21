@@ -49,80 +49,6 @@ export interface IResultListOptions {
  * templates (see [Result Templates](https://developers.coveo.com/x/aIGfAQ)).
  *
  * This component supports many additional features, such as infinite scrolling.
- *
- * **Examples:**
- *
- * - This first example shows a very simple ResultList with a single Underscore template. This template has no
- * `data-condition`. Therefore, it is rendered for all results.
- *
- * ```html
- * <div class='CoveoResultList'>
- *   <script class='result-template' id='MyDefaultTemplate' type='text/underscore'>
- *     <div>
- *       <a class='CoveoResultLink'>Hey, click on this! <%- title %></a>
- *     </div>
- *   </script>
- * </div>
- * ```
- *
- * - This second example shows two different templates in the same ResultList. The first template has a `data-condition`
- * attribute while the second template has none.
- *
- * When the query returns, the conditional expression of the first template is evaluated against the first result.
- * If the result satisfies the condition (in this case, if the `result.raw.objecttype` property in the JSON equals
- * `MyObjectType`), the first template is rendered for this result. The second template is neither evaluated nor
- * rendered for this result.
- *
- * If the result does not match the condition of the first template, then the next template is evaluated. Since the
- * second template has no `data-condition`, it is `true` for any result and can thus load as a "fallback" template.
- *
- * This process repeats itself for each result.
- *
- * ```html
- * <div class="CoveoResultList">
- *   <script class="result-template" id='MyObjectTypeTemplate' type='text/underscore' data-condition='raw.objecttype==MyObjectType'>
- *     <div>
- *       <a class='CoveoResultLink'>Hey, click on this! <%- title %></a>
- *       <div class='CoveoExcerpt'></div>
- *       <span>This is a result for the type: <%- raw.objecttype %></span>
- *     </div>
- *   </script>
- *
- *   <script class='result-template' id='MyFallbackTemplate' type='text/underscore'>
- *     <div>
- *       <a class='CoveoResultLink'>Hey, click on this! <%- title %></a>
- *     </div>
- *   </script>
- * </div>
- * ```
- *
- * - This third example shows two different templates in the same result list. Both templates have a `data-condition`
- * attribute.
- *
- * In this case, there is no "fallback" template, since all templates have a `data-condition` attribute. Therefore, if a
- * result matches none of the conditions, the default templates included in the Coveo JavaScript Search Framework will
- * load instead. This ensures that all results render themselves.
- *
- * ```html
- * <div class="CoveoResultList">
- *   <script class="result-template" type="text/underscore" data-condition='raw.objecttype==MyObjectType' id='MyObjectTypeTemplate'>
- *     <div>
- *       <a class='CoveoResultLink'>Hey, click on this ! <%- title %></a>
- *       <div class='CoveoExcerpt'></div>
- *       <span>This is a result for the type : <%- raw.objecttype %></span>
- *      </div>
- *   </script>
- *
- *   <script class="result-template" type="text/underscore" data-condition='raw.objecttype==MySecondObjectType' id='MySecondObjectTypeTemplate'>
- *     <div>
- *       <span class='CoveoIcon'></span>
- *       <a class='CoveoResultLink'></a>
- *     </div>
- *     <div class='CoveoExcerpt'></div>
- *     <div class='CoveoPrintableUri'></div>
- *   </script>
- * </div>
- * ```
  */
 export class ResultList extends Component {
 
@@ -193,6 +119,10 @@ export class ResultList extends Component {
      * See also {@link ResultList.options.infiniteScrollPageSize}, {@link ResultList.options.infiniteScrollContainer}
      * and {@link ResultList.options.enableInfiniteScrollWaitingAnimation}.
      *
+     * It is important to specify the {@link ResultList.options.infiniteScrollContainer} manually if you want the scrolling
+     * element to be something else than the default `window` element.
+     * Otherwise, you might get in a weird state where the framework will rapidly trigger multiple successive query.
+     *
      * Default value is `false`.
      */
     enableInfiniteScroll: ComponentOptions.buildBooleanOption({ defaultValue: false }),
@@ -209,12 +139,20 @@ export class ResultList extends Component {
      * If {@link ResultList.options.enableInfiniteScroll} is `true`, specifies the element that triggers the fetching of
      * additional results when the end user scrolls down to its bottom.
      *
+     * You can change the container by specifying its selector (e.g.,
+     * `data-infinite-scroll-container-selector='#someCssSelector'`).
+     *
      * By default, the framework uses the first vertically scrollable parent element it finds, starting from the
      * ResultList element itself. A vertically scrollable element is an element whose CSS `overflow-y` attribute is
      * `scroll`.
      *
      * This implies that if the framework can find no scrollable parent, it uses the window itself as a scrollable
      * container.
+     *
+     * This heuristic is not perfect, for technical reasons. There are always some corner case CSS combination which the framework will
+     * not be able to detect correctly as 'scrollable'.
+     *
+     * It is highly recommended that you manually set this option if you wish to have something else than `window` be the scrollable element.
      */
     infiniteScrollContainer: ComponentOptions.buildChildHtmlElementOption({ depend: 'enableInfiniteScroll', defaultFunction: (element) => ComponentOptions.findParentScrolling(element) }),
 
@@ -278,6 +216,15 @@ export class ResultList extends Component {
   private fetchingMoreResults: Promise<IQueryResults>;
   private reachedTheEndOfResults = false;
 
+  // This variable serves to block some setup where the framework fails to correctly identify the "real" scrolling container.
+  // Since it's not technically feasible to correctly identify the scrolling container in every possible scenario without some very complex logic, we instead try to add some kind of mechanism to
+  // block runaway requests where UI will keep asking more results in the index, eventually bringing the browser to it's knee.
+  // Those successive request are needed in "displayMoreResults" to ensure we fill the scrolling container correctly.
+  // Since the container is not identified correctly, it is never "full", so we keep asking for more.
+  // It is reset every time the user actually scroll the container manually.
+  private successiveScrollCount = 0;
+  private static MAX_AMOUNT_OF_SUCESSIVE_REQUESTS = 5;
+
   /**
    * Creates a new ResultList component. Binds various event related to queries (e.g., on querySuccess ->
    * renderResults). Binds scroll event if {@link ResultList.options.enableInfiniteScroll} is `true`.
@@ -312,7 +259,10 @@ export class ResultList extends Component {
 
     if (this.options.enableInfiniteScroll) {
       this.handlePageChanged();
-      this.bind.on(<HTMLElement>this.options.infiniteScrollContainer, 'scroll', (e: Event) => this.handleScrollOfResultList());
+      this.bind.on(<HTMLElement>this.options.infiniteScrollContainer, 'scroll', (e: Event) => {
+        this.successiveScrollCount = 0;
+        this.handleScrollOfResultList();
+      });
     }
     this.bind.onQueryState(MODEL_EVENTS.CHANGE_ONE, QUERY_STATE_ATTRIBUTES.FIRST, () => this.handlePageChanged());
 
@@ -360,7 +310,7 @@ export class ResultList extends Component {
       this.options.resultContainer.appendChild(resultElement);
       this.triggerNewResultDisplayed(Component.getResult(resultElement), resultElement);
     });
-    if (this.options.layout == 'card') {
+    if (this.options.layout == 'card' && !this.options.enableInfiniteScroll) {
       // Used to prevent last card from spanning the grid's whole width
       _.times(3, () => this.options.resultContainer.appendChild($$('div').el));
     }
@@ -448,7 +398,15 @@ export class ResultList extends Component {
     this.fetchingMoreResults.then(() => {
       this.hideWaitingAnimationForInfiniteScrolling();
       this.fetchingMoreResults = undefined;
-      Defer.defer(() => this.handleScrollOfResultList());
+      Defer.defer(() => {
+        this.successiveScrollCount++;
+        if (this.successiveScrollCount <= ResultList.MAX_AMOUNT_OF_SUCESSIVE_REQUESTS) {
+          this.handleScrollOfResultList();
+        } else {
+          this.logger.info(`Result list has triggered 5 consecutive queries to try and fill up the scrolling container, but it is still unable to do so`);
+          this.logger.info(`Try explicitly setting the 'data-infinite-scroll-container-selector' option on the result list. See : https://coveo.github.io/search-ui/components/resultlist.html#options.infinitescrollcontainer`);
+        }
+      });
     });
   }
 
@@ -705,7 +663,17 @@ export class ResultList extends Component {
   }
 
   private showWaitingAnimationForInfiniteScrolling() {
-    this.options.waitAnimationContainer.appendChild(DomUtils.getLoadingSpinner());
+    let spinner = DomUtils.getLoadingSpinner();
+    if (this.options.layout == 'card' && this.options.enableInfiniteScroll) {
+      let spinnerContainer = $$('div', {
+        className: 'coveo-loading-spinner-container'
+      });
+      spinnerContainer.append(spinner);
+      this.options.waitAnimationContainer.appendChild(spinnerContainer.el);
+    } else {
+      this.options.waitAnimationContainer.appendChild(DomUtils.getLoadingSpinner());
+    }
+
   }
 
   private hideWaitingAnimationForInfiniteScrolling() {

@@ -13,6 +13,8 @@ import {
 } from '../Analytics/AnalyticsActionListMeta';
 import { QueryUtils } from '../../utils/QueryUtils';
 import _ = require('underscore');
+import { Utils } from '../../utils/Utils';
+import { KeyboardUtils, KEYBOARD } from '../../utils/KeyboardUtils';
 
 
 export interface IFollowItemOptions {
@@ -88,6 +90,8 @@ export class FollowItem extends Component {
     this.text = $$('span');
     this.container.append(this.text.el);
     this.container.on('click', () => this.toggleFollow());
+    this.container.setAttribute('tabindex', '0');
+    this.bind.on(this.container, 'keyup', KeyboardUtils.keypressAction(KEYBOARD.ENTER, () => this.toggleFollow()));
 
     this.bind.onRootElement(SearchAlertsEvents.searchAlertsDeleted, (args: ISearchAlertsEventArgs) => this.handleSubscriptionDeleted(args));
     this.bind.onRootElement(SearchAlertsEvents.searchAlertsCreated, (args: ISearchAlertsEventArgs) => this.handleSubscriptionCreated(args));
@@ -210,7 +214,7 @@ export class FollowItem extends Component {
   }
 
   private getId() {
-    return this.result.raw.sysurihash || this.result.raw.urihash;
+    return Utils.getFieldValue(this.result, 'sysurihash') || Utils.getFieldValue(this.result, 'urihash');
   }
 
   private static buildFollowRequest(id: string, title: string, options: IFollowItemOptions): ISubscriptionRequest {
@@ -240,8 +244,8 @@ export class FollowItem extends Component {
       documentLanguage: QueryUtils.getLanguage(this.result),
       documentSource: QueryUtils.getSource(this.result),
       documentTitle: this.result.title,
-      contentIDValue: QueryUtils.getUniqueId(this.result).fieldValue,
-      contentIDKey: QueryUtils.getUniqueId(this.result).fieldUsed
+      contentIDValue: QueryUtils.getPermanentId(this.result).fieldValue,
+      contentIDKey: QueryUtils.getPermanentId(this.result).fieldUsed
     }, this.element);
   }
 }

@@ -154,6 +154,8 @@
   margin-right: -20px;
   &.CoveoResult {
     overflow: hidden;
+    display: flex;
+    position: relative;
 
     font-size: 0.9em;
 
@@ -180,10 +182,12 @@
       margin-top: 0;
     }
 
-    .coveo-result-frame {
+    .coveo-result-frame, &.coveo-result-frame {
       display: flex;
       padding: 20px;
       flex-direction: column;
+      width: 100%;
+      height: auto;
     }
 
     .CoveoResultLink {
