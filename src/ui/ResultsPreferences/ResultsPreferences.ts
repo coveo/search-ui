@@ -189,7 +189,7 @@ export class ResultsPreferences extends Component {
     }
 
     if (needToSave) {
-      Defer.defer(()=> {
+      Defer.defer(() => {
         this.save();
       });
     }
