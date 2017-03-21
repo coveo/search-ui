@@ -28,18 +28,18 @@ export function ResultsPreferencesTest() {
 
     describe('with incoherent configuration', ()=> {
 
-      it('will adjust the preferences for outlook correctly', (done)=> {
+      it('will adjust the preferences for outlook correctly', (done) => {
         localStorage.setItem('coveo-ResultsPreferences', JSON.stringify({openInOutlook: true}));
-        expect(()=> test = Mock.advancedComponentSetup<ResultsPreferences>(ResultsPreferences, new Mock.AdvancedComponentSetupOptions(element.el, {enableOpenInOutlook: false}))).not.toThrow();
+        expect(() => test = Mock.advancedComponentSetup<ResultsPreferences>(ResultsPreferences, new Mock.AdvancedComponentSetupOptions(element.el, {enableOpenInOutlook: false}))).not.toThrow();
         Defer.defer(()=> {
           expect(JSON.parse(localStorage.getItem('coveo-ResultsPreferences')).openInOutlook).toBe(false);
           done();
         });
       });
 
-      it('will adjust the preferences for open in new window correctly', (done)=> {
+      it('will adjust the preferences for open in new window correctly', (done) => {
         localStorage.setItem('coveo-ResultsPreferences', JSON.stringify({alwaysOpenInNewWindow: true}));
-        expect(()=> test = Mock.advancedComponentSetup<ResultsPreferences>(ResultsPreferences, new Mock.AdvancedComponentSetupOptions(element.el, {enableOpenInNewWindow: false}))).not.toThrow();
+        expect(() => test = Mock.advancedComponentSetup<ResultsPreferences>(ResultsPreferences, new Mock.AdvancedComponentSetupOptions(element.el, {enableOpenInNewWindow: false}))).not.toThrow();
         Defer.defer(()=> {
           expect(JSON.parse(localStorage.getItem('coveo-ResultsPreferences')).alwaysOpenInNewWindow).toBe(false);
           done();
