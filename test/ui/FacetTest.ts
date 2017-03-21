@@ -334,7 +334,7 @@ export function FacetTest() {
         expect(test.cmp.facetSort.activeSort.name.toLowerCase()).toBe('chisquare');
       });
 
-      it('available sort with only no sorts should still work', ()=> {
+      it('available sort with only no sorts should still work', () => {
         test = Mock.optionsComponentSetup<Facet, IFacetOptions>(Facet, {
           field: '@field',
           availableSorts: ['nosort']
