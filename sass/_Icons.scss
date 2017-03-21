@@ -2,6 +2,9 @@
 @import "../bin/sass/_GeneratedIconsNew.scss";
 @import "../node_modules/@salesforce-ux/design-system/scss/design-tokens";
 
+@include sprites($spritesheet-sprites);
+@include retina-sprites($retina-groups);
+
 .coveo-icon {
   @include GeneratedIcons();
   position: relative;

@@ -1,4 +1,6 @@
+@import "Variables";
 @import "../bin/sass/sprites";
+@import "mixins/mediaQuery";
 
 .CoveoQuickview {
   display: inline-block;

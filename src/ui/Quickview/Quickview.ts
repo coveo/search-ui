@@ -17,6 +17,8 @@ import { KeyboardUtils, KEYBOARD } from '../../utils/KeyboardUtils';
 import { ModalBox as ModalBoxModule } from '../../ExternalModulesShim';
 import { exportGlobally } from '../../GlobalExports';
 
+import 'styling/_Quickview';
+
 export interface IQuickviewOptions {
   title?: string;
   showDate?: boolean;

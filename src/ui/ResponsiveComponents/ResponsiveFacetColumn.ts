@@ -17,6 +17,8 @@ import { SearchInterface } from '../SearchInterface/SearchInterface';
 import { ResponsiveComponents } from './ResponsiveComponents';
 import * as _ from 'underscore';
 
+import 'styling/_ResponsiveFacets';
+
 export class ResponsiveFacetColumn implements IResponsiveComponent {
   public static DEBOUNCE_SCROLL_WAIT = 250;
 

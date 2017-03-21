@@ -14,6 +14,8 @@ import { get } from '../Base/RegisteredNamedMethods';
 import { QueryEvents, IQuerySuccessEventArgs, INoResultsEventArgs } from '../../events/QueryEvents';
 import * as _ from 'underscore';
 
+import 'styling/_ResponsiveRecommendation';
+
 export class ResponsiveRecommendation implements IResponsiveComponent {
 
   public static DROPDOWN_CONTAINER_CSS_CLASS_NAME: string = 'coveo-recommendation-dropdown-container';

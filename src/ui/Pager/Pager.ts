@@ -14,6 +14,8 @@ import { $$ } from '../../utils/Dom';
 import { KeyboardUtils, KEYBOARD } from '../../utils/KeyboardUtils';
 import { exportGlobally } from '../../GlobalExports';
 
+import 'styling/_Pager';
+
 export interface IPagerOptions {
   numberOfPages?: number;
   enableNavigationButton?: boolean;

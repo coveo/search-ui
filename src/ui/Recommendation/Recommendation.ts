@@ -27,6 +27,8 @@ import { DefaultRecommendationTemplate } from '../Templates/DefaultRecommendatio
 import { RecommendationQuery } from './RecommendationQuery';
 import { RecommendationAnalyticsClient } from '../Analytics/RecommendationAnalyticsClient';
 
+import 'styling/_Recommendation';
+
 export interface IRecommendationOptions extends ISearchInterfaceOptions {
   mainSearchInterface?: HTMLElement;
   userContext?: string;

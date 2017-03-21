@@ -12,6 +12,7 @@ import { ResponsiveComponentsUtils } from './ResponsiveComponentsUtils';
 import { l } from '../../strings/Strings';
 import { ResponsiveComponents } from './ResponsiveComponents';
 import * as _ from 'underscore';
+
 import 'styling/_ResponsiveTabs';
 
 export class ResponsiveTabs implements IResponsiveComponent {
