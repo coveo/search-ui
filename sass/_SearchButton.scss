@@ -25,7 +25,7 @@
   }
 }
 
-.coveo-executing-query .CoveoSearchButton > .coveo-icon {
+.coveo-executing-query .CoveoSearchButton > .coveo-icon, .coveo-executing-query .CoveoSearchButton:hover > .coveo-icon {
   @extend .coveo-sprites-facet-loading;
   @include animation-name(coveo-spin);
   @include animation-timing-function(linear);

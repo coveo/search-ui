@@ -14,6 +14,7 @@ import {
 import { QueryUtils } from '../../utils/QueryUtils';
 import _ = require('underscore');
 import { Utils } from '../../utils/Utils';
+import { KeyboardUtils, KEYBOARD } from '../../utils/KeyboardUtils';
 
 
 export interface IFollowItemOptions {
@@ -89,6 +90,8 @@ export class FollowItem extends Component {
     this.text = $$('span');
     this.container.append(this.text.el);
     this.container.on('click', () => this.toggleFollow());
+    this.container.setAttribute('tabindex', '0');
+    this.bind.on(this.container, 'keyup', KeyboardUtils.keypressAction(KEYBOARD.ENTER, () => this.toggleFollow()));
 
     this.bind.onRootElement(SearchAlertsEvents.searchAlertsDeleted, (args: ISearchAlertsEventArgs) => this.handleSubscriptionDeleted(args));
     this.bind.onRootElement(SearchAlertsEvents.searchAlertsCreated, (args: ISearchAlertsEventArgs) => this.handleSubscriptionCreated(args));
