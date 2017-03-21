@@ -1,6 +1,13 @@
 .CoveoResult {
-	&.coveo-omnibox-selectable {
-	  padding: 10px 10px 10px 36px;
-	  margin: 0;
-	}
+  &.coveo-omnibox-selectable {
+    padding: 10px 10px 10px 36px;
+    margin: 0;
+    box-sizing: border-box;
+  }
+  &.coveo-omnibox-result-list-element.coveo-omnibox-selectable.coveo-omnibox-selected {
+    padding: 7px 7px 8px 33px;
+    background-color: white;
+    border: $default-border;
+    border-width: 3px;
+  }
 }
