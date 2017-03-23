@@ -6,6 +6,8 @@ import { IResultsComponentBindings } from '../Base/ResultsComponentBindings';
 import { IQueryResult } from '../../rest/QueryResult';
 import _ = require('underscore');
 import { Utils } from '../../utils/Utils';
+import { YouTubeThumbnail, IYouTubeThumbnailOptions } from '../YouTube/YouTubeThumbnail';
+import { $$ } from '../../utils/Dom';
 
 export interface IBackdropOptions {
   imageUrl?: string;
@@ -103,6 +105,28 @@ export class Backdrop extends Component {
       result: result
     };
     Initialization.automaticallyCreateComponentsInside(this.element, initParameters);
+
+    this.configureSpecialBackdropActions();
+  }
+
+  private configureSpecialBackdropActions() {
+
+    // If the current backdrop is used for a youtube thumbnail, we automatically configure a component for this
+    if (Utils.getFieldValue(this.result, 'ytthumbnailurl')) {
+      // We create the element "in memory", but do not append it to the DOM.
+      // We don't want to see a duplicate of the preview for youtube : the backdrop already renders a preview.
+      let thumbnailYouTube = new YouTubeThumbnail($$('div').el, <IYouTubeThumbnailOptions>{
+        embed: true
+      }, <IResultsComponentBindings>this.getBindings(), this.result);
+
+      $$(this.element).on('click', (e: MouseEvent)=> {
+        // Since the backdrop often contain a result link, we must make sure the click did no originate from one.
+        // Otherwise, we might end up opening 2 results at the same time
+        if (!$$(<HTMLElement>e.target).hasClass('CoveoResultLink')) {
+          thumbnailYouTube.openResultLink();
+        }
+      })
+    }
   }
 }
 

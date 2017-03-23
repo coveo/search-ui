@@ -144,17 +144,9 @@ export class Dropdown {
   private bindEvents() {
     let button = $$(this.element).find('button');
 
-    $$(this.element).on('mouseleave', (e: MouseEvent) => {
+    $$(this.element).on('mouseleave', () => {
       setTimeout(() => {
-        let target;
-        // There is a slight difference between jQuery target/currentTarget
-        // and standard DOM events. Add a special check to cover both cases.
-        if (e.currentTarget) {
-          target = e.currentTarget;
-        } else {
-          target = e.target;
-        }
-        if (target == this.element && $$(this.element).hasClass('coveo-open')) {
+        if ($$(this.element).hasClass('coveo-open')) {
           this.close();
         }
       }, 300);
