@@ -6,7 +6,7 @@ import { ResultLink } from '../ResultLink/ResultLink';
 import { Initialization, IInitializationParameters } from '../Base/Initialization';
 import { DomUtils } from '../../utils/DomUtils';
 import { $$, Dom } from '../../utils/Dom';
-import { ModalBox } from '../../ExternalModulesShim';
+import { ModalBox as ModalBoxModule } from '../../ExternalModulesShim';
 import _ = require('underscore');
 import { get } from '../Base/RegisteredNamedMethods';
 
@@ -58,17 +58,18 @@ export class YouTubeThumbnail extends Component {
      *
      * Default value is `true`.
      */
-    embed: ComponentOptions.buildBooleanOption({defaultValue: true})
+    embed: ComponentOptions.buildBooleanOption({ defaultValue: true })
   };
 
   static fields = [
     'ytthumbnailurl'
   ];
 
-  private modalbox: Coveo.ModalBox.ModalBox;
-  private resultLink: Dom;
+  public resultLink: Dom;
 
-  constructor(public element: HTMLElement, public options?: IYouTubeThumbnailOptions, public bindings?: IResultsComponentBindings, public result?: IQueryResult) {
+  private modalbox: Coveo.ModalBox.ModalBox;
+
+  constructor(public element: HTMLElement, public options?: IYouTubeThumbnailOptions, public bindings?: IResultsComponentBindings, public result?: IQueryResult, public ModalBox = ModalBoxModule) {
     super(element, YouTubeThumbnail.ID, bindings);
     this.options = ComponentOptions.initComponentOptions(element, YouTubeThumbnail, options);
     this.resultLink = $$('a');
@@ -132,7 +133,7 @@ export class YouTubeThumbnail extends Component {
 
     div.append(iframe.el);
 
-    this.modalbox = ModalBox.open(div.el, {
+    this.modalbox = this.ModalBox.open(div.el, {
       overlayClose: true,
       title: DomUtils.getQuickviewHeader(this.result, { showDate: true, title: this.result.title }, this.bindings).el.outerHTML,
       className: 'coveo-quick-view coveo-youtube-player',

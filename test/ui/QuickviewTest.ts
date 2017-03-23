@@ -6,52 +6,38 @@ import { IQueryResult } from '../../src/rest/QueryResult';
 import { Template } from '../../src/ui/Templates/Template';
 import { StringUtils } from '../../src/utils/StringUtils';
 import { ModalBox } from '../../src/ExternalModulesShim';
+import { Simulate } from '../Simulate';
 
 export function QuickviewTest() {
   describe('Quickview', () => {
     let result: IQueryResult;
     let quickview: Quickview;
-    let open: jasmine.Spy;
-    let close: jasmine.Spy;
     let env: Mock.IMockEnvironment;
-    let oldOpen = ModalBox.open;
-    let oldClose = ModalBox.close;
+    let modalBox;
 
     beforeEach(() => {
       let mockBuilder = new Mock.MockEnvironmentBuilder();
       env = mockBuilder.build();
       result = FakeResults.createFakeResult();
-      open = jasmine.createSpy('open');
-      close = jasmine.createSpy('close');
-      oldOpen = ModalBox.open;
-      oldClose = ModalBox.close;
-      ModalBox.open = open.and.returnValue({
-        modalBox: $$('div', undefined, $$('div', { className: 'coveo-wrapper' })).el,
-        wrapper: $$('div', undefined, $$('div', { className: 'coveo-quickview-close-button' })).el,
-        overlay: $$('div').el,
-        content: $$('div').el,
-        close: close
-      });
-      quickview = new Quickview(env.element, { contentTemplate: buildTemplate() }, <any>mockBuilder.getBindings(), result, ModalBox);
+      modalBox = Simulate.modalBoxModule();
+      quickview = new Quickview(env.element, { contentTemplate: buildTemplate() }, <any>mockBuilder.getBindings(), result, modalBox);
     });
 
     afterEach(() => {
       quickview = null;
       env = null;
-      open = null;
-      close = null;
-      ModalBox.open = oldOpen;
+      modalBox = null;
     });
 
     it('creates a modal box on open', () => {
       quickview.open();
-      expect(open).toHaveBeenCalled();
+      expect(modalBox.open).toHaveBeenCalled();
     });
 
     it('closes the modal box on close', () => {
       quickview.open();
       quickview.close();
-      expect(close).toHaveBeenCalled();
+      expect(modalBox.close).toHaveBeenCalled();
     });
 
     it('computes the hash id', () => {

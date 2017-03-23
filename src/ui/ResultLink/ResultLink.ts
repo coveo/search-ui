@@ -231,7 +231,7 @@ export class ResultLink extends Component {
     'author' // analytics
   ];
 
-  private toExecuteOnOpen: (e?: Event)=> void;
+  private toExecuteOnOpen: (e?: Event) => void;
 
   /**
    * Creates a new ResultLink component.
@@ -341,7 +341,7 @@ export class ResultLink extends Component {
 
   private bindOnClickIfNotUndefined() {
     if (this.options.onClick != undefined) {
-      this.toExecuteOnOpen = (e: MouseEvent)=> {
+      this.toExecuteOnOpen = (e: MouseEvent) => {
         this.options.onClick.call(this, e, this.result);
       };
 
@@ -357,7 +357,7 @@ export class ResultLink extends Component {
 
   private bindOpenQuickviewIfNotUndefined() {
     if (this.quickviewShouldBeOpened()) {
-      this.toExecuteOnOpen = ()=> {
+      this.toExecuteOnOpen = () => {
         $$(this.bindings.resultElement).trigger(ResultListEvents.openQuickview);
       };
 
@@ -374,7 +374,7 @@ export class ResultLink extends Component {
 
   private openLinkThatIsNotAnAnchor() {
     if (!this.elementIsAnAnchor()) {
-      this.toExecuteOnOpen = ()=> {
+      this.toExecuteOnOpen = () => {
         if (this.options.alwaysOpenInNewWindow) {
           if (this.options.openInOutlook) {
             this.openLinkInOutlook();
