@@ -1,44 +1,35 @@
 import { Dropdown } from '../../../../src/ui/AdvancedSearch/Form/Dropdown';
-import { $$ } from '../../../../src/utils/Dom';
 
 export function DropdownTest() {
   describe('Dropdown', () => {
     let dropdown: Dropdown;
     let values: string[];
+    let changeSpy: jasmine.Spy;
 
     beforeEach(function () {
       values = ['one', 'two', 'three'];
-      dropdown = new Dropdown(undefined, values);
+      changeSpy = jasmine.createSpy('changeSpy');
+      dropdown = new Dropdown(changeSpy, values);
     });
 
     afterEach(function () {
       values = null;
       dropdown = null;
-    });
-
-    it('should open the menu on click', () => {
-      let element = dropdown.getElement();
-      let button = $$(element).find('.coveo-dropdown-toggle');
-      $$(button).trigger('click');
-      expect($$(element).hasClass('coveo-open')).toBe(true);
-    });
-
-    it('should close the menu on click if already open', () => {
-      dropdown.open();
-      let element = dropdown.getElement();
-      let button = $$(element).find('.coveo-dropdown-toggle');
-      $$(button).trigger('click');
-      expect($$(element).hasClass('coveo-open')).toBe(false);
+      changeSpy = null;
     });
 
     it('should select the first element by default', () => {
       expect(dropdown.getValue()).toEqual(values[0]);
     });
 
-    it('should select a value on click', () => {
-      let options = $$(dropdown.getElement()).findAll('li');
-      $$(options[1]).trigger('click');
-      expect(dropdown.getValue()).toEqual(values[1]);
+    it('should call the on change function when the option is changed', ()=> {
+      dropdown.select(1);
+      expect(changeSpy).toHaveBeenCalled();
+    });
+
+    it('should not call the on change function if not wanted', ()=> {
+      dropdown.select(1, false);
+      expect(changeSpy).not.toHaveBeenCalled();
     });
 
     describe('select', () => {
