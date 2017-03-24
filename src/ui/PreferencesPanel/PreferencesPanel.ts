@@ -9,6 +9,8 @@ import { l } from '../../strings/Strings';
 import { $$ } from '../../utils/Dom';
 import { exportGlobally } from '../../GlobalExports';
 
+import "styling/_PreferencesPanel";
+
 export interface IPreferencesPanelOptions {
 }
 
