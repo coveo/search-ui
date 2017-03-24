@@ -1,11 +1,9 @@
 import * as Mock from '../MockEnvironment';
 import { Quickview } from '../../src/ui/Quickview/Quickview';
-import { $$ } from '../../src/utils/Dom';
 import { FakeResults } from '../Fake';
 import { IQueryResult } from '../../src/rest/QueryResult';
 import { Template } from '../../src/ui/Templates/Template';
 import { StringUtils } from '../../src/utils/StringUtils';
-import { ModalBox } from '../../src/ExternalModulesShim';
 import { Simulate } from '../Simulate';
 
 export function QuickviewTest() {
