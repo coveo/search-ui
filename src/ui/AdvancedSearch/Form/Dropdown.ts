@@ -71,9 +71,9 @@ export class Dropdown {
   }
 
   private buildContent() {
-    this.selectElement = <HTMLSelectElement>$$('select', {className: 'coveo-dropdown'}).el;
+    this.selectElement = <HTMLSelectElement>$$('select', { className: 'coveo-dropdown' }).el;
     let selectOptions = this.buildOptions();
-    _.each(selectOptions, (opt)=> {
+    _.each(selectOptions, (opt) => {
       $$(this.selectElement).append(opt);
     });
     this.element = this.selectElement;
@@ -113,6 +113,6 @@ export class Dropdown {
   }
 
   private bindEvents() {
-    $$(this.selectElement).on('change', ()=> this.onChange());
+    $$(this.selectElement).on('change', () => this.onChange());
   }
 }

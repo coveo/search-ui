@@ -22,12 +22,12 @@ export function DropdownTest() {
       expect(dropdown.getValue()).toEqual(values[0]);
     });
 
-    it('should call the on change function when the option is changed', ()=> {
+    it('should call the on change function when the option is changed', () => {
       dropdown.select(1);
       expect(changeSpy).toHaveBeenCalled();
     });
 
-    it('should not call the on change function if not wanted', ()=> {
+    it('should not call the on change function if not wanted', () => {
       dropdown.select(1, false);
       expect(changeSpy).not.toHaveBeenCalled();
     });
