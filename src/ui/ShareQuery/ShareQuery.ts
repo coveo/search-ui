@@ -10,6 +10,8 @@ import { Utils } from '../../utils/Utils';
 import { Initialization } from '../Base/Initialization';
 import { exportGlobally } from '../../GlobalExports';
 
+import 'styling/_ShareQuery';
+
 export interface IShareQueryOptions {
 }
 

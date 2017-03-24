@@ -13,6 +13,8 @@ import { QuerySummaryEvents } from '../../events/QuerySummaryEvents';
 import * as _ from 'underscore';
 import { exportGlobally } from '../../GlobalExports';
 
+import 'styling/_QuerySummary';
+
 export interface IQuerySummaryOptions {
   enableSearchTips?: boolean;
   onlyDisplaySearchTips?: boolean;
