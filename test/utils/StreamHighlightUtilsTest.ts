@@ -165,6 +165,13 @@ export function StreamHighlightUtilsTest() {
       expect(StreamHighlightUtils.highlightStreamText(toHighlight, terms, {})).toEqual(`${getHighlightResultForTerm('abc', 1, 'abc')}. ${getHighlightResultForTerm('qwerty', 2, 'qwerty')}`);
     });
 
+    it('should work with regex sensitive character', () => {
+      var toHighlight = 'Lorem ipsum 9.1.1 dolor *amet*';
+      let terms: { [originalTerm: string]: string[]; } = { '*amet*': [] };
+      var phrases: { [phrase: string]: { [originalTerm: string]: string[]; } } = {};
+      expect(StreamHighlightUtils.highlightStreamText(toHighlight, terms, phrases)).toEqual(`Lorem ipsum 9.1.1 dolor ${getHighlightResultForTerm('*amet*', 1, '*amet*')}`);
+    });
+
     it('should work with number and dash', () => {
       var toHighlight = 'Lorem ipsum 9-1-1 dolor sit amet';
       let terms: { [originalTerm: string]: string[]; } = { 'lorem': [] };

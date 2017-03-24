@@ -11,6 +11,8 @@ import { ResultLayoutEvents } from '../../src/events/ResultLayoutEvents';
 import { AdvancedComponentSetupOptions } from '../MockEnvironment';
 import { TemplateList } from '../../src/ui/Templates/TemplateList';
 import { QueryBuilder } from '../../src/ui/Base/QueryBuilder';
+import { analyticsActionCauseList } from '../../src/ui/Analytics/AnalyticsActionListMeta';
+import { IQueryResults } from '../../src/rest/QueryResults';
 
 export function ResultListTest() {
   describe('ResultList', () => {
@@ -23,6 +25,108 @@ export function ResultListTest() {
 
     afterEach(() => {
       test = null;
+    });
+
+    describe('displayMoreResults', () => {
+
+      beforeEach(() => {
+        // Fill the result list one time first, so we can have more results.
+        Simulate.query(test.env);
+      });
+
+      describe('when returning less than 10 results', () => {
+        let promiseResults: Promise<IQueryResults>;
+        beforeEach(() => {
+          promiseResults = new Promise((resolve, reject) => {
+            resolve(FakeResults.createFakeResults(5));
+          });
+
+          (<jasmine.Spy>test.env.queryController.fetchMore).and.returnValue(promiseResults);
+        });
+
+        it('should stop asking for more results if consecutive calls are queued', () => {
+          test.cmp.displayMoreResults(10);
+          test.cmp.displayMoreResults(10);
+          test.cmp.displayMoreResults(10);
+          expect(test.env.queryController.fetchMore).toHaveBeenCalledTimes(1);
+        });
+
+        it('should stop asking for more results if less results than requested are returned', (done) => {
+          test.cmp.displayMoreResults(10);
+          promiseResults.then(() => {
+            test.cmp.displayMoreResults(10);
+            expect(test.env.queryController.fetchMore).toHaveBeenCalledTimes(1);
+            done();
+          });
+        });
+      });
+
+      describe('when returning 10 or more results', () => {
+        let promiseResults: Promise<IQueryResults>;
+        beforeEach(() => {
+          promiseResults = new Promise((resolve, reject) => {
+            resolve(FakeResults.createFakeResults(10));
+          });
+
+          (<jasmine.Spy>test.env.queryController.fetchMore).and.returnValue(promiseResults);
+        });
+
+        afterEach(() => {
+          promiseResults = null;
+        });
+
+        it('should trigger 10 new result displayed event when fetching more results', (done) => {
+          test.cmp.displayMoreResults(10);
+          let newResultSpy = jasmine.createSpy('newresultspy');
+          $$(test.cmp.element).on(ResultListEvents.newResultDisplayed, newResultSpy);
+          promiseResults.then(() => {
+            expect(newResultSpy).toHaveBeenCalledTimes(10);
+            done();
+          });
+        });
+
+        it('should trigger a single new results displayed event when fetching more results', (done) => {
+          test.cmp.displayMoreResults(10);
+          let newResultsSpy = jasmine.createSpy('newresultsspy');
+          $$(test.cmp.element).on(ResultListEvents.newResultsDisplayed, newResultsSpy);
+          promiseResults.then(() => {
+            // Once when filling the initial result list, another time when displaying more results
+            expect(newResultsSpy).toHaveBeenCalledTimes(2);
+            done();
+          });
+        });
+
+        it('should log an analytics event when more results are returned', (done) => {
+          test.cmp.displayMoreResults(10);
+          promiseResults.then(() => {
+            expect(test.env.usageAnalytics.logCustomEvent).toHaveBeenCalledWith(analyticsActionCauseList.pagerScrolling, jasmine.any(Object), test.cmp.element);
+            done();
+          });
+        });
+
+        it('should queue up another scroll when it receives results to fill up the container, if infinite scrolling is enabled', (done) => {
+          test.cmp.options.enableInfiniteScroll = true;
+          test.cmp.displayMoreResults(10);
+          promiseResults.then(() => {
+            setTimeout(() => {
+              expect(test.env.queryController.fetchMore).toHaveBeenCalled();
+              done();
+            }, 1000);
+          });
+        });
+
+        it('should not queue up infinite amount of request if it is trying to fill up the scrolling container', (done) => {
+          test.cmp.options.enableInfiniteScroll = true;
+          test.cmp.displayMoreResults(10);
+          promiseResults.then(() => {
+            setTimeout(() => {
+              // Once at the initial request, + 5 (ResultList.MAX_AMOUNT_OF_SUCESSIVE_REQUESTS)
+              expect(test.env.queryController.fetchMore).toHaveBeenCalledTimes(6);
+              done();
+            }, 1000);
+          });
+        });
+      });
     });
 
     it('should allow to return the currently displayed result', () => {

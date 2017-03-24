@@ -60,6 +60,7 @@ function getRestHighlightsForAllTerms(toHighlight: string, termsToHighlight: { [
   let sortedTerms = _.keys(termsToHighlight).sort(termsSorting);
   _.each(sortedTerms, (term: string) => {
     let termsToIterate = _.compact([term].concat(termsToHighlight[term]).sort(termsSorting));
+    termsToIterate = _.map(termsToIterate, (term) => Utils.escapeRegexCharacter(term));
     let regex = regexStart;
     regex += termsToIterate.join('|') + ')(?=(?:' + nonWordBoundary + '|$)+)';
     let indexesFound = StringUtils.getHighlights(toHighlight, new RegExp(regex, opts.regexFlags), term);

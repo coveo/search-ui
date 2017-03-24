@@ -12,6 +12,8 @@ import { $$ } from '../../utils/Dom';
 import * as _ from 'underscore';
 import { exportGlobally } from '../../GlobalExports';
 
+import 'styling/_ResultAttachments';
+
 export interface IResultAttachmentsOptions {
   resultTemplate?: Template;
   subResultTemplate?: Template;

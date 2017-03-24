@@ -1,5 +1,4 @@
 import { ExpressionBuilder } from './ExpressionBuilder';
-import { QueryUtils } from '../../utils/QueryUtils';
 import { IRankingFunction } from '../../rest/RankingFunction';
 import { IQueryFunction } from '../../rest/QueryFunction';
 import { IGroupByRequest } from '../../rest/GroupByRequest';
@@ -197,7 +196,7 @@ export class QueryBuilder {
   public sortField: string;
   public retrieveFirstSentences: boolean = true;
   public timezone: string;
-  public queryUid: string = QueryUtils.createGuid();
+  public queryUid: string;
   /**
    * This specifies an array of Query Function operation that will be executed on the results.
    */

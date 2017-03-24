@@ -1607,8 +1607,9 @@ export class Facet extends Component {
       $$(this.pinnedBottomSpace).addClass('coveo-with-animation');
       this.pinnedTopSpace.style.height = '0px';
       this.pinnedBottomSpace.style.height = '0px';
-      this.unpinnedViewportPosition = undefined;
     }
+    this.unpinnedViewportPosition = undefined;
+    this.pinnedViewportPosition = undefined;
   }
 
   private isFacetPinned(): boolean {

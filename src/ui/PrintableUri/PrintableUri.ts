@@ -9,6 +9,8 @@ import { Utils } from '../../utils/Utils';
 import { $$ } from '../../utils/Dom';
 import { exportGlobally } from '../../GlobalExports';
 
+import 'styling/_PrintableUri';
+
 export interface IPrintableUriOptions {
 }
 

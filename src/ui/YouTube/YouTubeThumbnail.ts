@@ -5,10 +5,11 @@ import { IQueryResult } from '../../rest/QueryResult';
 import { ResultLink } from '../ResultLink/ResultLink';
 import { Initialization, IInitializationParameters } from '../Base/Initialization';
 import { DomUtils } from '../../utils/DomUtils';
-import { $$ } from '../../utils/Dom';
-import { ModalBox } from '../../ExternalModulesShim';
+import { $$, Dom } from '../../utils/Dom';
+import { ModalBox as ModalBoxModule } from '../../ExternalModulesShim';
 import * as _ from 'underscore';
 import { exportGlobally } from '../../GlobalExports';
+import { get } from '../Base/RegisteredNamedMethods';
 
 export interface IYouTubeThumbnailOptions {
   width: string;
@@ -67,17 +68,19 @@ export class YouTubeThumbnail extends Component {
     embed: ComponentOptions.buildBooleanOption({ defaultValue: true })
   };
 
+  public resultLink: Dom;
+
   private modalbox: Coveo.ModalBox.ModalBox;
 
-  constructor(public element: HTMLElement, public options?: IYouTubeThumbnailOptions, public bindings?: IResultsComponentBindings, public result?: IQueryResult) {
+  constructor(public element: HTMLElement, public options?: IYouTubeThumbnailOptions, public bindings?: IResultsComponentBindings, public result?: IQueryResult, public ModalBox = ModalBoxModule) {
     super(element, YouTubeThumbnail.ID, bindings);
     this.options = ComponentOptions.initComponentOptions(element, YouTubeThumbnail, options);
-    let resultLink = $$('a');
-    resultLink.addClass(Component.computeCssClassName(ResultLink));
+    this.resultLink = $$('a');
+    this.resultLink.addClass(Component.computeCssClassName(ResultLink));
 
     let thumbnailDiv = $$('div');
     thumbnailDiv.addClass('coveo-youtube-thumbnail-container');
-    resultLink.append(thumbnailDiv.el);
+    this.resultLink.append(thumbnailDiv.el);
 
     let img = $$('img');
     img.el.style.width = this.options.width;
@@ -91,11 +94,11 @@ export class YouTubeThumbnail extends Component {
     thumbnailDiv.append(span.el);
 
 
-    $$(this.element).append(resultLink.el);
+    $$(this.element).append(this.resultLink.el);
 
     if (this.options.embed) {
       this.options = _.extend(this.options, {
-        onClick: () => this.handleOnClick()
+        onClick: () => this.openYoutubeIframe()
       });
     }
 
@@ -112,7 +115,17 @@ export class YouTubeThumbnail extends Component {
 
   }
 
-  private handleOnClick() {
+  /**
+   * Open the result link embedded in this component.
+   *
+   * With a standard configuration of this component, this will open an iframe that automatically plays the video.
+   */
+  public openResultLink() {
+    let resultLinkComponent = <ResultLink>get(this.resultLink.el);
+    resultLinkComponent.openLinkAsConfigured();
+  }
+
+  private openYoutubeIframe() {
     // need to put iframe inside div : iframe with position absolute and left:0, right : 0 , bottom: 0 is not standard/supported
     let iframe = $$('iframe'), div = $$('div');
     iframe.setAttribute('src', 'https://www.youtube.com/embed/' + this.extractVideoId() + '?autoplay=1');
@@ -123,7 +136,7 @@ export class YouTubeThumbnail extends Component {
 
     div.append(iframe.el);
 
-    this.modalbox = ModalBox.open(div.el, {
+    this.modalbox = this.ModalBox.open(div.el, {
       overlayClose: true,
       title: DomUtils.getQuickviewHeader(this.result, { showDate: true, title: this.result.title }, this.bindings).el.outerHTML,
       className: 'coveo-quick-view coveo-youtube-player',
