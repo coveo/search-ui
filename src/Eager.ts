@@ -114,9 +114,6 @@ Icon.doExport();
 import { registerFields as iconRegisterFields } from './ui/Icon/IconFields';
 iconRegisterFields();
 
-import { ImageResultList } from './ui/ImageResultList/ImageResultList';
-ImageResultList.doExport();
-
 import { Logo } from './ui/Logo/Logo';
 Logo.doExport();
 

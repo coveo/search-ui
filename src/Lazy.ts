@@ -104,9 +104,6 @@ lazyIcon();
 import { registerFields as iconRegisterFields } from './ui/Icon/IconFields';
 iconRegisterFields();
 
-import { lazyImageResultList } from './ui/ImageResultList/LazyImageResultList';
-lazyImageResultList();
-
 import { lazyLogo } from './ui/Logo/LazyLogo';
 lazyLogo();
 

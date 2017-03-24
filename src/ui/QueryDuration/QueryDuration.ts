@@ -9,6 +9,8 @@ import { Initialization } from '../Base/Initialization';
 import * as Globalize from 'globalize';
 import { exportGlobally } from '../../GlobalExports';
 
+import 'styling/_QueryDuration';
+
 export interface IQueryDurationOptions {
 }
 
