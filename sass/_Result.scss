@@ -208,17 +208,11 @@
   display: table-row;
   td {
     display: table-cell;
-    padding: .5em 0;
+    padding: 9px 15px;
     white-space: nowrap;
     border-bottom: $default-border;
     overflow: hidden;
     text-overflow: ellipsis;
-    &:not(:first-child) {
-      padding-left: 5px;
-    }
-    &:not(:last-child) {
-      padding-right: 5px;
-    }
   }
   th {
     text-align: left;
@@ -226,14 +220,10 @@
     color: $color-greyish-teal-blue;
     font-weight: bold;
     border-bottom: $default-border;
-    padding-top: 7px;
-    padding-bottom: 7px;
-    &:not(:first-child) {
-      padding-left: 5px;
-    }
-    &:not(:last-child) {
-      padding-right: 5px;
-    }
+    padding: 7px 15px;
+  }
+  &:hover td {
+    background-color: $color-blueish-white-grey;
   }
 }
 

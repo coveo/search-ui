@@ -52,4 +52,10 @@
     margin-left: 10px;
     margin-right: 10px;
   }
+  .coveo-table-layout-container {
+    table-layout: auto;
+    td {
+      max-width: 300px;
+    }
+  }
 }
