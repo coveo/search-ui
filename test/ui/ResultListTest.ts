@@ -425,79 +425,80 @@ export function ResultListTest() {
           role: 'table-header'
         }));
 
-      describe('layout', () => {
-        it('should correctly listen to populateResultLayout', () => {
-          test = Mock.optionsComponentSetup<ResultList, IResultListOptions>(ResultList, {
-            layout: 'card'
-          });
-          let layoutsPopulated = [];
-          $$(test.env.root).trigger(ResultLayoutEvents.populateResultLayout, { layouts: layoutsPopulated });
-          expect(layoutsPopulated).toEqual(jasmine.arrayContaining(['card']));
+        describe('layout', () => {
+          it('should correctly listen to populateResultLayout', () => {
+            test = Mock.optionsComponentSetup<ResultList, IResultListOptions>(ResultList, {
+              layout: 'card'
+            });
+            let layoutsPopulated = [];
+            $$(test.env.root).trigger(ResultLayoutEvents.populateResultLayout, { layouts: layoutsPopulated });
+            expect(layoutsPopulated).toEqual(jasmine.arrayContaining(['card']));
 
-        });
+          });
 
-        it('should set the correct layout on each child template if it contains a TemplateList', () => {
-          let elem = $$('div', {
-            className: 'CoveoResultList'
-          });
-          let scriptOne = $$('script', {
-            className: 'result-template',
-            type: 'text/html'
-          });
-          let scriptTwo = $$('script', {
-            className: 'result-template',
-            type: 'text/html'
-          });
-          elem.append(scriptOne.el);
-          elem.append(scriptTwo.el);
-          test = Mock.advancedComponentSetup<ResultList>(ResultList, new AdvancedComponentSetupOptions(elem.el, {
-            layout: 'card'
-          }));
+          it('should set the correct layout on each child template if it contains a TemplateList', () => {
+            let elem = $$('div', {
+              className: 'CoveoResultList'
+            });
+            let scriptOne = $$('script', {
+              className: 'result-template',
+              type: 'text/html'
+            });
+            let scriptTwo = $$('script', {
+              className: 'result-template',
+              type: 'text/html'
+            });
+            elem.append(scriptOne.el);
+            elem.append(scriptTwo.el);
+            test = Mock.advancedComponentSetup<ResultList>(ResultList, new AdvancedComponentSetupOptions(elem.el, {
+              layout: 'card'
+            }));
 
-          expect(test.cmp.options.resultTemplate instanceof TemplateList).toBe(true);
-          expect((<TemplateList>test.cmp.options.resultTemplate).templates[0].layout).toBe('card');
-          expect((<TemplateList>test.cmp.options.resultTemplate).templates[1].layout).toBe('card');
-        });
+            expect(test.cmp.options.resultTemplate instanceof TemplateList).toBe(true);
+            expect((<TemplateList>test.cmp.options.resultTemplate).templates[0].layout).toBe('card');
+            expect((<TemplateList>test.cmp.options.resultTemplate).templates[1].layout).toBe('card');
+          });
 
-        it('should add 3 empty div at the end of the results when it\'s a card template and infinite scroll is not enabled', () => {
-          test = Mock.optionsComponentSetup<ResultList, IResultListOptions>(ResultList, {
-            layout: 'card',
-            enableInfiniteScroll: false
+          it('should add 3 empty div at the end of the results when it\'s a card template and infinite scroll is not enabled', () => {
+            test = Mock.optionsComponentSetup<ResultList, IResultListOptions>(ResultList, {
+              layout: 'card',
+              enableInfiniteScroll: false
+            });
+            Simulate.query(test.env);
+            let container = test.cmp.options.resultContainer;
+            expect(container.children.item(container.children.length - 1).innerHTML).toBe('');
+            expect(container.children.item(container.children.length - 2).innerHTML).toBe('');
+            expect(container.children.item(container.children.length - 3).innerHTML).toBe('');
+            expect(container.children.item(container.children.length - 4).innerHTML).not.toBe('');
           });
-          Simulate.query(test.env);
-          let container = test.cmp.options.resultContainer;
-          expect(container.children.item(container.children.length - 1).innerHTML).toBe('');
-          expect(container.children.item(container.children.length - 2).innerHTML).toBe('');
-          expect(container.children.item(container.children.length - 3).innerHTML).toBe('');
-          expect(container.children.item(container.children.length - 4).innerHTML).not.toBe('');
-        });
 
-        it('should add 3 empty div at the end of the results when it\'s a card template and infinite scroll is enabled', () => {
-          test = Mock.optionsComponentSetup<ResultList, IResultListOptions>(ResultList, {
-            layout: 'card',
-            enableInfiniteScroll: true
+          it('should add 3 empty div at the end of the results when it\'s a card template and infinite scroll is enabled', () => {
+            test = Mock.optionsComponentSetup<ResultList, IResultListOptions>(ResultList, {
+              layout: 'card',
+              enableInfiniteScroll: true
+            });
+            Simulate.query(test.env);
+            let container = test.cmp.options.resultContainer;
+            expect(container.children.item(container.children.length - 1).innerHTML).not.toBe('');
+            expect(container.children.item(container.children.length - 2).innerHTML).not.toBe('');
+            expect(container.children.item(container.children.length - 3).innerHTML).not.toBe('');
           });
-          Simulate.query(test.env);
-          let container = test.cmp.options.resultContainer;
-          expect(container.children.item(container.children.length - 1).innerHTML).not.toBe('');
-          expect(container.children.item(container.children.length - 2).innerHTML).not.toBe('');
-          expect(container.children.item(container.children.length - 3).innerHTML).not.toBe('');
-        });
 
-        it('should react to change layout event', () => {
-          test = Mock.optionsComponentSetup<ResultList, IResultListOptions>(ResultList, {
-            layout: 'card'
+          it('should react to change layout event', () => {
+            test = Mock.optionsComponentSetup<ResultList, IResultListOptions>(ResultList, {
+              layout: 'card'
+            });
+            $$(test.env.root).trigger(ResultListEvents.changeLayout, {
+              layout: 'list',
+              results: FakeResults.createFakeResults()
+            });
+            expect($$(test.cmp.element).hasClass('coveo-hidden')).toBe(true);
+            $$(test.env.root).trigger(ResultListEvents.changeLayout, {
+              layout: 'card',
+              results: FakeResults.createFakeResults()
+            });
+            expect($$(test.cmp.element).hasClass('coveo-hidden')).toBe(false);
           });
-          $$(test.env.root).trigger(ResultListEvents.changeLayout, {
-            layout: 'list',
-            results: FakeResults.createFakeResults()
-          });
-          expect($$(test.cmp.element).hasClass('coveo-hidden')).toBe(true);
-          $$(test.env.root).trigger(ResultListEvents.changeLayout, {
-            layout: 'card',
-            results: FakeResults.createFakeResults()
-          });
-          expect($$(test.cmp.element).hasClass('coveo-hidden')).toBe(false);
         });
       });
     });
