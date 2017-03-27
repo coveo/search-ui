@@ -424,3 +424,6 @@ UnderscoreTemplateTest();
 
 import { ResponsiveComponentsManagerTest } from './ui/ResponsiveComponents/ResponsiveComponentsManagerTest';
 ResponsiveComponentsManagerTest();
+
+import { YouTubeThumbnailTest } from './ui/YouTubeThumbnailTest';
+YouTubeThumbnailTest();

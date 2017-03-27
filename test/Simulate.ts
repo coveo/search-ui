@@ -152,6 +152,20 @@ export class Simulate {
     return options;
   }
 
+  static modalBoxModule() {
+    let modalBox = <any>{};
+    modalBox.open = jasmine.createSpy('open');
+    modalBox.close = jasmine.createSpy('close');
+    modalBox.open.and.returnValue({
+      modalBox: $$('div', undefined, $$('div', { className: 'coveo-wrapper' })).el,
+      wrapper: $$('div', undefined, $$('div', { className: 'coveo-quickview-close-button' })).el,
+      overlay: $$('div').el,
+      content: $$('div').el,
+      close: modalBox.close
+    });
+    return modalBox;
+  }
+
   static omnibox(env: IMockEnvironment, options?): IOmniboxData {
     let expression = {
       word: 'foo',

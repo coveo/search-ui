@@ -231,6 +231,8 @@ export class ResultLink extends Component {
     'author' // analytics
   ];
 
+  private toExecuteOnOpen: (e?: Event) => void;
+
   /**
    * Creates a new ResultLink component.
    * @param element The HTMLElement on which to instantiate the component.
@@ -262,6 +264,7 @@ export class ResultLink extends Component {
       $$(element).on('contextmenu', () => {
         this.logOpenDocument();
       });
+
       $$(element).on('click', () => {
         this.logOpenDocument();
       });
@@ -277,15 +280,75 @@ export class ResultLink extends Component {
     this.bindEventToOpen();
   }
 
+  /**
+   * Opens the result in the same window, no matter how the actual component is configured for the end user.
+   * @param logAnalytics  If true, the method will take care of logging an analytic event.
+   */
+  public openLink(logAnalytics = true) {
+    if (logAnalytics) {
+      this.logOpenDocument();
+    }
+    window.location.href = this.getResultUri();
+  }
+
+  /**
+   * Opens the result in a new window, no matter how the actual component is configured for the end user.
+   * @param logAnalytics If true, the method will take care of logging an analytic event.
+   */
+  public openLinkInNewWindow(logAnalytics = true) {
+    if (logAnalytics) {
+      this.logOpenDocument();
+    }
+    window.open(this.getResultUri(), '_blank');
+  }
+
+  /**
+   * Try to open the result in Microsoft Outlook if the result has an `outlookformacuri` or `outlookuri` field.
+   *
+   * Normally, this means a result link for an email.
+   *
+   * If the needed fields are not present, this method will do nothing.
+   * @param logAnalytics If true, the method will take care of logging an analytic event.
+   */
+  public openLinkInOutlook(logAnalytics = true) {
+    if (this.hasOutlookField()) {
+      if (logAnalytics) {
+        this.logOpenDocument();
+      }
+      this.openLink();
+    }
+  }
+
+  /**
+   * Open the link in the same manner the end user would do.
+   *
+   * This essentially simulate a click on the result link.
+   *
+   * @param logAnalytics If true, the method will take care of logging an analytic event.
+   */
+  public openLinkAsConfigured(logAnalytics = true) {
+    if (this.toExecuteOnOpen) {
+      if (logAnalytics) {
+        this.logOpenDocument();
+      }
+      this.toExecuteOnOpen();
+    }
+  }
+
   protected bindEventToOpen(): boolean {
     return this.bindOnClickIfNotUndefined() || this.bindOpenQuickviewIfNotUndefined() || this.setHrefIfNotAlready() || this.openLinkThatIsNotAnAnchor();
   }
 
   private bindOnClickIfNotUndefined() {
     if (this.options.onClick != undefined) {
-      $$(this.element).on('click', (e: Event) => {
+      this.toExecuteOnOpen = (e: MouseEvent) => {
         this.options.onClick.call(this, e, this.result);
+      };
+
+      $$(this.element).on('click', (e: MouseEvent) => {
+        this.toExecuteOnOpen(e);
       });
+
       return true;
     } else {
       return false;
@@ -294,10 +357,15 @@ export class ResultLink extends Component {
 
   private bindOpenQuickviewIfNotUndefined() {
     if (this.quickviewShouldBeOpened()) {
+      this.toExecuteOnOpen = () => {
+        $$(this.bindings.resultElement).trigger(ResultListEvents.openQuickview);
+      };
+
       $$(this.element).on('click', (e: Event) => {
         e.preventDefault();
-        $$(this.bindings.resultElement).trigger(ResultListEvents.openQuickview);
+        this.toExecuteOnOpen();
       });
+
       return true;
     } else {
       return false;
@@ -306,7 +374,7 @@ export class ResultLink extends Component {
 
   private openLinkThatIsNotAnAnchor() {
     if (!this.elementIsAnAnchor()) {
-      $$(this.element).on('click', (ev: Event) => {
+      this.toExecuteOnOpen = () => {
         if (this.options.alwaysOpenInNewWindow) {
           if (this.options.openInOutlook) {
             this.openLinkInOutlook();
@@ -316,33 +384,15 @@ export class ResultLink extends Component {
         } else {
           this.openLink();
         }
+      };
+
+      $$(this.element).on('click', () => {
+        this.toExecuteOnOpen();
       });
+
       return true;
     }
     return false;
-  }
-
-  /**
-   * Opens the result.
-   */
-  public openLink() {
-    window.location.href = this.getResultUri();
-  }
-
-  /**
-   * Opens the result in a new window.
-   */
-  public openLinkInNewWindow() {
-    window.open(this.getResultUri(), '_blank');
-  }
-
-  /**
-   * Opens the result in Microsoft Outlook if the result has an `outlookformacuri` or `outlookuri` field.
-   */
-  public openLinkInOutlook() {
-    if (this.hasOutlookField()) {
-      this.openLink();
-    }
   }
 
   private setHrefIfNotAlready() {
