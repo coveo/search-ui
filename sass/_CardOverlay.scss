@@ -77,7 +77,7 @@
 }
 
 .CoveoResult.coveo-with-card-overlay {
-  transition: min-height .5s;
+  @include transition(min-height .5s);
   min-height: 0;
 }
 
