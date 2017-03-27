@@ -81,13 +81,7 @@ export class ResultList extends Component {
      * If you specify no value for this option, a `div` element will be dynamically created and appended to the result
      * list. This element will then be used as a result container.
      */
-    resultContainer: ComponentOptions.buildChildHtmlElementOption({
-      defaultFunction: (element: HTMLElement) => {
-        let d = document.createElement('div');
-        element.appendChild(d);
-        return d;
-      }
-    }),
+    resultContainer: ComponentOptions.buildChildHtmlElementOption(),
     resultTemplate: ComponentOptions.buildTemplateOption({ defaultFunction: ResultList.getDefaultTemplate }),
 
     /**
@@ -257,9 +251,7 @@ export class ResultList extends Component {
 
     Assert.exists(element);
     Assert.exists(this.options);
-    Assert.exists(this.options.resultContainer);
     Assert.exists(this.options.resultTemplate);
-    Assert.exists(this.options.waitAnimationContainer);
     Assert.exists(this.options.infiniteScrollContainer);
 
     this.showOrHideElementsDependingOnState(false, false);
@@ -281,7 +273,12 @@ export class ResultList extends Component {
     }
     this.bind.onQueryState(MODEL_EVENTS.CHANGE_ONE, QUERY_STATE_ATTRIBUTES.FIRST, () => this.handlePageChanged());
 
-    $$(this.options.resultContainer).addClass('coveo-result-list-container');
+    this.initResultContainer();
+    Assert.exists(this.options.resultContainer);
+
+    this.initWaitAnimationContainer();
+    Assert.exists(this.options.waitAnimationContainer);
+
     if (this.searchInterface.isNewDesign()) {
       this.setupTemplatesVersusLayouts();
       $$(this.root).on(ResultLayoutEvents.populateResultLayout, (e, args) => args.layouts.push(this.options.layout));
@@ -729,6 +726,18 @@ export class ResultList extends Component {
     if (decorationsToDisplay['tableFooter']) {
       this.options.resultContainer.appendChild(renderedDecorations['tableFooter']);
     }
+  }
+
+  private initResultContainer() {
+    if (this.options.resultContainer) return;
+    const elemType = this.options.layout === 'table' ? 'table' : 'div';
+    this.options.resultContainer = $$(elemType, { className: 'coveo-result-list-container' }).el;
+    this.element.appendChild(this.options.resultContainer);
+  }
+
+  private initWaitAnimationContainer() {
+    if (this.options.waitAnimationContainer) return;
+    this.options.waitAnimationContainer = this.options.resultContainer;
   }
 }
 

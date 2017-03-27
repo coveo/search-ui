@@ -206,13 +206,23 @@
 
 .coveo-table-layout {
   display: table-row;
-  .coveo-result-cell {
+  td {
     display: table-cell;
     padding: .5em 0;
     white-space: nowrap;
     border-bottom: $default-border;
     overflow: hidden;
     text-overflow: ellipsis;
+    &:not(:first-child) {
+      padding-left: 5px;
+    }
+    &:not(:last-child) {
+      padding-right: 5px;
+    }
+  }
+  th {
+    padding-top: 7px;
+    padding-bottom: 7px;
     &:not(:first-child) {
       padding-left: 5px;
     }

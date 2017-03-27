@@ -160,7 +160,8 @@ export class Template implements ITemplateProperties {
 
     var html = this.instantiateToString(object, mergedOptions);
     if (html != null) {
-      var element = $$('div', {}, html).el;
+      const elemType = this.layout === 'table' ? 'tr' : 'div';
+      var element = $$(elemType, {}, html).el;
       if (!mergedOptions.wrapInDiv && element.children.length === 1) {
         element = <HTMLElement>element.children.item(0);
       }
