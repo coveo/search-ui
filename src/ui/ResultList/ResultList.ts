@@ -225,6 +225,9 @@ export class ResultList extends Component {
   private fetchingMoreResults: Promise<IQueryResults>;
   private reachedTheEndOfResults = false;
 
+  private shouldDisplayTableHeader: boolean = true;
+  private shouldDisplayTableFooter: boolean = false;
+
   // This variable serves to block some setup where the framework fails to correctly identify the "real" scrolling container.
   // Since it's not technically feasible to correctly identify the scrolling container in every possible scenario without some very complex logic, we instead try to add some kind of mechanism to
   // block runaway requests where UI will keep asking more results in the index, eventually bringing the browser to it's knee.
@@ -247,7 +250,6 @@ export class ResultList extends Component {
   constructor(public element: HTMLElement, public options?: IResultListOptions, public bindings?: IComponentBindings, elementClassId: string = ResultList.ID) {
     super(element, elementClassId, bindings);
     this.options = ComponentOptions.initComponentOptions(element, ResultList, options);
-
 
     Assert.exists(element);
     Assert.exists(this.options);
@@ -300,6 +302,13 @@ export class ResultList extends Component {
           tmpl.layout = <ValidLayout>this.options.layout;
         }
       });
+      if (this.options.resultTemplate.hasTemplateWithRole('table-footer')) {
+        this.shouldDisplayTableFooter = true;
+      }
+      // If custom templates are defined but no header template, do not display it.
+      if (this.options.resultTemplate.templates.length !== 0 && !this.options.resultTemplate.hasTemplateWithRole('table-header')) {
+        this.shouldDisplayTableHeader = false;
+      }
     } else if (this.options.resultTemplate instanceof DefaultResultTemplate && this.options.layout == 'list') {
       ResponsiveDefaultResultTemplate.init(this.root, this, this.options);
     }
@@ -704,10 +713,10 @@ export class ResultList extends Component {
 
   private displayDecorations() {
     const decorationsToDisplay = {};
-    if (this.options.displayTableHeader) {
+    if (this.shouldDisplayTableHeader) {
       decorationsToDisplay['tableHeader'] = 'table-header';
     }
-    if (this.options.displayTableFooter) {
+    if (this.shouldDisplayTableFooter) {
       decorationsToDisplay['tableFooter'] = 'table-footer';
     }
     const renderedDecorations = _.mapObject(decorationsToDisplay, (role: TemplateRole) => {
@@ -729,15 +738,17 @@ export class ResultList extends Component {
   }
 
   private initResultContainer() {
-    if (this.options.resultContainer) return;
-    const elemType = this.options.layout === 'table' ? 'table' : 'div';
-    this.options.resultContainer = $$(elemType, { className: 'coveo-result-list-container' }).el;
-    this.element.appendChild(this.options.resultContainer);
+    if (!this.options.resultContainer) {
+      const elemType = this.options.layout === 'table' ? 'table' : 'div';
+      this.options.resultContainer = $$(elemType, { className: 'coveo-result-list-container' }).el;
+      this.element.appendChild(this.options.resultContainer);
+    }
   }
 
   private initWaitAnimationContainer() {
-    if (this.options.waitAnimationContainer) return;
-    this.options.waitAnimationContainer = this.options.resultContainer;
+    if (!this.options.waitAnimationContainer) {
+      this.options.waitAnimationContainer = this.options.resultContainer;
+    }
   }
 }
 
