@@ -83,7 +83,7 @@
 .coveo-facet-settings-section-clear-state {
   border-top: $default-border;
   cursor: pointer;
-  @include iconWithHoverState('.coveo-sprites-dropdown-more', 'none', 'coveo-facet-settings-disabled');
+  @include iconWithHoverState('.coveo-sprites-dropdown-less', 'none', 'coveo-facet-settings-disabled');
 }
 
 .coveo-facet-settings-section-hide {
