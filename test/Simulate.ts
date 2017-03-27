@@ -166,6 +166,23 @@ export class Simulate {
     return modalBox;
   }
 
+  static analyticsStoreModule(actionsHistory = []) {
+    return {
+      addElement: (query: IQuery) => {
+      },
+      getHistory: () => {
+        return actionsHistory;
+      },
+      setHistory: (history: any[]) => {
+      },
+      clear: () => {
+      },
+      getMostRecentElement: ()=> {
+        return null;
+      }
+    }
+  }
+
   static omnibox(env: IMockEnvironment, options?): IOmniboxData {
     let expression = {
       word: 'foo',
