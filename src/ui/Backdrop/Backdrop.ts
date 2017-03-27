@@ -1,14 +1,18 @@
 import { Component } from '../Base/Component';
-import { ComponentOptions } from '../Base/ComponentOptions';
+import { ComponentOptions, IFieldOption } from '../Base/ComponentOptions';
 import { IComponentBindings } from '../Base/ComponentBindings';
 import { Initialization, IInitializationParameters } from '../Base/Initialization';
 import { IResultsComponentBindings } from '../Base/ResultsComponentBindings';
 import { IQueryResult } from '../../rest/QueryResult';
 import _ = require('underscore');
+import { Utils } from '../../utils/Utils';
+import { YouTubeThumbnail, IYouTubeThumbnailOptions } from '../YouTube/YouTubeThumbnail';
+import { $$ } from '../../utils/Dom';
+import { ModalBox as ModalBoxModule } from '../../ExternalModulesShim';
 
 export interface IBackdropOptions {
   imageUrl?: string;
-  imageField?: string;
+  imageField?: IFieldOption;
   overlayColor?: string;
   overlayGradient?: boolean;
 }
@@ -45,7 +49,7 @@ export class Backdrop extends Component {
      *
      * If {@link Backdrop.options.imageUrl} is specified, it will override this option.
      */
-    imageField: ComponentOptions.buildStringOption(),
+    imageField: ComponentOptions.buildFieldOption(),
 
     /**
      * Specifies the color that will be overlaid on top of the background image.
@@ -73,7 +77,7 @@ export class Backdrop extends Component {
    * resolved (with a slower execution time).
    * @param result The {@link IQueryResult}.
    */
-  constructor(public element: HTMLElement, public options?: IBackdropOptions, bindings?: IComponentBindings, public result?: IQueryResult, public _window?: Window) {
+  constructor(public element: HTMLElement, public options?: IBackdropOptions, bindings?: IComponentBindings, public result?: IQueryResult, public _window?: Window, public ModalBox = ModalBoxModule) {
     super(element, Backdrop.ID, bindings);
     this.options = ComponentOptions.initComponentOptions(element, Backdrop, options);
 
@@ -85,7 +89,7 @@ export class Backdrop extends Component {
         + (this.options.overlayGradient ? 'rgba(0,0,0,0)' : this.options.overlayColor) + '), ';
     }
 
-    const imageSource = this.options.imageUrl || result.raw[this.options.imageField];
+    const imageSource = this.options.imageUrl || Utils.getFieldValue(result, <string>this.options.imageField);
     background += `url('${imageSource}') center center`;
 
     this.element.style.background = background;
@@ -102,6 +106,28 @@ export class Backdrop extends Component {
       result: result
     };
     Initialization.automaticallyCreateComponentsInside(this.element, initParameters);
+
+    this.configureSpecialBackdropActions();
+  }
+
+  private configureSpecialBackdropActions() {
+
+    // If the current backdrop is used for a youtube thumbnail, we automatically configure a component for this
+    if (Utils.getFieldValue(this.result, 'ytthumbnailurl')) {
+      // We create the element "in memory", but do not append it to the DOM.
+      // We don't want to see a duplicate of the preview for youtube : the backdrop already renders a preview.
+      let thumbnailYouTube = new YouTubeThumbnail($$('div').el, <IYouTubeThumbnailOptions>{
+        embed: true
+      }, <IResultsComponentBindings>this.getBindings(), this.result, this.ModalBox);
+
+      $$(this.element).on('click', (e: MouseEvent) => {
+        // Since the backdrop often contain a result link, we must make sure the click did no originate from one.
+        // Otherwise, we might end up opening 2 results at the same time
+        if (!$$(<HTMLElement>e.target).hasClass('CoveoResultLink')) {
+          thumbnailYouTube.openResultLink();
+        }
+      });
+    }
   }
 }
 

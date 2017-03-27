@@ -18,12 +18,12 @@ export class ChatterTopic extends Component {
   constructor(public element: HTMLElement, public options?: IChatterTopicOption, public bindings?: IResultsComponentBindings, public result?: IQueryResult) {
     super(element, ChatterTopic.ID, bindings);
 
-    if (!Utils.isNullOrUndefined(result.raw.coveochatterfeedtopics)) {
+    if (!Utils.isNullOrUndefined(Utils.getFieldValue(this.result, 'coveochatterfeedtopics'))) {
       let rootElement = $$('div', {
         className: 'coveo-chatter-result-box-row'
       });
 
-      let topics = result.raw.coveochatterfeedtopics.split(';');
+      let topics = Utils.getFieldValue(result, 'coveochatterfeedtopics').split(';');
 
       let icon = $$('div', {
         className: 'coveo-sprites-common-tagging_tag coveo-chatter-result-box-icon'

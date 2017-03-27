@@ -134,13 +134,13 @@ export class OmniboxResultList extends ResultList implements IComponentBindings 
    */
   public buildResults(results: IQueryResults): HTMLElement[] {
     return _.map(results.results, (result: IQueryResult) => {
-      let resultElement = this.buildResult(result);
-      $$(resultElement).addClass('coveo-omnibox-selectable');
-      $$(resultElement).on('keyboardSelect', () => {
-        this.options.onSelect.call(this, result, resultElement, this.lastOmniboxRequest.omniboxObject);
+      let resultElement = $$(this.buildResult(result));
+      resultElement.addClass(['coveo-omnibox-selectable', 'coveo-omnibox-result-list-element']);
+      resultElement.on('keyboardSelect', () => {
+        this.options.onSelect.call(this, result, resultElement.el, this.lastOmniboxRequest.omniboxObject);
       });
-      this.autoCreateComponentsInsideResult(resultElement, result);
-      return resultElement;
+      this.autoCreateComponentsInsideResult(resultElement.el, result);
+      return resultElement.el;
     });
   }
 
@@ -194,7 +194,7 @@ export class OmniboxResultList extends ResultList implements IComponentBindings 
   }
 
   private onRowSelection(result: IQueryResult, resultElement: HTMLElement, omniboxObject: IPopulateOmniboxEventArgs) {
-    this.usageAnalytics.logClickEvent(analyticsActionCauseList.documentOpen, { author: result.raw.author }, result, this.root);
+    this.usageAnalytics.logClickEvent(analyticsActionCauseList.documentOpen, { author: Utils.getFieldValue(result, 'author') }, result, this.root);
     window.location.href = result.clickUri;
   }
 }

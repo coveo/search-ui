@@ -10,9 +10,8 @@ import _ = require('underscore');
 export class Dropdown {
 
   private element: HTMLElement;
-  private selected: Dom;
-  private selectedIcon: Dom;
-  private options: HTMLElement[] = [];
+  private selectElement: HTMLSelectElement;
+  private optionsElement: HTMLOptionElement[] = [];
 
   /**
    * Create a new dropdown.
@@ -40,20 +39,6 @@ export class Dropdown {
   }
 
   /**
-   * Open the dropdown.
-   */
-  public open() {
-    $$(this.element).addClass('coveo-open');
-  }
-
-  /**
-   * Close the dropdown.
-   */
-  public close() {
-    $$(this.element).removeClass('coveo-open');
-  }
-
-  /**
    * Return the element on which the dropdown is bound.
    * @returns {HTMLElement}
    */
@@ -66,7 +51,7 @@ export class Dropdown {
    * @returns {string}
    */
   public getValue(): string {
-    return $$(this.element).find('.coveo-dropdown-selected-value').getAttribute('data-value');
+    return this.selectElement.value;
   }
 
   /**
@@ -74,7 +59,7 @@ export class Dropdown {
    * @param index
    */
   public select(index: number, executeOnChange = true) {
-    this.selectOption(this.options[index], executeOnChange);
+    this.selectOption(this.optionsElement[index], executeOnChange);
   }
 
   /**
@@ -86,85 +71,48 @@ export class Dropdown {
   }
 
   private buildContent() {
-    let dropdown = $$('div', { className: 'coveo-dropdown' });
-    let button = $$('button', { className: 'coveo-button coveo-dropdown-toggle', type: 'button' });
-    button.setAttribute('data-toggle', 'coveo-dropdown');
-    this.selected = $$('span', { className: 'coveo-dropdown-selected-value' });
-    button.append(this.selected.el);
-    button.append($$('span', { className: 'coveo-dropdown-toggle-arrow' }).el);
-    dropdown.append(button.el);
-    dropdown.append(this.buildDropdownMenu());
-    this.element = dropdown.el;
+    this.selectElement = <HTMLSelectElement>$$('select', { className: 'coveo-dropdown' }).el;
+    let selectOptions = this.buildOptions();
+    _.each(selectOptions, (opt) => {
+      $$(this.selectElement).append(opt);
+    });
+    this.element = this.selectElement;
   }
 
   public selectValue(value: string) {
-    _.each(this.options, (option) => {
+    _.each(this.optionsElement, (option) => {
       if ($$(option).getAttribute('data-value') == value) {
         this.selectOption(option);
       }
     });
   }
 
-  private selectOption(option: HTMLElement, executeOnChange = true) {
-    this.selectedIcon.detach();
-    let content = $$(option).find('span');
-    $$(content).prepend(this.selectedIcon.el);
-    let value = $$(option).getAttribute('data-value');
-    this.selected.setAttribute('data-value', value);
-    this.selected.text(this.getDisplayValue(value));
-    this.close();
+  private selectOption(option: HTMLOptionElement, executeOnChange = true) {
+    this.selectElement.value = option.value;
     if (executeOnChange) {
       this.onChange();
     }
   }
 
 
-  private buildDropdownMenu(): HTMLElement {
-    let dropdownMenu = $$('ul', { className: 'coveo-dropdown-menu' });
-    this.selectedIcon = $$('span', { className: 'coveo-selected-icon coveo-sprites-facet-search-checkbox-hook-active' });
+  private buildOptions(): HTMLElement[] {
+    let ret: HTMLElement[] = [];
     _.each(this.listOfValues, (value: string) => {
-      dropdownMenu.append(this.buildOption(value));
+      ret.push(this.buildOption(value));
     });
-    return dropdownMenu.el;
+    return ret;
   }
 
   private buildOption(value: string): HTMLElement {
-    let option = $$('li');
+    let option = $$('option');
     option.setAttribute('data-value', value);
-    let content = $$('span');
-    content.text(this.getDisplayValue(value));
-    option.append(content.el);
-    option.on('click', () => {
-      this.selectOption(option.el);
-    });
-    this.options.push(option.el);
+    option.setAttribute('value', value);
+    option.text(this.getDisplayValue(value));
+    this.optionsElement.push(<HTMLOptionElement>option.el);
     return option.el;
   }
 
   private bindEvents() {
-    let button = $$(this.element).find('button');
-
-    $$(this.element).on('mouseleave', (e: MouseEvent) => {
-      setTimeout(() => {
-        let target;
-        // There is a slight difference between jQuery target/currentTarget
-        // and standard DOM events. Add a special check to cover both cases.
-        if (e.currentTarget) {
-          target = e.currentTarget;
-        } else {
-          target = e.target;
-        }
-        if (target == this.element && $$(this.element).hasClass('coveo-open')) {
-          this.close();
-        }
-      }, 300);
-    });
-    $$(button).on('click', () => {
-      if ($$(this.element).hasClass('coveo-open')) {
-        this.close();
-      } else {
-        this.open();
-      }
-    });
+    $$(this.selectElement).on('change', () => this.onChange());
   }
 }

@@ -73,7 +73,7 @@ export class DomUtils {
   static getQuickviewHeader(result: IQueryResult, options: { showDate: boolean; title: string }, bindings: IResultsComponentBindings): Dom {
     let date = '';
     if (options.showDate) {
-      date = DateUtils.dateTimeToString(new Date(result.raw.date));
+      date = DateUtils.dateTimeToString(new Date(Utils.getFieldValue(result, 'date')));
     }
     let fileType = FileTypes.get(result);
     let header = $$('div');

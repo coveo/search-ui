@@ -444,13 +444,13 @@ export function LiveAnalyticsClientTest() {
         }));
       });
 
-      it('should send the uniqueid in metadata on click event, with a precedence over the uri hash', () => {
+      it('should send the permanentid in metadata on click event, with a precedence over the uri hash', () => {
         fakeResult.raw['urihash'] = '1234567890';
-        fakeResult.raw['uniqueid'] = '0987654321';
+        fakeResult.raw['permanentid'] = '0987654321';
         client.logClickEvent<IAnalyticsNoMeta>(analyticsActionCauseList.documentQuickview, {}, fakeResult, document.createElement('div'));
         Defer.flush();
         expect(spy).toHaveBeenCalledWith(jasmine.any(Object), jasmine.objectContaining({
-          metaObject: jasmine.objectContaining({ contentIDKey: 'uniqueid', contentIDValue: '0987654321' }),
+          metaObject: jasmine.objectContaining({ contentIDKey: 'permanentid', contentIDValue: '0987654321' }),
         }));
       });
     });

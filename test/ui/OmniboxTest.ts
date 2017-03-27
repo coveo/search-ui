@@ -46,7 +46,8 @@ export function OmniboxTest() {
 
       it('enableSearchAsYouType should allow to to trigger a query after a delay', function (done) {
         test = Mock.optionsComponentSetup<Omnibox, IOmniboxOptions>(Omnibox, {
-          enableSearchAsYouType: true
+          enableSearchAsYouType: true,
+          enableRevealQuerySuggestAddon: false
         });
         expect(test.cmp.magicBox.onchange).toBeDefined();
         test.cmp.setText('foobar');

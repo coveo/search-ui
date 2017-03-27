@@ -13,6 +13,7 @@ import { Assert } from '../../misc/Assert';
 import { l } from '../../strings/Strings';
 import { $$ } from '../../utils/Dom';
 import _ = require('underscore');
+import { Defer } from '../../misc/Defer';
 
 export interface IResultsPreferencesOptions {
   enableOpenInOutlook?: boolean;
@@ -75,6 +76,8 @@ export class ResultsPreferences extends Component {
     Assert.exists(this.preferencesPanel);
 
     this.preferences = this.preferencePanelLocalStorage.load() || {};
+    this.adjustPreferencesToComponentConfig();
+
     ComponentOptions.initComponentOptions(this.element, ResultsPreferences, this.preferences);
 
     this.updateComponentOptionsModel();
@@ -167,6 +170,29 @@ export class ResultsPreferences extends Component {
     var preference = (<HTMLInputElement>e.target).value;
     this.usageAnalytics.logCustomEvent<IAnalyticsPreferencesChangeMeta>(analyticsActionCauseList.preferencesChange, { preferenceName: preference, preferenceType: type }, this.element);
     this.usageAnalytics.logSearchEvent<IAnalyticsPreferencesChangeMeta>(analyticsActionCauseList.preferencesChange, { preferenceName: preference, preferenceType: type });
+  }
+
+  private adjustPreferencesToComponentConfig() {
+    // This method is used when there are illogical configuration between what's saved in local storage (the preferences)
+    // and how the component is configured.
+    // This can happen if an admin change the component configuration after end users have already selected a preferences.
+    // We need to adapt the saved preferences to what's actually available in the component
+    let needToSave = false;
+    if (this.preferences.alwaysOpenInNewWindow && !this.options.enableOpenInNewWindow) {
+      this.preferences.alwaysOpenInNewWindow = null;
+      needToSave = true;
+    }
+
+    if (this.preferences.openInOutlook && !this.options.enableOpenInOutlook) {
+      this.preferences.openInOutlook = null;
+      needToSave = true;
+    }
+
+    if (needToSave) {
+      Defer.defer(() => {
+        this.save();
+      });
+    }
   }
 }
 
