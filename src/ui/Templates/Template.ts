@@ -160,12 +160,12 @@ export class Template implements ITemplateProperties {
 
     var html = this.instantiateToString(object, mergedOptions);
     if (html != null) {
-      const elemType = this.layout === 'table' ? 'tr' : 'div';
+      const layout = this.layout || mergedOptions.currentLayout;
+      const elemType = layout === 'table' ? 'tr' : 'div';
       var element = $$(elemType, {}, html).el;
       if (!mergedOptions.wrapInDiv && element.children.length === 1) {
         element = <HTMLElement>element.children.item(0);
       }
-      const layout = this.layout || mergedOptions.currentLayout;
       if (layout) {
         $$(element).addClass(`coveo-${layout}-layout`);
       }
