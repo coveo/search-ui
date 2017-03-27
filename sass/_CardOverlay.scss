@@ -75,3 +75,13 @@
   cursor: pointer;
   flex-shrink: 0;
 }
+
+.CoveoResult.coveo-with-card-overlay {
+  @include transition(min-height .5s);
+  min-height: 0;
+}
+
+.CoveoResult.coveo-card-overlay-opened {
+  min-height: 180px;
+}
+
