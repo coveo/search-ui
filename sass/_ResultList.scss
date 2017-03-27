@@ -43,17 +43,7 @@
   width: 100%;
 }
 
-.coveo-result-list-table-header {
-  display: table-row;
-  text-align: left;
-  font-size: 12px;
-  color: $color-greyish-teal-blue;
-  font-weight: bold;
-  border-bottom: $default-border;
-}
-
 .coveo-result-list-table-footer {
-  @extend .coveo-result-list-table-header;
   border-bottom: none;
 }
 
