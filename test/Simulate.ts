@@ -177,10 +177,10 @@ export class Simulate {
       },
       clear: () => {
       },
-      getMostRecentElement: ()=> {
+      getMostRecentElement: () => {
         return null;
       }
-    }
+    };
   }
 
   static omnibox(env: IMockEnvironment, options?): IOmniboxData {
