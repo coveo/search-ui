@@ -17,6 +17,8 @@ import { IQueryResult } from '../../rest/QueryResult';
 import * as _ from 'underscore';
 import { exportGlobally } from '../../GlobalExports';
 
+import 'styling/_ResultTagging';
+
 export interface IResultTaggingOptions {
   field: IFieldOption;
   suggestBoxSize?: number;

@@ -13,6 +13,8 @@ import { l } from '../../strings/Strings';
 import * as _ from 'underscore';
 import { exportGlobally } from '../../GlobalExports';
 
+import 'styling/_ResultFolding';
+
 export interface IResultFoldingOptions {
   resultTemplate?: Template;
   normalCaption?: string;
