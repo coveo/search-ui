@@ -26,7 +26,9 @@ import { OmniboxHierarchicalValuesList } from './OmniboxHierarchicalValuesList';
 import { HierarchicalFacetValueElement } from './HierarchicalFacetValueElement';
 import { Initialization } from '../Base/Initialization';
 import { ISearchAlertsPopulateMessageEventArgs } from '../../events/SearchAlertEvents';
-import _ = require('underscore');
+import * as _ from 'underscore';
+import { exportGlobally } from '../../GlobalExports';
+import 'styling/_HierarchicalFacet';
 
 export interface IHierarchicalFacetOptions extends IFacetOptions {
   delimitingCharacter?: string;
@@ -54,7 +56,7 @@ interface IFlatHierarchy {
 }
 
 /**
- * The HierarchicalFacet component inherits all of its options and behavior from the normal {@link Facet} component, but
+ * The HierarchicalFacet component inherits all of its options and behavior from the normal {@link FacetModuleDefinition} component, but
  * is meant to be used for hierarchical values.
  *
  * The HierarchicalFacet component could be used to display files in a file system, or categories for documents in a
@@ -87,6 +89,12 @@ interface IFlatHierarchy {
  */
 export class HierarchicalFacet extends Facet implements IComponentBindings {
   static ID = 'HierarchicalFacet';
+
+  static doExport = () => {
+    exportGlobally({
+      'HierarchicalFacet': HierarchicalFacet
+    });
+  }
 
   /**
    * The options for the component

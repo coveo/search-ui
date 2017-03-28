@@ -1,3 +1,6 @@
+@import 'Variables';
+@import 'bourbon/bourbon';
+
 .CoveoSearchInterface {
   display: none; //hide the UI while loading
   min-height: 100%;

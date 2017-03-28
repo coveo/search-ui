@@ -1,3 +1,6 @@
+@import 'mixins/breadcrumb';
+@import 'mixins/mediaQuery';
+
 .CoveoBreadcrumb {
   padding: 10px 0px 10px 0px;
   &.coveo-small-display {

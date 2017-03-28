@@ -12,7 +12,8 @@ import { IResultLinkOptions } from '../ResultLink/ResultLinkOptions';
 import { Assert } from '../../misc/Assert';
 import { l } from '../../strings/Strings';
 import { $$ } from '../../utils/Dom';
-import _ = require('underscore');
+import * as _ from 'underscore';
+import { exportGlobally } from '../../GlobalExports';
 import { Defer } from '../../misc/Defer';
 
 export interface IResultsPreferencesOptions {
@@ -31,6 +32,12 @@ export interface IResultsPreferencesOptions {
  */
 export class ResultsPreferences extends Component {
   static ID = 'ResultsPreferences';
+
+  static doExport = () => {
+    exportGlobally({
+      'ResultsPreferences': ResultsPreferences
+    });
+  }
 
   /**
    * The options for the component

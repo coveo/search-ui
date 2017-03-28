@@ -12,7 +12,9 @@ import { Utils } from '../../utils/Utils';
 import { Assert } from '../../misc/Assert';
 import { $$ } from '../../utils/Dom';
 import { KeyboardUtils, KEYBOARD } from '../../utils/KeyboardUtils';
-import _ = require('underscore');
+import * as _ from 'underscore';
+import { exportGlobally } from '../../GlobalExports';
+import 'styling/_Tab';
 
 export interface ITabOptions {
   expression?: string;
@@ -67,6 +69,12 @@ export interface ITabOptions {
  */
 export class Tab extends Component {
   static ID = 'Tab';
+
+  static doExport = () => {
+    exportGlobally({
+      'Tab': Tab
+    });
+  }
 
   /**
    * The options for a Tab
@@ -153,7 +161,7 @@ export class Tab extends Component {
     /**
      * Specifies whether to filter duplicates in the search results when the user selects the Tab.
      *
-     * Setting this option to `true` forces duplicates to not appear in the search results. However, {@link Facet}
+     * Setting this option to `true` forces duplicates to not appear in the search results. However, {@link FacetModuleDefinition}
      * counts still include duplicates, which can be confusing for the end user. This is a limitation of the index.
      *
      * **Example:**

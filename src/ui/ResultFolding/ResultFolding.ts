@@ -3,7 +3,6 @@ import { Component } from '../Base/Component';
 import { IComponentBindings } from '../Base/ComponentBindings';
 import { ComponentOptions } from '../Base/ComponentOptions';
 import { DefaultFoldingTemplate } from './DefaultFoldingTemplate';
-import { Promise } from 'es6-promise';
 import { IQueryResult } from '../../rest/QueryResult';
 import { Utils } from '../../utils/Utils';
 import { QueryUtils } from '../../utils/QueryUtils';
@@ -11,7 +10,8 @@ import { Initialization, IInitializationParameters } from '../Base/Initializatio
 import { Assert } from '../../misc/Assert';
 import { $$ } from '../../utils/Dom';
 import { l } from '../../strings/Strings';
-import _ = require('underscore');
+import * as _ from 'underscore';
+import { exportGlobally } from '../../GlobalExports';
 
 export interface IResultFoldingOptions {
   resultTemplate?: Template;
@@ -31,6 +31,13 @@ export interface IResultFoldingOptions {
  */
 export class ResultFolding extends Component {
   static ID = 'ResultFolding';
+
+  static doExport = () => {
+    exportGlobally({
+      'ResultFolding': ResultFolding,
+      'DefaultFoldingTemplate': DefaultFoldingTemplate
+    });
+  }
 
   /**
    * The options for the component
@@ -248,29 +255,31 @@ export class ResultFolding extends Component {
     });
   }
 
-  private renderChildResult(childResult: IQueryResult) {
+  private renderChildResult(childResult: IQueryResult): Promise<boolean> {
     QueryUtils.setStateObjectOnQueryResult(this.queryStateModel.get(), childResult);
     QueryUtils.setSearchInterfaceObjectOnQueryResult(this.searchInterface, childResult);
 
-    let oneChild = this.options.resultTemplate.instantiateToElement(childResult, {
+    return this.options.resultTemplate.instantiateToElement(childResult, {
       wrapInDiv: false,
       checkCondition: false,
       responsiveComponents: this.searchInterface.responsiveComponents
-    });
-    $$(oneChild).addClass('coveo-result-folding-child-result');
-    this.results.appendChild(oneChild);
+    }).then((oneChild: HTMLElement) => {
+      $$(oneChild).addClass('coveo-result-folding-child-result');
+      this.results.appendChild(oneChild);
 
-    $$(oneChild).toggleClass('coveo-normal-child-result', !this.showingMoreResults);
-    $$(oneChild).toggleClass('coveo-expanded-child-result', this.showingMoreResults);
-    this.autoCreateComponentsInsideResult(oneChild, childResult);
+      $$(oneChild).toggleClass('coveo-normal-child-result', !this.showingMoreResults);
+      $$(oneChild).toggleClass('coveo-expanded-child-result', this.showingMoreResults);
+      return this.autoCreateComponentsInsideResult(oneChild, childResult);
+    });
+
   }
 
-  private autoCreateComponentsInsideResult(element: HTMLElement, result: IQueryResult) {
+  private autoCreateComponentsInsideResult(element: HTMLElement, result: IQueryResult): Promise<boolean> {
     Assert.exists(element);
 
     let initOptions = this.searchInterface.options;
     let initParameters: IInitializationParameters = { options: initOptions, bindings: this.getBindings(), result: result };
-    Initialization.automaticallyCreateComponentsInside(element, initParameters);
+    return Initialization.automaticallyCreateComponentsInside(element, initParameters);
   }
 
   private cancelAnyPendingShowMore() {

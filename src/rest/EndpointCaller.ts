@@ -6,7 +6,7 @@ import { DeviceUtils } from '../utils/DeviceUtils';
 import { Utils } from '../utils/Utils';
 import { Promise } from 'es6-promise';
 import { JQueryUtils } from '../utils/JQueryutils';
-import _ = require('underscore');
+import * as _ from 'underscore';
 
 declare var XDomainRequest;
 declare var $;

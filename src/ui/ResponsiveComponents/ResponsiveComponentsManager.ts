@@ -2,14 +2,10 @@ import { $$, Dom } from '../../utils/Dom';
 import { InitializationEvents } from '../../events/InitializationEvents';
 import { Component } from '../Base/Component';
 import { SearchInterface } from '../SearchInterface/SearchInterface';
-import { ResponsiveComponentsUtils } from './ResponsiveComponentsUtils';
 import { Utils } from '../../utils/Utils';
-import { Facet } from '../Facet/Facet';
-import { Tab } from '../Tab/Tab';
-import { ResponsiveFacets } from './ResponsiveFacets';
+import * as _ from 'underscore';
 import { QueryEvents } from '../../events/QueryEvents';
 import { Logger } from '../../misc/Logger';
-import _ = require('underscore');
 
 export interface IResponsiveComponentOptions {
   enableResponsiveMode?: boolean;
@@ -197,7 +193,7 @@ export class ResponsiveComponentsManager {
   }
 
   private isTabs(ID: string): boolean {
-    return ID == Tab.ID;
+    return ID == 'Tab';
   }
 
   private isActivated(ID: string): boolean {

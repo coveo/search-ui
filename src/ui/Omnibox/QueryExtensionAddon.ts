@@ -1,9 +1,8 @@
 ///<reference path='Omnibox.ts'/>
 import { OmniboxEvents } from '../../events/OmniboxEvents';
-import { Omnibox, IPopulateOmniboxSuggestionsEventArgs, IOmniboxSuggestion } from './Omnibox';
+import { Omnibox, IPopulateOmniboxSuggestionsEventArgs, IOmniboxSuggestion, MagicBox } from './Omnibox';
 import { IExtension } from '../../rest/Extension';
-import { MagicBox } from '../../ExternalModulesShim';
-import _ = require('underscore');
+import * as _ from 'underscore';
 
 interface IQueryExtensionAddonHash {
   type: string;

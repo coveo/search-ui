@@ -10,14 +10,15 @@ import { DateUtils } from '../../utils/DateUtils';
 import { FacetRangeQueryController } from '../../controllers/FacetRangeQueryController';
 import { IGroupByResult } from '../../rest/GroupByResult';
 import { Initialization } from '../Base/Initialization';
-import Globalize = require('globalize');
+import * as Globalize from 'globalize';
+import { exportGlobally } from '../../GlobalExports';
 
 export interface IFacetRangeOptions extends IFacetOptions {
   ranges?: IRangeValue[];
   dateField?: boolean;
 }
 /**
- * The FacetRange component displays a {@link Facet} whose values are expressed as ranges. These ranges are computed
+ * The FacetRange component displays a {@link FacetModuleDefinition} whose values are expressed as ranges. These ranges are computed
  * from the results of the current query.
  *
  * This component inherits from the Facet component. Thus, any option available for a Facet component is also available
@@ -27,6 +28,12 @@ export interface IFacetRangeOptions extends IFacetOptions {
 export class FacetRange extends Facet implements IComponentBindings {
   static ID = 'FacetRange';
   static parent = Facet;
+
+  static doExport = () => {
+    exportGlobally({
+      'FacetRange': FacetRange
+    });
+  }
 
   /**
    * The options for the component

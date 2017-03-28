@@ -20,12 +20,16 @@ import { ResultListEvents, IDisplayedNewResultEventArgs, IChangeLayoutEventArgs 
 import { ResultLayoutEvents } from '../../events/ResultLayoutEvents';
 import { Utils } from '../../utils/Utils';
 import { DomUtils } from '../../utils/DomUtils';
-import { Recommendation } from '../Recommendation/Recommendation';
 import { DefaultRecommendationTemplate } from '../Templates/DefaultRecommendationTemplate';
 import { ValidLayout } from '../ResultLayout/ResultLayout';
 import { TemplateList } from '../Templates/TemplateList';
 import { ResponsiveDefaultResultTemplate } from '../ResponsiveComponents/ResponsiveDefaultResultTemplate';
-import _ = require('underscore');
+import * as _ from 'underscore';
+import { exportGlobally } from '../../GlobalExports';
+
+import 'styling/_ResultList';
+import 'styling/_ResultFrame';
+import 'styling/_Result';
 
 export interface IResultListOptions {
   resultContainer?: HTMLElement;
@@ -54,13 +58,20 @@ export class ResultList extends Component {
 
   private static getDefaultTemplate(e: HTMLElement): Template {
     let component = <ResultList>Component.get(e);
-    if (component.searchInterface instanceof Recommendation) {
+    if (Coveo['Recommendation'] && component.searchInterface instanceof Coveo['Recommendation']) {
       return new DefaultRecommendationTemplate();
     }
     return new DefaultResultTemplate();
   }
 
   static ID = 'ResultList';
+
+  static doExport = () => {
+    exportGlobally({
+      'ResultList': ResultList
+    });
+  }
+
   /**
    * The options for the ResultList
    * @componentOptions
@@ -321,16 +332,21 @@ export class ResultList extends Component {
    * Builds and returns an array of HTMLElement with the given result set.
    * @param results the result set to build an array of HTMLElement from.
    */
-  public buildResults(results: IQueryResults): HTMLElement[] {
+  public buildResults(results: IQueryResults): Promise<HTMLElement[]> {
     let res: HTMLElement[] = [];
-    _.each(results.results, (result: IQueryResult) => {
-      let resultElement = this.buildResult(result);
-      if (resultElement != null) {
-        res.push(resultElement);
-      }
+    let resultsPromises = _.map(results.results, (result: IQueryResult) => {
+      return this.buildResult(result).then((resultElement: HTMLElement) => {
+        if (resultElement != null) {
+          res.push(resultElement);
+        }
+        ResultList.resultCurrentlyBeingRendered = null;
+        return resultElement;
+      });
     });
-    ResultList.resultCurrentlyBeingRendered = null;
-    return res;
+
+    return Promise.all(resultsPromises).then(() => {
+      return res;
+    });
   }
 
   /**
@@ -338,23 +354,25 @@ export class ResultList extends Component {
    * @param result the result to build an HTMLElement from.
    * @returns {HTMLElement}
    */
-  public buildResult(result: IQueryResult): HTMLElement {
+  public buildResult(result: IQueryResult): Promise<HTMLElement> {
     Assert.exists(result);
     QueryUtils.setStateObjectOnQueryResult(this.queryStateModel.get(), result);
     QueryUtils.setSearchInterfaceObjectOnQueryResult(this.searchInterface, result);
     ResultList.resultCurrentlyBeingRendered = result;
-    let resultElement = this.options.resultTemplate.instantiateToElement(result, {
+    return this.options.resultTemplate.instantiateToElement(result, {
       wrapInDiv: true,
       checkCondition: true,
       currentLayout: <ValidLayout>this.options.layout,
       responsiveComponents: this.searchInterface.responsiveComponents
+    }).then((resultElement: HTMLElement) => {
+      if (resultElement != null) {
+        Component.bindResultToElement(resultElement, result);
+        $$(resultElement).addClass('');
+      }
+      return this.autoCreateComponentsInsideResult(resultElement, result).then(() => {
+        return resultElement;
+      });
     });
-    if (resultElement != null) {
-      Component.bindResultToElement(resultElement, result);
-      $$(resultElement).addClass('');
-    }
-    this.autoCreateComponentsInsideResult(resultElement, result);
-    return resultElement;
   }
 
   /**
@@ -388,11 +406,13 @@ export class ResultList extends Component {
       this.usageAnalytics.logCustomEvent<IAnalyticsNoMeta>(analyticsActionCauseList.pagerScrolling, {}, this.element);
       let results = data.results;
       this.reachedTheEndOfResults = count > data.results.length;
-      this.renderResults(this.buildResults(data), true);
-      _.each(results, (result) => {
-        this.currentlyDisplayedResults.push(result);
+      this.buildResults(data).then((elements: HTMLElement[]) => {
+        this.renderResults(elements, true);
+        _.each(results, (result) => {
+          this.currentlyDisplayedResults.push(result);
+        });
+        this.triggerNewResultsDisplayed();
       });
-      this.triggerNewResultsDisplayed();
     });
 
     this.fetchingMoreResults.then(() => {
@@ -447,7 +467,7 @@ export class ResultList extends Component {
       bindings: resultComponentBindings,
       result: result
     };
-    Initialization.automaticallyCreateComponentsInside(element, initParameters);
+    return Initialization.automaticallyCreateComponentsInside(element, initParameters);
   }
 
   protected triggerNewResultDisplayed(result: IQueryResult, resultElement: HTMLElement) {
@@ -483,20 +503,22 @@ export class ResultList extends Component {
     this.hideWaitingAnimation();
     ResultList.resultCurrentlyBeingRendered = undefined;
     this.currentlyDisplayedResults = [];
-    this.renderResults(this.buildResults(data.results));
-    this.currentlyDisplayedResults = results.results;
-    this.reachedTheEndOfResults = false;
-    this.showOrHideElementsDependingOnState(true, this.currentlyDisplayedResults.length != 0);
+    this.buildResults(data.results).then((elements: HTMLElement[]) => {
+      this.renderResults(elements);
+      this.currentlyDisplayedResults = results.results;
+      this.reachedTheEndOfResults = false;
+      this.showOrHideElementsDependingOnState(true, this.currentlyDisplayedResults.length != 0);
 
-    if (DeviceUtils.isMobileDevice() && this.options.mobileScrollContainer != undefined) {
-      this.options.mobileScrollContainer.scrollTop = 0;
-    }
+      if (DeviceUtils.isMobileDevice() && this.options.mobileScrollContainer != undefined) {
+        this.options.mobileScrollContainer.scrollTop = 0;
+      }
 
-    if (this.options.enableInfiniteScroll && results.results.length == data.queryBuilder.numberOfResults) {
-      // This will check right away if we need to add more results to make the scroll container full & scrolling.
-      this.scrollBackToTop();
-      this.handleScrollOfResultList();
-    }
+      if (this.options.enableInfiniteScroll && results.results.length == data.queryBuilder.numberOfResults) {
+        // This will check right away if we need to add more results to make the scroll container full & scrolling.
+        this.scrollBackToTop();
+        this.handleScrollOfResultList();
+      }
+    });
   }
 
   private handleScrollOfResultList() {
@@ -548,7 +570,9 @@ export class ResultList extends Component {
       this.options.resultTemplate.layout = <ValidLayout>this.options.layout;
       if (args.results) {
         Defer.defer(() => {
-          this.renderResults(this.buildResults(args.results));
+          this.buildResults(args.results).then((elements: HTMLElement[]) => {
+            this.renderResults(elements);
+          });
         });
       }
     } else {

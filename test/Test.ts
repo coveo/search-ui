@@ -140,9 +140,6 @@ ComponentOptionsTest();
 import { ComponentTest } from './ui/ComponentTest';
 ComponentTest();
 
-import { CurrentTabTest } from './ui/CurrentTabTest';
-CurrentTabTest();
-
 import { DidYouMeanTest } from './ui/DidYouMeanTest';
 DidYouMeanTest();
 

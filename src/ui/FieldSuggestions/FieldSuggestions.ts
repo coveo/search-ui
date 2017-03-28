@@ -14,7 +14,8 @@ import { l } from '../../strings/Strings';
 import { $$ } from '../../utils/Dom';
 import { ISuggestionForOmniboxOptionsOnSelect } from '../Misc/SuggestionForOmnibox';
 import { IStringMap } from '../../rest/GenericParam';
-import _ = require('underscore');
+import * as _ from 'underscore';
+import { exportGlobally } from '../../GlobalExports';
 
 export interface IFieldSuggestionsOptions extends ISuggestionForOmniboxOptions {
   field?: IFieldOption;
@@ -30,6 +31,12 @@ export interface IFieldSuggestionsOptions extends ISuggestionForOmniboxOptions {
  */
 export class FieldSuggestions extends Component {
   static ID = 'FieldSuggestions';
+
+  static doExport = () => {
+    exportGlobally({
+      'FieldSuggestions': FieldSuggestions
+    });
+  }
 
   /**
    * @componentOptions
@@ -54,7 +61,7 @@ export class FieldSuggestions extends Component {
     /**
      * Specifies the z-index position at which the suggestions render themselves in the {@link Omnibox}.
      *
-     * When there are multiple suggestion providers (e.g., {@link Facet} or {@link AnalyticsSuggestions}), components
+     * When there are multiple suggestion providers (e.g., {@link FacetModuleDefinition} or {@link AnalyticsSuggestions}), components
      * with a higher omniboxZIndex values render themselves first.
      *
      * Default value is `51`. Minimum value is `0`.

@@ -5,13 +5,7 @@ import { Utils } from '../../utils/Utils';
 import { Logger } from '../../misc/Logger';
 import { TemplateFromAScriptTag, ITemplateFromStringProperties } from './TemplateFromAScriptTag';
 import { DefaultResultTemplate } from './DefaultResultTemplate';
-import _ = require('underscore');
-
-_.templateSettings = {
-  evaluate: /(?:<%|{{)([\s\S]+?)(?:%>|}})/g,
-  interpolate: /(?:<%|{{)=([\s\S]+?)(?:%>|}})/g,
-  escape: /(?:<%|{{)-([\s\S]+?)(?:%>|}})/g
-};
+import * as _ from 'underscore';
 
 export class UnderscoreTemplate extends Template {
   private template: (data: any) => string;
@@ -55,10 +49,6 @@ export class UnderscoreTemplate extends Template {
 
   getType() {
     return 'UnderscoreTemplate';
-  }
-
-  getFields() {
-    return this.fields;
   }
 
   static registerTemplateHelper(helperName: string, helper: ITemplateHelperFunction) {

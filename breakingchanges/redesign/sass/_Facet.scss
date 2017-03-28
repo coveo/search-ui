@@ -4,11 +4,6 @@
   border-bottom: 1px solid $color-facet-border;
 }
 
-.ie8or9 .coveo-facet-header-wait-animation, .ie8or9 .coveo-facet-search-wait-animation {
-  background: url(../image/wait_facet.gif) no-repeat;
-  background-size: 100%;
-}
-
 .coveo-facet-selectable:hover {
   background-color: $color-light-blue;
 }

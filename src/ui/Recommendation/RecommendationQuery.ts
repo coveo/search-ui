@@ -5,7 +5,7 @@ import { Utils } from '../../utils/Utils';
 import { QueryEvents, IBuildingQueryEventArgs } from '../../events/QueryEvents';
 import { Initialization } from '../Base/Initialization';
 import { $$ } from '../../utils/Dom';
-import _ = require('underscore');
+import * as _ from 'underscore';
 
 export interface IRecommendationQueryOptions {
 }

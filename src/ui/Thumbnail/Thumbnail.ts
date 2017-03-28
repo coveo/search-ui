@@ -4,14 +4,14 @@ import { IResultsComponentBindings } from '../Base/ResultsComponentBindings';
 import { ResultLink } from '../ResultLink/ResultLink';
 import { IQueryResult } from '../../rest/QueryResult';
 import { QueryUtils } from '../../utils/QueryUtils';
-import { DeviceUtils } from '../../utils/DeviceUtils';
 import { Initialization } from '../Base/Initialization';
 import { ISearchEndpoint } from '../../rest/SearchEndpointInterface';
 import { $$ } from '../../utils/Dom';
 import { FieldTable } from '../FieldTable/FieldTable';
 import { get } from '../Base/RegisteredNamedMethods';
 import { IResultLinkOptions } from '../ResultLink/ResultLinkOptions';
-import _ = require('underscore');
+import * as _ from 'underscore';
+import { exportGlobally } from '../../GlobalExports';
 
 export interface IThumbnailOptions extends IResultLinkOptions {
   noThumbnailClass?: string;
@@ -24,6 +24,12 @@ export interface IThumbnailOptions extends IResultLinkOptions {
  */
 export class Thumbnail extends Component {
   static ID = 'Thumbnail';
+
+  static doExport = () => {
+    exportGlobally({
+      'Thumbnail': Thumbnail
+    });
+  }
 
   /**
    * Options for the Thumbnail
@@ -50,15 +56,6 @@ export class Thumbnail extends Component {
   };
 
   static parent = ResultLink;
-
-  static fields = [
-    'outlookformacuri',
-    'outlookuri',
-    'connectortype',
-    'urihash',  //     ⎫
-    'collection', //   ⎬--- analytics
-    'source' //        ⎭
-  ];
 
   public img: HTMLImageElement;
 
@@ -110,8 +107,8 @@ export class Thumbnail extends Component {
   private buildThumbnailImage() {
     let endpoint = this.bindings.queryController.getEndpoint();
 
-    if (endpoint.isJsonp() || DeviceUtils.isIE8or9()) {
-      // For jsonp and IE8-9 (XDomain) we can't GET/POST for binary data. We are limited
+    if (endpoint.isJsonp()) {
+      // For jsonp we can't GET/POST for binary data. We are limited
       // to only setting the src attribute directly on the img.
       this.buildImageWithDirectSrcAttribute(endpoint);
     } else {

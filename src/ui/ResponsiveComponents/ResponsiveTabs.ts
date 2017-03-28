@@ -11,7 +11,9 @@ import { IResponsiveComponent, ResponsiveComponentsManager, IResponsiveComponent
 import { ResponsiveComponentsUtils } from './ResponsiveComponentsUtils';
 import { l } from '../../strings/Strings';
 import { ResponsiveComponents } from './ResponsiveComponents';
-import _ = require('underscore');
+import * as _ from 'underscore';
+
+import 'styling/_ResponsiveTabs';
 
 export class ResponsiveTabs implements IResponsiveComponent {
 

@@ -1,4 +1,5 @@
 @import "bourbon/bourbon";
+@import "../bin/sass/sprites.scss";
 
 // https://app.frontify.com/d/GthysWU8RY0Q/brand-guidelines#/basics/colors
 
@@ -79,17 +80,17 @@ $standard-transition-timing-function: cubic-bezier(0.4, 0.0, 0.2, 1);
 @mixin iconWithHoverState($iconBase, $float:'left', $inactive : 'coveo-disabled') {
   $iconActive: '#{$iconBase}-active';
   .coveo-icon {
-    @extend #{$iconBase};
+    @include retina-sprite(map-get($retina-group-map, $iconBase));
     float: #{$float};
   }
   &:hover {
     .coveo-icon {
-      @extend #{$iconActive};
+      @include retina-sprite(map-get($retina-group-map, $iconActive));
     }
   }
   &:hover.#{$inactive} {
     .coveo-icon {
-      @extend #{$iconBase};
+      @include retina-sprite(map-get($retina-group-map, $iconBase));
     }
   }
 }
@@ -153,11 +154,11 @@ $standard-transition-timing-function: cubic-bezier(0.4, 0.0, 0.2, 1);
   }
 
   #{$selector} {
-    @extend #{$icon};
+    @include retina-sprite(map-get($retina-group-map, $icon));
   }
   &:hover {
     #{$selector} {
-      @extend #{$icon-clear};
+      @include retina-sprite(map-get($retina-group-map, $icon-clear))
     }
   }
 }
@@ -175,12 +176,3 @@ $standard-transition-timing-function: cubic-bezier(0.4, 0.0, 0.2, 1);
   }
 }
 
-@include keyframes(coveo-spin) {
-  from {
-    @include transform(rotate(0deg));
-  }
-
-  to {
-    @include transform(rotate(360deg));
-  }
-}

@@ -25,10 +25,11 @@ import { ModalBox } from '../../ExternalModulesShim';
 import { SearchInterface } from '../SearchInterface/SearchInterface';
 import { ResponsiveComponentsUtils } from '../ResponsiveComponents/ResponsiveComponentsUtils';
 import { FacetValuesOrder } from './FacetValuesOrder';
-import _ = require('underscore');
+import * as _ from 'underscore';
+import 'styling/_FacetSearch';
 
 /**
- * Used by the {@link Facet} component to render and handle the facet search part of each facet.
+ * Used by the {@link FacetModuleDefinition} component to render and handle the facet search part of each facet.
  */
 export class FacetSearch {
   public currentlyDisplayedResults: string[];

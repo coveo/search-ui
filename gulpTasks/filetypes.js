@@ -6,9 +6,10 @@ const gulp = require('gulp');
 const utilities = require('./buildUtilities');
 
 
-gulp.task('fileTypes', [ 'sprites' ], function (done) {
+gulp.task('fileTypes', function (done) {
   readJsonForAllRepositories(function (json) {
     var sass = generateSass(json);
+    utilities.ensureDirectory('bin/sass');
     fs.writeFileSync('bin/sass/_GeneratedIconsNew.scss', sass);
 
     var str = generateStrings(json);
@@ -49,11 +50,20 @@ function generateSass(json, legacy) {
   // Be careful to output lowercase object types, since the JS UI helpers do the same,
   // and CSS class names are case sensitive. I do that because I can't expect to
   // match all the time the casing output by the connectors.
-
+  var sass = '';
   if (legacy == undefined) {
     legacy = false;
   }
-  var sass = '@mixin GeneratedIcons() {\n';
+
+  if (!legacy) {
+    sass += '@import "' + __dirname + '/../bin/sass/sprites";\n';
+    sass += '@import "' + __dirname + '/../bin/sass/salesforceSprites";\n';
+    sass += '@include sprites($salesforce-sprites);\n';
+    sass += '@include sprites($spritesheet-sprites);\n';
+    sass += '@include retina-sprites($retina-groups);\n';
+  }
+
+  sass += '@mixin GeneratedIcons() {\n';
   sass += '  .coveo-icon-caption-overlay { display: none; }';
 
   var defaultIcon = legacy ? '.coveo-sprites-fileType-default' : '.coveo-sprites-custom';
@@ -164,11 +174,10 @@ function ensureImageIsValid(filetype, image, legacy) {
   var retinaPath = './image/retina/' + image.replace('-', '/') + '.png';
   // DO not validate legacy because this pollutes the build console
   // with useless stuff
+
   if (!legacy) {
-    if (!legacy) {
-      if (!fs.existsSync(retinaPath)) {
-        console.warn('WARNING: Icon ' + path + ' is referenced by file type ' + filetype + ' but cannot be found in Retina sprites!');
-      }
+    if (!fs.existsSync(retinaPath)) {
+      console.warn('WARNING: Icon ' + path + ' is referenced by file type ' + filetype + ' but cannot be found in Retina sprites!');
     }
   }
 }

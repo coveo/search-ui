@@ -1,3 +1,5 @@
+@import "../bin/sass/sprites";
+
 .CoveoResultFolding {
 
   .coveo-folding-results {
@@ -61,7 +63,7 @@
   display: inline-block;
   vertical-align: middle;
   .coveo-folding-footer-icon {
-    @extend .coveo-sprites-arrow-down;
+    @include retina-sprite($arrow-down-group);
     position: relative;
     top: 1px;
   }
@@ -73,7 +75,7 @@
   }
   display: inline-block;
   .coveo-folding-footer-icon {
-    @extend .coveo-sprites-arrow-up;
+    @include retina-sprite($arrow-up-group);
     position: relative;
     top: 1px;
   }

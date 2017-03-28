@@ -1,3 +1,5 @@
+@import "Variables";
+
 .CoveoResultLink, a.CoveoResultLink, .CoveoResult a.CoveoResultLink {
   @include clickableVibrant();
   word-wrap: break-word;

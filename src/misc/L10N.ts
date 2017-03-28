@@ -1,5 +1,5 @@
 import { LocaleString } from '../ExternalModulesShim';
-import _ = require('underscore');
+import * as _ from 'underscore';
 
 String.toLocaleString = LocaleString;
 const pluralRegex = /<pl>(((?!<\/pl>).)*)<\/pl>/g;

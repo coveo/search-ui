@@ -1,5 +1,5 @@
 import { Initialization } from './Initialization';
-import _ = require('underscore');
+import * as _ from 'underscore';
 
 interface IWindow {
   $: any;

@@ -25,7 +25,7 @@ import { QueryError } from '../rest/QueryError';
 import { Utils } from '../utils/Utils';
 import { Promise } from 'es6-promise';
 import { shim } from '../misc/PromisesShim';
-import _ = require('underscore');
+import * as _ from 'underscore';
 shim();
 
 export class DefaultSearchEndpointOptions implements ISearchEndpointOptions {

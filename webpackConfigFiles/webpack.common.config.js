@@ -1,30 +1,49 @@
 'use strict';
 const webpack = require('webpack');
-const minimize = process.argv.indexOf('--minimize') !== -1;
+const minimize = process.argv.indexOf('minimize') !== -1;
 const colors = require('colors');
-const failPlugin = require('webpack-fail-plugin');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const spritesmithConfig = require('./spritesmithConfig/spritesmith.config.js');
+const salesforceSpritesmithConfig = require('./spritesmithConfig/salesforce.spritesmith.config');
+const path = require('path');
+const live = process.env.NODE_ENV === 'production';
 
-// Fail plugin will allow the webpack ts-loader to fail correctly when the TS compilation fails
-// Provide plugin allows us to use underscore in every module, without having to require underscore everywhere.
-let plugins = [failPlugin];
+// ExtractTextPlugin allows to output a css bundle instead of dynamically adding style tags
+// SpritesmithPlugin takes care of outputting the stylesheets.
+let plugins = [new ExtractTextPlugin('../css/[name].css'), spritesmithConfig, salesforceSpritesmithConfig];
+let sassLoader = { test: /\.scss/ };
+let bail;
 
 if (minimize) {
   plugins.push(new webpack.optimize.UglifyJsPlugin());
 }
 
 let globalizePath = __dirname + '/../lib/globalize/globalize.min.js';
+if (live) {
+  sassLoader['loader'] = ExtractTextPlugin.extract({ 
+    fallback: 'style-loader',
+    use: 'css-loader!resolve-url-loader!sass-loader?sourceMap',
+    publicPath: ''
+  });
+  bail = true;
+} else {
+  sassLoader['loaders'] = ['style-loader', 'css-loader', 'resolve-url-loader', 'sass-loader?sourceMap'];
+  bail = false;
+}
 
 module.exports = {
   resolve: {
-    extensions: ['', '.ts', '.js'],
+    extensions: ['.ts', '.js', '.scss'],
     alias: {
       'l10n': __dirname + '/../lib/l10n/l10n.min.js',
       'globalize': globalizePath,
       'modal-box': __dirname + '/../node_modules/modal-box/bin/ModalBox.min.js',
       'magic-box': __dirname + '/../node_modules/coveomagicbox/bin/MagicBox.min.js',
       'default-language': __dirname + '/../src/strings/DefaultLanguage.js',
-      'jQuery': __dirname + '/../test/lib/jquery.js'
-    }
+      'jQuery': __dirname + '/../test/lib/jquery.js',
+      'styling': __dirname + '/../sass'
+    },
+    modules: ['node_modules', path.resolve(__dirname, '../bin/image/css')]
   },
   devtool: 'source-map',
   module: {
@@ -66,9 +85,13 @@ module.exports = {
           flags: 'g',
           replace: ''
         }
+      },
+      sassLoader,
+      {
+        test: /\.(gif|svg|png|jpe?g|ttf|woff2?|eot)$/, loader: 'file-loader', query: {name: '../image/[name].[ext]', emitFile: false}, 
       }
     ]
   },
   plugins: plugins,
-  bail: true
+  bail: bail  
 }

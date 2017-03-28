@@ -2,7 +2,7 @@ import { Utils } from '../utils/Utils';
 import { JQueryUtils } from '../utils/JQueryutils';
 import { Assert } from '../misc/Assert';
 import { Logger } from '../misc/Logger';
-import _ = require('underscore');
+import * as _ from 'underscore';
 
 export interface IOffset {
   left: number;

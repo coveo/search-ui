@@ -3,12 +3,12 @@ import { Utils } from '../../utils/Utils';
 import { IGroupByValue } from '../../rest/GroupByValue';
 import { IIndexFieldValue } from '../../rest/FieldValue';
 import { IGroupByResult } from '../../rest/GroupByResult';
-import Globalize = require('globalize');
-import _ = require('underscore');
+import * as Globalize from 'globalize';
+import * as _ from 'underscore';
 
 /**
  * A class which holds information and operation available on a single facet value returned by a {@link IGroupByRequest}.<br/>
- * This class is used extensibely in the {@link Facet} component.
+ * This class is used extensibely in the {@link FacetModuleDefinition} component.
  */
 export class FacetValue {
   value: string;
