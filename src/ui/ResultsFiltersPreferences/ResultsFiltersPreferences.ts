@@ -20,7 +20,7 @@ import { $$ } from '../../utils/Dom';
 import * as _ from 'underscore';
 import { exportGlobally } from '../../GlobalExports';
 
-import "styling/_ResultsFiltersPreferences";
+import 'styling/_ResultsFiltersPreferences';
 
 export interface IResultFilterPreference {
   selected?: boolean;

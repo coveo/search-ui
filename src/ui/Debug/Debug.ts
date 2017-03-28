@@ -15,12 +15,11 @@ import { RootComponent } from '../Base/RootComponent';
 import { QueryController } from '../../controllers/QueryController';
 import { BaseComponent } from '../Base/BaseComponent';
 import { ModalBox } from '../../ExternalModulesShim';
-import * as Globalize from 'globalize';
+import Globalize = require('globalize');
 import { KEYBOARD } from '../../utils/KeyboardUtils';
 import { InitializationEvents } from '../../events/InitializationEvents';
 import { IStringMap } from '../../rest/GenericParam';
-import * as _ from 'underscore';
-import 'styling/Debug';
+import _ = require('underscore');
 
 export interface IDebugOptions {
   enableDebug?: boolean;
