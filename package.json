@@ -50,7 +50,7 @@
   ],
   "homepage": "https://github.com/coveo/coveo.search.js#readme",
   "engines": {
-    "node": "6.9.2"
+    "node": "6.10.0"
   },
   "devDependencies": {
     "@salesforce-ux/design-system": "2.0.3",
