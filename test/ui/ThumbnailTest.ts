@@ -5,16 +5,17 @@ import { IQueryResult } from '../../src/rest/QueryResult';
 import { IThumbnailOptions } from '../../src/ui/Thumbnail/Thumbnail';
 import { $$ } from '../../src/utils/Dom';
 import { FieldTable } from '../../src/ui/FieldTable/FieldTable';
-import { get } from '../../src/ui/Base/RegisteredNamedMethods';
+import { get, result } from '../../src/ui/Base/RegisteredNamedMethods';
 import { ResultLink } from '../../src/ui/ResultLink/ResultLink';
 import { Component } from '../../src/ui/Base/Component';
+import { MockEnvironmentBuilder } from '../MockEnvironment';
 
 export function ThumbnailTest() {
   describe('Thumbnail', function () {
 
-    var test: Mock.IBasicComponentSetup<Thumbnail>;
-    var endpoint: SearchEndpoint;
-    var getRawDataStreamPromise: Promise<ArrayBuffer>;
+    let test: Mock.IBasicComponentSetup<Thumbnail>;
+    let endpoint: SearchEndpoint;
+    let getRawDataStreamPromise: Promise<ArrayBuffer>;
 
     beforeEach(() => {
       endpoint = Mock.mockSearchEndpoint();
@@ -67,12 +68,17 @@ export function ThumbnailTest() {
       });
     });
 
-    it('should set a CSS class when no thumbnail is available', () => {
-      var result = <IQueryResult>{
+    it('should instanciate an icon when no thumnail is available', (done) => {
+      let result = <IQueryResult>{
         flags: ''
       };
-      test = Mock.optionsResultComponentSetup<Thumbnail, IThumbnailOptions>(Thumbnail, undefined, result);
-      expect($$(test.cmp.img).hasClass('coveo-no-thumbnail')).toBe(true);
+      let IconModuleMock: any = function () {
+        expect(true).toBe(true);
+        done();
+      }
+
+      let envBuilder = new MockEnvironmentBuilder().withResult(result);      
+      new Thumbnail(test.env.element, {}, test.cmp.bindings, envBuilder.result, IconModuleMock);
     });
 
     describe('exposes options', () => {

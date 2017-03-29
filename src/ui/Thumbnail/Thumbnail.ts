@@ -11,6 +11,7 @@ import { $$ } from '../../utils/Dom';
 import { FieldTable } from '../FieldTable/FieldTable';
 import { get } from '../Base/RegisteredNamedMethods';
 import { IResultLinkOptions } from '../ResultLink/ResultLinkOptions';
+import { Icon } from '../Icon/Icon';
 import _ = require('underscore');
 
 export interface IThumbnailOptions extends IResultLinkOptions {
@@ -70,7 +71,7 @@ export class Thumbnail extends Component {
    * automatically resolved (with a slower execution time).
    * @param result The result to associate the component with.
    */
-  constructor(public element: HTMLElement, public options?: IThumbnailOptions, public bindings?: IResultsComponentBindings, public result?: IQueryResult) {
+  constructor(public element: HTMLElement, public options?: IThumbnailOptions, public bindings?: IResultsComponentBindings, public result?: IQueryResult, private IconModule = Icon) {
     super(element, Thumbnail.ID, bindings);
 
     this.options = ComponentOptions.initOptions(element, <any>Thumbnail.options, options);
@@ -103,7 +104,8 @@ export class Thumbnail extends Component {
     if (QueryUtils.hasThumbnail(result)) {
       this.buildThumbnailImage();
     } else {
-      this.setEmptyThumbnailClass();
+      this.logger.info('Result has no thumbnail. Cannot build thumbnail image, instanciating an Icon component instead.');
+      new IconModule(element, { small: true}, bindings, result);
     }
   }
 
