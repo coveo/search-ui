@@ -20,5 +20,5 @@ gulp.task('buildLegacy', (done) => {
 });
 
 gulp.task('clean', () => {
-  return del(['./bin/**/*']);
+  return del.sync(['./bin/**/*']);
 });

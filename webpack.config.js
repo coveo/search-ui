@@ -17,7 +17,7 @@ conf.plugins.push(salesforceSpritesmithConfig);
 if (production) {
   // ExtractTextPlugin allows to output a css bundle instead of dynamically adding style tags
   const extractSass = new ExtractTextPlugin({
-    filename: '../css/[name].css',
+    filename: '../css/CoveoFullSearchNewDesign.css'
   });
   conf.module.rules.push({
     test: /\.scss/,
@@ -35,7 +35,9 @@ if (production) {
           sourceMap: true
         }
       }],
-      fallback: 'style-loader'
+      fallback: 'style-loader',
+      // This is important to set the correct relative path inside the generated css correctly
+      publicPath: ''
     })
   });
   conf.plugins.push(extractSass);

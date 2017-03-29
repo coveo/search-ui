@@ -980,7 +980,7 @@
 .coveo-facet-search-wait-animation,
 .coveo-mobile-device .coveo-modalBox.coveo-mobile-facet-search > .coveo-wrapper > .coveo-body > .coveo-facet-search .coveo-facet-search-wait-animation,
 .coveo-sprites-quickview-close {
-  background-image: url("../../../bin/image/sprites.png");
+  background-image: url("../image/sprites.png");
   display: inline-block;
   background-repeat: no-repeat;
   overflow: hidden;
@@ -4188,7 +4188,7 @@
   .coveo-mobile-device .coveo-modalBox.coveo-mobile-facet-search > .coveo-wrapper > .coveo-body > .coveo-facet-search-results .coveo-facet-value .coveo-facet-value-checkbox > span,
   .coveo-mobile-device .coveo-modalBox.coveo-mobile-facet-search > .coveo-wrapper > .coveo-body > .coveo-facet-search-results .coveo-facet-value:hover .coveo-facet-value-checkbox span,
   .coveo-sprites-quickview-close {
-    background-image: url("../../../bin/image/retina.png");
+    background-image: url("../image/retina.png");
     display: inline-block;
     background-repeat: no-repeat;
     overflow: hidden;
