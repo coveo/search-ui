@@ -20,7 +20,7 @@ gulp.task('fileTypes', function (done) {
   }, './filetypes/*.json');
 });
 
-gulp.task('fileTypesLegacy', [ 'spritesLegacy' ], function (done) {
+gulp.task('fileTypesLegacy', function (done) {
   readJsonForAllRepositories(function (json) {
     var sass = generateSass(json, true);
     fs.writeFileSync('bin/sasslegacy/_GeneratedIcons.scss', sass);

@@ -85,7 +85,6 @@
     "gulp-replace": "^0.5.4",
     "gulp-sass": "^2.3.2",
     "gulp-shell": "^0.5.2",
-    "gulp-sonar": "^2.1.0",
     "gulp-util": "^3.0.7",
     "gulp-zip": "^3.2.0",
     "image-size": "^0.5.0",
@@ -108,7 +107,6 @@
     "npm-cli-login": "0.0.10",
     "phantomjs-prebuilt": "^2.1.7",
     "plop": "^1.5.0",
-    "png-sprite": "^0.1.1",
     "pretty-typescript": "^1.14.0",
     "q": "^1.4.1",
     "remap-istanbul": "^0.6.4",
@@ -142,7 +140,6 @@
     "latinize": "^0.4.0",
     "modal-box": "1.0.7",
     "pikaday": "^1.4.0",
-    "ts-loader": "^2.0.0",
     "underscore": "^1.8.3"
   }
 }

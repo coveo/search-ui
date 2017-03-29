@@ -1,0 +1,8 @@
+@mixin GeneratedIcons() {
+  .coveo-icon-caption-overlay { display: none; }  &.objecttype {
+    @extend .coveo-sprites-fileType-default;
+  }
+  &.filetype, &.sysfiletype {
+    @extend .coveo-sprites-fileType-default;
+  }
+}

@@ -2,33 +2,12 @@
 const webpack = require('webpack');
 const minimize = process.argv.indexOf('minimize') !== -1;
 const colors = require('colors');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const spritesmithConfig = require('./spritesmithConfig/spritesmith.config.js');
-const salesforceSpritesmithConfig = require('./spritesmithConfig/salesforce.spritesmith.config');
 const path = require('path');
-const live = process.env.NODE_ENV === 'production';
-
-// ExtractTextPlugin allows to output a css bundle instead of dynamically adding style tags
-// SpritesmithPlugin takes care of outputting the stylesheets.
-let plugins = [new ExtractTextPlugin('../css/[name].css'), spritesmithConfig, salesforceSpritesmithConfig];
-let sassLoader = { test: /\.scss/ };
-let bail;
+const globalizePath = __dirname + '/../lib/globalize/globalize.min.js';
+let plugins = [];
 
 if (minimize) {
   plugins.push(new webpack.optimize.UglifyJsPlugin());
-}
-
-let globalizePath = __dirname + '/../lib/globalize/globalize.min.js';
-if (live) {
-  sassLoader['loader'] = ExtractTextPlugin.extract({ 
-    fallback: 'style-loader',
-    use: 'css-loader!resolve-url-loader!sass-loader?sourceMap',
-    publicPath: ''
-  });
-  bail = true;
-} else {
-  sassLoader['loaders'] = ['style-loader', 'css-loader', 'resolve-url-loader', 'sass-loader?sourceMap'];
-  bail = false;
 }
 
 module.exports = {
@@ -47,51 +26,59 @@ module.exports = {
   },
   devtool: 'source-map',
   module: {
-    loaders: [
-      {test: /\.ts$/, loader: 'ts-loader'},
+    rules: [
       {
-        test: require.resolve(globalizePath),
-        loader: 'expose-loader?Globalize'
-      },
-      {
+        test: /\.ts$/,
+        use: [{
+          loader: 'ts-loader',
+          options: {
+            project: 'tsconfig.json'
+          }
+        }]
+      }, {
         test: /underscore-min.js/,
-        loader: 'string-replace-loader',
-        query: {
-          search: '//# sourceMappingURL=underscore-min.map',
-          replace: ''
-        }
-      },
-      {
+        use: [{
+          loader: 'string-replace-loader',
+          options: {
+            search: '//# sourceMappingURL=underscore-min.map',
+            replace: ''
+          }
+        }]
+      }, {
+        test: require.resolve(globalizePath),
+        use: [{
+          loader: 'expose-loader?Globalize'
+        }]
+      }, {
         test: /jquery.js/,
-        loader: 'string-replace-loader',
-        query: {
-          search: '//@ sourceMappingURL=jquery.min.map',
-          replace: ''
-        }
-      },
-      {
+        use: [{
+          loader: 'string-replace-loader',
+          options: {
+            search: '//@ sourceMappingURL=jquery.min.map',
+            replace: ''
+          }
+        }]
+      }, {
         test: /promise|es6-promise/,
-        loader: 'string-replace-loader',
-        query: {
-          search: '//# sourceMappingURL=es6-promise.map',
-          replace: ''
-        }
-      },
-      {
+        use: [{
+          loader: 'string-replace-loader',
+          options: {
+            search: '//# sourceMappingURL=es6-promise.map',
+            replace: ''
+          }
+        }]
+      }, {
         test: /coveo\.analytics\/dist\/.*\.js/,
-        loader: 'string-replace-loader',
-        query: {
-          search: '(?!\n).*\.map',
-          flags: 'g',
-          replace: ''
-        }
-      },
-      sassLoader,
-      {
-        test: /\.(gif|svg|png|jpe?g|ttf|woff2?|eot)$/, loader: 'file-loader', query: {name: '../image/[name].[ext]', emitFile: false}, 
+        use: [{
+          loader: 'string-replace-loader',
+          options: {
+            search: '(?!\n).*\.map',
+            flags: 'g',
+            replace: ''
+          }
+        }]
       }
     ]
   },
-  plugins: plugins,
-  bail: bail  
-}
+  plugins: plugins
+};
