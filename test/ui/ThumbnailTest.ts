@@ -9,6 +9,7 @@ import { get, result } from '../../src/ui/Base/RegisteredNamedMethods';
 import { ResultLink } from '../../src/ui/ResultLink/ResultLink';
 import { Component } from '../../src/ui/Base/Component';
 import { MockEnvironmentBuilder } from '../MockEnvironment';
+import { Defer } from '../../src/misc/Defer';
 
 export function ThumbnailTest() {
   describe('Thumbnail', function () {
@@ -69,26 +70,30 @@ export function ThumbnailTest() {
     });
 
     it('should instanciate an icon when no thumnail is available', (done) => {
-      let result = <IQueryResult>{
-        flags: ''
-      };
+      let result = <IQueryResult>{ flags: '' };
       let IconModuleMock: any = function () {
         expect(true).toBe(true);
         done();
-      }
+      };
 
       let envBuilder = new MockEnvironmentBuilder().withResult(result);      
       new Thumbnail(test.env.element, {}, test.cmp.bindings, envBuilder.result, IconModuleMock);
     });
 
     describe('exposes options', () => {
-      it('noThumbnailClass should set the appropriate CSS class when no thumbnail is available', () => {
-        test = Mock.optionsResultComponentSetup<Thumbnail, IThumbnailOptions>(Thumbnail, <IThumbnailOptions>{
-          noThumbnailClass: 'coveo-heyo-there-is-no-class'
-        }, <IQueryResult>{ flags: '' });
+      it('noThumbnailClass should set the appropriate CSS class when no thumbnail is available', (done) => {
+        endpoint.getRawDataStream = () => new Promise<ArrayBuffer>((resolve, reject) => { reject()});
 
-        expect($$(test.cmp.img).hasClass('coveo-heyo-there-is-no-class')).toBe(true);
-        expect($$(test.cmp.img).hasClass('coveo-no-thumbnail')).toBe(false);
+        test = Mock.advancedResultComponentSetup<Thumbnail>(Thumbnail, undefined, <Mock.AdvancedComponentSetupOptions>{
+          cmpOptions: <IThumbnailOptions>{ noThumbnailClass: 'coveo-heyo-there-is-no-class' },
+          modifyBuilder: (builder: Mock.MockEnvironmentBuilder) => builder.withEndpoint(endpoint)
+        });
+
+        Defer.defer(() => {
+          expect($$(test.cmp.img).hasClass('coveo-heyo-there-is-no-class')).toBe(true);
+          expect($$(test.cmp.img).hasClass('coveo-no-thumbnail')).toBe(false);
+          done();
+        })
       });
 
       it('should create a result link if the element is not an image', () => {
