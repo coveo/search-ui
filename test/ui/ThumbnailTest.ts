@@ -82,7 +82,7 @@ export function ThumbnailTest() {
 
     describe('exposes options', () => {
       it('noThumbnailClass should set the appropriate CSS class when no thumbnail is available', (done) => {
-        endpoint.getRawDataStream = () => new Promise<ArrayBuffer>((resolve, reject) => { reject()});
+        endpoint.getRawDataStream = () => new Promise<ArrayBuffer>((resolve, reject) => { reject(); });
 
         test = Mock.advancedResultComponentSetup<Thumbnail>(Thumbnail, undefined, <Mock.AdvancedComponentSetupOptions>{
           cmpOptions: <IThumbnailOptions>{ noThumbnailClass: 'coveo-heyo-there-is-no-class' },
@@ -93,7 +93,7 @@ export function ThumbnailTest() {
           expect($$(test.cmp.img).hasClass('coveo-heyo-there-is-no-class')).toBe(true);
           expect($$(test.cmp.img).hasClass('coveo-no-thumbnail')).toBe(false);
           done();
-        })
+        });
       });
 
       it('should create a result link if the element is not an image', () => {
