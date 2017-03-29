@@ -1,10 +1,11 @@
+'use strict';
+
 const fs = require('fs');
 const path = require('path');
 const _ = require('underscore');
 const glob = require('glob');
 const gulp = require('gulp');
 const utilities = require('./buildUtilities');
-
 
 gulp.task('fileTypes', function (done) {
   readJsonForAllRepositories(function (json) {
@@ -18,19 +19,6 @@ gulp.task('fileTypes', function (done) {
 
     done();
   }, './filetypes/*.json');
-});
-
-gulp.task('fileTypesLegacy', function (done) {
-  readJsonForAllRepositories(function (json) {
-    var sass = generateSass(json, true);
-    fs.writeFileSync('bin/sasslegacy/_GeneratedIcons.scss', sass);
-
-    var str = generateStrings(json);
-    utilities.ensureDirectory('bin/strings');
-    fs.writeFileSync('bin/strings/filetypes.json', str);
-
-    done();
-  }, './breakingchanges/redesign/filetypes/*.json');
 });
 
 function readJsonForAllRepositories(callback, path) {

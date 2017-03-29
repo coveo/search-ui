@@ -18,7 +18,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/coveo/coveo.search.js.git"
+    "url": "git+https://github.com/coveo/search-ui.git"
   },
   "keywords": [
     "coveo",
@@ -33,7 +33,7 @@
   "author": "Coveo <sandbox_JSUI@coveo.com> (http://source.coveo.com/)",
   "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/coveo/coveo.search.js/issues"
+    "url": "https://github.com/coveo/search-ui/issues"
   },
   "files": [
     "bin",
@@ -48,7 +48,7 @@
     "src",
     "typings"
   ],
-  "homepage": "https://github.com/coveo/coveo.search.js#readme",
+  "homepage": "https://github.com/coveo/search-ui#readme",
   "engines": {
     "node": "6.9.2"
   },
@@ -83,9 +83,7 @@
     "gulp-footer": "^1.0.5",
     "gulp-rename": "^1.2.2",
     "gulp-replace": "^0.5.4",
-    "gulp-sass": "^2.3.2",
     "gulp-shell": "^0.5.2",
-    "gulp-util": "^3.0.7",
     "gulp-zip": "^3.2.0",
     "image-size": "^0.5.0",
     "imports-loader": "^0.6.5",
@@ -94,7 +92,6 @@
     "jasmine": "^2.4.1",
     "jasmine-core": "^2.4.1",
     "json5": "^0.5.0",
-    "jstimezonedetect": "^1.0.6",
     "karma": "^0.13.22",
     "karma-chrome-launcher": "^1.0.1",
     "karma-coverage": "^1.0.0",
@@ -120,7 +117,6 @@
     "string-replace-loader": "^1.0.2",
     "style-loader": "^0.13.1",
     "ts-loader": "^2.0.0",
-    "tsconfig-glob": "^0.4.3",
     "typedoc": "https://github.com/coveord/typedoc/tarball/master",
     "typescript": "^2.1.5",
     "walk": "^2.3.9",
