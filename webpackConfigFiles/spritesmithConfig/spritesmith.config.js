@@ -18,7 +18,7 @@ module.exports = new SpritesmithPlugin({
         cssImageRef: '../image/spritesNew.png',
         generateSpriteName: function(spriteImageFullPath) {
           let relative = path.relative(cwd, spriteImageFullPath);
-          return relative.split('/').join('-').replace('.png', '').toLowerCase();
+          return relative.split('/').join('-').replace('.png', '').replace('sprites-', '').replace('retina-', '').toLowerCase();
         }
       },
       retina: {
