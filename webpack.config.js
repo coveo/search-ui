@@ -5,14 +5,14 @@ const webpack = require('webpack');
 const path = require('path');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const spritesmithConfig = require('./webpackConfigFiles/spritesmithConfig/spritesmith.config.js');
-const salesforceSpritesmithConfig = require('./webpackConfigFiles/spritesmithConfig/salesforce.spritesmith.config');
+// const salesforceSpritesmithConfig = require('./webpackConfigFiles/spritesmithConfig/salesforce.spritesmith.config');
 const production = process.env.NODE_ENV === 'production';
 let conf = require('./webpackConfigFiles/webpack.common.config');
 let bail;
 
 // SpritesmithPlugin takes care of outputting the stylesheets.
 conf.plugins.push(spritesmithConfig);
-conf.plugins.push(salesforceSpritesmithConfig);
+// conf.plugins.push(salesforceSpritesmithConfig);
 
 if (production) {
   // ExtractTextPlugin allows to output a css bundle instead of dynamically adding style tags

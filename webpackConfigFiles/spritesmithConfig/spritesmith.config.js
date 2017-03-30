@@ -1,10 +1,12 @@
 const SpritesmithPlugin = require('webpack-spritesmith');
 const path = require('path');
 
+let cwd = path.resolve(__dirname, '../../image');
+
 module.exports = new SpritesmithPlugin({
       src: {
-        cwd: path.resolve(__dirname, '../../image'),
-        glob: '{retina,sprites}/*.png'
+        cwd: cwd,
+        glob: '{retina,sprites}/**/*.png'
       },
       target: {
         image: path.resolve(__dirname, '../../bin/image/spritesNew.png'),
@@ -13,7 +15,11 @@ module.exports = new SpritesmithPlugin({
         }]]
       },
       apiOptions: {
-        cssImageRef: '../image/spritesNew.png'
+        cssImageRef: '../image/spritesNew.png',
+        generateSpriteName: function(spriteImageFullPath) {
+          let relative = path.relative(cwd, spriteImageFullPath);
+          return relative.split('/').join('-').replace('.png', '').toLowerCase();
+        }
       },
       retina: {
         classifier: function(spritePath) {
