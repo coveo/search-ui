@@ -39,7 +39,7 @@ compilerPlayground.plugin('done', ()=> {
   debouncedGenerateDoc();
 })
 
-gulp.task('dev', ['setup', 'prepareSass'], (done)=> {
+gulp.task('dev', ['setup'], (done)=> {
   let server = new WebpackDevServer(compiler, {
     compress: true,
     contentBase: 'bin/',

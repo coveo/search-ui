@@ -428,7 +428,7 @@ export class FacetSearch {
     let selectAll = document.createElement('li');
     if (Utils.isNonEmptyString(facetSearchParameters.valueToSearch)) {
       $$(selectAll).addClass(['coveo-facet-selectable', 'coveo-facet-search-selectable', 'coveo-facet-search-select-all']);
-      $$(selectAll).text('SelectAll');
+      $$(selectAll).text(l('SelectAll'));
       $$(selectAll).on('click', () => this.selectAllValuesMatchingSearch());
       if (!this.isMobileDevice()) {
         this.searchResults.appendChild(selectAll);

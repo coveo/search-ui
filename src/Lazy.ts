@@ -226,4 +226,3 @@ youtubeThumbnailRegisterFields();
 
 import { swapVar } from './SwapVar';
 swapVar(this);
-
