@@ -161,7 +161,7 @@ export function InitializationTest() {
 
     it('allow to monkeyPatchComponentMethod', function () {
       Initialization.initializeFramework(root, searchInterfaceOptions, () => {
-        Initialization.initSearchInterface(root, searchInterfaceOptions);
+        return Initialization.initSearchInterface(root, searchInterfaceOptions);
       });
       let patch = jasmine.createSpy('patch');
       Initialization.monkeyPatchComponentMethod('submit', queryBox, patch);

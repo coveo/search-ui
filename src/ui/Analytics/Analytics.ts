@@ -17,7 +17,6 @@ import { LiveAnalyticsClient } from './LiveAnalyticsClient';
 import { MultiAnalyticsClient } from './MultiAnalyticsClient';
 import { IAnalyticsQueryErrorMeta, analyticsActionCauseList } from './AnalyticsActionListMeta';
 import { SearchInterface } from '../SearchInterface/SearchInterface';
-import { Recommendation } from '../Recommendation/Recommendation';
 import { RecommendationAnalyticsClient } from './RecommendationAnalyticsClient';
 import * as _ from 'underscore';
 import { exportGlobally } from '../../GlobalExports';
@@ -369,7 +368,7 @@ export class Analytics extends Component {
     let selector = Component.computeSelectorForType(Analytics.ID);
     let found: HTMLElement[] = [];
     found = found.concat($$(element).findAll(selector));
-    if (!(Component.get(element, SearchInterface) instanceof Recommendation)) {
+    if (!(Component.get(element, SearchInterface) instanceof Coveo['Recommendation'])) {
       found = this.ignoreElementsInsideRecommendationInterface(found);
     }
     found.push($$(element).closest(Component.computeCssClassName(Analytics)));
@@ -389,7 +388,7 @@ export class Analytics extends Component {
 
   private static ignoreElementsInsideRecommendationInterface(found: HTMLElement[]): HTMLElement[] {
     return _.filter(found, (element) => {
-      return $$(element).closest(Component.computeCssClassName(Recommendation)) === undefined;
+      return $$(element).closest(Component.computeCssClassNameForType('Recommendation')) === undefined;
     });
   }
 
