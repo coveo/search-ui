@@ -9,80 +9,21 @@ const salesforceSpritesmithConfig = require('./webpackConfigFiles/spritesmithCon
 const production = process.env.NODE_ENV === 'production';
 const globalizePath = __dirname + '/lib/globalize/globalize.min.js';
 
-let bail;
 let plugins = [];
-let additionalRules = [];
-
-if (minimize) {
-  plugins.push(new webpack.optimize.UglifyJsPlugin());
-}
 
 // SpritesmithPlugin takes care of outputting the stylesheets.
 plugins.push(spritesmithConfig);
 plugins.push(salesforceSpritesmithConfig);
 
-if (production) {
-  const extractSass = new ExtractTextPlugin({
-    filename: '../css/CoveoFullSearchNewDesign.css'
-  });
-  additionalRules.push({
-    test: /\.scss/,
-    use: extractSass.extract({
-      use: [{
-        loader: 'css-loader',
-        options: {
-          sourceMap: true
-        }
-      }, {
-        loader: 'resolve-url-loader'
-      }, {
-        loader: 'sass-loader',
-        options: {
-          sourceMap: true
-        }
-      }],
-      fallback: 'style-loader',
-      // This is important to set the correct relative path inside the generated css correctly
-      publicPath: ''
-    })
-  });
-  plugins.push(extractSass);
-  bail = true;
-} else {
-  additionalRules.push({
-    test: /\.scss/,
-    use: [{
-      loader: 'style-loader',
-    }, {
-      loader: 'css-loader',
-      options: {
-        sourceMap: true
-      }
-    }, {
-      loader: 'resolve-url-loader'
-    }, {
-      loader: 'sass-loader',
-      options: {
-        sourceMap: true
-      }
-    }]
-  });
-  bail = false;
-}
-
 module.exports = {
   entry: {
-    'CoveoJsSearch.Lazy': ['./src/Lazy.ts'],
-    'CoveoJsSearch': ['./src/Eager.ts']
+    'tests': ['./test/Test.ts']
   },
   output: {
-    path: path.resolve('./bin/js'),
-    filename: minimize ? '[name].min.js' : '[name].js',
-    chunkFilename: minimize ? '[name].min.js' : '[name].js',
-    libraryTarget: 'umd',
-    // See SwapVar.ts as for why this need to be a temporary variable
-    library: 'Coveo__temporary',
-    publicPath: 'js/',
+    path: require('path').resolve('./bin/tests'),
+    filename: '[name].js',
+    libraryTarget: 'var',
+    library: 'Coveo',
     devtoolModuleFilenameTemplate: '[resource-path]'
   },
   resolve: {
@@ -100,7 +41,7 @@ module.exports = {
   },
   devtool: 'source-map',
   module: {
-    rules: additionalRules.concat([{
+    rules: [{
       test: /underscore-min.js/,
       use: [{
         loader: 'string-replace-loader',
@@ -156,8 +97,24 @@ module.exports = {
       use: [{
         loader: 'ts-loader'
       }]
-    }])
+    }, {
+      test: /\.scss/,
+      use: [{
+        loader: 'style-loader',
+      }, {
+        loader: 'css-loader',
+        options: {
+          sourceMap: true
+        }
+      }, {
+        loader: 'resolve-url-loader'
+      }, {
+        loader: 'sass-loader',
+        options: {
+          sourceMap: true
+        }
+      }]
+    }]
   },
-  plugins: plugins,
-  bail: bail
+  plugins: plugins
 };

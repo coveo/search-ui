@@ -23,7 +23,6 @@ var configuration = {
   }],
   plugins: [
     'karma-jasmine',
-    'karma-chrome-launcher',
     'karma-phantomjs-launcher',
     'karma-coverage',
     'karma-spec-reporter'
