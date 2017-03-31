@@ -44,6 +44,7 @@ if (production) {
   bail = true;
 
 } else {
+  console.log('HHERRREE');
   conf.module.rules.push({
     test: /\.scss/,
     use: [{
@@ -51,7 +52,7 @@ if (production) {
     }, {
       loader: 'css-loader',
       options: {
-        sourceMap: 'true'
+        sourceMap: true
       }
     }, {
       loader: 'resolve-url-loader'
@@ -75,6 +76,14 @@ conf.module.rules.push({
     }
   }]
 });
+
+conf.module.rules.push({
+  test: /\.ts$/,
+  use: [{
+    loader: 'ts-loader'
+  }]
+});
+
 
 conf.entry = {
   'CoveoJsSearch.Lazy': ['./src/Lazy.ts'],

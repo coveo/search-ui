@@ -40,7 +40,7 @@ export function InitializationTest() {
 
       expect(Component.get(queryBox) instanceof Querybox).toBe(false);
       Initialization.initializeFramework(root, searchInterfaceOptions, () => {
-        Initialization.initSearchInterface(root, searchInterfaceOptions);
+        return Initialization.initSearchInterface(root, searchInterfaceOptions);
       });
       expect(Component.get(queryBox) instanceof Querybox).toBe(true);
     });
@@ -48,7 +48,7 @@ export function InitializationTest() {
     it('should not initialize a search interface twice', () => {
       expect(Component.get(queryBox) instanceof Querybox).toBe(false);
       Initialization.initializeFramework(root, searchInterfaceOptions, () => {
-        Initialization.initSearchInterface(root, searchInterfaceOptions);
+        return Initialization.initSearchInterface(root, searchInterfaceOptions);
       });
       expect(Component.get(queryBox) instanceof Querybox).toBe(true);
 
@@ -58,7 +58,7 @@ export function InitializationTest() {
       root.appendChild(newQueryBox);
       expect(Component.get(newQueryBox) instanceof Querybox).toBe(false);
       Initialization.initializeFramework(root, searchInterfaceOptions, () => {
-        Initialization.initSearchInterface(root, searchInterfaceOptions);
+        return Initialization.initSearchInterface(root, searchInterfaceOptions);
       });
       expect(Component.get(newQueryBox) instanceof Querybox).toBe(false);
     });
@@ -77,7 +77,7 @@ export function InitializationTest() {
 
       expect(Component.get(queryBox) instanceof Querybox).toBe(false);
       Initialization.initializeFramework(root, searchInterfaceOptions, () => {
-        Initialization.initSearchInterface(root, searchInterfaceOptions);
+        return Initialization.initSearchInterface(root, searchInterfaceOptions);
       });
       expect(Component.get(queryBox) instanceof Querybox).toBe(true);
       let sBox = <Querybox>Component.get(queryBox);
@@ -94,7 +94,7 @@ export function InitializationTest() {
 
       Initialization.registerAutoCreateComponent(dummyCmp);
       Initialization.initializeFramework(root, searchInterfaceOptions, () => {
-        Initialization.initSearchInterface(root, searchInterfaceOptions);
+        return Initialization.initSearchInterface(root, searchInterfaceOptions);
       });
       expect(dummyCmp).toHaveBeenCalled();
     });
@@ -115,17 +115,20 @@ export function InitializationTest() {
       expect(Initialization.getRegisteredComponent('Facet')).toBe(Facet);
     });
 
-    it('allow to automaticallyCreateComponentsInside', () => {
+    it('allow to automaticallyCreateComponentsInside', (done) => {
       let env = new Mock.MockEnvironmentBuilder().build();
       expect(Component.get(queryBox) instanceof Querybox).toBe(false);
       Initialization.automaticallyCreateComponentsInside(root, {
         options: {},
         bindings: env
+      }).then(() => {
+        expect(Component.get(queryBox) instanceof Querybox).toBe(true);
+        done();
       });
-      expect(Component.get(queryBox) instanceof Querybox).toBe(true);
+
     });
 
-    it('allow to automaticallyCreateComponentInside, as well as childs components', () => {
+    it('allow to automaticallyCreateComponentInside, as well as childs components', (done) => {
       let env = new Mock.MockEnvironmentBuilder().build();
       let resultList = $$('div', { className: Component.computeCssClassNameForType(ResultList.ID) });
       $$(queryBox).append(resultList.el);
@@ -133,21 +136,25 @@ export function InitializationTest() {
       Initialization.automaticallyCreateComponentsInside(root, {
         options: {},
         bindings: env
+      }).then(() => {
+        expect(Component.get(resultList.el) instanceof ResultList).toBe(true);
+        done();
       });
-      expect(Component.get(resultList.el) instanceof ResultList).toBe(true);
     });
 
-    it('allow to automaticallyCreateComponentsInside and can ignore some components', () => {
+    it('allow to automaticallyCreateComponentsInside and can ignore some components', (done) => {
       let env = new Mock.MockEnvironmentBuilder().build();
       expect(Component.get(queryBox) instanceof Querybox).toBe(false);
       Initialization.automaticallyCreateComponentsInside(root, {
         options: {},
         bindings: env
-      }, [Querybox.ID]);
-      expect(Component.get(queryBox) instanceof Querybox).toBe(false);
+      }, [Querybox.ID]).then(() => {
+        expect(Component.get(queryBox) instanceof Querybox).toBe(false);
+        done();
+      });
     });
 
-    it('allow to automaticallyCreateComponentInside can ignore child components', () => {
+    it('allow to automaticallyCreateComponentInside can ignore child components', (done) => {
       let env = new Mock.MockEnvironmentBuilder().build();
       let resultList = $$('div', { className: Component.computeCssClassNameForType(ResultList.ID) });
       $$(queryBox).append(resultList.el);
@@ -155,8 +162,11 @@ export function InitializationTest() {
       Initialization.automaticallyCreateComponentsInside(root, {
         options: {},
         bindings: env
-      }, [Querybox.ID]);
-      expect(Component.get(resultList.el) instanceof ResultList).toBe(false);
+      }, [Querybox.ID]).then(() => {
+        expect(Component.get(resultList.el) instanceof ResultList).toBe(false);
+        done();
+      });
+
     });
 
     it('allow to monkeyPatchComponentMethod', function () {
@@ -176,7 +186,7 @@ export function InitializationTest() {
 
       searchInterfaceOptions['externalComponents'] = [external];
       Initialization.initializeFramework(root, searchInterfaceOptions, () => {
-        Initialization.initSearchInterface(root, searchInterfaceOptions);
+        return Initialization.initSearchInterface(root, searchInterfaceOptions);
       });
       expect(Component.get(external) instanceof Pager).toBe(true);
     });
@@ -186,7 +196,7 @@ export function InitializationTest() {
       let external = $('<div class="CoveoPager"></div>');
       searchInterfaceOptions['externalComponents'] = [external];
       Initialization.initializeFramework(root, searchInterfaceOptions, () => {
-        Initialization.initSearchInterface(root, searchInterfaceOptions);
+        return Initialization.initSearchInterface(root, searchInterfaceOptions);
       });
       expect(Component.get(external.get(0)) instanceof Pager).toBe(true);
       Simulate.removeJQuery();

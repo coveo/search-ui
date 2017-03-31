@@ -26,16 +26,7 @@ module.exports = {
   },
   devtool: 'source-map',
   module: {
-    rules: [
-      {
-        test: /\.ts$/,
-        use: [{
-          loader: 'ts-loader',
-          options: {
-            project: 'tsconfig.json'
-          }
-        }]
-      }, {
+    rules: [{
         test: /underscore-min.js/,
         use: [{
           loader: 'string-replace-loader',
