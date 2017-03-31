@@ -10,6 +10,8 @@ import { ResultLink } from '../../src/ui/ResultLink/ResultLink';
 import { Component } from '../../src/ui/Base/Component';
 import { MockEnvironmentBuilder } from '../MockEnvironment';
 import { Defer } from '../../src/misc/Defer';
+import { Icon } from '../../src/ui/Icon/Icon';
+import { FakeResults } from '../Fake';
 
 export function ThumbnailTest() {
   describe('Thumbnail', function () {
@@ -69,15 +71,14 @@ export function ThumbnailTest() {
       });
     });
 
-    it('should instanciate an icon when no thumnail is available', (done) => {
-      let result = <IQueryResult>{ flags: '' };
-      let IconModuleMock: any = function () {
-        expect(true).toBe(true);
-        done();
-      };
+    it('should instanciate an icon when no thumnail is available', () => {
+      let result = FakeResults.createFakeResult('foobar');
+      result.raw.filetype = 'unknown';
+      result.flags = '';
 
-      let envBuilder = new MockEnvironmentBuilder().withResult(result);      
-      new Thumbnail(test.env.element, {}, test.cmp.bindings, envBuilder.result, IconModuleMock);
+      let envBuilder = new MockEnvironmentBuilder().withResult(result);
+      new Thumbnail(test.env.element, {}, test.cmp.bindings, envBuilder.result);
+      expect(get($$(test.cmp.root).find('.CoveoIcon'), Icon) instanceof Icon).toBe(true);
     });
 
     describe('exposes options', () => {

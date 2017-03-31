@@ -71,7 +71,7 @@ export class Thumbnail extends Component {
    * automatically resolved (with a slower execution time).
    * @param result The result to associate the component with.
    */
-  constructor(public element: HTMLElement, public options?: IThumbnailOptions, public bindings?: IResultsComponentBindings, public result?: IQueryResult, private IconModule = Icon) {
+  constructor(public element: HTMLElement, public options?: IThumbnailOptions, public bindings?: IResultsComponentBindings, public result?: IQueryResult) {
     super(element, Thumbnail.ID, bindings);
 
     this.options = ComponentOptions.initOptions(element, <any>Thumbnail.options, options);
@@ -105,7 +105,7 @@ export class Thumbnail extends Component {
       this.buildThumbnailImage();
     } else {
       this.logger.info('Result has no thumbnail. Cannot build thumbnail image, instanciating an Icon component instead.');
-      new IconModule(element, { small: true}, bindings, result);
+      new Icon(element, { small: true }, bindings, result);
     }
   }
 
