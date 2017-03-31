@@ -68,7 +68,7 @@ conf.module.rules.push({
   use: [{
     loader: 'file-loader',
     options: {
-      name: '../image/[name].[ext]',
+      name: production ? '../image/[name].[ext]' : 'http://localhost:8080/image/[name].[ext]',
       emitFile: false
     }
   }]

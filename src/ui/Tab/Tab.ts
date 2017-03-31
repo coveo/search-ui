@@ -1,4 +1,4 @@
-import { ResponsiveTabs } from '../ResponsiveComponents/ResponsiveTabs.ts';
+import { ResponsiveTabs } from '../ResponsiveComponents/ResponsiveTabs';
 import { Component } from '../Base/Component';
 import { ComponentOptions } from '../Base/ComponentOptions';
 import { IComponentBindings } from '../Base/ComponentBindings';
