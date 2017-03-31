@@ -11,6 +11,9 @@ import { DeviceUtils } from '../../utils/DeviceUtils';
 import * as _ from 'underscore';
 import { exportGlobally } from '../../GlobalExports';
 
+import 'styling/_ResultsPerPage';
+
+
 export interface IResultsPerPageOptions {
   choicesDisplayed?: number[];
   initialChoice?: number;

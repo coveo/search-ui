@@ -5,9 +5,12 @@
 @import "Loader";
 @import "Icons";
 @import "../bin/sass/ModalBox";
+@import "SearchModalBox";
 @import "Logo";
 @import "mixins/coveoSpin";
 @import "Animations";
+@import "Salesforce";
+@import "SalesforceChatter";
 
 @import "vapor/Input";
 @import "vapor/NumericSpinner";

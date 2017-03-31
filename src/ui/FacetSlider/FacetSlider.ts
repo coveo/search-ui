@@ -23,8 +23,10 @@ import { Initialization } from '../Base/Initialization';
 import { SearchAlertsEvents, ISearchAlertsPopulateMessageEventArgs } from '../../events/SearchAlertEvents';
 import * as _ from 'underscore';
 import { exportGlobally } from '../../GlobalExports';
-import 'styling/_FacetSlider';
 import { ResponsiveFacetSlider } from '../ResponsiveComponents/ResponsiveFacetSlider';
+
+import 'styling/_FacetSlider';
+
 
 export interface IFacetSliderOptions extends ISliderOptions {
   dateField?: boolean;

@@ -1,4 +1,7 @@
+@import "mixins/resultsHeaderElement";
 @import "../bin/sass/sprites";
+@import "bourbon/bourbon";
+@import "Variables";
 
 $stop-float: new-breakpoint(max-width 480px 1);
 
@@ -13,7 +16,7 @@ $stop-float: new-breakpoint(max-width 480px 1);
     margin-left: 5px;
     position: relative;
     top: 2px;
-    @include retina-sprite($arrow-dowsn-group);
+    @include retina-sprite($arrow-down-group);
   }
 
   &.coveo-ascending {

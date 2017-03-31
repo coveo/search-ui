@@ -1,5 +1,5 @@
 import { Component } from '../Base/Component';
-import { SortCriteria } from './SortCriteria.ts';
+import { SortCriteria } from './SortCriteria';
 import { ComponentOptions } from '../Base/ComponentOptions';
 import { IComponentBindings } from '../Base/ComponentBindings';
 import { Assert } from '../../misc/Assert';
@@ -14,6 +14,8 @@ import { KeyboardUtils, KEYBOARD } from '../../utils/KeyboardUtils';
 import { IQueryErrorEventArgs } from '../../events/QueryEvents';
 import * as _ from 'underscore';
 import { exportGlobally } from '../../GlobalExports';
+
+import 'styling/_Sort';
 
 export interface ISortOptions {
   sortCriteria?: SortCriteria[];

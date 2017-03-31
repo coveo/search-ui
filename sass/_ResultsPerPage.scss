@@ -1,5 +1,9 @@
+@import "Variables";
+@import "../bin/sass/sprites";
+@import "mixins/pagerList";
+
 .CoveoResultsPerPage {
-  margin: 0px 0px 0 15px;
+  margin: 0 0 0 15px;
   display: inline-block;
   float: right;
 }
@@ -10,11 +14,11 @@
 }
 
 .coveo-results-per-page-list {
-  @include retina-sprite($pager-list-group);
+  @include pager-list;
 }
 
 .coveo-results-per-page-list-item {
-  @include retina-sprite($pager-list-item-group);
+  @include pager-list-item;
   padding: 4px;
 }
 
