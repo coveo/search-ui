@@ -11,6 +11,8 @@ import { Initialization } from '../Base/Initialization';
 import * as _ from 'underscore';
 import { exportGlobally } from '../../GlobalExports';
 
+import 'styling/_Triggers';
+
 export interface ITriggersOptions {
 }
 
