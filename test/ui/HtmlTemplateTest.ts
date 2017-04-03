@@ -21,5 +21,17 @@ export function HtmlTemplateTest() {
       expect(createdTemplate.layout).toEqual('list');
       expect(createdTemplate.mobile).toBe(true);
     });
+
+    it('created element should have no attribute type', () => {
+      let element = document.createElement('script');
+      let createdTemplate = HtmlTemplate.create(element);
+      let createdHtmlElement = createdTemplate.toHtmlElement();
+      expect(createdHtmlElement.getAttribute('type')).toEqual(null);      
+    });
+
+    it('created element from string should have no attribute type', () => {
+      let createdTemplate = HtmlTemplate.fromString(`<div class="CoveoResultLink" data-field="@foo"></div>`, <ITemplateFromStringProperties>{});      
+      expect(createdTemplate.element.getAttribute('type')).toEqual(null); 
+    });
   });
 }

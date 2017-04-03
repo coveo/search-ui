@@ -53,7 +53,7 @@ export interface IResultListOptions {
 export class ResultList extends Component {
 
   private static getDefaultTemplate(e: HTMLElement): Template {
-    var template = ResultList.loadTemplatesFromCache();
+    const template = ResultList.loadTemplatesFromCache();
     if (template != null) {
       return template;
     }

@@ -9,8 +9,8 @@ declare let crypto: Crypto;
 
 export class QueryUtils {
   static createGuid(): string {
-    var guid: string;
-    var success: boolean = false;
+    let guid: string;
+    let success: boolean = false;
     if ((typeof (crypto) != 'undefined' && typeof (crypto.getRandomValues) != 'undefined')) {
       try {
         guid = QueryUtils.generateWithCrypto();
