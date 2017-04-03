@@ -39,3 +39,9 @@ $stop-float: new-breakpoint(max-width 480px 1);
     display: table-cell;
   }
 }
+
+.coveo-result-list-table-header .CoveoSort:not(.coveo-selected) {
+  .coveo-icon {
+    visibility: hidden;
+  }
+}
