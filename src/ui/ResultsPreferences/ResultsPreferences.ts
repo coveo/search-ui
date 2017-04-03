@@ -3,7 +3,6 @@ import { ComponentOptions } from '../Base/ComponentOptions';
 import { ComponentOptionsModel } from '../../models/ComponentOptionsModel';
 import { IComponentBindings } from '../Base/ComponentBindings';
 import { LocalStorageUtils } from '../../utils/LocalStorageUtils';
-import { PreferencesPanel } from '../PreferencesPanel/PreferencesPanel';
 import { PreferencesPanelCheckboxInput } from '../PreferencesPanel/PreferencesPanelItem';
 import { PreferencesPanelEvents } from '../../events/PreferencesPanelEvents';
 import { analyticsActionCauseList, IAnalyticsPreferencesChangeMeta } from '../Analytics/AnalyticsActionListMeta';
@@ -76,7 +75,7 @@ export class ResultsPreferences extends Component {
 
     this.options = ComponentOptions.initComponentOptions(element, ResultsPreferences, options);
 
-    this.preferencesPanel = $$(this.element).closest(Component.computeCssClassName(PreferencesPanel));
+    this.preferencesPanel = $$(this.element).closest(Component.computeCssClassNameForType('PreferencesPanel'));
     this.preferencePanelLocalStorage = new LocalStorageUtils(ResultsPreferences.ID);
     Assert.exists(this.componentOptionsModel);
     Assert.exists(window.localStorage);

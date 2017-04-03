@@ -5,8 +5,6 @@ import { SearchAlertsMessage } from './SearchAlertsMessage';
 import { SettingsEvents } from '../../events/SettingsEvents';
 import { QueryEvents } from '../../events/QueryEvents';
 import { Assert } from '../../misc/Assert';
-import { Querybox } from '../Querybox/Querybox';
-import { Omnibox } from '../Omnibox/Omnibox';
 import { IQuery } from '../../rest/Query';
 import { AjaxError } from '../../rest/AjaxError';
 import { ISettingsPopulateMenuArgs } from '../Settings/Settings';
@@ -403,11 +401,11 @@ export class SearchAlerts extends Component {
 
   protected findQueryBoxDom(): HTMLElement {
     let dom: HTMLElement;
-    let components = this.searchInterface.getComponents<Component>(Querybox.ID);
+    let components = this.searchInterface.getComponents<Component>('Querybox');
     if (components && components.length > 0) {
       dom = _.first(components).element;
     } else {
-      let components = this.searchInterface.getComponents<Component>(Omnibox.ID);
+      let components = this.searchInterface.getComponents<Component>('Omnibox');
       if (components && components.length > 0) {
         dom = _.first(components).element;
       }

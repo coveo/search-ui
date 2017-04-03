@@ -7,9 +7,9 @@ import { QueryUtils } from '../../utils/QueryUtils';
 import { Initialization } from '../Base/Initialization';
 import { ISearchEndpoint } from '../../rest/SearchEndpointInterface';
 import { $$ } from '../../utils/Dom';
-import { FieldTable } from '../FieldTable/FieldTable';
 import { get } from '../Base/RegisteredNamedMethods';
 import { IResultLinkOptions } from '../ResultLink/ResultLinkOptions';
+import FieldTableModule = require('../FieldTable/FieldTable');
 import * as _ from 'underscore';
 import { exportGlobally } from '../../GlobalExports';
 
@@ -137,9 +137,9 @@ export class Thumbnail extends Component {
   }
 
   private resizeContainingFieldTable() {
-    let closestFieldTableElement = $$(this.element).closest(Component.computeCssClassName(FieldTable));
+    let closestFieldTableElement = $$(this.element).closest(Component.computeCssClassNameForType('FieldTable'));
     if (closestFieldTableElement != null) {
-      let fieldTable = <FieldTable>get(closestFieldTableElement);
+      let fieldTable = <FieldTableModule.FieldTable>get(closestFieldTableElement);
       fieldTable.updateToggleHeight();
     }
   }

@@ -1,7 +1,6 @@
 import { IComponentDefinition } from '../Base/Component';
 import { Initialization } from '../Base/Initialization';
 import { lazyExport } from '../../GlobalExports';
-import { Promise } from 'es6-promise';
 
 export function lazyFacet() {
   Initialization.registerLazyComponent('Facet', () => {

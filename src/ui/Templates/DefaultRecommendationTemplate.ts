@@ -28,7 +28,7 @@ export class DefaultRecommendationTemplate extends Template {
     return new Promise((resolve, reject) => {
       var div = document.createElement('div');
       div.innerHTML = this.instantiateToString(object);
-      return div;
+      resolve(div);
     });
   }
 }

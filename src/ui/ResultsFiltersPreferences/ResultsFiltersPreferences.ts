@@ -3,7 +3,6 @@ import { ComponentOptions } from '../Base/ComponentOptions';
 import { IComponentBindings } from '../Base/ComponentBindings';
 import { LocalStorageUtils } from '../../utils/LocalStorageUtils';
 import { KEYBOARD } from '../../utils/KeyboardUtils';
-import { PreferencesPanel } from '../PreferencesPanel/PreferencesPanel';
 import { PreferencesPanelCheckboxInput, PreferencesPanelTextAreaInput, PreferencePanelMultiSelectInput, IPreferencePanelInputToBuild } from '../PreferencesPanel/PreferencesPanelItem';
 import { InitializationEvents } from '../../events/InitializationEvents';
 import { PreferencesPanelEvents } from '../../events/PreferencesPanelEvents';
@@ -143,7 +142,7 @@ export class ResultsFiltersPreferences extends Component {
 
     this.options = ComponentOptions.initComponentOptions(element, ResultsFiltersPreferences, options);
 
-    this.preferencePanel = $$(this.element).closest(Component.computeCssClassName(PreferencesPanel));
+    this.preferencePanel = $$(this.element).closest(Component.computeCssClassNameForType('PreferencesPanel'));
     this.preferencePanelLocalStorage = new LocalStorageUtils<{ [caption: string]: IResultFilterPreference }>(ResultsFiltersPreferences.ID);
     this.mergeLocalPreferencesWithStaticPreferences();
 
