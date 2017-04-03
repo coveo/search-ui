@@ -25,35 +25,26 @@ export class ResultListTableRenderer extends ResultListRenderer {
     }
   }
 
-  afterRenderingResults(resultElements: HTMLElement[]) {
-    if (!_.isEmpty(resultElements)) {
-      this.displayDecorations();
+  beforeRenderingResults(resultElements: HTMLElement[]) {
+    if (!_.isEmpty(resultElements) && this.shouldDisplayHeader) {
+      this.resultListOptions.resultContainer.appendChild(this.renderRoledTemplate('table-header'));
     }
   }
 
-  private displayDecorations() {
-    const decorationsToDisplay = {};
-    if (this.shouldDisplayHeader) {
-      decorationsToDisplay['tableHeader'] = 'table-header';
+  afterRenderingResults(resultElements: HTMLElement[]) {
+    if (!_.isEmpty(resultElements) && this.shouldDisplayFooter) {
+      this.resultListOptions.resultContainer.appendChild(this.renderRoledTemplate('table-footer'));
     }
-    if (this.shouldDisplayFooter) {
-      decorationsToDisplay['tableFooter'] = 'table-footer';
-    }
-    const renderedDecorations = _.mapObject(decorationsToDisplay, (role: TemplateRole) => {
-      const elem = this.resultListOptions.resultTemplate.instantiateToElement({}, {
-        role: role,
-        checkCondition: false,
-        currentLayout: 'table'
-      });
-      $$(elem).addClass(`coveo-result-list-${role}`);
-      this.autoCreateComponentsFn(elem, undefined);
-      return elem;
+  }
+
+  private renderRoledTemplate(role: TemplateRole): HTMLElement {
+    const elem = this.resultListOptions.resultTemplate.instantiateToElement({}, {
+      role: role,
+      checkCondition: false,
+      currentLayout: 'table'
     });
-    if (decorationsToDisplay['tableHeader']) {
-      $$(this.resultListOptions.resultContainer).prepend(renderedDecorations['tableHeader']);
-    }
-    if (decorationsToDisplay['tableFooter']) {
-      this.resultListOptions.resultContainer.appendChild(renderedDecorations['tableFooter']);
-    }
+    $$(elem).addClass(`coveo-result-list-${role}`);
+    this.autoCreateComponentsFn(elem, undefined);
+    return elem;
   }
 }
