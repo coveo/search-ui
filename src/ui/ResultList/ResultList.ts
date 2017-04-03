@@ -1,4 +1,4 @@
-import { Template } from '../Templates/Template';
+import { Template, TemplateRole } from '../Templates/Template';
 import { DefaultResultTemplate } from '../Templates/DefaultResultTemplate';
 import { Component } from '../Base/Component';
 import { IComponentBindings } from '../Base/ComponentBindings';
@@ -25,7 +25,6 @@ import { DefaultRecommendationTemplate } from '../Templates/DefaultRecommendatio
 import { ValidLayout } from '../ResultLayout/ResultLayout';
 import { TemplateList } from '../Templates/TemplateList';
 import { ResponsiveDefaultResultTemplate } from '../ResponsiveComponents/ResponsiveDefaultResultTemplate';
-import { TemplateRole } from '../Templates/Template';
 import _ = require('underscore');
 
 export interface IResultListOptions {
@@ -206,18 +205,6 @@ export class ResultList extends Component {
       defaultValue: 'list',
       required: true,
     }),
-    /**
-     * Specifies if the table header is to be displayed when layout is 'table'
-     *
-     * Default value is `true`.
-     */
-    displayTableHeader: ComponentOptions.buildBooleanOption({ defaultValue: true, depend: 'layout' }),
-    /**
-     * Specifies if the table footer is to be displayed when layout is 'table'
-     *
-     * Default value is `false`.
-     */
-    displayTableFooter: ComponentOptions.buildBooleanOption({ defaultValue: false, depend: 'layout' })
   };
 
   public static resultCurrentlyBeingRendered: IQueryResult = null;
