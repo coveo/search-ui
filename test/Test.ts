@@ -1,5 +1,3 @@
-export * from '../src/Index';
-
 // Get a cleaner output in phantom js for CI builds
 import { Logger } from '../src/misc/Logger';
 import { Simulate } from './Simulate';
@@ -196,9 +194,6 @@ HierarchicalFacetTest();
 
 import { IconTest } from './ui/IconTest';
 IconTest();
-
-import { ImageResultListTest } from './ui/ImageResultListTest';
-ImageResultListTest();
 
 import { InitializationTest } from './ui/InitializationTest';
 InitializationTest();

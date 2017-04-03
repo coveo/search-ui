@@ -10,6 +10,7 @@ import { $$ } from '../../utils/Dom';
 import { get } from '../Base/RegisteredNamedMethods';
 import { IResultLinkOptions } from '../ResultLink/ResultLinkOptions';
 import FieldTableModule = require('../FieldTable/FieldTable');
+import { Icon } from '../Icon/Icon';
 import * as _ from 'underscore';
 import { exportGlobally } from '../../GlobalExports';
 
@@ -100,7 +101,8 @@ export class Thumbnail extends Component {
     if (QueryUtils.hasThumbnail(result)) {
       this.buildThumbnailImage();
     } else {
-      this.setEmptyThumbnailClass();
+      this.logger.info('Result has no thumbnail. Cannot build thumbnail image, instanciating an Icon component instead.');
+      new Icon(element, { small: true }, bindings, result);
     }
   }
 

@@ -23,6 +23,7 @@ import { InitializationEvents } from '../../events/InitializationEvents';
 import { ComponentOptionsModel } from '../../models/ComponentOptionsModel';
 import * as _ from 'underscore';
 import { exportGlobally } from '../../GlobalExports';
+import HistoryQueryElement = CoveoAnalytics.HistoryQueryElement;
 import { DefaultRecommendationTemplate } from '../Templates/DefaultRecommendationTemplate';
 import { RecommendationQuery } from './RecommendationQuery';
 import { RecommendationAnalyticsClient } from '../Analytics/RecommendationAnalyticsClient';
@@ -224,6 +225,10 @@ export class Recommendation extends SearchInterface implements IComponentBinding
 
 
     this.historyStore = new history.HistoryStore();
+    if (!this.options.mainSearchInterface) {
+      // When the recommendation component is "standalone", we add additional safeguard against bad config.
+      this.ensureCurrentPageViewExistsInStore();
+    }
     ResponsiveRecommendation.init(this.root, this, options);
   }
 
@@ -253,6 +258,21 @@ export class Recommendation extends SearchInterface implements IComponentBinding
       this.displayStyle = this.element.style.display;
     }
     this.element.style.display = this.displayStyle;
+  }
+
+  private ensureCurrentPageViewExistsInStore() {
+    // It's not 100% sure that the element will actually be added in the store.
+    // It's possible that an external script configured by the end user to log the page view already did that.
+    // So we *could* end up with duplicate values in the store :
+    // We rely on the fact that the coveo.analytics lib has defensive code against consecutive page view that are identical.
+    // This is mainly done if the recommendation component is being initialized before the page view could be logged correctly by the coveo.analytics externa lib.
+    const historyElement = {
+      name: 'PageView',
+      value: document.location.toString(),
+      time: JSON.stringify(new Date()),
+      title: document.title
+    };
+    this.historyStore.addElement(historyElement);
   }
 
   private bindToMainSearchInterface() {
@@ -395,6 +415,6 @@ export class Recommendation extends SearchInterface implements IComponentBinding
     Recommendation.NEXT_ID++;
     this.options.id = id;
   }
-
 }
+
 // We do not register the Recommendation component since it is done with .coveo('initRecommendation')

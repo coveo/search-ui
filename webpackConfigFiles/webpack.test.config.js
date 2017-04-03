@@ -25,4 +25,9 @@ conf = _.extend(conf, {
   ])
 })
 
+conf.module.rules.push({
+    test: /\.scss/,
+    use: [{ loader: 'null-loader' }]
+});
+
 module.exports = conf;
