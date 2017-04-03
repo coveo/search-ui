@@ -109,7 +109,9 @@ export function DefaultResultTemplateTest() {
             const tableHeader = new Template(() => 'Epic table header');
             tableHeader.role = 'table-header';
             TemplateCache.registerTemplate('tableHeader', tableHeader, true, true);
+
             const instantiatedTemplate = new DefaultResultTemplate().instantiateToString({}, { role: 'table-header' });
+
             expect(instantiatedTemplate).toEqual('Epic table header');
             TemplateCache.unregisterTemplate('tableHeader');
           });
