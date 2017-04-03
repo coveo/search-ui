@@ -2,6 +2,8 @@ import * as Mock from '../MockEnvironment';
 import { FakeResults } from '../Fake';
 import { IQueryResult } from '../../src/rest/QueryResult';
 import { Backdrop, IBackdropOptions } from '../../src/ui/Backdrop/Backdrop';
+import { $$ } from '../../src/utils/Dom';
+import { Simulate } from '../Simulate';
 
 export function BackdropTest() {
   describe('Backdrop', function () {
@@ -74,6 +76,17 @@ export function BackdropTest() {
 
         expect(test.cmp.element.style.background)
           .toContain('linear-gradient(rgba(1, 2, 3, 0.8), rgba(0, 0, 0, 0))');
+      });
+    });
+
+    describe('for a youtube result', () => {
+      it('should open the youtubethumbnail in a modalbox', () => {
+        fakeResult.raw['ytthumbnailurl'] = 'someurl';
+        let fakeModalBox = Simulate.modalBoxModule();
+        test.cmp = new Backdrop(test.env.root, { imageField: 'thumbnailurl' }, test.cmp.getBindings(), fakeResult, null, fakeModalBox);
+
+        $$(test.cmp.element).trigger('click');
+        expect(fakeModalBox.open).toHaveBeenCalled();
       });
     });
   });

@@ -26,36 +26,36 @@ export function ResultsPreferencesTest() {
       localStorage.removeItem('coveo-ResultsPreferences');
     });
 
-    describe('with incoherent configuration', ()=> {
+    describe('with incoherent configuration', () => {
 
       it('will adjust the preferences for outlook correctly', (done) => {
-        localStorage.setItem('coveo-ResultsPreferences', JSON.stringify({openInOutlook: true}));
-        expect(() => test = Mock.advancedComponentSetup<ResultsPreferences>(ResultsPreferences, new Mock.AdvancedComponentSetupOptions(element.el, {enableOpenInOutlook: false}))).not.toThrow();
-        Defer.defer(()=> {
+        localStorage.setItem('coveo-ResultsPreferences', JSON.stringify({ openInOutlook: true }));
+        expect(() => test = Mock.advancedComponentSetup<ResultsPreferences>(ResultsPreferences, new Mock.AdvancedComponentSetupOptions(element.el, { enableOpenInOutlook: false }))).not.toThrow();
+        Defer.defer(() => {
           expect(JSON.parse(localStorage.getItem('coveo-ResultsPreferences')).openInOutlook).toBe(false);
           done();
         });
       });
 
       it('will adjust the preferences for open in new window correctly', (done) => {
-        localStorage.setItem('coveo-ResultsPreferences', JSON.stringify({alwaysOpenInNewWindow: true}));
-        expect(() => test = Mock.advancedComponentSetup<ResultsPreferences>(ResultsPreferences, new Mock.AdvancedComponentSetupOptions(element.el, {enableOpenInNewWindow: false}))).not.toThrow();
-        Defer.defer(()=> {
+        localStorage.setItem('coveo-ResultsPreferences', JSON.stringify({ alwaysOpenInNewWindow: true }));
+        expect(() => test = Mock.advancedComponentSetup<ResultsPreferences>(ResultsPreferences, new Mock.AdvancedComponentSetupOptions(element.el, { enableOpenInNewWindow: false }))).not.toThrow();
+        Defer.defer(() => {
           expect(JSON.parse(localStorage.getItem('coveo-ResultsPreferences')).alwaysOpenInNewWindow).toBe(false);
           done();
         });
       });
     });
 
-    describe('when an input changes', ()=> {
+    describe('when an input changes', () => {
       let input: HTMLInputElement;
 
-      beforeEach(()=> {
-        test = Mock.advancedComponentSetup<ResultsPreferences>(ResultsPreferences, new Mock.AdvancedComponentSetupOptions(element.el, {enableOpenInNewWindow: true}));
+      beforeEach(() => {
+        test = Mock.advancedComponentSetup<ResultsPreferences>(ResultsPreferences, new Mock.AdvancedComponentSetupOptions(element.el, { enableOpenInNewWindow: true }));
         input = <HTMLInputElement>$$(test.cmp.element).find(`input[value='${l('AlwaysOpenInNewWindow')}']`);
       });
 
-      afterEach(()=> {
+      afterEach(() => {
         input = null;
       });
 
@@ -73,7 +73,7 @@ export function ResultsPreferencesTest() {
         }));
       });
 
-      it('will trigger a query when the input is changed', ()=> {
+      it('will trigger a query when the input is changed', () => {
         $$(input).trigger('change');
         expect(test.env.queryController.executeQuery).toHaveBeenCalled();
       });

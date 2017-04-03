@@ -60,10 +60,7 @@ $spaceBetween: 0 5px;
   @include flex-wrap(wrap);
   align-items: center;
 
-  .coveo-dropdown {
-    margin: 0 10px;
-    @include flex-basis(115px);
-  }
+
 
   .coveo-input {
     @include flex-basis(200px);
@@ -83,10 +80,6 @@ $spaceBetween: 0 5px;
       color: $color-grey;
       width: 55px;
     }
-  }
-
-  .coveo-dropdown {
-    vertical-align: middle;
   }
 }
 

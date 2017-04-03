@@ -60,6 +60,7 @@ export class CardOverlay extends Component {
 
     this.parentCard = $$(this.element).closest('.CoveoResult');
     Assert.exists(this.parentCard);
+    $$(this.parentCard).addClass('coveo-with-card-overlay');
     this.createOverlay();
     this.createButton(this.element);
     this.closeOverlay();
@@ -91,6 +92,7 @@ export class CardOverlay extends Component {
   public openOverlay() {
     $$(this.overlay).removeClass('coveo-hidden-for-tab-nav');
     $$(this.overlay).addClass('coveo-opened');
+    $$(this.parentCard).addClass('coveo-card-overlay-opened');
     this.bind.trigger(this.element, CardOverlayEvents.openCardOverlay);
   }
 
@@ -102,6 +104,7 @@ export class CardOverlay extends Component {
   public closeOverlay() {
     $$(this.overlay).addClass('coveo-hidden-for-tab-nav');
     $$(this.overlay).removeClass('coveo-opened');
+    $$(this.parentCard).removeClass('coveo-card-overlay-opened');
     this.bind.trigger(this.element, CardOverlayEvents.closeCardOverlay);
   }
 
