@@ -46,12 +46,12 @@ export class TemplateFromAScriptTag {
   }
 
   toHtmlElement(): HTMLElement {
-    var script = $$('script');
+    var script = $$('code');
     let condition = $$(this.scriptTag).getAttribute('data-condition');
     if (condition) {
       script.setAttribute('data-condition', condition);
     }
-    script.text(this.scriptTag.innerHTML);
+    script.setHtml(this.scriptTag.innerHTML);
     return script.el;
   }
 
@@ -87,8 +87,8 @@ export class TemplateFromAScriptTag {
   }
 
   static fromString(template: string, properties: ITemplateFromStringProperties = {}): HTMLElement {
-    var script = document.createElement('script');
-    script.text = template;
+    var script = document.createElement('code');
+    script.innerHTML = template;
     if (properties.condition != null) {
       script.setAttribute('data-condition', properties.condition);
     }
