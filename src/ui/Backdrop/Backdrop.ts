@@ -11,6 +11,8 @@ import { YouTubeThumbnail, IYouTubeThumbnailOptions } from '../YouTube/YouTubeTh
 import { $$ } from '../../utils/Dom';
 import { ModalBox as ModalBoxModule } from '../../ExternalModulesShim';
 
+import 'styling/_Backdrop';
+
 export interface IBackdropOptions {
   imageUrl?: string;
   imageField?: IFieldOption;
