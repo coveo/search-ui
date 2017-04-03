@@ -687,7 +687,6 @@ export class ComponentOptions {
         template = ComponentOptions.loadResultTemplateFromId(id);
       }
     }
-
     // Child
     if (template == null) {
       let childSelector = option.childSelector;
