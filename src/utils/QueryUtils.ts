@@ -9,7 +9,22 @@ declare let crypto: Crypto;
 
 export class QueryUtils {
   static createGuid(): string {
-    return (typeof (crypto) != 'undefined' && typeof (crypto.getRandomValues) != 'undefined') ? QueryUtils.generateWithCrypto() : QueryUtils.generateWithRandom();
+    let guid: string;
+    let success: boolean = false;
+    if ((typeof (crypto) != 'undefined' && typeof (crypto.getRandomValues) != 'undefined')) {
+      try {
+        guid = QueryUtils.generateWithCrypto();
+        success = true;
+      } catch (e) {
+        success = false;
+      }
+    }
+
+    if (!success) {
+      guid = QueryUtils.generateWithRandom();
+    }
+
+    return guid;
   }
 
   // This method is a fallback as it's generate a lot of collisions in Chrome.
