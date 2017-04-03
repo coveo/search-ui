@@ -25,6 +25,9 @@ import { DefaultRecommendationTemplate } from '../Templates/DefaultRecommendatio
 import { ValidLayout } from '../ResultLayout/ResultLayout';
 import { TemplateList } from '../Templates/TemplateList';
 import { ResponsiveDefaultResultTemplate } from '../ResponsiveComponents/ResponsiveDefaultResultTemplate';
+import { ResultListRenderer } from './ResultListRenderer';
+import { ResultListTableRenderer } from './ResultListTableRenderer';
+import { ResultListCardRenderer } from './ResultListCardRenderer';
 import _ = require('underscore');
 
 export interface IResultListOptions {
@@ -215,6 +218,8 @@ export class ResultList extends Component {
   private shouldDisplayTableHeader: boolean = true;
   private shouldDisplayTableFooter: boolean = false;
 
+  private renderer: ResultListRenderer;
+
   // This variable serves to block some setup where the framework fails to correctly identify the "real" scrolling container.
   // Since it's not technically feasible to correctly identify the scrolling container in every possible scenario without some very complex logic, we instead try to add some kind of mechanism to
   // block runaway requests where UI will keep asking more results in the index, eventually bringing the browser to it's knee.
@@ -245,6 +250,7 @@ export class ResultList extends Component {
 
     this.showOrHideElementsDependingOnState(false, false);
 
+    this.setupRenderer();
 
     this.bind.onRootElement<INewQueryEventArgs>(QueryEvents.newQuery, (args: INewQueryEventArgs) => this.handleNewQuery());
     this.bind.onRootElement<IBuildingQueryEventArgs>(QueryEvents.buildingQuery, (args: IBuildingQueryEventArgs) => this.handleBuildingQuery(args));
@@ -289,13 +295,6 @@ export class ResultList extends Component {
           tmpl.layout = <ValidLayout>this.options.layout;
         }
       });
-      if (this.options.resultTemplate.hasTemplateWithRole('table-footer')) {
-        this.shouldDisplayTableFooter = true;
-      }
-      // If custom templates are defined but no header template, do not display it.
-      if (this.options.resultTemplate.templates.length !== 0 && !this.options.resultTemplate.hasTemplateWithRole('table-header')) {
-        this.shouldDisplayTableHeader = false;
-      }
     } else if (this.options.resultTemplate instanceof DefaultResultTemplate && this.options.layout == 'list') {
       ResponsiveDefaultResultTemplate.init(this.root, this, this.options);
     }
@@ -314,21 +313,9 @@ export class ResultList extends Component {
     if (!append) {
       this.options.resultContainer.innerHTML = '';
     }
-    _.each(resultElements, (resultElement) => {
-      this.options.resultContainer.appendChild(resultElement);
-      this.triggerNewResultDisplayed(Component.getResult(resultElement), resultElement);
-    });
 
-    if (!_.isEmpty(resultElements)) {
-      if (this.options.layout === 'table') {
-        this.displayDecorations();
-      }
+    this.renderer.renderResults(resultElements, append, this.triggerNewResultDisplayed.bind(this));
 
-      if (this.options.layout === 'card' && !this.options.enableInfiniteScroll) {
-        // Used to prevent last card from spanning the grid's whole width
-        _.times(3, () => this.options.resultContainer.appendChild($$('div').el));
-      }
-    }
     this.triggerNewResultsDisplayed();
   }
 
@@ -698,32 +685,6 @@ export class ResultList extends Component {
     }
   }
 
-  private displayDecorations() {
-    const decorationsToDisplay = {};
-    if (this.shouldDisplayTableHeader) {
-      decorationsToDisplay['tableHeader'] = 'table-header';
-    }
-    if (this.shouldDisplayTableFooter) {
-      decorationsToDisplay['tableFooter'] = 'table-footer';
-    }
-    const renderedDecorations = _.mapObject(decorationsToDisplay, (role: TemplateRole) => {
-      const elem = this.options.resultTemplate.instantiateToElement({}, {
-        role: role,
-        checkCondition: false,
-        currentLayout: <ValidLayout>this.options.layout
-      });
-      $$(elem).addClass(`coveo-result-list-${role}`);
-      this.autoCreateComponentsInsideResult(elem, undefined);
-      return elem;
-    });
-    if (decorationsToDisplay['tableHeader']) {
-      $$(this.options.resultContainer).prepend(renderedDecorations['tableHeader']);
-    }
-    if (decorationsToDisplay['tableFooter']) {
-      this.options.resultContainer.appendChild(renderedDecorations['tableFooter']);
-    }
-  }
-
   private initResultContainer() {
     if (!this.options.resultContainer) {
       const elemType = this.options.layout === 'table' ? 'table' : 'div';
@@ -737,7 +698,21 @@ export class ResultList extends Component {
       this.options.waitAnimationContainer = this.options.resultContainer;
     }
   }
-}
 
+  private setupRenderer() {
+    const autoCreateComponentsFn = this.autoCreateComponentsInsideResult.bind(this);
+    switch (this.options.layout) {
+    case 'list':
+      this.renderer = new ResultListRenderer(this.options, autoCreateComponentsFn);
+      break;
+    case 'card':
+      this.renderer = new ResultListCardRenderer(this.options, autoCreateComponentsFn);
+      break;
+    case 'table':
+      this.renderer = new ResultListTableRenderer(this.options, autoCreateComponentsFn);
+      break;
+    }
+  }
+}
 
 Initialization.registerAutoCreateComponent(ResultList);
