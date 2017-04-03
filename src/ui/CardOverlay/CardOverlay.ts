@@ -8,6 +8,8 @@ import { Assert } from '../../misc/Assert';
 import { KeyboardUtils, KEYBOARD } from '../../utils/KeyboardUtils';
 import { exportGlobally } from '../../GlobalExports';
 
+import 'styling/_CardOverlay';
+
 export interface ICardOverlayOptions {
   title: string;
   icon?: string;

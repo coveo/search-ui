@@ -9,6 +9,8 @@ import { KeyboardUtils, KEYBOARD } from '../../utils/KeyboardUtils';
 import * as _ from 'underscore';
 import { exportGlobally } from '../../GlobalExports';
 
+import 'styling/_CardActionBar';
+
 export interface ICardActionBarOptions {
   hidden?: boolean;
   openOnMouseOver?: boolean;
