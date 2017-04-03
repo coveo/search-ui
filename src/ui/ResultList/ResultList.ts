@@ -44,7 +44,6 @@ export interface IResultListOptions {
   layout?: string;
 }
 
-
 /**
  * The ResultList component is responsible for displaying the results of the current query using one or more result
  * templates (see [Result Templates](https://developers.coveo.com/x/aIGfAQ)).
@@ -54,7 +53,7 @@ export interface IResultListOptions {
 export class ResultList extends Component {
 
   private static getDefaultTemplate(e: HTMLElement): Template {
-    var template = this.loadTemplatesFromCache();
+    var template = ResultList.loadTemplatesFromCache();
     if (template != null) {
       return template;
     }
