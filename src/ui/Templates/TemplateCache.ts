@@ -1,5 +1,4 @@
 import { Template } from './Template';
-import TemplateModule = require('./Template');
 import { Assert } from '../../misc/Assert';
 import { UnderscoreTemplate } from './UnderscoreTemplate';
 import { HtmlTemplate } from './HtmlTemplate';
@@ -9,12 +8,12 @@ import * as _ from 'underscore';
  * Holds a reference to all template available in the framework
  */
 export class TemplateCache {
-  private static templates: { [templateName: string]: TemplateModule.Template; } = {};
+  private static templates: { [templateName: string]: Template; } = {};
   private static templateNames: string[] = [];
-  private static defaultTemplates: { [templateName: string]: TemplateModule.Template; } = {};
+  private static defaultTemplates: { [templateName: string]: Template; } = {};
 
 
-  public static registerTemplate(name: string, template: TemplateModule.Template, publicTemplate?: boolean, defaultTemplate?: boolean);
+  public static registerTemplate(name: string, template: Template, publicTemplate?: boolean, defaultTemplate?: boolean);
   public static registerTemplate(name: string, template: (data: {}) => string, publicTemplate?: boolean, defaultTemplate?: boolean);
   /**
    * Register a new template in the framework, which will be available to render any results.
@@ -26,7 +25,7 @@ export class TemplateCache {
   public static registerTemplate(name: string, template: any, publicTemplate: boolean = true, defaultTemplate: boolean = false) {
     Assert.isNonEmptyString(name);
     Assert.exists(template);
-    if (!(template instanceof TemplateModule.Template)) {
+    if (!(template instanceof Template)) {
       template = new Template(template);
     }
     if (template.name == null) {
