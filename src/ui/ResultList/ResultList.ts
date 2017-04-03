@@ -24,6 +24,7 @@ import { Recommendation } from '../Recommendation/Recommendation';
 import { DefaultRecommendationTemplate } from '../Templates/DefaultRecommendationTemplate';
 import { ValidLayout } from '../ResultLayout/ResultLayout';
 import { TemplateList } from '../Templates/TemplateList';
+import { TemplateCache } from '../Templates/TemplateCache';
 import { ResponsiveDefaultResultTemplate } from '../ResponsiveComponents/ResponsiveDefaultResultTemplate';
 import _ = require('underscore');
 
@@ -53,11 +54,25 @@ export interface IResultListOptions {
 export class ResultList extends Component {
 
   private static getDefaultTemplate(e: HTMLElement): Template {
+    var template = this.loadTemplatesFromCache();
+    if (template != null) {
+      return template;
+    }
+
     let component = <ResultList>Component.get(e);
     if (component.searchInterface instanceof Recommendation) {
       return new DefaultRecommendationTemplate();
     }
     return new DefaultResultTemplate();
+  }
+
+  private static loadTemplatesFromCache(): Template {
+    var pageTemplateNames = TemplateCache.getResultListTemplateNames();
+    if (pageTemplateNames.length > 0) {
+      return new TemplateList(_.compact(_.map(pageTemplateNames, (templateName) => TemplateCache.getTemplate(templateName))));
+    }
+
+    return null;
   }
 
   static ID = 'ResultList';

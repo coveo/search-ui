@@ -688,10 +688,6 @@ export class ComponentOptions {
       }
     }
 
-    if (template == null) {
-      template = ComponentOptions.loadResultTemplateFromPageTemplatesCache();
-    }
-
     // Child
     if (template == null) {
       let childSelector = option.childSelector;
@@ -705,16 +701,6 @@ export class ComponentOptions {
 
   static loadResultTemplateFromId(templateId: string): Template {
     return Utils.isNonEmptyString(templateId) ? TemplateCache.getTemplate(templateId) : null;
-  }
-
-  static loadResultTemplateFromPageTemplatesCache(): Template {
-    if (TemplateCache) {
-      var pageTemplateNames = TemplateCache.getPageTemplateNames();
-      if (pageTemplateNames.length > 0) {
-        return new TemplateList(_.compact(_.map(pageTemplateNames, (templateName) => TemplateCache.getTemplate(templateName))));
-      }
-    }
-    return null;
   }
 
   static loadChildrenResultTemplateFromSelector(element: HTMLElement, selector: string): Template {

@@ -10,7 +10,7 @@ import _ = require('underscore');
 export class TemplateCache {
   private static templates: { [templateName: string]: Template; } = {};
   private static templateNames: string[] = [];
-  private static pageTemplateNames: string[] = [];
+  private static resultListTemplateNames: string[] = [];
   private static defaultTemplates: { [templateName: string]: Template; } = {};
 
   public static registerTemplate(name: string, template: Template, publicTemplate?: boolean, defaultTemplate?: boolean, pageTemplate?: boolean);
@@ -23,7 +23,7 @@ export class TemplateCache {
    * @param defaultTemplate
    * @param pageTemplate
    */
-  public static registerTemplate(name: string, template: any, publicTemplate: boolean = true, defaultTemplate: boolean = false, pageTemplate: boolean = false) {
+  public static registerTemplate(name: string, template: any, publicTemplate: boolean = true, defaultTemplate: boolean = false, resultListTemplate: boolean = false) {
     Assert.isNonEmptyString(name);
     Assert.exists(template);
     if (!(template instanceof Template)) {
@@ -37,24 +37,13 @@ export class TemplateCache {
       TemplateCache.templateNames.push(name);
     }
 
-    if (pageTemplate && !_.contains(TemplateCache.pageTemplateNames, name)) {
-      TemplateCache.pageTemplateNames.push(name);
+    if (resultListTemplate && !_.contains(TemplateCache.resultListTemplateNames, name)) {
+      TemplateCache.resultListTemplateNames.push(name);
     }
 
     if (defaultTemplate) {
       TemplateCache.defaultTemplates[name] = template;
     }
-  }
-
-  /**
-   * Register a new page template in the framework. Equivalent to put script tags in the DOM.
-   * @param name
-   * @param template
-   */
-  public static registerPageTemplate(name: string, template: Template);
-  public static registerPageTemplate(name: string, template: (data: {}) => string);
-  public static registerPageTemplate(name: string, template: any) {
-    TemplateCache.registerTemplate(name, template, true, false, true);
   }
 
   /**
@@ -108,8 +97,8 @@ export class TemplateCache {
    * Get all page templates name currently registered in the framework.
    * @returns {string[]}
    */
-  public static getPageTemplateNames(): string[] {
-    return TemplateCache.pageTemplateNames;
+  public static getResultListTemplateNames(): string[] {
+    return TemplateCache.resultListTemplateNames;
   }
 
   /**
