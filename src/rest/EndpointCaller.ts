@@ -4,7 +4,6 @@ import { Assert } from '../misc/Assert';
 import { TimeSpan } from '../utils/TimeSpanUtils';
 import { DeviceUtils } from '../utils/DeviceUtils';
 import { Utils } from '../utils/Utils';
-import { Promise } from 'es6-promise';
 import { JQueryUtils } from '../utils/JQueryutils';
 import * as _ from 'underscore';
 

@@ -3,16 +3,10 @@ var configuration = {
   browsers: ['PhantomJS'],
   frameworks: ['jasmine'],
   files: [{
-    pattern: './node_modules/jasmine-core/lib/jasmine-core/jasmine.css',
-    watched: false
-  }, {
     pattern: './node_modules/es6-promise/dist/es6-promise.auto.js',
     watched: false
   }, {
     pattern: './node_modules/phantomjs-polyfill/bind-polyfill.js',
-    watched: false
-  }, {
-    pattern: './test/lib/jasmine-2.4.1/jasmine.css',
     watched: false
   }, {
     pattern: './test/lib/jasmine-ajax/jasmine-ajax.js',

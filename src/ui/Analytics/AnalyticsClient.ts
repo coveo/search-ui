@@ -1,7 +1,6 @@
 import { IAnalyticsActionCause } from '../Analytics/AnalyticsActionListMeta';
 import { IQueryResult } from '../../rest/QueryResult';
 import { ITopQueries } from '../../rest/TopQueries';
-import { Promise } from 'es6-promise';
 import { PendingSearchEvent } from './PendingSearchEvent';
 
 /**

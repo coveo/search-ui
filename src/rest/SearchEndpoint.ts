@@ -24,6 +24,8 @@ import { QueryUtils } from '../utils/QueryUtils';
 import { QueryError } from '../rest/QueryError';
 import { Utils } from '../utils/Utils';
 import * as _ from 'underscore';
+import { shim } from '../misc/PromisesShim';
+shim();
 
 export class DefaultSearchEndpointOptions implements ISearchEndpointOptions {
   restUri: string;

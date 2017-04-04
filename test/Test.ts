@@ -10,6 +10,9 @@ if (Simulate.isPhantomJs()) {
 import { defaultLanguage } from '../src/strings/DefaultLanguage';
 defaultLanguage();
 
+import { SearchEndpointTest } from './rest/SearchEndpointTest';
+SearchEndpointTest();
+
 import { CookieUtilsTest } from './utils/CookieUtilsTest';
 CookieUtilsTest();
 
@@ -33,9 +36,6 @@ QueryStateModelTest();
 
 import { EndpointCallerTest } from './rest/EndpointCallerTest';
 EndpointCallerTest();
-
-import { SearchEndpointTest } from './rest/SearchEndpointTest';
-SearchEndpointTest();
 
 import { FacetQueryControllerTest } from './controllers/FacetQueryControllerTest';
 FacetQueryControllerTest();
