@@ -39,7 +39,7 @@ export function InitializationTest() {
       expect(Component.get(queryBox) instanceof Querybox).toBe(false);
       Initialization.initializeFramework(root, searchInterfaceOptions, () => {
         return Initialization.initSearchInterface(root, searchInterfaceOptions);
-      }).then(()=> {
+      }).then(() => {
         expect(Component.get(queryBox) instanceof Querybox).toBe(true);
         done();
       });
@@ -50,7 +50,7 @@ export function InitializationTest() {
       // First initialization
       Initialization.initializeFramework(root, searchInterfaceOptions, () => {
         return Initialization.initSearchInterface(root, searchInterfaceOptions);
-      }).then(()=> {
+      }).then(() => {
         expect(Component.get(queryBox) instanceof Querybox).toBe(true);
         let newQueryBox = document.createElement('div');
         $$(newQueryBox).addClass('CoveoQuerybox');
@@ -60,7 +60,7 @@ export function InitializationTest() {
         // Second initialization
         Initialization.initializeFramework(root, searchInterfaceOptions, () => {
           return Initialization.initSearchInterface(root, searchInterfaceOptions);
-        }).then(()=> {
+        }).then(() => {
           expect(Component.get(newQueryBox) instanceof Querybox).toBe(false);
           done();
         });
@@ -127,7 +127,7 @@ export function InitializationTest() {
       Initialization.automaticallyCreateComponentsInside(root, {
         options: {},
         bindings: env
-      })
+      });
       expect(Component.get(queryBox) instanceof Querybox).toBe(true);
     });
 
@@ -201,7 +201,7 @@ export function InitializationTest() {
 
     it('will trigger a query automatically by default', () => {
       Initialization.initializeFramework(root, searchInterfaceOptions, () => {
-        Initialization.initSearchInterface(root, searchInterfaceOptions);
+        return Initialization.initSearchInterface(root, searchInterfaceOptions);
       });
       expect(endpoint.search).toHaveBeenCalled();
     });
@@ -209,7 +209,7 @@ export function InitializationTest() {
     it('will not trigger a query automatically if specified', () => {
       searchInterfaceOptions['SearchInterface'].autoTriggerQuery = false;
       Initialization.initializeFramework(root, searchInterfaceOptions, () => {
-        Initialization.initSearchInterface(root, searchInterfaceOptions);
+        return Initialization.initSearchInterface(root, searchInterfaceOptions);
       });
       expect(endpoint.search).not.toHaveBeenCalled();
     });
@@ -218,7 +218,7 @@ export function InitializationTest() {
       localStorage.removeItem('__coveo.analytics.history');
       expect(localStorage.getItem('__coveo.analytics.history')).toBeNull();
       Initialization.initializeFramework(root, searchInterfaceOptions, () => {
-        Initialization.initSearchInterface(root, searchInterfaceOptions);
+        return Initialization.initSearchInterface(root, searchInterfaceOptions);
       });
       const actionHistory = localStorage.getItem('__coveo.analytics.history');
       expect(actionHistory).not.toBeNull();

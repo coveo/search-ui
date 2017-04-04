@@ -3,24 +3,8 @@ const _ = require('underscore');
 const minimize = process.argv.indexOf('minimize') !== -1;
 const webpack = require('webpack');
 const path = require('path');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const spritesmithConfig = require('./webpackConfigFiles/spritesmithConfig/spritesmith.config.js');
-const salesforceSpritesmithConfig = require('./webpackConfigFiles/spritesmithConfig/salesforce.spritesmith.config');
 const production = process.env.NODE_ENV === 'production';
 const globalizePath = __dirname + '/lib/globalize/globalize.min.js';
-
-let plugins = [];
-
-// SpritesmithPlugin takes care of outputting the stylesheets.
-plugins.push(spritesmithConfig);
-plugins.push(salesforceSpritesmithConfig);
-
-const extractSass = new ExtractTextPlugin({
-  filename: '../css/CoveoFullSearchNewDesign.css'
-});
-
-plugins.push(extractSass)
-
 
 module.exports = {
   entry: {
@@ -91,40 +75,13 @@ module.exports = {
         }
       }]
     }, {
-      test: /\.(gif|svg|png|jpe?g|ttf|woff2?|eot)$/,
-      use: [{
-        loader: 'file-loader',
-        options: {
-          name: production ? '../image/[name].[ext]' : 'http://localhost:8080/image/[name].[ext]',
-          emitFile: false
-        }
-      }]
-    }, {
       test: /\.ts$/,
       use: [{
         loader: 'ts-loader'
       }]
     }, {
       test: /\.scss/,
-      use: extractSass.extract({
-        use: [{
-          loader: 'css-loader',
-          options: {
-            sourceMap: true
-          }
-        }, {
-          loader: 'resolve-url-loader'
-        }, {
-          loader: 'sass-loader',
-          options: {
-            sourceMap: true
-          }
-        }],
-        fallback: 'style-loader',
-        // This is important to set the correct relative path inside the generated css correctly
-        publicPath: ''
-      })
+      use: [{ loader: 'null-loader' }]
     }]
-  },
-  plugins: plugins
+  }
 };

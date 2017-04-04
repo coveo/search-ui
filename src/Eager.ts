@@ -42,7 +42,7 @@ import { CardActionBar } from './ui/CardActionBar/CardActionBar';
 CardActionBar.doExport();
 
 import { CardOverlay } from './ui/CardOverlay/CardOverlay';
-CardOverlay.doExport()
+CardOverlay.doExport();
 
 import { ChatterLikedBy } from './ui/ChatterLikedBy/ChatterLikedBy';
 ChatterLikedBy.doExport();

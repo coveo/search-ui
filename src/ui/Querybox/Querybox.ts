@@ -70,7 +70,7 @@ export class Querybox extends Component {
      *
      * Default value is `50`. Minimum value is `0`
      */
-    searchAsYouTypeDelay: ComponentOptions.buildNumberOption({defaultValue: 50, min: 0}),
+    searchAsYouTypeDelay: ComponentOptions.buildNumberOption({ defaultValue: 50, min: 0 }),
 
     /**
      * Specifies whether the Coveo Platform should try to interpret special query syntax such as field references in the

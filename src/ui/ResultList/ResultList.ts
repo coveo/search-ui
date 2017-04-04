@@ -26,6 +26,7 @@ import { TemplateList } from '../Templates/TemplateList';
 import { ResponsiveDefaultResultTemplate } from '../ResponsiveComponents/ResponsiveDefaultResultTemplate';
 import * as _ from 'underscore';
 import { exportGlobally } from '../../GlobalExports';
+import { IInitResult } from '../Base/Initialization';
 
 import 'styling/_ResultList';
 import 'styling/_ResultFrame';
@@ -313,7 +314,7 @@ export class ResultList extends Component {
    * @param resultsElement
    * @param append
    */
-  public renderResults(resultsElement: HTMLElement[], append = false) {
+  public renderResults(resultsElement: HTMLElement[], append = false): void {
     if (!append) {
       this.options.resultContainer.innerHTML = '';
     }
@@ -384,7 +385,7 @@ export class ResultList extends Component {
    * Asserts that the ResultList is not currently fetching results.
    * @param count The number of results to fetch and display.
    */
-  public displayMoreResults(count: number) {
+  public displayMoreResults(count: number): void {
     Assert.isLargerOrEqualsThan(1, count);
 
     if (this.isCurrentlyFetchingMoreResults()) {
@@ -446,16 +447,16 @@ export class ResultList extends Component {
     return $$(this.options.resultContainer).findAll('.CoveoResult');
   }
 
-  public enable() {
+  public enable(): void {
     super.enable();
     $$(this.element).removeClass('coveo-hidden');
   }
-  public disable() {
+  public disable(): void {
     super.disable();
     $$(this.element).addClass('coveo-hidden');
   }
 
-  protected autoCreateComponentsInsideResult(element: HTMLElement, result: IQueryResult) {
+  protected autoCreateComponentsInsideResult(element: HTMLElement, result: IQueryResult): IInitResult {
     Assert.exists(element);
 
     let initOptions = this.searchInterface.options.originalOptionsObject;
