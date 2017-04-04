@@ -12,7 +12,6 @@ export class TemplateCache {
   private static templateNames: string[] = [];
   private static defaultTemplates: { [templateName: string]: Template; } = {};
 
-
   public static registerTemplate(name: string, template: Template, publicTemplate?: boolean, defaultTemplate?: boolean);
   public static registerTemplate(name: string, template: (data: {}) => string, publicTemplate?: boolean, defaultTemplate?: boolean);
   /**

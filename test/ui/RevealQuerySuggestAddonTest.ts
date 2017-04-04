@@ -1,8 +1,7 @@
-import { Omnibox } from '../../src/ui/Omnibox/Omnibox';
+import { Omnibox, MagicBox } from '../../src/ui/Omnibox/Omnibox';
 import * as Mock from '../MockEnvironment';
 import { RevealQuerySuggestAddon } from '../../src/ui/Omnibox/RevealQuerySuggestAddon';
 import { SearchEndpoint } from '../../src/rest/SearchEndpoint';
-import { MagicBox } from '../../src/ExternalModulesShim';
 import { ComponentOptionsModel } from '../../src/models/ComponentOptionsModel';
 import { SearchInterface } from '../../src/ui/SearchInterface/SearchInterface';
 import { QueryController } from '../../src/controllers/QueryController';

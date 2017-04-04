@@ -77,7 +77,7 @@ export function ResultListTest() {
 
         it('should trigger 10 new result displayed event when fetching more results', (done) => {
           test.cmp.displayMoreResults(10);
-          let newResultSpy = jasmine.createSpy('newresultspy');
+          const newResultSpy = jasmine.createSpy('newresultspy');
           $$(test.cmp.element).on(ResultListEvents.newResultDisplayed, newResultSpy);
           promiseResults.then(() => {
             expect(newResultSpy).toHaveBeenCalledTimes(10);
@@ -87,7 +87,7 @@ export function ResultListTest() {
 
         it('should trigger a single new results displayed event when fetching more results', (done) => {
           test.cmp.displayMoreResults(10);
-          let newResultsSpy = jasmine.createSpy('newresultsspy');
+          const newResultsSpy = jasmine.createSpy('newresultsspy');
           $$(test.cmp.element).on(ResultListEvents.newResultsDisplayed, newResultsSpy);
           promiseResults.then(() => {
             // Once when filling the initial result list, another time when displaying more results
@@ -131,74 +131,86 @@ export function ResultListTest() {
 
     it('should allow to return the currently displayed result', () => {
       expect(ResultList.resultCurrentlyBeingRendered).toBeNull();
-      let data = FakeResults.createFakeResult();
+      const data = FakeResults.createFakeResult();
       test.cmp.buildResult(data);
       expect(ResultList.resultCurrentlyBeingRendered).toBe(data);
     });
 
     it('should set currently displayed result to undefined when they are all rendered', () => {
-      let data = FakeResults.createFakeResults(13);
+      const data = FakeResults.createFakeResults(13);
       test.cmp.buildResults(data);
       expect(ResultList.resultCurrentlyBeingRendered).toBeNull();
     });
 
     it('should reset currently displayed on new query', () => {
-      let data = FakeResults.createFakeResult();
+      const data = FakeResults.createFakeResult();
       test.cmp.buildResult(data);
       expect(ResultList.resultCurrentlyBeingRendered).toBe(data);
       Simulate.query(test.env);
       expect(ResultList.resultCurrentlyBeingRendered).toBeNull();
     });
 
-    it('should allow to build a single result element', () => {
-      let data = FakeResults.createFakeResult();
-      let built = test.cmp.buildResult(data);
-      expect(built).toBeDefined();
-      let rs = $$(built).find('.CoveoResultLink');
-      expect($$(rs).text()).toBe(data.title);
+    it('should allow to build a single result element', (done) => {
+      const data = FakeResults.createFakeResult();
+      test.cmp.buildResult(data).then(built => {
+        expect(built).toBeDefined();
+        const rs = $$(built).find('.CoveoResultLink');
+        expect($$(rs).text()).toBe(data.title);
+        done();
+      });
+
     });
 
-    it('should allow to build multiple results element', () => {
-      let data = FakeResults.createFakeResults(13);
-      let built = test.cmp.buildResults(data);
-      expect(built.length).toBe(13);
-      let rs = $$(built[0]).find('.CoveoResultLink');
-      expect($$(rs).text()).toBe(data.results[0].title);
-      rs = $$(built[12]).find('.CoveoResultLink');
-      expect($$(rs).text()).toBe(data.results[12].title);
+    it('should allow to build multiple results element', (done) => {
+      const data = FakeResults.createFakeResults(13);
+      test.cmp.buildResults(data).then(built => {
+        expect(built.length).toBe(13);
+        let rs = $$(built[0]).find('.CoveoResultLink');
+        expect($$(rs).text()).toBe(data.results[0].title);
+        rs = $$(built[12]).find('.CoveoResultLink');
+        expect($$(rs).text()).toBe(data.results[12].title);
+        done();
+      });
     });
 
-    it('should bind result on the HTMLElement', () => {
-      let data = FakeResults.createFakeResults(13);
-      let built = test.cmp.buildResults(data);
-
-      expect(built[0]['CoveoResult']).toEqual(jasmine.objectContaining({ title: 'Title0' }));
-      let jQuery = Simulate.addJQuery();
-      built = test.cmp.buildResults(data);
-      expect(jQuery(built[3]).data()).toEqual(jasmine.objectContaining({ title: 'Title3' }));
-      Simulate.removeJQuery();
+    it('should bind result on the HTMLElement', (done) => {
+      const data = FakeResults.createFakeResults(13);
+      test.cmp.buildResults(data).then(built => {
+        expect(built[0]['CoveoResult']).toEqual(jasmine.objectContaining({ title: 'Title0' }));
+        const jQuery = Simulate.addJQuery();
+        test.cmp.buildResults(data).then(built2 => {
+          expect(jQuery(built2[3]).data()).toEqual(jasmine.objectContaining({ title: 'Title3' }));
+          Simulate.removeJQuery();
+          done();
+        });
+      });
     });
 
-    it('should allow to render results inside the result list', () => {
-      let data = FakeResults.createFakeResults(13);
-      test.cmp.renderResults(test.cmp.buildResults(data));
-      expect($$(test.cmp.element).findAll('.CoveoResult').length).toBe(13);
+    it('should allow to render results inside the result list', (done) => {
+      const data = FakeResults.createFakeResults(13);
+      test.cmp.buildResults(data).then(elem => {
+        test.cmp.renderResults(elem);
+        expect($$(test.cmp.element).findAll('.CoveoResult').length).toBe(13);
+      });
     });
 
-    it('should trigger result displayed event when rendering', () => {
-      let data = FakeResults.createFakeResults(6);
-      let spyResult = jasmine.createSpy('spyResult');
-      let spyResults = jasmine.createSpy('spyResults');
+    it('should trigger result displayed event when rendering', (done) => {
+      const data = FakeResults.createFakeResults(6);
+      const spyResult = jasmine.createSpy('spyResult');
+      const spyResults = jasmine.createSpy('spyResults');
       $$(test.cmp.element).on(ResultListEvents.newResultDisplayed, spyResult);
       $$(test.cmp.element).on(ResultListEvents.newResultsDisplayed, spyResults);
-      test.cmp.renderResults(test.cmp.buildResults(data));
-      expect(spyResult).toHaveBeenCalledTimes(6);
-      expect(spyResults).toHaveBeenCalledTimes(1);
+      test.cmp.buildResults(data).then(elem => {
+        test.cmp.renderResults(elem);
+        expect(spyResult).toHaveBeenCalledTimes(6);
+        expect(spyResults).toHaveBeenCalledTimes(1);
+        done();
+      });
     });
 
     it('should render itself correctly after a full query', () => {
-      let spyResult = jasmine.createSpy('spyResult');
-      let spyResults = jasmine.createSpy('spyResults');
+      const spyResult = jasmine.createSpy('spyResult');
+      const spyResults = jasmine.createSpy('spyResults');
       $$(test.cmp.element).on(ResultListEvents.newResultDisplayed, spyResult);
       $$(test.cmp.element).on(ResultListEvents.newResultsDisplayed, spyResults);
       Simulate.query(test.env);
@@ -232,16 +244,16 @@ export function ResultListTest() {
     });
 
     it('should hide and show specific css class correctly', () => {
-      let showIfQuery = $$('div', {
+      const showIfQuery = $$('div', {
         className: 'coveo-show-if-query'
       });
-      let showIfNoQuery = $$('div', {
+      const showIfNoQuery = $$('div', {
         className: 'coveo-show-if-no-query'
       });
-      let showIfResults = $$('div', {
+      const showIfResults = $$('div', {
         className: 'coveo-show-if-results'
       });
-      let showIfNoResults = $$('div', {
+      const showIfNoResults = $$('div', {
         className: 'coveo-show-if-no-results'
       });
 
@@ -250,7 +262,7 @@ export function ResultListTest() {
       test.cmp.element.appendChild(showIfResults.el);
       test.cmp.element.appendChild(showIfNoResults.el);
 
-      let withAQuery = new QueryBuilder();
+      const withAQuery = new QueryBuilder();
       withAQuery.expression.add('foo');
 
       Simulate.query(test.env, {
@@ -278,7 +290,7 @@ export function ResultListTest() {
 
     describe('exposes options', () => {
       it('resultContainer allow to specify where to render results', () => {
-        let aNewContainer = document.createElement('div');
+        const aNewContainer = document.createElement('div');
         expect(aNewContainer.children.length).toBe(0);
         test = Mock.optionsComponentSetup<ResultList, IResultListOptions>(ResultList, {
           resultContainer: aNewContainer
@@ -292,13 +304,13 @@ export function ResultListTest() {
           autoSelectFieldsToInclude: true
         });
 
-        let simulation = Simulate.query(test.env);
+        const simulation = Simulate.query(test.env);
         expect(simulation.queryBuilder.build().fieldsToInclude).toEqual(jasmine.arrayContaining(['author', 'language', 'urihash', 'objecttype', 'collection', 'source', 'language', 'uniqueid']));
       });
 
       it('resultTemplate allow to specify a template manually', () => {
-        let tmpl: UnderscoreTemplate = Mock.mock<UnderscoreTemplate>(UnderscoreTemplate);
-        let asSpy = <any>tmpl;
+        const tmpl: UnderscoreTemplate = Mock.mock<UnderscoreTemplate>(UnderscoreTemplate);
+        const asSpy = <any>tmpl;
         asSpy.instantiateToElement.and.returnValue(document.createElement('div'));
         test = Mock.optionsComponentSetup<ResultList, IResultListOptions>(ResultList, {
           resultTemplate: tmpl
@@ -336,7 +348,7 @@ export function ResultListTest() {
       });
 
       it('waitAnimationContainer allow to specify where to display the animation', () => {
-        let aNewContainer = document.createElement('div');
+        const aNewContainer = document.createElement('div');
         test = Mock.optionsComponentSetup<ResultList, IResultListOptions>(ResultList, {
           waitAnimation: 'fade',
           waitAnimationContainer: aNewContainer
@@ -376,7 +388,7 @@ export function ResultListTest() {
         test = Mock.optionsComponentSetup<ResultList, IResultListOptions>(ResultList, {
           fieldsToInclude: ['@field1', '@field2', '@field3']
         });
-        let simulation = Simulate.query(test.env);
+        const simulation = Simulate.query(test.env);
         expect(simulation.queryBuilder.fieldsToInclude).toContain('field1');
         expect(simulation.queryBuilder.fieldsToInclude).toContain('field2');
         expect(simulation.queryBuilder.fieldsToInclude).toContain('field3');
@@ -387,21 +399,21 @@ export function ResultListTest() {
           test = Mock.optionsComponentSetup<ResultList, IResultListOptions>(ResultList, {
             layout: 'card'
           });
-          let layoutsPopulated = [];
+          const layoutsPopulated = [];
           $$(test.env.root).trigger(ResultLayoutEvents.populateResultLayout, { layouts: layoutsPopulated });
           expect(layoutsPopulated).toEqual(jasmine.arrayContaining(['card']));
 
         });
 
         it('should set the correct layout on each child template if it contains a TemplateList', () => {
-          let elem = $$('div', {
+          const elem = $$('div', {
             className: 'CoveoResultList'
           });
-          let scriptOne = $$('script', {
+          const scriptOne = $$('script', {
             className: 'result-template',
             type: 'text/html'
           });
-          let scriptTwo = $$('script', {
+          const scriptTwo = $$('script', {
             className: 'result-template',
             type: 'text/html'
           });
@@ -422,7 +434,7 @@ export function ResultListTest() {
             enableInfiniteScroll: false
           });
           Simulate.query(test.env);
-          let container = test.cmp.options.resultContainer;
+          const container = test.cmp.options.resultContainer;
           expect(container.children.item(container.children.length - 1).innerHTML).toBe('');
           expect(container.children.item(container.children.length - 2).innerHTML).toBe('');
           expect(container.children.item(container.children.length - 3).innerHTML).toBe('');
@@ -435,7 +447,7 @@ export function ResultListTest() {
             enableInfiniteScroll: true
           });
           Simulate.query(test.env);
-          let container = test.cmp.options.resultContainer;
+          const container = test.cmp.options.resultContainer;
           expect(container.children.item(container.children.length - 1).innerHTML).not.toBe('');
           expect(container.children.item(container.children.length - 2).innerHTML).not.toBe('');
           expect(container.children.item(container.children.length - 3).innerHTML).not.toBe('');

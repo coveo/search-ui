@@ -1,9 +1,9 @@
 import { IComponentDefinition } from '../Base/Component';
-import { Initialization } from '../Base/Initialization';
+import { LazyInitialization } from '../Base/Initialization';
 import { lazyExport } from '../../GlobalExports';
 
 export function lazyQuickview() {
-  Initialization.registerLazyComponent('Quickview', () => {
+  LazyInitialization.registerLazyComponent('Quickview', () => {
     return new Promise((resolve, reject) => {
       require.ensure(['./Quickview'], () => {
         let loaded = require<IComponentDefinition>('./Quickview.ts')['Quickview'];

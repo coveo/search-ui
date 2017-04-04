@@ -1,3 +1,4 @@
+export const MagicBox: any = require('exports-loader?Coveo.MagicBox!../../../node_modules/coveomagicbox/bin/MagicBox.min.js');
 import { Initialization } from '../Base/Initialization';
 import { Component } from '../Base/Component';
 import { IComponentBindings } from '../Base/ComponentBindings';
@@ -45,7 +46,8 @@ export class Querybox extends Component {
 
   static doExport = () => {
     exportGlobally({
-      'Querybox': Querybox
+      'Querybox': Querybox,
+      'MagicBox': MagicBox
     });
   }
 
@@ -66,9 +68,9 @@ export class Querybox extends Component {
      * If {@link Querybox.options.enableSearchAsYouType} is `true`, specifies the delay (in milliseconds) between a
      * key press and a query being triggered.
      *
-     * Default value is `500`. Minimum value is `0`
+     * Default value is `50`. Minimum value is `0`
      */
-    searchAsYouTypeDelay: ComponentOptions.buildNumberOption({ defaultValue: 500, min: 0 }),
+    searchAsYouTypeDelay: ComponentOptions.buildNumberOption({defaultValue: 50, min: 0}),
 
     /**
      * Specifies whether the Coveo Platform should try to interpret special query syntax such as field references in the
@@ -217,7 +219,7 @@ export class Querybox extends Component {
 
     this.options = ComponentOptions.initComponentOptions(element, Querybox, options);
 
-    this.magicBox = Coveo.MagicBox.create(element, new Coveo.MagicBox.Grammar('Query', {
+    this.magicBox = MagicBox.create(element, new MagicBox.Grammar('Query', {
       Query: '[Term*][Spaces?]',
       Term: '[Spaces?][Word]',
       Spaces: / +/,

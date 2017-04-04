@@ -1,9 +1,9 @@
 import { IComponentDefinition } from '../Base/Component';
-import { Initialization } from '../Base/Initialization';
+import { LazyInitialization } from '../Base/Initialization';
 import { lazyExport } from '../../GlobalExports';
 
 export function lazyResultRating() {
-  Initialization.registerLazyComponent('ResultRating', () => {
+  LazyInitialization.registerLazyComponent('ResultRating', () => {
     return new Promise((resolve, reject) => {
       require.ensure(['./ResultRating'], () => {
         let loaded = require<IComponentDefinition>('./ResultRating.ts')['ResultRating'];

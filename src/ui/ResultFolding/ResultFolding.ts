@@ -6,7 +6,7 @@ import { DefaultFoldingTemplate } from './DefaultFoldingTemplate';
 import { IQueryResult } from '../../rest/QueryResult';
 import { Utils } from '../../utils/Utils';
 import { QueryUtils } from '../../utils/QueryUtils';
-import { Initialization, IInitializationParameters } from '../Base/Initialization';
+import { Initialization, IInitializationParameters, IInitResult } from '../Base/Initialization';
 import { Assert } from '../../misc/Assert';
 import { $$ } from '../../utils/Dom';
 import { l } from '../../strings/Strings';
@@ -271,12 +271,11 @@ export class ResultFolding extends Component {
 
       $$(oneChild).toggleClass('coveo-normal-child-result', !this.showingMoreResults);
       $$(oneChild).toggleClass('coveo-expanded-child-result', this.showingMoreResults);
-      return this.autoCreateComponentsInsideResult(oneChild, childResult);
+      return this.autoCreateComponentsInsideResult(oneChild, childResult).initResult;
     });
-
   }
 
-  private autoCreateComponentsInsideResult(element: HTMLElement, result: IQueryResult): Promise<boolean> {
+  private autoCreateComponentsInsideResult(element: HTMLElement, result: IQueryResult): IInitResult {
     Assert.exists(element);
 
     let initOptions = this.searchInterface.options;

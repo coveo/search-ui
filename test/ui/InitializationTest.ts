@@ -35,31 +35,38 @@ export function InitializationTest() {
       queryBox = null;
     });
 
-    it('can initialize search interface and component', () => {
-
+    it('can initialize search interface and component', (done) => {
       expect(Component.get(queryBox) instanceof Querybox).toBe(false);
       Initialization.initializeFramework(root, searchInterfaceOptions, () => {
-        Initialization.initSearchInterface(root, searchInterfaceOptions);
+        return Initialization.initSearchInterface(root, searchInterfaceOptions);
+      }).then(()=> {
+        expect(Component.get(queryBox) instanceof Querybox).toBe(true);
+        done();
       });
-      expect(Component.get(queryBox) instanceof Querybox).toBe(true);
     });
 
-    it('should not initialize a search interface twice', () => {
+    it('should not initialize a search interface twice', (done) => {
       expect(Component.get(queryBox) instanceof Querybox).toBe(false);
+      // First initialization
       Initialization.initializeFramework(root, searchInterfaceOptions, () => {
-        Initialization.initSearchInterface(root, searchInterfaceOptions);
+        return Initialization.initSearchInterface(root, searchInterfaceOptions);
+      }).then(()=> {
+        expect(Component.get(queryBox) instanceof Querybox).toBe(true);
+        let newQueryBox = document.createElement('div');
+        $$(newQueryBox).addClass('CoveoQuerybox');
+        root.appendChild(newQueryBox);
+        expect(Component.get(newQueryBox) instanceof Querybox).toBe(false);
+
+        // Second initialization
+        Initialization.initializeFramework(root, searchInterfaceOptions, () => {
+          return Initialization.initSearchInterface(root, searchInterfaceOptions);
+        }).then(()=> {
+          expect(Component.get(newQueryBox) instanceof Querybox).toBe(false);
+          done();
+        });
       });
-      expect(Component.get(queryBox) instanceof Querybox).toBe(true);
 
 
-      let newQueryBox = document.createElement('div');
-      $$(newQueryBox).addClass('CoveoQuerybox');
-      root.appendChild(newQueryBox);
-      expect(Component.get(newQueryBox) instanceof Querybox).toBe(false);
-      Initialization.initializeFramework(root, searchInterfaceOptions, () => {
-        Initialization.initSearchInterface(root, searchInterfaceOptions);
-      });
-      expect(Component.get(newQueryBox) instanceof Querybox).toBe(false);
     });
 
     it('allows to register default options ahead of init call, and merge them', function () {
@@ -76,7 +83,7 @@ export function InitializationTest() {
 
       expect(Component.get(queryBox) instanceof Querybox).toBe(false);
       Initialization.initializeFramework(root, searchInterfaceOptions, () => {
-        Initialization.initSearchInterface(root, searchInterfaceOptions);
+        return Initialization.initSearchInterface(root, searchInterfaceOptions);
       });
       expect(Component.get(queryBox) instanceof Querybox).toBe(true);
       let sBox = <Querybox>Component.get(queryBox);
@@ -93,7 +100,7 @@ export function InitializationTest() {
 
       Initialization.registerAutoCreateComponent(dummyCmp);
       Initialization.initializeFramework(root, searchInterfaceOptions, () => {
-        Initialization.initSearchInterface(root, searchInterfaceOptions);
+        return Initialization.initSearchInterface(root, searchInterfaceOptions);
       });
       expect(dummyCmp).toHaveBeenCalled();
     });
@@ -120,7 +127,7 @@ export function InitializationTest() {
       Initialization.automaticallyCreateComponentsInside(root, {
         options: {},
         bindings: env
-      });
+      })
       expect(Component.get(queryBox) instanceof Querybox).toBe(true);
     });
 
@@ -156,6 +163,7 @@ export function InitializationTest() {
         bindings: env
       }, [Querybox.ID]);
       expect(Component.get(resultList.el) instanceof ResultList).toBe(false);
+
     });
 
     it('allow to monkeyPatchComponentMethod', function () {
@@ -175,7 +183,7 @@ export function InitializationTest() {
 
       searchInterfaceOptions['externalComponents'] = [external];
       Initialization.initializeFramework(root, searchInterfaceOptions, () => {
-        Initialization.initSearchInterface(root, searchInterfaceOptions);
+        return Initialization.initSearchInterface(root, searchInterfaceOptions);
       });
       expect(Component.get(external) instanceof Pager).toBe(true);
     });
@@ -185,7 +193,7 @@ export function InitializationTest() {
       let external = $('<div class="CoveoPager"></div>');
       searchInterfaceOptions['externalComponents'] = [external];
       Initialization.initializeFramework(root, searchInterfaceOptions, () => {
-        Initialization.initSearchInterface(root, searchInterfaceOptions);
+        return Initialization.initSearchInterface(root, searchInterfaceOptions);
       });
       expect(Component.get(external.get(0)) instanceof Pager).toBe(true);
       Simulate.removeJQuery();

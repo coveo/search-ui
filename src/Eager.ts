@@ -1,6 +1,5 @@
 export * from './Core';
 
-// UI
 export { CoreHelpers } from './ui/Templates/CoreHelpers';
 export { SearchInterface, StandaloneSearchInterface } from './ui/SearchInterface/SearchInterface';
 export { jQueryInstance as $ } from './ui/Base/CoveoJQuery';
@@ -11,6 +10,9 @@ export { ColorUtils } from './utils/ColorUtils';
 export { Cookie } from './utils/CookieUtils';
 export { CurrencyUtils } from './utils/CurrencyUtils';
 export { DateUtils } from './utils/DateUtils';
+
+import { Initialization, EagerInitialization } from './ui/Base/Initialization';
+Initialization.componentsFactory = EagerInitialization.componentsFactory;
 
 import { AdvancedSearch } from './ui/AdvancedSearch/AdvancedSearch';
 AdvancedSearch.doExport();
@@ -40,7 +42,7 @@ import { CardActionBar } from './ui/CardActionBar/CardActionBar';
 CardActionBar.doExport();
 
 import { CardOverlay } from './ui/CardOverlay/CardOverlay';
-CardOverlay.doExport();
+CardOverlay.doExport()
 
 import { ChatterLikedBy } from './ui/ChatterLikedBy/ChatterLikedBy';
 ChatterLikedBy.doExport();
@@ -233,4 +235,3 @@ export { Template } from './ui/Templates/Template';
 
 import { swapVar } from './SwapVar';
 swapVar(this);
-

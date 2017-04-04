@@ -1,9 +1,9 @@
 import { IComponentDefinition } from '../Base/Component';
-import { Initialization } from '../Base/Initialization';
 import { lazyExport } from '../../GlobalExports';
+import { LazyInitialization } from '../Base/Initialization';
 
 export function lazyAnalyticsSuggestions() {
-  Initialization.registerLazyComponent('AnalyticsSuggestions', () => {
+  LazyInitialization.registerLazyComponent('AnalyticsSuggestions', () => {
     return new Promise((resolve, reject) => {
       require.ensure(['./AnalyticsSuggestions'], () => {
         let loaded = require<IComponentDefinition>('./AnalyticsSuggestions.ts')['AnalyticsSuggestions'];

@@ -878,7 +878,7 @@ export class Matrix extends Component {
         result: result
       };
 
-      return Initialization.automaticallyCreateComponentsInside(content, initParameters).then(() => {
+      return Initialization.automaticallyCreateComponentsInside(content, initParameters).initResult.then(() => {
         return content;
       });
     });

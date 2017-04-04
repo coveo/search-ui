@@ -8,14 +8,13 @@ const _ = require('underscore');
 const path = require('path');
 
 let webpackConfig = require('../webpack.config.js');
-//webpackConfig.entry['CoveoJsSearch'].unshift('webpack-dev-server/client?http://localhost:8080/');
 webpackConfig.entry['CoveoJsSearch.Lazy'].unshift('webpack-dev-server/client?http://localhost:8080/');
 const compiler = webpack(webpackConfig);
 
-let webpackConfigTest = require('../webpackConfigFiles/webpack.test.config');
+let webpackConfigTest = require('../webpack.test.config.js');
 webpackConfigTest.entry['tests'].unshift('webpack-dev-server/client?http://localhost:8081/');
 const compilerTest = webpack(webpackConfigTest);
-
+/*
 let webpackConfigPlayground = require('../webpackConfigFiles/webpack.playground.config');
 webpackConfigPlayground.entry['playground'].unshift('webpack-dev-server/client?http://localhost:8082/');
 const compilerPlayground = webpack(webpackConfigPlayground);
@@ -33,12 +32,12 @@ let debouncedGenerateDoc = _.debounce(()=> {
 
 compiler.plugin('done', ()=> {
   debouncedLinkToExternal();
-})
+ });
 
 compilerPlayground.plugin('done', ()=> {
   debouncedGenerateDoc();
-})
-
+ });
+ */
 gulp.task('dev', ['setup'], (done)=> {
   let server = new WebpackDevServer(compiler, {
     compress: true,
@@ -55,7 +54,7 @@ gulp.task('dev', ['setup'], (done)=> {
   server.listen(8080, 'localhost', ()=> {
   });
   done();
-})
+});
 
 gulp.task('devTest', ['setupTests'], function (done) {
   var serverTests = new WebpackDevServer(compilerTest, {
@@ -64,17 +63,18 @@ gulp.task('devTest', ['setupTests'], function (done) {
     compress: true
   });
   serverTests.listen(8081, 'localhost', ()=> {
-  })
+  });
   done();
-})
-
+});
+/*
 gulp.task('devPlayground', function (done) {
   var serverPlayground = new WebpackDevServer(compilerPlayground, {
     contentBase: 'docgen/',
     publicPath: '/assets/gen/js/',
     compress: true
-  })
+ });
   serverPlayground.listen(8082, 'localhost', ()=> {
-  })
+ });
   done();
-})
+ });
+ */

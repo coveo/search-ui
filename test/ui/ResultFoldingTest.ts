@@ -10,21 +10,21 @@ import { CardOverlayEvents } from '../../src/events/CardOverlayEvents';
 import _ = require('underscore');
 
 export function ResultFoldingTest() {
-  describe('ResultFolding', function () {
+  describe('ResultFolding', () => {
     let test: Mock.IBasicComponentSetup<ResultFolding>;
-    beforeEach(function () {
+    beforeEach(() => {
       test = Mock.basicResultComponentSetup<ResultFolding>(ResultFolding);
     });
 
-    describe('exposes options', function () {
-      it('resultTemplate should use the default result template when not defined', function () {
+    describe('exposes options', () => {
+      it('resultTemplate should use the default result template when not defined', () => {
         test = Mock.optionsResultComponentSetup<ResultFolding, IResultFoldingOptions>(ResultFolding, <IResultFoldingOptions>{
           resultTemplate: undefined
         }, undefined);
         expect((<any>test.cmp.options.resultTemplate).constructor.name).toBe('DefaultFoldingTemplate');
       });
 
-      it('normalCaption should be set properly when not expanded and expanded caption is defined', function () {
+      it('normalCaption should be set properly when not expanded and expanded caption is defined', () => {
         test = Mock.optionsResultComponentSetup<ResultFolding, IResultFoldingOptions>(ResultFolding, <IResultFoldingOptions>{
           normalCaption: 'foobar',
           expandedCaption: 'obligatory'
@@ -32,7 +32,7 @@ export function ResultFoldingTest() {
         expect($$(test.cmp.element).find('.coveo-folding-normal-caption').innerHTML).toContain('foobar');
       });
 
-      it('expandedCaption should be set properly when expanded and normal caption is defined', function () {
+      it('expandedCaption should be set properly when expanded and normal caption is defined', () => {
         test = Mock.optionsResultComponentSetup<ResultFolding, IResultFoldingOptions>(ResultFolding, <IResultFoldingOptions>{
           expandedCaption: 'foobar',
           normalCaption: 'obligatory'
@@ -42,7 +42,7 @@ export function ResultFoldingTest() {
         expect($$(test.cmp.element).find('.coveo-folding-expanded-caption').innerHTML).toContain('foobar');
       });
 
-      it('normalCaption and extendedCaption should not be shown if one or the other is not defined', function () {
+      it('normalCaption and extendedCaption should not be shown if one or the other is not defined', () => {
         test = Mock.optionsResultComponentSetup<ResultFolding, IResultFoldingOptions>(ResultFolding, <IResultFoldingOptions>{
           expandedCaption: 'foobar',
           normalCaption: undefined
@@ -58,7 +58,7 @@ export function ResultFoldingTest() {
         expect($$(test.cmp.element).find('.coveo-folding-normal-caption')).toBeNull();
       });
 
-      it('moreCaption should set the appropriate caption on the expand link', function () {
+      it('moreCaption should set the appropriate caption on the expand link', () => {
         let fakeResult = FakeResults.createFakeResult();
         fakeResult.moreResults = () => new Promise((res, rej) => null);
         test = Mock.optionsResultComponentSetup<ResultFolding, IResultFoldingOptions>(ResultFolding, <IResultFoldingOptions>{
@@ -67,7 +67,7 @@ export function ResultFoldingTest() {
         expect($$(test.cmp.element.parentElement).find('.coveo-folding-show-more').innerHTML).toBe('foobar');
       });
 
-      it('lessCaption should set the appropriate caption on the unexpand link', function () {
+      it('lessCaption should set the appropriate caption on the unexpand link', () => {
         let fakeResult = FakeResults.createFakeResult();
         fakeResult.moreResults = () => new Promise((res, rej) => null);
         test = Mock.optionsResultComponentSetup<ResultFolding, IResultFoldingOptions>(ResultFolding, <IResultFoldingOptions>{
@@ -76,7 +76,7 @@ export function ResultFoldingTest() {
         expect($$(test.cmp.element.parentElement).find('.coveo-folding-show-less').innerHTML).toBe('foobar');
       });
 
-      it('oneResultCaption should set the appropriate caption when there is only one result', function () {
+      it('oneResultCaption should set the appropriate caption when there is only one result', () => {
         test = Mock.optionsResultComponentSetup<ResultFolding, IResultFoldingOptions>(ResultFolding, <IResultFoldingOptions>{
           oneResultCaption: 'foobar'
         }, FakeResults.createFakeResult());
@@ -84,7 +84,7 @@ export function ResultFoldingTest() {
       });
     });
 
-    it('should not display any header caption when there are no child results', function () {
+    it('should not display any header caption when there are no child results', () => {
       let fakeResult = FakeResults.createFakeResult();
       fakeResult.childResults = [];
       test = Mock.optionsResultComponentSetup<ResultFolding, IResultFoldingOptions>(ResultFolding, <IResultFoldingOptions>{
@@ -95,14 +95,14 @@ export function ResultFoldingTest() {
       expect($$(test.cmp.element).find('.coveo-folding-expanded-caption').style.display).toBe('none');
     });
 
-    it('should not display the \'more\' link when moreResults handler is not available', function () {
+    it('should not display the \'more\' link when moreResults handler is not available', () => {
       expect($$(test.cmp.element).find('coveo-folding-show-more')).toBeNull();
     });
 
-    describe('after calling showMoreResults', function () {
+    describe('after calling showMoreResults', () => {
       let fakeResult: IQueryResult;
 
-      beforeEach(function () {
+      beforeEach(() => {
         fakeResult = FakeResults.createFakeResultWithChildResult('rezzult', 4);
         fakeResult.moreResults = () => new Promise<IQueryResult[]>((resolve, reject) => {
           resolve(fakeResult.childResults);
@@ -155,14 +155,14 @@ export function ResultFoldingTest() {
       });
     });
 
-    it('should put a \'normal\' caption on unexpanded search results', function () {
+    it('should put a \'normal\' caption on unexpanded search results', () => {
       test = Mock.optionsResultComponentSetup<ResultFolding, IResultFoldingOptions>(ResultFolding, undefined, FakeResults.createFakeResultWithChildResult('rez', 10));
       _.each($$(test.cmp.element).findAll('.coveo-result-folding-child-result'), (res: HTMLElement) => {
         expect($$(res).hasClass('coveo-normal-child-result')).toBe(true);
       });
     });
 
-    it('should load template properly', function () {
+    it('should load template properly', () => {
       test = Mock.optionsResultComponentSetup<ResultFolding, IResultFoldingOptions>(ResultFolding, <IResultFoldingOptions>{
         resultTemplate: UnderscoreTemplate.fromString('Foo', {})
       }, FakeResults.createFakeResultWithChildResult('razzza', 2));
@@ -171,7 +171,7 @@ export function ResultFoldingTest() {
       });
     });
 
-    it('should automatically initialize components in child results\' templates', function () {
+    it('should automatically initialize components in child results\' templates', () => {
       let fakeResult = FakeResults.createFakeResultWithChildResult('test', 3);
       test = Mock.optionsResultComponentSetup<ResultFolding, IResultFoldingOptions>(ResultFolding, <IResultFoldingOptions>{
         resultTemplate: UnderscoreTemplate.fromString('<a class="CoveoResultLink" />', {})
@@ -181,19 +181,25 @@ export function ResultFoldingTest() {
       });
     });
 
-    it('can load an external template from an id', function () {
+    it('can load an external template from an id', (done) => {
       TemplateCache.registerTemplate('Foo', UnderscoreTemplate.fromString('foubarre', {}));
       test = Mock.advancedResultComponentSetup<ResultFolding>(ResultFolding, FakeResults.createFakeResult(), <Mock.AdvancedComponentSetupOptions>{
         element: $$('div', { 'data-result-template-id': 'Foo' }).el
       });
-      expect(test.cmp.options.resultTemplate.instantiateToElement(<IQueryResult>{}).innerHTML).toBe('foubarre');
+      test.cmp.options.resultTemplate.instantiateToElement(<IQueryResult>{}).then(elem => {
+        expect(elem.innerHTML).toBe('foubarre');
+        done();
+      });
     });
 
-    it('should automatically use the template inside its element', function () {
+    it('should automatically use the template inside its element', (done) => {
       test = Mock.advancedResultComponentSetup<ResultFolding>(ResultFolding, FakeResults.createFakeResult(), <Mock.AdvancedComponentSetupOptions>{
         element: $$('div', {}, $$('script', { className: 'result-template', 'type': 'text/underscore' }, 'heyo')).el,
       });
-      expect(test.cmp.options.resultTemplate.instantiateToElement(<IQueryResult>{}).innerHTML).toBe('heyo');
+      test.cmp.options.resultTemplate.instantiateToElement(<IQueryResult>{}).then(elem => {
+        expect(elem.innerHTML).toBe('heyo');
+        done();
+      });
     });
 
     it('should show or hide elements with special classes when expanding or unexpanding', function (done) {
@@ -218,7 +224,7 @@ export function ResultFoldingTest() {
       });
     });
 
-    it('should call showMoreResults when its parent CardOverlay *first* triggers openCardOverlay', function () {
+    it('should call showMoreResults when its parent CardOverlay *first* triggers openCardOverlay', () => {
       let parentCardOverlay = $$('div', { className: 'CoveoCardOverlay' }, $$('div')).el;
       let fakeResult = FakeResults.createFakeResult();
       fakeResult.moreResults = () => undefined; // moreResults needs to exist

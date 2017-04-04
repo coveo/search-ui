@@ -1,9 +1,9 @@
 import { IComponentDefinition } from '../Base/Component';
-import { Initialization } from '../Base/Initialization';
+import { LazyInitialization } from '../Base/Initialization';
 import { lazyExport } from '../../GlobalExports';
 
 export function lazyResultAttachment() {
-  Initialization.registerLazyComponent('ResultAttachments', () => {
+  LazyInitialization.registerLazyComponent('ResultAttachments', () => {
     return new Promise((resolve, reject) => {
       require.ensure(['./ResultAttachments'], () => {
         let loaded = require<IComponentDefinition>('./ResultAttachments.ts')['ResultAttachments'];

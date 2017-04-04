@@ -6,7 +6,7 @@ import { TemplateFieldsEvaluator } from './TemplateFieldsEvaluator';
 import { IQueryResult } from '../../rest/QueryResult';
 import { ResponsiveComponents } from '../ResponsiveComponents/ResponsiveComponents';
 import * as _ from 'underscore';
-import { Initialization } from '../Base/Initialization';
+import { Initialization, LazyInitialization } from '../Base/Initialization';
 import { Utils } from '../../utils/Utils';
 
 export interface ITemplateProperties {
@@ -182,7 +182,7 @@ export class Template implements ITemplateProperties {
     }
 
     let allComponentsLazyLoaded = _.map(this.getComponentsInside(html), (component: string) => {
-      return Initialization.getLazyRegisteredComponent(component).then((lazyLoadedComponent) => {
+      return LazyInitialization.getLazyRegisteredComponent(component).then((lazyLoadedComponent) => {
         return lazyLoadedComponent;
       });
     });

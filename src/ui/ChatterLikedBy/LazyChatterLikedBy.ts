@@ -1,9 +1,9 @@
 import { IComponentDefinition } from '../Base/Component';
-import { Initialization } from '../Base/Initialization';
+import { LazyInitialization } from '../Base/Initialization';
 import { lazyExport } from '../../GlobalExports';
 
 export function lazyChatterLikedBy() {
-  Initialization.registerLazyComponent('ChatterLikedBy', () => {
+  LazyInitialization.registerLazyComponent('ChatterLikedBy', () => {
     return new Promise((resolve, reject) => {
       require.ensure(['./ChatterLikedBy'], () => {
         let loaded = require<IComponentDefinition>('./ChatterLikedBy.ts')['ChatterLikedBy'];
