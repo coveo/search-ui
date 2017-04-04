@@ -23,6 +23,8 @@ gulp.task('cleanDefs', function () {
       .pipe(replace(/never/gm, 'void'))
       .pipe(replace(/ensureDom: Function;\n\s*options\?: any;/gm, 'ensureDom: Function;\n\t\toptions: any;'))
       .pipe(replace(/^(\s*const\s\w+\s)(=\s\w+);$/gm, '$1: any;'))
+      .pipe(replace(/:\s?.*ModuleDefinition\./gm, ': ')) // Assume that types that end with ModuleDefinition were imported using the import type only syntax
+                                                         // and stripping ModuleDefinition will refer to the correct type.
       .pipe(gulp.dest('bin/ts/'));
 });
 
