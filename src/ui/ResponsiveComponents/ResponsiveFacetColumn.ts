@@ -59,6 +59,7 @@ export class ResponsiveFacetColumn implements IResponsiveComponent {
 
   public registerComponent(accept: Component) {
     this.componentsInFacetColumn.push(accept);
+    this.preservePositionOriginalValues.push(accept.options.preservePosition);
     return true;
   }
 

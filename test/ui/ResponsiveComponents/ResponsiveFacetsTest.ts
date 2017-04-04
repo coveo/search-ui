@@ -149,9 +149,7 @@ export function ResponsiveFacetsTest() {
         responsiveFacets.handleResizeEvent();
         shouldSwitchToLargeMode();
         ResponsiveComponentsUtils.activateSmallFacet(root);
-
         responsiveFacets.handleResizeEvent();
-
         expect(facet.options.preservePosition).toBe(true);
       });
 

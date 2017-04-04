@@ -47,7 +47,7 @@ export class Initialization {
   // We need the 2 different mode for a specific reason :
   // In eager mode, when someone calls Coveo.init, this means the initialization is synchronous, and someone can then immediately start interacting with component.
   // In lazy mode, when someone calls Coveo.init, they have to wait for the returned promise to resolve before interacting with components.
-  public static componentsFactory: (elements: HTMLElement[], componentClassId: string, initParameters: IInitializationParameters)=> {factory: ()=> Promise<Component>[] | void, isLazyInit: boolean}
+  public static componentsFactory: (elements: HTMLElement[], componentClassId: string, initParameters: IInitializationParameters) => { factory: () => Promise<Component>[] | void, isLazyInit: boolean };
 
   private static logger = new Logger('Initialization');
   public static registeredComponents: String[] = [];
@@ -216,13 +216,13 @@ export class Initialization {
    * @param options The options for all components (eg: {Searchbox : {enableSearchAsYouType : true}}).
    * @param initSearchInterfaceFunction The function to execute to create the {@link SearchInterface} component. Different init call will create different {@link SearchInterface}.
    */
-  public static initializeFramework(element: HTMLElement, options: any, initSearchInterfaceFunction: (...args: any[]) => IInitResult): Promise<{elem: HTMLElement}> {
+  public static initializeFramework(element: HTMLElement, options: any, initSearchInterfaceFunction: (...args: any[]) => IInitResult): Promise<{ elem: HTMLElement }> {
     Assert.exists(element);
     let alreadyInitialized = Component.get(element, QueryController, true);
     if (alreadyInitialized) {
       this.logger.error('This DOM element has already been initialized as a search interface, skipping initialization', element);
-      return new Promise((resolve, reject)=> {
-        resolve({elem: element});
+      return new Promise((resolve, reject) => {
+        resolve({ elem: element });
       });
     }
 
@@ -231,7 +231,7 @@ export class Initialization {
     Initialization.performInitFunctionsOption(options, InitializationEvents.beforeInitialization);
     $$(element).trigger(InitializationEvents.beforeInitialization);
 
-    const toExecuteOnceSearchInterfaceIsInitialized = ()=> {
+    const toExecuteOnceSearchInterfaceIsInitialized = () => {
       Initialization.initExternalComponents(element, options);
 
       Initialization.performInitFunctionsOption(options, InitializationEvents.afterComponentsInitialization);
@@ -270,19 +270,19 @@ export class Initialization {
     // eg : CoveoJsSearch.Lazy.js was included in the page
     // this means that we can only execute the function after the promise has resolved
     if (resultOfSearchInterfaceInitialization.isLazyInit) {
-      return resultOfSearchInterfaceInitialization.initResult.then(()=> {
+      return resultOfSearchInterfaceInitialization.initResult.then(() => {
         toExecuteOnceSearchInterfaceIsInitialized();
         return {
           elem: element
         };
-      })
+      });
     } else {
       // Else, we are executing an "eager" initialization, which returns void;
       // eg : CoveoJsSearch.js was included in the page
       // this mean that this function gets executed immediately
       toExecuteOnceSearchInterfaceIsInitialized();
-      return new Promise((resolve, reject)=> {
-        resolve({elem: element})
+      return new Promise((resolve, reject) => {
+        resolve({ elem: element });
       });
 
     }
@@ -298,7 +298,7 @@ export class Initialization {
     options = Initialization.resolveDefaultOptions(element, options);
     let searchInterface = new SearchInterface(element, options.SearchInterface, options.Analytics);
     searchInterface.options.originalOptionsObject = options;
-    let initParameters: IInitializationParameters = {options: options, bindings: searchInterface.getBindings()};
+    let initParameters: IInitializationParameters = { options: options, bindings: searchInterface.getBindings() };
     return Initialization.automaticallyCreateComponentsInside(element, initParameters, ['Recommendation']);
   }
 
@@ -410,13 +410,13 @@ export class Initialization {
           }
         })).then(() => true),
         isLazyInit: true
-      }
+      };
     } else {
-      _.each(codeToExecute, (code)=> code());
+      _.each(codeToExecute, (code) => code());
       return {
         initResult: Promise.resolve(true),
         isLazyInit: false
-      }
+      };
     }
   }
 
@@ -638,7 +638,7 @@ export class LazyInitialization {
     }
   }
 
-  public static componentsFactory(elements: Element[], componentClassId: string, initParameters: IInitializationParameters): {factory: () => void, isLazyInit: boolean} {
+  public static componentsFactory(elements: Element[], componentClassId: string, initParameters: IInitializationParameters): { factory: () => void, isLazyInit: boolean } {
     const factory = () => {
       let promises: Promise<Component>[] = [];
       _.each(elements, (matchingElement: HTMLElement) => {
@@ -654,7 +654,7 @@ export class LazyInitialization {
             optionsToUse = Utils.extendDeep(optionsForElementId, initOptions);
             optionsToUse = Utils.extendDeep(optionsForComponentClass, optionsToUse);
           }
-          let initParamToUse = _.extend({}, initParameters, {options: optionsToUse});
+          let initParamToUse = _.extend({}, initParameters, { options: optionsToUse });
           promises.push(LazyInitialization.createComponentOfThisClassOnElement(componentClassId, matchingElement, initParamToUse));
         }
       });
@@ -698,7 +698,7 @@ export class EagerInitialization {
   // Map of every component with their implementation (eagerly loaded)
   public static eagerlyLoadedComponents: IStringMap<IComponentDefinition> = {};
 
-  public static componentsFactory(elements: Element[], componentClassId: string, initParameters: IInitializationParameters): {factory: () => void, isLazyInit: boolean } {
+  public static componentsFactory(elements: Element[], componentClassId: string, initParameters: IInitializationParameters): { factory: () => void, isLazyInit: boolean } {
     const factory = () => {
       _.each(elements, (matchingElement: HTMLElement) => {
         if (Component.get(matchingElement, componentClassId) == null) {
@@ -712,8 +712,8 @@ export class EagerInitialization {
             optionsToUse = Utils.extendDeep(optionsForElementId, initOptions);
             optionsToUse = Utils.extendDeep(optionsForComponentClass, optionsToUse);
           }
-          let initParamToUse = _.extend({}, initParameters, {options: optionsToUse});
-          EagerInitialization.createComponentOfThisClassOnElement(componentClassId, matchingElement, initParamToUse)
+          let initParamToUse = _.extend({}, initParameters, { options: optionsToUse });
+          EagerInitialization.createComponentOfThisClassOnElement(componentClassId, matchingElement, initParamToUse);
         }
       });
     };
@@ -721,7 +721,7 @@ export class EagerInitialization {
     return {
       factory: factory,
       isLazyInit: false
-    }
+    };
   }
 
   private static createComponentOfThisClassOnElement(componentClassId: string, element: HTMLElement, initParameters?: IInitializationParameters): Component {

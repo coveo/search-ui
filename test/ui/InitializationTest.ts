@@ -40,7 +40,7 @@ export function InitializationTest() {
       expect(Component.get(queryBox) instanceof Querybox).toBe(false);
       Initialization.initializeFramework(root, searchInterfaceOptions, () => {
         return Initialization.initSearchInterface(root, searchInterfaceOptions);
-      }).then(()=> {
+      }).then(() => {
         expect(Component.get(queryBox) instanceof Querybox).toBe(true);
         done();
       });
@@ -51,7 +51,7 @@ export function InitializationTest() {
       // First initialization
       Initialization.initializeFramework(root, searchInterfaceOptions, () => {
         return Initialization.initSearchInterface(root, searchInterfaceOptions);
-      }).then(()=> {
+      }).then(() => {
         expect(Component.get(queryBox) instanceof Querybox).toBe(true);
         let newQueryBox = document.createElement('div');
         $$(newQueryBox).addClass('CoveoQuerybox');
@@ -61,7 +61,7 @@ export function InitializationTest() {
         // Second initialization
         Initialization.initializeFramework(root, searchInterfaceOptions, () => {
           return Initialization.initSearchInterface(root, searchInterfaceOptions);
-        }).then(()=> {
+        }).then(() => {
           expect(Component.get(newQueryBox) instanceof Querybox).toBe(false);
           done();
         });
@@ -128,7 +128,7 @@ export function InitializationTest() {
       Initialization.automaticallyCreateComponentsInside(root, {
         options: {},
         bindings: env
-      })
+      });
       expect(Component.get(queryBox) instanceof Querybox).toBe(true);
     });
 

@@ -7,12 +7,8 @@ if (Simulate.isPhantomJs()) {
   Logger.disable();
 }
 
-
 import { defaultLanguage } from '../src/strings/DefaultLanguage';
 defaultLanguage();
-
-import { shim } from '../src/misc/PromisesShim';
-shim();
 
 import { CookieUtilsTest } from './utils/CookieUtilsTest';
 CookieUtilsTest();

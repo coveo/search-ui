@@ -13,7 +13,7 @@ import { QUERY_STATE_ATTRIBUTES } from '../../models/QueryStateModel';
 import { QueryUtils } from '../../utils/QueryUtils';
 import { $$, Win, Doc } from '../../utils/Dom';
 import { analyticsActionCauseList, IAnalyticsNoMeta } from '../Analytics/AnalyticsActionListMeta';
-import { Initialization, IInitializationParameters } from '../Base/Initialization';
+import { Initialization, IInitializationParameters, IInitResult } from '../Base/Initialization';
 import { Defer } from '../../misc/Defer';
 import { DeviceUtils } from '../../utils/DeviceUtils';
 import { ResultListEvents, IDisplayedNewResultEventArgs, IChangeLayoutEventArgs } from '../../events/ResultListEvents';
@@ -415,7 +415,7 @@ export class ResultList extends Component {
       });
     });
 
-    this.fetchingMoreResults.then(() => {
+    this.fetchingMoreResults.finally(() => {
       this.hideWaitingAnimationForInfiniteScrolling();
       this.fetchingMoreResults = undefined;
       Defer.defer(() => {
@@ -428,6 +428,8 @@ export class ResultList extends Component {
         }
       });
     });
+
+    return this.fetchingMoreResults;
   }
 
   /**
@@ -455,7 +457,7 @@ export class ResultList extends Component {
     $$(this.element).addClass('coveo-hidden');
   }
 
-  protected autoCreateComponentsInsideResult(element: HTMLElement, result: IQueryResult) {
+  protected autoCreateComponentsInsideResult(element: HTMLElement, result: IQueryResult): IInitResult {
     Assert.exists(element);
 
     let initOptions = this.searchInterface.options.originalOptionsObject;
