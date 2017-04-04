@@ -368,8 +368,10 @@ export class Analytics extends Component {
     let selector = Component.computeSelectorForType(Analytics.ID);
     let found: HTMLElement[] = [];
     found = found.concat($$(element).findAll(selector));
-    if (!(Component.get(element, SearchInterface) instanceof Coveo['Recommendation'])) {
-      found = this.ignoreElementsInsideRecommendationInterface(found);
+    if (Coveo['Recommendation']) {
+      if (!(Component.get(element, SearchInterface) instanceof Coveo['Recommendation'])) {
+        found = this.ignoreElementsInsideRecommendationInterface(found);
+      }
     }
     found.push($$(element).closest(Component.computeCssClassName(Analytics)));
     if ($$(element).is(selector)) {

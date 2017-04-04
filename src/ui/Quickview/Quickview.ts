@@ -303,7 +303,7 @@ export class Quickview extends Component {
         bindings: this.getBindings(),
         result: this.result
       };
-      return Initialization.automaticallyCreateComponentsInside(content.el, initParameters).then(() => {
+      return Initialization.automaticallyCreateComponentsInside(content.el, initParameters).initResult.then(() => {
         if (content.find('.' + Component.computeCssClassName(QuickviewDocument)) != undefined && this.options.enableLoadingAnimation) {
           if (loadingAnimation instanceof HTMLElement) {
             content.prepend(loadingAnimation);

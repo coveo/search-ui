@@ -149,7 +149,7 @@ export class OmniboxResultList extends ResultList implements IComponentBindings 
         $$(resultElement).on('keyboardSelect', () => {
           this.options.onSelect.call(this, result, resultElement, this.lastOmniboxRequest.omniboxObject);
         });
-        return this.autoCreateComponentsInsideResult(resultElement, result).then(() => {
+        return this.autoCreateComponentsInsideResult(resultElement, result).initResult.then(() => {
           builtResults.push(resultElement);
           return resultElement;
         });

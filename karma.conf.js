@@ -18,6 +18,9 @@ var configuration = {
     pattern: './test/lib/jasmine-ajax/jasmine-ajax.js',
     watched: false
   }, {
+    pattern: './bin/',
+    watched: false
+  }, {
     pattern: './bin/tests/tests.js',
     watched: true
   }],

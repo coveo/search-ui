@@ -15,6 +15,13 @@ let plugins = [];
 plugins.push(spritesmithConfig);
 plugins.push(salesforceSpritesmithConfig);
 
+const extractSass = new ExtractTextPlugin({
+  filename: '../css/CoveoFullSearchNewDesign.css'
+});
+
+plugins.push(extractSass)
+
+
 module.exports = {
   entry: {
     'tests': ['./test/Test.ts']
@@ -99,21 +106,24 @@ module.exports = {
       }]
     }, {
       test: /\.scss/,
-      use: [{
-        loader: 'style-loader',
-      }, {
-        loader: 'css-loader',
-        options: {
-          sourceMap: true
-        }
-      }, {
-        loader: 'resolve-url-loader'
-      }, {
-        loader: 'sass-loader',
-        options: {
-          sourceMap: true
-        }
-      }]
+      use: extractSass.extract({
+        use: [{
+          loader: 'css-loader',
+          options: {
+            sourceMap: true
+          }
+        }, {
+          loader: 'resolve-url-loader'
+        }, {
+          loader: 'sass-loader',
+          options: {
+            sourceMap: true
+          }
+        }],
+        fallback: 'style-loader',
+        // This is important to set the correct relative path inside the generated css correctly
+        publicPath: ''
+      })
     }]
   },
   plugins: plugins

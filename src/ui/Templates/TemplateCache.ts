@@ -13,7 +13,6 @@ export class TemplateCache {
   private static templateNames: string[] = [];
   private static defaultTemplates: { [templateName: string]: TemplateModule.Template; } = {};
 
-
   public static registerTemplate(name: string, template: TemplateModule.Template, publicTemplate?: boolean, defaultTemplate?: boolean);
   public static registerTemplate(name: string, template: (data: {}) => string, publicTemplate?: boolean, defaultTemplate?: boolean);
   /**

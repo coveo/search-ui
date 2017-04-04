@@ -1,9 +1,9 @@
 import { IComponentDefinition } from '../Base/Component';
-import { Initialization } from '../Base/Initialization';
+import { LazyInitialization } from '../Base/Initialization';
 import { lazyExport } from '../../GlobalExports';
 
 export function lazySearchButton() {
-  Initialization.registerLazyComponent('SearchButton', () => {
+  LazyInitialization.registerLazyComponent('SearchButton', () => {
     return new Promise((resolve, reject) => {
       require.ensure(['./SearchButton'], () => {
         let loaded = require<IComponentDefinition>('./SearchButton.ts')['SearchButton'];

@@ -36,31 +36,38 @@ export function InitializationTest() {
       queryBox = null;
     });
 
-    it('can initialize search interface and component', () => {
-
+    it('can initialize search interface and component', (done) => {
       expect(Component.get(queryBox) instanceof Querybox).toBe(false);
       Initialization.initializeFramework(root, searchInterfaceOptions, () => {
         return Initialization.initSearchInterface(root, searchInterfaceOptions);
+      }).then(()=> {
+        expect(Component.get(queryBox) instanceof Querybox).toBe(true);
+        done();
       });
-      expect(Component.get(queryBox) instanceof Querybox).toBe(true);
     });
 
-    it('should not initialize a search interface twice', () => {
+    it('should not initialize a search interface twice', (done) => {
       expect(Component.get(queryBox) instanceof Querybox).toBe(false);
+      // First initialization
       Initialization.initializeFramework(root, searchInterfaceOptions, () => {
         return Initialization.initSearchInterface(root, searchInterfaceOptions);
+      }).then(()=> {
+        expect(Component.get(queryBox) instanceof Querybox).toBe(true);
+        let newQueryBox = document.createElement('div');
+        $$(newQueryBox).addClass('CoveoQuerybox');
+        root.appendChild(newQueryBox);
+        expect(Component.get(newQueryBox) instanceof Querybox).toBe(false);
+
+        // Second initialization
+        Initialization.initializeFramework(root, searchInterfaceOptions, () => {
+          return Initialization.initSearchInterface(root, searchInterfaceOptions);
+        }).then(()=> {
+          expect(Component.get(newQueryBox) instanceof Querybox).toBe(false);
+          done();
+        });
       });
-      expect(Component.get(queryBox) instanceof Querybox).toBe(true);
 
 
-      let newQueryBox = document.createElement('div');
-      $$(newQueryBox).addClass('CoveoQuerybox');
-      root.appendChild(newQueryBox);
-      expect(Component.get(newQueryBox) instanceof Querybox).toBe(false);
-      Initialization.initializeFramework(root, searchInterfaceOptions, () => {
-        return Initialization.initSearchInterface(root, searchInterfaceOptions);
-      });
-      expect(Component.get(newQueryBox) instanceof Querybox).toBe(false);
     });
 
     it('allows to register default options ahead of init call, and merge them', function () {
@@ -115,20 +122,17 @@ export function InitializationTest() {
       expect(Initialization.getRegisteredComponent('Facet')).toBe(Facet);
     });
 
-    it('allow to automaticallyCreateComponentsInside', (done) => {
+    it('allow to automaticallyCreateComponentsInside', () => {
       let env = new Mock.MockEnvironmentBuilder().build();
       expect(Component.get(queryBox) instanceof Querybox).toBe(false);
       Initialization.automaticallyCreateComponentsInside(root, {
         options: {},
         bindings: env
-      }).then(() => {
-        expect(Component.get(queryBox) instanceof Querybox).toBe(true);
-        done();
-      });
-
+      })
+      expect(Component.get(queryBox) instanceof Querybox).toBe(true);
     });
 
-    it('allow to automaticallyCreateComponentInside, as well as childs components', (done) => {
+    it('allow to automaticallyCreateComponentInside, as well as childs components', () => {
       let env = new Mock.MockEnvironmentBuilder().build();
       let resultList = $$('div', { className: Component.computeCssClassNameForType(ResultList.ID) });
       $$(queryBox).append(resultList.el);
@@ -136,25 +140,21 @@ export function InitializationTest() {
       Initialization.automaticallyCreateComponentsInside(root, {
         options: {},
         bindings: env
-      }).then(() => {
-        expect(Component.get(resultList.el) instanceof ResultList).toBe(true);
-        done();
       });
+      expect(Component.get(resultList.el) instanceof ResultList).toBe(true);
     });
 
-    it('allow to automaticallyCreateComponentsInside and can ignore some components', (done) => {
+    it('allow to automaticallyCreateComponentsInside and can ignore some components', () => {
       let env = new Mock.MockEnvironmentBuilder().build();
       expect(Component.get(queryBox) instanceof Querybox).toBe(false);
       Initialization.automaticallyCreateComponentsInside(root, {
         options: {},
         bindings: env
-      }, [Querybox.ID]).then(() => {
-        expect(Component.get(queryBox) instanceof Querybox).toBe(false);
-        done();
-      });
+      }, [Querybox.ID]);
+      expect(Component.get(queryBox) instanceof Querybox).toBe(false);
     });
 
-    it('allow to automaticallyCreateComponentInside can ignore child components', (done) => {
+    it('allow to automaticallyCreateComponentInside can ignore child components', () => {
       let env = new Mock.MockEnvironmentBuilder().build();
       let resultList = $$('div', { className: Component.computeCssClassNameForType(ResultList.ID) });
       $$(queryBox).append(resultList.el);
@@ -162,10 +162,8 @@ export function InitializationTest() {
       Initialization.automaticallyCreateComponentsInside(root, {
         options: {},
         bindings: env
-      }, [Querybox.ID]).then(() => {
-        expect(Component.get(resultList.el) instanceof ResultList).toBe(false);
-        done();
-      });
+      }, [Querybox.ID]);
+      expect(Component.get(resultList.el) instanceof ResultList).toBe(false);
 
     });
 

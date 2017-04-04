@@ -369,7 +369,7 @@ export class ResultList extends Component {
         Component.bindResultToElement(resultElement, result);
         $$(resultElement).addClass('');
       }
-      return this.autoCreateComponentsInsideResult(resultElement, result).then(() => {
+      return this.autoCreateComponentsInsideResult(resultElement, result).initResult.then(() => {
         return resultElement;
       });
     });

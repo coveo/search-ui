@@ -7,6 +7,9 @@ if (__webpack_require__.p == '') {
   __webpack_require__.p = 'http://localhost:8080/js/';
 }
 
+import { Initialization, LazyInitialization } from './ui/Base/Initialization';
+Initialization.componentsFactory = LazyInitialization.componentsFactory;
+
 import { lazyAdvancedSearch } from './ui/AdvancedSearch/LazyAdvancedSearch';
 lazyAdvancedSearch();
 

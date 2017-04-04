@@ -1,9 +1,9 @@
 import { IComponentDefinition } from '../Base/Component';
-import { Initialization } from '../Base/Initialization';
 import { lazyExport } from '../../GlobalExports';
+import { LazyInitialization } from '../Base/Initialization';
 
 export function lazyAggregate() {
-  Initialization.registerLazyComponent('Aggregate', () => {
+  LazyInitialization.registerLazyComponent('Aggregate', () => {
     return new Promise((resolve, reject) => {
       require.ensure(['./Aggregate'], () => {
         let loaded = require<IComponentDefinition>('./Aggregate.ts')['Aggregate'];
