@@ -12,6 +12,7 @@ import { IResultLinkOptions } from '../ResultLink/ResultLinkOptions';
 import FieldTableModule = require('../FieldTable/FieldTable');
 import * as _ from 'underscore';
 import { exportGlobally } from '../../GlobalExports';
+import { Icon } from '../Icon/Icon';
 
 export interface IThumbnailOptions extends IResultLinkOptions {
   noThumbnailClass?: string;

@@ -26,12 +26,12 @@ export function HtmlTemplateTest() {
       let element = document.createElement('script');
       let createdTemplate = HtmlTemplate.create(element);
       let createdHtmlElement = createdTemplate.toHtmlElement();
-      expect(createdHtmlElement.getAttribute('type')).toEqual(null);      
+      expect(createdHtmlElement.getAttribute('type')).toEqual(null);
     });
 
     it('created element from string should have no attribute type', () => {
-      let createdTemplate = HtmlTemplate.fromString(`<div class="CoveoResultLink" data-field="@foo"></div>`, <ITemplateFromStringProperties>{});      
-      expect(createdTemplate.element.getAttribute('type')).toEqual(null); 
+      let createdTemplate = HtmlTemplate.fromString(`<div class="CoveoResultLink" data-field="@foo"></div>`, <ITemplateFromStringProperties>{});
+      expect(createdTemplate.element.getAttribute('type')).toEqual(null);
     });
   });
 }

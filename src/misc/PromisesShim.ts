@@ -1,3 +1,4 @@
+/* istanbul ignore next */
 export function shim() {
   if (typeof Promise.prototype['finally'] != 'function') {
     Promise.prototype['finally'] = function finallyPolyfill(callback) {

@@ -40,31 +40,31 @@ export function SearchInterfaceTest() {
       expect(cmp.options.firstLoadingAnimation.parentElement).toBeNull();
     });
 
-    it('should create an analytics client', ()=> {
+    it('should create an analytics client', () => {
       expect(cmp.usageAnalytics instanceof Coveo['NoopAnalyticsClient']).toBe(true);
     });
 
-    it('should create a query controller', ()=> {
+    it('should create a query controller', () => {
       expect(cmp.queryController instanceof QueryController).toBe(true);
     });
 
-    it('should create a query state model', ()=> {
+    it('should create a query state model', () => {
       expect(cmp.queryStateModel instanceof QueryStateModel).toBe(true);
     });
 
-    it('should create a component options model', ()=> {
+    it('should create a component options model', () => {
       expect(cmp.componentOptionsModel instanceof ComponentOptionsModel).toBe(true, 'Not a component options model');
     });
 
-    it('should create a component state model', ()=> {
+    it('should create a component state model', () => {
       expect(cmp.componentStateModel instanceof ComponentStateModel).toBe(true, 'Not a component state model');
     });
 
-    it('should create a search interface', ()=> {
+    it('should create a search interface', () => {
       expect(cmp instanceof SearchInterface).toBe(true);
     });
 
-    it('should set the root as itself', ()=> {
+    it('should set the root as itself', () => {
       expect(cmp.root).toBe(cmp.element, 'Not an element');
     });
 

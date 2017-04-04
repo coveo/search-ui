@@ -26,7 +26,7 @@ export class TemplateCache {
   public static registerTemplate(name: string, template: any, publicTemplate: boolean = true, defaultTemplate: boolean = false, resultListTemplate: boolean = false) {
     Assert.isNonEmptyString(name);
     Assert.exists(template);
-    if (!(template instanceof TemplateModule.Template)) {
+    if (!(template instanceof Template)) {
       template = new Template(template);
     }
     if (template.name == null) {

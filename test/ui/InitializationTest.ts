@@ -199,30 +199,39 @@ export function InitializationTest() {
       Simulate.removeJQuery();
     });
 
-    it('will trigger a query automatically by default', () => {
+    it('will trigger a query automatically by default', (done) => {
       Initialization.initializeFramework(root, searchInterfaceOptions, () => {
-        Initialization.initSearchInterface(root, searchInterfaceOptions);
+        return Initialization.initSearchInterface(root, searchInterfaceOptions);
+      }).then(() => {
+        expect(endpoint.search).toHaveBeenCalled();
+        done();
       });
-      expect(endpoint.search).toHaveBeenCalled();
+
     });
 
-    it('will not trigger a query automatically if specified', () => {
+    it('will not trigger a query automatically if specified', (done) => {
       searchInterfaceOptions['SearchInterface'].autoTriggerQuery = false;
       Initialization.initializeFramework(root, searchInterfaceOptions, () => {
-        Initialization.initSearchInterface(root, searchInterfaceOptions);
+        return Initialization.initSearchInterface(root, searchInterfaceOptions);
+      }).then(() => {
+        expect(endpoint.search).not.toHaveBeenCalled();
+        done();
       });
-      expect(endpoint.search).not.toHaveBeenCalled();
+
     });
 
-    it('will send action history on automatic query', () => {
+    it('will send action history on automatic query', (done) => {
       localStorage.removeItem('__coveo.analytics.history');
       expect(localStorage.getItem('__coveo.analytics.history')).toBeNull();
       Initialization.initializeFramework(root, searchInterfaceOptions, () => {
-        Initialization.initSearchInterface(root, searchInterfaceOptions);
+        return Initialization.initSearchInterface(root, searchInterfaceOptions);
+      }).then(() => {
+        const actionHistory = localStorage.getItem('__coveo.analytics.history');
+        expect(actionHistory).not.toBeNull();
+        expect(JSON.parse(actionHistory)[0].name).toEqual('Query');
+        done();
       });
-      const actionHistory = localStorage.getItem('__coveo.analytics.history');
-      expect(actionHistory).not.toBeNull();
-      expect(JSON.parse(actionHistory)[0].name).toEqual('Query');
+
     });
 
     describe('when initializing recommendation interface', function () {

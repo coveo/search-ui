@@ -1,6 +1,7 @@
 
 // CustomEvent polyfill from MDN
 // https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent/CustomEvent#Polyfill
+/* istanbul ignore next */
 export function customEventPolyfill() {
   // window.CustomEvent is missing from the definitions
   if (typeof (<any>window).CustomEvent === 'function') {

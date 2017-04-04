@@ -257,13 +257,13 @@ export class Initialization {
 
       if (searchInterface.options.autoTriggerQuery) {
         Initialization.logFirstQueryCause(searchInterface);
-let shouldLogInActionHistory = true;
-      // We should not log an action history if the interface is a standalone recommendation component.
-      if (Coveo['Recommendation']) {
-        shouldLogInActionHistory = !(searchInterface instanceof Coveo['Recommendation']);
-      }
+        let shouldLogInActionHistory = true;
+        // We should not log an action history if the interface is a standalone recommendation component.
+        if (Coveo['Recommendation']) {
+          shouldLogInActionHistory = !(searchInterface instanceof Coveo['Recommendation']);
+        }
         (<QueryController>Component.get(element, QueryController)).executeQuery({
-          logInActionsHistory:shouldLogInActionHistory,
+          logInActionsHistory: shouldLogInActionHistory,
           isFirstQuery: true
         });
       }
