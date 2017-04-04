@@ -19,7 +19,10 @@ export class HtmlTemplate extends Template {
 
   toHtmlElement(): HTMLElement {
     let script = this.templateFromAScriptTag.toHtmlElement();
-    script.setAttribute('type', _.first(HtmlTemplate.mimeTypes));
+    // We don't set the type attribute for 2 reasons:
+    // 1) LockerService doesn't like when we set it.
+    // 2) The HTML Template is the default one.
+
     return script;
   }
 
@@ -34,7 +37,10 @@ export class HtmlTemplate extends Template {
 
   static fromString(template: string, properties: ITemplateFromStringProperties): HtmlTemplate {
     let script = TemplateFromAScriptTag.fromString(template, properties);
-    script.setAttribute('type', HtmlTemplate.mimeTypes[0]);
+
+    // We don't set the type attribute for 2 reasons:
+    // 1) LockerService doesn't like when we set it.
+    // 2) The HTML Template is the default one.
     return new HtmlTemplate(script);
   }
 }

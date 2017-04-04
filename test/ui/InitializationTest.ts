@@ -8,7 +8,6 @@ import { Facet } from '../../src/ui/Facet/Facet';
 import { Pager } from '../../src/ui/Pager/Pager';
 import { ResultList } from '../../src/ui/ResultList/ResultList';
 import { Simulate } from '../Simulate';
-declare let coveoanalytics;
 declare let $;
 
 export function InitializationTest() {
@@ -200,6 +199,32 @@ export function InitializationTest() {
       Simulate.removeJQuery();
     });
 
+    it('will trigger a query automatically by default', () => {
+      Initialization.initializeFramework(root, searchInterfaceOptions, () => {
+        Initialization.initSearchInterface(root, searchInterfaceOptions);
+      });
+      expect(endpoint.search).toHaveBeenCalled();
+    });
+
+    it('will not trigger a query automatically if specified', () => {
+      searchInterfaceOptions['SearchInterface'].autoTriggerQuery = false;
+      Initialization.initializeFramework(root, searchInterfaceOptions, () => {
+        Initialization.initSearchInterface(root, searchInterfaceOptions);
+      });
+      expect(endpoint.search).not.toHaveBeenCalled();
+    });
+
+    it('will send action history on automatic query', () => {
+      localStorage.removeItem('__coveo.analytics.history');
+      expect(localStorage.getItem('__coveo.analytics.history')).toBeNull();
+      Initialization.initializeFramework(root, searchInterfaceOptions, () => {
+        Initialization.initSearchInterface(root, searchInterfaceOptions);
+      });
+      const actionHistory = localStorage.getItem('__coveo.analytics.history');
+      expect(actionHistory).not.toBeNull();
+      expect(JSON.parse(actionHistory)[0].name).toEqual('Query');
+    });
+
     describe('when initializing recommendation interface', function () {
       let options;
       beforeEach(function () {
@@ -215,13 +240,20 @@ export function InitializationTest() {
 
       afterEach(function () {
         options = null;
-        coveoanalytics = undefined;
       });
 
       it('should be able to generate to components', function () {
         expect(Component.get(queryBox) instanceof Querybox).toBe(false);
         Initialization.initRecommendationInterface(root, options);
         expect(Component.get(queryBox) instanceof Querybox).toBe(true);
+      });
+
+      it('should not send action history on automatic query', () => {
+        localStorage.removeItem('__coveo.analytics.history');
+        expect(localStorage.getItem('__coveo.analytics.history')).toBeNull();
+        Initialization.initRecommendationInterface(root, options);
+        const actionHistory = localStorage.getItem('__coveo.analytics.history');
+        expect(actionHistory).toBeNull();
       });
     });
   });

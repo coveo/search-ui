@@ -1,5 +1,4 @@
 import { Template } from './Template';
-import TemplateModule = require('./Template');
 import { Assert } from '../../misc/Assert';
 import { UnderscoreTemplate } from './UnderscoreTemplate';
 import { HtmlTemplate } from './HtmlTemplate';
@@ -9,20 +8,22 @@ import * as _ from 'underscore';
  * Holds a reference to all template available in the framework
  */
 export class TemplateCache {
-  private static templates: { [templateName: string]: TemplateModule.Template; } = {};
+  private static templates: { [templateName: string]: Template; } = {};
   private static templateNames: string[] = [];
-  private static defaultTemplates: { [templateName: string]: TemplateModule.Template; } = {};
+  private static resultListTemplateNames: string[] = [];
+  private static defaultTemplates: { [templateName: string]: Template; } = {};
 
-  public static registerTemplate(name: string, template: TemplateModule.Template, publicTemplate?: boolean, defaultTemplate?: boolean);
-  public static registerTemplate(name: string, template: (data: {}) => string, publicTemplate?: boolean, defaultTemplate?: boolean);
+  public static registerTemplate(name: string, template: Template, publicTemplate?: boolean, defaultTemplate?: boolean, pageTemplate?: boolean);
+  public static registerTemplate(name: string, template: (data: {}) => string, publicTemplate?: boolean, defaultTemplate?: boolean, pageTemplate?: boolean);
   /**
    * Register a new template in the framework, which will be available to render any results.
    * @param name
    * @param template
    * @param publicTemplate
    * @param defaultTemplate
+   * @param pageTemplate
    */
-  public static registerTemplate(name: string, template: any, publicTemplate: boolean = true, defaultTemplate: boolean = false) {
+  public static registerTemplate(name: string, template: any, publicTemplate: boolean = true, defaultTemplate: boolean = false, resultListTemplate: boolean = false) {
     Assert.isNonEmptyString(name);
     Assert.exists(template);
     if (!(template instanceof TemplateModule.Template)) {
@@ -35,6 +36,11 @@ export class TemplateCache {
     if (publicTemplate && !_.contains(TemplateCache.templateNames, name)) {
       TemplateCache.templateNames.push(name);
     }
+
+    if (resultListTemplate && !_.contains(TemplateCache.resultListTemplateNames, name)) {
+      TemplateCache.resultListTemplateNames.push(name);
+    }
+
     if (defaultTemplate) {
       TemplateCache.defaultTemplates[name] = template;
     }
@@ -85,6 +91,14 @@ export class TemplateCache {
    */
   public static getTemplateNames(): string[] {
     return TemplateCache.templateNames;
+  }
+
+  /**
+   * Get all page templates name currently registered in the framework.
+   * @returns {string[]}
+   */
+  public static getResultListTemplateNames(): string[] {
+    return TemplateCache.resultListTemplateNames;
   }
 
   /**

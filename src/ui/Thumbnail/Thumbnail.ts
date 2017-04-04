@@ -100,7 +100,8 @@ export class Thumbnail extends Component {
     if (QueryUtils.hasThumbnail(result)) {
       this.buildThumbnailImage();
     } else {
-      this.setEmptyThumbnailClass();
+      this.logger.info('Result has no thumbnail. Cannot build thumbnail image, instanciating an Icon component instead.');
+      new Icon(element, { small: true }, bindings, result);
     }
   }
 

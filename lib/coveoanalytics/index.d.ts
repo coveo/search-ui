@@ -114,6 +114,8 @@ declare namespace CoveoAnalytics {
 
     setHistory(history: HistoryElement[]): void;
     clear(): void;
+
+    getMostRecentElement(): HistoryElement;
   }
 
   interface History {
