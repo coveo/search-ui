@@ -59,7 +59,8 @@ export class Analytics extends Component {
       'analyticsActionCauseList': analyticsActionCauseList,
       'NoopAnalyticsClient': NoopAnalyticsClient,
       'LiveAnalyticsClient': LiveAnalyticsClient,
-      'MultiAnalyticsClient': MultiAnalyticsClient
+      'MultiAnalyticsClient': MultiAnalyticsClient,
+      'Analytics': Analytics
     });
   }
 

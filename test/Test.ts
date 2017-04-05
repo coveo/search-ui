@@ -6,12 +6,11 @@ if (Simulate.isPhantomJs()) {
   Logger.disable();
 }
 
-
 import { defaultLanguage } from '../src/strings/DefaultLanguage';
 defaultLanguage();
 
-import { shim } from '../src/misc/PromisesShim';
-shim();
+import { SearchEndpointTest } from './rest/SearchEndpointTest';
+SearchEndpointTest();
 
 import { CookieUtilsTest } from './utils/CookieUtilsTest';
 CookieUtilsTest();
@@ -36,9 +35,6 @@ QueryStateModelTest();
 
 import { EndpointCallerTest } from './rest/EndpointCallerTest';
 EndpointCallerTest();
-
-import { SearchEndpointTest } from './rest/SearchEndpointTest';
-SearchEndpointTest();
 
 import { FacetQueryControllerTest } from './controllers/FacetQueryControllerTest';
 FacetQueryControllerTest();

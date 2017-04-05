@@ -13,7 +13,7 @@ import { QUERY_STATE_ATTRIBUTES } from '../../models/QueryStateModel';
 import { QueryUtils } from '../../utils/QueryUtils';
 import { $$, Win, Doc } from '../../utils/Dom';
 import { analyticsActionCauseList, IAnalyticsNoMeta } from '../Analytics/AnalyticsActionListMeta';
-import { Initialization, IInitializationParameters } from '../Base/Initialization';
+import { Initialization, IInitializationParameters, IInitResult } from '../Base/Initialization';
 import { Defer } from '../../misc/Defer';
 import { DeviceUtils } from '../../utils/DeviceUtils';
 import { ResultListEvents, IDisplayedNewResultEventArgs, IChangeLayoutEventArgs } from '../../events/ResultListEvents';
@@ -23,10 +23,10 @@ import { DomUtils } from '../../utils/DomUtils';
 import { DefaultRecommendationTemplate } from '../Templates/DefaultRecommendationTemplate';
 import { ValidLayout } from '../ResultLayout/ResultLayout';
 import { TemplateList } from '../Templates/TemplateList';
+import { TemplateCache } from '../Templates/TemplateCache';
 import { ResponsiveDefaultResultTemplate } from '../ResponsiveComponents/ResponsiveDefaultResultTemplate';
 import * as _ from 'underscore';
 import { exportGlobally } from '../../GlobalExports';
-import { IInitResult } from '../Base/Initialization';
 
 import 'styling/_ResultList';
 import 'styling/_ResultFrame';
@@ -48,7 +48,6 @@ export interface IResultListOptions {
   layout?: string;
 }
 
-
 /**
  * The ResultList component is responsible for displaying the results of the current query using one or more result
  * templates (see [Result Templates](https://developers.coveo.com/x/aIGfAQ)).
@@ -58,11 +57,25 @@ export interface IResultListOptions {
 export class ResultList extends Component {
 
   private static getDefaultTemplate(e: HTMLElement): Template {
+    const template = ResultList.loadTemplatesFromCache();
+    if (template != null) {
+      return template;
+    }
+
     let component = <ResultList>Component.get(e);
     if (Coveo['Recommendation'] && component.searchInterface instanceof Coveo['Recommendation']) {
       return new DefaultRecommendationTemplate();
     }
     return new DefaultResultTemplate();
+  }
+
+  private static loadTemplatesFromCache(): Template {
+    var pageTemplateNames = TemplateCache.getResultListTemplateNames();
+    if (pageTemplateNames.length > 0) {
+      return new TemplateList(_.compact(_.map(pageTemplateNames, (templateName) => TemplateCache.getTemplate(templateName))));
+    }
+
+    return null;
   }
 
   static ID = 'ResultList';
@@ -385,7 +398,7 @@ export class ResultList extends Component {
    * Asserts that the ResultList is not currently fetching results.
    * @param count The number of results to fetch and display.
    */
-  public displayMoreResults(count: number): void {
+  public displayMoreResults(count: number) {
     Assert.isLargerOrEqualsThan(1, count);
 
     if (this.isCurrentlyFetchingMoreResults()) {
@@ -416,7 +429,7 @@ export class ResultList extends Component {
       });
     });
 
-    this.fetchingMoreResults.then(() => {
+    this.fetchingMoreResults.finally(() => {
       this.hideWaitingAnimationForInfiniteScrolling();
       this.fetchingMoreResults = undefined;
       Defer.defer(() => {
@@ -429,6 +442,8 @@ export class ResultList extends Component {
         }
       });
     });
+
+    return this.fetchingMoreResults;
   }
 
   /**

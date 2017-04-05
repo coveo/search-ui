@@ -189,7 +189,7 @@ export function SearchEndpointTest() {
           ep.reset();
         });
 
-        it('for search', function (done) {
+        it('for search', (done) => {
           var qbuilder = new QueryBuilder();
           qbuilder.expression.add('batman');
           qbuilder.numberOfResults = 153;
@@ -219,15 +219,16 @@ export function SearchEndpointTest() {
             })
             .catch((e: IErrorResponse) => {
               fail(e);
+              return e;
             })
-            .finally(() => done());
+            .then(() => done());
 
           jasmine.Ajax.requests.mostRecent().respondWith({
             status: 500
           });
         });
 
-        it('for getRawDataStream', function (done) {
+        it('for getRawDataStream', (done) => {
           var fakeResult = FakeResults.createFakeResult();
           var promiseSuccess = ep.getRawDataStream(fakeResult.uniqueId, '$Thumbnail');
           expect(jasmine.Ajax.requests.mostRecent().url).toContain(ep.getBaseUri() + '/datastream?');
@@ -244,8 +245,9 @@ export function SearchEndpointTest() {
             })
             .catch((e: IErrorResponse) => {
               fail(e);
+              return e;
             })
-            .finally(() => done());
+            .then(() => done());
 
           jasmine.Ajax.requests.mostRecent().respondWith({
             status: 200,
@@ -254,7 +256,7 @@ export function SearchEndpointTest() {
           });
         });
 
-        it('for getDocument', function (done) {
+        it('for getDocument', (done) => {
           var fakeResult = FakeResults.createFakeResult();
           var promiseSuccess = ep.getDocument(fakeResult.uniqueId);
           expect(jasmine.Ajax.requests.mostRecent().url).toContain(ep.getBaseUri() + '/document?');
@@ -270,8 +272,9 @@ export function SearchEndpointTest() {
             })
             .catch((e: IErrorResponse) => {
               fail(e);
+              return e;
             })
-            .finally(() => done());
+            .then(() => done());
 
           jasmine.Ajax.requests.mostRecent().respondWith({
             status: 200,
@@ -280,7 +283,7 @@ export function SearchEndpointTest() {
           });
         });
 
-        it('for getDocumentText', function (done) {
+        it('for getDocumentText', (done) => {
           var fakeResult = FakeResults.createFakeResult();
           var promiseSuccess = ep.getDocumentText(fakeResult.uniqueId);
           expect(jasmine.Ajax.requests.mostRecent().url).toContain(ep.getBaseUri() + '/text?');
@@ -296,8 +299,9 @@ export function SearchEndpointTest() {
             })
             .catch((e: IErrorResponse) => {
               fail(e);
+              return e;
             })
-            .finally(() => done());
+            .then(() => done());
 
           jasmine.Ajax.requests.mostRecent().respondWith({
             status: 200,
@@ -306,7 +310,7 @@ export function SearchEndpointTest() {
           });
         });
 
-        it('for getDocumentHtml', function (done) {
+        it('for getDocumentHtml', (done) => {
           var fakeResult = FakeResults.createFakeResult();
           var fakeDocument = document.implementation.createHTMLDocument(fakeResult.title);
           var promiseSuccess = ep.getDocumentHtml(fakeResult.uniqueId);
@@ -323,8 +327,9 @@ export function SearchEndpointTest() {
             })
             .catch((e: IErrorResponse) => {
               fail(e);
+              return e;
             })
-            .finally(() => done());
+            .then(() => done());
 
           jasmine.Ajax.requests.mostRecent().respondWith({
             status: 200,
@@ -333,7 +338,7 @@ export function SearchEndpointTest() {
           });
         });
 
-        it('for listFieldValues', function (done) {
+        it('for listFieldValues', (done) => {
           var request: IListFieldValuesRequest = {
             field: '@field',
             maximumNumberOfValues: 153,
@@ -357,8 +362,9 @@ export function SearchEndpointTest() {
             })
             .catch((e: IErrorResponse) => {
               fail(e);
+              return e;
             })
-            .finally(() => done());
+            .then(() => done());
 
           jasmine.Ajax.requests.mostRecent().respondWith({
             status: 200,
@@ -367,7 +373,7 @@ export function SearchEndpointTest() {
           });
         });
 
-        it('for listFields', function (done) {
+        it('for listFields', (done) => {
           var promiseSuccess = ep.listFields();
           expect(jasmine.Ajax.requests.mostRecent().url).toContain(ep.getBaseUri() + '/fields?');
           expect(jasmine.Ajax.requests.mostRecent().url).toContain('organizationId=myOrgId');
@@ -382,8 +388,9 @@ export function SearchEndpointTest() {
             })
             .catch((e: IErrorResponse) => {
               fail(e);
+              return e;
             })
-            .finally(() => done());
+            .then(() => done());
 
           // Not real field description, but will suffice for test purpose
           jasmine.Ajax.requests.mostRecent().respondWith({
@@ -393,7 +400,7 @@ export function SearchEndpointTest() {
           });
         });
 
-        it('for extensions', function (done) {
+        it('for extensions', (done) => {
           var promiseSuccess = ep.extensions();
           expect(jasmine.Ajax.requests.mostRecent().url).toContain(ep.getBaseUri() + '/extensions?');
           expect(jasmine.Ajax.requests.mostRecent().url).toContain('organizationId=myOrgId');
@@ -408,8 +415,9 @@ export function SearchEndpointTest() {
             })
             .catch((e: IErrorResponse) => {
               fail(e);
+              return e;
             })
-            .finally(() => done());
+            .then(() => done());
 
           // Not real extensions, but will suffice for test purpose
           jasmine.Ajax.requests.mostRecent().respondWith({
@@ -419,7 +427,7 @@ export function SearchEndpointTest() {
           });
         });
 
-        it('for rateDocument', function (done) {
+        it('for rateDocument', (done) => {
           var fakeResult = FakeResults.createFakeResult();
           var promiseSuccess = ep.rateDocument({
             rating: 'Best',
@@ -438,15 +446,16 @@ export function SearchEndpointTest() {
             })
             .catch((e: IErrorResponse) => {
               fail(e);
+              return e;
             })
-            .finally(() => done());
+            .then(() => done());
           jasmine.Ajax.requests.mostRecent().respondWith({
             status: 200,
             responseType: 'text'
           });
         });
 
-        it('for tagDocument', function (done) {
+        it('for tagDocument', (done) => {
           var fakeResult = FakeResults.createFakeResult();
           var promiseSuccess = ep.tagDocument({
             uniqueId: fakeResult.uniqueId,
@@ -472,8 +481,9 @@ export function SearchEndpointTest() {
             })
             .catch((e: IErrorResponse) => {
               fail(e);
+              return e;
             })
-            .finally(() => done());
+            .then(() => done());
 
           jasmine.Ajax.requests.mostRecent().respondWith({
             status: 200,
@@ -481,7 +491,7 @@ export function SearchEndpointTest() {
           });
         });
 
-        it('for getRevealQuerySuggest', function (done) {
+        it('for getRevealQuerySuggest', (done) => {
           var promiseSuccess = ep.getRevealQuerySuggest({
             q: 'foobar',
             count: 10
@@ -501,8 +511,9 @@ export function SearchEndpointTest() {
             })
             .catch((e: IErrorResponse) => {
               fail(e);
+              return e;
             })
-            .finally(() => done());
+            .then(() => done());
 
           // Not real completions, but will suffice for test purpose
           jasmine.Ajax.requests.mostRecent().respondWith({
@@ -511,7 +522,7 @@ export function SearchEndpointTest() {
           });
         });
 
-        it('for follow', function (done) {
+        it('for follow', (done) => {
           var qbuilder = new QueryBuilder();
           qbuilder.expression.add('batman');
           var promiseSuccess = ep.follow({
@@ -529,8 +540,9 @@ export function SearchEndpointTest() {
             })
             .catch((e: IErrorResponse) => {
               fail(e);
+              return e;
             })
-            .finally(() => done());
+            .then(() => done());
 
           expect(jasmine.Ajax.requests.mostRecent().url).toContain(ep.getBaseAlertsUri() + '/subscriptions?');
           expect(jasmine.Ajax.requests.mostRecent().url).toContain('organizationId=myOrgId');
@@ -552,7 +564,7 @@ export function SearchEndpointTest() {
           });
         });
 
-        it('for listSubscriptions', function (done) {
+        it('for listSubscriptions', (done) => {
           var promiseSuccess = ep.listSubscriptions(15);
           promiseSuccess
             .then((subs: ISubscription[]) => {
@@ -560,8 +572,9 @@ export function SearchEndpointTest() {
             })
             .catch((e: IErrorResponse) => {
               fail(e);
+              return e;
             })
-            .finally(() => done());
+            .then(() => done());
 
           // Should return the same promise, since it's not resolved yet
           var promiseSuccess2 = ep.listSubscriptions(15);
@@ -580,7 +593,7 @@ export function SearchEndpointTest() {
           });
         });
 
-        it('for updateSubscription', function (done) {
+        it('for updateSubscription', (done) => {
           var promiseSuccess = ep.updateSubscription(getSubscriptionPromiseSuccess());
           promiseSuccess
             .then((sub: ISubscription) => {
@@ -588,8 +601,9 @@ export function SearchEndpointTest() {
             })
             .catch((e: IErrorResponse) => {
               fail(e);
+              return e;
             })
-            .finally(() => done());
+            .then(() => done());
 
           expect(jasmine.Ajax.requests.mostRecent().url).toContain(ep.getBaseAlertsUri() + '/subscriptions/foobar?');
           expect(jasmine.Ajax.requests.mostRecent().url).toContain('organizationId=myOrgId');
@@ -604,7 +618,7 @@ export function SearchEndpointTest() {
           });
         });
 
-        it('for deleteSubscription', function (done) {
+        it('for deleteSubscription', (done) => {
           var promiseSuccess = ep.deleteSubscription(getSubscriptionPromiseSuccess());
           promiseSuccess
             .then((sub: ISubscription) => {
@@ -612,8 +626,9 @@ export function SearchEndpointTest() {
             })
             .catch((e: IErrorResponse) => {
               fail(e);
+              return e;
             })
-            .finally(() => done());
+            .then(() => done());
 
           expect(jasmine.Ajax.requests.mostRecent().url).toContain(ep.getBaseAlertsUri() + '/subscriptions/foobar?');
           expect(jasmine.Ajax.requests.mostRecent().url).toContain('organizationId=myOrgId');

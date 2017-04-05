@@ -14,7 +14,7 @@ module.exports = {
     path: require('path').resolve('./bin/tests'),
     filename: '[name].js',
     libraryTarget: 'var',
-    library: 'Coveo',
+    library: 'coveotest',
     devtoolModuleFilenameTemplate: '[resource-path]'
   },
   resolve: {

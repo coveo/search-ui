@@ -25,7 +25,7 @@ gulp.task('setupTests', function () {
 
 gulp.task('coverage', ['lcovCoverage']);
 
-gulp.task('test', /*['setupTests', 'buildTest'],*/ function (done) {
+gulp.task('test', ['setupTests', 'buildTest'], function (done) {
   new TestServer({
     configFile: path.resolve('./karma.conf.js')
   }, (exitCode) => {

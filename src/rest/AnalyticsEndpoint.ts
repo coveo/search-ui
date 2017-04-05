@@ -13,7 +13,6 @@ import { QueryUtils } from '../utils/QueryUtils';
 import { Cookie } from '../utils/CookieUtils';
 import { ISuccessResponse } from '../rest/EndpointCaller';
 import { IStringMap } from '../rest/GenericParam';
-import { Promise } from 'es6-promise';
 import * as _ from 'underscore';
 
 export interface IAnalyticsEndpointOptions {

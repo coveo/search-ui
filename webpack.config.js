@@ -51,6 +51,9 @@ if (production) {
     test: /\.scss/,
     use: [{
       loader: 'style-loader',
+      options: {
+        publicPath: ''
+      }
     }, {
       loader: 'css-loader',
       options: {
@@ -146,7 +149,8 @@ module.exports = {
         loader: 'file-loader',
         options: {
           name: production ? '../image/[name].[ext]' : 'http://localhost:8080/image/[name].[ext]',
-          emitFile: false
+          emitFile: false,
+          publicPath: ' ',
         }
       }]
     }, {

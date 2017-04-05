@@ -160,7 +160,7 @@ export function EndpointCallerTest() {
           this.promise.then((response: ISuccessResponse<IQueryResults>) => {
             expect(response.data.results.length).toBe(10);
             expect(response.duration).toBeDefined();
-          }).finally(() => {
+          }).then(() => {
             done();
           });
 
@@ -175,7 +175,7 @@ export function EndpointCallerTest() {
           this.promise.then((response: ISuccessResponse<IQueryResults>) => {
             expect(response.data.results.length).toBe(10);
             expect(response.duration).toBeDefined();
-          }).finally(() => {
+          }).then(() => {
             done();
           });
           var fakeRequest = jasmine.Ajax.requests.mostRecent();
@@ -194,8 +194,9 @@ export function EndpointCallerTest() {
             })
             .catch((error: IErrorResponse) => {
               expect(error.statusCode).toBe(500);
+              return error.statusCode;
             })
-            .finally(() => {
+            .then(() => {
               done();
             });
 
@@ -212,8 +213,9 @@ export function EndpointCallerTest() {
             })
             .catch((error: IErrorResponse) => {
               expect(error.statusCode).toBe(404);
+              return error.statusCode;
             })
-            .finally(() => {
+            .then(() => {
               done();
             });
 
@@ -252,7 +254,8 @@ export function EndpointCallerTest() {
           this.promise.then((response: ISuccessResponse<IQueryResults>) => {
             expect(response.data.results.length).toBe(10);
             expect(response.duration).toBeDefined();
-          }).finally(() => {
+            return response.duration;
+          }).then(() => {
             done();
           });
 
@@ -267,7 +270,8 @@ export function EndpointCallerTest() {
           this.promise.then((response: ISuccessResponse<IQueryResults>) => {
             expect(response.data.results.length).toBe(10);
             expect(response.duration).toBeDefined();
-          }).finally(() => {
+            return response.duration;
+          }).then(() => {
             done();
           });
 
