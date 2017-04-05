@@ -20,6 +20,10 @@ gulp.task('compile', ['addEolDependencies', 'deprecatedDependencies', 'prepareSa
   'node node_modules/webpack/bin/webpack.js'
 ]));
 
+gulp.task('compileTSOnly', shell.task([
+  'node node_modules/webpack/bin/webpack.js --config ./webpackConfigFiles/webpack.TSonly.config.js'
+]))
+
 gulp.task('minimize', ['addEolDependencies'], shell.task([
   'node node_modules/webpack/bin/webpack.js --optimize-minimize'
 ]));
