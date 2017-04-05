@@ -16,6 +16,9 @@ SearchEndpointTest();
 import { CookieUtilsTest } from './utils/CookieUtilsTest';
 CookieUtilsTest();
 
+import { ColorUtilsTest } from './utils/ColorUtilsTest';
+ColorUtilsTest();
+
 import { DomTests } from './utils/DomTest';
 DomTests();
 
