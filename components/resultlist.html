@@ -199,72 +199,6 @@
 						templates (see <a href="https://developers.coveo.com/x/aIGfAQ">Result Templates</a>).</p>
 					</div>
 					<p>This component supports many additional features, such as infinite scrolling.</p>
-					<p><strong>Examples:</strong></p>
-					<ul>
-						<li>This first example shows a very simple ResultList with a single Underscore template. This template has no
-						<code>data-condition</code>. Therefore, it is rendered for all results.</li>
-					</ul>
-					<pre><code class="lang-html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">'CoveoResultList'</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">class</span>=<span class="hljs-string">'result-template'</span> <span class="hljs-attr">id</span>=<span class="hljs-string">'MyDefaultTemplate'</span> <span class="hljs-attr">type</span>=<span class="hljs-string">'text/underscore'</span>&gt;</span><span class="handlebars"><span class="xml">
-    <span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">class</span>=<span class="hljs-string">'CoveoResultLink'</span>&gt;</span>Hey, click on this! <span class="hljs-tag">&lt;<span class="hljs-name">%-</span> <span class="hljs-attr">title</span> %&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
-    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
-  </span></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
-<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
-</code></pre>
-					<ul>
-						<li>This second example shows two different templates in the same ResultList. The first template has a <code>data-condition</code>
-						attribute while the second template has none.</li>
-					</ul>
-					<p>When the query returns, the conditional expression of the first template is evaluated against the first result.
-						If the result satisfies the condition (in this case, if the <code>result.raw.objecttype</code> property in the JSON equals
-						<code>MyObjectType</code>), the first template is rendered for this result. The second template is neither evaluated nor
-					rendered for this result.</p>
-					<p>If the result does not match the condition of the first template, then the next template is evaluated. Since the
-					second template has no <code>data-condition</code>, it is <code>true</code> for any result and can thus load as a &quot;fallback&quot; template.</p>
-					<p>This process repeats itself for each result.</p>
-					<pre><code class="lang-html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"CoveoResultList"</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"result-template"</span> <span class="hljs-attr">id</span>=<span class="hljs-string">'MyObjectTypeTemplate'</span> <span class="hljs-attr">type</span>=<span class="hljs-string">'text/underscore'</span> <span class="hljs-attr">data-condition</span>=<span class="hljs-string">'raw.objecttype==MyObjectType'</span>&gt;</span><span class="handlebars"><span class="xml">
-    <span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">class</span>=<span class="hljs-string">'CoveoResultLink'</span>&gt;</span>Hey, click on this! <span class="hljs-tag">&lt;<span class="hljs-name">%-</span> <span class="hljs-attr">title</span> %&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">'CoveoExcerpt'</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">span</span>&gt;</span>This is a result for the type: <span class="hljs-tag">&lt;<span class="hljs-name">%-</span> <span class="hljs-attr">raw.objecttype</span> %&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>
-    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
-  </span></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
-
-  <span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">class</span>=<span class="hljs-string">'result-template'</span> <span class="hljs-attr">id</span>=<span class="hljs-string">'MyFallbackTemplate'</span> <span class="hljs-attr">type</span>=<span class="hljs-string">'text/underscore'</span>&gt;</span><span class="handlebars"><span class="xml">
-    <span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">class</span>=<span class="hljs-string">'CoveoResultLink'</span>&gt;</span>Hey, click on this! <span class="hljs-tag">&lt;<span class="hljs-name">%-</span> <span class="hljs-attr">title</span> %&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
-    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
-  </span></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
-<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
-</code></pre>
-					<ul>
-						<li>This third example shows two different templates in the same result list. Both templates have a <code>data-condition</code>
-						attribute.</li>
-					</ul>
-					<p>In this case, there is no &quot;fallback&quot; template, since all templates have a <code>data-condition</code> attribute. Therefore, if a
-						result matches none of the conditions, the default templates included in the Coveo JavaScript Search Framework will
-					load instead. This ensures that all results render themselves.</p>
-					<pre><code class="lang-html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"CoveoResultList"</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"result-template"</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"text/underscore"</span> <span class="hljs-attr">data-condition</span>=<span class="hljs-string">'raw.objecttype==MyObjectType'</span> <span class="hljs-attr">id</span>=<span class="hljs-string">'MyObjectTypeTemplate'</span>&gt;</span><span class="handlebars"><span class="xml">
-    <span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">class</span>=<span class="hljs-string">'CoveoResultLink'</span>&gt;</span>Hey, click on this ! <span class="hljs-tag">&lt;<span class="hljs-name">%-</span> <span class="hljs-attr">title</span> %&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">'CoveoExcerpt'</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">span</span>&gt;</span>This is a result for the type : <span class="hljs-tag">&lt;<span class="hljs-name">%-</span> <span class="hljs-attr">raw.objecttype</span> %&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>
-     <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
-  </span></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
-
-  <span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"result-template"</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"text/underscore"</span> <span class="hljs-attr">data-condition</span>=<span class="hljs-string">'raw.objecttype==MySecondObjectType'</span> <span class="hljs-attr">id</span>=<span class="hljs-string">'MySecondObjectTypeTemplate'</span>&gt;</span><span class="handlebars"><span class="xml">
-    <span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">class</span>=<span class="hljs-string">'CoveoIcon'</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">class</span>=<span class="hljs-string">'CoveoResultLink'</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
-    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">'CoveoExcerpt'</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">'CoveoPrintableUri'</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
-  </span></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
-<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
-</code></pre>
 				</div>
 			</section>
 			<div class="preview-container tsd-panel">
@@ -339,8 +273,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L256">src/ui/ResultList/ResultList.ts
-							:256</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L208">src/ui/ResultList/ResultList.ts
+							:208</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -370,8 +304,8 @@ data-auto-select-fields-to-include&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L198">src/ui/ResultList/ResultList.ts
-							:198</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L142">src/ui/ResultList/ResultList.ts
+							:142</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -382,6 +316,9 @@ data-auto-select-fields-to-include&#x3D;&#x27;false&#x27;</pre>
 						</div>
 						<p>See also <a href="resultlist.html#options.infinitescrollpagesize">ResultList.options.infiniteScrollPageSize</a>, <a href="resultlist.html#options.infinitescrollcontainer">ResultList.options.infiniteScrollContainer</a>
 						and <a href="resultlist.html#options.enableinfinitescrollwaitinganimation">ResultList.options.enableInfiniteScrollWaitingAnimation</a>.</p>
+						<p>It is important to specify the <a href="resultlist.html#options.infinitescrollcontainer">ResultList.options.infiniteScrollContainer</a> manually if you want the scrolling
+							element to be something else than the default <code>window</code> element.
+						Otherwise, you might get in a weird state where the framework will rapidly trigger multiple successive query.</p>
 						<p>Default value is <code>false</code>.</p>
 					</div>
 					<div class="tsd-panel">
@@ -397,8 +334,8 @@ data-enable-infinite-scroll&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L227">src/ui/ResultList/ResultList.ts
-							:227</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L179">src/ui/ResultList/ResultList.ts
+							:179</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -421,8 +358,8 @@ data-enable-infinite-scroll-waiting-animation&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L240">src/ui/ResultList/ResultList.ts
-							:240</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L192">src/ui/ResultList/ResultList.ts
+							:192</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -446,8 +383,8 @@ data-enable-infinite-scroll-waiting-animation&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L219">src/ui/ResultList/ResultList.ts
-							:219</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L171">src/ui/ResultList/ResultList.ts
+							:171</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -455,11 +392,16 @@ data-enable-infinite-scroll-waiting-animation&#x3D;&#x27;false&#x27;</pre>
 							<p>If <a href="resultlist.html#options.enableinfinitescroll">ResultList.options.enableInfiniteScroll</a> is <code>true</code>, specifies the element that triggers the fetching of
 							additional results when the end user scrolls down to its bottom.</p>
 						</div>
+						<p>You can change the container by specifying its selector (e.g.,
+						<code>data-infinite-scroll-container-selector=&#39;#someCssSelector&#39;</code>).</p>
 						<p>By default, the framework uses the first vertically scrollable parent element it finds, starting from the
 							ResultList element itself. A vertically scrollable element is an element whose CSS <code>overflow-y</code> attribute is
 						<code>scroll</code>.</p>
 						<p>This implies that if the framework can find no scrollable parent, it uses the window itself as a scrollable
 						container.</p>
+						<p>This heuristic is not perfect, for technical reasons. There are always some corner case CSS combination which the framework will
+						not be able to detect correctly as &#39;scrollable&#39;.</p>
+						<p>It is highly recommended that you manually set this option if you wish to have something else than <code>window</code> be the scrollable element.</p>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
@@ -469,8 +411,8 @@ data-enable-infinite-scroll-waiting-animation&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L206">src/ui/ResultList/ResultList.ts
-							:206</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L150">src/ui/ResultList/ResultList.ts
+							:150</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -492,8 +434,8 @@ data-enable-infinite-scroll-waiting-animation&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L270">src/ui/ResultList/ResultList.ts
-							:270</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L222">src/ui/ResultList/ResultList.ts
+							:222</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -519,8 +461,8 @@ data-enable-infinite-scroll-waiting-animation&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L155">src/ui/ResultList/ResultList.ts
-							:155</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L95">src/ui/ResultList/ResultList.ts
+							:95</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -541,8 +483,8 @@ data-enable-infinite-scroll-waiting-animation&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L176">src/ui/ResultList/ResultList.ts
-							:176</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L116">src/ui/ResultList/ResultList.ts
+							:116</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -570,8 +512,8 @@ data-enable-infinite-scroll-waiting-animation&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L186">src/ui/ResultList/ResultList.ts
-							:186</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L126">src/ui/ResultList/ResultList.ts
+							:126</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -597,8 +539,8 @@ data-enable-infinite-scroll-waiting-animation&#x3D;&#x27;false&#x27;</pre>
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L391">src/ui/ResultList/ResultList.ts
-									:391</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L355">src/ui/ResultList/ResultList.ts
+									:355</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -630,8 +572,8 @@ data-enable-infinite-scroll-waiting-animation&#x3D;&#x27;false&#x27;</pre>
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L374">src/ui/ResultList/ResultList.ts
-									:374</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L338">src/ui/ResultList/ResultList.ts
+									:338</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -715,15 +657,15 @@ data-enable-infinite-scroll-waiting-animation&#x3D;&#x27;false&#x27;</pre>
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L419">src/ui/ResultList/ResultList.ts
-									:419</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L383">src/ui/ResultList/ResultList.ts
+									:383</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
 									<p>Executes a query to fetch new results. After the query returns, renders the new results.</p>
 								</div>
-								<p>Asserts that there are more results to display by verifying whether t3he last query has returned as many results as
+								<p>Asserts that there are more results to display by verifying whether the last query has returned as many results as
 								requested.</p>
 								<p>Asserts that the ResultList is not currently fetching results.</p>
 							</div>
@@ -803,8 +745,8 @@ data-enable-infinite-scroll-waiting-animation&#x3D;&#x27;false&#x27;</pre>
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L459">src/ui/ResultList/ResultList.ts
-									:459</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L431">src/ui/ResultList/ResultList.ts
+									:431</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -827,8 +769,8 @@ data-enable-infinite-scroll-waiting-animation&#x3D;&#x27;false&#x27;</pre>
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L467">src/ui/ResultList/ResultList.ts
-									:467</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L439">src/ui/ResultList/ResultList.ts
+									:439</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -851,8 +793,8 @@ data-enable-infinite-scroll-waiting-animation&#x3D;&#x27;false&#x27;</pre>
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L355">src/ui/ResultList/ResultList.ts
-									:355</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L319">src/ui/ResultList/ResultList.ts
+									:319</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1155,8 +1097,8 @@ data-enable-infinite-scroll-waiting-animation&#x3D;&#x27;false&#x27;</pre>
 								<p>Overwrites <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#constructor">constructor</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L279">src/ui/ResultList/ResultList.ts
-									:279</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L240">src/ui/ResultList/ResultList.ts
+									:240</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">

@@ -198,7 +198,7 @@
 					<p>The Omnibox component takes care of adding type-ahead capability to the search input. Custom components can extend
 					and customize the type-ahead and the suggestions it provides.</p>
 					<p>The type-ahead is configurable by activating addons, which the Coveo JavaScript Search Framework provides OOTB
-					(facets, analytics suggestions, Reveal suggestions and advanced Coveo syntax suggestions).</p>
+					(facets, analytics suggestions, Coveo Machine Learning suggestions and advanced Coveo syntax suggestions).</p>
 					<p>It is also possible for external code to provide type-ahead suggestions.</p>
 					<p>See also the <a href="searchbox.html">Searchbox</a> component, which can automatically instantiate an Omnibox component along with an
 					optional <a href="searchbutton.html">SearchButton</a> component.</p>
@@ -333,11 +333,11 @@ data-enable-query-extension-addon&#x3D;&#x27;false&#x27;</pre>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies whether to enable the Reveal query suggestions.</p>
+							<p>Specifies whether to enable the Coveo Machine Learning (Coveo ML) query suggestions.</p>
 						</div>
-						<p>This implies that you have a proper Reveal integration configured (see
-						<a href="http://www.coveo.com/go?dest=cloudhelp&amp;lcid=9&amp;context=177">Coveo Reveal</a>).</p>
-						<p>Default value is <code>false</code>.</p>
+						<p>This implies that you have a proper Coveo ML integration configured (see
+						<a href="http://www.coveo.com/go?dest=cloudhelp&amp;lcid=9&amp;context=177">Coveo Machine Learning</a>).</p>
+						<p>Default value is <code>true</code>.</p>
 					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
@@ -360,8 +360,8 @@ data-enable-reveal-query-suggest-addon&#x3D;&#x27;false&#x27;</pre>
 						<div class="lead">
 							<p>Specifies whether to automatically trigger a new query whenever the end user types new text inside the Omnibox.</p>
 						</div>
-						<p>Set this option as well a <a href="omnibox.html#options.inline">Omnibox.options.inline</a> and {@link Omnibox.options.RevealQuerySuggestAddon} to
-						<code>true</code> for a cool effect!</p>
+						<p>Set this option as well a <a href="omnibox.html#options.inline">Omnibox.options.inline</a> and
+						<a href="omnibox.html#options.enablerevealquerysuggestaddon">Omnibox.options.enableRevealQuerySuggestAddon</a> to <code>true</code> for a cool effect!</p>
 						<p>Default value is <code>false</code>.</p>
 					</div>
 					<div class="tsd-panel">
@@ -387,7 +387,7 @@ data-enable-search-as-you-type&#x3D;&#x27;false&#x27;</pre>
 							results.</p>
 						</div>
 						<p>Set this option as well as <a href="omnibox.html#options.enablesearchasyoutype">Omnibox.options.enableSearchAsYouType</a> and
-						{@link Omnibox.options.RevealQuerySuggestAddon} to <code>true</code> for a cool effect!</p>
+						<a href="omnibox.html#options.enablerevealquerysuggestaddon">Omnibox.options.enableRevealQuerySuggestAddon</a> to <code>true</code> for a cool effect!</p>
 						<p>Default value is <code>false</code>.</p>
 					</div>
 					<div class="tsd-panel">

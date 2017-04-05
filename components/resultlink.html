@@ -114,6 +114,9 @@
 								<a href="resultlink.html#openlink" class="tsd-kind-icon">open<wbr>Link</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class">
+								<a href="resultlink.html#openlinkasconfigured" class="tsd-kind-icon">open<wbr>Link<wbr>AsConfigured</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class">
 								<a href="resultlink.html#openlinkinnewwindow" class="tsd-kind-icon">open<wbr>Link<wbr>InNew<wbr>Window</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class">
@@ -219,6 +222,7 @@
 								<li class="tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited"><a href="resultlink.html#enable" class="tsd-kind-icon">enable</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited"><a href="resultlink.html#getbindings" class="tsd-kind-icon">get<wbr>Bindings</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class"><a href="resultlink.html#openlink" class="tsd-kind-icon">open<wbr>Link</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class"><a href="resultlink.html#openlinkasconfigured" class="tsd-kind-icon">open<wbr>Link<wbr>AsConfigured</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class"><a href="resultlink.html#openlinkinnewwindow" class="tsd-kind-icon">open<wbr>Link<wbr>InNew<wbr>Window</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class"><a href="resultlink.html#openlinkinoutlook" class="tsd-kind-icon">open<wbr>Link<wbr>InOutlook</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited tsd-is-static"><a href="resultlink.html#get" class="tsd-kind-icon">get</a></li>
@@ -258,8 +262,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultLink/ResultLink.ts#L103">src/ui/ResultLink/ResultLink.ts
-							:103</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultLink/ResultLink.ts#L109">src/ui/ResultLink/ResultLink.ts
+							:109</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -268,6 +272,13 @@
 						</div>
 						<p>If this option is <code>true</code>, clicking the ResultLink will call the <a href="resultlink.html#openlinkinnewwindow">ResultLink.openLinkInNewWindow</a> method
 						instead of the <a href="resultlink.html#openlink">ResultLink.openLink</a> method.</p>
+						<p><strong>Note:</strong></p>
+						<blockquote>
+							<p>If a search page contains a <a href="resultspreferences.html">ResultsPreferences</a> component whose
+								<a href="resultspreferences.html#options.enableopeninnewwindow">enableOpenInNewWindow</a> option is <code>true</code>, and the end
+								user checks the <b>Always open results in new window</b> box, then ResultLink components will always open in
+							a new window when the user clicks them, no matter what the value of their alwaysOpenInNewWindow option is.</p>
+						</blockquote>
 						<p>Default value is <code>false</code>.</p>
 					</div>
 					<div class="tsd-panel">
@@ -317,7 +328,7 @@ data-always-open-in-new-window&#x3D;&#x27;false&#x27;</pre>
   &lt;div <span class="hljs-class"><span class="hljs-keyword">class</span></span>=<span class="hljs-string">"CoveoExcerpt"</span>&gt;<span class="xml"><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
 </span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
 </code></pre>
-						<p>See also <a href="resultlink.html#options.hreftemplate">ResultLink.options.hrefTemplate</a>, which can override this option.</p>
+						<p>See also <a href="resultlink.html#options.hreftemplate">hrefTemplate</a>, which can override this option.</p>
 					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
@@ -331,8 +342,8 @@ data-always-open-in-new-window&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultLink/ResultLink.ts#L130">src/ui/ResultLink/ResultLink.ts
-							:130</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultLink/ResultLink.ts#L136">src/ui/ResultLink/ResultLink.ts
+							:136</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -340,7 +351,7 @@ data-always-open-in-new-window&#x3D;&#x27;false&#x27;</pre>
 							<p>Specifies a template literal from which to generate the ResultLink <code>href</code> attribute (see
 							<a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Template_literals">Template literals</a>).</p>
 						</div>
-						<p>This option overrides the value of <a href="resultlink.html#options.field">ResultLink.options.field</a>.</p>
+						<p>This option overrides the value of the <a href="resultlink.html#options.field">field</a> option.</p>
 						<p>The template literal can reference any number of fields from the parent result. It can also reference global
 						scope properties.</p>
 						<p>Default value is <code>undefined</code>.</p>
@@ -368,8 +379,8 @@ data-always-open-in-new-window&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultLink/ResultLink.ts#L213">src/ui/ResultLink/ResultLink.ts
-							:213</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultLink/ResultLink.ts#L219">src/ui/ResultLink/ResultLink.ts
+							:219</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -493,8 +504,8 @@ data-open-quickview&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultLink/ResultLink.ts#L169">src/ui/ResultLink/ResultLink.ts
-							:169</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultLink/ResultLink.ts#L175">src/ui/ResultLink/ResultLink.ts
+							:175</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -644,31 +655,40 @@ data-open-quickview&#x3D;&#x27;false&#x27;</pre>
 					<a name="openlink" class="tsd-anchor"></a>
 					<h3>open<wbr>Link</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">open<wbr>Link<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">open<wbr>Link<span class="tsd-signature-symbol">(</span>logAnalytics<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultLink/ResultLink.ts#L322">src/ui/ResultLink/ResultLink.ts
-									:322</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultLink/ResultLink.ts#L287">src/ui/ResultLink/ResultLink.ts
+									:287</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Opens the result.</p>
+									<p>Opens the result in the same window, no matter how the actual component is configured for the end user.</p>
 								</div>
 							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> logAnalytics: <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> =&nbsp;true</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>If true, the method will take care of logging an analytic event.</p>
+									</div>
+								</li>
+							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class">
-					<a name="openlinkinnewwindow" class="tsd-anchor"></a>
-					<h3>open<wbr>Link<wbr>InNew<wbr>Window</h3>
+					<a name="openlinkasconfigured" class="tsd-anchor"></a>
+					<h3>open<wbr>Link<wbr>AsConfigured</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">open<wbr>Link<wbr>InNew<wbr>Window<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">open<wbr>Link<wbr>AsConfigured<span class="tsd-signature-symbol">(</span>logAnalytics<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
@@ -681,9 +701,52 @@ data-open-quickview&#x3D;&#x27;false&#x27;</pre>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Opens the result in a new window.</p>
+									<p>Open the link in the same manner the end user would do.</p>
+								</div>
+								<p>This essentially simulate a click on the result link.</p>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> logAnalytics: <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> =&nbsp;true</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>If true, the method will take care of logging an analytic event.</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class">
+					<a name="openlinkinnewwindow" class="tsd-anchor"></a>
+					<h3>open<wbr>Link<wbr>InNew<wbr>Window</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">open<wbr>Link<wbr>InNew<wbr>Window<span class="tsd-signature-symbol">(</span>logAnalytics<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultLink/ResultLink.ts#L298">src/ui/ResultLink/ResultLink.ts
+									:298</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Opens the result in a new window, no matter how the actual component is configured for the end user.</p>
 								</div>
 							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> logAnalytics: <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> =&nbsp;true</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>If true, the method will take care of logging an analytic event.</p>
+									</div>
+								</li>
+							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
@@ -692,22 +755,33 @@ data-open-quickview&#x3D;&#x27;false&#x27;</pre>
 					<a name="openlinkinoutlook" class="tsd-anchor"></a>
 					<h3>open<wbr>Link<wbr>InOutlook</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">open<wbr>Link<wbr>InOutlook<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">open<wbr>Link<wbr>InOutlook<span class="tsd-signature-symbol">(</span>logAnalytics<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultLink/ResultLink.ts#L336">src/ui/ResultLink/ResultLink.ts
-									:336</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultLink/ResultLink.ts#L313">src/ui/ResultLink/ResultLink.ts
+									:313</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Opens the result in Microsoft Outlook if the result has an <code>outlookformacuri</code> or <code>outlookuri</code> field.</p>
+									<p>Try to open the result in Microsoft Outlook if the result has an <code>outlookformacuri</code> or <code>outlookuri</code> field.</p>
 								</div>
+								<p>Normally, this means a result link for an email.</p>
+								<p>If the needed fields are not present, this method will do nothing.</p>
 							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> logAnalytics: <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> =&nbsp;true</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>If true, the method will take care of logging an analytic event.</p>
+									</div>
+								</li>
+							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
@@ -990,8 +1064,8 @@ data-open-quickview&#x3D;&#x27;false&#x27;</pre>
 								<p>Overwrites <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#constructor">constructor</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultLink/ResultLink.ts#L226">src/ui/ResultLink/ResultLink.ts
-									:226</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultLink/ResultLink.ts#L234">src/ui/ResultLink/ResultLink.ts
+									:234</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">

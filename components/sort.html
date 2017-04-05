@@ -252,15 +252,15 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Sort/Sort.ts#L64">src/ui/Sort/Sort.ts
-							:64</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Sort/Sort.ts#L68">src/ui/Sort/Sort.ts
+							:68</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
 							<p>Specifies the caption to display on the element.</p>
 						</div>
-						<p>If not specified, the component will use the tag body of the element.</p>
+						<p>If you do not specify a value for this option, the component uses the tag body of the element.</p>
 					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
@@ -274,8 +274,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Sort/Sort.ts#L49">src/ui/Sort/Sort.ts
-							:49</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Sort/Sort.ts#L53">src/ui/Sort/Sort.ts
+							:53</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -287,10 +287,14 @@
 							<li><code>relevancy</code></li>
 							<li><code>date</code></li>
 							<li><code>qre</code></li>
-							<li><code>@fieldname</code> (replace <code>fieldname</code> with an actual field name (e.g., <code>@syssize</code>)</li>
+							<li><code>@fieldname</code> (replace <code>fieldname</code> with an actual field name (e.g., <code>@size</code>)</li>
 						</ul>
-						<p>You can also specify a direction (ascending or descending), for example <code>date ascending</code>.</p>
-						<p>You can pass an array containing multiple criteria to a Sort component.</p>
+						<p>You can also specify a direction (<code>ascending</code> or <code>descending</code>), for example <code>date ascending</code>.</p>
+						<p>You can pass an array containing multiple criteria to the Sort component.
+							If you specify multiple criteria, all criteria must have the same direction (either <code>ascending</code> or
+							<code>descending</code>).
+							You can only use the <code>date</code> and <code>@fieldname</code> criteria when specifying multiple criteria.
+						Multiple criteria are evaluated in the order you specify them.</p>
 						<p>It is necessary to specify a value for this option in order for this component to work.</p>
 					</div>
 				</section>
@@ -412,8 +416,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Sort/Sort.ts#L139">src/ui/Sort/Sort.ts
-									:139</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Sort/Sort.ts#L143">src/ui/Sort/Sort.ts
+									:143</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -436,8 +440,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Sort/Sort.ts#L147">src/ui/Sort/Sort.ts
-									:147</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Sort/Sort.ts#L151">src/ui/Sort/Sort.ts
+									:151</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -469,8 +473,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Sort/Sort.ts#L108">src/ui/Sort/Sort.ts
-									:108</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Sort/Sort.ts#L112">src/ui/Sort/Sort.ts
+									:112</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -770,8 +774,8 @@
 								<p>Overwrites <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#constructor">constructor</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Sort/Sort.ts#L67">src/ui/Sort/Sort.ts
-									:67</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Sort/Sort.ts#L71">src/ui/Sort/Sort.ts
+									:71</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
