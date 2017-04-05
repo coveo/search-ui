@@ -1,9 +1,9 @@
 {
   "name": "coveo-search-ui",
-  "version": "1.0.26",
+  "version": "1.2537.0",
   "description": "Coveo JavaScript Search Framework",
   "main": "./bin/js/CoveoJsSearch.js",
-  "types":"./bin/ts/CoveoJsSearch.d.ts",
+  "types": "./bin/ts/CoveoJsSearch.d.ts",
   "scripts": {
     "test": "gulp test && gulp coverage",
     "build": "gulp",
@@ -14,7 +14,7 @@
     "heroku-postbuild": "npm run build",
     "start": "node index.js",
     "zipForGitReleases": "gulp zip",
-    "uploadCoverage" : "gulp uploadCoverage"
+    "uploadCoverage": "gulp uploadCoverage"
   },
   "repository": {
     "type": "git",
