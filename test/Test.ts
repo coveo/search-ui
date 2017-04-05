@@ -196,6 +196,9 @@ IconTest();
 import { InitializationTest } from './ui/InitializationTest';
 InitializationTest();
 
+import { LazyInitializationTest } from './ui/LazyInitializationTest';
+LazyInitializationTest();
+
 import { LiveAnalyticsClientTest } from './ui/LiveAnalyticsClientTest';
 LiveAnalyticsClientTest();
 
@@ -417,3 +420,6 @@ ResponsiveComponentsManagerTest();
 
 import { YouTubeThumbnailTest } from './ui/YouTubeThumbnailTest';
 YouTubeThumbnailTest();
+
+import { ResultTaggingTest } from './ui/ResultTaggingTest';
+ResultTaggingTest();
