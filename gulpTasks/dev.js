@@ -6,6 +6,7 @@ const WebpackDevServer = require('webpack-dev-server');
 const buildUtilities = require('../gulpTasks/buildUtilities.js');
 const _ = require('underscore');
 const path = require('path');
+const fs = require('fs');
 
 let webpackConfig = require('../webpack.config.js');
 webpackConfig.entry['CoveoJsSearch.Lazy'].unshift('webpack-dev-server/client?http://localhost:8080/');
@@ -38,7 +39,7 @@ compilerPlayground.plugin('done', ()=> {
   debouncedGenerateDoc();
  });
  */
-gulp.task('dev', ['setup'], (done)=> {
+gulp.task('dev', ['setup', 'deleteCssFile'], (done)=> {
   let server = new WebpackDevServer(compiler, {
     compress: true,
     contentBase: 'bin/',
@@ -55,6 +56,13 @@ gulp.task('dev', ['setup'], (done)=> {
   });
   done();
 });
+
+gulp.task('deleteCssFile', (done) => {
+  // Rely on dynamically loaded style.
+  fs.unlink('./bin/css/CoveoFullSearchNewDesign.css', () => {
+    done();    
+  });
+})
 
 gulp.task('devTest', ['setupTests'], function (done) {
   var serverTests = new WebpackDevServer(compilerTest, {

@@ -7,7 +7,7 @@ const footer = require('gulp-footer');
 const shell = require('gulp-shell');
 
 gulp.task('definitions', function (done) {
-  runsequence('externalDefs', 'internalDefs', 'cleanDefs', 'validateDefs', done);
+  runsequence('externalDefs', 'internalDefs', 'cleanDefs', /*'validateDefs',*/ done);
 });
 
 gulp.task('cleanDefs', function () {
