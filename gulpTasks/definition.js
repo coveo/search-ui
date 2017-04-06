@@ -7,7 +7,7 @@ const footer = require('gulp-footer');
 const shell = require('gulp-shell');
 
 gulp.task('definitions', function (done) {
-  runsequence('externalDefs', 'internalDefs', 'cleanDefs', /*'validateDefs',*/ done);
+  runsequence('externalDefs', 'internalDefs', 'cleanDefs', 'validateDefs', done);
 });
 
 gulp.task('cleanDefs', function () {
@@ -26,6 +26,7 @@ gulp.task('cleanDefs', function () {
       .pipe(replace(/^(\s*const\s\w+\s)(=\s\w+);$/gm, '$1: any;'))
       .pipe(replace(/:\s?.*ModuleDefinition\./gm, ': ')) // Assume that types that end with ModuleDefinition were imported using the import type only syntax
                                                          // and stripping ModuleDefinition will refer to the correct type.
+      .pipe(replace(/\n\t(?:const|let|var)\s.*;/gm, ''))
       .pipe(gulp.dest('bin/ts/'));
 });
 
