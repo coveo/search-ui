@@ -19,6 +19,8 @@ import { Utils } from '../../utils/Utils';
 import * as _ from 'underscore';
 import { exportGlobally } from '../../GlobalExports';
 
+import 'styling/_ResultLayout';
+
 interface IActiveLayouts {
   button: {
     el: HTMLElement;
