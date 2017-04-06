@@ -5,11 +5,11 @@ import { IQueryResult } from '../../src/rest/QueryResult';
 import { $$ } from '../../src/utils/Dom';
 
 export function ResultTaggingTest() {
-  describe('ResultTagging', ()=> {
+  describe('ResultTagging', () => {
     let test: Mock.IBasicComponentSetup<ResultTagging>;
     let result: IQueryResult;
 
-    beforeEach(()=> {
+    beforeEach(() => {
       result = FakeResults.createFakeResult();
       result.raw['foo'] = 'value1;value2;value3';
       test = Mock.optionsResultComponentSetup<ResultTagging, IResultTaggingOptions>(ResultTagging, <IResultTaggingOptions>{
@@ -17,12 +17,12 @@ export function ResultTaggingTest() {
       }, result);
     });
 
-    afterEach(()=> {
+    afterEach(() => {
       result = null;
       test = null;
     });
 
-    it('should display the current tags values', ()=> {
+    it('should display the current tags values', () => {
       let tags = $$(test.cmp.element).findAll('.coveo-result-tagging-coveo-tag');
       expect(tags.length).toBe(3);
       expect($$(tags[0]).text()).toBe('value1');

@@ -426,3 +426,6 @@ YouTubeThumbnailTest();
 
 import { ResultTaggingTest } from './ui/ResultTaggingTest';
 ResultTaggingTest();
+
+import { ResultsFiltersPreferencesTest } from './ui/ResultsFiltersPreferencesTest';
+ResultsFiltersPreferencesTest();

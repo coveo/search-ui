@@ -502,7 +502,7 @@ export class Initialization {
           reject(false);
         }),
         isLazyInit: false
-      }
+      };
     }
   }
 

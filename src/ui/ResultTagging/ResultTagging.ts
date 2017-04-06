@@ -43,7 +43,7 @@ export class ResultTagging extends Component {
     exportGlobally({
       'ResultTagging': ResultTagging
     });
-  };
+  }
 
   /**
    * @componentOptions

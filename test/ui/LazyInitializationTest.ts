@@ -6,36 +6,36 @@ import { get } from '../../src/ui/Base/RegisteredNamedMethods';
 import { IComponentDefinition } from '../../src/ui/Base/Component';
 
 export function LazyInitializationTest() {
-  describe('LazyInitialization', ()=> {
+  describe('LazyInitialization', () => {
     let initParameters: IInitializationParameters;
 
-    beforeEach(()=> {
+    beforeEach(() => {
       initParameters = {
         bindings: new MockEnvironmentBuilder().build(),
         options: undefined,
         result: undefined
-      }
+      };
     });
 
-    afterEach(()=> {
+    afterEach(() => {
       initParameters = null;
     });
 
-    it('should allow to register a lazy component', ()=> {
-      let loadPromise = new Promise((resolve, reject)=> resolve(Querybox))
-      const myStuff = ()=> loadPromise;
+    it('should allow to register a lazy component', () => {
+      let loadPromise = new Promise((resolve, reject) => resolve(Querybox));
+      const myStuff = () => loadPromise;
       LazyInitialization.registerLazyComponent('MyStuff', myStuff);
       expect(LazyInitialization.getLazyRegisteredComponent('MyStuff')).toEqual(loadPromise);
     });
 
-    it('should allow to create a component with a factory', (done)=> {
-      const myStuff = ()=> new Promise((resolve, reject)=> resolve(Querybox));
+    it('should allow to create a component with a factory', (done) => {
+      const myStuff = () => new Promise((resolve, reject) => resolve(Querybox));
       LazyInitialization.registerLazyComponent('MyStuff', myStuff);
-      const elementOne = $$('div', {className: 'CoveoMyStuff'});
-      const elementTwo = $$('div', {className: 'CoveoMyStuff'});
+      const elementOne = $$('div', { className: 'CoveoMyStuff' });
+      const elementTwo = $$('div', { className: 'CoveoMyStuff' });
       const resultOfFactory = LazyInitialization.componentsFactory([elementOne.el, elementTwo.el], 'MyStuff', initParameters);
       expect(resultOfFactory.isLazyInit).toBe(true);
-      Promise.all(resultOfFactory.factory()).then(()=> {
+      Promise.all(resultOfFactory.factory()).then(() => {
         expect(get(elementOne.el) instanceof Querybox).toBe(true);
         expect(get(elementTwo.el) instanceof Querybox).toBe(true);
         done();
