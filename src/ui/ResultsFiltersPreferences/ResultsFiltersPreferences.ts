@@ -198,7 +198,9 @@ export class ResultsFiltersPreferences extends Component {
 
   private handleBuildingQuery(args: IBuildingQueryEventArgs) {
     _.each(this.getActiveFilters(), (filter) => {
-      args.queryBuilder.advancedExpression.add(filter.expression);
+      if (Utils.isNonEmptyString(filter.expression)) {
+        args.queryBuilder.advancedExpression.add(filter.expression);
+      }
     });
   }
 
@@ -516,7 +518,7 @@ export class ResultsFiltersPreferences extends Component {
         }
       });
     }
-    
+
   }
 
   private getDormantFilters() {

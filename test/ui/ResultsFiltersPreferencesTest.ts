@@ -17,12 +17,12 @@ export function ResultsFiltersPreferencesTest() {
     beforeEach(() => {
       preferencesPanelElement = $$('div', {className: 'CoveoPreferencesPanel'}).el;
       testPreferencesPanel = Mock.basicComponentSetup<PreferencesPanel>(PreferencesPanel);
-      test = Mock.advancedComponentSetup<ResultsFiltersPreferences>(ResultsFiltersPreferences, new Mock.AdvancedComponentSetupOptions(undefined, undefined, (env)=> {
+      test = Mock.advancedComponentSetup<ResultsFiltersPreferences>(ResultsFiltersPreferences, new Mock.AdvancedComponentSetupOptions(undefined, undefined, (env) => {
         return env.withElement(testPreferencesPanel.cmp.element);
       }));
     });
 
-    afterEach(()=> {
+    afterEach(() => {
       test = null;
       preferencesPanelElement = null;
     });
@@ -34,25 +34,25 @@ export function ResultsFiltersPreferencesTest() {
       expect($$(title).text()).toBe(l('ResultsFilteringExpression'));
     });
 
-    it('should allow to save', ()=> {
+    it('should allow to save', () => {
       test.cmp.createDom();
-      expect(()=> test.cmp.save()).not.toThrow();
+      expect(() => test.cmp.save()).not.toThrow();
     });
 
-    describe('with a predetermined filter', ()=> {
-      beforeEach(()=> {
+    describe('with a predetermined filter', () => {
+      beforeEach(() => {
         test = Mock.advancedComponentSetup<ResultsFiltersPreferences>(ResultsFiltersPreferences, new Mock.AdvancedComponentSetupOptions(undefined, {
           filters: {'Test filter': {'expression': 'test expression'}}
-        }, (env)=> {
+        }, (env) => {
           return env.withElement(testPreferencesPanel.cmp.element);
         }));
       });
 
-      it('should allow to create the filter', ()=> {
-        expect(()=> test.cmp.createDom()).not.toThrow();
+      it('should allow to create the filter', () => {
+        expect(() => test.cmp.createDom()).not.toThrow();
       });
 
-      it('should log an analytics event when a filter is selected', ()=> {
+      it('should log an analytics event when a filter is selected', () => {
         test.cmp.createDom();
 
         let choiceInput = $$(test.cmp.element).find('input');
@@ -60,7 +60,7 @@ export function ResultsFiltersPreferencesTest() {
         expect(test.env.usageAnalytics.logSearchEvent).toHaveBeenCalled();
       });
 
-      it('should trigger a query when a filter is selected', ()=> {
+      it('should trigger a query when a filter is selected', () => {
         test.cmp.createDom();
 
         let choiceInput = $$(test.cmp.element).find('input');
@@ -68,7 +68,7 @@ export function ResultsFiltersPreferencesTest() {
         expect(test.env.queryController.executeQuery).toHaveBeenCalled();
       });
 
-      it('should add the needed filter when the query is executed', ()=> {
+      it('should add the needed filter when the query is executed', () => {
         test.cmp.createDom();
         let choiceInput = $$(test.cmp.element).find('input');
         (<HTMLInputElement>choiceInput).checked = true;
@@ -78,7 +78,7 @@ export function ResultsFiltersPreferencesTest() {
         expect(simulation.queryBuilder.build().aq).toBe('test expression');
       });
 
-      it('should populate breadcrumb when a filter is active', ()=> {
+      it('should populate breadcrumb when a filter is active', () => {
         test.cmp.createDom();
         let choiceInput = $$(test.cmp.element).find('input');
         (<HTMLInputElement>choiceInput).checked = true;
@@ -88,10 +88,10 @@ export function ResultsFiltersPreferencesTest() {
         expect($$(breadcrumbItems[0].element).text()).toContain('Test filter');
       });
 
-      it('should validate an save on form submit', ()=> {
+      it('should validate and save on form submit', () => {
         test.cmp.createDom();
         let form = $$(test.cmp.element).find('form');
-        $$(form).trigger('submit');
+        expect(() => $$(form).trigger('submit')).not.toThrow();
       });
     });
   });
