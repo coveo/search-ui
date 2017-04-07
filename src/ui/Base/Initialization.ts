@@ -169,7 +169,9 @@ export class Initialization {
    * @returns {string[]|Array}
    */
   public static getRegisteredFieldsComponentForQuery(componentId: string): string[] {
-    return Initialization.fieldsNeededForQueryByComponent[componentId] || [];
+    const basicId = Initialization.fieldsNeededForQueryByComponent[componentId] || [];
+    const coveoId = Initialization.fieldsNeededForQueryByComponent[Component.computeCssClassNameForType(componentId)] || [];
+    return Utils.concatWithoutDuplicate(basicId, coveoId);
   }
 
   /**
@@ -477,13 +479,14 @@ export class Initialization {
     boundComponent[methodName] = handler;
   }
 
-  public static initBoxInterface(element: HTMLElement, options: any = {}, type: string = 'Standard', injectMarkup: boolean = true) {
+  public static initBoxInterface(element: HTMLElement, options: any = {}, type: string = 'Standard', injectMarkup: boolean = true): IInitResult {
     options = Initialization.resolveDefaultOptions(element, options);
     let fromInitTypeToBoxReference = 'Box';
     if (type != 'Standard') {
       fromInitTypeToBoxReference += 'For' + type;
     }
-    return Component.getComponentRef(fromInitTypeToBoxReference).then((boxRef) => {
+    const boxRef = Component.getComponentRef(fromInitTypeToBoxReference);
+    if (boxRef) {
       new Logger(element).info('Initializing box of type ' + fromInitTypeToBoxReference);
       let injectFunction: () => any = injectMarkup ? boxRef.getInjection : () => {
       };
@@ -491,13 +494,16 @@ export class Initialization {
       box.options.originalOptionsObject = options;
       let initParameters: IInitializationParameters = { options: options, bindings: box.getBindings() };
       return Initialization.automaticallyCreateComponentsInside(element, initParameters);
-    }).catch(() => {
-      return new Promise((resolve, reject) => {
-        new Logger(element).error('Trying to initialize box of type : ' + fromInitTypeToBoxReference + ' but not found in code (not compiled)!');
-        Assert.fail('Cannot initialize unknown type of box');
-        reject(false);
-      });
-    });
+    } else {
+      return {
+        initResult: new Promise((resolve, reject) => {
+          new Logger(element).error('Trying to initialize box of type : ' + fromInitTypeToBoxReference + ' but not found in code (not compiled)!');
+          Assert.fail('Cannot initialize unknown type of box');
+          reject(false);
+        }),
+        isLazyInit: false
+      };
+    }
   }
 
   public static dispatchNamedMethodCall(methodName: string, element: HTMLElement, args: any[]): any {
@@ -643,7 +649,7 @@ export class LazyInitialization {
     }
   }
 
-  public static componentsFactory(elements: Element[], componentClassId: string, initParameters: IInitializationParameters): { factory: () => void, isLazyInit: boolean } {
+  public static componentsFactory(elements: Element[], componentClassId: string, initParameters: IInitializationParameters): { factory: () => Promise<Component>[], isLazyInit: boolean } {
     const factory = () => {
       let promises: Promise<Component>[] = [];
       _.each(elements, (matchingElement: HTMLElement) => {

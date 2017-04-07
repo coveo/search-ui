@@ -15,6 +15,9 @@ SearchEndpointTest();
 import { CookieUtilsTest } from './utils/CookieUtilsTest';
 CookieUtilsTest();
 
+import { ColorUtilsTest } from './utils/ColorUtilsTest';
+ColorUtilsTest();
+
 import { DomTests } from './utils/DomTest';
 DomTests();
 
@@ -194,6 +197,9 @@ IconTest();
 
 import { InitializationTest } from './ui/InitializationTest';
 InitializationTest();
+
+import { LazyInitializationTest } from './ui/LazyInitializationTest';
+LazyInitializationTest();
 
 import { LiveAnalyticsClientTest } from './ui/LiveAnalyticsClientTest';
 LiveAnalyticsClientTest();
@@ -416,3 +422,9 @@ ResponsiveComponentsManagerTest();
 
 import { YouTubeThumbnailTest } from './ui/YouTubeThumbnailTest';
 YouTubeThumbnailTest();
+
+import { ResultTaggingTest } from './ui/ResultTaggingTest';
+ResultTaggingTest();
+
+import { ResultsFiltersPreferencesTest } from './ui/ResultsFiltersPreferencesTest';
+ResultsFiltersPreferencesTest();

@@ -8,6 +8,8 @@ import { Facet } from '../../src/ui/Facet/Facet';
 import { Pager } from '../../src/ui/Pager/Pager';
 import { ResultList } from '../../src/ui/ResultList/ResultList';
 import { Simulate } from '../Simulate';
+import { InitializationEvents } from '../../src/events/InitializationEvents';
+import { init } from '../../src/ui/Base/RegisteredNamedMethods';
 declare let $;
 
 export function InitializationTest() {
@@ -33,6 +35,55 @@ export function InitializationTest() {
       endpoint = null;
       searchInterfaceOptions = null;
       queryBox = null;
+    });
+
+    it('should allow to registerComponentFields', () => {
+      Initialization.registerComponentFields('MyComponent', ['myfirstfield', 'mysecondfield']);
+      expect(Initialization.getRegisteredFieldsForQuery()).toEqual(jasmine.arrayContaining(['myfirstfield', 'mysecondfield']));
+      expect(Initialization.getRegisteredFieldsComponentForQuery('MyComponent')).toEqual(jasmine.arrayContaining(['myfirstfield', 'mysecondfield']));
+    });
+
+    it('should allow to register componentsFields with duplicate without complaining', () => {
+      Initialization.registerComponentFields('AComponent', ['afield', 'anotherfield']);
+      Initialization.registerComponentFields('ANewComponent', ['afield', 'anotherfield']);
+      Initialization.registerComponentFields('AComponent', ['afield', 'yetanotherfield']);
+      expect(Initialization.getRegisteredFieldsForQuery()).toEqual(jasmine.arrayContaining(['afield', 'anotherfield', 'yetanotherfield']));
+      expect(Initialization.getRegisteredFieldsComponentForQuery('AComponent')).toEqual(jasmine.arrayContaining(['afield', 'anotherfield', 'yetanotherfield']));
+      expect(Initialization.getRegisteredFieldsComponentForQuery('ANewComponent')).toEqual(jasmine.arrayContaining(['afield', 'anotherfield']));
+    });
+
+    it('should allow to register components fields with the standard and special coveo id and it should be interchangeable', () => {
+      Initialization.registerComponentFields('MyStandardId', ['1', '2']);
+      Initialization.registerComponentFields('CoveoMyStandardId', ['3', '4']);
+      expect(Initialization.getRegisteredFieldsForQuery()).toEqual(jasmine.arrayContaining(['1', '2', '3', '4']));
+      expect(Initialization.getRegisteredFieldsComponentForQuery('MyStandardId')).toEqual(jasmine.arrayContaining(['1', '2', '3', '4']));
+      expect(Initialization.getRegisteredFieldsComponentForQuery('CoveoMyStandardId')).toEqual(jasmine.arrayContaining(['1', '2', '3', '4']));
+    });
+
+    it('should allow to return the list of eagerly loaded components', () => {
+      expect(Initialization.getListOfLoadedComponents()).toEqual(jasmine.arrayContaining(['Searchbox']));
+    });
+
+    it('should wait before resolving lazy init function to continue the framework initialization', (done) => {
+      let promiseToResolve = new Promise((resolve, reject) => {
+        setTimeout(resolve(true), 500);
+      });
+
+      let spy = jasmine.createSpy('spy');
+      $$(root).on(InitializationEvents.afterInitialization, spy);
+
+      Initialization.initializeFramework(root, searchInterfaceOptions, () => {
+        return {
+          isLazyInit: true,
+          initResult: promiseToResolve
+        };
+      });
+
+      expect(spy).not.toHaveBeenCalled();
+      promiseToResolve.then(() => {
+        expect(spy).toHaveBeenCalled();
+        done();
+      });
     });
 
     it('can initialize search interface and component', (done) => {
@@ -69,7 +120,7 @@ export function InitializationTest() {
 
     });
 
-    it('allows to register default options ahead of init call, and merge them', function () {
+    it('allows to register default options ahead of init call, and merge them', () => {
       Initialization.registerDefaultOptions(root, {
         Querybox: {
           enableSearchAsYouType: true
@@ -117,7 +168,7 @@ export function InitializationTest() {
       expect(Initialization.getListOfRegisteredComponents()).toEqual(jasmine.arrayContaining(['Facet', 'Pager']));
     });
 
-    it('allow to getRegisteredComponent', function () {
+    it('allow to getRegisteredComponent', () => {
       expect(Initialization.getRegisteredComponent('Facet')).toBe(Facet);
     });
 
@@ -166,7 +217,7 @@ export function InitializationTest() {
 
     });
 
-    it('allow to monkeyPatchComponentMethod', function () {
+    it('allow to monkeyPatchComponentMethod', () => {
       Initialization.initializeFramework(root, searchInterfaceOptions, () => {
         return Initialization.initSearchInterface(root, searchInterfaceOptions);
       });
@@ -176,7 +227,56 @@ export function InitializationTest() {
       expect(patch).toHaveBeenCalled();
     });
 
-    it('can initialize external components', function () {
+    it('allow to monkeyPatchComponentMethod with the component name', () => {
+      Initialization.initializeFramework(root, searchInterfaceOptions, () => {
+        return Initialization.initSearchInterface(root, searchInterfaceOptions);
+      });
+      let patch = jasmine.createSpy('patch');
+      Initialization.monkeyPatchComponentMethod('Querybox.submit', queryBox, patch);
+      (<Querybox>Component.get(queryBox)).submit();
+      expect(patch).toHaveBeenCalled();
+
+      it('allows to determine if a top level method is already registed', () => {
+        expect(Initialization.isNamedMethodRegistered('get')).toBe(true);
+        expect(Initialization.isNamedMethodRegistered('executeQuery')).toBe(true);
+        expect(Initialization.isNamedMethodRegistered('does not exist')).toBe(false);
+      });
+    });
+
+    it('should allow to init a box interface (and throw because it\'s only used in salesforce)', (done) => {
+      const init = Initialization.initBoxInterface(root, searchInterfaceOptions);
+      expect(init.isLazyInit).toBe(false);
+      init.initResult.catch((success) => {
+        expect(success).not.toBeNull();
+        done();
+      });
+    });
+
+    it('should allow to dispatch a named method call', () => {
+      init(root, searchInterfaceOptions);
+      Initialization.dispatchNamedMethodCall('executeQuery', root, []);
+      expect(endpoint.search).toHaveBeenCalled();
+    });
+
+    it('should throw when calling a named method that does not exist', () => {
+      init(root, searchInterfaceOptions);
+      expect(() => Initialization.dispatchNamedMethodCall('nope', root, [])).toThrow();
+    });
+
+    it('should allow to dispatchNamedMethodCallOrComponentCreation', () => {
+      init(root, searchInterfaceOptions);
+      Initialization.dispatchNamedMethodCallOrComponentCreation('executeQuery', root, []);
+      expect(endpoint.search).toHaveBeenCalled();
+      Initialization.dispatchNamedMethodCallOrComponentCreation('submit', queryBox, []);
+      expect(endpoint.search).toHaveBeenCalled();
+    });
+
+    it('should throw when dispatchNamedMethodCallOrComponentCreation is called with something that does not exist', () => {
+      init(root, searchInterfaceOptions);
+      expect(() => Initialization.dispatchNamedMethodCallOrComponentCreation('nope', root, [])).toThrow();
+    });
+
+    it('can initialize external components', () => {
       let external = $$('div', {
         className: 'CoveoPager'
       }).el;
@@ -234,9 +334,9 @@ export function InitializationTest() {
 
     });
 
-    describe('when initializing recommendation interface', function () {
+    describe('when initializing recommendation interface', () => {
       let options;
-      beforeEach(function () {
+      beforeEach(() => {
         options = {
           Recommendation: {
             endpoint: endpoint,
@@ -247,11 +347,11 @@ export function InitializationTest() {
         };
       });
 
-      afterEach(function () {
+      afterEach(() => {
         options = null;
       });
 
-      it('should be able to generate to components', function () {
+      it('should be able to generate to components', () => {
         expect(Component.get(queryBox) instanceof Querybox).toBe(false);
         Initialization.initRecommendationInterface(root, options);
         expect(Component.get(queryBox) instanceof Querybox).toBe(true);
