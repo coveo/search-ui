@@ -10,6 +10,8 @@ if (__webpack_require__.p == '') {
 import { Initialization, LazyInitialization } from './ui/Base/Initialization';
 Initialization.componentsFactory = LazyInitialization.componentsFactory;
 
+export { LazyInitialization, EagerInitialization, Initialization } from './ui/Base/Initialization';
+
 import { lazyAdvancedSearch } from './ui/AdvancedSearch/LazyAdvancedSearch';
 lazyAdvancedSearch();
 

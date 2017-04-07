@@ -164,7 +164,7 @@ export class SearchAlerts extends Component {
             // Trap 503 error, as the listSubscription call is called on every page initialization
             // to check for current subscriptions. By default, the search alert service is not enabled for most organization
             // Don't want to pollute the console with un-needed noise and confusion
-            if (e.status != 503) {
+            if (e.status != 403) {
               throw e;
             }
           });

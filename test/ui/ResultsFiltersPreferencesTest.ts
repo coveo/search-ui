@@ -15,7 +15,7 @@ export function ResultsFiltersPreferencesTest() {
     let testPreferencesPanel: Mock.IBasicComponentSetup<PreferencesPanel>;
 
     beforeEach(() => {
-      preferencesPanelElement = $$('div', {className: 'CoveoPreferencesPanel'}).el;
+      preferencesPanelElement = $$('div', { className: 'CoveoPreferencesPanel' }).el;
       testPreferencesPanel = Mock.basicComponentSetup<PreferencesPanel>(PreferencesPanel);
       test = Mock.advancedComponentSetup<ResultsFiltersPreferences>(ResultsFiltersPreferences, new Mock.AdvancedComponentSetupOptions(undefined, undefined, (env) => {
         return env.withElement(testPreferencesPanel.cmp.element);
@@ -42,7 +42,7 @@ export function ResultsFiltersPreferencesTest() {
     describe('with a predetermined filter', () => {
       beforeEach(() => {
         test = Mock.advancedComponentSetup<ResultsFiltersPreferences>(ResultsFiltersPreferences, new Mock.AdvancedComponentSetupOptions(undefined, {
-          filters: {'Test filter': {'expression': 'test expression'}}
+          filters: { 'Test filter': { 'expression': 'test expression' } }
         }, (env) => {
           return env.withElement(testPreferencesPanel.cmp.element);
         }));
@@ -84,7 +84,7 @@ export function ResultsFiltersPreferencesTest() {
         (<HTMLInputElement>choiceInput).checked = true;
         $$(choiceInput).trigger('change');
         let breadcrumbItems: IBreadcrumbItem[] = [];
-        $$(test.env.root).trigger(BreadcrumbEvents.populateBreadcrumb, {breadcrumbs: breadcrumbItems});
+        $$(test.env.root).trigger(BreadcrumbEvents.populateBreadcrumb, { breadcrumbs: breadcrumbItems });
         expect($$(breadcrumbItems[0].element).text()).toContain('Test filter');
       });
 

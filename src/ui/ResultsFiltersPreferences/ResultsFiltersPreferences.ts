@@ -207,12 +207,12 @@ export class ResultsFiltersPreferences extends Component {
   private handlePopulateBreadcrumb(args: IPopulateBreadcrumbEventArgs) {
     const actives = this.getActiveFilters();
     if (Utils.isNonEmptyArray(actives)) {
-      const container = $$('div', {className: 'coveo-results-filter-preferences-breadcrumb'});
-      const title = $$('span', {className: 'coveo-title'});
+      const container = $$('div', { className: 'coveo-results-filter-preferences-breadcrumb' });
+      const title = $$('span', { className: 'coveo-title' });
       title.text(l('FiltersInYourPreferences') + ':');
       container.el.appendChild(title.el);
 
-      const valuesContainer = $$('span', {className: 'coveo-values'});
+      const valuesContainer = $$('span', { className: 'coveo-values' });
       container.el.appendChild(valuesContainer.el);
 
       for (var i = 0; i < actives.length; i++) {
@@ -411,13 +411,13 @@ export class ResultsFiltersPreferences extends Component {
   }
 
   private buildBreadcrumb(filter: IResultFilterPreference): HTMLElement {
-    const elem = $$('span', {className: 'coveo-value'});
+    const elem = $$('span', { className: 'coveo-value' });
 
-    const caption = $$('span', {className: 'coveo-caption'});
+    const caption = $$('span', { className: 'coveo-caption' });
     caption.text(filter.caption);
     elem.el.appendChild(caption.el);
 
-    const clear = $$('span', {className: 'coveo-clear'});
+    const clear = $$('span', { className: 'coveo-clear' });
     elem.el.appendChild(clear.el);
 
     elem.on('click', () => {

@@ -46,7 +46,7 @@ const exceptions = {
     arrayOfComponents: ['Querybox', 'Omnibox', 'SearchButton', 'Searchbox']
   },
   'Thumbnail.js': {
-    arrayOfComponents: ['ResultLink', 'Thumbnail']
+    arrayOfComponents: ['ResultLink', 'Icon', 'Thumbnail']
   },
   'YouTubeThumbnail.js': {
     arrayOfComponents: ['ResultLink', 'YouTubeThumbnail']
@@ -57,7 +57,7 @@ const exceptions = {
 const testTmpl = `'use strict';
 describe('<%- componentName %>', function () {
   it('should load only the needed dependencies', function (done) {
-    Coveo.Initialization.getLazyRegisteredComponent('<%- componentName %>').then(function () {
+    Coveo.LazyInitialization.getLazyRegisteredComponent('<%- componentName %>').then(function () {
       expect(Coveo.Initialization.getListOfLoadedComponents().length).toBe(<%- numberOfExpectedComponents %>);
       expect(Coveo.Initialization.getListOfLoadedComponents()).toEqual(<%= JSON.stringify(arrayOfComponents) %>);
       done();

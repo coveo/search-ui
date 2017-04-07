@@ -6,6 +6,7 @@
   "types": "./bin/ts/CoveoJsSearch.d.ts",
   "scripts": {
     "test": "gulp test && gulp coverage",
+    "testChunks" : "node chunkTesters/chunk.tester.js",
     "build": "gulp",
     "minimize": "node node_modules/webpack/bin/webpack.js --env minimize",
     "doc": "gulp doc",
