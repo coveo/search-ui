@@ -383,16 +383,6 @@ export function ResultListTest() {
         expect(simulation.queryBuilder.fieldsToInclude).toContain('field3');
       });
 
-      it('layout set to table should only instantiate table-header by default', () => {
-        test = Mock.optionsComponentSetup<ResultList, IResultListOptions>(ResultList, {
-          layout: 'table'
-        });
-        spyOn(test.cmp.options.resultTemplate, 'instantiateRoleToElement').and.callThrough();
-        test.cmp.renderResults([test.cmp.buildResult(FakeResults.createFakeResult())]);
-        expect((<TableTemplate>test.cmp.options.resultTemplate).instantiateRoleToElement).toHaveBeenCalledWith('table-header');
-        expect((<TableTemplate>test.cmp.options.resultTemplate).instantiateRoleToElement).not.toHaveBeenCalledWith('table-footer');
-      });
-
       describe('layout', () => {
         it('should correctly listen to populateResultLayout', () => {
           test = Mock.optionsComponentSetup<ResultList, IResultListOptions>(ResultList, {

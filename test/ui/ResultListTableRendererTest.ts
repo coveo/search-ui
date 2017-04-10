@@ -16,6 +16,13 @@ export function ResultListTableRendererTest() {
       renderer = null;
     });
 
+    it('should only instantiate table-header by default', () => {
+      const fakeTemplateList = new TableTemplate([]);
+      renderer = new ResultListTableRenderer({ resultTemplate: fakeTemplateList, resultContainer: resultContainer }, () => null);
+      renderer.renderResults([$$('div', { className: 'CoveoResult' }).el], false, () => null);
+      expect($$(resultContainer).find('.coveo-result-list-table-header')).not.toBeNull();
+    });
+
     it('should render a table footer if one is present in an embedded TemplateList', () => {
       const fakeTemplateList = new TableTemplate([]);
       spyOn(fakeTemplateList, 'hasTemplateWithRole').and.callFake(a => {
