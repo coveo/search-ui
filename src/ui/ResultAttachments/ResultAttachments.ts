@@ -18,8 +18,9 @@ export interface IResultAttachmentsOptions {
 }
 
 /**
- * The ResultAttachments component renders attachments in a result set, for example when displaying emails. This
- * component is usable inside a result template when there is an active {@link Folding} component in the page.
+ * The `ResultAttachments` component renders attachments in a result set, for example when displaying emails. This
+ * component is usable inside a result template when there is an active [`Folding`]{@link Folding} component in the
+ * page.
  *
  * This component is a result template component (see [Result Templates](https://developers.coveo.com/x/aIGfAQ)).
  */
@@ -35,8 +36,8 @@ export class ResultAttachments extends Component {
     /**
      * Specifies the template to use to render each attachment for a top result.
      *
-     * You can specify a previously registered template for this option by referring the HTML `id` attribute or a CSS
-     * selector for the template (see {@link TemplateCache}).
+     * You can specify a previously registered template to use either by referring to its HTML `id` attribute or to a
+     * CSS selector (see {@link TemplateCache}).
      *
      * **Examples:**
      *
@@ -52,19 +53,19 @@ export class ResultAttachments extends Component {
      * <div class='CoveoResultAttachments' data-result-template-selector=".Foo"></div>
      * ```
      *
-     * By default, this option uses the template specified in a child element with a `script` tag
+     * If you do not specify a custom folding template, the component uses the default result attachment template.
      */
     resultTemplate: ComponentOptions.buildTemplateOption({ defaultFunction: (e) => new DefaultResultAttachmentTemplate() }),
 
     /**
      * Specifies the template to use to render sub-attachments, which are attachments within attachments, for example
-     * when multiple files are embedded within a .zip attachment.
+     * when multiple files are embedded within a `.zip` attachment.
      *
-     * Sub-attachments can themselves contain sub-attachments, and so on up to a certain level (see
-     * {@link ResultAttachments.options.maximumAttachmentLevel}).
+     * Sub-attachments can themselves contain sub-attachments, and so on up to a certain level (see the
+     * [`maximumAttachmentLevel`]{@link ResultAttachments.options.maximumAttachmentLevel} option).
      *
-     * You can specify a previously registered template for this option by referring the HTML `id` attribute or a CSS
-     * selector for the template (see {@link TemplateCache}).
+     * You can specify a previously registered template to use either by referring to its HTML `id` attribute or to a
+     * CSS selector (see {@link TemplateCache}).
      *
      * **Example:**
      *
@@ -80,7 +81,8 @@ export class ResultAttachments extends Component {
      * <div class="CoveoResultAttachments" data-sub-result-template-selector=".Foo"></div>
      * ```
      *
-     * By default, this option uses the same value as {@link ResultAttachments.options.resultTemplate}.
+     * By default, this option uses the same template you specify for the
+     * [`resultTemplate`]{@link ResultAttachments.options.resultTemplate} option.
      */
     subResultTemplate: ComponentOptions.buildTemplateOption({ postProcessing: (value: Template, options: IResultAttachmentsOptions) => value != null ? value : options.resultTemplate }),
 
@@ -95,9 +97,9 @@ export class ResultAttachments extends Component {
   private attachments: IQueryResult[];
 
   /**
-   * Creates a new ResultAttachments component.
+   * Creates a new `ResultAttachments` component.
    * @param element The HTMLElement on which to instantiate the component.
-   * @param options The options for the ResultAttachments component.
+   * @param options The options for the `ResultAttachments` component.
    * @param bindings The bindings that the component requires to function normally. If not set, these will be
    * automatically resolved (with a slower execution time).
    * @param result The result to associate the component with.
