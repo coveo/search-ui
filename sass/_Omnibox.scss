@@ -53,9 +53,6 @@
     text-overflow: ellipsis;
     padding: 5px 10px;
     margin: 0;
-    &:hover {
-      background-color: $color-blueish-white-grey;
-    }
     li.coveo-facet-value {
       list-style-type: none;
     }
