@@ -719,14 +719,15 @@ export class ResultList extends Component {
   private setupRenderer() {
     const autoCreateComponentsFn = this.autoCreateComponentsInsideResult.bind(this);
     switch (this.options.layout) {
-      case 'list':
-        this.renderer = new ResultListRenderer(this.options, autoCreateComponentsFn);
-        break;
       case 'card':
         this.renderer = new ResultListCardRenderer(this.options, autoCreateComponentsFn);
         break;
       case 'table':
         this.renderer = new ResultListTableRenderer(this.options, autoCreateComponentsFn);
+        break;
+      case 'list':
+      default:
+        this.renderer = new ResultListRenderer(this.options, autoCreateComponentsFn);
         break;
     }
   }
