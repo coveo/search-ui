@@ -196,7 +196,7 @@
     }
   }
   // These divs are used for filling the space when the number of cards is not even
-  > div:empty {
+  &:empty {
     width: 300px;
     height: 0;
     @include flex-grow(1);
