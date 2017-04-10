@@ -2,7 +2,6 @@ import * as Mock from '../MockEnvironment';
 import { SearchInterface } from '../../src/ui/SearchInterface/SearchInterface';
 import { Recommendation } from '../../src/ui/Recommendation/Recommendation';
 import { IRecommendationOptions } from '../../src/ui/Recommendation/Recommendation';
-import { IQuery } from '../../src/rest/Query';
 import { Simulate } from '../Simulate';
 import { QueryBuilder } from '../../src/ui/Base/QueryBuilder';
 import { FakeResults } from '../Fake';
@@ -25,12 +24,7 @@ export function RecommendationTest() {
           user_id: userId
         })
       };
-      store = {
-        addElement: (query: IQuery) => { },
-        getHistory: () => { return actionsHistory; },
-        setHistory: (history: any[]) => { },
-        clear: () => { }
-      };
+      store = Simulate.analyticsStoreModule(actionsHistory);
       test = Mock.optionsSearchInterfaceSetup<Recommendation, IRecommendationOptions>(Recommendation, options);
       test.cmp.historyStore = store;
     });

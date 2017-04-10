@@ -38,11 +38,15 @@ export class Sort extends Component {
      * - `relevancy`
      * - `date`
      * - `qre`
-     * - `@fieldname` (replace `fieldname` with an actual field name (e.g., `@syssize`)
+     * - `@fieldname` (replace `fieldname` with an actual field name (e.g., `@size`)
      *
-     * You can also specify a direction (ascending or descending), for example `date ascending`.
+     * You can also specify a direction (`ascending` or `descending`), for example `date ascending`.
      *
-     * You can pass an array containing multiple criteria to a Sort component.
+     * You can pass an array containing multiple criteria to the Sort component.
+     * If you specify multiple criteria, all criteria must have the same direction (either `ascending` or
+     * `descending`).
+     * You can only use the `date` and `@fieldname` criteria when specifying multiple criteria.
+     * Multiple criteria are evaluated in the order you specify them.
      *
      * It is necessary to specify a value for this option in order for this component to work.
      */
@@ -59,7 +63,7 @@ export class Sort extends Component {
     /**
      * Specifies the caption to display on the element.
      *
-     * If not specified, the component will use the tag body of the element.
+     * If you do not specify a value for this option, the component uses the tag body of the element.
      */
     caption: ComponentOptions.buildLocalizedStringOption({ required: true })
   };

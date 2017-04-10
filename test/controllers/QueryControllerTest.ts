@@ -3,8 +3,8 @@ import { QueryController } from '../../src/controllers/QueryController';
 import { $$ } from '../../src/utils/Dom';
 import { FakeResults } from '../Fake';
 import { QueryBuilder } from '../../src/ui/Base/QueryBuilder';
-import { IQuery } from '../../src/rest/Query';
 import { QueryEvents, IBuildingQueryEventArgs } from '../../src/events/QueryEvents';
+import { Simulate } from '../Simulate';
 
 export function QueryControllerTest() {
   describe('QueryController', function () {
@@ -217,18 +217,7 @@ export function QueryControllerTest() {
       let store: CoveoAnalytics.HistoryStore;
 
       beforeEach(function () {
-        store = {
-          addElement: (query: IQuery) => {
-          },
-          getHistory: () => {
-            return [];
-          },
-          setHistory: (history: any[]) => {
-          },
-          clear: () => {
-          }
-        };
-
+        store = Simulate.analyticsStoreModule();
         test.cmp.historyStore = store;
         spyOn(store, 'addElement');
       });
