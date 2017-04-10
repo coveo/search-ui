@@ -27,7 +27,7 @@ export function ResultListTableRendererTest() {
       const fakeTemplateList = new TableTemplate([]);
       spyOn(fakeTemplateList, 'hasTemplateWithRole').and.callFake(a => {
         if (a == 'table-footer') {
-         return true;
+          return true;
         }
       });
       renderer = new ResultListTableRenderer({ resultTemplate: fakeTemplateList, resultContainer: resultContainer }, () => null);
@@ -39,7 +39,7 @@ export function ResultListTableRendererTest() {
       const fakeTemplateList = new TableTemplate([new Template()]);
       spyOn(fakeTemplateList, 'hasTemplateWithRole').and.callFake(a => {
         if (a == 'table-header') {
-         return false;
+          return false;
         }
       });
       renderer = new ResultListTableRenderer({ resultTemplate: fakeTemplateList, resultContainer: resultContainer }, () => null);

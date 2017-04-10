@@ -335,19 +335,8 @@
     "priority": 1,
     "layout": "card"
   },
-  "Table": {
-    "priority": 4,
-    "layout": "table"
-  },
-  "TableHeader": {
-    "role": "table-header"
-  },
-  "TableFooter": {
-    "role": "table-footer"
-  },
   "Default": {
     "priority": 0,
     "layout": "list"
   }
 }
-
