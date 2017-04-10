@@ -104,24 +104,6 @@ export function DefaultResultTemplateTest() {
             expect(created).toEqual(dataToString(result));
             TemplateCache.unregisterTemplate('dummy2');
           });
-
-          it('should render only a roled template when a role is passed', () => {
-            const tableHeader = new Template(() => 'Epic table header');
-            tableHeader.role = 'table-header';
-            TemplateCache.registerTemplate('tableHeader', tableHeader, true, true);
-
-            const instantiatedTemplate = new DefaultResultTemplate().instantiateToString({}, { role: 'table-header' });
-
-            expect(instantiatedTemplate).toEqual('Epic table header');
-            TemplateCache.unregisterTemplate('tableHeader');
-          });
-
-          it('should render a fallback roled template if no appropriate template with role is found', () => {
-            const instantiatedTemplate = new DefaultResultTemplate().instantiateToString({}, {
-              role: 'table-header'
-            });
-            expect(instantiatedTemplate).toEqual(new DefaultResultTemplate().getFallbackTemplateForRole('table-header'));
-          });
         });
       });
     }
