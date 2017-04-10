@@ -19,7 +19,9 @@ export class TableTemplate extends TemplateList {
     if (roledTemplate) {
       return roledTemplate.instantiateToElement({}, {});
     } else {
-      return $$('tr', {}, this.defaultRoledTemplates[role]).el;
+      const tmpl = new Template(() => this.defaultRoledTemplates[role]);
+      tmpl.layout = 'table';
+      return tmpl.instantiateToElement({});
     }
   }
 

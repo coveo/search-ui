@@ -35,15 +35,6 @@ export class DefaultResultTemplate extends Template {
       .map(name => TemplateCache.getTemplate(name))
       .value();
 
-    if (instantiateOptions.role != null) {
-      const roledTemplate = _.find(templates, t => t.role === instantiateOptions.role);
-      if (roledTemplate) {
-        return roledTemplate.instantiateToString(object, mergedOptions);
-      } else {
-        return this.getFallbackTemplateForRole(instantiateOptions.role);
-      }
-    }
-
     // Put templates with conditions first
     const sortedTemplates = _.chain(templates)
       .sortBy(template => template.condition == null)
@@ -89,16 +80,4 @@ export class DefaultResultTemplate extends Template {
     resultContainer.append(excerpt.el);
     return resultContainer.el.outerHTML;
   }
-
-  getFallbackTemplateForRole(role: TemplateRole): string {
-    switch (role) {
-      case 'table-header':
-        return 'Table header <div class="CoveoText" data-value="patate"></div>';
-      case 'table-footer':
-        return 'Table footer';
-      default:
-        return '';
-    }
-  }
-
 }
