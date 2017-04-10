@@ -260,6 +260,9 @@ ResultLinkTest();
 import { ResultListTest } from './ui/ResultListTest';
 ResultListTest();
 
+import { ResultListTableRendererTest } from './ui/ResultListTableRendererTest';
+ResultListTableRendererTest();
+
 import { ResultRatingTest } from './ui/ResultRatingTest';
 ResultRatingTest();
 

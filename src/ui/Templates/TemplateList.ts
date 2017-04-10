@@ -1,4 +1,4 @@
-import { Template, IInstantiateTemplateOptions, DefaultInstantiateTemplateOptions, ITemplateMetaFields, TemplateRole } from './Template';
+import { Template, IInstantiateTemplateOptions, DefaultInstantiateTemplateOptions, TemplateRole } from './Template';
 import { DefaultResultTemplate } from './DefaultResultTemplate';
 import { IQueryResult } from '../../rest/QueryResult';
 import _ = require('underscore');
@@ -41,10 +41,6 @@ export class TemplateList extends Template {
 
   getType() {
     return 'TemplateList';
-  }
-
-  hasTemplateWithRole(role: TemplateRole) {
-    return _.find(this.templates, t => t.role === role);
   }
 
   protected getFallbackTemplate(): Template {

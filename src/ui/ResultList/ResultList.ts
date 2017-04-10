@@ -46,8 +46,6 @@ export interface IResultListOptions {
   fieldsToInclude?: IFieldOption[];
   autoSelectFieldsToInclude?: boolean;
   layout?: string;
-  displayTableHeader?: boolean;
-  displayTableFooter?: boolean;
 }
 
 /**

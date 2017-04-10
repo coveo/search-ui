@@ -427,39 +427,6 @@ export function ResultListTest() {
           expect((<TemplateList>test.cmp.options.resultTemplate).templates[1].layout).toBe('card');
         });
 
-        it('should render a table footer if one is present in an embedded TemplateList', () => {
-          let elem = $$('div', {
-            className: 'CoveoResultList'
-          });
-          let footer = $$('script', {
-            className: 'result-template',
-            type: 'text/html',
-            'data-role': 'table-footer'
-          });
-          elem.append(footer.el);
-          test = Mock.advancedComponentSetup<ResultList>(ResultList, new AdvancedComponentSetupOptions(elem.el, {
-            layout: 'table'
-          }));
-          test.cmp.renderResults(test.cmp.buildResults(FakeResults.createFakeResults(3)));
-          expect($$(test.cmp.element).find('.coveo-result-list-table-footer')).not.toBeNull();
-        });
-
-        it('should not render a table header if custom templates are specified but no header template', () => {
-          let elem = $$('div', {
-            className: 'CoveoResultList'
-          });
-          let footer = $$('script', {
-            className: 'result-template',
-            type: 'text/html'
-          });
-          elem.append(footer.el);
-          test = Mock.advancedComponentSetup<ResultList>(ResultList, new AdvancedComponentSetupOptions(elem.el, {
-            layout: 'table'
-          }));
-          test.cmp.renderResults(test.cmp.buildResults(FakeResults.createFakeResults(3)));
-          expect($$(test.cmp.element).find('.coveo-result-list-table-header')).toBeNull();
-        });
-
         it('should add 3 empty div at the end of the results when it\'s a card template and infinite scroll is not enabled', () => {
           test = Mock.optionsComponentSetup<ResultList, IResultListOptions>(ResultList, {
             layout: 'card',

@@ -32,10 +32,6 @@ export interface IInstantiateTemplateOptions {
   responsiveComponents?: ResponsiveComponents;
 }
 
-export interface ITemplateMetaFields {
-  total?: string;
-}
-
 export class DefaultInstantiateTemplateOptions implements IInstantiateTemplateOptions {
   public currentLayout: ValidLayout;
   public checkCondition: boolean;
@@ -83,7 +79,7 @@ export class Template implements ITemplateProperties {
   constructor(public dataToString?: (object?: any) => string) {
   }
 
-  instantiateToString(object: IQueryResult | ITemplateMetaFields, instantiateOptions: IInstantiateTemplateOptions = new DefaultInstantiateTemplateOptions()): string {
+  instantiateToString(object: IQueryResult, instantiateOptions: IInstantiateTemplateOptions = new DefaultInstantiateTemplateOptions()): string {
     if (this.dataToString) {
       if (instantiateOptions.checkCondition === false) {
         return this.dataToString(object);
@@ -134,12 +130,12 @@ export class Template implements ITemplateProperties {
         return this.dataToString(object);
       }
       // Condition (as a string) is parsed, if available.
-      if (this.conditionToParse != null && TemplateConditionEvaluator.evaluateCondition(this.conditionToParse, <IQueryResult>object, instantiateOptions.responsiveComponents)) {
+      if (this.conditionToParse != null && TemplateConditionEvaluator.evaluateCondition(this.conditionToParse, object, instantiateOptions.responsiveComponents)) {
         this.logger.trace('Template was loaded because condition was :', this.conditionToParse, object);
         return this.dataToString(object);
       }
       // fieldsToMatch is yet another fallback that allows to specify if a template should be loaded.
-      if (this.fieldsToMatch != null && TemplateFieldsEvaluator.evaluateFieldsToMatch(this.fieldsToMatch, <IQueryResult>object)) {
+      if (this.fieldsToMatch != null && TemplateFieldsEvaluator.evaluateFieldsToMatch(this.fieldsToMatch, object)) {
         this.logger.trace('Template was loaded because condition was :', this.fieldsToMatch, object);
         return this.dataToString(object);
       }
@@ -154,7 +150,7 @@ export class Template implements ITemplateProperties {
     return null;
   }
 
-  instantiateToElement(object: IQueryResult | ITemplateMetaFields, instantiateTemplateOptions: IInstantiateTemplateOptions = {}): HTMLElement {
+  instantiateToElement(object: IQueryResult, instantiateTemplateOptions: IInstantiateTemplateOptions = {}): HTMLElement {
     let mergedOptions = new DefaultInstantiateTemplateOptions().merge(instantiateTemplateOptions);
 
     var html = this.instantiateToString(object, mergedOptions);

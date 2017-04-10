@@ -9,7 +9,7 @@ export class TableTemplate extends TemplateList {
   instantiateRoletoString(role: TemplateRole) {
     const roledTemplate = _.find(this.templates, t => t.role === role);
     if (roledTemplate) {
-      return roledTemplate.instantiateToString({}, {});
+      return roledTemplate.instantiateToString(undefined, {});
     } else {
       return this.defaultRoledTemplates[role];
     }
@@ -17,11 +17,11 @@ export class TableTemplate extends TemplateList {
   instantiateRoleToElement(role: TemplateRole) {
     const roledTemplate = _.find(this.templates, t => t.role === role);
     if (roledTemplate) {
-      return roledTemplate.instantiateToElement({}, {});
+      return roledTemplate.instantiateToElement(undefined, {});
     } else {
       const tmpl = new Template(() => this.defaultRoledTemplates[role]);
       tmpl.layout = 'table';
-      return tmpl.instantiateToElement({});
+      return tmpl.instantiateToElement(undefined);
     }
   }
 
@@ -43,5 +43,9 @@ export class TableTemplate extends TemplateList {
 
   protected getFallbackTemplate(): Template {
     return new Template(() => this.defaultTemplate);
+  }
+
+  hasTemplateWithRole(role: TemplateRole) {
+    return _.find(this.templates, t => t.role === role);
   }
 }

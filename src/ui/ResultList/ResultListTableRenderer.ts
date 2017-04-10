@@ -15,7 +15,7 @@ export class ResultListTableRenderer extends ResultListRenderer {
 
   constructor(protected resultListOptions: IResultListOptions, protected autoCreateComponentsFn: Function) {
     super(resultListOptions, autoCreateComponentsFn);
-    if (this.resultListOptions.resultTemplate instanceof TemplateList) {
+    if (this.resultListOptions.resultTemplate instanceof TableTemplate) {
       if (this.resultListOptions.resultTemplate.hasTemplateWithRole('table-footer')) {
         this.shouldDisplayFooter = true;
       }

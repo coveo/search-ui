@@ -1,9 +1,4 @@
-import {
-  Template, IInstantiateTemplateOptions,
-  DefaultInstantiateTemplateOptions,
-  ITemplateMetaFields,
-  TemplateRole
-} from './Template';
+import { Template, IInstantiateTemplateOptions, DefaultInstantiateTemplateOptions, TemplateRole } from './Template';
 import { UnderscoreTemplate } from './UnderscoreTemplate';
 import { TemplateCache } from './TemplateCache';
 import { IQueryResult } from '../../rest/QueryResult';
@@ -25,7 +20,7 @@ export class DefaultResultTemplate extends Template {
     super();
   }
 
-  instantiateToString(object: IQueryResult | ITemplateMetaFields, instantiateOptions: IInstantiateTemplateOptions = {}): string {
+  instantiateToString(object: IQueryResult, instantiateOptions: IInstantiateTemplateOptions = {}): string {
     Assert.exists(object);
     let mergedOptions = new DefaultInstantiateTemplateOptions().merge(instantiateOptions);
     object = _.extend({}, object, UnderscoreTemplate.templateHelpers);
