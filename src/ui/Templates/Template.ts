@@ -30,7 +30,6 @@ export interface IInstantiateTemplateOptions {
   checkCondition?: boolean;
   wrapInDiv?: boolean;
   responsiveComponents?: ResponsiveComponents;
-  role?: TemplateRole;
 }
 
 export interface ITemplateMetaFields {

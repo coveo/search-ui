@@ -1,4 +1,5 @@
 import { Template, TemplateRole } from '../Templates/Template';
+import { TableTemplate } from '../Templates/TableTemplate';
 import { DefaultResultTemplate } from '../Templates/DefaultResultTemplate';
 import { Component } from '../Base/Component';
 import { IComponentBindings } from '../Base/ComponentBindings';
@@ -297,6 +298,10 @@ export class ResultList extends Component {
   private setupTemplatesVersusLayouts() {
     let layoutClassToAdd = `coveo-${this.options.layout}-layout-container`;
     $$(this.options.resultContainer).addClass(layoutClassToAdd);
+
+    if (this.options.layout === 'table') {
+      this.options.resultTemplate = new TableTemplate((<TemplateList>this.options.resultTemplate).templates);
+    }
 
     // A TemplateList is the scenario where the result template are directly embedded inside the ResultList
     // This is the typical scenario when a page gets created by the interface editor, for example.
@@ -716,15 +721,15 @@ export class ResultList extends Component {
   private setupRenderer() {
     const autoCreateComponentsFn = this.autoCreateComponentsInsideResult.bind(this);
     switch (this.options.layout) {
-    case 'list':
-      this.renderer = new ResultListRenderer(this.options, autoCreateComponentsFn);
-      break;
-    case 'card':
-      this.renderer = new ResultListCardRenderer(this.options, autoCreateComponentsFn);
-      break;
-    case 'table':
-      this.renderer = new ResultListTableRenderer(this.options, autoCreateComponentsFn);
-      break;
+      case 'list':
+        this.renderer = new ResultListRenderer(this.options, autoCreateComponentsFn);
+        break;
+      case 'card':
+        this.renderer = new ResultListCardRenderer(this.options, autoCreateComponentsFn);
+        break;
+      case 'table':
+        this.renderer = new ResultListTableRenderer(this.options, autoCreateComponentsFn);
+        break;
     }
   }
 }

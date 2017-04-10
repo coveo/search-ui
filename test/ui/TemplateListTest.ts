@@ -81,18 +81,6 @@ export function TemplateListTest() {
         let templateList = new TemplateList(templates);
         expect(templateList.getFields()).toEqual(jasmine.arrayContaining(['a', 'b', 'c']));
       });
-
-      it('should instantiate roled templates before when role is passed, regardless of conditions', () => {
-        templates[1].role = 'table-header';
-        let templateList = new TemplateList(templates);
-        expect(templateList.instantiateToString(result, { role: 'table-header' })).toEqual('Template 2');
-      });
-
-      it('should instantiate with DefaultResultTemplate if role is passed but no internal templates with role found', () => {
-        let templateList = new TemplateList(templates);
-        expect(templateList.instantiateToString(result, { role: 'table-footer' }))
-          .toEqual(new DefaultResultTemplate().instantiateToString(result, { role: 'table-footer' }));
-      });
     });
   });
 }

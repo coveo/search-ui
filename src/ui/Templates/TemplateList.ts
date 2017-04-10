@@ -9,17 +9,9 @@ export class TemplateList extends Template {
     super();
   }
 
-  instantiateToString(object: IQueryResult | ITemplateMetaFields, instantiateOptions: IInstantiateTemplateOptions = {}): string {
+  instantiateToString(object: IQueryResult, instantiateOptions: IInstantiateTemplateOptions = {}): string {
     let merged = new DefaultInstantiateTemplateOptions().merge(instantiateOptions);
 
-    if (merged.role != null) {
-      const roledTemplate = _.find(this.templates, t => t.role === merged.role);
-      if (roledTemplate) {
-        return roledTemplate.instantiateToString(object, merged);
-      } else {
-        return new DefaultResultTemplate().instantiateToString(object, merged);
-      }
-    }
     const filteredTemplates = _.reject(this.templates, t => t.role != null);
     for (var i = 0; i < filteredTemplates.length; i++) {
       var result = filteredTemplates[i].instantiateToString(object, merged);
@@ -27,20 +19,12 @@ export class TemplateList extends Template {
         return result;
       }
     }
-    return new DefaultResultTemplate().instantiateToString(object, instantiateOptions);
+    return this.getFallbackTemplate().instantiateToString(object, instantiateOptions);
   }
 
   instantiateToElement(object: IQueryResult, instantiateOptions: IInstantiateTemplateOptions = {}): HTMLElement {
     let merged = new DefaultInstantiateTemplateOptions().merge(instantiateOptions);
 
-    if (merged.role != null) {
-      const roledTemplate = _.find(this.templates, t => t.role === merged.role);
-      if (roledTemplate) {
-        return roledTemplate.instantiateToElement(object, merged);
-      } else {
-        return new DefaultResultTemplate().instantiateToElement(object, merged);
-      }
-    }
     const filteredTemplates = _.reject(this.templates, t => t.role != null);
     for (var i = 0; i < filteredTemplates.length; i++) {
       var element = filteredTemplates[i].instantiateToElement(object, merged);
@@ -48,7 +32,7 @@ export class TemplateList extends Template {
         return element;
       }
     }
-    return new DefaultResultTemplate().instantiateToElement(object, merged);
+    return this.getFallbackTemplate().instantiateToElement(object, merged);
   }
 
   getFields() {
@@ -61,5 +45,9 @@ export class TemplateList extends Template {
 
   hasTemplateWithRole(role: TemplateRole) {
     return _.find(this.templates, t => t.role === role);
+  }
+
+  protected getFallbackTemplate(): Template {
+    return new DefaultResultTemplate();
   }
 }

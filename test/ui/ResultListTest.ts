@@ -13,6 +13,7 @@ import { TemplateList } from '../../src/ui/Templates/TemplateList';
 import { QueryBuilder } from '../../src/ui/Base/QueryBuilder';
 import { analyticsActionCauseList } from '../../src/ui/Analytics/AnalyticsActionListMeta';
 import { IQueryResults } from '../../src/rest/QueryResults';
+import { TableTemplate } from '../../src/ui/templates/TableTemplate';
 
 export function ResultListTest() {
   describe('ResultList', () => {
@@ -386,13 +387,10 @@ export function ResultListTest() {
         test = Mock.optionsComponentSetup<ResultList, IResultListOptions>(ResultList, {
           layout: 'table'
         });
-        spyOn(test.cmp.options.resultTemplate, 'instantiateToElement').and.callThrough();
+        spyOn(test.cmp.options.resultTemplate, 'instantiateRoleToElement').and.callThrough();
         test.cmp.renderResults([test.cmp.buildResult(FakeResults.createFakeResult())]);
-        expect(test.cmp.options.resultTemplate.instantiateToElement).toHaveBeenCalledWith({}, {
-          role: 'table-header',
-          checkCondition: false,
-          currentLayout: 'table'
-        });
+        expect((<TableTemplate>test.cmp.options.resultTemplate).instantiateRoleToElement).toHaveBeenCalledWith('table-header');
+        expect((<TableTemplate>test.cmp.options.resultTemplate).instantiateRoleToElement).not.toHaveBeenCalledWith('table-footer');
       });
 
       describe('layout', () => {

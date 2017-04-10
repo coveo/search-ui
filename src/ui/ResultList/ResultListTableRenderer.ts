@@ -3,6 +3,7 @@ import { ResultListRenderer } from './ResultListRenderer';
 import { IQueryResult } from '../../rest/QueryResult';
 import { Template, TemplateRole } from '../Templates/Template';
 import { TemplateList } from '../Templates/TemplateList';
+import { TableTemplate } from '../Templates/TableTemplate';
 import { Component } from '../Base/Component';
 import { $$ } from '../../utils/Dom';
 import _ = require('underscore');
@@ -38,11 +39,7 @@ export class ResultListTableRenderer extends ResultListRenderer {
   }
 
   private renderRoledTemplate(role: TemplateRole): HTMLElement {
-    const elem = this.resultListOptions.resultTemplate.instantiateToElement({}, {
-      role: role,
-      checkCondition: false,
-      currentLayout: 'table'
-    });
+    const elem = (<TableTemplate>this.resultListOptions.resultTemplate).instantiateRoleToElement(role);
     $$(elem).addClass(`coveo-result-list-${role}`);
     this.autoCreateComponentsFn(elem, undefined);
     return elem;
