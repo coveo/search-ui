@@ -13,7 +13,7 @@ import { TemplateList } from '../../src/ui/Templates/TemplateList';
 import { QueryBuilder } from '../../src/ui/Base/QueryBuilder';
 import { analyticsActionCauseList } from '../../src/ui/Analytics/AnalyticsActionListMeta';
 import { IQueryResults } from '../../src/rest/QueryResults';
-import { TableTemplate } from '../../src/ui/templates/TableTemplate';
+import { TableTemplate } from '../../src/ui/Templates/TableTemplate';
 
 export function ResultListTest() {
   describe('ResultList', () => {
