@@ -32,6 +32,7 @@ export interface IAnalyticsOptions {
   splitTestRunVersion?: string;
   sendToCloud?: boolean;
   organization?: string;
+  originContext?: string;
 }
 
 /**
@@ -136,7 +137,17 @@ export class Analytics extends Component {
      * Default value is `undefined`, and the value of this parameter will fallback to the organization used for the
      * search endpoint.
      */
-    organization: ComponentOptions.buildStringOption()
+    organization: ComponentOptions.buildStringOption(),
+
+    /**
+     * Sets the Origin Context dimension on the analytic events.
+     * 
+     * You can use this dimension to specify the context of your application.
+     * Suggested values are "SearchPage", "InternalSearchPage" and "CommunitySearchPage"
+     *
+     * Default value is `SearchPage`.
+     */
+    originContext: ComponentOptions.buildStringOption({ defaultValue: 'SearchPage' }),
   };
 
   /**
@@ -302,7 +313,8 @@ export class Analytics extends Component {
         this.options.splitTestRunVersion,
         this.options.searchHub,
         this.options.sendToCloud,
-        this.getBindings());
+        this.getBindings(),
+        this.options.originContext);
     } else {
       this.client = new LiveAnalyticsClient(endpoint, elementToInitializeClient,
         this.options.user,
@@ -311,7 +323,8 @@ export class Analytics extends Component {
         this.options.splitTestRunName,
         this.options.splitTestRunVersion,
         this.options.searchHub,
-        this.options.sendToCloud);
+        this.options.sendToCloud,
+        this.options.originContext);
     }
   }
 

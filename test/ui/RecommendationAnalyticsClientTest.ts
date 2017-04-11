@@ -19,7 +19,7 @@ export function RecommendationAnalyticsClientTest() {
       endpoint = Mock.mock<AnalyticsEndpoint>(AnalyticsEndpoint);
       mainSearchInterface = Mock.basicSearchInterfaceSetup(SearchInterface);
       recommendation = Mock.optionsSearchInterfaceSetup<Recommendation, IRecommendationOptions>(Recommendation, { mainSearchInterface: mainSearchInterface.env.root });
-      client = new RecommendationAnalyticsClient(endpoint, recommendation.env.root, 'foo', 'foo display', false, 'foo run name', 'foo run version', 'default', true, recommendation.cmp.getBindings());
+      client = new RecommendationAnalyticsClient(endpoint, recommendation.env.root, 'foo', 'foo display', false, 'foo run name', 'foo run version', 'default', true, recommendation.cmp.getBindings(), 'context');
       clickElement = document.createElement('div');
     });
 

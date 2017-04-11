@@ -32,7 +32,16 @@ export class LiveAnalyticsClient implements IAnalyticsClient {
   private pendingSearchAsYouTypeSearchEvent: PendingSearchAsYouTypeSearchEvent;
   private logger: Logger;
 
-  constructor(public endpoint: AnalyticsEndpoint, public rootElement: HTMLElement, public userId: string, public userDisplayName: string, public anonymous: boolean, public splitTestRunName: string, public splitTestRunVersion: string, public originLevel1: string, public sendToCloud: boolean) {
+  constructor(public endpoint: AnalyticsEndpoint, 
+              public rootElement: HTMLElement, 
+              public userId: string, 
+              public userDisplayName: string,
+              public anonymous: boolean, 
+              public splitTestRunName: string, 
+              public splitTestRunVersion: string, 
+              public originLevel1: string, 
+              public sendToCloud: boolean,
+              public originContext: string) {
 
     Assert.exists(endpoint);
     Assert.exists(rootElement);
@@ -215,6 +224,7 @@ export class LiveAnalyticsClient implements IAnalyticsClient {
       originLevel1: this.originLevel1,
       originLevel2: this.getOriginLevel2(this.rootElement),
       originLevel3: document.referrer,
+      originContext: this.originContext,
       customData: _.keys(metaObject).length > 0 ? metaObject : undefined,
       userAgent: navigator.userAgent
     };
