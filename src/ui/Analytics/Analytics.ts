@@ -143,11 +143,11 @@ export class Analytics extends Component {
      * Sets the Origin Context dimension on the analytic events.
      * 
      * You can use this dimension to specify the context of your application.
-     * Suggested values are "SearchPage", "InternalSearchPage" and "CommunitySearchPage"
+     * Suggested values are "Search", "InternalSearch" and "CommunitySearch"
      *
-     * Default value is `SearchPage`.
+     * Default value is `Search`.
      */
-    originContext: ComponentOptions.buildStringOption({ defaultValue: 'SearchPage' }),
+    originContext: ComponentOptions.buildStringOption({ defaultValue: 'Search' }),
   };
 
   /**
