@@ -32,16 +32,16 @@ export class LiveAnalyticsClient implements IAnalyticsClient {
   private pendingSearchAsYouTypeSearchEvent: PendingSearchAsYouTypeSearchEvent;
   private logger: Logger;
 
-  constructor(public endpoint: AnalyticsEndpoint, 
-              public rootElement: HTMLElement, 
-              public userId: string, 
-              public userDisplayName: string,
-              public anonymous: boolean, 
-              public splitTestRunName: string, 
-              public splitTestRunVersion: string, 
-              public originLevel1: string, 
-              public sendToCloud: boolean,
-              public originContext: string) {
+  constructor(public endpoint: AnalyticsEndpoint,
+    public rootElement: HTMLElement,
+    public userId: string,
+    public userDisplayName: string,
+    public anonymous: boolean,
+    public splitTestRunName: string,
+    public splitTestRunVersion: string,
+    public originLevel1: string,
+    public sendToCloud: boolean,
+    public originContext: string) {
 
     Assert.exists(endpoint);
     Assert.exists(rootElement);

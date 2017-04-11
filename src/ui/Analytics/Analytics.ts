@@ -141,7 +141,7 @@ export class Analytics extends Component {
 
     /**
      * Sets the Origin Context dimension on the analytic events.
-     * 
+     *
      * You can use this dimension to specify the context of your application.
      * Suggested values are "Search", "InternalSearch" and "CommunitySearch"
      *
