@@ -188,13 +188,6 @@ export class Querybox extends Component {
      * Default value is `true`.
      */
     triggerQueryOnClear: ComponentOptions.buildBooleanOption({ defaultValue: true }),
-
-    /**
-     * Specifies whether the Querybox should get auto focus and selection upon initialization.
-     *
-     * Default value is `true`.
-     */
-    autoFocus: ComponentOptions.buildBooleanOption({ defaultValue: true })
   };
 
   public magicBox: Coveo.MagicBox.Instance;
@@ -254,10 +247,6 @@ export class Querybox extends Component {
         this.triggerNewQuery(false);
       }
     };
-
-    if (this.options.autoFocus) {
-      this.magicBox.focus();
-    }
   }
 
   /**

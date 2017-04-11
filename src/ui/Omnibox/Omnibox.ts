@@ -409,10 +409,6 @@ export class Omnibox extends Component {
       }
     };
 
-    if (this.options.autoFocus) {
-      this.magicBox.focus();
-    }
-
     this.magicBox.ontabpress = () => {
       this.handleTabPress();
     };
