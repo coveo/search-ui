@@ -46,6 +46,18 @@ $border-box-sizing: false;
       }
     }
   }
+
+  &.coveo-during-initialization {
+    .coveo-results-header {
+      * {
+        display: none;
+      }
+      height: 35px;
+    }
+    .CoveoLogo, .CoveoResultsPerPage {
+      display: none;
+    }
+  }
 }
 
 .coveo-results-header {

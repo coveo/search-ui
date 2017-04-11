@@ -37,27 +37,8 @@
   }
 }
 
-.coveo-hide-until-loaded {
-  display: none;
-}
-
-.coveo-show-after-loaded {
-  @include animation-name(coveo-appear);
-  @include animation-duration(1s);
-}
-
 body.coveo-modalBox-opened {
   &, .CoveoSearchInterface {
     overflow: hidden;
-  }
-}
-
-@include keyframes(coveo-appear) {
-  from {
-    opacity: 0;
-  }
-
-  to {
-    opacity: 1;
   }
 }

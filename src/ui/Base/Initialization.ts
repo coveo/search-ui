@@ -17,6 +17,7 @@ import { JQueryUtils } from '../../utils/JQueryutils';
 import { IJQuery } from './CoveoJQuery';
 import * as _ from 'underscore';
 import { IStringMap } from '../../rest/GenericParam';
+import { InitializationPlaceholder } from './InitializationPlaceholder';
 declare const require: any;
 
 /**
@@ -220,6 +221,7 @@ export class Initialization {
    */
   public static initializeFramework(element: HTMLElement, options: any, initSearchInterfaceFunction: (...args: any[]) => IInitResult): Promise<{ elem: HTMLElement }> {
     Assert.exists(element);
+
     let alreadyInitialized = Component.get(element, QueryController, true);
     if (alreadyInitialized) {
       this.logger.error('This DOM element has already been initialized as a search interface, skipping initialization', element);
@@ -227,6 +229,8 @@ export class Initialization {
         resolve({ elem: element });
       });
     }
+
+    new InitializationPlaceholder(element);
 
     options = Initialization.resolveDefaultOptions(element, options);
 
@@ -245,18 +249,6 @@ export class Initialization {
       $$(element).trigger(InitializationEvents.afterInitialization);
 
       let searchInterface = <SearchInterface>Component.get(element, SearchInterface);
-
-
-      // Elements that have the coveo-hide-until-loaded class are hidden by default.
-      // Now that we're loaded (and before the first query returns), we can remove
-      // the class. Also, we add a class that gives the opportunity for an animation
-      // to apply at startup, such as a fade-in that comes in by default.
-      let elemsHidden = $$(element).findAll('.coveo-hide-until-loaded');
-      _.each(elemsHidden, (e: HTMLElement) => {
-        $$(e).removeClass('coveo-hide-until-loaded');
-        $$(e).addClass('coveo-show-after-loaded');
-      });
-
       if (searchInterface.options.autoTriggerQuery) {
         Initialization.logFirstQueryCause(searchInterface);
         let shouldLogInActionHistory = true;

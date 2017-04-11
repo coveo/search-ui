@@ -428,3 +428,6 @@ ResultTaggingTest();
 
 import { ResultsFiltersPreferencesTest } from './ui/ResultsFiltersPreferencesTest';
 ResultsFiltersPreferencesTest();
+
+import { InitializationPlaceholderTest } from './ui/InitializationPlaceholderTest';
+InitializationPlaceholderTest();

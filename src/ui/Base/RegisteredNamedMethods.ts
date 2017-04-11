@@ -47,7 +47,6 @@ export function initSearchbox(element: HTMLElement, searchPageUri: string, optio
   var searchInterfaceOptions = <IStandaloneSearchInterfaceOptions>{};
   searchInterfaceOptions.searchPageUri = searchPageUri;
   searchInterfaceOptions.autoTriggerQuery = false;
-  searchInterfaceOptions.hideUntilFirstQuery = false;
   searchInterfaceOptions.enableHistory = false;
   options = _.extend({}, options, { StandaloneSearchInterface: searchInterfaceOptions });
   return Initialization.initializeFramework(element, options, () => {
