@@ -8105,8 +8105,6 @@
   text-overflow: ellipsis;
   padding: 5px 10px;
   margin: 0; }
-  .CoveoOmnibox.magic-box .coveo-omnibox-facet-value:hover {
-    background-color: #E6ECf0; }
   .CoveoOmnibox.magic-box .coveo-omnibox-facet-value li.coveo-facet-value {
     list-style-type: none; }
   .CoveoOmnibox.magic-box .coveo-omnibox-facet-value .coveo-facet-value-label-wrapper > * {
