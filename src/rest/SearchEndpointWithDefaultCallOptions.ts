@@ -2,8 +2,8 @@ import { ISearchEndpoint, IEndpointCallOptions, IGetDocumentOptions, ISearchEndp
 import { IQuery } from './Query';
 import { ITaggingRequest } from './TaggingRequest';
 import { IRatingRequest } from './RatingRequest';
-import { IRevealQuerySuggestRequest } from './RevealQuerySuggest';
-import { IRevealQuerySuggestResponse } from './RevealQuerySuggest';
+import { IQuerySuggestRequest } from './QuerySuggest';
+import { IQuerySuggestResponse } from './QuerySuggest';
 import { IIndexFieldValue } from '../rest/FieldValue';
 import { IQueryResult } from '../rest/QueryResult';
 import { IEndpointError } from '../rest/EndpointError';
@@ -50,8 +50,8 @@ export class SearchEndpointWithDefaultCallOptions implements ISearchEndpoint {
     return this.endpoint.tagDocument(taggingRequest, this.enrichCallOptions(taggingRequest));
   }
 
-  public getRevealQuerySuggest(request: IRevealQuerySuggestRequest, callOptions?: IEndpointCallOptions): Promise<IRevealQuerySuggestResponse> {
-    return this.endpoint.getRevealQuerySuggest(request, this.enrichCallOptions(callOptions));
+  public getQuerySuggest(request: IQuerySuggestRequest, callOptions?: IEndpointCallOptions): Promise<IQuerySuggestResponse> {
+    return this.endpoint.getQuerySuggest(request, this.enrichCallOptions(callOptions));
   }
 
   public rateDocument(ratingRequest: IRatingRequest, callOptions?: IEndpointCallOptions): Promise<boolean> {

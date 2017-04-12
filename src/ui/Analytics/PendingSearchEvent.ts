@@ -135,14 +135,14 @@ export class PendingSearchEvent {
 
     // The context_${key} format is important for the Analytics backend
     // This is what they use to recognize a custom data that will be used internally by other coveo's service.
-    // In this case, Reveal will be the consumer of this information.
+    // In this case, Coveo Machine Learning will be the consumer of this information.
     if (query.context != undefined) {
       _.each(query.context, (value: string, key: string) => {
         searchEvent.customData[`context_${key}`] = value;
       });
     }
 
-    // The refinedKeywords field is important for Reveal in order to learn properly on query
+    // The refinedKeywords field is important for Coveo Machine Learning in order to learn properly on query
     // made based on the long query.
     if (queryResults.refinedKeywords != undefined && queryResults.refinedKeywords.length != 0) {
       searchEvent.customData['refinedKeywords'] = queryResults.refinedKeywords;

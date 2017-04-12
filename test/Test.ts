@@ -378,8 +378,8 @@ CoreHelperTest();
 import { PipelineContextText } from './ui/PipelineContextTest';
 PipelineContextText();
 
-import { RevealQuerySuggestAddonTest } from './ui/RevealQuerySuggestAddonTest';
-RevealQuerySuggestAddonTest();
+import { QuerySuggestAddonTest } from './ui/QuerySuggestAddonTest';
+QuerySuggestAddonTest();
 
 import { ResponsiveComponentsTest } from './ui/ResponsiveComponentsTest';
 ResponsiveComponentsTest();

@@ -1,6 +1,6 @@
 import { Omnibox, MagicBox } from '../../src/ui/Omnibox/Omnibox';
 import * as Mock from '../MockEnvironment';
-import { RevealQuerySuggestAddon } from '../../src/ui/Omnibox/RevealQuerySuggestAddon';
+import { QuerySuggestAddon } from '../../src/ui/Omnibox/QuerySuggestAddon';
 import { SearchEndpoint } from '../../src/rest/SearchEndpoint';
 import { ComponentOptionsModel } from '../../src/models/ComponentOptionsModel';
 import { SearchInterface } from '../../src/ui/SearchInterface/SearchInterface';
@@ -8,8 +8,8 @@ import { QueryController } from '../../src/controllers/QueryController';
 import { QueryBuilder } from '../../src/ui/Base/QueryBuilder';
 import { Simulate } from '../Simulate';
 
-export function RevealQuerySuggestAddonTest() {
-  describe('RevealQuerySuggest', () => {
+export function QuerySuggestAddonTest() {
+  describe('QuerySuggest', () => {
     let omnibox: Omnibox;
     let endpoint: SearchEndpoint;
     let cmpOptionsModel: ComponentOptionsModel;
@@ -50,9 +50,9 @@ export function RevealQuerySuggestAddonTest() {
 
     describe('should call the query suggest service', () => {
       it('with the language', () => {
-        let revealQuerySuggest = new RevealQuerySuggestAddon(omnibox);
-        revealQuerySuggest.getSuggestion();
-        expect(endpoint.getRevealQuerySuggest).toHaveBeenCalledWith(jasmine.objectContaining({
+        let querySuggest = new QuerySuggestAddon(omnibox);
+        querySuggest.getSuggestion();
+        expect(endpoint.getQuerySuggest).toHaveBeenCalledWith(jasmine.objectContaining({
           language: jasmine.any(String)
         }));
       });
@@ -60,9 +60,9 @@ export function RevealQuerySuggestAddonTest() {
       it('with the search hub', () => {
         (<any>cmpOptionsModel).get.and.returnValue('a search hub');
 
-        let revealQuerySuggest = new RevealQuerySuggestAddon(omnibox);
-        revealQuerySuggest.getSuggestion();
-        expect(endpoint.getRevealQuerySuggest).toHaveBeenCalledWith(jasmine.objectContaining({
+        let querySuggest = new QuerySuggestAddon(omnibox);
+        querySuggest.getSuggestion();
+        expect(endpoint.getQuerySuggest).toHaveBeenCalledWith(jasmine.objectContaining({
           searchHub: 'a search hub'
         }));
       });
@@ -70,9 +70,9 @@ export function RevealQuerySuggestAddonTest() {
       it('with the pipeline', () => {
         searchInterface.options.pipeline = 'a pipeline';
 
-        let revealQuerySuggest = new RevealQuerySuggestAddon(omnibox);
-        revealQuerySuggest.getSuggestion();
-        expect(endpoint.getRevealQuerySuggest).toHaveBeenCalledWith(jasmine.objectContaining({
+        let querySuggest = new QuerySuggestAddon(omnibox);
+        querySuggest.getSuggestion();
+        expect(endpoint.getQuerySuggest).toHaveBeenCalledWith(jasmine.objectContaining({
           pipeline: 'a pipeline'
         }));
       });
@@ -84,9 +84,9 @@ export function RevealQuerySuggestAddonTest() {
           };
         };
 
-        let revealQuerySuggest = new RevealQuerySuggestAddon(omnibox);
-        revealQuerySuggest.getSuggestion();
-        expect(endpoint.getRevealQuerySuggest).toHaveBeenCalledWith(jasmine.objectContaining({
+        let querySuggest = new QuerySuggestAddon(omnibox);
+        querySuggest.getSuggestion();
+        expect(endpoint.getQuerySuggest).toHaveBeenCalledWith(jasmine.objectContaining({
           context: 'a context'
         }));
       });
@@ -95,39 +95,39 @@ export function RevealQuerySuggestAddonTest() {
       if (!Simulate.isPhantomJs()) {
         describe('with a cache', () => {
           it('should cache the result', (done) => {
-            let revealQuerySuggest = new RevealQuerySuggestAddon(omnibox);
+            let querySuggest = new QuerySuggestAddon(omnibox);
             let firstPromise = new Promise((resolve, reject) => {
             });
 
-            (<any>endpoint).getRevealQuerySuggest.and.returnValue(firstPromise);
-            let firstPromiseReturned = revealQuerySuggest.getSuggestion();
+            (<any>endpoint).getQuerySuggest.and.returnValue(firstPromise);
+            let firstPromiseReturned = querySuggest.getSuggestion();
             expect(firstPromiseReturned).toEqual(firstPromise);
 
             setTimeout(() => {
               let secondPromise = new Promise((resolve, reject) => {
               });
-              (<any>endpoint).getRevealQuerySuggest.and.returnValue(secondPromise);
-              let secondPromiseReturned = revealQuerySuggest.getSuggestion();
+              (<any>endpoint).getQuerySuggest.and.returnValue(secondPromise);
+              let secondPromiseReturned = querySuggest.getSuggestion();
               expect(secondPromiseReturned).toBe(firstPromiseReturned);
               done();
             }, 10);
           });
 
           it('should not cache the result if the query fails', (done) => {
-            let revealQuerySuggest = new RevealQuerySuggestAddon(omnibox);
+            let querySuggest = new QuerySuggestAddon(omnibox);
             let firstPromise = new Promise((resolve, reject) => {
               reject(false);
             });
-            (<any>endpoint).getRevealQuerySuggest.and.returnValue(firstPromise);
+            (<any>endpoint).getQuerySuggest.and.returnValue(firstPromise);
 
-            let firstPromiseReturned = revealQuerySuggest.getSuggestion();
+            let firstPromiseReturned = querySuggest.getSuggestion();
             expect(firstPromiseReturned).toEqual(firstPromise);
 
             setTimeout(() => {
               let secondPromise = new Promise((resolve, reject) => {
               });
-              (<any>endpoint).getRevealQuerySuggest.and.returnValue(secondPromise);
-              let secondPromiseReturned = revealQuerySuggest.getSuggestion();
+              (<any>endpoint).getQuerySuggest.and.returnValue(secondPromise);
+              let secondPromiseReturned = querySuggest.getSuggestion();
               expect(secondPromiseReturned).not.toBe(firstPromiseReturned);
               done();
             }, 10);
@@ -158,12 +158,12 @@ export function RevealQuerySuggestAddonTest() {
               }]
             });
           });
-          (<any>endpoint).getRevealQuerySuggest.and.returnValue(results);
+          (<any>endpoint).getQuerySuggest.and.returnValue(results);
         });
 
         it('should contain the text', (done) => {
-          let revealQuerySuggest = new RevealQuerySuggestAddon(omnibox);
-          let results = revealQuerySuggest.getSuggestion();
+          let querySuggest = new QuerySuggestAddon(omnibox);
+          let results = querySuggest.getSuggestion();
           results.then((completions) => {
             expect(completions[0].text).toBe('properly');
             done();
@@ -171,8 +171,8 @@ export function RevealQuerySuggestAddonTest() {
         });
 
         it('should contain an html version of the completion', (done) => {
-          let revealQuerySuggest = new RevealQuerySuggestAddon(omnibox);
-          let results = revealQuerySuggest.getSuggestion();
+          let querySuggest = new QuerySuggestAddon(omnibox);
+          let results = querySuggest.getSuggestion();
           results.then((completions) => {
             expect(completions[0].html).toBeDefined();
             done();

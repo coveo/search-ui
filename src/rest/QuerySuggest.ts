@@ -1,9 +1,9 @@
 import { IStringMap } from './GenericParam';
 /**
- * The IRevealQuerySuggestCompletion interface describes a completion suggestion from the Coveo Machine Learning
+ * The IQuerySuggestCompletion interface describes a completion suggestion from the Coveo Machine Learning
  * service (see [Coveo Machine Learning](http://www.coveo.com/go?dest=cloudhelp&lcid=9&context=177).
  */
-export interface IRevealQuerySuggestCompletion {
+export interface IQuerySuggestCompletion {
 
   /**
    * Contains the expression to complete.
@@ -28,21 +28,21 @@ export interface IRevealQuerySuggestCompletion {
 }
 
 /**
- * The IRevealQuerySuggestResponse interface describes a response from the Coveo Machine Learning service query
+ * The IQuerySuggestResponse interface describes a response from the Coveo Machine Learning service query
  * suggestions.
  */
-export interface IRevealQuerySuggestResponse {
+export interface IQuerySuggestResponse {
 
   /**
    * Contains an array of completions.
    */
-  completions: IRevealQuerySuggestCompletion[];
+  completions: IQuerySuggestCompletion[];
 }
 
 /**
- * The IRevealQuerySuggestRequest interface describes a request to the Coveo Machine Learning service query suggest.
+ * The IQuerySuggestRequest interface describes a request to the Coveo Machine Learning service query suggest.
  */
-export interface IRevealQuerySuggestRequest {
+export interface IQuerySuggestRequest {
 
   /**
    * Specifies the query / word for which to get completion.
