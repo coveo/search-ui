@@ -131,6 +131,7 @@ export function FoldingTest() {
           query.fieldsToInclude = ['should', 'be', 'included'];
           query.expression.add('should be there');
           query.advancedExpression.add('should not be there');
+          query.firstResult = 9999;
           fakeResults._folded = null;
           queryData = Simulate.query(test.env, {
             query: query.build(),
@@ -146,6 +147,12 @@ export function FoldingTest() {
             filterField: null,
             filterFieldRange: null,
             q: '(should be there) OR @uri'
+          }));
+        });
+
+        it('and modify firstResult', () => {
+          expect(test.env.queryController.getEndpoint().search).toHaveBeenCalledWith(jasmine.objectContaining({
+            firstResult: 0
           }));
         });
 
