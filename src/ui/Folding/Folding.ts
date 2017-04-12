@@ -406,6 +406,7 @@ export class Folding extends Component {
 
     query.filterField = null;
     query.filterFieldRange = null;
+    query.firstResult = 0;
 
     if (this.options.rearrange) {
       this.options.rearrange.putInQueryBuilder(builder);
