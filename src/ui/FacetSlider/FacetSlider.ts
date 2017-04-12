@@ -377,6 +377,7 @@ export class FacetSlider extends Component {
     super(element, FacetSlider.ID, bindings);
     this.options = ComponentOptions.initComponentOptions(element, FacetSlider, options);
 
+    debugger;
     ResponsiveFacets.init(this.root, this, this.options);
 
     if (this.options.excludeOuterBounds == null) {
@@ -510,7 +511,7 @@ export class FacetSlider extends Component {
     }
   }
 
-  // There is delayed graph data if at the time the facet slider tried to draw the facet was hidden in the
+  // There is delayed graph data if at the time the facet slider tried to draw, the facet was hidden in the
   // facet dropdown. This method will draw delayed graph data if it exists.
   public drawDelayedGraphData() {
     if (this.delayedGraphData != undefined && !this.isEmpty) {
