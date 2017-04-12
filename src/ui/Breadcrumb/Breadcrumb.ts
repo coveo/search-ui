@@ -19,7 +19,7 @@ export interface IBreadcrumbOptions {
 /**
  * The Breadcrumb component displays a summary of the currently active query filters.
  *
- * For example, when the user selects a {@link FacetModuleDefinition} value, the breadcrumbs display this value.
+ * For example, when the user selects a {@link Facet} value, the breadcrumbs display this value.
  *
  * The active filters are obtained by the component by firing an event in the Breadcrumb component.
  *
@@ -62,7 +62,7 @@ export class Breadcrumb extends Component {
   }
 
   /**
-   * Triggers the event to populate the breadcrumbs. Components such as {@link FacetModuleDefinition} can populate the breadcrumbs.
+   * Triggers the event to populate the breadcrumbs. Components such as {@link Facet} can populate the breadcrumbs.
    *
    * This method triggers a {@link BreadcrumbEvents.populateBreadcrumb} event with an
    * {@link IPopulateBreadcrumbEventArgs} object (an array) that other components or code can populate.
@@ -77,7 +77,7 @@ export class Breadcrumb extends Component {
   }
 
   /**
-   * Triggers the event to clear the current breadcrumbs that components such as {@link FacetModuleDefinition} can populate.
+   * Triggers the event to clear the current breadcrumbs that components such as {@link Facet} can populate.
    *
    * Also triggers a new query and logs the `breadcrumbResetAll` event in the usage analytics.
    */

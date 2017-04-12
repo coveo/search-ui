@@ -56,13 +56,13 @@ export interface IComponentOptions<T> {
   /**
    * Specify if the option is "required" so that the component can do it's job properly.
    *
-   * For example, the {@link FacetModuleDefinition.options.field} is required, as a facet with no field cannot function.
+   * For example, the {@link Facet.options.field} is required, as a facet with no field cannot function.
    */
   required?: boolean;
   /**
    * Specify a function which can be used to further modify the value for a given option after all other options have been loaded.
    *
-   * For example, the {@link FacetModuleDefinition.options.id} will use this to set the default ID with the same value as the {@link FacetModuleDefinition.options.field}.
+   * For example, the {@link Facet.options.id} will use this to set the default ID with the same value as the {@link Facet.options.field}.
    */
   postProcessing?: IComponentOptionsPostProcessing<T>;
   /**

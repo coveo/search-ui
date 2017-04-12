@@ -7,9 +7,9 @@ export const SMALL_SCREEN_WIDTH = 480;
 /**
  * This class serves as a way to get and set the different screen size breakpoints for the interface.
  *
- * By settings those, you can impact, amongst other, the {@link FacetModuleDefinition}, {@link Tab} or {@link ResultList} behaviour.
+ * By settings those, you can impact, amongst other, the {@link Facet}, {@link Tab} or {@link ResultList} behaviour.
  *
- * For example, the {@link FacetModuleDefinition} components of your interface will switch to a dropdown menu when the screen size reaches 800px or less.
+ * For example, the {@link Facet} components of your interface will switch to a dropdown menu when the screen size reaches 800px or less.
  *
  * You could modify this value using this calls
  *

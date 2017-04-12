@@ -4,7 +4,7 @@ const minimize = process.argv.indexOf('minimize') !== -1;
 const webpack = require('webpack');
 const path = require('path');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const spritesmithConfig = require('./webpackConfigFiles/spritesmithConfig/spritesmith.config.js');
+const spritesmithConfig = require('./spritesmithConfig/spritesmith.config.js');
 const production = process.env.NODE_ENV === 'production';
 const globalizePath = __dirname + '/lib/globalize/globalize.min.js';
 

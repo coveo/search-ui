@@ -1,7 +1,7 @@
 const SpritesmithPlugin = require('webpack-spritesmith');
 const path = require('path');
 
-let cwd = path.resolve(__dirname, '../../image');
+let cwd = path.resolve(__dirname, '../image');
 
 module.exports = new SpritesmithPlugin({
       src: {
@@ -9,8 +9,8 @@ module.exports = new SpritesmithPlugin({
         glob: '{retina,sprites}/**/*.png'
       },
       target: {
-        image: path.resolve(__dirname, '../../bin/image/spritesNew.png'),
-        css: [[path.resolve(__dirname, '../../bin/sass/sprites.scss'),{
+        image: path.resolve(__dirname, '../bin/image/spritesNew.png'),
+        css: [[path.resolve(__dirname, '../bin/sass/sprites.scss'),{
           format: 'optimized_scss_template'
         }]]
       },
@@ -42,7 +42,7 @@ module.exports = new SpritesmithPlugin({
 
           return spriteDescription;
         },
-        targetImage: path.resolve(__dirname, '../../bin/image/retinaNew.png'),
+        targetImage: path.resolve(__dirname, '../bin/image/retinaNew.png'),
         cssImageRef: '../image/retinaNew.png'
       },
       spritesmithOptions: {

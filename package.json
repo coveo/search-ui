@@ -8,6 +8,7 @@
     "test": "gulp test && gulp coverage",
     "testChunks" : "node chunkTesters/chunk.tester.js",
     "build": "gulp",
+    "tsonly": "gulp compileTSOnly",
     "minimize": "node node_modules/webpack/bin/webpack.js --env minimize",
     "doc": "gulp doc",
     "docsitemap": "gulp docsitemap",
