@@ -124,7 +124,7 @@ export class SearchInterface extends RootComponent implements IComponentBindings
     enableHistory: ComponentOptions.buildBooleanOption({ defaultValue: false }),
 
     /**
-     * Specifies whether to enable automatic responsive mode (i.e., automatically placing {@link FacetModuleDefinition} and {@link Tab}
+     * Specifies whether to enable automatic responsive mode (i.e., automatically placing {@link Facet} and {@link Tab}
      * components in dropdown menus under the search box when the width of the SearchInterface HTML element reaches or
      * falls behind a certain pixel threshold).
      *
@@ -134,12 +134,11 @@ export class SearchInterface extends RootComponent implements IComponentBindings
      * **Note:**
      *
      * > If this option is `true`, you can also specify whether to enable responsive mode for Facet components (see
-     * > {@link FacetModuleDefinition.options.enableResponsiveMode}) and for Tab components (see
+     * > {@link Facet.options.enableResponsiveMode}) and for Tab components (see
      * > {@link Tab.options.enableResponsiveMode}).
      * >
      * > In addition, you can specify the label you wish to display on the dropdown buttons (see
-     * > {@link FacetModuleDefinition.options.dropdownHeaderLabel} and {@link Tab.options.dropdownHeaderLabel}).
-     * > mode (see {@link FacetModuleDefinition.options.responsiveBreakpoint}.
+     * > {@link Facet.options.dropdownHeaderLabel} and {@link Tab.options.dropdownHeaderLabel}).
      *
      * Default value is `true`.
      */
@@ -257,7 +256,7 @@ export class SearchInterface extends RootComponent implements IComponentBindings
     /**
      * Specifies whether to filter duplicates in the search results.
      *
-     * Setting this option to `true` forces duplicates to not appear in search results. However, {@link FacetModuleDefinition} counts
+     * Setting this option to `true` forces duplicates to not appear in search results. However, {@link Facet} counts
      * still include the duplicates, which can be confusing for the end user. This is a limitation of the index.
      *
      * **Example:**
@@ -333,7 +332,7 @@ export class SearchInterface extends RootComponent implements IComponentBindings
   /**
    * Allows to get and set the different breakpoints for mobile and tablet devices.
    *
-   * This is useful, amongst other, for {@link FacetModuleDefinition}, {@link Tab} and {@link ResultList}
+   * This is useful, amongst other, for {@link Facet}, {@link Tab} and {@link ResultList}
    */
   public responsiveComponents: ResponsiveComponents;
 

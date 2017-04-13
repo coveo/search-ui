@@ -15,10 +15,6 @@ const compiler = webpack(webpackConfig);
 let webpackConfigTest = require('../webpack.test.config.js');
 webpackConfigTest.entry['tests'].unshift('webpack-dev-server/client?http://localhost:8081/');
 const compilerTest = webpack(webpackConfigTest);
-/*
-let webpackConfigPlayground = require('../webpackConfigFiles/webpack.playground.config');
-webpackConfigPlayground.entry['playground'].unshift('webpack-dev-server/client?http://localhost:8082/');
-const compilerPlayground = webpack(webpackConfigPlayground);
 
 let debouncedLinkToExternal = _.debounce(()=> {
   console.log('... Compiler done ... Linking external projects'.black.bgGreen);
@@ -26,19 +22,10 @@ let debouncedLinkToExternal = _.debounce(()=> {
   })
 }, 1000);
 
-let debouncedGenerateDoc = _.debounce(()=> {
-  buildUtilities.exec('gulp', ['doc'], undefined, function () {
-  })
-}, 1000);
-
 compiler.plugin('done', ()=> {
   debouncedLinkToExternal();
- });
+});
 
-compilerPlayground.plugin('done', ()=> {
-  debouncedGenerateDoc();
- });
- */
 gulp.task('dev', ['setup', 'deleteCssFile'], (done)=> {
   let server = new WebpackDevServer(compiler, {
     compress: true,

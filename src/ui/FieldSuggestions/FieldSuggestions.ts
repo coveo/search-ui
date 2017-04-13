@@ -61,7 +61,7 @@ export class FieldSuggestions extends Component {
     /**
      * Specifies the z-index position at which the suggestions render themselves in the {@link Omnibox}.
      *
-     * When there are multiple suggestion providers (e.g., {@link FacetModuleDefinition} or {@link AnalyticsSuggestions}), components
+     * When there are multiple suggestion providers (e.g., {@link Facet} or {@link AnalyticsSuggestions}), components
      * with a higher omniboxZIndex values render themselves first.
      *
      * Default value is `51`. Minimum value is `0`.

@@ -47,7 +47,7 @@ function showOnlyWithHelper<T>(helpers: string[], options?: T): T {
  * This component is a result template component (see [Result Templates](https://developers.coveo.com/x/aIGfAQ)).
  *
  * A common use of this component is to display a specific field value which also happens to be an existing
- * {@link FacetModuleDefinition.options.field}. When the user clicks on the FieldValue component, it activates the corresponding Facet.
+ * {@link Facet.options.field}. When the user clicks on the FieldValue component, it activates the corresponding Facet.
  */
 export class FieldValue extends Component {
   static ID = 'FieldValue';
@@ -72,12 +72,12 @@ export class FieldValue extends Component {
     field: ComponentOptions.buildFieldOption({ defaultValue: '@field', required: true }),
 
     /**
-     * Specifies the {@link FacetModuleDefinition} component to toggle when the end user clicks the FieldValue.
+     * Specifies the {@link Facet} component to toggle when the end user clicks the FieldValue.
      *
      * Default value is the value of {@link FieldValue.options.field}.
      *
      * **Note:**
-     * > If the target {@link FacetModuleDefinition.options.id} is is not the same as its {@link FacetModuleDefinition.options.field}), you must specify
+     * > If the target {@link Facet.options.id} is is not the same as its {@link Facet.options.field}), you must specify
      * > this option manually in order to link to the correct Facet.
      */
     facet: ComponentOptions.buildStringOption({ postProcessing: (value, options) => value || options.field }),
@@ -92,7 +92,7 @@ export class FieldValue extends Component {
     /**
      * Specifies whether to split the FieldValue at each {@link FieldValue.options.separator}.
      *
-     * This is useful for splitting groups using a {@link FacetModuleDefinition.options.field}.
+     * This is useful for splitting groups using a {@link Facet.options.field}.
      *
      * When this option is `true`, the displayed values are split by the {@link FieldValue.options.displaySeparator}.
      *
