@@ -151,12 +151,12 @@ export class ResponsiveComponentsManager {
         // Tabs need to be rendered last, so any dropdown header(eg: facet) is already there when the responsive tabs check for overflow.
         this.responsiveComponents.unshift(responsiveComponent);
       }
-      _.each(this.responsiveComponents, (responsiveComponent: IResponsiveComponent) => {
-        if (responsiveComponent.registerComponent != null) {
-          responsiveComponent.registerComponent(component);
-        }
-      });
     }
+    _.each(this.responsiveComponents, (responsiveComponent: IResponsiveComponent) => {
+      if (responsiveComponent.registerComponent != null) {
+        responsiveComponent.registerComponent(component);
+      }
+    });
   }
 
   public disableComponent(ID: string) {
