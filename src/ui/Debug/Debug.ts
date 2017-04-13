@@ -19,6 +19,7 @@ import { KEYBOARD } from '../../utils/KeyboardUtils';
 import { InitializationEvents } from '../../events/InitializationEvents';
 import { IStringMap } from '../../rest/GenericParam';
 import _ = require('underscore');
+import 'styling/_Debug';
 
 export interface IDebugOptions {
   enableDebug?: boolean;

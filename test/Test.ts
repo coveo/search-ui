@@ -428,3 +428,6 @@ ResultTaggingTest();
 
 import { ResultsFiltersPreferencesTest } from './ui/ResultsFiltersPreferencesTest';
 ResultsFiltersPreferencesTest();
+
+import { FacetRangeTest } from './ui/FacetRangeTest';
+FacetRangeTest();
