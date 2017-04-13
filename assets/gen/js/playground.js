@@ -10374,8 +10374,8 @@ var playground =
 	"use strict";
 	Object.defineProperty(exports, "__esModule", { value: true });
 	exports.version = {
-	    'lib': '1.2537.1-beta',
-	    'product': '1.2537.1-beta',
+	    'lib': '1.2537.2-beta',
+	    'product': '1.2537.2-beta',
 	    'supportedApiVersion': 2
 	};
 
@@ -20389,12 +20389,12 @@ var playground =
 	                // Tabs need to be rendered last, so any dropdown header(eg: facet) is already there when the responsive tabs check for overflow.
 	                this.responsiveComponents.unshift(responsiveComponent);
 	            }
-	            _.each(this.responsiveComponents, function (responsiveComponent) {
-	                if (responsiveComponent.registerComponent != null) {
-	                    responsiveComponent.registerComponent(component);
-	                }
-	            });
 	        }
+	        _.each(this.responsiveComponents, function (responsiveComponent) {
+	            if (responsiveComponent.registerComponent != null) {
+	                responsiveComponent.registerComponent(component);
+	            }
+	        });
 	    };
 	    ResponsiveComponentsManager.prototype.disableComponent = function (ID) {
 	        this.disabledComponents.push(ID);
@@ -21888,7 +21888,7 @@ var playground =
 	            return undefined;
 	        }
 	    };
-	    // There is delayed graph data if at the time the facet slider tried to draw the facet was hidden in the
+	    // There is delayed graph data if at the time the facet slider tried to draw, the facet was hidden in the
 	    // facet dropdown. This method will draw delayed graph data if it exists.
 	    FacetSlider.prototype.drawDelayedGraphData = function () {
 	        if (this.delayedGraphData != undefined && !this.isEmpty) {
