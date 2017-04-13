@@ -41,8 +41,14 @@ export function FacetSliderTest() {
       let simulation = Simulate.query(test.env);
       expect(simulation.queryBuilder.build().groupBy).toEqual(jasmine.arrayContaining([
         jasmine.objectContaining({
-          field: '@foo',
-          generateAutomaticRanges: true
+			field: '@foo',
+			completeFacetWithStandardValues: true,
+			allowedValues: undefined,
+			rangeValues: [ Object({ start: 0, end: 100, endInclusive: true, label: 'Slider' }) ],
+			generateAutomaticRanges: false,
+			maximumNumberOfValues: 1,
+			queryOverride: '@uri',
+			sortCriteria: 'nosort'
         })
       ]));
     });
