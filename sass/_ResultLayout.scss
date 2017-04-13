@@ -11,6 +11,8 @@
 
 .coveo-result-layout-selector {
   @include resultsHeaderElement();
+  display: block;
+
   .coveo-icon {
     margin-right: 5px;
     vertical-align: bottom;
