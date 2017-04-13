@@ -153,9 +153,9 @@ export class ResponsiveComponentsManager {
       }
     }
     _.each(this.responsiveComponents, (responsiveComponent: IResponsiveComponent) => {
-        if (responsiveComponent.registerComponent != null) {
-          responsiveComponent.registerComponent(component);
-        }
+      if (responsiveComponent.registerComponent != null) {
+        responsiveComponent.registerComponent(component);
+      }
     });
   }
 

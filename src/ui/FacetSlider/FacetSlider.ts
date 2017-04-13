@@ -377,7 +377,6 @@ export class FacetSlider extends Component {
     super(element, FacetSlider.ID, bindings);
     this.options = ComponentOptions.initComponentOptions(element, FacetSlider, options);
 
-    debugger;
     ResponsiveFacets.init(this.root, this, this.options);
 
     if (this.options.excludeOuterBounds == null) {
