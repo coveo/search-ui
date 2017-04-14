@@ -138,7 +138,7 @@ export class FacetSliderQueryController {
       return groupByQuery;
     } else {
 	  groupByQuery.generateAutomaticRanges = true;
-      return groupByQuery;
+	  return groupByQuery;
     }
   }
 

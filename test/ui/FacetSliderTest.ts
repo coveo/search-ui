@@ -41,14 +41,61 @@ export function FacetSliderTest() {
       let simulation = Simulate.query(test.env);
       expect(simulation.queryBuilder.build().groupBy).toEqual(jasmine.arrayContaining([
         jasmine.objectContaining({
-			field: '@foo',
-			completeFacetWithStandardValues: true,
-			allowedValues: undefined,
-			rangeValues: [ Object({ start: 0, end: 100, endInclusive: true, label: 'Slider' }) ],
-			generateAutomaticRanges: false,
-			maximumNumberOfValues: 1,
-			queryOverride: '@uri',
-			sortCriteria: 'nosort'
+		  field: '@foo',
+		  completeFacetWithStandardValues: true,
+		  allowedValues: undefined,
+		  rangeValues: [ Object({ start: 0, end: 100, endInclusive: true, label: 'Slider' }) ],
+		  generateAutomaticRanges: false,
+		  maximumNumberOfValues: 1,
+		  queryOverride: '@uri',
+		  sortCriteria: 'nosort'
+        })
+      ]));
+    });
+	
+    it('should add custom range to the query and disable automatic range, if range is specified', function () {
+      test = Mock.optionsComponentSetup<FacetSlider, IFacetSliderOptions>(FacetSlider, {
+        start: 0,
+        end: 100,
+        field: '@foo',
+        title: 'nice title'
+      });
+	  (<jasmine.Spy>test.env.queryStateModel.get).and.returnValue([0, 100]);
+      (<jasmine.Spy>test.env.queryStateModel.getDefault).and.returnValue([0, 100]);
+	  
+      let simulation = Simulate.query(test.env);
+      expect(simulation.queryBuilder.build().groupBy).toEqual(jasmine.arrayContaining([
+        jasmine.objectContaining({
+          field: '@foo',
+          completeFacetWithStandardValues: true,
+          allowedValues: undefined,
+          rangeValues: [Object({ start: 0, end: 100, endInclusive: true, label: 'Slider' })],
+          generateAutomaticRanges: false,
+          maximumNumberOfValues: 1,
+          queryOverride: '@uri',
+          sortCriteria: 'nosort'
+        })
+      ]));
+    });
+	
+	it('should enable automatic range if custom range is not specified', function () {
+      test = Mock.optionsComponentSetup<FacetSlider, IFacetSliderOptions>(FacetSlider, {
+        field: '@foo',
+        title: 'nice title'
+      });
+	  (<jasmine.Spy>test.env.queryStateModel.get).and.returnValue([0, 100]);
+      (<jasmine.Spy>test.env.queryStateModel.getDefault).and.returnValue([0, 100]);
+	  
+      let simulation = Simulate.query(test.env);
+      expect(simulation.queryBuilder.build().groupBy).toEqual(jasmine.arrayContaining([
+        jasmine.objectContaining({
+          field: '@foo',
+          completeFacetWithStandardValues: true,
+          allowedValues: undefined,
+          generateAutomaticRanges: true,
+          maximumNumberOfValues: 1,
+          queryOverride: '@uri',
+          sortCriteria: 'nosort' 
         })
       ]));
     });
