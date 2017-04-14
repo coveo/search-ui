@@ -7,7 +7,14 @@ import { ComponentOptions, IFieldOption } from '../Base/ComponentOptions';
 import { IQueryResult } from '../../rest/QueryResult';
 import { IQueryResults } from '../../rest/QueryResults';
 import { Assert } from '../../misc/Assert';
-import { QueryEvents, INewQueryEventArgs, IBuildingQueryEventArgs, IQuerySuccessEventArgs, IDuringQueryEventArgs, IQueryErrorEventArgs } from '../../events/QueryEvents';
+import {
+  QueryEvents,
+  INewQueryEventArgs,
+  IBuildingQueryEventArgs,
+  IQuerySuccessEventArgs,
+  IDuringQueryEventArgs,
+  IQueryErrorEventArgs
+} from '../../events/QueryEvents';
 import { MODEL_EVENTS } from '../../models/Model';
 import { QUERY_STATE_ATTRIBUTES } from '../../models/QueryStateModel';
 import { QueryUtils } from '../../utils/QueryUtils';
@@ -27,10 +34,10 @@ import { TemplateCache } from '../Templates/TemplateCache';
 import { ResponsiveDefaultResultTemplate } from '../ResponsiveComponents/ResponsiveDefaultResultTemplate';
 import * as _ from 'underscore';
 import { exportGlobally } from '../../GlobalExports';
-
 import 'styling/_ResultList';
 import 'styling/_ResultFrame';
 import 'styling/_Result';
+import { InitializationPlaceholder } from '../Base/InitializationPlaceholder';
 
 export interface IResultListOptions {
   resultContainer?: HTMLElement;
@@ -328,17 +335,20 @@ export class ResultList extends Component {
    * @param append
    */
   public renderResults(resultsElement: HTMLElement[], append = false): void {
-    if (!append) {
-      this.options.resultContainer.innerHTML = '';
-    }
+    const docFragment = document.createDocumentFragment();
+
     _.each(resultsElement, (resultElement) => {
-      this.options.resultContainer.appendChild(resultElement);
+      docFragment.appendChild(resultElement);
       this.triggerNewResultDisplayed(Component.getResult(resultElement), resultElement);
     });
     if (this.options.layout == 'card' && !this.options.enableInfiniteScroll) {
       // Used to prevent last card from spanning the grid's whole width
-      _.times(3, () => this.options.resultContainer.appendChild($$('div').el));
+      _.times(3, () => docFragment.appendChild($$('div').el));
     }
+    if (!append) {
+      this.options.resultContainer.innerHTML = '';
+    }
+    this.options.resultContainer.appendChild(docFragment);
     this.triggerNewResultsDisplayed();
   }
 
@@ -381,7 +391,6 @@ export class ResultList extends Component {
     }).then((resultElement: HTMLElement) => {
       if (resultElement != null) {
         Component.bindResultToElement(resultElement, result);
-        $$(resultElement).addClass('');
       }
       return this.autoCreateComponentsInsideResult(resultElement, result).initResult.then(() => {
         return resultElement;
@@ -585,6 +594,11 @@ export class ResultList extends Component {
       this.enable();
       this.options.resultTemplate.layout = <ValidLayout>this.options.layout;
       if (args.results) {
+        // Prevent flickering when switching to a new layout that is empty
+        // add a temporary placeholder, the same that is used on initialization
+        if (this.options.resultContainer.innerHTML == '') {
+          new InitializationPlaceholder(this.root, { resultList: true, layout: args.layout });
+        }
         Defer.defer(() => {
           this.buildResults(args.results).then((elements: HTMLElement[]) => {
             this.renderResults(elements);

@@ -817,11 +817,15 @@ export class SearchEndpoint implements ISearchEndpoint {
     params.queryString = params.queryString.concat(queryString);
     params.queryString = _.uniq(params.queryString);
 
+    const startTime = new Date();
     return this.caller.call(params)
       .then((response?: ISuccessResponse<T>) => {
-        if (response.data && (<any>response.data).clientDuration) {
-          (<any>response.data).clientDuration = response.duration;
+        if (response.data == null) {
+          response.data = <any>{};
         }
+        const timeToExecute = new Date().getTime() - startTime.getTime();
+        (<any>response.data).clientDuration = timeToExecute;
+        (<any>response.data).duration = response.duration || timeToExecute;
         return response.data;
       }).catch((error?: IErrorResponse) => {
         if (autoRenewToken && this.canRenewAccessToken() && this.isAccessTokenExpiredStatus(error.statusCode)) {

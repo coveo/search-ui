@@ -668,6 +668,16 @@ export class Dom {
     return this.el.offsetHeight;
   }
 
+  /**
+   * Clone the node
+   * @param deep true if the children of the node should also be cloned, or false to clone only the specified node.
+   * @returns {Dom}
+   */
+  public clone(deep = false): Dom {
+    let newNode = <HTMLElement>this.el.cloneNode(deep);
+    return $$(newNode);
+  }
+
   private traverseAncestorForClass(current = this.el, className: string): HTMLElement {
     if (className.indexOf('.') == 0) {
       className = className.substr(1);

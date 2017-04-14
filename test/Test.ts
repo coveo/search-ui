@@ -431,3 +431,6 @@ ResultsFiltersPreferencesTest();
 
 import { FacetRangeTest } from './ui/FacetRangeTest';
 FacetRangeTest();
+
+import { InitializationPlaceholderTest } from './ui/InitializationPlaceholderTest';
+InitializationPlaceholderTest();

@@ -30,16 +30,6 @@ export function SearchInterfaceTest() {
       cmp = null;
     });
 
-    it('should display the wait animation', function () {
-      cmp.showWaitAnimation();
-      expect(cmp.options.firstLoadingAnimation.parentElement).toBe(cmp.element);
-    });
-
-    it('should hide the wait animation', function () {
-      cmp.hideWaitAnimation();
-      expect(cmp.options.firstLoadingAnimation.parentElement).toBeNull();
-    });
-
     it('should create an analytics client', () => {
       expect(cmp.usageAnalytics instanceof Coveo['NoopAnalyticsClient']).toBe(true);
     });
@@ -103,38 +93,6 @@ export function SearchInterfaceTest() {
         searchInterfaceDiv.appendChild(analyticsDiv);
         let searchInterface = new SearchInterface(searchInterfaceDiv);
         expect(searchInterface.usageAnalytics instanceof Coveo['LiveAnalyticsClient']).toBe(true);
-      });
-    });
-
-    it('should hide the animation after a query success, but only once', function (done) {
-      cmp.showWaitAnimation();
-      expect(cmp.options.firstLoadingAnimation.parentElement).toBe(cmp.element);
-      $$(cmp.root).trigger(QueryEvents.querySuccess, { results: FakeResults.createFakeResults(10) });
-      _.defer(() => {
-        expect(cmp.options.firstLoadingAnimation.parentElement).toBeNull();
-        cmp.showWaitAnimation();
-        expect(cmp.options.firstLoadingAnimation.parentElement).toBe(cmp.element);
-        $$(cmp.root).trigger(QueryEvents.querySuccess, { results: FakeResults.createFakeResults(10) });
-        _.defer(() => {
-          expect(cmp.options.firstLoadingAnimation.parentElement).toBe(cmp.element);
-          done();
-        });
-      });
-    });
-
-    it('should hide the animation after a query error, but only once', function (done) {
-      cmp.showWaitAnimation();
-      expect(cmp.options.firstLoadingAnimation.parentElement).toBe(cmp.element);
-      $$(cmp.root).trigger(QueryEvents.queryError);
-      _.defer(() => {
-        expect(cmp.options.firstLoadingAnimation.parentElement).toBeNull();
-        cmp.showWaitAnimation();
-        expect(cmp.options.firstLoadingAnimation.parentElement).toBe(cmp.element);
-        $$(cmp.root).trigger(QueryEvents.queryError);
-        _.defer(() => {
-          expect(cmp.options.firstLoadingAnimation.parentElement).toBe(cmp.element);
-          done();
-        });
       });
     });
 
@@ -268,29 +226,6 @@ export function SearchInterfaceTest() {
         expect(simulation.queryBuilder.filterField).toBeUndefined();
       });
 
-      it('hideUntilFirstQuery should hide the interface until a first query success', function (done) {
-        let cmp = new SearchInterface(div, {
-          hideUntilFirstQuery: true
-        }, undefined, mockWindow);
-        expect(cmp.options.firstLoadingAnimation.parentElement).toBe(cmp.element);
-        Simulate.query(env);
-        _.defer(() => {
-          expect(cmp.options.firstLoadingAnimation.parentElement).toBeNull();
-          done();
-        });
-      });
-
-      it('hideUntilFirstQuery should not hide the interface if specified', function (done) {
-        let cmp = new SearchInterface(div, {
-          hideUntilFirstQuery: false
-        }, undefined, mockWindow);
-        expect(cmp.options.firstLoadingAnimation.parentElement).toBeNull();
-        Simulate.query(env);
-        _.defer(() => {
-          expect(cmp.options.firstLoadingAnimation.parentElement).toBeNull();
-          done();
-        });
-      });
 
       it('timezone allow to specify a timezone in the query', function () {
         new SearchInterface(div, { timezone: 'aa-bb' }, undefined, mockWindow);
