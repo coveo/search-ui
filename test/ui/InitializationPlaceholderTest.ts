@@ -125,12 +125,23 @@ export function InitializationPlaceholderTest() {
       it('should add the needed css class on the result list', () => {
         new InitializationPlaceholder(root.el);
         expect(resultList.hasClass(InitializationPlaceholder.INITIALIZATION_CLASS)).toBe(true);
+        expect(resultList.hasClass('coveo-with-placeholder')).toBe(true);
       });
 
       it('should remove the needed css class when a new result is displayed', () => {
         new InitializationPlaceholder(root.el);
         $$(root).trigger(ResultListEvents.newResultDisplayed);
         expect(resultList.hasClass(InitializationPlaceholder.INITIALIZATION_CLASS)).toBe(false);
+      });
+
+      it('should take the first result list of type "list" and transform it to a placeholder', () => {
+        let secondResultList = $$('div', { className: 'CoveoResultList', 'data-layout': 'card' });
+        $$(root).prepend(secondResultList.el);
+        new InitializationPlaceholder(root.el);
+        expect($$(resultList.el).hasClass(InitializationPlaceholder.INITIALIZATION_CLASS)).toBe(true);
+        expect($$(secondResultList.el).hasClass(InitializationPlaceholder.INITIALIZATION_CLASS)).toBe(true);
+        expect($$(resultList.el).hasClass('coveo-with-placeholder')).toBe(true);
+        expect($$(secondResultList.el).hasClass('coveo-with-placeholder')).toBe(false);
       });
     });
 

@@ -25,6 +25,12 @@
   margin-left: 2px;
 }
 
+.coveo-placeholder-icon-small {
+  width: 32px;
+  height: 32px;
+  margin-left: 2px;
+}
+
 .coveo-placeholder-title {
   height: 16px;
   margin-bottom: 20px;
@@ -53,7 +59,7 @@
   }
 }
 
-.coveo-placeholder-title, .coveo-placeholder-text, .coveo-placeholder-icon {
+.coveo-placeholder-title, .coveo-placeholder-text, .coveo-placeholder-icon, .coveo-placeholder-icon-small {
   @include placeholderLoading();
 }
 
@@ -105,10 +111,34 @@
 }
 
 .CoveoResultList.coveo-during-initialization {
-  .coveo-placeholder-result {
-    margin: 20px 0px 20px 20px;
-  }
-  .coveo-placeholder-text {
-    margin-bottom: 12px;
+  display: none;
+
+  &.coveo-with-placeholder {
+    .CoveoResult {
+      display: none;
+      &.coveo-placeholder-result {
+        display: block;
+      }
+    }
+    display: block;
+    .coveo-placeholder-result {
+      margin: 20px 0px 20px 20px;
+    }
+    .coveo-placeholder-text {
+      margin-bottom: 12px;
+    }
+    .coveo-card-layout {
+      .coveo-placeholder-title {
+        margin-bottom: 0;
+      }
+
+      &.coveo-placeholder-result {
+        min-height: 220px;
+        margin: 0 20px 20px 0;
+      }
+    }
   }
 }
+
+
+

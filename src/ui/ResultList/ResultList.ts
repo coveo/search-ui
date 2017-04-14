@@ -37,6 +37,7 @@ import { exportGlobally } from '../../GlobalExports';
 import 'styling/_ResultList';
 import 'styling/_ResultFrame';
 import 'styling/_Result';
+import { InitializationPlaceholder } from '../Base/InitializationPlaceholder';
 
 export interface IResultListOptions {
   resultContainer?: HTMLElement;
@@ -344,7 +345,9 @@ export class ResultList extends Component {
       // Used to prevent last card from spanning the grid's whole width
       _.times(3, () => docFragment.appendChild($$('div').el));
     }
-    this.options.resultContainer.innerHTML = '';
+    if (!append) {
+      this.options.resultContainer.innerHTML = '';
+    }
     this.options.resultContainer.appendChild(docFragment);
     this.triggerNewResultsDisplayed();
   }
@@ -591,6 +594,11 @@ export class ResultList extends Component {
       this.enable();
       this.options.resultTemplate.layout = <ValidLayout>this.options.layout;
       if (args.results) {
+        // Prevent flickering when switching to a new layout that is empty
+        // add a temporary placeholder, the same that is used on initialization
+        if (this.options.resultContainer.innerHTML == '') {
+          new InitializationPlaceholder(this.root, { resultList: true, layout: args.layout });
+        }
         Defer.defer(() => {
           this.buildResults(args.results).then((elements: HTMLElement[]) => {
             this.renderResults(elements);

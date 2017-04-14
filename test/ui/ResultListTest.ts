@@ -214,6 +214,30 @@ export function ResultListTest() {
       });
     });
 
+    it('should allow to render results and append them', (done) => {
+      const data = FakeResults.createFakeResults(13);
+      test.cmp.buildResults(data).then(elem => {
+        test.cmp.renderResults(elem);
+        test.cmp.buildResults(data).then(elem => {
+          test.cmp.renderResults(elem, true);
+          expect($$(test.cmp.element).findAll('.CoveoResult').length).toBe(26);
+          done();
+        });
+      });
+    });
+
+    it('should allow to render results and not append them', (done) => {
+      const data = FakeResults.createFakeResults(13);
+      test.cmp.buildResults(data).then(elem => {
+        test.cmp.renderResults(elem);
+        test.cmp.buildResults(data).then(elem => {
+          test.cmp.renderResults(elem, false);
+          expect($$(test.cmp.element).findAll('.CoveoResult').length).toBe(13);
+          done();
+        });
+      });
+    });
+
     it('should trigger result displayed event when rendering', (done) => {
       const data = FakeResults.createFakeResults(6);
       const spyResult = jasmine.createSpy('spyResult');

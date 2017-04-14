@@ -207,7 +207,7 @@ export class SearchInterface extends RootComponent implements IComponentBindings
      */
     filterField: ComponentOptions.buildFieldOption({ defaultValue: '' }),
 
-    hideUntilFirstQuery: ComponentOptions.buildBooleanOption({ deprecated: 'Exposed for legacy reasons. The loading animation is now composed of placeholder, and this options is obsolete.' }),
+    hideUntilFirstQuery: ComponentOptions.buildBooleanOption({ deprecated: 'Exposed for legacy reasons. The loading animation is now composed of placeholders, and this option is obsolete.' }),
 
     firstLoadingAnimation: ComponentOptions.buildChildHtmlElementOption({
       deprecated: 'Exposed for legacy reasons. The loading animation is now composed of placeholder, and this options is obsolete.'
