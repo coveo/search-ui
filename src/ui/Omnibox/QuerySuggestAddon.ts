@@ -1,17 +1,17 @@
 ///<reference path="Omnibox.ts"/>
 import { Omnibox, IPopulateOmniboxSuggestionsEventArgs, IOmniboxSuggestion } from './Omnibox';
 import { $$, Dom } from '../../utils/Dom';
-import { IRevealQuerySuggestCompletion, IRevealQuerySuggestRequest, IRevealQuerySuggestResponse } from '../../rest/RevealQuerySuggest';
+import { IQuerySuggestCompletion, IQuerySuggestRequest, IQuerySuggestResponse } from '../../rest/QuerySuggest';
 import { ComponentOptionsModel } from '../../models/ComponentOptionsModel';
 import { OmniboxEvents } from '../../events/OmniboxEvents';
 import { StringUtils } from '../../utils/StringUtils';
 import * as _ from 'underscore';
 
-export class RevealQuerySuggestAddon {
+export class QuerySuggestAddon {
 
   static INDEX = 60;
 
-  private static suggestiontHtml(suggestion: IRevealQuerySuggestCompletion) {
+  private static suggestiontHtml(suggestion: IQuerySuggestCompletion) {
     return suggestion.highlighted.replace(/\[(.*?)\]|\{(.*?)\}|\((.*?)\)/g, (part, notMatched, matched, corrected) => {
       var className = '';
       if (matched) {
@@ -34,7 +34,7 @@ export class RevealQuerySuggestAddon {
     });
   }
 
-  private static isPartialMatch(suggestion: IRevealQuerySuggestCompletion) {
+  private static isPartialMatch(suggestion: IQuerySuggestCompletion) {
     // groups : 1=notMatched, 2=matched, 3=corrected
     var parts = StringUtils.match(suggestion.highlighted, /\[(.*?)\]|\{(.*?)\}|\((.*?)\)/g);
     var firstFail = _.find(parts, (part: string[]) => part[1] != null);
@@ -66,7 +66,7 @@ export class RevealQuerySuggestAddon {
       return this.cache[text];
     }
 
-    let promise = this.getRevealQuerySuggest(text);
+    let promise = this.getQuerySuggest(text);
     this.cache[text] = promise;
     promise.catch(() => {
       delete this.cache[text];
@@ -74,8 +74,8 @@ export class RevealQuerySuggestAddon {
     return this.cache[text];
   }
 
-  private getRevealQuerySuggest(text: string): Promise<IOmniboxSuggestion[]> {
-    let payload = <IRevealQuerySuggestRequest>{ q: text };
+  private getQuerySuggest(text: string): Promise<IOmniboxSuggestion[]> {
+    let payload = <IQuerySuggestRequest>{ q: text };
     let language = <string>String['locale'];
     let searchHub = this.omnibox.getBindings().componentOptionsModel.get(ComponentOptionsModel.attributesEnum.searchHub);
     let pipeline = this.omnibox.getBindings().searchInterface.options.pipeline;
@@ -101,15 +101,15 @@ export class RevealQuerySuggestAddon {
     payload.enableWordCompletion = enableWordCompletion;
 
     return this.omnibox.queryController.getEndpoint()
-      .getRevealQuerySuggest(payload)
-      .then((result: IRevealQuerySuggestResponse) => {
+      .getQuerySuggest(payload)
+      .then((result: IQuerySuggestResponse) => {
         var completions = result.completions;
         var results: IOmniboxSuggestion[] = _.map(completions, (completion, i) => {
           return {
-            html: RevealQuerySuggestAddon.suggestiontHtml(completion),
+            html: QuerySuggestAddon.suggestiontHtml(completion),
             text: completion.expression,
-            index: RevealQuerySuggestAddon.INDEX - i / completions.length,
-            partial: RevealQuerySuggestAddon.isPartialMatch(completion),
+            index: QuerySuggestAddon.INDEX - i / completions.length,
+            partial: QuerySuggestAddon.isPartialMatch(completion),
             executableConfidence: completion.executableConfidence
           };
         });

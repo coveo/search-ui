@@ -15,7 +15,7 @@ import { IListFieldsResult } from '../rest/ListFieldsResult';
 import { IExtension } from '../rest/Extension';
 import { IRatingRequest } from '../rest/RatingRequest';
 import { ITaggingRequest } from '../rest/TaggingRequest';
-import { IRevealQuerySuggestRequest, IRevealQuerySuggestResponse } from '../rest/RevealQuerySuggest';
+import { IQuerySuggestRequest, IQuerySuggestResponse } from '../rest/QuerySuggest';
 import { ISentryLog } from './SentryLog';
 import { ISubscriptionRequest, ISubscription } from '../rest/Subscription';
 import { AjaxError } from '../rest/AjaxError';
@@ -567,21 +567,25 @@ export class SearchEndpoint implements ISearchEndpoint {
   }
 
   /**
-   * Returns a list of Coveo Machine Learning query suggestions, based on the given request
+   * Returns a list of query suggestions, based on the given request
    * @param request query and number of suggestions to return
    * @param callOptions Additional set of options to use for this call.
    * @param callParams Options injected by the applied decorators.
-   * @returns {Promise<IRevealQuerySuggestResponse>}
+   * @returns {Promise<IQuerySuggestResponse>}
    */
   @path('/querySuggest')
   @method('GET')
   @responseType('text')
-  public getRevealQuerySuggest(request: IRevealQuerySuggestRequest, callOptions?: IEndpointCallOptions, callParams?: IEndpointCallParameters): Promise<IRevealQuerySuggestResponse> {
-    this.logger.info('Get Reveal Query Suggest', request);
-
+  public getQuerySuggest(request: IQuerySuggestRequest, callOptions?: IEndpointCallOptions, callParams?: IEndpointCallParameters): Promise<IQuerySuggestResponse> {
+    this.logger.info('Get Query Suggest', request);
     callParams.requestData = request;
+    return this.performOneCall<IQuerySuggestResponse>(callParams);
+  }
 
-    return this.performOneCall<IRevealQuerySuggestResponse>(callParams);
+  // This is a non documented method to ensure backward compatibility for the old query suggest call.
+  // It simply calls the "real" official and documented method.
+  public getRevealQuerySuggest(request: IQuerySuggestRequest, callOptions?: IEndpointCallOptions, callParams?: IEndpointCallParameters): Promise<IQuerySuggestResponse> {
+    return this.getQuerySuggest(request, callOptions, callParams);
   }
 
   /**

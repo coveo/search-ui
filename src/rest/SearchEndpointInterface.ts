@@ -9,7 +9,7 @@ import { IFieldDescription } from '../rest/FieldDescription';
 import { IExtension } from '../rest/Extension';
 import { IEndpointError } from '../rest/EndpointError';
 import { ITaggingRequest } from '../rest/TaggingRequest';
-import { IRevealQuerySuggestRequest, IRevealQuerySuggestResponse } from '../rest/RevealQuerySuggest';
+import { IQuerySuggestRequest, IQuerySuggestResponse } from '../rest/QuerySuggest';
 import { IRatingRequest } from '../rest/RatingRequest';
 import { ISubscriptionRequest, ISubscription } from '../rest/Subscription';
 import { ISentryLog } from './SentryLog';
@@ -101,7 +101,7 @@ export interface ISearchEndpoint {
   listFields(callOptions?: IEndpointCallOptions): Promise<IFieldDescription[]>;
   extensions(callOptions?: IEndpointCallOptions): Promise<IExtension[]> | Promise<IEndpointError>;
   tagDocument(taggingRequest: ITaggingRequest, callOptions?: IEndpointCallOptions): Promise<boolean>;
-  getRevealQuerySuggest(request: IRevealQuerySuggestRequest, callOptions?: IEndpointCallOptions): Promise<IRevealQuerySuggestResponse>;
+  getQuerySuggest(request: IQuerySuggestRequest, callOptions?: IEndpointCallOptions): Promise<IQuerySuggestResponse>;
   rateDocument(ratingRequest: IRatingRequest, callOptions?: IEndpointCallOptions): Promise<boolean>;
   follow(request: ISubscriptionRequest): Promise<ISubscription>;
   listSubscriptions(page?: number): Promise<ISubscription[]>;
