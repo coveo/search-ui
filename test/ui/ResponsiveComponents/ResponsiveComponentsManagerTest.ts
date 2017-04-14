@@ -7,6 +7,7 @@ export function ResponsiveComponentsManagerTest() {
 
   let root: Dom;
   let handleResizeEvent: any;
+  let registerComponent: any;
   let responsiveComponentsManager: ResponsiveComponentsManager;
   let responsiveComponent: any;
   let component: any;
@@ -19,9 +20,12 @@ export function ResponsiveComponentsManagerTest() {
       searchInterfaceMock.cmp.isNewDesign = () => true;
       root = $$(searchInterfaceMock.cmp.root);
       handleResizeEvent = jasmine.createSpy('handleResizeEvent');
+      registerComponent = jasmine.createSpy('registerComponent');
       responsiveComponent = function () {
         this.needDrodpownWrapper = () => { };
         this.handleResizeEvent = handleResizeEvent;
+        this.registerComponent = registerComponent;
+        this.ID = 'id';
       };
       component = {};
       responsiveComponentsManager = new ResponsiveComponentsManager(root);
@@ -51,6 +55,13 @@ export function ResponsiveComponentsManagerTest() {
         done();
       }, ResponsiveComponentsManager.RESIZE_DEBOUNCE_DELAY + 1);
 
+    });
+
+    it('registers component even when the corresponding responsive class has already been instanciated', () => {
+      responsiveComponentsManager.register(responsiveComponent, root, 'id', component, {});
+      responsiveComponentsManager.register(responsiveComponent, root, 'id', component, {});
+
+      expect(registerComponent).toHaveBeenCalledTimes(2);
     });
   });
 }
