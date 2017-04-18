@@ -77,6 +77,13 @@
         "fr": "Cas"
       }
     },
+    "contentversion": {
+      "icon": "salesforce-standard-document",
+      "captions": {
+        "en": "Salesforce File",
+        "fr": "Fichier Salesforce"
+      }
+    },
     "contact": {
       "icon": "salesforce-standard-contact",
       "captions": {

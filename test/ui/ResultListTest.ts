@@ -293,7 +293,11 @@ export function ResultListTest() {
         });
 
         let simulation = Simulate.query(test.env);
-        expect(simulation.queryBuilder.build().fieldsToInclude).toEqual(jasmine.arrayContaining(['author', 'language', 'urihash', 'objecttype', 'collection', 'source', 'language', 'uniqueid']));
+        expect(simulation.queryBuilder.build().fieldsToInclude).toEqual(jasmine.arrayContaining(['author', 'language', 'urihash', 'objecttype', 'collection', 'source', 'language', 'permanentid']));
+      });
+
+      it('should allow to get the auto select fields to include', () => {
+        expect(test.cmp.getAutoSelectedFieldsToInclude()).toEqual(jasmine.arrayContaining(['author', 'language', 'urihash', 'objecttype', 'collection', 'source', 'language', 'permanentid']));
       });
 
       it('resultTemplate allow to specify a template manually', () => {

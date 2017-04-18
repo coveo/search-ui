@@ -205,6 +205,8 @@ export class Facet extends Component {
      * - `"computedfielddescending"`
      * - `"custom"`
      *
+     * See the {@link IGroupByRequest.sortCriteria} for a description of each possible value.
+     *
      * Default value is `"occurrences,score,alphaAscending,alphaDescending"`.
      */
     availableSorts: ComponentOptions.buildListOption<'occurrences' | 'score' | 'alphaascending' | 'alphadescending' | 'computedfieldascending' | 'computedfielddescending' | 'chisquare' | 'nosort'>({
@@ -216,7 +218,7 @@ export class Facet extends Component {
     /**
      * Specifies the criteria to use to sort the Facet values.
      *
-     * See {@link IGroupByRequest} for the list of possible values.
+     * See {@link IGroupByRequest.sortCriteria} for the list and description of possible values.
      *
      * Default value is the first sort criteria specified in the {@link Facet.options.availableSorts} option, or
      * `"occurrences"` if no sort criteria is specified.
