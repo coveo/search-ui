@@ -299,6 +299,9 @@ SortTest();
 import { TabTest } from './ui/TabTest';
 TabTest();
 
+import { TableTemplateTest } from './ui/TableTemplateTest';
+TableTemplateTest();
+
 import { TemplateLoaderTest } from './ui/TemplateLoaderTest';
 TemplateLoaderTest();
 

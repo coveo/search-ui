@@ -6,7 +6,7 @@ import { $$ } from '../../utils/Dom';
 import _ = require('underscore');
 
 export class TableTemplate extends TemplateList {
-  instantiateRoletoString(role: TemplateRole) {
+  instantiateRoleToString(role: TemplateRole) {
     const roledTemplate = _.find(this.templates, t => t.role === role);
     if (roledTemplate) {
       return roledTemplate.instantiateToString(undefined, {});
