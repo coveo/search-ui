@@ -72,13 +72,16 @@ export class ValueElement {
     this.renderer.setCssClassOnListValueElement();
   }
 
-  public triggerOnExcludeQuery() {
-    var actionCause: IAnalyticsActionCause;
+  public toggleExcludeWithUA() {
+    let actionCause: IAnalyticsActionCause;
     if (this.facetValue.excluded) {
       actionCause = this.isOmnibox ? analyticsActionCauseList.omniboxFacetUnexclude : analyticsActionCauseList.facetUnexclude;
     } else {
       actionCause = this.isOmnibox ? analyticsActionCauseList.omniboxFacetExclude : analyticsActionCauseList.facetExclude;
     }
+
+    this.facet.toggleExcludeValue(this.facetValue);
+
     if (this.onExclude) {
       this.facet.triggerNewQuery(() => this.onExclude(this, actionCause));
     } else {
@@ -109,8 +112,7 @@ export class ValueElement {
 
   protected handleExcludeClick(eventBindings: IValueElementEventsBinding) {
     this.facet.keepDisplayedValuesNextTime = eventBindings.displayNextTime && !this.facet.options.useAnd;
-    this.facet.toggleExcludeValue(this.facetValue);
-    this.triggerOnExcludeQuery();
+    this.toggleExcludeWithUA();
   }
 
   protected handleEventForExcludedValueElement(eventBindings: IValueElementEventsBinding) {
