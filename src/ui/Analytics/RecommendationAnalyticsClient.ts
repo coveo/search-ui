@@ -20,9 +20,8 @@ export class RecommendationAnalyticsClient extends LiveAnalyticsClient {
     public splitTestRunVersion: string,
     public originLevel1: string,
     public sendToCloud: boolean,
-    public bindings: IComponentBindings,
-    public originContext: string) {
-    super(endpoint, rootElement, userId, userDisplayName, anonymous, splitTestRunName, splitTestRunVersion, originLevel1, sendToCloud, originContext);
+    public bindings: IComponentBindings) {
+    super(endpoint, rootElement, userId, userDisplayName, anonymous, splitTestRunName, splitTestRunVersion, originLevel1, sendToCloud);
     this.recommendation = <Recommendation>this.bindings.searchInterface;
   }
 

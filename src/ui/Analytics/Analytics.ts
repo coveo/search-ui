@@ -32,7 +32,6 @@ export interface IAnalyticsOptions {
   splitTestRunVersion?: string;
   sendToCloud?: boolean;
   organization?: string;
-  originContext?: string;
 }
 
 /**
@@ -137,17 +136,7 @@ export class Analytics extends Component {
      * Default value is `undefined`, and the value of this parameter will fallback to the organization used for the
      * search endpoint.
      */
-    organization: ComponentOptions.buildStringOption(),
-
-    /**
-     * Sets the Origin Context dimension on the analytic events.
-     *
-     * You can use this dimension to specify the context of your application.
-     * Suggested values are "Search", "InternalSearch" and "CommunitySearch"
-     *
-     * Default value is `Search`.
-     */
-    originContext: ComponentOptions.buildStringOption({ defaultValue: 'Search' }),
+    organization: ComponentOptions.buildStringOption()
   };
 
   /**
@@ -274,6 +263,20 @@ export class Analytics extends Component {
     this.client.logClickEvent(actionCause, meta, result, element);
   }
 
+  /**
+   * Sets the Origin Context dimension on the analytic events.
+   *
+   * You can use this dimension to specify the context of your application.
+   * Suggested values are "Search", "InternalSearch" and "CommunitySearch"
+   *
+   * Default value is `Search`.
+   *
+   * @param originContext The origin context value
+   */
+  public setOriginContext(originContext: string) {
+    this.client.setOriginContext(originContext);
+  }
+
   protected initializeAnalyticsEndpoint(): AnalyticsEndpoint {
     return new AnalyticsEndpoint({
       token: this.options.token,
@@ -313,8 +316,7 @@ export class Analytics extends Component {
         this.options.splitTestRunVersion,
         this.options.searchHub,
         this.options.sendToCloud,
-        this.getBindings(),
-        this.options.originContext);
+        this.getBindings());
     } else {
       this.client = new LiveAnalyticsClient(endpoint, elementToInitializeClient,
         this.options.user,
@@ -323,8 +325,7 @@ export class Analytics extends Component {
         this.options.splitTestRunName,
         this.options.splitTestRunVersion,
         this.options.searchHub,
-        this.options.sendToCloud,
-        this.options.originContext);
+        this.options.sendToCloud);
     }
   }
 

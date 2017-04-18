@@ -30,7 +30,7 @@ export function LiveAnalyticsClientTest() {
 
       env = new Mock.MockEnvironmentBuilder().build();
       endpoint = Mock.mock<AnalyticsEndpoint>(AnalyticsEndpoint);
-      client = new LiveAnalyticsClient(endpoint, env.root, 'foo', 'foo display', false, 'foo run name', 'foo run version', 'default', true, 'context');
+      client = new LiveAnalyticsClient(endpoint, env.root, 'foo', 'foo display', false, 'foo run name', 'foo run version', 'default', true);
       promise = new Promise((resolve, reject) => {
         resolve(FakeResults.createFakeResults(3));
       });
@@ -50,6 +50,12 @@ export function LiveAnalyticsClientTest() {
       client.cancelAllPendingEvents();
       client.logSearchAsYouType<IAnalyticsNoMeta>(analyticsActionCauseList.searchboxSubmit, {});
       expect(client.getPendingSearchEvent() instanceof PendingSearchAsYouTypeSearchEvent).toBe(true);
+    });
+
+    it('originContext can be specified', () => {
+      client.setOriginContext('context');
+      client.logSearchEvent<IAnalyticsNoMeta>(analyticsActionCauseList.searchboxSubmit, {});
+      expect(client.getPendingSearchEvent().templateSearchEvent.originContext).toBe('context');
     });
 
     it('should send proper information on logSearchEvent', function (done) {
@@ -139,7 +145,7 @@ export function LiveAnalyticsClientTest() {
         root.appendChild(env.root);
         root.appendChild(env2.root);
         root.appendChild(env3.root);
-        client = new LiveAnalyticsClient(endpoint, root, 'foo', 'foo display', false, 'foo run name', 'foo run version', 'default', true, 'context');
+        client = new LiveAnalyticsClient(endpoint, root, 'foo', 'foo display', false, 'foo run name', 'foo run version', 'default', true);
       });
 
       afterEach(function () {

@@ -25,6 +25,8 @@ import _ = require('underscore');
 
 export class LiveAnalyticsClient implements IAnalyticsClient {
   public isContextual: boolean = false;
+  public originContext: string = 'Search';
+
   private language = <string>String['locale'];
   private device = DeviceUtils.getDeviceName();
   private mobile = DeviceUtils.isMobileDevice();
@@ -40,8 +42,7 @@ export class LiveAnalyticsClient implements IAnalyticsClient {
     public splitTestRunName: string,
     public splitTestRunVersion: string,
     public originLevel1: string,
-    public sendToCloud: boolean,
-    public originContext: string) {
+    public sendToCloud: boolean) {
 
     Assert.exists(endpoint);
     Assert.exists(rootElement);
@@ -140,6 +141,10 @@ export class LiveAnalyticsClient implements IAnalyticsClient {
         console.trace();
       }
     }
+  }
+
+  public setOriginContext(originContext: string) {
+    this.originContext = originContext;
   }
 
   private pushCustomEvent(actionCause: IAnalyticsActionCause, metaObject: IChangeableAnalyticsMetaObject, element?: HTMLElement) {

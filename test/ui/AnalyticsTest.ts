@@ -175,14 +175,6 @@ export function AnalyticsTest() {
         expect(client.originLevel1).toBe('foobar');
       });
 
-      it('originContext can be specified', () => {
-        test = Mock.optionsComponentSetup<Analytics, IAnalyticsOptions>(Analytics, {
-          originContext: 'context'
-        });
-        let client: LiveAnalyticsClient = <LiveAnalyticsClient>test.cmp.client;
-        expect(client.originContext).toBe('context');
-      });
-
       it('searchhub will be put in the query params', () => {
         test = Mock.optionsComponentSetup<Analytics, IAnalyticsOptions>(Analytics, {
           searchHub: 'yoo'
