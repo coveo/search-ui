@@ -1,12 +1,14 @@
 import { Template, IInstantiateTemplateOptions, DefaultInstantiateTemplateOptions, TemplateRole } from './Template';
 import { DefaultResultTemplate } from './DefaultResultTemplate';
 import { IQueryResult } from '../../rest/QueryResult';
+import { Assert } from '../../misc/Assert';
 import _ = require('underscore');
 
 export class TemplateList extends Template {
 
   constructor(public templates: Template[]) {
     super();
+    Assert.exists(templates);
   }
 
   instantiateToString(object: IQueryResult, instantiateOptions: IInstantiateTemplateOptions = {}): string {

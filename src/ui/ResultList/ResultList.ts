@@ -263,7 +263,6 @@ export class ResultList extends Component {
 
     this.showOrHideElementsDependingOnState(false, false);
 
-    this.setupRenderer();
 
     this.bind.onRootElement<INewQueryEventArgs>(QueryEvents.newQuery, (args: INewQueryEventArgs) => this.handleNewQuery());
     this.bind.onRootElement<IBuildingQueryEventArgs>(QueryEvents.buildingQuery, (args: IBuildingQueryEventArgs) => this.handleBuildingQuery(args));
@@ -289,6 +288,7 @@ export class ResultList extends Component {
 
     if (this.searchInterface.isNewDesign()) {
       this.setupTemplatesVersusLayouts();
+      this.setupRenderer();
       $$(this.root).on(ResultLayoutEvents.populateResultLayout, (e, args) => args.layouts.push(this.options.layout));
     }
   }
@@ -298,7 +298,7 @@ export class ResultList extends Component {
     $$(this.options.resultContainer).addClass(layoutClassToAdd);
 
     if (this.options.layout === 'table') {
-      this.options.resultTemplate = new TableTemplate((<TemplateList>this.options.resultTemplate).templates);
+      this.options.resultTemplate = new TableTemplate((<TemplateList>this.options.resultTemplate).templates || []);
     }
 
     // A TemplateList is the scenario where the result template are directly embedded inside the ResultList
