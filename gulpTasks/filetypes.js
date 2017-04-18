@@ -95,7 +95,7 @@ function generateInnerObjecttype(json, legacy, small) {
     // Old templates in salesforce are using something like this
     // <div class="coveo-icon objecttype <%-raw.objecttype%> "></div>
     // instead of the template helper : <%= fromFileTypeToIcon() %>
-    ret += '    &.' + capitalizeFirstLetter(objecttype) + " , ";
+    ret += '    &.' + removeSpace(capitalizeFirstLetter(objecttype)) + " , ";
     ret += '    &.' + objecttype.toLowerCase() +
         ' { @extend .coveo-sprites-' + (legacy ? 'fileType-' : '' ) +
         json.objecttype[objecttype].icon + (small ? '-small; ' : '; ') +
@@ -108,11 +108,12 @@ function generateInnerObjecttype(json, legacy, small) {
 function generateInnerFiletype(json, legacy, small) {
   var ret = '';
   _.each(_.keys(json.filetype), function (filetype) {
+
     // Be careful to output lowercase filetypes, since the JS UI helpers do the same,
     // and CSS class names are case sensitive. I do that because I can't expect to
     // match all the time the casing output by the connectors.
     ensureImageIsValid(filetype, json.filetype[filetype].icon, legacy);
-    ret += '    &.' + filetype.toLowerCase() +
+    ret += '    &.' + removeSpace(filetype.toLowerCase()) +
         ' { @extend .coveo-sprites-' + (legacy ? 'fileType-' : '' ) +
         json.filetype[filetype].icon + (small ? '-small; ' : '; ') +
         generateShouldDisplayLabel(json.filetype[filetype].shouldDisplayLabel) +
@@ -155,8 +156,7 @@ function ensureImageIsValid(filetype, image, legacy) {
   // with useless stuff
   if (!legacy) {
     if (!fs.existsSync(path)) {
-      console.trace();
-      throw ('Icon ' + path + ' is referenced by file type ' + filetype + ' but cannot be found!');
+      console.warn('Icon ' + path + ' is referenced by file type ' + filetype + ' but cannot be found!');
     }
   }
 
@@ -175,4 +175,8 @@ function ensureImageIsValid(filetype, image, legacy) {
 
 function capitalizeFirstLetter(str) {
   return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
+function removeSpace(str) {
+  return str.replace(' ', '-');
 }
