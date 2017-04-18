@@ -15,6 +15,7 @@ export interface IImageResultListOptions extends IResultListOptions {
 }
 
 /**
+ * @deprecated
  * The ImageResultList component extends the {@link ResultList} component to display image results.
  *
  * This component inherits from the {@link ResultList} component. Thus, any option available for a ResultList component

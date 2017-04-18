@@ -15,6 +15,7 @@ export interface ICurrentTabOptions {
 }
 
 /**
+ * @deprecated
  * This component is used to display the name of the currently selected tab.
  * If no tabs are selected, this component is hidden.
  */

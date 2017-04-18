@@ -140,9 +140,6 @@ ComponentOptionsTest();
 import { ComponentTest } from './ui/ComponentTest';
 ComponentTest();
 
-import { CurrentTabTest } from './ui/CurrentTabTest';
-CurrentTabTest();
-
 import { DidYouMeanTest } from './ui/DidYouMeanTest';
 DidYouMeanTest();
 
@@ -199,9 +196,6 @@ HierarchicalFacetTest();
 
 import { IconTest } from './ui/IconTest';
 IconTest();
-
-import { ImageResultListTest } from './ui/ImageResultListTest';
-ImageResultListTest();
 
 import { InitializationTest } from './ui/InitializationTest';
 InitializationTest();
