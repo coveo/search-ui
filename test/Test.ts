@@ -427,3 +427,6 @@ ResponsiveComponentsManagerTest();
 
 import { YouTubeThumbnailTest } from './ui/YouTubeThumbnailTest';
 YouTubeThumbnailTest();
+
+import { ValueElementTest } from './ui/ValueElementTest';
+ValueElementTest();
