@@ -595,7 +595,7 @@ export class ResultList extends Component {
 
   private getMinimalFieldsToInclude() {
     // these fields are needed for analytics click event
-    return ['author', 'language', 'urihash', 'objecttype', 'collection', 'source', 'language', 'uniqueid'];
+    return ['author', 'language', 'urihash', 'objecttype', 'collection', 'source', 'language', 'permanentid'];
   }
 
   private isScrollingOfResultListAlmostAtTheBottom(): boolean {
