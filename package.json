@@ -58,7 +58,6 @@
     "@types/d3": "3.5.36",
     "@types/d3-scale": "1.0.4",
     "@types/fastclick": "^1.0.28",
-    "@types/moment": "^2.13.0",
     "@types/pikaday": "0.0.31",
     "@types/underscore": "^1.7.33",
     "awesome-typescript-loader": "^2.2.4",
