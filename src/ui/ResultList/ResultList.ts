@@ -295,10 +295,10 @@ export class ResultList extends Component {
   public getAutoSelectedFieldsToInclude(): string[] {
 
     return _.chain(this.options.resultTemplate.getFields())
-            .concat(this.getMinimalFieldsToInclude())
-            .compact()
-            .unique()
-            .value();
+      .concat(this.getMinimalFieldsToInclude())
+      .compact()
+      .unique()
+      .value();
   }
 
   private setupTemplatesVersusLayouts() {
@@ -566,8 +566,8 @@ export class ResultList extends Component {
     }
     if (this.options.autoSelectFieldsToInclude) {
       const otherResultListsElements = _.reject($$(this.root).findAll(`.${Component.computeCssClassName(ResultList)}`), resultListElement => resultListElement == this.element);
-      const otherFields = _.flatten(_.map(otherResultListsElements, (otherResultListElement)=> {
-        return (<ResultList>get(otherResultListElement)).getAutoSelectedFieldsToInclude()
+      const otherFields = _.flatten(_.map(otherResultListsElements, (otherResultListElement) => {
+        return (<ResultList>get(otherResultListElement)).getAutoSelectedFieldsToInclude();
       }));
 
       args.queryBuilder.addRequiredFields(_.unique(otherFields.concat(this.getAutoSelectedFieldsToInclude())));
