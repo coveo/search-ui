@@ -64,17 +64,6 @@ export class ValueElement {
     this.facetValue.selected = false;
     this.facetValue.excluded = true;
     this.renderer.setCssClassOnListValueElement();
-    var actionCause: IAnalyticsActionCause;
-    if (this.facetValue.excluded) {
-      actionCause = this.isOmnibox ? analyticsActionCauseList.omniboxFacetUnexclude : analyticsActionCauseList.facetUnexclude;
-    } else {
-      actionCause = this.isOmnibox ? analyticsActionCauseList.omniboxFacetExclude : analyticsActionCauseList.facetExclude;
-    }
-    if (this.onExclude) {
-      this.facet.triggerNewQuery(() => this.onExclude(this, actionCause));
-    } else {
-      this.facet.triggerNewQuery(() => this.facet.usageAnalytics.logSearchEvent<IAnalyticsFacetMeta>(actionCause, this.getAnalyticsFacetMeta()));
-    }
   }
 
   public unexclude() {
