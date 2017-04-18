@@ -296,7 +296,7 @@ export function ResultListTest() {
         expect(simulation.queryBuilder.build().fieldsToInclude).toEqual(jasmine.arrayContaining(['author', 'language', 'urihash', 'objecttype', 'collection', 'source', 'language', 'uniqueid']));
       });
 
-      it('should allow to get the auto select fields to include', ()=> {
+      it('should allow to get the auto select fields to include', () => {
         expect(test.cmp.getAutoSelectedFieldsToInclude()).toEqual(jasmine.arrayContaining(['author', 'language', 'urihash', 'objecttype', 'collection', 'source', 'language', 'uniqueid']));
       });
 
