@@ -15,6 +15,11 @@ export function TemplateListTest() {
       result = null;
     });
 
+    it('should throw when passing null or undefined in constructor', () => {
+      expect(() => new TemplateList(null)).toThrow();
+      expect(() => new TemplateList(undefined)).toThrow();
+    });
+
     describe('when there are no templates', () => {
 
       it('should return a default result template when instantiating to element', () => {
