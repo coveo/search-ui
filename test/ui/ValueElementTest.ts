@@ -16,7 +16,7 @@ export function ValueElementTest() {
 
     beforeEach(() => {
       facet = Mock.optionsComponentSetup<Facet, IFacetOptions>(Facet, {
-          field: '@field'
+        field: '@field'
       }).cmp;
       facetValue = new FacetValue();
       facetValue.value = 'value';
@@ -34,7 +34,7 @@ export function ValueElementTest() {
       facet.queryController.executeQuery = options => {
         options.beforeExecuteQuery();
         return Promise.resolve();
-      }
+      };
 
       valueElement.toggleExcludeWithUA();
 
