@@ -5142,5 +5142,17 @@
   "Bytes": {
     "en": "bytes",
     "fr": "octets"
+  },
+  "List": {
+    "en": "List",
+    "fr": "Liste"
+  },
+  "Card": {
+    "en": "Card",
+    "fr": "Carte"
+  },
+  "Table": {
+    "en": "Table",
+    "fr": "Tableau"
   }
 }
