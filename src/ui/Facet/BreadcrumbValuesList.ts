@@ -14,16 +14,16 @@ export class BreadcrumbValueList {
   protected elem: HTMLElement;
   private valueContainer: HTMLElement;
 
-  constructor(public facet: Facet, public facetValues: FacetValue[], public breadcrumbValueElementKlass: IBreadcrumbValueElementKlass) {
+  constructor(public facet: Facet, public facetValues: FacetValue[], public breadcrumbValueElementKlass: IBreadcrumbValueElementKlass, private title: string = facet.options.title) {
     this.setExpandedAndCollapsed();
     this.elem = $$('div', {
       className: 'coveo-facet-breadcrumb'
     }).el;
 
-    let title = $$('span');
-    title.addClass('coveo-facet-breadcrumb-title');
-    title.text(this.facet.options.title + ':');
-    this.elem.appendChild(title.el);
+    let titleContainer = $$('span');
+    titleContainer.addClass('coveo-facet-breadcrumb-title');
+    titleContainer.text(this.title + ':');
+    this.elem.appendChild(titleContainer.el);
 
     this.valueContainer = $$('span', {
       className: 'coveo-facet-breadcrumb-values'
@@ -42,7 +42,7 @@ export class BreadcrumbValueList {
   public buildAsString(): string {
     this.build();
     if (this.elem) {
-      return `${this.facet.options.title}: ` + _.map($$(this.elem).findAll('.coveo-facet-breadcrumb-value'), (value: HTMLElement) => {
+      return `${this.title}: ` + _.map($$(this.elem).findAll('.coveo-facet-breadcrumb-value'), (value: HTMLElement) => {
         return $$(value).text();
       }).join(', ');
     }
