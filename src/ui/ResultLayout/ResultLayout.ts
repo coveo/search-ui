@@ -17,6 +17,7 @@ import { KeyboardUtils, KEYBOARD } from '../../utils/KeyboardUtils';
 import { ResponsiveResultLayout } from '../ResponsiveComponents/ResponsiveResultLayout';
 import { Utils } from '../../utils/Utils';
 import _ = require('underscore');
+import { l } from '../../strings/Strings';
 
 interface IActiveLayouts {
   button: {
@@ -269,8 +270,11 @@ export class ResultLayout extends Component {
     }
   }
 
-  private addButton(layout?: string) {
-    const btn = $$('span', { className: 'coveo-result-layout-selector', tabindex: 0 }, layout);
+  private addButton(layout: string) {
+    const btn = $$('span', {
+      className: 'coveo-result-layout-selector',
+      tabindex: 0
+    }, $$('span', { className: 'coveo-result-layout-selector-caption' }, l(layout)));
     btn.prepend($$('span', { className: `coveo-icon coveo-sprites-${layout}-layout` }).el);
     if (layout === this.currentLayout) {
       btn.addClass('coveo-selected');

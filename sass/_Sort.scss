@@ -10,7 +10,6 @@ $stop-float: new-breakpoint(max-width 480px 1);
   .coveo-icon {
     margin-left: 5px;
     position: relative;
-    top: 2px;
     @extend .coveo-sprites-arrow-down;
   }
 
