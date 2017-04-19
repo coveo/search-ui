@@ -10,6 +10,7 @@ import { ISubscriptionItemRequest, SUBSCRIPTION_TYPE, ISubscriptionQueryRequest 
 import { PopupUtils, HorizontalAlignment, VerticalAlignment } from '../../utils/PopupUtils';
 import { l } from '../../strings/Strings';
 import { $$, Dom } from '../../utils/Dom';
+import { ISearchAlertsPopulateMessageText } from '../../events/SearchAlertEvents';
 import _ = require('underscore');
 
 export interface ISearchAlertMessageOptions {
@@ -73,7 +74,8 @@ export class SearchAlertsMessage extends Component {
 
     let getAdditionalTextFormatted = () => {
       return _.map(populateMessageArguments.text, (text) => {
-        return `${htmlFormatted ? '<li>' : '('}${_.escape(text)}${htmlFormatted ? '</li>' : ')'}`;
+        text = this.formatMessageArgumentsText(text);
+        return `${htmlFormatted ? '<li>' : '('}${text}${htmlFormatted ? '</li>' : ')'}`;
       }).join(' ');
     };
 
@@ -89,6 +91,7 @@ export class SearchAlertsMessage extends Component {
     if (query && populateMessageArguments.text.length == 0) {
       automaticallyBuiltMessage = `${_.escape(query)}`;
     }
+
     if (!query && populateMessageArguments.text.length != 0) {
       automaticallyBuiltMessage = `${additionalMessage}`;
     }
@@ -111,7 +114,7 @@ export class SearchAlertsMessage extends Component {
     this.message.el.innerHTML = `
       <div class='coveo-subscriptions-messages-message'>
         <div class='coveo-subscriptions-messages-info-close'></div>
-        <div class='coveo-subscriptions-messages-content' title='${message}'>${message}</div>
+        <div class='coveo-subscriptions-messages-content'>${message}</div>
       </div>`;
 
     this.message.toggleClass('coveo-subscriptions-messages-error', error);
@@ -133,6 +136,17 @@ export class SearchAlertsMessage extends Component {
     this.message.on('mouseenter', () => {
       this.stopCloseDelay();
     });
+  }
+
+  private formatMessageArgumentsText(text: string | ISearchAlertsPopulateMessageText) {
+    if (_.isString(text)) {
+      text = _.escape(text);
+    } else if (text.lineThrough) {
+      text = '<span style="text-decoration:line-through">' + _.escape(text.value) + '</span>';
+    } else {
+      text = _.escape(text.value);
+    }
+    return text;
   }
 
   private handleSubscriptionCreated(args: ISearchAlertsEventArgs) {

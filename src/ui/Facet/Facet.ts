@@ -1112,7 +1112,22 @@ export class Facet extends Component {
 
   protected handlePopulateSearchAlerts(args: ISearchAlertsPopulateMessageEventArgs) {
     if (this.values.hasSelectedOrExcludedValues()) {
-      args.text.push(new BreadcrumbValueList(this, this.values.getSelected().concat(this.values.getExcluded()), BreadcrumbValueElement).buildAsString());
+      let excludedValues = this.values.getExcluded();
+      let selectedValues = this.values.getSelected();
+
+      if (!_.isEmpty(excludedValues)) {
+        args.text.push({
+          value: new BreadcrumbValueList(this, excludedValues, BreadcrumbValueElement).buildAsString(),
+          lineThrough: true
+        });
+      }
+
+      if (!_.isEmpty(selectedValues)) {
+        args.text.push({
+          value: new BreadcrumbValueList(this, selectedValues, BreadcrumbValueElement).buildAsString(),
+          lineThrough: false
+        });
+      }
     }
   }
 
