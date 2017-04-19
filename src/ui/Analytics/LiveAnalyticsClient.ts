@@ -25,6 +25,8 @@ import _ = require('underscore');
 
 export class LiveAnalyticsClient implements IAnalyticsClient {
   public isContextual: boolean = false;
+  public originContext: string = 'Search';
+
   private language = <string>String['locale'];
   private device = DeviceUtils.getDeviceName();
   private mobile = DeviceUtils.isMobileDevice();
@@ -32,7 +34,15 @@ export class LiveAnalyticsClient implements IAnalyticsClient {
   private pendingSearchAsYouTypeSearchEvent: PendingSearchAsYouTypeSearchEvent;
   private logger: Logger;
 
-  constructor(public endpoint: AnalyticsEndpoint, public rootElement: HTMLElement, public userId: string, public userDisplayName: string, public anonymous: boolean, public splitTestRunName: string, public splitTestRunVersion: string, public originLevel1: string, public sendToCloud: boolean) {
+  constructor(public endpoint: AnalyticsEndpoint,
+    public rootElement: HTMLElement,
+    public userId: string,
+    public userDisplayName: string,
+    public anonymous: boolean,
+    public splitTestRunName: string,
+    public splitTestRunVersion: string,
+    public originLevel1: string,
+    public sendToCloud: boolean) {
 
     Assert.exists(endpoint);
     Assert.exists(rootElement);
@@ -133,6 +143,10 @@ export class LiveAnalyticsClient implements IAnalyticsClient {
     }
   }
 
+  public setOriginContext(originContext: string) {
+    this.originContext = originContext;
+  }
+
   private pushCustomEvent(actionCause: IAnalyticsActionCause, metaObject: IChangeableAnalyticsMetaObject, element?: HTMLElement) {
     var customEvent = this.buildCustomEvent(actionCause, metaObject, element);
     this.triggerChangeAnalyticsCustomData('CustomEvent', metaObject, customEvent);
@@ -215,6 +229,7 @@ export class LiveAnalyticsClient implements IAnalyticsClient {
       originLevel1: this.originLevel1,
       originLevel2: this.getOriginLevel2(this.rootElement),
       originLevel3: document.referrer,
+      originContext: this.originContext,
       customData: _.keys(metaObject).length > 0 ? metaObject : undefined,
       userAgent: navigator.userAgent
     };
