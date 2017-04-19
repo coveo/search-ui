@@ -98,14 +98,16 @@ export class ResultTagging extends Component {
       return;
     }
     let fieldValue = Utils.getFieldValue(this.result, <string>this.options.field);
-    if (fieldValue) {
+    if (fieldValue && Utils.isNonEmptyString(fieldValue)) {
       this.tags = fieldValue.split(';');
-      this.tags = _.map(this.tags, (t) => {
-        return t.trim();
-      });
+    } else if (fieldValue && Utils.isNonEmptyArray(fieldValue)) {
+      this.tags = fieldValue;
     } else {
       this.tags = [];
     }
+    this.tags = _.map(this.tags, (t) => {
+      return t.trim();
+    });
     this.tagZone = $$('div', {
       className: 'coveo-result-tagging-tag-zone'
     }).el;
