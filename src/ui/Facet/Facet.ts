@@ -1121,14 +1121,14 @@ export class Facet extends Component {
         args.text.push({
           value: new BreadcrumbValueList(this, excludedValues, BreadcrumbValueElement).buildAsString(),
           lineThrough: true
-        })
+        });
       }
 
-      if(!_.isEmpty(selectedValues)) {
+      if (!_.isEmpty(selectedValues)) {
         args.text.push({
           value: new BreadcrumbValueList(this, selectedValues, BreadcrumbValueElement).buildAsString(),
           lineThrough: false
-        })
+        });
       }
     }
   }

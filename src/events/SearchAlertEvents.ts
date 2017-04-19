@@ -10,7 +10,7 @@ export interface ISearchAlertsFailEventArgs {
 }
 
 export interface ISearchAlertsPopulateMessageEventArgs {
-  text: Array<string|ISearchAlertsPopulateMessageText>;
+  text: Array<string | ISearchAlertsPopulateMessageText>;
 }
 
 export interface ISearchAlertsPopulateMessageText {

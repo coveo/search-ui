@@ -140,8 +140,8 @@ export class SearchAlertsMessage extends Component {
 
   private formatMessageArgumentsText(text: string | ISearchAlertsPopulateMessageText) {
     if (_.isString(text)) {
-      text = _.escape(text); 
-    } else if(text.lineThrough) {
+      text = _.escape(text);
+    } else if (text.lineThrough) {
       text = '<span style="text-decoration:line-through">' + _.escape(text.value) + '</span>';
     } else {
       text = _.escape(text.value);
