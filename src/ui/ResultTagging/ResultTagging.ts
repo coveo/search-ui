@@ -103,7 +103,7 @@ export class ResultTagging extends Component {
     } else if (fieldValue && Utils.isNonEmptyArray(fieldValue)) {
       this.tags = fieldValue;
     } else {
-      this.tags = []
+      this.tags = [];
     }
     this.tags = _.map(this.tags, (t) => {
       return t.trim();
