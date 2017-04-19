@@ -536,7 +536,6 @@ export class Dom {
       var event = new CustomEvent(type, { detail: data, bubbles: true });
       this.el.dispatchEvent(event);
     } else {
-      // TODO Support for older browser ?
       new Logger(this).error('CANNOT TRIGGER EVENT FOR OLDER BROWSER');
     }
   }
