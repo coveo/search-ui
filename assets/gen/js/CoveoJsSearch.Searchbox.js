@@ -1545,8 +1545,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	"use strict";
 	Object.defineProperty(exports, "__esModule", { value: true });
 	exports.version = {
-	    'lib': '1.2537.5-beta',
-	    'product': '1.2537.5-beta',
+	    'lib': '1.2537.6-beta',
+	    'product': '1.2537.6-beta',
 	    'supportedApiVersion': 2
 	};
 
@@ -7987,7 +7987,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	            this.el.dispatchEvent(event);
 	        }
 	        else {
-	            // TODO Support for older browser ?
 	            new Logger_1.Logger(this).error('CANNOT TRIGGER EVENT FOR OLDER BROWSER');
 	        }
 	    };
@@ -47137,7 +47136,20 @@ return /******/ (function(modules) { // webpackBootstrap
 	    };
 	    Facet.prototype.handlePopulateSearchAlerts = function (args) {
 	        if (this.values.hasSelectedOrExcludedValues()) {
-	            args.text.push(new BreadcrumbValuesList_1.BreadcrumbValueList(this, this.values.getSelected().concat(this.values.getExcluded()), BreadcrumbValueElement_1.BreadcrumbValueElement).buildAsString());
+	            var excludedValues = this.values.getExcluded();
+	            var selectedValues = this.values.getSelected();
+	            if (!_.isEmpty(excludedValues)) {
+	                args.text.push({
+	                    value: new BreadcrumbValuesList_1.BreadcrumbValueList(this, excludedValues, BreadcrumbValueElement_1.BreadcrumbValueElement).buildAsString(),
+	                    lineThrough: true
+	                });
+	            }
+	            if (!_.isEmpty(selectedValues)) {
+	                args.text.push({
+	                    value: new BreadcrumbValuesList_1.BreadcrumbValueList(this, selectedValues, BreadcrumbValueElement_1.BreadcrumbValueElement).buildAsString(),
+	                    lineThrough: false
+	                });
+	            }
 	        }
 	    };
 	    Facet.prototype.initFacetQueryController = function () {
@@ -49014,8 +49026,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        Assert_1.Assert.check(current != null);
 	        var valueCaption = Dom_1.$$(current).find('.coveo-facet-value-caption');
 	        var valueElement = this.facet.facetValuesList.get(Dom_1.$$(valueCaption).text());
-	        this.facet.toggleExcludeValue(valueElement.facetValue);
-	        valueElement.triggerOnExcludeQuery();
+	        valueElement.toggleExcludeWithUA();
 	    };
 	    FacetSearch.prototype.getValueInInputForFacetSearch = function () {
 	        return this.input.value.trim();
@@ -49164,30 +49175,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	        this.renderer.setCssClassOnListValueElement();
 	    };
 	    ValueElement.prototype.exclude = function () {
-	        var _this = this;
 	        this.facetValue.selected = false;
 	        this.facetValue.excluded = true;
 	        this.renderer.setCssClassOnListValueElement();
-	        var actionCause;
-	        if (this.facetValue.excluded) {
-	            actionCause = this.isOmnibox ? AnalyticsActionListMeta_1.analyticsActionCauseList.omniboxFacetUnexclude : AnalyticsActionListMeta_1.analyticsActionCauseList.facetUnexclude;
-	        }
-	        else {
-	            actionCause = this.isOmnibox ? AnalyticsActionListMeta_1.analyticsActionCauseList.omniboxFacetExclude : AnalyticsActionListMeta_1.analyticsActionCauseList.facetExclude;
-	        }
-	        if (this.onExclude) {
-	            this.facet.triggerNewQuery(function () { return _this.onExclude(_this, actionCause); });
-	        }
-	        else {
-	            this.facet.triggerNewQuery(function () { return _this.facet.usageAnalytics.logSearchEvent(actionCause, _this.getAnalyticsFacetMeta()); });
-	        }
 	    };
 	    ValueElement.prototype.unexclude = function () {
 	        this.facetValue.selected = false;
 	        this.facetValue.excluded = false;
 	        this.renderer.setCssClassOnListValueElement();
 	    };
-	    ValueElement.prototype.triggerOnExcludeQuery = function () {
+	    ValueElement.prototype.toggleExcludeWithUA = function () {
 	        var _this = this;
 	        var actionCause;
 	        if (this.facetValue.excluded) {
@@ -49196,6 +49193,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        else {
 	            actionCause = this.isOmnibox ? AnalyticsActionListMeta_1.analyticsActionCauseList.omniboxFacetExclude : AnalyticsActionListMeta_1.analyticsActionCauseList.facetExclude;
 	        }
+	        this.facet.toggleExcludeValue(this.facetValue);
 	        if (this.onExclude) {
 	            this.facet.triggerNewQuery(function () { return _this.onExclude(_this, actionCause); });
 	        }
@@ -49229,8 +49227,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    };
 	    ValueElement.prototype.handleExcludeClick = function (eventBindings) {
 	        this.facet.keepDisplayedValuesNextTime = eventBindings.displayNextTime && !this.facet.options.useAnd;
-	        this.facet.toggleExcludeValue(this.facetValue);
-	        this.triggerOnExcludeQuery();
+	        this.toggleExcludeWithUA();
 	    };
 	    ValueElement.prototype.handleEventForExcludedValueElement = function (eventBindings) {
 	        var _this = this;
