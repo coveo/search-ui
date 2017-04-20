@@ -1,4 +1,5 @@
 @import "Variables";
+@import "mixins/mediaQuery";
 
 .CoveoSearchInterface.coveo-small-tabs, .CoveoSearchInterface.coveo-small-facets, .CoveoSearchInterface.coveo-small-recommendation {
 
@@ -58,42 +59,9 @@
   }
 }
 
-.CoveoSearchInterface.coveo-small-tabs.coveo-small-facets, .CoveoSearchInterface.coveo-small-tabs {
-  .coveo-tab-section {
-    min-height: 40px;
-  }
-}
-
-.CoveoSearchInterface.coveo-small-facets {
-  .coveo-tab-section {
-    min-height: 30px;
-  }
-}
-
 .CoveoSearchInterface.coveo-small-interface {
-  .coveo-search-section {
-    margin: 0;
-    padding: 20px 10px 20px 10px;
-    margin: 0 auto;
-    width: 100%;
-    max-width: none;
-  }
 
-  .coveo-tab-section {
-    background-color: $color-blueish-white;
-  }
 
-  .CoveoSearchbox {
-    max-width: 800px;
-  }
-
-  .CoveoSettings {
-    margin-left: 0;
-  }
-
-  .CoveoSearchbox {
-    margin-right: 50px;
-  }
 }
 
 .coveo-dropdown-background {
@@ -107,4 +75,25 @@
   bottom: 0;
   left: 0;
   z-index: 15;
+}
+
+@include mediaSelector(480) {
+  .CoveoSearchInterface {
+    .coveo-tab-section {
+      background-color: $color-blueish-white;
+    }
+
+    .CoveoSearchbox {
+      max-width: 800px;
+      margin-right: 50px;
+    }
+
+    .CoveoSettings {
+      margin-left: 0;
+    }
+
+    .CoveoSettings + .CoveoSearchbox {
+      margin-right: 50px;
+    }
+  }
 }

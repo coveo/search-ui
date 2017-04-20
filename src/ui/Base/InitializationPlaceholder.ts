@@ -6,6 +6,7 @@ import { QueryEvents } from '../../events/QueryEvents';
 import { InitializationEvents } from '../../events/InitializationEvents';
 import { ResultListEvents } from '../../events/ResultListEvents';
 import { HashUtils } from '../../utils/HashUtils';
+import { ResponsiveComponents } from '../ResponsiveComponents/ResponsiveComponents';
 
 export interface InitializationPlaceholderOption {
   searchInterface?: boolean;

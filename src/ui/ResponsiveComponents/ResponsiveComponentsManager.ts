@@ -128,7 +128,7 @@ export class ResponsiveComponentsManager {
         interface display property be none? Could its visibility property be set to hidden? Also, if either of these scenarios happen during
         loading, it could be the cause of this issue.`);
       }
-    }, ResponsiveComponentsManager.RESIZE_DEBOUNCE_DELAY);
+    }, ResponsiveComponentsManager.RESIZE_DEBOUNCE_DELAY, true);
     window.addEventListener('resize', this.resizeListener);
     this.bindNukeEvents();
   }
