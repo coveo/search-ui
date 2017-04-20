@@ -8873,13 +8873,20 @@ a.coveo-folding-show-more, a.coveo-folding-show-less {
   border-bottom: 1px solid #BCC3CA;
   text-transform: uppercase;
   border-bottom: 2px solid #BCC3CA;
-  cursor: pointer; }
+  cursor: pointer;
+  padding-bottom: 9px; }
   .coveo-result-layout-selector.coveo-selected, .coveo-result-layout-selector.coveo-selected:hover {
     border-bottom: 2px solid #263E55; }
   .coveo-result-layout-selector:hover {
     color: #263E55; }
   .coveo-result-layout-selector .coveo-icon {
-    margin-right: 5px; }
+    margin-right: 5px;
+    display: inline-block;
+    vertical-align: middle; }
+
+.coveo-result-layout-selector-caption {
+  vertical-align: middle;
+  display: inline-block; }
 
 .CoveoSearchInterface .CoveoImageResultList {
   position: relative;
@@ -9212,8 +9219,7 @@ body.coveo-modalBox-opened, body.coveo-modalBox-opened .CoveoSearchInterface {
     color: #263E55; }
   .CoveoSort .coveo-icon {
     margin-left: 5px;
-    position: relative;
-    top: 2px; }
+    position: relative; }
   .CoveoSort.coveo-sort-hidden {
     display: none; }
 

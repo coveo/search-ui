@@ -1545,8 +1545,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	"use strict";
 	Object.defineProperty(exports, "__esModule", { value: true });
 	exports.version = {
-	    'lib': '1.2537.3-beta',
-	    'product': '1.2537.3-beta',
+	    'lib': '1.2537.5-beta',
+	    'product': '1.2537.5-beta',
 	    'supportedApiVersion': 2
 	};
 
@@ -5988,6 +5988,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	    "DoesNotContain": "does not contain",
 	    "Matches": "matches",
 	    "Bytes": "bytes",
+	    "List": "List",
+	    "Card": "Card",
+	    "Table": "Table",
 	    "objecttype_people": "People",
 	    "objecttype_message": "Message",
 	    "objecttype_feed": "RSS Feed",

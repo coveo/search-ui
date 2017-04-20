@@ -1759,8 +1759,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	"use strict";
 	Object.defineProperty(exports, "__esModule", { value: true });
 	exports.version = {
-	    'lib': '1.2537.3-beta',
-	    'product': '1.2537.3-beta',
+	    'lib': '1.2537.5-beta',
+	    'product': '1.2537.5-beta',
 	    'supportedApiVersion': 2
 	};
 
@@ -6202,6 +6202,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	    "DoesNotContain": "does not contain",
 	    "Matches": "matches",
 	    "Bytes": "bytes",
+	    "List": "List",
+	    "Card": "Card",
+	    "Table": "Table",
 	    "objecttype_people": "People",
 	    "objecttype_message": "Message",
 	    "objecttype_feed": "RSS Feed",
@@ -56211,6 +56214,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var ResponsiveResultLayout_1 = __webpack_require__(200);
 	var Utils_1 = __webpack_require__(13);
 	var _ = __webpack_require__(14);
+	var Strings_1 = __webpack_require__(35);
 	exports.defaultLayout = 'list';
 	/**
 	 * The ResultLayout component allows the end user to switch between multiple {@link ResultList} components that have
@@ -56383,7 +56387,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	    };
 	    ResultLayout.prototype.addButton = function (layout) {
 	        var _this = this;
-	        var btn = Dom_1.$$('span', { className: 'coveo-result-layout-selector', tabindex: 0 }, layout);
+	        var btn = Dom_1.$$('span', {
+	            className: 'coveo-result-layout-selector',
+	            tabindex: 0
+	        }, Dom_1.$$('span', { className: 'coveo-result-layout-selector-caption' }, Strings_1.l(layout)));
 	        btn.prepend(Dom_1.$$('span', { className: "coveo-icon coveo-sprites-" + layout + "-layout" }).el);
 	        if (layout === this.currentLayout) {
 	            btn.addClass('coveo-selected');
@@ -65166,15 +65173,18 @@ return /******/ (function(modules) { // webpackBootstrap
 	            return _this;
 	        }
 	        var fieldValue = Utils_1.Utils.getFieldValue(_this.result, _this.options.field);
-	        if (fieldValue) {
+	        if (fieldValue && Utils_1.Utils.isNonEmptyString(fieldValue)) {
 	            _this.tags = fieldValue.split(';');
-	            _this.tags = _.map(_this.tags, function (t) {
-	                return t.trim();
-	            });
+	        }
+	        else if (fieldValue && Utils_1.Utils.isNonEmptyArray(fieldValue)) {
+	            _this.tags = fieldValue;
 	        }
 	        else {
 	            _this.tags = [];
 	        }
+	        _this.tags = _.map(_this.tags, function (t) {
+	            return t.trim();
+	        });
 	        _this.tagZone = Dom_1.$$('div', {
 	            className: 'coveo-result-tagging-tag-zone'
 	        }).el;
