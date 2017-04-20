@@ -44,7 +44,7 @@ export class FieldSuggestions extends Component {
   static options: IFieldSuggestionsOptions = {
 
     /**
-     * Specifies the field from which to provide suggestions.
+     * Specifies the facet field from which to provide suggestions.
      *
      * Specifying a value for this option is required for the FieldSuggestions component to work.
      */

@@ -507,7 +507,7 @@ export function SearchEndpointTest() {
 
           // Not real extensions, but will suffice for test purpose
           promiseSuccess
-              .then((response: IQuerySuggestResponse) => {
+            .then((response: IQuerySuggestResponse) => {
               expect(response.completions.length).toBe(10);
             })
             .catch((e: IErrorResponse) => {
@@ -534,19 +534,19 @@ export function SearchEndpointTest() {
 
           // Not real extensions, but will suffice for test purpose
           promiseSuccess
-              .then((response: IQuerySuggestResponse) => {
-                expect(response.completions.length).toBe(10);
-              })
-              .catch((e: IErrorResponse) => {
-                fail(e);
-                return e;
-              })
-              .then(() => done());
+            .then((response: IQuerySuggestResponse) => {
+              expect(response.completions.length).toBe(10);
+            })
+            .catch((e: IErrorResponse) => {
+              fail(e);
+              return e;
+            })
+            .then(() => done());
 
           // Not real completions, but will suffice for test purpose
           jasmine.Ajax.requests.mostRecent().respondWith({
             status: 200,
-            responseText: JSON.stringify({completions: _.range(10)})
+            responseText: JSON.stringify({ completions: _.range(10) })
           });
         });
 

@@ -79,7 +79,7 @@ export class FacetUtils {
     let found: string;
 
     if (QueryUtils.isStratusAgnosticField(field.toLowerCase(), '@filetype')) {
-      found = FileTypes.getFileTypeCaptions()[value.toLowerCase()];
+      found = FileTypes.getFileType(value.toLowerCase()).caption;
     } else if (QueryUtils.isStratusAgnosticField(field.toLowerCase(), '@month')) {
       try {
         let month = parseInt(value);

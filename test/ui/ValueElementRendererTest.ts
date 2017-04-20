@@ -12,7 +12,7 @@ export function ValueElementRendererTest() {
     var facet: Facet;
     var valueRenderer: ValueElementRenderer;
 
-    beforeEach(function () {
+    beforeEach(() => {
       facet = Mock.optionsComponentSetup<Facet, IFacetOptions>(Facet, {
         field: '@field'
       }).cmp;
@@ -23,18 +23,18 @@ export function ValueElementRendererTest() {
       valueRenderer = null;
     });
 
-    it('should build a list element', function () {
+    it('should build a list element', () => {
       valueRenderer = new ValueElementRenderer(facet, FacetValue.createFromFieldValue(FakeResults.createFakeFieldValue('foo', 1234)));
       expect(valueRenderer.build().listItem).toBeDefined();
       expect(valueRenderer.build().listItem.getAttribute('data-value')).toBe('foo');
     });
 
-    it('should build a label', function () {
+    it('should build a label', () => {
       valueRenderer = new ValueElementRenderer(facet, FacetValue.createFromFieldValue(FakeResults.createFakeFieldValue('foo', 123)));
       expect(valueRenderer.build().label).toBeDefined();
     });
 
-    it('should build a checkbox', function () {
+    it('should build a checkbox', () => {
       valueRenderer = new ValueElementRenderer(facet, FacetValue.createFromFieldValue(FakeResults.createFakeFieldValue('foo', 123)));
       valueRenderer.facetValue.selected = true;
       valueRenderer.facetValue.excluded = false;
@@ -46,23 +46,23 @@ export function ValueElementRendererTest() {
       expect(valueRenderer.build().checkbox.getAttribute('disabled')).toBe('disabled');
     });
 
-    it('should put the tabindex attribute to 0 on a stylish checkbox', function () {
+    it('should put the tabindex attribute to 0 on a stylish checkbox', () => {
       valueRenderer = new ValueElementRenderer(facet, FacetValue.createFromFieldValue(FakeResults.createFakeFieldValue('foo', 123)));
       expect(valueRenderer.build().stylishCheckbox.getAttribute('tabindex')).toBe('0');
     });
 
-    it('should build a stylish checkbox', function () {
+    it('should build a stylish checkbox', () => {
       valueRenderer = new ValueElementRenderer(facet, FacetValue.createFromFieldValue(FakeResults.createFakeFieldValue('foo', 123)));
       expect(valueRenderer.build().stylishCheckbox).toBeDefined();
     });
 
-    it('should build a caption', function () {
+    it('should build a caption', () => {
       valueRenderer = new ValueElementRenderer(facet, FacetValue.createFromFieldValue(FakeResults.createFakeFieldValue('this is a nice value', 123)));
       expect(valueRenderer.build().valueCaption).toBeDefined();
       expect($$(valueRenderer.build().valueCaption).text()).toBe('this is a nice value');
     });
 
-    it('should build a value count', function () {
+    it('should build a value count', () => {
       valueRenderer = new ValueElementRenderer(facet, FacetValue.createFromFieldValue(FakeResults.createFakeFieldValue('foo', 1)));
       expect(valueRenderer.build().valueCount).toBeDefined();
       expect($$(valueRenderer.build().valueCount).text()).toBe('1');
@@ -72,22 +72,22 @@ export function ValueElementRendererTest() {
       expect($$(valueRenderer.build().valueCount).text()).toBe('31,416');
     });
 
-    it('should build an exclude icon', function () {
+    it('should build an exclude icon', () => {
       valueRenderer = new ValueElementRenderer(facet, FacetValue.createFromFieldValue(FakeResults.createFakeFieldValue('foo', 123)));
       expect(valueRenderer.build().excludeIcon).toBeDefined();
     });
 
-    it('should build an exclude icon', function () {
+    it('should build an exclude icon', () => {
       valueRenderer = new ValueElementRenderer(facet, FacetValue.createFromFieldValue(FakeResults.createFakeFieldValue('foo', 123)));
       expect(valueRenderer.build().excludeIcon).toBeDefined();
     });
 
-    it('should put the tabindex attribute to 0 on an exclude icon', function () {
+    it('should put the tabindex attribute to 0 on an exclude icon', () => {
       valueRenderer = new ValueElementRenderer(facet, FacetValue.createFromFieldValue(FakeResults.createFakeFieldValue('foo', 123)));
       expect(valueRenderer.build().excludeIcon.getAttribute('tabindex')).toBe('0');
     });
 
-    it('should render computed field only if needed', function () {
+    it('should render computed field only if needed', () => {
       valueRenderer = new ValueElementRenderer(facet, FacetValue.createFromFieldValue(FakeResults.createFakeFieldValue('foo', 123)));
       expect(valueRenderer.build().computedField).toBeUndefined();
 
@@ -100,7 +100,7 @@ export function ValueElementRendererTest() {
       expect($$(valueRenderer.build().computedField).text()).toBe('$9,999');
     });
 
-    it('should allow to remove element from the dom post build', function () {
+    it('should allow to remove element from the dom post build', () => {
       valueRenderer = new ValueElementRenderer(facet, FacetValue.createFromFieldValue(FakeResults.createFakeFieldValue('foo', 1)));
       var count = valueRenderer.build().valueCount;
       expect(count.parentNode).toBeDefined();

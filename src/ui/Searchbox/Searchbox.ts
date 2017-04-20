@@ -75,7 +75,7 @@ export class Searchbox extends Component {
      * Moreover, since the Omnibox component inherits all of the Querybox component options, the
      * `data-trigger-query-on-clear` option will also work on that Omnibox instance.
      * ```html
-     * <div class='CoveoSearchbox' data-enableOmnibox='true' data-place-holder='Please enter a query'></div>
+     * <div class='CoveoSearchbox' data-enable-omnibox='true' data-place-holder='Please enter a query'></div>
      * ```
      *
      * Default value is `false`.

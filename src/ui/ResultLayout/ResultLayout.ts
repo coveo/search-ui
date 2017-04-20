@@ -18,6 +18,7 @@ import { ResponsiveResultLayout } from '../ResponsiveComponents/ResponsiveResult
 import { Utils } from '../../utils/Utils';
 import * as _ from 'underscore';
 import { exportGlobally } from '../../GlobalExports';
+import { l } from '../../strings/Strings';
 
 import 'styling/_ResultLayout';
 
@@ -283,8 +284,11 @@ export class ResultLayout extends Component {
     }
   }
 
-  private addButton(layout?: string) {
-    const btn = $$('span', { className: 'coveo-result-layout-selector', tabindex: 0 }, layout);
+  private addButton(layout: string) {
+    const btn = $$('span', {
+      className: 'coveo-result-layout-selector',
+      tabindex: 0
+    }, $$('span', { className: 'coveo-result-layout-selector-caption' }, l(layout)));
     btn.prepend($$('span', { className: `coveo-icon coveo-sprites-${layout}-layout` }).el);
     if (layout === this.currentLayout) {
       btn.addClass('coveo-selected');

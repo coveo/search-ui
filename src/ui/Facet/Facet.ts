@@ -186,6 +186,9 @@ export class Facet extends Component {
      * See also {@link Facet.options.enableSettingsFacetState}, {@link Facet.options.availableSorts} and
      * {@link Facet.options.enableCollapse}.
      *
+     * **Note:**
+     * > The {@link FacetRange} component does not support this option.
+     *
      * Default value is `true`.
      */
     enableSettings: ComponentOptions.buildBooleanOption({ defaultValue: true, section: 'SettingsMenu', priority: 9 }),
@@ -193,6 +196,9 @@ export class Facet extends Component {
     /**
      * If {@link Facet.options.enableSettings} is `true`, specifies whether the **Save state** menu option is available
      * in the Facet **Settings** menu.
+     *
+     * **Note:**
+     * > The {@link FacetRange} component does not support this option.
      *
      * Default value is `false`.
      */
@@ -211,6 +217,11 @@ export class Facet extends Component {
      * - `"computedfielddescending"`
      * - `"custom"`
      *
+     * See the {@link IGroupByRequest.sortCriteria} for a description of each possible value.
+     *
+     * **Note:**
+     * > The {@link FacetRange} component does not support this option.
+     *
      * Default value is `"occurrences,score,alphaAscending,alphaDescending"`.
      */
     availableSorts: ComponentOptions.buildListOption<'occurrences' | 'score' | 'alphaascending' | 'alphadescending' | 'computedfieldascending' | 'computedfielddescending' | 'chisquare' | 'nosort'>({
@@ -222,7 +233,7 @@ export class Facet extends Component {
     /**
      * Specifies the criteria to use to sort the Facet values.
      *
-     * See {@link IGroupByRequest} for the list of possible values.
+     * See {@link IGroupByRequest.sortCriteria} for the list and description of possible values.
      *
      * Default value is the first sort criteria specified in the {@link Facet.options.availableSorts} option, or
      * `"occurrences"` if no sort criteria is specified.
@@ -233,7 +244,10 @@ export class Facet extends Component {
      * Specifies a custom order by which to sort the Facet values.
      *
      * For example, you could use this to specify a logical order for support tickets, such as
-     * `customSort : ["New","Opened","Feedback","Resolved","Feedback"]`
+     * `customSort : ["New","Opened","Feedback","Resolved"]`
+     *
+     * **Note:**
+     * > The {@link FacetRange} component does not support this option.
      */
     customSort: ComponentOptions.buildListOption<string>({ section: 'Identification' }),
 
@@ -285,6 +299,9 @@ export class Facet extends Component {
      * See also {@link Facet.options.facetSearchDelay}, {@link Facet.options.facetSearchIgnoreAccents},
      * {@link Facet.options.numberOfValuesInFacetSearch}.
      *
+     * **Note:**
+     * > The {@link FacetRange} component does not support this option.
+     *
      * Default value is `true`.
      */
     enableFacetSearch: ComponentOptions.buildBooleanOption({ defaultValue: true, section: 'FacetSearch', priority: 8 }),
@@ -296,6 +313,9 @@ export class Facet extends Component {
      * Specifying a smaller value means results will arrive faster. However, chances of having to cancel many requests
      * sent to the server will increase as the user keeps on typing new characters.
      *
+     * **Note:**
+     * > The {@link FacetRange} component does not support this option.
+     *
      * Default value is `100`. Minimum value is `0`.
      */
     facetSearchDelay: ComponentOptions.buildNumberOption({ defaultValue: 100, min: 0, depend: 'enableFacetSearch' }),
@@ -304,6 +324,9 @@ export class Facet extends Component {
      * If {@link Facet.options.enableFacetSearch} is `true`, specifies whether to ignore accents in the Facet search
      * box.
      *
+     * **Note:**
+     * > The {@link FacetRange} component does not support this option.
+     *
      * Default value is `false`.
      */
     facetSearchIgnoreAccents: ComponentOptions.buildBooleanOption({ defaultValue: false, depend: 'enableFacetSearch' }),
@@ -311,6 +334,9 @@ export class Facet extends Component {
     /**
      * If {@link Facet.options.enableFacetSearch} is `true`, specifies the number of values to display in the Facet
      * search results popup.
+     *
+     * **Note:**
+     * > The {@link FacetRange} component does not support this option.
      *
      * Default value is `15`. Minimum value is `1`.
      */
@@ -383,6 +409,9 @@ export class Facet extends Component {
      *
      * For example, setting this option to `"Money"` will display `"Money Ascending"` for computed field ascending.
      *
+     * **Note:**
+     * > The {@link FacetRange} component does not support this option.
+     *
      * Default value is the localized string for `"ComputedField"`.
      */
     computedFieldCaption: ComponentOptions.buildLocalizedStringOption({ defaultValue: l('ComputedField'), section: 'ComputedField' }),
@@ -432,6 +461,9 @@ export class Facet extends Component {
      *
      * See also {@link Facet.options.pageSize}.
      *
+     * **Note:**
+     * > The {@link FacetRange} component does not support this option.
+     *
      * Default value is `true`.
      */
     enableMoreLess: ComponentOptions.buildBooleanOption({ defaultValue: true }),
@@ -440,6 +472,9 @@ export class Facet extends Component {
      * If {@link Facet.options.enableMoreLess} is `true`, specifies the number of additional results to fetch when
      * clicking on the **More** button in the Facet.
      *
+     * **Note:**
+     * > The {@link FacetRange} component does not support this option.
+     *
      * Default value is `10`. Minimum value is `1`.
      */
     pageSize: ComponentOptions.buildNumberOption({ defaultValue: 10, min: 1, depend: 'enableMoreLess' }),
@@ -447,6 +482,9 @@ export class Facet extends Component {
     /**
      * If {@link Facet.options.enableSettings} is `true`, specifies whether the **Collapse \ Expand** menu option is
      * available in the Facet **Settings** menu.
+     *
+     * **Note:**
+     * > The {@link FacetRange} component does not support this option.
      *
      * Default value is `true`.
      */
@@ -1118,7 +1156,22 @@ export class Facet extends Component {
 
   protected handlePopulateSearchAlerts(args: ISearchAlertsPopulateMessageEventArgs) {
     if (this.values.hasSelectedOrExcludedValues()) {
-      args.text.push(new BreadcrumbValueList(this, this.values.getSelected().concat(this.values.getExcluded()), BreadcrumbValueElement).buildAsString());
+      let excludedValues = this.values.getExcluded();
+      let selectedValues = this.values.getSelected();
+
+      if (!_.isEmpty(excludedValues)) {
+        args.text.push({
+          value: new BreadcrumbValueList(this, excludedValues, BreadcrumbValueElement).buildAsString(),
+          lineThrough: true
+        });
+      }
+
+      if (!_.isEmpty(selectedValues)) {
+        args.text.push({
+          value: new BreadcrumbValueList(this, selectedValues, BreadcrumbValueElement).buildAsString(),
+          lineThrough: false
+        });
+      }
     }
   }
 

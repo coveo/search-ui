@@ -11,10 +11,15 @@
 
 .coveo-result-layout-selector {
   @include resultsHeaderElement();
-  display: block;
-
+  padding-bottom: 9px;
   .coveo-icon {
     margin-right: 5px;
-    vertical-align: bottom;
+    display: inline-block;
+    vertical-align: middle;
   }
+}
+
+.coveo-result-layout-selector-caption {
+  vertical-align: middle;
+  display: inline-block;
 }

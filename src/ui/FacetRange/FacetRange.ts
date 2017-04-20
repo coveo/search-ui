@@ -22,9 +22,33 @@ export interface IFacetRangeOptions extends IFacetOptions {
  * The FacetRange component displays a {@link Facet} whose values are expressed as ranges. These ranges are computed
  * from the results of the current query.
  *
- * This component inherits from the Facet component. Thus, any option available for a Facet component is also available
- * for a FacetRange component. This also implies that you must specify a [field]{@link Facet.options.field} value for
- * this component to work.
+ * This component inherits from the Facet component. This implies that you must specify a valid
+ * [field]{@link Facet.options.field} value for this component to work.
+ *
+ * Most of the options available for a Facet component are also available for a FacetRange component. There are some
+ * exceptions, however.
+ *
+ * Here is the list of Facet options which the FacetRange component does not support.
+ * - The **Settings** menu options:
+ *   - [enableSettings]{@link Facet.options.enableSettings}
+ *   - [enableSettingsFacetState]{@link Facet.options.enableSettingsFacetState}
+ *   - [enableCollapse]{@link Facet.options.enableCollapse}
+ *   - [availableSorts]{@link Facet.options.availableSorts}
+ *   - [customSort]{@link Facet.options.customSort}
+ *   - [computedFieldCaption]{@link Facet.options.computedFieldCaption}
+ * - The **Facet Search** options:
+ *   - [enableFacetSearch]{@link Facet.options.enableFacetSearch}
+ *   - [facetSearchDelay]{@link Facet.options.facetSearchDelay}
+ *   - [facetSearchIgnoreAccents]{@link Facet.options.facetSearchIgnoreAccents}
+ *   - [numberOfValuesInFacetSearch]{@link Facet.options.numberOfValuesInFacetSearch}
+ * - The **More and Less** options:
+ *   - [enableMoreLess]{@link Facet.options.enableMoreLess}
+ *   - [pageSize]{@link Facet.options.pageSize}
+ *
+ *
+ *  Moreover, while the [numberOfValues]{@link Facet.options.numberOfValues} option still allows you to specify the
+ *  maximum number of values to display in a FacetRange component, it is not possible for the end to display additional
+ *  values, since the component does not support the **More** button.
  */
 export class FacetRange extends Facet implements IComponentBindings {
   static ID = 'FacetRange';

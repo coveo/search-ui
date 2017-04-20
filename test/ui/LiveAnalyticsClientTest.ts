@@ -52,6 +52,12 @@ export function LiveAnalyticsClientTest() {
       expect(client.getPendingSearchEvent() instanceof PendingSearchAsYouTypeSearchEvent).toBe(true);
     });
 
+    it('originContext can be specified', () => {
+      client.setOriginContext('context');
+      client.logSearchEvent<IAnalyticsNoMeta>(analyticsActionCauseList.searchboxSubmit, {});
+      expect(client.getPendingSearchEvent().templateSearchEvent.originContext).toBe('context');
+    });
+
     it('should send proper information on logSearchEvent', function (done) {
       client.logSearchEvent<IAnalyticsNoMeta>(analyticsActionCauseList.searchboxSubmit, {});
       var query: IQuery = {

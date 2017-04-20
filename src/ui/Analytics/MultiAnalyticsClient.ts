@@ -72,6 +72,10 @@ export class MultiAnalyticsClient implements IAnalyticsClient {
     return _.first(this.analyticsClients).getPendingSearchEvent();
   }
 
+  public setOriginContext(originContext: string) {
+    _.each(this.analyticsClients, (analyticsClient: IAnalyticsClient) => analyticsClient.setOriginContext(originContext));
+  }
+
   private mergeTopQueries(values: string[][], pageSize: number = 5) {
     return _.chain(values)
       .flatten()
