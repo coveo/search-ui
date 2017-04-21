@@ -434,3 +434,6 @@ FacetRangeTest();
 
 import { InitializationPlaceholderTest } from './ui/InitializationPlaceholderTest';
 InitializationPlaceholderTest();
+
+import { ValueElementTest } from './ui/ValueElementTest';
+ValueElementTest();

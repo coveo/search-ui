@@ -73,32 +73,27 @@ module.exports = function (plop) {
         type: 'add',
         path: path.resolve('../src/ui/{{cmpName}}/{{cmpName}}.ts'),
         templateFile: path.resolve('./plopTemplates/plop.component.template.hbs')
-      })
-      actions.push(()=> {
-        let tsconfig = require(path.resolve('../tsconfig.json'));
-        let testtsconfig = require(path.resolve('../test/tsconfig.json'));
-        tsconfig.files.push(plop.renderString('src/ui/{{pascalCase cmpName}}/{{pascalCase cmpName}}.ts', data));
-        testtsconfig.files.push(plop.renderString('../test/ui/{{pascalCase cmpName}}Test.ts', data));
-        fs.writeFileSync(path.resolve('../tsconfig.json'), JSON.stringify(tsconfig, undefined, 4));
-        fs.writeFileSync(path.resolve('../test/tsconfig.json'), JSON.stringify(testtsconfig, undefined, 4));
-        return 'Modified tsconfig.json';
-      })
+      });
       actions.push(()=> {
         let newExport = plop.renderString('export \{ {{pascalCase cmpName}} \} from \'./ui/{{pascalCase cmpName}}/{{pascalCase cmpName}}\';', data);
+        let read = fs.readFileSync('../src/Index.ts', {encoding: 'utf8'});
+        let replaced = read.replace(/import \{ swapVar \} from '\.\/SwapVar';\nswapVar\(this\);/, '');
+        fs.writeFileSync(path.resolve('../src/Index.ts'), replaced);
         fs.appendFileSync(path.resolve('../src/Index.ts'), `\n${newExport}`);
+        fs.appendFileSync(path.resolve('../src/Index.ts'), `\n\nimport { swapVar } from './SwapVar';\nswapVar(this);`);
         return 'Modified Index.ts';
-      })
+      });
       actions.push(()=> {
         let newReference = plop.renderString('import { {{pascalCase cmpName}}Test } from \'./ui/{{pascalCase cmpName}}Test\';', data);
         let newTestExecution = plop.renderString('{{pascalCase cmpName}}Test();', data);
         fs.appendFileSync(path.resolve('../test/Test.ts'), `\n${newReference}\n${newTestExecution}`);
         return 'Modified Test.ts';
-      })
+      });
       actions.push({
         type : 'add',
         path: path.resolve('../test/ui/{{pascalCase cmpName}}Test.ts'),
         templateFile : path.resolve('./plopTemplates/plop.component.test.template.hbs')
-      })
+      });
       return actions;
     }
   })

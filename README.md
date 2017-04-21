@@ -18,6 +18,32 @@ If you are using a module bundler (Browserify, webpack, Babel, etc.), you can us
 Alternatively, you can download the latest version of the Coveo JavaScript Search UI Framework 
 [here](http://productupdate.coveo.com/?product=coveo-search-ui&version=1).
 
+## Including the Resources from a CDN
+
+Since the April 2017 release, it is possible to access the resources of any specific Coveo JavaScript Search  Framework 
+official release (from version `1.2537` on) through a content delivery network (CDN).
+
+You can simply use an URL such as `https://static.cloud.coveo.com/searchui/v[VERSION]/[PATH_TO_FILE]`, where you 
+replace `[VERSION]` by the actual release version number you wish to use and `[PATH_TO_FILE]` by the path of the file 
+you require.
+
+**Example:**
+> The following tags include the `1.2537` version (April 2017 release) of the `CoveoJsSearch.min.js`, `templateNew.js` 
+> and `CoveoFullSearchNewDesign.css` files.
+> ```
+> <head>
+>
+>   [ ... ]
+>
+>   <script src="https://static.cloud.coveo.com/searchui/v1.2537/js/CoveoJsSearch.min.js"></script>
+>   <script src="https://static.cloud.coveo.com/searchui/v1.2537/js/templates/templatesNew.js"></script>
+>   <link rel="stylesheet" href="https://static.cloud.coveo.com/searchui/v1.2537/css/CoveoFullSearchNewDesign.css" />
+>
+>   [ ... ]
+>
+>  </head>
+> ```
+
 ## Basic Usage
 
 ```

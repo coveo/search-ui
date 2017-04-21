@@ -67,6 +67,9 @@ export class NoopAnalyticsClient implements IAnalyticsClient {
     return null;
   }
 
+  setOriginContext(originContext: string) {
+  }
+
   private setNoopCauseAndMeta(cause: string, meta: IStringMap<any>) {
     this.currentEventCause = cause;
     this.currentEventMeta = meta;

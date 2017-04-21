@@ -25,11 +25,13 @@ export interface IResultFoldingOptions {
 }
 
 /**
- * The ResultFolding component renders folded result sets. It is usable inside a result template when there is an active
- * {@link Folding} component in the page. This component takes care of rendering the parent result and its child results
- * in a coherent manner.
+ * The `ResultFolding` component renders folded result sets. It is usable inside a result template when there is an
+ * active [`Folding`]{@link Folding} component in the page. This component takes care of rendering the parent result and
+ * its child results in a coherent manner.
  *
  * This component is a result template component (see [Result Templates](https://developers.coveo.com/x/aIGfAQ)).
+ *
+ * See [Folding Results](https://developers.coveo.com/x/7hUvAg).
  */
 export class ResultFolding extends Component {
   static ID = 'ResultFolding';
@@ -50,17 +52,24 @@ export class ResultFolding extends Component {
     /**
      * Specifies the template to use to render each of the child results for a top result.
      *
-     * By default, it will use the template specified in a child element with a `script` tag. This can be specified
-     * directly as an attribute of the element.
+     * You can specify a previously registered template to use either by referring to its HTML `id` attribute or to a
+     * CSS selector (see {@link TemplateCache}).
      *
      * **Example:**
      *
-     * With the following markup, the ResultFolding component will use a previously registered template ID (see
-     * {@link TemplateCache}):
+     * Specifying a previously registered template by referring to its HTML `id` attribute:
      *
      * ```html
-     * <div class='CoveoResultFolding' data-result-template-id='Foo'></div>
+     * <span class="CoveoResultFolding" data-result-template-id="Foo"></span>
      * ```
+     *
+     * Specifying a previously registered template by referring to a CSS selector:
+     *
+     * ```html
+     * <span class='CoveoResultFolding' data-result-template-selector="#Foo"></span>
+     * ```
+     *
+     * If you do not specify a custom folding template, the component uses the default result folding template.
      */
     resultTemplate: ComponentOptions.buildTemplateOption({ defaultFunction: () => new DefaultFoldingTemplate() }),
 

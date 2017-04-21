@@ -279,6 +279,20 @@ export class Analytics extends Component {
     this.client.logClickEvent(actionCause, meta, result, element);
   }
 
+  /**
+   * Sets the Origin Context dimension on the analytic events.
+   *
+   * You can use this dimension to specify the context of your application.
+   * Suggested values are "Search", "InternalSearch" and "CommunitySearch"
+   *
+   * Default value is `Search`.
+   *
+   * @param originContext The origin context value
+   */
+  public setOriginContext(originContext: string) {
+    this.client.setOriginContext(originContext);
+  }
+
   protected initializeAnalyticsEndpoint(): AnalyticsEndpoint {
     return new AnalyticsEndpoint({
       token: this.options.token,

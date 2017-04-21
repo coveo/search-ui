@@ -1,5 +1,6 @@
 @import "bourbon/bourbon";
 @import "Variables";
+@import "mixins/mediaQuery";
 
 .coveo-small-tabs {
 
@@ -21,10 +22,6 @@
     &.coveo-selected,
     &.coveo-selected:hover {
       font-weight: 700;
-    }
-    height: 40px;
-    * {
-      line-height: 40px;
     }
     &.coveo-selected,
     &.coveo-selected:hover {

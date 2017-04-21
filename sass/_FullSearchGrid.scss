@@ -16,6 +16,12 @@ $border-box-sizing: false;
     max-width: 800px;
     margin: 54px auto 47px auto;
     padding: 0 10px;
+    @include mediaSelector(480) {
+      padding: 20px 10px 20px 10px;
+      margin: 0 auto;
+      width: 100%;
+      max-width: none;
+    }
   }
 
   .coveo-main-section {
@@ -44,6 +50,34 @@ $border-box-sizing: false;
       &.coveo-no-results {
         max-width: 100%;
       }
+    }
+
+    @include mediaSelector(480) {
+      padding: 0;
+    }
+  }
+
+  &.coveo-during-initialization {
+    .coveo-results-header {
+      * {
+        display: none;
+      }
+      height: 35px;
+    }
+    .CoveoLogo, .CoveoResultsPerPage {
+      display: none;
+    }
+  }
+
+  &.coveo-during-initialization {
+    .coveo-results-header {
+      * {
+        display: none;
+      }
+      height: 35px;
+    }
+    .CoveoLogo, .CoveoResultsPerPage {
+      display: none;
     }
   }
 

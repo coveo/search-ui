@@ -41,7 +41,10 @@ export class SimpleFieldInput extends DocumentInput {
   }
 
   private buildFieldSelect() {
-    return this.endpoint.listFieldValues({ field: this.fieldName }).then((values: IIndexFieldValue[]) => {
+    return this.endpoint.listFieldValues({
+      field: this.fieldName,
+      maximumNumberOfValues: 50
+    }).then((values: IIndexFieldValue[]) => {
       let options = [''];
       _.each(values, (value: IIndexFieldValue) => {
         options.push(value.value);

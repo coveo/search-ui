@@ -38,6 +38,7 @@ import 'styling/_ResultList';
 import 'styling/_ResultFrame';
 import 'styling/_Result';
 import { InitializationPlaceholder } from '../Base/InitializationPlaceholder';
+import { get } from '../Base/RegisteredNamedMethods';
 
 export interface IResultListOptions {
   resultContainer?: HTMLElement;
@@ -303,6 +304,19 @@ export class ResultList extends Component {
       this.setupTemplatesVersusLayouts();
       $$(this.root).on(ResultLayoutEvents.populateResultLayout, (e, args) => args.layouts.push(this.options.layout));
     }
+  }
+
+  /**
+   * Get the fields needed to be automatically included in the query for this result list.
+   * @returns {string[]}
+   */
+  public getAutoSelectedFieldsToInclude(): string[] {
+
+    return _.chain(this.options.resultTemplate.getFields())
+      .concat(this.getMinimalFieldsToInclude())
+      .compact()
+      .unique()
+      .value();
   }
 
   private setupTemplatesVersusLayouts() {
@@ -584,7 +598,12 @@ export class ResultList extends Component {
       args.queryBuilder.addFieldsToInclude(_.map(this.options.fieldsToInclude, (field) => field.substr(1)));
     }
     if (this.options.autoSelectFieldsToInclude) {
-      args.queryBuilder.addRequiredFields(this.getAutoSelectedFieldsToInclude());
+      const otherResultListsElements = _.reject($$(this.root).findAll(`.${Component.computeCssClassName(ResultList)}`), resultListElement => resultListElement == this.element);
+      const otherFields = _.flatten(_.map(otherResultListsElements, (otherResultListElement) => {
+        return (<ResultList>get(otherResultListElement)).getAutoSelectedFieldsToInclude();
+      }));
+
+      args.queryBuilder.addRequiredFields(_.unique(otherFields.concat(this.getAutoSelectedFieldsToInclude())));
       args.queryBuilder.includeRequiredFields = true;
     }
   }
@@ -610,21 +629,13 @@ export class ResultList extends Component {
     }
   }
 
-  private getAutoSelectedFieldsToInclude() {
-    return _.chain(this.options.resultTemplate.getFields())
-      .concat(this.getMinimalFieldsToInclude())
-      .compact()
-      .unique()
-      .value();
-  }
-
   private isCurrentlyFetchingMoreResults(): boolean {
     return Utils.exists(this.fetchingMoreResults);
   }
 
   private getMinimalFieldsToInclude() {
     // these fields are needed for analytics click event
-    return ['author', 'language', 'urihash', 'objecttype', 'collection', 'source', 'language', 'uniqueid'];
+    return ['author', 'language', 'urihash', 'objecttype', 'collection', 'source', 'language', 'permanentid'];
   }
 
   private isScrollingOfResultListAlmostAtTheBottom(): boolean {

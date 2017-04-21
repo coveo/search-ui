@@ -51,6 +51,20 @@
       },
       "shouldDisplayLabel": true
     },
+    "oleFile": {
+      "icon": "file",
+      "captions": {
+        "en": "OLE file",
+        "fr": "Fichier OLE"
+      }
+    },
+    "gmailmessage": {
+      "icon": "mail",
+      "captions": {
+        "en": "Gmail Message",
+        "fr": "Message Gmail"
+      }
+    },
     "pdf": {
       "icon": "file",
       "captions": {
@@ -58,6 +72,13 @@
         "fr": "Fichier PDF"
       },
       "shouldDisplayLabel": true
+    },
+    "swf": {
+      "icon": "salesforce-doctype-flash",
+      "captions": {
+        "en": "Flash File",
+        "fr": "Fichier Flash"
+      }
     },
     "xml": {
       "icon": "file",
@@ -67,11 +88,48 @@
       },
       "shouldDisplayLabel": true
     },
+    "vsd": {
+      "icon": "salesforce-doctype-visio",
+      "captions": {
+        "en": "Visio",
+        "fr": "Visio"
+      }
+    },
+    "svg": {
+      "icon": "images",
+      "captions": {
+        "en": "SVG",
+        "fr": "SVG"
+      }
+    },
+    "svm": {
+      "icon": "salesforce-doctype-word",
+      "captions": {
+        "en": "Open Office",
+        "fr": "Open Office"
+      }
+    },
+    "rssitem": {
+      "icon": "file",
+      "captions": {
+        "en": "RSS feed",
+        "fr": "Flux RSS"
+      },
+      "shouldDisplayLabel": true
+    },
     "doc": {
       "icon": "file",
       "captions": {
         "en": "Document",
         "fr": "Document"
+      },
+      "shouldDisplayLabel": true
+    },
+    "docx": {
+      "icon": "file",
+      "captions": {
+        "en": "Microsoft Word Document",
+        "fr": "Document Microsoft Word"
       },
       "shouldDisplayLabel": true
     },
@@ -118,6 +176,21 @@
         "en": "Dynamics CRM",
         "fr": "Dynamics CRM"
       }
+    },
+    "salesforceitem": {
+      "icon": "salesforce-standard-default",
+      "captions": {
+        "en": "Salesforce",
+        "fr": "Salesforce"
+      }
+    },
+    "odt": {
+      "icon": "file",
+      "captions": {
+        "en": "Open Text Document",
+        "fr": "Document Open Text"
+      },
+      "shouldDisplayLabel": true
     }
   }
 }
