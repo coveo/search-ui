@@ -6,7 +6,7 @@
   "types": "./bin/ts/CoveoJsSearch.d.ts",
   "scripts": {
     "test": "gulp test && gulp coverage",
-    "testChunks" : "node chunkTesters/chunk.tester.js",
+    "testChunks": "node chunkTesters/chunk.tester.js",
     "build": "gulp",
     "tsonly": "gulp compileTSOnly",
     "minimize": "node node_modules/webpack/bin/webpack.js --env minimize",
@@ -62,6 +62,7 @@
     "@types/moment": "^2.13.0",
     "@types/pikaday": "0.0.31",
     "@types/underscore": "^1.7.33",
+    "@types/webpack-env": "^1.13.0",
     "awesome-typescript-loader": "^2.2.4",
     "bluebird": "^3.4.7",
     "cheerio": "^0.20.0",
