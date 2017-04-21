@@ -1,9 +1,10 @@
 import { CoreHelpers } from './ui/Templates/CoreHelpers';
-import _ = require('underscore');
+import * as _ from 'underscore';
 
 // Webpack output a library target with a temporary name.
-// This is to allow end user to put CoveoJsSearch.Dependencie.js before or after the main CoveoJsSearch.js, without breaking
-// This code swap the current module to the "real" Coveo variable.
+// It does not take care of merging the namespace if the global variable already exists.
+// If another piece of code in the page use the Coveo namespace (eg: extension), then they get overwritten
+// This code swap the current module to the "real" Coveo variable, without overwriting the whole global var.
 
 
 export function swapVar(scope: any) {

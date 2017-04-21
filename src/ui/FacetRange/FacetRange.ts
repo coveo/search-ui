@@ -10,7 +10,9 @@ import { DateUtils } from '../../utils/DateUtils';
 import { FacetRangeQueryController } from '../../controllers/FacetRangeQueryController';
 import { IGroupByResult } from '../../rest/GroupByResult';
 import { Initialization } from '../Base/Initialization';
-import Globalize = require('globalize');
+import * as Globalize from 'globalize';
+import { exportGlobally } from '../../GlobalExports';
+import { IStringMap } from '../../rest/GenericParam';
 
 export interface IFacetRangeOptions extends IFacetOptions {
   ranges?: IRangeValue[];
@@ -51,6 +53,12 @@ export interface IFacetRangeOptions extends IFacetOptions {
 export class FacetRange extends Facet implements IComponentBindings {
   static ID = 'FacetRange';
   static parent = Facet;
+
+  static doExport = () => {
+    exportGlobally({
+      'FacetRange': FacetRange
+    });
+  }
 
   /**
    * The options for the component
@@ -114,7 +122,7 @@ export class FacetRange extends Facet implements IComponentBindings {
      */
     ranges: ComponentOptions.buildCustomOption<IRangeValue[]>(() => {
       return null;
-    })
+    }),
   };
 
   public options: IFacetRangeOptions;
@@ -133,19 +141,23 @@ export class FacetRange extends Facet implements IComponentBindings {
     this.options.enableSettings = false;
     this.options.includeInOmnibox = false;
     this.options.enableMoreLess = false;
+
+    if (this.options.valueCaption == null && this.options.dateField == true) {
+      this.options.valueCaption = 'date';
+    }
   }
 
   public getValueCaption(facetValue: any): string {
-    var ret = super.getValueCaption(facetValue);
+    let ret = super.getValueCaption(facetValue);
     if (Utils.exists(this.options.valueCaption) && typeof this.options.valueCaption == 'string') {
-      var startEnd = /^(.*)\.\.(.*)$/.exec(facetValue.value);
+      const startEnd = /^(.*)\.\.(.*)$/.exec(facetValue.value);
       if (startEnd != null) {
-        var helper = TemplateHelpers.getHelper(this.options.valueCaption);
+        const helper = TemplateHelpers.getHelper(this.options.valueCaption);
         if (helper != null) {
           ret = helper.call(this, startEnd[1]) + ' - ' + helper.call(this, startEnd[2]);
         } else {
-          var start = startEnd[1].match(/^[\+\-]?[0-9]+(\.[0-9]+)?$/) ? <any>Number(startEnd[1]) : <any>DateUtils.convertFromJsonDateIfNeeded(startEnd[1]);
-          var end = startEnd[2].match(/^[\+\-]?[0-9]+(\.[0-9]+)?$/) ? <any>Number(startEnd[2]) : <any>DateUtils.convertFromJsonDateIfNeeded(startEnd[2]);
+          const start = startEnd[1].match(/^[\+\-]?[0-9]+(\.[0-9]+)?$/) ? <any>Number(startEnd[1]) : <any>DateUtils.convertFromJsonDateIfNeeded(startEnd[1]);
+          const end = startEnd[2].match(/^[\+\-]?[0-9]+(\.[0-9]+)?$/) ? <any>Number(startEnd[2]) : <any>DateUtils.convertFromJsonDateIfNeeded(startEnd[2]);
           ret = Globalize.format(start, this.options.valueCaption) + ' - ' + Globalize.format(end, this.options.valueCaption);
         }
       }
@@ -162,8 +174,8 @@ export class FacetRange extends Facet implements IComponentBindings {
       if (this.options.ranges == null && (!this.keepDisplayedValuesNextTime || this.values.hasSelectedOrExcludedValues())) {
         this.keepDisplayedValuesNextTime = false;
         groupByResult.values.sort((valueA, valueB) => {
-          var startEndA = valueA.value.split('..');
-          var startEndB = valueB.value.split('..');
+          const startEndA = valueA.value.split('..');
+          const startEndB = valueB.value.split('..');
           if (this.options.dateField) {
             return Date.parse(startEndA[0]) - Date.parse(startEndB[0]);
           }

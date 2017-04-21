@@ -4,7 +4,6 @@ import { QueryController } from '../../controllers/QueryController';
 import { QueryStateModel, setState } from '../../models/QueryStateModel';
 import { IQueryResult } from '../../rest/QueryResult';
 import { IQueryResults } from '../../rest/QueryResults';
-import { Analytics } from '../Analytics/Analytics';
 import { IAnalyticsClient } from '../Analytics/AnalyticsClient';
 import { InitializationEvents } from '../../events/InitializationEvents';
 import { $$ } from '../../utils/Dom';
@@ -14,41 +13,44 @@ import { BaseComponent } from '../Base/BaseComponent';
 import { Component } from '../Base/Component';
 import { IStandaloneSearchInterfaceOptions } from '../SearchInterface/SearchInterface';
 import { IRecommendationOptions } from '../Recommendation/Recommendation';
-import _ = require('underscore');
+import * as _ from 'underscore';
 
 /**
- * Initialize the framework with a basic search interface. Calls {@link Initialization.initSearchInterface}.<br/>
+ * Initialize the framework with a basic search interface. Calls {@link Initialization.initSearchInterface}.
+ *
  * If using the jQuery extension, this is called using <code>$('#root').coveo('init');</code>.
  * @param element The root of the interface to initialize.
  * @param options JSON options for the framework (e.g.: <code>{Searchbox : {enableSearchAsYouType : true}}</code>).
+ * @returns {Promise<{elem: HTMLElement}>}
  */
 export function init(element: HTMLElement, options: any = {}) {
-  Initialization.initializeFramework(element, options, () => {
-    Initialization.initSearchInterface(element, options);
+  return Initialization.initializeFramework(element, options, () => {
+    return Initialization.initSearchInterface(element, options);
   });
 }
 
 Initialization.registerNamedMethod('init', (element: HTMLElement, options: any = {}) => {
-  init(element, options);
+  return init(element, options);
 });
 
 /**
- * Initialize the framework with a standalone search box. Calls {@link Initialize.initStandaloneSearchInterface}.<br/>
+ * Initialize the framework with a standalone search box. Calls {@link Initialize.initStandaloneSearchInterface}.
+ *
  * If using the jQuery extension, this is called using <code>$('#root').coveo('initSearchbox');</code>.
  * @param element The root of the interface to initialize.
  * @param searchPageUri The search page on which to redirect when there is a query.
  * @param options JSON options for the framework (e.g.: <code>{Searchbox : {enableSearchAsYouType : true}}</code>).
+ * @returns {Promise<{elem: HTMLElement}>}
  */
-export function initSearchbox(element: HTMLElement, searchPageUri: string, options: any = {}): void {
+export function initSearchbox(element: HTMLElement, searchPageUri: string, options: any = {}) {
   Assert.isNonEmptyString(searchPageUri);
   var searchInterfaceOptions = <IStandaloneSearchInterfaceOptions>{};
   searchInterfaceOptions.searchPageUri = searchPageUri;
   searchInterfaceOptions.autoTriggerQuery = false;
-  searchInterfaceOptions.hideUntilFirstQuery = false;
   searchInterfaceOptions.enableHistory = false;
   options = _.extend({}, options, { StandaloneSearchInterface: searchInterfaceOptions });
-  Initialization.initializeFramework(element, options, () => {
-    Initialization.initStandaloneSearchInterface(element, options);
+  return Initialization.initializeFramework(element, options, () => {
+    return Initialization.initStandaloneSearchInterface(element, options);
   });
 }
 
@@ -57,21 +59,23 @@ Initialization.registerNamedMethod('initSearchbox', (element: HTMLElement, searc
 });
 
 /**
- * Initialize the framework with a recommendation interface. Calls {@link Initialization.initRecommendationInterface}.<br/>
+ * Initialize the framework with a recommendation interface. Calls {@link Initialization.initRecommendationInterface}.
+ *
  * If using the jQuery extension, this is called using <code>$('#root').coveo('initRecommendation');</code>.
  * @param element The root of the interface to initialize.
  * @param mainSearchInterface The search interface to link with the recommendation interface (see {@link Recommendation}).
  * @param userContext The user context to pass with the query generated in the recommendation interface (see {@link Recommendation}).
  * @param options JSON options for the framework (e.g.: <code>{Searchbox : {enableSearchAsYouType: true}}</code>).
+ * @returns {Promise<{elem: HTMLElement}>}
  */
-export function initRecommendation(element: HTMLElement, mainSearchInterface?: HTMLElement, userContext?: { [name: string]: any }, options: any = {}): void {
+export function initRecommendation(element: HTMLElement, mainSearchInterface?: HTMLElement, userContext?: { [name: string]: any }, options: any = {}) {
   var recommendationOptions = <IRecommendationOptions>{};
   recommendationOptions.mainSearchInterface = mainSearchInterface;
   recommendationOptions.userContext = JSON.stringify(userContext);
   recommendationOptions.enableHistory = false;
   options = _.extend({}, options, { Recommendation: recommendationOptions });
-  Initialization.initializeFramework(element, options, () => {
-    Initialization.initRecommendationInterface(element, options);
+  return Initialization.initializeFramework(element, options, () => {
+    return Initialization.initRecommendationInterface(element, options);
   });
 }
 
@@ -79,13 +83,17 @@ Initialization.registerNamedMethod('initRecommendation', (element: HTMLElement, 
   initRecommendation(element, mainSearchInterface, userContext, options);
 });
 
-
 /**
- * Execute a standard query. Active component in the interface will react to events/ push data in the query / handle the query success or failure as needed.<br/>
- * It triggers a standard query flow for which the standard component will perform their expected behavior.<br/>
- * If you wish to only perform a query on the index to retrieve results (without the component reacting), look into {@link SearchInterface} instead.<br/>
+ * Execute a standard query. Active component in the interface will react to events/ push data in the query / handle the query success or failure as needed.
+ *
+ * It triggers a standard query flow for which the standard component will perform their expected behavior.
+ *
+ * If you wish to only perform a query on the index to retrieve results (without the component reacting), look into {@link SearchInterface} instead.
+ *
  * Calling this method is the same as calling {@link QueryController.executeQuery}.
+ *
  * @param element The root of the interface to initialize.
+ * @returns {Promise<IQueryResults>}
  */
 export function executeQuery(element: HTMLElement): Promise<IQueryResults> {
   Assert.exists(element);
@@ -150,7 +158,7 @@ Initialization.registerNamedMethod('result', (element: HTMLElement, noThrow?: bo
 });
 
 function getCoveoAnalyticsClient(element: HTMLElement): IAnalyticsClient {
-  var analytics = getCoveoAnalytics(element);
+  var analytics = <any>getCoveoAnalytics(element);
   if (analytics) {
     return analytics.client;
   } else {
@@ -158,10 +166,10 @@ function getCoveoAnalyticsClient(element: HTMLElement): IAnalyticsClient {
   }
 }
 
-function getCoveoAnalytics(element: HTMLElement): Analytics {
-  var analyticsElement = $$(element).find('.' + Component.computeCssClassName(Analytics));
+function getCoveoAnalytics(element: HTMLElement) {
+  var analyticsElement = $$(element).find('.' + Component.computeCssClassNameForType(`Analytics`));
   if (analyticsElement) {
-    return <Analytics>Component.get(analyticsElement);
+    return Component.get(analyticsElement);
   } else {
     return undefined;
   }
@@ -292,7 +300,7 @@ export function initBox(element: HTMLElement, ...args: any[]) {
   merged[type || 'Container'] = _.extend({}, options.SearchInterface, options[type]);
   options = _.extend({}, options, merged);
   Initialization.initializeFramework(element, options, () => {
-    Initialization.initBoxInterface(element, options, type, injectMarkup);
+    return Initialization.initBoxInterface(element, options, type, injectMarkup);
   });
 }
 

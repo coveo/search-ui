@@ -2,7 +2,7 @@ import { QueryController } from '../controllers/QueryController';
 import { Logger } from './Logger';
 import { ISentryLog } from '../rest/SentryLog';
 import { DeviceUtils } from '../utils/DeviceUtils';
-import _ = require('underscore');
+import * as _ from 'underscore';
 
 export class SentryLogger {
   private logger: Logger;

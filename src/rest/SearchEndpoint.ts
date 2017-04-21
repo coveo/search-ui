@@ -15,7 +15,7 @@ import { IListFieldsResult } from '../rest/ListFieldsResult';
 import { IExtension } from '../rest/Extension';
 import { IRatingRequest } from '../rest/RatingRequest';
 import { ITaggingRequest } from '../rest/TaggingRequest';
-import { IRevealQuerySuggestRequest, IRevealQuerySuggestResponse } from '../rest/RevealQuerySuggest';
+import { IQuerySuggestRequest, IQuerySuggestResponse } from '../rest/QuerySuggest';
 import { ISentryLog } from './SentryLog';
 import { ISubscriptionRequest, ISubscription } from '../rest/Subscription';
 import { AjaxError } from '../rest/AjaxError';
@@ -23,9 +23,8 @@ import { MissingAuthenticationError } from '../rest/MissingAuthenticationError';
 import { QueryUtils } from '../utils/QueryUtils';
 import { QueryError } from '../rest/QueryError';
 import { Utils } from '../utils/Utils';
-import { Promise } from 'es6-promise';
+import * as _ from 'underscore';
 import { shim } from '../misc/PromisesShim';
-import _ = require('underscore');
 shim();
 
 export class DefaultSearchEndpointOptions implements ISearchEndpointOptions {
@@ -568,21 +567,25 @@ export class SearchEndpoint implements ISearchEndpoint {
   }
 
   /**
-   * Returns a list of Coveo Machine Learning query suggestions, based on the given request
+   * Returns a list of query suggestions, based on the given request
    * @param request query and number of suggestions to return
    * @param callOptions Additional set of options to use for this call.
    * @param callParams Options injected by the applied decorators.
-   * @returns {Promise<IRevealQuerySuggestResponse>}
+   * @returns {Promise<IQuerySuggestResponse>}
    */
   @path('/querySuggest')
   @method('GET')
   @responseType('text')
-  public getRevealQuerySuggest(request: IRevealQuerySuggestRequest, callOptions?: IEndpointCallOptions, callParams?: IEndpointCallParameters): Promise<IRevealQuerySuggestResponse> {
-    this.logger.info('Get Reveal Query Suggest', request);
-
+  public getQuerySuggest(request: IQuerySuggestRequest, callOptions?: IEndpointCallOptions, callParams?: IEndpointCallParameters): Promise<IQuerySuggestResponse> {
+    this.logger.info('Get Query Suggest', request);
     callParams.requestData = request;
+    return this.performOneCall<IQuerySuggestResponse>(callParams);
+  }
 
-    return this.performOneCall<IRevealQuerySuggestResponse>(callParams);
+  // This is a non documented method to ensure backward compatibility for the old query suggest call.
+  // It simply calls the "real" official and documented method.
+  public getRevealQuerySuggest(request: IQuerySuggestRequest, callOptions?: IEndpointCallOptions, callParams?: IEndpointCallParameters): Promise<IQuerySuggestResponse> {
+    return this.getQuerySuggest(request, callOptions, callParams);
   }
 
   /**
@@ -636,7 +639,7 @@ export class SearchEndpoint implements ISearchEndpoint {
         // Trap 503 error, as the listSubscription call is called on every page initialization
         // to check for current subscriptions. By default, the search alert service is not enabled for most organization
         // Don't want to pollute the console with un-needed noise and confusion
-        if (e.status != 503) {
+        if (e.status != 403) {
           throw e;
         }
       });
@@ -818,11 +821,15 @@ export class SearchEndpoint implements ISearchEndpoint {
     params.queryString = params.queryString.concat(queryString);
     params.queryString = _.uniq(params.queryString);
 
+    const startTime = new Date();
     return this.caller.call(params)
       .then((response?: ISuccessResponse<T>) => {
-        if (response.data && (<any>response.data).clientDuration) {
-          (<any>response.data).clientDuration = response.duration;
+        if (response.data == null) {
+          response.data = <any>{};
         }
+        const timeToExecute = new Date().getTime() - startTime.getTime();
+        (<any>response.data).clientDuration = timeToExecute;
+        (<any>response.data).duration = response.duration || timeToExecute;
         return response.data;
       }).catch((error?: IErrorResponse) => {
         if (autoRenewToken && this.canRenewAccessToken() && this.isAccessTokenExpiredStatus(error.statusCode)) {

@@ -1,3 +1,8 @@
+@import "mixins/resultsHeaderElement";
+@import "../bin/sass/sprites";
+@import "bourbon/bourbon";
+@import "Variables";
+
 $stop-float: new-breakpoint(max-width 480px 1);
 
 .coveo-sort-section {
@@ -10,17 +15,18 @@ $stop-float: new-breakpoint(max-width 480px 1);
   .coveo-icon {
     margin-left: 5px;
     position: relative;
-    @extend .coveo-sprites-arrow-down;
+    top: 2px;
+    @include retina-sprite($arrow-down-group);
   }
 
   &.coveo-ascending {
     .coveo-icon {
-      @extend .coveo-sprites-arrow-up;
+      @include retina-sprite($arrow-up-group);
     }
   }
   &.coveo-descending {
     .coveo-icon {
-      @extend .coveo-sprites-arrow-down;
+      @include retina-sprite($arrow-down-group);
     }
   }
 

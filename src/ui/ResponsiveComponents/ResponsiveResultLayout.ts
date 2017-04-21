@@ -8,7 +8,7 @@ import { Component } from '../Base/Component';
 import { ResultLayout, ValidLayout } from '../ResultLayout/ResultLayout';
 import { Logger } from '../../misc/Logger';
 import { SearchInterface } from '../SearchInterface/SearchInterface';
-import _ = require('underscore');
+import * as _ from 'underscore';
 
 export class ResponsiveResultLayout implements IResponsiveComponent {
   private searchInterface: SearchInterface;

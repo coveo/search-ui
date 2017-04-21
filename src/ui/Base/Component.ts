@@ -13,7 +13,7 @@ import { NoopAnalyticsClient } from '../../ui/Analytics/NoopAnalyticsClient';
 import { BaseComponent } from './BaseComponent';
 import { IComponentBindings } from './ComponentBindings';
 import { DebugEvents } from '../../events/DebugEvents';
-import _ = require('underscore');
+import * as _ from 'underscore';
 
 /**
  * Definition for a Component.
@@ -29,6 +29,10 @@ export interface IComponentDefinition {
    * For example, SearchButton -> static ID : SearchButton -> className : CoveoSearchButton
    */
   className?: string;
+  /**
+   * Function that can be called to export one or multiple module in the global scope.
+   */
+  doExport?: () => void;
   /**
    * Constructor for each component
    * @param element The HTMLElement on which the component will instantiate.

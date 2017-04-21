@@ -6,7 +6,10 @@ import { Assert } from '../../misc/Assert';
 import { $$ } from '../../utils/Dom';
 import { l } from '../../strings/Strings';
 import { Initialization } from '../Base/Initialization';
-import Globalize = require('globalize');
+import * as Globalize from 'globalize';
+import { exportGlobally } from '../../GlobalExports';
+
+import 'styling/_QueryDuration';
 
 export interface IQueryDurationOptions {
 }
@@ -21,6 +24,12 @@ export interface IQueryDurationOptions {
  */
 export class QueryDuration extends Component {
   static ID = 'QueryDuration';
+
+  static doExport = () => {
+    exportGlobally({
+      'QueryDuration': QueryDuration
+    });
+  }
 
   static options: IQueryDurationOptions = {
   };
@@ -52,13 +61,13 @@ export class QueryDuration extends Component {
       Assert.exists(data);
 
       let tooltip = [
-        l('Duration', this.formatQueryDuration(data.results.duration)),
-        l('IndexDuration', this.formatQueryDuration(data.results.indexDuration)),
+        l('Duration', this.formatQueryDuration(data.results.clientDuration)),
+        l('IndexDuration', this.formatQueryDuration(data.results.duration)),
         l('ProxyDuration', this.formatQueryDuration(data.results.proxyDuration)),
         l('ClientDuration', this.formatQueryDuration(data.results.clientDuration))
       ].join('\n');
 
-      this.textContainer.textContent = this.formatQueryDuration(data.results.duration);
+      this.textContainer.textContent = this.formatQueryDuration(data.results.clientDuration);
       this.element.setAttribute('title', tooltip);
       this.element.style.display = 'inline';
     } else {

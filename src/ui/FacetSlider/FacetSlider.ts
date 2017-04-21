@@ -5,7 +5,6 @@ import { ISliderOptions, Slider, IEndSlideEventArgs, IDuringSlideEventArgs, ISli
 import { Component } from '../Base/Component';
 import { IComponentBindings } from '../Base/ComponentBindings';
 import { ComponentOptions, IFieldOption } from '../Base/ComponentOptions';
-import { ResponsiveFacets } from '../ResponsiveComponents/ResponsiveFacets';
 import { FacetHeader } from '../Facet/FacetHeader';
 import { l } from '../../strings/Strings';
 import { InitializationEvents } from '../../events/InitializationEvents';
@@ -21,9 +20,13 @@ import { Assert } from '../../misc/Assert';
 import { Utils } from '../../utils/Utils';
 import { ResponsiveComponentsUtils } from '../ResponsiveComponents/ResponsiveComponentsUtils';
 import { Initialization } from '../Base/Initialization';
-import d3 = require('d3');
 import { SearchAlertsEvents, ISearchAlertsPopulateMessageEventArgs } from '../../events/SearchAlertEvents';
-import _ = require('underscore');
+import * as _ from 'underscore';
+import { exportGlobally } from '../../GlobalExports';
+import { ResponsiveFacetSlider } from '../ResponsiveComponents/ResponsiveFacetSlider';
+
+import 'styling/_FacetSlider';
+
 
 export interface IFacetSliderOptions extends ISliderOptions {
   dateField?: boolean;
@@ -350,6 +353,14 @@ export class FacetSlider extends Component {
   };
 
   static ID = 'FacetSlider';
+
+  static doExport = () => {
+    exportGlobally({
+      'FacetSlider': FacetSlider,
+      'Slider': Slider
+    });
+  }
+
   public static DEBOUNCED_RESIZE_DELAY = 250;
 
   public startOfSlider: number;
@@ -377,7 +388,7 @@ export class FacetSlider extends Component {
     super(element, FacetSlider.ID, bindings);
     this.options = ComponentOptions.initComponentOptions(element, FacetSlider, options);
 
-    ResponsiveFacets.init(this.root, this, this.options);
+    ResponsiveFacetSlider.init(this.root, this, this.options);
 
     if (this.options.excludeOuterBounds == null) {
       this.options.excludeOuterBounds = false;
@@ -389,11 +400,6 @@ export class FacetSlider extends Component {
 
     if (this.options.end) {
       this.options.end = this.options.dateField ? <any>new Date(this.options.end.replace(/-/g, '/')).getTime() : <any>Number(this.options.end);
-    }
-
-    if (this.hasAGraph() && typeof d3 == 'undefined') {
-      this.options.graph = undefined;
-      this.logger.info('Cannot find the required dependencies d3.js. Cannot add graphic to your facet range', this);
     }
 
     this.facetQueryController = new FacetSliderQueryController(this);

@@ -1,26 +1,13 @@
+@import "Variables";
+@import "mixins/pagerList";
+@import "../bin/sass/sprites.scss";
+
 .coveo-pager-list {
-  padding-left:0;
-  margin:0;
-  display: inline-block;
+  @include pager-list;
 }
 
 .coveo-pager-list-item {
-  @include defaultRoundedBorder();
-  margin: 5px 6px;
-  padding: 4px 8px;
-  list-style: none;
-  display: inline-block;
-  vertical-align: baseline;
-  color: $color-vibrant-blue;
-  font-size: $font-size-smaller;
-  &.coveo-active, &:hover {
-    color: $color-greyish-cyan;
-    background-color: $color-greyish-teal-blue;
-    & a {
-      color: $color-greyish-cyan;
-    }
-  }
-  cursor: pointer;
+  @include pager-list-item;
 }
 
 .coveo-pager-previous, .coveo-pager-next{
@@ -38,12 +25,12 @@
 }
 
 .coveo-pager-next > a > span {
-  @extend .coveo-sprites-pager-right-arrow;
+  @include retina-sprite($pager-right-arrow-group);
   vertical-align: middle;
 }
 
 .coveo-pager-previous > a > span {
-  @extend .coveo-sprites-pager-left-arrow;
+  @include retina-sprite($pager-left-arrow-group);
   vertical-align: middle;
 }
 

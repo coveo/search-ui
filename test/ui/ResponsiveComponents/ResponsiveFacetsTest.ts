@@ -75,10 +75,6 @@ export function ResponsiveFacetsTest() {
       }, ResponsiveFacets.DEBOUNCE_SCROLL_WAIT + 1);
     });
 
-    it('registers drawFacetSliderGraphs as an on open handler on the responsive dropdown', () => {
-      expect(responsiveDropdown.registerOnOpenHandler).toHaveBeenCalledWith(responsiveFacets.drawFacetSliderGraphs, responsiveFacets);
-    });
-
     it('registers dismissFacetSearches an on close handler on the responsive dropdown', () => {
       expect(responsiveDropdown.registerOnCloseHandler).toHaveBeenCalledWith(responsiveFacets.dismissFacetSearches, responsiveFacets);
     });
@@ -153,9 +149,7 @@ export function ResponsiveFacetsTest() {
         responsiveFacets.handleResizeEvent();
         shouldSwitchToLargeMode();
         ResponsiveComponentsUtils.activateSmallFacet(root);
-
         responsiveFacets.handleResizeEvent();
-
         expect(facet.options.preservePosition).toBe(true);
       });
 
@@ -194,16 +188,6 @@ export function ResponsiveFacetsTest() {
       spyOn(facet.facetSearch, 'completelyDismissSearch');
       responsiveFacets.dismissFacetSearches();
       expect(facet.facetSearch.completelyDismissSearch).toHaveBeenCalled();
-    });
-
-    it('calls drawDelayedGraphData on the registered facet when drawFacetSliderGraphs is called', () => {
-      let facetSlider = new FacetSlider(root.el, {}, envBuilder.getBindings());
-      spyOn(facetSlider, 'drawDelayedGraphData');
-      responsiveFacets.registerComponent(facetSlider);
-
-      responsiveFacets.drawFacetSliderGraphs();
-
-      expect(facetSlider.drawDelayedGraphData).toHaveBeenCalled();
     });
 
     it('should need the dropdown wrapper when the width is under the breakpoint specified', () => {

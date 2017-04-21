@@ -1,0 +1,164 @@
+@import "Variables";
+@import "mixins/mediaQuery";
+
+@include keyframes(placeholderColorChange) {
+  0% {
+    background: $color-light-grey;
+  }
+  50% {
+    background: $color-blueish-white-grey;
+  }
+  100% {
+    background: $color-light-grey;
+  }
+}
+
+@mixin placeholderLoading {
+  @include animation-name(placeholderColorChange);
+  @include animation-timing-function(linear);
+  @include animation-duration(2s);
+  @include animation-iteration-count(infinite);
+}
+
+.coveo-placeholder-icon {
+  width: 64px;
+  height: 64px;
+  margin-left: 2px;
+}
+
+.coveo-placeholder-icon-small {
+  width: 32px;
+  height: 32px;
+  margin-left: 2px;
+}
+
+.coveo-placeholder-title {
+  height: 16px;
+  margin-bottom: 20px;
+}
+
+.coveo-placeholder-text {
+  height: 8px;
+}
+
+.CoveoSearchInterface.coveo-during-initialization {
+  .CoveoBreadcrumb {
+    display: none;
+  }
+  .CoveoHiddenQuery {
+    display: none;
+  }
+  .CoveoDidYouMean {
+    display: none;
+  }
+  .CoveoErrorReport {
+    display: none;
+  }
+  .coveo-results-header {
+    height: 42px;
+    visibility: hidden;
+  }
+  @include mediaSelector(800) {
+    .coveo-results-header {
+      height: 69px;
+    }
+    .coveo-facet-column {
+      display: none;
+    }
+  }
+}
+
+.coveo-placeholder-title, .coveo-placeholder-text, .coveo-placeholder-icon, .coveo-placeholder-icon-small {
+  @include placeholderLoading();
+}
+
+.CoveoFacet.coveo-during-initialization {
+  display: none;
+
+  &.coveo-with-placeholder {
+    @include defaultRoundedBorder();
+    margin-bottom: 20px;
+    display: block;
+    @include mediaSelector(480) {
+      display: none;
+    }
+    > * {
+      display: none;
+    }
+  }
+
+  .coveo-facet-placeholder {
+    display: block;
+
+    .coveo-placeholder-title {
+      height: 24px;
+    }
+
+    .coveo-facet-placeholder-line {
+      padding: 0px 20px 0px 20px;
+      margin-bottom: 20px;
+      display: flex;
+    }
+
+    .coveo-facet-placeholder-checkbox {
+      display: inline-block;
+      width: 15px;
+      height: 15px;
+      align-self: center;
+      margin-right: 10px;
+      @include placeholderLoading();
+    }
+
+    .coveo-placeholder-text {
+      flex-grow: 1;
+      align-self: center;
+    }
+  }
+}
+
+.CoveoSearchbox.coveo-during-initialization {
+  display: block;
+  height: 50px;
+  @include defaultRoundedBorder();
+}
+
+.CoveoResultList.coveo-during-initialization {
+  display: none;
+
+  &.coveo-with-placeholder {
+    .CoveoResult {
+      display: none;
+      &.coveo-placeholder-result {
+        display: block;
+      }
+    }
+    display: block;
+    .coveo-placeholder-result {
+      margin: 20px 0px 20px 20px;
+    }
+    .coveo-placeholder-text {
+      margin-bottom: 12px;
+    }
+    .coveo-card-layout {
+      .coveo-placeholder-title {
+        margin-bottom: 0;
+      }
+
+      &.coveo-placeholder-result {
+        min-height: 220px;
+        margin: 0 20px 20px 0;
+      }
+    }
+  }
+}
+
+@include mediaSelector(480) {
+  .CoveoResultList.coveo-during-initialization.coveo-with-placeholder {
+    .coveo-card-layout.coveo-placeholder-result {
+      margin: 0 0 20px 0;
+    }
+  }
+}
+
+
+

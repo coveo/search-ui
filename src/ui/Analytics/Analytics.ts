@@ -17,9 +17,11 @@ import { LiveAnalyticsClient } from './LiveAnalyticsClient';
 import { MultiAnalyticsClient } from './MultiAnalyticsClient';
 import { IAnalyticsQueryErrorMeta, analyticsActionCauseList } from './AnalyticsActionListMeta';
 import { SearchInterface } from '../SearchInterface/SearchInterface';
-import { Recommendation } from '../Recommendation/Recommendation';
 import { RecommendationAnalyticsClient } from './RecommendationAnalyticsClient';
-import _ = require('underscore');
+import * as _ from 'underscore';
+import { exportGlobally } from '../../GlobalExports';
+import { PendingSearchEvent } from './PendingSearchEvent';
+import { PendingSearchAsYouTypeSearchEvent } from './PendingSearchAsYouTypeSearchEvent';
 
 export interface IAnalyticsOptions {
   user?: string;
@@ -46,8 +48,22 @@ export interface IAnalyticsOptions {
  *
  * See also [Sending Custom Analytics Events](https://developers.coveo.com/x/KoGfAQ) for more advanced use cases.
  */
+
 export class Analytics extends Component {
   static ID = 'Analytics';
+
+  static doExport() {
+    exportGlobally({
+      'PendingSearchEvent': PendingSearchEvent,
+      'PendingSearchAsYouTypeSearchEvent': PendingSearchAsYouTypeSearchEvent,
+      'analyticsActionCauseList': analyticsActionCauseList,
+      'NoopAnalyticsClient': NoopAnalyticsClient,
+      'LiveAnalyticsClient': LiveAnalyticsClient,
+      'MultiAnalyticsClient': MultiAnalyticsClient,
+      'Analytics': Analytics
+    });
+  }
+
   // NOTE: The default values for some of those options (`organization`, `endpoint`, `searchHub`) can be
   // overridden by generated code when using hosted search pages.
 
@@ -298,7 +314,7 @@ export class Analytics extends Component {
 
       }
 
-      let isRecommendation = $$(this.root).hasClass(Component.computeCssClassName(Recommendation));
+      let isRecommendation = $$(this.root).hasClass(Component.computeCssClassNameForType(`Recommendation`));
       this.instantiateAnalyticsClient(endpoint, elementToInitializeClient, isRecommendation);
 
     } else {
@@ -367,8 +383,10 @@ export class Analytics extends Component {
     let selector = Component.computeSelectorForType(Analytics.ID);
     let found: HTMLElement[] = [];
     found = found.concat($$(element).findAll(selector));
-    if (!(Component.get(element, SearchInterface) instanceof Recommendation)) {
-      found = this.ignoreElementsInsideRecommendationInterface(found);
+    if (Coveo['Recommendation']) {
+      if (!(Component.get(element, SearchInterface) instanceof Coveo['Recommendation'])) {
+        found = this.ignoreElementsInsideRecommendationInterface(found);
+      }
     }
     found.push($$(element).closest(Component.computeCssClassName(Analytics)));
     if ($$(element).is(selector)) {
@@ -387,7 +405,7 @@ export class Analytics extends Component {
 
   private static ignoreElementsInsideRecommendationInterface(found: HTMLElement[]): HTMLElement[] {
     return _.filter(found, (element) => {
-      return $$(element).closest(Component.computeCssClassName(Recommendation)) === undefined;
+      return $$(element).closest(Component.computeCssClassNameForType('Recommendation')) === undefined;
     });
   }
 

@@ -8,10 +8,11 @@ import { IListFieldValuesRequest } from '../../src/rest/ListFieldValuesRequest';
 import { IIndexFieldValue } from '../../src/rest/FieldValue';
 import { IExtension } from '../../src/rest/Extension';
 import { IFieldDescription } from '../../src/rest/FieldDescription';
-import { IRevealQuerySuggestResponse } from '../../src/rest/RevealQuerySuggest';
+import { IQuerySuggestResponse } from '../../src/rest/QuerySuggest';
 import { ISubscription } from '../../src/rest/Subscription';
 import { AjaxError } from '../../src/rest/AjaxError';
 import _ = require('underscore');
+
 
 export function SearchEndpointTest() {
   describe('SearchEndpoint', function () {
@@ -26,7 +27,7 @@ export function SearchEndpointTest() {
 
     it('allow to setup easily a search endpoint to point to a sample endpoint', function () {
       SearchEndpoint.configureSampleEndpoint();
-      var ep: SearchEndpoint = SearchEndpoint.endpoints['default'];
+      const ep: SearchEndpoint = SearchEndpoint.endpoints['default'];
       expect(ep).toBeDefined();
       expect(ep.options.accessToken).toBeDefined();
       expect(ep.options.restUri).toBeDefined();
@@ -34,7 +35,7 @@ export function SearchEndpointTest() {
 
     it('allow to setup easily a cloud endpoint', function () {
       SearchEndpoint.configureCloudEndpoint('foo', 'bar');
-      var ep: SearchEndpoint = SearchEndpoint.endpoints['default'];
+      const ep: SearchEndpoint = SearchEndpoint.endpoints['default'];
       expect(ep).toBeDefined();
       expect(ep.options.accessToken).toBe('bar');
       expect(ep.options.queryStringArguments['organizationId']).toBe('foo');
@@ -42,13 +43,13 @@ export function SearchEndpointTest() {
 
     it('allow to setup easily a on prem endpoint', function () {
       SearchEndpoint.configureOnPremiseEndpoint('foo.com');
-      var ep: SearchEndpoint = SearchEndpoint.endpoints['default'];
+      const ep: SearchEndpoint = SearchEndpoint.endpoints['default'];
       expect(ep).toBeDefined();
       expect(ep.options.restUri).toBe('foo.com');
     });
 
     describe('with a workgroup argument', function () {
-      var ep: SearchEndpoint;
+      let ep: SearchEndpoint;
 
       beforeEach(function () {
         ep = new SearchEndpoint({
@@ -64,13 +65,13 @@ export function SearchEndpointTest() {
       });
 
       it('should not map it to organizationId', function () {
-        var fakeResult = FakeResults.createFakeResult();
+        const fakeResult = FakeResults.createFakeResult();
         expect(ep.getViewAsHtmlUri(fakeResult.uniqueId)).toBe(ep.getBaseUri() + '/html?workgroup=myOrgId&uniqueId=' + fakeResult.uniqueId);
       });
     });
 
     describe('with an orgaganizationId argument', function () {
-      var ep: SearchEndpoint;
+      let ep: SearchEndpoint;
 
       beforeEach(function () {
         ep = new SearchEndpoint({
@@ -86,13 +87,13 @@ export function SearchEndpointTest() {
       });
 
       it('should not map it to workgroup', function () {
-        var fakeResult = FakeResults.createFakeResult();
+        const fakeResult = FakeResults.createFakeResult();
         expect(ep.getViewAsHtmlUri(fakeResult.uniqueId)).toBe(ep.getBaseUri() + '/html?organizationId=myOrgId&uniqueId=' + fakeResult.uniqueId);
       });
     });
 
     describe('with a search token argument', function () {
-      var ep: SearchEndpoint;
+      let ep: SearchEndpoint;
 
       beforeEach(function () {
         ep = new SearchEndpoint({
@@ -106,13 +107,13 @@ export function SearchEndpointTest() {
       });
 
       it('will add it in the query string', () => {
-        var fakeResult = FakeResults.createFakeResult();
+        const fakeResult = FakeResults.createFakeResult();
         expect(ep.getViewAsHtmlUri(fakeResult.uniqueId)).toBe(ep.getBaseUri() + '/html?access_token=token&uniqueId=' + fakeResult.uniqueId);
       });
     });
 
     describe('with a basic setup', function () {
-      var ep: SearchEndpoint;
+      let ep: SearchEndpoint;
 
       beforeEach(function () {
         ep = new SearchEndpoint({
@@ -152,7 +153,7 @@ export function SearchEndpointTest() {
       });
 
       it('allow to get an export to excel link', function () {
-        var qbuilder = new QueryBuilder();
+        const qbuilder = new QueryBuilder();
         qbuilder.expression.add('batman');
         expect(ep.getExportToExcelLink(qbuilder.build(), 56)).toContain(ep.getBaseUri() + '/?');
         expect(ep.getExportToExcelLink(qbuilder.build(), 56)).toContain('organizationId=myOrgId');
@@ -163,7 +164,7 @@ export function SearchEndpointTest() {
       });
 
       it('allow to get an uri to view as datastream', function () {
-        var fakeResult = FakeResults.createFakeResult();
+        const fakeResult = FakeResults.createFakeResult();
         expect(ep.getViewAsDatastreamUri(fakeResult.uniqueId, '$Thumbnail')).toContain(ep.getBaseUri() + '/datastream?');
         expect(ep.getViewAsDatastreamUri(fakeResult.uniqueId, '$Thumbnail')).toContain('organizationId=myOrgId');
         expect(ep.getViewAsDatastreamUri(fakeResult.uniqueId, '$Thumbnail')).toContain('potatoe=mashed');
@@ -172,7 +173,7 @@ export function SearchEndpointTest() {
       });
 
       it('allow to get an uri to view as html', function () {
-        var fakeResult = FakeResults.createFakeResult();
+        const fakeResult = FakeResults.createFakeResult();
         expect(ep.getViewAsHtmlUri(fakeResult.uniqueId)).toContain(ep.getBaseUri() + '/html?');
         expect(ep.getViewAsHtmlUri(fakeResult.uniqueId)).toContain('organizationId=myOrgId');
         expect(ep.getViewAsHtmlUri(fakeResult.uniqueId)).toContain('potatoe=mashed');
@@ -189,12 +190,12 @@ export function SearchEndpointTest() {
           ep.reset();
         });
 
-        it('for search', function (done) {
-          var qbuilder = new QueryBuilder();
+        it('for search', (done) => {
+          const qbuilder = new QueryBuilder();
           qbuilder.expression.add('batman');
           qbuilder.numberOfResults = 153;
           qbuilder.enableCollaborativeRating = true;
-          var promiseSuccess = ep.search(qbuilder.build());
+          const promiseSuccess = ep.search(qbuilder.build());
           expect(jasmine.Ajax.requests.mostRecent().url).toContain(ep.getBaseUri() + '/?');
           expect(jasmine.Ajax.requests.mostRecent().url).toContain('organizationId=myOrgId');
           expect(jasmine.Ajax.requests.mostRecent().url).toContain('potatoe=mashed');
@@ -211,7 +212,7 @@ export function SearchEndpointTest() {
             responseText: JSON.stringify(FakeResults.createFakeResults())
           });
 
-          var promiseFail = ep.search(qbuilder.build());
+          const promiseFail = ep.search(qbuilder.build());
           promiseFail
             .catch((e: AjaxError) => {
               expect(e).toBeDefined();
@@ -219,17 +220,18 @@ export function SearchEndpointTest() {
             })
             .catch((e: IErrorResponse) => {
               fail(e);
+              return e;
             })
-            .finally(() => done());
+            .then(() => done());
 
           jasmine.Ajax.requests.mostRecent().respondWith({
             status: 500
           });
         });
 
-        it('for getRawDataStream', function (done) {
-          var fakeResult = FakeResults.createFakeResult();
-          var promiseSuccess = ep.getRawDataStream(fakeResult.uniqueId, '$Thumbnail');
+        it('for getRawDataStream', (done) => {
+          const fakeResult = FakeResults.createFakeResult();
+          const promiseSuccess = ep.getRawDataStream(fakeResult.uniqueId, '$Thumbnail');
           expect(jasmine.Ajax.requests.mostRecent().url).toContain(ep.getBaseUri() + '/datastream?');
           expect(jasmine.Ajax.requests.mostRecent().url).toContain('uniqueId=' + fakeResult.uniqueId);
           expect(jasmine.Ajax.requests.mostRecent().url).toContain('dataStream=$Thumbnail');
@@ -244,8 +246,9 @@ export function SearchEndpointTest() {
             })
             .catch((e: IErrorResponse) => {
               fail(e);
+              return e;
             })
-            .finally(() => done());
+            .then(() => done());
 
           jasmine.Ajax.requests.mostRecent().respondWith({
             status: 200,
@@ -254,9 +257,9 @@ export function SearchEndpointTest() {
           });
         });
 
-        it('for getDocument', function (done) {
-          var fakeResult = FakeResults.createFakeResult();
-          var promiseSuccess = ep.getDocument(fakeResult.uniqueId);
+        it('for getDocument', (done) => {
+          const fakeResult = FakeResults.createFakeResult();
+          const promiseSuccess = ep.getDocument(fakeResult.uniqueId);
           expect(jasmine.Ajax.requests.mostRecent().url).toContain(ep.getBaseUri() + '/document?');
           expect(jasmine.Ajax.requests.mostRecent().url).toContain('uniqueId=' + fakeResult.uniqueId);
           expect(jasmine.Ajax.requests.mostRecent().url).toContain('organizationId=myOrgId');
@@ -270,8 +273,9 @@ export function SearchEndpointTest() {
             })
             .catch((e: IErrorResponse) => {
               fail(e);
+              return e;
             })
-            .finally(() => done());
+            .then(() => done());
 
           jasmine.Ajax.requests.mostRecent().respondWith({
             status: 200,
@@ -280,9 +284,9 @@ export function SearchEndpointTest() {
           });
         });
 
-        it('for getDocumentText', function (done) {
-          var fakeResult = FakeResults.createFakeResult();
-          var promiseSuccess = ep.getDocumentText(fakeResult.uniqueId);
+        it('for getDocumentText', (done) => {
+          const fakeResult = FakeResults.createFakeResult();
+          const promiseSuccess = ep.getDocumentText(fakeResult.uniqueId);
           expect(jasmine.Ajax.requests.mostRecent().url).toContain(ep.getBaseUri() + '/text?');
           expect(jasmine.Ajax.requests.mostRecent().url).toContain('uniqueId=' + fakeResult.uniqueId);
           expect(jasmine.Ajax.requests.mostRecent().url).toContain('organizationId=myOrgId');
@@ -296,8 +300,9 @@ export function SearchEndpointTest() {
             })
             .catch((e: IErrorResponse) => {
               fail(e);
+              return e;
             })
-            .finally(() => done());
+            .then(() => done());
 
           jasmine.Ajax.requests.mostRecent().respondWith({
             status: 200,
@@ -306,10 +311,10 @@ export function SearchEndpointTest() {
           });
         });
 
-        it('for getDocumentHtml', function (done) {
-          var fakeResult = FakeResults.createFakeResult();
-          var fakeDocument = document.implementation.createHTMLDocument(fakeResult.title);
-          var promiseSuccess = ep.getDocumentHtml(fakeResult.uniqueId);
+        it('for getDocumentHtml', (done) => {
+          const fakeResult = FakeResults.createFakeResult();
+          const fakeDocument = document.implementation.createHTMLDocument(fakeResult.title);
+          const promiseSuccess = ep.getDocumentHtml(fakeResult.uniqueId);
           expect(jasmine.Ajax.requests.mostRecent().url).toContain(ep.getBaseUri() + '/html?');
           expect(jasmine.Ajax.requests.mostRecent().url).toContain('uniqueId=' + fakeResult.uniqueId);
           expect(jasmine.Ajax.requests.mostRecent().url).toContain('organizationId=myOrgId');
@@ -323,8 +328,9 @@ export function SearchEndpointTest() {
             })
             .catch((e: IErrorResponse) => {
               fail(e);
+              return e;
             })
-            .finally(() => done());
+            .then(() => done());
 
           jasmine.Ajax.requests.mostRecent().respondWith({
             status: 200,
@@ -333,14 +339,14 @@ export function SearchEndpointTest() {
           });
         });
 
-        it('for listFieldValues', function (done) {
-          var request: IListFieldValuesRequest = {
+        it('for listFieldValues', (done) => {
+          const request: IListFieldValuesRequest = {
             field: '@field',
             maximumNumberOfValues: 153,
             pattern: '.*$',
             patternType: 'regex'
           };
-          var promisesSuccess = ep.listFieldValues(request);
+          const promisesSuccess = ep.listFieldValues(request);
           expect(jasmine.Ajax.requests.mostRecent().url).toContain(ep.getBaseUri() + '/values?');
           expect(jasmine.Ajax.requests.mostRecent().url).toContain('organizationId=myOrgId');
           expect(jasmine.Ajax.requests.mostRecent().url).toContain('potatoe=mashed');
@@ -357,8 +363,9 @@ export function SearchEndpointTest() {
             })
             .catch((e: IErrorResponse) => {
               fail(e);
+              return e;
             })
-            .finally(() => done());
+            .then(() => done());
 
           jasmine.Ajax.requests.mostRecent().respondWith({
             status: 200,
@@ -367,8 +374,8 @@ export function SearchEndpointTest() {
           });
         });
 
-        it('for listFields', function (done) {
-          var promiseSuccess = ep.listFields();
+        it('for listFields', (done) => {
+          const promiseSuccess = ep.listFields();
           expect(jasmine.Ajax.requests.mostRecent().url).toContain(ep.getBaseUri() + '/fields?');
           expect(jasmine.Ajax.requests.mostRecent().url).toContain('organizationId=myOrgId');
           expect(jasmine.Ajax.requests.mostRecent().url).toContain('potatoe=mashed');
@@ -382,8 +389,9 @@ export function SearchEndpointTest() {
             })
             .catch((e: IErrorResponse) => {
               fail(e);
+              return e;
             })
-            .finally(() => done());
+            .then(() => done());
 
           // Not real field description, but will suffice for test purpose
           jasmine.Ajax.requests.mostRecent().respondWith({
@@ -393,8 +401,8 @@ export function SearchEndpointTest() {
           });
         });
 
-        it('for extensions', function (done) {
-          var promiseSuccess = ep.extensions();
+        it('for extensions', (done) => {
+          const promiseSuccess = ep.extensions();
           expect(jasmine.Ajax.requests.mostRecent().url).toContain(ep.getBaseUri() + '/extensions?');
           expect(jasmine.Ajax.requests.mostRecent().url).toContain('organizationId=myOrgId');
           expect(jasmine.Ajax.requests.mostRecent().url).toContain('potatoe=mashed');
@@ -408,8 +416,9 @@ export function SearchEndpointTest() {
             })
             .catch((e: IErrorResponse) => {
               fail(e);
+              return e;
             })
-            .finally(() => done());
+            .then(() => done());
 
           // Not real extensions, but will suffice for test purpose
           jasmine.Ajax.requests.mostRecent().respondWith({
@@ -419,9 +428,9 @@ export function SearchEndpointTest() {
           });
         });
 
-        it('for rateDocument', function (done) {
-          var fakeResult = FakeResults.createFakeResult();
-          var promiseSuccess = ep.rateDocument({
+        it('for rateDocument', (done) => {
+          const fakeResult = FakeResults.createFakeResult();
+          const promiseSuccess = ep.rateDocument({
             rating: 'Best',
             uniqueId: fakeResult.uniqueId
           });
@@ -438,17 +447,18 @@ export function SearchEndpointTest() {
             })
             .catch((e: IErrorResponse) => {
               fail(e);
+              return e;
             })
-            .finally(() => done());
+            .then(() => done());
           jasmine.Ajax.requests.mostRecent().respondWith({
             status: 200,
             responseType: 'text'
           });
         });
 
-        it('for tagDocument', function (done) {
-          var fakeResult = FakeResults.createFakeResult();
-          var promiseSuccess = ep.tagDocument({
+        it('for tagDocument', (done) => {
+          const fakeResult = FakeResults.createFakeResult();
+          const promiseSuccess = ep.tagDocument({
             uniqueId: fakeResult.uniqueId,
             doAdd: true,
             fieldName: '@field',
@@ -472,8 +482,9 @@ export function SearchEndpointTest() {
             })
             .catch((e: IErrorResponse) => {
               fail(e);
+              return e;
             })
-            .finally(() => done());
+            .then(() => done());
 
           jasmine.Ajax.requests.mostRecent().respondWith({
             status: 200,
@@ -481,8 +492,8 @@ export function SearchEndpointTest() {
           });
         });
 
-        it('for getRevealQuerySuggest', function (done) {
-          var promiseSuccess = ep.getRevealQuerySuggest({
+        it('for getQuerySuggest', (done) => {
+          const promiseSuccess = ep.getQuerySuggest({
             q: 'foobar',
             count: 10
           });
@@ -496,13 +507,14 @@ export function SearchEndpointTest() {
 
           // Not real extensions, but will suffice for test purpose
           promiseSuccess
-            .then((response: IRevealQuerySuggestResponse) => {
+            .then((response: IQuerySuggestResponse) => {
               expect(response.completions.length).toBe(10);
             })
             .catch((e: IErrorResponse) => {
               fail(e);
+              return e;
             })
-            .finally(() => done());
+            .then(() => done());
 
           // Not real completions, but will suffice for test purpose
           jasmine.Ajax.requests.mostRecent().respondWith({
@@ -511,10 +523,37 @@ export function SearchEndpointTest() {
           });
         });
 
-        it('for follow', function (done) {
-          var qbuilder = new QueryBuilder();
+        it('for backward compatible query suggest call', (done) => {
+          const promiseSuccess = ep.getRevealQuerySuggest({
+            q: 'foobar',
+            count: 10
+          });
+
+          expect(jasmine.Ajax.requests.mostRecent().url).toContain(ep.getBaseUri() + '/querySuggest?');
+          expect(jasmine.Ajax.requests.mostRecent().url).toContain('q=foobar');
+
+          // Not real extensions, but will suffice for test purpose
+          promiseSuccess
+            .then((response: IQuerySuggestResponse) => {
+              expect(response.completions.length).toBe(10);
+            })
+            .catch((e: IErrorResponse) => {
+              fail(e);
+              return e;
+            })
+            .then(() => done());
+
+          // Not real completions, but will suffice for test purpose
+          jasmine.Ajax.requests.mostRecent().respondWith({
+            status: 200,
+            responseText: JSON.stringify({ completions: _.range(10) })
+          });
+        });
+
+        it('for follow', (done) => {
+          const qbuilder = new QueryBuilder();
           qbuilder.expression.add('batman');
-          var promiseSuccess = ep.follow({
+          const promiseSuccess = ep.follow({
             frequency: 'weekly',
             type: 'query',
             typeConfig: {
@@ -529,8 +568,9 @@ export function SearchEndpointTest() {
             })
             .catch((e: IErrorResponse) => {
               fail(e);
+              return e;
             })
-            .finally(() => done());
+            .then(() => done());
 
           expect(jasmine.Ajax.requests.mostRecent().url).toContain(ep.getBaseAlertsUri() + '/subscriptions?');
           expect(jasmine.Ajax.requests.mostRecent().url).toContain('organizationId=myOrgId');
@@ -552,19 +592,20 @@ export function SearchEndpointTest() {
           });
         });
 
-        it('for listSubscriptions', function (done) {
-          var promiseSuccess = ep.listSubscriptions(15);
+        it('for listSubscriptions', (done) => {
+          const promiseSuccess = ep.listSubscriptions(15);
           promiseSuccess
             .then((subs: ISubscription[]) => {
               expect(subs.length).toBe(44);
             })
             .catch((e: IErrorResponse) => {
               fail(e);
+              return e;
             })
-            .finally(() => done());
+            .then(() => done());
 
           // Should return the same promise, since it's not resolved yet
-          var promiseSuccess2 = ep.listSubscriptions(15);
+          const promiseSuccess2 = ep.listSubscriptions(15);
           expect(promiseSuccess).toBe(promiseSuccess2);
 
           expect(jasmine.Ajax.requests.mostRecent().url).toContain(ep.getBaseAlertsUri() + '/subscriptions?');
@@ -580,16 +621,17 @@ export function SearchEndpointTest() {
           });
         });
 
-        it('for updateSubscription', function (done) {
-          var promiseSuccess = ep.updateSubscription(getSubscriptionPromiseSuccess());
+        it('for updateSubscription', (done) => {
+          const promiseSuccess = ep.updateSubscription(getSubscriptionPromiseSuccess());
           promiseSuccess
             .then((sub: ISubscription) => {
               expect(sub.id).toBe('foobar');
             })
             .catch((e: IErrorResponse) => {
               fail(e);
+              return e;
             })
-            .finally(() => done());
+            .then(() => done());
 
           expect(jasmine.Ajax.requests.mostRecent().url).toContain(ep.getBaseAlertsUri() + '/subscriptions/foobar?');
           expect(jasmine.Ajax.requests.mostRecent().url).toContain('organizationId=myOrgId');
@@ -604,16 +646,17 @@ export function SearchEndpointTest() {
           });
         });
 
-        it('for deleteSubscription', function (done) {
-          var promiseSuccess = ep.deleteSubscription(getSubscriptionPromiseSuccess());
+        it('for deleteSubscription', (done) => {
+          const promiseSuccess = ep.deleteSubscription(getSubscriptionPromiseSuccess());
           promiseSuccess
             .then((sub: ISubscription) => {
               expect(sub.id).toBe('foobar');
             })
             .catch((e: IErrorResponse) => {
               fail(e);
+              return e;
             })
-            .finally(() => done());
+            .then(() => done());
 
           expect(jasmine.Ajax.requests.mostRecent().url).toContain(ep.getBaseAlertsUri() + '/subscriptions/foobar?');
           expect(jasmine.Ajax.requests.mostRecent().url).toContain('organizationId=myOrgId');
@@ -643,7 +686,7 @@ export function SearchEndpointTest() {
   });
 
   function getSubscriptionPromiseSuccess(): ISubscription {
-    var qbuilder = new QueryBuilder();
+    const qbuilder = new QueryBuilder();
     qbuilder.expression.add('batman');
     return {
       id: 'foobar',

@@ -2,7 +2,7 @@ import { Template } from './Template';
 import { Assert } from '../../misc/Assert';
 import { UnderscoreTemplate } from './UnderscoreTemplate';
 import { HtmlTemplate } from './HtmlTemplate';
-import _ = require('underscore');
+import * as _ from 'underscore';
 
 /**
  * Holds a reference to all template available in the framework
@@ -62,7 +62,7 @@ export class TemplateCache {
   }
 
   /**
-   * Return a template by its name/ID.
+   * Return a template by its name/FacID.
    * @param name
    * @returns {Template}
    */

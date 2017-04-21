@@ -1,10 +1,12 @@
 import {$$, Dom} from "../../../src/utils/Dom";
 import {Component} from "../../../src/ui/Base/Component";
 import {SearchEndpoint} from "../../../src/rest/SearchEndpoint";
-import {init, executeQuery} from "../../../src/ui/Base/RegisteredNamedMethods";
+import { executeQuery } from "../../../src/ui/Base/RegisteredNamedMethods";
 import {IComponentPlaygroundConfiguration, PlaygroundConfiguration} from "./PlaygroundConfiguration";
 import {ResultList} from "../../../src/ui/ResultList/ResultList";
 import {QueryEvents, IBuildingQueryEventArgs} from "../../../src/events/QueryEvents";
+import { setLanguageAfterPageLoaded } from '../../../src/strings/DefaultLanguage';
+setLanguageAfterPageLoaded();
 
 declare var Coveo;
 declare var $;
@@ -13,7 +15,6 @@ export class Playground {
   private componentContainer: Dom;
   private showButton: Dom;
   private hideButton: Dom;
-  private editButton: Dom;
   private initialized = false;
 
   constructor(public body: HTMLBodyElement) {
@@ -54,14 +55,12 @@ export class Playground {
   public hide() {
     this.showButton.show();
     this.hideButton.hide();
-    this.editButton.hide();
     $(this.componentContainer.el).slideUp();
   }
 
   public show() {
     this.showButton.hide();
     this.hideButton.show();
-    this.editButton.show();
     $(this.componentContainer.el).slideDown(undefined, ()=> {
       if (!this.initialized) {
         this.initializeComponent();
@@ -70,8 +69,8 @@ export class Playground {
   }
 
   public initializeComponent() {
-    let configuration = this.getConfiguration()
-    SearchEndpoint.configureSampleEndpoint();
+    let configuration = this.getConfiguration();
+    SearchEndpoint.configureSampleEndpointV2();
     let searchInterface = this.getSearchInterface();
     this.componentContainer.append(searchInterface.el);
     Coveo.SearchEndpoint.endpoints['default'] = SearchEndpoint.endpoints['default'];
@@ -114,11 +113,9 @@ export class Playground {
     let previewContainer = $$(document.body).find('.preview-container');
     this.showButton = $$('button', {className: 'preview-toggle'}, `Show a live example of ${this.getComponentName()}`);
     this.hideButton = $$('button', {className: 'preview-toggle'}, 'Hide example');
-    this.editButton = $$('button', {className: 'preview-edit'}, `Edit`);
     this.componentContainer = $$('div', {className: 'component-container'});
     this.componentContainer.hide();
     this.hideButton.hide();
-    this.editButton.hide();
     this.showButton.on('click', ()=> {
       this.show();
     });
@@ -126,50 +123,8 @@ export class Playground {
     this.hideButton.on('click', ()=> {
       this.hide();
     });
-    this.editButton.on('click', ()=> {
-      let editDiv = $$('div', {id: 'editor'});
-      Coveo.ModalBox['open'](editDiv.el, {
-        fullscreen: true,
-        overlayClose: true
-      });
-      let load = ()=> {
-        let deferred = $.Deferred();
-        let head =
-            `<script src="../assets/gen/js/CoveoJsSearch.js"></script>
-            <script src="../assets/gen/js/templates/templatesNew.js"></script>
-            <link rel="stylesheet" href="../assets/gen/css/CoveoFullSearchNewDesign.css" />
-            <script>
-              document.addEventListener("DOMContentLoaded", function() {
-                Coveo.SearchEndpoint.configureSampleEndpoint();
-                Coveo.init(document.querySelector(".CoveoSearchInterface"));
-              
-              })
-            </script>`
-        setTimeout(()=> {
-          let searchInterface = this.getSearchInterface();
-          deferred.resolve({root: '.', body: searchInterface.el.outerHTML, head: head})
-        }, 100);
-        return deferred;
-      };
-      let close = ()=> {
-        Coveo.ModalBox.close();
-      };
-      var editor = new Coveo.InterfaceEditor.Editor('#editor', {
-        namespace: window.location.pathname,
-        basicMode: true,
-        load: load,
-        save: undefined,
-        close: close,
-        delete: undefined,
-        mobile: false,
-        resultCss: 'assets/gen/css/CoveoFullSearchNewDesign.css',
-        iconsUrl: 'assets/gen/image/normal-icon-list-new.json',
-        repositories: undefined
-      });
-    });
     previewContainer.appendChild(this.showButton.el);
     previewContainer.appendChild(this.hideButton.el);
-    // previewContainer.appendChild(this.editButton.el);
     previewContainer.appendChild(this.componentContainer.el);
   }
 

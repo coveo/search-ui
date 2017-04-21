@@ -5,7 +5,8 @@ import { Utils } from '../../utils/Utils';
 import { QueryEvents, IBuildingQueryEventArgs } from '../../events/QueryEvents';
 import { $$ } from '../../utils/Dom';
 import { Initialization } from '../Base/Initialization';
-import _ = require('underscore');
+import * as _ from 'underscore';
+import { exportGlobally } from '../../GlobalExports';
 
 export var context: any;
 declare var Coveo;
@@ -17,7 +18,7 @@ export interface IPipelineContextOptions {
  * A PipelineContext is used to add contextual information about the environment inside which the query is executed.
  *
  * It allows to pass arbitrary key values pairs ( think `JSON` ), which can then be leveraged by the [Query Pipeline](http://www.coveo.com/go?dest=cloudhelp&lcid=9&context=108),
- * or by Reveal.
+ * or by Coveo Machine Learning.
  *
  * This can be any arbitrary information that you can use to contextualize the query and help Coveo improve relevance by returning results tailored to a specific context.
  *
@@ -47,6 +48,13 @@ export interface IPipelineContextOptions {
 export class PipelineContext extends Component {
   static ID = 'PipelineContext';
   static CURRENT_URL = 'CurrentUrl';
+
+  static doExport = () => {
+    exportGlobally({
+      'PipelineContext': PipelineContext,
+      'context': context
+    });
+  }
 
   private content: { [id: string]: string };
 

@@ -1,3 +1,7 @@
+@import "mixins/resultsHeaderElement";
+@import "bourbon/bourbon";
+@import "Variables";
+
 .CoveoResultLayout {
   @include display(flex);
   &.coveo-result-layout-hidden {
@@ -7,15 +11,10 @@
 
 .coveo-result-layout-selector {
   @include resultsHeaderElement();
-  padding-bottom: 9px;
+  display: block;
+
   .coveo-icon {
     margin-right: 5px;
-    display: inline-block;
-    vertical-align: middle;
+    vertical-align: bottom;
   }
-}
-
-.coveo-result-layout-selector-caption {
-  vertical-align: middle;
-  display: inline-block;
 }

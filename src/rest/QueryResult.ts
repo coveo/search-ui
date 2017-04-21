@@ -1,5 +1,4 @@
 import { IHighlight, IHighlightPhrase, IHighlightTerm } from './Highlight';
-import { Promise } from 'es6-promise';
 import { SearchInterface } from '../ui/SearchInterface/SearchInterface';
 
 /**

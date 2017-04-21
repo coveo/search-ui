@@ -54,14 +54,6 @@ export class DeviceUtils {
     return deviceName == 'iPhone' || deviceName == 'iPad' || deviceName == 'iPod';
   }
 
-  static isIE8or9(): boolean {
-    var myNav = navigator.userAgent.toLowerCase();
-    if (myNav.indexOf('msie') == -1) {
-      return false;
-    }
-    return parseInt(myNav.split('msie')[1]) < 10;
-  }
-
   static isMobileDevice() {
     return mobile;
   }

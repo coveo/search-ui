@@ -1,9 +1,12 @@
+@import 'Variables';
+@import "../bin/sass/sprites";
+
 .coveo-logo{
-  @extend .coveo-sprites-coveo-logo;
+  @include retina-sprite($coveo-logo-group);
 }
 
 .coveo-powered-by {
-  @extend .coveo-sprites-coveo-powered-by-logo;
+  @include retina-sprite($coveo-powered-by-logo-group);
 }
 
 .CoveoLogo {

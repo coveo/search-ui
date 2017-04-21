@@ -4,10 +4,12 @@ import { ComponentOptions } from '../Base/ComponentOptions';
 import { QueryUtils } from '../../utils/QueryUtils';
 import { IQueryResult } from '../../rest/QueryResult';
 import { Initialization } from '../Base/Initialization';
-import { FieldValue, IFieldValueOptions } from './FieldValue';
+import { FieldValue, IFieldValueOptions } from '../FieldValue/FieldValue';
 import { $$ } from '../../utils/Dom';
 import { KeyboardUtils, KEYBOARD } from '../../utils/KeyboardUtils';
-import _ = require('underscore');
+import * as _ from 'underscore';
+import { exportGlobally } from '../../GlobalExports';
+import 'styling/_FieldTable';
 
 export interface IFieldTableOptions {
   allowMinimization: boolean;
@@ -37,6 +39,13 @@ export interface IFieldTableOptions {
  */
 export class FieldTable extends Component {
   static ID = 'FieldTable';
+
+  static doExport = () => {
+    exportGlobally({
+      'FieldTable': FieldTable,
+      'FieldValue': FieldValue
+    });
+  }
 
   /**
    * The options for the component
