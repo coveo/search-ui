@@ -1,3 +1,6 @@
+@import "Variables";
+@import "../bin/sass/sprites.scss";
+
 .coveo-facet-header {
   padding: 10px 20px;
   background: $color-blueish-white;
@@ -27,11 +30,11 @@
 
 .coveo-facet-header-settings {
   .coveo-icon {
-    @extend .coveo-sprites-more-menu;
+    @include retina-sprite($more-menu-group);
   }
   &:hover, &:focus {
     .coveo-icon {
-      @extend .coveo-sprites-more-menu-active;
+      @include retina-sprite($more-menu-active-group);
     }
     outline: none;
   }
@@ -40,10 +43,11 @@
 
 .coveo-facet-header-operator {
   .coveo-icon.coveo-and {
-    @extend .coveo-sprites-and;
+    @include retina-sprite($and-group);
   }
+
   .coveo-icon.coveo-or {
-    @extend .coveo-sprites-or;
+    @include retina-sprite($or-group);
   }
 }
 
@@ -69,9 +73,9 @@
   position: relative;
   width: 16px;
   height: 16px;
+  @include retina-sprite($facet-loading-group);
   min-width: 16px;
   min-height: 16px;
-  @extend .coveo-sprites-facet-loading;
   @include animation-name(coveo-spin);
   @include animation-timing-function(linear);
   @include animation-duration(1s);

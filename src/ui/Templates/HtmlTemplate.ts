@@ -1,7 +1,7 @@
 import { Template } from './Template';
 import { Assert } from '../../misc/Assert';
 import { TemplateFromAScriptTag, ITemplateFromStringProperties } from './TemplateFromAScriptTag';
-import _ = require('underscore');
+import * as _ from 'underscore';
 
 export class HtmlTemplate extends Template {
 
@@ -28,10 +28,6 @@ export class HtmlTemplate extends Template {
 
   getType() {
     return 'HtmlTemplate';
-  }
-
-  getFields(): string[] {
-    return this.fields;
   }
 
   static create(element: HTMLElement): HtmlTemplate {

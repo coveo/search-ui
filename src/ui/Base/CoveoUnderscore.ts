@@ -1,4 +1,4 @@
-import _ = require('underscore');
+import * as _ from 'underscore';
 
 export let underscoreInstance;
 underscoreInstance = _;

@@ -1,14 +1,3 @@
-/// <reference path="../../controllers/HierarchicalFacetQueryController.ts" />
-/// <reference path="../../controllers/FacetQueryController.ts" />
-/// <reference path="FacetSearch.ts" />
-/// <reference path="FacetSettings.ts" />
-/// <reference path="FacetSort.ts" />
-/// <reference path="FacetHeader.ts" />
-/// <reference path="BreadcrumbValueElement.ts" />
-/// <reference path="ValueElementRenderer.ts" />
-/// <reference path="FacetSearchParameters.ts" />
-/// <reference path="../HierarchicalFacet/HierarchicalFacet.ts" />
-
 import { Component } from '../Base/Component';
 import { IComponentBindings } from '../Base/ComponentBindings';
 import { FacetValue, FacetValues } from './FacetValues';
@@ -54,7 +43,10 @@ import { IStringMap } from '../../rest/GenericParam';
 import { FacetValuesOrder } from './FacetValuesOrder';
 import { ValueElement } from './ValueElement';
 import { SearchAlertsEvents, ISearchAlertsPopulateMessageEventArgs } from '../../events/SearchAlertEvents';
-import _ = require('underscore');
+import * as _ from 'underscore';
+import { exportGlobally } from '../../GlobalExports';
+import 'styling/_Facet';
+import 'styling/_FacetFooter';
 
 export interface IFacetOptions {
   title?: string;
@@ -101,6 +93,7 @@ export interface IFacetOptions {
   dropdownHeaderLabel?: string;
 }
 
+
 /**
  * The Facet component displays a *facet* of the results for the current query. A facet consists of a list of values for
  * a given field occurring in the results, ordered using a configurable criteria.
@@ -121,6 +114,19 @@ export interface IFacetOptions {
 export class Facet extends Component {
   static ID = 'Facet';
   static omniboxIndex = 50;
+
+  static doExport = () => {
+    exportGlobally({
+      'Facet': Facet,
+      'FacetHeader': FacetHeader,
+      'FacetSearchValuesList': FacetSearchValuesList,
+      'FacetSettings': FacetSettings,
+      'FacetSort': FacetSort,
+      'FacetUtils': FacetUtils,
+      'FacetValueElement': FacetValueElement,
+      'FacetValue': FacetValue
+    });
+  }
 
   /**
    * The possible options for a facet
@@ -1193,7 +1199,9 @@ export class Facet extends Component {
 
   protected updateAppearanceDependingOnState() {
     $$(this.element).toggleClass('coveo-active', this.values.hasSelectedOrExcludedValues());
-    $$(this.element).toggleClass('coveo-facet-empty', !this.isAnyValueCurrentlyDisplayed());
+    if (!$$(this.element).hasClass('coveo-with-placeholder')) {
+      $$(this.element).toggleClass('coveo-facet-empty', !this.isAnyValueCurrentlyDisplayed());
+    }
     if (this.searchInterface.isNewDesign()) {
       $$(this.facetHeader.eraserElement).toggleClass('coveo-facet-header-eraser-visible', this.values.hasSelectedOrExcludedValues());
     } else {
@@ -1862,4 +1870,7 @@ export class Facet extends Component {
     return info;
   }
 }
+
 Initialization.registerAutoCreateComponent(Facet);
+
+Facet.doExport();

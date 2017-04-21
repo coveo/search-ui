@@ -1,4 +1,4 @@
-import { ResponsiveTabs } from '../ResponsiveComponents/ResponsiveTabs.ts';
+import { ResponsiveTabs } from '../ResponsiveComponents/ResponsiveTabs';
 import { Component } from '../Base/Component';
 import { ComponentOptions } from '../Base/ComponentOptions';
 import { IComponentBindings } from '../Base/ComponentBindings';
@@ -12,7 +12,9 @@ import { Utils } from '../../utils/Utils';
 import { Assert } from '../../misc/Assert';
 import { $$ } from '../../utils/Dom';
 import { KeyboardUtils, KEYBOARD } from '../../utils/KeyboardUtils';
-import _ = require('underscore');
+import * as _ from 'underscore';
+import { exportGlobally } from '../../GlobalExports';
+import 'styling/_Tab';
 
 export interface ITabOptions {
   expression?: string;
@@ -67,6 +69,12 @@ export interface ITabOptions {
  */
 export class Tab extends Component {
   static ID = 'Tab';
+
+  static doExport = () => {
+    exportGlobally({
+      'Tab': Tab
+    });
+  }
 
   /**
    * The options for a Tab

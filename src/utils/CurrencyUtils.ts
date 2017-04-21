@@ -1,7 +1,7 @@
 import { Assert } from '../misc/Assert';
 import { Options } from '../misc/Options';
 import { Utils } from '../utils/Utils';
-import Globalize = require('globalize');
+import * as Globalize from 'globalize';
 
 export interface ICurrencyToStringOptions {
   decimals?: number;

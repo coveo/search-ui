@@ -1,3 +1,6 @@
+@import "Variables";
+@import "mixins/mediaQuery";
+
 .CoveoResult {
   position: relative; // Allows using absolute positioning for buttons such as Show All Thread, etc.
 

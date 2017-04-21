@@ -128,7 +128,7 @@ export interface IQueryResults {
    */
   triggers: ITrigger<any>[];
   /**
-   * The keywords selected by Reveal's Refined Query feature
+   * The keywords selected by Coveo Machine Learning Refined Query feature
    */
   refinedKeywords?: string[];
   _folded: boolean;

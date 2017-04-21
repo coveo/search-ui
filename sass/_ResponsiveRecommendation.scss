@@ -1,4 +1,6 @@
-@import "Variables.scss";
+@import "Variables";
+@import "mixins/mediaQuery";
+
 .CoveoSearchInterface.coveo-small-recommendation {
 
   .coveo-recommendation-dropdown-header {
@@ -28,7 +30,7 @@
     &.coveo-recommendation-column, &.CoveoRecommendation {
       display: block;
     }
-
+    
     &.coveo-open-dropdown-content {
       max-height: 1000px;
       width: 100%;

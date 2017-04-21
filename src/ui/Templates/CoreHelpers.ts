@@ -6,7 +6,6 @@ import { IDateToStringOptions, DateUtils } from '../../utils/DateUtils';
 import { ICurrencyToStringOptions, CurrencyUtils } from '../../utils/CurrencyUtils';
 import { IAnchorUtilsOptions, IImageUtilsOptions, AnchorUtils, ImageUtils } from '../../utils/HtmlUtils';
 import { IQueryResult } from '../../rest/QueryResult';
-import { IIconOptions, Icon } from '../Icon/Icon';
 import { Utils } from '../../utils/Utils';
 import { StringUtils } from '../../utils/StringUtils';
 import { TimeSpan, ITimeSpanUtilsOptions } from '../../utils/TimeSpanUtils';
@@ -16,13 +15,13 @@ import { DeviceUtils } from '../../utils/DeviceUtils';
 import { TemplateCache } from './TemplateCache';
 import { $$ } from '../../utils/Dom';
 import { SearchEndpoint } from '../../rest/SearchEndpoint';
-import { ResultList } from '../ResultList/ResultList';
 import { StreamHighlightUtils } from '../../utils/StreamHighlightUtils';
 import { FacetUtils } from '../Facet/FacetUtils';
-import Globalize = require('globalize');
+import * as Globalize from 'globalize';
 import { IStringMap } from '../../rest/GenericParam';
-import { Quickview } from '../Quickview/Quickview';
-import _ = require('underscore');
+import * as _ from 'underscore';
+import { ResultList } from '../ResultList/ResultList';
+import { Component } from '../Base/Component';
 
 /**
  * The core template helpers provided by default.
@@ -224,7 +223,7 @@ export interface ICoreHelpers {
    *   your template)
    * - `options`: The options to use (see {@link IIconOptions}).
    */
-  fromFileTypeToIcon: (result?: IQueryResult, options?: IIconOptions) => string;
+  fromFileTypeToIcon: (result?: IQueryResult, options?: any) => string;
   /**
    * Loads a partial template in the current template, by passing the ID of
    * the template to load, the condition for which this template should be
@@ -499,8 +498,11 @@ TemplateHelpers.registerTemplateHelper('thumbnail', (result: IQueryResult = reso
   }
 });
 
-TemplateHelpers.registerTemplateHelper('fromFileTypeToIcon', (result: IQueryResult = resolveQueryResult(), options: IIconOptions = {}) => {
-  return Icon.createIcon(result, options).outerHTML;
+TemplateHelpers.registerTemplateHelper('fromFileTypeToIcon', (result: IQueryResult = resolveQueryResult(), options = {}) => {
+  let icon = Component.getComponentRef('Icon');
+  if (icon) {
+    return icon.createIcon(result, options).outerHTML;
+  }
 });
 
 TemplateHelpers.registerTemplateHelper('attrEncode', (value: string) => {
@@ -581,7 +583,18 @@ TemplateHelpers.registerTemplateHelper('isMobileDevice', () => {
 });
 
 function resolveQueryResult(): IQueryResult {
-  return ResultList.resultCurrentlyBeingRendered || Quickview.resultCurrentlyBeingRendered;
+  let found;
+  let resultList = Component.getComponentRef('ResultList');
+  if (resultList) {
+    found = resultList.resultCurrentlyBeingRendered;
+  }
+  if (!found) {
+    let quickview = Component.getComponentRef('Quickview');
+    if (quickview) {
+      found = quickview.resultCurrentlyBeingRendered;
+    }
+  }
+  return found;
 }
 
 function resolveTermsToHighlight(): IHighlightTerm {

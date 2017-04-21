@@ -6,6 +6,7 @@ import { $$, Dom } from '../../utils/Dom';
 import { Initialization } from '../Base/Initialization';
 import { Utils } from '../../utils/Utils';
 import { IRatingRequest } from '../../rest/RatingRequest';
+import { exportGlobally } from '../../GlobalExports';
 
 export enum RatingValues { Undefined, Lowest, Low, Average, Good, Best };
 
@@ -19,6 +20,12 @@ export interface IResultRatingOptions {
  */
 export class ResultRating extends Component {
   static ID = 'ResultRating';
+
+  static doExport = () => {
+    exportGlobally({
+      'ResultRating': ResultRating
+    });
+  }
 
   /**
    * Creates a new ResultRating component.

@@ -9,12 +9,12 @@ import { RecommendationDropdownContent } from './ResponsiveDropdown/Recommendati
 import { ResponsiveDropdownHeader } from './ResponsiveDropdown/ResponsiveDropdownHeader';
 import { ResponsiveDropdown } from './ResponsiveDropdown/ResponsiveDropdown';
 import { l } from '../../strings/Strings';
-import { FacetSlider } from '../FacetSlider/FacetSlider';
-import { Facet } from '../Facet/Facet';
 import { Component } from '../Base/Component';
 import { get } from '../Base/RegisteredNamedMethods';
 import { QueryEvents, IQuerySuccessEventArgs, INoResultsEventArgs } from '../../events/QueryEvents';
-import _ = require('underscore');
+import * as _ from 'underscore';
+
+import 'styling/_ResponsiveRecommendation';
 
 export class ResponsiveRecommendation implements IResponsiveComponent {
 
@@ -25,8 +25,8 @@ export class ResponsiveRecommendation implements IResponsiveComponent {
   private breakpoint: number;
   private dropdown: ResponsiveDropdown;
   private logger: Logger;
-  private facetSliders: FacetSlider[];
-  private facets: Facet[];
+  private facetSliders: any[];
+  private facets: any[];
   private dropdownContainer: Dom;
   private dropdownHeaderLabel: string;
 
@@ -142,24 +142,20 @@ export class ResponsiveRecommendation implements IResponsiveComponent {
     return breakpoint;
   }
 
-  private getFacetSliders(): FacetSlider[] {
+  private getFacetSliders(): any[] {
     let facetSliders = [];
-    _.each(this.coveoRoot.findAll('.' + Component.computeCssClassName(FacetSlider)), facetSliderElement => {
-      let facetSlider = Component.get(facetSliderElement, FacetSlider);
-      if (facetSlider instanceof FacetSlider) {
-        facetSliders.push(facetSlider);
-      }
+    _.each(this.coveoRoot.findAll('.' + Component.computeCssClassNameForType(`FacetSlider`)), facetSliderElement => {
+      let facetSlider = Component.get(facetSliderElement);
+      facetSliders.push(facetSlider);
     });
     return facetSliders;
   }
 
-  private getFacets(): Facet[] {
+  private getFacets(): any[] {
     let facets = [];
-    _.each(this.coveoRoot.findAll('.' + Component.computeCssClassName(Facet)), facetElement => {
-      let facet = Component.get(facetElement, Facet);
-      if (facet instanceof Facet) {
-        facets.push(facet);
-      }
+    _.each(this.coveoRoot.findAll('.' + Component.computeCssClassNameForType('Facet')), facetElement => {
+      let facet = Component.get(facetElement);
+      facets.push(facet);
     });
     return facets;
   }

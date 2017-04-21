@@ -14,7 +14,10 @@ import { ITaggingRequest } from '../../rest/TaggingRequest';
 import { $$ } from '../../utils/Dom';
 import { analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
 import { IQueryResult } from '../../rest/QueryResult';
-import _ = require('underscore');
+import * as _ from 'underscore';
+import { exportGlobally } from '../../GlobalExports';
+
+import 'styling/_ResultTagging';
 
 export interface IResultTaggingOptions {
   field: IFieldOption;
@@ -37,6 +40,12 @@ export interface IAnalyticsResultTaggingMeta {
 export class ResultTagging extends Component {
   static ID = 'ResultTagging';
   static autoCompleteClass = 'coveo-result-tagging-auto-complete';
+
+  static doExport = () => {
+    exportGlobally({
+      'ResultTagging': ResultTagging
+    });
+  }
 
   /**
    * @componentOptions

@@ -1,4 +1,6 @@
 import { Assert } from '../../misc/Assert';
+import 'styling/_ResponsiveComponents';
+
 export const MEDIUM_SCREEN_WIDTH = 800;
 export const SMALL_SCREEN_WIDTH = 480;
 

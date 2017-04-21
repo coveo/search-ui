@@ -8,7 +8,7 @@ import { IIndexFieldValue } from '../../rest/FieldValue';
 import { FacetValue } from '../Facet/FacetValues';
 import { Utils } from '../../utils/Utils';
 import { ModalBox } from '../../ExternalModulesShim';
-import _ = require('underscore');
+import * as _ from 'underscore';
 
 export class HierarchicalFacetSearch extends FacetSearch {
   constructor(public facet: HierarchicalFacet, public facetSearchValuesListKlass: IFacetSearchValuesListKlass, root: HTMLElement) {

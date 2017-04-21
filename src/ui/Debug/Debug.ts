@@ -10,7 +10,6 @@ import { $$, Dom } from '../../utils/Dom';
 import { StringUtils } from '../../utils/StringUtils';
 import { SearchEndpoint } from '../../rest/SearchEndpoint';
 import { Template } from '../Templates/Template';
-import { Promise } from 'es6-promise';
 import { RootComponent } from '../Base/RootComponent';
 import { QueryController } from '../../controllers/QueryController';
 import { BaseComponent } from '../Base/BaseComponent';
@@ -20,6 +19,7 @@ import { KEYBOARD } from '../../utils/KeyboardUtils';
 import { InitializationEvents } from '../../events/InitializationEvents';
 import { IStringMap } from '../../rest/GenericParam';
 import _ = require('underscore');
+import 'styling/_Debug';
 
 export interface IDebugOptions {
   enableDebug?: boolean;

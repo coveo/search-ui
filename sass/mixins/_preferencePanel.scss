@@ -64,7 +64,7 @@
       &:before {
         content: '';
         display: inline-block;
-        @extend .coveo-sprites-checkbox-hook-white;
+        @include retina-sprite($checkbox-hook-white-group);
         position: relative;
         right: -1px;
         bottom: 2px;

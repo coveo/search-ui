@@ -1,7 +1,7 @@
 import { $$ } from '../../utils/Dom';
 import { Assert } from '../../misc/Assert';
 import { Utils } from '../../utils/Utils';
-import _ = require('underscore');
+import * as _ from 'underscore';
 
 export interface IPreferencePanelInputToBuild {
   label: string;

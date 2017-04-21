@@ -5,6 +5,7 @@ import { IQueryResult } from '../../src/rest/QueryResult';
 import { Template } from '../../src/ui/Templates/Template';
 import { StringUtils } from '../../src/utils/StringUtils';
 import { Simulate } from '../Simulate';
+import { Defer } from '../../src/misc/Defer';
 
 export function QuickviewTest() {
   describe('Quickview', () => {
@@ -27,15 +28,22 @@ export function QuickviewTest() {
       modalBox = null;
     });
 
-    it('creates a modal box on open', () => {
+    it('creates a modal box on open', (done) => {
       quickview.open();
-      expect(modalBox.open).toHaveBeenCalled();
+      Defer.defer(() => {
+        expect(modalBox.open).toHaveBeenCalled();
+        done();
+      });
     });
 
-    it('closes the modal box on close', () => {
+    it('closes the modal box on close', (done) => {
+
       quickview.open();
-      quickview.close();
-      expect(modalBox.close).toHaveBeenCalled();
+      Defer.defer(() => {
+        quickview.close();
+        expect(modalBox.close).toHaveBeenCalled();
+        done();
+      });
     });
 
     it('computes the hash id', () => {
