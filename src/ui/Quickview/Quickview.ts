@@ -135,13 +135,12 @@ export class Quickview extends Component {
      * Specifies the Quick View modal window size (width and height) relative to the full window.<br/>
      * The default value is 95% on a desktop and 100% on a mobile device.
      */
-    size: ComponentOptions.buildStringOption({ defaultValue: DeviceUtils.isMobileDevice() ? '100%' : '95%' })
+    size: ComponentOptions.buildStringOption({ defaultValue: DeviceUtils.isMobileDevice() ? '90%' : '90%' })
   };
 
   public static resultCurrentlyBeingRendered: IQueryResult = null;
 
   private modalbox: Coveo.ModalBox.ModalBox;
-  private bindedHandleEscapeEvent = this.handleEscapeEvent.bind(this);
 
   constructor(public element: HTMLElement, public options?: IQuickviewOptions, public bindings?: IResultsComponentBindings, public result?: IQueryResult, private ModalBox = ModalBoxModule) {
     super(element, Quickview.ID, bindings);
@@ -194,7 +193,6 @@ export class Quickview extends Component {
         this.queryStateModel.set(QueryStateModel.attributesEnum.quickview, this.getHashId());
         Quickview.resultCurrentlyBeingRendered = null;
       });
-
     }
   }
 
@@ -205,7 +203,6 @@ export class Quickview extends Component {
     if (this.modalbox != null) {
       this.modalbox.close();
       this.modalbox = null;
-      $$(document.body).off('keyup', this.bindedHandleEscapeEvent);
     }
   }
 
@@ -225,16 +222,6 @@ export class Quickview extends Component {
 
   private bindQuickviewEvents(openerObject: IQuickviewOpenerObject) {
 
-    let closeButton = $$(this.modalbox.wrapper).find('.coveo-quickview-close-button');
-    $$(closeButton).on('click', () => {
-      this.closeQuickview();
-      this.close();
-    });
-
-    $$(this.modalbox.overlay).on('click', () => {
-      this.closeQuickview();
-    });
-
     $$(this.modalbox.content).on(QuickviewEvents.quickviewLoaded, () => {
       if (openerObject.loadingAnimation instanceof HTMLElement) {
         $$(openerObject.loadingAnimation).remove();
@@ -243,27 +230,13 @@ export class Quickview extends Component {
           $$(anim).remove();
         });
       }
-      this.bindIFrameEscape();
     });
-    this.bindEscape();
   }
 
   private animateAndOpen() {
-    let animationDuration = this.modalbox.wrapper.style.animationDuration;
     let quickviewDocument = $$(this.modalbox.modalBox).find('.' + Component.computeCssClassName(QuickviewDocument));
     if (quickviewDocument) {
-      if (animationDuration) {
-        let duration = /^(.+)(ms|s)$/.exec(animationDuration);
-        let durationMs = Number(duration[1]) * (duration[2] == 's' ? 1000 : 1);
-        // open the QuickviewDocument
-        setTimeout(() => {
-          if (this.modalbox != null) {
-            Initialization.dispatchNamedMethodCallOrComponentCreation('open', quickviewDocument, null);
-          }
-        }, durationMs);
-      } else {
-        Initialization.dispatchNamedMethodCallOrComponentCreation('open', quickviewDocument, null);
-      }
+      Initialization.dispatchNamedMethodCallOrComponentCreation('open', quickviewDocument, null);
     }
   }
 
@@ -277,7 +250,10 @@ export class Quickview extends Component {
           title: this.options.title
         }, this.bindings).el.outerHTML,
         className: 'coveo-quick-view',
-        validation: () => true,
+        validation: () => {
+          this.closeQuickview();
+          return true;
+        },
         body: this.element.ownerDocument.body
       });
       this.setQuickviewSize();
@@ -318,34 +294,16 @@ export class Quickview extends Component {
     });
   }
 
-  private bindEscape() {
-    $$(document.body).on('keyup', this.bindedHandleEscapeEvent);
-  }
-
-  private bindIFrameEscape() {
-    let quickviewDocument = $$(this.modalbox.content).find('.' + Component.computeCssClassName(QuickviewDocument));
-    quickviewDocument = $$(quickviewDocument).find('iframe');
-    let body = (<HTMLIFrameElement>quickviewDocument).contentWindow.document.body;
-    $$(body).on('keyup', this.bindedHandleEscapeEvent);
-  }
-
   private closeQuickview() {
     this.queryStateModel.set(QueryStateModel.attributesEnum.quickview, '');
   }
 
   private setQuickviewSize() {
-    let wrapper = $$($$(this.modalbox.modalBox).find('.coveo-wrapper'));
+    let wrapper = $$($$(this.modalbox.modalBox).find('.coveo-modal-content'));
     wrapper.el.style.width = this.options.size;
     wrapper.el.style.height = this.options.size;
     wrapper.el.style.maxWidth = this.options.size;
     wrapper.el.style.maxHeight = this.options.size;
-  }
-
-  private handleEscapeEvent(e: KeyboardEvent) {
-    if (e.keyCode == KEYBOARD.ESCAPE) {
-      this.closeQuickview();
-      this.close();
-    }
   }
 }
 Initialization.registerAutoCreateComponent(Quickview);
