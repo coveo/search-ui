@@ -80,7 +80,7 @@ export class Searchbox extends Component {
      *
      * Default value is `true`.
      */
-    enableOmnibox: ComponentOptions.buildBooleanOption({defaultValue: true})
+    enableOmnibox: ComponentOptions.buildBooleanOption({ defaultValue: true })
   };
 
   /**

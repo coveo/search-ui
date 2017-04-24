@@ -20,6 +20,7 @@ import { InitializationEvents } from '../../events/InitializationEvents';
 import { IStringMap } from '../../rest/GenericParam';
 import _ = require('underscore');
 import 'styling/_Debug';
+import { l } from '../../strings/Strings';
 
 export interface IDebugOptions {
   enableDebug?: boolean;
@@ -171,18 +172,19 @@ export class Debug extends RootComponent {
     let build = builder();
 
     let modalbox = this.modalBox.open(build.body, {
-      title: '',
+      title: l('Debug'),
       className: 'coveo-debug',
       titleClose: true,
       overlayClose: true,
       validation: () => {
         this.unbindEscapeEvent();
         return true;
-      }
+      },
+      sizeMod: 'big'
     });
     this.bindEscapeEvent();
 
-    let title = $$(modalbox.wrapper).find('.coveo-title');
+    let title = $$(modalbox.wrapper).find('.coveo-modal-header');
     let search = this.buildSearchBox(build.body);
     let downloadLink = $$('a', { download: 'debug.json', 'href': this.downloadHref(build.json) }, 'Download');
     let bodyBuilder = (results?: IQueryResults) => {
