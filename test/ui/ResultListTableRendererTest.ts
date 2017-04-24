@@ -46,5 +46,18 @@ export function ResultListTableRendererTest() {
       renderer.renderResults([$$('div', { className: 'CoveoResult' }).el], false, () => null);
       expect($$(resultContainer).find('.coveo-result-list-table-header')).toBeNull();
     });
+
+    it('should not render a header or a footer when passed append set to true', () => {
+      const fakeTemplateList = new TableTemplate([new Template()]);
+      spyOn(fakeTemplateList, 'hasTemplateWithRole').and.callFake(a => {
+        if (a == 'table-header') {
+          return false;
+        }
+      });
+      renderer = new ResultListTableRenderer({ resultTemplate: fakeTemplateList, resultContainer: resultContainer }, () => null);
+      renderer.renderResults([$$('div', { className: 'CoveoResult' }).el], true, () => null);
+      expect($$(resultContainer).find('.coveo-result-list-table-header')).toBeNull();
+      expect($$(resultContainer).find('.coveo-result-list-table-footer')).toBeNull();
+    });
   });
 }
