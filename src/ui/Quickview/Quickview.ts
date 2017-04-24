@@ -254,7 +254,8 @@ export class Quickview extends Component {
           this.closeQuickview();
           return true;
         },
-        body: this.element.ownerDocument.body
+        body: this.element.ownerDocument.body,
+        sizeMod: 'big'
       });
       this.setQuickviewSize();
       return computedModalBoxContent;
