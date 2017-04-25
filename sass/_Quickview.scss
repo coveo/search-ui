@@ -131,19 +131,21 @@
   vertical-align: middle;
 }
 
-.coveo-modal-container.coveo-quick-view .coveo-modal-body {
-  height: 90%;
-  div {
-    height: 100%;
-    width: 100%;
-  }
-  .coveo-quickview-header {
-    height: auto;
-  }
-  iframe {
-    height: 100%;
-    width: 100%;
-    @include defaultRoundedBorder();
-    padding: 10px 0 0 10px;
+.coveo-modal-container.coveo-quick-view {
+  .coveo-modal-body {
+    height: 90%;
+    div {
+      height: 100%;
+      width: 100%;
+    }
+    .coveo-quickview-header {
+      height: auto;
+    }
+    iframe {
+      height: 100%;
+      width: 100%;
+      @include defaultRoundedBorder();
+      padding: 10px 0 0 10px;
+    }
   }
 }

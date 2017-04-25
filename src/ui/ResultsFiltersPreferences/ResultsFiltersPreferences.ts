@@ -3,7 +3,7 @@ import { ComponentOptions } from '../Base/ComponentOptions';
 import { IComponentBindings } from '../Base/ComponentBindings';
 import { LocalStorageUtils } from '../../utils/LocalStorageUtils';
 import { KEYBOARD } from '../../utils/KeyboardUtils';
-import { PreferencesPanelCheckboxInput, PreferencesPanelTextAreaInput, PreferencePanelMultiSelectInput, IPreferencePanelInputToBuild } from '../PreferencesPanel/PreferencesPanelItem';
+// import { PreferencesPanelCheckboxInput, PreferencesPanelTextAreaInput, PreferencePanelMultiSelectInput, IPreferencePanelInputToBuild } from '../PreferencesPanel/PreferencesPanelItem';
 import { InitializationEvents } from '../../events/InitializationEvents';
 import { PreferencesPanelEvents } from '../../events/PreferencesPanelEvents';
 import { MODEL_EVENTS } from '../../models/Model';
@@ -20,6 +20,15 @@ import * as _ from 'underscore';
 import { exportGlobally } from '../../GlobalExports';
 
 import 'styling/_ResultsFiltersPreferences';
+import { Checkbox } from '../FormWidgets/Checkbox';
+
+export interface IPreferencePanelInputToBuild {
+  label: string;
+  placeholder?: string;
+  tab?: string[];
+  expression?: string;
+  otherAttribute?: string;
+}
 
 export interface IResultFilterPreference {
   selected?: boolean;
@@ -122,12 +131,12 @@ export class ResultsFiltersPreferences extends Component {
   private preferencePanelLocalStorage: LocalStorageUtils<{ [caption: string]: IResultFilterPreference }>;
   private preferencePanel: HTMLElement;
   private preferenceContainer: HTMLElement;
-  private preferencePanelCheckboxInput: PreferencesPanelCheckboxInput;
+  private preferencePanelCheckboxInput: Checkbox;
   private advancedFilters: HTMLElement;
   private advancedFiltersBuilder: HTMLElement;
-  private advancedFiltersTextInputCaption: PreferencesPanelTextAreaInput;
-  private advancedFiltersTextInputExpression: PreferencesPanelTextAreaInput;
-  private advancedFiltersTabSelect: PreferencePanelMultiSelectInput;
+  private advancedFiltersTextInputCaption: any; // PreferencesPanelTextAreaInput;
+  private advancedFiltersTextInputExpression: any; // PreferencesPanelTextAreaInput;
+  private advancedFiltersTabSelect: any; // PreferencePanelMultiSelectInput;
   private advancedFilterFormValidate: HTMLFormElement;
 
   /**
@@ -262,7 +271,7 @@ export class ResultsFiltersPreferences extends Component {
   }
 
   private buildAdvancedFilterInput() {
-    this.advancedFiltersTextInputCaption = new PreferencesPanelTextAreaInput(<IPreferencePanelInputToBuild[]>[{
+    /*this.advancedFiltersTextInputCaption = new PreferencesPanelTextAreaInput(<IPreferencePanelInputToBuild[]>[{
       label: l('Caption'),
       placeholder: l('EnterExpressionName'),
       otherAttribute: 'required'
@@ -275,7 +284,7 @@ export class ResultsFiltersPreferences extends Component {
     this.advancedFiltersTabSelect = new PreferencePanelMultiSelectInput({
       label: l('Tab'),
       placeholder: l('SelectTab')
-    }, this.getAllTabs(), ResultsFiltersPreferences.ID + '-multiselect');
+     }, this.getAllTabs(), ResultsFiltersPreferences.ID + '-multiselect');*/
   }
 
   private buildAdvancedFilterFormValidate() {
@@ -354,7 +363,7 @@ export class ResultsFiltersPreferences extends Component {
     }
     const toBuild = this.getPreferencesBoxInputToBuild();
     if (Utils.isNonEmptyArray(toBuild)) {
-      this.preferencePanelCheckboxInput = new PreferencesPanelCheckboxInput(toBuild, ResultsFiltersPreferences.ID);
+      // this.preferencePanelCheckboxInput = new Checkbox new PreferencesPanelCheckboxInput(toBuild, ResultsFiltersPreferences.ID);
       this.preferenceContainer = $$('div', {
         className: 'coveo-choices-container'
       }).el;
@@ -436,7 +445,9 @@ export class ResultsFiltersPreferences extends Component {
       this.deleteFilterPreference(filter, filterElement);
       if (isSelected) {
         this.fromFilterToAnalyticsEvent(filter, 'deleted');
-        this.queryController.executeQuery();
+        this.queryController.executeQuery({
+          closeModalBox: false
+        });
       }
     }
   }
@@ -492,23 +503,25 @@ export class ResultsFiltersPreferences extends Component {
     this.advancedFiltersTabSelect.reset();
     this.element.appendChild(this.advancedFiltersBuilder);
     this.fromFilterToAnalyticsEvent(this.preferences[caption], 'saved');
-    this.queryController.executeQuery();
+    this.queryController.executeQuery({
+      closeModalBox: false
+    });
   }
 
   private fromPreferencesToCheckboxInput() {
     _.each(this.getActiveFilters(), (filter: IResultFilterPreference) => {
-      this.preferencePanelCheckboxInput.select(filter.caption);
+      // this.preferencePanelCheckboxInput.select(filter.caption);
     });
     _.each(this.getInactiveFilters(), (filter: IResultFilterPreference) => {
-      this.preferencePanelCheckboxInput.unselect(filter.caption);
+      // this.preferencePanelCheckboxInput.unselect(filter.caption);
     });
     _.each(this.getDormantFilters(), (filter: IResultFilterPreference) => {
-      this.preferencePanelCheckboxInput.select(filter.caption);
+      // this.preferencePanelCheckboxInput.select(filter.caption);
     });
   }
 
   private fromCheckboxInputToPreferences() {
-    if (this.preferencePanelCheckboxInput) {
+    /*if (this.preferencePanelCheckboxInput) {
       const selecteds = this.preferencePanelCheckboxInput.getSelecteds();
       _.each(this.preferences, (filter: IResultFilterPreference) => {
         if (_.contains(selecteds, filter.caption)) {
@@ -517,7 +530,7 @@ export class ResultsFiltersPreferences extends Component {
           filter.selected = false;
         }
       });
-    }
+     }*/
 
   }
 

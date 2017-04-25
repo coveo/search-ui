@@ -6,7 +6,7 @@
   "types": "./bin/ts/CoveoJsSearch.d.ts",
   "scripts": {
     "test": "gulp test && gulp coverage",
-    "testChunks" : "node chunkTesters/chunk.tester.js",
+    "testChunks": "node chunkTesters/chunk.tester.js",
     "build": "gulp",
     "tsonly": "gulp compileTSOnly",
     "minimize": "node --max_old_space_size=8192 node_modules/webpack/bin/webpack.js --env minimize",
@@ -128,6 +128,7 @@
     "yargs": "^4.7.1"
   },
   "dependencies": {
+    "coveo-styleguide": "1.13.4",
     "coveo.analytics": "^0.7.0",
     "coveomagicbox": "1.0.x",
     "d3": "^4.2.1",

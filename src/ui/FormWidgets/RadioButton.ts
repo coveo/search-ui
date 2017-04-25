@@ -1,11 +1,13 @@
-import { $$ } from '../../../utils/Dom';
+import { $$ } from '../../utils/Dom';
+import { IFormWidgetsWithLabel, IFormWidgetsSelectable } from './FormWidgets';
+import 'styling/vapor/_Radio';
 
 /**
  * This class will create a radio button meant to be used inside the {@link AdvancedSearch} component.
  *
  * It can be, more specifically, used for external code using the {@link AdvancedSearchEvents.buildingAdvancedSearch}
  */
-export class RadioButton {
+export class RadioButton implements IFormWidgetsWithLabel, IFormWidgetsSelectable {
 
   protected element: HTMLElement;
 
@@ -14,8 +16,8 @@ export class RadioButton {
    * @param onChange will be called every time the radio button change it's value. `this` will be the `RadioButton` instance.
    * @param label The label for the choice.
    */
-  constructor(public onChange: () => void = () => {
-  }, public label: string) {
+  constructor(public onChange: (radioButton: RadioButton) => void = (radioButton: RadioButton) => {
+  }, public label: string, public name) {
     this.buildContent();
   }
 
@@ -23,7 +25,14 @@ export class RadioButton {
    * Reset the radio button
    */
   public reset() {
-    (<HTMLInputElement>this.element).checked = false;
+    this.getRadio().checked = false;
+  }
+
+  /**
+   * Select the radio button;
+   */
+  public select() {
+    this.getRadio().checked = true;
   }
 
   /**
@@ -43,7 +52,7 @@ export class RadioButton {
   }
 
   public getValue(): string {
-    return '';
+    return this.label;
   }
 
   /**
@@ -71,19 +80,16 @@ export class RadioButton {
   }
 
   private buildContent() {
-    let section = $$('div', { className: 'coveo-advanced-search-radio-section' });
-    let radioOption = $$('div', { className: 'coveo-radio' });
-    let radioInput = $$('input', { type: 'radio', name: 'coveo-advanced-search-radio-input', id: this.label });
-    let labelInput = $$('label', { className: 'coveo-advanced-search-radio-input-label', 'for': this.label });
+    const radioOption = $$('div', {className: 'coveo-radio'});
+    const radioInput = $$('input', {type: 'radio', name: this.name, id: this.label});
+    const labelInput = $$('label', {className: 'coveo-radio-input-label', 'for': this.label});
     labelInput.text(this.label);
     radioInput.on('change', () => {
-      this.onChange();
+      this.onChange(this);
     });
 
     radioOption.append(radioInput.el);
     radioOption.append(labelInput.el);
-    section.append(radioOption.el);
-    this.element = section.el;
+    this.element = radioOption.el;
   }
-
 }

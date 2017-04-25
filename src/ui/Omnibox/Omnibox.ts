@@ -3,6 +3,7 @@
 ///<reference path="QuerySuggestAddon.ts" />
 ///<reference path="OldOmniboxAddon.ts" />
 
+import { ComponentOptionsModel } from '../../models/ComponentOptionsModel';
 export const MagicBox: any = require('exports-loader?Coveo.MagicBox!../../../node_modules/coveomagicbox/bin/MagicBox.min.js');
 import { IQueryboxOptions } from '../Querybox/Querybox';
 import { Component } from '../Base/Component';
@@ -193,6 +194,8 @@ export class Omnibox extends Component {
     super(element, Omnibox.ID, bindings);
 
     this.options = ComponentOptions.initComponentOptions(element, Omnibox, options);
+    const originalValueForQuerySyntax = this.options.enableQuerySyntax;
+    this.options = _.extend({}, this.options, this.componentOptionsModel.get(ComponentOptionsModel.attributesEnum.searchBox));
 
     let grammar: { start: string; expressions: { [id: string]: Coveo.MagicBox.ExpressionDef } };
 
@@ -237,6 +240,13 @@ export class Omnibox extends Component {
     if (this.isAutoSuggestion()) {
       this.bind.onRootElement(QueryEvents.duringQuery, (args: IDuringQueryEventArgs) => this.handleDuringQuery(args));
     }
+    this.bind.onComponentOptions(MODEL_EVENTS.CHANGE_ONE, ComponentOptionsModel.attributesEnum.searchBox, (args: IAttributeChangedEventArg)=> {
+      if (args.value.enableQuerySyntax != null) {
+        this.options.enableQuerySyntax = args.value.enableQuerySyntax;
+      } else {
+        this.options.enableQuerySyntax = originalValueForQuerySyntax;
+      }
+    });
     this.setupMagicBox();
   }
 

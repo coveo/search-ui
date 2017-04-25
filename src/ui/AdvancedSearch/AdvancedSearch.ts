@@ -16,11 +16,11 @@ import { QuerySummaryEvents } from '../../events/QuerySummaryEvents';
 import * as _ from 'underscore';
 import { exportGlobally } from '../../GlobalExports';
 import 'styling/_AdvancedSearch';
-import { NumericSpinner } from './Form/NumericSpinner';
-import { DatePicker } from './Form/DatePicker';
-import { Dropdown } from './Form/Dropdown';
-import { TextInput } from './Form/TextInput';
-import { RadioButton } from './Form/RadioButton';
+import { NumericSpinner } from '../FormWidgets/NumericSpinner';
+import { DatePicker } from '../FormWidgets/DatePicker';
+import { Dropdown } from '../FormWidgets/Dropdown';
+import { TextInput } from '../FormWidgets/TextInput';
+import { RadioButton } from '../FormWidgets/RadioButton';
 
 
 export interface IAdvancedSearchOptions {

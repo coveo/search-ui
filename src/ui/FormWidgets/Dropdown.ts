@@ -1,5 +1,5 @@
-import { $$, Dom } from '../../../utils/Dom';
-import { l } from '../../../strings/Strings';
+import { $$, Dom } from '../../utils/Dom';
+import { l } from '../../strings/Strings';
 import * as _ from 'underscore';
 
 /**

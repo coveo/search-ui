@@ -108,35 +108,12 @@ export class PreferencesPanelBoxInput {
   }
 }
 
-export class PreferencesPanelRadioInput extends PreferencesPanelBoxInput {
+/*export class PreferencesPanelRadioInput extends PreferencesPanelBoxInput {
   constructor(private radioElementToBuild: IPreferencePanelInputToBuild[], private name: string) {
     super(radioElementToBuild, name, 'radio');
   }
-}
+}*/
 
-export class PreferencesPanelCheckboxInput extends PreferencesPanelBoxInput {
-  constructor(private checkboxElementToBuild: IPreferencePanelInputToBuild[], public name: string) {
-    super(checkboxElementToBuild, name, 'checkbox');
-  }
-
-  public build(): HTMLElement {
-    var build = super.build();
-    var icons = $$(build).findAll('.coveo-input-icon');
-    _.each(icons, (icon: HTMLElement) => {
-      var input = <HTMLInputElement>$$(icon.parentElement).find('input');
-      $$(input).on('change', () => {
-        var checked = input.checked;
-        $$(icon).toggleClass('coveo-selected', checked);
-      });
-
-      $$(icon).on('click', () => {
-        input.checked = !input.checked;
-        $$(input).trigger('change');
-      });
-    });
-    return build;
-  }
-}
 
 export class PreferencesPanelTextInput {
   public inputs: { [label: string]: HTMLElement } = {};

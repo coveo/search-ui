@@ -181,11 +181,11 @@ export interface IQuery {
   debug?: boolean;
   timezone?: string;
   /**
-   * Whether to disable the special query syntax such as field references for the basic query expression (parameter q).
+   * Whether to enable the special query syntax such as field references for the basic query expression (parameter q).
    * It is equivalent to a No syntax block applied to the basic query expression.
    * If not specified, the parameter defaults to false
    */
-  disableQuerySyntax?: boolean;
+  enableQuerySyntax?: boolean;
   enableDuplicateFiltering?: boolean;
   /**
    * Whether the index should take collaborative rating in account when ranking result. See : {@link ResultRating}

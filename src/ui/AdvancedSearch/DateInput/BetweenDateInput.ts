@@ -1,5 +1,5 @@
 import { DateInput } from './DateInput';
-import { DatePicker } from '../Form/DatePicker';
+import { DatePicker } from '../../FormWidgets/DatePicker';
 import { l } from '../../../strings/Strings';
 import { $$ } from '../../../utils/Dom';
 

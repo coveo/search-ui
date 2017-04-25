@@ -1,4 +1,4 @@
-import { Dropdown } from '../../../../src/ui/AdvancedSearch/Form/Dropdown';
+import { Dropdown } from '../../../../src/ui/FormWidgets/Dropdown';
 import { $$ } from '../../../../src/utils/Dom';
 
 export function RadioButtonTest() {

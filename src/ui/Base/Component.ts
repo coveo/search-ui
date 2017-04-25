@@ -14,6 +14,7 @@ import { BaseComponent } from './BaseComponent';
 import { IComponentBindings } from './ComponentBindings';
 import { DebugEvents } from '../../events/DebugEvents';
 import * as _ from 'underscore';
+import { Model } from '../../models/Model';
 
 /**
  * Definition for a Component.
@@ -355,6 +356,10 @@ export class ComponentEvents {
     this.onRootElement(this.getQueryStateEventName(eventType, attribute), handler);
   }
 
+  public onComponentOptions<T>(eventType: string, attribute?: string, handler?: (args: T)=> any) {
+    this.onRootElement(this.getComponentOptionEventName(eventType, attribute), handler);
+  }
+
   /**
    * Bind an event related specially to the query state model.<br/>
    * This will build the correct string event and execute the handler only if the component is activated.<br/>
@@ -412,11 +417,19 @@ export class ComponentEvents {
   }
 
   private getQueryStateEventName(eventType: string, attribute?: string): string {
+    return this.getModelEvent(this.owner.queryStateModel, eventType, attribute);
+  }
+
+  private getComponentOptionEventName(eventType: string, attribute?: string): string {
+    return this.getModelEvent(this.owner.componentOptionsModel, eventType, attribute);
+  }
+
+  private getModelEvent(model: Model, eventType: string, attribute?: string) {
     var evtName;
     if (eventType && attribute) {
-      evtName = this.owner.queryStateModel.getEventName(eventType + attribute);
+      evtName = model.getEventName(eventType + attribute);
     } else {
-      evtName = this.owner.queryStateModel.getEventName(eventType);
+      evtName = model.getEventName(eventType);
     }
     return evtName;
   }

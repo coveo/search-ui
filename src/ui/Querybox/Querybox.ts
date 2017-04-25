@@ -1,3 +1,4 @@
+import { ComponentOptionsModel } from '../../models/ComponentOptionsModel';
 export const MagicBox: any = require('exports-loader?Coveo.MagicBox!../../../node_modules/coveomagicbox/bin/MagicBox.min.js');
 import { Initialization } from '../Base/Initialization';
 import { Component } from '../Base/Component';
@@ -11,6 +12,7 @@ import { IAnalyticsNoMeta, analyticsActionCauseList } from '../Analytics/Analyti
 import { $$ } from '../../utils/Dom';
 import { Assert } from '../../misc/Assert';
 import { QueryboxQueryParameters } from './QueryboxQueryParameters';
+import * as _ from 'underscore';
 import { exportGlobally } from '../../GlobalExports';
 
 export interface IQueryboxOptions {
@@ -81,7 +83,7 @@ export class Querybox extends Component {
      *
      * Default value is `true`.
      */
-    enableQuerySyntax: ComponentOptions.buildBooleanOption({ defaultValue: true }),
+    enableQuerySyntax: ComponentOptions.buildBooleanOption({defaultValue: false}),
 
     /**
      * Specifies whether the Coveo Platform should expand keywords containing wildcard characters (`*`) to the possible
@@ -211,6 +213,7 @@ export class Querybox extends Component {
     }
 
     this.options = ComponentOptions.initComponentOptions(element, Querybox, options);
+    this.options = _.extend({}, this.options, this.componentOptionsModel.get(ComponentOptionsModel.attributesEnum.searchBox));
 
     this.magicBox = MagicBox.create(element, new MagicBox.Grammar('Query', {
       Query: '[Term*][Spaces?]',

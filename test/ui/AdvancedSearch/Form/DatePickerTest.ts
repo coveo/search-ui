@@ -1,4 +1,4 @@
-import { DatePicker } from '../../../../src/ui/AdvancedSearch/Form/DatePicker';
+import { DatePicker } from '../../../../src/ui/FormWidgets/DatePicker';
 
 export function DatePickerTest() {
   describe('DatePicker', () => {

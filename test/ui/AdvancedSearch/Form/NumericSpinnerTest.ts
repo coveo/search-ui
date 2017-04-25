@@ -1,4 +1,4 @@
-import { NumericSpinner } from '../../../../src/ui/AdvancedSearch/Form/NumericSpinner';
+import { NumericSpinner } from '../../../../src/ui/FormWidgets/NumericSpinner';
 import { $$ } from '../../../../src/utils/Dom';
 
 export function NumericSpinnerTest() {

@@ -1,4 +1,4 @@
-import { TextInput } from '../../../../src/ui/AdvancedSearch/Form/TextInput';
+import { TextInput } from '../../../../src/ui/FormWidgets/TextInput';
 import { $$ } from '../../../../src/utils/Dom';
 
 export function TextInputTest() {
