@@ -1,6 +1,6 @@
 import { IQueryboxOptions } from './Querybox';
 import { QueryBuilder } from '../Base/QueryBuilder';
-import _ = require('underscore');
+import * as _ from 'underscore';
 
 export class QueryboxQueryParameters {
   constructor(private options: IQueryboxOptions) {

@@ -35,8 +35,9 @@ export function AnalyticsEndpointTest() {
         })
         .catch((e: IErrorResponse) => {
           fail(e);
+          return e;
         })
-        .finally(() => done());
+        .then(() => done());
       expect(jasmine.Ajax.requests.mostRecent().url).toBe(buildUrl(endpoint, '/analytics/visit?org=organization&access_token=token'));
       expect(jasmine.Ajax.requests.mostRecent().method).toBe('GET');
 
@@ -56,8 +57,9 @@ export function AnalyticsEndpointTest() {
         })
         .catch((e: IErrorResponse) => {
           fail(e);
+          return e;
         })
-        .finally(() => done());
+        .then(() => done());
 
       // Here, the current visit id should be undefined
       expect(endpoint.getCurrentVisitId()).toBeUndefined();
@@ -82,8 +84,9 @@ export function AnalyticsEndpointTest() {
         })
         .catch((e: IErrorResponse) => {
           fail(e);
+          return e;
         })
-        .finally(() => done());
+        .then(() => done());
 
       // Here, the current visit id should be undefined
       expect(endpoint.getCurrentVisitId()).toBeUndefined();
@@ -122,8 +125,9 @@ export function AnalyticsEndpointTest() {
         })
         .catch((e: IErrorResponse) => {
           fail(e);
+          return e;
         })
-        .finally(() => done());
+        .then(() => done());
 
       expect(jasmine.Ajax.requests.mostRecent().url).toBe(buildUrl(endpoint, '/stats/topQueries?org=organization&access_token=token&pageSize=10&queryText=foobar'));
       expect(jasmine.Ajax.requests.mostRecent().method).toBe('GET');

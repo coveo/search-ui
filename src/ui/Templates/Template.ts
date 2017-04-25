@@ -5,7 +5,9 @@ import { TemplateConditionEvaluator } from './TemplateConditionEvaluator';
 import { TemplateFieldsEvaluator } from './TemplateFieldsEvaluator';
 import { IQueryResult } from '../../rest/QueryResult';
 import { ResponsiveComponents } from '../ResponsiveComponents/ResponsiveComponents';
-import _ = require('underscore');
+import * as _ from 'underscore';
+import { Initialization, LazyInitialization } from '../Base/Initialization';
+import { Utils } from '../../utils/Utils';
 
 export type TemplateRole = 'table-header' | 'table-footer';
 
@@ -72,7 +74,7 @@ export class Template implements ITemplateProperties {
   public mobile: boolean;
   public tablet: boolean;
   public desktop: boolean;
-  public fields: string[];
+  public fields: string[] = [];
   public layout: ValidLayout;
   public role: TemplateRole;
 
@@ -150,11 +152,46 @@ export class Template implements ITemplateProperties {
     return null;
   }
 
-  instantiateToElement(object: IQueryResult, instantiateTemplateOptions: IInstantiateTemplateOptions = {}): HTMLElement {
+  addField(field: string) {
+    if (!_.contains(this.fields, field)) {
+      this.fields.push(field);
+    }
+  }
+
+  addFields(fields: string[]) {
+    if (Utils.isNonEmptyArray(fields)) {
+      this.fields = Utils.concatWithoutDuplicate(this.fields, fields);
+    }
+  }
+
+  getComponentsInside(tmplString: string): string[] {
+    let allComponentsInsideCurrentTemplate = _.map(Initialization.getListOfRegisteredComponents(), (componentId: string) => {
+      let regex = new RegExp(`Coveo${componentId}`, 'g');
+      if (regex.exec(tmplString)) {
+        return componentId;
+      } else {
+        return null;
+      }
+    });
+
+    return _.compact(allComponentsInsideCurrentTemplate);
+  }
+
+  instantiateToElement(object: IQueryResult, instantiateTemplateOptions: IInstantiateTemplateOptions = {}): Promise<HTMLElement> {
     let mergedOptions = new DefaultInstantiateTemplateOptions().merge(instantiateTemplateOptions);
 
     var html = this.instantiateToString(object, mergedOptions);
-    if (html != null) {
+    if (html == null) {
+      return null;
+    }
+
+    let allComponentsLazyLoaded = _.map(this.getComponentsInside(html), (component: string) => {
+      return LazyInitialization.getLazyRegisteredComponent(component).then((lazyLoadedComponent) => {
+        return lazyLoadedComponent;
+      });
+    });
+
+    return Promise.all(allComponentsLazyLoaded).then(() => {
       const layout = this.layout || mergedOptions.currentLayout;
       const elemType = layout === 'table' ? 'tr' : 'div';
       var element = $$(elemType, {}, html).el;
@@ -167,8 +204,7 @@ export class Template implements ITemplateProperties {
       this.logger.trace('Instantiated result template', object, element);
       element['template'] = this;
       return element;
-    }
-    return null;
+    });
   }
 
   toHtmlElement(): HTMLElement {
@@ -176,7 +212,7 @@ export class Template implements ITemplateProperties {
   }
 
   getFields(): string[] {
-    return this.fields || [];
+    return this.fields;
   }
 
   getType() {

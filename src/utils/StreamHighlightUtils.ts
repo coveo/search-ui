@@ -4,7 +4,7 @@ import { StringUtils } from './StringUtils';
 import { Utils } from './Utils';
 import { IHighlight } from '../rest/Highlight';
 import { $$ } from './Dom';
-import _ = require('underscore');
+import * as _ from 'underscore';
 
 // \u2011: http://graphemica.com/%E2%80%91
 let nonWordBoundary = '[\\.\\-\\u2011\\s~=,.\\|\\/:\'`’;_()!?]';

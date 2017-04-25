@@ -9,17 +9,19 @@ export class ResultListRenderer {
   }
 
   renderResults(resultElements: HTMLElement[], append = false, resultDisplayedCallback: (result: IQueryResult, resultElem: HTMLElement) => any) {
-    this.beforeRenderingResults(resultElements, append);
-    _.each(resultElements, (resultElement) => {
-      this.resultListOptions.resultContainer.appendChild(resultElement);
+    const resultsFragment = document.createDocumentFragment();
+    this.beforeRenderingResults(resultsFragment, resultElements, append);
+    _.each(resultElements, resultElement => {
+      resultsFragment.appendChild(resultElement);
       resultDisplayedCallback(Component.getResult(resultElement), resultElement);
     });
-    this.afterRenderingResults(resultElements, append);
+    this.afterRenderingResults(resultsFragment, resultElements, append);
+    this.resultListOptions.resultContainer.appendChild(resultsFragment);
   }
 
-  protected beforeRenderingResults(resultElements: HTMLElement[], append: boolean) {
+  protected beforeRenderingResults(container: Node, resultElements: HTMLElement[], append: boolean) {
   }
 
-  protected afterRenderingResults(resultElements: HTMLElement[], append: boolean) {
+  protected afterRenderingResults(container: Node, resultElements: HTMLElement[], append: boolean) {
   }
 }

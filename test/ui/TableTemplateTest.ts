@@ -28,17 +28,21 @@ export function TableTemplateTest() {
       expect(instantiatedString).not.toBeFalsy();
     });
 
-    it('instantiateRoleToElement should render a roled template to element', () => {
+    it('instantiateRoleToElement should render a roled template to element', (done) => {
       const roledTemplate = new Template(() => 'header');
       roledTemplate.role = 'table-header';
       tableTemplate = new TableTemplate([roledTemplate]);
-      const instantiatedElement = tableTemplate.instantiateRoleToElement('table-header');
-      expect(instantiatedElement.innerHTML).toBe('header');
+      tableTemplate.instantiateRoleToElement('table-header').then(instantiatedElement => {
+        expect(instantiatedElement.innerHTML).toBe('header');
+        done();
+      });
     });
 
-    it('instantiateRoleToElement should render a default roled template if it doesn\'t have one available', () => {
-      const instantiatedElement = tableTemplate.instantiateRoleToElement('table-header');
-      expect(instantiatedElement.childElementCount).toBe(3);
+    it('instantiateRoleToElement should render a default roled template if it doesn\'t have one available', (done) => {
+      tableTemplate.instantiateRoleToElement('table-header').then(instantiatedElement => {
+        expect(instantiatedElement.childElementCount).toBe(3);
+        done();
+      });
     });
   });
 }

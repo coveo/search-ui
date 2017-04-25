@@ -1,3 +1,5 @@
+@import "Variables";
+@import "../bin/sass/sprites";
 
 .CoveoFieldTable {
   @include defaultRoundedBorder();
@@ -53,7 +55,7 @@
   position: relative;
   top: 2px;
 
-  @extend .coveo-sprites-arrow-down;
+  @include retina-sprite($arrow-down-group);
   @include transition(opacity 0.5s);
   opacity: 1;
   &.coveo-opened {
@@ -66,7 +68,7 @@
   bottom: 10px;
   right: 10px;
   margin: 0;
-  @extend .coveo-sprites-arrow-up;
+  @include retina-sprite($arrow-up-group);
   display: none;
   &.coveo-opened {
     display: inline-block;

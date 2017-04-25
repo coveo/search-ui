@@ -5,9 +5,9 @@ import { SearchInterface } from '../SearchInterface/SearchInterface';
 import { Utils } from '../../utils/Utils';
 import { Tab } from '../Tab/Tab';
 import { ResponsiveFacets } from './ResponsiveFacets';
+import * as _ from 'underscore';
 import { QueryEvents } from '../../events/QueryEvents';
 import { Logger } from '../../misc/Logger';
-import _ = require('underscore');
 
 export interface IResponsiveComponentOptions {
   enableResponsiveMode?: boolean;
@@ -130,7 +130,7 @@ export class ResponsiveComponentsManager {
         interface display property be none? Could its visibility property be set to hidden? Also, if either of these scenarios happen during
         loading, it could be the cause of this issue.`);
       }
-    }, ResponsiveComponentsManager.RESIZE_DEBOUNCE_DELAY);
+    }, ResponsiveComponentsManager.RESIZE_DEBOUNCE_DELAY, true);
     window.addEventListener('resize', this.resizeListener);
     this.bindNukeEvents();
   }
@@ -195,7 +195,7 @@ export class ResponsiveComponentsManager {
   }
 
   private isTabs(ID: string): boolean {
-    return ID == Tab.ID;
+    return ID == 'Tab';
   }
 
   private isActivated(ID: string): boolean {

@@ -247,7 +247,7 @@ export function mockSearchEndpoint(): SearchEndpoint {
   }));
   m.search.and.returnValue(new Promise((resolve, reject) => {
   }));
-  m.getRevealQuerySuggest.and.returnValue(new Promise((resolve, reject) => {
+  m.getQuerySuggest.and.returnValue(new Promise((resolve, reject) => {
   }));
   m.extensions.and.returnValue(new Promise((resolve, reject) => {
   }));

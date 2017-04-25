@@ -65,32 +65,43 @@ export function TemplateTest() {
         expect(tmpl.instantiateToString(result)).toBeNull();
       });
 
-      it('should instantiate to element', () => {
-        let created = tmpl.instantiateToElement(result);
-        expect($$(created).text()).toBe(`Hello World`);
+      it('should instantiate to element', (done) => {
+        tmpl.instantiateToElement(result).then(created => {
+          expect($$(created).text()).toBe(`Hello World`);
+          done();
+        });
       });
 
-      it('should correctly return the root HTMLElement when not wrapping in a div', () => {
+      it('should correctly return the root HTMLElement when not wrapping in a div', (done) => {
         tmpl = new Template(() => '<div class="my-stuff"></div>');
-        let created = tmpl.instantiateToElement(result, { wrapInDiv: false });
-        expect($$(created).hasClass('my-stuff')).toBe(true);
+        tmpl.instantiateToElement(result, { wrapInDiv: false }).then(created => {
+          expect($$(created).hasClass('my-stuff')).toBe(true);
+          done();
+        });
       });
 
-      it('should correctly return the root HTMLElement when not wrapping in a div even if there is a leading whitespace in the content', () => {
+      it('should correctly return the root HTMLElement when not wrapping in a div even if there is a leading whitespace in the content', (done) => {
         tmpl = new Template(() => '     <div class="my-stuff"></div>');
-        let created = tmpl.instantiateToElement(result, { wrapInDiv: false });
-        expect($$(created).hasClass('my-stuff')).toBe(true);
+        tmpl.instantiateToElement(result, { wrapInDiv: false }).then(created => {
+          expect($$(created).hasClass('my-stuff')).toBe(true);
+          done();
+        });
       });
 
-      it('should add the correct layout class', () => {
+      it('should add the correct layout class', (done) => {
         tmpl.layout = 'card';
-        let created = tmpl.instantiateToElement(result);
-        expect($$(created).hasClass('coveo-card-layout')).toBe(true);
+        tmpl.instantiateToElement(result).then(created => {
+          expect($$(created).hasClass('coveo-card-layout')).toBe(true);
+          done();
+        });
+
       });
 
-      it('should add the correct layout class when specified in instantiateOptions', () => {
-        let created = tmpl.instantiateToElement(result, { currentLayout: 'table' });
-        expect($$(created).hasClass('coveo-table-layout')).toBe(true);
+      it('should add the correct layout class when specified in instantiateOptions', (done) => {
+        tmpl.instantiateToElement(result, { currentLayout: 'table' }).then(created => {
+          expect($$(created).hasClass('coveo-table-layout')).toBe(true);
+          done();
+        });
       });
 
       it('should return the correct type', () => {

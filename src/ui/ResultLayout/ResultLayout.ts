@@ -16,7 +16,11 @@ import { IQueryResults } from '../../rest/QueryResults';
 import { KeyboardUtils, KEYBOARD } from '../../utils/KeyboardUtils';
 import { ResponsiveResultLayout } from '../ResponsiveComponents/ResponsiveResultLayout';
 import { Utils } from '../../utils/Utils';
-import _ = require('underscore');
+import * as _ from 'underscore';
+import { exportGlobally } from '../../GlobalExports';
+import { l } from '../../strings/Strings';
+
+import 'styling/_ResultLayout';
 
 interface IActiveLayouts {
   button: {
@@ -51,6 +55,12 @@ export const defaultLayout: ValidLayout = 'list';
  */
 export class ResultLayout extends Component {
   static ID = 'ResultLayout';
+
+  static doExport = () => {
+    exportGlobally({
+      'ResultLayout': ResultLayout
+    });
+  }
 
   public static validLayouts: ValidLayout[] = ['list', 'card', 'table'];
 
@@ -215,13 +225,18 @@ export class ResultLayout extends Component {
   }
 
   private setLayout(layout: ValidLayout, results?: IQueryResults) {
-    this.isLayoutDisplayedByButton(layout);
-    if (this.currentLayout) {
-      $$(this.currentActiveLayouts[this.currentLayout].button.el).removeClass('coveo-selected');
+    if (layout) {
+      this.isLayoutDisplayedByButton(layout);
+      if (this.currentLayout) {
+        $$(this.currentActiveLayouts[this.currentLayout].button.el).removeClass('coveo-selected');
+      }
+      $$(this.currentActiveLayouts[layout].button.el).addClass('coveo-selected');
+      this.currentLayout = layout;
+      $$(this.element).trigger(ResultListEvents.changeLayout, <IChangeLayoutEventArgs>{
+        layout: layout,
+        results: results
+      });
     }
-    $$(this.currentActiveLayouts[layout].button.el).addClass('coveo-selected');
-    this.currentLayout = layout;
-    $$(this.element).trigger(ResultListEvents.changeLayout, <IChangeLayoutEventArgs>{ layout: layout, results: results });
   }
 
   private handleQuerySuccess(args: IQuerySuccessEventArgs) {
@@ -266,8 +281,11 @@ export class ResultLayout extends Component {
     }
   }
 
-  private addButton(layout?: string) {
-    const btn = $$('span', { className: 'coveo-result-layout-selector', tabindex: 0 }, layout);
+  private addButton(layout: string) {
+    const btn = $$('span', {
+      className: 'coveo-result-layout-selector',
+      tabindex: 0
+    }, $$('span', { className: 'coveo-result-layout-selector-caption' }, l(layout)));
     btn.prepend($$('span', { className: `coveo-icon coveo-sprites-${layout}-layout` }).el);
     if (layout === this.currentLayout) {
       btn.addClass('coveo-selected');

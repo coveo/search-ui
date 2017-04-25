@@ -1,3 +1,7 @@
+@import "bourbon/bourbon";
+@import "mixins/mediaQuery";
+@import "Variables";
+
 .CoveoResultList.coveo-faded {
 	opacity : 0.5;
 }
@@ -8,7 +12,7 @@
 
   .coveo-fade-out {
 	opacity : 0.5;
-	@include transition (opacity .5s);
+	@include transition(opacity .5s);
   }
 
   .coveo-wait-animation {

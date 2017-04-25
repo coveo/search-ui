@@ -1,7 +1,7 @@
 import * as Mock from '../MockEnvironment';
-import { FieldValue } from '../../src/ui/FieldTable/FieldValue';
+import { FieldValue } from '../../src/ui/FieldValue/FieldValue';
 import { FakeResults } from '../Fake';
-import { IFieldValueOptions } from '../../src/ui/FieldTable/FieldValue';
+import { IFieldValueOptions } from '../../src/ui/FieldValue/FieldValue';
 import { $$ } from '../../src/utils/Dom';
 import { TemplateHelpers } from '../../src/ui/Templates/TemplateHelpers';
 import { Facet } from '../../src/ui/Facet/Facet';

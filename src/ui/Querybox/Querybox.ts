@@ -1,3 +1,4 @@
+export const MagicBox: any = require('exports-loader?Coveo.MagicBox!../../../node_modules/coveomagicbox/bin/MagicBox.min.js');
 import { Initialization } from '../Base/Initialization';
 import { Component } from '../Base/Component';
 import { IComponentBindings } from '../Base/ComponentBindings';
@@ -10,6 +11,7 @@ import { IAnalyticsNoMeta, analyticsActionCauseList } from '../Analytics/Analyti
 import { $$ } from '../../utils/Dom';
 import { Assert } from '../../misc/Assert';
 import { QueryboxQueryParameters } from './QueryboxQueryParameters';
+import { exportGlobally } from '../../GlobalExports';
 
 export interface IQueryboxOptions {
   enableSearchAsYouType?: boolean;
@@ -42,6 +44,13 @@ export interface IQueryboxOptions {
 export class Querybox extends Component {
   static ID = 'Querybox';
 
+  static doExport = () => {
+    exportGlobally({
+      'Querybox': Querybox,
+      'MagicBox': MagicBox
+    });
+  }
+
   /**
    * The options for the Querybox.
    * @componentOptions
@@ -59,9 +68,9 @@ export class Querybox extends Component {
      * If {@link Querybox.options.enableSearchAsYouType} is `true`, specifies the delay (in milliseconds) between a
      * key press and a query being triggered.
      *
-     * Default value is `500`. Minimum value is `0`
+     * Default value is `50`. Minimum value is `0`
      */
-    searchAsYouTypeDelay: ComponentOptions.buildNumberOption({ defaultValue: 500, min: 0 }),
+    searchAsYouTypeDelay: ComponentOptions.buildNumberOption({ defaultValue: 50, min: 0 }),
 
     /**
      * Specifies whether the Coveo Platform should try to interpret special query syntax such as field references in the
@@ -179,13 +188,6 @@ export class Querybox extends Component {
      * Default value is `true`.
      */
     triggerQueryOnClear: ComponentOptions.buildBooleanOption({ defaultValue: true }),
-
-    /**
-     * Specifies whether the Querybox should get auto focus and selection upon initialization.
-     *
-     * Default value is `true`.
-     */
-    autoFocus: ComponentOptions.buildBooleanOption({ defaultValue: true })
   };
 
   public magicBox: Coveo.MagicBox.Instance;
@@ -210,7 +212,7 @@ export class Querybox extends Component {
 
     this.options = ComponentOptions.initComponentOptions(element, Querybox, options);
 
-    this.magicBox = Coveo.MagicBox.create(element, new Coveo.MagicBox.Grammar('Query', {
+    this.magicBox = MagicBox.create(element, new MagicBox.Grammar('Query', {
       Query: '[Term*][Spaces?]',
       Term: '[Spaces?][Word]',
       Spaces: / +/,
@@ -245,10 +247,6 @@ export class Querybox extends Component {
         this.triggerNewQuery(false);
       }
     };
-
-    if (this.options.autoFocus) {
-      this.magicBox.focus();
-    }
   }
 
   /**

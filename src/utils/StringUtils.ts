@@ -2,7 +2,7 @@ import { Assert } from '../misc/Assert';
 import { IHighlight } from '../rest/Highlight';
 import { $$ } from '../utils/Dom';
 import * as latinize from 'latinize';
-import _ = require('underscore');
+import * as _ from 'underscore';
 
 export class StringUtils {
   static javascriptEncode(value: string): string {

@@ -5,6 +5,7 @@ import { $$ } from '../../utils/Dom';
 import { l } from '../../strings/Strings';
 import { IAnalyticsNoMeta, analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
 import { Initialization } from '../Base/Initialization';
+import { exportGlobally } from '../../GlobalExports';
 
 export interface ISearchButtonOptions {
 }
@@ -17,6 +18,12 @@ export interface ISearchButtonOptions {
  */
 export class SearchButton extends Component {
   static ID = 'SearchButton';
+
+  static doExport = () => {
+    exportGlobally({
+      'SearchButton': SearchButton
+    });
+  }
 
   static options: ISearchButtonOptions = {};
 

@@ -1,12 +1,12 @@
 /// <reference path='Facet.ts' />
-import { Facet } from './Facet';
 import { StringUtils } from '../../utils/StringUtils';
 import { QueryUtils } from '../../utils/QueryUtils';
 import { FileTypes } from '../Misc/FileTypes';
 import { DateUtils } from '../../utils/DateUtils';
 import { Utils } from '../../utils/Utils';
 import { $$ } from '../../utils/Dom';
-import _ = require('underscore');
+import * as _ from 'underscore';
+import FacetModuleDefinition = require('./Facet');
 
 declare const Coveo;
 
@@ -15,7 +15,7 @@ export class FacetUtils {
     return new RegExp(StringUtils.stringToRegex(value, ignoreAccent), 'i');
   }
 
-  static getValuesToUseForSearchInFacet(original: string, facet: Facet): string[] {
+  static getValuesToUseForSearchInFacet(original: string, facet: FacetModuleDefinition.Facet): string[] {
     let ret = [original];
     let regex = this.getRegexToUseForFacetSearch(original, facet.options.facetSearchIgnoreAccents);
     if (facet.options.valueCaption) {
@@ -65,7 +65,7 @@ export class FacetUtils {
     return currentSearchLength < newSearchLength && currentSearchLength < desiredSearchLength && currentSearchLength > oldSearchLength;
   }
 
-  static addNoStateCssClassToFacetValues(facet: Facet, container: HTMLElement) {
+  static addNoStateCssClassToFacetValues(facet: FacetModuleDefinition.Facet, container: HTMLElement) {
     // This takes care of adding the correct css class on each facet value checkbox (empty white box) if at least one value is selected in that facet
     if (facet.values.getSelected().length != 0) {
       let noStates = $$(container).findAll('li:not(.coveo-selected)');
@@ -79,7 +79,7 @@ export class FacetUtils {
     let found: string;
 
     if (QueryUtils.isStratusAgnosticField(field.toLowerCase(), '@filetype')) {
-      found = FileTypes.getFileTypeCaptions()[value.toLowerCase()];
+      found = FileTypes.getFileType(value.toLowerCase()).caption;
     } else if (QueryUtils.isStratusAgnosticField(field.toLowerCase(), '@month')) {
       try {
         let month = parseInt(value);
@@ -91,9 +91,9 @@ export class FacetUtils {
     return found != undefined && Utils.isNonEmptyString(found) ? found : value;
   }
 
-  static clipCaptionsToAvoidOverflowingTheirContainer(facet: Facet, forceClip?: boolean) {
+  static clipCaptionsToAvoidOverflowingTheirContainer(facet: FacetModuleDefinition.Facet, forceClip = false) {
     // in new design, we don't need this : use flexbox instead (sorry IE user)
-    if (facet.getBindings && facet.getBindings().searchInterface && facet.getBindings().searchInterface.isNewDesign()) {
+    if (facet.getBindings && facet.getBindings().searchInterface && facet.getBindings().searchInterface.isNewDesign() && !forceClip) {
       return;
     }
     if (!(Coveo.HierarchicalFacet && facet instanceof Coveo.HierarchicalFacet) || forceClip) {

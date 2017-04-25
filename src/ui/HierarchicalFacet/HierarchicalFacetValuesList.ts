@@ -4,7 +4,7 @@ import { FacetValuesList } from '../Facet/FacetValuesList';
 import { FacetValue } from '../Facet/FacetValues';
 import { HierarchicalFacet, IValueHierarchy } from './HierarchicalFacet';
 import { IFacetValueElementKlass } from '../Facet/FacetValueElement';
-import _ = require('underscore');
+import * as _ from 'underscore';
 
 export class HierarchicalFacetValuesList extends FacetValuesList {
   public hierarchyFacetValues: FacetValue[];

@@ -8,7 +8,10 @@ import { $$ } from '../../utils/Dom';
 import { IAnalyticsTriggerNotify, analyticsActionCauseList, IAnalyticsTriggerRedirect, IAnalyticsTriggerQuery, IAnalyticsTriggerExecute } from '../Analytics/AnalyticsActionListMeta';
 import { QueryStateModel } from '../../models/QueryStateModel';
 import { Initialization } from '../Base/Initialization';
-import _ = require('underscore');
+import * as _ from 'underscore';
+import { exportGlobally } from '../../GlobalExports';
+
+import 'styling/_Triggers';
 
 export interface ITriggersOptions {
 }
@@ -21,6 +24,12 @@ export interface ITriggersOptions {
 export class Triggers extends Component {
   static ID = 'Triggers';
   static options: ITriggersOptions = {};
+
+  static doExport = () => {
+    exportGlobally({
+      'Triggers': Triggers
+    });
+  }
 
   /**
    * The list of notifications returned by the Search API for the current query (via `notify` triggers).

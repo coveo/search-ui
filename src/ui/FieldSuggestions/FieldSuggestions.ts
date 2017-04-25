@@ -14,7 +14,8 @@ import { l } from '../../strings/Strings';
 import { $$ } from '../../utils/Dom';
 import { ISuggestionForOmniboxOptionsOnSelect } from '../Misc/SuggestionForOmnibox';
 import { IStringMap } from '../../rest/GenericParam';
-import _ = require('underscore');
+import * as _ from 'underscore';
+import { exportGlobally } from '../../GlobalExports';
 
 export interface IFieldSuggestionsOptions extends ISuggestionForOmniboxOptions {
   field?: IFieldOption;
@@ -31,13 +32,19 @@ export interface IFieldSuggestionsOptions extends ISuggestionForOmniboxOptions {
 export class FieldSuggestions extends Component {
   static ID = 'FieldSuggestions';
 
+  static doExport = () => {
+    exportGlobally({
+      'FieldSuggestions': FieldSuggestions
+    });
+  }
+
   /**
    * @componentOptions
    */
   static options: IFieldSuggestionsOptions = {
 
     /**
-     * Specifies the field from which to provide suggestions.
+     * Specifies the facet field from which to provide suggestions.
      *
      * Specifying a value for this option is required for the FieldSuggestions component to work.
      */

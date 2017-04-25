@@ -26,20 +26,20 @@ export class ResultListTableRenderer extends ResultListRenderer {
     }
   }
 
-  beforeRenderingResults(resultElements: HTMLElement[], append: boolean) {
+  beforeRenderingResults(container: Node, resultElements: HTMLElement[], append: boolean) {
     if (!append && !_.isEmpty(resultElements) && this.shouldDisplayHeader) {
-      this.resultListOptions.resultContainer.appendChild(this.renderRoledTemplate('table-header'));
+      this.renderRoledTemplate('table-header').then(tpl => container.appendChild(tpl));
     }
   }
 
-  afterRenderingResults(resultElements: HTMLElement[], append: boolean) {
+  afterRenderingResults(container: Node, resultElements: HTMLElement[], append: boolean) {
     if (!append && !_.isEmpty(resultElements) && this.shouldDisplayFooter) {
-      this.resultListOptions.resultContainer.appendChild(this.renderRoledTemplate('table-footer'));
+      this.renderRoledTemplate('table-footer').then(tpl => container.appendChild(tpl));
     }
   }
 
-  private renderRoledTemplate(role: TemplateRole): HTMLElement {
-    const elem = (<TableTemplate>this.resultListOptions.resultTemplate).instantiateRoleToElement(role);
+  private async renderRoledTemplate(role: TemplateRole) {
+    const elem = await (<TableTemplate>this.resultListOptions.resultTemplate).instantiateRoleToElement(role);
     $$(elem).addClass(`coveo-result-list-${role}`);
     this.autoCreateComponentsFn(elem, undefined);
     return elem;

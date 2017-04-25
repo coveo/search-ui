@@ -1,7 +1,9 @@
 ///<reference path="FieldAddon.ts" />
 ///<reference path="QueryExtensionAddon.ts" />
-///<reference path="RevealQuerySuggestAddon.ts" />
+///<reference path="QuerySuggestAddon.ts" />
 ///<reference path="OldOmniboxAddon.ts" />
+
+export const MagicBox: any = require('exports-loader?Coveo.MagicBox!../../../node_modules/coveomagicbox/bin/MagicBox.min.js');
 import { IQueryboxOptions } from '../Querybox/Querybox';
 import { Component } from '../Base/Component';
 import { IComponentBindings } from '../Base/ComponentBindings';
@@ -19,16 +21,17 @@ import { Initialization } from '../Base/Initialization';
 import { Querybox } from '../Querybox/Querybox';
 import { FieldAddon } from './FieldAddon';
 import { QueryExtensionAddon } from './QueryExtensionAddon';
-import { RevealQuerySuggestAddon } from './RevealQuerySuggestAddon';
+import { QuerySuggestAddon } from './QuerySuggestAddon';
 import { OldOmniboxAddon } from './OldOmniboxAddon';
 import { QueryboxQueryParameters } from '../Querybox/QueryboxQueryParameters';
 import { IAnalyticsActionCause } from '../Analytics/AnalyticsActionListMeta';
 import { IDuringQueryEventArgs } from '../../events/QueryEvents';
 import { PendingSearchAsYouTypeSearchEvent } from '../Analytics/PendingSearchAsYouTypeSearchEvent';
 import { Utils } from '../../utils/Utils';
-import { MagicBox } from '../../ExternalModulesShim';
 import { StandaloneSearchInterface } from '../SearchInterface/SearchInterface';
-import _ = require('underscore');
+import * as _ from 'underscore';
+import { exportGlobally } from '../../GlobalExports';
+import 'styling/_Omnibox';
 
 export interface IPopulateOmniboxSuggestionsEventArgs {
   omnibox: Omnibox;
@@ -45,7 +48,7 @@ export interface IOmniboxOptions extends IQueryboxOptions {
   enableSimpleFieldAddon?: boolean;
   listOfFields?: IFieldOption[];
   fieldAlias?: { [alias: string]: IFieldOption };
-  enableRevealQuerySuggestAddon?: boolean;
+  enableQuerySuggestAddon?: boolean;
   enableQueryExtensionAddon?: boolean;
   omniboxTimeout?: number;
   placeholder?: string;
@@ -72,6 +75,13 @@ const MINIMUM_EXECUTABLE_CONFIDENCE = 0.8;
 export class Omnibox extends Component {
   public static ID = 'Omnibox';
 
+  static doExport = () => {
+    exportGlobally({
+      'Omnibox': Omnibox,
+      'MagicBox': MagicBox
+    });
+  }
+
   /**
    * The options for the omnibox
    * @componentOptions
@@ -83,7 +93,7 @@ export class Omnibox extends Component {
      * results.
      *
      * Set this option as well as {@link Omnibox.options.enableSearchAsYouType} and
-     * {@link Omnibox.options.enableRevealQuerySuggestAddon} to `true` for a cool effect!
+     * {@link Omnibox.options.enableQuerySuggestAddon} to `true` for a cool effect!
      *
      * Default value is `false`.
      */
@@ -93,7 +103,7 @@ export class Omnibox extends Component {
      * Specifies whether to automatically trigger a new query whenever the end user types new text inside the Omnibox.
      *
      * Set this option as well a {@link Omnibox.options.inline} and
-     * {@link Omnibox.options.enableRevealQuerySuggestAddon} to `true` for a cool effect!
+     * {@link Omnibox.options.enableQuerySuggestAddon} to `true` for a cool effect!
      *
      * Default value is `false`.
      */
@@ -136,7 +146,10 @@ export class Omnibox extends Component {
      *
      * Default value is `true`.
      */
-    enableRevealQuerySuggestAddon: ComponentOptions.buildBooleanOption({ defaultValue: true, alias: 'enableTopQueryAddon' }),
+    enableQuerySuggestAddon: ComponentOptions.buildBooleanOption({
+      defaultValue: true,
+      alias: ['enableTopQueryAddon', 'enableRevealQuerySuggestAddon']
+    }),
 
     /**
      * If {@link Querybox.options.enableQuerySyntax} is `true`, specifies whether to enable the `query extension` addon.
@@ -167,7 +180,7 @@ export class Omnibox extends Component {
   private modifyEventTo: IAnalyticsActionCause;
   private movedOnce = false;
   private searchAsYouTypeTimeout: number;
-  private skipRevealAutoSuggest = false;
+  private skipAutoSuggest = false;
 
   /**
    * Creates a new Omnibox component. Also enables necessary addons and binds events on various query events.
@@ -200,8 +213,8 @@ export class Omnibox extends Component {
       grammar = { start: 'Any', expressions: { Any: /.*/ } };
     }
 
-    if (this.options.enableRevealQuerySuggestAddon) {
-      new RevealQuerySuggestAddon(this);
+    if (this.options.enableQuerySuggestAddon) {
+      new QuerySuggestAddon(this);
     }
 
     new OldOmniboxAddon(this);
@@ -221,7 +234,7 @@ export class Omnibox extends Component {
     this.bind.onRootElement(StandaloneSearchInterfaceEvents.beforeRedirect, () => this.handleBeforeRedirect());
     this.bind.onRootElement(QueryEvents.querySuccess, () => this.handleQuerySuccess());
     this.bind.onQueryState(MODEL_EVENTS.CHANGE_ONE, QUERY_STATE_ATTRIBUTES.Q, (args: IAttributeChangedEventArg) => this.handleQueryStateChanged(args));
-    if (this.isRevealAutoSuggestion()) {
+    if (this.isAutoSuggestion()) {
       this.bind.onRootElement(QueryEvents.duringQuery, (args: IDuringQueryEventArgs) => this.handleDuringQuery(args));
     }
     this.setupMagicBox();
@@ -291,18 +304,18 @@ export class Omnibox extends Component {
   private setupMagicBox() {
     this.magicBox.onmove = () => {
       // We assume that once the user has moved its selection, it becomes an explicit omnibox analytics event
-      if (this.isRevealAutoSuggestion()) {
+      if (this.isAutoSuggestion()) {
         this.modifyEventTo = this.getOmniboxAnalyticsEventCause();
       }
       this.movedOnce = true;
     };
 
     this.magicBox.onfocus = () => {
-      if (this.isRevealAutoSuggestion()) {
+      if (this.isAutoSuggestion()) {
         // This flag is used to block the automatic query when the UI is loaded with a query (#q=foo)
         // and then the input is focused. We want to block that query, even if it match the suggestion
         // Only when there is an actual change in the input (user typing something) is when we want the automatic query to kick in
-        this.skipRevealAutoSuggest = true;
+        this.skipAutoSuggest = true;
       }
     };
 
@@ -314,7 +327,7 @@ export class Omnibox extends Component {
       }
       this.movedOnce = false;
       this.lastSuggestions = suggestions;
-      if (this.isRevealAutoSuggestion() && !this.skipRevealAutoSuggest) {
+      if (this.isAutoSuggestion() && !this.skipAutoSuggest) {
         this.searchAsYouType();
       }
     };
@@ -324,10 +337,10 @@ export class Omnibox extends Component {
     }
 
     this.magicBox.onchange = () => {
-      this.skipRevealAutoSuggest = false;
+      this.skipAutoSuggest = false;
       let text = this.getText();
       if (text != undefined && text != '') {
-        if (this.isRevealAutoSuggestion()) {
+        if (this.isAutoSuggestion()) {
           if (this.movedOnce) {
             this.searchAsYouType(true);
           }
@@ -357,24 +370,24 @@ export class Omnibox extends Component {
       let suggestions = _.compact(_.map(this.lastSuggestions, (suggestion) => suggestion.text));
       this.magicBox.clearSuggestion();
       this.updateQueryState();
-      // A bit tricky here : When it's reveal auto suggestions
+      // A bit tricky here : When it's machine learning auto suggestions
       // the mouse selection and keyboard selection acts differently :
       // keyboard selection will automatically do the query (which will log a search as you type event -> further modified by this.modifyEventTo if needed)
       // mouse selection will not "auto" send the query.
       // the movedOnce variable detect the keyboard movement, and is used to differentiate mouse vs keyboard
-      if (!this.isRevealAutoSuggestion()) {
+      if (!this.isAutoSuggestion()) {
         this.usageAnalytics.cancelAllPendingEvents();
         this.triggerNewQuery(false, () => {
           this.usageAnalytics.logSearchEvent<IAnalyticsOmniboxSuggestionMeta>(this.getOmniboxAnalyticsEventCause(), this.buildCustomDataForPartialQueries(index, suggestions));
         });
-      } else if (this.isRevealAutoSuggestion() && this.movedOnce) {
-        this.handleRevealAutoSuggestionWithKeyboard(index, suggestions);
-      } else if (this.isRevealAutoSuggestion() && !this.movedOnce) {
-        this.handleRevealAutoSuggestionsWithMouse(index, suggestions);
+      } else if (this.isAutoSuggestion() && this.movedOnce) {
+        this.handleAutoSuggestionWithKeyboard(index, suggestions);
+      } else if (this.isAutoSuggestion() && !this.movedOnce) {
+        this.handleAutoSuggestionsWithMouse(index, suggestions);
       }
 
       // Consider a selection like a reset of the partial queries (it's the end of a suggestion pattern)
-      if (this.isRevealAutoSuggestion()) {
+      if (this.isAutoSuggestion()) {
         this.partialQueries = [];
       }
     };
@@ -385,7 +398,7 @@ export class Omnibox extends Component {
       } else {
         this.updateQueryState();
       }
-      if (this.isRevealAutoSuggestion()) {
+      if (this.isAutoSuggestion()) {
         this.usageAnalytics.sendAllPendingEvents();
       }
     };
@@ -399,10 +412,6 @@ export class Omnibox extends Component {
       }
     };
 
-    if (this.options.autoFocus) {
-      this.magicBox.focus();
-    }
-
     this.magicBox.ontabpress = () => {
       this.handleTabPress();
     };
@@ -411,7 +420,7 @@ export class Omnibox extends Component {
     this.magicBox.getSuggestions = () => this.handleSuggestions();
   }
 
-  private handleRevealAutoSuggestionWithKeyboard(index: number, suggestions: string[]) {
+  private handleAutoSuggestionWithKeyboard(index: number, suggestions: string[]) {
     if (this.searchAsYouTypeTimeout) {
       // Here, there is currently a search as you typed queued up :
       // Think : user typed very quickly, then very quickly selected a suggestion (without waiting for the search as you type)
@@ -434,7 +443,7 @@ export class Omnibox extends Component {
     }
   }
 
-  private handleRevealAutoSuggestionsWithMouse(index: number, suggestions: string[]) {
+  private handleAutoSuggestionsWithMouse(index: number, suggestions: string[]) {
     if (this.searchAsYouTypeTimeout || index != 0) {
       // Here : the user either very quickly chose the first suggestion, and the search as you type is still queued up.
       // OR
@@ -558,14 +567,14 @@ export class Omnibox extends Component {
   }
 
   private handleTabPress() {
-    if (this.options.enableRevealQuerySuggestAddon) {
-      this.handleTabPressForRevealSuggestions();
+    if (this.options.enableQuerySuggestAddon) {
+      this.handleTabPressForSuggestions();
     } else {
       this.handleTabPressForOldOmniboxAddon();
     }
   }
 
-  private handleTabPressForRevealSuggestions() {
+  private handleTabPressForSuggestions() {
     if (!this.options.enableSearchAsYouType) {
       let suggestions = _.compact(_.map(this.lastSuggestions, (suggestion) => suggestion.text));
       this.usageAnalytics.logCustomEvent(this.getOmniboxAnalyticsEventCause(), this.buildCustomDataForPartialQueries(0, suggestions), this.element);
@@ -624,7 +633,7 @@ export class Omnibox extends Component {
   }
 
   private handleQuerySuccess() {
-    if (!this.isRevealAutoSuggestion()) {
+    if (!this.isAutoSuggestion()) {
       this.partialQueries = [];
     }
   }
@@ -665,8 +674,8 @@ export class Omnibox extends Component {
     }
   }
 
-  private isRevealAutoSuggestion() {
-    return this.options.enableSearchAsYouType && this.options.enableRevealQuerySuggestAddon;
+  private isAutoSuggestion() {
+    return this.options.enableSearchAsYouType && this.options.enableQuerySuggestAddon;
   }
 
   private shouldExecuteQuery(searchAsYouType: boolean) {

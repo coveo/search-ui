@@ -22,12 +22,16 @@ import { BaseComponent } from '../Base/BaseComponent';
 import { Debug } from '../Debug/Debug';
 import { HashUtils } from '../../utils/HashUtils';
 import * as fastclick from 'fastclick';
-import jstz = require('jstimezonedetect');
+import * as jstz from 'jstimezonedetect';
 import { SentryLogger } from '../../misc/SentryLogger';
 import { IComponentBindings } from '../Base/ComponentBindings';
 import { analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
 import { ResponsiveComponents } from '../ResponsiveComponents/ResponsiveComponents';
-import _ = require('underscore');
+import * as _ from 'underscore';
+
+import 'styling/Globals';
+import 'styling/_SearchInterface';
+import 'styling/_SearchModalBox';
 
 export interface ISearchInterfaceOptions {
   enableHistory?: boolean;
@@ -37,14 +41,13 @@ export interface ISearchInterfaceOptions {
   excerptLength?: number;
   expression?: string;
   filterField?: IFieldOption;
-  hideUntilFirstQuery?: boolean;
-  firstLoadingAnimation?: HTMLElement;
   autoTriggerQuery?: boolean;
   timezone?: string;
   enableDebugInfo?: boolean;
   enableCollaborativeRating?: boolean;
   enableDuplicateFiltering?: boolean;
-
+  hideUntilFirstQuery?: boolean;
+  firstLoadingAnimation?: any;
   pipeline?: string;
   maximumAge?: number;
   searchPageUri?: string;
@@ -204,76 +207,14 @@ export class SearchInterface extends RootComponent implements IComponentBindings
      */
     filterField: ComponentOptions.buildFieldOption({ defaultValue: '' }),
 
-    /**
-     * Specifies whether to display a loading animation before the first query successfully returns.
-     *
-     * **Note:**
-     *
-     * > If you do not set this options to `false`, the loading animation will still run until the first query
-     * > successfully returns even if the [autoTriggerQuery]{@link SearchInterface.options.autoTriggerQuery} option is
-     * `false`.
-     *
-     * See also the [firstLoadingAnimation]{@link SearchInterface.options.firstLoadingAnimation} option.
-     *
-     * Default value is `true`.
-     */
-    hideUntilFirstQuery: ComponentOptions.buildBooleanOption({ defaultValue: true }),
+    hideUntilFirstQuery: ComponentOptions.buildBooleanOption({ deprecated: 'Exposed for legacy reasons. The loading animation is now composed of placeholders, and this option is obsolete.' }),
 
-    /**
-     * Specifies the animation that you wish to display while your interface is loading.
-     *
-     * You can either specify the CSS selector of an HTML element that matches the default CSS class
-     * (`coveo-first-loading-animation`), or add `-selector` to the markup attribute of this option to specify the CSS
-     * selector of an HTML element that matches any CSS class.
-     *
-     * See also the [hideUntilFirstQuery]{@link SearchInterface.options.hideUntilFirstQuery} option.
-     *
-     * **Examples:**
-     *
-     * In this first case, the SearchInterface uses the HTML element whose `id` attribute is `MyAnimation` as the
-     * loading animation only if the `class` attribute of this element also matches `coveo-first-loading-animation`.
-     * Default loading animation CSS, which you can customize as you see fit, applies to this HTML element.
-     * ```html
-     * <div class='CoveoSearchInterface' data-first-loading-animation='#MyAnimation'>
-     *   <div id='MyAnimation' class='coveo-first-loading-animation'>
-     *     <!-- ... -->
-     *   </div>
-     *   <!-- ... -->
-     * </div>
-     * ```
-     *
-     * In this second case, the SearchInterface uses the HTML element whose `id` attribute is `MyAnimation` as the
-     * loading animation no matter what CSS class it matches. However, if the `class` attribute of the HTML element does
-     * not match `coveo-first-loading-animation`, no default loading animation CSS applies to this HTML element.
-     * Normally, you should only use `data-first-loading-animation-selector` if you want to completely override the
-     * default loading animation CSS.
-     * ```html
-     * <div class='CoveoSearchInterface' data-first-loading-animation-selector='#MyAnimation'>
-     *   <div id='MyAnimation' class='my-custom-loading-animation-class'>
-     *     <!-- ... -->
-     *   </div>
-     *   <!-- ... -->
-     * </div>
-     * ```
-     *
-     * See [Branding Customization](https://developers.coveo.com/x/EoGfAQ).
-     *
-     * By default, the loading animation is a Coveo CSS animation (which you can customize with CSS).
-     */
     firstLoadingAnimation: ComponentOptions.buildChildHtmlElementOption({
-      childSelector: '.coveo-first-loading-animation',
-      defaultFunction: () => DomUtils.getBasicLoadingAnimation()
+      deprecated: 'Exposed for legacy reasons. The loading animation is now composed of placeholder, and this options is obsolete.'
     }),
 
     /**
      * Specifies whether to trigger the first query automatically when the page finishes loading.
-     *
-     *
-     * **Note:**
-     *
-     * > If you set this option to `false` while the
-     * > [hideUntilFirstQuery]{@link SearchInterface.options.hideUntilFirstQuery} option is `true`, the loading
-     * > animation will still run until the first query successfully returns.
      *
      * Default value is `true`.
      */
@@ -391,14 +332,13 @@ export class SearchInterface extends RootComponent implements IComponentBindings
   /**
    * Allows to get and set the different breakpoints for mobile and tablet devices.
    *
-   * This is useful, among other things, for {@link Facet}, {@link Tab} and {@link ResultList} components.
+   * This is useful, amongst other, for {@link Facet}, {@link Tab} and {@link ResultList}
    */
   public responsiveComponents: ResponsiveComponents;
 
   /**
    * Creates a new SearchInterface. Initialize various singletons for the interface (e.g., usage analytics, query
-   * controller, state model, etc.). Binds events related to the query. Hides and shows the loading animation, if
-   * activated (see the [hideUntilFirstQuery]{@link SearchInterface.options.hideUntilFirstQuery} option).
+   * controller, state model, etc.). Binds events related to the query.
    * @param element The HTMLElement on which to instantiate the component. This cannot be an `HTMLInputElement` for
    * technical reasons.
    * @param options The options for the SearchInterface.
@@ -422,10 +362,6 @@ export class SearchInterface extends RootComponent implements IComponentBindings
     this.options = ComponentOptions.initComponentOptions(element, SearchInterface, options);
     Assert.exists(element);
     Assert.exists(this.options);
-
-    if (this.options.hideUntilFirstQuery) {
-      this.showAndHideFirstQueryAnimation();
-    }
 
     this.root = element;
     this.queryStateModel = new QueryStateModel(element);
@@ -458,29 +394,6 @@ export class SearchInterface extends RootComponent implements IComponentBindings
     this.setupDebugInfo();
     this.isNewDesignAttribute = this.root.getAttribute('data-design') == 'new';
     this.responsiveComponents = new ResponsiveComponents();
-  }
-
-  /**
-   * Displays the first query animation (see the
-   * [firstLoadingAnimation]{@link SearchInterface.options.firstLoadingAnimation} option).
-   *
-   * By default, this is the Coveo logo with a CSS animation (which can be customized with options or CSS).
-   */
-  public showWaitAnimation() {
-    $$(this.options.firstLoadingAnimation).detach();
-    $$(this.element).addClass('coveo-waiting-for-first-query');
-    this.element.appendChild(this.options.firstLoadingAnimation);
-  }
-
-  /**
-   * Hides the first query animation (see the
-   * [firstLoadingAnimation]{@link SearchInterface.options.firstLoadingAnimation} option).
-   *
-   * By default, this is the Coveo logo with a CSS animation (which can be customized with options or CSS).
-   */
-  public hideWaitAnimation() {
-    $$(this.options.firstLoadingAnimation).detach();
-    $$(this.element).removeClass('coveo-waiting-for-first-query');
   }
 
   /**
@@ -566,17 +479,6 @@ export class SearchInterface extends RootComponent implements IComponentBindings
     if (this.options.enableDebugInfo) {
       setTimeout(() => new Debug(this.element, this.queryController));
     }
-  }
-
-  private showAndHideFirstQueryAnimation() {
-    this.showWaitAnimation();
-    // On first query success or error, wait for call stack to finish, then remove the animation
-    $$(this.element).one(QueryEvents.querySuccess, () => {
-      _.defer(() => this.hideWaitAnimation());
-    });
-    $$(this.element).one(QueryEvents.queryError, () => {
-      _.defer(() => this.hideWaitAnimation());
-    });
   }
 
   private handlePreprocessQueryStateModel(args: any) {

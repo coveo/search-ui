@@ -25,7 +25,8 @@ import { ModalBox } from '../../ExternalModulesShim';
 import { SearchInterface } from '../SearchInterface/SearchInterface';
 import { ResponsiveComponentsUtils } from '../ResponsiveComponents/ResponsiveComponentsUtils';
 import { FacetValuesOrder } from './FacetValuesOrder';
-import _ = require('underscore');
+import * as _ from 'underscore';
+import 'styling/_FacetSearch';
 
 /**
  * Used by the {@link Facet} component to render and handle the facet search part of each facet.
@@ -609,8 +610,7 @@ export class FacetSearch {
     let valueCaption = $$(current).find('.coveo-facet-value-caption');
     let valueElement = this.facet.facetValuesList.get($$(valueCaption).text());
 
-    this.facet.toggleExcludeValue(valueElement.facetValue);
-    valueElement.triggerOnExcludeQuery();
+    valueElement.toggleExcludeWithUA();
   }
 
   public getValueInInputForFacetSearch() {

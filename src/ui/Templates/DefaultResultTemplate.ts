@@ -4,7 +4,8 @@ import { TemplateCache } from './TemplateCache';
 import { IQueryResult } from '../../rest/QueryResult';
 import { Assert } from '../../misc/Assert';
 import { $$ } from '../../utils/Dom';
-import _ = require('underscore');
+import * as _ from 'underscore';
+import { Initialization } from '../Base/Initialization';
 
 /*
  * This renders the appropriate result template, found in TemplateCache,
@@ -18,6 +19,9 @@ export class DefaultResultTemplate extends Template {
 
   constructor() {
     super();
+    // For default result template, register everything since it's not possible to "scan" them before they are rendered.
+
+    this.addFields(Initialization.getRegisteredFieldsForQuery());
   }
 
   instantiateToString(object: IQueryResult, instantiateOptions: IInstantiateTemplateOptions = {}): string {

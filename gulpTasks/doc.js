@@ -15,7 +15,7 @@ gulp.task('doc', ['copyBinToDoc', 'buildPlayground'], function () {
     theme: 'docs/theme',
     name: 'Coveo JavaScript Search Framework - Reference Documentation',
     readme: 'README.md',
-    externalPattern: '**/{typings,lib,node_modules}/**',
+    externalPattern: '**/{sure,lib,node_modules}/**',
     ignoreCompilerErrors: true
   });
   var src = app.expandInputFiles(['src/Doc.ts']);
@@ -31,7 +31,7 @@ gulp.task('copyBinToDoc', function () {
 });
 
 gulp.task('buildPlayground', shell.task([
-  'node node_modules/webpack/bin/webpack.js --config webpackConfigFiles/webpack.playground.config.js'
+  'node node_modules/webpack/bin/webpack.js --config ./webpack.playground.config.js'
 ]));
 
 function copyFile(source, target, cb) {

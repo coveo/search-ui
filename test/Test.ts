@@ -1,5 +1,4 @@
-export * from '../src/Index';
-
+export * from '../src/Eager';
 // Get a cleaner output in phantom js for CI builds
 import { Logger } from '../src/misc/Logger';
 import { Simulate } from './Simulate';
@@ -7,15 +6,17 @@ if (Simulate.isPhantomJs()) {
   Logger.disable();
 }
 
-
 import { defaultLanguage } from '../src/strings/DefaultLanguage';
 defaultLanguage();
 
-import { shim } from '../src/misc/PromisesShim';
-shim();
+import { SearchEndpointTest } from './rest/SearchEndpointTest';
+SearchEndpointTest();
 
 import { CookieUtilsTest } from './utils/CookieUtilsTest';
 CookieUtilsTest();
+
+import { ColorUtilsTest } from './utils/ColorUtilsTest';
+ColorUtilsTest();
 
 import { DomTests } from './utils/DomTest';
 DomTests();
@@ -37,9 +38,6 @@ QueryStateModelTest();
 
 import { EndpointCallerTest } from './rest/EndpointCallerTest';
 EndpointCallerTest();
-
-import { SearchEndpointTest } from './rest/SearchEndpointTest';
-SearchEndpointTest();
 
 import { FacetQueryControllerTest } from './controllers/FacetQueryControllerTest';
 FacetQueryControllerTest();
@@ -140,9 +138,6 @@ ComponentOptionsTest();
 import { ComponentTest } from './ui/ComponentTest';
 ComponentTest();
 
-import { CurrentTabTest } from './ui/CurrentTabTest';
-CurrentTabTest();
-
 import { DidYouMeanTest } from './ui/DidYouMeanTest';
 DidYouMeanTest();
 
@@ -200,11 +195,11 @@ HierarchicalFacetTest();
 import { IconTest } from './ui/IconTest';
 IconTest();
 
-import { ImageResultListTest } from './ui/ImageResultListTest';
-ImageResultListTest();
-
 import { InitializationTest } from './ui/InitializationTest';
 InitializationTest();
+
+import { LazyInitializationTest } from './ui/LazyInitializationTest';
+LazyInitializationTest();
 
 import { LiveAnalyticsClientTest } from './ui/LiveAnalyticsClientTest';
 LiveAnalyticsClientTest();
@@ -389,6 +384,12 @@ CoreHelperTest();
 import { TemplateConditionEvaluatorTest } from './ui/TemplateConditionEvaluatorTest';
 TemplateConditionEvaluatorTest();
 
+import { PipelineContextText } from './ui/PipelineContextTest';
+PipelineContextText();
+
+import { QuerySuggestAddonTest } from './ui/QuerySuggestAddonTest';
+QuerySuggestAddonTest();
+
 import { TemplateFieldsEvaluatorTest } from './ui/TemplateFieldsEvaluatorTest';
 TemplateFieldsEvaluatorTest();
 
@@ -419,9 +420,6 @@ TemplateListTest();
 import { UnderscoreTemplateTest } from './ui/UnderscoreTemplateTest';
 UnderscoreTemplateTest();
 
-import { RevealQuerySuggestAddonTest } from './ui/RevealQuerySuggestAddonTest';
-RevealQuerySuggestAddonTest();
-
 import { ResponsiveComponentsTest } from './ui/ResponsiveComponentsTest';
 ResponsiveComponentsTest();
 
@@ -430,3 +428,18 @@ ResponsiveComponentsManagerTest();
 
 import { YouTubeThumbnailTest } from './ui/YouTubeThumbnailTest';
 YouTubeThumbnailTest();
+
+import { ResultTaggingTest } from './ui/ResultTaggingTest';
+ResultTaggingTest();
+
+import { ResultsFiltersPreferencesTest } from './ui/ResultsFiltersPreferencesTest';
+ResultsFiltersPreferencesTest();
+
+import { FacetRangeTest } from './ui/FacetRangeTest';
+FacetRangeTest();
+
+import { InitializationPlaceholderTest } from './ui/InitializationPlaceholderTest';
+InitializationPlaceholderTest();
+
+import { ValueElementTest } from './ui/ValueElementTest';
+ValueElementTest();

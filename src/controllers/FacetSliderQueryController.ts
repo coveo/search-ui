@@ -9,7 +9,7 @@ import { IRangeValue } from '../rest/RangeValue';
 import { DateUtils } from '../utils/DateUtils';
 import { Logger } from '../misc/Logger';
 import { QueryUtils } from '../utils/QueryUtils';
-import _ = require('underscore');
+import * as _ from 'underscore';
 
 export class FacetSliderQueryController {
   public graphGroupByQueriesIndex: number;

@@ -6,7 +6,8 @@ import { IQueryResult } from '../../rest/QueryResult';
 import { Assert } from '../../misc/Assert';
 import { Initialization, IInitializationParameters } from '../Base/Initialization';
 import { $$ } from '../../utils/Dom';
-import _ = require('underscore');
+import * as _ from 'underscore';
+import { exportGlobally } from '../../GlobalExports';
 
 export interface ITemplateLoaderOptions {
   template: Template;
@@ -63,6 +64,12 @@ export interface ITemplateLoaderOptions {
  */
 export class TemplateLoader extends Component {
   static ID = 'TemplateLoader';
+
+  static doExport = () => {
+    exportGlobally({
+      'TemplateLoader': TemplateLoader
+    });
+  }
 
   /**
    * The possible options for a TemplateLoader.

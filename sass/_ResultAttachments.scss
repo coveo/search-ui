@@ -1,3 +1,6 @@
+@import "Variables";
+@import "../bin/sass/sprites";
+
 .CoveoResultAttachments {
 
   .coveo-attachment-sub-container {
@@ -14,7 +17,7 @@
   }
 
   .coveo-thumbnail-icon {
-    @extend .coveo-sprites-quickview;
+    @include retina-sprite($quickview-group);
     position: relative;
     margin-left: 5px;
     top: 5px;

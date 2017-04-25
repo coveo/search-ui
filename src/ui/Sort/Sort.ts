@@ -1,5 +1,5 @@
 import { Component } from '../Base/Component';
-import { SortCriteria } from './SortCriteria.ts';
+import { SortCriteria } from './SortCriteria';
 import { ComponentOptions } from '../Base/ComponentOptions';
 import { IComponentBindings } from '../Base/ComponentBindings';
 import { Assert } from '../../misc/Assert';
@@ -12,7 +12,10 @@ import { Initialization } from '../Base/Initialization';
 import { analyticsActionCauseList, IAnalyticsResultsSortMeta } from '../Analytics/AnalyticsActionListMeta';
 import { KeyboardUtils, KEYBOARD } from '../../utils/KeyboardUtils';
 import { IQueryErrorEventArgs } from '../../events/QueryEvents';
-import _ = require('underscore');
+import * as _ from 'underscore';
+import { exportGlobally } from '../../GlobalExports';
+
+import 'styling/_Sort';
 
 export interface ISortOptions {
   sortCriteria?: SortCriteria[];
@@ -24,6 +27,13 @@ export interface ISortOptions {
  */
 export class Sort extends Component {
   static ID = 'Sort';
+
+  static doExport = () => {
+    exportGlobally({
+      'Sort': Sort,
+      'SortCriteria': SortCriteria
+    });
+  }
 
   /**
    * Options for the component

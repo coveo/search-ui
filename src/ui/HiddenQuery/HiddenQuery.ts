@@ -10,7 +10,9 @@ import { $$ } from '../../utils/Dom';
 import { Utils } from '../../utils/Utils';
 import { Initialization } from '../Base/Initialization';
 import { Assert } from '../../misc/Assert';
-import _ = require('underscore');
+import * as _ from 'underscore';
+import { exportGlobally } from '../../GlobalExports';
+import 'styling/_HiddenQuery';
 
 export interface IHiddenQueryOptions {
   maximumDescriptionLength: number;
@@ -26,6 +28,12 @@ export interface IHiddenQueryOptions {
  */
 export class HiddenQuery extends Component {
   static ID = 'HiddenQuery';
+
+  static doExport = () => {
+    exportGlobally({
+      'HiddenQuery': HiddenQuery
+    });
+  }
 
   /**
    * Possible options for the `HiddenQuery` component
@@ -46,7 +54,8 @@ export class HiddenQuery extends Component {
     /**
      * Specifies the title that should appear in the {@link Breadcrumb} when the HiddenQuery populates it.
      *
-     * Default value is the localized string for `"Additional filters:"`
+     * Default value is the localized string f
+     * or `"Additional filters:"`
      */
     title: ComponentOptions.buildLocalizedStringOption({ defaultValue: l('AdditionalFilters') + ': ' })
   };

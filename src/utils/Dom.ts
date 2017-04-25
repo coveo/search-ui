@@ -2,7 +2,7 @@ import { Utils } from '../utils/Utils';
 import { JQueryUtils } from '../utils/JQueryutils';
 import { Assert } from '../misc/Assert';
 import { Logger } from '../misc/Logger';
-import _ = require('underscore');
+import * as _ from 'underscore';
 
 export interface IOffset {
   left: number;
@@ -536,7 +536,6 @@ export class Dom {
       var event = new CustomEvent(type, { detail: data, bubbles: true });
       this.el.dispatchEvent(event);
     } else {
-      // TODO Support for older browser ?
       new Logger(this).error('CANNOT TRIGGER EVENT FOR OLDER BROWSER');
     }
   }
@@ -666,6 +665,16 @@ export class Dom {
    */
   public height(): number {
     return this.el.offsetHeight;
+  }
+
+  /**
+   * Clone the node
+   * @param deep true if the children of the node should also be cloned, or false to clone only the specified node.
+   * @returns {Dom}
+   */
+  public clone(deep = false): Dom {
+    let newNode = <HTMLElement>this.el.cloneNode(deep);
+    return $$(newNode);
   }
 
   private traverseAncestorForClass(current = this.el, className: string): HTMLElement {

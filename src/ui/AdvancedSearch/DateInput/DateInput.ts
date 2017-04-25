@@ -3,7 +3,7 @@ import { AdvancedSearchEvents } from '../../../events/AdvancedSearchEvents';
 import { QueryBuilder } from '../../Base/QueryBuilder';
 import { $$ } from '../../../utils/Dom';
 import { RadioButton } from '../Form/RadioButton';
-import _ = require('underscore');
+import * as _ from 'underscore';
 
 export class DateInput implements IAdvancedSearchInput {
 
