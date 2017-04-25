@@ -36,7 +36,7 @@
   }
 }
 
-.CoveoSettings + .CoveoSearchbox {
+.CoveoSettings ~ .CoveoSearchbox {
   margin-right: 76px;
 }
 
