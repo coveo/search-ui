@@ -30,7 +30,7 @@ export function init(element: HTMLElement, options: any = {}) {
   });
 }
 
-Initialization.registerNamedMethod('init', (element: HTMLElement, options: any = {}) => {
+Initialization.configureRessourceRoot('init', (element: HTMLElement, options: any = {}) => {
   return init(element, options);
 });
 
@@ -55,7 +55,7 @@ export function initSearchbox(element: HTMLElement, searchPageUri: string, optio
   });
 }
 
-Initialization.registerNamedMethod('initSearchbox', (element: HTMLElement, searchPageUri: string, options: any = {}) => {
+Initialization.configureRessourceRoot('initSearchbox', (element: HTMLElement, searchPageUri: string, options: any = {}) => {
   initSearchbox(element, searchPageUri, options);
 });
 
@@ -80,7 +80,7 @@ export function initRecommendation(element: HTMLElement, mainSearchInterface?: H
   });
 }
 
-Initialization.registerNamedMethod('initRecommendation', (element: HTMLElement, mainSearchInterface: HTMLElement, userContext: any = {}, options: any = {}) => {
+Initialization.configureRessourceRoot('initRecommendation', (element: HTMLElement, mainSearchInterface: HTMLElement, userContext: any = {}, options: any = {}) => {
   initRecommendation(element, mainSearchInterface, userContext, options);
 });
 
@@ -104,7 +104,7 @@ export function executeQuery(element: HTMLElement): Promise<IQueryResults> {
   return queryController.executeQuery();
 }
 
-Initialization.registerNamedMethod('executeQuery', (element: HTMLElement) => {
+Initialization.configureRessourceRoot('executeQuery', (element: HTMLElement) => {
   return executeQuery(element);
 });
 
@@ -125,7 +125,7 @@ export function state(element: HTMLElement, ...args: any[]): any {
   return setState(model, args);
 }
 
-Initialization.registerNamedMethod('state', (element: HTMLElement, ...args: any[]): any => {
+Initialization.configureRessourceRoot('state', (element: HTMLElement, ...args: any[]): any => {
   if (args.length != 0) {
     return state.apply(undefined, [element].concat(args));
   } else {
@@ -145,7 +145,7 @@ export function get(element: HTMLElement, componentClass?, noThrow?: boolean): B
   return Component.get(element, componentClass, noThrow);
 }
 
-Initialization.registerNamedMethod('get', (element: HTMLElement, componentClass?: any, noThrow?: boolean): BaseComponent => {
+Initialization.configureRessourceRoot('get', (element: HTMLElement, componentClass?: any, noThrow?: boolean): BaseComponent => {
   return get(element, componentClass, noThrow);
 });
 
@@ -154,7 +154,7 @@ export function result(element: HTMLElement, noThrow?: boolean): IQueryResult {
   return Component.getResult(element, noThrow);
 }
 
-Initialization.registerNamedMethod('result', (element: HTMLElement, noThrow?: boolean): IQueryResult => {
+Initialization.configureRessourceRoot('result', (element: HTMLElement, noThrow?: boolean): IQueryResult => {
   return result(element, noThrow);
 });
 
@@ -189,7 +189,7 @@ export function logCustomEvent(element: HTMLElement, customEventCause: IAnalytic
   }
 }
 
-Initialization.registerNamedMethod('logCustomEvent', (element: HTMLElement, customEventCause: IAnalyticsActionCause, metadata: any) => {
+Initialization.configureRessourceRoot('logCustomEvent', (element: HTMLElement, customEventCause: IAnalyticsActionCause, metadata: any) => {
   logCustomEvent(element, customEventCause, metadata);
 });
 
@@ -206,7 +206,7 @@ export function logSearchEvent(element: HTMLElement, searchEventCause: IAnalytic
   }
 }
 
-Initialization.registerNamedMethod('logSearchEvent', (element: HTMLElement, searchEventCause: IAnalyticsActionCause, metadata: IStringMap<string>) => {
+Initialization.configureRessourceRoot('logSearchEvent', (element: HTMLElement, searchEventCause: IAnalyticsActionCause, metadata: IStringMap<string>) => {
   logSearchEvent(element, searchEventCause, metadata);
 });
 
@@ -224,7 +224,7 @@ export function logSearchAsYouTypeEvent(element: HTMLElement, searchAsYouTypeEve
   }
 }
 
-Initialization.registerNamedMethod('logSearchAsYouTypeEvent', (element: HTMLElement, searchAsYouTypeEventCause: IAnalyticsActionCause, metadata: IStringMap<string>) => {
+Initialization.configureRessourceRoot('logSearchAsYouTypeEvent', (element: HTMLElement, searchAsYouTypeEventCause: IAnalyticsActionCause, metadata: IStringMap<string>) => {
   logSearchAsYouTypeEvent(element, searchAsYouTypeEventCause, metadata);
 });
 
@@ -242,7 +242,7 @@ export function logClickEvent(element: HTMLElement, clickEventCause: IAnalyticsA
   }
 }
 
-Initialization.registerNamedMethod('logClickEvent', (element: HTMLElement, clickEventCause: IAnalyticsActionCause, metadata: IStringMap<string>, result: IQueryResult) => {
+Initialization.configureRessourceRoot('logClickEvent', (element: HTMLElement, clickEventCause: IAnalyticsActionCause, metadata: IStringMap<string>, result: IQueryResult) => {
   logClickEvent(element, clickEventCause, metadata, result);
 });
 
@@ -256,7 +256,7 @@ export function options(element: HTMLElement, optionsToSet: any = {}) {
   Initialization.registerDefaultOptions(element, optionsToSet);
 }
 
-Initialization.registerNamedMethod('options', (element: HTMLElement, optionsToSet: any = {}) => {
+Initialization.configureRessourceRoot('options', (element: HTMLElement, optionsToSet: any = {}) => {
   options(element, optionsToSet);
 });
 
@@ -270,7 +270,7 @@ export function patch(element: HTMLElement, methodName: string, handler: (...arg
   Initialization.monkeyPatchComponentMethod(methodName, element, handler);
 }
 
-Initialization.registerNamedMethod('patch', (element?: HTMLElement, methodName?: string, handler?: (...args: any[]) => any) => {
+Initialization.configureRessourceRoot('patch', (element?: HTMLElement, methodName?: string, handler?: (...args: any[]) => any) => {
   patch(element, methodName, handler);
 });
 
@@ -306,7 +306,7 @@ export function initBox(element: HTMLElement, ...args: any[]) {
 }
 
 
-Initialization.registerNamedMethod('initBox', (element?: HTMLElement, ...args: any[]) => {
+Initialization.configureRessourceRoot('initBox', (element?: HTMLElement, ...args: any[]) => {
   initBox(element, args);
 });
 
@@ -314,7 +314,7 @@ export function nuke(element: HTMLElement) {
   $$(element).trigger(InitializationEvents.nuke);
 }
 
-Initialization.registerNamedMethod('nuke', (element: HTMLElement) => {
+Initialization.configureRessourceRoot('nuke', (element: HTMLElement) => {
   nuke(element);
 });
 
@@ -322,10 +322,10 @@ Initialization.registerNamedMethod('nuke', (element: HTMLElement) => {
  * Sets the path from where the chunks used for lazy loading will be loaded.
  * @param path This should be the path of the Coveo script.
  */
-export function configureChunkLoadingPath(path: string) {
-  PublicPathUtils.configureChunkLoadingPath(path);
+export function configureRessourceRoot(path: string) {
+  PublicPathUtils.configureRessourceRoot(path);
 }
 
-Initialization.registerNamedMethod('configureChunkLoadingPath', (path: string) => {
-  configureChunkLoadingPath(path);
+Initialization.configureRessourceRoot('configureChunkLoadingPath', (path: string) => {
+  configureRessourceRoot(path);
 });

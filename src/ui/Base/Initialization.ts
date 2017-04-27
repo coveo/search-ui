@@ -425,7 +425,7 @@ export class Initialization {
    * @param methodName The method name to register.
    * @param handler The function to execute when the method is called.
    */
-  public static registerNamedMethod(methodName: string, handler: (...args: any[]) => any) {
+  public static configureRessourceRoot(methodName: string, handler: (...args: any[]) => any) {
     Assert.isNonEmptyString(methodName);
     Assert.doesNotExists(EagerInitialization.eagerlyLoadedComponents[methodName]);
     Assert.doesNotExists(Initialization.namedMethods[methodName]);

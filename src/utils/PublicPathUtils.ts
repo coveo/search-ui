@@ -20,7 +20,7 @@ export class PublicPathUtils {
     }
   }
 
-  public static configureChunkLoadingPath(path: string) {
+  public static configureRessourceRoot(path: string) {
     this.pathHasBeenConfigured = true;
     __webpack_public_path__ = path;
   }
