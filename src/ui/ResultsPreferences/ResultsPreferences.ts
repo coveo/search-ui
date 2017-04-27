@@ -15,7 +15,7 @@ import { Defer } from '../../misc/Defer';
 import { Checkbox } from '../FormWidgets/Checkbox';
 import { RadioButton } from '../FormWidgets/RadioButton';
 import { FormGroup } from '../FormWidgets/FormGroup';
-import { IFormWidgetsSelectable } from '../FormWidgets/FormWidgets';
+import { IFormWidgetSelectable } from '../FormWidgets/FormWidgets';
 
 export interface IResultsPreferencesOptions {
   enableOpenInOutlook?: boolean;
@@ -64,13 +64,13 @@ export class ResultsPreferences extends Component {
      *
      * Default value is `true`
      */
-    enableOpenInNewWindow: ComponentOptions.buildBooleanOption({defaultValue: true}),
+    enableOpenInNewWindow: ComponentOptions.buildBooleanOption({ defaultValue: true }),
     /**
      * Specifies whether to make the option to enable the end user to control the query syntax available.
      *
      * Default value is `false`
      */
-    enableQuerySyntax: ComponentOptions.buildBooleanOption({defaultValue: false})
+    enableQuerySyntax: ComponentOptions.buildBooleanOption({ defaultValue: false })
   };
 
   public preferences: IPossiblePreferences;
@@ -140,7 +140,7 @@ export class ResultsPreferences extends Component {
           this.save();
           this.queryController.executeQuery({
             closeModalBox: false
-          })
+          });
         }, label, 'coveo-results-preferences-query-syntax');
         this.preferencePanelRadioInputs[label] = radio;
         return radio;
@@ -148,9 +148,8 @@ export class ResultsPreferences extends Component {
       const formGroup = new FormGroup(radios, l('EnableQuerySyntax'));
       $$(this.element).append(formGroup.build());
       radios[2].select();
+      this.fromPreferencesToRadioInput();
     }
-
-    this.fromPreferencesToRadioInput();
   }
 
   private buildCheckboxesInput() {
@@ -196,7 +195,7 @@ export class ResultsPreferences extends Component {
         this.preferences.alwaysOpenInNewWindow = true;
       }
     });
-    _.each(this.preferencePanelRadioInputs, (radio: RadioButton, label: string)=> {
+    _.each(this.preferencePanelRadioInputs, (radio: RadioButton, label: string) => {
       if (this.isSelected(l('On'), label, radio)) {
         this.preferences.enableQuerySyntax = true;
       }
@@ -265,7 +264,7 @@ export class ResultsPreferences extends Component {
     }
   }
 
-  private isSelected(checkingFor: string, label: string, input: IFormWidgetsSelectable) {
+  private isSelected(checkingFor: string, label: string, input: IFormWidgetSelectable) {
     return checkingFor == label && input.isSelected();
   }
 }

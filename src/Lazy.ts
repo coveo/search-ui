@@ -8,6 +8,7 @@ if (__webpack_require__.p == '') {
 }
 
 export { Checkbox } from './ui/FormWidgets/Checkbox';
+export { MultiSelect } from './ui/FormWidgets/MultiSelect';
 
 import { Initialization, LazyInitialization } from './ui/Base/Initialization';
 Initialization.componentsFactory = LazyInitialization.componentsFactory;

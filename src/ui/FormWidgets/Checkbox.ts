@@ -1,55 +1,73 @@
-import { IFormWidgetsWithLabel, IFormWidgetsSelectable } from './FormWidgets';
+import { IFormWidgetWithLabel, IFormWidgetSelectable } from './FormWidgets';
 import { $$ } from '../../utils/Dom';
 import 'styling/vapor/_Checkbox';
 
-export class Checkbox implements IFormWidgetsWithLabel, IFormWidgetsSelectable {
+export class Checkbox implements IFormWidgetWithLabel, IFormWidgetSelectable {
   protected element: HTMLElement;
   protected checkbox: HTMLInputElement;
 
+  /**
+   * Create a new checkbox, with standard styling.
+   * @param onChange Called when the checkbox value changes, with the checkbox instance as a parameter
+   * @param label
+   */
   constructor(public onChange: (checkbox: Checkbox) => void = (checkBox: Checkbox) => {
   }, public label: string) {
     this.buildContent();
   }
 
-  /*constructor(private checkboxElementToBuild: IPreferencePanelInputToBuild[], public name: string) {
-   super(checkboxElementToBuild, name, 'checkbox');
-   }*/
-
-  public build(): HTMLElement {
+  /**
+   * Return the HTMLElement bound to the checkbox
+   * @returns {HTMLElement}
+   */
+  public getElement(): HTMLElement {
     return this.element;
-
-    /* var icons = $$(build).findAll('.coveo-input-icon');
-     _.each(icons, (icon: HTMLElement) => {
-     var input = <HTMLInputElement>$$(icon.parentElement).find('input');
-     $$(input).on('change', () => {
-     var checked = input.checked;
-     $$(icon).toggleClass('coveo-selected', checked);
-     });
-
-     $$(icon).on('click', () => {
-     input.checked = !input.checked;
-     $$(input).trigger('change');
-     });
-     });
-     return build;*/
   }
 
+  /**
+   * Return the HTMLElement bound to the checkbox
+   * @returns {HTMLElement}
+   */
+  public build(): HTMLElement {
+    return this.element;
+  }
+
+  /**
+   * Return the label value of the checkbox
+   * @returns {string}
+   */
   public getValue() {
     return this.label;
   }
 
+  /**
+   * Unselect the checkbox
+   */
   public reset() {
     this.checkbox.checked = false;
+    $$(this.checkbox).trigger('change');
   }
 
+  /**
+   * Select the checkbox
+   */
   public select() {
     this.checkbox.checked = true;
+    $$(this.checkbox).trigger('change');
   }
 
+  /**
+   * Return true if the checkbox is selected
+   * @returns {boolean}
+   */
   public isSelected() {
     return this.checkbox.checked;
   }
 
+  /**
+   * Return the HTMLElement bound to the label
+   * @returns {HTMLElement}
+   */
   public getLabel() {
     return this.element;
   }
@@ -59,7 +77,11 @@ export class Checkbox implements IFormWidgetsWithLabel, IFormWidgetsSelectable {
       className: 'coveo-checkbox-label'
     });
 
-    this.checkbox = <HTMLInputElement>$$('input', { type: 'checkbox', className: 'coveo-checkbox', id: this.label }).el;
+    this.checkbox = <HTMLInputElement>$$('input', {
+      type: 'checkbox',
+      className: 'coveo-checkbox',
+      value: this.label
+    }).el;
     const button = $$('button', { type: 'button', className: 'coveo-checkbox-button' });
     const labelSpan = $$('span', { className: 'coveo-checkbox-span-label' }, this.label);
 

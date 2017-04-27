@@ -1,11 +1,10 @@
 import { $$ } from '../../utils/Dom';
+import { IFormWidget, IFormWidgetSettable } from './FormWidgets';
 
 /**
- * This class will create a numeric spinner meant to be used inside the {@link AdvancedSearch} component.
- *
- * It can be, more specifically, used for external code using the {@link AdvancedSearchEvents.buildingAdvancedSearch}
+ * This class will create a numeric spinner with standard styling
  */
-export class NumericSpinner {
+export class NumericSpinner implements IFormWidget, IFormWidgetSettable {
 
   private element: HTMLElement;
   public name: string;
@@ -13,11 +12,11 @@ export class NumericSpinner {
   /**
    * Create a new numeric spinner.
    *
-   * @param onChange will be called every time the numeric spinner change it's value. `this` will be the `NumericSpinner` instance.
+   * @param onChange will be called every time the numeric spinner change it's value. The numeric spinner instance will be passed to the function.
    * @param min will be the minimum value selectable by the spinner
    * @param max will be the maximum value selectable by the spinner
    */
-  constructor(public onChange: () => void = () => {
+  constructor(public onChange: (numericSpinner: NumericSpinner) => void = (numericSpinner: NumericSpinner) => {
   }, public min: number = 0, public max?: number) {
     this.buildContent();
     this.bindEvents();
@@ -28,6 +27,7 @@ export class NumericSpinner {
    */
   public reset() {
     this.getSpinnerInput().value = '';
+    this.onChange(this);
   }
 
   /**
@@ -36,6 +36,14 @@ export class NumericSpinner {
    */
   public getElement(): HTMLElement {
     return this.element;
+  }
+
+  /**
+   * Return the current selected value in the spinner.
+   * @returns {string}
+   */
+  public getValue(): string {
+    return this.getSpinnerInput().value;
   }
 
   /**
@@ -67,7 +75,7 @@ export class NumericSpinner {
       value = this.min;
     }
     this.getSpinnerInput().value = value.toString();
-    this.onChange();
+    this.onChange(this);
   }
 
   /**
@@ -79,7 +87,7 @@ export class NumericSpinner {
 
   private buildContent() {
     let numericSpinner = $$('div', { className: 'coveo-numeric-spinner' });
-    let numberInput = $$('input', { className: 'coveo-advanced-search-number-input', type: 'text' });
+    let numberInput = $$('input', { className: 'coveo-number-input', type: 'text' });
     let addOn = $$('span', { className: 'coveo-add-on' });
     addOn.el.innerHTML = `<div class="coveo-spinner-up">
                               <i class="coveo-sprites-arrow-up"></i>
@@ -106,12 +114,12 @@ export class NumericSpinner {
     let numberInput = <HTMLInputElement>$$(this.element).find('input');
     $$(numberInput).on('input', () => {
       if (numberInput.value.match(/[0-9]*/)) {
-        this.onChange();
+        this.onChange(this);
       }
     });
   }
 
   private getSpinnerInput(): HTMLInputElement {
-    return (<HTMLInputElement>$$(this.element).find('.coveo-advanced-search-number-input'));
+    return (<HTMLInputElement>$$(this.element).find('.coveo-number-input'));
   }
 }

@@ -1,3 +1,4 @@
+import { IFormWidget, IFormWidgetSettable } from './FormWidgets';
 declare function require(name: string);
 import { $$ } from '../../utils/Dom';
 import { DateUtils } from '../../utils/DateUtils';
@@ -5,11 +6,9 @@ let Pikaday = require('pikaday');
 
 
 /**
- * This class will create a date picker meant to be used inside the {@link AdvancedSearch} component.
- *
- * It can be, more specifically, used for external code using the {@link AdvancedSearchEvents.buildingAdvancedSearch}
+ * A date picker with standard styling.
  */
-export class DatePicker {
+export class DatePicker implements IFormWidget, IFormWidgetSettable {
 
   private element: HTMLInputElement;
   private picker: Pikaday;
@@ -17,10 +16,11 @@ export class DatePicker {
   private wasReset = false;
 
   /**
-   * Create a new date picker.
-   * @param onChange will be called every time the date picker change it's value. `this` will be the `DatePicker` instance.
+   * Create a new datepicker
+   * @param onChange called when a new date is selected, with the date picker instance as the argument
    */
-  constructor(public onChange: () => void = () => { }) {
+  constructor(public onChange: (datePicker: DatePicker) => void = () => {
+  }) {
     this.buildContent();
   }
 

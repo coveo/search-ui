@@ -356,7 +356,7 @@ export class ComponentEvents {
     this.onRootElement(this.getQueryStateEventName(eventType, attribute), handler);
   }
 
-  public onComponentOptions<T>(eventType: string, attribute?: string, handler?: (args: T)=> any) {
+  public onComponentOptions<T>(eventType: string, attribute?: string, handler?: (args: T) => any) {
     this.onRootElement(this.getComponentOptionEventName(eventType, attribute), handler);
   }
 

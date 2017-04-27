@@ -21,6 +21,9 @@ import { exportGlobally } from '../../GlobalExports';
 
 import 'styling/_ResultsFiltersPreferences';
 import { Checkbox } from '../FormWidgets/Checkbox';
+import { TextInput } from '../FormWidgets/TextInput';
+import { MultiSelect } from '../FormWidgets/MultiSelect';
+import { FormGroup } from '../FormWidgets/FormGroup';
 
 export interface IPreferencePanelInputToBuild {
   label: string;
@@ -51,7 +54,7 @@ export interface IResultsFiltersPreferencesOptions {
  * filters are saved in the local storage of the end user.
  *
  * Only advanced end users who understand the Coveo query syntax should actually use this feature (see
- * [Coveo Query Sytax Reference](http://www.coveo.com/go?dest=adminhelp70&lcid=9&context=10005)).
+ * [Coveo Query Syntax Reference](http://www.coveo.com/go?dest=adminhelp70&lcid=9&context=10005)).
  *
  * This component is normally accessible through the {@link Settings} menu. Its usual location in the DOM is inside the
  * {@link PreferencesPanel} component.
@@ -128,15 +131,16 @@ export class ResultsFiltersPreferences extends Component {
   };
 
   public preferences: { [caption: string]: IResultFilterPreference };
+  private container: HTMLFieldSetElement;
   private preferencePanelLocalStorage: LocalStorageUtils<{ [caption: string]: IResultFilterPreference }>;
   private preferencePanel: HTMLElement;
   private preferenceContainer: HTMLElement;
-  private preferencePanelCheckboxInput: Checkbox;
+  private preferencePanelCheckboxInput: { [caption: string]: Checkbox } = {};
   private advancedFilters: HTMLElement;
   private advancedFiltersBuilder: HTMLElement;
-  private advancedFiltersTextInputCaption: any; // PreferencesPanelTextAreaInput;
-  private advancedFiltersTextInputExpression: any; // PreferencesPanelTextAreaInput;
-  private advancedFiltersTabSelect: any; // PreferencePanelMultiSelectInput;
+  private advancedFiltersTextInputCaption: TextInput; // PreferencesPanelTextAreaInput;
+  private advancedFiltersTextInputExpression: TextInput; // PreferencesPanelTextAreaInput;
+  private advancedFiltersTabSelect: MultiSelect; // PreferencePanelMultiSelectInput;
   private advancedFilterFormValidate: HTMLFormElement;
 
   /**
@@ -171,7 +175,8 @@ export class ResultsFiltersPreferences extends Component {
   }
 
   public createDom() {
-    this.buildTitle();
+    this.container = <HTMLFieldSetElement>new FormGroup([], l('ResultsFilteringExpression')).build();
+    this.element.appendChild(this.container);
     this.buildCheckboxesInput();
     if (this.options.showAdvancedFilters) {
       this.buildAdvancedFilters();
@@ -187,6 +192,7 @@ export class ResultsFiltersPreferences extends Component {
 
   public exitWithoutSave() {
     this.fromPreferencesToCheckboxInput();
+    this.hideAdvancedFilterBuilder();
   }
 
   private bindPreferencePanelEvent() {
@@ -245,12 +251,6 @@ export class ResultsFiltersPreferences extends Component {
     this.fromPreferencesToCheckboxInput();
   }
 
-  private buildTitle() {
-    this.element.appendChild($$('div', {
-      className: 'coveo-title'
-    }, l('ResultsFilteringExpression')).el);
-  }
-
   private buildAdvancedFilters() {
     this.advancedFilters = $$('div', { className: 'coveo-advanced-filters' }, l('Create')).el;
     this.buildAdvancedFilterInput();
@@ -263,28 +263,27 @@ export class ResultsFiltersPreferences extends Component {
       className: 'coveo-online-help'
     }, '?');
 
-    const title = $$(this.element).find('.coveo-title');
+    const title = $$(this.container).find('.coveo-form-group-label');
 
     onlineHelp.insertAfter(title);
     $$(this.advancedFilters).insertAfter(title);
-    this.element.appendChild(this.advancedFiltersBuilder);
+    this.container.appendChild(this.advancedFiltersBuilder);
   }
 
   private buildAdvancedFilterInput() {
-    /*this.advancedFiltersTextInputCaption = new PreferencesPanelTextAreaInput(<IPreferencePanelInputToBuild[]>[{
-      label: l('Caption'),
-      placeholder: l('EnterExpressionName'),
-      otherAttribute: 'required'
-    }], ResultsFiltersPreferences.ID + '-advanced-caption');
-    this.advancedFiltersTextInputExpression = new PreferencesPanelTextAreaInput(<IPreferencePanelInputToBuild[]>[{
-      label: l('Expression'),
-      placeholder: l('EnterExpressionToFilterWith'),
-      otherAttribute: 'required'
-    }], ResultsFiltersPreferences.ID + '-advanced-expression');
-    this.advancedFiltersTabSelect = new PreferencePanelMultiSelectInput({
-      label: l('Tab'),
-      placeholder: l('SelectTab')
-     }, this.getAllTabs(), ResultsFiltersPreferences.ID + '-multiselect');*/
+
+    this.advancedFiltersTextInputCaption = new TextInput(() => {
+    }, l('Caption'));
+
+    this.advancedFiltersTextInputCaption.getInput().setAttribute('required', '');
+
+    this.advancedFiltersTextInputExpression = new TextInput(() => {
+    }, l('Expression'));
+
+    this.advancedFiltersTextInputExpression.getInput().setAttribute('required', '');
+
+    this.advancedFiltersTabSelect = new MultiSelect(() => {
+    }, this.getAllTabs(), l('Tab'));
   }
 
   private buildAdvancedFilterFormValidate() {
@@ -318,19 +317,16 @@ export class ResultsFiltersPreferences extends Component {
     const filtersExpression = this.advancedFiltersTextInputExpression.build();
     $$(filtersExpression).addClass('coveo-expression');
 
-    _.each([inputCaption, filtersTabSelect, filtersExpression, saveAndCloseContainer.el, formSubmit.el], (el: HTMLElement) => {
+    _.each([inputCaption, filtersExpression, filtersTabSelect, saveAndCloseContainer.el, formSubmit.el], (el: HTMLElement) => {
       this.advancedFilterFormValidate.appendChild(el);
     });
 
     saveFormButton.on('click', () => {
       formSubmit.el.click();
     });
-    closeFormButton.on('click', () => $$(this.advancedFiltersBuilder).toggleClass('coveo-active'));
+    closeFormButton.on('click', () => {
 
-    $$($$(this.advancedFilterFormValidate).find('textarea')).on('keyup', (e: KeyboardEvent) => {
-      if (e.keyCode == KEYBOARD.ENTER) {
-        formSubmit.trigger('click');
-      }
+      this.hideAdvancedFilterBuilder();
     });
 
     $$(this.advancedFilterFormValidate).on('submit', (e: Event) => this.validateAndSaveAdvancedFilter(e));
@@ -363,29 +359,32 @@ export class ResultsFiltersPreferences extends Component {
     }
     const toBuild = this.getPreferencesBoxInputToBuild();
     if (Utils.isNonEmptyArray(toBuild)) {
-      // this.preferencePanelCheckboxInput = new Checkbox new PreferencesPanelCheckboxInput(toBuild, ResultsFiltersPreferences.ID);
       this.preferenceContainer = $$('div', {
         className: 'coveo-choices-container'
       }).el;
-      this.preferenceContainer.appendChild(this.preferencePanelCheckboxInput.build());
+
+      _.each(toBuild, (filterToBuild) => {
+        const checkbox = new Checkbox((checkbox: Checkbox) => {
+          this.save();
+          const filter = this.preferences[checkbox.getValue()];
+          this.fromFilterToAnalyticsEvent(filter, filter.selected ? 'selected' : 'unselected');
+          this.queryController.executeQuery({
+            closeModalBox: false
+          });
+        }, filterToBuild.label);
+        $$(checkbox.build()).addClass('coveo-choice-container');
+        this.preferencePanelCheckboxInput[filterToBuild.label] = checkbox;
+        this.preferenceContainer.appendChild(checkbox.getElement());
+      });
 
       _.each($$(this.preferenceContainer).findAll('.coveo-choice-container'), (choiceContainer: HTMLElement) => {
         choiceContainer.appendChild($$('div', { className: 'coveo-section coveo-section-edit-delete' }).el);
       });
 
-      $$(this.element).append(this.preferenceContainer);
+      $$(this.container).append(this.preferenceContainer);
       this.buildEditAdvancedFilter();
       this.buildDeleteAdvancedFilter();
       this.fromPreferencesToCheckboxInput();
-      _.each($$(this.preferenceContainer).findAll('input'), (input: HTMLElement) => {
-        $$(input).on('change', (e: Event) => {
-          this.save();
-          const target: HTMLInputElement = <HTMLInputElement>e.target;
-          const filter = this.preferences[target.value];
-          this.fromFilterToAnalyticsEvent(filter, filter.selected ? 'selected' : 'unselected');
-          this.queryController.executeQuery();
-        });
-      });
     }
   }
 
@@ -398,7 +397,7 @@ export class ResultsFiltersPreferences extends Component {
           className: 'coveo-icon'
         }).el).el;
         const filterElement = this.getFilterElementByCaption(filter.caption);
-        const insertInto = $$($$(filterElement).closest('coveo-section').parentElement).find('.coveo-section-edit-delete');
+        const insertInto = $$(filterElement).find('.coveo-section-edit-delete');
         insertInto.appendChild(deleteElement);
         $$(deleteElement).on('click', () => this.confirmDelete(filter, filterElement));
       }
@@ -412,7 +411,7 @@ export class ResultsFiltersPreferences extends Component {
           className: 'coveo-edit'
         }, $$('span', { className: 'coveo-icon' }));
         const filterElement = this.getFilterElementByCaption(filter.caption);
-        const insertInto = $$($$(filterElement).closest('coveo-section').parentElement).find('.coveo-section-edit-delete');
+        const insertInto = $$(filterElement).find('.coveo-section-edit-delete');
         insertInto.appendChild(editElement.el);
         editElement.on('click', () => this.editElement(filter, filterElement));
       }
@@ -433,7 +432,9 @@ export class ResultsFiltersPreferences extends Component {
       filter.selected = false;
       this.fromFilterToAnalyticsEvent(filter, 'cleared from breadcrumb');
       this.fromPreferencesToCheckboxInput();
-      this.queryController.executeQuery();
+      this.queryController.executeQuery({
+        closeModalBox: false
+      });
     });
 
     return elem.el;
@@ -462,9 +463,9 @@ export class ResultsFiltersPreferences extends Component {
   }
 
   private populateEditSection(toPopulate = { tab: [''], caption: '', expression: '' }) {
-    this.advancedFiltersTextInputCaption.setValue(l('Caption'), toPopulate.caption);
-    this.advancedFiltersTextInputExpression.setValue(l('Expression'), toPopulate.expression);
-    this.advancedFiltersTabSelect.setValues(toPopulate.tab);
+    this.advancedFiltersTextInputCaption.setValue(toPopulate.caption);
+    this.advancedFiltersTextInputExpression.setValue(toPopulate.expression);
+    this.advancedFiltersTabSelect.setValue(toPopulate.tab);
   }
 
   private deleteFilterPreference(filter: IResultFilterPreference, filterElement: HTMLElement) {
@@ -476,18 +477,19 @@ export class ResultsFiltersPreferences extends Component {
   private openAdvancedFilterSectionOrSaveFilters() {
     if ($$(this.advancedFiltersBuilder).hasClass('coveo-active')) {
       $$($$(this.advancedFilterFormValidate).find('input[type=submit]')).trigger('click');
+      this.hideAdvancedFilterBuilder();
     } else {
       this.populateEditSection();
-      $$(this.advancedFiltersBuilder).toggleClass('coveo-active');
+      this.showAdvancedFilterBuilder();
     }
   }
 
   private validateAndSaveAdvancedFilter(e: Event) {
     e.preventDefault();
-    $$(this.advancedFiltersBuilder).removeClass('coveo-active');
-    const caption = this.advancedFiltersTextInputCaption.getValues()[0];
-    const expression = this.advancedFiltersTextInputExpression.getValues()[0];
-    const tabs = this.advancedFiltersTabSelect.getValues();
+    this.hideAdvancedFilterBuilder();
+    const caption = this.advancedFiltersTextInputCaption.getValue();
+    const expression = this.advancedFiltersTextInputExpression.getValue();
+    const tabs = this.advancedFiltersTabSelect.getValue();
     this.preferences[caption] = {
       caption: caption,
       custom: true,
@@ -501,7 +503,7 @@ export class ResultsFiltersPreferences extends Component {
     this.advancedFiltersTextInputCaption.reset();
     this.advancedFiltersTextInputExpression.reset();
     this.advancedFiltersTabSelect.reset();
-    this.element.appendChild(this.advancedFiltersBuilder);
+    this.container.appendChild(this.advancedFiltersBuilder);
     this.fromFilterToAnalyticsEvent(this.preferences[caption], 'saved');
     this.queryController.executeQuery({
       closeModalBox: false
@@ -510,19 +512,19 @@ export class ResultsFiltersPreferences extends Component {
 
   private fromPreferencesToCheckboxInput() {
     _.each(this.getActiveFilters(), (filter: IResultFilterPreference) => {
-      // this.preferencePanelCheckboxInput.select(filter.caption);
+      this.preferencePanelCheckboxInput[filter.caption].select();
     });
     _.each(this.getInactiveFilters(), (filter: IResultFilterPreference) => {
-      // this.preferencePanelCheckboxInput.unselect(filter.caption);
+      this.preferencePanelCheckboxInput[filter.caption].reset();
     });
     _.each(this.getDormantFilters(), (filter: IResultFilterPreference) => {
-      // this.preferencePanelCheckboxInput.select(filter.caption);
+      this.preferencePanelCheckboxInput[filter.caption].select();
     });
   }
 
   private fromCheckboxInputToPreferences() {
-    /*if (this.preferencePanelCheckboxInput) {
-      const selecteds = this.preferencePanelCheckboxInput.getSelecteds();
+    if (this.preferencePanelCheckboxInput) {
+      const selecteds = _.map(_.filter(this.preferencePanelCheckboxInput, (checkbox: Checkbox) => checkbox.isSelected()), (selected: Checkbox) => selected.getValue());
       _.each(this.preferences, (filter: IResultFilterPreference) => {
         if (_.contains(selecteds, filter.caption)) {
           filter.selected = true;
@@ -530,8 +532,7 @@ export class ResultsFiltersPreferences extends Component {
           filter.selected = false;
         }
       });
-     }*/
-
+    }
   }
 
   private getDormantFilters() {
@@ -612,6 +613,34 @@ export class ResultsFiltersPreferences extends Component {
       customFilterExpression: filter.expression,
       customFilterType: type
     });
+  }
+
+  private enlargeModalBox() {
+    const modalBoxContainer = $$(document.body).find('.coveo-modal-container');
+    if (modalBoxContainer) {
+      $$(modalBoxContainer).addClass('coveo-mod-big');
+    }
+  }
+
+  private shrinkModalBox() {
+    const modalBoxContainer = $$(document.body).find('.coveo-modal-container');
+    if (modalBoxContainer) {
+      $$(modalBoxContainer).removeClass('coveo-mod-big');
+    }
+  }
+
+  private showAdvancedFilterBuilder() {
+    if (this.advancedFiltersBuilder) {
+      $$(this.advancedFiltersBuilder).addClass('coveo-active');
+      this.enlargeModalBox();
+    }
+  }
+
+  private hideAdvancedFilterBuilder() {
+    if (this.advancedFiltersBuilder) {
+      $$(this.advancedFiltersBuilder).removeClass('coveo-active');
+      this.shrinkModalBox();
+    }
   }
 }
 

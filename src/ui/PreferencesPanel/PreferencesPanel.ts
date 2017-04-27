@@ -66,13 +66,16 @@ export class PreferencesPanel extends Component {
   public open(): void {
     if (this.modalbox == null) {
       let root = $$('div');
-
       _.each(this.content, (oneChild) => {
         root.append(oneChild);
       });
 
       this.modalbox = this.ModalBox.open(root.el, {
-        title: l('Preferences')
+        title: l('Preferences'),
+        validation: () => {
+          this.cleanupOnExit();
+          return true;
+        }
       });
     }
   }
@@ -84,7 +87,7 @@ export class PreferencesPanel extends Component {
    */
   public close(): void {
     if (this.modalbox) {
-      $$(this.element).trigger(PreferencesPanelEvents.exitPreferencesWithoutSave);
+      this.cleanupOnExit();
       this.modalbox.close();
       this.modalbox = null;
     }
@@ -98,6 +101,10 @@ export class PreferencesPanel extends Component {
   public save(): void {
     $$(this.element).trigger(PreferencesPanelEvents.savePreferences);
     this.queryController.executeQuery();
+  }
+
+  private cleanupOnExit() {
+    $$(this.element).trigger(PreferencesPanelEvents.exitPreferencesWithoutSave);
   }
 }
 

@@ -1,13 +1,11 @@
 import { $$ } from '../../utils/Dom';
-import { IFormWidgetsWithLabel, IFormWidgetsSelectable } from './FormWidgets';
+import { IFormWidgetWithLabel, IFormWidgetSelectable } from './FormWidgets';
 import 'styling/vapor/_Radio';
 
 /**
- * This class will create a radio button meant to be used inside the {@link AdvancedSearch} component.
- *
- * It can be, more specifically, used for external code using the {@link AdvancedSearchEvents.buildingAdvancedSearch}
+ * This class will create a radio button with standard styling.
  */
-export class RadioButton implements IFormWidgetsWithLabel, IFormWidgetsSelectable {
+export class RadioButton implements IFormWidgetWithLabel, IFormWidgetSelectable {
 
   protected element: HTMLElement;
 
@@ -26,6 +24,7 @@ export class RadioButton implements IFormWidgetsWithLabel, IFormWidgetsSelectabl
    */
   public reset() {
     this.getRadio().checked = false;
+    this.onChange(this);
   }
 
   /**
@@ -80,9 +79,9 @@ export class RadioButton implements IFormWidgetsWithLabel, IFormWidgetsSelectabl
   }
 
   private buildContent() {
-    const radioOption = $$('div', {className: 'coveo-radio'});
-    const radioInput = $$('input', {type: 'radio', name: this.name, id: this.label});
-    const labelInput = $$('label', {className: 'coveo-radio-input-label', 'for': this.label});
+    const radioOption = $$('div', { className: 'coveo-radio' });
+    const radioInput = $$('input', { type: 'radio', name: this.name, id: this.label });
+    const labelInput = $$('label', { className: 'coveo-radio-input-label', 'for': this.label });
     labelInput.text(this.label);
     radioInput.on('change', () => {
       this.onChange(this);

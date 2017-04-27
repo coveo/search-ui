@@ -1,13 +1,12 @@
 import { $$, Dom } from '../../utils/Dom';
 import { l } from '../../strings/Strings';
 import * as _ from 'underscore';
+import { IFormWidget, IFormWidgetSettable } from './FormWidgets';
 
 /**
- * This class will create a dropdown meant to be used inside the {@link AdvancedSearch} component.
- *
- * It can be, more specifically, used for external code using the {@link AdvancedSearchEvents.buildingAdvancedSearch}
+ * A dropdown, with standard styling
  */
-export class Dropdown {
+export class Dropdown implements IFormWidget, IFormWidgetSettable {
 
   private element: HTMLElement;
   private selectElement: HTMLSelectElement;
@@ -15,12 +14,12 @@ export class Dropdown {
 
   /**
    * Create a new dropdown.
-   * @param onChange will be called every time the dropdown change it's value. `this` will be the `Dropdown` instance.
+   * @param onChange will be called every time the dropdown change it's value, with the dropdown as the function argument
    * @param listOfValues will be the list of selectable values in the dropdown
    * @param getDisplayValue An optional function that allow to modify the display value vs the actual value from the `listOfValues`
    * @param label A label/title to display for this dropdown
    */
-  constructor(public onChange: () => void = () => {
+  constructor(public onChange: (dropdown: Dropdown) => void = (dropdown: Dropdown) => {
   }, protected listOfValues: string[], private getDisplayValue: (string) => string = l, private label?: string) {
     this.buildContent();
     this.select(0, false);
@@ -70,16 +69,11 @@ export class Dropdown {
     return this.element;
   }
 
-  private buildContent() {
-    this.selectElement = <HTMLSelectElement>$$('select', { className: 'coveo-dropdown' }).el;
-    let selectOptions = this.buildOptions();
-    _.each(selectOptions, (opt) => {
-      $$(this.selectElement).append(opt);
-    });
-    this.element = this.selectElement;
-  }
-
-  public selectValue(value: string) {
+  /**
+   * Set the value in the dropdown
+   * @param value
+   */
+  public setValue(value: string) {
     _.each(this.optionsElement, (option) => {
       if ($$(option).getAttribute('data-value') == value) {
         this.selectOption(option);
@@ -90,10 +84,18 @@ export class Dropdown {
   private selectOption(option: HTMLOptionElement, executeOnChange = true) {
     this.selectElement.value = option.value;
     if (executeOnChange) {
-      this.onChange();
+      this.onChange(this);
     }
   }
 
+  private buildContent() {
+    this.selectElement = <HTMLSelectElement>$$('select', { className: 'coveo-dropdown' }).el;
+    let selectOptions = this.buildOptions();
+    _.each(selectOptions, (opt) => {
+      $$(this.selectElement).append(opt);
+    });
+    this.element = this.selectElement;
+  }
 
   private buildOptions(): HTMLElement[] {
     let ret: HTMLElement[] = [];
@@ -113,6 +115,6 @@ export class Dropdown {
   }
 
   private bindEvents() {
-    $$(this.selectElement).on('change', () => this.onChange());
+    $$(this.selectElement).on('change', () => this.onChange(this));
   }
 }

@@ -132,7 +132,7 @@ export class PreferencesPanelTextInput {
         id: `coveo-${toBuild.label}`,
         type: 'text',
         name: this.name,
-        placeholder: toBuild.placeholder || toBuild.label
+        placeholder: toBuild.label || toBuild.label
       });
 
       if (toBuild.otherAttribute) {
@@ -191,7 +191,7 @@ export class PreferencesPanelTextAreaInput extends PreferencesPanelTextInput {
       let textArea = $$('textarea', {
         className: `coveo-${toBuild.label}`,
         name: `coveo-${toBuild.label}`,
-        placeholder: toBuild.placeholder || toBuild.label
+        placeholder: toBuild.label || toBuild.label
       });
 
       if (toBuild.otherAttribute) {

@@ -7,7 +7,7 @@ import { SettingsEvents } from '../../events/SettingsEvents';
 import { ISettingsPopulateMenuArgs } from '../Settings/Settings';
 import { Initialization } from '../Base/Initialization';
 import { l } from '../../strings/Strings';
-import { $$ } from '../../utils/Dom';
+import { $$, Dom } from '../../utils/Dom';
 import { IAdvancedSearchInput, IAdvancedSearchPrebuiltInput, IAdvancedSearchSection, IExternalAdvancedSearchSection } from './AdvancedSearchInput';
 import { AdvancedSearchInputFactory } from './AdvancedSearchInputFactory';
 import { IQueryOptions } from '../../controllers/QueryController';
@@ -21,7 +21,7 @@ import { DatePicker } from '../FormWidgets/DatePicker';
 import { Dropdown } from '../FormWidgets/Dropdown';
 import { TextInput } from '../FormWidgets/TextInput';
 import { RadioButton } from '../FormWidgets/RadioButton';
-
+import { ModalBox as ModalBoxModule } from '../../ExternalModulesShim';
 
 export interface IAdvancedSearchOptions {
   includeKeywords?: boolean;
@@ -80,6 +80,8 @@ export class AdvancedSearch extends Component {
   public inputs: IAdvancedSearchInput[] = [];
   private inputFactory = new AdvancedSearchInputFactory(this.queryController.getEndpoint());
   private externalSections: IExternalAdvancedSearchSection[] = [];
+  private modalbox: Coveo.ModalBox.ModalBox;
+  private content: Dom;
 
   /**
    * Creates a new AdvancedSearch component.
@@ -90,11 +92,11 @@ export class AdvancedSearch extends Component {
    * @param bindings The bindings that the component requires to function normally. If not set, these will be
    * automatically resolved (with a slower execution time).
    */
-  constructor(public element: HTMLElement, public options?: IAdvancedSearchOptions, bindings?: IComponentBindings) {
+  constructor(public element: HTMLElement, public options?: IAdvancedSearchOptions, bindings?: IComponentBindings, private ModalBox = ModalBoxModule) {
     super(element, AdvancedSearch.ID, bindings);
     this.options = ComponentOptions.initComponentOptions(element, AdvancedSearch, options);
     this.bindEvents();
-    this.buildComponent();
+    this.buildContent();
   }
 
   /**
@@ -104,7 +106,9 @@ export class AdvancedSearch extends Component {
    */
   public executeAdvancedSearch() {
     this.usageAnalytics.logSearchEvent<IAnalyticsNoMeta>(analyticsActionCauseList.advancedSearch, {});
-    this.queryController.executeQuery();
+    this.queryController.executeQuery({
+      closeModalBox: false
+    });
   }
 
   /**
@@ -114,24 +118,6 @@ export class AdvancedSearch extends Component {
     _.each(this.inputs, (input) => {
       input.reset();
     });
-  }
-
-  private buildComponent() {
-    this.buildTitle();
-    this.buildCloseButton();
-    this.buildContent();
-    $$(this.element).hide();
-  }
-
-  private buildTitle() {
-    var title = $$('div', { className: 'coveo-advanced-search-panel-title' }, l('AdvancedSearch')).el;
-    $$(this.element).append(title);
-  }
-
-  private buildCloseButton() {
-    var closeButton = $$('div', { className: 'coveo-advanced-search-panel-close' }, $$('span', { className: 'coveo-icon' }).el);
-    closeButton.on('click', () => this.close());
-    $$(this.element).append(closeButton.el);
   }
 
   private buildContent() {
@@ -151,6 +137,7 @@ export class AdvancedSearch extends Component {
     $$(this.root).trigger(AdvancedSearchEvents.buildingAdvancedSearch, {
       sections: this.externalSections,
       executeQuery: (options: IQueryOptions) => {
+        options = _.extend({}, options, { closeModalBox: false });
         return this.queryController.executeQuery(options);
       }
     });
@@ -164,15 +151,24 @@ export class AdvancedSearch extends Component {
       component.append(this.buildInternalSection(section));
     });
 
-    $$(this.element).append(component.el);
+    this.content = component;
   }
 
   private open() {
-    $$(this.element).show();
+    if (this.modalbox == null) {
+      this.modalbox = this.ModalBox.open(this.content.el, {
+        sizeMod: 'big',
+        title: l('AdvancedSearch'),
+        className: 'coveo-advanced-search-modal'
+      });
+    }
   }
 
   private close() {
-    $$(this.element).hide();
+    if (this.modalbox != null) {
+      this.modalbox.close();
+      this.modalbox = null;
+    }
   }
 
   private getKeywordsSection(): IAdvancedSearchSection {

@@ -83,7 +83,7 @@ export class Querybox extends Component {
      *
      * Default value is `true`.
      */
-    enableQuerySyntax: ComponentOptions.buildBooleanOption({defaultValue: false}),
+    enableQuerySyntax: ComponentOptions.buildBooleanOption({ defaultValue: false }),
 
     /**
      * Specifies whether the Coveo Platform should expand keywords containing wildcard characters (`*`) to the possible

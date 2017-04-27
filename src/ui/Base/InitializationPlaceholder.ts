@@ -188,7 +188,7 @@ export class InitializationPlaceholder {
       };
       $$(this.root).one(ResultListEvents.newResultDisplayed, () => reset());
       $$(this.root).one(QueryEvents.queryError, () => reset());
-      $$(this.root).one(QueryEvents.noResults, ()=> reset());
+      $$(this.root).one(QueryEvents.noResults, () => reset());
     }
   }
 

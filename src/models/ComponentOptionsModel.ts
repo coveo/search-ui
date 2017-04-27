@@ -1,7 +1,7 @@
 import { Model } from './Model';
 import * as _ from 'underscore';
 
-export const QUERY_STATE_ATTRIBUTES = {
+export const COMPONENT_OPTIONS_ATTRIBUTES = {
   RESULT_LINK: 'resultLink',
   SEARCH_HUB: 'searchHub',
   SEARCH_BOX: 'searchBox'

@@ -240,7 +240,7 @@ export class Omnibox extends Component {
     if (this.isAutoSuggestion()) {
       this.bind.onRootElement(QueryEvents.duringQuery, (args: IDuringQueryEventArgs) => this.handleDuringQuery(args));
     }
-    this.bind.onComponentOptions(MODEL_EVENTS.CHANGE_ONE, ComponentOptionsModel.attributesEnum.searchBox, (args: IAttributeChangedEventArg)=> {
+    this.bind.onComponentOptions(MODEL_EVENTS.CHANGE_ONE, ComponentOptionsModel.attributesEnum.searchBox, (args: IAttributeChangedEventArg) => {
       if (args.value.enableQuerySyntax != null) {
         this.options.enableQuerySyntax = args.value.enableQuerySyntax;
       } else {
