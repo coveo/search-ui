@@ -319,7 +319,7 @@ Initialization.registerNamedMethod('nuke', (element: HTMLElement) => {
 });
 
 /**
- * Sets the path from where the chunks used for lazy loading will be loaded.
+ * Sets the path from where the chunks used for lazy loading will be loaded. In some cases, in IE11, we cannot automatically detect it, use this instead.
  * @param path This should be the path of the Coveo script. It should also have a trailing slash.
  */
 export function configureRessourceRoot(path: string) {

@@ -222,7 +222,7 @@ export class Initialization {
    */
   public static initializeFramework(element: HTMLElement, options: any, initSearchInterfaceFunction: (...args: any[]) => IInitResult): Promise<{ elem: HTMLElement }> {
     Assert.exists(element);
-
+    debugger;
     let alreadyInitialized = Component.get(element, QueryController, true);
     if (alreadyInitialized) {
       this.logger.error('This DOM element has already been initialized as a search interface, skipping initialization', element);
@@ -643,7 +643,7 @@ export class LazyInitialization {
   }
 
   public static buildErrorCallback(chunkName: string) {
-    return () => LazyInitialization.logger.error(`Cannot load chunk for ${chunkName}. You may need to configure the paths of the chunks using Coveo.configureChunkLoadingPath`);
+    return () => LazyInitialization.logger.error(`Cannot load chunk for ${chunkName}. You may need to configure the paths of the ressources using Coveo.configureRessourceRoot. Current path is ${__webpack_public_path__}.`);
   }
 
   public static componentsFactory(elements: Element[], componentClassId: string, initParameters: IInitializationParameters): { factory: () => Promise<Component>[], isLazyInit: boolean } {
