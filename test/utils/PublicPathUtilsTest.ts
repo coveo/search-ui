@@ -4,12 +4,12 @@ import { PublicPathUtils } from '../../src/utils/PublicPathUtils';
 export function PublicPathUtilsTest() {
   describe('PublicPathUtils', () => {
     let currentScript;
-    let fakeScript = <HTMLScriptElement>{ src: 'some/path/script.js#some=value'};
+    let fakeScript = <HTMLScriptElement>{ src: 'some/path/script.js#some=value' };
     beforeEach(() => {
       PublicPathUtils.reset();
       currentScript = DomUtils.getCurrentScript;
       DomUtils.getCurrentScript = () => fakeScript;
-    })
+    });
 
     afterEach(() => {
       DomUtils.getCurrentScript = currentScript;
@@ -23,6 +23,6 @@ export function PublicPathUtilsTest() {
     it('should detect the ressource root', () => {
       PublicPathUtils.detectPublicPath();
       expect(__webpack_public_path__).toBe('some/path/');
-    })
+    });
   });
-}
+};
