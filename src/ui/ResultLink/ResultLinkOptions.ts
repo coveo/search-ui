@@ -1,12 +1,10 @@
-import { IQueryResult } from '../../rest/QueryResult';
-import { IFieldOption } from '../Base/ComponentOptions';
+import {IQueryResult} from '../../rest/QueryResult'
 
 export interface IResultLinkOptions {
   onClick?: (e: Event, result: IQueryResult) => any;
-  field?: IFieldOption;
+  field?: string;
   openInOutlook?: boolean;
   openQuickview?: boolean;
   alwaysOpenInNewWindow?: boolean;
   hrefTemplate?: string;
-  titleTemplate?: string;
 }

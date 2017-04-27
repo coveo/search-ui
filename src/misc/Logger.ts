@@ -1,6 +1,6 @@
 // Ensure that we're not going to get console is undefined error in IE8-9
 if (!window['console']) {
-  console = <any>{
+  console = {
     log: function () {
     },
     debug: function () {

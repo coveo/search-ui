@@ -1,12 +1,10 @@
 .idea
 node_modules
 bin
+lib/MagicBox.d.ts
 src/strings
+coverage
 docgen
 npm-debug.log
-chunkTesters/gen
 *.orig
 environments/conf.js
-docs/theme/assets/gen
-.vscode/
-

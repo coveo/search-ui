@@ -1,39 +1,33 @@
-import { TemplateHelpers, ITemplateHelperFunction } from './TemplateHelpers';
-import { IHighlight, IHighlightPhrase, IHighlightTerm } from '../../rest/Highlight';
-import { HighlightUtils, StringAndHoles } from '../../utils/HighlightUtils';
-import { IStreamHighlightOptions } from '../../utils/StreamHighlightUtils';
-import { IDateToStringOptions, DateUtils } from '../../utils/DateUtils';
-import { ICurrencyToStringOptions, CurrencyUtils } from '../../utils/CurrencyUtils';
-import { IAnchorUtilsOptions, IImageUtilsOptions, AnchorUtils, ImageUtils } from '../../utils/HtmlUtils';
-import { IQueryResult } from '../../rest/QueryResult';
-import { Utils } from '../../utils/Utils';
-import { StringUtils } from '../../utils/StringUtils';
-import { TimeSpan, ITimeSpanUtilsOptions } from '../../utils/TimeSpanUtils';
-import { EmailUtils } from '../../utils/EmailUtils';
-import { QueryUtils } from '../../utils/QueryUtils';
-import { DeviceUtils } from '../../utils/DeviceUtils';
-import { TemplateCache } from './TemplateCache';
-import { $$ } from '../../utils/Dom';
-import { SearchEndpoint } from '../../rest/SearchEndpoint';
-import { StreamHighlightUtils } from '../../utils/StreamHighlightUtils';
-import { FacetUtils } from '../Facet/FacetUtils';
-import * as Globalize from 'globalize';
-import { IStringMap } from '../../rest/GenericParam';
-import * as _ from 'underscore';
-import { ResultList } from '../ResultList/ResultList';
-import { Component } from '../Base/Component';
+import {TemplateHelpers} from './TemplateHelpers'
+import {ComponentOptions} from '../Base/ComponentOptions'
+import {IHighlight, IHighlightPhrase, IHighlightTerm} from '../../rest/Highlight'
+import {HighlightUtils, StringAndHoles} from '../../utils/HighlightUtils'
+import {IStreamHighlightOptions} from '../../utils/StreamHighlightUtils'
+import {IDateToStringOptions, DateUtils} from '../../utils/DateUtils'
+import {ICurrencyToStringOptions, CurrencyUtils} from '../../utils/CurrencyUtils'
+import {IAnchorUtilsOptions, IImageUtilsOptions, AnchorUtils, ImageUtils} from '../../utils/HtmlUtils'
+import {IQueryResult} from '../../rest/QueryResult'
+import {IIconOptions, Icon} from '../Icon/Icon'
+import {Utils} from '../../utils/Utils'
+import {StringUtils} from '../../utils/StringUtils'
+import {TimeSpan, ITimeSpanUtilsOptions} from '../../utils/TimeSpanUtils'
+import {EmailUtils} from '../../utils/EmailUtils'
+import {QueryUtils} from '../../utils/QueryUtils'
+import {DeviceUtils} from '../../utils/DeviceUtils'
+import {TemplateCache} from './TemplateCache'
+import {$$} from '../../utils/Dom'
+import {SearchEndpoint} from '../../rest/SearchEndpoint'
+import _ = require('underscore');
+import {ResultList} from '../ResultList/ResultList';
+import {StreamHighlightUtils} from '../../utils/StreamHighlightUtils';
+
+declare var Globalize;
 
 /**
  * The core template helpers provided by default.
  *
- * Example usage:
+ * Example usage (using Underscore templating):
  *
- * ### HTML
- * ```
- * <div class="CoveoFieldValue" data-helper="helperName" data-helper-options-optionName="option-value"></div>
- * ```
- *
- * ### Underscore
  * ```
  * <%= helperName(argument1, argument2) %>
  * ```
@@ -86,12 +80,10 @@ export interface ICoreHelpers {
    * This helper highlights the provided terms in a given string.<br/>
    * By default, the terms to highlight are the current query and the
    * associated stemming words from the index.
-   * The only required parameter is the content, which specify the string that needs to be highlighted.
-   * The other parameters will normally be automatically resolved for you from the current result object.
    *
    * - `content`: The string content to highlight
-   * - `termsToHighlight`: Optional. The terms to highlight (see {@link IHighlightTerm})
-   * - `phraseToHighlight`: Optional. The phrases to highlight (see {@link IHighlightPhrase})
+   * - `termsToHighlight`: The terms to highlight (see {@link IHighlightTerm})
+   * - `phraseToHighlight`: The phrases to highlight (see {@link IHighlightPhrase})
    * - `options`: Optional. The options defined below as {@link IStreamHighlightOptions}
    */
   highlightStreamText: (content: string,
@@ -104,8 +96,8 @@ export interface ICoreHelpers {
    * of not highlighting the HTML markup.
    *
    * - `content`: The string content to highlight
-   * - `termsToHighlight`: Optional. The terms to highlight (see {@link IHighlightTerm})
-   * - `phraseToHighlight`: Optional. The phrases to highlight (see {@link IHighlightPhrase})
+   * - `termsToHighlight`: The terms to highlight (see {@link IHighlightTerm})
+   * - `phraseToHighlight`: The phrases to highlight (see {@link IHighlightPhrase})
    * - `options`: Optional. The options defined below as {@link IStreamHighlightOptions}
    */
   highlightStreamHTML: (content: string,
@@ -160,28 +152,28 @@ export interface ICoreHelpers {
   /**
    * Renders one or several email values in `mailto:` hyperlinks.
    *
-   * - `value`: The string or array of string that contains a list of semicolon-separated email
+   * - `value`: The string that contains a list of semicolon-separated email
    *   values. When multiple values are passed, each value is displayed in a
    *   separate hyperlink.
-   * - `companyDomain`: The string that contains your own domain (e.g.:
+   * - `companyDomain`: The string that contains your own domain (e.g.,
    *   coveo.com). When specified, this parameter allows email addresses
    *   coming from your own domain to be displayed in a shortened format
-   *   (e.g.: Full Name), whereas email addresses coming from an external
-   *   domain will be displayed in an extended format (e.g.: Full Name
+   *   (e.g., Full Name), whereas email addresses coming from an external
+   *   domain will be displayed in an extended format (e.g., Full Name
    *   (domain.com)). If this parameter is not specified, then the shortened
    *   format will automatically be used.
    * - `me`: The string that contains the current username. If it is
    *   specified, then the email address containing the current username will
    *   be replaced by the localized string 'Me'.
    * - `lengthLimit`: The number of email addresses that you want to display
-   *   before an ellipse is added (e.g.: 'From Joe, John and 5 others').<br/>
+   *   before an ellipse is added (e.g., 'From Joe, John and 5 others').<br/>
    *   The default value is 2.
    * - `truncateName`: When the username is available from the email address,
-   *   then you can specify if you want to truncate the full name. (e.g.:
+   *   then you can specify if you want to truncate the full name. (e.g.,
    *   'John S.' instead of 'John Smith').<br/>
    *   The default value is `false`.
    */
-  email: (value: string | string[], companyDomain?: string, me?: string, lengthLimit?: number, truncateName?: boolean) => string;
+  email: (value: string, companyDomain?: string, me?: string, lengthLimit?: number, truncateName?: boolean) => string;
   /**
    * Formats a clickable HTML link (`<a>`).
    *
@@ -223,7 +215,7 @@ export interface ICoreHelpers {
    *   your template)
    * - `options`: The options to use (see {@link IIconOptions}).
    */
-  fromFileTypeToIcon: (result?: IQueryResult, options?: any) => string;
+  fromFileTypeToIcon: (result?: IQueryResult, options?: IIconOptions) => string;
   /**
    * Loads a partial template in the current template, by passing the ID of
    * the template to load, the condition for which this template should be
@@ -241,88 +233,11 @@ export interface ICoreHelpers {
    *   as its contextObject.
    */
   loadTemplate: (templateId: string, condition?: boolean, contextObject?: any) => string;
-  /**
-   * Given a number, either in millisecond or second, convert to a HH:MM:SS format.
-   *
-   * eg:
-   *
-   * `timeSpan(1, {isMilliseconds: false}) => '00:01'`
-   *
-   * `timeSpan(1000, {isMilliseconds: true}) => '00:01'`
-   *
-   * - `value`: The number to convert to a timespan
-   * - `options` : The options to use (see {@link ITimeSpanUtilsOptions})
-   */
-  timeSpan: (value: number, options: ITimeSpanUtilsOptions) => string;
-  /**
-   * Given a number, which represent a file size in bytes, format the value into a logical unit size.
-   *
-   * eg:
-   *
-   * `size(1024) => 1024 B`
-   *
-   * `size(1025) => 1 KB`
-   *
-   * `size(10240) => 10 KB`
-   */
-  size: (value: number, options?: ISizeOptions) => string;
-  /**
-   * Given a filetype value, try to return a translated and human readable version.
-   *
-   * If the filetype is known and recognized by the framework, a translated value will be returned.
-   *
-   * eg:
-   *
-   * `translatedCaption('doc') => Document`
-   *
-   * `translatedCaption('xls') => Spreadsheet Document`
-   */
-  translatedCaption: (value: string) => string;
-  /**
-   * Replace all carriage return in a string by a &lt;br /&gt; tag
-   */
-  encodeCarriageReturn: (value: string) => string;
-  /**
-   * Detect if the results is being rendered in a mobile device.
-   *
-   * If it's not a mobile device, the helper return null ;
-   *
-   * If it's a mobile device, return the type of device (Android, iPhone, iPad) etc.
-   */
-  isMobileDevice: () => string;
-
-}
-
-
-/**
- * Available options for the size templateHelpers.
- */
-export interface ISizeOptions {
-  /**
-   * The base into which to format the value.
-   */
-  base?: number;
-  /**
-   * The precision to use to format the size.
-   */
-  precision?: number;
 }
 
 export class CoreHelpers {
   public constructor() {
-  }
 
-  /**
-   * For backward compatibility reason, the "global" template helper should be available under the
-   * coveo namespace.
-   * @param scope
-   */
-  public static exportAllHelpersGlobally(scope: IStringMap<any>) {
-    _.each(TemplateHelpers.getHelpers(), (helper: ITemplateHelperFunction, name: string) => {
-      if (scope[name] == undefined) {
-        scope[name] = helper;
-      }
-    });
   }
 }
 
@@ -372,9 +287,9 @@ TemplateHelpers.registerTemplateHelper('highlight', (content: string, highlights
   }
 });
 
-TemplateHelpers.registerTemplateHelper('highlightStreamText', (content: string, termsToHighlight = resolveTermsToHighlight(), phrasesToHighlight = resolvePhrasesToHighlight(), opts?: IStreamHighlightOptions) => {
-  if (Utils.exists(content) && Utils.exists(termsToHighlight) && Utils.exists(phrasesToHighlight)) {
-    if (termsToHighlightAreDefined(termsToHighlight, phrasesToHighlight)) {
+TemplateHelpers.registerTemplateHelper('highlightStreamText', (content: string, termsToHighlight = resolveQueryResult().termsToHighlight, phrasesToHighlight = resolveQueryResult().phrasesToHighlight, opts?: IStreamHighlightOptions) => {
+  if (Utils.exists(content)) {
+    if (Utils.isNonEmptyArray(_.keys(termsToHighlight)) || Utils.isNonEmptyArray(_.keys(phrasesToHighlight))) {
       return StreamHighlightUtils.highlightStreamText(content, termsToHighlight, phrasesToHighlight, opts);
     } else {
       return content;
@@ -384,9 +299,9 @@ TemplateHelpers.registerTemplateHelper('highlightStreamText', (content: string, 
   }
 });
 
-TemplateHelpers.registerTemplateHelper('highlightStreamHTML', (content: string, termsToHighlight = resolveTermsToHighlight(), phrasesToHighlight = resolvePhrasesToHighlight(), opts?: IStreamHighlightOptions) => {
-  if (Utils.exists(content) && Utils.exists(termsToHighlight) && Utils.exists(phrasesToHighlight)) {
-    if (termsToHighlightAreDefined(termsToHighlight, phrasesToHighlight)) {
+TemplateHelpers.registerTemplateHelper('highlightStreamHTML', (content: string, termsToHighlight = resolveQueryResult().termsToHighlight, phrasesToHighlight = resolveQueryResult().phrasesToHighlight, opts?: IStreamHighlightOptions) => {
+  if (Utils.exists(content)) {
+    if (Utils.isNonEmptyArray(termsToHighlight)) {
       return StreamHighlightUtils.highlightStreamHTML(content, termsToHighlight, phrasesToHighlight, opts);
     } else {
       return content;
@@ -397,7 +312,7 @@ TemplateHelpers.registerTemplateHelper('highlightStreamHTML', (content: string, 
 });
 
 TemplateHelpers.registerFieldHelper('number', (value: any, options?: any) => {
-  var numberValue = Number(value);
+  var numberValue = Number(value)
   if (Utils.exists(value)) {
     if (_.isString(options)) {
       return StringUtils.htmlEncode(Globalize.format(numberValue, <string>options));
@@ -436,7 +351,7 @@ TemplateHelpers.registerFieldHelper('timeSpan', (value: any, options: ITimeSpanU
   return new TimeSpan(value, options.isMilliseconds).getHHMMSS();
 });
 
-TemplateHelpers.registerFieldHelper('email', (value: string | string[], ...args: any[]) => {
+TemplateHelpers.registerFieldHelper('email', (value: any, ...args: any[]) => {
   // support old arguments (value: any, companyDomain: string, me: string, lengthLimit = 2, truncateName = false)
   var companyDomain: string;
   var me: string;
@@ -474,15 +389,15 @@ TemplateHelpers.registerTemplateHelper('excessEmailToggle', (target: HTMLElement
   if ($$(target).hasClass('coveo-emails-excess-collapsed')) {
     _.each($$(target).siblings('.coveo-emails-excess-expanded'), (sibling) => {
       $$(sibling).addClass('coveo-active');
-    });
+    })
   } else if ($$(target).hasClass('coveo-hide-expanded')) {
     $$(target.parentElement).addClass('coveo-inactive');
     _.each($$(target.parentElement).siblings('.coveo-emails-excess-collapsed'), (sibling) => {
       $$(sibling).addClass('coveo-active');
-    });
+    })
   }
   return undefined;
-});
+})
 
 TemplateHelpers.registerFieldHelper('anchor', (href: string, options?: IAnchorUtilsOptions) => {
   return AnchorUtils.buildAnchor(href, options);
@@ -498,11 +413,8 @@ TemplateHelpers.registerTemplateHelper('thumbnail', (result: IQueryResult = reso
   }
 });
 
-TemplateHelpers.registerTemplateHelper('fromFileTypeToIcon', (result: IQueryResult = resolveQueryResult(), options = {}) => {
-  let icon = Component.getComponentRef('Icon');
-  if (icon) {
-    return icon.createIcon(result, options).outerHTML;
-  }
+TemplateHelpers.registerTemplateHelper('fromFileTypeToIcon', (result: IQueryResult = resolveQueryResult(), options: IIconOptions = {}) => {
+  return Icon.createIcon(result, options).outerHTML;
 });
 
 TemplateHelpers.registerTemplateHelper('attrEncode', (value: string) => {
@@ -511,8 +423,27 @@ TemplateHelpers.registerTemplateHelper('attrEncode', (value: string) => {
     .replace(/'/g, '&apos;')/* The 4 other predefined entities, required. */
     .replace(/'/g, '&quot;')
     .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;');
+    .replace(/>/g, '&gt;')
 });
+
+TemplateHelpers.registerTemplateHelper('templateFields', (result: IQueryResult = resolveQueryResult()) => {
+  var rows: string[] = [];
+  if (result.fields != null) {
+    _.forEach(result.fields, (tableField: any) => {
+      var tr = $$('tr');
+      _.forEach(tableField, (value: any, key: string) => {
+        if (_.isObject(value)) {
+          tr.setAttribute(ComponentOptions.attrNameFromName(key), JSON.stringify(value));
+        } else {
+          tr.setAttribute(ComponentOptions.attrNameFromName(key), value);
+        }
+      });
+      return rows.push(tr.el.outerHTML);
+    });
+  }
+  return rows.join('');
+}
+);
 
 TemplateHelpers.registerTemplateHelper('loadTemplates', (templatesToLoad: { [id: string]: any }, once = true) => {
   var ret = '';
@@ -524,38 +455,34 @@ TemplateHelpers.registerTemplateHelper('loadTemplates', (templatesToLoad: { [id:
     if (value == 'default') {
       defaultTmpl = key;
     }
-  });
+  })
   if (defaultTmpl != undefined) {
-    toLoad = _.omit(templatesToLoad, defaultTmpl);
+    toLoad = _.omit(templatesToLoad, defaultTmpl)
   }
   _.each(toLoad, (condition, id?, obj?) => {
     if (!atLeastOneWasLoaded || !once) {
       atLeastOneWasLoaded = atLeastOneWasLoaded || condition;
       ret += TemplateHelpers.getHelper('loadTemplate')(id, condition, data);
     }
-  });
+  })
   if (!atLeastOneWasLoaded && defaultTmpl != undefined) {
     ret += TemplateHelpers.getHelper('loadTemplate')(defaultTmpl, true, data);
   }
   return ret;
-});
+})
 
-const byteMeasure = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB'];
+var byteMeasure = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB'];
 
-TemplateHelpers.registerFieldHelper('size', (value: any, options?: ISizeOptions) => {
-  var size = parseInt(value, 10);
-  var precision = (options != null && options.precision != null ? options.precision : 2);
+TemplateHelpers.registerFieldHelper('size', (value: any, options?: { base?: number; presision?: number; }) => {
+  var size = Number(value);
+  var presision = (options != null && options.presision != null ? options.presision : 2);
   var base = (options != null && options.base != null ? options.base : 0);
   while (size > 1024 && base + 1 < byteMeasure.length) {
     size /= 1024;
     base++;
   }
-  size = Math.floor(size * Math.pow(10, precision)) / Math.pow(10, precision);
+  size = Math.floor(size * Math.pow(10, presision)) / Math.pow(10, presision);
   return size + ' ' + byteMeasure[base];
-});
-
-TemplateHelpers.registerFieldHelper('translatedCaption', (value: string) => {
-  return FacetUtils.tryToGetTranslatedCaption('@filetype', value);
 });
 
 TemplateHelpers.registerTemplateHelper('loadTemplate', (id: string, condition: boolean = true, data?: any) => {
@@ -563,9 +490,7 @@ TemplateHelpers.registerTemplateHelper('loadTemplate', (id: string, condition: b
     data = resolveQueryResult();
   }
   if (condition) {
-    return TemplateCache.getTemplate(id).instantiateToString(data, {
-      checkCondition: false
-    });
+    return TemplateCache.getTemplate(id).instantiateToString(data, false);
   }
   return '';
 });
@@ -583,34 +508,5 @@ TemplateHelpers.registerTemplateHelper('isMobileDevice', () => {
 });
 
 function resolveQueryResult(): IQueryResult {
-  let found;
-  let resultList = Component.getComponentRef('ResultList');
-  if (resultList) {
-    found = resultList.resultCurrentlyBeingRendered;
-  }
-  if (!found) {
-    let quickview = Component.getComponentRef('Quickview');
-    if (quickview) {
-      found = quickview.resultCurrentlyBeingRendered;
-    }
-  }
-  return found;
-}
-
-function resolveTermsToHighlight(): IHighlightTerm {
-  let currentQueryResult = resolveQueryResult();
-  if (currentQueryResult) {
-    return currentQueryResult.termsToHighlight;
-  }
-}
-
-function resolvePhrasesToHighlight(): IHighlightPhrase {
-  let currentQueryResult = resolveQueryResult();
-  if (currentQueryResult) {
-    return currentQueryResult.phrasesToHighlight;
-  }
-}
-
-function termsToHighlightAreDefined(termsToHighlight, phrasesToHighlight) {
-  return Utils.isNonEmptyArray(_.keys(termsToHighlight)) || Utils.isNonEmptyArray(_.keys(phrasesToHighlight));
+  return ResultList.resultCurrentlyBeingRendered;
 }

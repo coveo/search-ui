@@ -1,18 +1,17 @@
-import { Utils } from './Utils';
-import { l } from '../strings/Strings';
-import * as _ from 'underscore';
+import {Utils} from './Utils';
+import {l} from '../strings/Strings';
 
 export class EmailUtils {
   static splitSemicolonSeparatedListOfEmailAddresses(addresses: string): string[] {
     var addressesAsList: string[] = addresses.split(/\s*;\s*/);
     return _.filter(addressesAsList, (s: string) => {
-      return Utils.exists(s) && Utils.isNonEmptyString(Utils.trim(s));
+      return Utils.exists(s) && Utils.isNonEmptyString(Utils.trim(s))
     });
   }
 
   static emailAddressesToHyperlinks(addresses: string[], companyDomain?: string, me?: string, lengthLimit = 2, truncateName = false): string {
     addresses = _.filter(addresses, (s: string) => {
-      return Utils.exists(s) && Utils.isNonEmptyString(Utils.trim(s));
+      return Utils.exists(s) && Utils.isNonEmptyString(Utils.trim(s))
     });
     var hyperlinks = _.map(addresses, (item) => {
       var emailArray = EmailUtils.parseEmail(item);
@@ -33,7 +32,7 @@ export class EmailUtils {
         name += ' (' + domain + ')';
       }
 
-      return '<a title="' + item.replace(/'/g, '&quot;') + '" href="mailto:' + encodeURI(email) + '">' + name + '</a>';
+      return '<a title="' + item.replace(/'/g, '&quot;') + 'href="mailto:' + encodeURI(email) + '">' + name + '</a>';
     });
     var excess = hyperlinks.length - lengthLimit;
     var andOthers = excess > 0 ? EmailUtils.buildEmailAddressesAndOthers(_.last(hyperlinks, excess)) : '';

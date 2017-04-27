@@ -1,0 +1,8 @@
+#colorbox.coveo-error-report {
+	.CoveoErrorReport {
+ 		@include smallMobile() {
+ 		 	left:5px;
+    	right:5px;
+   	}
+  }
+}

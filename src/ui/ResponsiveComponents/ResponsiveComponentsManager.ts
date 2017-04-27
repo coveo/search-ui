@@ -1,105 +1,62 @@
-import { $$, Dom } from '../../utils/Dom';
-import { InitializationEvents } from '../../events/InitializationEvents';
-import { Component } from '../Base/Component';
-import { SearchInterface } from '../SearchInterface/SearchInterface';
-import { Utils } from '../../utils/Utils';
-import * as _ from 'underscore';
-import { QueryEvents } from '../../events/QueryEvents';
-import { Logger } from '../../misc/Logger';
-
-export interface IResponsiveComponentOptions {
-  enableResponsiveMode?: boolean;
-  responsiveBreakpoint?: number;
-  dropdownHeaderLabel?: string;
-}
+import {$$, Dom} from '../../utils/Dom';
+import {InitializationEvents} from '../../events/InitializationEvents';
+import {Component} from '../Base/Component';
+import {Tab} from '../Tab/Tab';
+import {Facet} from '../Facet/Facet';
+import {ResponsiveFacets} from './ResponsiveFacets';
+import {IComponentDefinition} from '../Base/Component';
+import _ = require('underscore');
 
 export interface IResponsiveComponentConstructor {
-  new (root: Dom, ID: string, options: IResponsiveComponentOptions): IResponsiveComponent;
+  new (root: Dom, ID: string): IResponsiveComponent;
 }
 
 export interface IResponsiveComponent {
   ID: string;
-  handleResizeEvent(): void;
-  needDropdownWrapper?(): boolean;
-  registerComponent?(accept: Component): boolean;
-}
-
-interface IComponentInitialization {
-  responsiveComponentsManager: ResponsiveComponentsManager;
-  arguments: [IResponsiveComponentConstructor, Dom, string, Component, IResponsiveComponentOptions];
+  needSmallMode(): boolean;
+  changeToSmallMode(): void;
+  changeToLargeMode(): void;
+  handleResizeEvent?(): void;
 }
 
 export class ResponsiveComponentsManager {
 
-  public static DROPDOWN_HEADER_WRAPPER_CSS_CLASS = 'coveo-dropdown-header-wrapper';
-  public static RESIZE_DEBOUNCE_DELAY = 200;
+  public static MEDIUM_MOBILE_WIDTH = 640;
 
-  private static componentManagers: ResponsiveComponentsManager[] = [];
+  private static componentManagers: Array<ResponsiveComponentsManager> = [];
   private static remainingComponentInitializations: number = 0;
-  private static componentInitializations: IComponentInitialization[] = [];
 
-  public resizeListener;
-
-  private disabledComponents: string[] = [];
   private coveoRoot: Dom;
-  private responsiveComponents: IResponsiveComponent[] = [];
+  private resizeListener;
+  private responsiveComponents: Array<IResponsiveComponent> = [];
+  private tabSection: Dom;
   private searchBoxElement: HTMLElement;
-  private dropdownHeadersWrapper: Dom;
-  private searchInterface: SearchInterface;
-  private logger: Logger;
+  private isTabActivated: boolean = false;
+  private isFacetActivated: boolean = false;
+  private responsiveFacets: ResponsiveFacets;
 
   // Register takes a class and will instantiate it after framework initialization has completed.
-  public static register(responsiveComponentConstructor: IResponsiveComponentConstructor, root: Dom, ID: string, component: Component, options: IResponsiveComponentOptions): void {
+  public static register(responsiveComponentConstructor: IResponsiveComponentConstructor, root: Dom, ID: string, component: IComponentDefinition) {
+
     root.on(InitializationEvents.afterInitialization, () => {
-      if (this.shouldEnableResponsiveMode(root)) {
-        let responsiveComponentsManager = _.find(this.componentManagers, (componentManager) => root.el == componentManager.coveoRoot.el);
-        if (!responsiveComponentsManager) {
-          responsiveComponentsManager = new ResponsiveComponentsManager(root);
-          this.componentManagers.push(responsiveComponentsManager);
-        }
-
-        if (!Utils.isNullOrUndefined(options.enableResponsiveMode) && !options.enableResponsiveMode) {
-          responsiveComponentsManager.disableComponent(ID);
-          return;
-        }
-
-        this.componentInitializations.push({
-          responsiveComponentsManager: responsiveComponentsManager,
-          arguments: [responsiveComponentConstructor, root, ID, component, options]
-        });
+      let responsiveComponentsManager = _.find(this.componentManagers, (componentManager) => root.el == componentManager.coveoRoot.el);
+      if (responsiveComponentsManager) {
+        responsiveComponentsManager.register(responsiveComponentConstructor, root, ID, component);
+      } else {
+        responsiveComponentsManager = new ResponsiveComponentsManager(root);
+        this.componentManagers.push(responsiveComponentsManager);
+        responsiveComponentsManager.register(responsiveComponentConstructor, root, ID, component);
       }
 
       this.remainingComponentInitializations--;
       if (this.remainingComponentInitializations == 0) {
-        this.instantiateResponsiveComponents(); // necessary to verify if all components are disabled before they are initialized.
-        if (root.width() == 0) {
-          let logger = new Logger('ResponsiveComponentsManager');
-          logger.info(`Search interface width is 0, cannot dispatch resize events to responsive components. Will try again after first
-          query success.`);
-          root.one(QueryEvents.querySuccess, () => {
-            this.resizeAllComponentsManager();
-          });
-        } else {
-          this.resizeAllComponentsManager();
-        }
+        this.resizeAllComponentsManager();
       }
     });
     this.remainingComponentInitializations++;
   }
 
-  private static shouldEnableResponsiveMode(root: Dom): boolean {
-    let searchInterface = <SearchInterface>Component.get(root.el, SearchInterface, true);
-    return searchInterface instanceof SearchInterface && searchInterface.options.enableAutomaticResponsiveMode && searchInterface.isNewDesign();
-  }
-
-  private static instantiateResponsiveComponents() {
-    _.each(this.componentInitializations, componentInitialization => {
-      let responsiveComponentsManager = componentInitialization.responsiveComponentsManager;
-      responsiveComponentsManager.register.apply(responsiveComponentsManager, componentInitialization.arguments);
-    });
-  }
-
-  private static resizeAllComponentsManager(): void {
+  private static resizeAllComponentsManager() {
     _.each(this.componentManagers, componentManager => {
       componentManager.resizeListener();
     });
@@ -107,97 +64,90 @@ export class ResponsiveComponentsManager {
 
   constructor(root: Dom) {
     this.coveoRoot = root;
-    this.searchInterface = <SearchInterface>Component.get(this.coveoRoot.el, SearchInterface, false);
-    this.dropdownHeadersWrapper = $$('div', { className: ResponsiveComponentsManager.DROPDOWN_HEADER_WRAPPER_CSS_CLASS });
     this.searchBoxElement = this.getSearchBoxElement();
-    this.logger = new Logger(this);
     this.resizeListener = _.debounce(() => {
-      if (this.coveoRoot.width() != 0) {
-        this.addDropdownHeaderWrapperIfNeeded();
-        if (this.shouldSwitchToSmallMode()) {
-          this.coveoRoot.addClass('coveo-small-interface');
-        } else if (!this.shouldSwitchToSmallMode()) {
-          this.coveoRoot.removeClass('coveo-small-interface');
+      for (let i = 0; i < this.responsiveComponents.length; i++) {
+        if (this.responsiveComponents[i].needSmallMode()) {
+          if (!this.coveoRoot.hasClass('coveo-small-search-interface')) {
+            this.coveoRoot.addClass('coveo-small-search-interface');
+            this.changeToSmallMode();
+          }
+          this.handleResizeEvent();
+          return;
         }
-        _.each(this.responsiveComponents, responsiveComponent => {
-          responsiveComponent.handleResizeEvent();
-        });
-      } else {
-        this.logger.warn(`The width of the search interface is 0, cannot dispatch resize events to responsive components. This means that the tabs will not
-        automatically fit in the tab section. Also, the facet and recommendation component will not hide in a menu. Could the search
-        interface display property be none? Could its visibility property be set to hidden? Also, if either of these scenarios happen during
-        loading, it could be the cause of this issue.`);
       }
-    }, ResponsiveComponentsManager.RESIZE_DEBOUNCE_DELAY, true);
+
+      if (this.coveoRoot.hasClass('coveo-small-search-interface')) {
+        this.coveoRoot.removeClass('coveo-small-search-interface');
+        this.changeToLargeMode();
+      }
+      this.handleResizeEvent();
+    }, 200);
     window.addEventListener('resize', this.resizeListener);
     this.bindNukeEvents();
   }
 
-  public register(responsiveComponentConstructor: IResponsiveComponentConstructor, root: Dom, ID: string, component: Component, options: IResponsiveComponentOptions): void {
-    if (this.isDisabled(ID)) {
-      return;
+  public register(responsiveComponentConstructor: IResponsiveComponentConstructor, root: Dom, ID: string, component) {
+
+    if (this.isFacet(ID) && this.isActivated(ID)) {
+      this.responsiveFacets.registerFacet(component);
     }
 
     if (!this.isActivated(ID)) {
-      let responsiveComponent = new responsiveComponentConstructor(root, ID, options);
+      let responsiveComponent = new responsiveComponentConstructor(root, ID);
+      if (this.isTabs(responsiveComponent.ID)) {
+        this.isTabActivated = true;
+        if (this.isFacetActivated) {
+          this.tabSection = null;
+        }
+      }
 
-      if (this.isTabs(ID)) {
-        this.responsiveComponents.push(responsiveComponent);
-      } else {
-        // Tabs need to be rendered last, so any dropdown header(eg: facet) is already there when the responsive tabs check for overflow.
+      if (this.isFacet(ID)) {
+        this.responsiveFacets = <ResponsiveFacets>responsiveComponent;
+        this.responsiveFacets.registerFacet(component)
+        this.isFacetActivated = true;
+        if (!this.isTabActivated) {
+          this.tabSection = $$('div', { className: 'coveo-tab-section' });
+        }
+        // Facets need to be rendered before tabs, so the facet dropdown header is already there when the responsive tabs check for overflow.
         this.responsiveComponents.unshift(responsiveComponent);
+      } else {
+        this.responsiveComponents.push(responsiveComponent);
       }
     }
-    _.each(this.responsiveComponents, (responsiveComponent: IResponsiveComponent) => {
-      if (responsiveComponent.registerComponent != null) {
-        responsiveComponent.registerComponent(component);
-      }
+
+  }
+
+  private changeToSmallMode(): void {
+    this.tabSection && this.tabSection.insertAfter(this.searchBoxElement);
+    _.each(this.responsiveComponents, responsiveComponent => {
+      responsiveComponent.changeToSmallMode();
     });
   }
 
-  public disableComponent(ID: string) {
-    this.disabledComponents.push(ID);
+  private changeToLargeMode(): void {
+    this.tabSection && this.tabSection.detach();
+    _.each(this.responsiveComponents, responsiveComponent => {
+      responsiveComponent.changeToLargeMode();
+    });
   }
 
-  private isDisabled(ID: string) {
-    return _.indexOf(this.disabledComponents, ID) != -1;
+  private handleResizeEvent(): void {
+    _.each(this.responsiveComponents, responsiveComponent => {
+      responsiveComponent.handleResizeEvent && responsiveComponent.handleResizeEvent();
+    });
   }
 
-  private shouldSwitchToSmallMode(): boolean {
-    let aComponentNeedsTabSection = this.needDropdownWrapper();
-    let reachedBreakpoint = this.coveoRoot.width() <= this.searchInterface.responsiveComponents.getMediumScreenWidth();
-    return aComponentNeedsTabSection || reachedBreakpoint;
-  }
-
-  private needDropdownWrapper(): boolean {
-    for (let i = 0; i < this.responsiveComponents.length; i++) {
-      let responsiveComponent = this.responsiveComponents[i];
-      if (responsiveComponent.needDropdownWrapper && responsiveComponent.needDropdownWrapper()) {
-        return true;
-      }
-    }
-    return false;
-  }
-
-  private addDropdownHeaderWrapperIfNeeded(): void {
-    if (this.needDropdownWrapper()) {
-      let tabSection = $$(this.coveoRoot).find('.coveo-tab-section');
-      if (this.searchBoxElement) {
-        this.dropdownHeadersWrapper.insertAfter(this.searchBoxElement);
-      } else if (tabSection) {
-        this.dropdownHeadersWrapper.insertAfter(tabSection);
-      } else {
-        this.coveoRoot.prepend(this.dropdownHeadersWrapper.el);
-      }
-    }
+  private isFacet(ID: string): boolean {
+    return ID == Facet.ID;
   }
 
   private isTabs(ID: string): boolean {
-    return ID == 'Tab';
+    return ID == Tab.ID;
   }
 
   private isActivated(ID: string): boolean {
-    return _.find(this.responsiveComponents, current => current.ID == ID) != undefined;
+    return _.find(this.responsiveComponents, current => current.ID == ID) != undefined
   }
 
   private getSearchBoxElement(): HTMLElement {
@@ -209,7 +159,7 @@ export class ResponsiveComponentsManager {
     }
   }
 
-  private bindNukeEvents(): void {
+  private bindNukeEvents() {
     $$(this.coveoRoot).on(InitializationEvents.nuke, () => {
       window.removeEventListener('resize', this.resizeListener);
     });

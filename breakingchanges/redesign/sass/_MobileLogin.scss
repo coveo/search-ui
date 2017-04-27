@@ -1,0 +1,283 @@
+.CoveoLogin{
+	@extend .CoveoTab;
+}
+
+.coveo-login-combined, .coveo-demo-section-container {
+	position:absolute;
+	top:0;
+	left:0;
+	right:0;
+	bottom:0;
+	z-index: 1;
+	padding: 10px;
+	text-align:center;
+	overflow:hidden;
+	@include transition(all, 0.5s);
+	@include linear-gradient(#25272a,#3f4146);
+
+    &.coveo-active {
+      @include transform(translate3d(0,0,200px));
+    }
+}
+
+.coveo-demo-section-container {
+	@include transform(translate3d(100%,0,200px));
+	&.coveo-active {
+		box-shadow: -20px 0px 5px 0px #3f4146;
+	}
+}
+
+.coveo-login-form-container {
+	margin: 0px 100px;
+	@include smallMobileLandscape() {
+		margin: 0px 0px;
+	}
+	
+	padding: 10px 20px;
+	background-color: $color-facet-background;
+	border-radius: 4px;
+}
+
+.coveo-login-caption {
+	margin-bottom: 10px;
+	font-weight: bold;
+	text-align: left;
+	color: #3f4146;
+}
+
+.coveo-login-error-message {
+	background-color: #ca423e;
+	border: 1px solid #ff8080;
+	color: white;
+	display: none;
+	width: 100%;
+	line-height: 30px;
+	&.coveo-show {
+		display: block;
+	}
+}
+
+.coveo-login-logo {
+	@extend .coveo-logo-light-large;
+}
+
+.coveo-login-logo, .coveo-login-error-message {
+	margin: 100px 0px;
+	@include smallMobile() {
+		margin: 20px 0px;
+	}
+
+}
+
+.coveo-login-credentials-container, .coveo-login-page-settings-container {
+	background-color: white;
+}
+
+.coveo-login-form.coveo-fade {
+	opacity:0.5;
+}
+
+.coveo-login-buttons {
+	@include coveo-generic-button-no-hover-effect;
+	-webkit-appearance: none;
+	border-radius: 4px;
+	min-height: 40px;
+	background-color: #f47f24;
+	border: 1px solid #e46813;
+	color:white;
+	width: 100%;
+	font-size:15px;
+	font-weight:bold;
+}
+
+.coveo-input-container {
+	position: relative;
+}
+
+.coveo-login-input-icon {
+	position:absolute;
+	top: 8px;
+	left: 5px;
+}
+
+.coveo-login-tab-icon {
+	@extend .coveo-sprites-documentType-answer;
+	margin-right: 12px;
+	position: relative;
+	top: 3px;
+}
+
+.coveo-username-icon {
+	@extend .coveo-login-input-icon;
+	@extend .coveo-sprites-common-login_user;
+	
+}
+
+.coveo-password-icon {
+	@extend .coveo-login-input-icon;
+	@extend .coveo-sprites-common-lock;
+	
+}
+
+.coveo-page-settings-icon {
+	@extend .coveo-login-input-icon;
+  @extend .coveo-sprites-common-system;
+  top: 11px;
+  left:9px;
+}
+ 
+.coveo-submit, .coveo-login-demo {
+	@extend .coveo-login-buttons;
+	
+	> .coveo-waiting {
+	  	display: none;
+	  	margin-right: 10px;
+	  	vertical-align: top;
+	    @extend .coveo-sprites-searchButton-spin;
+	    @include animation-name(coveo-spin);
+	    @include animation-timing-function(linear);
+	    @include animation-duration(1s);
+	    @include animation-iteration-count(infinite);
+	}
+
+	&.coveo-waiting {
+		> .coveo-waiting {
+			display: inline-block;
+		}
+	}
+}
+
+.coveo-username {
+	@include coveo-login-input;
+	margin-bottom: 0px;
+	border-bottom-right-radius: 0px;
+	border-bottom-left-radius: 0px;
+	border-bottom: none;
+}
+
+.coveo-password {
+	@include coveo-login-input;
+	margin-top: 0px;
+	border-top-right-radius: 0px;
+	border-top-left-radius: 0px;
+}
+
+.coveo-page-settings {
+	@include coveo-login-input;
+}
+
+@include keyframes(coveo-spin) {
+  from {
+    @include transform(rotate(0deg));
+  }
+
+  to {
+    @include transform(rotate(360deg));
+  }
+}
+
+.coveo-login-website {
+	position: absolute;
+	bottom: 5px;
+	right: 5px;
+	font-size: 10px;
+	color: #f47f24;
+}
+
+.coveo-new-to-coveo-section {
+	text-align: left;
+	color: white;
+	padding: 10px 20px;
+	position: absolute !important;
+	bottom: 60px;
+	left:0px;
+	right: 0px;
+	h2 {
+		font-size: 20px;
+		margin: 2px 0px;
+	}
+	h3 {
+		font-size: 15px;
+		margin: 2px 0px;
+		color: rgb(199,199,199);
+	}
+	.coveo-demo-section-arrow-forward {
+		@extend .coveo-sprites-common-doritos;
+		position: absolute;
+		bottom: 25px;
+		right: 30px;
+	}
+	@include smallMobile() {
+		bottom: 20px;
+   	}
+}
+
+.coveo-demo-section {
+	padding: 20px;
+	position: relative;
+	height: 100%;
+	@include smallMobile() {
+		padding: 0px;
+	}
+}
+
+.coveo-demo-section-try-it, .coveo-demo-section-contact {
+	@extend .coveo-login-buttons;
+	max-width: 500px;
+	@include smallMobile() {
+		position: absolute !important;
+		width: 100%;
+		left:0;
+	}
+}
+
+.coveo-demo-section-try-it {
+	margin-top:100px;
+	@include smallMobile() {
+		bottom:75px;
+		margin-top: 0px;
+	}
+}
+
+.coveo-demo-section-contact {
+	margin-top: 10px;
+	@include smallMobile() {
+		bottom:30px;
+	}	
+}
+
+.coveo-demo-section-logo {
+	@extend .coveo-sprites-common-get_started;
+	margin:60px 0px;
+	@include smallMobile() {
+		margin: 20px 0px;
+	}
+}
+
+.coveo-demo-section-back-to-login {
+	color:white;
+	text-align: left;
+    line-height: 40px;
+    margin-top: 20px;
+    @include smallMobile() {
+    	margin-top: 0px;
+    }
+}
+
+.coveo-demo-section-explanation {
+	color: rgb(199,199,199);
+	margin: 0px 50px;
+	font-size: 25px;
+	@include smallMobile() {
+		font-size: 15px;
+		margin:0px 0px;
+	}
+}
+
+.coveo-demo-section-arrow-backward {
+	@extend .coveo-sprites-common-doritos;
+	@include transform(rotate(180deg));
+	top:2px;
+	margin-right: 5px;
+	position: relative;
+}

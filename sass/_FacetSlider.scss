@@ -1,5 +1,5 @@
-@import "mixins/slider";
-
+@import 'Slider';
+// Use a mixin so that
 @include coveoSlider();
 
 .CoveoFacetSlider {

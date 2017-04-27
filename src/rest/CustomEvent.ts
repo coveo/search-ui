@@ -1,4 +1,4 @@
-import { IAnalyticsEvent } from './AnalyticsEvent';
+import {IAnalyticsEvent} from './AnalyticsEvent';
 
 export interface ICustomEvent extends IAnalyticsEvent {
   eventType: string;

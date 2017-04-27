@@ -1,3 +1,0 @@
-interface String {
-  toLocaleString: ()=> string;
-}

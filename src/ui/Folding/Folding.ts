@@ -1,24 +1,22 @@
-import { IQueryResult } from '../../rest/QueryResult';
-import { Component } from '../Base/Component';
-import { SortCriteria } from '../Sort/SortCriteria';
-import { ComponentOptions, IFieldOption } from '../Base/ComponentOptions';
-import { IComponentBindings } from '../Base/ComponentBindings';
-import { Utils } from '../../utils/Utils';
-import { Assert } from '../../misc/Assert';
-import { QueryEvents, IBuildingQueryEventArgs, IPreprocessResultsEventArgs } from '../../events/QueryEvents';
-import { Initialization } from '../Base/Initialization';
-import { IQueryResults } from '../../rest/QueryResults';
-import { IQuery } from '../../rest/Query';
-import { $$ } from '../../utils/Dom';
-import { QueryBuilder } from '../Base/QueryBuilder';
-import * as _ from 'underscore';
-import { exportGlobally } from '../../GlobalExports';
+import {IQueryResult} from '../../rest/QueryResult';
+import {Component} from '../Base/Component';
+import {SortCriteria} from '../Sort/SortCriteria';
+import {ComponentOptions} from '../Base/ComponentOptions';
+import {IComponentBindings} from '../Base/ComponentBindings';
+import {Utils} from '../../utils/Utils';
+import {Assert} from '../../misc/Assert';
+import {QueryEvents, IBuildingQueryEventArgs, IPreprocessResultsEventArgs} from '../../events/QueryEvents';
+import {Initialization} from '../Base/Initialization';
+import {IQueryResults} from '../../rest/QueryResults';
+import {IQuery} from '../../rest/Query';
+import {$$} from '../../utils/Dom';
+import {QueryBuilder} from '../Base/QueryBuilder';
 
 export interface IFoldingOptions {
-  field?: IFieldOption;
+  field?: string;
 
-  childField?: IFieldOption;
-  parentField?: IFieldOption;
+  childField?: string;
+  parentField?: string;
 
   range?: number;
   rearrange?: SortCriteria;
@@ -45,181 +43,76 @@ interface IResultNode {
 }
 
 /**
- * The `Folding` component makes it possible to render hierarchic representations of search results sharing a common
- * [`field`]{@link Folding.options.field}.
- *
- * This component has no visual impact on its own. It simply folds certain search results so that the
- * [`ResultFolding`]{@link ResultFolding} and [`ResultAttachments`]{@link ResultAttachments} components can then nicely
- * render them within result templates (see [Result Templates](https://developers.coveo.com/x/aIGfAQ)).
- *
- * A typical use case of the `Folding` component is to fold email conversations and message board threads results in a
- * result set in order to display them in a convenient format. Messages belonging to a single conversation typically
- * have a unique conversation ID. By indexing this ID on a field, you can use it to fold search results (see
- * [Folding Results](https://developers.coveo.com/x/7hUvAg)).
- *
- * **Note:**
- * > There can only be one `Folding` component per [`Tab`]{@link Tab} component.
+ * This component is used to display search results that share a common field hierarchically.
+ * It is typically used to display email conversations and message board threads.
+ * The different messages in a given conversation typically have a unique conversation ID.
+ * Given that this ID is indexed in a field, you can use it to fold search results
  */
 export class Folding extends Component {
   static ID = 'Folding';
-
-  static doExport = () => {
-    exportGlobally({
-      'Folding': Folding
-    });
-  }
-
   /**
    * The options for the component
    * @componentOptions
    */
   static options: IFoldingOptions = {
-
     /**
-     * Specifies the name of the field on which to do the folding.
-     *
-     * Specifying a value for this option is required for this component to work.
+     * The name of the field on which the folding is done.<br/>
+     * This option is required.
      */
     field: ComponentOptions.buildFieldOption({ required: true }),
-
     /**
-     * Specifies the field that determines whether a certain result is a child of another top result.
-     *
-     * Default value is `@topparentid`.
+     * Specifies the field that determines that a result is a child of another top result.<br/>
+     * The default value is <code>@topparentid</code>
      */
     childField: ComponentOptions.buildFieldOption({ defaultValue: '@topparentid' }),
-
     /**
-     * Specifies the field that determines whether a certain result is a top result containing other child results.
-     *
-     * Default value is `@containsattachment`.
+     * Specifies the field that determines that a result is a top result containing other child results<br/>
+     * The default value is <code>@syscontainsattachmen</code>
      */
     parentField: ComponentOptions.buildFieldOption({ defaultValue: '@containsattachment' }),
-
     /**
-     * Specifies the maximum number of child results to fold.
-     *
-     * **Example:**
-     * > For an email thread with a total of 20 messages, using the default value of `2` means that the component loads
-     * > up to a maximum of 2 child messages under the original message, unless the end user expands the entire
-     * > conversation using the **Show More** link (see the [`enableExpand`]{@link Folding.options.enableExpand}
-     * > option).
-     *
-     * Default value is `2`. Minimum value is `0`.
+     * The number of child results to fold.<br />
+     * The default value is 2.<br/>
+     * The minimum value is 0.
      */
     range: ComponentOptions.buildNumberOption({ defaultValue: 2, min: 0 }),
-
     /**
-     * Specifies the sort criteria to apply to the top result and its child results (e.g., `date ascending`,
-     * `@myfield descending`, etc. [See
-     * Query Parameters - sortCriteria](https://developers.coveo.com/x/iwEv#QueryParameters-sortCriteriasortCriteria)).
-     *
-     * **Example**
-     * > If you are folding email results by conversation and you specify `date descending` as the `rearrange` value of
-     * > the `Folding` component, the component re-arranges email conversations so that the newest email is always the
-     * > top result. Specifying `date ascending` instead always makes the original email the top result, as it is also
-     * > necessarily the oldest.
-     *
-     * By default, the component displays the results in the order that the index returns them.
+     * Specifies how the top result and its related child results, following the {@link SortCriteria} format
+     * (<code>date ascending</code>, <code>@somefield ascending</code>, etc.).<br/>
+     * The default value is <code>none</code>, which means that results are displayed in the order that the index returned them.
      */
     rearrange: ComponentOptions.buildCustomOption((value) => Utils.isNonEmptyString(value) ? SortCriteria.parse(value) : null),
-
     /**
-     * Specifies whether to add a callback function on the top result, allowing to make an additional query to load all
-     * of its child results (e.g., to load all conversations of a given thread).
-     *
-     * Concretely, the [`ResultFolding`]{@link ResultFolding} component uses this for its **Show More** link.
-     *
-     * See also the [`expandExpression`]{@link Folding.options.expandExpression} and
-     * [`maximumExpandedResults`]{@link Folding.options.maximumExpandedResults} options.
-     *
-     * Default value is `true`.
+     * Specifies whether to add a callback function on the top result, allowing to make an additional query
+     * to load all the conversation of a given thread.<br/>
+     * Concretely, the {@link ResultFolding} component uses this for its <b>Load full conversation</b> option.<br/>
+     * The default value is <code>true</code>
      */
-    enableExpand: ComponentOptions.buildBooleanOption({ defaultValue: true })
-    ,
+    enableExpand: ComponentOptions.buildBooleanOption({ defaultValue: true }),
     /**
-     * If the [`enableExpand`]{@link Folding.options.enableExpand} option is `true`, specifies a custom constant
-     * expression to send when querying the expanded results.
-     *
-     * Default value is `undefined`.
+     * Specifies a customized constant expression to send when querying the expanded results.
      */
     expandExpression: ComponentOptions.buildStringOption({ depend: 'enableExpand' }),
-
     /**
-     * If the [`enableExpand`]{@link Folding.options.enableExpand} option is `true`, specifies the maximum number of
-     * results to load when expanding.
-     *
-     * Default value is `100`. Minimum value is `1`.
+     * Specifies the maximum number of expanded results.<br/>
+     * The default value is 100.<br/>
+     * The minimum value is 1.
      */
-    maximumExpandedResults: ComponentOptions.buildNumberOption({ defaultValue: 100, min: 1, depend: 'enableExpand' }),
-
-    /**
-     * Specifies the function that manages the individual folding of each result.
-     *
-     * Default value is:
-     *
-     * ```javascript
-     * var results = result.childResults || [];
-     * // Add the top result at the top of the list.
-     * results.unshift(result);
-     * // Empty childResults just to clean it.
-     * result.childResults = [];
-     * // Fold those results.
-     * results = Coveo.Folding.foldWithParent(results);
-     * // The first result is the top one.
-     * var topResult = results.shift();
-     * // All other results are childResults.
-     * topResult.childResults = results;
-     * return topResult;
-     * ```
-     *
-     * You can pre-process all the result with this option in the [`init`]{@link init} call of your search interface:
-     *
-     * ```javascript
-     * Coveo.init(document.querySelector('#search'), {
-     *    Folding: {
-     *      getResult: function(result) {
-     *        result = Coveo.Folding.defaultGetResult(result);
-     *        // Your code here
-     *      }
-     *    }
-     * })
-     * ```
-     */
-    getResult: ComponentOptions.buildCustomOption<(result: IQueryResult) => IQueryResult>(() => {
-      return null;
-    }),
-
-    /**
-     * Specifies the function that manages the folding of all results.
-     *
-     * Default value is:
-     *
-     * ```javascript
-     * Coveo.Folding.defaultGetMoreResults = function(results) {
-     *    // The results are flat, just do the folding.
-     *    return Coveo.Folding.foldWithParent(results);
-     * }
-     * ```
-     */
-    getMoreResults: ComponentOptions.buildCustomOption<(results: IQueryResult[]) => IQueryResult[]>(() => {
-      return null;
-    })
-  };
+    maximumExpandedResults: ComponentOptions.buildNumberOption({ defaultValue: 100, min: 1, depend: 'enableExpand' })
+  }
 
   /**
-   * Creates a new `Folding` component.
-   * @param element The HTMLElement on which to instantiate the component.
-   * @param options The options for the `Folding` component.
-   * @param bindings The bindings that the component requires to function normally. If not set, these will be
-   * automatically resolved (with a slower execution time).
+   * Create a new Folding component
+   * @param element
+   * @param options
+   * @param bindings
    */
   constructor(public element: HTMLElement, public options: IFoldingOptions, bindings?: IComponentBindings) {
     super(element, Folding.ID, bindings);
 
     this.options = ComponentOptions.initComponentOptions(element, Folding, options);
 
-    Assert.check(Utils.isCoveoField(<string>this.options.field), this.options.field + ' is not a valid field');
+    Assert.check(Utils.isCoveoField(this.options.field), this.options.field + ' is not a valid field');
     Assert.exists(this.options.maximumExpandedResults);
 
     this.bind.onRootElement(QueryEvents.buildingQuery, this.handleBuildingQuery);
@@ -235,7 +128,7 @@ export class Folding extends Component {
       result: <IQueryResult>{
         raw: false
       }
-    };
+    }
 
     _.each(queryResults, (queryResult: IQueryResult, i: number) => {
       let resultNode = Folding.findUniqueId(rootNode.children, queryResult.uniqueId);
@@ -262,7 +155,7 @@ export class Folding extends Component {
             result: queryResult,
             score: i,
             children: []
-          };
+          }
         }
 
         let parentResult = Folding.findUniqueId(rootNode.children, queryResult.parentResult.uniqueId);
@@ -288,7 +181,7 @@ export class Folding extends Component {
     });
     let rootResult = Folding.resultNodeToQueryResult(rootNode);
     // Remove the root from all results
-    _.each(rootResult.attachments, (attachment) => attachment.parentResult = null);
+    _.each(rootResult.attachments, (attachment) => attachment.parentResult = null)
     return rootResult.attachments;
   }
 
@@ -340,24 +233,24 @@ export class Folding extends Component {
     Assert.exists(data);
 
     if (!this.disabled) {
-      data.queryBuilder.childField = <string>this.options.childField;
-      data.queryBuilder.parentField = <string>this.options.parentField;
-      data.queryBuilder.filterField = <string>this.options.field;
+      data.queryBuilder.childField = this.options.childField;
+      data.queryBuilder.parentField = this.options.parentField;
+      data.queryBuilder.filterField = this.options.field;
       data.queryBuilder.filterFieldRange = this.options.range;
 
-      data.queryBuilder.requiredFields.push(<string>this.options.field);
+      data.queryBuilder.requiredFields.push(this.options.field);
       if (this.options.childField != null) {
-        data.queryBuilder.requiredFields.push(<string>this.options.childField);
+        data.queryBuilder.requiredFields.push(this.options.childField);
       }
       if (this.options.parentField != null) {
-        data.queryBuilder.requiredFields.push(<string>this.options.parentField);
+        data.queryBuilder.requiredFields.push(this.options.parentField);
       }
     }
   }
 
   private handlepreprocessResults(data: IPreprocessResultsEventArgs) {
     Assert.exists(data);
-    Assert.check(!data.results._folded, 'Two or more Folding components are active at the same time for the same Tab. Cannot process the results.');
+    Assert.check(!data.results._folded, 'Two folding component are active at the same time for the same tab. Can\'t process result !');
     data.results._folded = true;
 
     let queryResults = data.results;
@@ -369,59 +262,51 @@ export class Folding extends Component {
 
   private addLoadMoreHandler(results: IQueryResult[], originalQuery: IQuery) {
     return _.map(results, (result) => {
-      if (this.options.enableExpand && !Utils.isNullOrUndefined(Utils.getFieldValue(result, <string>this.options.field))) {
+      if (this.options.enableExpand && !Utils.isNullOrUndefined(Utils.getFieldValue(result, this.options.field))) {
         result.moreResults = () => {
           return this.moreResults(result, originalQuery);
-        };
+        }
       }
       return result;
-    });
+    })
   }
 
 
   private moreResults(result: IQueryResult, originalQuery: IQuery): Promise<IQueryResult[]> {
-    let query = _.clone(originalQuery);
-    let builder = new QueryBuilder();
-
+    let query = new QueryBuilder();
     query.numberOfResults = this.options.maximumExpandedResults;
-    let fieldValue = Utils.getFieldValue(result, <string>this.options.field);
+
+    let fieldValue = Utils.getFieldValue(result, this.options.field);
 
     if (Utils.isNonEmptyString(fieldValue)) {
-      builder.advancedExpression.addFieldExpression(<string>this.options.field, '=', [fieldValue]);
-      query.aq = builder.build().aq;
+      query.advancedExpression.addFieldExpression(this.options.field, '=', [fieldValue]);
     }
 
     if (Utils.isNonEmptyString(originalQuery.q)) {
       // We add keywords to get the highlight and we add @uri to get all results
-      query.q = '(' + originalQuery.q + ') OR @uri';
+      query.expression.add('(' + originalQuery.q + ') OR @uri');
     }
 
     if (Utils.isNonEmptyString(this.options.expandExpression)) {
-      query.cq = this.options.expandExpression;
+      query.constantExpression.add(this.options.expandExpression);
     }
 
     if (this.options.parentField != null) {
-      query.parentField = <string>this.options.parentField;
+      query.parentField = this.options.parentField;
     }
-
     if (this.options.childField != null) {
-      query.childField = <string>this.options.childField;
+      query.childField = this.options.childField;
     }
-
-    query.filterField = null;
-    query.filterFieldRange = null;
-    query.firstResult = 0;
 
     if (this.options.rearrange) {
-      this.options.rearrange.putInQueryBuilder(builder);
-      query.sortCriteria = builder.sortCriteria;
-      query.sortField = builder.sortField;
+      this.options.rearrange.putInQueryBuilder(query);
     } else {
       query.sortCriteria = originalQuery.sortCriteria;
       query.sortField = originalQuery.sortField;
     }
 
-    return this.queryController.getEndpoint().search(query)
+    let builtQuery = query.build();
+    return this.queryController.getEndpoint().search(builtQuery)
       .then((results: IQueryResults) => {
         this.handlePreprocessMoreResults(results);
         return results.results;

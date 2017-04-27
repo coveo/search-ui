@@ -9,10 +9,9 @@
 const fs = require('fs');
 const colors = require('colors');
 const Q = require('q');
-const rmdir = require('rimraf');
-let devConfig;
+var devConfig;
 
-const stats = Q.denodeify(fs.lstat);
+const stats = Q.denodeify(fs.stat);
 const unlink = Q.denodeify(fs.unlink);
 const link = Q.denodeify(fs.symlink);
 const write = Q.denodeify(fs.writeFile);
@@ -21,6 +20,7 @@ const fetch = require('node-fetch');
 try {
   devConfig = require('./conf.js');
 } catch (e) {
+  console.log('conf.js not found. Did you forget to rename the sample file in ./environments ?'.black.bgRed);
   process.exit(1);
 }
 
@@ -28,47 +28,38 @@ if (devConfig.externalsProjects) {
   devConfig.externalsProjects.forEach(function (proj) {
     const path = proj + '/node_modules/coveo-search-ui';
     stats(path)
-        .then((fStat)=> {
-          if (fStat.isSymbolicLink()) {
+        .then(function (fStat) {
+          if (fStat.isDirectory()) {
             return unlink(path)
-          } else if (fStat.isDirectory()) {
-            return new Promise((resolve, reject)=> {
-              rmdir(path, (err)=> {
-                if (err) {
-                  reject(err);
-                }
-                resolve(fStat);
-              })
-            })
           } else {
             return fStat;
           }
         })
-        .catch(()=> {
+        .catch(function () {
           return '';
         })
-        .then(()=> {
-          return fetch('http://localhost:8080/js/CoveoJsSearch.js')
-              .then((res)=> {
+        .then(function () {
+          return fetch('http://localhost:8080/devserver/CoveoJsSearch.js')
+              .then(function (res) {
                 if (res && res.status === 200) {
                   return res.text();
                 }
                 return '';
               })
-              .then((body)=> {
+              .then(function (body) {
                 if (body) {
-                  return write(process.cwd() + '/bin/js/CoveoJsSearch.js', body);
+                  return write(process.env.PWD + '/bin/js/CoveoJsSearch.js', body);
                 }
                 return '';
               })
-              .catch(()=> {
+              .catch(function () {
                 return '';
               })
         })
-        .then(()=> {
-          return link(process.cwd(), path, "dir");
+        .then(function () {
+          return link(process.env.PWD, path);
         })
-        .done(()=> {
+        .done(function () {
           console.log(`Link done for ${path}`.black.bgGreen);
         })
   })

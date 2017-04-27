@@ -1,0 +1,83 @@
+.CoveoResultFolding {
+  
+  .coveo-folding-results {
+  }
+  
+  .coveo-loading-animation {
+  }
+  
+  .coveo-child-result {
+    background-color: $color-gray-background;
+    border: 1px solid $color-medium-dark-gray;
+    padding: 10px;
+    margin-bottom: 5px;
+    .coveo-excerpt {
+      clear: both;
+      position:relative;
+    }
+    &:hover {
+      border: 1px solid $color-medium-dark-gray;
+    }
+  }
+}
+
+.coveo-folding-footer {
+  margin:0;
+  padding:0;
+
+  .coveo-folding-show-more, .coveo-folding-show-less {
+    color: #999999;
+    font-size: 13px;
+    display: inline-block;
+    line-height: 30px;
+    float:left;
+
+    &:link {
+      text-decoration: none;
+      color: #999999;
+    }
+
+    &:hover {
+      text-decoration: none;
+      color: #999999;
+    }
+  }
+
+  
+  .coveo-more {
+    min-height: 30px;
+    min-width: 30px;
+    line-height: 30px;
+    display: inline-block;
+    .coveo-folding-footer-icon {
+      @extend .coveo-sprites-folding-showmore;
+    }
+  }
+
+  .coveo-less {
+    min-height: 30px;
+    min-width: 30px;
+    line-height: 30px;
+    display: inline-block;
+    .coveo-folding-footer-icon {
+      @extend .coveo-sprites-folding-showless;
+    }
+  }
+
+  .coveo-folding-footer-section-for-less, .coveo-folding-footer-section-for-more {
+    background-color: inherit;
+    border: none;
+    padding: 0;
+    position: inherit;
+    border-radius: inherit;
+    bottom: inherit;
+  }
+}
+
+.coveo-folding-footer-icon {
+  margin-left: 10px;
+  margin-right: 0;
+}
+
+
+

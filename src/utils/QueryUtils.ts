@@ -1,30 +1,15 @@
-import { IQueryResults } from '../rest/QueryResults';
-import { IQueryResult } from '../rest/QueryResult';
-import { IQuery } from '../rest/Query';
-import { Assert } from '../misc/Assert';
-import { Utils } from '../utils/Utils';
-import * as _ from 'underscore';
+import {IQueryResults} from '../rest/QueryResults';
+import {IQueryResult} from '../rest/QueryResult';
+import {IQuery} from '../rest/Query';
+import {Assert} from '../misc/Assert';
+import {Utils} from '../utils/Utils';
+import _ = require('underscore');
 
 declare let crypto: Crypto;
 
 export class QueryUtils {
   static createGuid(): string {
-    let guid: string;
-    let success: boolean = false;
-    if ((typeof (crypto) != 'undefined' && typeof (crypto.getRandomValues) != 'undefined')) {
-      try {
-        guid = QueryUtils.generateWithCrypto();
-        success = true;
-      } catch (e) {
-        success = false;
-      }
-    }
-
-    if (!success) {
-      guid = QueryUtils.generateWithRandom();
-    }
-
-    return guid;
+    return (typeof (crypto) != 'undefined' && typeof (crypto.getRandomValues) != 'undefined') ? QueryUtils.generateWithCrypto() : QueryUtils.generateWithRandom();
   }
 
   // This method is a fallback as it's generate a lot of collisions in Chrome.
@@ -57,10 +42,6 @@ export class QueryUtils {
     QueryUtils.setPropertyOnResult(result, 'state', state);
   }
 
-  static setSearchInterfaceObjectOnQueryResult(searchInterface, result: IQueryResult) {
-    QueryUtils.setPropertyOnResult(result, 'searchInterface', searchInterface);
-  }
-
   static setIndexAndUidOnQueryResults(query: IQuery, results: IQueryResults, queryUid: string, pipeline: string, splitTestRun: string) {
     Assert.exists(query);
     Assert.exists(results);
@@ -78,7 +59,7 @@ export class QueryUtils {
 
   static splitFlags(flags: string, delimiter: string = ';') {
     Assert.exists(flags);
-    return flags.split(delimiter);
+    return flags.split(delimiter)
   }
 
   static isAttachment(result: IQueryResult) {
@@ -101,47 +82,6 @@ export class QueryUtils {
     return result.excerpt != undefined && result.excerpt != '';
   }
 
-  static getAuthor(result: IQueryResult): string {
-    return result.raw['author'];
-  }
-
-  static getUriHash(result: IQueryResult): string {
-    return result.raw['urihash'];
-  }
-
-  static getObjectType(result: IQueryResult): string {
-    return result.raw['objecttype'];
-  }
-
-  static getCollection(result: IQueryResult): string {
-    return result.raw['collection'];
-  }
-
-  static getSource(result: IQueryResult): string {
-    return result.raw['source'];
-  }
-
-  static getLanguage(result: IQueryResult): string {
-    return result.raw['language'];
-  }
-
-  static getPermanentId(result: IQueryResult): { fieldValue: string, fieldUsed: string } {
-    let fieldValue;
-    let fieldUsed;
-    let permanentId = Utils.getFieldValue(result, 'permanentid');
-    if (permanentId) {
-      fieldUsed = 'permanentid';
-      fieldValue = permanentId;
-    } else {
-      fieldUsed = 'urihash';
-      fieldValue = Utils.getFieldValue(result, 'urihash');
-    }
-    return {
-      fieldValue: fieldValue,
-      fieldUsed: fieldUsed
-    };
-  }
-
   static quoteAndEscapeIfNeeded(str: string): string {
     Assert.isString(str);
     return QueryUtils.isAtomicString(str) || (QueryUtils.isRangeString(str) || QueryUtils.isRangeWithoutOuterBoundsString(str)) ? str : QueryUtils.quoteAndEscape(str);
@@ -149,12 +89,12 @@ export class QueryUtils {
 
   static quoteAndEscape(str: string): string {
     Assert.isString(str);
-    return `"${QueryUtils.escapeString(str)}"`;
+    return `'${QueryUtils.escapeString(str)}'`;
   }
 
   static escapeString(str: string): string {
     Assert.isString(str);
-    return str.replace(/"/g, ' ');
+    return str.replace(/'/g, ' ');
   }
 
   static isAtomicString(str: string): boolean {
@@ -219,14 +159,14 @@ export class QueryUtils {
     _.each(results.results, (result: IQueryResult) => {
       QueryUtils.setPropertyOnResult(result, property, value);
       value = afterOneLoop ? afterOneLoop() : value;
-    });
+    })
   }
 
   public static setPropertyOnResult(result: IQueryResult, property: string, value: any) {
     result[property] = value;
     _.each(result.childResults, (child: IQueryResult) => {
       child[property] = value;
-    });
+    })
     if (!Utils.isNullOrUndefined(result.parentResult)) {
       result.parentResult[property] = value;
     }
@@ -238,12 +178,13 @@ export class QueryUtils {
   }
 
   public static isStratusAgnosticField(fieldToVerify: string, fieldToMatch: string): boolean {
-    let checkForSystem = /^(@?)(sys)?(.*)/i;
+    let checkForSystem = /^(@?)(sys)?(.*)/i
     let matchFieldToVerify = checkForSystem.exec(fieldToVerify);
     let matchFieldToMatch = checkForSystem.exec(fieldToMatch);
     if (matchFieldToVerify && matchFieldToMatch) {
-      return (matchFieldToVerify[1] + matchFieldToVerify[3]).toLowerCase() == (matchFieldToMatch[1] + matchFieldToMatch[3]).toLowerCase();
+      return (matchFieldToVerify[1] + matchFieldToVerify[3]).toLowerCase() == (matchFieldToMatch[1] + matchFieldToMatch[3]).toLowerCase()
     }
     return false;
   }
+
 }

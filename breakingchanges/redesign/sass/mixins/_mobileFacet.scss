@@ -1,0 +1,94 @@
+@mixin coveo-facet-value-for-mobile-with-computed-field {
+  position:relative;
+  margin: 5px 0px 5px 0px;
+  .coveo-facet-value-count {
+    display: block;
+    position: absolute;
+    left: 33px;
+    top: 17px;
+    line-height: 23px;
+  }
+  .coveo-facet-value-caption {
+    line-height: 23px;
+    vertical-align: top;
+  }
+  .coveo-computed-field {
+    line-height: 23px;
+  }
+}
+
+@mixin coveo-realign-checkbox-for-mobile-facet {
+  vertical-align:top;
+  margin-top:8px;
+}
+
+@mixin coveo-checkbox-for-mobile-facet {
+  width: 30px;
+  height: 30px;
+  padding-top: 1px;
+  vertical-align:middle;
+  > span {
+    @include coveo-realign-checkbox-for-mobile-facet;
+    @extend .coveo-sprites-facet-checkmark_unselected;
+  }
+}
+
+@mixin coveo-checkbox-for-mobile-facet-hovered {
+
+  span {
+    @include coveo-realign-checkbox-for-mobile-facet;
+    @extend .coveo-sprites-facet-checkmark_unselected;
+  }
+}
+
+@mixin coveo-checkbox-for-mobile-facet-selected {
+
+  > span {
+    @include coveo-realign-checkbox-for-mobile-facet;
+    @extend .coveo-sprites-facet-checkmark_selected;
+  }
+}
+
+@mixin coveo-checkbox-for-mobile-facet-selected-hovered {
+
+  span {
+    @include coveo-realign-checkbox-for-mobile-facet;
+    @extend .coveo-sprites-facet-checkmark_selected;
+  }
+}
+
+@mixin coveo-facet-value-for-mobile {
+  padding: 0 10px;
+  margin: 0 -10px;
+  font-size: 16px;
+  line-height: 36px;
+
+  .coveo-facet-value-checkbox{
+    @include coveo-checkbox-for-mobile-facet;
+  }
+
+  &:hover .coveo-facet-value-checkbox {
+    @include coveo-checkbox-for-mobile-facet-hovered;
+  }
+
+  &.coveo-selected div.coveo-facet-value-checkbox{
+    @include coveo-checkbox-for-mobile-facet-selected;
+  }
+
+  &.coveo-selected:hover div.coveo-facet-value-checkbox{
+    @include coveo-checkbox-for-mobile-facet-selected-hovered;
+    span {
+      vertical-align:top;
+    }
+  }
+
+  .coveo-facet-value-exclude {
+    display:none;
+  }
+
+  &.coveo-no-state:hover .coveo-facet-value-checkbox {
+    > span {
+      visibility : hidden;
+    }
+  }
+}

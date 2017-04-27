@@ -1,6 +1,9 @@
-import { IQueryboxOptions } from './Querybox';
-import { QueryBuilder } from '../Base/QueryBuilder';
-import * as _ from 'underscore';
+import {IQueryboxOptions} from './Querybox';
+import {Component} from '../Base/Component';
+import {QueryEvents} from '../../events/QueryEvents';
+import {IBuildingQueryEventArgs} from '../../events/QueryEvents';
+import {Assert} from '../../misc/Assert';
+import {QueryBuilder} from '../Base/QueryBuilder';
 
 export class QueryboxQueryParameters {
   constructor(private options: IQueryboxOptions) {
@@ -20,7 +23,7 @@ export class QueryboxQueryParameters {
     }
 
     if (!_.isEmpty(lastQuery)) {
-      queryBuilder.enableQuerySyntax = this.options.enableQuerySyntax;
+      queryBuilder.disableQuerySyntax = !this.options.enableQuerySyntax;
       queryBuilder.expression.add(lastQuery);
       if (this.options.enablePartialMatch) {
         queryBuilder.enablePartialMatch = this.options.enablePartialMatch;

@@ -1,39 +1,13 @@
-@import 'Variables';
-@import "../bin/sass/sprites";
-
 .coveo-logo{
-  @include retina-sprite($coveo-logo-group);
+	@extend .coveo-sprites-coveo-logo;
 }
-
 .coveo-powered-by {
-  @include retina-sprite($coveo-powered-by-logo-group);
-}
-
-.CoveoLogo {
-  float: right;
-  display: inline-block;
-  margin: 0px 0 0 20px;
-  &.coveo-hidden {
-    display: none;
-  }
-  @media (max-width: 970px) {
-    position: absolute;
-    right: 10px;
-    bottom: -30px;
-  }
-}
-
-.coveo-waiting-for-first-query {
-  .CoveoLogo {
-    @media (max-width: 970px) {
-      display: none;
-    }
-  }
+	@extend .coveo-sprites-coveo-powered-by-logo;
 }
 
 .coveo-facet-column {
   .coveo-logo {
-    @include align('horizontal');
-    margin: 10px 0px;
+		@include align('horizontal');
+		margin: 10px 0px;
   }
 }

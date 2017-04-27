@@ -1,5 +1,3 @@
-@import "Variables";
-
 .coveo-waiting-for-first-query .CoveoSearchbox .CoveoSearchButton {
   z-index: 0;
 }
@@ -25,7 +23,7 @@
     }
     .magic-box-clear .magic-box-icon:before {
       content: '';
-      @include retina-sprite($main-clear-group);
+      @extend .coveo-sprites-main-clear;
     }
     .magic-box-input {
       border-radius: $default-border-radius;
@@ -38,14 +36,4 @@
 
 .CoveoSettings + .CoveoSearchbox {
   margin-right: 76px;
-}
-
-.magic-box, .magic-box.magic-box-hasFocus {
-  .magic-box-input {
-    .magic-box-underlay {
-      .magic-box-ghost-text {
-        display: none;
-      }
-    }
-  }
 }

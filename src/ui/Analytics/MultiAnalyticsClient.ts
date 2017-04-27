@@ -1,9 +1,8 @@
-import { IAnalyticsClient } from './AnalyticsClient';
-import { PendingSearchEvent } from './PendingSearchEvent';
-import { IAnalyticsActionCause, IAnalyticsDocumentViewMeta } from './AnalyticsActionListMeta';
-import { IQueryResult } from '../../rest/QueryResult';
-import { ITopQueries } from '../../rest/TopQueries';
-import * as _ from 'underscore';
+import {IAnalyticsClient} from './AnalyticsClient';
+import {IAnalyticsActionCause, IAnalyticsDocumentViewMeta} from './AnalyticsActionListMeta';
+import {IQueryResult} from '../../rest/QueryResult';
+import {ITopQueries} from '../../rest/TopQueries';
+import {PendingSearchEvent} from './PendingSearchEvent';
 
 export class MultiAnalyticsClient implements IAnalyticsClient {
   public isContextual = false;
@@ -41,11 +40,11 @@ export class MultiAnalyticsClient implements IAnalyticsClient {
 
   public getTopQueries(params: ITopQueries): Promise<string[]> {
     return Promise.all(_.map(this.analyticsClients, (client) => {
-      return client.getTopQueries(params);
+      return client.getTopQueries(params)
     }))
       .then((values: string[][]) => {
-        return this.mergeTopQueries(values, params.pageSize);
-      });
+        return this.mergeTopQueries(values, params.pageSize)
+      })
   }
 
   public getCurrentVisitIdPromise(): Promise<string> {
@@ -56,24 +55,20 @@ export class MultiAnalyticsClient implements IAnalyticsClient {
     return _.first(this.analyticsClients).getCurrentVisitId();
   }
 
-  public sendAllPendingEvents(): void {
+  public sendAllPendingEvents() {
     _.each(this.analyticsClients, (analyticsClient: IAnalyticsClient) => analyticsClient.sendAllPendingEvents());
   }
 
-  public warnAboutSearchEvent(): void {
+  public warnAboutSearchEvent() {
     _.each(this.analyticsClients, (analyticsClient: IAnalyticsClient) => analyticsClient.warnAboutSearchEvent());
   }
 
-  public cancelAllPendingEvents(): void {
+  public cancelAllPendingEvents() {
     _.each(this.analyticsClients, (analyticsClient: IAnalyticsClient) => analyticsClient.cancelAllPendingEvents());
   }
 
-  public getPendingSearchEvent(): PendingSearchEvent {
+  public getPendingSearchEvent() {
     return _.first(this.analyticsClients).getPendingSearchEvent();
-  }
-
-  public setOriginContext(originContext: string) {
-    _.each(this.analyticsClients, (analyticsClient: IAnalyticsClient) => analyticsClient.setOriginContext(originContext));
   }
 
   private mergeTopQueries(values: string[][], pageSize: number = 5) {

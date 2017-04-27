@@ -1,5 +1,4 @@
 @import "bourbon/bourbon";
-@import "../bin/sass/sprites.scss";
 
 // https://app.frontify.com/d/GthysWU8RY0Q/brand-guidelines#/basics/colors
 
@@ -40,15 +39,13 @@ $font-size-smaller: 14px;
 $font-size-smallest: 12px;
 
 // Border
-$default-border-radius: 2px;
-$small-border-radius: 1px;
+$default-border-radius: 4px;
+$small-border-radius: 2px;
 $default-border: 1px solid $color-light-grey;
 @mixin defaultRoundedBorder {
   border: $default-border;
   border-radius: $default-border-radius;
 }
-
-$standard-transition-timing-function: cubic-bezier(0.4, 0.0, 0.2, 1);
 
 /*
 * @param direction vertical or horizontal
@@ -80,52 +77,42 @@ $standard-transition-timing-function: cubic-bezier(0.4, 0.0, 0.2, 1);
 @mixin iconWithHoverState($iconBase, $float:'left', $inactive : 'coveo-disabled') {
   $iconActive: '#{$iconBase}-active';
   .coveo-icon {
-    @include retina-sprite(map-get($retina-group-map, $iconBase));
+    @extend #{$iconBase} !optional;
     float: #{$float};
   }
   &:hover {
     .coveo-icon {
-      @include retina-sprite(map-get($retina-group-map, $iconActive));
+      @extend #{$iconActive} !optional;
     }
   }
   &:hover.#{$inactive} {
     .coveo-icon {
-      @include retina-sprite(map-get($retina-group-map, $iconBase));
+      @extend #{$iconBase} !optional;
     }
   }
 }
 
-@mixin clickable($dark-background: false) {
+@mixin clickable {
   color: $color-teal;
-  @if $dark-background == true {
-    color: $color-coveo-for-salesforce;
-  }
   text-decoration: none;
   cursor: pointer;
   &:hover, &:visited {
     text-decoration: none;
-    @if $dark-background == false {
-      color: $color-greyish-dark-blue;
-    } @else {
-      color: $color-coveo-for-salesforce;
-    }
+    color: $color-greyish-dark-blue;
   }
   &:hover, &:hover a {
     text-decoration: underline;
   }
   &.coveo-selected * {
-    @if $dark-background == false {
-      color: $color-greyish-dark-blue;
-    } @else {
-      color: $color-coveo-for-salesforce;
-    }
+    color: $color-greyish-dark-blue;
   }
 }
 
-@mixin clickableVibrant($dark-background: false) {
-  @include clickable($dark-background);
+@mixin clickableVibrant {
+  @include clickable();
   color: $color-coveo-for-salesforce;
   &:hover {
+    text-decoration: underline;
     color: $color-coveo-for-salesforce;
   }
   &.coveo-selected * {
@@ -154,11 +141,11 @@ $standard-transition-timing-function: cubic-bezier(0.4, 0.0, 0.2, 1);
   }
 
   #{$selector} {
-    @include retina-sprite(map-get($retina-group-map, $icon));
+    @extend #{$icon};
   }
   &:hover {
     #{$selector} {
-      @include retina-sprite(map-get($retina-group-map, $icon-clear))
+      @extend #{$icon-clear};
     }
   }
 }
@@ -173,5 +160,15 @@ $standard-transition-timing-function: cubic-bezier(0.4, 0.0, 0.2, 1);
   a {
     @include clickable();
     white-space: nowrap;
+  }
+}
+
+@include keyframes(coveo-spin) {
+  from {
+    @include transform(rotate(0deg));
+  }
+
+  to {
+    @include transform(rotate(360deg));
   }
 }

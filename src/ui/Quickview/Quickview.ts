@@ -1,85 +1,49 @@
-import { Component } from '../Base/Component';
-import { ComponentOptions, ComponentOptionsType } from '../Base/ComponentOptions';
-import { IResultsComponentBindings } from '../Base/ResultsComponentBindings';
-import { Template } from '../Templates/Template';
-import { DomUtils } from '../../utils/DomUtils';
-import { DeviceUtils } from '../../utils/DeviceUtils';
-import { IQueryResult } from '../../rest/QueryResult';
-import { $$, Dom } from '../../utils/Dom';
-import { DefaultQuickviewTemplate } from './DefaultQuickviewTemplate';
-import { ResultListEvents } from '../../events/ResultListEvents';
-import { StringUtils } from '../../utils/StringUtils';
-import { QuickviewDocument } from './QuickviewDocument';
-import { QueryStateModel } from '../../models/QueryStateModel';
-import { QuickviewEvents } from '../../events/QuickviewEvents';
-import { Initialization, IInitializationParameters } from '../Base/Initialization';
-import { KeyboardUtils, KEYBOARD } from '../../utils/KeyboardUtils';
-import { ModalBox as ModalBoxModule } from '../../ExternalModulesShim';
-import { exportGlobally } from '../../GlobalExports';
-
-import 'styling/_Quickview';
+import {Component} from '../Base/Component'
+import {ComponentOptions, ComponentOptionsType} from '../Base/ComponentOptions'
+import {IResultsComponentBindings} from '../Base/ResultsComponentBindings'
+import {Template} from '../Templates/Template'
+import {DomUtils} from '../../utils/DomUtils'
+import {DeviceUtils} from '../../utils/DeviceUtils'
+import {IQueryResult} from '../../rest/QueryResult'
+import {$$, Dom} from '../../utils/Dom'
+import {DefaultQuickviewTemplate} from './DefaultQuickviewTemplate'
+import {ResultListEvents} from '../../events/ResultListEvents'
+import {StringUtils} from '../../utils/StringUtils'
+import {QuickviewDocument} from './QuickviewDocument'
+import {QueryStateModel} from '../../models/QueryStateModel'
+import {Model} from '../../models/Model'
+import {QuickviewEvents} from '../../events/QuickviewEvents'
+import {Initialization, IInitializationParameters} from '../Base/Initialization';
+import {KEYBOARD} from '../../utils/KeyboardUtils';
 
 export interface IQuickviewOptions {
   title?: string;
   showDate?: boolean;
   contentTemplate?: Template;
   enableLoadingAnimation?: boolean;
-  loadingAnimation?: HTMLElement | Promise<HTMLElement>;
+  loadingAnimation?: HTMLElement;
   alwaysShow?: boolean;
   size?: string;
 }
 
 interface IQuickviewOpenerObject {
-  content: Promise<Dom>;
-  loadingAnimation: HTMLElement | Promise<HTMLElement>;
+  content: Dom;
+  loadingAnimation: HTMLElement
 }
 
 /**
  * This component is meant to exist within a result template.
  * It allows to create a button/link inside the result list that opens a modal box for a given result.
- *
- * Most of the time, this component will reference a {@link QuickviewDocument} in its content template.
- *
- * ## Choosing what to display for the Quickview
- * The Quick View uses any HTML structure you put inside its tag and uses that as the content of the dialog box. This content can thus be any element you decide, using your CSS and your structure.
- *
- * ## Example
- * - You can change the appearance of the Quick View link by adding HTML inside the body of the div.
- *
- * - You can change the content of the Quick View link by specifying a template ID.
- *
- * - You can use the methods of the [CoreHelpers]{@link ICoreHelpers} in the template.
- *
- * ```html
- * <!-- This would change the appearance of the quickview button itself in the result. -->
- * <div class="CoveoQuickview" data-template-id="TemplateId">
- *   <span>Click here for Quickview</span>
- * </div>
- *
- * <!-- This would modify the content of the quickview when it is opened in the modal box -->
- * <script class='result-template' type='text/underscore' id='TemplateId' >
- *   <div>
- *     <span>This is the content that will be displayed when you open the Quick View. You can also include any other Coveo components.</span>
- *     <table class="CoveoFieldTable">
- *       <tr data-field="@liboardshorttitle" data-caption="Board" />
- *       <tr data-field="@licategoryshorttitle" data-caption="Category" />
- *       <tr data-field="@sysauthor" data-caption="Author" />
- *     </table>
- *   </div>
- * </script>
- *
- * <!-- Note that this is all optional: Just including a <div class='CoveoQuickview'></div> will do the job most of the time, and will include a default template and default button appearance -->
- * ```
  */
 export class Quickview extends Component {
   static ID = 'Quickview';
 
-  static doExport = () => {
-    exportGlobally({
-      'Quickview': Quickview,
-      'QuickviewDocument': QuickviewDocument
-    });
-  }
+  static fields = [
+    'urihash', // analytics
+    'collection', // analytics
+    'source', // analytics,
+    'author' // analytics
+  ];
 
   /**
    * @componentOptions
@@ -103,7 +67,7 @@ export class Quickview extends Component {
     enableLoadingAnimation: ComponentOptions.buildBooleanOption({ defaultValue: true }),
     /**
      * Specifies the template to use to present the Quick View content in the modal window.<br/>
-     * e.g.: <br/>
+     * eg : <br/>
      *     <div class="CoveoQuickview" data-template-id="TemplateId"></div>
      *     <div class="CoveoQuickview" data-template-selector=".templateSelector"></div>
      */
@@ -111,22 +75,20 @@ export class Quickview extends Component {
       selectorAttr: 'data-template-selector',
       idAttr: 'data-template-id'
     }),
-    loadingAnimation: ComponentOptions.buildOption<HTMLElement | Promise<HTMLElement>>(ComponentOptionsType.NONE, (element: HTMLElement) => {
-      let loadingAnimationSelector = element.getAttribute('data-loading-animation-selector');
+    loadingAnimation: ComponentOptions.buildOption<HTMLElement>(ComponentOptionsType.NONE, (element: HTMLElement) => {
+      var loadingAnimationSelector = element.getAttribute('data-loading-animation-selector');
       if (loadingAnimationSelector != null) {
-        let loadingAnimation = $$(document.documentElement).find(loadingAnimationSelector);
+        var loadingAnimation = $$(document.documentElement).find(loadingAnimationSelector);
         if (loadingAnimation != null) {
           $$(loadingAnimation).detach();
           return loadingAnimation;
         }
       }
-      let id = element.getAttribute('data-loading-animation-template-id');
+      var id = element.getAttribute('data-loading-animation-template-id');
       if (id != null) {
-        let loadingAnimationTemplate = ComponentOptions.loadResultTemplateFromId(id);
+        var loadingAnimationTemplate = ComponentOptions.loadResultTemplateFromId(id);
         if (loadingAnimationTemplate) {
-          return loadingAnimationTemplate.instantiateToElement(undefined, {
-            checkCondition: false
-          });
+          return loadingAnimationTemplate.instantiateToElement({});
         }
       }
       return DomUtils.getBasicLoadingAnimation();
@@ -135,14 +97,14 @@ export class Quickview extends Component {
      * Specifies the Quick View modal window size (width and height) relative to the full window.<br/>
      * The default value is 95% on a desktop and 100% on a mobile device.
      */
-    size: ComponentOptions.buildStringOption({ defaultValue: DeviceUtils.isMobileDevice() ? '90%' : '90%' })
+    size: ComponentOptions.buildStringOption({ defaultValue: DeviceUtils.isMobileDevice() ? '100%' : '95%' })
   };
 
-  public static resultCurrentlyBeingRendered: IQueryResult = null;
-
+  private link: Dom;
   private modalbox: Coveo.ModalBox.ModalBox;
+  private bindedHandleEscapeEvent = this.handleEscapeEvent.bind(this);
 
-  constructor(public element: HTMLElement, public options?: IQuickviewOptions, public bindings?: IResultsComponentBindings, public result?: IQueryResult, private ModalBox = ModalBoxModule) {
+  constructor(public element: HTMLElement, public options?: IQuickviewOptions, public bindings?: IResultsComponentBindings, public result?: IQueryResult) {
     super(element, Quickview.ID, bindings);
     this.options = ComponentOptions.initComponentOptions(element, Quickview, options);
 
@@ -154,16 +116,14 @@ export class Quickview extends Component {
     // we need to add something that will show up in the result template itself
     if (/^\s*$/.test(this.element.innerHTML)) {
       let iconForQuickview = $$('div');
-      iconForQuickview.addClass('coveo-icon-for-quickview');
+      iconForQuickview.addClass('coveo-icon-for-quickview')
       if (this.searchInterface.isNewDesign()) {
-        let captionForQuickview = $$(
-          'div',
-          { className: 'coveo-caption-for-quickview', tabindex: 0 },
-          'Quickview'.toLocaleString()
-        ).el;
+        let captionForQuickview = $$('div');
+        captionForQuickview.addClass('coveo-caption-for-quickview')
+        captionForQuickview.text('Quickview'.toLocaleString())
         let div = $$('div');
         div.append(iconForQuickview.el);
-        div.append(captionForQuickview);
+        div.append(captionForQuickview.el);
         $$(this.element).append(div.el);
       } else {
         iconForQuickview.text('Quickview'.toLocaleString());
@@ -183,16 +143,14 @@ export class Quickview extends Component {
   public open() {
     if (this.modalbox == null) {
       // To prevent the keyboard from opening on mobile if the search bar has focus
-      Quickview.resultCurrentlyBeingRendered = this.result;
       $$(<HTMLElement>document.activeElement).trigger('blur');
 
-      let openerObject = this.prepareOpenQuickviewObject();
-      this.createModalBox(openerObject).then(() => {
-        this.bindQuickviewEvents(openerObject);
-        this.animateAndOpen();
-        this.queryStateModel.set(QueryStateModel.attributesEnum.quickview, this.getHashId());
-        Quickview.resultCurrentlyBeingRendered = null;
-      });
+      var openerObject = this.prepareOpenQuickviewObject();
+      this.createModalBox(openerObject);
+      this.bindQuickviewEvents(openerObject);
+      this.animateAndOpen();
+      var eventName = this.queryStateModel.getEventName(Model.eventTypes.changeOne + QueryStateModel.attributesEnum.quickview);
+      this.queryStateModel.set(QueryStateModel.attributesEnum.quickview, this.getHashId());
     }
   }
 
@@ -203,6 +161,7 @@ export class Quickview extends Component {
     if (this.modalbox != null) {
       this.modalbox.close();
       this.modalbox = null;
+      $$(document.body).off('keyup', this.bindedHandleEscapeEvent);
     }
   }
 
@@ -212,9 +171,7 @@ export class Quickview extends Component {
 
   private bindClick(result: IQueryResult) {
     if (typeof result.hasHtmlVersion == 'undefined' || result.hasHtmlVersion || this.options.alwaysShow) {
-      const clickAction = () => this.open();
-      $$(this.element).on('click', clickAction);
-      this.bind.on(this.element, 'keyup', KeyboardUtils.keypressAction(KEYBOARD.ENTER, clickAction));
+      $$(this.element).on('click', () => this.open());
     } else {
       this.element.style.display = 'none';
     }
@@ -222,89 +179,110 @@ export class Quickview extends Component {
 
   private bindQuickviewEvents(openerObject: IQuickviewOpenerObject) {
 
+    let closeButton = $$(this.modalbox.wrapper).find('.coveo-quickview-close-button');
+    $$(closeButton).on('click', () => {
+      this.closeQuickview();
+      this.close();
+    })
+
+    $$(this.modalbox.overlay).on('click', () => {
+      this.closeQuickview();
+    })
+
     $$(this.modalbox.content).on(QuickviewEvents.quickviewLoaded, () => {
-      if (openerObject.loadingAnimation instanceof HTMLElement) {
-        $$(openerObject.loadingAnimation).remove();
-      } else if (openerObject.loadingAnimation instanceof Promise) {
-        openerObject.loadingAnimation.then((anim) => {
-          $$(anim).remove();
-        });
-      }
-    });
+      $$(openerObject.loadingAnimation).remove();
+      this.bindIFrameEscape();
+    })
+
+    this.bindEscape();
   }
 
   private animateAndOpen() {
-    let quickviewDocument = $$(this.modalbox.modalBox).find('.' + Component.computeCssClassName(QuickviewDocument));
-    if (quickviewDocument) {
+    var animationDuration = this.modalbox.wrapper.style.animationDuration;
+    if (animationDuration) {
+      var duration = /^(.+)(ms|s)$/.exec(animationDuration);
+      var durationMs = Number(duration[1]) * (duration[2] == 's' ? 1000 : 1);
+      // open the QuickviewDocument
+      setTimeout(() => {
+        if (this.modalbox != null) {
+          let quickviewDocument = $$(this.modalbox.modalBox).find('.' + Component.computeCssClassName(QuickviewDocument));
+          Initialization.dispatchNamedMethodCallOrComponentCreation('open', quickviewDocument, null);
+        }
+      }, durationMs);
+    } else {
+      let quickviewDocument = $$(this.modalbox.modalBox).find('.' + Component.computeCssClassName(QuickviewDocument));
       Initialization.dispatchNamedMethodCallOrComponentCreation('open', quickviewDocument, null);
     }
   }
 
   private createModalBox(openerObject: IQuickviewOpenerObject) {
-    let computedModalBoxContent = $$('div');
-    return openerObject.content.then((builtContent) => {
-      computedModalBoxContent.append(builtContent.el);
-      this.modalbox = this.ModalBox.open(computedModalBoxContent.el, {
-        title: DomUtils.getQuickviewHeader(this.result, {
-          showDate: this.options.showDate,
-          title: this.options.title
-        }, this.bindings).el.outerHTML,
-        className: 'coveo-quick-view',
-        validation: () => {
-          this.closeQuickview();
-          return true;
-        },
-        body: this.element.ownerDocument.body,
-        sizeMod: 'big'
-      });
-      this.setQuickviewSize();
-      return computedModalBoxContent;
+
+    var computedModalBoxContent = $$('div')
+    computedModalBoxContent.append(openerObject.content.el);
+    this.modalbox = Coveo.ModalBox.open(computedModalBoxContent.el, {
+      title: DomUtils.getQuickviewHeader(this.result, {
+        showDate: this.options.showDate,
+        title: this.options.title
+      }, this.bindings).el.outerHTML,
+      className: 'coveo-quick-view',
+      validation: () => true,
+      body: this.element.ownerDocument.body
     });
+    this.setQuickviewSize();
   }
 
   private prepareOpenQuickviewObject() {
-    let loadingAnimation = this.options.loadingAnimation;
+    var loadingAnimation = this.options.loadingAnimation;
     return {
       loadingAnimation: loadingAnimation,
       content: this.prepareQuickviewContent(loadingAnimation)
-    };
+    }
   }
 
-  private prepareQuickviewContent(loadingAnimation: HTMLElement | Promise<HTMLElement>): Promise<Dom> {
-    return this.options.contentTemplate.instantiateToElement(this.result).then((built: HTMLElement) => {
-      let content = $$(built);
+  private prepareQuickviewContent(loadingAnimation: HTMLElement) {
+    var content = $$(this.options.contentTemplate.instantiateToElement(this.result));
+    var initOptions = this.searchInterface.options;
+    var initParameters: IInitializationParameters = {
+      options: initOptions,
+      bindings: this.getBindings(),
+      result: this.result
+    };
+    Initialization.automaticallyCreateComponentsInside(content.el, initParameters);
+    if (content.find('.' + Component.computeCssClassName(QuickviewDocument)) != undefined && this.options.enableLoadingAnimation) {
+      content.prepend(loadingAnimation);
+    }
+    return content;
+  }
 
-      let initOptions = this.searchInterface.options;
-      let initParameters: IInitializationParameters = {
-        options: initOptions,
-        bindings: this.getBindings(),
-        result: this.result
-      };
-      return Initialization.automaticallyCreateComponentsInside(content.el, initParameters).initResult.then(() => {
-        if (content.find('.' + Component.computeCssClassName(QuickviewDocument)) != undefined && this.options.enableLoadingAnimation) {
-          if (loadingAnimation instanceof HTMLElement) {
-            content.prepend(loadingAnimation);
-          } else if (loadingAnimation instanceof Promise) {
-            loadingAnimation.then((anim) => {
-              content.prepend(anim);
-            });
-          }
-        }
-        return content;
-      });
-    });
+  private bindEscape() {
+    $$(document.body).on('keyup', this.bindedHandleEscapeEvent);
+  }
+
+  private bindIFrameEscape() {
+    let quickviewDocument = $$(this.modalbox.content).find('.' + Component.computeCssClassName(QuickviewDocument))
+    quickviewDocument = $$(quickviewDocument).find('iframe');
+    let body = (<HTMLIFrameElement>quickviewDocument).contentWindow.document.body
+    $$(body).on('keyup', this.bindedHandleEscapeEvent);
   }
 
   private closeQuickview() {
+    var eventName = this.queryStateModel.getEventName(Model.eventTypes.changeOne + QueryStateModel.attributesEnum.quickview);
     this.queryStateModel.set(QueryStateModel.attributesEnum.quickview, '');
   }
 
   private setQuickviewSize() {
-    let wrapper = $$($$(this.modalbox.modalBox).find('.coveo-modal-content'));
+    var wrapper = $$($$(this.modalbox.modalBox).find('.coveo-wrapper'));
     wrapper.el.style.width = this.options.size;
     wrapper.el.style.height = this.options.size;
     wrapper.el.style.maxWidth = this.options.size;
     wrapper.el.style.maxHeight = this.options.size;
+  }
+
+  private handleEscapeEvent(e: KeyboardEvent) {
+    if (e.keyCode == KEYBOARD.ESCAPE) {
+      this.closeQuickview();
+      this.close();
+    }
   }
 }
 Initialization.registerAutoCreateComponent(Quickview);

@@ -1,9 +1,6 @@
-import { AnalyticsEndpoint } from '../../src/rest/AnalyticsEndpoint';
-import { IErrorResponse } from '../../src/rest/EndpointCaller';
-import { FakeResults } from '../Fake';
-import { IAPIAnalyticsSearchEventsResponse } from '../../src/rest/APIAnalyticsSearchEventsResponse';
-import { IAPIAnalyticsEventResponse } from '../../src/rest/APIAnalyticsEventResponse';
-export function AnalyticsEndpointTest() {
+/// <reference path="../Test.ts" />
+
+module Coveo {
   function buildUrl(endpoint: AnalyticsEndpoint, path: string) {
     return endpoint.options.serviceUrl + '/rest/' + AnalyticsEndpoint.DEFAULT_ANALYTICS_VERSION + path;
   }
@@ -34,10 +31,9 @@ export function AnalyticsEndpointTest() {
           expect(endpoint.getCurrentVisitId()).toBe('visitid');
         })
         .catch((e: IErrorResponse) => {
-          fail(e);
-          return e;
+          fail(e)
         })
-        .then(() => done());
+        .finally(() => done());
       expect(jasmine.Ajax.requests.mostRecent().url).toBe(buildUrl(endpoint, '/analytics/visit?org=organization&access_token=token'));
       expect(jasmine.Ajax.requests.mostRecent().method).toBe('GET');
 
@@ -56,10 +52,9 @@ export function AnalyticsEndpointTest() {
           expect(endpoint.getCurrentVisitId()).toBe('visitid');
         })
         .catch((e: IErrorResponse) => {
-          fail(e);
-          return e;
+          fail(e)
         })
-        .then(() => done());
+        .finally(() => done());
 
       // Here, the current visit id should be undefined
       expect(endpoint.getCurrentVisitId()).toBeUndefined();
@@ -83,10 +78,9 @@ export function AnalyticsEndpointTest() {
           expect(endpoint.getCurrentVisitId()).toBe('visitid');
         })
         .catch((e: IErrorResponse) => {
-          fail(e);
-          return e;
+          fail(e)
         })
-        .then(() => done());
+        .finally(() => done());
 
       // Here, the current visit id should be undefined
       expect(endpoint.getCurrentVisitId()).toBeUndefined();
@@ -124,10 +118,9 @@ export function AnalyticsEndpointTest() {
           expect(res[0]).toBe('foo');
         })
         .catch((e: IErrorResponse) => {
-          fail(e);
-          return e;
+          fail(e)
         })
-        .then(() => done());
+        .finally(() => done())
 
       expect(jasmine.Ajax.requests.mostRecent().url).toBe(buildUrl(endpoint, '/stats/topQueries?org=organization&access_token=token&pageSize=10&queryText=foobar'));
       expect(jasmine.Ajax.requests.mostRecent().method).toBe('GET');

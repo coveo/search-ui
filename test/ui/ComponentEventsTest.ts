@@ -1,17 +1,14 @@
-import * as Mock from '../MockEnvironment';
-import { NoopComponent } from '../NoopComponent';
-import { registerCustomMatcher } from '../CustomMatchers';
-import { $$ } from '../../src/utils/Dom';
+/// <reference path="../Test.ts" />
 
-export function ComponentEventsTest() {
+module Coveo {
   describe('ComponentEvent', () => {
 
-    var test: Mock.IBasicComponentSetup<NoopComponent>;
+    var test: Mock.IBasicComponentSetup<Components.NoopComponent>;
     var spy: jasmine.Spy;
 
     beforeEach(function () {
       registerCustomMatcher();
-      test = Mock.basicComponentSetup<NoopComponent>(NoopComponent);
+      test = Mock.basicComponentSetup<Components.NoopComponent>(Components.NoopComponent);
       spy = jasmine.createSpy('spy');
     });
 
@@ -23,6 +20,9 @@ export function ComponentEventsTest() {
     it('should execute handler if the component is enabled', function () {
       test.cmp.enable();
       test.cmp.bind.onRootElement('foo', spy);
+      test.cmp.bind.onRootElement('foo', function () {
+        console.log(arguments)
+      });
       $$(test.env.root).trigger('foo');
       expect(spy).toHaveBeenCalled();
       $$(test.env.root).trigger('foo', { bar: 'baz' });
@@ -31,7 +31,7 @@ export function ComponentEventsTest() {
 
     it('should execute handler only once if the component is enabled', function () {
       test.cmp.enable();
-      var spyOnce = jasmine.createSpy('spyOnce');
+      var spyOnce = jasmine.createSpy('spyOnce')
       test.cmp.bind.onRootElement('foo', spy);
       test.cmp.bind.oneRootElement('foo', spyOnce);
       $$(test.env.root).trigger('foo');
@@ -77,5 +77,12 @@ export function ComponentEventsTest() {
       test.cmp.bind.trigger(test.env.root, 'foo', { bar: 'baz' });
       expect(spy).not.eventHandlerToHaveBeenCalledWith({ bar: 'baz' });
     });
-  });
+
+    it('trigger and bindOnRoot should work correctly with one another', function () {
+      test.cmp.enable();
+      test.cmp.bind.onRoot('foo', spy);
+      test.cmp.bind.trigger(test.env.root, 'foo');
+      expect(spy).toHaveBeenCalled();
+    });
+  })
 }

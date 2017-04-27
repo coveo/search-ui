@@ -1,15 +1,12 @@
-import { Component } from '../Base/Component';
-import { IComponentBindings } from '../Base/ComponentBindings';
-import { ComponentOptions } from '../Base/ComponentOptions';
-import { InitializationEvents } from '../../events/InitializationEvents';
-import { $$ } from '../../utils/Dom';
-import { PopupUtils, IPosition, HorizontalAlignment, VerticalAlignment } from '../../utils/PopupUtils';
-import { IMenuItem } from '../Menu/MenuItem';
-import { SettingsEvents } from '../../events/SettingsEvents';
-import { Initialization } from '../Base/Initialization';
-import * as _ from 'underscore';
-import { exportGlobally } from '../../GlobalExports';
-import 'styling/_Settings';
+import {Component} from '../Base/Component';
+import {IComponentBindings} from '../Base/ComponentBindings';
+import {ComponentOptions} from '../Base/ComponentOptions';
+import {InitializationEvents} from '../../events/InitializationEvents';
+import {$$} from '../../utils/Dom';
+import {PopupUtils, IPosition, HorizontalAlignment, VerticalAlignment} from '../../utils/PopupUtils';
+import {IMenuItem} from '../Menu/MenuItem';
+import {SettingsEvents} from '../../events/SettingsEvents';
+import {Initialization} from '../Base/Initialization';
 
 export interface ISettingsPopulateMenuArgs {
   settings: Settings;
@@ -21,51 +18,33 @@ export interface ISettingsOptions {
 }
 
 /**
- * The Settings component renders a **Settings** button that the end user can click to access a popup menu from which
- * it is possible to perform several contextual actions. The usual location of the **Settings** button in the page is to
- * the right of the {@link Searchbox}.
- *
- * This component can reference several components to populate its popup menu:
- * - {@link AdvancedSearch}
- * - {@link ExportToExcel}
- * - {@link PreferencesPanel} (see also {@link ResultsFiltersPreferences} and {@link ResultsPreferences})
- * - {@link SearchAlerts} (see also {@link SearchAlertsMessage})
- * - {@link ShareQuery}
+ * The Settings component is comprised of a settings button (usually located
+ * on the right of the search box) which allows for some contextual actions.<br/>
+ * This component references other components to show in its menu, for example
+ * the {@link ShareQuery} component.
  */
 export class Settings extends Component {
   static ID = 'Settings';
-
-  static doExport = () => {
-    exportGlobally({
-      'Settings': Settings
-    });
-  }
-
-
   /**
    * The options for Settings
    * @componentOptions
    */
   static options: ISettingsOptions = {
-
     /**
-     * Specifies the delay (in milliseconds) before hiding the popup menu when the cursor is not hovering over it.
-     *
-     * Default value is `300`. Minimum value is `0 `.
+     * The delay before hiding the popup menu when the mouse leaves it.<br/>
+     * The default value is <code>300</code>
      */
     menuDelay: ComponentOptions.buildNumberOption({ defaultValue: 300, min: 0 })
   };
 
   private menu: HTMLElement;
   private closeTimeout: number;
-  private isOpened: boolean = false;
 
   /**
-   * Creates a new Settings component.
-   * @param element The HTMLElement on which to instantiate the component.
-   * @param options The options for the Settings component.
-   * @param bindings The bindings that the component requires to function normally. If not set, these will be
-   * automatically resolved (with a slower execution time).
+   * Create a new Settings component
+   * @param element
+   * @param options
+   * @param bindings
    */
   constructor(public element: HTMLElement, public options: ISettingsOptions, bindings?: IComponentBindings) {
     super(element, Settings.ID, bindings);
@@ -74,25 +53,22 @@ export class Settings extends Component {
   }
 
   /**
-   * Opens the **Settings** popup menu.
+   * Open the settings popup
    */
   public open() {
-    this.isOpened = true;
     if (this.menu != null) {
       $$(this.menu).detach();
     }
     this.menu = this.buildMenu();
     $$(this.menu).on('mouseleave', () => this.mouseleave());
     $$(this.menu).on('mouseenter', () => this.mouseenter());
-    PopupUtils.positionPopup(this.menu, this.element, this.root, this.getPopupPositioning(), this.root);
-
+    PopupUtils.positionPopup(this.menu, this.element, this.root, this.root, this.getPopupPositioning());
   }
 
   /**
-   * Closes the **Settings** popup menu.
+   * Close the settings popup
    */
   public close() {
-    this.isOpened = false;
     if (this.menu != null) {
       $$(this.menu).detach();
       this.menu = null;
@@ -111,11 +87,7 @@ export class Settings extends Component {
     }
 
     $$(this.element).on('click', () => {
-      if (this.isOpened) {
-        this.close();
-      } else {
-        this.open();
-      }
+      this.open();
     });
 
     $$(this.element).on('mouseleave', () => this.mouseleave());
@@ -127,7 +99,7 @@ export class Settings extends Component {
     var settingsPopulateMenuArgs: ISettingsPopulateMenuArgs = {
       settings: this,
       menuData: []
-    };
+    }
     $$(this.root).trigger(SettingsEvents.settingsPopulateMenu, settingsPopulateMenuArgs);
     _.each(settingsPopulateMenuArgs.menuData, (menuItem) => {
       var menuItemDom = $$('div', {
@@ -137,10 +109,10 @@ export class Settings extends Component {
       menuItemDom.appendChild($$('div', { className: 'coveo-icon' }).el);
       menuItemDom.appendChild($$('div', { className: 'coveo-settings-text' }, _.escape(menuItem.text)).el);
       $$(menuItemDom).on('click', () => {
-        this.close();
+        $$(this.menu).detach();
         _.each(settingsPopulateMenuArgs.menuData, (menuItem) => {
           menuItem.onClose && menuItem.onClose();
-        });
+        })
         menuItem.onOpen();
       });
       menu.appendChild(menuItemDom);
@@ -152,7 +124,7 @@ export class Settings extends Component {
     clearTimeout(this.closeTimeout);
     this.closeTimeout = setTimeout(() => {
       this.close();
-    }, this.options.menuDelay);
+    }, this.options.menuDelay)
   }
 
   private mouseenter() {
@@ -164,7 +136,7 @@ export class Settings extends Component {
       horizontal: HorizontalAlignment.INNERRIGHT,
       vertical: VerticalAlignment.BOTTOM,
       verticalOffset: 8
-    };
+    }
   }
 }
 Initialization.registerAutoCreateComponent(Settings);

@@ -1,15 +1,12 @@
 /// <reference path="../ui/FacetSlider/FacetSlider.ts" />
 
-import { FacetSlider } from '../ui/FacetSlider/FacetSlider';
-import { QueryEvents, IQuerySuccessEventArgs } from '../events/QueryEvents';
-import { QueryBuilder } from '../ui/Base/QueryBuilder';
-import { IGroupByRequest } from '../rest/GroupByRequest';
-import { ExpressionBuilder } from '../ui/Base/ExpressionBuilder';
-import { IRangeValue } from '../rest/RangeValue';
-import { DateUtils } from '../utils/DateUtils';
-import { Logger } from '../misc/Logger';
-import { QueryUtils } from '../utils/QueryUtils';
-import * as _ from 'underscore';
+import {FacetSlider} from '../ui/FacetSlider/FacetSlider';
+import {QueryEvents, IQuerySuccessEventArgs} from '../events/QueryEvents';
+import {QueryBuilder} from '../ui/Base/QueryBuilder';
+import {IGroupByRequest} from '../rest/GroupByRequest';
+import {ExpressionBuilder} from '../ui/Base/ExpressionBuilder';
+import {IRangeValue} from '../rest/RangeValue';
+import {DateUtils} from '../utils/DateUtils';
 
 export class FacetSliderQueryController {
   public graphGroupByQueriesIndex: number;
@@ -32,8 +29,8 @@ export class FacetSliderQueryController {
   }
 
   public createBasicGroupByRequest(allowedValues?: string[], addComputedField: boolean = true) {
-    let groupByQuery: IGroupByRequest = {
-      field: <string>this.facet.options.field,
+    var groupByQuery: IGroupByRequest = {
+      field: this.facet.options.field,
       completeFacetWithStandardValues: true
     };
     groupByQuery.allowedValues = undefined;
@@ -46,7 +43,7 @@ export class FacetSliderQueryController {
   }
 
   public computeOurFilterExpression(boundary = [this.facet.startOfSlider, this.facet.endOfSlider]) {
-    let builder = new ExpressionBuilder();
+    var builder = new ExpressionBuilder();
     if (boundary[0] != undefined && boundary[1] != undefined) {
       if (this.facet.options.excludeOuterBounds) {
         this.addFilterExpressionWithOuterBoundsExcluded(boundary[0], boundary[1], builder);
@@ -58,35 +55,17 @@ export class FacetSliderQueryController {
   }
 
   private handleQuerySuccess(args: IQuerySuccessEventArgs) {
-    if (!this.isAValidRangeResponse(args)) {
-      let logger = new Logger(this);
-      logger.error(`Cannot instantiate FacetSlider for this field : ${this.facet.options.field}. It needs to be configured as a numerical field in the index`);
-      logger.error(`Disabling the FacetSlider`, this.facet);
-      this.facet.disable();
-      return;
-    }
-
     if (this.facet.options && this.facet.options.graph && this.rangeValuesForGraphToUse == undefined) {
       this.rangeValuesForGraphToUse = [];
-      let rawValues = args.results.groupByResults[this.graphGroupByQueriesIndex].values;
+      var rawValues = args.results.groupByResults[this.graphGroupByQueriesIndex].values;
       _.each(rawValues, (rawValue) => {
-        let rawSplit = rawValue.value.split('..');
+        var rawSplit = rawValue.value.split('..');
         this.rangeValuesForGraphToUse.push({
           start: this.facet.options.dateField ? this.getISOFormat(rawSplit[0].replace('@', ' ')) : parseInt(rawSplit[0], 10),
           end: this.facet.options.dateField ? this.getISOFormat(rawSplit[1].replace('@', ' ')) : parseInt(rawSplit[1], 10)
-        });
-      });
+        })
+      })
     }
-  }
-
-  private isAValidRangeResponse(args: IQuerySuccessEventArgs) {
-    if (this.lastGroupByRequestIndex != undefined && args.results.groupByResults[this.lastGroupByRequestIndex]) {
-      let firstValue = args.results.groupByResults[this.lastGroupByRequestIndex].values[0];
-      if (firstValue && !QueryUtils.isRangeString(firstValue.value)) {
-        return false;
-      }
-    }
-    return true;
   }
 
   private addFilterExpressionWithOuterBoundsIncluded(start: any, end: any, builder: ExpressionBuilder) {
@@ -95,15 +74,15 @@ export class FacetSliderQueryController {
         start = this.getFilterDateFormat(start);
         end = this.getFilterDateFormat(end);
       }
-      builder.addFieldExpression(<string>this.facet.options.field, '==', [start + '..' + end]);
+      builder.addFieldExpression(this.facet.options.field, '==', [start + '..' + end]);
     }
   }
 
   private addFilterExpressionWithOuterBoundsExcluded(start: any, end: any, builder: ExpressionBuilder) {
-    let startCompare = this.facet.options.start;
-    let endCompare = this.facet.options.end;
-    let startCompared = start;
-    let endCompared = end;
+    var startCompare = this.facet.options.start;
+    var endCompare = this.facet.options.end;
+    var startCompared = start;
+    var endCompared = end;
     if (this.facet.options.dateField) {
       startCompared = this.getFilterDateFormat(start);
       endCompared = this.getFilterDateFormat(end);
@@ -116,9 +95,9 @@ export class FacetSliderQueryController {
       endCompare += '';
     }
     if (startCompared != startCompare && endCompared == endCompare) {
-      builder.addFieldExpression(<string>this.facet.options.field, '>=', [startCompared]);
+      builder.addFieldExpression(this.facet.options.field, '>=', [startCompared]);
     } else if (startCompared == startCompare && endCompared != endCompare) {
-      builder.addFieldExpression(<string>this.facet.options.field, '<=', [endCompared]);
+      builder.addFieldExpression(this.facet.options.field, '<=', [endCompared]);
     } else {
       this.addFilterExpressionWithOuterBoundsIncluded(start, end, builder);
     }
@@ -126,8 +105,8 @@ export class FacetSliderQueryController {
 
   private buildGroupByQueryForSlider(groupByQuery: IGroupByRequest) {
     if (this.facet.options.start != undefined && this.facet.options.end != undefined) {
-      let start = this.facet.options.start;
-      let end = this.facet.options.end;
+      var start = this.facet.options.start;
+      var end = this.facet.options.end;
       if (this.facet.options.dateField || this.facet.options.dateField) {
         start = this.getISOFormat(start);
         end = this.getISOFormat(end);
@@ -151,14 +130,14 @@ export class FacetSliderQueryController {
 
   private putGroupByForGraphIntoQueryBuilder(queryBuilder: QueryBuilder) {
     this.graphGroupByQueriesIndex = queryBuilder.groupByRequests.length;
-    let basicGroupByRequestForGraph = this.createBasicGroupByRequest();
+    var basicGroupByRequestForGraph = this.createBasicGroupByRequest();
     if (basicGroupByRequestForGraph.rangeValues) {
-      let basicRangeRequest = basicGroupByRequestForGraph.rangeValues[0];
+      var basicRangeRequest = basicGroupByRequestForGraph.rangeValues[0];
       basicGroupByRequestForGraph.rangeValues = this.createRangeValuesForGraph(basicRangeRequest);
     }
-    let filter = this.computeOurFilterExpression(this.facet.getSliderBoundaryForQuery());
+    var filter = this.computeOurFilterExpression(this.facet.getSliderBoundaryForQuery());
     if (filter != undefined) {
-      let queryOverrideObject = queryBuilder.computeCompleteExpressionPartsExcept(filter);
+      var queryOverrideObject = queryBuilder.computeCompleteExpressionPartsExcept(filter);
       basicGroupByRequestForGraph.queryOverride = queryOverrideObject.basic;
       basicGroupByRequestForGraph.advancedQueryOverride = queryOverrideObject.advanced;
       basicGroupByRequestForGraph.constantQueryOverride = queryOverrideObject.constant;
@@ -168,7 +147,7 @@ export class FacetSliderQueryController {
         basicGroupByRequestForGraph.queryOverride += (this.facet.options.queryOverride ? ' ' + this.facet.options.queryOverride : '');
       }
     } else if (this.facet.options.queryOverride != null) {
-      let completeExpression = queryBuilder.computeCompleteExpression();
+      var completeExpression = queryBuilder.computeCompleteExpression();
       basicGroupByRequestForGraph.queryOverride = (completeExpression != null ? completeExpression + ' ' : '') + this.facet.options.queryOverride;
     }
 
@@ -179,7 +158,7 @@ export class FacetSliderQueryController {
 
   private putGroupByForSliderIntoQueryBuilder(queryBuilder: QueryBuilder) {
     this.lastGroupByRequestIndex = queryBuilder.groupByRequests.length;
-    let basicGroupByRequestForSlider = this.createBasicGroupByRequest();
+    var basicGroupByRequestForSlider = this.createBasicGroupByRequest();
     basicGroupByRequestForSlider.maximumNumberOfValues = this.facet.options.graph != null ? this.facet.options.graph.steps || 1 : 1;
     basicGroupByRequestForSlider.queryOverride = this.facet.options.queryOverride || '@uri';
     basicGroupByRequestForSlider.sortCriteria = 'nosort';
@@ -212,16 +191,17 @@ export class FacetSliderQueryController {
         end: value.end,
         endInclusive: basicRangeRequest.endInclusive,
         label: basicRangeRequest.label
-      };
-    });
+      }
+    })
   }
 
   private buildRange(basicRangeRequest: IRangeValue) {
-    let start = this.facet.options.start;
-    let oneStep = (this.facet.options.end - this.facet.options.start) / this.facet.options.graph.steps;
+    var start = this.facet.options.start;
+    var end = this.facet.options.end;
+    var oneStep = (this.facet.options.end - this.facet.options.start) / this.facet.options.graph.steps;
     return _.map(_.range(0, this.facet.options.graph.steps, 1), (step) => {
-      let newStart = start + (step * oneStep);
-      let newEnd = start + ((step + 1) * oneStep);
+      var newStart = start + (step * oneStep);
+      var newEnd = start + ((step + 1) * oneStep);
       if (this.facet.options.dateField) {
         newStart = this.getISOFormat(newStart);
         newEnd = this.getISOFormat(newEnd);
@@ -231,8 +211,8 @@ export class FacetSliderQueryController {
         label: basicRangeRequest.label,
         start: newStart,
         end: newEnd
-      };
-    });
+      }
+    })
   }
 
   private getISOFormat(value: any) {
@@ -240,12 +220,12 @@ export class FacetSliderQueryController {
       if (!isNaN(value)) {
         value = Number(value);
       }
-      let date = new Date(value);
+      var date = new Date(value);
       if (!DateUtils.isValid(date)) {
-        date = new Date(this.getBrowserCompatibleFormat(value));
+        date = new Date(this.getBrowserCompatibleFormat(value))
         if (!DateUtils.isValid(date)) {
           // If we get here, we'll probably get an error further down the line when querying the index anyway ...
-          this.facet.logger.error('Cannot parse this date format.', value, new Date(value));
+          this.facet.logger.error('Cannot parse this date format.', value, new Date(value))
           return undefined;
         }
       }
@@ -264,6 +244,6 @@ export class FacetSliderQueryController {
   }
 
   private getBrowserCompatibleFormat(value: string) {
-    return value.replace('@', 'T').replace(/\//g, '-');
+    return value.replace('@', 'T').replace(/\//g, '-')
   }
 }

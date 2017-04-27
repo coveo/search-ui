@@ -1,20 +1,16 @@
-import { Component } from '../Base/Component';
-import { IComponentBindings } from '../Base/ComponentBindings';
-import { ComponentOptions } from '../Base/ComponentOptions';
-import { DeviceUtils } from '../../utils/DeviceUtils';
-import { QueryEvents, INewQueryEventArgs, IBuildingQueryEventArgs, IQuerySuccessEventArgs, INoResultsEventArgs } from '../../events/QueryEvents';
-import { MODEL_EVENTS, IAttributeChangedEventArg } from '../../models/Model';
-import { QueryStateModel } from '../../models/QueryStateModel';
-import { QUERY_STATE_ATTRIBUTES } from '../../models/QueryStateModel';
-import { analyticsActionCauseList, IAnalyticsPagerMeta, IAnalyticsActionCause } from '../Analytics/AnalyticsActionListMeta';
-import { Initialization } from '../Base/Initialization';
-import { Assert } from '../../misc/Assert';
-import { l } from '../../strings/Strings';
-import { $$ } from '../../utils/Dom';
-import { KeyboardUtils, KEYBOARD } from '../../utils/KeyboardUtils';
-import { exportGlobally } from '../../GlobalExports';
-
-import 'styling/_Pager';
+import {Component} from '../Base/Component';
+import {IComponentBindings} from '../Base/ComponentBindings';
+import {ComponentOptions} from '../Base/ComponentOptions';
+import {DeviceUtils} from '../../utils/DeviceUtils'
+import {QueryEvents, INewQueryEventArgs, IBuildingQueryEventArgs, IQuerySuccessEventArgs, INoResultsEventArgs} from '../../events/QueryEvents'
+import {MODEL_EVENTS, IAttributeChangedEventArg} from '../../models/Model'
+import {QueryStateModel} from '../../models/QueryStateModel'
+import {QUERY_STATE_ATTRIBUTES} from '../../models/QueryStateModel'
+import {analyticsActionCauseList, IAnalyticsPagerMeta, IAnalyticsActionCause} from '../Analytics/AnalyticsActionListMeta'
+import {Initialization} from '../Base/Initialization';
+import {Assert} from '../../misc/Assert'
+import {l} from '../../strings/Strings'
+import {$$} from '../../utils/Dom'
 
 export interface IPagerOptions {
   numberOfPages?: number;
@@ -23,63 +19,46 @@ export interface IPagerOptions {
 }
 
 /**
- * The Pager component attaches itself to a `div` element and renders widgets that allow the end user to navigate
- * through the different result pages.
- *
- * This component takes care of triggering a query with the correct result range whenever the end user selects a page or
- * uses the navigation buttons (**Previous** and **Next**).
+ * This component attaches itself to a div and allows users to navigate through the different result pages.<br/>
+ * It takes care of triggering a query with the correct range whenever a user selects a page or uses the navigation buttons (Previous, Next).
  */
 export class Pager extends Component {
   static ID = 'Pager';
-
-  static doExport = () => {
-    exportGlobally({
-      'Pager': Pager
-    });
-  }
 
   /**
    * The options for the Pager
    * @componentOptions
    */
   static options: IPagerOptions = {
-
     /**
-     * Specifies how many page links to display in the pager.
-     *
-     * Default value is `5` on a desktop computers and `3` on a mobile device. Minimum value is `1`.
+     * Specifies how many page links to display in the pager.<br/>
+     * The default value is 10 pages on desktop, 3 on mobile
      */
     numberOfPages: ComponentOptions.buildNumberOption({
       defaultFunction: () => {
         if (DeviceUtils.isMobileDevice()) {
           return 3;
         } else {
-          return 5;
+          return 10;
         }
       },
       min: 1
     }),
-
     /**
-     * Specifies whether the **Previous** and **Next** buttons should appear at each end of the pager when appropriate.
-     *
-     * The default value is `true`.
+     * Specifies whether the Previous and Next buttons appear at each end of the pager when appropriate.<br/>
+     * The default value is true.
      */
     enableNavigationButton: ComponentOptions.buildBooleanOption({ defaultValue: true }),
-
     /**
-     * Specifies the maximum number of pages to display if enough results are available.
-     *
-     * This property is typically set when the default number of accessible results from the index has been changed from
-     * its default value of `1000` (10 results per page X 100 maxNumberOfPage).
-     *
-     * Default value is `100`.
+     * Specifies the maximum number of pages that will be displayed if enough results are available.<br/>
+     * The default value is 100 pages.<br/>
+     * This property is typically set when the default number of accessible results from the index has been changed from it's default value of 1000. (So 10 per page X 100 maximumNumberOfPage)
      */
     maxNumberOfPages: ComponentOptions.buildNumberOption({ defaultValue: undefined })
-  };
+  }
 
   /**
-   * The current page (1-based index).
+   * The current page (1 based index)
    */
   public currentPage: number;
   private listenToQueryStateChange = true;
@@ -96,17 +75,16 @@ export class Pager extends Component {
 
 
   /**
-   * Creates a new Pager. Binds multiple query events ({@link QueryEvents.newQuery}, {@link QueryEvents.buildingQuery},
-   * {@link QueryEvents.querySuccess}, {@link QueryEvents.queryError} and {@link QueryEvents.noResults}. Renders itself
-   * on every query success.
-   * @param element The HTMLElement on which to instantiate the component (normally a `div`).
-   * @param options The options for the Pager component.
-   * @param bindings The bindings that the component requires to function normally. If not set, these will be
-   * automatically resolved (with a slower execution time).
+   * Create a new Pager. Bind multiple query events (new query, building query, query success).<br/>
+   * Render itself on every query success.
+   * @param element HTMLElement on which to instantiate the page (Normally : a div)
+   * @param options
+   * @param bindings
    */
   constructor(public element: HTMLElement, public options?: IPagerOptions, bindings?: IComponentBindings) {
     super(element, Pager.ID, bindings);
     this.options = ComponentOptions.initComponentOptions(element, Pager, options);
+
     this.currentPage = 1;
 
     if (this.options.maxNumberOfPages == null) {
@@ -127,12 +105,10 @@ export class Pager extends Component {
   }
 
   /**
-   * Sets the current page, then executes a query.
-   *
-   * Also logs an event in the usage analytics (`pageNumber` by default) with the new current page number as meta data.
-   *
-   * @param pageNumber The page number to navigate to.
-   * @param analyticCause The event to log in the usage analytics.
+   * Set the current page, and execute a query.<br/>
+   * Log the required analytics event (pagerNumber by default)
+   * @param pageNumber
+   * @param analyticCause
    */
   public setPage(pageNumber: number, analyticCause: IAnalyticsActionCause = analyticsActionCauseList.pagerNumber) {
     Assert.exists(pageNumber);
@@ -147,18 +123,16 @@ export class Pager extends Component {
   }
 
   /**
-   * Navigates to the previous page, then executes a query.
-   *
-   * Also logs the `pagePrevious` event in the usage analytics with the new current page number as meta data.
+   * Go to the previous page, and execute a query.<br/>
+   * Log the required analytics event (pagerPrevious)
    */
   public previousPage() {
     this.setPage(this.currentPage - 1, analyticsActionCauseList.pagerPrevious);
   }
 
   /**
-   * Navigates to the next page, then executes a query.
-   *
-   * Also logs the `pageNext` event in the usage analytics with the new current page number as meta data.
+   * Go to the next page, and execute a query.<br/>
+   * Log the required analytics event (pagerNext)
    */
   public nextPage() {
     this.setPage(this.currentPage + 1, analyticsActionCauseList.pagerNext);
@@ -199,18 +173,19 @@ export class Pager extends Component {
         for (var i = pagerBoundary.start; i <= pagerBoundary.end; i++) {
 
           var listItemValue = document.createElement('a');
-          $$(listItemValue).addClass(['coveo-pager-list-item-text', 'coveo-pager-anchor']);
+          $$(listItemValue).addClass('coveo-pager-anchor');
           $$(listItemValue).text(i.toString(10));
 
-          let listItem = $$('li', { className: 'coveo-pager-list-item', tabindex: 0 }).el;
+          var listItem = document.createElement('li');
+          $$(listItem).addClass('coveo-pager-list-item');
           if (i == this.currentPage) {
             $$(listItem).addClass('coveo-active');
           }
 
           ((pageNumber: number) => {
-            let clickAction = () => this.handleClickPage(pageNumber);
-            $$(listItem).on('click', clickAction);
-            $$(listItem).on('keyup', KeyboardUtils.keypressAction(KEYBOARD.ENTER, clickAction));
+            $$(listItem).on('click', () => {
+              this.handleClickPage(pageNumber);
+            })
           })(i);
 
           listItem.appendChild(listItemValue);

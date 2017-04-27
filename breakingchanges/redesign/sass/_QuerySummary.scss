@@ -1,0 +1,25 @@
+.CoveoQuerySummary {
+	div {
+		margin-bottom: 5px;
+	}
+	ul {
+		margin-top: 0px;
+		li {
+			font-size: 14px;
+		}
+	}
+}
+
+.coveo-query-summary-no-results-string {
+  font-size: 16px;
+}
+
+.coveo-query-summary-cancel-last {
+  font-size:13px;
+  color: $color-blue-for-link;
+  cursor: pointer;
+}
+
+.coveo-query-summary-search-tips-info {
+  font-size: 16px;
+}

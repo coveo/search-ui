@@ -33,25 +33,32 @@ exports.convert = function (from, to) {
   fs.writeFileSync(to, JSON.stringify(json, undefined, ' '));
 };
 
-const mergeFunctionAsString = 'var merge = function(obj1, obj2) {\n' +
-    '  var obj3 = {};\n' +
-    '  for(var attrname in obj1){obj3[attrname] = obj1[attrname]; }\n' +
-    '  for(var attrname in obj2){obj3[attrname] = obj2[attrname]; }\n' +
-    '  return obj3;\n' +
+const mergeFunctionAsString = '\tvar merge = function(obj1, obj2) {\n' +
+    '\t\tvar obj3 = {};\n' +
+    '\t\tfor(var attrname in obj1){obj3[attrname] = obj1[attrname]; }\n' +
+    '\t\tfor(var attrname in obj2){obj3[attrname] = obj2[attrname]; }\n' +
+    '\t\treturn obj3;\n' +
     '}\n'
 
 function dictObjectAsString(json, language) {
-  var dictAsString = 'var dict = {\n';
+  var dictAsString = '  var dict = {\n';
 
   _.each(_.keys(json), function (key) {
-    var str = json[key][language.toLowerCase()];
+    var str = json[key][language];
     if (str != undefined) {
-      dictAsString += '  ' + JSON.stringify(key) + ': ' + JSON.stringify(json[key][language.toLowerCase()]) + ',\n';
+      dictAsString += '      ' + JSON.stringify(key) + ': ' + JSON.stringify(json[key][language]) + ',\n';
     }
   });
 
-  dictAsString += '}\n';
+  dictAsString += '  }\n';
   return dictAsString;
+}
+
+function bindPrototypeOnNativeStringOnPageReady(language) {
+  var pageReadyString = 'document.addEventListener(\'DOMContentLoaded\', function(event){\n';
+  pageReadyString += setPrototypeOnNativeString(language);
+  pageReadyString += '})';
+  return pageReadyString;
 }
 
 function setPrototypeOnNativeString(language) {
@@ -63,7 +70,7 @@ function setPrototypeOnNativeString(language) {
   nativeStringPrototype += '  String["toLocaleString"].call(this, { ' + languageWithQuotes + ': dict });\n';
   nativeStringPrototype += '  String["locale"] = ' + languageWithQuotes + ';\n';
   nativeStringPrototype += '  String["defaultLocale"] = "en";\n';
-  nativeStringPrototype += '  Globalize.culture(' + languageWithQuotes + ')';
+
   return nativeStringPrototype;
 }
 
@@ -101,15 +108,13 @@ function Dictionary(from, options) {
   };
 
   this.writeDefaultLanguage = function (to, language) {
-    var code = 'import * as Globalize from \'globalize\';\n';
-    code += 'import {LocaleString} from \'../ExternalModulesShim\';\n';
-    code += mergeFunctionAsString;
+    var code = mergeFunctionAsString;
     code += dictObjectAsString(this.json, language);
     code += 'export function defaultLanguage() {\n';
-    code += setPrototypeOnNativeString(language) + '\n';
+    code += bindPrototypeOnNativeStringOnPageReady(language);
     code += '}\n';
     code += 'export function setLanguageAfterPageLoaded() {\n';
-    code += setPrototypeOnNativeString(language) + '\n';
+    code += setPrototypeOnNativeString(language);
     code += '}\n';
 
     utilities.ensureDirectory(path.dirname(to));
@@ -117,18 +122,12 @@ function Dictionary(from, options) {
   }
 
   this.writeLanguageFile = function (to, language, culture, typed) {
-    var cultureFileAsString = fs.readFileSync(culture).toString();
-    var code = cultureFileAsString + '(function() {\n';
+    var code = '(function() {\n';
     code += mergeFunctionAsString;
     code += dictObjectAsString(this.json, language);
-    code += setPrototypeOnNativeString(language);
+    code += bindPrototypeOnNativeStringOnPageReady(language);
     code += '})();\n';
-    code += 'if(!window.Coveo){window.Coveo = {};}\n';
-    code += 'Coveo.setLanguageAfterPageLoaded = function() {\n';
-    code += mergeFunctionAsString + '\n';
-    code += dictObjectAsString(this.json, language) + '\n';
-    code += setPrototypeOnNativeString(language) + '\n';
-    code += '}';
+
     utilities.ensureDirectory(path.dirname(to));
     fs.writeFileSync(to, code);
   };

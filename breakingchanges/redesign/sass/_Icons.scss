@@ -1,0 +1,90 @@
+@import "GeneratedIcons";
+
+.coveo-icon.filetype {
+  @extend .coveo-sprites-documentType-default;
+}
+
+.coveo-icon {
+  @include GeneratedIcons();
+}
+
+.coveo-omnibox .coveo-icon, .coveo-facet-header .coveo-icon {
+  &.author, &.sfownername {
+    @extend .coveo-sprites-documentType-user;
+  }
+  &.sfopportunityforecastcategory {
+    @extend .coveo-sprites-documentType-opportunity;
+  }
+  &.sfaccountname, &.sfaccounttype {
+    @extend .coveo-sprites-documentType-account-salesforce;
+  }
+  &.sfcontactname {
+    @extend .coveo-sprites-documentType-contact;
+  }
+  &.sfcasestatus {
+    @extend .coveo-sprites-documentType-status;
+  }
+  &.sfcasepriority {
+    @extend .coveo-sprites-documentType-support;
+  }
+  &.sfcountry, &.sfcity {
+    @extend .coveo-sprites-documentType-city;
+  }
+  &.sfstate {
+    @extend .coveo-sprites-documentType-city;
+  }
+  &.sfindustry {
+    @extend .coveo-sprites-documentType-industry;
+  }
+  &.sfuserdepartment {
+    @extend .coveo-sprites-documentType-user;
+  }
+  &.sfuserdivision {
+    @extend .coveo-sprites-documentType-manager;
+  }
+  &.Sfopportunitystagename {
+    @extend .coveo-sprites-documentType-status;
+  }
+  &.Sfopportunityforecastcategory {
+    @extend .coveo-sprites-documentType-category;
+  }
+  &.sfopportunitycompetitionc {
+    @extend .coveo-sprites-documentType-competition;
+  }
+  &.sfleadsource {
+    @extend .coveo-sprites-documentType-lead;
+  }
+  &.sfopportunityclosedquarterc {
+    @extend .coveo-sprites-documentType-year;
+  }
+  &.sfopportunitytype, &.sfopportunitystagename {
+    @extend .coveo-sprites-documentType-opportunity;
+  }
+  &.mailbox {
+    @extend .coveo-sprites-documentType-mail;
+  }
+  &.from, &.displayfrom {
+    @extend .coveo-sprites-documentType-from;
+  }
+  &.to, &.displayrecipients {
+    @extend .coveo-sprites-documentType-to;
+  }
+  &.year, &.month, &.date {
+    @extend .coveo-sprites-documentType-year;
+  }
+  &.emailfolders {
+    @extend .coveo-sprites-documentType-folder;
+  }
+  &.displayparticipants {
+    @extend .coveo-sprites-documentType-intranet;
+  }
+  &.language {
+    @extend .coveo-sprites-documentType-language;
+  }
+  &.concepts {
+    @extend .coveo-sprites-documentType-kb;
+  }
+  &.source {
+    @extend .coveo-sprites-common-system;
+  }
+}

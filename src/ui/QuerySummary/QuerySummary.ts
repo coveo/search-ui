@@ -1,19 +1,15 @@
-import { Component } from '../Base/Component';
-import { ComponentOptions } from '../Base/ComponentOptions';
-import { QueryEvents, IQuerySuccessEventArgs } from '../../events/QueryEvents';
-import { IComponentBindings } from '../Base/ComponentBindings';
-import { $$, Dom } from '../../utils/Dom';
-import { Assert } from '../../misc/Assert';
-import { l } from '../../strings/Strings';
-import { analyticsActionCauseList, IAnalyticsNoMeta } from '../Analytics/AnalyticsActionListMeta';
-import { Initialization } from '../Base/Initialization';
-import { QueryStateModel } from '../../models/QueryStateModel';
-import * as Globalize from 'globalize';
-import { QuerySummaryEvents } from '../../events/QuerySummaryEvents';
-import * as _ from 'underscore';
-import { exportGlobally } from '../../GlobalExports';
+import {Component} from '../Base/Component';
+import {ComponentOptions} from '../Base/ComponentOptions';
+import {QueryEvents, IQuerySuccessEventArgs} from '../../events/QueryEvents';
+import {IComponentBindings} from '../Base/ComponentBindings';
+import {$$, Dom} from '../../utils/Dom';
+import {Assert} from '../../misc/Assert';
+import {l} from '../../strings/Strings';
+import {analyticsActionCauseList, IAnalyticsNoMeta} from '../Analytics/AnalyticsActionListMeta';
+import {Initialization} from '../Base/Initialization';
+import {QueryStateModel} from '../../models/QueryStateModel';
 
-import 'styling/_QuerySummary';
+declare const Globalize;
 
 export interface IQuerySummaryOptions {
   enableSearchTips?: boolean;
@@ -21,53 +17,30 @@ export interface IQuerySummaryOptions {
 }
 
 /**
- * The QuerySummary component can display information about the currently displayed range of results (e.g., "Results
- * 1-10 of 123").
- *
- * If the query matches no document, the QuerySummary component can instead display tips to help the end user formulate
- * a better query.
+ * This component displays information about the current range of results being displayed (ex: 1-10 of 123).<br/>
+ * If the query matches no documents, it will display advices and tip for the end user on how to remedy the problem.
  */
 export class QuerySummary extends Component {
   static ID = 'QuerySummary';
-
-  static doExport = () => {
-    exportGlobally({
-      'QuerySummary': QuerySummary
-    });
-  }
-
   /**
    * Options for the component
    * @componentOptions
    */
   static options: IQuerySummaryOptions = {
-
     /**
-     * Specifies whether to display the search tips to the end user when there are no search results.
-     *
-     * Default value is `true`.
+     * Specifies whether the search tips are displayed to the end user when there are no search results.<br/>
+     * The default value is <code>true</code>.
      */
     enableSearchTips: ComponentOptions.buildBooleanOption({ defaultValue: true }),
-
     /**
-     * Specifies whether to hide the information about the currently displayed range of results and only display the
-     * search tips instead.
-     *
-     * Default value is `false`.
+     * Specifies whether to hide the information about the current range of results being displayed and only display the search tips.<br/>
+     * The default value is <code>false</code>.
      */
     onlyDisplaySearchTips: ComponentOptions.buildBooleanOption({ defaultValue: false })
   };
 
   private textContainer: HTMLElement;
-  private lastKnownGoodState: any;
 
-  /**
-   * Creates a new QuerySummary component.
-   * @param element The HTMLElement on which to instantiate the component.
-   * @param options The options for the QuerySummary component.
-   * @param bindings The bindings that the component requires to function normally. If not set, these will be
-   * automatically resolved (with a slower execution time).
-   */
   constructor(public element: HTMLElement, public options?: IQuerySummaryOptions, bindings?: IComponentBindings) {
     super(element, QuerySummary.ID, bindings);
 
@@ -111,8 +84,6 @@ export class QuerySummary extends Component {
       this.textContainer.innerHTML = l('QueryException', code);
     } else if (data.results.results.length == 0) {
       this.displayInfoOnNoResults();
-    } else {
-      this.lastKnownGoodState = this.queryStateModel.getAttributes();
     }
   }
 
@@ -131,20 +102,13 @@ export class QuerySummary extends Component {
 
     cancelLastAction.on('click', () => {
       this.usageAnalytics.logCustomEvent<IAnalyticsNoMeta>(analyticsActionCauseList.noResultsBack, {}, this.root);
-      this.usageAnalytics.logSearchEvent<IAnalyticsNoMeta>(analyticsActionCauseList.noResultsBack, {});
-      if (this.lastKnownGoodState) {
-        this.queryStateModel.reset();
-        this.queryStateModel.setMultiple(this.lastKnownGoodState);
-        $$(this.root).trigger(QuerySummaryEvents.cancelLastAction);
-        this.queryController.executeQuery();
-      } else {
-        history.back();
-      }
+      this.usageAnalytics.logSearchEvent<IAnalyticsNoMeta>(analyticsActionCauseList.noResultsBack, {})
+      history.back();
     });
 
     let searchTipsInfo = $$('div', {
       className: 'coveo-query-summary-search-tips-info'
-    });
+    })
     searchTipsInfo.text(l('SearchTips'));
     let searchTips = $$('ul');
 

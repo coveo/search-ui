@@ -1,0 +1,14 @@
+﻿.CoveoEmailAction {
+  background: #f7f7f7;
+  text-decoration: none;
+  display: inline-block;
+  margin: 0 5px 10px 10px;
+  border: 1px solid #cccccc;
+  padding: 3px;
+  font-size: 15px;
+  color: #8f8f8f;
+  border-radius: 3px;
+  &:hover {
+    cursor: pointer;
+  }
+}

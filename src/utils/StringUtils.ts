@@ -1,8 +1,6 @@
-import { Assert } from '../misc/Assert';
-import { IHighlight } from '../rest/Highlight';
-import { $$ } from '../utils/Dom';
-import * as latinize from 'latinize';
-import * as _ from 'underscore';
+import {Assert} from '../misc/Assert';
+import {IHighlight} from '../rest/Highlight';
+import {$$} from '../utils/Dom';
 
 export class StringUtils {
   static javascriptEncode(value: string): string {
@@ -17,7 +15,7 @@ export class StringUtils {
 
   static htmlEncode(value: string): string {
     Assert.isString(value);
-    let div = $$('div');
+    var div = $$('div');
     div.text(value);
     return div.el.innerHTML;
   }
@@ -30,8 +28,8 @@ export class StringUtils {
     if (value.length < length) {
       return value;
     }
-    let toRemove = value.length - length;
-    let index = Math.floor(length / 2);
+    var toRemove = value.length - length;
+    var index = Math.floor(length / 2);
     return StringUtils.splice(value, index, toRemove, toAdd);
   }
 
@@ -42,16 +40,16 @@ export class StringUtils {
 
   static stringToRegex(value: string, ignoreAccent = false): string {
     Assert.isString(value);
-    let encoded = StringUtils.regexEncode(value);
+    var encoded = StringUtils.regexEncode(value);
 
     if (ignoreAccent) {
       return _.map(encoded, (char: string) => {
-        let regexp = _.find(StringUtils.accented, (regexp: RegExp) => char.match(regexp) != null);
+        var regexp = _.find(StringUtils.accented, (regexp: RegExp) => char.match(regexp) != null);
         if (regexp) {
-          return regexp.source;
+          return regexp.source
         }
         return char;
-      }).join('');
+      }).join('')
     }
 
     return encoded;
@@ -60,7 +58,7 @@ export class StringUtils {
   static wildcardsToRegex(value: string, ignoreAccent = false): string {
     Assert.isString(value);
 
-    let encoded = StringUtils.stringToRegex(value, ignoreAccent);
+    var encoded = StringUtils.stringToRegex(value, ignoreAccent);
 
     encoded = encoded.replace(/\\\*/, '.*');
     encoded = encoded.replace(/\\\?/, '.');
@@ -69,13 +67,13 @@ export class StringUtils {
   }
 
   static getHighlights(strToSearch: string, regexToFind: RegExp, dataHighlightGroupTerm: string): IHighlight[] {
-    let match, indexes: IHighlight[] = [];
+    var match, indexes: IHighlight[] = [];
 
     while (match = regexToFind.exec(strToSearch)) {
-      let desiredMatch = match[2];
-      let undesiredMatch = match[1];
-      let offset = match.index + undesiredMatch.length;
-      indexes.push({ offset: offset, length: desiredMatch.length, dataHighlightGroupTerm: dataHighlightGroupTerm });
+      var desiredMatch = match[2];
+      var undesiredMatch = match[1];
+      var offset = match.index + undesiredMatch.length;
+      indexes.push({ offset: offset, length: desiredMatch.length, dataHighlightGroupTerm: dataHighlightGroupTerm })
       if (!regexToFind.global) {
         break;
       }
@@ -93,8 +91,8 @@ export class StringUtils {
   }
 
   static match(value: string, regex: RegExp) {
-    let results: string[][] = [];
-    let arr: string[];
+    var results: string[][] = [];
+    var arr: string[];
     while ((arr = regex.exec(value)) !== null) {
       results.push(arr);
     }
@@ -102,10 +100,10 @@ export class StringUtils {
   }
 
   static hashCode(str: string): string {
-    let hash = 0;
-    let len = str.length;
-    for (let i = 0; i < len; i++) {
-      let char = str.charCodeAt(i);
+    var hash = 0;
+    var len = str.length
+    for (var i = 0; i < len; i++) {
+      var char = str.charCodeAt(i);
       hash = ((hash << 5) - hash) + char;
       hash = hash & hash; // Convert to 32bit integer
     }
@@ -113,8 +111,10 @@ export class StringUtils {
   }
 
   // http://stackoverflow.com/a/25575009
-  static latinize(str: string) {
-    return latinize(str);
+  static removePunctuation(str: string) {
+    var punctRE = /[\u2000-\u206F\u2E00-\u2E7F\\'!"#\$%&\(\)\*\+,\-\.\/:;<=>\?@\[\]\^_`\{\|\}~]/g;
+    var spaceRE = /\s+/g;
+    return str.replace(punctRE, '').replace(spaceRE, ' ');
   }
 
   public static accented: { [letter: string]: RegExp } = {
@@ -144,5 +144,5 @@ export class StringUtils {
     'X': /[Xx\u02e3\u1e8a-\u1e8d\u2093\u213b\u2168-\u216b\u2178-\u217b\u24b3\u24cd\u24e7\u33d3\uff38\uff58]/g,
     'Y': /[Yy\xdd\xfd\xff\u0176-\u0178\u0232\u0233\u02b8\u1e8e\u1e8f\u1e99\u1ef2-\u1ef9\u24b4\u24ce\u24e8\u33c9\uff39\uff59]/g,
     'Z': /[Zz\u0179-\u017e\u01f1-\u01f3\u1dbb\u1e90-\u1e95\u2124\u2128\u24b5\u24cf\u24e9\u3390-\u3394\uff3a\uff5a]/g
-  };
+  }
 }

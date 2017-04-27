@@ -1,23 +1,24 @@
-import FacetSliderModuleDefinition = require('../FacetSlider/FacetSlider');
-import FacetModuleDefinition = require('./Facet');
-import { IFacetSettingsKlass, FacetSettings } from './FacetSettings';
-import { IFacetSortKlass, FacetSort } from './FacetSort';
-import { $$ } from '../../utils/Dom';
-import { FacetUtils } from './FacetUtils';
-import { l } from '../../strings/Strings';
-import { IAnalyticsFacetOperatorMeta, IAnalyticsFacetMeta, analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
-import 'styling/_FacetHeader';
-import '../../../bin/sass/_GeneratedIconsNew';
+/// <reference path="Facet.ts" />
+/// <reference path="FacetSettings.ts" />
+
+import {Facet} from './Facet';
+import {FacetSlider} from '../FacetSlider/FacetSlider';
+import {IFacetSettingsKlass, FacetSettings} from './FacetSettings';
+import {IFacetSortKlass, FacetSort} from './FacetSort';
+import {$$} from '../../utils/Dom';
+import {FacetUtils} from './FacetUtils';
+import {l} from '../../strings/Strings';
+import {IAnalyticsFacetOperatorMeta, IAnalyticsFacetMeta, analyticsActionCauseList} from '../Analytics/AnalyticsActionListMeta';
 
 export interface IFacetHeaderOptions {
   facetElement: HTMLElement;
-  facet?: FacetModuleDefinition.Facet;
   title: string;
   field: string;
   enableClearElement: boolean;
   enableCollapseElement: boolean;
   icon?: string;
-  facetSlider?: FacetSliderModuleDefinition.FacetSlider;
+  facet?: Facet;
+  facetSlider?: FacetSlider;
   settingsKlass?: IFacetSettingsKlass;
   sortKlass?: IFacetSortKlass;
   availableSorts?: string[];
@@ -41,13 +42,47 @@ export class FacetHeader {
   }
 
   public build(): HTMLElement {
-    if (this.options.isNewDesign) {
-      return this.buildNewDesign();
-    } else {
-      return this.buildOldDesign();
+    if (this.options.isNewDesign && this.options.icon != undefined) {
+      this.element.appendChild(this.buildIcon());
+    } else if (!this.options.isNewDesign) {
+      this.element.appendChild(this.buildIcon());
     }
-  }
 
+    if (!this.options.isNewDesign) {
+      this.element.appendChild(this.buildWaitAnimation());
+    }
+
+    if (this.options.settingsKlass) {
+      this.sort = this.settings = new this.options.settingsKlass(this.options.availableSorts, this.options.facet);
+      this.element.appendChild(this.settings.build());
+    } else if (this.options.sortKlass) {
+      this.sort = new this.options.sortKlass(this.options.availableSorts, this.options.facet);
+    }
+
+    if (this.options.enableCollapseElement && !this.options.isNewDesign) {
+      this.collapseElement = this.buildCollapse();
+      this.element.appendChild(this.collapseElement);
+
+      this.expandElement = this.buildExpand();
+      this.element.appendChild(this.expandElement);
+    }
+
+    if (this.options.facet) {
+      this.operatorElement = this.buildOperatorToggle();
+      this.element.appendChild(this.operatorElement);
+      $$(this.operatorElement).toggle(this.options.facet.options.enableTogglingOperator);
+    }
+
+    this.eraserElement = this.buildEraser();
+    this.element.appendChild(this.eraserElement);
+
+    this.element.appendChild(this.buildTitle());
+
+    if (this.options.isNewDesign) {
+      this.element.appendChild(this.buildWaitAnimation());
+    }
+    return this.element;
+  }
 
   public switchToAnd(): void {
     if (this.options.facet) {
@@ -94,75 +129,6 @@ export class FacetHeader {
     }
   }
 
-  private buildNewDesign() {
-    let titleSection = $$('div', {
-      className: 'coveo-facet-header-title-section'
-    });
-    if (this.options.icon != undefined) {
-      this.iconElement = this.buildIcon();
-      titleSection.append(this.iconElement);
-    }
-    titleSection.append(this.buildTitle());
-    this.waitElement = this.buildWaitAnimation();
-    titleSection.append(this.waitElement);
-    this.element.appendChild(titleSection.el);
-
-    let settingsSection = $$('div', {
-      className: 'coveo-facet-header-settings-section'
-    });
-
-    this.eraserElement = this.buildEraser();
-    settingsSection.append(this.eraserElement);
-
-    if (this.options.facet) {
-      this.operatorElement = this.buildOperatorToggle();
-      settingsSection.append(this.operatorElement);
-      $$(this.operatorElement).toggle(this.options.facet.options.enableTogglingOperator);
-    }
-
-    if (this.options.settingsKlass) {
-      this.sort = this.settings = new this.options.settingsKlass(this.options.availableSorts, this.options.facet);
-      settingsSection.append(this.settings.build());
-    } else if (this.options.sortKlass) {
-      this.sort = new this.options.sortKlass(this.options.availableSorts, this.options.facet);
-    }
-    this.element.appendChild(settingsSection.el);
-
-    return this.element;
-  }
-
-  private buildOldDesign() {
-    this.element.appendChild(this.buildIcon());
-    this.element.appendChild(this.buildWaitAnimation());
-
-    if (this.options.settingsKlass) {
-      this.sort = this.settings = new this.options.settingsKlass(this.options.availableSorts, this.options.facet);
-      this.element.appendChild(this.settings.build());
-    } else if (this.options.sortKlass) {
-      this.sort = new this.options.sortKlass(this.options.availableSorts, this.options.facet);
-    }
-
-    if (this.options.enableCollapseElement) {
-      this.collapseElement = this.buildCollapse();
-      this.element.appendChild(this.collapseElement);
-
-      this.expandElement = this.buildExpand();
-      this.element.appendChild(this.expandElement);
-    }
-
-    if (this.options.facet) {
-      this.operatorElement = this.buildOperatorToggle();
-      this.element.appendChild(this.operatorElement);
-      $$(this.operatorElement).toggle(this.options.facet.options.enableTogglingOperator);
-    }
-
-    this.eraserElement = this.buildEraser();
-    this.element.appendChild(this.eraserElement);
-    this.element.appendChild(this.buildTitle());
-
-    return this.element;
-  }
-
   private rebuildOperatorToggle(): void {
     var newElement = this.buildOperatorToggle();
     if (this.operatorElement) {
@@ -186,12 +152,7 @@ export class FacetHeader {
   private buildWaitAnimation(): HTMLElement {
     this.waitElement = document.createElement('div');
     $$(this.waitElement).addClass('coveo-facet-header-wait-animation');
-
-    if (this.options.isNewDesign) {
-      this.waitElement.style.visibility = 'hidden';
-    } else {
-      $$(this.waitElement).hide();
-    }
+    $$(this.waitElement).hide();
     return this.waitElement;
   }
 
@@ -254,12 +215,10 @@ export class FacetHeader {
   }
 
   private buildTitle(): HTMLElement {
-    var title = $$('div', {
-      title: this.options.title,
-      className: 'coveo-facet-header-title'
-    });
-    title.text(this.options.title);
-    return title.el;
+    var title = document.createElement('div');
+    $$(title).text(this.options.title);
+    $$(title).addClass('coveo-facet-header-title');
+    return title;
   }
 
   public buildEraser(): HTMLElement {
@@ -276,9 +235,9 @@ export class FacetHeader {
       cmp.usageAnalytics.logSearchEvent<IAnalyticsFacetMeta>(analyticsActionCauseList.facetClearAll, {
         facetId: cmp.options.id,
         facetTitle: cmp.options.title
-      });
+      })
       cmp.queryController.executeQuery();
-    });
+    })
     return eraser;
   }
 }

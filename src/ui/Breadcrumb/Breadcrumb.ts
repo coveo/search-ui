@@ -1,55 +1,35 @@
-import { Component } from '../Base/Component';
-import { IComponentBindings } from '../Base/ComponentBindings';
-import { ComponentOptions } from '../Base/ComponentOptions';
-import { InitializationEvents } from '../../events/InitializationEvents';
-import { BreadcrumbEvents, IBreadcrumbItem, IPopulateBreadcrumbEventArgs, IClearBreadcrumbEventArgs } from '../../events/BreadcrumbEvents';
-import { analyticsActionCauseList, IAnalyticsNoMeta } from '../Analytics/AnalyticsActionListMeta';
-import { $$ } from '../../utils/Dom';
-import { l } from '../../strings/Strings';
-import { Initialization } from '../Base/Initialization';
-import { QueryEvents } from '../../events/QueryEvents';
-import { KeyboardUtils, KEYBOARD } from '../../utils/KeyboardUtils';
-import * as _ from 'underscore';
-import { exportGlobally } from '../../GlobalExports';
-import 'styling/_Breadcrumb';
+import {Component} from '../Base/Component';
+import {IComponentBindings} from '../Base/ComponentBindings';
+import {ComponentOptions} from '../Base/ComponentOptions';
+import {InitializationEvents} from '../../events/InitializationEvents';
+import {BreadcrumbEvents, IBreadcrumbItem, IPopulateBreadcrumbEventArgs, IClearBreadcrumbEventArgs} from '../../events/BreadcrumbEvents';
+import {analyticsActionCauseList, IAnalyticsNoMeta} from '../Analytics/AnalyticsActionListMeta';
+import {$$} from '../../utils/Dom';
+import {l} from '../../strings/Strings';
+import {Initialization} from '../Base/Initialization';
+import {QueryEvents} from '../../events/QueryEvents';
 
 export interface IBreadcrumbOptions {
 }
 
 /**
- * The Breadcrumb component displays a summary of the currently active query filters.
- *
- * For example, when the user selects a {@link Facet} value, the breadcrumbs display this value.
- *
- * The active filters are obtained by the component by firing an event in the Breadcrumb component.
- *
- * All other components having an active state can react to this event by providing custom bits of HTML to display
- * inside the breadcrumbs.
- *
- * Thus, it is possible to easily extend the Breadcrumb component using custom code to display information about custom
- * states and filters.
- *
- * See {@link BreadcrumbEvents} for the list of events and parameters sent when a Breadcrumb component is populated.
+ * This component displays a summary of the filters currently active in the query.<br/>
+ * For example, when the user selects a facet value, the value is displayed in the breadcrumbs.<br/>
+ * The active filters are obtained by the component by firing an event in the breadcrumb component.<br/>
+ * All other components having an active state can answer to this event by providing custom bits of HTML that will be displayed inside the breadcrumb.<br/>
+ * Thus, the breadcrumb can easily be extended by custom code to display information about custom state and filters.
  */
 export class Breadcrumb extends Component {
   static ID = 'Breadcrumb';
-  static options: IBreadcrumbOptions = {};
-
-  static doExport = () => {
-    exportGlobally({
-      'Breadcrumb': Breadcrumb
-    });
-  }
+  static options: IBreadcrumbOptions = {}
 
   private lastBreadcrumbs: IBreadcrumbItem[];
 
   /**
-   * Creates a new Breadcrumb component. Binds event on {@link QueryEvents.deferredQuerySuccess} to draw the
-   * breadcrumbs.
-   * @param element The HTMLElement on which to instantiate the component.
-   * @param options The options for the Breadcrumb component.
-   * @param bindings The bindings that the component requires to function normally. If not set, these will be
-   * automatically resolved (with a slower execution time).
+   * Create a new breadcrumb element, bind event on deferredQuerySuccess to draw the breadcrumb
+   * @param element
+   * @param options
+   * @param bindings
    */
   constructor(public element: HTMLElement, public options?: IBreadcrumbOptions, bindings?: IComponentBindings) {
     super(element, Breadcrumb.ID, bindings);
@@ -62,11 +42,9 @@ export class Breadcrumb extends Component {
   }
 
   /**
-   * Triggers the event to populate the breadcrumbs. Components such as {@link Facet} can populate the breadcrumbs.
-   *
-   * This method triggers a {@link BreadcrumbEvents.populateBreadcrumb} event with an
-   * {@link IPopulateBreadcrumbEventArgs} object (an array) that other components or code can populate.
-   * @returns {IBreadcrumbItem[]} A populated breadcrumb item list.
+   * Trigger the event to populate breadcrumb, which component such as {@link Facet} can populate.<br/>
+   * Will trigger an event with {@link IPopulateBreadcrumbEventArgs} object (an array) which other component or code can populate.
+   * @returns {IBreadcrumbItem[]}
    */
   public getBreadcrumbs(): IBreadcrumbItem[] {
     let args = <IPopulateBreadcrumbEventArgs>{ breadcrumbs: [] };
@@ -77,9 +55,8 @@ export class Breadcrumb extends Component {
   }
 
   /**
-   * Triggers the event to clear the current breadcrumbs that components such as {@link Facet} can populate.
-   *
-   * Also triggers a new query and logs the `breadcrumbResetAll` event in the usage analytics.
+   * Trigger the event to clear the current breadcrumbs, which component such as {@link Facet} can populate.<br/>
+   * Trigger a new query, and log a search event
    */
   public clearBreadcrumbs() {
     let args = <IClearBreadcrumbEventArgs>{};
@@ -90,8 +67,8 @@ export class Breadcrumb extends Component {
   }
 
   /**
-   * Draws the specified breadcrumb items.
-   * @param breadcrumbs The breadcrumb items to draw.
+   * Draw the given breadcrumbs items
+   * @param breadcrumbs
    */
   public drawBreadcrumb(breadcrumbs: IBreadcrumbItem[]) {
     $$(this.element).empty();
@@ -108,15 +85,14 @@ export class Breadcrumb extends Component {
       let elem = bcrumb.element;
       $$(elem).addClass('coveo-breadcrumb-item');
       breadcrumbItems.appendChild(elem);
-    });
+    })
 
-    let clear = $$('div', {
-      className: 'coveo-breadcrumb-clear-all',
-      title: l('ClearAllFilters'),
-      tabindex: 0
-    }).el;
+    let clear = document.createElement('div');
+    $$(clear).addClass('coveo-breadcrumb-clear-all');
+    clear.setAttribute('title', l('ClearAllFilters'));
 
-    let clearIcon = $$('div', { className: 'coveo-icon coveo-breadcrumb-icon-clear-all' }).el;
+    let clearIcon = document.createElement('div');
+    $$(clearIcon).addClass('coveo-icon coveo-breadcrumb-icon-clear-all');
     clear.appendChild(clearIcon);
 
     if (this.searchInterface.isNewDesign()) {
@@ -128,9 +104,9 @@ export class Breadcrumb extends Component {
       this.element.insertBefore(clear, this.element.firstChild);
     }
 
-    const clearAction = () => this.clearBreadcrumbs();
-    this.bind.on(clear, 'click', clearAction);
-    this.bind.on(clear, 'keyup', KeyboardUtils.keypressAction(KEYBOARD.ENTER, clearAction));
+    this.bind.on(clear, 'click', () => {
+      this.clearBreadcrumbs();
+    })
   }
 
   private redrawBreadcrumb() {

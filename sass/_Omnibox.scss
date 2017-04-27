@@ -1,6 +1,4 @@
 @import "../bin/sass/MagicBox/MagicBox";
-@import "Variables";
-
 .coveo-waiting-for-first-query .coveo-omnibox {
   z-index: 0;
 }
@@ -35,7 +33,7 @@
   }
   &.coveo-search-as-you-type {
     .magic-box-ghost-text {
-      display: none;
+      visibility: visible;
     }
   }
   .coveo-omnibox-selectable {
@@ -53,8 +51,11 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    padding: 5px 10px;
+    padding: 0 15px 0 30px;
     margin: 0;
+    &:hover {
+      background-color: $color-blueish-white-grey;
+    }
     li.coveo-facet-value {
       list-style-type: none;
     }
@@ -67,7 +68,7 @@
   .coveo-omnibox-facet-header {
     float: left;
     width: 100%;
-    padding: 5px 5px;
+    padding: 5px 12px;
     height: 26px;
     color: #2c5985;
     .coveo-icon {

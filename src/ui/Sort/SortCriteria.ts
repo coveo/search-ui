@@ -1,8 +1,7 @@
-import { Assert } from '../../misc/Assert';
-import { QueryBuilder } from '../Base/QueryBuilder';
-import { Utils } from '../../utils/Utils';
-import { IQueryResult } from '../../rest/QueryResult';
-import * as _ from 'underscore';
+import {Assert} from '../../misc/Assert';
+import {QueryBuilder} from '../Base/QueryBuilder';
+import {Utils} from '../../utils/Utils';
+import {IQueryResult} from '../../rest/QueryResult';
 
 export class SortCriteria {
   private static validSorts = ['relevancy', 'date', 'qre'];
@@ -11,8 +10,8 @@ export class SortCriteria {
 
   /**
    * Create a new SortCriteria
-   * @param sort The sort criteria (e.g.: relevancy, date)
-   * @param direction The direction by which to sort (e.g.: ascending, descending)
+   * @param sort The sort criteria (e.g. relevancy, date)
+   * @param direction The direction by which to sort (e.g. ascending, descending)
    */
   constructor(public sort: string, public direction: string = '') {
     Assert.isNonEmptyString(sort);
@@ -36,7 +35,7 @@ export class SortCriteria {
 
   /**
    * Put the sort criteria in the passed queryBuilder
-   * @param queryBuilder The queryBuilder in which to put the sort criteria.
+   * @param queryBuilder The queryBuilder in which to put the sort criteria
    */
   public putInQueryBuilder(queryBuilder: QueryBuilder) {
     Assert.exists(queryBuilder);
@@ -51,8 +50,8 @@ export class SortCriteria {
   }
 
   /**
-   * Gets the value of the sort criteria from a single {@link IQueryResult}.<br/>
-   * For example, if the sort criteria is 'relevancy', it will return the value of the 'relevancy' field from result.
+   * Gets the value of the sort criteria from a single {@link IQueryResult}<br/>
+   * For example, if the sort criteria is 'relevancy', it will return the value of the 'relevancy' field from result
    * @param result The {@link IQueryResult} from which to get the value.
    */
   public getValueFromResult(result: IQueryResult): any {
@@ -68,7 +67,7 @@ export class SortCriteria {
   }
 
   /**
-   * Returns a string representation of the sort criteria (e.g.: 'date ascending').
+   * Returns a string representation of the sort criteria (e.g. 'date ascending')
    */
   public toString(): string {
     if (Utils.isNonEmptyString(this.direction)) {
@@ -79,7 +78,7 @@ export class SortCriteria {
   }
 
   /**
-   * Checks if the SortCriteria is equal to another.
+   * Checks if the SortCriteria is equal to another
    * @param criteria The SortCriteria to compare with
    */
   public equals(criteria: SortCriteria): boolean {

@@ -1,94 +1,70 @@
-import { Component } from '../Base/Component';
-import { ComponentOptions } from '../Base/ComponentOptions';
-import { IResultsComponentBindings } from '../Base/ResultsComponentBindings';
-import { ResultLink } from '../ResultLink/ResultLink';
-import { IQueryResult } from '../../rest/QueryResult';
-import { QueryUtils } from '../../utils/QueryUtils';
-import { Initialization } from '../Base/Initialization';
-import { ISearchEndpoint } from '../../rest/SearchEndpointInterface';
-import { $$ } from '../../utils/Dom';
-import { get } from '../Base/RegisteredNamedMethods';
-import { IResultLinkOptions } from '../ResultLink/ResultLinkOptions';
-import FieldTableModule = require('../FieldTable/FieldTable');
-import { Icon } from '../Icon/Icon';
-import * as _ from 'underscore';
-import { exportGlobally } from '../../GlobalExports';
+import {Component} from '../Base/Component'
+import {ComponentOptions} from '../Base/ComponentOptions'
+import {IResultsComponentBindings} from '../Base/ResultsComponentBindings'
+import {ResultLink} from '../ResultLink/ResultLink'
+import {IQueryResult} from '../../rest/QueryResult'
+import {QueryUtils} from '../../utils/QueryUtils'
+import {DeviceUtils} from '../../utils/DeviceUtils'
+import {Initialization} from '../Base/Initialization'
+import {ISearchEndpoint} from '../../rest/SearchEndpointInterface'
+import {$$} from '../../utils/Dom'
 
-export interface IThumbnailOptions extends IResultLinkOptions {
+export interface IThumbnailOptions {
   noThumbnailClass?: string;
   clickable?: boolean;
 }
 
 /**
- * The Thumbnail component automatically fetches the thumbnail of the result object and outputs an HTML `img` tag with
- * it.
+ * This component automatically fetches the thumbnail of the result object
+ * and formats an HTML image tag (<code>img</code>) with it.
  */
 export class Thumbnail extends Component {
   static ID = 'Thumbnail';
-
-  static doExport = () => {
-    exportGlobally({
-      'Thumbnail': Thumbnail
-    });
-  }
 
   /**
    * Options for the Thumbnail
    * @componentOptions
    */
   static options: IThumbnailOptions = {
-
     /**
-     * Specifies the CSS class to use on the `img` tag that the Thumbnail component outputs when a result has no
-     * thumbnail in the index.
-     *
-     * Default value is `coveo-no-thumbnail`.
+     * Specifies the CSS class to use on the thumbnail image tag when a result
+     * has no thumbnail in the index.<br/>
+     * Default value: <code>coveo-no-thumbnail</code>
      */
     noThumbnailClass: ComponentOptions.buildStringOption({ defaultValue: 'coveo-no-thumbnail' }),
-
     /**
-     * Specifies whether to create a clickable {@link ResultLink} around the Thumbnail.
-     *
-     * Default value is `false`.
-     *
-     * If set to true, you can use the options specified on {@link ResultLink.options}
+     * Specifies if a clickable {@link ResultLink} is to be created around the Thumbnail.<br/>
+     * Uses all the same options as as {@link ResultLink} except <code>field</code><br/>
+     * Default value is <code>false</code>
      */
     clickable: ComponentOptions.buildBooleanOption({ defaultValue: false })
   };
 
   static parent = ResultLink;
 
-  public img: HTMLImageElement;
+  static fields = [
+    'outlookformacuri',
+    'outlookuri',
+    'connectortype',
+    'urihash',  //     ⎫
+    'collection', //   ⎬--- analytics
+    'source' //        ⎭
+  ]
 
   /**
-   * Creates a new Thumbnail component.
-   * @param element The HTMLElement on which to instantiate the component.
-   * @param options The options for the Thumbnail component.
-   * @param bindings The bindings that the component requires to function normally. If not set, these will be
-   * automatically resolved (with a slower execution time).
-   * @param result The result to associate the component with.
+   * Create a new Thumbnail component
+   * @param element
+   * @param options
+   * @param bindings
+   * @param result
    */
   constructor(public element: HTMLElement, public options?: IThumbnailOptions, public bindings?: IResultsComponentBindings, public result?: IQueryResult) {
     super(element, Thumbnail.ID, bindings);
 
     this.options = ComponentOptions.initOptions(element, <any>Thumbnail.options, options);
 
-    if (this.element.tagName.toLowerCase() != 'img') {
-      this.img = <HTMLImageElement>$$('img').el;
-      this.element.appendChild(this.img);
-    } else {
-      this.img = <HTMLImageElement>this.element;
-    }
-
     if (this.options.clickable) {
-      if (this.element.tagName.toLowerCase() != 'img') {
-        new ResultLink(this.element, this.options, this.bindings, this.result);
-      } else {
-        let href = $$('a');
-        $$(this.element).replaceWith(href.el);
-        $$(href).append(this.element);
-        new ResultLink(href.el, this.options, this.bindings, this.result);
-      }
+      new ResultLink(this.element, this.options, this.bindings, this.result);
     }
 
 
@@ -96,21 +72,20 @@ export class Thumbnail extends Component {
     // changing size once it's loaded. Also, doing this prevents a border from
     // appearing on some browsers when there is no thumbnail. I've found no other
     // way to get rid of it...
-    this.img.setAttribute('src', 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==');
+    this.element.setAttribute('src', 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==');
 
     if (QueryUtils.hasThumbnail(result)) {
       this.buildThumbnailImage();
     } else {
-      this.logger.info('Result has no thumbnail. Cannot build thumbnail image, instanciating an Icon component instead.');
-      new Icon(element, { small: true }, bindings, result);
+      this.setEmptyThumbnailClass();
     }
   }
 
   private buildThumbnailImage() {
     let endpoint = this.bindings.queryController.getEndpoint();
 
-    if (endpoint.isJsonp()) {
-      // For jsonp we can't GET/POST for binary data. We are limited
+    if (endpoint.isJsonp() || DeviceUtils.isIE8or9()) {
+      // For jsonp and IE8-9 (XDomain) we can't GET/POST for binary data. We are limited
       // to only setting the src attribute directly on the img.
       this.buildImageWithDirectSrcAttribute(endpoint);
     } else {
@@ -122,35 +97,23 @@ export class Thumbnail extends Component {
 
   private buildImageWithDirectSrcAttribute(endpoint: ISearchEndpoint) {
     let dataStreamUri = endpoint.getViewAsDatastreamUri(this.result.uniqueId, '$Thumbnail$', { contentType: 'image/png' });
-    this.img.setAttribute('src', dataStreamUri);
-    this.resizeContainingFieldTable();
+    this.element.setAttribute('src', dataStreamUri);
   }
 
   private buildImageWithBase64SrcAttribute(endpoint: ISearchEndpoint) {
     endpoint.getRawDataStream(this.result.uniqueId, '$Thumbnail$')
       .then((response) => {
         let rawBinary = String.fromCharCode.apply(null, new Uint8Array(response));
-        this.img.setAttribute('src', 'data:image/png;base64, ' + btoa(rawBinary));
-        this.resizeContainingFieldTable();
+        this.element.setAttribute('src', 'data:image/png;base64, ' + btoa(rawBinary));
       })
       .catch(() => {
         this.setEmptyThumbnailClass();
-      });
-  }
-
-  private resizeContainingFieldTable() {
-    let closestFieldTableElement = $$(this.element).closest(Component.computeCssClassNameForType('FieldTable'));
-    if (closestFieldTableElement != null) {
-      let fieldTable = <FieldTableModule.FieldTable>get(closestFieldTableElement);
-      fieldTable.updateToggleHeight();
-    }
+      })
   }
 
   private setEmptyThumbnailClass() {
-    $$(this.img).addClass(this.options.noThumbnailClass);
+    $$(this.element).addClass(this.options.noThumbnailClass);
   }
 }
-
-Thumbnail.options = _.extend({}, ResultLink.options, Thumbnail.options);
 
 Initialization.registerAutoCreateComponent(Thumbnail);

@@ -1,4 +1,4 @@
-import { IComponentBindings } from './ComponentBindings';
+import {IComponentBindings} from './ComponentBindings';
 /**
  * The bindings, or environment in which each component inside the {@link ResultList} exists.
  */

@@ -1,12 +1,5 @@
-import { Assert } from '../misc/Assert';
-import { Utils } from '../utils/Utils';
-import * as _ from 'underscore';
-
-interface IHashUtils {
-  getHash(w: any);
-  getValue();
-  encodeValues();
-}
+import {Assert} from '../misc/Assert';
+import {Utils} from '../utils/Utils';
 
 export class HashUtils {
   private static DELIMITER = {
@@ -18,7 +11,7 @@ export class HashUtils {
     'objectEndRegExp': '}+$',
     'arrayStartRegExp': '^[',
     'arrayEndRegExp': ']+$'
-  };
+  }
 
   public static getHash(w = window): string {
     Assert.exists(w);
@@ -26,30 +19,30 @@ export class HashUtils {
     // window.location.hash returns the DECODED hash on Firefox (it's a well known bug),
     // so any & in values will be already unescaped. This breaks our value splitting.
     // The following trick works on all browsers.
-    let ret = '#' + (w.location.href.split('#')[1] || '');
+    var ret = '#' + (w.location.href.split('#')[1] || '');
     return HashUtils.getAjaxcrawlableHash(ret);
   }
 
-  public static getValue(key: string, toParse: string): any {
-    Assert.isNonEmptyString(key);
+  public static getValue(value: string, toParse: string): any {
+    Assert.isNonEmptyString(value);
     Assert.exists(toParse);
     toParse = HashUtils.getAjaxcrawlableHash(toParse);
-    let paramValue = HashUtils.getRawValue(key, toParse);
+    var paramValue = HashUtils.getRawValue(value, toParse);
     if (paramValue != undefined) {
-      paramValue = HashUtils.getValueDependingOnType(key, paramValue);
+      paramValue = HashUtils.getValueDependingOnType(paramValue);
     }
     return paramValue;
   }
 
   public static encodeValues(values: {}): string {
-    let hash: String[] = [];
+    var hash: String[] = [];
     _.each(<_.Dictionary<any>>values, (valueToEncode, key, obj?) => {
-      let encodedValue = '';
+      var encodedValue = '';
       if (Utils.isNonEmptyArray(valueToEncode)) {
         encodedValue = HashUtils.encodeArray(valueToEncode);
       } else if (_.isObject(valueToEncode) && Utils.isNonEmptyArray(_.keys(valueToEncode))) {
         encodedValue = HashUtils.encodeObject(valueToEncode);
-      } else if (!Utils.isNullOrUndefined(valueToEncode)) {
+      } else {
         encodedValue = encodeURIComponent(valueToEncode.toString());
       }
       if (encodedValue != '') {
@@ -68,18 +61,18 @@ export class HashUtils {
     }
   }
 
-  private static getRawValue(key: string, toParse: string): string {
-    Assert.exists(key);
+  private static getRawValue(value: string, toParse: string): string {
+    Assert.exists(value);
     Assert.exists(toParse);
     Assert.check(toParse.indexOf('#') == 0 || toParse == '');
 
-    let toParseArray = toParse.substr(1).split('&');
-    let paramPos = 0;
-    let loop = true;
-    let paramValue: string = undefined;
+    var toParseArray = toParse.substr(1).split('&');
+    var paramPos = 0;
+    var loop = true;
+    var paramValue: string = undefined;
     while (loop) {
-      let paramValuePair = toParseArray[paramPos].split('=');
-      if (paramValuePair[0] == key) {
+      var paramValuePair = toParseArray[paramPos].split('=');
+      if (paramValuePair[0] == value) {
         loop = false;
         paramValue = paramValuePair[1];
       } else {
@@ -93,10 +86,9 @@ export class HashUtils {
     return paramValue;
   }
 
-  private static getValueDependingOnType(key: string, paramValue: string): any {
-    let type = HashUtils.getValueType(key, paramValue);
-    let returnValue;
-
+  private static getValueDependingOnType(paramValue: string): any {
+    var type = HashUtils.getValueType(paramValue);
+    var returnValue;
     if (type == 'object') {
       returnValue = HashUtils.decodeObject(paramValue);
     } else if (type == 'array') {
@@ -107,20 +99,18 @@ export class HashUtils {
     return returnValue;
   }
 
-  private static getValueType(key: string, paramValue: string): string {
-    if (key == 'q') {
-      return 'other';
-    } else if (HashUtils.isObject(paramValue)) {
+  private static getValueType(paramValue: string): string {
+    if (HashUtils.isObject(paramValue)) {
       return 'object';
     } else if (HashUtils.isArray(paramValue)) {
-      return 'array';
+      return 'array'
     } else {
-      return 'other';
+      return 'other'
     }
   }
 
   private static isArrayStartNotEncoded(value: string) {
-    return value.substr(0, 1) == HashUtils.DELIMITER.arrayStart;
+    return value.substr(0, 1) == HashUtils.DELIMITER.arrayStart
   }
 
   private static isArrayStartEncoded(value: string) {
@@ -136,7 +126,7 @@ export class HashUtils {
   }
 
   private static isObjectStartNotEncoded(value: string) {
-    return value.substr(0, 1) == HashUtils.DELIMITER.objectStart;
+    return value.substr(0, 1) == HashUtils.DELIMITER.objectStart
   }
 
   private static isObjectStartEncoded(value: string) {
@@ -152,43 +142,46 @@ export class HashUtils {
   }
 
   private static isObject(value: string) {
-    let isObjectStart = HashUtils.isObjectStartNotEncoded(value) || HashUtils.isObjectStartEncoded(value);
-    let isObjectEnd = HashUtils.isObjectEndNotEncoded(value) || HashUtils.isObjectEndEncoded(value);
+    var isObjectStart = HashUtils.isObjectStartNotEncoded(value) || HashUtils.isObjectStartEncoded(value);
+    var isObjectEnd = HashUtils.isObjectEndNotEncoded(value) || HashUtils.isObjectEndEncoded(value);
     return isObjectStart && isObjectEnd;
   }
 
   private static isArray(value: string) {
-    let isArrayStart = HashUtils.isArrayStartNotEncoded(value) || HashUtils.isArrayStartEncoded(value);
-    let isArrayEnd = HashUtils.isArrayEndNotEncoded(value) || HashUtils.isArrayEndEncoded(value);
+    var isArrayStart = HashUtils.isArrayStartNotEncoded(value) || HashUtils.isArrayStartEncoded(value);
+    var isArrayEnd = HashUtils.isArrayEndNotEncoded(value) || HashUtils.isArrayEndEncoded(value);
     return isArrayStart && isArrayEnd;
   }
 
   public static encodeArray(array: string[]): string {
-    let arrayReturn = _.map(array, (value) => {
-      return encodeURIComponent(value);
+    var arrayReturn = [];
+    _.each(array, (value) => {
+      arrayReturn.push(encodeURIComponent(value));
     });
     return HashUtils.DELIMITER.arrayStart + arrayReturn.join(',') + HashUtils.DELIMITER.arrayEnd;
   }
 
   public static encodeObject(obj: Object): string {
-    let retArray = _.map(<_.Dictionary<any>>obj, (val, key?, obj?) => {
-      return `"${encodeURIComponent(key)}":${this.encodeValue(val)}`;
-    });
-    return HashUtils.DELIMITER.objectStart + retArray.join(' , ') + HashUtils.DELIMITER.objectEnd;
-  }
-
-  private static encodeValue(val: any) {
-    let encodedValue = '';
-    if (_.isArray(val)) {
-      encodedValue = HashUtils.encodeArray(val);
-    } else if (_.isObject(val)) {
-      encodedValue = HashUtils.encodeObject(val);
-    } else if (_.isNumber(val) || _.isBoolean(val)) {
-      encodedValue = encodeURIComponent(val.toString());
-    } else {
-      encodedValue = '"' + encodeURIComponent(val) + '"';
-    }
-    return encodedValue;
+    var ret = HashUtils.DELIMITER.objectStart;
+    var retArray = [];
+    _.each(<_.Dictionary<any>>obj, (val, key?, obj?) => {
+      var retValue = '';
+      retValue += '\'' + encodeURIComponent(key) + '\'' + ' : '
+      if (_.isArray(val)) {
+        retValue += HashUtils.encodeArray(val)
+      } else if (_.isObject(val)) {
+        retValue += HashUtils.encodeObject(val);
+      } else {
+        if (_.isNumber(val) || _.isBoolean(val)) {
+          retValue += encodeURIComponent(val)
+        } else {
+          retValue += '\'' + encodeURIComponent(val) + '\''
+        }
+      }
+      retArray.push(retValue)
+    })
+    ret += retArray.join(' , ');
+    return ret + HashUtils.DELIMITER.objectEnd;
   }
 
   private static decodeObject(obj: string): Object {
@@ -206,9 +199,9 @@ export class HashUtils {
     }
     value = value.substr(1);
     value = value.substr(0, value.length - 1);
-    let array = value.split(',');
+    var array = value.split(',');
     return _.map(array, (val) => {
       return decodeURIComponent(val);
-    });
+    })
   }
 }

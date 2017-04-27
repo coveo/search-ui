@@ -1,16 +1,9 @@
-import { Model } from './Model';
-import * as _ from 'underscore';
-
-export const QUERY_STATE_ATTRIBUTES = {
-  RESULT_LINK: 'resultLink',
-  SEARCH_HUB: 'searchHub',
-  SEARCH_BOX: 'searchBox'
-};
+import {Model} from './Model';
+import _ = require('underscore');
 
 export interface IComponentOptionsAttributes {
   resultLink: any;
   searchHub: string;
-  searchBox: any;
 }
 
 export class ComponentOptionsModel extends Model {
@@ -18,14 +11,12 @@ export class ComponentOptionsModel extends Model {
 
   static defaultAttributes: IComponentOptionsAttributes = {
     resultLink: undefined,
-    searchHub: undefined,
-    searchBox: undefined
+    searchHub: undefined
   };
 
   static attributesEnum = {
     resultLink: 'resultLink',
-    searchHub: 'searchHub',
-    searchBox: 'searchBox'
+    searchHub: 'searchHub'
   };
 
   constructor(element: HTMLElement, attributes?: IComponentOptionsAttributes) {

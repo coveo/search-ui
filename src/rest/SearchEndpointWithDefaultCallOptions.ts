@@ -1,19 +1,17 @@
-import { ISearchEndpoint, IEndpointCallOptions, IGetDocumentOptions, ISearchEndpointOptions, IViewAsHtmlOptions } from './SearchEndpointInterface';
-import { IQuery } from './Query';
-import { ITaggingRequest } from './TaggingRequest';
-import { IRatingRequest } from './RatingRequest';
-import { IQuerySuggestRequest } from './QuerySuggest';
-import { IQuerySuggestResponse } from './QuerySuggest';
-import { IIndexFieldValue } from '../rest/FieldValue';
-import { IQueryResult } from '../rest/QueryResult';
-import { IEndpointError } from '../rest/EndpointError';
-import { IExtension } from '../rest/Extension';
-import { IQueryResults } from './QueryResults';
-import { IFieldDescription } from '../rest/FieldDescription';
-import { IListFieldValuesRequest } from './ListFieldValuesRequest';
-import { ISubscriptionRequest, ISubscription } from './Subscription';
-import { ISentryLog } from './SentryLog';
-import * as _ from 'underscore';
+import {ISearchEndpoint, IEndpointCallOptions, IGetDocumentOptions, ISearchEndpointOptions, IViewAsHtmlOptions} from './SearchEndpointInterface';
+import {IQuery} from './Query';
+import {ITaggingRequest} from './TaggingRequest';
+import {IRatingRequest} from './RatingRequest';
+import {IRevealQuerySuggestRequest, IRevealQuerySuggestResponse} from './RevealQuerySuggest';
+import {IListFieldValuesRequest} from './ListFieldValuesRequest';
+import {ISubscriptionRequest, ISubscription} from './Subscription';
+import {IQueryResults} from './QueryResults';
+import {IQueryResult} from './QueryResult';
+import {IIndexFieldValue} from './FieldValue';
+import {IFieldDescription} from './FieldDescription';
+import {IExtension} from './Extension';
+import {IEndpointError} from './EndpointError';
+import _ = require('underscore');
 
 export class SearchEndpointWithDefaultCallOptions implements ISearchEndpoint {
   options: ISearchEndpointOptions;
@@ -22,12 +20,8 @@ export class SearchEndpointWithDefaultCallOptions implements ISearchEndpoint {
     this.options = endpoint.options;
   }
 
-  public getBaseUri(): string {
+  public getBaseUri() {
     return this.endpoint.getBaseUri();
-  }
-
-  public getBaseAlertsUri(): string {
-    return this.endpoint.getBaseAlertsUri();
   }
 
   public getAuthenticationProviderUri(provider: string, returnUri: string, message: string): string {
@@ -38,7 +32,7 @@ export class SearchEndpointWithDefaultCallOptions implements ISearchEndpoint {
     return this.endpoint.isJsonp();
   }
 
-  public search(query: IQuery, callOptions?: IEndpointCallOptions): Promise<IQueryResults> {
+  public search(query: IQuery, callOptions?: IEndpointCallOptions) {
     return this.endpoint.search(query, this.enrichCallOptions(callOptions));
   }
 
@@ -46,31 +40,31 @@ export class SearchEndpointWithDefaultCallOptions implements ISearchEndpoint {
     return this.endpoint.getExportToExcelLink(query, numberOfResults, this.enrichCallOptions(callOptions));
   }
 
-  public tagDocument(taggingRequest: ITaggingRequest, callOptions?: IEndpointCallOptions): Promise<boolean> {
+  public tagDocument(taggingRequest: ITaggingRequest, callOptions?: IEndpointCallOptions) {
     return this.endpoint.tagDocument(taggingRequest, this.enrichCallOptions(taggingRequest));
   }
 
-  public getQuerySuggest(request: IQuerySuggestRequest, callOptions?: IEndpointCallOptions): Promise<IQuerySuggestResponse> {
-    return this.endpoint.getQuerySuggest(request, this.enrichCallOptions(callOptions));
+  public getRevealQuerySuggest(request: IRevealQuerySuggestRequest, callOptions?: IEndpointCallOptions) {
+    return this.endpoint.getRevealQuerySuggest(request, this.enrichCallOptions(callOptions));
   }
 
-  public rateDocument(ratingRequest: IRatingRequest, callOptions?: IEndpointCallOptions): Promise<boolean> {
+  public rateDocument(ratingRequest: IRatingRequest, callOptions?: IEndpointCallOptions) {
     return this.endpoint.rateDocument(ratingRequest, this.enrichCallOptions(callOptions));
   }
 
-  public getRawDataStream(documentUniqueId: string, dataStreamType: string, callOptions?: IViewAsHtmlOptions): Promise<ArrayBuffer> {
+  public getRawDataStream(documentUniqueId: string, dataStreamType: string, callOptions?: IViewAsHtmlOptions) {
     return this.endpoint.getRawDataStream(documentUniqueId, dataStreamType, this.enrichCallOptions(callOptions));
   }
 
-  public getDocument(documentUniqueId: string, callOptions?: IGetDocumentOptions): Promise<IQueryResult> {
+  public getDocument(documentUniqueId: string, callOptions?: IGetDocumentOptions) {
     return this.endpoint.getDocument(documentUniqueId, this.enrichCallOptions(callOptions));
   }
 
-  public getDocumentText(documentUniqueID: string, callOptions?: IEndpointCallOptions): Promise<string> {
+  public getDocumentText(documentUniqueID: string, callOptions?: IEndpointCallOptions) {
     return this.endpoint.getDocumentText(documentUniqueID, this.enrichCallOptions(callOptions));
   }
 
-  public getDocumentHtml(documentUniqueID: string, callOptions?: IViewAsHtmlOptions): Promise<HTMLDocument> {
+  public getDocumentHtml(documentUniqueID: string, callOptions?: IViewAsHtmlOptions) {
     return this.endpoint.getDocumentHtml(documentUniqueID, this.enrichCallOptions(callOptions));
   }
 
@@ -82,36 +76,32 @@ export class SearchEndpointWithDefaultCallOptions implements ISearchEndpoint {
     return this.endpoint.getViewAsDatastreamUri(documentUniqueID, dataStreamType, this.enrichCallOptions(callOptions));
   }
 
-  public listFieldValues(request: IListFieldValuesRequest, callOptions?: IEndpointCallOptions): Promise<IIndexFieldValue[]> {
+  public listFieldValues(request: IListFieldValuesRequest, callOptions?: IEndpointCallOptions) {
     return this.endpoint.listFieldValues(request, this.enrichCallOptions(callOptions));
   }
 
-  public listFields(callOptions?: IEndpointCallOptions): Promise<IFieldDescription[]> {
+  public listFields(callOptions?: IEndpointCallOptions) {
     return this.endpoint.listFields(this.enrichCallOptions(callOptions));
   }
 
-  public extensions(callOptions?: IEndpointCallOptions): Promise<IExtension[]> | Promise<IEndpointError> {
+  public extensions(callOptions?: IEndpointCallOptions) {
     return this.endpoint.extensions(this.enrichCallOptions(callOptions));
   }
 
-  public follow(request: ISubscriptionRequest): Promise<ISubscription> {
+  public follow(request: ISubscriptionRequest) {
     return this.endpoint.follow(request);
   }
 
-  public listSubscriptions(page: number): Promise<ISubscription[]> {
+  public listSubscriptions(page: number) {
     return this.endpoint.listSubscriptions(page);
   }
 
-  public updateSubscription(subscription: ISubscription): Promise<ISubscription> {
+  public updateSubscription(subscription: ISubscription) {
     return this.endpoint.updateSubscription(subscription);
   }
 
-  public deleteSubscription(subscription: ISubscription): Promise<ISubscription> {
+  public deleteSubscription(subscription: ISubscription) {
     return this.endpoint.deleteSubscription(subscription);
-  }
-
-  public logError(sentryLog: ISentryLog): Promise<boolean> {
-    return this.endpoint.logError(sentryLog);
   }
 
   private enrichCallOptions<T extends IEndpointCallOptions>(callOptions?: T): T {

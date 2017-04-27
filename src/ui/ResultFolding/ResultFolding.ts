@@ -1,19 +1,16 @@
-import { Template } from '../Templates/Template';
-import { Component } from '../Base/Component';
-import { IComponentBindings } from '../Base/ComponentBindings';
-import { ComponentOptions } from '../Base/ComponentOptions';
-import { DefaultFoldingTemplate } from './DefaultFoldingTemplate';
-import { IQueryResult } from '../../rest/QueryResult';
-import { Utils } from '../../utils/Utils';
-import { QueryUtils } from '../../utils/QueryUtils';
-import { Initialization, IInitializationParameters, IInitResult } from '../Base/Initialization';
-import { Assert } from '../../misc/Assert';
-import { $$ } from '../../utils/Dom';
-import { l } from '../../strings/Strings';
-import * as _ from 'underscore';
-import { exportGlobally } from '../../GlobalExports';
-
-import 'styling/_ResultFolding';
+import {Template} from '../Templates/Template'
+import {Component} from '../Base/Component'
+import {IComponentBindings} from '../Base/ComponentBindings'
+import {ComponentOptions} from '../Base/ComponentOptions'
+import {DefaultFoldingTemplate} from './DefaultFoldingTemplate'
+import {Promise} from 'es6-promise';
+import {IQueryResult} from '../../rest/QueryResult'
+import {Utils} from '../../utils/Utils'
+import {QueryUtils} from '../../utils/QueryUtils'
+import {Initialization, IInitializationParameters} from '../Base/Initialization';
+import {Assert} from '../../misc/Assert'
+import {$$} from '../../utils/Dom'
+import {l} from '../../strings/Strings'
 
 export interface IResultFoldingOptions {
   resultTemplate?: Template;
@@ -25,86 +22,52 @@ export interface IResultFoldingOptions {
 }
 
 /**
- * The `ResultFolding` component renders folded result sets. It is usable inside a result template when there is an
- * active [`Folding`]{@link Folding} component in the page. This component takes care of rendering the parent result and
- * its child results in a coherent manner.
- *
- * This component is a result template component (see [Result Templates](https://developers.coveo.com/x/aIGfAQ)).
- *
- * See [Folding Results](https://developers.coveo.com/x/7hUvAg).
+ * This component is used to render folded result sets. It is intended to be used inside a
+ * <a href='https://developers.coveo.com/display/public/JsSearchV1/Result+Templates'>Result Template</a>
+ * when there is an active {@link Folding} component on the page. This component takes care of rendering
+ * the parent result and its child results in a coherent manner.
  */
 export class ResultFolding extends Component {
   static ID = 'ResultFolding';
-
-  static doExport = () => {
-    exportGlobally({
-      'ResultFolding': ResultFolding,
-      'DefaultFoldingTemplate': DefaultFoldingTemplate
-    });
-  }
 
   /**
    * The options for the component
    * @componentOptions
    */
   static options: IResultFoldingOptions = {
-
     /**
-     * Specifies the template to use to render each of the child results for a top result.
-     *
-     * You can specify a previously registered template to use either by referring to its HTML `id` attribute or to a
-     * CSS selector (see {@link TemplateCache}).
-     *
-     * **Example:**
-     *
-     * Specifying a previously registered template by referring to its HTML `id` attribute:
-     *
+     * Specifies the template to use to render each of the child results for a top result.<br/>
+     * By default, it will use the template specified in a child element with a `<script>` tag.<br/>
+     * This can be specified directly as an attribute to the element, for example :
      * ```html
-     * <span class="CoveoResultFolding" data-result-template-id="Foo"></span>
+     * <div class='CoveoResultFolding' data-result-template-id='Foo'></div>
      * ```
-     *
-     * Specifying a previously registered template by referring to a CSS selector:
-     *
-     * ```html
-     * <span class='CoveoResultFolding' data-result-template-selector="#Foo"></span>
-     * ```
-     *
-     * If you do not specify a custom folding template, the component uses the default result folding template.
+     * which will use a previously registered template ID (see {@link TemplateCache})
      */
     resultTemplate: ComponentOptions.buildTemplateOption({ defaultFunction: () => new DefaultFoldingTemplate() }),
-
     /**
-     * Specifies the caption to display at the top of the child results when the folding result set is not expanded.
-     *
-     * Default value is `undefined`, which displays no caption.
+     * Specifies the caption to show at the top of the child results when the conversation is not expanded.<br/>
+     * By default, the value is undefined, which doesn't show any caption.
      */
     normalCaption: ComponentOptions.buildLocalizedStringOption(),
-
     /**
-     * Specifies the caption to display at the top of the child results when the folding result set is expanded.
-     *
-     * Default value is `undefined`, which displays no caption.
+     * Specifies the caption to show at the top of the child results when the conversation is expanded.<br/>
+     * By default, the value is undefined, which doesn't show any caption.
      */
     expandedCaption: ComponentOptions.buildLocalizedStringOption(),
-
     /**
-     * Specifies the caption to display on the link to expand / show child results.
-     *
-     * Default value is the localized string for `ShowMore`.
+     * Specifies the caption to show on the link to expand / show child results
+     * The default value is the localized version of <code>ShowMore</code>.
      */
     moreCaption: ComponentOptions.buildLocalizedStringOption({ postProcessing: (value) => value || l('ShowMore') }),
-
     /**
-     * Specifies the caption to display on the link to shrink the loaded folding result set back to only the top result.
-     *
-     * Default value is the localized string for `ShowLess`.
+     * Specifies the caption to show on the link to shrink the loaded conversation back to only the top result.
+     * The default value is the localized version of <code>ShowLess</code>.
      */
     lessCaption: ComponentOptions.buildLocalizedStringOption({ postProcessing: (value) => value || l('ShowLess') }),
-
     /**
-     * Specifies the caption to display when there is only one result in a folding result set.
-     *
-     * Default value is the localized string for `DisplayingTheOnlyMessage`
+     * Specifies the caption to show when there is only one result in a conversation.
+     * The default value is the localized version of <code>DisplayingTheOnlyMessage</code>.
      */
     oneResultCaption: ComponentOptions.buildLocalizedStringOption({ postProcessing: (value) => value || l('DisplayingTheOnlyMessage') })
   };
@@ -121,13 +84,6 @@ export class ResultFolding extends Component {
 
   public childResults: IQueryResult[];
 
-  /**
-   * Creates a new ResultFolding component.
-   * @param options The options for the ResultFolding component.
-   * @param bindings The bindings that the component requires to function normally. If not set, these will be
-   * automatically resolved (with a slower execution time).
-   * @param result The result to associate the component with.
-   */
   constructor(public element: HTMLElement, public options?: IResultFoldingOptions, bindings?: IComponentBindings, public result?: IQueryResult) {
     super(element, ResultFolding.ID, bindings);
 
@@ -136,23 +92,14 @@ export class ResultFolding extends Component {
     Assert.exists(result);
 
     this.buildElements();
-    this.displayThoseResults(this.result.childResults).then(() => {
-      this.updateElementVisibility();
+    this.displayThoseResults(this.result.childResults);
+    this.updateElementVisibility();
 
-      if ($$(this.element.parentElement).hasClass('CoveoCardOverlay')) {
-        this.bindOverlayEvents();
-      }
-
-      if (this.result.childResults.length == 0 && !this.result.moreResults) {
-        $$(this.element).hide();
-      }
-    });
+    if (this.result.childResults.length == 0 && !this.result.moreResults) {
+      $$(this.element).hide();
+    }
   }
 
-  /**
-   *
-   * @returns {Promise<IQueryResult[]>}
-   */
   public showMoreResults() {
     Assert.exists(this.result.moreResults);
 
@@ -162,24 +109,19 @@ export class ResultFolding extends Component {
     this.results.appendChild(this.waitAnimation);
     this.updateElementVisibility();
 
-    let ret = this.moreResultsPromise
+    this.moreResultsPromise
       .then((results?: IQueryResult[]) => {
         this.childResults = results;
         this.showingMoreResults = true;
-        return this.displayThoseResults(results).then(() => {
-          this.updateElementVisibility(results.length);
-          return results;
-        });
-
+        this.displayThoseResults(results);
+        this.updateElementVisibility(results.length);
+        return results;
+      })
+      .finally((results?: IQueryResult[]) => {
+        this.moreResultsPromise = undefined;
+        $$(this.waitAnimation).detach();
+        this.waitAnimation = undefined;
       });
-
-    ret.finally(() => {
-      this.moreResultsPromise = undefined;
-      $$(this.waitAnimation).detach();
-      this.waitAnimation = undefined;
-    });
-
-    return ret;
   }
 
   public showLessResults() {
@@ -269,45 +211,31 @@ export class ResultFolding extends Component {
     window.scrollTo(0, window.scrollY + resultElem.getBoundingClientRect().top);
   }
 
-  private displayThoseResults(results: IQueryResult[]): Promise<boolean> {
-    const childResultsPromises = _.map(results, (result) => {
-      return this.renderChildResult(result);
-    });
-
-    return Promise.all(childResultsPromises).then((childsToAppend: HTMLElement[]) => {
-      $$(this.results).empty();
-      _.each(childsToAppend, (oneChild) => {
-        this.results.appendChild(oneChild);
-      });
-      return true;
+  private displayThoseResults(results: IQueryResult[]) {
+    $$(this.results).empty();
+    _.each(results, (result) => {
+      this.renderChildResult(result);
     });
   }
 
-  private renderChildResult(childResult: IQueryResult): Promise<HTMLElement> {
+  private renderChildResult(childResult: IQueryResult) {
     QueryUtils.setStateObjectOnQueryResult(this.queryStateModel.get(), childResult);
-    QueryUtils.setSearchInterfaceObjectOnQueryResult(this.searchInterface, childResult);
 
-    return this.options.resultTemplate.instantiateToElement(childResult, {
-      wrapInDiv: false,
-      checkCondition: false,
-      responsiveComponents: this.searchInterface.responsiveComponents
-    }).then((oneChild: HTMLElement) => {
-      $$(oneChild).addClass('coveo-result-folding-child-result');
+    let oneChild = this.options.resultTemplate.instantiateToElement(childResult)
+    $$(oneChild).addClass('coveo-result-folding-child-result');
+    this.results.appendChild(oneChild);
 
-      $$(oneChild).toggleClass('coveo-normal-child-result', !this.showingMoreResults);
-      $$(oneChild).toggleClass('coveo-expanded-child-result', this.showingMoreResults);
-      return this.autoCreateComponentsInsideResult(oneChild, childResult).initResult.then(() => {
-        return oneChild;
-      });
-    });
+    $$(oneChild).toggleClass('coveo-normal-child-result', !this.showingMoreResults);
+    $$(oneChild).toggleClass('coveo-expanded-child-result', this.showingMoreResults);
+    this.autoCreateComponentsInsideResult(oneChild, childResult);
   }
 
-  private autoCreateComponentsInsideResult(element: HTMLElement, result: IQueryResult): IInitResult {
+  private autoCreateComponentsInsideResult(element: HTMLElement, result: IQueryResult) {
     Assert.exists(element);
 
     let initOptions = this.searchInterface.options;
-    let initParameters: IInitializationParameters = { options: initOptions, bindings: this.getBindings(), result: result };
-    return Initialization.automaticallyCreateComponentsInside(element, initParameters);
+    let initParameters: IInitializationParameters = { options: initOptions, bindings: this.getBindings(), result: result }
+    Initialization.automaticallyCreateComponentsInside(element, initParameters);
   }
 
   private cancelAnyPendingShowMore() {
@@ -317,14 +245,6 @@ export class ResultFolding extends Component {
 
     Assert.doesNotExists(this.moreResultsPromise);
     Assert.doesNotExists(this.waitAnimation);
-  }
-
-  private bindOverlayEvents() {
-    this.bind.one(this.element.parentElement, 'openCardOverlay', () => {
-      if (this.result.moreResults) {
-        this.showMoreResults();
-      }
-    });
   }
 }
 

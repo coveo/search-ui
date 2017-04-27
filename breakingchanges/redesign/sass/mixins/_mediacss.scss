@@ -1,0 +1,8 @@
+@mixin mediaCss($size){
+  .coveo-layout#{$size} {
+    @content;
+  }
+  @media (max-width: $size * 1px) {
+    @content;
+  }
+}

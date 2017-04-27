@@ -1,13 +1,9 @@
-@import 'Variables';
-@import 'bourbon/bourbon';
-@import url('https://fonts.googleapis.com/css?family=Lato:300,400,700');
-
 .CoveoSearchInterface {
   display: none; //hide the UI while loading
   min-height: 100%;
   position: relative;
   margin: 0;
-  font-family: "Lato", $helvetica, sans-serif;
+  font-family: $helvetica, sans-serif;
   font-size: 15px;
   color: $color-dark-grey;
 
@@ -38,8 +34,27 @@
   }
 }
 
-body.coveo-modalBox-opened {
-  &, .CoveoSearchInterface {
+.coveo-hide-until-loaded {
+  display: none;
+}
+
+.coveo-show-after-loaded {
+  @include animation-name(coveo-appear);
+  @include animation-duration(1s);
+}
+
+body.coveo-modalBox-opened{
+  &, .CoveoSearchInterface{
     overflow: hidden;
+  }
+}
+
+@include keyframes(coveo-appear) {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
   }
 }

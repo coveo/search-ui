@@ -1,5 +1,5 @@
-import { Model } from './Model';
-import { BaseComponent } from '../ui/Base/BaseComponent';
+import {Model} from './Model';
+import {BaseComponent} from '../ui/Base/BaseComponent';
 
 export class ComponentStateModel extends Model {
   static ID = 'ComponentState';

@@ -1,15 +1,9 @@
-import { LiveAnalyticsClient } from './LiveAnalyticsClient';
-import { IAnalyticsActionCause, analyticsActionCauseList } from './AnalyticsActionListMeta';
-import { IQueryResult } from '../../rest/QueryResult';
-import { AnalyticsEndpoint } from '../../rest/AnalyticsEndpoint';
-import { Component } from '../Base/Component';
-import { IComponentBindings } from '../Base/ComponentBindings';
-import { Recommendation } from '../Recommendation/Recommendation';
-import { SearchInterface } from '../SearchInterface/SearchInterface';
+import {LiveAnalyticsClient} from './LiveAnalyticsClient';
+import {AnalyticsEndpoint} from '../../rest/AnalyticsEndpoint';
+import {IComponentBindings} from '../Base/ComponentBindings';
+import {Recommendation} from '../Recommendation/Recommendation';
 
 export class RecommendationAnalyticsClient extends LiveAnalyticsClient {
-
-  private recommendation: Recommendation;
 
   constructor(public endpoint: AnalyticsEndpoint,
     public rootElement: HTMLElement,
@@ -22,34 +16,10 @@ export class RecommendationAnalyticsClient extends LiveAnalyticsClient {
     public sendToCloud: boolean,
     public bindings: IComponentBindings) {
     super(endpoint, rootElement, userId, userDisplayName, anonymous, splitTestRunName, splitTestRunVersion, originLevel1, sendToCloud);
-    this.recommendation = <Recommendation>this.bindings.searchInterface;
-  }
-
-  public logSearchEvent<TMeta>(actionCause: IAnalyticsActionCause, meta: TMeta) {
-    if (actionCause == analyticsActionCauseList.interfaceLoad) {
-      actionCause = analyticsActionCauseList.recommendationInterfaceLoad;
-    }
-    super.logSearchEvent(actionCause, meta);
-  }
-
-  public logClickEvent<TMeta>(actionCause: IAnalyticsActionCause, meta: TMeta, result: IQueryResult, element: HTMLElement) {
-    if (actionCause == analyticsActionCauseList.documentOpen) {
-      actionCause = analyticsActionCauseList.recommendationOpen;
-    }
-
-    super.logClickEvent(actionCause, meta, result, element);
-
-
-    if (this.recommendation.mainQuerySearchUID && this.recommendation.mainQueryPipeline != null) {
-      // We log a second click associated with the main interface query to tell the analytics that the query was a success.
-      let mainInterface = <SearchInterface>Component.get(this.recommendation.options.mainSearchInterface, SearchInterface);
-      result.queryUid = this.recommendation.mainQuerySearchUID;
-      result.pipeline = this.recommendation.mainQueryPipeline;
-      mainInterface.usageAnalytics.logClickEvent(actionCause, meta, result, element);
-    }
   }
 
   protected getOriginLevel2(element: HTMLElement): string {
-    return this.recommendation.getId();
+    var recommendation = <Recommendation>this.bindings.searchInterface;
+    return recommendation.getId();
   }
 }

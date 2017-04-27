@@ -1,31 +1,21 @@
 /**
- * The IRangeValue interface describes a single range of values in a group by clause.
+ * Describe a single rangle value in a group by
  */
 export interface IRangeValue {
-
   /**
-   * Specifies the start of the range.
-   *
-   * E.g., `0`
+   * Start of the range.
    */
   start?: any;
-
   /**
-   * Specifies the end of the range.
-   *
-   * E.g., `500`
+   * End of the range
    */
   end?: any;
-
   /**
-   * Specifies the label to generate for this range.
-   *
-   * E.g., `0 - 500`
+   * Label to generate for this range
    */
   label?: string;
-
   /**
-   * Specifies whether to include the value of the [end]{@link IRangeValue.end} property in this range.
+   * Is the end parameter included or excluded in this range.
    */
   endInclusive?: boolean;
 }

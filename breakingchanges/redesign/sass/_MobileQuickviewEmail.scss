@@ -1,0 +1,14 @@
+.coveo-quick-view-header-mobile-email {
+	.coveo-date{
+		float:right;
+		font-size:11px;
+		font-weight:bold;
+		margin-left:10px;
+	}
+	.coveo-email-from, .coveo-email-to {
+		font-size:12px;
+		a {
+			@include coveo-clickable-link-inside-result;
+		}
+	}
+}

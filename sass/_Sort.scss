@@ -1,8 +1,3 @@
-@import "mixins/resultsHeaderElement";
-@import "../bin/sass/sprites";
-@import "bourbon/bourbon";
-@import "Variables";
-
 $stop-float: new-breakpoint(max-width 480px 1);
 
 .coveo-sort-section {
@@ -11,25 +6,43 @@ $stop-float: new-breakpoint(max-width 480px 1);
 }
 
 .CoveoSort {
-  @include resultsHeaderElement();
+  font-size: $font-size-smallest;
+  font-weight: bold;
+  padding: 0px 5px 10px 5px;
+  border-bottom: $default-border;
+  text-transform: uppercase;
+
+  border-bottom: 2px solid $color-light-grey;
+  padding-bottom: 11px;
+
+  &.coveo-selected, &.coveo-selected:hover {
+    border-bottom: 2px solid $color-greyish-dark-blue;
+  }
+
+  &:hover {
+    color: $color-greyish-dark-blue;
+  }
+
+  cursor: pointer;
+
   .coveo-icon {
     margin-left: 5px;
     position: relative;
-    top: 2px;
-    @include retina-sprite($arrow-down-group);
+    top: 3px;
+    @extend .coveo-sprites-arrow-down;
   }
 
   &.coveo-ascending {
     .coveo-icon {
-      @include retina-sprite($arrow-up-group);
+      @extend .coveo-sprites-arrow-up;
     }
   }
   &.coveo-descending {
     .coveo-icon {
-      @include retina-sprite($arrow-down-group);
+      @extend .coveo-sprites-arrow-down;
     }
   }
-
+  
   &.coveo-sort-hidden {
     display: none;
   }

@@ -1,10 +1,8 @@
-import * as Mock from '../MockEnvironment';
-import { SearchButton } from '../../src/ui/SearchButton/SearchButton';
-import { analyticsActionCauseList } from '../../src/ui/Analytics/AnalyticsActionListMeta';
+/// <reference path="../Test.ts" />
 
-export function SearchButtonTest() {
+module Coveo {
   describe('SearchButton', () => {
-    var test: Mock.IBasicComponentSetup<SearchButton>;
+    var test: Mock.IBasicComponentSetup<SearchButton>
 
     beforeEach(function () {
       test = Mock.basicComponentSetup<SearchButton>(SearchButton);
@@ -12,7 +10,7 @@ export function SearchButtonTest() {
 
     afterEach(function () {
       test = null;
-    });
+    })
 
     it('can be initialized', function () {
       expect(test.cmp).toBeDefined();
@@ -25,8 +23,7 @@ export function SearchButtonTest() {
 
     it('will log an analytics event', function () {
       test.cmp.click();
-      expect(test.env.usageAnalytics.logSearchEvent).toHaveBeenCalledWith(analyticsActionCauseList.searchboxSubmit, {});
-    });
-  });
-
+      expect(test.env.usageAnalytics.logSearchEvent).toHaveBeenCalledWith(analyticsActionCauseList.searchboxSubmit, {})
+    })
+  })
 }

@@ -1,6 +1,3 @@
-@import "Variables";
-@import "../bin/sass/sprites";
-
 .CoveoResultFolding {
 
   .coveo-folding-results {
@@ -19,18 +16,11 @@
   }
 }
 
-.coveo-list-layout {
-  .coveo-result-folding-child-result {
-    border-left: $default-border;
-    padding: 0px 0px 0px 6px;
-    &:hover {
-      border-left: 1px solid $color-teal;
-    }
-  }
-  .coveo-folding-normal-caption,
-  .coveo-folding-expanded-caption,
-  .coveo-folding-oneresult-caption {
-    color: #333333;
+.coveo-result-folding-child-result {
+  border-left: $default-border;
+  padding: 0px 0px 0px 6px;
+  &:hover {
+    border-left: 1px solid $color-teal;
   }
 }
 
@@ -42,6 +32,7 @@
 .coveo-folding-expanded-caption,
 .coveo-folding-oneresult-caption {
   font-size: 11px;
+  color: #333333;
   margin-bottom: 10px;
   &.coveo-hidden {
     display: none;
@@ -64,7 +55,7 @@
   display: inline-block;
   vertical-align: middle;
   .coveo-folding-footer-icon {
-    @include retina-sprite($arrow-down-group);
+    @extend .coveo-sprites-arrow-down;
     position: relative;
     top: 1px;
   }
@@ -76,7 +67,7 @@
   }
   display: inline-block;
   .coveo-folding-footer-icon {
-    @include retina-sprite($arrow-up-group);
+    @extend .coveo-sprites-arrow-up;
     position: relative;
     top: 1px;
   }
@@ -86,31 +77,9 @@ a.coveo-folding-show-more, a.coveo-folding-show-less {
   @include clickable();
 }
 
-.coveo-card-layout {
-  a.coveo-folding-show-more, a.coveo-folding-show-less {
-    @include clickable($dark-background: true);
-  }
-}
-
 .coveo-child-result {
   margin-bottom: 5px;
   * {
     vertical-align: middle;
-  }
-}
-
-.coveo-card-overlay {
-  .coveo-folding-header,
-  .coveo-folding-results,
-  .coveo-folding-footer {
-    padding-left: 20px;
-    padding-right: 20px;
-  }
-  .coveo-folding-header {
-    margin-top: 10px;
-  }
-
-  .coveo-result-folding-child-result:not(:last-child) {
-    border-bottom: 1px solid $color-light-grey;
   }
 }

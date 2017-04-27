@@ -1,17 +1,14 @@
-import { ComponentOptions } from '../Base/ComponentOptions';
-import { Component } from '../Base/Component';
-import { IComponentBindings } from '../Base/ComponentBindings';
-import { Initialization } from '../Base/Initialization';
-import { $$ } from '../../utils/Dom';
-import { exportGlobally } from '../../GlobalExports';
 
-import 'styling/_Text';
+import {ComponentOptions} from '../Base/ComponentOptions';
+import {Component} from '../Base/Component';
+import {IComponentBindings} from '../Base/ComponentBindings';
+import {Initialization} from '../Base/Initialization';
+import {$$} from '../../utils/Dom';
 
 export interface ITextOptions {
   value?: string;
   size?: string;
   style?: string;
-  color?: string;
   weight?: string;
   textAlign?: string;
 
@@ -27,116 +24,77 @@ export interface ITextOptions {
 }
 
 /**
- * The Text component embeds itself in a result template to output a simple text value.
- *
- * The only purpose of this component is to make it possible to easily add different text values to result templates
- * when using the Coveo JavaScript Search Interface Editor (see
- * [JavaScript Search Interface Editor](http://www.coveo.com/go?dest=cloudhelp&lcid=9&context=230)).
- *
- * If you are not designing a search interface using the Coveo JavaScript Search Interface Editor, using this component
- * is unnecessary.
- *
- * This component is a result template component (see [Result Templates](https://developers.coveo.com/x/aIGfAQ)).
+ * This component only role is to be embedded in a result template and to output a simple text value.<br/>
+ * Thus, the only purpose is to be able to easily add different text value with the interface editor.<br/>
+ * If you are not designing a search using the interface editor, the usage of this component is not pertinent.
  */
 export class Text extends Component {
   static ID = 'Text';
-
-  static doExport = () => {
-    exportGlobally({
-      'Text': Text
-    });
-  }
 
   /**
    * @componentOptions
    */
   static options: ITextOptions = {
-
     /**
-     * Specifies the localized string value that the component should render.
+     * The localized string value that the component should render
      */
     value: ComponentOptions.buildLocalizedStringOption(),
-
     /**
-     * Specifies the size of the text (set as the `font-size` CSS property).
+     * The size of the text (set as the font-size css property)
      */
     size: ComponentOptions.buildStringOption(),
-
     /**
-     * Specifies the style of the text (set as the `font-style` CSS property).
+     * The style of the text (set as the font-style css property)
      */
     style: ComponentOptions.buildStringOption(),
-
     /**
-     * Specifies the color of the text (set as the `color` CSS property).
-     */
-    color: ComponentOptions.buildStringOption(),
-
-    /**
-     * Specifies the weight of the text (set as the `font-weight` CSS property).
+     * The weight of the text (set as the font-weight css property)
      */
     weight: ComponentOptions.buildStringOption(),
-
     /**
-     * Specifies the alignment of the text (set as the `text-align` CSS property).
+     * The alignment of the text (set as the text-align css property)
      */
     textAlign: ComponentOptions.buildStringOption(),
-
     /**
-     * Specifies the top margin of the text (set as the `margin-top` CSS property).
+     * The margin top of the text (set as the margin-top css property)
      */
     marginTop: ComponentOptions.buildStringOption(),
-
     /**
-     * Specifies the bottom margin of the text (set as the `margin-bottom` CSS property).
+     * The margin bottom of the text (set as the margin-bottom css property)
      */
     marginBottom: ComponentOptions.buildStringOption(),
-
     /**
-     * Specifies the left margin of the text (set as the `margin-left` CSS property).
+     * The margin left of the text (set as the margin-left css property)
      */
     marginLeft: ComponentOptions.buildStringOption(),
-
     /**
-     * Specifies the right margin of the text (set as the `margin-right` CSS property).
+     * The margin right of the text (set as the margin-right css property)
      */
     marginRight: ComponentOptions.buildStringOption(),
-
     /**
-     * Specifies the top padding of the text (set as the `padding-top` CSS property).
+     * The padding top of the text (set as the padding-top css property)
      */
     paddingTop: ComponentOptions.buildStringOption(),
-
     /**
-     * Specifies the bottom padding of the text (set as the `padding-bottom` CSS property).
+     * The padding bottom of the text (set as the padding-bottom css property)
      */
     paddingBottom: ComponentOptions.buildStringOption(),
-
     /**
-     * Specifies the left padding of the text (set as the `padding-left` CSS property).
+     * The padding left of the text (set as the padding-left css property)
      */
     paddingLeft: ComponentOptions.buildStringOption(),
-
     /**
-     * Specifies the right padding of the text (set as the `padding-right` CSS property).
+     * The padding right of the text (set as the padding-right css property)
      */
     paddingRight: ComponentOptions.buildStringOption()
   };
 
-  /**
-   * Creates a new Text component.
-   * @param element The HTMLElement on which to instantiate the component.
-   * @param options The options for the Text component.
-   * @param bindings The bindings that the component requires to function normally. If not set, these will be
-   * automatically resolved (with a slower execution time).
-   */
   constructor(public element: HTMLElement, public options?: ITextOptions, bindings?: IComponentBindings) {
     super(element, Text.ID, bindings);
     this.options = ComponentOptions.initComponentOptions(element, Text, options);
     $$(this.element).text(this.options.value);
     this.element.style.fontSize = this.options.size;
     this.element.style.fontStyle = this.options.style;
-    this.element.style.color = this.options.color;
     this.element.style.fontWeight = this.options.weight;
     this.element.style.textAlign = this.options.textAlign;
     this.element.style.marginTop = this.options.marginTop;

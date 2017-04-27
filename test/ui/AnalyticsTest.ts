@@ -1,15 +1,6 @@
-import * as Mock from '../MockEnvironment';
-import { Analytics } from '../../src/ui/Analytics/Analytics';
-import { SearchEndpoint } from '../../src/rest/SearchEndpoint';
-import { IAnalyticsOptions } from '../../src/ui/Analytics/Analytics';
-import { Simulate } from '../Simulate';
-import { analyticsActionCauseList } from '../../src/ui/Analytics/AnalyticsActionListMeta';
-import { NoopAnalyticsClient } from '../../src/ui/Analytics/NoopAnalyticsClient';
-import { LiveAnalyticsClient } from '../../src/ui/Analytics/LiveAnalyticsClient';
-import { MultiAnalyticsClient } from '../../src/ui/Analytics/MultiAnalyticsClient';
+/// <reference path="../Test.ts" />
 
-
-export function AnalyticsTest() {
+module Coveo {
   describe('Analytics', () => {
 
     describe('with default setup', () => {
@@ -43,7 +34,7 @@ export function AnalyticsTest() {
       });
 
       it('log an event on query error', () => {
-        spyOn(test.cmp.client, 'logCustomEvent');
+        spyOn(test.cmp.client, 'logCustomEvent')
         Simulate.query(test.env, {
           error: {
             message: 'oops',

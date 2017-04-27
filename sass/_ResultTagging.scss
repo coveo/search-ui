@@ -1,21 +1,17 @@
-@import "Variables";
-@import "../bin/sass/sprites";
-
 .coveo-result-tagging-add-tag {
   display: inline-block;
   margin: 1px 2px;
 }
-
 .coveo-result-tagging-add-tag-text {
   color: #DDD;
   font-size: 11px;
 }
-
+.coveo-result-tagging-add-tag-icon {
+}
 .coveo-result-tagging-auto-complete-zone {
   display: none;
   position: relative;
 }
-
 .coveo-result-tagging-coveo-tag {
   display: inline-block;
   margin: 0 2px;
@@ -35,7 +31,6 @@
     color: #DDD;
   }
 }
-
 .coveo-result-tagging-add-tag-tick-icon {
   display: inline-block;
   background: #B0B3AE;
@@ -43,11 +38,10 @@
   line-height: 22px;
   height: 22px;
   span {
-    @include retina-sprite($tagging-ok-group);
+    @extend .coveo-sprites-tagging-ok;
     cursor: pointer;
   }
 }
-
 .coveo-result-tagging-clear-icon {
   display: inline-block;
   background: #B0B3AE;
@@ -57,11 +51,10 @@
   border-bottom-right-radius: 3px;
   border-top-right-radius: 3px;
   span {
-    @include retina-sprite($tagging-clear-group);
+    @extend .coveo-sprites-tagging-clear;
     cursor: pointer;
   }
 }
-
 .coveo-result-tagging-add-tag-textbox {
   margin: 0;
   border: 1px solid #B0B3AE;
@@ -74,22 +67,18 @@
   border-bottom-left-radius: 3px;
   outline: none;
 }
-
 .coveo-result-tagging-add-tag-textbox:focus {
   border-color: #9ecaed;
   box-shadow: inset 0 0 3px #9ecaed;
 }
-
 .coveo-result-tagging-tag-zone {
   display: inline-block;
 }
-
 .coveo-result-tagging-delete-icon {
-  @include retina-sprite($tagging-clear-group);
+  @extend .coveo-sprites-tagging-clear;
   cursor: pointer;
   margin-left: 2px;
 }
-
 .coveo-result-tagging-auto-complete {
   position: absolute;
   padding-top: 1px;
@@ -113,7 +102,6 @@
     background-color: #d7ebff;
   }
 }
-
 .CoveoResultTagging {
   margin: 0 3px;
   font-size: 12px;
@@ -121,7 +109,6 @@
     vertical-align: middle;
   }
 }
-
 .CoveoResultTagging {
   display: inline-block;
   &.coveo-opened {

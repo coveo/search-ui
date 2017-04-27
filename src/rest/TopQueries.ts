@@ -1,4 +1,4 @@
-import { IStringMap } from './GenericParam';
+import {IStringMap} from './GenericParam';
 
 /**
  * Describe a request to get top queries

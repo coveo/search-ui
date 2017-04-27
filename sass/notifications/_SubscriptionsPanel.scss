@@ -3,12 +3,6 @@
   margin-top: 10px;
   display: none;
 }
-
-.coveo-modalBox.coveo-subscriptions-panel > .coveo-wrapper > .coveo-title {
-  cursor: inherit;
-}
-
-
 .coveo-subscriptions-panel {
   > .coveo-wrapper {
     overflow: visible;
@@ -17,15 +11,8 @@
     max-height: 600px;
     min-width: 500px;
   }
-
-  @media (max-width: 600px) {
-    .coveo-body {
-      min-width: inherit;
-    }
-  }
-
   .coveo-subscriptions-panel-fail {
-    padding: 10px 0px ;
+    padding: 10px;
   }
   .coveo-subscriptions-panel-close {
     float: right;
@@ -35,10 +22,10 @@
     background-color: #f7f7f7;
     height: 24px;
     width: 24px;
-    @include clearButton('.coveo-icon');
-    .coveo-icon {
-      vertical-align: text-top;
-    }
+  }
+  .coveo-subscriptions-panel-title {
+    font-size: 18px;
+    text-align: left;
   }
   .coveo-subscriptions-panel-content {
     width: 100%; 

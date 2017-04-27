@@ -1,12 +1,12 @@
-import { ExpressionBuilder } from './ExpressionBuilder';
-import { IRankingFunction } from '../../rest/RankingFunction';
-import { IQueryFunction } from '../../rest/QueryFunction';
-import { IGroupByRequest } from '../../rest/GroupByRequest';
-import { IQuery } from '../../rest/Query';
-import * as _ from 'underscore';
+import {ExpressionBuilder} from './ExpressionBuilder';
+import {QueryUtils} from '../../utils/QueryUtils';
+import {IRankingFunction} from '../../rest/RankingFunction';
+import {IQueryFunction} from '../../rest/QueryFunction';
+import {IGroupByRequest} from '../../rest/GroupByRequest';
+import {IQuery} from '../../rest/Query';
 
 /**
- * Describe the expressions part of a QueryBuilder.
+ * Describe the expressions part of a QueryBuilder
  */
 export interface IQueryBuilderExpression {
   /**
@@ -14,7 +14,7 @@ export interface IQueryBuilderExpression {
    */
   full?: string;
   /**
-   * The full part, but without the constant.
+   * The full part, but without the constant
    */
   withoutConstant?: string;
   /**
@@ -50,27 +50,20 @@ export class QueryBuilder {
   public advancedExpression: ExpressionBuilder = new ExpressionBuilder();
   /**
    * Used to build the advanced part of the query expression.<br/>
-   * This part is similar to `advancedExpression`, but its content is interpreted as a constant expression by the index and it takes advantage of special caching features.
+   * This part is similar to advancedExpression, but its content is interpreted as a constant expression by the index and it takes advantage of special caching features.
    * @type {Coveo.ExpressionBuilder}
    */
   public constantExpression: ExpressionBuilder = new ExpressionBuilder();
   /**
-   * The contextual text.<br/>
-   * This is the contextual text part of the query. It uses the Coveo Machine Learning service to pick key keywords from the text and add them to the basic expression.
-   * This field is mainly used to pass context such a case description, long textual query or any other form of text that might help in
-   * refining the query.
-   */
-  public longQueryExpression: ExpressionBuilder = new ExpressionBuilder();
-  /**
    * Used to build the disjunctive part of the query expression.<br/>
-   * When present, this part is evaluated separately from the other expressions and the matching results are merged to those matching expressions, `advancedExpression` and `constantExpression`.<br/>
+   * When present, this part is evaluated separately from the other expressions and the matching results are merged to those matching expression, advancedExpression and constantExpression.<br/>
    * The final boolean expression for the query is thus (basic advanced constant) OR (disjunction).
    * @type {Coveo.ExpressionBuilder}
    */
   public disjunctionExpression: ExpressionBuilder = new ExpressionBuilder();
   /**
    * The hub value set from the {@link Analytics} component.<br/>
-   * Used for analytics reporting in the Coveo platform.
+   * Used for analytics reporting in the Coveo platform
    */
   public searchHub: string;
   /**
@@ -92,7 +85,7 @@ export class QueryBuilder {
   /**
    * Whether to enable wildcards on the basic expression keywords.<br/>
    * This enables the wildcard features of the index. Coveo Platform will expand keywords containing wildcard characters to the possible matching keywords to broaden the query.<br/>
-   * (see : https://onlinehelp.coveo.com/en/ces/7.0/user/using_wildcards_in_queries.htm).<br/>
+   * See : https://onlinehelp.coveo.com/en/ces/7.0/user/using_wildcards_in_queries.htm<br/>
    * If not specified, this parameter defaults to false.
    */
   public enableWildcards: boolean;
@@ -102,13 +95,13 @@ export class QueryBuilder {
    */
   public enableQuestionMarks: boolean;
   /**
-   * Whether to enable the special query syntax such as field references for the basic query expression (parameter q).
+   * Whether to disable the special query syntax such as field references for the basic query expression (parameter q).
    * It is equivalent to a No syntax block applied to the basic query expression.
-   * If not specified, the parameter defaults to false.
+   * If not specified, the parameter defaults to false
    */
-  public enableQuerySyntax: boolean = false;
+  public disableQuerySyntax: boolean = false;
   /**
-   * Whether to enable the support for operator in lowercase (AND OR -> and or).
+   * Whether to enable the support for operator in lowercase (AND OR -> and or)
    */
   public enableLowercaseOperators: boolean;
   /**
@@ -154,15 +147,15 @@ export class QueryBuilder {
    */
   public filterField: string;
   /**
-   * Number of results that should be folded, using the {@link IQuery.filterField}.
+   * Number of results that should be folded, using the {@link IQuery.filterField}
    */
   public filterFieldRange: number;
   /**
-   * Specifies the `parentField` when doing parent-child loading (See : {@link Folding}).
+   * Specifies the parentField when doing parent-child loading (See : {@link Folding})
    */
   public parentField: string;
   /**
-   * Specifies the childField when doing parent-child loading (See : {@link Folding}).
+   * Specifies the childField when doing parent-child loading (See : {@link Folding})
    */
   public childField: string;
   public fieldsToInclude: string[];
@@ -170,43 +163,43 @@ export class QueryBuilder {
   public includeRequiredFields: boolean = false;
   public fieldsToExclude: string[];
   /**
-   * Whether to enable query corrections on this query (see {@link DidYouMean}).
+   * Whether to enable query corrections on this query. See {@link DidYouMean}
    */
   public enableDidYouMean: boolean = false;
   /**
    * Whether to enable debug info on the query.<br/>
    * This will return additional information on the resulting JSON response from the Search API.<br/>
-   * Mostly: execution report (a detailed breakdown of the parsed and executed query).
+   * Mostly : execution report (a detailed breakdown of the parsed and executed query)
    */
   public enableDebug: boolean = false;
   /**
-   * Whether the index should take collaborative rating in account when ranking result (see : {@link ResultRating}).
+   * Whether the index should take collaborative rating in account when ranking result. See : {@link ResultRating}
    */
   public enableCollaborativeRating: boolean;
   /**
-   * This specifies the sort criterion(s) to use to sort results. If not specified, this parameter defaults to relevancy.<br/>
+   * This specifies the sort criterion(s) to use to sort results. If not specified, this parameter defaults to Relevancy.<br/>
    * Possible values are : <br/>
    * -- relevancy :  This uses all the configured ranking weights as well as any specified ranking expressions to rank results.<br/>
-   * -- dateascending / datedescending Sort using the value of the `@date` field, which is typically the last modification date of an item in the index.<br/>
-   * -- qre : Sort using only the weights applied through ranking expressions. This is much like using `relevancy` except that automatic weights based on keyword proximity etc, are not computed.<br/>
+   * -- dateascending / datedescending : Sort using the value of the @date field, which is typically the last modification date of an item in the index.<br/>
+   * -- qre : Sort using only the weights applied through ranking expressions. This is much like using Relevancy except that automatic weights based on keyword proximity etc, are not computed.<br/>
    * -- nosort : Do not sort the results. The order in which items are returned is essentially random.<br/>
-   * -- @field ascending / @field descending Sort using the value of a custom field.
+   * -- @field ascending / @field descending : Sort using the value of a custom field.
    */
   public sortCriteria: string = 'relevancy';
   public sortField: string;
   public retrieveFirstSentences: boolean = true;
   public timezone: string;
-  public queryUid: string;
+  public queryUid: string = QueryUtils.createGuid();
   /**
    * This specifies an array of Query Function operation that will be executed on the results.
    */
   public queryFunctions: IQueryFunction[] = [];
   /**
-   * This specifies an array of Ranking Function operations that will be executed on the results.
+   * This specifies an array of Ranking Function operations that will be executed on the result
    */
   public rankingFunctions: IRankingFunction[] = [];
   /**
-   * This specifies an array of Group By operations that can be performed on the query results to extract facets.
+   * This specifies an array of Group By operations that can be performed on the query results to extract facets
    */
   public groupByRequests: IGroupByRequest[] = [];
   public enableDuplicateFiltering: boolean = false;
@@ -214,18 +207,16 @@ export class QueryBuilder {
    * The context is a map of key_value that can be used in the Query pipeline in the Coveo platform.<br/>
    */
   public context: { [key: string]: any };
+
   /**
-   * The actions history represents the past actions a user made and is used by the Coveo Machine Learning service to suggest recommendations.
-   * It is generated by the page view script (https://github.com/coveo/coveo.analytics.js).
+   * The actions history represents the past actions a user made and is used by reveal to suggest recommendations.
+   * It is generated by the page view script (https://github.com/coveo/coveo.analytics.js)
    */
   public actionsHistory: string;
+
   /**
-   * This is the ID of the recommendation interface that generated the query.
-   */
-  public recommendation: string;
-  /**
-   * Build the current content or state of the query builder and return a {@link IQuery}.<br/>
-   * build can be called multiple times on the same QueryBuilder.
+   * Build the current content or state of the query builder and return a {@link IQuery}<br/>
+   * build can be called multiple time on the same QueryBuilder.
    * @returns {IQuery}
    */
   build(): IQuery {
@@ -233,7 +224,6 @@ export class QueryBuilder {
       q: this.expression.build(),
       aq: this.advancedExpression.build(),
       cq: this.constantExpression.build(),
-      lq: this.longQueryExpression.build(),
       dq: this.disjunctionExpression.build(),
 
       searchHub: this.searchHub,
@@ -266,20 +256,19 @@ export class QueryBuilder {
       groupBy: this.groupByRequests,
       retrieveFirstSentences: this.retrieveFirstSentences,
       timezone: this.timezone,
-      enableQuerySyntax: this.enableQuerySyntax,
+      disableQuerySyntax: this.disableQuerySyntax,
       enableDuplicateFiltering: this.enableDuplicateFiltering,
       enableCollaborativeRating: this.enableCollaborativeRating,
       debug: this.enableDebug,
       context: this.context,
-      actionsHistory: this.actionsHistory,
-      recommendation: this.recommendation
+      actionsHistory: this.actionsHistory
     };
     return query;
   }
 
   /**
    * Return only the expression(s) part(s) of the query, as a string.<br/>
-   * This means the basic, advanced and constant part in a complete expression {@link IQuery.q}, {@link IQuery.aq}, {@link IQuery.cq}.
+   * This means the basic, advanced and constant part in a complete expression {@link IQuery.q}, {@link IQuery.aq}, {@link IQuery.cq}
    * @returns {string}
    */
   public computeCompleteExpression(): string {
@@ -287,7 +276,7 @@ export class QueryBuilder {
   }
 
   /**
-   * Return only the expression(s) part(s) of the query, as an object.
+   * Return only the expression(s) part(s) of the query, as an object
    * @returns {{full: string, withoutConstant: string, constant: string}}
    */
   public computeCompleteExpressionParts(): IQueryBuilderExpression {
@@ -299,7 +288,7 @@ export class QueryBuilder {
       basic: ExpressionBuilder.mergeUsingOr(this.expression, this.disjunctionExpression).build(),
       advanced: ExpressionBuilder.mergeUsingOr(this.advancedExpression, this.disjunctionExpression).build(),
       constant: ExpressionBuilder.mergeUsingOr(this.constantExpression, this.disjunctionExpression).build()
-    };
+    }
   }
 
   /**
@@ -336,25 +325,25 @@ export class QueryBuilder {
       basic: ExpressionBuilder.mergeUsingOr(basicAndExcept, this.disjunctionExpression).build(),
       advanced: ExpressionBuilder.mergeUsingOr(advancedAndExcept, this.disjunctionExpression).build(),
       constant: ExpressionBuilder.mergeUsingOr(this.constantExpression, this.disjunctionExpression).build()
-    };
+    }
   }
 
   /**
    * Add fields to specifically include when the results return.<br/>
-   * This can be used to accelerate the execution time of every query, as there is much less data to process if you whitelist specific fields.
+   * This can be used to accelerate the execution time of every query, as there is much less data to process if you whitelist specific fields
    * @param fields
    */
   public addFieldsToInclude(fields: string[]) {
-    this.fieldsToInclude = _.uniq((this.fieldsToInclude || []).concat(fields));
+    this.fieldsToInclude = _.uniq((this.fieldsToInclude || []).concat(fields))
   }
 
   public addRequiredFields(fields: string[]) {
-    this.requiredFields = _.uniq(this.requiredFields.concat(fields));
+    this.requiredFields = _.uniq(this.requiredFields.concat(fields))
   }
 
   /**
    * Add fields to specifically exclude when the results return.<br/>
-   * This can be used to accelerate the execution time of every query, as there is much less data to process if you blacklist specific fields.
+   * This can be used to accelerate the execution time of every query, as there is much less data to process if you blacklist specific fields
    * @param fields
    */
   public addFieldsToExclude(fields: string[]) {

@@ -1,20 +1,14 @@
-import * as Mock from '../MockEnvironment';
-import { ResultRating } from '../../src/ui/ResultRating/ResultRating';
-import { IQueryResult } from '../../src/rest/QueryResult';
-import { FakeResults } from '../Fake';
-import { RatingValues } from '../../src/ui/ResultRating/ResultRating';
-import { $$ } from '../../src/utils/Dom';
-import { IRatingRequest } from '../../src/rest/RatingRequest';
-import { Simulate } from '../Simulate';
+/// <reference path="../Test.ts" />
 
-export function ResultRatingTest() {
+module Coveo {
   describe('ResultRating', function () {
     let test: Mock.IBasicComponentSetup<ResultRating>;
+
     let averageFakeResult: IQueryResult;
+
     let fakeResultWithNoStars: IQueryResult;
 
     beforeEach(() => {
-      Simulate.removeJQuery();
       averageFakeResult = FakeResults.createFakeResult();
       averageFakeResult.rating = RatingValues.Average;
 
@@ -90,7 +84,7 @@ export function ResultRatingTest() {
       let spy = <jasmine.Spy>test.env.searchEndpoint.rateDocument;
       spy.and.returnValue(new Promise((resolve, reject) => {
         resolve();
-      }));
+      }))
 
       test.cmp.rateDocument(RatingValues.Undefined);
 
@@ -183,7 +177,7 @@ export function ResultRatingTest() {
       let firstStar = $$($$(test.env.element).find('a'));
 
       firstStar.trigger('mouseover');
-      firstStar.trigger('mouseout');
+      firstStar.trigger('mouseleave');
 
       expect(numberOActivatedStarsIs(3)).toBe(true);
     });
@@ -196,7 +190,7 @@ export function ResultRatingTest() {
       let firstStar = $$($$(test.env.element).find('a'));
 
       firstStar.trigger('mouseover');
-      firstStar.trigger('mouseout');
+      firstStar.trigger('mouseleave');
 
       expect(numberOActivatedStarsIs(0)).toBe(true);
     });
@@ -210,4 +204,4 @@ export function ResultRatingTest() {
       expect(numberOActivatedStarsIs(0)).toBe(true);
     });
   });
-}
+};

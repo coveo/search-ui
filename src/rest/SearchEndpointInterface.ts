@@ -1,18 +1,18 @@
-import { IEndpointCallerOptions } from '../rest/EndpointCaller';
-import { IStringMap } from '../rest/GenericParam';
-import { IQuery } from '../rest/Query';
-import { IQueryResults } from '../rest/QueryResults';
-import { IQueryResult } from '../rest/QueryResult';
-import { IIndexFieldValue } from '../rest/FieldValue';
-import { IListFieldValuesRequest } from '../rest/ListFieldValuesRequest';
-import { IFieldDescription } from '../rest/FieldDescription';
-import { IExtension } from '../rest/Extension';
-import { IEndpointError } from '../rest/EndpointError';
-import { ITaggingRequest } from '../rest/TaggingRequest';
-import { IQuerySuggestRequest, IQuerySuggestResponse } from '../rest/QuerySuggest';
-import { IRatingRequest } from '../rest/RatingRequest';
-import { ISubscriptionRequest, ISubscription } from '../rest/Subscription';
-import { ISentryLog } from './SentryLog';
+import {IEndpointCallerOptions} from '../rest/EndpointCaller';
+import {IStringMap} from '../rest/GenericParam';
+import {IQuery} from '../rest/Query';
+import {IQueryResults} from '../rest/QueryResults';
+import {IQueryResult} from '../rest/QueryResult';
+import {IIndexFieldValue} from '../rest/FieldValue';
+import {IListFieldValuesRequest} from '../rest/ListFieldValuesRequest';
+import {IFieldDescription} from '../rest/FieldDescription';
+import {IExtension} from '../rest/Extension';
+import {IEndpointError} from '../rest/EndpointError';
+import {ITaggingRequest} from '../rest/TaggingRequest';
+import {IRevealQuerySuggestRequest, IRevealQuerySuggestResponse} from '../rest/RevealQuerySuggest';
+import {IRatingRequest} from '../rest/RatingRequest';
+import {ISubscriptionRequest, ISubscription} from '../rest/Subscription';
+import {Promise} from 'es6-promise';
 
 /**
  * The possible options when creating a {@link SearchEndpoint}
@@ -84,9 +84,8 @@ export interface IViewAsHtmlOptions extends IEndpointCallOptions {
 }
 
 export interface ISearchEndpoint {
-  options?: ISearchEndpointOptions;
+  options: ISearchEndpointOptions;
   getBaseUri(): string;
-  getBaseAlertsUri(): string;
   getAuthenticationProviderUri(provider: string, returnUri: string, message: string): string;
   isJsonp(): boolean;
   search(query: IQuery, callOptions?: IEndpointCallOptions): Promise<IQueryResults>;
@@ -101,11 +100,10 @@ export interface ISearchEndpoint {
   listFields(callOptions?: IEndpointCallOptions): Promise<IFieldDescription[]>;
   extensions(callOptions?: IEndpointCallOptions): Promise<IExtension[]> | Promise<IEndpointError>;
   tagDocument(taggingRequest: ITaggingRequest, callOptions?: IEndpointCallOptions): Promise<boolean>;
-  getQuerySuggest(request: IQuerySuggestRequest, callOptions?: IEndpointCallOptions): Promise<IQuerySuggestResponse>;
+  getRevealQuerySuggest(request: IRevealQuerySuggestRequest, callOptions?: IEndpointCallOptions): Promise<IRevealQuerySuggestResponse>;
   rateDocument(ratingRequest: IRatingRequest, callOptions?: IEndpointCallOptions): Promise<boolean>;
   follow(request: ISubscriptionRequest): Promise<ISubscription>;
   listSubscriptions(page?: number): Promise<ISubscription[]>;
   updateSubscription(subscription: ISubscription): Promise<ISubscription>;
   deleteSubscription(subscription: ISubscription): Promise<ISubscription>;
-  logError(sentryLog: ISentryLog): Promise<boolean>;
 }

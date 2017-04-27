@@ -1,12 +1,11 @@
-import { LocalStorageUtils } from '../utils/LocalStorageUtils';
-import { Model } from '../models/Model';
-import { QueryController } from './QueryController';
-import { Logger } from '../misc/Logger';
-import { Assert } from '../misc/Assert';
-import { InitializationEvents } from '../events/InitializationEvents';
-import { RootComponent } from '../ui/Base/RootComponent';
-import { $$ } from '../utils/Dom';
-import * as _ from 'underscore';
+import {LocalStorageUtils} from '../utils/LocalStorageUtils';
+import {Model} from '../models/Model';
+import {QueryController} from './QueryController';
+import {Logger} from '../misc/Logger';
+import {Assert} from '../misc/Assert';
+import {InitializationEvents} from '../events/InitializationEvents';
+import {RootComponent} from '../ui/Base/RootComponent';
+import {$$} from '../utils/Dom';
 
 /**
  * This component acts like the {@link HistoryController} excepts that is saves the {@link QueryStateModel} in the local storage.<br/>
@@ -62,7 +61,7 @@ export class LocalStorageHistoryController extends RootComponent {
         valToSet = this.model.defaultAttributes[key];
       }
       toSet[key] = valToSet;
-    });
+    })
     this.model.setMultiple(toSet);
   }
 

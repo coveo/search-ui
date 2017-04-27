@@ -1,49 +1,37 @@
-import { Component } from '../Base/Component';
-import { ComponentOptions } from '../Base/ComponentOptions';
-import { IComponentBindings } from '../Base/ComponentBindings';
-import { Assert } from '../../misc/Assert';
-import { QueryEvents, IBuildingQueryEventArgs, INoResultsEventArgs, IQuerySuccessEventArgs } from '../../events/QueryEvents';
-import { $$ } from '../../utils/Dom';
-import { QueryStateModel } from '../../models/QueryStateModel';
-import { Initialization } from '../Base/Initialization';
-import { IQueryCorrection } from '../../rest/QueryCorrection';
-import { StringUtils } from '../../utils/StringUtils';
-import { Utils } from '../../utils/Utils';
-import { analyticsActionCauseList, IAnalyticsNoMeta } from '../Analytics/AnalyticsActionListMeta';
-import { l } from '../../strings/Strings';
-import * as _ from 'underscore';
-import { exportGlobally } from '../../GlobalExports';
-import 'styling/_DidYouMean';
+import {Component} from '../Base/Component';
+import {ComponentOptions} from '../Base/ComponentOptions';
+import {IComponentBindings} from '../Base/ComponentBindings';
+import {Assert} from '../../misc/Assert';
+import {QueryEvents, IBuildingQueryEventArgs, INoResultsEventArgs, IQuerySuccessEventArgs} from '../../events/QueryEvents';
+import {$$} from '../../utils/Dom';
+import {QueryStateModel} from '../../models/QueryStateModel';
+import {Initialization} from '../Base/Initialization';
+import {IQueryCorrection} from '../../rest/QueryCorrection';
+import {StringUtils} from '../../utils/StringUtils';
+import {Utils} from '../../utils/Utils';
+import {analyticsActionCauseList, IAnalyticsNoMeta} from '../Analytics/AnalyticsActionListMeta';
+import {l} from '../../strings/Strings';
 
 export interface IDidYouMeanOptions {
-  enableAutoCorrection?: boolean;
+  enableAutoCorrection?: boolean
 }
 
 /**
- * The DidYouMean component is responsible for displaying query corrections. If this component is in the page and the
- * query returns no result but finds a possible query correction, the component either suggests the correction or
- * automatically triggers a new query with the suggested term.
+ * This component is responsible for displaying query corrections. If this component is in the page
+ * and the query returns no results, but finds a possible query correction, the component either
+ * suggests the correction or automatically triggers a new query with the suggested term.
  */
 export class DidYouMean extends Component {
   static ID = 'DidYouMean';
-
-  static doExport = () => {
-    exportGlobally({
-      'DidYouMean': DidYouMean
-    });
-  }
-
   /**
    * The options for the component
    * @componentOptions
    */
   static options: IDidYouMeanOptions = {
-
     /**
-     * Specifies whether the DidYouMean component automatically triggers a new query when a query returns no result and
-     * a possible correction is available.
-     *
-     * Default value is `true`.
+     * This option allows the DidYouMean component to automatically trigger a new query
+     * when there are no results and a correction is available <br/>
+     * The default value is <code>true</code>
      */
     enableAutoCorrection: ComponentOptions.buildBooleanOption({ defaultValue: true }),
   };
@@ -53,11 +41,10 @@ export class DidYouMean extends Component {
   private hideNext: boolean;
 
   /**
-   * Creates a new DidYouMean component.
-   * @param element The HTMLElement on which to instantiate the component.
-   * @param options The options for the DidYouMean component.
-   * @param bindings The bindings that the component requires to function normally. If not set, these will be
-   * automatically resolved (with a slower execution time).
+   * Create a new DidYouMean component
+   * @param element
+   * @param options
+   * @param bindings
    */
   constructor(public element: HTMLElement, public options?: IDidYouMeanOptions, public bindings?: IComponentBindings) {
 
@@ -79,9 +66,8 @@ export class DidYouMean extends Component {
   }
 
   /**
-   * Executes a query with the corrected term.
-   * Throws an exception if the corrected term has not been initialized.
-   * If successful, logs a `didyoumeanClick` event in the usage analytics.
+   * Execute a query with the corrected term <br/>
+   * Will throw an exception if the corrected term has not been initialized
    */
   public doQueryWithCorrectedTerm() {
     Assert.exists(this.correctedTerm);
@@ -165,7 +151,7 @@ export class DidYouMean extends Component {
       toReturn.push(StringUtils.htmlEncode(correction.correctedQuery.slice(currentOffset, wordCorrection.length + currentOffset)));
       toReturn.push(tagEnd);
       currentOffset = wordCorrection.offset + wordCorrection.length;
-    });
+    })
     toReturn.push(StringUtils.htmlEncode(correction.correctedQuery.slice(currentOffset)));
     return toReturn.join('');
   }

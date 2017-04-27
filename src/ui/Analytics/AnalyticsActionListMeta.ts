@@ -1,25 +1,15 @@
 /**
- * The IAnalyticsActionCause interface describes the cause of an event for the analytics service.
- *
- * See the {@link Analytics} component
+ * Describe the cause of an event for the analytics service
  */
 export interface IAnalyticsActionCause {
-
   /**
-   * Specifies the name of the event. While you can actually set this property to any arbitrary string value, its value
-   * should uniquely identify the precise action that triggers the event. Thus, each individual event should have its
-   * own unique `name` value.
-   *
-   * Example: `searchBoxSubmit`, `resultSort`, etc.
+   * The name of the event. Should be unique for each event.<br/>
+   * Eg : searchBoxSubmit or resultSort
    */
   name: string;
-
   /**
-   * Specifies the type of the event. While you can actually set this property to any arbitrary string value, it should
-   * describe the general category of the event. Thus, more than one event can have the same `type` value, which makes
-   * it possible to group events with identical types when doing reporting.
-   *
-   * Example: All search box related events could have `searchbox` as their `type` value.
+   * The type of the event. Allow to regroup similar event type together when doing reporting.<br/>
+   * For example, all search box event will be of type "search box"
    */
   type: string;
   metaMap?: { [name: string]: number };
@@ -45,24 +35,19 @@ export interface IAnalyticsResultsSortMeta {
 }
 
 /**
- * The IAnalyticsDocumentViewMeta describes the expected metadata when logging a click event / document view.
- *
- * See also the {@link Analytics} component, and more specifically the {@link Analytics.logClickEvent} method.
+ * The expected metadata when loggin a click event / document view
  */
 export interface IAnalyticsDocumentViewMeta {
-
   /**
-   * The URL of the clicked document.
+   * The url of the clicked document
    */
   documentURL?: string;
-
   /**
-   * The title of the clicked document.
+   * The title of the clicked document
    */
   documentTitle?: string;
-
   /**
-   * The author of the clicked document.
+   * The author of the clicked document
    */
   author: string;
 }
@@ -150,21 +135,14 @@ export interface IAnalyticsCaseDetachMeta extends IAnalyticsCaseAttachMeta {
 
 export interface IAnalyticsCaseCreationInputChangeMeta {
   inputTitle: string;
-  input: string;
-  value: string;
 }
 
 export interface IAnalyticsCaseCreationDeflectionMeta {
   hasClicks: boolean;
-  values: { [field: string]: string };
 }
 
 export interface IAnalyticsPagerMeta {
   pagerNumber: number;
-}
-
-export interface IAnalyticsResultsPerPageMeta {
-  currentResultsPerPage: number;
 }
 
 export interface IAnalyticsTriggerNotify {
@@ -181,25 +159,6 @@ export interface IAnalyticsTriggerQuery {
 
 export interface IAnalyticsTriggerExecute {
   executed: string;
-}
-
-export interface IAnalyticsSearchAlertsMeta {
-  subscription: string;
-}
-
-export interface IAnalyticsSearchAlertsUpdateMeta extends IAnalyticsSearchAlertsMeta {
-  frequency: string;
-}
-
-export interface IAnalyticsSearchAlertsFollowDocumentMeta extends IAnalyticsDocumentViewMeta {
-  documentSource: string;
-  documentLanguage: string;
-  contentIDKey: string;
-  contentIDValue: string;
-}
-
-export interface IAnalyticsResultsLayoutChange {
-  resultsLayoutChangeTo: string;
 }
 
 export var analyticsActionCauseList = {
@@ -293,16 +252,6 @@ export var analyticsActionCauseList = {
   },
   omniboxAnalytics: <IAnalyticsActionCause>{
     name: 'omniboxAnalytics',
-    type: 'omnibox',
-    metaMap: {
-      partialQuery: 1,
-      suggestionRanking: 2,
-      partialQueries: 3,
-      suggestions: 4
-    }
-  },
-  omniboxFromLink: <IAnalyticsActionCause>{
-    name: 'omniboxFromLink',
     type: 'omnibox',
     metaMap: {
       partialQuery: 1,
@@ -458,10 +407,6 @@ export var analyticsActionCauseList = {
     name: 'pagerScrolling',
     type: 'getMoreResults'
   },
-  pagerResize: <IAnalyticsActionCause>{
-    name: 'pagerResize',
-    type: 'getMoreResults'
-  },
   searchFromLink: <IAnalyticsActionCause>{
     name: 'searchFromLink',
     type: 'interface'
@@ -490,49 +435,5 @@ export var analyticsActionCauseList = {
   exportToExcel: <IAnalyticsActionCause>{
     name: 'exportToExcel',
     type: 'misc'
-  },
-  recommendation: <IAnalyticsActionCause>{
-    name: 'recommendation',
-    type: 'recommendation'
-  },
-  recommendationInterfaceLoad: <IAnalyticsActionCause>{
-    name: 'recommendationInterfaceLoad',
-    type: 'recommendation'
-  },
-  recommendationOpen: <IAnalyticsActionCause>{
-    name: 'recommendationOpen',
-    type: 'recommendation'
-  },
-  advancedSearch: <IAnalyticsActionCause>{
-    name: 'advancedSearch',
-    type: 'advancedSearch'
-  },
-  searchAlertsFollowDocument: <IAnalyticsActionCause>{
-    name: 'followDocument',
-    type: 'searchAlerts'
-  },
-  searchAlertsFollowQuery: <IAnalyticsActionCause>{
-    name: 'followQuery',
-    type: 'searchAlerts'
-  },
-  searchAlertsUpdateSubscription: <IAnalyticsActionCause>{
-    name: 'updateSubscription',
-    type: 'searchAlerts'
-  },
-  searchAlertsDeleteSubscription: <IAnalyticsActionCause>{
-    name: 'deleteSubscription',
-    type: 'searchAlerts'
-  },
-  searchAlertsUnfollowDocument: <IAnalyticsActionCause>{
-    name: 'unfollowDocument',
-    type: 'searchAlerts'
-  },
-  searchAlertsUnfollowQuery: <IAnalyticsActionCause>{
-    name: 'unfollowQuery',
-    type: 'searchAlerts'
-  },
-  resultsLayoutChange: <IAnalyticsActionCause>{
-    name: 'changeResultsLayout',
-    type: 'resultsLayout'
   }
-};
+}

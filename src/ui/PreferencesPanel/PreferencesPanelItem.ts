@@ -1,7 +1,6 @@
-import { $$ } from '../../utils/Dom';
-import { Assert } from '../../misc/Assert';
-import { Utils } from '../../utils/Utils';
-import * as _ from 'underscore';
+import {$$} from '../../utils/Dom';
+import {Assert} from '../../misc/Assert';
+import {Utils} from '../../utils/Utils';
 
 export interface IPreferencePanelInputToBuild {
   label: string;
@@ -13,65 +12,33 @@ export interface IPreferencePanelInputToBuild {
 
 export class PreferencesPanelBoxInput {
   public inputs: { [label: string]: HTMLElement } = {};
+
+  private inputTemplate = _.template('<div class=\'coveo-choice-container\'>\
+      <div class=\'coveo-section coveo-section-input\'>\
+        <input <%- otherAttribute %> class=\'coveo-<%- label %>\' id=\'coveo-<%- label %>\' type=\'<%- type %>\' name=\'<%- name%>\' value=\'<%- label %>\' ></input><span class=\'coveo-input-icon\'></span><label class=\'coveo-preferences-panel-item-label\' for=\'coveo-<%- label %>\'><%- label %></label>\
+      </div>\
+      <div class=\'coveo-section coveo-section-tab\'><%- tab %></div>\
+    <div class=\'coveo-section coveo-section-expression\'><%- expression %></div>\
+    </div>');
+
   constructor(private boxInputToBuild: IPreferencePanelInputToBuild[], private nameOfInput: string, private type: string) {
   }
 
   public build(): HTMLElement {
     return _.reduce(_.map(this.boxInputToBuild, (toBuild) => {
-      let choiceContainer = $$('div', {
-        className: 'coveo-choice-container'
-      });
-
-      let sectionInput = $$('div', {
-        className: 'coveo-section coveo-section-input'
-      });
-
-      let input = $$('input', {
-        className: `coveo-${toBuild.label}`,
-        id: `coveo-${toBuild.label}`,
-        type: this.type,
+      this.inputs[toBuild.label] = $$('div', undefined, this.inputTemplate({
+        label: toBuild.label,
         name: this.nameOfInput,
-        value: toBuild.label
-      });
-
-      if (toBuild.otherAttribute) {
-        input.setAttribute(toBuild.otherAttribute, toBuild.otherAttribute);
-      }
-
-      let inputIcon = $$('span', {
-        className: 'coveo-input-icon'
-      });
-
-      let label = $$('label', {
-        className: 'coveo-preferences-panel-item-label',
-        'for': `coveo-${toBuild.label}`,
-      });
-      label.text(toBuild.label);
-
-      sectionInput.append(input.el);
-      sectionInput.append(inputIcon.el);
-      sectionInput.append(label.el);
-
-      let sectionTab = $$('div', {
-        className: 'coveo-section coveo-section-tab'
-      });
-      if (toBuild.tab) {
-        sectionTab.text(toBuild.tab.join(' '));
-      }
-      let sectionExpression = $$('div', {
-        className: 'coveo-section coveo-section-expression'
-      });
-      sectionExpression.text(toBuild.expression);
-
-      choiceContainer.append(sectionInput.el);
-      choiceContainer.append(sectionTab.el);
-      choiceContainer.append(sectionExpression.el);
-      this.inputs[toBuild.label] = $$('div', undefined, choiceContainer).el;
+        type: this.type,
+        otherAttribute: toBuild.otherAttribute,
+        tab: toBuild.tab,
+        expression: toBuild.expression
+      })).el;
       return this.inputs[toBuild.label];
     }), (memo: HTMLElement, input: HTMLElement) => {
       memo.appendChild(input);
       return memo;
-    }, $$('div').el);
+    }, $$('div').el)
   }
 
   public select(toSelect: string) {
@@ -92,7 +59,7 @@ export class PreferencesPanelBoxInput {
     var checked = _.find(this.inputs, (el: HTMLElement) => {
       var input = <HTMLInputElement>$$(el).find('input');
       return input.checked;
-    });
+    })
     return (<HTMLInputElement>$$(checked).find('input')).value;
   }
 
@@ -100,48 +67,61 @@ export class PreferencesPanelBoxInput {
     var checkeds = _.filter(this.inputs, (el: HTMLElement) => {
       var input = <HTMLInputElement>$$(el).find('input');
       return input.checked;
-    });
+    })
 
     return _.map(checkeds, (checked) => {
       return (<HTMLInputElement>$$(checked).find('input')).value;
-    });
+    })
   }
 }
 
-/*export class PreferencesPanelRadioInput extends PreferencesPanelBoxInput {
+export class PreferencesPanelRadioInput extends PreferencesPanelBoxInput {
   constructor(private radioElementToBuild: IPreferencePanelInputToBuild[], private name: string) {
     super(radioElementToBuild, name, 'radio');
   }
-}*/
+}
 
+export class PreferencesPanelCheckboxInput extends PreferencesPanelBoxInput {
+  constructor(private checkboxElementToBuild: IPreferencePanelInputToBuild[], public name: string) {
+    super(checkboxElementToBuild, name, 'checkbox');
+  }
+
+  public build(): HTMLElement {
+    var build = super.build();
+    var icons = $$(build).findAll('.coveo-input-icon');
+    _.each(icons, (icon: HTMLElement) => {
+      var input = <HTMLInputElement>$$(icon.parentElement).find('input');
+      $$(input).on('change', () => {
+        var checked = input.checked;
+        $$(icon).toggleClass('coveo-selected', checked);
+      })
+
+      $$(icon).on('click', () => {
+        input.checked = !input.checked;
+        $$(input).trigger('change');
+      })
+    })
+    return build;
+  }
+}
 
 export class PreferencesPanelTextInput {
   public inputs: { [label: string]: HTMLElement } = {};
+  public inputTemplate = _.template('<div class=\'coveo-choice-container\'><input <%- otherAttribute %> class=\'coveo-<%- label %>\' id=\'coveo-<%- label %>\' type=\'<%- type %>\' name=\'<%- name%>\' placeholder=\'<%- placeholder %>\' ></input></div>');
 
   constructor(public textElementToBuild: IPreferencePanelInputToBuild[], public name: string) {
   }
 
   public build(): HTMLElement {
     return _.reduce(_.map(this.textElementToBuild, (toBuild) => {
-      let choiceContainer = $$('div', {
-        className: 'coveo-choice-container'
-      });
-
-      let input = $$('input', {
-        className: `coveo-${toBuild.label}`,
-        id: `coveo-${toBuild.label}`,
-        type: 'text',
+      this.inputs[toBuild.label] = $$('div', undefined, this.inputTemplate({
+        label: toBuild.label,
         name: this.name,
+        type: 'text',
+        otherAttribute: toBuild.otherAttribute,
         placeholder: toBuild.placeholder || toBuild.label
-      });
+      })).el;
 
-      if (toBuild.otherAttribute) {
-        input.setAttribute(toBuild.otherAttribute, toBuild.otherAttribute);
-      }
-
-      choiceContainer.append(input.el);
-
-      this.inputs[toBuild.label] = $$('div', undefined, choiceContainer).el;
       return this.inputs[toBuild.label];
     }), (memo: HTMLElement, input: HTMLElement) => {
       memo.appendChild(input);
@@ -152,7 +132,7 @@ export class PreferencesPanelTextInput {
   public getValues(): string[] {
     return _.map(this.inputs, (input, key) => {
       return (<HTMLInputElement>this.getInput(key)).value;
-    });
+    })
   }
 
   public setValue(input: string, value: string) {
@@ -167,7 +147,7 @@ export class PreferencesPanelTextInput {
         inputElement = (<HTMLTextAreaElement>$$(input).find('textarea'));
       }
       inputElement.value = '';
-    });
+    })
   }
 
   private getInput(input: string): HTMLElement {
@@ -181,30 +161,21 @@ export class PreferencesPanelTextInput {
 }
 
 export class PreferencesPanelTextAreaInput extends PreferencesPanelTextInput {
+  public inputTemplate = _.template('<div class=\'coveo-choice-container\'><textarea <%- otherAttribute %> class=\'coveo-<%- label %>\' id=\'coveo-<%- label %>\' name=\'<%- name%>\' placeholder=\'<%- placeholder %>\' ></textarea></div>');
 
   public build(): HTMLElement {
     return _.reduce(_.map(this.textElementToBuild, (toBuild) => {
-      let choiceContainer = $$('div', {
-        className: 'coveo-choice-container'
-      });
-
-      let textArea = $$('textarea', {
-        className: `coveo-${toBuild.label}`,
-        name: `coveo-${toBuild.label}`,
+      this.inputs[toBuild.label] = $$('div', undefined, this.inputTemplate({
+        label: toBuild.label,
+        name: this.name,
+        otherAttribute: toBuild.otherAttribute,
         placeholder: toBuild.placeholder || toBuild.label
-      });
-
-      if (toBuild.otherAttribute) {
-        textArea.setAttribute(toBuild.otherAttribute, toBuild.otherAttribute);
-      }
-      choiceContainer.append(textArea.el);
-
-      this.inputs[toBuild.label] = $$('div', undefined, choiceContainer).el;
+      })).el;
       return this.inputs[toBuild.label];
     }), (memo: HTMLElement, input: HTMLElement) => {
       memo.appendChild(input);
       return memo;
-    }, $$('div').el);
+    }, $$('div').el)
   }
 }
 
@@ -238,8 +209,8 @@ export class PreferencePanelMultiSelectInput {
       } else {
         this.reset();
       }
-    });
-    var el = this.textInput.build();
+    })
+    var el = this.textInput.build()
     el.appendChild(this.select);
     return el;
   }

@@ -1,439 +1,108 @@
-export * from '../src/Eager';
-// Get a cleaner output in phantom js for CI builds
-import { Logger } from '../src/misc/Logger';
-import { Simulate } from './Simulate';
-if (Simulate.isPhantomJs()) {
-  Logger.disable();
+/// <reference path="lib/jasmine.d.ts" />
+
+// ***** COVEO SEARCH ******
+/// <reference path="../bin/ts/CoveoJsSearch.d.ts" />
+
+
+// ***** CUSTOM MATCHER ******
+/// <reference path="CustomMatchers.ts" />
+
+// ***** TEST UTILITIES ******
+/// <reference path="Fake.ts" />
+/// <reference path="NoopComponent.ts" />
+/// <reference path="MockEnvironment.ts" />
+/// <reference path="Simulate.ts" />
+
+// ***** TEST ON UTILS ******
+/// <reference path="utils/DomTest.ts" />
+/// <reference path="utils/CookieUtilsTest.ts" />
+/// <reference path="utils/L10NTest.ts" />
+/// <reference path="utils/HighlightUtilsTest.ts" />
+
+// ***** TEST ON MISC ******
+/// <reference path="misc/PromisesShimTest.ts" />
+
+// ***** TEST ON MODELS ******
+/// <reference path="models/ModelTest.ts" />
+/// <reference path="models/QueryStateModelTest.ts" />
+
+// ***** TEST ON CONTROLLERS ******
+/// <reference path="controllers/FacetQueryControllerTest.ts" />
+/// <reference path="controllers/HistoryControllerTest.ts" />
+/// <reference path="controllers/QueryControllerTest.ts" />
+
+// ***** TEST ON REST ******
+/// <reference path="rest/EndpointCallerTest.ts" />
+/// <reference path="rest/SearchEndpointTest.ts" />
+
+// ***** TEST ON UI ******
+/// <reference path="ui/AggregateTest.ts" />
+/// <reference path="ui/AnalyticsEndpointTest.ts" />
+/// <reference path="ui/AnalyticsTest.ts" />
+/// <reference path="ui/BreadcrumbTest.ts" />
+/// <reference path="ui/ComponentEventsTest.ts" />
+/// <reference path="ui/ComponentTest.ts" />
+/// <reference path="ui/DidYouMeanTest.ts" />
+/// <reference path="ui/ErrorReportTest.ts" />
+/// <reference path="ui/ExportToExcelTest.ts" />
+/// <reference path="ui/ExpressionBuilderTest.ts" />
+/// <reference path="ui/FacetHeaderTest.ts" />
+/// <reference path="ui/FacetSearchParametersTest.ts" />
+/// <reference path="ui/FacetSearchTest.ts" />
+/// <reference path="ui/FacetSettingsTest.ts" />
+/// <reference path="ui/FacetSliderTest.ts" />
+/// <reference path="ui/FacetTest.ts" />
+/// <reference path="ui/FieldSuggestionsTest.ts" />
+/// <reference path="ui/FieldTableTest.ts" />
+/// <reference path="ui/FieldValueTest.ts" />
+/// <reference path="ui/FoldingTest.ts" />
+/// <reference path="ui/HiddenQueryTest.ts" />
+/// <reference path="ui/HierarchicalFacetTest.ts" />
+/// <reference path="ui/InitializationTest.ts" />
+/// <reference path="ui/LiveAnalyticsClientTest.ts" />
+/// <reference path="ui/MatrixTest.ts" />
+/// <reference path="ui/OmniboxTest.ts" />
+/// <reference path="ui/PagerTest.ts" />
+/// <reference path="ui/PreferencesPanelTest.ts" />
+/// <reference path="ui/QueryboxTest.ts" />
+/// <reference path="ui/QueryBuilderTest.ts" />
+/// <reference path="ui/QueryDurationTest.ts" />
+/// <reference path="ui/QuerySummaryTest.ts" />
+/// <reference path="ui/SearchboxTest.ts" />
+/// <reference path="ui/SearchButtonTest.ts" />
+/// <reference path="ui/SearchInterfaceTest.ts" />
+/// <reference path="ui/SettingsTest.ts" />
+/// <reference path="ui/ShareQueryTest.ts" />
+/// <reference path="ui/SliderTest.ts" />
+/// <reference path="ui/SortCriteriaTest.ts" />
+/// <reference path="ui/SortTest.ts" />
+/// <reference path="ui/TabTest.ts" />
+/// <reference path="ui/TriggersTest.ts" />
+/// <reference path="ui/ValueElementRendererTest.ts" />
+/// <reference path="ui/ExcerptTest.ts" />
+/// <reference path="ui/ResultLinkTest.ts" />
+/// <reference path="ui/RecommendationTest.ts" />
+/// <reference path="ui/TemplateLoaderTest.ts" />
+/// <reference path="ui/AnalyticsSuggestionsTest.ts" />
+/// <reference path="ui/RecommendationQueryTest.ts" />
+/// <reference path="ui/ResultsPreferencesTest.ts" />
+/// <reference path="ui/FieldSuggestionsTest.ts" />
+/// <reference path="ui/AuthenticationProviderTest.ts" />
+/// <reference path="ui/CurrentTabTest.ts" />
+/// <reference path="ui/QueryboxQueryParametersTest.ts" />
+/// <reference path="ui/ResultListTest.ts" />
+/// <reference path="ui/ImageResultListTest.ts" />
+/// <reference path="ui/SearchAlertsTest.ts" />
+/// <reference path="ui/FollowItemTest.ts" />
+/// <reference path="ui/SearchAlertsMessageTest.ts" />
+/// <reference path="ui/PendingSearchAsYouTypeSearchEventTest.ts" />
+
+Coveo.Logger.disable();
+
+module Coveo {
+  var _ = window['_'];
 }
 
-import { defaultLanguage } from '../src/strings/DefaultLanguage';
-defaultLanguage();
-
-import { SearchEndpointTest } from './rest/SearchEndpointTest';
-SearchEndpointTest();
-
-import { CookieUtilsTest } from './utils/CookieUtilsTest';
-CookieUtilsTest();
-
-import { ColorUtilsTest } from './utils/ColorUtilsTest';
-ColorUtilsTest();
-
-import { DomTests } from './utils/DomTest';
-DomTests();
-
-import { HighlightUtilsTest } from './utils/HighlightUtilsTest';
-HighlightUtilsTest();
-
-import { L10NTest } from './utils/L10NTest';
-L10NTest();
-
-import { PromisesShimTest } from './misc/PromisesShimTest';
-PromisesShimTest();
-
-import { ModelTest } from './models/ModelTest';
-ModelTest();
-
-import { QueryStateModelTest } from './models/QueryStateModelTest';
-QueryStateModelTest();
-
-import { EndpointCallerTest } from './rest/EndpointCallerTest';
-EndpointCallerTest();
-
-import { FacetQueryControllerTest } from './controllers/FacetQueryControllerTest';
-FacetQueryControllerTest();
-
-import { HistoryControllerTest } from './controllers/HistoryControllerTest';
-HistoryControllerTest();
-
-import { QueryControllerTest } from './controllers/QueryControllerTest';
-QueryControllerTest();
-
-import { AdvancedSearchTest } from './ui/AdvancedSearch/AdvancedSearchTest';
-AdvancedSearchTest();
-
-import { TextInputTest } from './ui/AdvancedSearch/Form/TextInputTest';
-TextInputTest();
-
-import { NumericSpinnerTest } from './ui/AdvancedSearch/Form/NumericSpinnerTest';
-NumericSpinnerTest();
-
-import { DropdownTest } from './ui/AdvancedSearch/Form/DropdownTest';
-DropdownTest();
-
-import { DatePickerTest } from './ui/AdvancedSearch/Form/DatePickerTest';
-DatePickerTest();
-
-import { RadioButtonTest } from './ui/AdvancedSearch/Form/RadioButtonTest';
-RadioButtonTest();
-
-import { KeywordsInputTest } from './ui/AdvancedSearch/KeywordsInput/KeywordsInputTest';
-KeywordsInputTest();
-
-import { AnyKeywordsInputTest } from './ui/AdvancedSearch/KeywordsInput/AnyKeywordsInputTest';
-AnyKeywordsInputTest();
-
-import { ExactKeywordsInputTest } from './ui/AdvancedSearch/KeywordsInput/ExactKeywordsInputTest';
-ExactKeywordsInputTest();
-
-import { NoneKeywordsInputTest } from './ui/AdvancedSearch/KeywordsInput/NoneKeywordsInputTest';
-NoneKeywordsInputTest();
-
-import { DateInputTest } from './ui/AdvancedSearch/DateInput/DateInputTest';
-DateInputTest();
-
-import { BetweenDateInputTest } from './ui/AdvancedSearch/DateInput/BetweenDateInputTest';
-BetweenDateInputTest();
-
-import { InTheLastDateInputTest } from './ui/AdvancedSearch/DateInput/InTheLastDateInputTest';
-InTheLastDateInputTest();
-
-import { DocumentInputTest } from './ui/AdvancedSearch/DocumentInput/DocumentInputTest';
-DocumentInputTest();
-
-import { SimpleFieldInputTest } from './ui/AdvancedSearch/DocumentInput/SimpleFieldInputTest';
-SimpleFieldInputTest();
-
-import { AdvancedFieldInputTest } from './ui/AdvancedSearch/DocumentInput/AdvancedFieldInputTest';
-AdvancedFieldInputTest();
-
-import { SizeInputTest } from './ui/AdvancedSearch/DocumentInput/SizeInputTest';
-SizeInputTest();
-
-import { AggregateTest } from './ui/AggregateTest';
-AggregateTest();
-
-import { AnalyticsEndpointTest } from './ui/AnalyticsEndpointTest';
-AnalyticsEndpointTest();
-
-import { AnalyticsSuggestionsTest } from './ui/AnalyticsSuggestionsTest';
-AnalyticsSuggestionsTest();
-
-import { AnalyticsTest } from './ui/AnalyticsTest';
-AnalyticsTest();
-
-import { AuthenticationProviderTest } from './ui/AuthenticationProviderTest';
-AuthenticationProviderTest();
-
-import { BadgeTest } from './ui/BadgeTest';
-BadgeTest();
-
-import { BreadcrumbTest } from './ui/BreadcrumbTest';
-BreadcrumbTest();
-
-import { ChatterLikedByTest } from './ui/ChatterLikedByTest';
-ChatterLikedByTest();
-
-import { ChatterPostAttachmentTest } from './ui/ChatterPostAttachmentTest';
-ChatterPostAttachmentTest();
-
-import { ChatterPostedByTest } from './ui/ChatterPostedByTest';
-ChatterPostedByTest();
-
-import { ComponentEventsTest } from './ui/ComponentEventsTest';
-ComponentEventsTest();
-
-import { ComponentOptionsTest } from './ui/ComponentOptionsTest';
-ComponentOptionsTest();
-
-import { ComponentTest } from './ui/ComponentTest';
-ComponentTest();
-
-import { DidYouMeanTest } from './ui/DidYouMeanTest';
-DidYouMeanTest();
-
-import { ErrorReportTest } from './ui/ErrorReportTest';
-ErrorReportTest();
-
-import { ExcerptTest } from './ui/ExcerptTest';
-ExcerptTest();
-
-import { ExportToExcelTest } from './ui/ExportToExcelTest';
-ExportToExcelTest();
-
-import { ExpressionBuilderTest } from './ui/ExpressionBuilderTest';
-ExpressionBuilderTest();
-
-import { FacetHeaderTest } from './ui/FacetHeaderTest';
-FacetHeaderTest();
-
-import { FacetSearchParametersTest } from './ui/FacetSearchParametersTest';
-FacetSearchParametersTest();
-
-import { FacetSearchTest } from './ui/FacetSearchTest';
-FacetSearchTest();
-
-import { FacetSettingsTest } from './ui/FacetSettingsTest';
-FacetSettingsTest();
-
-import { FacetSliderTest } from './ui/FacetSliderTest';
-FacetSliderTest();
-
-import { FacetTest } from './ui/FacetTest';
-FacetTest();
-
-import { FieldSuggestionsTest } from './ui/FieldSuggestionsTest';
-FieldSuggestionsTest();
-
-import { FieldTableTest } from './ui/FieldTableTest';
-FieldTableTest();
-
-import { FieldValueTest } from './ui/FieldValueTest';
-FieldValueTest();
-
-import { FoldingTest } from './ui/FoldingTest';
-FoldingTest();
-
-import { FollowItemTest } from './ui/FollowItemTest';
-FollowItemTest();
-
-import { HiddenQueryTest } from './ui/HiddenQueryTest';
-HiddenQueryTest();
-
-import { HierarchicalFacetTest } from './ui/HierarchicalFacetTest';
-HierarchicalFacetTest();
-
-import { IconTest } from './ui/IconTest';
-IconTest();
-
-import { InitializationTest } from './ui/InitializationTest';
-InitializationTest();
-
-import { LazyInitializationTest } from './ui/LazyInitializationTest';
-LazyInitializationTest();
-
-import { LiveAnalyticsClientTest } from './ui/LiveAnalyticsClientTest';
-LiveAnalyticsClientTest();
-
-import { MatrixTest } from './ui/MatrixTest';
-MatrixTest();
-
-import { OmniboxTest } from './ui/OmniboxTest';
-OmniboxTest();
-
-import { PagerTest } from './ui/PagerTest';
-PagerTest();
-
-import { PendingSearchAsYouTypeSearchEventTest } from './ui/PendingSearchAsYouTypeSearchEventTest';
-PendingSearchAsYouTypeSearchEventTest();
-
-import { PreferencesPanelTest } from './ui/PreferencesPanelTest';
-PreferencesPanelTest();
-
-import { QueryboxQueryParametersTest } from './ui/QueryboxQueryParametersTest';
-QueryboxQueryParametersTest();
-
-import { QueryboxTest } from './ui/QueryboxTest';
-QueryboxTest();
-
-import { QueryBuilderTest } from './ui/QueryBuilderTest';
-QueryBuilderTest();
-
-import { QueryDurationTest } from './ui/QueryDurationTest';
-QueryDurationTest();
-
-import { QuerySummaryTest } from './ui/QuerySummaryTest';
-QuerySummaryTest();
-
-import { RecommendationAnalyticsClientTest } from './ui/RecommendationAnalyticsClientTest';
-RecommendationAnalyticsClientTest();
-
-import { RecommendationQueryTest } from './ui/RecommendationQueryTest';
-RecommendationQueryTest();
-
-import { RecommendationTest } from './ui/RecommendationTest';
-RecommendationTest();
-
-import { ResultAttachmentsTest } from './ui/ResultAttachmentsTest';
-ResultAttachmentsTest();
-
-import { ResultFoldingTest } from './ui/ResultFoldingTest';
-ResultFoldingTest();
-
-import { ResultLinkTest } from './ui/ResultLinkTest';
-ResultLinkTest();
-
-import { ResultListTest } from './ui/ResultListTest';
-ResultListTest();
-
-import { ResultRatingTest } from './ui/ResultRatingTest';
-ResultRatingTest();
-
-import { ResultsPreferencesTest } from './ui/ResultsPreferencesTest';
-ResultsPreferencesTest();
-
-import { SearchAlertsMessageTest } from './ui/SearchAlertsMessageTest';
-SearchAlertsMessageTest();
-
-import { SearchAlertsTest } from './ui/SearchAlertsTest';
-SearchAlertsTest();
-
-import { SearchButtonTest } from './ui/SearchButtonTest';
-SearchButtonTest();
-
-import { SearchInterfaceTest } from './ui/SearchInterfaceTest';
-SearchInterfaceTest();
-
-import { SettingsTest } from './ui/SettingsTest';
-SettingsTest();
-
-import { ShareQueryTest } from './ui/ShareQueryTest';
-ShareQueryTest();
-
-import { SliderTest } from './ui/SliderTest';
-SliderTest();
-
-import { SortCriteriaTest } from './ui/SortCriteriaTest';
-SortCriteriaTest();
-
-import { SortTest } from './ui/SortTest';
-SortTest();
-
-import { TabTest } from './ui/TabTest';
-TabTest();
-
-import { TemplateLoaderTest } from './ui/TemplateLoaderTest';
-TemplateLoaderTest();
-
-import { ThumbnailTest } from './ui/ThumbnailTest';
-ThumbnailTest();
-
-import { TriggersTest } from './ui/TriggersTest';
-TriggersTest();
-
-import { ValueElementRendererTest } from './ui/ValueElementRendererTest';
-ValueElementRendererTest();
-
-import { ResultsPerPageTest } from './ui/ResultsPerPageTest';
-ResultsPerPageTest();
-
-import { ResultLayoutTest } from './ui/ResultLayoutTest';
-ResultLayoutTest();
-
-import { LogoTest } from './ui/LogoTest';
-LogoTest();
-
-import { RegisteredNamedMethodsTest } from './ui/RegisteredNamedMethodsTest';
-RegisteredNamedMethodsTest();
-
-import { FacetValuesOrderTest } from './ui/FacetValuesOrderTest';
-FacetValuesOrderTest();
-
-import { SentryLoggerTest } from './misc/SentryLoggerTest';
-SentryLoggerTest();
-
-import { DebugTest } from './ui/DebugTest';
-DebugTest();
-
-import { StreamHighlightUtilsTest } from './utils/StreamHighlightUtilsTest';
-StreamHighlightUtilsTest();
-
-import { BackdropTest } from './ui/BackdropTest';
-BackdropTest();
-
-import { CardActionBarTest } from './ui/CardActionBarTest';
-CardActionBarTest();
-
-import { QuickviewTest } from './ui/QuickviewTest';
-QuickviewTest();
-
-import { CardOverlayTest } from './ui/CardOverlayTest';
-CardOverlayTest();
-
-import { ResponsiveDropdownTest } from './ui/ResponsiveComponents/ResponsiveDropdownTest';
-ResponsiveDropdownTest();
-
-import { StandaloneSearchInterfaceTest } from './ui/StandaloneSearchInterfaceTest';
-StandaloneSearchInterfaceTest();
-
-import { ResponsiveFacetsTest } from './ui/ResponsiveComponents/ResponsiveFacetsTest';
-ResponsiveFacetsTest();
-
-import { ResponsiveRecommendationTest } from './ui/ResponsiveComponents/ResponsiveRecommendationTest';
-ResponsiveRecommendationTest();
-
-import { ResponsiveTabsTest } from './ui/ResponsiveComponents/ResponsiveTabsTest';
-ResponsiveTabsTest();
-
-import { ResponsiveDropdownContentTest } from './ui/ResponsiveComponents/ResponsiveDropdownContentTest';
-ResponsiveDropdownContentTest();
-
-import { RecommendationDropdownContentTest } from './ui/ResponsiveComponents/RecommendationDropdownContentTest';
-RecommendationDropdownContentTest();
-
-import { ResponsiveDropdownHeaderTest } from './ui/ResponsiveComponents/ResponsiveDropdownHeaderTest';
-ResponsiveDropdownHeaderTest();
-
-import { KeyboardUtilsTests } from './utils/KeyboardUtilsTest';
-KeyboardUtilsTests();
-
-import { HashUtilsTest } from './utils/HashUtilsTest';
-HashUtilsTest();
-
-import { StringUtilsTests } from './utils/StringUtilsTest';
-StringUtilsTests();
-
-import { CoreHelperTest } from './ui/CoreHelpersTest';
-CoreHelperTest();
-
-import { PipelineContextText } from './ui/PipelineContextTest';
-PipelineContextText();
-
-import { QuerySuggestAddonTest } from './ui/QuerySuggestAddonTest';
-QuerySuggestAddonTest();
-
-import { ResponsiveComponentsTest } from './ui/ResponsiveComponentsTest';
-ResponsiveComponentsTest();
-
-import { TemplateTest } from './ui/TemplateTest';
-TemplateTest();
-
-import { TemplateListTest } from './ui/TemplateListTest';
-TemplateListTest();
-
-import { TemplateCacheTest } from './ui/TemplateCacheTest';
-TemplateCacheTest();
-
-import { DefaultInstantiateTemplateOptionsTest } from './ui/DefaultInstantiateTemplateOptionsTest';
-DefaultInstantiateTemplateOptionsTest();
-
-import { DefaultRecommendationTemplateTest } from './ui/DefaultRecommendationTemplateTest';
-DefaultRecommendationTemplateTest();
-
-import { DefaultResultTemplateTest } from './ui/DefaultResultTemplateTest';
-DefaultResultTemplateTest();
-
-import { HtmlTemplateTest } from './ui/HtmlTemplateTest';
-HtmlTemplateTest();
-
-import { TemplateConditionEvaluatorTest } from './ui/TemplateConditionEvaluatorTest';
-TemplateConditionEvaluatorTest();
-
-import { TemplateFieldsEvaluatorTest } from './ui/TemplateFieldsEvaluatorTest';
-TemplateFieldsEvaluatorTest();
-
-import { TemplateFromAScriptTagTest } from './ui/TemplateFromAScriptTagTest';
-TemplateFromAScriptTagTest();
-
-import { UnderscoreTemplateTest } from './ui/UnderscoreTemplateTest';
-UnderscoreTemplateTest();
-
-import { ResponsiveComponentsManagerTest } from './ui/ResponsiveComponents/ResponsiveComponentsManagerTest';
-ResponsiveComponentsManagerTest();
-
-import { YouTubeThumbnailTest } from './ui/YouTubeThumbnailTest';
-YouTubeThumbnailTest();
-
-import { ResultTaggingTest } from './ui/ResultTaggingTest';
-ResultTaggingTest();
-
-import { ResultsFiltersPreferencesTest } from './ui/ResultsFiltersPreferencesTest';
-ResultsFiltersPreferencesTest();
-
-import { FacetRangeTest } from './ui/FacetRangeTest';
-FacetRangeTest();
-
-import { InitializationPlaceholderTest } from './ui/InitializationPlaceholderTest';
-InitializationPlaceholderTest();
-
-import { ValueElementTest } from './ui/ValueElementTest';
-ValueElementTest();
+function isPhantomJs() {
+  return navigator.userAgent.indexOf('PhantomJS') != -1;
+}

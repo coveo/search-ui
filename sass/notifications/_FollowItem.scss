@@ -1,5 +1,3 @@
-@import "../../bin/sass/sprites";
-
 .CoveoFollowItem {
   display: inline-block;
   color: #adadad;
@@ -7,15 +5,15 @@
   cursor: pointer;
   &:before {
     content: '';
-    @include retina-sprite($result-follow-group);
+    @extend .coveo-sprites-result-follow;
     vertical-align: middle;
     margin-right: 6px;
   }
   &.coveo-follow-item-followed:before {
-    @include retina-sprite($result-follow-active-group);
+    @extend .coveo-sprites-result-follow-active;
   }
   &.coveo-follow-item-loading:before {
-    @include retina-sprite($facet-loading-group);
+    @extend .coveo-sprites-facet-loading;
     @include animation-name(coveo-spin);
     @include animation-timing-function(linear);
     @include animation-duration(1s);
@@ -27,10 +25,4 @@
   span {
     vertical-align: middle;
   }
-}
-
-.CoveoCardActionBar .CoveoFollowItem {
-  display: flex;
-  padding-left: 0;
-  color: #fff;
 }

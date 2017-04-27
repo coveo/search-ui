@@ -1,0 +1,149 @@
+.coveo-facet-values {
+  list-style: none;
+  margin: 5px 0 3px 0;
+  padding: 0;
+}
+
+.coveo-facet-value {
+  @include transition(opacity 0.2s);
+  opacity: 1;
+  margin: 0;
+  padding: 0;
+  line-height: 22px;
+
+  &.coveo-selected .coveo-facet-value-caption {
+    font-weight: bold;
+  }
+
+  &.coveo-excluded .coveo-facet-value-caption, &.coveo-excluded .coveo-computed-field, &.coveo-excluded .coveo-count {
+    text-decoration: line-through;
+  }
+
+  > * {
+    vertical-align: middle;
+  }
+
+  input[type="checkbox"] {
+    display: none;
+  }
+
+  &:hover .coveo-facet-value-checkbox {
+    > span {
+      @extend .coveo-sprites-facet-checkmark_selected;
+    }
+  }
+
+  &.coveo-selected .coveo-facet-value-checkbox {
+    > span {
+      @extend .coveo-sprites-facet-checkmark_selected;
+    }
+  }
+
+  &.coveo-no-state .coveo-facet-value-checkbox {
+    > span {
+      visibility: hidden;
+    }
+  }
+
+  &.coveo-no-state:hover .coveo-facet-value-checkbox {
+    > span {
+      visibility: visible;
+    }
+  }
+
+  &.coveo-excluded {
+    .coveo-facet-value-checkbox {
+      background-color: $color-facet-checkbox-normal;
+    }
+    .coveo-computed-field {
+      margin-right: 16px;
+    }
+    .coveo-facet-value-exclude {
+      visibility: hidden;
+    }
+    &:hover {
+      .coveo-facet-value-exclude {
+        visibility: hidden;
+      }
+    }
+  }
+
+  &:hover .coveo-facet-value-exclude {
+    visibility: visible;
+  }
+}
+
+.coveo-facet-value-label {
+  display: block;
+  overflow: hidden;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.coveo-facet-value-label-wrapper {
+  overflow: hidden;
+}
+
+.coveo-facet-value-caption {
+  display: inline-block;
+  color: black;
+  font-size: 13px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  vertical-align: middle;
+}
+
+.coveo-facet-value-checkbox {
+  width: 16px;
+  height: 16px;
+  display: inline-block;
+  margin: 3px 5px 3px 3px;
+  background-color: $color-facet-checkbox-normal;
+  box-shadow: 0px 0px 1px rgba(176, 179, 174, 1);
+  text-align: center;
+  vertical-align: top;
+
+  > span {
+    margin: 2px;
+    @extend .coveo-sprites-facet-checkmark_unselected;
+  }
+}
+
+.coveo-facet-value-icon {
+  display: inline-block;
+  margin: 3px 5px 3px 0;
+  vertical-align: top;
+}
+
+.coveo-facet-value-count {
+  font-size: 12px;
+  color: #8a8a8a;
+  vertical-align: middle;
+  margin: 0 5px;
+  display: inline-block;
+  @include transition(opacity 1.0s);
+  &.coveo-waitDelta {
+    opacity: 0;
+  }
+}
+
+.coveo-facet-value-computed-field {
+  float: right;
+  font-size: 11px;
+  color: $color-medium-gray;
+}
+
+.coveo-facet-value-exclude {
+  float: right;
+  visibility: hidden;
+  cursor: pointer;
+  opacity: 0.5;
+  margin: 5px 2px 4px;
+
+  @extend .coveo-sprites-facet-disable;
+
+  &:hover {
+    opacity: 1;
+  }
+}

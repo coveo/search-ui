@@ -1,6 +1,3 @@
-@import "../bin/sass/sprites";
-@import "Variables";
-
 .CoveoSearchButton {
   color: white;
   border: 1px solid #bcc3ca;
@@ -20,19 +17,21 @@
 
   & > .coveo-icon {
     vertical-align: middle;
-    @include retina-sprite($main-search-group);
-    animation: none;
+    @extend .coveo-sprites-main-search;
   }
   &:hover > .coveo-icon {
-    @include retina-sprite($main-search-active-group);
+    @extend .coveo-sprites-main-search-active;
   }
 }
 
-.coveo-executing-query .CoveoSearchButton > .coveo-icon, .coveo-executing-query .CoveoSearchButton:hover > .coveo-icon {
-  @include retina-sprite($facet-loading-group);
+.coveo-executing-query .CoveoSearchButton > .coveo-icon {
+  @extend .coveo-sprites-facet-loading;
   @include animation-name(coveo-spin);
   @include animation-timing-function(linear);
   @include animation-duration(1s);
   @include animation-iteration-count(infinite);
 }
 
+.ie8or9 .coveo-executing-query .CoveoSearchButton > .coveo-icon {
+  @extend .coveo-sprites-main-search;
+}

@@ -1,39 +1,22 @@
-import { Initialization } from './Initialization';
-import * as _ from 'underscore';
+import {Initialization, IInitializationParameters} from './Initialization';
 
 interface IWindow {
   $: any;
 }
 
-export interface IJQuery {
-  fn: any;
+// This class is essentially only there for legacy reasons : If there is any code in the wild that called this directly,
+// we don't want this to break.
+export class CoveoJQuery {
+  public static automaticallyCreateComponentsInside(element: HTMLElement, initParameters: IInitializationParameters, ignore?: string[]) {
+    return Initialization.automaticallyCreateComponentsInside(element, initParameters, ignore);
+  }
 }
 
-export var jQueryInstance: IJQuery;
+export var jQueryInstance: JQuery;
 
-if (!initCoveoJQuery()) {
-  // Adding a check in case jQuery was added after the jsSearch
-  // Since this event listener is registered before the Coveo.init call, JQuery should always be initiated before the Coveo.init call
-  document.addEventListener('DOMContentLoaded', () => {
-    initCoveoJQuery();
-  });
-}
-
-export function initCoveoJQuery() {
-  if (!jQueryIsDefined()) {
-    return false;
-  }
-
-  jQueryInstance = getJQuery();
-
-  if (window['Coveo'] == undefined) {
-    window['Coveo'] = {};
-  }
-  if (window['Coveo']['$'] == undefined) {
-    window['Coveo']['$'] = jQueryInstance;
-  }
-
-  jQueryInstance.fn.coveo = function (...args: any[]) {
+if (window['$'] != undefined && window['$'].fn != undefined) {
+  jQueryInstance = window['$'];
+  window['$'].fn.coveo = function (...args: any[]) {
     var returnValue: any;
     this.each((index: number, element: HTMLElement) => {
       var returnValueForThisElement: any;
@@ -49,29 +32,5 @@ export function initCoveoJQuery() {
       returnValue = returnValue || returnValueForThisElement;
     });
     return returnValue;
-  };
-
-  return true;
-}
-
-export function jQueryIsDefined(): boolean {
-  return jQueryDefinedOnWindow() || jQueryDefinedOnCoveoObject();
-}
-
-function jQueryDefinedOnCoveoObject(): boolean {
-  return window['Coveo'] != undefined && window['Coveo']['$'] != undefined;
-}
-
-function jQueryDefinedOnWindow(): boolean {
-  return window['$'] != undefined && window['$'].fn != undefined && window['$'].fn.jquery != undefined;
-}
-
-function getJQuery(): IJQuery {
-  let jQueryInstance: IJQuery;
-  if (window['$']) {
-    jQueryInstance = window['$'];
-  } else {
-    jQueryInstance = window['Coveo']['$'];
   }
-  return jQueryInstance;
 }

@@ -6,12 +6,13 @@
     <meta about="Search People content." />
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, height=device-height" >
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0,  maximum-scale=1.0, user-scalable=0">
     <script src="js/CoveoJsSearch.js"></script>
+    <script src="js/CoveoJsSearch.Dependencies.js"></script>
     <script src="js/templates/templatesNew.js"></script>
     <link rel="stylesheet" href="css/CoveoFullSearchNewDesign.css" />
     <script>
-      document.addEventListener('DOMContentLoaded', function() {
+      document.addEventListener('DOMContentLoaded', function(){
         Coveo.SearchEndpoint.configureSampleEndpoint();
         Coveo.init(document.body);
       })
@@ -23,7 +24,7 @@
       <a class="CoveoTab" data-id="People" data-caption="People" data-expression="@fullname"></a>
     </div>
     <div class='coveo-search-section'>
-      <div class="CoveoSettings"></div>
+      <div class="CoveoSettings" data-include-in-menu=".CoveoShareQuery,.CoveoExportToExcel,.CoveoPreferencesPanel"></div>
       <div class="CoveoSearchbox" data-enable-omnibox="true"></div>
     </div>
     <div class="coveo-main-section">
@@ -47,9 +48,6 @@
             <span class="CoveoQuerySummary"></span>
             <span class="CoveoQueryDuration"></span>
           </div>
-          <div class="coveo-result-layout-section">
-            <span class="CoveoResultLayout"></span>
-          </div>
           <div class="coveo-sort-section">
             <span class="CoveoSort" data-sort-criteria="relevancy" data-caption="Relevance"></span>
             <span class="CoveoSort" data-sort-criteria="date descending,date ascending" data-caption="Date"></span>
@@ -57,12 +55,9 @@
         </div>
         <div class="CoveoHiddenQuery"></div>
         <div class="CoveoDidYouMean"></div>
-        <div class="CoveoErrorReport"></div>
-        <div class="CoveoResultList" data-layout="list" data-wait-animation="fade" data-auto-select-fields-to-include="true"></div>
-        <div class="CoveoResultList" data-layout="card" data-wait-animation="fade" data-auto-select-fields-to-include="true"></div>
+        <div class="CoveoErrorReport" data-pop-up="false"></div>
+        <div class="CoveoResultList" data-wait-animation="fade" data-auto-select-fields-to-include="true"></div>
         <div class="CoveoPager"></div>
-        <div class="CoveoLogo"></div>
-        <div class="CoveoResultsPerPage"></div>
       </div>
     </div>
   </body>

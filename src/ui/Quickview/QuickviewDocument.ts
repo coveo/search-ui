@@ -1,21 +1,20 @@
-import { Component } from '../Base/Component';
-import { IComponentBindings } from '../Base/ComponentBindings';
-import { ComponentOptions } from '../Base/ComponentOptions';
-import { analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
-import { IQueryResult } from '../../rest/QueryResult';
-import { Assert } from '../../misc/Assert';
-import { $$, Dom } from '../../utils/Dom';
-import { IOpenQuickviewEventArgs } from '../../events/ResultListEvents';
-import { QuickviewEvents, IQuickviewLoadedEventArgs } from '../../events/QuickviewEvents';
-import { DeviceUtils } from '../../utils/DeviceUtils';
-import { Utils } from '../../utils/Utils';
-import { ColorUtils } from '../../utils/ColorUtils';
-import { Initialization } from '../Base/Initialization';
-import { IQuery } from '../../rest/Query';
-import { IViewAsHtmlOptions } from '../../rest/SearchEndpointInterface';
-import { AjaxError } from '../../rest/AjaxError';
-import { l } from '../../strings/Strings';
-import * as _ from 'underscore';
+import {Component} from '../Base/Component'
+import {IComponentBindings} from '../Base/ComponentBindings'
+import {ComponentOptions} from '../Base/ComponentOptions'
+import {analyticsActionCauseList} from '../Analytics/AnalyticsActionListMeta'
+import {IQueryResult} from '../../rest/QueryResult'
+import {Assert} from '../../misc/Assert'
+import {$$, Dom} from '../../utils/Dom'
+import {IOpenQuickviewEventArgs} from '../../events/ResultListEvents'
+import {QuickviewEvents, IQuickviewLoadedEventArgs} from '../../events/QuickviewEvents'
+import {DeviceUtils} from '../../utils/DeviceUtils'
+import {Utils} from '../../utils/Utils'
+import {ColorUtils} from '../../utils/ColorUtils'
+import {Initialization} from '../Base/Initialization'
+import {IQuery} from '../../rest/Query'
+import {IViewAsHtmlOptions} from '../../rest/SearchEndpointInterface'
+import {AjaxError} from '../../rest/AjaxError'
+import {l} from '../../strings/Strings'
 
 const HIGHLIGHT_PREFIX = 'CoveoHighlight';
 
@@ -39,24 +38,10 @@ interface IWordState {
   index: number;
 }
 
-/**
- * The QuickviewDocument component is meant to exist within Result Templates, more specifically inside a {@link Quickview} component.
- * The sole purpose of this component is to include an iframe which will load the correct HTML version of the current document.
- * By default, this component is included in the default template for a {@link Quickview} component.
- */
 export class QuickviewDocument extends Component {
   static ID = 'QuickviewDocument';
 
-  /**
-   * The options for the component
-   * @componentOptions
-   */
   static options: IQuickviewDocumentOptions = {
-    /**
-     * Specifies the maximum document size (the preview) that should be returned by the index.
-     *
-     * By default its value is 0, and the whole preview is returned.
-     */
     maximumDocumentSize: ComponentOptions.buildNumberOption({ defaultValue: 0, min: 0 }),
   };
 
@@ -65,13 +50,6 @@ export class QuickviewDocument extends Component {
   private termsToHighlightWereModified: boolean;
   private keywordsState: IWordState[];
 
-  /**
-   * Create a new instance of the component
-   * @param element
-   * @param options
-   * @param bindings
-   * @param result
-   */
   constructor(public element: HTMLElement, public options?: IQuickviewDocumentOptions, bindings?: IComponentBindings, public result?: IQueryResult) {
     super(element, QuickviewDocument.ID, bindings);
 
@@ -100,7 +78,7 @@ export class QuickviewDocument extends Component {
       documentURL = this.result.clickUri;
     }
     this.usageAnalytics.logClickEvent(analyticsActionCauseList.documentQuickview, {
-      author: Utils.getFieldValue(this.result, 'author'),
+      author: this.result.raw.author,
       documentURL: documentURL,
       documentTitle: this.result.title
     }, this.result, this.queryController.element);
@@ -112,7 +90,7 @@ export class QuickviewDocument extends Component {
     let termsToHighlight = _.keys(this.result.termsToHighlight);
     let dataToSendOnOpenQuickView: IOpenQuickviewEventArgs = {
       termsToHighlight: termsToHighlight
-    };
+    }
 
     $$(this.element).trigger(QuickviewEvents.openQuickview, dataToSendOnOpenQuickView);
     this.checkIfTermsToHighlightWereModified(dataToSendOnOpenQuickView.termsToHighlight);
@@ -152,7 +130,7 @@ export class QuickviewDocument extends Component {
         } else {
           iframe.onload = () => {
             this.triggerQuickviewLoaded(beforeLoad);
-          };
+          }
           iframe.src = endpoint.getViewAsHtmlUri(this.result.uniqueId, callOptions);
         }
       });
@@ -164,7 +142,7 @@ export class QuickviewDocument extends Component {
 
       // Remove white border for new Quickview
       if (this.isNewQuickviewDocument(iframe.contentWindow)) {
-        let body = $$(this.element).closest('.coveo-body');
+        let body = $$(this.element).closest('.coveo-body')
         body.style.padding = '0';
         let header = $$(this.element).find('.coveo-quickview-header');
         header.style.paddingTop = '10';
@@ -203,13 +181,7 @@ export class QuickviewDocument extends Component {
     }
 
     iframe.contentWindow.document.open();
-    try {
-      iframe.contentWindow.document.write(toWrite);
-    } catch (e) {
-      // The iframe is sandboxed, and can throw ugly errors, especially when rendering random web pages.
-      // Suppress those
-    }
-
+    iframe.contentWindow.document.write(toWrite);
     iframe.contentWindow.document.close();
   }
 
@@ -232,13 +204,18 @@ export class QuickviewDocument extends Component {
         // The 'scrolling' part is required otherwise the hack doesn't work.
         //
         // http://stackoverflow.com/questions/23083462/how-to-get-an-iframe-to-be-responsive-in-ios-safari
-        cssText += 'body, html { height: 1px !important; min-height: 100%; width: 1px !important; min-width: 100%; overflow: scroll; }';
+        cssText += 'body, html { height: 1px !important; min-height: 100%; overflow: scroll; }';
         $$(iframe).setAttribute('scrolling', 'no');
 
         // Some content is cropped on iOs if a margin is present
         // We remove it and add one on the iframe wrapper.
         cssText += 'body, html {margin: auto}';
         iframe.parentElement.style.margin = '0 0 5px 5px';
+
+        // While we're on the topic of iOS Safari: This magic trick prevents iOS from NOT
+        // displaying the content of the iframe. If we don't do this, you'll see the body
+        // of the iframe ONLY when viewing the page in the tab switcher.  Isn't that *magical*?
+        iframe.style.position = 'relative';
       }
 
       if ('styleSheet' in style) {
@@ -308,7 +285,8 @@ export class QuickviewDocument extends Component {
 
     let words: { [index: string]: IWord } = {};
     let highlightsCount = 0;
-    _.each($$(window.document.body).findAll('[id^="' + HIGHLIGHT_PREFIX + '"]'), (element: HTMLElement, index: number) => {
+
+    _.each($$(window.document.body).findAll('[id^=' + HIGHLIGHT_PREFIX + ']'), (element: HTMLElement, index: number) => {
       let idParts = this.getHighlightIdParts(element);
 
       if (idParts) {
@@ -383,7 +361,7 @@ export class QuickviewDocument extends Component {
         color: word.element.style.backgroundColor,
         currentIndex: 0,
         index: word.index
-      };
+      }
 
       this.keywordsState.push(state);
       $$(this.header).append(this.buildWordButton(state, window));
@@ -429,14 +407,14 @@ export class QuickviewDocument extends Component {
         // The expansions do NOT include the original term (makes sense), so be sure to check
         // the original term for a match too.
         return (originalTerm.toLowerCase() == highlight.toLowerCase()) ||
-          (_.find(this.result.termsToHighlight[originalTerm], (expansion: string) => expansion.toLowerCase() == highlight.toLowerCase()) != undefined);
+          (_.find(this.result.termsToHighlight[originalTerm], (expansion: string) => expansion.toLowerCase() == highlight.toLowerCase()) != undefined)
       }) || found;
     }
     return found;
   }
 
   private buildWordButton(wordState: IWordState, window: Window): HTMLElement {
-    let wordHtml = $$('span');
+    let wordHtml = $$('span')
     wordHtml.addClass('coveo-term-for-quickview');
 
     let quickviewName = $$('span');
@@ -444,18 +422,8 @@ export class QuickviewDocument extends Component {
     quickviewName.setHtml(wordState.word.text);
     quickviewName.on('click', () => {
       this.navigate(wordState, false, window);
-    });
+    })
     wordHtml.append(quickviewName.el);
-
-    let quickviewUpArrow = $$('span');
-    quickviewUpArrow.addClass('coveo-term-for-quickview-up-arrow');
-    let quickviewUpArrowIcon = $$('span');
-    quickviewUpArrowIcon.addClass('coveo-term-for-quickview-up-arrow-icon');
-    quickviewUpArrow.append(quickviewUpArrowIcon.el);
-    quickviewUpArrow.on('click', () => {
-      this.navigate(wordState, true, window);
-    });
-    wordHtml.append(quickviewUpArrow.el);
 
     let quickviewDownArrow = $$('span');
     quickviewDownArrow.addClass('coveo-term-for-quickview-down-arrow');
@@ -464,8 +432,18 @@ export class QuickviewDocument extends Component {
     quickviewDownArrow.append(quickviewDownArrowIcon.el);
     quickviewDownArrow.on('click', () => {
       this.navigate(wordState, false, window);
-    });
+    })
     wordHtml.append(quickviewDownArrow.el);
+
+    let quickviewUpArrow = $$('span');
+    quickviewUpArrow.addClass('coveo-term-for-quickview-up-arrow');
+    let quickviewUpArrowIcon = $$('span');
+    quickviewUpArrowIcon.addClass('coveo-term-for-quickview-up-arrow-icon');
+    quickviewUpArrow.append(quickviewUpArrowIcon.el);
+    quickviewUpArrow.on('click', () => {
+      this.navigate(wordState, true, window);
+    })
+    wordHtml.append(quickviewUpArrow.el)
 
     wordHtml.el.style.backgroundColor = wordState.color;
     wordHtml.el.style.borderColor = this.getSaturatedColor(wordState.color);
@@ -486,13 +464,14 @@ export class QuickviewDocument extends Component {
     let scroll = this.getScrollingElement(window);
 
     // Un-highlight any currently selected element
-    let current = $$(scroll).find('[id^="' + HIGHLIGHT_PREFIX + ':' + state.word.index + '.' + fromIndex + '"]');
+    let current = $$(scroll).find(`[id^=${HIGHLIGHT_PREFIX}:${state.word.index}.${fromIndex}.]`
+    )
     if (current) {
       current.style.border = '';
     }
 
     // Find and highlight the new element.
-    let element = $$(window.document.body).find('[id^="' + HIGHLIGHT_PREFIX + ':' + state.word.index + '.' + toIndex + '"]');
+    let element = $$(window.document.body).find(`[id^=${HIGHLIGHT_PREFIX}:${state.word.index}.${toIndex}.]`);
     element.style.border = '1px dotted #333';
     state.currentIndex = toIndex;
 
@@ -500,19 +479,42 @@ export class QuickviewDocument extends Component {
     // But this prevents keyword navigation from working so we must force show it. This
     // is done by adding the 'opened' class to it (defined by pdf2html).
     if (this.isNewQuickviewDocument(window)) {
-      let pdf = $$(element).closest('.pc');
+      let pdf = $$(element).closest('.pc')
       $$(pdf).addClass('opened');
     }
 
-    element.scrollIntoView();
+    // pdf2html docs hide the non-visible frames by default, to speed up browsers.
+    // Hack for now: the new Quick View is far too complex to manually scroll
+    // to the content, so SCREW IT and use good ol' scrollIntoView. I'm planning
+    // on a page-based quick view in an upcoming hackaton anyway :)
+    //
+    // Also, mobile devices have troubles with the animation.
+    if (this.isNewQuickviewDocument(window) || DeviceUtils.isMobileDevice()) {
+      element.scrollIntoView();
 
-    document.body.scrollLeft = 0;
-    document.body.scrollTop = 0;
+      // iOS on Safari might scroll the whole modal box body when we do this,
+      // so give it a nudge in the right direction.
+      let body = this.iframe.closest('.coveo-body');
+      body.scrollLeft = 0;
+      body.scrollTop = 0;
+
+      return;
+    }
+
+    // For other quick views we use a nicer animation that centers the keyword
+
+    this.animateScroll(scroll,
+      element.offsetLeft - scroll.clientWidth / 2 + $$(element).width() / 2,
+      element.offsetTop - scroll.clientHeight / 2 + $$(element).height() / 2);
+
+    this.animateScroll(this.iframe.el,
+      element.offsetLeft - this.iframe.width() / 2 + $$(element).width() / 2,
+      element.offsetTop - this.iframe.height() / 2 + $$(element).height() / 2);
 
   }
 
   private buildHeader(): Dom {
-    let header = $$('div');
+    let header = $$('div')
     header.addClass('coveo-quickview-header');
     return header;
   }
@@ -576,8 +578,23 @@ export class QuickviewDocument extends Component {
     if (hsv[1] > 1) {
       hsv[1] = 1;
     }
-    let rgb = ColorUtils.hsvToRgb(hsv[0], hsv[1], hsv[2]);
+    let rgb = ColorUtils.hsvToRgb(hsv[0], hsv[1], hsv[2])
     return 'rgb(' + rgb[0].toString() + ', ' + rgb[1].toString() + ', ' + rgb[2].toString() + ')';
+  }
+
+  private animateScroll(scroll: HTMLElement, scrollLeftValue: number, scrollTopValue: number, duration: number = 100) {
+    let leftStep = Math.round((scrollLeftValue - scroll.scrollLeft) / duration);
+    let topStep = Math.round((scrollTopValue - scroll.scrollTop) / duration);
+
+    let interval = setInterval(function () {
+      if (duration != 0) {
+        scroll.scrollLeft += leftStep;
+        scroll.scrollTop += topStep;
+        duration -= 1
+      } else {
+        clearInterval(interval);
+      }
+    }, 1);
   }
 }
 

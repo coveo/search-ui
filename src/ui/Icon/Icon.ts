@@ -1,18 +1,15 @@
-import { Component } from '../Base/Component';
-import { IComponentBindings } from '../Base/ComponentBindings';
-import { ComponentOptions } from '../Base/ComponentOptions';
-import { IQueryResult } from '../../rest/QueryResult';
-import { Assert } from '../../misc/Assert';
-import { QueryUtils } from '../../utils/QueryUtils';
-import { Initialization } from '../Base/Initialization';
-import { Utils } from '../../utils/Utils';
-import { FileTypes, IFileTypeInfo } from '../Misc/FileTypes';
-import { $$ } from '../../utils/Dom';
-import { exportGlobally } from '../../GlobalExports';
+import {Component} from '../Base/Component'
+import {IComponentBindings} from '../Base/ComponentBindings'
+import {ComponentOptions} from '../Base/ComponentOptions'
+import {IQueryResult} from '../../rest/QueryResult'
+import {Assert} from '../../misc/Assert'
+import {QueryUtils} from '../../utils/QueryUtils'
+import {Initialization} from '../Base/Initialization'
+import {Utils} from '../../utils/Utils'
+import {FileTypes, IFileTypeInfo} from '../Misc/FileTypes'
+import {Quickview} from '../Quickview/Quickview'
+import {$$} from '../../utils/Dom'
 
-/**
- * Available options for the {@link Icon} component.
- */
 export interface IIconOptions {
   value?: string;
   small?: boolean;
@@ -21,71 +18,51 @@ export interface IIconOptions {
 }
 
 /**
- * The Icon component outputs the corresponding icon for a given file type. The component searches for a suitable icon
- * from those available in the Coveo JavaScript Search Framework. If the component finds no suitable icon, it instead
- * outputs a generic icon.
- *
- * This component is a result template component (see [Result Templates](https://developers.coveo.com/x/aIGfAQ)).
+ * An icon component is a Result template component which outputs the corresponding icon for a give filetype. It uses the
+ * available icons in the framework, and if no suitable one are found, it fallback on a generic icon.
  */
 export class Icon extends Component {
   static ID = 'Icon';
 
-  static doExport = () => {
-    exportGlobally({
-      'Icon': Icon
-    });
-  }
-
   /**
-   * The options for the Icon
+   * The options for the component
    * @componentOptions
    */
   static options: IIconOptions = {
-
     /**
-     * Specifies the value that the Icon component should output as its CSS class instead of the auto-selected value.
-     *
-     * Default value is `undefined`, which means that the Coveo JavaScript Search Framework outputs a suitable icon
-     * depending on the result file type.
+     * Setting this value will tell the Icon component to output this value as it's css class, instead of the auto-selected one.<br/>
+     * Default is `undefined`, and the framework will determine an icon from the result filetype.
      */
     value: ComponentOptions.buildIconOption(),
-
     /**
-     * Specifies whether the Icon component should output the smaller version of the icon instead of the regular one.
-     *
-     * Default value is `undefined`.
+     * Setting this value to true will output the smaller version of the auto-generated icon.<br/>
+     * Default is `false`.
      */
-    small: ComponentOptions.buildBooleanOption(),
-
+    small: ComponentOptions.buildBooleanOption({ defaultValue: false }),
     /**
-     * Specifies whether the Icon component should force the output icon to display its caption/label.
-     *
-     * **Note:**
-     *
-     * > Due to limited screen real estate, setting this option to `true` has no effect on icons used inside Coveo for
-     * > Salesforce Insight Panels.
-     *
-     * Default value is `undefined`, which means that the Coveo JavaScript Search Framework determines whether the icon
-     * needs to display a caption/label depending on the result file type.
+     * Setting this to true will force the caption/label to appear.<br/>
+     * Setting this to false will force the caption/label to never appear.<br/>
+     * Default value is `undefined`, and the framework will determine if a label needs to be displayed.
      */
     withLabel: ComponentOptions.buildBooleanOption(),
-
     /**
-     * Specifies what text to display as the icon caption/label.
-     *
-     * Default value is `undefined`, which means that the Coveo JavaScript Search Framework determines what text the icon
-     * needs to display depending on the result file type.
+     * Setting this option allow to set the label that should be displayed.<br/>
+     * Default value is `undefined`, and the framework will determine the label that will be displayed.
      */
     labelValue: ComponentOptions.buildLocalizedStringOption()
   };
 
+  static fields = [
+    'objecttype',
+    'filetype',
+  ];
+
   /**
-   * Creates a new Icon component.
-   * @param element The HTMLElement on which to instantiate the component.
-   * @param options The options for the Icon component.
-   * @param bindings The bindings that the component requires to function normally. If not set, these will be
-   * automatically resolved (with a slower execution time).
-   * @param result The result to associate the component with.
+   * Create a new Icon component
+   * @param element
+   * @param options
+   * @param bindings
+   * @param result
    */
   constructor(public element: HTMLElement, public options?: IIconOptions, bindings?: IComponentBindings, public result?: IQueryResult) {
     super(element, Icon.ID, bindings);
@@ -94,11 +71,11 @@ export class Icon extends Component {
     this.result = this.result || this.resolveResult();
     Assert.exists(this.result);
 
-    var possibleInternalQuickview = $$(this.element).find('.' + Component.computeCssClassNameForType('Quickview'));
+    var possibleInternalQuickview = $$(this.element).find('.' + Component.computeCssClassNameForType(Quickview.ID));
     if (!Utils.isNullOrUndefined(possibleInternalQuickview) && QueryUtils.hasHTMLVersion(this.result)) {
       $$(this.element).addClass('coveo-with-quickview');
       $$(this.element).on('click', () => {
-        var qv = <any>Component.get(possibleInternalQuickview);
+        var qv: Quickview = <Quickview>Component.get(possibleInternalQuickview);
         qv.open();
       });
     }
@@ -108,36 +85,17 @@ export class Icon extends Component {
 
   static createIcon(result: IQueryResult, options: IIconOptions = {}, element: HTMLElement = $$('div').el, bindings?: IComponentBindings) {
     var info = FileTypes.get(result);
-
-
-    if (!bindings && result.searchInterface) {
-      // try to resolve results bindings automatically
-      bindings = result.searchInterface.getBindings();
-    }
     info = Icon.preprocessIconInfo(options, info);
-    $$(element).toggleClass('coveo-small', options.small === true);
-
-    if (options.value != undefined) {
-      if (options.small === true) {
-        if (options.value.indexOf('-small') == -1) {
-          info.icon += '-small';
-        }
-      }
-      if (options.small === false) {
-        if (options.value.indexOf('-small') != -1) {
-          info.icon = info.icon.replace('-small', '');
-        }
-      }
-    }
     $$(element).addClass(info.icon);
     element.setAttribute('title', info.caption);
-
+    if (options.small) {
+      $$(element).addClass('coveo-small');
+    }
     if (Icon.shouldDisplayLabel(options, bindings)) {
       element.appendChild($$('span', {
         className: 'coveo-icon-caption-overlay'
       }, info.caption).el);
       $$(element).addClass('coveo-icon-with-caption-overlay');
-      $$(element).setAttribute('data-with-label', 'true');
     }
     return element;
   }

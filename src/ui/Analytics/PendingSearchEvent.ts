@@ -1,19 +1,18 @@
-import { IDuringQueryEventArgs, QueryEvents } from '../../events/QueryEvents';
-import { IQueryResults } from '../../rest/QueryResults';
-import { IQuery } from '../../rest/Query';
-import { ISearchEvent } from '../../rest/SearchEvent';
-import { AnalyticsEndpoint } from '../../rest/AnalyticsEndpoint';
-import { Assert } from '../../misc/Assert';
-import { $$ } from '../../utils/Dom';
-import { SearchInterface } from '../SearchInterface/SearchInterface';
-import { Component } from '../Base/Component';
-import { QueryController } from '../../controllers/QueryController';
-import { Defer } from '../../misc/Defer';
-import { APIAnalyticsBuilder } from '../../rest/APIAnalyticsBuilder';
-import { IAnalyticsSearchEventsArgs, AnalyticsEvents } from '../../events/AnalyticsEvents';
-import { analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
-import { QueryStateModel } from '../../models/QueryStateModel';
-import * as _ from 'underscore';
+import {IDuringQueryEventArgs, QueryEvents} from '../../events/QueryEvents';
+import {IQueryResults} from '../../rest/QueryResults';
+import {IQuery} from '../../rest/Query';
+import {ISearchEvent} from '../../rest/SearchEvent';
+import {AnalyticsEndpoint} from '../../rest/AnalyticsEndpoint';
+import {Assert} from '../../misc/Assert';
+import {$$} from '../../utils/Dom';
+import {SearchInterface} from '../SearchInterface/SearchInterface';
+import {Component} from '../Base/Component';
+import {QueryController} from '../../controllers/QueryController';
+import {Defer} from '../../misc/Defer';
+import {APIAnalyticsBuilder} from '../../rest/APIAnalyticsBuilder';
+import {IAnalyticsSearchEventsArgs, AnalyticsEvents} from '../../events/AnalyticsEvents';
+import {QueryStateModel} from '../../models/QueryStateModel';
+import _ = require('underscore');
 
 export class PendingSearchEvent {
   private handler: (evt: Event, arg: IDuringQueryEventArgs) => void;
@@ -29,7 +28,7 @@ export class PendingSearchEvent {
     Assert.exists(templateSearchEvent);
 
     this.handler = (evt: Event, arg: IDuringQueryEventArgs) => {
-      this.handleDuringQuery(evt, arg);
+      this.handleDuringQuery(evt, arg)
     };
     $$(root).on(QueryEvents.duringQuery, this.handler);
   }
@@ -60,7 +59,11 @@ export class PendingSearchEvent {
 
     // TODO: Maybe a better way to grab the search interface?
     let eventTarget: HTMLElement;
-    eventTarget = <HTMLElement>evt.target;
+    if (window['jQuery'] && evt instanceof window['jQuery'].Event) {
+      eventTarget = <HTMLElement>evt.target;
+    } else {
+      eventTarget = <HTMLElement>evt.srcElement;
+    }
     let searchInterface = <SearchInterface>Component.get(eventTarget, SearchInterface);
     Assert.exists(searchInterface);
     // TODO: Maybe a better way to grab the query controller?
@@ -70,7 +73,7 @@ export class PendingSearchEvent {
     args.promise.then((queryResults: IQueryResults) => {
       Assert.exists(queryResults);
       Assert.check(!this.finished);
-      if (queryResults._reusedSearchUid !== true || this.templateSearchEvent.actionCause == analyticsActionCauseList.recommendation.name) {
+      if (queryResults._reusedSearchUid !== true) {
         let searchEvent = <ISearchEvent>_.extend({}, this.templateSearchEvent);
         this.fillSearchEvent(searchEvent, searchInterface, args.query, queryResults);
         this.searchEvents.push(searchEvent);
@@ -83,7 +86,7 @@ export class PendingSearchEvent {
       if (this.searchPromises.length == 0) {
         this.flush();
       }
-    });
+    })
   }
 
   public stopRecording() {
@@ -112,7 +115,10 @@ export class PendingSearchEvent {
     }
   }
 
-  private fillSearchEvent(searchEvent: ISearchEvent, searchInterface: SearchInterface, query: IQuery, queryResults: IQueryResults) {
+  private fillSearchEvent(searchEvent: ISearchEvent,
+    searchInterface: SearchInterface,
+    query: IQuery,
+    queryResults: IQueryResults) {
     Assert.exists(searchEvent);
     Assert.exists(searchInterface);
     Assert.exists(query);
@@ -132,20 +138,5 @@ export class PendingSearchEvent {
     searchEvent.resultsPerPage = query.numberOfResults;
     searchEvent.searchQueryUid = queryResults.searchUid;
     searchEvent.queryPipeline = queryResults.pipeline;
-
-    // The context_${key} format is important for the Analytics backend
-    // This is what they use to recognize a custom data that will be used internally by other coveo's service.
-    // In this case, Coveo Machine Learning will be the consumer of this information.
-    if (query.context != undefined) {
-      _.each(query.context, (value: string, key: string) => {
-        searchEvent.customData[`context_${key}`] = value;
-      });
-    }
-
-    // The refinedKeywords field is important for Coveo Machine Learning in order to learn properly on query
-    // made based on the long query.
-    if (queryResults.refinedKeywords != undefined && queryResults.refinedKeywords.length != 0) {
-      searchEvent.customData['refinedKeywords'] = queryResults.refinedKeywords;
-    }
   }
 }

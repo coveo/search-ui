@@ -1,0 +1,12 @@
+.CoveoSearchButton {
+  padding: 10px;
+  min-width: 40px;
+  box-shadow: none;
+  float: right;
+  border-top-right-radius: 0px;
+  border-bottom-right-radius: 0px;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  height: 40px;
+  @include transform(translate3d(0,0,150px));
+} 

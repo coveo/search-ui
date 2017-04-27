@@ -1,0 +1,34 @@
+.CoveoSearchInterface .CoveoResult.coveo-email-result {
+  img {
+    max-width: 286px;
+  }
+
+  .CoveoQuickview, .coveo-icon-for-quickview {
+    display: none;
+  }
+
+  .coveo-email-from {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    margin: 3px 0;
+    display: block;
+  }
+
+  .coveo-email-to {
+    clear: both;
+    display: block;
+  }
+
+  .CoveoResultAttachments {
+    .coveo-icon {
+      margin: 4px 4px 0px 0px;
+    }
+
+    .coveo-attachment-container {
+      white-space: nowrap;
+      overflow:hidden;
+      text-overflow: ellipsis; 
+    }
+  }
+}

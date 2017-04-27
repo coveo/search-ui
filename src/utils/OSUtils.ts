@@ -16,9 +16,9 @@ export class OSUtils {
     } else if (nav.appVersion.indexOf('X11') != -1) {
       osName = OS_NAME.UNIX;
     } else if (nav.appVersion.indexOf('Linux') != -1) {
-      osName = OS_NAME.LINUX;
+      osName = OS_NAME.LINUX
     } else {
-      osName = OS_NAME.UNKNOWN;
+      osName = OS_NAME.UNKNOWN
     }
     return osName;
   }

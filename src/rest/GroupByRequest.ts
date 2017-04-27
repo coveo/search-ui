@@ -1,5 +1,5 @@
-import { IComputedFieldRequest } from './ComputedFieldRequest';
-import { IRangeValue } from './RangeValue';
+import {IComputedFieldRequest} from './ComputedFieldRequest';
+import {IRangeValue} from './RangeValue';
 
 /**
  * Describe a group by request to perform against the index.<br/>

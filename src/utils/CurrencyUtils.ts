@@ -1,7 +1,8 @@
-import { Assert } from '../misc/Assert';
-import { Options } from '../misc/Options';
-import { Utils } from '../utils/Utils';
-import * as Globalize from 'globalize';
+import {Assert} from '../misc/Assert';
+import {Options} from '../misc/Options';
+import {Utils} from '../utils/Utils';
+
+declare var Globalize;
 
 export interface ICurrencyToStringOptions {
   decimals?: number;

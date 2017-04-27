@@ -3,36 +3,36 @@
     "lithiummessage": {
       "icon": "mail",
       "captions": {
-        "en": "Lithium Message",
-        "fr": "Message Lithium"
+        "en": "Message",
+        "fr": "Message"
       }
     },
     "lithiumthread": {
       "icon": "list",
       "captions": {
-        "en": "Lithium Thread",
-        "fr": "Fil de conversation Lithium"
+        "en": "Thread",
+        "fr": "Fil de conversation"
       }
     },
     "lithiumboard": {
       "icon": "list",
       "captions": {
-        "en": "Lithium Board",
-        "fr": "Babillard électronique Lithium"
+        "en": "Board",
+        "fr": "Board"
       }
     },
     "lithiumcategory": {
       "icon": "list",
       "captions": {
-        "en": "Lithium Category",
-        "fr": "Catégorie Lithium"
+        "en": "Category",
+        "fr": "Catégorie"
       }
     },
     "lithiumcommunity": {
       "icon": "custom",
       "captions": {
-        "en": "Lithium Community",
-        "fr": "Communauté Lithium"
+        "en": "Community",
+        "fr": "Communauté"
       }
     }
   }

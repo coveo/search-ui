@@ -1,0 +1,76 @@
+@mixin coveo-preferences-panel-button {
+
+  @include coveo-generic-button;
+  float: right;
+  position: absolute;
+  top: 0;
+  background-color: $color-gray-background;
+  border-radius: 2px;
+  padding: 4px;
+  width: 24px;
+  height: 24px;
+  display: inline-block;
+
+  .coveo-icon {
+    position: relative;
+    top: 2px;
+  }
+}
+
+@mixin coveo-preferences-panel-item {
+  clear: both;
+  margin-bottom: 20px;
+  margin-top: 10px;
+
+  .coveo-title {
+    font-size: 14px;
+    font-weight: initial;
+    color: black;
+    margin: 15px 0px 10px 0px;
+  }
+
+  .coveo-choices-container .coveo-inactive {
+    display: none;
+  }
+
+  .coveo-choice-container {
+    padding: 5px 10px 0px 0px;
+  }
+
+  input {
+    margin-right: 35px;
+  }
+
+  input[type=text] {
+    margin-bottom: 0px;
+    border-radius: 4px;
+    border: 1px solid $color-query-box-border;
+    box-shadow: $facet-search-box-shadow;
+    border-top-color: #C1C1C1;
+    padding: 2px 8px;
+    line-height: 25px;
+  }
+
+  input[type=checkbox] {
+    display: none;
+  }
+
+  .coveo-input-icon {
+    width: 42px;
+    height: 20px;
+    cursor: pointer;
+    display: inline-block;
+    top: 7px;
+    margin-right: 7px;
+    position: relative;
+    @extend .coveo-sprites-preferencesPanel-toggle_off;
+
+    &.coveo-selected {
+      @extend .coveo-sprites-preferencesPanel-toggle_on;
+    }
+  }
+
+  input[type=submit] {
+    display: none;
+  }
+}

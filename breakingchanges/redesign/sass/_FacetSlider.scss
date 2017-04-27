@@ -1,0 +1,19 @@
+.CoveoFacetSlider {
+  &.coveo-disabled {
+    .coveo-slider-line {
+      background-color: #dddddd;
+    }
+    .coveo-slider-button {
+      background-color: #b3b3b3;
+      box-shadow: none;
+    }
+  }
+  &.coveo-facet-collapsed {
+    .coveo-slider-container {
+      display: none;
+    }
+  }
+  &.coveo-disabled-empty {
+    display: none;
+  }
+}

@@ -1,5 +1,5 @@
 @mixin coveo-thumbnail-icon {
-  @include retina-sprite($quickview-group);
+  @extend .coveo-sprites-quickview;
   position: relative;
   margin-left: 5px;
   top: 5px;

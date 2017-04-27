@@ -1,12 +1,5 @@
-import { HiddenQuery } from '../../src/ui/HiddenQuery/HiddenQuery';
-import * as Mock from '../MockEnvironment';
-import { $$ } from '../../src/utils/Dom';
-import { BreadcrumbEvents } from '../../src/events/BreadcrumbEvents';
-import { Simulate } from '../Simulate';
-import { IPopulateBreadcrumbEventArgs } from '../../src/events/BreadcrumbEvents';
-import _ = require('underscore');
-
-export function HiddenQueryTest() {
+/// <reference path="../Test.ts" />
+module Coveo {
   describe('HiddenQuery', function () {
     var test: Mock.IBasicComponentSetup<HiddenQuery>;
 
@@ -14,11 +7,11 @@ export function HiddenQueryTest() {
       test = Mock.advancedComponentSetup<HiddenQuery>(HiddenQuery, new Mock.AdvancedComponentSetupOptions(undefined, undefined, (env: Mock.MockEnvironmentBuilder) => {
         return env.withLiveQueryStateModel();
       }));
-    });
+    })
 
     afterEach(function () {
       test = null;
-    });
+    })
 
     it('should populate breadcrumb if hd and hq is set', function () {
       var breadcrumbMatcher = jasmine.arrayContaining([jasmine.objectContaining({ element: jasmine.any(HTMLElement) })]);
@@ -50,19 +43,19 @@ export function HiddenQueryTest() {
 
       $$(test.env.root).trigger(BreadcrumbEvents.populateBreadcrumb, { breadcrumbs: [] });
       expect(spy).toHaveBeenCalledWith(jasmine.anything(), matcher);
-    });
+    })
 
     it('should push hq in the query if it is set', function () {
       test.env.queryStateModel.set('hq', 'test');
       var simulation = Simulate.query(test.env);
       expect(simulation.queryBuilder.build().aq).toBe('test');
-    });
+    })
 
     it('should not push hq in the query if not set', function () {
       test.env.queryStateModel.set('hq', '');
       var simulation = Simulate.query(test.env);
       expect(simulation.queryBuilder.build().aq).toBe(undefined);
-    });
+    })
 
     it('clear should clear the query state', function () {
       test.env.queryStateModel.set('hq', 'test');
@@ -70,7 +63,7 @@ export function HiddenQueryTest() {
       test.cmp.clear();
       expect(test.env.queryStateModel.get('hq')).toBe('');
       expect(test.env.queryStateModel.get('hd')).toBe('');
-    });
+    })
 
     describe('exposes options', function () {
       it('maximumDescriptionLength should splice the description in the breadcrumb', function () {
@@ -78,7 +71,7 @@ export function HiddenQueryTest() {
           maximumDescriptionLength: 56
         }, (env: Mock.MockEnvironmentBuilder) => {
           return env.withLiveQueryStateModel();
-        }));
+        }))
 
         test.env.queryStateModel.set('hq', 'test');
         test.env.queryStateModel.set('hd', _.range(200).toString());
@@ -88,14 +81,14 @@ export function HiddenQueryTest() {
           expect($$(args.breadcrumbs[0].element).text().length).toBeLessThan(100);
         });
         $$(test.env.root).trigger(BreadcrumbEvents.populateBreadcrumb, { breadcrumbs: [] });
-      });
+      })
 
       it('title allows to specify a breadcrumb title', function () {
         test = Mock.advancedComponentSetup<HiddenQuery>(HiddenQuery, new Mock.AdvancedComponentSetupOptions(undefined, {
           title: 'foobar'
         }, (env: Mock.MockEnvironmentBuilder) => {
           return env.withLiveQueryStateModel();
-        }));
+        }))
 
         test.env.queryStateModel.set('hq', 'test');
         test.env.queryStateModel.set('hd', 'test');
@@ -103,7 +96,7 @@ export function HiddenQueryTest() {
           expect($$(<HTMLElement>args.breadcrumbs[0].element.firstChild).text()).toBe('foobar');
         });
         $$(test.env.root).trigger(BreadcrumbEvents.populateBreadcrumb, { breadcrumbs: [] });
-      });
-    });
-  });
+      })
+    })
+  })
 }

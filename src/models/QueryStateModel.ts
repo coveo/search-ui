@@ -1,8 +1,8 @@
-import { Model, IModelSetOptions } from './Model';
-import { Assert } from '../misc/Assert';
-import { IStringMap } from '../rest/GenericParam';
-import * as _ from 'underscore';
-import { Utils } from '../utils/Utils';
+import {Model, IModelSetOptions} from './Model';
+import {Assert} from '../misc/Assert';
+import {IStringMap} from '../rest/GenericParam';
+import {Utils} from '../utils/Utils';
+import _ = require('underscore');
 
 export const QUERY_STATE_ATTRIBUTES = {
   Q: 'q',
@@ -10,11 +10,10 @@ export const QUERY_STATE_ATTRIBUTES = {
   T: 't',
   TG: 'tg',
   SORT: 'sort',
-  LAYOUT: 'layout',
   HD: 'hd',
   HQ: 'hq',
   QUICKVIEW: 'quickview'
-};
+}
 
 export interface IQueryStateIncludedAttribute {
   title: string;
@@ -48,7 +47,6 @@ export class QueryStateModel extends Model {
     hd: '',
     hq: '',
     sort: '',
-    layout: 'list',
     tg: '',
     quickview: ''
   };
@@ -58,7 +56,6 @@ export class QueryStateModel extends Model {
     first: 'first',
     t: 't',
     sort: 'sort',
-    layout: 'layout',
     hd: 'hd',
     hq: 'hq',
     tg: 'tg',
@@ -94,8 +91,8 @@ export class QueryStateModel extends Model {
    */
   public atLeastOneFacetIsActive() {
     return !_.isUndefined(_.find(this.attributes, (value, key: any) => {
-      return key.indexOf('f:') == 0 && Utils.isNonEmptyArray(value);
-    }));
+      return key.indexOf('f:') == 0 && Utils.isNonEmptyArray(value) && key.indexOf(':range') < 0;
+    }))
   }
 
   public set(attribute: string, value: any, options?: IModelSetOptions) {
@@ -105,7 +102,6 @@ export class QueryStateModel extends Model {
 
   private validate(attribute: string, value: any) {
     if (attribute == QueryStateModel.attributesEnum.first) {
-      Assert.isNumber(value);
       Assert.isLargerOrEqualsThan(0, value);
     }
   }

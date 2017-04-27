@@ -1,16 +1,6 @@
 {{#with comment}}
     {{#if hasVisibleComponent}}
         <div class="tsd-comment tsd-typography">
-            {{#if tags}}
-                <dl class="tsd-deprecated">
-                    {{#each tags}}
-                        {{#if isDeprecated}}
-                            <dt>{{tagName}}</dt>
-                            <dd>{{#markdown}}{{{text}}}{{/markdown}}</dd>
-                        {{/if}}
-                    {{/each}}
-                </dl>
-            {{/if}}
             {{#if shortText}}
                 <div class="lead">
                     {{#markdown}}{{{shortText}}}{{/markdown}}
@@ -22,10 +12,8 @@
             {{#if tags}}
                 <dl class="tsd-comment-tags">
                     {{#each tags}}
-                        {{#unless isDeprecated}}
-                            <dt>{{tagName}}</dt>
-                            <dd>{{#markdown}}{{{text}}}{{/markdown}}</dd>
-                        {{/unless}}
+                        <dt class="tsd-comment-flag-{{tagName}}">{{tagName}}</dt>
+                        <dd>{{#markdown}}{{{text}}}{{/markdown}}</dd>
                     {{/each}}
                 </dl>
             {{/if}}

@@ -1,24 +1,18 @@
-import { $$, Dom } from '../../utils/Dom';
-import { InitializationEvents } from '../../events/InitializationEvents';
-import { PopupUtils, HorizontalAlignment, VerticalAlignment } from '../../utils/PopupUtils';
-import { EventsUtils } from '../../utils/EventsUtils';
-import { Utils } from '../../utils/Utils';
-import { Logger } from '../../misc/Logger';
-import { Component } from '../Base/Component';
-import { SearchInterface } from '../SearchInterface/SearchInterface';
-import { Tab } from '../Tab/Tab';
-import { IResponsiveComponent, ResponsiveComponentsManager, IResponsiveComponentOptions } from './ResponsiveComponentsManager';
-import { ResponsiveComponentsUtils } from './ResponsiveComponentsUtils';
-import { l } from '../../strings/Strings';
-import { ResponsiveComponents } from './ResponsiveComponents';
-import * as _ from 'underscore';
-
-import 'styling/_ResponsiveTabs';
+import {Win, $$, Dom} from '../../utils/Dom';
+import {InitializationEvents} from '../../events/InitializationEvents';
+import {PopupUtils, HorizontalAlignment, VerticalAlignment} from '../../utils/PopupUtils';
+import {EventsUtils} from '../../utils/EventsUtils';
+import {Logger} from '../../misc/Logger';
+import {IResponsiveComponent, ResponsiveComponentsManager} from './ResponsiveComponentsManager';
+import {l} from '../../strings/Strings.ts';
+import '../../../sass/_ResponsiveTabs.scss';
+import _ = require('underscore');
 
 export class ResponsiveTabs implements IResponsiveComponent {
 
-  private static DROPDOWN_HEADER_LABEL_DEFAULT_VALUE = 'More';
   private static logger: Logger;
+
+  public ID: string;
 
   private dropdownHeader: Dom;
   private dropdownContent: Dom;
@@ -26,13 +20,13 @@ export class ResponsiveTabs implements IResponsiveComponent {
   private previousSibling: Dom;
   private parent: Dom;
   private searchBoxElement: HTMLElement;
+  private coveoRoot: Dom;
+  private resizeListener: EventListener;
   private documentClickListener: EventListener;
-  private searchInterface: SearchInterface;
-  private dropdownHeaderLabel: string;
 
-  constructor(private coveoRoot: Dom, public ID: string) {
-    this.dropdownHeaderLabel = this.getDropdownHeaderLabel();
-    this.searchInterface = <SearchInterface>Component.get(this.coveoRoot.el, SearchInterface, false);
+  constructor(root: Dom, ID: string) {
+    this.ID = ID;
+    this.coveoRoot = root;
     this.searchBoxElement = this.getSearchBoxElement();
     this.dropdownContent = this.buildDropdownContent();
     this.dropdownHeader = this.buildDropdownHeader();
@@ -41,129 +35,109 @@ export class ResponsiveTabs implements IResponsiveComponent {
     this.tabSection = $$(<HTMLElement>this.coveoRoot.find('.coveo-tab-section'));
     this.manageTabSwapping();
     this.saveTabsPosition();
-    this.bindNukeEvents();
   }
 
-  public static init(root: HTMLElement, component: Component, options: IResponsiveComponentOptions) {
+  public static init(root: HTMLElement, ID: string, component) {
     this.logger = new Logger('ResponsiveTabs');
     if (!$$(root).find('.coveo-tab-section')) {
       this.logger.info('No element with class coveo-tab-section. Responsive tabs cannot be enabled.');
       return;
     }
-    ResponsiveComponentsManager.register(ResponsiveTabs, $$(root), Tab.ID, component, options);
+    ResponsiveComponentsManager.register(ResponsiveTabs, $$(root), ID, component);
   }
 
-  public handleResizeEvent(): void {
-    if (this.needSmallMode() && !ResponsiveComponentsUtils.isSmallTabsActivated(this.coveoRoot)) {
-      this.changeToSmallMode();
-    } else if (!this.needSmallMode() && ResponsiveComponentsUtils.isSmallTabsActivated(this.coveoRoot)) {
-      this.changeToLargeMode();
-    }
-
-    let tabs = this.getTabsInTabSection();
+  public handleResizeEvent() {
     if (this.shouldAddTabsToDropdown()) {
-      this.addTabsToDropdown(tabs);
+      let currentTab;
+      let overflowingElements = [];
+      let tabs = this.tabSection.findAll('.CoveoTab');
+
+      if (!this.tabSection.find('.coveo-tab-dropdown-header')) {
+        let facetDropdownHeader = this.tabSection.find('.coveo-facet-dropdown-header-container');
+        if (facetDropdownHeader) {
+          this.dropdownHeader.insertBefore(facetDropdownHeader);
+        } else {
+          this.tabSection.el.appendChild(this.dropdownHeader.el);
+        }
+      }
+      for (let i = tabs.length - 1; i >= 0; i--) {
+        currentTab = tabs[i];
+
+        if ($$(currentTab).hasClass('coveo-selected') && i > 0) {
+          currentTab = tabs[--i];
+        }
+
+        this.addToDropdown(currentTab);
+
+        if (!this.isOverflowing(this.tabSection.el)) {
+          break;
+        }
+      }
+
     } else if (this.shouldRemoveTabsFromDropdown()) {
-      this.removeTabsFromDropdown(tabs);
+      let dropdownTabs = this.dropdownContent.findAll('.coveo-tab-dropdown');
+
+      while (!this.isOverflowing(this.tabSection.el) && !this.isDropdownEmpty()) {
+        let current = dropdownTabs.shift();
+        this.removeFromDropdown(current);
+        $$(current).insertBefore(this.dropdownHeader.el);
+      }
+
+      if (this.isOverflowing(this.tabSection.el)) {
+        let tabs = this.tabSection.findAll('.CoveoTab');
+        this.addToDropdown(tabs.pop());
+      }
+
+      if (this.isDropdownEmpty()) {
+        this.detachDropdown();
+      }
     }
 
     if (this.dropdownHeader.hasClass('coveo-dropdown-header-active')) {
       this.positionPopup();
     }
+
   };
 
-  private needSmallMode(): boolean {
-    let mediumWidth = this.searchInterface ? this.searchInterface.responsiveComponents.getMediumScreenWidth() : new ResponsiveComponents().getMediumScreenWidth();
-    if (this.coveoRoot.width() <= mediumWidth) {
+  public needSmallMode(): boolean {
+    let tabSectionIsOverflowing = this.isOverflowing(this.tabSection.el);
+    let win = new Win(window);
+
+    if (win.width() <= ResponsiveComponentsManager.MEDIUM_MOBILE_WIDTH) {
       return true;
-    } else if (!ResponsiveComponentsUtils.isSmallTabsActivated(this.coveoRoot)) {
+    } else if (!this.coveoRoot.is('.coveo-small-search-interface')) {
       return this.isOverflowing(this.tabSection.el);
     } else {
       return this.isLargeFormatOverflowing();
     }
   }
 
-  private changeToSmallMode(): void {
-    ResponsiveComponentsUtils.activateSmallTabs(this.coveoRoot);
+  public changeToLargeMode() {
+    this.restoreTabSectionPosition();
+    this.emptyDropdown();
+    this.detachDropdown();
   }
 
-  private changeToLargeMode(): void {
-    this.emptyDropdown();
-    this.cleanUpDropdown();
-    ResponsiveComponentsUtils.deactivateSmallTabs(this.coveoRoot);
+  public changeToSmallMode() {
+    this.tabSection.insertAfter(this.searchBoxElement);
   }
 
   private shouldAddTabsToDropdown(): boolean {
-    return this.isOverflowing(this.tabSection.el) && ResponsiveComponentsUtils.isSmallTabsActivated(this.coveoRoot);
-  }
-
-  private addTabsToDropdown(tabs: HTMLElement[]): void {
-    let currentTab;
-    if (!this.tabSection.find('.coveo-tab-dropdown-header')) {
-      let facetDropdownHeader = this.tabSection.find('.coveo-facet-dropdown-header');
-      if (facetDropdownHeader) {
-        this.dropdownHeader.insertBefore(facetDropdownHeader);
-      } else {
-        this.tabSection.el.appendChild(this.dropdownHeader.el);
-      }
-    }
-    for (let i = tabs.length - 1; i >= 0; i--) {
-      currentTab = tabs[i];
-
-      if ($$(currentTab).hasClass('coveo-selected') && i > 0) {
-        currentTab = tabs[--i];
-      }
-
-      this.addToDropdown(currentTab);
-
-      if (!this.isOverflowing(this.tabSection.el)) {
-        break;
-      }
-    }
+    return this.isOverflowing(this.tabSection.el) && this.coveoRoot.is('.coveo-small-search-interface');
   }
 
   private shouldRemoveTabsFromDropdown(): boolean {
-    return !this.isOverflowing(this.tabSection.el) && ResponsiveComponentsUtils.isSmallTabsActivated(this.coveoRoot) && !this.isDropdownEmpty();
+    return !this.isOverflowing(this.tabSection.el) && this.coveoRoot.is('.coveo-small-search-interface') && !this.isDropdownEmpty();
   }
 
-  private removeTabsFromDropdown(tabs: HTMLElement[]) {
-    let dropdownTabs = this.dropdownContent.findAll('.coveo-tab-dropdown');
-    let lastTabInSection: HTMLElement, current: HTMLElement;
-    if (tabs) {
-      lastTabInSection = tabs.pop();
-    }
-
-    while (!this.isOverflowing(this.tabSection.el) && !this.isDropdownEmpty()) {
-      current = dropdownTabs.shift();
-      this.removeFromDropdown(current);
-      this.fromDropdownToTabSection($$(current), lastTabInSection);
-      lastTabInSection = _.clone(current);
-    }
-
-    if (this.isOverflowing(this.tabSection.el)) {
-      let tabs = this.getTabsInTabSection();
-      this.addToDropdown(tabs.pop());
-    }
-
-    if (this.isDropdownEmpty()) {
-      this.cleanUpDropdown();
-    }
-  }
-
-  private emptyDropdown(): void {
+  private emptyDropdown() {
     if (!this.isDropdownEmpty()) {
       let dropdownTabs = this.dropdownContent.findAll('.coveo-tab-dropdown');
-      let tabs = this.getTabsInTabSection();
-      let lastTabInSection: HTMLElement;
-      if (tabs) {
-        lastTabInSection = tabs.pop();
-      }
+
       while (!this.isDropdownEmpty()) {
         let current = dropdownTabs.shift();
         this.removeFromDropdown(current);
         $$(current).insertBefore(this.dropdownHeader.el);
-        this.fromDropdownToTabSection($$(current), lastTabInSection);
-        lastTabInSection = _.clone(current);
       }
     }
   }
@@ -175,6 +149,8 @@ export class ResponsiveTabs implements IResponsiveComponent {
     if (dropdownHeader) {
       virtualTabSection.el.removeChild(dropdownHeader);
     }
+    let facetDropdownHeader = virtualTabSection.find('.coveo-facet-dropdown-header-container');
+    facetDropdownHeader && virtualTabSection.el.removeChild(facetDropdownHeader);
 
     virtualTabSection.el.style.position = 'absolute';
     virtualTabSection.el.style.visibility = 'hidden';
@@ -184,11 +160,12 @@ export class ResponsiveTabs implements IResponsiveComponent {
         virtualTabSection.el.appendChild(tab.cloneNode(true));
       });
     }
-    virtualTabSection.insertBefore(this.tabSection.el);
 
-    ResponsiveComponentsUtils.deactivateSmallTabs(this.coveoRoot);
+    this.coveoRoot.append(virtualTabSection.el);
+
+    this.coveoRoot.removeClass('coveo-small-search-interface');
     let isOverflowing = this.isOverflowing(virtualTabSection.el);
-    ResponsiveComponentsUtils.activateSmallTabs(this.coveoRoot);
+    this.coveoRoot.addClass('coveo-small-search-interface');
 
 
     virtualTabSection.detach();
@@ -196,13 +173,18 @@ export class ResponsiveTabs implements IResponsiveComponent {
   }
 
   private isOverflowing(el: HTMLElement) {
-    return el.clientWidth < el.scrollWidth;
+    return el.clientWidth < el.scrollWidth || el.clientHeight < el.scrollHeight;
+  }
+
+  private couldNotFindSearchBoxError() {
+    ResponsiveTabs.logger.info('While trying to move the tab section around the search box, could not find an element with class \
+                      coveo-search-section or CoveoSearchBox');
   }
 
   private buildDropdownHeader(): Dom {
     let dropdownHeader = $$('a', { className: 'coveo-dropdown-header coveo-tab-dropdown-header' });
     let content = $$('p');
-    content.text(this.dropdownHeaderLabel);
+    content.text(l('More'));
     content.el.appendChild($$('span', { className: 'coveo-sprites-more-tabs' }).el);
     dropdownHeader.el.appendChild(content.el);
     return dropdownHeader;
@@ -214,13 +196,14 @@ export class ResponsiveTabs implements IResponsiveComponent {
         this.positionPopup();
         this.dropdownHeader.addClass('coveo-dropdown-header-active');
       } else {
-        this.closeDropdown();
+        this.dropdownContent.detach();
+        this.dropdownHeader.removeClass('coveo-dropdown-header-active');
       }
     });
   }
 
   private buildDropdownContent() {
-    let dropdownContent = $$('div', { className: 'coveo-tab-list-container ' + SearchInterface.SMALL_INTERFACE_CLASS_NAME });
+    let dropdownContent = $$('div', { className: 'coveo-tab-list-container coveo-small-search-interface' });
     let contentList = $$('ol', { className: 'coveo-tab-list' });
     dropdownContent.el.appendChild(contentList.el);
     return dropdownContent;
@@ -228,19 +211,13 @@ export class ResponsiveTabs implements IResponsiveComponent {
 
   private bindDropdownContentEvents() {
     this.documentClickListener = event => {
-      if (Utils.isHtmlElement(event.target)) {
-        let eventTarget = $$(<HTMLElement>event.target);
-        if (!eventTarget.closest('coveo-tab-list-container') && !eventTarget.closest('coveo-tab-dropdown-header') && !eventTarget.closest('coveo-tab-dropdown')) {
-          this.closeDropdown();
-        }
+      let eventTarget = $$(<HTMLElement>event.target);
+      if (!eventTarget.closest('coveo-tab-list-container') && !eventTarget.closest('coveo-tab-dropdown-header') && !eventTarget.closest('coveo-tab-dropdown')) {
+        this.dropdownContent.detach();
+        this.dropdownHeader.removeClass('coveo-dropdown-header-active');
       }
     };
     $$(document.documentElement).on('click', this.documentClickListener);
-  }
-
-  private closeDropdown(): void {
-    this.dropdownContent.detach();
-    this.dropdownHeader.removeClass('coveo-dropdown-header-active');
   }
 
   private addToDropdown(el: HTMLElement) {
@@ -260,10 +237,18 @@ export class ResponsiveTabs implements IResponsiveComponent {
     }
   }
 
-  private cleanUpDropdown() {
+  private detachDropdown() {
     this.dropdownHeader.removeClass('coveo-dropdown-header-active');
     this.dropdownHeader.detach();
     this.dropdownContent.detach();
+  }
+
+  private addSmallClass() {
+    this.coveoRoot.addClass('coveo-small-search-interface');
+  }
+
+  private removeSmallClass() {
+    this.coveoRoot.removeClass('coveo-small-search-interface');
   }
 
   private isDropdownEmpty(): boolean {
@@ -275,20 +260,19 @@ export class ResponsiveTabs implements IResponsiveComponent {
   }
 
   private manageTabSwapping() {
-    _.each(this.coveoRoot.findAll('.' + Component.computeCssClassNameForType(this.ID)), tabElement => {
+    _.each(this.tabSection.findAll('.CoveoTab'), tabElement => {
       let tab = $$(tabElement);
       let fadeOutFadeIn = (event) => {
-        let tabsInSection = this.getTabsInTabSection();
+        let tabsInSection = this.tabSection.findAll('.CoveoTab');
         let lastTabInSection = tabsInSection.pop();
-        let lastTabSectionSibling = lastTabInSection.previousSibling;
+
         if (event.propertyName == 'opacity') {
           if (tab.el.style.opacity == '0') {
 
             $$(lastTabInSection).addClass('coveo-tab-dropdown');
             tab.replaceWith(lastTabInSection);
             tab.removeClass('coveo-tab-dropdown');
-
-            this.fromDropdownToTabSection(tab, <HTMLElement>lastTabSectionSibling);
+            tab.insertBefore(this.dropdownHeader.el);
 
             // Because of the DOM manipulation, sometimes the animation will not trigger. Accessing the computed styles makes sure
             // the animation will happen.
@@ -297,23 +281,23 @@ export class ResponsiveTabs implements IResponsiveComponent {
 
             tab.el.style.opacity = lastTabInSection.style.opacity = '1';
           } else if (tab.el.style.opacity == '1') {
-            this.closeDropdown();
+            this.dropdownContent.detach();
+            this.dropdownHeader.removeClass('coveo-dropdown-header-active');
             EventsUtils.removePrefixedEvent(tab.el, 'TransitionEnd', fadeOutFadeIn);
-            this.handleResizeEvent();
           }
         }
-      };
+      }
 
       tab.on('click', () => {
         if (tab.hasClass('coveo-tab-dropdown')) {
-          let tabsInSection = this.getTabsInTabSection();
+          let tabsInSection = this.tabSection.findAll('.CoveoTab');
           let lastTabInSection = tabsInSection.pop();
           if (lastTabInSection) {
             EventsUtils.addPrefixedEvent(tab.el, 'TransitionEnd', fadeOutFadeIn);
             tab.el.style.opacity = lastTabInSection.style.opacity = '0';
           }
         }
-      });
+      })
     });
   }
 
@@ -331,6 +315,14 @@ export class ResponsiveTabs implements IResponsiveComponent {
     this.parent = $$(this.tabSection.el.parentElement);
   }
 
+  private restoreTabSectionPosition() {
+    if (this.previousSibling) {
+      this.tabSection.insertAfter(this.previousSibling.el);
+    } else {
+      this.parent.prepend(this.tabSection.el);
+    }
+  }
+
   private bindNukeEvents() {
     $$(this.coveoRoot).on(InitializationEvents.nuke, () => {
       $$(document.documentElement).off('click', this.documentClickListener);
@@ -338,44 +330,7 @@ export class ResponsiveTabs implements IResponsiveComponent {
   }
 
   private positionPopup() {
-    PopupUtils.positionPopup(this.dropdownContent.el, this.dropdownHeader.el, this.coveoRoot.el,
-      { horizontal: HorizontalAlignment.INNERRIGHT, vertical: VerticalAlignment.BOTTOM }, this.coveoRoot.el);
-  }
-
-  private getTabsInTabSection(): HTMLElement[] {
-    let tabsInSection = [];
-    _.each(this.tabSection.el.children, childElement => {
-      if (Utils.isHtmlElement(childElement)) {
-        let child = $$(<HTMLElement>childElement);
-        if (!child.hasClass('coveo-tab-dropdown') && child.hasClass(Component.computeCssClassNameForType(this.ID))) {
-          tabsInSection.push(child.el);
-        }
-      }
-    });
-    return tabsInSection;
-  }
-
-  private fromDropdownToTabSection(tab: Dom, lastTabInTabSection: HTMLElement) {
-    if (lastTabInTabSection) {
-      tab.insertAfter(<HTMLElement>lastTabInTabSection);
-    } else {
-      this.tabSection.prepend(tab.el);
-    }
-  }
-
-  private getDropdownHeaderLabel() {
-    let dropdownHeaderLabel: string;
-    _.each($$(this.coveoRoot.find('.coveo-tab-section')).findAll('.' + Component.computeCssClassName(Tab)), tabElement => {
-      let tab = <Tab>Component.get(tabElement, Tab);
-      if (!dropdownHeaderLabel && tab.options.dropdownHeaderLabel) {
-        dropdownHeaderLabel = tab.options.dropdownHeaderLabel;
-      }
-    });
-
-    if (!dropdownHeaderLabel) {
-      dropdownHeaderLabel = l(ResponsiveTabs.DROPDOWN_HEADER_LABEL_DEFAULT_VALUE);
-    }
-
-    return dropdownHeaderLabel;
+    PopupUtils.positionPopup(this.dropdownContent.el, this.dropdownHeader.el, this.coveoRoot.el, this.coveoRoot.el,
+      { horizontal: HorizontalAlignment.INNERLEFT, vertical: VerticalAlignment.BOTTOM });
   }
 }

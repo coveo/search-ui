@@ -1,9 +1,9 @@
-import { ISearchEvent } from './SearchEvent';
-import { IAPISearchEvent } from './APISearchEvent';
-import { IClickEvent } from './ClickEvent';
-import { IAPIDocumentViewEvent } from './APIDocumentViewEvent';
-import { IAPICustomEvent } from './APICustomEvent';
-import { ICustomEvent } from './CustomEvent';
+import {ISearchEvent} from './SearchEvent';
+import {IAPISearchEvent} from './APISearchEvent';
+import {IClickEvent} from './ClickEvent';
+import {IAPIDocumentViewEvent} from './APIDocumentViewEvent';
+import {IAPICustomEvent} from './APICustomEvent';
+import {ICustomEvent} from './CustomEvent';
 
 export class APIAnalyticsBuilder {
   public static convertSearchEventToAPI(searchEvent: ISearchEvent) {
@@ -26,7 +26,7 @@ export class APIAnalyticsBuilder {
       queryPipeline: searchEvent.queryPipeline,
       splitTestRunName: searchEvent.splitTestRunName,
       splitTestRunVersion: searchEvent.splitTestRunVersion
-    };
+    }
     return apiSearchEvent;
   }
 
@@ -51,7 +51,7 @@ export class APIAnalyticsBuilder {
       queryPipeline: documentView.queryPipeline,
       splitTestRunName: documentView.splitTestRunName,
       splitTestRunVersion: documentView.splitTestRunVersion
-    };
+    }
     return apiDocumentView;
   }
 
@@ -66,7 +66,7 @@ export class APIAnalyticsBuilder {
       searchHub: customEvent.originLevel1,
       searchInterface: customEvent.originLevel2,
       customMetadatas: customEvent.customData
-    };
+    }
     return apiCustomEvent;
   }
 }

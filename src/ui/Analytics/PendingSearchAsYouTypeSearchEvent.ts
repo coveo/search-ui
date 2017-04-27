@@ -1,11 +1,11 @@
-import { PendingSearchEvent } from './PendingSearchEvent';
-import { AnalyticsEndpoint } from '../../rest/AnalyticsEndpoint';
-import { $$ } from '../../utils/Dom';
-import { InitializationEvents } from '../../events/InitializationEvents';
-import { ISearchEvent } from '../../rest/SearchEvent';
-import { IDuringQueryEventArgs } from '../../events/QueryEvents';
-import { IAnalyticsActionCause } from './AnalyticsActionListMeta';
-import * as _ from 'underscore';
+import {PendingSearchEvent} from './PendingSearchEvent';
+import {AnalyticsEndpoint} from '../../rest/AnalyticsEndpoint';
+import {$$} from '../../utils/Dom';
+import {InitializationEvents} from '../../events/InitializationEvents';
+import {ISearchEvent} from '../../rest/SearchEvent';
+import {IDuringQueryEventArgs} from '../../events/QueryEvents';
+import _ = require('underscore');
+import {IAnalyticsActionCause} from './AnalyticsActionListMeta';
 
 export class PendingSearchAsYouTypeSearchEvent extends PendingSearchEvent {
   public delayBeforeSending = 5000;
@@ -18,24 +18,23 @@ export class PendingSearchAsYouTypeSearchEvent extends PendingSearchEvent {
     super(root, endpoint, templateSearchEvent, sendToCloud);
     this.beforeUnloadHandler = () => {
       this.onWindowUnload();
-    };
+    }
     window.addEventListener('beforeunload', this.beforeUnloadHandler);
     $$(root).on(InitializationEvents.nuke, () => this.handleNuke());
   }
 
   protected handleDuringQuery(e: Event, args: IDuringQueryEventArgs) {
-    var event = _.clone(e);
     this.beforeResolve = new Promise((resolve) => {
       this.toSendRightNow = () => {
         if (!this.isCancelledOrFinished()) {
           resolve(this);
-          super.handleDuringQuery(event, args);
+          super.handleDuringQuery(e, args);
         }
-      };
+      }
       _.delay(() => {
         this.toSendRightNow();
       }, this.delayBeforeSending);
-    });
+    })
   }
 
   public sendRightNow() {
@@ -47,7 +46,7 @@ export class PendingSearchAsYouTypeSearchEvent extends PendingSearchEvent {
   public modifyCustomData(key: string, newData: any) {
     _.each(this.searchEvents, (searchEvent: ISearchEvent) => {
       searchEvent.customData[key] = newData;
-    });
+    })
     if (!this.templateSearchEvent.customData) {
       this.templateSearchEvent.customData = {};
     }
@@ -58,7 +57,7 @@ export class PendingSearchAsYouTypeSearchEvent extends PendingSearchEvent {
     _.each(this.searchEvents, (searchEvent: ISearchEvent) => {
       searchEvent.actionCause = newCause.name;
       searchEvent.actionType = newCause.type;
-    });
+    })
     this.templateSearchEvent.actionCause = newCause.name;
     this.templateSearchEvent.actionType = newCause.type;
   }

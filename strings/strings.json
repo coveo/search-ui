@@ -1277,10 +1277,6 @@
     "zh-cn": "无排序",
     "zh-tw": "無排序"
   },
-  "NosortDescription": {
-    "en": "Do not sort the values. The values will be returned in a random order.",
-    "fr": "Ne pas trier les valeurs. Les valeurs seront retournées dans un ordre aléatoire"
-  },
   "RelativeFrequency": {
     "en": "Relative Frequency",
     "fr": "Fréquence relative",
@@ -4903,10 +4899,6 @@
     "en": "Detach",
     "fr": "Détacher"
   },
-  "Details": {
-    "en": "Details",
-    "fr": "Détails"
-  },
   "AdditionalFilters": {
     "en": "Additional filters",
     "fr": "Filtres additionnels"
@@ -5003,10 +4995,6 @@
     "en": "Expiration",
     "fr": "Expiration"
   },
-  "Monthly": {
-    "en": "Monthly",
-    "fr": "Mensuel"
-  },
   "Daily": {
     "en": "Daily",
     "fr": "Quotidiennement"
@@ -5066,113 +5054,5 @@
   "Facets": {
     "en": "Facets",
     "fr": "Facettes"
-  },
-  "AdvancedSearch": {
-    "en": "Advanced Search",
-    "fr": "Recherche Avancée"
-  },
-  "Keywords": {
-    "en": "Keywords",
-    "fr": "Mot-clés"
-  },
-  "AllTheseWords": {
-    "en": "All these words",
-    "fr": "Tous ces mots"
-  },
-  "ExactPhrase": {
-    "en": "This exact phrase",
-    "fr": "Cette phrase exacte"
-  },
-  "AnyOfTheseWords": {
-    "en": "Any of these words",
-    "fr": "N'importe lequel de ces mots"
-  },
-  "NoneOfTheseWords": {
-    "en": "None of these words",
-    "fr": "Aucun de ces mots"
-  },
-  "Anytime": {
-    "en": "Anytime",
-    "fr": "N'importe quand"
-  },
-  "InTheLast": {
-    "en": "In the last",
-    "fr": "Dans les derniers"
-  },
-  "Days": {
-    "en": "days",
-    "fr": "jours"
-  },
-  "Months": {
-    "en": "months",
-    "fr": "mois"
-  },
-  "Between": {
-    "en": "Between",
-    "fr": "Entre"
-  },
-  "Language": {
-    "en": "Language",
-    "fr": "Langage"
-  },
-  "Size": {
-    "en": "Size",
-    "fr": "Taille"
-  },
-  "AtLeast": {
-    "en": "at least",
-    "fr": "au moins"
-  },
-  "AtMost": {
-    "en": "at most",
-    "fr": "au moins"
-  },
-  "Contains": {
-    "en": "contains",
-    "fr": "contient"
-  },
-  "DoesNotContain": {
-    "en": "does not contain",
-    "fr": "ne contient pas"
-  },
-  "Matches": {
-    "en": "matches",
-    "fr": "égale"
-  },
-  "Bytes": {
-    "en": "bytes",
-    "fr": "octets"
-  },
-  "List": {
-    "en": "List",
-    "fr": "Liste"
-  },
-  "Card": {
-    "en": "Card",
-    "fr": "Carte"
-  },
-  "Table": {
-    "en": "Table",
-    "fr": "Tableau"
-  },
-  "ResultLinks": {
-    "en": "Result links",
-    "fr": "Liens de résultat"
-  },
-  "EnableQuerySyntax": {
-    "en": "Enable query syntax",
-    "fr": "Activation de la syntaxe de recherche"
-  },
-  "On": {
-    "en": "On",
-    "fr": "Activé"
-  },
-  "Off": {
-    "en": "Off",
-    "fr": "Désactivé"
-  },
-  "Automatic": {
-    "en": "Automatic",
-    "fr": "Automatique"
   }
 }

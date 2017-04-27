@@ -1,13 +1,13 @@
-import { Facet } from './Facet';
-import { FacetValue } from './FacetValues';
-import { $$ } from '../../utils/Dom';
-import { Utils } from '../../utils/Utils';
-import { l } from '../../strings/Strings';
-import { Component } from '../Base/Component';
-import * as _ from 'underscore';
+/// <reference path="Facet.ts" />
+import {Facet} from './Facet';
+import {FacetValue} from './FacetValues';
+import {$$} from '../../utils/Dom';
+import {Utils} from '../../utils/Utils';
+import {l} from '../../strings/Strings';
+import {Component} from '../Base/Component';
 
 export class ValueElementRenderer {
-  public listItem: HTMLElement;
+  public listElement: HTMLElement;
   public label: HTMLElement;
   public checkbox: HTMLElement;
   public stylishCheckbox: HTMLElement;
@@ -28,7 +28,7 @@ export class ValueElementRenderer {
         if (e) {
           $$(e).detach();
         }
-      });
+      })
     } else {
       if (element) {
         $$(element).detach();
@@ -38,29 +38,29 @@ export class ValueElementRenderer {
   }
 
   public build(): ValueElementRenderer {
-    this.listItem = $$('li', {
+    this.listElement = $$('li', {
       className: 'coveo-facet-value coveo-facet-selectable'
     }).el;
-    this.listItem.setAttribute('data-value', this.facetValue.value);
+    this.listElement.setAttribute('data-value', this.facetValue.value);
     if (!this.facet.searchInterface.isNewDesign()) {
       this.excludeIcon = this.buildExcludeIcon();
-      this.listItem.appendChild(this.excludeIcon);
+      this.listElement.appendChild(this.excludeIcon);
     }
     this.label = $$('label', {
       className: 'coveo-facet-value-label'
     }).el;
-    this.listItem.appendChild(this.label);
+    this.listElement.appendChild(this.label);
 
     if (this.facet.searchInterface.isNewDesign()) {
       this.excludeIcon = this.buildExcludeIcon();
-      this.listItem.appendChild(this.excludeIcon);
+      this.listElement.appendChild(this.excludeIcon);
 
       $$(this.excludeIcon).on('mouseover', () => {
-        $$(this.listItem).addClass('coveo-facet-value-will-exclude');
+        $$(this.listElement).addClass('coveo-facet-value-will-exclude');
       });
 
       $$(this.excludeIcon).on('mouseout', () => {
-        $$(this.listItem).removeClass('coveo-facet-value-will-exclude');
+        $$(this.listElement).removeClass('coveo-facet-value-will-exclude');
       });
     }
     if (Utils.exists(this.facetValue.computedField)) {
@@ -105,27 +105,25 @@ export class ValueElementRenderer {
   }
 
   public setCssClassOnListValueElement(): void {
-    $$(this.listItem).toggleClass('coveo-selected', this.facetValue.selected);
-    $$(this.listItem).toggleClass('coveo-excluded', this.facetValue.excluded);
+    $$(this.listElement).toggleClass('coveo-selected', this.facetValue.selected);
+    $$(this.listElement).toggleClass('coveo-excluded', this.facetValue.excluded);
   }
 
   protected buildExcludeIcon(): HTMLElement {
-    let excludeIcon = $$('div', {
+    var ret = $$('div', {
       title: l('Exclude', this.facet.getValueCaption(this.facetValue)),
-      className: 'coveo-facet-value-exclude',
-      tabindex: 0
+      className: 'coveo-facet-value-exclude'
     }).el;
-    this.addFocusAndBlurEventListeners(excludeIcon);
 
     if (this.facet.searchInterface.isNewDesign()) {
-      excludeIcon.appendChild($$('span', {
+      ret.appendChild($$('span', {
         className: 'coveo-icon'
       }).el);
     }
     if (Utils.exists(this.facetValue.computedField)) {
-      $$(excludeIcon).addClass('coveo-facet-value-exclude-with-computed-field');
+      $$(ret).addClass('coveo-facet-value-exclude-with-computed-field');
     }
-    return excludeIcon;
+    return ret;
   }
 
   protected buildValueComputedField(): HTMLElement {
@@ -133,7 +131,7 @@ export class ValueElementRenderer {
     if (Utils.isNonEmptyString(computedField)) {
       var elem = $$('span', {
         className: 'coveo-facet-value-computed-field'
-      }).el;
+      }).el
       $$(elem).text(computedField);
       return elem;
     } else {
@@ -144,7 +142,7 @@ export class ValueElementRenderer {
   protected buildValueCheckbox(): HTMLElement {
     var checkbox = $$('input', {
       type: 'checkbox'
-    }).el;
+    }).el
     if (this.facetValue.selected) {
       checkbox.setAttribute('checked', 'checked');
     } else {
@@ -160,11 +158,9 @@ export class ValueElementRenderer {
   }
 
   protected buildValueStylishCheckbox(): HTMLElement {
-    let checkbox = $$('div', {
-      className: 'coveo-facet-value-checkbox',
-      tabindex: 0
+    var checkbox = $$('div', {
+      className: 'coveo-facet-value-checkbox'
     }, $$('span')).el;
-    this.addFocusAndBlurEventListeners(checkbox);
     return checkbox;
   }
 
@@ -174,7 +170,7 @@ export class ValueElementRenderer {
       return $$('img', {
         className: 'coveo-facet-value-icon coveo-icon',
         src: this.getValueIcon()
-      }).el;
+      }).el
     } else {
       return this.buildValueIconFromSprite();
     }
@@ -191,7 +187,7 @@ export class ValueElementRenderer {
   protected buildValueIconFromSprite(): HTMLElement {
     return $$('div', {
       className: 'coveo-facet-value-icon coveo-icon ' + this.facet.options.field.substr(1) + ' ' + this.facetValue.value
-    }).el;
+    }).el
   }
 
   protected buildValueCaption(): HTMLElement {
@@ -199,7 +195,7 @@ export class ValueElementRenderer {
     var valueCaption = $$('span', {
       className: 'coveo-facet-value-caption',
       title: caption
-    }).el;
+    }).el
 
     $$(valueCaption).text(caption);
     return valueCaption;
@@ -216,10 +212,5 @@ export class ValueElementRenderer {
     } else {
       return undefined;
     }
-  }
-
-  private addFocusAndBlurEventListeners(elem: HTMLElement) {
-    $$(elem).on('focus', () => $$(this.listItem).addClass('coveo-focused'));
-    $$(elem).on('blur', () => $$(this.listItem).removeClass('coveo-focused'));
   }
 }
