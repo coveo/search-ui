@@ -1,7 +1,7 @@
 export * from './Core';
 
-import { setPublicPath } from './setPublicPath';
-setPublicPath();
+import { PublicPathUtils } from './utils/PublicPathUtils';
+PublicPathUtils.detectPublicPath();
 
 import { Initialization, LazyInitialization } from './ui/Base/Initialization';
 Initialization.componentsFactory = LazyInitialization.componentsFactory;

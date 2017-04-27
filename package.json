@@ -61,7 +61,6 @@
     "@types/fastclick": "^1.0.28",
     "@types/pikaday": "0.0.31",
     "@types/underscore": "^1.7.33",
-    "@types/webpack-env": "^1.13.0",
     "awesome-typescript-loader": "^2.2.4",
     "bluebird": "^3.4.7",
     "cheerio": "^0.20.0",

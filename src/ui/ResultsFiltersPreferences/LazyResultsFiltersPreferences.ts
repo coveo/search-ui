@@ -8,7 +8,7 @@ export function lazyResultsFiltersPreferences() {
       require.ensure(['./ResultsFiltersPreferences'], () => {
         let loaded = require<IComponentDefinition>('./ResultsFiltersPreferences.ts')['ResultsFiltersPreferences'];
         lazyExport(loaded, resolve);
-      }, 'ResultsFiltersPreferences');
+      }, LazyInitialization.buildErrorCallback('ResultsFiltersPreferences'), 'ResultsFiltersPreferences');
     });
   });
 }

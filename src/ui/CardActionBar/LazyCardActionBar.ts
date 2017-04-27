@@ -8,7 +8,7 @@ export function lazyCardActionBar() {
       require.ensure(['./CardActionBar'], () => {
         let loaded = require<IComponentDefinition>('./CardActionBar.ts')['CardActionBar'];
         lazyExport(loaded, resolve);
-      }, 'CardActionBar');
+      }, LazyInitialization.buildErrorCallback('CardActionBar'), 'CardActionBar');
     });
   });
 }

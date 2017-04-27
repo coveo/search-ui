@@ -18,6 +18,7 @@ import { IJQuery } from './CoveoJQuery';
 import * as _ from 'underscore';
 import { IStringMap } from '../../rest/GenericParam';
 import { InitializationPlaceholder } from './InitializationPlaceholder';
+import { NoopComponent } from '../NoopComponent/NoopComponent';
 declare const require: any;
 
 /**
@@ -46,7 +47,7 @@ export class Initialization {
   // In eager mode, the generator return an array of function. Each function returns "void" when called. After all the function have been called, all the components are initialized, synchronously.
   // In lazy mode, the generator return an array of function. Each function return an array of Promise when called. When all the promises are resolved, the components are correctly initialized, asynchronously.
   // We need the 2 different mode for a specific reason :
-  // In eager mode, when someone calls Coveo.init, this means the initialization is synchronous, and someone can then immediately start interacting with component.
+  // In eager mode, when someone calls Coveo.init, this means the initialization is synchronous, and someone can then immediately start interacting with components.
   // In lazy mode, when someone calls Coveo.init, they have to wait for the returned promise to resolve before interacting with components.
   public static componentsFactory: (elements: HTMLElement[], componentClassId: string, initParameters: IInitializationParameters) => { factory: () => Promise<Component>[] | void, isLazyInit: boolean };
 
@@ -424,7 +425,7 @@ export class Initialization {
    * @param methodName The method name to register.
    * @param handler The function to execute when the method is called.
    */
-  public static registerNamedMethod(methodName: string, handler: (element: HTMLElement, ...args: any[]) => any) {
+  public static registerNamedMethod(methodName: string, handler: (...args: any[]) => any) {
     Assert.isNonEmptyString(methodName);
     Assert.doesNotExists(EagerInitialization.eagerlyLoadedComponents[methodName]);
     Assert.doesNotExists(Initialization.namedMethods[methodName]);
@@ -641,6 +642,10 @@ export class LazyInitialization {
     }
   }
 
+  public static buildErrorCallback(chunkName: string) {
+    return () => LazyInitialization.logger.error(`Cannot load chunk for ${chunkName}. You may need to configure the paths of the chunks using Coveo.configureChunkLoadingPath`);
+  }
+
   public static componentsFactory(elements: Element[], componentClassId: string, initParameters: IInitializationParameters): { factory: () => Promise<Component>[], isLazyInit: boolean } {
     const factory = () => {
       let promises: Promise<Component>[] = [];
@@ -658,6 +663,7 @@ export class LazyInitialization {
             optionsToUse = Utils.extendDeep(optionsForComponentClass, optionsToUse);
           }
           let initParamToUse = _.extend({}, initParameters, { options: optionsToUse });
+
           promises.push(LazyInitialization.createComponentOfThisClassOnElement(componentClassId, matchingElement, initParamToUse));
         }
       });

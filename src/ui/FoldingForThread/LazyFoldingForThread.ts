@@ -8,7 +8,7 @@ export function lazyFoldingForThread() {
       require.ensure(['./FoldingForThread'], () => {
         let loaded = require<IComponentDefinition>('./FoldingForThread.ts')['FoldingForThread'];
         lazyExport(loaded, resolve);
-      }, 'FoldingForThread');
+      }, LazyInitialization.buildErrorCallback('FoldingForThread'), 'FoldingForThread');
     });
   });
 }

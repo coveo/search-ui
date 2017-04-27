@@ -14,6 +14,7 @@ import { Component } from '../Base/Component';
 import { IStandaloneSearchInterfaceOptions } from '../SearchInterface/SearchInterface';
 import { IRecommendationOptions } from '../Recommendation/Recommendation';
 import * as _ from 'underscore';
+import { PublicPathUtils } from '../../utils/PublicPathUtils';
 
 /**
  * Initialize the framework with a basic search interface. Calls {@link Initialization.initSearchInterface}.
@@ -315,4 +316,16 @@ export function nuke(element: HTMLElement) {
 
 Initialization.registerNamedMethod('nuke', (element: HTMLElement) => {
   nuke(element);
+});
+
+/**
+ * Sets the path from where the chunks used for lazy loading will be loaded.
+ * @param path This should be the path of the Coveo script.
+ */
+export function configureChunkLoadingPath(path: string) {
+  PublicPathUtils.configureChunkLoadingPath(path);
+}
+
+Initialization.registerNamedMethod('configureChunkLoadingPath', (path: string) => {
+  configureChunkLoadingPath(path);
 });

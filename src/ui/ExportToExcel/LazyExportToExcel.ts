@@ -8,7 +8,7 @@ export function lazyExportToExcel() {
       require.ensure(['./ExportToExcel'], () => {
         let loaded = require<IComponentDefinition>('./ExportToExcel.ts')['ExportToExcel'];
         lazyExport(loaded, resolve);
-      }, 'ExportToExcel');
+      }, LazyInitialization.buildErrorCallback('ExportToExcel'), 'ExportToExcel');
     });
   });
 }
