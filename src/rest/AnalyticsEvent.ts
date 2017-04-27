@@ -9,9 +9,10 @@ export interface IAnalyticsEvent {
   originLevel1: string;
   originLevel2: string;
   originLevel3?: string;
+  originContext: string;
   language: string;
   responseTime: number;
   userAgent?: string;
   userGroups?: string;
-  customData?: { [key: string]: string };
+  customData?: { [key: string]: any };
 }

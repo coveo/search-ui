@@ -1,8 +1,9 @@
-import {Assert} from '../../misc/Assert';
-import {QueryUtils} from '../../utils/QueryUtils';
+import { Assert } from '../../misc/Assert';
+import { QueryUtils } from '../../utils/QueryUtils';
+import * as _ from 'underscore';
 
 /**
- * An ExpressionBuilder that is mostly used by the {@link QueryBuilder}<br/>
+ * An `ExpressionBuilder` that is mostly used by the {@link QueryBuilder}.<br/>
  * It is used to build a single query expression.<br/>
  * It allows combining multiple expression parts into a single string and provides utilities to generate common expression parts.
  */
@@ -20,19 +21,19 @@ export class ExpressionBuilder {
   }
 
   /**
-   * Take another ExpressionBuilder, and copy it.
+   * Take another `ExpressionBuilder`, and copy it.
    * @param expression
    */
   public fromExpressionBuilder(expression: ExpressionBuilder) {
-    this.parts = this.parts.concat(expression.parts)
+    this.parts = this.parts.concat(expression.parts);
   }
 
   /**
    * Add a new part to the expression, but specific for field values<br/>
-   * eg @field=(value1,value2,value3)
-   * @param field The field for which to create an expression eg: @foo
-   * @param operator The operator to use eg: = (equal) == (strict equal) <> (not equal)
-   * @param values The values to put in the expression
+   * eg @field=(value1,value2,value3).
+   * @param field The field for which to create an expression (e.g.: @foo).
+   * @param operator The operator to use e.g.: = (equal) == (strict equal) <> (not equal).
+   * @param values The values to put in the expression.
    */
   public addFieldExpression(field: string, operator: string, values: string[]) {
     Assert.isNonEmptyString(field);
@@ -45,9 +46,9 @@ export class ExpressionBuilder {
 
   /**
    * Add a new part to the expression, but specific for field values<br/>
-   * eg : NOT @field==(value1, value2, value3)
-   * @param field The field for which to create an expression eg: @foo
-   * @param values The values to put in the expression
+   * eg : NOT @field==(value1, value2, value3).
+   * @param field The field for which to create an expression (e.g.: @foo)
+   * @param values The values to put in the expression.
    */
   public addFieldNotEqualExpression(field: string, values: string[]) {
     Assert.isNonEmptyString(field);
@@ -79,7 +80,7 @@ export class ExpressionBuilder {
 
   /**
    * Builds the expression string by combining all the parts together.<br/>
-   * @param exp expression to join the different parts, default to a space
+   * @param exp expression to join the different parts, default to a space.
    * @returns {any}
    */
   public build(exp: string = ' '): string {
@@ -95,8 +96,8 @@ export class ExpressionBuilder {
   }
 
   /**
-   * Merges several ExpressionBuilder together.
-   * @param builders Builders that should be merged
+   * Merges several `ExpressionBuilder` together.
+   * @param builders Builders that should be merged.
    * @returns {Coveo.ExpressionBuilder}
    */
   static merge(...builders: ExpressionBuilder[]): ExpressionBuilder {
@@ -109,8 +110,8 @@ export class ExpressionBuilder {
   }
 
   /**
-   * Merges several ExpressionBuilder together, using the OR operator
-   * @param builders Builders that should be merged
+   * Merges several `ExpressionBuilder` together, using the OR operator.
+   * @param builders Builders that should be merged.
    * @returns {Coveo.ExpressionBuilder}
    */
   static mergeUsingOr(...builders: ExpressionBuilder[]): ExpressionBuilder {

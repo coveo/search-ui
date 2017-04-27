@@ -1,12 +1,12 @@
-/// <reference path="../../../lib/d3.d.ts" />
-import {$$} from '../../utils/Dom';
-import {DeviceUtils} from '../../utils/DeviceUtils';
-import {SliderEvents, IGraphValueSelectedArgs} from '../../events/SliderEvents';
-import {Utils} from '../../utils/Utils';
-import {InitializationEvents} from '../../events/InitializationEvents';
-import d3 = require('d3');
-
-declare var Globalize;
+import { $$ } from '../../utils/Dom';
+import { DeviceUtils } from '../../utils/DeviceUtils';
+import { SliderEvents, IGraphValueSelectedArgs } from '../../events/SliderEvents';
+import { Utils } from '../../utils/Utils';
+import { scaleBand, scaleLinear } from 'd3-scale';
+import { select as d3select, max as d3max } from 'd3';
+import * as Globalize from 'globalize';
+import * as _ from 'underscore';
+import { Logger } from '../../misc/Logger';
 
 export interface IStartSlideEventArgs {
   slider: Slider;
@@ -64,11 +64,13 @@ export interface ISliderOptions {
   rounded?: number;
 }
 
+export const MAX_NUMBER_OF_STEPS = 100;
+
 export class Slider {
   public steps: number[] = [];
   public currentValues: number[];
   private sliderButton: SliderButton;
-  private sliderRange: SliderRange
+  private sliderRange: SliderRange;
   private sliderLine: SliderLine;
   private sliderCaption: SliderCaption;
   private sliderGraph: SliderGraph;
@@ -88,22 +90,22 @@ export class Slider {
     }
 
     if (this.options.graph) {
-      this.sliderGraph = new SliderGraph(this, root);
+      this.sliderGraph = new SliderGraph(this);
     }
 
     this.sliderLine = new SliderLine(this);
     _.each(this.sliderLine.build(), (e: HTMLElement) => {
       this.element.appendChild(e);
-    })
+    });
 
     if (this.options.rangeSlider) {
       this.sliderRange = new SliderRange(this);
       _.each(this.sliderRange.build(), (e: HTMLElement) => {
         this.element.appendChild(e);
-      })
+      });
     } else {
       this.sliderButton = new SliderButton(this, 1);
-      var btnEl = this.sliderButton.build();
+      const btnEl = this.sliderButton.build();
       $$(btnEl).addClass('coveo-no-range-button');
       this.element.appendChild(btnEl);
       this.sliderLine.setActiveWidth(this.sliderButton);
@@ -118,6 +120,7 @@ export class Slider {
       this.sliderRange.setBoundary();
       this.sliderLine.setActiveWidth(this.sliderRange.firstButton, this.sliderRange.secondButton);
     } else {
+      this.setButtonBoundary();
       this.sliderLine.setActiveWidth(this.sliderButton);
     }
     if (this.options.graph) {
@@ -137,8 +140,7 @@ export class Slider {
       } else {
         this.sliderButton.setValue(values[1]);
       }
-      this.sliderButton.leftBoundary = 0;
-      this.sliderButton.rightBoundary = this.element.clientWidth;
+      this.setButtonBoundary();
       this.sliderLine.setActiveWidth(this.sliderButton);
     }
     this.displayCaption();
@@ -197,7 +199,14 @@ export class Slider {
   }
 
   public drawGraph(data?: ISliderGraphData[]) {
-    this.sliderGraph.draw(data);
+    if (this.sliderGraph) {
+      this.sliderGraph.draw(data);
+    }
+  }
+
+  private setButtonBoundary() {
+    this.sliderButton.leftBoundary = 0;
+    this.sliderButton.rightBoundary = this.element.clientWidth;
   }
 
   private displayCaption() {
@@ -216,12 +225,18 @@ export class Slider {
     if (this.options.getSteps) {
       this.steps = this.options.getSteps(this.options.start, this.options.end);
     } else {
-      var oneStep = (this.options.end - this.options.start) / Math.max(1, this.options.steps);
+      if (this.options.steps > MAX_NUMBER_OF_STEPS) {
+        new Logger(this).warn(`Maximum number of steps for slider is ${MAX_NUMBER_OF_STEPS} for performance reason`);
+        this.options.steps = MAX_NUMBER_OF_STEPS;
+      }
+      const oneStep = (this.options.end - this.options.start) / Math.max(1, this.options.steps);
       if (oneStep > 0) {
-        var currentStep = this.options.start;
-        while (currentStep <= this.options.end) {
+        let currentStep = this.options.start;
+        let currentNumberOfSteps = 0;
+        while (currentStep <= this.options.end && currentNumberOfSteps <= MAX_NUMBER_OF_STEPS) {
           this.steps.push(currentStep);
           currentStep += oneStep;
+          currentNumberOfSteps++;
         }
       } else {
         this.steps.push(this.options.start);
@@ -252,17 +267,20 @@ class SliderLine {
 
   public setActiveWidth(buttonOne: SliderButton, buttonTwo?: SliderButton) {
     if (this.slider.options.rangeSlider) {
-      var width = (buttonTwo.getPercent() - buttonOne.getPercent()) * 100;
+      const width = (buttonTwo.getPercent() - buttonOne.getPercent()) * 100;
       this.activePart.style.width = width + '%';
       this.activePart.style.left = buttonOne.getPercent() * 100 + '%';
       this.activePart.style.right = buttonTwo.getPercent() * 100 + '%';
     } else {
-      var width = buttonOne.getPercent() * 100;
+      const width = buttonOne.getPercent() * 100;
       this.activePart.style.width = width + '%';
     }
   }
 }
 
+// This component relies heavily on mouse interaction, really difficult to test inside a UT context.
+// Ignore it
+/* istanbul ignore next */
 export class SliderButton {
   public leftBoundary: number;
   public rightBoundary: number;
@@ -289,7 +307,7 @@ export class SliderButton {
 
     this.bindEvents();
     this.element['CoveoSliderButton'] = this;
-    return this.element
+    return this.element;
   }
 
   public toBeginning() {
@@ -301,12 +319,12 @@ export class SliderButton {
   }
 
   public setValue(value: number) {
-    var percent = this.fromValueToPercent(value);
+    const percent = this.fromValueToPercent(value);
     this.element.style.left = Math.round(percent * 100) + '%';
   }
 
   public getPosition() {
-    var left = this.element.style.left;
+    const left = this.element.style.left;
     if (left.indexOf('%') != -1) {
       return (parseFloat(left) / 100) * this.slider.element.clientWidth;
     } else {
@@ -322,21 +340,21 @@ export class SliderButton {
   }
 
   public getValue() {
-    var value = this.getPercent() * (this.slider.options.end - this.slider.options.start) + this.slider.options.start;
+    const value = this.getPercent() * (this.slider.options.end - this.slider.options.start) + this.slider.options.start;
     return value;
   }
 
   public fromValueToPercent(value: number) {
-    return 1 - ((this.slider.options.end - value) / (this.slider.options.end - this.slider.options.start))
+    return 1 - ((this.slider.options.end - value) / (this.slider.options.end - this.slider.options.start));
   }
 
   public fromPositionToValue(position: number) {
-    var percent = this.getPercent(position);
+    const percent = this.getPercent(position);
     return this.slider.options.start + (percent * (this.slider.options.end - this.slider.options.start));
   }
 
   public fromValueToPosition(value: number) {
-    var percent = this.fromValueToPercent(value);
+    const percent = this.fromValueToPercent(value);
     return this.slider.element.clientWidth * percent;
   }
 
@@ -344,7 +362,7 @@ export class SliderButton {
     $$(this.element).on(this.eventMouseDown, (e: MouseEvent) => {
       this.handleStartSlide(e);
     });
-    var doc = this.slider.options.document || document;
+    const doc = this.slider.options.document || document;
     doc.addEventListener(this.eventMouseMove, (e: MouseEvent) => {
       if (this.eventMouseMove == 'touchmove' && this.isMouseDown) {
         e.preventDefault();
@@ -371,7 +389,7 @@ export class SliderButton {
   }
 
   private handleStartSlide(e: MouseEvent) {
-    var position = this.getMousePosition(e);
+    const position = this.getMousePosition(e);
     this.isMouseDown = true;
     this.startPositionX = position.x;
     this.lastElementLeft = (parseInt(this.element.style.left, 10) / 100) * this.slider.element.clientWidth;
@@ -389,8 +407,8 @@ export class SliderButton {
 
   private handleMoving(e: MouseEvent) {
     if (this.isMouseDown) {
-      this.updatePosition(e);
       this.slider.onMoving();
+      this.updatePosition(e);
       this.handleButtonNearEnd();
       $$(this.element).trigger(SliderEvents.duringSlide, <IDuringSlideEventArgs>{
         button: this,
@@ -407,7 +425,7 @@ export class SliderButton {
       $$(this.element).trigger(SliderEvents.endSlide, <IEndSlideEventArgs>{
         button: this,
         slider: this.slider
-      })
+      });
     }
     this.isMouseDown = false;
   }
@@ -426,15 +444,15 @@ export class SliderButton {
   }
 
   private getMousePosition(e: MouseEvent) {
-    var posx = 0;
-    var posy = 0;
-    if (this.eventMouseMove == 'touchmove') {
-      posx = e['originalEvent']['touches'][0].pageX;
-      posy = e['originalEvent']['touches'][0].pageY;
-    } else if (e.pageX || e.pageY) {
+    let posx = 0;
+    let posy = 0;
+    if (e['touches'] && e['touches'][0]) {
+      posx = e['touches'][0].pageX;
+      posy = e['touches'][0].pageY;
+    } else if (e.pageX && e.pageY) {
       posx = e.pageX;
       posy = e.pageY;
-    } else if (e.clientX || e.clientY) {
+    } else if (e.clientX && e.clientY) {
       posx = e.clientX + document.body.scrollLeft + document.documentElement.scrollLeft;
       posy = e.clientY + document.body.scrollTop + document.documentElement.scrollTop;
     }
@@ -442,13 +460,14 @@ export class SliderButton {
   }
 
   private updatePosition(e: MouseEvent) {
-    var pos = this.getMousePosition(e);
-    var spanX = pos.x - this.startPositionX;
+    const pos = this.getMousePosition(e);
+    const spanX = pos.x - this.startPositionX;
+    let currentValue;
     this.currentPos = this.lastElementLeft + spanX;
     if (this.slider.options.steps || this.slider.options.getSteps) {
-      var snapResult = this.snapToStep(spanX);
+      const snapResult = this.snapToStep(spanX);
       this.currentPos = snapResult.position;
-      var currentValue = snapResult.value;
+      currentValue = snapResult.value;
     }
     this.currentPos = Math.max(this.leftBoundary, this.currentPos);
     this.currentPos = Math.min(this.rightBoundary, this.currentPos);
@@ -464,21 +483,21 @@ export class SliderButton {
   }
 
   private snapToStep(spanX: number) {
-    var diffs = _.map(this.slider.steps, (step, i) => {
+    const diffs = _.map(this.slider.steps, (step, i) => {
       return Math.abs(this.currentPos - this.fromValueToPosition(this.slider.steps[i]));
     });
-    var diffsNext = _.map(this.slider.steps, (step, i) => {
+    const diffsNext = _.map(this.slider.steps, (step, i) => {
       return Math.abs(this.rightBoundary - this.fromValueToPosition(this.slider.steps[i]));
     });
-    var diffsPrev = _.map(this.slider.steps, (step, i) => {
+    const diffsPrev = _.map(this.slider.steps, (step, i) => {
       return Math.abs(this.leftBoundary - this.fromValueToPosition(this.slider.steps[i]));
     });
-    var nearest = _.min(diffs);
-    var nearestNext = _.min(diffsNext);
-    var nearestPrevious = _.min(diffsPrev);
-    var currentStep = this.slider.steps[_.indexOf(diffs, nearest)];
-    var nextStep = this.slider.steps[_.indexOf(diffsNext, nearestNext)];
-    var previousStep = this.slider.steps[_.indexOf(diffsPrev, nearestPrevious)];
+    const nearest = _.min(diffs);
+    const nearestNext = _.min(diffsNext);
+    const nearestPrevious = _.min(diffsPrev);
+    let currentStep = this.slider.steps[_.indexOf(diffs, nearest)];
+    const nextStep = this.slider.steps[_.indexOf(diffsNext, nearestNext)];
+    const previousStep = this.slider.steps[_.indexOf(diffsPrev, nearestPrevious)];
     currentStep = Math.min(currentStep, nextStep);
     currentStep = Math.max(currentStep, previousStep);
     return { position: this.fromValueToPosition(currentStep), value: currentStep };
@@ -495,8 +514,8 @@ class SliderRange {
   }
 
   public build(): HTMLElement[] {
-    var firstElem = this.firstButton.build();
-    var secondElem = this.secondButton.build();
+    const firstElem = this.firstButton.build();
+    const secondElem = this.secondButton.build();
     $$(secondElem).addClass('coveo-range-button');
     return [firstElem, secondElem];
   }
@@ -525,15 +544,15 @@ class SliderRange {
   }
 
   public getPosition() {
-    return [this.firstButton.getPosition(), this.secondButton.getPosition()]
+    return [this.firstButton.getPosition(), this.secondButton.getPosition()];
   }
 
   public getPercentPosition() {
-    return [this.firstButton.getPercent(), this.secondButton.getPercent()]
+    return [this.firstButton.getPercent(), this.secondButton.getPercent()];
   }
 
   public getValue() {
-    return [this.firstButton.getValue(), this.secondButton.getValue()]
+    return [this.firstButton.getValue(), this.secondButton.getValue()];
   }
 }
 
@@ -574,12 +593,12 @@ class SliderCaption {
   }
 
   public setAsValue() {
-    $$(this.caption).text(this.getValueCaption())
+    $$(this.caption).text(this.getValueCaption());
   }
 
   public setAsPercent() {
-    var values = this.slider.getPercentPosition();
-    $$(this.caption).text([(values[0] * 100).toFixed(this.slider.options.rounded), '%', this.separator, (values[1] * 100).toFixed(this.slider.options.rounded), '%'].join(' '))
+    const values = this.slider.getPercentPosition();
+    $$(this.caption).text([(values[0] * 100).toFixed(this.slider.options.rounded), '%', this.separator, (values[1] * 100).toFixed(this.slider.options.rounded), '%'].join(' '));
   }
 
   public setFromString(str: string) {
@@ -587,12 +606,12 @@ class SliderCaption {
   }
 
   private getValueCaption(values = this.slider.getValues()) {
-    var first = values[0];
-    var second = values[1];
+    let first = values[0];
+    let second = values[1];
 
     if (this.slider.options.dateField) {
-      var firstAsDate = new Date(first);
-      var secondAsDate = new Date(second);
+      const firstAsDate = new Date(first);
+      const secondAsDate = new Date(second);
       firstAsDate.setHours(0, 0, 0, 0);
       secondAsDate.setHours(0, 0, 0, 0);
       first = Globalize.format(firstAsDate, this.slider.options.dateFormat || 'MMM dd, yyyy');
@@ -612,12 +631,11 @@ class SliderGraph {
   private y: any;
   private oldData: ISliderGraphData[];
   private tooltip: HTMLElement;
-  private resize: (...args: any[]) => void;
 
-  constructor(public slider: Slider, root: HTMLElement) {
-    this.svg = d3.select(slider.element).append('svg').append('g');
-    this.x = d3.scale.ordinal();
-    this.y = d3.scale.linear();
+  constructor(public slider: Slider) {
+    this.svg = d3select(slider.element).append('svg').append('g');
+    this.x = scaleBand();
+    this.y = scaleLinear();
     this.slider.options.graph.margin = Utils.extendDeep({
       top: 20,
       right: 0,
@@ -626,120 +644,131 @@ class SliderGraph {
     }, this.slider.options.graph.margin || {});
     this.slider.options.graph.animationDuration = this.slider.options.graph.animationDuration || 500;
 
-    this.resize = () => {
-      this.draw();
-    };
-    window.addEventListener('resize', this.resize);
-    $$(root).on(InitializationEvents.nuke, this.handleNuke);
-
     this.tooltip = $$('div', {
       className: 'coveo-slider-tooltip'
     }).el;
     this.tooltip.style.display = 'none';
-    this.slider.element.appendChild(this.tooltip)
+    this.slider.element.appendChild(this.tooltip);
     this.slider.options.graph.steps = this.slider.options.graph.steps || 10;
   }
 
   public draw(data: ISliderGraphData[] = this.oldData) {
     if (data) {
-      var sliderOuterWidth = this.slider.element.offsetWidth;
-      var sliderOuterHeight = this.slider.element.offsetHeight;
-      var width = sliderOuterWidth - this.slider.options.graph.margin.left - this.slider.options.graph.margin.right;
-      var height = sliderOuterHeight - this.slider.options.graph.margin.top - this.slider.options.graph.margin.bottom;
+      if (data != this.oldData) {
+        // only modify the data if it's new
+        data = this.modifyPossibleSinglePointDataIntoValidRange(data);
+      }
+      const sliderOuterWidth = this.slider.element.offsetWidth;
+      const sliderOuterHeight = this.slider.element.offsetHeight;
+      const width = sliderOuterWidth - this.slider.options.graph.margin.left - this.slider.options.graph.margin.right;
+      const height = sliderOuterHeight - this.slider.options.graph.margin.top - this.slider.options.graph.margin.bottom;
+      if (!isNaN(width) && width >= 0 && !isNaN(height) && height >= 0) {
+        this.applyTransformOnSvg(width, height);
+        this.setXAndYRange(width, height);
+        this.setXAndYDomain(data);
 
-      this.applyTransformOnSvg(width, height);
-      this.setXAndYRange(width, height);
-      this.setXAndYDomain(data);
+        const bars = this.svg.selectAll('.coveo-bar').data(data);
+        const currentSliderValues = this.slider.getValues();
+        this.renderGraphBars(bars, width, height, currentSliderValues);
+        this.setGraphBarsTransition(bars, height, currentSliderValues);
+      }
 
-      var bars = this.svg.selectAll('.coveo-bar').data(data);
-      var currentSliderValues = this.slider.getValues();
-      this.renderGraphBars(bars, width, height, currentSliderValues);
-      this.setGraphBarsTransition(bars, height, currentSliderValues);
       this.oldData = data;
     }
   }
 
-  private handleNuke() {
-    window.removeEventListener('resize', this.resize);
+  private modifyPossibleSinglePointDataIntoValidRange(data: ISliderGraphData[]) {
+    return _.map(data, (d: ISliderGraphData) => {
+      // In some rare corner case, the index can return range values where the start of the data is equal to the end of the data
+      // Since it's a "point" as opposed to a real range, it's impossible to display this properly on a graph (where the range is the x axis)
+      // An element in a graph with with 0 width on the x axis is illogical and cannot work.
+      // In those case, we must "widen" the x range. Instead of adding an arbitrary value (like +1 to end, for example), we need something that won't make the range super small to click on.
+      // We use the total width available, and subtract half a step at the beginning, and add half a step at the end
+      if (d.start == d.end) {
+        const oneStep = (this.slider.options.end - this.slider.options.start) / this.slider.options.graph.steps;
+        d.start = Math.round(d.start - oneStep / 2);
+        d.end = Math.round(d.end + oneStep / 2);
+      }
+      return d;
+    });
   }
 
   private setXAndYRange(width: number, height: number) {
-    this.x.rangeBands([0, width], 0.2, 0);
+    this.x.range([0, width]);
+    this.x.padding(0.2);
     this.y.range([height - this.slider.options.graph.margin.top, 0]);
   }
 
   private setXAndYDomain(data: ISliderGraphData[]) {
     this.padGraphWithEmptyData(data);
     this.x.domain(_.map(data, (d) => {
-      return d.start
+      return d.start;
     }));
-    this.y.domain([0, d3.max(data, (d) => {
-      return d.y
+    this.y.domain([0, d3max(data, (d) => {
+      return d.y;
     })]);
   }
 
   private padGraphWithEmptyData(data: ISliderGraphData[]) {
-    var oneStepOfGraph = data[0].end - data[0].start;
-    if (oneStepOfGraph != 0) {
-      this.padBeginningOfGraphWithEmptyData(data, oneStepOfGraph);
-      this.padEndOfGraphWithEmptyData(data, oneStepOfGraph);
-    }
+    let oneStepOfGraph = data[0].end - data[0].start;
+    this.padBeginningOfGraphWithEmptyData(data, oneStepOfGraph);
+    this.padEndOfGraphWithEmptyData(data, oneStepOfGraph);
   }
 
   private padBeginningOfGraphWithEmptyData(data: ISliderGraphData[], oneStepOfGraph: number) {
-    if (data[0].start > this.slider.options.start) {
-      var difToFillAtStart = data[0].start - this.slider.options.start;
-      var nbOfStepsAtStart = Math.round(difToFillAtStart / oneStepOfGraph);
-      var currentStep = data[0].start;
-      for (var i = nbOfStepsAtStart; i > 0; i--) {
-        data.unshift(<ISliderGraphData>{ start: currentStep - oneStepOfGraph, end: currentStep, y: 0 })
+    if (data[0].start > this.slider.options.start && data[0].start > oneStepOfGraph) {
+      const difToFillAtStart = data[0].start - this.slider.options.start;
+      const nbOfStepsAtStart = Math.round(difToFillAtStart / oneStepOfGraph);
+      let currentStep = data[0].start;
+      for (let i = nbOfStepsAtStart; i > 0; i--) {
+        data.unshift(<ISliderGraphData>{ start: currentStep - oneStepOfGraph, end: currentStep, y: 0 });
         currentStep -= oneStepOfGraph;
       }
     }
   }
 
   private padEndOfGraphWithEmptyData(data: ISliderGraphData[], oneStepOfGraph: number) {
-    var lastDataIndex = data.length - 1;
+    const lastDataIndex = data.length - 1;
     if (data[lastDataIndex].end < this.slider.options.end) {
-      var diffToFillAtEnd = this.slider.options.end - data[lastDataIndex].end;
-      var nbOfStepsAtEnd = Math.round(diffToFillAtEnd / oneStepOfGraph);
-      var currentStep = data[lastDataIndex].end;
-      for (var i = 0; i < nbOfStepsAtEnd; i++) {
-        data.push(<ISliderGraphData>{ start: currentStep, end: currentStep + oneStepOfGraph, y: 0 })
+      const diffToFillAtEnd = this.slider.options.end - data[lastDataIndex].end;
+      const nbOfStepsAtEnd = Math.round(diffToFillAtEnd / oneStepOfGraph);
+      let currentStep = data[lastDataIndex].end;
+      for (let i = 0; i < nbOfStepsAtEnd; i++) {
+        data.push(<ISliderGraphData>{ start: currentStep, end: currentStep + oneStepOfGraph, y: 0 });
         currentStep += oneStepOfGraph;
       }
     }
   }
 
   private applyTransformOnSvg(width: number, height: number) {
-    var svg = $$(this.slider.element).find('svg');
+    const svg = $$(this.slider.element).find('svg');
     svg.setAttribute('width', width + 'px');
     svg.setAttribute('height', height + 'px');
     this.svg.attr('transform', 'translate(' + this.slider.options.graph.margin.left + ',' + this.slider.options.graph.margin.top + ')');
   }
 
-  private renderGraphBars(bars: D3.UpdateSelection, width: number, height: number, currentSliderValues: number[]) {
+  private renderGraphBars(bars: d3.selection.Update<ISliderGraphData>, width: number, height: number, currentSliderValues: number[]) {
     bars.enter().append('rect')
       .attr('class', this.getFunctionForClass(currentSliderValues))
-      .attr('width', this.x.rangeBand())
+      .attr('width', this.x.bandwidth())
       .attr('height', this.getFunctionForHeight(height))
       .attr('x', this.getFunctionForX())
       .attr('y', this.getFunctionForY())
       .on('click', this.getFunctionForClick())
       .on('mouseover', this.getFunctionForMouseOver(height))
-      .on('mouseout', this.getFunctionForMouseOut())
+      .on('mouseout', this.getFunctionForMouseOut());
   }
 
-  private setGraphBarsTransition(bars: D3.UpdateSelection, height: number, currentSliderValues: number[]) {
+  private setGraphBarsTransition(bars: d3.Transition<ISliderGraphData>, height: number, currentSliderValues: number[]) {
     bars
       .transition()
       .attr('x', this.getFunctionForX())
-      .attr('width', this.x.rangeBand())
+      .attr('width', this.x.bandwidth())
       .attr('class', this.getFunctionForClass(currentSliderValues))
       .transition()
       .duration(this.slider.options.graph.animationDuration)
       .attr('y', this.getFunctionForY())
-      .attr('height', this.getFunctionForHeight(height))
+      .attr('height', this.getFunctionForHeight(height));
   }
 
   private getBarClass(currentSliderValues: number[], d: ISliderGraphData, i: number) {
@@ -755,12 +784,12 @@ class SliderGraph {
   }
 
   private setTooltip(d: ISliderGraphData, height: number) {
-    var caption = $$('span', {
+    const caption = $$('span', {
       className: 'coveo-caption'
     });
     caption.text(this.slider.getCaptionFromValue([d.start, d.end]));
 
-    var count = $$('span', {
+    const count = $$('span', {
       className: 'coveo-count'
     });
     count.text(d.y.toString());
@@ -775,26 +804,26 @@ class SliderGraph {
 
   private getFunctionForX() {
     return (d: ISliderGraphData) => {
-      return this.x(d.start)
-    }
+      return this.x(d.start);
+    };
   }
 
   private getFunctionForY() {
     return (d: ISliderGraphData) => {
-      return this.y(d.y)
-    }
+      return this.y(d.y);
+    };
   }
 
   private getFunctionForHeight(height: number) {
     return (d: ISliderGraphData) => {
-      return height - this.y(d.y)
-    }
+      return height - this.y(d.y);
+    };
   }
 
   private getFunctionForClass(currentSliderValues: number[]) {
     return (d, i) => {
-      return 'coveo-bar ' + this.getBarClass(currentSliderValues, d, i)
-    }
+      return 'coveo-bar ' + this.getBarClass(currentSliderValues, d, i);
+    };
   }
 
   private getFunctionForClick() {
@@ -803,19 +832,19 @@ class SliderGraph {
         start: d.start,
         end: d.end,
         value: d.y
-      })
-    }
+      });
+    };
   }
 
   private getFunctionForMouseOver(height: number) {
     return (d: ISliderGraphData) => {
-      this.setTooltip(d, height)
-    }
+      this.setTooltip(d, height);
+    };
   }
 
   private getFunctionForMouseOut() {
     return () => {
       this.tooltip.style.display = 'none';
-    }
+    };
   }
 }

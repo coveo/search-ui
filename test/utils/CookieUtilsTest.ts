@@ -1,11 +1,11 @@
-/// <reference path="../Test.ts" />
+import { Cookie } from '../../src/utils/CookieUtils';
+import { Simulate } from '../Simulate';
 
-module Coveo {
-
+export function CookieUtilsTest() {
   describe('CookieUtils', function () {
     var mockDocument = {
       cookie: ''
-    }
+    };
     var cookieDesc = Object.getOwnPropertyDescriptor(Document.prototype, 'cookie') ||
       Object.getOwnPropertyDescriptor(HTMLDocument.prototype, 'cookie');
     if (cookieDesc && cookieDesc.configurable) {
@@ -21,31 +21,31 @@ module Coveo {
 
     afterEach(function () {
       mockDocument.cookie = '';
-    })
+    });
 
     it('sets a cookie accordingly', () => {
       Cookie.set('foo', 'bar');
       expect(document.cookie.indexOf('foo=bar')).not.toBe(-1);
-    })
+    });
 
     it('gets the right cookie when cookie exists', () => {
       Cookie.set('dude', 'dudevalue');
       expect(Cookie.get('dude')).toBe('dudevalue');
-    })
+    });
 
     it('returns null if cookie doesn\'t exist', () => {
       expect(Cookie.get('foobar2000')).toBe(null);
-    })
+    });
 
     it('erases cookie accordingly', () => {
       // Phantom doesn't handle document.cookie
-      if (isPhantomJs()) {
+      if (Simulate.isPhantomJs()) {
         expect(true).toBe(true);
       } else {
         document.cookie = 'coveo_patate=frite';
         Cookie.erase('patate');
         expect(document.cookie.replace(' ', '').indexOf('coveo_patate=frite')).toBe(-1);
       }
-    })
-  })
+    });
+  });
 }

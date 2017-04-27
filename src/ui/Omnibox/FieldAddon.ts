@@ -1,16 +1,16 @@
 ///<reference path='Omnibox.ts'/>
-import {Omnibox, IPopulateOmniboxSuggestionsEventArgs, IOmniboxSuggestion} from './Omnibox';
-import {OmniboxEvents} from '../../events/OmniboxEvents';
-import {IFieldDescription} from '../../rest/FieldDescription';
-import {IEndpointError} from '../../rest/EndpointError';
-import _ = require('underscore');
+import { Omnibox, IPopulateOmniboxSuggestionsEventArgs, IOmniboxSuggestion, MagicBox } from './Omnibox';
+import { OmniboxEvents } from '../../events/OmniboxEvents';
+import { IFieldDescription } from '../../rest/FieldDescription';
+import { IEndpointError } from '../../rest/EndpointError';
+import * as _ from 'underscore';
 
 interface IFieldAddonHash {
   type: string;
   before: string;
   after: string;
   current: string;
-  field?: string
+  field?: string;
 }
 
 export class FieldAddon {
@@ -21,7 +21,7 @@ export class FieldAddon {
   constructor(public omnibox: Omnibox) {
     this.omnibox.bind.on(this.omnibox.element, OmniboxEvents.populateOmniboxSuggestions, (args: IPopulateOmniboxSuggestionsEventArgs) => {
       args.suggestions.push(this.getSuggestion());
-    })
+    });
   }
 
   public getSuggestion(): Promise<IOmniboxSuggestion[]> {
@@ -46,7 +46,7 @@ export class FieldAddon {
     this.cache[hashString] = values;
     values.catch(() => {
       delete this.cache[hashString];
-    })
+    });
     return this.hashValueToSuggestion(hash, values);
   }
 
@@ -98,9 +98,9 @@ export class FieldAddon {
       var suggestions: IOmniboxSuggestion[] = _.map(values, (value: string, i) => {
         return {
           text: hash.before + (hash.current.toLowerCase().indexOf(value.toLowerCase()) == 0 ? hash.current + value.substr(hash.current.length) : value) + hash.after,
-          html: Coveo.MagicBox.Utils.highlightText(value, hash.current, true),
+          html: MagicBox.Utils.highlightText(value, hash.current, true),
           index: FieldAddon.INDEX - i / values.length
-        }
+        };
       });
       return suggestions;
     });
@@ -112,7 +112,7 @@ export class FieldAddon {
     if (this.fields == null) {
       this.fields = new Promise<string[]>((resolve, reject) => {
         if (this.omnibox.options.listOfFields != null) {
-          resolve(this.omnibox.options.listOfFields);
+          resolve(<string[]>this.omnibox.options.listOfFields);
         } else {
           var promise: Promise<IFieldDescription[] | IEndpointError> = this.omnibox.queryController.getEndpoint().listFields();
           promise.then((fieldDescriptions: IFieldDescription[]) => {
@@ -126,13 +126,13 @@ export class FieldAddon {
             reject();
           });
         }
-      })
+      });
     }
     return this.fields;
   }
 
   private fieldNames(current: string): Promise<IOmniboxSuggestion[]> {
-    var withAt = current.length > 0 && current[0] == '@'
+    var withAt = current.length > 0 && current[0] == '@';
     var fieldName = withAt ? current.substr(1) : current;
     var fieldNameLC = fieldName.toLowerCase();
 
@@ -141,7 +141,7 @@ export class FieldAddon {
         .map((field: string) => {
           return {
             index: field.toLowerCase().indexOf(fieldNameLC),
-            field: withAt ? '@' + field : field
+            field: withAt ? field : '@' + field
           };
         })
         .filter((field) => {
@@ -152,7 +152,7 @@ export class FieldAddon {
         .value();
       matchFields = _.first(matchFields, 5);
       return matchFields;
-    })
+    });
   }
 
   private fieldValues(field: string, current: string): Promise<IOmniboxSuggestion[]> {
@@ -178,7 +178,7 @@ export class FieldAddon {
           return value.value.replace(/ /g, '\u00A0');
         })
         .value();
-    })
+    });
   }
 
   private simpleFieldNames(current: string): Promise<IOmniboxSuggestion[]> {
@@ -201,6 +201,6 @@ export class FieldAddon {
         .value();
       matchFields = _.first(matchFields, 5);
       return matchFields;
-    })
+    });
   }
 }

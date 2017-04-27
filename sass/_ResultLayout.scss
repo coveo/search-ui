@@ -1,0 +1,20 @@
+@import "mixins/resultsHeaderElement";
+@import "bourbon/bourbon";
+@import "Variables";
+
+.CoveoResultLayout {
+  @include display(flex);
+  &.coveo-result-layout-hidden {
+    display: none;
+  }
+}
+
+.coveo-result-layout-selector {
+  @include resultsHeaderElement();
+  display: block;
+
+  .coveo-icon {
+    margin-right: 5px;
+    vertical-align: bottom;
+  }
+}

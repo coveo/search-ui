@@ -1,3 +1,5 @@
+@import "Variables";
+@import "../bin/sass/sprites";
 
 .CoveoFieldTable {
   @include defaultRoundedBorder();
@@ -5,18 +7,13 @@
   background-color: $color-blueish-white;
   padding-bottom: 10px;
   position: relative;
+  word-break: break-all;
   th, td {
     font-size: $font-size-smaller;
   }
   td {
     width: 99%;
     padding: 10px 20px 0px 0px;
-    .coveo-clickable {
-      @include clickable();
-      &.coveo-selected {
-        font-weight: bold;
-      }
-    }
   }
 
   th {
@@ -29,6 +26,12 @@
   border-collapse: separate;
   margin-bottom: 20px;
 
+  .coveo-clickable {
+    @include clickable();
+    &.coveo-selected {
+      font-weight: bold;
+    }
+  }
 }
 
 .coveo-field-table-toggle {
@@ -52,7 +55,7 @@
   position: relative;
   top: 2px;
 
-  @extend .coveo-sprites-arrow-down;
+  @include retina-sprite($arrow-down-group);
   @include transition(opacity 0.5s);
   opacity: 1;
   &.coveo-opened {
@@ -65,7 +68,7 @@
   bottom: 10px;
   right: 10px;
   margin: 0;
-  @extend .coveo-sprites-arrow-up;
+  @include retina-sprite($arrow-up-group);
   display: none;
   &.coveo-opened {
     display: inline-block;
@@ -78,5 +81,27 @@
     &.coveo-selected {
       font-weight: bold;
     }
+  }
+  &.coveo-with-label {
+    display: inline-block;
+  }
+  .coveo-field-caption {
+    color: $color-blueish-gray;
+    margin-right: 10px;
+  }
+}
+
+.coveo-card-overlay {
+  .CoveoFieldTable {
+    background-color: transparent;
+    border: none;
+    padding: 0;
+    margin: 10px 0 0;
+    th {
+      color: $color-light-grey;
+    }
+  }
+  .coveo-clickable {
+    @include clickableVibrant($dark-background: true);
   }
 }

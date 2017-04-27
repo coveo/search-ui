@@ -1,11 +1,15 @@
+@import "Variables";
+@import "../bin/sass/sprites";
+
 .coveo-facet-more, .coveo-facet-less {
   width: 100%;
   height: 15px;
-  background: white;
+  background: $color-blueish-white;
   cursor: pointer;
   text-align: center;
-  &:hover {
+  &:hover, &:focus {
     background: $color-light-grey;
+    outline: none;
   }
 }
 
@@ -13,9 +17,9 @@
   border-bottom-left-radius: $default-border-radius;
   border-bottom-right-radius: $default-border-radius;
   .coveo-icon {
-    @extend .coveo-sprites-arrow-down;
+    @include retina-sprite($arrow-down-group);
     position: relative;
-    top:1px;
+    top: 1px;
   }
   display: none;
   &.coveo-active {
@@ -25,7 +29,7 @@
 
 .coveo-facet-less {
   .coveo-icon {
-    @extend .coveo-sprites-arrow-up;
+    @include retina-sprite($arrow-up-group);
   }
   display: none;
   &.coveo-active {
@@ -40,7 +44,7 @@
 }
 
 .coveo-facet-footer {
-  background: white;
+  background: $color-blueish-white;
   min-height: 15px;
   border-bottom-left-radius: $default-border-radius;
   border-bottom-right-radius: $default-border-radius;

@@ -1,27 +1,32 @@
 /// <reference path='../ui/Facet/Facet.ts' />
 
-import {Facet} from '../ui/Facet/Facet';
-import {IGroupByRequest} from '../rest/GroupByRequest';
-import {IGroupByResult} from '../rest/GroupByResult';
-import {ExpressionBuilder} from '../ui/Base/ExpressionBuilder';
-import {FacetValue} from '../ui/Facet/FacetValues';
-import {Utils} from '../utils/Utils';
-import {QueryBuilder} from '../ui/Base/QueryBuilder';
-import {FacetSearchParameters} from '../ui/Facet/FacetSearchParameters';
-import {Assert} from '../misc/Assert';
-import {IIndexFieldValue} from '../rest/FieldValue';
-import {FacetUtils} from '../ui/Facet/FacetUtils';
-import {IQueryResults} from '../rest/QueryResults';
-import {IGroupByValue} from '../rest/GroupByValue';
-import {IEndpointError} from '../rest/EndpointError';
-import {IQueryBuilderExpression} from '../ui/Base/QueryBuilder';
+import { Facet } from '../ui/Facet/Facet';
+import { IGroupByRequest } from '../rest/GroupByRequest';
+import { IGroupByResult } from '../rest/GroupByResult';
+import { ExpressionBuilder } from '../ui/Base/ExpressionBuilder';
+import { FacetValue } from '../ui/Facet/FacetValues';
+import { Utils } from '../utils/Utils';
+import { QueryBuilder } from '../ui/Base/QueryBuilder';
+import { FacetSearchParameters } from '../ui/Facet/FacetSearchParameters';
+import { Assert } from '../misc/Assert';
+import { IIndexFieldValue } from '../rest/FieldValue';
+import { FacetUtils } from '../ui/Facet/FacetUtils';
+import { IQueryResults } from '../rest/QueryResults';
+import { IGroupByValue } from '../rest/GroupByValue';
+import { IEndpointError } from '../rest/EndpointError';
+import { IQueryBuilderExpression } from '../ui/Base/QueryBuilder';
+import * as _ from 'underscore';
 
 export class FacetQueryController {
   public expressionToUseForFacetSearch: string;
+  public basicExpressionToUseForFacetSearch: string;
+  public advancedExpressionToUseForFacetSearch: string;
   public constantExpressionToUseForFacetSearch: string;
   public lastGroupByRequestIndex: number;
   public lastGroupByRequest: IGroupByRequest;
   public lastGroupByResult: IGroupByResult;
+
+  private currentSearchPromise: Promise<IQueryResults>;
 
   constructor(public facet: Facet) {
   }
@@ -45,15 +50,15 @@ export class FacetQueryController {
     if (selected.length > 0) {
       if (this.facet.options.useAnd) {
         _.each(selected, (value: FacetValue) => {
-          builder.addFieldExpression(this.facet.options.field, '==', [value.value]);
+          builder.addFieldExpression(<string>this.facet.options.field, '==', [value.value]);
         });
       } else {
-        builder.addFieldExpression(this.facet.options.field, '==', _.map(selected, (value: FacetValue) => value.value));
+        builder.addFieldExpression(<string>this.facet.options.field, '==', _.map(selected, (value: FacetValue) => value.value));
       }
     }
     let excluded = this.facet.values.getExcluded();
     if (excluded.length > 0) {
-      builder.addFieldNotEqualExpression(this.facet.options.field, _.map(excluded, (value: FacetValue) => value.value));
+      builder.addFieldNotEqualExpression(<string>this.facet.options.field, _.map(excluded, (value: FacetValue) => value.value));
     }
     if (Utils.isNonEmptyString(this.facet.options.additionalFilter)) {
       builder.add(this.facet.options.additionalFilter);
@@ -77,13 +82,14 @@ export class FacetQueryController {
       groupByRequest.advancedQueryOverride = queryOverrideObject.advanced;
       groupByRequest.constantQueryOverride = queryOverrideObject.constant;
       this.expressionToUseForFacetSearch = queryOverrideObject.withoutConstant;
+      this.basicExpressionToUseForFacetSearch = queryOverrideObject.basic;
+      this.advancedExpressionToUseForFacetSearch = queryOverrideObject.advanced;
       this.constantExpressionToUseForFacetSearch = queryOverrideObject.constant;
     } else {
       let parts = queryBuilder.computeCompleteExpressionParts();
-      this.expressionToUseForFacetSearch = parts.withoutConstant;
-      if (this.expressionToUseForFacetSearch == null) {
-        this.expressionToUseForFacetSearch = '@uri';
-      }
+      this.expressionToUseForFacetSearch = parts.withoutConstant == null ? '@uri' : parts.withoutConstant;
+      this.basicExpressionToUseForFacetSearch = parts.basic == null ? '@uri' : parts.basic;
+      this.advancedExpressionToUseForFacetSearch = parts.advanced;
       this.constantExpressionToUseForFacetSearch = parts.constant;
     }
     this.lastGroupByRequestIndex = queryBuilder.groupByRequests.length;
@@ -98,7 +104,6 @@ export class FacetQueryController {
    * @returns {Promise|Promise<T>}
    */
   public search(params: FacetSearchParameters, oldLength = params.nbResults): Promise<IIndexFieldValue[]> {
-
     return new Promise((resolve, reject) => {
       let onResult = (fieldValues?: IIndexFieldValue[]) => {
         let newLength = fieldValues.length;
@@ -110,37 +115,39 @@ export class FacetQueryController {
         } else {
           resolve(fieldValues);
         }
-      }
+      };
 
-      this.facet.getEndpoint().search(params.getQuery())
-        .then((queryResults: IQueryResults) => {
-          if (this.facet.searchInterface.isNewDesign()) {
-            // params.getQuery() will generate a query for all excluded values + some new values
-            // there is no clean way to do a group by and remove some values
-            // so instead we request more values than we need, and crop all the one we don't want
-            let valuesCropped: IGroupByValue[] = [];
-            if (queryResults.groupByResults && queryResults.groupByResults[0]) {
-              _.each(queryResults.groupByResults[0].values, (v: IGroupByValue) => {
-                if (v.lookupValue) {
-                  if (!_.contains(params.alwaysExclude, v.lookupValue.toLowerCase())) {
-                    valuesCropped.push(v);
-                  }
-                } else {
-                  if (!_.contains(params.alwaysExclude, v.value.toLowerCase())) {
-                    valuesCropped.push(v);
-                  }
+      let searchPromise = this.facet.getEndpoint().search(params.getQuery());
+      this.currentSearchPromise = searchPromise;
+
+      searchPromise.then((queryResults: IQueryResults) => {
+        if (this.currentSearchPromise == searchPromise) {
+          // params.getQuery() will generate a query for all excluded values + some new values
+          // there is no clean way to do a group by and remove some values
+          // so instead we request more values than we need, and crop all the one we don't want
+          let valuesCropped: IGroupByValue[] = [];
+          if (queryResults.groupByResults && queryResults.groupByResults[0]) {
+            _.each(queryResults.groupByResults[0].values, (v: IGroupByValue) => {
+              if (v.lookupValue) {
+                if (!_.contains(params.alwaysExclude, v.lookupValue.toLowerCase())) {
+                  valuesCropped.push(v);
                 }
-              })
-            }
-            onResult(_.first(valuesCropped, params.nbResults));
-          } else {
-            return queryResults.groupByResults[0];
+              } else {
+                if (!_.contains(params.alwaysExclude, v.value.toLowerCase())) {
+                  valuesCropped.push(v);
+                }
+              }
+            });
           }
-        })
+          onResult(_.first(valuesCropped, params.nbResults));
+        } else {
+          reject();
+        }
+      })
         .catch((error: IEndpointError) => {
           reject(error);
-        })
-    })
+        });
+    });
   }
 
   public fetchMore(numberOfValuesToFetch: number) {
@@ -165,37 +172,48 @@ export class FacetQueryController {
   protected createGroupByAllowedValues() {
     // if you want to keep displayed values next time, take all current values as allowed values
     // otherwise take only the selected value
-    let allowedFacetValues: FacetValue[];
     if (this.facet.options.allowedValues != undefined) {
       return this.facet.options.allowedValues;
     } else if (this.facet.options.customSort != undefined) {
       // If there is a custom sort, we still need to add selectedValues to the group by
       // Filter out duplicates with a lower case comparison on the value
-      let toCompare = _.map(this.facet.options.customSort, (val: string) => {
-        return val.toLowerCase();
-      })
-      let filtered = _.filter(this.getAllowedValuesFromSelected(), (value: string) => {
-        return !_.contains(toCompare, value.toLowerCase());
-      })
-      return this.facet.options.customSort.concat(filtered);
-
+      return this.getUnionWithCustomSortLowercase(this.facet.options.customSort, this.getAllowedValuesFromSelected());
     } else {
-      return this.getAllowedValuesFromSelected();
+      return _.map(this.getAllowedValuesFromSelected(), (facetValue: FacetValue) => facetValue.value);
     }
   }
 
-  private getAllowedValuesFromSelected() {
-    let toMap: FacetValue[] = [];
+  private getUnionWithCustomSortLowercase(customSort: string[], facetValues: FacetValue[]) {
+    // This will take the custom sort, compare it against the passed in facetValues
+    // The comparison is lowercase.
+    // The union of the 2 arrays with duplicated filtered out is returned.
+
+    let toCompare = _.map(customSort, (val: string) => {
+      return val.toLowerCase();
+    });
+    let filtered = _.chain(facetValues)
+      .filter((facetValue: FacetValue) => {
+        return !_.contains(toCompare, facetValue.value.toLowerCase());
+      })
+      .map((facetValue: FacetValue) => {
+        return facetValue.value;
+      })
+      .value();
+    return _.compact(customSort.concat(filtered));
+  }
+
+  protected getAllowedValuesFromSelected() {
+    let facetValues: FacetValue[] = [];
     if (this.facet.options.useAnd || !this.facet.keepDisplayedValuesNextTime) {
       let selected = this.facet.values.getSelected();
       if (selected.length == 0) {
         return undefined;
       }
-      toMap = this.facet.values.getSelected();
+      facetValues = this.facet.values.getSelected();
     } else {
-      toMap = this.facet.values.getAll();
+      facetValues = this.facet.values.getAll();
     }
-    return _.map(toMap, (facetValue: FacetValue) => facetValue.value);
+    return facetValues;
   }
 
   private createGroupByQueryOverride(queryBuilder: QueryBuilder): IQueryBuilderExpression {
@@ -234,7 +252,7 @@ export class FacetQueryController {
       if (Utils.isEmptyString(queryOverrideObject[k]) || Utils.isNullOrUndefined(queryOverrideObject[k])) {
         delete queryOverrideObject[k];
       }
-    })
+    });
     if (_.keys(queryOverrideObject).length == 0) {
       queryOverrideObject = undefined;
     }
@@ -244,27 +262,27 @@ export class FacetQueryController {
   protected createBasicGroupByRequest(allowedValues?: string[], addComputedField: boolean = true): IGroupByRequest {
     let nbOfRequestedValues = this.facet.numberOfValues;
     if (this.facet.options.customSort != null) {
-      let usedValues = _.union(_.map(this.facet.values.getSelected(), (facetValue: FacetValue) => facetValue.value), _.map(this.facet.values.getExcluded(), (facetValue: FacetValue) => facetValue.value), this.facet.options.customSort);
+      // If we have a custom sort, we need to make sure that we always request at least enough values to always receive them
+      let usedValues = this.getUnionWithCustomSortLowercase(this.facet.options.customSort, this.facet.values.getSelected().concat(this.facet.values.getExcluded()));
       nbOfRequestedValues = Math.max(nbOfRequestedValues, usedValues.length);
     }
-
     let groupByRequest: IGroupByRequest = {
-      field: this.facet.options.field,
+      field: <string>this.facet.options.field,
       maximumNumberOfValues: nbOfRequestedValues + (this.facet.options.enableMoreLess ? 1 : 0),
       sortCriteria: this.facet.options.sortCriteria,
       injectionDepth: this.facet.options.injectionDepth,
       completeFacetWithStandardValues: this.facet.options.allowedValues == undefined ? true : false
     };
     if (this.facet.options.lookupField) {
-      groupByRequest.lookupField = this.facet.options.lookupField;
+      groupByRequest.lookupField = <string>this.facet.options.lookupField;
     }
     if (allowedValues != null) {
       groupByRequest.allowedValues = allowedValues;
     }
 
-    if (addComputedField && Utils.isNonEmptyString(this.facet.options.computedField)) {
+    if (addComputedField && Utils.isNonEmptyString(<string>this.facet.options.computedField)) {
       groupByRequest.computedFields = [{
-        field: this.facet.options.computedField,
+        field: <string>this.facet.options.computedField,
         operation: this.facet.options.computedFieldOperation
       }];
     }
@@ -281,6 +299,6 @@ export class FacetQueryController {
 
       let value = this.facet.getValueCaption(fieldValue);
       return isAllowed && regex.test(value);
-    })
+    });
   }
 }

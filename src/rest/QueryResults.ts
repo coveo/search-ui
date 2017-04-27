@@ -1,10 +1,10 @@
-import {IUserIdentity} from './UserIdentity';
-import {IRankingExpression} from './RankingExpression';
-import {IQueryException} from './QueryException';
-import {IQueryResult} from './QueryResult';
-import {IGroupByResult} from './GroupByResult';
-import {IQueryCorrection} from './QueryCorrection';
-import {ITrigger} from './Trigger';
+import { IUserIdentity } from './UserIdentity';
+import { IRankingExpression } from './RankingExpression';
+import { IQueryException } from './QueryException';
+import { IQueryResult } from './QueryResult';
+import { IGroupByResult } from './GroupByResult';
+import { IQueryCorrection } from './QueryCorrection';
+import { ITrigger } from './Trigger';
 
 /**
  * Describe a set a results returned by the Search API
@@ -127,6 +127,10 @@ export interface IQueryResults {
    * The Coveo Query Pipeline triggers, if any were configured.
    */
   triggers: ITrigger<any>[];
+  /**
+   * The keywords selected by Coveo Machine Learning Refined Query feature
+   */
+  refinedKeywords?: string[];
   _folded: boolean;
   _reusedSearchUid?: boolean;
 }

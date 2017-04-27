@@ -1,52 +1,33 @@
-import {Template} from './Template';
-import {ComponentOptions, IComponentOptionsFieldsOption} from '../Base/ComponentOptions';
-import {Assert} from '../../misc/Assert';
-import {$$} from '../../utils/Dom';
-
+import { Template } from './Template';
+import { Assert } from '../../misc/Assert';
+import { TemplateFromAScriptTag, ITemplateFromStringProperties } from './TemplateFromAScriptTag';
+import * as _ from 'underscore';
 
 export class HtmlTemplate extends Template {
 
   public static mimeTypes = [
-    'text/html'
+    'text/html',
+    'text/HTML'
   ];
 
-  private fields: string[];
+  private templateFromAScriptTag: TemplateFromAScriptTag;
 
   constructor(public element: HTMLElement) {
-    super(() => {
-      return element.innerHTML;
-    });
-
-    var condition = $$(element).getAttribute('data-condition')
-    if (condition != null) {
-      // Allows to add quotes in data-condition on the templates
-      condition = condition.toString().replace(/&quot;/g, '"');
-      this.condition = new Function('obj', 'with(obj||{}){return ' + condition + '}')
-    }
-
-    this.fields = Template.getFieldFromString(element.innerHTML + ' ' + condition);
-
-    var additionalFields = ComponentOptions.loadFieldsOption(element, 'fields', <IComponentOptionsFieldsOption>{ includeInResults: true });
-    if (additionalFields != null) {
-      // remove the @
-      this.fields = this.fields.concat(_.map(additionalFields, (field) => field.substr(1)));
-    }
+    super(() => element.innerHTML);
+    this.templateFromAScriptTag = new TemplateFromAScriptTag(this, this.element);
   }
 
   toHtmlElement(): HTMLElement {
-    var script = $$('script');
-    script.setAttribute('type', _.first(HtmlTemplate.mimeTypes));
-    script.setAttribute('data-condition', $$(this.element).getAttribute('data-condition'));
-    script.text(this.element.innerHTML);
-    return script.el;
+    let script = this.templateFromAScriptTag.toHtmlElement();
+    // We don't set the type attribute for 2 reasons:
+    // 1) LockerService doesn't like when we set it.
+    // 2) The HTML Template is the default one.
+
+    return script;
   }
 
   getType() {
-    return 'HtmlTemplate'
-  }
-
-  getFields(): string[] {
-    return this.fields;
+    return 'HtmlTemplate';
   }
 
   static create(element: HTMLElement): HtmlTemplate {
@@ -54,13 +35,12 @@ export class HtmlTemplate extends Template {
     return new HtmlTemplate(element);
   }
 
-  static fromString(template: string, condition?: string): HtmlTemplate {
-    var script = document.createElement('script');
-    script.text = template;
-    if (condition != null) {
-      $$(script).setAttribute('data-condition', condition);
-    }
-    $$(script).setAttribute('type', HtmlTemplate.mimeTypes[0]);
+  static fromString(template: string, properties: ITemplateFromStringProperties): HtmlTemplate {
+    let script = TemplateFromAScriptTag.fromString(template, properties);
+
+    // We don't set the type attribute for 2 reasons:
+    // 1) LockerService doesn't like when we set it.
+    // 2) The HTML Template is the default one.
     return new HtmlTemplate(script);
   }
 }

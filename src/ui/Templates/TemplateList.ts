@@ -1,31 +1,35 @@
-import {Template} from './Template';
-import {DefaultResultTemplate} from './DefaultResultTemplate';
+import { Template, IInstantiateTemplateOptions, DefaultInstantiateTemplateOptions } from './Template';
+import { DefaultResultTemplate } from './DefaultResultTemplate';
+import { IQueryResult } from '../../rest/QueryResult';
+import * as _ from 'underscore';
 
 export class TemplateList extends Template {
 
-  constructor(private templates: Template[]) {
+  constructor(public templates: Template[]) {
     super();
   }
 
-  instantiateToString(object?: any, checkCondition?: boolean): string {
+  instantiateToString(object: IQueryResult, instantiateOptions: IInstantiateTemplateOptions = {}): string {
+    let merged = new DefaultInstantiateTemplateOptions().merge(instantiateOptions);
+
     for (var i = 0; i < this.templates.length; i++) {
-      var result = this.templates[i].instantiateToString(object, checkCondition);
+      var result = this.templates[i].instantiateToString(object, merged);
       if (result != null) {
         return result;
       }
     }
-    return new DefaultResultTemplate().instantiateToString(object);
+    return new DefaultResultTemplate().instantiateToString(object, instantiateOptions);
   }
 
-  instantiateToElement(object?: any, checkCondition = true): HTMLElement {
+  instantiateToElement(object: IQueryResult, instantiateOptions: IInstantiateTemplateOptions = {}): Promise<HTMLElement> {
+    let merged = new DefaultInstantiateTemplateOptions().merge(instantiateOptions);
     for (var i = 0; i < this.templates.length; i++) {
-      var element = this.templates[i].instantiateToElement(object, checkCondition);
-      if (element != null) {
-        return element;
+      var promiseOfHTMLElement = this.templates[i].instantiateToElement(object, merged);
+      if (promiseOfHTMLElement != null) {
+        return promiseOfHTMLElement;
       }
     }
-
-    return new DefaultResultTemplate().instantiateToElement(object)
+    return new DefaultResultTemplate().instantiateToElement(object, merged);
   }
 
   getFields() {
@@ -33,6 +37,6 @@ export class TemplateList extends Template {
   }
 
   getType() {
-    return 'TemplateList'
+    return 'TemplateList';
   }
 }

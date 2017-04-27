@@ -1,11 +1,11 @@
 @import "bourbon/bourbon";
-@import "_Variables.scss";
+@import "Variables";
 
 .CoveoFacet, .CoveoFacetRange, .CoveoFacetSlider, .CoveoHierarchicalFacet {
   margin: 10px 0px 10px 0px;
   padding: 0;
   @include defaultRoundedBorder();
-  background: $color-blueish-white;
+  background: white;
   position: relative;
 }
 
@@ -13,11 +13,6 @@
   .coveo-topSpace.coveo-with-animation, .coveo-bottomSpace.coveo-with-animation {
     @include transition(height 0.5s);
   }
-}
-
-.ie8or9 .coveo-facet-header-wait-animation, .ie8or9 .coveo-facet-search-wait-animation {
-  background: url(../image/wait_facet.gif) no-repeat;
-  background-size: 100%;
 }
 
 .coveo-facet-empty {

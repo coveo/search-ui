@@ -1,15 +1,15 @@
 /// <reference path="Facet.ts" />
-import {Facet} from './Facet';
-import {FacetValue} from './FacetValues';
-import {IPopulateOmniboxObject} from '../Omnibox/OmniboxInterface';
-import {ValueElementRenderer} from './ValueElementRenderer';
-import {Utils} from '../../utils/Utils';
-import {IAnalyticsActionCause, analyticsActionCauseList, IAnalyticsFacetMeta} from '../Analytics/AnalyticsActionListMeta';
-import {$$} from '../../utils/Dom';
-import {DeviceUtils} from '../../utils/DeviceUtils';
-import {Defer} from '../../misc/Defer';
-
-declare const Coveo;
+import { Facet } from './Facet';
+import { FacetValue } from './FacetValues';
+import { IPopulateOmniboxObject } from '../Omnibox/OmniboxInterface';
+import { ValueElementRenderer } from './ValueElementRenderer';
+import { Utils } from '../../utils/Utils';
+import { IAnalyticsActionCause, analyticsActionCauseList, IAnalyticsFacetMeta } from '../Analytics/AnalyticsActionListMeta';
+import { $$ } from '../../utils/Dom';
+import { DeviceUtils } from '../../utils/DeviceUtils';
+import { Defer } from '../../misc/Defer';
+import { ModalBox } from '../../ExternalModulesShim';
+import { KeyboardUtils, KEYBOARD } from '../../utils/KeyboardUtils';
 
 export interface IValueElementKlass {
   new (facet: Facet, facetValue: FacetValue): ValueElement;
@@ -72,6 +72,23 @@ export class ValueElement {
     this.renderer.setCssClassOnListValueElement();
   }
 
+  public toggleExcludeWithUA() {
+    let actionCause: IAnalyticsActionCause;
+    if (this.facetValue.excluded) {
+      actionCause = this.isOmnibox ? analyticsActionCauseList.omniboxFacetUnexclude : analyticsActionCauseList.facetUnexclude;
+    } else {
+      actionCause = this.isOmnibox ? analyticsActionCauseList.omniboxFacetExclude : analyticsActionCauseList.facetExclude;
+    }
+
+    this.facet.toggleExcludeValue(this.facetValue);
+
+    if (this.onExclude) {
+      this.facet.triggerNewQuery(() => this.onExclude(this, actionCause));
+    } else {
+      this.facet.triggerNewQuery(() => this.facet.usageAnalytics.logSearchEvent<IAnalyticsFacetMeta>(actionCause, this.getAnalyticsFacetMeta()));
+    }
+  }
+
   protected handleSelectValue(eventBindings: IValueElementEventsBinding) {
     this.facet.keepDisplayedValuesNextTime = eventBindings.displayNextTime && !this.facet.options.useAnd;
     var actionCause: IAnalyticsActionCause;
@@ -95,22 +112,11 @@ export class ValueElement {
 
   protected handleExcludeClick(eventBindings: IValueElementEventsBinding) {
     this.facet.keepDisplayedValuesNextTime = eventBindings.displayNextTime && !this.facet.options.useAnd;
-    var actionCause: IAnalyticsActionCause;
-    if (this.facetValue.excluded) {
-      actionCause = this.isOmnibox ? analyticsActionCauseList.omniboxFacetUnexclude : analyticsActionCauseList.facetUnexclude;
-    } else {
-      actionCause = this.isOmnibox ? analyticsActionCauseList.omniboxFacetExclude : analyticsActionCauseList.facetExclude;
-    }
-    this.facet.toggleExcludeValue(this.facetValue);
-    if (this.onExclude) {
-      this.facet.triggerNewQuery(() => this.onExclude(this, actionCause));
-    } else {
-      this.facet.triggerNewQuery(() => this.facet.usageAnalytics.logSearchEvent<IAnalyticsFacetMeta>(actionCause, this.getAnalyticsFacetMeta()));
-    }
+    this.toggleExcludeWithUA();
   }
 
   protected handleEventForExcludedValueElement(eventBindings: IValueElementEventsBinding) {
-    $$(this.renderer.label).on('click', (event) => {
+    let clickEvent = (event: Event) => {
       if (eventBindings.pinFacet) {
         this.facet.pinFacetPosition();
       }
@@ -118,28 +124,55 @@ export class ValueElement {
         this.omniboxCloseEvent(eventBindings.omniboxObject);
       }
       this.handleSelectValue(eventBindings);
-      event.stopPropagation();
       return false;
-    })
+    };
+
+    $$(this.renderer.label).on('click', e => {
+      e.stopPropagation();
+      clickEvent(e);
+    });
+
+    $$(this.renderer.stylishCheckbox).on('keydown', KeyboardUtils.keypressAction([
+      KEYBOARD.SPACEBAR,
+      KEYBOARD.ENTER
+    ], clickEvent));
   }
 
   protected handleEventForValueElement(eventBindings: IValueElementEventsBinding) {
-    $$(this.renderer.excludeIcon).on('click', (event) => {
+    let excludeAction = (event: Event) => {
       if (eventBindings.omniboxObject) {
         this.omniboxCloseEvent(eventBindings.omniboxObject);
       }
-      this.handleExcludeClick(eventBindings);
       event.stopPropagation();
+      event.preventDefault();
+      this.handleExcludeClick(eventBindings);
+
+      if (this.facet && this.facet.facetSearch && this.facet.facetSearch.completelyDismissSearch) {
+        this.facet.facetSearch.completelyDismissSearch();
+      }
       return false;
-    })
-    $$(this.renderer.label).on('click', (event: Event) => {
+    };
+    $$(this.renderer.excludeIcon).on('click', excludeAction);
+
+    $$(this.renderer.excludeIcon).on('keydown', KeyboardUtils.keypressAction([
+      KEYBOARD.SPACEBAR,
+      KEYBOARD.ENTER
+    ], excludeAction));
+
+    let selectAction = (event: Event) => {
       if (eventBindings.pinFacet) {
         this.facet.pinFacetPosition();
       }
       event.preventDefault();
       $$(this.renderer.checkbox).trigger('change');
       return false;
-    })
+    };
+    $$(this.renderer.label).on('click', selectAction);
+
+    $$(this.renderer.stylishCheckbox).on('keydown', KeyboardUtils.keypressAction([
+      KEYBOARD.SPACEBAR,
+      KEYBOARD.ENTER
+    ], selectAction));
   }
 
   protected handleEventForCheckboxChange(eventBindings: IValueElementEventsBinding) {
@@ -151,11 +184,11 @@ export class ValueElement {
       this.handleSelectValue(eventBindings);
       if (DeviceUtils.isMobileDevice() && !this.facet.searchInterface.isNewDesign() && this.facet.options.enableFacetSearch) {
         Defer.defer(() => {
-          Coveo.ModalBox.close(true);
+          ModalBox.close(true);
           this.facet.facetSearch.completelyDismissSearch();
         });
       }
-    })
+    });
   }
 
   protected omniboxCloseEvent(eventArg: IPopulateOmniboxObject) {
@@ -168,6 +201,6 @@ export class ValueElement {
       facetId: this.facet.options.id,
       facetValue: this.facetValue.value,
       facetTitle: this.facet.options.title
-    }
+    };
   }
 }

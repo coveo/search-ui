@@ -1,11 +1,10 @@
 /// <reference path="Facet.ts" />
 /// <reference path="FacetSettings.ts" />
-import {Facet} from './Facet';
-import {l} from '../../strings/Strings';
-import {FacetSettings} from './FacetSettings';
-import {Utils} from '../../utils/Utils';
-import {FacetValue} from './FacetValues';
-import {StringUtils} from '../../utils/StringUtils';
+import { Facet } from './Facet';
+import { l } from '../../strings/Strings';
+import { FacetSettings } from './FacetSettings';
+import { Utils } from '../../utils/Utils';
+import * as _ from 'underscore';
 
 declare const Coveo;
 
@@ -69,6 +68,12 @@ export class FacetSort {
       description: l('RelativeFrequencyDescription'),
       name: 'chisquare'
     },
+    nosort: {
+      label: l('Nosort'),
+      directionToggle: false,
+      description: l('NosortDescription'),
+      name: 'nosort'
+    },
     custom: {
       label: l('Custom'),
       directionToggle: true,
@@ -76,7 +81,7 @@ export class FacetSort {
       name: 'custom',
       relatedSort: 'custom'
     }
-  }
+  };
 
   public enabledSorts: IFacetSortDescription[] = [];
   public activeSort: IFacetSortDescription;
@@ -88,13 +93,13 @@ export class FacetSort {
       if (newSortToEnable != undefined) {
         this.enabledSorts.push(newSortToEnable);
       }
-    })
+    });
     this.removeEnabledSortsBasedOnFacetType();
     if (Utils.isNonEmptyArray(this.enabledSorts)) {
       if (this.facet.options.sortCriteria != undefined) {
         this.activeSort = _.find<IFacetSortDescription>(this.enabledSorts, (enabledSort) => {
-          return enabledSort.name == this.facet.options.sortCriteria
-        })
+          return enabledSort.name == this.facet.options.sortCriteria;
+        });
       }
       if (!this.activeSort) {
         this.activeSort = this.enabledSorts[0];
@@ -109,34 +114,5 @@ export class FacetSort {
         this.enabledSorts = [];
       }
     }
-  }
-
-  public reorderValues(facetValues: FacetValue[]): FacetValue[] {
-    if (this.activeSort.name == 'custom' && this.facet.options.customSort != undefined) {
-      return this.reorderValuesWithCustomOrder(facetValues);
-    } else {
-      return facetValues
-    }
-  }
-
-  private reorderValuesWithCustomOrder(facetValues: FacetValue[]) {
-    var notFoundIndex = facetValues.length;
-    var customSortsLowercase = _.map(this.facet.options.customSort, (customSort) => customSort.toLowerCase());
-    var valueIndexPair = _.map(facetValues, (facetValue) => {
-      var index = _.reduce(customSortsLowercase, (memo, customSort, i) => {
-        if (memo != -1) {
-          return memo;
-        }
-        if (StringUtils.equalsCaseInsensitive(<string>customSort, facetValue.value) || (facetValue.lookupValue != null && StringUtils.equalsCaseInsensitive(<string>customSort, facetValue.lookupValue))) {
-          return i;
-        }
-        return -1;
-      }, -1);
-      index = index == -1 ? ++notFoundIndex : index;
-      return { facetValue: facetValue, index: index };
-    })
-    var sorted = _.sortBy(valueIndexPair, 'index');
-    sorted = this.customSortDirection == 'ascending' ? sorted : sorted.reverse();
-    return _.pluck(sorted, 'facetValue');
   }
 }

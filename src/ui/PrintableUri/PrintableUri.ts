@@ -1,36 +1,50 @@
-import {Component} from '../Base/Component'
-import {IComponentBindings} from '../Base/ComponentBindings'
-import {ComponentOptions} from '../Base/ComponentOptions'
-import {IQueryResult} from '../../rest/QueryResult'
-import {HighlightUtils, StringAndHoles} from '../../utils/HighlightUtils'
-import {Initialization} from '../Base/Initialization'
-import {DeviceUtils} from '../../utils/DeviceUtils'
-import {analyticsActionCauseList} from '../Analytics/AnalyticsActionListMeta'
-import {Utils} from '../../utils/Utils'
-import {$$} from '../../utils/Dom'
+import { Component } from '../Base/Component';
+import { IComponentBindings } from '../Base/ComponentBindings';
+import { ComponentOptions } from '../Base/ComponentOptions';
+import { IQueryResult } from '../../rest/QueryResult';
+import { HighlightUtils, StringAndHoles } from '../../utils/HighlightUtils';
+import { Initialization } from '../Base/Initialization';
+import { analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
+import { Utils } from '../../utils/Utils';
+import { $$ } from '../../utils/Dom';
+import { exportGlobally } from '../../GlobalExports';
+
+import 'styling/_PrintableUri';
 
 export interface IPrintableUriOptions {
 }
 
-/*
- * This component is meant to be used inside a result template to display the URI or path to access a result.
+/**
+ * The PrintableUri component displays the URI, or path, to access a result.
+ *
+ * This component is a result template component (see [Result Templates](https://developers.coveo.com/x/aIGfAQ)).
  */
 export class PrintableUri extends Component {
   static ID = 'PrintableUri';
   static options: IPrintableUriOptions = {};
 
-  static fields = [
-    'parents'
-  ]
+  static doExport = () => {
+    exportGlobally({
+      'PrintableUri': PrintableUri
+    });
+  }
 
   private uri: string;
 
+  /**
+   * Creates a new PrintableUri.
+   * @param element The HTMLElement on which to instantiate the component.
+   * @param options The options for the PrintableUri component.
+   * @param bindings The bindings that the component requires to function normally. If not set, these will be
+   * automatically resolved (with a slower execution time).
+   * @param result The result to associate the component with.
+   */
   constructor(public element: HTMLElement, public options: IPrintableUriOptions, bindings?: IComponentBindings, public result?: IQueryResult) {
     super(element, PrintableUri.ID, bindings);
 
     this.options = ComponentOptions.initComponentOptions(element, PrintableUri, options);
 
-    let parentsXml = result.raw.parents;
+    let parentsXml = Utils.getFieldValue(result, 'parents');
     if (parentsXml) {
       this.renderParentsXml(element, parentsXml);
     } else {
@@ -146,14 +160,19 @@ export class PrintableUri extends Component {
 
   private bindLogOpenDocument(link: HTMLElement) {
     $$(link).on(['mousedown', 'touchend'], (e: Event) => {
+      // jQuery event != standard dom event for mouse events
+      // if we have access to the original event, use that.
+      if ((<any>e).originalEvent) {
+        e = (<any>e).originalEvent;
+      }
       let url = $$(<HTMLElement>e.srcElement).getAttribute('href');
       let title = $$(<HTMLElement>e.srcElement).text();
       this.usageAnalytics.logClickEvent(analyticsActionCauseList.documentOpen, {
         documentURL: url,
         documentTitle: title,
-        author: this.result.raw.author
+        author: Utils.getFieldValue(this.result, 'author')
       }, this.result, this.root);
-    })
+    });
   }
 
 }

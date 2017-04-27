@@ -1,17 +1,38 @@
-.CoveoResultList.coveo-faded { 
+@import "bourbon/bourbon";
+@import "mixins/mediaQuery";
+@import "Variables";
+
+.CoveoResultList.coveo-faded {
 	opacity : 0.5;
 }
 
 .CoveoResultList {
   margin-top: 15px;
+  margin-bottom: 15px;
 
   .coveo-fade-out {
 	opacity : 0.5;
-	@include transition (opacity .5s);
+	@include transition(opacity .5s);
   }
-	
+
   .coveo-wait-animation {
     display: block;
     margin: 10px auto;
+  }
+
+  &.coveo-hidden {
+    display: none;
+  }
+}
+
+.coveo-card-layout-container {
+  @include display(flex);
+  @include flex-wrap(wrap);
+}
+
+@include mediaSelector(800) {
+  .CoveoResultList {
+    margin-left: 10px;
+    margin-right: 10px;
   }
 }

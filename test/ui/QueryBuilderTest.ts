@@ -1,16 +1,16 @@
-/// <reference path="../Test.ts" />
 
-module Coveo {
+import { QueryBuilder } from '../../src/ui/Base/QueryBuilder';
+export function QueryBuilderTest() {
   describe('QueryBuilder', function () {
     var queryBuilder: QueryBuilder;
 
     beforeEach(function () {
       queryBuilder = new QueryBuilder();
-    })
+    });
 
     afterEach(function () {
       queryBuilder = null;
-    })
+    });
 
     it('can addContextValue and addContext', function () {
       queryBuilder.addContextValue('foo', 'bar');
@@ -18,18 +18,18 @@ module Coveo {
       queryBuilder.addContext({ 'a': 'b', 'c': 'd' });
       expect(queryBuilder.build().context['foo']).toBe('bar');
       expect(queryBuilder.build().context['a']).toBe('b');
-    })
+    });
 
     it('can addFieldsToInclude', function () {
       queryBuilder.addFieldsToInclude(['foo', 'bar', 'yo']);
       expect(queryBuilder.build().fieldsToInclude).toEqual(['foo', 'bar', 'yo']);
-    })
+    });
 
     it('can addFieldsToExclude', function () {
       expect(queryBuilder.build().fieldsToExclude).toBeUndefined();
       queryBuilder.addFieldsToExclude(['a', 'b', 'c']);
       expect(queryBuilder.build().fieldsToExclude).toEqual(['a', 'b', 'c']);
-    })
+    });
 
     it('can addRequiredFields', function () {
       queryBuilder.addRequiredFields(['foo', 'bar', 'yo']);
@@ -38,7 +38,7 @@ module Coveo {
       queryBuilder.addFieldsToInclude(['a', 'b', 'c']);
       // Now everything should be there, as fieldsToInclude were added
       expect(queryBuilder.build().fieldsToInclude).toEqual(['foo', 'bar', 'yo', 'a', 'b', 'c']);
-    })
+    });
 
     describe('can compute expression', function () {
 
@@ -47,29 +47,30 @@ module Coveo {
         queryBuilder.advancedExpression.add('advanced');
         queryBuilder.constantExpression.add('constant');
         queryBuilder.disjunctionExpression.add('disjunction');
-      })
+        queryBuilder.longQueryExpression.add('long');
+      });
 
       it('and computeCompleteExpression', function () {
         expect(queryBuilder.computeCompleteExpression()).toBe('((basic) (advanced) (constant)) OR (disjunction)');
-      })
+      });
 
       it('and computeCompleteExpressionParts', function () {
         expect(queryBuilder.computeCompleteExpressionParts().constant).toBe('(constant) OR (disjunction)');
         expect(queryBuilder.computeCompleteExpressionParts().withoutConstant).toBe('((basic) (advanced)) OR (disjunction)');
         expect(queryBuilder.computeCompleteExpressionParts().full).toBe('((basic) (advanced) (constant)) OR (disjunction)');
-      })
+      });
 
       it('and computeCompleteExpressionExcept', function () {
         expect(queryBuilder.computeCompleteExpressionExcept('advanced')).toBe('((basic) (constant)) OR (disjunction)');
         expect(queryBuilder.computeCompleteExpressionExcept('basic')).toBe('((advanced) (constant)) OR (disjunction)');
-      })
+      });
 
       it('and computeCompleteExpressionPartsExcept', function () {
         expect(queryBuilder.computeCompleteExpressionPartsExcept('advanced').constant).toBe('(constant) OR (disjunction)');
         expect(queryBuilder.computeCompleteExpressionPartsExcept('advanced').withoutConstant).toBe('(basic) OR (disjunction)');
         expect(queryBuilder.computeCompleteExpressionPartsExcept('advanced').full).toBe('((basic) (constant)) OR (disjunction)');
-      })
-    })
+      });
+    });
 
     it('can add properties to query', function () {
       queryBuilder.pipeline = 'pipeline';
@@ -104,11 +105,11 @@ module Coveo {
       }];
       queryBuilder.groupByRequests = [{
         field: 'field'
-      }]
+      }];
       queryBuilder.enableDuplicateFiltering = true;
       queryBuilder.context = {
         'foo': 'bar'
-      }
+      };
 
       expect(queryBuilder.build().pipeline).toBe('pipeline');
       expect(queryBuilder.build().timezone).toBe('timezone');
@@ -142,11 +143,11 @@ module Coveo {
       }]);
       expect(queryBuilder.build().groupBy).toEqual([{
         field: 'field'
-      }])
+      }]);
       expect(queryBuilder.build().enableDuplicateFiltering).toBe(true);
       expect(queryBuilder.build().context).toEqual({
         'foo': 'bar'
-      })
-    })
-  })
+      });
+    });
+  });
 }

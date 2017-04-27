@@ -1,43 +1,60 @@
-import {Component} from '../Base/Component';
-import {ComponentOptions} from '../Base/ComponentOptions';
-import {IComponentBindings} from '../Base/ComponentBindings';
-import {SettingsEvents} from '../../events/SettingsEvents';
-import {ISettingsPopulateMenuArgs} from '../Settings/Settings';
-import {IAnalyticsNoMeta, analyticsActionCauseList} from '../Analytics/AnalyticsActionListMeta'
-import {Initialization} from '../Base/Initialization';
-import {l} from '../../strings/Strings';
+import { Component } from '../Base/Component';
+import { ComponentOptions, IFieldOption } from '../Base/ComponentOptions';
+import { IComponentBindings } from '../Base/ComponentBindings';
+import { SettingsEvents } from '../../events/SettingsEvents';
+import { ISettingsPopulateMenuArgs } from '../Settings/Settings';
+import { IAnalyticsNoMeta, analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
+import { Initialization } from '../Base/Initialization';
+import { l } from '../../strings/Strings';
+import * as _ from 'underscore';
+import { exportGlobally } from '../../GlobalExports';
+import 'styling/_ExportToExcel';
 
 export interface IExportToExcelOptions {
-  numberOfResults?: number
+  numberOfResults?: number;
+  fieldsToInclude?: IFieldOption[];
 }
 
 /**
- * This component allows users to export the current search results in a Microsoft Excel (.xlsx) format.
- * It populates the {@link Settings} component's menu.
+ * The ExportToExcel component renders an item in the {@link Settings} menu to allow the end user to export the current
+ * search results to the Microsoft Excel format (.xlsx).
  */
 export class ExportToExcel extends Component {
   static ID = 'ExportToExcel';
+
+  static doExport = () => {
+    exportGlobally({
+      'ExportToExcel': ExportToExcel
+    });
+  }
+
   /**
-   * The options for the component
+   * The options for the ExportToExcel
    * @componentOptions
    */
   static options: IExportToExcelOptions = {
+
     /**
-     * The number of results included in the exported Excel file.<br/>
-     * The default value of <code>100</code> makes the generation and the download of the resulting Excel file
-     * last about 1 second.<br/>
-     * Increasing this value will exponentially increase the time needed to create the Excel file.<br/>
-     * It is not recommended to go above the default index limit of 1000 search results.
+     * Specifies the number of results to include in the resulting Excel file.
+     *
+     * Generating and downloading the Excel file should take a reasonably short amount of time when using the default
+     * value. However, this amount of time will increase exponentially as you set the value higher.
+     *
+     * Consequently, you should avoid setting this value above the default index limit of 1000 search results.
+     *
+     * Default value is `100`. Minimum value is `1`.
      */
-    numberOfResults: ComponentOptions.buildNumberOption({ defaultValue: 100, min: 1 })
+    numberOfResults: ComponentOptions.buildNumberOption({ defaultValue: 100, min: 1 }),
+    fieldsToInclude: ComponentOptions.buildFieldsOption()
   };
 
   /**
-   * Create a new ExportToExcel component
-   * @param element
-   * @param options
-   * @param bindings
-   * @param _window The global Window object (used to download the Excel link)
+   * Creates a new ExportToExcel component.
+   * @param element The HTMLElement on which to instantiate the component.
+   * @param options The options for the ExportToExcel component.
+   * @param bindings The bindings that the component requires to function normally. If not set, these will be
+   * automatically resolved (with a slower execution time).
+   * @param _window The global Window object (used to download the Excel link).
    */
   constructor(public element: HTMLElement, public options: IExportToExcelOptions, public bindings?: IComponentBindings, public _window?: Window) {
     super(element, ExportToExcel.ID, bindings);
@@ -49,18 +66,23 @@ export class ExportToExcel extends Component {
         className: 'coveo-export-to-excel',
         tooltip: l('ExportToExcelDescription'),
         onOpen: () => this.download()
-      })
+      });
     });
   }
 
   /**
-   * Download the Excel representation of the current query
+   * Downloads the Excel representation of the current query.
+   *
+   * Also logs an `exportToExcel` event in the usage analytics.
    */
   public download() {
     let query = this.queryController.getLastQuery();
 
     if (query) {
       query = _.omit(query, 'numberOfResults');
+      if (this.options.fieldsToInclude) {
+        query.fieldsToInclude = <string[]>this.options.fieldsToInclude;
+      }
       this.logger.debug('Performing query following \'Export to Excel\' click');
 
       let endpoint = this.queryController.getEndpoint();

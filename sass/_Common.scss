@@ -1,5 +1,5 @@
-@import "../bin/sass/spritesNew";
-@import "../bin/sass/ModalBox";
+@import "/bin/sass/spritesNew";
+@import "/bin/sass/ModalBox";
 @import "Variables";
 @import "Icons";
 @import "Animations";
@@ -10,9 +10,10 @@
 @import "mixins/login";
 @import "mixins/resultAttachments";
 @import "mixins/breadcrumb";
+@import "mixins/resultsHeaderElement";
 
 @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 200 / 100), only screen and (min-device-pixel-ratio: 2) {
-	@import "../bin/sass/retinaNew";
+	@import "/bin/sass/retinaNew";
 }
 
 @import "Quickview";
@@ -43,11 +44,13 @@
 @import "QueryDuration";
 @import "QuerySummary";
 @import "Result";
+@import "ResultsPerPage";
 @import "ResultAttachments";
 @import "ResultFolding";
 @import "ResultFrame";
 @import "ResultLink";
 @import "ResultList";
+@import "ResultLayout";
 @import "ImageResultList";
 @import "Searchbox";
 @import "SearchButton";
@@ -59,6 +62,7 @@
 @import "Debug";
 @import "TabGroup";
 @import "Text";
+@import "Backdrop";
 @import "Slider";
 @import "EmailActions";
 @import "PreferencesPanel";
@@ -72,15 +76,26 @@
 @import "Triggers";
 @import "UserActions";
 @import "Matrix";
-@import "AttachToCase";
 @import "YouTube";
 @import "ExportToExcel";
 @import "FieldTable";
 @import "ResponsiveTabs";
 @import "ResponsiveFacets";
+@import "ResponsiveRecommendation";
+@import "ResponsiveComponents";
 @import "Recommendation";
+@import "AdvancedSearch";
+@import "CardActionBar";
+@import "CardOverlay";
 
 @import "notifications/FollowItem";
 @import "notifications/FollowQuery";
 @import "notifications/SubscriptionsPanel";
 @import "notifications/SubscriptionsMessages";
+
+@import "vapor/Input";
+@import "vapor/NumericSpinner";
+@import "vapor/Radio";
+@import "vapor/Dropdown";
+@import "vapor/Button";
+@import "vapor/DatePicker";

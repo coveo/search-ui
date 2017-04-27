@@ -1,29 +1,31 @@
-import {ISearchEndpointOptions, ISearchEndpoint, IViewAsHtmlOptions} from './SearchEndpointInterface';
-import {EndpointCaller, IEndpointCallParameters, ISuccessResponse, IErrorResponse} from '../rest/EndpointCaller';
-import {IEndpointCallOptions} from '../rest/SearchEndpointInterface';
-import {IStringMap} from './GenericParam';
-import {Logger} from '../misc/Logger';
-import {Assert} from '../misc/Assert';
-import {IQuery} from '../rest/Query';
-import {IQueryResults} from '../rest/QueryResults';
-import {IQueryResult} from '../rest/QueryResult';
-import {version} from '../misc/Version';
-import {IListFieldValuesRequest} from '../rest/ListFieldValuesRequest';
-import {IIndexFieldValue} from '../rest/FieldValue';
-import {IFieldDescription} from '../rest/FieldDescription';
-import {IListFieldsResult} from '../rest/ListFieldsResult';
-import {IExtension} from '../rest/Extension';
-import {IRatingRequest} from '../rest/RatingRequest';
-import {ITaggingRequest} from '../rest/TaggingRequest';
-import {IRevealQuerySuggestRequest, IRevealQuerySuggestResponse} from '../rest/RevealQuerySuggest';
-import {ISubscriptionRequest, ISubscription} from '../rest/Subscription';
-import {AjaxError} from '../rest/AjaxError';
-import {MissingAuthenticationError} from '../rest/MissingAuthenticationError';
-import {QueryUtils} from '../utils/QueryUtils';
-import {QueryError} from '../rest/QueryError';
-import {Utils} from '../utils/Utils';
-import {Promise} from 'es6-promise';
-import _ = require('underscore');
+import { ISearchEndpointOptions, ISearchEndpoint, IViewAsHtmlOptions } from './SearchEndpointInterface';
+import { EndpointCaller, IEndpointCallParameters, ISuccessResponse, IErrorResponse, IRequestInfo } from '../rest/EndpointCaller';
+import { IEndpointCallOptions } from '../rest/SearchEndpointInterface';
+import { IStringMap } from './GenericParam';
+import { Logger } from '../misc/Logger';
+import { Assert } from '../misc/Assert';
+import { IQuery } from '../rest/Query';
+import { IQueryResults } from '../rest/QueryResults';
+import { IQueryResult } from '../rest/QueryResult';
+import { version } from '../misc/Version';
+import { IListFieldValuesRequest } from '../rest/ListFieldValuesRequest';
+import { IIndexFieldValue } from '../rest/FieldValue';
+import { IFieldDescription } from '../rest/FieldDescription';
+import { IListFieldsResult } from '../rest/ListFieldsResult';
+import { IExtension } from '../rest/Extension';
+import { IRatingRequest } from '../rest/RatingRequest';
+import { ITaggingRequest } from '../rest/TaggingRequest';
+import { IQuerySuggestRequest, IQuerySuggestResponse } from '../rest/QuerySuggest';
+import { ISentryLog } from './SentryLog';
+import { ISubscriptionRequest, ISubscription } from '../rest/Subscription';
+import { AjaxError } from '../rest/AjaxError';
+import { MissingAuthenticationError } from '../rest/MissingAuthenticationError';
+import { QueryUtils } from '../utils/QueryUtils';
+import { QueryError } from '../rest/QueryError';
+import { Utils } from '../utils/Utils';
+import * as _ from 'underscore';
+import { shim } from '../misc/PromisesShim';
+shim();
 
 export class DefaultSearchEndpointOptions implements ISearchEndpointOptions {
   restUri: string;
@@ -39,7 +41,7 @@ export class DefaultSearchEndpointOptions implements ISearchEndpointOptions {
 }
 
 /**
- * A search endpoint allows to execute letious actions against the Coveo Search API and index.<br/>
+ * A search endpoint allows to execute various actions against the Coveo Search API and index.<br/>
  * For example, you can search, list field values, get the quickview content for a document, etc.<br/>
  * Any actions that you execute using this class will not trigger a full query cycle for the Coveo components.<br/>
  * This is because this class will not trigger any query events directly.<br/>
@@ -77,6 +79,22 @@ export class SearchEndpoint implements ISearchEndpoint {
   }
 
   /**
+   * Configure an endpoint that will point to a Coveo Cloud index V2, which contains a set of public sources with no security on them.<br/>
+   * Used for demo purposes and ease of setup.
+   * @param otherOptions A set of additional options to use when configuring this endpoint
+   */
+  static configureSampleEndpointV2(optionsOPtions?: ISearchEndpointOptions) {
+    SearchEndpoint.endpoints['default'] = new SearchEndpoint(_.extend({
+      restUri: 'https://platform.cloud.coveo.com/rest/search',
+      accessToken: 'xx564559b1-0045-48e1-953c-3addd1ee4457',
+      queryStringArguments: {
+        organizationId: 'searchuisamples',
+        viewAllContent: 1
+      }
+    }));
+  }
+
+  /**
    * Configure an endpoint to a Coveo Cloud index.
    * @param organization The organization id of your Coveo cloud index
    * @param token The token to use to execute query. If null, you will most probably need to login when querying.
@@ -92,7 +110,18 @@ export class SearchEndpoint implements ISearchEndpoint {
 
     let merged = SearchEndpoint.mergeConfigOptions(options, otherOptions);
 
-    SearchEndpoint.endpoints['default'] = new SearchEndpoint(SearchEndpoint.removeUndefinedConfigOption(merged))
+    SearchEndpoint.endpoints['default'] = new SearchEndpoint(SearchEndpoint.removeUndefinedConfigOption(merged));
+  }
+
+  /**
+   * Configure an endpoint to a Coveo Cloud index, in the V2 platform.
+   * @param organization The organization id of your Coveo cloud index
+   * @param token The token to use to execute query. If null, you will most probably need to login when querying.
+   * @param uri The uri of your cloud Search API. By default, will point to the production environment
+   * @param otherOptions A set of additional options to use when configuring this endpoint
+   */
+  static configureCloudV2Endpoint(organization?: string, token?: string, uri: string = 'https://platform.cloud.coveo.com/rest/search', otherOptions?: ISearchEndpointOptions) {
+    return SearchEndpoint.configureCloudEndpoint(organization, token, uri, otherOptions);
   }
 
   /**
@@ -154,7 +183,7 @@ export class SearchEndpoint implements ISearchEndpoint {
     }
     this.onUnload = () => {
       this.handleUnload();
-    }
+    };
     window.addEventListener('beforeunload', this.onUnload);
     this.logger = new Logger(this);
     this.createEndpointCaller();
@@ -162,6 +191,16 @@ export class SearchEndpoint implements ISearchEndpoint {
 
   public reset() {
     this.createEndpointCaller();
+  }
+
+  /**
+   * Set a function which will allow external code to modify all endpoint call parameters before they are sent by the browser.
+   *
+   * Used in very specific scenario where the network infrastructure require special request headers to be added or removed, for example.
+   * @param requestModifier
+   */
+  public setRequestModifier(requestModifier: (params: IRequestInfo<any>) => IRequestInfo<any>) {
+    this.caller.options.requestModifier = requestModifier;
   }
 
   /**
@@ -195,7 +234,7 @@ export class SearchEndpoint implements ISearchEndpoint {
     let queryString = this.buildBaseQueryString(callOptions);
     callParams.queryString = callParams.queryString.concat(queryString);
 
-    callParams.url += provider + '?'
+    callParams.url += provider + '?';
 
     if (Utils.isNonEmptyString(returnUri)) {
       callParams.url += 'redirectUri=' + encodeURIComponent(returnUri) + '&';
@@ -232,7 +271,7 @@ export class SearchEndpoint implements ISearchEndpoint {
 
     this.logger.info('Performing REST query', query);
 
-    return this.performOneCall(callParams).then((results?: IQueryResults) => {
+    return this.performOneCall(callParams, callOptions).then((results?: IQueryResults) => {
       this.logger.info('REST query successful', results, query);
 
       // Version check
@@ -253,7 +292,7 @@ export class SearchEndpoint implements ISearchEndpoint {
       QueryUtils.setIndexAndUidOnQueryResults(query, results, results.searchUid, results.pipeline, results.splitTestRun);
       QueryUtils.setTermsToHighlightOnQueryResults(query, results);
       return results;
-    })
+    });
   }
   /**
    * Get a link/uri to download a set of results, for a given query, to an xlsx format.<br/>
@@ -309,7 +348,7 @@ export class SearchEndpoint implements ISearchEndpoint {
     return this.performOneCall(callParams).then((results) => {
       this.logger.info('REST query successful', results, documentUniqueId);
       return results;
-    })
+    });
   }
 
   /**
@@ -372,7 +411,7 @@ export class SearchEndpoint implements ISearchEndpoint {
 
     return this.performOneCall<{ content: string, duration: number }>(callParams)
       .then((data) => {
-        return data.content
+        return data.content;
       });
   }
 
@@ -414,7 +453,7 @@ export class SearchEndpoint implements ISearchEndpoint {
 
     queryString = this.buildViewAsHtmlQueryString(documentUniqueID, callOptions);
     callParams.queryString = callParams.queryString.concat(queryString);
-
+    callParams.queryString = _.uniq(callParams.queryString);
     return callParams.url + '?' + callParams.queryString.join('&');
   }
 
@@ -428,7 +467,7 @@ export class SearchEndpoint implements ISearchEndpoint {
       .then((data) => {
         this.logger.info('REST list field values successful', data.values, request);
         return data.values;
-      })
+      });
   }
 
   /**
@@ -451,8 +490,8 @@ export class SearchEndpoint implements ISearchEndpoint {
     return this.performOneCall<any>(callParams)
       .then((data) => {
         this.logger.info('REST list field values successful', data.values, request);
-        return data.values
-      })
+        return data.values;
+      });
   }
 
   /**
@@ -469,7 +508,7 @@ export class SearchEndpoint implements ISearchEndpoint {
 
     return this.performOneCall<IListFieldsResult>(callParams).then((data) => {
       return data.fields;
-    })
+    });
   }
 
   /**
@@ -484,7 +523,7 @@ export class SearchEndpoint implements ISearchEndpoint {
   public extensions(callOptions?: IEndpointCallOptions, callParams?: IEndpointCallParameters): Promise<IExtension[]> {
     this.logger.info('Listing extensions');
 
-    return this.performOneCall<IExtension[]>(callParams)
+    return this.performOneCall<IExtension[]>(callParams);
   }
 
   /**
@@ -504,7 +543,7 @@ export class SearchEndpoint implements ISearchEndpoint {
 
     return this.performOneCall<any>(callParams).then(() => {
       return true;
-    })
+    });
   }
 
   /**
@@ -524,25 +563,29 @@ export class SearchEndpoint implements ISearchEndpoint {
 
     return this.performOneCall<any>(callParams).then(() => {
       return true;
-    })
+    });
   }
 
   /**
-   * Return a list of reveal query suggestions, based on the given request
+   * Returns a list of query suggestions, based on the given request
    * @param request query and number of suggestions to return
    * @param callOptions Additional set of options to use for this call.
    * @param callParams Options injected by the applied decorators.
-   * @returns {Promise<IRevealQuerySuggestResponse>}
+   * @returns {Promise<IQuerySuggestResponse>}
    */
   @path('/querySuggest')
   @method('GET')
   @responseType('text')
-  public getRevealQuerySuggest(request: IRevealQuerySuggestRequest, callOptions?: IEndpointCallOptions, callParams?: IEndpointCallParameters): Promise<IRevealQuerySuggestResponse> {
-    this.logger.info('Get Reveal Query Suggest', request);
-
+  public getQuerySuggest(request: IQuerySuggestRequest, callOptions?: IEndpointCallOptions, callParams?: IEndpointCallParameters): Promise<IQuerySuggestResponse> {
+    this.logger.info('Get Query Suggest', request);
     callParams.requestData = request;
+    return this.performOneCall<IQuerySuggestResponse>(callParams);
+  }
 
-    return this.performOneCall<IRevealQuerySuggestResponse>(callParams);
+  // This is a non documented method to ensure backward compatibility for the old query suggest call.
+  // It simply calls the "real" official and documented method.
+  public getRevealQuerySuggest(request: IQuerySuggestRequest, callOptions?: IEndpointCallOptions, callParams?: IEndpointCallParameters): Promise<IQuerySuggestResponse> {
+    return this.getQuerySuggest(request, callOptions, callParams);
   }
 
   /**
@@ -582,8 +625,8 @@ export class SearchEndpoint implements ISearchEndpoint {
   public listSubscriptions(page: number, callOptions?: IEndpointCallOptions, callParams?: IEndpointCallParameters) {
     if (this.options.isGuestUser) {
       return new Promise((resolve, reject) => {
-        reject()
-      })
+        reject();
+      });
     }
     if (this.currentListSubscriptions == null) {
       callParams.queryString.push('page=' + (page || 0));
@@ -596,7 +639,7 @@ export class SearchEndpoint implements ISearchEndpoint {
         // Trap 503 error, as the listSubscription call is called on every page initialization
         // to check for current subscriptions. By default, the search alert service is not enabled for most organization
         // Don't want to pollute the console with un-needed noise and confusion
-        if (e.status != 503) {
+        if (e.status != 403) {
           throw e;
         }
       });
@@ -644,6 +687,19 @@ export class SearchEndpoint implements ISearchEndpoint {
     return this.performOneCall<ISubscription>(callParams);
   }
 
+  @path('/log')
+  @method('POST')
+  public logError(sentryLog: ISentryLog, callOptions?: IEndpointCallOptions, callParams?: IEndpointCallParameters) {
+    callParams.requestData = sentryLog;
+    return this.performOneCall(callParams, callOptions)
+      .then(() => {
+        return true;
+      })
+      .catch(() => {
+        return false;
+      });
+  }
+
   public nuke() {
     window.removeEventListener('beforeunload', this.onUnload);
   }
@@ -687,6 +743,8 @@ export class SearchEndpoint implements ISearchEndpoint {
     return uri;
   }
 
+  // see https://github.com/palantir/tslint/issues/1421
+  // tslint:disable-next-line:no-unused-variable
   private buildAccessToken(tokenKey: string): string[] {
     let queryString: string[] = [];
 
@@ -702,16 +760,11 @@ export class SearchEndpoint implements ISearchEndpoint {
     let queryString: string[] = [];
 
     for (let name in this.options.queryStringArguments) {
-      // The mapping workgroup --> organizationId is necessary for backwards compatibility
-      if (name == 'workgroup') {
-        queryString.push('organizationId' + '=' + encodeURIComponent(this.options.queryStringArguments[name]));
-      } else {
-        queryString.push(name + '=' + encodeURIComponent(this.options.queryStringArguments[name]));
-      }
+      queryString.push(name + '=' + encodeURIComponent(this.options.queryStringArguments[name]));
     }
 
     if (callOptions && _.isArray(callOptions.authentication) && callOptions.authentication.length != 0) {
-      queryString.push('authentication=' + callOptions.authentication.join(','))
+      queryString.push('authentication=' + callOptions.authentication.join(','));
     }
 
     return queryString;
@@ -732,6 +785,11 @@ export class SearchEndpoint implements ISearchEndpoint {
       _.each(queryObject.context, (value, key) => {
         queryString.push('context[' + key + ']=' + encodeURIComponent(value));
       });
+
+      if (queryObject.fieldsToInclude) {
+        queryString.push(`fieldsToInclude=[${_.map(queryObject.fieldsToInclude, (field) => '"' + encodeURIComponent(field.replace('@', '')) + '"').join(',')}]`);
+      }
+
     } else if (query) {
       queryString.push('q=' + encodeURIComponent(query));
     }
@@ -741,7 +799,7 @@ export class SearchEndpoint implements ISearchEndpoint {
 
   private buildViewAsHtmlQueryString(uniqueId: string, callOptions?: IViewAsHtmlOptions): string[] {
     callOptions = _.extend({}, callOptions);
-    let queryString: string[] = [];
+    let queryString: string[] = this.buildBaseQueryString(callOptions);
     queryString.push('uniqueId=' + encodeURIComponent(uniqueId));
 
     if (callOptions.query || callOptions.queryObject) {
@@ -749,34 +807,38 @@ export class SearchEndpoint implements ISearchEndpoint {
     }
 
     if (callOptions.requestedOutputSize) {
-      queryString.push('requestedOutputSize=' + encodeURIComponent(callOptions.requestedOutputSize.toString()))
+      queryString.push('requestedOutputSize=' + encodeURIComponent(callOptions.requestedOutputSize.toString()));
     }
 
     if (callOptions.contentType) {
-      queryString.push('contentType=' + encodeURIComponent(callOptions.contentType))
+      queryString.push('contentType=' + encodeURIComponent(callOptions.contentType));
     }
-
     return queryString;
   }
 
   private performOneCall<T>(params: IEndpointCallParameters, callOptions?: IEndpointCallOptions, autoRenewToken = true): Promise<T> {
     let queryString = this.buildBaseQueryString(callOptions);
     params.queryString = params.queryString.concat(queryString);
+    params.queryString = _.uniq(params.queryString);
+
+    const startTime = new Date();
     return this.caller.call(params)
       .then((response?: ISuccessResponse<T>) => {
-        if (response.data && (<any>response.data).clientDuration) {
-          (<any>response.data).clientDuration = response.duration;
+        if (response.data == null) {
+          response.data = <any>{};
         }
-        return response.data
+        const timeToExecute = new Date().getTime() - startTime.getTime();
+        (<any>response.data).clientDuration = timeToExecute;
+        (<any>response.data).duration = response.duration || timeToExecute;
+        return response.data;
       }).catch((error?: IErrorResponse) => {
         if (autoRenewToken && this.canRenewAccessToken() && this.isAccessTokenExpiredStatus(error.statusCode)) {
-          this.renewAccessToken()
-            .then(() => {
-              return this.performOneCall(params, callOptions, autoRenewToken);
-            })
+          this.renewAccessToken().then(() => {
+            return this.performOneCall(params, callOptions, autoRenewToken);
+          })
             .catch(() => {
               return Promise.reject(this.handleErrorResponse(error));
-            })
+            });
         } else if (error.statusCode == 0 && this.isRedirecting) {
           // The page is getting redirected
           // Set timeout on return with empty string, since it does not really matter
@@ -786,16 +848,18 @@ export class SearchEndpoint implements ISearchEndpoint {
         } else {
           return Promise.reject(this.handleErrorResponse(error));
         }
-      })
+      });
   }
 
   private handleErrorResponse(errorResponse: IErrorResponse): Error {
     if (this.isMissingAuthenticationProviderStatus(errorResponse.statusCode)) {
-      return new MissingAuthenticationError(errorResponse.data['provider'])
+      return new MissingAuthenticationError(errorResponse.data['provider']);
+    } else if (errorResponse.data && errorResponse.data.message && errorResponse.data.type) {
+      return new QueryError(errorResponse);
     } else if (errorResponse.data && errorResponse.data.message) {
-      return new QueryError(errorResponse)
+      return new AjaxError(`Request Error : ${errorResponse.data.message}`, errorResponse.statusCode);
     } else {
-      return new AjaxError('Request Error', errorResponse.statusCode)
+      return new AjaxError('Request Error', errorResponse.statusCode);
     }
   }
 
@@ -803,25 +867,17 @@ export class SearchEndpoint implements ISearchEndpoint {
     return Utils.isNonEmptyString(this.options.accessToken) && _.isFunction(this.options.renewAccessToken);
   }
 
-  private renewAccessToken(): Promise<string> | Promise<any> {
+  private renewAccessToken(): Promise<string> {
     this.logger.info('Renewing expired access token');
     return this.options.renewAccessToken().then((token: string) => {
       Assert.isNonEmptyString(token);
       this.options.accessToken = token;
       this.createEndpointCaller();
       return token;
-    })
-      .catch((e: any) => {
-        this.logger.error('Failed to renew access token', e);
-        return e;
-      })
-  }
-
-  private addTrailingSlash(uri: string) {
-    if (!this.hasTrailingSlash(uri)) {
-      uri += '/';
-    }
-    return uri;
+    }).catch((e: string) => {
+      this.logger.error('Failed to renew access token', e);
+      return e;
+    });
   }
 
   private removeTrailingSlash(uri: string) {
@@ -845,24 +901,19 @@ export class SearchEndpoint implements ISearchEndpoint {
 }
 
 
-/**
- * It's taken for granted that methods using decorators have :
- * {@link IEndpointCallOptions} as their second to last parameter
- * {@link IEndpointCallParameters} as their last parameter
- * The default parameters for each member of the injected {@link IEndpointCallParameters} are the following:
- * url: '',
- * queryString: [],
- * requestData: {},
- * requestDataType: undefined,
- * method: '',
- * responseType: '',
- * errorsAsSuccess: false
- */
+// It's taken for granted that methods using decorators have :
+// IEndpointCallOptions as their second to last parameter
+// IEndpointCallParameters as their last parameter
+// The default parameters for each member of the injected {@link IEndpointCallParameters} are the following:
+// url: '',
+// queryString: [],
+// requestData: {},
+// requestDataType: undefined,
+// method: '',
+// responseType: '',
+// errorsAsSuccess: false
 
-/**
- * Add the base url
- * @param path The path to append to the url
- */
+
 function path(path: string) {
   return function (target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
     let originalMethod = descriptor.value;
@@ -888,13 +939,9 @@ function path(path: string) {
     };
 
     return descriptor;
-  }
+  };
 }
 
-/**
- * Add the alert url
- * @param path The path to append to the url
- */
 function alertsPath(path: string) {
   return function (target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
     let originalMethod = descriptor.value;
@@ -920,13 +967,9 @@ function alertsPath(path: string) {
     };
 
     return descriptor;
-  }
+  };
 }
 
-/**
- * Set the request data type
- * @param type The type to set
- */
 function requestDataType(type: string) {
   return function (target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
     let originalMethod = descriptor.value;
@@ -952,13 +995,9 @@ function requestDataType(type: string) {
     };
 
     return descriptor;
-  }
+  };
 }
 
-/**
- * Set the request data type
- * @param met The type to set
- */
 function method(met: string) {
   return function (target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
     let originalMethod = descriptor.value;
@@ -983,13 +1022,9 @@ function method(met: string) {
     };
 
     return descriptor;
-  }
+  };
 }
 
-/**
- * Set the response type
- * @param resp The response type to set
- */
 function responseType(resp: string) {
   return function (target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
     let originalMethod = descriptor.value;
@@ -1014,12 +1049,9 @@ function responseType(resp: string) {
     };
 
     return descriptor;
-  }
+  };
 }
 
-/**
- * Add the accessToken to the query string arguments
- */
 function accessTokenInUrl(tokenKey: string = 'access_token') {
   return function (target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
     let originalMethod = descriptor.value;
@@ -1045,5 +1077,5 @@ function accessTokenInUrl(tokenKey: string = 'access_token') {
     };
 
     return descriptor;
-  }
+  };
 }
