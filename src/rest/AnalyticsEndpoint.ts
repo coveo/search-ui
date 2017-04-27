@@ -1,20 +1,19 @@
-import {Logger} from '../misc/Logger';
-import {EndpointCaller, IEndpointCallerOptions} from '../rest/EndpointCaller';
-import {IAPIAnalyticsVisitResponseRest} from './APIAnalyticsVisitResponse';
-import {IErrorResponse} from '../rest/EndpointCaller'
-import {IAPIAnalyticsSearchEventsResponse} from '../rest/APIAnalyticsSearchEventsResponse';
-import {ISearchEvent} from '../rest/SearchEvent';
-import {IClickEvent} from '../rest/ClickEvent';
-import {IAPIAnalyticsEventResponse} from './APIAnalyticsEventResponse';
-import {Assert} from '../misc/Assert';
-import {ICustomEvent} from './CustomEvent';
-import {ITopQueries} from './TopQueries';
-import {QueryUtils} from '../utils/QueryUtils';
-import {Cookie} from '../utils/CookieUtils';
-import {ISuccessResponse} from '../rest/EndpointCaller';
-import {IStringMap} from '../rest/GenericParam';
-import {Promise} from 'es6-promise';
-import _ = require('underscore');
+import { Logger } from '../misc/Logger';
+import { EndpointCaller, IEndpointCallerOptions } from '../rest/EndpointCaller';
+import { IAPIAnalyticsVisitResponseRest } from './APIAnalyticsVisitResponse';
+import { IErrorResponse } from '../rest/EndpointCaller';
+import { IAPIAnalyticsSearchEventsResponse } from '../rest/APIAnalyticsSearchEventsResponse';
+import { ISearchEvent } from '../rest/SearchEvent';
+import { IClickEvent } from '../rest/ClickEvent';
+import { IAPIAnalyticsEventResponse } from './APIAnalyticsEventResponse';
+import { Assert } from '../misc/Assert';
+import { ICustomEvent } from './CustomEvent';
+import { ITopQueries } from './TopQueries';
+import { QueryUtils } from '../utils/QueryUtils';
+import { Cookie } from '../utils/CookieUtils';
+import { ISuccessResponse } from '../rest/EndpointCaller';
+import { IStringMap } from '../rest/GenericParam';
+import * as _ from 'underscore';
 
 export interface IAnalyticsEndpointOptions {
   token: string;
@@ -41,7 +40,7 @@ export class AnalyticsEndpoint {
 
     var endpointCallerOptions: IEndpointCallerOptions = {
       accessToken: (this.options.token && this.options.token != '') ? this.options.token : null
-    }
+    };
     this.endpointCaller = new EndpointCaller(endpointCallerOptions);
     this.organization = options.organization;
   }
@@ -65,13 +64,13 @@ export class AnalyticsEndpoint {
             reject(response);
           });
       }
-    })
+    });
   }
 
   public sendSearchEvents(searchEvents: ISearchEvent[]): Promise<IAPIAnalyticsSearchEventsResponse> {
     if (searchEvents.length > 0) {
       this.logger.info('Logging analytics search events', searchEvents);
-      return this.sendToService<ISearchEvent[], IAPIAnalyticsSearchEventsResponse>(searchEvents, 'searches', 'searchEvents')
+      return this.sendToService<ISearchEvent[], IAPIAnalyticsSearchEventsResponse>(searchEvents, 'searches', 'searchEvents');
     }
   }
 
@@ -122,7 +121,7 @@ export class AnalyticsEndpoint {
       return AnalyticsEndpoint.pendingRequest;
     } else {
       return AnalyticsEndpoint.pendingRequest.finally(() => {
-        return this.sendToService<D, R>(data, path, paramName)
+        return this.sendToService<D, R>(data, path, paramName);
       });
     }
   }
@@ -137,8 +136,8 @@ export class AnalyticsEndpoint {
       responseType: 'json',
       url: url
     }).then((res: ISuccessResponse<T>) => {
-      return res.data
-    })
+      return res.data;
+    });
   }
 
   private handleAnalyticsEventResponse(response: IAPIAnalyticsEventResponse | IAPIAnalyticsSearchEventsResponse) {

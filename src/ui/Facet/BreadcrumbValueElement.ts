@@ -1,11 +1,13 @@
 /// <reference path="Facet.ts" />
 
-import {FacetValue} from './FacetValues';
-import {Facet} from './Facet';
-import {Assert} from '../../misc/Assert';
-import {DeviceUtils} from '../../utils/DeviceUtils';
-import {IAnalyticsFacetMeta, analyticsActionCauseList} from '../Analytics/AnalyticsActionListMeta';
-import {$$, Dom} from '../../utils/Dom';
+import { FacetValue } from './FacetValues';
+import { Facet } from './Facet';
+import { Assert } from '../../misc/Assert';
+import { DeviceUtils } from '../../utils/DeviceUtils';
+import { IAnalyticsFacetMeta, analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
+import { $$, Dom } from '../../utils/Dom';
+import * as _ from 'underscore';
+import 'styling/_FacetBreadcrumb';
 
 export interface IBreadcrumbValueElementKlass {
   new (facet: Facet, facetValue: FacetValue): BreadcrumbValueElement;
@@ -15,7 +17,7 @@ export class BreadcrumbValueElement {
   constructor(public facet: Facet, public facetValue: FacetValue) {
   }
 
-  public build(tooltip = true) {
+  public build(tooltip = true): Dom {
     Assert.exists(this.facetValue);
 
     var elem = DeviceUtils.isMobileDevice() ? $$('div') : $$('span');
@@ -50,7 +52,7 @@ export class BreadcrumbValueElement {
           facetTitle: this.facet.options.title
         }));
       }
-    })
+    });
 
     return elem;
   }

@@ -1,10 +1,10 @@
 /// <reference path="Facet.ts" />
 
-import {Facet} from './Facet';
-import {FacetValue} from './FacetValues';
-import {QueryEvents} from '../../events/QueryEvents';
-import {$$} from '../../utils/Dom';
-import {ValueElement} from './ValueElement';
+import { Facet } from './Facet';
+import { FacetValue } from './FacetValues';
+import { QueryEvents } from '../../events/QueryEvents';
+import { $$ } from '../../utils/Dom';
+import { ValueElement } from './ValueElement';
 
 
 export interface IFacetValueElementKlass {
@@ -19,7 +19,7 @@ export class FacetValueElement extends ValueElement {
     // The analytics code expect a first query to be made to link the user action with a query UID
     $$(facet.root).one(QueryEvents.querySuccess, () => {
       this.firstQuery = false;
-    })
+    });
   }
 
   public bindEvent() {

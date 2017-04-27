@@ -1,6 +1,6 @@
-import {Logger} from '../misc/Logger';
-import {Utils} from '../utils/Utils';
-import _ = require('underscore');
+import { Logger } from '../misc/Logger';
+import { Utils } from '../utils/Utils';
+import * as _ from 'underscore';
 
 export class Assert {
   private static logger = new Logger('Assert');
@@ -17,7 +17,7 @@ export class Assert {
     } else {
       throw new PreconditionFailedException('Assertion Failed!');
     }
-  };
+  }
 
   static fail(message?: string) {
     Assert.failureHandler(message);
@@ -88,8 +88,9 @@ export class Assert {
   }
 }
 
-export class PreconditionFailedException {
+export class PreconditionFailedException extends Error {
   constructor(public message: string) {
+    super(message);
   }
 
   toString() {

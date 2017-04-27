@@ -1,10 +1,10 @@
-import {Assert} from '../../misc/Assert';
-import {Utils} from '../../utils/Utils';
-import {IGroupByValue} from '../../rest/GroupByValue';
-import {IIndexFieldValue} from '../../rest/FieldValue';
-import {IGroupByResult} from '../../rest/GroupByResult';
-
-declare const Globalize;
+import { Assert } from '../../misc/Assert';
+import { Utils } from '../../utils/Utils';
+import { IGroupByValue } from '../../rest/GroupByValue';
+import { IIndexFieldValue } from '../../rest/FieldValue';
+import { IGroupByResult } from '../../rest/GroupByResult';
+import * as Globalize from 'globalize';
+import * as _ from 'underscore';
 
 /**
  * A class which holds information and operation available on a single facet value returned by a {@link IGroupByRequest}.<br/>
@@ -78,7 +78,7 @@ export class FacetValue {
         return FacetValue.createFromFieldValue(value);
       }
     } else {
-      throw new Error('Can\'t create value from ' + value)
+      throw new Error('Can\'t create value from ' + value);
     }
   }
 
@@ -138,7 +138,7 @@ export class FacetValues {
 
   remove(value: string) {
     Assert.isNonEmptyString(value);
-    value = value
+    value = value;
     this.values = _.filter(this.values, (elem: FacetValue) => elem.value != value);
   }
 
@@ -191,11 +191,6 @@ export class FacetValues {
       var myValue = this.get(otherValue.value);
       if (Utils.exists(myValue)) {
         myValue.selected = true;
-      } else if (otherValue.occurrences != 0) {
-        var occurrences = otherValue.occurrences;
-        var clone = otherValue.cloneWithZeroOccurrences();
-        clone.occurrences = occurrences;
-        this.values.push(clone);
       } else {
         this.values.push(otherValue.cloneWithZeroOccurrences());
       }

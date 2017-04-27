@@ -1,3 +1,10 @@
+@import "Variables";
+
 .CoveoResultLink, a.CoveoResultLink, .CoveoResult a.CoveoResultLink {
   @include clickableVibrant();
+  word-wrap: break-word;
+}
+
+.coveo-card-overlay a.CoveoResultLink {
+  @include clickableVibrant($dark-background: true);
 }

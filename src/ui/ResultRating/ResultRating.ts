@@ -1,23 +1,40 @@
-import {Component} from '../Base/Component'
-import {IComponentBindings} from '../Base/ComponentBindings'
-import {ComponentOptions} from '../Base/ComponentOptions'
-import {IQueryResult} from '../../rest/QueryResult'
-import {$$, Dom} from '../../utils/Dom'
-import {Initialization} from '../Base/Initialization';
-import {Utils} from '../../utils/Utils'
-import {IRatingRequest} from '../../rest/RatingRequest';
+import { Component } from '../Base/Component';
+import { IComponentBindings } from '../Base/ComponentBindings';
+import { ComponentOptions } from '../Base/ComponentOptions';
+import { IQueryResult } from '../../rest/QueryResult';
+import { $$, Dom } from '../../utils/Dom';
+import { Initialization } from '../Base/Initialization';
+import { Utils } from '../../utils/Utils';
+import { IRatingRequest } from '../../rest/RatingRequest';
+import { exportGlobally } from '../../GlobalExports';
 
 export enum RatingValues { Undefined, Lowest, Low, Average, Good, Best };
 
 export interface IResultRatingOptions {
 }
 /**
- * Component used to render document rating. Allows search users to rate a result with a 5-star representation.
- * Interactive rating is possible if collaborative rating is enabled.
+ * The ResultRating component renders a 5-star rating widget. Interactive rating is possible if
+ * {@link SearchInterface.options.enableCollaborativeRating} is `true`.
+ *
+ * This component is a result template component (see [Result Templates](https://developers.coveo.com/x/aIGfAQ)).
  */
 export class ResultRating extends Component {
   static ID = 'ResultRating';
 
+  static doExport = () => {
+    exportGlobally({
+      'ResultRating': ResultRating
+    });
+  }
+
+  /**
+   * Creates a new ResultRating component.
+   * @param element The HTMLElement on which to instantiate the component.
+   * @param options The options for the ResultRating component.
+   * @param bindings The bindings that the component requires to function normally. If not set, these will be
+   * automatically resolved (with a slower execution time).
+   * @param result The result to associate the component with.
+   */
   constructor(public element: HTMLElement, public options?: IResultRatingOptions, public bindings?: IComponentBindings, public result?: IQueryResult) {
     super(element, ResultRating.ID, bindings);
     this.options = ComponentOptions.initComponentOptions(element, ResultRating, options);
@@ -72,9 +89,17 @@ export class ResultRating extends Component {
   }
 
   /**
-   * Rates a document with the specified rating value.
-   * @param rating The rating assigned to the document. Specified using the enum RatingValues.
-   * Possible values are: Undefined, Lowest, Low, Average, Good and Best.
+   * Rates a document using the the specified `rating` value.
+   * @param rating The rating to assign to the document.
+   *
+   * The possible values are:
+   *
+   * - `0`: renders no star.
+   * - `1`: renders 1 star.
+   * - `2`: renders 2 stars.
+   * - `3`: renders 3 stars.
+   * - `4`: renders 4 stars.
+   * - `5`: renders 5 stars.
    */
   public rateDocument(rating: RatingValues) {
     let request: IRatingRequest = {

@@ -1,9 +1,9 @@
-import {Options} from '../misc/Options';
-import {Utils} from './Utils';
-import {l} from '../strings/Strings';
-import {TimeSpan} from './TimeSpanUtils';
-
-declare var Globalize;
+import { Options } from '../misc/Options';
+import { Utils } from './Utils';
+import { l } from '../strings/Strings';
+import { TimeSpan } from './TimeSpanUtils';
+import * as Globalize from 'globalize';
+import * as _ from 'underscore';
 
 export interface IDateToStringOptions {
   now?: Date;
@@ -43,6 +43,17 @@ export class DateUtils {
     } else {
       return undefined;
     }
+  }
+
+  static dateForQuery(date: Date): string {
+    return date.getFullYear() + '/' + DateUtils.padNumber((date.getMonth() + 1).toString()) + '/' + DateUtils.padNumber(date.getDate().toString());
+  }
+
+  private static padNumber(num: string, length: number = 2): string {
+    while (num.length < length) {
+      num = '0' + num;
+    }
+    return num;
   }
 
   static keepOnlyDatePart(date: Date): Date {
@@ -138,7 +149,7 @@ export class DateUtils {
 
   static isValid(date: any) {
     if (date instanceof Date) {
-      return !isNaN(date.getTime())
+      return !isNaN(date.getTime());
     }
     return false;
   }
@@ -175,5 +186,5 @@ if (!Date.prototype.toISOString) {
         '.' + (this.getUTCMilliseconds() / 1000).toFixed(3).slice(2, 5) +
         'Z';
     };
-  } ());
+  }());
 }

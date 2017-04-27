@@ -1,4 +1,6 @@
-@import "../bin/sass/GeneratedIconsNew";
+@import "Variables";
+@import "../bin/sass/_GeneratedIconsNew.scss";
+@import "../node_modules/@salesforce-ux/design-system/scss/design-tokens";
 
 .coveo-icon {
   @include GeneratedIcons();
@@ -33,6 +35,9 @@
   .coveo-icon-caption-overlay {
     display: block;
   }
+  &.coveo-small .coveo-icon-caption-overlay {
+    display: none;
+  }
 }
 
 .CoveoIcon, .CoveoIcon.coveo-icon, .CoveoIcon.coveo-icon.filetype, .CoveoIcon.coveo-icon.objecttype, .CoveoIcon.coveo-icon.sysfiletype {
@@ -55,5 +60,17 @@
         text-decoration: none;
       }
     }
+  }
+}
+
+@each $name, $color in $bg-standard-map {
+  $id: $name;
+  // Wtf... The only one not following the standard format.
+  @if $id == 'task-2' {
+    $id: 'task2';
+  }
+  .coveo-sprites-salesforce-standard-#{$id}, .coveo-sprites-salesforce-standard-#{$id}-small {
+    background-color: $color;
+    border-radius: $default-border-radius;
   }
 }

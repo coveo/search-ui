@@ -1,5 +1,10 @@
-/// <reference path="../Test.ts" />
-module Coveo {
+import * as Mock from '../MockEnvironment';
+import { Badge } from '../../src/ui/Badge/Badge';
+import { IBadgeOptions } from '../../src/ui/Badge/Badge';
+import { FakeResults } from '../Fake';
+import { $$ } from '../../src/utils/Dom';
+
+export function BadgeTest() {
   describe('Badge', function () {
     let test: Mock.IBasicComponentSetup<Badge>;
 
@@ -19,12 +24,12 @@ module Coveo {
             }
           }
         }
-      }, FakeResults.createFakeResult())
-    })
+      }, FakeResults.createFakeResult());
+    });
 
     afterEach(function () {
       test = null;
-    })
+    });
 
     describe('exposes options', function () {
       describe('colors', function () {
@@ -34,7 +39,7 @@ module Coveo {
               element: $$('span', { 'data-colors': 'I am quite invalid.' }).el
             });
           }).toThrow();
-        })
+        });
 
         it('should parse the colors using the old format properly', function () {
           test = Mock.advancedResultComponentSetup<Badge>(Badge, FakeResults.createFakeResult(), <Mock.AdvancedComponentSetupOptions>{
@@ -45,7 +50,7 @@ module Coveo {
           expect(test.cmp.options.colors.values['foo'].icon).toBe('green');
           expect(test.cmp.options.colors.values['bar'].icon).toBe('#123456');
           expect(test.cmp.options.colors.values['foobar'].icon).toBe('#911');
-        })
+        });
 
         it('should parse the colors using the new JSON format properly', function () {
           let jsonColors = {
@@ -61,21 +66,21 @@ module Coveo {
                 text: '#123'
               }
             }
-          }
+          };
           test = Mock.advancedResultComponentSetup<Badge>(Badge, FakeResults.createFakeResult(), <Mock.AdvancedComponentSetupOptions>{
             element: $$('span', { 'data-colors': JSON.stringify(jsonColors) }).el
           });
           expect(test.cmp.options.colors).toEqual(jsonColors);
-        })
-      })
-    })
+        });
+      });
+    });
 
     it('getColor should return the appropriate color corresponding to the passed field value', function () {
       expect(test.cmp.getColor()).toEqual({ icon: '#123', text: '#123456' });
       expect(test.cmp.getColor('foo')).toEqual({ icon: 'pink', text: 'black' });
       expect(test.cmp.getColor('bar')).toEqual({ icon: 'blue', text: 'green' });
       expect(test.cmp.getColor('I do not exist.')).toEqual({ icon: '#123', text: '#123456' });
-    })
+    });
 
     describe('renderOneValue', function () {
       it('should render the proper colors', function () {
@@ -90,7 +95,7 @@ module Coveo {
               }
             }
           }
-        }, FakeResults.createFakeResult())
+        }, FakeResults.createFakeResult());
 
         let defaultValue = test.cmp.renderOneValue('');
         expect($$(defaultValue).find('span.coveo-badge-icon').style.color).toBe('white');
@@ -99,22 +104,22 @@ module Coveo {
         let fooVal = test.cmp.renderOneValue('foo');
         expect($$(fooVal).find('span.coveo-badge-icon').style.color).toBe('rgb(0, 0, 0)');
         expect($$(fooVal).find('span.coveo-badge-label').style.color).toBe('rgb(255, 255, 255)');
-      })
+      });
 
       describe('when isNewDesign is false', function () {
         beforeEach(function () {
           test.env.searchInterface.isNewDesign = () => false;
-        })
+        });
 
         it('should not render an icon', function () {
           expect($$(test.cmp.renderOneValue('foo')).find('span.coveo-badge-icon')).toBeNull();
-        })
+        });
 
         it('should set the background color of the label instead of the icon color', function () {
           expect(test.cmp.renderOneValue('bar').style.backgroundColor).toBe('blue');
           expect($$(test.cmp.renderOneValue('bar')).find('span.coveo-badge-label').style.color).toBe('green');
-        })
-      })
-    })
-  })
+        });
+      });
+    });
+  });
 }

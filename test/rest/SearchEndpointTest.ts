@@ -1,19 +1,33 @@
-/// <reference path="../Test.ts" />
-module Coveo {
-  import SearchEndpoint = Coveo.SearchEndpoint;
+import { SearchEndpoint } from '../../src/rest/SearchEndpoint';
+import { FakeResults } from '../Fake';
+import { QueryBuilder } from '../../src/ui/Base/QueryBuilder';
+import { IQueryResults } from '../../src/rest/QueryResults';
+import { IErrorResponse, IRequestInfo } from '../../src/rest/EndpointCaller';
+import { IQueryResult } from '../../src/rest/QueryResult';
+import { IListFieldValuesRequest } from '../../src/rest/ListFieldValuesRequest';
+import { IIndexFieldValue } from '../../src/rest/FieldValue';
+import { IExtension } from '../../src/rest/Extension';
+import { IFieldDescription } from '../../src/rest/FieldDescription';
+import { IQuerySuggestResponse } from '../../src/rest/QuerySuggest';
+import { ISubscription } from '../../src/rest/Subscription';
+import { AjaxError } from '../../src/rest/AjaxError';
+import _ = require('underscore');
+
+
+export function SearchEndpointTest() {
   describe('SearchEndpoint', function () {
 
     beforeEach(function () {
-      Coveo.SearchEndpoint.endpoints = {};
+      SearchEndpoint.endpoints = {};
     });
 
     afterEach(function () {
-      Coveo.SearchEndpoint.endpoints = {};
+      SearchEndpoint.endpoints = {};
     });
 
     it('allow to setup easily a search endpoint to point to a sample endpoint', function () {
       SearchEndpoint.configureSampleEndpoint();
-      var ep: SearchEndpoint = Coveo.SearchEndpoint.endpoints['default'];
+      const ep: SearchEndpoint = SearchEndpoint.endpoints['default'];
       expect(ep).toBeDefined();
       expect(ep.options.accessToken).toBeDefined();
       expect(ep.options.restUri).toBeDefined();
@@ -21,7 +35,7 @@ module Coveo {
 
     it('allow to setup easily a cloud endpoint', function () {
       SearchEndpoint.configureCloudEndpoint('foo', 'bar');
-      var ep: SearchEndpoint = Coveo.SearchEndpoint.endpoints['default'];
+      const ep: SearchEndpoint = SearchEndpoint.endpoints['default'];
       expect(ep).toBeDefined();
       expect(ep.options.accessToken).toBe('bar');
       expect(ep.options.queryStringArguments['organizationId']).toBe('foo');
@@ -29,13 +43,13 @@ module Coveo {
 
     it('allow to setup easily a on prem endpoint', function () {
       SearchEndpoint.configureOnPremiseEndpoint('foo.com');
-      var ep: SearchEndpoint = Coveo.SearchEndpoint.endpoints['default'];
+      const ep: SearchEndpoint = SearchEndpoint.endpoints['default'];
       expect(ep).toBeDefined();
       expect(ep.options.restUri).toBe('foo.com');
     });
 
     describe('with a workgroup argument', function () {
-      var ep: SearchEndpoint;
+      let ep: SearchEndpoint;
 
       beforeEach(function () {
         ep = new SearchEndpoint({
@@ -43,27 +57,49 @@ module Coveo {
           queryStringArguments: {
             workgroup: 'myOrgId'
           }
-        })
+        });
       });
 
       afterEach(function () {
         ep = null;
       });
 
-      it('map it to organizationId', function () {
-        var fakeResult = FakeResults.createFakeResult();
-        expect(ep.getViewAsHtmlUri(fakeResult.uniqueId)).toBe(ep.getBaseUri() + '/html?organizationId=myOrgId&uniqueId=' + fakeResult.uniqueId)
-      })
+      it('should not map it to organizationId', function () {
+        const fakeResult = FakeResults.createFakeResult();
+        expect(ep.getViewAsHtmlUri(fakeResult.uniqueId)).toBe(ep.getBaseUri() + '/html?workgroup=myOrgId&uniqueId=' + fakeResult.uniqueId);
+      });
+    });
+
+    describe('with an orgaganizationId argument', function () {
+      let ep: SearchEndpoint;
+
+      beforeEach(function () {
+        ep = new SearchEndpoint({
+          restUri: 'foo/rest/search',
+          queryStringArguments: {
+            organizationId: 'myOrgId'
+          }
+        });
+      });
+
+      afterEach(function () {
+        ep = null;
+      });
+
+      it('should not map it to workgroup', function () {
+        const fakeResult = FakeResults.createFakeResult();
+        expect(ep.getViewAsHtmlUri(fakeResult.uniqueId)).toBe(ep.getBaseUri() + '/html?organizationId=myOrgId&uniqueId=' + fakeResult.uniqueId);
+      });
     });
 
     describe('with a search token argument', function () {
-      var ep: SearchEndpoint;
+      let ep: SearchEndpoint;
 
       beforeEach(function () {
         ep = new SearchEndpoint({
           restUri: 'foo/rest/search',
           accessToken: 'token'
-        })
+        });
       });
 
       afterEach(function () {
@@ -71,14 +107,13 @@ module Coveo {
       });
 
       it('will add it in the query string', () => {
-        var fakeResult = FakeResults.createFakeResult();
-        expect(ep.getViewAsHtmlUri(fakeResult.uniqueId)).toBe(ep.getBaseUri() + '/html?access_token=token&uniqueId=' + fakeResult.uniqueId)
-      })
-
-    })
+        const fakeResult = FakeResults.createFakeResult();
+        expect(ep.getViewAsHtmlUri(fakeResult.uniqueId)).toBe(ep.getBaseUri() + '/html?access_token=token&uniqueId=' + fakeResult.uniqueId);
+      });
+    });
 
     describe('with a basic setup', function () {
-      var ep: SearchEndpoint;
+      let ep: SearchEndpoint;
 
       beforeEach(function () {
         ep = new SearchEndpoint({
@@ -88,7 +123,7 @@ module Coveo {
             organizationId: 'myOrgId',
             potatoe: 'mashed'
           }
-        })
+        });
       });
 
       afterEach(function () {
@@ -96,7 +131,7 @@ module Coveo {
       });
 
       it('allow to get the base uri', function () {
-        expect(ep.getBaseUri()).toBe('foo/rest/search/v2')
+        expect(ep.getBaseUri()).toBe('foo/rest/search/v2');
       });
 
       it('allow to get the auth provider uri', function () {
@@ -118,18 +153,18 @@ module Coveo {
       });
 
       it('allow to get an export to excel link', function () {
-        var qbuilder = new QueryBuilder();
+        const qbuilder = new QueryBuilder();
         qbuilder.expression.add('batman');
         expect(ep.getExportToExcelLink(qbuilder.build(), 56)).toContain(ep.getBaseUri() + '/?');
         expect(ep.getExportToExcelLink(qbuilder.build(), 56)).toContain('organizationId=myOrgId');
         expect(ep.getExportToExcelLink(qbuilder.build(), 56)).toContain('potatoe=mashed');
         expect(ep.getExportToExcelLink(qbuilder.build(), 56)).toContain('q=batman');
         expect(ep.getExportToExcelLink(qbuilder.build(), 56)).toContain('numberOfResults=56');
-        expect(ep.getExportToExcelLink(qbuilder.build(), 56)).toContain('format=xlsx')
+        expect(ep.getExportToExcelLink(qbuilder.build(), 56)).toContain('format=xlsx');
       });
 
       it('allow to get an uri to view as datastream', function () {
-        var fakeResult = FakeResults.createFakeResult();
+        const fakeResult = FakeResults.createFakeResult();
         expect(ep.getViewAsDatastreamUri(fakeResult.uniqueId, '$Thumbnail')).toContain(ep.getBaseUri() + '/datastream?');
         expect(ep.getViewAsDatastreamUri(fakeResult.uniqueId, '$Thumbnail')).toContain('organizationId=myOrgId');
         expect(ep.getViewAsDatastreamUri(fakeResult.uniqueId, '$Thumbnail')).toContain('potatoe=mashed');
@@ -138,7 +173,7 @@ module Coveo {
       });
 
       it('allow to get an uri to view as html', function () {
-        var fakeResult = FakeResults.createFakeResult();
+        const fakeResult = FakeResults.createFakeResult();
         expect(ep.getViewAsHtmlUri(fakeResult.uniqueId)).toContain(ep.getBaseUri() + '/html?');
         expect(ep.getViewAsHtmlUri(fakeResult.uniqueId)).toContain('organizationId=myOrgId');
         expect(ep.getViewAsHtmlUri(fakeResult.uniqueId)).toContain('potatoe=mashed');
@@ -152,14 +187,15 @@ module Coveo {
 
         afterEach(function () {
           jasmine.Ajax.uninstall();
+          ep.reset();
         });
 
-        it('for search', function (done) {
-          var qbuilder = new QueryBuilder();
+        it('for search', (done) => {
+          const qbuilder = new QueryBuilder();
           qbuilder.expression.add('batman');
           qbuilder.numberOfResults = 153;
           qbuilder.enableCollaborativeRating = true;
-          var promiseSuccess = ep.search(qbuilder.build());
+          const promiseSuccess = ep.search(qbuilder.build());
           expect(jasmine.Ajax.requests.mostRecent().url).toContain(ep.getBaseUri() + '/?');
           expect(jasmine.Ajax.requests.mostRecent().url).toContain('organizationId=myOrgId');
           expect(jasmine.Ajax.requests.mostRecent().url).toContain('potatoe=mashed');
@@ -176,7 +212,7 @@ module Coveo {
             responseText: JSON.stringify(FakeResults.createFakeResults())
           });
 
-          var promiseFail = ep.search(qbuilder.build());
+          const promiseFail = ep.search(qbuilder.build());
           promiseFail
             .catch((e: AjaxError) => {
               expect(e).toBeDefined();
@@ -184,17 +220,18 @@ module Coveo {
             })
             .catch((e: IErrorResponse) => {
               fail(e);
+              return e;
             })
-            .finally(() => done());
+            .then(() => done());
 
           jasmine.Ajax.requests.mostRecent().respondWith({
             status: 500
-          })
+          });
         });
 
-        it('for getRawDataStream', function (done) {
-          var fakeResult = FakeResults.createFakeResult();
-          var promiseSuccess = ep.getRawDataStream(fakeResult.uniqueId, '$Thumbnail');
+        it('for getRawDataStream', (done) => {
+          const fakeResult = FakeResults.createFakeResult();
+          const promiseSuccess = ep.getRawDataStream(fakeResult.uniqueId, '$Thumbnail');
           expect(jasmine.Ajax.requests.mostRecent().url).toContain(ep.getBaseUri() + '/datastream?');
           expect(jasmine.Ajax.requests.mostRecent().url).toContain('uniqueId=' + fakeResult.uniqueId);
           expect(jasmine.Ajax.requests.mostRecent().url).toContain('dataStream=$Thumbnail');
@@ -209,19 +246,20 @@ module Coveo {
             })
             .catch((e: IErrorResponse) => {
               fail(e);
+              return e;
             })
-            .finally(() => done());
+            .then(() => done());
 
           jasmine.Ajax.requests.mostRecent().respondWith({
             status: 200,
             response: new ArrayBuffer(123),
             responseType: 'arraybuffer'
-          })
+          });
         });
 
-        it('for getDocument', function (done) {
-          var fakeResult = FakeResults.createFakeResult();
-          var promiseSuccess = ep.getDocument(fakeResult.uniqueId);
+        it('for getDocument', (done) => {
+          const fakeResult = FakeResults.createFakeResult();
+          const promiseSuccess = ep.getDocument(fakeResult.uniqueId);
           expect(jasmine.Ajax.requests.mostRecent().url).toContain(ep.getBaseUri() + '/document?');
           expect(jasmine.Ajax.requests.mostRecent().url).toContain('uniqueId=' + fakeResult.uniqueId);
           expect(jasmine.Ajax.requests.mostRecent().url).toContain('organizationId=myOrgId');
@@ -235,19 +273,20 @@ module Coveo {
             })
             .catch((e: IErrorResponse) => {
               fail(e);
+              return e;
             })
-            .finally(() => done());
+            .then(() => done());
 
           jasmine.Ajax.requests.mostRecent().respondWith({
             status: 200,
             responseText: JSON.stringify(fakeResult),
             responseType: 'text'
-          })
+          });
         });
 
-        it('for getDocumentText', function (done) {
-          var fakeResult = FakeResults.createFakeResult();
-          var promiseSuccess = ep.getDocumentText(fakeResult.uniqueId);
+        it('for getDocumentText', (done) => {
+          const fakeResult = FakeResults.createFakeResult();
+          const promiseSuccess = ep.getDocumentText(fakeResult.uniqueId);
           expect(jasmine.Ajax.requests.mostRecent().url).toContain(ep.getBaseUri() + '/text?');
           expect(jasmine.Ajax.requests.mostRecent().url).toContain('uniqueId=' + fakeResult.uniqueId);
           expect(jasmine.Ajax.requests.mostRecent().url).toContain('organizationId=myOrgId');
@@ -261,20 +300,21 @@ module Coveo {
             })
             .catch((e: IErrorResponse) => {
               fail(e);
+              return e;
             })
-            .finally(() => done());
+            .then(() => done());
 
           jasmine.Ajax.requests.mostRecent().respondWith({
             status: 200,
             responseText: JSON.stringify({ content: fakeResult.excerpt }),
             responseType: 'text'
-          })
+          });
         });
 
-        it('for getDocumentHtml', function (done) {
-          var fakeResult = FakeResults.createFakeResult();
-          var fakeDocument = document.implementation.createHTMLDocument(fakeResult.title);
-          var promiseSuccess = ep.getDocumentHtml(fakeResult.uniqueId);
+        it('for getDocumentHtml', (done) => {
+          const fakeResult = FakeResults.createFakeResult();
+          const fakeDocument = document.implementation.createHTMLDocument(fakeResult.title);
+          const promiseSuccess = ep.getDocumentHtml(fakeResult.uniqueId);
           expect(jasmine.Ajax.requests.mostRecent().url).toContain(ep.getBaseUri() + '/html?');
           expect(jasmine.Ajax.requests.mostRecent().url).toContain('uniqueId=' + fakeResult.uniqueId);
           expect(jasmine.Ajax.requests.mostRecent().url).toContain('organizationId=myOrgId');
@@ -287,25 +327,26 @@ module Coveo {
               expect(jasmine.Ajax.requests.mostRecent().responseType).toBe('document');
             })
             .catch((e: IErrorResponse) => {
-              fail(e)
+              fail(e);
+              return e;
             })
-            .finally(() => done());
+            .then(() => done());
 
           jasmine.Ajax.requests.mostRecent().respondWith({
             status: 200,
             response: fakeDocument,
             responseType: 'document'
-          })
+          });
         });
 
-        it('for listFieldValues', function (done) {
-          var request: IListFieldValuesRequest = {
+        it('for listFieldValues', (done) => {
+          const request: IListFieldValuesRequest = {
             field: '@field',
             maximumNumberOfValues: 153,
             pattern: '.*$',
             patternType: 'regex'
           };
-          var promisesSuccess = ep.listFieldValues(request);
+          const promisesSuccess = ep.listFieldValues(request);
           expect(jasmine.Ajax.requests.mostRecent().url).toContain(ep.getBaseUri() + '/values?');
           expect(jasmine.Ajax.requests.mostRecent().url).toContain('organizationId=myOrgId');
           expect(jasmine.Ajax.requests.mostRecent().url).toContain('potatoe=mashed');
@@ -321,19 +362,20 @@ module Coveo {
               expect(jasmine.Ajax.requests.mostRecent().responseType).toBe('text');
             })
             .catch((e: IErrorResponse) => {
-              fail(e)
+              fail(e);
+              return e;
             })
-            .finally(() => done());
+            .then(() => done());
 
           jasmine.Ajax.requests.mostRecent().respondWith({
             status: 200,
             responseText: JSON.stringify({ values: FakeResults.createFakeFieldValues('foo', 10) }),
             responseType: 'text'
-          })
+          });
         });
 
-        it('for listFields', function (done) {
-          var promiseSuccess = ep.listFields();
+        it('for listFields', (done) => {
+          const promiseSuccess = ep.listFields();
           expect(jasmine.Ajax.requests.mostRecent().url).toContain(ep.getBaseUri() + '/fields?');
           expect(jasmine.Ajax.requests.mostRecent().url).toContain('organizationId=myOrgId');
           expect(jasmine.Ajax.requests.mostRecent().url).toContain('potatoe=mashed');
@@ -347,19 +389,20 @@ module Coveo {
             })
             .catch((e: IErrorResponse) => {
               fail(e);
+              return e;
             })
-            .finally(() => done());
+            .then(() => done());
 
           // Not real field description, but will suffice for test purpose
           jasmine.Ajax.requests.mostRecent().respondWith({
             status: 200,
             responseText: JSON.stringify({ fields: _.range(10) }),
             responseType: 'text'
-          })
+          });
         });
 
-        it('for extensions', function (done) {
-          var promiseSuccess = ep.extensions();
+        it('for extensions', (done) => {
+          const promiseSuccess = ep.extensions();
           expect(jasmine.Ajax.requests.mostRecent().url).toContain(ep.getBaseUri() + '/extensions?');
           expect(jasmine.Ajax.requests.mostRecent().url).toContain('organizationId=myOrgId');
           expect(jasmine.Ajax.requests.mostRecent().url).toContain('potatoe=mashed');
@@ -373,20 +416,21 @@ module Coveo {
             })
             .catch((e: IErrorResponse) => {
               fail(e);
+              return e;
             })
-            .finally(() => done());
+            .then(() => done());
 
           // Not real extensions, but will suffice for test purpose
           jasmine.Ajax.requests.mostRecent().respondWith({
             status: 200,
             responseText: JSON.stringify(_.range(10)),
             responseType: 'text'
-          })
+          });
         });
 
-        it('for rateDocument', function (done) {
-          var fakeResult = FakeResults.createFakeResult();
-          var promiseSuccess = ep.rateDocument({
+        it('for rateDocument', (done) => {
+          const fakeResult = FakeResults.createFakeResult();
+          const promiseSuccess = ep.rateDocument({
             rating: 'Best',
             uniqueId: fakeResult.uniqueId
           });
@@ -403,17 +447,18 @@ module Coveo {
             })
             .catch((e: IErrorResponse) => {
               fail(e);
+              return e;
             })
-            .finally(() => done());
+            .then(() => done());
           jasmine.Ajax.requests.mostRecent().respondWith({
             status: 200,
             responseType: 'text'
-          })
+          });
         });
 
-        it('for tagDocument', function (done) {
-          var fakeResult = FakeResults.createFakeResult();
-          var promiseSuccess = ep.tagDocument({
+        it('for tagDocument', (done) => {
+          const fakeResult = FakeResults.createFakeResult();
+          const promiseSuccess = ep.tagDocument({
             uniqueId: fakeResult.uniqueId,
             doAdd: true,
             fieldName: '@field',
@@ -437,17 +482,18 @@ module Coveo {
             })
             .catch((e: IErrorResponse) => {
               fail(e);
+              return e;
             })
-            .finally(() => done());
+            .then(() => done());
 
           jasmine.Ajax.requests.mostRecent().respondWith({
             status: 200,
             responseType: 'text'
-          })
+          });
         });
 
-        it('for getRevealQuerySuggest', function (done) {
-          var promiseSuccess = ep.getRevealQuerySuggest({
+        it('for getQuerySuggest', (done) => {
+          const promiseSuccess = ep.getQuerySuggest({
             q: 'foobar',
             count: 10
           });
@@ -461,30 +507,59 @@ module Coveo {
 
           // Not real extensions, but will suffice for test purpose
           promiseSuccess
-            .then((response: IRevealQuerySuggestResponse) => {
+            .then((response: IQuerySuggestResponse) => {
               expect(response.completions.length).toBe(10);
             })
             .catch((e: IErrorResponse) => {
               fail(e);
+              return e;
             })
-            .finally(() => done());
+            .then(() => done());
 
           // Not real completions, but will suffice for test purpose
           jasmine.Ajax.requests.mostRecent().respondWith({
             status: 200,
             responseText: JSON.stringify({ completions: _.range(10) })
-          })
+          });
         });
 
-        it('for follow', function (done) {
-          var qbuilder = new QueryBuilder();
+        it('for backward compatible query suggest call', (done) => {
+          const promiseSuccess = ep.getRevealQuerySuggest({
+            q: 'foobar',
+            count: 10
+          });
+
+          expect(jasmine.Ajax.requests.mostRecent().url).toContain(ep.getBaseUri() + '/querySuggest?');
+          expect(jasmine.Ajax.requests.mostRecent().url).toContain('q=foobar');
+
+          // Not real extensions, but will suffice for test purpose
+          promiseSuccess
+            .then((response: IQuerySuggestResponse) => {
+              expect(response.completions.length).toBe(10);
+            })
+            .catch((e: IErrorResponse) => {
+              fail(e);
+              return e;
+            })
+            .then(() => done());
+
+          // Not real completions, but will suffice for test purpose
+          jasmine.Ajax.requests.mostRecent().respondWith({
+            status: 200,
+            responseText: JSON.stringify({ completions: _.range(10) })
+          });
+        });
+
+        it('for follow', (done) => {
+          const qbuilder = new QueryBuilder();
           qbuilder.expression.add('batman');
-          var promiseSuccess = ep.follow({
+          const promiseSuccess = ep.follow({
             frequency: 'weekly',
             type: 'query',
             typeConfig: {
               query: qbuilder.build()
-            }
+            },
+            name: 'asdasd'
           });
 
           promiseSuccess
@@ -492,9 +567,10 @@ module Coveo {
               expect(sub.id).toBeDefined();
             })
             .catch((e: IErrorResponse) => {
-              fail(e)
+              fail(e);
+              return e;
             })
-            .finally(() => done());
+            .then(() => done());
 
           expect(jasmine.Ajax.requests.mostRecent().url).toContain(ep.getBaseAlertsUri() + '/subscriptions?');
           expect(jasmine.Ajax.requests.mostRecent().url).toContain('organizationId=myOrgId');
@@ -502,6 +578,7 @@ module Coveo {
           expect(jasmine.Ajax.requests.mostRecent().url).toContain('accessToken=token');
           expect(jasmine.Ajax.requests.mostRecent().method).toBe('POST');
           expect(JSON.parse(jasmine.Ajax.requests.mostRecent().params).frequency).toBe('weekly');
+          expect(JSON.parse(jasmine.Ajax.requests.mostRecent().params).name).toBe('asdasd');
 
           jasmine.Ajax.requests.mostRecent().respondWith({
             status: 200,
@@ -512,22 +589,23 @@ module Coveo {
                 query: qbuilder.build()
               }
             })
-          })
+          });
         });
 
-        it('for listSubscriptions', function (done) {
-          var promiseSuccess = ep.listSubscriptions(15);
+        it('for listSubscriptions', (done) => {
+          const promiseSuccess = ep.listSubscriptions(15);
           promiseSuccess
             .then((subs: ISubscription[]) => {
-              expect(subs.length).toBe(44)
+              expect(subs.length).toBe(44);
             })
             .catch((e: IErrorResponse) => {
-              fail(e)
+              fail(e);
+              return e;
             })
-            .finally(() => done());
+            .then(() => done());
 
           // Should return the same promise, since it's not resolved yet
-          var promiseSuccess2 = ep.listSubscriptions(15);
+          const promiseSuccess2 = ep.listSubscriptions(15);
           expect(promiseSuccess).toBe(promiseSuccess2);
 
           expect(jasmine.Ajax.requests.mostRecent().url).toContain(ep.getBaseAlertsUri() + '/subscriptions?');
@@ -540,19 +618,20 @@ module Coveo {
           jasmine.Ajax.requests.mostRecent().respondWith({
             status: 200,
             responseText: JSON.stringify(_.range(44))
-          })
+          });
         });
 
-        it('for updateSubscription', function (done) {
-          var promiseSuccess = ep.updateSubscription(getSubscriptionPromiseSuccess());
+        it('for updateSubscription', (done) => {
+          const promiseSuccess = ep.updateSubscription(getSubscriptionPromiseSuccess());
           promiseSuccess
             .then((sub: ISubscription) => {
               expect(sub.id).toBe('foobar');
             })
             .catch((e: IErrorResponse) => {
               fail(e);
+              return e;
             })
-            .finally(() => done());
+            .then(() => done());
 
           expect(jasmine.Ajax.requests.mostRecent().url).toContain(ep.getBaseAlertsUri() + '/subscriptions/foobar?');
           expect(jasmine.Ajax.requests.mostRecent().url).toContain('organizationId=myOrgId');
@@ -564,19 +643,20 @@ module Coveo {
           jasmine.Ajax.requests.mostRecent().respondWith({
             status: 200,
             responseText: JSON.stringify({ id: 'foobar' })
-          })
+          });
         });
 
-        it('for deleteSubscription', function (done) {
-          var promiseSuccess = ep.deleteSubscription(getSubscriptionPromiseSuccess());
+        it('for deleteSubscription', (done) => {
+          const promiseSuccess = ep.deleteSubscription(getSubscriptionPromiseSuccess());
           promiseSuccess
             .then((sub: ISubscription) => {
               expect(sub.id).toBe('foobar');
             })
             .catch((e: IErrorResponse) => {
-              fail(e)
+              fail(e);
+              return e;
             })
-            .finally(() => done());
+            .then(() => done());
 
           expect(jasmine.Ajax.requests.mostRecent().url).toContain(ep.getBaseAlertsUri() + '/subscriptions/foobar?');
           expect(jasmine.Ajax.requests.mostRecent().url).toContain('organizationId=myOrgId');
@@ -588,14 +668,25 @@ module Coveo {
           jasmine.Ajax.requests.mostRecent().respondWith({
             status: 200,
             responseText: JSON.stringify({ id: 'foobar' })
-          })
-        })
-      })
-    })
+          });
+        });
+
+        it('request can be modified', function () {
+          ep.setRequestModifier((requestInfo: IRequestInfo<any>) => {
+            requestInfo.headers['Potato'] = 'OmgPotatoes';
+            return requestInfo;
+          });
+          ep.search(new QueryBuilder().build());
+          expect(jasmine.Ajax.requests.mostRecent().requestHeaders).toEqual(jasmine.objectContaining({
+            'Potato': 'OmgPotatoes'
+          }));
+        });
+      });
+    });
   });
 
   function getSubscriptionPromiseSuccess(): ISubscription {
-    var qbuilder = new QueryBuilder();
+    const qbuilder = new QueryBuilder();
     qbuilder.expression.add('batman');
     return {
       id: 'foobar',
@@ -606,8 +697,8 @@ module Coveo {
       user: {
         manageToken: '1',
         email: '42@coveo.com'
-      }
-    }
+      },
+      name: 'asdasd'
+    };
   }
-
 }

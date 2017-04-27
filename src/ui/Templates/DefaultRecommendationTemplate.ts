@@ -1,6 +1,5 @@
-import {Template} from './Template';
-import {TemplateCache} from './TemplateCache';
-import {IQueryResult} from '../../rest/QueryResult';
+import { Template } from './Template';
+import { IQueryResult } from '../../rest/QueryResult';
 
 export class DefaultRecommendationTemplate extends Template {
 
@@ -25,9 +24,11 @@ export class DefaultRecommendationTemplate extends Template {
     return template;
   }
 
-  instantiateToElement(object?: IQueryResult): HTMLElement {
-    var div = document.createElement('div');
-    div.innerHTML = this.instantiateToString(object);
-    return div;
+  instantiateToElement(object?: IQueryResult): Promise<HTMLElement> {
+    return new Promise((resolve, reject) => {
+      var div = document.createElement('div');
+      div.innerHTML = this.instantiateToString(object);
+      resolve(div);
+    });
   }
 }

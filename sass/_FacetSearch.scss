@@ -1,4 +1,6 @@
+@import "Variables";
 @import "FacetValues";
+@import "../bin/sass/sprites";
 
 .coveo-facet-search-results {
   position: absolute;
@@ -22,6 +24,10 @@
       top: 0px;
     }
   }
+  &.coveo-no-results {
+    display: none;
+    visibility: hidden;
+  }
 
   .coveo-facet-value {
     @include facetValuesCheckboxes('smaller');
@@ -32,7 +38,7 @@
   }
 
   .coveo-facet-value-exclude {
-    right: 2px;
+    right: 10px;
   }
   .coveo-facet-value-label {
     padding-right: 5px;
@@ -118,13 +124,13 @@
 .coveo-facet-search-magnifier {
   float: left;
   margin: 5px 6px 5px 10px;
-  @extend .coveo-sprites-facet-search;
+  @include retina-sprite($facet-search-group);
 }
 
 .coveo-facet-search-wait-animation {
   float: left;
   margin: 3px 3px 5px 10px;
-  @extend .coveo-sprites-facet-search-loading;
+  @include retina-sprite($facet-search-loading-group);
   @include animation-name(coveo-spin);
   @include animation-timing-function(linear);
   @include animation-duration(1s);
@@ -141,10 +147,10 @@
   .coveo-facet-value-checkbox {
     border-style: dashed;
   }
-  &:hover {
-    .coveo-facet-value-checkbox {
-      border-style: solid;
-    }
+
+  &:hover .coveo-facet-value-checkbox,
+  .coveo-facet-value-checkbox:focus {
+    border-style: solid;
   }
 }
 
@@ -156,7 +162,7 @@
 
 .coveo-facet-value.coveo-facet-search-button {
   .coveo-facet-value-checkbox > span, &:hover .coveo-facet-value-checkbox > span {
-    @extend .coveo-sprites-checkbox-more-values;
+    @include retina-sprite($checkbox-more-values-group);
     bottom: 1px;
   }
 }

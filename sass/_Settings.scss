@@ -1,3 +1,5 @@
+@import "Variables";
+
 .CoveoSettings {
   float: right;
   margin: 0 0 0 36px;
@@ -65,7 +67,6 @@
   .coveo-settings-text {
     overflow:hidden;
     padding:8px 8px 8px 8px;
-    white-space: nowrap;
   }
 
   &:first-child {
@@ -83,6 +84,10 @@
   }
 
   &.coveo-preferences-panel {
+    @include iconWithHoverState('.coveo-sprites-dropdown-preferences');
+  }
+
+  &.coveo-advanced-search {
     @include iconWithHoverState('.coveo-sprites-dropdown-preferences');
   }
 

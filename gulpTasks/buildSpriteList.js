@@ -4,7 +4,6 @@ const fs = require('fs-extra');
 const path = require('path');
 const walk = require('walk');
 const _ = require('underscore');
-const color = require('colors');
 
 let args = require('yargs')
   .option('sprites', {
@@ -18,21 +17,21 @@ let args = require('yargs')
   .help('help')
   .argv;
 
-function buildSpriteList(spriteDir, outputDir, done) {
+function buildSpriteList(spriteDir, outputDir, fileName, done) {
   spriteDir = spriteDir || args.sprites;
   outputDir = outputDir || args.output;
 
   if (spriteDir == undefined) throw 'Error. No sprite directory defined';
   if (outputDir == undefined) throw 'Error. No output directory defined';
 
-  console.log(`Generating sprite list for ${spriteDir}`.green.bgBlue);
+  console.log(`Generating sprite list for ${spriteDir} as ${fileName}`.green.bgBlue);
 
   let sprites = {};
   let prefix = spriteDir.indexOf('retina') !== -1 ? 'retina' : 'normal';
 
   let walker = walk.walk(spriteDir);
   walker.on('file', (root, fileStats, next) => fileHandler(sprites, root, fileStats, prefix, next));
-  walker.on('end', () => endHandler(sprites, outputDir, prefix, done));
+  walker.on('end', () => endHandler(sprites, outputDir, prefix, fileName, done));
 }
 
 function generateCssClass(filePath, prefix) {
@@ -48,18 +47,25 @@ function generateCssClass(filePath, prefix) {
 
 function fileHandler(sprites, root, fileStats, prefix, next) {
   let fullPath = path.join(root, fileStats.name);
-  fs.readFile(fullPath, (err, imgBuffer) => {
-    if (err) throw err;
 
-    let cssClass = generateCssClass(fullPath, prefix);
-    let imgSize = sizeOf(imgBuffer);
-    sprites[cssClass] = {
-      img: imgBuffer.toString('base64'),
-      size: imgSize.width * imgSize.height,
-      name: cssClass.substring(1)
-    }
-    next();
-  })
+  //node-walk only supports filters for directories...
+  if (fileStats.name[0] !== '.') {
+    fs.readFile(fullPath, (err, imgBuffer) => {
+      if (err) throw err;
+      let cssClass = generateCssClass(fullPath, prefix);
+      try {
+        let imgSize = sizeOf(imgBuffer);
+        sprites[cssClass] = {
+          img: imgBuffer.toString('base64'),
+          size: imgSize.width * imgSize.height,
+          name: cssClass.substring(1)
+        }
+      } catch (e) {
+        console.log(`Skipping file : ${fullPath}`);
+      }
+    })
+  }
+  next();
 }
 
 function generateHtmlOutput(sprites) {
@@ -77,8 +83,12 @@ function generateHtmlOutput(sprites) {
   return header + style + rows + footer;
 }
 
-function endHandler(sprites, outputDir, prefix, done) {
-  let outFilename = path.join(outputDir, prefix + '-icon-list');
+function endHandler(sprites, outputDir, prefix, fileName, done) {
+  let outFilename = fileName;
+  if (!outFilename) {
+    outFilename = path.join(outputDir, prefix + '-icon-list');
+  }
+  outFilename = path.join(outputDir, outFilename);
   fs.outputFileSync(`${outFilename}.html`, generateHtmlOutput(sprites));
   fs.outputJsonSync(`${outFilename}.json`, sprites);
   if (done) done();

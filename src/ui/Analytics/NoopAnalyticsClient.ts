@@ -1,46 +1,53 @@
-import {IAnalyticsClient} from './AnalyticsClient';
-import {IAnalyticsActionCause} from './AnalyticsActionListMeta';
-import {IQueryResult} from '../../rest/QueryResult';
-import {ITopQueries} from '../../rest/TopQueries';
-import {Promise} from 'es6-promise';
+import { IAnalyticsClient } from './AnalyticsClient';
+import { IAnalyticsActionCause } from './AnalyticsActionListMeta';
+import { IQueryResult } from '../../rest/QueryResult';
+import { ITopQueries } from '../../rest/TopQueries';
+import { IStringMap } from '../../rest/GenericParam';
 
 export class NoopAnalyticsClient implements IAnalyticsClient {
   public isContextual: boolean = false;
+
+  private currentEventCause: string;
+  private currentEventMeta: IStringMap<any>;
 
   isActivated() {
     return false;
   }
 
   getCurrentEventCause(): string {
-    return null;
+    return this.currentEventCause;
   }
 
-  getCurrentEventMeta(): { [key: string]: any } {
-    return {};
+  getCurrentEventMeta(): IStringMap<any> {
+    return this.currentEventMeta;
   }
 
   logSearchEvent<TMeta>(actionCause: IAnalyticsActionCause, meta: TMeta) {
+    this.setNoopCauseAndMeta(actionCause.name, meta);
   }
 
   logSearchAsYouType<TMeta>(actionCause: IAnalyticsActionCause, meta: TMeta) {
+    this.setNoopCauseAndMeta(actionCause.name, meta);
   }
 
   logClickEvent<TMeta>(actionCause: IAnalyticsActionCause, meta: TMeta, result?: IQueryResult, element?: HTMLElement) {
+    this.setNoopCauseAndMeta(actionCause.name, meta);
   }
 
   logCustomEvent<TMeta>(actionCause: IAnalyticsActionCause, meta: TMeta, element?: HTMLElement) {
+    this.setNoopCauseAndMeta(actionCause.name, meta);
   }
 
   getTopQueries(params: ITopQueries): Promise<string[]> {
     return new Promise((resolve, reject) => {
       resolve([]);
-    })
+    });
   }
 
   getCurrentVisitIdPromise(): Promise<string> {
     return new Promise((resolve, reject) => {
       resolve(null);
-    })
+    });
   }
 
   getCurrentVisitId(): string {
@@ -58,5 +65,13 @@ export class NoopAnalyticsClient implements IAnalyticsClient {
 
   getPendingSearchEvent() {
     return null;
+  }
+
+  setOriginContext(originContext: string) {
+  }
+
+  private setNoopCauseAndMeta(cause: string, meta: IStringMap<any>) {
+    this.currentEventCause = cause;
+    this.currentEventMeta = meta;
   }
 }

@@ -1,5 +1,16 @@
-/// <reference path="../Test.ts" />
-module Coveo {
+import * as Mock from '../MockEnvironment';
+import { FieldValue } from '../../src/ui/FieldValue/FieldValue';
+import { FakeResults } from '../Fake';
+import { IFieldValueOptions } from '../../src/ui/FieldValue/FieldValue';
+import { $$ } from '../../src/utils/Dom';
+import { TemplateHelpers } from '../../src/ui/Templates/TemplateHelpers';
+import { Facet } from '../../src/ui/Facet/Facet';
+import { FacetValues } from '../../src/ui/Facet/FacetValues';
+import { FacetValue } from '../../src/ui/Facet/FacetValues';
+import { IDateToStringOptions } from '../../src/utils/DateUtils';
+import { DateUtils } from '../../src/utils/DateUtils';
+
+export function FieldValueTest() {
   describe('FieldValue', () => {
     let test: Mock.IBasicComponentSetup<FieldValue>;
     let element: HTMLElement;
@@ -23,14 +34,14 @@ module Coveo {
       it('field not specified should default to @field', () => {
         test = Mock.optionsResultComponentSetup<FieldValue, IFieldValueOptions>(FieldValue, <IFieldValueOptions>{
           field: undefined
-        }, FakeResults.createFakeResult())
+        }, FakeResults.createFakeResult());
         expect(test.cmp.options.field).toBe('@field');
       });
 
       it('facet should use the field value by default', () => {
         test = Mock.optionsResultComponentSetup<FieldValue, IFieldValueOptions>(FieldValue, <IFieldValueOptions>{
           field: '@foobarde'
-        }, FakeResults.createFakeResult())
+        }, FakeResults.createFakeResult());
         expect(test.cmp.options.facet).toBe('@foobarde');
       });
 
@@ -143,31 +154,58 @@ module Coveo {
         expect(test.cmp.renderOneValue('1337').textContent).toEqual('ham1337burger');
       });
 
-      describe('helperOptions', () => {
-        it('should call helper with appropriate options', () => {
-          test = Mock.advancedResultComponentSetup<FieldValue>(FieldValue, FakeResults.createFakeResult(), <Mock.AdvancedComponentSetupOptions>{
-            element: element,
-            cmpOptions: <IFieldValueOptions>{
-              field: '@foobarde',
-              helper: 'myHelper',
-              helperOptions: {
-                myOption: '0002raboof'
-              }
-            }
-          });
-          TemplateHelpers.registerFieldHelper('myHelper', (_, options) => {
-            expect(options).toEqual(jasmine.objectContaining({
-              myOption: '0002raboof'
-            }));
-            return '';
-          });
-          test.cmp.renderOneValue('someValue');
+      it('helper should eliminate helperOptions that do not match the current helper', () => {
+        test = Mock.advancedResultComponentSetup<FieldValue>(FieldValue, FakeResults.createFakeResult(), <Mock.AdvancedComponentSetupOptions>{
+          element: element,
+          cmpOptions: <IFieldValueOptions>{
+            field: '@author',
+            helper: 'anchor',
+            htmlValue: true
+          }
         });
+
+        let anchor = $$(test.cmp.element).find('a');
+
+        expect(anchor.outerHTML).toEqual('<a href="o.o">o.o</a>');
+      });
+
+      it('textCaption should render a text value', () => {
+        test = Mock.advancedResultComponentSetup<FieldValue>(FieldValue, FakeResults.createFakeResult(), <Mock.AdvancedComponentSetupOptions>{
+          element: element,
+          cmpOptions: <IFieldValueOptions>{
+            field: '@title',
+            textCaption: '<script>alert("Potatoes")</script>'
+          }
+        });
+
+        expect($$(test.cmp.element).text()).toContain('<script>alert("Potatoes")</script>');
+      });
+
+      it('textCaption should render in front of the fieldValue', () => {
+        test = Mock.advancedResultComponentSetup<FieldValue>(FieldValue, FakeResults.createFakeResult(), <Mock.AdvancedComponentSetupOptions>{
+          element: element,
+          cmpOptions: <IFieldValueOptions>{
+            field: '@title',
+            textCaption: 'this is a test'
+          }
+        });
+        expect($$($$(test.cmp.element).children()[0]).hasClass('coveo-field-caption')).toBe(true);
+      });
+
+      it('textCaption option should add the class coveo-with-label to the CoveoFieldValue', () => {
+        test = Mock.advancedResultComponentSetup<FieldValue>(FieldValue, FakeResults.createFakeResult(), <Mock.AdvancedComponentSetupOptions>{
+          element: element,
+          cmpOptions: <IFieldValueOptions>{
+            field: '@title',
+            textCaption: 'this is a test'
+          }
+        });
+        expect($$(test.cmp.element).hasClass('coveo-with-label')).toBe(true);
       });
     });
 
     it('should display the proper field value', () => {
-      expect($$(test.cmp.element).find('span').textContent).toBe('string value')
+      expect($$(test.cmp.element).find('span').textContent).toBe('string value');
     });
 
     describe('with a related facet', () => {
@@ -181,8 +219,8 @@ module Coveo {
           let value = Mock.mock<FacetValue>(FacetValue);
           value.selected = true;
           return value;
-        }
-      })
+        };
+      });
 
       afterEach(() => {
         facet = null;
@@ -226,7 +264,7 @@ module Coveo {
       let options = {
         field: '@date',
         helper: 'date'
-      }
+      };
 
       let fullDateOptions: IDateToStringOptions = {
         useLongDateFormat: true,
@@ -248,7 +286,7 @@ module Coveo {
       options.helper = 'emailDateTime';
       test = Mock.optionsResultComponentSetup<FieldValue, IFieldValueOptions>(FieldValue, options, fakeResult);
       expect($$(test.cmp.element).find('span').getAttribute('title')).toEqual(dateTimeString);
-    })
+    });
 
     it('should not show a full date tooltip if it doesn\'t have the helper is not a date', () => {
       test = Mock.optionsResultComponentSetup<FieldValue, IFieldValueOptions>(FieldValue, <IFieldValueOptions>{

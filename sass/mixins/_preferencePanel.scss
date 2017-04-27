@@ -11,10 +11,6 @@
 }
 
 @mixin coveo-preferences-panel-item {
-  clear: both;
-  margin-bottom: 20px;
-  margin-top: 10px;
-
   .coveo-title {
     font-size: 14px;
     font-weight: initial;
@@ -64,7 +60,7 @@
       &:before {
         content: '';
         display: inline-block;
-        @extend .coveo-sprites-checkbox-hook-white;
+        @include retina-sprite($checkbox-hook-white-group);
         position: relative;
         right: -1px;
         bottom: 2px;

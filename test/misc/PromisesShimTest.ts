@@ -1,6 +1,6 @@
-/// <reference path="../Test.ts" />
+import { Simulate } from '../Simulate';
 
-module Coveo {
+export function PromisesShimTest() {
   describe('PromisesShim', function () {
     it('should shim finally', (done) => {
       new Promise((resolve, reject) => {
@@ -10,16 +10,16 @@ module Coveo {
         expect(true).toBe(true);
         done();
       });
-    })
+    });
 
     it('should shim done', (done) => {
       // In a normal browser, this would require
       // to import es6-promises.
       // Testing for phantom js is good enough
-      if (isPhantomJs()) {
+      if (Simulate.isPhantomJs()) {
         var p = new Promise((resolve, reject) => {
           resolve(true);
-        })
+        });
 
         p.done((value) => {
           expect(value).toBe(true);
@@ -29,16 +29,16 @@ module Coveo {
         expect(true).toBe(true);
         done();
       }
-    })
+    });
 
     it('should shim fail', (done) => {
       // In a normal browser, this would require
       // to import es6-promises.
       // Testing for phantom js is good enough
-      if (isPhantomJs()) {
+      if (Simulate.isPhantomJs()) {
         var p = new Promise((resolve, reject) => {
           reject(false);
-        })
+        });
 
         p.fail((value) => {
           expect(value).toBe(false);
@@ -48,7 +48,6 @@ module Coveo {
         expect(true).toBe(true);
         done();
       }
-
-    })
-  })
+    });
+  });
 }

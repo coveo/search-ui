@@ -1,12 +1,18 @@
-import {Utils} from '../utils/Utils';
-import {Assert} from '../misc/Assert';
-import {Logger} from '../misc/Logger';
-import _ = require('underscore');
+import { Utils } from '../utils/Utils';
+import { JQueryUtils } from '../utils/JQueryutils';
+import { Assert } from '../misc/Assert';
+import { Logger } from '../misc/Logger';
+import * as _ from 'underscore';
+
+export interface IOffset {
+  left: number;
+  top: number;
+}
 
 /**
  * This is essentially an helper class for dom manipulation.<br/>
  * This is intended to provide some basic functionality normally offered by jQuery.<br/>
- * To minimize the multiple jQuery conflict we have while integrating in various system, we implemented the very small subset that the framework need.<br/>
+ * To minimize the multiple jQuery conflict we have while integrating in various system, we implemented the very small subset that the framework needs.<br/>
  * See {@link $$}, which is a function that wraps this class constructor, for less verbose code.
  */
 export class Dom {
@@ -41,7 +47,7 @@ export class Dom {
       if (key === 'className') {
         elem.className = props['className'];
       } else {
-        let attr = key.indexOf('-') !== -1 ? key : Utils.toDashCase(key)
+        let attr = key.indexOf('-') !== -1 ? key : Utils.toDashCase(key);
         elem.setAttribute(attr, props[key]);
       }
     }
@@ -54,7 +60,7 @@ export class Dom {
       } else if (child instanceof Dom) {
         elem.appendChild(child.el);
       }
-    })
+    });
 
     return elem;
   }
@@ -74,6 +80,9 @@ export class Dom {
    * @returns {string}
    */
   public css(property: string): string {
+    if (this.el.style[property]) {
+      return this.el.style[property];
+    }
     return window.getComputedStyle(this.el).getPropertyValue(property);
   }
 
@@ -83,14 +92,14 @@ export class Dom {
    * @returns {string}
    */
   public text(txt?: string): string {
-    if (txt) {
+    if (Utils.isUndefined(txt)) {
+      return this.el.innerText || this.el.textContent;
+    } else {
       if (this.el.innerText != undefined) {
         this.el.innerText = txt;
       } else if (this.el.textContent != undefined) {
         this.el.textContent = txt;
       }
-    } else {
-      return this.el.innerText || this.el.textContent;
     }
   }
 
@@ -211,33 +220,43 @@ export class Dom {
   }
 
   /**
-   * Get the first element that matches the classname by testing the element itself and traversing up through its ancestors in the DOM tree.<br/>
+   * Get the first element that matches the classname by testing the element itself and traversing up through its ancestors in the DOM tree.
+   *
    * Stops at the body of the document
    * @param className A CSS classname
    */
   public closest(className: string): HTMLElement {
-    if (className.indexOf('.') == 0) {
-      className = className.substr(1);
+    return this.traverseAncestorForClass(this.el, className);
+  }
+
+  /**
+   * Get the first element that matches the classname by testing the element itself and traversing up through its ancestors in the DOM tree.
+   *
+   * Stops at the body of the document
+   * @returns {any}
+   */
+  public parent(className: string): HTMLElement {
+    if (this.el.parentElement == undefined) {
+      return undefined;
     }
-    var current = this.el, found = false;
-    while (!found) {
-      if ($$(current).hasClass(className)) {
-        found = true;
-      }
-      if (current.tagName.toLowerCase() == 'body') {
-        break;
-      }
-      if (current.parentElement == null) {
-        break;
-      }
-      if (!found) {
-        current = current.parentElement;
-      }
+    return this.traverseAncestorForClass(this.el.parentElement, className);
+  }
+
+  /**
+   *  Get all the ancestors of the current element that match the given className
+   *
+   *  Return an empty array if none found.
+   * @param className
+   * @returns {HTMLElement[]}
+   */
+  public parents(className: string): HTMLElement[] {
+    let parentsFound = [];
+    let parentFound = this.parent(className);
+    while (parentFound) {
+      parentsFound.push(parentFound);
+      parentFound = new Dom(parentFound).parent(className);
     }
-    if (found) {
-      return current;
-    }
-    return undefined;
+    return parentsFound;
   }
 
   /**
@@ -291,7 +310,7 @@ export class Dom {
    */
   public findClass(className: string): HTMLElement[] {
     if ('getElementsByClassName' in this.el) {
-      return this.nodeListToArray(this.el.getElementsByClassName(className))
+      return this.nodeListToArray(this.el.getElementsByClassName(className));
     }
     // For ie 8
     return this.nodeListToArray(this.el.querySelectorAll('.' + className));
@@ -316,7 +335,7 @@ export class Dom {
     if (_.isArray(className)) {
       _.each(className, (name: string) => {
         this.addClass(name);
-      })
+      });
     } else {
       if (!this.hasClass(className)) {
         if (this.el.className) {
@@ -333,7 +352,7 @@ export class Dom {
    * @param className Classname to remove on the the element
    */
   public removeClass(className: string): void {
-    this.el.className = this.el.className.replace(new RegExp(`(^|\\s)${className}(\\s|\\b)`, 'g'), '$1');
+    this.el.className = this.el.className.replace(new RegExp(`(^|\\s)${className}(\\s|\\b)`, 'g'), '$1').trim();
   }
 
   /**
@@ -370,7 +389,7 @@ export class Dom {
    * @returns {any|Array}
    */
   public getClass(): string[] {
-    return this.el.className.match(Dom.CLASS_NAME_REGEX) || []
+    return this.el.className.match(Dom.CLASS_NAME_REGEX) || [];
   }
 
   /**
@@ -428,19 +447,19 @@ export class Dom {
     if (_.isArray(type)) {
       _.each(type, (t: string) => {
         this.on(t, eventHandle);
-      })
+      });
     } else {
-      var jq = this.getJQuery();
+      var jq = JQueryUtils.getJQuery();
       if (jq) {
         jq(this.el).on(type, eventHandle);
       } else if (this.el.addEventListener) {
         var fn = (e: CustomEvent) => {
-          eventHandle(e, e.detail)
-        }
+          eventHandle(e, e.detail);
+        };
         Dom.handlers.push({
           eventHandle: eventHandle,
           fn: fn
-        })
+        });
         this.el.addEventListener(type, fn, false);
       } else if (this.el['on']) {
         this.el['on']('on' + type, eventHandle);
@@ -460,12 +479,12 @@ export class Dom {
     if (_.isArray(type)) {
       _.each(type, (t: string) => {
         this.one(t, eventHandle);
-      })
+      });
     } else {
       var once = (e: Event, args: any) => {
         this.off(type, once);
         return eventHandle(e, args);
-      }
+      };
       this.on(type, once);
     }
   }
@@ -481,19 +500,19 @@ export class Dom {
     if (_.isArray(type)) {
       _.each(type, (t: string) => {
         this.off(t, eventHandle);
-      })
+      });
     } else {
-      var jq = this.getJQuery();
+      var jq = JQueryUtils.getJQuery();
       if (jq) {
         jq(this.el).off(type, eventHandle);
       } else if (this.el.removeEventListener) {
-        var idx = 0
+        var idx = 0;
         var found = _.find(Dom.handlers, (handlerObj: { eventHandle: Function, fn: EventListener }, i) => {
           if (handlerObj.eventHandle == eventHandle) {
             idx = i;
             return true;
           }
-        })
+        });
         if (found) {
           this.el.removeEventListener(type, found.fn, false);
           Dom.handlers.splice(idx, 1);
@@ -510,14 +529,13 @@ export class Dom {
    * @param data
    */
   public trigger(type: string, data?: { [key: string]: any }): void {
-    var jq = this.getJQuery();
+    var jq = JQueryUtils.getJQuery();
     if (jq) {
-      jq(this.el).trigger(type, data)
+      jq(this.el).trigger(type, data);
     } else if (CustomEvent !== undefined) {
       var event = new CustomEvent(type, { detail: data, bubbles: true });
       this.el.dispatchEvent(event);
     } else {
-      // TODO Support for older browser ?
       new Logger(this).error('CANNOT TRIGGER EVENT FOR OLDER BROWSER');
     }
   }
@@ -557,27 +575,132 @@ export class Dom {
     this.detach();
   }
 
+  // based on http://api.jquery.com/position/
+  /**
+   * Return the position relative to the offset parent.
+   */
+  public position(): IOffset {
+    let offsetParent = this.offsetParent();
+    let parentOffset: IOffset = { top: 0, left: 0 };
+
+    let offset = this.offset();
+    if (!$$(offsetParent).is('html')) {
+      parentOffset = $$(offsetParent).offset();
+    }
+
+    let borderTopWidth = parseInt($$(offsetParent).css('borderTopWidth'));
+    let borderLeftWidth = parseInt($$(offsetParent).css('borderLeftWidth'));
+    borderTopWidth = isNaN(borderTopWidth) ? 0 : borderTopWidth;
+    borderLeftWidth = isNaN(borderLeftWidth) ? 0 : borderLeftWidth;
+
+    parentOffset = {
+      top: parentOffset.top + borderTopWidth,
+      left: parentOffset.left + borderLeftWidth
+    };
+
+    let marginTop = parseInt(this.css('marginTop'));
+    let marginLeft = parseInt(this.css('marginLeft'));
+    marginTop = isNaN(marginTop) ? 0 : marginTop;
+    marginLeft = isNaN(marginLeft) ? 0 : marginLeft;
+
+    return {
+      top: offset.top - parentOffset.top - marginTop,
+      left: offset.left - parentOffset.left - marginLeft
+    };
+  }
+
+  // based on https://api.jquery.com/offsetParent/
+  /**
+   * Returns the offset parent. The offset parent is the closest parent that is positioned.
+   * An element is positioned when its position property is not 'static', which is the default.
+   */
+  public offsetParent(): HTMLElement {
+    let offsetParent = this.el.offsetParent;
+
+    while (offsetParent instanceof HTMLElement && $$(offsetParent).css('position') === 'static') {
+      // Will break out if it stumbles upon an non-HTMLElement and return documentElement
+      offsetParent = (<HTMLElement>offsetParent).offsetParent;
+    }
+
+    if (!(offsetParent instanceof HTMLElement)) {
+      return document.documentElement;
+    }
+    return <HTMLElement>offsetParent;
+  }
+
+  // based on http://api.jquery.com/offset/
+  /**
+   * Return the position relative to the document.
+   */
+  public offset(): IOffset {
+    // In <=IE11, calling getBoundingClientRect on a disconnected node throws an error
+    if (!this.el.getClientRects().length) {
+      return { top: 0, left: 0 };
+    }
+
+
+    let rect = this.el.getBoundingClientRect();
+
+    if (rect.width || rect.height) {
+      let doc = this.el.ownerDocument;
+      let docElem = doc.documentElement;
+
+      return {
+        top: rect.top + window.pageYOffset - docElem.clientTop,
+        left: rect.left + window.pageXOffset - docElem.clientLeft
+      };
+    }
+    return rect;
+  }
+
   /**
    * Returns the offset width of the element
    */
-  public width() {
+  public width(): number {
     return this.el.offsetWidth;
   }
 
   /**
    * Returns the offset height of the element
    */
-  public height() {
+  public height(): number {
     return this.el.offsetHeight;
   }
 
-  private getJQuery() {
-    if (window['jQuery'] != undefined) {
-      return window['jQuery']
-    }
-    return false;
+  /**
+   * Clone the node
+   * @param deep true if the children of the node should also be cloned, or false to clone only the specified node.
+   * @returns {Dom}
+   */
+  public clone(deep = false): Dom {
+    let newNode = <HTMLElement>this.el.cloneNode(deep);
+    return $$(newNode);
   }
 
+  private traverseAncestorForClass(current = this.el, className: string): HTMLElement {
+    if (className.indexOf('.') == 0) {
+      className = className.substr(1);
+    }
+    var found = false;
+    while (!found) {
+      if ($$(current).hasClass(className)) {
+        found = true;
+      }
+      if (current.tagName.toLowerCase() == 'body') {
+        break;
+      }
+      if (current.parentElement == null) {
+        break;
+      }
+      if (!found) {
+        current = current.parentElement;
+      }
+    }
+    if (found) {
+      return current;
+    }
+    return undefined;
+  }
 }
 
 export class Win {
@@ -590,6 +713,22 @@ export class Win {
 
   public width(): number {
     return this.win.innerWidth;
+  }
+
+  public scrollY(): number {
+    return this.supportPageOffset() ? this.win.pageYOffset : this.isCSS1Compat() ? this.win.document.documentElement.scrollTop : this.win.document.body.scrollTop;
+  }
+
+  public scrollX(): number {
+    return this.supportPageOffset() ? window.pageXOffset : this.isCSS1Compat() ? document.documentElement.scrollLeft : document.body.scrollLeft;
+  }
+
+  private isCSS1Compat() {
+    return (this.win.document.compatMode || '') === 'CSS1Compat';
+  }
+
+  private supportPageOffset() {
+    return this.win.pageXOffset !== undefined;
   }
 }
 
@@ -627,15 +766,4 @@ export function $$(...args: any[]): Dom {
   } else {
     return new Dom(Dom.createElement.apply(Dom, args));
   }
-}
-
-export function htmlToDom(html: string): Element {
-  var parsedHtml = document.createElement('div');
-  parsedHtml.innerHTML = html;
-  // If the template has a single root element, we return it directly. Otherwise
-  // we'll have to wrap this thing in a div as ResultList expects a single element.
-  if (parsedHtml.children.length == 1) {
-    return parsedHtml.children.item(0);
-  }
-  return parsedHtml;
 }

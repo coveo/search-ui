@@ -1,7 +1,8 @@
-import {IQueryResult} from '../../rest/QueryResult';
-import {Utils} from '../../utils/Utils';
-import {l} from '../../strings/Strings';
-import {Assert} from '../../misc/Assert';
+import { IQueryResult } from '../../rest/QueryResult';
+import { Utils } from '../../utils/Utils';
+import { l } from '../../strings/Strings';
+import { Assert } from '../../misc/Assert';
+import * as _ from 'underscore';
 
 // On-demand mapping of file types to captions. Used by facets, but I don't
 // really like this. Maybe a dedicated filetype facet would be better? Hmm...
@@ -14,8 +15,8 @@ export interface IFileTypeInfo {
 
 export class FileTypes {
   static get(result: IQueryResult): IFileTypeInfo {
-    var objecttype = <string>result.raw.objecttype;
-    var filetype = <string>result.raw.filetype;
+    var objecttype = <string>Utils.getFieldValue(result, 'objecttype');
+    var filetype = <string>Utils.getFieldValue(result, 'filetype');
 
     // When @objecttype is File we fallback on @filetype for icons and such
     if (Utils.isNonEmptyString(objecttype) && objecttype.toLowerCase() != 'file') {
@@ -36,13 +37,14 @@ export class FileTypes {
     // are generated (they are case sensitive, alas).
     objecttype = objecttype.toLowerCase();
 
+    const variableValue = `objecttype_${objecttype}`;
     // Most object types have a set of localized strings in the main dictionary
-    var localizedString = l('objecttype_' + objecttype);
+    var localizedString = l(variableValue);
 
     return {
-      'icon': 'coveo-icon objecttype ' + objecttype,
-      caption: localizedString != 'objecttype_' + objecttype ? localizedString : objecttype
-    }
+      'icon': 'coveo-icon objecttype ' + objecttype.replace(' ', '-'),
+      caption: localizedString != variableValue ? localizedString : objecttype
+    };
   }
 
   static getFileType(filetype: string): IFileTypeInfo {
@@ -56,18 +58,20 @@ export class FileTypes {
       filetype = filetype.substring(1);
     }
 
+    const variableValue = `filetype_${filetype}`;
     // Most filetypes have a set of localized strings in the main dictionary
-    var localizedString = l('filetype_' + filetype);
+    let localizedString = l(variableValue);
+
     return {
-      'icon': 'coveo-icon filetype ' + filetype,
-      caption: localizedString != 'filetype_' + filetype ? localizedString : filetype
-    }
+      'icon': 'coveo-icon filetype ' + filetype.replace(' ', '-'),
+      caption: localizedString != variableValue ? localizedString : filetype
+    };
   }
 
   static getFileTypeCaptions() {
     if (fileTypeCaptions == undefined) {
       fileTypeCaptions = {};
-      var strings = String['locales'][String['locale']];
+      var strings = String['locales'][String['locale'].toLowerCase()];
       Assert.isNotUndefined(strings);
       _.each(_.keys(strings), function (key) {
         if (key.indexOf('filetype_') == 0) {

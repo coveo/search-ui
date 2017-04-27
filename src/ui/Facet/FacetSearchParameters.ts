@@ -1,12 +1,13 @@
 /// <reference path="Facet.ts" />
 
-import {Facet} from './Facet';
-import {Utils} from '../../utils/Utils';
-import {FacetUtils} from './FacetUtils';
-import {IGroupByRequest} from '../../rest/GroupByRequest';
-import {IQuery} from '../../rest/Query';
-import {QueryBuilder} from '../Base/QueryBuilder';
-import {$$} from '../../utils/Dom';
+import { Facet } from './Facet';
+import { Utils } from '../../utils/Utils';
+import { FacetUtils } from './FacetUtils';
+import { IGroupByRequest } from '../../rest/GroupByRequest';
+import { IQuery } from '../../rest/Query';
+import { QueryBuilder } from '../Base/QueryBuilder';
+import { $$ } from '../../utils/Dom';
+import * as _ from 'underscore';
 
 export class FacetSearchParameters {
   public searchEvenIfEmpty: boolean;
@@ -27,6 +28,7 @@ export class FacetSearchParameters {
   public setValueToSearch(value: string) {
     this.valueToSearch = value;
     if (Utils.isNonEmptyString(value)) {
+      this.valueToSearch = this.valueToSearch.trim();
       this.alwaysInclude = this.alwaysInclude.concat(FacetUtils.getValuesToUseForSearchInFacet(this.valueToSearch, this.facet));
     }
     return this;
@@ -36,15 +38,15 @@ export class FacetSearchParameters {
     _.each(this.getCurrentlyShowedValueInSearch(searchResults), (v) => {
       var expandedValues = FacetUtils.getValuesToUseForSearchInFacet(v, this.facet);
       _.each(expandedValues, (expanded) => {
-        this.alwaysExclude.push(expanded)
-      })
+        this.alwaysExclude.push(expanded);
+      });
     });
     _.each(this.facet.getDisplayedFacetValues(), (v) => {
       var expandedValues = FacetUtils.getValuesToUseForSearchInFacet(v.value, this.facet);
       _.each(expandedValues, (expanded) => {
         this.alwaysExclude.push(expanded);
-      })
-    })
+      });
+    });
   }
 
   public getGroupByRequest(): IGroupByRequest {
@@ -56,27 +58,27 @@ export class FacetSearchParameters {
 
     var typedByUser = [];
     if (this.valueToSearch) {
-      typedByUser = ['*' + this.valueToSearch + '*']
+      typedByUser = ['*' + this.valueToSearch + '*'];
     }
 
     var request: IGroupByRequest = {
       allowedValues: typedByUser.concat(this.alwaysInclude).concat(this.alwaysExclude),
       maximumNumberOfValues: nbResults,
-      completeFacetWithStandardValues: true,
-      field: this.facet.options.field,
+      completeFacetWithStandardValues: this.facet.options.lookupField ? false : true, // See : https://coveord.atlassian.net/browse/JSUI-728
+      field: <string>this.facet.options.field,
       sortCriteria: this.facet.options.sortCriteria || this.sortCriteria,
       injectionDepth: this.facet.options.injectionDepth,
-    }
+    };
 
     if (this.facet.options.lookupField) {
-      request.lookupField = this.facet.options.lookupField;
+      request.lookupField = <string>this.facet.options.lookupField;
     }
 
     if (this.facet.options.computedField) {
       request.computedFields = [{
-        field: this.facet.options.computedField,
+        field: <string>this.facet.options.computedField,
         operation: this.facet.options.computedFieldOperation
-      }]
+      }];
     }
     return request;
   }
@@ -85,12 +87,12 @@ export class FacetSearchParameters {
     var lastQuery = _.clone(this.facet.queryController.getLastQuery());
     if (!lastQuery) {
       // There should normally always be a last query available
-      // If not, just create en empty one.
+      // If not, just create an empty one.
       lastQuery = new QueryBuilder().build();
     }
-    lastQuery.q = this.facet.facetQueryController.expressionToUseForFacetSearch;
+    lastQuery.q = this.facet.facetQueryController.basicExpressionToUseForFacetSearch;
     lastQuery.cq = this.facet.facetQueryController.constantExpressionToUseForFacetSearch;
-    lastQuery.aq = null;
+    lastQuery.aq = this.facet.facetQueryController.advancedExpressionToUseForFacetSearch;
     lastQuery.enableDidYouMean = false;
     lastQuery.firstResult = 0;
     lastQuery.numberOfResults = 0;
@@ -102,15 +104,22 @@ export class FacetSearchParameters {
   private getCurrentlyShowedValueInSearch(searchResults: HTMLElement) {
     return _.map($$(searchResults).findAll('.coveo-facet-value-caption'), (val) => {
       return $$(val).text();
-    })
+    });
   }
 
   private lowerCaseAll() {
-    this.alwaysExclude = _.map(this.alwaysExclude, (v) => {
-      return v.toLowerCase()
-    });
-    this.alwaysInclude = _.map(this.alwaysInclude, (v) => {
-      return v.toLowerCase()
-    });
+    this.alwaysExclude = _.chain(this.alwaysExclude)
+      .map((v) => {
+        return v.toLowerCase();
+      })
+      .uniq()
+      .value();
+
+    this.alwaysInclude = _.chain(this.alwaysInclude)
+      .map((v) => {
+        return v.toLowerCase();
+      })
+      .uniq()
+      .value();
   }
 }

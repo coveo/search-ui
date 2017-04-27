@@ -1,18 +1,42 @@
-@import "Variables.scss";
+@import "bourbon/bourbon";
+@import "Variables";
 
-.CoveoSearchInterface.coveo-small-search-interface {
-  .coveo-facet-dropdown-header-container {
-    display: inline-block;
-    height: 40px;
-    vertical-align: top;
-    p {
-      height: 100%;
+.CoveoSearchInterface.coveo-small-facets {
+
+  .coveo-results-header {
+    padding-left: 10px;
+  }
+
+  .coveo-sort-section {
+    span:first-child {
+      padding-left: 0;
     }
   }
 
+  .coveo-list-layout {
+    .CoveoResult {
+      margin: 0;
+      padding: 15px 10px 15px 15px;
+    }
+  }
+
+  .CoveoResultList {
+    margin-bottom: 15px;
+  }
+
+  .coveo-facet-dropdown-content {
+    z-index: 20;
+    margin: 0;
+  }
+
   .coveo-facet-dropdown-header {
-    margin: 0 10px 0 10px;
-    @include align();
+    @include order(2);
+    @include defaultRoundedBorder();
+    background-color: white;
+
+    &.coveo-dropdown-header-active {
+      z-index: 20;
+    }
   }
 
   .coveo-facet-column.coveo-facet-dropdown-content {
@@ -26,52 +50,51 @@
     z-index: 20;
     box-shadow: 0 7px 15px rgba(0, 0, 0, 0.25);
     border-radius: 0 0 0 2px;
-
-    .coveo-facet-header-filter-by-container {
-      background: $color-blueish-white;
-      font-size: $font-size-bigger;
-      font-weight: 700;
-      letter-spacing: 0.22px;
-      line-height: 22px;
-
-      .coveo-facet-header-filter-by {
-        display: block;
-        padding: 10px 0 10px 20px;
-      }
-    }
-    
-    .CoveoFacet {
+    .CoveoFacet,
+    .CoveoFacetSlider,
+    .CoveoFacetRange,
+    .CoveoHierarchicalFacet {
       margin: 0;
       border: 0;
       border-radius: 0;
-
       .coveo-facet-header {
         border: 0;
         border-radius: 0;
         border-top: $default-border;
+        white-space: initial;
       }
     }
+  }
 
-    .CoveoFacet.coveo-last-facet {
-        //Since we override facet border and we want the facet column to have a border-radius, we need to set the last facet with the
-        //border-radius or it will not be visible since there's no border-width.
-        border-radius: 0 0 0 2px;
+  .coveo-facet-header-filter-by-container {
+    background: $color-blueish-white;
+    font-size: $font-size-bigger;
+    font-weight: 700;
+    letter-spacing: 0.22px;
+    line-height: 22px;
+    .coveo-facet-header-filter-by {
+      display: block;
+      padding: 10px 0 10px 20px;
     }
   }
-}
-.coveo-facet-dropdown-background {
-    @include transition-property(opacity);
-    @include transition-duration(0.300s);
-    background: $color-transparent-background;
-    opacity: 0;
-    position: fixed;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    z-index: 15;
+
+  .coveo-facet-header-filter-by-container {
+    background: $color-blueish-white;
+    font-size: $font-size-bigger;
+    font-weight: 700;
+    letter-spacing: 0.22px;
+    line-height: 22px;
+    .coveo-facet-header-filter-by {
+      display: block;
+      padding: 10px 0 10px 20px;
+    }
+  }
 }
 
 .coveo-facet-header-filter-by {
   display: none;
+}
+
+.coveo-facet-settings-popup {
+  z-index: 999;
 }
