@@ -222,7 +222,6 @@ export class Initialization {
    */
   public static initializeFramework(element: HTMLElement, options: any, initSearchInterfaceFunction: (...args: any[]) => IInitResult): Promise<{ elem: HTMLElement }> {
     Assert.exists(element);
-    debugger;
     let alreadyInitialized = Component.get(element, QueryController, true);
     if (alreadyInitialized) {
       this.logger.error('This DOM element has already been initialized as a search interface, skipping initialization', element);
