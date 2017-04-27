@@ -1,8 +1,11 @@
-@import "mixins/preferencePanel";
 @import "Variables";
 
 .CoveoPreferencesPanel {
   display: none;
+}
+
+.CoveoResultsPreferences + .CoveoResultsFiltersPreferences {
+  margin-top: 20px;
 }
 
 .preferences-panel-item-label {
@@ -10,12 +13,4 @@
   &:hover {
     cursor: pointer;
   }
-}
-
-.CoveoResultsPreferences, .CoveoResultsFiltersPreferences {
-  @include coveo-preferences-panel-item;
-}
-
-.CoveoPreferencePanelItem {
-  @include coveo-preferences-panel-item;
 }
