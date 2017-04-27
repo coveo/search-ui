@@ -320,7 +320,7 @@ Initialization.configureRessourceRoot('nuke', (element: HTMLElement) => {
 
 /**
  * Sets the path from where the chunks used for lazy loading will be loaded.
- * @param path This should be the path of the Coveo script.
+ * @param path This should be the path of the Coveo script. It should also have a trailing slash.
  */
 export function configureRessourceRoot(path: string) {
   PublicPathUtils.configureRessourceRoot(path);
