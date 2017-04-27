@@ -1,4 +1,4 @@
-# Search UI [![Build Status](https://travis-ci.org/coveo/search-ui.svg?branch=master)](https://travis-ci.org/coveo/search-ui) [![TypeScript](https://badges.frapsoft.com/typescript/code/typescript.svg?v=101)](https://github.com/ellerbrock/typescript-badges/)
+# Search UI [![Build Status](https://travis-ci.org/coveo/search-ui.svg?branch=master)](https://travis-ci.org/coveo/search-ui) [![Coverage Status](https://coveralls.io/repos/github/coveo/search-ui/badge.svg?branch=master)](https://coveralls.io/github/coveo/search-ui?branch=master) [![TypeScript](https://badges.frapsoft.com/typescript/code/typescript.svg?v=101)](https://github.com/ellerbrock/typescript-badges/)
 
 Coveo JavaScript Search UI Framework
 
@@ -186,10 +186,10 @@ General reference documentation is generated using TypeDoc (see
 generated reference documentation lists and describes all available options and public methods for each component.
 
 Handwritten documentation with more examples is also available (see 
-[JavaScript Search Framework V1 Home](https://developers.coveo.com/display/JsSearchV1/JavaScript+Search+Framework+V1+Home)).
+[JavaScript Search Framework Home](https://developers.coveo.com/display/JsSearchV1/JavaScript+Search+Framework+V1+Home)).
 
 A tutorial is available (see 
-[JavaScript Search Framework V1 Getting Started Tutorial](https://developers.coveo.com/display/JsSearchV1/JavaScript+Search+Framework+V1+Getting+Started+Tutorial)). 
+[JavaScript Search Framework Getting Started Tutorial](https://developers.coveo.com/display/JsSearchV1/JavaScript+Search+Framework+V1+Getting+Started+Tutorial)). 
 If you are new to the Coveo JavaScript Search UI Framework, you should definitely consult this tutorial, as it contains 
 valuable information.
 
