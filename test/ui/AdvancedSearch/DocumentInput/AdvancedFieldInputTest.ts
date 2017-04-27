@@ -22,17 +22,17 @@ export function AdvancedFieldInputTest() {
 
     describe('getValue', () => {
       it('if contains, should return fieldName = value', () => {
-        input.mode.selectValue('Contains');
+        input.mode.setValue('Contains');
         expect(input.getValue()).toEqual(`${fieldName}=${value}`);
       });
 
       it('if does not contains, should return fieldName <> value', () => {
-        input.mode.selectValue('DoesNotContain');
+        input.mode.setValue('DoesNotContain');
         expect(input.getValue()).toEqual(`${fieldName}<>${value}`);
       });
 
       it('if matches, should return fieldName == "value"', () => {
-        input.mode.selectValue('Matches');
+        input.mode.setValue('Matches');
         expect(input.getValue()).toEqual(`${fieldName}==${value}`);
       });
     });

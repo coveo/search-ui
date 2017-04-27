@@ -1,14 +1,15 @@
 import { Dropdown } from '../../../../src/ui/FormWidgets/Dropdown';
 import { $$ } from '../../../../src/utils/Dom';
+import { RadioButton } from '../../../../src/ui/FormWidgets/RadioButton';
 
 export function RadioButtonTest() {
   describe('RadioButton', () => {
-    let dropdown: Dropdown;
+    /*let dropdown: RadioButton;
     let values: string[];
 
     beforeEach(function () {
       values = ['one', 'two', 'three'];
-      dropdown = new Dropdown(undefined, values);
+     dropdown = new RadioButton(undefined, values);
     });
 
     afterEach(function () {
@@ -29,14 +30,14 @@ export function RadioButtonTest() {
 
     describe('selectValue', () => {
       it('should select option with specified value', () => {
-        dropdown.selectValue('three');
+     dropdown.setValue('three');
         expect(dropdown.getValue()).toEqual('three');
       });
 
       it('should not change selection if the value doesn\'t exist', () => {
-        dropdown.selectValue('random');
+     dropdown.setValue('random');
         expect(dropdown.getValue()).toEqual(values[0]);
       });
-    });
+     });*/
   });
 }

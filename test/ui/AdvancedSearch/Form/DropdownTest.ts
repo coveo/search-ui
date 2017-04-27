@@ -55,12 +55,12 @@ export function DropdownTest() {
 
     describe('selectValue', () => {
       it('should select option with specified value', () => {
-        dropdown.selectValue('three');
+        dropdown.setValue('three');
         expect(dropdown.getValue()).toEqual('three');
       });
 
       it('should not change selection if the value doesn\'t exist', () => {
-        dropdown.selectValue('random');
+        dropdown.setValue('random');
         expect(dropdown.getValue()).toEqual(values[0]);
       });
     });

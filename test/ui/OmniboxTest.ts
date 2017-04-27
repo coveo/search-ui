@@ -58,14 +58,14 @@ export function OmniboxTest() {
         }, test.cmp.options.searchAsYouTypeDelay);
       });
 
-      it('enableQuerySyntax should modify the disableQuerySyntax parameter', function () {
+      it('enableQuerySyntax should modify the enableQuerySyntax parameter', function () {
         test = Mock.optionsComponentSetup<Omnibox, IOmniboxOptions>(Omnibox, {
           enableQuerySyntax: false
         });
         test.cmp.setText('@field==Batman');
 
         var simulation = Simulate.query(test.env);
-        expect(simulation.queryBuilder.disableQuerySyntax).toBe(true);
+        expect(simulation.queryBuilder.enableQuerySyntax).toBe(false);
 
         test = Mock.optionsComponentSetup<Omnibox, IOmniboxOptions>(Omnibox, {
           enableQuerySyntax: true
@@ -73,7 +73,7 @@ export function OmniboxTest() {
         test.cmp.setText('@field==Batman');
 
         simulation = Simulate.query(test.env);
-        expect(simulation.queryBuilder.disableQuerySyntax).toBe(false);
+        expect(simulation.queryBuilder.enableQuerySyntax).toBe(true);
 
       });
 
@@ -214,14 +214,14 @@ export function OmniboxTest() {
         test = Mock.optionsComponentSetup<Omnibox, IOmniboxOptions>(Omnibox, {
           placeholder: 'trololo'
         });
-        expect(test.cmp.getInput().placeholder).toBe('trololo');
+        expect(test.cmp.getInput().value).toBe('trololo');
       });
 
       it('placeholder should use translated version', () => {
         test = Mock.optionsComponentSetup<Omnibox, IOmniboxOptions>(Omnibox, {
           placeholder: 'SearchFor'
         });
-        expect(test.cmp.getInput().placeholder).toBe(l('SearchFor'));
+        expect(test.cmp.getInput().value).toBe(l('SearchFor'));
       });
 
       it('enableSearchAsYouType + enableQuerySuggestAddon should send correct analytics events', () => {
