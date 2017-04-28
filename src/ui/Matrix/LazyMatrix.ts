@@ -8,7 +8,7 @@ export function lazyMatrix() {
       require.ensure(['./Matrix'], () => {
         let loaded = require<IComponentDefinition>('./Matrix.ts')['Matrix'];
         lazyExport(loaded, resolve);
-      }, 'Matrix');
+      }, LazyInitialization.buildErrorCallback('Matrix'), 'Matrix');
     });
   });
 }

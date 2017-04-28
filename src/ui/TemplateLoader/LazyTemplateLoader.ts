@@ -8,7 +8,7 @@ export function lazyTemplateLoader() {
       require.ensure(['./TemplateLoader'], () => {
         let loaded = require<IComponentDefinition>('./TemplateLoader.ts')['TemplateLoader'];
         lazyExport(loaded, resolve);
-      }, 'TemplateLoader');
+      }, LazyInitialization.buildErrorCallback('TemplateLoader'), 'TemplateLoader');
     });
   });
 }

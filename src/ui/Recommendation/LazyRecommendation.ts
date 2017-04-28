@@ -8,7 +8,7 @@ export function lazyRecommendation() {
       require.ensure(['./Recommendation'], () => {
         let loaded = require<IComponentDefinition>('./Recommendation.ts')['Recommendation'];
         lazyExport(loaded, resolve);
-      }, 'Recommendation');
+      }, LazyInitialization.buildErrorCallback('Recommendation'), 'Recommendation');
     });
   });
 }

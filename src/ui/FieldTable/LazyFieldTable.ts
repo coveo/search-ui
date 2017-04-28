@@ -8,7 +8,7 @@ export function lazyFieldTable() {
       require.ensure(['./FieldTable'], () => {
         let loaded = require<IComponentDefinition>('./FieldTable.ts')['FieldTable'];
         lazyExport(loaded, resolve);
-      }, 'FieldTable');
+      }, LazyInitialization.buildErrorCallback('FieldTable'), 'FieldTable');
     });
   });
 }

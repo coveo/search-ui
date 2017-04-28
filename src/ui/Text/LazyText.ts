@@ -8,7 +8,7 @@ export function lazyText() {
       require.ensure(['./Text'], () => {
         let loaded = require<IComponentDefinition>('./Text.ts')['Text'];
         lazyExport(loaded, resolve);
-      }, 'Text');
+      }, LazyInitialization.buildErrorCallback('Text'), 'Text');
     });
   });
 }

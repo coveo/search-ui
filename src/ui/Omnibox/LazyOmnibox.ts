@@ -8,7 +8,7 @@ export function lazyOmnibox() {
       require.ensure(['./Omnibox'], () => {
         let loaded = require<IComponentDefinition>('./Omnibox.ts')['Omnibox'];
         lazyExport(loaded, resolve);
-      }, 'Omnibox');
+      }, LazyInitialization.buildErrorCallback('Omnibox'), 'Omnibox');
     });
   });
 }

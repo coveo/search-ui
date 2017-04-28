@@ -8,7 +8,7 @@ export function lazySearchbox() {
       require.ensure(['./Searchbox'], () => {
         let loaded = require<IComponentDefinition>('./Searchbox.ts')['Searchbox'];
         lazyExport(loaded, resolve);
-      }, 'Searchbox');
+      }, LazyInitialization.buildErrorCallback('Searchbox'), 'Searchbox');
     });
   });
 }

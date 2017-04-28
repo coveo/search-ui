@@ -8,7 +8,7 @@ export function lazyPipelineContext() {
       require.ensure(['./PipelineContext'], () => {
         let loaded = require<IComponentDefinition>('./PipelineContext.ts')['PipelineContext'];
         lazyExport(loaded, resolve);
-      }, 'PipelineContext');
+      }, LazyInitialization.buildErrorCallback('PipelineContext'), 'PipelineContext');
     });
   });
 }

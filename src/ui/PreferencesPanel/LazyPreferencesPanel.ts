@@ -8,7 +8,7 @@ export function lazyPreferencesPanel() {
       require.ensure(['./PreferencesPanel'], () => {
         let loaded = require<IComponentDefinition>('./PreferencesPanel.ts')['PreferencesPanel'];
         lazyExport(loaded, resolve);
-      }, 'PreferencesPanel');
+      }, LazyInitialization.buildErrorCallback('lazyPreferencesPanel'), 'PreferencesPanel');
     });
   });
 }

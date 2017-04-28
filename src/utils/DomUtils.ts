@@ -90,4 +90,12 @@ export class DomUtils {
     new Coveo[Coveo['Salesforce'] ? 'SalesforceResultLink' : 'ResultLink'](header.find('.coveo-quickview-pop-up-reminder'), undefined, bindings, result);
     return header;
   }
+
+  static getCurrentScript(): HTMLScriptElement {
+    return <HTMLScriptElement>document.currentScript;
+  }
+
+  static getElementsByTagName<K extends keyof ElementListTagNameMap>(tagname: K): ElementListTagNameMap[K] {
+    return document.getElementsByTagName(tagname);
+  }
 }

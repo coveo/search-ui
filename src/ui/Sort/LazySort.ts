@@ -8,7 +8,7 @@ export function lazySort() {
       require.ensure(['./Sort'], () => {
         let loaded = require<IComponentDefinition>('./Sort.ts')['Sort'];
         lazyExport(loaded, resolve);
-      }, 'Sort');
+      }, LazyInitialization.buildErrorCallback('Sort'), 'Sort');
     });
   });
 }

@@ -8,7 +8,7 @@ export function lazyAnalytics() {
       require.ensure(['./Analytics'], () => {
         let loaded = require<IComponentDefinition>('./Analytics.ts')['Analytics'];
         lazyExport(loaded, resolve);
-      }, 'Analytics');
+      }, LazyInitialization.buildErrorCallback('Analytics'), 'Analytics');
     });
   });
 }
