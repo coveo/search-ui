@@ -8,7 +8,7 @@ export function lazyResultsPerPage() {
       require.ensure(['./ResultsPerPage'], () => {
         let loaded = require<IComponentDefinition>('./ResultsPerPage.ts')['ResultsPerPage'];
         lazyExport(loaded, resolve);
-      }, 'ResultsPerPage');
+      }, LazyInitialization.buildErrorCallback('ResultsPerPage'), 'ResultsPerPage');
     });
   });
 }

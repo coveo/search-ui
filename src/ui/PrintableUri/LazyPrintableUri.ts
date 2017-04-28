@@ -8,7 +8,7 @@ export function lazyPrintableUri() {
       require.ensure(['./PrintableUri'], () => {
         let loaded = require<IComponentDefinition>('./PrintableUri.ts')['PrintableUri'];
         lazyExport(loaded, resolve);
-      }, 'PrintableUri');
+      }, LazyInitialization.buildErrorCallback('PrintableUri'), 'PrintableUri');
     });
   });
 }

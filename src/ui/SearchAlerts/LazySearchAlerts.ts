@@ -8,7 +8,7 @@ export function lazySearchAlerts() {
       require.ensure(['./SearchAlerts'], () => {
         let loaded = require<IComponentDefinition>('./SearchAlerts.ts')['SearchAlerts'];
         lazyExport(loaded, resolve);
-      }, 'SearchAlerts');
+      }, LazyInitialization.buildErrorCallback('SearchAlerts'), 'SearchAlerts');
     });
   });
 }

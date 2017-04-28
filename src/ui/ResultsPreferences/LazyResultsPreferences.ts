@@ -8,7 +8,7 @@ export function lazyResultsPreferences() {
       require.ensure(['./ResultsPreferences'], () => {
         let loaded = require<IComponentDefinition>('./ResultsPreferences.ts')['ResultsPreferences'];
         lazyExport(loaded, resolve);
-      }, 'ResultsPreferences');
+      }, LazyInitialization.buildErrorCallback('ResultsPreferences'), 'ResultsPreferences');
     });
   });
 }

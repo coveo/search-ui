@@ -331,6 +331,10 @@ export class FieldValue extends Component {
   }
 
   private bindEventOnValue(element: HTMLElement, value: string) {
+    if (Utils.isUndefined(Coveo['FacetRange'])) {
+      return;
+    }
+
     let facetAttributeName = QueryStateModel.getFacetId(this.options.facet);
     let facets: Component[] = _.filter(this.componentStateModel.get(facetAttributeName), (facet: Component) => {
       if (Coveo['FacetRange']) {

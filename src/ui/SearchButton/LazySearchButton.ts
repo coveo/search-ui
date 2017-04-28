@@ -8,7 +8,7 @@ export function lazySearchButton() {
       require.ensure(['./SearchButton'], () => {
         let loaded = require<IComponentDefinition>('./SearchButton.ts')['SearchButton'];
         lazyExport(loaded, resolve);
-      }, 'SearchButton');
+      }, LazyInitialization.buildErrorCallback('SearchButton'), 'SearchButton');
     });
   });
 }

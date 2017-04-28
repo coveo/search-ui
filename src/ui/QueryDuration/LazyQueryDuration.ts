@@ -8,7 +8,7 @@ export function lazyQueryDuration() {
       require.ensure(['./QueryDuration'], () => {
         let loaded = require<IComponentDefinition>('./QueryDuration.ts')['QueryDuration'];
         lazyExport(loaded, resolve);
-      }, 'QueryDuration');
+      }, LazyInitialization.buildErrorCallback('QueryDuration'), 'QueryDuration');
     });
   });
 }

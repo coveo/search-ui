@@ -8,7 +8,7 @@ export function lazySettings() {
       require.ensure(['./Settings'], () => {
         let loaded = require<IComponentDefinition>('./Settings.ts')['Settings'];
         lazyExport(loaded, resolve);
-      }, 'Settings');
+      }, LazyInitialization.buildErrorCallback('Settings'), 'Settings');
     });
   });
 }
