@@ -1,16 +1,19 @@
-import { TextInput } from '../../../../src/ui/FormWidgets/TextInput';
-import { $$ } from '../../../../src/utils/Dom';
+import { TextInput } from '../../src/ui/FormWidgets/TextInput';
+import { $$ } from '../../src/utils/Dom';
 
 export function TextInputTest() {
   describe('TextInput', () => {
     let textInput: TextInput;
+    let spy: jasmine.Spy;
 
-    beforeEach(function () {
-      textInput = new TextInput();
+    beforeEach(() => {
+      spy = jasmine.createSpy('spy');
+      textInput = new TextInput(spy, 'hello');
     });
 
-    afterEach(function () {
+    afterEach(() => {
       textInput = null;
+      spy = null;
     });
 
     it('should contain a required input element', () => {
@@ -29,6 +32,7 @@ export function TextInputTest() {
     });
 
     it('should not contain a label if not specified', () => {
+      textInput = new TextInput(spy);
       let element = textInput.getElement();
       let labelHTML = <HTMLInputElement>$$(element).find('label');
       expect(labelHTML).toBeNull();
@@ -40,6 +44,31 @@ export function TextInputTest() {
         textInput.setValue(value);
         expect(textInput.getValue()).toEqual(value);
       });
+
+      it('should call the onchange', () => {
+        textInput.setValue('test');
+        expect(spy).toHaveBeenCalledWith(textInput);
+      });
+
+      it('should not call the onchange multiple time', () => {
+        textInput.setValue('test');
+        textInput.setValue('test');
+        textInput.setValue('test');
+        expect(spy).toHaveBeenCalledTimes(1);
+      });
+    });
+
+    it('should call on change on reset', () => {
+      textInput.setValue('test');
+      textInput.reset();
+      expect(spy).toHaveBeenCalledTimes(2);
+    });
+
+    it('should not call on change on reset multiple time', () => {
+      textInput.setValue('test');
+      textInput.reset();
+      textInput.reset();
+      expect(spy).toHaveBeenCalledTimes(2);
     });
   });
 }

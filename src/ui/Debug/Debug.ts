@@ -185,17 +185,19 @@ export class Debug extends RootComponent {
     this.bindEscapeEvent();
 
     let title = $$(modalbox.wrapper).find('.coveo-modal-header');
-    let search = this.buildSearchBox(build.body);
-    let downloadLink = $$('a', { download: 'debug.json', 'href': this.downloadHref(build.json) }, 'Download');
-    let bodyBuilder = (results?: IQueryResults) => {
-      let build = builder(results);
-      downloadLink.el.setAttribute('href', this.downloadHref(build.json));
-      return build.body;
-    };
-    title.appendChild(this.buildEnabledHighlightRecommendation());
-    title.appendChild(this.buildEnableDebugCheckbox(build.body, search, bodyBuilder));
-    title.appendChild(search);
-    title.appendChild(downloadLink.el);
+    if (title) {
+      let search = this.buildSearchBox(build.body);
+      let downloadLink = $$('a', { download: 'debug.json', 'href': this.downloadHref(build.json) }, 'Download');
+      let bodyBuilder = (results?: IQueryResults) => {
+        let build = builder(results);
+        downloadLink.el.setAttribute('href', this.downloadHref(build.json));
+        return build.body;
+      };
+      title.appendChild(this.buildEnabledHighlightRecommendation());
+      title.appendChild(this.buildEnableDebugCheckbox(build.body, search, bodyBuilder));
+      title.appendChild(search);
+      title.appendChild(downloadLink.el);
+    }
   }
 
   private handleEscapeEvent(e: KeyboardEvent) {

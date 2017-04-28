@@ -7,9 +7,6 @@ if (__webpack_require__.p == '') {
   __webpack_require__.p = 'http://localhost:8080/js/';
 }
 
-export { Checkbox } from './ui/FormWidgets/Checkbox';
-export { MultiSelect } from './ui/FormWidgets/MultiSelect';
-
 import { Initialization, LazyInitialization } from './ui/Base/Initialization';
 Initialization.componentsFactory = LazyInitialization.componentsFactory;
 
@@ -231,6 +228,30 @@ import { lazyYouTubeThumbnail } from './ui/YouTube/LazyYouTubeThumbnail';
 lazyYouTubeThumbnail();
 import { registerFields as youtubeThumbnailRegisterFields } from './ui/YouTube/YouTubeThumbnailFields';
 youtubeThumbnailRegisterFields();
+
+import { lazyCheckbox } from './ui/FormWidgets/LazyCheckbox';
+lazyCheckbox();
+
+import { lazyDatePicker } from './ui/FormWidgets/LazyDatePicker';
+lazyDatePicker();
+
+import { lazyDropdown } from './ui/FormWidgets/LazyDropdown';
+lazyDropdown();
+
+import { lazyFormGroup } from './ui/FormWidgets/LazyFormGroup';
+lazyFormGroup();
+
+import { lazyMultiSelect } from './ui/FormWidgets/LazyMultiSelect';
+lazyMultiSelect();
+
+import { lazyNumericSpinner } from './ui/FormWidgets/LazyNumericSpinner';
+lazyNumericSpinner();
+
+import { lazyRadioButton } from './ui/FormWidgets/LazyRadioButton';
+lazyRadioButton();
+
+import { lazyTextInput } from './ui/FormWidgets/LazyTextInput';
+lazyTextInput();
 
 import { swapVar } from './SwapVar';
 swapVar(this);

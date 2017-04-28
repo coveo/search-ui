@@ -83,6 +83,9 @@ export class ShareQuery extends Component {
    * Gets the link to the current query.
    */
   public getLinkToThisQuery(): string {
+    if (!this.linkToThisQuery) {
+      this.buildLinkToThisQuery();
+    }
     return this.linkToThisQuery.value;
   }
 
@@ -90,6 +93,9 @@ export class ShareQuery extends Component {
    * Sets the link to the current query.
    */
   public setLinkToThisQuery(link: string): void {
+    if (!this.linkToThisQuery) {
+      this.buildLinkToThisQuery();
+    }
     this.linkToThisQuery.value = link;
   }
 
@@ -97,6 +103,9 @@ export class ShareQuery extends Component {
    * Gets the complete query expression string
    */
   public getCompleteQuery(): string {
+    if (!this.completeQuery) {
+      this.buildCompleteQuery();
+    }
     return this.completeQuery.value;
   }
 
@@ -104,6 +113,9 @@ export class ShareQuery extends Component {
    * Set the complete query expression string.
    */
   public setCompleteQuery(completeQuery: string) {
+    if (!this.completeQuery) {
+      this.buildCompleteQuery();
+    }
     this.completeQuery.value = completeQuery;
   }
 
@@ -123,22 +135,8 @@ export class ShareQuery extends Component {
       className: 'coveo-share-query-summary-info-boxes'
     }).el;
 
-    this.linkToThisQuery = <HTMLInputElement>$$('input', {
-      type: 'text',
-      className: 'coveo-share-query-summary-info-input'
-    }).el;
-
-    $$(this.linkToThisQuery).on('click', () => this.linkToThisQuery.select());
-    this.linkToThisQuery.value = window.location.href;
-
-    this.completeQuery = <HTMLInputElement>$$('input', {
-      type: 'text',
-      className: 'coveo-share-query-summary-info-input'
-    }).el;
-
-    const lastQuery = this.queryController.getLastQuery();
-
-    this.completeQuery.value = Utils.trim(this.outputIfNotNull(lastQuery.q) + ' ' + this.outputIfNotNull(lastQuery.aq) + ' ' + this.outputIfNotNull(lastQuery.cq));
+    this.buildLinkToThisQuery();
+    this.buildCompleteQuery();
 
     boxes.appendChild(this.buildTextBoxWithLabel(l('Link') + ':', this.linkToThisQuery));
     boxes.appendChild(this.buildTextBoxWithLabel(l('CompleteQuery') + ':', this.completeQuery));
@@ -147,6 +145,26 @@ export class ShareQuery extends Component {
     Component.pointElementsToDummyForm(content);
 
     return content;
+  }
+
+  private buildCompleteQuery() {
+    this.completeQuery = <HTMLInputElement>$$('input', {
+      type: 'text',
+      className: 'coveo-share-query-summary-info-input'
+    }).el;
+
+    const lastQuery = this.queryController.getLastQuery();
+    this.completeQuery.value = Utils.trim(this.outputIfNotNull(lastQuery.q) + ' ' + this.outputIfNotNull(lastQuery.aq) + ' ' + this.outputIfNotNull(lastQuery.cq));
+  }
+
+  private buildLinkToThisQuery() {
+    this.linkToThisQuery = <HTMLInputElement>$$('input', {
+      type: 'text',
+      className: 'coveo-share-query-summary-info-input'
+    }).el;
+
+    $$(this.linkToThisQuery).on('click', () => this.linkToThisQuery.select());
+    this.linkToThisQuery.value = window.location.href;
   }
 
   private buildTextBoxWithLabel(label: string, input: HTMLInputElement): HTMLElement {

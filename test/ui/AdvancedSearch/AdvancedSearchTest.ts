@@ -16,10 +16,10 @@ import _ = require('underscore');
 
 export function AdvancedSearchTest() {
   describe('AdvancedSearch', () => {
-    var test: Mock.IBasicComponentSetup<AdvancedSearch>;
+    var test: Mock.IBasicComponentSetupWithModalBox<AdvancedSearch>;
 
     beforeEach(function () {
-      test = Mock.basicComponentSetup<AdvancedSearch>(AdvancedSearch);
+      test = Mock.basicComponentSetupWithModalBox<AdvancedSearch>(AdvancedSearch);
     });
 
     afterEach(function () {
@@ -55,7 +55,7 @@ export function AdvancedSearchTest() {
         });
       });
 
-      test = Mock.advancedComponentSetup<AdvancedSearch>(AdvancedSearch, new AdvancedComponentSetupOptions(undefined, undefined, (builder: MockEnvironmentBuilder) => {
+      test = Mock.advancedComponentSetupWithModalBox<AdvancedSearch>(AdvancedSearch, new AdvancedComponentSetupOptions(undefined, undefined, (builder: MockEnvironmentBuilder) => {
         builder.root = root;
         return builder;
       }));
@@ -64,12 +64,23 @@ export function AdvancedSearchTest() {
 
     });
 
+    it('should open the modal box on open', () => {
+      test.cmp.open();
+      expect(test.modalBox.open).toHaveBeenCalled();
+    });
+
+    it('should close the modal box on close', () => {
+      test.cmp.open();
+      test.cmp.close();
+      expect(test.modalBox.close).toHaveBeenCalled();
+    });
+
     describe('exposes includeKeywords', () => {
       it('should include the keywords section by default', () => {
         expect(getSection(l('Keywords'))).not.toBeUndefined();
       });
       it('should not include the keywords section if false', () => {
-        test = Mock.optionsComponentSetup<AdvancedSearch, IAdvancedSearchOptions>(AdvancedSearch, { includeKeywords: false });
+        test = Mock.optionsComponentSetupWithModalBox<AdvancedSearch, IAdvancedSearchOptions>(AdvancedSearch, { includeKeywords: false });
         expect(getSection(l('Keywords'))).toBeUndefined();
       });
     });
@@ -79,7 +90,7 @@ export function AdvancedSearchTest() {
         expect(getSection(l('Date'))).not.toBeUndefined();
       });
       it('should not include the date section if false', () => {
-        test = Mock.optionsComponentSetup<AdvancedSearch, IAdvancedSearchOptions>(AdvancedSearch, { includeDate: false });
+        test = Mock.optionsComponentSetupWithModalBox<AdvancedSearch, IAdvancedSearchOptions>(AdvancedSearch, { includeDate: false });
         expect(getSection(l('Date'))).toBeUndefined();
       });
     });
@@ -89,7 +100,7 @@ export function AdvancedSearchTest() {
         expect(getSection(l('Document'))).not.toBeUndefined();
       });
       it('should not include the document section if false', () => {
-        test = Mock.optionsComponentSetup<AdvancedSearch, IAdvancedSearchOptions>(AdvancedSearch, { includeDocument: false });
+        test = Mock.optionsComponentSetupWithModalBox<AdvancedSearch, IAdvancedSearchOptions>(AdvancedSearch, { includeDocument: false });
         expect(getSection(l('Document'))).toBeUndefined();
       });
     });
@@ -112,7 +123,7 @@ export function AdvancedSearchTest() {
     });
 
     function getSection(section: string) {
-      let sectionsTitle = $$(test.cmp.element).findAll('.coveo-advanced-search-section-title');
+      let sectionsTitle = $$(test.cmp.content).findAll('.coveo-advanced-search-section-title');
       let title = _.find(sectionsTitle, (title) => {
         return title.innerText == section;
       });

@@ -135,7 +135,16 @@ export class Omnibox extends Component {
      *
      * Default value is `false`.
      */
-    enableFieldAddon: ComponentOptions.buildBooleanOption({ defaultValue: false, depend: 'enableQuerySyntax' }),
+    enableFieldAddon: ComponentOptions.buildBooleanOption({
+      defaultValue: false,
+      depend: 'enableQuerySyntax',
+      postProcessing: (value, options: IOmniboxOptions) => {
+        if (value) {
+          options.enableQuerySyntax = true;
+        }
+        return value;
+      }
+    }),
     enableSimpleFieldAddon: ComponentOptions.buildBooleanOption({ defaultValue: false, depend: 'enableFieldAddon' }),
     listOfFields: ComponentOptions.buildFieldsOption({ depend: 'enableFieldAddon' }),
 
@@ -159,7 +168,16 @@ export class Omnibox extends Component {
      *
      * Default value is `false`.
      */
-    enableQueryExtensionAddon: ComponentOptions.buildBooleanOption({ defaultValue: false, depend: 'enableQuerySyntax' }),
+    enableQueryExtensionAddon: ComponentOptions.buildBooleanOption({
+      defaultValue: false,
+      depend: 'enableQuerySyntax',
+      postProcessing: (value, options: IOmniboxOptions) => {
+        if (value) {
+          options.enableQuerySyntax = true;
+        }
+        return value;
+      }
+    }),
 
     /**
      * Specifies a placeholder for the input.
@@ -171,7 +189,19 @@ export class Omnibox extends Component {
      *
      * Default value is `2000`. Minimum value is `0`.
      */
-    omniboxTimeout: ComponentOptions.buildNumberOption({ defaultValue: 2000, min: 0 })
+    omniboxTimeout: ComponentOptions.buildNumberOption({ defaultValue: 2000, min: 0 }),
+    /**
+     * Specifies whether the Coveo Platform should try to interpret special query syntax such as field references in the
+     * query that the user enters in the Querybox (see
+     * [Coveo Query Syntax Reference](http://www.coveo.com/go?dest=adminhelp70&lcid=9&context=10005)).
+     *
+     * Setting this option to `true` also causes the query syntax in the Querybox to highlight.
+     *
+     * Default value is `false`.
+     */
+    enableQuerySyntax: ComponentOptions.buildBooleanOption({
+      defaultValue: false
+    }),
   };
 
   public magicBox: Coveo.MagicBox.Instance;

@@ -1,5 +1,6 @@
 import { $$ } from '../../utils/Dom';
 import { IFormWidget, IFormWidgetSettable } from './FormWidgets';
+import { exportGlobally } from '../../GlobalExports';
 
 /**
  * This class will create a numeric spinner with standard styling
@@ -8,6 +9,12 @@ export class NumericSpinner implements IFormWidget, IFormWidgetSettable {
 
   private element: HTMLElement;
   public name: string;
+
+  public static doExport() {
+    exportGlobally({
+      'NumericSpinner': NumericSpinner
+    });
+  }
 
   /**
    * Create a new numeric spinner.

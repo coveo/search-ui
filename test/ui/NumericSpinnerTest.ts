@@ -1,5 +1,5 @@
-import { NumericSpinner } from '../../../../src/ui/FormWidgets/NumericSpinner';
-import { $$ } from '../../../../src/utils/Dom';
+import { NumericSpinner } from '../../src/ui/FormWidgets/NumericSpinner';
+import { $$ } from '../../src/utils/Dom';
 
 export function NumericSpinnerTest() {
   describe('NumericSpinner', () => {

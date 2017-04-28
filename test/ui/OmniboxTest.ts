@@ -214,14 +214,14 @@ export function OmniboxTest() {
         test = Mock.optionsComponentSetup<Omnibox, IOmniboxOptions>(Omnibox, {
           placeholder: 'trololo'
         });
-        expect(test.cmp.getInput().value).toBe('trololo');
+        expect(test.cmp.getInput().placeholder).toBe('trololo');
       });
 
       it('placeholder should use translated version', () => {
         test = Mock.optionsComponentSetup<Omnibox, IOmniboxOptions>(Omnibox, {
           placeholder: 'SearchFor'
         });
-        expect(test.cmp.getInput().value).toBe(l('SearchFor'));
+        expect(test.cmp.getInput().placeholder).toBe(l('SearchFor'));
       });
 
       it('enableSearchAsYouType + enableQuerySuggestAddon should send correct analytics events', () => {

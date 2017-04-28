@@ -1,6 +1,7 @@
 import { $$ } from '../../utils/Dom';
 import { KEYBOARD } from '../../utils/KeyboardUtils';
 import { IFormWidget, IFormWidgetSettable } from './FormWidgets';
+import { exportGlobally } from '../../GlobalExports';
 
 /**
  * This class will create a text input with standard styling.
@@ -9,6 +10,12 @@ export class TextInput implements IFormWidget, IFormWidgetSettable {
 
   private element: HTMLElement;
   private lastQueryText: string = '';
+
+  static doExport() {
+    exportGlobally({
+      'TextInput': TextInput
+    });
+  }
 
   /**
    * Create a new text input.
@@ -41,15 +48,23 @@ export class TextInput implements IFormWidget, IFormWidgetSettable {
    * @param value
    */
   public setValue(value: string) {
+    const currentValue = this.getValue();
     (<HTMLInputElement>$$(this.element).find('input')).value = value;
+    if (currentValue != value) {
+      this.onChange(this);
+    }
   }
 
   /**
    * Reset the text input
    */
   public reset() {
+    const currentValue = this.getValue();
     (<HTMLInputElement>$$(this.element).find('input')).value = '';
-    this.onChange(this);
+    if (currentValue != '') {
+      this.onChange(this);
+    }
+
   }
 
   /**

@@ -81,7 +81,7 @@ export class Querybox extends Component {
      *
      * Setting this option to `true` also causes the query syntax in the Querybox to highlight.
      *
-     * Default value is `true`.
+     * Default value is `false`.
      */
     enableQuerySyntax: ComponentOptions.buildBooleanOption({ defaultValue: false }),
 
@@ -118,7 +118,7 @@ export class Querybox extends Component {
      * > Otherwise, if the enableQuerySyntax option is `true` and this option is `false`, the end user has to type the
      * > `NEAR` keyword in uppercase in order for the Coveo Platform to interpret it as a query operator.
      */
-    enableLowercaseOperators: ComponentOptions.buildBooleanOption({ defaultValue: false }),
+    enableLowercaseOperators: ComponentOptions.buildBooleanOption({ defaultValue: false, depend: 'enableQuerySyntax' }),
 
     /**
      * Specifies whether to automatically convert a basic expression containing at least a certain number of keywords

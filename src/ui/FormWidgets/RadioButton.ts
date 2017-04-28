@@ -1,6 +1,7 @@
 import { $$ } from '../../utils/Dom';
 import { IFormWidgetWithLabel, IFormWidgetSelectable } from './FormWidgets';
 import 'styling/vapor/_Radio';
+import { exportGlobally } from '../../GlobalExports';
 
 /**
  * This class will create a radio button with standard styling.
@@ -8,6 +9,12 @@ import 'styling/vapor/_Radio';
 export class RadioButton implements IFormWidgetWithLabel, IFormWidgetSelectable {
 
   protected element: HTMLElement;
+
+  static doExport() {
+    exportGlobally({
+      'RadioButton': RadioButton
+    });
+  }
 
   /**
    * Create a new Radio button.
@@ -23,15 +30,22 @@ export class RadioButton implements IFormWidgetWithLabel, IFormWidgetSelectable 
    * Reset the radio button
    */
   public reset() {
+    const currentlySelected = this.isSelected();
     this.getRadio().checked = false;
-    this.onChange(this);
+    if (currentlySelected) {
+      this.onChange(this);
+    }
   }
 
   /**
    * Select the radio button;
    */
   public select() {
+    const currentlySelected = this.isSelected();
     this.getRadio().checked = true;
+    if (!currentlySelected) {
+      this.onChange(this);
+    }
   }
 
   /**

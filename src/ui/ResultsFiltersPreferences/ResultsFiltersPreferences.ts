@@ -131,7 +131,7 @@ export class ResultsFiltersPreferences extends Component {
   };
 
   public preferences: { [caption: string]: IResultFilterPreference };
-  private container: HTMLFieldSetElement;
+  public container: HTMLFieldSetElement;
   private preferencePanelLocalStorage: LocalStorageUtils<{ [caption: string]: IResultFilterPreference }>;
   private preferencePanel: HTMLElement;
   private preferenceContainer: HTMLElement;

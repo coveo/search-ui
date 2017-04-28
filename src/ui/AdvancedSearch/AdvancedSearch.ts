@@ -78,11 +78,11 @@ export class AdvancedSearch extends Component {
   };
 
   public inputs: IAdvancedSearchInput[] = [];
+  public content: Dom;
+
   private inputFactory = new AdvancedSearchInputFactory(this.queryController.getEndpoint());
   private externalSections: IExternalAdvancedSearchSection[] = [];
   private modalbox: Coveo.ModalBox.ModalBox;
-  private content: Dom;
-
   /**
    * Creates a new AdvancedSearch component.
    *
@@ -120,6 +120,29 @@ export class AdvancedSearch extends Component {
     });
   }
 
+  /**
+   * Open the advanced search
+   */
+  public open() {
+    if (this.modalbox == null) {
+      this.modalbox = this.ModalBox.open(this.content.el, {
+        sizeMod: 'big',
+        title: l('AdvancedSearch'),
+        className: 'coveo-advanced-search-modal'
+      });
+    }
+  }
+
+  /**
+   * Close the advanced search
+   */
+  public close() {
+    if (this.modalbox != null) {
+      this.modalbox.close();
+      this.modalbox = null;
+    }
+  }
+
   private buildContent() {
     let component = $$('div');
     let inputSections: IAdvancedSearchSection[] = [];
@@ -152,23 +175,6 @@ export class AdvancedSearch extends Component {
     });
 
     this.content = component;
-  }
-
-  private open() {
-    if (this.modalbox == null) {
-      this.modalbox = this.ModalBox.open(this.content.el, {
-        sizeMod: 'big',
-        title: l('AdvancedSearch'),
-        className: 'coveo-advanced-search-modal'
-      });
-    }
-  }
-
-  private close() {
-    if (this.modalbox != null) {
-      this.modalbox.close();
-      this.modalbox = null;
-    }
   }
 
   private getKeywordsSection(): IAdvancedSearchSection {

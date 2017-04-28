@@ -27,3 +27,12 @@ export function lazyExport(component: IComponentDefinition, promiseResolve: Func
   Initialization.registerAutoCreateComponent(component);
   promiseResolve(component);
 }
+
+export function lazyExportModule(mod: any, promiseResolve: Function) {
+  if (mod.doExport) {
+    mod.doExport();
+  } else {
+    new Logger(this).error(`Module ${mod} has no export function !`);
+  }
+  promiseResolve(mod);
+}

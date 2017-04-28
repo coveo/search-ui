@@ -2,6 +2,7 @@ import { $$, Dom } from '../../utils/Dom';
 import { l } from '../../strings/Strings';
 import * as _ from 'underscore';
 import { IFormWidget, IFormWidgetSettable } from './FormWidgets';
+import { exportGlobally } from '../../GlobalExports';
 
 /**
  * A dropdown, with standard styling
@@ -11,6 +12,12 @@ export class Dropdown implements IFormWidget, IFormWidgetSettable {
   private element: HTMLElement;
   private selectElement: HTMLSelectElement;
   private optionsElement: HTMLOptionElement[] = [];
+
+  static doExport() {
+    exportGlobally({
+      'Dropdown': Dropdown
+    });
+  }
 
   /**
    * Create a new dropdown.

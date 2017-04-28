@@ -624,9 +624,14 @@ export class LazyInitialization {
 
   // Map of every component to a promise that resolve with their implementation (lazily loaded)
   public static lazyLoadedComponents: IStringMap<() => Promise<IComponentDefinition>> = {};
+  public static lazyLoadedModule: IStringMap<() => Promise<any>> = {};
 
   public static getLazyRegisteredComponent(name: string): Promise<IComponentDefinition> {
     return LazyInitialization.lazyLoadedComponents[name]();
+  }
+
+  public static getLazyRegisteredModule(name: string): Promise<any> {
+    return LazyInitialization.lazyLoadedModule[name]();
   }
 
   public static registerLazyComponent(id: string, load: () => Promise<IComponentDefinition>): void {
@@ -636,6 +641,15 @@ export class LazyInitialization {
         Initialization.registeredComponents.push(id);
       }
       LazyInitialization.lazyLoadedComponents[id] = load;
+    } else {
+      this.logger.warn('Component being registered twice', id);
+    }
+  }
+
+  public static registerLazyModule(id: string, load: () => Promise<any>): void {
+    if (LazyInitialization.lazyLoadedModule[id] == null) {
+      Assert.exists(load);
+      LazyInitialization.lazyLoadedModule[id] = load;
     } else {
       this.logger.warn('Component being registered twice', id);
     }

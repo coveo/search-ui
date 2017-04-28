@@ -13,8 +13,6 @@
     ]
   },
   "include": [
-    "src/**/*.ts",
-    "test/**/*.ts",
-    "docs/playground/src/**/*.ts"
+    "src/**/*.ts"
   ]
 }

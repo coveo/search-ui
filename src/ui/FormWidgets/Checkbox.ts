@@ -1,10 +1,17 @@
 import { IFormWidgetWithLabel, IFormWidgetSelectable } from './FormWidgets';
 import { $$ } from '../../utils/Dom';
 import 'styling/vapor/_Checkbox';
+import { exportGlobally } from '../../GlobalExports';
 
 export class Checkbox implements IFormWidgetWithLabel, IFormWidgetSelectable {
   protected element: HTMLElement;
   protected checkbox: HTMLInputElement;
+
+  static doExport = () => {
+    exportGlobally({
+      'Checkbox': Checkbox
+    });
+  }
 
   /**
    * Create a new checkbox, with standard styling.
@@ -44,16 +51,22 @@ export class Checkbox implements IFormWidgetWithLabel, IFormWidgetSelectable {
    * Unselect the checkbox
    */
   public reset() {
+    const currentlyChecked = this.isSelected();
     this.checkbox.checked = false;
-    $$(this.checkbox).trigger('change');
+    if (currentlyChecked) {
+      $$(this.checkbox).trigger('change');
+    }
   }
 
   /**
    * Select the checkbox
    */
   public select() {
+    const currentlyChecked = this.isSelected();
     this.checkbox.checked = true;
-    $$(this.checkbox).trigger('change');
+    if (!currentlyChecked) {
+      $$(this.checkbox).trigger('change');
+    }
   }
 
   /**

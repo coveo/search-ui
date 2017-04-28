@@ -3,9 +3,16 @@ import { Dom, $$ } from '../../utils/Dom';
 import * as _ from 'underscore';
 
 import 'styling/vapor/_FormGroup';
+import { exportGlobally } from '../../GlobalExports';
 
 export class FormGroup {
   private element: Dom;
+
+  static doExport() {
+    exportGlobally({
+      'FormGroup': FormGroup
+    });
+  }
 
   /**
    * Create a new FormGroup which is a simple `fieldset` HTMLElement, containing multiple form widgets

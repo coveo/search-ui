@@ -2,6 +2,7 @@ import { IFormWidget, IFormWidgetSettable } from './FormWidgets';
 declare function require(name: string);
 import { $$ } from '../../utils/Dom';
 import { DateUtils } from '../../utils/DateUtils';
+import { exportGlobally } from '../../GlobalExports';
 let Pikaday = require('pikaday');
 
 
@@ -14,6 +15,12 @@ export class DatePicker implements IFormWidget, IFormWidgetSettable {
   private picker: Pikaday;
   public name: string;
   private wasReset = false;
+
+  static doExport = () => {
+    exportGlobally({
+      'DatePicker': DatePicker
+    });
+  }
 
   /**
    * Create a new datepicker
@@ -59,6 +66,7 @@ export class DatePicker implements IFormWidget, IFormWidgetSettable {
   public setValue(date: Date) {
     this.picker.setDate(date);
     this.wasReset = false;
+    this.onChange(this);
   }
 
   /**
