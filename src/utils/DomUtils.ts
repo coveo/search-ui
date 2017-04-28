@@ -94,4 +94,8 @@ export class DomUtils {
   static getCurrentScript(): HTMLScriptElement {
     return <HTMLScriptElement>document.currentScript;
   }
+
+  static getElementsByTagName<K extends keyof ElementListTagNameMap>(tagname: K): ElementListTagNameMap[K] {
+    return document.getElementsByTagName(tagname);
+  }
 }
