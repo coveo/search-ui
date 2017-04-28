@@ -31,6 +31,7 @@ gulp.task('dev', ['setup', 'deleteCssFile'], (done)=> {
     compress: true,
     contentBase: 'bin/',
     publicPath: 'http://localhost:8080/js/',
+    disableHostCheck: true,
     headers: {
       'Content-Security-Policy': "script-src 'self' code.jquery.com static.cloud.coveo.com 'unsafe-inline'"
     },
