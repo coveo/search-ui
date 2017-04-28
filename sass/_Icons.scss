@@ -7,6 +7,10 @@
   position: relative;
 }
 
+.coveo-placeholder {
+  display: none;
+}
+
 .coveo-icon-caption-overlay {
   background-color: white;
   @include defaultRoundedBorder();
