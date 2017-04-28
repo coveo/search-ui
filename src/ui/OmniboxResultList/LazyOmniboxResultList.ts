@@ -8,7 +8,7 @@ export function lazyOmniboxResultList() {
       require.ensure(['./OmniboxResultList'], () => {
         let loaded = require<IComponentDefinition>('./OmniboxResultList.ts')['OmniboxResultList'];
         lazyExport(loaded, resolve);
-      }, 'OmniboxResultList');
+      }, LazyInitialization.buildErrorCallback('OmniboxResultList'), 'OmniboxResultList');
     });
   });
 }

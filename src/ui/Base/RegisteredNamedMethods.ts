@@ -14,6 +14,7 @@ import { Component } from '../Base/Component';
 import { IStandaloneSearchInterfaceOptions } from '../SearchInterface/SearchInterface';
 import { IRecommendationOptions } from '../Recommendation/Recommendation';
 import * as _ from 'underscore';
+import { PublicPathUtils } from '../../utils/PublicPathUtils';
 
 /**
  * Initialize the framework with a basic search interface. Calls {@link Initialization.initSearchInterface}.
@@ -315,4 +316,16 @@ export function nuke(element: HTMLElement) {
 
 Initialization.registerNamedMethod('nuke', (element: HTMLElement) => {
   nuke(element);
+});
+
+/**
+ * Sets the path from where the chunks used for lazy loading will be loaded. In some cases, in IE11, we cannot automatically detect it, use this instead.
+ * @param path This should be the path of the Coveo script. It should also have a trailing slash.
+ */
+export function configureRessourceRoot(path: string) {
+  PublicPathUtils.configureRessourceRoot(path);
+}
+
+Initialization.registerNamedMethod('configureRessourceRoot', (path: string) => {
+  configureRessourceRoot(path);
 });

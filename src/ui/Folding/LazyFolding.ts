@@ -8,7 +8,7 @@ export function lazyFolding() {
       require.ensure(['./Folding'], () => {
         let loaded = require<IComponentDefinition>('./Folding.ts')['Folding'];
         lazyExport(loaded, resolve);
-      }, 'Folding');
+      }, LazyInitialization.buildErrorCallback('Folding'), 'Folding');
     });
   });
 }

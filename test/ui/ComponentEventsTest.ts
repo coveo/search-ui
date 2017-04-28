@@ -1,5 +1,5 @@
 import * as Mock from '../MockEnvironment';
-import { NoopComponent } from '../NoopComponent';
+import { NoopComponent } from '../../src/ui/NoopComponent/NoopComponent';
 import { registerCustomMatcher } from '../CustomMatchers';
 import { $$ } from '../../src/utils/Dom';
 

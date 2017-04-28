@@ -8,7 +8,7 @@ export function lazyResultRating() {
       require.ensure(['./ResultRating'], () => {
         let loaded = require<IComponentDefinition>('./ResultRating.ts')['ResultRating'];
         lazyExport(loaded, resolve);
-      }, 'ResultRating');
+      }, LazyInitialization.buildErrorCallback('ResultRating'), 'ResultRating');
     });
   });
 }

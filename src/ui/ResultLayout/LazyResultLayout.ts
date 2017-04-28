@@ -8,7 +8,7 @@ export function lazyResultLayout() {
       require.ensure(['./ResultLayout'], () => {
         let loaded = require<IComponentDefinition>('./ResultLayout.ts')['ResultLayout'];
         lazyExport(loaded, resolve);
-      }, 'ResultLayout');
+      }, LazyInitialization.buildErrorCallback('ResultLayout'), 'ResultLayout');
     });
   });
 }

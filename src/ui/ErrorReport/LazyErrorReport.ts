@@ -8,7 +8,7 @@ export function lazyErrorReport() {
       require.ensure(['./ErrorReport'], () => {
         let loaded = require<IComponentDefinition>('./ErrorReport.ts')['ErrorReport'];
         lazyExport(loaded, resolve);
-      }, 'ErrorReport');
+      }, LazyInitialization.buildErrorCallback('ErrorReport'), 'ErrorReport');
     });
   });
 }

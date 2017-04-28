@@ -8,7 +8,7 @@ export function lazyFacet() {
       require.ensure(['./Facet'], () => {
         let loaded = require<IComponentDefinition>('./Facet.ts')['Facet'];
         lazyExport(loaded, resolve);
-      }, 'Facet');
+      }, LazyInitialization.buildErrorCallback('Facet'), 'Facet');
     });
   });
 }

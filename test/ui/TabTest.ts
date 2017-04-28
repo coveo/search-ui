@@ -4,7 +4,7 @@ import { ITabOptions } from '../../src/ui/Tab/Tab';
 import { Simulate } from '../Simulate';
 import { $$ } from '../../src/utils/Dom';
 import { SearchEndpoint } from '../../src/rest/SearchEndpoint';
-import { NoopComponent } from '../NoopComponent';
+import { NoopComponent } from '../../src/ui/NoopComponent/NoopComponent';
 import { analyticsActionCauseList } from '../../src/ui/Analytics/AnalyticsActionListMeta';
 
 export function TabTest() {

@@ -8,7 +8,7 @@ export function lazyQuickview() {
       require.ensure(['./Quickview'], () => {
         let loaded = require<IComponentDefinition>('./Quickview.ts')['Quickview'];
         lazyExport(loaded, resolve);
-      }, 'Quickview');
+      }, LazyInitialization.buildErrorCallback('Quickview'), 'Quickview');
     });
   });
 }

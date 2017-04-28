@@ -1,11 +1,7 @@
 export * from './Core';
 
-// Hack for local dev ...
-// This publicPath is never set for some reason when using the dev server ...
-declare var __webpack_require__: any;
-if (__webpack_require__.p == '') {
-  __webpack_require__.p = 'http://localhost:8080/js/';
-}
+import { PublicPathUtils } from './utils/PublicPathUtils';
+PublicPathUtils.detectPublicPath();
 
 import { Initialization, LazyInitialization } from './ui/Base/Initialization';
 Initialization.componentsFactory = LazyInitialization.componentsFactory;
