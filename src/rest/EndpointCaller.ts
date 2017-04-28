@@ -300,7 +300,7 @@ export class EndpointCaller {
           var status = xmlHttpRequest.status;
 
           if (this.isSuccessHttpStatus(status)) {
-            xmlHttpRequest.responseType = responseType;
+            xmlHttpRequest.responseType = <XMLHttpRequestResponseType>responseType;
           } else {
             xmlHttpRequest.responseType = 'text';
           }

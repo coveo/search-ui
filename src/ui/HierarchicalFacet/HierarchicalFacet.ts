@@ -672,7 +672,7 @@ export class HierarchicalFacet extends Facet implements IComponentBindings {
       hierarchyElement.style.marginLeft = (this.options.marginByLevel * (hierarchy.level - this.options.levelStart)) + 'px';
     });
 
-    $$(<HTMLElement>fragment).insertAfter(this.headerElement);
+    $$(<any>fragment).insertAfter(this.headerElement);
   }
 
   private setValueListContent() {

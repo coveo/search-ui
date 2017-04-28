@@ -333,7 +333,12 @@ export class FieldValue extends Component {
   private bindEventOnValue(element: HTMLElement, value: string) {
     let facetAttributeName = QueryStateModel.getFacetId(this.options.facet);
     let facets: Component[] = _.filter(this.componentStateModel.get(facetAttributeName), (facet: Component) => {
-      return !facet.disabled && !(facet instanceof Coveo['FacetRange']);
+      if (Coveo['FacetRange']) {
+        return !facet.disabled && !(facet instanceof Coveo['FacetRange']);
+      } else {
+        return !facet.disabled;
+      }
+
     });
     let atLeastOneFacetIsEnabled = facets.length > 0;
 
