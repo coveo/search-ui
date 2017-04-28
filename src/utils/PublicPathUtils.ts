@@ -32,6 +32,6 @@ export class PublicPathUtils {
   }
 
   private static parseScriptDirectoryPath(script: HTMLScriptElement) {
-    return script.src.replace(/[\w\.]*\.js((#|\?)(.*)){0,1}$/, '');
+    return script.src.replace(/\/[\w\.-]*\.js((#|\?)(.*)){0,1}$/, '/');
   }
 }
