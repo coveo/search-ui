@@ -7,7 +7,7 @@ export function lazyFormGroup() {
       require.ensure(['./FormGroup'], () => {
         let loaded = require('./FormGroup.ts')['FormGroup'];
         lazyExportModule(loaded, resolve);
-      }, 'FormGroup');
+      }, LazyInitialization.buildErrorCallback('FormGroup'), 'FormGroup');
     });
   });
 }

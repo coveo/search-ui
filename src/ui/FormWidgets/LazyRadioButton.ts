@@ -7,7 +7,7 @@ export function lazyRadioButton() {
       require.ensure(['./RadioButton'], () => {
         let loaded = require('./RadioButton.ts')['RadioButton'];
         lazyExportModule(loaded, resolve);
-      }, 'RadioButton');
+      }, LazyInitialization.buildErrorCallback('RadioButton'), 'RadioButton');
     });
   });
 }

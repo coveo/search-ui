@@ -7,7 +7,7 @@ export function lazyDatePicker() {
       require.ensure(['./DatePicker'], () => {
         let loaded = require('./DatePicker.ts')['DatePicker'];
         lazyExportModule(loaded, resolve);
-      }, 'DatePicker');
+      }, LazyInitialization.buildErrorCallback('DatePicker'), 'DatePicker');
     });
   });
 }

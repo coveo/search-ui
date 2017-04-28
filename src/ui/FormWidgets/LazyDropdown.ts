@@ -7,7 +7,7 @@ export function lazyDropdown() {
       require.ensure(['./Dropdown'], () => {
         let loaded = require('./Dropdown.ts')['Dropdown'];
         lazyExportModule(loaded, resolve);
-      }, 'Dropdown');
+      }, LazyInitialization.buildErrorCallback('Dropdown'), 'Dropdown');
     });
   });
 }
