@@ -19,8 +19,8 @@ export function ResultListTableRendererTest() {
     it('should only instantiate table-header by default', () => {
       const fakeTemplateList = new TableTemplate([]);
       renderer = new ResultListTableRenderer({ resultTemplate: fakeTemplateList, resultContainer: resultContainer }, () => null);
-      renderer.renderResults([$$('div', { className: 'CoveoResult' }).el], false, () => null);
-      expect($$(resultContainer).find('.coveo-result-list-table-header')).not.toBeNull();
+      renderer.renderResults([$$('div', { className: 'CoveoResult' }).el], false, () => null)
+        .then(() => expect($$(resultContainer).find('.coveo-result-list-table-header')).not.toBeNull());
     });
 
     it('should render a table footer if one is present in an embedded TemplateList', () => {
@@ -31,8 +31,8 @@ export function ResultListTableRendererTest() {
         }
       });
       renderer = new ResultListTableRenderer({ resultTemplate: fakeTemplateList, resultContainer: resultContainer }, () => null);
-      renderer.renderResults([$$('div', { className: 'CoveoResult' }).el], false, () => null);
-      expect($$(resultContainer).find('.coveo-result-list-table-footer')).not.toBeNull();
+      renderer.renderResults([$$('div', { className: 'CoveoResult' }).el], false, () => null)
+        .then(() => expect($$(resultContainer).find('.coveo-result-list-table-footer')).not.toBeNull());
     });
 
     it('should not render a table header if custom templates are specified but no header template', () => {

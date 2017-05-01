@@ -26,15 +26,15 @@ export class ResultListTableRenderer extends ResultListRenderer {
     }
   }
 
-  beforeRenderingResults(container: Node, resultElements: HTMLElement[], append: boolean) {
+  getStartFragment(resultElements: HTMLElement[], append: boolean) {
     if (!append && !_.isEmpty(resultElements) && this.shouldDisplayHeader) {
-      this.renderRoledTemplate('table-header').then(tpl => container.appendChild(tpl));
+      return this.renderRoledTemplate('table-header');
     }
   }
 
-  afterRenderingResults(container: Node, resultElements: HTMLElement[], append: boolean) {
+  getEndFragment(resultElements: HTMLElement[], append: boolean) {
     if (!append && !_.isEmpty(resultElements) && this.shouldDisplayFooter) {
-      this.renderRoledTemplate('table-footer').then(tpl => container.appendChild(tpl));
+      return this.renderRoledTemplate('table-footer');
     }
   }
 

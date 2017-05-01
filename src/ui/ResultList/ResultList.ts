@@ -358,14 +358,13 @@ export class ResultList extends Component {
    * @param resultsElement
    * @param append
    */
-  public renderResults(resultElements: HTMLElement[], append = false): void {
+  public renderResults(resultElements: HTMLElement[], append = false): Promise<void> {
     if (!append) {
       this.options.resultContainer.innerHTML = '';
     }
 
-    this.renderer.renderResults(resultElements, append, this.triggerNewResultDisplayed.bind(this));
-
-    this.triggerNewResultsDisplayed();
+    return this.renderer.renderResults(resultElements, append, this.triggerNewResultDisplayed.bind(this))
+      .then(() => this.triggerNewResultsDisplayed());
   }
 
   /**

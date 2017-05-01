@@ -9,19 +9,30 @@ export class ResultListRenderer {
   }
 
   renderResults(resultElements: HTMLElement[], append = false, resultDisplayedCallback: (result: IQueryResult, resultElem: HTMLElement) => any) {
-    const resultsFragment = document.createDocumentFragment();
-    this.beforeRenderingResults(resultsFragment, resultElements, append);
-    _.each(resultElements, resultElement => {
-      resultsFragment.appendChild(resultElement);
-      resultDisplayedCallback(Component.getResult(resultElement), resultElement);
+    return Promise.all([
+      this.getStartFragment(resultElements, append),
+      this.getEndFragment(resultElements, append)
+    ]).then(([startFrag, endFrag]) => {
+      const resultsFragment = document.createDocumentFragment();
+      if (startFrag) {
+        resultsFragment.appendChild(startFrag);
+      }
+      _.each(resultElements, resultElement => {
+        resultsFragment.appendChild(resultElement);
+        resultDisplayedCallback(Component.getResult(resultElement), resultElement);
+      });
+      if (endFrag) {
+        resultsFragment.appendChild(endFrag);
+      }
+      this.resultListOptions.resultContainer.appendChild(resultsFragment);
     });
-    this.afterRenderingResults(resultsFragment, resultElements, append);
-    this.resultListOptions.resultContainer.appendChild(resultsFragment);
   }
 
-  protected beforeRenderingResults(container: Node, resultElements: HTMLElement[], append: boolean) {
+  protected getStartFragment(resultElements: HTMLElement[], append: boolean): Promise<DocumentFragment> {
+    return Promise.resolve(document.createDocumentFragment());
   }
 
-  protected afterRenderingResults(container: Node, resultElements: HTMLElement[], append: boolean) {
+  protected getEndFragment(resultElements: HTMLElement[], append: boolean): Promise<DocumentFragment> {
+    return Promise.resolve(document.createDocumentFragment());
   }
 }
