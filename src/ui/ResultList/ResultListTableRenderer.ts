@@ -26,13 +26,13 @@ export class ResultListTableRenderer extends ResultListRenderer {
     }
   }
 
-  getStartFragment(resultElements: HTMLElement[], append: boolean) {
+  getStartFragment(resultElements: HTMLElement[], append: boolean): Promise<DocumentFragment> {
     if (!append && !_.isEmpty(resultElements) && this.shouldDisplayHeader) {
       return this.renderRoledTemplate('table-header');
     }
   }
 
-  getEndFragment(resultElements: HTMLElement[], append: boolean) {
+  getEndFragment(resultElements: HTMLElement[], append: boolean): Promise<DocumentFragment> {
     if (!append && !_.isEmpty(resultElements) && this.shouldDisplayFooter) {
       return this.renderRoledTemplate('table-footer');
     }
@@ -42,6 +42,8 @@ export class ResultListTableRenderer extends ResultListRenderer {
     const elem = await (<TableTemplate>this.resultListOptions.resultTemplate).instantiateRoleToElement(role);
     $$(elem).addClass(`coveo-result-list-${role}`);
     this.autoCreateComponentsFn(elem, undefined);
-    return elem;
+    const frag = document.createDocumentFragment();
+    frag.appendChild(elem);
+    return frag;
   }
 }
