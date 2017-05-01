@@ -4,8 +4,9 @@ const glob = require('glob');
 const _ = require('underscore');
 const fs = require('fs');
 const buildSpriteList = require('./buildSpriteList');
+const shell = require('gulp-shell');
 
-gulp.task('spritesLists', ['regularSpriteList', 'retinaSpriteList', 'validateRetinaSprites']);
+gulp.task('spritesLists', ['regularSpriteList', 'retinaSpriteList', 'validateRetinaSprites', 'dumbCopy']);
 
 gulp.task('validateRetinaSprites', function (done) {
   glob("image/retina/**", function (err, files) {
@@ -25,3 +26,5 @@ gulp.task('regularSpriteList', function (done) {
 gulp.task('retinaSpriteList', function (done) {
   buildSpriteList('image/retina', 'bin/image', 'retina-icon-list-new', done);
 });
+
+gulp.task('dumbCopy', shell.task(['cp ./doctype.svg ./bin/']));

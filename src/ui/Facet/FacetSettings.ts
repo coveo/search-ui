@@ -11,6 +11,7 @@ import { DeviceUtils } from '../../utils/DeviceUtils';
 import { PopupUtils, HorizontalAlignment, VerticalAlignment } from '../../utils/PopupUtils';
 import * as _ from 'underscore';
 import 'styling/_FacetSettings';
+import { SVGLoaderUtils } from '../../utils/SvgLoaderUtils';
 
 export interface IFacetSettingsKlass {
   new (sorts: string[], facet: Facet): FacetSettings;
@@ -62,8 +63,9 @@ export class FacetSettings extends FacetSort {
     }).el;
 
     this.settingsIcon = $$('span', { className: 'coveo-icon' }).el;
+    this.settingsIcon = SVGLoaderUtils.buildSVG('ai', this.settingsButton).el;
 
-    this.settingsButton.appendChild(this.settingsIcon);
+    // this.settingsButton.appendChild(this.settingsIcon);
 
     this.settingsPopup = $$('div', { className: 'coveo-facet-settings-popup' }).el;
 
