@@ -8,7 +8,7 @@ export function lazyResultList() {
       require.ensure(['./ResultList'], () => {
         let loaded = require<IComponentDefinition>('./ResultList.ts')['ResultList'];
         lazyExport(loaded, resolve);
-      }, 'ResultList');
+      }, LazyInitialization.buildErrorCallback('ResultList'), 'ResultList');
     });
   });
 }

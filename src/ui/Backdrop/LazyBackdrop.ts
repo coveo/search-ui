@@ -8,7 +8,7 @@ export function lazyBackdrop() {
       require.ensure(['./Backdrop'], () => {
         let loaded = require<IComponentDefinition>('./Backdrop.ts')['Backdrop'];
         lazyExport(loaded, resolve);
-      }, 'Backdrop');
+      }, LazyInitialization.buildErrorCallback('Backdrop'), 'Backdrop');
     });
   });
 }

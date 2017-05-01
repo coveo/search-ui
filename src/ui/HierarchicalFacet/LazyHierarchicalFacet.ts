@@ -8,7 +8,7 @@ export function lazyHierarchicalFacet() {
       require.ensure(['./HierarchicalFacet', '../Facet/Facet'], () => {
         let loaded = require<IComponentDefinition>('./HierarchicalFacet.ts')['HierarchicalFacet'];
         lazyExport(loaded, resolve);
-      }, 'HierarchicalFacet');
+      }, LazyInitialization.buildErrorCallback('HierarchicalFacet'), 'HierarchicalFacet');
     });
   });
 }

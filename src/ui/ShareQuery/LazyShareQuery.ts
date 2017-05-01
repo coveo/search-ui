@@ -8,7 +8,7 @@ export function lazyShareQuery() {
       require.ensure(['./ShareQuery'], () => {
         let loaded = require<IComponentDefinition>('./ShareQuery.ts')['ShareQuery'];
         lazyExport(loaded, resolve);
-      }, 'ShareQuery');
+      }, LazyInitialization.buildErrorCallback('ShareQuery'), 'ShareQuery');
     });
   });
 }

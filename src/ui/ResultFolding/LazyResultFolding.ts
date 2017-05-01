@@ -8,7 +8,7 @@ export function lazyResultFolding() {
       require.ensure(['./ResultFolding'], () => {
         let loaded = require<IComponentDefinition>('./ResultFolding.ts')['ResultFolding'];
         lazyExport(loaded, resolve);
-      }, 'ResultFolding');
+      }, LazyInitialization.buildErrorCallback('ResultFolding'), 'ResultFolding');
     });
   });
 }

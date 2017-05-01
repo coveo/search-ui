@@ -8,7 +8,7 @@ export function lazyThumbnail() {
       require.ensure(['./Thumbnail'], () => {
         let loaded = require<IComponentDefinition>('./Thumbnail.ts')['Thumbnail'];
         lazyExport(loaded, resolve);
-      }, 'Thumbnail');
+      }, LazyInitialization.buildErrorCallback('Thumbnail'), 'Thumbnail');
     });
   });
 }

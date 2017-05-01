@@ -443,3 +443,6 @@ InitializationPlaceholderTest();
 
 import { ValueElementTest } from './ui/ValueElementTest';
 ValueElementTest();
+
+import { PublicPathUtilsTest } from './utils/PublicPathUtilsTest';
+PublicPathUtilsTest();

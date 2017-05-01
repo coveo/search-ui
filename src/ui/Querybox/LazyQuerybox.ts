@@ -8,7 +8,7 @@ export function lazyQuerybox() {
       require.ensure(['./Querybox'], () => {
         let loaded = require<IComponentDefinition>('./Querybox.ts')['Querybox'];
         lazyExport(loaded, resolve);
-      }, 'Querybox');
+      }, LazyInitialization.buildErrorCallback('Querybox'), 'Querybox');
     });
   });
 }

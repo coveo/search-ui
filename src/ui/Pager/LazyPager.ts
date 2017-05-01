@@ -8,7 +8,7 @@ export function lazyPager() {
       require.ensure(['./Pager'], () => {
         let loaded = require<IComponentDefinition>('./Pager.ts')['Pager'];
         lazyExport(loaded, resolve);
-      }, 'Pager');
+      }, LazyInitialization.buildErrorCallback('Pager'), 'Pager');
     });
   });
 }
