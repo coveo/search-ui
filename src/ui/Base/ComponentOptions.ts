@@ -247,10 +247,6 @@ export class ComponentOptions {
     return ComponentOptions.buildOption<boolean>(ComponentOptionsType.BOOLEAN, ComponentOptions.loadBooleanOption, optionArgs);
   }
 
-  static buildTriStateOption(optionArgs?: IComponentOptions<string>): string {
-    return ComponentOptions.buildOption<string>(ComponentOptionsType.STRING, ComponentOptions.loadStringOption, optionArgs);
-  }
-
   /**
    * Build a number option.
    *

@@ -130,12 +130,7 @@ export class Quickview extends Component {
         }
       }
       return DomUtils.getBasicLoadingAnimation();
-    }),
-    /**
-     * Specifies the Quick View modal window size (width and height) relative to the full window.<br/>
-     * The default value is 95% on a desktop and 100% on a mobile device.
-     */
-    size: ComponentOptions.buildStringOption({ defaultValue: DeviceUtils.isMobileDevice() ? '90%' : '90%' })
+    })
   };
 
   public static resultCurrentlyBeingRendered: IQueryResult = null;

@@ -134,7 +134,8 @@ export class ResultsPreferences extends Component {
 
   private buildRadiosInput() {
     if (this.options.enableQuerySyntax) {
-      const radios = _.map([l('On'), l('Off'), l('Automatic')], (label) => {
+
+      const createRadioButton = (label: string) => {
         const radio = new RadioButton((radioButtonInstance) => {
           this.fromPreferenceChangeEventToUsageAnalyticsLog(radioButtonInstance.isSelected() ? 'selected' : 'unselected', label);
           this.save();
@@ -142,9 +143,16 @@ export class ResultsPreferences extends Component {
             closeModalBox: false
           });
         }, label, 'coveo-results-preferences-query-syntax');
+        return radio;
+      };
+
+      const translatedLabels = _.map(['On', 'Off', 'Automatic'], label => l(label));
+      const radios = _.map(translatedLabels, (label) => {
+        const radio = createRadioButton(label);
         this.preferencePanelRadioInputs[label] = radio;
         return radio;
       });
+
       const formGroup = new FormGroup(radios, l('EnableQuerySyntax'));
       $$(this.element).append(formGroup.build());
       radios[2].select();
@@ -218,14 +226,10 @@ export class ResultsPreferences extends Component {
   }
 
   private fromPreferencesToRadioInput() {
-    if (this.preferences.enableQuerySyntax != null) {
-      if (this.preferences.enableQuerySyntax === true) {
-        this.preferencePanelRadioInputs[l('On')].select();
-      } else if (this.preferences.enableQuerySyntax === false) {
-        this.preferencePanelRadioInputs[l('Off')].select();
-      } else {
-        this.preferencePanelRadioInputs[l('Automatic')].select();
-      }
+    if (this.preferences.enableQuerySyntax === true) {
+      this.preferencePanelRadioInputs[l('On')].select();
+    } else if (this.preferences.enableQuerySyntax === false) {
+      this.preferencePanelRadioInputs[l('Off')].select();
     } else {
       this.preferencePanelRadioInputs[l('Automatic')].select();
     }

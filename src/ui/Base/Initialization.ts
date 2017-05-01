@@ -653,9 +653,9 @@ export class LazyInitialization {
   public static registerLazyModule(id: string, load: () => Promise<any>): void {
     if (LazyInitialization.lazyLoadedModule[id] == null) {
       Assert.exists(load);
-    } else {
       LazyInitialization.lazyLoadedModule[id] = load;
-      this.logger.warn('Component being registered twice', id);
+    } else {
+      this.logger.warn('Module being registered twice', id);
     }
   }
 

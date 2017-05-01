@@ -56,6 +56,19 @@ export function TextInputTest() {
         textInput.setValue('test');
         expect(spy).toHaveBeenCalledTimes(1);
       });
+
+      it('should call on change with different values multiple time', () => {
+        textInput.setValue('test 1');
+        textInput.setValue('test 2');
+        textInput.setValue('test 3');
+        expect(spy).toHaveBeenCalledTimes(3);
+      });
+
+      it('should call on change with empty value', () => {
+        textInput.setValue('test');
+        textInput.setValue('');
+        expect(spy).toHaveBeenCalledTimes(2);
+      });
     });
 
     it('should call on change on reset', () => {

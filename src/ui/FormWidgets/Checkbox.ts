@@ -3,6 +3,9 @@ import { $$ } from '../../utils/Dom';
 import 'styling/vapor/_Checkbox';
 import { exportGlobally } from '../../GlobalExports';
 
+/**
+ * A checkbox widget with standard styling
+ */
 export class Checkbox implements IFormWidgetWithLabel, IFormWidgetSelectable {
   protected element: HTMLElement;
   protected checkbox: HTMLInputElement;
@@ -21,6 +24,14 @@ export class Checkbox implements IFormWidgetWithLabel, IFormWidgetSelectable {
   constructor(public onChange: (checkbox: Checkbox) => void = (checkBox: Checkbox) => {
   }, public label: string) {
     this.buildContent();
+  }
+
+  /**
+   * Toggle the checkbox.
+   */
+  public toggle() {
+    this.checkbox.checked = !this.isSelected();
+    $$(this.checkbox).trigger('change');
   }
 
   /**
@@ -102,10 +113,7 @@ export class Checkbox implements IFormWidgetWithLabel, IFormWidgetSelectable {
     label.append(button.el);
     label.append(labelSpan.el);
 
-    button.on('click', () => {
-      this.checkbox.checked = !this.isSelected();
-      $$(this.checkbox).trigger('change');
-    });
+    button.on('click', () => this.toggle());
 
     $$(this.checkbox).on('change', () => {
       this.onChange(this);

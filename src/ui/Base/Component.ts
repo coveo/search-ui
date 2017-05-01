@@ -356,6 +356,13 @@ export class ComponentEvents {
     this.onRootElement(this.getQueryStateEventName(eventType, attribute), handler);
   }
 
+  /**
+   * Bind an event related specially to the component option model.
+   * This will build the correct string event and execute the handler only if the component is activated.
+   * @param eventType The event type for which to register an event.
+   * @param attribute The attribute for which to register an event.
+   * @param handler The handler to execute when the query state event is triggered.
+   */
   public onComponentOptions<T>(eventType: string, attribute?: string, handler?: (args: T) => any) {
     this.onRootElement(this.getComponentOptionEventName(eventType, attribute), handler);
   }

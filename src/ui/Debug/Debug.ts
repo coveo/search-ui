@@ -197,6 +197,8 @@ export class Debug extends RootComponent {
       title.appendChild(this.buildEnableDebugCheckbox(build.body, search, bodyBuilder));
       title.appendChild(search);
       title.appendChild(downloadLink.el);
+    } else {
+      this.logger.warn('No title found in modal box.');
     }
   }
 

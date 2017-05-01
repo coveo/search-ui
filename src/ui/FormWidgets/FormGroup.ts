@@ -5,6 +5,9 @@ import * as _ from 'underscore';
 import 'styling/vapor/_FormGroup';
 import { exportGlobally } from '../../GlobalExports';
 
+/**
+ * A simple `fieldset` HTMLElement, containing multiple form widgets
+ */
 export class FormGroup {
   private element: Dom;
 

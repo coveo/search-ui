@@ -154,7 +154,7 @@ export class ShareQuery extends Component {
     }).el;
 
     const lastQuery = this.queryController.getLastQuery();
-    this.completeQuery.value = Utils.trim(this.outputIfNotNull(lastQuery.q) + ' ' + this.outputIfNotNull(lastQuery.aq) + ' ' + this.outputIfNotNull(lastQuery.cq));
+    this.completeQuery.value = Utils.trim(`${this.outputIfNotNull(lastQuery.q)} ${this.outputIfNotNull(lastQuery.aq)} ${this.outputIfNotNull(lastQuery.cq)}`);
   }
 
   private buildLinkToThisQuery() {

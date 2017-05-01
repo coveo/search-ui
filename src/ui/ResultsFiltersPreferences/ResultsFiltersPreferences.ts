@@ -2,8 +2,6 @@ import { Component } from '../Base/Component';
 import { ComponentOptions } from '../Base/ComponentOptions';
 import { IComponentBindings } from '../Base/ComponentBindings';
 import { LocalStorageUtils } from '../../utils/LocalStorageUtils';
-import { KEYBOARD } from '../../utils/KeyboardUtils';
-// import { PreferencesPanelCheckboxInput, PreferencesPanelTextAreaInput, PreferencePanelMultiSelectInput, IPreferencePanelInputToBuild } from '../PreferencesPanel/PreferencesPanelItem';
 import { InitializationEvents } from '../../events/InitializationEvents';
 import { PreferencesPanelEvents } from '../../events/PreferencesPanelEvents';
 import { MODEL_EVENTS } from '../../models/Model';
@@ -138,9 +136,9 @@ export class ResultsFiltersPreferences extends Component {
   private preferencePanelCheckboxInput: { [caption: string]: Checkbox } = {};
   private advancedFilters: HTMLElement;
   private advancedFiltersBuilder: HTMLElement;
-  private advancedFiltersTextInputCaption: TextInput; // PreferencesPanelTextAreaInput;
-  private advancedFiltersTextInputExpression: TextInput; // PreferencesPanelTextAreaInput;
-  private advancedFiltersTabSelect: MultiSelect; // PreferencePanelMultiSelectInput;
+  private advancedFiltersTextInputCaption: TextInput;
+  private advancedFiltersTextInputExpression: TextInput;
+  private advancedFiltersTabSelect: MultiSelect;
   private advancedFilterFormValidate: HTMLFormElement;
 
   /**

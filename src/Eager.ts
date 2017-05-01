@@ -179,8 +179,8 @@ ResultList.doExport();
 import { ResultRating } from './ui/ResultRating/ResultRating';
 ResultRating.doExport();
 
-/*import { ResultsFiltersPreferences } from './ui/ResultsFiltersPreferences/ResultsFiltersPreferences';
- ResultsFiltersPreferences.doExport();*/
+import { ResultsFiltersPreferences } from './ui/ResultsFiltersPreferences/ResultsFiltersPreferences';
+ResultsFiltersPreferences.doExport();
 
 import { ResultsPerPage } from './ui/ResultsPerPage/ResultsPerPage';
 ResultsPerPage.doExport();

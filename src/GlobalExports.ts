@@ -31,8 +31,6 @@ export function lazyExport(component: IComponentDefinition, promiseResolve: Func
 export function lazyExportModule(mod: any, promiseResolve: Function) {
   if (mod.doExport) {
     mod.doExport();
-  } else {
-    new Logger(this).error(`Module ${mod} has no export function !`);
   }
   promiseResolve(mod);
 }
