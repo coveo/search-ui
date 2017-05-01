@@ -78,9 +78,9 @@ export class Searchbox extends Component {
      * <div class='CoveoSearchbox' data-enable-omnibox='true' data-place-holder='Please enter a query'></div>
      * ```
      *
-     * Default value is `false`.
+     * Default value is `true`.
      */
-    enableOmnibox: ComponentOptions.buildBooleanOption({ defaultValue: false })
+    enableOmnibox: ComponentOptions.buildBooleanOption({ defaultValue: true })
   };
 
   /**

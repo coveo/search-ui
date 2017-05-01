@@ -16,6 +16,7 @@ import { OmniboxEvents } from '../src/events/OmniboxEvents';
 import { IBreadcrumbItem, IPopulateBreadcrumbEventArgs, BreadcrumbEvents } from '../src/events/BreadcrumbEvents';
 import { JQuery } from '../test/JQueryModule';
 import _ = require('underscore');
+import ModalBox = Coveo.ModalBox.ModalBox;
 
 export interface ISimulateQueryData {
   query?: IQuery;
@@ -152,7 +153,7 @@ export class Simulate {
     return options;
   }
 
-  static modalBoxModule() {
+  static modalBoxModule(): ModalBox {
     let modalBox = <any>{};
     modalBox.open = jasmine.createSpy('open');
     modalBox.close = jasmine.createSpy('close');

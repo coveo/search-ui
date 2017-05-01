@@ -225,5 +225,29 @@ lazyYouTubeThumbnail();
 import { registerFields as youtubeThumbnailRegisterFields } from './ui/YouTube/YouTubeThumbnailFields';
 youtubeThumbnailRegisterFields();
 
+import { lazyCheckbox } from './ui/FormWidgets/LazyCheckbox';
+lazyCheckbox();
+
+import { lazyDatePicker } from './ui/FormWidgets/LazyDatePicker';
+lazyDatePicker();
+
+import { lazyDropdown } from './ui/FormWidgets/LazyDropdown';
+lazyDropdown();
+
+import { lazyFormGroup } from './ui/FormWidgets/LazyFormGroup';
+lazyFormGroup();
+
+import { lazyMultiSelect } from './ui/FormWidgets/LazyMultiSelect';
+lazyMultiSelect();
+
+import { lazyNumericSpinner } from './ui/FormWidgets/LazyNumericSpinner';
+lazyNumericSpinner();
+
+import { lazyRadioButton } from './ui/FormWidgets/LazyRadioButton';
+lazyRadioButton();
+
+import { lazyTextInput } from './ui/FormWidgets/LazyTextInput';
+lazyTextInput();
+
 import { swapVar } from './SwapVar';
 swapVar(this);

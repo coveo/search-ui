@@ -1,33 +1,5 @@
 @import "Variables";
 
-.CoveoShareQuery {
-  overflow: hidden;
-  margin-top: 10px;
-  display: none;
-  &.coveo-share-query-opened {
-    display: block;
-  }
-  text-align: left;
-}
-
-.coveo-share-query-summary-info-close {
-  float: right;
-  @include clearButton('&');
-}
-
-.coveo-share-query-summary-info {
-  font-size: $font-size-bigger;
-}
-
-.coveo-share-query-summary-info-boxes {
-  margin-top: 4px;
-  padding-bottom: 5px;
-
-	div:last-child {
-	  margin-top: 6px;
-	}
-}
-
 .coveo-share-query-summary-info-label {
   display: block;
   font-size: 13px;

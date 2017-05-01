@@ -29,9 +29,7 @@ export function ResultsFiltersPreferencesTest() {
 
     it('should allow to createDom', () => {
       test.cmp.createDom();
-      let title = $$(test.cmp.element).find('.coveo-title');
-      expect(title).not.toBeNull();
-      expect($$(title).text()).toBe(l('ResultsFilteringExpression'));
+      expect(test.cmp.container).not.toBeNull();
     });
 
     it('should allow to save', () => {

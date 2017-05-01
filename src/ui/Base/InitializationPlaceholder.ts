@@ -181,11 +181,14 @@ export class InitializationPlaceholder {
       _.times(InitializationPlaceholder.NUMBER_OF_RESULTS, () => {
         rootToUse.innerHTML += placeholderToUse;
       });
-      $$(this.root).one(ResultListEvents.newResultDisplayed, () => {
+      const reset = () => {
         $$(rootToUse).remove();
         _.each(resultListsElements, el => $$(el).removeClass(InitializationPlaceholder.INITIALIZATION_CLASS));
         $$(resultListToUse).removeClass('coveo-with-placeholder');
-      });
+      };
+      $$(this.root).one(ResultListEvents.newResultDisplayed, () => reset());
+      $$(this.root).one(QueryEvents.queryError, () => reset());
+      $$(this.root).one(QueryEvents.noResults, () => reset());
     }
   }
 

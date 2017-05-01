@@ -45,6 +45,15 @@ export function ResultsPreferencesTest() {
           done();
         });
       });
+
+      it('will adjust the preferences for enable query syntax correctly', (done) => {
+        localStorage.setItem('coveo-ResultsPreferences', JSON.stringify({ enableQuerySyntax: true }));
+        expect(() => test = Mock.advancedComponentSetup<ResultsPreferences>(ResultsPreferences, new Mock.AdvancedComponentSetupOptions(element.el, { enableQuerySyntax: false }))).not.toThrow();
+        Defer.defer(() => {
+          expect(JSON.parse(localStorage.getItem('coveo-ResultsPreferences')).enableQuerySyntax).toBe(undefined);
+          done();
+        });
+      });
     });
 
     describe('when an input changes', () => {
@@ -88,6 +97,18 @@ export function ResultsPreferencesTest() {
       it('will not build a open in outlook option if false', () => {
         test = Mock.advancedComponentSetup<ResultsPreferences>(ResultsPreferences, new Mock.AdvancedComponentSetupOptions(element.el, { enableOpenInOutlook: false }));
         expect($$(test.cmp.element).find(`input[value='${l('OpenInOutlookWhenPossible')}']`)).toBeNull();
+      });
+    });
+
+    describe('exposes enableQuerySyntax', () => {
+      it('will build a enable query syntax option', () => {
+        test = Mock.advancedComponentSetup<ResultsPreferences>(ResultsPreferences, new Mock.AdvancedComponentSetupOptions(element.el, { enableQuerySyntax: true }));
+        expect($$(test.cmp.element).find(`input[name="coveo-results-preferences-query-syntax"]`)).not.toBeNull();
+      });
+
+      it('will not build a enable query syntax option if false', () => {
+        test = Mock.advancedComponentSetup<ResultsPreferences>(ResultsPreferences, new Mock.AdvancedComponentSetupOptions(element.el, { enableQuerySyntax: false }));
+        expect($$(test.cmp.element).find(`input[name="coveo-results-preferences-query-syntax"]`)).toBeNull();
       });
     });
 
