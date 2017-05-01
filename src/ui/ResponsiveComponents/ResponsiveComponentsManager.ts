@@ -3,6 +3,8 @@ import { InitializationEvents } from '../../events/InitializationEvents';
 import { Component } from '../Base/Component';
 import { SearchInterface } from '../SearchInterface/SearchInterface';
 import { Utils } from '../../utils/Utils';
+import { Tab } from '../Tab/Tab';
+import { ResponsiveFacets } from './ResponsiveFacets';
 import * as _ from 'underscore';
 import { QueryEvents } from '../../events/QueryEvents';
 import { Logger } from '../../misc/Logger';
