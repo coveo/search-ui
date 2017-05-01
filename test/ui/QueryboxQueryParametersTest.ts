@@ -38,11 +38,18 @@ export function QueryboxQueryParametersTest() {
 
     it('should add enableQuerySyntax to builder', () => {
       new QueryboxQueryParameters({
+        enableQuerySyntax: true
+      }).addParameters(builder, 'foobar');
+
+      expect(builder.enableQuerySyntax).toBe(true);
+
+      new QueryboxQueryParameters({
         enableQuerySyntax: false
       }).addParameters(builder, 'foobar');
 
-      expect(builder.disableQuerySyntax).toBe(true);
+      expect(builder.enableQuerySyntax).toBe(false);
     });
+
 
     it('should add enablePartialMatch to builder', () => {
       new QueryboxQueryParameters({

@@ -51,19 +51,19 @@ QueryControllerTest();
 import { AdvancedSearchTest } from './ui/AdvancedSearch/AdvancedSearchTest';
 AdvancedSearchTest();
 
-import { TextInputTest } from './ui/AdvancedSearch/Form/TextInputTest';
+import { TextInputTest } from './ui/TextInputTest';
 TextInputTest();
 
-import { NumericSpinnerTest } from './ui/AdvancedSearch/Form/NumericSpinnerTest';
+import { NumericSpinnerTest } from './ui/NumericSpinnerTest';
 NumericSpinnerTest();
 
-import { DropdownTest } from './ui/AdvancedSearch/Form/DropdownTest';
+import { DropdownTest } from './ui/DropdownTest';
 DropdownTest();
 
-import { DatePickerTest } from './ui/AdvancedSearch/Form/DatePickerTest';
+import { DatePickerTest } from './ui/DatePickerTest';
 DatePickerTest();
 
-import { RadioButtonTest } from './ui/AdvancedSearch/Form/RadioButtonTest';
+import { RadioButtonTest } from './ui/RadioButtonTest';
 RadioButtonTest();
 
 import { KeywordsInputTest } from './ui/AdvancedSearch/KeywordsInput/KeywordsInputTest';
@@ -446,3 +446,12 @@ ValueElementTest();
 
 import { PublicPathUtilsTest } from './utils/PublicPathUtilsTest';
 PublicPathUtilsTest();
+
+import { CheckboxTest } from './ui/CheckboxTest';
+CheckboxTest();
+
+import { FormGroupTest } from './ui/FormGroupTest';
+FormGroupTest();
+
+import { MultiSelectTest } from './ui/MultiSelectTest';
+MultiSelectTest();

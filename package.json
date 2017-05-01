@@ -129,6 +129,8 @@
     "yargs": "^4.7.1"
   },
   "dependencies": {
+    "@material/select": "^0.3.3",
+    "coveo-styleguide": "1.13.4",
     "coveo.analytics": "^0.7.0",
     "coveomagicbox": "1.0.x",
     "d3": "^4.2.1",
@@ -137,7 +139,7 @@
     "fastclick": "1.0.6",
     "jstimezonedetect": "^1.0.6",
     "latinize": "^0.4.0",
-    "modal-box": "1.0.7",
+    "modal-box": "2.0.x",
     "pikaday": "^1.4.0",
     "underscore": "^1.8.3"
   }

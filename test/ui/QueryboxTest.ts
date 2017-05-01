@@ -175,14 +175,14 @@ export function QueryboxTest() {
         }, 10);
       });
 
-      it('enableQuerySyntax should modify the disableQuerySyntax parameter', function () {
+      it('enableQuerySyntax should modify the enableQuerySyntax parameter', function () {
         test = Mock.optionsComponentSetup<Querybox, IQueryboxOptions>(Querybox, {
           enableQuerySyntax: false
         });
         test.cmp.setText('@field==Batman');
 
         var simulation = Simulate.query(test.env);
-        expect(simulation.queryBuilder.disableQuerySyntax).toBe(true);
+        expect(simulation.queryBuilder.enableQuerySyntax).toBe(false);
 
         test = Mock.optionsComponentSetup<Querybox, IQueryboxOptions>(Querybox, {
           enableQuerySyntax: true
@@ -190,7 +190,7 @@ export function QueryboxTest() {
         test.cmp.setText('@field==Batman');
 
         simulation = Simulate.query(test.env);
-        expect(simulation.queryBuilder.disableQuerySyntax).toBe(false);
+        expect(simulation.queryBuilder.enableQuerySyntax).toBe(true);
 
       });
 
