@@ -64,16 +64,16 @@
 }
 
 .coveo-field-table-toggle-icon-up {
-  position: relative;
-  bottom: 45px;
-  right: -657px;
+  position: absolute;
+  bottom: 35px;
+  right: 10px;
   margin: 0;
   @include transition(opacity 0s);
   @include retina-sprite($arrow-up-group);
   opacity: 0;
   &.coveo-opened {
     opacity:1;
-    @include transition(opacity 0.5s);
+    @include transition(opacity 2.8s);
   }
 }
 
