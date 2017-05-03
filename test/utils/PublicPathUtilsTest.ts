@@ -1,16 +1,5 @@
 import { DomUtils } from '../../src/utils/DomUtils';
 import { PublicPathUtils } from '../../src/utils/PublicPathUtils';
-import { $$ } from '../../src/utils/Dom';
-
-function getElementsByTagName<K extends keyof
-ElementListTagNameMap > (tagname
-:
-K
-):
-ElementListTagNameMap[K]
-{
-  return document.getElementsByTagName(tagname);
-}
 
 export function PublicPathUtilsTest() {
   describe('PublicPathUtils', () => {
@@ -57,7 +46,6 @@ export function PublicPathUtilsTest() {
     });
 
     it('should use the last parsed script to detect ressource root when document.currentScript is not available', () => {
-      var getElementsByTagName = () => [$$('script'), fakeScript];
       PublicPathUtils.detectPublicPath();
       expect(__webpack_public_path__).toBe(expectedPath);
     });

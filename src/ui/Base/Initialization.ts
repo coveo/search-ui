@@ -768,10 +768,10 @@ export class EagerInitialization {
     // If we do not find the eager component registered, we can instead try to load the one found in lazy mode.
     // If it still fails there... tough luck. The component simply won't work.
     if (eagerlyLoadedComponent == null) {
-      LazyInitialization.getLazyRegisteredComponent(componentClassId).then((lazyLoadedComponent)=> {
+      LazyInitialization.getLazyRegisteredComponent(componentClassId).then((lazyLoadedComponent) => {
         EagerInitialization.logger.warn(`Component of class ${componentClassId} was not found in "Eager" mode. Using lazy mode as a fallback.`);
         new lazyLoadedComponent(element, options, bindings, result);
-      }).catch(()=> {
+      }).catch(() => {
         EagerInitialization.logger.error(`Component of class ${componentClassId} was not found in "Eager" mode nor "Lazy" mode. It will not be initialized properly...`);
       });
       return null;

@@ -367,20 +367,20 @@ export function InitializationTest() {
       });
     });
 
-    it('should fallback on lazy registered component if it\'s only registered as lazy', (done)=> {
-      const lazyCustomStuff = jasmine.createSpy('customstuff').and.callFake(()=> new Promise((resolve, reject)=> {
+    it('should fallback on lazy registered component if it\'s only registered as lazy', (done) => {
+      const lazyCustomStuff = jasmine.createSpy('customstuff').and.callFake(() => new Promise((resolve, reject) => {
         resolve(NoopComponent);
       }));
 
       // We register the component only as "lazy", but then do an initialization "eager" style.
       // Normally, the fallback should kick in and the component should still be initialized
-      root.appendChild($$('div', {className: 'CoveoMyCustomStuff'}).el);
+      root.appendChild($$('div', { className: 'CoveoMyCustomStuff' }).el);
       LazyInitialization.registerLazyComponent('MyCustomStuff', lazyCustomStuff);
 
 
       Initialization.initializeFramework(root, searchInterfaceOptions, () => {
         return Initialization.initSearchInterface(root, searchInterfaceOptions);
-      }).then(()=> {
+      }).then(() => {
         expect(lazyCustomStuff).toHaveBeenCalled();
         done();
       });

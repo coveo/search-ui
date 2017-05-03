@@ -10,7 +10,7 @@ import { $$ } from '../../utils/Dom';
 import { IAnalyticsActionCause, IAnalyticsDocumentViewMeta } from '../Analytics/AnalyticsActionListMeta';
 import { IStringMap } from '../../rest/GenericParam';
 import { BaseComponent } from '../Base/BaseComponent';
-import { Component, IComponentDefinition } from '../Base/Component';
+import { Component } from '../Base/Component';
 import { IStandaloneSearchInterfaceOptions } from '../SearchInterface/SearchInterface';
 import { IRecommendationOptions } from '../Recommendation/Recommendation';
 import * as _ from 'underscore';
@@ -338,7 +338,7 @@ Initialization.registerNamedMethod('configureRessourceRoot', (path: string) => {
  * @returns {Promise}
  */
 export function load<T>(modules: string): Promise<T> {
-  const loadOne = (toLoad: string)=> {
+  const loadOne = (toLoad: string) => {
     if (LazyInitialization.lazyLoadedComponents[toLoad] !== null) {
       return <Promise<T>>(<any>LazyInitialization.getLazyRegisteredComponent(toLoad));
     } else {
@@ -348,6 +348,6 @@ export function load<T>(modules: string): Promise<T> {
   return loadOne(<string>modules);
 }
 
-Initialization.registerNamedMethod('require', (modules: string)=> {
+Initialization.registerNamedMethod('require', (modules: string) => {
   return load(modules);
 });
