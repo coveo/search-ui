@@ -2,23 +2,30 @@ import { DomUtils } from '../../src/utils/DomUtils';
 import { PublicPathUtils } from '../../src/utils/PublicPathUtils';
 import { $$ } from '../../src/utils/Dom';
 
+function getElementsByTagName<K extends keyof
+ElementListTagNameMap > (tagname
+:
+K
+):
+ElementListTagNameMap[K]
+{
+  return document.getElementsByTagName(tagname);
+}
+
 export function PublicPathUtilsTest() {
   describe('PublicPathUtils', () => {
     let currentScript;
-    let getElementsByTagName;
     let expectedPath = 'some/path/';
     let fakeScript = <HTMLScriptElement>{ src: `${expectedPath}script.js` };
 
     beforeEach(() => {
       currentScript = DomUtils.getCurrentScript;
-      getElementsByTagName = DomUtils.getElementsByTagName;
       PublicPathUtils.reset();
       DomUtils.getCurrentScript = () => fakeScript;
     });
 
     afterEach(() => {
       DomUtils.getCurrentScript = currentScript;
-      DomUtils.getElementsByTagName = getElementsByTagName;
     });
 
     it('should set webpack pulic path when configuring ressource root', () => {
@@ -50,7 +57,7 @@ export function PublicPathUtilsTest() {
     });
 
     it('should use the last parsed script to detect ressource root when document.currentScript is not available', () => {
-      DomUtils.getElementsByTagName = () => [$$('script'), fakeScript];
+      var getElementsByTagName = () => [$$('script'), fakeScript];
       PublicPathUtils.detectPublicPath();
       expect(__webpack_public_path__).toBe(expectedPath);
     });

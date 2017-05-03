@@ -10,6 +10,7 @@ import { ResultList } from '../../src/ui/ResultList/ResultList';
 import { Simulate } from '../Simulate';
 import { InitializationEvents } from '../../src/events/InitializationEvents';
 import { init } from '../../src/ui/Base/RegisteredNamedMethods';
+import { NoopComponent } from '../../src/ui/NoopComponent/NoopComponent';
 declare let $;
 
 export function InitializationTest() {
@@ -365,12 +366,24 @@ export function InitializationTest() {
         expect(actionHistory).toBeNull();
       });
     });
-    it('should fallback on lazy registered component if it\'s only registered as lazy', ()=> {
-      const lazyCustomStuff = jasmine.createSpy('customstuff');
-      LazyInitialization.registerLazyComponent('MyCustomStuff', lazyCustomStuff);
-      root.append($$('div', {className : 'MyCustomStuff'}).el);
 
-      Initialization.automaticallyCreateComponentsInside(root.el)
+    it('should fallback on lazy registered component if it\'s only registered as lazy', (done)=> {
+      const lazyCustomStuff = jasmine.createSpy('customstuff').and.callFake(()=> new Promise((resolve, reject)=> {
+        resolve(NoopComponent);
+      }));
+
+      // We register the component only as "lazy", but then do an initialization "eager" style.
+      // Normally, the fallback should kick in and the component should still be initialized
+      root.appendChild($$('div', {className: 'CoveoMyCustomStuff'}).el);
+      LazyInitialization.registerLazyComponent('MyCustomStuff', lazyCustomStuff);
+
+
+      Initialization.initializeFramework(root, searchInterfaceOptions, () => {
+        return Initialization.initSearchInterface(root, searchInterfaceOptions);
+      }).then(()=> {
+        expect(lazyCustomStuff).toHaveBeenCalled();
+        done();
+      });
     });
   });
 }
