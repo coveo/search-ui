@@ -764,6 +764,17 @@ export class EagerInitialization {
     }
 
     EagerInitialization.logger.trace('Creating component of class ' + componentClassId, element, options);
-    return new eagerlyLoadedComponent(element, options, bindings, result);
+    // This is done so that external code that extends a base component does not have to have two code path for lazy vs eager;
+    // If we do not find the eager component registered, we can instead try to load the one found in lazy mode.
+    if (eagerlyLoadedComponent == null) {
+      LazyInitialization.getLazyRegisteredComponent(componentClassId).then((lazyLoadedComponent)=> {
+        return new lazyLoadedComponent(element, options, bindings, result);
+      }).catch(()=> {
+        return null;
+      });
+      return null;
+    } else {
+      return new eagerlyLoadedComponent(element, options, bindings, result);
+    }
   }
 }

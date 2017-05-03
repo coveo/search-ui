@@ -1,4 +1,4 @@
-import { Initialization } from './Initialization';
+import { Initialization, LazyInitialization, INewableComponent } from './Initialization';
 import { Assert } from '../../misc/Assert';
 import { QueryController } from '../../controllers/QueryController';
 import { QueryStateModel, setState } from '../../models/QueryStateModel';
@@ -10,7 +10,7 @@ import { $$ } from '../../utils/Dom';
 import { IAnalyticsActionCause, IAnalyticsDocumentViewMeta } from '../Analytics/AnalyticsActionListMeta';
 import { IStringMap } from '../../rest/GenericParam';
 import { BaseComponent } from '../Base/BaseComponent';
-import { Component } from '../Base/Component';
+import { Component, IComponentDefinition } from '../Base/Component';
 import { IStandaloneSearchInterfaceOptions } from '../SearchInterface/SearchInterface';
 import { IRecommendationOptions } from '../Recommendation/Recommendation';
 import * as _ from 'underscore';
@@ -328,4 +328,26 @@ export function configureRessourceRoot(path: string) {
 
 Initialization.registerNamedMethod('configureRessourceRoot', (path: string) => {
   configureRessourceRoot(path);
+});
+
+/**
+ * Load a module or chunk asynchronously.
+ *
+ * For example, you can do `Coveo.load('Searchbox').then((Searchbox)=>{})` to load the Searchbox component if it not already loaded in your page.
+ * @param modules The module identifier to load. For components, this will be the name of the component. eg: `Facet` or `Searchbox`. You can also pass an array of modules to load.
+ * @returns {Promise}
+ */
+export function load<T>(modules: string): Promise<T> {
+  const loadOne = (toLoad: string)=> {
+    if (LazyInitialization.lazyLoadedComponents[toLoad] !== null) {
+      return <Promise<T>>(<any>LazyInitialization.getLazyRegisteredComponent(toLoad));
+    } else {
+      return <Promise<T>>LazyInitialization.getLazyRegisteredModule(toLoad);
+    }
+  };
+  return loadOne(<string>modules);
+}
+
+Initialization.registerNamedMethod('require', (modules: string)=> {
+  return load(modules);
 });

@@ -23,14 +23,6 @@ import { TextInput } from '../FormWidgets/TextInput';
 import { MultiSelect } from '../FormWidgets/MultiSelect';
 import { FormGroup } from '../FormWidgets/FormGroup';
 
-export interface IPreferencePanelInputToBuild {
-  label: string;
-  placeholder?: string;
-  tab?: string[];
-  expression?: string;
-  otherAttribute?: string;
-}
-
 export interface IResultFilterPreference {
   selected?: boolean;
   custom?: boolean;
@@ -341,7 +333,7 @@ export class ResultsFiltersPreferences extends Component {
     }
   }
 
-  private getPreferencesBoxInputToBuild(): IPreferencePanelInputToBuild[] {
+  private getPreferencesBoxInputToBuild() {
     return _.map(this.preferences, (filter: IResultFilterPreference) => {
       return {
         label: filter.caption,
