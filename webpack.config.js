@@ -144,7 +144,7 @@ module.exports = {
         }
       }]
     }, {
-      test: /\.(gif|png|jpe?g|ttf|woff2?|eot)$/,
+      test: /\.(gif|png|jpe?g|svg|ttf|woff2?|eot)$/,
       use: [{
         loader: 'file-loader',
         options: {
@@ -152,11 +152,6 @@ module.exports = {
           emitFile: false,
           publicPath: ' ',
         }
-      }]
-    }, {
-      test: /\.svg$/,
-      use: [{
-        loader: 'svg-inline-loader'
       }]
     },{
       test: /\.ts$/,
