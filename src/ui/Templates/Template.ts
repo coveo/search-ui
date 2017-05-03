@@ -9,6 +9,8 @@ import * as _ from 'underscore';
 import { Initialization, LazyInitialization } from '../Base/Initialization';
 import { Utils } from '../../utils/Utils';
 
+export type TemplateRole = 'table-header' | 'table-footer';
+
 export interface ITemplateProperties {
   condition?: Function;
   conditionToParse?: string;
@@ -17,6 +19,7 @@ export interface ITemplateProperties {
   tablet?: boolean;
   desktop?: boolean;
   fieldsToMatch?: IFieldsToMatch[];
+  role?: TemplateRole;
 }
 
 export interface IFieldsToMatch {
@@ -73,6 +76,7 @@ export class Template implements ITemplateProperties {
   public desktop: boolean;
   public fields: string[] = [];
   public layout: ValidLayout;
+  public role: TemplateRole;
 
   constructor(public dataToString?: (object?: any) => string) {
   }
@@ -84,8 +88,8 @@ export class Template implements ITemplateProperties {
       }
 
       // Should not happen but...
-      // Normally, top level call from sub-class will have already created a DefaultInstantiateTemplateOptions
-      // and merged down
+      // Normally, top level call from sub-class will have already created a
+      // DefaultInstantiateTemplateOptions and merged down
       if (instantiateOptions.responsiveComponents == null) {
         instantiateOptions.responsiveComponents = new ResponsiveComponents();
       }
@@ -174,9 +178,9 @@ export class Template implements ITemplateProperties {
   }
 
   instantiateToElement(object: IQueryResult, instantiateTemplateOptions: IInstantiateTemplateOptions = {}): Promise<HTMLElement> {
-    let merged = new DefaultInstantiateTemplateOptions().merge(instantiateTemplateOptions);
+    let mergedOptions = new DefaultInstantiateTemplateOptions().merge(instantiateTemplateOptions);
 
-    var html = this.instantiateToString(object, merged);
+    var html = this.instantiateToString(object, mergedOptions);
     if (html == null) {
       return null;
     }
@@ -188,12 +192,14 @@ export class Template implements ITemplateProperties {
     });
 
     return Promise.all(allComponentsLazyLoaded).then(() => {
-      var element = $$('div', {}, html).el;
-      if (!merged.wrapInDiv && element.children.length === 1) {
+      const layout = this.layout || mergedOptions.currentLayout;
+      const elemType = layout === 'table' ? 'tr' : 'div';
+      var element = $$(elemType, {}, html).el;
+      if (!mergedOptions.wrapInDiv && element.children.length === 1) {
         element = <HTMLElement>element.children.item(0);
       }
-      if (this.layout) {
-        $$(element).addClass(`coveo-${this.layout}-layout`);
+      if (layout) {
+        $$(element).addClass(`coveo-${layout}-layout`);
       }
       this.logger.trace('Instantiated result template', object, element);
       element['template'] = this;

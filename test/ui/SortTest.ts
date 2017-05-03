@@ -261,5 +261,17 @@ export function SortTest() {
 
       expect(test.cmp.getCurrentCriteria().toString()).toEqual('date descending');
     });
+
+    it('should update on first creation', () => {
+      const elem = $$('div', { 'data-sort-criteria': 'date descending, date ascending' }).el;
+      test = Mock.advancedComponentSetup<Sort>(Sort, <Mock.AdvancedComponentSetupOptions>{
+        element: elem,
+        modifyBuilder: builder => {
+          (<jasmine.Spy>builder.queryStateModel.get).and.returnValue('date ascending');
+          return builder;
+        }
+      });
+      expect(test.cmp.getCurrentCriteria().toString()).toEqual('date ascending');
+    });
   });
 }

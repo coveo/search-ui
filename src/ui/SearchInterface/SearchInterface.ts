@@ -359,7 +359,6 @@ export class SearchInterface extends RootComponent implements IComponentBindings
       (<any>fastclick).attach(element);
     }
 
-
     this.options = ComponentOptions.initComponentOptions(element, SearchInterface, options);
     Assert.exists(element);
     Assert.exists(this.options);

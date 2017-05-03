@@ -13,6 +13,7 @@ import { TemplateList } from '../../src/ui/Templates/TemplateList';
 import { QueryBuilder } from '../../src/ui/Base/QueryBuilder';
 import { analyticsActionCauseList } from '../../src/ui/Analytics/AnalyticsActionListMeta';
 import { IQueryResults } from '../../src/rest/QueryResults';
+import { TableTemplate } from '../../src/ui/Templates/TableTemplate';
 import { Defer } from '../../src/misc/Defer';
 
 export function ResultListTest() {
@@ -207,8 +208,7 @@ export function ResultListTest() {
 
     it('should allow to render results inside the result list', (done) => {
       const data = FakeResults.createFakeResults(13);
-      test.cmp.buildResults(data).then(elem => {
-        test.cmp.renderResults(elem);
+      test.cmp.buildResults(data).then(elem => test.cmp.renderResults(elem)).then(() => {
         expect($$(test.cmp.element).findAll('.CoveoResult').length).toBe(13);
         done();
       });
@@ -216,26 +216,26 @@ export function ResultListTest() {
 
     it('should allow to render results and append them', (done) => {
       const data = FakeResults.createFakeResults(13);
-      test.cmp.buildResults(data).then(elem => {
-        test.cmp.renderResults(elem);
-        test.cmp.buildResults(data).then(elem => {
-          test.cmp.renderResults(elem, true);
+      test.cmp.buildResults(data)
+        .then(elem => test.cmp.renderResults(elem))
+        .then(() => test.cmp.buildResults(data))
+        .then(elem => test.cmp.renderResults(elem, true))
+        .then(() => {
           expect($$(test.cmp.element).findAll('.CoveoResult').length).toBe(26);
           done();
         });
-      });
     });
 
     it('should allow to render results and not append them', (done) => {
       const data = FakeResults.createFakeResults(13);
-      test.cmp.buildResults(data).then(elem => {
-        test.cmp.renderResults(elem);
-        test.cmp.buildResults(data).then(elem => {
-          test.cmp.renderResults(elem, false);
+      test.cmp.buildResults(data)
+        .then(elem => test.cmp.renderResults(elem))
+        .then(() => test.cmp.buildResults(data))
+        .then(elem => test.cmp.renderResults(elem, false))
+        .then(() => {
           expect($$(test.cmp.element).findAll('.CoveoResult').length).toBe(13);
           done();
         });
-      });
     });
 
     it('should trigger result displayed event when rendering', (done) => {
@@ -244,8 +244,7 @@ export function ResultListTest() {
       const spyResults = jasmine.createSpy('spyResults');
       $$(test.cmp.element).on(ResultListEvents.newResultDisplayed, spyResult);
       $$(test.cmp.element).on(ResultListEvents.newResultsDisplayed, spyResults);
-      test.cmp.buildResults(data).then(elem => {
-        test.cmp.renderResults(elem);
+      test.cmp.buildResults(data).then(elem => test.cmp.renderResults(elem)).then(() => {
         expect(spyResult).toHaveBeenCalledTimes(6);
         expect(spyResults).toHaveBeenCalledTimes(1);
         done();

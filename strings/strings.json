@@ -3978,7 +3978,7 @@
     "no": "Ugyldig term",
     "pl": "Nieprawidłowy termin",
     "pt-br": "Termo inválido",
-    "ru": "Недопустимое термин",
+    "ru": "Недопустимый термин",
     "sv": "Ogiltig term",
     "th": "คำศัพท์ไม่ถูกต้อง",
     "tr": "Geçersiz terim",
@@ -5154,5 +5154,25 @@
   "Table": {
     "en": "Table",
     "fr": "Tableau"
+  },
+  "ResultLinks": {
+    "en": "Result links",
+    "fr": "Liens de résultat"
+  },
+  "EnableQuerySyntax": {
+    "en": "Enable query syntax",
+    "fr": "Activation de la syntaxe de recherche"
+  },
+  "On": {
+    "en": "On",
+    "fr": "Activé"
+  },
+  "Off": {
+    "en": "Off",
+    "fr": "Désactivé"
+  },
+  "Automatic": {
+    "en": "Automatic",
+    "fr": "Automatique"
   }
 }
