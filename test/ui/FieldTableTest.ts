@@ -9,7 +9,7 @@ export function FieldTableTest() {
     let test: Mock.IBasicComponentSetup<FieldTable>;
     let element: HTMLElement;
 
-    const createElement = () =>{
+    const createElement = () => {
       element = $$('table', { className: 'CoveoFieldTable' }).el;
       element.appendChild($$('tr', { 'data-field': '@author', 'data-caption': 'Author' }).el);
 
