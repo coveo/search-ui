@@ -334,18 +334,37 @@ Initialization.registerNamedMethod('configureRessourceRoot', (path: string) => {
  * Load a module or chunk asynchronously.
  *
  * For example, you can do `Coveo.load('Searchbox').then((Searchbox)=>{})` to load the Searchbox component if it not already loaded in your page.
- * @param modules The module identifier to load. For components, this will be the name of the component. eg: `Facet` or `Searchbox`. You can also pass an array of modules to load.
+ *
+ * This is especially useful for complex integration where you want to extend a base component, but have it also work in lazy mode.
+ *
+ * Example :
+ * ```
+ * export function myLazyCustomSearchbox() {
+ *    return Coveo.load<Searchbox>('Searchbox').then((Searchbox) => {
+ *            class MyCustomSearchbox extends Searchbox {
+ *                 [ ... ]
+ *             }
+ *             Coveo.Initialization.registerAutoCreateComponent(MyCustomSearchbox);
+ *             return MyCustomSearchbox;
+ *     })
+ * }
+ *
+ * Coveo.LazyInitialization.registerLazyComponent('MyCustomSearchbox', myLazyCustomSearchbox);
+ * ```
+ *
+ * You can also use this to ensure a specific component is loaded in your page before executing any code.
+ *
+ * @param id The module identifier to load. For components, this will be the name of the component. eg: `Facet` or `Searchbox`.
  * @returns {Promise}
  */
-export function load<T>(modules: string): Promise<T> {
-  const loadOne = (toLoad: string) => {
-    if (LazyInitialization.lazyLoadedComponents[toLoad] !== null) {
-      return <Promise<T>>(<any>LazyInitialization.getLazyRegisteredComponent(toLoad));
-    } else {
-      return <Promise<T>>LazyInitialization.getLazyRegisteredModule(toLoad);
-    }
-  };
-  return loadOne(<string>modules);
+export function load<T>(id: string): Promise<T> {
+  if (LazyInitialization.lazyLoadedComponents[id] != null) {
+    return <Promise<T>>(<any>LazyInitialization.getLazyRegisteredComponent(id));
+  } else if (LazyInitialization.lazyLoadedModule[id] != null) {
+    return <Promise<T>>LazyInitialization.getLazyRegisteredModule(id);
+  } else {
+    return Promise.reject(`Module ${id} is not available`);
+  }
 }
 
 Initialization.registerNamedMethod('require', (modules: string) => {
