@@ -1,0 +1,19 @@
+.<%=common %> {
+    font-size: <%= baseSize %>px;
+    & {
+      background-repeat: no-repeat;
+      background-position: center center;
+      background-size: 100%;
+    }
+}
+
+
+<% _.forEach(svg, function(svgItem) { %>
+
+.<%=svgItem.name%> {
+  @extend .<%=common %>;
+  & {
+      background-image: url("../image/symbols.svg#<%=svgItem.name%>")
+    }
+}
+<% }); %>
