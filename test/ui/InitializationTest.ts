@@ -3,7 +3,7 @@ import { SearchEndpoint } from '../../src/rest/SearchEndpoint';
 import { $$ } from '../../src/utils/Dom';
 import { Querybox } from '../../src/ui/Querybox/Querybox';
 import { Component } from '../../src/ui/Base/Component';
-import { Initialization } from '../../src/ui/Base/Initialization';
+import { Initialization, LazyInitialization } from '../../src/ui/Base/Initialization';
 import { Facet } from '../../src/ui/Facet/Facet';
 import { Pager } from '../../src/ui/Pager/Pager';
 import { ResultList } from '../../src/ui/ResultList/ResultList';
@@ -364,6 +364,13 @@ export function InitializationTest() {
         const actionHistory = localStorage.getItem('__coveo.analytics.history');
         expect(actionHistory).toBeNull();
       });
+    });
+    it('should fallback on lazy registered component if it\'s only registered as lazy', ()=> {
+      const lazyCustomStuff = jasmine.createSpy('customstuff');
+      LazyInitialization.registerLazyComponent('MyCustomStuff', lazyCustomStuff);
+      root.append($$('div', {className : 'MyCustomStuff'}).el);
+
+      Initialization.automaticallyCreateComponentsInside(root.el)
     });
   });
 }

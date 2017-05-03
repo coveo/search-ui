@@ -1,4 +1,4 @@
-import { Initialization, LazyInitialization, INewableComponent } from './Initialization';
+import { Initialization, LazyInitialization } from './Initialization';
 import { Assert } from '../../misc/Assert';
 import { QueryController } from '../../controllers/QueryController';
 import { QueryStateModel, setState } from '../../models/QueryStateModel';
