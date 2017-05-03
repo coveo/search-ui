@@ -64,7 +64,7 @@ export function FieldTableTest() {
         });
 
         it('should show a toggle link', function () {
-          expect($$(test.env.element.parentElement).find('.coveo-field-table-toggle')).not.toBeNull();
+          expect($$(test.env.element.parentElement.parentElement).find('.coveo-field-table-toggle')).not.toBeNull();
         });
 
         it('should put the tabindex to 0 on the toggle caption', function () {
