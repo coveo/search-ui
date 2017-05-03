@@ -72,9 +72,12 @@
   @include transition(opacity 0s);
   @include retina-sprite($arrow-up-group);
   opacity: 0;
+  height:0px;
   &.coveo-opened {
     opacity:1;
     @include transition(opacity 2.8s);
+    height:13px;
+
   }
 }
 
