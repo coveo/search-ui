@@ -37,11 +37,7 @@ export class FacetSliderQueryController {
       completeFacetWithStandardValues: true
     };
     groupByQuery.allowedValues = undefined;
-    if (this.facet.options.graph) {
-      groupByQuery = this.buildGroupByQueryForSlider(groupByQuery);
-    } else {
-      groupByQuery = this.buildGroupByQueryForAutomaticRanges(groupByQuery);
-    }
+    groupByQuery = this.buildGroupByQueryForSlider(groupByQuery);
     return groupByQuery;
   }
 
@@ -138,9 +134,11 @@ export class FacetSliderQueryController {
         endInclusive: true,
         label: 'Slider'
       }];
+      groupByQuery.generateAutomaticRanges = false;
       return groupByQuery;
     } else {
-      return this.buildGroupByQueryForAutomaticRanges(groupByQuery);
+	  groupByQuery.generateAutomaticRanges = true;
+	  return groupByQuery;
     }
   }
 
@@ -183,8 +181,6 @@ export class FacetSliderQueryController {
     basicGroupByRequestForSlider.maximumNumberOfValues = this.facet.options.graph != null ? this.facet.options.graph.steps || 1 : 1;
     basicGroupByRequestForSlider.queryOverride = this.facet.options.queryOverride || '@uri';
     basicGroupByRequestForSlider.sortCriteria = 'nosort';
-    basicGroupByRequestForSlider.generateAutomaticRanges = true;
-    basicGroupByRequestForSlider.rangeValues = undefined;
     queryBuilder.groupByRequests.push(basicGroupByRequestForSlider);
   }
 
