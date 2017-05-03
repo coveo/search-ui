@@ -152,7 +152,7 @@ export class Omnibox extends Component {
      * Specifies whether to enable the Coveo Machine Learning (Coveo ML) query suggestions.
      *
      * This implies that you have a proper Coveo ML integration configured (see
-     * [Coveo Machine Learning](http://www.coveo.com/go?dest=cloudhelp&lcid=9&context=177)).
+     * [Managing Machine Learning Query Suggestions in a Query Pipeline](http://www.coveo.com/go?dest=cloudhelp&lcid=9&context=168)).
      *
      * Default value is `true`.
      */
