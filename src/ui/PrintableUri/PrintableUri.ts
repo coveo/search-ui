@@ -10,6 +10,8 @@ import { $$ } from '../../utils/Dom';
 import { exportGlobally } from '../../GlobalExports';
 
 import 'styling/_PrintableUri';
+import {ResultLink} from "../ResultLink/ResultLink";
+import {IResultsComponentBindings} from "../Base/ResultsComponentBindings";
 
 export interface IPrintableUriOptions {
 }
@@ -19,7 +21,7 @@ export interface IPrintableUriOptions {
  *
  * This component is a result template component (see [Result Templates](https://developers.coveo.com/x/aIGfAQ)).
  */
-export class PrintableUri extends Component {
+export class PrintableUri extends ResultLink implements IComponentBindings {
   static ID = 'PrintableUri';
   static options: IPrintableUriOptions = {};
 
@@ -30,7 +32,6 @@ export class PrintableUri extends Component {
   }
 
   private uri: string;
-
   /**
    * Creates a new PrintableUri.
    * @param element The HTMLElement on which to instantiate the component.
@@ -39,16 +40,13 @@ export class PrintableUri extends Component {
    * automatically resolved (with a slower execution time).
    * @param result The result to associate the component with.
    */
-  constructor(public element: HTMLElement, public options: IPrintableUriOptions, bindings?: IComponentBindings, public result?: IQueryResult) {
-    super(element, PrintableUri.ID, bindings);
+  constructor(public element: HTMLElement, public options: IPrintableUriOptions, bindings?: IResultsComponentBindings, public result?: IQueryResult) {
+    super(element, ComponentOptions.initComponentOptions(element, PrintableUri, options), bindings, result);
 
-    this.options = ComponentOptions.initComponentOptions(element, PrintableUri, options);
 
     let parentsXml = Utils.getFieldValue(result, 'parents');
     if (parentsXml) {
       this.renderParentsXml(element, parentsXml);
-    } else {
-      this.renderUri(element, result);
     }
   }
 
