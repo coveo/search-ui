@@ -125,6 +125,7 @@ export class FacetSliderQueryController {
 
     if (this.facet.isSimpleSliderConfig()) {
       basicGroupByRequestForGraph.rangeValues = this.createRangeValuesForGraphUsingStartAndEnd();
+      basicGroupByRequestForGraph.generateAutomaticRanges = false;
     } else {
       basicGroupByRequestForGraph.generateAutomaticRanges = true;
     }

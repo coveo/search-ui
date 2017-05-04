@@ -152,6 +152,7 @@ export function FacetSliderQueryControllerTest() {
         field: '@foo',
         maximumNumberOfValues: 10,
         sortCriteria: 'nosort',
+        generateAutomaticRanges: false,
         rangeValues: jasmine.arrayContaining([jasmine.objectContaining({
           'start': jasmine.stringMatching('1970'),
           'end': jasmine.stringMatching('1970'),
