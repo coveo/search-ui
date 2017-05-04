@@ -472,7 +472,7 @@ export class ResultLink extends Component {
     return (this.options.openQuickview || this.isUriThatMustBeOpenedInQuickview()) && QueryUtils.hasHTMLVersion(this.result);
   }
 
-  protected parseStringTemplate(template: string): string {
+  private parseStringTemplate(template: string): string {
     if (!template) {
       return '';
     }
