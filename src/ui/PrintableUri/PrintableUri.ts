@@ -10,9 +10,9 @@ import { $$ } from '../../utils/Dom';
 import { exportGlobally } from '../../GlobalExports';
 import { StreamHighlightUtils } from '../../utils/StreamHighlightUtils';
 import 'styling/_PrintableUri';
-import {ResultLink} from "../ResultLink/ResultLink";
+import {ResultLink} from '../ResultLink/ResultLink';
 import { IResultLinkOptions } from '../ResultLink/ResultLinkOptions';
-import {IResultsComponentBindings} from "../Base/ResultsComponentBindings";
+import {IResultsComponentBindings} from '../Base/ResultsComponentBindings';
 
 export interface IPrintableUriOptions extends IResultLinkOptions{
 }
