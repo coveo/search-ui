@@ -1,5 +1,7 @@
 export * from './Core';
 
+export { SearchInterface, StandaloneSearchInterface } from './ui/SearchInterface/SearchInterface';
+
 import { PublicPathUtils } from './utils/PublicPathUtils';
 PublicPathUtils.detectPublicPath();
 
