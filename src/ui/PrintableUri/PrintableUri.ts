@@ -1,4 +1,3 @@
-import { Component } from '../Base/Component';
 import { IComponentBindings } from '../Base/ComponentBindings';
 import { ComponentOptions } from '../Base/ComponentOptions';
 import { IQueryResult } from '../../rest/QueryResult';
@@ -8,18 +7,15 @@ import { analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
 import { Utils } from '../../utils/Utils';
 import { $$ } from '../../utils/Dom';
 import { exportGlobally } from '../../GlobalExports';
-
 import 'styling/_PrintableUri';
-<<<<<<< HEAD
 import {ResultLink} from '../ResultLink/ResultLink';
 import { IResultLinkOptions } from '../ResultLink/ResultLinkOptions';
 import {IResultsComponentBindings} from '../Base/ResultsComponentBindings';
-=======
-import { ResultLink } from '../ResultLink/ResultLink';
-import { IResultsComponentBindings } from '../Base/ResultsComponentBindings';
->>>>>>> JSUI-1536
+import { StreamHighlightUtils } from '../../utils/StreamHighlightUtils';
 
-export interface IPrintableUriOptions {
+
+
+export interface IPrintableUriOptions extends IResultLinkOptions {
 }
 
 /**
@@ -27,7 +23,7 @@ export interface IPrintableUriOptions {
  *
  * This component is a result template component (see [Result Templates](https://developers.coveo.com/x/aIGfAQ)).
  */
-export class PrintableUri extends ResultLink implements IComponentBindings {
+export class PrintableUri extends ResultLink {
   static ID = 'PrintableUri';
   static options: IPrintableUriOptions = {};
 
@@ -134,7 +130,10 @@ export class PrintableUri extends ResultLink implements IComponentBindings {
     link.setHtml(uri);
     link.setAttribute('href', result.clickUri);
     this.bindLogOpenDocument(link.el);
+    let newTitle = this.parseStringTemplate(this.options.titleTemplate);
+    this.element.innerHTML = newTitle ? StreamHighlightUtils.highlightStreamText(newTitle, this.result.termsToHighlight, this.result.phrasesToHighlight) : this.result.clickUri;
     element.appendChild(link.el);
+
   }
 
   public buildSeperator() {
