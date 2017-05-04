@@ -165,7 +165,7 @@ export class FacetSliderQueryController {
         end: this.facet.options.end,
         label: 'slider',
         endInclusive: false
-      }]
+      }];
     }
 
     const basicGroupByRequestForSlider = this.createBasicGroupByRequest();

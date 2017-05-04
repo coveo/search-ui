@@ -6,11 +6,11 @@ import { QueryBuilder } from '../../src/ui/Base/QueryBuilder';
 
 export function FacetSliderQueryControllerTest() {
 
-  describe('FacetSliderQueryController', ()=> {
+  describe('FacetSliderQueryController', () => {
     let facet: FacetSlider;
     let controller: FacetSliderQueryController;
 
-    beforeEach(()=> {
+    beforeEach(() => {
       facet = Mock.mockComponent<FacetSlider>(FacetSlider);
       facet.options = {};
       facet.bind = <any>{};
@@ -21,48 +21,48 @@ export function FacetSliderQueryControllerTest() {
       controller = new FacetSliderQueryController(facet);
     });
 
-    afterEach(()=> {
+    afterEach(() => {
       facet = null;
       controller = null;
     });
 
-    it('should allow to compute a filter expression', ()=> {
+    it('should allow to compute a filter expression', () => {
       let filter = controller.computeOurFilterExpression([5, 99]);
       expect(filter).toEqual('@foo==5..99');
     });
 
-    it('should allow to compute a filter expression when the facet is inactive', ()=> {
+    it('should allow to compute a filter expression when the facet is inactive', () => {
       let filter = controller.computeOurFilterExpression([0, 100]);
       expect(filter).toBeUndefined();
     });
 
-    it('should allow to compute a filter expression with outer bounds excluded at the end of the range', ()=> {
+    it('should allow to compute a filter expression with outer bounds excluded at the end of the range', () => {
       facet.options.excludeOuterBounds = true;
       let filter = controller.computeOurFilterExpression([0, 99]);
       expect(filter).toEqual('@foo<=99');
     });
 
-    it('should allow to compute a filter expression with outer bounds excluded at the start of the range', ()=> {
+    it('should allow to compute a filter expression with outer bounds excluded at the start of the range', () => {
       facet.options.excludeOuterBounds = true;
       let filter = controller.computeOurFilterExpression([1, 100]);
       expect(filter).toEqual('@foo>=1');
     });
 
-    it('should allow to compute a filter expression with outer bounds excluded, when both end are active', ()=> {
+    it('should allow to compute a filter expression with outer bounds excluded, when both end are active', () => {
       facet.options.excludeOuterBounds = true;
       let filter = controller.computeOurFilterExpression([1, 99]);
       expect(filter).toEqual('@foo==1..99');
     });
 
-    it('should allow to compute a filter expression with outher bounds excluded as a date', ()=> {
+    it('should allow to compute a filter expression with outher bounds excluded as a date', () => {
       facet.options.dateField = true;
       facet.options.excludeOuterBounds = true;
       let filter = controller.computeOurFilterExpression([1, 100]);
       expect(filter).toContain(`@foo>="1970`);
     });
 
-    it('should allow to put the group by into a query builder with simple slider config', ()=> {
-      facet.isSimpleSliderConfig = ()=> true;
+    it('should allow to put the group by into a query builder with simple slider config', () => {
+      facet.isSimpleSliderConfig = () => true;
       const builder = new QueryBuilder();
       controller.putGroupByIntoQueryBuilder(builder);
       expect(builder.groupByRequests).toEqual(jasmine.arrayContaining([jasmine.objectContaining({
@@ -79,11 +79,11 @@ export function FacetSliderQueryControllerTest() {
       })]));
     });
 
-    it('should add a group by for graph if needed if it\'s not a simple slider config', ()=> {
-      facet.isSimpleSliderConfig = ()=> false;
+    it('should add a group by for graph if needed if it\'s not a simple slider config', () => {
+      facet.isSimpleSliderConfig = () => false;
       facet.options.graph = {};
       facet.options.graph.steps = 10;
-      facet.getSliderBoundaryForQuery = ()=> [5, 99];
+      facet.getSliderBoundaryForQuery = () => [5, 99];
 
       const builder = new QueryBuilder();
       controller.putGroupByIntoQueryBuilder(builder);
@@ -94,14 +94,14 @@ export function FacetSliderQueryControllerTest() {
         queryOverride: '@uri',
         sortCriteria: 'nosort'
       }));
-    })
+    });
 
-    it('should add a group by for graph using the query override if specified', ()=> {
-      facet.isSimpleSliderConfig = ()=> false;
+    it('should add a group by for graph using the query override if specified', () => {
+      facet.isSimpleSliderConfig = () => false;
       facet.options.graph = {};
       facet.options.graph.steps = 10;
       facet.options.queryOverride = 'my query override';
-      facet.getSliderBoundaryForQuery = ()=> [5, 99];
+      facet.getSliderBoundaryForQuery = () => [5, 99];
 
       const builder = new QueryBuilder();
       controller.putGroupByIntoQueryBuilder(builder);
@@ -114,13 +114,13 @@ export function FacetSliderQueryControllerTest() {
       }));
     });
 
-    it('should add a range request if needed for graph', ()=> {
-      facet.isSimpleSliderConfig = ()=> true;
+    it('should add a range request if needed for graph', () => {
+      facet.isSimpleSliderConfig = () => true;
       facet.options.graph = {};
       facet.options.graph.steps = 10;
       facet.options.start = 0;
       facet.options.end = 100;
-      facet.getSliderBoundaryForQuery = ()=> [5, 99];
+      facet.getSliderBoundaryForQuery = () => [5, 99];
 
       const builder = new QueryBuilder();
       controller.putGroupByIntoQueryBuilder(builder);
@@ -137,13 +137,13 @@ export function FacetSliderQueryControllerTest() {
       }));
     });
 
-    it('should add a group by for graph if it\'s a date', ()=> {
-      facet.isSimpleSliderConfig = ()=> true;
+    it('should add a group by for graph if it\'s a date', () => {
+      facet.isSimpleSliderConfig = () => true;
       facet.options.graph = {};
       facet.options.graph.steps = 10;
       facet.options.start = 1;
       facet.options.end = 100;
-      facet.getSliderBoundaryForQuery = ()=> [5, 99];
+      facet.getSliderBoundaryForQuery = () => [5, 99];
       facet.options.dateField = true;
 
       const builder = new QueryBuilder();
