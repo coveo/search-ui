@@ -8,13 +8,12 @@ import { analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
 import { Utils } from '../../utils/Utils';
 import { $$ } from '../../utils/Dom';
 import { exportGlobally } from '../../GlobalExports';
-import { StreamHighlightUtils } from '../../utils/StreamHighlightUtils';
+
 import 'styling/_PrintableUri';
 import {ResultLink} from "../ResultLink/ResultLink";
-import { IResultLinkOptions } from '../ResultLink/ResultLinkOptions';
 import {IResultsComponentBindings} from "../Base/ResultsComponentBindings";
 
-export interface IPrintableUriOptions extends IResultLinkOptions{
+export interface IPrintableUriOptions {
 }
 
 /**
@@ -130,8 +129,6 @@ export class PrintableUri extends ResultLink implements IComponentBindings {
     link.setAttribute('href', result.clickUri);
     this.bindLogOpenDocument(link.el);
     element.appendChild(link.el);
-    let newTitle = this.parseStringTemplate(this.options.titleTemplate);
-    this.element.innerHTML = newTitle ? StreamHighlightUtils.highlightStreamText(newTitle, this.result.termsToHighlight, this.result.phrasesToHighlight) : this.result.clickUri;
   }
 
   public buildSeperator() {
