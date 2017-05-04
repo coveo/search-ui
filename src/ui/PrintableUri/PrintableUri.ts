@@ -10,8 +10,8 @@ import { $$ } from '../../utils/Dom';
 import { exportGlobally } from '../../GlobalExports';
 
 import 'styling/_PrintableUri';
-import {ResultLink} from "../ResultLink/ResultLink";
-import {IResultsComponentBindings} from "../Base/ResultsComponentBindings";
+import { ResultLink } from '../ResultLink/ResultLink';
+import { IResultsComponentBindings } from '../Base/ResultsComponentBindings';
 
 export interface IPrintableUriOptions {
 }
