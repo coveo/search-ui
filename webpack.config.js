@@ -7,6 +7,7 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const spritesmithConfig = require('./spritesmithConfig/spritesmith.config.js');
 const production = process.env.NODE_ENV === 'production';
 const globalizePath = __dirname + '/lib/globalize/globalize.min.js';
+const svg4everybodyPath = __dirname + '/node_modules/svg4everybody/dist/svg4everybody';
 
 let bail;
 let plugins = [];
@@ -29,10 +30,13 @@ if (production) {
       use: [{
         loader: 'css-loader',
         options: {
-          sourceMap: true
+          sourceMap: false
         }
       }, {
-        loader: 'resolve-url-loader'
+        loader: 'resolve-url-loader',
+        options: {
+          keepQuery: true
+        }
       }, {
         loader: 'sass-loader',
         options: {
@@ -60,7 +64,10 @@ if (production) {
         sourceMap: true
       }
     }, {
-      loader: 'resolve-url-loader'
+      loader: 'resolve-url-loader',
+      options: {
+        keepQuery: true
+      }
     }, {
       loader: 'sass-loader',
       options: {
@@ -93,6 +100,7 @@ module.exports = {
       'globalize': globalizePath,
       'modal-box': __dirname + '/node_modules/modal-box/bin/ModalBox.min.js',
       'magic-box': __dirname + '/node_modules/coveomagicbox/bin/MagicBox.min.js',
+      'svg4everybody': svg4everybodyPath,
       'default-language': __dirname + '/src/strings/DefaultLanguage.js',
       'jQuery': __dirname + '/test/lib/jquery.js',
       'styling': __dirname + '/sass'
@@ -111,6 +119,12 @@ module.exports = {
         }
       }]
     }, {
+      test: require.resolve(svg4everybodyPath),
+      use: [{
+        loader: 'imports-loader?this=>window'
+      }]
+    },
+    {
       test: require.resolve(globalizePath),
       use: [{
         loader: 'expose-loader?Globalize'

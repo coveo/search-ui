@@ -6,7 +6,7 @@ export class SVGLoaderUtils {
     let svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
     let use = document.createElementNS('http://www.w3.org/2000/svg', 'use');
     use.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', 'http://localhost:8080/image/symbols.svg#more');
-
+    // could fallback on img in ie..
     svg.appendChild(use);
     let placeholder = $$('span', { class: 'coveo-placeholder' });
     svg.appendChild(use);
