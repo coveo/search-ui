@@ -1763,8 +1763,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	"use strict";
 	Object.defineProperty(exports, "__esModule", { value: true });
 	exports.version = {
-	    'lib': '1.2537.10-beta',
-	    'product': '1.2537.10-beta',
+	    'lib': '1.2537.13-beta',
+	    'product': '1.2537.13-beta',
 	    'supportedApiVersion': 2
 	};
 
@@ -13463,19 +13463,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 	        this.putGroupByForSliderIntoQueryBuilder(queryBuilder);
 	    };
-	    FacetSliderQueryController.prototype.createBasicGroupByRequest = function (allowedValues, addComputedField) {
-	        if (addComputedField === void 0) { addComputedField = true; }
+	    FacetSliderQueryController.prototype.createBasicGroupByRequest = function () {
 	        var groupByQuery = {
 	            field: this.facet.options.field,
-	            completeFacetWithStandardValues: true
+	            completeFacetWithStandardValues: true,
+	            allowedValues: undefined
 	        };
-	        groupByQuery.allowedValues = undefined;
-	        if (this.facet.options.graph) {
-	            groupByQuery = this.buildGroupByQueryForSlider(groupByQuery);
-	        }
-	        else {
-	            groupByQuery = this.buildGroupByQueryForAutomaticRanges(groupByQuery);
-	        }
 	        return groupByQuery;
 	    };
 	    FacetSliderQueryController.prototype.computeOurFilterExpression = function (boundary) {
@@ -13557,36 +13550,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	            this.addFilterExpressionWithOuterBoundsIncluded(start, end, builder);
 	        }
 	    };
-	    FacetSliderQueryController.prototype.buildGroupByQueryForSlider = function (groupByQuery) {
-	        if (this.facet.options.start != undefined && this.facet.options.end != undefined) {
-	            var start = this.facet.options.start;
-	            var end = this.facet.options.end;
-	            if (this.facet.options.dateField || this.facet.options.dateField) {
-	                start = this.getISOFormat(start);
-	                end = this.getISOFormat(end);
-	            }
-	            groupByQuery.rangeValues = [{
-	                    start: start,
-	                    end: end,
-	                    endInclusive: true,
-	                    label: 'Slider'
-	                }];
-	            return groupByQuery;
-	        }
-	        else {
-	            return this.buildGroupByQueryForAutomaticRanges(groupByQuery);
-	        }
-	    };
-	    FacetSliderQueryController.prototype.buildGroupByQueryForAutomaticRanges = function (groupByQuery) {
-	        groupByQuery.generateAutomaticRanges = true;
-	        return groupByQuery;
-	    };
 	    FacetSliderQueryController.prototype.putGroupByForGraphIntoQueryBuilder = function (queryBuilder) {
 	        this.graphGroupByQueriesIndex = queryBuilder.groupByRequests.length;
 	        var basicGroupByRequestForGraph = this.createBasicGroupByRequest();
-	        if (basicGroupByRequestForGraph.rangeValues) {
-	            var basicRangeRequest = basicGroupByRequestForGraph.rangeValues[0];
-	            basicGroupByRequestForGraph.rangeValues = this.createRangeValuesForGraph(basicRangeRequest);
+	        if (this.facet.isSimpleSliderConfig()) {
+	            basicGroupByRequestForGraph.rangeValues = this.createRangeValuesForGraphUsingStartAndEnd();
+	            basicGroupByRequestForGraph.generateAutomaticRanges = false;
+	        }
+	        else {
+	            basicGroupByRequestForGraph.generateAutomaticRanges = true;
 	        }
 	        var filter = this.computeOurFilterExpression(this.facet.getSliderBoundaryForQuery());
 	        if (filter != undefined) {
@@ -13611,15 +13583,40 @@ return /******/ (function(modules) { // webpackBootstrap
 	    };
 	    FacetSliderQueryController.prototype.putGroupByForSliderIntoQueryBuilder = function (queryBuilder) {
 	        this.lastGroupByRequestIndex = queryBuilder.groupByRequests.length;
+	        var maximumNumberOfValues = 1;
+	        if (this.facet.hasAGraph()) {
+	            maximumNumberOfValues = this.facet.options.graph.steps;
+	        }
+	        var rangeValues = undefined;
+	        if (this.facet.isSimpleSliderConfig()) {
+	            rangeValues = [{
+	                    start: this.facet.options.start,
+	                    end: this.facet.options.end,
+	                    label: 'slider',
+	                    endInclusive: false
+	                }];
+	        }
 	        var basicGroupByRequestForSlider = this.createBasicGroupByRequest();
-	        basicGroupByRequestForSlider.maximumNumberOfValues = this.facet.options.graph != null ? this.facet.options.graph.steps || 1 : 1;
+	        basicGroupByRequestForSlider.maximumNumberOfValues = maximumNumberOfValues;
 	        basicGroupByRequestForSlider.queryOverride = this.facet.options.queryOverride || '@uri';
 	        basicGroupByRequestForSlider.sortCriteria = 'nosort';
-	        basicGroupByRequestForSlider.generateAutomaticRanges = true;
-	        basicGroupByRequestForSlider.rangeValues = undefined;
+	        basicGroupByRequestForSlider.generateAutomaticRanges = !this.facet.isSimpleSliderConfig();
+	        basicGroupByRequestForSlider.rangeValues = rangeValues;
 	        queryBuilder.groupByRequests.push(basicGroupByRequestForSlider);
 	    };
-	    FacetSliderQueryController.prototype.createRangeValuesForGraph = function (basicRangeRequest) {
+	    FacetSliderQueryController.prototype.createRangeValuesForGraphUsingStartAndEnd = function () {
+	        var start = this.facet.options.start;
+	        var end = this.facet.options.end;
+	        if (this.facet.options.dateField) {
+	            start = this.getISOFormat(start);
+	            end = this.getISOFormat(end);
+	        }
+	        var oneRange = {
+	            start: start,
+	            end: end,
+	            endInclusive: true,
+	            label: 'Slider'
+	        };
 	        if (this.facet.options.graph.steps == undefined) {
 	            this.facet.options.graph.steps = 10;
 	        }
@@ -13630,10 +13627,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	            this.facet.options.end = new Date(this.facet.options.end).getTime();
 	        }
 	        if (this.rangeValuesForGraphToUse != undefined) {
-	            return this.usePrebuiltRange(basicRangeRequest);
+	            return this.usePrebuiltRange(oneRange);
 	        }
 	        else {
-	            return this.buildRange(basicRangeRequest);
+	            return this.buildRange(oneRange);
 	        }
 	    };
 	    FacetSliderQueryController.prototype.usePrebuiltRange = function (basicRangeRequest) {
@@ -24480,6 +24477,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	            this.slider.drawGraph(this.delayedGraphData);
 	        }
 	    };
+	    FacetSlider.prototype.isSimpleSliderConfig = function () {
+	        return this.options.start != null && this.options.end != null;
+	    };
+	    FacetSlider.prototype.hasAGraph = function () {
+	        return this.options.graph != undefined;
+	    };
 	    FacetSlider.prototype.handleNoresults = function () {
 	        this.isEmpty = true;
 	        this.updateAppearanceDependingOnState();
@@ -24613,9 +24616,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        this.ensureDom();
 	        this.setupSliderIfNeeded(data);
 	        var groupByResults = data.results.groupByResults[this.facetQueryController.lastGroupByRequestIndex];
-	        if (groupByResults == undefined || groupByResults.values[0] == undefined) {
-	            this.isEmpty = true;
-	        }
+	        this.isEmpty = this.isFacetEmpty(groupByResults);
 	        this.updateAppearanceDependingOnState();
 	        if (this.hasAGraph()) {
 	            this.renderToSliderGraph(data);
@@ -24709,7 +24710,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            });
 	        }
 	        if (totalGraphResults == 0) {
-	            this.isEmpty = true;
+	            this.isEmpty = !this.isSimpleSliderConfig();
 	            this.updateAppearanceDependingOnState();
 	        }
 	        else if (graphData != undefined && !this.isDropdownHidden()) {
@@ -24861,9 +24862,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	            }
 	        }
 	    };
-	    FacetSlider.prototype.hasAGraph = function () {
-	        return this.options.graph != undefined;
-	    };
 	    FacetSlider.prototype.updateAppearanceDependingOnState = function (sliding) {
 	        if (sliding === void 0) { sliding = false; }
 	        if (this.isEmpty && !this.isActive() && !sliding) {
@@ -24885,6 +24883,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	    };
 	    FacetSlider.prototype.handleNuke = function () {
 	        window.removeEventListener('resize', this.onResize);
+	    };
+	    FacetSlider.prototype.isFacetEmpty = function (groupByResults) {
+	        return groupByResults == null || groupByResults.values[0] == null;
 	    };
 	    return FacetSlider;
 	}(Component_1.Component));
