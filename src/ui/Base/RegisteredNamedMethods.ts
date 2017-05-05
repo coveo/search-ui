@@ -1,4 +1,4 @@
-import { Initialization } from './Initialization';
+import { Initialization, LazyInitialization } from './Initialization';
 import { Assert } from '../../misc/Assert';
 import { QueryController } from '../../controllers/QueryController';
 import { QueryStateModel, setState } from '../../models/QueryStateModel';
@@ -328,4 +328,45 @@ export function configureRessourceRoot(path: string) {
 
 Initialization.registerNamedMethod('configureRessourceRoot', (path: string) => {
   configureRessourceRoot(path);
+});
+
+/**
+ * Load a module or chunk asynchronously.
+ *
+ * For example, you can do `Coveo.load('Searchbox').then((Searchbox)=>{})` to load the Searchbox component if it not already loaded in your page.
+ *
+ * This is especially useful for complex integration where you want to extend a base component, but have it also work in lazy mode.
+ *
+ * Example :
+ * ```
+ * export function myLazyCustomSearchbox() {
+ *    return Coveo.load<Searchbox>('Searchbox').then((Searchbox) => {
+ *            class MyCustomSearchbox extends Searchbox {
+ *                 [ ... ]
+ *             }
+ *             Coveo.Initialization.registerAutoCreateComponent(MyCustomSearchbox);
+ *             return MyCustomSearchbox;
+ *     })
+ * }
+ *
+ * Coveo.LazyInitialization.registerLazyComponent('MyCustomSearchbox', myLazyCustomSearchbox);
+ * ```
+ *
+ * You can also use this to ensure a specific component is loaded in your page before executing any code.
+ *
+ * @param id The module identifier to load. For components, this will be the name of the component. eg: `Facet` or `Searchbox`.
+ * @returns {Promise}
+ */
+export function load<T>(id: string): Promise<T> {
+  if (LazyInitialization.lazyLoadedComponents[id] != null) {
+    return <Promise<T>>(<any>LazyInitialization.getLazyRegisteredComponent(id));
+  } else if (LazyInitialization.lazyLoadedModule[id] != null) {
+    return <Promise<T>>LazyInitialization.getLazyRegisteredModule(id);
+  } else {
+    return Promise.reject(`Module ${id} is not available`);
+  }
+}
+
+Initialization.registerNamedMethod('require', (modules: string) => {
+  return load(modules);
 });

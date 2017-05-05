@@ -6,6 +6,8 @@ import { Searchbox } from '../../src/ui/Searchbox/Searchbox';
 import { FakeResults } from '../Fake';
 import { IAnalyticsClient } from '../../src/ui/Analytics/AnalyticsClient';
 import { mockUsageAnalytics } from '../MockEnvironment';
+import { LazyInitialization } from '../../src/ui/Base/Initialization';
+import { NoopComponent } from '../../src/ui/NoopComponent/NoopComponent';
 
 export function RegisteredNamedMethodsTest() {
   describe('RegisteredNamedMethods', () => {
@@ -25,6 +27,34 @@ export function RegisteredNamedMethodsTest() {
     afterEach(() => {
       env = null;
       searchbox = null;
+    });
+
+    it('should allow to load an arbitrary module', () => {
+      const fooModule = jasmine.createSpy('foo').and.callFake(() => new Promise((resolve, reject) => {
+      }));
+
+      LazyInitialization.registerLazyModule('foo', fooModule);
+
+      RegisteredNamedMethod.load('foo');
+      expect(fooModule).toHaveBeenCalled();
+
+    });
+
+    it('should allow to load an arbitrary component', () => {
+      const barComponent = jasmine.createSpy('bar').and.callFake(() => new Promise((resolve, reject) => {
+        resolve(NoopComponent);
+      }));
+
+      LazyInitialization.registerLazyComponent('bar', barComponent);
+      RegisteredNamedMethod.load('bar');
+      expect(barComponent).toHaveBeenCalled();
+    });
+
+    it('promise should throw when loading something that does not exist', (done) => {
+      RegisteredNamedMethod.load('does not exist').catch(() => {
+        expect(true).toBe(true);
+        done();
+      });
     });
 
     it('should allow to call state correctly', () => {
