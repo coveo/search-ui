@@ -30,7 +30,7 @@ export class PrintableUri extends ResultLink {
       'PrintableUri': PrintableUri
     });
   }
-
+  private shortenedUri: string;
   private uri: string;
   /**
    * Creates a new PrintableUri.
@@ -114,24 +114,26 @@ export class PrintableUri extends ResultLink {
   }
 
   public renderUri(element: HTMLElement, result?: IQueryResult) {
-    this.uri = result.clickUri;
-    let stringAndHoles: StringAndHoles;
-    if (result.printableUri.indexOf('\\') == -1) {
-      stringAndHoles = StringAndHoles.shortenUri(result.printableUri, $$(element).width() / 7);
-    } else {
-      stringAndHoles = StringAndHoles.shortenPath(result.printableUri, $$(element).width() / 7);
-    }
-    let uri = HighlightUtils.highlightString(stringAndHoles.value, result.printableUriHighlights, stringAndHoles.holes, 'coveo-highlight');
-    let link = $$('a');
-    link.setAttribute('title', result.printableUri);
-    link.addClass('coveo-printable-uri');
-    link.setHtml(uri);
-    link.setAttribute('href', result.clickUri);
-    this.bindLogOpenDocument(link.el);
-    this.element.innerHTML =StreamHighlightUtils.highlightStreamText(uri, this.result.termsToHighlight, this.result.phrasesToHighlight);
-    //let newTitle = this.parseStringTemplate(this.options.titleTemplate);
-    //this.element.innerHTML = newTitle ? StreamHighlightUtils.highlightStreamText(newTitle, this.result.termsToHighlight, this.result.phrasesToHighlight) : this.result.clickUri;
-
+      if(!this.options.titleTemplate) {
+          this.uri = result.clickUri;
+          let stringAndHoles: StringAndHoles;
+          if (result.printableUri.indexOf('\\') == -1) {
+              stringAndHoles = StringAndHoles.shortenUri(result.printableUri, $$(element).width() / 7);
+          } else {
+              stringAndHoles = StringAndHoles.shortenPath(result.printableUri, $$(element).width() / 7);
+          }
+          this.shortenedUri = HighlightUtils.highlightString(stringAndHoles.value, result.printableUriHighlights, stringAndHoles.holes, 'coveo-highlight');
+          let link = $$('a');
+          link.setAttribute('title', result.printableUri);
+          link.addClass('coveo-printable-uri');
+          link.setHtml(this.shortenedUri);
+          link.setAttribute('href', result.clickUri);
+          element.appendChild(link.el);
+      }
+      else if(this.options.titleTemplate){
+          let newTitle = this.parseStringTemplate(this.options.titleTemplate);
+          this.element.innerHTML = newTitle ? StreamHighlightUtils.highlightStreamText(newTitle, this.result.termsToHighlight, this.result.phrasesToHighlight) : this.result.clickUri;
+      }
   }
 
   public buildSeperator() {
@@ -151,7 +153,6 @@ export class PrintableUri extends ResultLink {
   public buildHtmlToken(name: string, uri: string) {
     let modifiedName = name.charAt(0).toUpperCase() + name.slice(1);
     let link = document.createElement('a');
-    this.bindLogOpenDocument(link);
     link.href = uri;
     this.uri = uri;
     link.className = 'coveo-printable-uri';
@@ -159,22 +160,7 @@ export class PrintableUri extends ResultLink {
     return link;
   }
 
-  private bindLogOpenDocument(link: HTMLElement) {
-    $$(link).on(['mousedown', 'touchend'], (e: Event) => {
-      // jQuery event != standard dom event for mouse events
-      // if we have access to the original event, use that.
-      if ((<any>e).originalEvent) {
-        e = (<any>e).originalEvent;
-      }
-      let url = $$(<HTMLElement>e.srcElement).getAttribute('href');
-      let title = $$(<HTMLElement>e.srcElement).text();
-      this.usageAnalytics.logClickEvent(analyticsActionCauseList.documentOpen, {
-        documentURL: url,
-        documentTitle: title,
-        author: Utils.getFieldValue(this.result, 'author')
-      }, this.result, this.root);
-    });
-  }
+
 
 }
 PrintableUri.options = _.extend({}, PrintableUri.options, ResultLink.options);
