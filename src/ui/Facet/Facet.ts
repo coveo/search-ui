@@ -519,7 +519,7 @@ export class Facet extends Component {
      * those other values.
      *
      * ```html
-
+     *
      * <div class="CoveoFacet" data-field="@objecttype" data-title="Object Type" data-tab="All" data-allowed-values="Contact,Account,File"></div>
      * ```
      *
