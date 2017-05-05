@@ -25,6 +25,7 @@ import d3 = require('d3');
 import { SearchAlertsEvents, ISearchAlertsPopulateMessageEventArgs } from '../../events/SearchAlertEvents';
 import _ = require('underscore');
 
+import { IGroupByResult } from '../../rest/GroupByResult';
 export interface IFacetSliderOptions extends ISliderOptions {
   dateField?: boolean;
   queryOverride?: string;
@@ -518,6 +519,14 @@ export class FacetSlider extends Component {
     }
   }
 
+  public isSimpleSliderConfig() {
+    return this.options.start != null && this.options.end != null;
+  }
+
+  public hasAGraph() {
+    return this.options.graph != undefined;
+  }
+
   private handleNoresults(): void {
     this.isEmpty = true;
     this.updateAppearanceDependingOnState();
@@ -665,9 +674,7 @@ export class FacetSlider extends Component {
     this.ensureDom();
     this.setupSliderIfNeeded(data);
     let groupByResults = data.results.groupByResults[this.facetQueryController.lastGroupByRequestIndex];
-    if (groupByResults == undefined || groupByResults.values[0] == undefined) {
-      this.isEmpty = true;
-    }
+    this.isEmpty = this.isFacetEmpty(groupByResults);
     this.updateAppearanceDependingOnState();
     if (this.hasAGraph()) {
       this.renderToSliderGraph(data);
@@ -763,7 +770,7 @@ export class FacetSlider extends Component {
       });
     }
     if (totalGraphResults == 0) {
-      this.isEmpty = true;
+      this.isEmpty = !this.isSimpleSliderConfig();
       this.updateAppearanceDependingOnState();
     } else if (graphData != undefined && !this.isDropdownHidden()) {
       this.slider.drawGraph(graphData);
@@ -923,10 +930,6 @@ export class FacetSlider extends Component {
     }
   }
 
-  private hasAGraph() {
-    return this.options.graph != undefined;
-  }
-
   private updateAppearanceDependingOnState(sliding = false) {
     if (this.isEmpty && !this.isActive() && !sliding) {
       $$(this.element).addClass('coveo-disabled-empty');
@@ -948,5 +951,10 @@ export class FacetSlider extends Component {
   private handleNuke() {
     window.removeEventListener('resize', this.onResize);
   }
+
+  private isFacetEmpty(groupByResults: IGroupByResult) {
+    return groupByResults == null || groupByResults.values[0] == null;
+  }
 }
+
 Initialization.registerAutoCreateComponent(FacetSlider);

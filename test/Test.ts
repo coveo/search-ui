@@ -430,3 +430,6 @@ YouTubeThumbnailTest();
 
 import { ValueElementTest } from './ui/ValueElementTest';
 ValueElementTest();
+
+import { FacetSliderQueryControllerTest } from './controllers/FacetSliderQueryControllerTest';
+FacetSliderQueryControllerTest();

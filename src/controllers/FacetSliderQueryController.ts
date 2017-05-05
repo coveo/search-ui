@@ -31,17 +31,12 @@ export class FacetSliderQueryController {
     this.putGroupByForSliderIntoQueryBuilder(queryBuilder);
   }
 
-  public createBasicGroupByRequest(allowedValues?: string[], addComputedField: boolean = true) {
+  private createBasicGroupByRequest() {
     let groupByQuery: IGroupByRequest = {
       field: <string>this.facet.options.field,
-      completeFacetWithStandardValues: true
+      completeFacetWithStandardValues: true,
+      allowedValues: undefined
     };
-    groupByQuery.allowedValues = undefined;
-    if (this.facet.options.graph) {
-      groupByQuery = this.buildGroupByQueryForSlider(groupByQuery);
-    } else {
-      groupByQuery = this.buildGroupByQueryForAutomaticRanges(groupByQuery);
-    }
     return groupByQuery;
   }
 
@@ -124,38 +119,17 @@ export class FacetSliderQueryController {
     }
   }
 
-  private buildGroupByQueryForSlider(groupByQuery: IGroupByRequest) {
-    if (this.facet.options.start != undefined && this.facet.options.end != undefined) {
-      let start = this.facet.options.start;
-      let end = this.facet.options.end;
-      if (this.facet.options.dateField || this.facet.options.dateField) {
-        start = this.getISOFormat(start);
-        end = this.getISOFormat(end);
-      }
-      groupByQuery.rangeValues = [{
-        start: start,
-        end: end,
-        endInclusive: true,
-        label: 'Slider'
-      }];
-      return groupByQuery;
-    } else {
-      return this.buildGroupByQueryForAutomaticRanges(groupByQuery);
-    }
-  }
-
-  private buildGroupByQueryForAutomaticRanges(groupByQuery: IGroupByRequest) {
-    groupByQuery.generateAutomaticRanges = true;
-    return groupByQuery;
-  }
-
   private putGroupByForGraphIntoQueryBuilder(queryBuilder: QueryBuilder) {
     this.graphGroupByQueriesIndex = queryBuilder.groupByRequests.length;
     let basicGroupByRequestForGraph = this.createBasicGroupByRequest();
-    if (basicGroupByRequestForGraph.rangeValues) {
-      let basicRangeRequest = basicGroupByRequestForGraph.rangeValues[0];
-      basicGroupByRequestForGraph.rangeValues = this.createRangeValuesForGraph(basicRangeRequest);
+
+    if (this.facet.isSimpleSliderConfig()) {
+      basicGroupByRequestForGraph.rangeValues = this.createRangeValuesForGraphUsingStartAndEnd();
+      basicGroupByRequestForGraph.generateAutomaticRanges = false;
+    } else {
+      basicGroupByRequestForGraph.generateAutomaticRanges = true;
     }
+
     let filter = this.computeOurFilterExpression(this.facet.getSliderBoundaryForQuery());
     if (filter != undefined) {
       let queryOverrideObject = queryBuilder.computeCompleteExpressionPartsExcept(filter);
@@ -179,16 +153,45 @@ export class FacetSliderQueryController {
 
   private putGroupByForSliderIntoQueryBuilder(queryBuilder: QueryBuilder) {
     this.lastGroupByRequestIndex = queryBuilder.groupByRequests.length;
-    let basicGroupByRequestForSlider = this.createBasicGroupByRequest();
-    basicGroupByRequestForSlider.maximumNumberOfValues = this.facet.options.graph != null ? this.facet.options.graph.steps || 1 : 1;
+
+    let maximumNumberOfValues = 1;
+    if (this.facet.hasAGraph()) {
+      maximumNumberOfValues = this.facet.options.graph.steps;
+    }
+
+    let rangeValues = undefined;
+    if (this.facet.isSimpleSliderConfig()) {
+      rangeValues = [{
+        start: this.facet.options.start,
+        end: this.facet.options.end,
+        label: 'slider',
+        endInclusive: false
+      }];
+    }
+
+    const basicGroupByRequestForSlider = this.createBasicGroupByRequest();
+    basicGroupByRequestForSlider.maximumNumberOfValues = maximumNumberOfValues;
     basicGroupByRequestForSlider.queryOverride = this.facet.options.queryOverride || '@uri';
     basicGroupByRequestForSlider.sortCriteria = 'nosort';
-    basicGroupByRequestForSlider.generateAutomaticRanges = true;
-    basicGroupByRequestForSlider.rangeValues = undefined;
+    basicGroupByRequestForSlider.generateAutomaticRanges = !this.facet.isSimpleSliderConfig();
+    basicGroupByRequestForSlider.rangeValues = rangeValues;
     queryBuilder.groupByRequests.push(basicGroupByRequestForSlider);
   }
 
-  private createRangeValuesForGraph(basicRangeRequest: IRangeValue) {
+  private createRangeValuesForGraphUsingStartAndEnd() {
+    let start = this.facet.options.start;
+    let end = this.facet.options.end;
+    if (this.facet.options.dateField) {
+      start = this.getISOFormat(start);
+      end = this.getISOFormat(end);
+    }
+    let oneRange: IRangeValue = {
+      start: start,
+      end: end,
+      endInclusive: true,
+      label: 'Slider'
+    };
+
     if (this.facet.options.graph.steps == undefined) {
       this.facet.options.graph.steps = 10;
     }
@@ -199,9 +202,9 @@ export class FacetSliderQueryController {
       this.facet.options.end = new Date(this.facet.options.end).getTime();
     }
     if (this.rangeValuesForGraphToUse != undefined) {
-      return this.usePrebuiltRange(basicRangeRequest);
+      return this.usePrebuiltRange(oneRange);
     } else {
-      return this.buildRange(basicRangeRequest);
+      return this.buildRange(oneRange);
     }
   }
 
