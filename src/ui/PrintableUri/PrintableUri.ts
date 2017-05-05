@@ -1,4 +1,3 @@
-import { IComponentBindings } from '../Base/ComponentBindings';
 import { ComponentOptions } from '../Base/ComponentOptions';
 import { IQueryResult } from '../../rest/QueryResult';
 import { HighlightUtils, StringAndHoles } from '../../utils/HighlightUtils';
@@ -12,7 +11,7 @@ import {ResultLink} from '../ResultLink/ResultLink';
 import { IResultLinkOptions } from '../ResultLink/ResultLinkOptions';
 import {IResultsComponentBindings} from '../Base/ResultsComponentBindings';
 import { StreamHighlightUtils } from '../../utils/StreamHighlightUtils';
-
+import * as _ from 'underscore';
 
 
 export interface IPrintableUriOptions extends IResultLinkOptions {
@@ -26,7 +25,6 @@ export interface IPrintableUriOptions extends IResultLinkOptions {
 export class PrintableUri extends ResultLink {
   static ID = 'PrintableUri';
   static options: IPrintableUriOptions = {};
-
   static doExport = () => {
     exportGlobally({
       'PrintableUri': PrintableUri
@@ -130,9 +128,9 @@ export class PrintableUri extends ResultLink {
     link.setHtml(uri);
     link.setAttribute('href', result.clickUri);
     this.bindLogOpenDocument(link.el);
-    let newTitle = this.parseStringTemplate(this.options.titleTemplate);
-    this.element.innerHTML = newTitle ? StreamHighlightUtils.highlightStreamText(newTitle, this.result.termsToHighlight, this.result.phrasesToHighlight) : this.result.clickUri;
-    element.appendChild(link.el);
+    this.element.innerHTML =StreamHighlightUtils.highlightStreamText(uri, this.result.termsToHighlight, this.result.phrasesToHighlight);
+    //let newTitle = this.parseStringTemplate(this.options.titleTemplate);
+    //this.element.innerHTML = newTitle ? StreamHighlightUtils.highlightStreamText(newTitle, this.result.termsToHighlight, this.result.phrasesToHighlight) : this.result.clickUri;
 
   }
 
@@ -179,5 +177,5 @@ export class PrintableUri extends ResultLink {
   }
 
 }
-
+PrintableUri.options = _.extend({}, PrintableUri.options, ResultLink.options);
 Initialization.registerAutoCreateComponent(PrintableUri);
