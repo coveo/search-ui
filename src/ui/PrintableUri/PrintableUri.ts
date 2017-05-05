@@ -2,7 +2,6 @@ import { ComponentOptions } from '../Base/ComponentOptions';
 import { IQueryResult } from '../../rest/QueryResult';
 import { HighlightUtils, StringAndHoles } from '../../utils/HighlightUtils';
 import { Initialization } from '../Base/Initialization';
-import { analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
 import { Utils } from '../../utils/Utils';
 import { $$ } from '../../utils/Dom';
 import { exportGlobally } from '../../GlobalExports';
@@ -123,7 +122,7 @@ export class PrintableUri extends ResultLink {
               stringAndHoles = StringAndHoles.shortenPath(result.printableUri, $$(element).width() / 7);
           }
           this.shortenedUri = HighlightUtils.highlightString(stringAndHoles.value, result.printableUriHighlights, stringAndHoles.holes, 'coveo-highlight');
-          let link = $$('a');
+          let link = $$('div');
           link.setAttribute('title', result.printableUri);
           link.addClass('coveo-printable-uri');
           link.setHtml(this.shortenedUri);
