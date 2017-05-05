@@ -46,7 +46,7 @@ export function PrintableUriTest() {
         });
 
         it('should shorten the printable uri correctly if title template is an empty string', () => {
-            test.cmp.options.titleTemplate = '';
+            test.cmp.options.titleTemplate = "";
             fakeResult.printableUri = 'http://a.very.very.very.very.very.very.very.very.very.very.long.printable.uri';
             test = Mock.advancedResultComponentSetup<PrintableUri>(PrintableUri, fakeResult, undefined);
             expect($$(test.cmp.element).find('a').innerText).toEqual('http://a.very.very.very.very.very.very.very.very.very.very.long.printable....');
@@ -151,12 +151,6 @@ export function PrintableUriTest() {
                 test = Mock.optionsResultComponentSetup<PrintableUri, IResultLinkOptions>(PrintableUri, { titleTemplate: titleTemplate }, fakeResult);
                 expect(test.cmp.element.innerHTML).toEqual('testExternal');
                 window['Coveo']['test'] = undefined;
-            });
-
-            it('should print the title if the option is set but the template is empty', () => {
-                let titleTemplate = '';
-                test = Mock.optionsResultComponentSetup<PrintableUri, IResultLinkOptions>(PrintableUri, { titleTemplate: titleTemplate }, fakeResult);
-                expect($$(test.cmp.element).text()).toEqual(fakeResult.title);
             });
 
             it('should print the template if the key used in the template is undefined', () => {
