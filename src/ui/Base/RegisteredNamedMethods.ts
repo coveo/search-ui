@@ -331,31 +331,38 @@ Initialization.registerNamedMethod('configureRessourceRoot', (path: string) => {
 });
 
 /**
- * Load a module or chunk asynchronously.
+ * Asynchronously loads a module, or chunk.
  *
- * For example, you can do `Coveo.load('Searchbox').then((Searchbox)=>{})` to load the Searchbox component if it not already loaded in your page.
+ * This is especially useful when you want to extend a base component, and make sure the lazy component loading process
+ * recognizes it (see [Lazy Versus Eager Component Loading](https://developers.coveo.com/x/YBgvAg)).
  *
- * This is especially useful for complex integration where you want to extend a base component, but have it also work in lazy mode.
+ * **Example:**
  *
- * Example :
+ * ```typescript
+ * export function lazyCustomFacet() {
+ *   return Coveo.load<Facet>('Facet').then((Facet) => {
+ *     class CustomFacet extends Facet {
+ *       [ ... ]
+ *     };
+ *     Coveo.Initialization.registerAutoCreateComponent(CustomFacet);
+ *     return CustomFacet;
+ *   });
+ * };
+ *
+ * Coveo.LazyInitialization.registerLazyComponent('CustomFacet', lazyCustomFacet);
  * ```
- * export function myLazyCustomSearchbox() {
- *    return Coveo.load<Searchbox>('Searchbox').then((Searchbox) => {
- *            class MyCustomSearchbox extends Searchbox {
- *                 [ ... ]
- *             }
- *             Coveo.Initialization.registerAutoCreateComponent(MyCustomSearchbox);
- *             return MyCustomSearchbox;
- *     })
- * }
  *
- * Coveo.LazyInitialization.registerLazyComponent('MyCustomSearchbox', myLazyCustomSearchbox);
- * ```
+ * You can also use this function to assert a component is fully loaded in your page before executing any code relating
+ * to this component.
  *
- * You can also use this to ensure a specific component is loaded in your page before executing any code.
+ * **Example:**
  *
- * @param id The module identifier to load. For components, this will be the name of the component. eg: `Facet` or `Searchbox`.
- * @returns {Promise}
+ * > You could do `Coveo.load('Searchbox').then(function(Searchbox) {})` to load the [`Searchbox`]{@link Searchbox}
+ * > component, if it is not already loaded in your search page.
+ *
+ * @param id The identifier of the module you wish to load. In the case of components, this identifier is the component
+ * name (e.g., `Facet`, `Searchbox`).
+ * @returns {Promise} A Promise of the module, or chunk.
  */
 export function load<T>(id: string): Promise<T> {
   if (LazyInitialization.lazyLoadedComponents[id] != null) {
