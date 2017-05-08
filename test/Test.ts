@@ -455,3 +455,6 @@ FormGroupTest();
 
 import { MultiSelectTest } from './ui/MultiSelectTest';
 MultiSelectTest();
+
+import { FacetSliderQueryControllerTest } from './controllers/FacetSliderQueryControllerTest';
+FacetSliderQueryControllerTest();
