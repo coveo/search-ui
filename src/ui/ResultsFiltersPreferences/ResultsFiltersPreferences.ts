@@ -40,14 +40,14 @@ export interface IResultsFiltersPreferencesOptions {
 }
 
 /**
- * The ResultFiltersPreferences component allows the end user to create custom filters to apply to queries. These
- * filters are saved in the local storage of the end user.
+ * The `ResultFiltersPreferences` component allows end users to create custom filters to apply to queries. These filters
+ * are saved to local storage.
  *
- * Only advanced end users who understand the Coveo query syntax should actually use this feature (see
+ * Only advanced end users who understand the Coveo query syntax should use this feature (see
  * [Coveo Query Syntax Reference](http://www.coveo.com/go?dest=adminhelp70&lcid=9&context=10005)).
  *
- * This component is normally accessible through the {@link Settings} menu. Its usual location in the DOM is inside the
- * {@link PreferencesPanel} component.
+ * This component is normally accessible through the [`Settings`]{@link Settings} menu. Its usual location in the DOM is
+ * inside the [`PreferencesPanel`]{@link PreferencesPanel} element.
  *
  * See also the {@link ResultsPreferences} component.
  */
@@ -67,7 +67,7 @@ export class ResultsFiltersPreferences extends Component {
   static options: IResultsFiltersPreferencesOptions = {
 
     /**
-     * Specifies whether to include the active filter(s) in the {@link Breadcrumb}.
+     * Specifies whether to display the active filter(s) in the [`Breadcrumb`]{@link Breadcrumb}.
      *
      * Default value is `true`.
      */
@@ -76,43 +76,59 @@ export class ResultsFiltersPreferences extends Component {
     /**
      * Specifies whether to show the **Create** button that allows the end user to create filters.
      *
-     * If you set this option to `false`, only the pre-populated {@link ResultsFiltersPreferences.options.filters} will
-     * be available to the end user.
+     * If you set this option to `false`, only the pre-populated
+     * [`filters`]{@link ResultsFiltersPreferences.options.filters} are available to the end user.
      *
      * Default value is `true`.
      */
     showAdvancedFilters: ComponentOptions.buildBooleanOption({ defaultValue: true }),
 
     /**
-     * Specifies the default filters that all end users can apply.
+     * Specifies the default filters which all end users can apply.
      *
-     * End users will not be able to modify or delete these filters. They do not count as "user-made" filters, but
-     * rather as "built-in" filters created by the developer of the search page.
+     * End users cannot modify or delete these filters. These filters do not count as "user-made" filters, but rather as
+     * "built-in" filters created by the developer of the search page.
      *
-     * You can only set this option in the `init` call of your search interface. You cannot set it directly in the
-     * markup as an HTML attribute.
+     * **Note:**
+     * > You cannot set this option directly in the component markup as an HTML attribute. You must either set it in the
+     * > [`init`]{@link init} call of your search interface (see
+     * > [Components - Passing Component Options in the init Call](https://developers.coveo.com/x/PoGfAQ#Components-PassingComponentOptionsintheinitCall)),
+     * > or before the `init` call, using the `options` top-level function (see
+     * > [Components - Passing Component Options Before the init Call](https://developers.coveo.com/x/PoGfAQ#Components-PassingComponentOptionsBeforetheinitCall)).
      *
      * Filters should follow this definition:
      *
-     * `filters: { [caption: string]: { expression: string; tab?: string[]; } }`;
+     * `filters : { [caption : string] : { expression : string, tab? : string[] } }`;
      *
      * **Example:**
      *
+     * var myFilters = {
+     *   "Only Google Drive Items" : {
+     *     expression : "@connectortype == 'GoogleDriveCrawler'",
+     *     tab : ["Tab1", "Tab2"]
+     *   },
+     *
+     *   "Another Filter" : {
+     *     expression : [ ... another expression ... ]
+     *   },
+     *
+     *   [ ... ]
+     * };
+     *
      * ```javascript
-     * Coveo.init(document.querySelector('#search'), {
+     * // You can set the option in the 'init' call:
+     * Coveo.init(document.querySelector("#search"), {
      *   ResultsFiltersPreferences : {
-     *     filters : {
-     *       "Only Google Drive Items" : {
-     *         expression : "@connectortype == 'GoogleDriveCrawler'"
-     *         tab: ['Tab1', 'Tab2'],
-     *       },
-     *       "Another Filter" : {
-     *         expression : [ ... another expression ... ]
-     *       },
-     *       [ ... ]
-     *     }
+     *     filters : myFilters
      *   }
      * });
+     *
+     * // Or before the 'init' call, using the 'options' top-level function:
+     * // Coveo.options(document.querySelector("#search"), {
+     * //   ResultsFiltersPreferences : {
+     *        filters : myFilters
+     *      }
+     * // });
      * ```
      *
      * Default value is `undefined`.
@@ -134,9 +150,9 @@ export class ResultsFiltersPreferences extends Component {
   private advancedFilterFormValidate: HTMLFormElement;
 
   /**
-   * Creates a new ResultsFiltersPreferences component.
+   * Creates a new `ResultsFiltersPreferences` component.
    * @param element The HTMLElement on which to instantiate the component.
-   * @param options The options for the ResultsFiltersPreferences component.
+   * @param options The options for the `ResultsFiltersPreferences` component.
    * @param bindings The bindings that the component requires to function normally. If not set, these will be
    * automatically resolved (with a slower execution time).
    */
