@@ -31,6 +31,7 @@ export class PrintableUri extends ResultLink {
   }
   private shortenedUri: string;
   private uri: string;
+
   /**
    * Creates a new PrintableUri.
    * @param element The HTMLElement on which to instantiate the component.
@@ -43,118 +44,69 @@ export class PrintableUri extends ResultLink {
     super(element, ComponentOptions.initComponentOptions(element, PrintableUri, options), bindings, result);
 
 
-    let parentsXml = Utils.getFieldValue(result, 'parents');
-    if (parentsXml) {
-      this.renderParentsXml(element, parentsXml);
-    }
+
   }
 
   public renderParentsXml(element: HTMLElement, parentsXml: string) {
     let xmlDoc: XMLDocument = Utils.parseXml(parentsXml);
     let parents = xmlDoc.getElementsByTagName('parent');
-
     let tokens: HTMLElement[] = [];
-    let seperators: HTMLElement[] = [];
-
+    let separators: HTMLElement[] = [];
     for (let i = 0; i < parents.length; i++) {
       if (i > 0) {
-        let seperator = this.buildSeperator();
-        seperators.push(seperator);
+        let seperator = this.buildSeparator();
+        separators.push(seperator);
         element.appendChild(seperator);
       }
-
       let parent = <Element>parents.item(i);
       let token = this.buildHtmlToken(parent.getAttribute('name'), parent.getAttribute('uri'));
       tokens.push(token);
       element.appendChild(token);
     }
+  }
 
-    if (tokens.length > 1) {
-      let ellipsis: HTMLElement = this.buildEllipsis();
-      element.insertBefore(ellipsis, seperators[0]);
-      let ellipsisSeperator: HTMLElement = this.buildSeperator();
-      element.insertBefore(ellipsisSeperator, ellipsis);
-
-      let contentWidth = 0;
-      let tokensWidth: number[] = [];
-      for (let i = 0; i < tokens.length; i++) {
-        tokensWidth[i] = tokens[i].offsetWidth;
-        contentWidth += tokensWidth[i];
-      }
-      let seperatorWidth = seperators[0].offsetWidth;
-      let ellipsisWidth = ellipsis.offsetWidth;
-      let availableWidth = element.offsetWidth;
-
-      if (availableWidth <= contentWidth) {
-        contentWidth += ellipsisWidth + seperatorWidth;
-        let hidden: HTMLElement[] = [];
-        let i = 1;
-        while (i < tokens.length && availableWidth <= contentWidth) {
-          element.removeChild(tokens[i]);
-          element.removeChild(seperators[i - 1]);
-          if (i > 1) {
-            hidden.push(seperators[i - 1]);
-          }
-          hidden.push(tokens[i]);
-          contentWidth -= tokensWidth[i] + seperatorWidth;
-          i++;
+  public renderUri(element: HTMLElement, result?: IQueryResult) {
+    let parentsXml = Utils.getFieldValue(result, 'parents');
+    if (parentsXml) {
+      this.renderParentsXml(element, parentsXml);
+    }
+    else {
+      if (!this.options.titleTemplate) {
+        this.uri = result.clickUri;
+        let stringAndHoles: StringAndHoles;
+        if (result.printableUri.indexOf('\\') == -1) {
+          stringAndHoles = StringAndHoles.shortenUri(result.printableUri, $$(element).width() / 7);
+        } else {
+          stringAndHoles = StringAndHoles.shortenPath(result.printableUri, $$(element).width() / 7);
         }
-        ellipsis.onclick = () => {
-          for (let i = 0; i < hidden.length; i++) {
-            element.insertBefore(hidden[i], ellipsis);
-          }
-          element.removeChild(ellipsis);
-        };
-      } else {
-        element.removeChild(ellipsis);
-        element.removeChild(ellipsisSeperator);
+        this.shortenedUri = HighlightUtils.highlightString(stringAndHoles.value, result.printableUriHighlights, stringAndHoles.holes, 'coveo-highlight');
+        let link = $$('div');
+        link.setAttribute('title', result.printableUri);
+        link.addClass('coveo-printable-uri');
+        link.setHtml(this.shortenedUri);
+        link.setAttribute('href', result.clickUri);
+        element.appendChild(link.el);
+      }
+      else if (this.options.titleTemplate) {
+        let newTitle = this.parseStringTemplate(this.options.titleTemplate);
+        this.element.innerHTML = newTitle ? StreamHighlightUtils.highlightStreamText(newTitle, this.result.termsToHighlight, this.result.phrasesToHighlight) : this.result.clickUri;
       }
     }
   }
 
-  public renderUri(element: HTMLElement, result?: IQueryResult) {
-      if(!this.options.titleTemplate) {
-          this.uri = result.clickUri;
-          let stringAndHoles: StringAndHoles;
-          if (result.printableUri.indexOf('\\') == -1) {
-              stringAndHoles = StringAndHoles.shortenUri(result.printableUri, $$(element).width() / 7);
-          } else {
-              stringAndHoles = StringAndHoles.shortenPath(result.printableUri, $$(element).width() / 7);
-          }
-          this.shortenedUri = HighlightUtils.highlightString(stringAndHoles.value, result.printableUriHighlights, stringAndHoles.holes, 'coveo-highlight');
-          let link = $$('div');
-          link.setAttribute('title', result.printableUri);
-          link.addClass('coveo-printable-uri');
-          link.setHtml(this.shortenedUri);
-          link.setAttribute('href', result.clickUri);
-          element.appendChild(link.el);
-      }
-      else if(this.options.titleTemplate){
-          let newTitle = this.parseStringTemplate(this.options.titleTemplate);
-          this.element.innerHTML = newTitle ? StreamHighlightUtils.highlightStreamText(newTitle, this.result.termsToHighlight, this.result.phrasesToHighlight) : this.result.clickUri;
-      }
-  }
-
-  public buildSeperator() {
+  public buildSeparator() {
     let seperator = document.createElement('span');
-    seperator.innerText = '>';
+    seperator.innerText = ' > ';
     seperator.className = 'coveo-printable-uri-separator';
     return seperator;
   }
 
-  public buildEllipsis() {
-    let ellipsis = document.createElement('span');
-    ellipsis.innerText = '...';
-    ellipsis.className = 'coveo-printable-uri';
-    return ellipsis;
-  }
 
   public buildHtmlToken(name: string, uri: string) {
     let modifiedName = name.charAt(0).toUpperCase() + name.slice(1);
-    let link = document.createElement('a');
-    link.href = uri;
+    let link = document.createElement('span');
     this.uri = uri;
-    link.className = 'coveo-printable-uri';
+    link.className = 'coveo-printable-uri-part';
     link.appendChild(document.createTextNode(modifiedName));
     return link;
   }

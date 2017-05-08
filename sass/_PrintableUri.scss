@@ -1,15 +1,28 @@
 @import "Variables";
 
 .CoveoPrintableUri {
+  flex-wrap: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   margin: 2px 0 5px 0;
   font-size: $font-size-smallest;
   @include clickable();
   padding: 0 2px 0 2px;
-  display:inline-block;
+  display: flex;
   .coveo-printable-uri-separator {
     font-size: 9px;
   }
   .coveo-hidden {
     display: none;
   }
+
+  .coveo-printable-uri-part:nth-of-type(1) { font-size: 12px; flex-shrink: 0}
+  .coveo-printable-uri-part:last-of-type{ font-size:12px; flex-shrink: 0}
+
+  .coveo-printable-uri-part {
+    margin: 1px;
+    box-sizing: border-box;
+    flex: 0 1 auto;
+  }
 }
+

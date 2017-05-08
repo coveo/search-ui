@@ -27,6 +27,20 @@ export function PrintableUriTest() {
             expect(test.cmp.element.getAttribute('tabindex')).toBe('0');
         });
 
+        it('should display the XML correctly if the result has a non-null parents field', () => {
+            fakeResult.raw.parents = '<?xml version="1.0" encoding="utf-16"?><parents><parent name="My Drive" uri="https://drive.google.com/#my-drive" /></parents>';
+            test = Mock.advancedResultComponentSetup<PrintableUri>(PrintableUri, fakeResult, undefined);
+            expect($$(test.cmp.element).find('span').innerText).toEqual('My Drive');
+        });
+
+        it('should display the XML correctly if the result has a very long parents field', () => {
+            fakeResult.raw.parents = '<?xml version="1.0" encoding="utf-16"?><parents><parent name="Organization" uri="https://na17.salesforce.com/home/home.jsp" /><parent name="Technical_Article__ka" uri="http://www.salesforce.com/org:organization/articletype:Technical_Article" /><parent name="Generator became sentient and refuses to cut power" uri="https://na17.salesforce.com/kA0o00000003Wpk" /><parent name="un autre test" uri="http//:google.ca" /></parents>';
+            test = Mock.advancedResultComponentSetup<PrintableUri>(PrintableUri, fakeResult, undefined);
+            expect($$(test.cmp.element).findAll('span.coveo-printable-uri-part')[0].innerText).toEqual('Organization');
+            expect($$(test.cmp.element).findAll('span.coveo-printable-uri-part')[1].innerText).toEqual('Technical_Article__ka');
+
+        });
+
         it('should shorten the printable uri correctly if the title is not a uri', () => {
             fakeResult.printableUri = 'This is not a Uri';
             test = Mock.advancedResultComponentSetup<PrintableUri>(PrintableUri, fakeResult, undefined);
