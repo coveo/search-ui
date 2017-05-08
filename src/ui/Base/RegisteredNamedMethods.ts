@@ -353,11 +353,11 @@ Initialization.registerNamedMethod('configureRessourceRoot', (path: string) => {
  * ```
  *
  * You can also use this function to assert a component is fully loaded in your page before executing any code relating
- * to this component.
+ * to it.
  *
  * **Example:**
  *
- * > You could do `Coveo.load('Searchbox').then(function(Searchbox) {})` to load the [`Searchbox`]{@link Searchbox}
+ * > You could do `Coveo.load('Searchbox').then((Searchbox) => {})` to load the [`Searchbox`]{@link Searchbox}
  * > component, if it is not already loaded in your search page.
  *
  * @param id The identifier of the module you wish to load. In the case of components, this identifier is the component
