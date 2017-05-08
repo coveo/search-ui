@@ -7,7 +7,8 @@ import { $$ } from './Dom';
 import * as _ from 'underscore';
 
 // \u2011: http://graphemica.com/%E2%80%91
-let nonWordBoundary = '[\\.\\-\\u2011\\s~=,.\\|\\/:\'`’;_()!?]';
+// Used to split terms and phrases. Should match characters that can separate words.
+let nonWordBoundary = '[\\.\\-\\u2011\\s~=,.\\|\\/:\'`’;_()!?&+]';
 let regexStart = '(' + nonWordBoundary + '|^)(';
 
 /**
