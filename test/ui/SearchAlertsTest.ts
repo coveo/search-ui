@@ -11,7 +11,7 @@ import { SearchAlertsEvents, ISearchAlertsPopulateMessageEventArgs } from '../..
 import { analyticsActionCauseList } from '../../src/ui/Analytics/AnalyticsActionListMeta';
 import { AdvancedComponentSetupOptions } from '../MockEnvironment';
 import {
-    SUBSCRIPTION_TYPE, ISubscriptionRequest, ISubscriptionQueryRequest,
+    SUBSCRIPTION_TYPE, ISubscriptionQueryRequest,
     ISubscriptionItemRequest
 } from '../../src/rest/Subscription';
 import * as _ from 'underscore';
@@ -108,6 +108,7 @@ export function SearchAlertsTest() {
     });
 
     describe('exposes enableFollowQuery options', () => {
+
       it('should add the option in the settings menu after the first query success', (done) => {
         let promise = Promise.resolve();
         listSubscription.and.returnValue(promise);
@@ -123,7 +124,6 @@ export function SearchAlertsTest() {
         let promise = Promise.reject('oh noes');
         listSubscription.and.returnValue(promise);
         Simulate.query(test.env);
-
         promise.catch(() => {
           $$(test.env.root).trigger(SettingsEvents.settingsPopulateMenu, settingsData);
           expect(settingsData.menuData).not.toContain(jasmine.objectContaining({ className: 'coveo-follow-query' }));
@@ -155,11 +155,13 @@ export function SearchAlertsTest() {
         });
       });
 
-      it('should display subscription with a name', (done)=> {
-        const queryBuilder = new QueryBuilder();
-        queryBuilder.expression.add('my query');
-        const promise = new Promise((resolve, reject)=> {
-          resolve([<ISubscriptionRequest>{
+      describe('with a query being followed', ()=> {
+        let request;
+
+        beforeEach(()=> {
+          const queryBuilder = new QueryBuilder();
+          queryBuilder.expression.add('my query');
+          request = {
             id: 'qwerty',
             frequency: 'daily',
             name: 'my subscription',
@@ -168,326 +170,253 @@ export function SearchAlertsTest() {
               modifiedDateField: '@date',
               query: queryBuilder.build()
             }
-          }]);
-        });
-        listSubscription.and.returnValue(promise);
-
-        test.cmp.openPanel().then(()=> {
-          const elementOpened = getRootElementOpenedInModalBox(test);
-          expect($$(elementOpened).find('tr.coveo-subscriptions-panel-subscription')).not.toBeNull();
-          expect($$(elementOpened).find('td.coveo-subscriptions-panel-context')).not.toBeNull();
-          expect($$($$(elementOpened).find('td.coveo-subscriptions-panel-context')).text()).toBe('my subscription');
-          done();
-        });
-      });
-
-      it('should display subscription query if there is no name', (done)=> {
-        const queryBuilder = new QueryBuilder();
-        queryBuilder.expression.add('my query');
-        const promise = new Promise((resolve, reject)=> {
-          resolve([<ISubscriptionRequest>{
-            id: 'qwerty',
-            frequency: 'daily',
-            name: null,
-            type: SUBSCRIPTION_TYPE.followQuery,
-            typeConfig: <ISubscriptionQueryRequest>{
-              modifiedDateField: '@date',
-              query: queryBuilder.build()
-            }
-          }]);
-        });
-        listSubscription.and.returnValue(promise);
-
-        test.cmp.openPanel().then(()=> {
-          const elementOpened = getRootElementOpenedInModalBox(test);
-          expect($$(elementOpened).find('tr.coveo-subscriptions-panel-subscription')).not.toBeNull();
-          expect($$(elementOpened).find('td.coveo-subscriptions-panel-context')).not.toBeNull();
-          expect($$($$(elementOpened).find('td.coveo-subscriptions-panel-context')).text()).toBe('my query');
-          done();
-        });
-      });
-
-      it('should display subscription query if there is no name', (done)=> {
-        const queryBuilder = new QueryBuilder();
-        queryBuilder.expression.add('my query');
-        const promise = new Promise((resolve, reject)=> {
-          resolve([<ISubscriptionRequest>{
-            id: 'qwerty',
-            frequency: 'daily',
-            name: null,
-            type: SUBSCRIPTION_TYPE.followQuery,
-            typeConfig: <ISubscriptionQueryRequest>{
-              modifiedDateField: '@date',
-              query: queryBuilder.build()
-            }
-          }]);
-        });
-        listSubscription.and.returnValue(promise);
-
-        test.cmp.openPanel().then(()=> {
-          const elementOpened = getRootElementOpenedInModalBox(test);
-          expect($$(elementOpened).find('tr.coveo-subscriptions-panel-subscription')).not.toBeNull();
-          expect($$(elementOpened).find('td.coveo-subscriptions-panel-context')).not.toBeNull();
-          expect($$($$(elementOpened).find('td.coveo-subscriptions-panel-context')).text()).toBe('my query');
-          done();
-        });
-      });
-
-      it('should display and escape subscription query if there is no name', (done)=> {
-        const queryBuilder = new QueryBuilder();
-        queryBuilder.expression.add('<script>1+1</script>');
-        const promise = new Promise((resolve, reject)=> {
-          resolve([<ISubscriptionRequest>{
-            id: 'qwerty',
-            frequency: 'daily',
-            name: null,
-            type: SUBSCRIPTION_TYPE.followQuery,
-            typeConfig: <ISubscriptionQueryRequest>{
-              modifiedDateField: '@date',
-              query: queryBuilder.build()
-            }
-          }]);
-        });
-        listSubscription.and.returnValue(promise);
-
-        test.cmp.openPanel().then(()=> {
-          const elementOpened = getRootElementOpenedInModalBox(test);
-          expect($$(elementOpened).find('tr.coveo-subscriptions-panel-subscription')).not.toBeNull();
-          expect($$(elementOpened).find('td.coveo-subscriptions-panel-context')).not.toBeNull();
-          expect($$(elementOpened).find('td.coveo-subscriptions-panel-context').innerHTML).toEqual(_.escape('<script>1+1</script>'));
-          done();
-        });
-      });
-
-      it('should use the type config title if it\'s a follow item', (done)=> {
-        const promise = new Promise((resolve, reject)=> {
-          resolve([<ISubscriptionRequest>{
-            id: 'qwerty',
-            frequency: 'daily',
-            name: null,
-            type: SUBSCRIPTION_TYPE.followDocument,
-            typeConfig: <ISubscriptionItemRequest>{
-              modifiedDateField: '@date',
-              title: 'my title'
-            }
-          }]);
-        });
-        listSubscription.and.returnValue(promise);
-
-        test.cmp.openPanel().then(()=> {
-          const elementOpened = getRootElementOpenedInModalBox(test);
-          expect($$(elementOpened).find('tr.coveo-subscriptions-panel-subscription')).not.toBeNull();
-          expect($$(elementOpened).find('td.coveo-subscriptions-panel-context')).not.toBeNull();
-          expect($$($$(elementOpened).find('td.coveo-subscriptions-panel-context')).text()).toEqual('my title');
-          done();
-        });
-      });
-
-      it('should set the correct frequency in the dropdown', (done)=> {
-        const promise = new Promise((resolve, reject)=> {
-          resolve([<ISubscriptionRequest>{
-            id: 'qwerty',
-            frequency: 'sunday',
-            name: null,
-            type: SUBSCRIPTION_TYPE.followDocument,
-            typeConfig: <ISubscriptionItemRequest>{
-              modifiedDateField: '@date',
-              title: 'my title'
-            }
-          }]);
-        });
-        listSubscription.and.returnValue(promise);
-
-        test.cmp.openPanel().then(()=> {
-          const elementOpened = getRootElementOpenedInModalBox(test);
-
-          expect(($$(elementOpened).find('.coveo-dropdown') as HTMLSelectElement).value).toBe('sunday');
-          done();
-        });
-      });
-
-      it('should call usage analytics when the dropdown for frequency is changed', (done)=> {
-        const promise = new Promise((resolve, reject)=> {
-          resolve([<ISubscriptionRequest>{
-            id: 'qwerty',
-            frequency: 'sunday',
-            name: null,
-            type: SUBSCRIPTION_TYPE.followDocument,
-            typeConfig: <ISubscriptionItemRequest>{
-              modifiedDateField: '@date',
-              title: 'my title'
-            }
-          }]);
-        });
-        listSubscription.and.returnValue(promise);
-
-        test.cmp.openPanel().then(()=> {
-          const elementOpened = getRootElementOpenedInModalBox(test);
-          const dropdown = $$(elementOpened).find('.coveo-dropdown') as HTMLSelectElement;
-          $$(dropdown).trigger('change');
-          expect(test.env.usageAnalytics.logCustomEvent).toHaveBeenCalledWith(analyticsActionCauseList.searchAlertsUpdateSubscription, jasmine.objectContaining({
-            subscription: 'my title',
-            frequency: 'sunday'
-          }), test.cmp.element);
-          done();
-        });
-      });
-
-      it('should call the search alert service when the dropdown for frequency is changed', (done)=> {
-        const promise = new Promise((resolve, reject)=> {
-          resolve([<ISubscriptionRequest>{
-            id: 'qwerty',
-            frequency: 'sunday',
-            name: null,
-            type: SUBSCRIPTION_TYPE.followDocument,
-            typeConfig: <ISubscriptionItemRequest>{
-              modifiedDateField: '@date',
-              title: 'my title'
-            }
-          }]);
-        });
-        listSubscription.and.returnValue(promise);
-
-        test.cmp.openPanel().then(()=> {
-          const elementOpened = getRootElementOpenedInModalBox(test);
-          const dropdown = $$(elementOpened).find('.coveo-dropdown') as HTMLSelectElement;
-          $$(dropdown).trigger('change');
-          expect(updateSubscription).toHaveBeenCalledWith(jasmine.objectContaining({
-            frequency: 'sunday',
-            typeConfig: jasmine.objectContaining({
-              title: 'my title'
-            })
-          }));
-          done();
-        });
-      });
-
-      it('should call the search alert service when an item is unfollowed', (done)=> {
-        const promise = new Promise((resolve, reject)=> {
-          resolve([<ISubscriptionRequest>{
-            id: 'qwerty',
-            frequency: 'sunday',
-            name: null,
-            type: SUBSCRIPTION_TYPE.followDocument,
-            typeConfig: <ISubscriptionItemRequest>{
-              modifiedDateField: '@date',
-              title: 'my title'
-            }
-          }]);
-        });
-        listSubscription.and.returnValue(promise);
-
-        test.cmp.openPanel().then(()=> {
-          const elementOpened = getRootElementOpenedInModalBox(test);
-          const unfollow = $$(elementOpened).find('.coveo-subscriptions-panel-action-unfollow');
-          $$(unfollow).trigger('click');
-          expect(deleteSubscription).toHaveBeenCalledWith(jasmine.objectContaining({
-            frequency: 'sunday',
-            typeConfig: jasmine.objectContaining({
-              title: 'my title'
-            })
-          }));
-          done();
-        });
-      });
-
-      it('should call the analytics service when an item is unfollowed', (done)=> {
-        const promise = new Promise((resolve, reject)=> {
-          resolve([<ISubscriptionRequest>{
-            id: 'qwerty',
-            frequency: 'sunday',
-            name: 'my sub',
-            type: SUBSCRIPTION_TYPE.followDocument,
-            typeConfig: <ISubscriptionItemRequest>{
-              modifiedDateField: '@date',
-              title: 'my title'
-            }
-          }]);
-        });
-
-        listSubscription.and.returnValue(promise);
-        test.cmp.openPanel().then(()=> {
-
-          let deletePromise = Promise.resolve();
-          deleteSubscription.and.returnValue(deletePromise);
-
-          const elementOpened = getRootElementOpenedInModalBox(test);
-          const unfollow = $$(elementOpened).find('.coveo-subscriptions-panel-action-unfollow');
-
-          $$(unfollow).trigger('click');
-
-          deletePromise.finally(()=> {
-            expect(test.env.usageAnalytics.logCustomEvent).toHaveBeenCalledWith(analyticsActionCauseList.searchAlertsUnfollowDocument, jasmine.objectContaining({
-              subscription: 'my sub'
-            }), test.cmp.element);
-            done();
-          });
-        });
-      });
-
-      it('should call the search alert service when an item is followed', (done)=> {
-        const promise = new Promise((resolve, reject)=> {
-          resolve([<ISubscriptionRequest>{
-            id: 'qwerty',
-            frequency: 'sunday',
-            name: null,
-            type: SUBSCRIPTION_TYPE.followDocument,
-            typeConfig: <ISubscriptionItemRequest>{
-              modifiedDateField: '@date',
-              title: 'my title'
-            }
-          }]);
-        });
-        listSubscription.and.returnValue(promise);
-        followSubscription.and.returnValue(Promise.resolve());
-
-        test.cmp.openPanel().then(()=> {
-          const elementOpened = getRootElementOpenedInModalBox(test);
-          const follow = $$(elementOpened).find('.coveo-subscriptions-panel-action-follow');
-          $$(follow).trigger('click');
-          expect(followSubscription).toHaveBeenCalledWith(jasmine.objectContaining({
-            frequency: 'sunday',
-            typeConfig: jasmine.objectContaining({
-              title: 'my title'
-            })
-          }));
-          done();
-        });
-      });
-
-      it('should call the analytics service when an item is followed', (done)=> {
-        const request = [<ISubscriptionRequest>{
-          id: 'qwerty',
-          frequency: 'sunday',
-          name: 'my sub',
-          type: SUBSCRIPTION_TYPE.followDocument,
-          typeConfig: <ISubscriptionItemRequest>{
-            modifiedDateField: '@date',
-            title: 'my title'
           }
-        }];
+        });
 
-        listSubscription.and.returnValue(new Promise((resolve, reject)=> {
-          resolve(request);
-        }));
+        afterEach(()=> {
+          request = null;
+        });
 
-        test.cmp.openPanel().then(()=> {
-
-          let followPromise = new Promise((resolve, reject)=> {
-            resolve(request);
+        it('should display subscription with a name', (done)=> {
+          const promise = new Promise((resolve, reject)=> {
+            resolve([request]);
           });
-          followSubscription.and.returnValue(followPromise);
+          listSubscription.and.returnValue(promise);
 
-          const elementOpened = getRootElementOpenedInModalBox(test);
-          const follow = $$(elementOpened).find('.coveo-subscriptions-panel-action-follow');
+          test.cmp.openPanel().then(()=> {
+            const elementOpened = getRootElementOpenedInModalBox(test);
+            expect($$(elementOpened).find('tr.coveo-subscriptions-panel-subscription')).not.toBeNull();
+            expect($$(elementOpened).find('td.coveo-subscriptions-panel-context')).not.toBeNull();
+            expect($$($$(elementOpened).find('td.coveo-subscriptions-panel-context')).text()).toBe('my subscription');
+            done();
+          });
+        });
 
-          $$(follow).trigger('click');
+        it('should display subscription query if there is no name', (done)=> {
+          request.name = null;
+          const promise = new Promise((resolve, reject)=> {
+            resolve([request]);
+          });
+          listSubscription.and.returnValue(promise);
 
-          followPromise.finally(()=> {
-            expect(test.env.usageAnalytics.logCustomEvent).toHaveBeenCalledWith(analyticsActionCauseList.searchAlertsFollowDocument, jasmine.objectContaining({
-              subscription: 'my sub'
+          test.cmp.openPanel().then(()=> {
+            const elementOpened = getRootElementOpenedInModalBox(test);
+            expect($$(elementOpened).find('tr.coveo-subscriptions-panel-subscription')).not.toBeNull();
+            expect($$(elementOpened).find('td.coveo-subscriptions-panel-context')).not.toBeNull();
+            expect($$($$(elementOpened).find('td.coveo-subscriptions-panel-context')).text()).toBe('my query');
+            done();
+          });
+        });
+
+        it('should display and escape subscription query if there is no name', (done)=> {
+          request.name = null;
+          const queryBuilder = new QueryBuilder();
+          queryBuilder.expression.add('<script>1+1</script>');
+          request.typeConfig.query = queryBuilder.build();
+
+          const promise = new Promise((resolve, reject)=> {
+            resolve([request]);
+          });
+
+          listSubscription.and.returnValue(promise);
+
+          test.cmp.openPanel().then(()=> {
+            const elementOpened = getRootElementOpenedInModalBox(test);
+            expect($$(elementOpened).find('tr.coveo-subscriptions-panel-subscription')).not.toBeNull();
+            expect($$(elementOpened).find('td.coveo-subscriptions-panel-context')).not.toBeNull();
+            expect($$(elementOpened).find('td.coveo-subscriptions-panel-context').innerHTML).toEqual(_.escape('<script>1+1</script>'));
+            done();
+          });
+        });
+      });
+
+      describe('with a follow item', ()=> {
+        let request;
+
+        beforeEach(()=> {
+          request = {
+            id: 'qwerty',
+            frequency: 'daily',
+            name: null,
+            type: SUBSCRIPTION_TYPE.followDocument,
+            typeConfig: <ISubscriptionItemRequest>{
+              modifiedDateField: '@date',
+              title: 'my title'
+            }
+          };
+        });
+
+        afterEach(()=> {
+          request = null;
+        });
+
+        it('should use the type config title', (done)=> {
+          const promise = new Promise((resolve, reject)=> {
+            resolve([request]);
+          });
+          listSubscription.and.returnValue(promise);
+
+          test.cmp.openPanel().then(()=> {
+            const elementOpened = getRootElementOpenedInModalBox(test);
+            expect($$(elementOpened).find('tr.coveo-subscriptions-panel-subscription')).not.toBeNull();
+            expect($$(elementOpened).find('td.coveo-subscriptions-panel-context')).not.toBeNull();
+            expect($$($$(elementOpened).find('td.coveo-subscriptions-panel-context')).text()).toEqual('my title');
+            done();
+          });
+        });
+
+        it('should set the correct frequency in the dropdown', (done)=> {
+          request.frequency = 'sunday';
+          const promise = new Promise((resolve, reject)=> {
+            resolve([request]);
+          });
+          listSubscription.and.returnValue(promise);
+
+          test.cmp.openPanel().then(()=> {
+            const elementOpened = getRootElementOpenedInModalBox(test);
+            expect(($$(elementOpened).find('.coveo-dropdown') as HTMLSelectElement).value).toBe('sunday');
+            done();
+          });
+        });
+
+        it('should call usage analytics when the dropdown for frequency is changed', (done)=> {
+          request.frequency = 'sunday';
+          request.typeConfig.title = 'my title';
+          const promise = new Promise((resolve, reject)=> {
+            resolve([request]);
+          });
+          listSubscription.and.returnValue(promise);
+
+          test.cmp.openPanel().then(()=> {
+            const elementOpened = getRootElementOpenedInModalBox(test);
+            const dropdown = $$(elementOpened).find('.coveo-dropdown') as HTMLSelectElement;
+            $$(dropdown).trigger('change');
+            expect(test.env.usageAnalytics.logCustomEvent).toHaveBeenCalledWith(analyticsActionCauseList.searchAlertsUpdateSubscription, jasmine.objectContaining({
+              subscription: 'my title',
+              frequency: 'sunday'
             }), test.cmp.element);
             done();
+          });
+        });
+
+        it('should call the search alert service when the dropdown for frequency is changed', (done)=> {
+          request.frequency = 'monday';
+          request.typeConfig.title = 'some nice title';
+          const promise = new Promise((resolve, reject)=> {
+            resolve([request]);
+          });
+          listSubscription.and.returnValue(promise);
+
+          test.cmp.openPanel().then(()=> {
+            const elementOpened = getRootElementOpenedInModalBox(test);
+            const dropdown = $$(elementOpened).find('.coveo-dropdown') as HTMLSelectElement;
+            $$(dropdown).trigger('change');
+            expect(updateSubscription).toHaveBeenCalledWith(jasmine.objectContaining({
+              frequency: 'monday',
+              typeConfig: jasmine.objectContaining({
+                title: 'some nice title'
+              })
+            }));
+            done();
+          });
+        });
+
+        it('should call the search alert service when an item is unfollowed', (done)=> {
+          request.frequency = 'friday';
+          request.typeConfig.title = 'it\'s friday friday, gotta get down on friday';
+          const promise = new Promise((resolve, reject)=> {
+            resolve([request]);
+          });
+          listSubscription.and.returnValue(promise);
+
+          test.cmp.openPanel().then(()=> {
+            const elementOpened = getRootElementOpenedInModalBox(test);
+            const unfollow = $$(elementOpened).find('.coveo-subscriptions-panel-action-unfollow');
+            $$(unfollow).trigger('click');
+            expect(deleteSubscription).toHaveBeenCalledWith(jasmine.objectContaining({
+              frequency: 'friday',
+              typeConfig: jasmine.objectContaining({
+                title: 'it\'s friday friday, gotta get down on friday'
+              })
+            }));
+            done();
+          });
+        });
+
+        it('should call the analytics service when an item is unfollowed', (done)=> {
+          request.name = 'my sub';
+          const promise = new Promise((resolve, reject)=> {
+            resolve([request]);
+          });
+          listSubscription.and.returnValue(promise);
+
+          test.cmp.openPanel().then(()=> {
+
+            let deletePromise = Promise.resolve();
+            deleteSubscription.and.returnValue(deletePromise);
+
+            const elementOpened = getRootElementOpenedInModalBox(test);
+            const unfollow = $$(elementOpened).find('.coveo-subscriptions-panel-action-unfollow');
+            $$(unfollow).trigger('click');
+
+            deletePromise.finally(()=> {
+              expect(test.env.usageAnalytics.logCustomEvent).toHaveBeenCalledWith(analyticsActionCauseList.searchAlertsUnfollowDocument, jasmine.objectContaining({
+                subscription: 'my sub'
+              }), test.cmp.element);
+              done();
+            });
+          });
+        });
+
+        it('should call the search alert service when an item is followed', (done)=> {
+          const promise = new Promise((resolve, reject)=> {
+            resolve([request]);
+          });
+          listSubscription.and.returnValue(promise);
+
+          test.cmp.openPanel().then(()=> {
+
+            let followPromise = Promise.resolve();
+            followSubscription.and.returnValue(followPromise);
+
+            const elementOpened = getRootElementOpenedInModalBox(test);
+            const follow = $$(elementOpened).find('.coveo-subscriptions-panel-action-follow');
+            $$(follow).trigger('click');
+
+            followPromise.finally(()=> {
+              expect(followSubscription).toHaveBeenCalledWith(jasmine.objectContaining({
+                frequency: 'daily',
+                typeConfig: jasmine.objectContaining({
+                  title: 'my title'
+                })
+              }));
+              done();
+            });
+          });
+        });
+
+        it('should call the analytics service when an item is followed', (done)=> {
+          request.name = 'my document';
+          const promise = new Promise((resolve, reject)=> {
+            resolve([request]);
+          });
+          listSubscription.and.returnValue(promise);
+
+          test.cmp.openPanel().then(()=> {
+
+            let followPromise = Promise.resolve();
+            followSubscription.and.returnValue(followPromise);
+
+            const elementOpened = getRootElementOpenedInModalBox(test);
+            const follow = $$(elementOpened).find('.coveo-subscriptions-panel-action-follow');
+            $$(follow).trigger('click');
+
+            followPromise.finally(()=> {
+              expect(test.env.usageAnalytics.logCustomEvent).toHaveBeenCalledWith(analyticsActionCauseList.searchAlertsFollowDocument, jasmine.objectContaining({
+                subscription: 'my document'
+              }), test.cmp.element);
+              done();
+            });
           });
         });
       });
