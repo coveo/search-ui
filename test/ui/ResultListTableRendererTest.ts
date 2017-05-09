@@ -32,10 +32,10 @@ export function ResultListTableRendererTest() {
       });
       renderer = new ResultListTableRenderer({ resultTemplate: fakeTemplateList, resultContainer: resultContainer }, () => null);
       renderer.renderResults([$$('div', { className: 'CoveoResult' }).el], false, () => null)
-              .then(() => {
-                expect($$(resultContainer).find('.coveo-result-list-table-footer')).not.toBeNull();
-                done();
-              });
+        .then(() => {
+          expect($$(resultContainer).find('.coveo-result-list-table-footer')).not.toBeNull();
+          done();
+        });
     });
 
     it('should not render a table header if custom templates are specified but no header template', () => {

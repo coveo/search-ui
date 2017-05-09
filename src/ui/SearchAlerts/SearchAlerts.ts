@@ -180,8 +180,8 @@ export class SearchAlerts extends Component {
    * Also logs the `searchAlertsFollowQuery` event in the usage analytics with the name of the request as meta data.
    */
   public followQuery() {
-    let queryBuilder = this.queryController.createQueryBuilder({});
-    let request = this.buildFollowQueryRequest(queryBuilder.build(), this.options);
+    const queryBuilder = this.queryController.createQueryBuilder({});
+    const request = this.buildFollowQueryRequest(queryBuilder.build(), this.options);
 
     this.usageAnalytics.logCustomEvent<IAnalyticsSearchAlertsMeta>(analyticsActionCauseList.searchAlertsFollowQuery, {
       subscription: request.name
@@ -190,7 +190,7 @@ export class SearchAlerts extends Component {
     this.queryController.getEndpoint().follow(request)
       .then((subscription: ISubscription) => {
         if (subscription) {
-          let eventArgs: ISearchAlertsEventArgs = {
+          const eventArgs: ISearchAlertsEventArgs = {
             subscription: subscription,
             dom: this.findQueryBoxDom()
           };
@@ -268,7 +268,8 @@ export class SearchAlerts extends Component {
       });
     }).catch(() => {
       sizeModForModalBox = 'small';
-      container.el.innerHTML = '<div class=\'coveo-subscriptions-panel-fail\'>' + l('SearchAlerts_Fail') + '</div>';
+      container.empty();
+      container.append(this.getFailureMessage().el);
     }).finally(() => {
       this.modal = this.ModalBox.open(container.el, {
         title: title.el.outerHTML,
@@ -278,14 +279,17 @@ export class SearchAlerts extends Component {
     });
   }
 
+  private getFailureMessage(): Dom {
+    return $$('div', {
+      className: 'coveo-subscriptions-panel-fail'
+    }, l('SearchAlerts_Fail'));
+  }
+
   private handleSearchAlertsFail() {
     if (this.modal != null) {
       const modalBody = $$(this.modal.wrapper).find('.coveo-modal-body');
-      const errorMessage = $$('div', {
-        className: 'coveo-subscriptions-panel-fail'
-      }, l('SearchAlerts_Fail'));
       $$(modalBody).empty();
-      $$(modalBody).append(errorMessage.el);
+      $$(modalBody).append(this.getFailureMessage().el);
     }
   }
 
@@ -313,10 +317,10 @@ export class SearchAlerts extends Component {
     if (subscription.name) {
       context = subscription.name;
     } else if (subscription.type == SUBSCRIPTION_TYPE.followQuery) {
-      let typeConfig = <ISubscriptionQueryRequest>subscription.typeConfig;
+      const typeConfig = <ISubscriptionQueryRequest>subscription.typeConfig;
       context = _.escape(typeConfig.query.q) || l('EmptyQuery');
     } else {
-      let typeConfig = <ISubscriptionItemRequest>subscription.typeConfig;
+      const typeConfig = <ISubscriptionItemRequest>subscription.typeConfig;
       context = _.escape(typeConfig.title || typeConfig.id);
     }
 
@@ -379,7 +383,7 @@ export class SearchAlerts extends Component {
           }
           delete subscription.id;
 
-          let eventArgs: ISearchAlertsEventArgs = { subscription: subscription };
+          const eventArgs: ISearchAlertsEventArgs = { subscription: subscription };
           $$(this.root).trigger(SearchAlertsEvents.searchAlertsDeleted, eventArgs);
         })
         .catch(() => {
@@ -399,7 +403,7 @@ export class SearchAlerts extends Component {
             this.logAnalyticsEvent(analyticsActionCauseList.searchAlertsFollowQuery, subscription);
           }
           subscription.id = updatedSearchAlert.id;
-          let eventArgs: ISearchAlertsEventArgs = { subscription: subscription };
+          const eventArgs: ISearchAlertsEventArgs = { subscription: subscription };
           $$(this.root).trigger(SearchAlertsEvents.searchAlertsCreated, eventArgs);
         })
         .catch(() => {
@@ -418,7 +422,7 @@ export class SearchAlerts extends Component {
   }
 
   private triggerSearchAlertsFail() {
-    let eventArgs: ISearchAlertsFailEventArgs = {
+    const eventArgs: ISearchAlertsFailEventArgs = {
       dom: this.findQueryBoxDom()
     };
     $$(this.root).trigger(SearchAlertsEvents.searchAlertsFail, eventArgs);
@@ -426,11 +430,11 @@ export class SearchAlerts extends Component {
 
   protected findQueryBoxDom(): HTMLElement {
     let dom: HTMLElement;
-    let components = this.searchInterface.getComponents<Component>('Querybox');
+    const components = this.searchInterface.getComponents<Component>('Querybox');
     if (components && components.length > 0) {
       dom = _.first(components).element;
     } else {
-      let components = this.searchInterface.getComponents<Component>('Omnibox');
+      const components = this.searchInterface.getComponents<Component>('Omnibox');
       if (components && components.length > 0) {
         dom = _.first(components).element;
       }
@@ -439,7 +443,7 @@ export class SearchAlerts extends Component {
   }
 
   private buildFollowQueryRequest(query: IQuery, options: ISearchAlertsOptions): ISubscriptionRequest {
-    let typeConfig: ISubscriptionQueryRequest = {
+    const typeConfig: ISubscriptionQueryRequest = {
       query: query
     };
 

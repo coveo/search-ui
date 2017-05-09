@@ -11,8 +11,8 @@ import { SearchAlertsEvents, ISearchAlertsPopulateMessageEventArgs } from '../..
 import { analyticsActionCauseList } from '../../src/ui/Analytics/AnalyticsActionListMeta';
 import { AdvancedComponentSetupOptions } from '../MockEnvironment';
 import {
-    SUBSCRIPTION_TYPE, ISubscriptionQueryRequest,
-    ISubscriptionItemRequest
+  SUBSCRIPTION_TYPE, ISubscriptionQueryRequest,
+  ISubscriptionItemRequest
 } from '../../src/rest/Subscription';
 import * as _ from 'underscore';
 
@@ -31,13 +31,13 @@ export function SearchAlertsTest() {
 
     beforeEach(() => {
       listSubscription = jasmine.createSpy('listSub');
-      listSubscription.and.returnValue(new Promise((resolve, reject)=> {
+      listSubscription.and.returnValue(new Promise((resolve, reject) => {
       }));
       updateSubscription = jasmine.createSpy('update');
-      updateSubscription.and.returnValue(new Promise((resolve, reject)=> {
+      updateSubscription.and.returnValue(new Promise((resolve, reject) => {
       }));
       deleteSubscription = jasmine.createSpy('delete');
-      deleteSubscription.and.returnValue(new Promise((resolve, reject)=> {
+      deleteSubscription.and.returnValue(new Promise((resolve, reject) => {
       }));
       followSubscription = jasmine.createSpy('follow');
       followSubscription.and.returnValue(followSubscription);
@@ -69,7 +69,7 @@ export function SearchAlertsTest() {
       });
 
       it('should not be able to send message if false', () => {
-        test = Mock.optionsComponentSetupWithModalBox<SearchAlerts, ISearchAlertsOptions>(SearchAlerts, {enableMessage: false});
+        test = Mock.optionsComponentSetupWithModalBox<SearchAlerts, ISearchAlertsOptions>(SearchAlerts, { enableMessage: false });
         expect(test.cmp.message).toBeUndefined();
       });
     });
@@ -79,7 +79,7 @@ export function SearchAlertsTest() {
       it('should add the option in the settings menu if the user is not anonymous', () => {
         test = Mock.advancedComponentSetupWithModalBox<SearchAlerts>(SearchAlerts, new AdvancedComponentSetupOptions(null, {
           enableManagePanel: true
-        }, (env)=> {
+        }, (env) => {
           env.searchEndpoint.options.isGuestUser = false;
           return env;
         }));
@@ -90,7 +90,7 @@ export function SearchAlertsTest() {
       it('should not add the option in the setting menu if the user is anonymous', () => {
         test = Mock.advancedComponentSetupWithModalBox<SearchAlerts>(SearchAlerts, new AdvancedComponentSetupOptions(null, {
           enableManagePanel: true
-        }, (env)=> {
+        }, (env) => {
           env.searchEndpoint.options.isGuestUser = true;
           return env;
         }));
@@ -113,7 +113,7 @@ export function SearchAlertsTest() {
         let promise = Promise.resolve();
         listSubscription.and.returnValue(promise);
         Simulate.query(test.env);
-        promise.then(()=> {
+        promise.then(() => {
           $$(test.env.root).trigger(SettingsEvents.settingsPopulateMenu, settingsData);
           expect(settingsData.menuData).toContain(jasmine.objectContaining({ className: 'coveo-follow-query' }));
           done();
@@ -139,7 +139,7 @@ export function SearchAlertsTest() {
       it('should open a modal box', (done) => {
         listSubscription.and.returnValue(Promise.resolve());
         test.cmp.openPanel().then(() => {
-          expect(test.modalBox.open).toHaveBeenCalledWith(jasmine.anything(), jasmine.objectContaining({className: 'coveo-subscriptions-panel'}));
+          expect(test.modalBox.open).toHaveBeenCalledWith(jasmine.anything(), jasmine.objectContaining({ className: 'coveo-subscriptions-panel' }));
           done();
         });
       });
@@ -155,10 +155,10 @@ export function SearchAlertsTest() {
         });
       });
 
-      describe('with a query being followed', ()=> {
+      describe('with a query being followed', () => {
         let request;
 
-        beforeEach(()=> {
+        beforeEach(() => {
           const queryBuilder = new QueryBuilder();
           queryBuilder.expression.add('my query');
           request = {
@@ -170,20 +170,20 @@ export function SearchAlertsTest() {
               modifiedDateField: '@date',
               query: queryBuilder.build()
             }
-          }
+          };
         });
 
-        afterEach(()=> {
+        afterEach(() => {
           request = null;
         });
 
-        it('should display subscription with a name', (done)=> {
-          const promise = new Promise((resolve, reject)=> {
+        it('should display subscription with a name', (done) => {
+          const promise = new Promise((resolve, reject) => {
             resolve([request]);
           });
           listSubscription.and.returnValue(promise);
 
-          test.cmp.openPanel().then(()=> {
+          test.cmp.openPanel().then(() => {
             const elementOpened = getRootElementOpenedInModalBox(test);
             expect($$(elementOpened).find('tr.coveo-subscriptions-panel-subscription')).not.toBeNull();
             expect($$(elementOpened).find('td.coveo-subscriptions-panel-context')).not.toBeNull();
@@ -192,14 +192,14 @@ export function SearchAlertsTest() {
           });
         });
 
-        it('should display subscription query if there is no name', (done)=> {
+        it('should display subscription query if there is no name', (done) => {
           request.name = null;
-          const promise = new Promise((resolve, reject)=> {
+          const promise = new Promise((resolve, reject) => {
             resolve([request]);
           });
           listSubscription.and.returnValue(promise);
 
-          test.cmp.openPanel().then(()=> {
+          test.cmp.openPanel().then(() => {
             const elementOpened = getRootElementOpenedInModalBox(test);
             expect($$(elementOpened).find('tr.coveo-subscriptions-panel-subscription')).not.toBeNull();
             expect($$(elementOpened).find('td.coveo-subscriptions-panel-context')).not.toBeNull();
@@ -208,19 +208,19 @@ export function SearchAlertsTest() {
           });
         });
 
-        it('should display and escape subscription query if there is no name', (done)=> {
+        it('should display and escape subscription query if there is no name', (done) => {
           request.name = null;
           const queryBuilder = new QueryBuilder();
           queryBuilder.expression.add('<script>1+1</script>');
           request.typeConfig.query = queryBuilder.build();
 
-          const promise = new Promise((resolve, reject)=> {
+          const promise = new Promise((resolve, reject) => {
             resolve([request]);
           });
 
           listSubscription.and.returnValue(promise);
 
-          test.cmp.openPanel().then(()=> {
+          test.cmp.openPanel().then(() => {
             const elementOpened = getRootElementOpenedInModalBox(test);
             expect($$(elementOpened).find('tr.coveo-subscriptions-panel-subscription')).not.toBeNull();
             expect($$(elementOpened).find('td.coveo-subscriptions-panel-context')).not.toBeNull();
@@ -230,10 +230,10 @@ export function SearchAlertsTest() {
         });
       });
 
-      describe('with a follow item', ()=> {
+      describe('with a follow item', () => {
         let request;
 
-        beforeEach(()=> {
+        beforeEach(() => {
           request = {
             id: 'qwerty',
             frequency: 'daily',
@@ -246,17 +246,17 @@ export function SearchAlertsTest() {
           };
         });
 
-        afterEach(()=> {
+        afterEach(() => {
           request = null;
         });
 
-        it('should use the type config title', (done)=> {
-          const promise = new Promise((resolve, reject)=> {
+        it('should use the type config title', (done) => {
+          const promise = new Promise((resolve, reject) => {
             resolve([request]);
           });
           listSubscription.and.returnValue(promise);
 
-          test.cmp.openPanel().then(()=> {
+          test.cmp.openPanel().then(() => {
             const elementOpened = getRootElementOpenedInModalBox(test);
             expect($$(elementOpened).find('tr.coveo-subscriptions-panel-subscription')).not.toBeNull();
             expect($$(elementOpened).find('td.coveo-subscriptions-panel-context')).not.toBeNull();
@@ -265,29 +265,29 @@ export function SearchAlertsTest() {
           });
         });
 
-        it('should set the correct frequency in the dropdown', (done)=> {
+        it('should set the correct frequency in the dropdown', (done) => {
           request.frequency = 'sunday';
-          const promise = new Promise((resolve, reject)=> {
+          const promise = new Promise((resolve, reject) => {
             resolve([request]);
           });
           listSubscription.and.returnValue(promise);
 
-          test.cmp.openPanel().then(()=> {
+          test.cmp.openPanel().then(() => {
             const elementOpened = getRootElementOpenedInModalBox(test);
             expect(($$(elementOpened).find('.coveo-dropdown') as HTMLSelectElement).value).toBe('sunday');
             done();
           });
         });
 
-        it('should call usage analytics when the dropdown for frequency is changed', (done)=> {
+        it('should call usage analytics when the dropdown for frequency is changed', (done) => {
           request.frequency = 'sunday';
           request.typeConfig.title = 'my title';
-          const promise = new Promise((resolve, reject)=> {
+          const promise = new Promise((resolve, reject) => {
             resolve([request]);
           });
           listSubscription.and.returnValue(promise);
 
-          test.cmp.openPanel().then(()=> {
+          test.cmp.openPanel().then(() => {
             const elementOpened = getRootElementOpenedInModalBox(test);
             const dropdown = $$(elementOpened).find('.coveo-dropdown') as HTMLSelectElement;
             $$(dropdown).trigger('change');
@@ -299,15 +299,15 @@ export function SearchAlertsTest() {
           });
         });
 
-        it('should call the search alert service when the dropdown for frequency is changed', (done)=> {
+        it('should call the search alert service when the dropdown for frequency is changed', (done) => {
           request.frequency = 'monday';
           request.typeConfig.title = 'some nice title';
-          const promise = new Promise((resolve, reject)=> {
+          const promise = new Promise((resolve, reject) => {
             resolve([request]);
           });
           listSubscription.and.returnValue(promise);
 
-          test.cmp.openPanel().then(()=> {
+          test.cmp.openPanel().then(() => {
             const elementOpened = getRootElementOpenedInModalBox(test);
             const dropdown = $$(elementOpened).find('.coveo-dropdown') as HTMLSelectElement;
             $$(dropdown).trigger('change');
@@ -321,15 +321,15 @@ export function SearchAlertsTest() {
           });
         });
 
-        it('should call the search alert service when an item is unfollowed', (done)=> {
+        it('should call the search alert service when an item is unfollowed', (done) => {
           request.frequency = 'friday';
           request.typeConfig.title = 'it\'s friday friday, gotta get down on friday';
-          const promise = new Promise((resolve, reject)=> {
+          const promise = new Promise((resolve, reject) => {
             resolve([request]);
           });
           listSubscription.and.returnValue(promise);
 
-          test.cmp.openPanel().then(()=> {
+          test.cmp.openPanel().then(() => {
             const elementOpened = getRootElementOpenedInModalBox(test);
             const unfollow = $$(elementOpened).find('.coveo-subscriptions-panel-action-unfollow');
             $$(unfollow).trigger('click');
@@ -343,14 +343,14 @@ export function SearchAlertsTest() {
           });
         });
 
-        it('should call the analytics service when an item is unfollowed', (done)=> {
+        it('should call the analytics service when an item is unfollowed', (done) => {
           request.name = 'my sub';
-          const promise = new Promise((resolve, reject)=> {
+          const promise = new Promise((resolve, reject) => {
             resolve([request]);
           });
           listSubscription.and.returnValue(promise);
 
-          test.cmp.openPanel().then(()=> {
+          test.cmp.openPanel().then(() => {
 
             let deletePromise = Promise.resolve();
             deleteSubscription.and.returnValue(deletePromise);
@@ -359,7 +359,7 @@ export function SearchAlertsTest() {
             const unfollow = $$(elementOpened).find('.coveo-subscriptions-panel-action-unfollow');
             $$(unfollow).trigger('click');
 
-            deletePromise.finally(()=> {
+            deletePromise.finally(() => {
               expect(test.env.usageAnalytics.logCustomEvent).toHaveBeenCalledWith(analyticsActionCauseList.searchAlertsUnfollowDocument, jasmine.objectContaining({
                 subscription: 'my sub'
               }), test.cmp.element);
@@ -368,13 +368,13 @@ export function SearchAlertsTest() {
           });
         });
 
-        it('should call the search alert service when an item is followed', (done)=> {
-          const promise = new Promise((resolve, reject)=> {
+        it('should call the search alert service when an item is followed', (done) => {
+          const promise = new Promise((resolve, reject) => {
             resolve([request]);
           });
           listSubscription.and.returnValue(promise);
 
-          test.cmp.openPanel().then(()=> {
+          test.cmp.openPanel().then(() => {
 
             let followPromise = Promise.resolve();
             followSubscription.and.returnValue(followPromise);
@@ -383,7 +383,7 @@ export function SearchAlertsTest() {
             const follow = $$(elementOpened).find('.coveo-subscriptions-panel-action-follow');
             $$(follow).trigger('click');
 
-            followPromise.finally(()=> {
+            followPromise.finally(() => {
               expect(followSubscription).toHaveBeenCalledWith(jasmine.objectContaining({
                 frequency: 'daily',
                 typeConfig: jasmine.objectContaining({
@@ -395,14 +395,14 @@ export function SearchAlertsTest() {
           });
         });
 
-        it('should call the analytics service when an item is followed', (done)=> {
+        it('should call the analytics service when an item is followed', (done) => {
           request.name = 'my document';
-          const promise = new Promise((resolve, reject)=> {
+          const promise = new Promise((resolve, reject) => {
             resolve([request]);
           });
           listSubscription.and.returnValue(promise);
 
-          test.cmp.openPanel().then(()=> {
+          test.cmp.openPanel().then(() => {
 
             let followPromise = Promise.resolve();
             followSubscription.and.returnValue(followPromise);
@@ -411,7 +411,7 @@ export function SearchAlertsTest() {
             const follow = $$(elementOpened).find('.coveo-subscriptions-panel-action-follow');
             $$(follow).trigger('click');
 
-            followPromise.finally(()=> {
+            followPromise.finally(() => {
               expect(test.env.usageAnalytics.logCustomEvent).toHaveBeenCalledWith(analyticsActionCauseList.searchAlertsFollowDocument, jasmine.objectContaining({
                 subscription: 'my document'
               }), test.cmp.element);
