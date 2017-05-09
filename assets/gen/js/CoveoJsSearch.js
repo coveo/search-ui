@@ -1763,8 +1763,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	"use strict";
 	Object.defineProperty(exports, "__esModule", { value: true });
 	exports.version = {
-	    'lib': '1.2537.13-beta',
-	    'product': '1.2537.13-beta',
+	    'lib': '1.2537.14-beta',
+	    'product': '1.2537.14-beta',
 	    'supportedApiVersion': 2
 	};
 
@@ -17944,6 +17944,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	    NoopAnalyticsClient.prototype.getPendingSearchEvent = function () {
 	        return null;
 	    };
+	    NoopAnalyticsClient.prototype.setOriginContext = function (originContext) {
+	    };
 	    NoopAnalyticsClient.prototype.setNoopCauseAndMeta = function (cause, meta) {
 	        this.currentEventCause = cause;
 	        this.currentEventMeta = meta;
@@ -21520,6 +21522,19 @@ return /******/ (function(modules) { // webpackBootstrap
 	        if (element === void 0) { element = this.element; }
 	        this.client.logClickEvent(actionCause, meta, result, element);
 	    };
+	    /**
+	     * Sets the Origin Context dimension on the analytic events.
+	     *
+	     * You can use this dimension to specify the context of your application.
+	     * Suggested values are "Search", "InternalSearch" and "CommunitySearch"
+	     *
+	     * Default value is `Search`.
+	     *
+	     * @param originContext The origin context value
+	     */
+	    Analytics.prototype.setOriginContext = function (originContext) {
+	        this.client.setOriginContext(originContext);
+	    };
 	    Analytics.prototype.initializeAnalyticsEndpoint = function () {
 	        return new AnalyticsEndpoint_1.AnalyticsEndpoint({
 	            token: this.options.token,
@@ -21739,6 +21754,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        this.originLevel1 = originLevel1;
 	        this.sendToCloud = sendToCloud;
 	        this.isContextual = false;
+	        this.originContext = 'Search';
 	        this.language = String['locale'];
 	        this.device = DeviceUtils_1.DeviceUtils.getDeviceName();
 	        this.mobile = DeviceUtils_1.DeviceUtils.isMobileDevice();
@@ -21827,6 +21843,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	            }
 	        }
 	    };
+	    LiveAnalyticsClient.prototype.setOriginContext = function (originContext) {
+	        this.originContext = originContext;
+	    };
 	    LiveAnalyticsClient.prototype.pushCustomEvent = function (actionCause, metaObject, element) {
 	        var _this = this;
 	        var customEvent = this.buildCustomEvent(actionCause, metaObject, element);
@@ -21906,6 +21925,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            originLevel1: this.originLevel1,
 	            originLevel2: this.getOriginLevel2(this.rootElement),
 	            originLevel3: document.referrer,
+	            originContext: this.originContext,
 	            customData: _.keys(metaObject).length > 0 ? metaObject : undefined,
 	            userAgent: navigator.userAgent
 	        };
@@ -22422,6 +22442,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	    };
 	    MultiAnalyticsClient.prototype.getPendingSearchEvent = function () {
 	        return _.first(this.analyticsClients).getPendingSearchEvent();
+	    };
+	    MultiAnalyticsClient.prototype.setOriginContext = function (originContext) {
+	        _.each(this.analyticsClients, function (analyticsClient) { return analyticsClient.setOriginContext(originContext); });
 	    };
 	    MultiAnalyticsClient.prototype.mergeTopQueries = function (values, pageSize) {
 	        if (pageSize === void 0) { pageSize = 5; }

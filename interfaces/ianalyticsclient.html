@@ -116,6 +116,9 @@
 							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-has-type-parameter">
 								<a href="ianalyticsclient.html#logsearchevent" class="tsd-kind-icon">log<wbr>Search<wbr>Event</a>
 							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-interface">
+								<a href="ianalyticsclient.html#setorigincontext" class="tsd-kind-icon">set<wbr>Origin<wbr>Context</a>
+							</li>
 						</ul>
 					</li>
 				</ul>
@@ -167,6 +170,7 @@
 								<li class="tsd-kind-method tsd-parent-kind-interface tsd-has-type-parameter"><a href="ianalyticsclient.html#logcustomevent" class="tsd-kind-icon">log<wbr>Custom<wbr>Event</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-interface tsd-has-type-parameter"><a href="ianalyticsclient.html#logsearchasyoutype" class="tsd-kind-icon">log<wbr>Search<wbr>AsYou<wbr>Type</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-interface tsd-has-type-parameter"><a href="ianalyticsclient.html#logsearchevent" class="tsd-kind-icon">log<wbr>Search<wbr>Event</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="ianalyticsclient.html#setorigincontext" class="tsd-kind-icon">set<wbr>Origin<wbr>Context</a></li>
 							</ul>
 						</section>
 					</div>
@@ -484,6 +488,42 @@
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface">
+					<a name="setorigincontext" class="tsd-anchor"></a>
+					<h3>set<wbr>Origin<wbr>Context</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
+						<li class="tsd-signature tsd-kind-icon">set<wbr>Origin<wbr>Context<span class="tsd-signature-symbol">(</span>originContext<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Analytics/AnalyticsClient.ts#L126">src/ui/Analytics/AnalyticsClient.ts
+									:126</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Sets the Origin Context dimension on the analytic events.</p>
+								</div>
+								<p>You can use this dimension to specify the context of your application.
+								Suggested values are &quot;Search&quot;, &quot;InternalSearch&quot; and &quot;CommunitySearch&quot;</p>
+								<p>Default value is <code>Search</code>.</p>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>originContext: <span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The origin context value</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">any</span></h4>
 						</li>
 					</ul>
 				</section>
