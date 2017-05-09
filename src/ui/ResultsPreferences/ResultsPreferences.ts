@@ -135,7 +135,7 @@ export class ResultsPreferences extends Component {
   }
 
   private updateComponentOptionsModel() {
-    const resultLinkOption = _.pick(this.preferences, 'enableOpenInOutlook', 'enableOpenInNewWindow');
+    const resultLinkOption = _.pick(this.preferences, 'openInOutlook', 'alwaysOpenInNewWindow');
     const searchBoxOption = _.pick(this.preferences, 'enableQuerySyntax');
     this.componentOptionsModel.set(ComponentOptionsModel.attributesEnum.resultLink, resultLinkOption);
     this.componentOptionsModel.set(ComponentOptionsModel.attributesEnum.searchBox, searchBoxOption);
@@ -164,7 +164,6 @@ export class ResultsPreferences extends Component {
 
       const formGroup = new FormGroup(radios, l('EnableQuerySyntax'));
       $$(this.element).append(formGroup.build());
-      radios[2].select();
       this.fromPreferencesToRadioInput();
     }
   }
