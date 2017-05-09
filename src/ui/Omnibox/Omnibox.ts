@@ -233,10 +233,7 @@ export class Omnibox extends Component {
       new QuerySuggestAddon(this);
     }
     new OldOmniboxAddon(this);
-
-    this.bind.onRootElement(InitializationEvents.afterComponentsInitialization, ()=> {
-      this.createMagicBox();
-    });
+    this.createMagicBox();
 
     this.bind.onRootElement(QueryEvents.buildingQuery, (args: IBuildingQueryEventArgs) => this.handleBuildingQuery(args));
     this.bind.onRootElement(StandaloneSearchInterfaceEvents.beforeRedirect, () => this.handleBeforeRedirect());
@@ -251,7 +248,7 @@ export class Omnibox extends Component {
       } else {
         this.options.enableQuerySyntax = originalValueForQuerySyntax;
       }
-      this.createMagicBox();
+      this.updateGrammar();
     });
   }
 
@@ -316,8 +313,7 @@ export class Omnibox extends Component {
     return this.magicBox.resultAtCursor(match);
   }
 
-  private createMagicBox() {
-
+  private createGrammar() {
     let grammar = null;
 
     if (this.options.grammar != null) {
@@ -337,18 +333,24 @@ export class Omnibox extends Component {
     } else {
       grammar = {start: 'Any', expressions: {Any: /.*/}};
     }
-    if (this.magicBox) {
-      this.magicBox.grammar = new MagicBox.Grammar(grammar.start, grammar.expressions);
-      this.magicBox.setText(this.magicBox.getText());
-    } else {
-      this.magicBox = MagicBox.create(this.element, new MagicBox.Grammar(grammar.start, grammar.expressions), {
-        inline: this.options.inline,
-        selectableSuggestionClass: 'coveo-omnibox-selectable',
-        selectedSuggestionClass: 'coveo-omnibox-selected',
-        suggestionTimeout: this.options.omniboxTimeout
-      });
-      this.setupMagicBox();
-    }
+    return grammar;
+  }
+
+  private updateGrammar() {
+    const grammar = this.createGrammar();
+    this.magicBox.grammar = new MagicBox.Grammar(grammar.start, grammar.expressions);
+    this.magicBox.setText(this.magicBox.getText());
+  }
+
+  private createMagicBox() {
+    const grammar = this.createGrammar();
+    this.magicBox = MagicBox.create(this.element, new MagicBox.Grammar(grammar.start, grammar.expressions), {
+      inline: this.options.inline,
+      selectableSuggestionClass: 'coveo-omnibox-selectable',
+      selectedSuggestionClass: 'coveo-omnibox-selected',
+      suggestionTimeout: this.options.omniboxTimeout
+    });
+    this.setupMagicBox();
   }
 
   private setupMagicBox() {
