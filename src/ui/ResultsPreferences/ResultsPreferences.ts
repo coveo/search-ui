@@ -66,7 +66,16 @@ export class ResultsPreferences extends Component {
      */
     enableOpenInNewWindow: ComponentOptions.buildBooleanOption({ defaultValue: true }),
     /**
-     * Specifies whether to make the option to enable the end user to control the query syntax available.
+     * Specifies whether to make the option to allow end users to turn query syntax on or off available.
+     *
+     * If query syntax is enabled, the Coveo Platform tries to interpret special query syntax (e.g.,
+     * `@objecttype=message`) when the end user types a query in the [`Querybox`]{@link Querybox} (see
+     * [Coveo Query Syntax Reference](http://www.coveo.com/go?dest=adminhelp70&lcid=9&context=10005)). Enabling query
+     * syntax also causes the `Querybox` to highlight any query syntax.
+     *
+     * Selecting **On** for the **Enable query syntax** setting enables query syntax, whereas selecting **Off** disables
+     * it. Selecting **Automatic** uses the `Querybox` [`enableQuerySyntax`]{@link Querybox.options.enableQuerySyntax}
+     * option value (which is `false` by default).
      *
      * Default value is `false`
      */
