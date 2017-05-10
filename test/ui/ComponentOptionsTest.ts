@@ -148,7 +148,8 @@ export function ComponentOptionsTest() {
           'data-my-selector': '#CoveoSearchbox',
           'data-my-child-selector': '#CoveoSearchboxChild',
           'data-my-template-selector': '#CoveoTemplate',
-          'data-my-template-id': 'CoveoTemplateId'
+          'data-my-template-id': 'CoveoTemplateId',
+          'data-initialization-options': '{}'
         });
         scrollElem.appendChild(elem);
         childElem = Dom.createElement('div', {
@@ -301,6 +302,29 @@ export function ComponentOptionsTest() {
           };
           let initOptions = ComponentOptions.initComponentOptions(elem, { options, ID: 'fooID' });
           expect(initOptions.myAttr).toBeUndefined();
+        });
+
+        it('which adds initializationOptions to the component options', () => {
+          let options = {
+            testString: ComponentOptions.buildStringOption({
+              attrName:'fooptions',
+              defaultValue:'shouldnotbe'
+            }),
+          };
+          elem.setAttribute('data-initialization-options', '{ "fooptions": "bar" }');
+          let initOptions = ComponentOptions.initComponentOptions(elem, { options, ID: 'fooID' });
+          expect(initOptions.fooptions).toBe('bar');
+        });
+
+        it('which keeps values over initializationOptions', () => {
+          let options = {
+            testString: ComponentOptions.buildStringOption({
+              attrName:'fooptions'
+            }),
+          };
+          elem.setAttribute('data-initialization-options', '{ "fooptions": "shouldnotoverridebar" }');
+          let initOptions = ComponentOptions.initComponentOptions(elem, { options, ID: 'fooID' }, { fooptions: 'bar' });
+          expect(initOptions.fooptions).toBe('bar');
         });
       });
 
@@ -470,6 +494,23 @@ export function ComponentOptionsTest() {
         it('which loads an html template from the html element matching the name in the html element option', () => {
           let option = ComponentOptions.loadTemplateOption(elem, 'coveoChild', {}, doc);
           expect(option.getType()).toBe('TemplateList');
+        });
+      });
+
+      describe('loadJSONStringAsObjectOption', () => {
+        it('which loads an object option', () => {
+          elem.setAttribute('data-initialization-options', '{ "fooptions": "bar" }');
+          let option = ComponentOptions.loadJSONStringAsObjectOption(elem, 'initializationOptions', {});
+          expect(option['fooptions']).toBe('bar');
+        });
+        it('which loads an object with nested option', () => {
+          elem.setAttribute('data-initialization-options', '{ "fooptions": { "nested": "option" } }');
+          let option = ComponentOptions.loadJSONStringAsObjectOption(elem, 'initializationOptions', {});
+          expect(option['fooptions']['nested']).toBe('option');
+        });
+        it('which throws with an invalid object', () => {
+          elem.setAttribute('data-initialization-options', '{ "somethinginvalid" }');
+          expect(() => ComponentOptions.loadJSONStringAsObjectOption(elem, 'initializationOptions', {})).toThrow();
         });
       });
 

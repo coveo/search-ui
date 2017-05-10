@@ -490,6 +490,10 @@ export class ComponentOptions {
     if (values == null) {
       values = {};
     }
+    let initializationOptions = ComponentOptions.loadJSONStringAsObjectOption(element, 'initializationOptions', {});
+    if (!Utils.isNullOrUndefined(initializationOptions)) {
+      values = _.extend({}, initializationOptions, values);
+    }
     let names: string[] = _.keys(options);
     for (let i = 0; i < names.length; i++) {
       let name = names[i];
@@ -706,6 +710,20 @@ export class ComponentOptions {
     let foundElements = ComponentOptions.loadChildrenHtmlElementFromSelector(element, selector);
     if (foundElements.length > 0) {
       return new TemplateList(_.compact(_.map(foundElements, (element) => ComponentOptions.createResultTemplateFromElement(element))));
+    }
+    return null;
+  }
+
+  static loadJSONStringAsObjectOption(element: HTMLElement, name: string, option: IComponentOptions<any>): {
+    [name: string]: any
+  } {
+    let foundObject = ComponentOptions.loadStringOption(element, name, option);
+    if (Utils.isNonEmptyString(foundObject)) {
+      try {
+        return JSON.parse(foundObject);
+      } catch (exception) {
+        Assert.fail(`Could not parse the object from attribute: ${name}.`);
+      }
     }
     return null;
   }
