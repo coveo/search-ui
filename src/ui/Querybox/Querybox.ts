@@ -75,11 +75,18 @@ export class Querybox extends Component {
     searchAsYouTypeDelay: ComponentOptions.buildNumberOption({ defaultValue: 50, min: 0 }),
 
     /**
-     * Specifies whether the Coveo Platform should try to interpret special query syntax such as field references in the
-     * query that the user enters in the Querybox (see
-     * [Coveo Query Syntax Reference](http://www.coveo.com/go?dest=adminhelp70&lcid=9&context=10005)).
+     * Specifies whether the Coveo Platform should try to interpret special query syntax (e.g., `@objecttype=message`)
+     * when the end user types a query in the `Querybox` (see
+     * [Coveo Query Syntax Reference](http://www.coveo.com/go?dest=adminhelp70&lcid=9&context=10005)). Enabling query
+     * syntax also causes the `Querybox` to highlight any query syntax.
      *
-     * Setting this option to `true` also causes the query syntax in the Querybox to highlight.
+     * **Note:**
+     * > End user preferences can override the value you specify for this option.
+     * >
+     * > If the end user selects a value other than **Automatic** for the **Enable query syntax** setting (see
+     * > the [`enableQuerySyntax`]{@link ResultsPreferences.options.enableQuerySyntax} option of the
+     * > [`ResultsPreferences`]{@link ResultsPreferences} component), the end user preference takes precedence over this
+     * > option.
      *
      * Default value is `false`.
      */

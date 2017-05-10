@@ -197,7 +197,7 @@ export class FieldTable extends Component {
     $$(this.toggleButton).insertBefore(this.element);
 
     this.toggleButtonInsideTable = $$('span', { className: 'coveo-field-table-toggle-icon-up coveo-field-table-toggle' }).el;
-    this.element.appendChild(this.toggleButtonInsideTable);
+    $$(this.toggleButtonInsideTable).insertAfter(this.element);
 
     if (this.options.minimizedByDefault === true) {
       this.isExpanded = false;

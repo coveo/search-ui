@@ -1,5 +1,7 @@
 export * from './Core';
 
+export { SearchInterface, StandaloneSearchInterface } from './ui/SearchInterface/SearchInterface';
+
 import { PublicPathUtils } from './utils/PublicPathUtils';
 PublicPathUtils.detectPublicPath();
 
@@ -8,14 +10,14 @@ Initialization.componentsFactory = LazyInitialization.componentsFactory;
 
 export { LazyInitialization, EagerInitialization, Initialization } from './ui/Base/Initialization';
 
+import { Analytics } from './ui/Analytics/Analytics';
+Analytics.doExport();
+
 import { lazyAdvancedSearch } from './ui/AdvancedSearch/LazyAdvancedSearch';
 lazyAdvancedSearch();
 
 import { lazyAggregate } from './ui/Aggregate/LazyAggregate';
 lazyAggregate();
-
-import { lazyAnalytics } from './ui/Analytics/LazyAnalytics';
-lazyAnalytics();
 
 import { lazyAnalyticsSuggestions } from './ui/AnalyticsSuggestions/LazyAnalyticsSuggestions';
 lazyAnalyticsSuggestions();

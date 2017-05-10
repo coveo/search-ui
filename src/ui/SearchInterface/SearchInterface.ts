@@ -470,7 +470,7 @@ export class SearchInterface extends RootComponent implements IComponentBindings
   protected initializeAnalytics(): IAnalyticsClient {
     let analyticsRef = BaseComponent.getComponentRef('Analytics');
     if (analyticsRef) {
-      return analyticsRef.create(this.element, this.analyticsOptions);
+      return analyticsRef.create(this.element, this.analyticsOptions, this.getBindings());
     }
     return new NoopAnalyticsClient();
   }
