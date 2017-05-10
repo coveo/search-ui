@@ -6,6 +6,7 @@ import { Simulate } from '../Simulate';
 import { $$ } from '../../src/utils/Dom';
 import { l } from '../../src/strings/Strings';
 import { InitializationEvents } from '../../src/events/InitializationEvents';
+import Suggestion = Coveo.MagicBox.Suggestion;
 
 export function OmniboxTest() {
   describe('Omnibox', () => {
@@ -15,7 +16,7 @@ export function OmniboxTest() {
       if (Simulate.isPhantomJs()) {
         Simulate.addJQuery();
       }
-      test = Mock.basicComponentSetup<Omnibox>(Omnibox)
+      test = Mock.basicComponentSetup<Omnibox>(Omnibox);
       $$(test.env.root).trigger(InitializationEvents.afterComponentsInitialization);
     });
 
@@ -173,10 +174,13 @@ export function OmniboxTest() {
           listOfFields: ['@field', '@another_field']
         });
 
-        test.cmp.setText('@field');
-        let suggestions = test.cmp.magicBox.getSuggestions();
-        (<Promise<any>>suggestions[0]).then((fields) => {
+        test.cmp.setText('@');
+
+        const fieldSuggestion = test.cmp.magicBox.getSuggestions()[1] as Promise<Suggestion[]>;
+
+        fieldSuggestion.then((fields) => {
           expect(fields[0].text).toEqual('@field');
+          expect(fields[1].text).toEqual('@another_field');
           done();
         });
       });

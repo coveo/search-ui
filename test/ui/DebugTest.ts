@@ -16,7 +16,7 @@ export function DebugTest() {
     beforeEach(() => {
       env = new Mock.MockEnvironmentBuilder().build();
       modalBox = Simulate.modalBoxModule();
-      cmp = new Debug(env.root, env.queryController, undefined, modalBox);
+      cmp = new Debug(env.root, env, undefined, modalBox);
     });
 
     afterEach(() => {

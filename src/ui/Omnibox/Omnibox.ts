@@ -316,9 +316,7 @@ export class Omnibox extends Component {
   private createGrammar() {
     let grammar = null;
 
-    if (this.options.grammar != null) {
-      grammar = this.options.grammar(grammar);
-    } else if (this.options.enableQuerySyntax) {
+    if (this.options.enableQuerySyntax) {
       grammar = MagicBox.Grammars.Expressions(MagicBox.Grammars.Complete);
       if (this.options.enableFieldAddon) {
         new FieldAddon(this);
@@ -331,8 +329,13 @@ export class Omnibox extends Component {
         new QueryExtensionAddon(this);
       }
     } else {
-      grammar = {start: 'Any', expressions: {Any: /.*/}};
+      grammar = { start: 'Any', expressions: { Any: /.*/ } };
     }
+
+    if (this.options.grammar != null) {
+      grammar = this.options.grammar(grammar);
+    }
+
     return grammar;
   }
 

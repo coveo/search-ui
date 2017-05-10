@@ -197,7 +197,7 @@ export class ResultsPreferences extends Component {
   }
 
   private fromInputToPreferences() {
-    this.preferences = {
+    this.preferences = this.preferences || {
       openInOutlook: false,
       alwaysOpenInNewWindow: false,
       enableQuerySyntax: undefined
@@ -254,18 +254,18 @@ export class ResultsPreferences extends Component {
     // This can happen if an admin change the component configuration after end users have already selected a preferences.
     // We need to adapt the saved preferences to what's actually available in the component
     let needToSave = false;
-    if (this.preferences.alwaysOpenInNewWindow && !this.options.enableOpenInNewWindow) {
-      this.preferences.alwaysOpenInNewWindow = null;
+    if (!this.options.enableOpenInNewWindow) {
+      delete this.preferences.alwaysOpenInNewWindow;
       needToSave = true;
     }
 
-    if (this.preferences.openInOutlook && !this.options.enableOpenInOutlook) {
-      this.preferences.openInOutlook = null;
+    if (!this.options.enableOpenInOutlook) {
+      delete this.preferences.openInOutlook;
       needToSave = true;
     }
 
-    if (this.preferences.enableQuerySyntax && !this.options.enableQuerySyntax) {
-      this.preferences.enableQuerySyntax = null;
+    if (!this.options.enableQuerySyntax) {
+      delete this.preferences.enableQuerySyntax;
       needToSave = true;
     }
 

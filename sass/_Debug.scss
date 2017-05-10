@@ -6,10 +6,8 @@ $color_clientDuration: #3B3;
 $color_duration: #33B;
 
 .coveo-debug.coveo-modal-container {
-  .coveo-debug-search, .coveo-enabled-debug, .coveo-enabled-highlight-recommendation {
-    display: inline-block;
+  .coveo-checkbox-label, .coveo-input {
     margin: 0 8px;
-    color: $color-greyish-teal-blue;
   }
   .coveo-modal-header {
     a {

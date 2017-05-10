@@ -11,16 +11,19 @@ import { StringUtils } from '../../utils/StringUtils';
 import { SearchEndpoint } from '../../rest/SearchEndpoint';
 import { Template } from '../Templates/Template';
 import { RootComponent } from '../Base/RootComponent';
-import { QueryController } from '../../controllers/QueryController';
 import { BaseComponent } from '../Base/BaseComponent';
 import { ModalBox } from '../../ExternalModulesShim';
 import Globalize = require('globalize');
 import { KEYBOARD } from '../../utils/KeyboardUtils';
 import { InitializationEvents } from '../../events/InitializationEvents';
 import { IStringMap } from '../../rest/GenericParam';
-import _ = require('underscore');
+import * as _ from 'underscore';
 import 'styling/_Debug';
 import { l } from '../../strings/Strings';
+import { IComponentBindings } from '../Base/ComponentBindings';
+import { COMPONENT_OPTIONS_ATTRIBUTES } from '../../models/ComponentOptionsModel';
+import { Checkbox } from '../FormWidgets/Checkbox';
+import { TextInput } from '../FormWidgets/TextInput';
 
 export interface IDebugOptions {
   enableDebug?: boolean;
@@ -47,7 +50,7 @@ export class Debug extends RootComponent {
   private stackDebug: any;
   private boundEscapeKey: (evt: Event, arg?: any) => void;
 
-  constructor(public element: HTMLElement, public queryController: QueryController, public options?: IDebugOptions, public modalBox = ModalBox) {
+  constructor(public element: HTMLElement, public bindings: IComponentBindings, public options?: IDebugOptions, public modalBox = ModalBox) {
     super(element, Debug.ID);
     this.options = ComponentOptions.initComponentOptions(element, Debug, options);
     $$(this.element).on(QueryEvents.buildingQuery, (e, args: IBuildingQueryEventArgs) => {
@@ -195,6 +198,7 @@ export class Debug extends RootComponent {
       };
       title.appendChild(this.buildEnabledHighlightRecommendation());
       title.appendChild(this.buildEnableDebugCheckbox(build.body, search, bodyBuilder));
+      title.appendChild(this.buildEnableQuerySyntaxCheckbox());
       title.appendChild(search);
       title.appendChild(downloadLink.el);
     } else {
@@ -276,30 +280,11 @@ export class Debug extends RootComponent {
   }
 
   private buildSearchBox(body: HTMLElement) {
-    let dom = Dom.createElement('div', { className: 'coveo-debug-search' }, '<input type=\'text\'/>');
-    dom.onclick = (e) => {
-      e.stopPropagation();
-    };
-    let lastSearch = '';
-    let input = dom.querySelector('input') as HTMLInputElement;
-    input.setAttribute('placeholder', 'Search in debug');
-    input.onkeyup = (e) => {
-      if (e == null || e.keyCode == 13) {
-        let value = input.value.toLowerCase();
-        if (lastSearch != value) {
-          lastSearch = value;
-          this.search(value, body);
-        }
-      }
-    };
-    input.onchange = () => {
-      let value = input.value.toLowerCase();
-      if (lastSearch != value) {
-        lastSearch = value;
-        this.search(value, body);
-      }
-    };
-    return dom;
+    const txtInput = new TextInput((txtInputInstance) => {
+      const value = txtInputInstance.getValue().toLowerCase();
+      this.search(value, body);
+    }, 'Search in debug');
+    return txtInput.build();
   }
 
   private search(value: string, body: HTMLElement) {
@@ -351,16 +336,9 @@ export class Debug extends RootComponent {
   }
 
   private buildEnableDebugCheckbox(body: HTMLElement, search: HTMLElement, bodyBuilder: (results: IQueryResults) => HTMLElement) {
-    let dom = Dom.createElement('div', { className: 'coveo-enabled-debug' }, '<label>Enable query debug <input type=\'checkbox\'/></label>');
-    $$(dom).on('click', (e) => {
-      e.stopPropagation();
-    });
-    let checkbox = $$(dom).find('input');
-    if (this.debug) {
-      checkbox.setAttribute('checked', 'checked');
-    }
-    checkbox.onchange = () => {
-      this.debug = !this.debug;
+    const chkbox = new Checkbox((chkboxInstance) => {
+      this.debug = chkboxInstance.isSelected();
+
       $$(this.element).one([QueryEvents.querySuccess, QueryEvents.queryError], (e: Event, args: IQuerySuccessEventArgs) => {
         $$(body).removeClass('coveo-debug-loading');
         $$(body).empty();
@@ -368,29 +346,40 @@ export class Debug extends RootComponent {
           body.appendChild(child);
         });
       });
-      this.queryController.executeQuery({ closeModalBox: false });
+
+      this.bindings.queryController.executeQuery({
+        closeModalBox: false
+      });
+
       $$(body).addClass('coveo-debug-loading');
       let input = search.querySelector('input') as HTMLInputElement;
       input.value = '';
       input.onkeyup(null);
-    };
-    return dom;
+    }, 'Enable query debug');
+    if (this.debug) {
+      chkbox.select();
+    }
+    return chkbox.build();
+  }
+
+  private buildEnableQuerySyntaxCheckbox() {
+    const chkbox = new Checkbox((chkboxInstance) => {
+      this.bindings.componentOptionsModel.set(COMPONENT_OPTIONS_ATTRIBUTES.SEARCH_BOX, { enableQuerySyntax: chkboxInstance.isSelected() });
+    }, 'Enable query syntax in search box');
+    return chkbox.build();
   }
 
   private buildEnabledHighlightRecommendation() {
-    let dom = Dom.createElement('div', { className: 'coveo-enabled-highlight-recommendation' }, '<label>Highlight recommendation <input type=\'checkbox\'/></label>');
-    dom.onclick = (e) => {
-      e.stopPropagation();
-    };
-    let checkbox = $$(dom).find('input');
+    const chkbox = new Checkbox((chkboxInstance) => {
+      this.highlightRecommendation = chkboxInstance.isSelected();
+      this.bindings.queryController.executeQuery({
+        closeModalBox: false
+      });
+    }, 'Highlight recommendation');
     if (this.highlightRecommendation) {
-      checkbox.setAttribute('checked', 'checked');
+      chkbox.select();
     }
-    checkbox.onchange = () => {
-      this.highlightRecommendation = !this.highlightRecommendation;
-      this.queryController.executeQuery({ closeModalBox: false });
-    };
-    return dom;
+    return chkbox.build();
   }
 
   private buildSection(id: string) {
@@ -425,7 +414,7 @@ export class Debug extends RootComponent {
 
   private fetchFields(): Promise<{ [field: string]: IFieldDescription }> {
     if (this.fields == null) {
-      return this.queryController.getEndpoint().listFields().then((fields: IFieldDescription[]) => {
+      return this.bindings.queryController.getEndpoint().listFields().then((fields: IFieldDescription[]) => {
         this.fields = {};
         fields.forEach((field) => {
           this.fields[field.name] = field;
