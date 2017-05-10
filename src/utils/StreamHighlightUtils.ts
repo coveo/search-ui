@@ -80,7 +80,7 @@ function getRestHighlightsForAllTerms(toHighlight: string, termsToHighlight: { [
       }
       regex += nonWordBoundary;
       if (i == split.length - 1) {
-        regex += ')';
+        regex += '|$)';
       }
       if (i != split.length - 1) {
         regex += '+';
