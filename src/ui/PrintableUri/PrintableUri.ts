@@ -61,6 +61,7 @@ export class PrintableUri extends ResultLink {
       let parent = <Element>parents.item(i);
       let token = this.buildHtmlToken(parent.getAttribute('name'), parent.getAttribute('uri'));
       tokens.push(token);
+
       element.appendChild(token);
     }
   }
@@ -92,6 +93,7 @@ export class PrintableUri extends ResultLink {
         this.element.innerHTML = newTitle ? StreamHighlightUtils.highlightStreamText(newTitle, this.result.termsToHighlight, this.result.phrasesToHighlight) : this.result.clickUri;
       }
     }
+    element.title = this.result.printableUri;
   }
 
   public buildSeparator() {
