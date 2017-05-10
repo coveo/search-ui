@@ -10,6 +10,7 @@ import { KeyboardUtils, KEYBOARD } from '../../utils/KeyboardUtils';
 import { DeviceUtils } from '../../utils/DeviceUtils';
 import * as _ from 'underscore';
 import { exportGlobally } from '../../GlobalExports';
+import { l } from '../../strings/Strings';
 
 import 'styling/_ResultsPerPage';
 
@@ -130,7 +131,7 @@ export class ResultsPerPage extends Component {
   private initComponent(element: HTMLElement) {
     this.span = $$('span', {
       className: 'coveo-results-per-page-text'
-    }, 'Results per page').el;
+    }, l('Results per page')).el;
     element.appendChild(this.span);
     this.list = $$('ul', {
       className: 'coveo-results-per-page-list'

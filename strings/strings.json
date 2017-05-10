@@ -5143,15 +5143,15 @@
     "en": "bytes",
     "fr": "octets"
   },
-  "List": {
+  "list": {
     "en": "List",
     "fr": "Liste"
   },
-  "Card": {
+  "card": {
     "en": "Card",
     "fr": "Carte"
   },
-  "Table": {
+  "table": {
     "en": "Table",
     "fr": "Tableau"
   },
@@ -5174,5 +5174,9 @@
   "Automatic": {
     "en": "Automatic",
     "fr": "Automatique"
+  },
+  "ResultsPerPage": {
+    "en": "Results per page",
+    "fr": "Résultats par page"
   }
 }

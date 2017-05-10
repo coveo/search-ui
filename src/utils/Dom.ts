@@ -41,13 +41,13 @@ export class Dom {
    * @param innerHTML The contents of the new HTMLElement, either in string form or as another HTMLElement
    */
   static createElement(type: string, props?: Object, ...children: Array<string | HTMLElement | Dom>): HTMLElement {
-    var elem: HTMLElement = document.createElement(type);
+    const elem: HTMLElement = document.createElement(type);
 
-    for (var key in props) {
+    for (const key in props) {
       if (key === 'className') {
         elem.className = props['className'];
       } else {
-        let attr = key.indexOf('-') !== -1 ? key : Utils.toDashCase(key);
+        const attr = key.indexOf('-') !== -1 ? key : Utils.toDashCase(key);
         elem.setAttribute(attr, props[key]);
       }
     }
@@ -110,8 +110,8 @@ export class Dom {
    * @returns {HTMLElement[]}
    */
   public nodeListToArray(nodeList: NodeList): HTMLElement[] {
-    var i = nodeList.length;
-    var arr: HTMLElement[] = new Array(i);
+    let i = nodeList.length;
+    const arr: HTMLElement[] = new Array(i);
     while (i--) {
       arr[i] = <HTMLElement>nodeList.item(i);
     }
@@ -252,7 +252,7 @@ export class Dom {
    * @returns {HTMLElement[]}
    */
   public parents(className: string): HTMLElement[] {
-    let parentsFound = [];
+    const parentsFound = [];
     let parentFound = this.parent(className);
     while (parentFound) {
       parentsFound.push(parentFound);
@@ -274,7 +274,7 @@ export class Dom {
    * @returns {HTMLElement[]}
    */
   public siblings(selector: string): HTMLElement[] {
-    let sibs = [];
+    const sibs = [];
     let currentElement = <HTMLElement>this.el.parentNode.firstChild;
     for (; currentElement; currentElement = <HTMLElement>currentElement.nextSibling) {
       if (currentElement != this.el) {
@@ -287,8 +287,8 @@ export class Dom {
   }
 
   private matches(element: HTMLElement, selector: string) {
-    var all = document.querySelectorAll(selector);
-    for (var i = 0; i < all.length; i++) {
+    const all = document.querySelectorAll(selector);
+    for (let i = 0; i < all.length; i++) {
       if (all[i] === element) {
         return true;
       }
@@ -451,11 +451,11 @@ export class Dom {
         this.on(t, eventHandle);
       });
     } else {
-      var jq = JQueryUtils.getJQuery();
+      const jq = JQueryUtils.getJQuery();
       if (jq) {
         jq(this.el).on(type, eventHandle);
       } else if (this.el.addEventListener) {
-        var fn = (e: CustomEvent) => {
+        const fn = (e: CustomEvent) => {
           eventHandle(e, e.detail);
         };
         Dom.handlers.push({
@@ -483,7 +483,7 @@ export class Dom {
         this.one(t, eventHandle);
       });
     } else {
-      var once = (e: Event, args: any) => {
+      const once = (e: Event, args: any) => {
         this.off(type, once);
         return eventHandle(e, args);
       };
@@ -504,12 +504,12 @@ export class Dom {
         this.off(t, eventHandle);
       });
     } else {
-      var jq = JQueryUtils.getJQuery();
+      const jq = JQueryUtils.getJQuery();
       if (jq) {
         jq(this.el).off(type, eventHandle);
       } else if (this.el.removeEventListener) {
-        var idx = 0;
-        var found = _.find(Dom.handlers, (handlerObj: { eventHandle: Function, fn: EventListener }, i) => {
+        let idx = 0;
+        const found = _.find(Dom.handlers, (handlerObj: { eventHandle: Function, fn: EventListener }, i) => {
           if (handlerObj.eventHandle == eventHandle) {
             idx = i;
             return true;
@@ -531,11 +531,11 @@ export class Dom {
    * @param data
    */
   public trigger(type: string, data?: { [key: string]: any }): void {
-    var jq = JQueryUtils.getJQuery();
+    const jq = JQueryUtils.getJQuery();
     if (jq) {
       jq(this.el).trigger(type, data);
     } else if (CustomEvent !== undefined) {
-      var event = new CustomEvent(type, { detail: data, bubbles: true });
+      const event = new CustomEvent(type, { detail: data, bubbles: true });
       this.el.dispatchEvent(event);
     } else {
       new Logger(this).error('CANNOT TRIGGER EVENT FOR OLDER BROWSER');
@@ -555,7 +555,7 @@ export class Dom {
    * @param other
    */
   public isDescendant(parent: HTMLElement): boolean {
-    var node = this.el.parentNode;
+    let node = this.el.parentNode;
     while (node != null) {
       if (node == parent) {
         return true;
@@ -570,7 +570,7 @@ export class Dom {
    * @param otherElem
    */
   public replaceWith(otherElem: HTMLElement): void {
-    var parent = this.el.parentNode;
+    const parent = this.el.parentNode;
     if (parent) {
       new Dom(otherElem).insertAfter(this.el);
     }
@@ -582,10 +582,10 @@ export class Dom {
    * Return the position relative to the offset parent.
    */
   public position(): IOffset {
-    let offsetParent = this.offsetParent();
+    const offsetParent = this.offsetParent();
+    const offset = this.offset();    
     let parentOffset: IOffset = { top: 0, left: 0 };
 
-    let offset = this.offset();
     if (!$$(offsetParent).is('html')) {
       parentOffset = $$(offsetParent).offset();
     }
@@ -640,8 +640,7 @@ export class Dom {
       return { top: 0, left: 0 };
     }
 
-
-    let rect = this.el.getBoundingClientRect();
+    const rect = this.el.getBoundingClientRect();
 
     if (rect.width || rect.height) {
       let doc = this.el.ownerDocument;
@@ -675,15 +674,14 @@ export class Dom {
    * @returns {Dom}
    */
   public clone(deep = false): Dom {
-    let newNode = <HTMLElement>this.el.cloneNode(deep);
-    return $$(newNode);
+    return $$(<HTMLElement>this.el.cloneNode(deep));
   }
 
   private traverseAncestorForClass(current = this.el, className: string): HTMLElement {
     if (className.indexOf('.') == 0) {
       className = className.substr(1);
     }
-    var found = false;
+    let found = false;
     while (!found) {
       if ($$(current).hasClass(className)) {
         found = true;
@@ -739,12 +737,12 @@ export class Doc {
   }
 
   public height(): number {
-    var body = this.doc.body;
+    const body = this.doc.body;
     return Math.max(body.scrollHeight, body.offsetHeight);
   }
 
   public width(): number {
-    var body = this.doc.body;
+    const body = this.doc.body;
     return Math.max(body.scrollWidth, body.offsetWidth);
   }
 }
