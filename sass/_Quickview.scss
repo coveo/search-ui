@@ -6,9 +6,31 @@
 
   }
 
-  .coveo-caption-for-quickview {
+  &:hover .coveo-caption-for-icon {
+    display: inline;
+  }
+  
+  .coveo-caption-for-icon {
     font-size: $font-size-smallest;
-    margin-top: -7px;
+    display: none;
+    background: #263E55;
+    color: white;
+    border-radius: 2px;
+    padding: 6px 16px;
+    position: absolute;
+    white-space: nowrap;
+    transform: translate(-60%, 90%);
+
+    &:before {
+      border: solid;
+      border-color: #263E55 transparent;
+      border-width: 0 6px 6px 6px;
+      content: "";
+      position: absolute;
+      z-index: 99;
+      top: -6px;
+      left: calc(50% - 8px);
+    }
   }
 }
 
