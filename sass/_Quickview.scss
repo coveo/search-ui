@@ -13,23 +13,23 @@
   .coveo-caption-for-icon {
     font-size: $font-size-smallest;
     display: none;
-    background: #263E55;
+    background: $color-greyish-dark-blue;
     color: white;
     border-radius: 2px;
     padding: 6px 16px;
     position: absolute;
     white-space: nowrap;
-    transform: translate(-60%, 90%);
+    transform: translate(calc(-50% - 11px), calc(100% - 6px));
 
     &:before {
       border: solid;
-      border-color: #263E55 transparent;
+      border-color: $color-greyish-dark-blue transparent;
       border-width: 0 6px 6px 6px;
       content: "";
       position: absolute;
       z-index: 99;
       top: -6px;
-      left: calc(50% - 8px);
+      left: calc(50% - 6px);
     }
   }
 }
