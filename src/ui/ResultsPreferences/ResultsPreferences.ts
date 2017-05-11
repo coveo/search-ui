@@ -206,11 +206,16 @@ export class ResultsPreferences extends Component {
     _.each(this.preferencePanelCheckboxInputs, (checkbox: Checkbox, label: string) => {
       if (this.isSelected(l('OpenInOutlookWhenPossible'), label, checkbox)) {
         this.preferences.openInOutlook = true;
+      } else if (this.preferences.openInOutlook != null) {
+        this.preferences.openInOutlook = false;
       }
       if (this.isSelected(l('AlwaysOpenInNewWindow'), label, checkbox)) {
         this.preferences.alwaysOpenInNewWindow = true;
+      } else if (this.preferences.alwaysOpenInNewWindow != null) {
+        this.preferences.alwaysOpenInNewWindow = false;
       }
     });
+
     _.each(this.preferencePanelRadioInputs, (radio: RadioButton, label: string) => {
       if (this.isSelected(l('On'), label, radio)) {
         this.preferences.enableQuerySyntax = true;
@@ -222,6 +227,7 @@ export class ResultsPreferences extends Component {
         delete this.preferences.enableQuerySyntax;
       }
     });
+
   }
 
   private fromPreferencesToCheckboxInput() {

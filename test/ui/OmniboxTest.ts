@@ -36,6 +36,7 @@ export function OmniboxTest() {
     });
 
     describe('exposes options', () => {
+
       it('inline should be passed down to magic box', () => {
         test = Mock.optionsComponentSetup<Omnibox, IOmniboxOptions>(Omnibox, {
           inline: true

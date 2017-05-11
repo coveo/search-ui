@@ -12,10 +12,8 @@ import { SearchEndpoint } from '../../rest/SearchEndpoint';
 import { Template } from '../Templates/Template';
 import { RootComponent } from '../Base/RootComponent';
 import { BaseComponent } from '../Base/BaseComponent';
-import { ModalBox } from '../../ExternalModulesShim';
+import { ModalBox as ModalBoxModule } from '../../ExternalModulesShim';
 import Globalize = require('globalize');
-import { KEYBOARD } from '../../utils/KeyboardUtils';
-import { InitializationEvents } from '../../events/InitializationEvents';
 import { IStringMap } from '../../rest/GenericParam';
 import * as _ from 'underscore';
 import 'styling/_Debug';
@@ -24,6 +22,7 @@ import { IComponentBindings } from '../Base/ComponentBindings';
 import { COMPONENT_OPTIONS_ATTRIBUTES } from '../../models/ComponentOptionsModel';
 import { Checkbox } from '../FormWidgets/Checkbox';
 import { TextInput } from '../FormWidgets/TextInput';
+import { DebugHeader } from './DebugHeader';
 
 export interface IDebugOptions {
   enableDebug?: boolean;
@@ -36,32 +35,37 @@ export class Debug extends RootComponent {
   };
 
   static customOrder = ['error', 'queryDuration', 'result', 'fields', 'rankingInfo', 'template', 'query', 'results', 'state'];
-
   static durationKeys = ['indexDuration', 'proxyDuration', 'clientDuration', 'duration'];
   static maxDepth = 10;
-
   public localStorageDebug: LocalStorageUtils<string[]>;
   public collapsedSections: string[];
-
-  private debug = false;
-  private highlightRecommendation = false;
+  private modalBox: Coveo.ModalBox.ModalBox;
+  private opened = false;
   private fields: { [field: string]: IFieldDescription };
-
   private stackDebug: any;
-  private boundEscapeKey: (evt: Event, arg?: any) => void;
 
-  constructor(public element: HTMLElement, public bindings: IComponentBindings, public options?: IDebugOptions, public modalBox = ModalBox) {
+  public showDebugPanel: ()=> void;
+
+  private debugHeader: DebugHeader;
+
+
+  constructor(public element: HTMLElement, public bindings: IComponentBindings, public options?: IDebugOptions, public ModalBox = ModalBoxModule) {
     super(element, Debug.ID);
     this.options = ComponentOptions.initComponentOptions(element, Debug, options);
+
+    this.showDebugPanel = _.debounce(()=> this.openModalBox(), 100);
+    this.debugHeader = new DebugHeader(this.element, this.bindings);
+
     $$(this.element).on(QueryEvents.buildingQuery, (e, args: IBuildingQueryEventArgs) => {
       args.queryBuilder.enableDebug = this.debug || args.queryBuilder.enableDebug;
     });
+
     $$(this.element).on(ResultListEvents.newResultDisplayed, (e, args: IDisplayedNewResultEventArgs) => this.handleNewResultDisplayed(args));
     $$(this.element).on(DebugEvents.showDebugPanel, (e, args) => {
-      this.handleShowDebugPanel(args);
-    });
-    $$(this.element).on(InitializationEvents.nuke, () => {
-      this.unbindEscapeEvent();
+      debugger;
+      this.addInfoToDebugPanel(args);
+      this.buildStackPanel(args);
+      //this.showDebugPanel();
     });
 
     this.localStorageDebug = new LocalStorageUtils<string[]>('DebugPanel');
@@ -132,10 +136,10 @@ export class Debug extends RootComponent {
     return rankingInfo;
   }
 
-  public buildStackPanel(stackDebug: any, results?: IQueryResults): { body: HTMLElement; json: any; } {
+  public buildStackPanel(results?: IQueryResults): { body: HTMLElement; json: any; } {
     let body = Dom.createElement('div', { className: 'coveo-debug' });
 
-    let keys: any[][] = _.pairs(_.keys(stackDebug));
+    let keys: any[][] = _.pairs(_.keys(this.stackDebug));
 
     keys = keys.sort((a: any[], b: any[]) => {
       let indexA = _.indexOf(Debug.customOrder, a[1]);
@@ -171,71 +175,65 @@ export class Debug extends RootComponent {
     return null;
   }
 
-  private showDebugPanel(builder: (results?: IQueryResults) => { body: HTMLElement; json: any; }) {
-    let build = builder();
+  private addInfoToDebugPanel(info: any) {
+    if(this.stackDebug == null) {
+      this.stackDebug = {};
+    }
+    this.stackDebug = _.extend({}, this.stackDebug, info);
+  }
 
-    let modalbox = this.modalBox.open(build.body, {
+  private teardownDebugPanel() {
+    this.stackDebug = null;
+    this.opened = false;
+  }
+
+  private openModalBox() {
+    let build = this.buildStackPanel();
+    this.opened = true;
+
+    this.modalBox = this.ModalBox.open(build.body, {
       title: l('Debug'),
       className: 'coveo-debug',
       titleClose: true,
       overlayClose: true,
       validation: () => {
-        this.unbindEscapeEvent();
+        this.teardownDebugPanel();
         return true;
       },
       sizeMod: 'big'
     });
-    this.bindEscapeEvent();
 
-    let title = $$(modalbox.wrapper).find('.coveo-modal-header');
+    let title = $$(this.modalBox.wrapper).find('.coveo-modal-header');
     if (title) {
-      let search = this.buildSearchBox(build.body);
-      let downloadLink = $$('a', { download: 'debug.json', 'href': this.downloadHref(build.json) }, 'Download');
-      let bodyBuilder = (results?: IQueryResults) => {
-        let build = builder(results);
-        downloadLink.el.setAttribute('href', this.downloadHref(build.json));
-        return build.body;
-      };
       title.appendChild(this.buildEnabledHighlightRecommendation());
-      title.appendChild(this.buildEnableDebugCheckbox(build.body, search, bodyBuilder));
+      title.appendChild(this.buildEnableDebugCheckbox(search));
       title.appendChild(this.buildEnableQuerySyntaxCheckbox());
       title.appendChild(search);
       title.appendChild(downloadLink.el);
+
+      $$(this.element).on(QueryEvents.querySuccess, (e: Event, args: IQuerySuccessEventArgs) => {
+        if (this.opened && this.modalBox) {
+          let bodyBuilder = (results?: IQueryResults) => {
+            let build = this.buildStackPanel(this.stackDebug, results);
+            downloadLink.el.setAttribute('href', this.downloadHref(build.json));
+            return build.body;
+          };
+
+          $$(build.body).removeClass('coveo-debug-loading');
+          $$(build.body).empty();
+          $$(bodyBuilder(args.results)).children().forEach((child) => {
+            build.body.appendChild(child);
+          });
+        }
+      });
+
     } else {
       this.logger.warn('No title found in modal box.');
     }
   }
 
-  private handleEscapeEvent(e: KeyboardEvent) {
-    if (e.keyCode == KEYBOARD.ESCAPE) {
-      if (this.modalBox) {
-        this.modalBox.close();
-      }
-    }
-  }
-
-  private bindEscapeEvent() {
-    this.boundEscapeKey = this.handleEscapeEvent.bind(this);
-    $$(document.body).on('keyup', this.boundEscapeKey);
-  }
-
-  private unbindEscapeEvent() {
-    if (this.boundEscapeKey) {
-      $$(document.body).off('keyup', this.boundEscapeKey);
-    }
-    this.boundEscapeKey = null;
-  }
-
-  private handleShowDebugPanel(info: any) {
-    if (this.stackDebug == null) {
-      setTimeout(() => {
-        let stackDebug = this.stackDebug;
-        this.showDebugPanel((results?: IQueryResults) => this.buildStackPanel(stackDebug, results));
-        this.stackDebug = null;
-      });
-      this.stackDebug = {};
-    }
-    _.extend(this.stackDebug, info);
+  private buildStackDebug(info: any) {
+    this.stackDebug = _.clone(info);
   }
 
   private handleNewResultDisplayed(args: IDisplayedNewResultEventArgs) {
@@ -255,18 +253,17 @@ export class Debug extends RootComponent {
       let findResult = (results?: IQueryResults) => results != null ? _.find(results.results, (result: IQueryResult) => result.index == index) : args.result;
       let template = args.item['template'];
 
-      let debugPanel = {
+      let debugInfo = {
         result: findResult,
         fields: (results?: IQueryResults) => this.buildFieldsSection(findResult(results)),
         rankingInfo: (results?: IQueryResults) => this.buildRankingInfoSection(findResult(results)),
         template: this.templateToJson(template),
       };
-      this.handleShowDebugPanel(debugPanel);
+      this.addInfoToDebugPanel(debugInfo);
+      //this.buildStackDebug(debugInfo);
+      //this.showDebugPanel()
+      //this.handleShowDebugPanel(debugInfo);
     }
-  }
-
-  private downloadHref(info: any) {
-    return 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(info));
   }
 
   private buildStackPanelSection(value: any, results: IQueryResults): { section: HTMLElement; json?: any; } {
@@ -333,53 +330,6 @@ export class Debug extends RootComponent {
       jElement.toggleClass('coveo-search-match', match);
     }
     return match;
-  }
-
-  private buildEnableDebugCheckbox(body: HTMLElement, search: HTMLElement, bodyBuilder: (results: IQueryResults) => HTMLElement) {
-    const chkbox = new Checkbox((chkboxInstance) => {
-      this.debug = chkboxInstance.isSelected();
-
-      $$(this.element).one([QueryEvents.querySuccess, QueryEvents.queryError], (e: Event, args: IQuerySuccessEventArgs) => {
-        $$(body).removeClass('coveo-debug-loading');
-        $$(body).empty();
-        $$(bodyBuilder(args.results)).children().forEach((child) => {
-          body.appendChild(child);
-        });
-      });
-
-      this.bindings.queryController.executeQuery({
-        closeModalBox: false
-      });
-
-      $$(body).addClass('coveo-debug-loading');
-      let input = search.querySelector('input') as HTMLInputElement;
-      input.value = '';
-      input.onkeyup(null);
-    }, 'Enable query debug');
-    if (this.debug) {
-      chkbox.select();
-    }
-    return chkbox.build();
-  }
-
-  private buildEnableQuerySyntaxCheckbox() {
-    const chkbox = new Checkbox((chkboxInstance) => {
-      this.bindings.componentOptionsModel.set(COMPONENT_OPTIONS_ATTRIBUTES.SEARCH_BOX, { enableQuerySyntax: chkboxInstance.isSelected() });
-    }, 'Enable query syntax in search box');
-    return chkbox.build();
-  }
-
-  private buildEnabledHighlightRecommendation() {
-    const chkbox = new Checkbox((chkboxInstance) => {
-      this.highlightRecommendation = chkboxInstance.isSelected();
-      this.bindings.queryController.executeQuery({
-        closeModalBox: false
-      });
-    }, 'Highlight recommendation');
-    if (this.highlightRecommendation) {
-      chkbox.select();
-    }
-    return chkbox.build();
   }
 
   private buildSection(id: string) {
