@@ -701,6 +701,7 @@ export class Facet extends Component {
 
     if (this.options.valueCaption != null) {
       this.options.availableSorts = _.filter(this.options.availableSorts, (sort: string) => !/^alpha.*$/.test(sort));
+      this.logger.warn(`Because the ${this.options.field} facet is using value captions, alphabetical sorts are disabled.`);
     }
 
     ResponsiveFacets.init(this.root, this, this.options);
