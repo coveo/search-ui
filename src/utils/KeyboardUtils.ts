@@ -76,9 +76,9 @@ export class KeyboardUtils {
         const eventCode = e.charCode || e.keyCode;
         if (eventCode) {
           if (_.isArray(keyCode) && _.contains(keyCode, eventCode)) {
-            return action(e);
+            action(e);
           } else if (eventCode === keyCode) {
-            return action(e);
+            action(e);
           }
         }
       }
