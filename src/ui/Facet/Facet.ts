@@ -224,7 +224,7 @@ export class Facet extends Component {
      * **Notes:**
      * > * The [`FacetRange`]{@link FacetRange} component does not support this option.
      *
-     * > * Using value captions will disable alphabetical sorts.
+     * > * Using value captions will disable alphabetical sorts (see the [valueCaption]{@link Facet.options.valueCaption} option).
      *
      * Default value is `"occurrences,score,alphaAscending,alphaDescending"`.
      */
@@ -581,7 +581,7 @@ export class Facet extends Component {
      *    > or before the `init` call, using the `options` top-level function (see
      *    > [Components - Passing Component Options Before the init Call](https://developers.coveo.com/x/PoGfAQ#Components-PassingComponentOptionsBeforetheinitCall)).
      *
-     * > *  Using value captions will disable alphabetical sorts.
+     * > *  Using value captions will disable alphabetical sorts (see the [availableSorts]{@link Facet.options.availableSorts} option).
      *
      * **Example:**
      *
