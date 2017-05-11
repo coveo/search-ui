@@ -1,3 +1,5 @@
+@import './mixins/breadcrumb';
+
 .coveo-hidden-query-breadcrumb-title {
   @include breadcrumbTitle();
 }

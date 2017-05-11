@@ -1,6 +1,6 @@
 import { Component } from '../Base/Component';
 import { IComponentBindings } from '../Base/ComponentBindings';
-import { QueryEvents, IQuerySuccessEventArgs } from '../../events/QueryEvents';
+import { IQuerySuccessEventArgs } from '../../events/QueryEvents';
 import { SettingsEvents } from '../../events/SettingsEvents';
 import { ISettingsPopulateMenuArgs } from '../Settings/Settings';
 import { Assert } from '../../misc/Assert';
@@ -8,6 +8,10 @@ import { $$ } from '../../utils/Dom';
 import { l } from '../../strings/Strings';
 import { Utils } from '../../utils/Utils';
 import { Initialization } from '../Base/Initialization';
+import { exportGlobally } from '../../GlobalExports';
+import { ModalBox as ModalBoxModule } from '../../ExternalModulesShim';
+
+import 'styling/_ShareQuery';
 
 export interface IShareQueryOptions {
 }
@@ -21,9 +25,16 @@ export class ShareQuery extends Component {
   static ID = 'ShareQuery';
   static options: IShareQueryOptions = {};
 
+  static doExport = () => {
+    exportGlobally({
+      'ShareQuery': ShareQuery
+    });
+  }
+
   public dialogBoxContent: HTMLElement;
   private linkToThisQuery: HTMLInputElement;
   private completeQuery: HTMLInputElement;
+  private modalbox: Coveo.ModalBox.ModalBox;
 
   /**
    * Creates a new ShareQuery component.
@@ -32,11 +43,8 @@ export class ShareQuery extends Component {
    * @param bindings The bindings that the component requires to function normally. If not set, these will be
    * automatically resolved (with a slower execution time).
    */
-  constructor(public element: HTMLElement, public options: IShareQueryOptions, bindings?: IComponentBindings) {
+  constructor(public element: HTMLElement, public options: IShareQueryOptions, bindings?: IComponentBindings, private ModalBox = ModalBoxModule) {
     super(element, ShareQuery.ID, bindings);
-    this.dialogBoxContent = this.buildContent();
-    element.appendChild(this.dialogBoxContent);
-    this.bind.onRootElement(QueryEvents.querySuccess, (args: IQuerySuccessEventArgs) => this.handleProcessNewQueryResults(args));
 
     this.bind.onRootElement(SettingsEvents.settingsPopulateMenu, (args: ISettingsPopulateMenuArgs) => {
       args.menuData.push({
@@ -49,23 +57,35 @@ export class ShareQuery extends Component {
   }
 
   /**
-   * Shows the **Share Query** panel.
+   * Open the **Share Query** modal box.
    */
   public open() {
-    $$(this.element).addClass('coveo-share-query-opened');
+    if (this.modalbox == null) {
+      this.dialogBoxContent = this.buildContent();
+      this.modalbox = this.ModalBox.open(this.dialogBoxContent, {
+        title: l('ShareQuery'),
+        className: 'coveo-share-query-opened'
+      });
+    }
   }
 
   /**
-   * Hides the **Share Query** panel.
+   * Close the **Share Query** modal box.
    */
   public close() {
-    $$(this.element).removeClass('coveo-share-query-opened');
+    if (this.modalbox) {
+      this.modalbox.close();
+      this.modalbox = null;
+    }
   }
 
   /**
    * Gets the link to the current query.
    */
   public getLinkToThisQuery(): string {
+    if (!this.linkToThisQuery) {
+      this.buildLinkToThisQuery();
+    }
     return this.linkToThisQuery.value;
   }
 
@@ -73,6 +93,9 @@ export class ShareQuery extends Component {
    * Sets the link to the current query.
    */
   public setLinkToThisQuery(link: string): void {
+    if (!this.linkToThisQuery) {
+      this.buildLinkToThisQuery();
+    }
     this.linkToThisQuery.value = link;
   }
 
@@ -80,6 +103,9 @@ export class ShareQuery extends Component {
    * Gets the complete query expression string
    */
   public getCompleteQuery(): string {
+    if (!this.completeQuery) {
+      this.buildCompleteQuery();
+    }
     return this.completeQuery.value;
   }
 
@@ -87,18 +113,10 @@ export class ShareQuery extends Component {
    * Set the complete query expression string.
    */
   public setCompleteQuery(completeQuery: string) {
+    if (!this.completeQuery) {
+      this.buildCompleteQuery();
+    }
     this.completeQuery.value = completeQuery;
-  }
-
-  private handleProcessNewQueryResults(args: IQuerySuccessEventArgs) {
-    Assert.exists(args);
-    Assert.exists(args.results);
-    let query = args.query;
-
-    this.linkToThisQuery.value = window.location.href;
-    this.completeQuery.value = Utils.trim(this.outputIfNotNull(query.q) + ' ' + this.outputIfNotNull(query.aq) + ' ' + this.outputIfNotNull(query.cq));
-
-    this.logger.trace('Received query results from new query', query);
   }
 
   private outputIfNotNull(value: string): string {
@@ -109,25 +127,16 @@ export class ShareQuery extends Component {
   }
 
   private buildContent(): HTMLElement {
-    let content = $$('div', { className: 'coveo-share-query-summary-info' }).el;
-    content.appendChild($$('span', { className: 'coveo-query-summary-info-title' }, l('ShareQuery')).el);
-
-    let close = $$('div', { className: 'coveo-share-query-summary-info-close' }).el;
-    close.appendChild($$('span').el);
-    $$(close).on('click', () => this.close());
-    content.appendChild(close);
-
-    let boxes = $$('div', { className: 'coveo-share-query-summary-info-boxes' }).el;
-
-    this.linkToThisQuery = <HTMLInputElement>$$('input', {
-      'type': 'text',
-      className: 'coveo-share-query-summary-info-input'
+    const content = $$('div', {
+      className: 'coveo-share-query-summary-info'
     }).el;
-    $$(this.linkToThisQuery).on('click', () => this.linkToThisQuery.select());
 
-    this.completeQuery = <HTMLInputElement>$$('input').el;
-    this.completeQuery.setAttribute('type', 'text');
-    $$(this.completeQuery).addClass('coveo-share-query-summary-info-input');
+    const boxes = $$('div', {
+      className: 'coveo-share-query-summary-info-boxes'
+    }).el;
+
+    this.buildLinkToThisQuery();
+    this.buildCompleteQuery();
 
     boxes.appendChild(this.buildTextBoxWithLabel(l('Link') + ':', this.linkToThisQuery));
     boxes.appendChild(this.buildTextBoxWithLabel(l('CompleteQuery') + ':', this.completeQuery));
@@ -138,20 +147,36 @@ export class ShareQuery extends Component {
     return content;
   }
 
+  private buildCompleteQuery() {
+    this.completeQuery = <HTMLInputElement>$$('input', {
+      type: 'text',
+      className: 'coveo-share-query-summary-info-input'
+    }).el;
+
+    const lastQuery = this.queryController.getLastQuery();
+    this.completeQuery.value = Utils.trim(`${this.outputIfNotNull(lastQuery.q)} ${this.outputIfNotNull(lastQuery.aq)} ${this.outputIfNotNull(lastQuery.cq)}`);
+  }
+
+  private buildLinkToThisQuery() {
+    this.linkToThisQuery = <HTMLInputElement>$$('input', {
+      type: 'text',
+      className: 'coveo-share-query-summary-info-input'
+    }).el;
+
+    $$(this.linkToThisQuery).on('click', () => this.linkToThisQuery.select());
+    this.linkToThisQuery.value = window.location.href;
+  }
+
   private buildTextBoxWithLabel(label: string, input: HTMLInputElement): HTMLElement {
-    let labelElement = $$('span', { className: 'coveo-share-query-summary-info-label' });
+    const labelElement = $$('span', {
+      className: 'coveo-share-query-summary-info-label'
+    });
     labelElement.text(label);
 
-    let returnDiv = $$('div').el;
+    const returnDiv = $$('div').el;
     returnDiv.appendChild(labelElement.el);
     returnDiv.appendChild(input);
     return returnDiv;
-  }
-
-  static create(element: HTMLElement, options?: IShareQueryOptions, root?: HTMLElement): ShareQuery {
-    Assert.exists(element);
-
-    return new ShareQuery(element, options, root);
   }
 }
 

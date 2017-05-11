@@ -1,12 +1,21 @@
+@import "../bin/sass/sprites";
+@import "Variables";
+
 .CoveoResultsFiltersPreferences {
   .coveo-title {
     display: inline-block;
   }
 
   .coveo-choice-container {
-    background-color: #ececec;
     margin-bottom: 2px;
     padding: 0;
+    @include display(flex);
+    @include align-items(center);
+    width: 100%;
+
+    .coveo-checkbox-span-label {
+      @include flex-grow(1);
+    }
 
     .coveo-section {
       display: inline-block;
@@ -34,10 +43,6 @@
       width: 45%;
     }
 
-    .coveo-section-edit-delete {
-      width: 10%;
-      float: right;
-    }
     .coveo-section.coveo-section-input {
       .coveo-input-icon.coveo-selected:before {
         bottom: 7px;
@@ -48,7 +53,6 @@
   .coveo-advanced-filters {
     @include defaultRoundedBorder();
     display: inline-block;
-    margin-left: 10px;
     margin-bottom: 10px;
     padding: 6px 5px 6px 5px;
 
@@ -67,11 +71,9 @@
   }
 
   .coveo-delete {
-    position: relative;
-    top: 2px;
-    left: 25px;
+    margin-left: 10px;
     .coveo-icon {
-      @extend .coveo-sprites-clear-active-filters;
+      @include retina-sprite($clear-active-filters-group);
     }
     &:hover {
       cursor: pointer;
@@ -79,11 +81,8 @@
   }
 
   .coveo-edit {
-    position: relative;
-    top: 2px;
-    left: 10px;
     .coveo-icon {
-      @extend .coveo-sprites-settings;
+      @include retina-sprite($settings-group);
     }
     &:hover {
       cursor: pointer;
@@ -92,43 +91,27 @@
 
   .coveo-advanced-filters-builder {
     display: none;
-    background-color: #ebf3fb;
     position: relative;
-
-    form {
-      height: 120px;
-      overflow: hidden;
-      padding: 0;
-      @include display('flex');
-    }
 
     &.coveo-active {
       display: block;
-      z-index: 1;
     }
 
-    .coveo-choice-container {
-      margin: 0;
-      background-color: #ebf3fb;
-      vertical-align: top;
-      height: 100%;
-      text-align: center;
+    form {
+      overflow: hidden;
+      padding: 10px;
+      @include defaultRoundedBorder();
+      @include display('flex');
+      @include flex-wrap(wrap);
     }
 
-    .coveo-caption, .coveo-tab, .coveo-close-and-save {
-      @include flex-grow(1);
+    .coveo-input {
+      width: 100%;
+      margin-bottom: 10px;
     }
-
+    
     .coveo-expression {
       @include flex-grow(2);
-    }
-
-    .coveo-caption, .coveo-tab, .coveo-expression {
-      height: 100%;
-    }
-
-    .coveo-tab {
-      text-align: center;
     }
 
     .coveo-caption, .coveo-expression {
@@ -141,40 +124,31 @@
     .coveo-close-and-save {
 
       .coveo-save {
-        @extend .coveo-sprites-checkbox-hook-active;
+        @include retina-sprite($checkbox-hook-active-group);
         @include clickable();
         position: absolute;
-        top: 5px;
-        right: 20px;
+        top: 6px;
+        right: 30px;
       }
 
       .coveo-close {
         @include clearButton('&');
         position: absolute;
-        top: 9px;
-        right: 5px;
+        top: 10px;
+        right: 10px;
       }
     }
 
-    textArea {
-      height: 90%;
-      width: 93%;
-      background-color: white;
-      border: 1px solid transparent;
-      box-shadow: inset 0 1px 2px rgba(0, 0, 0, .39), 0 -1px 1px #FFF, 0 1px 0 #FFF;
-      resize: none;
-      font-family: $helvetica;
-      margin-top: 6px;
+    .coveo-tab {
+      min-height: 100px;
+      width: 100%;
+      optgroup {
+        padding-left: 10px;
+      }
     }
 
-    textArea.coveo-Tab {
-      height: 36px;
-    }
-
-    select {
-      height: 70px;
-      width: 90%;
-      font-family: $helvetica;
+    input[type=submit] {
+      display: none;
     }
   }
 }

@@ -7,7 +7,9 @@ import { PopupUtils, IPosition, HorizontalAlignment, VerticalAlignment } from '.
 import { IMenuItem } from '../Menu/MenuItem';
 import { SettingsEvents } from '../../events/SettingsEvents';
 import { Initialization } from '../Base/Initialization';
-import _ = require('underscore');
+import * as _ from 'underscore';
+import { exportGlobally } from '../../GlobalExports';
+import 'styling/_Settings';
 
 export interface ISettingsPopulateMenuArgs {
   settings: Settings;
@@ -32,6 +34,14 @@ export interface ISettingsOptions {
  */
 export class Settings extends Component {
   static ID = 'Settings';
+
+  static doExport = () => {
+    exportGlobally({
+      'Settings': Settings
+    });
+  }
+
+
   /**
    * The options for Settings
    * @componentOptions

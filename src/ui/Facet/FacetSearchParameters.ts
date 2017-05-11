@@ -7,7 +7,7 @@ import { IGroupByRequest } from '../../rest/GroupByRequest';
 import { IQuery } from '../../rest/Query';
 import { QueryBuilder } from '../Base/QueryBuilder';
 import { $$ } from '../../utils/Dom';
-import _ = require('underscore');
+import * as _ from 'underscore';
 
 export class FacetSearchParameters {
   public searchEvenIfEmpty: boolean;
@@ -61,10 +61,19 @@ export class FacetSearchParameters {
       typedByUser = ['*' + this.valueToSearch + '*'];
     }
 
+    let completeFacetWithStandardValues = true;
+    if (this.facet.options.lookupField != null) {
+      completeFacetWithStandardValues = false;
+    }
+
+    if (this.facet.options.allowedValues != null) {
+      completeFacetWithStandardValues = false;
+    }
+
     var request: IGroupByRequest = {
       allowedValues: typedByUser.concat(this.alwaysInclude).concat(this.alwaysExclude),
       maximumNumberOfValues: nbResults,
-      completeFacetWithStandardValues: this.facet.options.lookupField ? false : true, // See : https://coveord.atlassian.net/browse/JSUI-728
+      completeFacetWithStandardValues: completeFacetWithStandardValues,
       field: <string>this.facet.options.field,
       sortCriteria: this.facet.options.sortCriteria || this.sortCriteria,
       injectionDepth: this.facet.options.injectionDepth,

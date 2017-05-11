@@ -1,12 +1,13 @@
-import { Component } from '../Base/Component';
+import { Component, IComponentDefinition } from '../Base/Component';
 import { IComponentBindings } from '../Base/ComponentBindings';
 import { ComponentOptions, IFieldOption } from '../Base/ComponentOptions';
 import { QueryEvents, IBuildingQueryEventArgs, IQuerySuccessEventArgs } from '../../events/QueryEvents';
 import { IGroupByRequest } from '../../rest/GroupByRequest';
 import { Initialization } from '../Base/Initialization';
 import { $$ } from '../../utils/Dom';
-import Globalize = require('globalize');
-import _ = require('underscore');
+import * as Globalize from 'globalize';
+import * as _ from 'underscore';
+import { exportGlobally } from '../../GlobalExports';
 
 export interface IAggregateOptions {
   field: IFieldOption;
@@ -21,6 +22,12 @@ export interface IAggregateOptions {
  */
 export class Aggregate extends Component {
   static ID = 'Aggregate';
+
+  static doExport() {
+    exportGlobally({
+      'Aggregate': Aggregate
+    });
+  }
 
   /**
    * The options for the component

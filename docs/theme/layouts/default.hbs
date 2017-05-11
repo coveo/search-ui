@@ -72,9 +72,20 @@
                         </a>
                         {{#with model}}{{> breadcrumb}}{{/with}}
                     </ul>
-                    <h1>{{#compact}}
+
+                    <!-- Has to remain here for the playground to work -->
+                    <h1 style="visibility: collapse; font-size:0">{{#compact}}
                         {{model.kindString}}&nbsp;
                         {{model.name}}
+                    {{/compact}}</h1>
+
+                    <h1>{{#compact}}
+                        {{#ifCond model.kindString "==" "Coveo component"}}
+                            Coveo {{model.name}} Component (Coveo{{model.name}})
+                        {{else}}
+                            {{model.kindString}}&nbsp;
+                            {{model.name}}
+                        {{/ifCond}}
                         {{#if model.typeParameters}}
                             &lt;
                             {{#each model.typeParameters}}

@@ -1,10 +1,10 @@
-import { Dropdown } from '../Form/Dropdown';
+import { Dropdown } from '../../FormWidgets/Dropdown';
 import { FacetUtils } from '../../../ui/Facet/FacetUtils';
 import { IIndexFieldValue } from '../../../rest/FieldValue';
 import { ISearchEndpoint } from '../../../rest/SearchEndpointInterface';
 import { DocumentInput } from './DocumentInput';
 import { $$ } from '../../../utils/Dom';
-import _ = require('underscore');
+import * as _ from 'underscore';
 import { QueryBuilder } from '../../Base/QueryBuilder';
 
 export class SimpleFieldInput extends DocumentInput {
@@ -41,7 +41,10 @@ export class SimpleFieldInput extends DocumentInput {
   }
 
   private buildFieldSelect() {
-    return this.endpoint.listFieldValues({ field: this.fieldName }).then((values: IIndexFieldValue[]) => {
+    return this.endpoint.listFieldValues({
+      field: this.fieldName,
+      maximumNumberOfValues: 50
+    }).then((values: IIndexFieldValue[]) => {
       let options = [''];
       _.each(values, (value: IIndexFieldValue) => {
         options.push(value.value);

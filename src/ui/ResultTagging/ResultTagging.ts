@@ -14,7 +14,10 @@ import { ITaggingRequest } from '../../rest/TaggingRequest';
 import { $$ } from '../../utils/Dom';
 import { analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
 import { IQueryResult } from '../../rest/QueryResult';
-import _ = require('underscore');
+import * as _ from 'underscore';
+import { exportGlobally } from '../../GlobalExports';
+
+import 'styling/_ResultTagging';
 
 export interface IResultTaggingOptions {
   field: IFieldOption;
@@ -37,6 +40,12 @@ export interface IAnalyticsResultTaggingMeta {
 export class ResultTagging extends Component {
   static ID = 'ResultTagging';
   static autoCompleteClass = 'coveo-result-tagging-auto-complete';
+
+  static doExport = () => {
+    exportGlobally({
+      'ResultTagging': ResultTagging
+    });
+  }
 
   /**
    * @componentOptions
@@ -98,14 +107,16 @@ export class ResultTagging extends Component {
       return;
     }
     let fieldValue = Utils.getFieldValue(this.result, <string>this.options.field);
-    if (fieldValue) {
+    if (fieldValue && Utils.isNonEmptyString(fieldValue)) {
       this.tags = fieldValue.split(';');
-      this.tags = _.map(this.tags, (t) => {
-        return t.trim();
-      });
+    } else if (fieldValue && Utils.isNonEmptyArray(fieldValue)) {
+      this.tags = fieldValue;
     } else {
       this.tags = [];
     }
+    this.tags = _.map(this.tags, (t) => {
+      return t.trim();
+    });
     this.tagZone = $$('div', {
       className: 'coveo-result-tagging-tag-zone'
     }).el;

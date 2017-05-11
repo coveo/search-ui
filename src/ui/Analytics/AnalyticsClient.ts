@@ -1,7 +1,6 @@
 import { IAnalyticsActionCause } from '../Analytics/AnalyticsActionListMeta';
 import { IQueryResult } from '../../rest/QueryResult';
 import { ITopQueries } from '../../rest/TopQueries';
-import { Promise } from 'es6-promise';
 import { PendingSearchEvent } from './PendingSearchEvent';
 
 /**
@@ -112,4 +111,16 @@ export interface IAnalyticsClient {
   getPendingSearchEvent(): PendingSearchEvent;
   sendAllPendingEvents(): void;
   warnAboutSearchEvent(): void;
+
+  /**
+   * Sets the Origin Context dimension on the analytic events.
+   *
+   * You can use this dimension to specify the context of your application.
+   * Suggested values are "Search", "InternalSearch" and "CommunitySearch"
+   *
+   * Default value is `Search`.
+   *
+   * @param originContext The origin context value
+   */
+  setOriginContext(originContext: string);
 }

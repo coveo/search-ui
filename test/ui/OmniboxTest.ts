@@ -47,7 +47,7 @@ export function OmniboxTest() {
       it('enableSearchAsYouType should allow to to trigger a query after a delay', function (done) {
         test = Mock.optionsComponentSetup<Omnibox, IOmniboxOptions>(Omnibox, {
           enableSearchAsYouType: true,
-          enableRevealQuerySuggestAddon: false
+          enableQuerySuggestAddon: false
         });
         expect(test.cmp.magicBox.onchange).toBeDefined();
         test.cmp.setText('foobar');
@@ -58,14 +58,14 @@ export function OmniboxTest() {
         }, test.cmp.options.searchAsYouTypeDelay);
       });
 
-      it('enableQuerySyntax should modify the disableQuerySyntax parameter', function () {
+      it('enableQuerySyntax should modify the enableQuerySyntax parameter', function () {
         test = Mock.optionsComponentSetup<Omnibox, IOmniboxOptions>(Omnibox, {
           enableQuerySyntax: false
         });
         test.cmp.setText('@field==Batman');
 
         var simulation = Simulate.query(test.env);
-        expect(simulation.queryBuilder.disableQuerySyntax).toBe(true);
+        expect(simulation.queryBuilder.enableQuerySyntax).toBe(false);
 
         test = Mock.optionsComponentSetup<Omnibox, IOmniboxOptions>(Omnibox, {
           enableQuerySyntax: true
@@ -73,7 +73,7 @@ export function OmniboxTest() {
         test.cmp.setText('@field==Batman');
 
         simulation = Simulate.query(test.env);
-        expect(simulation.queryBuilder.disableQuerySyntax).toBe(false);
+        expect(simulation.queryBuilder.enableQuerySyntax).toBe(true);
 
       });
 
@@ -179,7 +179,7 @@ export function OmniboxTest() {
         });
       });
 
-      it('enableTopQueryAddon should get suggestion from reveal', () => {
+      it('enableTopQueryAddon should get suggestion', () => {
         let element = $$('div');
         element.addClass('CoveoOmnibox');
         element.setAttribute('data-enable-top-query-addon', 'true');
@@ -187,17 +187,17 @@ export function OmniboxTest() {
 
         test.cmp.setText('foobar');
         test.cmp.magicBox.getSuggestions();
-        expect(test.env.searchEndpoint.getRevealQuerySuggest).toHaveBeenCalled();
+        expect(test.env.searchEndpoint.getQuerySuggest).toHaveBeenCalled();
       });
 
-      it('enableRevealQuerySuggestAddon should create an addon component', () => {
+      it('enableQuerySuggestAddon should create an addon component', () => {
         test = Mock.optionsComponentSetup<Omnibox, IOmniboxOptions>(Omnibox, {
-          enableRevealQuerySuggestAddon: true
+          enableQuerySuggestAddon: true
         });
 
         test.cmp.setText('foobar');
         test.cmp.magicBox.getSuggestions();
-        expect(test.env.searchEndpoint.getRevealQuerySuggest).toHaveBeenCalled();
+        expect(test.env.searchEndpoint.getQuerySuggest).toHaveBeenCalled();
       });
 
       it('enableQueryExtensionAddon should create an addon component', () => {
@@ -224,13 +224,13 @@ export function OmniboxTest() {
         expect(test.cmp.getInput().placeholder).toBe(l('SearchFor'));
       });
 
-      it('enableSearchAsYouType + enableRevealQuerySuggestAddon should send correct analytics events', () => {
+      it('enableSearchAsYouType + enableQuerySuggestAddon should send correct analytics events', () => {
         test = Mock.optionsComponentSetup<Omnibox, IOmniboxOptions>(Omnibox, {
-          enableRevealQuerySuggestAddon: true,
+          enableQuerySuggestAddon: true,
           enableSearchAsYouType: true
         });
         let spy = jasmine.createSpy('spy');
-        test.env.searchEndpoint.getRevealQuerySuggest = spy;
+        test.env.searchEndpoint.getQuerySuggest = spy;
 
         spy.and.returnValue({
           completions: [
@@ -284,7 +284,7 @@ export function OmniboxTest() {
     it('should execute query automatically when confidence level is > 0.8 on suggestion', (done) => {
       test = Mock.optionsComponentSetup<Omnibox, IOmniboxOptions>(Omnibox, {
         enableSearchAsYouType: true,
-        enableRevealQuerySuggestAddon: true
+        enableQuerySuggestAddon: true
       });
       test.cmp.setText('foobar');
       expect(test.cmp.magicBox.onsuggestions).toBeDefined();
@@ -302,7 +302,7 @@ export function OmniboxTest() {
     it('should execute query automatically when confidence level is = 0.8 on suggestion', (done) => {
       test = Mock.optionsComponentSetup<Omnibox, IOmniboxOptions>(Omnibox, {
         enableSearchAsYouType: true,
-        enableRevealQuerySuggestAddon: true
+        enableQuerySuggestAddon: true
       });
       test.cmp.setText('foobar');
       expect(test.cmp.magicBox.onsuggestions).toBeDefined();
@@ -320,7 +320,7 @@ export function OmniboxTest() {
     it('should not execute query automatically when confidence level is < 0.8 on suggestion', (done) => {
       test = Mock.optionsComponentSetup<Omnibox, IOmniboxOptions>(Omnibox, {
         enableSearchAsYouType: true,
-        enableRevealQuerySuggestAddon: true
+        enableQuerySuggestAddon: true
       });
       test.cmp.setText('foobar');
       expect(test.cmp.magicBox.onsuggestions).toBeDefined();
@@ -338,7 +338,7 @@ export function OmniboxTest() {
     it('should execute query automatically when confidence level is not provided and the suggestion does not match the typed text', (done) => {
       test = Mock.optionsComponentSetup<Omnibox, IOmniboxOptions>(Omnibox, {
         enableSearchAsYouType: true,
-        enableRevealQuerySuggestAddon: true
+        enableQuerySuggestAddon: true
       });
       test.cmp.setText('baz');
       expect(test.cmp.magicBox.onsuggestions).toBeDefined();
@@ -355,7 +355,7 @@ export function OmniboxTest() {
     it('should not execute query automatically when confidence level is not provided but the suggestion match the typed text', (done) => {
       test = Mock.optionsComponentSetup<Omnibox, IOmniboxOptions>(Omnibox, {
         enableSearchAsYouType: true,
-        enableRevealQuerySuggestAddon: true
+        enableQuerySuggestAddon: true
       });
       test.cmp.setText('foo');
       expect(test.cmp.magicBox.onsuggestions).toBeDefined();

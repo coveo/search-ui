@@ -7,4 +7,4 @@ gulp.task('zip', ()=> {
   return gulp.src('bin/**/*')
       .pipe(zip('search-ui.zip'))
       .pipe(gulp.dest('./'))
-})
+});

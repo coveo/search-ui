@@ -7,14 +7,21 @@ import { SettingsEvents } from '../../events/SettingsEvents';
 import { ISettingsPopulateMenuArgs } from '../Settings/Settings';
 import { Initialization } from '../Base/Initialization';
 import { l } from '../../strings/Strings';
-import { $$ } from '../../utils/Dom';
+import { $$, Dom } from '../../utils/Dom';
 import { IAdvancedSearchInput, IAdvancedSearchPrebuiltInput, IAdvancedSearchSection, IExternalAdvancedSearchSection } from './AdvancedSearchInput';
 import { AdvancedSearchInputFactory } from './AdvancedSearchInputFactory';
 import { IQueryOptions } from '../../controllers/QueryController';
 import { IAnalyticsNoMeta, analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
 import { QuerySummaryEvents } from '../../events/QuerySummaryEvents';
-import _ = require('underscore');
-
+import * as _ from 'underscore';
+import { exportGlobally } from '../../GlobalExports';
+import 'styling/_AdvancedSearch';
+import { NumericSpinner } from '../FormWidgets/NumericSpinner';
+import { DatePicker } from '../FormWidgets/DatePicker';
+import { Dropdown } from '../FormWidgets/Dropdown';
+import { TextInput } from '../FormWidgets/TextInput';
+import { RadioButton } from '../FormWidgets/RadioButton';
+import { ModalBox as ModalBoxModule } from '../../ExternalModulesShim';
 
 export interface IAdvancedSearchOptions {
   includeKeywords?: boolean;
@@ -31,6 +38,17 @@ export interface IAdvancedSearchOptions {
  */
 export class AdvancedSearch extends Component {
   static ID = 'AdvancedSearch';
+
+  static doExport = () => {
+    exportGlobally({
+      'AdvancedSearch': AdvancedSearch,
+      'NumericSpinner': NumericSpinner,
+      'DatePicker': DatePicker,
+      'Dropdown': Dropdown,
+      'TextInput': TextInput,
+      'RadioButton': RadioButton
+    });
+  }
 
   /**
    * @componentOptions
@@ -60,9 +78,11 @@ export class AdvancedSearch extends Component {
   };
 
   public inputs: IAdvancedSearchInput[] = [];
+  public content: Dom;
+
   private inputFactory = new AdvancedSearchInputFactory(this.queryController.getEndpoint());
   private externalSections: IExternalAdvancedSearchSection[] = [];
-
+  private modalbox: Coveo.ModalBox.ModalBox;
   /**
    * Creates a new AdvancedSearch component.
    *
@@ -72,11 +92,11 @@ export class AdvancedSearch extends Component {
    * @param bindings The bindings that the component requires to function normally. If not set, these will be
    * automatically resolved (with a slower execution time).
    */
-  constructor(public element: HTMLElement, public options?: IAdvancedSearchOptions, bindings?: IComponentBindings) {
+  constructor(public element: HTMLElement, public options?: IAdvancedSearchOptions, bindings?: IComponentBindings, private ModalBox = ModalBoxModule) {
     super(element, AdvancedSearch.ID, bindings);
     this.options = ComponentOptions.initComponentOptions(element, AdvancedSearch, options);
     this.bindEvents();
-    this.buildComponent();
+    this.buildContent();
   }
 
   /**
@@ -86,7 +106,9 @@ export class AdvancedSearch extends Component {
    */
   public executeAdvancedSearch() {
     this.usageAnalytics.logSearchEvent<IAnalyticsNoMeta>(analyticsActionCauseList.advancedSearch, {});
-    this.queryController.executeQuery();
+    this.queryController.executeQuery({
+      closeModalBox: false
+    });
   }
 
   /**
@@ -98,22 +120,27 @@ export class AdvancedSearch extends Component {
     });
   }
 
-  private buildComponent() {
-    this.buildTitle();
-    this.buildCloseButton();
-    this.buildContent();
-    $$(this.element).hide();
+  /**
+   * Open the advanced search
+   */
+  public open() {
+    if (this.modalbox == null) {
+      this.modalbox = this.ModalBox.open(this.content.el, {
+        sizeMod: 'big',
+        title: l('AdvancedSearch'),
+        className: 'coveo-advanced-search-modal'
+      });
+    }
   }
 
-  private buildTitle() {
-    var title = $$('div', { className: 'coveo-advanced-search-panel-title' }, l('AdvancedSearch')).el;
-    $$(this.element).append(title);
-  }
-
-  private buildCloseButton() {
-    var closeButton = $$('div', { className: 'coveo-advanced-search-panel-close' }, $$('span', { className: 'coveo-icon' }).el);
-    closeButton.on('click', () => this.close());
-    $$(this.element).append(closeButton.el);
+  /**
+   * Close the advanced search
+   */
+  public close() {
+    if (this.modalbox != null) {
+      this.modalbox.close();
+      this.modalbox = null;
+    }
   }
 
   private buildContent() {
@@ -133,6 +160,7 @@ export class AdvancedSearch extends Component {
     $$(this.root).trigger(AdvancedSearchEvents.buildingAdvancedSearch, {
       sections: this.externalSections,
       executeQuery: (options: IQueryOptions) => {
+        options = _.extend({}, options, { closeModalBox: false });
         return this.queryController.executeQuery(options);
       }
     });
@@ -146,15 +174,7 @@ export class AdvancedSearch extends Component {
       component.append(this.buildInternalSection(section));
     });
 
-    $$(this.element).append(component.el);
-  }
-
-  private open() {
-    $$(this.element).show();
-  }
-
-  private close() {
-    $$(this.element).hide();
+    this.content = component;
   }
 
   private getKeywordsSection(): IAdvancedSearchSection {

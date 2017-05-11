@@ -5,6 +5,8 @@ import { ComponentOptions } from '../Base/ComponentOptions';
 import { Assert } from '../../misc/Assert';
 import { HighlightUtils } from '../../utils/HighlightUtils';
 import { Initialization } from '../Base/Initialization';
+import { exportGlobally } from '../../GlobalExports';
+import 'styling/_Excerpt';
 
 /**
  * The Excerpt component renders an excerpt of its associated result and highlights the keywords from the query using
@@ -14,6 +16,12 @@ import { Initialization } from '../Base/Initialization';
  */
 export class Excerpt extends Component {
   static ID = 'Excerpt';
+
+  static doExport = () => {
+    exportGlobally({
+      'Excerpt': Excerpt
+    });
+  }
 
   /**
    * Creates a new Excerpt component.

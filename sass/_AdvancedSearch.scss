@@ -1,4 +1,6 @@
-$spaceBetween: 0 5px;
+@import "Variables";
+
+$spaceBetween: 0 5px 5px 0;
 
 .CoveoAdvancedSearch {
   position: relative;
@@ -12,7 +14,7 @@ $spaceBetween: 0 5px;
   margin: 20px 0;
 }
 
-#coveo-advanced-search-in-the-last-select{
+#coveo-advanced-search-in-the-last-select {
   margin-left: 20px;
 
   .coveo-button { 
@@ -28,16 +30,16 @@ $spaceBetween: 0 5px;
 
 .coveo-advanced-search-date-input-section {
   @include display(flex);
-  height: 45px;
   align-items: center;
+  @include flex-wrap(wrap);
 
   .coveo-radio {
-    width: 20%;
-
     input[type='radio'] + label {
       display: inline;
     }
   }
+
+  margin: 10px 0 10px 0;
 
   .coveo-advanced-search-date-input {
     display: inline-block;
@@ -97,28 +99,17 @@ $spaceBetween: 0 5px;
 
 
 .coveo-advanced-search-keyword-label {
-  width: 40%;
   display: inline-block;
 }
 
 .coveo-advanced-search-label {
-  width: 20%;
   display: inline-block;
+  min-width: 7em;
+  margin-bottom: 10px;
 }
 
 .coveo-advanced-search-select {
   margin: $spaceBetween;
-}
-
-.coveo-advanced-search-panel-close {
-  @include coveo-preferences-panel-button();
-  @include clearButton('&');
-  right: 0;
-}
-
-.coveo-advanced-search-panel-title {
-  font-size: $font-size-biggest;
-  display: inline-block;
 }
 
 .coveo-advanced-search-and {
@@ -126,9 +117,8 @@ $spaceBetween: 0 5px;
   margin: $spaceBetween;
 }
 
-.coveo-advanced-search-number-input{
+.coveo-number-input {
   max-width: 45px;
-  margin: $spaceBetween;
 }
 
 #coveo-advanced-search-execute-query {
@@ -140,8 +130,13 @@ $spaceBetween: 0 5px;
 
 .coveo-size-input-mode-section {
   display: inline-block;
-  width: 80%;
-  & > * {
-    margin: 5px 0px 5px 0px;
+}
+
+.coveo-advanced-search-modal {
+  fieldset {
+    display: inline-block;
+  }
+  .coveo-dropdown, .coveo-numeric-spinner {
+    margin: $spaceBetween;
   }
 }

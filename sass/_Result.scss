@@ -1,3 +1,6 @@
+@import "Variables";
+@import "mixins/mediaQuery";
+
 .CoveoResult {
   position: relative; // Allows using absolute positioning for buttons such as Show All Thread, etc.
 
@@ -196,7 +199,7 @@
     }
   }
   // These divs are used for filling the space when the number of cards is not even
-  > div:empty {
+  &:empty {
     width: 300px;
     height: 0;
     @include flex-grow(1);
@@ -205,16 +208,25 @@
 }
 
 .coveo-table-layout {
-  display: table;
-  border-collapse: collapse;
-  width: 100%;
-  margin-bottom: 20px;
-  > .CoveoResult {
-    display: table-row;
-    > * {
-      padding: .5em 0;
-      border-bottom: $default-border;
-    }
+  display: table-row;
+  td {
+    display: table-cell;
+    padding: 9px 15px;
+    white-space: nowrap;
+    border-bottom: $default-border;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  th {
+    text-align: left;
+    font-size: 12px;
+    color: $color-greyish-teal-blue;
+    font-weight: bold;
+    border-bottom: $default-border;
+    padding: 7px 15px;
+  }
+  &:hover td {
+    background-color: $color-blueish-white-grey;
   }
 }
 

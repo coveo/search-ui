@@ -4,11 +4,14 @@ import { IComponentBindings } from '../Base/ComponentBindings';
 import { Initialization, IInitializationParameters } from '../Base/Initialization';
 import { IResultsComponentBindings } from '../Base/ResultsComponentBindings';
 import { IQueryResult } from '../../rest/QueryResult';
-import _ = require('underscore');
+import * as _ from 'underscore';
 import { Utils } from '../../utils/Utils';
+import { exportGlobally } from '../../GlobalExports';
 import { YouTubeThumbnail, IYouTubeThumbnailOptions } from '../YouTube/YouTubeThumbnail';
 import { $$ } from '../../utils/Dom';
 import { ModalBox as ModalBoxModule } from '../../ExternalModulesShim';
+
+import 'styling/_Backdrop';
 
 export interface IBackdropOptions {
   imageUrl?: string;
@@ -31,6 +34,12 @@ export interface IBackdropOptions {
  */
 export class Backdrop extends Component {
   static ID = 'Backdrop';
+
+  static doExport = () => {
+    exportGlobally({
+      'Backdrop': Backdrop
+    });
+  }
 
   /**
    * @componentOptions

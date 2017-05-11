@@ -1,3 +1,5 @@
+@import "Variables";
+@import "../bin/sass/sprites";
 
 .CoveoFieldTable {
   @include defaultRoundedBorder();
@@ -6,6 +8,7 @@
   padding-bottom: 10px;
   position: relative;
   word-break: break-all;
+  margin-top:1px;
   th, td {
     font-size: $font-size-smaller;
   }
@@ -53,7 +56,7 @@
   position: relative;
   top: 2px;
 
-  @extend .coveo-sprites-arrow-down;
+  @include retina-sprite($arrow-down-group);
   @include transition(opacity 0.5s);
   opacity: 1;
   &.coveo-opened {
@@ -63,13 +66,18 @@
 
 .coveo-field-table-toggle-icon-up {
   position: absolute;
-  bottom: 10px;
+  bottom: 35px;
   right: 10px;
   margin: 0;
-  @extend .coveo-sprites-arrow-up;
-  display: none;
+  @include transition(opacity 0s);
+  @include retina-sprite($arrow-up-group);
+  opacity: 0;
+  height:0px;
   &.coveo-opened {
-    display: inline-block;
+    opacity:1;
+    @include transition(opacity 2.8s);
+    height:13px;
+
   }
 }
 

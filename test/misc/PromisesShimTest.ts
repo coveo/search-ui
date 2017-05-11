@@ -1,6 +1,4 @@
 import { Simulate } from '../Simulate';
-import { shim } from '../../src/misc/PromisesShim';
-shim();
 
 export function PromisesShimTest() {
   describe('PromisesShim', function () {

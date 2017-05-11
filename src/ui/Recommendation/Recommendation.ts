@@ -21,8 +21,14 @@ import { history } from 'coveo.analytics';
 import { get } from '../Base/RegisteredNamedMethods';
 import { InitializationEvents } from '../../events/InitializationEvents';
 import { ComponentOptionsModel } from '../../models/ComponentOptionsModel';
-import _ = require('underscore');
+import * as _ from 'underscore';
+import { exportGlobally } from '../../GlobalExports';
 import HistoryQueryElement = CoveoAnalytics.HistoryQueryElement;
+import { DefaultRecommendationTemplate } from '../Templates/DefaultRecommendationTemplate';
+import { RecommendationQuery } from './RecommendationQuery';
+import { RecommendationAnalyticsClient } from '../Analytics/RecommendationAnalyticsClient';
+
+import 'styling/_Recommendation';
 
 export interface IRecommendationOptions extends ISearchInterfaceOptions {
   mainSearchInterface?: HTMLElement;
@@ -57,6 +63,15 @@ export interface IRecommendationOptions extends ISearchInterfaceOptions {
 export class Recommendation extends SearchInterface implements IComponentBindings {
   static ID = 'Recommendation';
   private static NEXT_ID = 1;
+
+  static doExport = () => {
+    exportGlobally({
+      'Recommendation': Recommendation,
+      'DefaultRecommendationTemplate': DefaultRecommendationTemplate,
+      'RecommendationQuery': RecommendationQuery,
+      'RecommendationAnalyticsClient': RecommendationAnalyticsClient
+    });
+  }
 
   /**
    * The options for the recommendation component

@@ -15,7 +15,7 @@ import { IQuery } from '../../rest/Query';
 import { IViewAsHtmlOptions } from '../../rest/SearchEndpointInterface';
 import { AjaxError } from '../../rest/AjaxError';
 import { l } from '../../strings/Strings';
-import _ = require('underscore');
+import * as _ from 'underscore';
 
 const HIGHLIGHT_PREFIX = 'CoveoHighlight';
 
@@ -203,7 +203,13 @@ export class QuickviewDocument extends Component {
     }
 
     iframe.contentWindow.document.open();
-    iframe.contentWindow.document.write(toWrite);
+    try {
+      iframe.contentWindow.document.write(toWrite);
+    } catch (e) {
+      // The iframe is sandboxed, and can throw ugly errors, especially when rendering random web pages.
+      // Suppress those
+    }
+
     iframe.contentWindow.document.close();
   }
 
@@ -498,14 +504,11 @@ export class QuickviewDocument extends Component {
       $$(pdf).addClass('opened');
     }
 
-
     element.scrollIntoView();
 
-    // iOS on Safari might scroll the whole modal box body when we do this,
-    // so give it a nudge in the right direction.
-    let body = this.iframe.closest('.coveo-body');
-    body.scrollLeft = 0;
-    body.scrollTop = 0;
+    document.body.scrollLeft = 0;
+    document.body.scrollTop = 0;
+
   }
 
   private buildHeader(): Dom {

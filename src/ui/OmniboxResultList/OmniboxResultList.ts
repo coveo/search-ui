@@ -12,7 +12,10 @@ import { Assert } from '../../misc/Assert';
 import { Utils } from '../../utils/Utils';
 import { Initialization } from '../Base/Initialization';
 import { IQueryResults } from '../../rest/QueryResults';
-import _ = require('underscore');
+import * as _ from 'underscore';
+import { exportGlobally } from '../../GlobalExports';
+
+import 'styling/_OmniboxResultList';
 
 export interface IOmniboxResultListOptions extends IResultListOptions {
   omniboxZIndex?: number;
@@ -42,6 +45,12 @@ export interface IOmniboxResultListOptions extends IResultListOptions {
  */
 export class OmniboxResultList extends ResultList implements IComponentBindings {
   static ID = 'OmniboxResultList';
+
+  static doExport = () => {
+    exportGlobally({
+      'OmniboxResultList': OmniboxResultList
+    });
+  }
 
   /**
    * The options for the component
@@ -132,15 +141,23 @@ export class OmniboxResultList extends ResultList implements IComponentBindings 
    * Builds and returns an array of `HTMLElement` from the {@link IQueryResults} set received as an argument.
    * @param results The IQueryResults set to build an array of `HTMLElement` from.
    */
-  public buildResults(results: IQueryResults): HTMLElement[] {
-    return _.map(results.results, (result: IQueryResult) => {
-      let resultElement = $$(this.buildResult(result));
-      resultElement.addClass(['coveo-omnibox-selectable', 'coveo-omnibox-result-list-element']);
-      resultElement.on('keyboardSelect', () => {
-        this.options.onSelect.call(this, result, resultElement.el, this.lastOmniboxRequest.omniboxObject);
+  public buildResults(results: IQueryResults): Promise<HTMLElement[]> {
+    let builtResults: HTMLElement[] = [];
+    let builtPromises = _.map(results.results, (result: IQueryResult) => {
+      return this.buildResult(result).then((resultElement: HTMLElement) => {
+        $$(resultElement).addClass('coveo-omnibox-selectable');
+        $$(resultElement).on('keyboardSelect', () => {
+          this.options.onSelect.call(this, result, resultElement, this.lastOmniboxRequest.omniboxObject);
+        });
+        return this.autoCreateComponentsInsideResult(resultElement, result).initResult.then(() => {
+          builtResults.push(resultElement);
+          return resultElement;
+        });
       });
-      this.autoCreateComponentsInsideResult(resultElement.el, result);
-      return resultElement.el;
+    });
+
+    return Promise.all(builtPromises).then(() => {
+      return builtResults;
     });
   }
 
@@ -164,6 +181,7 @@ export class OmniboxResultList extends ResultList implements IComponentBindings 
       });
       this.triggerNewResultsDisplayed();
       this.lastOmniboxRequest.resolve({ element: content, zIndex: this.options.omniboxZIndex });
+      return Promise.resolve(null);
     }
   }
 

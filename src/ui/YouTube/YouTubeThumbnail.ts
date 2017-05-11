@@ -7,7 +7,8 @@ import { Initialization, IInitializationParameters } from '../Base/Initializatio
 import { DomUtils } from '../../utils/DomUtils';
 import { $$, Dom } from '../../utils/Dom';
 import { ModalBox as ModalBoxModule } from '../../ExternalModulesShim';
-import _ = require('underscore');
+import * as _ from 'underscore';
+import { exportGlobally } from '../../GlobalExports';
 import { get } from '../Base/RegisteredNamedMethods';
 
 export interface IYouTubeThumbnailOptions {
@@ -30,6 +31,12 @@ export interface IYouTubeThumbnailOptions {
  */
 export class YouTubeThumbnail extends Component {
   static ID = 'YouTubeThumbnail';
+
+  static doExport = () => {
+    exportGlobally({
+      'YouTubeThumbnail': YouTubeThumbnail
+    });
+  }
 
   /**
    * @componentOptions
@@ -60,10 +67,6 @@ export class YouTubeThumbnail extends Component {
      */
     embed: ComponentOptions.buildBooleanOption({ defaultValue: true })
   };
-
-  static fields = [
-    'ytthumbnailurl'
-  ];
 
   public resultLink: Dom;
 
@@ -136,9 +139,10 @@ export class YouTubeThumbnail extends Component {
     this.modalbox = this.ModalBox.open(div.el, {
       overlayClose: true,
       title: DomUtils.getQuickviewHeader(this.result, { showDate: true, title: this.result.title }, this.bindings).el.outerHTML,
-      className: 'coveo-quick-view coveo-youtube-player',
+      className: 'coveo-youtube-player',
       validation: () => true,
-      body: this.element.ownerDocument.body
+      body: this.element.ownerDocument.body,
+      sizeMod: 'big'
     });
 
     $$($$(this.modalbox.wrapper).find('.coveo-quickview-close-button')).on('click', () => {

@@ -16,6 +16,8 @@ import { SearchEndpoint } from '../src/rest/SearchEndpoint';
 import { QueryController } from '../src/controllers/QueryController';
 import { ResponsiveComponents } from '../src/ui/ResponsiveComponents/ResponsiveComponents';
 import { QueryBuilder } from '../src/ui/Base/QueryBuilder';
+import { Simulate } from './Simulate';
+import ModalBox = Coveo.ModalBox.ModalBox;
 
 export interface IMockEnvironment extends IComponentBindings {
   root: HTMLElement;
@@ -154,6 +156,10 @@ export interface IBasicComponentSetup<T extends BaseComponent> {
   cmp: T;
 }
 
+export interface IBasicComponentSetupWithModalBox<T extends BaseComponent> extends IBasicComponentSetup<T> {
+  modalBox: ModalBox;
+}
+
 export class AdvancedComponentSetupOptions {
 
   constructor(public element: HTMLElement = $$('div').el, public cmpOptions: any = {}, public modifyBuilder = (env: MockEnvironmentBuilder) => {
@@ -172,15 +178,15 @@ export class AdvancedComponentSetupOptions {
 }
 
 export function mock<T>(contructorFunc, name = 'mock'): T {
-  var keys = [];
-  for (var key in contructorFunc.prototype) {
+  const keys = [];
+  for (const key in contructorFunc.prototype) {
     keys.push(key);
   }
   return keys.length > 0 ? jasmine.createSpyObj(name, keys) : {};
 }
 
 export function mockWindow(): Window {
-  var mockWindow = <any>mock(window);
+  const mockWindow = <any>mock(window);
   mockWindow.location = <Location>{
     'href': '',
     'hash': ''
@@ -208,13 +214,13 @@ export function mockWindow(): Window {
 }
 
 export function mockComponent<T extends BaseComponent>(constructorFunc, name = 'mock'): T {
-  var m = mock<T>(constructorFunc, name);
+  const m = mock<T>(constructorFunc, name);
   m.type = name;
   return m;
 }
 
 export function mockSearchInterface(): SearchInterface {
-  var m = mockComponent<SearchInterface>(SearchInterface, SearchInterface.ID);
+  const m = mockComponent<SearchInterface>(SearchInterface, SearchInterface.ID);
   m.options = {};
   m.options.originalOptionsObject = {};
   m.responsiveComponents = mockResponsiveComponents();
@@ -222,7 +228,7 @@ export function mockSearchInterface(): SearchInterface {
 }
 
 export function mockResponsiveComponents(): ResponsiveComponents {
-  var m = mock<ResponsiveComponents>(ResponsiveComponents);
+  const m = mock<ResponsiveComponents>(ResponsiveComponents);
   m.isSmallScreenWidth = () => false;
   m.isMediumScreenWidth = () => false;
   m.isLargeScreenWidth = () => true;
@@ -230,8 +236,8 @@ export function mockResponsiveComponents(): ResponsiveComponents {
 }
 
 export function mockQueryController(): QueryController {
-  var m = mockComponent<QueryController>(QueryController, QueryController.ID);
-  var spy = <any>m;
+  const m = mockComponent<QueryController>(QueryController, QueryController.ID);
+  const spy = <any>m;
   spy.options = {};
   spy.options.resultsPerPage = 10;
   spy.fetchMore.and.returnValue(new Promise((resolve, reject) => { }));
@@ -240,14 +246,14 @@ export function mockQueryController(): QueryController {
 }
 
 export function mockSearchEndpoint(): SearchEndpoint {
-  var m = mock<any>(SearchEndpoint, 'SearchEndpoint');
+  const m = mock<any>(SearchEndpoint, 'SearchEndpoint');
   m.listFields.and.returnValue(new Promise((resolve, reject) => {
   }));
   m.listFieldValues.and.returnValue(new Promise((resolve, reject) => {
   }));
   m.search.and.returnValue(new Promise((resolve, reject) => {
   }));
-  m.getRevealQuerySuggest.and.returnValue(new Promise((resolve, reject) => {
+  m.getQuerySuggest.and.returnValue(new Promise((resolve, reject) => {
   }));
   m.extensions.and.returnValue(new Promise((resolve, reject) => {
   }));
@@ -257,32 +263,52 @@ export function mockSearchEndpoint(): SearchEndpoint {
 }
 
 export function mockUsageAnalytics(): IAnalyticsClient {
-  var m = mock<any>(NoopAnalyticsClient, 'AnalyticsClient');
+  const m = mock<any>(NoopAnalyticsClient, 'AnalyticsClient');
   m.getTopQueries.and.returnValue(new Promise((resolve, reject) => {
   }));
   return m;
 }
 
 export function basicComponentSetup<T>(klass, options = {}) {
-  var envBuilder = new MockEnvironmentBuilder();
+  const envBuilder = new MockEnvironmentBuilder();
   return {
     env: envBuilder.build(),
     cmp: <T>new klass(envBuilder.getBindings().element, options, envBuilder.getBindings())
   };
 }
 
-export function basicResultComponentSetup<T>(klass) {
-  var envBuilder = new MockEnvironmentBuilder().withResult();
+export function basicComponentSetupWithModalBox<T>(klass, options = {}) {
+  const envBuilder = new MockEnvironmentBuilder();
+  const modalBox = Simulate.modalBoxModule();
   return {
     env: envBuilder.build(),
-    cmp: <T>new klass(envBuilder.getBindings().element, {}, envBuilder.getBindings(), envBuilder.result)
+    modalBox: modalBox,
+    cmp: <T>new klass(envBuilder.getBindings().element, options, envBuilder.getBindings(), modalBox)
+  };
+}
+
+export function basicResultComponentSetup<T>(klass, options = {}) {
+  const envBuilder = new MockEnvironmentBuilder().withResult();
+  return {
+    env: envBuilder.build(),
+    cmp: <T>new klass(envBuilder.getBindings().element, options, envBuilder.getBindings(), envBuilder.result)
+  };
+}
+
+export function basicResultComponentSetupWithModalBox<T>(klass, options = {}) {
+  const envBuilder = new MockEnvironmentBuilder();
+  const modalBox = Simulate.modalBoxModule();
+  return {
+    env: envBuilder.build(),
+    modalBox: modalBox,
+    cmp: <T>new klass(envBuilder.getBindings().element, options, envBuilder.getBindings(), envBuilder.result, modalBox)
   };
 }
 
 export function basicSearchInterfaceSetup<T extends SearchInterface>(klass) {
-  var div = $$('div').el;
-  var envBuilder = new MockEnvironmentBuilder().withRoot(div);
-  var component = <T>new klass(div);
+  const div = $$('div').el;
+  const envBuilder = new MockEnvironmentBuilder().withRoot(div);
+  const component = <T>new klass(div);
   envBuilder.searchInterface = component;
   return {
     env: envBuilder.build(),
@@ -291,9 +317,9 @@ export function basicSearchInterfaceSetup<T extends SearchInterface>(klass) {
 }
 
 export function optionsSearchInterfaceSetup<T extends SearchInterface, U>(klass, options: U) {
-  var div = $$('div').el;
-  var envBuilder = new MockEnvironmentBuilder().withRoot(div);
-  var component = <T>new klass(div, options);
+  const div = $$('div').el;
+  const envBuilder = new MockEnvironmentBuilder().withRoot(div);
+  const component = <T>new klass(div, options);
   envBuilder.searchInterface = component;
   return {
     env: envBuilder.build(),
@@ -302,26 +328,48 @@ export function optionsSearchInterfaceSetup<T extends SearchInterface, U>(klass,
 }
 
 export function optionsResultComponentSetup<T, U>(klass, options: U, result: IQueryResult) {
-  var envBuilder = new MockEnvironmentBuilder().withResult(result);
+  const envBuilder = new MockEnvironmentBuilder().withResult(result);
   return {
     env: envBuilder.build(),
     cmp: <T>new klass(envBuilder.getBindings().element, options, envBuilder.getBindings(), envBuilder.result)
   };
 }
 
+export function optionsResultComponentSetupWithModalBox<T, U>(klass, options: U, result: IQueryResult) {
+  const envBuilder = new MockEnvironmentBuilder().withResult(result);
+  const modalBox = Simulate.modalBoxModule();
+
+  return {
+    env: envBuilder.build(),
+    modalBox: modalBox,
+    cmp: <T>new klass(envBuilder.getBindings().element, options, envBuilder.getBindings(), envBuilder.result, modalBox)
+  };
+}
+
 export function optionsComponentSetup<T, U>(klass, options: U) {
-  var envBuilder = new MockEnvironmentBuilder();
+  const envBuilder = new MockEnvironmentBuilder();
   return {
     env: envBuilder.build(),
     cmp: <T>new klass(envBuilder.getBindings().element, options, envBuilder.getBindings())
   };
 }
 
-export function advancedComponentSetup<T>(klass, options?: AdvancedComponentSetupOptions) {
-  var baseOptions = new AdvancedComponentSetupOptions();
-  var optsMerged = baseOptions.merge(options);
+export function optionsComponentSetupWithModalBox<T, U>(klass, options: U) {
+  const envBuilder = new MockEnvironmentBuilder();
+  const modalBox = Simulate.modalBoxModule();
 
-  var envBuilder = new MockEnvironmentBuilder().withElement(optsMerged.element);
+  return {
+    env: envBuilder.build(),
+    modalBox: modalBox,
+    cmp: <T>new klass(envBuilder.getBindings().element, options, envBuilder.getBindings(), modalBox)
+  };
+}
+
+export function advancedComponentSetup<T>(klass, options?: AdvancedComponentSetupOptions) {
+  const baseOptions = new AdvancedComponentSetupOptions();
+  const optsMerged = baseOptions.merge(options);
+
+  let envBuilder = new MockEnvironmentBuilder().withElement(optsMerged.element);
   envBuilder = optsMerged.modifyBuilder(envBuilder);
   return {
     env: envBuilder.build(),
@@ -329,11 +377,25 @@ export function advancedComponentSetup<T>(klass, options?: AdvancedComponentSetu
   };
 }
 
-export function advancedResultComponentSetup<T>(klass, result: IQueryResult, options?: AdvancedComponentSetupOptions) {
-  var baseOptions = new AdvancedComponentSetupOptions();
-  var optsMerged = baseOptions.merge(options);
+export function advancedComponentSetupWithModalBox<T>(klass, options?: AdvancedComponentSetupOptions) {
+  const baseOptions = new AdvancedComponentSetupOptions();
+  const optsMerged = baseOptions.merge(options);
+  const modalBox = Simulate.modalBoxModule();
 
-  var envBuilder = new MockEnvironmentBuilder().withElement(optsMerged.element).withResult(result);
+  let envBuilder = new MockEnvironmentBuilder().withElement(optsMerged.element);
+  envBuilder = optsMerged.modifyBuilder(envBuilder);
+  return {
+    env: envBuilder.build(),
+    modalBox: modalBox,
+    cmp: <T>new klass(envBuilder.getBindings().element, optsMerged.cmpOptions, envBuilder.getBindings(), modalBox)
+  };
+}
+
+export function advancedResultComponentSetup<T>(klass, result: IQueryResult, options?: AdvancedComponentSetupOptions) {
+  const baseOptions = new AdvancedComponentSetupOptions();
+  const optsMerged = baseOptions.merge(options);
+
+  let envBuilder = new MockEnvironmentBuilder().withElement(optsMerged.element).withResult(result);
   envBuilder = optsMerged.modifyBuilder(envBuilder);
   return {
     env: envBuilder.build(),

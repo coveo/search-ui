@@ -9,7 +9,8 @@ import { QueryStateModel } from '../../models/QueryStateModel';
 import { IAnalyticsFacetMeta, analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
 import { DeviceUtils } from '../../utils/DeviceUtils';
 import { PopupUtils, HorizontalAlignment, VerticalAlignment } from '../../utils/PopupUtils';
-import _ = require('underscore');
+import * as _ from 'underscore';
+import 'styling/_FacetSettings';
 
 export interface IFacetSettingsKlass {
   new (sorts: string[], facet: Facet): FacetSettings;

@@ -41,7 +41,7 @@ export const PlaygroundConfiguration: IStringMap<IComponentPlaygroundConfigurati
   Omnibox: {
     show: true,
     options: {
-      enableRevealQuerySuggestAddon: true,
+      enableQuerySuggestAddon: true,
       inline: true
     }
   },

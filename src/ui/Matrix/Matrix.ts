@@ -15,8 +15,10 @@ import { IQueryResult } from '../../rest/QueryResult';
 import { Initialization, IInitializationParameters } from '../Base/Initialization';
 import { QueryUtils } from '../../utils/QueryUtils';
 import { IQuery } from '../../rest/Query';
-import Globalize = require('globalize');
-import _ = require('underscore');
+import * as Globalize from 'globalize';
+import * as _ from 'underscore';
+import { exportGlobally } from '../../GlobalExports';
+import 'styling/_Matrix';
 
 export interface IMatrixOptions {
   title?: string;
@@ -59,6 +61,12 @@ export interface IMatrixOptions {
  */
 export class Matrix extends Component {
   static ID = 'Matrix';
+
+  static doExport = () => {
+    exportGlobally({
+      'Matrix': Matrix
+    });
+  }
 
   /**
    * The possible options for the component
@@ -113,7 +121,7 @@ export class Matrix extends Component {
      *
      * See also {@link Matrix.options.columnLabels}.
      *
-     * Default valus is `[]`, which means that the Matrix will not generate any column (except the **Total** column, if
+     * Default value is `[]`, which means that the Matrix will not generate any column (except the **Total** column, if
      * {@link Matrix.options.enableRowTotals} is `true`).
      */
     columnFieldValues: ComponentOptions.buildListOption<string>({ defaultValue: [] }),
@@ -849,26 +857,31 @@ export class Matrix extends Component {
       });
       let html = '';
       _.each(instantiatedResults, (result) => {
-        html += result.outerHTML;
+        result.then((builtResultElement: HTMLElement) => {
+          html += builtResultElement.outerHTML;
+        });
       });
-      cell.updatePreview(html);
+      Promise.all(instantiatedResults).then(() => {
+        cell.updatePreview(html);
+      });
     });
   }
 
-  private instantiateTemplate(result: IQueryResult): HTMLElement {
-    let content = this.options.previewTemplate.instantiateToElement(result, {
+  private instantiateTemplate(result: IQueryResult): Promise<HTMLElement> {
+    return this.options.previewTemplate.instantiateToElement(result, {
       checkCondition: false,
       responsiveComponents: this.searchInterface.responsiveComponents
+    }).then((content: HTMLElement) => {
+      let initParameters: IInitializationParameters = {
+        options: this.options,
+        bindings: this.getBindings(),
+        result: result
+      };
+
+      return Initialization.automaticallyCreateComponentsInside(content, initParameters).initResult.then(() => {
+        return content;
+      });
     });
-    let initParameters: IInitializationParameters = {
-      options: this.options,
-      bindings: this.getBindings(),
-      result: result
-    };
-
-    Initialization.automaticallyCreateComponentsInside(content, initParameters);
-
-    return content;
   }
 
   private createPreviewQuery(rowNumber: number, columnNumber: number): IQuery {
