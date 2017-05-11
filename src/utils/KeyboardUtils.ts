@@ -76,13 +76,12 @@ export class KeyboardUtils {
         const eventCode = e.charCode || e.keyCode;
         if (eventCode) {
           if (_.isArray(keyCode) && _.contains(keyCode, eventCode)) {
-            action(e);
+            return action(e);
           } else if (eventCode === keyCode) {
-            action(e);
+            return action(e);
           }
         }
       }
-      return false;
     };
   }
 }
