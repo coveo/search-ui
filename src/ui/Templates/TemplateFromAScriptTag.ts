@@ -1,4 +1,4 @@
-import { Template, IFieldsToMatch } from './Template';
+import { Template, IFieldsToMatch, TemplateRole } from './Template';
 import { Utils } from '../../utils/Utils';
 import { TemplateConditionEvaluator } from './TemplateConditionEvaluator';
 import { ComponentOptions, IComponentOptionsFieldsOption } from '../Base/ComponentOptions';
@@ -14,6 +14,7 @@ export interface ITemplateFromStringProperties {
   tablet?: boolean;
   desktop?: boolean;
   fieldsToMatch?: IFieldsToMatch[];
+  role?: TemplateRole;
 }
 
 export class TemplateFromAScriptTag {
@@ -35,6 +36,8 @@ export class TemplateFromAScriptTag {
     this.template.tablet = this.parseScreenSize('data-tablet');
     this.template.desktop = this.parseScreenSize('data-desktop');
     this.template.fields = TemplateConditionEvaluator.getFieldFromString(`${scriptTag.innerHTML} ${condition ? condition : ''}`);
+
+    this.template.role = <TemplateRole>scriptTag.getAttribute('data-role');
 
     this.template.addFields(TemplateConditionEvaluator.getFieldFromString(scriptTag.innerHTML + ' ' + condition) || []);
 
@@ -132,6 +135,9 @@ export class TemplateFromAScriptTag {
         }
 
       });
+    }
+    if (properties.role != null) {
+      script.setAttribute('data-role', properties.role);
     }
     return script;
   }

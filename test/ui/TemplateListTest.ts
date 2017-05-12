@@ -15,7 +15,12 @@ export function TemplateListTest() {
       result = null;
     });
 
-    describe('when there is no templates', () => {
+    it('should throw when passing null or undefined in constructor', () => {
+      expect(() => new TemplateList(null)).toThrow();
+      expect(() => new TemplateList(undefined)).toThrow();
+    });
+
+    describe('when there are no templates', () => {
 
       it('should return a default result template when instantiating to element', (done) => {
         let templateList = new TemplateList([]);

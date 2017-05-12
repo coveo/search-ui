@@ -2,7 +2,7 @@
 
 Coveo JavaScript Search UI Framework
 
-<img id='readme-image' src='./readme.png' />
+<img id='readme-image' src='https://raw.githubusercontent.com/coveo/search-ui/master/readme.png' />
 
 ## Installation
 

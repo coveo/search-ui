@@ -80,6 +80,8 @@ export class Sort extends Component {
 
   private currentCriteria: SortCriteria;
 
+  private icon: HTMLElement;
+
   /**
    * Creates a new Sort component.
    * @param element The HTMLElement on which to instantiate the component.
@@ -108,9 +110,11 @@ export class Sort extends Component {
     }
 
     if (this.isToggle()) {
-      this.element.innerHTML += '<span class="coveo-icon" />';
+      this.icon = $$('span', { className: 'coveo-icon' }).el;
+      this.element.appendChild(this.icon);
     }
 
+    this.update();
     this.updateAppearance();
   }
 
@@ -225,7 +229,11 @@ export class Sort extends Component {
 
     if (this.isToggle()) {
       var direction = this.currentCriteria ? this.currentCriteria.direction : this.options.sortCriteria[0].direction;
-      $$(this.element).toggleClass('coveo-ascending', direction == 'ascending');
+      $$(this.element).removeClass('coveo-ascending');
+      $$(this.element).removeClass('coveo-descending');
+      if (this.isSelected()) {
+        $$(this.element).addClass(direction === 'ascending' ? 'coveo-ascending' : 'coveo-descending');
+      }
     }
   }
 }

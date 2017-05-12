@@ -5,10 +5,10 @@ import { PreferencesPanelEvents } from '../../src/events/PreferencesPanelEvents'
 
 export function PreferencesPanelTest() {
   describe('PreferencesPanel', function () {
-    var test: Mock.IBasicComponentSetup<PreferencesPanel>;
+    var test: Mock.IBasicComponentSetupWithModalBox<PreferencesPanel>;
 
     beforeEach(function () {
-      test = Mock.basicComponentSetup<PreferencesPanel>(PreferencesPanel);
+      test = Mock.basicComponentSetupWithModalBox<PreferencesPanel>(PreferencesPanel);
     });
 
     it('shouldn\'t be active by default', function () {
@@ -17,13 +17,13 @@ export function PreferencesPanelTest() {
 
     it('should activate when \'open\' is called', function () {
       test.cmp.open();
-      expect($$(test.env.element).hasClass('coveo-active')).toBe(true);
+      expect(test.modalBox.open).toHaveBeenCalled();
     });
 
     it('should deactivate when \'close\' is called', function () {
       test.cmp.open();
       test.cmp.close();
-      expect($$(test.env.element).hasClass('coveo-active')).toBe(false);
+      expect(test.modalBox.close).toHaveBeenCalled();
     });
 
     it('should trigger a savePreferences event when \'save\' is called', function () {
@@ -43,6 +43,7 @@ export function PreferencesPanelTest() {
     it('should trigger exitPreferencesWithoutSave when \'close\' is called', function () {
       var closeSpy = jasmine.createSpy('closeSpy');
       $$(test.cmp.element).on(PreferencesPanelEvents.exitPreferencesWithoutSave, closeSpy);
+      test.cmp.open();
       test.cmp.close();
       expect(closeSpy).toHaveBeenCalled();
     });

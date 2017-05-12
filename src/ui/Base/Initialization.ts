@@ -624,9 +624,14 @@ export class LazyInitialization {
 
   // Map of every component to a promise that resolve with their implementation (lazily loaded)
   public static lazyLoadedComponents: IStringMap<() => Promise<IComponentDefinition>> = {};
+  public static lazyLoadedModule: IStringMap<() => Promise<any>> = {};
 
   public static getLazyRegisteredComponent(name: string): Promise<IComponentDefinition> {
     return LazyInitialization.lazyLoadedComponents[name]();
+  }
+
+  public static getLazyRegisteredModule(name: string): Promise<any> {
+    return LazyInitialization.lazyLoadedModule[name]();
   }
 
   public static registerLazyComponent(id: string, load: () => Promise<IComponentDefinition>): void {
@@ -643,6 +648,15 @@ export class LazyInitialization {
 
   public static buildErrorCallback(chunkName: string) {
     return () => LazyInitialization.logger.error(`Cannot load chunk for ${chunkName}. You may need to configure the paths of the ressources using Coveo.configureRessourceRoot. Current path is ${__webpack_public_path__}.`);
+  }
+
+  public static registerLazyModule(id: string, load: () => Promise<any>): void {
+    if (LazyInitialization.lazyLoadedModule[id] == null) {
+      Assert.exists(load);
+      LazyInitialization.lazyLoadedModule[id] = load;
+    } else {
+      this.logger.warn('Module being registered twice', id);
+    }
   }
 
   public static componentsFactory(elements: Element[], componentClassId: string, initParameters: IInitializationParameters): { factory: () => Promise<Component>[], isLazyInit: boolean } {
@@ -749,7 +763,20 @@ export class EagerInitialization {
       result = initParameters.result;
     }
 
-    EagerInitialization.logger.trace('Creating component of class ' + componentClassId, element, options);
-    return new eagerlyLoadedComponent(element, options, bindings, result);
+    EagerInitialization.logger.trace(`Creating component of class ${componentClassId}`, element, options);
+    // This is done so that external code that extends a base component does not have to have two code path for lazy vs eager;
+    // If we do not find the eager component registered, we can instead try to load the one found in lazy mode.
+    // If it still fails there... tough luck. The component simply won't work.
+    if (eagerlyLoadedComponent == null) {
+      LazyInitialization.getLazyRegisteredComponent(componentClassId).then((lazyLoadedComponent) => {
+        EagerInitialization.logger.warn(`Component of class ${componentClassId} was not found in "Eager" mode. Using lazy mode as a fallback.`);
+        new lazyLoadedComponent(element, options, bindings, result);
+      }).catch(() => {
+        EagerInitialization.logger.error(`Component of class ${componentClassId} was not found in "Eager" mode nor "Lazy" mode. It will not be initialized properly...`);
+      });
+      return null;
+    } else {
+      return new eagerlyLoadedComponent(element, options, bindings, result);
+    }
   }
 }

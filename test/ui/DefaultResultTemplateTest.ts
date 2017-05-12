@@ -65,7 +65,7 @@ export function DefaultResultTemplateTest() {
             templateWithCondition = null;
           });
 
-          it('should order template with condition first', () => {
+          it('should order templates with conditions first', () => {
             // Test that the Hello world template is rendered before the fallback template
             templateWithCondition.condition = () => true;
             TemplateCache.registerTemplate('dummy2', templateWithCondition, true, true);

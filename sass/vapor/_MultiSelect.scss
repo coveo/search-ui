@@ -1,0 +1,8 @@
+@import "../bourbon/bourbon";
+@import "../../node_modules/@material/select/dist/mdc.select.min.css";
+
+.mdc-list-item {
+  height: 30px;
+  @include display(flex);
+  @include align-items(center);
+}

@@ -14,3 +14,18 @@
 .coveo-youtube-thumbnail-play-button {
   display: none;
 }
+
+.coveo-modal-container.coveo-youtube-player {
+  .coveo-modal-body {
+    height: 90%;
+    div {
+      height: 100%;
+      width: 100%;
+    }
+    iframe {
+      height: 100%;
+      width: 100%;
+      border: none;
+    }
+  }
+}

@@ -3978,7 +3978,7 @@
     "no": "Ugyldig term",
     "pl": "Nieprawidłowy termin",
     "pt-br": "Termo inválido",
-    "ru": "Недопустимое термин",
+    "ru": "Недопустимый термин",
     "sv": "Ogiltig term",
     "th": "คำศัพท์ไม่ถูกต้อง",
     "tr": "Geçersiz terim",
@@ -5143,16 +5143,40 @@
     "en": "bytes",
     "fr": "octets"
   },
-  "List": {
+  "list": {
     "en": "List",
     "fr": "Liste"
   },
-  "Card": {
+  "card": {
     "en": "Card",
     "fr": "Carte"
   },
-  "Table": {
+  "table": {
     "en": "Table",
     "fr": "Tableau"
+  },
+  "ResultLinks": {
+    "en": "Result links",
+    "fr": "Liens de résultat"
+  },
+  "EnableQuerySyntax": {
+    "en": "Enable query syntax",
+    "fr": "Activation de la syntaxe de recherche"
+  },
+  "On": {
+    "en": "On",
+    "fr": "Activé"
+  },
+  "Off": {
+    "en": "Off",
+    "fr": "Désactivé"
+  },
+  "Automatic": {
+    "en": "Automatic",
+    "fr": "Automatique"
+  },
+  "ResultsPerPage": {
+    "en": "Results per page",
+    "fr": "Résultats par page"
   }
 }

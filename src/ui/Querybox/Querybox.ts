@@ -1,3 +1,4 @@
+import { ComponentOptionsModel } from '../../models/ComponentOptionsModel';
 export const MagicBox: any = require('exports-loader?Coveo.MagicBox!../../../node_modules/coveomagicbox/bin/MagicBox.min.js');
 import { Initialization } from '../Base/Initialization';
 import { Component } from '../Base/Component';
@@ -11,6 +12,7 @@ import { IAnalyticsNoMeta, analyticsActionCauseList } from '../Analytics/Analyti
 import { $$ } from '../../utils/Dom';
 import { Assert } from '../../misc/Assert';
 import { QueryboxQueryParameters } from './QueryboxQueryParameters';
+import * as _ from 'underscore';
 import { exportGlobally } from '../../GlobalExports';
 
 export interface IQueryboxOptions {
@@ -73,15 +75,22 @@ export class Querybox extends Component {
     searchAsYouTypeDelay: ComponentOptions.buildNumberOption({ defaultValue: 50, min: 0 }),
 
     /**
-     * Specifies whether the Coveo Platform should try to interpret special query syntax such as field references in the
-     * query that the user enters in the Querybox (see
-     * [Coveo Query Syntax Reference](http://www.coveo.com/go?dest=adminhelp70&lcid=9&context=10005)).
+     * Specifies whether the Coveo Platform should try to interpret special query syntax (e.g., `@objecttype=message`)
+     * when the end user types a query in the `Querybox` (see
+     * [Coveo Query Syntax Reference](http://www.coveo.com/go?dest=adminhelp70&lcid=9&context=10005)). Enabling query
+     * syntax also causes the `Querybox` to highlight any query syntax.
      *
-     * Setting this option to `true` also causes the query syntax in the Querybox to highlight.
+     * **Note:**
+     * > End user preferences can override the value you specify for this option.
+     * >
+     * > If the end user selects a value other than **Automatic** for the **Enable query syntax** setting (see
+     * > the [`enableQuerySyntax`]{@link ResultsPreferences.options.enableQuerySyntax} option of the
+     * > [`ResultsPreferences`]{@link ResultsPreferences} component), the end user preference takes precedence over this
+     * > option.
      *
-     * Default value is `true`.
+     * Default value is `false`.
      */
-    enableQuerySyntax: ComponentOptions.buildBooleanOption({ defaultValue: true }),
+    enableQuerySyntax: ComponentOptions.buildBooleanOption({ defaultValue: false }),
 
     /**
      * Specifies whether the Coveo Platform should expand keywords containing wildcard characters (`*`) to the possible
@@ -116,7 +125,7 @@ export class Querybox extends Component {
      * > Otherwise, if the enableQuerySyntax option is `true` and this option is `false`, the end user has to type the
      * > `NEAR` keyword in uppercase in order for the Coveo Platform to interpret it as a query operator.
      */
-    enableLowercaseOperators: ComponentOptions.buildBooleanOption({ defaultValue: false }),
+    enableLowercaseOperators: ComponentOptions.buildBooleanOption({ defaultValue: false, depend: 'enableQuerySyntax' }),
 
     /**
      * Specifies whether to automatically convert a basic expression containing at least a certain number of keywords
@@ -211,6 +220,7 @@ export class Querybox extends Component {
     }
 
     this.options = ComponentOptions.initComponentOptions(element, Querybox, options);
+    this.options = _.extend({}, this.options, this.componentOptionsModel.get(ComponentOptionsModel.attributesEnum.searchBox));
 
     this.magicBox = MagicBox.create(element, new MagicBox.Grammar('Query', {
       Query: '[Term*][Spaces?]',

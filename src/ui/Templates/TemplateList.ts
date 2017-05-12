@@ -1,35 +1,40 @@
-import { Template, IInstantiateTemplateOptions, DefaultInstantiateTemplateOptions } from './Template';
+import { Template, IInstantiateTemplateOptions, DefaultInstantiateTemplateOptions, TemplateRole } from './Template';
 import { DefaultResultTemplate } from './DefaultResultTemplate';
 import { IQueryResult } from '../../rest/QueryResult';
+import { Assert } from '../../misc/Assert';
 import * as _ from 'underscore';
 
 export class TemplateList extends Template {
 
   constructor(public templates: Template[]) {
     super();
+    Assert.exists(templates);
   }
 
   instantiateToString(object: IQueryResult, instantiateOptions: IInstantiateTemplateOptions = {}): string {
     let merged = new DefaultInstantiateTemplateOptions().merge(instantiateOptions);
 
-    for (var i = 0; i < this.templates.length; i++) {
-      var result = this.templates[i].instantiateToString(object, merged);
+    const filteredTemplates = _.reject(this.templates, t => t.role != null);
+    for (var i = 0; i < filteredTemplates.length; i++) {
+      var result = filteredTemplates[i].instantiateToString(object, merged);
       if (result != null) {
         return result;
       }
     }
-    return new DefaultResultTemplate().instantiateToString(object, instantiateOptions);
+    return this.getFallbackTemplate().instantiateToString(object, instantiateOptions);
   }
 
   instantiateToElement(object: IQueryResult, instantiateOptions: IInstantiateTemplateOptions = {}): Promise<HTMLElement> {
     let merged = new DefaultInstantiateTemplateOptions().merge(instantiateOptions);
-    for (var i = 0; i < this.templates.length; i++) {
-      var promiseOfHTMLElement = this.templates[i].instantiateToElement(object, merged);
+
+    const filteredTemplates = _.reject(this.templates, t => t.role != null);
+    for (var i = 0; i < filteredTemplates.length; i++) {
+      var promiseOfHTMLElement = filteredTemplates[i].instantiateToElement(object, merged);
       if (promiseOfHTMLElement != null) {
         return promiseOfHTMLElement;
       }
     }
-    return new DefaultResultTemplate().instantiateToElement(object, merged);
+    return this.getFallbackTemplate().instantiateToElement(object, merged);
   }
 
   getFields() {
@@ -38,5 +43,9 @@ export class TemplateList extends Template {
 
   getType() {
     return 'TemplateList';
+  }
+
+  protected getFallbackTemplate(): Template {
+    return new DefaultResultTemplate();
   }
 }

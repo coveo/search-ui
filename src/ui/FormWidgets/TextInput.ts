@@ -1,22 +1,29 @@
-import { $$ } from '../../../utils/Dom';
-import { KEYBOARD } from '../../../utils/KeyboardUtils';
+import { $$ } from '../../utils/Dom';
+import { KEYBOARD } from '../../utils/KeyboardUtils';
+import { IFormWidget, IFormWidgetSettable } from './FormWidgets';
+import { exportGlobally } from '../../GlobalExports';
 
 /**
- * This class will create a text input meant to be used inside the {@link AdvancedSearch} component.
- *
- * It can be, more specifically, used for external code using the {@link AdvancedSearchEvents.buildingAdvancedSearch}
+ * This class will create a text input with standard styling.
  */
-export class TextInput {
+export class TextInput implements IFormWidget, IFormWidgetSettable {
 
   private element: HTMLElement;
   private lastQueryText: string = '';
 
+  static doExport() {
+    exportGlobally({
+      'TextInput': TextInput
+    });
+  }
+
   /**
    * Create a new text input.
-   * @param onChange will be called every time the text input change it's value. `this` will be the `TextInput` instance.
+   * @param onChange will be called every time the text input change it's value, witht the `TextInput` instance as an argument.
    * @param name
    */
-  constructor(public onChange: () => void = () => { }, public name?: string) {
+  constructor(public onChange: (textInput: TextInput) => void = (textInput: TextInput) => {
+  }, public name?: string) {
     this.buildContent();
   }
 
@@ -41,14 +48,23 @@ export class TextInput {
    * @param value
    */
   public setValue(value: string) {
+    const currentValue = this.getValue();
     (<HTMLInputElement>$$(this.element).find('input')).value = value;
+    if (currentValue != value) {
+      this.onChange(this);
+    }
   }
 
   /**
    * Reset the text input
    */
   public reset() {
+    const currentValue = this.getValue();
     (<HTMLInputElement>$$(this.element).find('input')).value = '';
+    if (currentValue != '') {
+      this.onChange(this);
+    }
+
   }
 
   /**
@@ -57,6 +73,14 @@ export class TextInput {
    */
   public build() {
     return this.element;
+  }
+
+  /**
+   * Return the input element
+   * @returns {HTMLElement}
+   */
+  public getInput(): HTMLInputElement {
+    return <HTMLInputElement>$$(this.element).find('input');
   }
 
   private buildContent() {
@@ -77,14 +101,9 @@ export class TextInput {
     this.element = container.el;
   }
 
-  private getInput(): HTMLInputElement {
-    return <HTMLInputElement>$$(this.element).find('input');
-  }
-
-
   private triggerChange() {
     if (this.lastQueryText != this.getInput().value) {
-      this.onChange();
+      this.onChange(this);
       this.lastQueryText = this.getInput().value;
     }
   }

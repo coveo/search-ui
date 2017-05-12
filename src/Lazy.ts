@@ -1,5 +1,7 @@
 export * from './Core';
 
+export { SearchInterface, StandaloneSearchInterface } from './ui/SearchInterface/SearchInterface';
+
 import { PublicPathUtils } from './utils/PublicPathUtils';
 PublicPathUtils.detectPublicPath();
 
@@ -8,14 +10,14 @@ Initialization.componentsFactory = LazyInitialization.componentsFactory;
 
 export { LazyInitialization, EagerInitialization, Initialization } from './ui/Base/Initialization';
 
+import { Analytics } from './ui/Analytics/Analytics';
+Analytics.doExport();
+
 import { lazyAdvancedSearch } from './ui/AdvancedSearch/LazyAdvancedSearch';
 lazyAdvancedSearch();
 
 import { lazyAggregate } from './ui/Aggregate/LazyAggregate';
 lazyAggregate();
-
-import { lazyAnalytics } from './ui/Analytics/LazyAnalytics';
-lazyAnalytics();
 
 import { lazyAnalyticsSuggestions } from './ui/AnalyticsSuggestions/LazyAnalyticsSuggestions';
 lazyAnalyticsSuggestions();
@@ -224,6 +226,30 @@ import { lazyYouTubeThumbnail } from './ui/YouTube/LazyYouTubeThumbnail';
 lazyYouTubeThumbnail();
 import { registerFields as youtubeThumbnailRegisterFields } from './ui/YouTube/YouTubeThumbnailFields';
 youtubeThumbnailRegisterFields();
+
+import { lazyCheckbox } from './ui/FormWidgets/LazyCheckbox';
+lazyCheckbox();
+
+import { lazyDatePicker } from './ui/FormWidgets/LazyDatePicker';
+lazyDatePicker();
+
+import { lazyDropdown } from './ui/FormWidgets/LazyDropdown';
+lazyDropdown();
+
+import { lazyFormGroup } from './ui/FormWidgets/LazyFormGroup';
+lazyFormGroup();
+
+import { lazyMultiSelect } from './ui/FormWidgets/LazyMultiSelect';
+lazyMultiSelect();
+
+import { lazyNumericSpinner } from './ui/FormWidgets/LazyNumericSpinner';
+lazyNumericSpinner();
+
+import { lazyRadioButton } from './ui/FormWidgets/LazyRadioButton';
+lazyRadioButton();
+
+import { lazyTextInput } from './ui/FormWidgets/LazyTextInput';
+lazyTextInput();
 
 import { swapVar } from './SwapVar';
 swapVar(this);
