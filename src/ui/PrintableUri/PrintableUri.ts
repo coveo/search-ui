@@ -83,7 +83,7 @@ export class PrintableUri extends ResultLink {
         this.shortenedUri = HighlightUtils.highlightString(stringAndHoles.value, result.printableUriHighlights, stringAndHoles.holes, 'coveo-highlight');
         let link = $$('div');
         link.setAttribute('title', result.printableUri);
-        link.addClass('coveo-printable-uri');
+        link.addClass('coveo-printable-uri-part');
         link.setHtml(this.shortenedUri);
         link.setAttribute('href', result.clickUri);
         element.appendChild(link.el);
