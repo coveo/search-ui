@@ -6,9 +6,9 @@ import { Utils } from '../../utils/Utils';
 import { $$ } from '../../utils/Dom';
 import { exportGlobally } from '../../GlobalExports';
 import 'styling/_PrintableUri';
-import {ResultLink} from '../ResultLink/ResultLink';
+import { ResultLink } from '../ResultLink/ResultLink';
 import { IResultLinkOptions } from '../ResultLink/ResultLinkOptions';
-import {IResultsComponentBindings} from '../Base/ResultsComponentBindings';
+import { IResultsComponentBindings } from '../Base/ResultsComponentBindings';
 import { StreamHighlightUtils } from '../../utils/StreamHighlightUtils';
 import * as _ from 'underscore';
 
@@ -70,8 +70,7 @@ export class PrintableUri extends ResultLink {
     let parentsXml = Utils.getFieldValue(result, 'parents');
     if (parentsXml) {
       this.renderParentsXml(element, parentsXml);
-    }
-    else {
+    } else {
       if (!this.options.titleTemplate) {
         this.uri = result.clickUri;
         let stringAndHoles: StringAndHoles;
@@ -87,8 +86,7 @@ export class PrintableUri extends ResultLink {
         link.setHtml(this.shortenedUri);
         link.setAttribute('href', result.clickUri);
         element.appendChild(link.el);
-      }
-      else if (this.options.titleTemplate) {
+      } else if (this.options.titleTemplate) {
         let newTitle = this.parseStringTemplate(this.options.titleTemplate);
         this.element.innerHTML = newTitle ? StreamHighlightUtils.highlightStreamText(newTitle, this.result.termsToHighlight, this.result.phrasesToHighlight) : this.result.clickUri;
       }
