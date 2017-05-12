@@ -5039,6 +5039,14 @@
     "en": "Sunday",
     "fr": "Dimanche"
   },
+  "NextDay": {
+    "en": "Next {0}",
+    "fr": "{0} prochain"
+  },
+  "LastDay": {
+    "en": "Last {0}",
+    "fr": "{0} précédent"
+  },
   "StartTypingCaseForSuggestions": {
     "en": "Describe your problem to see possible solutions",
     "fr": "Décrivez votre problème pour voir des solutions possibles"
