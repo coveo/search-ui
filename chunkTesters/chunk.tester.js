@@ -9,7 +9,7 @@ const colors = require('colors');
 const readDir = Promise.promisify(fs.readdir);
 const writeFile = Promise.promisify(fs.writeFile);
 
-const filesToSkip = ['CoveoJsSearch.Lazy.js', 'CoveoJsSearch.Dependencies.js', 'CoveoJsSearch.js'];
+const filesToSkip = ['CoveoJsSearch.Lazy.js', 'CoveoJsSearch.Dependencies.js', 'CoveoJsSearch.js', 'Checkbox.js', 'DatePicker.js', 'Dropdown.js', 'FormGroup.js', 'MultiSelect.js', 'NumericSpinner.js', 'RadioButton.js', 'TextInput.js'];
 
 const exceptions = {
   'Backdrop.js': {
@@ -90,8 +90,10 @@ const generateTestFiles = () => {
       };
       const exception = exceptions[f];
       if (exception != null) {
-        tmplData.numberOfExpectedComponents = exception.arrayOfComponents.length;
-        tmplData.arrayOfComponents = exception.arrayOfComponents;
+        if (exception.arrayOfComponents) {
+          tmplData.numberOfExpectedComponents = exception.arrayOfComponents.length;
+          tmplData.arrayOfComponents = exception.arrayOfComponents;
+        }
       }
       const tmpl = _.template(testTmpl)(tmplData);
       return writeFile(path.resolve(`chunkTesters/gen/${f}`), tmpl);

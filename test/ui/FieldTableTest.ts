@@ -9,10 +9,13 @@ export function FieldTableTest() {
     let test: Mock.IBasicComponentSetup<FieldTable>;
     let element: HTMLElement;
 
-    beforeEach(function () {
+    const createElement = () => {
       element = $$('table', { className: 'CoveoFieldTable' }).el;
       element.appendChild($$('tr', { 'data-field': '@author', 'data-caption': 'Author' }).el);
 
+    };
+
+    beforeEach(function () {
       test = Mock.advancedResultComponentSetup<FieldTable>(FieldTable, FakeResults.createFakeResult(), <Mock.AdvancedComponentSetupOptions>{
         element: element
       });
@@ -55,6 +58,7 @@ export function FieldTableTest() {
 
       describe('allowMinimization set to true', function () {
         beforeEach(function () {
+          createElement();
           test = Mock.advancedResultComponentSetup<FieldTable>(FieldTable, FakeResults.createFakeResult(), <Mock.AdvancedComponentSetupOptions>{
             element: element,
             cmpOptions: <IFieldTableOptions>{
@@ -64,11 +68,11 @@ export function FieldTableTest() {
         });
 
         it('should show a toggle link', function () {
-          expect($$(test.env.element.parentElement).find('.coveo-field-table-toggle')).not.toBeNull();
+          expect($$(test.env.root).find('.coveo-field-table-toggle')).not.toBeNull();
         });
 
         it('should put the tabindex to 0 on the toggle caption', function () {
-          expect($$(test.env.element.parentElement.parentElement).find('.coveo-field-table-toggle-caption').getAttribute('tabindex')).toBe('0');
+          expect($$(test.env.root).find('.coveo-field-table-toggle-caption').getAttribute('tabindex')).toBe('0');
         });
 
         it('should wrap the table in a toggle container', function () {
@@ -76,13 +80,14 @@ export function FieldTableTest() {
         });
 
         it('expandedTitle should be the text of the toggle link only when table is expanded', function () {
+          createElement();
           test = Mock.advancedResultComponentSetup<FieldTable>(FieldTable, FakeResults.createFakeResult(), <Mock.AdvancedComponentSetupOptions>{
             element: element,
             cmpOptions: <IFieldTableOptions>{
               expandedTitle: 'foobar2000'
             }
           });
-          let toggle = $$(test.cmp.element.parentElement.parentElement).find('.coveo-field-table-toggle-caption');
+          let toggle = $$(test.env.root).find('.coveo-field-table-toggle-caption');
           test.cmp.expand();
           expect(toggle.textContent).toBe('foobar2000');
           test.cmp.minimize();
@@ -91,18 +96,19 @@ export function FieldTableTest() {
 
         it('expandedTitle should be the localized version of "Details" by default', function () {
           test.cmp.expand();
-          let toggle = $$(test.cmp.element.parentElement.parentElement).find('.coveo-field-table-toggle-caption');
+          let toggle = $$(test.env.root).find('.coveo-field-table-toggle-caption');
           expect(toggle.textContent).toBe('Details'.toLocaleString());
         });
 
         it('minimizedTitle should be the text of the toggle link only when table is minimized', function () {
+          createElement();
           test = Mock.advancedResultComponentSetup<FieldTable>(FieldTable, FakeResults.createFakeResult(), <Mock.AdvancedComponentSetupOptions>{
             element: element,
             cmpOptions: <IFieldTableOptions>{
               minimizedTitle: 'foobar2000'
             }
           });
-          let toggle = $$(test.cmp.element.parentElement.parentElement).find('.coveo-field-table-toggle-caption');
+          let toggle = $$(test.env.root).find('.coveo-field-table-toggle-caption');
           test.cmp.minimize();
           expect(toggle.textContent).toBe('foobar2000');
           test.cmp.expand();
@@ -111,7 +117,7 @@ export function FieldTableTest() {
 
         it('minimizedTitle should be the localized version of "Details" by default', function () {
           test.cmp.minimize();
-          let toggle = $$(test.cmp.element.parentElement.parentElement).find('.coveo-field-table-toggle-caption');
+          let toggle = $$(test.env.root).find('.coveo-field-table-toggle-caption');
           expect(toggle.textContent).toBe('Details'.toLocaleString());
         });
 

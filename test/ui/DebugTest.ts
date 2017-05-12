@@ -2,43 +2,27 @@ import { Debug } from '../../src/ui/Debug/Debug';
 import { $$ } from '../../src/utils/Dom';
 import * as Mock from '../MockEnvironment';
 import { DebugEvents } from '../../src/events/DebugEvents';
-import { ModalBox } from '../../src/ExternalModulesShim';
 import { Simulate } from '../Simulate';
 import { KEYBOARD } from '../../src/utils/KeyboardUtils';
 import _ = require('underscore');
+import ModalBox = Coveo.ModalBox.ModalBox;
 
 export function DebugTest() {
   describe('Debug', () => {
     let cmp: Debug;
     let env: Mock.IMockEnvironment;
-    let open: jasmine.Spy;
-    let close: jasmine.Spy;
-    let oldOpen: any;
-    let oldClose: any;
+    let modalBox: ModalBox;
 
     beforeEach(() => {
       env = new Mock.MockEnvironmentBuilder().build();
-      open = jasmine.createSpy('open');
-      close = jasmine.createSpy('close');
-      oldOpen = ModalBox.open;
-      oldClose = ModalBox.close;
-      ModalBox.open = open.and.returnValue({
-        wrapper: $$('div', undefined, $$('div', { className: 'coveo-title' }))
-      });
-      ModalBox.close = close;
-
-      cmp = new Debug(env.root, env.queryController, undefined, ModalBox);
+      modalBox = Simulate.modalBoxModule();
+      cmp = new Debug(env.root, env.queryController, undefined, modalBox);
     });
 
     afterEach(() => {
       cmp = null;
       env = null;
-      open = null;
-      close = null;
-      ModalBox.open = oldOpen;
-      ModalBox.close = oldClose;
-      oldOpen = null;
-      oldClose = null;
+      modalBox = null;
     });
 
     it('should open on showDebugPanelEvent', (done) => {
@@ -46,7 +30,7 @@ export function DebugTest() {
         'foo': 'bar'
       });
       _.defer(() => {
-        expect(open).toHaveBeenCalled();
+        expect(modalBox.open).toHaveBeenCalled();
         done();
       }, 0);
     });
@@ -185,9 +169,9 @@ export function DebugTest() {
           'foo': 'bar'
         });
         _.defer(() => {
-          expect(open).toHaveBeenCalled();
+          expect(modalBox.open).toHaveBeenCalled();
           Simulate.keyUp(document.body, KEYBOARD.ESCAPE);
-          expect(close).toHaveBeenCalled();
+          expect(modalBox.close).toHaveBeenCalled();
           done();
         }, 0);
       });

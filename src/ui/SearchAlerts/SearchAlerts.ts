@@ -209,17 +209,10 @@ export class SearchAlerts extends Component {
   public openPanel(): Promise<ISubscription> {
     let title = $$('div');
 
-    let close = $$('div', {
-      className: 'coveo-subscriptions-panel-close'
-    }, $$('span', {
-      className: 'coveo-icon'
-    }));
-
     let titleInfo = $$('div', {
       className: 'coveo-subscriptions-panel-title'
     }, l('SearchAlerts_Panel'));
 
-    title.append(close.el);
     title.append(titleInfo.el);
 
     let container = $$('div');
@@ -258,11 +251,10 @@ export class SearchAlerts extends Component {
           titleClose: false,
           overlayClose: true,
           title: title.el.outerHTML,
-          className: 'coveo-subscriptions-panel'
+          className: 'coveo-subscriptions-panel',
+          sizeMod: 'small'
         });
-        $$($$(this.modal.modalBox).find('.coveo-subscriptions-panel-close')).on('click', () => {
-          this.close();
-        });
+
       });
   }
 

@@ -23,16 +23,43 @@
   &.coveo-hidden {
     display: none;
   }
+
+  &[data-layout="table"] {
+    overflow-x: auto;
+    margin-bottom: 20px;
+  }
 }
 
 .coveo-card-layout-container {
   @include display(flex);
   @include flex-wrap(wrap);
+  margin-right: -20px;
+  @include mediaSelector(480) {
+    margin-right: 0;
+  }
+}
+
+.coveo-table-layout-container {
+  display: table;
+  white-space: nowrap;
+  table-layout: fixed;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.coveo-result-list-table-footer {
+  border-bottom: none;
 }
 
 @include mediaSelector(800) {
   .CoveoResultList {
     margin-left: 10px;
     margin-right: 10px;
+  }
+  .coveo-table-layout-container {
+    table-layout: auto;
+    td {
+      max-width: 300px;
+    }
   }
 }

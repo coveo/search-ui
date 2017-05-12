@@ -17,6 +17,9 @@ $stop-float: new-breakpoint(max-width 480px 1);
     position: relative;
     top: 2px;
     @include retina-sprite($arrow-down-group);
+    &.coveo-hidden {
+      visibility: hidden;
+    }
   }
 
   &.coveo-ascending {
@@ -32,5 +35,18 @@ $stop-float: new-breakpoint(max-width 480px 1);
 
   &.coveo-sort-hidden {
     display: none;
+  }
+
+  &.coveo-table-header-sort {
+    text-transform: inherit;
+    padding-top: inherit;
+    padding-bottom: inherit;
+    display: table-cell;
+  }
+}
+
+.coveo-result-list-table-header .CoveoSort:not(.coveo-selected) {
+  .coveo-icon {
+    visibility: hidden;
   }
 }

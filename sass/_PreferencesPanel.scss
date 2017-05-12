@@ -1,33 +1,11 @@
-@import "mixins/preferencePanel";
 @import "Variables";
 
 .CoveoPreferencesPanel {
-  margin-top: 10px;
-  height: 0px;
   display: none;
-  overflow: hidden;
-  position: relative;
-
-  &.coveo-active {
-    height: auto;
-    display: block;
-  }
 }
 
-.coveo-no-results {
-  .CoveoPreferencesPanel {
-    &.coveo-active {
-      text-align: left;
-    }
-  }
-}
-
-.CoveoResultsPreferences, .CoveoResultsFiltersPreferences {
-  @include coveo-preferences-panel-item;
-}
-
-.CoveoPreferencePanelItem {
-  @include coveo-preferences-panel-item;
+.CoveoResultsPreferences + .CoveoResultsFiltersPreferences {
+  margin-top: 20px;
 }
 
 .preferences-panel-item-label {
@@ -35,15 +13,4 @@
   &:hover {
     cursor: pointer;
   }
-}
-
-.coveo-preferences-panel-close {
-  @include coveo-preferences-panel-button();
-  @include clearButton('&');
-  right: 0;
-}
-
-.coveo-preferences-panel-title {
-  font-size: 18px;
-  display: inline-block;
 }

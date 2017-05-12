@@ -359,7 +359,6 @@ export class SearchInterface extends RootComponent implements IComponentBindings
       (<any>fastclick).attach(element);
     }
 
-
     this.options = ComponentOptions.initComponentOptions(element, SearchInterface, options);
     Assert.exists(element);
     Assert.exists(this.options);
@@ -471,7 +470,7 @@ export class SearchInterface extends RootComponent implements IComponentBindings
   protected initializeAnalytics(): IAnalyticsClient {
     let analyticsRef = BaseComponent.getComponentRef('Analytics');
     if (analyticsRef) {
-      return analyticsRef.create(this.element, this.analyticsOptions);
+      return analyticsRef.create(this.element, this.analyticsOptions, this.getBindings());
     }
     return new NoopAnalyticsClient();
   }

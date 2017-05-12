@@ -139,9 +139,10 @@ export class YouTubeThumbnail extends Component {
     this.modalbox = this.ModalBox.open(div.el, {
       overlayClose: true,
       title: DomUtils.getQuickviewHeader(this.result, { showDate: true, title: this.result.title }, this.bindings).el.outerHTML,
-      className: 'coveo-quick-view coveo-youtube-player',
+      className: 'coveo-youtube-player',
       validation: () => true,
-      body: this.element.ownerDocument.body
+      body: this.element.ownerDocument.body,
+      sizeMod: 'big'
     });
 
     $$($$(this.modalbox.wrapper).find('.coveo-quickview-close-button')).on('click', () => {

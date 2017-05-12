@@ -1,4 +1,5 @@
-import { Template } from '../Templates/Template';
+import { Template, TemplateRole } from '../Templates/Template';
+import { TableTemplate } from '../Templates/TableTemplate';
 import { DefaultResultTemplate } from '../Templates/DefaultResultTemplate';
 import { Component } from '../Base/Component';
 import { IComponentBindings } from '../Base/ComponentBindings';
@@ -32,6 +33,9 @@ import { ValidLayout } from '../ResultLayout/ResultLayout';
 import { TemplateList } from '../Templates/TemplateList';
 import { TemplateCache } from '../Templates/TemplateCache';
 import { ResponsiveDefaultResultTemplate } from '../ResponsiveComponents/ResponsiveDefaultResultTemplate';
+import { ResultListRenderer } from './ResultListRenderer';
+import { ResultListTableRenderer } from './ResultListTableRenderer';
+import { ResultListCardRenderer } from './ResultListCardRenderer';
 import * as _ from 'underscore';
 import { exportGlobally } from '../../GlobalExports';
 import 'styling/_ResultList';
@@ -111,13 +115,7 @@ export class ResultList extends Component {
      * If you specify no value for this option, a `div` element will be dynamically created and appended to the result
      * list. This element will then be used as a result container.
      */
-    resultContainer: ComponentOptions.buildChildHtmlElementOption({
-      defaultFunction: (element: HTMLElement) => {
-        let d = document.createElement('div');
-        element.appendChild(d);
-        return d;
-      }
-    }),
+    resultContainer: ComponentOptions.buildChildHtmlElementOption(),
     resultTemplate: ComponentOptions.buildTemplateOption({ defaultFunction: ResultList.getDefaultTemplate }),
 
     /**
@@ -241,13 +239,18 @@ export class ResultList extends Component {
     layout: ComponentOptions.buildStringOption({
       defaultValue: 'list',
       required: true,
-    })
+    }),
   };
 
   public static resultCurrentlyBeingRendered: IQueryResult = null;
   public currentlyDisplayedResults: IQueryResult[] = [];
   private fetchingMoreResults: Promise<IQueryResults>;
   private reachedTheEndOfResults = false;
+
+  private shouldDisplayTableHeader: boolean = true;
+  private shouldDisplayTableFooter: boolean = false;
+
+  private renderer: ResultListRenderer;
 
   // This variable serves to block some setup where the framework fails to correctly identify the "real" scrolling container.
   // Since it's not technically feasible to correctly identify the scrolling container in every possible scenario without some very complex logic, we instead try to add some kind of mechanism to
@@ -272,12 +275,9 @@ export class ResultList extends Component {
     super(element, elementClassId, bindings);
     this.options = ComponentOptions.initComponentOptions(element, ResultList, options);
 
-
     Assert.exists(element);
     Assert.exists(this.options);
-    Assert.exists(this.options.resultContainer);
     Assert.exists(this.options.resultTemplate);
-    Assert.exists(this.options.waitAnimationContainer);
     Assert.exists(this.options.infiniteScrollContainer);
 
     this.showOrHideElementsDependingOnState(false, false);
@@ -299,9 +299,15 @@ export class ResultList extends Component {
     }
     this.bind.onQueryState(MODEL_EVENTS.CHANGE_ONE, QUERY_STATE_ATTRIBUTES.FIRST, () => this.handlePageChanged());
 
-    $$(this.options.resultContainer).addClass('coveo-result-list-container');
+    this.initResultContainer();
+    Assert.exists(this.options.resultContainer);
+
+    this.initWaitAnimationContainer();
+    Assert.exists(this.options.waitAnimationContainer);
+
     if (this.searchInterface.isNewDesign()) {
       this.setupTemplatesVersusLayouts();
+      this.setupRenderer();
       $$(this.root).on(ResultLayoutEvents.populateResultLayout, (e, args) => args.layouts.push(this.options.layout));
     }
   }
@@ -322,6 +328,10 @@ export class ResultList extends Component {
   private setupTemplatesVersusLayouts() {
     let layoutClassToAdd = `coveo-${this.options.layout}-layout-container`;
     $$(this.options.resultContainer).addClass(layoutClassToAdd);
+
+    if (this.options.layout === 'table') {
+      this.options.resultTemplate = new TableTemplate((<TemplateList>this.options.resultTemplate).templates || []);
+    }
 
     // A TemplateList is the scenario where the result template are directly embedded inside the ResultList
     // This is the typical scenario when a page gets created by the interface editor, for example.
@@ -348,22 +358,13 @@ export class ResultList extends Component {
    * @param resultsElement
    * @param append
    */
-  public renderResults(resultsElement: HTMLElement[], append = false): void {
-    const docFragment = document.createDocumentFragment();
-
-    _.each(resultsElement, (resultElement) => {
-      docFragment.appendChild(resultElement);
-      this.triggerNewResultDisplayed(Component.getResult(resultElement), resultElement);
-    });
-    if (this.options.layout == 'card' && !this.options.enableInfiniteScroll) {
-      // Used to prevent last card from spanning the grid's whole width
-      _.times(3, () => docFragment.appendChild($$('div').el));
-    }
+  public renderResults(resultElements: HTMLElement[], append = false): Promise<void> {
     if (!append) {
       this.options.resultContainer.innerHTML = '';
     }
-    this.options.resultContainer.appendChild(docFragment);
-    this.triggerNewResultsDisplayed();
+
+    return this.renderer.renderResults(resultElements, append, this.triggerNewResultDisplayed.bind(this))
+      .then(() => this.triggerNewResultsDisplayed());
   }
 
   /**
@@ -747,7 +748,36 @@ export class ResultList extends Component {
       $$(spinner).detach();
     }
   }
-}
 
+  private initResultContainer() {
+    if (!this.options.resultContainer) {
+      const elemType = this.options.layout === 'table' ? 'table' : 'div';
+      this.options.resultContainer = $$(elemType, { className: 'coveo-result-list-container' }).el;
+      this.element.appendChild(this.options.resultContainer);
+    }
+  }
+
+  private initWaitAnimationContainer() {
+    if (!this.options.waitAnimationContainer) {
+      this.options.waitAnimationContainer = this.options.resultContainer;
+    }
+  }
+
+  private setupRenderer() {
+    const autoCreateComponentsFn = this.autoCreateComponentsInsideResult.bind(this);
+    switch (this.options.layout) {
+      case 'card':
+        this.renderer = new ResultListCardRenderer(this.options, autoCreateComponentsFn);
+        break;
+      case 'table':
+        this.renderer = new ResultListTableRenderer(this.options, autoCreateComponentsFn);
+        break;
+      case 'list':
+      default:
+        this.renderer = new ResultListRenderer(this.options, autoCreateComponentsFn);
+        break;
+    }
+  }
+}
 
 Initialization.registerAutoCreateComponent(ResultList);

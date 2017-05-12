@@ -40,6 +40,7 @@ declare module Coveo.ModalBox {
          * @param forceClose
          */
         close: (button?: BUTTON, forceClose?: boolean) => boolean;
+        open: (content: HTMLElement, options?: Options) => ModalBox;
     }
     /**
      * Possible options when creating a ModalBox

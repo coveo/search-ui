@@ -3,6 +3,7 @@
 ///<reference path="QuerySuggestAddon.ts" />
 ///<reference path="OldOmniboxAddon.ts" />
 
+import { ComponentOptionsModel } from '../../models/ComponentOptionsModel';
 export const MagicBox: any = require('exports-loader?Coveo.MagicBox!../../../node_modules/coveomagicbox/bin/MagicBox.min.js');
 import { IQueryboxOptions } from '../Querybox/Querybox';
 import { Component } from '../Base/Component';
@@ -134,7 +135,16 @@ export class Omnibox extends Component {
      *
      * Default value is `false`.
      */
-    enableFieldAddon: ComponentOptions.buildBooleanOption({ defaultValue: false, depend: 'enableQuerySyntax' }),
+    enableFieldAddon: ComponentOptions.buildBooleanOption({
+      defaultValue: false,
+      depend: 'enableQuerySyntax',
+      postProcessing: (value, options: IOmniboxOptions) => {
+        if (value) {
+          options.enableQuerySyntax = true;
+        }
+        return value;
+      }
+    }),
     enableSimpleFieldAddon: ComponentOptions.buildBooleanOption({ defaultValue: false, depend: 'enableFieldAddon' }),
     listOfFields: ComponentOptions.buildFieldsOption({ depend: 'enableFieldAddon' }),
 
@@ -142,7 +152,7 @@ export class Omnibox extends Component {
      * Specifies whether to enable the Coveo Machine Learning (Coveo ML) query suggestions.
      *
      * This implies that you have a proper Coveo ML integration configured (see
-     * [Coveo Machine Learning](http://www.coveo.com/go?dest=cloudhelp&lcid=9&context=177)).
+     * [Managing Machine Learning Query Suggestions in a Query Pipeline](http://www.coveo.com/go?dest=cloudhelp&lcid=9&context=168)).
      *
      * Default value is `true`.
      */
@@ -158,7 +168,16 @@ export class Omnibox extends Component {
      *
      * Default value is `false`.
      */
-    enableQueryExtensionAddon: ComponentOptions.buildBooleanOption({ defaultValue: false, depend: 'enableQuerySyntax' }),
+    enableQueryExtensionAddon: ComponentOptions.buildBooleanOption({
+      defaultValue: false,
+      depend: 'enableQuerySyntax',
+      postProcessing: (value, options: IOmniboxOptions) => {
+        if (value) {
+          options.enableQuerySyntax = true;
+        }
+        return value;
+      }
+    }),
 
     /**
      * Specifies a placeholder for the input.
@@ -170,7 +189,19 @@ export class Omnibox extends Component {
      *
      * Default value is `2000`. Minimum value is `0`.
      */
-    omniboxTimeout: ComponentOptions.buildNumberOption({ defaultValue: 2000, min: 0 })
+    omniboxTimeout: ComponentOptions.buildNumberOption({ defaultValue: 2000, min: 0 }),
+    /**
+     * Specifies whether the Coveo Platform should try to interpret special query syntax such as field references in the
+     * query that the user enters in the Querybox (see
+     * [Coveo Query Syntax Reference](http://www.coveo.com/go?dest=adminhelp70&lcid=9&context=10005)).
+     *
+     * Setting this option to `true` also causes the query syntax in the Querybox to highlight.
+     *
+     * Default value is `false`.
+     */
+    enableQuerySyntax: ComponentOptions.buildBooleanOption({
+      defaultValue: false
+    }),
   };
 
   public magicBox: Coveo.MagicBox.Instance;
@@ -193,6 +224,8 @@ export class Omnibox extends Component {
     super(element, Omnibox.ID, bindings);
 
     this.options = ComponentOptions.initComponentOptions(element, Omnibox, options);
+    const originalValueForQuerySyntax = this.options.enableQuerySyntax;
+    this.options = _.extend({}, this.options, this.componentOptionsModel.get(ComponentOptionsModel.attributesEnum.searchBox));
 
     let grammar: { start: string; expressions: { [id: string]: Coveo.MagicBox.ExpressionDef } };
 
@@ -237,6 +270,13 @@ export class Omnibox extends Component {
     if (this.isAutoSuggestion()) {
       this.bind.onRootElement(QueryEvents.duringQuery, (args: IDuringQueryEventArgs) => this.handleDuringQuery(args));
     }
+    this.bind.onComponentOptions(MODEL_EVENTS.CHANGE_ONE, ComponentOptionsModel.attributesEnum.searchBox, (args: IAttributeChangedEventArg) => {
+      if (args.value.enableQuerySyntax != null) {
+        this.options.enableQuerySyntax = args.value.enableQuerySyntax;
+      } else {
+        this.options.enableQuerySyntax = originalValueForQuerySyntax;
+      }
+    });
     this.setupMagicBox();
   }
 

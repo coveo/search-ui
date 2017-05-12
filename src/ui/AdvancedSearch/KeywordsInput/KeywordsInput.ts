@@ -1,5 +1,5 @@
 import { IAdvancedSearchInput } from '../AdvancedSearchInput';
-import { TextInput } from '../Form/TextInput';
+import { TextInput } from '../../FormWidgets/TextInput';
 import { QueryBuilder } from '../../Base/QueryBuilder';
 import { AdvancedSearchEvents } from '../../../events/AdvancedSearchEvents';
 import { $$ } from '../../../utils/Dom';

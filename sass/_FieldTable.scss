@@ -8,6 +8,7 @@
   padding-bottom: 10px;
   position: relative;
   word-break: break-all;
+  margin-top:1px;
   th, td {
     font-size: $font-size-smaller;
   }
@@ -65,13 +66,18 @@
 
 .coveo-field-table-toggle-icon-up {
   position: absolute;
-  bottom: 10px;
+  bottom: 35px;
   right: 10px;
   margin: 0;
+  @include transition(opacity 0s);
   @include retina-sprite($arrow-up-group);
-  display: none;
+  opacity: 0;
+  height:0px;
   &.coveo-opened {
-    display: inline-block;
+    opacity:1;
+    @include transition(opacity 2.8s);
+    height:13px;
+
   }
 }
 

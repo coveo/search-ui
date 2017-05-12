@@ -97,6 +97,13 @@ export function TemplateTest() {
 
       });
 
+      it('should add the correct layout class when specified in instantiateOptions', (done) => {
+        tmpl.instantiateToElement(result, { currentLayout: 'table' }).then(created => {
+          expect($$(created).hasClass('coveo-table-layout')).toBe(true);
+          done();
+        });
+      });
+
       it('should return the correct type', () => {
         expect(tmpl.getType()).toBe('Template');
       });
