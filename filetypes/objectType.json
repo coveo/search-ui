@@ -22,14 +22,14 @@
       }
     },
     "thread": {
-      "icon": "list",
+      "icon": "salesforce-standard-feedback",
       "captions": {
         "en": "Thread",
         "fr": "Fil de conversation"
       }
     },
     "file": {
-      "icon": "file",
+      "icon": "salesforce-standard-file",
       "captions": {
         "en": "File",
         "fr": "Fichier"
@@ -57,7 +57,7 @@
       }
     },
     "annotation": {
-      "icon": "file",
+      "icon": "salesforce-standard-file",
       "captions": {
         "en": "Note",
         "fr": "Note"
@@ -164,7 +164,7 @@
       }
     },
     "attachment": {
-      "icon": "attachment",
+      "icon": "salesforce-doctype-attachment",
       "captions": {
         "en": "Attachment",
         "fr": "Pièce jointe"

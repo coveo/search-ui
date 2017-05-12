@@ -331,6 +331,55 @@
     ],
     "layout": "list"
   },
+  "CardConfluence": {
+    "priority": 2,
+    "layout": "card",
+    "fieldsToMatch": [
+      {
+        "field": "connectortype",
+        "values": [
+          "Confluence2Crawler"
+        ]
+      }
+    ]
+  },
+  "Confluence": {
+    "priority": 1,
+    "layout": "list",
+    "fieldsToMatch": [
+      {
+        "field": "connectortype",
+        "values": [
+          "Confluence2Crawler"
+        ]
+      }
+    ]
+  },
+  "CardRSS": {
+    "priority": 2,
+    "layout": "card",
+    "fieldsToMatch": [
+      {
+        "field": "filetype",
+        "values": [
+          "rssitem"
+        ]
+      }
+    ]
+  },
+  "RSS": {
+    "priority": 1,
+    "layout": "list",
+    "fieldsToMatch": [
+      {
+        "field": "filetype",
+        "values": [
+          "rssitem",
+          "rssfeed"
+        ]
+      }
+    ]
+  },
   "Card": {
     "priority": 1,
     "layout": "card"
