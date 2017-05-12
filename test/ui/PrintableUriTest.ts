@@ -60,7 +60,7 @@ export function PrintableUriTest() {
         });
 
         it('should shorten the printable uri correctly if title template is an empty string', () => {
-            test.cmp.options.titleTemplate = "";
+            test.cmp.options.titleTemplate = '';
             fakeResult.printableUri = 'http://a.very.very.very.very.very.very.very.very.very.very.long.printable.uri';
             test = Mock.advancedResultComponentSetup<PrintableUri>(PrintableUri, fakeResult, undefined);
             expect($$(test.cmp.element).find('div').innerText).toEqual('http://a.very.very.very.very.very.very.very.very.very.very.long.printable....');
