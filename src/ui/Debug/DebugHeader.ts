@@ -22,7 +22,7 @@ export class DebugHeader {
     this.element.appendChild(this.buildDownloadLink());
 
     // After components initialization ensure any component that might modify the result will have the chance to do their job before we display debug info
-    $$(this.root).on(InitializationEvents.afterInitialization, ()=> {
+    $$(this.root).on(InitializationEvents.afterInitialization, () => {
       $$(this.root).on(ResultListEvents.newResultDisplayed, (e, args: IDisplayedNewResultEventArgs) => this.handleNewResultDisplayed(args));
     });
     $$(this.root).on(QueryEvents.buildingQuery, (e, args: IBuildingQueryEventArgs) => this.handleBuildingQuery(args));
@@ -74,7 +74,7 @@ export class DebugHeader {
   private buildEnableQuerySyntaxCheckbox() {
     const checkbox = new Checkbox((chkboxInstance) => {
       this.enableQuerySyntax = chkboxInstance.isSelected();
-      this.bindings.componentOptionsModel.set(COMPONENT_OPTIONS_ATTRIBUTES.SEARCH_BOX, {enableQuerySyntax: this.enableQuerySyntax});
+      this.bindings.componentOptionsModel.set(COMPONENT_OPTIONS_ATTRIBUTES.SEARCH_BOX, { enableQuerySyntax: this.enableQuerySyntax });
       this.bindings.queryController.executeQuery({
         closeModalBox: false
       });

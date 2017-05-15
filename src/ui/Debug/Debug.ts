@@ -54,7 +54,7 @@ export class Debug extends RootComponent {
     $$(this.element).on(ResultListEvents.newResultDisplayed, (e, args: IDisplayedNewResultEventArgs) => this.handleNewResultDisplayed(args));
     $$(this.element).on(DebugEvents.showDebugPanel, (e, args) => this.handleShowDebugPanel(args));
     $$(this.element).on(QueryEvents.querySuccess, (e, args: IQuerySuccessEventArgs) => this.handleQuerySuccess(args));
-    $$(this.element).on(QueryEvents.newQuery, ()=> this.handleNewQuery());
+    $$(this.element).on(QueryEvents.newQuery, () => this.handleNewQuery());
 
     this.localStorageDebug = new LocalStorageUtils<string[]>('DebugPanel');
     this.collapsedSections = this.localStorageDebug.load() || [];
@@ -122,9 +122,9 @@ export class Debug extends RootComponent {
     });
 
     let keys = _.chain(this.stackDebug)
-                .omit('findResult') // findResult is a duplicate of the simpler "result" key used to retrieve the results only
-                .keys()
-                .value();
+      .omit('findResult') // findResult is a duplicate of the simpler "result" key used to retrieve the results only
+      .keys()
+      .value();
 
     // TODO Can't chain this properly due to a bug in underscore js definition file.
     // Yep, A PR is opened to DefinitelyTyped.

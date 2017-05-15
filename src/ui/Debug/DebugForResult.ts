@@ -47,25 +47,25 @@ export class DebugForResult {
 
   private buildFieldsSection(result: IQueryResult) {
     return this.fetchFields()
-               .then((fieldDescriptions: IStringMap<IFieldDescription>) => {
-                 let fields = {};
-                 _.each(result.raw, (value: any, key: string) => {
-                   let fieldDescription = fieldDescriptions['@' + key];
-                   if (fieldDescription == null && key.match(/^sys/)) {
-                     fieldDescription = fieldDescriptions['@' + key.substr(3)];
-                   }
-                   if (fieldDescription == null) {
-                     fields['@' + key] = value;
-                   } else if (fieldDescription.fieldType == 'Date') {
-                     fields['@' + key] = new Date(value);
-                   } else if (fieldDescription.splitGroupByField && _.isString(value)) {
-                     fields['@' + key] = value.split(/\s*;\s*/);
-                   } else {
-                     fields['@' + key] = value;
-                   }
-                 });
-                 return fields;
-               });
+      .then((fieldDescriptions: IStringMap<IFieldDescription>) => {
+        let fields = {};
+        _.each(result.raw, (value: any, key: string) => {
+          let fieldDescription = fieldDescriptions['@' + key];
+          if (fieldDescription == null && key.match(/^sys/)) {
+            fieldDescription = fieldDescriptions['@' + key.substr(3)];
+          }
+          if (fieldDescription == null) {
+            fields['@' + key] = value;
+          } else if (fieldDescription.fieldType == 'Date') {
+            fields['@' + key] = new Date(value);
+          } else if (fieldDescription.splitGroupByField && _.isString(value)) {
+            fields['@' + key] = value.split(/\s*;\s*/);
+          } else {
+            fields['@' + key] = value;
+          }
+        });
+        return fields;
+      });
   }
 
   private parseRankingInfo(value: string) {

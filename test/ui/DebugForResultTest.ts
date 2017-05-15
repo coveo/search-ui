@@ -6,12 +6,12 @@ import { IStringMap } from '../../src/rest/GenericParam';
 import { IFieldDescription } from '../../src/rest/FieldDescription';
 
 export function DebugForResultTest() {
-  describe('DebugForResult', ()=> {
+  describe('DebugForResult', () => {
     let debugForResult: DebugForResult;
     let env: IMockEnvironment;
     let result: IQueryResult;
 
-    beforeEach(()=> {
+    beforeEach(() => {
       env = new MockEnvironmentBuilder().build();
       debugForResult = new DebugForResult(env);
       result = FakeResults.createFakeResult();
@@ -124,36 +124,36 @@ export function DebugForResultTest() {
       }));
     });
 
-    it('should contain a reference to the original result', ()=> {
+    it('should contain a reference to the original result', () => {
       expect(debugForResult.generateDebugInfoForResult(result).result).toEqual(result);
     });
 
-    it('should call list fields to build the fields section', ()=> {
-      debugForResult.generateDebugInfoForResult(result).fields()
+    it('should call list fields to build the fields section', () => {
+      debugForResult.generateDebugInfoForResult(result).fields();
       expect(env.searchEndpoint.listFields).toHaveBeenCalled();
     });
 
-    it('should return a correct field description for field of date type', (done)=> {
+    it('should return a correct field description for field of date type', (done) => {
       result.raw.date = 1;
       (<jasmine.Spy>env.searchEndpoint.listFields).and.returnValue(Promise.resolve([{
         fieldType: 'Date',
         name: '@date'
       }]));
 
-      expect(debugForResult.generateDebugInfoForResult(result).fields().then((formattedField)=> {
+      expect(debugForResult.generateDebugInfoForResult(result).fields().then((formattedField) => {
         expect(formattedField['@date'].getTime()).toEqual(1);
         done();
       }));
     });
 
-    it('should return a correct field description for a split group by', (done)=> {
+    it('should return a correct field description for a split group by', (done) => {
       result.raw.split = 'a;b;c';
       (<jasmine.Spy>env.searchEndpoint.listFields).and.returnValue(Promise.resolve([{
         splitGroupByField: true,
         name: '@split'
       }]));
 
-      expect(debugForResult.generateDebugInfoForResult(result).fields().then((formattedField)=> {
+      expect(debugForResult.generateDebugInfoForResult(result).fields().then((formattedField) => {
         expect(formattedField['@split']).toEqual(jasmine.arrayContaining(['a', 'b', 'c']));
         done();
       }));

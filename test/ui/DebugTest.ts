@@ -14,30 +14,30 @@ export function DebugTest() {
       test = null;
     });
 
-    it('should allow to open the debug panel after a delay', (done)=> {
+    it('should allow to open the debug panel after a delay', (done) => {
       test.cmp.showDebugPanel();
-      setTimeout(()=> {
+      setTimeout(() => {
         expect(test.modalBox.open).toHaveBeenCalled();
         done();
-      }, 200)
+      }, 200);
     });
 
-    it('should allow to add additional info of content HTML and they should render correctly', (done)=> {
-      let headerDiv = $$('div', {className: 'some-header'}, 'the content of the header').el;
+    it('should allow to add additional info of content HTML and they should render correctly', (done) => {
+      let headerDiv = $$('div', { className: 'some-header' }, 'the content of the header').el;
       test.cmp.addInfoToDebugPanel({
         'Header': headerDiv
       });
       test.cmp.showDebugPanel();
 
-      setTimeout(()=> {
+      setTimeout(() => {
         const modalOpened = (<jasmine.Spy>test.modalBox.open).calls.argsFor(0)[0];
         expect($$(modalOpened).find('.some-header')).not.toBeNull();
         expect($$($$(modalOpened).find('.some-header')).text()).toBe('the content of the header');
         done();
-      }, 200)
+      }, 200);
     });
 
-    it('should allow to add additional info of as a function and they should render correctly', (done)=> {
+    it('should allow to add additional info of as a function and they should render correctly', (done) => {
       let func = jasmine.createSpy('func');
 
       func.and.returnValue($$('div', {
@@ -49,7 +49,7 @@ export function DebugTest() {
       });
       test.cmp.showDebugPanel();
 
-      setTimeout(()=> {
+      setTimeout(() => {
         const modalOpened = (<jasmine.Spy>test.modalBox.open).calls.argsFor(0)[0];
         expect($$(modalOpened).find('.my-function')).not.toBeNull();
         expect($$($$(modalOpened).find('.my-function')).text()).toBe('my-function-content');
@@ -58,7 +58,7 @@ export function DebugTest() {
       }, 200);
     });
 
-    it('shoud allow to add additional info as a JSON and it should render correctly', (done)=> {
+    it('shoud allow to add additional info as a JSON and it should render correctly', (done) => {
       test.cmp.addInfoToDebugPanel({
         'HeaderJSON': {
           'foo': 'bar',
@@ -74,7 +74,7 @@ export function DebugTest() {
       });
       test.cmp.showDebugPanel();
 
-      setTimeout(()=> {
+      setTimeout(() => {
         const modalOpened = (<jasmine.Spy>test.modalBox.open).calls.argsFor(0)[0];
         expect($$(modalOpened).find('.coveo-property-object')).not.toBeNull();
         expect($$(modalOpened).find('.coveo-property-basic')).not.toBeNull();
@@ -87,14 +87,14 @@ export function DebugTest() {
       }, 200);
     });
 
-    it('should allow to search', ()=> {
-      let headerDiv = $$('div', {className: 'some-header'}, 'the content of the header').el;
+    it('should allow to search', () => {
+      let headerDiv = $$('div', { className: 'some-header' }, 'the content of the header').el;
       test.cmp.addInfoToDebugPanel({
         'Header': headerDiv
       });
       test.cmp.showDebugPanel();
 
-      
+
     });
   });
 }

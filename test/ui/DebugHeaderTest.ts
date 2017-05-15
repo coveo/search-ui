@@ -6,13 +6,13 @@ import { InitializationEvents } from '../../src/events/InitializationEvents';
 import { ResultListEvents } from '../../src/events/ResultListEvents';
 export function DebugHeaderTest() {
 
-  describe('DebugHeader', ()=> {
+  describe('DebugHeader', () => {
     let env: IMockEnvironment;
     let elem: Dom;
     let searchSpy: jasmine.Spy;
     let debugHeader: DebugHeader;
 
-    beforeEach(()=> {
+    beforeEach(() => {
       env = new MockEnvironmentBuilder().build();
       elem = $$('div');
       searchSpy = jasmine.createSpy('search');
@@ -21,51 +21,51 @@ export function DebugHeaderTest() {
       });
     });
 
-    const getDebugCheckbox = (elem: HTMLElement)=> {
+    const getDebugCheckbox = (elem: HTMLElement) => {
       return $$(elem).find('input[value="Enable query debug"]');
     };
 
-    const getQuerySyntaxCheckbox = (elem: HTMLElement)=> {
+    const getQuerySyntaxCheckbox = (elem: HTMLElement) => {
       return $$(elem).find('input[value="Enable query syntax in search box"]');
     };
 
-    const getHighlightCheckbox = (elem: HTMLElement)=> {
+    const getHighlightCheckbox = (elem: HTMLElement) => {
       return $$(elem).find('input[value="Highlight recommendation"]');
     };
 
-    const getSearchInput = (elem: HTMLElement)=> {
+    const getSearchInput = (elem: HTMLElement) => {
       return <HTMLInputElement>$$(elem).find('input[type="text"]');
     };
 
-    it('should create a download button', ()=> {
+    it('should create a download button', () => {
 
       expect($$(elem.el).find('a[download="debug.json"]')).not.toBeNull();
     });
 
-    it('should create a debug checkbox', ()=> {
+    it('should create a debug checkbox', () => {
       expect(getDebugCheckbox(elem.el)).not.toBeNull();
     });
 
-    it('should create a query syntax checkbox', ()=> {
+    it('should create a query syntax checkbox', () => {
       expect(getQuerySyntaxCheckbox(elem.el)).not.toBeNull();
     });
 
-    it('should create an highlight checkbox', ()=> {
+    it('should create an highlight checkbox', () => {
       expect(getHighlightCheckbox(elem.el)).not.toBeNull();
     });
 
-    it('should create a search box', ()=> {
+    it('should create a search box', () => {
       expect(getSearchInput(elem.el)).not.toBeNull();
     });
 
-    it('should add debug if enabled', ()=> {
+    it('should add debug if enabled', () => {
       getDebugCheckbox(elem.el).setAttribute('checked', 'checked');
       $$(getDebugCheckbox(elem.el)).trigger('change');
       const simulation = Simulate.query(env);
       expect(simulation.queryBuilder.enableDebug).toBe(true);
     });
 
-    it('should add highlight if enabled', ()=> {
+    it('should add highlight if enabled', () => {
       $$(env.root).trigger(InitializationEvents.afterInitialization);
 
       getHighlightCheckbox(elem.el).setAttribute('checked', 'checked');
@@ -80,7 +80,7 @@ export function DebugHeaderTest() {
       expect($$(fakeResultElement.item).hasClass('coveo-is-recommendation')).toBe(true);
     });
 
-    it('should add query syntax if enabled', ()=> {
+    it('should add query syntax if enabled', () => {
       const querySyntax = getQuerySyntaxCheckbox(elem.el);
       querySyntax.setAttribute('checked', 'checked');
       $$(querySyntax).trigger('change');
