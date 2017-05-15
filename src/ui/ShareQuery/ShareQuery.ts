@@ -138,8 +138,8 @@ export class ShareQuery extends Component {
     this.buildLinkToThisQuery();
     this.buildCompleteQuery();
 
-    boxes.appendChild(this.buildTextBoxWithLabel(l('Link') + ':', this.linkToThisQuery));
-    boxes.appendChild(this.buildTextBoxWithLabel(l('CompleteQuery') + ':', this.completeQuery));
+    boxes.appendChild(this.buildTextBoxWithLabel(l('Link'), this.linkToThisQuery));
+    boxes.appendChild(this.buildTextBoxWithLabel(l('CompleteQuery'), this.completeQuery));
     content.appendChild(boxes);
 
     Component.pointElementsToDummyForm(content);
