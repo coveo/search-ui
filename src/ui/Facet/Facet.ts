@@ -221,8 +221,10 @@ export class Facet extends Component {
      *
      * See {@link IGroupByRequest.sortCriteria} for a description of each possible value.
      *
-     * **Note:**
-     * > The [`FacetRange`]{@link FacetRange} component does not support this option.
+     * **Notes:**
+     * > * The [`FacetRange`]{@link FacetRange} component does not support this option.
+     *
+     * > * Using value captions will disable alphabetical sorts (see the [valueCaption]{@link Facet.options.valueCaption} option).
      *
      * Default value is `"occurrences,score,alphaAscending,alphaDescending"`.
      */
@@ -572,12 +574,14 @@ export class Facet extends Component {
      * Specifies a JSON object describing a mapping of facet values to their desired captions. See
      * [Normalizing Facet Value Captions](https://developers.coveo.com/x/jBsvAg).
      *
-     * **Note:**
-     * > You cannot set this option directly in the component markup as an HTML attribute. You must either set it in the
-     * > [`init`]{@link init} call of your search interface (see
-     * > [Components - Passing Component Options in the init Call](https://developers.coveo.com/x/PoGfAQ#Components-PassingComponentOptionsintheinitCall)),
-     * > or before the `init` call, using the `options` top-level function (see
-     * > [Components - Passing Component Options Before the init Call](https://developers.coveo.com/x/PoGfAQ#Components-PassingComponentOptionsBeforetheinitCall)).
+     * **Notes:**
+     * > * You cannot set this option directly in the component markup as an HTML attribute. You must either set it in the
+     *    > [`init`]{@link init} call of your search interface (see
+     *    > [Components - Passing Component Options in the init Call](https://developers.coveo.com/x/PoGfAQ#Components-PassingComponentOptionsintheinitCall)),
+     *    > or before the `init` call, using the `options` top-level function (see
+     *    > [Components - Passing Component Options Before the init Call](https://developers.coveo.com/x/PoGfAQ#Components-PassingComponentOptionsBeforetheinitCall)).
+     *
+     * > *  Using value captions will disable alphabetical sorts (see the [availableSorts]{@link Facet.options.availableSorts} option).
      *
      * **Example:**
      *
@@ -697,6 +701,7 @@ export class Facet extends Component {
 
     if (this.options.valueCaption != null) {
       this.options.availableSorts = _.filter(this.options.availableSorts, (sort: string) => !/^alpha.*$/.test(sort));
+      this.logger.warn(`Because the ${this.options.field} facet is using value captions, alphabetical sorts are disabled.`);
     }
 
     ResponsiveFacets.init(this.root, this, this.options);

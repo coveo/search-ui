@@ -7,8 +7,9 @@ import { $$ } from './Dom';
 import * as _ from 'underscore';
 
 // \u2011: http://graphemica.com/%E2%80%91
-let nonWordBoundary = '[\\.\\-\\u2011\\s~=,.\\|\\/:\'`’;_()!?]';
-let regexStart = '(' + nonWordBoundary + '|^)(';
+// Used to split terms and phrases. Should match characters that can separate words.
+const wordBoundary = '[\\.\\-\\u2011\\s~=,.\\|\\/:\'`’;_()!?&+]';
+const regexStart = '(' + wordBoundary + '|^)(';
 
 /**
  * The possible options when highlighting a stream.
@@ -34,12 +35,12 @@ class DefaultStreamHighlightOptions extends Options implements IStreamHighlightO
 
 export class StreamHighlightUtils {
   static highlightStreamHTML(stream: string, termsToHighlight: { [originalTerm: string]: string[] }, phrasesToHighlight: { [phrase: string]: { [originalTerm: string]: string[] } }, options?: IStreamHighlightOptions) {
-    let opts = new DefaultStreamHighlightOptions().merge(options);
-    let container = createStreamHTMLContainer(stream);
-    let allElements = $$(container).findAll('*');
+    const opts = new DefaultStreamHighlightOptions().merge(options);
+    const container = createStreamHTMLContainer(stream);
+    const allElements = $$(container).findAll('*');
     if (allElements.length > 0) {
       _.each(allElements, (elem: HTMLElement, i: number) => {
-        let text = $$(elem).text();
+        const text = $$(elem).text();
         elem.innerHTML = HighlightUtils.highlightString(text, getRestHighlightsForAllTerms(text, termsToHighlight, phrasesToHighlight, opts), [], opts.cssClass);
       });
     } else {
@@ -49,44 +50,44 @@ export class StreamHighlightUtils {
   }
 
   static highlightStreamText(stream: string, termsToHighlight: { [originalTerm: string]: string[] }, phrasesToHighlight: { [phrase: string]: { [originalTerm: string]: string[] } }, options?: IStreamHighlightOptions) {
-    let opts = new DefaultStreamHighlightOptions().merge(options);
+    const opts = new DefaultStreamHighlightOptions().merge(options);
     return HighlightUtils.highlightString(stream, getRestHighlightsForAllTerms(stream, termsToHighlight, phrasesToHighlight, opts), [], opts.cssClass);
   }
 }
 
 
 function getRestHighlightsForAllTerms(toHighlight: string, termsToHighlight: { [originalTerm: string]: string[] }, phrasesToHighlight: { [phrase: string]: { [originalTerm: string]: string[] } }, opts: IStreamHighlightOptions): IHighlight[] {
-  let indexes = [];
-  let sortedTerms = _.keys(termsToHighlight).sort(termsSorting);
+  const indexes = [];
+  const sortedTerms = _.keys(termsToHighlight).sort(termsSorting);
   _.each(sortedTerms, (term: string) => {
     let termsToIterate = _.compact([term].concat(termsToHighlight[term]).sort(termsSorting));
     termsToIterate = _.map(termsToIterate, (term) => Utils.escapeRegexCharacter(term));
     let regex = regexStart;
-    regex += termsToIterate.join('|') + ')(?=(?:' + nonWordBoundary + '|$)+)';
-    let indexesFound = StringUtils.getHighlights(toHighlight, new RegExp(regex, opts.regexFlags), term);
+    regex += termsToIterate.join('|') + ')(?=(?:' + wordBoundary + '|$)+)';
+    const indexesFound = StringUtils.getHighlights(toHighlight, new RegExp(regex, opts.regexFlags), term);
     if (indexesFound != undefined && Utils.isNonEmptyArray(indexesFound)) {
       indexes.push(indexesFound);
     }
   });
 
   _.each(phrasesToHighlight, (phrase, origPhrase) => {
-    let split = origPhrase.split(' ');
+    const split = origPhrase.split(' ');
     let regex = regexStart;
     _.each(split, (origWord, i) => {
       regex += '(?:' + [origWord].concat(phrase[origWord]).join('|') + ')';
       if (i == split.length - 1) {
         regex += '(?=';
       }
-      regex += nonWordBoundary;
+      regex += wordBoundary;
       if (i == split.length - 1) {
-        regex += ')';
+        regex += '|$)';
       }
       if (i != split.length - 1) {
         regex += '+';
       }
     });
     regex += ')';
-    let indexesFound = StringUtils.getHighlights(toHighlight, new RegExp(regex, opts.regexFlags), origPhrase);
+    const indexesFound = StringUtils.getHighlights(toHighlight, new RegExp(regex, opts.regexFlags), origPhrase);
     if (indexesFound != undefined && Utils.isNonEmptyArray(indexesFound)) {
       indexes.push(indexesFound);
     }
@@ -102,10 +103,10 @@ function getRestHighlightsForAllTerms(toHighlight: string, termsToHighlight: { [
       return highlight.offset;
     })
     .map((highlight) => {
-      let keysFromTerms = _.keys(termsToHighlight);
-      let keysFromPhrases = _.keys(phrasesToHighlight);
-      let keys = keysFromTerms.concat(keysFromPhrases);
-      let group = _.indexOf(keys, highlight.dataHighlightGroupTerm) + 1;
+      const keysFromTerms = _.keys(termsToHighlight);
+      const keysFromPhrases = _.keys(phrasesToHighlight);
+      const keys = keysFromTerms.concat(keysFromPhrases);
+      const group = _.indexOf(keys, highlight.dataHighlightGroupTerm) + 1;
       return _.extend(highlight, { dataHighlightGroup: group });
     })
     .value();
@@ -116,7 +117,7 @@ function termsSorting(first: string, second: string) {
 }
 
 function createStreamHTMLContainer(stream: string) {
-  let container = $$('div').el;
+  const container = $$('div').el;
   container.innerHTML = stream;
   return container;
 }
