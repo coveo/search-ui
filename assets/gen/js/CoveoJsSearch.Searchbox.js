@@ -1549,8 +1549,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	"use strict";
 	Object.defineProperty(exports, "__esModule", { value: true });
 	exports.version = {
-	    'lib': '1.2537.17-beta',
-	    'product': '1.2537.17-beta',
+	    'lib': '1.2537.18-beta',
+	    'product': '1.2537.18-beta',
 	    'supportedApiVersion': 2
 	};
 
@@ -24519,15 +24519,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            });
 	        }
 	        if (totalGraphResults == 0) {
-	            // Special corner case for "simple slider facet" : Do not only handle the group by results,
-	            // but also look for the complete result set when determining if we should show the facet.
-	            // This allows simple slider facet to still show with query function fields
-	            if (this.isSimpleSliderConfig()) {
-	                this.isEmpty = data.results.results.length == 0;
-	            }
-	            else {
-	                this.isEmpty = true;
-	            }
+	            this.isEmpty = true;
 	            this.updateAppearanceDependingOnState();
 	        }
 	        else if (graphData != undefined && !this.isDropdownHidden()) {
@@ -24702,7 +24694,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        window.removeEventListener('resize', this.onResize);
 	    };
 	    FacetSlider.prototype.isFacetEmpty = function (groupByResults, data) {
-	        return groupByResults == null || groupByResults.values[0] == null || data.results.results.length == 0;
+	        return groupByResults == null || groupByResults.values[0] == null || groupByResults.values[0].numberOfResults == 0 || data.results.results.length == 0;
 	    };
 	    return FacetSlider;
 	}(Component_1.Component));
