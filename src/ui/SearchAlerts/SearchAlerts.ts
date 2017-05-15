@@ -138,6 +138,8 @@ export class SearchAlerts extends Component {
           });
         }
       });
+    } else {
+      this.logger.warn('Logged in as guest user, search alerts are therefore not available.');
     }
 
     let once = false;
