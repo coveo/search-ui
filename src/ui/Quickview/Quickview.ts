@@ -153,7 +153,7 @@ export class Quickview extends Component {
       if (this.searchInterface.isNewDesign()) {
         let captionForQuickview = $$(
           'div',
-          { className: 'coveo-caption-for-quickview', tabindex: 0 },
+          { className: 'coveo-caption-for-icon', tabindex: 0 },
           'Quickview'.toLocaleString()
         ).el;
         let div = $$('div');
