@@ -4,7 +4,7 @@ import { IFormWidget, IFormWidgetSettable } from './FormWidgets';
 import { exportGlobally } from '../../GlobalExports';
 
 /**
- * This class will create a text input with standard styling.
+ * A text input widget with standard styling.
  */
 export class TextInput implements IFormWidget, IFormWidgetSettable {
 
@@ -18,9 +18,10 @@ export class TextInput implements IFormWidget, IFormWidgetSettable {
   }
 
   /**
-   * Create a new text input.
-   * @param onChange will be called every time the text input change it's value, witht the `TextInput` instance as an argument.
-   * @param name
+   * Creates a new `TextInput`.
+   * @param onChange The function to call when the value entered in the text input changes. This function takes the
+   * current `TextInput` instance as an argument.
+   * @param name The text to display in the text input label.
    */
   constructor(public onChange: (textInput: TextInput) => void = (textInput: TextInput) => {
   }, public name?: string) {
@@ -28,24 +29,24 @@ export class TextInput implements IFormWidget, IFormWidgetSettable {
   }
 
   /**
-   * Return the element on which the dropdown is bound.
-   * @returns {HTMLElement}
+   * Gets the element on which the text input is bound.
+   * @returns {HTMLElement} The text input element.
    */
   public getElement(): HTMLElement {
     return this.element;
   }
 
   /**
-   * Get the currently entered value in the text input.
-   * @returns {string}
+   * Gets the value currently entered in the text input.
+   * @returns {string} The text input current value.
    */
   public getValue(): string {
     return (<HTMLInputElement>$$(this.element).find('input')).value;
   }
 
   /**
-   * Set the value in the text input.
-   * @param value
+   * Sets the value in the text input.
+   * @param value The value to set the text input to.
    */
   public setValue(value: string) {
     const currentValue = this.getValue();
@@ -56,7 +57,7 @@ export class TextInput implements IFormWidget, IFormWidgetSettable {
   }
 
   /**
-   * Reset the text input
+   * Resets the text input.
    */
   public reset() {
     const currentValue = this.getValue();
@@ -68,16 +69,16 @@ export class TextInput implements IFormWidget, IFormWidgetSettable {
   }
 
   /**
-   * Return the element on which the dropdown is bound.
-   * @returns {HTMLElement}
+   * Gets the element on which the text input is bound.
+   * @returns {HTMLElement} The text input element.
    */
   public build() {
     return this.element;
   }
 
   /**
-   * Return the input element
-   * @returns {HTMLElement}
+   * Gets the `input` element (the text input itself).
+   * @returns {HTMLElement} The `input` element.
    */
   public getInput(): HTMLInputElement {
     return <HTMLInputElement>$$(this.element).find('input');

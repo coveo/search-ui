@@ -3,7 +3,7 @@ import { IFormWidget, IFormWidgetSettable } from './FormWidgets';
 import { exportGlobally } from '../../GlobalExports';
 
 /**
- * This class will create a numeric spinner with standard styling
+ * A numeric spinner widget with standard styling.
  */
 export class NumericSpinner implements IFormWidget, IFormWidgetSettable {
 
@@ -17,11 +17,11 @@ export class NumericSpinner implements IFormWidget, IFormWidgetSettable {
   }
 
   /**
-   * Create a new numeric spinner.
-   *
-   * @param onChange will be called every time the numeric spinner change it's value. The numeric spinner instance will be passed to the function.
-   * @param min will be the minimum value selectable by the spinner
-   * @param max will be the maximum value selectable by the spinner
+   * Creates a new `NumericSpinner`.
+   * @param onChange The function to call when the numeric spinner value changes. This function takes the current
+   * `NumericSpinner` instance as an argument.
+   * @param min The minimum possible value of the numeric spinner.
+   * @param max The maximum possible value of the numeric spinner.
    */
   constructor(public onChange: (numericSpinner: NumericSpinner) => void = (numericSpinner: NumericSpinner) => {
   }, public min: number = 0, public max?: number) {
@@ -30,7 +30,7 @@ export class NumericSpinner implements IFormWidget, IFormWidgetSettable {
   }
 
   /**
-   * Reset the spinner
+   * Resets the numeric spinner.
    */
   public reset() {
     this.getSpinnerInput().value = '';
@@ -38,41 +38,43 @@ export class NumericSpinner implements IFormWidget, IFormWidgetSettable {
   }
 
   /**
-   * Return the element on which the spinner is bound.
-   * @returns {HTMLInputElement}
+   * Gets the element on which the numeric spinner is bound.
+   * @returns {HTMLInputElement} The numeric spinner element.
    */
   public getElement(): HTMLElement {
     return this.element;
   }
 
   /**
-   * Return the current selected value in the spinner.
-   * @returns {string}
+   * Gets the numeric spinner currently selected value (as a string).
+   * @returns {string} The numeric spinner value.
    */
   public getValue(): string {
     return this.getSpinnerInput().value;
   }
 
   /**
-   * Return the current selected value in the spinner, as an int.
-   * @returns {number}
+   * Gets the numeric spinner currently selected value (as an integer).
+   * @returns {number} The numeric spinner value.
    */
   public getIntValue(): number {
     return this.getSpinnerInput().value ? parseInt(this.getSpinnerInput().value, 10) : this.min;
   }
 
   /**
-   * Return the current selected value in the spinner, as a float.
-   * @returns {number}
+   * Gets the numeric spinner currently selected value (as a float).
+   * @returns {number} The numeric spinner value.
    */
   public getFloatValue(): number {
     return this.getSpinnerInput().value ? parseFloat(this.getSpinnerInput().value) : this.min;
   }
 
   /**
-   * Set the value in the spinner.
+   * Sets the numeric spinner value.
    *
-   * @param value
+   * @param value The value to set the numeric spinner to. If `value` is greater than [`max`]{@link NumericSpinner.max},
+   * this method sets the numeric spinner to its maximum value instead. Likewise, if value is lesser than
+   * [`min`]{@link NumericSpinner.min}, the method sets the numeric spinner to its minimum value.
    */
   public setValue(value: number) {
     if (this.max && value > this.max) {
@@ -86,7 +88,8 @@ export class NumericSpinner implements IFormWidget, IFormWidgetSettable {
   }
 
   /**
-   * Return the element on which the spinner is bound.
+   * Gets the element on which the numeric spinner is bound.
+   * @returns {HTMLInputElement} The numeric spinner element.
    */
   public build() {
     return this.element;
