@@ -632,7 +632,6 @@ export class Facet extends Component {
     this.initSearchAlertEvents();
     this.updateNumberOfValues();
 
-
     this.resize = () => {
       if (!this.disabled) {
         FacetUtils.clipCaptionsToAvoidOverflowingTheirContainer(this);
