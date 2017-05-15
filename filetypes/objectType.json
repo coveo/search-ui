@@ -331,6 +331,13 @@
         "en": "Knowledge Article",
         "fr": "Article de base de connaissance"
       }
+    },
+    "topic": {
+      "icon": "salesforce-standard-topic",
+      "captions": {
+        "en": "Topic",
+        "fr": "Sujet"
+      }
     }
   }
 }
