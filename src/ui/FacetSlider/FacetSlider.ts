@@ -774,7 +774,7 @@ export class FacetSlider extends Component {
       // but also look for the complete result set when determining if we should show the facet.
       // This allows simple slider facet to still show with query function fields
       if (this.isSimpleSliderConfig()) {
-        this.isEmpty = data.results.results.length == 0
+        this.isEmpty = data.results.results.length == 0;
       } else {
         this.isEmpty = true;
       }
