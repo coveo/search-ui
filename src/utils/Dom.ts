@@ -583,7 +583,7 @@ export class Dom {
    */
   public position(): IOffset {
     const offsetParent = this.offsetParent();
-    const offset = this.offset();    
+    const offset = this.offset();
     let parentOffset: IOffset = { top: 0, left: 0 };
 
     if (!$$(offsetParent).is('html')) {
