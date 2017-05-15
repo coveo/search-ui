@@ -3,7 +3,7 @@ import { PendingSearchEvent } from './PendingSearchEvent';
 import { IAnalyticsActionCause, IAnalyticsDocumentViewMeta } from './AnalyticsActionListMeta';
 import { IQueryResult } from '../../rest/QueryResult';
 import { ITopQueries } from '../../rest/TopQueries';
-import _ = require('underscore');
+import * as _ from 'underscore';
 
 export class MultiAnalyticsClient implements IAnalyticsClient {
   public isContextual = false;
@@ -70,6 +70,10 @@ export class MultiAnalyticsClient implements IAnalyticsClient {
 
   public getPendingSearchEvent(): PendingSearchEvent {
     return _.first(this.analyticsClients).getPendingSearchEvent();
+  }
+
+  public setOriginContext(originContext: string) {
+    _.each(this.analyticsClients, (analyticsClient: IAnalyticsClient) => analyticsClient.setOriginContext(originContext));
   }
 
   private mergeTopQueries(values: string[][], pageSize: number = 5) {

@@ -26,7 +26,9 @@ import { OmniboxHierarchicalValuesList } from './OmniboxHierarchicalValuesList';
 import { HierarchicalFacetValueElement } from './HierarchicalFacetValueElement';
 import { Initialization } from '../Base/Initialization';
 import { ISearchAlertsPopulateMessageEventArgs } from '../../events/SearchAlertEvents';
-import _ = require('underscore');
+import * as _ from 'underscore';
+import { exportGlobally } from '../../GlobalExports';
+import 'styling/_HierarchicalFacet';
 
 export interface IHierarchicalFacetOptions extends IFacetOptions {
   delimitingCharacter?: string;
@@ -87,6 +89,12 @@ interface IFlatHierarchy {
  */
 export class HierarchicalFacet extends Facet implements IComponentBindings {
   static ID = 'HierarchicalFacet';
+
+  static doExport = () => {
+    exportGlobally({
+      'HierarchicalFacet': HierarchicalFacet
+    });
+  }
 
   /**
    * The options for the component
@@ -664,7 +672,7 @@ export class HierarchicalFacet extends Facet implements IComponentBindings {
       hierarchyElement.style.marginLeft = (this.options.marginByLevel * (hierarchy.level - this.options.levelStart)) + 'px';
     });
 
-    $$(<HTMLElement>fragment).insertAfter(this.headerElement);
+    $$(<any>fragment).insertAfter(this.headerElement);
   }
 
   private setValueListContent() {

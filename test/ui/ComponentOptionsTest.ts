@@ -327,6 +327,12 @@ export function ComponentOptionsTest() {
           let option = ComponentOptions.loadStringOption(elem, null, { alias: 'myAttr' });
           expect(option).toBe('baz');
         });
+        it('which loads a string option from the IComponentOptions option alias as an array', () => {
+          let option = ComponentOptions.loadStringOption(elem, null, { alias: ['myAttr', 'myAttr2'] });
+          expect(option).toBe('baz');
+          option = ComponentOptions.loadStringOption(elem, null, { alias: ['myAttr2', 'myAttr'] });
+          expect(option).toBe('baz');
+        });
       });
 
       describe('loadFieldOption', () => {
@@ -494,6 +500,13 @@ export function ComponentOptionsTest() {
       describe('getAttributeFromAlias', () => {
         it('which gets an attribute of the html element matching the alias', () => {
           let option = ComponentOptions.getAttributeFromAlias(elem, { alias: 'myAttr' });
+          expect(option).toBe('baz');
+        });
+
+        it('which gets an attribute of the html element matching the alias as an array', () => {
+          let option = ComponentOptions.getAttributeFromAlias(elem, { alias: ['myAttr', 'myAttr2'] });
+          expect(option).toBe('baz');
+          option = ComponentOptions.getAttributeFromAlias(elem, { alias: ['myAttr2', 'myAttr'] });
           expect(option).toBe('baz');
         });
       });

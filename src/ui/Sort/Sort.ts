@@ -1,5 +1,5 @@
 import { Component } from '../Base/Component';
-import { SortCriteria } from './SortCriteria.ts';
+import { SortCriteria } from './SortCriteria';
 import { ComponentOptions } from '../Base/ComponentOptions';
 import { IComponentBindings } from '../Base/ComponentBindings';
 import { Assert } from '../../misc/Assert';
@@ -12,7 +12,10 @@ import { Initialization } from '../Base/Initialization';
 import { analyticsActionCauseList, IAnalyticsResultsSortMeta } from '../Analytics/AnalyticsActionListMeta';
 import { KeyboardUtils, KEYBOARD } from '../../utils/KeyboardUtils';
 import { IQueryErrorEventArgs } from '../../events/QueryEvents';
-import _ = require('underscore');
+import * as _ from 'underscore';
+import { exportGlobally } from '../../GlobalExports';
+
+import 'styling/_Sort';
 
 export interface ISortOptions {
   sortCriteria?: SortCriteria[];
@@ -24,6 +27,13 @@ export interface ISortOptions {
  */
 export class Sort extends Component {
   static ID = 'Sort';
+
+  static doExport = () => {
+    exportGlobally({
+      'Sort': Sort,
+      'SortCriteria': SortCriteria
+    });
+  }
 
   /**
    * Options for the component
@@ -70,6 +80,8 @@ export class Sort extends Component {
 
   private currentCriteria: SortCriteria;
 
+  private icon: HTMLElement;
+
   /**
    * Creates a new Sort component.
    * @param element The HTMLElement on which to instantiate the component.
@@ -98,9 +110,11 @@ export class Sort extends Component {
     }
 
     if (this.isToggle()) {
-      this.element.innerHTML += '<span class="coveo-icon" />';
+      this.icon = $$('span', { className: 'coveo-icon' }).el;
+      this.element.appendChild(this.icon);
     }
 
+    this.update();
     this.updateAppearance();
   }
 
@@ -215,7 +229,11 @@ export class Sort extends Component {
 
     if (this.isToggle()) {
       var direction = this.currentCriteria ? this.currentCriteria.direction : this.options.sortCriteria[0].direction;
-      $$(this.element).toggleClass('coveo-ascending', direction == 'ascending');
+      $$(this.element).removeClass('coveo-ascending');
+      $$(this.element).removeClass('coveo-descending');
+      if (this.isSelected()) {
+        $$(this.element).addClass(direction === 'ascending' ? 'coveo-ascending' : 'coveo-descending');
+      }
     }
   }
 }

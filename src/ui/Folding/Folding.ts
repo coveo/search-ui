@@ -11,7 +11,8 @@ import { IQueryResults } from '../../rest/QueryResults';
 import { IQuery } from '../../rest/Query';
 import { $$ } from '../../utils/Dom';
 import { QueryBuilder } from '../Base/QueryBuilder';
-import _ = require('underscore');
+import * as _ from 'underscore';
+import { exportGlobally } from '../../GlobalExports';
 
 export interface IFoldingOptions {
   field?: IFieldOption;
@@ -61,6 +62,12 @@ interface IResultNode {
  */
 export class Folding extends Component {
   static ID = 'Folding';
+
+  static doExport = () => {
+    exportGlobally({
+      'Folding': Folding
+    });
+  }
 
   /**
    * The options for the component
@@ -403,6 +410,7 @@ export class Folding extends Component {
 
     query.filterField = null;
     query.filterFieldRange = null;
+    query.firstResult = 0;
 
     if (this.options.rearrange) {
       this.options.rearrange.putInQueryBuilder(builder);

@@ -4,9 +4,10 @@ const replace = require('gulp-replace');
 const fs = require('fs');
 const runsequence = require('run-sequence');
 const footer = require('gulp-footer');
+const shell = require('gulp-shell');
 
 gulp.task('definitions', function (done) {
-  runsequence('externalDefs', 'internalDefs', 'cleanDefs', done);
+  runsequence('externalDefs', 'internalDefs', 'cleanDefs', 'validateDefs', done);
 });
 
 gulp.task('cleanDefs', function () {
@@ -23,6 +24,9 @@ gulp.task('cleanDefs', function () {
       .pipe(replace(/never/gm, 'void'))
       .pipe(replace(/ensureDom: Function;\n\s*options\?: any;/gm, 'ensureDom: Function;\n\t\toptions: any;'))
       .pipe(replace(/^(\s*const\s\w+\s)(=\s\w+);$/gm, '$1: any;'))
+      .pipe(replace(/:\s?.*ModuleDefinition\./gm, ': ')) // Assume that types that end with ModuleDefinition were imported using the import type only syntax
+                                                         // and stripping ModuleDefinition will refer to the correct type.
+      .pipe(replace(/\n\t(?:const|let|var)\s.*;/gm, ''))
       .pipe(gulp.dest('bin/ts/'));
 });
 
@@ -56,10 +60,13 @@ gulp.task('internalDefs', function () {
   return require('dts-generator').default({
     name: 'Coveo',
     project: './',
-    baseDir: './src/',
     out: 'bin/ts/CoveoJsSearch.d.ts',
     externs: ['Externals.d.ts'],
     verbose: true,
     exclude: ['lib/**/*.d.ts', 'node_modules/**/*.d.ts', 'typings/**/*.d.ts', 'src/*.ts', 'bin/**/*.d.ts', 'test/lib/**/*.d.ts', 'test/Test.ts']
   });
 })
+
+gulp.task('validateDefs', shell.task([
+  './node_modules/typescript/bin/tsc --noEmit ./bin/ts/CoveoJsSearch.d.ts'
+]))

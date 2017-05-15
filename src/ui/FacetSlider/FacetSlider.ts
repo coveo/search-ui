@@ -5,7 +5,6 @@ import { ISliderOptions, Slider, IEndSlideEventArgs, IDuringSlideEventArgs, ISli
 import { Component } from '../Base/Component';
 import { IComponentBindings } from '../Base/ComponentBindings';
 import { ComponentOptions, IFieldOption } from '../Base/ComponentOptions';
-import { ResponsiveFacets } from '../ResponsiveComponents/ResponsiveFacets';
 import { FacetHeader } from '../Facet/FacetHeader';
 import { l } from '../../strings/Strings';
 import { InitializationEvents } from '../../events/InitializationEvents';
@@ -21,9 +20,14 @@ import { Assert } from '../../misc/Assert';
 import { Utils } from '../../utils/Utils';
 import { ResponsiveComponentsUtils } from '../ResponsiveComponents/ResponsiveComponentsUtils';
 import { Initialization } from '../Base/Initialization';
-import d3 = require('d3');
 import { SearchAlertsEvents, ISearchAlertsPopulateMessageEventArgs } from '../../events/SearchAlertEvents';
-import _ = require('underscore');
+import * as _ from 'underscore';
+import { exportGlobally } from '../../GlobalExports';
+import { ResponsiveFacetSlider } from '../ResponsiveComponents/ResponsiveFacetSlider';
+
+import 'styling/_FacetSlider';
+import { IGroupByResult } from '../../rest/GroupByResult';
+
 
 export interface IFacetSliderOptions extends ISliderOptions {
   dateField?: boolean;
@@ -37,52 +41,18 @@ export interface IFacetSliderOptions extends ISliderOptions {
 }
 
 /**
- * The FacetSlider component creates a facet containing a slider widget that allows the end user to filter results based
- * on a range of numerical values, rather than a "classic" multi-select {@link Facet} with a label and a count for each
- * value.
+ * The `FacetSlider` component creates a facet which contains a slider widget that allows the end user to filter results
+ * based on a range of numerical values (e.g., a date range, a price range, etc.).
  *
- * Note that this component does not inherit from the Facet component, and thus does not offer the same configuration
- * options. Also, some of the FacetSlider options cannot be set as a HTML attributes on the component and must rather be
- * configured in the {@link init} call of the search interface.
- *
- * **Examples:**
- *
- * Specifying the FacetSlider configuration using a JSON inside the init call. Note that the JSON follows the
- * FacetSlider options:
- *
- * ```javascript
- * // You can call the init script using "pure" JavaScript:
- * Coveo.init(document.querySelector('#search'), {
- *    FacetSlider: {
- *      field: "@size",
- *      start: 1000,
- *      end: 5000,
- *      rangeSlider: true,
- *      graph: {
- *        steps: 10
- *      }
- *    }
- * })
- *
- * // Or you can call the init script using the jQuery extension:
- * $('#search').coveo('init', {
- *    FacetSlider: {
- *      field: "@size",
- *      start: 1000,
- *      end: 5000,
- *      rangeSlider: true,
- *      graph: {
- *        steps: 10
- *      }
- *    }
- * })
- * ```
- *
- * Specifying the same FacetSlider configuration by setting the corresponding HTML attributes directly in the markup:
- *
- * ```html
- * <div class='CoveoFacetSlider' data-field='@size' data-start='1000' data-end='5000' data-range-slider='true' data-graph-steps='10'></div>
- * ```
+ * **Note:**
+ * > This component does **not** inherit from the [`Facet`]{@link Facet} component. Consequently, it does not offer the
+ * > same configuration options. Moreover, some of the `FacetSlider` options (see
+ * > [`getSteps`]{@link FacetSlider.options.getSteps} and [`valueCaption`]{@link FacetSlider.options.valueCaption})
+ * > cannot be configured as `data-` attributes in the markup. If you wish to configure those options, you must either
+ * > do so in the [`init`]{@link init} call of your search interface (see
+ * > [Components - Passing Component Options in the init Call](https://developers.coveo.com/x/PoGfAQ#Components-PassingComponentOptionsintheinitCall)),
+ * > or before the `init` call, using the `options` top-level function (see
+ * > [Components - Passing Component Options Before the init Call](https://developers.coveo.com/x/PoGfAQ#Components-PassingComponentOptionsBeforetheinitCall)).
  */
 export class FacetSlider extends Component {
 
@@ -93,65 +63,73 @@ export class FacetSlider extends Component {
   static options: IFacetSliderOptions = {
 
     /**
-     * Specifies the title to display on top of the FacetSlider component.
+     * Specifies the title to display on top of the `FacetSlider`.
      *
-     * Default value is the localized string for `"NoTitle"`.
+     * Default value is the localized string for `NoTitle`.
      */
     title: ComponentOptions.buildLocalizedStringOption({ defaultValue: l('NoTitle') }),
 
     /**
-     * Specifies whether the field for which you are requesting a range is a date field. This allows the FacetSlider to
-     * correctly build the outgoing [GroupByRequest]{@link IGroupByRequest} and render itself properly.
+     * Specifies whether the [`field`]{@link FacetSlider.options.field} for which you are requesting a range is a date
+     * field. This allows the `FacetSlider` to correctly build the outgoing [GroupByRequest]{@link IGroupByRequest} and
+     * render itself properly.
      *
      * Default value is `false`.
      */
     dateField: ComponentOptions.buildBooleanOption({ defaultValue: false }),
 
     /**
-     * Specifies the index field whose values the FacetSlider should use.
+     * Specifies the index field whose values the `FacetSlider` should use.
      *
-     * This requires the given field to be configured correctly in the index as a Facet field (see
+     * The field must be configured correctly as a Facet field in the index (see
      * [Adding Fields to a Source](http://www.coveo.com/go?dest=cloudhelp&lcid=9&context=137)).
      *
-     * Specifying a value for this option is required for the FacetSlider component to work.
+     * Specifying a value for this option is required for the `FacetSlider` component to work.
      */
     field: ComponentOptions.buildFieldOption({ groupByField: true, required: true }),
 
     /**
-     * Specifies a unique identifier for the FacetSlider. Among other things, this identifier serves the purpose of
+     * Specifies a unique identifier for the `FacetSlider`. Among other things, this identifier serves the purpose of
      * saving the facet state in the URL hash.
      *
-     * If you have two facets with the same field on the same page, you should specify a unique id value for at least
-     * one of those two facets. This id must be unique in the page.
+     * If you have two facets with the same field in the same page, you should specify a unique `id` value for at least
+     * one of those two facets. This `id` must be unique in the page.
      *
-     * Default value is the {@link FacetSlider.options.field} option value.
+     * Default value is the [`field`]{@link FacetSlider.options.field} option value.
      */
     id: ComponentOptions.buildStringOption({
       postProcessing: (value, options: IFacetSliderOptions) => value || <string>options.field
     }),
 
     /**
-     * Specifies the format to use to display values if they are dates.
+     * Specifies the format to use when displaying date values.
      *
-     * Default value is `"MMM dd, yyyy"`.
+     * See also the [`dateField`]{@link FacetSlider.options.dateField} option.
+     *
+     * Default value is `MMM dd, yyyy`.
      */
     dateFormat: ComponentOptions.buildStringOption(),
 
     /**
-     * Specifies the query to filter automatic minimum and maximum range of the slider.
+     * Specifies a query to filter automatic minimum and maximum values for the slider range.
      *
-     * This is especially useful for date ranges where the index may contain values which are not set, and thus the
-     * automatic range returns values from the year 1400 (earliest date from the boost C++ library).
+     * This is especially useful in the case of date ranges since the index may contain values which are not set, and
+     * thus return values from the year 1400 (the earliest date from the boost C++ library).
      *
-     * This option can be useful to do something like `queryOverride : @date>2000/01/01` or some arbitrary date which
-     * will filter out unwanted values.
+     * **Example:**
+     *
+     * The query override in the following markup filters out any `@date` value anterior to January 1st 2000.
+     * ```html
+     * <div class="CoveoFacetSlider" data-field="@date" data-date-field="true" data-query-override="@date>2000/01/01"></div>
+     * ```
      */
     queryOverride: ComponentOptions.buildStringOption(),
 
     /**
      * Specifies the starting boundary of the slider.
      *
-     * Date values are rounded to the nearest year when {@link FacetSlider.options.dateField} is `true`.
+     * Date values are rounded to the nearest year when you set the [`dateField`]{@link FacetSlider.options.dateField}
+     * option to `true`.
      *
      * Default value is the lowest available field value in the index.
      */
@@ -160,7 +138,8 @@ export class FacetSlider extends Component {
     /**
      * Specifies the ending boundary of the slider.
      *
-     * Date values are rounded to the nearest year when {@link FacetSlider.options.dateField} is `true`.
+     * Date values are rounded to the nearest year when you set the [`dateField`]{@link FacetSlider.options.dateField}
+     * option to `true`.
      *
      * Default value is the highest available field value in the index.
      */
@@ -183,12 +162,12 @@ export class FacetSlider extends Component {
     /**
      * Specifies the number of steps to split the slider into.
      *
-     * For example, if your range is [ 0 , 100 ] and you specify 10 steps, then the end user can move the slider only to
-     * the values [ 0, 10, 20, 30 ... , 100 ].
+     * For example, if your range is [ 0 , 100 ] and you specify `10` steps, then the end user can move the slider only
+     * to the values [ 0, 10, 20, 30 ... , 100 ].
      *
-     * For performance reasons, the maximum value for option is 1
+     * For performance reasons, the maximum value for this option is `100`
      *
-     * Default value is `undefined`, and the slider allows all values. Minimum value is `2`.
+     * Default value is `undefined`, and the slider allows up to 100 steps. Minimum value is `2`.
      */
     steps: ComponentOptions.buildNumberOption({ min: 2 }),
 
@@ -200,12 +179,12 @@ export class FacetSlider extends Component {
     rangeSlider: ComponentOptions.buildBooleanOption(),
 
     /**
-     * Specifies the caption options to use to display the field values.
+     * Specifies the caption options to use when displaying the field values.
      *
      * Available options are:
      * - enable (`data-display-as-value-enable`): boolean; specifies whether to display the caption as a value. Default
      * value is `true`.
-     * - unitSign (`data-display-as-value-unit-sign`): string; specifies the unit sign for this value (e.g., `"$"`).
+     * - unitSign (`data-display-as-value-unit-sign`): string; specifies the unit sign for this value (e.g., `$`).
      * Default value is `undefined`.
      * - separator (`data-display-as-value-separator`): string; specifies the character(s) to use as a separator in the
      * caption. Default value is `"-"`.
@@ -219,7 +198,7 @@ export class FacetSlider extends Component {
     }),
 
     /**
-     * Specifies the percentage caption options to use to display the field values.
+     * Specifies the percentage caption options to use when displaying the field values.
      *
      * Available options are:
      * - enable (`data-display-as-percent-enable`): boolean; specifies whether to display the caption as a percentage.
@@ -257,35 +236,41 @@ export class FacetSlider extends Component {
     }),
 
     /**
-     * Specifies a function to generate the steps for the FacetSlider (see {@link FacetSlider.options.steps}. This
-     * function receives the FacetSlider boundaries (see {@link FacetSlider.options.start} and
-     * {@link FacetSlider.options.end}) and must return an array of numbers (the steps).
+     * Specifies a function to generate the `FacetSlider` steps (see the [`steps`]{@link FacetSlider.options.steps}
+     * option). This function receives the `FacetSlider` boundaries (see the [`start`]{@link FacetSlider.options.start}
+     * and [`end`]{@link FacetSlider.options.end} options), and must return an array of numbers (the steps).
      *
-     * You can only set this option in the {@link init} call of your search interface. You cannot set it directly in the
-     * markup as an HTML attribute.
+     * **Note:**
+     * > You cannot set this option directly in the component markup as an HTML attribute. You must either set it in the
+     * > [`init`]{@link init} call of your search interface (see
+     * > [Components - Passing Component Options in the init Call](https://developers.coveo.com/x/PoGfAQ#Components-PassingComponentOptionsintheinitCall)),
+     * > or before the `init` call, using the `options` top-level function (see
+     * > [Components - Passing Component Options Before the init Call](https://developers.coveo.com/x/PoGfAQ#Components-PassingComponentOptionsBeforetheinitCall)).
      *
      * **Example:**
-     *
      * ```javascript
-     * // You can call the init script using "pure" JavaScript:
-     * Coveo.init(document.querySelector('#search'), {
-     *    FacetSlider: {
-     *      field: "@size",
-     *      getSteps: function(start, end) {
-     *        return [0,2,4,6,8,10];
-     *      }
-     *    }
-     * })
      *
-     * // Or you can call the init script using the jQuery extension:
-     * $('#search').coveo('init', {
+     * var myGetStepsFunction = function(start, end) {
+     *   var result = [];
+     *   for (i = start; i < end; i += 2) {
+     *     result.push(i);
+     *   }
+     *   return result;
+     * }
+     *
+     * // You can set the option in the 'init' call:
+     * Coveo.init(document.querySelector("#search"), {
      *    FacetSlider: {
-     *        field: "@size",
-     *        getSteps: function(start, end) {
-     *            return [0,2,4,6,8,10];
-     *        }
+     *      getSteps: myGetStepsFunction
      *    }
-     * })
+     * });
+     *
+     * // Or before the 'init' call, using the 'options' top-level function:
+     * // Coveo.options(document.querySelector("#search"), {
+     * //   FacetSlider : {
+     * //     valueCaption : myGetStepsFunction
+     * //   }
+     * // });
      * ```
      */
     getSteps: ComponentOptions.buildCustomOption<(start: number, end: number) => number[]>(() => {
@@ -293,34 +278,36 @@ export class FacetSlider extends Component {
     }),
 
     /**
-     * Specifies a function to generate the caption for the FacetSlider. Receives the current slider values
-     * (number[]) and must return the caption (string).
+     * Specifies a function to generate the value caption for the `FacetSlider`. This function receives the current
+     * slider values (number[]), and must return the caption (string).
      *
-     * You can only set this option in the {@link init} call of your search interface. You cannot set it directly in the
-     * markup as an HTML attribute.
+     * **Note:**
+     * > You cannot set this option directly in the component markup as an HTML attribute. You must either set it in the
+     * > [`init`]{@link init} call of your search interface (see
+     * > [Components - Passing Component Options in the init Call](https://developers.coveo.com/x/PoGfAQ#Components-PassingComponentOptionsintheinitCall)),
+     * > or before the `init` call, using the `options` top-level function (see
+     * > [Components - Passing Component Options Before the init Call](https://developers.coveo.com/x/PoGfAQ#Components-PassingComponentOptionsBeforetheinitCall)).
      *
      * **Example:**
-     *
      * ```javascript
-     * // You can call the init script using "pure" JavaScript:
-     * Coveo.init(document.querySelector('#search'), {
-     *    FacetSlider: {
-     *      field: "@size",
-     *      valueCaption: function(values) {
-     *        return values[0] + " hello" + ", " + values[1] + " world";
-     *      }
-     *    }
-     * })
      *
-     * // Or you can call the init script using the jQuery extension:
-     * $('#search').coveo('init', {
-     *    FacetSlider: {
-     *      field: "@size",
-     *      valueCaption: function(values) {
-     *        return values[0] + " hello" + ", " + values[1] + " world";
-     *      }
-     *    }
-     * })
+     * var myValueCaptionFunction = function(values) {
+     *   return "From " + values[0] + " to " + values[1];
+     * }
+     *
+     * // You can set the option in the 'init' call:
+     * Coveo.init(document.querySelector("#search"), {
+     *   FacetSlider: {
+     *     valueCaption: myValueCaptionFunction
+     *   }
+     * });
+     *
+     * // Or before the 'init' call, using the 'options' top-level function:
+     * // Coveo.options(document.querySelector("#search"), {
+     * //   FacetSlider : {
+     * //     valueCaption : myValueCaptionFunction
+     * //   }
+     * // });
      * ```
      */
     valueCaption: ComponentOptions.buildCustomOption<(values: number[]) => string>(() => {
@@ -329,27 +316,38 @@ export class FacetSlider extends Component {
     }),
 
     /**
-     * Specifies whether to enable *responsive mode* for facets. Setting this options to `false` on any {@link Facet} or
-     * {@link FacetSlider} in a search interface disables responsive mode for all other facets in the search interface.
+     * Specifies whether to enable *responsive mode* for facets. Setting this options to `false` on any
+     * [`Facet`]{@link Facet} or [`FacetSlider`]{@link FacetSlider} in a search interface disables responsive mode for
+     * all other facets in the search interface.
      *
      * Responsive mode displays all facets under a single dropdown button whenever the width of the HTML element which
      * the search interface is bound to reaches or falls behind a certain threshold (see
      * {@link SearchInterface.responsiveComponents}).
      *
-     * See also {@link FacetSlider.options.dropdownHeaderLabel}.
+     * See also the `FacetSlider` [`dropdownHeaderLabel`]{@link FacetSlider.options.dropdownHeaderLabel} option.
      *
      * Default value is `true`.
      */
     enableResponsiveMode: ComponentOptions.buildBooleanOption({ defaultValue: true }),
+
     /**
-     * Specifies the label of the button that allows to show the facets when in responsive mode. If it is specified more than once, the
-     * first occurence of the option will be used.
-     * The default value is "Filters".
+     * Specifies the label of the button which the end user can click to display the facets when in responsive mode. If
+     * this option is configured more than once, the button uses the first occurrence of the option as its label.
+     *
+     * Default value is "Filters".
      */
     dropdownHeaderLabel: ComponentOptions.buildLocalizedStringOption()
   };
 
   static ID = 'FacetSlider';
+
+  static doExport = () => {
+    exportGlobally({
+      'FacetSlider': FacetSlider,
+      'Slider': Slider
+    });
+  }
+
   public static DEBOUNCED_RESIZE_DELAY = 250;
 
   public startOfSlider: number;
@@ -366,9 +364,9 @@ export class FacetSlider extends Component {
   private delayedGraphData: ISliderGraphData[];
 
   /**
-   * Creates a new FacetSlider component. Binds multiple query events as well.
+   * Creates a new `FacetSlider` component. Binds multiple query events as well.
    * @param element The HTMLElement on which to instantiate the component.
-   * @param options The options for the FacetSlider component.
+   * @param options The options for the `FacetSlider` component.
    * @param bindings The bindings that the component requires to function normally. If not set, these will be
    * automatically resolved (with a slower execution time).
    * @param slider
@@ -377,7 +375,7 @@ export class FacetSlider extends Component {
     super(element, FacetSlider.ID, bindings);
     this.options = ComponentOptions.initComponentOptions(element, FacetSlider, options);
 
-    ResponsiveFacets.init(this.root, this, this.options);
+    ResponsiveFacetSlider.init(this.root, this, this.options);
 
     if (this.options.excludeOuterBounds == null) {
       this.options.excludeOuterBounds = false;
@@ -389,11 +387,6 @@ export class FacetSlider extends Component {
 
     if (this.options.end) {
       this.options.end = this.options.dateField ? <any>new Date(this.options.end.replace(/-/g, '/')).getTime() : <any>Number(this.options.end);
-    }
-
-    if (this.hasAGraph() && typeof d3 == 'undefined') {
-      this.options.graph = undefined;
-      this.logger.info('Cannot find the required dependencies d3.js. Cannot add graphic to your facet range', this);
     }
 
     this.facetQueryController = new FacetSliderQueryController(this);
@@ -437,7 +430,7 @@ export class FacetSlider extends Component {
   }
 
   /**
-   * Resets the FacetSlider (meaning that you need to set the range value as inactive).
+   * Resets the `FacetSlider` (meaning that you need to set the range value as inactive).
    */
   public reset() {
     if (this.slider) {
@@ -448,7 +441,7 @@ export class FacetSlider extends Component {
   }
 
   /**
-   * Gets the current selection in the FacetSlider.
+   * Gets the current selection in the slider.
    *
    * **Note:**
    * > This method returns an array of number for selected date values. These numbers represent a number of milliseconds
@@ -484,8 +477,8 @@ export class FacetSlider extends Component {
   }
 
   /**
-   * Indicates whether the FacetSlider is active. An active FacetSlider outputs an expression in the query when a search
-   * is performed.
+   * Indicates whether the `FacetSlider` is active. An active `FacetSlider` outputs an expression in the query when a
+   * search is performed.
    * @returns {boolean} `true` if the FacetSlider is active; `false` otherwise.
    */
   public isActive(): boolean {
@@ -510,12 +503,20 @@ export class FacetSlider extends Component {
     }
   }
 
-  // There is delayed graph data if at the time the facet slider tried to draw the facet was hidden in the
+  // There is delayed graph data if at the time the facet slider tried to draw, the facet was hidden in the
   // facet dropdown. This method will draw delayed graph data if it exists.
   public drawDelayedGraphData() {
     if (this.delayedGraphData != undefined && !this.isEmpty) {
       this.slider.drawGraph(this.delayedGraphData);
     }
+  }
+
+  public isSimpleSliderConfig() {
+    return this.options.start != null && this.options.end != null;
+  }
+
+  public hasAGraph() {
+    return this.options.graph != undefined;
   }
 
   private handleNoresults(): void {
@@ -665,9 +666,7 @@ export class FacetSlider extends Component {
     this.ensureDom();
     this.setupSliderIfNeeded(data);
     let groupByResults = data.results.groupByResults[this.facetQueryController.lastGroupByRequestIndex];
-    if (groupByResults == undefined || groupByResults.values[0] == undefined) {
-      this.isEmpty = true;
-    }
+    this.isEmpty = this.isFacetEmpty(groupByResults);
     this.updateAppearanceDependingOnState();
     if (this.hasAGraph()) {
       this.renderToSliderGraph(data);
@@ -763,7 +762,7 @@ export class FacetSlider extends Component {
       });
     }
     if (totalGraphResults == 0) {
-      this.isEmpty = true;
+      this.isEmpty = !this.isSimpleSliderConfig();
       this.updateAppearanceDependingOnState();
     } else if (graphData != undefined && !this.isDropdownHidden()) {
       this.slider.drawGraph(graphData);
@@ -923,10 +922,6 @@ export class FacetSlider extends Component {
     }
   }
 
-  private hasAGraph() {
-    return this.options.graph != undefined;
-  }
-
   private updateAppearanceDependingOnState(sliding = false) {
     if (this.isEmpty && !this.isActive() && !sliding) {
       $$(this.element).addClass('coveo-disabled-empty');
@@ -948,5 +943,10 @@ export class FacetSlider extends Component {
   private handleNuke() {
     window.removeEventListener('resize', this.onResize);
   }
+
+  private isFacetEmpty(groupByResults: IGroupByResult) {
+    return groupByResults == null || groupByResults.values[0] == null;
+  }
 }
+
 Initialization.registerAutoCreateComponent(FacetSlider);

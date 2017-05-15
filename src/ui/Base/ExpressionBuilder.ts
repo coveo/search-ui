@@ -1,6 +1,6 @@
 import { Assert } from '../../misc/Assert';
 import { QueryUtils } from '../../utils/QueryUtils';
-import _ = require('underscore');
+import * as _ from 'underscore';
 
 /**
  * An `ExpressionBuilder` that is mostly used by the {@link QueryBuilder}.<br/>

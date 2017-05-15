@@ -2,8 +2,8 @@ import { Options } from '../misc/Options';
 import { Utils } from './Utils';
 import { l } from '../strings/Strings';
 import { TimeSpan } from './TimeSpanUtils';
-import Globalize = require('globalize');
-import _ = require('underscore');
+import * as Globalize from 'globalize';
+import * as _ from 'underscore';
 
 export interface IDateToStringOptions {
   now?: Date;

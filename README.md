@@ -1,8 +1,8 @@
-# Search UI [![Build Status](https://travis-ci.org/coveo/search-ui.svg?branch=master)](https://travis-ci.org/coveo/search-ui) [![TypeScript](https://badges.frapsoft.com/typescript/code/typescript.svg?v=101)](https://github.com/ellerbrock/typescript-badges/)
+# Search UI [![Build Status](https://travis-ci.org/coveo/search-ui.svg?branch=master)](https://travis-ci.org/coveo/search-ui) [![Coverage Status](https://coveralls.io/repos/github/coveo/search-ui/badge.svg?branch=master)](https://coveralls.io/github/coveo/search-ui?branch=master) [![TypeScript](https://badges.frapsoft.com/typescript/code/typescript.svg?v=101)](https://github.com/ellerbrock/typescript-badges/)
 
 Coveo JavaScript Search UI Framework
 
-<img id='readme-image' src='./readme.png' />
+<img id='readme-image' src='https://raw.githubusercontent.com/coveo/search-ui/master/readme.png' />
 
 ## Installation
 
@@ -17,6 +17,32 @@ If you are using a module bundler (Browserify, webpack, Babel, etc.), you can us
 
 Alternatively, you can download the latest version of the Coveo JavaScript Search UI Framework 
 [here](http://productupdate.coveo.com/?product=coveo-search-ui&version=1).
+
+## Including the Resources from a CDN
+
+Since the April 2017 release, it is possible to access the resources of any specific Coveo JavaScript Search  Framework 
+official release (from version `1.2537` on) through a content delivery network (CDN).
+
+You can simply use an URL such as `https://static.cloud.coveo.com/searchui/v[VERSION]/[PATH_TO_FILE]`, where you 
+replace `[VERSION]` by the actual release version number you wish to use and `[PATH_TO_FILE]` by the path of the file 
+you require.
+
+**Example:**
+> The following tags include the `1.2537` version (April 2017 release) of the `CoveoJsSearch.min.js`, `templateNew.js` 
+> and `CoveoFullSearchNewDesign.css` files.
+> ```
+> <head>
+>
+>   [ ... ]
+>
+>   <script src="https://static.cloud.coveo.com/searchui/v1.2537/js/CoveoJsSearch.min.js"></script>
+>   <script src="https://static.cloud.coveo.com/searchui/v1.2537/js/templates/templatesNew.js"></script>
+>   <link rel="stylesheet" href="https://static.cloud.coveo.com/searchui/v1.2537/css/CoveoFullSearchNewDesign.css" />
+>
+>   [ ... ]
+>
+>  </head>
+> ```
 
 ## Basic Usage
 
@@ -160,10 +186,10 @@ General reference documentation is generated using TypeDoc (see
 generated reference documentation lists and describes all available options and public methods for each component.
 
 Handwritten documentation with more examples is also available (see 
-[JavaScript Search Framework V1 Home](https://developers.coveo.com/display/JsSearchV1/JavaScript+Search+Framework+V1+Home)).
+[JavaScript Search Framework Home](https://developers.coveo.com/display/JsSearchV1/JavaScript+Search+Framework+V1+Home)).
 
 A tutorial is available (see 
-[JavaScript Search Framework V1 Getting Started Tutorial](https://developers.coveo.com/display/JsSearchV1/JavaScript+Search+Framework+V1+Getting+Started+Tutorial)). 
+[JavaScript Search Framework Getting Started Tutorial](https://developers.coveo.com/display/JsSearchV1/JavaScript+Search+Framework+V1+Getting+Started+Tutorial)). 
 If you are new to the Coveo JavaScript Search UI Framework, you should definitely consult this tutorial, as it contains 
 valuable information.
 

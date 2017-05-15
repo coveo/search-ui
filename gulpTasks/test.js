@@ -27,30 +27,24 @@ gulp.task('coverage', ['lcovCoverage']);
 
 gulp.task('test', ['setupTests', 'buildTest'], function (done) {
   new TestServer({
-    configFile: __dirname + '/../karma.conf.js',
+    configFile: path.resolve('./karma.conf.js')
   }, (exitCode) => {
     if (exitCode) {
       // Fail CI builds if any test fails (since karma will exit 1 on any error)
       throw new Error(exitCode);
     } else {
-      done()
+      done();
     }
   }).start();
 });
 
 gulp.task('buildTest', shell.task([
-  'node node_modules/webpack/bin/webpack.js --config ./webpackConfigFiles/webpack.test.config.js'
+  'node node_modules/webpack/bin/webpack.js --config webpack.test.config.js'
 ]));
 
 gulp.task('uploadCoverage', ['lcovCoverage'], shell.task([
   'cat bin/coverage/lcov.info | ./node_modules/.bin/coveralls'
 ]));
-
-gulp.task('testDev', ['watchTest'], function (done) {
-  new TestServer({
-    configFile: __dirname + '/../karma.dev.conf.js',
-  }, done).start();
-});
 
 gulp.task('remapCoverage', function (done) {
   return gulp.src(`${COVERAGE_DIR}/coverage-es5.json`)

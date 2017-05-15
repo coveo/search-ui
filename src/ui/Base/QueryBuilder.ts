@@ -3,7 +3,7 @@ import { IRankingFunction } from '../../rest/RankingFunction';
 import { IQueryFunction } from '../../rest/QueryFunction';
 import { IGroupByRequest } from '../../rest/GroupByRequest';
 import { IQuery } from '../../rest/Query';
-import _ = require('underscore');
+import * as _ from 'underscore';
 
 /**
  * Describe the expressions part of a QueryBuilder.
@@ -102,11 +102,11 @@ export class QueryBuilder {
    */
   public enableQuestionMarks: boolean;
   /**
-   * Whether to disable the special query syntax such as field references for the basic query expression (parameter q).
+   * Whether to enable the special query syntax such as field references for the basic query expression (parameter q).
    * It is equivalent to a No syntax block applied to the basic query expression.
    * If not specified, the parameter defaults to false.
    */
-  public disableQuerySyntax: boolean = false;
+  public enableQuerySyntax: boolean = false;
   /**
    * Whether to enable the support for operator in lowercase (AND OR -> and or).
    */
@@ -266,7 +266,7 @@ export class QueryBuilder {
       groupBy: this.groupByRequests,
       retrieveFirstSentences: this.retrieveFirstSentences,
       timezone: this.timezone,
-      disableQuerySyntax: this.disableQuerySyntax,
+      enableQuerySyntax: this.enableQuerySyntax,
       enableDuplicateFiltering: this.enableDuplicateFiltering,
       enableCollaborativeRating: this.enableCollaborativeRating,
       debug: this.enableDebug,

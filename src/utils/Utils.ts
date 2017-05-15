@@ -1,5 +1,5 @@
 import { IQueryResult } from '../rest/QueryResult';
-import _ = require('underscore');
+import * as _ from 'underscore';
 
 const isCoveoFieldRegex = /^@[a-zA-Z0-9_\.]+$/;
 
@@ -361,5 +361,13 @@ export class Utils {
         }
       }
     });
+  }
+
+  static concatWithoutDuplicate(firstArray: any[], secondArray: any[]) {
+    let diff = _.difference(secondArray, firstArray);
+    if (diff && diff.length > 0) {
+      firstArray = firstArray.concat(diff);
+    }
+    return firstArray;
   }
 }

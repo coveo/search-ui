@@ -15,12 +15,19 @@ export function TemplateListTest() {
       result = null;
     });
 
-    describe('when there is no templates', () => {
+    it('should throw when passing null or undefined in constructor', () => {
+      expect(() => new TemplateList(null)).toThrow();
+      expect(() => new TemplateList(undefined)).toThrow();
+    });
 
-      it('should return a default result template when instantiating to element', () => {
+    describe('when there are no templates', () => {
+
+      it('should return a default result template when instantiating to element', (done) => {
         let templateList = new TemplateList([]);
-        let element = templateList.instantiateToElement(result);
-        expect(element.innerHTML).toEqual(new DefaultResultTemplate().instantiateToString(result));
+        templateList.instantiateToElement(result).then(element => {
+          expect(element.innerHTML).toEqual(new DefaultResultTemplate().instantiateToString(result));
+          done();
+        });
       });
 
       it('should return a default result template when instantiating to string', () => {

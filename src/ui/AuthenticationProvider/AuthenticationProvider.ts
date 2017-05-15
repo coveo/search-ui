@@ -12,7 +12,9 @@ import { Initialization } from '../Base/Initialization';
 import { l } from '../../strings/Strings';
 import { ModalBox } from '../../ExternalModulesShim';
 import { MissingAuthenticationError } from '../../rest/MissingAuthenticationError';
-import _ = require('underscore');
+import * as _ from 'underscore';
+import { exportGlobally } from '../../GlobalExports';
+import 'styling/_AuthenticationProvider';
 
 export interface IAuthenticationProviderOptions {
   name?: string;
@@ -33,6 +35,12 @@ export interface IAuthenticationProviderOptions {
  */
 export class AuthenticationProvider extends Component {
   static ID = 'AuthenticationProvider';
+
+  static doExport = () => {
+    exportGlobally({
+      'AuthenticationProvider': AuthenticationProvider
+    });
+  }
 
   /**
    * The options for the component.
@@ -85,7 +93,6 @@ export class AuthenticationProvider extends Component {
   };
 
   private handlers: ((...args: any[]) => void)[];
-
   private redirectCount: number;
 
   /**
@@ -162,9 +169,9 @@ export class AuthenticationProvider extends Component {
 
   private createHandler(modalbox: Coveo.ModalBox.ModalBox, iframe: HTMLElement): () => void {
     return () => {
-      modalbox.close();
       $$(iframe).detach();
       this.logger.info(`Got authentication for provider ${this.options.name}; retrying query.`);
+      modalbox.close();
       this.queryController.executeQuery();
     };
   }
@@ -182,7 +189,8 @@ export class AuthenticationProvider extends Component {
     document.body.appendChild(iframe);
 
     ModalBox.open(popup, {
-      title: l('Authenticating', this.options.caption)
+      title: l('Authenticating', this.options.caption),
+      sizeMod: 'small'
     });
     return ModalBox;
   }
@@ -193,7 +201,8 @@ export class AuthenticationProvider extends Component {
 
     ModalBox.open(popup, {
       title: l('Authenticating', this.options.caption),
-      className: 'coveo-authentication-popup'
+      className: 'coveo-authentication-popup',
+      sizeMod: 'big'
     });
     return ModalBox;
   }

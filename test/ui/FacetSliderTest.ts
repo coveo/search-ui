@@ -42,7 +42,7 @@ export function FacetSliderTest() {
       expect(simulation.queryBuilder.build().groupBy).toEqual(jasmine.arrayContaining([
         jasmine.objectContaining({
           field: '@foo',
-          generateAutomaticRanges: true
+          generateAutomaticRanges: false
         })
       ]));
     });

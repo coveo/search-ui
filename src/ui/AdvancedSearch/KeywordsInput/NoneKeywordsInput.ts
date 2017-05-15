@@ -1,6 +1,6 @@
 import { KeywordsInput } from './KeywordsInput';
 import { l } from '../../../strings/Strings';
-import _ = require('underscore');
+import * as _ from 'underscore';
 
 export class NoneKeywordsInput extends KeywordsInput {
   constructor() {

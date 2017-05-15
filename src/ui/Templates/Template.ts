@@ -5,7 +5,11 @@ import { TemplateConditionEvaluator } from './TemplateConditionEvaluator';
 import { TemplateFieldsEvaluator } from './TemplateFieldsEvaluator';
 import { IQueryResult } from '../../rest/QueryResult';
 import { ResponsiveComponents } from '../ResponsiveComponents/ResponsiveComponents';
-import _ = require('underscore');
+import * as _ from 'underscore';
+import { Initialization, LazyInitialization } from '../Base/Initialization';
+import { Utils } from '../../utils/Utils';
+
+export type TemplateRole = 'table-header' | 'table-footer';
 
 export interface ITemplateProperties {
   condition?: Function;
@@ -15,6 +19,7 @@ export interface ITemplateProperties {
   tablet?: boolean;
   desktop?: boolean;
   fieldsToMatch?: IFieldsToMatch[];
+  role?: TemplateRole;
 }
 
 export interface IFieldsToMatch {
@@ -69,8 +74,9 @@ export class Template implements ITemplateProperties {
   public mobile: boolean;
   public tablet: boolean;
   public desktop: boolean;
-  public fields: string[];
+  public fields: string[] = [];
   public layout: ValidLayout;
+  public role: TemplateRole;
 
   constructor(public dataToString?: (object?: any) => string) {
   }
@@ -82,8 +88,8 @@ export class Template implements ITemplateProperties {
       }
 
       // Should not happen but...
-      // Normally, top level call from sub-class will have already created a DefaultInstantiateTemplateOptions
-      // and merged down
+      // Normally, top level call from sub-class will have already created a
+      // DefaultInstantiateTemplateOptions and merged down
       if (instantiateOptions.responsiveComponents == null) {
         instantiateOptions.responsiveComponents = new ResponsiveComponents();
       }
@@ -146,23 +152,59 @@ export class Template implements ITemplateProperties {
     return null;
   }
 
-  instantiateToElement(object: IQueryResult, instantiateTemplateOptions: IInstantiateTemplateOptions = {}): HTMLElement {
-    let merged = new DefaultInstantiateTemplateOptions().merge(instantiateTemplateOptions);
+  addField(field: string) {
+    if (!_.contains(this.fields, field)) {
+      this.fields.push(field);
+    }
+  }
 
-    var html = this.instantiateToString(object, merged);
-    if (html != null) {
-      var element = $$('div', {}, html).el;
-      if (!merged.wrapInDiv && element.children.length === 1) {
+  addFields(fields: string[]) {
+    if (Utils.isNonEmptyArray(fields)) {
+      this.fields = Utils.concatWithoutDuplicate(this.fields, fields);
+    }
+  }
+
+  getComponentsInside(tmplString: string): string[] {
+    let allComponentsInsideCurrentTemplate = _.map(Initialization.getListOfRegisteredComponents(), (componentId: string) => {
+      let regex = new RegExp(`Coveo${componentId}`, 'g');
+      if (regex.exec(tmplString)) {
+        return componentId;
+      } else {
+        return null;
+      }
+    });
+
+    return _.compact(allComponentsInsideCurrentTemplate);
+  }
+
+  instantiateToElement(object: IQueryResult, instantiateTemplateOptions: IInstantiateTemplateOptions = {}): Promise<HTMLElement> {
+    let mergedOptions = new DefaultInstantiateTemplateOptions().merge(instantiateTemplateOptions);
+
+    var html = this.instantiateToString(object, mergedOptions);
+    if (html == null) {
+      return null;
+    }
+
+    let allComponentsLazyLoaded = _.map(this.getComponentsInside(html), (component: string) => {
+      return LazyInitialization.getLazyRegisteredComponent(component).then((lazyLoadedComponent) => {
+        return lazyLoadedComponent;
+      });
+    });
+
+    return Promise.all(allComponentsLazyLoaded).then(() => {
+      const layout = this.layout || mergedOptions.currentLayout;
+      const elemType = layout === 'table' ? 'tr' : 'div';
+      var element = $$(elemType, {}, html).el;
+      if (!mergedOptions.wrapInDiv && element.children.length === 1) {
         element = <HTMLElement>element.children.item(0);
       }
-      if (this.layout) {
-        $$(element).addClass(`coveo-${this.layout}-layout`);
+      if (layout) {
+        $$(element).addClass(`coveo-${layout}-layout`);
       }
       this.logger.trace('Instantiated result template', object, element);
       element['template'] = this;
       return element;
-    }
-    return null;
+    });
   }
 
   toHtmlElement(): HTMLElement {
@@ -170,7 +212,7 @@ export class Template implements ITemplateProperties {
   }
 
   getFields(): string[] {
-    return this.fields || [];
+    return this.fields;
   }
 
   getType() {

@@ -12,12 +12,6 @@
       "node_modules/@types"
     ]
   },
-  "lib": [
-    "DOM",
-    "ES5",
-    "ScriptHost",
-    "ES2015.Promise"
-  ],
   "include": [
     "src/**/*.ts"
   ]

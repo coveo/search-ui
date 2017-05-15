@@ -12,7 +12,8 @@ import { Initialization } from '../Base/Initialization';
 import { $$ } from '../../utils/Dom';
 import { StandaloneSearchInterface } from '../SearchInterface/SearchInterface';
 import { IStringMap } from '../../rest/GenericParam';
-import _ = require('underscore');
+import * as _ from 'underscore';
+import { exportGlobally } from '../../GlobalExports';
 
 export interface IAnalyticsSuggestionsOptions extends ISuggestionForOmniboxOptions {
 }
@@ -28,9 +29,20 @@ export interface IAnalyticsSuggestionsOptions extends ISuggestionForOmniboxOptio
  * The query suggestions appear in the {@link Omnibox} Component. The AnalyticsSuggestion component strongly
  * relates to the {@link Analytics} component. While a user is typing in a query box, the AnalyticsSuggestion component
  * allows them to see and select the most commonly used and relevant queries.
+ *
+ * @deprecated This component is exposed for legacy reasons. If possible, you should avoid using this component.
+ * Instead, you should use the [`Omnibox`]{@link Omnibox}
+ * [`enableQuerySuggesAddon`]{@link Omnibox.options.enableQuerySuggestAddon} option.
  */
 export class AnalyticsSuggestions extends Component {
   static ID = 'AnalyticsSuggestions';
+
+  static doExport() {
+    exportGlobally({
+      'AnalyticsSuggestions': AnalyticsSuggestions
+    });
+  }
+
   /**
    * The options for the component
    * @componentOptions

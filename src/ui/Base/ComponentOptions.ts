@@ -9,7 +9,7 @@ import { UnderscoreTemplate } from '../Templates/UnderscoreTemplate';
 import { HtmlTemplate } from '../Templates/HtmlTemplate';
 import { Utils } from '../../utils/Utils';
 import { l } from '../../strings/Strings';
-import _ = require('underscore');
+import * as _ from 'underscore';
 
 /**
  * Declare a type for options that should contain a field to be used in a query.
@@ -76,7 +76,7 @@ export interface IComponentOptions<T> {
    *
    * This can be useful to modify the name of an option without introducing a breaking change.
    */
-  alias?: string;
+  alias?: string | string[];
   /**
    * Specify a section name inside which the option should appear in the interface editor.
    */
@@ -728,8 +728,17 @@ export class ComponentOptions {
   }
 
   static getAttributeFromAlias(element: HTMLElement, option: IComponentOptions<any>) {
-    if (option.alias) {
-      return element.getAttribute(ComponentOptions.attrNameFromName(option.alias));
+    if (_.isArray(option.alias)) {
+      let attributeFound;
+      _.each(option.alias, alias => {
+        const attributeFoundWithThisAlias = element.getAttribute(ComponentOptions.attrNameFromName(alias));
+        if (attributeFoundWithThisAlias) {
+          attributeFound = attributeFoundWithThisAlias;
+        }
+      });
+      return attributeFound;
+    } else {
+      return element.getAttribute(ComponentOptions.attrNameFromName(<string>option.alias));
     }
   }
 

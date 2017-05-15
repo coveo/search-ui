@@ -8,7 +8,7 @@ import { IAnalyticsActionCause, IAnalyticsOmniboxFacetMeta } from '../Analytics/
 import { $$ } from '../../utils/Dom';
 import { Utils } from '../../utils/Utils';
 import { FacetUtils } from './FacetUtils';
-import _ = require('underscore');
+import * as _ from 'underscore';
 
 export class OmniboxValuesList {
   constructor(public facet: Facet, public facetValues: FacetValue[], public omniboxObject: IPopulateOmniboxObject, public omniboxValueElementKlass: IOmniboxValueElementKlass) {

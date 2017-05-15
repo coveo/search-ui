@@ -10,7 +10,7 @@ if (travisBranchName) {
   branchToTag = travisBranchName.replace('-beta', '');
   const match = branchToTag.match(/([0-9]{1}.[0-9]+).[0-9]+/);
   if (match) {
-    if (match[1] == '1.0') {
+    if (match[1] == '2.0' || match[1] == '1.0') {
       branchToTag = '-master';
     } else {
       branchToTag = `-${match[1]}`;

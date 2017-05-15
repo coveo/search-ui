@@ -1,9 +1,11 @@
-
 import { ComponentOptions } from '../Base/ComponentOptions';
 import { Component } from '../Base/Component';
 import { IComponentBindings } from '../Base/ComponentBindings';
 import { Initialization } from '../Base/Initialization';
 import { $$ } from '../../utils/Dom';
+import { exportGlobally } from '../../GlobalExports';
+
+import 'styling/_Text';
 
 export interface ITextOptions {
   value?: string;
@@ -38,6 +40,12 @@ export interface ITextOptions {
  */
 export class Text extends Component {
   static ID = 'Text';
+
+  static doExport = () => {
+    exportGlobally({
+      'Text': Text
+    });
+  }
 
   /**
    * @componentOptions

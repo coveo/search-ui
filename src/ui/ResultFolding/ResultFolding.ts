@@ -3,15 +3,17 @@ import { Component } from '../Base/Component';
 import { IComponentBindings } from '../Base/ComponentBindings';
 import { ComponentOptions } from '../Base/ComponentOptions';
 import { DefaultFoldingTemplate } from './DefaultFoldingTemplate';
-import { Promise } from 'es6-promise';
 import { IQueryResult } from '../../rest/QueryResult';
 import { Utils } from '../../utils/Utils';
 import { QueryUtils } from '../../utils/QueryUtils';
-import { Initialization, IInitializationParameters } from '../Base/Initialization';
+import { Initialization, IInitializationParameters, IInitResult } from '../Base/Initialization';
 import { Assert } from '../../misc/Assert';
 import { $$ } from '../../utils/Dom';
 import { l } from '../../strings/Strings';
-import _ = require('underscore');
+import * as _ from 'underscore';
+import { exportGlobally } from '../../GlobalExports';
+
+import 'styling/_ResultFolding';
 
 export interface IResultFoldingOptions {
   resultTemplate?: Template;
@@ -33,6 +35,13 @@ export interface IResultFoldingOptions {
  */
 export class ResultFolding extends Component {
   static ID = 'ResultFolding';
+
+  static doExport = () => {
+    exportGlobally({
+      'ResultFolding': ResultFolding,
+      'DefaultFoldingTemplate': DefaultFoldingTemplate
+    });
+  }
 
   /**
    * The options for the component
@@ -127,18 +136,23 @@ export class ResultFolding extends Component {
     Assert.exists(result);
 
     this.buildElements();
-    this.displayThoseResults(this.result.childResults);
-    this.updateElementVisibility();
+    this.displayThoseResults(this.result.childResults).then(() => {
+      this.updateElementVisibility();
 
-    if ($$(this.element.parentElement).hasClass('CoveoCardOverlay')) {
-      this.bindOverlayEvents();
-    }
+      if ($$(this.element.parentElement).hasClass('CoveoCardOverlay')) {
+        this.bindOverlayEvents();
+      }
 
-    if (this.result.childResults.length == 0 && !this.result.moreResults) {
-      $$(this.element).hide();
-    }
+      if (this.result.childResults.length == 0 && !this.result.moreResults) {
+        $$(this.element).hide();
+      }
+    });
   }
 
+  /**
+   *
+   * @returns {Promise<IQueryResult[]>}
+   */
   public showMoreResults() {
     Assert.exists(this.result.moreResults);
 
@@ -148,19 +162,24 @@ export class ResultFolding extends Component {
     this.results.appendChild(this.waitAnimation);
     this.updateElementVisibility();
 
-    this.moreResultsPromise
+    let ret = this.moreResultsPromise
       .then((results?: IQueryResult[]) => {
         this.childResults = results;
         this.showingMoreResults = true;
-        this.displayThoseResults(results);
-        this.updateElementVisibility(results.length);
-        return results;
-      })
-      .finally((results?: IQueryResult[]) => {
-        this.moreResultsPromise = undefined;
-        $$(this.waitAnimation).detach();
-        this.waitAnimation = undefined;
+        return this.displayThoseResults(results).then(() => {
+          this.updateElementVisibility(results.length);
+          return results;
+        });
+
       });
+
+    ret.finally(() => {
+      this.moreResultsPromise = undefined;
+      $$(this.waitAnimation).detach();
+      this.waitAnimation = undefined;
+    });
+
+    return ret;
   }
 
   public showLessResults() {
@@ -250,36 +269,45 @@ export class ResultFolding extends Component {
     window.scrollTo(0, window.scrollY + resultElem.getBoundingClientRect().top);
   }
 
-  private displayThoseResults(results: IQueryResult[]) {
-    $$(this.results).empty();
-    _.each(results, (result) => {
-      this.renderChildResult(result);
+  private displayThoseResults(results: IQueryResult[]): Promise<boolean> {
+    const childResultsPromises = _.map(results, (result) => {
+      return this.renderChildResult(result);
+    });
+
+    return Promise.all(childResultsPromises).then((childsToAppend: HTMLElement[]) => {
+      $$(this.results).empty();
+      _.each(childsToAppend, (oneChild) => {
+        this.results.appendChild(oneChild);
+      });
+      return true;
     });
   }
 
-  private renderChildResult(childResult: IQueryResult) {
+  private renderChildResult(childResult: IQueryResult): Promise<HTMLElement> {
     QueryUtils.setStateObjectOnQueryResult(this.queryStateModel.get(), childResult);
     QueryUtils.setSearchInterfaceObjectOnQueryResult(this.searchInterface, childResult);
 
-    let oneChild = this.options.resultTemplate.instantiateToElement(childResult, {
+    return this.options.resultTemplate.instantiateToElement(childResult, {
       wrapInDiv: false,
       checkCondition: false,
       responsiveComponents: this.searchInterface.responsiveComponents
-    });
-    $$(oneChild).addClass('coveo-result-folding-child-result');
-    this.results.appendChild(oneChild);
+    }).then((oneChild: HTMLElement) => {
+      $$(oneChild).addClass('coveo-result-folding-child-result');
 
-    $$(oneChild).toggleClass('coveo-normal-child-result', !this.showingMoreResults);
-    $$(oneChild).toggleClass('coveo-expanded-child-result', this.showingMoreResults);
-    this.autoCreateComponentsInsideResult(oneChild, childResult);
+      $$(oneChild).toggleClass('coveo-normal-child-result', !this.showingMoreResults);
+      $$(oneChild).toggleClass('coveo-expanded-child-result', this.showingMoreResults);
+      return this.autoCreateComponentsInsideResult(oneChild, childResult).initResult.then(() => {
+        return oneChild;
+      });
+    });
   }
 
-  private autoCreateComponentsInsideResult(element: HTMLElement, result: IQueryResult) {
+  private autoCreateComponentsInsideResult(element: HTMLElement, result: IQueryResult): IInitResult {
     Assert.exists(element);
 
     let initOptions = this.searchInterface.options;
     let initParameters: IInitializationParameters = { options: initOptions, bindings: this.getBindings(), result: result };
-    Initialization.automaticallyCreateComponentsInside(element, initParameters);
+    return Initialization.automaticallyCreateComponentsInside(element, initParameters);
   }
 
   private cancelAnyPendingShowMore() {

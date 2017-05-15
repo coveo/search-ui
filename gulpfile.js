@@ -7,18 +7,18 @@ requireDir('./gulpTasks');
 
 gulp.task('default', ['build', 'buildLegacy']);
 
-gulp.task('build', ['linkGitHooks'], function (done) {
-  runsequence('clean', ['css', 'fileTypes', 'sprites', 'strings', 'setup', 'templates'], 'prettify', 'src', done);
+gulp.task('build', ['linkGitHooks', 'setNodeProdEnv'], (done) => {
+  runsequence('clean', ['fileTypes', 'spritesLists', 'strings', 'setup', 'templates'], 'prettify', 'src', done);
 });
 
-gulp.task('src', function (done) {
+gulp.task('src', (done) => {
   runsequence('compile', 'definitions', done);
 });
 
-gulp.task('buildLegacy', function (done) {
-  runsequence(['cssLegacy', 'fileTypesLegacy', 'spritesLegacy', 'templatesLegacy'], done);
+gulp.task('buildLegacy', (done) => {
+  runsequence('legacy', done);
 });
 
-gulp.task('clean', function () {
-  return del(['./bin', './zip/**.zip']);
+gulp.task('clean', () => {
+  return del.sync(['./bin/**/*']);
 });

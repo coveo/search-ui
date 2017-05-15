@@ -6,7 +6,10 @@ import { IQueryResult } from '../../rest/QueryResult';
 import { Assert } from '../../misc/Assert';
 import { $$ } from '../../utils/Dom';
 import { KeyboardUtils, KEYBOARD } from '../../utils/KeyboardUtils';
-import _ = require('underscore');
+import * as _ from 'underscore';
+import { exportGlobally } from '../../GlobalExports';
+
+import 'styling/_CardActionBar';
 
 export interface ICardActionBarOptions {
   hidden?: boolean;
@@ -36,6 +39,12 @@ export interface ICardActionBarOptions {
  */
 export class CardActionBar extends Component {
   static ID = 'CardActionBar';
+
+  static doExport = () => {
+    exportGlobally({
+      'CardActionBar': CardActionBar
+    });
+  }
 
   parentResult: HTMLElement;
   arrowContainer: HTMLElement;

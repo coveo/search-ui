@@ -5,8 +5,6 @@ import { SearchAlertsMessage } from './SearchAlertsMessage';
 import { SettingsEvents } from '../../events/SettingsEvents';
 import { QueryEvents } from '../../events/QueryEvents';
 import { Assert } from '../../misc/Assert';
-import { Querybox } from '../Querybox/Querybox';
-import { Omnibox } from '../Omnibox/Omnibox';
 import { IQuery } from '../../rest/Query';
 import { AjaxError } from '../../rest/AjaxError';
 import { ISettingsPopulateMenuArgs } from '../Settings/Settings';
@@ -19,7 +17,8 @@ import { ModalBox } from '../../ExternalModulesShim';
 import {
   analyticsActionCauseList, IAnalyticsSearchAlertsUpdateMeta, IAnalyticsSearchAlertsMeta, IAnalyticsActionCause
 } from '../Analytics/AnalyticsActionListMeta';
-import _ = require('underscore');
+import * as _ from 'underscore';
+import { exportGlobally } from '../../GlobalExports';
 
 export interface ISearchAlertsOptions {
   enableManagePanel?: boolean;
@@ -41,6 +40,13 @@ export interface ISearchAlertsOptions {
  */
 export class SearchAlerts extends Component {
   static ID = 'SearchAlerts';
+
+  static doExport = () => {
+    exportGlobally({
+      'SearchAlerts': SearchAlerts,
+      'SearchAlertsMessage': SearchAlertsMessage
+    });
+  }
 
   /**
    * The options for the search alerts
@@ -158,7 +164,7 @@ export class SearchAlerts extends Component {
             // Trap 503 error, as the listSubscription call is called on every page initialization
             // to check for current subscriptions. By default, the search alert service is not enabled for most organization
             // Don't want to pollute the console with un-needed noise and confusion
-            if (e.status != 503) {
+            if (e.status != 403) {
               throw e;
             }
           });
@@ -203,17 +209,10 @@ export class SearchAlerts extends Component {
   public openPanel(): Promise<ISubscription> {
     let title = $$('div');
 
-    let close = $$('div', {
-      className: 'coveo-subscriptions-panel-close'
-    }, $$('span', {
-      className: 'coveo-icon'
-    }));
-
     let titleInfo = $$('div', {
       className: 'coveo-subscriptions-panel-title'
     }, l('SearchAlerts_Panel'));
 
-    title.append(close.el);
     title.append(titleInfo.el);
 
     let container = $$('div');
@@ -252,11 +251,10 @@ export class SearchAlerts extends Component {
           titleClose: false,
           overlayClose: true,
           title: title.el.outerHTML,
-          className: 'coveo-subscriptions-panel'
+          className: 'coveo-subscriptions-panel',
+          sizeMod: 'small'
         });
-        $$($$(this.modal.modalBox).find('.coveo-subscriptions-panel-close')).on('click', () => {
-          this.close();
-        });
+
       });
   }
 
@@ -395,11 +393,11 @@ export class SearchAlerts extends Component {
 
   protected findQueryBoxDom(): HTMLElement {
     let dom: HTMLElement;
-    let components = this.searchInterface.getComponents<Component>(Querybox.ID);
+    let components = this.searchInterface.getComponents<Component>('Querybox');
     if (components && components.length > 0) {
       dom = _.first(components).element;
     } else {
-      let components = this.searchInterface.getComponents<Component>(Omnibox.ID);
+      let components = this.searchInterface.getComponents<Component>('Omnibox');
       if (components && components.length > 0) {
         dom = _.first(components).element;
       }
