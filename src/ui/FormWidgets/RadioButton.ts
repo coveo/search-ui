@@ -40,12 +40,13 @@ export class RadioButton implements IFormWidgetWithLabel, IFormWidgetSelectable 
   }
 
   /**
-   * Selects the radio button.
+   * Select the radio button
+   * @param triggerChange will trigger change event if specified and the radio button is not already selected
    */
-  public select() {
+  public select(triggerChange = true) {
     const currentlySelected = this.isSelected();
     this.getRadio().checked = true;
-    if (!currentlySelected) {
+    if (!currentlySelected && triggerChange) {
       this.onChange(this);
     }
   }

@@ -18,7 +18,6 @@ import { IJQuery } from './CoveoJQuery';
 import * as _ from 'underscore';
 import { IStringMap } from '../../rest/GenericParam';
 import { InitializationPlaceholder } from './InitializationPlaceholder';
-import { NoopComponent } from '../NoopComponent/NoopComponent';
 declare const require: any;
 
 /**

@@ -102,6 +102,7 @@ export class FacetSearchParameters {
     lastQuery.q = this.facet.facetQueryController.basicExpressionToUseForFacetSearch;
     lastQuery.cq = this.facet.facetQueryController.constantExpressionToUseForFacetSearch;
     lastQuery.aq = this.facet.facetQueryController.advancedExpressionToUseForFacetSearch;
+    lastQuery.enableQuerySyntax = true;
     lastQuery.enableDidYouMean = false;
     lastQuery.firstResult = 0;
     lastQuery.numberOfResults = 0;
