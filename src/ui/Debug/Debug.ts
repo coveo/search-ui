@@ -1,7 +1,5 @@
 import { ComponentOptions } from '../Base/ComponentOptions';
 import { LocalStorageUtils } from '../../utils/LocalStorageUtils';
-import { IFieldDescription } from '../../rest/FieldDescription';
-import { IBuildingQueryEventArgs, IQuerySuccessEventArgs, QueryEvents } from '../../events/QueryEvents';
 import { ResultListEvents, IDisplayedNewResultEventArgs } from '../../events/ResultListEvents';
 import { DebugEvents } from '../../events/DebugEvents';
 import { IQueryResults } from '../../rest/QueryResults';
@@ -14,15 +12,13 @@ import { RootComponent } from '../Base/RootComponent';
 import { BaseComponent } from '../Base/BaseComponent';
 import { ModalBox as ModalBoxModule } from '../../ExternalModulesShim';
 import Globalize = require('globalize');
-import { IStringMap } from '../../rest/GenericParam';
 import * as _ from 'underscore';
 import 'styling/_Debug';
 import { l } from '../../strings/Strings';
 import { IComponentBindings } from '../Base/ComponentBindings';
-import { COMPONENT_OPTIONS_ATTRIBUTES } from '../../models/ComponentOptionsModel';
-import { Checkbox } from '../FormWidgets/Checkbox';
-import { TextInput } from '../FormWidgets/TextInput';
 import { DebugHeader } from './DebugHeader';
+import { QueryEvents, IQuerySuccessEventArgs } from '../../events/QueryEvents';
+import { DebugForResult } from './DebugForResult';
 
 export interface IDebugOptions {
   enableDebug?: boolean;
@@ -41,109 +37,102 @@ export class Debug extends RootComponent {
   public collapsedSections: string[];
   private modalBox: Coveo.ModalBox.ModalBox;
   private opened = false;
-  private fields: { [field: string]: IFieldDescription };
   private stackDebug: any;
 
-  public showDebugPanel: ()=> void;
-
-  private debugHeader: DebugHeader;
-
+  public showDebugPanel: () => void;
 
   constructor(public element: HTMLElement, public bindings: IComponentBindings, public options?: IDebugOptions, public ModalBox = ModalBoxModule) {
     super(element, Debug.ID);
     this.options = ComponentOptions.initComponentOptions(element, Debug, options);
 
-    this.showDebugPanel = _.debounce(()=> this.openModalBox(), 100);
-    this.debugHeader = new DebugHeader(this.element, this.bindings);
-
-    $$(this.element).on(QueryEvents.buildingQuery, (e, args: IBuildingQueryEventArgs) => {
-      args.queryBuilder.enableDebug = this.debug || args.queryBuilder.enableDebug;
-    });
+    // This gets debounced so the following logic works correctly :
+    // When you alt dbl click on a component, it's possible to add/merge multiple debug info source together
+    // They will be merged together in this.addInfoToDebugPanel
+    // Then, openModalBox, even if it's called from multiple different caller will be opened only once all the info has been merged together correctly
+    this.showDebugPanel = _.debounce(() => this.openModalBox(), 100);
 
     $$(this.element).on(ResultListEvents.newResultDisplayed, (e, args: IDisplayedNewResultEventArgs) => this.handleNewResultDisplayed(args));
-    $$(this.element).on(DebugEvents.showDebugPanel, (e, args) => {
-      debugger;
-      this.addInfoToDebugPanel(args);
-      this.buildStackPanel(args);
-      //this.showDebugPanel();
-    });
+    $$(this.element).on(DebugEvents.showDebugPanel, (e, args) => this.handleShowDebugPanel(args));
+    $$(this.element).on(QueryEvents.querySuccess, (e, args: IQuerySuccessEventArgs) => this.handleQuerySuccess(args));
+    $$(this.element).on(QueryEvents.newQuery, ()=> this.handleNewQuery());
 
     this.localStorageDebug = new LocalStorageUtils<string[]>('DebugPanel');
     this.collapsedSections = this.localStorageDebug.load() || [];
   }
 
-  public buildFieldsSection(result: IQueryResult) {
-    return this.fetchFields()
-      .then((fieldDescriptions: IStringMap<IFieldDescription>) => {
-        let fields = {};
-        _.each(result.raw, (value: any, key: string) => {
-          let fieldDescription = fieldDescriptions['@' + key];
-          if (fieldDescription == null && key.match(/^sys/)) {
-            fieldDescription = fieldDescriptions['@' + key.substr(3)];
-          }
-          if (fieldDescription == null) {
-            fields['@' + key] = value;
-          } else if (fieldDescription.fieldType == 'Date') {
-            fields['@' + key] = new Date(value);
-          } else if (fieldDescription.splitGroupByField && _.isString(value)) {
-            fields['@' + key] = value.split(/\s*;\s*/);
-          } else {
-            fields['@' + key] = value;
-          }
-        });
-        return fields;
-      });
+  public debugInfo() {
+    return null;
   }
 
-  public parseRankingInfo(value: string) {
-    let rankingInfo = {};
-    if (value) {
-      let documentWeights = /Document weights:\n((?:.)*?)\n+/g.exec(value);
-      let termsWeight = /Terms weights:\n((?:.|\n)*)\n+/g.exec(value);
-      let totalWeight = /Total weight: ([0-9]+)/g.exec(value);
-
-      if (documentWeights && documentWeights[1]) {
-        rankingInfo['Document weights'] = this.parseWeights(documentWeights[1]);
-      }
-
-      if (totalWeight && totalWeight[1]) {
-        rankingInfo['Total weight'] = Number(totalWeight[1]);
-      }
-
-      if (termsWeight && termsWeight[1]) {
-        let terms = StringUtils.match(termsWeight[1], /((?:[^:]+: [0-9]+, [0-9]+; )+)\n((?:\w+: [0-9]+; )+)/g);
-        rankingInfo['Terms weights'] = _.object(_.map(terms, (term) => {
-          let words = _.object(_.map(StringUtils.match(term[1], /([^:]+): ([0-9]+), ([0-9]+); /g), (word) => {
-            return [
-              word[1],
-              {
-                Correlation: Number(word[2]),
-                'TF-IDF': Number(word[3]),
-              }
-            ];
-          }));
-          let weights = this.parseWeights(term[2]);
-          return [
-            _.keys(words).join(', '),
-            {
-              terms: words,
-              Weights: weights
-            }];
-        }));
-      }
+  public addInfoToDebugPanel(info: any) {
+    if (this.stackDebug == null) {
+      this.stackDebug = {};
     }
-
-    return rankingInfo;
+    this.stackDebug = _.extend({}, this.stackDebug, info);
   }
 
-  public buildStackPanel(results?: IQueryResults): { body: HTMLElement; json: any; } {
-    let body = Dom.createElement('div', { className: 'coveo-debug' });
+  private handleNewResultDisplayed(args: IDisplayedNewResultEventArgs) {
+    $$(args.item).on('dblclick', (e: MouseEvent) => {
+      this.handleResultDoubleClick(e, args);
+    });
+  }
 
-    let keys: any[][] = _.pairs(_.keys(this.stackDebug));
+  private handleResultDoubleClick(e: MouseEvent, args: IDisplayedNewResultEventArgs) {
+    if (e.altKey) {
+      let index = args.result.index;
 
-    keys = keys.sort((a: any[], b: any[]) => {
-      let indexA = _.indexOf(Debug.customOrder, a[1]);
-      let indexB = _.indexOf(Debug.customOrder, b[1]);
+      let template = args.item['template'];
+
+      let findResult = (results?: IQueryResults) => results != null ? _.find(results.results, (result: IQueryResult) => result.index == index) : args.result;
+
+      let debugInfo = _.extend(new DebugForResult(this.bindings).generateDebugInfoForResult(args.result), {
+        findResult: findResult,
+        template: this.templateToJson(template),
+      });
+
+      this.addInfoToDebugPanel(debugInfo);
+      this.showDebugPanel();
+    }
+  }
+
+  private handleQuerySuccess(args: IQuerySuccessEventArgs) {
+    if (this.opened) {
+      if (this.stackDebug && this.stackDebug.findResult) {
+        this.addInfoToDebugPanel(new DebugForResult(this.bindings).generateDebugInfoForResult(this.stackDebug.findResult(args.results)));
+      }
+      this.redrawDebugPanel();
+      this.hideAnimationDuringQuery();
+    }
+  }
+
+  private handleNewQuery() {
+    if (this.opened) {
+      this.showAnimationDuringQuery();
+    }
+  }
+
+  private handleShowDebugPanel(args: any) {
+    this.addInfoToDebugPanel(args);
+    this.showDebugPanel();
+  }
+
+  private buildStackPanel(): { body: HTMLElement; json: any; } {
+    const body = $$('div', {
+      className: 'coveo-debug'
+    });
+
+    let keys = _.chain(this.stackDebug)
+                .omit('findResult') // findResult is a duplicate of the simpler "result" key used to retrieve the results only
+                .keys()
+                .value();
+
+    // TODO Can't chain this properly due to a bug in underscore js definition file.
+    // Yep, A PR is opened to DefinitelyTyped.
+    let keysPaired = _.pairs(keys);
+
+    keysPaired = keysPaired.sort((a: any[], b: any[]) => {
+      const indexA = _.indexOf(Debug.customOrder, a[1]);
+      const indexB = _.indexOf(Debug.customOrder, b[1]);
       if (indexA != -1 && indexB != -1) {
         return indexA - indexB;
       }
@@ -156,35 +145,38 @@ export class Debug extends RootComponent {
       return a[0] - b[0];
     });
 
-    let json = {};
+    const json = {};
 
-    _.forEach(keys, (key: string[]) => {
+    _.forEach(keysPaired, (key: string[]) => {
       let section = this.buildSection(key[1]);
-      let build = this.buildStackPanelSection(stackDebug[key[1]], results);
+      let build = this.buildStackPanelSection(this.stackDebug[key[1]], this.stackDebug['result']);
       section.container.appendChild(build.section);
       if (build.json != null) {
         json[key[1]] = build.json;
       }
-      body.appendChild(section.dom);
+      body.append(section.dom);
     });
 
-    return { body: body, json: json };
+    return {
+      body: body.el,
+      json: json
+    };
   }
 
-  public debugInfo() {
+  private getModalBody() {
+    if (this.modalBox && this.modalBox.content) {
+      return $$(this.modalBox.content).find('.coveo-modal-body');
+    }
     return null;
   }
 
-  private addInfoToDebugPanel(info: any) {
-    if(this.stackDebug == null) {
-      this.stackDebug = {};
+  private redrawDebugPanel() {
+    let build = this.buildStackPanel();
+    const body = this.getModalBody();
+    if (body) {
+      $$(body).empty();
+      $$(body).append(build.body);
     }
-    this.stackDebug = _.extend({}, this.stackDebug, info);
-  }
-
-  private teardownDebugPanel() {
-    this.stackDebug = null;
-    this.opened = false;
   }
 
   private openModalBox() {
@@ -197,7 +189,7 @@ export class Debug extends RootComponent {
       titleClose: true,
       overlayClose: true,
       validation: () => {
-        this.teardownDebugPanel();
+        this.onCloseModalBox();
         return true;
       },
       sizeMod: 'big'
@@ -205,65 +197,15 @@ export class Debug extends RootComponent {
 
     let title = $$(this.modalBox.wrapper).find('.coveo-modal-header');
     if (title) {
-      title.appendChild(this.buildEnabledHighlightRecommendation());
-      title.appendChild(this.buildEnableDebugCheckbox(search));
-      title.appendChild(this.buildEnableQuerySyntaxCheckbox());
-      title.appendChild(search);
-      title.appendChild(downloadLink.el);
-
-      $$(this.element).on(QueryEvents.querySuccess, (e: Event, args: IQuerySuccessEventArgs) => {
-        if (this.opened && this.modalBox) {
-          let bodyBuilder = (results?: IQueryResults) => {
-            let build = this.buildStackPanel(this.stackDebug, results);
-            downloadLink.el.setAttribute('href', this.downloadHref(build.json));
-            return build.body;
-          };
-
-          $$(build.body).removeClass('coveo-debug-loading');
-          $$(build.body).empty();
-          $$(bodyBuilder(args.results)).children().forEach((child) => {
-            build.body.appendChild(child);
-          });
-        }
-      });
-
+      new DebugHeader(this.element, title, this.bindings, (value: string) => this.search(value, build.body), this.stackDebug);
     } else {
       this.logger.warn('No title found in modal box.');
     }
   }
 
-  private buildStackDebug(info: any) {
-    this.stackDebug = _.clone(info);
-  }
-
-  private handleNewResultDisplayed(args: IDisplayedNewResultEventArgs) {
-    if (args.item != null) {
-      if (this.highlightRecommendation && args.result.isRecommendation) {
-        $$(args.item).addClass('coveo-is-recommendation');
-      }
-      $$(args.item).on('dblclick', (e: MouseEvent) => {
-        this.handleResultDoubleClick(e, args);
-      });
-    }
-  }
-
-  private handleResultDoubleClick(e: MouseEvent, args: IDisplayedNewResultEventArgs) {
-    if (e.altKey) {
-      let index = args.result.index;
-      let findResult = (results?: IQueryResults) => results != null ? _.find(results.results, (result: IQueryResult) => result.index == index) : args.result;
-      let template = args.item['template'];
-
-      let debugInfo = {
-        result: findResult,
-        fields: (results?: IQueryResults) => this.buildFieldsSection(findResult(results)),
-        rankingInfo: (results?: IQueryResults) => this.buildRankingInfoSection(findResult(results)),
-        template: this.templateToJson(template),
-      };
-      this.addInfoToDebugPanel(debugInfo);
-      //this.buildStackDebug(debugInfo);
-      //this.showDebugPanel()
-      //this.handleShowDebugPanel(debugInfo);
-    }
+  private onCloseModalBox() {
+    this.stackDebug = null;
+    this.opened = false;
   }
 
   private buildStackPanelSection(value: any, results: IQueryResults): { section: HTMLElement; json?: any; } {
@@ -274,33 +216,6 @@ export class Debug extends RootComponent {
     }
     let json = this.toJson(value);
     return { section: this.buildProperty(json), json: json };
-  }
-
-  private buildSearchBox(body: HTMLElement) {
-    const txtInput = new TextInput((txtInputInstance) => {
-      const value = txtInputInstance.getValue().toLowerCase();
-      this.search(value, body);
-    }, 'Search in debug');
-    return txtInput.build();
-  }
-
-  private search(value: string, body: HTMLElement) {
-    if (_.isEmpty(value)) {
-      $$(body).findAll('.coveo-search-match, .coveo-search-submatch').forEach((el) => {
-        $$(el).removeClass('coveo-search-match, coveo-search-submatch');
-      });
-      $$(body).removeClass('coveo-searching');
-    } else {
-      $$(body).addClass('coveo-searching-loading');
-      setTimeout(() => {
-        let rootProperties = $$(body).findAll('.coveo-section .coveo-section-container > .coveo-property');
-        _.each(rootProperties, (element: HTMLElement) => {
-          this.findInProperty(element, value);
-        });
-        $$(body).addClass('coveo-searching');
-        $$(body).removeClass('coveo-searching-loading');
-      });
-    }
   }
 
   private findInProperty(element: HTMLElement, value: string): boolean {
@@ -360,32 +275,6 @@ export class Debug extends RootComponent {
       header: header,
       container: container
     };
-  }
-
-  private fetchFields(): Promise<{ [field: string]: IFieldDescription }> {
-    if (this.fields == null) {
-      return this.bindings.queryController.getEndpoint().listFields().then((fields: IFieldDescription[]) => {
-        this.fields = {};
-        fields.forEach((field) => {
-          this.fields[field.name] = field;
-        });
-        return this.fields;
-      });
-    } else {
-      return Promise.resolve(this.fields);
-    }
-  }
-
-  private buildRankingInfoSection(result: IQueryResult) {
-    return result.rankingInfo && this.parseRankingInfo(result.rankingInfo);
-  }
-
-  private parseWeights(value: string) {
-    let listOfWeight = value.match(/(\w+(?:\s\w+)*): ([-0-9]+)/g);
-    return _.object(_.map(listOfWeight, (weight) => {
-      let weightGroup = weight.match(/^(\w+(?:\s\w+)*): ([-0-9]+)$/);
-      return [weightGroup[1], Number(weightGroup[2])];
-    }));
   }
 
   private buildProperty(value: any, label?: string): HTMLElement {
@@ -622,6 +511,25 @@ export class Debug extends RootComponent {
     }
   }
 
+  private search(value: string, body: HTMLElement) {
+    if (_.isEmpty(value)) {
+      $$(body).findAll('.coveo-search-match, .coveo-search-submatch').forEach((el) => {
+        $$(el).removeClass('coveo-search-match, coveo-search-submatch');
+      });
+      $$(body).removeClass('coveo-searching');
+    } else {
+      $$(body).addClass('coveo-searching-loading');
+      setTimeout(() => {
+        let rootProperties = $$(body).findAll('.coveo-section .coveo-section-container > .coveo-property');
+        _.each(rootProperties, (element: HTMLElement) => {
+          this.findInProperty(element, value);
+        });
+        $$(body).addClass('coveo-searching');
+        $$(body).removeClass('coveo-searching-loading');
+      });
+    }
+  }
+
   private highlightSearch(element: HTMLElement, search: string) {
     if (element != null) {
       let match = element.innerText.split(new RegExp('(?=' + StringUtils.regexEncode(search) + ')', 'gi'));
@@ -650,5 +558,13 @@ export class Debug extends RootComponent {
     if (element != null) {
       element.innerHTML = element.innerText;
     }
+  }
+
+  private showAnimationDuringQuery() {
+    $$(this.modalBox.content).addClass('coveo-debug-loading');
+  }
+
+  private hideAnimationDuringQuery() {
+    $$(this.modalBox.content).removeClass('coveo-debug-loading');
   }
 }

@@ -3,6 +3,10 @@ import { Checkbox } from '../FormWidgets/Checkbox';
 import { COMPONENT_OPTIONS_ATTRIBUTES } from '../../models/ComponentOptionsModel';
 import { TextInput } from '../FormWidgets/TextInput';
 import { $$ } from '../../utils/Dom';
+import { ResultListEvents, IDisplayedNewResultEventArgs } from '../../events/ResultListEvents';
+import { QueryEvents, IBuildingQueryEventArgs } from '../../events/QueryEvents';
+import { InitializationEvents } from '../../events/InitializationEvents';
+import { stringify } from 'circular-json';
 
 export class DebugHeader {
   private debug = false;
@@ -10,8 +14,28 @@ export class DebugHeader {
   private highlightRecommendation = false;
   private search: HTMLElement;
 
-  constructor(public element: HTMLElement, public bindings: IComponentBindings, public onSearch: (value: string)=> void, public infoToDebug: any) {
+  constructor(public root: HTMLElement, public element: HTMLElement, public bindings: IComponentBindings, public onSearch: (value: string) => void, public infoToDebug: any) {
+    this.element.appendChild(this.buildEnabledHighlightRecommendation());
+    this.element.appendChild(this.buildEnableDebugCheckbox());
+    this.element.appendChild(this.buildEnableQuerySyntaxCheckbox());
+    this.element.appendChild(this.buildSearch());
+    this.element.appendChild(this.buildDownloadLink());
 
+    // After components initialization ensure any component that might modify the result will have the chance to do their job before we display debug info
+    $$(this.root).on(InitializationEvents.afterInitialization, ()=> {
+      $$(this.root).on(ResultListEvents.newResultDisplayed, (e, args: IDisplayedNewResultEventArgs) => this.handleNewResultDisplayed(args));
+    });
+    $$(this.root).on(QueryEvents.buildingQuery, (e, args: IBuildingQueryEventArgs) => this.handleBuildingQuery(args));
+  }
+
+  private handleNewResultDisplayed(args: IDisplayedNewResultEventArgs) {
+    if (args.item != null && args.result.isRecommendation && this.highlightRecommendation) {
+      $$(args.item).addClass('coveo-is-recommendation');
+    }
+  }
+
+  private handleBuildingQuery(args: IBuildingQueryEventArgs) {
+    args.queryBuilder.enableDebug = this.debug || args.queryBuilder.enableDebug;
   }
 
   private buildSearch() {
@@ -31,50 +55,50 @@ export class DebugHeader {
     return downloadLink.el;
   }
 
-  private buildEnableDebugCheckbox(search: HTMLElement) {
-    const chkbox = new Checkbox((chkboxInstance) => {
+  private buildEnableDebugCheckbox() {
+    const checkbox = new Checkbox((chkboxInstance) => {
       this.debug = chkboxInstance.isSelected();
 
       this.bindings.queryController.executeQuery({
         closeModalBox: false
       });
-      let input = search.querySelector('input') as HTMLInputElement;
+      let input = this.search.querySelector('input') as HTMLInputElement;
       input.value = '';
     }, 'Enable query debug');
     if (this.debug) {
-      chkbox.select();
+      checkbox.select();
     }
-    return chkbox.build();
+    return checkbox.build();
   }
 
   private buildEnableQuerySyntaxCheckbox() {
-    const chkbox = new Checkbox((chkboxInstance) => {
+    const checkbox = new Checkbox((chkboxInstance) => {
       this.enableQuerySyntax = chkboxInstance.isSelected();
       this.bindings.componentOptionsModel.set(COMPONENT_OPTIONS_ATTRIBUTES.SEARCH_BOX, {enableQuerySyntax: this.enableQuerySyntax});
       this.bindings.queryController.executeQuery({
         closeModalBox: false
-      })
+      });
     }, 'Enable query syntax in search box');
     if (this.enableQuerySyntax) {
-      chkbox.select();
+      checkbox.select();
     }
-    return chkbox.build();
+    return checkbox.build();
   }
 
   private buildEnabledHighlightRecommendation() {
-    const chkbox = new Checkbox((chkboxInstance) => {
+    const checkbox = new Checkbox((chkboxInstance) => {
       this.highlightRecommendation = chkboxInstance.isSelected();
       this.bindings.queryController.executeQuery({
         closeModalBox: false
       });
     }, 'Highlight recommendation');
     if (this.highlightRecommendation) {
-      chkbox.select();
+      checkbox.select();
     }
-    return chkbox.build();
+    return checkbox.build();
   }
 
   private downloadHref() {
-    return 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(this.infoToDebug));
+    return 'data:text/json;charset=utf-8,' + encodeURIComponent(stringify(this.infoToDebug));
   }
 }
