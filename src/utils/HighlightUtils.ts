@@ -17,7 +17,7 @@ export class StringAndHoles {
   static WORD_SHORTER: number = 10;
 
   static replace(str: string, find: string, replace: string): StringAndHoles {
-    let strAndHoles = new StringAndHoles();
+    const strAndHoles = new StringAndHoles();
 
     if (Utils.isNullOrEmptyString(str)) {
       return strAndHoles;
@@ -29,9 +29,9 @@ export class StringAndHoles {
       return strAndHoles;
     }
 
-    let holes: IStringHole[] = [];
+    const holes: IStringHole[] = [];
     while (index >= 0) {
-      let hole = <IStringHole>{
+      const hole = <IStringHole>{
         begin: index,
         size: find.length,
         replacementSize: replace.length
@@ -53,15 +53,14 @@ export class StringAndHoles {
    * @param length The length to which the path will be shortened.
    */
   static shortenPath(uriOrig: string, length: number): StringAndHoles {
+    const strAndHoles = new StringAndHoles();    
     let uri = uriOrig;
-    let strAndHoles = new StringAndHoles();
-
     if (Utils.isNullOrEmptyString(uri) || (uri.length <= length)) {
       strAndHoles.value = uri;
       return strAndHoles;
     }
 
-    let holes: IStringHole[] = [];
+    const holes: IStringHole[] = [];
 
     let first = -1;
     if (Utils.stringStartsWith(uri, '\\\\')) {
@@ -80,7 +79,7 @@ export class StringAndHoles {
 
       if (removed > 0) {
         uri = uri.slice(0, first + 1) + StringAndHoles.SHORTEN_END + uri.slice(removed);
-        let hole = <IStringHole>{
+        const hole = <IStringHole>{
           begin: first + 1,
           size: removed - StringAndHoles.SHORTEN_END.length,
           replacementSize: StringAndHoles.SHORTEN_END.length
@@ -90,10 +89,10 @@ export class StringAndHoles {
     }
 
     if (uri.length > length) {
-      let over = uri.length - length + StringAndHoles.SHORTEN_END.length;
-      let start = uri.length - over;
+      const over = uri.length - length + StringAndHoles.SHORTEN_END.length;
+      const start = uri.length - over;
       uri = uri.slice(0, start) + StringAndHoles.SHORTEN_END;
-      let hole = <IStringHole>{
+      const hole = <IStringHole>{
         begin: start,
         size: over,
         replacementSize: StringAndHoles.SHORTEN_END.length
@@ -113,9 +112,9 @@ export class StringAndHoles {
    * @param toAppend The string to append at the end (usually, it is set to '...')
    */
   static shortenString(toShortenOrig: string, length: number = 200, toAppend?: string): StringAndHoles {
-    let toShorten = toShortenOrig;
+    const toShorten = toShortenOrig;
     toAppend = Utils.toNotNullString(toAppend);
-    let strAndHoles = new StringAndHoles();
+    const strAndHoles = new StringAndHoles();
     if (Utils.isNullOrEmptyString(toShorten) || length <= toAppend.length) {
       strAndHoles.value = toShorten;
       return strAndHoles;
@@ -132,12 +131,12 @@ export class StringAndHoles {
     str = str.slice(0, length);
 
     if (toShorten.charAt(str.length) !== ' ') {
-      let pos = str.lastIndexOf(' ');
+      const pos = str.lastIndexOf(' ');
       if (pos !== -1 && str.length - pos < StringAndHoles.WORD_SHORTER) {
         str = str.slice(0, pos);
       }
     }
-    let holes: IStringHole[] = [];
+    const holes: IStringHole[] = [];
     holes[0] = <IStringHole>{
       begin: str.length,
       size: toShorten.length - str.length,
@@ -155,13 +154,13 @@ export class StringAndHoles {
    * @param length The length to which the URI will be shortened.
    */
   static shortenUri(uri: string, length: number): StringAndHoles {
-    let strAndHoles = new StringAndHoles();
+    const strAndHoles = new StringAndHoles();
     if (Utils.isNullOrEmptyString(uri) || (uri.length <= length)) {
       strAndHoles.value = uri;
       return strAndHoles;
     }
 
-    let holes: IStringHole[] = [];
+    const holes: IStringHole[] = [];
 
     let first = uri.indexOf('//');
     if (first !== -1) {
@@ -178,7 +177,7 @@ export class StringAndHoles {
 
       if (removed > 0) {
         uri = uri.slice(0, first + 1) + StringAndHoles.SHORTEN_END + uri.slice(first + 1 + removed);
-        let hole = <IStringHole>{
+        const hole = <IStringHole>{
           begin: first + 1,
           size: removed,
           replacementSize: StringAndHoles.SHORTEN_END.length
@@ -188,10 +187,10 @@ export class StringAndHoles {
     }
 
     if (uri.length > length) {
-      let over = uri.length - length + StringAndHoles.SHORTEN_END.length;
-      let start = uri.length - over;
+      const over = uri.length - length + StringAndHoles.SHORTEN_END.length;
+      const start = uri.length - over;
       uri = uri.slice(0, start) + StringAndHoles.SHORTEN_END;
-      let hole = <IStringHole>{
+      const hole = <IStringHole>{
         begin: start,
         size: over,
         replacementSize: StringAndHoles.SHORTEN_END.length
@@ -220,20 +219,20 @@ export class HighlightUtils {
     if (Utils.isNullOrEmptyString(content)) {
       return content;
     }
-    let last = 0;
-    let maxIndex = content.length;
+    const maxIndex = content.length;
     let highlighted = '';
+    let last = 0;
     for (let i = 0; i < highlights.length; i++) {
-      let highlight = highlights[i];
+      const highlight = highlights[i];
       let start: number = highlight.offset;
       let end: number = start + highlight.length;
 
       if (holes !== null) {
         let skip = false;
         for (let j = 0; j < holes.length; j++) {
-          let hole = holes[j];
-          let holeBegin = hole.begin;
-          let holeEnd = holeBegin + hole.size;
+          const hole = holes[j];
+          const holeBegin = hole.begin;
+          const holeEnd = holeBegin + hole.size;
           if (start < holeBegin && end >= holeBegin && end < holeEnd) {
             end = holeBegin;
           } else if (start >= holeBegin && end < holeEnd) {
@@ -245,7 +244,7 @@ export class HighlightUtils {
           } else if (start < holeBegin && end >= holeEnd) {
             end -= hole.size - hole.replacementSize;
           } else if (start >= holeEnd) {
-            let offset = hole.size - hole.replacementSize;
+            const offset = hole.size - hole.replacementSize;
             start -= offset;
             end -= offset;
           }
