@@ -5045,7 +5045,7 @@
   },
   "LastDay": {
     "en": "Last {0}",
-    "fr": "{0} précédent"
+    "fr": "{0} dernier"
   },
   "StartTypingCaseForSuggestions": {
     "en": "Describe your problem to see possible solutions",
