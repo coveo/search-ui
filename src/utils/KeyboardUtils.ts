@@ -82,7 +82,6 @@ export class KeyboardUtils {
           }
         }
       }
-      return false;
     };
   }
 }
