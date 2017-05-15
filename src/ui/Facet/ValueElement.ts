@@ -143,14 +143,14 @@ export class ValueElement {
       if (eventBindings.omniboxObject) {
         this.omniboxCloseEvent(eventBindings.omniboxObject);
       }
-      event.stopPropagation();
-      event.preventDefault();
+
       this.handleExcludeClick(eventBindings);
 
       if (this.facet && this.facet.facetSearch && this.facet.facetSearch.completelyDismissSearch) {
         this.facet.facetSearch.completelyDismissSearch();
       }
-      return false;
+      event.stopPropagation();
+      event.preventDefault();
     };
     $$(this.renderer.excludeIcon).on('click', excludeAction);
 
@@ -163,10 +163,11 @@ export class ValueElement {
       if (eventBindings.pinFacet) {
         this.facet.pinFacetPosition();
       }
-      event.preventDefault();
+
       $$(this.renderer.checkbox).trigger('change');
-      return false;
+      event.preventDefault();
     };
+
     $$(this.renderer.label).on('click', selectAction);
 
     $$(this.renderer.stylishCheckbox).on('keydown', KeyboardUtils.keypressAction([

@@ -51,7 +51,7 @@ export class AuthenticationProvider extends Component {
     /**
      * Specifies the name of the authentication provider.
      *
-     * See [Windows Service Configuration File](https://developers.coveo.com/x/OQMv).
+     * See [SAML Authentication](https://developers.coveo.com/x/pw8vAg).
      */
     name: ComponentOptions.buildStringOption(),
 
