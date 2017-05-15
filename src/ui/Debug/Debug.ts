@@ -79,13 +79,13 @@ export class Debug extends RootComponent {
 
   private handleResultDoubleClick(e: MouseEvent, args: IDisplayedNewResultEventArgs) {
     if (e.altKey) {
-      let index = args.result.index;
+      const index = args.result.index;
 
-      let template = args.item['template'];
+      const template = args.item['template'];
 
-      let findResult = (results?: IQueryResults) => results != null ? _.find(results.results, (result: IQueryResult) => result.index == index) : args.result;
+      const findResult = (results?: IQueryResults) => results != null ? _.find(results.results, (result: IQueryResult) => result.index == index) : args.result;
 
-      let debugInfo = _.extend(new DebugForResult(this.bindings).generateDebugInfoForResult(args.result), {
+      const debugInfo = _.extend(new DebugForResult(this.bindings).generateDebugInfoForResult(args.result), {
         findResult: findResult,
         template: this.templateToJson(template),
       });
@@ -121,7 +121,7 @@ export class Debug extends RootComponent {
       className: 'coveo-debug'
     });
 
-    let keys = _.chain(this.stackDebug)
+    const keys = _.chain(this.stackDebug)
       .omit('findResult') // findResult is a duplicate of the simpler "result" key used to retrieve the results only
       .keys()
       .value();
@@ -148,13 +148,13 @@ export class Debug extends RootComponent {
     const json = {};
 
     _.forEach(keysPaired, (key: string[]) => {
-      let section = this.buildSection(key[1]);
-      let build = this.buildStackPanelSection(this.stackDebug[key[1]], this.stackDebug['result']);
-      section.container.appendChild(build.section);
+      const section = this.buildSection(key[1]);
+      const build = this.buildStackPanelSection(this.stackDebug[key[1]], this.stackDebug['result']);
+      section.container.append(build.section);
       if (build.json != null) {
         json[key[1]] = build.json;
       }
-      body.append(section.dom);
+      body.append(section.dom.el);
     });
 
     return {
@@ -171,7 +171,7 @@ export class Debug extends RootComponent {
   }
 
   private redrawDebugPanel() {
-    let build = this.buildStackPanel();
+    const build = this.buildStackPanel();
     const body = this.getModalBody();
     if (body) {
       $$(body).empty();
@@ -180,7 +180,7 @@ export class Debug extends RootComponent {
   }
 
   private openModalBox() {
-    let build = this.buildStackPanel();
+    const build = this.buildStackPanel();
     this.opened = true;
 
     this.modalBox = this.ModalBox.open(build.body, {
@@ -195,7 +195,7 @@ export class Debug extends RootComponent {
       sizeMod: 'big'
     });
 
-    let title = $$(this.modalBox.wrapper).find('.coveo-modal-header');
+    const title = $$(this.modalBox.wrapper).find('.coveo-modal-header');
     if (title) {
       new DebugHeader(this.element, title, this.bindings, (value: string) => this.search(value, build.body), this.stackDebug);
     } else {
@@ -214,26 +214,26 @@ export class Debug extends RootComponent {
     } else if (_.isFunction(value)) {
       return this.buildStackPanelSection(value(results), results);
     }
-    let json = this.toJson(value);
+    const json = this.toJson(value);
     return { section: this.buildProperty(json), json: json };
   }
 
   private findInProperty(element: HTMLElement, value: string): boolean {
-    let jElement = $$(element);
+    const wrappedElement = $$(element);
     let match = element['label'].indexOf(value) != -1;
     if (match) {
       this.highlightSearch(element['labelDom'], value);
     } else {
       this.removeHighlightSearch(element['labelDom']);
     }
-    if (jElement.hasClass('coveo-property-object')) {
-      jElement.toggleClass('coveo-search-match', match);
-      let children = element['buildKeys']();
+    if (wrappedElement.hasClass('coveo-property-object')) {
+      wrappedElement.toggleClass('coveo-search-match', match);
+      const children = element['buildKeys']();
       let submatch = false;
       _.each(children, (child: HTMLElement) => {
         submatch = this.findInProperty(child, value) || submatch;
       });
-      jElement.toggleClass('coveo-search-submatch', submatch);
+      wrappedElement.toggleClass('coveo-search-submatch', submatch);
       return match || submatch;
     } else {
       if (element['values'].indexOf(value) != -1) {
@@ -242,25 +242,35 @@ export class Debug extends RootComponent {
       } else {
         this.removeHighlightSearch(element['valueDom']);
       }
-      jElement.toggleClass('coveo-search-match', match);
+      wrappedElement.toggleClass('coveo-search-match', match);
     }
     return match;
   }
 
   private buildSection(id: string) {
-    let dom = Dom.createElement('div', { className: 'coveo-section coveo-' + id + '-section' });
-    let header = Dom.createElement('div', { className: 'coveo-section-header' });
-    $$(header).text(id);
-    dom.appendChild(header);
+    const dom = $$('div', {
+      className: `coveo-section coveo-${id}-section`
+    });
 
-    let container = Dom.createElement('div', { className: 'coveo-section-container' });
-    dom.appendChild(container);
+    const header = $$('div', {
+      className: 'coveo-section-header'
+    });
+
+    $$(header).text(id);
+    dom.append(header.el);
+
+    const container = $$('div', {
+      className: 'coveo-section-container'
+    });
+
+    dom.append(container.el);
 
     if (_.contains(this.collapsedSections, id)) {
       $$(dom).addClass('coveo-debug-collapsed');
     }
 
-    header.onclick = () => {
+
+    header.on('click', () => {
       $$(dom).toggleClass('coveo-debug-collapsed');
       if (_.contains(this.collapsedSections, id)) {
         this.collapsedSections = _.without(this.collapsedSections, id);
@@ -268,7 +278,7 @@ export class Debug extends RootComponent {
         this.collapsedSections.push(id);
       }
       this.localStorageDebug.save(this.collapsedSections);
-    };
+    });
 
     return {
       dom: dom,
@@ -288,106 +298,117 @@ export class Debug extends RootComponent {
   }
 
   private buildPromise(promise: Promise<any>, label?: string): HTMLElement {
-    let dom: HTMLElement = document.createElement('div');
-    dom.className = 'coveo-property coveo-property-promise';
-    promise.then((value) => {
-      let resolvedDom = this.buildProperty(value, label);
-      $$(dom).replaceWith(resolvedDom);
+    const dom = $$('div', {
+      className: 'coveo-property coveo-property-promise'
     });
-    return dom;
+
+    promise.then((value) => {
+      const resolvedDom = this.buildProperty(value, label);
+      dom.replaceWith(resolvedDom);
+    });
+
+    return dom.el;
   }
 
   private buildObjectProperty(object: any, label?: string): HTMLElement {
-    let dom: HTMLElement = document.createElement('div');
-    dom.className = 'coveo-property coveo-property-object';
+    const dom = $$('div', {
+      className: 'coveo-property coveo-property-object'
+    });
 
-    let valueContainer: HTMLElement = document.createElement('div');
-    valueContainer.className = 'coveo-property-value';
+    const valueContainer = $$('div', {
+      className: 'coveo-property-value'
+    });
 
-    let keys = _.keys(object);
+    const keys = _.keys(object);
     if (!_.isArray(object)) {
       keys.sort();
     }
 
     let children: HTMLElement[];
-    let buildKeys = () => {
+    const buildKeys = () => {
       if (children == null) {
         children = [];
         _.each(keys, (key: string) => {
-          let property = this.buildProperty(object[key], key);
+          const property = this.buildProperty(object[key], key);
           if (property != null) {
             children.push(property);
-            valueContainer.appendChild(property);
+            valueContainer.append(property);
           }
         });
       }
       return children;
     };
-    dom['buildKeys'] = buildKeys;
+    dom.el['buildKeys'] = buildKeys;
 
     if (label != null) {
-      let labelDom = document.createElement('div');
-      labelDom.className = 'coveo-property-label';
-      labelDom.appendChild(document.createTextNode(label));
-      dom['labelDom'] = labelDom;
+      const labelDom = $$('div', {
+        className: 'coveo-property-label'
+      });
 
-      dom.appendChild(labelDom);
+      labelDom.text(label);
+      dom.el['labelDom'] = labelDom.el;
+
+      dom.append(labelDom.el);
       if (keys.length != 0) {
-        dom.className += ' coveo-collapsible';
-        labelDom.onclick = () => {
+        dom.addClass('coveo-collapsible');
+
+        labelDom.on('click', () => {
           buildKeys();
-          let className = dom.className.split(/\s+/);
+          let className = dom.el.className.split(/\s+/);
           if (_.contains(className, 'coveo-expanded')) {
             className = _.without(className, 'coveo-expanded');
           } else {
             className.push('coveo-expanded');
           }
-          dom.className = className.join(' ');
-        };
+          dom.el.className = className.join(' ');
+        });
       }
     } else {
       buildKeys();
     }
     if (keys.length == 0) {
-      let className = _.without(dom.className.split(/\s+/), 'coveo-property-object');
+      const className = _.without(dom.el.className.split(/\s+/), 'coveo-property-object');
       className.push('coveo-property-basic');
-      dom.className = className.join(' ');
+      dom.el.className = className.join(' ');
       if (_.isArray(object)) {
-        valueContainer.innerHTML = '[]';
+        valueContainer.setHtml('[]');
       } else {
-        valueContainer.innerHTML = '{}';
+        valueContainer.setHtml('{}');
       }
-      dom['values'] = '';
+      dom.el['values'] = '';
     }
-    dom['label'] = label != null ? label.toLowerCase() : '';
-    dom.appendChild(valueContainer);
-    return dom;
+    dom.el['label'] = label != null ? label.toLowerCase() : '';
+    dom.append(valueContainer.el);
+    return dom.el;
   }
 
   private buildBasicProperty(value: string, label?: string): HTMLElement {
-    let dom: HTMLElement = document.createElement('div');
-    dom.className = 'coveo-property coveo-property-basic';
+    const dom = $$('div', {
+      className: 'coveo-property coveo-property-basic'
+    });
 
     if (label != null) {
-      let labelDom = document.createElement('div');
-      labelDom.className = 'coveo-property-label';
-      labelDom.appendChild(document.createTextNode(label));
-      dom.appendChild(labelDom);
-      dom['labelDom'] = labelDom;
+      const labelDom = $$('div', {
+        className: 'coveo-property-label'
+      });
+      labelDom.text(label);
+      dom.append(labelDom.el);
+      dom.el['labelDom'] = labelDom.el;
     }
-    let stringValue = value != null ? value.toString() : String(value);
+    const stringValue = value != null ? value.toString() : String(value);
     if (value != null && value['ref'] != null) {
       value = value['ref'];
     }
-    let valueDom = document.createElement('div');
-    valueDom.appendChild(document.createTextNode(stringValue));
-    valueDom.ondblclick = () => {
-      this.selectElementText(valueDom);
-    };
-    dom.appendChild(valueDom);
-    dom['valueDom'] = valueDom;
+    const valueDom = $$('div');
+    valueDom.text(stringValue);
+    valueDom.on('dblclick', ()=> {
+      this.selectElementText(valueDom.el);
+    });
 
-    let className: string[] = ['coveo-property-value'];
+    dom.append(valueDom.el);
+    dom.el['valueDom'] = valueDom;
+
+    const className: string[] = ['coveo-property-value'];
     if (_.isString(value)) {
       className.push('coveo-property-value-string');
     }
@@ -409,11 +430,11 @@ export class Debug extends RootComponent {
     if (_.isArray(value)) {
       className.push('coveo-property-value-array');
     }
-    valueDom.className = className.join(' ');
+    valueDom.el.className = className.join(' ');
 
-    dom['label'] = label != null ? label.toLowerCase() : '';
-    dom['values'] = stringValue.toLowerCase();
-    return dom;
+    dom.el['label'] = label != null ? label.toLowerCase() : '';
+    dom.el['values'] = stringValue.toLowerCase();
+    return dom.el;
   }
 
   private toJson(value: any, depth = 0, done: any[] = []) {
@@ -444,7 +465,7 @@ export class Debug extends RootComponent {
       } else if (_.isDate(value)) {
         return this.toJsonRef(value, Globalize.format(value, 'F'));
       } else {
-        let result = {};
+        const result = {};
         _.each(value, (subValue, key) => {
           result[key] = this.toJson(subValue, depth + 1, done.concat([value]));
         });
@@ -462,7 +483,7 @@ export class Debug extends RootComponent {
   }
 
   private componentToJson(value: BaseComponent | SearchEndpoint, depth = 0): any {
-    let options = _.keys(value['options']);
+    const options = _.keys(value['options']);
     if (options.length > 0) {
       return this.toJson(value['options'], depth);
     } else {
@@ -485,8 +506,8 @@ export class Debug extends RootComponent {
     if (template == null) {
       return null;
     }
-    let element: HTMLElement = template['element'];
-    let templateObject: any = {
+    const element: HTMLElement = template['element'];
+    const templateObject: any = {
       type: template.getType(),
     };
     if (element != null) {
@@ -499,13 +520,13 @@ export class Debug extends RootComponent {
 
   private selectElementText(el: HTMLElement) {
     if (window.getSelection && document.createRange) {
-      let selection = window.getSelection();
-      let range = document.createRange();
+      const selection = window.getSelection();
+      const range = document.createRange();
       range.selectNodeContents(el);
       selection.removeAllRanges();
       selection.addRange(range);
     } else if ('createTextRange' in document.body) {
-      let textRange = document.body['createTextRange']();
+      const textRange = document.body['createTextRange']();
       textRange.moveToElementText(el);
       textRange.select();
     }
@@ -520,7 +541,7 @@ export class Debug extends RootComponent {
     } else {
       $$(body).addClass('coveo-searching-loading');
       setTimeout(() => {
-        let rootProperties = $$(body).findAll('.coveo-section .coveo-section-container > .coveo-property');
+        const rootProperties = $$(body).findAll('.coveo-section .coveo-section-container > .coveo-property');
         _.each(rootProperties, (element: HTMLElement) => {
           this.findInProperty(element, value);
         });
@@ -532,23 +553,29 @@ export class Debug extends RootComponent {
 
   private highlightSearch(element: HTMLElement, search: string) {
     if (element != null) {
-      let match = element.innerText.split(new RegExp('(?=' + StringUtils.regexEncode(search) + ')', 'gi'));
+      const match = element.innerText.split(new RegExp('(?=' + StringUtils.regexEncode(search) + ')', 'gi'));
       element.innerHTML = '';
       match.forEach((value) => {
-        let regex = new RegExp('(' + StringUtils.regexEncode(search) + ')', 'i');
-        let group = value.match(regex);
-        let span: HTMLSpanElement;
+        const regex = new RegExp('(' + StringUtils.regexEncode(search) + ')', 'i');
+        const group = value.match(regex);
+        let span;
+
         if (group != null) {
-          span = Dom.createElement('span', { className: 'coveo-debug-highlight' });
-          span.appendChild(document.createTextNode(group[1]));
-          element.appendChild(span);
-          span = Dom.createElement('span');
-          span.appendChild(document.createTextNode(value.substr(group[1].length)));
-          element.appendChild(span);
+          span = $$('span', {
+            className: 'coveo-debug-highlight'
+          });
+          span.text(group[1]);
+          element.appendChild(span.el);
+
+          span = $$('span');
+          span.text(value.substr(group[1].length));
+          element.appendChild(span.el);
         } else {
-          span = Dom.createElement('span');
-          span.appendChild(document.createTextNode(value));
-          element.appendChild(span);
+
+          span = $$('span');
+          span.text(value);
+          element.appendChild(span.el);
+
         }
       });
     }
