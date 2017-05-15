@@ -23,7 +23,7 @@ export function ResultListTableRendererTest() {
         .then(() => expect($$(resultContainer).find('.coveo-result-list-table-header')).not.toBeNull());
     });
 
-    it('should render a table footer if one is present in an embedded TemplateList', () => {
+    it('should render a table footer if one is present in an embedded TemplateList', (done) => {
       const fakeTemplateList = new TableTemplate([]);
       spyOn(fakeTemplateList, 'hasTemplateWithRole').and.callFake(a => {
         if (a == 'table-footer') {
@@ -32,7 +32,10 @@ export function ResultListTableRendererTest() {
       });
       renderer = new ResultListTableRenderer({ resultTemplate: fakeTemplateList, resultContainer: resultContainer }, () => null);
       renderer.renderResults([$$('div', { className: 'CoveoResult' }).el], false, () => null)
-        .then(() => expect($$(resultContainer).find('.coveo-result-list-table-footer')).not.toBeNull());
+        .then(() => {
+          expect($$(resultContainer).find('.coveo-result-list-table-footer')).not.toBeNull();
+          done();
+        });
     });
 
     it('should not render a table header if custom templates are specified but no header template', () => {

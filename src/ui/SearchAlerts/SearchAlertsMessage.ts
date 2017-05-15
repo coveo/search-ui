@@ -82,7 +82,7 @@ export class SearchAlertsMessage extends Component {
     $$(this.root).trigger(SearchAlertsEvents.searchAlertsPopulateMessage, populateMessageArguments);
     let additionalMessage = `${htmlFormatted ? '<ul>' : ''}${getAdditionalTextFormatted()}${htmlFormatted ? '</ul>' : ''}`;
 
-    let automaticallyBuiltMessage;
+    let automaticallyBuiltMessage: string;
 
     if (query && populateMessageArguments.text.length != 0) {
       automaticallyBuiltMessage = `${_.escape(query)} ${additionalMessage}`;
