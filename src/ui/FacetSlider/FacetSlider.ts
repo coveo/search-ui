@@ -666,7 +666,7 @@ export class FacetSlider extends Component {
     this.ensureDom();
     this.setupSliderIfNeeded(data);
     let groupByResults = data.results.groupByResults[this.facetQueryController.lastGroupByRequestIndex];
-    this.isEmpty = this.isFacetEmpty(groupByResults);
+    this.isEmpty = this.isFacetEmpty(groupByResults, data);
     this.updateAppearanceDependingOnState();
     if (this.hasAGraph()) {
       this.renderToSliderGraph(data);
@@ -762,7 +762,14 @@ export class FacetSlider extends Component {
       });
     }
     if (totalGraphResults == 0) {
-      this.isEmpty = !this.isSimpleSliderConfig();
+      // Special corner case for "simple slider facet" : Do not only handle the group by results,
+      // but also look for the complete result set when determining if we should show the facet.
+      // This allows simple slider facet to still show with query function fields
+      if (this.isSimpleSliderConfig()) {
+        this.isEmpty = data.results.results.length == 0;
+      } else {
+        this.isEmpty = true;
+      }
       this.updateAppearanceDependingOnState();
     } else if (graphData != undefined && !this.isDropdownHidden()) {
       this.slider.drawGraph(graphData);
@@ -944,8 +951,8 @@ export class FacetSlider extends Component {
     window.removeEventListener('resize', this.onResize);
   }
 
-  private isFacetEmpty(groupByResults: IGroupByResult) {
-    return groupByResults == null || groupByResults.values[0] == null;
+  private isFacetEmpty(groupByResults: IGroupByResult, data: IQuerySuccessEventArgs) {
+    return groupByResults == null || groupByResults.values[0] == null || data.results.results.length == 0;
   }
 }
 
