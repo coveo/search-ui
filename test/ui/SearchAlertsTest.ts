@@ -178,9 +178,7 @@ export function SearchAlertsTest() {
         });
 
         it('should display subscription with a name', (done) => {
-          const promise = new Promise((resolve, reject) => {
-            resolve([request]);
-          });
+          const promise = Promise.resolve([request]);
           listSubscription.and.returnValue(promise);
 
           test.cmp.openPanel().then(() => {
@@ -194,9 +192,7 @@ export function SearchAlertsTest() {
 
         it('should display subscription query if there is no name', (done) => {
           request.name = null;
-          const promise = new Promise((resolve, reject) => {
-            resolve([request]);
-          });
+          const promise = Promise.resolve([request]);
           listSubscription.and.returnValue(promise);
 
           test.cmp.openPanel().then(() => {
@@ -214,9 +210,7 @@ export function SearchAlertsTest() {
           queryBuilder.expression.add('<script>1+1</script>');
           request.typeConfig.query = queryBuilder.build();
 
-          const promise = new Promise((resolve, reject) => {
-            resolve([request]);
-          });
+          const promise = Promise.resolve([request]);
 
           listSubscription.and.returnValue(promise);
 
@@ -251,9 +245,8 @@ export function SearchAlertsTest() {
         });
 
         it('should use the type config title', (done) => {
-          const promise = new Promise((resolve, reject) => {
-            resolve([request]);
-          });
+          const promise = Promise.resolve([request]);
+
           listSubscription.and.returnValue(promise);
 
           test.cmp.openPanel().then(() => {
@@ -267,11 +260,8 @@ export function SearchAlertsTest() {
 
         it('should set the correct frequency in the dropdown', (done) => {
           request.frequency = 'sunday';
-          const promise = new Promise((resolve, reject) => {
-            resolve([request]);
-          });
+          const promise = Promise.resolve([request]);
           listSubscription.and.returnValue(promise);
-
           test.cmp.openPanel().then(() => {
             const elementOpened = getRootElementOpenedInModalBox(test);
             expect(($$(elementOpened).find('.coveo-dropdown') as HTMLSelectElement).value).toBe('sunday');
@@ -282,9 +272,8 @@ export function SearchAlertsTest() {
         it('should call usage analytics when the dropdown for frequency is changed', (done) => {
           request.frequency = 'sunday';
           request.typeConfig.title = 'my title';
-          const promise = new Promise((resolve, reject) => {
-            resolve([request]);
-          });
+          const promise = Promise.resolve([request]);
+
           listSubscription.and.returnValue(promise);
 
           test.cmp.openPanel().then(() => {
@@ -302,9 +291,8 @@ export function SearchAlertsTest() {
         it('should call the search alert service when the dropdown for frequency is changed', (done) => {
           request.frequency = 'monday';
           request.typeConfig.title = 'some nice title';
-          const promise = new Promise((resolve, reject) => {
-            resolve([request]);
-          });
+          const promise = Promise.resolve([request]);
+
           listSubscription.and.returnValue(promise);
 
           test.cmp.openPanel().then(() => {
@@ -324,9 +312,7 @@ export function SearchAlertsTest() {
         it('should call the search alert service when an item is unfollowed', (done) => {
           request.frequency = 'friday';
           request.typeConfig.title = 'it\'s friday friday, gotta get down on friday';
-          const promise = new Promise((resolve, reject) => {
-            resolve([request]);
-          });
+          const promise = Promise.resolve([request]);
           listSubscription.and.returnValue(promise);
 
           test.cmp.openPanel().then(() => {
@@ -345,9 +331,7 @@ export function SearchAlertsTest() {
 
         it('should call the analytics service when an item is unfollowed', (done) => {
           request.name = 'my sub';
-          const promise = new Promise((resolve, reject) => {
-            resolve([request]);
-          });
+          const promise = Promise.resolve([request]);
           listSubscription.and.returnValue(promise);
 
           test.cmp.openPanel().then(() => {
@@ -369,9 +353,7 @@ export function SearchAlertsTest() {
         });
 
         it('should call the search alert service when an item is followed', (done) => {
-          const promise = new Promise((resolve, reject) => {
-            resolve([request]);
-          });
+          const promise = Promise.resolve([request]);
           listSubscription.and.returnValue(promise);
 
           test.cmp.openPanel().then(() => {
@@ -397,9 +379,7 @@ export function SearchAlertsTest() {
 
         it('should call the analytics service when an item is followed', (done) => {
           request.name = 'my document';
-          const promise = new Promise((resolve, reject) => {
-            resolve([request]);
-          });
+          const promise = Promise.resolve([request]);
           listSubscription.and.returnValue(promise);
 
           test.cmp.openPanel().then(() => {

@@ -315,7 +315,13 @@ export class SearchAlerts extends Component {
 
     let context: string;
     if (subscription.name) {
-      context = subscription.name;
+      if (subscription.name == '<empty>') {
+        context = '&lt;empty&gt;';
+      } else {
+        const textExtracted = $$('div').el;
+        textExtracted.innerHTML = subscription.name;
+        context = $$(textExtracted).text();
+      }
     } else if (subscription.type == SUBSCRIPTION_TYPE.followQuery) {
       const typeConfig = <ISubscriptionQueryRequest>subscription.typeConfig;
       context = _.escape(typeConfig.query.q) || l('EmptyQuery');
