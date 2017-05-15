@@ -4,6 +4,7 @@ import { l } from '../strings/Strings';
 import { TimeSpan } from './TimeSpanUtils';
 import * as Globalize from 'globalize';
 import * as _ from 'underscore';
+import * as moment from 'moment';
 
 export interface IDateToStringOptions {
   now?: Date;
@@ -18,7 +19,7 @@ export interface IDateToStringOptions {
 }
 
 class DefaultDateToStringOptions extends Options implements IDateToStringOptions {
-  now: Date = new Date();
+  now: Date = moment().toDate();
   useTodayYesterdayAndTomorrow = true;
   useWeekdayIfThisWeek = true;
   omitYearIfCurrentOne = true;
@@ -35,18 +36,23 @@ export class DateUtils {
   static convertFromJsonDateIfNeeded(date: Date): Date;
   static convertFromJsonDateIfNeeded(date: any): Date {
     if (_.isDate(date)) {
-      return date;
+      return moment(date).toDate();
     } else if (date !== null && !isNaN(Number(date))) {
-      return new Date(Number(date));
+      return moment(Number(date)).toDate();
     } else if (_.isString(date)) {
-      return new Date(<string>date.replace('@', ' '));
+      var dateMoment = moment(date, ['YYYY/MM/DD@HH:mm:ssZ', moment.ISO_8601]);
+      return dateMoment.toDate();
     } else {
       return undefined;
     }
   }
 
   static dateForQuery(date: Date): string {
-    return date.getFullYear() + '/' + DateUtils.padNumber((date.getMonth() + 1).toString()) + '/' + DateUtils.padNumber(date.getDate().toString());
+    var dateMoment = moment(date);
+    var getMonth = dateMoment.month();
+    var getYear = dateMoment.year();
+    var getDate = dateMoment.date();
+    return getYear + '/' + DateUtils.padNumber((getMonth + 1).toString()) + '/' + DateUtils.padNumber(getDate.toString());
   }
 
   private static padNumber(num: string, length: number = 2): string {
@@ -57,14 +63,16 @@ export class DateUtils {
   }
 
   static keepOnlyDatePart(date: Date): Date {
-    return new Date(date.getFullYear(), date.getMonth(), date.getDate());
+    var dateMoment = moment(date);
+    var getMonth = dateMoment.month();
+    var getYear = dateMoment.year();
+    var getDate = dateMoment.date();
+    return new Date(getYear, getMonth, getDate);
   }
 
   static offsetDateByDays(date: Date, offset: number): Date {
-    var newDate = new Date(date.valueOf());
-    newDate.setDate(newDate.getDate() + offset);
-
-    return newDate;
+    var newDate = moment(date.valueOf()).add(offset,'day');
+    return newDate.toDate();
   }
 
   static dateToString(d: Date, options?: IDateToStringOptions): string {
@@ -143,7 +151,7 @@ export class DateUtils {
   }
 
   static monthToString(month: number): string {
-    var date = new Date(1980, month);
+    var date = moment(new Date(1980, month)).toDate();
     return Globalize.format(date, 'MMMM');
   }
 
@@ -160,8 +168,8 @@ export class DateUtils {
     }
 
     return ('0' + ((to.getTime() - from.getTime()) / (1000 * 60 * 60)).toFixed()).slice(-2) +
-      ':' + ('0' + ((to.getTime() - from.getTime()) % (1000 * 60 * 60) / (1000 * 60)).toFixed()).slice(-2) +
-      ':' + ('0' + ((to.getTime() - from.getTime()) % (1000 * 60) / (1000)).toFixed()).slice(-2);
+        ':' + ('0' + ((to.getTime() - from.getTime()) % (1000 * 60 * 60) / (1000 * 60)).toFixed()).slice(-2) +
+        ':' + ('0' + ((to.getTime() - from.getTime()) % (1000 * 60) / (1000)).toFixed()).slice(-2);
   }
 }
 
@@ -178,13 +186,13 @@ if (!Date.prototype.toISOString) {
 
     Date.prototype.toISOString = function () {
       return this.getUTCFullYear() +
-        '-' + pad(this.getUTCMonth() + 1) +
-        '-' + pad(this.getUTCDate()) +
-        'T' + pad(this.getUTCHours()) +
-        ':' + pad(this.getUTCMinutes()) +
-        ':' + pad(this.getUTCSeconds()) +
-        '.' + (this.getUTCMilliseconds() / 1000).toFixed(3).slice(2, 5) +
-        'Z';
+          '-' + pad(this.getUTCMonth() + 1) +
+          '-' + pad(this.getUTCDate()) +
+          'T' + pad(this.getUTCHours()) +
+          ':' + pad(this.getUTCMinutes()) +
+          ':' + pad(this.getUTCSeconds()) +
+          '.' + (this.getUTCMilliseconds() / 1000).toFixed(3).slice(2, 5) +
+          'Z';
     };
   }());
 }
