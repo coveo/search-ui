@@ -100,7 +100,7 @@
     "zh-tw": "清除 {0}"
   },
   "CompleteQuery": {
-    "en": "Complete Query",
+    "en": "Complete query",
     "fr": "Requête complète",
     "cs": "Celý dotaz",
     "da": "Afslut forespørgsel",
@@ -500,7 +500,7 @@
     "zh-tw": "喜好設定"
   },
   "LinkOpeningSettings": {
-    "en": "Link Opening Settings",
+    "en": "Link opening settings",
     "fr": "Réglage pour l'ouverture des liens",
     "cs": "Nastavení otevírání odkazů",
     "da": "Indstillinger til åbning af links",
@@ -550,7 +550,7 @@
     "zh-tw": "重新驗證 {0}"
   },
   "ResultsFilteringExpression": {
-    "en": "Results Filtering Expressions",
+    "en": "Results filtering expressions",
     "fr": "Expression de filtrage des résultats",
     "cs": "Výrazy pro filtrování výsledků",
     "da": "Tilkendegivelser filtrerer resultater",

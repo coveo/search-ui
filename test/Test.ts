@@ -458,3 +458,4 @@ MultiSelectTest();
 
 import { FacetSliderQueryControllerTest } from './controllers/FacetSliderQueryControllerTest';
 FacetSliderQueryControllerTest();
+

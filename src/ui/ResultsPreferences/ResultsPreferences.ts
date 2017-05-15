@@ -193,7 +193,7 @@ export class ResultsPreferences extends Component {
       checkboxes.push(createCheckbox(l('AlwaysOpenInNewWindow')));
     }
 
-    this.element.appendChild(new FormGroup(checkboxes, l('ResultLink')).build());
+    this.element.appendChild(new FormGroup(checkboxes, l('ResultLinks')).build());
     this.fromPreferencesToCheckboxInput();
   }
 
