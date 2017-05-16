@@ -36,13 +36,13 @@ export class FacetSearchParameters {
 
   public excludeCurrentlyDisplayedValuesInSearch(searchResults: HTMLElement) {
     _.each(this.getCurrentlyShowedValueInSearch(searchResults), (v) => {
-      var expandedValues = FacetUtils.getValuesToUseForSearchInFacet(v, this.facet);
+      const expandedValues = FacetUtils.getValuesToUseForSearchInFacet(v, this.facet);
       _.each(expandedValues, (expanded) => {
         this.alwaysExclude.push(expanded);
       });
     });
     _.each(this.facet.getDisplayedFacetValues(), (v) => {
-      var expandedValues = FacetUtils.getValuesToUseForSearchInFacet(v.value, this.facet);
+      const expandedValues = FacetUtils.getValuesToUseForSearchInFacet(v.value, this.facet);
       _.each(expandedValues, (expanded) => {
         this.alwaysExclude.push(expanded);
       });
@@ -51,12 +51,12 @@ export class FacetSearchParameters {
 
   public getGroupByRequest(): IGroupByRequest {
     this.lowerCaseAll();
-    var nbResults = this.nbResults;
+    let nbResults = this.nbResults;
     if (this.facet.searchInterface.isNewDesign()) {
       nbResults += this.alwaysExclude.length;
     }
 
-    var typedByUser = [];
+    let typedByUser = [];
     if (this.valueToSearch) {
       typedByUser = ['*' + this.valueToSearch + '*'];
     }
@@ -70,7 +70,7 @@ export class FacetSearchParameters {
       completeFacetWithStandardValues = false;
     }
 
-    var request: IGroupByRequest = {
+    const request: IGroupByRequest = {
       allowedValues: typedByUser.concat(this.alwaysInclude).concat(this.alwaysExclude),
       maximumNumberOfValues: nbResults,
       completeFacetWithStandardValues: completeFacetWithStandardValues,
@@ -93,16 +93,26 @@ export class FacetSearchParameters {
   }
 
   public getQuery(): IQuery {
-    var lastQuery = _.clone(this.facet.queryController.getLastQuery());
+    let lastQuery = _.clone(this.facet.queryController.getLastQuery());
     if (!lastQuery) {
       // There should normally always be a last query available
       // If not, just create an empty one.
       lastQuery = new QueryBuilder().build();
     }
-    lastQuery.q = this.facet.facetQueryController.basicExpressionToUseForFacetSearch;
+    // We want to always force query syntax to true for a facet search,
+    // but arrange but the basic expression to adapt itself with no syntax block
+    if (lastQuery.enableQuerySyntax) {
+      lastQuery.q = this.facet.facetQueryController.basicExpressionToUseForFacetSearch;
+    } else {
+      if (this.facet.facetQueryController.basicExpressionToUseForFacetSearch == '@uri') {
+        lastQuery.q = '';
+      } else {
+        lastQuery.q = `<@- ${this.facet.facetQueryController.basicExpressionToUseForFacetSearch} -@>`;
+      }
+    }
+    lastQuery.enableQuerySyntax = true;
     lastQuery.cq = this.facet.facetQueryController.constantExpressionToUseForFacetSearch;
     lastQuery.aq = this.facet.facetQueryController.advancedExpressionToUseForFacetSearch;
-    lastQuery.enableQuerySyntax = true;
     lastQuery.enableDidYouMean = false;
     lastQuery.firstResult = 0;
     lastQuery.numberOfResults = 0;

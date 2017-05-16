@@ -8,10 +8,10 @@ import { QueryController } from '../../src/controllers/QueryController';
 import { FacetQueryController } from '../../src/controllers/FacetQueryController';
 
 export function FacetSearchParametersTest() {
-  describe('FacetSearchParameters', function () {
-    var mockFacet: Facet;
+  describe('FacetSearchParameters', () => {
+    let mockFacet: Facet;
 
-    beforeEach(function () {
+    beforeEach(() => {
       mockFacet = Mock.mock<Facet>(Facet);
       mockFacet.options = {};
       mockFacet.options.numberOfValuesInFacetSearch = 10;
@@ -22,12 +22,12 @@ export function FacetSearchParametersTest() {
       };
     });
 
-    afterEach(function () {
+    afterEach(() => {
       mockFacet = null;
     });
 
-    it('should allow to set value to search and expand it with different captions', function () {
-      var params = new FacetSearchParameters(mockFacet);
+    it('should allow to set value to search and expand it with different captions', () => {
+      let params = new FacetSearchParameters(mockFacet);
       params.setValueToSearch('test');
       expect(params.alwaysInclude).toContain('test');
 
@@ -42,11 +42,11 @@ export function FacetSearchParametersTest() {
       expect(params.alwaysInclude).toContain('bar');
     });
 
-    it('should allow to build a group by request', function () {
-      var params = new FacetSearchParameters(mockFacet);
+    it('should allow to build a group by request', () => {
+      let params = new FacetSearchParameters(mockFacet);
 
       params.setValueToSearch('testing');
-      var req = params.getGroupByRequest();
+      let req = params.getGroupByRequest();
       expect(req.allowedValues).toContain('*testing*');
       expect(req.maximumNumberOfValues).toBe(mockFacet.options.numberOfValuesInFacetSearch);
       expect(req.field).toBe(mockFacet.options.field);
@@ -60,20 +60,20 @@ export function FacetSearchParametersTest() {
       expect(req.computedFields[0].operation).toBe('sum');
     });
 
-    describe('with facet having displayed values', function () {
-      var elem: HTMLElement;
+    describe('with facet having displayed values', () => {
+      let elem: HTMLElement;
 
-      beforeEach(function () {
+      beforeEach(() => {
         mockFacet.options.valueCaption = {
           'foo': 'test',
           'bar': 'testing'
         };
-        var spy = <jasmine.Spy>mockFacet.getDisplayedFacetValues;
+        const spy = <jasmine.Spy>mockFacet.getDisplayedFacetValues;
         spy.and.returnValue([FacetValue.createFromValue('a'), FacetValue.createFromValue('b'), FacetValue.createFromValue('c')]);
 
         elem = document.createElement('div');
-        var oneValue = document.createElement('div');
-        var twoValue = document.createElement('div');
+        const oneValue = document.createElement('div');
+        const twoValue = document.createElement('div');
         $$(oneValue).text('test');
         $$(twoValue).text('qwerty');
         oneValue.className = 'coveo-facet-value-caption';
@@ -82,12 +82,12 @@ export function FacetSearchParametersTest() {
         elem.appendChild(twoValue);
       });
 
-      afterEach(function () {
+      afterEach(() => {
         elem = null;
       });
 
-      it('allows to exclude currently displayed values in search', function () {
-        var params = new FacetSearchParameters(mockFacet);
+      it('allows to exclude currently displayed values in search', () => {
+        const params = new FacetSearchParameters(mockFacet);
         params.excludeCurrentlyDisplayedValuesInSearch(elem);
         expect(params.alwaysExclude.length).toBe(7);
         expect(params.alwaysExclude).toContain('test');
@@ -99,10 +99,10 @@ export function FacetSearchParametersTest() {
         expect(params.alwaysExclude).toContain('c');
       });
 
-      it('allows to create a group by', function () {
-        var params = new FacetSearchParameters(mockFacet);
+      it('allows to create a group by', () => {
+        const params = new FacetSearchParameters(mockFacet);
         params.setValueToSearch('qwerty');
-        var groupBy = params.getGroupByRequest();
+        let groupBy = params.getGroupByRequest();
         expect(groupBy.allowedValues).toContain('*qwerty*');
         expect(groupBy.allowedValues).not.toContain('test');
         expect(groupBy.allowedValues).not.toContain('c');
@@ -114,44 +114,90 @@ export function FacetSearchParametersTest() {
         expect(groupBy.allowedValues).toContain('c');
       });
 
-      it('allow to create a query duplicated from the last one', function () {
-        var spy = jasmine.createSpy('spy');
-        var builder = new QueryBuilder();
-        builder.enablePartialMatch = true;
+      describe('should duplicate query', () => {
+        let spy: jasmine.Spy;
+        let builder: QueryBuilder;
 
-        mockFacet.queryController = <QueryController>{};
-        mockFacet.queryController.getLastQuery = spy;
-        spy.and.returnValue(builder.build());
+        beforeEach(() => {
+          spy = jasmine.createSpy('spy');
+          builder = new QueryBuilder();
+          mockFacet.queryController = <QueryController>{};
+          mockFacet.queryController.getLastQuery = spy;
+          mockFacet.facetQueryController = <FacetQueryController>{};
+          mockFacet.facetQueryController.basicExpressionToUseForFacetSearch = '@basic';
+          mockFacet.facetQueryController.advancedExpressionToUseForFacetSearch = '@advanced';
+          mockFacet.facetQueryController.constantExpressionToUseForFacetSearch = '@constant';
+        });
 
-        mockFacet.facetQueryController = <FacetQueryController>{};
-        mockFacet.facetQueryController.basicExpressionToUseForFacetSearch = '@basic';
-        mockFacet.facetQueryController.advancedExpressionToUseForFacetSearch = '@advanced';
-        mockFacet.facetQueryController.constantExpressionToUseForFacetSearch = '@constant';
+        afterEach(() => {
+          spy = null;
+          builder = null;
+        });
 
-        var params = new FacetSearchParameters(mockFacet);
-        expect(params.getQuery().partialMatch).toBe(true);
-        expect(params.getQuery().q).toBe('@basic');
-        expect(params.getQuery().aq).toBe('@advanced');
-        expect(params.getQuery().cq).toBe('@constant');
-      });
+        it('should contain the same parameters as last one', () => {
+          builder.enablePartialMatch = true;
+          builder.enableQuerySyntax = true;
+          spy.and.returnValue(builder.build());
+          const params = new FacetSearchParameters(mockFacet);
+          expect(params.getQuery().partialMatch).toBe(true);
+          expect(params.getQuery().q).toBe('@basic');
+          expect(params.getQuery().aq).toBe('@advanced');
+          expect(params.getQuery().cq).toBe('@constant');
+        });
 
-      it('should use the same group by parameters as the facet', () => {
-        var spy = jasmine.createSpy('spy');
-        var builder = new QueryBuilder();
+        it('should force the duplicated query to enable query syntax, with @uri in basic expression', () => {
+          builder.enableQuerySyntax = false;
+          mockFacet.facetQueryController.basicExpressionToUseForFacetSearch = '@uri';
+          spy.and.returnValue(builder.build());
+          const params = new FacetSearchParameters(mockFacet);
+          expect(params.getQuery().enableQuerySyntax).toBe(true);
+          expect(params.getQuery().q).toBe('');
+          expect(params.getQuery().aq).toBe('@advanced');
+          expect(params.getQuery().cq).toBe('@constant');
+        });
 
-        mockFacet.queryController = <QueryController>{};
-        mockFacet.queryController.getLastQuery = spy;
-        spy.and.returnValue(builder.build());
+        it('should force the duplicated query to enable query syntax, with a field expression in basic expression', () => {
+          builder.enableQuerySyntax = false;
+          mockFacet.facetQueryController.basicExpressionToUseForFacetSearch = '@test=a';
+          spy.and.returnValue(builder.build());
+          const params = new FacetSearchParameters(mockFacet);
+          expect(params.getQuery().enableQuerySyntax).toBe(true);
+          expect(params.getQuery().q).toBe('<@- @test=a -@>');
+          expect(params.getQuery().aq).toBe('@advanced');
+          expect(params.getQuery().cq).toBe('@constant');
+        });
 
-        mockFacet.options.sortCriteria = 'alphaascending';
-        mockFacet.facetQueryController = <FacetQueryController>{};
-        mockFacet.facetQueryController.expressionToUseForFacetSearch = '@asdf';
-        mockFacet.facetQueryController.constantExpressionToUseForFacetSearch = '@qwerty';
+        it('should not modify the basic expression if query syntax was originally enabled', () => {
+          builder.enableQuerySyntax = true;
+          mockFacet.facetQueryController.basicExpressionToUseForFacetSearch = '@test=a';
+          spy.and.returnValue(builder.build());
+          const params = new FacetSearchParameters(mockFacet);
+          expect(params.getQuery().enableQuerySyntax).toBe(true);
+          expect(params.getQuery().q).toBe('@test=a');
+          expect(params.getQuery().aq).toBe('@advanced');
+          expect(params.getQuery().cq).toBe('@constant');
+        });
 
-        var params = new FacetSearchParameters(mockFacet);
-        expect(params.getQuery().groupBy[0].sortCriteria).toBe('alphaascending');
-        mockFacet.options.sortCriteria = 'occurences';
-        expect(params.getQuery().groupBy[0].sortCriteria).toBe('occurences');
+        it('should not modify the basic expression with @uri if query syntax was originally enabled', () => {
+          builder.enableQuerySyntax = true;
+          mockFacet.facetQueryController.basicExpressionToUseForFacetSearch = '@uri';
+          spy.and.returnValue(builder.build());
+          const params = new FacetSearchParameters(mockFacet);
+          expect(params.getQuery().enableQuerySyntax).toBe(true);
+          expect(params.getQuery().q).toBe('@uri');
+          expect(params.getQuery().aq).toBe('@advanced');
+          expect(params.getQuery().cq).toBe('@constant');
+        });
+
+        it('should use the same group by parameters as the facet', () => {
+          mockFacet.options.sortCriteria = 'alphaascending';
+          spy.and.returnValue(builder.build());
+          const params = new FacetSearchParameters(mockFacet);
+          expect(params.getQuery().groupBy[0].sortCriteria).toBe('alphaascending');
+          mockFacet.options.sortCriteria = 'occurences';
+          expect(params.getQuery().groupBy[0].sortCriteria).toBe('occurences');
+        });
+
       });
     });
   });
