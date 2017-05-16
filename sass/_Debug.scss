@@ -8,7 +8,7 @@ $color_duration: #33B;
 .coveo-debug.coveo-modal-container {
 
   .coveo-modal-content {
-    @include transition(opacity 2s);
+    @include transition(opacity .3s);
     &.coveo-debug-loading {
       opacity: 0.5;
     }
