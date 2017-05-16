@@ -98,9 +98,9 @@ export class DateUtils {
     var isThisWeek = Math.abs(TimeSpan.fromDates(dateOnly, today).getDays()) < 7;
     if (options.useWeekdayIfThisWeek && isThisWeek) {
       if (dateOnly.valueOf() > today.valueOf()) {
-        return l('Next') + ' ' + Globalize.format(dateOnly, 'dddd');
+        return l('NextDay', Globalize.format(dateOnly, 'dddd'));
       } else {
-        return l('Last') + ' ' + Globalize.format(dateOnly, 'dddd');
+        return l('LastDay', Globalize.format(dateOnly, 'dddd'));
       }
     }
 
@@ -163,28 +163,4 @@ export class DateUtils {
       ':' + ('0' + ((to.getTime() - from.getTime()) % (1000 * 60 * 60) / (1000 * 60)).toFixed()).slice(-2) +
       ':' + ('0' + ((to.getTime() - from.getTime()) % (1000 * 60) / (1000)).toFixed()).slice(-2);
   }
-}
-
-// Shim for IE8 Date.toISOString
-// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString
-if (!Date.prototype.toISOString) {
-  (function () {
-    function pad(nber) {
-      if (nber < 10) {
-        return '0' + nber;
-      }
-      return nber;
-    }
-
-    Date.prototype.toISOString = function () {
-      return this.getUTCFullYear() +
-        '-' + pad(this.getUTCMonth() + 1) +
-        '-' + pad(this.getUTCDate()) +
-        'T' + pad(this.getUTCHours()) +
-        ':' + pad(this.getUTCMinutes()) +
-        ':' + pad(this.getUTCSeconds()) +
-        '.' + (this.getUTCMilliseconds() / 1000).toFixed(3).slice(2, 5) +
-        'Z';
-    };
-  }());
 }
