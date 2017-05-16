@@ -100,7 +100,7 @@ export class FacetSearchParameters {
       lastQuery = new QueryBuilder().build();
     }
     // We want to always force query syntax to true for a facet search,
-    // but arrange but the basic expression to adapt itself with no syntax block
+    // but arrange for the basic expression to adapt itself with no syntax block
     if (lastQuery.enableQuerySyntax) {
       lastQuery.q = this.facet.facetQueryController.basicExpressionToUseForFacetSearch;
     } else {
