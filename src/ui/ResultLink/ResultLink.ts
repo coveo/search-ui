@@ -22,8 +22,8 @@ import { exportGlobally } from '../../GlobalExports';
 import 'styling/_ResultLink';
 
 /**
- * The ResultLink component automatically transform a search result title into a clickable link pointing to the original
- * document.
+ * The `ResultLink` component automatically transform a search result title into a clickable link pointing to the
+ * original document.
  *
  * This component is a result template component (see [Result Templates](https://developers.coveo.com/x/aIGfAQ)).
  */
@@ -43,30 +43,21 @@ export class ResultLink extends Component {
   static options: IResultLinkOptions = {
 
     /**
-     * Specifies the field which the ResultLink should use to output its `href` attribute.
-     *
-     * By default, the component uses the `clickUri` field available on the document, but you can override this field
-     * by specifying a value for this option.
+     * Specifies the field to use to output the component `href` attribute value.
      *
      * **Tip:**
-     *
-     * > When you do not include a `field` option in your result template, you can include an `href` attribute on the
-     * > ResultLink element. When present, the `href` attribute value overrides the `clickUri` field, which is otherwise
-     * > the default field.
-     *
-     * > Specifying an `href` attribute is useful when you want to build the ResultLink using a custom script or by
-     * > concatenating the content of two or more variables.
+     * > Instead of specifying a value for the `field` option, you can directly add an `href` attribute to the
+     * > `ResultLink` HTML element. Then, you can use a custom script to generate the `href` value.
      *
      * **Examples:**
-     *
-     * - With the following markup, the ResultLink will output its `href` attribute using the `uri` field instead of the
-     * default `clickUri` field:
+     * - With the following markup, the `ResultLink` outputs its `href` value using the `@uri` field (rather than the
+     * default field):
      *
      * ```html
      * <a class="CoveoResultLink" field="@uri"></a>
      * ```
      *
-     * - In the following result template, the custom `getMyKBUri()` function will provide the `href`:
+     * - In the following result template, the custom `getMyKBUri()` function provides the `href` value:
      *
      * ```html
      * <script id="KnowledgeArticle" type="text/underscore" class="result-template">
@@ -76,131 +67,140 @@ export class ResultLink extends Component {
      * </script>
      * ```
      *
-     * See also [hrefTemplate]{@link ResultLink.options.hrefTemplate}, which can override this option.
+     * See also [`hrefTemplate`]{@link ResultLink.options.hrefTemplate}, which can override this option.
+     *
+     * By default, the component uses the document `@clickUri` field to output the value of its href attribute.
      */
     field: ComponentOptions.buildFieldOption(),
 
     /**
-     * Specifies whether the ResultLink should try to open in Microsoft Outlook.
+     * Specifies whether the component should try to open its link in Microsoft Outlook.
      *
-     * Setting this option to `true` is normally useful for ResultLink instances which are related to Microsoft Exchange
-     * emails.
+     * Setting this option to `true` is normally useful for `ResultLink` instances related to Microsoft Exchange emails.
      *
-     * If this option is `true`, clicking the ResultLink will call the {@link ResultLink.openLinkInOutlook} method
-     * instead of the {@link ResultLink.openLink} method.
+     * If this option is `true`, clicking the `ResultLink` calls the
+     * [`openLinkInOutlook`]{@link ResultLink.openLinkInOutlook} method instead of the
+     * [`openLink`]{@link ResultLink.openLink} method.
      *
      * Default value is `false`.
      */
     openInOutlook: ComponentOptions.buildBooleanOption({ defaultValue: false }),
 
     /**
-     * Specifies whether the ResultLink should open in the {@link Quickview} component rather than loading through the
-     * original URL.
+     * Specifies whether the component should open its link in the [`Quickview`]{@link Quickview} component rather than
+     * loading through the original URL.
      *
      * Default value is `false`.
      */
     openQuickview: ComponentOptions.buildBooleanOption({ defaultValue: false }),
 
     /**
-     * Specifies whether the ResultLink should open in a new window instead of opening in the current context.
+     * Specifies whether the component should open its link in a new window instead of opening it in the current
+     * context.
      *
-     * If this option is `true`, clicking the ResultLink will call the {@link ResultLink.openLinkInNewWindow} method
-     * instead of the {@link ResultLink.openLink} method.
+     * If this option is `true`, clicking the `ResultLink` calls the
+     * [`openLinkInNewWindow`]{@link ResultLink.openLinkInNewWindow} method instead of the
+     * [ `openLink`]{@link ResultLink.openLink} method.
      *
      * **Note:**
-     * > If a search page contains a {@link ResultsPreferences} component whose
-     * > [enableOpenInNewWindow]{@link ResultsPreferences.options.enableOpenInNewWindow} option is `true`, and the end
-     * > user checks the <b>Always open results in new window</b> box, then ResultLink components will always open in
-     * > a new window when the user clicks them, no matter what the value of their alwaysOpenInNewWindow option is.
+     * > If a search page contains a [`ResultPreferences`]{@link ResultsPreferences} component whose
+     * > [`enableOpenInNewWindow`]{@link ResultsPreferences.options.enableOpenInNewWindow} option is `true`, and the end
+     * > user checks the <b>Always open results in new window</b> box, `ResultLink` components in this page will always
+     * > open their links in a new window when the end user clicks them, no matter what the value of their
+     * > `alwaysOpenInNewWindow` option is.
      *
      * Default value is `false`.
      */
     alwaysOpenInNewWindow: ComponentOptions.buildBooleanOption({ defaultValue: false }),
 
     /**
-     * Specifies a template literal from which to generate the ResultLink `href` attribute (see
+     * Specifies a template literal from which to generate the `ResultLink` `href` attribute value (see
      * [Template literals](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Template_literals)).
      *
-     * This option overrides the value of the [field]{@link ResultLink.options.field} option.
+     * This option overrides the [`field`]{@link ResultLink.options.field} option value.
      *
      * The template literal can reference any number of fields from the parent result. It can also reference global
      * scope properties.
      *
-     * Default value is `undefined`.
-     *
      * **Examples:**
      *
-     * - The following markup generates a ResultLink `href` such as `http://uri.com?id=documentTitle`:
+     * - The following markup generates an `href` value such as `http://uri.com?id=documentTitle`:
      *
      * ```html
      * <a class='CoveoResultLink' data-href-template='${clickUri}?id=${title}'></a>
      * ```
      *
-     * - The following markup generates a ResultLink `href` such as `localhost/fooBar`:
+     * - The following markup generates an `href` value such as `localhost/fooBar`:
      *
      * ```html
      * <a class='CoveoResultLink' data-href-template='${window.location.hostname}/{Foo.Bar}'></a>
      * ```
+     *
+     * Default value is `undefined`.
      */
     hrefTemplate: ComponentOptions.buildStringOption(),
 
     /**
-     * Specifies a template literal from which to generate the ResultLink display title (see
+     * Specifies a template literal from which to generate the `ResultLink` display title (see
      * [Template literals](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Template_literals)).
      *
-     * This option overrides the default ResultLink display title behavior.
+     * This option overrides the default `ResultLink` display title behavior.
      *
      * The template literal can reference any number of fields from the parent result. However, if the template literal
-     * references a key whose value is undefined in the parent result fields, then the ResultLink title displays the
+     * references a key whose value is undefined in the parent result fields, the `ResultLink` title displays the
      * name of this key instead.
      *
-     * This option is ignored if the ResultLink innerHTML contains any value.
-     *
-     * Default value is `undefined`.
+     * This option is ignored if the `ResultLink` innerHTML contains any value.
      *
      * **Examples:**
      *
-     * - The following markup generates a ResultLink display title such as `Case number: 123456` if both the
+     * - The following markup generates a `ResultLink` display title such as `Case number: 123456` if both the
      * `raw.objecttype` and `raw.objectnumber` keys are defined in the parent result fields:
      *
      * ```html
      * <a class="CoveoResultLink" data-title-template="${raw.objecttype} number: ${raw.objectnumber}"></a>
      * ```
      *
-     * - The following markup generates `${myField}` as a ResultLink display title if the `myField` key is undefined
+     * - The following markup generates `${myField}` as a `ResultLink` display title if the `myField` key is undefined
      * in the parent result fields:
      *
      * ```html
      * <a class="CoveoResultLink" data-title-template="${myField}"></a>
      * ```
      *
-     * - The following markup generates `Foobar` as a ResultLink display title, because the ResultLink innterHTML is not
-     * empty:
+     * - The following markup generates `Foobar` as a `ResultLink` display title, because the `ResultLink` innterHTML is
+     * not empty:
      *
      * ```html
      * <a class="CoveoResultLink" data-title-template="${will} ${be} ${ignored}">Foobar</a>
      * ```
+     *
+     * Default value is `undefined`.
      */
     titleTemplate: ComponentOptions.buildStringOption(),
 
     /**
-     * Specifies an event handler function to execute when the user clicks the ResultLink component.
+     * Specifies an event handler function to execute when the user clicks the `ResultLink` component.
      *
-     * The handler function takes a JavaScript [Event](https://developer.mozilla.org/en/docs/Web/API/Event) object and
-     * an {@link IQueryResult} as its parameters.
+     * The handler function takes a JavaScript [`Event`](https://developer.mozilla.org/en/docs/Web/API/Event) object and
+     * an [`IQueryResult`]{@link IQueryResult} as its parameters.
      *
      * Overriding the default behavior of the `onClick` event can allow you to execute specific code instead.
      *
-     * You can only set this option in the {@link init} call of your search interface. You cannot set it directly in the
-     * markup as an HTML attribute.
+     * **Note:**
+     * > You cannot set this option directly in the component markup as an HTML attribute. You must either set it in the
+     * > [`init`]{@link init} call of your search interface (see
+     * > [Components - Passing Component Options in the init Call](https://developers.coveo.com/x/PoGfAQ#Components-PassingComponentOptionsintheinitCall)),
+     * > or before the `init` call, using the `options` top-level function (see
+     * > [Components - Passing Component Options Before the init Call](https://developers.coveo.com/x/PoGfAQ#Components-PassingComponentOptionsBeforetheinitCall)).
      *
-     * **Examples:**
-     *
-     * - In the following code excerpt, the ResultLink opens the original document in a custom way instead of using the
-     * normal browser behavior:
-     *
+     * **Example:**
      * ```javascript
-     * Coveo.init(document.querySelector('#search'), {
+     *
+     *
+     *
+     * // You can set the option in the 'init' call:
+     * Coveo.init(document.querySelector("#search"), {
      *   ResultLink : {
      *     onClick : function(e, result) {
      *       e.preventDefault();
@@ -209,20 +209,17 @@ export class ResultLink extends Component {
      *     }
      *   }
      * });
-     * ```
      *
-     * - You can achieve the same result using the jQuery extension:
-     *
-     * ```javascript
-     * $("#search").coveo('init', {
-     *   ResultLink : {
-     *     onClick : function(e, result) {
-     *       e.preventDefault();
-     *       // Custom code to execute with the URI and title of the document.
-     *       openUriInASpecialTab(result.clickUri, result.title);
-     *     }
-     *   }
-     * });
+     * // Or before the 'init' call, using the 'options' top-level function:
+     * // Coveo.options(document.querySelector('#search'), {
+     * //   ResultLink : {
+     * //     onClick : function(e, result) {
+     * //       e.preventDefault();
+     * //       // Custom code to execute with the URI and title of the document.
+     * //       openUriInASpecialTab(result.clickUri, result.title);
+     * //     }
+     * //   }
+     * // });
      * ```
      */
     onClick: ComponentOptions.buildCustomOption<(e: Event, result: IQueryResult) => any>(() => {
@@ -233,9 +230,9 @@ export class ResultLink extends Component {
   private toExecuteOnOpen: (e?: Event) => void;
 
   /**
-   * Creates a new ResultLink component.
+   * Creates a new `ResultLink` component.
    * @param element The HTMLElement on which to instantiate the component.
-   * @param options The options for the ResultLink component.
+   * @param options The options for the `ResultLink` component.
    * @param bindings The bindings that the component requires to function normally. If not set, these will be
    * automatically resolved (with a slower execution time).
    * @param result The result to associate the component with.
@@ -250,7 +247,6 @@ export class ResultLink extends Component {
     if (this.options.openQuickview == null) {
       this.options.openQuickview = result.raw['connectortype'] == 'ExchangeCrawler' && DeviceUtils.isMobileDevice();
     }
-
     this.element.setAttribute('tabindex', '0');
 
     Assert.exists(this.componentOptionsModel);
@@ -281,7 +277,7 @@ export class ResultLink extends Component {
 
   /**
    * Opens the result in the same window, no matter how the actual component is configured for the end user.
-   * @param logAnalytics  If true, the method will take care of logging an analytic event.
+   * @param logAnalytics Specifies whether the method should log an analytics event.
    */
   public openLink(logAnalytics = true) {
     if (logAnalytics) {
@@ -292,7 +288,7 @@ export class ResultLink extends Component {
 
   /**
    * Opens the result in a new window, no matter how the actual component is configured for the end user.
-   * @param logAnalytics If true, the method will take care of logging an analytic event.
+   * @param logAnalytics Specifies whether the method should log an analytics event.
    */
   public openLinkInNewWindow(logAnalytics = true) {
     if (logAnalytics) {
@@ -302,12 +298,12 @@ export class ResultLink extends Component {
   }
 
   /**
-   * Try to open the result in Microsoft Outlook if the result has an `outlookformacuri` or `outlookuri` field.
+   * Tries to open the result in Microsoft Outlook if the result has an `outlookformacuri` or `outlookuri` field.
    *
-   * Normally, this means a result link for an email.
+   * Normally, this implies the result should be a link to an email.
    *
-   * If the needed fields are not present, this method will do nothing.
-   * @param logAnalytics If true, the method will take care of logging an analytic event.
+   * If the needed fields are not present, this method does nothing.
+   * @param logAnalytics Specifies whether the method should log an analytics event.
    */
   public openLinkInOutlook(logAnalytics = true) {
     if (this.hasOutlookField()) {
@@ -319,11 +315,11 @@ export class ResultLink extends Component {
   }
 
   /**
-   * Open the link in the same manner the end user would do.
+   * Opens the link in the same manner the end user would.
    *
-   * This essentially simulate a click on the result link.
+   * This essentially simulates a click on the result link.
    *
-   * @param logAnalytics If true, the method will take care of logging an analytic event.
+   * @param logAnalytics Specifies whether the method should log an analytics event.
    */
   public openLinkAsConfigured(logAnalytics = true) {
     if (this.toExecuteOnOpen) {

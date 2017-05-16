@@ -1,80 +1,63 @@
+@import "Variables";
+
 $color_indexDuration: #B33;
 $color_proxyDuration: #B3B;
 $color_clientDuration: #3B3;
 $color_duration: #33B;
 
-.coveo-debug.coveo-modalBox {
-  > .coveo-wrapper {
-    height: 95%;
-    width: 95%;
-    position: relative;
-    overflow: hidden;
-    > .coveo-title {
-      position: absolute;
-      top: 0;
-      right: 0;
-      left: 0;
-      height: 40px;
-      line-height: 40px;
-      padding: 0 16px;
-      overflow-y: hidden;
-      text-align: right;
-      .coveo-debug-search, .coveo-enabled-debug, .coveo-enabled-highlight-recommendation {
-        display: inline-block;
-        margin: 0 8px;
-      }
+.coveo-debug.coveo-modal-container {
+  .coveo-debug-search, .coveo-enabled-debug, .coveo-enabled-highlight-recommendation {
+    display: inline-block;
+    margin: 0 8px;
+    color: $color-greyish-teal-blue;
+  }
+  .coveo-modal-header {
+    a {
+      @include clickableVibrant();
     }
-    > .coveo-body {
-      position: absolute;
-      top: 40px;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      overflow-y: scroll;
-      transition: opacity 0.3s;
-      &.coveo-debug-loading {
-        opacity: 0;
-      }
-      &.coveo-searching {
-        .coveo-property {
-          display:none;
-        }
-        .coveo-property.coveo-search-match {
-          display:block;
-          .coveo-property {
-            display:block;
-          }
-          > .coveo-property-label, > .coveo-property-value {
-            >.coveo-debug-highlight {
-              background: yellow;
-            }
-          }
-        }
-        .coveo-property.coveo-search-submatch {
-          display:block;
-        }
-        .coveo-section-container > .coveo-property {
-          display:block;
-          .coveo-property-value{
-            display: none;
-          }
-          &:after {
-            content: 'No match';
-          }
-          &.coveo-search-submatch, &.coveo-search-match{
-            .coveo-property-value{
-              display: block;
-            }
-            &:after {
-              content: '';
-            }
-          }
-        }
-        
-      }
-      &.coveo-searching-loading {
+  }
+  .coveo-modal-body {
+    &.coveo-debug-loading {
+      opacity: 0;
+    }
+    .coveo-searching {
+      .coveo-property {
         display: none;
       }
+      .coveo-property.coveo-search-match {
+        display: block;
+        .coveo-property {
+          display:block;
+        }
+        > .coveo-property-label, > .coveo-property-value {
+          > .coveo-debug-highlight {
+            background: yellow;
+          }
+        }
+      }
+      .coveo-property.coveo-search-submatch {
+        display: block;
+      }
+      .coveo-section-container > .coveo-property {
+        display: block;
+        .coveo-property-value {
+          display: none;
+        }
+        &:after {
+          content: 'No match';
+        }
+        &.coveo-search-submatch, &.coveo-search-match {
+          .coveo-property-value{
+            display: block;
+          }
+          &:after {
+            content: '';
+          }
+        }
+      }
+    }
+    .coveo-searching-loading {
+      display: none;
     }
   }
   

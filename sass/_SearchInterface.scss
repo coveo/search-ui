@@ -1,12 +1,13 @@
 @import 'Variables';
 @import 'bourbon/bourbon';
+@import url('https://fonts.googleapis.com/css?family=Lato:300,400,700');
 
 .CoveoSearchInterface {
   display: none; //hide the UI while loading
   min-height: 100%;
   position: relative;
   margin: 0;
-  font-family: $helvetica, sans-serif;
+  font-family: "Lato", $helvetica, sans-serif;
   font-size: 15px;
   color: $color-dark-grey;
 

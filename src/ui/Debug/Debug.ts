@@ -20,6 +20,7 @@ import { InitializationEvents } from '../../events/InitializationEvents';
 import { IStringMap } from '../../rest/GenericParam';
 import _ = require('underscore');
 import 'styling/_Debug';
+import { l } from '../../strings/Strings';
 
 export interface IDebugOptions {
   enableDebug?: boolean;
@@ -171,29 +172,34 @@ export class Debug extends RootComponent {
     let build = builder();
 
     let modalbox = this.modalBox.open(build.body, {
-      title: '',
+      title: l('Debug'),
       className: 'coveo-debug',
       titleClose: true,
       overlayClose: true,
       validation: () => {
         this.unbindEscapeEvent();
         return true;
-      }
+      },
+      sizeMod: 'big'
     });
     this.bindEscapeEvent();
 
-    let title = $$(modalbox.wrapper).find('.coveo-title');
-    let search = this.buildSearchBox(build.body);
-    let downloadLink = $$('a', { download: 'debug.json', 'href': this.downloadHref(build.json) }, 'Download');
-    let bodyBuilder = (results?: IQueryResults) => {
-      let build = builder(results);
-      downloadLink.el.setAttribute('href', this.downloadHref(build.json));
-      return build.body;
-    };
-    title.appendChild(this.buildEnabledHighlightRecommendation());
-    title.appendChild(this.buildEnableDebugCheckbox(build.body, search, bodyBuilder));
-    title.appendChild(search);
-    title.appendChild(downloadLink.el);
+    let title = $$(modalbox.wrapper).find('.coveo-modal-header');
+    if (title) {
+      let search = this.buildSearchBox(build.body);
+      let downloadLink = $$('a', { download: 'debug.json', 'href': this.downloadHref(build.json) }, 'Download');
+      let bodyBuilder = (results?: IQueryResults) => {
+        let build = builder(results);
+        downloadLink.el.setAttribute('href', this.downloadHref(build.json));
+        return build.body;
+      };
+      title.appendChild(this.buildEnabledHighlightRecommendation());
+      title.appendChild(this.buildEnableDebugCheckbox(build.body, search, bodyBuilder));
+      title.appendChild(search);
+      title.appendChild(downloadLink.el);
+    } else {
+      this.logger.warn('No title found in modal box.');
+    }
   }
 
   private handleEscapeEvent(e: KeyboardEvent) {

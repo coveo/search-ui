@@ -37,19 +37,19 @@ export class ResponsiveResultLayout implements IResponsiveComponent {
 
   public handleResizeEvent() {
     if (this.needSmallMode()) {
-      this.enableAndDisableLayout(<ValidLayout[]>this.resultLayout.options.mobileLayouts);
+      this.enableAndDisableLayouts(<ValidLayout[]>this.resultLayout.options.mobileLayouts);
     } else if (this.needMediumMode()) {
-      this.enableAndDisableLayout(<ValidLayout[]>this.resultLayout.options.tabletLayouts);
+      this.enableAndDisableLayouts(<ValidLayout[]>this.resultLayout.options.tabletLayouts);
     } else {
-      this.enableAndDisableLayout(<ValidLayout[]>this.resultLayout.options.desktopLayouts);
+      this.enableAndDisableLayouts(<ValidLayout[]>this.resultLayout.options.desktopLayouts);
     }
   }
 
-  private enableAndDisableLayout(validLayouts: ValidLayout[]) {
-    let needToDisable = _.difference<any>(ResultLayout.validLayouts, validLayouts);
-    let needToEnable = _.intersection<any>(ResultLayout.validLayouts, validLayouts);
-    this.resultLayout.disableLayouts(needToDisable);
-    this.resultLayout.enableLayouts(needToEnable);
+  private enableAndDisableLayouts(validLayouts: ValidLayout[]) {
+    const layoutsToDisable = _.difference<any>(ResultLayout.validLayouts, validLayouts);
+    const layoutsToEnable = _.intersection<any>(ResultLayout.validLayouts, validLayouts);
+    this.resultLayout.disableLayouts(layoutsToDisable);
+    this.resultLayout.enableLayouts(layoutsToEnable);
   }
 
   private needSmallMode(): boolean {

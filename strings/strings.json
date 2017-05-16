@@ -100,7 +100,7 @@
     "zh-tw": "清除 {0}"
   },
   "CompleteQuery": {
-    "en": "Complete Query",
+    "en": "Complete query",
     "fr": "Requête complète",
     "cs": "Celý dotaz",
     "da": "Afslut forespørgsel",
@@ -500,7 +500,7 @@
     "zh-tw": "喜好設定"
   },
   "LinkOpeningSettings": {
-    "en": "Link Opening Settings",
+    "en": "Link opening settings",
     "fr": "Réglage pour l'ouverture des liens",
     "cs": "Nastavení otevírání odkazů",
     "da": "Indstillinger til åbning af links",
@@ -550,7 +550,7 @@
     "zh-tw": "重新驗證 {0}"
   },
   "ResultsFilteringExpression": {
-    "en": "Results Filtering Expressions",
+    "en": "Results filtering expressions",
     "fr": "Expression de filtrage des résultats",
     "cs": "Výrazy pro filtrování výsledků",
     "da": "Tilkendegivelser filtrerer resultater",
@@ -3978,7 +3978,7 @@
     "no": "Ugyldig term",
     "pl": "Nieprawidłowy termin",
     "pt-br": "Termo inválido",
-    "ru": "Недопустимое термин",
+    "ru": "Недопустимый термин",
     "sv": "Ogiltig term",
     "th": "คำศัพท์ไม่ถูกต้อง",
     "tr": "Geçersiz terim",
@@ -5039,6 +5039,14 @@
     "en": "Sunday",
     "fr": "Dimanche"
   },
+  "NextDay": {
+    "en": "Next {0}",
+    "fr": "{0} prochain"
+  },
+  "LastDay": {
+    "en": "Last {0}",
+    "fr": "{0} dernier"
+  },
   "StartTypingCaseForSuggestions": {
     "en": "Describe your problem to see possible solutions",
     "fr": "Décrivez votre problème pour voir des solutions possibles"
@@ -5143,16 +5151,40 @@
     "en": "bytes",
     "fr": "octets"
   },
-  "List": {
+  "list": {
     "en": "List",
     "fr": "Liste"
   },
-  "Card": {
+  "card": {
     "en": "Card",
     "fr": "Carte"
   },
-  "Table": {
+  "table": {
     "en": "Table",
     "fr": "Tableau"
+  },
+  "ResultLinks": {
+    "en": "Result links",
+    "fr": "Liens de résultat"
+  },
+  "EnableQuerySyntax": {
+    "en": "Enable query syntax",
+    "fr": "Activation de la syntaxe de recherche"
+  },
+  "On": {
+    "en": "On",
+    "fr": "Activé"
+  },
+  "Off": {
+    "en": "Off",
+    "fr": "Désactivé"
+  },
+  "Automatic": {
+    "en": "Automatic",
+    "fr": "Automatique"
+  },
+  "ResultsPerPage": {
+    "en": "Results per page",
+    "fr": "Résultats par page"
   }
 }

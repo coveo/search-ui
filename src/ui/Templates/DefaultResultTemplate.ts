@@ -1,7 +1,4 @@
-import {
-  Template, IInstantiateTemplateOptions,
-  DefaultInstantiateTemplateOptions
-} from './Template';
+import { Template, IInstantiateTemplateOptions, DefaultInstantiateTemplateOptions, TemplateRole } from './Template';
 import { UnderscoreTemplate } from './UnderscoreTemplate';
 import { TemplateCache } from './TemplateCache';
 import { IQueryResult } from '../../rest/QueryResult';
@@ -27,30 +24,24 @@ export class DefaultResultTemplate extends Template {
     this.addFields(Initialization.getRegisteredFieldsForQuery());
   }
 
-  instantiateToString(queryResult: IQueryResult, instantiateOptions: IInstantiateTemplateOptions = {}): string {
-    Assert.exists(queryResult);
-    let merged = new DefaultInstantiateTemplateOptions().merge(instantiateOptions);
-    queryResult = _.extend({}, queryResult, UnderscoreTemplate.templateHelpers);
+  instantiateToString(object: IQueryResult, instantiateOptions: IInstantiateTemplateOptions = {}): string {
+    Assert.exists(object);
+    let mergedOptions = new DefaultInstantiateTemplateOptions().merge(instantiateOptions);
+    object = _.extend({}, object, UnderscoreTemplate.templateHelpers);
+
+
+    const templates = _.chain(TemplateCache.getDefaultTemplates())
+      .map(name => TemplateCache.getTemplate(name))
+      .value();
 
     // Put templates with conditions first
-    let templates = _.chain(TemplateCache.getDefaultTemplates())
-      .map(name => TemplateCache.getTemplate(name))
+    const sortedTemplates = _.chain(templates)
       .sortBy(template => template.condition == null)
       .sortBy(template => template.fieldsToMatch == null)
       .value();
 
-    // For the DefaultResultTemplate, we want to display card only in mobile
-    // The default list template are not adapted to mobile.
-    if (merged.responsiveComponents.isSmallScreenWidth()) {
-      templates = _.filter(templates, (tmpl) => tmpl.layout == 'card');
-      merged.currentLayout = 'card';
-      this.layout = 'card';
-    } else {
-      this.layout = merged.currentLayout;
-    }
-
-    for (let i = 0; i < templates.length; i++) {
-      var result = templates[i].instantiateToString(queryResult, merged);
+    for (let i = 0; i < sortedTemplates.length; i++) {
+      const result = sortedTemplates[i].instantiateToString(object, mergedOptions);
       if (result != null) {
         return result;
       }

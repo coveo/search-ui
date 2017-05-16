@@ -60,7 +60,6 @@ gulp.task('internalDefs', function () {
   return require('dts-generator').default({
     name: 'Coveo',
     project: './',
-    baseDir: './src/',
     out: 'bin/ts/CoveoJsSearch.d.ts',
     externs: ['Externals.d.ts'],
     verbose: true,

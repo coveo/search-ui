@@ -56,6 +56,7 @@
   },
   "devDependencies": {
     "@salesforce-ux/design-system": "2.0.3",
+    "bluebird": "^3.4.7",
     "@types/d3": "3.5.36",
     "@types/d3-scale": "1.0.4",
     "@types/fastclick": "^1.0.28",
@@ -131,6 +132,8 @@
     "yargs": "^4.7.1"
   },
   "dependencies": {
+    "@material/select": "^0.3.3",
+    "coveo-styleguide": "1.13.4",
     "coveo.analytics": "^0.7.0",
     "coveomagicbox": "1.0.x",
     "d3": "^4.2.1",
@@ -139,7 +142,7 @@
     "fastclick": "1.0.6",
     "jstimezonedetect": "^1.0.6",
     "latinize": "^0.4.0",
-    "modal-box": "1.0.7",
+    "modal-box": "2.0.x",
     "pikaday": "^1.4.0",
     "underscore": "^1.8.3"
   }

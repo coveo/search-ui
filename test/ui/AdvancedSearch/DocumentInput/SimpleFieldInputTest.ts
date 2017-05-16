@@ -21,7 +21,7 @@ export function SimpleFieldInputTest() {
 
     describe('getValue', () => {
       it('should return fieldName == the value', () => {
-        input.dropDown.selectValue('what');
+        input.dropDown.setValue('what');
         expect(input.getValue()).toEqual('@test==what');
       });
     });

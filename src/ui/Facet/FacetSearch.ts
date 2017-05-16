@@ -80,11 +80,7 @@ export class FacetSearch {
    * @returns {HTMLElement}
    */
   public build(): HTMLElement {
-    if (this.isMobileDevice()) {
-      return this.buildSearchMobile();
-    } else {
-      return this.buildBaseSearch();
-    }
+    return this.buildBaseSearch();
   }
 
   /**
@@ -230,30 +226,6 @@ export class FacetSearch {
     this.searchResults.style.display = 'none';
 
     return this.search;
-  }
-
-  private buildSearchMobile() {
-    let button = document.createElement('div');
-    $$(button).addClass('coveo-facet-search-button-mobile');
-    $$(button).text(l('Search'));
-    this.search = this.buildBaseSearch();
-    $$(button).on('click', () => {
-      let toOpen = document.createElement('div');
-      toOpen.appendChild(this.search);
-
-      ModalBox.open(toOpen, {
-        title: DomUtils.getPopUpCloseButton(l('Close'), l('SearchIn', this.facet.options.title)),
-        validation: () => {
-          this.completelyDismissSearch();
-          return true;
-        },
-        className: 'coveo-mobile-facet-search',
-        titleClose: true
-      });
-      this.input.value = '';
-      this.input.focus();
-    });
-    return button;
   }
 
   private handleFacetSearchKeyUp(event: KeyboardEvent) {

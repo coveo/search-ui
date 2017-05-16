@@ -181,6 +181,7 @@ export class OmniboxResultList extends ResultList implements IComponentBindings 
       });
       this.triggerNewResultsDisplayed();
       this.lastOmniboxRequest.resolve({ element: content, zIndex: this.options.omniboxZIndex });
+      return Promise.resolve(null);
     }
   }
 

@@ -1,14 +1,17 @@
-﻿.coveo-modalBox.coveo-authentication-popup {
-  > .coveo-wrapper {
-    width: 90%;
-    height: 90%;
-    max-width: 90%;
-    max-height: 90%;
-    position: relative;
+﻿@import "Variables";
 
-    > .coveo-body {
+.coveo-modal-container.coveo-authentication-popup {
+  .coveo-modal-body {
+    height: 90%;
+    div {
       height: 100%;
-      overflow-y: hidden;
+      width: 100%;
+    }
+    iframe {
+      height: 100%;
+      width: 100%;
+      @include defaultRoundedBorder();
+      padding: 10px 0 0 10px;
     }
   }
 }

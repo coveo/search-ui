@@ -1,4 +1,4 @@
-import { Dropdown } from '../Form/Dropdown';
+import { Dropdown } from '../../FormWidgets/Dropdown';
 import { FacetUtils } from '../../../ui/Facet/FacetUtils';
 import { IIndexFieldValue } from '../../../rest/FieldValue';
 import { ISearchEndpoint } from '../../../rest/SearchEndpointInterface';
