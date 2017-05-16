@@ -2,7 +2,10 @@ import { Component } from '../Base/Component';
 import { IComponentBindings } from '../Base/ComponentBindings';
 import { ComponentOptions } from '../Base/ComponentOptions';
 import { DeviceUtils } from '../../utils/DeviceUtils';
-import { QueryEvents, INewQueryEventArgs, IBuildingQueryEventArgs, IQuerySuccessEventArgs, INoResultsEventArgs } from '../../events/QueryEvents';
+import {
+    QueryEvents, INewQueryEventArgs, IBuildingQueryEventArgs, IQuerySuccessEventArgs, INoResultsEventArgs,
+    IDoneBuildingQueryEventArgs
+} from '../../events/QueryEvents';
 import { MODEL_EVENTS, IAttributeChangedEventArg } from '../../models/Model';
 import { QueryStateModel } from '../../models/QueryStateModel';
 import { QUERY_STATE_ATTRIBUTES } from '../../models/QueryStateModel';
@@ -15,6 +18,7 @@ import { KeyboardUtils, KEYBOARD } from '../../utils/KeyboardUtils';
 import { exportGlobally } from '../../GlobalExports';
 
 import 'styling/_Pager';
+import { Defer } from '../../misc/Defer';
 
 export interface IPagerOptions {
   numberOfPages?: number;
@@ -82,6 +86,7 @@ export class Pager extends Component {
    * The current page (1-based index).
    */
   public currentPage: number;
+  private lastNumberOfResultsPerPage: number;
   private listenToQueryStateChange = true;
   private ignoreNextQuerySuccess = false;
 
@@ -109,13 +114,10 @@ export class Pager extends Component {
     this.options = ComponentOptions.initComponentOptions(element, Pager, options);
     this.currentPage = 1;
 
-    if (this.options.maxNumberOfPages == null) {
-      this.options.maxNumberOfPages = 1000 /
-        (this.queryController.options.resultsPerPage > 0 ? this.queryController.options.resultsPerPage : 10);
-    }
-
+    this.updateMaxNumberOfPages();
     this.bind.onRootElement(QueryEvents.newQuery, (args: INewQueryEventArgs) => this.handleNewQuery(args));
     this.bind.onRootElement(QueryEvents.buildingQuery, (args: IBuildingQueryEventArgs) => this.handleBuildingQuery(args));
+    this.bind.onRootElement(QueryEvents.doneBuildingQuery, (args: IBuildingQueryEventArgs)=> this.handleDoneBuildingQuery(args));
     this.bind.onRootElement(QueryEvents.querySuccess, (args: IQuerySuccessEventArgs) => this.handleQuerySuccess(args));
     this.bind.onRootElement(QueryEvents.queryError, () => this.handleQueryError());
     this.bind.onRootElement(QueryEvents.noResults, (args: INoResultsEventArgs) => this.handleNoResults(args));
@@ -136,7 +138,7 @@ export class Pager extends Component {
    */
   public setPage(pageNumber: number, analyticCause: IAnalyticsActionCause = analyticsActionCauseList.pagerNumber) {
     Assert.exists(pageNumber);
-    this.currentPage = Math.max(Math.min(pageNumber, 1000), 1);
+    this.currentPage = Math.max(Math.min(pageNumber, this.options.maxNumberOfPages), 1);
     this.updateQueryStateModel(this.getFirstResultNumber(this.currentPage));
     this.usageAnalytics.logCustomEvent<IAnalyticsPagerMeta>(analyticCause, { pagerNumber: this.currentPage }, this.element);
     this.queryController.executeQuery({
@@ -162,6 +164,16 @@ export class Pager extends Component {
    */
   public nextPage() {
     this.setPage(this.currentPage + 1, analyticsActionCauseList.pagerNext);
+  }
+
+  private updateMaxNumberOfPages() {
+    let divideBy;
+    if (this.lastNumberOfResultsPerPage == null) {
+      divideBy = this.queryController.options.resultsPerPage > 0 ? this.queryController.options.resultsPerPage : 10
+    } else {
+      divideBy = this.lastNumberOfResultsPerPage;
+    }
+    this.options.maxNumberOfPages = Math.ceil(1000 / divideBy);
   }
 
   private handleNewQuery(data: INewQueryEventArgs) {
@@ -225,10 +237,26 @@ export class Pager extends Component {
   }
 
   private handleNoResults(data: INoResultsEventArgs) {
-    var lastValidPage = this.computePagerBoundary(data.results.totalCountFiltered, data.results.totalCount).lastResultPage;
-    if (this.currentPage > lastValidPage) {
-      this.ignoreNextQuerySuccess = true;
-      this.setPage(lastValidPage);
+    this.ignoreNextQuerySuccess = true;
+    let lastValidPage;
+    if (data.results.totalCount > 0) {
+      // First scenario : The index returned less results than expected (because of folding).
+      // Recalculate the last valid page, and change to that new page.
+      let possibleValidPage = this.computePagerBoundary(data.results.totalCountFiltered, data.results.totalCount).lastResultPage;
+      if (this.currentPage > possibleValidPage) {
+        lastValidPage = possibleValidPage;
+      }
+    } else if (this.currentPage > this.options.maxNumberOfPages) {
+      // Someone tried to access a non-valid page by the URL for example, which is higher than the maximumNumberOfPages
+      // available from the index.
+      lastValidPage = this.options.maxNumberOfPages;
+    }
+
+    // This needs to be deferred because we still want all the "querySuccess" callbacks the complete their execution
+    // before triggering/queuing the next query;
+    // if we cannot find a lastValidPage to go to, do nothing : this means it's a query that simply return nothing.
+    if (lastValidPage != null) {
+      Defer.defer(()=> this.setPage(lastValidPage));
     }
   }
 
@@ -243,7 +271,12 @@ export class Pager extends Component {
     data.queryBuilder.numberOfResults = eventArgs.count;
   }
 
+  private handleDoneBuildingQuery(data: IDoneBuildingQueryEventArgs) {
+    this.lastNumberOfResultsPerPage = data.queryBuilder.numberOfResults;
+  }
+
   private computePagerBoundary(firstResult: number, totalCount: number): { start: number; end: number; lastResultPage: number; currentPage: number; } {
+    this.updateMaxNumberOfPages();
     var resultPerPage: number = this.queryController.options.resultsPerPage;
     var currentPage = Math.floor(firstResult / resultPerPage) + 1;
     var lastPageNumber: number = Math.min(Math.ceil(totalCount / resultPerPage), this.options.maxNumberOfPages);
