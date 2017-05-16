@@ -13,6 +13,8 @@
 .<%=svgItem.name%> {
   @extend .<%=common %>;
   & {
+      width: 20px;
+      height: 20px;
       background-image: url("../image/symbols.svg#<%=svgItem.name%>")
     }
 }

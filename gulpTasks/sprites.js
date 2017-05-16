@@ -30,9 +30,9 @@ gulp.task('retinaSpriteList', function (done) {
 });
 
   let config = {
-    /*templates: {
+    templates: {
       css: fs.readFileSync('./sass/template/svgSpriteTemplate.lodash.scss', 'utf-8')
-    },*/
+    },
     mode: 'symbols',
     common: 'coveo',
     svg: {
