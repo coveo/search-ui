@@ -477,7 +477,7 @@ export class SearchInterface extends RootComponent implements IComponentBindings
 
   private setupDebugInfo() {
     if (this.options.enableDebugInfo) {
-      setTimeout(() => new Debug(this.element, this.queryController));
+      setTimeout(() => new Debug(this.element, this.getBindings()));
     }
   }
 

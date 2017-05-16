@@ -32,7 +32,7 @@ export function ResultsPreferencesTest() {
         localStorage.setItem('coveo-ResultsPreferences', JSON.stringify({ openInOutlook: true }));
         expect(() => test = Mock.advancedComponentSetup<ResultsPreferences>(ResultsPreferences, new Mock.AdvancedComponentSetupOptions(element.el, { enableOpenInOutlook: false }))).not.toThrow();
         Defer.defer(() => {
-          expect(JSON.parse(localStorage.getItem('coveo-ResultsPreferences')).openInOutlook).toBe(false);
+          expect(JSON.parse(localStorage.getItem('coveo-ResultsPreferences')).openInOutlook).toBeUndefined();
           done();
         });
       });
@@ -41,7 +41,7 @@ export function ResultsPreferencesTest() {
         localStorage.setItem('coveo-ResultsPreferences', JSON.stringify({ alwaysOpenInNewWindow: true }));
         expect(() => test = Mock.advancedComponentSetup<ResultsPreferences>(ResultsPreferences, new Mock.AdvancedComponentSetupOptions(element.el, { enableOpenInNewWindow: false }))).not.toThrow();
         Defer.defer(() => {
-          expect(JSON.parse(localStorage.getItem('coveo-ResultsPreferences')).alwaysOpenInNewWindow).toBe(false);
+          expect(JSON.parse(localStorage.getItem('coveo-ResultsPreferences')).alwaysOpenInNewWindow).toBeUndefined();
           done();
         });
       });
@@ -50,7 +50,7 @@ export function ResultsPreferencesTest() {
         localStorage.setItem('coveo-ResultsPreferences', JSON.stringify({ enableQuerySyntax: true }));
         expect(() => test = Mock.advancedComponentSetup<ResultsPreferences>(ResultsPreferences, new Mock.AdvancedComponentSetupOptions(element.el, { enableQuerySyntax: false }))).not.toThrow();
         Defer.defer(() => {
-          expect(JSON.parse(localStorage.getItem('coveo-ResultsPreferences')).enableQuerySyntax).toBe(undefined);
+          expect(JSON.parse(localStorage.getItem('coveo-ResultsPreferences')).enableQuerySyntax).toBeUndefined();
           done();
         });
       });
