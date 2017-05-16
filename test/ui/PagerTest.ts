@@ -11,22 +11,22 @@ import { analyticsActionCauseList } from '../../src/ui/Analytics/AnalyticsAction
 import { IPagerOptions } from '../../src/ui/Pager/Pager';
 
 export function PagerTest() {
-  describe('Pager', function () {
-    var test: Mock.IBasicComponentSetup<Pager>;
+  describe('Pager', ()=> {
+    let test: Mock.IBasicComponentSetup<Pager>;
 
-    beforeEach(function () {
+    beforeEach(()=> {
       registerCustomMatcher();
       test = Mock.basicComponentSetup<Pager>(Pager);
       test.env.queryController.options = {};
       test.env.queryController.options.resultsPerPage = 10;
     });
 
-    afterEach(function () {
+    afterEach(()=> {
       test = null;
     });
 
-    it('should set the correct result number when changing page', function () {
-      var currentPage = 1;
+    it('should set the correct result number when changing page', ()=> {
+      let currentPage = 1;
       $$(test.env.root).on('buildingQuery', (e, args: IBuildingQueryEventArgs) => {
         expect(args.queryBuilder.build().firstResult).toBe(currentPage * 10);
       });
@@ -39,8 +39,8 @@ export function PagerTest() {
       expect(test.env.queryController.executeQuery).toHaveBeenCalledTimes(4);
     });
 
-    it('should update the state when changing page', function () {
-      var currentPage = 1;
+    it('should update the state when changing page', ()=> {
+      let currentPage = 1;
       test.cmp.setPage(++currentPage);
       expect(test.env.queryStateModel.set).toHaveBeenCalledWith('first', (currentPage - 1) * 10);
       test.cmp.setPage(++currentPage);
@@ -53,7 +53,7 @@ export function PagerTest() {
       expect(test.env.queryStateModel.set).toHaveBeenCalledWith('first', (currentPage - 1) * 10);
     });
 
-    it('should update page when state is changed', function () {
+    it('should update page when state is changed', ()=> {
       test = Mock.advancedComponentSetup<Pager>(Pager, new Mock.AdvancedComponentSetupOptions(undefined, undefined, (env) => {
         return env.withLiveQueryStateModel();
       }));
@@ -63,17 +63,17 @@ export function PagerTest() {
       expect(test.cmp.currentPage).toBe(4);
     });
 
-    it('should not render anything if only one page of result is returned', function () {
+    it('should not render anything if only one page of result is returned', ()=> {
       Simulate.query(test.env, { results: FakeResults.createFakeResults(5) });
       expect(test.cmp.element.querySelectorAll('li').length).toBe(0);
     });
 
-    it('should render the pager boundary correctly', function () {
+    it('should render the pager boundary correctly', ()=> {
       // First results start at 70.
       // Pager displays 10 pages by default, and 10 results per page.
       // So the total range should be from results 20 to results 110 (page #3 to page #12)
 
-      var builder = new QueryBuilder();
+      const builder = new QueryBuilder();
       builder.firstResult = 70;
 
       Simulate.query(test.env, {
@@ -81,31 +81,13 @@ export function PagerTest() {
         results: FakeResults.createFakeResults(1000)
       });
 
-      var anchors = $$(test.cmp.element).findAll('a.coveo-pager-list-item-text');
+      const anchors = $$(test.cmp.element).findAll('a.coveo-pager-list-item-text');
       expect($$(anchors[0]).text()).toBe('6');
       expect(anchors[0].parentElement.getAttribute('tabindex')).toBe('0');
       expect($$(anchors[anchors.length - 1]).text()).toBe('10');
     });
 
-    it('should render the pager boundary correctly when the number of results per page changes', function () {
-      // First results start at 70.
-      // Pager displays 10 pages by default, and 10 results per page.
-      // So the total range should be from results 20 to results 110 (page #3 to page #12)
-      test.env.queryController.options.resultsPerPage = 20;
-
-      var builder = new QueryBuilder();
-      builder.firstResult = 70;
-      Simulate.query(test.env, {
-        query: builder.build(),
-        results: FakeResults.createFakeResults(1000)
-      });
-
-      var anchors = $$(test.cmp.element).findAll('a.coveo-pager-list-item-text');
-      expect($$(anchors[0]).text()).toBe('2');
-      expect($$(anchors[anchors.length - 1]).text()).toBe('6');
-    });
-
-    it('should reset page number on a new query if the origin is not a pager', function () {
+    it('should reset page number on a new query if the origin is not a pager', ()=> {
       // origin not available -> reset
       test.cmp.setPage(5);
       expect(test.cmp.currentPage).toBe(5);
@@ -129,29 +111,60 @@ export function PagerTest() {
       expect(test.cmp.currentPage).toBe(6);
     });
 
-    describe('analytics', function () {
+    it('should adapt itself to the number of results on each new query', ()=> {
+      let builder = new QueryBuilder();
+      builder.numberOfResults = 10;
+      builder.firstResult = 0;
+      Simulate.query(test.env, {
+        query: builder.build(),
+        queryBuilder: builder,
+        results: FakeResults.createFakeResults(1000),
+      });
 
-      it('should log the proper event when selecting a page directly', function () {
+      // 10 results per page : show full pager
+      // Page 1 to 5
+      let anchors = $$(test.cmp.element).findAll('a.coveo-pager-list-item-text');
+      expect($$(anchors[0]).text()).toBe('1');
+      expect($$(anchors[anchors.length - 1]).text()).toBe('5');
+
+      // 500 results per page : only 2 page available
+      // Page 1 to 2
+      builder = new QueryBuilder();
+      builder.firstResult = 0;
+      builder.numberOfResults = 500;
+      Simulate.query(test.env, {
+        query: builder.build(),
+        queryBuilder: builder,
+        results: FakeResults.createFakeResults(1000),
+      });
+      anchors = $$(test.cmp.element).findAll('a.coveo-pager-list-item-text');
+      expect($$(anchors[0]).text()).toBe('1');
+      expect($$(anchors[anchors.length - 1]).text()).toBe('2');
+    });
+
+    describe('analytics', ()=> {
+
+      it('should log the proper event when selecting a page directly', ()=> {
         test.cmp.setPage(15);
         expect(test.env.usageAnalytics.logCustomEvent).toHaveBeenCalledWith(analyticsActionCauseList.pagerNumber, { pagerNumber: 15 }, test.cmp.element);
       });
 
-      it('should log the proper event when hitting next page', function () {
+      it('should log the proper event when hitting next page', ()=> {
         test.cmp.nextPage();
         expect(test.env.usageAnalytics.logCustomEvent).toHaveBeenCalledWith(analyticsActionCauseList.pagerNext, { pagerNumber: 2 }, test.cmp.element);
       });
 
-      it('should log the proper event when hitting previous page', function () {
+      it('should log the proper event when hitting previous page', ()=> {
         test.cmp.setPage(3);
         test.cmp.previousPage();
         expect(test.env.usageAnalytics.logCustomEvent).toHaveBeenCalledWith(analyticsActionCauseList.pagerPrevious, { pagerNumber: 2 }, test.cmp.element);
       });
     });
 
-    describe('exposes options', function () {
+    describe('exposes options', ()=> {
 
-      it('numberOfPages allow to specify the number of pages to render', function () {
-        test = Mock.optionsComponentSetup<Pager, IPagerOptions>(Pager, {
+      it('numberOfPages allow to specify the number of pages to render', ()=> {
+        test = Mock.optionsComponentSetup<Pager, IPagerOptions>(Pager, <IPagerOptions>{
           numberOfPages: 22
         });
         Simulate.query(test.env, {
@@ -160,11 +173,11 @@ export function PagerTest() {
         expect($$(test.cmp.element).findAll('a.coveo-pager-list-item-text').length).toBe(22);
       });
 
-      it('enableNavigationButton can enable or disable nav buttons', function () {
-        test = Mock.optionsComponentSetup<Pager, IPagerOptions>(Pager, {
+      it('enableNavigationButton can enable or disable nav buttons', ()=> {
+        test = Mock.optionsComponentSetup<Pager, IPagerOptions>(Pager, <IPagerOptions>{
           enableNavigationButton: true
         });
-        var builder = new QueryBuilder();
+        const builder = new QueryBuilder();
         builder.firstResult = 70;
 
         Simulate.query(test.env, {
@@ -174,7 +187,7 @@ export function PagerTest() {
         expect($$(test.cmp.element).findAll('.coveo-pager-previous').length).toBe(1);
         expect($$(test.cmp.element).findAll('.coveo-pager-next').length).toBe(1);
 
-        test = Mock.optionsComponentSetup<Pager, IPagerOptions>(Pager, {
+        test = Mock.optionsComponentSetup<Pager, IPagerOptions>(Pager, <IPagerOptions>{
           enableNavigationButton: false
         });
 
@@ -186,20 +199,23 @@ export function PagerTest() {
         expect($$(test.cmp.element).findAll('.coveo-pager-next').length).toBe(0);
       });
 
-      it('maxNumberOfPages allow to specify the max page to render', function () {
-        test = Mock.optionsComponentSetup<Pager, IPagerOptions>(Pager, {
-          maxNumberOfPages: 5
+      it('maximumNumberOfResultsFromIndex allow to specify the maximum last possible result from the index', ()=> {
+        test = Mock.optionsComponentSetup<Pager, IPagerOptions>(Pager, <IPagerOptions>{
+          maximumNumberOfResultsFromIndex: 31
         });
-        var builder = new QueryBuilder();
+        const builder = new QueryBuilder();
         builder.firstResult = 30;
 
         Simulate.query(test.env, {
           query: builder.build(),
-          results: FakeResults.createFakeResults(1000)
+          results: FakeResults.createFakeResults(1000) // return much more results than 31, but the option should still work properly
         });
 
-        var anchors = $$(test.cmp.element).findAll('a.coveo-pager-list-item-text');
-        expect($$(anchors[anchors.length - 1]).text()).toBe('5');
+        const anchors = $$(test.cmp.element).findAll('a.coveo-pager-list-item-text');
+        // 31 results max from the index
+        // divided by 10 results per page
+        // means 4 pages
+        expect($$(anchors[anchors.length - 1]).text()).toBe('4');
       });
     });
   });
