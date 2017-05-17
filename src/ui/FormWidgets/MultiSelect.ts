@@ -7,7 +7,7 @@ import { Utils } from '../../utils/Utils';
 import { exportGlobally } from '../../GlobalExports';
 
 /**
- * A select with multiple possible selection, with standard styling
+ * A multi select widget with standard styling.
  */
 export class MultiSelect implements IFormWidget, IFormWidgetSettable {
   private element: HTMLSelectElement;
@@ -19,10 +19,11 @@ export class MultiSelect implements IFormWidget, IFormWidgetSettable {
   }
 
   /**
-   * Create a new MultiSelect
-   * @param onChange Called when the selection changes, with the `MultiSelect` instance as a callback
-   * @param options
-   * @param label
+   * Creates a new `MultiSelect`.
+   * @param onChange The function to call when the widget selected values change. This function takes the current
+   * `MultiSelect` instance as an argument.
+   * @param options The values which can be selected with the multi select.
+   * @param label The label to display for the multi select.
    */
   constructor(public onChange: (multiSelect: MultiSelect) => void = (multiSelect: MultiSelect) => {
   }, public options: string[], public label: string) {
@@ -30,24 +31,24 @@ export class MultiSelect implements IFormWidget, IFormWidgetSettable {
   }
 
   /**
-   * Return the HTMLElement bound to the multi select
-   * @returns {HTMLSelectElement}
+   * Gets the element on which the multi select is bound.
+   * @returns {HTMLSelectElement} The multi select element.
    */
   public build(): HTMLElement {
     return this.element;
   }
 
   /**
-   * Return the HTMLElement bound to the multi select
-   * @returns {HTMLSelectElement}
+   * Gets the element on which the multi select is bound.
+   * @returns {HTMLSelectElement} The multi select element.
    */
   public getElement(): HTMLElement {
     return this.element;
   }
 
   /**
-   * Get the array of values currently selected in the MultiSelect
-   * @returns {string[]}
+   * Gets the currently selected values.
+   * @returns {string[]} The array of selected multi select values.
    */
   public getValue(): string[] {
     return _.chain(<any>this.element.options)
@@ -58,8 +59,8 @@ export class MultiSelect implements IFormWidget, IFormWidgetSettable {
   }
 
   /**
-   * Get the array of values that are not currently selected in the MultiSelect
-   * @returns {string[]}
+   * Gets the currently un-selected values.
+   * @returns {string[]} The array of un-selected multi select values.
    */
   public getUnselectedValues(): string[] {
     return _.chain(<any>this.element.options)
@@ -70,8 +71,8 @@ export class MultiSelect implements IFormWidget, IFormWidgetSettable {
   }
 
   /**
-   * Set the currently selected values
-   * @param values
+   * Sets the currently selected values.
+   * @param values The values to select.
    */
   public setValue(values: string[]) {
     const currentlySelected = this.getValue();
@@ -96,7 +97,7 @@ export class MultiSelect implements IFormWidget, IFormWidgetSettable {
   }
 
   /**
-   * Reset the currently selected values
+   * Resets the multi select.
    */
   public reset() {
     const currentlySelected = this.getValue();

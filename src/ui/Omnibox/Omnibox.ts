@@ -3,7 +3,7 @@
 ///<reference path="QuerySuggestAddon.ts" />
 ///<reference path="OldOmniboxAddon.ts" />
 
-import { ComponentOptionsModel } from '../../models/ComponentOptionsModel';
+import { ComponentOptionsModel, COMPONENT_OPTIONS_ATTRIBUTES } from '../../models/ComponentOptionsModel';
 export const MagicBox: any = require('exports-loader?Coveo.MagicBox!../../../node_modules/coveomagicbox/bin/MagicBox.min.js');
 import { IQueryboxOptions } from '../Querybox/Querybox';
 import { Component } from '../Base/Component';
@@ -33,6 +33,7 @@ import { StandaloneSearchInterface } from '../SearchInterface/SearchInterface';
 import * as _ from 'underscore';
 import { exportGlobally } from '../../GlobalExports';
 import 'styling/_Omnibox';
+import { InitializationEvents } from '../../events/InitializationEvents';
 
 export interface IPopulateOmniboxSuggestionsEventArgs {
   omnibox: Omnibox;
@@ -224,44 +225,15 @@ export class Omnibox extends Component {
     super(element, Omnibox.ID, bindings);
 
     this.options = ComponentOptions.initComponentOptions(element, Omnibox, options);
+
     const originalValueForQuerySyntax = this.options.enableQuerySyntax;
     this.options = _.extend({}, this.options, this.componentOptionsModel.get(ComponentOptionsModel.attributesEnum.searchBox));
-
-    let grammar: { start: string; expressions: { [id: string]: Coveo.MagicBox.ExpressionDef } };
-
-    if (this.options.enableQuerySyntax) {
-      grammar = MagicBox.Grammars.Expressions(MagicBox.Grammars.Complete);
-
-      if (this.options.enableFieldAddon) {
-        new FieldAddon(this);
-      }
-      if (this.options.fieldAlias != null) {
-        this.options.listOfFields = this.options.listOfFields || [];
-        this.options.listOfFields = this.options.listOfFields.concat(_.keys(this.options.fieldAlias));
-      }
-      if (this.options.enableQueryExtensionAddon) {
-        new QueryExtensionAddon(this);
-      }
-    } else {
-      grammar = { start: 'Any', expressions: { Any: /.*/ } };
-    }
 
     if (this.options.enableQuerySuggestAddon) {
       new QuerySuggestAddon(this);
     }
-
     new OldOmniboxAddon(this);
-
-    if (this.options.grammar != null) {
-      grammar = this.options.grammar(grammar);
-    }
-
-    this.magicBox = MagicBox.create(element, new MagicBox.Grammar(grammar.start, grammar.expressions), {
-      inline: this.options.inline,
-      selectableSuggestionClass: 'coveo-omnibox-selectable',
-      selectedSuggestionClass: 'coveo-omnibox-selected',
-      suggestionTimeout: this.options.omniboxTimeout
-    });
+    this.createMagicBox();
 
     this.bind.onRootElement(QueryEvents.buildingQuery, (args: IBuildingQueryEventArgs) => this.handleBuildingQuery(args));
     this.bind.onRootElement(StandaloneSearchInterfaceEvents.beforeRedirect, () => this.handleBeforeRedirect());
@@ -270,14 +242,14 @@ export class Omnibox extends Component {
     if (this.isAutoSuggestion()) {
       this.bind.onRootElement(QueryEvents.duringQuery, (args: IDuringQueryEventArgs) => this.handleDuringQuery(args));
     }
-    this.bind.onComponentOptions(MODEL_EVENTS.CHANGE_ONE, ComponentOptionsModel.attributesEnum.searchBox, (args: IAttributeChangedEventArg) => {
+    this.bind.onComponentOptions(MODEL_EVENTS.CHANGE_ONE, COMPONENT_OPTIONS_ATTRIBUTES.SEARCH_BOX, (args: IAttributeChangedEventArg) => {
       if (args.value.enableQuerySyntax != null) {
         this.options.enableQuerySyntax = args.value.enableQuerySyntax;
       } else {
         this.options.enableQuerySyntax = originalValueForQuerySyntax;
       }
+      this.updateGrammar();
     });
-    this.setupMagicBox();
   }
 
   /**
@@ -339,6 +311,49 @@ export class Omnibox extends Component {
 
   public resultAtCursor(match?: string | { (result: Coveo.MagicBox.Result): boolean; }) {
     return this.magicBox.resultAtCursor(match);
+  }
+
+  private createGrammar() {
+    let grammar = null;
+
+    if (this.options.enableQuerySyntax) {
+      grammar = MagicBox.Grammars.Expressions(MagicBox.Grammars.Complete);
+      if (this.options.enableFieldAddon) {
+        new FieldAddon(this);
+      }
+      if (this.options.fieldAlias != null) {
+        this.options.listOfFields = this.options.listOfFields || [];
+        this.options.listOfFields = this.options.listOfFields.concat(_.keys(this.options.fieldAlias));
+      }
+      if (this.options.enableQueryExtensionAddon) {
+        new QueryExtensionAddon(this);
+      }
+    } else {
+      grammar = { start: 'Any', expressions: { Any: /.*/ } };
+    }
+
+    if (this.options.grammar != null) {
+      grammar = this.options.grammar(grammar);
+    }
+
+    return grammar;
+  }
+
+  private updateGrammar() {
+    const grammar = this.createGrammar();
+    this.magicBox.grammar = new MagicBox.Grammar(grammar.start, grammar.expressions);
+    this.magicBox.setText(this.magicBox.getText());
+  }
+
+  private createMagicBox() {
+    const grammar = this.createGrammar();
+    this.magicBox = MagicBox.create(this.element, new MagicBox.Grammar(grammar.start, grammar.expressions), {
+      inline: this.options.inline,
+      selectableSuggestionClass: 'coveo-omnibox-selectable',
+      selectedSuggestionClass: 'coveo-omnibox-selected',
+      suggestionTimeout: this.options.omniboxTimeout
+    });
+    this.setupMagicBox();
   }
 
   private setupMagicBox() {

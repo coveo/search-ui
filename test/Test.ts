@@ -461,3 +461,10 @@ FacetSliderQueryControllerTest();
 
 import { DateUtilsTest } from './ui/DateUtilsTest';
 DateUtilsTest();
+
+import { DebugForResultTest } from './ui/DebugForResultTest';
+DebugForResultTest();
+
+import { DebugHeaderTest } from './ui/DebugHeaderTest';
+DebugHeaderTest();
+

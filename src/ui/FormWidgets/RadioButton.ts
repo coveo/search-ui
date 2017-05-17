@@ -4,7 +4,7 @@ import 'styling/vapor/_Radio';
 import { exportGlobally } from '../../GlobalExports';
 
 /**
- * This class will create a radio button with standard styling.
+ * A radio button widget with standard styling.
  */
 export class RadioButton implements IFormWidgetWithLabel, IFormWidgetSelectable {
 
@@ -17,9 +17,11 @@ export class RadioButton implements IFormWidgetWithLabel, IFormWidgetSelectable 
   }
 
   /**
-   * Create a new Radio button.
-   * @param onChange will be called every time the radio button change it's value. `this` will be the `RadioButton` instance.
-   * @param label The label for the choice.
+   * Creates a new `RadioButton`.
+   * @param onChange The function to call when the radio button value changes. This function takes the current
+   * `RadioButton` instance as an argument.
+   * @param label The label to display next to the radio button.
+   * @param name The value to set the `input` HTMLElement `name` attribute to.
    */
   constructor(public onChange: (radioButton: RadioButton) => void = (radioButton: RadioButton) => {
   }, public label: string, public name) {
@@ -27,7 +29,7 @@ export class RadioButton implements IFormWidgetWithLabel, IFormWidgetSelectable 
   }
 
   /**
-   * Reset the radio button
+   * Resets the radio button.
    */
   public reset() {
     const currentlySelected = this.isSelected();
@@ -38,27 +40,28 @@ export class RadioButton implements IFormWidgetWithLabel, IFormWidgetSelectable 
   }
 
   /**
-   * Select the radio button;
+   * Select the radio button
+   * @param triggerChange will trigger change event if specified and the radio button is not already selected
    */
-  public select() {
+  public select(triggerChange = true) {
     const currentlySelected = this.isSelected();
     this.getRadio().checked = true;
-    if (!currentlySelected) {
+    if (!currentlySelected && triggerChange) {
       this.onChange(this);
     }
   }
 
   /**
-   * Return the element on which the dropdown is bound.
-   * @returns {HTMLElement}
+   * Gets the element on which the radio button is bound.
+   * @returns {HTMLElement} The radio button element.
    */
   public build(): HTMLElement {
     return this.element;
   }
 
   /**
-   * Return the element on which the dropdown is bound.
-   * @returns {HTMLElement}
+   * Gets the element on which the radio button is bound.
+   * @returns {HTMLElement} The radio button element.
    */
   public getElement(): HTMLElement {
     return this.element;
@@ -69,24 +72,24 @@ export class RadioButton implements IFormWidgetWithLabel, IFormWidgetSelectable 
   }
 
   /**
-   * Return true if the radio button is selected.
-   * @returns {boolean}
+   * Indicates whether the radio button is selected.
+   * @returns {boolean} `true` if the radio button is selected, `false` otherwise.
    */
   public isSelected(): boolean {
     return this.getRadio().checked;
   }
 
   /**
-   * Get the input element (the radio button itself).
-   * @returns {HTMLInputElement}
+   * Gets the `input` element (the radio button itself).
+   * @returns {HTMLInputElement} The `input` element.
    */
   public getRadio(): HTMLInputElement {
     return <HTMLInputElement>$$(this.element).find('input');
   }
 
   /**
-   * Get the label element.
-   * @returns {HTMLLabelElement}
+   * Gets the radio button [`label`]{@link RadioButton.label} element.
+   * @returns {HTMLLabelElement} The `label` element.
    */
   public getLabel(): HTMLLabelElement {
     return <HTMLLabelElement>$$(this.element).find('label');
