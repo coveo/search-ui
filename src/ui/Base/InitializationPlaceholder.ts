@@ -143,10 +143,12 @@ export class InitializationPlaceholder {
         placeholders.push(placeHolder);
       });
 
-      $$(this.root).one(QueryEvents.deferredQuerySuccess, () => {
-        _.each(placeholders, (placeholder: Dom) => placeholder.remove());
-        _.each(facetElements, (facetElement: HTMLElement) => $$(facetElement).removeClass(InitializationPlaceholder.INITIALIZATION_CLASS));
-        _.each(facetElements, (facetElement: HTMLElement) => $$(facetElement).removeClass('coveo-with-placeholder'));
+      $$(this.root).one(InitializationEvents.afterComponentsInitialization, () => {
+        $$(this.root).one(QueryEvents.deferredQuerySuccess, () => {
+          _.each(placeholders, (placeholder: Dom) => placeholder.remove());
+          _.each(facetElements, (facetElement: HTMLElement) => $$(facetElement).removeClass(InitializationPlaceholder.INITIALIZATION_CLASS));
+          _.each(facetElements, (facetElement: HTMLElement) => $$(facetElement).removeClass('coveo-with-placeholder'));
+        });
       });
     }
   }

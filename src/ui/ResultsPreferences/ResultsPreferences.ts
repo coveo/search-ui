@@ -135,7 +135,7 @@ export class ResultsPreferences extends Component {
   }
 
   private updateComponentOptionsModel() {
-    const resultLinkOption = _.pick(this.preferences, 'enableOpenInOutlook', 'enableOpenInNewWindow');
+    const resultLinkOption = _.pick(this.preferences, 'openInOutlook', 'alwaysOpenInNewWindow');
     const searchBoxOption = _.pick(this.preferences, 'enableQuerySyntax');
     this.componentOptionsModel.set(ComponentOptionsModel.attributesEnum.resultLink, resultLinkOption);
     this.componentOptionsModel.set(ComponentOptionsModel.attributesEnum.searchBox, searchBoxOption);
@@ -166,7 +166,6 @@ export class ResultsPreferences extends Component {
 
       const formGroup = new FormGroup(radios, l('EnableQuerySyntax'));
       $$(this.element).append(formGroup.build());
-      radios[2].select();
       this.fromPreferencesToRadioInput();
     }
   }
@@ -200,7 +199,7 @@ export class ResultsPreferences extends Component {
   }
 
   private fromInputToPreferences() {
-    this.preferences = {
+    this.preferences = this.preferences || {
       openInOutlook: false,
       alwaysOpenInNewWindow: false,
       enableQuerySyntax: undefined
@@ -209,11 +208,16 @@ export class ResultsPreferences extends Component {
     _.each(this.preferencePanelCheckboxInputs, (checkbox: Checkbox, label: string) => {
       if (this.isSelected(l('OpenInOutlookWhenPossible'), label, checkbox)) {
         this.preferences.openInOutlook = true;
+      } else if (this.preferences.openInOutlook != null) {
+        this.preferences.openInOutlook = false;
       }
       if (this.isSelected(l('AlwaysOpenInNewWindow'), label, checkbox)) {
         this.preferences.alwaysOpenInNewWindow = true;
+      } else if (this.preferences.alwaysOpenInNewWindow != null) {
+        this.preferences.alwaysOpenInNewWindow = false;
       }
     });
+
     _.each(this.preferencePanelRadioInputs, (radio: RadioButton, label: string) => {
       if (this.isSelected(l('On'), label, radio)) {
         this.preferences.enableQuerySyntax = true;
@@ -225,6 +229,7 @@ export class ResultsPreferences extends Component {
         delete this.preferences.enableQuerySyntax;
       }
     });
+
   }
 
   private fromPreferencesToCheckboxInput() {
@@ -257,18 +262,18 @@ export class ResultsPreferences extends Component {
     // This can happen if an admin change the component configuration after end users have already selected a preferences.
     // We need to adapt the saved preferences to what's actually available in the component
     let needToSave = false;
-    if (this.preferences.alwaysOpenInNewWindow && !this.options.enableOpenInNewWindow) {
-      this.preferences.alwaysOpenInNewWindow = null;
+    if (!this.options.enableOpenInNewWindow) {
+      delete this.preferences.alwaysOpenInNewWindow;
       needToSave = true;
     }
 
-    if (this.preferences.openInOutlook && !this.options.enableOpenInOutlook) {
-      this.preferences.openInOutlook = null;
+    if (!this.options.enableOpenInOutlook) {
+      delete this.preferences.openInOutlook;
       needToSave = true;
     }
 
-    if (this.preferences.enableQuerySyntax && !this.options.enableQuerySyntax) {
-      this.preferences.enableQuerySyntax = null;
+    if (!this.options.enableQuerySyntax) {
+      delete this.preferences.enableQuerySyntax;
       needToSave = true;
     }
 
