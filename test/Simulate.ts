@@ -17,6 +17,8 @@ import { IBreadcrumbItem, IPopulateBreadcrumbEventArgs, BreadcrumbEvents } from 
 import { JQuery } from '../test/JQueryModule';
 import _ = require('underscore');
 import ModalBox = Coveo.ModalBox.ModalBox;
+import { NoopComponent } from '../src/ui/NoopComponent/NoopComponent';
+import { Component } from '../src/ui/Base/Component';
 
 export interface ISimulateQueryData {
   query?: IQuery;
@@ -33,6 +35,7 @@ export interface ISimulateQueryData {
   doNotFlushDefer?: boolean;
   deferSuccess?: boolean;
   cancel?: boolean;
+  origin?: Component;
 }
 
 
@@ -57,7 +60,8 @@ export class Simulate {
       callbackAfterQuery: () => {
       },
       deferSuccess: false,
-      cancel: false
+      cancel: false,
+      origin: NoopComponent
     }, options);
 
     if (options.queryCorrections) {
@@ -69,7 +73,8 @@ export class Simulate {
 
     var newQueryEventArgs: INewQueryEventArgs = {
       searchAsYouType: options.searchAsYouType,
-      cancel: options.cancel
+      cancel: options.cancel,
+      origin: options.origin
     };
     $$(env.root).trigger(QueryEvents.newQuery, newQueryEventArgs);
 
@@ -114,7 +119,7 @@ export class Simulate {
           resolve(options.results);
         }));
 
-        if (options.results.totalCount == 0) {
+        if (options.results.totalCount == 0 || options.results.results.length == 0) {
           var noResultsEventArgs: INoResultsEventArgs = {
             query: options.query,
             queryBuilder: options.queryBuilder,

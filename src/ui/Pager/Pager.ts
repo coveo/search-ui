@@ -251,7 +251,7 @@ export class Pager extends Component {
     if (data.results.totalCount > 0) {
       // First scenario : The index returned less results than expected (because of folding).
       // Recalculate the last valid page, and change to that new page.
-      let possibleValidPage = this.computePagerBoundary(data.results.totalCountFiltered, data.results.totalCount).lastResultPage;
+      const possibleValidPage = this.computePagerBoundary(data.results.totalCountFiltered, data.results.totalCount).lastResultPage;
       if (this.currentPage > possibleValidPage) {
         lastValidPage = possibleValidPage;
       }

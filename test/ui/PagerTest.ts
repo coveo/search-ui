@@ -9,6 +9,8 @@ import { QueryBuilder } from '../../src/ui/Base/QueryBuilder';
 import { QueryEvents } from '../../src/events/QueryEvents';
 import { analyticsActionCauseList } from '../../src/ui/Analytics/AnalyticsActionListMeta';
 import { IPagerOptions } from '../../src/ui/Pager/Pager';
+import { Defer } from '../../src/misc/Defer';
+import { Component } from '../../src/ui/Base/Component';
 
 export function PagerTest() {
   describe('Pager', ()=> {
@@ -140,6 +142,68 @@ export function PagerTest() {
       anchors = $$(test.cmp.element).findAll('a.coveo-pager-list-item-text');
       expect($$(anchors[0]).text()).toBe('1');
       expect($$(anchors[anchors.length - 1]).text()).toBe('2');
+    });
+
+    it('should return to the last valid page when there is no results', (done)=> {
+      let builder = new QueryBuilder();
+      test.cmp.currentPage = 101;
+      builder.numberOfResults = 10;
+      builder.firstResult = 1000;
+      Simulate.query(test.env, {
+        query: builder.build(),
+        queryBuilder: builder,
+        results: FakeResults.createFakeResults(0),
+        origin: <Component>test.cmp
+      });
+      Defer.defer(()=> {
+        // started at page 101
+        // should go back to last valid page, which is 100 (1000 results / 10 per page)
+        expect(test.cmp.currentPage).toBe(100);
+        done();
+      });
+    });
+
+    it('should return to the last valid page when there is no results and the numberOfResults per page is no standard', (done)=> {
+      let builder = new QueryBuilder();
+      test.cmp.currentPage = 11;
+      builder.numberOfResults = 100;
+      builder.firstResult = 1000;
+      Simulate.query(test.env, {
+        query: builder.build(),
+        queryBuilder: builder,
+        results: FakeResults.createFakeResults(0),
+        origin: <Component>test.cmp
+      });
+      Defer.defer(()=> {
+        // started at page 11
+        // should go back to last valid page, which is 10 (1000 results / 100 per page)
+        expect(test.cmp.currentPage).toBe(10);
+        done();
+      });
+    });
+
+    it('should return to the last valid page when there are less results than expected', (done)=> {
+      let builder = new QueryBuilder();
+      test.cmp.currentPage = 4;
+      builder.numberOfResults = 10;
+      builder.firstResult = 30;
+      const results = FakeResults.createFakeResults(0);
+      results.totalCountFiltered = 29;
+      results.totalCount = 29;
+
+      Simulate.query(test.env, {
+        query: builder.build(),
+        queryBuilder: builder,
+        results: results,
+        origin: <Component>test.cmp
+      });
+      Defer.defer(()=> {
+        // started at page 4
+        // expected to receive more than 30 results in total but received only 29
+        // Should go back to last valid page, which is page 3
+        expect(test.cmp.currentPage).toBe(3);
+        done();
+      });
     });
 
     describe('analytics', ()=> {
