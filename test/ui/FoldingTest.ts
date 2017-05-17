@@ -66,7 +66,7 @@ export function FoldingTest() {
           field: '@fieldname',
           expandExpression: 'myExpandExpression'
         });
-        const data = Simulate.query(test.env, {results: fakeResults});
+        const data = Simulate.query(test.env, { results: fakeResults });
 
         data.results.results[0].moreResults();
         expect(test.env.queryController.getEndpoint().search).toHaveBeenCalledWith(jasmine.objectContaining({
@@ -80,7 +80,7 @@ export function FoldingTest() {
           maximumExpandedResults: 42
         });
 
-        const data = Simulate.query(test.env, {results: fakeResults});
+        const data = Simulate.query(test.env, { results: fakeResults });
         test.env.queryController.getEndpoint().search = (query: IQuery) => {
           expect(query.numberOfResults).toBe(42);
           return new Promise((resolve, reject) => null);
@@ -93,7 +93,7 @@ export function FoldingTest() {
           field: '@fieldname',
           enableExpand: true
         });
-        const data = Simulate.query(test.env, {results: fakeResults});
+        const data = Simulate.query(test.env, { results: fakeResults });
         expect(data.results.results[0].moreResults).toEqual(jasmine.any(Function));
       });
 
@@ -102,7 +102,7 @@ export function FoldingTest() {
           field: '@fieldname',
           enableExpand: false
         });
-        const data = Simulate.query(test.env, {results: fakeResults});
+        const data = Simulate.query(test.env, { results: fakeResults });
         expect(data.results.results[0].moreResults).toBeUndefined();
       });
     });
@@ -215,7 +215,7 @@ export function FoldingTest() {
       fakeResults.results[0].flags = 'IsAttachment';
       fakeResults.results[0].parentResult = parent;
       fakeResults.results[0].raw.childfield = 'abc';
-      const data = Simulate.query(test.env, {results: fakeResults});
+      const data = Simulate.query(test.env, { results: fakeResults });
       expect(data.results.results[0].title).toBe('TitleParentResult');
     });
 
