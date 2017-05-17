@@ -174,7 +174,7 @@ export function FoldingTest() {
           }));
         });
 
-        it('modify query syntax', () => {
+        it('and modify query syntax', () => {
           expect(test.env.queryController.getEndpoint().search).toHaveBeenCalledWith(jasmine.objectContaining({
             enableQuerySyntax: true
           }));
