@@ -458,3 +458,6 @@ MultiSelectTest();
 
 import { FacetSliderQueryControllerTest } from './controllers/FacetSliderQueryControllerTest';
 FacetSliderQueryControllerTest();
+
+import { DateUtilsTest } from './ui/DateUtilsTest';
+DateUtilsTest();
