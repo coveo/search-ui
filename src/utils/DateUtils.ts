@@ -136,8 +136,8 @@ class DefaultDateToStringOptions extends Options implements IDateToStringOptions
 export class DateUtils {
 
   static convertFromJsonDateIfNeeded(date: any): Date {
-   return DateUtils.convertToStandardDate(date);
-}
+    return DateUtils.convertToStandardDate(date);
+  }
 
   static convertToStandardDate(date: string): Date;
   static convertToStandardDate(date: number): Date;
@@ -166,24 +166,24 @@ export class DateUtils {
     }
   }
 
-  public static setLocale():void {
+  public static setLocale(): void {
     let currentLocale = String['locale'];
 
-    //Our cultures.js directory contains 'no' which is the equivalent to 'nn' for momentJS
-    if(currentLocale == 'no') {
+    // Our cultures.js directory contains 'no' which is the equivalent to 'nn' for momentJS
+    if (currentLocale == 'no') {
       currentLocale = 'nn';
-    } else if(currentLocale == 'es-ES') {
-      //Our cultures.js directory contains 'es-es' which is the equivalent to 'es' for momentJS
+    } else if (currentLocale == 'es-ES') {
+      // Our cultures.js directory contains 'es-es' which is the equivalent to 'es' for momentJS
       currentLocale = 'es';
     }
 
     moment.locale(currentLocale);
 
     moment.updateLocale(currentLocale, {
-      calendar : {
-        lastDay : `[${l('Yesterday')}]`,
-        sameDay : `[${l('Today')}]`,
-        nextDay : `[${l('Tomorrow')}]`
+      calendar: {
+        lastDay: `[${l('Yesterday')}]`,
+        sameDay: `[${l('Today')}]`,
+        nextDay: `[${l('Tomorrow')}]`
       }
     });
   }
@@ -207,7 +207,7 @@ export class DateUtils {
   static keepOnlyDatePart(date: Date): Date {
     DateUtils.setLocale();
     const dateMoment = moment(date);
-    return new Date(dateMoment.year(), dateMoment.month(),dateMoment.date())
+    return new Date(dateMoment.year(), dateMoment.month(), dateMoment.date());
   }
 
   /**
@@ -237,19 +237,19 @@ export class DateUtils {
        'today' is already a moment, but we need to create another instance of moment so that 'today' isn't modified by 'add'.
        If we simply used 'today', we would have to add(-2,'days') instead of -1.
        */
-      if (dateOnly.valueOf() == today.valueOf() || dateOnly.valueOf() == moment(today).add(1,'days').valueOf() ||
-          dateOnly.valueOf() == moment(today).add(-1,'days').valueOf()) {
-            return moment(dateOnly).calendar(moment(today));
+      if (dateOnly.valueOf() == today.valueOf() || dateOnly.valueOf() == moment(today).add(1, 'days').valueOf() ||
+        dateOnly.valueOf() == moment(today).add(-1, 'days').valueOf()) {
+        return moment(dateOnly).calendar(moment(today));
       }
     }
 
 
-    const isThisWeek = dateOnly.diff(moment(today),'weeks') == 0;
+    const isThisWeek = dateOnly.diff(moment(today), 'weeks') == 0;
     if (options.useWeekdayIfThisWeek && isThisWeek) {
       if (dateOnly.valueOf() > today.valueOf()) {
 
         return l('Next') + ' ' + dateOnly.format('dddd');
-      } else if (dateOnly.valueOf() < today.valueOf()){
+      } else if (dateOnly.valueOf() < today.valueOf()) {
         return l('Last') + ' ' + dateOnly.format('dddd');
       } else {
         return dateOnly.format('dddd');
@@ -264,7 +264,7 @@ export class DateUtils {
       return dateOnly.format('dddd, MMMM DD, YYYY');
     }
 
-    return dateOnly.format('M/D/YYYY')
+    return dateOnly.format('M/D/YYYY');
   }
 
   /**
@@ -295,7 +295,7 @@ export class DateUtils {
 
     options = new DefaultDateToStringOptions().merge(options);
     const today = DateUtils.keepOnlyDatePart(options.now);
-    const isThisWeek = moment(date).diff(moment(today),'weeks') == 0;
+    const isThisWeek = moment(date).diff(moment(today), 'weeks') == 0;
     const datePart = DateUtils.dateToString(date, options);
     const dateWithoutTime = DateUtils.keepOnlyDatePart(date);
 
