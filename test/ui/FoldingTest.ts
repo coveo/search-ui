@@ -12,8 +12,8 @@ import _ = require('underscore');
 
 export function FoldingTest() {
   describe('Folding', () => {
-    var test: Mock.IBasicComponentSetup<Folding>;
-    var fakeResults: IQueryResults;
+    let test: Mock.IBasicComponentSetup<Folding>;
+    let fakeResults: IQueryResults;
 
     beforeEach(() => {
       test = Mock.optionsComponentSetup<Folding, IFoldingOptions>(Folding, {
@@ -41,7 +41,7 @@ export function FoldingTest() {
           test = Mock.optionsComponentSetup<Folding, IFoldingOptions>(Folding, {
             field: '@myfield'
           });
-          var data = Simulate.query(test.env);
+          const data = Simulate.query(test.env);
           expect(data.queryBuilder.filterField).toBe('@myfield');
         });
 
@@ -57,7 +57,7 @@ export function FoldingTest() {
           field: '@fieldname',
           range: 42
         });
-        var data = Simulate.query(test.env);
+        const data = Simulate.query(test.env);
         expect(data.queryBuilder.filterFieldRange).toBe(42);
       });
 
@@ -66,7 +66,7 @@ export function FoldingTest() {
           field: '@fieldname',
           expandExpression: 'myExpandExpression'
         });
-        var data = Simulate.query(test.env, { results: fakeResults });
+        const data = Simulate.query(test.env, { results: fakeResults });
 
         data.results.results[0].moreResults();
         expect(test.env.queryController.getEndpoint().search).toHaveBeenCalledWith(jasmine.objectContaining({
@@ -80,7 +80,7 @@ export function FoldingTest() {
           maximumExpandedResults: 42
         });
 
-        var data = Simulate.query(test.env, { results: fakeResults });
+        const data = Simulate.query(test.env, { results: fakeResults });
         test.env.queryController.getEndpoint().search = (query: IQuery) => {
           expect(query.numberOfResults).toBe(42);
           return new Promise((resolve, reject) => null);
@@ -93,7 +93,7 @@ export function FoldingTest() {
           field: '@fieldname',
           enableExpand: true
         });
-        var data = Simulate.query(test.env, { results: fakeResults });
+        const data = Simulate.query(test.env, { results: fakeResults });
         expect(data.results.results[0].moreResults).toEqual(jasmine.any(Function));
       });
 
@@ -102,13 +102,13 @@ export function FoldingTest() {
           field: '@fieldname',
           enableExpand: false
         });
-        var data = Simulate.query(test.env, { results: fakeResults });
+        const data = Simulate.query(test.env, { results: fakeResults });
         expect(data.results.results[0].moreResults).toBeUndefined();
       });
     });
 
     describe('expand', () => {
-      var queryData: ISimulateQueryData;
+      let queryData: ISimulateQueryData;
 
       beforeEach(() => {
         test = Mock.optionsComponentSetup<Folding, IFoldingOptions>(Folding, {
@@ -146,7 +146,7 @@ export function FoldingTest() {
             fieldsToInclude: jasmine.arrayContaining(['should', 'be', 'included']),
             filterField: null,
             filterFieldRange: null,
-            q: '(should be there) OR @uri'
+            q: '( <@- should be there -@> ) OR @uri'
           }));
         });
 
@@ -173,6 +173,12 @@ export function FoldingTest() {
             filterFieldRange: null
           }));
         });
+
+        it('and modify query syntax', () => {
+          expect(test.env.queryController.getEndpoint().search).toHaveBeenCalledWith(jasmine.objectContaining({
+            enableQuerySyntax: true
+          }));
+        });
       });
 
       it('should perform query with expected expression when moreResults is called', () => {
@@ -185,7 +191,7 @@ export function FoldingTest() {
       it('should include query keywords for highlighting', () => {
         queryData.results.results[0].moreResults();
         expect(test.env.queryController.getEndpoint().search).toHaveBeenCalledWith(jasmine.objectContaining({
-          q: '(foo bar) OR @uri'
+          q: '( <@- foo bar -@> ) OR @uri'
         }));
       });
 
@@ -203,18 +209,18 @@ export function FoldingTest() {
         childField: '@childfield',
         parentField: '@parentfield'
       });
-      var parent = FakeResults.createFakeResult('ParentResult');
+      const parent = FakeResults.createFakeResult('ParentResult');
       parent.flags = 'ContainsAttachment';
       parent.raw.parentfield = 'abc';
       fakeResults.results[0].flags = 'IsAttachment';
       fakeResults.results[0].parentResult = parent;
       fakeResults.results[0].raw.childfield = 'abc';
-      var data = Simulate.query(test.env, { results: fakeResults });
+      const data = Simulate.query(test.env, { results: fakeResults });
       expect(data.results.results[0].title).toBe('TitleParentResult');
     });
 
     it('should set the proper childResults and attachments in multiple folded results', () => {
-      var results: IQueryResult[] = [];
+      const results: IQueryResult[] = [];
       _.times(7, (n) => results.push(FakeResults.createFakeResult(n.toString())));
 
       // 0 - 1
@@ -226,7 +232,7 @@ export function FoldingTest() {
       results[2].parentResult = results[0];
       results[3].parentResult = results[2];
       results[5].parentResult = results[4];
-      var topResult = results.shift();
+      let topResult = results.shift();
       topResult.childResults = results;
 
       topResult = Folding.defaultGetResult(topResult);
@@ -266,7 +272,7 @@ export function FoldingTest() {
     });
 
     it('should sort by the original position', () => {
-      var results: IQueryResult[] = [];
+      const results: IQueryResult[] = [];
       _.times(7, (n) => results.push(FakeResults.createFakeResult(n.toString())));
 
       // Priority is : 6, 3, 5, 4, 1, 2, 0
@@ -280,7 +286,7 @@ export function FoldingTest() {
       results[2].parentResult = results[0];
       results[3].parentResult = results[2];
       results[5].parentResult = results[4];
-      var topResult = results[6];
+      let topResult = results[6];
       topResult.childResults = [
         results[3],
         results[5],
@@ -327,7 +333,7 @@ export function FoldingTest() {
     });
 
     it('should remove duplicate from the result set if one is loaded through the parentResult field', () => {
-      var results: IQueryResult[] = [];
+      const results: IQueryResult[] = [];
       _.times(7, (n) => results.push(FakeResults.createFakeResult(n.toString())));
 
       // 0 - 1
@@ -341,7 +347,7 @@ export function FoldingTest() {
       results[5].parentResult = results[4];
       results.push(results[0], results[2], results[3], results[5], results[6]);
 
-      var topResult = results.shift();
+      let topResult = results.shift();
       topResult.childResults = results;
 
       topResult = Folding.defaultGetResult(topResult);

@@ -392,8 +392,16 @@ export class Folding extends Component {
     }
 
     if (Utils.isNonEmptyString(originalQuery.q)) {
+
       // We add keywords to get the highlight and we add @uri to get all results
-      query.q = '(' + originalQuery.q + ') OR @uri';
+      // To ensure it plays nicely with query syntax, we ensure that the needed part of the query
+      // are correctly surrounded with the no syntax block
+      if (originalQuery.enableQuerySyntax) {
+        query.q = `( ${originalQuery.q} ) OR @uri`;
+      } else {
+        query.enableQuerySyntax = true;
+        query.q = `( <@- ${originalQuery.q} -@> ) OR @uri`;
+      }
     }
 
     if (Utils.isNonEmptyString(this.options.expandExpression)) {

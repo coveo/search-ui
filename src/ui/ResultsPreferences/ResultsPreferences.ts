@@ -16,6 +16,7 @@ import { Checkbox } from '../FormWidgets/Checkbox';
 import { RadioButton } from '../FormWidgets/RadioButton';
 import { FormGroup } from '../FormWidgets/FormGroup';
 import { IFormWidgetSelectable } from '../FormWidgets/FormWidgets';
+import { InitializationEvents } from '../../events/InitializationEvents';
 
 export interface IResultsPreferencesOptions {
   enableOpenInOutlook?: boolean;
@@ -115,7 +116,6 @@ export class ResultsPreferences extends Component {
 
     this.bind.on(this.preferencesPanel, PreferencesPanelEvents.savePreferences, () => this.save());
     this.bind.on(this.preferencesPanel, PreferencesPanelEvents.exitPreferencesWithoutSave, () => this.exitWithoutSave());
-
     this.buildCheckboxesInput();
     this.buildRadiosInput();
   }
@@ -148,9 +148,11 @@ export class ResultsPreferences extends Component {
         const radio = new RadioButton((radioButtonInstance) => {
           this.fromPreferenceChangeEventToUsageAnalyticsLog(radioButtonInstance.isSelected() ? 'selected' : 'unselected', label);
           this.save();
+
           this.queryController.executeQuery({
             closeModalBox: false
           });
+
         }, label, 'coveo-results-preferences-query-syntax');
         return radio;
       };
@@ -232,20 +234,20 @@ export class ResultsPreferences extends Component {
 
   private fromPreferencesToCheckboxInput() {
     if (this.preferences.openInOutlook) {
-      this.preferencePanelCheckboxInputs[l('OpenInOutlookWhenPossible')].select();
+      this.preferencePanelCheckboxInputs[l('OpenInOutlookWhenPossible')].select(false);
     }
     if (this.preferences.alwaysOpenInNewWindow) {
-      this.preferencePanelCheckboxInputs[l('AlwaysOpenInNewWindow')].select();
+      this.preferencePanelCheckboxInputs[l('AlwaysOpenInNewWindow')].select(false);
     }
   }
 
   private fromPreferencesToRadioInput() {
     if (this.preferences.enableQuerySyntax === true) {
-      this.preferencePanelRadioInputs[l('On')].select();
+      this.preferencePanelRadioInputs[l('On')].select(false);
     } else if (this.preferences.enableQuerySyntax === false) {
-      this.preferencePanelRadioInputs[l('Off')].select();
+      this.preferencePanelRadioInputs[l('Off')].select(false);
     } else {
-      this.preferencePanelRadioInputs[l('Automatic')].select();
+      this.preferencePanelRadioInputs[l('Automatic')].select(false);
     }
   }
 
