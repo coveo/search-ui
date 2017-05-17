@@ -25,7 +25,7 @@ export class ChatterPostedBy extends Component {
   };
 
   static fields = [
-    'sfcreatedby',
+    'sfcreatedbyname',
     'sfcreatedbyid',
     'sffeeditemid',
     'sfuserid',
@@ -38,11 +38,11 @@ export class ChatterPostedBy extends Component {
     super(element, ChatterPostedBy.ID, bindings);
     this.options = ComponentOptions.initComponentOptions(element, ChatterPostedBy, options);
 
-    if (Utils.getFieldValue(this.result, 'sfcreatedby') != null) {
+    if (Utils.getFieldValue(this.result, 'sfcreatedbyname') != null) {
       let from = $$('span');
       from.text(`${this.options.useFromInstead ? l('From') : l('PostedBy')} `);
       $$(element).append(from.el);
-      $$(element).append(this.renderLink(Utils.getFieldValue(this.result, 'sfcreatedby'), Utils.getFieldValue(this.result, 'sfcreatedbyid')));
+      $$(element).append(this.renderLink(Utils.getFieldValue(this.result, 'sfcreatedbyname'), Utils.getFieldValue(this.result, 'sfcreatedbyid')));
 
       if (this.options.enablePostedOn && !Utils.isNullOrUndefined(Utils.getFieldValue(this.result, 'sfparentname')) && !Utils.isNullOrUndefined(Utils.getFieldValue(this.result, 'sfparentid'))) {
         // Post on user's wall

@@ -182,7 +182,7 @@
     ]
   },
   "CardSalesforceCase": {
-    "priority": 3,
+    "priority": 4,
     "fieldsToMatch": [
       {
         "field": "sfcaseid"
@@ -195,6 +195,18 @@
     "fieldsToMatch": [
       {
         "field": "sfcaseid"
+      }
+    ],
+    "layout": "list"
+  },
+  "SalesforceCaseComment": {
+    "priority": 3,
+    "fieldsToMatch": [
+      {
+        "field": "objecttype",
+        "values": [
+          "CaseComment"
+        ]
       }
     ],
     "layout": "list"
