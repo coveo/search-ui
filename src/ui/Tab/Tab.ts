@@ -166,8 +166,8 @@ export class Tab extends Component {
      *
      * **Example:**
      *
-     * > The end user narrows a query down to one document that has a duplicate. If this options is `true` and the user
-     * > selects the Tab, only one document appears in the search results while the Facet count is still 2.
+     * > The end user narrows a query down to one item that has a duplicate. If this options is `true` and the user
+     * > selects the Tab, only one item appears in the search results while the Facet count is still 2.
      *
      * **Note:**
      *

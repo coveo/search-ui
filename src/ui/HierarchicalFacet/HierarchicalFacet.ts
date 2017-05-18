@@ -56,13 +56,13 @@ interface IFlatHierarchy {
 }
 
 /**
- * The HierarchicalFacet component inherits all of its options and behavior from the normal {@link Facet} component, but
- * is meant to be used for hierarchical values.
+ * The `HierarchicalFacet` component inherits all of its options and behaviors from the [`Facet`]{@link Facet}
+ * component, but is meant to be used to render hierarchical values.
  *
- * The HierarchicalFacet component could be used to display files in a file system, or categories for documents in a
+ * You can use the `HierarchicalFacet` component to display files in a file system, or categories for items in a
  * hierarchy.
  *
- * This facet requires a group by field with a special format in order to work correctly.
+ * This facet requires a group by field with a special format to work correctly.
  *
  * **Example:**
  *
@@ -75,17 +75,17 @@ interface IFlatHierarchy {
  *      folder3\
  *        text2.txt
  * ```
- * The document `text1.txt` would need to have a field with the following format:
+ * The `text1.txt` item would need to have a field with the following format:
  * `@field : c; c|folder1;`
  *
- * The document `text2.txt` would have a field with the following format:
+ * The `text2.txt` item would have a field with the following format:
  * `@field: c; c|folder2; c|folder2|folder3;`
  *
- * The | character allows the facet to build its hierarchy (`folder3` inside `folder2` inside `c`).
+ * The `|` character allows the facet to build its hierarchy (`folder3` inside `folder2` inside `c`).
  *
- * Since both documents contain the `c` value, selecting that value in the facet would return both documents.
+ * Since both items contain the `c` value, selecting this value in the facet would return both items.
  *
- * Selecting the `folder3` value in the facet would only return the `text2.txt` document.
+ * Selecting the `folder3` value in the facet would only return the `text2.txt` item.
  */
 export class HierarchicalFacet extends Facet implements IComponentBindings {
   static ID = 'HierarchicalFacet';
@@ -111,14 +111,14 @@ export class HierarchicalFacet extends Facet implements IComponentBindings {
      *
      * `@field: c; c>folder2; c>folder2>folder3;`
      *
-     * Then your delimiting character is `>`.
+     * The delimiting character is `>`.
      *
      * Default value is `|`.
      */
     delimitingCharacter: ComponentOptions.buildStringOption({ defaultValue: '|' }),
 
     /**
-     * Specifies at which level (0-based index) of the hierarchy the HierarchicalFacet should start displaying its
+     * Specifies at which level (0-based index) of the hierarchy the `HierarchicalFacet` should start displaying its
      * values.
      *
      * **Example:**
@@ -132,17 +132,17 @@ export class HierarchicalFacet extends Facet implements IComponentBindings {
      *      folder3\
      *        text2.txt
      * ```
-     * Then, setting levelStart to `1` displays `folder1` and `folder2` in the HierarchicalFacet, but omits `c:`.
+     * Setting `levelStart` to `1` displays `folder1` and `folder2` in the `HierarchicalFacet`, but omits `c:`.
      *
      * Default (and minimum) value is `0`.
      */
     levelStart: ComponentOptions.buildNumberOption({ defaultValue: 0, min: 0 }),
 
     /**
-     * Specifies at which level (0-based index) of the hierarchy the HierarchicalFacet should stop displaying its
+     * Specifies at which level (0-based index) of the hierarchy the `HierarchicalFacet` should stop displaying its
      * values.
      *
-     * Default value is `undefined`, which means the HierarchicalFacet component renders all hierarchical levels.
+     * Default value is `undefined`, which means the `HierarchicalFacet` component renders all hierarchical levels.
      * Minimum value is `0`.
      */
     levelEnd: ComponentOptions.buildNumberOption({ min: 0 }),
@@ -171,10 +171,11 @@ export class HierarchicalFacet extends Facet implements IComponentBindings {
   private correctLevels: IFlatHierarchy[] = [];
 
   /**
-   * Creates a new HierarchicalFacet.
-   * @param element
-   * @param options
-   * @param bindings
+   * Creates a new `HierarchicalFacet` component.
+   * @param element The HTMLElement on which to instantiate the component.
+   * @param options The options for the `HierarchicalFacet` component.
+   * @param bindings The bindings that the component requires to function normally. If not set, these will be
+   * automatically resolved (with a slower execution time).
    */
   public constructor(public element: HTMLElement, options: IHierarchicalFacetOptions, public bindings: IComponentBindings) {
     super(element, options, bindings, HierarchicalFacet.ID);
@@ -182,15 +183,15 @@ export class HierarchicalFacet extends Facet implements IComponentBindings {
     this.numberOfValuesToShow = this.originalNumberOfValuesToShow = (this.options.numberOfValues || 5);
     this.numberOfValues = Math.max(this.options.numberOfValues, 10000);
     this.options.injectionDepth = Math.max(this.options.injectionDepth, 10000);
-    this.logger.info('Hierarchy facet : Set number of values very high in order to build hierarchy', this.numberOfValues, this);
-    this.logger.info('Hierarchy facet : Set injection depth very high in order to build hierarchy', this.options.injectionDepth);
+    this.logger.info('Hierarchy facet: Set number of values very high in order to build hierarchy', this.numberOfValues, this);
+    this.logger.info('Hierarchy facet: Set injection depth very high in order to build hierarchy', this.options.injectionDepth);
   }
 
   /**
    * Selects a single value.
    * @param value The value to select.
    * @param selectChildren Specifies whether to also select all child values (if any). Default value is the opposite of
-   * the {@link Facet.options.useAnd} value set for this HierarchicalFacet.
+   * the [`useAnd`]{@link Facet.options.useAnd} option value set for this `HierarchicalFacet`.
    */
   public selectValue(value: FacetValue, selectChildren?: boolean): void;
   public selectValue(value: string, selectChildren?: boolean): void;
@@ -209,7 +210,7 @@ export class HierarchicalFacet extends Facet implements IComponentBindings {
    * Selects multiple values
    * @param values The array of values to select.
    * @param selectChildren Specifies whether to also select all child values (if any). Default value is the opposite of
-   * the {@link Facet.options.useAnd} value set for this HierarchicalFacet.
+   * the [`useAnd`]{@link Facet.options.useAnd} option value set for this `HierarchicalFacet`.
    */
   public selectMultipleValues(values: FacetValue[], selectChildren?: boolean): void;
   public selectMultipleValues(values: string[], selectChildren?: boolean): void;
@@ -261,7 +262,7 @@ export class HierarchicalFacet extends Facet implements IComponentBindings {
    * Excludes a single value.
    * @param value The value to exclude.
    * @param excludeChildren Specifies whether to also exclude all child values (if any). Default value is the opposite
-   * of the {@link Facet.options.useAnd} value set for this HierarchicalFacet.
+   * of the [`useAnd`]{@link Facet.options.useAnd} option value set for this `HierarchicalFacet`.
    */
   public excludeValue(value: FacetValue, excludeChildren?: boolean): void;
   public excludeValue(value: string, excludeChildren?: boolean): void;
@@ -283,7 +284,7 @@ export class HierarchicalFacet extends Facet implements IComponentBindings {
    * Un-excludes a single value.
    * @param value The value to un-exclude.
    * @param unexludeChildren Specifies whether to also un-exclude all child values (if any). Default value is the
-   * opposite of the {@link Facet.options.useAnd} value set for this HierarchicalFacet.
+   * opposite of the [`useAnd`]{@link Facet.options.useAnd} option value set for this `HierarchicalFacet`.
    */
   public unexcludeValue(value: FacetValue, unexludeChildren?: boolean): void;
   public unexcludeValue(value: string, unexludeChildren?: boolean): void;
@@ -302,7 +303,7 @@ export class HierarchicalFacet extends Facet implements IComponentBindings {
    * Deselects multiple values.
    * @param values The array of values to deselect.
    * @param deselectChildren Specifies whether to also deselect all child values (if any). Default value is the opposite
-   * of the {@link Facet.options.useAnd} value set for this HierarchicalFacet.
+   * of the [`useAnd`]{@link Facet.options.useAnd} option value set for this `HierarchicalFacet`.
    */
   public deselectMultipleValues(values: FacetValue[], deselectChildren?: boolean): void;
   public deselectMultipleValues(values: string[], deselectChildren?: boolean): void;
@@ -378,8 +379,8 @@ export class HierarchicalFacet extends Facet implements IComponentBindings {
   }
 
   /**
-   * Gets the values that the HierarchicalFacet is currently displaying.
-   * @returns {any[]} An array containing all the values that the HierarchicalFacet is currently displaying.
+   * Gets the values that the `HierarchicalFacet` is currently displaying.
+   * @returns {any[]} An array containing all the values that the `HierarchicalFacet` is currently displaying.
    */
   public getDisplayedValues(): string[] {
     let displayed = _.filter(this.values.getAll(), (v) => {
@@ -394,7 +395,11 @@ export class HierarchicalFacet extends Facet implements IComponentBindings {
   }
 
   /**
-   * Updates the sort criteria for the HierarchicalFacet.
+   * Updates the sort criteria for the `HierarchicalFacet`.
+   *
+   * See the [`sortCriteria`]{@link IGroupByRequest.sortCriteria} property of the [`IGroupByRequest`] interface for the
+   * list and description of possible values.
+   *
    * @param criteria The new sort criteria.
    */
   public updateSort(criteria: string) {
@@ -455,7 +460,7 @@ export class HierarchicalFacet extends Facet implements IComponentBindings {
   }
 
   /**
-   * Resets the HierarchicalFacet state.
+   * Resets the `HierarchicalFacet` state.
    */
   public reset() {
     _.each(this.getAllValueHierarchy(), (valueHierarchy) => {
