@@ -62,9 +62,9 @@ export class PrintableUri extends ResultLink {
       }
       const parent = <Element>parents.item(i);
       const token = this.buildHtmlToken(parent.getAttribute('name'), parent.getAttribute('uri'));
-      tokens.push(token.el);
+      tokens.push(token);
 
-      element.appendChild(token.el);
+      element.appendChild(token);
     }
   }
 
@@ -104,11 +104,11 @@ export class PrintableUri extends ResultLink {
   }
 
 
-  public buildHtmlToken(name: string, uri: string) {
+  public buildHtmlToken(name: string, uri: string): HTMLElement {
     let modifiedName = name.charAt(0).toUpperCase() + name.slice(1);
     const link = $$('span', { className: 'coveo-printable-uri-part' }, modifiedName);
     this.uri = uri;
-    return link;
+    return link.el;
   }
 
 

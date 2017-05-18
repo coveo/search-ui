@@ -1,5 +1,5 @@
 import * as Mock from '../MockEnvironment';
-import {IPrintableUriOptions, PrintableUri} from '../../src/ui/PrintableUri/PrintableUri';
+import { IPrintableUriOptions, PrintableUri } from '../../src/ui/PrintableUri/PrintableUri';
 import { IQueryResult } from '../../src/rest/QueryResult';
 import { $$ } from '../../src/utils/Dom';
 import { analyticsActionCauseList } from '../../src/ui/Analytics/AnalyticsActionListMeta';
@@ -34,9 +34,9 @@ export function PrintableUriTest() {
 
     it('should display the XML correctly if the result has a very long parents field', () => {
       fakeResult.raw.parents = '<?xml version="1.0" encoding="utf-16"?><parents><parent name="Organization" uri="https://na17.salesforce.com/home/home.jsp" />`' +
-          '<parent name="Technical_Article__ka" uri="http://www.salesforce.com/org:organization/articletype:Technical_Article" />`' +
-          '<parent name="Generator became sentient and refuses to cut power"`' +
-          ' uri="https://na17.salesforce.com/kA0o00000003Wpk" /><parent name="un autre test" uri="http//:google.ca" /></parents>';
+        '<parent name="Technical_Article__ka" uri="http://www.salesforce.com/org:organization/articletype:Technical_Article" />`' +
+        '<parent name="Generator became sentient and refuses to cut power"`' +
+        ' uri="https://na17.salesforce.com/kA0o00000003Wpk" /><parent name="un autre test" uri="http//:google.ca" /></parents>';
       test = Mock.advancedResultComponentSetup<PrintableUri>(PrintableUri, fakeResult, undefined);
       expect($$(test.cmp.element).findAll('span.coveo-printable-uri-part')[0].innerText).toEqual('Organization');
       expect($$(test.cmp.element).findAll('span.coveo-printable-uri-part')[1].innerText).toEqual('Technical_Article__ka');
