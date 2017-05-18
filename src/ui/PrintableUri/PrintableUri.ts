@@ -17,7 +17,9 @@ export interface IPrintableUriOptions extends IResultLinkOptions {
 }
 
 /**
- * The PrintableUri component displays the URI, or path, to access a result.
+ * The PrintableUri component inherits from the ResultLink component and supports all of its options.
+ *
+ * This component displays the URI, or path, to access a result.
  *
  * This component is a result template component (see [Result Templates](https://developers.coveo.com/x/aIGfAQ)).
  */
@@ -48,26 +50,26 @@ export class PrintableUri extends ResultLink {
   }
 
   public renderParentsXml(element: HTMLElement, parentsXml: string) {
-    let xmlDoc: XMLDocument = Utils.parseXml(parentsXml);
-    let parents = xmlDoc.getElementsByTagName('parent');
-    let tokens: HTMLElement[] = [];
-    let separators: HTMLElement[] = [];
+    const xmlDoc: XMLDocument = Utils.parseXml(parentsXml);
+    const parents = xmlDoc.getElementsByTagName('parent');
+    const tokens: HTMLElement[] = [];
+    const separators: HTMLElement[] = [];
     for (let i = 0; i < parents.length; i++) {
       if (i > 0) {
-        let seperator = this.buildSeparator();
+        const seperator = this.buildSeparator();
         separators.push(seperator);
         element.appendChild(seperator);
       }
-      let parent = <Element>parents.item(i);
-      let token = this.buildHtmlToken(parent.getAttribute('name'), parent.getAttribute('uri'));
-      tokens.push(token);
+      const parent = <Element>parents.item(i);
+      const token = this.buildHtmlToken(parent.getAttribute('name'), parent.getAttribute('uri'));
+      tokens.push(token.el);
 
-      element.appendChild(token);
+      element.appendChild(token.el);
     }
   }
 
   public renderUri(element: HTMLElement, result?: IQueryResult) {
-    let parentsXml = Utils.getFieldValue(result, 'parents');
+    const parentsXml = Utils.getFieldValue(result, 'parents');
     if (parentsXml) {
       this.renderParentsXml(element, parentsXml);
     } else {
@@ -75,19 +77,19 @@ export class PrintableUri extends ResultLink {
         this.uri = result.clickUri;
         let stringAndHoles: StringAndHoles;
         if (result.printableUri.indexOf('\\') == -1) {
-          stringAndHoles = StringAndHoles.shortenUri(result.printableUri, $$(element).width() / 7);
+          stringAndHoles = StringAndHoles.shortenUri(result.printableUri, $$(element).width());
         } else {
-          stringAndHoles = StringAndHoles.shortenPath(result.printableUri, $$(element).width() / 7);
+          stringAndHoles = StringAndHoles.shortenPath(result.printableUri, $$(element).width());
         }
         this.shortenedUri = HighlightUtils.highlightString(stringAndHoles.value, result.printableUriHighlights, stringAndHoles.holes, 'coveo-highlight');
-        let link = $$('div');
+        const link = $$('div');
         link.setAttribute('title', result.printableUri);
         link.addClass('coveo-printable-uri-part');
         link.setHtml(this.shortenedUri);
         link.setAttribute('href', result.clickUri);
         element.appendChild(link.el);
       } else if (this.options.titleTemplate) {
-        let newTitle = this.parseStringTemplate(this.options.titleTemplate);
+        const newTitle = this.parseStringTemplate(this.options.titleTemplate);
         this.element.innerHTML = newTitle ? StreamHighlightUtils.highlightStreamText(newTitle, this.result.termsToHighlight, this.result.phrasesToHighlight) : this.result.clickUri;
       }
     }
@@ -95,8 +97,8 @@ export class PrintableUri extends ResultLink {
   }
 
   public buildSeparator() {
-    let seperator = document.createElement('span');
-    seperator.innerText = ' > ';
+    const seperator = document.createElement('span');
+    seperator.textContent = ' > ';
     seperator.className = 'coveo-printable-uri-separator';
     return seperator;
   }
@@ -104,10 +106,8 @@ export class PrintableUri extends ResultLink {
 
   public buildHtmlToken(name: string, uri: string) {
     let modifiedName = name.charAt(0).toUpperCase() + name.slice(1);
-    let link = document.createElement('span');
+    const link = $$('span', { className: 'coveo-printable-uri-part' }, modifiedName);
     this.uri = uri;
-    link.className = 'coveo-printable-uri-part';
-    link.appendChild(document.createTextNode(modifiedName));
     return link;
   }
 
