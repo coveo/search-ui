@@ -461,3 +461,12 @@ MultiSelectTest();
 
 import { FacetSliderQueryControllerTest } from './controllers/FacetSliderQueryControllerTest';
 FacetSliderQueryControllerTest();
+
+import { DebugForResultTest } from './ui/DebugForResultTest';
+DebugForResultTest();
+
+import { DebugHeaderTest } from './ui/DebugHeaderTest';
+DebugHeaderTest();
+
+import { FacetValuesTest } from './ui/FacetValuesTest';
+FacetValuesTest();

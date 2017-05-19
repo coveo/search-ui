@@ -2,45 +2,45 @@ import { IHighlight, IHighlightPhrase, IHighlightTerm } from './Highlight';
 import { SearchInterface } from '../ui/SearchInterface/SearchInterface';
 
 /**
- * The IQueryResult interface describes a single result returned by the Coveo REST Search API.
+ * The `IQueryResult` interface describes a single result returned by the Coveo REST Search API.
  */
 export interface IQueryResult {
 
   /**
-   * Contains the title of the document
+   * Contains the title of the item.
    */
   title: string;
   titleHighlights: IHighlight[];
 
   /**
-   * Contains the URI of the document.
+   * Contains the URI of the item.
    */
   uri: string;
 
   /**
-   * Contains a printable URI (or path) to the document.
+   * Contains a printable URI (or path) to the item.
    */
   printableUri: string;
   printableUriHighlights: IHighlight[];
 
   /**
-   * Contains the clickable URI of the document, which you can set on an `href` in your search interface.
+   * Contains the clickable URI of the item, which you can set on an `href` in your search interface.
    *
-   * See the {@link ResultLink} document.
+   * See the [`ResultLink`]{@link ResultLink} component.
    */
   clickUri: string;
 
   /**
-   * Contains a unique ID for the document.
+   * Contains the unique ID of the item.
    *
-   * This parameter is useful when making certain calls to a {@link SearchEndpoint}.
+   * This parameter is useful when making certain calls to a [`SearchEndpoint`]{@link SearchEndpoint}.
    */
   uniqueId: string;
 
   /**
-   * Contains the excerpt of the document. Can be empty for certain types of documents (e.g., images, videos, etc.).
+   * Contains an excerpt of the item. Can be empty for certain types of items (e.g., images, videos, etc.).
    *
-   * See the {@link Excerpt} component.
+   * See the [`Excerpt`]{@link Excerpt} component.
    */
   excerpt: string;
   excerptHighlights: IHighlight[];
@@ -48,55 +48,58 @@ export interface IQueryResult {
   firstSentencesHighlights: IHighlight[];
 
   /**
-   * Contains a value specifying whether the document has an HTML version.
+   * Contains a value specifying whether the item has an HTML version.
    *
-   * See the {@link Quickview} component.
+   * See the [`Quickview`]{@link Quickview} component.
    */
   hasHtmlVersion: boolean;
   hasMobileHtmlVersion: boolean;
 
   /**
-   * Contains the list of flags that the document has. Each value is separated by a semicolon (`;`).
+   * Contains the list of flags for the item. Values are separated by a semicolon characters (`;`).
    */
   flags: string;
   summary: string;
   summaryHighlights: IHighlight[];
 
   /**
-   * Contains a ranking information which is returned along the document if {@link IQuery.debug} is `true`.
+   * Contains ranking information, which the Coveo REST Search API returns along with the item when the query
+   * [`debug`]{@link IQuery.debug} property is `true`.
    */
   rankingInfo: string;
 
   /**
-   * Contains the rating of the document.
+   * Contains the collaborative rating value for the item.
    *
-   * See the {@link ResultRating} component.
+   * See the [`ResultRating`]{@link ResultRating} component.
    */
   rating?: number;
 
   /**
-   * Contains the raw field values of the document, expressed as key-value pairs.
+   * Contains the raw field values of the item, expressed as key-value pairs.
    */
   raw: any;
 
   /**
-   * Contains the parent result if parent-child loading was performed.
+   * Contains the parent result of the item, if parent-child loading was performed.
    *
-   * See the {@link Folding} component.
+   * See the [`Folding`]{@link Folding} component.
    */
   parentResult?: IQueryResult;
 
   /**
-   * Contains the child results if parent-child loading was performed.
+   * Contains the child results of the item, if parent-child loading was performed.
    *
-   * See the {@link Folding} component.
+   * See the [`Folding`]{@link Folding} component.
    */
   childResults: IQueryResult[];
 
   /**
    * Contains a value that specifies whether the result was recommended by the Coveo Machine Learning service.
    *
-   * See [Coveo Machine Learning](http://www.coveo.com/go?dest=cloudhelp&lcid=9&context=177).
+   * See the [`Recommendation`]{@link Recommendation} component.
+   *
+   * See also [Coveo Machine Learning](http://www.coveo.com/go?dest=cloudhelp&lcid=9&context=177).
    */
   isRecommendation: boolean;
   termsToHighlight?: IHighlightTerm;
@@ -110,7 +113,7 @@ export interface IQueryResult {
   index?: number;
 
   /**
-   * Contains The query UID, as returned by the Coveo REST Search API.
+   * Contains the query UID, as returned by the Coveo REST Search API.
    *
    * This value is used mainly for usage analytics.
    *
@@ -125,7 +128,7 @@ export interface IQueryResult {
   attachments?: IQueryResult[];
 
   /**
-   * Contains the query state of the {@link SearchInterface} inside which this result is rendered.
+   * Contains the query state of the [`SearchInterface`]{@link SearchInterface} inside which this result is rendered.
    *
    * This value is used mainly to allow for conditional rendering of results templates.
    *
@@ -134,7 +137,7 @@ export interface IQueryResult {
   state: { [attribute: string]: any; };
 
   /**
-   * The {@link SearchInterface} inside which this result is rendered.
+   * The [`SearchInterface`]{@link SearchInterface} inside which this result is rendered.
    *
    * This value is used mainly to allow for conditional rendering of results templates.
    *

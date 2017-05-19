@@ -23,7 +23,7 @@ import 'styling/_ResultLink';
 
 /**
  * The `ResultLink` component automatically transform a search result title into a clickable link pointing to the
- * original document.
+ * original item.
  *
  * This component is a result template component (see [Result Templates](https://developers.coveo.com/x/aIGfAQ)).
  */
@@ -69,7 +69,7 @@ export class ResultLink extends Component {
      *
      * See also [`hrefTemplate`]{@link ResultLink.options.hrefTemplate}, which can override this option.
      *
-     * By default, the component uses the document `@clickUri` field to output the value of its href attribute.
+     * By default, the component uses the `@clickUri` field of the item to output the value of its `href` attribute.
      */
     field: ComponentOptions.buildFieldOption(),
 
@@ -124,7 +124,7 @@ export class ResultLink extends Component {
      *
      * **Examples:**
      *
-     * - The following markup generates an `href` value such as `http://uri.com?id=documentTitle`:
+     * - The following markup generates an `href` value such as `http://uri.com?id=itemTitle`:
      *
      * ```html
      * <a class='CoveoResultLink' data-href-template='${clickUri}?id=${title}'></a>
@@ -204,7 +204,7 @@ export class ResultLink extends Component {
      *   ResultLink : {
      *     onClick : function(e, result) {
      *       e.preventDefault();
-     *       // Custom code to execute with the URI and title of the document.
+     *       // Custom code to execute with the item URI and title.
      *       openUriInASpecialTab(result.clickUri, result.title);
      *     }
      *   }
@@ -215,7 +215,7 @@ export class ResultLink extends Component {
      * //   ResultLink : {
      * //     onClick : function(e, result) {
      * //       e.preventDefault();
-     * //       // Custom code to execute with the URI and title of the document.
+     * //       // Custom code to execute with the item URI and title.
      * //       openUriInASpecialTab(result.clickUri, result.title);
      * //     }
      * //   }

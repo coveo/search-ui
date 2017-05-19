@@ -7,7 +7,7 @@ let Pikaday = require('pikaday');
 
 
 /**
- * A date picker with standard styling.
+ * A date picker widget with standard styling.
  */
 export class DatePicker implements IFormWidget, IFormWidgetSettable {
 
@@ -23,8 +23,9 @@ export class DatePicker implements IFormWidget, IFormWidgetSettable {
   }
 
   /**
-   * Create a new datepicker
-   * @param onChange called when a new date is selected, with the date picker instance as the argument
+   * Creates a new `DatePicker`.
+   * @param onChange The function to call when a new value is selected in the date picker. This function takes the
+   * current `DatePicker` instance as an argument.
    */
   constructor(public onChange: (datePicker: DatePicker) => void = () => {
   }) {
@@ -32,7 +33,7 @@ export class DatePicker implements IFormWidget, IFormWidgetSettable {
   }
 
   /**
-   * Reset the date picker
+   * Resets the date picker.
    */
   public reset() {
     this.picker.setDate(undefined);
@@ -40,16 +41,16 @@ export class DatePicker implements IFormWidget, IFormWidgetSettable {
   }
 
   /**
-   * Return the element on which the date picker is bound.
-   * @returns {HTMLInputElement}
+   * Gets the element on which the date picker is bound.
+   * @returns {HTMLInputElement} The date picker element.
    */
   public getElement(): HTMLInputElement {
     return this.element;
   }
 
   /**
-   * Get the current value for the date picker.
-   * @returns {string}
+   * Gets the currently selected value in the date picker.
+   * @returns {string} A textual representation of the currently selected value (`YYYY-MM-DD` format).
    */
   public getValue(): string {
     if (this.wasReset) {
@@ -60,8 +61,9 @@ export class DatePicker implements IFormWidget, IFormWidgetSettable {
   }
 
   /**
-   * Set the current value for the date picker.
-   * @param date
+   * Sets the date picker value.
+   * @param date The value to set the date picker to. Must be a
+   * [Date](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Date) object.
    */
   public setValue(date: Date) {
     this.picker.setDate(date);
@@ -70,8 +72,8 @@ export class DatePicker implements IFormWidget, IFormWidgetSettable {
   }
 
   /**
-   * Return the element on which the date picker is bound.
-   * @returns {HTMLInputElement}
+   * Gets the element on which the date picker is bound.
+   * @returns {HTMLInputElement} The date picker element.
    */
   public build(): HTMLInputElement {
     return this.element;

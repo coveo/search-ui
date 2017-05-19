@@ -6,7 +6,7 @@ import 'styling/vapor/_FormGroup';
 import { exportGlobally } from '../../GlobalExports';
 
 /**
- * A simple `fieldset` HTMLElement, containing multiple form widgets
+ * A simple `fieldset` HTMLElement containing multiple form widgets.
  */
 export class FormGroup {
   private element: Dom;
@@ -18,9 +18,9 @@ export class FormGroup {
   }
 
   /**
-   * Create a new FormGroup which is a simple `fieldset` HTMLElement, containing multiple form widgets
-   * @param contents
-   * @param label
+   * Creates a new `FormGroup`.
+   * @param contents The form widgets to include in the form group.
+   * @param label The label to display for the form group.
    */
   constructor(contents: IFormWidget[], label: string) {
     this.element = $$('fieldset', { className: 'coveo-form-group' }, $$('span', { className: 'coveo-form-group-label' }, label));
@@ -30,8 +30,8 @@ export class FormGroup {
   }
 
   /**
-   * Return the element on which the fieldset is bound
-   * @returns {HTMLElement}
+   * Gets the element on which the form group is bound.
+   * @returns {HTMLElement} The form group element.
    */
   public build(): HTMLElement {
     return this.element.el;
