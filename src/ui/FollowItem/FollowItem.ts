@@ -24,8 +24,8 @@ export interface IFollowItemOptions {
 }
 
 /**
- * The FollowItem component renders a widget that the end user can click to follow a particular item (document). A user
- * following an item receives email notifications when the item changes.
+ * The FollowItem component renders a widget that the end user can click to follow a particular item. A user following
+ * an item receives email notifications when the item changes.
  *
  * **Note:**
  * > A {@link SearchAlerts} component must be present in the page for this component to work. It is also necessary to
