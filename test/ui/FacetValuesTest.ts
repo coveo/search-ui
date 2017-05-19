@@ -3,10 +3,10 @@ import { FakeResults } from '../Fake';
 import * as _ from 'underscore';
 
 export function FacetValuesTest() {
-  describe('FacetValues', ()=> {
+  describe('FacetValues', () => {
 
 
-    it('should allow to updateCountsFromNewValues', ()=> {
+    it('should allow to updateCountsFromNewValues', () => {
       const oldValues = new FacetValues(FakeResults.createFakeGroupByResult('@field', '@token', 10));
       expect(oldValues.get('@token0').occurrences).toEqual(1);
 
@@ -17,7 +17,7 @@ export function FacetValuesTest() {
       expect(oldValues.get('@token0').occurrences).toEqual(123);
     });
 
-    it('should not touch old values if they do not exist in new values', ()=> {
+    it('should not touch old values if they do not exist in new values', () => {
       const oldValues = new FacetValues(FakeResults.createFakeGroupByResult('@field', '@token', 10));
       expect(oldValues.get('@token9').occurrences).toEqual(10);
 
@@ -27,15 +27,15 @@ export function FacetValuesTest() {
       expect(oldValues.get('@token9').occurrences).toEqual(10);
     });
 
-    it('should set occurrences to 0 in old values if a new values does not exist in old values', ()=> {
+    it('should set occurrences to 0 in old values if a new value does not exist in old values', () => {
       const oldValues = new FacetValues(FakeResults.createFakeGroupByResult('@field', '@token', 10));
       delete oldValues.get('@token9').occurrences;
       expect(oldValues.get('@token9').occurrences).toBeUndefined();
 
-      const newValues = new FacetValues(FakeResults.createFakeGroupByResult('@field', '@token', 10));
+      const newValues = new FacetValues(FakeResults.createFakeGroupByResult('@field', '@token', 3));
 
       oldValues.updateCountsFromNewValues(newValues);
-      expect(oldValues.get('@token9').occurrences).toEqual(10);
+      expect(oldValues.get('@token9').occurrences).toEqual(0);
     });
-  })
+  });
 }
