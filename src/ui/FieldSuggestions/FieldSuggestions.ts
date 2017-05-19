@@ -24,10 +24,9 @@ export interface IFieldSuggestionsOptions extends ISuggestionForOmniboxOptions {
 
 /**
  * The `FieldSuggestions` component provides query suggestions based on a particular facet field. For example, you could
- * use this component to provide auto-complete suggestions while the end user is typing a document
- * title.
+ * use this component to provide auto-complete suggestions while the end user is typing the title of an item.
  *
- * The query suggestions provided by this component appear in the {@link Omnibox} component.
+ * The query suggestions provided by this component appear in the [`Omnibox`]{@link Omnibox} component.
  */
 export class FieldSuggestions extends Component {
   static ID = 'FieldSuggestions';
@@ -59,7 +58,7 @@ export class FieldSuggestions extends Component {
     queryOverride: ComponentOptions.buildStringOption({ defaultValue: '' }),
 
     /**
-     * Specifies the z-index position at which the suggestions render themselves in the {@link Omnibox}.
+     * Specifies the z-index position at which the suggestions render themselves in the [`Omnibox`]{@link Omnibox}.
      *
      * When there are multiple suggestion providers, components with higher `omniboxZIndex` values render themselves
      * first.
@@ -69,8 +68,8 @@ export class FieldSuggestions extends Component {
     omniboxZIndex: ComponentOptions.buildNumberOption({ defaultValue: 51, min: 0 }),
 
     /**
-     * Specifies the title of the result suggestions group in the {@link Omnibox} component. This option is not
-     * available when using the default Lightning Friendly Theme (see
+     * Specifies the title of the result suggestions group in the [`Omnibox`]{@link Omnibox} component. This option is
+     * not available when using the default Lightning Friendly Theme (see
      * [Lightning Friendly Theme](https://developers.coveo.com/x/Y4EAAg)).
      *
      * Default value is the localized string for `SuggestedResults`.
@@ -86,9 +85,9 @@ export class FieldSuggestions extends Component {
 
     /**
      * Specifies the event handler function to execute when the end user selects a suggested value in the
-     * [`Omnibox`]{@link Omnibox}. By default, the query box text is replaced by what the end user selected and a new query is
-     * executed. You can, however, replace this default behavior by providing a callback function to execute when the
-     * value is selected.
+     * [`Omnibox`]{@link Omnibox}. By default, the query box text is replaced by what the end user selected and a new
+     * query is executed. You can, however, replace this default behavior by providing a callback function to execute
+     * when the value is selected.
      *
      * **Note:**
      * > You cannot set this option directly in the component markup as an HTML attribute. You must either set it in the
