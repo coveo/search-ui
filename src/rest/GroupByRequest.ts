@@ -54,7 +54,7 @@ export interface IGroupByRequest {
   allowedValues?: string[];
   /**
    * This specifies an array of computed fields that should be computed for each Group By value that is returned.<br/>
-   * Computed fields are used to perform aggregate operations on other fields for all the matching documents having a specific value in the Group By field in the results
+   * Computed fields are used to perform aggregate operations on other fields for all the matching items having a specific value in the Group By field in the results
    */
   computedFields?: IComputedFieldRequest[];
   /**

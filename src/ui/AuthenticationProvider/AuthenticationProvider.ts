@@ -24,14 +24,14 @@ export interface IAuthenticationProviderOptions {
 }
 
 /**
- * The AuthenticationProvider component arranges for queries to execute with an identity that the user obtains using an
- * Authentication Provider configured on the Coveo Search API
- * (see [On-Premises SharePoint Claims Authentication](https://developers.coveo.com/x/hQLL)).
+ * The `AuthenticationProvider` component makes it possible to execute queries with an identity that the end user
+ * can obtain using an authentication provider configured on the Coveo REST Search API
+ * (see [Claims Authentication](https://developers.coveo.com/x/pQ8vAg)).
  *
  * When necessary, this component handles redirecting the browser to the address that starts the authentication process.
  *
- * Using the standard `data-tab` attribute, you can enable the AuthenticationProvider component only for tabs requiring
- * authentication (see {@link Tab}).
+ * You can use the `data-tab` attribute to enable the `AuthenticationProvider` component only for the tabs of your
+ * search interface that require authentication (see the [`Tab`]{@link Tab} component).
  */
 export class AuthenticationProvider extends Component {
   static ID = 'AuthenticationProvider';
@@ -56,38 +56,40 @@ export class AuthenticationProvider extends Component {
     name: ComponentOptions.buildStringOption(),
 
     /**
-     * Specifies the friendly name of the authentication provider. This is the name that you want to display in the user
-     * interface when a user is logging in.
+     * Specifies the display name of the authentication provider. This is the name that you want to appear in the user
+     * interface when the end user is logging in.
      *
-     * Default value is the value set to {@link AuthenticationProvider.options.name}.
+     * Default value is the [`name`]{@link AuthenticationProvider.options.name} option value.
      */
     caption: ComponentOptions.buildStringOption({ postProcessing: (value, options) => value || options.name }),
 
     /**
-     * Specifies whether to use an `<iframe>` to host the chain of redirections that make up the authentication
+     * Specifies whether to use an `<iframe>` to host the chain of redirection that make up the authentication
      * process.
      *
-     * Default value is `false`.
-     *
      * Using an `<iframe>` prevents leaving the search page as part of the authentication process. However, some login
-     * providers will refuse to load in an `<iframe>`.
+     * providers refuse to load in an `<iframe>`.
+     *
+     * Default value is `false`.
      */
-    useIFrame: ComponentOptions.buildBooleanOption({ defaultValue: false, attrName: 'data-use-iframe' }),
+    useIFrame: ComponentOptions.buildBooleanOption({
+      defaultValue: false,
+      alias: ['useIframe']
+    }),
 
     /**
-     * If the {@link AuthenticationProvider.options.useIFrame} is set to `true`, specifies whether to make the
-     * authentication `<iframe>` visible to the user (inside a popup).
-     *
-     * Default value is `true`.
+     * If the [`useIFrame`]{@link AuthenticationProvider.options.useIFrame} option is `true`, specifies whether to make
+     * the authentication `<iframe>` visible to the user (inside a popup).
      *
      * When the underlying authentication provider requires no user interaction (for example, when a user authenticates
-     * using Windows Authentication along with SharePoint Claims), setting this option to `false` reduces the visual
+     * using Windows authentication along with SharePoint claims), setting this option to `false` reduces the visual
      * impact of the authentication process.
      *
+     * Default value is `true`.
      */
     showIFrame: ComponentOptions.buildBooleanOption({
       defaultValue: true,
-      attrName: 'data-show-iframe',
+      alias: ['showIframe'],
       depend: 'useIFrame'
     })
   };
@@ -96,9 +98,9 @@ export class AuthenticationProvider extends Component {
   private redirectCount: number;
 
   /**
-   * Creates a new AuthenticationProvider component.
+   * Creates a new `AuthenticationProvider` component.
    * @param element The HTMLElement on which to instantiate the component.
-   * @param options The options for the AuthenticationProvider component.
+   * @param options The options for the `AuthenticationProvider` component.
    * @param bindings The bindings that the component requires to function normally. If not set, these will be
    * automatically resolved (with a slower execution time).
    */

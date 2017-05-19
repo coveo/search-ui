@@ -45,24 +45,25 @@ export interface IAnalyticsResultsSortMeta {
 }
 
 /**
- * The IAnalyticsDocumentViewMeta describes the expected metadata when logging a click event / document view.
+ * The `IAnalyticsDocumentViewMeta` interface describes the expected metadata when logging a click event / item view.
  *
- * See also the {@link Analytics} component, and more specifically the {@link Analytics.logClickEvent} method.
+ * See also the [`Analytics`]{@link Analytics} component, and more specifically its
+ * [`logClickEvent`]{@link Analytics.logClickEvent} method.
  */
 export interface IAnalyticsDocumentViewMeta {
 
   /**
-   * The URL of the clicked document.
+   * The URL of the clicked item.
    */
   documentURL?: string;
 
   /**
-   * The title of the clicked document.
+   * The title of the clicked item.
    */
   documentTitle?: string;
 
   /**
-   * The author of the clicked document.
+   * The author of the clicked item.
    */
   author: string;
 }

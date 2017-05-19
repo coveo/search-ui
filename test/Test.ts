@@ -468,3 +468,6 @@ DebugForResultTest();
 import { DebugHeaderTest } from './ui/DebugHeaderTest';
 DebugHeaderTest();
 
+import { FacetValuesTest } from './ui/FacetValuesTest';
+FacetValuesTest();
+

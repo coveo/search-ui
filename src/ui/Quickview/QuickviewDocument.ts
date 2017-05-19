@@ -40,9 +40,13 @@ interface IWordState {
 }
 
 /**
- * The QuickviewDocument component is meant to exist within Result Templates, more specifically inside a {@link Quickview} component.
- * The sole purpose of this component is to include an iframe which will load the correct HTML version of the current document.
- * By default, this component is included in the default template for a {@link Quickview} component.
+ * The `QuickviewDocument` component normally exists within a [`Quickview`]{@link Quickview} component. The sole purpose
+ * of this component is to add an `<iframe>` which loads the correct HTML version of the current item.
+ *
+ * The default [`contentTemplate`]{@link Quickview.options.contentTemplate} of the
+ * `Quickview` component includes the `QuickviewDocument` component.
+ *
+ * This component is a result template component (see [Result Templates](https://developers.coveo.com/x/aIGfAQ)).
  */
 export class QuickviewDocument extends Component {
   static ID = 'QuickviewDocument';
@@ -53,9 +57,9 @@ export class QuickviewDocument extends Component {
    */
   static options: IQuickviewDocumentOptions = {
     /**
-     * Specifies the maximum document size (the preview) that should be returned by the index.
+     * Specifies the maximum preview size that the index should return.
      *
-     * By default its value is 0, and the whole preview is returned.
+     * Default value is `0`, and the index returns the entire preview. Minimum value is `0`.
      */
     maximumDocumentSize: ComponentOptions.buildNumberOption({ defaultValue: 0, min: 0 }),
   };
@@ -66,11 +70,12 @@ export class QuickviewDocument extends Component {
   private keywordsState: IWordState[];
 
   /**
-   * Create a new instance of the component
-   * @param element
-   * @param options
-   * @param bindings
-   * @param result
+   * Creates a new `QuickviewDocument` component.
+   * @param element The HTMLElement on which to instantiate the component.
+   * @param options The options for the `QuickviewDocument` component.
+   * @param bindings The bindings that the component requires to function normally. If not set, these will be
+   * automatically resolved (with a slower execution time).
+   * @param result The current result.
    */
   constructor(public element: HTMLElement, public options?: IQuickviewDocumentOptions, bindings?: IComponentBindings, public result?: IQueryResult) {
     super(element, QuickviewDocument.ID, bindings);
