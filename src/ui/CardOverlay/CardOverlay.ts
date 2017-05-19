@@ -7,7 +7,6 @@ import { $$ } from '../../utils/Dom';
 import { Assert } from '../../misc/Assert';
 import { KeyboardUtils, KEYBOARD } from '../../utils/KeyboardUtils';
 import { exportGlobally } from '../../GlobalExports';
-import { l } from '../../strings/Strings';
 import 'styling/_CardOverlay';
 
 export interface ICardOverlayOptions {
@@ -48,7 +47,7 @@ export class CardOverlay extends Component {
      *
      * Setting a value for this option is required for this component to work.
      */
-    title: ComponentOptions.buildStringOption({ required: true }),
+    title: ComponentOptions.buildLocalizedStringOption({ required: true, defaultValue: 'NoTitle' }),
 
     /**
      * Specifies the icon to use for the overlay icon and for the button icon.
@@ -145,10 +144,12 @@ export class CardOverlay extends Component {
   }
 
   private createButton(element: HTMLElement) {
+
+
     if (this.options.icon) {
       element.appendChild($$('span', { className: 'coveo-icon ' + this.options.icon }).el);
     }
-    element.appendChild($$('span', { className: 'coveo-label' }, l(this.options.title)).el);
+    element.appendChild($$('span', { className: 'coveo-label' }, this.options.title).el);
     element.setAttribute('tabindex', '0');
     $$(element).on('click', () => this.toggleOverlay());
     this.bind.on(element, 'keyup', KeyboardUtils.keypressAction(KEYBOARD.ENTER, () => this.toggleOverlay()));
