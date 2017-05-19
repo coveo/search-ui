@@ -35,31 +35,22 @@ interface IQuickviewOpenerObject {
 }
 
 /**
- * This component is meant to exist within a result template.
- * It allows to create a button/link inside the result list that opens a modal box for a given result.
+ * The `Quickview` component renders a button / link which the end user can click to open a modal box containing certain
+ * content about a result. Most of the time, this component references a [`QuickviewDocument`]{@link QuickviewDocument}
+ * in its [`contentTemplate`]{@link Quickview.options.contentTemplate}.
  *
- * Most of the time, this component will reference a {@link QuickviewDocument} in its content template.
+ * **Note:**
+ * > - You can change the appearance of the `Quickview` link / button by adding HTML inside the body of its `div`.
+ * > - You can change the content of the `Quickview` modal box link by specifying a template ID or selector (see the
+ * > [`contentTemplate`]{@link Quickview.options.contentTemplate} option).
  *
- * ## Choosing what to display for the Quickview
- * The Quick View uses any HTML structure you put inside its tag and uses that as the content of the dialog box. This content can thus be any element you decide, using your CSS and your structure.
- *
- * ## Example
- * - You can change the appearance of the Quick View link by adding HTML inside the body of the div.
- *
- * - You can change the content of the Quick View link by specifying a template ID.
- *
- * - You can use the methods of the [CoreHelpers]{@link ICoreHelpers} in the template.
- *
+ * **Example:**
  * ```html
- * <!-- This would change the appearance of the quickview button itself in the result. -->
- * <div class="CoveoQuickview" data-template-id="TemplateId">
- *   <span>Click here for Quickview</span>
- * </div>
+ * [ ... ]
  *
- * <!-- This would modify the content of the quickview when it is opened in the modal box -->
- * <script class='result-template' type='text/underscore' id='TemplateId' >
+ * <script class='result-template' type='text/underscore' id='myContentTemplateId'>
  *   <div>
- *     <span>This is the content that will be displayed when you open the Quick View. You can also include any other Coveo components.</span>
+ *     <span>This content will be displayed when then end user opens the Quickview modal box. It could also include other Coveo component, and use core helpers.</span>
  *     <table class="CoveoFieldTable">
  *       <tr data-field="@liboardshorttitle" data-caption="Board" />
  *       <tr data-field="@licategoryshorttitle" data-caption="Category" />
@@ -68,8 +59,26 @@ interface IQuickviewOpenerObject {
  *   </div>
  * </script>
  *
- * <!-- Note that this is all optional: Just including a <div class='CoveoQuickview'></div> will do the job most of the time, and will include a default template and default button appearance -->
+ * [ ... ]
+ *
+ * <div class='CoveoResultList'>
+ *   <script class='result-template' type='text/underscore' id='myResultTemplateId'>
+ *
+ *   [ ... ]
+ *
+ *     <!-- The `myContentTemplateId` template applies when displaying content in the Quickview modal box. -->
+ *       <div class='CoveoQuickview' data-template-id='myContentTemplateId'>
+ *         <!-- This changes the appearance of the Quickview button itself in the results -->
+ *         <span>Click here for a Quickview</span>
+ *       </div>
+ *   </script>
+ *
+ *   [ ... ]
+ *
+ * <!-- Note that this is all optional. Simply including `<div class='CoveoQuickview'></div>` in the markup suffices most of the time and includes a default template, and default button appearance. -->
  * ```
+ *
+ * This component is a result template component (see [Result Templates](https://developers.coveo.com/x/aIGfAQ)).
  */
 export class Quickview extends Component {
   static ID = 'Quickview';
@@ -85,27 +94,57 @@ export class Quickview extends Component {
    * @componentOptions
    */
   static options: IQuickviewOptions = {
+
     /**
-     * Specifies whether the quickview is always shown, even when the index body for a document is empty.<br/>
-     * In such cases, the {@link Quickview.options.contentTemplate} specifies what appears in the quickview.<br/>
-     * If there is no quickview for the document, you *MUST* specify a contentTemplate otherwise the component will throw an error when opened.
+     * Specifies whether to always show the `Quickview` button / link, even when the index body of an item is empty.
+     *
+     * In such cases, the [`contentTemplate`]{@link Quickview.options.contentTemplate} defines what appears in the
+     * `Quickview` modal box. Consequently, if there is no quickview for the item, you *MUST* specify a custom
+     * `contentTemplate`, otherwise the component will throw an error when opened.
+     *
+     * Default value is `false`.
      */
     alwaysShow: ComponentOptions.buildBooleanOption({ defaultValue: false }),
+
     /**
-     * Specifies the title of your choice that appears at the top of the Quick View modal window.
+     * Specifies the title that should appear in the `Quickview` modal box header.
+     *
+     * Default value is `undefined`.
      */
     title: ComponentOptions.buildStringOption(),
+
     /**
-     * Specifies whether to show the document date in the Quick View modal window header.<br/>
-     * The default value is `true`.
+     * Specifies whether to display the item date in the `Quickview` modal box header.
+     *
+     * Default value is `true`.
      */
     showDate: ComponentOptions.buildBooleanOption({ defaultValue: true }),
     enableLoadingAnimation: ComponentOptions.buildBooleanOption({ defaultValue: true }),
+
     /**
-     * Specifies the template to use to present the Quick View content in the modal window.<br/>
-     * e.g.: <br/>
-     *     <div class="CoveoQuickview" data-template-id="TemplateId"></div>
-     *     <div class="CoveoQuickview" data-template-selector=".templateSelector"></div>
+     * Specifies a custom template to use when displaying content in the `Quickview` modal box.
+     *
+     * **Note:**
+     * > You can use [`CoreHelpers`]{@link ICoreHelpers} methods in your content template.
+     *
+     * You can specify a previously registered template to use either by referring to its HTML `id` attribute or to a
+     * CSS selector (see [`TemplateCache`]{@link TemplateCache}).
+     *
+     * **Example:**
+     *
+     * Specifying a previously registered template by referring to its HTML `id` attribute:
+     *
+     * ```html
+     * <div class="CoveoQuickview" data-template-id="myContentTemplateId"></div>
+     * ```
+     *
+     * Specifying a previously registered template by referring to a CSS selector:
+     *
+     * ```html
+     * <div class='CoveoQuickview' data-template-selector=".myContentTemplateSelector"></div>
+     * ```
+     *
+     * If you do not specify a custom content template, the component uses its default template.
      */
     contentTemplate: ComponentOptions.buildTemplateOption({
       selectorAttr: 'data-template-selector',
@@ -137,6 +176,15 @@ export class Quickview extends Component {
 
   private modalbox: Coveo.ModalBox.ModalBox;
 
+  /**
+   * Creates a new `Quickview` component.
+   * @param element The HTMLElement on which to instantiate the component.
+   * @param options The options for the `Quickview` component.
+   * @param bindings The bindings that the component requires to function normally. If not set, these will be
+   * automatically resolved (with a slower execution time).
+   * @param result The result to associate the component with.
+   * @param ModalBox The quickview modal box.
+   */
   constructor(public element: HTMLElement, public options?: IQuickviewOptions, public bindings?: IResultsComponentBindings, public result?: IQueryResult, private ModalBox = ModalBoxModule) {
     super(element, Quickview.ID, bindings);
     this.options = ComponentOptions.initComponentOptions(element, Quickview, options);
@@ -173,7 +221,7 @@ export class Quickview extends Component {
   }
 
   /**
-   * Open the quickview
+   * Opens the `Quickview` modal box.
    */
   public open() {
     if (this.modalbox == null) {
@@ -192,7 +240,7 @@ export class Quickview extends Component {
   }
 
   /**
-   * Close the quickview
+   * Closes the `Quickview` modal box.
    */
   public close() {
     if (this.modalbox != null) {

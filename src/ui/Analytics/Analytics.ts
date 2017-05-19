@@ -245,7 +245,7 @@ export class Analytics extends Component {
 
   /**
    * Logs a Custom event on the service. You can use custom events to create custom reports, or to track events
-   * that are not queries or document views.
+   * that are not queries or item views.
    *
    * @param actionCause Describes the cause of the event.
    * @param meta The metadata which you want to use to create custom dimensions. Metadata can contain as many key-value
@@ -260,7 +260,7 @@ export class Analytics extends Component {
   }
 
   /**
-   * Logs a Click event. You can understand click events as document views (e.g., clicking on a {@link ResultLink} or
+   * Logs a Click event. You can understand click events as item views (e.g., clicking on a {@link ResultLink} or
    * opening a {@link Quickview}).
    *
    * This event is logged immediately on the service.

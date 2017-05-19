@@ -68,13 +68,15 @@ export interface IEndpointCallOptions {
 }
 
 /**
- * Available options when calling against the {@link SearchEndpoint} to get a document
+ * The `IGetDocumentOptions` interface describes the available options when calling against a
+ * [`SearchEndpoint`]{@link SearchEndpoint} to get an item.
  */
 export interface IGetDocumentOptions extends IEndpointCallOptions {
 }
 
 /**
- * Available options when calling against the {@link SearchEndpoint} to view a document as an HTMLElement (quickview basically...)
+ * The `IViewAsHtmlOptions` interface describes the available options when calling against a
+ * [`SearchEndpoint`]{@link SearchEndpoint} to view an item as an HTMLElement (think: quickview).
  */
 export interface IViewAsHtmlOptions extends IEndpointCallOptions {
   query?: string;
