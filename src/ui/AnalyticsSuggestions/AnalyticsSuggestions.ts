@@ -22,7 +22,7 @@ export interface IAnalyticsSuggestionsOptions extends ISuggestionForOmniboxOptio
  * The AnalyticsSuggestion component provides query suggestions based on the queries that a Coveo Analytics service most
  * commonly logs.
  *
- * This component orders possible query suggestions by their respective number of successful document views, thus
+ * This component orders possible query suggestions by their respective number of successful item views, thus
  * prioritizing the most relevant query suggestions. Consequently, when better options are available, this component
  * does not suggest queries resulting in no clicks from users or requiring refinements.
  *
