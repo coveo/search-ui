@@ -5,6 +5,8 @@ import { IOmniboxOptions, IOmniboxSuggestion } from '../../src/ui/Omnibox/Omnibo
 import { Simulate } from '../Simulate';
 import { $$ } from '../../src/utils/Dom';
 import { l } from '../../src/strings/Strings';
+import { InitializationEvents } from '../../src/events/InitializationEvents';
+import Suggestion = Coveo.MagicBox.Suggestion;
 
 export function OmniboxTest() {
   describe('Omnibox', () => {
@@ -15,6 +17,7 @@ export function OmniboxTest() {
         Simulate.addJQuery();
       }
       test = Mock.basicComponentSetup<Omnibox>(Omnibox);
+      $$(test.env.root).trigger(InitializationEvents.afterComponentsInitialization);
     });
 
     afterEach(() => {
@@ -33,6 +36,7 @@ export function OmniboxTest() {
     });
 
     describe('exposes options', () => {
+
       it('inline should be passed down to magic box', () => {
         test = Mock.optionsComponentSetup<Omnibox, IOmniboxOptions>(Omnibox, {
           inline: true
@@ -171,10 +175,13 @@ export function OmniboxTest() {
           listOfFields: ['@field', '@another_field']
         });
 
-        test.cmp.setText('@f');
-        let suggestions = test.cmp.magicBox.getSuggestions();
-        (<Promise<any>>suggestions[0]).then((fields) => {
+        test.cmp.setText('@');
+
+        const fieldSuggestion = test.cmp.magicBox.getSuggestions()[1] as Promise<Suggestion[]>;
+
+        fieldSuggestion.then((fields) => {
           expect(fields[0].text).toEqual('@field');
+          expect(fields[1].text).toEqual('@another_field');
           done();
         });
       });

@@ -63,7 +63,6 @@
     "@types/pikaday": "0.0.31",
     "@types/underscore": "^1.7.33",
     "awesome-typescript-loader": "^2.2.4",
-    "bluebird": "^3.4.7",
     "cheerio": "^0.20.0",
     "colors": "^1.1.2",
     "coveralls": "^2.11.15",
@@ -130,6 +129,7 @@
   },
   "dependencies": {
     "@material/select": "^0.3.3",
+    "circular-json": "^0.3.1",
     "coveo-styleguide": "1.13.4",
     "coveo.analytics": "^0.7.0",
     "coveomagicbox": "1.0.x",
