@@ -22,6 +22,10 @@ import { Dropdown } from '../FormWidgets/Dropdown';
 import { TextInput } from '../FormWidgets/TextInput';
 import { RadioButton } from '../FormWidgets/RadioButton';
 import { ModalBox as ModalBoxModule } from '../../ExternalModulesShim';
+import {
+    BreadcrumbEvents, IPopulateBreadcrumbEventArgs,
+    IClearBreadcrumbEventArgs
+} from '../../events/BreadcrumbEvents';
 
 export interface IAdvancedSearchOptions {
   includeKeywords?: boolean;
@@ -83,6 +87,7 @@ export class AdvancedSearch extends Component {
   private inputFactory = new AdvancedSearchInputFactory(this.queryController.getEndpoint());
   private externalSections: IExternalAdvancedSearchSection[] = [];
   private modalbox: Coveo.ModalBox.ModalBox;
+  private needToPopulateBreadcrumb = false;
   /**
    * Creates a new AdvancedSearch component.
    *
@@ -97,6 +102,8 @@ export class AdvancedSearch extends Component {
     this.options = ComponentOptions.initComponentOptions(element, AdvancedSearch, options);
     this.bindEvents();
     this.buildContent();
+    this.bind.onRootElement(BreadcrumbEvents.populateBreadcrumb, (args: IPopulateBreadcrumbEventArgs) => this.handlePopulateBreadcrumb(args));
+    this.bind.onRootElement(BreadcrumbEvents.clearBreadcrumb, (args: IClearBreadcrumbEventArgs)=> this.handleClearBreadcrumb());
   }
 
   /**
@@ -141,6 +148,34 @@ export class AdvancedSearch extends Component {
       this.modalbox.close();
       this.modalbox = null;
     }
+  }
+
+  private handlePopulateBreadcrumb(args: IPopulateBreadcrumbEventArgs) {
+    if (this.needToPopulateBreadcrumb) {
+      const elem = $$('div', {
+        className: 'coveo-advanced-search-breadcrumb'
+      });
+      const title = $$('span', {
+        className: 'coveo-title'
+      });
+      title.text(l('FiltersInAdvancedSearch') + ' : ');
+      const clear = $$('span', {
+        className: 'coveo-advanced-search-breadcrumb-clear'
+      });
+      clear.on('click', ()=> this.handleClearBreadcrumb());
+
+      elem.append(title.el);
+      elem.append(clear.el);
+
+      args.breadcrumbs.push({
+        element: elem.el
+      })
+    }
+  }
+
+  private handleClearBreadcrumb() {
+    this.reset();
+    this.executeAdvancedSearch();
   }
 
   private buildContent() {
@@ -259,6 +294,7 @@ export class AdvancedSearch extends Component {
     });
 
     this.bind.onRootElement(QueryEvents.buildingQuery, (data: IBuildingQueryEventArgs) => {
+      const originalQuery = data.queryBuilder.build();
       _.each(this.externalSections, (section: IExternalAdvancedSearchSection) => {
         if (section.updateQuery) {
           section.updateQuery(<any>section.inputs, data.queryBuilder);
@@ -269,6 +305,8 @@ export class AdvancedSearch extends Component {
           input.updateQuery(data.queryBuilder);
         }
       });
+      const modifiedQuery = data.queryBuilder.build();
+      this.needToPopulateBreadcrumb = modifiedQuery.aq != originalQuery.aq;
     });
 
     this.bind.onRootElement(AdvancedSearchEvents.executeAdvancedSearch, () => {

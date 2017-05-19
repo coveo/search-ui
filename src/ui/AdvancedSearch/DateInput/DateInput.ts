@@ -9,6 +9,7 @@ export class DateInput implements IAdvancedSearchInput {
 
   protected element: HTMLElement;
   private radio: RadioButton;
+  private error: HTMLElement;
 
   constructor(public inputName: string) {
     this.buildContent();
@@ -35,14 +36,36 @@ export class DateInput implements IAdvancedSearchInput {
   }
 
   public updateQuery(queryBuilder: QueryBuilder) {
-    let value = this.getValue();
-    if (value) {
-      queryBuilder.advancedExpression.add(this.getValue());
+    try {
+      let value = this.getValue();
+      if (value) {
+        queryBuilder.advancedExpression.add(this.getValue());
+      }
+      this.hideError();
+    } catch (error) {
+      this.showError(error);
     }
   }
 
   protected getRadio(): HTMLInputElement {
     return <HTMLInputElement>$$(this.element).find('input');
+  }
+
+
+  private showError(message: string) {
+    if (this.error) {
+      this.hideError();
+    }
+    this.error = $$('div', {
+      className: 'coveo-error coveo-error-date-input'
+    }, message).el;
+    $$(this.element).append(this.error);
+  }
+
+  private hideError() {
+    if (this.error) {
+      $$(this.error).remove();
+    }
   }
 
   private buildContent() {

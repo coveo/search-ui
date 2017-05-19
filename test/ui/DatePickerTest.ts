@@ -21,6 +21,10 @@ export function DatePickerTest() {
       expect(element.readOnly).toBe(true);
     });
 
+    it('should return an empty string for getValue if it was not set before', ()=> {
+      expect(picker.getValue()).toEqual('');
+    });
+
     describe('set value', () => {
       it('should allow to set the date', () => {
         const date = new Date();
