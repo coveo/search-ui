@@ -2,10 +2,7 @@ import { Component } from '../Base/Component';
 import { IComponentBindings } from '../Base/ComponentBindings';
 import { ComponentOptions } from '../Base/ComponentOptions';
 import { DeviceUtils } from '../../utils/DeviceUtils';
-import {
-    QueryEvents, INewQueryEventArgs, IBuildingQueryEventArgs, IQuerySuccessEventArgs, INoResultsEventArgs,
-    IDoneBuildingQueryEventArgs
-} from '../../events/QueryEvents';
+import { QueryEvents, INewQueryEventArgs, IBuildingQueryEventArgs, IQuerySuccessEventArgs, INoResultsEventArgs, IDoneBuildingQueryEventArgs } from '../../events/QueryEvents';
 import { MODEL_EVENTS, IAttributeChangedEventArg } from '../../models/Model';
 import { QueryStateModel } from '../../models/QueryStateModel';
 import { QUERY_STATE_ATTRIBUTES } from '../../models/QueryStateModel';
@@ -73,24 +70,23 @@ export class Pager extends Component {
     enableNavigationButton: ComponentOptions.buildBooleanOption({ defaultValue: true }),
 
     /**
-     * This is a deprecated option. Instead, the pager will automatically adapt itself on each new query.
+     * Specifies the maximum number of pages to display if enough results are available.
      *
-     * This was used to set the default number of page accessible from the index.
+     * This property is typically set when the default number of accessible results from the index has been changed from its default value of `1000` (10 results per page X 100 `maxNumberOfPages`).
+     * Default value is `100`
      *
-     * Use {@link Pager.options.maximumNumberOfResultsFromIndex} instead if you modified the settings from the index.
-     *
-     * @deprecated
+     * @deprecated This is a deprecated option. The `Pager` now automatically adapts itself on each new query, so you no longer need to specify a value for this option. However, if the default maximum number of accessible results value was changed on your Coveo index, you should use the [`maximumNumberOfResultsFromIndex`]{@link Pager.options.maximumNumberOfResultsFromIndex} option to specify the new value.
      */
     maxNumberOfPages: ComponentOptions.buildNumberOption({
       defaultValue: undefined,
       deprecated: 'This is a deprecated option. The pager will automatically adapt itself on each new query. You no longer need to specify this option. Use maximumNumberOfResultsFromIndex instead.'
     }),
     /**
-     * Specify the maximum number of results that the index can return for any query.
+     * Specifies the maximum number of results that the index can return for any query.
      *
-     * The default value is `1000` in a Coveo index.
+     * Default value is `1000` in a Coveo index.
      *
-     * If this value was modified for any reason in the index, you will need to adjust this option so that the Pager component can do it's job correctly.
+     * If this value was modified in your Coveo index, you must specify the new value in this option for the Pager component to work properly
      */
     maximumNumberOfResultsFromIndex: ComponentOptions.buildNumberOption({
       defaultValue: 1000
@@ -131,7 +127,7 @@ export class Pager extends Component {
 
     this.bind.onRootElement(QueryEvents.newQuery, (args: INewQueryEventArgs) => this.handleNewQuery(args));
     this.bind.onRootElement(QueryEvents.buildingQuery, (args: IBuildingQueryEventArgs) => this.handleBuildingQuery(args));
-    this.bind.onRootElement(QueryEvents.doneBuildingQuery, (args: IBuildingQueryEventArgs)=> this.handleDoneBuildingQuery(args));
+    this.bind.onRootElement(QueryEvents.doneBuildingQuery, (args: IBuildingQueryEventArgs) => this.handleDoneBuildingQuery(args));
     this.bind.onRootElement(QueryEvents.querySuccess, (args: IQuerySuccessEventArgs) => this.handleQuerySuccess(args));
     this.bind.onRootElement(QueryEvents.queryError, () => this.handleQueryError());
     this.bind.onRootElement(QueryEvents.noResults, (args: INoResultsEventArgs) => this.handleNoResults(args));
@@ -246,7 +242,6 @@ export class Pager extends Component {
   }
 
   private handleNoResults(data: INoResultsEventArgs) {
-    this.ignoreNextQuerySuccess = true;
     let lastValidPage;
     if (data.results.totalCount > 0) {
       // First scenario : The index returned less results than expected (because of folding).
@@ -257,6 +252,7 @@ export class Pager extends Component {
       }
     } else if (this.currentPage > this.getMaxNumberOfPagesForCurrentResultsPerPage()) {
       // Second scenario : Someone tried to access a non-valid page by the URL for example, which is  higher than the current possible with the number of
+      // possible results. The last valid page will be the maximum number of results avaiable from the index.
       lastValidPage = this.getMaxNumberOfPagesForCurrentResultsPerPage();
     }
 
@@ -264,7 +260,11 @@ export class Pager extends Component {
     // before triggering/queuing the next query;
     // if we cannot find a lastValidPage to go to, do nothing : this means it's a query that simply return nothing.
     if (lastValidPage != null) {
-      Defer.defer(()=> this.setPage(lastValidPage));
+      this.currentPage = lastValidPage;
+      data.retryTheQuery = true;
+      this.needToReset = false;
+      this.ignoreNextQuerySuccess = false;
+      this.updateQueryStateModel(this.getFirstResultNumber(this.currentPage));
     }
   }
 

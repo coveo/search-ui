@@ -119,27 +119,33 @@ export class Simulate {
           resolve(options.results);
         }));
 
-        if (options.results.totalCount == 0 || options.results.results.length == 0) {
-          var noResultsEventArgs: INoResultsEventArgs = {
-            query: options.query,
-            queryBuilder: options.queryBuilder,
-            results: options.results,
-            searchAsYouType: options.searchAsYouType,
-            retryTheQuery: false
-          };
+        var noResultsEventArgs: INoResultsEventArgs = {
+          query: options.query,
+          queryBuilder: options.queryBuilder,
+          results: options.results,
+          searchAsYouType: options.searchAsYouType,
+          retryTheQuery: false
+        };
 
+        if (options.results.totalCount == 0 || options.results.results.length == 0) {
           $$(env.root).trigger(QueryEvents.noResults, noResultsEventArgs);
           options.callbackAfterNoResults();
         }
 
-        var querySuccessEventArgs: IQuerySuccessEventArgs = {
-          query: options.query,
-          queryBuilder: options.queryBuilder,
-          results: options.results,
-          searchAsYouType: options.searchAsYouType
-        };
-        $$(env.root).trigger(QueryEvents.querySuccess, querySuccessEventArgs);
-        $$(env.root).trigger(QueryEvents.deferredQuerySuccess, querySuccessEventArgs);
+        if (noResultsEventArgs.retryTheQuery) {
+          // do nothing, as this could cause test to loop endlessly if they do not handle the query being retried.
+        } else {
+          var querySuccessEventArgs: IQuerySuccessEventArgs = {
+            query: options.query,
+            queryBuilder: options.queryBuilder,
+            results: options.results,
+            searchAsYouType: options.searchAsYouType
+          };
+          $$(env.root).trigger(QueryEvents.querySuccess, querySuccessEventArgs);
+          $$(env.root).trigger(QueryEvents.deferredQuerySuccess, querySuccessEventArgs);
+        }
+
+
       }
 
       if (!options.doNotFlushDefer) {
