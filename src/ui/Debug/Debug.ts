@@ -401,7 +401,7 @@ export class Debug extends RootComponent {
     }
     const valueDom = $$('div');
     valueDom.text(stringValue);
-    valueDom.on('dblclick', ()=> {
+    valueDom.on('dblclick', () => {
       this.selectElementText(valueDom.el);
     });
 

@@ -21,6 +21,12 @@ export function BetweenDateInputTest() {
         input.secondDatePicker.setValue(new Date(2016, 8, 4));
         expect(input.getValue()).toEqual('(@date>=2016/09/01)(@date<=2016/09/04)');
       });
+
+      it('should throw if the values are invalid (ie: second date < first date)', () => {
+        input.firstDatePicker.setValue(new Date(2016, 8, 4));
+        input.secondDatePicker.setValue(new Date(2016, 8, 1));
+        expect(() => input.getValue()).toThrow();
+      });
     });
   });
 }

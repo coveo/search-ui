@@ -63,7 +63,7 @@ export class DatePicker implements IFormWidget, IFormWidgetSettable {
 
   /**
    * Get the currently selected value in the date picker, as a Date object
-   * @returns {Date} A Date object for the current value, or null if the date picker was reset.
+   * @returns {Date} A Date object for the current value, or null if the date picker was reset or a date has not been selected initially.
    */
   public getDateValue(): Date {
     if (this.wasReset) {
@@ -95,9 +95,9 @@ export class DatePicker implements IFormWidget, IFormWidgetSettable {
     this.element.readOnly = true;
     this.picker = new Pikaday({
       field: this.element,
-      onSelect: ()=> {
+      onSelect: () => {
         this.wasReset = false;
-        this.onChange.call(this, this)
+        this.onChange.call(this, this);
       }
     });
   }

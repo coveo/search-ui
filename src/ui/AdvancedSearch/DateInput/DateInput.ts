@@ -53,9 +53,7 @@ export class DateInput implements IAdvancedSearchInput {
 
 
   private showError(message: string) {
-    if (this.error) {
-      this.hideError();
-    }
+    this.hideError();
     this.error = $$('div', {
       className: 'coveo-error coveo-error-date-input'
     }, message).el;

@@ -21,7 +21,7 @@ export class BetweenDateInput extends DateInput {
 
   public build(): HTMLElement {
     super.build();
-    const container = $$('fieldset', {className: 'coveo-advanced-search-date-input'});
+    const container = $$('fieldset', { className: 'coveo-advanced-search-date-input' });
     (<HTMLFieldSetElement>container.el).disabled = true;
 
     container.append(this.firstDatePicker.getElement());
@@ -41,7 +41,7 @@ export class BetweenDateInput extends DateInput {
     let query = '';
 
     if (this.isSelected()) {
-      if (firstDate && secondDate && this.isSelected()) {
+      if (firstDate && secondDate) {
         const timespan = TimeSpan.fromDates(DateUtils.convertFromJsonDateIfNeeded(firstDate), DateUtils.convertFromJsonDateIfNeeded(secondDateAsString));
         if (timespan.getMilliseconds() < 0) {
           throw l('QueryExceptionInvalidDate');
@@ -58,7 +58,7 @@ export class BetweenDateInput extends DateInput {
   }
 
   private buildAnd(): HTMLElement {
-    const and = $$('div', {className: 'coveo-advanced-search-and'});
+    const and = $$('div', { className: 'coveo-advanced-search-and' });
     and.text(l('And').toLowerCase());
     return and.el;
   }
