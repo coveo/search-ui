@@ -17,7 +17,7 @@ export interface IPrintableUriOptions extends IResultLinkOptions {
 }
 
 /**
- * The PrintableUri component inherits from the ResultLink component and supports all of its options.
+ * The `PrintableUri` component inherits from the [ ResultLink ]{@link ResultLink} component and supports all of its options.
  *
  * This component displays the URI, or path, to access a result.
  *
@@ -44,9 +44,6 @@ export class PrintableUri extends ResultLink {
    */
   constructor(public element: HTMLElement, public options: IPrintableUriOptions, bindings?: IResultsComponentBindings, public result?: IQueryResult) {
     super(element, ComponentOptions.initComponentOptions(element, PrintableUri, options), bindings, result);
-
-
-
   }
 
   public renderParentsXml(element: HTMLElement, parentsXml: string) {
@@ -56,9 +53,9 @@ export class PrintableUri extends ResultLink {
     const separators: HTMLElement[] = [];
     for (let i = 0; i < parents.length; i++) {
       if (i > 0) {
-        const seperator = this.buildSeparator();
-        separators.push(seperator);
-        element.appendChild(seperator);
+        const separator = this.buildSeparator();
+        separators.push(separator);
+        element.appendChild(separator);
       }
       const parent = <Element>parents.item(i);
       const token = this.buildHtmlToken(parent.getAttribute('name'), parent.getAttribute('uri'));
@@ -97,10 +94,8 @@ export class PrintableUri extends ResultLink {
   }
 
   public buildSeparator() {
-    const seperator = document.createElement('span');
-    seperator.textContent = ' > ';
-    seperator.className = 'coveo-printable-uri-separator';
-    return seperator;
+    const separator = $$('span', {className : 'coveo-rpintable-uri-separator'}, ' > ');
+    return separator.el;
   }
 
 
