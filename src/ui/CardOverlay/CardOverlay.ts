@@ -144,8 +144,6 @@ export class CardOverlay extends Component {
   }
 
   private createButton(element: HTMLElement) {
-
-
     if (this.options.icon) {
       element.appendChild($$('span', { className: 'coveo-icon ' + this.options.icon }).el);
     }
