@@ -186,7 +186,7 @@ export function DidYouMeanTest() {
 
       it('when query is autocorrected', function () {
         Simulate.query(test.env, {
-          results: FakeResults.createFakeResults(0),
+          results: FakeResults.createFakeResults(10),
           queryCorrections: [<IQueryCorrection>{
             correctedQuery: '<script>alert("thou shalt surely die")</script>'
           }]
