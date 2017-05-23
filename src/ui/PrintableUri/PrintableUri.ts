@@ -17,7 +17,7 @@ export interface IPrintableUriOptions extends IResultLinkOptions {
 }
 
 /**
- * The `PrintableUri` component inherits from the [ ResultLink ]{@link ResultLink} component and supports all of its options.
+ * The `PrintableUri` component inherits from the [ `ResultLink` ]{@link ResultLink} component and supports all of its options.
  *
  * This component displays the URI, or path, to access a result.
  *
