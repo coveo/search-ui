@@ -5115,6 +5115,14 @@
     "en": "months",
     "fr": "mois"
   },
+  "Month": {
+    "en" : "Month",
+    "fr" : "Mois"
+  },
+  "Year" : {
+    "en" : "Year",
+    "fr" : "Année"
+  },
   "Between": {
     "en": "Between",
     "fr": "Entre"
@@ -5186,5 +5194,17 @@
   "ResultsPerPage": {
     "en": "Results per page",
     "fr": "Résultats par page"
+  },
+  "PreviousMonth" : {
+    "en" : "Previous month",
+    "fr" : "Mois précédent"
+  },
+  "NextMonth" : {
+    "en" : "Next month",
+    "fr" : "Mois suivant"
+  },
+  "Title" : {
+    "en" : "Title",
+    "fr" : "Titre"
   }
 }
