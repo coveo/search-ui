@@ -219,9 +219,10 @@ export class FacetValues {
       if (Utils.exists(newValue)) {
         myValue.updateCountsFromNewValue(newValue);
         return myValue;
-      } else {
+      } else if (myValue.occurrences == null) {
         return myValue.cloneWithZeroOccurrences();
       }
+      return myValue;
     });
   }
 
