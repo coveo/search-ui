@@ -269,27 +269,32 @@ export class Component extends BaseComponent {
 }
 
 /**
- * Used by the various Coveo Component to trigger and bind event.<br/>
- * It adds a small logic to execute handler or triggers only when the component is "enabled".<br/>
- * A component is disabled by calling {Component.disable}<br/>
- * Typically, a component is disabled when it is not active in the current {Tab}.<br/>
- * It can also be disabled by external code.<br/>
- * The class serves as a way to not execute handler on component that are invisible and inactive in the query.
+ * The `ComponentEvents` class is used by the various Coveo Component to trigger events and bind event handlers. It adds
+ * logic to execute handlers or triggers only when a component is "enabled", which serves as a way to avoid executing
+ * handlers on components that are invisible and inactive in the query.
+ *
+ * Typically, a component is disabled when it is not active in the current [`Tab`]{@link Tab}. It can also be disabled
+ * by external code, however.
+ *
+ * To manually enable or disable a component, simply use its [`enable`]{@link Component.enable} or
+ * [`disable`]{@link Component.disable} method.
  */
 export class ComponentEvents {
+
   /**
-   * Create a new `ComponentEvents` for the given {@link Component}.
-   * @param owner The {@link Component} which owns those events handler and trigger.
+   * Creates a new `ComponentEvents` instance for a [`Component`]{@link Component}.
+   * @param owner The [`Component`]{@link Component} that owns the event handlers and triggers.
    */
   constructor(public owner: Component) {
     Assert.exists(owner);
   }
 
   /**
-   * Execute the handler for the given event on the given target element.<br/>
-   * Execute only if the component is "enabled" (see {@link Component.enable}).
-   * @param el The target on which the event will originate.
-   * @param event The event for which to register an handler.
+   * Executes the handler for an event on a target element.
+   *
+   * Executes only if the component is enabled (see the [`enable`]{@link Component.enable} method).
+   * @param el The element from which the event originates.
+   * @param event The event for which to register a handler.
    * @param handler The function to execute when the event is triggered.
    */
   public on(el: HTMLElement | Window | Document, event: string, handler: Function);
@@ -305,7 +310,7 @@ export class ComponentEvents {
   }
 
   /**
-   * Execute the handler for the given event on the given target element.<br/>
+   * Executes the handler for the given event on the given target element.<br/>
    * Execute only if the component is "enabled" (see {@link Component.enable}).<br/>
    * Execute the handler only ONE time.
    * @param el The target on which the event will originate.

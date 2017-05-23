@@ -13,8 +13,9 @@ export enum RatingValues { Undefined, Lowest, Low, Average, Good, Best };
 export interface IResultRatingOptions {
 }
 /**
- * The ResultRating component renders a 5-star rating widget. Interactive rating is possible if
- * {@link SearchInterface.options.enableCollaborativeRating} is `true`.
+ * The `ResultRating` component renders a 5-star rating widget. Interactive rating is possible if
+ * the [`enableCollaborativeRating`]{@link SearchInterface.options.enableCollaborativeRating} option of your
+ * search interface is `true`, and if collaborative rating is enabled on your Coveo index.
  *
  * This component is a result template component (see [Result Templates](https://developers.coveo.com/x/aIGfAQ)).
  */
@@ -28,9 +29,9 @@ export class ResultRating extends Component {
   }
 
   /**
-   * Creates a new ResultRating component.
+   * Creates a new `ResultRating` component.
    * @param element The HTMLElement on which to instantiate the component.
-   * @param options The options for the ResultRating component.
+   * @param options The options for the `ResultRating` component.
    * @param bindings The bindings that the component requires to function normally. If not set, these will be
    * automatically resolved (with a slower execution time).
    * @param result The result to associate the component with.
@@ -89,8 +90,8 @@ export class ResultRating extends Component {
   }
 
   /**
-   * Rates a document using the the specified `rating` value.
-   * @param rating The rating to assign to the document.
+   * Rates an item using the the specified `rating` value.
+   * @param rating The rating to assign to the item.
    *
    * The possible values are:
    *
@@ -113,7 +114,7 @@ export class ResultRating extends Component {
         this.renderComponent(this.element, rating);
       })
       .catch(() => {
-        this.logger.error('An error occurred while rating the document');
+        this.logger.error('An error occurred while rating the item');
       });
   }
 }

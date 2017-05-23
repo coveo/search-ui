@@ -71,12 +71,13 @@ export class Checkbox implements IFormWidgetWithLabel, IFormWidgetSelectable {
   }
 
   /**
-   * Checks the checkbox.
+   * Select the checkbox
+   * @param triggerChange will trigger change even if specified and not already selected
    */
-  public select() {
+  public select(triggerChange = true) {
     const currentlyChecked = this.isSelected();
     this.checkbox.checked = true;
-    if (!currentlyChecked) {
+    if (!currentlyChecked && triggerChange) {
       $$(this.checkbox).trigger('change');
     }
   }
