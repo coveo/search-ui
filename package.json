@@ -59,8 +59,6 @@
     "@types/d3": "3.5.36",
     "@types/d3-scale": "1.0.4",
     "@types/fastclick": "^1.0.28",
-    "@types/jasmine": "^2.2.34",
-    "@types/jasmine-ajax": "^3.1.36",
     "@types/pikaday": "0.0.31",
     "@types/underscore": "^1.7.33",
     "awesome-typescript-loader": "^2.2.4",
