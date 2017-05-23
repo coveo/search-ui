@@ -5,7 +5,7 @@ const _ = require('underscore');
 const fs = require('fs');
 const buildSpriteList = require('./buildSpriteList');
 const shell = require('gulp-shell');
-const svgSprite = require('gulp-svg-sprites')
+const svgSprite = require('gulp-svg-sprite')
 
 
 gulp.task('spritesLists', ['regularSpriteList', 'retinaSpriteList', 'validateRetinaSprites', 'dumbCopy', 'spritesSymbols', 'spritesCssFile']);
@@ -29,16 +29,26 @@ gulp.task('retinaSpriteList', function (done) {
   buildSpriteList('image/retina', 'bin/image', 'retina-icon-list-new', done);
 });
 
+  /*
   let config = {
     templates: {
       css: fs.readFileSync('./sass/template/svgSpriteTemplate.lodash.scss', 'utf-8')
     },
-    mode: 'symbols',
+    mode: 'stack',
     common: 'coveo',
     svg: {
-      symbols: 'image/symbols.svg'
+      symbols: 'image/symbolss.svg',
+      stacks: 'image/stacks.svg'
     }
-  };
+  };*/
+  const config = {
+    mode: {
+      stack: {
+        dest: 'image/stack.svg',
+        prefix: 'coveo'
+      }
+    }
+  }
 gulp.task('spritesSymbols', function () {
 
   return gulp.src('image/svg/*.svg')
@@ -58,4 +68,4 @@ gulp.task('spritesCssFile', function () {
       }))
       .pipe(gulp.dest('bin'));
 })
-gulp.task('dumbCopy', shell.task(['cp ./doctype.svg ./bin/ && cp ./ai.svg ./bin/ && cp ./more.svg ./bin/']));
+gulp.task('dumbCopy', shell.task(['cp ./symbols.svg ./bin/image && cp ./ai.svg ./bin/ && cp ./more.svg ./bin/']));

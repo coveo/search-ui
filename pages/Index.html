@@ -7,14 +7,41 @@
     <link rel="stylesheet" href="./css/CoveoFullSearchNewDesign.css"/>
     <script src="js/CoveoJsSearch.Lazy.js"></script>
     <script src="js/templates/templatesNew.js"></script>
+    <style>
+      .svg-icon {
+        background-image: url('image/symbols.svg#user-secured-view');
+        width: 240px;
+        height: 160px;
+        background-repeat: no-repeat !important;
+        background-position: center center !important;
+        background-size: 100% auto !important;
+      }
+      .svg2-icon {
+        background-image: url('image/symbols.svg#tag-traits-view');
+        width: 240px;
+        height: 160px;
+        background-repeat: no-repeat !important;
+        background-position: center center !important;
+        background-size: 100% auto !important;
+      }
+    </style>
     <script>
       document.addEventListener('DOMContentLoaded', function () {
         Coveo.SearchEndpoint.configureSampleEndpointV2();
-        Coveo.init(document.body);
+        Coveo.init(document.body, {
+          Facet: {
+            valueCaption: {
+
+            }
+          }
+        });
       })
     </script>
   </head>
   <body id="search" class='CoveoSearchInterface' data-enable-history="true" data-design="new">
+    <div class="svg-icon"></div>
+    <div class="svg2-icon"></div>    
+    <!--<div class="action-activity"></div>-->
     <div class="coveo-tab-section">
       <a class="CoveoTab" data-id="All" data-caption="All Content"></a>
     </div>

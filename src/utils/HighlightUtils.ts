@@ -53,7 +53,7 @@ export class StringAndHoles {
    * @param length The length to which the path will be shortened.
    */
   static shortenPath(uriOrig: string, length: number): StringAndHoles {
-    const strAndHoles = new StringAndHoles();    
+    const strAndHoles = new StringAndHoles();
     let uri = uriOrig;
     if (Utils.isNullOrEmptyString(uri) || (uri.length <= length)) {
       strAndHoles.value = uri;
