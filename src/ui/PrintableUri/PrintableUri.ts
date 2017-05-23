@@ -79,11 +79,8 @@ export class PrintableUri extends ResultLink {
           stringAndHoles = StringAndHoles.shortenPath(result.printableUri, $$(element).width());
         }
         this.shortenedUri = HighlightUtils.highlightString(stringAndHoles.value, result.printableUriHighlights, stringAndHoles.holes, 'coveo-highlight');
-        const link = $$('div');
-        link.setAttribute('title', result.printableUri);
-        link.addClass('coveo-printable-uri-part');
+        const link = $$('div', { className: 'coveo-printable-uri-part', href: result.clickUri, title: result.printableUri });
         link.setHtml(this.shortenedUri);
-        link.setAttribute('href', result.clickUri);
         element.appendChild(link.el);
       } else if (this.options.titleTemplate) {
         const newTitle = this.parseStringTemplate(this.options.titleTemplate);
@@ -94,7 +91,7 @@ export class PrintableUri extends ResultLink {
   }
 
   public buildSeparator() {
-    const separator = $$('span', {className : 'coveo-rpintable-uri-separator'}, ' > ');
+    const separator = $$('span', { className: 'coveo-rpintable-uri-separator' }, ' > ');
     return separator.el;
   }
 
