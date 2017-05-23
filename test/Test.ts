@@ -252,6 +252,9 @@ ResultFoldingTest();
 import { ResultLinkTest } from './ui/ResultLinkTest';
 ResultLinkTest();
 
+import { PrintableUriTest } from './ui/PrintableUriTest';
+PrintableUriTest();
+
 import { ResultListTest } from './ui/ResultListTest';
 ResultListTest();
 
