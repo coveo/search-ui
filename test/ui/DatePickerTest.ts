@@ -25,11 +25,21 @@ export function DatePickerTest() {
       expect(picker.getValue()).toEqual('');
     });
 
+    it('should return null for getDateValue if it was not set before', () => {
+      expect(picker.getDateValue()).toBeNull();
+    });
+
     describe('set value', () => {
-      it('should allow to set the date', () => {
+      it('should allow to set the date and get it as a string', () => {
         const date = new Date();
         picker.setValue(date);
         expect(picker.getValue()).toEqual(DateUtils.dateForQuery(date));
+      });
+
+      it('should allow to set the date and get it as a date', () => {
+        const date = new Date();
+        picker.setValue(date);
+        expect(picker.getDateValue() instanceof Date).toBe(true);
       });
 
       it('should call on change when the date is set', () => {
@@ -46,6 +56,7 @@ export function DatePickerTest() {
         picker.setValue(date);
         picker.reset();
         expect(picker.getValue()).toEqual('');
+        expect(picker.getDateValue()).toBeNull();
       });
 
       it('should call on change with reset', () => {
