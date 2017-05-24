@@ -32,15 +32,28 @@ export class ChatterPostedBy extends Component {
     openInSubTab: ComponentOptions.buildBooleanOption({ defaultValue: true }),
   };
 
+<<<<<<< HEAD
+=======
+  static fields = [
+    'sfcreatedbyname',
+    'sfcreatedbyid',
+    'sffeeditemid',
+    'sfuserid',
+    'sfinsertedbyid',
+    'sfparentid',
+    'sfparentname'
+  ];
+
+>>>>>>> pro-templates
   constructor(public element: HTMLElement, public options?: IChatterPostedByOption, public bindings?: IResultsComponentBindings, public result?: IQueryResult) {
     super(element, ChatterPostedBy.ID, bindings);
     this.options = ComponentOptions.initComponentOptions(element, ChatterPostedBy, options);
 
-    if (Utils.getFieldValue(this.result, 'sfcreatedby') != null) {
+    if (Utils.getFieldValue(this.result, 'sfcreatedbyname') != null) {
       let from = $$('span');
       from.text(`${this.options.useFromInstead ? l('From') : l('PostedBy')} `);
       $$(element).append(from.el);
-      $$(element).append(this.renderLink(Utils.getFieldValue(this.result, 'sfcreatedby'), Utils.getFieldValue(this.result, 'sfcreatedbyid')));
+      $$(element).append(this.renderLink(Utils.getFieldValue(this.result, 'sfcreatedbyname'), Utils.getFieldValue(this.result, 'sfcreatedbyid')));
 
       if (this.options.enablePostedOn && !Utils.isNullOrUndefined(Utils.getFieldValue(this.result, 'sfparentname')) && !Utils.isNullOrUndefined(Utils.getFieldValue(this.result, 'sfparentid'))) {
         // Post on user's wall

@@ -2,8 +2,8 @@
 <html>
 
   <head>
-    <title>Salesforce</title>
-    <meta about="Search Salesforce content." />
+    <title>Dropbox</title>
+    <meta about="Search Confluence content." />
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, height=device-height" >
@@ -20,7 +20,7 @@
 
   <body id="search" class='CoveoSearchInterface' data-enable-history="true" data-design="new">
     <div class="coveo-tab-section">
-      <a class="CoveoTab" data-id="Salesforce" data-caption="Salesforce" data-expression="@sfid"></a>
+      <a class="CoveoTab" data-id="Confluence" data-caption="Confluence" data-expression="@connectortype==Confluence2Crawler"></a>
     </div>
     <div class='coveo-search-section'>
       <div class="CoveoSettings"></div>
@@ -28,15 +28,10 @@
     </div>
     <div class="coveo-main-section">
       <div class="coveo-facet-column">
-        <div class="CoveoFacet" data-title="Type" data-field="@objecttype" data-number-of-values="5" data-tab="Salesforce"></div>
-        <div class="CoveoFacet" data-title="Status" data-field="@sfstatus" data-number-of-values="5" data-tab="Salesforce"></div>
-        <div class="CoveoFacet" data-title="Close quarter" data-field="@sfopportunityclosedquarterc" data-computed-field="@sfopportunityamountconverted" data-sort-criteria="AlphaDescending" data-tab="Salesforce"></div>
-        <div class="CoveoFacet" data-title="Salesforce Account" data-field="@sfaccountname" data-computed-field="@sfopportunityamountconverted" data-sort-criteria="ComputedFieldDescending" data-number-of-values="7" data-tab="Salesforce"></div>
-        <div class="CoveoFacet" data-title="Salesforce Owner" data-field="@sfownername" data-computed-field="@sfopportunityamountconverted" data-sort-criteria="ComputedFieldDescending" data-number-of-values="7" data-tab="Salesforce"></div>
-        <div class="CoveoFacet" data-title="Opportunity Type" data-field="@sfopportunitytype" data-computed-field="@sfopportunityamountconverted" data-sort-criteria="ComputedFieldDescending" data-number-of-values="5" data-tab="Salesforce"></div>
-        <div class="CoveoFacet" data-title="Opportunity Stage" data-field="@sfopportunitystagename" data-computed-field="@sfopportunityamountconverted" data-sort-criteria="ComputedFieldDescending" data-tab="Salesforce"></div>
-        <div class="CoveoFacet" data-title="Lead Source" data-field="@sfleadsource" data-computed-field="@sfopportunityamountconverted" data-sort-criteria="ComputedFieldDescending" data-number-of-values="5" data-tab="Salesforce"></div>
-        <div class="CoveoFacet" data-title="Created By" data-field="@sfcreatedbyname" data-number-of-values="5" data-tab="Salesforce"></div>
+        <div class="CoveoFacet" data-title="Type" data-field="@confdocumenttype" data-tab="Confluence"></div>
+        <div class="CoveoFacet" data-title="Space" data-field="@confspacename" data-tab="Confluence"></div>
+        <div class="CoveoFacet" data-title="File Type" data-field="@filetype" data-tab="Confluence"></div>
+        <div class="CoveoFacet" data-title="Author" data-field="@author" data-tab="Confluence"></div>
       </div>
       <div class="coveo-results-column">
         <div class="CoveoShareQuery"></div>
@@ -57,7 +52,6 @@
           <div class="coveo-sort-section">
             <span class="CoveoSort" data-sort-criteria="relevancy" data-caption="Relevance"></span>
             <span class="CoveoSort" data-sort-criteria="date descending,date ascending" data-caption="Date"></span>
-            <span class="CoveoSort" data-sort-criteria="@sfopportunityamountconverted descending,@sfopportunityamountconverted ascending" data-tab="Salesforce" data-caption="Amount"></span>
           </div>
         </div>
         <div class="CoveoHiddenQuery"></div>

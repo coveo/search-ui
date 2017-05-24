@@ -2,7 +2,7 @@
 @import "mixins/mediaQuery";
 
 .CoveoResult {
-  position: relative; // Allows using absolute positioning for buttons such as Show All Thread, etc.
+  //position: relative; // Allows using absolute positioning for buttons such as Show All Thread, etc.
 
   &.coveo-omnibox-selectable {
     padding: 10px 10px 10px 15px;
@@ -150,7 +150,7 @@
 
 .coveo-list-layout.CoveoResult {
   border-bottom: $default-border;
-  margin: 20px 0px 20px 20px;
+  padding: 16px 0px 16px 16px;
 }
 
 .coveo-card-layout {

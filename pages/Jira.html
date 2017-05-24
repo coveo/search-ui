@@ -21,7 +21,7 @@
   <body id="search" class='CoveoSearchInterface' data-enable-history="true" data-design="new">
     <div class="CoveoFolding" data-field="@jiissueid" data-expand-expression="@jidocumenttype==Attachment" data-tab="Jira" data-parent-field="@jiid" data-child-field="@jiparentissueid" data-range="10"> </div>
     <div class="coveo-tab-section">
-      <a class="CoveoTab" data-id="Jira" data-caption="Jira" data-expression='@jisourcetype AND NOT @jidocumenttype="WorkLog"'></a>
+      <a class="CoveoTab" data-id="Jira" data-caption="Jira" data-expression='@connectortype=="JiraCrawler" AND NOT @jidocumenttype="WorkLog"'></a>
     </div>
     <div class='coveo-search-section'>
       <div class="CoveoSettings"></div>
@@ -29,25 +29,18 @@
     </div>
     <div class="coveo-main-section">
       <div class="coveo-facet-column">
-        <div class="CoveoFacet" data-title="Type" data-field="@jidocumenttype" data-tab="Jira"></div>
         <div class="CoveoFacet" data-title="Project" data-field="@jiprojectname" data-tab="Jira"></div>
+        <div class="CoveoFacet" data-title="Type" data-field="@jidocumenttype" data-tab="Jira"></div>
         <!--Will work only with issue-->
-        <div class='CoveoFacet' data-title='Assignee' data-field='@jifieldsassigneedisplayname' data-tab="Jira"></div>
-        <div class='CoveoFacet' data-title='Reporter' data-field='@jifieldsreporterdisplayname' data-tab="Jira"></div>
-        <div class="CoveoFacet" data-title="Issue type" data-field="@jifieldsissuetypename" data-tab="Jira"></div>
-        <div class="CoveoFacet" data-title="Author" data-field="@jiauthordisplayname" data-tab="Jira"></div>
-        <div class="CoveoFacet" data-title="Update Author" data-field="@jiupdateauthordisplayname" data-tab="Jira"></div>
-        <div class='CoveoFacet' data-title='Commenter' data-field='@jifieldscommentcommentsauthordisplayname' data-tab="Jira"></div>
-        <div class='CoveoFacet' data-title='Links' data-field='@jifieldsissuelinkstypename' data-tab="Jira"></div>
-        <div class='CoveoFacet' data-title='Outward links' data-field='@jifieldsissuelinkstypeoutward' data-tab="Jira"></div>
-        <div class='CoveoFacet' data-title='Inward links' data-field='@jifieldsissuelinkstypeinward' data-tab="Jira"></div>
-        <!--Will work only with bug issue-->
-        <div class='CoveoFacet' data-title='Fix Version/s' data-field='@jifieldsfixversionsname' data-tab="Jira"></div>
-        <div class='CoveoFacet' data-title='Version' data-field='@jifieldsversionsname' data-tab="Jira"></div>
-        <!--Will work only with issue-->
-        <div class='CoveoFacet' data-title='Label' data-field='@jifieldslabels' data-allow-toggling-operator='true' data-is-multi-value='true' data-tab="Jira"></div>
         <div class='CoveoFacet' data-title='Status' data-field='@jifieldsstatusname' data-allow-toggling-operator='true' data-is-multi-value='true' data-tab="Jira"></div>
         <div class="CoveoFacet" data-title="Priority" data-field="@jifieldspriorityname" data-tab="Jira"></div>
+        <div class='CoveoFacet' data-title='Assignee' data-field='@jifieldsassigneedisplayname' data-tab="Jira"></div>
+        <div class="CoveoFacet" data-title="Issue type" data-field="@jifieldsissuetypename" data-tab="Jira"></div>
+        <div class='CoveoFacet' data-title='Reporter' data-field='@jifieldsreporterdisplayname' data-tab="Jira"></div>
+        <div class="CoveoFacet" data-title="Author" data-field="@jiauthordisplayname" data-tab="Jira"></div>
+        <div class='CoveoFacet' data-title='Label' data-field='@jifieldslabels' data-allow-toggling-operator='true' data-is-multi-value='true' data-tab="Jira"></div>
+        <!--Will work only with bug issue-->
+        <div class='CoveoFacet' data-title='Version' data-field='@jifieldsversionsname' data-tab="Jira"></div>
       </div>
       <div class="coveo-results-column">
         <div class="CoveoShareQuery"></div>
@@ -73,8 +66,8 @@
         <div class="CoveoHiddenQuery"></div>
         <div class="CoveoDidYouMean"></div>
         <div class="CoveoErrorReport"></div>
-        <div class="CoveoResultList" data-layout="list" data-wait-animation="fade" data-auto-select-fields-to-include="true"></div>
-        <div class="CoveoResultList" data-layout="card" data-wait-animation="fade" data-auto-select-fields-to-include="true"></div>
+        <div class="CoveoResultList" data-layout="list" data-wait-animation="fade" data-auto-select-fields-to-include="false"></div>
+        <div class="CoveoResultList" data-layout="card" data-wait-animation="fade" data-auto-select-fields-to-include="false"></div>
         <div class="CoveoPager"></div>
         <div class="CoveoLogo"></div>
         <div class="CoveoResultsPerPage"></div>

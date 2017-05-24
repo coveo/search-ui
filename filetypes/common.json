@@ -1,42 +1,42 @@
 {
   "filetype": {
     "html": {
-      "icon": "webpage",
+      "icon": "salesforce-doctype-html",
       "captions": {
         "en": "HTML File",
         "fr": "Fichier HTML"
       }
     },
     "wiki": {
-      "icon": "webpage",
+      "icon": "salesforce-doctype-link",
       "captions": {
         "en": "Wiki",
         "fr": "Wiki"
       }
     },
     "webscraperwebpage": {
-      "icon": "webpage",
+      "icon": "salesforce-doctype-link",
       "captions": {
         "en": "Web Page",
         "fr": "Page Web"
       }
     },
     "image": {
-      "icon": "images",
+      "icon": "salesforce-doctype-image",
       "captions": {
         "en": "Image",
         "fr": "Image"
       }
     },
     "folder": {
-      "icon": "folder",
+      "icon": "salesforce-standard-folder",
       "captions": {
         "en": "Folder",
         "fr": "Dossier"
       }
     },
     "txt": {
-      "icon": "file",
+      "icon": "salesforce-doctype-gdoc",
       "captions": {
         "en": "Text",
         "fr": "Texte"
@@ -44,7 +44,7 @@
       "shouldDisplayLabel": true
     },
     "zip": {
-      "icon": "file",
+      "icon": "salesforce-doctype-pack",
       "captions": {
         "en": "Zip File",
         "fr": "Fichier Zip"
@@ -66,7 +66,7 @@
       }
     },
     "pdf": {
-      "icon": "file",
+      "icon": "salesforce-doctype-pdf",
       "captions": {
         "en": "PDF File",
         "fr": "Fichier PDF"
@@ -81,7 +81,7 @@
       }
     },
     "xml": {
-      "icon": "file",
+      "icon": "salesforce-doctype-html",
       "captions": {
         "en": "XML File",
         "fr": "Fichier XML"
@@ -118,7 +118,7 @@
       "shouldDisplayLabel": true
     },
     "doc": {
-      "icon": "file",
+      "icon": "salesforce-doctype-gdoc",
       "captions": {
         "en": "Document",
         "fr": "Document"
@@ -134,7 +134,7 @@
       "shouldDisplayLabel": true
     },
     "xls": {
-      "icon": "file",
+      "icon": "salesforce-doctype-excel",
       "captions": {
         "en": "Spreadsheet Document",
         "fr": "Feuille de calcul"
@@ -142,7 +142,7 @@
       "shouldDisplayLabel": true
     },
     "ppt": {
-      "icon": "file",
+      "icon": "salesforce-doctype-ppt",
       "captions": {
         "en": "Presentation Document",
         "fr": "Présentation"
@@ -150,7 +150,7 @@
       "shouldDisplayLabel": true
     },
     "video": {
-      "icon": "video",
+      "icon": "salesforce-doctype-video",
       "captions": {
         "en": "Video",
         "fr": "Vidéo"
@@ -164,14 +164,14 @@
       }
     },
     "saleforceitem": {
-      "icon": "list",
+      "icon": "salesforce-standard-related-list",
       "captions": {
         "en": "Salesforce",
         "fr": "Salesforce"
       }
     },
     "dynamicscrmitem": {
-      "icon": "list",
+      "icon": "salesforce-doctype-link",
       "captions": {
         "en": "Dynamics CRM",
         "fr": "Dynamics CRM"
@@ -191,6 +191,13 @@
         "fr": "Document Open Text"
       },
       "shouldDisplayLabel": true
+    },
+    "box": {
+      "icon": "user",
+      "captions": {
+        "en": "User",
+        "fr": "Utilisateur"
+      }
     }
   }
 }
