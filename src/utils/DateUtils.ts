@@ -4,117 +4,142 @@ import { l } from '../strings/Strings';
 import * as _ from 'underscore';
 import * as moment from 'moment';
 /**
- * The 'DateUtils' class renders dates and times using momentJS using the right culture languages and formats.
- *
- * This class can transform strings, numbers and date objects into a standardized ISO_8601 Date.
- *
+ * The `IDateToStringOptions` interface describes a set of options to use when converting a standard Date object to a
+ * string using the [ `dateToString` ]{@link DateUtils.dateToString}, or the
+ * [ `dateTimeToString` ]{@link DateUtils.dateTimeToString} method from the [ `DateUtils` ]{@link DateUtils} class.
+ * The precedence orders for the options are:
+ * [ `useTodayYesterdayAndTomorrow` ]{@link IDateToStringOptions.useTodayYesterdayAndTomorrow}
+ * -> [ `useWeekdayIfThisWeek` ]{@link IDateToStringOptions.useWeekdayIfThisWeek}
+ * -> [ `omitYearIfCurrentOne` ]{@link IDateToStringOptions.omitYearIfCurrentOne}
+ * -> [ `useLongDateFormat` ]{@link IDateToStringOptions.useLongDateFormat}
+ * and [ `alwaysIncludeTime` ]{@link IDateToStringOptions.alwaysIncludeTime}
+ * -> [ `includeTimeIfThisWeek` ]{@link IDateToStringOptions.includeTimeIfThisWeek}
+ * -> [ `includeTimeIfToday` ]{@link IDateToStringOptions.includeTimeIfToday}.
  */
 export interface IDateToStringOptions {
   /**
-   * Specifies whether the date and time are the current ones.
+   * Contains a standard Date object that specifies the current date and time.
+   *
+   * Default value is `undefined`.
    */
   now?: Date;
 
   /**
-   * Specifies whether the date should be displayed normally or using Today, Yesterday and Tomorrow.
+   * Specifies whether to convert the Date object to the localized version of `Today`, `Yesterday` and `Tomorrow`,
+   * if possible. This option takes precedence over
+   * [ `useWeekdayIfThisWeek` ]{@link IDateToStringOptions.useWeekdayIfThisWeek}.
    *
    * **Examples**
    *
-   * - If the date to render is equal to the current date, it will display 'Today':
-   *    Current date: march 8 2017, date to render: march 8 2017, result: 'Today'
+   * If [ `useTodayYesterdayAndTomorrow` ]{@link IDateToStringOptions.useTodayYesterdayAndTomorrow} is `true`,
+   * and [ `now` ]{@link IDateToStringOptions.now} contains a Date object equivalent to `March 8, 2017`, then:
    *
-   * - If the date to render is equal to the current date plus or minus 1, it will display Yesterday or Tomorrow:
-   *    Current date: march 8 2017, date to render: march 7 2017, result: 'Yesterday'
+   *  - If the Date object to convert contains a value equivalent to `March 7, 2017`, the resulting string is the
+   *  localized version of `Yesterday`.
    *
-   * Default value is 'true'
+   *  - If the Date object to convert contains a value equivalent to `March 8, 2017`, the resulting string is the
+   *  localized version of `Today`.
+   *
+   *  - If the Date object to convert contains a value equivalent to `March 9, 2017`, the resulting string is the
+   *  localized version of `Tomorrow`.
+   *
+   * Default value is `true`.
    */
   useTodayYesterdayAndTomorrow?: boolean;
 
   /**
-   * Specifies whether the date should be displayed normally or using days of the week if the date it is part of the
-   * current week.
+   * Specifies whether to convert the Date object to the localized version of the corresponding day of the week,
+   * if the date to convert is part of the current week. This option takes precedence over
+   * [ `omitYearIfCurrentOne` ]{@link IDateToStringOptions.omitYearIfCurrentOne}.
    *
-   * **Example**
+   * **Examples**
    *
-   * -If the date to render has less than a week's difference with the current date, it will display the corresponding
-   * day:
-   *    Current date: monday march 8 2017, date to render: march 11 2017, result: 'Next Thursday'
+   *  If [ `useWeekdayIfThisWeek` ]{@link IDateToStringOptions.useWeekdayIfThisWeek} is `true`
+   *  and [ `now` ]{@link IDateToStringOptions.now} contains a Date object equivalent to `Monday, March 8, 2017`, then:
    *
-   * Default value is 'true'
+   *   - If the date to convert is equivalent to `Saturday, March 6, 2017`, the resulting string is the localized
+   *   version of `Last Saturday`.
+   *
+   *   - If the date to convert is equivalent to `Thursday, March 11, 2017`, the resulting string is the localized
+   *   version of `Next Thursday`.
+   *
+   * Default value is `true`.
    */
   useWeekdayIfThisWeek?: boolean;
 
   /**
-   * Specifies whether the date should be displayed normally or without the year.
+   * Specifies whether to omit the year from the resulting string when converting the Date object, if the year
+   * is the current one. This option takes precedence over
+   * [ `useLongDateFormat` ]{@link IDateToStringOptions.useLongDateFormat}.
    *
-   * **Example**
+   * **Examples**
    *
-   * - If the date to render is the same year as the current one, it won't display the year value:
-   *    Current date: march 8 2017, date to render: 09/22/2017, result: 'September 22'
+   *  - If the Date object to convert is equivalent to `September 22, 2017`, the resulting string does not contain
+   *  the year (e.g., `September 22`).
    *
-   * Default value is 'true'
+   *  - If the Date object to convert is equivalent to `September 22, 2016`, the resulting string contains the year
+   *  (e.g., `September 22, 2016`).
+   *
+   * Default value is `true`.
    */
   omitYearIfCurrentOne?: boolean;
 
   /**
-   * Specifies whether the date should be displayed normally or displayed using the complete format.
+   * Specifies whether to format the resulting string in the long date format (e.g., `Friday, August 04, 2017`).
    *
-   * **Example**
-   *
-   * - If the date to render is 08/04/2017:
-   *    The result will be Friday, August 04, 2017
-   *
-   * Default value is 'false'
+   * Default value is `false`.
    */
   useLongDateFormat?: boolean;
 
   /**
-   * Specifies whether the date should be dislayed normally or if it should also display the time if it is today.
+   * Specifies whether to include the time in the resulting string when converting the Date object (e.g. `May 15, 4:17 PM`)
+   * if the date to convert is equivalent to [ `now` ]{@link IDateToStringOptions.now}.
    *
-   * **Example**
+   * **Examples**
    *
-   * - If the date to render is equal to the current date, it will display the day and the time:
-   *    Current date: march 8th 2017, date to render: 03/08/2017 7:10, result: 'Today, 7:10 AM'
+   * If [ `includeTimeIfToday` ]{@link IDateToStringOptions.includeTimeIfToday} is `true`
+   * and [ `now` ]{@link IDateToStringOptions.now} contains a Date object equivalent to `Monday, March 8, 2017`, then:
    *
-   * Default value is 'true'
+   *    - If the Date object to convert is equivalent to `2017/03/08 17:23:11`, the resulting string is `3/8/2017, 5:23 PM`.
+   *
+   *    - If the Date object to convert is equivalent to `2017/03/09 17:23:11`, the resulting string is `3/9/2017`.
+   *
+   * Default value is `true`.
    */
   includeTimeIfToday?: boolean;
 
   /**
-   * Specifies whether the date should be dislayed normally or if it should also display the time if it is part of
-   * the current week.
+   * Specifies whether to include the time in the resulting string when converting the Date object (e.g. `May 15, 4:17 PM`)
+   * if the date to convert within a week from [ `now` ]{@link IDateToStringOptions.now}. This option takes precedence over
+   * [ `includeTimeIfToday` ]{@link IDateToStringOptions.includeTimeIfToday}.
    *
-   * **Example**
+   * **Examples**
    *
-   * - If the date to render is equal to the current date, it will display the day and the time:
-   *    Current date: march 8th 2017, date to render: 03/10/2017 7:10, result: 'March 03, 7:10 AM'
+   * If [ `includeTimeIfToday` ]{@link IDateToStringOptions.includeTimeIfToday} is `true`
+   * and [ `now` ]{@link IDateToStringOptions.now} contains a Date object equivalent to `Monday, March 8, 2017`, then:
    *
-   * Default value is 'true'
+   *    - If the Date object to convert is equivalent to `2017/03/08 17:23:11`, the resulting string is `3/8/2017, 5:23 PM`.
+   *
+   *    - If the Date object to convert is equivalent to `2017/03/09 17:23:11`, the resulting string is `3/9/2017 ,5:23 PM`.
+   *
+   * Default value is `true`.
    */
   includeTimeIfThisWeek?: boolean;
 
   /**
-   * Specifies whether the date should be dislayed normally or if it should also display the time.
+   * Specifies whether to always include the time in the resulting string when converting the Date object (e.g. `May 15, 4:17 PM`)
+   * This option takes precedence over [ `includeTimeIfThisWeek` ]{@link IDateToStringOptions.includeTimeIfThisWeek}.
    *
    * **Example**
    *
-   * - If the option is 'true', the time will always be displayed:
-   *    Current date: march 8th 2017, date to render: 04/11/2015 7:10, result: '04/11/2015, 7:10 AM'
+   * If [ `includeTimeIfToday` ]{@link IDateToStringOptions.includeTimeIfToday} is `true`
+   * and [ `now` ]{@link IDateToStringOptions.now} contains a Date object equivalent to `Monday, March 8, 2017`, then:
    *
-   * Default value is 'false'
+   *    - If the Date object to convert is equivalent to `2010/03/08 17:23:11`, the resulting string is `3/8/2010, 5:23 PM`.
+   *
+   * Default value is `false`.
    */
   alwaysIncludeTime?: boolean;
-
-  /**
-   * Specifies a specific format to use when displaying the date.
-   *
-   * **Example**
-   *
-   * - If the predefinedFormat is 'YYYY-MM-dd', the date will be displayed as such:
-   *    Date to render: 04/11/2015, result: 2015-04-11
-   *
-   * Default value is 'undefined'
-   */
   predefinedFormat?: string;
 }
 
@@ -131,22 +156,21 @@ class DefaultDateToStringOptions extends Options implements IDateToStringOptions
 }
 
 /**
- * This class modifies the received Date so that it is rendered the way the options specify.
+ * The `DateUtils` class exposes methods to convert strings, numbers and date objects to standard ISO 8601 Date objects,
+ * using the correct culture, language and format. It also offers methods to convert date objects to strings.
  */
 export class DateUtils {
-
+  // This function is used to call convertToStandardDate for legacy reasons. convertFromJsonDateIfNeeded was refactored to
+  // convertToStandardDate, which would be a breaking change otherwise.
   static convertFromJsonDateIfNeeded(date: any): Date {
     return DateUtils.convertToStandardDate(date);
   }
 
-  static convertToStandardDate(date: string): Date;
-  static convertToStandardDate(date: number): Date;
-  static convertToStandardDate(date: Date): Date;
   /**
    * Receives a date of any type and converts it to a standard Date object.
-   * @param date can be a string, a number or a Date object. It can also be any other type, but the result will be
-   * 'undefined' if it is not recognized as a date.
-   * @returns {any} the Date, or undefined it it wasn't recognized as a valid date.
+   * @param date Can be a string, a number or a Date object. It can also be any other type, but the result will be
+   * `undefined` if it is not recognized as a date.
+   * @returns {any} The Date, or `Invalid Date` if it wasn't recognized as a valid date.
    */
   static convertToStandardDate(date: any): Date {
     if (_.isDate(date)) {
@@ -154,15 +178,9 @@ export class DateUtils {
     } else if (date !== null && !isNaN(Number(date))) {
       return moment(Number(date)).toDate();
     } else if (_.isString(date)) {
-      /*
-      If the input is a string recognized as a Date, parse it using momentJS.
-      This array specifies the possible string formats the moment will have to parse. It will be either the standard
-      ISO_8601 or the format our index uses to store dates ('YYYY/MM/DD@HH:mm:ssZ').
-      */
-      const dateMoment = moment(date, ['YYYY/MM/DD@HH:mm:ssZ', moment.ISO_8601]);
+      const formats = ['YYYY/MM/DD@HH:mm:ssZ', moment.ISO_8601];
+      const dateMoment = moment(date, formats);
       return dateMoment.toDate();
-    } else {
-      return undefined;
     }
   }
 
@@ -170,9 +188,9 @@ export class DateUtils {
     let currentLocale = String['locale'];
 
     // Our cultures.js directory contains 'no' which is the equivalent to 'nn' for momentJS
-    if (currentLocale == 'no') {
+    if (currentLocale.toLowerCase() == ('no')) {
       currentLocale = 'nn';
-    } else if (currentLocale == 'es-ES') {
+    } else if (currentLocale.toLowerCase() == 'es-es') {
       // Our cultures.js directory contains 'es-es' which is the equivalent to 'es' for momentJS
       currentLocale = 'es';
     }
@@ -191,7 +209,7 @@ export class DateUtils {
   /**
    * Receives a Date and formats into the standard string required for queries.
    * @param date The date to convert into a string.
-   * @returns {string} Corresponds to the Date in a 'YYYY/MM/DD' format.
+   * @returns {string} Corresponds to the Date in a `YYYY/MM/DD` format.
    */
   static dateForQuery(date: Date): string {
     DateUtils.setLocale();
@@ -200,7 +218,7 @@ export class DateUtils {
   }
 
   /**
-   * Keeps only the date information, removing the time information.
+   * Keeps only the date, removing the time information.
    * @param date The date to crop.
    * @returns {Date} The cropped date, without the time information.
    */
@@ -211,46 +229,61 @@ export class DateUtils {
   }
 
   /**
+   * Adds offset to a Date, counted in days.
+   * @param date The date to offset.
+   * @param offset The amount of days to add or remove to the date.
+   * @returns {Date} The modified date.
+   */
+  static offsetDateByDays(date: Date, offset: number): Date {
+    return moment(date).add(offset, 'days').toDate();
+  }
+
+  private static isTodayYesterdayOrTomorrow(d: Date, options?: IDateToStringOptions): boolean {
+    const dateOnly = moment(DateUtils.keepOnlyDatePart(d));
+    const today = moment(DateUtils.keepOnlyDatePart(options.now));
+    return dateOnly.diff(today, 'days') == 0 || dateOnly.diff(moment(today), 'days') == 1 ||
+      dateOnly.diff(moment(today), 'days') == -1;
+  }
+
+  /**
    * Converts the date into a string according to the specified options.
-   * @param d The date to convert to a string.
+   * This method uses [ `keepOnlyDatePart` ]{@link DateUtils.keepOnlyDatePart} which removes the time information
+   * from the date. To convert a date using a timestamp, use [ `dateTimeToString` ]{@link DateUtils.dateTimeToString}.
+   * @param date The date to convert to a string.
    * @param options Specifies the enabled options on the date.
    * @returns {any} The date after being formatted into a string according to the specified options.
    */
-  static dateToString(d: Date, options?: IDateToStringOptions): string {
+  static dateToString(date: Date, options?: IDateToStringOptions): string {
     DateUtils.setLocale();
 
-    if (Utils.isNullOrUndefined(d)) {
+    if (Utils.isNullOrUndefined(date)) {
       return '';
     }
 
     options = new DefaultDateToStringOptions().merge(options);
 
-    const dateOnly = moment(DateUtils.keepOnlyDatePart(d));
+    const dateOnly = moment(DateUtils.keepOnlyDatePart(date));
+    const today = moment(DateUtils.keepOnlyDatePart(options.now));
 
     if (options.predefinedFormat) {
-      return dateOnly.format(options.predefinedFormat.replace(/yyyy/g, String.prototype.toUpperCase()));
+      // yyyy was used to format dates before implementing moment.js, which only recognizes YYYY.
+      return dateOnly.format(options.predefinedFormat.replace(/yyyy/g, 'YYYY'));
     }
 
-    const today = moment(DateUtils.keepOnlyDatePart(options.now));
+
     if (options.useTodayYesterdayAndTomorrow) {
-      /*
-       'today' is already a moment, but we need to create another instance of moment so that 'today' isn't modified by 'add'.
-       If we simply used 'today', we would have to add(-2,'days') instead of -1.
-       */
-      if (dateOnly.valueOf() == today.valueOf() || dateOnly.valueOf() == moment(today).add(1, 'days').valueOf() ||
-        dateOnly.valueOf() == moment(today).add(-1, 'days').valueOf()) {
+      if (DateUtils.isTodayYesterdayOrTomorrow(date, options)) {
         return moment(dateOnly).calendar(moment(today));
       }
     }
 
-
     const isThisWeek = dateOnly.diff(moment(today), 'weeks') == 0;
+
     if (options.useWeekdayIfThisWeek && isThisWeek) {
       if (dateOnly.valueOf() > today.valueOf()) {
-
-        return l('Next') + ' ' + dateOnly.format('dddd');
+        return l('NextDay', dateOnly.format('dddd'));
       } else if (dateOnly.valueOf() < today.valueOf()) {
-        return l('Last') + ' ' + dateOnly.format('dddd');
+        return l('LastDay', dateOnly.format('dddd'));
       } else {
         return dateOnly.format('dddd');
       }
@@ -270,21 +303,23 @@ export class DateUtils {
   /**
    * Converts the time information from a date into a string.
    * @param date The date containing the time information to format.
+   * @param options Specifies the enabled options on the date.
    * @returns {any} Will either be an empty string or a string containing the time.
    */
   static timeToString(date: Date, options?: IDateToStringOptions): string {
     if (Utils.isNullOrUndefined(date)) {
       return '';
     }
-
     return moment(date).format('h:mm A');
   }
 
   /**
-   * Checks if options and their time conditions are met, and returns the date accordingly using timeToString.
-   * @param date The date to format according to the specified options.
-   * @param options The options specified to format the date according to preference.
-   * @returns {any} The date after being formatted according to the specified options.
+   * Converts the date into a string according to the specified options.
+   * This method uses [ `timeToString` ]{@link DateUtils.timeToString}, which adds a time information to the
+   * converted date. To display a date without a timestamp, use [ `dateToString` ]{@link DateUtils.timeToString}.
+   * @param date The date to convert to a string.
+   * @param options Specifies the enabled options on the date.
+   * @returns {any} The date after being formatted into a string according to the specified options.
    */
   static dateTimeToString(date: Date, options?: IDateToStringOptions): string {
     DateUtils.setLocale();
@@ -299,7 +334,8 @@ export class DateUtils {
     const datePart = DateUtils.dateToString(date, options);
     const dateWithoutTime = DateUtils.keepOnlyDatePart(date);
 
-    if (options.alwaysIncludeTime || (options.includeTimeIfThisWeek && isThisWeek) || (options.includeTimeIfToday && dateWithoutTime.valueOf() == today.valueOf())) {
+    if (moment(date).isValid() && (options.alwaysIncludeTime == true || (options.includeTimeIfThisWeek == true && isThisWeek)
+      || (options.includeTimeIfToday == true && dateWithoutTime.valueOf() == today.valueOf()))) {
       return datePart + ', ' + DateUtils.timeToString(date);
     } else {
       return datePart;
@@ -307,9 +343,9 @@ export class DateUtils {
   }
 
   /**
-   * Converts a month from a number to a string (e.g '1' to 'january').
-   * @param month The month represented by it's number (1 to 12).
-   * @returns {string} The month's name associated to it's number.
+   * Converts a month from a number to a string (e.g '0' to 'january').
+   * @param month The month represented by its number (0 to 11).
+   * @returns {string} The month's name associated to its number.
    */
   static monthToString(month: number): string {
     DateUtils.setLocale();
@@ -320,7 +356,7 @@ export class DateUtils {
   /**
    * Checks if the input is an instance of Date.
    * @param date The value to evaluate.
-   * @returns {boolean} False if the result is not an instance of Date.
+   * @returns {boolean} False if the result is not an instance of `Date`.
    */
   static isValid(date: any) {
     DateUtils.setLocale();
@@ -329,5 +365,21 @@ export class DateUtils {
       return !isNaN(date.getTime());
     }
     return false;
+  }
+
+  /**
+   * Compares the amount of time between two dates.
+   * @param from The first Date to compare.
+   * @param to The second Date to compare
+   * @returns {any} The amount of time between the first and second Date.
+   */
+  static timeBetween(from: Date, to: Date) {
+    if (Utils.isNullOrUndefined(from) || Utils.isNullOrUndefined(to)) {
+      return '';
+    }
+
+    return ('0' + ((moment(to).valueOf() - moment(from).valueOf()) / (1000 * 60 * 60)).toFixed()).slice(-2) +
+      ':' + ('0' + ((moment(to).valueOf() - moment(from).valueOf()) % (1000 * 60 * 60) / (1000 * 60)).toFixed()).slice(-2) +
+      ':' + ('0' + ((moment(to).valueOf() - moment(from).valueOf()) % (1000 * 60) / (1000)).toFixed()).slice(-2);
   }
 }
