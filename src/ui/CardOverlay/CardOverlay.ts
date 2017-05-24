@@ -7,7 +7,6 @@ import { $$ } from '../../utils/Dom';
 import { Assert } from '../../misc/Assert';
 import { KeyboardUtils, KEYBOARD } from '../../utils/KeyboardUtils';
 import { exportGlobally } from '../../GlobalExports';
-
 import 'styling/_CardOverlay';
 
 export interface ICardOverlayOptions {
@@ -48,7 +47,7 @@ export class CardOverlay extends Component {
      *
      * Setting a value for this option is required for this component to work.
      */
-    title: ComponentOptions.buildStringOption({ required: true }),
+    title: ComponentOptions.buildLocalizedStringOption({ required: true, defaultValue: 'NoTitle' }),
 
     /**
      * Specifies the icon to use for the overlay icon and for the button icon.

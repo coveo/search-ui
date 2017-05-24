@@ -4,7 +4,7 @@ import 'styling/vapor/_Checkbox';
 import { exportGlobally } from '../../GlobalExports';
 
 /**
- * A checkbox widget with standard styling
+ * A checkbox widget with standard styling.
  */
 export class Checkbox implements IFormWidgetWithLabel, IFormWidgetSelectable {
   protected element: HTMLElement;
@@ -17,17 +17,18 @@ export class Checkbox implements IFormWidgetWithLabel, IFormWidgetSelectable {
   }
 
   /**
-   * Create a new checkbox, with standard styling.
-   * @param onChange Called when the checkbox value changes, with the checkbox instance as a parameter
-   * @param label
+   * Creates a new `Checkbox`.
+   * @param onChange The function to call when the checkbox state changes. This function takes the current `Checkbox`
+   * instance as an argument.
+   * @param label The label to display next to the checkbox.
    */
-  constructor(public onChange: (checkbox: Checkbox) => void = (checkBox: Checkbox) => {
+  constructor(public onChange: (checkbox: Checkbox) => void = (checkbox: Checkbox) => {
   }, public label: string) {
     this.buildContent();
   }
 
   /**
-   * Toggle the checkbox.
+   * Toggles the checkbox state.
    */
   public toggle() {
     this.checkbox.checked = !this.isSelected();
@@ -35,31 +36,31 @@ export class Checkbox implements IFormWidgetWithLabel, IFormWidgetSelectable {
   }
 
   /**
-   * Return the HTMLElement bound to the checkbox
-   * @returns {HTMLElement}
+   * Gets the element on which the checkbox is bound.
+   * @returns {HTMLElement} The checkbox element.
    */
   public getElement(): HTMLElement {
     return this.element;
   }
 
   /**
-   * Return the HTMLElement bound to the checkbox
-   * @returns {HTMLElement}
+   * Gets the element on which the checkbox is bound.
+   * @returns {HTMLElement} The checkbox element.
    */
   public build(): HTMLElement {
     return this.element;
   }
 
   /**
-   * Return the label value of the checkbox
-   * @returns {string}
+   * Gets the checkbox [`label`]{@link Checkbox.label} value.
+   * @returns {string} The checkbox label value.
    */
   public getValue() {
     return this.label;
   }
 
   /**
-   * Unselect the checkbox
+   * Resets the checkbox.
    */
   public reset() {
     const currentlyChecked = this.isSelected();
@@ -71,26 +72,27 @@ export class Checkbox implements IFormWidgetWithLabel, IFormWidgetSelectable {
 
   /**
    * Select the checkbox
+   * @param triggerChange will trigger change even if specified and not already selected
    */
-  public select() {
+  public select(triggerChange = true) {
     const currentlyChecked = this.isSelected();
     this.checkbox.checked = true;
-    if (!currentlyChecked) {
+    if (!currentlyChecked && triggerChange) {
       $$(this.checkbox).trigger('change');
     }
   }
 
   /**
-   * Return true if the checkbox is selected
-   * @returns {boolean}
+   * Indicates whether the checkbox is checked.
+   * @returns {boolean} `true` if the checkbox is checked, `false` otherwise.
    */
   public isSelected() {
     return this.checkbox.checked;
   }
 
   /**
-   * Return the HTMLElement bound to the label
-   * @returns {HTMLElement}
+   * Gets the element on which the checkbox [`label`]{@link Checkbox.label} is bound.
+   * @returns {HTMLElement} The `label` element.
    */
   public getLabel() {
     return this.element;
