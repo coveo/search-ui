@@ -32,8 +32,6 @@ export class ChatterPostedBy extends Component {
     openInSubTab: ComponentOptions.buildBooleanOption({ defaultValue: true }),
   };
 
-<<<<<<< HEAD
-=======
   static fields = [
     'sfcreatedbyname',
     'sfcreatedbyid',
@@ -44,7 +42,6 @@ export class ChatterPostedBy extends Component {
     'sfparentname'
   ];
 
->>>>>>> pro-templates
   constructor(public element: HTMLElement, public options?: IChatterPostedByOption, public bindings?: IResultsComponentBindings, public result?: IQueryResult) {
     super(element, ChatterPostedBy.ID, bindings);
     this.options = ComponentOptions.initComponentOptions(element, ChatterPostedBy, options);
