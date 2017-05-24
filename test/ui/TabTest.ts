@@ -151,6 +151,30 @@ export function TabTest() {
         simulation = Simulate.query(test.env);
         expect(simulation.queryBuilder.build().maximumAge).toBe(321);
       });
+
+      it('layout will change on initialization', () => {
+        test = Mock.optionsComponentSetup<Tab, ITabOptions>(Tab, {
+          layout: 'card',
+          caption: 'caption',
+          id: 'id'
+        });
+
+        expect(test.env.queryStateModel.set).toHaveBeenCalledWith('layout', 'card');
+      });
+
+      it('layout will change on selection', () => {
+        test = Mock.optionsComponentSetup<Tab, ITabOptions>(Tab, {
+          layout: 'card',
+          caption: 'caption',
+          id: 'id'
+        });
+
+        expect(test.env.queryStateModel.set).toHaveBeenCalledWith('layout', 'card');
+        test.cmp.select();
+        expect(test.env.queryStateModel.setMultiple).toHaveBeenCalledWith(jasmine.objectContaining({
+          'layout': 'card'
+        }));
+      });
     });
 
     describe('can control inclusion of other elements', function () {

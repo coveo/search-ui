@@ -254,6 +254,9 @@ export class Tab extends Component {
     this.bind.on(element, 'click', clickAction);
     this.bind.on(element, 'keyup', KeyboardUtils.keypressAction(KEYBOARD.ENTER, clickAction));
     this.render();
+    if (this.options.layout) {
+      this.queryStateModel.set(QUERY_STATE_ATTRIBUTES.LAYOUT, this.options.layout);
+    }
     ResponsiveTabs.init(this.root, this, this.options);
   }
 
