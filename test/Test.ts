@@ -78,9 +78,6 @@ ExactKeywordsInputTest();
 import { NoneKeywordsInputTest } from './ui/AdvancedSearch/KeywordsInput/NoneKeywordsInputTest';
 NoneKeywordsInputTest();
 
-import { DateInputTest } from './ui/AdvancedSearch/DateInput/DateInputTest';
-DateInputTest();
-
 import { BetweenDateInputTest } from './ui/AdvancedSearch/DateInput/BetweenDateInputTest';
 BetweenDateInputTest();
 

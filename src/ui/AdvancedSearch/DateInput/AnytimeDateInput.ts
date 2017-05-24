@@ -8,6 +8,10 @@ export class AnytimeDateInput extends DateInput {
     super(l('Anytime'));
   }
 
+  public getValue() {
+    return null;
+  }
+
   public build(): HTMLElement {
     super.build();
     let radio = this.getRadio();
