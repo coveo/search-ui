@@ -55,7 +55,7 @@
 	</div>
 	<div class="bottomHeader">
 		<div id="searchBox">
-			<div class="CoveoSearchbox" data-enable-omnibox="true" data-inline="false" data-enable-wildcards="true" data-enable-search-as-you-type="false" data-enable-reveal-query-suggest-addon="false" data-enable-query-syntax="true" data-enable-field-addon="true"></div>
+			<div class="CoveoSearchbox" data-enable-omnibox="true" data-inline="false" data-enable-wildcards="true" data-enable-search-as-you-type="false" data-enable-query-suggest-addon="false" data-enable-query-syntax="true" data-enable-field-addon="true"></div>
 			<div class="CoveoFieldSuggestions" data-field="@systitle" data-header-title="Suggested topics"></div>
 		</div>
 	</div>
@@ -171,19 +171,21 @@
 							<a href="authenticationprovider.html">AuthenticationProvider</a>
 						</li>
 					</ul>
-					<h1>Coveo component AuthenticationProvider</h1>
+					<!-- Has to remain here for the playground to work -->
+					<h1 style="visibility: collapse; font-size:0">Coveo component AuthenticationProvider</h1>
+					<h1>Coveo AuthenticationProvider Component (CoveoAuthenticationProvider)</h1>
 				</div>
 			</div>
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>The AuthenticationProvider component arranges for queries to execute with an identity that the user obtains using an
-							Authentication Provider configured on the Coveo Search API
-						(see <a href="https://developers.coveo.com/x/hQLL">On-Premises SharePoint Claims Authentication</a>).</p>
+						<p>The <code>AuthenticationProvider</code> component makes it possible to execute queries with an identity that the end user
+							can obtain using an authentication provider configured on the Coveo REST Search API
+						(see <a href="https://developers.coveo.com/x/pQ8vAg">Claims Authentication</a>).</p>
 					</div>
 					<p>When necessary, this component handles redirecting the browser to the address that starts the authentication process.</p>
-					<p>Using the standard <code>data-tab</code> attribute, you can enable the AuthenticationProvider component only for tabs requiring
-					authentication (see <a href="tab.html">Tab</a>).</p>
+					<p>You can use the <code>data-tab</code> attribute to enable the <code>AuthenticationProvider</code> component only for the tabs of your
+					search interface that require authentication (see the <a href="tab.html"><code>Tab</code></a> component).</p>
 				</div>
 			</section>
 			<div class="preview-container tsd-panel">
@@ -246,16 +248,16 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/AuthenticationProvider/AuthenticationProvider.ts#L56">src/ui/AuthenticationProvider/AuthenticationProvider.ts
-							:56</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/AuthenticationProvider/AuthenticationProvider.ts#L64">src/ui/AuthenticationProvider/AuthenticationProvider.ts
+							:64</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies the friendly name of the authentication provider. This is the name that you want to display in the user
-							interface when a user is logging in.</p>
+							<p>Specifies the display name of the authentication provider. This is the name that you want to appear in the user
+							interface when the end user is logging in.</p>
 						</div>
-						<p>Default value is the value set to <a href="authenticationprovider.html#options.name">AuthenticationProvider.options.name</a>.</p>
+						<p>Default value is the <a href="authenticationprovider.html#options.name"><code>name</code></a> option value.</p>
 					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
@@ -269,15 +271,15 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/AuthenticationProvider/AuthenticationProvider.ts#L48">src/ui/AuthenticationProvider/AuthenticationProvider.ts
-							:48</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/AuthenticationProvider/AuthenticationProvider.ts#L56">src/ui/AuthenticationProvider/AuthenticationProvider.ts
+							:56</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
 							<p>Specifies the name of the authentication provider.</p>
 						</div>
-						<p>See <a href="https://developers.coveo.com/x/OQMv">Windows Service Configuration File</a>.</p>
+						<p>See <a href="https://developers.coveo.com/x/pw8vAg">SAML Authentication</a>.</p>
 					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
@@ -291,19 +293,19 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/AuthenticationProvider/AuthenticationProvider.ts#L80">src/ui/AuthenticationProvider/AuthenticationProvider.ts
-							:80</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/AuthenticationProvider/AuthenticationProvider.ts#L90">src/ui/AuthenticationProvider/AuthenticationProvider.ts
+							:90</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>If the <a href="authenticationprovider.html#options.useiframe">AuthenticationProvider.options.useIFrame</a> is set to <code>true</code>, specifies whether to make the
-							authentication <code>&lt;iframe&gt;</code> visible to the user (inside a popup).</p>
+							<p>If the <a href="authenticationprovider.html#options.useiframe"><code>useIFrame</code></a> option is <code>true</code>, specifies whether to make
+							the authentication <code>&lt;iframe&gt;</code> visible to the user (inside a popup).</p>
 						</div>
-						<p>Default value is <code>true</code>.</p>
 						<p>When the underlying authentication provider requires no user interaction (for example, when a user authenticates
-							using Windows Authentication along with SharePoint Claims), setting this option to <code>false</code> reduces the visual
+							using Windows authentication along with SharePoint claims), setting this option to <code>false</code> reduces the visual
 						impact of the authentication process.</p>
+						<p>Default value is <code>true</code>.</p>
 					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
@@ -318,18 +320,18 @@ data-show-i-frame&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/AuthenticationProvider/AuthenticationProvider.ts#L67">src/ui/AuthenticationProvider/AuthenticationProvider.ts
-							:67</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/AuthenticationProvider/AuthenticationProvider.ts#L75">src/ui/AuthenticationProvider/AuthenticationProvider.ts
+							:75</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies whether to use an <code>&lt;iframe&gt;</code> to host the chain of redirections that make up the authentication
+							<p>Specifies whether to use an <code>&lt;iframe&gt;</code> to host the chain of redirection that make up the authentication
 							process.</p>
 						</div>
-						<p>Default value is <code>false</code>.</p>
 						<p>Using an <code>&lt;iframe&gt;</code> prevents leaving the search page as part of the authentication process. However, some login
-						providers will refuse to load in an <code>&lt;iframe&gt;</code>.</p>
+						providers refuse to load in an <code>&lt;iframe&gt;</code>.</p>
+						<p>Default value is <code>false</code>.</p>
 					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
@@ -431,8 +433,8 @@ data-use-i-frame&#x3D;&#x27;false&#x27;</pre>
 								<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#getbindings">getBindings</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L124">src/ui/Base/Component.ts
-									:124</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L129">src/ui/Base/Component.ts
+									:129</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -456,8 +458,8 @@ data-use-i-frame&#x3D;&#x27;false&#x27;</pre>
 								<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#get">get</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L193">src/ui/Base/Component.ts
-									:193</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L198">src/ui/Base/Component.ts
+									:198</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -502,8 +504,8 @@ data-use-i-frame&#x3D;&#x27;false&#x27;</pre>
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#bind">bind</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L62">src/ui/Base/Component.ts
-							:62</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L67">src/ui/Base/Component.ts
+							:67</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -527,8 +529,8 @@ data-use-i-frame&#x3D;&#x27;false&#x27;</pre>
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#componentoptionsmodel">componentOptionsModel</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L90">src/ui/Base/Component.ts
-							:90</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L95">src/ui/Base/Component.ts
+							:95</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -545,8 +547,8 @@ data-use-i-frame&#x3D;&#x27;false&#x27;</pre>
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#componentstatemodel">componentStateModel</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L74">src/ui/Base/Component.ts
-							:74</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L79">src/ui/Base/Component.ts
+							:79</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -606,8 +608,8 @@ data-use-i-frame&#x3D;&#x27;false&#x27;</pre>
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#querycontroller">queryController</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L78">src/ui/Base/Component.ts
-							:78</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L83">src/ui/Base/Component.ts
+							:83</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -624,8 +626,8 @@ data-use-i-frame&#x3D;&#x27;false&#x27;</pre>
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#querystatemodel">queryStateModel</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L70">src/ui/Base/Component.ts
-							:70</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L75">src/ui/Base/Component.ts
+							:75</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -642,8 +644,8 @@ data-use-i-frame&#x3D;&#x27;false&#x27;</pre>
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#root">root</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L66">src/ui/Base/Component.ts
-							:66</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L71">src/ui/Base/Component.ts
+							:71</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -660,8 +662,8 @@ data-use-i-frame&#x3D;&#x27;false&#x27;</pre>
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#searchinterface">searchInterface</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L82">src/ui/Base/Component.ts
-							:82</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L87">src/ui/Base/Component.ts
+							:87</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -678,8 +680,8 @@ data-use-i-frame&#x3D;&#x27;false&#x27;</pre>
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#usageanalytics">usageAnalytics</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L86">src/ui/Base/Component.ts
-							:86</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L91">src/ui/Base/Component.ts
+							:91</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -722,13 +724,13 @@ data-use-i-frame&#x3D;&#x27;false&#x27;</pre>
 								<p>Overwrites <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#constructor">constructor</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/AuthenticationProvider/AuthenticationProvider.ts#L89">src/ui/AuthenticationProvider/AuthenticationProvider.ts
-									:89</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/AuthenticationProvider/AuthenticationProvider.ts#L98">src/ui/AuthenticationProvider/AuthenticationProvider.ts
+									:98</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Creates a new AuthenticationProvider component.</p>
+									<p>Creates a new <code>AuthenticationProvider</code> component.</p>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -745,7 +747,7 @@ data-use-i-frame&#x3D;&#x27;false&#x27;</pre>
 									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> options: <span class="tsd-signature-type">IAuthenticationProviderOptions</span><span class="tsd-signature-symbol"> =&nbsp;{}</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<div class="lead">
-											<p>The options for the AuthenticationProvider component.</p>
+											<p>The options for the <code>AuthenticationProvider</code> component.</p>
 										</div>
 									</div>
 								</li>

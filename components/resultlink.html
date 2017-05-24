@@ -55,7 +55,7 @@
 	</div>
 	<div class="bottomHeader">
 		<div id="searchBox">
-			<div class="CoveoSearchbox" data-enable-omnibox="true" data-inline="false" data-enable-wildcards="true" data-enable-search-as-you-type="false" data-enable-reveal-query-suggest-addon="false" data-enable-query-syntax="true" data-enable-field-addon="true"></div>
+			<div class="CoveoSearchbox" data-enable-omnibox="true" data-inline="false" data-enable-wildcards="true" data-enable-search-as-you-type="false" data-enable-query-suggest-addon="false" data-enable-query-syntax="true" data-enable-field-addon="true"></div>
 			<div class="CoveoFieldSuggestions" data-field="@systitle" data-header-title="Suggested topics"></div>
 		</div>
 	</div>
@@ -183,14 +183,16 @@
 							<a href="resultlink.html">ResultLink</a>
 						</li>
 					</ul>
-					<h1>Coveo component ResultLink</h1>
+					<!-- Has to remain here for the playground to work -->
+					<h1 style="visibility: collapse; font-size:0">Coveo component ResultLink</h1>
+					<h1>Coveo ResultLink Component (CoveoResultLink)</h1>
 				</div>
 			</div>
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>The ResultLink component automatically transform a search result title into a clickable link pointing to the original
-						document.</p>
+						<p>The <code>ResultLink</code> component automatically transform a search result title into a clickable link pointing to the
+						original item.</p>
 					</div>
 					<p>This component is a result template component (see <a href="https://developers.coveo.com/x/aIGfAQ">Result Templates</a>).</p>
 				</div>
@@ -212,6 +214,7 @@
 								<li class="tsd-kind-variable tsd-parent-kind-object-literal"><a href="resultlink.html#options.openinoutlook" class="tsd-kind-icon">open<wbr>InOutlook</a></li>
 								<li class="tsd-kind-variable tsd-parent-kind-object-literal"><a href="resultlink.html#options.openquickview" class="tsd-kind-icon">open<wbr>Quickview</a></li>
 								<li class="tsd-kind-variable tsd-parent-kind-object-literal"><a href="resultlink.html#options.titletemplate" class="tsd-kind-icon">title<wbr>Template</a></li>
+								<li class="tsd-kind-object-literal tsd-parent-kind-class tsd-is-inherited tsd-is-static"><a href="../classes/printableuri.html#options" class="tsd-kind-icon">options</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
@@ -262,22 +265,25 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultLink/ResultLink.ts#L109">src/ui/ResultLink/ResultLink.ts
-							:109</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultLink/ResultLink.ts#L114">src/ui/ResultLink/ResultLink.ts
+							:114</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies whether the ResultLink should open in a new window instead of opening in the current context.</p>
+							<p>Specifies whether the component should open its link in a new window instead of opening it in the current
+							context.</p>
 						</div>
-						<p>If this option is <code>true</code>, clicking the ResultLink will call the <a href="resultlink.html#openlinkinnewwindow">ResultLink.openLinkInNewWindow</a> method
-						instead of the <a href="resultlink.html#openlink">ResultLink.openLink</a> method.</p>
+						<p>If this option is <code>true</code>, clicking the <code>ResultLink</code> calls the
+							<a href="resultlink.html#openlinkinnewwindow"><code>openLinkInNewWindow</code></a> method instead of the
+						<a href="resultlink.html#openlink"> <code>openLink</code></a> method.</p>
 						<p><strong>Note:</strong></p>
 						<blockquote>
-							<p>If a search page contains a <a href="resultspreferences.html">ResultsPreferences</a> component whose
-								<a href="resultspreferences.html#options.enableopeninnewwindow">enableOpenInNewWindow</a> option is <code>true</code>, and the end
-								user checks the <b>Always open results in new window</b> box, then ResultLink components will always open in
-							a new window when the user clicks them, no matter what the value of their alwaysOpenInNewWindow option is.</p>
+							<p>If a search page contains a <a href="resultspreferences.html"><code>ResultPreferences</code></a> component whose
+								<a href="resultspreferences.html#options.enableopeninnewwindow"><code>enableOpenInNewWindow</code></a> option is <code>true</code>, and the end
+								user checks the <b>Always open results in new window</b> box, <code>ResultLink</code> components in this page will always
+								open their links in a new window when the end user clicks them, no matter what the value of their
+							<code>alwaysOpenInNewWindow</code> option is.</p>
 						</blockquote>
 						<p>Default value is <code>false</code>.</p>
 					</div>
@@ -294,33 +300,28 @@ data-always-open-in-new-window&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultLink/ResultLink.ts#L72">src/ui/ResultLink/ResultLink.ts
-							:72</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultLink/ResultLink.ts#L74">src/ui/ResultLink/ResultLink.ts
+							:74</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies the field which the ResultLink should use to output its <code>href</code> attribute.</p>
+							<p>Specifies the field to use to output the component <code>href</code> attribute value.</p>
 						</div>
-						<p>By default, the component uses the <code>clickUri</code> field available on the document, but you can override this field
-						by specifying a value for this option.</p>
 						<p><strong>Tip:</strong></p>
 						<blockquote>
-							<p>When you do not include a <code>field</code> option in your result template, you can include an <code>href</code> attribute on the
-								ResultLink element. When present, the <code>href</code> attribute value overrides the <code>clickUri</code> field, which is otherwise
-							the default field.</p>
-							<p>Specifying an <code>href</code> attribute is useful when you want to build the ResultLink using a custom script or by
-							concatenating the content of two or more variables.</p>
+							<p>Instead of specifying a value for the <code>field</code> option, you can directly add an <code>href</code> attribute to the
+							<code>ResultLink</code> HTML element. Then, you can use a custom script to generate the <code>href</code> value.</p>
 						</blockquote>
 						<p><strong>Examples:</strong></p>
 						<ul>
-							<li>With the following markup, the ResultLink will output its <code>href</code> attribute using the <code>uri</code> field instead of the
-							default <code>clickUri</code> field:</li>
+							<li>With the following markup, the <code>ResultLink</code> outputs its <code>href</code> value using the <code>@uri</code> field (rather than the
+							default field):</li>
 						</ul>
 						<pre><code class="lang-html"><span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"CoveoResultLink"</span> <span class="hljs-attr">field</span>=<span class="hljs-string">"@uri"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
 </code></pre>
 						<ul>
-							<li>In the following result template, the custom <code>getMyKBUri()</code> function will provide the <code>href</code>:</li>
+							<li>In the following result template, the custom <code>getMyKBUri()</code> function provides the <code>href</code> value:</li>
 						</ul>
 						<pre><code class="lang-html"><span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"KnowledgeArticle"</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"text/underscore"</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"result-template"</span>&gt;</span><span class="javascript">
   &lt;div <span class="hljs-class"><span class="hljs-keyword">class</span></span>=<span class="hljs-string">'CoveoIcon&gt;'</span>&gt;<span class="xml"><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
@@ -328,7 +329,8 @@ data-always-open-in-new-window&#x3D;&#x27;false&#x27;</pre>
   &lt;div <span class="hljs-class"><span class="hljs-keyword">class</span></span>=<span class="hljs-string">"CoveoExcerpt"</span>&gt;<span class="xml"><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
 </span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
 </code></pre>
-						<p>See also <a href="resultlink.html#options.hreftemplate">hrefTemplate</a>, which can override this option.</p>
+						<p>See also <a href="resultlink.html#options.hreftemplate"><code>hrefTemplate</code></a>, which can override this option.</p>
+						<p>By default, the component uses the <code>@clickUri</code> field of the item to output the value of its <code>href</code> attribute.</p>
 					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
@@ -342,30 +344,30 @@ data-always-open-in-new-window&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultLink/ResultLink.ts#L136">src/ui/ResultLink/ResultLink.ts
-							:136</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultLink/ResultLink.ts#L141">src/ui/ResultLink/ResultLink.ts
+							:141</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies a template literal from which to generate the ResultLink <code>href</code> attribute (see
+							<p>Specifies a template literal from which to generate the <code>ResultLink</code> <code>href</code> attribute value (see
 							<a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Template_literals">Template literals</a>).</p>
 						</div>
-						<p>This option overrides the value of the <a href="resultlink.html#options.field">field</a> option.</p>
+						<p>This option overrides the <a href="resultlink.html#options.field"><code>field</code></a> option value.</p>
 						<p>The template literal can reference any number of fields from the parent result. It can also reference global
 						scope properties.</p>
-						<p>Default value is <code>undefined</code>.</p>
 						<p><strong>Examples:</strong></p>
 						<ul>
-							<li>The following markup generates a ResultLink <code>href</code> such as <code>http://uri.com?id=documentTitle</code>:</li>
+							<li>The following markup generates an <code>href</code> value such as <code>http://uri.com?id=itemTitle</code>:</li>
 						</ul>
 						<pre><code class="lang-html"><span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">class</span>=<span class="hljs-string">'CoveoResultLink'</span> <span class="hljs-attr">data-href-template</span>=<span class="hljs-string">'${clickUri}?id=${title}'</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
 </code></pre>
 						<ul>
-							<li>The following markup generates a ResultLink <code>href</code> such as <code>localhost/fooBar</code>:</li>
+							<li>The following markup generates an <code>href</code> value such as <code>localhost/fooBar</code>:</li>
 						</ul>
 						<pre><code class="lang-html"><span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">class</span>=<span class="hljs-string">'CoveoResultLink'</span> <span class="hljs-attr">data-href-template</span>=<span class="hljs-string">'${window.location.hostname}/{Foo.Bar}'</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
 </code></pre>
+						<p>Default value is <code>undefined</code>.</p>
 					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
@@ -379,46 +381,50 @@ data-always-open-in-new-window&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultLink/ResultLink.ts#L219">src/ui/ResultLink/ResultLink.ts
-							:219</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultLink/ResultLink.ts#L225">src/ui/ResultLink/ResultLink.ts
+							:225</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies an event handler function to execute when the user clicks the ResultLink component.</p>
+							<p>Specifies an event handler function to execute when the user clicks the <code>ResultLink</code> component.</p>
 						</div>
-						<p>The handler function takes a JavaScript <a href="https://developer.mozilla.org/en/docs/Web/API/Event">Event</a> object and
-						an <a href="../interfaces/iqueryresult.html">IQueryResult</a> as its parameters.</p>
+						<p>The handler function takes a JavaScript <a href="https://developer.mozilla.org/en/docs/Web/API/Event"><code>Event</code></a> object and
+						an <a href="../interfaces/iqueryresult.html"><code>IQueryResult</code></a> as its parameters.</p>
 						<p>Overriding the default behavior of the <code>onClick</code> event can allow you to execute specific code instead.</p>
-						<p>You can only set this option in the <a href="../globals.html#init">init</a> call of your search interface. You cannot set it directly in the
-						markup as an HTML attribute.</p>
-						<p><strong>Examples:</strong></p>
-						<ul>
-							<li>In the following code excerpt, the ResultLink opens the original document in a custom way instead of using the
-							normal browser behavior:</li>
-						</ul>
-						<pre><code class="lang-javascript">Coveo.init(<span class="hljs-built_in">document</span>.querySelector(<span class="hljs-string">'#search'</span>), {
+						<p><strong>Note:</strong></p>
+						<blockquote>
+							<p>You cannot set this option directly in the component markup as an HTML attribute. You must either set it in the
+								<a href="../globals.html#init"><code>init</code></a> call of your search interface (see
+								<a href="https://developers.coveo.com/x/PoGfAQ#Components-PassingComponentOptionsintheinitCall">Components - Passing Component Options in the init Call</a>),
+								or before the <code>init</code> call, using the <code>options</code> top-level function (see
+							<a href="https://developers.coveo.com/x/PoGfAQ#Components-PassingComponentOptionsBeforetheinitCall">Components - Passing Component Options Before the init Call</a>).</p>
+						</blockquote>
+						<p><strong>Example:</strong></p>
+						<pre><code class="lang-javascript">
+
+
+<span class="hljs-comment">// You can set the option in the 'init' call:</span>
+Coveo.init(<span class="hljs-built_in">document</span>.querySelector(<span class="hljs-string">"#search"</span>), {
   <span class="hljs-attr">ResultLink</span> : {
     <span class="hljs-attr">onClick</span> : <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">e, result</span>) </span>{
       e.preventDefault();
-      <span class="hljs-comment">// Custom code to execute with the URI and title of the document.</span>
+      <span class="hljs-comment">// Custom code to execute with the item URI and title.</span>
       openUriInASpecialTab(result.clickUri, result.title);
     }
   }
 });
-</code></pre>
-						<ul>
-							<li>You can achieve the same result using the jQuery extension:</li>
-						</ul>
-						<pre><code class="lang-javascript">$(<span class="hljs-string">"#search"</span>).coveo(<span class="hljs-string">'init'</span>, {
-  <span class="hljs-attr">ResultLink</span> : {
-    <span class="hljs-attr">onClick</span> : <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">e, result</span>) </span>{
-      e.preventDefault();
-      <span class="hljs-comment">// Custom code to execute with the URI and title of the document.</span>
-      openUriInASpecialTab(result.clickUri, result.title);
-    }
-  }
-});
+
+<span class="hljs-comment">// Or before the 'init' call, using the 'options' top-level function:</span>
+<span class="hljs-comment">// Coveo.options(document.querySelector('#search'), {</span>
+<span class="hljs-comment">//   ResultLink : {</span>
+<span class="hljs-comment">//     onClick : function(e, result) {</span>
+<span class="hljs-comment">//       e.preventDefault();</span>
+<span class="hljs-comment">//       // Custom code to execute with the item URI and title.</span>
+<span class="hljs-comment">//       openUriInASpecialTab(result.clickUri, result.title);</span>
+<span class="hljs-comment">//     }</span>
+<span class="hljs-comment">//   }</span>
+<span class="hljs-comment">// });</span>
 </code></pre>
 					</div>
 					<div class="tsd-type-declaration">
@@ -453,18 +459,18 @@ data-always-open-in-new-window&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultLink/ResultLink.ts#L85">src/ui/ResultLink/ResultLink.ts
-							:85</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultLink/ResultLink.ts#L87">src/ui/ResultLink/ResultLink.ts
+							:87</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies whether the ResultLink should try to open in Microsoft Outlook.</p>
+							<p>Specifies whether the component should try to open its link in Microsoft Outlook.</p>
 						</div>
-						<p>Setting this option to <code>true</code> is normally useful for ResultLink instances which are related to Microsoft Exchange
-						emails.</p>
-						<p>If this option is <code>true</code>, clicking the ResultLink will call the <a href="resultlink.html#openlinkinoutlook">ResultLink.openLinkInOutlook</a> method
-						instead of the <a href="resultlink.html#openlink">ResultLink.openLink</a> method.</p>
+						<p>Setting this option to <code>true</code> is normally useful for <code>ResultLink</code> instances related to Microsoft Exchange emails.</p>
+						<p>If this option is <code>true</code>, clicking the <code>ResultLink</code> calls the
+							<a href="resultlink.html#openlinkinoutlook"><code>openLinkInOutlook</code></a> method instead of the
+						<a href="resultlink.html#openlink"><code>openLink</code></a> method.</p>
 						<p>Default value is <code>false</code>.</p>
 					</div>
 					<div class="tsd-panel">
@@ -480,14 +486,14 @@ data-open-in-outlook&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultLink/ResultLink.ts#L93">src/ui/ResultLink/ResultLink.ts
-							:93</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultLink/ResultLink.ts#L95">src/ui/ResultLink/ResultLink.ts
+							:95</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies whether the ResultLink should open in the <a href="quickview.html">Quickview</a> component rather than loading through the
-							original URL.</p>
+							<p>Specifies whether the component should open its link in the <a href="quickview.html"><code>Quickview</code></a> component rather than
+							loading through the original URL.</p>
 						</div>
 						<p>Default value is <code>false</code>.</p>
 					</div>
@@ -504,45 +510,361 @@ data-open-quickview&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultLink/ResultLink.ts#L175">src/ui/ResultLink/ResultLink.ts
-							:175</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultLink/ResultLink.ts#L180">src/ui/ResultLink/ResultLink.ts
+							:180</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies a template literal from which to generate the ResultLink display title (see
+							<p>Specifies a template literal from which to generate the <code>ResultLink</code> display title (see
 							<a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Template_literals">Template literals</a>).</p>
 						</div>
-						<p>This option overrides the default ResultLink display title behavior.</p>
+						<p>This option overrides the default <code>ResultLink</code> display title behavior.</p>
 						<p>The template literal can reference any number of fields from the parent result. However, if the template literal
-							references a key whose value is undefined in the parent result fields, then the ResultLink title displays the
+							references a key whose value is undefined in the parent result fields, the <code>ResultLink</code> title displays the
 						name of this key instead.</p>
-						<p>This option is ignored if the ResultLink innerHTML contains any value.</p>
-						<p>Default value is <code>undefined</code>.</p>
+						<p>This option is ignored if the <code>ResultLink</code> innerHTML contains any value.</p>
 						<p><strong>Examples:</strong></p>
 						<ul>
-							<li>The following markup generates a ResultLink display title such as <code>Case number: 123456</code> if both the
+							<li>The following markup generates a <code>ResultLink</code> display title such as <code>Case number: 123456</code> if both the
 							<code>raw.objecttype</code> and <code>raw.objectnumber</code> keys are defined in the parent result fields:</li>
 						</ul>
 						<pre><code class="lang-html"><span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"CoveoResultLink"</span> <span class="hljs-attr">data-title-template</span>=<span class="hljs-string">"${raw.objecttype} number: ${raw.objectnumber}"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
 </code></pre>
 						<ul>
-							<li>The following markup generates <code>${myField}</code> as a ResultLink display title if the <code>myField</code> key is undefined
+							<li>The following markup generates <code>${myField}</code> as a <code>ResultLink</code> display title if the <code>myField</code> key is undefined
 							in the parent result fields:</li>
 						</ul>
 						<pre><code class="lang-html"><span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"CoveoResultLink"</span> <span class="hljs-attr">data-title-template</span>=<span class="hljs-string">"${myField}"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
 </code></pre>
 						<ul>
-							<li>The following markup generates <code>Foobar</code> as a ResultLink display title, because the ResultLink innterHTML is not
-							empty:</li>
+							<li>The following markup generates <code>Foobar</code> as a <code>ResultLink</code> display title, because the <code>ResultLink</code> innterHTML is
+							not empty:</li>
 						</ul>
 						<pre><code class="lang-html"><span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"CoveoResultLink"</span> <span class="hljs-attr">data-title-template</span>=<span class="hljs-string">"${will} ${be} ${ignored}"</span>&gt;</span>Foobar<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
 </code></pre>
+						<p>Default value is <code>undefined</code>.</p>
 					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
 						<pre>data-title-template&#x3D;&#x27;foo&#x27;</pre>
 					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-object-literal tsd-parent-kind-class tsd-is-inherited tsd-is-static">
+					<a name="options" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> options</h3>
+					<div class="tsd-signature tsd-kind-icon">options<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
+					<aside class="tsd-sources">
+						<p>Inherited from <a href="resultlink.html">ResultLink</a>.<a href="resultlink.html#options">options</a></p>
+						<ul>
+							<li>Defined in
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultLink/ResultLink.ts#L43">src/ui/ResultLink/ResultLink.ts
+							:43</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-deprecated">
+						</dl>
+						<div class="lead">
+							<p>The options for the ResultLink</p>
+						</div>
+						<dl class="tsd-comment-tags">
+							<dt>componentoptions</dt>
+							<dd></dd>
+						</dl>
+					</div>
+					<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
+						<a name="options.alwaysopeninnewwindow" class="tsd-anchor"></a>
+						<h3>always<wbr>Open<wbr>InNew<wbr>Window</h3>
+						<div class="tsd-signature tsd-kind-icon">always<wbr>Open<wbr>InNew<wbr>Window<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in
+									<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultLink/ResultLink.ts#L114">src/ui/ResultLink/ResultLink.ts
+								:114</a></li>
+							</ul>
+						</aside>
+						<div class="tsd-comment tsd-typography">
+							<div class="lead">
+								<p>Specifies whether the component should open its link in a new window instead of opening it in the current
+								context.</p>
+							</div>
+							<p>If this option is <code>true</code>, clicking the <code>ResultLink</code> calls the
+								<a href="resultlink.html#openlinkinnewwindow"><code>openLinkInNewWindow</code></a> method instead of the
+							<a href="resultlink.html#openlink"> <code>openLink</code></a> method.</p>
+							<p><strong>Note:</strong></p>
+							<blockquote>
+								<p>If a search page contains a <a href="resultspreferences.html"><code>ResultPreferences</code></a> component whose
+									<a href="resultspreferences.html#options.enableopeninnewwindow"><code>enableOpenInNewWindow</code></a> option is <code>true</code>, and the end
+									user checks the <b>Always open results in new window</b> box, <code>ResultLink</code> components in this page will always
+									open their links in a new window when the end user clicks them, no matter what the value of their
+								<code>alwaysOpenInNewWindow</code> option is.</p>
+							</blockquote>
+							<p>Default value is <code>false</code>.</p>
+						</div>
+						<div class="tsd-panel">
+							<div class="tsd-signature-type">Markup configuration example(s) :</div>
+							<pre>data-always-open-in-new-window&#x3D;&#x27;true&#x27;
+data-always-open-in-new-window&#x3D;&#x27;false&#x27;</pre>
+						</div>
+					</section>
+					<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
+						<a name="options.field" class="tsd-anchor"></a>
+						<h3>field</h3>
+						<div class="tsd-signature tsd-kind-icon">field<span class="tsd-signature-symbol">:</span> <a href="../interfaces/ifieldoption.html" class="tsd-signature-type">IFieldOption</a></div>
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in
+									<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultLink/ResultLink.ts#L74">src/ui/ResultLink/ResultLink.ts
+								:74</a></li>
+							</ul>
+						</aside>
+						<div class="tsd-comment tsd-typography">
+							<div class="lead">
+								<p>Specifies the field to use to output the component <code>href</code> attribute value.</p>
+							</div>
+							<p><strong>Tip:</strong></p>
+							<blockquote>
+								<p>Instead of specifying a value for the <code>field</code> option, you can directly add an <code>href</code> attribute to the
+								<code>ResultLink</code> HTML element. Then, you can use a custom script to generate the <code>href</code> value.</p>
+							</blockquote>
+							<p><strong>Examples:</strong></p>
+							<ul>
+								<li>With the following markup, the <code>ResultLink</code> outputs its <code>href</code> value using the <code>@uri</code> field (rather than the
+								default field):</li>
+							</ul>
+							<pre><code class="lang-html"><span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"CoveoResultLink"</span> <span class="hljs-attr">field</span>=<span class="hljs-string">"@uri"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+</code></pre>
+							<ul>
+								<li>In the following result template, the custom <code>getMyKBUri()</code> function provides the <code>href</code> value:</li>
+							</ul>
+							<pre><code class="lang-html"><span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"KnowledgeArticle"</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"text/underscore"</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"result-template"</span>&gt;</span><span class="javascript">
+  &lt;div <span class="hljs-class"><span class="hljs-keyword">class</span></span>=<span class="hljs-string">'CoveoIcon&gt;'</span>&gt;<span class="xml"><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
+  &lt;a <span class="hljs-class"><span class="hljs-keyword">class</span></span>=<span class="hljs-string">"CoveoResultLink"</span> href=<span class="hljs-string">"&lt;%= getMyKBUri(raw) %&gt;"</span>&gt;<span class="xml"><span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span></span>
+  &lt;div <span class="hljs-class"><span class="hljs-keyword">class</span></span>=<span class="hljs-string">"CoveoExcerpt"</span>&gt;<span class="xml"><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
+</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+</code></pre>
+							<p>See also <a href="resultlink.html#options.hreftemplate"><code>hrefTemplate</code></a>, which can override this option.</p>
+							<p>By default, the component uses the <code>@clickUri</code> field of the item to output the value of its <code>href</code> attribute.</p>
+						</div>
+						<div class="tsd-panel">
+							<div class="tsd-signature-type">Markup configuration example(s) :</div>
+							<pre>data-field&#x3D;&#x27;@foo&#x27;</pre>
+						</div>
+					</section>
+					<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
+						<a name="options.hreftemplate" class="tsd-anchor"></a>
+						<h3>href<wbr>Template</h3>
+						<div class="tsd-signature tsd-kind-icon">href<wbr>Template<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in
+									<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultLink/ResultLink.ts#L141">src/ui/ResultLink/ResultLink.ts
+								:141</a></li>
+							</ul>
+						</aside>
+						<div class="tsd-comment tsd-typography">
+							<div class="lead">
+								<p>Specifies a template literal from which to generate the <code>ResultLink</code> <code>href</code> attribute value (see
+								<a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Template_literals">Template literals</a>).</p>
+							</div>
+							<p>This option overrides the <a href="resultlink.html#options.field"><code>field</code></a> option value.</p>
+							<p>The template literal can reference any number of fields from the parent result. It can also reference global
+							scope properties.</p>
+							<p><strong>Examples:</strong></p>
+							<ul>
+								<li>The following markup generates an <code>href</code> value such as <code>http://uri.com?id=itemTitle</code>:</li>
+							</ul>
+							<pre><code class="lang-html"><span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">class</span>=<span class="hljs-string">'CoveoResultLink'</span> <span class="hljs-attr">data-href-template</span>=<span class="hljs-string">'${clickUri}?id=${title}'</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+</code></pre>
+							<ul>
+								<li>The following markup generates an <code>href</code> value such as <code>localhost/fooBar</code>:</li>
+							</ul>
+							<pre><code class="lang-html"><span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">class</span>=<span class="hljs-string">'CoveoResultLink'</span> <span class="hljs-attr">data-href-template</span>=<span class="hljs-string">'${window.location.hostname}/{Foo.Bar}'</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+</code></pre>
+							<p>Default value is <code>undefined</code>.</p>
+						</div>
+						<div class="tsd-panel">
+							<div class="tsd-signature-type">Markup configuration example(s) :</div>
+							<pre>data-href-template&#x3D;&#x27;foo&#x27;</pre>
+						</div>
+					</section>
+					<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
+						<a name="options.onclick" class="tsd-anchor"></a>
+						<h3>on<wbr>Click</h3>
+						<div class="tsd-signature tsd-kind-icon">on<wbr>Click<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">function</span></div>
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in
+									<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultLink/ResultLink.ts#L225">src/ui/ResultLink/ResultLink.ts
+								:225</a></li>
+							</ul>
+						</aside>
+						<div class="tsd-comment tsd-typography">
+							<div class="lead">
+								<p>Specifies an event handler function to execute when the user clicks the <code>ResultLink</code> component.</p>
+							</div>
+							<p>The handler function takes a JavaScript <a href="https://developer.mozilla.org/en/docs/Web/API/Event"><code>Event</code></a> object and
+							an <a href="../interfaces/iqueryresult.html"><code>IQueryResult</code></a> as its parameters.</p>
+							<p>Overriding the default behavior of the <code>onClick</code> event can allow you to execute specific code instead.</p>
+							<p><strong>Note:</strong></p>
+							<blockquote>
+								<p>You cannot set this option directly in the component markup as an HTML attribute. You must either set it in the
+									<a href="../globals.html#init"><code>init</code></a> call of your search interface (see
+									<a href="https://developers.coveo.com/x/PoGfAQ#Components-PassingComponentOptionsintheinitCall">Components - Passing Component Options in the init Call</a>),
+									or before the <code>init</code> call, using the <code>options</code> top-level function (see
+								<a href="https://developers.coveo.com/x/PoGfAQ#Components-PassingComponentOptionsBeforetheinitCall">Components - Passing Component Options Before the init Call</a>).</p>
+							</blockquote>
+							<p><strong>Example:</strong></p>
+							<pre><code class="lang-javascript">
+
+
+<span class="hljs-comment">// You can set the option in the 'init' call:</span>
+Coveo.init(<span class="hljs-built_in">document</span>.querySelector(<span class="hljs-string">"#search"</span>), {
+  <span class="hljs-attr">ResultLink</span> : {
+    <span class="hljs-attr">onClick</span> : <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">e, result</span>) </span>{
+      e.preventDefault();
+      <span class="hljs-comment">// Custom code to execute with the item URI and title.</span>
+      openUriInASpecialTab(result.clickUri, result.title);
+    }
+  }
+});
+
+<span class="hljs-comment">// Or before the 'init' call, using the 'options' top-level function:</span>
+<span class="hljs-comment">// Coveo.options(document.querySelector('#search'), {</span>
+<span class="hljs-comment">//   ResultLink : {</span>
+<span class="hljs-comment">//     onClick : function(e, result) {</span>
+<span class="hljs-comment">//       e.preventDefault();</span>
+<span class="hljs-comment">//       // Custom code to execute with the item URI and title.</span>
+<span class="hljs-comment">//       openUriInASpecialTab(result.clickUri, result.title);</span>
+<span class="hljs-comment">//     }</span>
+<span class="hljs-comment">//   }</span>
+<span class="hljs-comment">// });</span>
+</code></pre>
+						</div>
+						<div class="tsd-type-declaration">
+							<h4>Type declaration</h4>
+							<ul class="tsd-parameters">
+								<li class="tsd-parameter-siganture">
+									<ul class="tsd-signatures tsd-kind-type-literal tsd-parent-kind-variable tsd-is-not-exported">
+										<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>e<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Event</span>, result<span class="tsd-signature-symbol">: </span><a href="../interfaces/iqueryresult.html" class="tsd-signature-type">IQueryResult</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></li>
+									</ul>
+									<ul class="tsd-descriptions">
+										<li class="tsd-description">
+											<h4 class="tsd-parameters-title">Parameters</h4>
+											<ul class="tsd-parameters">
+												<li>
+													<h5>e: <span class="tsd-signature-type">Event</span></h5>
+												</li>
+												<li>
+													<h5>result: <a href="../interfaces/iqueryresult.html" class="tsd-signature-type">IQueryResult</a></h5>
+												</li>
+											</ul>
+											<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">any</span></h4>
+										</li>
+									</ul>
+								</li>
+							</ul>
+						</div>
+					</section>
+					<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
+						<a name="options.openinoutlook" class="tsd-anchor"></a>
+						<h3>open<wbr>InOutlook</h3>
+						<div class="tsd-signature tsd-kind-icon">open<wbr>InOutlook<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in
+									<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultLink/ResultLink.ts#L87">src/ui/ResultLink/ResultLink.ts
+								:87</a></li>
+							</ul>
+						</aside>
+						<div class="tsd-comment tsd-typography">
+							<div class="lead">
+								<p>Specifies whether the component should try to open its link in Microsoft Outlook.</p>
+							</div>
+							<p>Setting this option to <code>true</code> is normally useful for <code>ResultLink</code> instances related to Microsoft Exchange emails.</p>
+							<p>If this option is <code>true</code>, clicking the <code>ResultLink</code> calls the
+								<a href="resultlink.html#openlinkinoutlook"><code>openLinkInOutlook</code></a> method instead of the
+							<a href="resultlink.html#openlink"><code>openLink</code></a> method.</p>
+							<p>Default value is <code>false</code>.</p>
+						</div>
+						<div class="tsd-panel">
+							<div class="tsd-signature-type">Markup configuration example(s) :</div>
+							<pre>data-open-in-outlook&#x3D;&#x27;true&#x27;
+data-open-in-outlook&#x3D;&#x27;false&#x27;</pre>
+						</div>
+					</section>
+					<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
+						<a name="options.openquickview" class="tsd-anchor"></a>
+						<h3>open<wbr>Quickview</h3>
+						<div class="tsd-signature tsd-kind-icon">open<wbr>Quickview<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in
+									<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultLink/ResultLink.ts#L95">src/ui/ResultLink/ResultLink.ts
+								:95</a></li>
+							</ul>
+						</aside>
+						<div class="tsd-comment tsd-typography">
+							<div class="lead">
+								<p>Specifies whether the component should open its link in the <a href="quickview.html"><code>Quickview</code></a> component rather than
+								loading through the original URL.</p>
+							</div>
+							<p>Default value is <code>false</code>.</p>
+						</div>
+						<div class="tsd-panel">
+							<div class="tsd-signature-type">Markup configuration example(s) :</div>
+							<pre>data-open-quickview&#x3D;&#x27;true&#x27;
+data-open-quickview&#x3D;&#x27;false&#x27;</pre>
+						</div>
+					</section>
+					<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
+						<a name="options.titletemplate" class="tsd-anchor"></a>
+						<h3>title<wbr>Template</h3>
+						<div class="tsd-signature tsd-kind-icon">title<wbr>Template<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in
+									<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultLink/ResultLink.ts#L180">src/ui/ResultLink/ResultLink.ts
+								:180</a></li>
+							</ul>
+						</aside>
+						<div class="tsd-comment tsd-typography">
+							<div class="lead">
+								<p>Specifies a template literal from which to generate the <code>ResultLink</code> display title (see
+								<a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Template_literals">Template literals</a>).</p>
+							</div>
+							<p>This option overrides the default <code>ResultLink</code> display title behavior.</p>
+							<p>The template literal can reference any number of fields from the parent result. However, if the template literal
+								references a key whose value is undefined in the parent result fields, the <code>ResultLink</code> title displays the
+							name of this key instead.</p>
+							<p>This option is ignored if the <code>ResultLink</code> innerHTML contains any value.</p>
+							<p><strong>Examples:</strong></p>
+							<ul>
+								<li>The following markup generates a <code>ResultLink</code> display title such as <code>Case number: 123456</code> if both the
+								<code>raw.objecttype</code> and <code>raw.objectnumber</code> keys are defined in the parent result fields:</li>
+							</ul>
+							<pre><code class="lang-html"><span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"CoveoResultLink"</span> <span class="hljs-attr">data-title-template</span>=<span class="hljs-string">"${raw.objecttype} number: ${raw.objectnumber}"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+</code></pre>
+							<ul>
+								<li>The following markup generates <code>${myField}</code> as a <code>ResultLink</code> display title if the <code>myField</code> key is undefined
+								in the parent result fields:</li>
+							</ul>
+							<pre><code class="lang-html"><span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"CoveoResultLink"</span> <span class="hljs-attr">data-title-template</span>=<span class="hljs-string">"${myField}"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+</code></pre>
+							<ul>
+								<li>The following markup generates <code>Foobar</code> as a <code>ResultLink</code> display title, because the <code>ResultLink</code> innterHTML is
+								not empty:</li>
+							</ul>
+							<pre><code class="lang-html"><span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"CoveoResultLink"</span> <span class="hljs-attr">data-title-template</span>=<span class="hljs-string">"${will} ${be} ${ignored}"</span>&gt;</span>Foobar<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+</code></pre>
+							<p>Default value is <code>undefined</code>.</p>
+						</div>
+						<div class="tsd-panel">
+							<div class="tsd-signature-type">Markup configuration example(s) :</div>
+							<pre>data-title-template&#x3D;&#x27;foo&#x27;</pre>
+						</div>
+					</section>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
@@ -638,8 +960,8 @@ data-open-quickview&#x3D;&#x27;false&#x27;</pre>
 								<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#getbindings">getBindings</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L124">src/ui/Base/Component.ts
-									:124</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L129">src/ui/Base/Component.ts
+									:129</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -662,8 +984,8 @@ data-open-quickview&#x3D;&#x27;false&#x27;</pre>
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultLink/ResultLink.ts#L287">src/ui/ResultLink/ResultLink.ts
-									:287</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultLink/ResultLink.ts#L286">src/ui/ResultLink/ResultLink.ts
+									:286</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -676,7 +998,7 @@ data-open-quickview&#x3D;&#x27;false&#x27;</pre>
 								<li>
 									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> logAnalytics: <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> =&nbsp;true</span></h5>
 									<div class="tsd-comment tsd-typography">
-										<p>If true, the method will take care of logging an analytic event.</p>
+										<p>Specifies whether the method should log an analytics event.</p>
 									</div>
 								</li>
 							</ul>
@@ -695,22 +1017,22 @@ data-open-quickview&#x3D;&#x27;false&#x27;</pre>
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultLink/ResultLink.ts#L329">src/ui/ResultLink/ResultLink.ts
-									:329</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultLink/ResultLink.ts#L328">src/ui/ResultLink/ResultLink.ts
+									:328</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Open the link in the same manner the end user would do.</p>
+									<p>Opens the link in the same manner the end user would.</p>
 								</div>
-								<p>This essentially simulate a click on the result link.</p>
+								<p>This essentially simulates a click on the result link.</p>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> logAnalytics: <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> =&nbsp;true</span></h5>
 									<div class="tsd-comment tsd-typography">
-										<p>If true, the method will take care of logging an analytic event.</p>
+										<p>Specifies whether the method should log an analytics event.</p>
 									</div>
 								</li>
 							</ul>
@@ -729,8 +1051,8 @@ data-open-quickview&#x3D;&#x27;false&#x27;</pre>
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultLink/ResultLink.ts#L298">src/ui/ResultLink/ResultLink.ts
-									:298</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultLink/ResultLink.ts#L297">src/ui/ResultLink/ResultLink.ts
+									:297</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -743,7 +1065,7 @@ data-open-quickview&#x3D;&#x27;false&#x27;</pre>
 								<li>
 									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> logAnalytics: <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> =&nbsp;true</span></h5>
 									<div class="tsd-comment tsd-typography">
-										<p>If true, the method will take care of logging an analytic event.</p>
+										<p>Specifies whether the method should log an analytics event.</p>
 									</div>
 								</li>
 							</ul>
@@ -762,23 +1084,23 @@ data-open-quickview&#x3D;&#x27;false&#x27;</pre>
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultLink/ResultLink.ts#L313">src/ui/ResultLink/ResultLink.ts
-									:313</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultLink/ResultLink.ts#L312">src/ui/ResultLink/ResultLink.ts
+									:312</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Try to open the result in Microsoft Outlook if the result has an <code>outlookformacuri</code> or <code>outlookuri</code> field.</p>
+									<p>Tries to open the result in Microsoft Outlook if the result has an <code>outlookformacuri</code> or <code>outlookuri</code> field.</p>
 								</div>
-								<p>Normally, this means a result link for an email.</p>
-								<p>If the needed fields are not present, this method will do nothing.</p>
+								<p>Normally, this implies the result should be a link to an email.</p>
+								<p>If the needed fields are not present, this method does nothing.</p>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> logAnalytics: <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> =&nbsp;true</span></h5>
 									<div class="tsd-comment tsd-typography">
-										<p>If true, the method will take care of logging an analytic event.</p>
+										<p>Specifies whether the method should log an analytics event.</p>
 									</div>
 								</li>
 							</ul>
@@ -798,8 +1120,8 @@ data-open-quickview&#x3D;&#x27;false&#x27;</pre>
 								<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#get">get</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L193">src/ui/Base/Component.ts
-									:193</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L198">src/ui/Base/Component.ts
+									:198</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -844,8 +1166,8 @@ data-open-quickview&#x3D;&#x27;false&#x27;</pre>
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#bind">bind</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L62">src/ui/Base/Component.ts
-							:62</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L67">src/ui/Base/Component.ts
+							:67</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -869,8 +1191,8 @@ data-open-quickview&#x3D;&#x27;false&#x27;</pre>
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#componentoptionsmodel">componentOptionsModel</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L90">src/ui/Base/Component.ts
-							:90</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L95">src/ui/Base/Component.ts
+							:95</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -887,8 +1209,8 @@ data-open-quickview&#x3D;&#x27;false&#x27;</pre>
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#componentstatemodel">componentStateModel</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L74">src/ui/Base/Component.ts
-							:74</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L79">src/ui/Base/Component.ts
+							:79</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -948,8 +1270,8 @@ data-open-quickview&#x3D;&#x27;false&#x27;</pre>
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#querycontroller">queryController</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L78">src/ui/Base/Component.ts
-							:78</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L83">src/ui/Base/Component.ts
+							:83</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -966,8 +1288,8 @@ data-open-quickview&#x3D;&#x27;false&#x27;</pre>
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#querystatemodel">queryStateModel</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L70">src/ui/Base/Component.ts
-							:70</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L75">src/ui/Base/Component.ts
+							:75</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -984,8 +1306,8 @@ data-open-quickview&#x3D;&#x27;false&#x27;</pre>
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#root">root</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L66">src/ui/Base/Component.ts
-							:66</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L71">src/ui/Base/Component.ts
+							:71</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -1002,8 +1324,8 @@ data-open-quickview&#x3D;&#x27;false&#x27;</pre>
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#searchinterface">searchInterface</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L82">src/ui/Base/Component.ts
-							:82</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L87">src/ui/Base/Component.ts
+							:87</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -1020,8 +1342,8 @@ data-open-quickview&#x3D;&#x27;false&#x27;</pre>
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#usageanalytics">usageAnalytics</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L86">src/ui/Base/Component.ts
-							:86</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L91">src/ui/Base/Component.ts
+							:91</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -1064,13 +1386,13 @@ data-open-quickview&#x3D;&#x27;false&#x27;</pre>
 								<p>Overwrites <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#constructor">constructor</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultLink/ResultLink.ts#L234">src/ui/ResultLink/ResultLink.ts
-									:234</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultLink/ResultLink.ts#L230">src/ui/ResultLink/ResultLink.ts
+									:230</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Creates a new ResultLink component.</p>
+									<p>Creates a new <code>ResultLink</code> component.</p>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1087,7 +1409,7 @@ data-open-quickview&#x3D;&#x27;false&#x27;</pre>
 									<h5>options: <span class="tsd-signature-type">IResultLinkOptions</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<div class="lead">
-											<p>The options for the ResultLink component.</p>
+											<p>The options for the <code>ResultLink</code> component.</p>
 										</div>
 									</div>
 								</li>
@@ -1120,6 +1442,14 @@ data-open-quickview&#x3D;&#x27;false&#x27;</pre>
 						</li>
 					</ul>
 				</section>
+			</section>
+			<section class="tsd-panel tsd-hierarchy">
+				<h3>Hierarchy</h3>
+				<ul class="tsd-hierarchy">
+					<li>
+						<a href="../classes/component.html" class="tsd-signature-type">Component</a>
+					</li>
+				</ul>
 			</section>
 			<footer class="with-border-bottom">
 				<div class="container">
