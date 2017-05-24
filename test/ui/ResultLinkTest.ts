@@ -63,7 +63,7 @@ export function ResultLinkTest() {
         expect(window.open).toHaveBeenCalledWith(hrefTemplate, jasmine.anything());
       });
 
-      it('should replaces fields in the href template by the results equivalent', () => {
+      it('should replace fields in the href template by the results equivalent', () => {
         let hrefTemplate = '${title}';
         test = Mock.optionsResultComponentSetup<ResultLink, IResultLinkOptions>(ResultLink, { hrefTemplate: hrefTemplate }, fakeResult);
         test.cmp.openLinkInNewWindow();
@@ -179,7 +179,7 @@ export function ResultLinkTest() {
       });
     });
 
-    describe('when the element is an hyperlink', () => {
+    describe('when the element is a hyperlink', () => {
 
       beforeEach(() => {
         test = Mock.advancedResultComponentSetup<ResultLink>(ResultLink, fakeResult, new Mock.AdvancedComponentSetupOptions($$('a').el));

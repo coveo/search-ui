@@ -78,9 +78,6 @@ ExactKeywordsInputTest();
 import { NoneKeywordsInputTest } from './ui/AdvancedSearch/KeywordsInput/NoneKeywordsInputTest';
 NoneKeywordsInputTest();
 
-import { DateInputTest } from './ui/AdvancedSearch/DateInput/DateInputTest';
-DateInputTest();
-
 import { BetweenDateInputTest } from './ui/AdvancedSearch/DateInput/BetweenDateInputTest';
 BetweenDateInputTest();
 
@@ -251,6 +248,9 @@ ResultFoldingTest();
 
 import { ResultLinkTest } from './ui/ResultLinkTest';
 ResultLinkTest();
+
+import { PrintableUriTest } from './ui/PrintableUriTest';
+PrintableUriTest();
 
 import { ResultListTest } from './ui/ResultListTest';
 ResultListTest();

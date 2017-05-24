@@ -5,10 +5,11 @@ import { $$ } from '../../../utils/Dom';
 import { RadioButton } from '../../FormWidgets/RadioButton';
 import * as _ from 'underscore';
 
-export class DateInput implements IAdvancedSearchInput {
+export abstract class DateInput implements IAdvancedSearchInput {
 
   protected element: HTMLElement;
   private radio: RadioButton;
+  private error: HTMLElement;
 
   constructor(public inputName: string) {
     this.buildContent();
@@ -26,23 +27,41 @@ export class DateInput implements IAdvancedSearchInput {
     return this.element;
   }
 
-  public getValue(): string {
-    return '';
-  }
+  public abstract getValue(): string;
 
   public isSelected(): boolean {
     return this.getRadio().checked;
   }
 
   public updateQuery(queryBuilder: QueryBuilder) {
-    let value = this.getValue();
-    if (value) {
-      queryBuilder.advancedExpression.add(this.getValue());
+    try {
+      let value = this.getValue();
+      if (value) {
+        queryBuilder.advancedExpression.add(value);
+      }
+      this.removeErrorMessage();
+    } catch (error) {
+      this.setErrorMessage(error);
     }
   }
 
   protected getRadio(): HTMLInputElement {
     return <HTMLInputElement>$$(this.element).find('input');
+  }
+
+
+  private setErrorMessage(message: string) {
+    this.removeErrorMessage();
+    this.error = $$('div', {
+      className: 'coveo-error coveo-error-date-input'
+    }, message).el;
+    $$(this.element).append(this.error);
+  }
+
+  private removeErrorMessage() {
+    if (this.error) {
+      $$(this.error).remove();
+    }
   }
 
   private buildContent() {
