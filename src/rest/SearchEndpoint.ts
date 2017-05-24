@@ -41,25 +41,34 @@ export class DefaultSearchEndpointOptions implements ISearchEndpointOptions {
 }
 
 /**
- * A search endpoint allows to execute various actions against the Coveo Search API and index.<br/>
- * For example, you can search, list field values, get the quickview content for a document, etc.<br/>
- * Any actions that you execute using this class will not trigger a full query cycle for the Coveo components.<br/>
- * This is because this class will not trigger any query events directly.<br/>
- * If you wish to execute a query that all components will react to (and trigger the corresponding query events), use the {@link QueryController}
+ * The `SearchEndpoint` class allows you to execute various actions against the Coveo Search API and a Coveo index
+ * (e.g., searching, listing field values, getting the quickview content of an item, etc.).
+ *
+ * This class does trigger any query events directly. Consequently, executing an action with this class does not trigger
+ * a full query cycle for the Coveo components.
+ *
+ * If you wish to have all Coveo components "react" to a query, (and trigger the corresponding query events), use the
+ * [`QueryController`]{@link QueryController} class instead.
  */
 export class SearchEndpoint implements ISearchEndpoint {
 
   /**
-   * A map of all the initialized endpoint.<br/>
-   * eg : Coveo.SearchEndpoint.endpoints['default'] will return the default endpoint that was created at initialization
+   * Contains a map of all initialized `SearchEndpoint` instances.
+   *
+   * **Example:**
+   * > `Coveo.SearchEndpoint.endpoints['default']` returns the default endpoint that was created at initialization.
    * @type {{}}
    */
   static endpoints: { [endpoint: string]: SearchEndpoint; } = {};
 
   /**
-   * Configure an endpoint that will point to a Coveo Cloud index, which contains a set of public sources with no security on them.<br/>
-   * Used for demo purposes and ease of setup.
-   * @param otherOptions A set of additional options to use when configuring this endpoint
+   * Configures a sample search endpoint on a Coveo Cloud index containing a set of public sources with no secured
+   * content.
+   *
+   * **Note:**
+   * > This method mainly exists for demo purposes and ease of setup.
+   *
+   * @param otherOptions A set of additional options to use when configuring this endpoint.
    */
   static configureSampleEndpoint(otherOptions?: ISearchEndpointOptions) {
     if (SearchEndpoint.isUseLocalArgumentPresent()) {
@@ -79,9 +88,13 @@ export class SearchEndpoint implements ISearchEndpoint {
   }
 
   /**
-   * Configure an endpoint that will point to a Coveo Cloud index V2, which contains a set of public sources with no security on them.<br/>
-   * Used for demo purposes and ease of setup.
-   * @param otherOptions A set of additional options to use when configuring this endpoint
+   * Configures a sample search endpoint on a Coveo Cloud V2 index containing a set of public sources with no secured
+   * content.
+   *
+   * **Note:**
+   * > This method mainly exists for demo purposes and ease of setup.
+   *
+   * @param otherOptions A set of additional options to use when configuring this endpoint.
    */
   static configureSampleEndpointV2(optionsOPtions?: ISearchEndpointOptions) {
     SearchEndpoint.endpoints['default'] = new SearchEndpoint(_.extend({
@@ -95,11 +108,11 @@ export class SearchEndpoint implements ISearchEndpoint {
   }
 
   /**
-   * Configure an endpoint to a Coveo Cloud index.
-   * @param organization The organization id of your Coveo cloud index
-   * @param token The token to use to execute query. If null, you will most probably need to login when querying.
-   * @param uri The uri of your cloud Search API. By default, will point to the production environment
-   * @param otherOptions A set of additional options to use when configuring this endpoint
+   * Configures a search endpoint on a Coveo Cloud index.
+   * @param organization The organization ID of your Coveo Cloud index.
+   * @param token The token to use to execute query. If not specified, you will likely need to login when querying.
+   * @param uri The URI of the Coveo Cloud REST Search API. By default, this points to the production environment.
+   * @param otherOptions A set of additional options to use when configuring this endpoint.
    */
   static configureCloudEndpoint(organization?: string, token?: string, uri: string = 'https://cloudplatform.coveo.com/rest/search', otherOptions?: ISearchEndpointOptions) {
     let options: ISearchEndpointOptions = {
@@ -114,21 +127,22 @@ export class SearchEndpoint implements ISearchEndpoint {
   }
 
   /**
-   * Configure an endpoint to a Coveo Cloud index, in the V2 platform.
-   * @param organization The organization id of your Coveo cloud index
-   * @param token The token to use to execute query. If null, you will most probably need to login when querying.
-   * @param uri The uri of your cloud Search API. By default, will point to the production environment
-   * @param otherOptions A set of additional options to use when configuring this endpoint
+   * Configures a search endpoint on a Coveo Cloud V2 index.
+   * @param organization The organization ID of your Coveo Cloud V2 index.
+   * @param token The token to use to execute query. If not specified, you will likely need to login when querying.
+   * @param uri The URI of the Coveo Cloud REST Search API. By default, this points to the production environment.
+   * @param otherOptions A set of additional options to use when configuring this endpoint.
    */
   static configureCloudV2Endpoint(organization?: string, token?: string, uri: string = 'https://platform.cloud.coveo.com/rest/search', otherOptions?: ISearchEndpointOptions) {
     return SearchEndpoint.configureCloudEndpoint(organization, token, uri, otherOptions);
   }
 
   /**
-   * Configure an endpoint to a Coveo on premise index.
-   * @param uri The uri of your Coveo Search API endpoint. eg : http://myserver:8080/rest/search
-   * @param token The token to use to execute query. If null, you will most probably need to login when querying (unless the search api is configured using advanced auth options, like windows auth or claims)
-   * @param otherOptions A set of additional options to use when configuring this endpoint
+   * Configures a search endpoint on a Coveo on-premise index.
+   * @param uri The URI of your Coveo Search API endpoint (e.g., `http://myserver:8080/rest/search`)
+   * @param token The token to use to execute query. If not specified, you will likely need to login when querying
+   * (unless your Coveo Search API endpoint is configured using advanced auth options, such as Windows auth or claims).
+   * @param otherOptions A set of additional options to use when configuring this endpoint.
    */
   static configureOnPremiseEndpoint(uri: string, token?: string, otherOptions?: ISearchEndpointOptions) {
     let merged = SearchEndpoint.mergeConfigOptions({
@@ -160,10 +174,11 @@ export class SearchEndpoint implements ISearchEndpoint {
   private onUnload: (...args: any[]) => void;
 
   /**
-   * Create a new SearchEndpoint.<br/>
-   * Will use a set of sane default options, and merge them with the options parameter.<br/>
-   * Will create an {@link EndpointCaller} and use it to communicate with the endpoint internally
-   * @param options
+   * Creates a new `SearchEndpoint` instance.
+   * Uses a set of adequate default options, and merges these with the `options` parameter.
+   * Also creates an [`EndpointCaller`]{@link EndpointCaller} instance and uses it to communicate with the endpoint
+   * internally.
+   * @param options The custom options to apply to the new `SearchEndpoint`.
    */
   constructor(public options?: ISearchEndpointOptions) {
     Assert.exists(options);
@@ -194,39 +209,41 @@ export class SearchEndpoint implements ISearchEndpoint {
   }
 
   /**
-   * Set a function which will allow external code to modify all endpoint call parameters before they are sent by the browser.
+   * Sets a function which allows external code to modify all endpoint call parameters before the browser sends them.
    *
-   * Used in very specific scenario where the network infrastructure require special request headers to be added or removed, for example.
-   * @param requestModifier
+   * **Note:**
+   * > This is useful in very specific scenarios where the network infrastructure requires special request headers to be
+   * > added or removed, for example.
+   * @param requestModifier The function.
    */
   public setRequestModifier(requestModifier: (params: IRequestInfo<any>) => IRequestInfo<any>) {
     this.caller.options.requestModifier = requestModifier;
   }
 
   /**
-   * Return the base uri of the endpoint to perform search
-   * @returns {string}
+   * Gets the base URI of the Search API endpoint.
+   * @returns {string} The base URI of the Search API endpoint.
    */
   public getBaseUri(): string {
     return this.buildBaseUri('');
   }
 
   /**
-   * Return the base uri of the endpoint for search alert
-   * @returns {string}
+   * Gets the base URI of the search alerts endpoint.
+   * @returns {string} The base URI of the search alerts endpoint.
    */
   public getBaseAlertsUri(): string {
     return this.buildSearchAlertsUri('');
   }
 
   /**
-   * Get the uri that can be used to authenticate against the given provider
-   * @param provider The provider name
-   * @param returnUri The uri at which to return after the authentication is completed
-   * @param message The message for authentication
+   * Gets the URI that can be used to authenticate against the given provider.
+   * @param provider The provider name.
+   * @param returnUri The URI to return to after the authentication is completed.
+   * @param message The authentication message.
    * @param callOptions Additional set of options to use for this call.
    * @param callParams Options injected by the applied decorators.
-   * @returns {string}
+   * @returns {string} The authentication provider URI.
    */
   @path('/login/')
   @accessTokenInUrl()
@@ -246,20 +263,23 @@ export class SearchEndpoint implements ISearchEndpoint {
   }
 
   /**
-   * is the search endpoint using jsonp internally to communicate with Search API
-   * @returns {boolean}
+   * Indicates whether the search endpoint is using JSONP internally to communicate with the Search API.
+   * @returns {boolean} `true` in the search enpoint is using JSONP; `false` otherwise.
    */
   public isJsonp(): boolean {
     return this.caller.useJsonp;
   }
 
   /**
-   * Perform a search on the index and returns a Promise of {@link IQueryResults}.<br/>
-   * Will modify the query results slightly, by adding additional information on each results (an id, the state object, etc.)
-   * @param query The query to execute. Typically, the query object is built using a {@link QueryBuilder}
-   * @param callOptions Additional set of options to use for this call.
-   * @param callParams Options injected by the applied decorators.
-   * @returns {Promise<IQueryResults>}
+   * Performs a search on the index and returns a Promise of [`IQueryResults`]{@link IQueryResults}.
+   *
+   * This method slightly modifies the query results by adding additional information to each result (id, state object,
+   * etc.).
+   * @param query The query to execute. Typically, the query object is built using a
+   * [`QueryBuilder`]{@link QueryBuilder}.
+   * @param callOptions An additional set of options to use for this call.
+   * @param callParams The options injected by the applied decorators.
+   * @returns {Promise<IQueryResults>} A Promise of query results.
    */
   @path('/')
   @method('POST')
@@ -295,13 +315,16 @@ export class SearchEndpoint implements ISearchEndpoint {
     });
   }
   /**
-   * Get a link/uri to download a set of results, for a given query, to an xlsx format.<br/>
-   * Note : This does not download automatically the documents, merely provide an url at which to download them.
-   * @param query The query for which to get the xlsx documents
-   * @param numberOfResults The number of results that should be downloaded
-   * @param callOptions Additional set of options to use for this call.
-   * @param callParams Options injected by the applied decorators.
-   * @returns {string}
+   * Gets a link / URI to download a query result set to the XLSX format.
+   *
+   * **Note:**
+   * > This method does not automatically download the query result set, but rather provides an URI from which to
+   * > download it.
+   * @param query The query for which to get the XLSX result set.
+   * @param numberOfResults The number of results to download.
+   * @param callOptions An additional set of options to use for this call.
+   * @param callParams The options injected by the applied decorators.
+   * @returns {string} The download URI.
    */
   @path('/')
   @accessTokenInUrl()
@@ -322,14 +345,19 @@ export class SearchEndpoint implements ISearchEndpoint {
   }
 
   /**
-   * Get the raw datastream for a given document. This is typically used to get a thumbnail for a document.<br/>
-   * Return an array buffer : <br/>
-   * eg : let rawBinary = String.fromCharCode.apply(null, new Uint8Array(response));<br/>
+   * Gets the raw datastream for an item. This is typically used to get a thumbnail for an item.
+   *
+   * Returns an array buffer.
+   *
+   * **Example:**
+   * ```
+   * let rawBinary = String.fromCharCode.apply(null, new Uint8Array(response));
    * img.setAttribute('src', 'data:image/png;base64,' + btoa(rawBinary));
-   * @param documentUniqueId Typically the {@link IQueryResult.uniqueId} on each result
-   * @param dataStreamType Normally : '$Thumbnail'
-   * @param callOptions Additional set of options to use for this call.
-   * @param callParams Options injected by the applied decorators.
+   * ```
+   * @param documentUniqueId Typically, the {@link IQueryResult.uniqueId} on each result.
+   * @param dataStreamType Normally, `$Thumbnail`.
+   * @param callOptions An additional set of options to use for this call.
+   * @param callParams The options injected by the applied decorators.
    * @returns {Promise<TResult>|Promise<U>}
    */
   @path('/datastream')
@@ -342,7 +370,7 @@ export class SearchEndpoint implements ISearchEndpoint {
     let queryString = this.buildViewAsHtmlQueryString(documentUniqueId, callOptions);
     callParams.queryString = callParams.queryString.concat(queryString);
 
-    this.logger.info('Performing REST query for datastream ' + dataStreamType + ' on document uniqueID' + documentUniqueId);
+    this.logger.info('Performing REST query for datastream ' + dataStreamType + ' on item uniqueID ' + documentUniqueId);
 
     callParams.queryString.push('dataStream=' + dataStreamType);
     return this.performOneCall(callParams).then((results) => {
@@ -352,12 +380,13 @@ export class SearchEndpoint implements ISearchEndpoint {
   }
 
   /**
-   * Return an url that will allow to see the datastream for a given document. This is typically used to get a thumbnail for a document.<br/>
-   * @param documentUniqueID Typically the {@link IQueryResult.uniqueId} on each result
-   * @param dataStreamType Normally : '$Thumbnail'
-   * @param callOptions Additional set of options to use for this call.
-   * @param callParams Options injected by the applied decorators.
-   * @returns {string}
+   * Gets an URL from which it is possible to see the datastream for an item. This is typically used to get a
+   * thumbnail for an item.
+   * @param documentUniqueID Typically, the {@link IQueryResult.uniqueId} on each result.
+   * @param dataStreamType Normally, `$Thumbnail`.
+   * @param callOptions An additional set of options to use for this call.
+   * @param callParams The options injected by the applied decorators.
+   * @returns {string} The datastream URL.
    */
   @path('/datastream')
   @accessTokenInUrl()
@@ -378,11 +407,11 @@ export class SearchEndpoint implements ISearchEndpoint {
   }
 
   /**
-   * Return a single document, using it's uniqueId
-   * @param documentUniqueID Typically the {@link IQueryResult.uniqueId} on each result
-   * @param callOptions Additional set of options to use for this call.
-   * @param callParams Options injected by the applied decorators.
-   * @returns {Promise<IQueryResult>}
+   * Gets a single item, using its `uniqueId`.
+   * @param documentUniqueID Typically, the {@link IQueryResult.uniqueId} on each result.
+   * @param callOptions An additional set of options to use for this call.
+   * @param callParams The options injected by the applied decorators.
+   * @returns {Promise<IQueryResult>} A Promise of the item.
    */
   @path('/document')
   @method('GET')
@@ -395,12 +424,11 @@ export class SearchEndpoint implements ISearchEndpoint {
   }
 
   /**
-   * Return the content for a single document, as text.<br/>
-   * Think : quickview
-   * @param documentUniqueID Typically the {@link IQueryResult.uniqueId} on each result
-   * @param callOptions Additional set of options to use for this call.
-   * @param callParams Options injected by the applied decorators.
-   * @returns {Promise<string>}
+   * Gets the content of a single item, as text (think: quickview).
+   * @param documentUniqueID Typically, the {@link IQueryResult.uniqueId} on each result.
+   * @param callOptions An additional set of options to use for this call.
+   * @param callParams The options injected by the applied decorators.
+   * @returns {Promise<string>} A Promise of the item content.
    */
   @path('/text')
   @method('GET')
@@ -416,12 +444,11 @@ export class SearchEndpoint implements ISearchEndpoint {
   }
 
   /**
-   * Return the content for a single document, as an HTMLDocument.<br/>
-   * Think : quickview
-   * @param documentUniqueID Typically the {@link IQueryResult.uniqueId} on each result
-   * @param callOptions Additional set of options to use for this call.
-   * @param callParams Options injected by the applied decorators.
-   * @returns {Promise<HTMLDocument>}
+   * Gets the content for a single item, as an HTMLDocument (think: quickview).
+   * @param documentUniqueID Typically, the {@link IQueryResult.uniqueId} on each result.
+   * @param callOptions An additional set of options to use for this call.
+   * @param callParams The options injected by the applied decorators.
+   * @returns {Promise<HTMLDocument>} A Promise of the item content.
    */
   @path('/html')
   @method('POST')
@@ -438,12 +465,11 @@ export class SearchEndpoint implements ISearchEndpoint {
   }
 
   /**
-   * Return an url that will allow to see a single document content, as HTML.<br/>
-   * Think : quickview
-   * @param documentUniqueID Typically the {@link IQueryResult.uniqueId} on each result
-   * @param callOptions Additional set of options to use for this call.
-   * @param callParams Options injected by the applied decorators.
-   * @returns {string}
+   * Gets an URL from which it is possible to see a single item content, as HTML (think: quickview).
+   * @param documentUniqueID Typically, the {@link IQueryResult.uniqueId} on each result.
+   * @param callOptions An additional set of options to use for this call.
+   * @param callParams The options injected by the applied decorators.
+   * @returns {string} The URL.
    */
   @path('/html')
   @accessTokenInUrl()
@@ -471,11 +497,11 @@ export class SearchEndpoint implements ISearchEndpoint {
   }
 
   /**
-   * List the possible values for a given request
-   * @param request The request for which to list the possible field values
-   * @param callOptions Additional set of options to use for this call.
-   * @param callParams Options injected by the applied decorators.
-   * @returns {Promise<TResult>|Promise<U>}
+   * Lists the possible field values for a request.
+   * @param request The request for which to list the possible field values.
+   * @param callOptions An additional set of options to use for this call.
+   * @param callParams The options injected by the applied decorators.
+   * @returns {Promise<TResult>|Promise<U>} A Promise of the field values.
    */
   @path('/values')
   @method('POST')
@@ -495,10 +521,10 @@ export class SearchEndpoint implements ISearchEndpoint {
   }
 
   /**
-   * List all fields for the index, and return an array of their description
-   * @param callOptions Additional set of options to use for this call.
-   * @param callParams Options injected by the applied decorators.
-   * @returns {Promise<TResult>|Promise<U>}
+   * Lists all fields for the index, and returns an array of their descriptions.
+   * @param callOptions An additional set of options to use for this call.
+   * @param callParams The options injected by the applied decorators.
+   * @returns {Promise<TResult>|Promise<U>} A Promise of the index fields and descriptions.
    */
   @path('/fields')
   @method('GET')
@@ -512,10 +538,10 @@ export class SearchEndpoint implements ISearchEndpoint {
   }
 
   /**
-   * List all available query extensions for the search endpoint
-   * @param callOptions Additional set of options to use for this call.
-   * @param callParams Options injected by the applied decorators.
-   * @returns {Promise<IExtension[]>}
+   * Lists all available query extensions for the search endpoint.
+   * @param callOptions An additional set of options to use for this call.
+   * @param callParams The options injected by the applied decorators.
+   * @returns {Promise<IExtension[]>} A Promise of the extensions.
    */
   @path('/extensions')
   @method('GET')
@@ -527,10 +553,10 @@ export class SearchEndpoint implements ISearchEndpoint {
   }
 
   /**
-   * Allow to rate a single document in the index (granted that collaborative rating is enabled on your index)
-   * @param ratingRequest Document id and rating
-   * @param callOptions Additional set of options to use for this call.
-   * @param callParams Options injected by the applied decorators.
+   * Rates a single item in the index (granted that collaborative rating is enabled on your index)
+   * @param ratingRequest The item id, and the rating to add.
+   * @param callOptions An additional set of options to use for this call.
+   * @param callParams The options injected by the applied decorators.
    * @returns {Promise<boolean>|Promise<T>}
    */
   @path('/rating')
@@ -547,17 +573,17 @@ export class SearchEndpoint implements ISearchEndpoint {
   }
 
   /**
-   * Allow to tag a single document
-   * @param taggingRequest Document id and tag action to perform
-   * @param callOptions Additional set of options to use for this call.
-   * @param callParams Options injected by the applied decorators.
+   * Tags a single item.
+   * @param taggingRequest The item id, and the tag action to perform.
+   * @param callOptions An additional set of options to use for this call.
+   * @param callParams The options injected by the applied decorators.
    * @returns {Promise<boolean>|Promise<T>}
    */
   @path('/tag')
   @method('POST')
   @responseType('text')
   public tagDocument(taggingRequest: ITaggingRequest, callOptions?: IEndpointCallOptions, callParams?: IEndpointCallParameters): Promise<boolean> {
-    this.logger.info('Tagging a document', taggingRequest);
+    this.logger.info('Tagging an item', taggingRequest);
 
     callParams.requestData = taggingRequest;
 
@@ -567,11 +593,11 @@ export class SearchEndpoint implements ISearchEndpoint {
   }
 
   /**
-   * Returns a list of query suggestions, based on the given request
-   * @param request query and number of suggestions to return
-   * @param callOptions Additional set of options to use for this call.
-   * @param callParams Options injected by the applied decorators.
-   * @returns {Promise<IQuerySuggestResponse>}
+   * Gets a list of query suggestions for a request.
+   * @param request The query, and the number of suggestions to return.
+   * @param callOptions An additional set of options to use for this call.
+   * @param callParams The options injected by the applied decorators.
+   * @returns {Promise<IQuerySuggestResponse>} A Promise of query suggestions.
    */
   @path('/querySuggest')
   @method('GET')
@@ -589,10 +615,10 @@ export class SearchEndpoint implements ISearchEndpoint {
   }
 
   /**
-   * Allow to follow a document or a query on the search alerts service
-   * @param request
-   * @param callOptions Additional set of options to use for this call.
-   * @param callParams Options injected by the applied decorators.
+   * Follows an item, or a query result, using the search alerts service.
+   * @param request The subscription details.
+   * @param callOptions An additional set of options to use for this call.
+   * @param callParams The options injected by the applied decorators.
    * @returns {Promise<ISubscription>}
    */
   @alertsPath('/subscriptions')
@@ -603,7 +629,7 @@ export class SearchEndpoint implements ISearchEndpoint {
   public follow(request: ISubscriptionRequest, callOptions?: IEndpointCallOptions, callParams?: IEndpointCallParameters): Promise<ISubscription> {
     callParams.requestData = request;
 
-    this.logger.info('Following a document or a query', request);
+    this.logger.info('Following an item or a query', request);
 
     return this.performOneCall<ISubscription>(callParams);
   }
@@ -611,10 +637,10 @@ export class SearchEndpoint implements ISearchEndpoint {
   private currentListSubscriptions: Promise<ISubscription[]>;
 
   /**
-   * Return a Promise of array of current subscriptions
-   * @param page The page of the subsctiptions
-   * @param callOptions Additional set of options to use for this call.
-   * @param callParams Options injected by the applied decorators.
+   * Gets a Promise of an array of the current subscriptions.
+   * @param page The page of the subscriptions.
+   * @param callOptions An additional set of options to use for this call.
+   * @param callParams The options injected by the applied decorators.
    * @returns {any}
    */
   @alertsPath('/subscriptions')
@@ -648,10 +674,10 @@ export class SearchEndpoint implements ISearchEndpoint {
   }
 
   /**
-   * Update a subscription with new parameters
-   * @param subscription The subscription to update with new parameters
-   * @param callOptions Additional set of options to use for this call.
-   * @param callParams Options injected by the applied decorators.
+   * Updates a subscription with new parameters.
+   * @param subscription The subscription to update with new parameters.
+   * @param callOptions An additional set of options to use for this call.
+   * @param callParams The options injected by the applied decorators.
    * @returns {Promise<ISubscription>}
    */
   @alertsPath('/subscriptions/')
@@ -670,10 +696,10 @@ export class SearchEndpoint implements ISearchEndpoint {
   }
 
   /**
-   * Delete a subscription
-   * @param subscription The subscription to delete
-   * @param callOptions Additional set of options to use for this call.
-   * @param callParams Options injected by the applied decorators.
+   * Deletes a subscription.
+   * @param subscription The subscription to delete.
+   * @param callOptions An additional set of options to use for this call.
+   * @param callParams The options injected by the applied decorators.
    * @returns {Promise<ISubscription>}
    */
   @alertsPath('/subscriptions/')
