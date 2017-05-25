@@ -3,6 +3,8 @@ import { Utils } from './Utils';
 import { l } from '../strings/Strings';
 import * as _ from 'underscore';
 import * as moment from 'moment';
+import * as d3 from "d3";
+import days = d3.time.days;
 /**
  * The `IDateToStringOptions` interface describes a set of options to use when converting a standard Date object to a
  * string using the [ `dateToString` ]{@link DateUtils.dateToString}, or the
@@ -240,8 +242,8 @@ export class DateUtils {
   private static isTodayYesterdayOrTomorrow(d: Date, options?: IDateToStringOptions): boolean {
     const dateOnly = moment(DateUtils.keepOnlyDatePart(d));
     const today = moment(DateUtils.keepOnlyDatePart(options.now));
-    return dateOnly.diff(today, 'days') == 0 || dateOnly.diff(moment(today), 'days') == 1 ||
-      dateOnly.diff(moment(today), 'days') == -1;
+    const daysDifference = dateOnly.diff(today, 'days');
+    return daysDifference == 0 || daysDifference == 1 || daysDifference == -1;
   }
 
   /**
