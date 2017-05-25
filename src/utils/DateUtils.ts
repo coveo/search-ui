@@ -25,7 +25,7 @@ export interface IDateToStringOptions {
   now?: Date;
 
   /**
-   * Specifies whether to convert the Date object to the localized version of `Today`, `Yesterday` and `Tomorrow`,
+   * Specifies whether to convert the Date object to the localized version of `Today`, `Yesterday`, or `Tomorrow`,
    * if possible. This option takes precedence over
    * [ `useWeekdayIfThisWeek` ]{@link IDateToStringOptions.useWeekdayIfThisWeek}.
    *
@@ -167,10 +167,9 @@ export class DateUtils {
   }
 
   /**
-   * Receives a date of any type and converts it to a standard Date object.
-   * @param date Can be a string, a number or a Date object. It can also be any other type, but the result will be
-   * `undefined` if it is not recognized as a date.
-   * @returns {any} The Date, or `Invalid Date` if it wasn't recognized as a valid date.
+   * Tries to parse an argument of any type to a standard Date object.
+   * @param date The value to parse. Can be of any type (string, number, Date, etc.).
+   * @returns {any} The parsed Date object, or `Invalid Date` if the `date` argument was not recognized as a valid date.
    */
   static convertToStandardDate(date: any): Date {
     if (_.isDate(date)) {
