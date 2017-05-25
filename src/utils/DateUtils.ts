@@ -208,9 +208,9 @@ export class DateUtils {
   }
 
   /**
-   * Receives a Date and formats into the standard string required for queries.
-   * @param date The date to convert into a string.
-   * @returns {string} Corresponds to the Date in a `YYYY/MM/DD` format.
+   * Creates a string from a Date object. The resulting string is in the format required for queries.
+   * @param date The Date object to create a string from.
+   * @returns {string} A string corresponding to the `date` argument value, in the `YYYY/MM/DD` format.
    */
   static dateForQuery(date: Date): string {
     DateUtils.setLocale();
@@ -219,9 +219,9 @@ export class DateUtils {
   }
 
   /**
-   * Keeps only the date, removing the time information.
-   * @param date The date to crop.
-   * @returns {Date} The cropped date, without the time information.
+   * Creates a cropped version of a Date object. The resulting object contains no time information.
+   * @param date The original Date object to create a cropped Date object from.
+   * @returns {Date} A cropped Date object corresponding to the `date` argument value, excluding its time information.
    */
   static keepOnlyDatePart(date: Date): Date {
     DateUtils.setLocale();
