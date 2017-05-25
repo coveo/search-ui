@@ -27,18 +27,9 @@ export function IconTest() {
       expect($$(test.cmp.element).hasClass('unknown')).toBe(true);
     });
 
-    describe('with a quickview inside', function () {
-      beforeEach(function () {
-        test = Mock.advancedResultComponentSetup<Icon>(Icon, result, new Mock.AdvancedComponentSetupOptions($$('div', undefined, $$('div', { className: 'CoveoQuickview' }).el).el, undefined, undefined));
-      });
+    describe('with an objecttype', function(){
 
-      it('should render properly', function () {
-        expect($$(test.cmp.element).hasClass('coveo-icon')).toBe(true);
-        expect($$(test.cmp.element).hasClass('filetype')).toBe(true);
-        expect($$(test.cmp.element).hasClass('unknown')).toBe(true);
-      });
-
-      it('should render an icon for objecttype with priority over filetype', function () {
+      it('objecttype should have priority over filetype', function () {
         result.raw.objecttype = 'user';
         test = Mock.optionsResultComponentSetup<Icon, IIconOptions>(Icon, undefined, result);
         expect($$(test.cmp.element).hasClass('coveo-icon')).toBe(true);
@@ -70,6 +61,19 @@ export function IconTest() {
         test = Mock.optionsResultComponentSetup<Icon, IIconOptions>(Icon, undefined, result);
         expect($$(test.cmp.element).hasClass('coveo-icon')).toBe(true);
         expect($$(test.cmp.element).hasClass('objecttype')).toBe(false);
+        expect($$(test.cmp.element).hasClass('filetype')).toBe(true);
+        expect($$(test.cmp.element).hasClass('unknown')).toBe(true);
+      });
+
+    });
+
+    describe('with a quickview inside', function () {
+      beforeEach(function () {
+        test = Mock.advancedResultComponentSetup<Icon>(Icon, result, new Mock.AdvancedComponentSetupOptions($$('div', undefined, $$('div', { className: 'CoveoQuickview' }).el).el, undefined, undefined));
+      });
+
+      it('should render properly', function () {
+        expect($$(test.cmp.element).hasClass('coveo-icon')).toBe(true);
         expect($$(test.cmp.element).hasClass('filetype')).toBe(true);
         expect($$(test.cmp.element).hasClass('unknown')).toBe(true);
       });
