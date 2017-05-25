@@ -245,10 +245,10 @@ export class SearchInterface extends RootComponent implements IComponentBindings
     enableDebugInfo: ComponentOptions.buildBooleanOption({ defaultValue: true }),
 
     /**
-     * Specifies whether to enable the collaborative rating for the index and to include user ratings on each results
-     * in addition to the normal index ranking.
+     * Specifies whether to enable collaborative rating, which you can leverage using the
+     * [`ResultRating`]{@link ResultRating} component.
      *
-     * If you set this option to `true`, you can leverage it with the {@link ResultRating} component.
+     * Setting this option to `true` has no effect unless collaborative rating is also enabled on your Coveo index.
      *
      * Default value is `false`.
      */
@@ -262,8 +262,8 @@ export class SearchInterface extends RootComponent implements IComponentBindings
      *
      * **Example:**
      *
-     * > The end user narrows a query down to a single document that has a duplicate. If the enableDuplicateFiltering
-     * > option is `true`, then only one document appears in the search results while the Facet count is still 2.
+     * > The end user narrows a query down to a single item that has a duplicate. If the enableDuplicateFiltering
+     * > option is `true`, then only one item appears in the search results while the Facet count is still 2.
      *
      * **Note:**
      *
@@ -480,7 +480,7 @@ export class SearchInterface extends RootComponent implements IComponentBindings
 
   private setupDebugInfo() {
     if (this.options.enableDebugInfo) {
-      setTimeout(() => new Debug(this.element, this.queryController));
+      setTimeout(() => new Debug(this.element, this.getBindings()));
     }
   }
 
