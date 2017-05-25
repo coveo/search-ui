@@ -154,7 +154,6 @@ function ensureImageIsValid(filetype, image, legacy) {
   // with useless stuff
   if (!legacy) {
     if (!fs.existsSync(path)) {
-      // console.trace();
       console.warn('WARNING: Icon ' + path + ' is referenced by file type ' + filetype + ' but cannot be found!');
     }
   }

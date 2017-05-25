@@ -37,6 +37,38 @@ export function IconTest() {
         expect($$(test.cmp.element).hasClass('filetype')).toBe(true);
         expect($$(test.cmp.element).hasClass('unknown')).toBe(true);
       });
+
+      it('should render an icon for objecttype with priority over filetype', function () {
+        result.raw.objecttype = 'user';
+        test = Mock.optionsResultComponentSetup<Icon, IIconOptions>(Icon, undefined, result);
+        expect($$(test.cmp.element).hasClass('coveo-icon')).toBe(true);
+        expect($$(test.cmp.element).hasClass('filetype')).toBe(false);
+        expect($$(test.cmp.element).hasClass('objecttype')).toBe(true);
+        expect($$(test.cmp.element).hasClass('user')).toBe(true);
+      });
+
+      it('should fallback on filetype when objecttype match(/^(file|document|ContentVersion)$/i)', function () {
+        result.raw.objecttype = 'Document';
+        test = Mock.optionsResultComponentSetup<Icon, IIconOptions>(Icon, undefined, result);
+        expect($$(test.cmp.element).hasClass('coveo-icon')).toBe(true);
+        expect($$(test.cmp.element).hasClass('objecttype')).toBe(false);
+        expect($$(test.cmp.element).hasClass('filetype')).toBe(true);
+        expect($$(test.cmp.element).hasClass('unknown')).toBe(true);
+
+        result.raw.objecttype = 'File';
+        test = Mock.optionsResultComponentSetup<Icon, IIconOptions>(Icon, undefined, result);
+        expect($$(test.cmp.element).hasClass('coveo-icon')).toBe(true);
+        expect($$(test.cmp.element).hasClass('objecttype')).toBe(false);
+        expect($$(test.cmp.element).hasClass('filetype')).toBe(true);
+        expect($$(test.cmp.element).hasClass('unknown')).toBe(true);
+
+        result.raw.objecttype = 'contentversion';
+        test = Mock.optionsResultComponentSetup<Icon, IIconOptions>(Icon, undefined, result);
+        expect($$(test.cmp.element).hasClass('coveo-icon')).toBe(true);
+        expect($$(test.cmp.element).hasClass('objecttype')).toBe(false);
+        expect($$(test.cmp.element).hasClass('filetype')).toBe(true);
+        expect($$(test.cmp.element).hasClass('unknown')).toBe(true);
+      });
     });
 
     describe('exposes options', function () {
