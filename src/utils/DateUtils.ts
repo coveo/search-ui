@@ -7,7 +7,7 @@ import * as d3 from 'd3';
 import days = d3.time.days;
 /**
  * The `IDateToStringOptions` interface describes a set of options to use when converting a standard Date object to a
- * string using the [ `dateToString` ]{@link DateUtils.dateToString}, or the
+ * string using the [ `dateToString` ]{@link DateUtils.dateToString}, [ `timeToString` ]{@link DateUtils.timeToString}, or the
  * [ `dateTimeToString` ]{@link DateUtils.dateTimeToString} method from the [ `DateUtils` ]{@link DateUtils} class.
  * The precedence orders for the options are:
  * [ `useTodayYesterdayAndTomorrow` ]{@link IDateToStringOptions.useTodayYesterdayAndTomorrow}
@@ -230,10 +230,10 @@ export class DateUtils {
   }
 
   /**
-   * Adds offset to a Date, counted in days.
-   * @param date The date to offset.
-   * @param offset The amount of days to add or remove to the date.
-   * @returns {Date} The modified date.
+   * Creates an offset version of a Date object. The offset is counted in days.
+   * @param date The original Date object to create an offset Date object from.
+   * @param offset The number of days to add to (or subtract from) the `date` argument.
+   * @returns {Date} An offset Date object corresponding to the `date` argument value plus the `offset` value.
    */
   static offsetDateByDays(date: Date, offset: number): Date {
     return moment(date).add(offset, 'days').toDate();
@@ -247,12 +247,13 @@ export class DateUtils {
   }
 
   /**
-   * Converts the date into a string according to the specified options.
-   * This method uses [ `keepOnlyDatePart` ]{@link DateUtils.keepOnlyDatePart} which removes the time information
-   * from the date. To convert a date using a timestamp, use [ `dateTimeToString` ]{@link DateUtils.dateTimeToString}.
-   * @param date The date to convert to a string.
-   * @param options Specifies the enabled options on the date.
-   * @returns {any} The date after being formatted into a string according to the specified options.
+   * Creates a string from a Date object. The resulting string is formatted according to a set of options.
+   * This method calls [ `keepOnlyDatePart` ]{@link DateUtils.keepOnlyDatePart} to remove time information from the date.
+   * If you need to create a timestamp, use the [ `dateTimeToString` ]{@link DateUtils.dateTimeToString} method instead.
+   * @param date The Date object to create a string from.
+   * @param options The set of options to apply when formatting the resulting string. If you do not specify a value for
+   * this parameter, the method uses a default set of options.
+   * @returns {string} A date string corresponding to the `date` argument value, formatted according to the specified `options`.
    */
   static dateToString(date: Date, options?: IDateToStringOptions): string {
     DateUtils.setLocale();
@@ -302,10 +303,11 @@ export class DateUtils {
   }
 
   /**
-   * Converts the time information from a date into a string.
-   * @param date The date containing the time information to format.
-   * @param options Specifies the enabled options on the date.
-   * @returns {any} Will either be an empty string or a string containing the time.
+   * Creates a string from a Date object. The string corresponds to the time information of the Date object.
+   * @param date The Date object to create a string from.
+   * @param options The set of options to apply when formatting the resulting string. If you do not specify a
+   * value for this parameter, the method uses a default set of options.
+   * @returns {string} A string containing the time information of the `date` argument, and formatted according to the specified `options`.
    */
   static timeToString(date: Date, options?: IDateToStringOptions): string {
     if (Utils.isNullOrUndefined(date)) {
@@ -315,12 +317,13 @@ export class DateUtils {
   }
 
   /**
-   * Converts the date into a string according to the specified options.
-   * This method uses [ `timeToString` ]{@link DateUtils.timeToString}, which adds a time information to the
-   * converted date. To display a date without a timestamp, use [ `dateToString` ]{@link DateUtils.timeToString}.
-   * @param date The date to convert to a string.
-   * @param options Specifies the enabled options on the date.
-   * @returns {any} The date after being formatted into a string according to the specified options.
+   * Creates a string from a Date object. The resulting string is formatted according to a set of options.
+   * This method calls [ `timeToString` ]{@link DateUtils.timeToString} to add time information to the date.
+   * If you need to create a date string without a timestamp, use the [ `dateToString` ]{@link DateUtils.dateToString} method instead.
+   * @param date The date object to create a string from.
+   * @param options The set of options to apply when formatting the resulting string. If you do not specify a value for
+   * this parameter, the method uses a default set of options.
+   * @returns {string} A date string corresponding to the `date` argument value, formatted according to the specified `options`.
    */
   static dateTimeToString(date: Date, options?: IDateToStringOptions): string {
     DateUtils.setLocale();
@@ -344,9 +347,11 @@ export class DateUtils {
   }
 
   /**
-   * Converts a month from a number to a string (e.g '0' to 'january').
-   * @param month The month represented by its number (0 to 11).
-   * @returns {string} The month's name associated to its number.
+   * Creates a string from a number. The resulting string is the localized name of the month that corresponds
+   * to this number (e.g., `0` results in the localized version of `January`).
+   * @param month The number to create a string from. Minimum value is `0` (which corresponds to `January`). Maximum
+   * value is `11` (which corresponds to `December`).
+   * @returns {string} A string whose value is the localized name of the corresponding `month`.
    */
   static monthToString(month: number): string {
     DateUtils.setLocale();
@@ -355,9 +360,9 @@ export class DateUtils {
   }
 
   /**
-   * Checks if the input is an instance of Date.
-   * @param date The value to evaluate.
-   * @returns {boolean} False if the result is not an instance of `Date`.
+   * validates whether a value is an instance of Date.
+   * @param date The value to verify.
+   * @returns {boolean} `true` if the `date` argument is an instance of Date; `false` otherwise..
    */
   static isValid(date: any) {
     DateUtils.setLocale();
@@ -369,10 +374,11 @@ export class DateUtils {
   }
 
   /**
-   * Compares the amount of time between two dates.
-   * @param from The first Date to compare.
-   * @param to The second Date to compare
-   * @returns {any} The amount of time between the first and second Date.
+   * Creates a string from two Date objects. The resulting string corresponds to the amount of time between those two dates.
+   * @param from The Date object which contains the "oldest" value.
+   * @param to The Date object which contains the "newest" value.
+   * @returns {any} A string whose value corresponds to the amount of time between `from` and `to`,
+   * or an empty string if either argument was undefined.
    */
   static timeBetween(from: Date, to: Date) {
     if (Utils.isNullOrUndefined(from) || Utils.isNullOrUndefined(to)) {
