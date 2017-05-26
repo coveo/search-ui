@@ -262,7 +262,7 @@ export class ResultLayout extends Component {
   }
 
   private updateSelectorAppearance() {
-    if (this.shouldShowSelector()) {
+    if (this.shouldShowSelector() && !QueryEvents.noResults) {
       this.show();
     } else {
       this.hide();
