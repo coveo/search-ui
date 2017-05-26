@@ -618,7 +618,7 @@ export class FacetSlider extends Component {
 
   private buildSlider() {
     let sliderContainer = $$('div', {
-      className: 'coveo-facet-values coveo-slider-container'
+      className: 'coveo-slider-container'
     }).el;
 
     if (this.hasAGraph()) {

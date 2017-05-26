@@ -1,6 +1,6 @@
 {
   "name": "coveo-search-ui",
-  "version": "2.0.0",
+  "version": "2.0.2",
   "description": "Coveo JavaScript Search Framework",
   "main": "./bin/js/CoveoJsSearch.js",
   "types": "./bin/ts/CoveoJsSearch.d.ts",
@@ -56,13 +56,13 @@
   },
   "devDependencies": {
     "@salesforce-ux/design-system": "2.0.3",
-    "bluebird": "^3.4.7",
     "@types/d3": "3.5.36",
     "@types/d3-scale": "1.0.4",
     "@types/fastclick": "^1.0.28",
     "@types/pikaday": "0.0.31",
     "@types/underscore": "^1.7.33",
     "awesome-typescript-loader": "^2.2.4",
+    "bluebird": "^3.4.7",
     "cheerio": "^0.20.0",
     "colors": "^1.1.2",
     "coveralls": "^2.11.15",
