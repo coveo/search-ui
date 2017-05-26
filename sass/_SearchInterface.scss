@@ -36,6 +36,10 @@
   * {
     @include box-sizing(border-box);
   }
+
+  .coveo-error {
+    color: $coveo-red;
+  }
 }
 
 body.coveo-modalBox-opened {

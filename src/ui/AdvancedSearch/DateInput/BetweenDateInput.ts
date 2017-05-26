@@ -2,6 +2,8 @@ import { DateInput } from './DateInput';
 import { DatePicker } from '../../FormWidgets/DatePicker';
 import { l } from '../../../strings/Strings';
 import { $$ } from '../../../utils/Dom';
+import { DateUtils } from '../../../utils/DateUtils';
+import { TimeSpan } from '../../../utils/TimeSpanUtils';
 
 export class BetweenDateInput extends DateInput {
 
@@ -19,7 +21,7 @@ export class BetweenDateInput extends DateInput {
 
   public build(): HTMLElement {
     super.build();
-    let container = $$('fieldset', { className: 'coveo-advanced-search-date-input' });
+    const container = $$('fieldset', { className: 'coveo-advanced-search-date-input' });
     (<HTMLFieldSetElement>container.el).disabled = true;
 
     container.append(this.firstDatePicker.getElement());
@@ -31,20 +33,32 @@ export class BetweenDateInput extends DateInput {
   }
 
   public getValue(): string {
-    let firstDate = this.firstDatePicker.getValue();
-    let secondDate = this.secondDatePicker.getValue();
+    const firstDate = this.firstDatePicker.getDateValue();
+    const secondDate = this.secondDatePicker.getDateValue();
+    const firstDateAsString = this.firstDatePicker.getValue();
+    const secondDateAsString = this.secondDatePicker.getValue();
+
     let query = '';
-    if (firstDate) {
-      query += `(@date>=${firstDate})`;
+
+    if (this.isSelected()) {
+      if (firstDate && secondDate) {
+        const timespan = TimeSpan.fromDates(DateUtils.convertFromJsonDateIfNeeded(firstDate), DateUtils.convertFromJsonDateIfNeeded(secondDateAsString));
+        if (timespan.getMilliseconds() < 0) {
+          throw l('QueryExceptionInvalidDate');
+        }
+      }
+      if (firstDateAsString) {
+        query += `(@date>=${firstDateAsString})`;
+      }
+      if (secondDateAsString) {
+        query += `(@date<=${secondDateAsString})`;
+      }
     }
-    if (secondDate) {
-      query += `(@date<=${secondDate})`;
-    }
-    return this.isSelected() ? query : '';
+    return query;
   }
 
   private buildAnd(): HTMLElement {
-    let and = $$('div', { className: 'coveo-advanced-search-and' });
+    const and = $$('div', { className: 'coveo-advanced-search-and' });
     and.text(l('And').toLowerCase());
     return and.el;
   }

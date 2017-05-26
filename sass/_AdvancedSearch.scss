@@ -115,6 +115,7 @@ $spaceBetween: 0 5px 5px 0;
 .coveo-advanced-search-and {
   display: inline-block;
   margin: $spaceBetween;
+  margin-left: 5px;
 }
 
 .coveo-number-input {
@@ -138,5 +139,11 @@ $spaceBetween: 0 5px 5px 0;
   }
   .coveo-dropdown, .coveo-numeric-spinner {
     margin: $spaceBetween;
+  }
+}
+
+.coveo-advanced-search-breadcrumb {
+  .coveo-advanced-search-breadcrumb-clear {
+    @include clearButton('&');
   }
 }
