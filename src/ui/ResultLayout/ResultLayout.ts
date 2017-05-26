@@ -68,6 +68,7 @@ export class ResultLayout extends Component {
 
   private currentActiveLayouts: { [key: string]: IActiveLayouts };
   private resultLayoutSection: HTMLElement;
+  private hasNoResults: boolean;
 
   static options: IResultLayoutOptions = {
     /**
@@ -242,8 +243,10 @@ export class ResultLayout extends Component {
   private handleQuerySuccess(args: IQuerySuccessEventArgs) {
     if (args.results.results.length === 0 || !this.shouldShowSelector()) {
       this.hide();
+      this.hasNoResults = true;
     } else {
       this.show();
+      this.hasNoResults = false;
     }
   }
 
@@ -262,7 +265,7 @@ export class ResultLayout extends Component {
   }
 
   private updateSelectorAppearance() {
-    if (this.shouldShowSelector() && !QueryEvents.noResults) {
+    if (this.shouldShowSelector() && !this.hasNoResults) {
       this.show();
     } else {
       this.hide();
