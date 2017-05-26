@@ -6,6 +6,7 @@ import { Logger } from '../../misc/Logger';
 import { TemplateFromAScriptTag, ITemplateFromStringProperties } from './TemplateFromAScriptTag';
 import { DefaultResultTemplate } from './DefaultResultTemplate';
 import * as _ from 'underscore';
+import { $$ } from '../../utils/Dom';
 
 export class UnderscoreTemplate extends Template {
   private template: (data: any) => string;
@@ -42,7 +43,7 @@ export class UnderscoreTemplate extends Template {
   }
 
   toHtmlElement(): HTMLElement {
-    let script = this.templateFromAScriptTag.toHtmlElement();
+    const script = this.templateFromAScriptTag.toHtmlElement($$('script'));
     script.setAttribute('type', _.first(UnderscoreTemplate.mimeTypes));
     return script;
   }
@@ -60,7 +61,7 @@ export class UnderscoreTemplate extends Template {
   }
 
   static fromString(template: string, properties: ITemplateFromStringProperties): UnderscoreTemplate {
-    let script = TemplateFromAScriptTag.fromString(template, properties);
+    const script = TemplateFromAScriptTag.fromString(template, properties, document.createElement('script'));
     script.setAttribute('type', UnderscoreTemplate.mimeTypes[0]);
 
     return new UnderscoreTemplate(script);
