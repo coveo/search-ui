@@ -7,7 +7,7 @@ import * as d3 from 'd3';
 import days = d3.time.days;
 /**
  * The `IDateToStringOptions` interface describes a set of options to use when converting a standard Date object to a
- * string using the [ `dateToString` ]{@link DateUtils.dateToString}, [ `timeToString` ]{@link DateUtils.timeToString}, or the
+ * string using the [ `dateToString` ]{@link DateUtils.dateToString}, or the
  * [ `dateTimeToString` ]{@link DateUtils.dateTimeToString} method from the [ `DateUtils` ]{@link DateUtils} class.
  * The precedence orders for the options are:
  * [ `useTodayYesterdayAndTomorrow` ]{@link IDateToStringOptions.useTodayYesterdayAndTomorrow}
@@ -360,9 +360,9 @@ export class DateUtils {
   }
 
   /**
-   * validates whether a value is an instance of Date.
+   * Validates whether a value is an instance of Date.
    * @param date The value to verify.
-   * @returns {boolean} `true` if the `date` argument is an instance of Date; `false` otherwise..
+   * @returns {boolean} `true` if the `date` argument is an instance of Date; `false` otherwise.
    */
   static isValid(date: any) {
     DateUtils.setLocale();
