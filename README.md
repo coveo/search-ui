@@ -86,13 +86,13 @@ Make sure you were able to run `gulp` entirely without any errors first. Then yo
 This will start a webpack-dev-server instance (see 
 [Webpack Dev Server](https://webpack.github.io/docs/webpack-dev-server.html)).
 
-You can now load [http://localhost:8080/Index.html](http://localhost:8080/Index.html) in a web browser.
+You can now load [http://localhost:8080/index.html](http://localhost:8080/index.html) in a web browser.
 
 Any time you hit **Save** in a source file, the bundle will be recompiled and the dev page will reload.
 
 If you need to modify the content of the search page (i.e., the markup itself, not the TypeScript code), modify the 
-`Index.html` page under `./bin`. This page is not committed to the repository, so you do not have to worry about 
-breaking anything. However, if you feel like you have a good reason to modify the original `Index.html`, feel free to 
+`index.html` page under `./bin`. This page is not committed to the repository, so you do not have to worry about 
+breaking anything. However, if you feel like you have a good reason to modify the original `index.html`, feel free to 
 do so.
 
 <h2 class="home-section-with-ordered-list">Build a Custom Version of the Library</h2>
