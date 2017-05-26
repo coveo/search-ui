@@ -78,9 +78,6 @@ ExactKeywordsInputTest();
 import { NoneKeywordsInputTest } from './ui/AdvancedSearch/KeywordsInput/NoneKeywordsInputTest';
 NoneKeywordsInputTest();
 
-import { DateInputTest } from './ui/AdvancedSearch/DateInput/DateInputTest';
-DateInputTest();
-
 import { BetweenDateInputTest } from './ui/AdvancedSearch/DateInput/BetweenDateInputTest';
 BetweenDateInputTest();
 
@@ -462,6 +459,9 @@ MultiSelectTest();
 import { FacetSliderQueryControllerTest } from './controllers/FacetSliderQueryControllerTest';
 FacetSliderQueryControllerTest();
 
+import { DateUtilsTest } from './ui/DateUtilsTest';
+DateUtilsTest();
+
 import { DebugForResultTest } from './ui/DebugForResultTest';
 DebugForResultTest();
 
@@ -470,3 +470,4 @@ DebugHeaderTest();
 
 import { FacetValuesTest } from './ui/FacetValuesTest';
 FacetValuesTest();
+

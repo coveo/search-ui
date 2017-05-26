@@ -1,5 +1,3 @@
-/// <reference path="lib/jasmine.d.ts" />
-
 import {IStringMap} from '../src/rest/GenericParam';
 import _ = require('underscore');
 
