@@ -6,6 +6,7 @@ import { $$ } from '../../src/utils/Dom';
 import { SearchEndpoint } from '../../src/rest/SearchEndpoint';
 import { NoopComponent } from '../../src/ui/NoopComponent/NoopComponent';
 import { analyticsActionCauseList } from '../../src/ui/Analytics/AnalyticsActionListMeta';
+import { InitializationEvents } from '../../src/events/InitializationEvents';
 
 export function TabTest() {
   describe('Tab', function () {
@@ -152,28 +153,52 @@ export function TabTest() {
         expect(simulation.queryBuilder.build().maximumAge).toBe(321);
       });
 
-      it('layout will change on initialization', () => {
-        test = Mock.optionsComponentSetup<Tab, ITabOptions>(Tab, {
+      it('layout will change on initialization if the tab is selected', () => {
+        test = Mock.advancedComponentSetup<Tab>(Tab, new Mock.AdvancedComponentSetupOptions(undefined, {
           layout: 'card',
           caption: 'caption',
           id: 'id'
-        });
+        }, (env: Mock.MockEnvironmentBuilder) => {
+          return env.withLiveQueryStateModel();
+        }));
 
-        expect(test.env.queryStateModel.set).toHaveBeenCalledWith('layout', 'card');
+        test.env.queryStateModel.set('t', 'id');
+
+        $$(test.env.root).trigger(InitializationEvents.afterInitialization);
+        expect(test.env.queryStateModel.get('layout')).toEqual('card');
+      });
+
+      it('layout will not change on initialization if the tab is not selected', () => {
+        test = Mock.advancedComponentSetup<Tab>(Tab, new Mock.AdvancedComponentSetupOptions(undefined, {
+          layout: 'card',
+          caption: 'caption',
+          id: 'id'
+        }, (env: Mock.MockEnvironmentBuilder) => {
+          return env.withLiveQueryStateModel();
+        }));
+
+        test.env.queryStateModel.set('t', 'notid');
+
+        $$(test.env.root).trigger(InitializationEvents.afterInitialization);
+        expect(test.env.queryStateModel.get('layout')).not.toEqual('card');
       });
 
       it('layout will change on selection', () => {
-        test = Mock.optionsComponentSetup<Tab, ITabOptions>(Tab, {
+        test = Mock.advancedComponentSetup<Tab>(Tab, new Mock.AdvancedComponentSetupOptions(undefined, {
           layout: 'card',
           caption: 'caption',
           id: 'id'
-        });
-
-        expect(test.env.queryStateModel.set).toHaveBeenCalledWith('layout', 'card');
-        test.cmp.select();
-        expect(test.env.queryStateModel.setMultiple).toHaveBeenCalledWith(jasmine.objectContaining({
-          'layout': 'card'
+        }, (env: Mock.MockEnvironmentBuilder) => {
+          return env.withLiveQueryStateModel();
         }));
+
+        test.env.queryStateModel.set('t', 'id');
+
+        $$(test.env.root).trigger(InitializationEvents.afterInitialization);
+        expect(test.env.queryStateModel.get('layout')).toEqual('card');
+        test.env.queryStateModel.set('layout', 'list');
+        test.cmp.select();
+        expect(test.env.queryStateModel.get('layout')).toEqual('card');
       });
     });
 
