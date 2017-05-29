@@ -1,0 +1,470 @@
+{
+  "clear-small": {
+    "height": "12",
+    "width": "12"
+  },
+  "notifications": {
+    "height": "16",
+    "width": "16"
+  },
+  "arrow-collapse-up": {
+    "height": "6",
+    "width": "10"
+  },
+  "menu-analytics": {
+    "height": "20",
+    "width": "20"
+  },
+  "position": {
+    "height": "19",
+    "width": "14"
+  },
+  "alert": {
+    "height": "16",
+    "width": "16"
+  },
+  "dropdown-manage-alerts-manage": {
+    "height": "20",
+    "width": "20"
+  },
+  "pager-left-arrow": {
+    "height": "20",
+    "width": "11"
+  },
+  "line": {
+    "height": "2",
+    "width": "12"
+  },
+  "insert": {
+    "height": "14",
+    "width": "12"
+  },
+  "action-select": {
+    "height": "20",
+    "width": "20"
+  },
+  "pager-right-arrow": {
+    "height": "20",
+    "width": "11"
+  },
+  "action-activity": {
+    "height": "20",
+    "width": "20"
+  },
+  "action-movetonewfile": {
+    "height": "20",
+    "width": "19"
+  },
+  "action-clear": {
+    "height": "20",
+    "width": "20"
+  },
+  "deploy": {
+    "height": "18",
+    "width": "18"
+  },
+  "google-plus": {
+    "height": "12",
+    "width": "18"
+  },
+  "drag-handle": {
+    "height": "15",
+    "width": "9"
+  },
+  "advanced-settings-dropdown-preferences": {
+    "height": "22",
+    "width": "22"
+  },
+  "tagging-clear": {
+    "height": "8",
+    "width": "8"
+  },
+  "search": {
+    "height": "20",
+    "width": "20"
+  },
+  "star": {
+    "height": "16",
+    "width": "16"
+  },
+  "files": {
+    "height": "15",
+    "width": "12"
+  },
+  "action-external": {
+    "height": "20",
+    "width": "20"
+  },
+  "arrow-previous": {
+    "height": "10",
+    "width": "6"
+  },
+  "settings": {
+    "height": "20",
+    "width": "20"
+  },
+  "action-refresh": {
+    "height": "20",
+    "width": "20"
+  },
+  "checkbox-exclusion": {
+    "height": "8",
+    "width": "8"
+  },
+  "action-interface-editor": {
+    "height": "20",
+    "width": "20"
+  },
+  "attach-to-case": {
+    "height": "20",
+    "width": "20"
+  },
+  "action-facet": {
+    "height": "12",
+    "width": "12"
+  },
+  "external": {
+    "height": "18",
+    "width": "18"
+  },
+  "sort": {
+    "height": "14",
+    "width": "15"
+  },
+  "info": {
+    "height": "16",
+    "width": "16"
+  },
+  "user": {
+    "height": "12",
+    "width": "12"
+  },
+  "table-layout": {
+    "height": "13",
+    "width": "18"
+  },
+  "action-details": {
+    "height": "20",
+    "width": "20"
+  },
+  "arrow-dropdown": {
+    "height": "5",
+    "width": "9"
+  },
+  "discussion": {
+    "height": "20",
+    "width": "18"
+  },
+  "list-layout": {
+    "height": "14",
+    "width": "19"
+  },
+  "quickview": {
+    "height": "12",
+    "width": "20"
+  },
+  "plus": {
+    "height": "10",
+    "width": "10"
+  },
+  "user-everyone": {
+    "height": "15",
+    "width": "26"
+  },
+  "clear-active-filters": {
+    "height": "11",
+    "width": "11"
+  },
+  "menu-jumpto": {
+    "height": "16",
+    "width": "16"
+  },
+  "clear": {
+    "height": "16",
+    "width": "16"
+  },
+  "action-exit": {
+    "height": "20",
+    "width": "20"
+  },
+  "expand": {
+    "height": "13",
+    "width": "13"
+  },
+  "edit-picklist": {
+    "height": "13",
+    "width": "13"
+  },
+  "action-delete": {
+    "height": "20",
+    "width": "19"
+  },
+  "tag-result": {
+    "height": "15",
+    "width": "15"
+  },
+  "facet-search-checkbox-hook": {
+    "height": "7",
+    "width": "7"
+  },
+  "dropdown-authenticate-hover": {
+    "height": "16",
+    "width": "12"
+  },
+  "support": {
+    "height": "16",
+    "width": "14"
+  },
+  "dropdown-authenticate": {
+    "height": "14",
+    "width": "12"
+  },
+  "dropdown-export": {
+    "height": "14",
+    "width": "14"
+  },
+  "facet-loading": {
+    "height": "18",
+    "width": "18"
+  },
+  "condition": {
+    "height": "18",
+    "width": "18"
+  },
+  "set-to-now": {
+    "height": "18",
+    "width": "18"
+  },
+  "action-edit": {
+    "height": "20",
+    "width": "20"
+  },
+  "coin-selecteur": {
+    "height": "14",
+    "width": "14"
+  },
+  "dropdown-expand": {
+    "height": "16",
+    "width": "16"
+  },
+  "community": {
+    "height": "12",
+    "width": "20"
+  },
+  "thesaurus": {
+    "height": "20",
+    "width": "20"
+  },
+  "arrow-expand-down": {
+    "height": "6",
+    "width": "10"
+  },
+  "more-tabs": {
+    "height": "4",
+    "width": "7"
+  },
+  "action-exportagain": {
+    "height": "20",
+    "width": "20"
+  },
+  "pin": {
+    "height": "16",
+    "width": "16"
+  },
+  "checkbox-hook": {
+    "height": "8",
+    "width": "10"
+  },
+  "search-options": {
+    "height": "42",
+    "width": "42"
+  },
+  "menu-organization-case": {
+    "height": "16",
+    "width": "16"
+  },
+  "reply": {
+    "height": "18",
+    "width": "18"
+  },
+  "exclusion": {
+    "height": "6",
+    "width": "6"
+  },
+  "dropdown-less": {
+    "height": "16",
+    "width": "16"
+  },
+  "dropdown-collapse": {
+    "height": "16",
+    "width": "16"
+  },
+  "action-close": {
+    "height": "10",
+    "width": "10"
+  },
+  "product-manuals": {
+    "height": "18",
+    "width": "18"
+  },
+  "less": {
+    "height": "2",
+    "width": "10"
+  },
+  "action-exclude": {
+    "height": "20",
+    "width": "20"
+  },
+  "more-menu": {
+    "height": "16",
+    "width": "16"
+  },
+  "action-remove": {
+    "height": "18",
+    "width": "18"
+  },
+  "collapse": {
+    "height": "13",
+    "width": "13"
+  },
+  "dropdown-ascending": {
+    "height": "12",
+    "width": "15"
+  },
+  "action-filter": {
+    "height": "18",
+    "width": "18"
+  },
+  "action-download": {
+    "height": "20",
+    "width": "20"
+  },
+  "facet-checkbox-exclusion": {
+    "height": "6",
+    "width": "6"
+  },
+  "action-modify-edit": {
+    "height": "15",
+    "width": "15"
+  },
+  "arrow-next": {
+    "height": "10",
+    "width": "6"
+  },
+  "dropdown-density": {
+    "height": "16",
+    "width": "16"
+  },
+  "dropdown-share-query": {
+    "height": "14",
+    "width": "18"
+  },
+  "action-help": {
+    "height": "20",
+    "width": "20"
+  },
+  "facet-search": {
+    "height": "10",
+    "width": "10"
+  },
+  "menu-status": {
+    "height": "16",
+    "width": "16"
+  },
+  "preferences": {
+    "height": "16",
+    "width": "16"
+  },
+  "dropdown-more": {
+    "height": "16",
+    "width": "16"
+  },
+  "dropdown-descending": {
+    "height": "12",
+    "width": "15"
+  },
+  "menu-content": {
+    "height": "18",
+    "width": "18"
+  },
+  "dropdown-follow-query-result-follow": {
+    "height": "12",
+    "width": "15"
+  },
+  "more": {
+    "height": "512",
+    "width": "512"
+  },
+  "salesforce": {
+    "height": "13",
+    "width": "18"
+  },
+  "main-search": {
+    "height": "20",
+    "width": "20"
+  },
+  "menu-infrastructure": {
+    "height": "15",
+    "width": "16"
+  },
+  "or-and": {
+    "height": "18",
+    "width": "18"
+  },
+  "blog": {
+    "height": "16",
+    "width": "18"
+  },
+  "action-logs": {
+    "height": "20",
+    "width": "16"
+  },
+  "main-clear": {
+    "height": "13",
+    "width": "13"
+  },
+  "tagging-ok": {
+    "height": "7",
+    "width": "9"
+  },
+  "checkbox-more-values": {
+    "height": "11",
+    "width": "11"
+  },
+  "replies": {
+    "height": "20",
+    "width": "20"
+  },
+  "my-product": {
+    "height": "37",
+    "width": "45"
+  },
+  "email": {
+    "height": "15",
+    "width": "18"
+  },
+  "user-secured": {
+    "height": "16",
+    "width": "24"
+  },
+  "card-view-layout": {
+    "height": "16",
+    "width": "16"
+  },
+  "facet-search-loading": {
+    "height": "13",
+    "width": "13"
+  },
+  "action-add": {
+    "height": "18",
+    "width": "18"
+  },
+  "action-upload": {
+    "height": "20",
+    "width": "20"
+  },
+  "download": {
+    "height": "12",
+    "width": "12"
+  }
+}

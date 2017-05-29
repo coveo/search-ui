@@ -1,9 +1,8 @@
 .<%=common %> {
-    font-size: <%= baseSize %>px;
     & {
-      background-repeat: no-repeat;
-      background-position: center center;
-      background-size: 100%;
+        background-repeat: no-repeat !important;
+        background-position: center center !important;
+        background-size: 100% auto !important;
     }
 }
 
@@ -13,7 +12,7 @@
 .<%=svgItem.name%> {
   @extend .<%=common %>;
   & {
-      width: 20px;
+      width: 20px; // should be 
       height: 20px;
       background-image: url("../image/symbols.svg#<%=svgItem.name%>")
     }
