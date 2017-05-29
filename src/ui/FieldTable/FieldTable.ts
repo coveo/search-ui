@@ -124,7 +124,7 @@ export class FieldTable extends Component {
       this.buildToggle();
       $$(this.toggleContainer).insertBefore(this.element);
       this.toggleContainer.appendChild(this.element);
-      this.toggleContainer.appendChild(this.toggleButtonInsideTable)
+      this.toggleContainer.appendChild(this.toggleButtonInsideTable);
     } else {
       this.isExpanded = true;
     }
