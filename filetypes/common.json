@@ -198,6 +198,13 @@
         "en": "User",
         "fr": "Utilisateur"
       }
+    },
+    "jiraissue": {
+      "icon": "salesforce-standard-custom",
+      "captions": {
+        "en": "Jira Issue",
+        "fr": "Issue Jira"
+      }
     }
   }
 }
