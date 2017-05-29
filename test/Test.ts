@@ -459,6 +459,9 @@ MultiSelectTest();
 import { FacetSliderQueryControllerTest } from './controllers/FacetSliderQueryControllerTest';
 FacetSliderQueryControllerTest();
 
+import { DateUtilsTest } from './ui/DateUtilsTest';
+DateUtilsTest();
+
 import { DebugForResultTest } from './ui/DebugForResultTest';
 DebugForResultTest();
 
@@ -467,3 +470,4 @@ DebugHeaderTest();
 
 import { FacetValuesTest } from './ui/FacetValuesTest';
 FacetValuesTest();
+

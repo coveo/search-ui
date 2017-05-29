@@ -771,6 +771,7 @@ export class StandaloneSearchInterface extends SearchInterface {
 
     let link = document.createElement('a');
     link.href = searchPage;
+    link.href = link.href; // IE11 needs this to correctly fill the properties that are used below.
 
     // By using a setTimeout, we allow other possible code related to the search box / magic box time to complete.
     // eg: onblur of the magic box.
