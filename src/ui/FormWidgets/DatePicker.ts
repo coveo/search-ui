@@ -3,7 +3,9 @@ declare function require(name: string);
 import { $$ } from '../../utils/Dom';
 import { DateUtils } from '../../utils/DateUtils';
 import { exportGlobally } from '../../GlobalExports';
-let Pikaday = require('pikaday');
+import { l } from '../../strings/Strings';
+const Globalize = require('globalize');
+const Pikaday = require('pikaday');
 
 
 /**
@@ -98,6 +100,12 @@ export class DatePicker implements IFormWidget, IFormWidgetSettable {
       onSelect: () => {
         this.wasReset = false;
         this.onChange.call(this, this);
+      },
+      i18n: {
+        previousMonth: l('PreviousMonth'),
+        nextMonth: l('NextMonth'),
+        months: Globalize.culture().calendar.months.names,
+        weekdays: Globalize.culture().calendar.days.names
       }
     });
   }
