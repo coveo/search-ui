@@ -18,7 +18,7 @@ export function InTheLastDateInputTest() {
 
     describe('getValue', () => {
       it('should return the date >= specified date', () => {
-        input.dropdown.setValue('months');
+        input.dropdown.setValue('Months');
         input.spinner.setValue(13);
         let currentDate = new Date();
         currentDate.setMonth(currentDate.getMonth() - 13);
