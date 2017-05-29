@@ -265,7 +265,7 @@ export class ResultLayout extends Component {
   }
 
   private updateSelectorAppearance() {
-    if (this.shouldShowSelector() && !this.hasNoResults) {
+    if (this.shouldShowSelector()) {
       this.show();
     } else {
       this.hide();
@@ -325,7 +325,7 @@ export class ResultLayout extends Component {
   }
 
   private shouldShowSelector() {
-    return _.keys(this.currentActiveLayouts).length > 1 && _.filter(this.currentActiveLayouts, (activeLayout: IActiveLayouts) => activeLayout.button.visible).length > 1;
+    return _.keys(this.currentActiveLayouts).length > 1 && _.filter(this.currentActiveLayouts, (activeLayout: IActiveLayouts) => activeLayout.button.visible).length > 1 && !this.hasNoResults;
   }
 
   private isLayoutDisplayedByButton(layout: ValidLayout) {
