@@ -33,6 +33,17 @@ export function ResultLayoutTest() {
         $$(test.env.root).trigger(InitializationEvents.afterComponentsInitialization);
       });
 
+      it('hides on querySuccess when there are 0 results and the page is resized', function () {
+        const root = $$(test.cmp.root);
+        let spy = jasmine.createSpy('hideSpy');
+        test.cmp['hide'] = spy;
+        root.width = () => 400;
+        $$(test.env.root).trigger(QueryEvents.querySuccess, <IQuerySuccessEventArgs>{
+          results: FakeResults.createFakeResults(0)
+        });
+        expect(spy).toHaveBeenCalled();
+      });
+
       it('changeLayout should switch the layout when entering a valid and available layout', function () {
         test.cmp.changeLayout('card');
         expect(test.cmp.getCurrentLayout()).toBe('card');
