@@ -1192,6 +1192,9 @@ export class Facet extends Component {
     if (!groupByResult) {
       this.keepDisplayedValuesNextTime = false;
     }
+    if(groupByResult.values.length < 1) {
+      this.element.remove();
+    }
     this.processNewGroupByResults(groupByResult);
   }
 
@@ -1375,7 +1378,7 @@ export class Facet extends Component {
 
   protected updateSearchInNewDesign(moreValuesAvailable = true) {
     if (this.searchInterface.isNewDesign() && moreValuesAvailable) {
-      let renderer = new ValueElementRenderer(this, FacetValue.create(l('Search')));
+      let renderer = new ValueElementRenderer(this, FacetValue.create(('Search')));
       let searchButton = renderer.build().withNo([renderer.excludeIcon, renderer.icon]);
       $$(searchButton.listItem).addClass('coveo-facet-search-button');
       searchButton.stylishCheckbox.removeAttribute('tabindex');
