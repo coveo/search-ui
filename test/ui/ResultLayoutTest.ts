@@ -35,10 +35,11 @@ export function ResultLayoutTest() {
       });
 
       it('hides on querySuccess when there are 0 results and the page is resized', function () {
-        let root = $$(test.cmp.root);
+        const root = $$(test.cmp.root);
         let spy = jasmine.createSpy('hideSpy');
         test.cmp['hide'] = spy;
-        root.width = () => (400);
+        root.width = () => 400;
+
         $$(test.env.root).trigger(QueryEvents.querySuccess, <IQuerySuccessEventArgs>{
           results: FakeResults.createFakeResults(0)
         });
