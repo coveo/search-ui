@@ -11,13 +11,24 @@ module.exports = through.obj(function (file, enc, cb) {
   xml2js.parseString(file.contents, (err, result) => {
     result.svg.use = [];
     result.svg.view = [];
+    let maxWidth = 0;
     result.svg.symbol.forEach((symbol) => {
-      const size = getSizeFromId(symbol.$.id);
-      symbol.$.viewBox = formatViewBox(size);
+      const size = getSizeFromViewBox(symbol.$.viewBox);
       result.svg.use.push(buildUseTag(symbol.$.id, size, currentY));
       result.svg.view.push(buildViewTag(symbol.$.id, size, currentY));
       currentY += parseInt(size.height, 10);
+
+      let width = parseInt(size.width, 10); 
+      if (width > maxWidth) {
+        maxWidth = width;
+      }
     });
+
+    let svgWidth = maxWidth.toString(10);
+    let svgHeight = currentY.toString(10);
+    result.svg.$.viewBox = formatViewBox(svgWidth, svgHeight)
+    result.svg.$.width = svgWidth;
+    result.svg.$.height = svgHeight;
 
     let builder = new xml2js.Builder();
     this.push(new File({
@@ -29,24 +40,24 @@ module.exports = through.obj(function (file, enc, cb) {
     cb();
   })
 
-  function getSizeFromId(id) {
-    if (sizeMap.hasOwnProperty(id)) {
-      return sizeMap[id];
-    } else {
-      console.error('svg icon with id ' + id + ' could not be found in the size map');
+  function getSizeFromViewBox(viewBox) {
+    const values = viewBox.split(' ');
+    return {
+      width: values[2],
+      height: values[3]
     }
   }
 
-  function formatViewBox(size) {
-    return '0 0 ' + size.width + ' ' + size.height; 
+  function formatViewBox(width, height) {
+    return '0 0 ' + width + ' ' + height; 
   }
 
   function buildUseTag(id, size, currentY) {
     return { $ :
       {
         href: '#' + id,
-        width: size.width.toString(10),
-        height: size.height.toString(10),
+        width: size.width,
+        height: size.height,
         x: 0,
         y: currentY
       }
@@ -56,7 +67,7 @@ module.exports = through.obj(function (file, enc, cb) {
   function buildViewTag(id, size, currentY) {
     return { $ : {
         id: id + '-view',
-        viewbox: '0 ' + currentY + ' ' + size.width + ' ' + size.height
+        viewBox: '0 ' + currentY + ' ' + size.width + ' ' + size.height
       }
     }
   }

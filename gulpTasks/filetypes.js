@@ -45,7 +45,7 @@ function generateSass(json, legacy) {
 
   if (!legacy) {
     sass += '@import "' + __dirname + '/../bin/sass/sprites";\n';
-    sass += '@import "' + __dirname + '/../bin/sass/svgSprite";\n';
+    // sass += '@import "' + __dirname + '/../bin/sass/svgSprite";\n';
     // sass += '@import "' + __dirname + '/../bin/sass/salesforceSprites";\n';
     // sass += '@include sprites($salesforce-sprites);\n';
     sass += '@include sprites($spritesheet-sprites);\n';

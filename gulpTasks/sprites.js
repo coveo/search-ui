@@ -9,7 +9,7 @@ const svgSprite = require('gulp-svg-sprites')
 const buildSvgStylesheet = require('./buildSvgStylesheet/buildSvgStylesheet.js')
 
 
-gulp.task('spritesLists', ['regularSpriteList', 'retinaSpriteList', 'spritesSymbols', 'spritesCssFile']);
+gulp.task('spritesLists', ['regularSpriteList', 'retinaSpriteList', 'spritesSymbols', /* 'spritesCssFile' */]);
 
 // "demo" html and json
 gulp.task('regularSpriteList', function (done) {
@@ -37,7 +37,7 @@ gulp.task('spritesSymbols', function () {
       .pipe(gulp.dest('bin'));
 })
 
-gulp.task('spritesCssFile', function () {
+/* gulp.task('spritesCssFile', function () {
 
   return gulp.src('image/svg/*.svg')
       .pipe(svgSprite({
@@ -48,4 +48,4 @@ gulp.task('spritesCssFile', function () {
         cssFile: 'sass/svgSprite.scss'
       }))
       .pipe(gulp.dest('bin'));
-})
+}) */

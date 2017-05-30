@@ -7,7 +7,6 @@ import { FacetUtils } from './FacetUtils';
 import { l } from '../../strings/Strings';
 import { IAnalyticsFacetOperatorMeta, IAnalyticsFacetMeta, analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
 import 'styling/_FacetHeader';
-import '../../../bin/sass/_GeneratedIconsNew';
 
 export interface IFacetHeaderOptions {
   facetElement: HTMLElement;
