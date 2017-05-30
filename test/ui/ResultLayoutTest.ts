@@ -5,9 +5,10 @@ import { QueryEvents, IQuerySuccessEventArgs } from '../../src/events/QueryEvent
 import { InitializationEvents } from '../../src/events/InitializationEvents';
 import { FakeResults } from '../Fake';
 import { QueryStateModel } from '../../src/models/QueryStateModel';
-import { $$ } from '../../src/utils/Dom';
+import { $$, Dom } from '../../src/utils/Dom';
 
 export function ResultLayoutTest() {
+
   describe('ResultLayout', () => {
     let test: Mock.IBasicComponentSetup<ResultLayout>;
 
@@ -31,6 +32,18 @@ export function ResultLayoutTest() {
           }
         });
         $$(test.env.root).trigger(InitializationEvents.afterComponentsInitialization);
+      });
+
+      it('hides on querySuccess when there are 0 results and the page is resized', function () {
+        const root = $$(test.cmp.root);
+        let spy = jasmine.createSpy('hideSpy');
+        test.cmp['hide'] = spy;
+        root.width = () => 400;
+
+        $$(test.env.root).trigger(QueryEvents.querySuccess, <IQuerySuccessEventArgs>{
+          results: FakeResults.createFakeResults(0)
+        });
+        expect(spy).toHaveBeenCalled();
       });
 
       it('changeLayout should switch the layout when entering a valid and available layout', function () {
