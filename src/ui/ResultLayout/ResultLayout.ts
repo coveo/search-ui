@@ -68,6 +68,7 @@ export class ResultLayout extends Component {
 
   private currentActiveLayouts: { [key: string]: IActiveLayouts };
   private resultLayoutSection: HTMLElement;
+  private hasNoResults: boolean;
 
   static options: IResultLayoutOptions = {
     /**
@@ -242,8 +243,10 @@ export class ResultLayout extends Component {
   private handleQuerySuccess(args: IQuerySuccessEventArgs) {
     if (args.results.results.length === 0 || !this.shouldShowSelector()) {
       this.hide();
+      this.hasNoResults = true;
     } else {
       this.show();
+      this.hasNoResults = false;
     }
   }
 
@@ -322,7 +325,7 @@ export class ResultLayout extends Component {
   }
 
   private shouldShowSelector() {
-    return _.keys(this.currentActiveLayouts).length > 1 && _.filter(this.currentActiveLayouts, (activeLayout: IActiveLayouts) => activeLayout.button.visible).length > 1;
+    return _.keys(this.currentActiveLayouts).length > 1 && _.filter(this.currentActiveLayouts, (activeLayout: IActiveLayouts) => activeLayout.button.visible).length > 1 && !this.hasNoResults;
   }
 
   private isLayoutDisplayedByButton(layout: ValidLayout) {
