@@ -2,7 +2,7 @@ export * from './Core';
 
 export { SearchInterface, StandaloneSearchInterface } from './ui/SearchInterface/SearchInterface';
 
-export { PublicPathUtils } from "./utils/PublicPathUtils";
+export { PublicPathUtils } from './utils/PublicPathUtils';
 
 import { PublicPathUtils } from './utils/PublicPathUtils';
 PublicPathUtils.detectPublicPath();
