@@ -608,8 +608,13 @@ export class Facet extends Component {
      * // });
      * ```
      */
-    valueCaption: ComponentOptions.buildCustomOption<IStringMap<string>>(() => {
-      return null;
+    valueCaption: ComponentOptions.buildCustomOption<IStringMap<string>>((value) => {
+      try {
+        return JSON.parse(value);
+      } catch (exception) {
+        // Value is not a valid JSON, ignore.
+        return null;
+      }
     }),
 
     /**
