@@ -3,7 +3,9 @@ declare function require(name: string);
 import { $$ } from '../../utils/Dom';
 import { DateUtils } from '../../utils/DateUtils';
 import { exportGlobally } from '../../GlobalExports';
-let Pikaday = require('pikaday');
+import { l } from '../../strings/Strings';
+const Globalize = require('globalize');
+const Pikaday = require('pikaday');
 
 
 /**
@@ -14,7 +16,7 @@ export class DatePicker implements IFormWidget, IFormWidgetSettable {
   private element: HTMLInputElement;
   private picker: Pikaday;
   public name: string;
-  private wasReset = false;
+  private wasReset = true;
 
   static doExport = () => {
     exportGlobally({
@@ -38,6 +40,7 @@ export class DatePicker implements IFormWidget, IFormWidgetSettable {
   public reset() {
     this.picker.setDate(undefined);
     this.wasReset = true;
+    this.onChange(this);
   }
 
   /**
@@ -61,6 +64,17 @@ export class DatePicker implements IFormWidget, IFormWidgetSettable {
   }
 
   /**
+   * Get the currently selected value in the date picker, as a Date object
+   * @returns {Date} A Date object for the current value, or null if the date picker was reset or a date has not been selected initially.
+   */
+  public getDateValue(): Date {
+    if (this.wasReset) {
+      return null;
+    }
+    return this.picker.getDate();
+  }
+
+  /**
    * Sets the date picker value.
    * @param date The value to set the date picker to. Must be a
    * [Date](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Date) object.
@@ -68,7 +82,6 @@ export class DatePicker implements IFormWidget, IFormWidgetSettable {
   public setValue(date: Date) {
     this.picker.setDate(date);
     this.wasReset = false;
-    this.onChange(this);
   }
 
   /**
@@ -84,7 +97,16 @@ export class DatePicker implements IFormWidget, IFormWidgetSettable {
     this.element.readOnly = true;
     this.picker = new Pikaday({
       field: this.element,
-      onSelect: this.onChange
+      onSelect: () => {
+        this.wasReset = false;
+        this.onChange.call(this, this);
+      },
+      i18n: {
+        previousMonth: l('PreviousMonth'),
+        nextMonth: l('NextMonth'),
+        months: Globalize.culture().calendar.months.names,
+        weekdays: Globalize.culture().calendar.days.names
+      }
     });
   }
 }
