@@ -1192,9 +1192,6 @@ export class Facet extends Component {
     if (!groupByResult) {
       this.keepDisplayedValuesNextTime = false;
     }
-    if(groupByResult.values.length < 1) {
-      this.element.remove();
-    }
     this.processNewGroupByResults(groupByResult);
   }
 
@@ -1254,7 +1251,7 @@ export class Facet extends Component {
 
   protected updateAppearanceDependingOnState() {
     $$(this.element).toggleClass('coveo-active', this.values.hasSelectedOrExcludedValues());
-    if (!$$(this.element).hasClass('coveo-with-placeholder')) {
+    if (!$$(this.element).hasClass('coveo-with-placeholder') || this.nbAvailableValues < 1) {
       $$(this.element).toggleClass('coveo-facet-empty', !this.isAnyValueCurrentlyDisplayed());
     }
     if (this.searchInterface.isNewDesign()) {
