@@ -414,22 +414,22 @@ export function ComponentOptionsTest() {
       });
 
       describe('loadJsonObjectOption', () => {
-        interface JsonObjectTest { 
-          foo: string
-        };
+        interface IJsonObjectTest {
+          foo: string;
+        }
 
         it('which loads a JSON object option', () => {
-          const option = ComponentOptions.loadJsonObjectOption<JsonObjectTest>(elem, 'myTestJsonObject', {});
+          const option = ComponentOptions.loadJsonObjectOption<IJsonObjectTest>(elem, 'myTestJsonObject', {});
           expect(option.foo).not.toBeUndefined();
-          expect(option.foo).toBe('bar')
+          expect(option.foo).toBe('bar');
         });
         it('which loads a JSON array option', () => {
-          const option = ComponentOptions.loadJsonObjectOption<JsonObjectTest[]>(elem, 'myTestJsonArray', {});
+          const option = ComponentOptions.loadJsonObjectOption<IJsonObjectTest[]>(elem, 'myTestJsonArray', {});
           expect(option.length).toBe(1);
-          expect(option[0].foo)
+          expect(option[0].foo);
         });
         it('which disables an invalid JSON option', () => {
-          const option = ComponentOptions.loadJsonObjectOption<JsonObjectTest>(elem, 'myFields', {});
+          const option = ComponentOptions.loadJsonObjectOption<IJsonObjectTest>(elem, 'myFields', {});
           expect(option).toBe(null);
         });
       });
