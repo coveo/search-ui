@@ -253,5 +253,8 @@ lazyRadioButton();
 import { lazyTextInput } from './ui/FormWidgets/LazyTextInput';
 lazyTextInput();
 
+import { lazySimpleFilter } from './ui/SimpleFilter/LazySimpleFilter';
+lazySimpleFilter();
+
 import { swapVar } from './SwapVar';
 swapVar(this);
