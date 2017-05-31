@@ -120,14 +120,7 @@ export class FacetRange extends Facet implements IComponentBindings {
      * function (see [Query Function](https://developers.coveo.com/x/XQCq)). When this is the case, you must specify the
      * ranges at query time.
      */
-    ranges: ComponentOptions.buildCustomOption<IRangeValue[]>((value) => {
-      try {
-        return JSON.parse(value);
-      } catch (exception) {
-        // Invalid ranges, ignore.
-        return null;
-      }
-    }),
+    ranges: ComponentOptions.buildJsonObjectOption<IRangeValue[]>(),
   };
 
   public options: IFacetRangeOptions;

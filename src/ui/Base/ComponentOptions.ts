@@ -200,6 +200,9 @@ export interface IComponentOptionsObjectOptionArgs extends IComponentOptions<{ [
   subOptions: { [key: string]: IComponentOptionsOption<any> };
 }
 
+export interface IComponentJsonObjectOption<T> extends IComponentOptions<T> {
+}
+
 export enum ComponentOptionsType {
   BOOLEAN,
   NUMBER,
@@ -400,6 +403,10 @@ export class ComponentOptions {
       }
     };
     return ComponentOptions.buildOption<T>(ComponentOptionsType.STRING, loadOption, optionArgs);
+  }
+
+  static buildJsonObjectOption<T>(optionArgs?: IComponentJsonObjectOption<T>): T {
+    return ComponentOptions.buildOption<T>(ComponentOptionsType.JSON, ComponentOptions.loadJsonObjectOption, optionArgs);
   }
 
   static buildCustomListOption<T>(converter: (value: string[]) => T, optionArgs?: IComponentOptionsCustomListOptionArgs<T>): T {
@@ -627,6 +634,19 @@ export class ComponentOptions {
   static loadEnumOption(element: HTMLElement, name: string, option: IComponentOptionsOption<any>, _enum: any): number {
     let enumAsString = ComponentOptions.loadStringOption(element, name, option);
     return enumAsString != null ? _enum[enumAsString] : null;
+  }
+
+  static loadJsonObjectOption<T>(element: HTMLElement, name: string, option: IComponentOptions<any>): T {
+    const jsonAsString = ComponentOptions.loadStringOption(element, name, option);
+    if (jsonAsString == null) {
+      return null;
+    }
+    try {
+      return JSON.parse(jsonAsString) as T;
+    } catch (exception) {
+      new Logger(element).info(`Value for option ${name} is not a valid JSON string (Value is ${jsonAsString}). It has been disabled.`);
+      return null;
+    }
   }
 
   static loadSelectorOption(element: HTMLElement, name: string, option: IComponentOptionsOption<any>, doc: Document = document): HTMLElement {

@@ -608,14 +608,7 @@ export class Facet extends Component {
      * // });
      * ```
      */
-    valueCaption: ComponentOptions.buildCustomOption<IStringMap<string>>((value) => {
-      try {
-        return JSON.parse(value);
-      } catch (exception) {
-        // Value is not a valid JSON, ignore.
-        return null;
-      }
-    }),
+    valueCaption: ComponentOptions.buildJsonObjectOption<IStringMap<string>>(),
 
     /**
      * Specifies whether to enable *responsive mode* for facets. Setting this options to `false` on any `Facet`, or
