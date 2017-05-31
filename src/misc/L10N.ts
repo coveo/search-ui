@@ -8,14 +8,14 @@ const singularRegex = /<sn>(((?!<\/sn>).)*)<\/sn>/g;
 export var L10N = {
   format: (key: string, ...args: any[]) => {
     let value = key.toLocaleString();
-    //Try to find a soft match
+    // Try to find a soft match
     if (value == key) {
       value = key.toUpperCase().toLocaleString();
-      if(value == key.toUpperCase()) {
+      if (value == key.toUpperCase()) {
         value = key.toLowerCase().toLocaleString();
-        if(value == key.toLowerCase()) {
+        if (value == key.toLowerCase()) {
           value = (key.charAt(0).toUpperCase() + key.slice(1)).toLocaleString();
-          if(value.toLowerCase() == key){
+          if (value.toLowerCase() == key) {
             value = key;
           }
         }

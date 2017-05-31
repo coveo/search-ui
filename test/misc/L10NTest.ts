@@ -17,18 +17,18 @@ export function L10NTest() {
           'baby': '{0} bab<sn>y</sn><pl>ies</pl>'
         },
         'fr': {
-          'Foo': 'Barre',
+          'Foo': 'Foo',
           'TwoNumbers': '{0} et {1}',
           'baby': '{0} bébé<pl>s</pl>'
         }
       });
     });
     afterEach(() => {
-     String.toLocaleString({
-       'en': {
-         'Foo': 'Foo'
-       }
-     })
+      String.toLocaleString({
+        'en': {
+          'Foo': 'Foo'
+        }
+      });
     });
 
     it('should work for simple localizations', function () {
