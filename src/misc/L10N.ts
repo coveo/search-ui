@@ -15,6 +15,9 @@ export var L10N = {
         value = key.toLowerCase().toLocaleString();
         if(value == key.toLowerCase()) {
           value = (key.charAt(0).toUpperCase() + key.slice(1)).toLocaleString();
+          if(value.toLowerCase() == key){
+            value = key;
+          }
         }
       }
     }

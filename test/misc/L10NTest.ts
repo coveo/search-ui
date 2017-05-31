@@ -23,6 +23,13 @@ export function L10NTest() {
         }
       });
     });
+    afterEach(() => {
+     String.toLocaleString({
+       'en': {
+         'Foo': 'Foo'
+       }
+     })
+    });
 
     it('should work for simple localizations', function () {
       String.locale = 'fr';
