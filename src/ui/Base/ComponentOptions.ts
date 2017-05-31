@@ -644,7 +644,7 @@ export class ComponentOptions {
     try {
       return JSON.parse(jsonAsString) as T;
     } catch (exception) {
-      new Logger(element).info(`Value for option ${name} is not a valid JSON string (Value is ${jsonAsString}). It has been disabled.`);
+      new Logger(element).info(`Value for option ${name} is not a valid JSON string (Value is ${jsonAsString}). It has been disabled.`, exception);
       return null;
     }
   }
