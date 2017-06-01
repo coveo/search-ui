@@ -29,8 +29,6 @@ import { RecommendationQuery } from './RecommendationQuery';
 import { RecommendationAnalyticsClient } from '../Analytics/RecommendationAnalyticsClient';
 
 import 'styling/_Recommendation';
-import { Initialization } from "../Base/Initialization";
-import { IComponentDefinition } from "../Base/Component";
 
 export interface IRecommendationOptions extends ISearchInterfaceOptions {
   mainSearchInterface?: HTMLElement;
