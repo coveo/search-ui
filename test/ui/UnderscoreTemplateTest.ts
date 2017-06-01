@@ -13,17 +13,22 @@ export function UnderscoreTemplateTest() {
     });
 
     it('should be able to create an HTMLElement', () => {
-      let scriptCreated = new UnderscoreTemplate(element).toHtmlElement();
+      const scriptCreated = new UnderscoreTemplate(element).toHtmlElement();
       expect(scriptCreated.getAttribute('type')).toEqual('text/underscore');
     });
 
+    it('should be able to return a valid UnderscoreTemplate from string', () => {
+      const template = UnderscoreTemplate.fromString(element.innerHTML, {});
+      expect(template.instantiateToString(result).indexOf(result.clickUri)).toBeGreaterThan(0);
+    });
+
     it('should be able to return the type', () => {
-      let template = UnderscoreTemplate.create(element);
+      const template = UnderscoreTemplate.create(element);
       expect(template.getType()).toEqual('UnderscoreTemplate');
     });
 
     it('should be able to get the fields', () => {
-      let template = UnderscoreTemplate.create(element);
+      const template = UnderscoreTemplate.create(element);
       expect(template.getFields()).toEqual(jasmine.arrayContaining(['foo']));
     });
   });

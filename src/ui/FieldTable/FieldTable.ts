@@ -124,6 +124,7 @@ export class FieldTable extends Component {
       this.buildToggle();
       $$(this.toggleContainer).insertBefore(this.element);
       this.toggleContainer.appendChild(this.element);
+      this.toggleContainer.appendChild(this.toggleButtonInsideTable);
     } else {
       this.isExpanded = true;
     }
@@ -197,7 +198,6 @@ export class FieldTable extends Component {
     $$(this.toggleButton).insertBefore(this.element);
 
     this.toggleButtonInsideTable = $$('span', { className: 'coveo-field-table-toggle-icon-up coveo-field-table-toggle' }).el;
-    $$(this.toggleButtonInsideTable).insertAfter(this.element);
 
     if (this.options.minimizedByDefault === true) {
       this.isExpanded = false;
