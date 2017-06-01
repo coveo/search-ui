@@ -11,16 +11,23 @@ export var L10N = {
     // Try to find a soft match
     if (value == key) {
       value = key.toUpperCase().toLocaleString();
-      if (value == key.toUpperCase()) {
-        value = key.toLowerCase().toLocaleString();
-        if (value == key.toLowerCase()) {
-          value = (key.charAt(0).toUpperCase() + key.slice(1)).toLocaleString();
-          if (value.toLowerCase() == key) {
-            value = key;
-          }
-        }
-      }
     }
+
+    if (value == key.toUpperCase()) {
+      value = key.toLowerCase().toLocaleString();
+    }
+
+    if (value == key.toLowerCase()) {
+      value = (key.charAt(0).toUpperCase() + key.slice(1)).toLocaleString();
+    }
+
+    if (value.toLowerCase() == key) {
+      value = key;
+    }
+
+
+
+
     if (args.length > 0) {
       let last = _.last(args);
       // Last argument is either the count or a boolean forcing plural (true) or singular (false)

@@ -17,7 +17,7 @@ export function L10NTest() {
           'baby': '{0} bab<sn>y</sn><pl>ies</pl>'
         },
         'fr': {
-          'Foo': 'Foo',
+          'Foo': 'Barre',
           'TwoNumbers': '{0} et {1}',
           'baby': '{0} bébé<pl>s</pl>'
         }
@@ -27,6 +27,9 @@ export function L10NTest() {
       String.toLocaleString({
         'en': {
           'Foo': 'Foo'
+        },
+        'fr': {
+          'Foo' :'Foo'
         }
       });
     });

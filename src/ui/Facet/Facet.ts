@@ -1251,7 +1251,7 @@ export class Facet extends Component {
 
   protected updateAppearanceDependingOnState() {
     $$(this.element).toggleClass('coveo-active', this.values.hasSelectedOrExcludedValues());
-    if (!$$(this.element).hasClass('coveo-with-placeholder') || this.nbAvailableValues < 1) {
+    if (this.nbAvailableValues < 1) {
       $$(this.element).toggleClass('coveo-facet-empty', !this.isAnyValueCurrentlyDisplayed());
     }
     if (this.searchInterface.isNewDesign()) {

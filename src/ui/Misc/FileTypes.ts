@@ -41,9 +41,9 @@ export class FileTypes {
     // Most object types have a set of localized strings in the main dictionary
     var localizedString = l(variableValue);
     // Some strings are sent as `objecttype_[...]` to specify a dictionary to use. If there's no match, try using
-    // the main dictionary by keepingo only the value after `_`.
+    // the main dictionary by keeping only the value after `_`.
     if (localizedString.toLowerCase() == variableValue.toLowerCase()) {
-      localizedString = l(localizedString.replace(/(.*)_/g, ''));
+      localizedString = l(objecttype);
     }
     return {
       'icon': 'coveo-icon objecttype ' + objecttype.replace(' ', '-'),
@@ -68,7 +68,7 @@ export class FileTypes {
     if (localizedString.toLowerCase() == variableValue.toLowerCase()) {
       // Some strings are sent as `filetype_[...]` to specify a dictionary to use. If there's no match, try using
       // The main dictionary by keeping only the value after `_`.
-      localizedString = l(localizedString.replace(/(.*)_/g, ''));
+      localizedString = l(filetype);
     }
     return {
       'icon': 'coveo-icon filetype ' + filetype.replace(' ', '-'),
