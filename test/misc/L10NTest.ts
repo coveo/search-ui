@@ -73,6 +73,13 @@ export function L10NTest() {
       expect(L10N.format('baby', 1, true)).toBe('1 babies');
       expect(L10N.format('baby', 37, false)).toBe('37 baby');
     });
+
+    it('should try to find a soft match between strings', function () {
+      String.locale = 'fr';
+      expect(L10N.format('foo')).toBe('Barre');
+      expect(L10N.format('FOO')).toBe('Barre');
+      String.locale = 'en';
+    });
   });
 
 }
