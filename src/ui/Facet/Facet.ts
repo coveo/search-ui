@@ -599,13 +599,13 @@ export class Facet extends Component {
      *   }
      * });
      * ```
-     * 
+     *
      * Or directly in the markup:
      * ```html
      * <!-- Ensure that the double quotes are properly handled in data-value-caption. -->
      * <div class='CoveoFacet' data-field='@myotherfield' data-value-caption='{"txt":"Text files","html":"Web page"}></div>
      * ```
-     * 
+     *
      * **Note:**
      * > Using value captions will disable alphabetical sorts (see the [availableSorts]{@link Facet.options.availableSorts} option).
      */
