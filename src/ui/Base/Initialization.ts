@@ -18,6 +18,7 @@ import { IJQuery } from './CoveoJQuery';
 import * as _ from 'underscore';
 import { IStringMap } from '../../rest/GenericParam';
 import { InitializationPlaceholder } from './InitializationPlaceholder';
+import { NoopComponent } from '../NoopComponent/NoopComponent';
 declare const require: any;
 
 /**
@@ -645,8 +646,11 @@ export class LazyInitialization {
     }
   }
 
-  public static buildErrorCallback(chunkName: string) {
-    return () => LazyInitialization.logger.error(`Cannot load chunk for ${chunkName}. You may need to configure the paths of the ressources using Coveo.configureRessourceRoot. Current path is ${__webpack_public_path__}.`);
+  public static buildErrorCallback(chunkName: string, resolve: Function) {
+    return () => {
+      LazyInitialization.logger.warn(`Cannot load chunk for ${chunkName}. You may need to configure the paths of the ressources using Coveo.configureRessourceRoot. Current path is ${__webpack_public_path__}.`);
+      resolve(NoopComponent);
+    };
   }
 
   public static registerLazyModule(id: string, load: () => Promise<any>): void {

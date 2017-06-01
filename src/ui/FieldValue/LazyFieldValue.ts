@@ -8,7 +8,7 @@ export function lazyFieldValue() {
       require.ensure(['./FieldValue'], () => {
         let loaded = require<IComponentDefinition>('./FieldValue.ts')['FieldValue'];
         lazyExport(loaded, resolve);
-      }, LazyInitialization.buildErrorCallback('FieldValue'), 'FieldValue');
+      }, LazyInitialization.buildErrorCallback('FieldValue', resolve), 'FieldValue');
     });
   });
 }

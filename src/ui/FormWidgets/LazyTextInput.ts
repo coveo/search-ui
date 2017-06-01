@@ -7,7 +7,7 @@ export function lazyTextInput() {
       require.ensure(['./TextInput'], () => {
         let loaded = require('./TextInput.ts')['TextInput'];
         lazyExportModule(loaded, resolve);
-      }, LazyInitialization.buildErrorCallback('TextInput'), 'TextInput');
+      }, LazyInitialization.buildErrorCallback('TextInput', resolve), 'TextInput');
     });
   });
 }

@@ -8,7 +8,7 @@ export function lazyFollowItem() {
       require.ensure(['./FollowItem'], () => {
         let loaded = require<IComponentDefinition>('./FollowItem.ts')['FollowItem'];
         lazyExport(loaded, resolve);
-      }, LazyInitialization.buildErrorCallback('FollowItem'), 'FollowItem');
+      }, LazyInitialization.buildErrorCallback('FollowItem', resolve), 'FollowItem');
     });
   });
 }

@@ -8,7 +8,7 @@ export function lazyBadge() {
       require.ensure(['./Badge'], () => {
         let loaded = require<IComponentDefinition>('./Badge.ts')['Badge'];
         lazyExport(loaded, resolve);
-      }, LazyInitialization.buildErrorCallback('Badge'), 'Badge');
+      }, LazyInitialization.buildErrorCallback('Badge', resolve), 'Badge');
     });
   });
 }
