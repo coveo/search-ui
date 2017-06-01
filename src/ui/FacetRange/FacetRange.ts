@@ -81,7 +81,7 @@ export class FacetRange extends Facet implements IComponentBindings {
      *
      * **Examples:**
      *
-     * You can set the option in the 'init' call:
+     * You can set the option in the ['init']{@link init} call:
      * ```javascript
      * var myRanges = [
      *   {

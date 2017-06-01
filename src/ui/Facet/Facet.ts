@@ -576,7 +576,7 @@ export class Facet extends Component {
      *
      * **Examples:**
      *
-     * You can set the option in the 'init' call:
+     * You can set the option in the ['init']{@link init} call:
      * ```javascript
      * var myValueCaptions = {
      *   "txt" : "Text files",
@@ -591,7 +591,7 @@ export class Facet extends Component {
      * });
      * ```
      *
-     * Or before the 'init' call, using the 'options' top-level function:
+     * Or before the `init` call, using the ['options']{@link options} top-level function:
      * ```javascript
      * Coveo.options(document.querySelector("#search"), {
      *   Facet : {
