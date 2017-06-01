@@ -29,7 +29,7 @@ export function L10NTest() {
           'Foo': 'Foo'
         },
         'fr': {
-          'Foo' :'Foo'
+          'Foo': 'Foo'
         }
       });
     });
