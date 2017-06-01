@@ -78,11 +78,10 @@ export class FacetRange extends Facet implements IComponentBindings {
     /**
      * Specifies an array of {@link IRangeValue} to use as Facet values.
      *
-     * It is only possible to specify a value for this option in the {@link init} call of your search interface. You
-     * cannot set it directly as an HTML attribute.
      *
-     * **Example:**
+     * **Examples:**
      *
+     * You can set the option in the ['init']{@link init} call:
      * ```javascript
      * var myRanges = [
      *   {
@@ -112,6 +111,12 @@ export class FacetRange extends Facet implements IComponentBindings {
      * })
      * ```
      *
+     * Or directly in the markup:
+     * ```html
+     * <!-- Ensure that the double quotes are properly handled in data-ranges. -->
+     * <div class='CoveoFacetRange' data-field='@myotherfield' data-ranges='[{"start": 0, "end": 100, "label": "0 - 100", "endInclusive": false}, {"start": 100, "end": 200, "label": "100 - 200", "endInclusive": false}]'></div>
+     * ```
+     *
      * **Note:**
      * > Ranges can overlap.
      *
@@ -120,9 +125,7 @@ export class FacetRange extends Facet implements IComponentBindings {
      * function (see [Query Function](https://developers.coveo.com/x/XQCq)). When this is the case, you must specify the
      * ranges at query time.
      */
-    ranges: ComponentOptions.buildCustomOption<IRangeValue[]>(() => {
-      return null;
-    }),
+    ranges: ComponentOptions.buildJsonObjectOption<IRangeValue[]>(),
   };
 
   public options: IFacetRangeOptions;
