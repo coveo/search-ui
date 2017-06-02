@@ -665,6 +665,30 @@ export function FacetTest() {
         expect($$(test.cmp.element).hasClass('coveo-facet-dependent')).toBe(true);
         expect($$(masterFacet.cmp.element).hasClass('coveo-facet-dependent')).toBe(false);
       });
+
+      it('padding container should default to coveo-facet-column', () => {
+        const facetColumn = $$('div', { className: 'coveo-facet-column' });
+        const dummyDivParent = $$('div');
+        test = Mock.advancedComponentSetup<Facet>(Facet, new Mock.AdvancedComponentSetupOptions(undefined, {
+        }, (builder: Mock.MockEnvironmentBuilder) => {
+          facetColumn.append(builder.element);
+          dummyDivParent.append(builder.element);
+          facetColumn.append(dummyDivParent.el);
+          return builder;
+        }));
+
+        expect(test.cmp.options.paddingContainer).toBe(facetColumn.el);
+      });
+
+      it('padding container should default to the parent container if there is no coveo-facet-column', () => {
+        const dummyDivParent = $$('div');
+        test = Mock.advancedComponentSetup<Facet>(Facet, new Mock.AdvancedComponentSetupOptions(undefined, {
+        }, (builder: Mock.MockEnvironmentBuilder) => {
+          dummyDivParent.append(builder.element);
+          return builder;
+        }));
+        expect(test.cmp.options.paddingContainer).toBe(dummyDivParent.el);
+      });
     });
   });
 }
