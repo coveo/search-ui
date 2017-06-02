@@ -4,7 +4,7 @@ import { COMPONENT_OPTIONS_ATTRIBUTES } from '../../models/ComponentOptionsModel
 import { TextInput } from '../FormWidgets/TextInput';
 import { $$ } from '../../utils/Dom';
 import { ResultListEvents, IDisplayedNewResultEventArgs } from '../../events/ResultListEvents';
-import { QueryEvents, IBuildingQueryEventArgs } from '../../events/QueryEvents';
+import { QueryEvents, IDoneBuildingQueryEventArgs } from '../../events/QueryEvents';
 import { InitializationEvents } from '../../events/InitializationEvents';
 import { stringify } from 'circular-json';
 
@@ -12,20 +12,19 @@ export class DebugHeader {
   private debug = false;
   private enableQuerySyntax = false;
   private highlightRecommendation = false;
+  private requestAllFields = false;
   private search: HTMLElement;
 
   constructor(public root: HTMLElement, public element: HTMLElement, public bindings: IComponentBindings, public onSearch: (value: string) => void, public infoToDebug: any) {
     this.element.appendChild(this.buildEnabledHighlightRecommendation());
     this.element.appendChild(this.buildEnableDebugCheckbox());
     this.element.appendChild(this.buildEnableQuerySyntaxCheckbox());
+    this.element.appendChild(this.buildRequestAllFieldsCheckbox());
     this.element.appendChild(this.buildSearch());
     this.element.appendChild(this.buildDownloadLink());
 
-    // After components initialization ensure any component that might modify the result will have the chance to do their job before we display debug info
-    $$(this.root).on(InitializationEvents.afterInitialization, () => {
-      $$(this.root).on(ResultListEvents.newResultDisplayed, (e, args: IDisplayedNewResultEventArgs) => this.handleNewResultDisplayed(args));
-    });
-    $$(this.root).on(QueryEvents.buildingQuery, (e, args: IBuildingQueryEventArgs) => this.handleBuildingQuery(args));
+    $$(this.root).on(ResultListEvents.newResultDisplayed, (e, args: IDisplayedNewResultEventArgs) => this.handleNewResultDisplayed(args));
+    $$(this.root).on(QueryEvents.doneBuildingQuery, (e, args: IDoneBuildingQueryEventArgs) => this.handleDoneBuildingQuery(args));
   }
 
   private handleNewResultDisplayed(args: IDisplayedNewResultEventArgs) {
@@ -34,8 +33,11 @@ export class DebugHeader {
     }
   }
 
-  private handleBuildingQuery(args: IBuildingQueryEventArgs) {
+  private handleDoneBuildingQuery(args: IDoneBuildingQueryEventArgs) {
     args.queryBuilder.enableDebug = this.debug || args.queryBuilder.enableDebug;
+    if (this.requestAllFields) {
+      args.queryBuilder.includeRequiredFields = false;
+    }
   }
 
   private buildSearch() {
@@ -80,6 +82,19 @@ export class DebugHeader {
       });
     }, 'Enable query syntax in search box');
     if (this.enableQuerySyntax) {
+      checkbox.select();
+    }
+    return checkbox.build();
+  }
+
+  private buildRequestAllFieldsCheckbox() {
+    const checkbox = new Checkbox((chkboxInstance) => {
+      this.requestAllFields = chkboxInstance.isSelected();
+      this.bindings.queryController.executeQuery({
+        closeModalBox: false
+      });
+    }, 'Request all fields available');
+    if (this.requestAllFields) {
       checkbox.select();
     }
     return checkbox.build();

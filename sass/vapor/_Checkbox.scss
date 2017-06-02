@@ -8,3 +8,7 @@
     margin-left: $checkbox-label-margin;
   }
 }
+
+.coveo-checkbox-button, input[type=checkbox].coveo-checkbox + button {
+  min-width: 18px;
+}
