@@ -574,43 +574,42 @@ export class Facet extends Component {
      * Specifies a JSON object describing a mapping of facet values to their desired captions. See
      * [Normalizing Facet Value Captions](https://developers.coveo.com/x/jBsvAg).
      *
-     * **Notes:**
-     * > * You cannot set this option directly in the component markup as an HTML attribute. You must either set it in the
-     *    > [`init`]{@link init} call of your search interface (see
-     *    > [Components - Passing Component Options in the init Call](https://developers.coveo.com/x/PoGfAQ#Components-PassingComponentOptionsintheinitCall)),
-     *    > or before the `init` call, using the `options` top-level function (see
-     *    > [Components - Passing Component Options Before the init Call](https://developers.coveo.com/x/PoGfAQ#Components-PassingComponentOptionsBeforetheinitCall)).
+     * **Examples:**
      *
-     * > *  Using value captions will disable alphabetical sorts (see the [availableSorts]{@link Facet.options.availableSorts} option).
-     *
-     * **Example:**
-     *
+     * You can set the option in the ['init']{@link init} call:
      * ```javascript
-     *
      * var myValueCaptions = {
      *   "txt" : "Text files",
      *   "html" : "Web page",
      *   [ ... ]
      * };
      *
-     * // You can set the option in the 'init' call:
      * Coveo.init(document.querySelector("#search"), {
      *   Facet : {
      *     valueCaption : myValueCaptions
      *   }
      * });
-     *
-     * // Or before the 'init' call, using the 'options' top-level function:
-     * // Coveo.options(document.querySelector("#search"), {
-     * //  Facet : {
-     * //    valueCaption : myValueCaptions
-     * //  }
-     * // });
      * ```
+     *
+     * Or before the `init` call, using the ['options']{@link options} top-level function:
+     * ```javascript
+     * Coveo.options(document.querySelector("#search"), {
+     *   Facet : {
+     *     valueCaption : myValueCaptions
+     *   }
+     * });
+     * ```
+     *
+     * Or directly in the markup:
+     * ```html
+     * <!-- Ensure that the double quotes are properly handled in data-value-caption. -->
+     * <div class='CoveoFacet' data-field='@myotherfield' data-value-caption='{"txt":"Text files","html":"Web page"}></div>
+     * ```
+     *
+     * **Note:**
+     * > Using value captions will disable alphabetical sorts (see the [availableSorts]{@link Facet.options.availableSorts} option).
      */
-    valueCaption: ComponentOptions.buildCustomOption<IStringMap<string>>(() => {
-      return null;
-    }),
+    valueCaption: ComponentOptions.buildJsonObjectOption<IStringMap<string>>(),
 
     /**
      * Specifies whether to enable *responsive mode* for facets. Setting this options to `false` on any `Facet`, or
