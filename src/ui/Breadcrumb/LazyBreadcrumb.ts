@@ -8,7 +8,7 @@ export function lazyBreadcrumb() {
       require.ensure(['./Breadcrumb'], () => {
         let loaded = require<IComponentDefinition>('./Breadcrumb.ts')['Breadcrumb'];
         lazyExport(loaded, resolve);
-      }, LazyInitialization.buildErrorCallback('Breadcrumb'), 'Breadcrumb');
+      }, LazyInitialization.buildErrorCallback('Breadcrumb', resolve), 'Breadcrumb');
     });
   });
 }

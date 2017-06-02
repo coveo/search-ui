@@ -8,7 +8,7 @@ export function lazyResultTagging() {
       require.ensure(['./ResultTagging'], () => {
         let loaded = require<IComponentDefinition>('./ResultTagging.ts')['ResultTagging'];
         lazyExport(loaded, resolve);
-      }, LazyInitialization.buildErrorCallback('ResultTagging'), 'ResultTagging');
+      }, LazyInitialization.buildErrorCallback('ResultTagging', resolve), 'ResultTagging');
     });
   });
 }
