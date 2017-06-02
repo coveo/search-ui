@@ -8,7 +8,7 @@ export function lazyHiddenQuery() {
       require.ensure(['./HiddenQuery'], () => {
         let loaded = require<IComponentDefinition>('./HiddenQuery.ts')['HiddenQuery'];
         lazyExport(loaded, resolve);
-      }, LazyInitialization.buildErrorCallback('HiddenQuery'), 'HiddenQuery');
+      }, LazyInitialization.buildErrorCallback('HiddenQuery', resolve), 'HiddenQuery');
     });
   });
 }

@@ -17,6 +17,10 @@ if (minimize) {
   plugins.push(new webpack.optimize.UglifyJsPlugin());
 }
 
+plugins.push(new webpack.DefinePlugin({
+  DISABLE_LOGGER: minimize
+}))
+
 // SpritesmithPlugin takes care of outputting the stylesheets.
 plugins.push(spritesmithConfig);
 

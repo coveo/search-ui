@@ -8,7 +8,7 @@ export function lazyIcon() {
       require.ensure(['./Icon'], () => {
         let loaded = require<IComponentDefinition>('./Icon.ts')['Icon'];
         lazyExport(loaded, resolve);
-      }, LazyInitialization.buildErrorCallback('Icon'), 'Icon');
+      }, LazyInitialization.buildErrorCallback('Icon', resolve), 'Icon');
     });
   });
 }

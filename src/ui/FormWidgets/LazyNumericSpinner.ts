@@ -7,7 +7,7 @@ export function lazyNumericSpinner() {
       require.ensure(['./NumericSpinner'], () => {
         let loaded = require('./NumericSpinner.ts')['NumericSpinner'];
         lazyExportModule(loaded, resolve);
-      }, LazyInitialization.buildErrorCallback('NumericSpinner'), 'NumericSpinner');
+      }, LazyInitialization.buildErrorCallback('NumericSpinner', resolve), 'NumericSpinner');
     });
   });
 }
