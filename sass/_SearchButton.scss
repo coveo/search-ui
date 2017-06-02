@@ -20,11 +20,17 @@
 
   & > .coveo-icon {
     vertical-align: middle;
-    @include retina-sprite($main-search-group);
-    animation: none;
+    //@include retina-sprite($main-search-group);
+    //animation: none;
   }
   &:hover > .coveo-icon {
-    @include retina-sprite($main-search-active-group);
+    //@include retina-sprite($main-search-active-group);
+  }
+
+  svg {
+    vertical-align: middle;    
+    width: 20px;
+    height: 20px;
   }
 }
 

@@ -9,16 +9,13 @@ module.exports = through.obj(function (file, enc, cb) {
   let currentY = 0;
 
   xml2js.parseString(file.contents, (err, result) => {
-    result.svg.use = [];
     result.svg.view = [];
     let maxWidth = 0;
-    result.svg.symbol.forEach((symbol) => {
-      const size = getSizeFromViewBox(symbol.$.viewBox);
-      result.svg.use.push(buildUseTag(symbol.$.id, size, currentY));
-      result.svg.view.push(buildViewTag(symbol.$.id, size, currentY));
-      currentY += parseInt(size.height, 10);
-
-      let width = parseInt(size.width, 10); 
+    result.svg.svg.forEach((svg) => {
+      const size = getSizeFromViewBox(svg.$.viewBox);
+      result.svg.view.push(buildViewTag(svg.$.id, size, svg.$.y));
+      //  ADD SOMETHING TO VERIFY ICON SIZES IS OK, CAN DO REVERSE CHECK TOO
+      let width = parseInt(size.width, 10);
       if (width > maxWidth) {
         maxWidth = width;
       }
@@ -64,10 +61,10 @@ module.exports = through.obj(function (file, enc, cb) {
     }
   }
 
-  function buildViewTag(id, size, currentY) {
+  function buildViewTag(id, size, y) {
     return { $ : {
         id: id + '-view',
-        viewBox: '0 ' + currentY + ' ' + size.width + ' ' + size.height
+        viewBox: '0 ' + y + ' ' + size.width + ' ' + size.height
       }
     }
   }

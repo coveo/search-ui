@@ -27,6 +27,7 @@ import { ResponsiveComponentsUtils } from '../ResponsiveComponents/ResponsiveCom
 import { FacetValuesOrder } from './FacetValuesOrder';
 import * as _ from 'underscore';
 import 'styling/_FacetSearch';
+import { SVGIcons } from '../../utils/SVGIcons';
 
 /**
  * Used by the {@link Facet} component to render and handle the facet search part of each facet.
@@ -184,7 +185,7 @@ export class FacetSearch {
     this.search = document.createElement('div');
     $$(this.search).addClass('coveo-facet-search');
 
-    this.magnifier = document.createElement('div');
+    // this.magnifier = SVGIcons.search;
     $$(this.magnifier).addClass('coveo-facet-search-magnifier');
     this.search.appendChild(this.magnifier);
 

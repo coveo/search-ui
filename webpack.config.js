@@ -94,7 +94,7 @@ module.exports = {
     devtoolModuleFilenameTemplate: '[resource-path]'
   },
   resolve: {
-    extensions: ['.ts', '.js', '.scss'],
+    extensions: ['.ts', '.js', '.scss', '.svg'],
     alias: {
       'l10n': __dirname + '/lib/l10n/l10n.min.js',
       'globalize': globalizePath,
@@ -103,7 +103,8 @@ module.exports = {
       'svg4everybody': svg4everybodyPath,
       'default-language': __dirname + '/src/strings/DefaultLanguage.js',
       'jQuery': __dirname + '/test/lib/jquery.js',
-      'styling': __dirname + '/sass'
+      'styling': __dirname + '/sass',
+      'svg': __dirname + '/image/svg'
     },
     modules: ['node_modules', path.resolve(__dirname, '../bin/image/css')]
   },
@@ -158,7 +159,7 @@ module.exports = {
         }
       }]
     }, {
-      test: /\.(gif|png|jpe?g|svg|ttf|woff2?|eot)$/,
+      test: /\.(gif|png|jpe?g|ttf|woff2?|eot)$/,
       use: [{
         loader: 'file-loader',
         options: {
@@ -168,7 +169,13 @@ module.exports = {
           publicPath: ' ',
         }
       }]
-    },{
+    }, {
+      test: /\.svg$/,
+      use: [{
+        loader: 'svg-inline-loader'
+      }]
+    },
+    {
       test: /\.ts$/,
       use: [{
         loader: 'ts-loader'

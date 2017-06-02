@@ -25,7 +25,7 @@ gulp.task('spritesSymbols', function () {
     templates: {
       css: fs.readFileSync('./sass/template/svgSpriteTemplate.lodash.scss', 'utf-8')
     },
-    mode: 'symbols',
+    //mode: 'symbols',
     common: 'coveo',
     svg: {
       symbols: 'image/symbols.svg'
@@ -33,7 +33,7 @@ gulp.task('spritesSymbols', function () {
   };
   return gulp.src('image/svg/*.svg')
       .pipe(svgSprite(config))
-      .pipe(buildSvgStylesheet)
+      //.pipe(buildSvgStylesheet)
       .pipe(gulp.dest('bin'));
 })
 

@@ -29,34 +29,24 @@
 }
 
 .coveo-facet-header-settings {
-  .coveo-icon {
-    @include retina-sprite($more-menu-group);
-  }
-  &:hover, &:focus {
-    .coveo-icon {
-      @include retina-sprite($more-menu-active-group);
+  span {
+    &:hover, &:focus {
+      outline: none;
+      svg > path {
+        fill-opacity: 1;
+        fill: $color-blueish-white-grey;
+      }
     }
-    outline: none;
-  }
 
-  svg {
-    width: 18px;
-    height: 18px;
-  }
-
-  .coveo-placeholder {
-    /* 
-        width: 100%;
-    height: 100%;
-    background-repeat: no-repeat !important;
-    background-position: center center !important;
-    background-size: 100% auto !important;
-    fill: #0000ff;
-    display: inline-block;
-    background-image: url('../image/symbols.svg#action-add'); */
+    svg {
+      width: 18px;
+      height: 18px;
+      path {
+        fill: $color-greyish-teal-blue;
+      }
+    }
   }
 }
-
 
 .coveo-facet-header-operator {
   .coveo-icon.coveo-and {
