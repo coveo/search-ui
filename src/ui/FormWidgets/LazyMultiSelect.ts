@@ -7,7 +7,7 @@ export function lazyMultiSelect() {
       require.ensure(['./MultiSelect'], () => {
         let loaded = require('./MultiSelect.ts')['MultiSelect'];
         lazyExportModule(loaded, resolve);
-      }, LazyInitialization.buildErrorCallback('MultiSelect'), 'MultiSelect');
+      }, LazyInitialization.buildErrorCallback('MultiSelect', resolve), 'MultiSelect');
     });
   });
 }

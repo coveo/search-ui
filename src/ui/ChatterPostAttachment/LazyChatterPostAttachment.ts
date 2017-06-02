@@ -8,7 +8,7 @@ export function lazyChatterPostAttachment() {
       require.ensure(['./ChatterPostAttachment'], () => {
         let loaded = require<IComponentDefinition>('./ChatterPostAttachment.ts')['ChatterPostAttachment'];
         lazyExport(loaded, resolve);
-      }, LazyInitialization.buildErrorCallback('ChatterPostAttachment'), 'ChatterPostAttachment');
+      }, LazyInitialization.buildErrorCallback('ChatterPostAttachment', resolve), 'ChatterPostAttachment');
     });
   });
 }

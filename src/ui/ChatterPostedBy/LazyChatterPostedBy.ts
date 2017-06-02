@@ -8,7 +8,7 @@ export function lazyChatterPostedBy() {
       require.ensure(['./ChatterPostedBy'], () => {
         let loaded = require<IComponentDefinition>('./ChatterPostedBy.ts')['ChatterPostedBy'];
         lazyExport(loaded, resolve);
-      }, LazyInitialization.buildErrorCallback('ChatterPostedBy'), 'ChatterPostedBy');
+      }, LazyInitialization.buildErrorCallback('ChatterPostedBy', resolve), 'ChatterPostedBy');
     });
   });
 }

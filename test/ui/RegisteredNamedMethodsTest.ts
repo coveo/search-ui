@@ -8,6 +8,7 @@ import { IAnalyticsClient } from '../../src/ui/Analytics/AnalyticsClient';
 import { mockUsageAnalytics } from '../MockEnvironment';
 import { LazyInitialization } from '../../src/ui/Base/Initialization';
 import { NoopComponent } from '../../src/ui/NoopComponent/NoopComponent';
+import { Defer } from '../../src/misc/Defer';
 
 export function RegisteredNamedMethodsTest() {
   describe('RegisteredNamedMethods', () => {
@@ -78,17 +79,23 @@ export function RegisteredNamedMethodsTest() {
         Searchbox: { addSearchButton: false },
         SearchInterface: { autoTriggerQuery: false }
       })).not.toThrow();
+
       expect((<Component>Component.get(searchbox)).options.addSearchButton).toBe(false);
       expect((<Component>Component.get(searchbox)).options.triggerQueryOnClear).toBe(false);
     });
 
-    it('should allow to call init recommendation correctly', () => {
+    it('should allow to call init recommendation correctly', (done) => {
       expect(() => RegisteredNamedMethod.initRecommendation(root, undefined, undefined, {
         Searchbox: { addSearchButton: false },
         SearchInterface: { autoTriggerQuery: false }
       })).not.toThrow();
 
-      expect((<Component>Component.get(searchbox)).options.addSearchButton).toBe(false);
+      Defer.defer(() => {
+        expect((<Component>Component.get(searchbox)).options.addSearchButton).toBe(false);
+        done();
+      });
+
+
     });
 
     it('should allow to call execute query', () => {

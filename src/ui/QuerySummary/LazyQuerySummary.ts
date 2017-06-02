@@ -8,7 +8,7 @@ export function lazyQuerySummary() {
       require.ensure(['./QuerySummary'], () => {
         let loaded = require<IComponentDefinition>('./QuerySummary.ts')['QuerySummary'];
         lazyExport(loaded, resolve);
-      }, LazyInitialization.buildErrorCallback('QuerySummary'), 'QuerySummary');
+      }, LazyInitialization.buildErrorCallback('QuerySummary', resolve), 'QuerySummary');
     });
   });
 }

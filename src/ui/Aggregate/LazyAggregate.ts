@@ -8,7 +8,7 @@ export function lazyAggregate() {
       require.ensure(['./Aggregate'], () => {
         let loaded = require<IComponentDefinition>('./Aggregate.ts')['Aggregate'];
         lazyExport(loaded, resolve);
-      }, LazyInitialization.buildErrorCallback('Aggregate'), 'Aggregate');
+      }, LazyInitialization.buildErrorCallback('Aggregate', resolve), 'Aggregate');
     });
   });
 }
