@@ -58,8 +58,8 @@ export class DebugHeader {
   }
 
   private buildEnableDebugCheckbox() {
-    const checkbox = new Checkbox((chkboxInstance) => {
-      this.debug = chkboxInstance.isSelected();
+    const checkbox = new Checkbox((checkboxInstance) => {
+      this.debug = checkboxInstance.isSelected();
 
       this.bindings.queryController.executeQuery({
         closeModalBox: false
@@ -74,8 +74,8 @@ export class DebugHeader {
   }
 
   private buildEnableQuerySyntaxCheckbox() {
-    const checkbox = new Checkbox((chkboxInstance) => {
-      this.enableQuerySyntax = chkboxInstance.isSelected();
+    const checkbox = new Checkbox((checkboxInstance) => {
+      this.enableQuerySyntax = checkboxInstance.isSelected();
       this.bindings.componentOptionsModel.set(COMPONENT_OPTIONS_ATTRIBUTES.SEARCH_BOX, { enableQuerySyntax: this.enableQuerySyntax });
       this.bindings.queryController.executeQuery({
         closeModalBox: false
@@ -88,8 +88,8 @@ export class DebugHeader {
   }
 
   private buildRequestAllFieldsCheckbox() {
-    const checkbox = new Checkbox((chkboxInstance) => {
-      this.requestAllFields = chkboxInstance.isSelected();
+    const checkbox = new Checkbox((checkboxInstance) => {
+      this.requestAllFields = checkboxInstance.isSelected();
       this.bindings.queryController.executeQuery({
         closeModalBox: false
       });
@@ -101,8 +101,8 @@ export class DebugHeader {
   }
 
   private buildEnabledHighlightRecommendation() {
-    const checkbox = new Checkbox((chkboxInstance) => {
-      this.highlightRecommendation = chkboxInstance.isSelected();
+    const checkbox = new Checkbox((checkboxInstance) => {
+      this.highlightRecommendation = checkboxInstance.isSelected();
       this.bindings.queryController.executeQuery({
         closeModalBox: false
       });
