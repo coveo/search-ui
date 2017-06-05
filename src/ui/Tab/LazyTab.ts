@@ -8,7 +8,7 @@ export function lazyTab() {
       require.ensure(['./Tab'], () => {
         let loaded = require<IComponentDefinition>('./Tab.ts')['Tab'];
         lazyExport(loaded, resolve);
-      }, LazyInitialization.buildErrorCallback('Tab'), 'Tab');
+      }, LazyInitialization.buildErrorCallback('Tab', resolve), 'Tab');
     });
   });
 }

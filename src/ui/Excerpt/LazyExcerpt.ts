@@ -8,7 +8,7 @@ export function lazyExcerpt() {
       require.ensure(['./Excerpt'], () => {
         let loaded = require<IComponentDefinition>('./Excerpt.ts')['Excerpt'];
         lazyExport(loaded, resolve);
-      }, LazyInitialization.buildErrorCallback('Excerpt'), 'Excerpt');
+      }, LazyInitialization.buildErrorCallback('Excerpt', resolve), 'Excerpt');
     });
   });
 }

@@ -10,7 +10,7 @@ export function lazyYouTubeThumbnail() {
       require.ensure(['./YouTubeThumbnail'], () => {
         let loaded = require<IComponentDefinition>('./YouTubeThumbnail.ts')['YouTubeThumbnail'];
         lazyExport(loaded, resolve);
-      }, LazyInitialization.buildErrorCallback('YouTubeThumbnail'), 'YouTubeThumbnail');
+      }, LazyInitialization.buildErrorCallback('YouTubeThumbnail', resolve), 'YouTubeThumbnail');
     });
   });
 }
