@@ -230,6 +230,14 @@ export function SearchEndpointTest() {
           });
         });
 
+        it('should not override actions history if specified manually on a search call', () => {
+          const qbuilder = new QueryBuilder();
+          const historyAsString = JSON.stringify([{ name: 'foo', value: 'bar' }]);
+          qbuilder.actionsHistory = historyAsString;
+          const promiseSuccess = ep.search(qbuilder.build());
+          expect(jasmine.Ajax.requests.mostRecent().params).toContain(`actionsHistory=${encodeURIComponent(historyAsString)}`);
+        });
+
         it('for getRawDataStream', (done) => {
           const fakeResult = FakeResults.createFakeResult();
           const promiseSuccess = ep.getRawDataStream(fakeResult.uniqueId, '$Thumbnail');
