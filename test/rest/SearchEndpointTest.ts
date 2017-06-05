@@ -202,6 +202,7 @@ export function SearchEndpointTest() {
           expect(jasmine.Ajax.requests.mostRecent().params).toContain('q=batman');
           expect(jasmine.Ajax.requests.mostRecent().params).toContain('numberOfResults=153');
           expect(jasmine.Ajax.requests.mostRecent().params).toContain('enableCollaborativeRating=true');
+          expect(jasmine.Ajax.requests.mostRecent().params).toContain('actionsHistory=');
           expect(jasmine.Ajax.requests.mostRecent().method).toBe('POST');
           promiseSuccess
             .then((data: IQueryResults) => {
@@ -499,11 +500,13 @@ export function SearchEndpointTest() {
           });
 
           expect(jasmine.Ajax.requests.mostRecent().url).toContain(ep.getBaseUri() + '/querySuggest?');
-          expect(jasmine.Ajax.requests.mostRecent().url).toContain('q=foobar');
-          expect(jasmine.Ajax.requests.mostRecent().url).toContain('count=10');
           expect(jasmine.Ajax.requests.mostRecent().url).toContain('organizationId=myOrgId');
           expect(jasmine.Ajax.requests.mostRecent().url).toContain('potatoe=mashed');
-          expect(jasmine.Ajax.requests.mostRecent().method).toBe('GET');
+
+          expect(jasmine.Ajax.requests.mostRecent().params).toContain('q=foobar');
+          expect(jasmine.Ajax.requests.mostRecent().params).toContain('count=10');
+          expect(jasmine.Ajax.requests.mostRecent().params).toContain('actionsHistory=');
+          expect(jasmine.Ajax.requests.mostRecent().method).toBe('POST');
 
           // Not real extensions, but will suffice for test purpose
           promiseSuccess
@@ -530,7 +533,7 @@ export function SearchEndpointTest() {
           });
 
           expect(jasmine.Ajax.requests.mostRecent().url).toContain(ep.getBaseUri() + '/querySuggest?');
-          expect(jasmine.Ajax.requests.mostRecent().url).toContain('q=foobar');
+          expect(jasmine.Ajax.requests.mostRecent().params).toContain('q=foobar');
 
           // Not real extensions, but will suffice for test purpose
           promiseSuccess

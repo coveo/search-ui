@@ -127,7 +127,7 @@ export class Recommendation extends SearchInterface implements IComponentBinding
      * However, setting this option to `false` can be useful to display side results in a search page.
      *
      * Default value is `true`.
-     * 
+     *
      * @deprecated This option is now deprecated. The correct way to control this behaviour is to configure an appropriate machine learning model in the administration interface (Recommendation, Relevance tuning, Query suggestions)
      */
     sendActionsHistory: ComponentOptions.buildBooleanOption({ defaultValue: true, deprecated: 'This option is now deprecated. The correct way to control this behaviour is to configure an appropriate machine learning model in the administration interface (Recommendation, Relevance tuning, Query suggestions)' }),

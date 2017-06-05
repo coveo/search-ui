@@ -127,30 +127,6 @@ export function RecommendationTest() {
         expect(simulation.queryBuilder.context).toBeUndefined();
       });
 
-      describe('exposes option sendActionHistory', () => {
-        it('should add the actionsHistory in the triggered query', () => {
-          let simulation = Simulate.query(test.env);
-          expect(simulation.queryBuilder.actionsHistory).toEqual(JSON.stringify(actionsHistory));
-        });
-
-        it('should add the actionsHistory even if the user context is not specified', () => {
-          options = {
-            mainSearchInterface: mainSearchInterface.env.root
-          };
-          test = Mock.optionsSearchInterfaceSetup<Recommendation, IRecommendationOptions>(Recommendation, options);
-          test.cmp.historyStore = store;
-          let simulation = Simulate.query(test.env);
-          expect(simulation.queryBuilder.actionsHistory).toEqual(JSON.stringify(actionsHistory));
-        });
-
-        it('should not send the actionsHistory if false', () => {
-          options.sendActionsHistory = false;
-          test = Mock.optionsSearchInterfaceSetup<Recommendation, IRecommendationOptions>(Recommendation, options);
-          let simulation = Simulate.query(test.env);
-          expect(simulation.queryBuilder.actionsHistory).toBeUndefined();
-        });
-      });
-
       describe('exposes option hideIfNoResults', () => {
         it('should hide the interface if there are no recommendations and the option is true', () => {
           options.hideIfNoResults = true;
