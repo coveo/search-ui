@@ -17,6 +17,9 @@
 
 .coveo-facet-empty {
   display: none;
+  &.coveo-with-placeholder {
+    display: block;
+  }
 }
 
 .coveo-facet-dependent {

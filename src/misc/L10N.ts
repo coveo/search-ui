@@ -8,6 +8,22 @@ const singularRegex = /<sn>(((?!<\/sn>).)*)<\/sn>/g;
 export var L10N = {
   format: (key: string, ...args: any[]) => {
     let value = key.toLocaleString();
+    // Try to find a soft match
+    // These conditions check if there was a change in the string (meaning toLocaleString found a match). If there was no
+    // match, try another format.
+    if (value == key) {
+      const tryTranslationInUpperCase = key.toUpperCase().toLocaleString();
+      const tryTranslationInLowerCase = key.toLowerCase().toLocaleString();
+      const tryTranslationAfterCapitalization = (key.charAt(0).toUpperCase() + key.toLowerCase().slice(1)).toLocaleString();
+      if (tryTranslationInUpperCase != key.toUpperCase().toLocaleString()) {
+        value = tryTranslationInUpperCase;
+      } else if (tryTranslationInLowerCase != key.toLowerCase().toLocaleString()) {
+        value = tryTranslationInLowerCase;
+      } else if (tryTranslationAfterCapitalization != key.charAt(0).toUpperCase() + key.toLowerCase().slice(1)) {
+        value = tryTranslationAfterCapitalization;
+      }
+
+    }
     if (args.length > 0) {
       let last = _.last(args);
       // Last argument is either the count or a boolean forcing plural (true) or singular (false)
