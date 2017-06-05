@@ -40,10 +40,14 @@ export class FileTypes {
     const variableValue = `objecttype_${objecttype}`;
     // Most object types have a set of localized strings in the main dictionary
     var localizedString = l(variableValue);
-
+    // Some strings are sent as `objecttype_[...]` to specify a dictionary to use. If there's no match, try using
+    // the main dictionary by keeping only the value after `_`.
+    if (localizedString.toLowerCase() == variableValue.toLowerCase()) {
+      localizedString = l(objecttype);
+    }
     return {
       'icon': 'coveo-icon objecttype ' + objecttype.replace(' ', '-'),
-      caption: localizedString != variableValue ? localizedString : objecttype
+      caption: localizedString
     };
   }
 
@@ -61,10 +65,14 @@ export class FileTypes {
     const variableValue = `filetype_${filetype}`;
     // Most filetypes have a set of localized strings in the main dictionary
     let localizedString = l(variableValue);
-
+    if (localizedString.toLowerCase() == variableValue.toLowerCase()) {
+      // Some strings are sent as `filetype_[...]` to specify a dictionary to use. If there's no match, try using
+      // The main dictionary by keeping only the value after `_`.
+      localizedString = l(filetype);
+    }
     return {
       'icon': 'coveo-icon filetype ' + filetype.replace(' ', '-'),
-      caption: localizedString != variableValue ? localizedString : filetype
+      caption: localizedString
     };
   }
 

@@ -24,7 +24,7 @@ DomTests();
 import { HighlightUtilsTest } from './utils/HighlightUtilsTest';
 HighlightUtilsTest();
 
-import { L10NTest } from './utils/L10NTest';
+import { L10NTest } from './misc/L10NTest';
 L10NTest();
 
 import { PromisesShimTest } from './misc/PromisesShimTest';

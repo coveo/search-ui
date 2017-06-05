@@ -7,6 +7,7 @@ import { Utils } from '../../utils/Utils';
 import { $$ } from '../../utils/Dom';
 import * as _ from 'underscore';
 import FacetModuleDefinition = require('./Facet');
+import { l } from '../../strings/Strings';
 
 declare const Coveo;
 
@@ -80,13 +81,17 @@ export class FacetUtils {
 
     if (QueryUtils.isStratusAgnosticField(field.toLowerCase(), '@filetype')) {
       found = FileTypes.getFileType(value.toLowerCase()).caption;
-    } else if (QueryUtils.isStratusAgnosticField(field.toLowerCase(), '@month')) {
+    } else if (QueryUtils.isStratusAgnosticField(field.toLowerCase(), '@objecttype')) {
+      found = FileTypes.getObjectType(value.toLowerCase()).caption;
+    } else if (QueryUtils.isStratusAgnosticField(field.toLowerCase(), '@month') && value != 'Search') {
       try {
         let month = parseInt(value);
         found = DateUtils.monthToString(month - 1);
       } catch (ex) {
         // Do nothing
       }
+    } else {
+      found = l(value);
     }
     return found != undefined && Utils.isNonEmptyString(found) ? found : value;
   }
