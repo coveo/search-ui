@@ -346,6 +346,8 @@ export class ResultsFiltersPreferences extends Component {
         let tab = <Tab>Component.get(tabElement);
         return tab.options.id;
       });
+    } else {
+      return [];
     }
   }
 
