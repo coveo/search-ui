@@ -12,7 +12,7 @@ export class PublicPathUtils {
       __webpack_public_path__ = PublicPathUtils.getDynamicPublicPath();
     }
   }
-  
+
   /**
    * Helper function to resolve the public path used to load the chunks relative to the Coveo script.
    */
