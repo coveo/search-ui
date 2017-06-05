@@ -12,7 +12,7 @@ import { FacetValuesList } from './FacetValuesList';
 import { FacetHeader } from './FacetHeader';
 import { FacetUtils } from './FacetUtils';
 import { InitializationEvents } from '../../events/InitializationEvents';
-import { QueryEvents, INewQueryEventArgs, IQuerySuccessEventArgs, IBuildingQueryEventArgs, IDoneBuildingQueryEventArgs } from '../../events/QueryEvents';
+import { QueryEvents, INewQueryEventArgs, IQuerySuccessEventArgs, IDoneBuildingQueryEventArgs } from '../../events/QueryEvents';
 import { Assert } from '../../misc/Assert';
 import { ISearchEndpoint } from '../../rest/SearchEndpointInterface';
 import { $$ } from '../../utils/Dom';
@@ -461,7 +461,15 @@ export class Facet extends Component {
      *
      * Default value is `element.parentElement`.
      */
-    paddingContainer: ComponentOptions.buildSelectorOption({ defaultFunction: (element) => element.parentElement }),
+    paddingContainer: ComponentOptions.buildSelectorOption({
+      defaultFunction: (element) => {
+        const standardColumn = $$(element).parent('coveo-facet-column');
+        if (standardColumn != null) {
+          return standardColumn;
+        }
+        return element.parentElement;
+      }
+    }),
 
     /**
      * Specifies the HTML element (through a CSS selector) whose scroll amount the facet should adjust to preserve its
@@ -1262,7 +1270,7 @@ export class Facet extends Component {
 
   protected initQueryEvents() {
     this.bind.onRootElement(QueryEvents.duringQuery, () => this.handleDuringQuery());
-    this.bind.onRootElement(QueryEvents.buildingQuery, (args: IBuildingQueryEventArgs) => this.handleBuildingQuery(args));
+    this.bind.onRootElement(QueryEvents.buildingQuery, (args: IDoneBuildingQueryEventArgs) => this.handleBuildingQuery(args));
     this.bind.onRootElement(QueryEvents.doneBuildingQuery, (args: IDoneBuildingQueryEventArgs) => this.handleDoneBuildingQuery(args));
     this.bind.onRootElement(QueryEvents.deferredQuerySuccess, (args: IQuerySuccessEventArgs) => this.handleDeferredQuerySuccess(args));
   }
@@ -1613,7 +1621,7 @@ export class Facet extends Component {
     }
   }
 
-  private handleBuildingQuery(data: IBuildingQueryEventArgs) {
+  private handleBuildingQuery(data: IDoneBuildingQueryEventArgs) {
     Assert.exists(data);
     Assert.exists(data.queryBuilder);
 
@@ -1749,28 +1757,12 @@ export class Facet extends Component {
       scrollToOffset();
       currentViewportPosition = this.element.getBoundingClientRect().top;
       offset = currentViewportPosition - this.pinnedViewportPosition;
-
       // If scrolling has worked (offset == 0), we're good to go, nothing to do anymore.
-      // Otherwise try other voodoo magic.
+
       if (offset < 0) {
         // This means the facet element is scrolled up in the viewport,
         // scroll it down by adding space in the top container
         this.pinnedTopSpace.style.height = (offset * -1) + 'px';
-      } else {
-        // Here, this means the facet element is scrolled down in the viewport,
-        // and there is not enough scroll space in the page / window to scroll far enough
-        // we need to add space at the bottom so that we can finally scroll there.
-        _.defer(() => {
-          let heightBottom = 0;
-          let attempts = 0;
-          while (offset > 0 && attempts++ < 100) {
-            heightBottom += 100;
-            this.pinnedBottomSpace.style.height = heightBottom + 'px';
-            currentViewportPosition = this.element.getBoundingClientRect().top;
-            offset = currentViewportPosition - this.pinnedViewportPosition;
-            scrollToOffset();
-          }
-        });
       }
       this.unpinnedViewportPosition = this.pinnedViewportPosition;
       this.pinnedViewportPosition = null;
