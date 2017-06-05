@@ -160,10 +160,11 @@ export class FacetSliderQueryController {
     }
 
     let rangeValues = undefined;
+    const {start, end} = this.formatStartAndEnd();
     if (this.facet.isSimpleSliderConfig()) {
       rangeValues = [{
-        start: this.facet.options.start,
-        end: this.facet.options.end,
+        start: start,
+        end: end,
         label: 'slider',
         endInclusive: false
       }];
@@ -179,12 +180,7 @@ export class FacetSliderQueryController {
   }
 
   private createRangeValuesForGraphUsingStartAndEnd() {
-    let start = this.facet.options.start;
-    let end = this.facet.options.end;
-    if (this.facet.options.dateField) {
-      start = this.getISOFormat(start);
-      end = this.getISOFormat(end);
-    }
+    const {start, end} = this.formatStartAndEnd();
     let oneRange: IRangeValue = {
       start: start,
       end: end,
@@ -236,6 +232,19 @@ export class FacetSliderQueryController {
         end: newEnd
       };
     });
+  }
+
+  private formatStartAndEnd() {
+    let start = this.facet.options.start;
+    let end = this.facet.options.end;
+    if (this.facet.options.dateField) {
+      start = this.getISOFormat(start);
+      end = this.getISOFormat(end);
+    }
+    return {
+      start: start,
+      end: end
+    };
   }
 
   private getISOFormat(value: any) {
