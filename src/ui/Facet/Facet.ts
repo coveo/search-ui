@@ -1250,9 +1250,8 @@ export class Facet extends Component {
 
   protected updateAppearanceDependingOnState() {
     $$(this.element).toggleClass('coveo-active', this.values.hasSelectedOrExcludedValues());
-    if (this.nbAvailableValues < 1) {
-      $$(this.element).toggleClass('coveo-facet-empty', !this.isAnyValueCurrentlyDisplayed());
-    }
+    $$(this.element).toggleClass('coveo-facet-empty', !this.isAnyValueCurrentlyDisplayed());
+
     if (this.searchInterface.isNewDesign()) {
       $$(this.facetHeader.eraserElement).toggleClass('coveo-facet-header-eraser-visible', this.values.hasSelectedOrExcludedValues());
     } else {

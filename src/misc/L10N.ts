@@ -21,10 +21,7 @@ export var L10N = {
         value = tryTranslationInLowerCase;
       } else if (tryTranslationAfterCapitalization != key.charAt(0).toUpperCase() + key.toLowerCase().slice(1)) {
         value = tryTranslationAfterCapitalization;
-      } else {
-        value = key;
       }
-
 
     }
     if (args.length > 0) {

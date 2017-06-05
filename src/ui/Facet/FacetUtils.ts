@@ -83,7 +83,7 @@ export class FacetUtils {
       found = FileTypes.getFileType(value.toLowerCase()).caption;
     } else if (QueryUtils.isStratusAgnosticField(field.toLowerCase(), '@objecttype')) {
       found = FileTypes.getObjectType(value.toLowerCase()).caption;
-    } else if (QueryUtils.isStratusAgnosticField(field.toLowerCase(), '@month') && value != ('Search')) {
+    } else if (QueryUtils.isStratusAgnosticField(field.toLowerCase(), '@month') && value != 'Search') {
       try {
         let month = parseInt(value);
         found = DateUtils.monthToString(month - 1);
