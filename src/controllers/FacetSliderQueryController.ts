@@ -160,7 +160,7 @@ export class FacetSliderQueryController {
     }
 
     let rangeValues = undefined;
-    const {start, end} = this.formatStartAndEnd();
+    const { start, end } = this.formatStartAndEnd();
     if (this.facet.isSimpleSliderConfig()) {
       rangeValues = [{
         start: start,
@@ -180,7 +180,7 @@ export class FacetSliderQueryController {
   }
 
   private createRangeValuesForGraphUsingStartAndEnd() {
-    const {start, end} = this.formatStartAndEnd();
+    const { start, end } = this.formatStartAndEnd();
     let oneRange: IRangeValue = {
       start: start,
       end: end,

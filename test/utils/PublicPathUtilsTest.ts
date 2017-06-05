@@ -6,7 +6,7 @@ export function PublicPathUtilsTest() {
     let currentScript;
     const detectedPath = 'some/path/';
     const configuredPath = 'path';
-    
+
     const fakeScript = <HTMLScriptElement>{ src: `${detectedPath}script.js` };
 
     beforeEach(() => {
