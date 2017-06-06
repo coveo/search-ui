@@ -24,7 +24,6 @@ gulp.task('spritesSymbols', function () {
     templates: {
       css: fs.readFileSync('./sass/template/svgSpriteTemplate.lodash.scss', 'utf-8')
     },
-    //mode: 'symbols',
     common: 'coveo',
     svg: {
       symbols: 'image/symbols.svg'

@@ -14,7 +14,6 @@ module.exports = through.obj(function (file, enc, cb) {
     result.svg.svg.forEach((svg) => {
       const size = getSizeFromViewBox(svg.$.viewBox);
       result.svg.view.push(buildViewTag(svg.$.id, size, svg.$.y));
-      //  ADD SOMETHING TO VERIFY ICON SIZES IS OK, CAN DO REVERSE CHECK TOO
       let width = parseInt(size.width, 10);
       if (width > maxWidth) {
         maxWidth = width;

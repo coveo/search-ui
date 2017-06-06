@@ -23,7 +23,7 @@ export class SVGIcons {
   public static parseSvg(svgToParse: string): SVGSVGElement {
     return <any>SVGIcons.parser.parseFromString(svgToParse, 'image/svg+xml').documentElement.cloneNode(true);
   }
-  
+
   private static getClass(el: HTMLElement): string {
     return $$(el).getClass().join(' ');
   }
