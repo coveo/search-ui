@@ -4,7 +4,6 @@ const minimize = process.argv.indexOf('minimize') !== -1;
 const webpack = require('webpack');
 const path = require('path');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const spritesmithConfig = require('./spritesmithConfig/spritesmith.config.js');
 const production = process.env.NODE_ENV === 'production';
 const globalizePath = __dirname + '/lib/globalize/globalize.min.js';
 const svg4everybodyPath = __dirname + '/node_modules/svg4everybody/dist/svg4everybody';
@@ -22,7 +21,6 @@ plugins.push(new webpack.DefinePlugin({
 }))
 
 // SpritesmithPlugin takes care of outputting the stylesheets.
-plugins.push(spritesmithConfig);
 
 if (production) {
   const extractSass = new ExtractTextPlugin({

@@ -45,8 +45,10 @@ function generateSass(json, legacy) {
 
   if (!legacy) {
     sass += '@import "' + __dirname + '/../bin/sass/sprites";\n';
-    sass += '@import "' + __dirname + '/../bin/sass/retinaNew";\n';
-    sass += '@import "' + __dirname + '/../bin/sass/spritesNew";\n';
+    // sass += '@include sprites($spritesheet-sprites);\n';
+    // sass += '@include retina-sprites($retina-groups);\n';
+    sass += '@import "' + __dirname + '/../bin/css/retinaNew";\n';
+    sass += '@import "' + __dirname + '/../bin/css/spritesNew";\n';
   }
 
   sass += '@mixin GeneratedIcons() {\n';

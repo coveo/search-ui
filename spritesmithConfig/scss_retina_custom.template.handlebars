@@ -4,7 +4,7 @@
   'variableNameTransforms': ['dasherize']
 }
 
-{{#extend "scss"}}
+{{#extend "optimized_scss_template"}}
 {{#content "sprites" mode="append"}}
 {{#each retina_sprites}}
 ${{strings.name_name}}: '{{name}}';
@@ -50,13 +50,20 @@ ${{retina_groups_info.strings.name}}: ({{#each retina_groups}}${{strings.name_gr
 // .icon-home {
 //   @include retina-sprite($icon-home-group);
 // }
-@mixin sprite-background-size($sprite) {
-  $sprite-total-width: nth($sprite, 7);
-  $sprite-total-height: nth($sprite, 8);
-  background-size: $sprite-total-width $sprite-total-height;
+
+@mixin validate-retina-group($retina-group) {
+  $error-message: 'Wrong variable has been passed to the retina-sprite mixin';
+  @if type-of($retina-group) != 'list' or length($retina-group) != 3 {
+    @error $error-message;
+  }
+  @if type-of(nth($retina-group, 1)) != 'string' or type-of(nth($retina-group, 2)) != 'list' or type-of(nth($retina-group, 3)) != 'list' {
+    @error $error-message;
+  }
 }
 
 @mixin retina-sprite($retina-group) {
+  @include validate-retina-group($retina-group);
+
   $normal-sprite: nth($retina-group, 2);
   $retina-sprite: nth($retina-group, 3);
   @include sprite($normal-sprite);
@@ -66,6 +73,14 @@ ${{retina_groups_info.strings.name}}: ({{#each retina_groups}}${{strings.name_gr
     @include sprite-image($retina-sprite);
     @include sprite-background-size($normal-sprite);
   }
+}
+
+// used only when generating the bundle
+@mixin optimized-retina-sprite($retina-group) {
+  $normal-sprite: nth($retina-group, 2);
+  $retina-sprite: nth($retina-group, 3);
+  @include optimized-sprite($normal-sprite);
+  @include sprite-background-size($normal-sprite);  
 }
 {{/if}}
 {{/content}}
@@ -78,14 +93,23 @@ ${{retina_groups_info.strings.name}}: ({{#each retina_groups}}${{strings.name_gr
 //
 // @include retina-sprites($retina-groups);
 @mixin retina-sprites($retina-groups) {
-  @each $retina-group in $retina-groups {
-    $sprite-name: nth($retina-group, 1);
-    .#{$sprite-name} {
-      @include retina-sprite($retina-group);
+  @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+    $retina-sprite: nth(nth($retina-groups, 1), 3);
+    %retina-sprite {
+      @include sprite-image($retina-sprite);
+    }
+    @each $retina-group in $retina-groups {
+      $sprite-name: nth($retina-group, 1);
+      .coveo-sprites-#{$sprite-name} {
+        @include optimized-retina-sprite($retina-group);
+        @extend %retina-sprite;
+      }
     }
   }
 }
 {{/if}}
+
+// sass map that associates .coveo-sprites-[name] to the corresponding sass variable
 $retina-group-map: (
   {{#each retina_groups}}
   '.coveo-sprites-{{name}}': ('{{name}}', ${{normal.strings.name}}, ${{retina.strings.name}},),
