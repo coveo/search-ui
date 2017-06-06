@@ -123,11 +123,6 @@ module.exports = {
           replace: ''
         }
       }]
-    }, {
-      test: require.resolve(svg4everybodyPath),
-      use: [{
-        loader: 'imports-loader?this=>window'
-      }]
     },
     {
       test: require.resolve(globalizePath),

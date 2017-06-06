@@ -28,24 +28,20 @@
   font-size: $font-size-regular;
 }
 
-.coveo-facet-header-settings {
-  span {
-    &:hover, &:focus {
-      outline: none;
-      svg > path {
-        fill-opacity: 1;
-        fill: $color-blueish-white-grey;
-      }
-    }
-
-    svg {
-      width: 18px;
-      height: 18px;
-      path {
-        fill: $color-greyish-teal-blue;
-      }
+.coveo-facet-settings-more {
+  &:hover, &:focus {
+    outline: none;
+    .coveo-facet-settings-more-svg > path{
+      fill-opacity: 1;
+      fill: $color-blueish-white-grey;
     }
   }
+}
+
+.coveo-facet-settings-more-svg {
+  width: 18px;
+  height: 18px;
+  color: $color-greyish-teal-blue;
 }
 
 .coveo-facet-header-operator {

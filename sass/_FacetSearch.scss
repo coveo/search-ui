@@ -123,18 +123,28 @@
 
 .coveo-facet-search-magnifier {
   float: left;
-  margin: 5px 6px 5px 10px;
-  @include retina-sprite($facet-search-group);
+}
+
+.coveo-facet-search-magnifier-svg {
+  margin: 5px 6px 5px 10px;  
+  width: 10px;
+  height: 10px;
+  color: $color-light-greyish-blue;
 }
 
 .coveo-facet-search-wait-animation {
   float: left;
+}
+
+.coveo-facet-search-wait-animation-svg {
+  width: 13px;
+  height: 13px;
+  color: $color-greyish-teal-blue;
   margin: 3px 3px 5px 10px;
-  @include retina-sprite($facet-search-loading-group);
   @include animation-name(coveo-spin);
   @include animation-timing-function(linear);
   @include animation-duration(1s);
-  @include animation-iteration-count(infinite);
+  @include animation-iteration-count(infinite);  
 }
 
 .coveo-facet-search-middle {
@@ -161,8 +171,12 @@
 }
 
 .coveo-facet-value.coveo-facet-search-button {
-  .coveo-facet-value-checkbox > span, &:hover .coveo-facet-value-checkbox > span {
-    @include retina-sprite($checkbox-more-values-group);
+  .coveo-facet-value-checkbox {
     bottom: 1px;
+  }
+  .coveo-facet-value-checkbox > .coveo-facet-value-checkbox-svg, &:hover .coveo-facet-value-checkbox > .coveo-facet-value-checkbox-svg {
+    color: $color-light-grey;
+    width: 11px;
+    height: 11px;
   }
 }
