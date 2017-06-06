@@ -53,3 +53,4 @@ module.exports = new SpritesmithPlugin({
         'optimized_scss_template_retina': path.resolve(__dirname, './scss_retina_custom.template.handlebars')
       }
     })
+    // sass map that associates .coveo-sprites-[name] to the corresponding sass variable

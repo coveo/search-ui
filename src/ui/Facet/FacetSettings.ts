@@ -62,7 +62,7 @@ export class FacetSettings extends FacetSort {
       title: l('Settings'),
     }).el;
 
-    this.settingsIcon = $$('span', {className: 'coveo-facet-settings-more'}).el;
+    this.settingsIcon = $$('span', { className: 'coveo-facet-settings-more' }).el;
     this.settingsIcon.innerHTML = SVGIcons.more;
     SVGIcons.addClassToSVGInContainer(this.settingsIcon, 'coveo-facet-settings-more-svg');
     this.settingsButton.appendChild(this.settingsIcon);

@@ -171,7 +171,7 @@ export class FieldTable extends Component {
     }
   }
 
-  /** 
+  /**
    * Updates the toggle height if the content was dynamically resized, so that the expanding and minimizing animation
    * can match the new content size.
    */
@@ -199,7 +199,7 @@ export class FieldTable extends Component {
     $$(this.toggleButton).prepend(this.toggleCaption);
     $$(this.toggleButton).insertBefore(this.element);
 
-    this.toggleButtonInsideTable = $$('span', {className: 'coveo-field-table-toggle'}, SVGIcons.arrowUp).el;
+    this.toggleButtonInsideTable = $$('span', { className: 'coveo-field-table-toggle' }, SVGIcons.arrowUp).el;
     SVGIcons.addClassToSVGInContainer(this.toggleButtonInsideTable, 'coveo-field-table-toggle-up-svg');
 
     if (this.options.minimizedByDefault === true) {
