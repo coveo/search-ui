@@ -95,8 +95,24 @@ export class InitializationPlaceholder {
 </div>
 `;
 
+  public recommendationResultListPlaceholder = `<div class="coveo-result-frame coveo-placeholder-result">
+  <div class="coveo-result-row">
+    <div class="coveo-result-cell" style="width: 32px; vertical-align: middle;">
+        <div class="coveo-placeholder-icon-small"></div>
+      </div>
+    <div class="coveo-result-cell" style="padding-left:10px; vertical-align: middle;">
+      <div class="coveo-result-row">
+        <div class="coveo-result-cell">
+          <div class="coveo-placeholder-title" style="width: 90%"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  `;
+
   public static NUMBER_OF_FACETS = 3;
   public static NUMBER_OF_RESULTS = 10;
+  public static NUMBER_OF_RESULTS_RECOMMENDATION = 5;
   public static INITIALIZATION_CLASS = 'coveo-during-initialization';
 
   constructor(public root: HTMLElement, public options: InitializationPlaceholderOption = {
@@ -180,7 +196,7 @@ export class InitializationPlaceholder {
       $$(resultListToUse).append(rootToUse);
       $$(resultListToUse).addClass('coveo-with-placeholder');
 
-      _.times(InitializationPlaceholder.NUMBER_OF_RESULTS, () => {
+      _.times(this.isRecommendationRoot() ? InitializationPlaceholder.NUMBER_OF_RESULTS_RECOMMENDATION : InitializationPlaceholder.NUMBER_OF_RESULTS, () => {
         rootToUse.innerHTML += placeholderToUse;
       });
       const reset = () => {
@@ -239,7 +255,11 @@ export class InitializationPlaceholder {
   private determinerResultListFromLayout(layout: string) {
     switch (layout) {
       case 'list':
-        return this.resultListPlaceholder;
+        if (this.isRecommendationRoot()) {
+          return this.recommendationResultListPlaceholder;
+        } else {
+          return this.resultListPlaceholder;
+        }
       case 'card':
         return this.cardResultListPlaceholder;
       default:
@@ -256,6 +276,10 @@ export class InitializationPlaceholder {
       default:
         return $$('div').el;
     }
+  }
+
+  private isRecommendationRoot(): boolean {
+    return $$(this.root).hasClass('CoveoRecommendation');
   }
 }
 
