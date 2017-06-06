@@ -9,6 +9,7 @@ import { exportGlobally } from '../../GlobalExports';
 export class Checkbox implements IFormWidgetWithLabel, IFormWidgetSelectable {
   protected element: HTMLElement;
   protected checkbox: HTMLInputElement;
+  protected caption: string;
 
   static doExport = () => {
     exportGlobally({
@@ -96,6 +97,14 @@ export class Checkbox implements IFormWidgetWithLabel, IFormWidgetSelectable {
    */
   public getLabel() {
     return this.element;
+  }
+
+  public setCaption(caption: string) {
+    this.caption = caption;
+  }
+
+  public getCaption() {
+    return this.caption;
   }
 
   private buildContent() {
