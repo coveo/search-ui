@@ -1,6 +1,6 @@
-webpackJsonpCoveo__temporary([17,47,64],{
+webpackJsonpCoveo__temporary([16,47,64],{
 
-/***/ 127:
+/***/ 246:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16,15 +16,15 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var Component_1 = __webpack_require__(7);
-var ComponentOptions_1 = __webpack_require__(8);
-var Assert_1 = __webpack_require__(6);
-var QueryUtils_1 = __webpack_require__(16);
-var Initialization_1 = __webpack_require__(1);
-var Utils_1 = __webpack_require__(4);
-var FileTypes_1 = __webpack_require__(81);
-var Dom_1 = __webpack_require__(2);
-var GlobalExports_1 = __webpack_require__(3);
+var Component_1 = __webpack_require__(8);
+var ComponentOptions_1 = __webpack_require__(9);
+var Assert_1 = __webpack_require__(7);
+var QueryUtils_1 = __webpack_require__(17);
+var Initialization_1 = __webpack_require__(2);
+var Utils_1 = __webpack_require__(5);
+var FileTypes_1 = __webpack_require__(83);
+var Dom_1 = __webpack_require__(3);
+var GlobalExports_1 = __webpack_require__(4);
 /**
  * The Icon component outputs the corresponding icon for a given file type. The component searches for a suitable icon
  * from those available in the Coveo JavaScript Search Framework. If the component finds no suitable icon, it instead
@@ -170,7 +170,7 @@ Initialization_1.Initialization.registerAutoCreateComponent(Icon);
 
 /***/ }),
 
-/***/ 209:
+/***/ 327:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -186,16 +186,16 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var Component_1 = __webpack_require__(7);
-var ComponentOptions_1 = __webpack_require__(8);
-var ResultLink_1 = __webpack_require__(75);
-var QueryUtils_1 = __webpack_require__(16);
-var Initialization_1 = __webpack_require__(1);
-var Dom_1 = __webpack_require__(2);
+var Component_1 = __webpack_require__(8);
+var ComponentOptions_1 = __webpack_require__(9);
+var ResultLink_1 = __webpack_require__(77);
+var QueryUtils_1 = __webpack_require__(17);
+var Initialization_1 = __webpack_require__(2);
+var Dom_1 = __webpack_require__(3);
 var RegisteredNamedMethods_1 = __webpack_require__(57);
-var Icon_1 = __webpack_require__(127);
-var _ = __webpack_require__(0);
-var GlobalExports_1 = __webpack_require__(3);
+var Icon_1 = __webpack_require__(246);
+var _ = __webpack_require__(1);
+var GlobalExports_1 = __webpack_require__(4);
 /**
  * The Thumbnail component automatically fetches the thumbnail of the result object and outputs an HTML `img` tag with
  * it.
@@ -326,14 +326,14 @@ Initialization_1.Initialization.registerAutoCreateComponent(Thumbnail);
 
 /***/ }),
 
-/***/ 442:
+/***/ 446:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
 
-/***/ 75:
+/***/ 77:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -349,24 +349,24 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var Component_1 = __webpack_require__(7);
-var ComponentOptions_1 = __webpack_require__(8);
-var ComponentOptionsModel_1 = __webpack_require__(24);
-var AnalyticsActionListMeta_1 = __webpack_require__(11);
-var ResultListEvents_1 = __webpack_require__(29);
-var HighlightUtils_1 = __webpack_require__(42);
-var DeviceUtils_1 = __webpack_require__(17);
-var OSUtils_1 = __webpack_require__(124);
-var Initialization_1 = __webpack_require__(1);
-var QueryUtils_1 = __webpack_require__(16);
-var Assert_1 = __webpack_require__(6);
-var Utils_1 = __webpack_require__(4);
-var Defer_1 = __webpack_require__(25);
-var Dom_1 = __webpack_require__(2);
-var StreamHighlightUtils_1 = __webpack_require__(62);
-var _ = __webpack_require__(0);
-var GlobalExports_1 = __webpack_require__(3);
-__webpack_require__(442);
+var Component_1 = __webpack_require__(8);
+var ComponentOptions_1 = __webpack_require__(9);
+var ComponentOptionsModel_1 = __webpack_require__(25);
+var AnalyticsActionListMeta_1 = __webpack_require__(12);
+var ResultListEvents_1 = __webpack_require__(30);
+var HighlightUtils_1 = __webpack_require__(44);
+var DeviceUtils_1 = __webpack_require__(18);
+var OSUtils_1 = __webpack_require__(243);
+var Initialization_1 = __webpack_require__(2);
+var QueryUtils_1 = __webpack_require__(17);
+var Assert_1 = __webpack_require__(7);
+var Utils_1 = __webpack_require__(5);
+var Defer_1 = __webpack_require__(26);
+var Dom_1 = __webpack_require__(3);
+var StreamHighlightUtils_1 = __webpack_require__(63);
+var _ = __webpack_require__(1);
+var GlobalExports_1 = __webpack_require__(4);
+__webpack_require__(446);
 /**
  * The `ResultLink` component automatically transform a search result title into a clickable link pointing to the
  * original item.

@@ -1,10 +1,10 @@
-webpackJsonpCoveo__temporary([20],{
+webpackJsonpCoveo__temporary([19],{
 
-/***/ 186:
+/***/ 304:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-
+/* WEBPACK VAR INJECTION */(function(Promise) {
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
         ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -16,20 +16,20 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var Component_1 = __webpack_require__(7);
-var ComponentOptions_1 = __webpack_require__(8);
-var Cell_1 = __webpack_require__(609);
-var DefaultMatrixResultPreviewTemplate_1 = __webpack_require__(610);
-var Dom_1 = __webpack_require__(2);
-var QueryEvents_1 = __webpack_require__(10);
-var QueryStateModel_1 = __webpack_require__(12);
-var Utils_1 = __webpack_require__(4);
-var Initialization_1 = __webpack_require__(1);
-var QueryUtils_1 = __webpack_require__(16);
-var Globalize = __webpack_require__(22);
-var _ = __webpack_require__(0);
-var GlobalExports_1 = __webpack_require__(3);
-__webpack_require__(560);
+var Component_1 = __webpack_require__(8);
+var ComponentOptions_1 = __webpack_require__(9);
+var Cell_1 = __webpack_require__(611);
+var DefaultMatrixResultPreviewTemplate_1 = __webpack_require__(612);
+var Dom_1 = __webpack_require__(3);
+var QueryEvents_1 = __webpack_require__(11);
+var QueryStateModel_1 = __webpack_require__(14);
+var Utils_1 = __webpack_require__(5);
+var Initialization_1 = __webpack_require__(2);
+var QueryUtils_1 = __webpack_require__(17);
+var Globalize = __webpack_require__(24);
+var _ = __webpack_require__(1);
+var GlobalExports_1 = __webpack_require__(4);
+__webpack_require__(562);
 /**
  * The Matrix component uses the values of two fields (row and column) to display the results of the specified computed
  * field in a table.
@@ -809,24 +809,25 @@ Matrix.options = {
 exports.Matrix = Matrix;
 Initialization_1.Initialization.registerAutoCreateComponent(Matrix);
 
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(6)))
 
 /***/ }),
 
-/***/ 560:
+/***/ 562:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
 
-/***/ 609:
+/***/ 611:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var Dom_1 = __webpack_require__(2);
-var _ = __webpack_require__(0);
+var Dom_1 = __webpack_require__(3);
+var _ = __webpack_require__(1);
 /**
  * Represent a single cell of data in the {@link Matrix} component.
  */
@@ -914,11 +915,11 @@ exports.Cell = Cell;
 
 /***/ }),
 
-/***/ 610:
+/***/ 612:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-
+/* WEBPACK VAR INJECTION */(function(Promise) {
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
         ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -931,8 +932,8 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var Template_1 = __webpack_require__(23);
-var Dom_1 = __webpack_require__(2);
-var Globalize = __webpack_require__(22);
+var Dom_1 = __webpack_require__(3);
+var Globalize = __webpack_require__(24);
 var DefaultMatrixResultPreviewTemplate = (function (_super) {
     __extends(DefaultMatrixResultPreviewTemplate, _super);
     function DefaultMatrixResultPreviewTemplate(computedField, format) {
@@ -967,6 +968,7 @@ var DefaultMatrixResultPreviewTemplate = (function (_super) {
 }(Template_1.Template));
 exports.DefaultMatrixResultPreviewTemplate = DefaultMatrixResultPreviewTemplate;
 
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(6)))
 
 /***/ })
 

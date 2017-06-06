@@ -1,17 +1,17 @@
-webpackJsonpCoveo__temporary([5],{
+webpackJsonpCoveo__temporary([3],{
 
-/***/ 119:
+/***/ 238:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 /// <reference path="Facet.ts" />
 Object.defineProperty(exports, "__esModule", { value: true });
-var Utils_1 = __webpack_require__(4);
-var FacetUtils_1 = __webpack_require__(33);
-var QueryBuilder_1 = __webpack_require__(40);
-var Dom_1 = __webpack_require__(2);
-var _ = __webpack_require__(0);
+var Utils_1 = __webpack_require__(5);
+var FacetUtils_1 = __webpack_require__(34);
+var QueryBuilder_1 = __webpack_require__(42);
+var Dom_1 = __webpack_require__(3);
+var _ = __webpack_require__(1);
 var FacetSearchParameters = (function () {
     function FacetSearchParameters(facet) {
         this.facet = facet;
@@ -139,13 +139,13 @@ exports.FacetSearchParameters = FacetSearchParameters;
 
 /***/ }),
 
-/***/ 142:
+/***/ 260:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var _ = __webpack_require__(0);
+var _ = __webpack_require__(1);
 var EventsUtils = (function () {
     function EventsUtils() {
     }
@@ -175,14 +175,14 @@ exports.EventsUtils = EventsUtils;
 
 /***/ }),
 
-/***/ 143:
+/***/ 261:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var StringUtils_1 = __webpack_require__(18);
-var _ = __webpack_require__(0);
+var StringUtils_1 = __webpack_require__(19);
+var _ = __webpack_require__(1);
 var FacetValuesOrder = (function () {
     function FacetValuesOrder(facet, facetSort) {
         this.facet = facet;
@@ -233,19 +233,19 @@ exports.FacetValuesOrder = FacetValuesOrder;
 
 /***/ }),
 
-/***/ 144:
+/***/ 262:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-
+/* WEBPACK VAR INJECTION */(function(Promise) {
 /// <reference path='../ui/Facet/Facet.ts' />
 Object.defineProperty(exports, "__esModule", { value: true });
-var ExpressionBuilder_1 = __webpack_require__(65);
-var Utils_1 = __webpack_require__(4);
-var FacetSearchParameters_1 = __webpack_require__(119);
-var Assert_1 = __webpack_require__(6);
-var FacetUtils_1 = __webpack_require__(33);
-var _ = __webpack_require__(0);
+var ExpressionBuilder_1 = __webpack_require__(66);
+var Utils_1 = __webpack_require__(5);
+var FacetSearchParameters_1 = __webpack_require__(238);
+var Assert_1 = __webpack_require__(7);
+var FacetUtils_1 = __webpack_require__(34);
+var _ = __webpack_require__(1);
 var FacetQueryController = (function () {
     function FacetQueryController(facet) {
         this.facet = facet;
@@ -517,18 +517,19 @@ var FacetQueryController = (function () {
 }());
 exports.FacetQueryController = FacetQueryController;
 
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(6)))
 
 /***/ }),
 
-/***/ 270:
+/***/ 389:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var Dom_1 = __webpack_require__(2);
-var EventsUtils_1 = __webpack_require__(142);
-var _ = __webpack_require__(0);
+var Dom_1 = __webpack_require__(3);
+var EventsUtils_1 = __webpack_require__(260);
+var _ = __webpack_require__(1);
 var ResponsiveDropdown = (function () {
     function ResponsiveDropdown(dropdownContent, dropdownHeader, coveoRoot) {
         this.dropdownContent = dropdownContent;
@@ -634,15 +635,15 @@ exports.ResponsiveDropdown = ResponsiveDropdown;
 
 /***/ }),
 
-/***/ 271:
+/***/ 390:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var Dom_1 = __webpack_require__(2);
-var PopupUtils_1 = __webpack_require__(45);
-var ResponsiveComponentsManager_1 = __webpack_require__(74);
+var Dom_1 = __webpack_require__(3);
+var PopupUtils_1 = __webpack_require__(47);
+var ResponsiveComponentsManager_1 = __webpack_require__(76);
 var ResponsiveDropdownContent = (function () {
     function ResponsiveDropdownContent(componentName, element, coveoRoot, minWidth, widthRatio) {
         this.element = element;
@@ -678,13 +679,13 @@ exports.ResponsiveDropdownContent = ResponsiveDropdownContent;
 
 /***/ }),
 
-/***/ 272:
+/***/ 391:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var Dom_1 = __webpack_require__(2);
+var Dom_1 = __webpack_require__(3);
 var ResponsiveDropdownHeader = (function () {
     function ResponsiveDropdownHeader(componentName, element) {
         this.element = element;
@@ -715,7 +716,7 @@ exports.ResponsiveDropdownHeader = ResponsiveDropdownHeader;
 
 /***/ }),
 
-/***/ 273:
+/***/ 392:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -731,17 +732,17 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var FacetSort_1 = __webpack_require__(274);
-var Dom_1 = __webpack_require__(2);
-var LocalStorageUtils_1 = __webpack_require__(34);
-var Utils_1 = __webpack_require__(4);
-var Strings_1 = __webpack_require__(9);
-var QueryStateModel_1 = __webpack_require__(12);
-var AnalyticsActionListMeta_1 = __webpack_require__(11);
-var DeviceUtils_1 = __webpack_require__(17);
-var PopupUtils_1 = __webpack_require__(45);
-var _ = __webpack_require__(0);
-__webpack_require__(450);
+var FacetSort_1 = __webpack_require__(393);
+var Dom_1 = __webpack_require__(3);
+var LocalStorageUtils_1 = __webpack_require__(35);
+var Utils_1 = __webpack_require__(5);
+var Strings_1 = __webpack_require__(10);
+var QueryStateModel_1 = __webpack_require__(14);
+var AnalyticsActionListMeta_1 = __webpack_require__(12);
+var DeviceUtils_1 = __webpack_require__(18);
+var PopupUtils_1 = __webpack_require__(47);
+var _ = __webpack_require__(1);
+__webpack_require__(454);
 /**
  * Handle the rendering of the {@link Facet} settings menu (typically the ... in the facet header).
  */
@@ -1220,16 +1221,16 @@ exports.FacetSettings = FacetSettings;
 
 /***/ }),
 
-/***/ 274:
+/***/ 393:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var Strings_1 = __webpack_require__(9);
-var FacetSettings_1 = __webpack_require__(273);
-var Utils_1 = __webpack_require__(4);
-var _ = __webpack_require__(0);
+var Strings_1 = __webpack_require__(10);
+var FacetSettings_1 = __webpack_require__(392);
+var Utils_1 = __webpack_require__(5);
+var _ = __webpack_require__(1);
 var FacetSort = (function () {
     function FacetSort(sorts, facet) {
         var _this = this;
@@ -1330,20 +1331,20 @@ exports.FacetSort = FacetSort;
 
 /***/ }),
 
-/***/ 275:
+/***/ 394:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var ValueElementRenderer_1 = __webpack_require__(276);
-var Utils_1 = __webpack_require__(4);
-var AnalyticsActionListMeta_1 = __webpack_require__(11);
-var Dom_1 = __webpack_require__(2);
-var DeviceUtils_1 = __webpack_require__(17);
-var Defer_1 = __webpack_require__(25);
-var ExternalModulesShim_1 = __webpack_require__(21);
-var KeyboardUtils_1 = __webpack_require__(20);
+var ValueElementRenderer_1 = __webpack_require__(395);
+var Utils_1 = __webpack_require__(5);
+var AnalyticsActionListMeta_1 = __webpack_require__(12);
+var Dom_1 = __webpack_require__(3);
+var DeviceUtils_1 = __webpack_require__(18);
+var Defer_1 = __webpack_require__(26);
+var ExternalModulesShim_1 = __webpack_require__(22);
+var KeyboardUtils_1 = __webpack_require__(21);
 var ValueElement = (function () {
     function ValueElement(facet, facetValue, onSelect, onExclude) {
         this.facet = facet;
@@ -1521,17 +1522,17 @@ exports.ValueElement = ValueElement;
 
 /***/ }),
 
-/***/ 276:
+/***/ 395:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var Dom_1 = __webpack_require__(2);
-var Utils_1 = __webpack_require__(4);
-var Strings_1 = __webpack_require__(9);
-var Component_1 = __webpack_require__(7);
-var _ = __webpack_require__(0);
+var Dom_1 = __webpack_require__(3);
+var Utils_1 = __webpack_require__(5);
+var Strings_1 = __webpack_require__(10);
+var Component_1 = __webpack_require__(8);
+var _ = __webpack_require__(1);
 var ValueElementRenderer = (function () {
     function ValueElementRenderer(facet, facetValue) {
         this.facet = facet;
@@ -1734,18 +1735,18 @@ exports.ValueElementRenderer = ValueElementRenderer;
 
 /***/ }),
 
-/***/ 278:
+/***/ 397:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var Dom_1 = __webpack_require__(2);
-var FacetUtils_1 = __webpack_require__(33);
-var Strings_1 = __webpack_require__(9);
-var AnalyticsActionListMeta_1 = __webpack_require__(11);
-__webpack_require__(444);
-__webpack_require__(443);
+var Dom_1 = __webpack_require__(3);
+var FacetUtils_1 = __webpack_require__(34);
+var Strings_1 = __webpack_require__(10);
+var AnalyticsActionListMeta_1 = __webpack_require__(12);
+__webpack_require__(448);
+__webpack_require__(447);
 var FacetHeader = (function () {
     function FacetHeader(options) {
         this.options = options;
@@ -1975,27 +1976,27 @@ exports.FacetHeader = FacetHeader;
 
 /***/ }),
 
-/***/ 280:
+/***/ 399:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var Dom_1 = __webpack_require__(2);
-var ResponsiveComponentsManager_1 = __webpack_require__(74);
-var ResponsiveComponentsUtils_1 = __webpack_require__(85);
-var Component_1 = __webpack_require__(7);
+var Dom_1 = __webpack_require__(3);
+var ResponsiveComponentsManager_1 = __webpack_require__(76);
+var ResponsiveComponentsUtils_1 = __webpack_require__(87);
+var Component_1 = __webpack_require__(8);
 var Logger_1 = __webpack_require__(13);
-var Strings_1 = __webpack_require__(9);
-var Utils_1 = __webpack_require__(4);
-var ResponsiveDropdown_1 = __webpack_require__(270);
-var ResponsiveDropdownContent_1 = __webpack_require__(271);
-var ResponsiveDropdownHeader_1 = __webpack_require__(272);
-var QueryEvents_1 = __webpack_require__(10);
-var SearchInterface_1 = __webpack_require__(19);
-var ResponsiveComponents_1 = __webpack_require__(38);
-var _ = __webpack_require__(0);
-__webpack_require__(445);
+var Strings_1 = __webpack_require__(10);
+var Utils_1 = __webpack_require__(5);
+var ResponsiveDropdown_1 = __webpack_require__(389);
+var ResponsiveDropdownContent_1 = __webpack_require__(390);
+var ResponsiveDropdownHeader_1 = __webpack_require__(391);
+var QueryEvents_1 = __webpack_require__(11);
+var SearchInterface_1 = __webpack_require__(20);
+var ResponsiveComponents_1 = __webpack_require__(39);
+var _ = __webpack_require__(1);
+__webpack_require__(449);
 var ResponsiveFacetColumn = (function () {
     function ResponsiveFacetColumn(coveoRoot, ID, options, responsiveDropdown) {
         this.coveoRoot = coveoRoot;
@@ -2179,19 +2180,19 @@ exports.ResponsiveFacetColumn = ResponsiveFacetColumn;
 
 /***/ }),
 
-/***/ 281:
+/***/ 400:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 /// <reference path="Facet.ts" />
 Object.defineProperty(exports, "__esModule", { value: true });
-var Assert_1 = __webpack_require__(6);
-var DeviceUtils_1 = __webpack_require__(17);
-var AnalyticsActionListMeta_1 = __webpack_require__(11);
-var Dom_1 = __webpack_require__(2);
-var _ = __webpack_require__(0);
-__webpack_require__(447);
+var Assert_1 = __webpack_require__(7);
+var DeviceUtils_1 = __webpack_require__(18);
+var AnalyticsActionListMeta_1 = __webpack_require__(12);
+var Dom_1 = __webpack_require__(3);
+var _ = __webpack_require__(1);
+__webpack_require__(451);
 var BreadcrumbValueElement = (function () {
     function BreadcrumbValueElement(facet, facetValue) {
         this.facet = facet;
@@ -2245,18 +2246,18 @@ exports.BreadcrumbValueElement = BreadcrumbValueElement;
 
 /***/ }),
 
-/***/ 282:
+/***/ 401:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var DeviceUtils_1 = __webpack_require__(17);
-var Assert_1 = __webpack_require__(6);
-var Strings_1 = __webpack_require__(9);
-var Dom_1 = __webpack_require__(2);
-var Globalize = __webpack_require__(22);
-var _ = __webpack_require__(0);
+var DeviceUtils_1 = __webpack_require__(18);
+var Assert_1 = __webpack_require__(7);
+var Strings_1 = __webpack_require__(10);
+var Dom_1 = __webpack_require__(3);
+var Globalize = __webpack_require__(24);
+var _ = __webpack_require__(1);
 var BreadcrumbValueList = (function () {
     function BreadcrumbValueList(facet, facetValues, breadcrumbValueElementKlass) {
         this.facet = facet;
@@ -2385,36 +2386,36 @@ exports.BreadcrumbValueList = BreadcrumbValueList;
 
 /***/ }),
 
-/***/ 283:
+/***/ 402:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-
+/* WEBPACK VAR INJECTION */(function(Promise) {
 /// <reference path="Facet.ts" />
 Object.defineProperty(exports, "__esModule", { value: true });
 var Facet_1 = __webpack_require__(54);
-var Dom_1 = __webpack_require__(2);
-var Utils_1 = __webpack_require__(4);
-var InitializationEvents_1 = __webpack_require__(14);
-var DeviceUtils_1 = __webpack_require__(17);
-var EventsUtils_1 = __webpack_require__(142);
-var FacetSearchParameters_1 = __webpack_require__(119);
-var AnalyticsActionListMeta_1 = __webpack_require__(11);
-var Component_1 = __webpack_require__(7);
-var PopupUtils_1 = __webpack_require__(45);
-var Strings_1 = __webpack_require__(9);
-var Assert_1 = __webpack_require__(6);
-var KeyboardUtils_1 = __webpack_require__(20);
-var FacetUtils_1 = __webpack_require__(33);
-var FacetValues_1 = __webpack_require__(87);
-var StringUtils_1 = __webpack_require__(18);
-var FacetValueElement_1 = __webpack_require__(86);
-var ExternalModulesShim_1 = __webpack_require__(21);
-var SearchInterface_1 = __webpack_require__(19);
-var ResponsiveComponentsUtils_1 = __webpack_require__(85);
-var FacetValuesOrder_1 = __webpack_require__(143);
-var _ = __webpack_require__(0);
-__webpack_require__(449);
+var Dom_1 = __webpack_require__(3);
+var Utils_1 = __webpack_require__(5);
+var InitializationEvents_1 = __webpack_require__(15);
+var DeviceUtils_1 = __webpack_require__(18);
+var EventsUtils_1 = __webpack_require__(260);
+var FacetSearchParameters_1 = __webpack_require__(238);
+var AnalyticsActionListMeta_1 = __webpack_require__(12);
+var Component_1 = __webpack_require__(8);
+var PopupUtils_1 = __webpack_require__(47);
+var Strings_1 = __webpack_require__(10);
+var Assert_1 = __webpack_require__(7);
+var KeyboardUtils_1 = __webpack_require__(21);
+var FacetUtils_1 = __webpack_require__(34);
+var FacetValues_1 = __webpack_require__(89);
+var StringUtils_1 = __webpack_require__(19);
+var FacetValueElement_1 = __webpack_require__(88);
+var ExternalModulesShim_1 = __webpack_require__(22);
+var SearchInterface_1 = __webpack_require__(20);
+var ResponsiveComponentsUtils_1 = __webpack_require__(87);
+var FacetValuesOrder_1 = __webpack_require__(261);
+var _ = __webpack_require__(1);
+__webpack_require__(453);
 /**
  * Used by the {@link Facet} component to render and handle the facet search part of each facet.
  */
@@ -2966,16 +2967,17 @@ var FacetSearch = (function () {
 }());
 exports.FacetSearch = FacetSearch;
 
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(6)))
 
 /***/ }),
 
-/***/ 284:
+/***/ 403:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var _ = __webpack_require__(0);
+var _ = __webpack_require__(1);
 var FacetSearchValuesList = (function () {
     function FacetSearchValuesList(facet, facetValueElementKlass) {
         this.facet = facet;
@@ -2999,20 +3001,20 @@ exports.FacetSearchValuesList = FacetSearchValuesList;
 
 /***/ }),
 
-/***/ 285:
+/***/ 404:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 /// <reference path="Facet.ts" />
 Object.defineProperty(exports, "__esModule", { value: true });
-var FacetValueElement_1 = __webpack_require__(86);
-var Dom_1 = __webpack_require__(2);
-var FacetValues_1 = __webpack_require__(87);
-var Utils_1 = __webpack_require__(4);
-var FacetUtils_1 = __webpack_require__(33);
-var FacetValuesOrder_1 = __webpack_require__(143);
-var _ = __webpack_require__(0);
+var FacetValueElement_1 = __webpack_require__(88);
+var Dom_1 = __webpack_require__(3);
+var FacetValues_1 = __webpack_require__(89);
+var Utils_1 = __webpack_require__(5);
+var FacetUtils_1 = __webpack_require__(34);
+var FacetValuesOrder_1 = __webpack_require__(261);
+var _ = __webpack_require__(1);
 var FacetValuesList = (function () {
     function FacetValuesList(facet, facetValueElementKlass) {
         this.facet = facet;
@@ -3161,7 +3163,7 @@ exports.FacetValuesList = FacetValuesList;
 
 /***/ }),
 
-/***/ 286:
+/***/ 405:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3178,7 +3180,7 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var ValueElement_1 = __webpack_require__(275);
+var ValueElement_1 = __webpack_require__(394);
 var OmniboxValueElement = (function (_super) {
     __extends(OmniboxValueElement, _super);
     function OmniboxValueElement(facet, facetValue, eventArg, onSelect, onExclude) {
@@ -3198,16 +3200,16 @@ exports.OmniboxValueElement = OmniboxValueElement;
 
 /***/ }),
 
-/***/ 287:
+/***/ 406:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var Dom_1 = __webpack_require__(2);
-var Utils_1 = __webpack_require__(4);
-var FacetUtils_1 = __webpack_require__(33);
-var _ = __webpack_require__(0);
+var Dom_1 = __webpack_require__(3);
+var Utils_1 = __webpack_require__(5);
+var FacetUtils_1 = __webpack_require__(34);
+var _ = __webpack_require__(1);
 var OmniboxValuesList = (function () {
     function OmniboxValuesList(facet, facetValues, omniboxObject, omniboxValueElementKlass) {
         this.facet = facet;
@@ -3302,34 +3304,6 @@ exports.OmniboxValuesList = OmniboxValuesList;
 
 /***/ }),
 
-/***/ 443:
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-
-/***/ 444:
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-
-/***/ 445:
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-
-/***/ 446:
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-
 /***/ 447:
 /***/ (function(module, exports) {
 
@@ -3358,7 +3332,35 @@ exports.OmniboxValuesList = OmniboxValuesList;
 
 /***/ }),
 
+/***/ 451:
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+
+/***/ 452:
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+
 /***/ 453:
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+
+/***/ 454:
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+
+/***/ 457:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3374,7 +3376,7 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var ResponsiveFacetColumn_1 = __webpack_require__(280);
+var ResponsiveFacetColumn_1 = __webpack_require__(399);
 var Facet_1 = __webpack_require__(54);
 var ResponsiveFacets = (function (_super) {
     __extends(ResponsiveFacets, _super);
@@ -3395,7 +3397,7 @@ exports.ResponsiveFacets = ResponsiveFacets;
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-
+/* WEBPACK VAR INJECTION */(function(Promise) {
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
         ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -3407,46 +3409,46 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var Component_1 = __webpack_require__(7);
-var FacetValues_1 = __webpack_require__(87);
-var ComponentOptions_1 = __webpack_require__(8);
-var DeviceUtils_1 = __webpack_require__(17);
-var Strings_1 = __webpack_require__(9);
-var FacetQueryController_1 = __webpack_require__(144);
-var FacetSearch_1 = __webpack_require__(283);
-var FacetSettings_1 = __webpack_require__(273);
-var FacetSort_1 = __webpack_require__(274);
-var FacetValuesList_1 = __webpack_require__(285);
-var FacetHeader_1 = __webpack_require__(278);
-var FacetUtils_1 = __webpack_require__(33);
-var InitializationEvents_1 = __webpack_require__(14);
-var QueryEvents_1 = __webpack_require__(10);
-var Assert_1 = __webpack_require__(6);
-var Dom_1 = __webpack_require__(2);
-var AnalyticsActionListMeta_1 = __webpack_require__(11);
-var Utils_1 = __webpack_require__(4);
-var BreadcrumbValueElement_1 = __webpack_require__(281);
-var BreadcrumbValuesList_1 = __webpack_require__(282);
-var FacetValueElement_1 = __webpack_require__(86);
-var FacetSearchValuesList_1 = __webpack_require__(284);
-var Defer_1 = __webpack_require__(25);
-var QueryStateModel_1 = __webpack_require__(12);
-var Model_1 = __webpack_require__(15);
-var OmniboxEvents_1 = __webpack_require__(30);
-var OmniboxValueElement_1 = __webpack_require__(286);
-var OmniboxValuesList_1 = __webpack_require__(287);
-var ValueElementRenderer_1 = __webpack_require__(276);
-var FacetSearchParameters_1 = __webpack_require__(119);
-var Initialization_1 = __webpack_require__(1);
-var BreadcrumbEvents_1 = __webpack_require__(49);
-var ResponsiveFacets_1 = __webpack_require__(453);
-var KeyboardUtils_1 = __webpack_require__(20);
-var FacetValuesOrder_1 = __webpack_require__(143);
+var Component_1 = __webpack_require__(8);
+var FacetValues_1 = __webpack_require__(89);
+var ComponentOptions_1 = __webpack_require__(9);
+var DeviceUtils_1 = __webpack_require__(18);
+var Strings_1 = __webpack_require__(10);
+var FacetQueryController_1 = __webpack_require__(262);
+var FacetSearch_1 = __webpack_require__(402);
+var FacetSettings_1 = __webpack_require__(392);
+var FacetSort_1 = __webpack_require__(393);
+var FacetValuesList_1 = __webpack_require__(404);
+var FacetHeader_1 = __webpack_require__(397);
+var FacetUtils_1 = __webpack_require__(34);
+var InitializationEvents_1 = __webpack_require__(15);
+var QueryEvents_1 = __webpack_require__(11);
+var Assert_1 = __webpack_require__(7);
+var Dom_1 = __webpack_require__(3);
+var AnalyticsActionListMeta_1 = __webpack_require__(12);
+var Utils_1 = __webpack_require__(5);
+var BreadcrumbValueElement_1 = __webpack_require__(400);
+var BreadcrumbValuesList_1 = __webpack_require__(401);
+var FacetValueElement_1 = __webpack_require__(88);
+var FacetSearchValuesList_1 = __webpack_require__(403);
+var Defer_1 = __webpack_require__(26);
+var QueryStateModel_1 = __webpack_require__(14);
+var Model_1 = __webpack_require__(16);
+var OmniboxEvents_1 = __webpack_require__(31);
+var OmniboxValueElement_1 = __webpack_require__(405);
+var OmniboxValuesList_1 = __webpack_require__(406);
+var ValueElementRenderer_1 = __webpack_require__(395);
+var FacetSearchParameters_1 = __webpack_require__(238);
+var Initialization_1 = __webpack_require__(2);
+var BreadcrumbEvents_1 = __webpack_require__(41);
+var ResponsiveFacets_1 = __webpack_require__(457);
+var KeyboardUtils_1 = __webpack_require__(21);
+var FacetValuesOrder_1 = __webpack_require__(261);
 var SearchAlertEvents_1 = __webpack_require__(56);
-var _ = __webpack_require__(0);
-var GlobalExports_1 = __webpack_require__(3);
-__webpack_require__(446);
-__webpack_require__(448);
+var _ = __webpack_require__(1);
+var GlobalExports_1 = __webpack_require__(4);
+__webpack_require__(450);
+__webpack_require__(452);
 /**
  * The `Facet` component displays a *facet* of the results for the current query. A facet is a list of values for a
  * certain field occurring in the results, ordered using a configurable criteria (e.g., number of occurrences).
@@ -3901,9 +3903,7 @@ var Facet = (function (_super) {
     };
     Facet.prototype.updateAppearanceDependingOnState = function () {
         Dom_1.$$(this.element).toggleClass('coveo-active', this.values.hasSelectedOrExcludedValues());
-        if (!Dom_1.$$(this.element).hasClass('coveo-with-placeholder')) {
-            Dom_1.$$(this.element).toggleClass('coveo-facet-empty', !this.isAnyValueCurrentlyDisplayed());
-        }
+        Dom_1.$$(this.element).toggleClass('coveo-facet-empty', !this.isAnyValueCurrentlyDisplayed());
         if (this.searchInterface.isNewDesign()) {
             Dom_1.$$(this.facetHeader.eraserElement).toggleClass('coveo-facet-header-eraser-visible', this.values.hasSelectedOrExcludedValues());
         }
@@ -4022,7 +4022,7 @@ var Facet = (function (_super) {
         var _this = this;
         if (moreValuesAvailable === void 0) { moreValuesAvailable = true; }
         if (this.searchInterface.isNewDesign() && moreValuesAvailable) {
-            var renderer = new ValueElementRenderer_1.ValueElementRenderer(this, FacetValues_1.FacetValue.create(Strings_1.l('Search')));
+            var renderer = new ValueElementRenderer_1.ValueElementRenderer(this, FacetValues_1.FacetValue.create(('Search')));
             var searchButton_1 = renderer.build().withNo([renderer.excludeIcon, renderer.icon]);
             Dom_1.$$(searchButton_1.listItem).addClass('coveo-facet-search-button');
             searchButton_1.stylishCheckbox.removeAttribute('tabindex');
@@ -4343,7 +4343,6 @@ var Facet = (function (_super) {
         return Utils_1.Utils.exists(this.unpinnedViewportPosition);
     };
     Facet.prototype.ensurePinnedFacetHasntMoved = function () {
-        var _this = this;
         if (this.isFacetPinned()) {
             Assert_1.Assert.exists(this.pinnedViewportPosition);
             Dom_1.$$(this.pinnedTopSpace).removeClass('coveo-with-animation');
@@ -4353,9 +4352,9 @@ var Facet = (function (_super) {
             // Under firefox scrolling the body doesn't work, but window does
             // on all browser, so we substitute those here when needed.
             var elementToScroll_1 = this.options.scrollContainer == document.body ? window : this.options.scrollContainer;
-            var currentViewportPosition_1 = this.element.getBoundingClientRect().top;
-            var offset_1 = currentViewportPosition_1 - this.pinnedViewportPosition;
-            var scrollToOffset_1 = function () {
+            var currentViewportPosition = this.element.getBoundingClientRect().top;
+            var offset_1 = currentViewportPosition - this.pinnedViewportPosition;
+            var scrollToOffset = function () {
                 if (elementToScroll_1 instanceof Window) {
                     window.scrollTo(0, window.scrollY + offset_1);
                 }
@@ -4364,31 +4363,14 @@ var Facet = (function (_super) {
                 }
             };
             // First try to adjust position by scrolling the page
-            scrollToOffset_1();
-            currentViewportPosition_1 = this.element.getBoundingClientRect().top;
-            offset_1 = currentViewportPosition_1 - this.pinnedViewportPosition;
+            scrollToOffset();
+            currentViewportPosition = this.element.getBoundingClientRect().top;
+            offset_1 = currentViewportPosition - this.pinnedViewportPosition;
             // If scrolling has worked (offset == 0), we're good to go, nothing to do anymore.
-            // Otherwise try other voodoo magic.
             if (offset_1 < 0) {
                 // This means the facet element is scrolled up in the viewport,
                 // scroll it down by adding space in the top container
                 this.pinnedTopSpace.style.height = (offset_1 * -1) + 'px';
-            }
-            else {
-                // Here, this means the facet element is scrolled down in the viewport,
-                // and there is not enough scroll space in the page / window to scroll far enough
-                // we need to add space at the bottom so that we can finally scroll there.
-                _.defer(function () {
-                    var heightBottom = 0;
-                    var attempts = 0;
-                    while (offset_1 > 0 && attempts++ < 100) {
-                        heightBottom += 100;
-                        _this.pinnedBottomSpace.style.height = heightBottom + 'px';
-                        currentViewportPosition_1 = _this.element.getBoundingClientRect().top;
-                        offset_1 = currentViewportPosition_1 - _this.pinnedViewportPosition;
-                        scrollToOffset_1();
-                    }
-                });
             }
             this.unpinnedViewportPosition = this.pinnedViewportPosition;
             this.pinnedViewportPosition = null;
@@ -4843,7 +4825,15 @@ Facet.options = {
      *
      * Default value is `element.parentElement`.
      */
-    paddingContainer: ComponentOptions_1.ComponentOptions.buildSelectorOption({ defaultFunction: function (element) { return element.parentElement; } }),
+    paddingContainer: ComponentOptions_1.ComponentOptions.buildSelectorOption({
+        defaultFunction: function (element) {
+            var standardColumn = Dom_1.$$(element).parent('coveo-facet-column');
+            if (standardColumn != null) {
+                return standardColumn;
+            }
+            return element.parentElement;
+        }
+    }),
     /**
      * Specifies the HTML element (through a CSS selector) whose scroll amount the facet should adjust to preserve its
      * position when results are updated.
@@ -4948,43 +4938,42 @@ Facet.options = {
      * Specifies a JSON object describing a mapping of facet values to their desired captions. See
      * [Normalizing Facet Value Captions](https://developers.coveo.com/x/jBsvAg).
      *
-     * **Notes:**
-     * > * You cannot set this option directly in the component markup as an HTML attribute. You must either set it in the
-     *    > [`init`]{@link init} call of your search interface (see
-     *    > [Components - Passing Component Options in the init Call](https://developers.coveo.com/x/PoGfAQ#Components-PassingComponentOptionsintheinitCall)),
-     *    > or before the `init` call, using the `options` top-level function (see
-     *    > [Components - Passing Component Options Before the init Call](https://developers.coveo.com/x/PoGfAQ#Components-PassingComponentOptionsBeforetheinitCall)).
+     * **Examples:**
      *
-     * > *  Using value captions will disable alphabetical sorts (see the [availableSorts]{@link Facet.options.availableSorts} option).
-     *
-     * **Example:**
-     *
+     * You can set the option in the ['init']{@link init} call:
      * ```javascript
-     *
      * var myValueCaptions = {
      *   "txt" : "Text files",
      *   "html" : "Web page",
      *   [ ... ]
      * };
      *
-     * // You can set the option in the 'init' call:
      * Coveo.init(document.querySelector("#search"), {
      *   Facet : {
      *     valueCaption : myValueCaptions
      *   }
      * });
-     *
-     * // Or before the 'init' call, using the 'options' top-level function:
-     * // Coveo.options(document.querySelector("#search"), {
-     * //  Facet : {
-     * //    valueCaption : myValueCaptions
-     * //  }
-     * // });
      * ```
+     *
+     * Or before the `init` call, using the ['options']{@link options} top-level function:
+     * ```javascript
+     * Coveo.options(document.querySelector("#search"), {
+     *   Facet : {
+     *     valueCaption : myValueCaptions
+     *   }
+     * });
+     * ```
+     *
+     * Or directly in the markup:
+     * ```html
+     * <!-- Ensure that the double quotes are properly handled in data-value-caption. -->
+     * <div class='CoveoFacet' data-field='@myotherfield' data-value-caption='{"txt":"Text files","html":"Web page"}></div>
+     * ```
+     *
+     * **Note:**
+     * > Using value captions will disable alphabetical sorts (see the [availableSorts]{@link Facet.options.availableSorts} option).
      */
-    valueCaption: ComponentOptions_1.ComponentOptions.buildCustomOption(function () {
-        return null;
-    }),
+    valueCaption: ComponentOptions_1.ComponentOptions.buildJsonObjectOption(),
     /**
      * Specifies whether to enable *responsive mode* for facets. Setting this options to `false` on any `Facet`, or
      * [`FacetSlider`]{@link FacetSlider} component in a search interface disables responsive mode for all other facets
@@ -5016,22 +5005,23 @@ exports.Facet = Facet;
 Initialization_1.Initialization.registerAutoCreateComponent(Facet);
 Facet.doExport();
 
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(6)))
 
 /***/ }),
 
-/***/ 74:
+/***/ 76:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var Dom_1 = __webpack_require__(2);
-var InitializationEvents_1 = __webpack_require__(14);
-var Component_1 = __webpack_require__(7);
-var SearchInterface_1 = __webpack_require__(19);
-var Utils_1 = __webpack_require__(4);
-var _ = __webpack_require__(0);
-var QueryEvents_1 = __webpack_require__(10);
+var Dom_1 = __webpack_require__(3);
+var InitializationEvents_1 = __webpack_require__(15);
+var Component_1 = __webpack_require__(8);
+var SearchInterface_1 = __webpack_require__(20);
+var Utils_1 = __webpack_require__(5);
+var _ = __webpack_require__(1);
+var QueryEvents_1 = __webpack_require__(11);
 var Logger_1 = __webpack_require__(13);
 var ResponsiveComponentsManager = (function () {
     function ResponsiveComponentsManager(root) {
@@ -5201,7 +5191,7 @@ exports.ResponsiveComponentsManager = ResponsiveComponentsManager;
 
 /***/ }),
 
-/***/ 85:
+/***/ 87:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5250,7 +5240,7 @@ exports.ResponsiveComponentsUtils = ResponsiveComponentsUtils;
 
 /***/ }),
 
-/***/ 86:
+/***/ 88:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5267,9 +5257,9 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var QueryEvents_1 = __webpack_require__(10);
-var Dom_1 = __webpack_require__(2);
-var ValueElement_1 = __webpack_require__(275);
+var QueryEvents_1 = __webpack_require__(11);
+var Dom_1 = __webpack_require__(3);
+var ValueElement_1 = __webpack_require__(394);
 var FacetValueElement = (function (_super) {
     __extends(FacetValueElement, _super);
     function FacetValueElement(facet, facetValue, keepDisplayedValueNextTime) {
@@ -5294,16 +5284,16 @@ exports.FacetValueElement = FacetValueElement;
 
 /***/ }),
 
-/***/ 87:
+/***/ 89:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var Assert_1 = __webpack_require__(6);
-var Utils_1 = __webpack_require__(4);
-var Globalize = __webpack_require__(22);
-var _ = __webpack_require__(0);
+var Assert_1 = __webpack_require__(7);
+var Utils_1 = __webpack_require__(5);
+var Globalize = __webpack_require__(24);
+var _ = __webpack_require__(1);
 /**
  * A class which holds information and operation available on a single facet value returned by a {@link IGroupByRequest}.<br/>
  * This class is used extensibely in the {@link Facet} component.

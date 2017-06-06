@@ -1,6 +1,6 @@
 webpackJsonpCoveo__temporary([62],{
 
-/***/ 189:
+/***/ 307:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16,14 +16,14 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var Component_1 = __webpack_require__(7);
-var ComponentOptions_1 = __webpack_require__(8);
-var Utils_1 = __webpack_require__(4);
-var QueryEvents_1 = __webpack_require__(10);
-var Dom_1 = __webpack_require__(2);
-var Initialization_1 = __webpack_require__(1);
-var _ = __webpack_require__(0);
-var GlobalExports_1 = __webpack_require__(3);
+var Component_1 = __webpack_require__(8);
+var ComponentOptions_1 = __webpack_require__(9);
+var Utils_1 = __webpack_require__(5);
+var QueryEvents_1 = __webpack_require__(11);
+var Dom_1 = __webpack_require__(3);
+var Initialization_1 = __webpack_require__(2);
+var _ = __webpack_require__(1);
+var GlobalExports_1 = __webpack_require__(4);
 /**
  * A PipelineContext is used to add contextual information about the environment inside which the query is executed.
  *

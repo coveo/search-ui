@@ -1,13 +1,13 @@
 webpackJsonpCoveo__temporary([65],{
 
-/***/ 79:
+/***/ 81:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var Dom_1 = __webpack_require__(2);
-var GlobalExports_1 = __webpack_require__(3);
+var Dom_1 = __webpack_require__(3);
+var GlobalExports_1 = __webpack_require__(4);
 /**
  * A numeric spinner widget with standard styling.
  */

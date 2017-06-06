@@ -1,6 +1,6 @@
 webpackJsonpCoveo__temporary([64],{
 
-/***/ 127:
+/***/ 246:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16,15 +16,15 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var Component_1 = __webpack_require__(7);
-var ComponentOptions_1 = __webpack_require__(8);
-var Assert_1 = __webpack_require__(6);
-var QueryUtils_1 = __webpack_require__(16);
-var Initialization_1 = __webpack_require__(1);
-var Utils_1 = __webpack_require__(4);
-var FileTypes_1 = __webpack_require__(81);
-var Dom_1 = __webpack_require__(2);
-var GlobalExports_1 = __webpack_require__(3);
+var Component_1 = __webpack_require__(8);
+var ComponentOptions_1 = __webpack_require__(9);
+var Assert_1 = __webpack_require__(7);
+var QueryUtils_1 = __webpack_require__(17);
+var Initialization_1 = __webpack_require__(2);
+var Utils_1 = __webpack_require__(5);
+var FileTypes_1 = __webpack_require__(83);
+var Dom_1 = __webpack_require__(3);
+var GlobalExports_1 = __webpack_require__(4);
 /**
  * The Icon component outputs the corresponding icon for a given file type. The component searches for a suitable icon
  * from those available in the Coveo JavaScript Search Framework. If the component finds no suitable icon, it instead

@@ -1,6 +1,6 @@
 webpackJsonpCoveo__temporary([52],{
 
-/***/ 177:
+/***/ 295:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16,15 +16,15 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var Component_1 = __webpack_require__(7);
-var ComponentOptions_1 = __webpack_require__(8);
-var SettingsEvents_1 = __webpack_require__(37);
-var AnalyticsActionListMeta_1 = __webpack_require__(11);
-var Initialization_1 = __webpack_require__(1);
-var Strings_1 = __webpack_require__(9);
-var _ = __webpack_require__(0);
-var GlobalExports_1 = __webpack_require__(3);
-__webpack_require__(555);
+var Component_1 = __webpack_require__(8);
+var ComponentOptions_1 = __webpack_require__(9);
+var SettingsEvents_1 = __webpack_require__(38);
+var AnalyticsActionListMeta_1 = __webpack_require__(12);
+var Initialization_1 = __webpack_require__(2);
+var Strings_1 = __webpack_require__(10);
+var _ = __webpack_require__(1);
+var GlobalExports_1 = __webpack_require__(4);
+__webpack_require__(557);
 /**
  * The ExportToExcel component renders an item in the {@link Settings} menu to allow the end user to export the current
  * search results to the Microsoft Excel format (.xlsx).
@@ -110,7 +110,7 @@ Initialization_1.Initialization.registerAutoCreateComponent(ExportToExcel);
 
 /***/ }),
 
-/***/ 555:
+/***/ 557:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

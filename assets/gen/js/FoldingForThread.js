@@ -1,6 +1,6 @@
-webpackJsonpCoveo__temporary([21,30],{
+webpackJsonpCoveo__temporary([20,29],{
 
-/***/ 125:
+/***/ 244:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16,17 +16,17 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var Component_1 = __webpack_require__(7);
-var SortCriteria_1 = __webpack_require__(403);
-var ComponentOptions_1 = __webpack_require__(8);
-var Utils_1 = __webpack_require__(4);
-var Assert_1 = __webpack_require__(6);
-var QueryEvents_1 = __webpack_require__(10);
-var Initialization_1 = __webpack_require__(1);
-var Dom_1 = __webpack_require__(2);
-var QueryBuilder_1 = __webpack_require__(40);
-var _ = __webpack_require__(0);
-var GlobalExports_1 = __webpack_require__(3);
+var Component_1 = __webpack_require__(8);
+var SortCriteria_1 = __webpack_require__(407);
+var ComponentOptions_1 = __webpack_require__(9);
+var Utils_1 = __webpack_require__(5);
+var Assert_1 = __webpack_require__(7);
+var QueryEvents_1 = __webpack_require__(11);
+var Initialization_1 = __webpack_require__(2);
+var Dom_1 = __webpack_require__(3);
+var QueryBuilder_1 = __webpack_require__(42);
+var _ = __webpack_require__(1);
+var GlobalExports_1 = __webpack_require__(4);
 /**
  * The `Folding` component makes it possible to render hierarchic representations of search results sharing a common
  * [`field`]{@link Folding.options.field}.
@@ -400,7 +400,7 @@ Initialization_1.Initialization.registerAutoCreateComponent(Folding);
 
 /***/ }),
 
-/***/ 181:
+/***/ 299:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -416,9 +416,9 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var Folding_1 = __webpack_require__(125);
-var Initialization_1 = __webpack_require__(1);
-var GlobalExports_1 = __webpack_require__(3);
+var Folding_1 = __webpack_require__(244);
+var Initialization_1 = __webpack_require__(2);
+var GlobalExports_1 = __webpack_require__(4);
 /**
  * The `FoldingForThread` component inherits from the [`Folding`]{@link Folding} component. It offers the
  * same configuration options.
@@ -472,15 +472,15 @@ Initialization_1.Initialization.registerAutoCreateComponent(FoldingForThread);
 
 /***/ }),
 
-/***/ 403:
+/***/ 407:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var Assert_1 = __webpack_require__(6);
-var Utils_1 = __webpack_require__(4);
-var _ = __webpack_require__(0);
+var Assert_1 = __webpack_require__(7);
+var Utils_1 = __webpack_require__(5);
+var _ = __webpack_require__(1);
 var SortCriteria = (function () {
     /**
      * Create a new SortCriteria

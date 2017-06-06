@@ -1,6 +1,6 @@
-webpackJsonpCoveo__temporary([18],{
+webpackJsonpCoveo__temporary([17],{
 
-/***/ 133:
+/***/ 252:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16,25 +16,25 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var Component_1 = __webpack_require__(7);
-var ComponentOptions_1 = __webpack_require__(8);
-var QueryEvents_1 = __webpack_require__(10);
-var Initialization_1 = __webpack_require__(1);
-var InitializationEvents_1 = __webpack_require__(14);
-var Assert_1 = __webpack_require__(6);
-var ResultListEvents_1 = __webpack_require__(29);
-var ResultLayoutEvents_1 = __webpack_require__(99);
-var Dom_1 = __webpack_require__(2);
-var QueryStateModel_1 = __webpack_require__(12);
-var Model_1 = __webpack_require__(15);
-var AnalyticsActionListMeta_1 = __webpack_require__(11);
-var KeyboardUtils_1 = __webpack_require__(20);
-var ResponsiveResultLayout_1 = __webpack_require__(618);
-var Utils_1 = __webpack_require__(4);
-var _ = __webpack_require__(0);
-var GlobalExports_1 = __webpack_require__(3);
-var Strings_1 = __webpack_require__(9);
-__webpack_require__(573);
+var Component_1 = __webpack_require__(8);
+var ComponentOptions_1 = __webpack_require__(9);
+var QueryEvents_1 = __webpack_require__(11);
+var Initialization_1 = __webpack_require__(2);
+var InitializationEvents_1 = __webpack_require__(15);
+var Assert_1 = __webpack_require__(7);
+var ResultListEvents_1 = __webpack_require__(30);
+var ResultLayoutEvents_1 = __webpack_require__(101);
+var Dom_1 = __webpack_require__(3);
+var QueryStateModel_1 = __webpack_require__(14);
+var Model_1 = __webpack_require__(16);
+var AnalyticsActionListMeta_1 = __webpack_require__(12);
+var KeyboardUtils_1 = __webpack_require__(21);
+var ResponsiveResultLayout_1 = __webpack_require__(620);
+var Utils_1 = __webpack_require__(5);
+var _ = __webpack_require__(1);
+var GlobalExports_1 = __webpack_require__(4);
+var Strings_1 = __webpack_require__(10);
+__webpack_require__(575);
 exports.defaultLayout = 'list';
 /**
  * The ResultLayout component allows the end user to switch between multiple {@link ResultList} components that have
@@ -171,9 +171,11 @@ var ResultLayout = (function (_super) {
     ResultLayout.prototype.handleQuerySuccess = function (args) {
         if (args.results.results.length === 0 || !this.shouldShowSelector()) {
             this.hide();
+            this.hasNoResults = true;
         }
         else {
             this.show();
+            this.hasNoResults = false;
         }
     };
     ResultLayout.prototype.handleQueryStateChanged = function (args) {
@@ -246,7 +248,7 @@ var ResultLayout = (function (_super) {
         this.queryStateModel.set(QueryStateModel_1.QueryStateModel.attributesEnum.layout, val);
     };
     ResultLayout.prototype.shouldShowSelector = function () {
-        return _.keys(this.currentActiveLayouts).length > 1 && _.filter(this.currentActiveLayouts, function (activeLayout) { return activeLayout.button.visible; }).length > 1;
+        return _.keys(this.currentActiveLayouts).length > 1 && _.filter(this.currentActiveLayouts, function (activeLayout) { return activeLayout.button.visible; }).length > 1 && !this.hasNoResults;
     };
     ResultLayout.prototype.isLayoutDisplayedByButton = function (layout) {
         return _.contains(_.keys(this.currentActiveLayouts), layout);
@@ -304,26 +306,26 @@ Initialization_1.Initialization.registerAutoCreateComponent(ResultLayout);
 
 /***/ }),
 
-/***/ 573:
+/***/ 575:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
 
-/***/ 618:
+/***/ 620:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var ResponsiveComponentsManager_1 = __webpack_require__(74);
-var Dom_1 = __webpack_require__(2);
-var Component_1 = __webpack_require__(7);
-var ResultLayout_1 = __webpack_require__(133);
+var ResponsiveComponentsManager_1 = __webpack_require__(76);
+var Dom_1 = __webpack_require__(3);
+var Component_1 = __webpack_require__(8);
+var ResultLayout_1 = __webpack_require__(252);
 var Logger_1 = __webpack_require__(13);
-var SearchInterface_1 = __webpack_require__(19);
-var _ = __webpack_require__(0);
+var SearchInterface_1 = __webpack_require__(20);
+var _ = __webpack_require__(1);
 var ResponsiveResultLayout = (function () {
     function ResponsiveResultLayout(coveoRoot, ID, options, responsiveDropdown) {
         this.coveoRoot = coveoRoot;
@@ -375,19 +377,19 @@ exports.ResponsiveResultLayout = ResponsiveResultLayout;
 
 /***/ }),
 
-/***/ 74:
+/***/ 76:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var Dom_1 = __webpack_require__(2);
-var InitializationEvents_1 = __webpack_require__(14);
-var Component_1 = __webpack_require__(7);
-var SearchInterface_1 = __webpack_require__(19);
-var Utils_1 = __webpack_require__(4);
-var _ = __webpack_require__(0);
-var QueryEvents_1 = __webpack_require__(10);
+var Dom_1 = __webpack_require__(3);
+var InitializationEvents_1 = __webpack_require__(15);
+var Component_1 = __webpack_require__(8);
+var SearchInterface_1 = __webpack_require__(20);
+var Utils_1 = __webpack_require__(5);
+var _ = __webpack_require__(1);
+var QueryEvents_1 = __webpack_require__(11);
 var Logger_1 = __webpack_require__(13);
 var ResponsiveComponentsManager = (function () {
     function ResponsiveComponentsManager(root) {

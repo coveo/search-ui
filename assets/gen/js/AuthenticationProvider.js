@@ -1,6 +1,6 @@
 webpackJsonpCoveo__temporary([58],{
 
-/***/ 164:
+/***/ 282:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16,20 +16,20 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var Component_1 = __webpack_require__(7);
-var ComponentOptions_1 = __webpack_require__(8);
-var Assert_1 = __webpack_require__(6);
-var QueryEvents_1 = __webpack_require__(10);
-var InitializationEvents_1 = __webpack_require__(14);
-var SettingsEvents_1 = __webpack_require__(37);
-var DomUtils_1 = __webpack_require__(41);
-var Dom_1 = __webpack_require__(2);
-var Initialization_1 = __webpack_require__(1);
-var Strings_1 = __webpack_require__(9);
-var ExternalModulesShim_1 = __webpack_require__(21);
-var _ = __webpack_require__(0);
-var GlobalExports_1 = __webpack_require__(3);
-__webpack_require__(547);
+var Component_1 = __webpack_require__(8);
+var ComponentOptions_1 = __webpack_require__(9);
+var Assert_1 = __webpack_require__(7);
+var QueryEvents_1 = __webpack_require__(11);
+var InitializationEvents_1 = __webpack_require__(15);
+var SettingsEvents_1 = __webpack_require__(38);
+var DomUtils_1 = __webpack_require__(43);
+var Dom_1 = __webpack_require__(3);
+var Initialization_1 = __webpack_require__(2);
+var Strings_1 = __webpack_require__(10);
+var ExternalModulesShim_1 = __webpack_require__(22);
+var _ = __webpack_require__(1);
+var GlobalExports_1 = __webpack_require__(4);
+__webpack_require__(549);
 /**
  * The `AuthenticationProvider` component makes it possible to execute queries with an identity that the end user
  * can obtain using an authentication provider configured on the Coveo REST Search API
@@ -206,7 +206,7 @@ Initialization_1.Initialization.registerAutoCreateComponent(AuthenticationProvid
 
 /***/ }),
 
-/***/ 547:
+/***/ 549:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

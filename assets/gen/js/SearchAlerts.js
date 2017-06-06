@@ -1,6 +1,6 @@
-webpackJsonpCoveo__temporary([16,66],{
+webpackJsonpCoveo__temporary([15,66],{
 
-/***/ 148:
+/***/ 266:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14,7 +14,7 @@ exports.SUBSCRIPTION_TYPE = {
 
 /***/ }),
 
-/***/ 202:
+/***/ 320:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -30,22 +30,22 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var Component_1 = __webpack_require__(7);
-var ComponentOptions_1 = __webpack_require__(8);
-var SearchAlertsMessage_1 = __webpack_require__(622);
-var SettingsEvents_1 = __webpack_require__(37);
-var QueryEvents_1 = __webpack_require__(10);
-var Assert_1 = __webpack_require__(6);
+var Component_1 = __webpack_require__(8);
+var ComponentOptions_1 = __webpack_require__(9);
+var SearchAlertsMessage_1 = __webpack_require__(624);
+var SettingsEvents_1 = __webpack_require__(38);
+var QueryEvents_1 = __webpack_require__(11);
+var Assert_1 = __webpack_require__(7);
 var SearchAlertEvents_1 = __webpack_require__(56);
-var Subscription_1 = __webpack_require__(148);
-var Initialization_1 = __webpack_require__(1);
-var Strings_1 = __webpack_require__(9);
-var Dom_1 = __webpack_require__(2);
-var ExternalModulesShim_1 = __webpack_require__(21);
-var AnalyticsActionListMeta_1 = __webpack_require__(11);
-var _ = __webpack_require__(0);
-var GlobalExports_1 = __webpack_require__(3);
-var Dropdown_1 = __webpack_require__(48);
+var Subscription_1 = __webpack_require__(266);
+var Initialization_1 = __webpack_require__(2);
+var Strings_1 = __webpack_require__(10);
+var Dom_1 = __webpack_require__(3);
+var ExternalModulesShim_1 = __webpack_require__(22);
+var AnalyticsActionListMeta_1 = __webpack_require__(12);
+var _ = __webpack_require__(1);
+var GlobalExports_1 = __webpack_require__(4);
+var Dropdown_1 = __webpack_require__(50);
 /**
  * The Search Alerts component renders items in the {@link Settings} menu that allow the end user to follow queries
  * and to manage search alerts. A user following a query receives email notifications when the query results change.
@@ -445,9 +445,9 @@ SearchAlerts.options = {
      * If {@link SearchAlerts.options.enableMessage} is `true`, specifies how long to display the search alert messages
      * (in milliseconds).
      *
-     * Default value is `3000`. Minimum value is `0`.
+     * Default value is `2000`. Minimum value is `0`.
      */
-    messageCloseDelay: ComponentOptions_1.ComponentOptions.buildNumberOption({ defaultValue: 3000, min: 0, depend: 'enableMessage' }),
+    messageCloseDelay: ComponentOptions_1.ComponentOptions.buildNumberOption({ defaultValue: 2000, min: 0, depend: 'enableMessage' }),
 };
 exports.SearchAlerts = SearchAlerts;
 Initialization_1.Initialization.registerAutoCreateComponent(SearchAlerts);
@@ -455,16 +455,16 @@ Initialization_1.Initialization.registerAutoCreateComponent(SearchAlerts);
 
 /***/ }),
 
-/***/ 48:
+/***/ 50:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var Dom_1 = __webpack_require__(2);
-var Strings_1 = __webpack_require__(9);
-var _ = __webpack_require__(0);
-var GlobalExports_1 = __webpack_require__(3);
+var Dom_1 = __webpack_require__(3);
+var Strings_1 = __webpack_require__(10);
+var _ = __webpack_require__(1);
+var GlobalExports_1 = __webpack_require__(4);
 /**
  * A dropdown widget with standard styling.
  */
@@ -591,7 +591,7 @@ exports.Dropdown = Dropdown;
 
 /***/ }),
 
-/***/ 622:
+/***/ 624:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -607,15 +607,15 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var Component_1 = __webpack_require__(7);
-var ComponentOptions_1 = __webpack_require__(8);
+var Component_1 = __webpack_require__(8);
+var ComponentOptions_1 = __webpack_require__(9);
 var SearchAlertEvents_1 = __webpack_require__(56);
-var QueryEvents_1 = __webpack_require__(10);
-var Subscription_1 = __webpack_require__(148);
-var PopupUtils_1 = __webpack_require__(45);
-var Strings_1 = __webpack_require__(9);
-var Dom_1 = __webpack_require__(2);
-var _ = __webpack_require__(0);
+var QueryEvents_1 = __webpack_require__(11);
+var Subscription_1 = __webpack_require__(266);
+var PopupUtils_1 = __webpack_require__(47);
+var Strings_1 = __webpack_require__(10);
+var Dom_1 = __webpack_require__(3);
+var _ = __webpack_require__(1);
 /**
  * The SearchAlertsMessage component allows the {@link SearchAlerts} component to display messages.
  *
@@ -683,7 +683,7 @@ var SearchAlertsMessage = (function (_super) {
     SearchAlertsMessage.prototype.showMessage = function (dom, message, error) {
         var _this = this;
         this.message = Dom_1.$$('div');
-        this.message.el.innerHTML = "\n      <div class='coveo-subscriptions-messages-message'>\n        <div class='coveo-subscriptions-messages-info-close'></div>\n        <div class='coveo-subscriptions-messages-content'>" + message + "</div>\n      </div>";
+        this.message.el.innerHTML = "\n      <div class='coveo-subscriptions-messages-message'>\n        <div class='coveo-subscriptions-messages-content'>" + message + "</div>\n        <div class='coveo-subscriptions-messages-info-close'></div>\n      </div>";
         this.message.toggleClass('coveo-subscriptions-messages-error', error);
         var closeButton = this.message.find('.coveo-subscriptions-messages-info-close');
         Dom_1.$$(closeButton).on('click', function () { return _this.close(); });
@@ -760,9 +760,9 @@ SearchAlertsMessage.options = {
     /**
      * Specifies how long to display the search alerts messages (in milliseconds).
      *
-     * Default value is `3000`. Minimum value is `0`.
+     * Default value is `2000`. Minimum value is `0`.
      */
-    closeDelay: ComponentOptions_1.ComponentOptions.buildNumberOption({ defaultValue: 3000, min: 0 }),
+    closeDelay: ComponentOptions_1.ComponentOptions.buildNumberOption({ defaultValue: 2000, min: 0 }),
 };
 exports.SearchAlertsMessage = SearchAlertsMessage;
 

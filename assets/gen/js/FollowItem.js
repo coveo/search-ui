@@ -1,6 +1,6 @@
-webpackJsonpCoveo__temporary([37],{
+webpackJsonpCoveo__temporary([36],{
 
-/***/ 148:
+/***/ 266:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14,7 +14,7 @@ exports.SUBSCRIPTION_TYPE = {
 
 /***/ }),
 
-/***/ 182:
+/***/ 300:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -30,20 +30,20 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var Component_1 = __webpack_require__(7);
-var ComponentOptions_1 = __webpack_require__(8);
-var Assert_1 = __webpack_require__(6);
+var Component_1 = __webpack_require__(8);
+var ComponentOptions_1 = __webpack_require__(9);
+var Assert_1 = __webpack_require__(7);
 var SearchAlertEvents_1 = __webpack_require__(56);
-var Subscription_1 = __webpack_require__(148);
-var Initialization_1 = __webpack_require__(1);
-var Strings_1 = __webpack_require__(9);
-var Dom_1 = __webpack_require__(2);
-var AnalyticsActionListMeta_1 = __webpack_require__(11);
-var QueryUtils_1 = __webpack_require__(16);
-var _ = __webpack_require__(0);
-var Utils_1 = __webpack_require__(4);
-var KeyboardUtils_1 = __webpack_require__(20);
-var GlobalExports_1 = __webpack_require__(3);
+var Subscription_1 = __webpack_require__(266);
+var Initialization_1 = __webpack_require__(2);
+var Strings_1 = __webpack_require__(10);
+var Dom_1 = __webpack_require__(3);
+var AnalyticsActionListMeta_1 = __webpack_require__(12);
+var QueryUtils_1 = __webpack_require__(17);
+var _ = __webpack_require__(1);
+var Utils_1 = __webpack_require__(5);
+var KeyboardUtils_1 = __webpack_require__(21);
+var GlobalExports_1 = __webpack_require__(4);
 /**
  * The FollowItem component renders a widget that the end user can click to follow a particular item. A user following
  * an item receives email notifications when the item changes.

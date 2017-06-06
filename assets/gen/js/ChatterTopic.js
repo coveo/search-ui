@@ -1,6 +1,6 @@
 webpackJsonpCoveo__temporary([68],{
 
-/***/ 173:
+/***/ 291:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16,11 +16,11 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var Component_1 = __webpack_require__(7);
-var Utils_1 = __webpack_require__(4);
-var Initialization_1 = __webpack_require__(1);
-var Dom_1 = __webpack_require__(2);
-var GlobalExports_1 = __webpack_require__(3);
+var Component_1 = __webpack_require__(8);
+var Utils_1 = __webpack_require__(5);
+var Initialization_1 = __webpack_require__(2);
+var Dom_1 = __webpack_require__(3);
+var GlobalExports_1 = __webpack_require__(4);
 var ChatterTopic = (function (_super) {
     __extends(ChatterTopic, _super);
     function ChatterTopic(element, options, bindings, result) {

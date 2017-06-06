@@ -1,10 +1,10 @@
-webpackJsonpCoveo__temporary([24],{
+webpackJsonpCoveo__temporary([23],{
 
-/***/ 196:
+/***/ 314:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-
+/* WEBPACK VAR INJECTION */(function(Promise) {
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
         ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -16,18 +16,18 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var Component_1 = __webpack_require__(7);
-var ComponentOptions_1 = __webpack_require__(8);
-var DefaultFoldingTemplate_1 = __webpack_require__(621);
-var Utils_1 = __webpack_require__(4);
-var QueryUtils_1 = __webpack_require__(16);
-var Initialization_1 = __webpack_require__(1);
-var Assert_1 = __webpack_require__(6);
-var Dom_1 = __webpack_require__(2);
-var Strings_1 = __webpack_require__(9);
-var _ = __webpack_require__(0);
-var GlobalExports_1 = __webpack_require__(3);
-__webpack_require__(572);
+var Component_1 = __webpack_require__(8);
+var ComponentOptions_1 = __webpack_require__(9);
+var DefaultFoldingTemplate_1 = __webpack_require__(623);
+var Utils_1 = __webpack_require__(5);
+var QueryUtils_1 = __webpack_require__(17);
+var Initialization_1 = __webpack_require__(2);
+var Assert_1 = __webpack_require__(7);
+var Dom_1 = __webpack_require__(3);
+var Strings_1 = __webpack_require__(10);
+var _ = __webpack_require__(1);
+var GlobalExports_1 = __webpack_require__(4);
+__webpack_require__(574);
 /**
  * The `ResultFolding` component renders folded result sets. It is usable inside a result template when there is an
  * active [`Folding`]{@link Folding} component in the page. This component takes care of rendering the parent result and
@@ -290,17 +290,18 @@ ResultFolding.options = {
 exports.ResultFolding = ResultFolding;
 Initialization_1.Initialization.registerAutoCreateComponent(ResultFolding);
 
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(6)))
 
 /***/ }),
 
-/***/ 572:
+/***/ 574:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
 
-/***/ 621:
+/***/ 623:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";

@@ -1,17 +1,17 @@
-webpackJsonpCoveo__temporary([12,39,40],{
+webpackJsonpCoveo__temporary([11,39,40],{
 
-/***/ 126:
+/***/ 245:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var Dom_1 = __webpack_require__(2);
-var _ = __webpack_require__(0);
-var Strings_1 = __webpack_require__(9);
-__webpack_require__(458);
-var Utils_1 = __webpack_require__(4);
-var GlobalExports_1 = __webpack_require__(3);
+var Dom_1 = __webpack_require__(3);
+var _ = __webpack_require__(1);
+var Strings_1 = __webpack_require__(10);
+__webpack_require__(462);
+var Utils_1 = __webpack_require__(5);
+var GlobalExports_1 = __webpack_require__(4);
 /**
  * A multi select widget with standard styling.
  */
@@ -128,7 +128,7 @@ exports.MultiSelect = MultiSelect;
 
 /***/ }),
 
-/***/ 199:
+/***/ 317:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -144,27 +144,27 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var Component_1 = __webpack_require__(7);
-var ComponentOptions_1 = __webpack_require__(8);
-var LocalStorageUtils_1 = __webpack_require__(34);
-var InitializationEvents_1 = __webpack_require__(14);
-var PreferencesPanelEvents_1 = __webpack_require__(64);
-var Model_1 = __webpack_require__(15);
-var QueryEvents_1 = __webpack_require__(10);
-var QueryStateModel_1 = __webpack_require__(12);
-var BreadcrumbEvents_1 = __webpack_require__(49);
-var AnalyticsActionListMeta_1 = __webpack_require__(11);
-var Initialization_1 = __webpack_require__(1);
-var Strings_1 = __webpack_require__(9);
-var Utils_1 = __webpack_require__(4);
-var Dom_1 = __webpack_require__(2);
-var _ = __webpack_require__(0);
-var GlobalExports_1 = __webpack_require__(3);
-__webpack_require__(575);
+var Component_1 = __webpack_require__(8);
+var ComponentOptions_1 = __webpack_require__(9);
+var LocalStorageUtils_1 = __webpack_require__(35);
+var InitializationEvents_1 = __webpack_require__(15);
+var PreferencesPanelEvents_1 = __webpack_require__(65);
+var Model_1 = __webpack_require__(16);
+var QueryEvents_1 = __webpack_require__(11);
+var QueryStateModel_1 = __webpack_require__(14);
+var BreadcrumbEvents_1 = __webpack_require__(41);
+var AnalyticsActionListMeta_1 = __webpack_require__(12);
+var Initialization_1 = __webpack_require__(2);
+var Strings_1 = __webpack_require__(10);
+var Utils_1 = __webpack_require__(5);
+var Dom_1 = __webpack_require__(3);
+var _ = __webpack_require__(1);
+var GlobalExports_1 = __webpack_require__(4);
+__webpack_require__(577);
 var Checkbox_1 = __webpack_require__(59);
-var TextInput_1 = __webpack_require__(43);
-var MultiSelect_1 = __webpack_require__(126);
-var FormGroup_1 = __webpack_require__(95);
+var TextInput_1 = __webpack_require__(45);
+var MultiSelect_1 = __webpack_require__(245);
+var FormGroup_1 = __webpack_require__(97);
 /**
  * The `ResultFiltersPreferences` component allows end users to create custom filters to apply to queries. These filters
  * are saved to local storage.
@@ -347,6 +347,9 @@ var ResultsFiltersPreferences = (function (_super) {
                 var tab = Component_1.Component.get(tabElement);
                 return tab.options.id;
             });
+        }
+        else {
+            return [];
         }
     };
     ResultsFiltersPreferences.prototype.getPreferencesBoxInputToBuild = function () {
@@ -712,37 +715,37 @@ Initialization_1.Initialization.registerAutoCreateComponent(ResultsFiltersPrefer
 
 /***/ }),
 
-/***/ 451:
+/***/ 455:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
 
-/***/ 458:
+/***/ 462:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
 
-/***/ 575:
+/***/ 577:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
 
-/***/ 95:
+/***/ 97:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var Dom_1 = __webpack_require__(2);
-var _ = __webpack_require__(0);
-__webpack_require__(451);
-var GlobalExports_1 = __webpack_require__(3);
+var Dom_1 = __webpack_require__(3);
+var _ = __webpack_require__(1);
+__webpack_require__(455);
+var GlobalExports_1 = __webpack_require__(4);
 /**
  * A simple `fieldset` HTMLElement containing multiple form widgets.
  */

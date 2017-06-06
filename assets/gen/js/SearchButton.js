@@ -1,6 +1,6 @@
 webpackJsonpCoveo__temporary([60],{
 
-/***/ 128:
+/***/ 247:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16,13 +16,13 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var Component_1 = __webpack_require__(7);
-var Utils_1 = __webpack_require__(4);
-var Dom_1 = __webpack_require__(2);
-var Strings_1 = __webpack_require__(9);
-var AnalyticsActionListMeta_1 = __webpack_require__(11);
-var Initialization_1 = __webpack_require__(1);
-var GlobalExports_1 = __webpack_require__(3);
+var Component_1 = __webpack_require__(8);
+var Utils_1 = __webpack_require__(5);
+var Dom_1 = __webpack_require__(3);
+var Strings_1 = __webpack_require__(10);
+var AnalyticsActionListMeta_1 = __webpack_require__(12);
+var Initialization_1 = __webpack_require__(2);
+var GlobalExports_1 = __webpack_require__(4);
 /**
  * The SearchButton component renders a search icon that the end user can click to trigger a new query.
  *

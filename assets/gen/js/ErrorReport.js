@@ -1,6 +1,6 @@
 webpackJsonpCoveo__temporary([54],{
 
-/***/ 175:
+/***/ 293:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16,16 +16,16 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var Component_1 = __webpack_require__(7);
-var ComponentOptions_1 = __webpack_require__(8);
-var Dom_1 = __webpack_require__(2);
-var QueryEvents_1 = __webpack_require__(10);
-var AnalyticsActionListMeta_1 = __webpack_require__(11);
-var Strings_1 = __webpack_require__(9);
-var Assert_1 = __webpack_require__(6);
-var Initialization_1 = __webpack_require__(1);
-var GlobalExports_1 = __webpack_require__(3);
-__webpack_require__(553);
+var Component_1 = __webpack_require__(8);
+var ComponentOptions_1 = __webpack_require__(9);
+var Dom_1 = __webpack_require__(3);
+var QueryEvents_1 = __webpack_require__(11);
+var AnalyticsActionListMeta_1 = __webpack_require__(12);
+var Strings_1 = __webpack_require__(10);
+var Assert_1 = __webpack_require__(7);
+var Initialization_1 = __webpack_require__(2);
+var GlobalExports_1 = __webpack_require__(4);
+__webpack_require__(555);
 /**
  * The ErrorReport component takes care of handling fatal error when doing a query on the index / Search API.
  *
@@ -191,7 +191,7 @@ Initialization_1.Initialization.registerAutoCreateComponent(ErrorReport);
 
 /***/ }),
 
-/***/ 553:
+/***/ 555:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

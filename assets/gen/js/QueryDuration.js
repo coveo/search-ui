@@ -1,6 +1,6 @@
 webpackJsonpCoveo__temporary([48],{
 
-/***/ 192:
+/***/ 310:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16,16 +16,16 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var Component_1 = __webpack_require__(7);
-var ComponentOptions_1 = __webpack_require__(8);
-var QueryEvents_1 = __webpack_require__(10);
-var Assert_1 = __webpack_require__(6);
-var Dom_1 = __webpack_require__(2);
-var Strings_1 = __webpack_require__(9);
-var Initialization_1 = __webpack_require__(1);
-var Globalize = __webpack_require__(22);
-var GlobalExports_1 = __webpack_require__(3);
-__webpack_require__(565);
+var Component_1 = __webpack_require__(8);
+var ComponentOptions_1 = __webpack_require__(9);
+var QueryEvents_1 = __webpack_require__(11);
+var Assert_1 = __webpack_require__(7);
+var Dom_1 = __webpack_require__(3);
+var Strings_1 = __webpack_require__(10);
+var Initialization_1 = __webpack_require__(2);
+var Globalize = __webpack_require__(24);
+var GlobalExports_1 = __webpack_require__(4);
+__webpack_require__(567);
 /**
  * The QueryDuration component displays the duration of the last query execution.
  *
@@ -102,7 +102,7 @@ Initialization_1.Initialization.registerAutoCreateComponent(QueryDuration);
 
 /***/ }),
 
-/***/ 565:
+/***/ 567:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

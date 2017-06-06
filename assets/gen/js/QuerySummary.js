@@ -1,6 +1,6 @@
-webpackJsonpCoveo__temporary([26],{
+webpackJsonpCoveo__temporary([25],{
 
-/***/ 193:
+/***/ 311:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16,20 +16,20 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var Component_1 = __webpack_require__(7);
-var ComponentOptions_1 = __webpack_require__(8);
-var QueryEvents_1 = __webpack_require__(10);
-var Dom_1 = __webpack_require__(2);
-var Assert_1 = __webpack_require__(6);
-var Strings_1 = __webpack_require__(9);
-var AnalyticsActionListMeta_1 = __webpack_require__(11);
-var Initialization_1 = __webpack_require__(1);
-var QueryStateModel_1 = __webpack_require__(12);
-var Globalize = __webpack_require__(22);
-var QuerySummaryEvents_1 = __webpack_require__(406);
-var _ = __webpack_require__(0);
-var GlobalExports_1 = __webpack_require__(3);
-__webpack_require__(566);
+var Component_1 = __webpack_require__(8);
+var ComponentOptions_1 = __webpack_require__(9);
+var QueryEvents_1 = __webpack_require__(11);
+var Dom_1 = __webpack_require__(3);
+var Assert_1 = __webpack_require__(7);
+var Strings_1 = __webpack_require__(10);
+var AnalyticsActionListMeta_1 = __webpack_require__(12);
+var Initialization_1 = __webpack_require__(2);
+var QueryStateModel_1 = __webpack_require__(14);
+var Globalize = __webpack_require__(24);
+var QuerySummaryEvents_1 = __webpack_require__(410);
+var _ = __webpack_require__(1);
+var GlobalExports_1 = __webpack_require__(4);
+__webpack_require__(568);
 /**
  * The QuerySummary component can display information about the currently displayed range of results (e.g., "Results
  * 1-10 of 123").
@@ -179,7 +179,7 @@ Initialization_1.Initialization.registerAutoCreateComponent(QuerySummary);
 
 /***/ }),
 
-/***/ 406:
+/***/ 410:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -205,7 +205,7 @@ exports.QuerySummaryEvents = QuerySummaryEvents;
 
 /***/ }),
 
-/***/ 566:
+/***/ 568:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

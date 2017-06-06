@@ -1,6 +1,6 @@
-webpackJsonpCoveo__temporary([13,38,40],{
+webpackJsonpCoveo__temporary([12,38,40],{
 
-/***/ 201:
+/***/ 319:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16,22 +16,22 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var Component_1 = __webpack_require__(7);
-var ComponentOptions_1 = __webpack_require__(8);
-var ComponentOptionsModel_1 = __webpack_require__(24);
-var LocalStorageUtils_1 = __webpack_require__(34);
-var PreferencesPanelEvents_1 = __webpack_require__(64);
-var AnalyticsActionListMeta_1 = __webpack_require__(11);
-var Initialization_1 = __webpack_require__(1);
-var Assert_1 = __webpack_require__(6);
-var Strings_1 = __webpack_require__(9);
-var Dom_1 = __webpack_require__(2);
-var _ = __webpack_require__(0);
-var GlobalExports_1 = __webpack_require__(3);
-var Defer_1 = __webpack_require__(25);
+var Component_1 = __webpack_require__(8);
+var ComponentOptions_1 = __webpack_require__(9);
+var ComponentOptionsModel_1 = __webpack_require__(25);
+var LocalStorageUtils_1 = __webpack_require__(35);
+var PreferencesPanelEvents_1 = __webpack_require__(65);
+var AnalyticsActionListMeta_1 = __webpack_require__(12);
+var Initialization_1 = __webpack_require__(2);
+var Assert_1 = __webpack_require__(7);
+var Strings_1 = __webpack_require__(10);
+var Dom_1 = __webpack_require__(3);
+var _ = __webpack_require__(1);
+var GlobalExports_1 = __webpack_require__(4);
+var Defer_1 = __webpack_require__(26);
 var Checkbox_1 = __webpack_require__(59);
-var RadioButton_1 = __webpack_require__(78);
-var FormGroup_1 = __webpack_require__(95);
+var RadioButton_1 = __webpack_require__(80);
+var FormGroup_1 = __webpack_require__(97);
 /**
  * The ResultsPreferences component allows the end user to select preferences related to the search results. These
  * preferences are then saved in the local storage of the end user.
@@ -269,29 +269,29 @@ Initialization_1.Initialization.registerAutoCreateComponent(ResultsPreferences);
 
 /***/ }),
 
-/***/ 451:
+/***/ 455:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
 
-/***/ 452:
+/***/ 456:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
 
-/***/ 78:
+/***/ 80:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var Dom_1 = __webpack_require__(2);
-__webpack_require__(452);
-var GlobalExports_1 = __webpack_require__(3);
+var Dom_1 = __webpack_require__(3);
+__webpack_require__(456);
+var GlobalExports_1 = __webpack_require__(4);
 /**
  * A radio button widget with standard styling.
  */
@@ -396,16 +396,16 @@ exports.RadioButton = RadioButton;
 
 /***/ }),
 
-/***/ 95:
+/***/ 97:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var Dom_1 = __webpack_require__(2);
-var _ = __webpack_require__(0);
-__webpack_require__(451);
-var GlobalExports_1 = __webpack_require__(3);
+var Dom_1 = __webpack_require__(3);
+var _ = __webpack_require__(1);
+__webpack_require__(455);
+var GlobalExports_1 = __webpack_require__(4);
 /**
  * A simple `fieldset` HTMLElement containing multiple form widgets.
  */

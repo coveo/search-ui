@@ -1,6 +1,6 @@
 webpackJsonpCoveo__temporary([45],{
 
-/***/ 200:
+/***/ 318:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16,19 +16,19 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var Component_1 = __webpack_require__(7);
-var ComponentOptions_1 = __webpack_require__(8);
-var Initialization_1 = __webpack_require__(1);
-var QueryEvents_1 = __webpack_require__(10);
-var AnalyticsActionListMeta_1 = __webpack_require__(11);
-var Assert_1 = __webpack_require__(6);
-var Dom_1 = __webpack_require__(2);
-var KeyboardUtils_1 = __webpack_require__(20);
-var DeviceUtils_1 = __webpack_require__(17);
-var _ = __webpack_require__(0);
-var GlobalExports_1 = __webpack_require__(3);
-var Strings_1 = __webpack_require__(9);
-__webpack_require__(576);
+var Component_1 = __webpack_require__(8);
+var ComponentOptions_1 = __webpack_require__(9);
+var Initialization_1 = __webpack_require__(2);
+var QueryEvents_1 = __webpack_require__(11);
+var AnalyticsActionListMeta_1 = __webpack_require__(12);
+var Assert_1 = __webpack_require__(7);
+var Dom_1 = __webpack_require__(3);
+var KeyboardUtils_1 = __webpack_require__(21);
+var DeviceUtils_1 = __webpack_require__(18);
+var _ = __webpack_require__(1);
+var GlobalExports_1 = __webpack_require__(4);
+var Strings_1 = __webpack_require__(10);
+__webpack_require__(578);
 /**
  * The ResultsPerPage component attaches itself to a `div` and allows the end user to choose how many results to
  * display per page.
@@ -196,7 +196,7 @@ Initialization_1.Initialization.registerAutoCreateComponent(ResultsPerPage);
 
 /***/ }),
 
-/***/ 576:
+/***/ 578:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

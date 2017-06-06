@@ -1,6 +1,6 @@
 webpackJsonpCoveo__temporary([67],{
 
-/***/ 94:
+/***/ 96:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16,18 +16,18 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var Component_1 = __webpack_require__(7);
-var ComponentOptions_1 = __webpack_require__(8);
-var Initialization_1 = __webpack_require__(1);
-var TemplateHelpers_1 = __webpack_require__(66);
-var Assert_1 = __webpack_require__(6);
+var Component_1 = __webpack_require__(8);
+var ComponentOptions_1 = __webpack_require__(9);
+var Initialization_1 = __webpack_require__(2);
+var TemplateHelpers_1 = __webpack_require__(67);
+var Assert_1 = __webpack_require__(7);
 var DateUtils_1 = __webpack_require__(27);
-var QueryStateModel_1 = __webpack_require__(12);
-var AnalyticsActionListMeta_1 = __webpack_require__(11);
-var Utils_1 = __webpack_require__(4);
-var Dom_1 = __webpack_require__(2);
-var _ = __webpack_require__(0);
-var GlobalExports_1 = __webpack_require__(3);
+var QueryStateModel_1 = __webpack_require__(14);
+var AnalyticsActionListMeta_1 = __webpack_require__(12);
+var Utils_1 = __webpack_require__(5);
+var Dom_1 = __webpack_require__(3);
+var _ = __webpack_require__(1);
+var GlobalExports_1 = __webpack_require__(4);
 function showOnlyWithHelper(helpers, options) {
     if (options == null) {
         options = {};

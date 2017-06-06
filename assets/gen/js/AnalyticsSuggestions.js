@@ -1,10 +1,10 @@
-webpackJsonpCoveo__temporary([36],{
+webpackJsonpCoveo__temporary([35],{
 
-/***/ 163:
+/***/ 281:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-
+/* WEBPACK VAR INJECTION */(function(Promise) {
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
         ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -16,20 +16,20 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var SuggestionForOmnibox_1 = __webpack_require__(407);
-var ComponentOptions_1 = __webpack_require__(8);
-var Component_1 = __webpack_require__(7);
-var Assert_1 = __webpack_require__(6);
-var OmniboxEvents_1 = __webpack_require__(30);
-var QueryEvents_1 = __webpack_require__(10);
-var Strings_1 = __webpack_require__(9);
-var QueryStateModel_1 = __webpack_require__(12);
-var AnalyticsActionListMeta_1 = __webpack_require__(11);
-var Initialization_1 = __webpack_require__(1);
-var Dom_1 = __webpack_require__(2);
-var SearchInterface_1 = __webpack_require__(19);
-var _ = __webpack_require__(0);
-var GlobalExports_1 = __webpack_require__(3);
+var SuggestionForOmnibox_1 = __webpack_require__(411);
+var ComponentOptions_1 = __webpack_require__(9);
+var Component_1 = __webpack_require__(8);
+var Assert_1 = __webpack_require__(7);
+var OmniboxEvents_1 = __webpack_require__(31);
+var QueryEvents_1 = __webpack_require__(11);
+var Strings_1 = __webpack_require__(10);
+var QueryStateModel_1 = __webpack_require__(14);
+var AnalyticsActionListMeta_1 = __webpack_require__(12);
+var Initialization_1 = __webpack_require__(2);
+var Dom_1 = __webpack_require__(3);
+var SearchInterface_1 = __webpack_require__(20);
+var _ = __webpack_require__(1);
+var GlobalExports_1 = __webpack_require__(4);
 /**
  * The AnalyticsSuggestion component provides query suggestions based on the queries that a Coveo Analytics service most
  * commonly logs.
@@ -270,18 +270,19 @@ AnalyticsSuggestions.options = {
 exports.AnalyticsSuggestions = AnalyticsSuggestions;
 Initialization_1.Initialization.registerAutoCreateComponent(AnalyticsSuggestions);
 
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(6)))
 
 /***/ }),
 
-/***/ 407:
+/***/ 411:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var DomUtils_1 = __webpack_require__(41);
-var Dom_1 = __webpack_require__(2);
-var _ = __webpack_require__(0);
+var DomUtils_1 = __webpack_require__(43);
+var Dom_1 = __webpack_require__(3);
+var _ = __webpack_require__(1);
 var SuggestionForOmnibox = (function () {
     function SuggestionForOmnibox(structure, onSelect, onTabPress) {
         this.structure = structure;

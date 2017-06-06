@@ -1,6 +1,6 @@
-webpackJsonpCoveo__temporary([35,67],{
+webpackJsonpCoveo__temporary([34,67],{
 
-/***/ 166:
+/***/ 284:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16,14 +16,14 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var ComponentOptions_1 = __webpack_require__(8);
-var Initialization_1 = __webpack_require__(1);
-var FieldValue_1 = __webpack_require__(94);
-var StringUtils_1 = __webpack_require__(18);
-var Assert_1 = __webpack_require__(6);
-var Dom_1 = __webpack_require__(2);
-var _ = __webpack_require__(0);
-var GlobalExports_1 = __webpack_require__(3);
+var ComponentOptions_1 = __webpack_require__(9);
+var Initialization_1 = __webpack_require__(2);
+var FieldValue_1 = __webpack_require__(96);
+var StringUtils_1 = __webpack_require__(19);
+var Assert_1 = __webpack_require__(7);
+var Dom_1 = __webpack_require__(3);
+var _ = __webpack_require__(1);
+var GlobalExports_1 = __webpack_require__(4);
 /**
  * The Badge component outputs a field value with customizable colors and an icon preceding it.
  *
@@ -193,7 +193,7 @@ Initialization_1.Initialization.registerAutoCreateComponent(Badge);
 
 /***/ }),
 
-/***/ 94:
+/***/ 96:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -209,18 +209,18 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var Component_1 = __webpack_require__(7);
-var ComponentOptions_1 = __webpack_require__(8);
-var Initialization_1 = __webpack_require__(1);
-var TemplateHelpers_1 = __webpack_require__(66);
-var Assert_1 = __webpack_require__(6);
+var Component_1 = __webpack_require__(8);
+var ComponentOptions_1 = __webpack_require__(9);
+var Initialization_1 = __webpack_require__(2);
+var TemplateHelpers_1 = __webpack_require__(67);
+var Assert_1 = __webpack_require__(7);
 var DateUtils_1 = __webpack_require__(27);
-var QueryStateModel_1 = __webpack_require__(12);
-var AnalyticsActionListMeta_1 = __webpack_require__(11);
-var Utils_1 = __webpack_require__(4);
-var Dom_1 = __webpack_require__(2);
-var _ = __webpack_require__(0);
-var GlobalExports_1 = __webpack_require__(3);
+var QueryStateModel_1 = __webpack_require__(14);
+var AnalyticsActionListMeta_1 = __webpack_require__(12);
+var Utils_1 = __webpack_require__(5);
+var Dom_1 = __webpack_require__(3);
+var _ = __webpack_require__(1);
+var GlobalExports_1 = __webpack_require__(4);
 function showOnlyWithHelper(helpers, options) {
     if (options == null) {
         options = {};

@@ -1,10 +1,10 @@
-webpackJsonpCoveo__temporary([31],{
+webpackJsonpCoveo__temporary([30],{
 
-/***/ 179:
+/***/ 297:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-
+/* WEBPACK VAR INJECTION */(function(Promise) {
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
         ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -16,19 +16,19 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var SuggestionForOmnibox_1 = __webpack_require__(407);
-var Component_1 = __webpack_require__(7);
-var ComponentOptions_1 = __webpack_require__(8);
-var Assert_1 = __webpack_require__(6);
-var Utils_1 = __webpack_require__(4);
-var OmniboxEvents_1 = __webpack_require__(30);
-var QueryStateModel_1 = __webpack_require__(12);
-var Initialization_1 = __webpack_require__(1);
-var AnalyticsActionListMeta_1 = __webpack_require__(11);
-var Strings_1 = __webpack_require__(9);
-var Dom_1 = __webpack_require__(2);
-var _ = __webpack_require__(0);
-var GlobalExports_1 = __webpack_require__(3);
+var SuggestionForOmnibox_1 = __webpack_require__(411);
+var Component_1 = __webpack_require__(8);
+var ComponentOptions_1 = __webpack_require__(9);
+var Assert_1 = __webpack_require__(7);
+var Utils_1 = __webpack_require__(5);
+var OmniboxEvents_1 = __webpack_require__(31);
+var QueryStateModel_1 = __webpack_require__(14);
+var Initialization_1 = __webpack_require__(2);
+var AnalyticsActionListMeta_1 = __webpack_require__(12);
+var Strings_1 = __webpack_require__(10);
+var Dom_1 = __webpack_require__(3);
+var _ = __webpack_require__(1);
+var GlobalExports_1 = __webpack_require__(4);
 /**
  * The `FieldSuggestions` component provides query suggestions based on a particular facet field. For example, you could
  * use this component to provide auto-complete suggestions while the end user is typing the title of an item.
@@ -291,18 +291,19 @@ FieldSuggestions.options = {
 exports.FieldSuggestions = FieldSuggestions;
 Initialization_1.Initialization.registerAutoCreateComponent(FieldSuggestions);
 
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(6)))
 
 /***/ }),
 
-/***/ 407:
+/***/ 411:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var DomUtils_1 = __webpack_require__(41);
-var Dom_1 = __webpack_require__(2);
-var _ = __webpack_require__(0);
+var DomUtils_1 = __webpack_require__(43);
+var Dom_1 = __webpack_require__(3);
+var _ = __webpack_require__(1);
 var SuggestionForOmnibox = (function () {
     function SuggestionForOmnibox(structure, onSelect, onTabPress) {
         this.structure = structure;

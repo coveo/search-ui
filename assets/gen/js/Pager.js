@@ -1,6 +1,6 @@
 webpackJsonpCoveo__temporary([50],{
 
-/***/ 188:
+/***/ 306:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16,21 +16,21 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var Component_1 = __webpack_require__(7);
-var ComponentOptions_1 = __webpack_require__(8);
-var DeviceUtils_1 = __webpack_require__(17);
-var QueryEvents_1 = __webpack_require__(10);
-var Model_1 = __webpack_require__(15);
-var QueryStateModel_1 = __webpack_require__(12);
-var QueryStateModel_2 = __webpack_require__(12);
-var AnalyticsActionListMeta_1 = __webpack_require__(11);
-var Initialization_1 = __webpack_require__(1);
-var Assert_1 = __webpack_require__(6);
-var Strings_1 = __webpack_require__(9);
-var Dom_1 = __webpack_require__(2);
-var KeyboardUtils_1 = __webpack_require__(20);
-var GlobalExports_1 = __webpack_require__(3);
-__webpack_require__(562);
+var Component_1 = __webpack_require__(8);
+var ComponentOptions_1 = __webpack_require__(9);
+var DeviceUtils_1 = __webpack_require__(18);
+var QueryEvents_1 = __webpack_require__(11);
+var Model_1 = __webpack_require__(16);
+var QueryStateModel_1 = __webpack_require__(14);
+var QueryStateModel_2 = __webpack_require__(14);
+var AnalyticsActionListMeta_1 = __webpack_require__(12);
+var Initialization_1 = __webpack_require__(2);
+var Assert_1 = __webpack_require__(7);
+var Strings_1 = __webpack_require__(10);
+var Dom_1 = __webpack_require__(3);
+var KeyboardUtils_1 = __webpack_require__(21);
+var GlobalExports_1 = __webpack_require__(4);
+__webpack_require__(564);
 /**
  * The Pager component attaches itself to a `div` element and renders widgets that allow the end user to navigate
  * through the different result pages.
@@ -361,7 +361,7 @@ Initialization_1.Initialization.registerAutoCreateComponent(Pager);
 
 /***/ }),
 
-/***/ 562:
+/***/ 564:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

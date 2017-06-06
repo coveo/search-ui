@@ -1,13 +1,13 @@
 webpackJsonpCoveo__temporary([47],{
 
-/***/ 442:
+/***/ 446:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
 
-/***/ 75:
+/***/ 77:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23,24 +23,24 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var Component_1 = __webpack_require__(7);
-var ComponentOptions_1 = __webpack_require__(8);
-var ComponentOptionsModel_1 = __webpack_require__(24);
-var AnalyticsActionListMeta_1 = __webpack_require__(11);
-var ResultListEvents_1 = __webpack_require__(29);
-var HighlightUtils_1 = __webpack_require__(42);
-var DeviceUtils_1 = __webpack_require__(17);
-var OSUtils_1 = __webpack_require__(124);
-var Initialization_1 = __webpack_require__(1);
-var QueryUtils_1 = __webpack_require__(16);
-var Assert_1 = __webpack_require__(6);
-var Utils_1 = __webpack_require__(4);
-var Defer_1 = __webpack_require__(25);
-var Dom_1 = __webpack_require__(2);
-var StreamHighlightUtils_1 = __webpack_require__(62);
-var _ = __webpack_require__(0);
-var GlobalExports_1 = __webpack_require__(3);
-__webpack_require__(442);
+var Component_1 = __webpack_require__(8);
+var ComponentOptions_1 = __webpack_require__(9);
+var ComponentOptionsModel_1 = __webpack_require__(25);
+var AnalyticsActionListMeta_1 = __webpack_require__(12);
+var ResultListEvents_1 = __webpack_require__(30);
+var HighlightUtils_1 = __webpack_require__(44);
+var DeviceUtils_1 = __webpack_require__(18);
+var OSUtils_1 = __webpack_require__(243);
+var Initialization_1 = __webpack_require__(2);
+var QueryUtils_1 = __webpack_require__(17);
+var Assert_1 = __webpack_require__(7);
+var Utils_1 = __webpack_require__(5);
+var Defer_1 = __webpack_require__(26);
+var Dom_1 = __webpack_require__(3);
+var StreamHighlightUtils_1 = __webpack_require__(63);
+var _ = __webpack_require__(1);
+var GlobalExports_1 = __webpack_require__(4);
+__webpack_require__(446);
 /**
  * The `ResultLink` component automatically transform a search result title into a clickable link pointing to the
  * original item.

@@ -1,13 +1,13 @@
-webpackJsonpCoveo__temporary([9],{
+webpackJsonpCoveo__temporary([8],{
 
-/***/ 145:
+/***/ 263:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-
+/* WEBPACK VAR INJECTION */(function(Promise) {
 Object.defineProperty(exports, "__esModule", { value: true });
-var Component_1 = __webpack_require__(7);
-var _ = __webpack_require__(0);
+var Component_1 = __webpack_require__(8);
+var _ = __webpack_require__(1);
 var ResultListRenderer = (function () {
     function ResultListRenderer(resultListOptions, autoCreateComponentsFn) {
         this.resultListOptions = resultListOptions;
@@ -45,14 +45,15 @@ var ResultListRenderer = (function () {
 }());
 exports.ResultListRenderer = ResultListRenderer;
 
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(6)))
 
 /***/ }),
 
-/***/ 404:
+/***/ 408:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-
+/* WEBPACK VAR INJECTION */(function(Promise) {
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
         ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -86,10 +87,11 @@ var DefaultRecommendationTemplate = (function (_super) {
 }(Template_1.Template));
 exports.DefaultRecommendationTemplate = DefaultRecommendationTemplate;
 
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(6)))
 
 /***/ }),
 
-/***/ 405:
+/***/ 409:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -106,8 +108,8 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var Template_1 = __webpack_require__(23);
-var TemplateList_1 = __webpack_require__(98);
-var _ = __webpack_require__(0);
+var TemplateList_1 = __webpack_require__(100);
+var _ = __webpack_require__(1);
 var TableTemplate = (function (_super) {
     __extends(TableTemplate, _super);
     function TableTemplate() {
@@ -154,38 +156,38 @@ exports.TableTemplate = TableTemplate;
 
 /***/ }),
 
-/***/ 455:
+/***/ 459:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
 
-/***/ 456:
+/***/ 460:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
 
-/***/ 457:
+/***/ 461:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
 
-/***/ 465:
+/***/ 468:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var ResponsiveComponentsManager_1 = __webpack_require__(74);
-var SearchInterface_1 = __webpack_require__(19);
-var ResultList_1 = __webpack_require__(96);
-var Dom_1 = __webpack_require__(2);
-var Component_1 = __webpack_require__(7);
+var ResponsiveComponentsManager_1 = __webpack_require__(76);
+var SearchInterface_1 = __webpack_require__(20);
+var ResultList_1 = __webpack_require__(98);
+var Dom_1 = __webpack_require__(3);
+var Component_1 = __webpack_require__(8);
 var Logger_1 = __webpack_require__(13);
 var ResponsiveDefaultResultTemplate = (function () {
     function ResponsiveDefaultResultTemplate(coveoRoot, ID, options, responsiveDropdown) {
@@ -247,11 +249,11 @@ exports.ResponsiveDefaultResultTemplate = ResponsiveDefaultResultTemplate;
 
 /***/ }),
 
-/***/ 466:
+/***/ 469:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-
+/* WEBPACK VAR INJECTION */(function(Promise) {
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
         ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -263,9 +265,9 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var ResultListRenderer_1 = __webpack_require__(145);
-var Dom_1 = __webpack_require__(2);
-var _ = __webpack_require__(0);
+var ResultListRenderer_1 = __webpack_require__(263);
+var Dom_1 = __webpack_require__(3);
+var _ = __webpack_require__(1);
 var ResultListCardRenderer = (function (_super) {
     __extends(ResultListCardRenderer, _super);
     function ResultListCardRenderer() {
@@ -289,14 +291,15 @@ var ResultListCardRenderer = (function (_super) {
 }(ResultListRenderer_1.ResultListRenderer));
 exports.ResultListCardRenderer = ResultListCardRenderer;
 
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(6)))
 
 /***/ }),
 
-/***/ 467:
+/***/ 470:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-
+/* WEBPACK VAR INJECTION */(function(Promise) {
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
         ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -343,10 +346,10 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var ResultListRenderer_1 = __webpack_require__(145);
-var TableTemplate_1 = __webpack_require__(405);
-var Dom_1 = __webpack_require__(2);
-var _ = __webpack_require__(0);
+var ResultListRenderer_1 = __webpack_require__(263);
+var TableTemplate_1 = __webpack_require__(409);
+var Dom_1 = __webpack_require__(3);
+var _ = __webpack_require__(1);
 var ResultListTableRenderer = (function (_super) {
     __extends(ResultListTableRenderer, _super);
     function ResultListTableRenderer(resultListOptions, autoCreateComponentsFn) {
@@ -397,22 +400,23 @@ var ResultListTableRenderer = (function (_super) {
 }(ResultListRenderer_1.ResultListRenderer));
 exports.ResultListTableRenderer = ResultListTableRenderer;
 
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(6)))
 
 /***/ }),
 
-/***/ 74:
+/***/ 76:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var Dom_1 = __webpack_require__(2);
-var InitializationEvents_1 = __webpack_require__(14);
-var Component_1 = __webpack_require__(7);
-var SearchInterface_1 = __webpack_require__(19);
-var Utils_1 = __webpack_require__(4);
-var _ = __webpack_require__(0);
-var QueryEvents_1 = __webpack_require__(10);
+var Dom_1 = __webpack_require__(3);
+var InitializationEvents_1 = __webpack_require__(15);
+var Component_1 = __webpack_require__(8);
+var SearchInterface_1 = __webpack_require__(20);
+var Utils_1 = __webpack_require__(5);
+var _ = __webpack_require__(1);
+var QueryEvents_1 = __webpack_require__(11);
 var Logger_1 = __webpack_require__(13);
 var ResponsiveComponentsManager = (function () {
     function ResponsiveComponentsManager(root) {
@@ -582,11 +586,11 @@ exports.ResponsiveComponentsManager = ResponsiveComponentsManager;
 
 /***/ }),
 
-/***/ 96:
+/***/ 98:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-
+/* WEBPACK VAR INJECTION */(function(Promise) {
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
         ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -598,37 +602,37 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var TableTemplate_1 = __webpack_require__(405);
-var DefaultResultTemplate_1 = __webpack_require__(82);
-var Component_1 = __webpack_require__(7);
-var ComponentOptions_1 = __webpack_require__(8);
-var Assert_1 = __webpack_require__(6);
-var QueryEvents_1 = __webpack_require__(10);
-var Model_1 = __webpack_require__(15);
-var QueryStateModel_1 = __webpack_require__(12);
-var QueryUtils_1 = __webpack_require__(16);
-var Dom_1 = __webpack_require__(2);
-var AnalyticsActionListMeta_1 = __webpack_require__(11);
-var Initialization_1 = __webpack_require__(1);
-var Defer_1 = __webpack_require__(25);
-var DeviceUtils_1 = __webpack_require__(17);
-var ResultListEvents_1 = __webpack_require__(29);
-var ResultLayoutEvents_1 = __webpack_require__(99);
-var Utils_1 = __webpack_require__(4);
-var DomUtils_1 = __webpack_require__(41);
-var DefaultRecommendationTemplate_1 = __webpack_require__(404);
-var TemplateList_1 = __webpack_require__(98);
-var TemplateCache_1 = __webpack_require__(44);
-var ResponsiveDefaultResultTemplate_1 = __webpack_require__(465);
-var ResultListRenderer_1 = __webpack_require__(145);
-var ResultListTableRenderer_1 = __webpack_require__(467);
-var ResultListCardRenderer_1 = __webpack_require__(466);
-var _ = __webpack_require__(0);
-var GlobalExports_1 = __webpack_require__(3);
-__webpack_require__(457);
-__webpack_require__(456);
-__webpack_require__(455);
-var InitializationPlaceholder_1 = __webpack_require__(130);
+var TableTemplate_1 = __webpack_require__(409);
+var DefaultResultTemplate_1 = __webpack_require__(84);
+var Component_1 = __webpack_require__(8);
+var ComponentOptions_1 = __webpack_require__(9);
+var Assert_1 = __webpack_require__(7);
+var QueryEvents_1 = __webpack_require__(11);
+var Model_1 = __webpack_require__(16);
+var QueryStateModel_1 = __webpack_require__(14);
+var QueryUtils_1 = __webpack_require__(17);
+var Dom_1 = __webpack_require__(3);
+var AnalyticsActionListMeta_1 = __webpack_require__(12);
+var Initialization_1 = __webpack_require__(2);
+var Defer_1 = __webpack_require__(26);
+var DeviceUtils_1 = __webpack_require__(18);
+var ResultListEvents_1 = __webpack_require__(30);
+var ResultLayoutEvents_1 = __webpack_require__(101);
+var Utils_1 = __webpack_require__(5);
+var DomUtils_1 = __webpack_require__(43);
+var DefaultRecommendationTemplate_1 = __webpack_require__(408);
+var TemplateList_1 = __webpack_require__(100);
+var TemplateCache_1 = __webpack_require__(46);
+var ResponsiveDefaultResultTemplate_1 = __webpack_require__(468);
+var ResultListRenderer_1 = __webpack_require__(263);
+var ResultListTableRenderer_1 = __webpack_require__(470);
+var ResultListCardRenderer_1 = __webpack_require__(469);
+var _ = __webpack_require__(1);
+var GlobalExports_1 = __webpack_require__(4);
+__webpack_require__(461);
+__webpack_require__(460);
+__webpack_require__(459);
+var InitializationPlaceholder_1 = __webpack_require__(249);
 var RegisteredNamedMethods_1 = __webpack_require__(57);
 /**
  * The ResultList component is responsible for displaying the results of the current query using one or more result
@@ -1291,6 +1295,7 @@ ResultList.MAX_AMOUNT_OF_SUCESSIVE_REQUESTS = 5;
 exports.ResultList = ResultList;
 Initialization_1.Initialization.registerAutoCreateComponent(ResultList);
 
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(6)))
 
 /***/ })
 

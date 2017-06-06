@@ -1,6 +1,6 @@
 webpackJsonpCoveo__temporary([46],{
 
-/***/ 198:
+/***/ 316:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16,20 +16,20 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var Component_1 = __webpack_require__(7);
-var ComponentOptions_1 = __webpack_require__(8);
-var Assert_1 = __webpack_require__(6);
-var Utils_1 = __webpack_require__(4);
-var Initialization_1 = __webpack_require__(1);
-var StringUtils_1 = __webpack_require__(18);
-var Strings_1 = __webpack_require__(9);
-var KeyboardUtils_1 = __webpack_require__(20);
-var QueryStateModel_1 = __webpack_require__(12);
-var Dom_1 = __webpack_require__(2);
-var AnalyticsActionListMeta_1 = __webpack_require__(11);
-var _ = __webpack_require__(0);
-var GlobalExports_1 = __webpack_require__(3);
-__webpack_require__(574);
+var Component_1 = __webpack_require__(8);
+var ComponentOptions_1 = __webpack_require__(9);
+var Assert_1 = __webpack_require__(7);
+var Utils_1 = __webpack_require__(5);
+var Initialization_1 = __webpack_require__(2);
+var StringUtils_1 = __webpack_require__(19);
+var Strings_1 = __webpack_require__(10);
+var KeyboardUtils_1 = __webpack_require__(21);
+var QueryStateModel_1 = __webpack_require__(14);
+var Dom_1 = __webpack_require__(3);
+var AnalyticsActionListMeta_1 = __webpack_require__(12);
+var _ = __webpack_require__(1);
+var GlobalExports_1 = __webpack_require__(4);
+__webpack_require__(576);
 /**
  * The ResultTagging component lists the current tag field values of its associated result and renders a control that
  * allows the end user to add values to a tag field.
@@ -424,7 +424,7 @@ Initialization_1.Initialization.registerAutoCreateComponent(ResultTagging);
 
 /***/ }),
 
-/***/ 574:
+/***/ 576:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

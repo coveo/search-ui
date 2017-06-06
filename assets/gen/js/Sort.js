@@ -1,6 +1,6 @@
-webpackJsonpCoveo__temporary([22],{
+webpackJsonpCoveo__temporary([21],{
 
-/***/ 206:
+/***/ 324:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16,21 +16,21 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var Component_1 = __webpack_require__(7);
-var SortCriteria_1 = __webpack_require__(403);
-var ComponentOptions_1 = __webpack_require__(8);
-var Assert_1 = __webpack_require__(6);
-var Utils_1 = __webpack_require__(4);
-var Dom_1 = __webpack_require__(2);
-var Model_1 = __webpack_require__(15);
-var QueryStateModel_1 = __webpack_require__(12);
-var QueryEvents_1 = __webpack_require__(10);
-var Initialization_1 = __webpack_require__(1);
-var AnalyticsActionListMeta_1 = __webpack_require__(11);
-var KeyboardUtils_1 = __webpack_require__(20);
-var _ = __webpack_require__(0);
-var GlobalExports_1 = __webpack_require__(3);
-__webpack_require__(581);
+var Component_1 = __webpack_require__(8);
+var SortCriteria_1 = __webpack_require__(407);
+var ComponentOptions_1 = __webpack_require__(9);
+var Assert_1 = __webpack_require__(7);
+var Utils_1 = __webpack_require__(5);
+var Dom_1 = __webpack_require__(3);
+var Model_1 = __webpack_require__(16);
+var QueryStateModel_1 = __webpack_require__(14);
+var QueryEvents_1 = __webpack_require__(11);
+var Initialization_1 = __webpack_require__(2);
+var AnalyticsActionListMeta_1 = __webpack_require__(12);
+var KeyboardUtils_1 = __webpack_require__(21);
+var _ = __webpack_require__(1);
+var GlobalExports_1 = __webpack_require__(4);
+__webpack_require__(583);
 /**
  * The Sort component renders a widget that the end user can interact with to sort query results according to a single
  * criterion or list of criteria.
@@ -231,15 +231,15 @@ Initialization_1.Initialization.registerAutoCreateComponent(Sort);
 
 /***/ }),
 
-/***/ 403:
+/***/ 407:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var Assert_1 = __webpack_require__(6);
-var Utils_1 = __webpack_require__(4);
-var _ = __webpack_require__(0);
+var Assert_1 = __webpack_require__(7);
+var Utils_1 = __webpack_require__(5);
+var _ = __webpack_require__(1);
 var SortCriteria = (function () {
     /**
      * Create a new SortCriteria
@@ -337,7 +337,7 @@ exports.SortCriteria = SortCriteria;
 
 /***/ }),
 
-/***/ 581:
+/***/ 583:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

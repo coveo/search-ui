@@ -1,6 +1,6 @@
-webpackJsonpCoveo__temporary([14],{
+webpackJsonpCoveo__temporary([13],{
 
-/***/ 147:
+/***/ 265:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18,11 +18,11 @@ exports.QuickviewEvents = QuickviewEvents;
 
 /***/ }),
 
-/***/ 194:
+/***/ 312:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-
+/* WEBPACK VAR INJECTION */(function(Promise) {
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
         ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -34,21 +34,21 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var Component_1 = __webpack_require__(7);
-var ComponentOptions_1 = __webpack_require__(8);
-var DomUtils_1 = __webpack_require__(41);
-var Dom_1 = __webpack_require__(2);
-var DefaultQuickviewTemplate_1 = __webpack_require__(612);
-var ResultListEvents_1 = __webpack_require__(29);
-var StringUtils_1 = __webpack_require__(18);
-var QuickviewDocument_1 = __webpack_require__(613);
-var QueryStateModel_1 = __webpack_require__(12);
-var QuickviewEvents_1 = __webpack_require__(147);
-var Initialization_1 = __webpack_require__(1);
-var KeyboardUtils_1 = __webpack_require__(20);
-var ExternalModulesShim_1 = __webpack_require__(21);
-var GlobalExports_1 = __webpack_require__(3);
-__webpack_require__(567);
+var Component_1 = __webpack_require__(8);
+var ComponentOptions_1 = __webpack_require__(9);
+var DomUtils_1 = __webpack_require__(43);
+var Dom_1 = __webpack_require__(3);
+var DefaultQuickviewTemplate_1 = __webpack_require__(614);
+var ResultListEvents_1 = __webpack_require__(30);
+var StringUtils_1 = __webpack_require__(19);
+var QuickviewDocument_1 = __webpack_require__(615);
+var QueryStateModel_1 = __webpack_require__(14);
+var QuickviewEvents_1 = __webpack_require__(265);
+var Initialization_1 = __webpack_require__(2);
+var KeyboardUtils_1 = __webpack_require__(21);
+var ExternalModulesShim_1 = __webpack_require__(22);
+var GlobalExports_1 = __webpack_require__(4);
+__webpack_require__(569);
 /**
  * The `Quickview` component renders a button / link which the end user can click to open a modal box containing certain
  * content about a result. Most of the time, this component references a [`QuickviewDocument`]{@link QuickviewDocument}
@@ -354,17 +354,18 @@ Quickview.resultCurrentlyBeingRendered = null;
 exports.Quickview = Quickview;
 Initialization_1.Initialization.registerAutoCreateComponent(Quickview);
 
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(6)))
 
 /***/ }),
 
-/***/ 567:
+/***/ 569:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
 
-/***/ 612:
+/***/ 614:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -396,7 +397,7 @@ exports.DefaultQuickviewTemplate = DefaultQuickviewTemplate;
 
 /***/ }),
 
-/***/ 613:
+/***/ 615:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -412,18 +413,18 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var Component_1 = __webpack_require__(7);
-var ComponentOptions_1 = __webpack_require__(8);
-var AnalyticsActionListMeta_1 = __webpack_require__(11);
-var Assert_1 = __webpack_require__(6);
-var Dom_1 = __webpack_require__(2);
-var QuickviewEvents_1 = __webpack_require__(147);
-var DeviceUtils_1 = __webpack_require__(17);
-var Utils_1 = __webpack_require__(4);
-var ColorUtils_1 = __webpack_require__(101);
-var Initialization_1 = __webpack_require__(1);
-var Strings_1 = __webpack_require__(9);
-var _ = __webpack_require__(0);
+var Component_1 = __webpack_require__(8);
+var ComponentOptions_1 = __webpack_require__(9);
+var AnalyticsActionListMeta_1 = __webpack_require__(12);
+var Assert_1 = __webpack_require__(7);
+var Dom_1 = __webpack_require__(3);
+var QuickviewEvents_1 = __webpack_require__(265);
+var DeviceUtils_1 = __webpack_require__(18);
+var Utils_1 = __webpack_require__(5);
+var ColorUtils_1 = __webpack_require__(103);
+var Initialization_1 = __webpack_require__(2);
+var Strings_1 = __webpack_require__(10);
+var _ = __webpack_require__(1);
 var HIGHLIGHT_PREFIX = 'CoveoHighlight';
 /**
  * The `QuickviewDocument` component normally exists within a [`Quickview`]{@link Quickview} component. The sole purpose

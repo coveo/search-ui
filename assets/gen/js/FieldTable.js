@@ -1,6 +1,6 @@
-webpackJsonpCoveo__temporary([27,67],{
+webpackJsonpCoveo__temporary([26,67],{
 
-/***/ 180:
+/***/ 298:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16,16 +16,16 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var Component_1 = __webpack_require__(7);
-var ComponentOptions_1 = __webpack_require__(8);
-var QueryUtils_1 = __webpack_require__(16);
-var Initialization_1 = __webpack_require__(1);
-var FieldValue_1 = __webpack_require__(94);
-var Dom_1 = __webpack_require__(2);
-var KeyboardUtils_1 = __webpack_require__(20);
-var _ = __webpack_require__(0);
-var GlobalExports_1 = __webpack_require__(3);
-__webpack_require__(557);
+var Component_1 = __webpack_require__(8);
+var ComponentOptions_1 = __webpack_require__(9);
+var QueryUtils_1 = __webpack_require__(17);
+var Initialization_1 = __webpack_require__(2);
+var FieldValue_1 = __webpack_require__(96);
+var Dom_1 = __webpack_require__(3);
+var KeyboardUtils_1 = __webpack_require__(21);
+var _ = __webpack_require__(1);
+var GlobalExports_1 = __webpack_require__(4);
+__webpack_require__(559);
 /**
  * The FieldTable component displays a set of {@link FieldValue} components in a table that can optionally be
  * expandable and minimizable. This component automatically takes care of not displaying empty field values.
@@ -73,6 +73,7 @@ var FieldTable = (function (_super) {
             _this.buildToggle();
             Dom_1.$$(_this.toggleContainer).insertBefore(_this.element);
             _this.toggleContainer.appendChild(_this.element);
+            _this.toggleContainer.appendChild(_this.toggleButtonInsideTable);
         }
         else {
             _this.isExpanded = true;
@@ -145,7 +146,6 @@ var FieldTable = (function (_super) {
         this.toggleButton.appendChild(this.toggleIcon);
         Dom_1.$$(this.toggleButton).insertBefore(this.element);
         this.toggleButtonInsideTable = Dom_1.$$('span', { className: 'coveo-field-table-toggle-icon-up coveo-field-table-toggle' }).el;
-        Dom_1.$$(this.toggleButtonInsideTable).insertAfter(this.element);
         if (this.options.minimizedByDefault === true) {
             this.isExpanded = false;
         }
@@ -265,14 +265,14 @@ ValueRow.parent = FieldValue_1.FieldValue;
 
 /***/ }),
 
-/***/ 557:
+/***/ 559:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
 
-/***/ 94:
+/***/ 96:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -288,18 +288,18 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var Component_1 = __webpack_require__(7);
-var ComponentOptions_1 = __webpack_require__(8);
-var Initialization_1 = __webpack_require__(1);
-var TemplateHelpers_1 = __webpack_require__(66);
-var Assert_1 = __webpack_require__(6);
+var Component_1 = __webpack_require__(8);
+var ComponentOptions_1 = __webpack_require__(9);
+var Initialization_1 = __webpack_require__(2);
+var TemplateHelpers_1 = __webpack_require__(67);
+var Assert_1 = __webpack_require__(7);
 var DateUtils_1 = __webpack_require__(27);
-var QueryStateModel_1 = __webpack_require__(12);
-var AnalyticsActionListMeta_1 = __webpack_require__(11);
-var Utils_1 = __webpack_require__(4);
-var Dom_1 = __webpack_require__(2);
-var _ = __webpack_require__(0);
-var GlobalExports_1 = __webpack_require__(3);
+var QueryStateModel_1 = __webpack_require__(14);
+var AnalyticsActionListMeta_1 = __webpack_require__(12);
+var Utils_1 = __webpack_require__(5);
+var Dom_1 = __webpack_require__(3);
+var _ = __webpack_require__(1);
+var GlobalExports_1 = __webpack_require__(4);
 function showOnlyWithHelper(helpers, options) {
     if (options == null) {
         options = {};

@@ -177,6 +177,18 @@
   margin: 0 8px;
 }
 
+.coveo-debug.coveo-modal-container .coveo-modal-header {
+  height: auto;
+  min-height: 80px;
+  -webkit-box-lines: multiple;
+  -moz-box-lines: multiple;
+  box-lines: multiple;
+  -webkit-flex-wrap: wrap;
+  -moz-flex-wrap: wrap;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+}
+
 .coveo-debug.coveo-modal-container .coveo-modal-header a {
   color: #296896;
   text-decoration: none;
@@ -573,6 +585,12 @@ label[for].coveo-checkbox-label {
   margin-left: 18px;
 }
 
+.coveo-checkbox-button,
+input[type=checkbox].coveo-checkbox + button,
+input[type=checkbox].coveo-checkbox + button {
+  min-width: 18px;
+}
+
 @charset "UTF-8";
 
 /*
@@ -695,12 +713,6 @@ label[for].coveo-checkbox-label {
 
 .CoveoEmailAction > div {
   display: inline-block;
-}
-
-* {
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
 }
 
 .CoveoSearchInterface {
@@ -13398,6 +13410,16 @@ select.coveo-dropdown::-ms-expand {
   display: none;
 }
 
+/*
+* @param direction vertical or horizontal
+* @param position type of positioning to apply (relative/absolute)
+*/
+
+/*
+* @param $selector css selector on which to apply the icon. Can be '&' if the icon should be applied on the current element;
+* @param $size size of the icon to use
+*/
+
 .coveo-subscriptions-messages-message {
   background-color: #ecad00;
   border-radius: 2px;
@@ -13437,21 +13459,55 @@ select.coveo-dropdown::-ms-expand {
 .coveo-subscriptions-messages-message .coveo-subscriptions-messages-content {
   line-height: 26px;
   vertical-align: middle;
-  display: block;
+  display: inline-block;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
 .coveo-subscriptions-messages-message .coveo-subscriptions-messages-info-close {
-  float: right;
   display: inline-block;
   cursor: pointer;
-  padding: 0 4px;
+  vertical-align: middle;
+  margin: 0 5px;
+  cursor: pointer;
 }
 
-.coveo-subscriptions-messages-message .coveo-subscriptions-messages-info-close:before {
-  content: '';
-  vertical-align: middle;
+.coveo-subscriptions-messages-message .coveo-subscriptions-messages-info-close {
+  display: inline-block;
+  background-repeat: no-repeat;
+  overflow: hidden;
+  text-indent: 10px;
+  background-image: url( ../image/spritesNew.png);
+  background-position: -1075px -908px;
+  width: 10px;
+  height: 10px;
+  background-size: 1094px 1025px;
+}
+
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  .coveo-subscriptions-messages-message .coveo-subscriptions-messages-info-close {
+    background-image: url( ../image/retinaNew.png);
+    background-size: 1094px 1025px;
+  }
+}
+
+.coveo-subscriptions-messages-message .coveo-subscriptions-messages-info-close:hover {
+  display: inline-block;
+  background-repeat: no-repeat;
+  overflow: hidden;
+  text-indent: 10px;
+  background-image: url( ../image/spritesNew.png);
+  background-position: -1075px -874px;
+  width: 10px;
+  height: 10px;
+  background-size: 1094px 1025px;
+}
+
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  .coveo-subscriptions-messages-message .coveo-subscriptions-messages-info-close:hover {
+    background-image: url( ../image/retinaNew.png);
+    background-size: 1094px 1025px;
+  }
 }
 
 /*
@@ -13507,6 +13563,10 @@ select.coveo-dropdown::-ms-expand {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
+}
+
+.CoveoSearchInterface .coveo-error {
+  color: #DC291E;
 }
 
 body.coveo-modalBox-opened,
@@ -14132,6 +14192,7 @@ body.coveo-modalBox-opened .CoveoSearchInterface {
 .coveo-advanced-search-and {
   display: inline-block;
   margin: 0 5px 5px 0;
+  margin-left: 5px;
 }
 
 .coveo-number-input {
@@ -14156,6 +14217,48 @@ body.coveo-modalBox-opened .CoveoSearchInterface {
 .coveo-advanced-search-modal .coveo-dropdown,
 .coveo-advanced-search-modal .coveo-numeric-spinner {
   margin: 0 5px 5px 0;
+}
+
+.coveo-advanced-search-breadcrumb .coveo-advanced-search-breadcrumb-clear {
+  cursor: pointer;
+}
+
+.coveo-advanced-search-breadcrumb .coveo-advanced-search-breadcrumb-clear {
+  display: inline-block;
+  background-repeat: no-repeat;
+  overflow: hidden;
+  text-indent: 10px;
+  background-image: url( ../image/spritesNew.png);
+  background-position: -1075px -908px;
+  width: 10px;
+  height: 10px;
+  background-size: 1094px 1025px;
+}
+
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  .coveo-advanced-search-breadcrumb .coveo-advanced-search-breadcrumb-clear {
+    background-image: url( ../image/retinaNew.png);
+    background-size: 1094px 1025px;
+  }
+}
+
+.coveo-advanced-search-breadcrumb .coveo-advanced-search-breadcrumb-clear:hover {
+  display: inline-block;
+  background-repeat: no-repeat;
+  overflow: hidden;
+  text-indent: 10px;
+  background-image: url( ../image/spritesNew.png);
+  background-position: -1075px -874px;
+  width: 10px;
+  height: 10px;
+  background-size: 1094px 1025px;
+}
+
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  .coveo-advanced-search-breadcrumb .coveo-advanced-search-breadcrumb-clear:hover {
+    background-image: url( ../image/retinaNew.png);
+    background-size: 1094px 1025px;
+  }
 }
 
 /*
@@ -22232,7 +22335,7 @@ a.CoveoResultLink.coveo-selected *,
   display: inline-block;
   margin-left: 5px;
   position: relative;
-  top: 3px;
+  top: 5px;
 }
 
 .coveo-facet-breadcrumb-multi-icon {
@@ -22429,6 +22532,10 @@ a.CoveoResultLink.coveo-selected *,
 
 .coveo-facet-empty {
   display: none;
+}
+
+.coveo-facet-empty.coveo-with-placeholder {
+  display: block;
 }
 
 .coveo-facet-dependent {
@@ -22828,6 +22935,7 @@ a.CoveoResultLink.coveo-selected *,
 }
 
 .coveo-field-table-toggle-container {
+  position: relative;
   overflow: hidden;
   height: 0;
   transition: height 0.5s ease-in-out;

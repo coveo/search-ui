@@ -1,6 +1,6 @@
-webpackJsonpCoveo__temporary([33],{
+webpackJsonpCoveo__temporary([32],{
 
-/***/ 146:
+/***/ 264:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22,7 +22,7 @@ exports.ChatterUtils = ChatterUtils;
 
 /***/ }),
 
-/***/ 171:
+/***/ 289:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -38,13 +38,13 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var Component_1 = __webpack_require__(7);
-var Utils_1 = __webpack_require__(4);
-var ChatterUtils_1 = __webpack_require__(146);
-var Strings_1 = __webpack_require__(9);
-var Initialization_1 = __webpack_require__(1);
-var Dom_1 = __webpack_require__(2);
-var GlobalExports_1 = __webpack_require__(3);
+var Component_1 = __webpack_require__(8);
+var Utils_1 = __webpack_require__(5);
+var ChatterUtils_1 = __webpack_require__(264);
+var Strings_1 = __webpack_require__(10);
+var Initialization_1 = __webpack_require__(2);
+var Dom_1 = __webpack_require__(3);
+var GlobalExports_1 = __webpack_require__(4);
 var ChatterPostAttachment = (function (_super) {
     __extends(ChatterPostAttachment, _super);
     function ChatterPostAttachment(element, options, bindings, result) {

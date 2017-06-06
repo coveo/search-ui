@@ -1,6 +1,6 @@
-webpackJsonpCoveo__temporary([11],{
+webpackJsonpCoveo__temporary([10],{
 
-/***/ 134:
+/***/ 253:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16,22 +16,23 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var ResponsiveTabs_1 = __webpack_require__(619);
-var Component_1 = __webpack_require__(7);
-var ComponentOptions_1 = __webpack_require__(8);
-var Model_1 = __webpack_require__(15);
-var QueryEvents_1 = __webpack_require__(10);
-var QueryStateModel_1 = __webpack_require__(12);
-var AnalyticsActionListMeta_1 = __webpack_require__(11);
-var SearchEndpoint_1 = __webpack_require__(35);
-var Initialization_1 = __webpack_require__(1);
-var Utils_1 = __webpack_require__(4);
-var Assert_1 = __webpack_require__(6);
-var Dom_1 = __webpack_require__(2);
-var KeyboardUtils_1 = __webpack_require__(20);
-var _ = __webpack_require__(0);
-var GlobalExports_1 = __webpack_require__(3);
-__webpack_require__(582);
+var ResponsiveTabs_1 = __webpack_require__(621);
+var Component_1 = __webpack_require__(8);
+var ComponentOptions_1 = __webpack_require__(9);
+var Model_1 = __webpack_require__(16);
+var QueryEvents_1 = __webpack_require__(11);
+var InitializationEvents_1 = __webpack_require__(15);
+var QueryStateModel_1 = __webpack_require__(14);
+var AnalyticsActionListMeta_1 = __webpack_require__(12);
+var SearchEndpoint_1 = __webpack_require__(36);
+var Initialization_1 = __webpack_require__(2);
+var Utils_1 = __webpack_require__(5);
+var Assert_1 = __webpack_require__(7);
+var Dom_1 = __webpack_require__(3);
+var KeyboardUtils_1 = __webpack_require__(21);
+var _ = __webpack_require__(1);
+var GlobalExports_1 = __webpack_require__(4);
+__webpack_require__(584);
 /**
  * The Tab component renders a bar that allows the end user to select a specific search interface.
  *
@@ -83,6 +84,7 @@ var Tab = (function (_super) {
         _this.isFirstQuery = true;
         _this.options = ComponentOptions_1.ComponentOptions.initComponentOptions(element, Tab, options);
         _this.bind.onRootElement(QueryEvents_1.QueryEvents.buildingQuery, function (args) { return _this.handleBuildingQuery(args); });
+        _this.bind.onRootElement(InitializationEvents_1.InitializationEvents.afterInitialization, function () { return _this.handleAfterInitialization(); });
         _this.bind.onQueryState(Model_1.MODEL_EVENTS.CHANGE_ONE, QueryStateModel_1.QUERY_STATE_ATTRIBUTES.T, function (args) { return _this.handleQueryStateChanged(args); });
         var clickAction = function () { return _this.handleClick(); };
         _this.bind.on(element, 'click', clickAction);
@@ -175,6 +177,11 @@ var Tab = (function (_super) {
         }
         else {
             Dom_1.$$(this.element).removeClass('coveo-selected');
+        }
+    };
+    Tab.prototype.handleAfterInitialization = function () {
+        if (this.isSelected() && this.options.layout) {
+            this.queryStateModel.set(QueryStateModel_1.QUERY_STATE_ATTRIBUTES.LAYOUT, this.options.layout);
         }
     };
     Tab.prototype.isSelected = function () {
@@ -391,13 +398,13 @@ Initialization_1.Initialization.registerAutoCreateComponent(Tab);
 
 /***/ }),
 
-/***/ 142:
+/***/ 260:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var _ = __webpack_require__(0);
+var _ = __webpack_require__(1);
 var EventsUtils = (function () {
     function EventsUtils() {
     }
@@ -427,41 +434,41 @@ exports.EventsUtils = EventsUtils;
 
 /***/ }),
 
-/***/ 570:
+/***/ 572:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
 
-/***/ 582:
+/***/ 584:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
 
-/***/ 619:
+/***/ 621:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var Dom_1 = __webpack_require__(2);
-var InitializationEvents_1 = __webpack_require__(14);
-var PopupUtils_1 = __webpack_require__(45);
-var EventsUtils_1 = __webpack_require__(142);
-var Utils_1 = __webpack_require__(4);
+var Dom_1 = __webpack_require__(3);
+var InitializationEvents_1 = __webpack_require__(15);
+var PopupUtils_1 = __webpack_require__(47);
+var EventsUtils_1 = __webpack_require__(260);
+var Utils_1 = __webpack_require__(5);
 var Logger_1 = __webpack_require__(13);
-var Component_1 = __webpack_require__(7);
-var SearchInterface_1 = __webpack_require__(19);
-var Tab_1 = __webpack_require__(134);
-var ResponsiveComponentsManager_1 = __webpack_require__(74);
-var ResponsiveComponentsUtils_1 = __webpack_require__(85);
-var Strings_1 = __webpack_require__(9);
-var ResponsiveComponents_1 = __webpack_require__(38);
-var _ = __webpack_require__(0);
-__webpack_require__(570);
+var Component_1 = __webpack_require__(8);
+var SearchInterface_1 = __webpack_require__(20);
+var Tab_1 = __webpack_require__(253);
+var ResponsiveComponentsManager_1 = __webpack_require__(76);
+var ResponsiveComponentsUtils_1 = __webpack_require__(87);
+var Strings_1 = __webpack_require__(10);
+var ResponsiveComponents_1 = __webpack_require__(39);
+var _ = __webpack_require__(1);
+__webpack_require__(572);
 var ResponsiveTabs = (function () {
     function ResponsiveTabs(coveoRoot, ID) {
         this.coveoRoot = coveoRoot;
@@ -785,19 +792,19 @@ exports.ResponsiveTabs = ResponsiveTabs;
 
 /***/ }),
 
-/***/ 74:
+/***/ 76:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var Dom_1 = __webpack_require__(2);
-var InitializationEvents_1 = __webpack_require__(14);
-var Component_1 = __webpack_require__(7);
-var SearchInterface_1 = __webpack_require__(19);
-var Utils_1 = __webpack_require__(4);
-var _ = __webpack_require__(0);
-var QueryEvents_1 = __webpack_require__(10);
+var Dom_1 = __webpack_require__(3);
+var InitializationEvents_1 = __webpack_require__(15);
+var Component_1 = __webpack_require__(8);
+var SearchInterface_1 = __webpack_require__(20);
+var Utils_1 = __webpack_require__(5);
+var _ = __webpack_require__(1);
+var QueryEvents_1 = __webpack_require__(11);
 var Logger_1 = __webpack_require__(13);
 var ResponsiveComponentsManager = (function () {
     function ResponsiveComponentsManager(root) {
@@ -967,7 +974,7 @@ exports.ResponsiveComponentsManager = ResponsiveComponentsManager;
 
 /***/ }),
 
-/***/ 85:
+/***/ 87:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";

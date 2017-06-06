@@ -1,6 +1,6 @@
 webpackJsonpCoveo__temporary([49],{
 
-/***/ 190:
+/***/ 308:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16,18 +16,18 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var Component_1 = __webpack_require__(7);
-var ComponentOptions_1 = __webpack_require__(8);
-var SettingsEvents_1 = __webpack_require__(37);
-var PreferencesPanelEvents_1 = __webpack_require__(64);
-var Initialization_1 = __webpack_require__(1);
-var Strings_1 = __webpack_require__(9);
-var Dom_1 = __webpack_require__(2);
-var GlobalExports_1 = __webpack_require__(3);
-var ExternalModulesShim_1 = __webpack_require__(21);
-var _ = __webpack_require__(0);
-__webpack_require__(563);
-var InitializationEvents_1 = __webpack_require__(14);
+var Component_1 = __webpack_require__(8);
+var ComponentOptions_1 = __webpack_require__(9);
+var SettingsEvents_1 = __webpack_require__(38);
+var PreferencesPanelEvents_1 = __webpack_require__(65);
+var Initialization_1 = __webpack_require__(2);
+var Strings_1 = __webpack_require__(10);
+var Dom_1 = __webpack_require__(3);
+var GlobalExports_1 = __webpack_require__(4);
+var ExternalModulesShim_1 = __webpack_require__(22);
+var _ = __webpack_require__(1);
+__webpack_require__(565);
+var InitializationEvents_1 = __webpack_require__(15);
 /**
  * The PreferencesPanel component renders a **Preferences** item inside the {@link Settings} component which the end
  * user can click to access a panel from which it is possible to specify certain customization options for the search
@@ -123,7 +123,7 @@ Initialization_1.Initialization.registerAutoCreateComponent(PreferencesPanel);
 
 /***/ }),
 
-/***/ 563:
+/***/ 565:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
