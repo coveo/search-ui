@@ -9,6 +9,7 @@ import { TemplateCache } from '../../src/ui/Templates/TemplateCache';
 import { CardOverlayEvents } from '../../src/events/CardOverlayEvents';
 import _ = require('underscore');
 import { Defer } from '../../src/misc/Defer';
+import { analyticsActionCauseList } from '../../src/ui/Analytics/AnalyticsActionListMeta';
 
 export function ResultFoldingTest() {
   describe('ResultFolding', () => {
@@ -249,6 +250,34 @@ export function ResultFoldingTest() {
           done();
         });
       });
+    });
+
+    it('should call usage analytics when showing more results', (done) => {
+      const result = FakeResults.createFakeResultWithChildResult('foo', 3);
+      test = Mock.optionsResultComponentSetup<ResultFolding, IResultFoldingOptions>(ResultFolding, <IResultFoldingOptions>{
+      }, result);
+      result.moreResults = () => new Promise((res, rej) => res(result.childResults));
+      test.cmp.showMoreResults().then(() => {
+        expect(test.env.usageAnalytics.logClickEvent).toHaveBeenCalledWith(analyticsActionCauseList.foldingShowMore, jasmine.objectContaining({
+          documentURL: result.clickUri,
+          documentTitle: result.title,
+          author: result.raw['author']
+        }), result, test.cmp.element);
+        done();
+      });
+    });
+
+    it('should call usage analytics when showing less results', () => {
+      const result = FakeResults.createFakeResultWithChildResult('foo', 3);
+      test = Mock.optionsResultComponentSetup<ResultFolding, IResultFoldingOptions>(ResultFolding, <IResultFoldingOptions>{
+      }, result);
+      result.moreResults = () => new Promise((res, rej) => res(result.childResults));
+      test.cmp.showLessResults();
+      expect(test.env.usageAnalytics.logCustomEvent).toHaveBeenCalledWith(analyticsActionCauseList.foldingShowLess, jasmine.objectContaining({
+        documentURL: result.clickUri,
+        documentTitle: result.title,
+        author: result.raw['author']
+      }), test.cmp.element);
     });
 
     it('should call showMoreResults when its parent CardOverlay *first* triggers openCardOverlay', (done) => {
