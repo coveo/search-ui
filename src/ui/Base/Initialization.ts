@@ -700,6 +700,7 @@ export class LazyInitialization {
     if (Initialization.isThereASingleComponentBoundToThisElement(element)) {
       // This means a component already exists on this element.
       // Do not re-initialize again.
+      LazyInitialization.logger.warn(`Skipping component of class ${componentClassId} because the element is already initialized as another component.`, element);
       return null;
     }
 
@@ -776,6 +777,7 @@ export class EagerInitialization {
     if (Initialization.isThereASingleComponentBoundToThisElement(element)) {
       // This means a component already exists on this element.
       // Do not re-initialize again.
+      EagerInitialization.logger.warn(`Skipping component of class ${componentClassId} because the element is already initialized as another component.`, element);
       return null;
     }
 
