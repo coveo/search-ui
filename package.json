@@ -128,7 +128,6 @@
     "walk": "^2.3.9",
     "webpack": "^2.2.1",
     "webpack-dev-server": "^1.14.1",
-    "webpack-spritesmith": "^0.3.1",
     "xml2js": "^0.4.17",
     "yargs": "^4.7.1"
   },
