@@ -202,6 +202,7 @@ export function SearchEndpointTest() {
           expect(jasmine.Ajax.requests.mostRecent().params).toContain('q=batman');
           expect(jasmine.Ajax.requests.mostRecent().params).toContain('numberOfResults=153');
           expect(jasmine.Ajax.requests.mostRecent().params).toContain('enableCollaborativeRating=true');
+          expect(jasmine.Ajax.requests.mostRecent().params).toContain('actionsHistory=');
           expect(jasmine.Ajax.requests.mostRecent().method).toBe('POST');
           promiseSuccess
             .then((data: IQueryResults) => {
@@ -227,6 +228,14 @@ export function SearchEndpointTest() {
           jasmine.Ajax.requests.mostRecent().respondWith({
             status: 500
           });
+        });
+
+        it('should not override actions history if specified manually on a search call', () => {
+          const qbuilder = new QueryBuilder();
+          const historyAsString = JSON.stringify([{ name: 'foo', value: 'bar' }]);
+          qbuilder.actionsHistory = historyAsString;
+          const promiseSuccess = ep.search(qbuilder.build());
+          expect(jasmine.Ajax.requests.mostRecent().params).toContain(`actionsHistory=${encodeURIComponent(historyAsString)}`);
         });
 
         it('for getRawDataStream', (done) => {
@@ -499,11 +508,13 @@ export function SearchEndpointTest() {
           });
 
           expect(jasmine.Ajax.requests.mostRecent().url).toContain(ep.getBaseUri() + '/querySuggest?');
-          expect(jasmine.Ajax.requests.mostRecent().url).toContain('q=foobar');
-          expect(jasmine.Ajax.requests.mostRecent().url).toContain('count=10');
           expect(jasmine.Ajax.requests.mostRecent().url).toContain('organizationId=myOrgId');
           expect(jasmine.Ajax.requests.mostRecent().url).toContain('potatoe=mashed');
-          expect(jasmine.Ajax.requests.mostRecent().method).toBe('GET');
+
+          expect(jasmine.Ajax.requests.mostRecent().params).toContain('q=foobar');
+          expect(jasmine.Ajax.requests.mostRecent().params).toContain('count=10');
+          expect(jasmine.Ajax.requests.mostRecent().params).toContain('actionsHistory=');
+          expect(jasmine.Ajax.requests.mostRecent().method).toBe('POST');
 
           // Not real extensions, but will suffice for test purpose
           promiseSuccess
@@ -530,7 +541,7 @@ export function SearchEndpointTest() {
           });
 
           expect(jasmine.Ajax.requests.mostRecent().url).toContain(ep.getBaseUri() + '/querySuggest?');
-          expect(jasmine.Ajax.requests.mostRecent().url).toContain('q=foobar');
+          expect(jasmine.Ajax.requests.mostRecent().params).toContain('q=foobar');
 
           // Not real extensions, but will suffice for test purpose
           promiseSuccess
