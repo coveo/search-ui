@@ -53,35 +53,40 @@
   }
 }
 
-.coveo-field-table-toggle-down-svg {
+.coveo-field-table-toggle-down {
   position: relative;
   top: 2px;
-  width: 16px;
-  height: 16px;
-  // @include retina-sprite($arrow-down-group);
-  @include transition(opacity 0.5s);
+}
+
+.coveo-field-table-toggle-down-svg {
+  color: $color-greyish-teal-blue;  
+  width: 10px;
+  height: 6px;
+  @include transition(fill-opacity 0.5s);
   fill-opacity: 1;
   &.coveo-opened {
     fill-opacity: 0;
   }
 }
 
-.coveo-field-table-toggle-up-svg {
+.coveo-field-table-toggle-up {
   position: absolute;
-  bottom: 35px;
+  bottom: 44px;
   right: 10px;
   margin: 0;
-  width: 16px;
-  height: 16px;
-  @include transition(opacity 0s);
-  // @include retina-sprite($arrow-up-group);
-  fill-opacity: 0;
-  height:0px;
-  &.coveo-opened {
-    fill-opacity:1;
-    @include transition(opacity 2.8s);
-    height:13px;
+  height: 0px;
+}
 
+.coveo-field-table-toggle-up-svg {
+  color: $color-greyish-teal-blue;
+  width: 10px;
+  height: 6px;
+  @include transition(fill-opacity 0s);
+  fill-opacity: 0;
+  &.coveo-opened {
+    fill-opacity: 1;
+    height: 13px;
+    @include transition(fill-opacity cubic-bezier(1,0,1,0) 0.4s);
   }
 }
 
