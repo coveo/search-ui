@@ -239,20 +239,20 @@ export class InitializationPlaceholder {
         resultListElement = _.first(resultListElements);
       }
       return {
-        placeholderToUse: this.determinerResultListFromLayout(currentLayout),
+        placeholderToUse: this.determineResultListFromLayout(currentLayout),
         resultListToUse: resultListElement,
         rootToUse: this.determineRootFromLayout(currentLayout)
       };
     } else {
       return {
-        placeholderToUse: this.determinerResultListFromLayout(currentLayout),
+        placeholderToUse: this.determineResultListFromLayout(currentLayout),
         resultListToUse: resultListElements[0],
         rootToUse: this.determineRootFromLayout(currentLayout)
       };
     }
   }
 
-  private determinerResultListFromLayout(layout: string) {
+  private determineResultListFromLayout(layout: string) {
     switch (layout) {
       case 'list':
         if (this.isRecommendationRoot()) {
