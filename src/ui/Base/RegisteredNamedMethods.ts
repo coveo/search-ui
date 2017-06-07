@@ -1,4 +1,4 @@
-import { Initialization, LazyInitialization } from './Initialization';
+import { Initialization, LazyInitialization, EagerInitialization } from './Initialization';
 import { Assert } from '../../misc/Assert';
 import { QueryController } from '../../controllers/QueryController';
 import { QueryStateModel, setState } from '../../models/QueryStateModel';
@@ -81,6 +81,7 @@ export function initRecommendation(element: HTMLElement, mainSearchInterface?: H
   // This ensure that we can always call `getLazyRegisteredComponent`, no matter if it was loaded from eager or lazy mode.
   if (window['Coveo']['Recommendation'] != null) {
     LazyInitialization.registerLazyComponent('Recommendation', () => Promise.resolve(window['Coveo']['Recommendation']));
+    EagerInitialization.eagerlyLoadedComponents['Recommendation'] = window['Coveo']['Recommendation'];
   }
 
   return LazyInitialization.getLazyRegisteredComponent('Recommendation').then(() => {
