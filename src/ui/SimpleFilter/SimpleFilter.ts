@@ -17,13 +17,17 @@ import {IGroupByRequest} from "../../rest/GroupByRequest";
 import {QueryBuilder} from "../Base/QueryBuilder";
 import {IStringMap} from "../../rest/GenericParam";
 import {Utils} from "../../utils/Utils";
+import {BreadcrumbEvents, IClearBreadcrumbEventArgs, IPopulateBreadcrumbEventArgs} from "../../events/BreadcrumbEvents";
+import {BreadcrumbValueElement} from "../Facet/BreadcrumbValueElement";
+import {BreadcrumbValueList} from "../Facet/BreadcrumbValuesList";
 
 
 export interface ISimpleFilterOptions{
     title: string;
-    captions: string[],
+    values: string[],
     field: IFieldOption,
-    valueCaption: any
+    //includeInBreadcrumb: boolean,
+    valueCaption?: any
 }
 
 export class SimpleFilter extends Component {
@@ -34,17 +38,18 @@ export class SimpleFilter extends Component {
         })
     };
     static options: ISimpleFilterOptions = {
-        captions: ComponentOptions.buildListOption<string>(),
+
+        values: ComponentOptions.buildListOption<string>(),
         field: ComponentOptions.buildFieldOption({ required: true, groupByField: true, section: 'Identification' }),
-        title: ComponentOptions.buildStringOption(),
+        title: ComponentOptions.buildStringOption({defaultValue: l('NoTitle')}),
+        //includeInBreadcrumb: ComponentOptions.buildBooleanOption({defaultValue : true}),
         valueCaption: ComponentOptions.buildCustomOption<IStringMap<string>>(() => {
             return null;
         }),
     };
 
-    private selectedValues: string[] = [];
-    private checkboxes: Checkbox [] = [];
-    private checkboxContainer: Dom;
+    public checkboxes: {checkbox: Checkbox, value: string} [] =  [];
+    public checkboxContainer: Dom;
     private expanded = false;
 
     constructor(public element: HTMLElement, public options: ISimpleFilterOptions, public bindings?: IComponentBindings){
@@ -59,6 +64,16 @@ export class SimpleFilter extends Component {
 
         let overselect = $$('div', {className: 'overselect'});
         const multiselect = $$('div', { className: 'multiselect'});
+        multiselect.el.appendChild(select.el);
+        multiselect.el.appendChild(overselect.el);
+        this.element.appendChild(multiselect.el);
+
+        this.checkboxContainer = $$('div', { className: 'checkboxes'});
+        this.checkboxes = _.map(this.options.values, (value)=> this.createCheckboxes(value));
+        _.each(this.checkboxes, (result) => {
+            this.checkboxContainer.el.appendChild(result.checkbox.getElement())
+        });
+        this.element.appendChild(this.checkboxContainer.el);
 
         $$(document.body).on('click', (e: Event)=> {
             let target = <Element>e.target;
@@ -67,54 +82,34 @@ export class SimpleFilter extends Component {
                 this.onClick()
             } else {
                 while (target != this.element) {
-                    if(target != this.root) {
+                    if(target != this.root && target.parentElement != null) {
                         target = target.parentElement;
                     }
-                    if (target == this.root  && this.expanded) {
+                    if ((target == this.root || target.parentElement == null) && this.expanded) {
                         this.onClick();
                         break;
-                    } else if (target == this.root && !this.expanded){
+                    } else if ((target == this.root || target.parentElement == null) && !this.expanded){
                         break;
                     }
                 }
             }
         });
-
-
-        multiselect.el.appendChild(select.el);
-        multiselect.el.appendChild(overselect.el);
-        this.element.appendChild(multiselect.el);
-        this.checkboxContainer = $$('div', { className: 'checkboxes'});
-
-        this.checkboxes = _.map(this.options.captions, (value)=> this.createCheckboxes(value));
-        _.each(this.checkboxes, (result) => {
-            this.checkboxContainer.el.appendChild(result.getElement())
-        });
-
         this.bind.onRootElement(QueryEvents.buildingQuery, (args: IBuildingQueryEventArgs) => this.handleBuildingQuery(args));
         this.bind.onRootElement(QueryEvents.querySuccess, (args: IQuerySuccessEventArgs) => this.groupBy(args));
         this.bind.onRootElement(QueryEvents.doneBuildingQuery, (args: IDoneBuildingQueryEventArgs) => this.handleDoneBuildingQuery(args));
-        this.element.appendChild(this.checkboxContainer.el);
-        var x = this.queryController;
+
     }
 
     private handleBuildingQuery(args: IBuildingQueryEventArgs) {
         Assert.exists(args);
         Assert.exists(args.queryBuilder);
-        this.selectedValues = [];
-
-        _.each(_.filter(this.checkboxes, (result) => {
-            return result.isSelected();
-        }), (checkboxes) => {
-            this.selectedValues.push(checkboxes.getCaption());
-        });
-
-        if(this.selectedValues.length > 0) {
-            args.queryBuilder.advancedExpression.addFieldExpression(this.options.field.toLocaleString(), '==', this.selectedValues);
+        let selectedValues = this.getSelectedValues();
+        if(selectedValues.length > 0) {
+            args.queryBuilder.advancedExpression.addFieldExpression(this.options.field.toLocaleString(), '==', selectedValues);
         }
     }
 
-    private onClick () {
+    public onClick () {
 
         if(!this.expanded){
             this.checkboxContainer.el.style.display = 'block';
@@ -124,20 +119,20 @@ export class SimpleFilter extends Component {
             this.expanded = false;
         }
     }
+
     private onCheck() {
         this.queryController.executeQuery();
     }
 
-    private createCheckboxes (captionValue: string): Checkbox{
+    private createCheckboxes (value: string) {
         const checkbox = new Checkbox(() => {
             this.onCheck();
-        }, l(this.getValueCaption(captionValue)));
-         checkbox.setCaption(captionValue);
-        return checkbox;
+        }, l(this.getValueCaption(value)));
+        return {checkbox, value};
     }
 
-    public getValueCaption(caption: string): string {
-        let lookupValue = caption;
+    public getValueCaption(value: string): string {
+        let lookupValue = value;
         let ret = lookupValue;
 
         if (Utils.exists(this.options.valueCaption)) {
@@ -148,6 +143,15 @@ export class SimpleFilter extends Component {
         return ret;
     }
 
+    public getSelected() {
+        return _.filter(this.checkboxes, (object: {checkbox, value}) => object.checkbox.isSelected());
+    }
+
+    public getSelectedValues() {
+        return _.map(this.getSelected(), (object: {checkbox, value}) => object.value);
+    }
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
     private groupBy (data: IQuerySuccessEventArgs) {
         let groupByResult = data.results.groupByResults;
         return groupByResult;
@@ -179,6 +183,6 @@ export class SimpleFilter extends Component {
         this.putGroupByIntoQueryBuilder(queryBuilder);
     }
 
-
+/////////////////////////////////////////////////////////////////////////////////////////////////
 }
 Initialization.registerAutoCreateComponent(SimpleFilter);
