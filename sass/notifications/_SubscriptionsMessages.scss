@@ -1,3 +1,5 @@
+@import "../_Variables";
+
 .coveo-subscriptions-messages-message {
   background-color: #ecad00;
   border-radius: 2px;
@@ -32,19 +34,16 @@
   .coveo-subscriptions-messages-content {
     line-height: 26px;
     vertical-align: middle;
-    display: block;
+    display: inline-block;
     overflow: hidden;
     text-overflow: ellipsis;
   }
 
   .coveo-subscriptions-messages-info-close {
-    float: right;
     display: inline-block;
     cursor: pointer;
-    padding: 0 4px;
-    &:before {
-      content: '';
-      vertical-align: middle;
-    }
+    vertical-align: middle;
+    margin: 0 5px;
+    @include clearButton('&');
   }
 }

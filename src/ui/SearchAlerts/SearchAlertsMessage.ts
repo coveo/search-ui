@@ -35,9 +35,9 @@ export class SearchAlertsMessage extends Component {
     /**
      * Specifies how long to display the search alerts messages (in milliseconds).
      *
-     * Default value is `3000`. Minimum value is `0`.
+     * Default value is `2000`. Minimum value is `0`.
      */
-    closeDelay: ComponentOptions.buildNumberOption({ defaultValue: 3000, min: 0 }),
+    closeDelay: ComponentOptions.buildNumberOption({ defaultValue: 2000, min: 0 }),
   };
 
   private message: Dom;
@@ -59,7 +59,6 @@ export class SearchAlertsMessage extends Component {
     this.bind.onRootElement(SearchAlertsEvents.searchAlertsCreated, (args: ISearchAlertsEventArgs) => this.handleSubscriptionCreated(args));
     this.bind.oneRootElement(SearchAlertsEvents.searchAlertsFail, (args: ISearchAlertsEventArgs) => this.handleSearchAlertsFail(args));
     this.bind.oneRootElement(SearchAlertsEvents.searchAlertsDeleted, () => this.close());
-
     this.bind.oneRootElement(QueryEvents.newQuery, () => this.close());
   }
 
@@ -113,8 +112,8 @@ export class SearchAlertsMessage extends Component {
     this.message = $$('div');
     this.message.el.innerHTML = `
       <div class='coveo-subscriptions-messages-message'>
-        <div class='coveo-subscriptions-messages-info-close'></div>
         <div class='coveo-subscriptions-messages-content'>${message}</div>
+        <div class='coveo-subscriptions-messages-info-close'></div>
       </div>`;
 
     this.message.toggleClass('coveo-subscriptions-messages-error', error);
