@@ -1,4 +1,4 @@
-import { Initialization, LazyInitialization } from './Initialization';
+import { Initialization, LazyInitialization, EagerInitialization } from './Initialization';
 import { Assert } from '../../misc/Assert';
 import { QueryController } from '../../controllers/QueryController';
 import { QueryStateModel, setState } from '../../models/QueryStateModel';
@@ -75,8 +75,19 @@ export function initRecommendation(element: HTMLElement, mainSearchInterface?: H
   recommendationOptions.userContext = JSON.stringify(userContext);
   recommendationOptions.enableHistory = false;
   options = _.extend({}, options, { Recommendation: recommendationOptions });
-  return Initialization.initializeFramework(element, options, () => {
-    return Initialization.initRecommendationInterface(element, options);
+
+  // Recommendation component is special : It is not explicitely registered like other "basic" components since it's a full search interface.
+  // Since it's not done using the "standard" path, we need to register this manually here
+  // This ensure that we can always call `getLazyRegisteredComponent`, no matter if it was loaded from eager or lazy mode.
+  if (window['Coveo']['Recommendation'] != null) {
+    LazyInitialization.registerLazyComponent('Recommendation', () => Promise.resolve(window['Coveo']['Recommendation']));
+    EagerInitialization.eagerlyLoadedComponents['Recommendation'] = window['Coveo']['Recommendation'];
+  }
+
+  return LazyInitialization.getLazyRegisteredComponent('Recommendation').then(() => {
+    return Initialization.initializeFramework(element, options, () => {
+      return Initialization.initRecommendationInterface(element, options);
+    });
   });
 }
 

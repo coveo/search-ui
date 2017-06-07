@@ -4,6 +4,7 @@ import { Dom, $$ } from '../../src/utils/Dom';
 import { Simulate } from '../Simulate';
 import { InitializationEvents } from '../../src/events/InitializationEvents';
 import { ResultListEvents } from '../../src/events/ResultListEvents';
+import { QueryBuilder } from '../../src/ui/Base/QueryBuilder';
 export function DebugHeaderTest() {
 
   describe('DebugHeader', () => {
@@ -33,6 +34,10 @@ export function DebugHeaderTest() {
       return $$(elem).find('input[value="Highlight recommendation"]');
     };
 
+    const getRequestFieldCheckbox = (elem: HTMLElement) => {
+      return $$(elem).find('input[value="Request all fields available"]');
+    };
+
     const getSearchInput = (elem: HTMLElement) => {
       return <HTMLInputElement>$$(elem).find('input[type="text"]');
     };
@@ -58,11 +63,35 @@ export function DebugHeaderTest() {
       expect(getSearchInput(elem.el)).not.toBeNull();
     });
 
+    it('should create a request field checkbox', () => {
+      expect(getRequestFieldCheckbox(elem.el)).not.toBeNull();
+    });
+
     it('should add debug if enabled', () => {
       getDebugCheckbox(elem.el).setAttribute('checked', 'checked');
       $$(getDebugCheckbox(elem.el)).trigger('change');
       const simulation = Simulate.query(env);
       expect(simulation.queryBuilder.enableDebug).toBe(true);
+    });
+
+    it('should modify the fieldsToInclude if enabled', () => {
+      getRequestFieldCheckbox(elem.el).setAttribute('checked', 'checked');
+      $$(getRequestFieldCheckbox(elem.el)).trigger('change');
+      const builder = new QueryBuilder();
+      builder.includeRequiredFields = true;
+      const simulation = Simulate.query(env, {
+        queryBuilder: builder
+      });
+      expect(simulation.queryBuilder.includeRequiredFields).toBe(false);
+    });
+
+    it('should not modify fields to include if not enabled', () => {
+      const builder = new QueryBuilder();
+      builder.includeRequiredFields = true;
+      const simulation = Simulate.query(env, {
+        queryBuilder: builder
+      });
+      expect(simulation.queryBuilder.includeRequiredFields).toBe(true);
     });
 
     it('should add highlight if enabled', () => {

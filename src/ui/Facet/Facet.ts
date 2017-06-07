@@ -12,7 +12,7 @@ import { FacetValuesList } from './FacetValuesList';
 import { FacetHeader } from './FacetHeader';
 import { FacetUtils } from './FacetUtils';
 import { InitializationEvents } from '../../events/InitializationEvents';
-import { QueryEvents, INewQueryEventArgs, IQuerySuccessEventArgs, IBuildingQueryEventArgs, IDoneBuildingQueryEventArgs } from '../../events/QueryEvents';
+import { QueryEvents, INewQueryEventArgs, IQuerySuccessEventArgs, IDoneBuildingQueryEventArgs } from '../../events/QueryEvents';
 import { Assert } from '../../misc/Assert';
 import { ISearchEndpoint } from '../../rest/SearchEndpointInterface';
 import { $$ } from '../../utils/Dom';
@@ -461,7 +461,15 @@ export class Facet extends Component {
      *
      * Default value is `element.parentElement`.
      */
-    paddingContainer: ComponentOptions.buildSelectorOption({ defaultFunction: (element) => element.parentElement }),
+    paddingContainer: ComponentOptions.buildSelectorOption({
+      defaultFunction: (element) => {
+        const standardColumn = $$(element).parent('coveo-facet-column');
+        if (standardColumn != null) {
+          return standardColumn;
+        }
+        return element.parentElement;
+      }
+    }),
 
     /**
      * Specifies the HTML element (through a CSS selector) whose scroll amount the facet should adjust to preserve its
@@ -574,43 +582,42 @@ export class Facet extends Component {
      * Specifies a JSON object describing a mapping of facet values to their desired captions. See
      * [Normalizing Facet Value Captions](https://developers.coveo.com/x/jBsvAg).
      *
-     * **Notes:**
-     * > * You cannot set this option directly in the component markup as an HTML attribute. You must either set it in the
-     *    > [`init`]{@link init} call of your search interface (see
-     *    > [Components - Passing Component Options in the init Call](https://developers.coveo.com/x/PoGfAQ#Components-PassingComponentOptionsintheinitCall)),
-     *    > or before the `init` call, using the `options` top-level function (see
-     *    > [Components - Passing Component Options Before the init Call](https://developers.coveo.com/x/PoGfAQ#Components-PassingComponentOptionsBeforetheinitCall)).
+     * **Examples:**
      *
-     * > *  Using value captions will disable alphabetical sorts (see the [availableSorts]{@link Facet.options.availableSorts} option).
-     *
-     * **Example:**
-     *
+     * You can set the option in the ['init']{@link init} call:
      * ```javascript
-     *
      * var myValueCaptions = {
      *   "txt" : "Text files",
      *   "html" : "Web page",
      *   [ ... ]
      * };
      *
-     * // You can set the option in the 'init' call:
      * Coveo.init(document.querySelector("#search"), {
      *   Facet : {
      *     valueCaption : myValueCaptions
      *   }
      * });
-     *
-     * // Or before the 'init' call, using the 'options' top-level function:
-     * // Coveo.options(document.querySelector("#search"), {
-     * //  Facet : {
-     * //    valueCaption : myValueCaptions
-     * //  }
-     * // });
      * ```
+     *
+     * Or before the `init` call, using the ['options']{@link options} top-level function:
+     * ```javascript
+     * Coveo.options(document.querySelector("#search"), {
+     *   Facet : {
+     *     valueCaption : myValueCaptions
+     *   }
+     * });
+     * ```
+     *
+     * Or directly in the markup:
+     * ```html
+     * <!-- Ensure that the double quotes are properly handled in data-value-caption. -->
+     * <div class='CoveoFacet' data-field='@myotherfield' data-value-caption='{"txt":"Text files","html":"Web page"}></div>
+     * ```
+     *
+     * **Note:**
+     * > Using value captions will disable alphabetical sorts (see the [availableSorts]{@link Facet.options.availableSorts} option).
      */
-    valueCaption: ComponentOptions.buildCustomOption<IStringMap<string>>(() => {
-      return null;
-    }),
+    valueCaption: ComponentOptions.buildJsonObjectOption<IStringMap<string>>(),
 
     /**
      * Specifies whether to enable *responsive mode* for facets. Setting this options to `false` on any `Facet`, or
@@ -1251,9 +1258,8 @@ export class Facet extends Component {
 
   protected updateAppearanceDependingOnState() {
     $$(this.element).toggleClass('coveo-active', this.values.hasSelectedOrExcludedValues());
-    if (!$$(this.element).hasClass('coveo-with-placeholder')) {
-      $$(this.element).toggleClass('coveo-facet-empty', !this.isAnyValueCurrentlyDisplayed());
-    }
+    $$(this.element).toggleClass('coveo-facet-empty', !this.isAnyValueCurrentlyDisplayed());
+
     if (this.searchInterface.isNewDesign()) {
       $$(this.facetHeader.eraserElement).toggleClass('coveo-facet-header-eraser-visible', this.values.hasSelectedOrExcludedValues());
     } else {
@@ -1264,7 +1270,7 @@ export class Facet extends Component {
 
   protected initQueryEvents() {
     this.bind.onRootElement(QueryEvents.duringQuery, () => this.handleDuringQuery());
-    this.bind.onRootElement(QueryEvents.buildingQuery, (args: IBuildingQueryEventArgs) => this.handleBuildingQuery(args));
+    this.bind.onRootElement(QueryEvents.buildingQuery, (args: IDoneBuildingQueryEventArgs) => this.handleBuildingQuery(args));
     this.bind.onRootElement(QueryEvents.doneBuildingQuery, (args: IDoneBuildingQueryEventArgs) => this.handleDoneBuildingQuery(args));
     this.bind.onRootElement(QueryEvents.deferredQuerySuccess, (args: IQuerySuccessEventArgs) => this.handleDeferredQuerySuccess(args));
   }
@@ -1375,7 +1381,7 @@ export class Facet extends Component {
 
   protected updateSearchInNewDesign(moreValuesAvailable = true) {
     if (this.searchInterface.isNewDesign() && moreValuesAvailable) {
-      let renderer = new ValueElementRenderer(this, FacetValue.create(l('Search')));
+      let renderer = new ValueElementRenderer(this, FacetValue.create(('Search')));
       let searchButton = renderer.build().withNo([renderer.excludeIcon, renderer.icon]);
       $$(searchButton.listItem).addClass('coveo-facet-search-button');
       searchButton.stylishCheckbox.removeAttribute('tabindex');
@@ -1615,7 +1621,7 @@ export class Facet extends Component {
     }
   }
 
-  private handleBuildingQuery(data: IBuildingQueryEventArgs) {
+  private handleBuildingQuery(data: IDoneBuildingQueryEventArgs) {
     Assert.exists(data);
     Assert.exists(data.queryBuilder);
 
@@ -1751,28 +1757,12 @@ export class Facet extends Component {
       scrollToOffset();
       currentViewportPosition = this.element.getBoundingClientRect().top;
       offset = currentViewportPosition - this.pinnedViewportPosition;
-
       // If scrolling has worked (offset == 0), we're good to go, nothing to do anymore.
-      // Otherwise try other voodoo magic.
+
       if (offset < 0) {
         // This means the facet element is scrolled up in the viewport,
         // scroll it down by adding space in the top container
         this.pinnedTopSpace.style.height = (offset * -1) + 'px';
-      } else {
-        // Here, this means the facet element is scrolled down in the viewport,
-        // and there is not enough scroll space in the page / window to scroll far enough
-        // we need to add space at the bottom so that we can finally scroll there.
-        _.defer(() => {
-          let heightBottom = 0;
-          let attempts = 0;
-          while (offset > 0 && attempts++ < 100) {
-            heightBottom += 100;
-            this.pinnedBottomSpace.style.height = heightBottom + 'px';
-            currentViewportPosition = this.element.getBoundingClientRect().top;
-            offset = currentViewportPosition - this.pinnedViewportPosition;
-            scrollToOffset();
-          }
-        });
       }
       this.unpinnedViewportPosition = this.pinnedViewportPosition;
       this.pinnedViewportPosition = null;

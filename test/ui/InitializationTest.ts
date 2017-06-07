@@ -218,6 +218,24 @@ export function InitializationTest() {
 
     });
 
+    it('allow to automaticallyCreateComponentInside and will ignore elements that are already components', () => {
+      let env = new Mock.MockEnvironmentBuilder().build();
+      expect(Component.get(queryBox) instanceof Querybox).toBe(false);
+      Initialization.automaticallyCreateComponentsInside(root, {
+        options: {},
+        bindings: env
+      });
+      expect(Component.get(queryBox) instanceof Querybox).toBe(true);
+      queryBox.className = 'CoveoResultList';
+      Initialization.automaticallyCreateComponentsInside(root, {
+        options: {},
+        bindings: env
+      });
+      expect(Component.get(queryBox) instanceof Querybox).toBe(true);
+      expect(Component.get(queryBox) instanceof ResultList).toBe(false);
+
+    });
+
     it('allow to monkeyPatchComponentMethod', () => {
       Initialization.initializeFramework(root, searchInterfaceOptions, () => {
         return Initialization.initSearchInterface(root, searchInterfaceOptions);

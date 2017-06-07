@@ -7,7 +7,7 @@ export function lazyCheckbox() {
       require.ensure(['./Checkbox'], () => {
         let loaded = require('./Checkbox.ts')['Checkbox'];
         lazyExportModule(loaded, resolve);
-      }, LazyInitialization.buildErrorCallback('Checkbox'), 'Checkbox');
+      }, LazyInitialization.buildErrorCallback('Checkbox', resolve), 'Checkbox');
     });
   });
 }

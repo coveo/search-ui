@@ -9,16 +9,21 @@ export class PublicPathUtils {
   // Fallback on last parsed script if document.currentScript is not available.
   public static detectPublicPath() {
     if (!this.pathHasBeenConfigured) {
-      let path;
-      let currentScript = DomUtils.getCurrentScript();
-      if (Utils.isNullOrUndefined(currentScript)) {
-        let scripts = document.getElementsByTagName('script');
-        path = this.parseScriptDirectoryPath(scripts[scripts.length - 1]);
-      } else {
-        let script = currentScript;
-        path = this.parseScriptDirectoryPath(script);
-      }
-      __webpack_public_path__ = path;
+      __webpack_public_path__ = PublicPathUtils.getDynamicPublicPath();
+    }
+  }
+
+  /**
+   * Helper function to resolve the public path used to load the chunks relative to the Coveo script.
+   */
+  public static getDynamicPublicPath() {
+    let currentScript = DomUtils.getCurrentScript();
+    if (Utils.isNullOrUndefined(currentScript)) {
+      let scripts = document.getElementsByTagName('script');
+      return this.parseScriptDirectoryPath(scripts[scripts.length - 1]);
+    } else {
+      let script = currentScript;
+      return this.parseScriptDirectoryPath(script);
     }
   }
 

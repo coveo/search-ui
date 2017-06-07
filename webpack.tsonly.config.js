@@ -10,6 +10,10 @@ let bail;
 let plugins = [];
 let additionalRules = [];
 
+plugins.push(new webpack.DefinePlugin({
+  DISABLE_LOGGER: minimize
+}))
+
 module.exports = {
   entry: {
     'CoveoJsSearch.Lazy': ['./src/Lazy.ts'],

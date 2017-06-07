@@ -8,7 +8,7 @@ export function lazyLogo() {
       require.ensure(['./Logo'], () => {
         let loaded = require<IComponentDefinition>('./Logo.ts')['Logo'];
         lazyExport(loaded, resolve);
-      }, LazyInitialization.buildErrorCallback('Logo'), 'Logo');
+      }, LazyInitialization.buildErrorCallback('Logo', resolve), 'Logo');
     });
   });
 }
