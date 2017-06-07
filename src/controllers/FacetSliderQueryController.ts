@@ -170,13 +170,30 @@ export class FacetSliderQueryController {
       }];
     }
 
+    
+
     const basicGroupByRequestForSlider = this.createBasicGroupByRequest();
     basicGroupByRequestForSlider.maximumNumberOfValues = maximumNumberOfValues;
-    basicGroupByRequestForSlider.queryOverride = this.facet.options.queryOverride || '@uri';
     basicGroupByRequestForSlider.sortCriteria = 'nosort';
     basicGroupByRequestForSlider.generateAutomaticRanges = !this.facet.isSimpleSliderConfig();
     basicGroupByRequestForSlider.rangeValues = rangeValues;
     queryBuilder.groupByRequests.push(basicGroupByRequestForSlider);
+
+    let filter = this.computeOurFilterExpression(this.facet.getSliderBoundaryForQuery());
+    if (filter != undefined) {
+      let queryOverrideObject = queryBuilder.computeCompleteExpressionPartsExcept(filter);
+      basicGroupByRequestForSlider.queryOverride = queryOverrideObject.basic;
+      basicGroupByRequestForSlider.advancedQueryOverride = queryOverrideObject.advanced;
+      basicGroupByRequestForSlider.constantQueryOverride = queryOverrideObject.constant;
+      if (basicGroupByRequestForSlider.queryOverride == undefined) {
+        basicGroupByRequestForSlider.queryOverride = this.facet.options.queryOverride || '@uri';
+      } else {
+        basicGroupByRequestForSlider.queryOverride += (this.facet.options.queryOverride ? ' ' + this.facet.options.queryOverride : '');
+      }
+    } else if (this.facet.options.queryOverride != null) {
+      let completeExpression = queryBuilder.computeCompleteExpression();
+      basicGroupByRequestForSlider.queryOverride = (completeExpression != null ? completeExpression + ' ' : '') + this.facet.options.queryOverride;
+    }
   }
 
   private createRangeValuesForGraphUsingStartAndEnd() {

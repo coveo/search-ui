@@ -668,7 +668,7 @@ export class FacetSlider extends Component {
     let groupByResults = data.results.groupByResults[this.facetQueryController.lastGroupByRequestIndex];
     this.isEmpty = this.isFacetEmpty(groupByResults, data);
     this.updateAppearanceDependingOnState();
-    if (this.hasAGraph()) {
+    if (this.hasAGraph() && !this.isEmpty) {
       this.renderToSliderGraph(data);
     }
   }
@@ -952,7 +952,7 @@ export class FacetSlider extends Component {
   }
 
   private isFacetEmpty(groupByResults: IGroupByResult, data: IQuerySuccessEventArgs) {
-    return groupByResults == null || groupByResults.values[0] == null || data.results.results.length == 0;
+    return groupByResults == null || groupByResults.values[0] == null || groupByResults.values[0].numberOfResults == 0 || data.results.results.length == 0;
   }
 }
 
