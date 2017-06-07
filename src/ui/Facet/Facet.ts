@@ -372,9 +372,9 @@ export class Facet extends Component {
      */
     numberOfValuesInBreadcrumb: ComponentOptions.buildNumberOption({ defaultFunction: () => DeviceUtils.isMobileDevice() ? 3 : 5, min: 0, depend: 'includeInBreadcrumb' }),
 
-    includeInOmnibox: ComponentOptions.buildBooleanOption({ defaultValue: false, deprecated: 'This option is exposed for legacy reasons and the recommendation is to not use this option.' }),
+    includeInOmnibox: ComponentOptions.buildBooleanOption({ defaultValue: false, deprecated: 'This option is exposed for legacy reasons. It is not recommended to use this option.' }),
 
-    numberOfValuesInOmnibox: ComponentOptions.buildNumberOption({ defaultFunction: () => DeviceUtils.isMobileDevice() ? 3 : 5, min: 0, depend: 'includeInOmnibox', deprecated: 'This option is exposed for legacy reasons, and the recommendation is to not use this option.' }),
+    numberOfValuesInOmnibox: ComponentOptions.buildNumberOption({ defaultFunction: () => DeviceUtils.isMobileDevice() ? 3 : 5, min: 0, depend: 'includeInOmnibox', deprecated: 'This option is exposed for legacy reasons. It is not recommended to use this option.' }),
 
     /**
      * Specifies the name of a field on which to execute an aggregate operation for all distinct values of the facet
@@ -634,7 +634,7 @@ export class Facet extends Component {
      */
     enableResponsiveMode: ComponentOptions.buildBooleanOption({ defaultValue: true }),
 
-    responsiveBreakpoint: ComponentOptions.buildNumberOption({ defaultValue: 800, deprecated: 'This option is exposed for legacy reasons, and the recommendation is to not use this option.' }),
+    responsiveBreakpoint: ComponentOptions.buildNumberOption({ defaultValue: 800, deprecated: 'This option is exposed for legacy reasons. It is not recommended to use this option.' }),
 
     /**
      * If the [`enableResponsiveMode`]{@link Facet.options.enableResponsiveMode} option is `true` for all facets and
