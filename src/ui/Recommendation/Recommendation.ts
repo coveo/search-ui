@@ -128,7 +128,7 @@ export class Recommendation extends SearchInterface implements IComponentBinding
      *
      * Default value is `true`.
      *
-     * @deprecated This option is now deprecated. The correct way to control this behaviour is to configure an appropriate machine learning model in the administration interface (Recommendation, Relevance tuning, Query suggestions)
+     * @deprecated This option is now deprecated. The correct way to control this behavior is to configure an appropriate machine learning model in the administration interface (Recommendation, Relevance tuning, Query suggestions).
      */
     sendActionsHistory: ComponentOptions.buildBooleanOption({ defaultValue: true, deprecated: 'This option is now deprecated. The correct way to control this behaviour is to configure an appropriate machine learning model in the administration interface (Recommendation, Relevance tuning, Query suggestions)' }),
 
