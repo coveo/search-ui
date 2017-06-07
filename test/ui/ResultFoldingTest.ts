@@ -9,6 +9,7 @@ import { TemplateCache } from '../../src/ui/Templates/TemplateCache';
 import { CardOverlayEvents } from '../../src/events/CardOverlayEvents';
 import _ = require('underscore');
 import { Defer } from '../../src/misc/Defer';
+import { analyticsActionCauseList } from '../../src/ui/Analytics/AnalyticsActionListMeta';
 
 export function ResultFoldingTest() {
   describe('ResultFolding', () => {
@@ -25,9 +26,7 @@ export function ResultFoldingTest() {
 
       beforeEach(() => {
         fakeResult = FakeResults.createFakeResultWithChildResult('rezzult', 4);
-        fakeResult.moreResults = () => new Promise<IQueryResult[]>((resolve, reject) => {
-          resolve(fakeResult.childResults);
-        });
+        fakeResult.moreResults = () => Promise.resolve(fakeResult.childResults);
         test = Mock.optionsResultComponentSetup<ResultFolding, IResultFoldingOptions>(ResultFolding, undefined, fakeResult);
         afterMoreResults = test.cmp.showMoreResults();
       });
@@ -66,7 +65,7 @@ export function ResultFoldingTest() {
       it('should display the original results when showLessResults is called', (done) => {
         let tempChildResults = fakeResult.childResults;
         fakeResult.childResults = [];
-        fakeResult.moreResults = () => new Promise((res, rej) => res(tempChildResults));
+        fakeResult.moreResults = () => Promise.resolve(tempChildResults);
         test = Mock.optionsResultComponentSetup<ResultFolding, IResultFoldingOptions>(ResultFolding, undefined, fakeResult);
 
         test.cmp.showMoreResults();
@@ -102,7 +101,7 @@ export function ResultFoldingTest() {
           expandedCaption: 'foobar',
           normalCaption: 'obligatory'
         }, FakeResults.createFakeResultWithChildResult('heyo', 3));
-        test.cmp.result.moreResults = () => new Promise((resolve, reject) => null);
+        test.cmp.result.moreResults = () => Promise.resolve(null);
         test.cmp.showMoreResults();
         expect($$(test.cmp.element).find('.coveo-folding-expanded-caption').innerHTML).toContain('foobar');
       });
@@ -112,7 +111,7 @@ export function ResultFoldingTest() {
           expandedCaption: 'foobar',
           normalCaption: undefined
         }, FakeResults.createFakeResultWithChildResult('heyo', 3));
-        test.cmp.result.moreResults = () => new Promise((resolve, reject) => null);
+        test.cmp.result.moreResults = () => Promise.resolve(null);
         test.cmp.showMoreResults();
         expect($$(test.cmp.element).find('.coveo-folding-expanded-caption')).toBeNull();
 
@@ -125,7 +124,7 @@ export function ResultFoldingTest() {
 
       it('moreCaption should set the appropriate caption on the expand link', () => {
         let fakeResult = FakeResults.createFakeResult();
-        fakeResult.moreResults = () => new Promise((res, rej) => null);
+        fakeResult.moreResults = () => Promise.resolve(null);
         test = Mock.optionsResultComponentSetup<ResultFolding, IResultFoldingOptions>(ResultFolding, <IResultFoldingOptions>{
           moreCaption: 'foobar'
         }, fakeResult);
@@ -134,7 +133,7 @@ export function ResultFoldingTest() {
 
       it('lessCaption should set the appropriate caption on the unexpand link', () => {
         let fakeResult = FakeResults.createFakeResult();
-        fakeResult.moreResults = () => new Promise((res, rej) => null);
+        fakeResult.moreResults = () => Promise.resolve(null);
         test = Mock.optionsResultComponentSetup<ResultFolding, IResultFoldingOptions>(ResultFolding, <IResultFoldingOptions>{
           lessCaption: 'foobar'
         }, fakeResult);
@@ -233,7 +232,7 @@ export function ResultFoldingTest() {
       let templateStr = '<div class="coveo-show-if-normal"></div><div class="coveo-show-if-expanded"></div>';
 
       let result = FakeResults.createFakeResultWithChildResult('foo', 3);
-      result.moreResults = () => new Promise((res, rej) => res(result.childResults));
+      result.moreResults = () => Promise.resolve(result.childResults);
 
       test = Mock.optionsResultComponentSetup<ResultFolding, IResultFoldingOptions>(ResultFolding, <IResultFoldingOptions>{
         resultTemplate: UnderscoreTemplate.fromString(templateStr, {})
@@ -249,6 +248,34 @@ export function ResultFoldingTest() {
           done();
         });
       });
+    });
+
+    it('should call usage analytics when showing more results', (done) => {
+      const result = FakeResults.createFakeResultWithChildResult('foo', 3);
+      test = Mock.optionsResultComponentSetup<ResultFolding, IResultFoldingOptions>(ResultFolding, <IResultFoldingOptions>{
+      }, result);
+      result.moreResults = () => Promise.resolve(result.childResults);
+      test.cmp.showMoreResults().then(() => {
+        expect(test.env.usageAnalytics.logClickEvent).toHaveBeenCalledWith(analyticsActionCauseList.foldingShowMore, jasmine.objectContaining({
+          documentURL: result.clickUri,
+          documentTitle: result.title,
+          author: result.raw['author']
+        }), result, test.cmp.element);
+        done();
+      });
+    });
+
+    it('should call usage analytics when showing less results', () => {
+      const result = FakeResults.createFakeResultWithChildResult('foo', 3);
+      test = Mock.optionsResultComponentSetup<ResultFolding, IResultFoldingOptions>(ResultFolding, <IResultFoldingOptions>{
+      }, result);
+      result.moreResults = () => Promise.resolve(result.childResults);
+      test.cmp.showLessResults();
+      expect(test.env.usageAnalytics.logCustomEvent).toHaveBeenCalledWith(analyticsActionCauseList.foldingShowLess, jasmine.objectContaining({
+        documentURL: result.clickUri,
+        documentTitle: result.title,
+        author: result.raw['author']
+      }), test.cmp.element);
     });
 
     it('should call showMoreResults when its parent CardOverlay *first* triggers openCardOverlay', (done) => {
