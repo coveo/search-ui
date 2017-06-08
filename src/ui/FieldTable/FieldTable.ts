@@ -68,7 +68,7 @@ export class FieldTable extends Component {
 
     /**
      * If {@link FieldTable.options.allowMinimization} is `true`, specifies the caption to show on the **Minimize** link
-     * (the link that appears when the FieldTable is expanded).).addClass(
+     * (the link that appears when the FieldTable is expanded).
      *
      * Default value is `"Details"`.
      */

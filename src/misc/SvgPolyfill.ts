@@ -6,6 +6,6 @@ declare function svg4everybody(): void;
 
 export function SvgPolyfill(root: HTMLElement) {
   $$(root).on(InitializationEvents.afterComponentsInitialization, () => {
-    // svg4everybody();
+    svg4everybody();
   });
 }

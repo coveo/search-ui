@@ -144,7 +144,7 @@
   @include animation-name(coveo-spin);
   @include animation-timing-function(linear);
   @include animation-duration(1s);
-  @include animation-iteration-count(infinite);  
+  @include animation-iteration-count(infinite);
 }
 
 .coveo-facet-search-middle {
