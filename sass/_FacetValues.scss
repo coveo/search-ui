@@ -2,20 +2,9 @@
 @import "../bin/sass/sprites";
 
 @mixin facetValuesCheckboxes($size: 'normal') {
-  $icon-inactive: $checkbox-hook-inactive-group;
-  $icon-active: $checkbox-hook-active-group;
-  $icon-exclusion: $checkbox-exclusion-group;
   $pixel-size: '18px';
-  $pixel-bottom: '1px';
-  $pixel-left: '-1px';
-
   @if $size == 'smaller' {
-    $icon-inactive: $facet-search-checkbox-hook-inactive-group; 
-    $icon-active: $facet-search-checkbox-hook-active-group;
-    $icon-exclusion: $facet-checkbox-exclusion-group;
     $pixel-size: '13px';
-    $pixel-bottom: '3px';
-    $pixel-left: '-1px';
   }
 
   input[type="checkbox"] {
@@ -36,27 +25,27 @@
     top: 2px;
     > svg {
       position: relative;
-      bottom: #{$pixel-bottom};
-      left: #{$pixel-left};
       background: none;
     }
   }
 
   &.coveo-selected .coveo-facet-value-checkbox {
-    svg .coveo-hook-svg {
-      fill: $color-grey;
+    svg {
+      @include coveo-hook($size);
     }
   }
 
-  &:hover .coveo-facet-value-checkbox {
-    .coveo-hook-svg {
-      fill: $color-grey;
+  &:hover:not(.coveo-facet-search-button):not(.coveo-excluded):not(.coveo-facet-value-will-exclude) .coveo-facet-value-checkbox {
+    svg {
+      @include coveo-hook($size);
     }
   }
 
-  &:hover.coveo-excluded .coveo-facet-value-checkbox {
-    .coveo-exclusion-svg {
-      fill: none;
+  &:hover.coveo-excluded {
+    .coveo-facet-value-checkbox {
+      .coveo-hook-svg {
+        fill-opacity: 0;
+      }
     }
   }
 
@@ -66,43 +55,75 @@
 
   &:not(.coveo-facet-search-button) {
     .coveo-facet-value-checkbox:focus {
-      .coveo-hook-svg {
-        fill: $color-grey;
+      svg {
+        @include coveo-hook($size);
+        .coveo-exclusion-svg {
+          fill-opacity: 0;
+        }
       }
     }
   }
 
   &.coveo-facet-value-will-exclude .coveo-facet-value-checkbox,
-  &:hover.coveo-facet-value-will-exclude .coveo-facet-value-checkbox {
-    .coveo-exclusion-svg {
-      fill: $color-red;
-      & ~ .coveo-hook-svg {
-        fill: none;
-      }
+  &:hover.coveo-facet-value-will-exclude .coveo-facet-value-checkbox{
+    svg {
+      @include coveo-exclusion($size);
+    }
+  }
+
+  &.coveo-facet-value-will-exclude.coveo-selected .coveo-facet-value-checkbox,
+  &:hover.coveo-facet-value-will-exclude.coveo-selected .coveo-facet-value-checkbox {
+    .coveo-hook-svg {
+      fill-opacity: 0;
     }
   }
 
   &.coveo-excluded .coveo-facet-value-checkbox{
-    .coveo-exclusion-svg {
-      fill: $color-red;
+    svg {
+      @include coveo-exclusion($size);
+    }
+  }
+
+  &.coveo-facet-value-will-exclude:focus,
+  &.coveo-facet-value-will-exclude:hover, {
+    .coveo-facet-value-checkbox .coveo-hook-svg {
+      fill-opacity: 0;
     }
   }
 }
 
-/*.coveo-hook-svg {
-  width: 10px;
-  height: 8px;
+@mixin coveo-hook($size: 'normal') {
+  @if $size == 'smaller' {
+    width: 11px;
+    height: 9px;
+    bottom: 5px;
+    .coveo-hook-svg {
+      fill: black;
+    }
+  } @else {
+    width: 14px;
+    height: 12px;
+    bottom: 3px;
+    .coveo-hook-svg {
+      fill: $color-grey;
+    }
+  }
 }
 
-.coveo-exclusion-svg {
-  width: 6px;
-  height: 6px;
+@mixin coveo-exclusion($size: 'normal') {
+  @if $size == 'smaller' {
+    width: 7px;
+    height: 7px;
+    bottom: 6px;
+  } @else {
+    width: 10px;
+    height: 10px;
+    bottom: 4px;
+  }
+  .coveo-exclusion-svg {
+    fill: $color-red
+  }
 }
-
-.coveo-more-svg {
-  width: 11px;
-  height: 11px;
-} */
 
 .coveo-facet-values {
   list-style: none;
