@@ -22,6 +22,9 @@
     vertical-align: middle;
     @include retina-sprite($main-search-group);
     animation: none;
+    text-indent: 18px;
+    background-repeat: no-repeat;
+    display: inline-block;
   }
   &:hover > .coveo-icon {
     @include retina-sprite($main-search-active-group);
