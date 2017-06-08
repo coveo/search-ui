@@ -173,6 +173,13 @@
 .coveo-facet-value.coveo-facet-search-button {
   .coveo-facet-value-checkbox {
     bottom: 1px;
+    svg {
+      bottom: 4px;
+      left: 1px;
+      .coveo-more-svg {
+        fill: $color-light-grey;
+      }
+    }
   }
   .coveo-facet-value-checkbox > .coveo-facet-value-checkbox-svg, &:hover .coveo-facet-value-checkbox > .coveo-facet-value-checkbox-svg {
     color: $color-light-grey;
