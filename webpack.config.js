@@ -18,7 +18,11 @@ if (minimize) {
 
 plugins.push(new webpack.DefinePlugin({
   DISABLE_LOGGER: minimize
-}))
+}));
+
+plugins.push(new webpack.ProvidePlugin({
+  'Promise' : 'es6-promise/dist/es6-promise.auto'
+}));
 
 // SpritesmithPlugin takes care of outputting the stylesheets.
 

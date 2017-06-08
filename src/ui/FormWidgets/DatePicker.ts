@@ -105,7 +105,8 @@ export class DatePicker implements IFormWidget, IFormWidgetSettable {
         previousMonth: l('PreviousMonth'),
         nextMonth: l('NextMonth'),
         months: Globalize.culture().calendar.months.names,
-        weekdays: Globalize.culture().calendar.days.names
+        weekdays: Globalize.culture().calendar.days.names,
+        weekdaysShort: Globalize.culture().calendar.days.namesAbbr
       }
     });
   }

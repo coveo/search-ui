@@ -12,6 +12,7 @@ import { $$ } from '../../utils/Dom';
 import { l } from '../../strings/Strings';
 import * as _ from 'underscore';
 import { exportGlobally } from '../../GlobalExports';
+import { analyticsActionCauseList, IAnalyticsDocumentViewMeta } from '../Analytics/AnalyticsActionListMeta';
 
 import 'styling/_ResultFolding';
 
@@ -150,7 +151,8 @@ export class ResultFolding extends Component {
   }
 
   /**
-   *
+   * Show more results by fetching additional results from the index, which match the current folded conversation.
+   * This is the equivalent of clicking "Show all conversation".
    * @returns {Promise<IQueryResult[]>}
    */
   public showMoreResults() {
@@ -166,6 +168,7 @@ export class ResultFolding extends Component {
       .then((results?: IQueryResult[]) => {
         this.childResults = results;
         this.showingMoreResults = true;
+        this.usageAnalytics.logClickEvent<IAnalyticsDocumentViewMeta>(analyticsActionCauseList.foldingShowMore, this.getAnalyticsMetadata(), this.result, this.element);
         return this.displayThoseResults(results).then(() => {
           this.updateElementVisibility(results.length);
           return results;
@@ -182,9 +185,13 @@ export class ResultFolding extends Component {
     return ret;
   }
 
+  /**
+   * Show less results for a given conversation. This is the equivalent of clicking "Show less"
+   */
   public showLessResults() {
     this.cancelAnyPendingShowMore();
     this.showingMoreResults = false;
+    this.usageAnalytics.logCustomEvent<IAnalyticsDocumentViewMeta>(analyticsActionCauseList.foldingShowLess, this.getAnalyticsMetadata(), this.element);
     this.displayThoseResults(this.result.childResults);
     this.updateElementVisibility();
     this.scrollToResultElement();
@@ -325,6 +332,14 @@ export class ResultFolding extends Component {
         this.showMoreResults();
       }
     });
+  }
+
+  private getAnalyticsMetadata(): IAnalyticsDocumentViewMeta {
+    return {
+      documentURL: this.result.clickUri,
+      documentTitle: this.result.title,
+      author: Utils.getFieldValue(this.result, 'author'),
+    };
   }
 }
 
