@@ -15,6 +15,7 @@ export class FacetSliderQueryController {
   public graphGroupByQueriesIndex: number;
   private rangeValuesForGraphToUse: { start: any; end: any }[];
   public lastGroupByRequestIndex: number;
+  public groupByRequestForFullRange: number;
 
   constructor(public facet: FacetSlider) {
     this.facet.bind.onRootElement(QueryEvents.querySuccess, (args: IQuerySuccessEventArgs) => this.handleQuerySuccess(args));
@@ -32,7 +33,7 @@ export class FacetSliderQueryController {
   }
 
   private createBasicGroupByRequest() {
-    let groupByQuery: IGroupByRequest = {
+    const groupByQuery: IGroupByRequest = {
       field: <string>this.facet.options.field,
       completeFacetWithStandardValues: true,
       allowedValues: undefined
@@ -41,7 +42,7 @@ export class FacetSliderQueryController {
   }
 
   public computeOurFilterExpression(boundary = [this.facet.startOfSlider, this.facet.endOfSlider]) {
-    let builder = new ExpressionBuilder();
+    const builder = new ExpressionBuilder();
     if (boundary[0] != undefined && boundary[1] != undefined) {
       if (this.facet.options.excludeOuterBounds) {
         this.addFilterExpressionWithOuterBoundsExcluded(boundary[0], boundary[1], builder);
@@ -54,7 +55,7 @@ export class FacetSliderQueryController {
 
   private handleQuerySuccess(args: IQuerySuccessEventArgs) {
     if (!this.isAValidRangeResponse(args)) {
-      let logger = new Logger(this);
+      const logger = new Logger(this);
       logger.error(`Cannot instantiate FacetSlider for this field : ${this.facet.options.field}. It needs to be configured as a numerical field in the index`);
       logger.error(`Disabling the FacetSlider`, this.facet);
       this.facet.disable();
@@ -63,9 +64,9 @@ export class FacetSliderQueryController {
 
     if (this.facet.options && this.facet.options.graph && this.rangeValuesForGraphToUse == undefined) {
       this.rangeValuesForGraphToUse = [];
-      let rawValues = args.results.groupByResults[this.graphGroupByQueriesIndex].values;
+      const rawValues = args.results.groupByResults[this.graphGroupByQueriesIndex].values;
       _.each(rawValues, (rawValue) => {
-        let rawSplit = rawValue.value.split('..');
+        const rawSplit = rawValue.value.split('..');
         this.rangeValuesForGraphToUse.push({
           start: this.facet.options.dateField ? this.getISOFormat(rawSplit[0].replace('@', ' ')) : parseInt(rawSplit[0], 10),
           end: this.facet.options.dateField ? this.getISOFormat(rawSplit[1].replace('@', ' ')) : parseInt(rawSplit[1], 10)
@@ -76,7 +77,7 @@ export class FacetSliderQueryController {
 
   private isAValidRangeResponse(args: IQuerySuccessEventArgs) {
     if (this.lastGroupByRequestIndex != undefined && args.results.groupByResults[this.lastGroupByRequestIndex]) {
-      let firstValue = args.results.groupByResults[this.lastGroupByRequestIndex].values[0];
+      const firstValue = args.results.groupByResults[this.lastGroupByRequestIndex].values[0];
       if (firstValue && !QueryUtils.isRangeString(firstValue.value)) {
         return false;
       }
@@ -121,7 +122,7 @@ export class FacetSliderQueryController {
 
   private putGroupByForGraphIntoQueryBuilder(queryBuilder: QueryBuilder) {
     this.graphGroupByQueriesIndex = queryBuilder.groupByRequests.length;
-    let basicGroupByRequestForGraph = this.createBasicGroupByRequest();
+    const basicGroupByRequestForGraph = this.createBasicGroupByRequest();
 
     if (this.facet.isSimpleSliderConfig()) {
       basicGroupByRequestForGraph.rangeValues = this.createRangeValuesForGraphUsingStartAndEnd();
@@ -130,21 +131,9 @@ export class FacetSliderQueryController {
       basicGroupByRequestForGraph.generateAutomaticRanges = true;
     }
 
-    let filter = this.computeOurFilterExpression(this.facet.getSliderBoundaryForQuery());
-    if (filter != undefined) {
-      let queryOverrideObject = queryBuilder.computeCompleteExpressionPartsExcept(filter);
-      basicGroupByRequestForGraph.queryOverride = queryOverrideObject.basic;
-      basicGroupByRequestForGraph.advancedQueryOverride = queryOverrideObject.advanced;
-      basicGroupByRequestForGraph.constantQueryOverride = queryOverrideObject.constant;
-      if (basicGroupByRequestForGraph.queryOverride == undefined) {
-        basicGroupByRequestForGraph.queryOverride = this.facet.options.queryOverride || '@uri';
-      } else {
-        basicGroupByRequestForGraph.queryOverride += (this.facet.options.queryOverride ? ' ' + this.facet.options.queryOverride : '');
-      }
-    } else if (this.facet.options.queryOverride != null) {
-      let completeExpression = queryBuilder.computeCompleteExpression();
-      basicGroupByRequestForGraph.queryOverride = (completeExpression != null ? completeExpression + ' ' : '') + this.facet.options.queryOverride;
-    }
+    const filter = this.computeOurFilterExpression(this.facet.getSliderBoundaryForQuery());
+    this.processQueryOverride(filter, basicGroupByRequestForGraph, queryBuilder);
+
 
     basicGroupByRequestForGraph.sortCriteria = 'nosort';
     basicGroupByRequestForGraph.maximumNumberOfValues = this.facet.options.graph.steps;
@@ -170,18 +159,49 @@ export class FacetSliderQueryController {
       }];
     }
 
+    // A basic group by request that takes into account the current query
+    // This one will determine if the facet is empty for the current query
     const basicGroupByRequestForSlider = this.createBasicGroupByRequest();
     basicGroupByRequestForSlider.maximumNumberOfValues = maximumNumberOfValues;
-    basicGroupByRequestForSlider.queryOverride = this.facet.options.queryOverride || '@uri';
     basicGroupByRequestForSlider.sortCriteria = 'nosort';
     basicGroupByRequestForSlider.generateAutomaticRanges = !this.facet.isSimpleSliderConfig();
     basicGroupByRequestForSlider.rangeValues = rangeValues;
+    const filter = this.computeOurFilterExpression(this.facet.getSliderBoundaryForQuery());
+    this.processQueryOverride(filter, basicGroupByRequestForSlider, queryBuilder);
+
     queryBuilder.groupByRequests.push(basicGroupByRequestForSlider);
+
+    // We need a group by request for the "full range" that does not take into account the current query
+    // This will determine the full range of the query so that the X range of the slider is static
+    this.groupByRequestForFullRange = queryBuilder.groupByRequests.length;
+    const groupByRequestForFullRange = _.clone(basicGroupByRequestForSlider);
+    groupByRequestForFullRange.queryOverride = this.facet.options.queryOverride || '@uri';
+    delete groupByRequestForFullRange.constantQueryOverride;
+    delete groupByRequestForFullRange.advancedQueryOverride;
+
+    queryBuilder.groupByRequests.push(groupByRequestForFullRange);
+  }
+
+  private processQueryOverride(filter: string, groupByRequest: IGroupByRequest, queryBuilder: QueryBuilder) {
+    if (filter != undefined) {
+      const queryOverrideObject = queryBuilder.computeCompleteExpressionPartsExcept(filter);
+      groupByRequest.queryOverride = queryOverrideObject.basic;
+      groupByRequest.advancedQueryOverride = queryOverrideObject.advanced;
+      groupByRequest.constantQueryOverride = queryOverrideObject.constant;
+      if (groupByRequest.queryOverride == undefined) {
+        groupByRequest.queryOverride = this.facet.options.queryOverride || '@uri';
+      } else {
+        groupByRequest.queryOverride += (this.facet.options.queryOverride ? ' ' + this.facet.options.queryOverride : '');
+      }
+    } else if (this.facet.options.queryOverride != null) {
+      const completeExpression = queryBuilder.computeCompleteExpression();
+      groupByRequest.queryOverride = (completeExpression != null ? completeExpression + ' ' : '') + this.facet.options.queryOverride;
+    }
   }
 
   private createRangeValuesForGraphUsingStartAndEnd() {
     const { start, end } = this.formatStartAndEnd();
-    let oneRange: IRangeValue = {
+    const oneRange: IRangeValue = {
       start: start,
       end: end,
       endInclusive: true,
@@ -216,8 +236,8 @@ export class FacetSliderQueryController {
   }
 
   private buildRange(basicRangeRequest: IRangeValue) {
-    let start = this.facet.options.start;
-    let oneStep = (this.facet.options.end - this.facet.options.start) / this.facet.options.graph.steps;
+    const start = this.facet.options.start;
+    const oneStep = (this.facet.options.end - this.facet.options.start) / this.facet.options.graph.steps;
     return _.map(_.range(0, this.facet.options.graph.steps, 1), (step) => {
       let newStart = start + (step * oneStep);
       let newEnd = start + ((step + 1) * oneStep);
