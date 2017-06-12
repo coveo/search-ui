@@ -48,7 +48,7 @@ gulp.task('dev', ['setup', 'deleteCssFile'], (done)=> {
 gulp.task('deleteCssFile', (done) => {
   // Rely on dynamically loaded style.
   fs.unlink('./bin/css/CoveoFullSearchNewDesign.css', () => {
-    done();    
+    done();
   });
 })
 

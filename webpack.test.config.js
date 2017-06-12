@@ -83,7 +83,7 @@ module.exports = {
         loader: 'ts-loader'
       }]
     }, {
-      test: /\.scss/,
+      test: /\.(scss|svg)$/,
       use: [{ loader: 'null-loader' }]
     }]
   }

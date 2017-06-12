@@ -3,7 +3,7 @@
 
 .CoveoSearchButton {
   color: white;
-  border: 1px solid #bcc3ca;
+  border: 1px solid $color-light-grey;
   text-decoration: none;
   text-align: center;
   vertical-align: middle;
@@ -18,16 +18,19 @@
     display: inline-block;
   }
 
-  & > .coveo-icon {
+  & > .coveo-search-button {
     vertical-align: middle;
-    @include retina-sprite($main-search-group);
     animation: none;
     text-indent: 18px;
-    background-repeat: no-repeat;
     display: inline-block;
+
+    .coveo-search-button-svg {
+      width: 20px;
+      height: 20px;
+    }
   }
   &:hover > .coveo-icon {
-    @include retina-sprite($main-search-active-group);
+    // hover colors
   }
 }
 
