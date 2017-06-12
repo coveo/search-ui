@@ -22,8 +22,7 @@
     padding: 6px 16px;
     position: absolute;
     white-space: nowrap;
-    /*This equates to centering according to parent: 50% of width left - padding, and down 100% + 6px for the little arrow*/
-    transform: translateX(-50%) translateX(-11px) translateY(100%) translateY(-6px);
+    transform: translateX(-50%) translateY(100%) translateY(-31px);
 
     &:before {
       border: solid;
