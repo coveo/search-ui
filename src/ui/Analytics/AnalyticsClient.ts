@@ -95,7 +95,6 @@ export interface IAnalyticsClient {
   logClickEvent<TMeta>(actionCause: IAnalyticsActionCause, meta: TMeta, result: IQueryResult, element: HTMLElement): void;
 
   /**
-   /**
    * Logs a `Custom` usage analytics event on the service.
    *
    * You can use `Custom` events to create custom reports, or to track events which are neither queries (see

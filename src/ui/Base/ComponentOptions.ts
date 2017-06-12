@@ -438,10 +438,6 @@ export class ComponentOptions {
   }
 
   /**
-
-   */
-
-  /**
    * Builds a JSON option.
    *
    * Normally, this simply builds a stringified JSON.
@@ -533,10 +529,6 @@ export class ComponentOptions {
   static buildListOption<T>(optionArgs?: IComponentOptionsListOptionArgs): T[] | string[] {
     return ComponentOptions.buildOption<string[]>(ComponentOptionsType.LIST, ComponentOptions.loadListOption, optionArgs);
   }
-
-  /**
-
-   */
 
   /**
    * Builds an option that allow to select an HTMLElement.
