@@ -126,13 +126,22 @@ export function AdvancedSearchTest() {
 
       describe('on a new query event', () => {
         let updateQuerySpy: jasmine.Spy;
+        let resetSpy: jasmine.Spy;
         beforeEach(() => {
           updateQuerySpy = jasmine.createSpy('updateQuery');
+          resetSpy = jasmine.createSpy('reset');
           updateQuerySpy.and.callFake((queryBuilder: QueryBuilder) => {
             queryBuilder.advancedExpression.add('foo');
           });
           test.cmp.inputs[0].updateQuery = updateQuerySpy;
+          test.cmp.inputs[0].reset = resetSpy;
         });
+
+        afterEach(() => {
+          updateQuerySpy = null;
+          resetSpy = null;
+        });
+
         it('should call updateQuery on each input', () => {
           const simulation = Simulate.query(test.env);
           expect(updateQuerySpy).toHaveBeenCalled();
@@ -156,6 +165,11 @@ export function AdvancedSearchTest() {
           });
           const simulation = Simulate.query(test.env);
           expect(updateQuerySpy).toHaveBeenCalled();
+        });
+
+        it('should call reset on each inputs when the breadcrumb is cleared', () => {
+          $$(test.env.root).trigger(BreadcrumbEvents.clearBreadcrumb);
+          expect(resetSpy).toHaveBeenCalled();
         });
       });
     });
