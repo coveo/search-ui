@@ -12,9 +12,9 @@ import { l } from '../../strings/Strings';
 import * as _ from 'underscore';
 
 /**
- * Declare a type for options that should contain a field to be used in a query.
+ * The `IFieldOption` interface declares a type for options that should contain a field to be used in a query.
  *
- * The only constraint this type has over a basic string is that it should start with "@".
+ * The only constraint this type has over a basic string is that it should start with the `@` character.
  */
 export interface IFieldOption extends String { };
 
@@ -23,13 +23,16 @@ export interface IComponentOptionsLoadOption<T> {
 }
 
 /**
- * Specify a postProcess function that allows an option to further modify itself once all other options have loaded.
+ * The `IComponentOptionsPostProcessing<T>` interface describes a post process function that should allow a component
+ * option to further modify its own value once all other options of that component have been built.
  */
 export interface IComponentOptionsPostProcessing<T> {
+
   /**
-   * Specify a postProcess function that allows an option to further modify itself once all other options have loaded.
-   * @param value
-   * @param options
+   * Specifies a function that should allow a component option to further modify its own value once all other options
+   * of that component have been built.
+   * @param value The value originally specified for the option.
+   * @param options The options of the component.
    */
   (value: T, options: any): T;
 }
@@ -40,69 +43,97 @@ export interface IComponentOptionsOption<T> extends IComponentOptions<T> {
 }
 
 /**
- * This represent the possible parameters that can be used to configure an option
+ * The `IComponentOptions` interface describes the available parameters when building any kind of component
+ * option.
  */
 export interface IComponentOptions<T> {
+
   /**
-   * Specify the default value that should be given to the option if it is not specified.
+   * Specifies the value the option must take when no other value is explicitly specified.
    */
   defaultValue?: T;
+
   /**
-   * Specify a function which should return the default value that should be given to the option if it is not specified.
+   * Specifies a function that should return the value the option must take when no other value is explicitly specified.
    *
    * @param element The HTMLElement on which the current option is being parsed.
+   * @return The default value of the option.
    */
   defaultFunction?: (element: HTMLElement) => T;
+
   /**
-   * Specify if the option is "required" so that the component can do it's job properly.
+   * Specifies whether it is necessary to explicitly specify a value for the option in order for the component to
+   * function properly.
    *
-   * For example, the {@link Facet.options.field} is required, as a facet with no field cannot function.
+   * **Example:**
+   *
+   * > The [`field`]{@link Facet.options.field} option of the `Facet` component is required, since a facet cannot
+   * > function properly without a field.
    */
   required?: boolean;
+
   /**
-   * Specify a function which can be used to further modify the value for a given option after all other options have been loaded.
+   * Specifies a function that should allow a component option to further modify its own value once all other options
+   * of that component have been built.
    *
-   * For example, the {@link Facet.options.id} will use this to set the default ID with the same value as the {@link Facet.options.field}.
+   * **Example:**
+   *
+   * > By default, the [`id`]{@link Facet.options.id} option of the `Facet` component uses a post processing function to
+   * > set its value to that of the [`field`]{@link Facet.options.field} option.
    */
   postProcessing?: IComponentOptionsPostProcessing<T>;
+
   /**
-   * Allow to specify a different markup name for an option than the default value.
+   * Specifies a different markup name to use for an option, rather than the standard name (i.e., `data-` followed by
+   * the hyphened name of the option).
    *
-   * Using this is extremely rare, and should be used only for legacy reasons.
+   * **Note:**
+   *
+   * > This should only be used for backward compatibility reasons.
    */
   attrName?: string;
+
   /**
-   * Allow to specify an alias for an option name.
+   * Specifies an alias, or array of aliases, which can be used instead of the actual option name.
    *
-   * This can be useful to modify the name of an option without introducing a breaking change.
+   * **Note:**
+   *
+   * > This can be useful to modify an option name without introducing a breaking change.
    */
   alias?: string | string[];
+
   /**
-   * Specify a section name inside which the option should appear in the interface editor.
+   * Specifies a section name inside which the option should appear in the Coveo JavaScript Interface Editor.
    */
   section?: string;
+
   /**
-   * Specify that an option depend on another option being enabled.
+   * Specifies the name of a boolean component option which must be `true` in order for this option to function
+   * properly.
    *
-   * Mostly useful for the interface editor.
+   * **Note:**
+   *
+   * > This is mostly useful for the Coveo JavaScript Interface Editor.
    */
   depend?: string;
   priority?: number;
+
   /**
-   * Specify that an option is deprecated.
+   * Specifies a message that labels the option as deprecated. This message appears in the console upon initialization
+   * if the deprecated option is used in the page. Consequently, this message should explain as clearly as possible why
+   * the option is deprecated, and what now replaces it.
    *
-   * This string will be displayed in the console on initialization.
+   * **Note:**
    *
-   * The message should be as clear as possible as to why this option is deprecated, and how it can be replaced.
-   *
-   * This also mean that the option will not appear in the interface editor.
+   * > Deprecated options do not appear in the Coveo JavaScript Interface Editor.
    */
   deprecated?: string;
+
   /**
-   * Specify a function which can be used to verify the validity of the option.
+   * Specifies a function that should indicate whether the option value is valid.
    *
-   * The function should return true if the option is valid, false otherwise.
-   * @param value
+   * @param value The option value to validate.
+   * @returns `true` if the option value is valid; `false` otherwise.
    */
   validator?: (value: T) => boolean;
 }
@@ -111,19 +142,29 @@ export interface IComponentOptionsNumberOption extends IComponentOptionsOption<n
 }
 
 /**
- * This represent the possible parameters that can be used to configure a number option.
+ * The `IComponentOptionsNumberOptionArgs` interface describes the available parameters when building a
+ * [number option]{@link ComponentOptions.buildNumberOption).
  */
 export interface IComponentOptionsNumberOptionArgs extends IComponentOptions<number> {
+
   /**
-   * The minimum value that can be set for this number.
+   * Specifies the exclusive minimum value the option can take.
+   *
+   * Configuring the option using a value strictly less than this minimum displays a warning message in the console and
+   * automatically sets the option to its minimum value.
    */
   min?: number;
+
   /**
-   * The maximum value that can be set for this number.
+   * Specifies the exclusive maximum value the option can take.
+   *
+   * Configuring the option using a value strictly greater than this maximum displays a warning message in the console
+   * and automatically sets the option to its maximum value.
    */
   max?: number;
+
   /**
-   * Specify if the value is a floating point number.
+   * Specifies whether the value of this option is a floating point number.
    */
   float?: boolean;
 }
@@ -132,15 +173,20 @@ export interface IComponentOptionsListOption extends IComponentOptionsOption<str
 }
 
 /**
- * The represent the possible parameters that can be used to configure a list option.
+ * The `IComponentOptionsListOptionArgs` interface describes the available parameters when building a
+ * [list option]{@link ComponentOptions.buildListOption).
  */
 export interface IComponentOptionsListOptionArgs extends IComponentOptions<string[]> {
+
   /**
-   * The separator that should be used for this list. By default, it will be `,`.
+   * Specifies the regular expression to use to separate the elements of the list option.
+   *
+   * Default value is a regular expression that inserts a comma character (`,`) between each word.
    */
   separator?: RegExp;
+
   /**
-   * The possible list of values for this option.
+   * Specifies the possible values the list option elements can take.
    */
   values?: any;
 }
@@ -160,9 +206,37 @@ export interface IComponentOptionsChildHtmlElementOptionArgs extends IComponentO
 
 export interface IComponentOptionsTemplateOption extends IComponentOptionsOption<Template>, IComponentOptionsTemplateOptionArgs {
 }
+
+/**
+ * The `IComponentOptionsTemplateOptionArgs` interface describes the available parameters when building a
+ * [template option]{@link ComponentOptions.buildTemplateOption}.
+ */
 export interface IComponentOptionsTemplateOptionArgs extends IComponentOptions<Template> {
+
+  /**
+   * Specifies the CSS selector the template must match. The first matching element in the page is used as the template
+   * option value, if this element is a valid template.
+   *
+   * If specified, this parameter takes precedence over [`idAttr`]{@link IComponentOptionsTemplateOptionArgs.idAttr}.
+   */
   selectorAttr?: string;
+
+  /**
+   * Specifies the CSS selector the templates must match. The list of all matching, valid elements in the page is used
+   * as the template option value.
+   *
+   * Default value is `.`, followed by the hyphened name of the template option being configured (e.g.,
+   * `.content-template`, `.result-template`, `.sub-result-template`, `.preview-template`, etc.).
+   */
   childSelector?: string;
+
+  /**
+   * Specifies the HTML `id` attribute the template must match. The corresponding template must be registered in
+   * the [`TemplateCache`]{@link TemplateCache} to be usable as the template option value.
+   *
+   * If specified, this parameter takes precedence over
+   * [`childSelector`]{@link IComponentOptionsTemplateOptionArgs.childSelector}.
+   */
   idAttr?: string;
 }
 
@@ -170,7 +244,8 @@ export interface IComponentOptionsFieldOption extends IComponentOptionsOption<st
 }
 
 /**
- * This represent the possible parameters that can be used to configure a field option.
+ * The `IComponentOptionsFieldOptionArgs` interface describes the available parameters when building a
+ * [field option]{@link ComponentOptions.buildFieldOption}.
  */
 export interface IComponentOptionsFieldOptionArgs extends IComponentOptions<string> {
   groupByField?: boolean;
@@ -184,7 +259,8 @@ export interface IComponentOptionsFieldsOption extends IComponentOptionsOption<s
 }
 
 /**
- * This represent the possible parameters that can be used to configure a list of fields option.
+ * The `IComponentOptionsFieldsOptionArgs` interface describes the available parameters when building a
+ * [fields option]{@link ComponentOptions.buildFieldsOption}.
  */
 export interface IComponentOptionsFieldsOptionArgs extends IComponentOptions<string[]> {
   groupByField?: boolean;
@@ -230,158 +306,244 @@ const fieldsSeperator = /\s*,\s*/;
 const localizer = /([a-zA-Z\-]+)\s*:\s*(([^,]|,\s*(?!([a-zA-Z\-]+)\s*:))+)/g;
 
 /**
- * This static class is used to initialize component options.
+ * The `ComponentOptions` static class contains methods allowing the Coveo JavaScript Search Framework to initialize
+ * component options.
  *
- * Typically, each {@link Component} that exposes a set of options will contains a static `options` property,
+ * Typically, each [`Component`]{@link Component} that exposes a set of options contains a static `options` property.
  *
- * This property will "build" the options based on their type.
+ * This property "builds" each option using the `ComponentOptions` method corresponding to its type (e.g.,
+ * [`buildBooleanOption`]{@link ComponentOptions.buildBooleanOption},
+ * [`buildFieldOption`]{@link ComponentOptions.buildFieldOption},
+ * [`buildStringOption`]{@link ComponentOptions.buildStringOption}, etc.)
  */
 export class ComponentOptions {
+
   /**
-   * Build a boolean option.
+   * Builds a boolean option.
    *
-   * A boolean option can be "true" or "false" in the markup.
+   * **Markup Examples:**
    *
-   * `data-foo="true"` or `data-foo="false"`.
-   * @param optionArgs
-   * @returns {boolean}
+   * > `data-foo="true"`
+   *
+   * > `data-foo="false"`
+   *
+   * @param optionArgs The arguments to apply when building the option.
+   * @returns {boolean} The resulting option value.
    */
   static buildBooleanOption(optionArgs?: IComponentOptions<boolean>): boolean {
     return ComponentOptions.buildOption<boolean>(ComponentOptionsType.BOOLEAN, ComponentOptions.loadBooleanOption, optionArgs);
   }
 
   /**
-   * Build a number option.
+   * Builds a number option.
    *
    * A number option can be an integer or a float in the markup.
    *
-   * `data-foo="1"` or `data-foo="1.5"`.
+   * **Markup Examples:**
+   *
+   * > `data-foo="3"`
+   *
+   * > `data-foo="1.5"`
+   *
+   * @param optionArgs The arguments to apply when building the option.
+   * @returns {number} The resulting option value.
    */
   static buildNumberOption(optionArgs?: IComponentOptionsNumberOptionArgs): number {
     return ComponentOptions.buildOption<number>(ComponentOptionsType.NUMBER, ComponentOptions.loadNumberOption, optionArgs);
   }
 
   /**
-   * Build a string option.
+   * Builds a string option.
    *
    * A string option can be any arbitrary string in the markup.
    *
-   * `data-foo="bar"`.
+   * **Markup Example:**
+   *
+   * > `data-foo="bar"`
+   *
+   * @param optionArgs The arguments to apply when building the option.
+   * @returns {string} The resulting option value.
    */
   static buildStringOption(optionArgs?: IComponentOptions<string>): string {
     return ComponentOptions.buildOption<string>(ComponentOptionsType.STRING, ComponentOptions.loadStringOption, optionArgs);
   }
 
   /**
-   * Build an icon option.
+   * Builds an icon option.
    *
-   * Normally, this only means that it will build a string that matches a CSS class for an icon.
+   * Normally, this simply builds a string that matches a CSS class for an icon.
    *
-   * In the markup, this has no advantage over a plain string. This is mostly useful for the interface editor.
+   * **Note:**
    *
-   * `data-foo="coveo-sprites-user"` or `data-foo="coveo-sprites-database"`.
+   * > In the markup, this offers no advantage over using a plain string. This is mostly useful for the Coveo JavaScript
+   * > Interface Editor.
+   *
+   * **Markup Examples:**
+   *
+   * > `data-foo="coveo-sprites-user"`
+   *
+   * > `data-foo="coveo-sprites-database"`
+   *
+   * @param optionArgs The arguments to apply when building the option.
+   * @returns {string} The resulting option value.
    */
   static buildIconOption(optionArgs?: IComponentOptions<string>): string {
     return ComponentOptions.buildOption<string>(ComponentOptionsType.ICON, ComponentOptions.loadStringOption, optionArgs);
   }
 
   /**
-   * Build a color option.
+   * Builds a color option.
    *
-   * Normally, this only means that it will build a string that matches a CSS color.
+   * Normally, this simply builds a string that matches a CSS color.
    *
-   * In the markup, this has no advantage over a plain string. This is mostly useful for the interface editor.
+   * **Note:**
    *
-   * `data-foo="coveo-sprites-user"` or `data-foo="coveo-sprites-database"`.
+   * > In the markup, this offers no advantage over using a plain string. This is mostly useful for the Coveo JavaScript
+   * > Interface Editor.
+   *
+   * **Markup Examples:**
+   *
+   * > `data-foo="coveo-sprites-user"`
+   *
+   * > `data-foo="coveo-sprites-database"`
+   *
+   * @param optionArgs The arguments to apply when building the option.
+   * @returns {string} The resulting option value.
    */
   static buildColorOption(optionArgs?: IComponentOptions<string>): string {
     return ComponentOptions.buildOption<string>(ComponentOptionsType.COLOR, ComponentOptions.loadStringOption, optionArgs);
   }
 
   /**
-   * Build a helper option.
+   * Builds a helper option.
    *
-   * Normally, this only means that it will build a string that matches the name of a template helper.
+   * Normally, this simply builds a string that matches the name of a template helper.
    *
-   * In the markup, this has no advantage over a plain string. This is mostly useful for the interface editor.
+   * **Note:**
    *
-   * `data-foo="date"` or `data-foo="dateTime"`.
+   * > In the markup, this offers no advantage over using a plain string. This is mostly useful for the Coveo JavaScript
+   * > Interface Editor.
+   *
+   * **Markup Examples:**
+   *
+   * > `data-foo="date"`
+   *
+   * > `data-foo="dateTime"`
+   *
+   * @param optionArgs The arguments to apply when building the option.
+   * @returns {string} The resulting option value.
    */
   static buildHelperOption(optionArgs?: IComponentOptions<string>): string {
     return ComponentOptions.buildOption<string>(ComponentOptionsType.HELPER, ComponentOptions.loadStringOption, optionArgs);
   }
 
   /**
-   * Build a JSON option.
+   * Builds a JSON option.
    *
-   * Normally, this only means that it will build a stringified JSON.
+   * Normally, this simply builds a stringified JSON.
    *
-   * In the markup, this has no advantage over a plain string. This is mostly useful for the interface editor.
+   * **Note:**
    *
-   * `data-foo='{"bar" : "baz"}'`.
+   * > In the markup, this offers no advantage over using a plain string. This is mostly useful for the Coveo JavaScript
+   * > Interface Editor.
+   *
+   * **Markup Example:**
+   *
+   * > `data-foo='{"bar" : "baz"}'`
+   *
+   * @param optionArgs The arguments to apply when building the option.
+   * @returns {string} The resulting option value.
    */
   static buildJsonOption(optionArgs?: IComponentOptions<string>): string {
     return ComponentOptions.buildOption<string>(ComponentOptionsType.JSON, ComponentOptions.loadStringOption, optionArgs);
   }
 
   /**
-   * Build a localized string option.
+   * Builds a localized string option.
    *
    * A localized string option can be any arbitrary string.
    *
-   * The framework, when parsing the value, will try to load the localization for that word if it is available.
+   * When parsing the value, the Coveo JavaScript Search Framework tries to load the localization for that string, if it
+   * is available.
    *
-   * If it is not available, it will return the non-localized option.
+   * If it is not available, it returns the non-localized value.
    *
    * This should be used for options that will be rendered directly to the end users.
    *
-   * `data-foo="bar"`.
+   * **Markup Example:**
+   *
+   * > `data-foo="bar"`
+   *
+   * @param optionArgs The arguments to apply when building the option.
+   * @returns {string} The resulting option value.
    */
   static buildLocalizedStringOption(optionArgs?: IComponentOptions<string>): string {
     return ComponentOptions.buildOption<string>(ComponentOptionsType.LOCALIZED_STRING, ComponentOptions.loadLocalizedStringOption, optionArgs);
   }
 
   /**
-   * Build a field option.
+   * Builds a field option.
    *
-   * A field option will validate that the field has a valid name. This means that the string has to start with @.
+   * A field option validates whether the field has a valid name. This means that the string must start with the `@`
+   * character.
    *
-   * `data-foo="@bar"`.
+   * **Markup Example:**
+   *
+   * > `data-foo="@bar"`
+   *
+   * @param optionArgs The arguments to apply when building the option.
+   * @returns {string} The resulting option value.
    */
   static buildFieldOption(optionArgs?: IComponentOptionsFieldOptionArgs): IFieldOption {
     return ComponentOptions.buildOption<string>(ComponentOptionsType.FIELD, ComponentOptions.loadFieldOption, optionArgs);
   }
 
   /**
-   * Build an array of field option.
+   * Builds an array of fields option.
    *
    * As with all options that expect an array, you should use commas to delimit the different values.
    *
-   * `data-foo="@bar,@baz"`.
+   * **Markup Example:**
+   *
+   * > `data-foo="@bar,@baz"`
+   *
+   * @param optionArgs The arguments to apply when building the option.
+   * @returns {string[]} The resulting option value.
    */
   static buildFieldsOption(optionArgs?: IComponentOptionsFieldsOptionArgs): IFieldOption[] {
     return ComponentOptions.buildOption<string[]>(ComponentOptionsType.FIELDS, ComponentOptions.loadFieldsOption, optionArgs);
   }
 
   /**
-   * Build an array of string option.
+   * Builds an array of strings option.
    *
    * As with all options that expect an array, you should use commas to delimit the different values.
    *
-   * `data-foo="bar,baz"`.
+   * **Markup Example:**
+   *
+   * > `data-foo="bar,baz"`
+   *
+   * @param optionArgs The arguments to apply when building the option.
+   * @returns {string[]} The resulting option value.
    */
   static buildListOption<T>(optionArgs?: IComponentOptionsListOptionArgs): T[] | string[] {
     return ComponentOptions.buildOption<string[]>(ComponentOptionsType.LIST, ComponentOptions.loadListOption, optionArgs);
   }
 
   /**
-   * Build an option that allow to select an HTMLElement.
+   * Builds an option that allow to select an HTMLElement.
    *
-   * The option accept a CSS selector that will allow to find the required HTMLElement.
+   * The option accepts a CSS selector matching the required HTMLElement. This selector can either be a class, or an ID
+   * selector.
    *
-   * It can be a class selector or an ID selector.
+   * **Markup Examples:**
    *
-   * `data-foo-selector=".bar" or data-foo-selector="#bar"`.
+   * > `data-foo-selector=".bar"`
+   *
+   * > `data-foo-selector="#bar"`
+   *
+   * @param optionArgs The arguments to apply when building the option.
+   * @returns {HTMLElement} The resulting option value.
    */
   static buildSelectorOption(optionArgs?: IComponentOptions<HTMLElement>): HTMLElement {
     return ComponentOptions.buildOption<HTMLElement>(ComponentOptionsType.SELECTOR, ComponentOptions.loadSelectorOption, optionArgs);
@@ -391,6 +553,24 @@ export class ComponentOptions {
     return ComponentOptions.buildOption<HTMLElement>(ComponentOptionsType.CHILD_HTML_ELEMENT, ComponentOptions.loadChildHtmlElementOption, optionArgs);
   }
 
+  /**
+   * Builds a template option.
+   *
+   * The option accepts a CSS selector matching a valid template. This selector can either be a class, or an ID
+   * selector.
+   *
+   * When building a template option using an ID selector, the matching template must be registered in the
+   * [`TemplateCache`]{@link TemplateCache}, however.
+   *
+   * **Markup Examples:**
+   *
+   * > `data-foo-id="#bar"`
+   *
+   * > `data-foo-selector=".bar"`
+   *
+   * @param optionArgs The arguments to apply when building the option.
+   * @returns {Template} The resulting option value.
+   */
   static buildTemplateOption(optionArgs?: IComponentOptionsTemplateOptionArgs): Template {
     return ComponentOptions.buildOption<Template>(ComponentOptionsType.TEMPLATE, ComponentOptions.loadTemplateOption, optionArgs);
   }
@@ -479,12 +659,14 @@ export class ComponentOptions {
   }
 
   /**
-   * The main function that will load and parse the options for the current given element.
+   * Loads and parses the options of the current element.
    *
-   * Every component will call this function in their constructor.
-   * @param element The element on which the options should be parsed
-   * @param component The component class for which the options should be parsed. For example : Searchbox, Facet, etc.
-   * @param values The optional options which should be merged with the options set in the markup.
+   * Each component calls this method in its constructor.
+   *
+   * @param element The element whose markup options the method should load and parse.
+   * @param component The class of the component whose options the method should load and parse (e.g., `Searchbox`,
+   * `Facet`, etc.)
+   * @param values The additional options which the method should merge with the specified markup option values.
    */
   static initComponentOptions(element: HTMLElement, component: any, values?: any) {
     return ComponentOptions.initOptions(element, component.options, values, component.ID);
@@ -507,7 +689,7 @@ export class ComponentOptions {
       if (loadFromAttribute != null) {
         value = loadFromAttribute(element, name, optionDefinition);
         if (value && optionDefinition.deprecated) {
-          logger.warn(componentID + '.' + name + ' : ' + optionDefinition.deprecated);
+          logger.warn(componentID + '.' + name + ': ' + optionDefinition.deprecated);
         }
       }
 
@@ -532,9 +714,9 @@ export class ComponentOptions {
         if (optionDefinition.validator) {
           let isValid = optionDefinition.validator(value);
           if (!isValid) {
-            logger.warn(`${componentID} .${name} has invalid value :  ${value}`);
+            logger.warn(`${componentID} .${name} has invalid value: ${value}`);
             if (optionDefinition.required) {
-              logger.error(`${componentID} .${name} is required and has an invalid value : ${value}. ***THIS COMPONENT WILL NOT WORK***`);
+              logger.error(`${componentID} .${name} is required and has an invalid value: ${value}. ***THIS COMPONENT WILL NOT WORK***`);
             }
             delete values[name];
             continue;
@@ -611,11 +793,11 @@ export class ComponentOptions {
     }
     let numberValue = option.float === true ? Utils.parseFloatIfNotUndefined(attributeValue) : Utils.parseIntIfNotUndefined(attributeValue);
     if (option.min != null && option.min > numberValue) {
-      new Logger(element).info(`Value for option ${name} is less than the possible minimum (Value is ${numberValue}, minimum is ${option.min}). It has been forced to it\'s minimum value.`, option);
+      new Logger(element).info(`Value for option ${name} is less than the possible minimum (Value is ${numberValue}, minimum is ${option.min}). It has been forced to its minimum value.`, option);
       numberValue = option.min;
     }
     if (option.max != null && option.max < numberValue) {
-      new Logger(element).info(`Value for option ${name} is higher than the possible maximum (Value is ${numberValue}, maximum is ${option.max}). It has been forced to it\'s maximum value.`, option);
+      new Logger(element).info(`Value for option ${name} is higher than the possible maximum (Value is ${numberValue}, maximum is ${option.max}). It has been forced to its maximum value.`, option);
       numberValue = option.max;
     }
     return numberValue;
@@ -765,7 +947,7 @@ export class ComponentOptions {
   static createResultTemplateFromElement(element: HTMLElement): Template {
     Assert.exists(element);
     let type = element.getAttribute('type');
-    let mimeTypes = 'You must specify the type of template. Valid values are :' +
+    let mimeTypes = 'You must specify the type of template. Valid values are:' +
       ' ' + UnderscoreTemplate.mimeTypes.toString() +
       ' ' + HtmlTemplate.mimeTypes.toString();
     Assert.check(Utils.isNonEmptyString(type), mimeTypes);
