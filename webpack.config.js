@@ -6,7 +6,7 @@ const path = require('path');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const production = process.env.NODE_ENV === 'production';
 const globalizePath = __dirname + '/lib/globalize/globalize.min.js';
-const svg4everybodyPath = __dirname + '/node_modules/svg4everybody/dist/svg4everybody';
+const svg4everybodyPath = __dirname + '/node_modules/svg4everybody/dist/svg4everybody.js';
 
 let bail;
 let plugins = [];
@@ -173,6 +173,11 @@ module.exports = {
       test: /\.svg$/,
       use: [{
         loader: 'svg-inline-loader'
+      }]
+    }, { 
+      test: require.resolve(svg4everybodyPath),
+      use: [{
+        loader: 'imports-loader?this=>window'
       }]
     },
     {
