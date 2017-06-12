@@ -535,5 +535,13 @@ export var analyticsActionCauseList = {
   resultsLayoutChange: <IAnalyticsActionCause>{
     name: 'changeResultsLayout',
     type: 'resultsLayout'
+  },
+  foldingShowMore: <IAnalyticsActionCause>{
+    name: 'showMoreFoldedResults',
+    type: 'folding'
+  },
+  foldingShowLess: <IAnalyticsActionCause>{
+    name: 'showLessFoldedResults',
+    type: 'folding'
   }
 };
