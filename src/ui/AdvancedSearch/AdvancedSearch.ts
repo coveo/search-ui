@@ -171,7 +171,6 @@ export class AdvancedSearch extends Component {
 
   private handleClearBreadcrumb() {
     this.reset();
-    this.executeAdvancedSearch();
   }
 
   private handlePopulateMenu(args: ISettingsPopulateMenuArgs) {
