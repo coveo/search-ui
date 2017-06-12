@@ -9171,6 +9171,7 @@ $retina-groups: ($and-group, $arrow-down-group, $arrow-up-group, $attach-group, 
 // <i class="icon icon-home"></i>
 @mixin sprite-width($sprite) {
   width: nth($sprite, 5);
+  text-indent: nth($sprite, 5);
 }
 
 @mixin sprite-height($sprite) {
@@ -9214,6 +9215,9 @@ $retina-groups: ($and-group, $arrow-down-group, $arrow-up-group, $attach-group, 
 @mixin retina-sprite($retina-group) {
   $normal-sprite: nth($retina-group, 2);
   $retina-sprite: nth($retina-group, 3);
+  display: inline-block;
+  overflow: hidden;
+  background: no-repeat;
   @include sprite($normal-sprite);
 
   @media (-webkit-min-device-pixel-ratio: 2),
