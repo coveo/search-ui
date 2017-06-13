@@ -10,6 +10,9 @@ gulp.task('legacy', ()=> {
       gulp.src('./legacy/prebuilt/css/**/*')
           .pipe(gulp.dest('./bin/css')),
 
+      gulp.src('./legacy/prebuilt/sass/**/*')
+          .pipe(gulp.dest('./bin/sass')),
+
       gulp.src('./legacy/prebuilt/image/**/*')
           .pipe(gulp.dest('./bin/image')),
 

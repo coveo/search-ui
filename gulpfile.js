@@ -5,7 +5,7 @@ const runsequence = require('run-sequence');
 
 requireDir('./gulpTasks');
 
-gulp.task('default', ['build', 'buildLegacy']);
+gulp.task('default', ['buildLegacy', 'build']);
 
 gulp.task('build', ['linkGitHooks', 'setNodeProdEnv'], (done) => {
   runsequence('clean', ['fileTypes', 'spritesLists', 'strings', 'setup', 'templates'], 'prettify', 'src', done);
