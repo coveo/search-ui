@@ -42,11 +42,15 @@
   margin-bottom: 12px;
 }
 
-.coveo-placeholder-result {
-  margin: 20px 0px 20px 20px;
+.coveo-placeholder-result, .coveo-result-frame.coveo-placeholder-result {
+    margin: 20px 0px 20px 20px;
 }
 
 .CoveoSearchInterface.coveo-during-initialization {
+  
+  .coveo-result-frame.coveo-placeholder-result {
+    margin: 20px 0px 20px 20px;
+  }
   .CoveoBreadcrumb {
     display: none;
   }
@@ -77,7 +81,7 @@
   @include placeholderLoading();
 }
 
-.CoveoFacet.coveo-during-initialization {
+.CoveoFacet.coveo-during-initialization, .CoveoFacetSlider.coveo-during-initialization, .CoveoFacetRange.coveo-during-initialization, .CoveoHierarchicalFacet.coveo-during-initialization {
   display: none;
 
   &.coveo-with-placeholder {
@@ -117,6 +121,7 @@
     .coveo-placeholder-text {
       flex-grow: 1;
       align-self: center;
+      margin-bottom: 0;
     }
   }
 }
