@@ -7,6 +7,7 @@ import { IAnalyticsNoMeta, analyticsActionCauseList } from '../Analytics/Analyti
 import { Initialization } from '../Base/Initialization';
 import { exportGlobally } from '../../GlobalExports';
 import { SVGIcons } from '../../utils/SVGIcons';
+import { SVGDom } from '../../utils/SVGDom';
 
 export interface ISearchButtonOptions {
 }
@@ -44,7 +45,7 @@ export class SearchButton extends Component {
     if (Utils.trim($$(this.element).text()) == '') {
       const svgContainer = $$('span', { className: 'coveo-search-button' }).el;
       svgContainer.innerHTML = SVGIcons.search;
-      SVGIcons.addClassToSVGInContainer(svgContainer, 'coveo-search-button-svg');
+      SVGDom.addClassToSVGInContainer(svgContainer, 'coveo-search-button-svg');
       element.appendChild(svgContainer);
     }
   }

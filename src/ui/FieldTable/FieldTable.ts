@@ -11,6 +11,7 @@ import * as _ from 'underscore';
 import { exportGlobally } from '../../GlobalExports';
 import 'styling/_FieldTable';
 import { SVGIcons } from '../../utils/SVGIcons';
+import { SVGDom } from '../../utils/SVGDom';
 
 export interface IFieldTableOptions {
   allowMinimization: boolean;
@@ -151,8 +152,8 @@ export class FieldTable extends Component {
     if (this.isTogglable()) {
       this.isExpanded = true;
       this.toggleCaption.textContent = this.options.expandedTitle;
-      SVGIcons.addClassToSVGInContainer(this.toggleButtonSVGContainer, 'coveo-opened');
-      SVGIcons.addClassToSVGInContainer(this.toggleButtonInsideTable, 'coveo-opened');
+      SVGDom.addClassToSVGInContainer(this.toggleButtonSVGContainer, 'coveo-opened');
+      SVGDom.addClassToSVGInContainer(this.toggleButtonInsideTable, 'coveo-opened');
       anim ? this.slideToggle(true) : this.slideToggle(true, false);
     }
   }
@@ -165,8 +166,8 @@ export class FieldTable extends Component {
     if (this.isTogglable()) {
       this.isExpanded = false;
       this.toggleCaption.textContent = this.options.minimizedTitle;
-      SVGIcons.removeClassFromSVGInContainer(this.toggleButtonSVGContainer, 'coveo-opened');
-      SVGIcons.removeClassFromSVGInContainer(this.toggleButtonInsideTable, 'coveo-opened');
+      SVGDom.removeClassFromSVGInContainer(this.toggleButtonSVGContainer, 'coveo-opened');
+      SVGDom.removeClassFromSVGInContainer(this.toggleButtonInsideTable, 'coveo-opened');
       anim ? this.slideToggle(false) : this.slideToggle(false, false);
     }
   }
@@ -194,13 +195,13 @@ export class FieldTable extends Component {
 
     this.toggleButton = $$('div', { className: 'coveo-field-table-toggle coveo-field-table-toggle-down' }).el;
     this.toggleButtonSVGContainer = $$('span', null, SVGIcons.arrowDown).el;
-    SVGIcons.addClassToSVGInContainer(this.toggleButtonSVGContainer, 'coveo-field-table-toggle-down-svg');
+    SVGDom.addClassToSVGInContainer(this.toggleButtonSVGContainer, 'coveo-field-table-toggle-down-svg');
     this.toggleButton.appendChild(this.toggleCaption);
     this.toggleButton.appendChild(this.toggleButtonSVGContainer);
     $$(this.toggleButton).insertBefore(this.element);
 
     this.toggleButtonInsideTable = $$('span', { className: 'coveo-field-table-toggle coveo-field-table-toggle-up' }, SVGIcons.arrowUp).el;
-    SVGIcons.addClassToSVGInContainer(this.toggleButtonInsideTable, 'coveo-field-table-toggle-up-svg');
+    SVGDom.addClassToSVGInContainer(this.toggleButtonInsideTable, 'coveo-field-table-toggle-up-svg');
 
     if (this.options.minimizedByDefault === true) {
       this.isExpanded = false;

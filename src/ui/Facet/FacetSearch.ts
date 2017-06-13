@@ -28,6 +28,7 @@ import { FacetValuesOrder } from './FacetValuesOrder';
 import * as _ from 'underscore';
 import 'styling/_FacetSearch';
 import { SVGIcons } from '../../utils/SVGIcons';
+import { SVGDom } from '../../utils/SVGDom';
 
 /**
  * Used by the {@link Facet} component to render and handle the facet search part of each facet.
@@ -188,13 +189,13 @@ export class FacetSearch {
     this.magnifier = document.createElement('div');
     this.magnifier.innerHTML = SVGIcons.search;
     $$(this.magnifier).addClass('coveo-facet-search-magnifier');
-    SVGIcons.addClassToSVGInContainer(this.magnifier, 'coveo-facet-search-magnifier-svg');
+    SVGDom.addClassToSVGInContainer(this.magnifier, 'coveo-facet-search-magnifier-svg');
     this.search.appendChild(this.magnifier);
 
     this.wait = document.createElement('div');
     this.wait.innerHTML = SVGIcons.facetLoading;
     $$(this.wait).addClass('coveo-facet-search-wait-animation');
-    SVGIcons.addClassToSVGInContainer(this.wait, 'coveo-facet-search-wait-animation-svg');
+    SVGDom.addClassToSVGInContainer(this.wait, 'coveo-facet-search-wait-animation-svg');
     this.search.appendChild(this.wait);
     this.hideFacetSearchWaitingAnimation();
 

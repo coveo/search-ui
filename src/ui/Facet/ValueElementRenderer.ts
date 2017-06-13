@@ -6,6 +6,7 @@ import { l } from '../../strings/Strings';
 import { Component } from '../Base/Component';
 import * as _ from 'underscore';
 import { SVGIcons } from '../../utils/SVGIcons';
+import { SVGDom } from '../../utils/SVGDom';
 
 export class ValueElementRenderer {
   public listItem: HTMLElement;
@@ -166,7 +167,7 @@ export class ValueElementRenderer {
       tabindex: 0
     }).el;
     checkbox.innerHTML = SVGIcons.checkboxMoreValues;
-    SVGIcons.addClassToSVGInContainer(checkbox, 'coveo-facet-value-checkbox-svg');
+    SVGDom.addClassToSVGInContainer(checkbox, 'coveo-facet-value-checkbox-svg');
     this.addFocusAndBlurEventListeners(checkbox);
     return checkbox;
   }
