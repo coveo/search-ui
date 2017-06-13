@@ -6645,7 +6645,7 @@ var Initialization = (function () {
     };
     Initialization.isThereASingleComponentBoundToThisElement = function (element) {
         Assert_1.Assert.exists(element);
-        return Utils_1.Utils.exists(Component_1.Component.get(element));
+        return Utils_1.Utils.exists(Component_1.Component.get(element, null, true));
     };
     Initialization.dispatchMethodCallOnBoundComponent = function (methodName, element, args) {
         Assert_1.Assert.isNonEmptyString(methodName);
@@ -6802,6 +6802,12 @@ var LazyInitialization = (function () {
     LazyInitialization.createComponentOfThisClassOnElement = function (componentClassId, element, initParameters) {
         Assert_1.Assert.isNonEmptyString(componentClassId);
         Assert_1.Assert.exists(element);
+        if (Initialization.isThereASingleComponentBoundToThisElement(element)) {
+            // This means a component already exists on this element.
+            // Do not re-initialize again.
+            LazyInitialization.logger.warn("Skipping component of class " + componentClassId + " because the element is already initialized as another component.", element);
+            return null;
+        }
         return LazyInitialization.getLazyRegisteredComponent(componentClassId).then(function (lazyLoadedComponent) {
             Assert_1.Assert.exists(lazyLoadedComponent);
             var bindings = {};
@@ -6865,6 +6871,12 @@ var EagerInitialization = (function () {
             });
             options = initParameters.options;
             result = initParameters.result;
+        }
+        if (Initialization.isThereASingleComponentBoundToThisElement(element)) {
+            // This means a component already exists on this element.
+            // Do not re-initialize again.
+            EagerInitialization.logger.warn("Skipping component of class " + componentClassId + " because the element is already initialized as another component.", element);
+            return null;
         }
         EagerInitialization.logger.trace("Creating component of class " + componentClassId, element, options);
         // This is done so that external code that extends a base component does not have to have two code path for lazy vs eager;
@@ -16762,6 +16774,7 @@ function initRecommendation(element, mainSearchInterface, userContext, options) 
     // This ensure that we can always call `getLazyRegisteredComponent`, no matter if it was loaded from eager or lazy mode.
     if (window['Coveo']['Recommendation'] != null) {
         Initialization_1.LazyInitialization.registerLazyComponent('Recommendation', function () { return Promise.resolve(window['Coveo']['Recommendation']); });
+        Initialization_1.EagerInitialization.eagerlyLoadedComponents['Recommendation'] = window['Coveo']['Recommendation'];
     }
     return Initialization_1.LazyInitialization.getLazyRegisteredComponent('Recommendation').then(function () {
         return Initialization_1.Initialization.initializeFramework(element, options, function () {
@@ -17752,8 +17765,8 @@ exports.DebugEvents = DebugEvents;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.version = {
-    'lib': '2.2900.0-beta',
-    'product': '2.2900.0-beta',
+    'lib': '2.2900.1-beta',
+    'product': '2.2900.1-beta',
     'supportedApiVersion': 2
 };
 
@@ -32536,6 +32549,7 @@ var InitializationPlaceholder = (function () {
         this.facetPlaceholder = "<div class=\"coveo-placeholder-title\"></div>\n    <div class=\"coveo-facet-placeholder-line\">\n      <div class=\"coveo-facet-placeholder-checkbox\"></div>\n      <div class=\"coveo-placeholder-text\"></div>\n    </div>\n    <div class=\"coveo-facet-placeholder-line\">\n      <div class=\"coveo-facet-placeholder-checkbox\"></div>\n      <div class=\"coveo-placeholder-text\"></div>\n    </div>\n    <div class=\"coveo-facet-placeholder-line\">\n      <div class=\"coveo-facet-placeholder-checkbox\"></div>\n      <div class=\"coveo-placeholder-text\"></div>\n    </div>\n    <div class=\"coveo-facet-placeholder-line\">\n      <div class=\"coveo-facet-placeholder-checkbox\"></div>\n      <div class=\"coveo-placeholder-text\"></div>\n    </div>\n    <div class=\"coveo-facet-placeholder-line\">\n      <div class=\"coveo-facet-placeholder-checkbox\"></div>\n      <div class=\"coveo-placeholder-text\"></div>\n    </div>";
         this.resultListPlaceholder = "<div class=\"coveo-result-frame coveo-placeholder-result\">\n  <div class=\"coveo-result-row\">\n    <div class=\"coveo-result-cell\" style=\"width:85px;text-align:center;\">\n      <div class=\"coveo-placeholder-icon\"></div>\n    </div>\n    <div class=\"coveo-result-cell\" style=\"padding-left:15px;\">\n      <div class=\"coveo-result-row\">\n        <div class=\"coveo-result-cell\">\n          <div class=\"coveo-placeholder-title\" style=\"width: 60%\"></div>\n        </div>\n        <div class=\"coveo-result-cell\" style=\"width:120px; text-align:right;\">\n          <div class=\"coveo-placeholder-text\" style=\"width: 80%\"></div>\n        </div>\n      </div>\n      <div class=\"coveo-result-row\">\n        <div class=\"coveo-result-cell\">\n          <div class=\"coveo-placeholder-text\" style=\"width: 70%\"></div>\n          <div class=\"coveo-placeholder-text\" style=\"width: 90%\"></div>\n          <div class=\"coveo-placeholder-text\" style=\"width: 60%\"></div>\n        </div>\n      </div>\n    </div>\n  </div>\n</div>";
         this.cardResultListPlaceholder = "<div class=\"coveo-card-layout coveo-placeholder-result CoveoResult\">\n  <div class=\"coveo-result-frame\">\n    <div class=\"coveo-result-row\" style=\"margin-bottom: 20px;\">\n      <div class=\"coveo-result-cell\" style=\"width: 32px; vertical-align: middle;\">\n        <div class=\"coveo-placeholder-icon-small\"></div>\n      </div>\n      <div class=\"coveo-result-cell\" style=\"text-align:left; padding-left: 10px; vertical-align: middle;\">\n        <div class=\"coveo-placeholder-title\" style=\"width: 60%\"></div>\n      </div>\n    </div>\n    <div class=\"coveo-result-row\" style=\"margin-bottom: 20px;\">\n      <div class=\"coveo-result-cell\">\n        <div class=\"coveo-placeholder-text\" style=\"width: 70%\"></div>\n        <div class=\"coveo-placeholder-text\" style=\"width: 90%\"></div>\n        <div class=\"coveo-placeholder-text\" style=\"width: 60%\"></div>\n      </div>\n      <div class=\"coveo-result-cell\">\n        <div class=\"coveo-placeholder-text\" style=\"width: 90%\"></div>\n        <div class=\"coveo-placeholder-text\" style=\"width: 70%\"></div>\n        <div class=\"coveo-placeholder-text\" style=\"width: 60%\"></div>\n      </div>\n    </div>\n    <div class=\"coveo-result-row\">\n      <div class=\"coveo-result-cell\">\n        <div class=\"coveo-placeholder-text\" style=\"width: 90%\"></div>\n          <div class=\"coveo-placeholder-text\" style=\"width: 100%\"></div>\n      </div>\n    </div>\n  </div>\n</div>\n";
+        this.recommendationResultListPlaceholder = "<div class=\"coveo-result-frame coveo-placeholder-result\">\n  <div class=\"coveo-result-row\">\n    <div class=\"coveo-result-cell\" style=\"width: 32px; vertical-align: middle;\">\n        <div class=\"coveo-placeholder-icon-small\"></div>\n      </div>\n    <div class=\"coveo-result-cell\" style=\"padding-left:10px; vertical-align: middle;\">\n      <div class=\"coveo-result-row\">\n        <div class=\"coveo-result-cell\">\n          <div class=\"coveo-placeholder-title\" style=\"width: 90%\"></div>\n        </div>\n      </div>\n    </div>\n  </div>\n  ";
         if (options.searchInterface) {
             Dom_1.$$(this.root).addClass(InitializationPlaceholder.INITIALIZATION_CLASS);
         }
@@ -32602,7 +32616,7 @@ var InitializationPlaceholder = (function () {
             var _a = this.determineResultListPlaceholder(resultListsElements), placeholderToUse_1 = _a.placeholderToUse, resultListToUse_1 = _a.resultListToUse, rootToUse_1 = _a.rootToUse;
             Dom_1.$$(resultListToUse_1).append(rootToUse_1);
             Dom_1.$$(resultListToUse_1).addClass('coveo-with-placeholder');
-            _.times(InitializationPlaceholder.NUMBER_OF_RESULTS, function () {
+            _.times(this.isRecommendationRoot() ? InitializationPlaceholder.NUMBER_OF_RESULTS_RECOMMENDATION : InitializationPlaceholder.NUMBER_OF_RESULTS, function () {
                 rootToUse_1.innerHTML += placeholderToUse_1;
             });
             var reset_1 = function () {
@@ -32644,23 +32658,28 @@ var InitializationPlaceholder = (function () {
                 resultListElement = _.first(resultListElements);
             }
             return {
-                placeholderToUse: this.determinerResultListFromLayout(currentLayout),
+                placeholderToUse: this.determineResultListFromLayout(currentLayout),
                 resultListToUse: resultListElement,
                 rootToUse: this.determineRootFromLayout(currentLayout)
             };
         }
         else {
             return {
-                placeholderToUse: this.determinerResultListFromLayout(currentLayout),
+                placeholderToUse: this.determineResultListFromLayout(currentLayout),
                 resultListToUse: resultListElements[0],
                 rootToUse: this.determineRootFromLayout(currentLayout)
             };
         }
     };
-    InitializationPlaceholder.prototype.determinerResultListFromLayout = function (layout) {
+    InitializationPlaceholder.prototype.determineResultListFromLayout = function (layout) {
         switch (layout) {
             case 'list':
-                return this.resultListPlaceholder;
+                if (this.isRecommendationRoot()) {
+                    return this.recommendationResultListPlaceholder;
+                }
+                else {
+                    return this.resultListPlaceholder;
+                }
             case 'card':
                 return this.cardResultListPlaceholder;
             default:
@@ -32677,10 +32696,14 @@ var InitializationPlaceholder = (function () {
                 return Dom_1.$$('div').el;
         }
     };
+    InitializationPlaceholder.prototype.isRecommendationRoot = function () {
+        return Dom_1.$$(this.root).hasClass('CoveoRecommendation');
+    };
     return InitializationPlaceholder;
 }());
 InitializationPlaceholder.NUMBER_OF_FACETS = 3;
 InitializationPlaceholder.NUMBER_OF_RESULTS = 10;
+InitializationPlaceholder.NUMBER_OF_RESULTS_RECOMMENDATION = 5;
 InitializationPlaceholder.INITIALIZATION_CLASS = 'coveo-during-initialization';
 exports.InitializationPlaceholder = InitializationPlaceholder;
 
@@ -38965,7 +38988,6 @@ var NoopAnalyticsClient_1 = __webpack_require__(72);
 var LiveAnalyticsClient_1 = __webpack_require__(231);
 var MultiAnalyticsClient_1 = __webpack_require__(369);
 var AnalyticsActionListMeta_1 = __webpack_require__(12);
-var SearchInterface_1 = __webpack_require__(20);
 var RecommendationAnalyticsClient_1 = __webpack_require__(255);
 var _ = __webpack_require__(1);
 var GlobalExports_1 = __webpack_require__(4);
@@ -39190,10 +39212,8 @@ var Analytics = (function (_super) {
         var selector = Component_1.Component.computeSelectorForType(Analytics.ID);
         var found = [];
         found = found.concat(Dom_1.$$(element).findAll(selector));
-        if (Coveo['Recommendation']) {
-            if (!(Component_1.Component.get(element, SearchInterface_1.SearchInterface) instanceof Coveo['Recommendation'])) {
-                found = this.ignoreElementsInsideRecommendationInterface(found);
-            }
+        if (!Dom_1.$$(element).hasClass(Component_1.Component.computeCssClassNameForType('Recommendation'))) {
+            found = this.ignoreElementsInsideRecommendationInterface(found);
         }
         found.push(Dom_1.$$(element).closest(Component_1.Component.computeCssClassName(Analytics)));
         if (Dom_1.$$(element).is(selector)) {

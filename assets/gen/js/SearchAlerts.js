@@ -682,7 +682,9 @@ var SearchAlertsMessage = (function (_super) {
      */
     SearchAlertsMessage.prototype.showMessage = function (dom, message, error) {
         var _this = this;
-        this.message = Dom_1.$$('div');
+        this.message = Dom_1.$$('div', {
+            className: 'coveo-subscriptions-messages'
+        });
         this.message.el.innerHTML = "\n      <div class='coveo-subscriptions-messages-message'>\n        <div class='coveo-subscriptions-messages-content'>" + message + "</div>\n        <div class='coveo-subscriptions-messages-info-close'></div>\n      </div>";
         this.message.toggleClass('coveo-subscriptions-messages-error', error);
         var closeButton = this.message.find('.coveo-subscriptions-messages-info-close');

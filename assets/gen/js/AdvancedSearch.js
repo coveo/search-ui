@@ -314,7 +314,6 @@ var AdvancedSearch = (function (_super) {
     };
     AdvancedSearch.prototype.handleClearBreadcrumb = function () {
         this.reset();
-        this.executeAdvancedSearch();
     };
     AdvancedSearch.prototype.handlePopulateMenu = function (args) {
         var _this = this;
@@ -2836,7 +2835,8 @@ var DatePicker = (function () {
                 previousMonth: Strings_1.l('PreviousMonth'),
                 nextMonth: Strings_1.l('NextMonth'),
                 months: Globalize.culture().calendar.months.names,
-                weekdays: Globalize.culture().calendar.days.names
+                weekdays: Globalize.culture().calendar.days.names,
+                weekdaysShort: Globalize.culture().calendar.days.namesAbbr
             }
         });
     };

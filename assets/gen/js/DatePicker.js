@@ -1294,7 +1294,8 @@ var DatePicker = (function () {
                 previousMonth: Strings_1.l('PreviousMonth'),
                 nextMonth: Strings_1.l('NextMonth'),
                 months: Globalize.culture().calendar.months.names,
-                weekdays: Globalize.culture().calendar.days.names
+                weekdays: Globalize.culture().calendar.days.names,
+                weekdaysShort: Globalize.culture().calendar.days.namesAbbr
             }
         });
     };

@@ -1004,17 +1004,19 @@ var ResultList = (function (_super) {
     ResultList.prototype.buildResults = function (results) {
         var _this = this;
         var res = [];
-        var resultsPromises = _.map(results.results, function (result) {
+        var resultsPromises = _.map(results.results, function (result, index) {
             return _this.buildResult(result).then(function (resultElement) {
                 if (resultElement != null) {
-                    res.push(resultElement);
+                    res.push({ elem: resultElement, idx: index });
                 }
                 ResultList.resultCurrentlyBeingRendered = null;
                 return resultElement;
             });
         });
+        // We need to sort by the original index order, because in lazy loading mode, it's possible that results does not gets rendered
+        // in the correct order returned by the index, depending on the time it takes to load all the results component for a given result template
         return Promise.all(resultsPromises).then(function () {
-            return res;
+            return _.pluck(_.sortBy(res, 'idx'), 'elem');
         });
     };
     /**
@@ -1214,7 +1216,13 @@ var ResultList = (function (_super) {
         if (this.options.autoSelectFieldsToInclude) {
             var otherResultListsElements = _.reject(Dom_1.$$(this.root).findAll("." + Component_1.Component.computeCssClassName(ResultList)), function (resultListElement) { return resultListElement == _this.element; });
             var otherFields = _.flatten(_.map(otherResultListsElements, function (otherResultListElement) {
-                return RegisteredNamedMethods_1.get(otherResultListElement).getAutoSelectedFieldsToInclude();
+                var otherResultListInstance = RegisteredNamedMethods_1.get(otherResultListElement);
+                if (otherResultListInstance) {
+                    return otherResultListInstance.getAutoSelectedFieldsToInclude();
+                }
+                else {
+                    return [];
+                }
             }));
             args.queryBuilder.addRequiredFields(_.unique(otherFields.concat(this.getAutoSelectedFieldsToInclude())));
             args.queryBuilder.includeRequiredFields = true;
