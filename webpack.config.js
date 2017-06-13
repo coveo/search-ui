@@ -6,7 +6,6 @@ const path = require('path');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const production = process.env.NODE_ENV === 'production';
 const globalizePath = __dirname + '/lib/globalize/globalize.min.js';
-const svg4everybodyPath = __dirname + '/node_modules/svg4everybody/dist/svg4everybody.js';
 
 let bail;
 let plugins = [];
@@ -106,7 +105,6 @@ module.exports = {
       'globalize': globalizePath,
       'modal-box': __dirname + '/node_modules/modal-box/bin/ModalBox.min.js',
       'magic-box': __dirname + '/node_modules/coveomagicbox/bin/MagicBox.min.js',
-      'svg4everybody': svg4everybodyPath,
       'default-language': __dirname + '/src/strings/DefaultLanguage.js',
       'jQuery': __dirname + '/test/lib/jquery.js',
       'styling': __dirname + '/sass',
@@ -164,7 +162,8 @@ module.exports = {
       use: [{
         loader: 'file-loader',
         options: {
-          name: production ? '../image/[name].[ext]' : 'http://localhost:8080/image/[name].[ext]',
+          // name: production ? '../image/[name].[ext]' : 'http://localhost:8080/image/[name].[ext]',
+          name: '../image/[name].[ext]',
           emitFile: false,
           publicPath: ' ',
         }
@@ -173,11 +172,6 @@ module.exports = {
       test: /\.svg$/,
       use: [{
         loader: 'svg-inline-loader'
-      }]
-    }, { 
-      test: require.resolve(svg4everybodyPath),
-      use: [{
-        loader: 'imports-loader?this=>window'
       }]
     },
     {

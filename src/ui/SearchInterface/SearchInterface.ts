@@ -27,12 +27,12 @@ import { SentryLogger } from '../../misc/SentryLogger';
 import { IComponentBindings } from '../Base/ComponentBindings';
 import { analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
 import { ResponsiveComponents } from '../ResponsiveComponents/ResponsiveComponents';
-import { SvgPolyfill } from '../../misc/SvgPolyfill';
 import * as _ from 'underscore';
 
 import 'styling/Globals';
 import 'styling/_SearchInterface';
 import 'styling/_SearchModalBox';
+import 'styling/_SearchButton';
 
 export interface ISearchInterfaceOptions {
   enableHistory?: boolean;
@@ -359,8 +359,6 @@ export class SearchInterface extends RootComponent implements IComponentBindings
     if ((<any>fastclick).attach) {
       (<any>fastclick).attach(element);
     }
-
-    SvgPolyfill(element);
 
     this.options = ComponentOptions.initComponentOptions(element, SearchInterface, options);
     Assert.exists(element);

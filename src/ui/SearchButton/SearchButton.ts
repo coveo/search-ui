@@ -7,7 +7,6 @@ import { IAnalyticsNoMeta, analyticsActionCauseList } from '../Analytics/Analyti
 import { Initialization } from '../Base/Initialization';
 import { exportGlobally } from '../../GlobalExports';
 import { SVGIcons } from '../../utils/SVGIcons';
-import 'styling/_SearchButton';
 
 export interface ISearchButtonOptions {
 }
@@ -39,10 +38,11 @@ export class SearchButton extends Component {
   constructor(public element: HTMLElement, public options?: ISearchButtonOptions, bindings?: IComponentBindings) {
     super(element, SearchButton.ID, bindings);
 
+    $$(element).setAttribute('aria-label', l('Search'));
     this.bind.on(element, 'click', () => this.handleClick());
     // Provide a magnifier icon if element contains nothing
     if (Utils.trim($$(this.element).text()) == '') {
-      const svgContainer = $$('span', { className: 'coveo-search-button', ariaLabel: l('Search') }).el;
+      const svgContainer = $$('span', { className: 'coveo-search-button' }).el;
       svgContainer.innerHTML = SVGIcons.search;
       SVGIcons.addClassToSVGInContainer(svgContainer, 'coveo-search-button-svg');
       element.appendChild(svgContainer);
