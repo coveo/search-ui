@@ -68,5 +68,5 @@ gulp.task('internalDefs', function () {
 })
 
 gulp.task('validateDefs', shell.task([
-  './node_modules/typescript/bin/tsc --noEmit ./bin/ts/CoveoJsSearch.d.ts'
+  'node node_modules/typescript/bin/tsc --noEmit ./bin/ts/CoveoJsSearch.d.ts'
 ]))

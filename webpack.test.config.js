@@ -18,7 +18,7 @@ module.exports = {
     devtoolModuleFilenameTemplate: '[resource-path]'
   },
   resolve: {
-    extensions: ['.ts', '.js', '.scss'],
+    extensions: ['.ts', '.js', '.scss', '.svg'],
     alias: {
       'l10n': __dirname + '/lib/l10n/l10n.min.js',
       'globalize': globalizePath,
@@ -26,7 +26,9 @@ module.exports = {
       'magic-box': __dirname + '/node_modules/coveomagicbox/bin/MagicBox.min.js',
       'default-language': __dirname + '/src/strings/DefaultLanguage.js',
       'jQuery': __dirname + '/test/lib/jquery.js',
-      'styling': __dirname + '/sass'
+      'styling': __dirname + '/sass',
+      'svg': __dirname + '/image/svg'
+
     },
     modules: ['node_modules', path.resolve(__dirname, '../bin/image/css')]
   },
@@ -83,8 +85,13 @@ module.exports = {
         loader: 'ts-loader'
       }]
     }, {
-      test: /\.scss/,
+      test: /\.scss$/,
       use: [{ loader: 'null-loader' }]
+    }, {
+      test: /\.svg$/,
+      use: [{
+        loader: 'svg-inline-loader'
+      }]
     }]
   }
 };
