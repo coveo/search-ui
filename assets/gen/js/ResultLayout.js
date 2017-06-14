@@ -169,13 +169,12 @@ var ResultLayout = (function (_super) {
         }
     };
     ResultLayout.prototype.handleQuerySuccess = function (args) {
-        if (args.results.results.length === 0 || !this.shouldShowSelector()) {
-            this.hide();
-            this.hasNoResults = true;
+        this.hasNoResults = args.results.results.length == 0;
+        if (this.shouldShowSelector()) {
+            this.show();
         }
         else {
-            this.show();
-            this.hasNoResults = false;
+            this.hide();
         }
     };
     ResultLayout.prototype.handleQueryStateChanged = function (args) {
@@ -248,7 +247,9 @@ var ResultLayout = (function (_super) {
         this.queryStateModel.set(QueryStateModel_1.QueryStateModel.attributesEnum.layout, val);
     };
     ResultLayout.prototype.shouldShowSelector = function () {
-        return _.keys(this.currentActiveLayouts).length > 1 && _.filter(this.currentActiveLayouts, function (activeLayout) { return activeLayout.button.visible; }).length > 1 && !this.hasNoResults;
+        return _.keys(this.currentActiveLayouts).length > 1 &&
+            _.filter(this.currentActiveLayouts, function (activeLayout) { return activeLayout.button.visible; }).length > 1 &&
+            !this.hasNoResults;
     };
     ResultLayout.prototype.isLayoutDisplayedByButton = function (layout) {
         return _.contains(_.keys(this.currentActiveLayouts), layout);
