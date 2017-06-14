@@ -109,7 +109,9 @@ export class SearchAlertsMessage extends Component {
    * @param error Specifies whether the message is an error message.
    */
   public showMessage(dom: Dom, message: string, error: boolean) {
-    this.message = $$('div');
+    this.message = $$('div', {
+      className: 'coveo-subscriptions-messages'
+    });
     this.message.el.innerHTML = `
       <div class='coveo-subscriptions-messages-message'>
         <div class='coveo-subscriptions-messages-content'>${message}</div>
