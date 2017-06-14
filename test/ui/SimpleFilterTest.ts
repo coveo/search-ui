@@ -1,6 +1,7 @@
 import * as Mock from '../MockEnvironment';
 import { ISimpleFilterOptions, SimpleFilter } from '../../src/ui/SimpleFilter/SimpleFilter';
 import { Simulate } from '../Simulate';
+import {$$} from '../../src/utils/Dom';
 
 export function SimpleFilterTest() {
   describe('SimpleFilter', () => {
@@ -46,21 +47,21 @@ export function SimpleFilterTest() {
     });
 
     it('should expand the component correctly', () => {
-      test.cmp.onClick();
-      expect(test.cmp.checkboxContainer.el.style.display).toEqual('block');
+      test.cmp.toggle();
+      expect(test.cmp.checkboxContainer.el.style.display).toEqual('inline-block');
 
     });
 
     it('should collapse the component correctly', () => {
-      test.cmp.onClick();
-      test.cmp.onClick();
+      test.cmp.toggle();
+      test.cmp.toggle();
       expect(test.cmp.checkboxContainer.el.style.display).toEqual('none');
     });
 
     it('should handle clicks correctly', () => {
-      test.cmp.onClick();
+      test.cmp.toggle();
       test.env.element.parentElement.click();
-      expect(test.cmp.checkboxContainer.el.style.display).toEqual('block');                 // checkboxContainer.el.style.display = 'block';
+      expect($$(test.cmp.element).hasClass('.coveo-checkbox-container-expanded')).toBe(true);
     });
 
     it('should use the correct selected values', () => {
