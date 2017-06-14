@@ -45,11 +45,22 @@
     display: flex;
     align-items: center;
   }
+  .coveo-caption-for-icon {
+    position: relative;
+    transform: none;
+    display: inline;
+    padding: 0px 5px;
+    font-size: inherit;
+    &:before {
+      display: none;
+    }
+  }
   .coveo-caption-for-quickview {
     margin-top: 0;
     margin-left: 3px;
     font-size: 11px;
   }
+
 }
 
 .CoveoQuickviewDocument {
