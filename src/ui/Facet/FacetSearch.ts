@@ -40,7 +40,6 @@ export class FacetSearch {
 
   private magnifier: HTMLElement;
   private wait: HTMLElement;
-  private clearIcon: HTMLElement;
   private clear: HTMLElement;
   private middle: HTMLElement;
   private input: HTMLInputElement;
@@ -199,16 +198,11 @@ export class FacetSearch {
     this.search.appendChild(this.wait);
     this.hideFacetSearchWaitingAnimation();
 
-    this.clear = document.createElement('div');
-    $$(this.clear).addClass('coveo-facet-search-clear');
-    this.clear.setAttribute('title', l('Clear', l('Search')));
+    this.clear = $$('div', {className: 'coveo-facet-search-clear', title: l('Clear', l('Search'))},
+        SVGIcons.checkboxHookExclusionMore).el;
+    SVGDom.addClassToSVGInContainer(this.clear, 'coveo-facet-search-clear-svg');
     this.clear.style.display = 'none';
     this.search.appendChild(this.clear);
-
-
-    this.clearIcon = document.createElement('span');
-    $$(this.clearIcon).addClass('coveo-icon');
-    this.clear.appendChild(this.clearIcon);
 
     this.middle = document.createElement('div');
     $$(this.middle).addClass('coveo-facet-search-middle');

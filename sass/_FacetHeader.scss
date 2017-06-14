@@ -62,9 +62,9 @@
 }
 
 .coveo-facet-header-eraser {
-  @include clearButton('&', 'bigger');
+  @include clearButton('&', 'big');
   position: relative;
-  top:0px;
+  top: 0px;
   visibility: hidden;
   &.coveo-facet-header-eraser-visible {
     visibility: visible;

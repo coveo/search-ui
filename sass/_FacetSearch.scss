@@ -62,12 +62,12 @@
 
 .coveo-facet-search-clear {
   float: right;
-  margin: 2px 4px 0px 0px;
+  margin-right: 3px;
   cursor: pointer;
   opacity: 0.5;
   clear: none;
-  .coveo-icon {
-    @include clearButton('&', 'smallest');
+  .coveo-facet-search-clear-svg {
+    @include clearButton('&', 'small');
   }
 
   &:hover {

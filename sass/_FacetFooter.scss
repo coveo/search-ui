@@ -16,15 +16,20 @@
 .coveo-facet-more {
   border-bottom-left-radius: $default-border-radius;
   border-bottom-right-radius: $default-border-radius;
-  .coveo-icon {
-    @include retina-sprite($arrow-down-group);
+  .coveo-facet-more-icon {
     position: relative;
-    top: 1px;
+    top: -4px;
   }
   display: none;
   &.coveo-active {
     display: block;
   }
+}
+
+.coveo-facet-more-icon-svg {
+  width: 10px;
+  height: 6px;
+  color: $color-greyish-teal-blue;
 }
 
 .coveo-facet-less {

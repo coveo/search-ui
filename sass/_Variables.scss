@@ -145,24 +145,36 @@ $standard-transition-timing-function: cubic-bezier(0.4, 0.0, 0.2, 1);
   cursor: pointer;
   $icon: '.coveo-sprites-clear-inactive-filters';
   $icon-clear: '.coveo-sprites-clear-active-filters';
-
-  @if $size == 'smaller' {
-    $icon: '.coveo-sprites-facet-exclusion-hover';
-    $icon-clear: '.coveo-sprites-facet-checkbox-exclusion';
-  } @else if $size == 'smallest' {
-    $icon: '.coveo-sprites-facet-exclusion-hover';
-    $icon-clear: '.coveo-sprites-facet-checkbox-exclusion';
-  } @else if $size == 'bigger' {
-    $icon: '.coveo-sprites-main-clear';
-    $icon-clear: '.coveo-sprites-main-clear-hover'; //TODO icon not exported yet
-  }
+  $width: 11px;
+  $height: 11px;
 
   #{$selector} {
-    @include retina-sprite(map-get($retina-group-map, $icon));
+    .coveo-exclusion-svg {
+      fill: $color-greyish-teal-blue;
+    }
+
+    @if $size == 'normal' {
+      width: 11px;
+      height: 11px;
+    }
+    @else if $size == 'small' {
+      $icon: '.coveo-sprites-facet-exclusion-hover';
+      $icon-clear: '.coveo-sprites-facet-checkbox-exclusion';
+      width: 6px;  
+      height: 6px;
+
+    } @else if $size == 'big' {
+      $icon: '.coveo-sprites-main-clear';
+      $icon-clear: '.coveo-sprites-main-clear-hover';
+      $width: 13px;
+      $height: 13px;
+    }
+
   }
+
   &:hover {
-    #{$selector} {
-      @include retina-sprite(map-get($retina-group-map, $icon-clear))
+    #{$selector} .coveo-exclusion-svg {
+      fill: $color-red;
     }
   }
 }

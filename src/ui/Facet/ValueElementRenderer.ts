@@ -166,7 +166,7 @@ export class ValueElementRenderer {
       className: 'coveo-facet-value-checkbox',
       tabindex: 0
     }).el;
-    checkbox.innerHTML = SVGIcons.checkboxMoreValues;
+    checkbox.innerHTML = SVGIcons.checkboxHookExclusionMore;
     SVGDom.addClassToSVGInContainer(checkbox, 'coveo-facet-value-checkbox-svg');
     this.addFocusAndBlurEventListeners(checkbox);
     return checkbox;
