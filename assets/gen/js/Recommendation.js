@@ -1,6 +1,6 @@
-webpackJsonpCoveo__temporary([5],{
+webpackJsonpCoveo__temporary([6],{
 
-/***/ 251:
+/***/ 253:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26,21 +26,21 @@ var PreferencesPanelEvents_1 = __webpack_require__(65);
 var AnalyticsEvents_1 = __webpack_require__(60);
 var AnalyticsActionListMeta_1 = __webpack_require__(12);
 var BreadcrumbEvents_1 = __webpack_require__(41);
-var QuickviewEvents_1 = __webpack_require__(265);
+var QuickviewEvents_1 = __webpack_require__(267);
 var QueryStateModel_1 = __webpack_require__(14);
 var Model_1 = __webpack_require__(16);
 var Utils_1 = __webpack_require__(5);
 var Dom_1 = __webpack_require__(3);
-var ResponsiveRecommendation_1 = __webpack_require__(619);
-var coveo_analytics_1 = __webpack_require__(254);
+var ResponsiveRecommendation_1 = __webpack_require__(626);
+var coveo_analytics_1 = __webpack_require__(256);
 var RegisteredNamedMethods_1 = __webpack_require__(57);
 var InitializationEvents_1 = __webpack_require__(15);
 var _ = __webpack_require__(1);
 var GlobalExports_1 = __webpack_require__(4);
-var DefaultRecommendationTemplate_1 = __webpack_require__(408);
-var RecommendationQuery_1 = __webpack_require__(616);
-var RecommendationAnalyticsClient_1 = __webpack_require__(255);
-__webpack_require__(570);
+var DefaultRecommendationTemplate_1 = __webpack_require__(411);
+var RecommendationQuery_1 = __webpack_require__(623);
+var RecommendationAnalyticsClient_1 = __webpack_require__(257);
+__webpack_require__(578);
 /**
  * The Recommendation component is a {@link SearchInterface} that displays recommendations typically based on user
  * history.
@@ -386,7 +386,7 @@ exports.Recommendation = Recommendation;
 
 /***/ }),
 
-/***/ 260:
+/***/ 262:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -422,7 +422,7 @@ exports.EventsUtils = EventsUtils;
 
 /***/ }),
 
-/***/ 265:
+/***/ 267:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -440,14 +440,14 @@ exports.QuickviewEvents = QuickviewEvents;
 
 /***/ }),
 
-/***/ 389:
+/***/ 392:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var Dom_1 = __webpack_require__(3);
-var EventsUtils_1 = __webpack_require__(260);
+var EventsUtils_1 = __webpack_require__(262);
 var _ = __webpack_require__(1);
 var ResponsiveDropdown = (function () {
     function ResponsiveDropdown(dropdownContent, dropdownHeader, coveoRoot) {
@@ -554,7 +554,7 @@ exports.ResponsiveDropdown = ResponsiveDropdown;
 
 /***/ }),
 
-/***/ 390:
+/***/ 393:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -598,7 +598,7 @@ exports.ResponsiveDropdownContent = ResponsiveDropdownContent;
 
 /***/ }),
 
-/***/ 391:
+/***/ 394:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -635,7 +635,7 @@ exports.ResponsiveDropdownHeader = ResponsiveDropdownHeader;
 
 /***/ }),
 
-/***/ 408:
+/***/ 411:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -677,21 +677,21 @@ exports.DefaultRecommendationTemplate = DefaultRecommendationTemplate;
 
 /***/ }),
 
-/***/ 570:
+/***/ 578:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
 
-/***/ 571:
+/***/ 579:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
 
-/***/ 616:
+/***/ 623:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -751,13 +751,13 @@ Initialization_1.Initialization.registerAutoCreateComponent(RecommendationQuery)
 
 /***/ }),
 
-/***/ 617:
+/***/ 624:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var ResponsiveDropdownContent_1 = __webpack_require__(390);
+var ResponsiveDropdownContent_1 = __webpack_require__(393);
 var Dom_1 = __webpack_require__(3);
 var RecommendationDropdownContent = (function () {
     function RecommendationDropdownContent(componentName, element, coveoRoot) {
@@ -794,28 +794,28 @@ exports.RecommendationDropdownContent = RecommendationDropdownContent;
 
 /***/ }),
 
-/***/ 619:
+/***/ 626:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var ResponsiveComponentsManager_1 = __webpack_require__(76);
-var ResponsiveComponentsUtils_1 = __webpack_require__(87);
+var ResponsiveComponentsUtils_1 = __webpack_require__(89);
 var SearchInterface_1 = __webpack_require__(20);
 var Utils_1 = __webpack_require__(5);
 var Dom_1 = __webpack_require__(3);
 var Logger_1 = __webpack_require__(13);
-var Recommendation_1 = __webpack_require__(251);
-var RecommendationDropdownContent_1 = __webpack_require__(617);
-var ResponsiveDropdownHeader_1 = __webpack_require__(391);
-var ResponsiveDropdown_1 = __webpack_require__(389);
+var Recommendation_1 = __webpack_require__(253);
+var RecommendationDropdownContent_1 = __webpack_require__(624);
+var ResponsiveDropdownHeader_1 = __webpack_require__(394);
+var ResponsiveDropdown_1 = __webpack_require__(392);
 var Strings_1 = __webpack_require__(10);
 var Component_1 = __webpack_require__(8);
 var RegisteredNamedMethods_1 = __webpack_require__(57);
 var QueryEvents_1 = __webpack_require__(11);
 var _ = __webpack_require__(1);
-__webpack_require__(571);
+__webpack_require__(579);
 var ResponsiveRecommendation = (function () {
     function ResponsiveRecommendation(coveoRoot, ID, options, responsiveDropdown) {
         this.coveoRoot = coveoRoot;
@@ -1178,7 +1178,7 @@ exports.ResponsiveComponentsManager = ResponsiveComponentsManager;
 
 /***/ }),
 
-/***/ 87:
+/***/ 89:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";

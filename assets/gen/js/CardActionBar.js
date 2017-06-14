@@ -1,6 +1,6 @@
-webpackJsonpCoveo__temporary([56],{
+webpackJsonpCoveo__temporary([57],{
 
-/***/ 286:
+/***/ 288:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -24,7 +24,7 @@ var Dom_1 = __webpack_require__(3);
 var KeyboardUtils_1 = __webpack_require__(21);
 var _ = __webpack_require__(1);
 var GlobalExports_1 = __webpack_require__(4);
-__webpack_require__(552);
+__webpack_require__(560);
 /**
  * The CardActionBar component displays an action bar at the bottom of a card result (see
  * [Result Layouts](https://developers.coveo.com/x/yQUvAg)). It is a simple container for buttons or complementary
@@ -148,7 +148,7 @@ Initialization_1.Initialization.registerAutoCreateComponent(CardActionBar);
 
 /***/ }),
 
-/***/ 552:
+/***/ 560:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

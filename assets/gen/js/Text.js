@@ -1,6 +1,6 @@
-webpackJsonpCoveo__temporary([42],{
+webpackJsonpCoveo__temporary([43],{
 
-/***/ 326:
+/***/ 328:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21,7 +21,7 @@ var Component_1 = __webpack_require__(8);
 var Initialization_1 = __webpack_require__(2);
 var Dom_1 = __webpack_require__(3);
 var GlobalExports_1 = __webpack_require__(4);
-__webpack_require__(585);
+__webpack_require__(592);
 /**
  * The Text component embeds itself in a result template to output a simple text value.
  *
@@ -139,7 +139,7 @@ Initialization_1.Initialization.registerAutoCreateComponent(Text);
 
 /***/ }),
 
-/***/ 585:
+/***/ 592:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

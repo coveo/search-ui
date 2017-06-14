@@ -1,6 +1,6 @@
-webpackJsonpCoveo__temporary([14,22,47],{
+webpackJsonpCoveo__temporary([16,24,48],{
 
-/***/ 248:
+/***/ 250:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -155,7 +155,7 @@ Initialization_1.Initialization.registerAutoCreateComponent(YouTubeThumbnail);
 
 /***/ }),
 
-/***/ 283:
+/***/ 285:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -177,10 +177,10 @@ var Initialization_1 = __webpack_require__(2);
 var _ = __webpack_require__(1);
 var Utils_1 = __webpack_require__(5);
 var GlobalExports_1 = __webpack_require__(4);
-var YouTubeThumbnail_1 = __webpack_require__(248);
+var YouTubeThumbnail_1 = __webpack_require__(250);
 var Dom_1 = __webpack_require__(3);
 var ExternalModulesShim_1 = __webpack_require__(22);
-__webpack_require__(550);
+__webpack_require__(558);
 /**
  * The Backdrop component renders an image URL (either passed as a direct URL or contained in a result field) as a
  * background image. It is useful for displaying information in front of a dynamic background image.
@@ -299,14 +299,14 @@ Initialization_1.Initialization.registerAutoCreateComponent(Backdrop);
 
 /***/ }),
 
-/***/ 446:
+/***/ 455:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
 
-/***/ 550:
+/***/ 558:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
@@ -336,7 +336,7 @@ var AnalyticsActionListMeta_1 = __webpack_require__(12);
 var ResultListEvents_1 = __webpack_require__(30);
 var HighlightUtils_1 = __webpack_require__(44);
 var DeviceUtils_1 = __webpack_require__(18);
-var OSUtils_1 = __webpack_require__(243);
+var OSUtils_1 = __webpack_require__(245);
 var Initialization_1 = __webpack_require__(2);
 var QueryUtils_1 = __webpack_require__(17);
 var Assert_1 = __webpack_require__(7);
@@ -346,7 +346,7 @@ var Dom_1 = __webpack_require__(3);
 var StreamHighlightUtils_1 = __webpack_require__(63);
 var _ = __webpack_require__(1);
 var GlobalExports_1 = __webpack_require__(4);
-__webpack_require__(446);
+__webpack_require__(455);
 /**
  * The `ResultLink` component automatically transform a search result title into a clickable link pointing to the
  * original item.

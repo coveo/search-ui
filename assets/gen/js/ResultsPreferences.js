@@ -1,6 +1,6 @@
-webpackJsonpCoveo__temporary([12,38,40],{
+webpackJsonpCoveo__temporary([14,39,41],{
 
-/***/ 319:
+/***/ 321:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -31,7 +31,7 @@ var GlobalExports_1 = __webpack_require__(4);
 var Defer_1 = __webpack_require__(26);
 var Checkbox_1 = __webpack_require__(59);
 var RadioButton_1 = __webpack_require__(80);
-var FormGroup_1 = __webpack_require__(97);
+var FormGroup_1 = __webpack_require__(99);
 /**
  * The ResultsPreferences component allows the end user to select preferences related to the search results. These
  * preferences are then saved in the local storage of the end user.
@@ -269,14 +269,14 @@ Initialization_1.Initialization.registerAutoCreateComponent(ResultsPreferences);
 
 /***/ }),
 
-/***/ 455:
+/***/ 463:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
 
-/***/ 456:
+/***/ 464:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
@@ -290,7 +290,7 @@ Initialization_1.Initialization.registerAutoCreateComponent(ResultsPreferences);
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var Dom_1 = __webpack_require__(3);
-__webpack_require__(456);
+__webpack_require__(464);
 var GlobalExports_1 = __webpack_require__(4);
 /**
  * A radio button widget with standard styling.
@@ -396,7 +396,7 @@ exports.RadioButton = RadioButton;
 
 /***/ }),
 
-/***/ 97:
+/***/ 99:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -404,7 +404,7 @@ exports.RadioButton = RadioButton;
 Object.defineProperty(exports, "__esModule", { value: true });
 var Dom_1 = __webpack_require__(3);
 var _ = __webpack_require__(1);
-__webpack_require__(455);
+__webpack_require__(463);
 var GlobalExports_1 = __webpack_require__(4);
 /**
  * A simple `fieldset` HTMLElement containing multiple form widgets.

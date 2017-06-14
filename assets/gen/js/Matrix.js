@@ -1,6 +1,6 @@
-webpackJsonpCoveo__temporary([19],{
+webpackJsonpCoveo__temporary([21],{
 
-/***/ 304:
+/***/ 306:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18,8 +18,8 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var Component_1 = __webpack_require__(8);
 var ComponentOptions_1 = __webpack_require__(9);
-var Cell_1 = __webpack_require__(611);
-var DefaultMatrixResultPreviewTemplate_1 = __webpack_require__(612);
+var Cell_1 = __webpack_require__(618);
+var DefaultMatrixResultPreviewTemplate_1 = __webpack_require__(619);
 var Dom_1 = __webpack_require__(3);
 var QueryEvents_1 = __webpack_require__(11);
 var QueryStateModel_1 = __webpack_require__(14);
@@ -29,7 +29,7 @@ var QueryUtils_1 = __webpack_require__(17);
 var Globalize = __webpack_require__(24);
 var _ = __webpack_require__(1);
 var GlobalExports_1 = __webpack_require__(4);
-__webpack_require__(562);
+__webpack_require__(570);
 /**
  * The Matrix component uses the values of two fields (row and column) to display the results of the specified computed
  * field in a table.
@@ -813,14 +813,14 @@ Initialization_1.Initialization.registerAutoCreateComponent(Matrix);
 
 /***/ }),
 
-/***/ 562:
+/***/ 570:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
 
-/***/ 611:
+/***/ 618:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -915,7 +915,7 @@ exports.Cell = Cell;
 
 /***/ }),
 
-/***/ 612:
+/***/ 619:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";

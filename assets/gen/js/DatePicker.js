@@ -1,6 +1,117 @@
-webpackJsonpCoveo__temporary([37],{
+webpackJsonpCoveo__temporary([38],{
 
-/***/ 463:
+/***/ 101:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var Dom_1 = __webpack_require__(3);
+var DateUtils_1 = __webpack_require__(27);
+var GlobalExports_1 = __webpack_require__(4);
+var Strings_1 = __webpack_require__(10);
+var Globalize = __webpack_require__(24);
+var Pikaday = __webpack_require__(471);
+/**
+ * A date picker widget with standard styling.
+ */
+var DatePicker = (function () {
+    /**
+     * Creates a new `DatePicker`.
+     * @param onChange The function to call when a new value is selected in the date picker. This function takes the
+     * current `DatePicker` instance as an argument.
+     */
+    function DatePicker(onChange) {
+        if (onChange === void 0) { onChange = function () {
+        }; }
+        this.onChange = onChange;
+        this.wasReset = true;
+        this.buildContent();
+    }
+    /**
+     * Resets the date picker.
+     */
+    DatePicker.prototype.reset = function () {
+        this.picker.setDate(undefined);
+        this.wasReset = true;
+        this.onChange(this);
+    };
+    /**
+     * Gets the element on which the date picker is bound.
+     * @returns {HTMLInputElement} The date picker element.
+     */
+    DatePicker.prototype.getElement = function () {
+        return this.element;
+    };
+    /**
+     * Gets the currently selected value in the date picker.
+     * @returns {string} A textual representation of the currently selected value (`YYYY-MM-DD` format).
+     */
+    DatePicker.prototype.getValue = function () {
+        if (this.wasReset) {
+            return '';
+        }
+        var date = this.picker.getDate();
+        return date ? DateUtils_1.DateUtils.dateForQuery(this.picker.getDate()) : '';
+    };
+    /**
+     * Get the currently selected value in the date picker, as a Date object
+     * @returns {Date} A Date object for the current value, or null if the date picker was reset or a date has not been selected initially.
+     */
+    DatePicker.prototype.getDateValue = function () {
+        if (this.wasReset) {
+            return null;
+        }
+        return this.picker.getDate();
+    };
+    /**
+     * Sets the date picker value.
+     * @param date The value to set the date picker to. Must be a
+     * [Date](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Date) object.
+     */
+    DatePicker.prototype.setValue = function (date) {
+        this.picker.setDate(date);
+        this.wasReset = false;
+    };
+    /**
+     * Gets the element on which the date picker is bound.
+     * @returns {HTMLInputElement} The date picker element.
+     */
+    DatePicker.prototype.build = function () {
+        return this.element;
+    };
+    DatePicker.prototype.buildContent = function () {
+        var _this = this;
+        this.element = Dom_1.$$('input', { className: 'coveo-button' }).el;
+        this.element.readOnly = true;
+        this.picker = new Pikaday({
+            field: this.element,
+            onSelect: function () {
+                _this.wasReset = false;
+                _this.onChange.call(_this, _this);
+            },
+            i18n: {
+                previousMonth: Strings_1.l('PreviousMonth'),
+                nextMonth: Strings_1.l('NextMonth'),
+                months: Globalize.culture().calendar.months.names,
+                weekdays: Globalize.culture().calendar.days.names,
+                weekdaysShort: Globalize.culture().calendar.days.namesAbbr
+            }
+        });
+    };
+    return DatePicker;
+}());
+DatePicker.doExport = function () {
+    GlobalExports_1.exportGlobally({
+        'DatePicker': DatePicker
+    });
+};
+exports.DatePicker = DatePicker;
+
+
+/***/ }),
+
+/***/ 471:
 /***/ (function(module, exports, __webpack_require__) {
 
 /*!
@@ -61,22 +172,6 @@ webpackJsonpCoveo__temporary([37],{
             el.removeEventListener(e, callback, !!capture);
         } else {
             el.detachEvent('on' + e, callback);
-        }
-    },
-
-    fireEvent = function(el, eventName, data)
-    {
-        var ev;
-
-        if (document.createEvent) {
-            ev = document.createEvent('HTMLEvents');
-            ev.initEvent(eventName, true, false);
-            ev = extend(ev, data);
-            el.dispatchEvent(ev);
-        } else if (document.createEventObject) {
-            ev = document.createEventObject();
-            ev = extend(ev, data);
-            el.fireEvent('on' + eventName, ev);
         }
     },
 
@@ -165,6 +260,22 @@ webpackJsonpCoveo__temporary([37],{
         return to;
     },
 
+    fireEvent = function(el, eventName, data)
+    {
+        var ev;
+
+        if (document.createEvent) {
+            ev = document.createEvent('HTMLEvents');
+            ev.initEvent(eventName, true, false);
+            ev = extend(ev, data);
+            el.dispatchEvent(ev);
+        } else if (document.createEventObject) {
+            ev = document.createEventObject();
+            ev = extend(ev, data);
+            el.fireEvent('on' + eventName, ev);
+        }
+    },
+
     adjustCalendar = function(calendar) {
         if (calendar.month < 0) {
             calendar.year -= Math.ceil(Math.abs(calendar.month)/12);
@@ -198,6 +309,13 @@ webpackJsonpCoveo__temporary([37],{
         // the default output format for `.toString()` and `field` value
         format: 'YYYY-MM-DD',
 
+        // the toString function which gets passed a current date object and format
+        // and returns a string
+        toString: null,
+
+        // used to create date object from current input string
+        parse: null,
+
         // the initial date to view when first opened
         defaultDate: null,
 
@@ -221,6 +339,9 @@ webpackJsonpCoveo__temporary([37],{
         // show week numbers at head of row
         showWeekNumber: false,
 
+        // Week picker mode
+        pickWholeWeek: false,
+
         // used internally (don't config outside)
         minYear: 0,
         maxYear: 9999,
@@ -241,6 +362,9 @@ webpackJsonpCoveo__temporary([37],{
         // Render days of the calendar grid that fall in the next or previous month
         showDaysInNextAndPreviousMonths: false,
 
+        // Allows user to select days that fall in the next or previous month
+        enableSelectionDaysInNextAndPreviousMonths: false,
+
         // how many months are visible
         numberOfMonths: 1,
 
@@ -250,6 +374,9 @@ webpackJsonpCoveo__temporary([37],{
 
         // Specify a DOM element to render the calendar in
         container: undefined,
+
+        // Blur field when date is selected
+        blurFieldOnSelect : true,
 
         // internationalization
         i18n: {
@@ -262,6 +389,9 @@ webpackJsonpCoveo__temporary([37],{
 
         // Theme Classname
         theme: null,
+
+        // events array
+        events: [],
 
         // callback function
         onSelect: null,
@@ -290,6 +420,11 @@ webpackJsonpCoveo__temporary([37],{
         if (opts.isEmpty) {
             if (opts.showDaysInNextAndPreviousMonths) {
                 arr.push('is-outside-current-month');
+
+                if(!opts.enableSelectionDaysInNextAndPreviousMonths) {
+                    arr.push('is-selection-disabled');
+                }
+
             } else {
                 return '<td class="is-empty"></td>';
             }
@@ -303,6 +438,9 @@ webpackJsonpCoveo__temporary([37],{
         if (opts.isSelected) {
             arr.push('is-selected');
             ariaSelected = 'true';
+        }
+        if (opts.hasEvent) {
+            arr.push('has-event');
         }
         if (opts.isInRange) {
             arr.push('is-inrange');
@@ -328,9 +466,9 @@ webpackJsonpCoveo__temporary([37],{
         return '<td class="pika-week">' + weekNum + '</td>';
     },
 
-    renderRow = function(days, isRTL)
+    renderRow = function(days, isRTL, pickWholeWeek, isRowSelected)
     {
-        return '<tr>' + (isRTL ? days.reverse() : days).join('') + '</tr>';
+        return '<tr class="pika-row' + (pickWholeWeek ? ' pick-whole-week' : '') + (isRowSelected ? ' is-selected' : '') + '">' + (isRTL ? days.reverse() : days).join('') + '</tr>';
     },
 
     renderBody = function(rows)
@@ -441,7 +579,7 @@ webpackJsonpCoveo__temporary([37],{
                     if (opts.bound) {
                         sto(function() {
                             self.hide();
-                            if (opts.field) {
+                            if (opts.blurFieldOnSelect && opts.field) {
                                 opts.field.blur();
                             }
                         }, 100);
@@ -491,7 +629,9 @@ webpackJsonpCoveo__temporary([37],{
                 switch(e.keyCode){
                     case 13:
                     case 27:
-                        opts.field.blur();
+                        if (opts.field) {
+                            opts.field.blur();
+                        }
                         break;
                     case 37:
                         e.preventDefault();
@@ -517,7 +657,9 @@ webpackJsonpCoveo__temporary([37],{
             if (e.firedBy === self) {
                 return;
             }
-            if (hasMoment) {
+            if (opts.parse) {
+                date = opts.parse(opts.field.value, opts.format);
+            } else if (hasMoment) {
                 date = moment(opts.field.value, opts.format, opts.formatStrict);
                 date = (date && date.isValid()) ? date.toDate() : null;
             }
@@ -707,7 +849,17 @@ webpackJsonpCoveo__temporary([37],{
          */
         toString: function(format)
         {
-            return !isDate(this._d) ? '' : hasMoment ? moment(this._d).format(format || this._o.format) : this._d.toDateString();
+            format = format || this._o.format;
+            if (!isDate(this._d)) {
+                return '';
+            }
+            if (this._o.toString) {
+              return this._o.toString(this._d, format);
+            }
+            if (hasMoment) {
+              return moment(this._d).format(format);
+            }
+            return this._d.toDateString();
         },
 
         /**
@@ -729,11 +881,11 @@ webpackJsonpCoveo__temporary([37],{
         },
 
         /**
-         * return a Date object of the current selection with fallback for the current date
+         * return a Date object of the current selection
          */
         getDate: function()
         {
-            return isDate(this._d) ? new Date(this._d.getTime()) : new Date();
+            return isDate(this._d) ? new Date(this._d.getTime()) : null;
         },
 
         /**
@@ -816,7 +968,7 @@ webpackJsonpCoveo__temporary([37],{
 
         adjustDate: function(sign, days) {
 
-            var day = this.getDate();
+            var day = this.getDate() || new Date();
             var difference = parseInt(days)*24*60*60*1000;
 
             var newDay;
@@ -825,14 +977,6 @@ webpackJsonpCoveo__temporary([37],{
                 newDay = new Date(day.valueOf() + difference);
             } else if (sign === 'subtract') {
                 newDay = new Date(day.valueOf() - difference);
-            }
-
-            if (hasMoment) {
-                if (sign === 'add') {
-                    newDay = moment(day).add(days, "days").toDate();
-                } else if (sign === 'subtract') {
-                    newDay = moment(day).subtract(days, "days").toDate();
-                }
             }
 
             this.setDate(newDay);
@@ -986,7 +1130,7 @@ webpackJsonpCoveo__temporary([37],{
             if (typeof this._o.onDraw === 'function') {
                 this._o.onDraw(this);
             }
-            
+
             if (opts.bound) {
                 // let the screen reader user know to use arrow keys
                 opts.field.setAttribute('aria-label', 'Use the arrow keys to pick a date');
@@ -1073,11 +1217,13 @@ webpackJsonpCoveo__temporary([37],{
                 after -= 7;
             }
             cells += 7 - after;
+            var isWeekSelected = false;
             for (var i = 0, r = 0; i < cells; i++)
             {
                 var day = new Date(year, month, 1 + (i - before)),
                     isSelected = isDate(this._d) ? compareDates(day, this._d) : false,
                     isToday = compareDates(day, now),
+                    hasEvent = opts.events.indexOf(day.toDateString()) !== -1 ? true : false,
                     isEmpty = i < before || i >= (days + before),
                     dayNumber = 1 + (i - before),
                     monthNumber = month,
@@ -1106,6 +1252,7 @@ webpackJsonpCoveo__temporary([37],{
                         day: dayNumber,
                         month: monthNumber,
                         year: yearNumber,
+                        hasEvent: hasEvent,
                         isSelected: isSelected,
                         isToday: isToday,
                         isDisabled: isDisabled,
@@ -1113,8 +1260,13 @@ webpackJsonpCoveo__temporary([37],{
                         isStartRange: isStartRange,
                         isEndRange: isEndRange,
                         isInRange: isInRange,
-                        showDaysInNextAndPreviousMonths: opts.showDaysInNextAndPreviousMonths
+                        showDaysInNextAndPreviousMonths: opts.showDaysInNextAndPreviousMonths,
+                        enableSelectionDaysInNextAndPreviousMonths: opts.enableSelectionDaysInNextAndPreviousMonths
                     };
+
+                if (opts.pickWholeWeek && isSelected) {
+                    isWeekSelected = true;
+                }
 
                 row.push(renderDay(dayConfig));
 
@@ -1122,9 +1274,10 @@ webpackJsonpCoveo__temporary([37],{
                     if (opts.showWeekNumber) {
                         row.unshift(renderWeek(i - before, month, year));
                     }
-                    data.push(renderRow(row, opts.isRTL));
+                    data.push(renderRow(row, opts.isRTL, opts.pickWholeWeek, isWeekSelected));
                     row = [];
                     r = 0;
+                    isWeekSelected = false;
                 }
             }
             return renderTable(opts, data, randId);
@@ -1138,9 +1291,9 @@ webpackJsonpCoveo__temporary([37],{
         show: function()
         {
             if (!this.isVisible()) {
-                removeClass(this.el, 'is-hidden');
                 this._v = true;
                 this.draw();
+                removeClass(this.el, 'is-hidden');
                 if (this._o.bound) {
                     addEvent(document, 'click', this._onClick);
                     this.adjustPosition();
@@ -1178,6 +1331,7 @@ webpackJsonpCoveo__temporary([37],{
             removeEvent(this.el, 'mousedown', this._onMouseDown, true);
             removeEvent(this.el, 'touchend', this._onMouseDown, true);
             removeEvent(this.el, 'change', this._onChange);
+            removeEvent(document, 'keydown', this._onKeyChange);
             if (this._o.field) {
                 removeEvent(this._o.field, 'change', this._onInputChange);
                 if (this._o.bound) {
@@ -1196,117 +1350,6 @@ webpackJsonpCoveo__temporary([37],{
     return Pikaday;
 
 }));
-
-
-/***/ }),
-
-/***/ 99:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var Dom_1 = __webpack_require__(3);
-var DateUtils_1 = __webpack_require__(27);
-var GlobalExports_1 = __webpack_require__(4);
-var Strings_1 = __webpack_require__(10);
-var Globalize = __webpack_require__(24);
-var Pikaday = __webpack_require__(463);
-/**
- * A date picker widget with standard styling.
- */
-var DatePicker = (function () {
-    /**
-     * Creates a new `DatePicker`.
-     * @param onChange The function to call when a new value is selected in the date picker. This function takes the
-     * current `DatePicker` instance as an argument.
-     */
-    function DatePicker(onChange) {
-        if (onChange === void 0) { onChange = function () {
-        }; }
-        this.onChange = onChange;
-        this.wasReset = true;
-        this.buildContent();
-    }
-    /**
-     * Resets the date picker.
-     */
-    DatePicker.prototype.reset = function () {
-        this.picker.setDate(undefined);
-        this.wasReset = true;
-        this.onChange(this);
-    };
-    /**
-     * Gets the element on which the date picker is bound.
-     * @returns {HTMLInputElement} The date picker element.
-     */
-    DatePicker.prototype.getElement = function () {
-        return this.element;
-    };
-    /**
-     * Gets the currently selected value in the date picker.
-     * @returns {string} A textual representation of the currently selected value (`YYYY-MM-DD` format).
-     */
-    DatePicker.prototype.getValue = function () {
-        if (this.wasReset) {
-            return '';
-        }
-        var date = this.picker.getDate();
-        return date ? DateUtils_1.DateUtils.dateForQuery(this.picker.getDate()) : '';
-    };
-    /**
-     * Get the currently selected value in the date picker, as a Date object
-     * @returns {Date} A Date object for the current value, or null if the date picker was reset or a date has not been selected initially.
-     */
-    DatePicker.prototype.getDateValue = function () {
-        if (this.wasReset) {
-            return null;
-        }
-        return this.picker.getDate();
-    };
-    /**
-     * Sets the date picker value.
-     * @param date The value to set the date picker to. Must be a
-     * [Date](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Date) object.
-     */
-    DatePicker.prototype.setValue = function (date) {
-        this.picker.setDate(date);
-        this.wasReset = false;
-    };
-    /**
-     * Gets the element on which the date picker is bound.
-     * @returns {HTMLInputElement} The date picker element.
-     */
-    DatePicker.prototype.build = function () {
-        return this.element;
-    };
-    DatePicker.prototype.buildContent = function () {
-        var _this = this;
-        this.element = Dom_1.$$('input', { className: 'coveo-button' }).el;
-        this.element.readOnly = true;
-        this.picker = new Pikaday({
-            field: this.element,
-            onSelect: function () {
-                _this.wasReset = false;
-                _this.onChange.call(_this, _this);
-            },
-            i18n: {
-                previousMonth: Strings_1.l('PreviousMonth'),
-                nextMonth: Strings_1.l('NextMonth'),
-                months: Globalize.culture().calendar.months.names,
-                weekdays: Globalize.culture().calendar.days.names,
-                weekdaysShort: Globalize.culture().calendar.days.namesAbbr
-            }
-        });
-    };
-    return DatePicker;
-}());
-DatePicker.doExport = function () {
-    GlobalExports_1.exportGlobally({
-        'DatePicker': DatePicker
-    });
-};
-exports.DatePicker = DatePicker;
 
 
 /***/ })

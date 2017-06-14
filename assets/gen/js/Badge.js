@@ -1,6 +1,6 @@
-webpackJsonpCoveo__temporary([34,67],{
+webpackJsonpCoveo__temporary([35,67],{
 
-/***/ 284:
+/***/ 286:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18,7 +18,7 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var ComponentOptions_1 = __webpack_require__(9);
 var Initialization_1 = __webpack_require__(2);
-var FieldValue_1 = __webpack_require__(96);
+var FieldValue_1 = __webpack_require__(98);
 var StringUtils_1 = __webpack_require__(19);
 var Assert_1 = __webpack_require__(7);
 var Dom_1 = __webpack_require__(3);
@@ -193,7 +193,7 @@ Initialization_1.Initialization.registerAutoCreateComponent(Badge);
 
 /***/ }),
 
-/***/ 96:
+/***/ 98:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";

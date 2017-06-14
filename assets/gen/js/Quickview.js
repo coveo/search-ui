@@ -1,6 +1,6 @@
-webpackJsonpCoveo__temporary([13],{
+webpackJsonpCoveo__temporary([15],{
 
-/***/ 265:
+/***/ 267:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18,7 +18,7 @@ exports.QuickviewEvents = QuickviewEvents;
 
 /***/ }),
 
-/***/ 312:
+/***/ 314:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -38,17 +38,17 @@ var Component_1 = __webpack_require__(8);
 var ComponentOptions_1 = __webpack_require__(9);
 var DomUtils_1 = __webpack_require__(43);
 var Dom_1 = __webpack_require__(3);
-var DefaultQuickviewTemplate_1 = __webpack_require__(614);
+var DefaultQuickviewTemplate_1 = __webpack_require__(621);
 var ResultListEvents_1 = __webpack_require__(30);
 var StringUtils_1 = __webpack_require__(19);
-var QuickviewDocument_1 = __webpack_require__(615);
+var QuickviewDocument_1 = __webpack_require__(622);
 var QueryStateModel_1 = __webpack_require__(14);
-var QuickviewEvents_1 = __webpack_require__(265);
+var QuickviewEvents_1 = __webpack_require__(267);
 var Initialization_1 = __webpack_require__(2);
 var KeyboardUtils_1 = __webpack_require__(21);
 var ExternalModulesShim_1 = __webpack_require__(22);
 var GlobalExports_1 = __webpack_require__(4);
-__webpack_require__(569);
+__webpack_require__(577);
 /**
  * The `Quickview` component renders a button / link which the end user can click to open a modal box containing certain
  * content about a result. Most of the time, this component references a [`QuickviewDocument`]{@link QuickviewDocument}
@@ -358,14 +358,14 @@ Initialization_1.Initialization.registerAutoCreateComponent(Quickview);
 
 /***/ }),
 
-/***/ 569:
+/***/ 577:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
 
-/***/ 614:
+/***/ 621:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -397,7 +397,7 @@ exports.DefaultQuickviewTemplate = DefaultQuickviewTemplate;
 
 /***/ }),
 
-/***/ 615:
+/***/ 622:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -418,10 +418,10 @@ var ComponentOptions_1 = __webpack_require__(9);
 var AnalyticsActionListMeta_1 = __webpack_require__(12);
 var Assert_1 = __webpack_require__(7);
 var Dom_1 = __webpack_require__(3);
-var QuickviewEvents_1 = __webpack_require__(265);
+var QuickviewEvents_1 = __webpack_require__(267);
 var DeviceUtils_1 = __webpack_require__(18);
 var Utils_1 = __webpack_require__(5);
-var ColorUtils_1 = __webpack_require__(103);
+var ColorUtils_1 = __webpack_require__(105);
 var Initialization_1 = __webpack_require__(2);
 var Strings_1 = __webpack_require__(10);
 var _ = __webpack_require__(1);

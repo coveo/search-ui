@@ -1,6 +1,6 @@
-webpackJsonpCoveo__temporary([15,66],{
+webpackJsonpCoveo__temporary([17,66],{
 
-/***/ 266:
+/***/ 268:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14,7 +14,7 @@ exports.SUBSCRIPTION_TYPE = {
 
 /***/ }),
 
-/***/ 320:
+/***/ 322:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -32,12 +32,12 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var Component_1 = __webpack_require__(8);
 var ComponentOptions_1 = __webpack_require__(9);
-var SearchAlertsMessage_1 = __webpack_require__(624);
+var SearchAlertsMessage_1 = __webpack_require__(631);
 var SettingsEvents_1 = __webpack_require__(38);
 var QueryEvents_1 = __webpack_require__(11);
 var Assert_1 = __webpack_require__(7);
 var SearchAlertEvents_1 = __webpack_require__(56);
-var Subscription_1 = __webpack_require__(266);
+var Subscription_1 = __webpack_require__(268);
 var Initialization_1 = __webpack_require__(2);
 var Strings_1 = __webpack_require__(10);
 var Dom_1 = __webpack_require__(3);
@@ -591,7 +591,7 @@ exports.Dropdown = Dropdown;
 
 /***/ }),
 
-/***/ 624:
+/***/ 631:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -611,7 +611,7 @@ var Component_1 = __webpack_require__(8);
 var ComponentOptions_1 = __webpack_require__(9);
 var SearchAlertEvents_1 = __webpack_require__(56);
 var QueryEvents_1 = __webpack_require__(11);
-var Subscription_1 = __webpack_require__(266);
+var Subscription_1 = __webpack_require__(268);
 var PopupUtils_1 = __webpack_require__(47);
 var Strings_1 = __webpack_require__(10);
 var Dom_1 = __webpack_require__(3);

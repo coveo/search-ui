@@ -1,6 +1,6 @@
-webpackJsonpCoveo__temporary([50],{
+webpackJsonpCoveo__temporary([51],{
 
-/***/ 306:
+/***/ 308:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -30,7 +30,7 @@ var Strings_1 = __webpack_require__(10);
 var Dom_1 = __webpack_require__(3);
 var KeyboardUtils_1 = __webpack_require__(21);
 var GlobalExports_1 = __webpack_require__(4);
-__webpack_require__(564);
+__webpack_require__(572);
 /**
  * The Pager component attaches itself to a `div` element and renders widgets that allow the end user to navigate
  * through the different result pages.
@@ -361,7 +361,7 @@ Initialization_1.Initialization.registerAutoCreateComponent(Pager);
 
 /***/ }),
 
-/***/ 564:
+/***/ 572:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

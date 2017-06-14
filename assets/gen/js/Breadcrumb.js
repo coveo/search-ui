@@ -1,6 +1,6 @@
-webpackJsonpCoveo__temporary([57],{
+webpackJsonpCoveo__temporary([58],{
 
-/***/ 285:
+/***/ 287:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28,7 +28,7 @@ var QueryEvents_1 = __webpack_require__(11);
 var KeyboardUtils_1 = __webpack_require__(21);
 var _ = __webpack_require__(1);
 var GlobalExports_1 = __webpack_require__(4);
-__webpack_require__(551);
+__webpack_require__(559);
 /**
  * The Breadcrumb component displays a summary of the currently active query filters.
  *
@@ -158,7 +158,7 @@ Initialization_1.Initialization.registerAutoCreateComponent(Breadcrumb);
 
 /***/ }),
 
-/***/ 551:
+/***/ 559:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

@@ -1,6 +1,6 @@
-webpackJsonpCoveo__temporary([21],{
+webpackJsonpCoveo__temporary([23],{
 
-/***/ 324:
+/***/ 326:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17,7 +17,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var Component_1 = __webpack_require__(8);
-var SortCriteria_1 = __webpack_require__(407);
+var SortCriteria_1 = __webpack_require__(410);
 var ComponentOptions_1 = __webpack_require__(9);
 var Assert_1 = __webpack_require__(7);
 var Utils_1 = __webpack_require__(5);
@@ -30,7 +30,7 @@ var AnalyticsActionListMeta_1 = __webpack_require__(12);
 var KeyboardUtils_1 = __webpack_require__(21);
 var _ = __webpack_require__(1);
 var GlobalExports_1 = __webpack_require__(4);
-__webpack_require__(583);
+__webpack_require__(590);
 /**
  * The Sort component renders a widget that the end user can interact with to sort query results according to a single
  * criterion or list of criteria.
@@ -231,7 +231,7 @@ Initialization_1.Initialization.registerAutoCreateComponent(Sort);
 
 /***/ }),
 
-/***/ 407:
+/***/ 410:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -337,7 +337,7 @@ exports.SortCriteria = SortCriteria;
 
 /***/ }),
 
-/***/ 583:
+/***/ 590:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

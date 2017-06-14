@@ -1,6 +1,6 @@
-webpackJsonpCoveo__temporary([17],{
+webpackJsonpCoveo__temporary([19],{
 
-/***/ 252:
+/***/ 254:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23,18 +23,18 @@ var Initialization_1 = __webpack_require__(2);
 var InitializationEvents_1 = __webpack_require__(15);
 var Assert_1 = __webpack_require__(7);
 var ResultListEvents_1 = __webpack_require__(30);
-var ResultLayoutEvents_1 = __webpack_require__(101);
+var ResultLayoutEvents_1 = __webpack_require__(103);
 var Dom_1 = __webpack_require__(3);
 var QueryStateModel_1 = __webpack_require__(14);
 var Model_1 = __webpack_require__(16);
 var AnalyticsActionListMeta_1 = __webpack_require__(12);
 var KeyboardUtils_1 = __webpack_require__(21);
-var ResponsiveResultLayout_1 = __webpack_require__(620);
+var ResponsiveResultLayout_1 = __webpack_require__(627);
 var Utils_1 = __webpack_require__(5);
 var _ = __webpack_require__(1);
 var GlobalExports_1 = __webpack_require__(4);
 var Strings_1 = __webpack_require__(10);
-__webpack_require__(575);
+__webpack_require__(583);
 exports.defaultLayout = 'list';
 /**
  * The ResultLayout component allows the end user to switch between multiple {@link ResultList} components that have
@@ -306,14 +306,14 @@ Initialization_1.Initialization.registerAutoCreateComponent(ResultLayout);
 
 /***/ }),
 
-/***/ 575:
+/***/ 583:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
 
-/***/ 620:
+/***/ 627:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -322,7 +322,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var ResponsiveComponentsManager_1 = __webpack_require__(76);
 var Dom_1 = __webpack_require__(3);
 var Component_1 = __webpack_require__(8);
-var ResultLayout_1 = __webpack_require__(252);
+var ResultLayout_1 = __webpack_require__(254);
 var Logger_1 = __webpack_require__(13);
 var SearchInterface_1 = __webpack_require__(20);
 var _ = __webpack_require__(1);

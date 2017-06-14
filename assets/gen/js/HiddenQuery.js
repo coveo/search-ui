@@ -1,6 +1,6 @@
-webpackJsonpCoveo__temporary([51],{
+webpackJsonpCoveo__temporary([52],{
 
-/***/ 301:
+/***/ 303:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -29,7 +29,7 @@ var Initialization_1 = __webpack_require__(2);
 var Assert_1 = __webpack_require__(7);
 var _ = __webpack_require__(1);
 var GlobalExports_1 = __webpack_require__(4);
-__webpack_require__(560);
+__webpack_require__(568);
 /**
  * The HiddenQuery component handles a "hidden" query parameter (`hq`) and its description (`hd`).
  *
@@ -152,7 +152,7 @@ Initialization_1.Initialization.registerAutoCreateComponent(HiddenQuery);
 
 /***/ }),
 
-/***/ 560:
+/***/ 568:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

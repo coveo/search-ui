@@ -1,6 +1,6 @@
-webpackJsonpCoveo__temporary([52],{
+webpackJsonpCoveo__temporary([53],{
 
-/***/ 295:
+/***/ 297:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -24,7 +24,7 @@ var Initialization_1 = __webpack_require__(2);
 var Strings_1 = __webpack_require__(10);
 var _ = __webpack_require__(1);
 var GlobalExports_1 = __webpack_require__(4);
-__webpack_require__(557);
+__webpack_require__(565);
 /**
  * The ExportToExcel component renders an item in the {@link Settings} menu to allow the end user to export the current
  * search results to the Microsoft Excel format (.xlsx).
@@ -110,7 +110,7 @@ Initialization_1.Initialization.registerAutoCreateComponent(ExportToExcel);
 
 /***/ }),
 
-/***/ 557:
+/***/ 565:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

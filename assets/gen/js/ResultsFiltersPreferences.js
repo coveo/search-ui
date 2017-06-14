@@ -1,6 +1,6 @@
-webpackJsonpCoveo__temporary([11,39,40],{
+webpackJsonpCoveo__temporary([13,40,41],{
 
-/***/ 245:
+/***/ 247:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9,7 +9,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var Dom_1 = __webpack_require__(3);
 var _ = __webpack_require__(1);
 var Strings_1 = __webpack_require__(10);
-__webpack_require__(462);
+__webpack_require__(470);
 var Utils_1 = __webpack_require__(5);
 var GlobalExports_1 = __webpack_require__(4);
 /**
@@ -128,7 +128,7 @@ exports.MultiSelect = MultiSelect;
 
 /***/ }),
 
-/***/ 317:
+/***/ 319:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -160,11 +160,11 @@ var Utils_1 = __webpack_require__(5);
 var Dom_1 = __webpack_require__(3);
 var _ = __webpack_require__(1);
 var GlobalExports_1 = __webpack_require__(4);
-__webpack_require__(577);
+__webpack_require__(585);
 var Checkbox_1 = __webpack_require__(59);
 var TextInput_1 = __webpack_require__(45);
-var MultiSelect_1 = __webpack_require__(245);
-var FormGroup_1 = __webpack_require__(97);
+var MultiSelect_1 = __webpack_require__(247);
+var FormGroup_1 = __webpack_require__(99);
 /**
  * The `ResultFiltersPreferences` component allows end users to create custom filters to apply to queries. These filters
  * are saved to local storage.
@@ -715,28 +715,28 @@ Initialization_1.Initialization.registerAutoCreateComponent(ResultsFiltersPrefer
 
 /***/ }),
 
-/***/ 455:
+/***/ 463:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
 
-/***/ 462:
+/***/ 470:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
 
-/***/ 577:
+/***/ 585:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
 
-/***/ 97:
+/***/ 99:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -744,7 +744,7 @@ Initialization_1.Initialization.registerAutoCreateComponent(ResultsFiltersPrefer
 Object.defineProperty(exports, "__esModule", { value: true });
 var Dom_1 = __webpack_require__(3);
 var _ = __webpack_require__(1);
-__webpack_require__(455);
+__webpack_require__(463);
 var GlobalExports_1 = __webpack_require__(4);
 /**
  * A simple `fieldset` HTMLElement containing multiple form widgets.
