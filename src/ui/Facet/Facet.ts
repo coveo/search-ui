@@ -1778,7 +1778,7 @@ export class Facet extends Component {
   private buildMore(): HTMLElement {
     let more: HTMLElement;
     if (this.searchInterface.isNewDesign()) {
-      const svgContainer = $$('span', {className: 'coveo-facet-more-icon'}, SVGIcons.arrowDown).el;
+      const svgContainer = $$('span', { className: 'coveo-facet-more-icon' }, SVGIcons.arrowDown).el;
       SVGDom.addClassToSVGInContainer(svgContainer, 'coveo-facet-more-icon-svg');
       more = $$('div', { className: 'coveo-facet-more', tabindex: 0 },
         svgContainer).el;

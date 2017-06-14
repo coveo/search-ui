@@ -143,10 +143,6 @@ $standard-transition-timing-function: cubic-bezier(0.4, 0.0, 0.2, 1);
 */
 @mixin clearButton($selector, $size:'normal') {
   cursor: pointer;
-  $icon: '.coveo-sprites-clear-inactive-filters';
-  $icon-clear: '.coveo-sprites-clear-active-filters';
-  $width: 11px;
-  $height: 11px;
 
   #{$selector} {
     .coveo-exclusion-svg {
@@ -154,27 +150,26 @@ $standard-transition-timing-function: cubic-bezier(0.4, 0.0, 0.2, 1);
     }
 
     @if $size == 'normal' {
-      width: 11px;
-      height: 11px;
+      width: 12px;
+      height: 12px;
     }
     @else if $size == 'small' {
-      $icon: '.coveo-sprites-facet-exclusion-hover';
-      $icon-clear: '.coveo-sprites-facet-checkbox-exclusion';
-      width: 6px;  
-      height: 6px;
+      width: 8px;  
+      height: 8px;
 
     } @else if $size == 'big' {
-      $icon: '.coveo-sprites-main-clear';
-      $icon-clear: '.coveo-sprites-main-clear-hover';
-      $width: 13px;
-      $height: 13px;
+      color: $color-greyish-teal-blue;
+      width: 15px;
+      height: 15px;
     }
-
   }
 
   &:hover {
-    #{$selector} .coveo-exclusion-svg {
-      fill: $color-red;
+    #{$selector} {
+      color: $color-red;
+      .coveo-exclusion-svg {
+        fill: $color-red;
+      }
     }
   }
 }

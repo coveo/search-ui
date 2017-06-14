@@ -58,17 +58,22 @@
   cursor: pointer;
   margin-left: 10px;
   position: relative;
-  top:2px;
+  top: 4px;
 }
 
 .coveo-facet-header-eraser {
-  @include clearButton('&', 'big');
   position: relative;
   top: 0px;
   visibility: hidden;
   &.coveo-facet-header-eraser-visible {
     visibility: visible;
   }
+}
+
+.coveo-facet-header-eraser-svg {
+  display: block;
+  margin-top: 5px;
+  @include clearButton('&', 'big');
 }
 
 .coveo-facet-header-wait-animation {

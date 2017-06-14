@@ -9,4 +9,5 @@ export class SVGIcons {
   public static checkboxHookExclusionMore = require('svg/checkbox-hook-exclusion-more');
   public static arrowUp = require('svg/arrow-up');
   public static arrowDown = require('svg/arrow-down');
+  public static mainClear = require('svg/main-clear');
 }
