@@ -826,7 +826,7 @@ export class SearchEndpoint implements ISearchEndpoint {
         return response.data;
       }).catch((error?: IErrorResponse) => {
         if (autoRenewToken && this.canRenewAccessToken() && this.isAccessTokenExpiredStatus(error.statusCode)) {
-          this.renewAccessToken().then(() => {
+          return this.renewAccessToken().then(() => {
             return this.performOneCall(params, callOptions, autoRenewToken);
           })
             .catch(() => {
