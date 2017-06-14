@@ -2,18 +2,33 @@
 @import "Variables";
 @import "../bin/sass/sprites";
 
+.coveo-filter-header-wrapper {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  @include display(inline-flex);
+  @include flex-wrap(nowrap);
+  @include justify-content(flex-end);
+}
+.coveo-dropdown-background {
+  opacity: 0.9;
+}
 .CoveoSimpleFilter {
   display: inline-block;
-
+  position: relative;
+  z-index: 20;
+  border: 1px #dadada solid;
+  background-color: white;
   .coveo-SimpleFilter-Select {
     color: #1D4F76;
     cursor: pointer;
-    position: relative;
+    display:inherit;
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
-    border : 10px;
+    white-space: nowrap;
+    padding: 6px;
     .coveo-icon {
       margin-left: 5px;
       position: relative;
@@ -42,20 +57,37 @@
 
   }
 
-.coveo-SimpleFilter-Select:hover {
-  background-color: $color-blueish-white-grey;
-}
+  .coveo-SimpleFilter-Select:hover {
+    background-color: $color-blueish-white-grey;
+  }
+
   .coveo-checkbox-container {
     display: none;
     border: 1px #dadada solid;
     .coveo-checkbox-button {
      @include defaultRoundedBorder();
+    }
+    &.coveo-checkbox-container-expanded {
+      position: absolute;
+      display: inline-block;
+      z-index: 20;
+      background-color: white;
+      top: 33px;
+      max-width: 170px;
 
     }
   }
 
+  .coveo-checkbox-container label {
+    display: inline-block;
+  }
+
+  .coveo-checkbox-container label:hover {
+    background-color: $color-blueish-white-grey;
+  }
+
   .coveo-checkbox-button, input[type=checkbox].coveo-checkbox + button {
-    margin-right: 0px;
+  //  margin-right: 0px;
   }
 
   .coveo-checkbox-span-label {
@@ -78,25 +110,7 @@
     user-select: none;
   }
 
-  .coveo-checkbox-container {
-    &.coveo-checkbox-container-expanded {
-      position: absolute;
-      display: inline-block;
-      z-index: 20;
-      background-color: white;
-      right: 357px;
-      top: 45px;
-      max-width: 170px;
 
-    }
-  }
 
-  .coveo-checkbox-container label {
-    display: inline-block;
-  }
-
-  .coveo-checkbox-container label:hover {
-    background-color: $color-blueish-white-grey;
-  }
 }
 

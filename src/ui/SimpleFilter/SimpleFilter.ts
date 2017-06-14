@@ -7,7 +7,7 @@ import { $$, Dom } from '../../utils/Dom';
 import { IBuildingQueryEventArgs, IDoneBuildingQueryEventArgs, IQuerySuccessEventArgs, QueryEvents } from '../../events/QueryEvents';
 import { ComponentOptions, IFieldOption } from '../Base/ComponentOptions';
 import { l } from '../../strings/Strings';
-import {Assert} from '../../misc/Assert';
+import { Assert } from '../../misc/Assert';
 import * as _ from 'underscore';
 import { Checkbox } from '../FormWidgets/Checkbox';
 import { IGroupByRequest } from '../../rest/GroupByRequest';
@@ -51,9 +51,11 @@ export class SimpleFilter extends Component {
     super(element, SimpleFilter.ID, bindings);
     this.options = ComponentOptions.initComponentOptions(element, SimpleFilter, options);
 
-    const select = $$('span', { className: 'coveo-SimpleFilter-Select' } , l(this.options.title));
-    const icon = $$('span', {className: 'coveo-icon'});
-
+    const mainxd = $$(document.body).find('.coveo-main-section');
+    const wrapper = $$('div', { className: 'coveo-filter-header-wrapper' });
+    const select = $$('span', { className: 'coveo-SimpleFilter-Select' }, l(this.options.title));
+    const icon = $$('span', { className: 'coveo-icon' });
+    wrapper.insertBefore(mainxd);
 
     select.el.appendChild(this.buildCircleElement().el);
     select.el.appendChild(icon.el);
@@ -65,8 +67,9 @@ export class SimpleFilter extends Component {
       this.checkboxContainer.el.appendChild(result.checkbox.getElement());
     });
     this.element.appendChild(this.checkboxContainer.el);
+    wrapper.append(this.element);
+    $$(this.element).on('click', (e: Event) => this.handleClick(e));
 
-    $$(this.element).on('click', (e: Event) => {this.handleClick(e)});
     this.bind.onRootElement(QueryEvents.buildingQuery, (args: IBuildingQueryEventArgs) => this.handleBuildingQuery(args));
     this.bind.onRootElement(QueryEvents.querySuccess, (args: IQuerySuccessEventArgs) => this.groupBy(args));
     this.bind.onRootElement(QueryEvents.doneBuildingQuery, (args: IDoneBuildingQueryEventArgs) => this.handleDoneBuildingQuery(args));
@@ -91,19 +94,17 @@ export class SimpleFilter extends Component {
   }
 
   private handleClick(e: Event) {
-      if (e.target == this.element || e.target == $$(this.element).find('.coveo-SimpleFilter-Select')) {
-        e.stopPropagation();
-        e.stopImmediatePropagation();
-        this.toggle();
-      }
-}
+    if (e.target == this.element || e.target == $$(this.element).find('.coveo-SimpleFilter-Select') ||
+      e.target == $$(this.element).find('.coveo-circle') || e.target == $$(this.element).find('.coveo-icon')) {
+
+      e.stopImmediatePropagation();
+      this.toggle();
+    }
+  }
   private open() {
     this.checkboxContainer.addClass('coveo-checkbox-container-expanded');
     this.expanded = true;
     let backdrop = $$('div', { className: 'coveo-dropdown-background' });
-    backdrop.el.style.opacity = '0.9';
-    backdrop.el.style.background = 'white';
-    this.element.style.zIndex = '20';
     this.element.parentElement.appendChild(backdrop.el);
   }
 
@@ -145,9 +146,9 @@ export class SimpleFilter extends Component {
   }
 
   private buildCircleElement(): Dom {
-    this.circleElement = $$('span', {className: 'coveo-circle'}, this.getSelectedValues().length.toString());
+    this.circleElement = $$('span', { className: 'coveo-circle' }, this.getSelectedValues().length.toString());
     return this.circleElement;
-}
+  }
 
   // ///////////////////////////////////////////////////////////////////////////////////////////////
   private groupBy(data: IQuerySuccessEventArgs) {
