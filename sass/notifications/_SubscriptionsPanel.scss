@@ -31,19 +31,6 @@
   .coveo-subscriptions-panel-fail {
     padding: 10px 0px ;
   }
-  .coveo-subscriptions-panel-close {
-    float: right;
-    cursor: pointer;
-    padding: 4px;
-    border-radius: 2px;
-    background-color: #f7f7f7;
-    height: 24px;
-    width: 24px;
-    @include clearButton('.coveo-icon');
-    .coveo-icon {
-      vertical-align: text-top;
-    }
-  }
   .coveo-subscriptions-panel-content {
     width: 100%; 
     margin: 20px 0;
