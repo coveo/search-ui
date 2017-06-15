@@ -771,10 +771,13 @@ export class StandaloneSearchInterface extends SearchInterface {
     link.href = searchPage;
     link.href = link.href; // IE11 needs this to correctly fill the properties that are used below.
 
+    let pathname = link.pathname.indexOf('/') == 0 ? link.pathname : '/' + link.pathname; // IE11 does not add a leading slash to this property.
+    let hash = link.hash ? link.hash + '&' : '#';
+
     // By using a setTimeout, we allow other possible code related to the search box / magic box time to complete.
     // eg: onblur of the magic box.
     setTimeout(() => {
-      this._window.location.href = `${link.protocol}//${link.host}${link.pathname}${link.search}${link.hash ? link.hash + '&' : '#'}${HashUtils.encodeValues(stateValues)}`;
+      this._window.location.href = `${link.protocol}//${link.host}${pathname}${link.search}${hash}${HashUtils.encodeValues(stateValues)}`;
     }, 0);
   }
 
