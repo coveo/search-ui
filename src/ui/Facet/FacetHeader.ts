@@ -197,9 +197,9 @@ export class FacetHeader {
   }
 
   private buildCollapse(): HTMLElement {
-    const icon = $$('span', {clasName: 'coveo-icon'});
+    const icon = $$('span', { clasName: 'coveo-icon' });
 
-    const collapse = $$('div', {title: l('Collapse'), className: 'coveo-facet-header-collapse'});
+    const collapse = $$('div', { title: l('Collapse'), className: 'coveo-facet-header-collapse' });
     collapse.append(icon.el);
 
     collapse.on('click', () => this.collapseFacet());
@@ -261,7 +261,7 @@ export class FacetHeader {
   }
 
   public buildEraser(): HTMLElement {
-    const eraser = $$('div', {title: l('Clear', this.options.title), className: 'coveo-facet-header-eraser'}, SVGIcons.mainClear);
+    const eraser = $$('div', { title: l('Clear', this.options.title), className: 'coveo-facet-header-eraser' }, SVGIcons.mainClear);
     SVGDom.addClassToSVGInContainer(eraser.el, 'coveo-facet-header-eraser-svg');
 
     eraser.on('click', () => {

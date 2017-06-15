@@ -119,12 +119,12 @@ export class HiddenQuery extends Component {
       $$(values).addClass('coveo-hidden-query-breadcrumb-values');
       elem.appendChild(values);
 
-      const value = $$('span', {className: 'coveo-hidden-query-breadcrumb-value'}, description);
+      const value = $$('span', { className: 'coveo-hidden-query-breadcrumb-value' }, description);
       values.appendChild(value.el);
 
-      const svgContainer = $$('span', {className: 'coveo-hidden-query-breadcrum-clear-icon'}, SVGIcons.checkboxHookExclusionMore);
+      const svgContainer = $$('span', { className: 'coveo-hidden-query-breadcrum-clear-icon' }, SVGIcons.checkboxHookExclusionMore);
       SVGDom.addClassToSVGInContainer(svgContainer.el, 'coveo-hidden-query-breadcrumb-clear-svg');
-      const clear = $$('span', {className: 'coveo-hidden-query-breadcrumb-clear'});
+      const clear = $$('span', { className: 'coveo-hidden-query-breadcrumb-clear' });
       clear.append(svgContainer.el);
       elem.appendChild(clear.el);
 

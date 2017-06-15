@@ -66,9 +66,7 @@
   cursor: pointer;
   opacity: 0.5;
   clear: none;
-  .coveo-facet-search-clear-svg {
-    @include clearButton('&', 'small');
-  }
+  @include clearButton('&', 'small');
 
   &:hover {
     opacity: 1;

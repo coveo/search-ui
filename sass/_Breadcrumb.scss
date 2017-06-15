@@ -24,14 +24,12 @@
   padding: 5px;
   margin-left: 5px;
   @include flex-shrink(0);
+  @include clearButton('.coveo-breadcrumb-clear-all-icon');
 }
 
 .coveo-breadcrumb-clear-all-icon {
   top: 1px;
-  margin-right: 5px;
-}
-.coveo-breadcrumb-clear-all-svg {
-  @include clearButton('&');
+  margin-right: 5px;  
 }
 
 .coveo-breadcrumb-items {

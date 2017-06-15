@@ -48,8 +48,6 @@
     cursor: pointer;
     vertical-align: middle;
     margin: 0 5px;
+    @include clearButton('&');
   }
-}
-.coveo-subscript-messages-info-close-svg {
-  @include clearButton('&');  
 }
