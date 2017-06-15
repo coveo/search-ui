@@ -20,7 +20,8 @@ export class HierarchicalFacetQueryController extends FacetQueryController {
       let match = _.chain(this.facet.getAllValueHierarchy())
         .toArray()
         .filter((v: IValueHierarchy) => {
-          return this.facet.getValueCaption(v.facetValue).match(regex) != null;
+          return this.facet.getValueCaption(v.facetValue).match(regex) != null &&
+            !_.contains(<any>_.map(params.alwaysExclude, (toExclude) => toExclude.toLowerCase()), v.facetValue.value.toLowerCase());
         })
         .first(this.facet.options.numberOfValuesInFacetSearch)
         .value();
