@@ -24,8 +24,8 @@ gulp.task('compileTSOnly', shell.task([
   'node node_modules/webpack/bin/webpack.js --config ./webpack.tsonly.config.js'
 ]));
 
-gulp.task('minimize', ['addEolDependencies'], shell.task([
-  'node node_modules/webpack/bin/webpack.js --optimize-minimize'
+gulp.task('minimize', ['addEolDependencies', 'setNodeProdEnv'], shell.task([
+  'node --max_old_space_size=8192 node_modules/webpack/bin/webpack.js --env minimize'
 ]));
 
 gulp.task('deprecatedDependencies', function () {
