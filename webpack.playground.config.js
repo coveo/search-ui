@@ -30,6 +30,9 @@ module.exports = {
     },
     modules: ['node_modules', path.resolve(__dirname, '../bin/image/css')]
   },
+  plugins : [new webpack.DefinePlugin({
+    DISABLE_LOGGER: minimize
+  })],
   devtool: 'source-map',
   module: {
     rules: [{

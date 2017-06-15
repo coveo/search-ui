@@ -9,7 +9,7 @@ export function lazyAdvancedSearch() {
       require.ensure(['./AdvancedSearch'], () => {
         let loaded = require<IComponentDefinition>('./AdvancedSearch.ts')['AdvancedSearch'];
         lazyExport(loaded, resolve);
-      }, LazyInitialization.buildErrorCallback('AdvancedSearch'), 'AdvancedSearch');
+      }, LazyInitialization.buildErrorCallback('AdvancedSearch', resolve), 'AdvancedSearch');
     });
   });
 }

@@ -8,7 +8,7 @@ export function lazyDidYouMean() {
       require.ensure(['./DidYouMean'], () => {
         let loaded = require<IComponentDefinition>('./DidYouMean.ts')['DidYouMean'];
         lazyExport(loaded, resolve);
-      }, LazyInitialization.buildErrorCallback('DidYouMean'), 'DidYouMean');
+      }, LazyInitialization.buildErrorCallback('DidYouMean', resolve), 'DidYouMean');
     });
   });
 }

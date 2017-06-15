@@ -4,7 +4,6 @@ const minimize = process.argv.indexOf('minimize') !== -1;
 const webpack = require('webpack');
 const path = require('path');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const spritesmithConfig = require('./spritesmithConfig/spritesmith.config.js');
 const production = process.env.NODE_ENV === 'production';
 const globalizePath = __dirname + '/lib/globalize/globalize.min.js';
 
@@ -16,8 +15,15 @@ if (minimize) {
   plugins.push(new webpack.optimize.UglifyJsPlugin());
 }
 
+plugins.push(new webpack.DefinePlugin({
+  DISABLE_LOGGER: minimize
+}));
+
+plugins.push(new webpack.ProvidePlugin({
+  'Promise' : 'es6-promise/dist/es6-promise.auto'
+}));
+
 // SpritesmithPlugin takes care of outputting the stylesheets.
-plugins.push(spritesmithConfig);
 
 if (production) {
   const extractSass = new ExtractTextPlugin({
@@ -29,10 +35,13 @@ if (production) {
       use: [{
         loader: 'css-loader',
         options: {
-          sourceMap: true
+          sourceMap: false
         }
       }, {
-        loader: 'resolve-url-loader'
+        loader: 'resolve-url-loader',
+        options: {
+          keepQuery: true
+        }
       }, {
         loader: 'sass-loader',
         options: {
@@ -60,7 +69,10 @@ if (production) {
         sourceMap: true
       }
     }, {
-      loader: 'resolve-url-loader'
+      loader: 'resolve-url-loader',
+      options: {
+        keepQuery: true
+      }
     }, {
       loader: 'sass-loader',
       options: {
@@ -87,7 +99,7 @@ module.exports = {
     devtoolModuleFilenameTemplate: '[resource-path]'
   },
   resolve: {
-    extensions: ['.ts', '.js', '.scss'],
+    extensions: ['.ts', '.js', '.scss', '.svg'],
     alias: {
       'l10n': __dirname + '/lib/l10n/l10n.min.js',
       'globalize': globalizePath,
@@ -95,7 +107,8 @@ module.exports = {
       'magic-box': __dirname + '/node_modules/coveomagicbox/bin/MagicBox.min.js',
       'default-language': __dirname + '/src/strings/DefaultLanguage.js',
       'jQuery': __dirname + '/test/lib/jquery.js',
-      'styling': __dirname + '/sass'
+      'styling': __dirname + '/sass',
+      'svg': __dirname + '/image/svg'
     },
     modules: ['node_modules', path.resolve(__dirname, '../bin/image/css')]
   },
@@ -110,7 +123,8 @@ module.exports = {
           replace: ''
         }
       }]
-    }, {
+    },
+    {
       test: require.resolve(globalizePath),
       use: [{
         loader: 'expose-loader?Globalize'
@@ -144,16 +158,23 @@ module.exports = {
         }
       }]
     }, {
-      test: /\.(gif|svg|png|jpe?g|ttf|woff2?|eot)$/,
+      test: /\.(gif|png|jpe?g|ttf|woff2?|eot)$/,
       use: [{
         loader: 'file-loader',
         options: {
-          name: production ? '../image/[name].[ext]' : 'http://localhost:8080/image/[name].[ext]',
+          // name: production ? '../image/[name].[ext]' : 'http://localhost:8080/image/[name].[ext]',
+          name: '../image/[name].[ext]',
           emitFile: false,
           publicPath: ' ',
         }
       }]
     }, {
+      test: /\.svg$/,
+      use: [{
+        loader: 'svg-inline-loader'
+      }]
+    },
+    {
       test: /\.ts$/,
       use: [{
         loader: 'ts-loader'

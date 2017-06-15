@@ -5115,6 +5115,14 @@
     "en": "months",
     "fr": "mois"
   },
+  "Month": {
+    "en" : "Month",
+    "fr" : "Mois"
+  },
+  "Year" : {
+    "en" : "Year",
+    "fr" : "Année"
+  },
   "Between": {
     "en": "Between",
     "fr": "Entre"
@@ -5186,5 +5194,25 @@
   "ResultsPerPage": {
     "en": "Results per page",
     "fr": "Résultats par page"
+  },
+  "FiltersInAdvancedSearch": {
+    "en": "Filters in advanced search",
+    "fr": "Filtres de recherche avancée"
+  },
+  "InvalidTimeRange" : {
+    "en" : "Invalid time range",
+    "fr" : "Plage de temps invalide"
+  },
+  "PreviousMonth" : {
+    "en" : "Previous month",
+    "fr" : "Mois précédent"
+  },
+  "NextMonth" : {
+    "en" : "Next month",
+    "fr" : "Mois suivant"
+  },
+  "Title" : {
+    "en" : "Title",
+    "fr" : "Titre"
   }
 }

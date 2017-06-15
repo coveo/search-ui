@@ -87,6 +87,11 @@ export function ComponentOptionsTest() {
         expect((<any>option).type).toBe(ComponentOptionsType.OBJECT);
       });
 
+      it('a JSON object option', () => {
+        let option = ComponentOptions.buildJsonObjectOption();
+        expect((<any>option).type).toBe(ComponentOptionsType.JSON);
+      });
+
       it('an option', () => {
         let option = ComponentOptions.buildOption<boolean>(ComponentOptionsType.BOOLEAN, ComponentOptions.loadBooleanOption);
         expect((<any>option).type).toBe(ComponentOptionsType.BOOLEAN);
@@ -145,6 +150,8 @@ export function ComponentOptionsTest() {
           'data-my-float-number': '4.4',
           'data-my-list': 'foo&bar&brak',
           'data-my-test-enum': 'bar',
+          'data-my-test-json-object': '{"foo":"bar"}',
+          'data-my-test-json-array': '[{"foo":"bar"}]',
           'data-my-selector': '#CoveoSearchbox',
           'data-my-child-selector': '#CoveoSearchboxChild',
           'data-my-template-selector': '#CoveoTemplate',
@@ -403,6 +410,27 @@ export function ComponentOptionsTest() {
           }
           let option = ComponentOptions.loadEnumOption(elem, 'myTestEnum', {}, testEnum);
           expect(option).toBe(2);
+        });
+      });
+
+      describe('loadJsonObjectOption', () => {
+        interface IJsonObjectTest {
+          foo: string;
+        }
+
+        it('which loads a JSON object option', () => {
+          const option = ComponentOptions.loadJsonObjectOption<IJsonObjectTest>(elem, 'myTestJsonObject', {});
+          expect(option.foo).not.toBeUndefined();
+          expect(option.foo).toBe('bar');
+        });
+        it('which loads a JSON array option', () => {
+          const option = ComponentOptions.loadJsonObjectOption<IJsonObjectTest[]>(elem, 'myTestJsonArray', {});
+          expect(option.length).toBe(1);
+          expect(option[0].foo);
+        });
+        it('which disables an invalid JSON option', () => {
+          const option = ComponentOptions.loadJsonObjectOption<IJsonObjectTest>(elem, 'myFields', {});
+          expect(option).toBe(null);
         });
       });
 

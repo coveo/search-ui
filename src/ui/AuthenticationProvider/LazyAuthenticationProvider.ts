@@ -8,7 +8,7 @@ export function lazyAuthenticationProvider() {
       require.ensure(['./AuthenticationProvider'], () => {
         let loaded = require<IComponentDefinition>('./AuthenticationProvider.ts')['AuthenticationProvider'];
         lazyExport(loaded, resolve);
-      }, LazyInitialization.buildErrorCallback('AuthenticationProvider'), 'AuthenticationProvider');
+      }, LazyInitialization.buildErrorCallback('AuthenticationProvider', resolve), 'AuthenticationProvider');
     });
   });
 }

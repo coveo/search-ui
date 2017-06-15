@@ -8,7 +8,7 @@ export function lazyResultAttachment() {
       require.ensure(['./ResultAttachments'], () => {
         let loaded = require<IComponentDefinition>('./ResultAttachments.ts')['ResultAttachments'];
         lazyExport(loaded, resolve);
-      }, LazyInitialization.buildErrorCallback('ResultAttachments'), 'ResultAttachments');
+      }, LazyInitialization.buildErrorCallback('ResultAttachments', resolve), 'ResultAttachments');
     });
   });
 }

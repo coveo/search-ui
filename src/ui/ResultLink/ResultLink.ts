@@ -264,6 +264,11 @@ export class ResultLink extends Component {
         this.logOpenDocument();
       });
     }
+    this.renderUri(element, result);
+    this.bindEventToOpen();
+  }
+  public renderUri(element: HTMLElement, result?: IQueryResult) {
+
     if (/^\s*$/.test(this.element.innerHTML)) {
       if (!this.options.titleTemplate) {
         this.element.innerHTML = this.result.title ? HighlightUtils.highlightString(this.result.title, this.result.titleHighlights, null, 'coveo-highlight') : this.result.clickUri;
@@ -272,9 +277,8 @@ export class ResultLink extends Component {
         this.element.innerHTML = newTitle ? StreamHighlightUtils.highlightStreamText(newTitle, this.result.termsToHighlight, this.result.phrasesToHighlight) : this.result.clickUri;
       }
     }
-    this.bindEventToOpen();
-  }
 
+  }
   /**
    * Opens the result in the same window, no matter how the actual component is configured for the end user.
    * @param logAnalytics Specifies whether the method should log an analytics event.
@@ -464,7 +468,7 @@ export class ResultLink extends Component {
     return (this.options.openQuickview || this.isUriThatMustBeOpenedInQuickview()) && QueryUtils.hasHTMLVersion(this.result);
   }
 
-  private parseStringTemplate(template: string): string {
+  protected parseStringTemplate(template: string): string {
     if (!template) {
       return '';
     }

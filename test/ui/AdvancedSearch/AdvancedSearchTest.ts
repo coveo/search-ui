@@ -13,6 +13,7 @@ import { AdvancedComponentSetupOptions } from '../../MockEnvironment';
 import { MockEnvironmentBuilder } from '../../MockEnvironment';
 import { analyticsActionCauseList } from '../../../src/ui/Analytics/AnalyticsActionListMeta';
 import _ = require('underscore');
+import { BreadcrumbEvents, IPopulateBreadcrumbEventArgs } from '../../../src/events/BreadcrumbEvents';
 
 export function AdvancedSearchTest() {
   describe('AdvancedSearch', () => {
@@ -75,6 +76,8 @@ export function AdvancedSearchTest() {
       expect(test.modalBox.close).toHaveBeenCalled();
     });
 
+
+
     describe('exposes includeKeywords', () => {
       it('should include the keywords section by default', () => {
         expect(getSection(l('Keywords'))).not.toBeUndefined();
@@ -119,6 +122,55 @@ export function AdvancedSearchTest() {
       it('should log an analytics event', () => {
         test.cmp.executeAdvancedSearch();
         expect(test.env.usageAnalytics.logSearchEvent).toHaveBeenCalledWith(analyticsActionCauseList.advancedSearch, jasmine.objectContaining({}));
+      });
+
+      describe('on a new query event', () => {
+        let updateQuerySpy: jasmine.Spy;
+        let resetSpy: jasmine.Spy;
+        beforeEach(() => {
+          updateQuerySpy = jasmine.createSpy('updateQuery');
+          resetSpy = jasmine.createSpy('reset');
+          updateQuerySpy.and.callFake((queryBuilder: QueryBuilder) => {
+            queryBuilder.advancedExpression.add('foo');
+          });
+          test.cmp.inputs[0].updateQuery = updateQuerySpy;
+          test.cmp.inputs[0].reset = resetSpy;
+        });
+
+        afterEach(() => {
+          updateQuerySpy = null;
+          resetSpy = null;
+        });
+
+        it('should call updateQuery on each input', () => {
+          const simulation = Simulate.query(test.env);
+          expect(updateQuerySpy).toHaveBeenCalled();
+          expect(simulation.queryBuilder.build().aq).toEqual('foo');
+        });
+
+        it('should populate breadcrumb if the query is modified by any input', () => {
+          $$(test.env.root).on(BreadcrumbEvents.populateBreadcrumb, (e, args: IPopulateBreadcrumbEventArgs) => {
+            expect(args.breadcrumbs.length).toEqual(1);
+          });
+          const simulation = Simulate.query(test.env);
+          expect(updateQuerySpy).toHaveBeenCalled();
+        });
+
+        it('should not populate breadcrumb if the query is not modified by any input', () => {
+          $$(test.env.root).on(BreadcrumbEvents.populateBreadcrumb, (e, args: IPopulateBreadcrumbEventArgs) => {
+            expect(args.breadcrumbs.length).toEqual(0);
+          });
+          updateQuerySpy.and.callFake((queryBuilder: QueryBuilder) => {
+            // do nothing
+          });
+          const simulation = Simulate.query(test.env);
+          expect(updateQuerySpy).toHaveBeenCalled();
+        });
+
+        it('should call reset on each inputs when the breadcrumb is cleared', () => {
+          $$(test.env.root).trigger(BreadcrumbEvents.clearBreadcrumb);
+          expect(resetSpy).toHaveBeenCalled();
+        });
       });
     });
 

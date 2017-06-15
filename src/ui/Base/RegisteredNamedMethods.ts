@@ -1,4 +1,4 @@
-import { Initialization, LazyInitialization } from './Initialization';
+import { Initialization, LazyInitialization, EagerInitialization } from './Initialization';
 import { Assert } from '../../misc/Assert';
 import { QueryController } from '../../controllers/QueryController';
 import { QueryStateModel, setState } from '../../models/QueryStateModel';
@@ -75,8 +75,19 @@ export function initRecommendation(element: HTMLElement, mainSearchInterface?: H
   recommendationOptions.userContext = JSON.stringify(userContext);
   recommendationOptions.enableHistory = false;
   options = _.extend({}, options, { Recommendation: recommendationOptions });
-  return Initialization.initializeFramework(element, options, () => {
-    return Initialization.initRecommendationInterface(element, options);
+
+  // Recommendation component is special : It is not explicitely registered like other "basic" components since it's a full search interface.
+  // Since it's not done using the "standard" path, we need to register this manually here
+  // This ensure that we can always call `getLazyRegisteredComponent`, no matter if it was loaded from eager or lazy mode.
+  if (window['Coveo']['Recommendation'] != null) {
+    LazyInitialization.registerLazyComponent('Recommendation', () => Promise.resolve(window['Coveo']['Recommendation']));
+    EagerInitialization.eagerlyLoadedComponents['Recommendation'] = window['Coveo']['Recommendation'];
+  }
+
+  return LazyInitialization.getLazyRegisteredComponent('Recommendation').then(() => {
+    return Initialization.initializeFramework(element, options, () => {
+      return Initialization.initRecommendationInterface(element, options);
+    });
   });
 }
 
@@ -177,10 +188,18 @@ function getCoveoAnalytics(element: HTMLElement) {
 }
 
 /**
- * Log a custom event on the Coveo Usage Analytics service.
- * @param element The root of the interface for which to log analytics events.
+ * Finds the [`Analytics`]{@link Analytics} component instance, and uses it to log a `Custom` usage analytics event.
+ *
+ * You can use `Custom` events to create custom reports, or to track events which are neither queries nor item
+ * views.
+ *
+ * @param element The root of the search interface which contains the [`Analytics`]{@link Analytics} component.
  * @param customEventCause The cause of the event.
- * @param metadata The metadata associated with the event (JSON key value).
+ * @param metadata The metadata you want to use to create custom dimensions. Metadata can contain as many key-value
+ * pairs as you need. Each key must contain only alphanumeric characters and underscores. The Coveo Usage Analytics
+ * service automatically converts white spaces to underscores, and uppercase characters to lowercase characters in key
+ * names. Each value must be a simple string. If you do not need to log metadata, you can simply pass an empty JSON
+ * ( `{}` ).
  */
 export function logCustomEvent(element: HTMLElement, customEventCause: IAnalyticsActionCause, metadata: IStringMap<string>) {
   var client = getCoveoAnalyticsClient(element);
@@ -194,10 +213,20 @@ Initialization.registerNamedMethod('logCustomEvent', (element: HTMLElement, cust
 });
 
 /**
- * Log a `SearchEvent` on the Coveo Usage Analytics service.
- * @param element The root of the interface for which to log analytics events.
+ * Finds the [`Analytics`]{@link Analytics} component instance, and uses it to log a `Search` usage analytics event.
+ *
+ * A `Search` event is actually sent to the Coveo Usage Analytics service only after the query successfully returns (not
+ * immediately after calling this method). Therefore, it is important to call this method **before** executing the
+ * query. Otherwise, the `Search` event will not be logged, and you will get a warning message in the console. See
+ * [Sending Custom Analytics Events](https://developers.coveo.com/x/KoGfAQ).
+ *
+ * @param element The root of the search interface which contains the [`Analytics`]{@link Analytics} component.
  * @param searchEventCause The cause of the event.
- * @param metadata The metadata associated with the event (JSON key value).
+ * @param metadata The metadata you want to use to create custom dimensions. Metadata can contain as many key-value
+ * pairs as you need. Each key must contain only alphanumeric characters and underscores. The Coveo Usage Analytics
+ * service automatically converts white spaces to underscores, and uppercase characters to lowercase characters in key
+ * names. Each value must be a simple string. If you do not need to log metadata, you can simply pass an empty JSON
+ * ( `{}` ).
  */
 export function logSearchEvent(element: HTMLElement, searchEventCause: IAnalyticsActionCause, metadata: IStringMap<string>) {
   var client = getCoveoAnalyticsClient(element);
@@ -211,11 +240,26 @@ Initialization.registerNamedMethod('logSearchEvent', (element: HTMLElement, sear
 });
 
 /**
- * Log a `SearchAsYouTypeEvent` on the Coveo Usage Analytics service.<br/>
- * It is a bit different from a standard search event, as it will wait 5 seconds before sending the final `SearchAsYouType` event.
- * @param element The root of the interface for which to log analytics events.
+ * Finds the [`Analytics`]{@link Analytics} component instance, and uses it to log a `SearchAsYouType` usage analytics
+ * event.
+ *
+ * This function is very similar to the `logSearchEvent` function, except that `logSearchAsYouTypeEvent` should, by
+ * definition, be called more frequently. Consequently, in order to avoid logging every single partial query, the
+ * `PendingSearchAsYouTypeEvent` takes care of logging only the "relevant" last event: an event that occurs after 5
+ * seconds have elapsed without any event being logged, or an event that occurs after another part of the interface
+ * triggers a search event.
+ *
+ * It is important to call this method **before** executing the query. Otherwise, no `SearchAsYouType` event will be
+ * logged, and you will get a warning message in the console. See
+ * [Sending Custom Analytics Events](https://developers.coveo.com/x/KoGfAQ).
+ *
+ * @param element The root of the search interface which contains the [`Analytics`]{@link Analytics} component.
  * @param searchAsYouTypeEventCause The cause of the event.
- * @param metadata The metadata associated with the event (JSON key value).
+ * @param metadata The metadata you want to use to create custom dimensions. Metadata can contain as many key-value
+ * pairs as you need. Each key must contain only alphanumeric characters and underscores. The Coveo Usage Analytics
+ * service automatically converts white spaces to underscores, and uppercase characters to lowercase characters in key
+ * names. Each value must be a simple string. If you do not need to log metadata, you can simply pass an empty JSON
+ * ( `{}` ).
  */
 export function logSearchAsYouTypeEvent(element: HTMLElement, searchAsYouTypeEventCause: IAnalyticsActionCause, metadata: IStringMap<string>) {
   var client = getCoveoAnalyticsClient(element);
@@ -229,10 +273,19 @@ Initialization.registerNamedMethod('logSearchAsYouTypeEvent', (element: HTMLElem
 });
 
 /**
- * Log a `ClickEvent` on the Coveo Usage Analytics service.
- * @param element The root of the interface for which to log analytics events.
+ * Finds the [`Analytics`]{@link Analytics} component instance, and uses it to log a `Click` usage analytics event.
+ *
+ * A `Click` event corresponds to an item view (e.g., clicking on a {@link ResultLink} or opening a {@link Quickview}).
+ *
+ * `Click` events are immediately sent to the Coveo Usage Analytics service.
+ *
+ * @param element The root of the search interface which contains the [`Analytics`]{@link Analytics} component.
  * @param clickEventCause The cause of the event.
- * @param metadata The metadata associated with the event (JSON key value).
+ * @param metadata The metadata you want to use to create custom dimensions. Metadata can contain as many key-value
+ * pairs as you need. Each key must contain only alphanumeric characters and underscores. The Coveo Usage Analytics
+ * service automatically converts white spaces to underscores, and uppercase characters to lowercase characters in key
+ * names. Each value must be a simple string. If you do not need to log metadata, you can simply pass an empty JSON
+ * ( `{}` ).
  * @param result The result that was clicked.
  */
 export function logClickEvent(element: HTMLElement, clickEventCause: IAnalyticsActionCause, metadata: IStringMap<any>, result: IQueryResult) {

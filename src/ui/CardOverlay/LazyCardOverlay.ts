@@ -8,7 +8,7 @@ export function lazyCardOverlay() {
       require.ensure(['./CardOverlay'], () => {
         let loaded = require<IComponentDefinition>('./CardOverlay.ts')['CardOverlay'];
         lazyExport(loaded, resolve);
-      }, LazyInitialization.buildErrorCallback('CardOverlay'), 'CardOverlay');
+      }, LazyInitialization.buildErrorCallback('CardOverlay', resolve), 'CardOverlay');
     });
   });
 }

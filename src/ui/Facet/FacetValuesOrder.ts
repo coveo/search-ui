@@ -42,8 +42,10 @@ export class FacetValuesOrder {
   }
 
   private reorderValuesWithCustomCaption(facetValues: FacetValue[]) {
-    let sorted = _.sortBy(facetValues, (facetValue: FacetValue) => {
-      return this.facet.getValueCaption(facetValue).toLowerCase();
+    let sorted = facetValues.sort((firstValue, secondValue) => {
+      return this.facet.getValueCaption(firstValue).localeCompare(this.facet.getValueCaption(secondValue), String['locale'], {
+        sensitivity: 'base'
+      });
     });
     if (this.facetSort.activeSort.name.indexOf('descending') != -1) {
       sorted = sorted.reverse();

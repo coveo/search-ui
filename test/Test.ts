@@ -24,7 +24,7 @@ DomTests();
 import { HighlightUtilsTest } from './utils/HighlightUtilsTest';
 HighlightUtilsTest();
 
-import { L10NTest } from './utils/L10NTest';
+import { L10NTest } from './misc/L10NTest';
 L10NTest();
 
 import { PromisesShimTest } from './misc/PromisesShimTest';
@@ -77,9 +77,6 @@ ExactKeywordsInputTest();
 
 import { NoneKeywordsInputTest } from './ui/AdvancedSearch/KeywordsInput/NoneKeywordsInputTest';
 NoneKeywordsInputTest();
-
-import { DateInputTest } from './ui/AdvancedSearch/DateInput/DateInputTest';
-DateInputTest();
 
 import { BetweenDateInputTest } from './ui/AdvancedSearch/DateInput/BetweenDateInputTest';
 BetweenDateInputTest();
@@ -251,6 +248,9 @@ ResultFoldingTest();
 
 import { ResultLinkTest } from './ui/ResultLinkTest';
 ResultLinkTest();
+
+import { PrintableUriTest } from './ui/PrintableUriTest';
+PrintableUriTest();
 
 import { ResultListTest } from './ui/ResultListTest';
 ResultListTest();
@@ -459,6 +459,9 @@ MultiSelectTest();
 import { FacetSliderQueryControllerTest } from './controllers/FacetSliderQueryControllerTest';
 FacetSliderQueryControllerTest();
 
+import { DateUtilsTest } from './ui/DateUtilsTest';
+DateUtilsTest();
+
 import { DebugForResultTest } from './ui/DebugForResultTest';
 DebugForResultTest();
 
@@ -467,3 +470,4 @@ DebugHeaderTest();
 
 import { FacetValuesTest } from './ui/FacetValuesTest';
 FacetValuesTest();
+

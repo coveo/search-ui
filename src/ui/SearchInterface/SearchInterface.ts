@@ -32,6 +32,7 @@ import * as _ from 'underscore';
 import 'styling/Globals';
 import 'styling/_SearchInterface';
 import 'styling/_SearchModalBox';
+import 'styling/_SearchButton';
 
 export interface ISearchInterfaceOptions {
   enableHistory?: boolean;

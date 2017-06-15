@@ -18,6 +18,8 @@ import { IJQuery } from './CoveoJQuery';
 import * as _ from 'underscore';
 import { IStringMap } from '../../rest/GenericParam';
 import { InitializationPlaceholder } from './InitializationPlaceholder';
+import { NoopComponent } from '../NoopComponent/NoopComponent';
+import { get } from './RegisteredNamedMethods';
 declare const require: any;
 
 /**
@@ -530,9 +532,9 @@ export class Initialization {
     return Utils.isNonEmptyString(searchInterface.getBindings().queryStateModel.get('q'));
   }
 
-  private static isThereASingleComponentBoundToThisElement(element: HTMLElement): boolean {
+  public static isThereASingleComponentBoundToThisElement(element: HTMLElement): boolean {
     Assert.exists(element);
-    return Utils.exists(Component.get(element));
+    return Utils.exists(Component.get(element, null, true));
   }
 
   private static dispatchMethodCallOnBoundComponent(methodName: string, element: HTMLElement, args: any[]): any {
@@ -645,8 +647,11 @@ export class LazyInitialization {
     }
   }
 
-  public static buildErrorCallback(chunkName: string) {
-    return () => LazyInitialization.logger.error(`Cannot load chunk for ${chunkName}. You may need to configure the paths of the ressources using Coveo.configureRessourceRoot. Current path is ${__webpack_public_path__}.`);
+  public static buildErrorCallback(chunkName: string, resolve: Function) {
+    return () => {
+      LazyInitialization.logger.warn(`Cannot load chunk for ${chunkName}. You may need to configure the paths of the ressources using Coveo.configureRessourceRoot. Current path is ${__webpack_public_path__}.`);
+      resolve(NoopComponent);
+    };
   }
 
   public static registerLazyModule(id: string, load: () => Promise<any>): void {
@@ -691,6 +696,13 @@ export class LazyInitialization {
   private static createComponentOfThisClassOnElement(componentClassId: string, element: HTMLElement, initParameters?: IInitializationParameters): Promise<Component> {
     Assert.isNonEmptyString(componentClassId);
     Assert.exists(element);
+
+    if (Initialization.isThereASingleComponentBoundToThisElement(element)) {
+      // This means a component already exists on this element.
+      // Do not re-initialize again.
+      LazyInitialization.logger.warn(`Skipping component of class ${componentClassId} because the element is already initialized as another component.`, element);
+      return null;
+    }
 
     return LazyInitialization.getLazyRegisteredComponent(componentClassId).then((lazyLoadedComponent: IComponentDefinition) => {
       Assert.exists(lazyLoadedComponent);
@@ -760,6 +772,13 @@ export class EagerInitialization {
       });
       options = initParameters.options;
       result = initParameters.result;
+    }
+
+    if (Initialization.isThereASingleComponentBoundToThisElement(element)) {
+      // This means a component already exists on this element.
+      // Do not re-initialize again.
+      EagerInitialization.logger.warn(`Skipping component of class ${componentClassId} because the element is already initialized as another component.`, element);
+      return null;
     }
 
     EagerInitialization.logger.trace(`Creating component of class ${componentClassId}`, element, options);

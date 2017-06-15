@@ -21,6 +21,10 @@ $color_duration: #33B;
     a {
       @include clickableVibrant();
     }
+    height: auto;
+    min-height: 80px;
+    @include flex-wrap(wrap);
+
   }
   .coveo-modal-body {
     .coveo-searching {

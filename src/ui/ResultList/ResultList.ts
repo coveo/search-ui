@@ -372,19 +372,21 @@ export class ResultList extends Component {
    * @param results the result set to build an array of HTMLElement from.
    */
   public buildResults(results: IQueryResults): Promise<HTMLElement[]> {
-    let res: HTMLElement[] = [];
-    let resultsPromises = _.map(results.results, (result: IQueryResult) => {
+    let res: { elem: HTMLElement, idx: number }[] = [];
+    let resultsPromises = _.map(results.results, (result: IQueryResult, index: number) => {
       return this.buildResult(result).then((resultElement: HTMLElement) => {
         if (resultElement != null) {
-          res.push(resultElement);
+          res.push({ elem: resultElement, idx: index });
         }
         ResultList.resultCurrentlyBeingRendered = null;
         return resultElement;
       });
     });
 
+    // We need to sort by the original index order, because in lazy loading mode, it's possible that results does not gets rendered
+    // in the correct order returned by the index, depending on the time it takes to load all the results component for a given result template
     return Promise.all(resultsPromises).then(() => {
-      return res;
+      return _.pluck(_.sortBy(res, 'idx'), 'elem');
     });
   }
 
@@ -601,7 +603,12 @@ export class ResultList extends Component {
     if (this.options.autoSelectFieldsToInclude) {
       const otherResultListsElements = _.reject($$(this.root).findAll(`.${Component.computeCssClassName(ResultList)}`), resultListElement => resultListElement == this.element);
       const otherFields = _.flatten(_.map(otherResultListsElements, (otherResultListElement) => {
-        return (<ResultList>get(otherResultListElement)).getAutoSelectedFieldsToInclude();
+        const otherResultListInstance = <ResultList>get(otherResultListElement);
+        if (otherResultListInstance) {
+          return otherResultListInstance.getAutoSelectedFieldsToInclude();
+        } else {
+          return [];
+        }
       }));
 
       args.queryBuilder.addRequiredFields(_.unique(otherFields.concat(this.getAutoSelectedFieldsToInclude())));

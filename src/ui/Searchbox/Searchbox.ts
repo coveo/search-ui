@@ -11,7 +11,6 @@ import * as _ from 'underscore';
 import { exportGlobally } from '../../GlobalExports';
 
 import 'styling/_Searchbox';
-import 'styling/_SearchButton';
 
 export interface ISearchboxOptions extends IOmniboxOptions {
   addSearchButton?: boolean;
