@@ -7,6 +7,7 @@ import { ResultListEvents, IDisplayedNewResultEventArgs } from '../../events/Res
 import { QueryEvents, IDoneBuildingQueryEventArgs } from '../../events/QueryEvents';
 import { InitializationEvents } from '../../events/InitializationEvents';
 import { stringify } from 'circular-json';
+import * as _ from 'underscore';
 
 export class DebugHeader {
   private debug = false;
@@ -14,17 +15,24 @@ export class DebugHeader {
   private highlightRecommendation = false;
   private requestAllFields = false;
   private search: HTMLElement;
+  private widgets: HTMLElement[] = [];
 
   constructor(public root: HTMLElement, public element: HTMLElement, public bindings: IComponentBindings, public onSearch: (value: string) => void, public infoToDebug: any) {
-    this.element.appendChild(this.buildEnabledHighlightRecommendation());
-    this.element.appendChild(this.buildEnableDebugCheckbox());
-    this.element.appendChild(this.buildEnableQuerySyntaxCheckbox());
-    this.element.appendChild(this.buildRequestAllFieldsCheckbox());
-    this.element.appendChild(this.buildSearch());
-    this.element.appendChild(this.buildDownloadLink());
+    this.widgets.push(this.buildEnabledHighlightRecommendation());
+    this.widgets.push(this.buildEnableDebugCheckbox());
+    this.widgets.push(this.buildEnableQuerySyntaxCheckbox());
+    this.widgets.push(this.buildRequestAllFieldsCheckbox());
+    this.widgets.push(this.buildSearch());
+    this.widgets.push(this.buildDownloadLink());
+    this.moveTo(element);
 
     $$(this.root).on(ResultListEvents.newResultDisplayed, (e, args: IDisplayedNewResultEventArgs) => this.handleNewResultDisplayed(args));
     $$(this.root).on(QueryEvents.doneBuildingQuery, (e, args: IDoneBuildingQueryEventArgs) => this.handleDoneBuildingQuery(args));
+  }
+
+  public moveTo(newElement: HTMLElement) {
+    _.each(this.widgets, (widget: HTMLElement) => newElement.appendChild(widget));
+    this.element = newElement;
   }
 
   private handleNewResultDisplayed(args: IDisplayedNewResultEventArgs) {
