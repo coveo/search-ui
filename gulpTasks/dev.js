@@ -44,7 +44,8 @@ gulp.task('dev', ['setup', 'prepareSass'], (done)=> {
     compress: true,
     headers: {
       'Content-Security-Policy': "script-src 'self' code.jquery.com static.cloud.coveo.com 'unsafe-inline'"
-    }
+    },
+    disableHostCheck: true
   });
   server.listen(8080, 'localhost', ()=> {
   });

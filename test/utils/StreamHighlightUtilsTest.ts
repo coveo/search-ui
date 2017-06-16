@@ -151,7 +151,7 @@ export function StreamHighlightUtilsTest() {
     });
 
     it('should work with number and point', () => {
-      const phrases: { [phrase: string]: { [originalTerm: string]: string[]; } } = { '9 1 1': { '9': [], '1': [] } };      
+      const phrases: { [phrase: string]: { [originalTerm: string]: string[]; } } = { '9 1 1': { '9': [], '1': [] } };
       let toHighlight = 'Lorem ipsum 9.1.1 dolor sit amet';
       let terms: { [originalTerm: string]: string[]; } = { 'lorem': [] };
       expect(StreamHighlightUtils.highlightStreamText(toHighlight, terms, phrases)).toEqual(`${getHighlightResultForTerm('Lorem', 1, 'lorem')} ipsum ${getHighlightResultForTerm('9.1.1', 2, '9 1 1')} dolor sit amet`);
