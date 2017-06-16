@@ -148,28 +148,47 @@ export function AdvancedSearchTest() {
           expect(simulation.queryBuilder.build().aq).toEqual('foo');
         });
 
-        it('should populate breadcrumb if the query is modified by any input', () => {
+        it('should populate breadcrumb if the query is modified by any input', (done) => {
           $$(test.env.root).on(BreadcrumbEvents.populateBreadcrumb, (e, args: IPopulateBreadcrumbEventArgs) => {
             expect(args.breadcrumbs.length).toEqual(1);
+            done();
           });
           const simulation = Simulate.query(test.env);
           expect(updateQuerySpy).toHaveBeenCalled();
+          Simulate.breadcrumb(test.env);
         });
 
-        it('should not populate breadcrumb if the query is not modified by any input', () => {
+        it('should not populate breadcrumb if the query is not modified by any input', (done) => {
           $$(test.env.root).on(BreadcrumbEvents.populateBreadcrumb, (e, args: IPopulateBreadcrumbEventArgs) => {
             expect(args.breadcrumbs.length).toEqual(0);
+            done();
           });
           updateQuerySpy.and.callFake((queryBuilder: QueryBuilder) => {
             // do nothing
           });
           const simulation = Simulate.query(test.env);
           expect(updateQuerySpy).toHaveBeenCalled();
+          Simulate.breadcrumb(test.env);
         });
 
         it('should call reset on each inputs when the breadcrumb is cleared', () => {
           $$(test.env.root).trigger(BreadcrumbEvents.clearBreadcrumb);
           expect(resetSpy).toHaveBeenCalled();
+        });
+
+        it('should call reset on each inputs when only this part of the breadcrumb is cleared', (done) => {
+          $$(test.env.root).on(BreadcrumbEvents.populateBreadcrumb, (e, args: IPopulateBreadcrumbEventArgs) => {
+            expect(args.breadcrumbs.length).toEqual(1);
+
+            const clear = $$(args.breadcrumbs[0].element).find('.coveo-advanced-search-breadcrumb-clear');
+            $$(clear).trigger('click');
+            expect(test.env.queryController.executeQuery).toHaveBeenCalled();
+            expect(test.env.usageAnalytics.logSearchEvent).toHaveBeenCalledWith(analyticsActionCauseList.breadcrumbAdvancedSearch, jasmine.any(Object));
+            done();
+
+          });
+          Simulate.query(test.env);
+          Simulate.breadcrumb(test.env);
         });
       });
     });
