@@ -202,6 +202,7 @@ export class Debug extends RootComponent {
         this.debugHeader = new DebugHeader(this.element, title, this.bindings, (value: string) => this.search(value, build.body), this.stackDebug);
       } else {
         this.debugHeader.moveTo(title);
+        this.debugHeader.setNewInfoToDebug(this.stackDebug);
       }
     } else {
       this.logger.warn('No title found in modal box.');
