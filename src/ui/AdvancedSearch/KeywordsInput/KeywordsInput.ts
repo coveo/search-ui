@@ -8,7 +8,7 @@ export class KeywordsInput implements IAdvancedSearchInput {
 
   protected input: TextInput;
 
-  constructor(public inputName: string) {
+  constructor(public inputName: string, public root: HTMLElement) {
   }
 
   public reset() {
@@ -40,7 +40,9 @@ export class KeywordsInput implements IAdvancedSearchInput {
   }
 
   protected onChange() {
-    if (this.input) {
+    if (this.root) {
+      $$(this.root).trigger(AdvancedSearchEvents.executeAdvancedSearch);
+    } else if (this.input) {
       $$(this.input.getElement()).trigger(AdvancedSearchEvents.executeAdvancedSearch);
     }
   }

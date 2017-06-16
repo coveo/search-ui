@@ -7,7 +7,7 @@ export function InTheLastDateInputTest() {
     let input: InTheLastDateInput;
 
     beforeEach(function () {
-      input = new InTheLastDateInput();
+      input = new InTheLastDateInput($$('div').el);
       input.build();
       (<HTMLInputElement>$$((input.getElement())).find('input')).checked = true;
     });

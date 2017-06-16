@@ -4,8 +4,8 @@ import { $$ } from '../../../utils/Dom';
 import { AdvancedSearchEvents } from '../../../events/AdvancedSearchEvents';
 
 export class AnytimeDateInput extends DateInput {
-  constructor() {
-    super(l('Anytime'));
+  constructor(public root: HTMLElement) {
+    super(l('Anytime'), root);
   }
 
   public getValue() {
@@ -17,7 +17,11 @@ export class AnytimeDateInput extends DateInput {
     let radio = this.getRadio();
     radio.checked = true;
     $$(radio).on('change', () => {
-      $$(this.element).trigger(AdvancedSearchEvents.executeAdvancedSearch);
+      if (this.root) {
+        $$(this.root).trigger(AdvancedSearchEvents.executeAdvancedSearch);
+      } else {
+        $$(this.element).trigger(AdvancedSearchEvents.executeAdvancedSearch);
+      }
     });
     return this.element;
   }

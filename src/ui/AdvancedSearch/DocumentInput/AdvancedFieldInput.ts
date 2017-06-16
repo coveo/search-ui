@@ -10,8 +10,8 @@ export class AdvancedFieldInput extends DocumentInput {
   public mode: Dropdown;
   public input: TextInput;
 
-  constructor(public inputName: string, public fieldName: string) {
-    super(inputName);
+  constructor(public inputName: string, public fieldName: string, public root: HTMLElement) {
+    super(inputName, root);
   }
 
   public reset() {
