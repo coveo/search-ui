@@ -85,7 +85,7 @@ module.exports = {
         loader: 'ts-loader'
       }]
     }, {
-      test: /\.scss$/,
+      test: /\.svg$/,
       use: [{
         loader: 'svg-inline-loader'
       }]
