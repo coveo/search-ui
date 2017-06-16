@@ -51,30 +51,27 @@ export class SimpleFilter extends Component {
     super(element, SimpleFilter.ID, bindings);
     this.options = ComponentOptions.initComponentOptions(element, SimpleFilter, options);
 
-
-    const select = $$('span', { className: 'coveo-simplefilter-select' }, l(this.options.title));
+    const select = $$('span', { className: 'coveo-simplefilter-select' });
+    const selectText = $$('span', {className: 'coveo-simplefilter-selecttext'}, l(this.options.title));
     const icon = $$('span', { className: 'coveo-icon' });
-
-
-    select.el.appendChild(this.buildCircleElement().el);
-    select.el.appendChild(icon.el);
-    this.element.appendChild(select.el);
 
     this.checkboxContainer = $$('div', { className: 'coveo-checkbox-container' });
     this.checkboxes = _.map(this.options.values, (value) => this.createCheckboxes(value));
     _.each(this.checkboxes, (result) => {
       this.checkboxContainer.el.appendChild(result.checkbox.getElement());
     });
-    this.element.appendChild(this.checkboxContainer.el);
 
+    select.el.appendChild(selectText.el);
+    select.el.appendChild(this.buildCircleElement().el);
+    select.el.appendChild(icon.el);
+    this.element.appendChild(select.el);
+    this.element.appendChild(this.checkboxContainer.el);
     this.createWrapper().append(this.element);
 
     $$(this.element).on('click', (e: Event) => this.handleClick(e));
-
     this.bind.onRootElement(QueryEvents.buildingQuery, (args: IBuildingQueryEventArgs) => this.handleBuildingQuery(args));
     this.bind.onRootElement(QueryEvents.querySuccess, (args: IQuerySuccessEventArgs) => this.groupBy(args));
     this.bind.onRootElement(QueryEvents.doneBuildingQuery, (args: IDoneBuildingQueryEventArgs) => this.handleDoneBuildingQuery(args));
-
   }
 
   private handleBuildingQuery(args: IBuildingQueryEventArgs) {
@@ -97,7 +94,9 @@ export class SimpleFilter extends Component {
 
   private handleClick(e: Event) {
     if (e.target == this.element || e.target == $$(this.element).find('.coveo-simplefilter-select') ||
-      e.target == $$(this.element).find('.coveo-circle') || e.target == $$(this.element).find('.coveo-icon')) {
+      e.target == $$(this.element).find('.coveo-circle') || e.target == $$(this.element).find('.coveo-icon')
+        || e.target == $$(this.element).find('.coveo-simplefilter-selecttext')) {
+
       e.stopImmediatePropagation();
       this.toggle();
     }
@@ -130,6 +129,12 @@ export class SimpleFilter extends Component {
 
   private handleCheckboxToggle() {
     this.circleElement.text(this.getSelectedValues().length.toString());
+    const title = $$(this.element).find('.coveo-simplefilter-selecttext');
+    if(this.getSelectedValues().length == 1){
+      $$(title).text(l(this.getSelectedValues()[0]));
+    } else {
+      $$(title).text(this.options.title);
+    }
     this.queryController.executeQuery();
   }
 

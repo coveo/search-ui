@@ -4,9 +4,13 @@
 
 .coveo-filter-header-wrapper {
   width: 100%;
-  margin: 15px;
-  padding: 0;
-  @include display(inline-flex);
+  margin:0 15px;
+  padding-left: 15px;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  position: relative;
+  display: block;
   @include flex-wrap(nowrap);
   @include justify-content(flex-start);
 }
@@ -18,24 +22,37 @@
   position: relative;
   border: 1px #dadada solid;
   background-color: white;
-  margin-left: 10px;
-  max-width: 200px;
-  .coveo-simplefilter-select {
-    color: #1D4F76;
-    cursor: pointer;
-    display:inherit;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-    white-space: nowrap;
-    padding: 6px;
-    .coveo-icon {
-      margin-left: 5px;
-      position: relative;
-      top: 2px;
-      @include retina-sprite($arrow-down-group);
-    }
+  width: 175px;
+  &:hover {
+    background-color: $color-blueish-white-grey;
+  }
+}
+
+.coveo-simplefilter-selecttext {
+  max-width: 100px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.coveo-simplefilter-select {
+  color: #1D4F76;
+  cursor: pointer;
+  display: flex;
+  width: 174px;
+  justify-content: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  white-space: nowrap;
+  padding: 3px 19px;
+  .coveo-icon {
+    margin-left: 5px;
+    position: relative;
+    top: 6px;
+    @include retina-sprite($arrow-down-group);
   }
 }
 
@@ -59,7 +76,7 @@
   }
 
   .coveo-simplefilter-select:hover {
-    background-color: $color-blueish-white-grey;
+
   }
 
   .coveo-checkbox-container {
@@ -67,9 +84,10 @@
     border: 1px #dadada solid;
     position: absolute;
     background-color: white;
-    top: 32px;
-    right: -10px;
-    max-width: 200px;
+    top: 26px;
+    right: -1px;
+    width: 175px;
+    text-align: left;
     .coveo-checkbox-button {
      @include defaultRoundedBorder();
     }
@@ -94,7 +112,10 @@
   .coveo-checkbox-span-label {
     white-space: nowrap;
     vertical-align: middle;
-
+    text-overflow: ellipsis;
+    display: inline-block;
+    overflow: hidden;
+    max-width: 125px;
   }
 
   .coveo-checkbox-button {
