@@ -1,0 +1,135 @@
+@import "bourbon/bourbon";
+@import "Variables";
+@import "../bin/sass/sprites";
+
+.coveo-filter-header-wrapper {
+  width: 100%;
+  margin:0 15px;
+  padding-left: 15px;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  position: relative;
+  display: block;
+  @include flex-wrap(nowrap);
+  @include justify-content(flex-start);
+}
+.coveo-dropdown-background {
+  opacity: 0.9;
+}
+.CoveoSimpleFilter {
+  display: inline-block;
+  position: relative;
+  border: 1px #dadada solid;
+  background-color: white;
+  width: 175px;
+  &:hover {
+    background-color: $color-blueish-white-grey;
+  }
+}
+
+.coveo-simplefilter-selecttext {
+  max-width: 100px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.coveo-simplefilter-select {
+  color: #1D4F76;
+  cursor: pointer;
+  display: flex;
+  width: 174px;
+  justify-content: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  white-space: nowrap;
+  padding: 3px 19px;
+  .coveo-icon {
+    margin-left: 5px;
+    position: relative;
+    top: 6px;
+    @include retina-sprite($arrow-down-group);
+  }
+}
+
+  .coveo-circle {
+    display: inline-block;
+    letter-spacing: 0.4px;
+    background-color: white;
+    border: 2px solid #1D4F76;
+    border-radius: 10px; /* one half of ( (border * 2) + height + padding ) */
+    color: #1D4F76;
+    font-size: 13px;
+    font-weight: bold;
+    height: 20px;
+    width: 20px;
+    line-height: 16px;
+    padding: 0 3px 0 3px;
+    text-align: center;
+    margin-left: 3px;
+    margin-right: 3px
+
+  }
+
+  .coveo-simplefilter-select:hover {
+
+  }
+
+  .coveo-checkbox-container {
+    display: none;
+    border: 1px #dadada solid;
+    position: absolute;
+    background-color: white;
+    top: 26px;
+    right: -1px;
+    width: 175px;
+    text-align: left;
+    .coveo-checkbox-button {
+     @include defaultRoundedBorder();
+    }
+  }
+  .coveo-checkbox-container-expanded {
+    display: inline-block;
+    z-index: 20;
+  }
+
+  .coveo-checkbox-container label {
+    display: inline-block;
+  }
+
+  .coveo-checkbox-container label:hover {
+    background-color: $color-blueish-white-grey;
+  }
+
+  .coveo-checkbox-button, input[type=checkbox].coveo-checkbox + button {
+  //  margin-right: 0px;
+  }
+
+  .coveo-checkbox-span-label {
+    white-space: nowrap;
+    vertical-align: middle;
+    text-overflow: ellipsis;
+    display: inline-block;
+    overflow: hidden;
+    max-width: 125px;
+  }
+
+  .coveo-checkbox-button {
+   vertical-align: middle;
+  }
+
+  .coveo-checkbox-label {
+    white-space: nowrap;
+    width:100%;
+    padding: 5px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+
+

@@ -41,7 +41,7 @@ export class FacetQueryController {
   }
 
   /**
-   * Compute the filter expression that the facet need to output for the query
+   * Compute the filter expression that the facet needs to output for the query
    * @returns {string}
    */
   public computeOurFilterExpression(): string {

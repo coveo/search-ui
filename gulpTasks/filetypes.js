@@ -126,11 +126,12 @@ function generateStrings(json) {
   // helpers do the same, and string lookups are case sensitive. I do that because
   // I can't expect to match all the time the casing output by the connectors.
   _.each(_.keys(json.objecttype), function (objecttype) {
-
+    out[objecttype.toLowerCase()] = json.objecttype[objecttype].captions;
     out['objecttype_' + objecttype.toLowerCase()] = json.objecttype[objecttype].captions;
   });
 
   _.each(_.keys(json.filetype), function (filetype) {
+    out[filetype.toLowerCase()] = json.filetype[filetype].captions;
     out['filetype_' + filetype.toLowerCase()] = json.filetype[filetype].captions;
   });
 
