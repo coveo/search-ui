@@ -249,8 +249,8 @@ export var analyticsActionCauseList = {
     metaMap: { facetId: 1, facetValue: 2, facetTitle: 3 }
   },
   breadcrumbAdvancedSearch: <IAnalyticsActionCause>{
-    name : 'breadcrumbAdvancedSearch',
-    type : 'breadcrumb'
+    name: 'breadcrumbAdvancedSearch',
+    type: 'breadcrumb'
   },
   breadcrumbResetAll: <IAnalyticsActionCause>{
     name: 'breadcrumbResetAll',

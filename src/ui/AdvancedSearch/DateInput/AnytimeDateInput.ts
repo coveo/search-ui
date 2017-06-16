@@ -17,7 +17,7 @@ export class AnytimeDateInput extends DateInput {
     let radio = this.getRadio();
     radio.checked = true;
     $$(radio).on('change', () => {
-      if(this.root) {
+      if (this.root) {
         $$(this.root).trigger(AdvancedSearchEvents.executeAdvancedSearch);
       } else {
         $$(this.element).trigger(AdvancedSearchEvents.executeAdvancedSearch);
