@@ -7,6 +7,7 @@ import { ResultListEvents, IDisplayedNewResultEventArgs } from '../../events/Res
 import { QueryEvents, IDoneBuildingQueryEventArgs } from '../../events/QueryEvents';
 import { InitializationEvents } from '../../events/InitializationEvents';
 import { stringify } from 'circular-json';
+import * as _ from 'underscore';
 
 export class DebugHeader {
   private debug = false;
@@ -140,7 +141,7 @@ export class DebugHeader {
       } else {
         toDownload[key] = _.omit(info, 'state', 'searchInterface');
       }
-    })
+    });
     console.log(toDownload);
     return 'data:text/json;charset=utf-8,' + encodeURIComponent(stringify(toDownload));
   }
