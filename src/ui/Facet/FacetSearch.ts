@@ -192,7 +192,7 @@ export class FacetSearch {
     this.search.appendChild(this.magnifier);
 
     this.wait = document.createElement('div');
-    this.wait.innerHTML = SVGIcons.facetLoading;
+    this.wait.innerHTML = SVGIcons.loading;
     $$(this.wait).addClass('coveo-facet-search-wait-animation');
     SVGDom.addClassToSVGInContainer(this.wait, 'coveo-facet-search-wait-animation-svg');
     this.search.appendChild(this.wait);

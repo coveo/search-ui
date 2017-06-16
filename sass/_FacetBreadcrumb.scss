@@ -22,7 +22,7 @@
   @include clearButton('.coveo-facet-breadcrumb-clear');
   @include clickableVibrant();
   & + & {
-    margin-left: 10px;
+    margin-left: 20px;
   }
 }
 
