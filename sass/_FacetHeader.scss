@@ -31,7 +31,7 @@
 .coveo-facet-settings-more {
   &:hover, &:focus {
     outline: none;
-    .coveo-facet-settings-more-svg > path{
+    .coveo-more-background-svg {
       fill-opacity: 1;
       fill: $color-blueish-white-grey;
     }
@@ -64,7 +64,7 @@
 .coveo-facet-header-eraser {
   @include clearButton('&', 'bigger');
   position: relative;
-  top:0px;
+  top: 0px;
   visibility: hidden;
   &.coveo-facet-header-eraser-visible {
     visibility: visible;
