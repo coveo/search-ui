@@ -12,8 +12,8 @@ export class SimpleFieldInput extends DocumentInput {
   protected element: HTMLElement;
   public dropDown: Dropdown;
 
-  constructor(public inputName: string, public fieldName: string, private endpoint: ISearchEndpoint) {
-    super(inputName);
+  constructor(public inputName: string, public fieldName: string, private endpoint: ISearchEndpoint, public root: HTMLElement) {
+    super(inputName, root);
   }
 
   public reset() {

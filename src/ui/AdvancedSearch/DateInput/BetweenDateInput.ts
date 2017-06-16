@@ -10,8 +10,8 @@ export class BetweenDateInput extends DateInput {
   public firstDatePicker: DatePicker = new DatePicker(this.onChange.bind(this));
   public secondDatePicker: DatePicker = new DatePicker(this.onChange.bind(this));
 
-  constructor() {
-    super(l('Between'));
+  constructor(public root: HTMLElement) {
+    super(l('Between'), root);
   }
 
   public reset() {
