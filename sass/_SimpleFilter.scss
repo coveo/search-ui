@@ -22,7 +22,7 @@
   position: relative;
   border: 1px #dadada solid;
   background-color: white;
-  width: 175px;
+  width: 160px;
   &:hover {
     background-color: $color-blueish-white-grey;
   }
@@ -38,7 +38,7 @@
   color: #1D4F76;
   cursor: pointer;
   display: flex;
-  width: 174px;
+  width: 159px;
   justify-content: center;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -51,6 +51,8 @@
   .coveo-icon {
     margin-left: 5px;
     position: relative;
+    min-height: 13px;
+    min-width: 13px;
     top: 6px;
     @include retina-sprite($arrow-down-group);
   }
@@ -65,8 +67,8 @@
     color: #1D4F76;
     font-size: 13px;
     font-weight: bold;
-    height: 20px;
-    width: 20px;
+    min-height: 20px;
+    min-width: 20px;
     line-height: 16px;
     padding: 0 3px 0 3px;
     text-align: center;
@@ -86,7 +88,7 @@
     background-color: white;
     top: 26px;
     right: -1px;
-    width: 175px;
+    width: 160px;
     text-align: left;
     .coveo-checkbox-button {
      @include defaultRoundedBorder();
@@ -115,7 +117,8 @@
     text-overflow: ellipsis;
     display: inline-block;
     overflow: hidden;
-    max-width: 125px;
+    max-width: 110px;
+    margin-left: 6px;
   }
 
   .coveo-checkbox-button {
@@ -132,4 +135,19 @@
     user-select: none;
   }
 
+.coveo-simplefilter-breadcrumb-title {
+  @include breadcrumbTitle();
+}
+
+
+.coveo-simplefilter-breadcrumb-value {
+  @include clickableVibrant();
+  padding-right: 10px;
+}
+
+.coveo-simplefilter-breadcrumb-clear {
+  display: inline-block;
+  margin: 3px 0px 0px 5px;
+  @include clearButton('&');
+}
 
