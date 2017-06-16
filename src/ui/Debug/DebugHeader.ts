@@ -143,7 +143,6 @@ export class DebugHeader {
         toDownload[key] = _.omit(info, 'state', 'searchInterface');
       }
     });
-    console.log(toDownload);
     return 'data:text/json;charset=utf-8,' + encodeURIComponent(stringify(toDownload));
   }
 }
