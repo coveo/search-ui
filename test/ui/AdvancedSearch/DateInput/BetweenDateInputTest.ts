@@ -7,7 +7,7 @@ export function BetweenDateInputTest() {
     let input: BetweenDateInput;
 
     beforeEach(function () {
-      input = new BetweenDateInput();
+      input = new BetweenDateInput($$('div').el);
       input.build();
       (<HTMLInputElement>$$((input.getElement())).find('input')).checked = true;
     });
