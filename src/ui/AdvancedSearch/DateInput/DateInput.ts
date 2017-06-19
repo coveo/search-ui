@@ -11,7 +11,7 @@ export abstract class DateInput implements IAdvancedSearchInput {
   private radio: RadioButton;
   private error: HTMLElement;
 
-  constructor(public inputName: string) {
+  constructor(public inputName: string, public root: HTMLElement) {
     this.buildContent();
   }
 
@@ -90,7 +90,9 @@ export abstract class DateInput implements IAdvancedSearchInput {
   }
 
   protected onChange() {
-    if (this.element) {
+    if (this.root) {
+      $$(this.root).trigger(AdvancedSearchEvents.executeAdvancedSearch);
+    } else if (this.element) {
       $$(this.element).trigger(AdvancedSearchEvents.executeAdvancedSearch);
     }
   }

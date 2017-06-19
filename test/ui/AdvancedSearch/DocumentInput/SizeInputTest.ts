@@ -1,11 +1,12 @@
 import { SizeInput } from '../../../../src/ui/AdvancedSearch/DocumentInput/SizeInput';
+import { $$ } from '../../../../src/utils/Dom';
 
 export function SizeInputTest() {
   describe('SizeInput', () => {
     let input: SizeInput;
 
     beforeEach(function () {
-      input = new SizeInput();
+      input = new SizeInput($$('div').el);
       input.build();
     });
 

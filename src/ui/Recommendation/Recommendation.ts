@@ -315,7 +315,9 @@ export class Recommendation extends SearchInterface implements IComponentBinding
       this.mainQuerySearchUID = args.results.searchUid;
       this.mainQueryPipeline = args.results.pipeline;
       this.usageAnalytics.logSearchEvent<IAnalyticsNoMeta>(analyticsActionCauseList.recommendation, {});
-      this.queryController.executeQuery();
+      this.queryController.executeQuery({
+        closeModalBox: false
+      });
     });
   }
 
