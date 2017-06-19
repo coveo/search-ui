@@ -208,31 +208,25 @@ export class SimpleFilter extends Component {
   }
 
   private handlePopulateBreadcrumb(args: IPopulateBreadcrumbEventArgs) {
-    const elem = document.createElement('div');
-    $$(elem).addClass('coveo-simplefilter-breadcrumb');
+    const elem = $$('div', { className: 'coveo-simplefilter-breadcrumb'});
 
-    const title = document.createElement('span');
-    $$(title).addClass('coveo-simplefilter-breadcrumb-title');
-    $$(title).text(this.options.title);
-    elem.appendChild(title);
+    const title = $$('span', { className: 'coveo-simplefilter-breadcrumb-title'}, this.options.title);
+    elem.el.appendChild(title.el);
 
-    const values = document.createElement('span');
-    $$(values).addClass('coveo-simplefilter-breadcrumb-values');
-    elem.appendChild(values);
+    const values = $$('span', { className: 'coveo-simplefilter-breadcrumb-values'});
+
+    elem.el.appendChild(values.el);
 
     _.each(this.getSelectedValues(), (selectedValue) => {
-      const value = document.createElement('span');
-      $$(value).addClass('coveo-simplefilter-breadcrumb-value');
-      $$(value).text(l(selectedValue));
-      values.appendChild(value);
-      const clear = document.createElement('span');
-      $$(clear).addClass('coveo-simplefilter-breadcrumb-clear');
-      value.appendChild(clear);
-      $$(value).on('click', () => this.handleRemoveFromBreadcrumb(value.textContent));
+      const value = $$('span', { className: 'coveo-simplefilter-breadcrumb-value'}, l(selectedValue))
+      values.el.appendChild(value.el);
+      const clear = $$('span', {className: 'coveo-simplefilter-breadcrumb-clear'});
+      value.el.appendChild(clear.el);
+      $$(value).on('click', () => this.handleRemoveFromBreadcrumb(value.el.textContent));
     });
 
     args.breadcrumbs.push({
-      element: elem
+      element: elem.el
     });
   }
 
