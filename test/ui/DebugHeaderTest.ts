@@ -47,6 +47,15 @@ export function DebugHeaderTest() {
       expect($$(elem.el).find('a[download="debug.json"]')).not.toBeNull();
     });
 
+    it('should change the download button when providing new info', () => {
+      const firstLinkToDownload = $$(elem.el).find('a[download="debug.json"]').getAttribute('href');
+      debugHeader.setNewInfoToDebug({
+        'baz': 'buzz'
+      });
+      const secondLinkToDownload = $$(elem.el).find('a[download="debug.json"]').getAttribute('href');
+      expect(firstLinkToDownload).not.toEqual(secondLinkToDownload);
+    });
+
     it('should create a debug checkbox', () => {
       expect(getDebugCheckbox(elem.el)).not.toBeNull();
     });
