@@ -1,6 +1,7 @@
 import { KeywordsInput } from '../../../../src/ui/AdvancedSearch/KeywordsInput/KeywordsInput';
 import { QueryBuilder } from '../../../../src/ui/Base/QueryBuilder';
 import { ExpressionBuilder } from '../../../../src/ui/Base/ExpressionBuilder';
+import { $$ } from '../../../../src/utils/Dom';
 import * as Mock from '../../../MockEnvironment';
 
 export function KeywordsInputTest() {
@@ -8,7 +9,7 @@ export function KeywordsInputTest() {
     let input: KeywordsInput;
 
     beforeEach(function () {
-      input = new KeywordsInput('test');
+      input = new KeywordsInput('test', $$('div').el);
       input.build();
     });
 

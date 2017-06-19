@@ -14,7 +14,7 @@ import { IFieldInputParameters } from './AdvancedSearchInput';
 
 export class AdvancedSearchInputFactory {
 
-  constructor(private endpoint: ISearchEndpoint) {
+  constructor(private endpoint: ISearchEndpoint, private root: HTMLElement) {
   }
 
   public create(name: string, options?: IFieldInputParameters): IAdvancedSearchInput {
@@ -45,43 +45,43 @@ export class AdvancedSearchInputFactory {
   }
 
   public createAllKeywordsInput(): AllKeywordsInput {
-    return new AllKeywordsInput();
+    return new AllKeywordsInput(this.root);
   }
 
   public createExactKeywordsInput(): ExactKeywordsInput {
-    return new ExactKeywordsInput();
+    return new ExactKeywordsInput(this.root);
   }
 
   public createAnyKeywordsInput(): AnyKeywordsInput {
-    return new AnyKeywordsInput();
+    return new AnyKeywordsInput(this.root);
   }
 
   public createNoneKeywordsInput(): NoneKeywordsInput {
-    return new NoneKeywordsInput();
+    return new NoneKeywordsInput(this.root);
   }
 
   public createAnytimeDateInput(): AnytimeDateInput {
-    return new AnytimeDateInput();
+    return new AnytimeDateInput(this.root);
   }
 
   public createInTheLastDateInput(): InTheLastDateInput {
-    return new InTheLastDateInput();
+    return new InTheLastDateInput(this.root);
   }
 
   public createBetweenDateInput(): BetweenDateInput {
-    return new BetweenDateInput();
+    return new BetweenDateInput(this.root);
   }
 
   public createSimpleFieldInput(name: string, field: string): SimpleFieldInput {
-    return new SimpleFieldInput(name, field, this.endpoint);
+    return new SimpleFieldInput(name, field, this.endpoint, this.root);
   }
 
   public createAdvancedFieldInput(name: string, field: string): AdvancedFieldInput {
-    return new AdvancedFieldInput(name, field);
+    return new AdvancedFieldInput(name, field, this.root);
   }
 
   public createSizeInput() {
-    return new SizeInput();
+    return new SizeInput(this.root);
   }
 
 }

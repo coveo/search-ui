@@ -15,8 +15,8 @@ export class SizeInput extends DocumentInput {
   public sizeInput: NumericSpinner;
   public sizeSelect: Dropdown;
 
-  constructor() {
-    super('Size');
+  constructor(public root: HTMLElement) {
+    super('Size', root);
   }
 
   public reset() {

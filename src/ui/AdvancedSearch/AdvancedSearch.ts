@@ -84,7 +84,7 @@ export class AdvancedSearch extends Component {
   public inputs: IAdvancedSearchInput[] = [];
   public content: Dom;
 
-  private inputFactory = new AdvancedSearchInputFactory(this.queryController.getEndpoint());
+  private inputFactory = new AdvancedSearchInputFactory(this.queryController.getEndpoint(), this.root);
   private externalSections: IExternalAdvancedSearchSection[] = [];
   private modalbox: Coveo.ModalBox.ModalBox;
   private needToPopulateBreadcrumb = false;
@@ -161,7 +161,11 @@ export class AdvancedSearch extends Component {
         className: 'coveo-advanced-search-breadcrumb-clear'
       }, SVGIcons.checkboxHookExclusionMore);
       SVGDom.addClassToSVGInContainer(clear.el, 'coveo-advanced-search-breadcrumb-clear-svg');
-      clear.on('click', () => this.handleClearBreadcrumb());
+      clear.on('click', () => {
+        this.handleClearBreadcrumb();
+        this.usageAnalytics.logSearchEvent<IAnalyticsNoMeta>(analyticsActionCauseList.breadcrumbAdvancedSearch, {});
+        this.queryController.executeQuery();
+      });
 
       elem.append(title.el);
       elem.append(clear.el);

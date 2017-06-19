@@ -38,6 +38,7 @@ export class Debug extends RootComponent {
   private modalBox: Coveo.ModalBox.ModalBox;
   private opened = false;
   private stackDebug: any;
+  private debugHeader: DebugHeader;
 
   public showDebugPanel: () => void;
 
@@ -197,7 +198,11 @@ export class Debug extends RootComponent {
 
     const title = $$(this.modalBox.wrapper).find('.coveo-modal-header');
     if (title) {
-      new DebugHeader(this.element, title, this.bindings, (value: string) => this.search(value, build.body), this.stackDebug);
+      if (!this.debugHeader) {
+        this.debugHeader = new DebugHeader(this.element, title, this.bindings, (value: string) => this.search(value, build.body), this.stackDebug);
+      } else {
+        this.debugHeader.moveTo(title);
+      }
     } else {
       this.logger.warn('No title found in modal box.');
     }

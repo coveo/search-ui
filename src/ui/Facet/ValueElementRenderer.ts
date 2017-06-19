@@ -72,7 +72,7 @@ export class ValueElementRenderer {
       }
       $$(this.label).addClass('coveo-with-computed-field');
     }
-    var labelDiv = $$('div', {
+    const labelDiv = $$('div', {
       className: 'coveo-facet-value-label-wrapper'
     }).el;
     this.label.appendChild(labelDiv);
@@ -112,7 +112,7 @@ export class ValueElementRenderer {
   }
 
   protected buildExcludeIcon(): HTMLElement {
-    let excludeIcon = $$('div', {
+    const excludeIcon = $$('div', {
       title: l('Exclude', this.facet.getValueCaption(this.facetValue)),
       className: 'coveo-facet-value-exclude',
       tabindex: 0
@@ -131,9 +131,9 @@ export class ValueElementRenderer {
   }
 
   protected buildValueComputedField(): HTMLElement {
-    var computedField = this.facetValue.getFormattedComputedField(this.facet.options.computedFieldFormat);
+    const computedField = this.facetValue.getFormattedComputedField(this.facet.options.computedFieldFormat);
     if (Utils.isNonEmptyString(computedField)) {
-      var elem = $$('span', {
+      const elem = $$('span', {
         className: 'coveo-facet-value-computed-field'
       }).el;
       $$(elem).text(computedField);
@@ -144,7 +144,7 @@ export class ValueElementRenderer {
   }
 
   protected buildValueCheckbox(): HTMLElement {
-    var checkbox = $$('input', {
+    const checkbox = $$('input', {
       type: 'checkbox'
     }).el;
     if (this.facetValue.selected) {
@@ -162,7 +162,7 @@ export class ValueElementRenderer {
   }
 
   protected buildValueStylishCheckbox(): HTMLElement {
-    let checkbox = $$('div', {
+    const checkbox = $$('div', {
       className: 'coveo-facet-value-checkbox',
       tabindex: 0
     }).el;
@@ -173,7 +173,7 @@ export class ValueElementRenderer {
   }
 
   protected buildValueIcon(): HTMLElement {
-    var icon = this.getValueIcon();
+    const icon = this.getValueIcon();
     if (Utils.exists(icon)) {
       return $$('img', {
         className: 'coveo-facet-value-icon coveo-icon',
@@ -199,8 +199,8 @@ export class ValueElementRenderer {
   }
 
   protected buildValueCaption(): HTMLElement {
-    var caption = this.facet.getValueCaption(this.facetValue);
-    var valueCaption = $$('span', {
+    const caption = this.facet.getValueCaption(this.facetValue);
+    const valueCaption = $$('span', {
       className: 'coveo-facet-value-caption',
       title: caption
     }).el;
@@ -210,9 +210,9 @@ export class ValueElementRenderer {
   }
 
   protected buildValueCount(): HTMLElement {
-    var count = this.facetValue.getFormattedCount();
+    const count = this.facetValue.getFormattedCount();
     if (Utils.isNonEmptyString(count)) {
-      var countElement = $$('span', {
+      const countElement = $$('span', {
         className: 'coveo-facet-value-count'
       }).el;
       $$(countElement).text(count);
