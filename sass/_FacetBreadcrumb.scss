@@ -22,7 +22,7 @@
   @include clearButton('.coveo-facet-breadcrumb-clear');
   @include clickableVibrant();
   & + & {
-    margin-left: 10px;
+    margin-left: 20px;
   }
 }
 
@@ -31,6 +31,12 @@
   margin-left: 5px;
   position: relative;
   top: 5px;
+}
+
+.coveo-facet-breadcrumb-clear-svg {
+  position: absolute;
+  top: -1px;
+
 }
 
 .coveo-facet-breadcrumb-multi-icon {

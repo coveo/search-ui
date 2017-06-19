@@ -13,6 +13,8 @@ import { Assert } from '../../misc/Assert';
 import * as _ from 'underscore';
 import { exportGlobally } from '../../GlobalExports';
 import 'styling/_HiddenQuery';
+import { SVGIcons } from '../../utils/SVGIcons';
+import { SVGDom } from '../../utils/SVGDom';
 
 export interface IHiddenQueryOptions {
   maximumDescriptionLength: number;
@@ -84,7 +86,7 @@ export class HiddenQuery extends Component {
    */
   public clear() {
     this.setStateEmpty();
-    let hiddenDescriptionRemoved = this.getDescription();
+    const hiddenDescriptionRemoved = this.getDescription();
     this.usageAnalytics.logSearchEvent<IAnalyticsContextRemoveMeta>(analyticsActionCauseList.contextRemove, { contextName: hiddenDescriptionRemoved });
     this.queryController.executeQuery();
   }
@@ -96,35 +98,35 @@ export class HiddenQuery extends Component {
 
   private handleBuildingQuery(data: IBuildingQueryEventArgs) {
     Assert.exists(data);
-    let hiddenQuery = this.queryStateModel.get(QUERY_STATE_ATTRIBUTES.HQ);
+    const hiddenQuery = this.queryStateModel.get(QUERY_STATE_ATTRIBUTES.HQ);
     if (Utils.isNonEmptyString(hiddenQuery)) {
       data.queryBuilder.advancedExpression.add(hiddenQuery);
     }
   }
 
   private handlePopulateBreadcrumb(args: IPopulateBreadcrumbEventArgs) {
-    let description = this.getDescription();
+    const description = this.getDescription();
     if (!_.isEmpty(description) && !_.isEmpty(this.queryStateModel.get(QUERY_STATE_ATTRIBUTES.HQ))) {
-      let elem = document.createElement('div');
+      const elem = document.createElement('div');
       $$(elem).addClass('coveo-hidden-query-breadcrumb');
 
-      let title = document.createElement('span');
+      const title = document.createElement('span');
       $$(title).addClass('coveo-hidden-query-breadcrumb-title');
       $$(title).text(this.options.title);
       elem.appendChild(title);
 
-      let values = document.createElement('span');
+      const values = document.createElement('span');
       $$(values).addClass('coveo-hidden-query-breadcrumb-values');
       elem.appendChild(values);
 
-      let value = document.createElement('span');
-      $$(value).addClass('coveo-hidden-query-breadcrumb-value');
-      $$(value).text(description);
-      values.appendChild(value);
+      const value = $$('span', { className: 'coveo-hidden-query-breadcrumb-value' }, description);
+      values.appendChild(value.el);
 
-      let clear = document.createElement('span');
-      $$(clear).addClass('coveo-hidden-query-breadcrumb-clear');
-      elem.appendChild(clear);
+      const svgContainer = $$('span', { className: 'coveo-hidden-query-breadcrum-clear-icon' }, SVGIcons.checkboxHookExclusionMore);
+      SVGDom.addClassToSVGInContainer(svgContainer.el, 'coveo-hidden-query-breadcrumb-clear-svg');
+      const clear = $$('span', { className: 'coveo-hidden-query-breadcrumb-clear' });
+      clear.append(svgContainer.el);
+      elem.appendChild(clear.el);
 
       $$(elem).on('click', () => this.clear());
 

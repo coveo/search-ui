@@ -12,6 +12,8 @@ import { l } from '../../strings/Strings';
 import { $$, Dom } from '../../utils/Dom';
 import * as _ from 'underscore';
 import { ISearchAlertsPopulateMessageText } from '../../events/SearchAlertEvents';
+import { SVGIcons } from '../../utils/SVGIcons';
+import { SVGDom } from '../../utils/SVGDom';
 
 export interface ISearchAlertMessageOptions {
   closeDelay: number;
@@ -115,11 +117,12 @@ export class SearchAlertsMessage extends Component {
     this.message.el.innerHTML = `
       <div class='coveo-subscriptions-messages-message'>
         <div class='coveo-subscriptions-messages-content'>${message}</div>
-        <div class='coveo-subscriptions-messages-info-close'></div>
+        <div class='coveo-subscriptions-messages-info-close'>${SVGIcons.checkboxHookExclusionMore}</div>
       </div>`;
 
     this.message.toggleClass('coveo-subscriptions-messages-error', error);
     let closeButton = this.message.find('.coveo-subscriptions-messages-info-close');
+    SVGDom.addClassToSVGInContainer(closeButton, 'coveo-subscript-messages-info-close-svg');
     $$(closeButton).on('click', () => this.close());
 
     PopupUtils.positionPopup(this.message.el, dom.el, this.root, {
