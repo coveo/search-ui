@@ -144,6 +144,13 @@ $spaceBetween: 0 5px 5px 0;
 
 .coveo-advanced-search-breadcrumb {
   .coveo-advanced-search-breadcrumb-clear {
+    position: relative;
     @include clearButton('&');
   }
+}
+
+.coveo-advanced-search-breadcrumb-clear-svg {
+  position: absolute;
+  top: 5px;
+  left: 3px;
 }
