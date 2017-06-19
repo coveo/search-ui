@@ -169,9 +169,8 @@ export class SimpleFilter extends Component {
 
   private createWrapper() {
     if ($$(document.body).find('.coveo-filter-header-wrapper') == null) {
-      const mainSection = $$(document.body).find('.coveo-main-section');
       const wrapper = $$('div', { className: 'coveo-filter-header-wrapper' });
-      wrapper.insertBefore(mainSection);
+      wrapper.insertBefore(this.element);
       return wrapper;
     } else {
       const wrapper = $$(document.body).find('.coveo-filter-header-wrapper');
