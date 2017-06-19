@@ -1064,9 +1064,9 @@ export class Facet extends Component {
   public hideWaitingAnimation(): void {
     this.ensureDom();
     if (this.showingWaitAnimation) {
-      $$(this.headerElement).find('.coveo-icon').style.display = '';
       if (!this.searchInterface.isNewDesign()) {
         $$(this.headerElement).find('.coveo-facet-header-wait-animation').style.display = 'none';
+        $$(this.headerElement).find('.coveo-icon').style.display = '';
       } else {
         $$(this.headerElement).find('.coveo-facet-header-wait-animation').style.visibility = 'hidden';
       }
