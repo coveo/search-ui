@@ -3,6 +3,7 @@ import { FieldSuggestions } from '../../src/ui/FieldSuggestions/FieldSuggestions
 import { IFieldSuggestionsOptions } from '../../src/ui/FieldSuggestions/FieldSuggestions';
 import { Simulate } from '../Simulate';
 import { analyticsActionCauseList } from '../../src/ui/Analytics/AnalyticsActionListMeta';
+import { $$ } from '../../src/utils/Dom';
 
 export function FieldSuggestionsTest() {
   describe('FieldSuggestions', () => {
@@ -96,6 +97,44 @@ export function FieldSuggestionsTest() {
           field: '@foobar',
           maximumNumberOfValues: 333
         }));
+      });
+
+      describe('when data is returned for a field', () => {
+        let fakeListField;
+        beforeEach(() => {
+          fakeListField = Promise.resolve([{ value: 'foo' }, { value: 'bar' }, { value: 'baz' }]);
+        });
+
+        it('should not provide a header if not configured as an option', (done) => {
+          test = Mock.optionsComponentSetup<FieldSuggestions, IFieldSuggestionsOptions>(FieldSuggestions, {
+            field: '@foobar'
+          });
+
+          (<jasmine.Spy>test.env.searchEndpoint.listFieldValues).and.returnValue(fakeListField);
+
+          const simulation = Simulate.omnibox(test.env);
+          simulation.rows[0].deferred.then((elementResolved) => {
+            expect($$(elementResolved.element).find('.coveo-top-field-suggestion-header')).toBeNull();
+            done();
+          });
+        });
+
+        it('should provide a header if configured as an option', (done) => {
+          test = Mock.optionsComponentSetup<FieldSuggestions, IFieldSuggestionsOptions>(FieldSuggestions, {
+            field: '@foobar',
+            headerTitle: 'my suggestion'
+          });
+
+          (<jasmine.Spy>test.env.searchEndpoint.listFieldValues).and.returnValue(fakeListField);
+
+          const simulation = Simulate.omnibox(test.env);
+          simulation.rows[0].deferred.then((elementResolved) => {
+            const header = $$(elementResolved.element).find('.coveo-top-field-suggestion-header');
+            expect(header).not.toBeNull();
+            expect($$(header).text()).toBe('my suggestion');
+            done();
+          })
+        });
       });
     });
   });
