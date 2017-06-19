@@ -10337,6 +10337,10 @@ exports.analyticsActionCauseList = {
         type: 'breadcrumb',
         metaMap: { facetId: 1, facetValue: 2, facetTitle: 3 }
     },
+    breadcrumbAdvancedSearch: {
+        name: 'breadcrumbAdvancedSearch',
+        type: 'breadcrumb'
+    },
     breadcrumbResetAll: {
         name: 'breadcrumbResetAll',
         type: 'breadcrumb',
@@ -19638,8 +19642,8 @@ exports.DebugEvents = DebugEvents;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.version = {
-    'lib': '2.2900.3-beta',
-    'product': '2.2900.3-beta',
+    'lib': '2.2900.4-beta',
+    'product': '2.2900.4-beta',
     'supportedApiVersion': 2
 };
 
@@ -37153,7 +37157,7 @@ var dict = {
     "Off": "Off",
     "Automatic": "Automatic",
     "ResultsPerPage": "Results per page",
-    "FiltersInAdvancedSearch": "Filters in advanced search",
+    "FiltersInAdvancedSearch": "Filters in Advanced Search",
     "InvalidTimeRange": "Invalid time range",
     "PreviousMonth": "Previous month",
     "NextMonth": "Next month",
@@ -38452,8 +38456,9 @@ var TextInput_1 = __webpack_require__(45);
 var AdvancedSearchEvents_1 = __webpack_require__(58);
 var Dom_1 = __webpack_require__(3);
 var KeywordsInput = (function () {
-    function KeywordsInput(inputName) {
+    function KeywordsInput(inputName, root) {
         this.inputName = inputName;
+        this.root = root;
     }
     KeywordsInput.prototype.reset = function () {
         this.clear();
@@ -38478,7 +38483,10 @@ var KeywordsInput = (function () {
         }
     };
     KeywordsInput.prototype.onChange = function () {
-        if (this.input) {
+        if (this.root) {
+            Dom_1.$$(this.root).trigger(AdvancedSearchEvents_1.AdvancedSearchEvents.executeAdvancedSearch);
+        }
+        else if (this.input) {
             Dom_1.$$(this.input.getElement()).trigger(AdvancedSearchEvents_1.AdvancedSearchEvents.executeAdvancedSearch);
         }
     };
@@ -40713,7 +40721,9 @@ var Recommendation = (function (_super) {
             _this.mainQuerySearchUID = args.results.searchUid;
             _this.mainQueryPipeline = args.results.pipeline;
             _this.usageAnalytics.logSearchEvent(AnalyticsActionListMeta_1.analyticsActionCauseList.recommendation, {});
-            _this.queryController.executeQuery();
+            _this.queryController.executeQuery({
+                closeModalBox: false
+            });
         });
     };
     Recommendation.prototype.handleRecommendationBuildingQuery = function (data) {
@@ -43362,8 +43372,9 @@ var Dom_1 = __webpack_require__(3);
 var RadioButton_1 = __webpack_require__(80);
 var _ = __webpack_require__(1);
 var DateInput = (function () {
-    function DateInput(inputName) {
+    function DateInput(inputName, root) {
         this.inputName = inputName;
+        this.root = root;
         this.buildContent();
     }
     DateInput.prototype.reset = function () {
@@ -43429,7 +43440,10 @@ var DateInput = (function () {
         });
     };
     DateInput.prototype.onChange = function () {
-        if (this.element) {
+        if (this.root) {
+            Dom_1.$$(this.root).trigger(AdvancedSearchEvents_1.AdvancedSearchEvents.executeAdvancedSearch);
+        }
+        else if (this.element) {
             Dom_1.$$(this.element).trigger(AdvancedSearchEvents_1.AdvancedSearchEvents.executeAdvancedSearch);
         }
     };
@@ -43449,8 +43463,9 @@ var Dom_1 = __webpack_require__(3);
 var AdvancedSearchEvents_1 = __webpack_require__(58);
 var Strings_1 = __webpack_require__(10);
 var DocumentInput = (function () {
-    function DocumentInput(inputName) {
+    function DocumentInput(inputName, root) {
         this.inputName = inputName;
+        this.root = root;
     }
     DocumentInput.prototype.reset = function () {
     };
@@ -43472,7 +43487,10 @@ var DocumentInput = (function () {
         }
     };
     DocumentInput.prototype.onChange = function () {
-        if (this.element) {
+        if (this.root) {
+            Dom_1.$$(this.root).trigger(AdvancedSearchEvents_1.AdvancedSearchEvents.executeAdvancedSearch);
+        }
+        else if (this.element) {
             Dom_1.$$(this.element).trigger(AdvancedSearchEvents_1.AdvancedSearchEvents.executeAdvancedSearch);
         }
     };
@@ -43545,7 +43563,7 @@ var AdvancedSearch = (function (_super) {
         _this.options = options;
         _this.ModalBox = ModalBox;
         _this.inputs = [];
-        _this.inputFactory = new AdvancedSearchInputFactory_1.AdvancedSearchInputFactory(_this.queryController.getEndpoint());
+        _this.inputFactory = new AdvancedSearchInputFactory_1.AdvancedSearchInputFactory(_this.queryController.getEndpoint(), _this.root);
         _this.externalSections = [];
         _this.needToPopulateBreadcrumb = false;
         _this.options = ComponentOptions_1.ComponentOptions.initComponentOptions(element, AdvancedSearch, options);
@@ -43606,7 +43624,11 @@ var AdvancedSearch = (function (_super) {
             var clear = Dom_1.$$('span', {
                 className: 'coveo-advanced-search-breadcrumb-clear'
             });
-            clear.on('click', function () { return _this.handleClearBreadcrumb(); });
+            clear.on('click', function () {
+                _this.handleClearBreadcrumb();
+                _this.usageAnalytics.logSearchEvent(AnalyticsActionListMeta_1.analyticsActionCauseList.breadcrumbAdvancedSearch, {});
+                _this.queryController.executeQuery();
+            });
             elem.append(title.el);
             elem.append(clear.el);
             args.breadcrumbs.push({
@@ -60752,7 +60774,12 @@ var Debug = (function (_super) {
         });
         var title = Dom_1.$$(this.modalBox.wrapper).find('.coveo-modal-header');
         if (title) {
-            new DebugHeader_1.DebugHeader(this.element, title, this.bindings, function (value) { return _this.search(value, build.body); }, this.stackDebug);
+            if (!this.debugHeader) {
+                this.debugHeader = new DebugHeader_1.DebugHeader(this.element, title, this.bindings, function (value) { return _this.search(value, build.body); }, this.stackDebug);
+            }
+            else {
+                this.debugHeader.moveTo(title);
+            }
         }
         else {
             this.logger.warn('No title found in modal box.');
@@ -61276,6 +61303,7 @@ var Dom_1 = __webpack_require__(3);
 var ResultListEvents_1 = __webpack_require__(30);
 var QueryEvents_1 = __webpack_require__(11);
 var circular_json_1 = __webpack_require__(332);
+var _ = __webpack_require__(1);
 var DebugHeader = (function () {
     function DebugHeader(root, element, bindings, onSearch, infoToDebug) {
         var _this = this;
@@ -61288,15 +61316,21 @@ var DebugHeader = (function () {
         this.enableQuerySyntax = false;
         this.highlightRecommendation = false;
         this.requestAllFields = false;
-        this.element.appendChild(this.buildEnabledHighlightRecommendation());
-        this.element.appendChild(this.buildEnableDebugCheckbox());
-        this.element.appendChild(this.buildEnableQuerySyntaxCheckbox());
-        this.element.appendChild(this.buildRequestAllFieldsCheckbox());
-        this.element.appendChild(this.buildSearch());
-        this.element.appendChild(this.buildDownloadLink());
+        this.widgets = [];
+        this.widgets.push(this.buildEnabledHighlightRecommendation());
+        this.widgets.push(this.buildEnableDebugCheckbox());
+        this.widgets.push(this.buildEnableQuerySyntaxCheckbox());
+        this.widgets.push(this.buildRequestAllFieldsCheckbox());
+        this.widgets.push(this.buildSearch());
+        this.widgets.push(this.buildDownloadLink());
+        this.moveTo(element);
         Dom_1.$$(this.root).on(ResultListEvents_1.ResultListEvents.newResultDisplayed, function (e, args) { return _this.handleNewResultDisplayed(args); });
         Dom_1.$$(this.root).on(QueryEvents_1.QueryEvents.doneBuildingQuery, function (e, args) { return _this.handleDoneBuildingQuery(args); });
     }
+    DebugHeader.prototype.moveTo = function (newElement) {
+        _.each(this.widgets, function (widget) { return newElement.appendChild(widget); });
+        this.element = newElement;
+    };
     DebugHeader.prototype.handleNewResultDisplayed = function (args) {
         if (args.item != null && args.result.isRecommendation && this.highlightRecommendation) {
             Dom_1.$$(args.item).addClass('coveo-is-recommendation');
@@ -89482,8 +89516,9 @@ var SimpleFieldInput_1 = __webpack_require__(603);
 var AdvancedFieldInput_1 = __webpack_require__(602);
 var SizeInput_1 = __webpack_require__(604);
 var AdvancedSearchInputFactory = (function () {
-    function AdvancedSearchInputFactory(endpoint) {
+    function AdvancedSearchInputFactory(endpoint, root) {
         this.endpoint = endpoint;
+        this.root = root;
     }
     AdvancedSearchInputFactory.prototype.create = function (name, options) {
         switch (name) {
@@ -89512,34 +89547,34 @@ var AdvancedSearchInputFactory = (function () {
         }
     };
     AdvancedSearchInputFactory.prototype.createAllKeywordsInput = function () {
-        return new AllKeywordsInput_1.AllKeywordsInput();
+        return new AllKeywordsInput_1.AllKeywordsInput(this.root);
     };
     AdvancedSearchInputFactory.prototype.createExactKeywordsInput = function () {
-        return new ExactKeywordsInput_1.ExactKeywordsInput();
+        return new ExactKeywordsInput_1.ExactKeywordsInput(this.root);
     };
     AdvancedSearchInputFactory.prototype.createAnyKeywordsInput = function () {
-        return new AnyKeywordsInput_1.AnyKeywordsInput();
+        return new AnyKeywordsInput_1.AnyKeywordsInput(this.root);
     };
     AdvancedSearchInputFactory.prototype.createNoneKeywordsInput = function () {
-        return new NoneKeywordsInput_1.NoneKeywordsInput();
+        return new NoneKeywordsInput_1.NoneKeywordsInput(this.root);
     };
     AdvancedSearchInputFactory.prototype.createAnytimeDateInput = function () {
-        return new AnytimeDateInput_1.AnytimeDateInput();
+        return new AnytimeDateInput_1.AnytimeDateInput(this.root);
     };
     AdvancedSearchInputFactory.prototype.createInTheLastDateInput = function () {
-        return new InTheLastDateInput_1.InTheLastDateInput();
+        return new InTheLastDateInput_1.InTheLastDateInput(this.root);
     };
     AdvancedSearchInputFactory.prototype.createBetweenDateInput = function () {
-        return new BetweenDateInput_1.BetweenDateInput();
+        return new BetweenDateInput_1.BetweenDateInput(this.root);
     };
     AdvancedSearchInputFactory.prototype.createSimpleFieldInput = function (name, field) {
-        return new SimpleFieldInput_1.SimpleFieldInput(name, field, this.endpoint);
+        return new SimpleFieldInput_1.SimpleFieldInput(name, field, this.endpoint, this.root);
     };
     AdvancedSearchInputFactory.prototype.createAdvancedFieldInput = function (name, field) {
-        return new AdvancedFieldInput_1.AdvancedFieldInput(name, field);
+        return new AdvancedFieldInput_1.AdvancedFieldInput(name, field, this.root);
     };
     AdvancedSearchInputFactory.prototype.createSizeInput = function () {
-        return new SizeInput_1.SizeInput();
+        return new SizeInput_1.SizeInput(this.root);
     };
     return AdvancedSearchInputFactory;
 }());
@@ -89569,8 +89604,10 @@ var Dom_1 = __webpack_require__(3);
 var AdvancedSearchEvents_1 = __webpack_require__(58);
 var AnytimeDateInput = (function (_super) {
     __extends(AnytimeDateInput, _super);
-    function AnytimeDateInput() {
-        return _super.call(this, Strings_1.l('Anytime')) || this;
+    function AnytimeDateInput(root) {
+        var _this = _super.call(this, Strings_1.l('Anytime'), root) || this;
+        _this.root = root;
+        return _this;
     }
     AnytimeDateInput.prototype.getValue = function () {
         return null;
@@ -89581,7 +89618,12 @@ var AnytimeDateInput = (function (_super) {
         var radio = this.getRadio();
         radio.checked = true;
         Dom_1.$$(radio).on('change', function () {
-            Dom_1.$$(_this.element).trigger(AdvancedSearchEvents_1.AdvancedSearchEvents.executeAdvancedSearch);
+            if (_this.root) {
+                Dom_1.$$(_this.root).trigger(AdvancedSearchEvents_1.AdvancedSearchEvents.executeAdvancedSearch);
+            }
+            else {
+                Dom_1.$$(_this.element).trigger(AdvancedSearchEvents_1.AdvancedSearchEvents.executeAdvancedSearch);
+            }
         });
         return this.element;
     };
@@ -89615,8 +89657,9 @@ var DateUtils_1 = __webpack_require__(27);
 var TimeSpanUtils_1 = __webpack_require__(61);
 var BetweenDateInput = (function (_super) {
     __extends(BetweenDateInput, _super);
-    function BetweenDateInput() {
-        var _this = _super.call(this, Strings_1.l('Between')) || this;
+    function BetweenDateInput(root) {
+        var _this = _super.call(this, Strings_1.l('Between'), root) || this;
+        _this.root = root;
         _this.firstDatePicker = new DatePicker_1.DatePicker(_this.onChange.bind(_this));
         _this.secondDatePicker = new DatePicker_1.DatePicker(_this.onChange.bind(_this));
         return _this;
@@ -89692,8 +89735,10 @@ var NumericSpinner_1 = __webpack_require__(81);
 var DateUtils_1 = __webpack_require__(27);
 var InTheLastDateInput = (function (_super) {
     __extends(InTheLastDateInput, _super);
-    function InTheLastDateInput() {
-        return _super.call(this, Strings_1.l('InTheLast')) || this;
+    function InTheLastDateInput(root) {
+        var _this = _super.call(this, Strings_1.l('InTheLast'), root) || this;
+        _this.root = root;
+        return _this;
     }
     InTheLastDateInput.prototype.reset = function () {
         this.dropdown.reset();
@@ -89709,6 +89754,7 @@ var InTheLastDateInput = (function (_super) {
         this.dropdown.setId('coveo-advanced-search-in-the-last-select');
         input.append(this.dropdown.getElement());
         this.element.appendChild(input.el);
+        Dom_1.$$(this.getRadio()).on('change', this.onChange.bind(this));
         return this.element;
     };
     InTheLastDateInput.prototype.getValue = function () {
@@ -89753,10 +89799,11 @@ var DocumentInput_1 = __webpack_require__(280);
 var QueryBuilder_1 = __webpack_require__(42);
 var AdvancedFieldInput = (function (_super) {
     __extends(AdvancedFieldInput, _super);
-    function AdvancedFieldInput(inputName, fieldName) {
-        var _this = _super.call(this, inputName) || this;
+    function AdvancedFieldInput(inputName, fieldName, root) {
+        var _this = _super.call(this, inputName, root) || this;
         _this.inputName = inputName;
         _this.fieldName = fieldName;
+        _this.root = root;
         return _this;
     }
     AdvancedFieldInput.prototype.reset = function () {
@@ -89820,11 +89867,12 @@ var _ = __webpack_require__(1);
 var QueryBuilder_1 = __webpack_require__(42);
 var SimpleFieldInput = (function (_super) {
     __extends(SimpleFieldInput, _super);
-    function SimpleFieldInput(inputName, fieldName, endpoint) {
-        var _this = _super.call(this, inputName) || this;
+    function SimpleFieldInput(inputName, fieldName, endpoint, root) {
+        var _this = _super.call(this, inputName, root) || this;
         _this.inputName = inputName;
         _this.fieldName = fieldName;
         _this.endpoint = endpoint;
+        _this.root = root;
         return _this;
     }
     SimpleFieldInput.prototype.reset = function () {
@@ -89894,8 +89942,10 @@ var DocumentInput_1 = __webpack_require__(280);
 var QueryBuilder_1 = __webpack_require__(42);
 var SizeInput = (function (_super) {
     __extends(SizeInput, _super);
-    function SizeInput() {
-        return _super.call(this, 'Size') || this;
+    function SizeInput(root) {
+        var _this = _super.call(this, 'Size', root) || this;
+        _this.root = root;
+        return _this;
     }
     SizeInput.prototype.reset = function () {
         this.modeSelect.reset();
@@ -89970,8 +90020,10 @@ var KeywordsInput_1 = __webpack_require__(244);
 var Strings_1 = __webpack_require__(10);
 var AllKeywordsInput = (function (_super) {
     __extends(AllKeywordsInput, _super);
-    function AllKeywordsInput() {
-        return _super.call(this, Strings_1.l('AllTheseWords')) || this;
+    function AllKeywordsInput(root) {
+        var _this = _super.call(this, Strings_1.l('AllTheseWords'), root) || this;
+        _this.root = root;
+        return _this;
     }
     return AllKeywordsInput;
 }(KeywordsInput_1.KeywordsInput));
@@ -90000,8 +90052,10 @@ var Strings_1 = __webpack_require__(10);
 var _ = __webpack_require__(1);
 var AnyKeywordsInput = (function (_super) {
     __extends(AnyKeywordsInput, _super);
-    function AnyKeywordsInput() {
-        return _super.call(this, Strings_1.l('AnyOfTheseWords')) || this;
+    function AnyKeywordsInput(root) {
+        var _this = _super.call(this, Strings_1.l('AnyOfTheseWords'), root) || this;
+        _this.root = root;
+        return _this;
     }
     AnyKeywordsInput.prototype.getValue = function () {
         var value = _super.prototype.getValue.call(this);
@@ -90039,8 +90093,10 @@ var KeywordsInput_1 = __webpack_require__(244);
 var Strings_1 = __webpack_require__(10);
 var ExactKeywordsInput = (function (_super) {
     __extends(ExactKeywordsInput, _super);
-    function ExactKeywordsInput() {
-        return _super.call(this, Strings_1.l('ExactPhrase')) || this;
+    function ExactKeywordsInput(root) {
+        var _this = _super.call(this, Strings_1.l('ExactPhrase'), root) || this;
+        _this.root = root;
+        return _this;
     }
     ExactKeywordsInput.prototype.getValue = function () {
         var value = _super.prototype.getValue.call(this);
@@ -90073,8 +90129,10 @@ var Strings_1 = __webpack_require__(10);
 var _ = __webpack_require__(1);
 var NoneKeywordsInput = (function (_super) {
     __extends(NoneKeywordsInput, _super);
-    function NoneKeywordsInput() {
-        return _super.call(this, Strings_1.l('NoneOfTheseWords')) || this;
+    function NoneKeywordsInput(root) {
+        var _this = _super.call(this, Strings_1.l('NoneOfTheseWords'), root) || this;
+        _this.root = root;
+        return _this;
     }
     NoneKeywordsInput.prototype.getValue = function () {
         var value = _super.prototype.getValue.call(this);

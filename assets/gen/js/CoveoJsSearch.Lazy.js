@@ -10419,6 +10419,10 @@ exports.analyticsActionCauseList = {
         type: 'breadcrumb',
         metaMap: { facetId: 1, facetValue: 2, facetTitle: 3 }
     },
+    breadcrumbAdvancedSearch: {
+        name: 'breadcrumbAdvancedSearch',
+        type: 'breadcrumb'
+    },
     breadcrumbResetAll: {
         name: 'breadcrumbResetAll',
         type: 'breadcrumb',
@@ -17767,8 +17771,8 @@ exports.DebugEvents = DebugEvents;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.version = {
-    'lib': '2.2900.3-beta',
-    'product': '2.2900.3-beta',
+    'lib': '2.2900.4-beta',
+    'product': '2.2900.4-beta',
     'supportedApiVersion': 2
 };
 
@@ -31474,7 +31478,7 @@ var dict = {
     "Off": "Off",
     "Automatic": "Automatic",
     "ResultsPerPage": "Results per page",
-    "FiltersInAdvancedSearch": "Filters in advanced search",
+    "FiltersInAdvancedSearch": "Filters in Advanced Search",
     "InvalidTimeRange": "Invalid time range",
     "PreviousMonth": "Previous month",
     "NextMonth": "Next month",
@@ -39677,7 +39681,12 @@ var Debug = (function (_super) {
         });
         var title = Dom_1.$$(this.modalBox.wrapper).find('.coveo-modal-header');
         if (title) {
-            new DebugHeader_1.DebugHeader(this.element, title, this.bindings, function (value) { return _this.search(value, build.body); }, this.stackDebug);
+            if (!this.debugHeader) {
+                this.debugHeader = new DebugHeader_1.DebugHeader(this.element, title, this.bindings, function (value) { return _this.search(value, build.body); }, this.stackDebug);
+            }
+            else {
+                this.debugHeader.moveTo(title);
+            }
         }
         else {
             this.logger.warn('No title found in modal box.');
@@ -40201,6 +40210,7 @@ var Dom_1 = __webpack_require__(3);
 var ResultListEvents_1 = __webpack_require__(30);
 var QueryEvents_1 = __webpack_require__(11);
 var circular_json_1 = __webpack_require__(332);
+var _ = __webpack_require__(1);
 var DebugHeader = (function () {
     function DebugHeader(root, element, bindings, onSearch, infoToDebug) {
         var _this = this;
@@ -40213,15 +40223,21 @@ var DebugHeader = (function () {
         this.enableQuerySyntax = false;
         this.highlightRecommendation = false;
         this.requestAllFields = false;
-        this.element.appendChild(this.buildEnabledHighlightRecommendation());
-        this.element.appendChild(this.buildEnableDebugCheckbox());
-        this.element.appendChild(this.buildEnableQuerySyntaxCheckbox());
-        this.element.appendChild(this.buildRequestAllFieldsCheckbox());
-        this.element.appendChild(this.buildSearch());
-        this.element.appendChild(this.buildDownloadLink());
+        this.widgets = [];
+        this.widgets.push(this.buildEnabledHighlightRecommendation());
+        this.widgets.push(this.buildEnableDebugCheckbox());
+        this.widgets.push(this.buildEnableQuerySyntaxCheckbox());
+        this.widgets.push(this.buildRequestAllFieldsCheckbox());
+        this.widgets.push(this.buildSearch());
+        this.widgets.push(this.buildDownloadLink());
+        this.moveTo(element);
         Dom_1.$$(this.root).on(ResultListEvents_1.ResultListEvents.newResultDisplayed, function (e, args) { return _this.handleNewResultDisplayed(args); });
         Dom_1.$$(this.root).on(QueryEvents_1.QueryEvents.doneBuildingQuery, function (e, args) { return _this.handleDoneBuildingQuery(args); });
     }
+    DebugHeader.prototype.moveTo = function (newElement) {
+        _.each(this.widgets, function (widget) { return newElement.appendChild(widget); });
+        this.element = newElement;
+    };
     DebugHeader.prototype.handleNewResultDisplayed = function (args) {
         if (args.item != null && args.result.isRecommendation && this.highlightRecommendation) {
             Dom_1.$$(args.item).addClass('coveo-is-recommendation');

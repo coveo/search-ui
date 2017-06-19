@@ -171,7 +171,9 @@ var Recommendation = (function (_super) {
             _this.mainQuerySearchUID = args.results.searchUid;
             _this.mainQueryPipeline = args.results.pipeline;
             _this.usageAnalytics.logSearchEvent(AnalyticsActionListMeta_1.analyticsActionCauseList.recommendation, {});
-            _this.queryController.executeQuery();
+            _this.queryController.executeQuery({
+                closeModalBox: false
+            });
         });
     };
     Recommendation.prototype.handleRecommendationBuildingQuery = function (data) {
