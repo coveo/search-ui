@@ -23,6 +23,8 @@ import { TextInput } from '../FormWidgets/TextInput';
 import { RadioButton } from '../FormWidgets/RadioButton';
 import { ModalBox as ModalBoxModule } from '../../ExternalModulesShim';
 import { BreadcrumbEvents, IPopulateBreadcrumbEventArgs, IClearBreadcrumbEventArgs } from '../../events/BreadcrumbEvents';
+import { SVGIcons } from '../../utils/SVGIcons';
+import { SVGDom } from '../../utils/SVGDom';
 
 export interface IAdvancedSearchOptions {
   includeKeywords?: boolean;
@@ -157,7 +159,8 @@ export class AdvancedSearch extends Component {
       title.text(l('FiltersInAdvancedSearch') + ' : ');
       const clear = $$('span', {
         className: 'coveo-advanced-search-breadcrumb-clear'
-      });
+      }, SVGIcons.checkboxHookExclusionMore);
+      SVGDom.addClassToSVGInContainer(clear.el, 'coveo-advanced-search-breadcrumb-clear-svg');
       clear.on('click', () => {
         this.handleClearBreadcrumb();
         this.usageAnalytics.logSearchEvent<IAnalyticsNoMeta>(analyticsActionCauseList.breadcrumbAdvancedSearch, {});
