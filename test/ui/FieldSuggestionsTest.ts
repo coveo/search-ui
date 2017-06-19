@@ -133,7 +133,7 @@ export function FieldSuggestionsTest() {
             expect(header).not.toBeNull();
             expect($$(header).text()).toBe('my suggestion');
             done();
-          })
+          });
         });
       });
     });
