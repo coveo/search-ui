@@ -14,10 +14,8 @@ import { IGroupByRequest } from '../../rest/GroupByRequest';
 import { QueryBuilder } from '../Base/QueryBuilder';
 import { Utils } from '../../utils/Utils';
 import { BreadcrumbEvents, IBreadcrumbItem, IClearBreadcrumbEventArgs, IPopulateBreadcrumbEventArgs } from '../../events/BreadcrumbEvents';
-
-
-
-
+import {SVGIcons} from '../../utils/SVGIcons';
+import {SVGDom} from '../../utils/SVGDom';
 
 export interface ISimpleFilterOptions {
   title: string;
@@ -32,7 +30,7 @@ export class SimpleFilter extends Component {
     exportGlobally({
       'SimpleFilter': SimpleFilter
     });
-  }
+  };
   static options: ISimpleFilterOptions = {
 
     values: ComponentOptions.buildListOption<string>(),
@@ -43,33 +41,19 @@ export class SimpleFilter extends Component {
 
   public checkboxes: { checkbox: Checkbox, value: string }[] = [];
   public checkboxContainer: Dom;
-  private expanded = false;
   private circleElement: Dom;
+  private backdrop: Dom;
+  private selectTitle: Dom;
 
   constructor(public element: HTMLElement, public options: ISimpleFilterOptions, public bindings?: IComponentBindings) {
     super(element, SimpleFilter.ID, bindings);
     this.options = ComponentOptions.initComponentOptions(element, SimpleFilter, options);
 
-    const select = $$('span', { className: 'coveo-simplefilter-select' });
-    const selectText = $$('span', { className: 'coveo-simplefilter-selecttext' }, l(this.options.title));
-    const icon = $$('span', { className: 'coveo-icon' });
-
-    this.checkboxContainer = $$('div', { className: 'coveo-checkbox-container' });
-    this.checkboxes = _.map(this.options.values, (value) => this.createCheckboxes(value));
-    _.each(this.checkboxes, (result) => {
-      this.checkboxContainer.el.appendChild(result.checkbox.getElement());
-    });
-
-    select.el.appendChild(selectText.el);
-    select.el.appendChild(this.buildCircleElement().el);
-    select.el.appendChild(icon.el);
-    this.element.appendChild(select.el);
-    this.element.appendChild(this.checkboxContainer.el);
-    this.createWrapper().append(this.element);
+    this.buildContent();
 
     $$(this.element).on('click', (e: Event) => this.handleClick(e));
     this.bind.onRootElement(BreadcrumbEvents.populateBreadcrumb, (args: IPopulateBreadcrumbEventArgs) => this.handlePopulateBreadcrumb(args));
-    // this.bind.onRootElement(BreadcrumbEvents.clearBreadcrumb, () => this.setStateEmpty());
+    this.bind.onRootElement(BreadcrumbEvents.clearBreadcrumb, () => this.handleClearBreadcrumb());
     this.bind.onRootElement(QueryEvents.buildingQuery, (args: IBuildingQueryEventArgs) => this.handleBuildingQuery(args));
     this.bind.onRootElement(QueryEvents.querySuccess, (args: IQuerySuccessEventArgs) => this.groupBy(args));
     this.bind.onRootElement(QueryEvents.doneBuildingQuery, (args: IDoneBuildingQueryEventArgs) => this.handleDoneBuildingQuery(args));
@@ -80,76 +64,86 @@ export class SimpleFilter extends Component {
     Assert.exists(args.queryBuilder);
     const selectedValues = this.getSelectedValues();
     if (selectedValues.length > 0) {
-      args.queryBuilder.advancedExpression.addFieldExpression(this.options.field.toLocaleString(), '==', selectedValues);
-    }
-  }
-
-  public toggle() {
-    this.expanded = $$(this.checkboxContainer).hasClass('coveo-checkbox-container-expanded');
-    if (!this.expanded) {
-      this.open();
-    } else if (this.expanded) {
-      this.close();
+      args.queryBuilder.advancedExpression.addFieldExpression(this.options.field.toString(), '==', selectedValues);
     }
   }
 
   private handleClick(e: Event) {
-    if (e.target == this.element || e.target == $$(this.element).find('.coveo-simplefilter-select') ||
-      e.target == $$(this.element).find('.coveo-circle') || e.target == $$(this.element).find('.coveo-icon')
-      || e.target == $$(this.element).find('.coveo-simplefilter-selecttext')) {
-
-      e.stopImmediatePropagation();
+    if (e.target == this.element) {
       this.toggle();
     }
   }
 
-
-  private open() {
-    $$(this.element).addClass('coveo-checkbox-container-expanded');
-    this.checkboxContainer.addClass('coveo-checkbox-container-expanded');
-    if ($$(document.body).find('.coveo-dropdown-background') == null) {
-      let backdrop = $$('div', { className: 'coveo-dropdown-background' });
-      backdrop.on('click', () => this.close());
-      this.element.parentElement.appendChild(backdrop.el);
-    } else {
-      const dropdown = $$(document.body).find('.coveo-dropdown-background');
-      $$(dropdown).on('click', () => this.close());
-    }
-  }
-
-  private close() {
-    $$(this.element).removeClass('coveo-checkbox-container-expanded');
-    this.checkboxContainer.removeClass('coveo-checkbox-container-expanded');
-    if ($$(this.element.parentElement).find('.coveo-dropdown-background') != null && $$(document.body).find('.coveo-checkbox-container-expanded') == null) {
-      $$(this.element.parentElement).find('.coveo-dropdown-background').remove();
-    }
-  }
-
   private handleCheckboxToggle() {
-    this.circleElement.text(this.getSelectedValues().length.toString());
-    const title = $$(this.element).find('.coveo-simplefilter-selecttext');
-    if (this.getSelectedValues().length == 1) {
-      $$(title).text(l(this.getSelectedValues()[0]));
+    const selectedValues = this.getSelectedValues();
+    this.circleElement.text(selectedValues.length.toString());
+    if (selectedValues.length == 1) {
+      this.setTitle(l(selectedValues[0]));
     } else {
-      $$(title).text(this.options.title);
+      this.setTitle(this.options.title);
     }
     this.queryController.executeQuery();
   }
 
-  private createCheckboxes(value: string) {
+  private createCheckbox(value: string) {
     const checkbox = new Checkbox(() => {
       this.handleCheckboxToggle();
     }, l(this.getValueCaption(value)));
     return { checkbox, value };
   }
 
+  private createCheckboxContainer () {
+    this.checkboxContainer = $$('div', { className: 'coveo-checkbox-container' });
+    this.checkboxes = _.map(this.options.values, (value) => this.createCheckbox(value));
+    _.each(this.checkboxes, (result) => {
+      this.checkboxContainer.el.appendChild(result.checkbox.getElement());
+    });
+  }
+
+  private buildContent () {
+    this.createCheckboxContainer();
+    this.element.appendChild(this.buildSelect());
+    this.element.appendChild(this.checkboxContainer.el);
+    this.findOrCreateWrapper().append(this.element);
+    this.createBackdrop();
+  }
+
+  private buildSelect(): HTMLElement{
+    const select = $$('span', { className: 'coveo-simplefilter-select' });
+    this.selectTitle = $$('span', { className: 'coveo-simplefilter-selecttext' }, l(this.options.title));
+    select.el.appendChild(this.selectTitle.el);
+    select.el.appendChild(this.buildCircleElement());
+    select.el.appendChild(this.buildSvgToggleUpIcon());
+    return select.el;
+  }
+
+  private buildSvgToggleUpIcon(): HTMLElement {
+    let svgIcon = $$('span', null, SVGIcons.arrowDown).el;
+    SVGDom.addClassToSVGInContainer(svgIcon, 'coveo-simplefilter-toggle-down-svg');
+    return svgIcon;
+  }
+
+  private buildCircleElement(): HTMLElement {
+    this.circleElement = $$('span', { className: 'coveo-circle' }, this.getSelectedValues().length.toString());
+    return this.circleElement.el;
+  }
+
+  private findOrCreateWrapper() {
+    if ($$(this.root).find('.coveo-filter-header-wrapper') == null) {
+      const wrapper = $$('div', { className: 'coveo-filter-header-wrapper' });
+      wrapper.insertBefore(this.element);
+      return wrapper;
+    } else {
+      const wrapper = $$(this.root).find('.coveo-filter-header-wrapper');
+      return $$(wrapper);
+    }
+  }
+
   public getValueCaption(value: string): string {
     let ret = value;
 
     if (Utils.exists(this.options.valueCaption)) {
-      if (typeof this.options.valueCaption == 'object') {
         ret = this.options.valueCaption[ret] || ret;
-      }
     }
     return ret;
   }
@@ -162,67 +156,102 @@ export class SimpleFilter extends Component {
     return _.map(this.getSelected(), (object: { checkbox: Checkbox, value: string }) => object.value);
   }
 
-  private buildCircleElement(): Dom {
-    this.circleElement = $$('span', { className: 'coveo-circle' }, this.getSelectedValues().length.toString());
-    return this.circleElement;
+  public toggle() {
+    $$(this.checkboxContainer).hasClass('coveo-checkbox-container-expanded') ? this.closeContainer() : this.openContainer();
   }
 
-  private createWrapper() {
-    if ($$(document.body).find('.coveo-filter-header-wrapper') == null) {
-      const wrapper = $$('div', { className: 'coveo-filter-header-wrapper' });
-      wrapper.insertBefore(this.element);
-      return wrapper;
-    } else {
-      const wrapper = $$(document.body).find('.coveo-filter-header-wrapper');
-      return $$(wrapper);
+  public openContainer() {
+    $$(this.element).addClass('coveo-checkbox-container-expanded');
+    this.checkboxContainer.addClass('coveo-checkbox-container-expanded');
+    if (this.backdrop.hasClass('coveo-dropdown-background-active') == false) {
+      this.showBackdrop();
     }
   }
 
-  private handleRemoveFromBreadcrumb(label: string) {
-    _.each(this.checkboxes, (object: { checkbox: Checkbox, value: string }) => {
-      if (object.value == label) {
-        object.checkbox.toggle();
-      }
-    });
+  public closeContainer() {
+    $$(this.element).removeClass('coveo-checkbox-container-expanded');
+    this.checkboxContainer.removeClass('coveo-checkbox-container-expanded');
+    if (this.backdrop.hasClass('coveo-dropdown-background-active') == true){
+     this.hideBackdrop();
+    }
   }
 
-  // ///////////////////////////////////////BREADCRUMB//////////////////////////////////////////////
+  public setTitle(title: string) {
+    this.selectTitle.text(title);
+  }
+
+  public getTitle(): string {
+    return this.selectTitle.text();
+  }
+
+  public getBackdrop(): Dom {
+    return this.backdrop;
+  }
+
+  private showBackdrop() {
+    this.backdrop.addClass('coveo-dropdown-background-active');
+  }
+
+  private hideBackdrop() {
+    this.backdrop.removeClass('coveo-dropdown-background-active');
+  }
+
+  private createBackdrop() {
+    const backdrop = $$(this.root).find('.coveo-dropdown-background');
+    if(backdrop == null) {
+      this.backdrop = $$('div', {className: 'coveo-dropdown-background'});
+      this.root.appendChild(this.backdrop.el);
+    } else {
+      this.backdrop = $$(backdrop);
+    }
+    this.backdrop.on('click', () => this.closeContainer());
+  }
 
   private handlePopulateBreadcrumb(args: IPopulateBreadcrumbEventArgs) {
-
-
-    let elem = document.createElement('div');
+    const elem = document.createElement('div');
     $$(elem).addClass('coveo-simplefilter-breadcrumb');
 
-    let title = document.createElement('span');
+    const title = document.createElement('span');
     $$(title).addClass('coveo-simplefilter-breadcrumb-title');
     $$(title).text(this.options.title);
     elem.appendChild(title);
 
-    let values = document.createElement('span');
+    const values = document.createElement('span');
     $$(values).addClass('coveo-simplefilter-breadcrumb-values');
     elem.appendChild(values);
 
-    _.each(this.getSelectedValues(), (test) => {
-      let value = document.createElement('span');
+    _.each(this.getSelectedValues(), (selectedValue) => {
+      const value = document.createElement('span');
       $$(value).addClass('coveo-simplefilter-breadcrumb-value');
-      $$(value).text(l(test));
+      $$(value).text(l(selectedValue));
       values.appendChild(value);
-      let clear = document.createElement('span');
+      const clear = document.createElement('span');
       $$(clear).addClass('coveo-simplefilter-breadcrumb-clear');
       value.appendChild(clear);
       $$(value).on('click', () => this.handleRemoveFromBreadcrumb(value.textContent));
     });
-
-
-
 
     args.breadcrumbs.push({
       element: elem
     });
   }
 
-  // ///////////////////////////////////////////////////////////////////////////////////////////////
+  private handleRemoveFromBreadcrumb(label: string) {
+    _.each(this.checkboxes, (object: { checkbox: Checkbox, value: string }) => {
+      if (object.value == label) {
+        object.checkbox.reset();
+      }
+    });
+  }
+
+  private handleClearBreadcrumb () {
+    _.each(this.checkboxes, (object: { checkbox: Checkbox, value: string }) => {
+      if (object.checkbox.isSelected()) {
+        object.checkbox.toggle();
+      }
+    });
+  }
+
   private groupBy(data: IQuerySuccessEventArgs) {
     const groupByResult = data.results.groupByResults;
     return groupByResult;
@@ -253,7 +282,6 @@ export class SimpleFilter extends Component {
     const queryBuilder = data.queryBuilder;
     this.putGroupByIntoQueryBuilder(queryBuilder);
   }
-
-  // ///////////////////////////////////////////////////////////////////////////////////////////////
 }
+
 Initialization.registerAutoCreateComponent(SimpleFilter);

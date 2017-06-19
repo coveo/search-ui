@@ -26,12 +26,10 @@ export function SimpleFilterTest() {
     });
 
     it('should set the title correctly', () => {
-      test.cmp.ensureDom();
       expect(test.cmp.options.title).toBe('FooTitleBar');
     });
 
     it('should set the field correctly', () => {
-      test.cmp.ensureDom();
       expect(test.cmp.options.field).toBe('@field');
     });
 
