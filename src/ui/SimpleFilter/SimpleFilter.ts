@@ -114,6 +114,14 @@ export class SimpleFilter extends Component {
     queryBuilder.groupByRequests.push(groupByRequest);
   }
 
+  public showBackdrop() {
+    this.backdrop.addClass('coveo-dropdown-background-active');
+  }
+
+  public hideBackdrop() {
+    this.backdrop.removeClass('coveo-dropdown-background-active');
+  }
+
   protected createBasicGroupByRequest(allowedValues?: string[], addComputedField: boolean = true): IGroupByRequest {
     const groupByRequest: IGroupByRequest = {
       field: <string>this.options.field,
@@ -205,14 +213,6 @@ export class SimpleFilter extends Component {
       const wrapper = $$(this.root).find('.coveo-filter-header-wrapper');
       return $$(wrapper);
     }
-  }
-
-  private showBackdrop() {
-    this.backdrop.addClass('coveo-dropdown-background-active');
-  }
-
-  private hideBackdrop() {
-    this.backdrop.removeClass('coveo-dropdown-background-active');
   }
 
   private createBackdrop() {
