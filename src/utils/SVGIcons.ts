@@ -10,4 +10,5 @@ export class SVGIcons {
   public static arrowUp = require('svg/arrow-up');
   public static arrowDown = require('svg/arrow-down');
   public static mainClear = require('svg/main-clear');
+  public static orAnd = require('svg/or-and');
 }
