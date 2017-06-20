@@ -16,26 +16,24 @@
 .coveo-facet-more {
   border-bottom-left-radius: $default-border-radius;
   border-bottom-right-radius: $default-border-radius;
-  .coveo-facet-more-icon {
-    position: relative;
-    top: -4px;
-  }
   display: none;
   &.coveo-active {
     display: block;
   }
 }
 
-.coveo-facet-more-icon-svg {
+.coveo-facet-more-icon-svg, .coveo-facet-less-icon-svg {
   width: 10px;
   height: 6px;
   color: $color-greyish-teal-blue;
 }
 
+.coveo-facet-more-icon, .coveo-facet-less-icon {
+    position: relative;
+    top: -4px;
+}
+
 .coveo-facet-less {
-  .coveo-icon {
-    @include retina-sprite($arrow-up-group);
-  }
   display: none;
   &.coveo-active {
     display: block;

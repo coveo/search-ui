@@ -169,12 +169,13 @@
     }
 
     .coveo-clear {
+      position: relative;
       margin-left: 5px;
     }
   }
 
   .coveo-clear-svg {
     position: absolute;
-    top: 20px;
+    top: 4px;
   }
 }
