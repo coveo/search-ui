@@ -36,6 +36,10 @@ export class DebugHeader {
     this.element = newElement;
   }
 
+  public setSearch(onSearch: (value: string) => void) {
+    this.onSearch = onSearch;
+  }
+
   public setNewInfoToDebug(newInfoToDebug) {
     this.infoToDebug = newInfoToDebug;
     this.rebuildDownloadLink();
