@@ -16,6 +16,7 @@ import { ISuggestionForOmniboxOptionsOnSelect } from '../Misc/SuggestionForOmnib
 import { IStringMap } from '../../rest/GenericParam';
 import * as _ from 'underscore';
 import { exportGlobally } from '../../GlobalExports';
+import 'styling/_FieldSuggestions';
 
 export interface IFieldSuggestionsOptions extends ISuggestionForOmniboxOptions {
   field?: IFieldOption;
@@ -68,13 +69,12 @@ export class FieldSuggestions extends Component {
     omniboxZIndex: ComponentOptions.buildNumberOption({ defaultValue: 51, min: 0 }),
 
     /**
-     * Specifies the title of the result suggestions group in the [`Omnibox`]{@link Omnibox} component. This option is
-     * not available when using the default Lightning Friendly Theme (see
-     * [Lightning Friendly Theme](https://developers.coveo.com/x/Y4EAAg)).
+     * Specifies the title of the result suggestions group in the [`Omnibox`]{@link Omnibox} component.
+     * If not provided, the component will simply not output any title.
      *
-     * Default value is the localized string for `SuggestedResults`.
+     * Default value is `null`.
      */
-    headerTitle: ComponentOptions.buildLocalizedStringOption({ defaultValue: l('SuggestedResults') }),
+    headerTitle: ComponentOptions.buildLocalizedStringOption(),
 
     /**
      * Specifies the number of suggestions to render in the [`Omnibox`]{@link Omnibox}.
@@ -179,7 +179,7 @@ export class FieldSuggestions extends Component {
     };
 
     let suggestionStructure: ISuggestionForOmniboxTemplate;
-    if (this.searchInterface.isNewDesign()) {
+    if (this.options.headerTitle == null) {
       suggestionStructure = {
         row: rowTemplate
       };
