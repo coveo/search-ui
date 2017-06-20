@@ -1,4 +1,4 @@
-webpackJsonpCoveo__temporary([5,10,11,29],{
+webpackJsonpCoveo__temporary([5,13,15,31],{
 
 /***/ 249:
 /***/ (function(module, exports, __webpack_require__) {
@@ -23,8 +23,8 @@ var Strings_1 = __webpack_require__(10);
 var AnalyticsActionListMeta_1 = __webpack_require__(12);
 var Initialization_1 = __webpack_require__(2);
 var GlobalExports_1 = __webpack_require__(4);
-var SVGIcons_1 = __webpack_require__(88);
-var SVGDom_1 = __webpack_require__(87);
+var SVGIcons_1 = __webpack_require__(29);
+var SVGDom_1 = __webpack_require__(28);
 /**
  * The SearchButton component renders a search icon that the end user can click to trigger a new query.
  *
@@ -48,10 +48,12 @@ var SearchButton = (function (_super) {
         _this.bind.on(element, 'click', function () { return _this.handleClick(); });
         // Provide a magnifier icon if element contains nothing
         if (Utils_1.Utils.trim(Dom_1.$$(_this.element).text()) == '') {
-            var svgContainer = Dom_1.$$('span', { className: 'coveo-search-button' }).el;
-            svgContainer.innerHTML = SVGIcons_1.SVGIcons.search;
-            SVGDom_1.SVGDom.addClassToSVGInContainer(svgContainer, 'coveo-search-button-svg');
-            element.appendChild(svgContainer);
+            var svgMagnifierContainer = Dom_1.$$('span', { className: 'coveo-search-button' }, SVGIcons_1.SVGIcons.search).el;
+            SVGDom_1.SVGDom.addClassToSVGInContainer(svgMagnifierContainer, 'coveo-search-button-svg');
+            var svgLoadingAnimationContainer = Dom_1.$$('span', { className: 'coveo-search-button-loading' }, SVGIcons_1.SVGIcons.loading).el;
+            SVGDom_1.SVGDom.addClassToSVGInContainer(svgLoadingAnimationContainer, 'coveo-search-button-loading-svg');
+            element.appendChild(svgMagnifierContainer);
+            element.appendChild(svgLoadingAnimationContainer);
         }
         return _this;
     }
@@ -82,6 +84,58 @@ Initialization_1.Initialization.registerAutoCreateComponent(SearchButton);
 
 /***/ }),
 
+/***/ 28:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var SVGDom = (function () {
+    function SVGDom() {
+    }
+    SVGDom.addClassToSVGInContainer = function (svgContainer, classToAdd) {
+        var svgElement = svgContainer.querySelector('svg');
+        svgElement.setAttribute('class', SVGDom.getClass(svgElement) + " " + classToAdd);
+    };
+    SVGDom.removeClassFromSVGInContainer = function (svgContainer, classToRemove) {
+        var svgElement = svgContainer.querySelector('svg');
+        svgElement.setAttribute('class', SVGDom.getClass(svgElement).replace(classToRemove, ''));
+    };
+    SVGDom.getClass = function (svgElement) {
+        var className = svgElement.getAttribute('class');
+        return className ? className : '';
+    };
+    return SVGDom;
+}());
+exports.SVGDom = SVGDom;
+
+
+/***/ }),
+
+/***/ 29:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var SVGIcons = (function () {
+    function SVGIcons() {
+    }
+    return SVGIcons;
+}());
+SVGIcons.search = __webpack_require__(456);
+SVGIcons.more = __webpack_require__(454);
+SVGIcons.loading = __webpack_require__(452);
+SVGIcons.checkboxHookExclusionMore = __webpack_require__(451);
+SVGIcons.arrowUp = __webpack_require__(450);
+SVGIcons.arrowDown = __webpack_require__(449);
+SVGIcons.mainClear = __webpack_require__(453);
+SVGIcons.orAnd = __webpack_require__(455);
+exports.SVGIcons = SVGIcons;
+
+
+/***/ }),
+
 /***/ 323:
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -99,7 +153,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var Component_1 = __webpack_require__(8);
-var Omnibox_1 = __webpack_require__(79);
+var Omnibox_1 = __webpack_require__(81);
 var ComponentOptions_1 = __webpack_require__(9);
 var SearchButton_1 = __webpack_require__(249);
 var Querybox_1 = __webpack_require__(97);
@@ -107,7 +161,9 @@ var Dom_1 = __webpack_require__(3);
 var Initialization_1 = __webpack_require__(2);
 var _ = __webpack_require__(1);
 var GlobalExports_1 = __webpack_require__(4);
-__webpack_require__(587);
+__webpack_require__(589);
+var SVGIcons_1 = __webpack_require__(29);
+var SVGDom_1 = __webpack_require__(28);
 /**
  * The `Searchbox` component allows you to conveniently instantiate two components which end users frequently use to
  * enter and submit queries.
@@ -151,6 +207,9 @@ var Searchbox = (function (_super) {
         else {
             _this.searchbox = new Querybox_1.Querybox(div, _this.options, bindings);
         }
+        var magicBoxIcon = Dom_1.$$(_this.element).find('.magic-box-icon');
+        magicBoxIcon.innerHTML = SVGIcons_1.SVGIcons.mainClear;
+        SVGDom_1.SVGDom.addClassToSVGInContainer(magicBoxIcon, 'magic-box-clear-svg');
         return _this;
     }
     return Searchbox;
@@ -304,33 +363,47 @@ module.exports = "<svg enable-background=\"new 0 0 18 18\" viewBox=\"0 0 18 18\"
 /***/ 453:
 /***/ (function(module, exports) {
 
-module.exports = "<svg enable-background=\"new 0 0 16 16\" viewBox=\"0 0 16 16\" xmlns=\"http://www.w3.org/2000/svg\"><path fill-opacity=\"0\" d=\"m8.03.819c3.987 0 7.227 3.222 7.227 7.181s-3.239 7.181-7.227 7.181c-3.976 0-7.209-3.222-7.209-7.181s3.237-7.181 7.209-7.181\"></path><g fill=\"currentColor\"><path d=\"m0 8c0 4.416 3.572 8 7.991 8 4.425 0 8.009-3.581 8.009-8 0-4.416-3.581-8-8.009-8-4.416 0-7.991 3.581-7.991 8m8.031-6.4c3.553 0 6.441 2.872 6.441 6.4s-2.887 6.4-6.441 6.4c-3.544 0-6.425-2.872-6.425-6.4s2.885-6.4 6.425-6.4\"></path><path d=\"m10.988 9.024c.551 0 1-.449 1-1s-.449-1-1-1-1 .449-1 1 .449 1 1 1\"></path><path d=\"m7.991 9c .551 0 1-.449 1-1s-.449-1-1-1-1 .449-1 1 .449 1 1 1\"></path><path d=\"m4.994 9c .551 0 1-.449 1-1s-.449-1-1-1-1 .449-1 1 .449 1 1 1\"></path></g></svg>"
+module.exports = "<svg enable-background=\"new 0 0 13 13\" viewBox=\"0 0 13 13\" xmlns=\"http://www.w3.org/2000/svg\"><g fill=\"currentColor\"><path d=\"m7.881 6.501 4.834-4.834c.38-.38.38-1.001 0-1.381s-1.001-.38-1.381 0l-4.834 4.834-4.834-4.835c-.38-.38-1.001-.38-1.381 0s-.38 1.001 0 1.381l4.834 4.834-4.834 4.834c-.38.38-.38 1.001 0 1.381s1.001.38 1.381 0l4.834-4.834 4.834 4.834c.38.38 1.001.38 1.381 0s .38-1.001 0-1.381z\"></path></g></svg>"
 
 /***/ }),
 
 /***/ 454:
 /***/ (function(module, exports) {
 
+module.exports = "<svg enable-background=\"new 0 0 16 16\" viewBox=\"0 0 16 16\" xmlns=\"http://www.w3.org/2000/svg\"><path fill-opacity=\"0\" d=\"m8.03.819c3.987 0 7.227 3.222 7.227 7.181s-3.239 7.181-7.227 7.181c-3.976 0-7.209-3.222-7.209-7.181s3.237-7.181 7.209-7.181\"></path><g fill=\"currentColor\"><path d=\"m0 8c0 4.416 3.572 8 7.991 8 4.425 0 8.009-3.581 8.009-8 0-4.416-3.581-8-8.009-8-4.416 0-7.991 3.581-7.991 8m8.031-6.4c3.553 0 6.441 2.872 6.441 6.4s-2.887 6.4-6.441 6.4c-3.544 0-6.425-2.872-6.425-6.4s2.885-6.4 6.425-6.4\"></path><path d=\"m10.988 9.024c.551 0 1-.449 1-1s-.449-1-1-1-1 .449-1 1 .449 1 1 1\"></path><path d=\"m7.991 9c .551 0 1-.449 1-1s-.449-1-1-1-1 .449-1 1 .449 1 1 1\"></path><path d=\"m4.994 9c .551 0 1-.449 1-1s-.449-1-1-1-1 .449-1 1 .449 1 1 1\"></path></g></svg>"
+
+/***/ }),
+
+/***/ 455:
+/***/ (function(module, exports) {
+
+module.exports = "<svg enable-background=\"new 0 0 18 18\" viewBox=\"0 0 18 18\" xmlns=\"http://www.w3.org/2000/svg\"><g fill=\"currentColor\"><path class=\"coveo-and-svg\" d=\"m13.769 5.294h-1.063v-1.063c0-2.329-1.894-4.231-4.231-4.231h-4.244c-2.329 0-4.231 1.894-4.231 4.231v4.244c0 2.329 1.894 4.231 4.231 4.231h1.063v1.063c0 2.329 1.894 4.231 4.231 4.231h4.244c2.329 0 4.231-1.894 4.231-4.231v-4.244c0-2.329-1.894-4.231-4.231-4.231zm2.731 8.475c0 1.506-1.225 2.731-2.731 2.731h-4.244c-1.506 0-2.731-1.225-2.731-2.731v-2.563h-2.563c-1.506 0-2.731-1.225-2.731-2.731v-4.244c0-1.506 1.225-2.731 2.731-2.731h4.244c1.506 0 2.731 1.225 2.731 2.731v2.563h2.563c1.506 0 2.731 1.225 2.731 2.731z\"></path><path class=\"coveo-or-svg\" d=\"m11.206 6.794v1.909c0 1.38-1.123 2.503-2.503 2.503h-1.909v-1.909c0-1.38 1.123-2.503 2.503-2.503zm1.5-1.5h-3.409c-2.209 0-4.003 1.792-4.003 4.003v3.409h3.409c2.209 0 4.003-1.792 4.003-4.003z\"></path></g></svg>"
+
+/***/ }),
+
+/***/ 456:
+/***/ (function(module, exports) {
+
 module.exports = "<svg enable-background=\"new 0 0 20 20\" viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><g fill=\"currentColor\"><path class=\"coveo-magnifier-circle-svg\" d=\"m8.368 16.736c-4.614 0-8.368-3.754-8.368-8.368s3.754-8.368 8.368-8.368 8.368 3.754 8.368 8.368-3.754 8.368-8.368 8.368m0-14.161c-3.195 0-5.793 2.599-5.793 5.793s2.599 5.793 5.793 5.793 5.793-2.599 5.793-5.793-2.599-5.793-5.793-5.793\"></path><path d=\"m18.713 20c-.329 0-.659-.126-.91-.377l-4.552-4.551c-.503-.503-.503-1.318 0-1.82.503-.503 1.318-.503 1.82 0l4.552 4.551c.503.503.503 1.318 0 1.82-.252.251-.581.377-.91.377\"></path></g></svg>"
 
 /***/ }),
 
-/***/ 466:
+/***/ 468:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
 
-/***/ 472:
+/***/ 474:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 /* WEBPACK VAR INJECTION */(function(Promise) {
 Object.defineProperty(exports, "__esModule", { value: true });
 ///<reference path='Omnibox.ts'/>
-var Omnibox_1 = __webpack_require__(79);
-var OmniboxEvents_1 = __webpack_require__(31);
+var Omnibox_1 = __webpack_require__(81);
+var OmniboxEvents_1 = __webpack_require__(33);
 var _ = __webpack_require__(1);
 var FieldAddon = (function () {
     function FieldAddon(omnibox) {
@@ -520,13 +593,13 @@ exports.FieldAddon = FieldAddon;
 
 /***/ }),
 
-/***/ 473:
+/***/ 475:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 /* WEBPACK VAR INJECTION */(function(Promise) {
 Object.defineProperty(exports, "__esModule", { value: true });
-var OmniboxEvents_1 = __webpack_require__(31);
+var OmniboxEvents_1 = __webpack_require__(33);
 var Dom_1 = __webpack_require__(3);
 var Utils_1 = __webpack_require__(5);
 var _ = __webpack_require__(1);
@@ -674,15 +747,15 @@ exports.OldOmniboxAddon = OldOmniboxAddon;
 
 /***/ }),
 
-/***/ 474:
+/***/ 476:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 ///<reference path='Omnibox.ts'/>
-var OmniboxEvents_1 = __webpack_require__(31);
-var Omnibox_1 = __webpack_require__(79);
+var OmniboxEvents_1 = __webpack_require__(33);
+var Omnibox_1 = __webpack_require__(81);
 var _ = __webpack_require__(1);
 var QueryExtensionAddon = (function () {
     function QueryExtensionAddon(omnibox) {
@@ -811,7 +884,7 @@ exports.QueryExtensionAddon = QueryExtensionAddon;
 
 /***/ }),
 
-/***/ 475:
+/***/ 477:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -819,7 +892,7 @@ exports.QueryExtensionAddon = QueryExtensionAddon;
 Object.defineProperty(exports, "__esModule", { value: true });
 var Dom_1 = __webpack_require__(3);
 var ComponentOptionsModel_1 = __webpack_require__(25);
-var OmniboxEvents_1 = __webpack_require__(31);
+var OmniboxEvents_1 = __webpack_require__(33);
 var StringUtils_1 = __webpack_require__(19);
 var _ = __webpack_require__(1);
 var QuerySuggestAddon = (function () {
@@ -924,14 +997,14 @@ exports.QuerySuggestAddon = QuerySuggestAddon;
 
 /***/ }),
 
-/***/ 587:
+/***/ 589:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
 
-/***/ 79:
+/***/ 81:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -956,27 +1029,27 @@ exports.MagicBox = __webpack_require__(399);
 var Component_1 = __webpack_require__(8);
 var ComponentOptions_1 = __webpack_require__(9);
 var QueryEvents_1 = __webpack_require__(11);
-var StandaloneSearchInterfaceEvents_1 = __webpack_require__(64);
+var StandaloneSearchInterfaceEvents_1 = __webpack_require__(66);
 var Model_1 = __webpack_require__(16);
 var QueryStateModel_1 = __webpack_require__(14);
 var AnalyticsActionListMeta_1 = __webpack_require__(12);
-var OmniboxEvents_1 = __webpack_require__(31);
+var OmniboxEvents_1 = __webpack_require__(33);
 var Dom_1 = __webpack_require__(3);
 var Assert_1 = __webpack_require__(7);
 var QueryStateModel_2 = __webpack_require__(14);
 var Initialization_1 = __webpack_require__(2);
 var Querybox_1 = __webpack_require__(97);
-var FieldAddon_1 = __webpack_require__(472);
-var QueryExtensionAddon_1 = __webpack_require__(474);
-var QuerySuggestAddon_1 = __webpack_require__(475);
-var OldOmniboxAddon_1 = __webpack_require__(473);
+var FieldAddon_1 = __webpack_require__(474);
+var QueryExtensionAddon_1 = __webpack_require__(476);
+var QuerySuggestAddon_1 = __webpack_require__(477);
+var OldOmniboxAddon_1 = __webpack_require__(475);
 var QueryboxQueryParameters_1 = __webpack_require__(401);
-var PendingSearchAsYouTypeSearchEvent_1 = __webpack_require__(82);
+var PendingSearchAsYouTypeSearchEvent_1 = __webpack_require__(84);
 var Utils_1 = __webpack_require__(5);
 var SearchInterface_1 = __webpack_require__(20);
 var _ = __webpack_require__(1);
 var GlobalExports_1 = __webpack_require__(4);
-__webpack_require__(466);
+__webpack_require__(468);
 var MINIMUM_EXECUTABLE_CONFIDENCE = 0.8;
 /**
  * The Omnibox component is very similar to the simpler {@link Querybox} component. It supports all of the same options
@@ -1637,56 +1710,6 @@ Initialization_1.Initialization.registerAutoCreateComponent(Omnibox);
 
 /***/ }),
 
-/***/ 87:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var SVGDom = (function () {
-    function SVGDom() {
-    }
-    SVGDom.addClassToSVGInContainer = function (svgContainer, classToAdd) {
-        var svgElement = svgContainer.querySelector('svg');
-        svgElement.setAttribute('class', SVGDom.getClass(svgElement) + " " + classToAdd);
-    };
-    SVGDom.removeClassFromSVGInContainer = function (svgContainer, classToRemove) {
-        var svgElement = svgContainer.querySelector('svg');
-        svgElement.setAttribute('class', SVGDom.getClass(svgElement).replace(classToRemove, ''));
-    };
-    SVGDom.getClass = function (svgElement) {
-        var className = svgElement.getAttribute('class');
-        return className ? className : '';
-    };
-    return SVGDom;
-}());
-exports.SVGDom = SVGDom;
-
-
-/***/ }),
-
-/***/ 88:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var SVGIcons = (function () {
-    function SVGIcons() {
-    }
-    return SVGIcons;
-}());
-SVGIcons.search = __webpack_require__(454);
-SVGIcons.more = __webpack_require__(453);
-SVGIcons.facetLoading = __webpack_require__(452);
-SVGIcons.checkboxMoreValues = __webpack_require__(451);
-SVGIcons.arrowUp = __webpack_require__(450);
-SVGIcons.arrowDown = __webpack_require__(449);
-exports.SVGIcons = SVGIcons;
-
-
-/***/ }),
-
 /***/ 97:
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -1711,7 +1734,7 @@ var ComponentOptions_1 = __webpack_require__(9);
 var QueryEvents_1 = __webpack_require__(11);
 var Model_1 = __webpack_require__(16);
 var QueryStateModel_1 = __webpack_require__(14);
-var StandaloneSearchInterfaceEvents_1 = __webpack_require__(64);
+var StandaloneSearchInterfaceEvents_1 = __webpack_require__(66);
 var AnalyticsActionListMeta_1 = __webpack_require__(12);
 var Dom_1 = __webpack_require__(3);
 var Assert_1 = __webpack_require__(7);

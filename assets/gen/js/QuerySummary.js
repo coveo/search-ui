@@ -1,4 +1,4 @@
-webpackJsonpCoveo__temporary([27],{
+webpackJsonpCoveo__temporary([29],{
 
 /***/ 313:
 /***/ (function(module, exports, __webpack_require__) {
@@ -29,7 +29,7 @@ var Globalize = __webpack_require__(24);
 var QuerySummaryEvents_1 = __webpack_require__(413);
 var _ = __webpack_require__(1);
 var GlobalExports_1 = __webpack_require__(4);
-__webpack_require__(576);
+__webpack_require__(578);
 /**
  * The QuerySummary component can display information about the currently displayed range of results (e.g., "Results
  * 1-10 of 123").
@@ -205,7 +205,7 @@ exports.QuerySummaryEvents = QuerySummaryEvents;
 
 /***/ }),
 
-/***/ 576:
+/***/ 578:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

@@ -1,4 +1,4 @@
-webpackJsonpCoveo__temporary([22,30],{
+webpackJsonpCoveo__temporary([24,32],{
 
 /***/ 246:
 /***/ (function(module, exports, __webpack_require__) {
@@ -24,7 +24,7 @@ var Assert_1 = __webpack_require__(7);
 var QueryEvents_1 = __webpack_require__(11);
 var Initialization_1 = __webpack_require__(2);
 var Dom_1 = __webpack_require__(3);
-var QueryBuilder_1 = __webpack_require__(42);
+var QueryBuilder_1 = __webpack_require__(44);
 var _ = __webpack_require__(1);
 var GlobalExports_1 = __webpack_require__(4);
 /**

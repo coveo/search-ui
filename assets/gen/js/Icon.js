@@ -22,7 +22,7 @@ var Assert_1 = __webpack_require__(7);
 var QueryUtils_1 = __webpack_require__(17);
 var Initialization_1 = __webpack_require__(2);
 var Utils_1 = __webpack_require__(5);
-var FileTypes_1 = __webpack_require__(83);
+var FileTypes_1 = __webpack_require__(85);
 var Dom_1 = __webpack_require__(3);
 var GlobalExports_1 = __webpack_require__(4);
 /**

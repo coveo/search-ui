@@ -1,4 +1,4 @@
-webpackJsonpCoveo__temporary([15],{
+webpackJsonpCoveo__temporary([18],{
 
 /***/ 267:
 /***/ (function(module, exports, __webpack_require__) {
@@ -36,19 +36,19 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var Component_1 = __webpack_require__(8);
 var ComponentOptions_1 = __webpack_require__(9);
-var DomUtils_1 = __webpack_require__(43);
+var DomUtils_1 = __webpack_require__(45);
 var Dom_1 = __webpack_require__(3);
-var DefaultQuickviewTemplate_1 = __webpack_require__(621);
-var ResultListEvents_1 = __webpack_require__(30);
+var DefaultQuickviewTemplate_1 = __webpack_require__(623);
+var ResultListEvents_1 = __webpack_require__(32);
 var StringUtils_1 = __webpack_require__(19);
-var QuickviewDocument_1 = __webpack_require__(622);
+var QuickviewDocument_1 = __webpack_require__(624);
 var QueryStateModel_1 = __webpack_require__(14);
 var QuickviewEvents_1 = __webpack_require__(267);
 var Initialization_1 = __webpack_require__(2);
 var KeyboardUtils_1 = __webpack_require__(21);
 var ExternalModulesShim_1 = __webpack_require__(22);
 var GlobalExports_1 = __webpack_require__(4);
-__webpack_require__(577);
+__webpack_require__(579);
 /**
  * The `Quickview` component renders a button / link which the end user can click to open a modal box containing certain
  * content about a result. Most of the time, this component references a [`QuickviewDocument`]{@link QuickviewDocument}
@@ -358,14 +358,14 @@ Initialization_1.Initialization.registerAutoCreateComponent(Quickview);
 
 /***/ }),
 
-/***/ 577:
+/***/ 579:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
 
-/***/ 621:
+/***/ 623:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -397,7 +397,7 @@ exports.DefaultQuickviewTemplate = DefaultQuickviewTemplate;
 
 /***/ }),
 
-/***/ 622:
+/***/ 624:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";

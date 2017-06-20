@@ -1,4 +1,4 @@
-webpackJsonpCoveo__temporary([14,39,41],{
+webpackJsonpCoveo__temporary([17,41,43],{
 
 /***/ 321:
 /***/ (function(module, exports, __webpack_require__) {
@@ -19,8 +19,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var Component_1 = __webpack_require__(8);
 var ComponentOptions_1 = __webpack_require__(9);
 var ComponentOptionsModel_1 = __webpack_require__(25);
-var LocalStorageUtils_1 = __webpack_require__(35);
-var PreferencesPanelEvents_1 = __webpack_require__(65);
+var LocalStorageUtils_1 = __webpack_require__(37);
+var PreferencesPanelEvents_1 = __webpack_require__(67);
 var AnalyticsActionListMeta_1 = __webpack_require__(12);
 var Initialization_1 = __webpack_require__(2);
 var Assert_1 = __webpack_require__(7);
@@ -29,8 +29,8 @@ var Dom_1 = __webpack_require__(3);
 var _ = __webpack_require__(1);
 var GlobalExports_1 = __webpack_require__(4);
 var Defer_1 = __webpack_require__(26);
-var Checkbox_1 = __webpack_require__(59);
-var RadioButton_1 = __webpack_require__(80);
+var Checkbox_1 = __webpack_require__(61);
+var RadioButton_1 = __webpack_require__(82);
 var FormGroup_1 = __webpack_require__(99);
 /**
  * The ResultsPreferences component allows the end user to select preferences related to the search results. These
@@ -269,28 +269,28 @@ Initialization_1.Initialization.registerAutoCreateComponent(ResultsPreferences);
 
 /***/ }),
 
-/***/ 463:
+/***/ 465:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
 
-/***/ 464:
+/***/ 466:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
 
-/***/ 80:
+/***/ 82:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var Dom_1 = __webpack_require__(3);
-__webpack_require__(464);
+__webpack_require__(466);
 var GlobalExports_1 = __webpack_require__(4);
 /**
  * A radio button widget with standard styling.
@@ -404,7 +404,7 @@ exports.RadioButton = RadioButton;
 Object.defineProperty(exports, "__esModule", { value: true });
 var Dom_1 = __webpack_require__(3);
 var _ = __webpack_require__(1);
-__webpack_require__(463);
+__webpack_require__(465);
 var GlobalExports_1 = __webpack_require__(4);
 /**
  * A simple `fieldset` HTMLElement containing multiple form widgets.

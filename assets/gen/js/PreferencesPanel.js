@@ -1,4 +1,4 @@
-webpackJsonpCoveo__temporary([50],{
+webpackJsonpCoveo__temporary([52],{
 
 /***/ 310:
 /***/ (function(module, exports, __webpack_require__) {
@@ -18,15 +18,15 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var Component_1 = __webpack_require__(8);
 var ComponentOptions_1 = __webpack_require__(9);
-var SettingsEvents_1 = __webpack_require__(38);
-var PreferencesPanelEvents_1 = __webpack_require__(65);
+var SettingsEvents_1 = __webpack_require__(40);
+var PreferencesPanelEvents_1 = __webpack_require__(67);
 var Initialization_1 = __webpack_require__(2);
 var Strings_1 = __webpack_require__(10);
 var Dom_1 = __webpack_require__(3);
 var GlobalExports_1 = __webpack_require__(4);
 var ExternalModulesShim_1 = __webpack_require__(22);
 var _ = __webpack_require__(1);
-__webpack_require__(573);
+__webpack_require__(575);
 var InitializationEvents_1 = __webpack_require__(15);
 /**
  * The PreferencesPanel component renders a **Preferences** item inside the {@link Settings} component which the end
@@ -123,7 +123,7 @@ Initialization_1.Initialization.registerAutoCreateComponent(PreferencesPanel);
 
 /***/ }),
 
-/***/ 573:
+/***/ 575:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

@@ -1,4 +1,4 @@
-webpackJsonpCoveo__temporary([55],{
+webpackJsonpCoveo__temporary([56],{
 
 /***/ 295:
 /***/ (function(module, exports, __webpack_require__) {
@@ -25,7 +25,7 @@ var Strings_1 = __webpack_require__(10);
 var Assert_1 = __webpack_require__(7);
 var Initialization_1 = __webpack_require__(2);
 var GlobalExports_1 = __webpack_require__(4);
-__webpack_require__(563);
+__webpack_require__(565);
 /**
  * The ErrorReport component takes care of handling fatal error when doing a query on the index / Search API.
  *
@@ -191,7 +191,7 @@ Initialization_1.Initialization.registerAutoCreateComponent(ErrorReport);
 
 /***/ }),
 
-/***/ 563:
+/***/ 565:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

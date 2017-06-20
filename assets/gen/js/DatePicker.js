@@ -1,4 +1,4 @@
-webpackJsonpCoveo__temporary([38],{
+webpackJsonpCoveo__temporary([40],{
 
 /***/ 101:
 /***/ (function(module, exports, __webpack_require__) {
@@ -11,7 +11,7 @@ var DateUtils_1 = __webpack_require__(27);
 var GlobalExports_1 = __webpack_require__(4);
 var Strings_1 = __webpack_require__(10);
 var Globalize = __webpack_require__(24);
-var Pikaday = __webpack_require__(471);
+var Pikaday = __webpack_require__(473);
 /**
  * A date picker widget with standard styling.
  */
@@ -111,7 +111,7 @@ exports.DatePicker = DatePicker;
 
 /***/ }),
 
-/***/ 471:
+/***/ 473:
 /***/ (function(module, exports, __webpack_require__) {
 
 /*!

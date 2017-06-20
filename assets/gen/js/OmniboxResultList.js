@@ -1,4 +1,4 @@
-webpackJsonpCoveo__temporary([7,8],{
+webpackJsonpCoveo__temporary([9,14],{
 
 /***/ 100:
 /***/ (function(module, exports, __webpack_require__) {
@@ -17,7 +17,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var TableTemplate_1 = __webpack_require__(412);
-var DefaultResultTemplate_1 = __webpack_require__(84);
+var DefaultResultTemplate_1 = __webpack_require__(86);
 var Component_1 = __webpack_require__(8);
 var ComponentOptions_1 = __webpack_require__(9);
 var Assert_1 = __webpack_require__(7);
@@ -30,24 +30,24 @@ var AnalyticsActionListMeta_1 = __webpack_require__(12);
 var Initialization_1 = __webpack_require__(2);
 var Defer_1 = __webpack_require__(26);
 var DeviceUtils_1 = __webpack_require__(18);
-var ResultListEvents_1 = __webpack_require__(30);
+var ResultListEvents_1 = __webpack_require__(32);
 var ResultLayoutEvents_1 = __webpack_require__(103);
 var Utils_1 = __webpack_require__(5);
-var DomUtils_1 = __webpack_require__(43);
+var DomUtils_1 = __webpack_require__(45);
 var DefaultRecommendationTemplate_1 = __webpack_require__(411);
 var TemplateList_1 = __webpack_require__(102);
-var TemplateCache_1 = __webpack_require__(46);
-var ResponsiveDefaultResultTemplate_1 = __webpack_require__(476);
+var TemplateCache_1 = __webpack_require__(48);
+var ResponsiveDefaultResultTemplate_1 = __webpack_require__(478);
 var ResultListRenderer_1 = __webpack_require__(265);
-var ResultListTableRenderer_1 = __webpack_require__(478);
-var ResultListCardRenderer_1 = __webpack_require__(477);
+var ResultListTableRenderer_1 = __webpack_require__(480);
+var ResultListCardRenderer_1 = __webpack_require__(479);
 var _ = __webpack_require__(1);
 var GlobalExports_1 = __webpack_require__(4);
+__webpack_require__(471);
+__webpack_require__(470);
 __webpack_require__(469);
-__webpack_require__(468);
-__webpack_require__(467);
 var InitializationPlaceholder_1 = __webpack_require__(251);
-var RegisteredNamedMethods_1 = __webpack_require__(57);
+var RegisteredNamedMethods_1 = __webpack_require__(59);
 /**
  * The ResultList component is responsible for displaying the results of the current query using one or more result
  * templates (see [Result Templates](https://developers.coveo.com/x/aIGfAQ)).
@@ -790,7 +790,7 @@ var Component_1 = __webpack_require__(8);
 var Dom_1 = __webpack_require__(3);
 var Strings_1 = __webpack_require__(10);
 var ResultList_1 = __webpack_require__(100);
-var OmniboxEvents_1 = __webpack_require__(31);
+var OmniboxEvents_1 = __webpack_require__(33);
 var ComponentOptions_1 = __webpack_require__(9);
 var QueryEvents_1 = __webpack_require__(11);
 var AnalyticsActionListMeta_1 = __webpack_require__(12);
@@ -799,7 +799,7 @@ var Utils_1 = __webpack_require__(5);
 var Initialization_1 = __webpack_require__(2);
 var _ = __webpack_require__(1);
 var GlobalExports_1 = __webpack_require__(4);
-__webpack_require__(571);
+__webpack_require__(573);
 /**
  * The OmniboxResultList component behaves exactly like the {@link ResultList} component (which it extends), except that
  * it renders itself inside the {@link Omnibox} component.
@@ -1097,20 +1097,6 @@ exports.TableTemplate = TableTemplate;
 
 /***/ }),
 
-/***/ 467:
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-
-/***/ 468:
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-
 /***/ 469:
 /***/ (function(module, exports) {
 
@@ -1118,13 +1104,27 @@ exports.TableTemplate = TableTemplate;
 
 /***/ }),
 
-/***/ 476:
+/***/ 470:
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+
+/***/ 471:
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+
+/***/ 478:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var ResponsiveComponentsManager_1 = __webpack_require__(76);
+var ResponsiveComponentsManager_1 = __webpack_require__(78);
 var SearchInterface_1 = __webpack_require__(20);
 var ResultList_1 = __webpack_require__(100);
 var Dom_1 = __webpack_require__(3);
@@ -1190,7 +1190,7 @@ exports.ResponsiveDefaultResultTemplate = ResponsiveDefaultResultTemplate;
 
 /***/ }),
 
-/***/ 477:
+/***/ 479:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1236,7 +1236,7 @@ exports.ResultListCardRenderer = ResultListCardRenderer;
 
 /***/ }),
 
-/***/ 478:
+/***/ 480:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1345,14 +1345,14 @@ exports.ResultListTableRenderer = ResultListTableRenderer;
 
 /***/ }),
 
-/***/ 571:
+/***/ 573:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
 
-/***/ 76:
+/***/ 78:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";

@@ -1,4 +1,4 @@
-webpackJsonpCoveo__temporary([20,48],{
+webpackJsonpCoveo__temporary([22,50],{
 
 /***/ 311:
 /***/ (function(module, exports, __webpack_require__) {
@@ -17,14 +17,14 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var ComponentOptions_1 = __webpack_require__(9);
-var HighlightUtils_1 = __webpack_require__(44);
+var HighlightUtils_1 = __webpack_require__(46);
 var Initialization_1 = __webpack_require__(2);
 var Utils_1 = __webpack_require__(5);
 var Dom_1 = __webpack_require__(3);
 var GlobalExports_1 = __webpack_require__(4);
-__webpack_require__(574);
-var ResultLink_1 = __webpack_require__(77);
-var StreamHighlightUtils_1 = __webpack_require__(63);
+__webpack_require__(576);
+var ResultLink_1 = __webpack_require__(79);
+var StreamHighlightUtils_1 = __webpack_require__(65);
 var _ = __webpack_require__(1);
 /**
  * The `PrintableUri` component inherits from the [ `ResultLink` ]{@link ResultLink} component and supports all of its options.
@@ -120,21 +120,21 @@ Initialization_1.Initialization.registerAutoCreateComponent(PrintableUri);
 
 /***/ }),
 
-/***/ 455:
+/***/ 457:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
 
-/***/ 574:
+/***/ 576:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
 
-/***/ 77:
+/***/ 79:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -154,8 +154,8 @@ var Component_1 = __webpack_require__(8);
 var ComponentOptions_1 = __webpack_require__(9);
 var ComponentOptionsModel_1 = __webpack_require__(25);
 var AnalyticsActionListMeta_1 = __webpack_require__(12);
-var ResultListEvents_1 = __webpack_require__(30);
-var HighlightUtils_1 = __webpack_require__(44);
+var ResultListEvents_1 = __webpack_require__(32);
+var HighlightUtils_1 = __webpack_require__(46);
 var DeviceUtils_1 = __webpack_require__(18);
 var OSUtils_1 = __webpack_require__(245);
 var Initialization_1 = __webpack_require__(2);
@@ -164,10 +164,10 @@ var Assert_1 = __webpack_require__(7);
 var Utils_1 = __webpack_require__(5);
 var Defer_1 = __webpack_require__(26);
 var Dom_1 = __webpack_require__(3);
-var StreamHighlightUtils_1 = __webpack_require__(63);
+var StreamHighlightUtils_1 = __webpack_require__(65);
 var _ = __webpack_require__(1);
 var GlobalExports_1 = __webpack_require__(4);
-__webpack_require__(455);
+__webpack_require__(457);
 /**
  * The `ResultLink` component automatically transform a search result title into a clickable link pointing to the
  * original item.

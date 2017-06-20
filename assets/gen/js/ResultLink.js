@@ -1,13 +1,13 @@
-webpackJsonpCoveo__temporary([48],{
+webpackJsonpCoveo__temporary([50],{
 
-/***/ 455:
+/***/ 457:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
 
-/***/ 77:
+/***/ 79:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27,8 +27,8 @@ var Component_1 = __webpack_require__(8);
 var ComponentOptions_1 = __webpack_require__(9);
 var ComponentOptionsModel_1 = __webpack_require__(25);
 var AnalyticsActionListMeta_1 = __webpack_require__(12);
-var ResultListEvents_1 = __webpack_require__(30);
-var HighlightUtils_1 = __webpack_require__(44);
+var ResultListEvents_1 = __webpack_require__(32);
+var HighlightUtils_1 = __webpack_require__(46);
 var DeviceUtils_1 = __webpack_require__(18);
 var OSUtils_1 = __webpack_require__(245);
 var Initialization_1 = __webpack_require__(2);
@@ -37,10 +37,10 @@ var Assert_1 = __webpack_require__(7);
 var Utils_1 = __webpack_require__(5);
 var Defer_1 = __webpack_require__(26);
 var Dom_1 = __webpack_require__(3);
-var StreamHighlightUtils_1 = __webpack_require__(63);
+var StreamHighlightUtils_1 = __webpack_require__(65);
 var _ = __webpack_require__(1);
 var GlobalExports_1 = __webpack_require__(4);
-__webpack_require__(455);
+__webpack_require__(457);
 /**
  * The `ResultLink` component automatically transform a search result title into a clickable link pointing to the
  * original item.

@@ -1,4 +1,4 @@
-webpackJsonpCoveo__temporary([45],{
+webpackJsonpCoveo__temporary([47],{
 
 /***/ 324:
 /***/ (function(module, exports, __webpack_require__) {
@@ -20,12 +20,12 @@ var Component_1 = __webpack_require__(8);
 var ComponentOptions_1 = __webpack_require__(9);
 var InitializationEvents_1 = __webpack_require__(15);
 var Dom_1 = __webpack_require__(3);
-var PopupUtils_1 = __webpack_require__(47);
-var SettingsEvents_1 = __webpack_require__(38);
+var PopupUtils_1 = __webpack_require__(49);
+var SettingsEvents_1 = __webpack_require__(40);
 var Initialization_1 = __webpack_require__(2);
 var _ = __webpack_require__(1);
 var GlobalExports_1 = __webpack_require__(4);
-__webpack_require__(588);
+__webpack_require__(590);
 /**
  * The Settings component renders a **Settings** button that the end user can click to access a popup menu from which
  * it is possible to perform several contextual actions. The usual location of the **Settings** button in the page is to
@@ -172,7 +172,7 @@ Initialization_1.Initialization.registerAutoCreateComponent(Settings);
 
 /***/ }),
 
-/***/ 588:
+/***/ 590:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

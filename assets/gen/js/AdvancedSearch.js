@@ -1,4 +1,4 @@
-webpackJsonpCoveo__temporary([4,38,39,65,66],{
+webpackJsonpCoveo__temporary([4,40,41,65,66],{
 
 /***/ 101:
 /***/ (function(module, exports, __webpack_require__) {
@@ -11,7 +11,7 @@ var DateUtils_1 = __webpack_require__(27);
 var GlobalExports_1 = __webpack_require__(4);
 var Strings_1 = __webpack_require__(10);
 var Globalize = __webpack_require__(24);
-var Pikaday = __webpack_require__(471);
+var Pikaday = __webpack_require__(473);
 /**
  * A date picker widget with standard styling.
  */
@@ -117,8 +117,8 @@ exports.DatePicker = DatePicker;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var TextInput_1 = __webpack_require__(45);
-var AdvancedSearchEvents_1 = __webpack_require__(58);
+var TextInput_1 = __webpack_require__(47);
+var AdvancedSearchEvents_1 = __webpack_require__(60);
 var Dom_1 = __webpack_require__(3);
 var KeywordsInput = (function () {
     function KeywordsInput(inputName, root) {
@@ -168,9 +168,9 @@ exports.KeywordsInput = KeywordsInput;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var AdvancedSearchEvents_1 = __webpack_require__(58);
+var AdvancedSearchEvents_1 = __webpack_require__(60);
 var Dom_1 = __webpack_require__(3);
-var RadioButton_1 = __webpack_require__(80);
+var RadioButton_1 = __webpack_require__(82);
 var _ = __webpack_require__(1);
 var DateInput = (function () {
     function DateInput(inputName, root) {
@@ -255,6 +255,34 @@ exports.DateInput = DateInput;
 
 /***/ }),
 
+/***/ 28:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var SVGDom = (function () {
+    function SVGDom() {
+    }
+    SVGDom.addClassToSVGInContainer = function (svgContainer, classToAdd) {
+        var svgElement = svgContainer.querySelector('svg');
+        svgElement.setAttribute('class', SVGDom.getClass(svgElement) + " " + classToAdd);
+    };
+    SVGDom.removeClassFromSVGInContainer = function (svgContainer, classToRemove) {
+        var svgElement = svgContainer.querySelector('svg');
+        svgElement.setAttribute('class', SVGDom.getClass(svgElement).replace(classToRemove, ''));
+    };
+    SVGDom.getClass = function (svgElement) {
+        var className = svgElement.getAttribute('class');
+        return className ? className : '';
+    };
+    return SVGDom;
+}());
+exports.SVGDom = SVGDom;
+
+
+/***/ }),
+
 /***/ 280:
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -262,7 +290,7 @@ exports.DateInput = DateInput;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var Dom_1 = __webpack_require__(3);
-var AdvancedSearchEvents_1 = __webpack_require__(58);
+var AdvancedSearchEvents_1 = __webpack_require__(60);
 var Strings_1 = __webpack_require__(10);
 var DocumentInput = (function () {
     function DocumentInput(inputName, root) {
@@ -322,24 +350,26 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var Component_1 = __webpack_require__(8);
 var ComponentOptions_1 = __webpack_require__(9);
 var QueryEvents_1 = __webpack_require__(11);
-var AdvancedSearchEvents_1 = __webpack_require__(58);
-var SettingsEvents_1 = __webpack_require__(38);
+var AdvancedSearchEvents_1 = __webpack_require__(60);
+var SettingsEvents_1 = __webpack_require__(40);
 var Initialization_1 = __webpack_require__(2);
 var Strings_1 = __webpack_require__(10);
 var Dom_1 = __webpack_require__(3);
-var AdvancedSearchInputFactory_1 = __webpack_require__(598);
+var AdvancedSearchInputFactory_1 = __webpack_require__(600);
 var AnalyticsActionListMeta_1 = __webpack_require__(12);
 var QuerySummaryEvents_1 = __webpack_require__(413);
 var _ = __webpack_require__(1);
 var GlobalExports_1 = __webpack_require__(4);
-__webpack_require__(556);
-var NumericSpinner_1 = __webpack_require__(81);
+__webpack_require__(558);
+var NumericSpinner_1 = __webpack_require__(83);
 var DatePicker_1 = __webpack_require__(101);
-var Dropdown_1 = __webpack_require__(50);
-var TextInput_1 = __webpack_require__(45);
-var RadioButton_1 = __webpack_require__(80);
+var Dropdown_1 = __webpack_require__(52);
+var TextInput_1 = __webpack_require__(47);
+var RadioButton_1 = __webpack_require__(82);
 var ExternalModulesShim_1 = __webpack_require__(22);
-var BreadcrumbEvents_1 = __webpack_require__(41);
+var BreadcrumbEvents_1 = __webpack_require__(43);
+var SVGIcons_1 = __webpack_require__(29);
+var SVGDom_1 = __webpack_require__(28);
 /**
  * The `AdvancedSearch` component is meant to render a section in the [`Settings`]{@link Settings} menu to allow the end
  * user to easily create complex queries to send to the index.
@@ -426,7 +456,8 @@ var AdvancedSearch = (function (_super) {
             title.text(Strings_1.l('FiltersInAdvancedSearch') + ' : ');
             var clear = Dom_1.$$('span', {
                 className: 'coveo-advanced-search-breadcrumb-clear'
-            });
+            }, SVGIcons_1.SVGIcons.checkboxHookExclusionMore);
+            SVGDom_1.SVGDom.addClassToSVGInContainer(clear.el, 'coveo-advanced-search-breadcrumb-clear-svg');
             clear.on('click', function () {
                 _this.handleClearBreadcrumb();
                 _this.usageAnalytics.logSearchEvent(AnalyticsActionListMeta_1.analyticsActionCauseList.breadcrumbAdvancedSearch, {});
@@ -610,6 +641,30 @@ Initialization_1.Initialization.registerAutoCreateComponent(AdvancedSearch);
 
 /***/ }),
 
+/***/ 29:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var SVGIcons = (function () {
+    function SVGIcons() {
+    }
+    return SVGIcons;
+}());
+SVGIcons.search = __webpack_require__(456);
+SVGIcons.more = __webpack_require__(454);
+SVGIcons.loading = __webpack_require__(452);
+SVGIcons.checkboxHookExclusionMore = __webpack_require__(451);
+SVGIcons.arrowUp = __webpack_require__(450);
+SVGIcons.arrowDown = __webpack_require__(449);
+SVGIcons.mainClear = __webpack_require__(453);
+SVGIcons.orAnd = __webpack_require__(455);
+exports.SVGIcons = SVGIcons;
+
+
+/***/ }),
+
 /***/ 413:
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -636,14 +691,70 @@ exports.QuerySummaryEvents = QuerySummaryEvents;
 
 /***/ }),
 
-/***/ 464:
+/***/ 449:
+/***/ (function(module, exports) {
+
+module.exports = "<svg enable-background=\"new 0 0 10 6\" viewBox=\"0 0 10 6\" xmlns=\"http://www.w3.org/2000/svg\"><g fill=\"currentColor\"><path d=\"m5 5.932c-.222 0-.443-.084-.612-.253l-4.134-4.134c-.338-.338-.338-.886 0-1.224s.886-.338 1.224 0l3.522 3.521 3.523-3.521c.336-.338.886-.338 1.224 0s .337.886-.001 1.224l-4.135 4.134c-.168.169-.39.253-.611.253z\"></path></g></svg>"
+
+/***/ }),
+
+/***/ 450:
+/***/ (function(module, exports) {
+
+module.exports = "<svg enable-background=\"new 0 0 10 6\" viewBox=\"0 0 10 6\" xmlns=\"http://www.w3.org/2000/svg\"><g fill=\"currentColor\"><path d=\"m5 .068c.222 0 .443.084.612.253l4.134 4.134c.338.338.338.886 0 1.224s-.886.338-1.224 0l-3.522-3.521-3.523 3.521c-.336.338-.886.338-1.224 0s-.337-.886.001-1.224l4.134-4.134c.168-.169.39-.253.612-.253z\"></path></g></svg>"
+
+/***/ }),
+
+/***/ 451:
+/***/ (function(module, exports) {
+
+module.exports = "<svg enable-background=\"new 0 0 11 11\" viewBox=\"0 0 11 11\" xmlns=\"http://www.w3.org/2000/svg\"><g class=\"coveo-more-svg\" fill=\"none\"><path d=\"m10.083 4.583h-3.666v-3.666c0-.524-.393-.917-.917-.917s-.917.393-.917.917v3.667h-3.666c-.524-.001-.917.392-.917.916s.393.917.917.917h3.667v3.667c-.001.523.392.916.916.916s.917-.393.917-.917v-3.666h3.667c.523 0 .916-.393.916-.917-.001-.524-.394-.917-.917-.917z\"></path></g><g class=\"coveo-exclusion-svg\" fill=\"none\"><path d=\"m9.233 7.989-2.489-2.489 2.489-2.489c.356-.356.356-.889 0-1.244-.356-.356-.889-.356-1.244 0l-2.489 2.489-2.489-2.489c-.356-.356-.889-.356-1.244 0-.356.356-.356.889 0 1.244l2.489 2.489-2.489 2.489c-.356.356-.356.889 0 1.244.356.356.889.356 1.244 0l2.489-2.489 2.489 2.489c.356.356.889.356 1.244 0 .356-.355.356-.889 0-1.244z\"></path></g><g class=\"coveo-hook-svg\" fill=\"none\"><path d=\"m10.252 2.213c-.155-.142-.354-.211-.573-.213-.215.005-.414.091-.561.24l-4.873 4.932-2.39-2.19c-.154-.144-.385-.214-.57-.214-.214.004-.415.09-.563.24-.148.147-.227.343-.222.549.005.207.093.4.249.542l2.905 2.662c.168.154.388.239.618.239h.022.003c.237-.007.457-.101.618-.266l5.362-5.428c.148-.148.228-.344.223-.551s-.093-.399-.248-.542z\"></path></g></svg>"
+
+/***/ }),
+
+/***/ 452:
+/***/ (function(module, exports) {
+
+module.exports = "<svg enable-background=\"new 0 0 18 18\" viewBox=\"0 0 18 18\" xmlns=\"http://www.w3.org/2000/svg\"><g fill=\"currentColor\"><path d=\"m16.76 8.051c-.448 0-.855-.303-.969-.757-.78-3.117-3.573-5.294-6.791-5.294s-6.01 2.177-6.79 5.294c-.134.537-.679.861-1.213.727-.536-.134-.861-.677-.728-1.212 1.004-4.009 4.594-6.809 8.731-6.809 4.138 0 7.728 2.8 8.73 6.809.135.536-.191 1.079-.727 1.213-.081.02-.162.029-.243.029z\"></path><path d=\"m9 18c-4.238 0-7.943-3.007-8.809-7.149-.113-.541.234-1.071.774-1.184.541-.112 1.071.232 1.184.773.674 3.222 3.555 5.56 6.851 5.56s6.178-2.338 6.852-5.56c.113-.539.634-.892 1.184-.773.54.112.887.643.773 1.184-.866 4.142-4.57 7.149-8.809 7.149z\"></path></g></svg>"
+
+/***/ }),
+
+/***/ 453:
+/***/ (function(module, exports) {
+
+module.exports = "<svg enable-background=\"new 0 0 13 13\" viewBox=\"0 0 13 13\" xmlns=\"http://www.w3.org/2000/svg\"><g fill=\"currentColor\"><path d=\"m7.881 6.501 4.834-4.834c.38-.38.38-1.001 0-1.381s-1.001-.38-1.381 0l-4.834 4.834-4.834-4.835c-.38-.38-1.001-.38-1.381 0s-.38 1.001 0 1.381l4.834 4.834-4.834 4.834c-.38.38-.38 1.001 0 1.381s1.001.38 1.381 0l4.834-4.834 4.834 4.834c.38.38 1.001.38 1.381 0s .38-1.001 0-1.381z\"></path></g></svg>"
+
+/***/ }),
+
+/***/ 454:
+/***/ (function(module, exports) {
+
+module.exports = "<svg enable-background=\"new 0 0 16 16\" viewBox=\"0 0 16 16\" xmlns=\"http://www.w3.org/2000/svg\"><path fill-opacity=\"0\" d=\"m8.03.819c3.987 0 7.227 3.222 7.227 7.181s-3.239 7.181-7.227 7.181c-3.976 0-7.209-3.222-7.209-7.181s3.237-7.181 7.209-7.181\"></path><g fill=\"currentColor\"><path d=\"m0 8c0 4.416 3.572 8 7.991 8 4.425 0 8.009-3.581 8.009-8 0-4.416-3.581-8-8.009-8-4.416 0-7.991 3.581-7.991 8m8.031-6.4c3.553 0 6.441 2.872 6.441 6.4s-2.887 6.4-6.441 6.4c-3.544 0-6.425-2.872-6.425-6.4s2.885-6.4 6.425-6.4\"></path><path d=\"m10.988 9.024c.551 0 1-.449 1-1s-.449-1-1-1-1 .449-1 1 .449 1 1 1\"></path><path d=\"m7.991 9c .551 0 1-.449 1-1s-.449-1-1-1-1 .449-1 1 .449 1 1 1\"></path><path d=\"m4.994 9c .551 0 1-.449 1-1s-.449-1-1-1-1 .449-1 1 .449 1 1 1\"></path></g></svg>"
+
+/***/ }),
+
+/***/ 455:
+/***/ (function(module, exports) {
+
+module.exports = "<svg enable-background=\"new 0 0 18 18\" viewBox=\"0 0 18 18\" xmlns=\"http://www.w3.org/2000/svg\"><g fill=\"currentColor\"><path class=\"coveo-and-svg\" d=\"m13.769 5.294h-1.063v-1.063c0-2.329-1.894-4.231-4.231-4.231h-4.244c-2.329 0-4.231 1.894-4.231 4.231v4.244c0 2.329 1.894 4.231 4.231 4.231h1.063v1.063c0 2.329 1.894 4.231 4.231 4.231h4.244c2.329 0 4.231-1.894 4.231-4.231v-4.244c0-2.329-1.894-4.231-4.231-4.231zm2.731 8.475c0 1.506-1.225 2.731-2.731 2.731h-4.244c-1.506 0-2.731-1.225-2.731-2.731v-2.563h-2.563c-1.506 0-2.731-1.225-2.731-2.731v-4.244c0-1.506 1.225-2.731 2.731-2.731h4.244c1.506 0 2.731 1.225 2.731 2.731v2.563h2.563c1.506 0 2.731 1.225 2.731 2.731z\"></path><path class=\"coveo-or-svg\" d=\"m11.206 6.794v1.909c0 1.38-1.123 2.503-2.503 2.503h-1.909v-1.909c0-1.38 1.123-2.503 2.503-2.503zm1.5-1.5h-3.409c-2.209 0-4.003 1.792-4.003 4.003v3.409h3.409c2.209 0 4.003-1.792 4.003-4.003z\"></path></g></svg>"
+
+/***/ }),
+
+/***/ 456:
+/***/ (function(module, exports) {
+
+module.exports = "<svg enable-background=\"new 0 0 20 20\" viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><g fill=\"currentColor\"><path class=\"coveo-magnifier-circle-svg\" d=\"m8.368 16.736c-4.614 0-8.368-3.754-8.368-8.368s3.754-8.368 8.368-8.368 8.368 3.754 8.368 8.368-3.754 8.368-8.368 8.368m0-14.161c-3.195 0-5.793 2.599-5.793 5.793s2.599 5.793 5.793 5.793 5.793-2.599 5.793-5.793-2.599-5.793-5.793-5.793\"></path><path d=\"m18.713 20c-.329 0-.659-.126-.91-.377l-4.552-4.551c-.503-.503-.503-1.318 0-1.82.503-.503 1.318-.503 1.82 0l4.552 4.551c.503.503.503 1.318 0 1.82-.252.251-.581.377-.91.377\"></path></g></svg>"
+
+/***/ }),
+
+/***/ 466:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
 
-/***/ 471:
+/***/ 473:
 /***/ (function(module, exports, __webpack_require__) {
 
 /*!
@@ -1886,7 +1997,7 @@ exports.QuerySummaryEvents = QuerySummaryEvents;
 
 /***/ }),
 
-/***/ 50:
+/***/ 52:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2022,29 +2133,29 @@ exports.Dropdown = Dropdown;
 
 /***/ }),
 
-/***/ 556:
+/***/ 558:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
 
-/***/ 598:
+/***/ 600:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var AllKeywordsInput_1 = __webpack_require__(605);
-var ExactKeywordsInput_1 = __webpack_require__(607);
-var AnyKeywordsInput_1 = __webpack_require__(606);
-var NoneKeywordsInput_1 = __webpack_require__(608);
-var AnytimeDateInput_1 = __webpack_require__(599);
-var InTheLastDateInput_1 = __webpack_require__(601);
-var BetweenDateInput_1 = __webpack_require__(600);
-var SimpleFieldInput_1 = __webpack_require__(603);
-var AdvancedFieldInput_1 = __webpack_require__(602);
-var SizeInput_1 = __webpack_require__(604);
+var AllKeywordsInput_1 = __webpack_require__(607);
+var ExactKeywordsInput_1 = __webpack_require__(609);
+var AnyKeywordsInput_1 = __webpack_require__(608);
+var NoneKeywordsInput_1 = __webpack_require__(610);
+var AnytimeDateInput_1 = __webpack_require__(601);
+var InTheLastDateInput_1 = __webpack_require__(603);
+var BetweenDateInput_1 = __webpack_require__(602);
+var SimpleFieldInput_1 = __webpack_require__(605);
+var AdvancedFieldInput_1 = __webpack_require__(604);
+var SizeInput_1 = __webpack_require__(606);
 var AdvancedSearchInputFactory = (function () {
     function AdvancedSearchInputFactory(endpoint, root) {
         this.endpoint = endpoint;
@@ -2113,7 +2224,7 @@ exports.AdvancedSearchInputFactory = AdvancedSearchInputFactory;
 
 /***/ }),
 
-/***/ 599:
+/***/ 601:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2132,7 +2243,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var DateInput_1 = __webpack_require__(279);
 var Strings_1 = __webpack_require__(10);
 var Dom_1 = __webpack_require__(3);
-var AdvancedSearchEvents_1 = __webpack_require__(58);
+var AdvancedSearchEvents_1 = __webpack_require__(60);
 var AnytimeDateInput = (function (_super) {
     __extends(AnytimeDateInput, _super);
     function AnytimeDateInput(root) {
@@ -2165,7 +2276,7 @@ exports.AnytimeDateInput = AnytimeDateInput;
 
 /***/ }),
 
-/***/ 600:
+/***/ 602:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2186,7 +2297,7 @@ var DatePicker_1 = __webpack_require__(101);
 var Strings_1 = __webpack_require__(10);
 var Dom_1 = __webpack_require__(3);
 var DateUtils_1 = __webpack_require__(27);
-var TimeSpanUtils_1 = __webpack_require__(61);
+var TimeSpanUtils_1 = __webpack_require__(63);
 var BetweenDateInput = (function (_super) {
     __extends(BetweenDateInput, _super);
     function BetweenDateInput(root) {
@@ -2244,7 +2355,7 @@ exports.BetweenDateInput = BetweenDateInput;
 
 /***/ }),
 
-/***/ 601:
+/***/ 603:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2263,8 +2374,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var DateInput_1 = __webpack_require__(279);
 var Dom_1 = __webpack_require__(3);
 var Strings_1 = __webpack_require__(10);
-var Dropdown_1 = __webpack_require__(50);
-var NumericSpinner_1 = __webpack_require__(81);
+var Dropdown_1 = __webpack_require__(52);
+var NumericSpinner_1 = __webpack_require__(83);
 var DateUtils_1 = __webpack_require__(27);
 var InTheLastDateInput = (function (_super) {
     __extends(InTheLastDateInput, _super);
@@ -2310,7 +2421,7 @@ exports.InTheLastDateInput = InTheLastDateInput;
 
 /***/ }),
 
-/***/ 602:
+/***/ 604:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2326,11 +2437,11 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var Dropdown_1 = __webpack_require__(50);
-var TextInput_1 = __webpack_require__(45);
+var Dropdown_1 = __webpack_require__(52);
+var TextInput_1 = __webpack_require__(47);
 var Dom_1 = __webpack_require__(3);
 var DocumentInput_1 = __webpack_require__(280);
-var QueryBuilder_1 = __webpack_require__(42);
+var QueryBuilder_1 = __webpack_require__(44);
 var AdvancedFieldInput = (function (_super) {
     __extends(AdvancedFieldInput, _super);
     function AdvancedFieldInput(inputName, fieldName, root) {
@@ -2378,7 +2489,7 @@ exports.AdvancedFieldInput = AdvancedFieldInput;
 
 /***/ }),
 
-/***/ 603:
+/***/ 605:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2394,12 +2505,12 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var Dropdown_1 = __webpack_require__(50);
-var FacetUtils_1 = __webpack_require__(34);
+var Dropdown_1 = __webpack_require__(52);
+var FacetUtils_1 = __webpack_require__(36);
 var DocumentInput_1 = __webpack_require__(280);
 var Dom_1 = __webpack_require__(3);
 var _ = __webpack_require__(1);
-var QueryBuilder_1 = __webpack_require__(42);
+var QueryBuilder_1 = __webpack_require__(44);
 var SimpleFieldInput = (function (_super) {
     __extends(SimpleFieldInput, _super);
     function SimpleFieldInput(inputName, fieldName, endpoint, root) {
@@ -2455,7 +2566,7 @@ exports.SimpleFieldInput = SimpleFieldInput;
 
 /***/ }),
 
-/***/ 604:
+/***/ 606:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2471,11 +2582,11 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var Dropdown_1 = __webpack_require__(50);
-var NumericSpinner_1 = __webpack_require__(81);
+var Dropdown_1 = __webpack_require__(52);
+var NumericSpinner_1 = __webpack_require__(83);
 var Dom_1 = __webpack_require__(3);
 var DocumentInput_1 = __webpack_require__(280);
-var QueryBuilder_1 = __webpack_require__(42);
+var QueryBuilder_1 = __webpack_require__(44);
 var SizeInput = (function (_super) {
     __extends(SizeInput, _super);
     function SizeInput(root) {
@@ -2537,7 +2648,7 @@ exports.SizeInput = SizeInput;
 
 /***/ }),
 
-/***/ 605:
+/***/ 607:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2569,7 +2680,7 @@ exports.AllKeywordsInput = AllKeywordsInput;
 
 /***/ }),
 
-/***/ 606:
+/***/ 608:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2612,7 +2723,7 @@ exports.AnyKeywordsInput = AnyKeywordsInput;
 
 /***/ }),
 
-/***/ 607:
+/***/ 609:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2648,7 +2759,7 @@ exports.ExactKeywordsInput = ExactKeywordsInput;
 
 /***/ }),
 
-/***/ 608:
+/***/ 610:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2693,14 +2804,14 @@ exports.NoneKeywordsInput = NoneKeywordsInput;
 
 /***/ }),
 
-/***/ 80:
+/***/ 82:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var Dom_1 = __webpack_require__(3);
-__webpack_require__(464);
+__webpack_require__(466);
 var GlobalExports_1 = __webpack_require__(4);
 /**
  * A radio button widget with standard styling.
@@ -2806,7 +2917,7 @@ exports.RadioButton = RadioButton;
 
 /***/ }),
 
-/***/ 81:
+/***/ 83:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";

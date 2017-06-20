@@ -1,4 +1,4 @@
-webpackJsonpCoveo__temporary([26],{
+webpackJsonpCoveo__temporary([28],{
 
 /***/ 315:
 /***/ (function(module, exports, __webpack_require__) {
@@ -18,7 +18,7 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var Component_1 = __webpack_require__(8);
 var ComponentOptions_1 = __webpack_require__(9);
-var DefaultResultAttachmentTemplate_1 = __webpack_require__(629);
+var DefaultResultAttachmentTemplate_1 = __webpack_require__(631);
 var Utils_1 = __webpack_require__(5);
 var QueryUtils_1 = __webpack_require__(17);
 var Initialization_1 = __webpack_require__(2);
@@ -26,7 +26,7 @@ var Assert_1 = __webpack_require__(7);
 var Dom_1 = __webpack_require__(3);
 var _ = __webpack_require__(1);
 var GlobalExports_1 = __webpack_require__(4);
-__webpack_require__(581);
+__webpack_require__(583);
 /**
  * The `ResultAttachments` component renders attachments in a result set, for example when displaying emails. This
  * component is usable inside a result template when there is an active [`Folding`]{@link Folding} component in the
@@ -177,14 +177,14 @@ Initialization_1.Initialization.registerAutoCreateComponent(ResultAttachments);
 
 /***/ }),
 
-/***/ 581:
+/***/ 583:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
 
-/***/ 629:
+/***/ 631:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";

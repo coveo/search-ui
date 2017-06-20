@@ -1,4 +1,4 @@
-webpackJsonpCoveo__temporary([44],{
+webpackJsonpCoveo__temporary([46],{
 
 /***/ 325:
 /***/ (function(module, exports, __webpack_require__) {
@@ -17,14 +17,14 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var Component_1 = __webpack_require__(8);
-var SettingsEvents_1 = __webpack_require__(38);
+var SettingsEvents_1 = __webpack_require__(40);
 var Dom_1 = __webpack_require__(3);
 var Strings_1 = __webpack_require__(10);
 var Utils_1 = __webpack_require__(5);
 var Initialization_1 = __webpack_require__(2);
 var GlobalExports_1 = __webpack_require__(4);
 var ExternalModulesShim_1 = __webpack_require__(22);
-__webpack_require__(589);
+__webpack_require__(591);
 /**
  * The ShareQuery component populates the {@link Settings} popup menu with the **Share Query** menu item. When the end
  * user clicks this item, it displays a panel containing two input boxes: one containing a shareable link and the other
@@ -175,7 +175,7 @@ Initialization_1.Initialization.registerAutoCreateComponent(ShareQuery);
 
 /***/ }),
 
-/***/ 589:
+/***/ 591:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

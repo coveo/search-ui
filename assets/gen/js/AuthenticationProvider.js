@@ -21,15 +21,15 @@ var ComponentOptions_1 = __webpack_require__(9);
 var Assert_1 = __webpack_require__(7);
 var QueryEvents_1 = __webpack_require__(11);
 var InitializationEvents_1 = __webpack_require__(15);
-var SettingsEvents_1 = __webpack_require__(38);
-var DomUtils_1 = __webpack_require__(43);
+var SettingsEvents_1 = __webpack_require__(40);
+var DomUtils_1 = __webpack_require__(45);
 var Dom_1 = __webpack_require__(3);
 var Initialization_1 = __webpack_require__(2);
 var Strings_1 = __webpack_require__(10);
 var ExternalModulesShim_1 = __webpack_require__(22);
 var _ = __webpack_require__(1);
 var GlobalExports_1 = __webpack_require__(4);
-__webpack_require__(557);
+__webpack_require__(559);
 /**
  * The `AuthenticationProvider` component makes it possible to execute queries with an identity that the end user
  * can obtain using an authentication provider configured on the Coveo REST Search API
@@ -206,7 +206,7 @@ Initialization_1.Initialization.registerAutoCreateComponent(AuthenticationProvid
 
 /***/ }),
 
-/***/ 557:
+/***/ 559:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

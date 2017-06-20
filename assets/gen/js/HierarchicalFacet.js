@@ -8,8 +8,8 @@ webpackJsonpCoveo__temporary([1,3],{
 /// <reference path="Facet.ts" />
 Object.defineProperty(exports, "__esModule", { value: true });
 var Utils_1 = __webpack_require__(5);
-var FacetUtils_1 = __webpack_require__(34);
-var QueryBuilder_1 = __webpack_require__(42);
+var FacetUtils_1 = __webpack_require__(36);
+var QueryBuilder_1 = __webpack_require__(44);
 var Dom_1 = __webpack_require__(3);
 var _ = __webpack_require__(1);
 var FacetSearchParameters = (function () {
@@ -240,11 +240,11 @@ exports.FacetValuesOrder = FacetValuesOrder;
 /* WEBPACK VAR INJECTION */(function(Promise) {
 /// <reference path='../ui/Facet/Facet.ts' />
 Object.defineProperty(exports, "__esModule", { value: true });
-var ExpressionBuilder_1 = __webpack_require__(66);
+var ExpressionBuilder_1 = __webpack_require__(68);
 var Utils_1 = __webpack_require__(5);
 var FacetSearchParameters_1 = __webpack_require__(240);
 var Assert_1 = __webpack_require__(7);
-var FacetUtils_1 = __webpack_require__(34);
+var FacetUtils_1 = __webpack_require__(36);
 var _ = __webpack_require__(1);
 var FacetQueryController = (function () {
     function FacetQueryController(facet) {
@@ -521,6 +521,58 @@ exports.FacetQueryController = FacetQueryController;
 
 /***/ }),
 
+/***/ 28:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var SVGDom = (function () {
+    function SVGDom() {
+    }
+    SVGDom.addClassToSVGInContainer = function (svgContainer, classToAdd) {
+        var svgElement = svgContainer.querySelector('svg');
+        svgElement.setAttribute('class', SVGDom.getClass(svgElement) + " " + classToAdd);
+    };
+    SVGDom.removeClassFromSVGInContainer = function (svgContainer, classToRemove) {
+        var svgElement = svgContainer.querySelector('svg');
+        svgElement.setAttribute('class', SVGDom.getClass(svgElement).replace(classToRemove, ''));
+    };
+    SVGDom.getClass = function (svgElement) {
+        var className = svgElement.getAttribute('class');
+        return className ? className : '';
+    };
+    return SVGDom;
+}());
+exports.SVGDom = SVGDom;
+
+
+/***/ }),
+
+/***/ 29:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var SVGIcons = (function () {
+    function SVGIcons() {
+    }
+    return SVGIcons;
+}());
+SVGIcons.search = __webpack_require__(456);
+SVGIcons.more = __webpack_require__(454);
+SVGIcons.loading = __webpack_require__(452);
+SVGIcons.checkboxHookExclusionMore = __webpack_require__(451);
+SVGIcons.arrowUp = __webpack_require__(450);
+SVGIcons.arrowDown = __webpack_require__(449);
+SVGIcons.mainClear = __webpack_require__(453);
+SVGIcons.orAnd = __webpack_require__(455);
+exports.SVGIcons = SVGIcons;
+
+
+/***/ }),
+
 /***/ 304:
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -543,23 +595,23 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var FacetValues_1 = __webpack_require__(91);
-var Facet_1 = __webpack_require__(54);
+var Facet_1 = __webpack_require__(56);
 var ComponentOptions_1 = __webpack_require__(9);
-var HierarchicalFacetValuesList_1 = __webpack_require__(615);
-var HierarchicalFacetQueryController_1 = __webpack_require__(596);
+var HierarchicalFacetValuesList_1 = __webpack_require__(617);
+var HierarchicalFacetQueryController_1 = __webpack_require__(598);
 var Utils_1 = __webpack_require__(5);
 var Dom_1 = __webpack_require__(3);
 var Defer_1 = __webpack_require__(26);
-var HierarchicalFacetSearchValuesList_1 = __webpack_require__(613);
-var HierarchicalFacetSearch_1 = __webpack_require__(611);
-var HierarchicalBreadcrumbValuesList_1 = __webpack_require__(610);
+var HierarchicalFacetSearchValuesList_1 = __webpack_require__(615);
+var HierarchicalFacetSearch_1 = __webpack_require__(613);
+var HierarchicalBreadcrumbValuesList_1 = __webpack_require__(612);
 var Assert_1 = __webpack_require__(7);
-var OmniboxHierarchicalValuesList_1 = __webpack_require__(617);
-var HierarchicalFacetValueElement_1 = __webpack_require__(614);
+var OmniboxHierarchicalValuesList_1 = __webpack_require__(619);
+var HierarchicalFacetValueElement_1 = __webpack_require__(616);
 var Initialization_1 = __webpack_require__(2);
 var _ = __webpack_require__(1);
 var GlobalExports_1 = __webpack_require__(4);
-__webpack_require__(569);
+__webpack_require__(571);
 /**
  * The `HierarchicalFacet` component inherits all of its options and behaviors from the [`Facet`]{@link Facet}
  * component, but is meant to be used to render hierarchical values.
@@ -1501,8 +1553,8 @@ exports.ResponsiveDropdown = ResponsiveDropdown;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var Dom_1 = __webpack_require__(3);
-var PopupUtils_1 = __webpack_require__(47);
-var ResponsiveComponentsManager_1 = __webpack_require__(76);
+var PopupUtils_1 = __webpack_require__(49);
+var ResponsiveComponentsManager_1 = __webpack_require__(78);
 var ResponsiveDropdownContent = (function () {
     function ResponsiveDropdownContent(componentName, element, coveoRoot, minWidth, widthRatio) {
         this.element = element;
@@ -1593,17 +1645,17 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var FacetSort_1 = __webpack_require__(396);
 var Dom_1 = __webpack_require__(3);
-var LocalStorageUtils_1 = __webpack_require__(35);
+var LocalStorageUtils_1 = __webpack_require__(37);
 var Utils_1 = __webpack_require__(5);
 var Strings_1 = __webpack_require__(10);
 var QueryStateModel_1 = __webpack_require__(14);
 var AnalyticsActionListMeta_1 = __webpack_require__(12);
 var DeviceUtils_1 = __webpack_require__(18);
-var PopupUtils_1 = __webpack_require__(47);
+var PopupUtils_1 = __webpack_require__(49);
 var _ = __webpack_require__(1);
-__webpack_require__(462);
-var SVGIcons_1 = __webpack_require__(88);
-var SVGDom_1 = __webpack_require__(87);
+__webpack_require__(464);
+var SVGIcons_1 = __webpack_require__(29);
+var SVGDom_1 = __webpack_require__(28);
 /**
  * Handle the rendering of the {@link Facet} settings menu (typically the ... in the facet header).
  */
@@ -2396,8 +2448,8 @@ var Utils_1 = __webpack_require__(5);
 var Strings_1 = __webpack_require__(10);
 var Component_1 = __webpack_require__(8);
 var _ = __webpack_require__(1);
-var SVGIcons_1 = __webpack_require__(88);
-var SVGDom_1 = __webpack_require__(87);
+var SVGIcons_1 = __webpack_require__(29);
+var SVGDom_1 = __webpack_require__(28);
 var ValueElementRenderer = (function () {
     function ValueElementRenderer(facet, facetValue) {
         this.facet = facet;
@@ -2492,12 +2544,8 @@ var ValueElementRenderer = (function () {
         }).el;
         this.addFocusAndBlurEventListeners(excludeIcon);
         if (this.facet.searchInterface.isNewDesign()) {
-            excludeIcon.appendChild(Dom_1.$$('span', {
-                className: 'coveo-icon'
-            }).el);
-        }
-        if (Utils_1.Utils.exists(this.facetValue.computedField)) {
-            Dom_1.$$(excludeIcon).addClass('coveo-facet-value-exclude-with-computed-field');
+            excludeIcon.innerHTML = SVGIcons_1.SVGIcons.checkboxHookExclusionMore;
+            SVGDom_1.SVGDom.addClassToSVGInContainer(excludeIcon, 'coveo-facet-value-exclude-svg');
         }
         return excludeIcon;
     };
@@ -2538,7 +2586,7 @@ var ValueElementRenderer = (function () {
             className: 'coveo-facet-value-checkbox',
             tabindex: 0
         }).el;
-        checkbox.innerHTML = SVGIcons_1.SVGIcons.checkboxMoreValues;
+        checkbox.innerHTML = SVGIcons_1.SVGIcons.checkboxHookExclusionMore;
         SVGDom_1.SVGDom.addClassToSVGInContainer(checkbox, 'coveo-facet-value-checkbox-svg');
         this.addFocusAndBlurEventListeners(checkbox);
         return checkbox;
@@ -2609,10 +2657,12 @@ exports.ValueElementRenderer = ValueElementRenderer;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var Dom_1 = __webpack_require__(3);
-var FacetUtils_1 = __webpack_require__(34);
+var FacetUtils_1 = __webpack_require__(36);
 var Strings_1 = __webpack_require__(10);
 var AnalyticsActionListMeta_1 = __webpack_require__(12);
-__webpack_require__(456);
+__webpack_require__(458);
+var SVGIcons_1 = __webpack_require__(29);
+var SVGDom_1 = __webpack_require__(28);
 var FacetHeader = (function () {
     function FacetHeader(options) {
         this.options = options;
@@ -2745,8 +2795,8 @@ var FacetHeader = (function () {
         return this.iconElement;
     };
     FacetHeader.prototype.buildWaitAnimation = function () {
-        this.waitElement = document.createElement('div');
-        Dom_1.$$(this.waitElement).addClass('coveo-facet-header-wait-animation');
+        this.waitElement = Dom_1.$$('div', { className: 'coveo-facet-header-wait-animation' }, SVGIcons_1.SVGIcons.loading).el;
+        SVGDom_1.SVGDom.addClassToSVGInContainer(this.waitElement, 'coveo-facet-header-wait-animation-svg');
         if (this.options.isNewDesign) {
             this.waitElement.style.visibility = 'hidden';
         }
@@ -2757,14 +2807,11 @@ var FacetHeader = (function () {
     };
     FacetHeader.prototype.buildCollapse = function () {
         var _this = this;
-        var icon = document.createElement('span');
-        Dom_1.$$(icon).addClass('coveo-icon');
-        var collapse = document.createElement('div');
-        collapse.setAttribute('title', Strings_1.l('Collapse'));
-        Dom_1.$$(collapse).addClass('coveo-facet-header-collapse');
-        collapse.appendChild(icon);
-        Dom_1.$$(collapse).on('click', function () { return _this.collapseFacet(); });
-        return collapse;
+        var icon = Dom_1.$$('span', { clasName: 'coveo-icon' });
+        var collapse = Dom_1.$$('div', { title: Strings_1.l('Collapse'), className: 'coveo-facet-header-collapse' });
+        collapse.append(icon.el);
+        collapse.on('click', function () { return _this.collapseFacet(); });
+        return collapse.el;
     };
     FacetHeader.prototype.buildExpand = function () {
         var _this = this;
@@ -2780,14 +2827,12 @@ var FacetHeader = (function () {
     };
     FacetHeader.prototype.buildOperatorToggle = function () {
         var _this = this;
-        var icon = document.createElement('span');
-        Dom_1.$$(icon).addClass(['coveo-' + (this.options.facet.options.useAnd ? 'and' : 'or'), 'coveo-icon']);
-        var toggle = document.createElement('div');
-        toggle.setAttribute('title', Strings_1.l('SwitchTo', this.options.facet.options.useAnd ? Strings_1.l('Or') : Strings_1.l('And')));
-        Dom_1.$$(toggle).addClass('coveo-facet-header-operator');
-        toggle.appendChild(icon);
+        var icon = Dom_1.$$('span', { className: 'coveo-' + (this.options.facet.options.useAnd ? 'and' : 'or') }, SVGIcons_1.SVGIcons.orAnd);
+        SVGDom_1.SVGDom.addClassToSVGInContainer(icon.el, 'coveo-or-and-svg');
+        var toggle = Dom_1.$$('div', { className: 'coveo-facet-header-operator', title: Strings_1.l('SwitchTo', this.options.facet.options.useAnd ? Strings_1.l('Or') : Strings_1.l('And')) });
+        toggle.append(icon.el);
         Dom_1.$$(toggle).on('click', function () { return _this.handleOperatorClick(); });
-        return toggle;
+        return toggle.el;
     };
     FacetHeader.prototype.handleOperatorClick = function () {
         var _this = this;
@@ -2798,12 +2843,12 @@ var FacetHeader = (function () {
             this.options.facet.switchToAnd();
         }
         if (this.options.facet.getSelectedValues().length != 0) {
-            var operatorNow = this.options.facet.options.useAnd ? 'AND' : 'OR';
-            var operatorBefore = this.options.facet.options.useAnd ? 'OR' : 'AND';
+            var operatorNow_1 = this.options.facet.options.useAnd ? 'AND' : 'OR';
+            var operatorBefore_1 = this.options.facet.options.useAnd ? 'OR' : 'AND';
             this.options.facet.triggerNewQuery(function () { return _this.options.facet.usageAnalytics.logSearchEvent(AnalyticsActionListMeta_1.analyticsActionCauseList.facetToggle, {
                 facetId: _this.options.facet.options.id,
-                facetOperatorBefore: operatorBefore,
-                facetOperatorAfter: operatorNow,
+                facetOperatorBefore: operatorBefore_1,
+                facetOperatorAfter: operatorNow_1,
                 facetTitle: _this.options.title
             }); });
         }
@@ -2818,13 +2863,9 @@ var FacetHeader = (function () {
     };
     FacetHeader.prototype.buildEraser = function () {
         var _this = this;
-        var icon = document.createElement('span');
-        Dom_1.$$(icon).addClass('coveo-icon');
-        var eraser = document.createElement('div');
-        eraser.setAttribute('title', Strings_1.l('Clear', this.options.title));
-        eraser.appendChild(icon);
-        Dom_1.$$(eraser).addClass('coveo-facet-header-eraser');
-        Dom_1.$$(eraser).on('click', function () {
+        var eraser = Dom_1.$$('div', { title: Strings_1.l('Clear', this.options.title), className: 'coveo-facet-header-eraser' }, SVGIcons_1.SVGIcons.mainClear);
+        SVGDom_1.SVGDom.addClassToSVGInContainer(eraser.el, 'coveo-facet-header-eraser-svg');
+        eraser.on('click', function () {
             var cmp = _this.options.facet || _this.options.facetSlider;
             cmp.reset();
             cmp.usageAnalytics.logSearchEvent(AnalyticsActionListMeta_1.analyticsActionCauseList.facetClearAll, {
@@ -2833,7 +2874,7 @@ var FacetHeader = (function () {
             });
             cmp.queryController.executeQuery();
         });
-        return eraser;
+        return eraser.el;
     };
     return FacetHeader;
 }());
@@ -2849,7 +2890,7 @@ exports.FacetHeader = FacetHeader;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var Dom_1 = __webpack_require__(3);
-var ResponsiveComponentsManager_1 = __webpack_require__(76);
+var ResponsiveComponentsManager_1 = __webpack_require__(78);
 var ResponsiveComponentsUtils_1 = __webpack_require__(89);
 var Component_1 = __webpack_require__(8);
 var Logger_1 = __webpack_require__(13);
@@ -2860,9 +2901,9 @@ var ResponsiveDropdownContent_1 = __webpack_require__(393);
 var ResponsiveDropdownHeader_1 = __webpack_require__(394);
 var QueryEvents_1 = __webpack_require__(11);
 var SearchInterface_1 = __webpack_require__(20);
-var ResponsiveComponents_1 = __webpack_require__(39);
+var ResponsiveComponents_1 = __webpack_require__(41);
 var _ = __webpack_require__(1);
-__webpack_require__(457);
+__webpack_require__(459);
 var ResponsiveFacetColumn = (function () {
     function ResponsiveFacetColumn(coveoRoot, ID, options, responsiveDropdown) {
         this.coveoRoot = coveoRoot;
@@ -3058,7 +3099,9 @@ var DeviceUtils_1 = __webpack_require__(18);
 var AnalyticsActionListMeta_1 = __webpack_require__(12);
 var Dom_1 = __webpack_require__(3);
 var _ = __webpack_require__(1);
-__webpack_require__(459);
+__webpack_require__(461);
+var SVGIcons_1 = __webpack_require__(29);
+var SVGDom_1 = __webpack_require__(28);
 var BreadcrumbValueElement = (function () {
     function BreadcrumbValueElement(facet, facetValue) {
         this.facet = facet;
@@ -3080,7 +3123,8 @@ var BreadcrumbValueElement = (function () {
         elem.el.appendChild(caption.el);
         var clear = Dom_1.$$('span', {
             className: 'coveo-facet-breadcrumb-clear'
-        });
+        }, SVGIcons_1.SVGIcons.checkboxHookExclusionMore);
+        SVGDom_1.SVGDom.addClassToSVGInContainer(clear.el, 'coveo-facet-breadcrumb-clear-svg');
         elem.el.appendChild(clear.el);
         var clicked = false;
         elem.on('click', function () {
@@ -3124,6 +3168,8 @@ var Strings_1 = __webpack_require__(10);
 var Dom_1 = __webpack_require__(3);
 var Globalize = __webpack_require__(24);
 var _ = __webpack_require__(1);
+var SVGIcons_1 = __webpack_require__(29);
+var SVGDom_1 = __webpack_require__(28);
 var BreadcrumbValueList = (function () {
     function BreadcrumbValueList(facet, facetValues, breadcrumbValueElementKlass) {
         this.facet = facet;
@@ -3195,7 +3241,8 @@ var BreadcrumbValueList = (function () {
             elem.el.appendChild(multi.el);
             var multiIcon = Dom_1.$$('div', {
                 className: 'coveo-selected coveo-facet-breadcrumb-multi-icon'
-            });
+            }, SVGIcons_1.SVGIcons.checkboxHookExclusionMore);
+            SVGDom_1.SVGDom.addClassToSVGInContainer(multiIcon.el, 'coveo-facet-breadcrumb-multi-icon-svg');
             elem.el.appendChild(multiIcon.el);
         }
         if (numberOfExcluded > 0) {
@@ -3206,7 +3253,8 @@ var BreadcrumbValueList = (function () {
             elem.el.appendChild(multiExcluded.el);
             var multiExcludedIcon = Dom_1.$$('div', {
                 className: 'coveo-excluded coveo-facet-breadcrumb-multi-icon'
-            });
+            }, SVGIcons_1.SVGIcons.checkboxHookExclusionMore);
+            SVGDom_1.SVGDom.addClassToSVGInContainer(multiExcludedIcon.el, 'coveo-facet-breadcrumb-multi-icon-svg');
             elem.el.appendChild(multiExcludedIcon.el);
         }
         var valueElements = _.map(this.collapsed, function (facetValue) {
@@ -3259,7 +3307,7 @@ exports.BreadcrumbValueList = BreadcrumbValueList;
 /* WEBPACK VAR INJECTION */(function(Promise) {
 /// <reference path="Facet.ts" />
 Object.defineProperty(exports, "__esModule", { value: true });
-var Facet_1 = __webpack_require__(54);
+var Facet_1 = __webpack_require__(56);
 var Dom_1 = __webpack_require__(3);
 var Utils_1 = __webpack_require__(5);
 var InitializationEvents_1 = __webpack_require__(15);
@@ -3268,11 +3316,11 @@ var EventsUtils_1 = __webpack_require__(262);
 var FacetSearchParameters_1 = __webpack_require__(240);
 var AnalyticsActionListMeta_1 = __webpack_require__(12);
 var Component_1 = __webpack_require__(8);
-var PopupUtils_1 = __webpack_require__(47);
+var PopupUtils_1 = __webpack_require__(49);
 var Strings_1 = __webpack_require__(10);
 var Assert_1 = __webpack_require__(7);
 var KeyboardUtils_1 = __webpack_require__(21);
-var FacetUtils_1 = __webpack_require__(34);
+var FacetUtils_1 = __webpack_require__(36);
 var FacetValues_1 = __webpack_require__(91);
 var StringUtils_1 = __webpack_require__(19);
 var FacetValueElement_1 = __webpack_require__(90);
@@ -3281,9 +3329,9 @@ var SearchInterface_1 = __webpack_require__(20);
 var ResponsiveComponentsUtils_1 = __webpack_require__(89);
 var FacetValuesOrder_1 = __webpack_require__(263);
 var _ = __webpack_require__(1);
-__webpack_require__(461);
-var SVGIcons_1 = __webpack_require__(88);
-var SVGDom_1 = __webpack_require__(87);
+__webpack_require__(463);
+var SVGIcons_1 = __webpack_require__(29);
+var SVGDom_1 = __webpack_require__(28);
 /**
  * Used by the {@link Facet} component to render and handle the facet search part of each facet.
  */
@@ -3422,19 +3470,15 @@ var FacetSearch = (function () {
         SVGDom_1.SVGDom.addClassToSVGInContainer(this.magnifier, 'coveo-facet-search-magnifier-svg');
         this.search.appendChild(this.magnifier);
         this.wait = document.createElement('div');
-        this.wait.innerHTML = SVGIcons_1.SVGIcons.facetLoading;
+        this.wait.innerHTML = SVGIcons_1.SVGIcons.loading;
         Dom_1.$$(this.wait).addClass('coveo-facet-search-wait-animation');
         SVGDom_1.SVGDom.addClassToSVGInContainer(this.wait, 'coveo-facet-search-wait-animation-svg');
         this.search.appendChild(this.wait);
         this.hideFacetSearchWaitingAnimation();
-        this.clear = document.createElement('div');
-        Dom_1.$$(this.clear).addClass('coveo-facet-search-clear');
-        this.clear.setAttribute('title', Strings_1.l('Clear', Strings_1.l('Search')));
+        this.clear = Dom_1.$$('div', { className: 'coveo-facet-search-clear', title: Strings_1.l('Clear', Strings_1.l('Search')) }, SVGIcons_1.SVGIcons.checkboxHookExclusionMore).el;
+        SVGDom_1.SVGDom.addClassToSVGInContainer(this.clear, 'coveo-facet-search-clear-svg');
         this.clear.style.display = 'none';
         this.search.appendChild(this.clear);
-        this.clearIcon = document.createElement('span');
-        Dom_1.$$(this.clearIcon).addClass('coveo-icon');
-        this.clear.appendChild(this.clearIcon);
         this.middle = document.createElement('div');
         Dom_1.$$(this.middle).addClass('coveo-facet-search-middle');
         this.search.appendChild(this.middle);
@@ -3884,7 +3928,7 @@ var FacetValueElement_1 = __webpack_require__(90);
 var Dom_1 = __webpack_require__(3);
 var FacetValues_1 = __webpack_require__(91);
 var Utils_1 = __webpack_require__(5);
-var FacetUtils_1 = __webpack_require__(34);
+var FacetUtils_1 = __webpack_require__(36);
 var FacetValuesOrder_1 = __webpack_require__(263);
 var _ = __webpack_require__(1);
 var FacetValuesList = (function () {
@@ -4080,7 +4124,7 @@ exports.OmniboxValueElement = OmniboxValueElement;
 Object.defineProperty(exports, "__esModule", { value: true });
 var Dom_1 = __webpack_require__(3);
 var Utils_1 = __webpack_require__(5);
-var FacetUtils_1 = __webpack_require__(34);
+var FacetUtils_1 = __webpack_require__(36);
 var _ = __webpack_require__(1);
 var OmniboxValuesList = (function () {
     function OmniboxValuesList(facet, facetValues, omniboxObject, omniboxValueElementKlass) {
@@ -4207,28 +4251,28 @@ module.exports = "<svg enable-background=\"new 0 0 18 18\" viewBox=\"0 0 18 18\"
 /***/ 453:
 /***/ (function(module, exports) {
 
-module.exports = "<svg enable-background=\"new 0 0 16 16\" viewBox=\"0 0 16 16\" xmlns=\"http://www.w3.org/2000/svg\"><path fill-opacity=\"0\" d=\"m8.03.819c3.987 0 7.227 3.222 7.227 7.181s-3.239 7.181-7.227 7.181c-3.976 0-7.209-3.222-7.209-7.181s3.237-7.181 7.209-7.181\"></path><g fill=\"currentColor\"><path d=\"m0 8c0 4.416 3.572 8 7.991 8 4.425 0 8.009-3.581 8.009-8 0-4.416-3.581-8-8.009-8-4.416 0-7.991 3.581-7.991 8m8.031-6.4c3.553 0 6.441 2.872 6.441 6.4s-2.887 6.4-6.441 6.4c-3.544 0-6.425-2.872-6.425-6.4s2.885-6.4 6.425-6.4\"></path><path d=\"m10.988 9.024c.551 0 1-.449 1-1s-.449-1-1-1-1 .449-1 1 .449 1 1 1\"></path><path d=\"m7.991 9c .551 0 1-.449 1-1s-.449-1-1-1-1 .449-1 1 .449 1 1 1\"></path><path d=\"m4.994 9c .551 0 1-.449 1-1s-.449-1-1-1-1 .449-1 1 .449 1 1 1\"></path></g></svg>"
+module.exports = "<svg enable-background=\"new 0 0 13 13\" viewBox=\"0 0 13 13\" xmlns=\"http://www.w3.org/2000/svg\"><g fill=\"currentColor\"><path d=\"m7.881 6.501 4.834-4.834c.38-.38.38-1.001 0-1.381s-1.001-.38-1.381 0l-4.834 4.834-4.834-4.835c-.38-.38-1.001-.38-1.381 0s-.38 1.001 0 1.381l4.834 4.834-4.834 4.834c-.38.38-.38 1.001 0 1.381s1.001.38 1.381 0l4.834-4.834 4.834 4.834c.38.38 1.001.38 1.381 0s .38-1.001 0-1.381z\"></path></g></svg>"
 
 /***/ }),
 
 /***/ 454:
 /***/ (function(module, exports) {
 
-module.exports = "<svg enable-background=\"new 0 0 20 20\" viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><g fill=\"currentColor\"><path class=\"coveo-magnifier-circle-svg\" d=\"m8.368 16.736c-4.614 0-8.368-3.754-8.368-8.368s3.754-8.368 8.368-8.368 8.368 3.754 8.368 8.368-3.754 8.368-8.368 8.368m0-14.161c-3.195 0-5.793 2.599-5.793 5.793s2.599 5.793 5.793 5.793 5.793-2.599 5.793-5.793-2.599-5.793-5.793-5.793\"></path><path d=\"m18.713 20c-.329 0-.659-.126-.91-.377l-4.552-4.551c-.503-.503-.503-1.318 0-1.82.503-.503 1.318-.503 1.82 0l4.552 4.551c.503.503.503 1.318 0 1.82-.252.251-.581.377-.91.377\"></path></g></svg>"
+module.exports = "<svg enable-background=\"new 0 0 16 16\" viewBox=\"0 0 16 16\" xmlns=\"http://www.w3.org/2000/svg\"><path fill-opacity=\"0\" d=\"m8.03.819c3.987 0 7.227 3.222 7.227 7.181s-3.239 7.181-7.227 7.181c-3.976 0-7.209-3.222-7.209-7.181s3.237-7.181 7.209-7.181\"></path><g fill=\"currentColor\"><path d=\"m0 8c0 4.416 3.572 8 7.991 8 4.425 0 8.009-3.581 8.009-8 0-4.416-3.581-8-8.009-8-4.416 0-7.991 3.581-7.991 8m8.031-6.4c3.553 0 6.441 2.872 6.441 6.4s-2.887 6.4-6.441 6.4c-3.544 0-6.425-2.872-6.425-6.4s2.885-6.4 6.425-6.4\"></path><path d=\"m10.988 9.024c.551 0 1-.449 1-1s-.449-1-1-1-1 .449-1 1 .449 1 1 1\"></path><path d=\"m7.991 9c .551 0 1-.449 1-1s-.449-1-1-1-1 .449-1 1 .449 1 1 1\"></path><path d=\"m4.994 9c .551 0 1-.449 1-1s-.449-1-1-1-1 .449-1 1 .449 1 1 1\"></path></g></svg>"
+
+/***/ }),
+
+/***/ 455:
+/***/ (function(module, exports) {
+
+module.exports = "<svg enable-background=\"new 0 0 18 18\" viewBox=\"0 0 18 18\" xmlns=\"http://www.w3.org/2000/svg\"><g fill=\"currentColor\"><path class=\"coveo-and-svg\" d=\"m13.769 5.294h-1.063v-1.063c0-2.329-1.894-4.231-4.231-4.231h-4.244c-2.329 0-4.231 1.894-4.231 4.231v4.244c0 2.329 1.894 4.231 4.231 4.231h1.063v1.063c0 2.329 1.894 4.231 4.231 4.231h4.244c2.329 0 4.231-1.894 4.231-4.231v-4.244c0-2.329-1.894-4.231-4.231-4.231zm2.731 8.475c0 1.506-1.225 2.731-2.731 2.731h-4.244c-1.506 0-2.731-1.225-2.731-2.731v-2.563h-2.563c-1.506 0-2.731-1.225-2.731-2.731v-4.244c0-1.506 1.225-2.731 2.731-2.731h4.244c1.506 0 2.731 1.225 2.731 2.731v2.563h2.563c1.506 0 2.731 1.225 2.731 2.731z\"></path><path class=\"coveo-or-svg\" d=\"m11.206 6.794v1.909c0 1.38-1.123 2.503-2.503 2.503h-1.909v-1.909c0-1.38 1.123-2.503 2.503-2.503zm1.5-1.5h-3.409c-2.209 0-4.003 1.792-4.003 4.003v3.409h3.409c2.209 0 4.003-1.792 4.003-4.003z\"></path></g></svg>"
 
 /***/ }),
 
 /***/ 456:
 /***/ (function(module, exports) {
 
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-
-/***/ 457:
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
+module.exports = "<svg enable-background=\"new 0 0 20 20\" viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><g fill=\"currentColor\"><path class=\"coveo-magnifier-circle-svg\" d=\"m8.368 16.736c-4.614 0-8.368-3.754-8.368-8.368s3.754-8.368 8.368-8.368 8.368 3.754 8.368 8.368-3.754 8.368-8.368 8.368m0-14.161c-3.195 0-5.793 2.599-5.793 5.793s2.599 5.793 5.793 5.793 5.793-2.599 5.793-5.793-2.599-5.793-5.793-5.793\"></path><path d=\"m18.713 20c-.329 0-.659-.126-.91-.377l-4.552-4.551c-.503-.503-.503-1.318 0-1.82.503-.503 1.318-.503 1.82 0l4.552 4.551c.503.503.503 1.318 0 1.82-.252.251-.581.377-.91.377\"></path></g></svg>"
 
 /***/ }),
 
@@ -4267,7 +4311,21 @@ module.exports = "<svg enable-background=\"new 0 0 20 20\" viewBox=\"0 0 20 20\"
 
 /***/ }),
 
-/***/ 465:
+/***/ 463:
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+
+/***/ 464:
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+
+/***/ 467:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4284,7 +4342,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var ResponsiveFacetColumn_1 = __webpack_require__(402);
-var Facet_1 = __webpack_require__(54);
+var Facet_1 = __webpack_require__(56);
 var ResponsiveFacets = (function (_super) {
     __extends(ResponsiveFacets, _super);
     function ResponsiveFacets() {
@@ -4300,7 +4358,7 @@ exports.ResponsiveFacets = ResponsiveFacets;
 
 /***/ }),
 
-/***/ 54:
+/***/ 56:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4327,7 +4385,7 @@ var FacetSettings_1 = __webpack_require__(395);
 var FacetSort_1 = __webpack_require__(396);
 var FacetValuesList_1 = __webpack_require__(407);
 var FacetHeader_1 = __webpack_require__(400);
-var FacetUtils_1 = __webpack_require__(34);
+var FacetUtils_1 = __webpack_require__(36);
 var InitializationEvents_1 = __webpack_require__(15);
 var QueryEvents_1 = __webpack_require__(11);
 var Assert_1 = __webpack_require__(7);
@@ -4341,21 +4399,23 @@ var FacetSearchValuesList_1 = __webpack_require__(406);
 var Defer_1 = __webpack_require__(26);
 var QueryStateModel_1 = __webpack_require__(14);
 var Model_1 = __webpack_require__(16);
-var OmniboxEvents_1 = __webpack_require__(31);
+var OmniboxEvents_1 = __webpack_require__(33);
 var OmniboxValueElement_1 = __webpack_require__(408);
 var OmniboxValuesList_1 = __webpack_require__(409);
 var ValueElementRenderer_1 = __webpack_require__(398);
 var FacetSearchParameters_1 = __webpack_require__(240);
 var Initialization_1 = __webpack_require__(2);
-var BreadcrumbEvents_1 = __webpack_require__(41);
-var ResponsiveFacets_1 = __webpack_require__(465);
+var BreadcrumbEvents_1 = __webpack_require__(43);
+var ResponsiveFacets_1 = __webpack_require__(467);
 var KeyboardUtils_1 = __webpack_require__(21);
 var FacetValuesOrder_1 = __webpack_require__(263);
-var SearchAlertEvents_1 = __webpack_require__(56);
+var SearchAlertEvents_1 = __webpack_require__(58);
 var _ = __webpack_require__(1);
 var GlobalExports_1 = __webpack_require__(4);
-__webpack_require__(458);
 __webpack_require__(460);
+__webpack_require__(462);
+var SVGIcons_1 = __webpack_require__(29);
+var SVGDom_1 = __webpack_require__(28);
 /**
  * The `Facet` component displays a *facet* of the results for the current query. A facet is a list of values for a
  * certain field occurring in the results, ordered using a configurable criteria (e.g., number of occurrences).
@@ -4637,9 +4697,9 @@ var Facet = (function (_super) {
     Facet.prototype.hideWaitingAnimation = function () {
         this.ensureDom();
         if (this.showingWaitAnimation) {
-            Dom_1.$$(this.headerElement).find('.coveo-icon').style.display = '';
             if (!this.searchInterface.isNewDesign()) {
                 Dom_1.$$(this.headerElement).find('.coveo-facet-header-wait-animation').style.display = 'none';
+                Dom_1.$$(this.headerElement).find('.coveo-icon').style.display = '';
             }
             else {
                 Dom_1.$$(this.headerElement).find('.coveo-facet-header-wait-animation').style.visibility = 'hidden';
@@ -5290,7 +5350,9 @@ var Facet = (function (_super) {
         var _this = this;
         var more;
         if (this.searchInterface.isNewDesign()) {
-            more = Dom_1.$$('div', { className: 'coveo-facet-more', tabindex: 0 }, Dom_1.$$('span', { className: 'coveo-icon' })).el;
+            var svgContainer = Dom_1.$$('span', { className: 'coveo-facet-more-icon' }, SVGIcons_1.SVGIcons.arrowDown).el;
+            SVGDom_1.SVGDom.addClassToSVGInContainer(svgContainer, 'coveo-facet-more-icon-svg');
+            more = Dom_1.$$('div', { className: 'coveo-facet-more', tabindex: 0 }, svgContainer).el;
         }
         else {
             more = Dom_1.$$('a', { className: 'coveo-facet-more' }, Strings_1.l('More')).el;
@@ -5304,7 +5366,9 @@ var Facet = (function (_super) {
         var _this = this;
         var less;
         if (this.searchInterface.isNewDesign()) {
-            less = Dom_1.$$('div', { className: 'coveo-facet-less', tabindex: 0 }, Dom_1.$$('span', { className: 'coveo-icon' })).el;
+            var svgContainer = Dom_1.$$('span', { className: 'coveo-facet-less-icon' }, SVGIcons_1.SVGIcons.arrowUp).el;
+            SVGDom_1.SVGDom.addClassToSVGInContainer(svgContainer, 'coveo-facet-less-icon-svg');
+            less = Dom_1.$$('div', { className: 'coveo-facet-less', tabIndex: 0 }, svgContainer).el;
         }
         else {
             less = Dom_1.$$('a', { className: 'coveo-facet-less' }, Strings_1.l('Less')).el;
@@ -5916,14 +5980,14 @@ Facet.doExport();
 
 /***/ }),
 
-/***/ 569:
+/***/ 571:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
 
-/***/ 596:
+/***/ 598:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5942,7 +6006,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var FacetQueryController_1 = __webpack_require__(264);
-var FacetUtils_1 = __webpack_require__(34);
+var FacetUtils_1 = __webpack_require__(36);
 var _ = __webpack_require__(1);
 var HierarchicalFacetQueryController = (function (_super) {
     __extends(HierarchicalFacetQueryController, _super);
@@ -5980,7 +6044,7 @@ exports.HierarchicalFacetQueryController = HierarchicalFacetQueryController;
 
 /***/ }),
 
-/***/ 609:
+/***/ 611:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6024,7 +6088,7 @@ exports.HierarchicalBreadcrumbValueElement = HierarchicalBreadcrumbValueElement;
 
 /***/ }),
 
-/***/ 610:
+/***/ 612:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6042,7 +6106,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var BreadcrumbValuesList_1 = __webpack_require__(404);
-var HierarchicalBreadcrumbValueElement_1 = __webpack_require__(609);
+var HierarchicalBreadcrumbValueElement_1 = __webpack_require__(611);
 var Dom_1 = __webpack_require__(3);
 var _ = __webpack_require__(1);
 var HierarchicalBreadcrumbValuesList = (function (_super) {
@@ -6075,7 +6139,7 @@ exports.HierarchicalBreadcrumbValuesList = HierarchicalBreadcrumbValuesList;
 
 /***/ }),
 
-/***/ 611:
+/***/ 613:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6163,7 +6227,7 @@ exports.HierarchicalFacetSearch = HierarchicalFacetSearch;
 
 /***/ }),
 
-/***/ 612:
+/***/ 614:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6204,7 +6268,7 @@ exports.HierarchicalFacetSearchValueElement = HierarchicalFacetSearchValueElemen
 
 /***/ }),
 
-/***/ 613:
+/***/ 615:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6222,7 +6286,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var FacetSearchValuesList_1 = __webpack_require__(406);
-var HierarchicalFacetSearchValueElement_1 = __webpack_require__(612);
+var HierarchicalFacetSearchValueElement_1 = __webpack_require__(614);
 var HierarchicalFacetSearchValuesList = (function (_super) {
     __extends(HierarchicalFacetSearchValuesList, _super);
     function HierarchicalFacetSearchValuesList(facet) {
@@ -6237,7 +6301,7 @@ exports.HierarchicalFacetSearchValuesList = HierarchicalFacetSearchValuesList;
 
 /***/ }),
 
-/***/ 614:
+/***/ 616:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6271,7 +6335,7 @@ exports.HierarchicalFacetValueElement = HierarchicalFacetValueElement;
 
 /***/ }),
 
-/***/ 615:
+/***/ 617:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6364,7 +6428,7 @@ exports.HierarchicalFacetValuesList = HierarchicalFacetValuesList;
 
 /***/ }),
 
-/***/ 616:
+/***/ 618:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6406,7 +6470,7 @@ exports.OmniboxHierarchicalValueElement = OmniboxHierarchicalValueElement;
 
 /***/ }),
 
-/***/ 617:
+/***/ 619:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6424,7 +6488,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var OmniboxValuesList_1 = __webpack_require__(409);
-var OmniboxHierarchicalValueElement_1 = __webpack_require__(616);
+var OmniboxHierarchicalValueElement_1 = __webpack_require__(618);
 var OmniboxHierarchicalValuesList = (function (_super) {
     __extends(OmniboxHierarchicalValuesList, _super);
     function OmniboxHierarchicalValuesList(facet, facetValues, omniboxObject) {
@@ -6441,7 +6505,7 @@ exports.OmniboxHierarchicalValuesList = OmniboxHierarchicalValuesList;
 
 /***/ }),
 
-/***/ 76:
+/***/ 78:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6619,56 +6683,6 @@ ResponsiveComponentsManager.componentManagers = [];
 ResponsiveComponentsManager.remainingComponentInitializations = 0;
 ResponsiveComponentsManager.componentInitializations = [];
 exports.ResponsiveComponentsManager = ResponsiveComponentsManager;
-
-
-/***/ }),
-
-/***/ 87:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var SVGDom = (function () {
-    function SVGDom() {
-    }
-    SVGDom.addClassToSVGInContainer = function (svgContainer, classToAdd) {
-        var svgElement = svgContainer.querySelector('svg');
-        svgElement.setAttribute('class', SVGDom.getClass(svgElement) + " " + classToAdd);
-    };
-    SVGDom.removeClassFromSVGInContainer = function (svgContainer, classToRemove) {
-        var svgElement = svgContainer.querySelector('svg');
-        svgElement.setAttribute('class', SVGDom.getClass(svgElement).replace(classToRemove, ''));
-    };
-    SVGDom.getClass = function (svgElement) {
-        var className = svgElement.getAttribute('class');
-        return className ? className : '';
-    };
-    return SVGDom;
-}());
-exports.SVGDom = SVGDom;
-
-
-/***/ }),
-
-/***/ 88:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var SVGIcons = (function () {
-    function SVGIcons() {
-    }
-    return SVGIcons;
-}());
-SVGIcons.search = __webpack_require__(454);
-SVGIcons.more = __webpack_require__(453);
-SVGIcons.facetLoading = __webpack_require__(452);
-SVGIcons.checkboxMoreValues = __webpack_require__(451);
-SVGIcons.arrowUp = __webpack_require__(450);
-SVGIcons.arrowDown = __webpack_require__(449);
-exports.SVGIcons = SVGIcons;
 
 
 /***/ }),

@@ -9141,7 +9141,7 @@ var LazyInitialization = (function () {
         }
     };
     LazyInitialization.buildErrorCallback = function (chunkName, resolve) {
-        return function () {
+        return function (error) {
             LazyInitialization.logger.warn("Cannot load chunk for " + chunkName + ". You may need to configure the paths of the ressources using Coveo.configureRessourceRoot. Current path is " + __webpack_require__.p + ".");
             resolve(NoopComponent_1.NoopComponent);
         };
@@ -9187,11 +9187,15 @@ var LazyInitialization = (function () {
         if (Initialization.isThereASingleComponentBoundToThisElement(element)) {
             // This means a component already exists on this element.
             // Do not re-initialize again.
-            LazyInitialization.logger.warn("Skipping component of class " + componentClassId + " because the element is already initialized as another component.", element);
             return null;
         }
         return LazyInitialization.getLazyRegisteredComponent(componentClassId).then(function (lazyLoadedComponent) {
             Assert_1.Assert.exists(lazyLoadedComponent);
+            if (Initialization.isThereASingleComponentBoundToThisElement(element)) {
+                // This means a component already exists on this element.
+                // Do not re-initialize again.
+                return null;
+            }
             var bindings = {};
             var options = {};
             var result = undefined;
@@ -11393,10 +11397,12 @@ var StandaloneSearchInterface = (function (_super) {
         var link = document.createElement('a');
         link.href = searchPage;
         link.href = link.href; // IE11 needs this to correctly fill the properties that are used below.
+        var pathname = link.pathname.indexOf('/') == 0 ? link.pathname : '/' + link.pathname; // IE11 does not add a leading slash to this property.
+        var hash = link.hash ? link.hash + '&' : '#';
         // By using a setTimeout, we allow other possible code related to the search box / magic box time to complete.
         // eg: onblur of the magic box.
         setTimeout(function () {
-            _this._window.location.href = link.protocol + "//" + link.host + link.pathname + link.search + (link.hash ? link.hash + '&' : '#') + HashUtils_1.HashUtils.encodeValues(stateValues);
+            _this._window.location.href = link.protocol + "//" + link.host + pathname + link.search + hash + HashUtils_1.HashUtils.encodeValues(stateValues);
         }, 0);
     };
     StandaloneSearchInterface.prototype.searchboxIsEmpty = function () {
@@ -12942,8 +12948,10 @@ var SearchEndpoint = (function () {
                 response.data = {};
             }
             var timeToExecute = new Date().getTime() - startTime.getTime();
-            response.data.clientDuration = timeToExecute;
-            response.data.duration = response.duration || timeToExecute;
+            if (response.data && _.isObject(response.data)) {
+                response.data.clientDuration = timeToExecute;
+                response.data.duration = response.duration || timeToExecute;
+            }
             return response.data;
         }).catch(function (error) {
             if (autoRenewToken && _this.canRenewAccessToken() && _this.isAccessTokenExpiredStatus(error.statusCode)) {
@@ -32254,8 +32262,8 @@ exports.SentryLogger = SentryLogger;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.version = {
-    'lib': '2.2900.4-beta',
-    'product': '2.2900.4-beta',
+    'lib': '2.2900.5-beta',
+    'product': '2.2900.5-beta',
     'supportedApiVersion': 2
 };
 
@@ -33917,6 +33925,7 @@ var Debug = (function (_super) {
             }
             else {
                 this.debugHeader.moveTo(title);
+                this.debugHeader.setNewInfoToDebug(this.stackDebug);
             }
         }
         else {
@@ -34467,6 +34476,15 @@ var DebugHeader = (function () {
         _.each(this.widgets, function (widget) { return newElement.appendChild(widget); });
         this.element = newElement;
     };
+    DebugHeader.prototype.setNewInfoToDebug = function (newInfoToDebug) {
+        this.infoToDebug = newInfoToDebug;
+        this.rebuildDownloadLink();
+    };
+    DebugHeader.prototype.rebuildDownloadLink = function () {
+        if (this.downloadLink) {
+            this.downloadLink.setAttribute('href', this.buildDownloadHref());
+        }
+    };
     DebugHeader.prototype.handleNewResultDisplayed = function (args) {
         if (args.item != null && args.result.isRecommendation && this.highlightRecommendation) {
             Dom_1.$$(args.item).addClass('coveo-is-recommendation');
@@ -34490,8 +34508,9 @@ var DebugHeader = (function () {
     DebugHeader.prototype.buildDownloadLink = function () {
         var downloadLink = Dom_1.$$('a', {
             download: 'debug.json',
-            'href': this.downloadHref()
+            'href': this.buildDownloadHref()
         }, 'Download');
+        this.downloadLink = downloadLink;
         return downloadLink.el;
     };
     DebugHeader.prototype.buildEnableDebugCheckbox = function () {
@@ -34549,8 +34568,17 @@ var DebugHeader = (function () {
         }
         return checkbox.build();
     };
-    DebugHeader.prototype.downloadHref = function () {
-        return 'data:text/json;charset=utf-8,' + encodeURIComponent(circular_json_1.stringify(this.infoToDebug));
+    DebugHeader.prototype.buildDownloadHref = function () {
+        var toDownload = {};
+        _.each(this.infoToDebug, function (info, key) {
+            if (info['bindings']) {
+                toDownload[key] = info['options'];
+            }
+            else {
+                toDownload[key] = _.omit(info, 'state', 'searchInterface');
+            }
+        });
+        return 'data:text/json;charset=utf-8,' + encodeURIComponent(circular_json_1.stringify(toDownload));
     };
     return DebugHeader;
 }());
@@ -34828,12 +34856,12 @@ var FileTypes = (function () {
     FileTypes.getObjectType = function (objecttype) {
         // We must use lowercase filetypes because that's how the CSS classes
         // are generated (they are case sensitive, alas).
-        objecttype = objecttype.toLowerCase();
-        var variableValue = "objecttype_" + objecttype;
+        var loweredCaseObjecttype = objecttype.toLowerCase();
+        var variableValue = "objecttype_" + loweredCaseObjecttype;
         // Most object types have a set of localized strings in the main dictionary
         var localizedString = Strings_1.l(variableValue);
         // Some strings are sent as `objecttype_[...]` to specify a dictionary to use. If there's no match, try using
-        // the main dictionary by keeping only the value after `_`.
+        // the main dictionary by using the original value.
         if (localizedString.toLowerCase() == variableValue.toLowerCase()) {
             localizedString = Strings_1.l(objecttype);
         }
@@ -34845,18 +34873,18 @@ var FileTypes = (function () {
     FileTypes.getFileType = function (filetype) {
         // We must use lowercase filetypes because that's how the CSS classes
         // are generated (they are case sensitive, alas).
-        filetype = filetype.toLowerCase();
+        var loweredCaseFiletype = filetype.toLowerCase();
         // Sometimes, filetype begins with a period (typically means the index has
         // no idea and uses the file extension as a filetype).
-        if (filetype[0] == '.') {
-            filetype = filetype.substring(1);
+        if (loweredCaseFiletype[0] == '.') {
+            loweredCaseFiletype = loweredCaseFiletype.substring(1);
         }
-        var variableValue = "filetype_" + filetype;
+        var variableValue = "filetype_" + loweredCaseFiletype;
         // Most filetypes have a set of localized strings in the main dictionary
         var localizedString = Strings_1.l(variableValue);
         if (localizedString.toLowerCase() == variableValue.toLowerCase()) {
             // Some strings are sent as `filetype_[...]` to specify a dictionary to use. If there's no match, try using
-            // The main dictionary by keeping only the value after `_`.
+            // The main dictionary by using the original value.
             localizedString = Strings_1.l(filetype);
         }
         return {

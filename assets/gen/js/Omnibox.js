@@ -1,4 +1,4 @@
-webpackJsonpCoveo__temporary([11,29],{
+webpackJsonpCoveo__temporary([15,31],{
 
 /***/ 399:
 /***/ (function(module, exports, __webpack_require__) {
@@ -54,22 +54,22 @@ exports.QueryboxQueryParameters = QueryboxQueryParameters;
 
 /***/ }),
 
-/***/ 466:
+/***/ 468:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
 
-/***/ 472:
+/***/ 474:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 /* WEBPACK VAR INJECTION */(function(Promise) {
 Object.defineProperty(exports, "__esModule", { value: true });
 ///<reference path='Omnibox.ts'/>
-var Omnibox_1 = __webpack_require__(79);
-var OmniboxEvents_1 = __webpack_require__(31);
+var Omnibox_1 = __webpack_require__(81);
+var OmniboxEvents_1 = __webpack_require__(33);
 var _ = __webpack_require__(1);
 var FieldAddon = (function () {
     function FieldAddon(omnibox) {
@@ -259,13 +259,13 @@ exports.FieldAddon = FieldAddon;
 
 /***/ }),
 
-/***/ 473:
+/***/ 475:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 /* WEBPACK VAR INJECTION */(function(Promise) {
 Object.defineProperty(exports, "__esModule", { value: true });
-var OmniboxEvents_1 = __webpack_require__(31);
+var OmniboxEvents_1 = __webpack_require__(33);
 var Dom_1 = __webpack_require__(3);
 var Utils_1 = __webpack_require__(5);
 var _ = __webpack_require__(1);
@@ -413,15 +413,15 @@ exports.OldOmniboxAddon = OldOmniboxAddon;
 
 /***/ }),
 
-/***/ 474:
+/***/ 476:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 ///<reference path='Omnibox.ts'/>
-var OmniboxEvents_1 = __webpack_require__(31);
-var Omnibox_1 = __webpack_require__(79);
+var OmniboxEvents_1 = __webpack_require__(33);
+var Omnibox_1 = __webpack_require__(81);
 var _ = __webpack_require__(1);
 var QueryExtensionAddon = (function () {
     function QueryExtensionAddon(omnibox) {
@@ -550,7 +550,7 @@ exports.QueryExtensionAddon = QueryExtensionAddon;
 
 /***/ }),
 
-/***/ 475:
+/***/ 477:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -558,7 +558,7 @@ exports.QueryExtensionAddon = QueryExtensionAddon;
 Object.defineProperty(exports, "__esModule", { value: true });
 var Dom_1 = __webpack_require__(3);
 var ComponentOptionsModel_1 = __webpack_require__(25);
-var OmniboxEvents_1 = __webpack_require__(31);
+var OmniboxEvents_1 = __webpack_require__(33);
 var StringUtils_1 = __webpack_require__(19);
 var _ = __webpack_require__(1);
 var QuerySuggestAddon = (function () {
@@ -663,7 +663,7 @@ exports.QuerySuggestAddon = QuerySuggestAddon;
 
 /***/ }),
 
-/***/ 79:
+/***/ 81:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -688,27 +688,27 @@ exports.MagicBox = __webpack_require__(399);
 var Component_1 = __webpack_require__(8);
 var ComponentOptions_1 = __webpack_require__(9);
 var QueryEvents_1 = __webpack_require__(11);
-var StandaloneSearchInterfaceEvents_1 = __webpack_require__(64);
+var StandaloneSearchInterfaceEvents_1 = __webpack_require__(66);
 var Model_1 = __webpack_require__(16);
 var QueryStateModel_1 = __webpack_require__(14);
 var AnalyticsActionListMeta_1 = __webpack_require__(12);
-var OmniboxEvents_1 = __webpack_require__(31);
+var OmniboxEvents_1 = __webpack_require__(33);
 var Dom_1 = __webpack_require__(3);
 var Assert_1 = __webpack_require__(7);
 var QueryStateModel_2 = __webpack_require__(14);
 var Initialization_1 = __webpack_require__(2);
 var Querybox_1 = __webpack_require__(97);
-var FieldAddon_1 = __webpack_require__(472);
-var QueryExtensionAddon_1 = __webpack_require__(474);
-var QuerySuggestAddon_1 = __webpack_require__(475);
-var OldOmniboxAddon_1 = __webpack_require__(473);
+var FieldAddon_1 = __webpack_require__(474);
+var QueryExtensionAddon_1 = __webpack_require__(476);
+var QuerySuggestAddon_1 = __webpack_require__(477);
+var OldOmniboxAddon_1 = __webpack_require__(475);
 var QueryboxQueryParameters_1 = __webpack_require__(401);
-var PendingSearchAsYouTypeSearchEvent_1 = __webpack_require__(82);
+var PendingSearchAsYouTypeSearchEvent_1 = __webpack_require__(84);
 var Utils_1 = __webpack_require__(5);
 var SearchInterface_1 = __webpack_require__(20);
 var _ = __webpack_require__(1);
 var GlobalExports_1 = __webpack_require__(4);
-__webpack_require__(466);
+__webpack_require__(468);
 var MINIMUM_EXECUTABLE_CONFIDENCE = 0.8;
 /**
  * The Omnibox component is very similar to the simpler {@link Querybox} component. It supports all of the same options
@@ -1393,7 +1393,7 @@ var ComponentOptions_1 = __webpack_require__(9);
 var QueryEvents_1 = __webpack_require__(11);
 var Model_1 = __webpack_require__(16);
 var QueryStateModel_1 = __webpack_require__(14);
-var StandaloneSearchInterfaceEvents_1 = __webpack_require__(64);
+var StandaloneSearchInterfaceEvents_1 = __webpack_require__(66);
 var AnalyticsActionListMeta_1 = __webpack_require__(12);
 var Dom_1 = __webpack_require__(3);
 var Assert_1 = __webpack_require__(7);

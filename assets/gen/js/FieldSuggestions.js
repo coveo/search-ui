@@ -1,4 +1,4 @@
-webpackJsonpCoveo__temporary([31],{
+webpackJsonpCoveo__temporary([33],{
 
 /***/ 299:
 /***/ (function(module, exports, __webpack_require__) {
@@ -21,7 +21,7 @@ var Component_1 = __webpack_require__(8);
 var ComponentOptions_1 = __webpack_require__(9);
 var Assert_1 = __webpack_require__(7);
 var Utils_1 = __webpack_require__(5);
-var OmniboxEvents_1 = __webpack_require__(31);
+var OmniboxEvents_1 = __webpack_require__(33);
 var QueryStateModel_1 = __webpack_require__(14);
 var Initialization_1 = __webpack_require__(2);
 var AnalyticsActionListMeta_1 = __webpack_require__(12);
@@ -301,7 +301,7 @@ Initialization_1.Initialization.registerAutoCreateComponent(FieldSuggestions);
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var DomUtils_1 = __webpack_require__(43);
+var DomUtils_1 = __webpack_require__(45);
 var Dom_1 = __webpack_require__(3);
 var _ = __webpack_require__(1);
 var SuggestionForOmnibox = (function () {

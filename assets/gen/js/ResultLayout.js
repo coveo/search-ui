@@ -1,4 +1,4 @@
-webpackJsonpCoveo__temporary([19],{
+webpackJsonpCoveo__temporary([21],{
 
 /***/ 254:
 /***/ (function(module, exports, __webpack_require__) {
@@ -22,19 +22,19 @@ var QueryEvents_1 = __webpack_require__(11);
 var Initialization_1 = __webpack_require__(2);
 var InitializationEvents_1 = __webpack_require__(15);
 var Assert_1 = __webpack_require__(7);
-var ResultListEvents_1 = __webpack_require__(30);
+var ResultListEvents_1 = __webpack_require__(32);
 var ResultLayoutEvents_1 = __webpack_require__(103);
 var Dom_1 = __webpack_require__(3);
 var QueryStateModel_1 = __webpack_require__(14);
 var Model_1 = __webpack_require__(16);
 var AnalyticsActionListMeta_1 = __webpack_require__(12);
 var KeyboardUtils_1 = __webpack_require__(21);
-var ResponsiveResultLayout_1 = __webpack_require__(627);
+var ResponsiveResultLayout_1 = __webpack_require__(629);
 var Utils_1 = __webpack_require__(5);
 var _ = __webpack_require__(1);
 var GlobalExports_1 = __webpack_require__(4);
 var Strings_1 = __webpack_require__(10);
-__webpack_require__(583);
+__webpack_require__(585);
 exports.defaultLayout = 'list';
 /**
  * The ResultLayout component allows the end user to switch between multiple {@link ResultList} components that have
@@ -307,20 +307,20 @@ Initialization_1.Initialization.registerAutoCreateComponent(ResultLayout);
 
 /***/ }),
 
-/***/ 583:
+/***/ 585:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
 
-/***/ 627:
+/***/ 629:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var ResponsiveComponentsManager_1 = __webpack_require__(76);
+var ResponsiveComponentsManager_1 = __webpack_require__(78);
 var Dom_1 = __webpack_require__(3);
 var Component_1 = __webpack_require__(8);
 var ResultLayout_1 = __webpack_require__(254);
@@ -378,7 +378,7 @@ exports.ResponsiveResultLayout = ResponsiveResultLayout;
 
 /***/ }),
 
-/***/ 76:
+/***/ 78:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
