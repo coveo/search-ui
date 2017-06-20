@@ -43,10 +43,12 @@ export class SearchButton extends Component {
     this.bind.on(element, 'click', () => this.handleClick());
     // Provide a magnifier icon if element contains nothing
     if (Utils.trim($$(this.element).text()) == '') {
-      const svgContainer = $$('span', { className: 'coveo-search-button' }).el;
-      svgContainer.innerHTML = SVGIcons.search;
-      SVGDom.addClassToSVGInContainer(svgContainer, 'coveo-search-button-svg');
-      element.appendChild(svgContainer);
+      const svgMagnifierContainer = $$('span', { className: 'coveo-search-button' }, SVGIcons.search).el;
+      SVGDom.addClassToSVGInContainer(svgMagnifierContainer, 'coveo-search-button-svg');
+      const svgLoadingAnimationContainer = $$('span', { className: 'coveo-search-button-loading' }, SVGIcons.loading).el;
+      SVGDom.addClassToSVGInContainer(svgLoadingAnimationContainer, 'coveo-search-button-loading-svg');
+      element.appendChild(svgMagnifierContainer);
+      element.appendChild(svgLoadingAnimationContainer);
     }
   }
 

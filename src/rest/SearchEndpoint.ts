@@ -858,8 +858,10 @@ export class SearchEndpoint implements ISearchEndpoint {
           response.data = <any>{};
         }
         const timeToExecute = new Date().getTime() - startTime.getTime();
-        (<any>response.data).clientDuration = timeToExecute;
-        (<any>response.data).duration = response.duration || timeToExecute;
+        if (response.data && _.isObject(response.data)) {
+          (<any>response.data).clientDuration = timeToExecute;
+          (<any>response.data).duration = response.duration || timeToExecute;
+        }
         return response.data;
       }).catch((error?: IErrorResponse) => {
         if (autoRenewToken && this.canRenewAccessToken() && this.isAccessTokenExpiredStatus(error.statusCode)) {

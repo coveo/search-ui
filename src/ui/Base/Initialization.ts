@@ -648,7 +648,7 @@ export class LazyInitialization {
   }
 
   public static buildErrorCallback(chunkName: string, resolve: Function) {
-    return () => {
+    return (error) => {
       LazyInitialization.logger.warn(`Cannot load chunk for ${chunkName}. You may need to configure the paths of the ressources using Coveo.configureRessourceRoot. Current path is ${__webpack_public_path__}.`);
       resolve(NoopComponent);
     };
@@ -700,13 +700,17 @@ export class LazyInitialization {
     if (Initialization.isThereASingleComponentBoundToThisElement(element)) {
       // This means a component already exists on this element.
       // Do not re-initialize again.
-      LazyInitialization.logger.warn(`Skipping component of class ${componentClassId} because the element is already initialized as another component.`, element);
       return null;
     }
 
     return LazyInitialization.getLazyRegisteredComponent(componentClassId).then((lazyLoadedComponent: IComponentDefinition) => {
       Assert.exists(lazyLoadedComponent);
 
+      if (Initialization.isThereASingleComponentBoundToThisElement(element)) {
+        // This means a component already exists on this element.
+        // Do not re-initialize again.
+        return null;
+      }
       let bindings: IComponentBindings = {};
       let options = {};
       let result: IQueryResult = undefined;
