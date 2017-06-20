@@ -143,12 +143,12 @@ $standard-transition-timing-function: cubic-bezier(0.4, 0.0, 0.2, 1);
 */
 @mixin clearButton($selector, $size:'normal') {
   cursor: pointer;
-  color: $color-greyish-teal-blue;
-  .coveo-exclusion-svg {
-      fill: $color-greyish-teal-blue;
-  }
 
   #{$selector} svg {
+    color: $color-greyish-teal-blue;
+    .coveo-exclusion-svg {
+      fill: $color-greyish-teal-blue;
+    }
 
     @if $size == 'normal' {
       width: 12px;
@@ -157,8 +157,8 @@ $standard-transition-timing-function: cubic-bezier(0.4, 0.0, 0.2, 1);
     @else if $size == 'small' {
       width: 8px;
       height: 8px;
-
-    } @else if $size == 'big' {
+    }
+    @else if $size == 'big' {
       width: 15px;
       height: 15px;
     }

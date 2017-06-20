@@ -7,6 +7,8 @@ import { l } from '../../strings/Strings';
 import { $$ } from '../../utils/Dom';
 import * as Globalize from 'globalize';
 import * as _ from 'underscore';
+import { SVGIcons } from '../../utils/SVGIcons';
+import { SVGDom } from '../../utils/SVGDom';
 
 export class BreadcrumbValueList {
   private expanded: FacetValue[];
@@ -87,7 +89,8 @@ export class BreadcrumbValueList {
 
       let multiIcon = $$('div', {
         className: 'coveo-selected coveo-facet-breadcrumb-multi-icon'
-      });
+      }, SVGIcons.checkboxHookExclusionMore);
+      SVGDom.addClassToSVGInContainer(multiIcon.el, 'coveo-facet-breadcrumb-multi-icon-svg');
       elem.el.appendChild(multiIcon.el);
     }
     if (numberOfExcluded > 0) {
@@ -99,7 +102,8 @@ export class BreadcrumbValueList {
 
       let multiExcludedIcon = $$('div', {
         className: 'coveo-excluded coveo-facet-breadcrumb-multi-icon'
-      });
+      }, SVGIcons.checkboxHookExclusionMore);
+      SVGDom.addClassToSVGInContainer(multiExcludedIcon.el, 'coveo-facet-breadcrumb-multi-icon-svg');
       elem.el.appendChild(multiExcludedIcon.el);
     }
 
