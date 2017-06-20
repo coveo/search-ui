@@ -14,8 +14,8 @@ import { IGroupByRequest } from '../../rest/GroupByRequest';
 import { QueryBuilder } from '../Base/QueryBuilder';
 import { Utils } from '../../utils/Utils';
 import { BreadcrumbEvents, IBreadcrumbItem, IClearBreadcrumbEventArgs, IPopulateBreadcrumbEventArgs } from '../../events/BreadcrumbEvents';
-import {SVGIcons} from '../../utils/SVGIcons';
-import {SVGDom} from '../../utils/SVGDom';
+import { SVGIcons } from '../../utils/SVGIcons';
+import { SVGDom } from '../../utils/SVGDom';
 
 export interface ISimpleFilterOptions {
   title: string;
@@ -30,7 +30,8 @@ export class SimpleFilter extends Component {
     exportGlobally({
       'SimpleFilter': SimpleFilter
     });
-  };
+  }
+
   static options: ISimpleFilterOptions = {
 
     values: ComponentOptions.buildListOption<string>(),
@@ -48,7 +49,7 @@ export class SimpleFilter extends Component {
   constructor(public element: HTMLElement, public options: ISimpleFilterOptions, public bindings?: IComponentBindings) {
     super(element, SimpleFilter.ID, bindings);
     this.options = ComponentOptions.initComponentOptions(element, SimpleFilter, options);
-
+    this.element.title = this.options.title;
     this.buildContent();
 
     $$(this.element).on('click', (e: Event) => this.handleClick(e));
@@ -92,7 +93,7 @@ export class SimpleFilter extends Component {
     return { checkbox, value };
   }
 
-  private createCheckboxContainer () {
+  private createCheckboxContainer() {
     this.checkboxContainer = $$('div', { className: 'coveo-checkbox-container' });
     this.checkboxes = _.map(this.options.values, (value) => this.createCheckbox(value));
     _.each(this.checkboxes, (result) => {
@@ -100,7 +101,7 @@ export class SimpleFilter extends Component {
     });
   }
 
-  private buildContent () {
+  private buildContent() {
     this.createCheckboxContainer();
     this.element.appendChild(this.buildSelect());
     this.element.appendChild(this.checkboxContainer.el);
@@ -108,7 +109,7 @@ export class SimpleFilter extends Component {
     this.createBackdrop();
   }
 
-  private buildSelect(): HTMLElement{
+  private buildSelect(): HTMLElement {
     const select = $$('span', { className: 'coveo-simplefilter-select' });
     this.selectTitle = $$('span', { className: 'coveo-simplefilter-selecttext' }, l(this.options.title));
     select.el.appendChild(this.selectTitle.el);
@@ -143,7 +144,7 @@ export class SimpleFilter extends Component {
     let ret = value;
 
     if (Utils.exists(this.options.valueCaption)) {
-        ret = this.options.valueCaption[ret] || ret;
+      ret = this.options.valueCaption[ret] || ret;
     }
     return ret;
   }
@@ -171,8 +172,8 @@ export class SimpleFilter extends Component {
   public closeContainer() {
     $$(this.element).removeClass('coveo-checkbox-container-expanded');
     this.checkboxContainer.removeClass('coveo-checkbox-container-expanded');
-    if (this.backdrop.hasClass('coveo-dropdown-background-active') == true){
-     this.hideBackdrop();
+    if (this.backdrop.hasClass('coveo-dropdown-background-active') == true) {
+      this.hideBackdrop();
     }
   }
 
@@ -198,8 +199,8 @@ export class SimpleFilter extends Component {
 
   private createBackdrop() {
     const backdrop = $$(this.root).find('.coveo-dropdown-background');
-    if(backdrop == null) {
-      this.backdrop = $$('div', {className: 'coveo-dropdown-background'});
+    if (backdrop == null) {
+      this.backdrop = $$('div', { className: 'coveo-dropdown-background' });
       this.root.appendChild(this.backdrop.el);
     } else {
       this.backdrop = $$(backdrop);
@@ -208,20 +209,22 @@ export class SimpleFilter extends Component {
   }
 
   private handlePopulateBreadcrumb(args: IPopulateBreadcrumbEventArgs) {
-    const elem = $$('div', { className: 'coveo-simplefilter-breadcrumb'});
+    const elem = $$('div', { className: 'coveo-simplefilter-breadcrumb' });
 
-    const title = $$('span', { className: 'coveo-simplefilter-breadcrumb-title'}, this.options.title);
+    const title = $$('span', { className: 'coveo-simplefilter-breadcrumb-title' }, this.options.title);
     elem.el.appendChild(title.el);
 
-    const values = $$('span', { className: 'coveo-simplefilter-breadcrumb-values'});
+    const values = $$('span', { className: 'coveo-simplefilter-breadcrumb-values' });
 
     elem.el.appendChild(values.el);
 
     _.each(this.getSelectedValues(), (selectedValue) => {
-      const value = $$('span', { className: 'coveo-simplefilter-breadcrumb-value'}, l(selectedValue))
+      const value = $$('span', { className: 'coveo-simplefilter-breadcrumb-value' }, l(selectedValue));
       values.el.appendChild(value.el);
-      const clear = $$('span', {className: 'coveo-simplefilter-breadcrumb-clear'});
-      value.el.appendChild(clear.el);
+      const svgContainer = $$('span', { className: 'coveo-simplefilter-breadcrumb-clear' }, SVGIcons.checkboxHookExclusionMore);
+      SVGDom.addClassToSVGInContainer(svgContainer.el, 'coveo-simplefilter-breadcrumb-clear-svg');
+      value.el.appendChild(svgContainer.el);
+      value.el.title = l(selectedValue);
       $$(value).on('click', () => this.handleRemoveFromBreadcrumb(value.el.textContent));
     });
 
@@ -232,13 +235,13 @@ export class SimpleFilter extends Component {
 
   private handleRemoveFromBreadcrumb(label: string) {
     _.each(this.checkboxes, (object: { checkbox: Checkbox, value: string }) => {
-      if (object.value == label) {
+      if (l(object.value) == label) {
         object.checkbox.reset();
       }
     });
   }
 
-  private handleClearBreadcrumb () {
+  private handleClearBreadcrumb() {
     _.each(this.checkboxes, (object: { checkbox: Checkbox, value: string }) => {
       if (object.checkbox.isSelected()) {
         object.checkbox.toggle();

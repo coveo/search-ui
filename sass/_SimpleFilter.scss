@@ -51,13 +51,6 @@
   @include user-select(none);
   white-space: nowrap;
   padding: 3px 19px;
-  .coveo-simplefilter-toggle-down-svg {
-    margin-left: 5px;
-    color: $color-greyish-teal-blue;
-    width: 10px;
-    height: 6px;
-
-  }
 }
 
   .coveo-circle {
@@ -133,13 +126,21 @@
 
 
 .coveo-simplefilter-breadcrumb-value {
+  @include clearButton('.coveo-simplefilter-breadcrumb-clear')
   @include clickableVibrant();
   padding-right: 10px;
+
 }
 
 .coveo-simplefilter-breadcrumb-clear {
   display: inline-block;
   margin: 3px 0px 0px 5px;
-  @include clearButton('&');
+  @include clearButton('.coveo-breadcrumb-clear-all-icon');
 }
 
+.coveo-simplefilter-toggle-down {
+  margin-left: 5px;
+  color: $color-greyish-teal-blue;
+  width: 10px;
+  height: 6px;
+}
