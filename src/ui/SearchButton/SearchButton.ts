@@ -45,7 +45,7 @@ export class SearchButton extends Component {
     if (Utils.trim($$(this.element).text()) == '') {
       const svgMagnifierContainer = $$('span', { className: 'coveo-search-button' }, SVGIcons.search).el;
       SVGDom.addClassToSVGInContainer(svgMagnifierContainer, 'coveo-search-button-svg');
-      const svgLoadingAnimationContainer = $$('span', {className: 'coveo-search-button-loading'}, SVGIcons.loading).el;
+      const svgLoadingAnimationContainer = $$('span', { className: 'coveo-search-button-loading' }, SVGIcons.loading).el;
       SVGDom.addClassToSVGInContainer(svgLoadingAnimationContainer, 'coveo-search-button-loading-svg');
       element.appendChild(svgMagnifierContainer);
       element.appendChild(svgLoadingAnimationContainer);

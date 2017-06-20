@@ -39,17 +39,31 @@
 }
 
 .coveo-facet-breadcrumb-multi-icon {
+  display: inline-block;
   margin: 0;
   &.coveo-selected {
-    @include retina-sprite($checkbox-hook-active-group);
-    vertical-align: middle;
     margin-left: 0px;
     margin-right: 5px;
+    .coveo-facet-breadcrumb-multi-icon-svg {
+      vertical-align: middle;
+      width: 14px;
+      height: 12px;
+    }
+    .coveo-hook-svg {
+      fill: $color-greyish-teal-blue;
+    }
   }
   &.coveo-excluded {
-    @include retina-sprite($facet-checkbox-exclusion-group);
-    vertical-align: middle;
     margin-left: 0px;
     margin-right: 5px;
+    .coveo-facet-breadcrumb-multi-icon-svg {
+      vertical-align: middle;
+      width: 10px;
+      height: 10px
+    }
+
+    .coveo-exclusion-svg {
+      fill: $color-red;
+    }
   }
 }

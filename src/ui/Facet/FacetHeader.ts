@@ -185,9 +185,8 @@ export class FacetHeader {
   }
 
   private buildWaitAnimation(): HTMLElement {
-    this.waitElement = document.createElement('div');
-    $$(this.waitElement).addClass('coveo-facet-header-wait-animation');
-
+    this.waitElement = $$('div', { className: 'coveo-facet-header-wait-animation' }, SVGIcons.loading).el;
+    SVGDom.addClassToSVGInContainer(this.waitElement, 'coveo-facet-header-wait-animation-svg');
     if (this.options.isNewDesign) {
       this.waitElement.style.visibility = 'hidden';
     } else {
@@ -221,16 +220,13 @@ export class FacetHeader {
   }
 
   private buildOperatorToggle(): HTMLElement {
-    const icon = document.createElement('span');
-    $$(icon).addClass(['coveo-' + (this.options.facet.options.useAnd ? 'and' : 'or'), 'coveo-icon']);
-
-    const toggle = document.createElement('div');
-    toggle.setAttribute('title', l('SwitchTo', this.options.facet.options.useAnd ? l('Or') : l('And')));
-    $$(toggle).addClass('coveo-facet-header-operator');
-    toggle.appendChild(icon);
+    const icon = $$('span', { className: 'coveo-' + (this.options.facet.options.useAnd ? 'and' : 'or') }, SVGIcons.orAnd);
+    SVGDom.addClassToSVGInContainer(icon.el, 'coveo-or-and-svg');
+    const toggle = $$('div', { className: 'coveo-facet-header-operator', title: l('SwitchTo', this.options.facet.options.useAnd ? l('Or') : l('And')) });
+    toggle.append(icon.el);
     $$(toggle).on('click', () => this.handleOperatorClick());
 
-    return toggle;
+    return toggle.el;
   }
 
   private handleOperatorClick(): void {

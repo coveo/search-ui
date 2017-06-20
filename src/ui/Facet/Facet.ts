@@ -1064,9 +1064,9 @@ export class Facet extends Component {
   public hideWaitingAnimation(): void {
     this.ensureDom();
     if (this.showingWaitAnimation) {
-      $$(this.headerElement).find('.coveo-icon').style.display = '';
       if (!this.searchInterface.isNewDesign()) {
         $$(this.headerElement).find('.coveo-facet-header-wait-animation').style.display = 'none';
+        $$(this.headerElement).find('.coveo-icon').style.display = '';
       } else {
         $$(this.headerElement).find('.coveo-facet-header-wait-animation').style.visibility = 'hidden';
       }
@@ -1780,8 +1780,7 @@ export class Facet extends Component {
     if (this.searchInterface.isNewDesign()) {
       const svgContainer = $$('span', { className: 'coveo-facet-more-icon' }, SVGIcons.arrowDown).el;
       SVGDom.addClassToSVGInContainer(svgContainer, 'coveo-facet-more-icon-svg');
-      more = $$('div', { className: 'coveo-facet-more', tabindex: 0 },
-        svgContainer).el;
+      more = $$('div', { className: 'coveo-facet-more', tabindex: 0 }, svgContainer).el;
     } else {
       more = $$('a', { className: 'coveo-facet-more' }, l('More')).el;
     }
@@ -1794,8 +1793,9 @@ export class Facet extends Component {
   private buildLess(): HTMLElement {
     let less: HTMLElement;
     if (this.searchInterface.isNewDesign()) {
-      less = $$('div', { className: 'coveo-facet-less', tabindex: 0 },
-        $$('span', { className: 'coveo-icon' })).el;
+      const svgContainer = $$('span', { className: 'coveo-facet-less-icon' }, SVGIcons.arrowUp).el;
+      SVGDom.addClassToSVGInContainer(svgContainer, 'coveo-facet-less-icon-svg');
+      less = $$('div', { className: 'coveo-facet-less', tabIndex: 0 }, svgContainer).el;
     } else {
       less = $$('a', { className: 'coveo-facet-less' }, l('Less')).el;
     }
