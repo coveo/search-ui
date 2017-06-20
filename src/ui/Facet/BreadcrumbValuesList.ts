@@ -90,7 +90,7 @@ export class BreadcrumbValueList {
       let multiIcon = $$('div', {
         className: 'coveo-selected coveo-facet-breadcrumb-multi-icon'
       }, SVGIcons.checkboxHookExclusionMore);
-      SVGDom.addClassToSVGInContainer(multiIcon.el,'coveo-facet-breadcrumb-multi-icon-svg')
+      SVGDom.addClassToSVGInContainer(multiIcon.el, 'coveo-facet-breadcrumb-multi-icon-svg');
       elem.el.appendChild(multiIcon.el);
     }
     if (numberOfExcluded > 0) {

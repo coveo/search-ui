@@ -121,7 +121,7 @@ export class ValueElementRenderer {
 
     if (this.facet.searchInterface.isNewDesign()) {
       excludeIcon.innerHTML = SVGIcons.checkboxHookExclusionMore;
-      SVGDom.addClassToSVGInContainer(excludeIcon, 'coveo-facet-value-exclude-svg')
+      SVGDom.addClassToSVGInContainer(excludeIcon, 'coveo-facet-value-exclude-svg');
     }
     return excludeIcon;
   }
