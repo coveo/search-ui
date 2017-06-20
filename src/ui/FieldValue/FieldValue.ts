@@ -271,7 +271,9 @@ export class FieldValue extends Component {
       }
     }
 
-    toRender = StringUtils.capitalizeFirstLetter(toRender);
+    if (this.options.helper == 'date' || this.options.helper == 'dateTime' || this.options.helper == 'emailDateTime') {
+      toRender = StringUtils.capitalizeFirstLetter(toRender);
+    }
     if (this.options.htmlValue) {
       element.innerHTML = toRender;
     } else {
