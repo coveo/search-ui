@@ -2,6 +2,7 @@ import * as Mock from '../MockEnvironment';
 import { ISimpleFilterOptions, SimpleFilter } from '../../src/ui/SimpleFilter/SimpleFilter';
 import { Simulate } from '../Simulate';
 import { $$ } from '../../src/utils/Dom';
+import {BreadcrumbEvents, IPopulateBreadcrumbEventArgs} from '../../src/events/BreadcrumbEvents';
 
 export function SimpleFilterTest() {
   describe('SimpleFilter', () => {
@@ -112,15 +113,44 @@ export function SimpleFilterTest() {
     });
 
     it('should put all simple filters in the same wrapper if there is more than one', () => {
-      expect($$(test.cmp.root).findAll('.coveo-simplefilter-header-wrapper').length).toEqual(1);
-      expect(test.cmp.findOrCreateWrapper()).toEqual(test2.cmp.findOrCreateWrapper());
       expect(test.cmp.element.parentElement).toEqual(test2.cmp.element.parentElement);
     });
 
+    it('should not create more than one wrapper for the simple filters', () => {
+      expect($$(test.cmp.root).findAll('.coveo-simplefilter-header-wrapper').length).toEqual(1);
+    });
+
     it('should link every simple filter to the same backdrop', () => {
-      expect($$(test.cmp.root).findAll('.coveo-dropdown-background').length).toEqual(1);
       expect(test.cmp.getBackdrop()).toEqual(test2.cmp.getBackdrop());
     });
-    
+
+    it('should not create more than one backdrop for the simple filters', () => {
+      expect($$(test.cmp.root).findAll('.coveo-dropdown-background').length).toEqual(1);
+    });
+
+    it('should populate the breadcrumb when values are selected', () => {
+      test.cmp.checkboxes[1].checkbox.select();
+
+      let args: IPopulateBreadcrumbEventArgs = {
+        breadcrumbs: []
+      };
+      $$(test.env.root).trigger(BreadcrumbEvents.populateBreadcrumb, args);
+      expect(args.breadcrumbs.length).toBe(1);
+    });
+
+    it('should reset checkboxes when clearBreadcrumb is triggered', () => {
+      test.cmp.checkboxes[0].checkbox.select();
+      test.cmp.checkboxes[1].checkbox.select();
+
+      let args: IPopulateBreadcrumbEventArgs = {
+        breadcrumbs: []
+      };
+      $$(test.env.root).trigger(BreadcrumbEvents.populateBreadcrumb, args);
+      expect(test.cmp.getSelectedValues().length).toBe(2);
+      $$(test.env.root).trigger(BreadcrumbEvents.clearBreadcrumb, args);
+      expect(test.cmp.getSelectedValues().length).toEqual(0);
+
+
+    });
   });
 }
