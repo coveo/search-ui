@@ -198,7 +198,8 @@ export class ValueElementRenderer {
     const caption = this.facet.getValueCaption(this.facetValue);
     const valueCaption = $$('span', {
       className: 'coveo-facet-value-caption',
-      title: caption
+      title: caption,
+      'data-original-value': this.facetValue.value
     }).el;
 
     $$(valueCaption).text(caption);
