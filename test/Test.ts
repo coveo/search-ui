@@ -471,3 +471,5 @@ DebugHeaderTest();
 import { FacetValuesTest } from './ui/FacetValuesTest';
 FacetValuesTest();
 
+import { DeviceUtilsTest } from './utils/DeviceUtilsTest';
+DeviceUtilsTest();
