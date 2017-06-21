@@ -3,8 +3,8 @@ import { l } from '../../../strings/Strings';
 import * as _ from 'underscore';
 
 export class AnyKeywordsInput extends KeywordsInput {
-  constructor() {
-    super(l('AnyOfTheseWords'));
+  constructor(public root: HTMLElement) {
+    super(l('AnyOfTheseWords'), root);
   }
 
   public getValue(): string {

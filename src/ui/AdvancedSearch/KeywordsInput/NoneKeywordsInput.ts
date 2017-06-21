@@ -3,8 +3,8 @@ import { l } from '../../../strings/Strings';
 import * as _ from 'underscore';
 
 export class NoneKeywordsInput extends KeywordsInput {
-  constructor() {
-    super(l('NoneOfTheseWords'));
+  constructor(public root: HTMLElement) {
+    super(l('NoneOfTheseWords'), root);
   }
 
   public getValue(): string {

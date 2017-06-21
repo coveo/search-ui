@@ -3,8 +3,29 @@
     "box user": {
       "icon": "user",
       "captions": {
-        "en": "Box User",
-        "fr": "Utilisateur Box"
+        "en": "User",
+        "fr": "Utilisateur",
+        "cs": "Uživatel",
+        "da": "Bruger",
+        "de": "Benutzer",
+        "el": "Χρήστης",
+        "es-es": "Usuario",
+        "fi": "Käyttäjä",
+        "hu": "Felhasználó",
+        "id": "Pengguna",
+        "it": "Utente",
+        "ja": "ユーザー",
+        "ko": "사용자",
+        "nl": "Gebruiker",
+        "no": "Bruker",
+        "pl": "Użytkownik",
+        "pt-br": "Usuário",
+        "ru": "Пользователь",
+        "sv": "Användare",
+        "th": "ผู้ใช้",
+        "tr": "Kullanıcı",
+        "zh-cn": "用户",
+        "zh-tw": "用戶"
       }
     }
   }
