@@ -6,9 +6,22 @@ import { $$ } from '../../src/utils/Dom';
 export function SimpleFilterTest() {
   describe('SimpleFilter', () => {
     let test: Mock.IBasicComponentSetup<SimpleFilter>;
+    let test2: Mock.IBasicComponentSetup<SimpleFilter>;
 
     beforeEach(() => {
       test = Mock.optionsComponentSetup<SimpleFilter, ISimpleFilterOptions>(SimpleFilter, <ISimpleFilterOptions>{
+        field: '@field',
+        title: 'FooTitleBar',
+        values: ['foo', 'bar'],
+        valueCaption: {
+          'gmailmessage': 'Gmail Message',
+          'lithiummessage': 'Lithium Message',
+          'youtubevideo': 'Youtube Video',
+          'message': 'Message'
+        }
+      });
+
+      test2 = Mock.optionsComponentSetup<SimpleFilter, ISimpleFilterOptions>(SimpleFilter, <ISimpleFilterOptions>{
         field: '@field',
         title: 'FooTitleBar',
         values: ['foo', 'bar'],
@@ -66,7 +79,7 @@ export function SimpleFilterTest() {
       expect(test.env.queryController.executeQuery).toHaveBeenCalled();
     });
 
-    it('field should set the field in the query', () => {
+    it('should set the field in the query', () => {
       let simulation = Simulate.query(test.env);
       expect(simulation.queryBuilder.groupByRequests).toEqual(jasmine.arrayContaining([
         jasmine.objectContaining({
@@ -75,10 +88,37 @@ export function SimpleFilterTest() {
       ]));
     });
 
-    it('field should set the selected values in the query', () => {
+    it('should set the selected values in the query', () => {
       test.cmp.checkboxes[0].checkbox.select();
       let simulation = Simulate.query(test.env);
       expect(simulation.queryBuilder.advancedExpression.build()).toEqual('@field==foo');
+    });
+
+    it('getDisplayedTitle should return the right title depending on values selected', () => {
+      test.cmp.setDisplayedTitle('FooBarre');
+      expect(test.cmp.getDisplayedTitle()).toEqual('FooBarre');
+      test.cmp.checkboxes[0].checkbox.select();
+      expect(test.cmp.getDisplayedTitle()).toEqual('foo');
+      test.cmp.checkboxes[1].checkbox.select();
+      expect(test.cmp.getDisplayedTitle()).toEqual(('FooTitleBar'));
+    });
+
+    it('should handle the backdrop correctly', () => {
+      expect(test.cmp.getBackdrop()).not.toBe(undefined);
+      test.cmp.showBackdrop();
+      expect(test.cmp.getBackdrop().hasClass('coveo-dropdown-background-active')).toBe(true);
+      test.cmp.hideBackdrop();
+      expect(test.cmp.getBackdrop().hasClass('coveo-dropdown-background-active')).toBe(false);
+    });
+
+    it('should put all simple filters in the same wrapper if there is more than one', () => {
+      expect(test.cmp.findOrCreateWrapper()).toEqual(test2.cmp.findOrCreateWrapper());
+      expect(test.cmp.element.parentElement).toEqual(test2.cmp.element.parentElement);
+    });
+
+    it('should link every simple filter to the same backdrop', () => {
+      expect($$(test.cmp.root).findAll('.coveo-dropdown-background').length).toEqual(1);
+      expect(test.cmp.getBackdrop()).toEqual(test2.cmp.getBackdrop());
     });
 
   });

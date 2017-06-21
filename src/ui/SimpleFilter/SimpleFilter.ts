@@ -122,6 +122,17 @@ export class SimpleFilter extends Component {
     this.backdrop.removeClass('coveo-dropdown-background-active');
   }
 
+  public findOrCreateWrapper() {
+    if ($$(this.root).find('.coveo-filter-header-wrapper') == null) {
+      const wrapper = $$('div', { className: 'coveo-filter-header-wrapper' });
+      wrapper.insertBefore(this.element);
+      return wrapper;
+    } else {
+      const wrapper = $$(this.root).find('.coveo-filter-header-wrapper');
+      return $$(wrapper);
+    }
+  }
+
   protected createBasicGroupByRequest(allowedValues?: string[], addComputedField: boolean = true): IGroupByRequest {
     const groupByRequest: IGroupByRequest = {
       field: <string>this.options.field,
@@ -202,17 +213,6 @@ export class SimpleFilter extends Component {
   private buildCircleElement(): HTMLElement {
     this.circleElement = $$('span', { className: 'coveo-circle' }, this.getSelectedValues().length.toString());
     return this.circleElement.el;
-  }
-
-  private findOrCreateWrapper() {
-    if ($$(this.root).find('.coveo-filter-header-wrapper') == null) {
-      const wrapper = $$('div', { className: 'coveo-filter-header-wrapper' });
-      wrapper.insertBefore(this.element);
-      return wrapper;
-    } else {
-      const wrapper = $$(this.root).find('.coveo-filter-header-wrapper');
-      return $$(wrapper);
-    }
   }
 
   private createBackdrop() {
