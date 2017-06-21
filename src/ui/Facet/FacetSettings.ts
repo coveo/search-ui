@@ -361,11 +361,11 @@ export class FacetSettings extends FacetSort {
 
   private buildIcon(iconClass: string, svgIcon: string) {
     if (this.facet.searchInterface.isNewDesign()) {
-      const icon = $$('div', {className: 'coveo-icon-container'}, svgIcon);
+      const icon = $$('div', { className: 'coveo-icon-container' }, svgIcon);
       SVGDom.addClassToSVGInContainer(icon.el, iconClass);
       return icon.el;
     } else {
-      return $$('div', {className: 'coveo-icon'});
+      return $$('div', { className: 'coveo-icon' });
     }
   }
 
