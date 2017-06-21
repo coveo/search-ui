@@ -59,14 +59,14 @@ export function SimpleFilterTest() {
 
     it('should expand the component correctly', () => {
       test.cmp.toggle();
-      expect($$(test.cmp.checkboxContainer).hasClass('coveo-checkbox-container-expanded')).toBe(true);
+      expect($$(test.cmp.checkboxContainer).hasClass('coveo-simplefilter-checkbox-container-expanded')).toBe(true);
 
     });
 
     it('should collapse the component correctly', () => {
       test.cmp.toggle();
       test.cmp.toggle();
-      expect($$(test.cmp.checkboxContainer).hasClass('coveo-checkbox-container-expanded')).toBe(false);
+      expect($$(test.cmp.checkboxContainer).hasClass('coveo-simplefilter-checkbox-container-expanded')).toBe(false);
     });
 
     it('should use the correct selected values', () => {
@@ -112,6 +112,7 @@ export function SimpleFilterTest() {
     });
 
     it('should put all simple filters in the same wrapper if there is more than one', () => {
+      expect($$(test.cmp.root).findAll('.coveo-simplefilter-header-wrapper').length).toEqual(1);
       expect(test.cmp.findOrCreateWrapper()).toEqual(test2.cmp.findOrCreateWrapper());
       expect(test.cmp.element.parentElement).toEqual(test2.cmp.element.parentElement);
     });
@@ -120,6 +121,6 @@ export function SimpleFilterTest() {
       expect($$(test.cmp.root).findAll('.coveo-dropdown-background').length).toEqual(1);
       expect(test.cmp.getBackdrop()).toEqual(test2.cmp.getBackdrop());
     });
-
+    
   });
 }

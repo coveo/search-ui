@@ -2,7 +2,7 @@
 @import "Variables";
 @import "../bin/sass/sprites";
 
-.coveo-filter-header-wrapper {
+.coveo-simplefilter-header-wrapper {
   width: 100%;
   margin: auto;
   padding-left: 15px;
@@ -52,7 +52,7 @@
   padding: 3px 19px;
 }
 
-.coveo-circle {
+.coveo-simplefilter-circle {
   display: inline-block;
   letter-spacing: 0.4px;
   background-color: white;
@@ -70,7 +70,7 @@
   pointer-events:none;
 }
 
-.coveo-checkbox-container {
+.coveo-simplefilter-checkbox-container {
   display: none;
   border: $default-border;
   position: absolute;
@@ -82,46 +82,45 @@
   .coveo-checkbox-button {
     @include defaultRoundedBorder();
   }
+
+  .coveo-checkbox-span-label {
+    white-space: nowrap;
+    vertical-align: middle;
+    text-overflow: ellipsis;
+    display: inline-block;
+    overflow: hidden;
+    max-width: 110px;
+    margin-left: 6px;
+  }
+
+  .coveo-checkbox-button {
+    vertical-align: middle;
+  }
+
+  .coveo-checkbox-label {
+    white-space: nowrap;
+    width:100%;
+    padding: 5px;
+    @include user-select(none);
+  }
 }
 
-.coveo-checkbox-container label {
+.coveo-simplefilter-checkbox-container label {
   display: inline-block;
 }
 
-.coveo-checkbox-container-expanded {
+.coveo-simplefilter-checkbox-container-expanded {
   display: inline-block;
   z-index: 20;
 }
 
-.coveo-checkbox-container label:hover {
+.coveo-simplefilter-checkbox-container label:hover {
   background-color: $color-blueish-white-grey;
-}
-
-.coveo-checkbox-span-label {
-  white-space: nowrap;
-  vertical-align: middle;
-  text-overflow: ellipsis;
-  display: inline-block;
-  overflow: hidden;
-  max-width: 110px;
-  margin-left: 6px;
-}
-
-.coveo-checkbox-button {
-  vertical-align: middle;
-}
-
-.coveo-checkbox-label {
-  white-space: nowrap;
-  width:100%;
-  padding: 5px;
-  @include user-select(none);
 }
 
 .coveo-simplefilter-breadcrumb-title {
   @include breadcrumbTitle();
 }
-
 
 .coveo-simplefilter-breadcrumb-value {
   @include clearButton('.coveo-simplefilter-breadcrumb-clear');
