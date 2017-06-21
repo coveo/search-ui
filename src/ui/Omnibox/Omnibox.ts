@@ -519,6 +519,17 @@ export class Omnibox extends Component {
       this.modifyEventTo = this.getOmniboxAnalyticsEventCause();
       this.modifyCustomDataOnPending(index, suggestions);
       this.usageAnalytics.sendAllPendingEvents();
+
+      // This should happen if :
+      // users did a (short) query first, which does not match the first suggestion. (eg: typed "t", then search)
+      // then, refocus the search box. The same suggestion(s) will re-appear.
+      // By selecting the first one with the mouse, we need to retrigger a query because this means the search as you type could not
+      // kick in and do the query automatically.
+      if (this.lastQuery != this.getText()) {
+        this.triggerNewQuery(false, () => {
+          this.usageAnalytics.logSearchEvent<IAnalyticsOmniboxSuggestionMeta>(this.getOmniboxAnalyticsEventCause(), this.buildCustomDataForPartialQueries(index, suggestions));
+        });
+      }
     }
   }
 
