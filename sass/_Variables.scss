@@ -99,6 +99,22 @@ $standard-transition-timing-function: cubic-bezier(0.4, 0.0, 0.2, 1);
   }
 }
 
+@mixin iconWithHoverState2($iconClass, $float:'left', $inactive : 'coveo-disabled') {
+  .#{$iconClass} {
+    float: #{$float};
+  }
+  &:hover {
+    .coveo-active-shape-svg {
+      fill: $color-active-yellow;
+    }
+  }
+  &:hover.#{$inactive} {
+    .#{iconClass} .coveo-active-shape-svg {
+      fill: inherit;
+    }
+  }
+}
+
 @mixin clickable($dark-background: false) {
   color: $color-teal;
   @if $dark-background == true {
@@ -143,13 +159,12 @@ $standard-transition-timing-function: cubic-bezier(0.4, 0.0, 0.2, 1);
 */
 @mixin clearButton($selector, $size:'normal') {
   cursor: pointer;
+  color: $color-greyish-teal-blue;
+  .coveo-exclusion-svg {
+    fill: $color-greyish-teal-blue;
+  }
 
   #{$selector} svg {
-    color: $color-greyish-teal-blue;
-    .coveo-exclusion-svg {
-      fill: $color-greyish-teal-blue;
-    }
-
     @if $size == 'normal' {
       width: 12px;
       height: 12px;

@@ -51,7 +51,7 @@
 }
 
 .coveo-facet-settings-section-sort {
-  @include iconWithHoverState('.coveo-sprites-sort', 'none');
+  @include iconWithHoverState2('.coveo-sprites-sort', 'none');
   &.coveo-facet-settings-section {
     margin-bottom: 15px;
     .coveo-icon-container {
