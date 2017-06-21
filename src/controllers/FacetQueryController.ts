@@ -154,7 +154,16 @@ export class FacetQueryController {
     let params = new FacetSearchParameters(this.facet);
     params.alwaysInclude = this.facet.options.allowedValues || _.pluck(this.facet.values.getAll(), 'value');
     params.nbResults = numberOfValuesToFetch;
-    return this.facet.getEndpoint().search(params.getQuery());
+    return this.facet.getEndpoint().search(params.getQuery()).then((results: IQueryResults) => {
+      if (this.facet.options.allowedValues && results && results.groupByResults && results.groupByResults[0]) {
+        let values = results.groupByResults[0].values;
+        values = _.filter(values, (value: IGroupByValue) => {
+          return _.contains(_.map(this.facet.options.allowedValues, allowedValue => allowedValue.toLowerCase()), value.value.toLowerCase());
+        });
+        results.groupByResults[0].values = values;
+      }
+      return results;
+    });
   }
 
   public searchInFacetToUpdateDelta(facetValues: FacetValue[]) {

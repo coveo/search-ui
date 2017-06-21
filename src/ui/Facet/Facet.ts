@@ -49,6 +49,7 @@ import 'styling/_Facet';
 import 'styling/_FacetFooter';
 import { SVGIcons } from '../../utils/SVGIcons';
 import { SVGDom } from '../../utils/SVGDom';
+import { IQueryResults } from '../../rest/QueryResults';
 
 export interface IFacetOptions {
   title?: string;
@@ -1810,7 +1811,7 @@ export class Facet extends Component {
     this.showWaitingAnimation();
     // fetch 1 more value than we need, so we can see if there is more value to fetch still or if we have reached
     // the end of the availables values
-    this.facetQueryController.fetchMore(this.numberOfValues + 1).then((queryResults?) => {
+    this.facetQueryController.fetchMore(this.numberOfValues + 1).then((queryResults: IQueryResults) => {
       let facetValues = new FacetValues(queryResults.groupByResults[0]);
 
       facetValues.importActiveValuesFromOtherList(this.values);
