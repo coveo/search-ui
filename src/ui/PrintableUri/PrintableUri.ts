@@ -11,6 +11,7 @@ import { IResultLinkOptions } from '../ResultLink/ResultLinkOptions';
 import { IResultsComponentBindings } from '../Base/ResultsComponentBindings';
 import { StreamHighlightUtils } from '../../utils/StreamHighlightUtils';
 import * as _ from 'underscore';
+import {ComponentOptionsModel} from '../../models/ComponentOptionsModel';
 
 
 export interface IPrintableUriOptions extends IResultLinkOptions {
@@ -44,6 +45,7 @@ export class PrintableUri extends ResultLink {
    */
   constructor(public element: HTMLElement, public options: IPrintableUriOptions, bindings?: IResultsComponentBindings, public result?: IQueryResult) {
     super(element, ComponentOptions.initComponentOptions(element, PrintableUri, options), bindings, result);
+    this.options = _.extend({}, this.options, this.componentOptionsModel.get(ComponentOptionsModel.attributesEnum.resultLink));
   }
 
   public renderParentsXml(element: HTMLElement, parentsXml: string) {
@@ -79,7 +81,7 @@ export class PrintableUri extends ResultLink {
           stringAndHoles = StringAndHoles.shortenPath(result.printableUri, $$(element).width());
         }
         this.shortenedUri = HighlightUtils.highlightString(stringAndHoles.value, result.printableUriHighlights, stringAndHoles.holes, 'coveo-highlight');
-        const link = $$('div', { className: 'coveo-printable-uri-part', href: result.clickUri, title: result.printableUri });
+        const link = $$('a', { className: 'coveo-printable-uri-part', title: result.printableUri });
         link.setHtml(this.shortenedUri);
         element.appendChild(link.el);
       } else if (this.options.titleTemplate) {
