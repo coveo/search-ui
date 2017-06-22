@@ -11,6 +11,7 @@ import { IResultLinkOptions } from '../ResultLink/ResultLinkOptions';
 import { IResultsComponentBindings } from '../Base/ResultsComponentBindings';
 import { StreamHighlightUtils } from '../../utils/StreamHighlightUtils';
 import * as _ from 'underscore';
+import {ComponentOptionsModel} from '../../models/ComponentOptionsModel';
 
 
 export interface IPrintableUriOptions extends IResultLinkOptions {
@@ -44,6 +45,7 @@ export class PrintableUri extends ResultLink {
    */
   constructor(public element: HTMLElement, public options: IPrintableUriOptions, bindings?: IResultsComponentBindings, public result?: IQueryResult) {
     super(element, ComponentOptions.initComponentOptions(element, PrintableUri, options), bindings, result);
+    this.options = _.extend({}, this.options, this.componentOptionsModel.get(ComponentOptionsModel.attributesEnum.resultLink));
   }
 
   public renderParentsXml(element: HTMLElement, parentsXml: string) {
