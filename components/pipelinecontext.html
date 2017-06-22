@@ -55,7 +55,7 @@
 	</div>
 	<div class="bottomHeader">
 		<div id="searchBox">
-			<div class="CoveoSearchbox" data-enable-omnibox="true" data-inline="false" data-enable-wildcards="true" data-enable-search-as-you-type="false" data-enable-reveal-query-suggest-addon="false" data-enable-query-syntax="true" data-enable-field-addon="true"></div>
+			<div class="CoveoSearchbox" data-enable-omnibox="true" data-inline="false" data-enable-wildcards="true" data-enable-search-as-you-type="false" data-enable-query-suggest-addon="false" data-enable-query-syntax="true" data-enable-field-addon="true"></div>
 			<div class="CoveoFieldSuggestions" data-field="@systitle" data-header-title="Suggested topics"></div>
 		</div>
 	</div>
@@ -174,7 +174,9 @@
 							<a href="pipelinecontext.html">PipelineContext</a>
 						</li>
 					</ul>
-					<h1>Coveo component PipelineContext</h1>
+					<!-- Has to remain here for the playground to work -->
+					<h1 style="visibility: collapse; font-size:0">Coveo component PipelineContext</h1>
+					<h1>Coveo PipelineContext Component (CoveoPipelineContext)</h1>
 				</div>
 			</div>
 			<section class="tsd-panel tsd-comment">
@@ -183,7 +185,7 @@
 						<p>A PipelineContext is used to add contextual information about the environment inside which the query is executed.</p>
 					</div>
 					<p>It allows to pass arbitrary key values pairs ( think <code>JSON</code> ), which can then be leveraged by the <a href="http://www.coveo.com/go?dest=cloudhelp&amp;lcid=9&amp;context=108">Query Pipeline</a>,
-					or by Reveal.</p>
+					or by Coveo Machine Learning.</p>
 					<p>This can be any arbitrary information that you can use to contextualize the query and help Coveo improve relevance by returning results tailored to a specific context.</p>
 					<p>This component is meant to be configured using a script tag, with a JSON content.</p>
 					<pre><code><span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">class</span>=<span class="hljs-string">'CoveoPipelineContext'</span> <span class="hljs-attr">type</span>=<span class="hljs-string">'text/context'</span>&gt;</span><span class="actionscript">
@@ -337,8 +339,8 @@
 								<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#getbindings">getBindings</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L124">src/ui/Base/Component.ts
-									:124</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L129">src/ui/Base/Component.ts
+									:129</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -361,8 +363,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/PipelineContext/PipelineContext.ts#L76">src/ui/PipelineContext/PipelineContext.ts
-									:76</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/PipelineContext/PipelineContext.ts#L84">src/ui/PipelineContext/PipelineContext.ts
+									:84</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -385,8 +387,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/PipelineContext/PipelineContext.ts#L85">src/ui/PipelineContext/PipelineContext.ts
-									:85</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/PipelineContext/PipelineContext.ts#L93">src/ui/PipelineContext/PipelineContext.ts
+									:93</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -416,8 +418,8 @@
 								<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#get">get</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L193">src/ui/Base/Component.ts
-									:193</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L198">src/ui/Base/Component.ts
+									:198</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -462,8 +464,8 @@
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#bind">bind</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L62">src/ui/Base/Component.ts
-							:62</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L67">src/ui/Base/Component.ts
+							:67</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -487,8 +489,8 @@
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#componentoptionsmodel">componentOptionsModel</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L90">src/ui/Base/Component.ts
-							:90</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L95">src/ui/Base/Component.ts
+							:95</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -505,8 +507,8 @@
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#componentstatemodel">componentStateModel</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L74">src/ui/Base/Component.ts
-							:74</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L79">src/ui/Base/Component.ts
+							:79</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -566,8 +568,8 @@
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#querycontroller">queryController</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L78">src/ui/Base/Component.ts
-							:78</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L83">src/ui/Base/Component.ts
+							:83</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -584,8 +586,8 @@
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#querystatemodel">queryStateModel</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L70">src/ui/Base/Component.ts
-							:70</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L75">src/ui/Base/Component.ts
+							:75</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -602,8 +604,8 @@
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#root">root</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L66">src/ui/Base/Component.ts
-							:66</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L71">src/ui/Base/Component.ts
+							:71</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -620,8 +622,8 @@
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#searchinterface">searchInterface</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L82">src/ui/Base/Component.ts
-							:82</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L87">src/ui/Base/Component.ts
+							:87</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -638,8 +640,8 @@
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#usageanalytics">usageAnalytics</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L86">src/ui/Base/Component.ts
-							:86</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L91">src/ui/Base/Component.ts
+							:91</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -682,8 +684,8 @@
 								<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#constructor">constructor</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L92">src/ui/Base/Component.ts
-									:92</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L97">src/ui/Base/Component.ts
+									:97</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">

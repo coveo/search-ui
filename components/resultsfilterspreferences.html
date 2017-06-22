@@ -55,7 +55,7 @@
 	</div>
 	<div class="bottomHeader">
 		<div id="searchBox">
-			<div class="CoveoSearchbox" data-enable-omnibox="true" data-inline="false" data-enable-wildcards="true" data-enable-search-as-you-type="false" data-enable-reveal-query-suggest-addon="false" data-enable-query-syntax="true" data-enable-field-addon="true"></div>
+			<div class="CoveoSearchbox" data-enable-omnibox="true" data-inline="false" data-enable-wildcards="true" data-enable-search-as-you-type="false" data-enable-query-suggest-addon="false" data-enable-query-syntax="true" data-enable-field-addon="true"></div>
 			<div class="CoveoFieldSuggestions" data-field="@systitle" data-header-title="Suggested topics"></div>
 		</div>
 	</div>
@@ -171,19 +171,21 @@
 							<a href="resultsfilterspreferences.html">ResultsFiltersPreferences</a>
 						</li>
 					</ul>
-					<h1>Coveo component ResultsFiltersPreferences</h1>
+					<!-- Has to remain here for the playground to work -->
+					<h1 style="visibility: collapse; font-size:0">Coveo component ResultsFiltersPreferences</h1>
+					<h1>Coveo ResultsFiltersPreferences Component (CoveoResultsFiltersPreferences)</h1>
 				</div>
 			</div>
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>The ResultFiltersPreferences component allows the end user to create custom filters to apply to queries. These
-						filters are saved in the local storage of the end user.</p>
+						<p>The <code>ResultFiltersPreferences</code> component allows end users to create custom filters to apply to queries. These filters
+						are saved to local storage.</p>
 					</div>
-					<p>Only advanced end users who understand the Coveo query syntax should actually use this feature (see
-					<a href="http://www.coveo.com/go?dest=adminhelp70&amp;lcid=9&amp;context=10005">Coveo Query Sytax Reference</a>).</p>
-					<p>This component is normally accessible through the <a href="settings.html">Settings</a> menu. Its usual location in the DOM is inside the
-					<a href="preferencespanel.html">PreferencesPanel</a> component.</p>
+					<p>Only advanced end users who understand the Coveo query syntax should use this feature (see
+					<a href="http://www.coveo.com/go?dest=adminhelp70&amp;lcid=9&amp;context=10005">Coveo Query Syntax Reference</a>).</p>
+					<p>This component is normally accessible through the <a href="settings.html"><code>Settings</code></a> menu. Its usual location in the DOM is
+					inside the <a href="preferencespanel.html"><code>PreferencesPanel</code></a> element.</p>
 					<p>See also the <a href="resultspreferences.html">ResultsPreferences</a> component.</p>
 				</div>
 			</section>
@@ -246,35 +248,50 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultsFiltersPreferences/ResultsFiltersPreferences.ts#L110">src/ui/ResultsFiltersPreferences/ResultsFiltersPreferences.ts
-							:110</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultsFiltersPreferences/ResultsFiltersPreferences.ts#L138">src/ui/ResultsFiltersPreferences/ResultsFiltersPreferences.ts
+							:138</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies the default filters that all end users can apply.</p>
+							<p>Specifies the default filters which all end users can apply.</p>
 						</div>
-						<p>End users will not be able to modify or delete these filters. They do not count as &quot;user-made&quot; filters, but
-						rather as &quot;built-in&quot; filters created by the developer of the search page.</p>
-						<p>You can only set this option in the <code>init</code> call of your search interface. You cannot set it directly in the
-						markup as an HTML attribute.</p>
+						<p>End users cannot modify or delete these filters. These filters do not count as &quot;user-made&quot; filters, but rather as
+						&quot;built-in&quot; filters created by the developer of the search page.</p>
+						<p><strong>Note:</strong></p>
+						<blockquote>
+							<p>You cannot set this option directly in the component markup as an HTML attribute. You must either set it in the
+								<a href="../globals.html#init"><code>init</code></a> call of your search interface (see
+								<a href="https://developers.coveo.com/x/PoGfAQ#Components-PassingComponentOptionsintheinitCall">Components - Passing Component Options in the init Call</a>),
+								or before the <code>init</code> call, using the <code>options</code> top-level function (see
+							<a href="https://developers.coveo.com/x/PoGfAQ#Components-PassingComponentOptionsBeforetheinitCall">Components - Passing Component Options Before the init Call</a>).</p>
+						</blockquote>
 						<p>Filters should follow this definition:</p>
-						<p><code>filters: { [caption: string]: { expression: string; tab?: string[]; } }</code>;</p>
+						<p><code>filters : { [caption : string] : { expression : string, tab? : string[] } }</code>;</p>
 						<p><strong>Example:</strong></p>
-						<pre><code class="lang-javascript">Coveo.init(<span class="hljs-built_in">document</span>.querySelector(<span class="hljs-string">'#search'</span>), {
+						<p>var myFilters = {
+							&quot;Only Google Drive Items&quot; : {
+							expression : &quot;@connectortype == &#39;GoogleDriveCrawler&#39;&quot;,
+							tab : [&quot;Tab1&quot;, &quot;Tab2&quot;]
+						},</p>
+						<p>  &quot;Another Filter&quot; : {
+							expression : [ ... another expression ... ]
+						},</p>
+						<p>  [ ... ]
+						};</p>
+						<pre><code class="lang-javascript"><span class="hljs-comment">// You can set the option in the 'init' call:</span>
+Coveo.init(<span class="hljs-built_in">document</span>.querySelector(<span class="hljs-string">"#search"</span>), {
   <span class="hljs-attr">ResultsFiltersPreferences</span> : {
-    <span class="hljs-attr">filters</span> : {
-      <span class="hljs-string">"Only Google Drive Items"</span> : {
-        <span class="hljs-attr">expression</span> : <span class="hljs-string">"@connectortype == 'GoogleDriveCrawler'"</span>
-        tab: [<span class="hljs-string">'Tab1'</span>, <span class="hljs-string">'Tab2'</span>],
-      },
-      <span class="hljs-string">"Another Filter"</span> : {
-        <span class="hljs-attr">expression</span> : [ ... another expression ... ]
-      },
-      [ ... ]
-    }
+    <span class="hljs-attr">filters</span> : myFilters
   }
 });
+
+<span class="hljs-comment">// Or before the 'init' call, using the 'options' top-level function:</span>
+<span class="hljs-comment">// Coveo.options(document.querySelector("#search"), {</span>
+<span class="hljs-comment">//   ResultsFiltersPreferences : {</span>
+       filters : myFilters
+     }
+<span class="hljs-comment">// });</span>
 </code></pre>
 						<p>Default value is <code>undefined</code>.</p>
 					</div>
@@ -286,13 +303,13 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultsFiltersPreferences/ResultsFiltersPreferences.ts#L64">src/ui/ResultsFiltersPreferences/ResultsFiltersPreferences.ts
-							:64</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultsFiltersPreferences/ResultsFiltersPreferences.ts#L76">src/ui/ResultsFiltersPreferences/ResultsFiltersPreferences.ts
+							:76</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies whether to include the active filter(s) in the <a href="breadcrumb.html">Breadcrumb</a>.</p>
+							<p>Specifies whether to display the active filter(s) in the <a href="breadcrumb.html"><code>Breadcrumb</code></a>.</p>
 						</div>
 						<p>Default value is <code>true</code>.</p>
 					</div>
@@ -309,16 +326,16 @@ data-include-in-breadcrumb&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultsFiltersPreferences/ResultsFiltersPreferences.ts#L74">src/ui/ResultsFiltersPreferences/ResultsFiltersPreferences.ts
-							:74</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultsFiltersPreferences/ResultsFiltersPreferences.ts#L86">src/ui/ResultsFiltersPreferences/ResultsFiltersPreferences.ts
+							:86</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
 							<p>Specifies whether to show the <strong>Create</strong> button that allows the end user to create filters.</p>
 						</div>
-						<p>If you set this option to <code>false</code>, only the pre-populated <a href="resultsfilterspreferences.html#options.filters">ResultsFiltersPreferences.options.filters</a> will
-						be available to the end user.</p>
+						<p>If you set this option to <code>false</code>, only the pre-populated
+						<a href="resultsfilterspreferences.html#options.filters"><code>filters</code></a> are available to the end user.</p>
 						<p>Default value is <code>true</code>.</p>
 					</div>
 					<div class="tsd-panel">
@@ -421,8 +438,8 @@ data-show-advanced-filters&#x3D;&#x27;false&#x27;</pre>
 								<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#getbindings">getBindings</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L124">src/ui/Base/Component.ts
-									:124</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L129">src/ui/Base/Component.ts
+									:129</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -446,8 +463,8 @@ data-show-advanced-filters&#x3D;&#x27;false&#x27;</pre>
 								<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#get">get</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L193">src/ui/Base/Component.ts
-									:193</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L198">src/ui/Base/Component.ts
+									:198</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -492,8 +509,8 @@ data-show-advanced-filters&#x3D;&#x27;false&#x27;</pre>
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#bind">bind</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L62">src/ui/Base/Component.ts
-							:62</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L67">src/ui/Base/Component.ts
+							:67</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -517,8 +534,8 @@ data-show-advanced-filters&#x3D;&#x27;false&#x27;</pre>
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#componentoptionsmodel">componentOptionsModel</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L90">src/ui/Base/Component.ts
-							:90</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L95">src/ui/Base/Component.ts
+							:95</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -535,8 +552,8 @@ data-show-advanced-filters&#x3D;&#x27;false&#x27;</pre>
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#componentstatemodel">componentStateModel</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L74">src/ui/Base/Component.ts
-							:74</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L79">src/ui/Base/Component.ts
+							:79</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -596,8 +613,8 @@ data-show-advanced-filters&#x3D;&#x27;false&#x27;</pre>
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#querycontroller">queryController</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L78">src/ui/Base/Component.ts
-							:78</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L83">src/ui/Base/Component.ts
+							:83</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -614,8 +631,8 @@ data-show-advanced-filters&#x3D;&#x27;false&#x27;</pre>
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#querystatemodel">queryStateModel</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L70">src/ui/Base/Component.ts
-							:70</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L75">src/ui/Base/Component.ts
+							:75</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -632,8 +649,8 @@ data-show-advanced-filters&#x3D;&#x27;false&#x27;</pre>
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#root">root</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L66">src/ui/Base/Component.ts
-							:66</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L71">src/ui/Base/Component.ts
+							:71</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -650,8 +667,8 @@ data-show-advanced-filters&#x3D;&#x27;false&#x27;</pre>
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#searchinterface">searchInterface</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L82">src/ui/Base/Component.ts
-							:82</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L87">src/ui/Base/Component.ts
+							:87</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -668,8 +685,8 @@ data-show-advanced-filters&#x3D;&#x27;false&#x27;</pre>
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#usageanalytics">usageAnalytics</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L86">src/ui/Base/Component.ts
-							:86</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L91">src/ui/Base/Component.ts
+							:91</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -712,13 +729,13 @@ data-show-advanced-filters&#x3D;&#x27;false&#x27;</pre>
 								<p>Overwrites <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#constructor">constructor</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultsFiltersPreferences/ResultsFiltersPreferences.ts#L123">src/ui/ResultsFiltersPreferences/ResultsFiltersPreferences.ts
-									:123</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultsFiltersPreferences/ResultsFiltersPreferences.ts#L152">src/ui/ResultsFiltersPreferences/ResultsFiltersPreferences.ts
+									:152</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Creates a new ResultsFiltersPreferences component.</p>
+									<p>Creates a new <code>ResultsFiltersPreferences</code> component.</p>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -735,7 +752,7 @@ data-show-advanced-filters&#x3D;&#x27;false&#x27;</pre>
 									<h5>options: <span class="tsd-signature-type">IResultsFiltersPreferencesOptions</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<div class="lead">
-											<p>The options for the ResultsFiltersPreferences component.</p>
+											<p>The options for the <code>ResultsFiltersPreferences</code> component.</p>
 										</div>
 									</div>
 								</li>
