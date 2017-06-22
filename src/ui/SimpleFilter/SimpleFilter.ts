@@ -16,6 +16,7 @@ import { Utils } from '../../utils/Utils';
 import { BreadcrumbEvents, IBreadcrumbItem, IClearBreadcrumbEventArgs, IPopulateBreadcrumbEventArgs } from '../../events/BreadcrumbEvents';
 import { SVGIcons } from '../../utils/SVGIcons';
 import { SVGDom } from '../../utils/SVGDom';
+import {IQueryResults} from '../../rest/QueryResults';
 
 export interface ISimpleFilterOptions {
   title: string;
@@ -45,18 +46,19 @@ export class SimpleFilter extends Component {
   private circleElement: Dom;
   private backdrop: Dom;
   private selectTitle: Dom;
+  private computedValues: string [] = [];
+  private position: number;
 
   constructor(public element: HTMLElement, public options: ISimpleFilterOptions, public bindings?: IComponentBindings) {
     super(element, SimpleFilter.ID, bindings);
     this.options = ComponentOptions.initComponentOptions(element, SimpleFilter, options);
     this.element.title = this.options.title;
-    this.buildContent();
     $$(this.element).on('click', (e: Event) => this.handleClick(e));
     this.bind.onRootElement(BreadcrumbEvents.populateBreadcrumb, (args: IPopulateBreadcrumbEventArgs) => this.handlePopulateBreadcrumb(args));
     this.bind.onRootElement(BreadcrumbEvents.clearBreadcrumb, () => this.handleClearBreadcrumb());
     this.bind.onRootElement(QueryEvents.buildingQuery, (args: IBuildingQueryEventArgs) => this.handleBuildingQuery(args));
-    this.bind.onRootElement(QueryEvents.querySuccess, (args: IQuerySuccessEventArgs) => this.groupBy(args));
     this.bind.onRootElement(QueryEvents.doneBuildingQuery, (args: IDoneBuildingQueryEventArgs) => this.handleDoneBuildingQuery(args));
+    this.bind.onRootElement(QueryEvents.deferredQuerySuccess, (args: IQuerySuccessEventArgs) => this.groupBy(args));
   }
 
   public getValueCaption(value: string): string {
@@ -112,6 +114,7 @@ export class SimpleFilter extends Component {
     Assert.exists(queryBuilder);
     const groupByRequest = this.createBasicGroupByRequest();
     queryBuilder.groupByRequests.push(groupByRequest);
+    this.position = queryBuilder.groupByRequests.length -1;
   }
 
   public showBackdrop() {
@@ -134,10 +137,11 @@ export class SimpleFilter extends Component {
   }
 
   protected createBasicGroupByRequest(allowedValues?: string[], addComputedField: boolean = true): IGroupByRequest {
-    const groupByRequest: IGroupByRequest = {
+    let groupByRequest: IGroupByRequest = {
       field: <string>this.options.field,
       maximumNumberOfValues: 5,
       injectionDepth: 1000,
+      completeFacetWithStandardValues: true
     };
 
     if (allowedValues != null) {
@@ -181,7 +185,7 @@ export class SimpleFilter extends Component {
 
   private createCheckboxContainer() {
     this.checkboxContainer = $$('div', { className: 'coveo-simplefilter-checkbox-container' });
-    this.checkboxes = _.map(this.options.values, (value) => this.createCheckbox(value));
+    this.checkboxes = _.map(this.computedValues, (value) => this.createCheckbox(value));
     _.each(this.checkboxes, (result) => {
       this.checkboxContainer.el.appendChild(result.checkbox.getElement());
     });
@@ -268,6 +272,12 @@ export class SimpleFilter extends Component {
 
   private groupBy(data: IQuerySuccessEventArgs) {
     const groupByResult = data.results.groupByResults;
+    if(groupByResult.length > 0) {
+      _.each(groupByResult[this.position].values, (value) => {
+        this.computedValues.push(value.lookupValue.toString())
+      });
+    }
+    this.buildContent();
     return groupByResult;
   }
 

@@ -2,7 +2,7 @@ import * as Mock from '../MockEnvironment';
 import { ISimpleFilterOptions, SimpleFilter } from '../../src/ui/SimpleFilter/SimpleFilter';
 import { Simulate } from '../Simulate';
 import { $$ } from '../../src/utils/Dom';
-import {BreadcrumbEvents, IPopulateBreadcrumbEventArgs} from '../../src/events/BreadcrumbEvents';
+import { BreadcrumbEvents, IPopulateBreadcrumbEventArgs } from '../../src/events/BreadcrumbEvents';
 
 export function SimpleFilterTest() {
   describe('SimpleFilter', () => {
