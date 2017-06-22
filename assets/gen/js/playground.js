@@ -32265,8 +32265,8 @@ exports.SentryLogger = SentryLogger;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.version = {
-    'lib': '2.2900.6-beta',
-    'product': '2.2900.6-beta',
+    'lib': '2.2900.7-beta',
+    'product': '2.2900.7-beta',
     'supportedApiVersion': 2
 };
 
