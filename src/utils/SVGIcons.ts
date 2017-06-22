@@ -12,4 +12,6 @@ export class SVGIcons {
   public static mainClear = require('svg/main-clear');
   public static orAnd = require('svg/or-and');
   public static sort = require('svg/sort');
+  public static ascending = require('svg/ascending');
+  public static descending = require('svg/descending');
 }

@@ -241,8 +241,8 @@ export class FacetSettings extends FacetSort {
   private buildDirectionSection() {
     if (this.facet.searchInterface.isNewDesign()) {
       const directionAscendingSection = this.buildAscendingOrDescendingSection('Ascending');
-      const iconAscending = this.buildIcon();
-      const iconDescending = this.buildIcon();
+      const iconAscending = this.buildIcon('coveo-facet-settings-section-direction-ascending-svg', SVGIcons.ascending);
+      const iconDescending = this.buildIcon('coveo-facet-settings-section-direction-descending-svg', SVGIcons.descending);
       const directionItemsAscending = this.buildItems();
       const ascending = this.buildAscendingOrDescending('Ascending');
 
@@ -359,13 +359,13 @@ export class FacetSettings extends FacetSort {
     return showSection;
   }
 
-  private buildIcon(iconClass: string, svgIcon: string) {
-    if (this.facet.searchInterface.isNewDesign()) {
+  private buildIcon(iconClass?: string, svgIcon?: string) {
+    if (this.facet.searchInterface.isNewDesign() && iconClass && svgIcon) {
       const icon = $$('div', { className: 'coveo-icon-container' }, svgIcon);
       SVGDom.addClassToSVGInContainer(icon.el, iconClass);
       return icon.el;
     } else {
-      return $$('div', { className: 'coveo-icon' });
+      return $$('div', { className: 'coveo-icon' }).el;
     }
   }
 

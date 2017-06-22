@@ -109,8 +109,8 @@ $standard-transition-timing-function: cubic-bezier(0.4, 0.0, 0.2, 1);
     }
   }
   &:hover.#{$inactive} {
-    .#{iconClass} .coveo-active-shape-svg {
-      fill: inherit;
+    .coveo-active-shape-svg {
+      fill: currentColor;
     }
   }
 }
