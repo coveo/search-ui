@@ -11531,8 +11531,14 @@ var mobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.te
 var DeviceUtils = (function () {
     function DeviceUtils() {
     }
-    DeviceUtils.getDeviceName = function () {
-        var userAgent = navigator.userAgent;
+    DeviceUtils.getDeviceName = function (userAgent) {
+        if (userAgent === void 0) { userAgent = navigator.userAgent; }
+        if (userAgent.match(/Edge/i)) {
+            return 'Edge';
+        }
+        if (userAgent.match(/Opera Mini/i)) {
+            return 'Opera Mini';
+        }
         if (userAgent.match(/Android/i)) {
             return 'Android';
         }
@@ -11547,12 +11553,6 @@ var DeviceUtils = (function () {
         }
         if (userAgent.match(/iPod/i)) {
             return 'iPod';
-        }
-        if (userAgent.match(/Opera Mini/i)) {
-            return 'Opera Mini';
-        }
-        if (userAgent.match(/IEMobile/i)) {
-            return 'IE Mobile';
         }
         if (userAgent.match(/Chrome/i)) {
             return 'Chrome';
@@ -11700,6 +11700,9 @@ var StringUtils = (function () {
     // http://stackoverflow.com/a/25575009
     StringUtils.latinize = function (str) {
         return latinize(str);
+    };
+    StringUtils.capitalizeFirstLetter = function (str) {
+        return str.charAt(0).toUpperCase() + str.slice(1);
     };
     return StringUtils;
 }());
@@ -19706,8 +19709,8 @@ exports.DebugEvents = DebugEvents;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.version = {
-    'lib': '2.2900.5-beta',
-    'product': '2.2900.5-beta',
+    'lib': '2.2900.6-beta',
+    'product': '2.2900.6-beta',
     'supportedApiVersion': 2
 };
 
@@ -23401,6 +23404,7 @@ var Utils_1 = __webpack_require__(5);
 var Dom_1 = __webpack_require__(3);
 var _ = __webpack_require__(1);
 var GlobalExports_1 = __webpack_require__(4);
+var StringUtils_1 = __webpack_require__(19);
 function showOnlyWithHelper(helpers, options) {
     if (options == null) {
         options = {};
@@ -23507,6 +23511,9 @@ var FieldValue = (function (_super) {
             if (fullDateStr) {
                 element.setAttribute('title', fullDateStr);
             }
+        }
+        if (this.options.helper == 'date' || this.options.helper == 'dateTime' || this.options.helper == 'emailDateTime') {
+            toRender = StringUtils_1.StringUtils.capitalizeFirstLetter(toRender);
         }
         if (this.options.htmlValue) {
             element.innerHTML = toRender;
@@ -38212,10 +38219,7 @@ var FacetSearchParameters = (function () {
             });
         });
         _.each(this.facet.getDisplayedFacetValues(), function (v) {
-            var expandedValues = FacetUtils_1.FacetUtils.getValuesToUseForSearchInFacet(v.value, _this.facet);
-            _.each(expandedValues, function (expanded) {
-                _this.alwaysExclude.push(expanded);
-            });
+            _this.alwaysExclude.push(v.value);
         });
     };
     FacetSearchParameters.prototype.getGroupByRequest = function () {
@@ -38230,9 +38234,6 @@ var FacetSearchParameters = (function () {
         }
         var completeFacetWithStandardValues = true;
         if (this.facet.options.lookupField != null) {
-            completeFacetWithStandardValues = false;
-        }
-        if (this.facet.options.allowedValues != null) {
             completeFacetWithStandardValues = false;
         }
         var request = {
@@ -38286,7 +38287,7 @@ var FacetSearchParameters = (function () {
     };
     FacetSearchParameters.prototype.getCurrentlyShowedValueInSearch = function (searchResults) {
         return _.map(Dom_1.$$(searchResults).findAll('.coveo-facet-value-caption'), function (val) {
-            return Dom_1.$$(val).text();
+            return Dom_1.$$(val).getAttribute('data-original-value') || Dom_1.$$(val).text();
         });
     };
     FacetSearchParameters.prototype.lowerCaseAll = function () {
@@ -42413,10 +42414,20 @@ var FacetQueryController = (function () {
         });
     };
     FacetQueryController.prototype.fetchMore = function (numberOfValuesToFetch) {
+        var _this = this;
         var params = new FacetSearchParameters_1.FacetSearchParameters(this.facet);
         params.alwaysInclude = this.facet.options.allowedValues || _.pluck(this.facet.values.getAll(), 'value');
         params.nbResults = numberOfValuesToFetch;
-        return this.facet.getEndpoint().search(params.getQuery());
+        return this.facet.getEndpoint().search(params.getQuery()).then(function (results) {
+            if (_this.facet.options.allowedValues && results && results.groupByResults && results.groupByResults[0]) {
+                var values = results.groupByResults[0].values;
+                values = _.filter(values, function (value) {
+                    return _.contains(_.map(_this.facet.options.allowedValues, function (allowedValue) { return allowedValue.toLowerCase(); }), value.value.toLowerCase());
+                });
+                results.groupByResults[0].values = values;
+            }
+            return results;
+        });
     };
     FacetQueryController.prototype.searchInFacetToUpdateDelta = function (facetValues) {
         var params = new FacetSearchParameters_1.FacetSearchParameters(this.facet);
@@ -60815,6 +60826,7 @@ var Debug = (function (_super) {
             else {
                 this.debugHeader.moveTo(title);
                 this.debugHeader.setNewInfoToDebug(this.stackDebug);
+                this.debugHeader.setSearch(function (value) { return _this.search(value, build.body); });
             }
         }
         else {
@@ -61160,10 +61172,17 @@ var Debug = (function (_super) {
             });
         }
     };
-    Debug.prototype.highlightSearch = function (element, search) {
-        if (element != null) {
-            var match = element.innerText.split(new RegExp('(?=' + StringUtils_1.StringUtils.regexEncode(search) + ')', 'gi'));
-            element.innerHTML = '';
+    Debug.prototype.highlightSearch = function (elementToSearch, search) {
+        var asHTMLElement;
+        if (elementToSearch instanceof HTMLElement) {
+            asHTMLElement = elementToSearch;
+        }
+        else if (elementToSearch instanceof Dom_1.Dom) {
+            asHTMLElement = elementToSearch.el;
+        }
+        if (asHTMLElement != null && asHTMLElement.innerText != null) {
+            var match = asHTMLElement.innerText.split(new RegExp('(?=' + StringUtils_1.StringUtils.regexEncode(search) + ')', 'gi'));
+            asHTMLElement.innerHTML = '';
             match.forEach(function (value) {
                 var regex = new RegExp('(' + StringUtils_1.StringUtils.regexEncode(search) + ')', 'i');
                 var group = value.match(regex);
@@ -61173,15 +61192,15 @@ var Debug = (function (_super) {
                         className: 'coveo-debug-highlight'
                     });
                     span.text(group[1]);
-                    element.appendChild(span.el);
+                    asHTMLElement.appendChild(span.el);
                     span = Dom_1.$$('span');
                     span.text(value.substr(group[1].length));
-                    element.appendChild(span.el);
+                    asHTMLElement.appendChild(span.el);
                 }
                 else {
                     span = Dom_1.$$('span');
                     span.text(value);
-                    element.appendChild(span.el);
+                    asHTMLElement.appendChild(span.el);
                 }
             });
         }
@@ -61366,6 +61385,9 @@ var DebugHeader = (function () {
     DebugHeader.prototype.moveTo = function (newElement) {
         _.each(this.widgets, function (widget) { return newElement.appendChild(widget); });
         this.element = newElement;
+    };
+    DebugHeader.prototype.setSearch = function (onSearch) {
+        this.onSearch = onSearch;
     };
     DebugHeader.prototype.setNewInfoToDebug = function (newInfoToDebug) {
         this.infoToDebug = newInfoToDebug;
@@ -63353,7 +63375,8 @@ var ValueElementRenderer = (function () {
         var caption = this.facet.getValueCaption(this.facetValue);
         var valueCaption = Dom_1.$$('span', {
             className: 'coveo-facet-value-caption',
-            title: caption
+            title: caption,
+            'data-original-value': this.facetValue.value
         }).el;
         Dom_1.$$(valueCaption).text(caption);
         return valueCaption;
@@ -67243,7 +67266,7 @@ module.exports = "<svg enable-background=\"new 0 0 13 13\" viewBox=\"0 0 13 13\"
 /* 454 */
 /***/ (function(module, exports) {
 
-module.exports = "<svg enable-background=\"new 0 0 16 16\" viewBox=\"0 0 16 16\" xmlns=\"http://www.w3.org/2000/svg\"><path fill-opacity=\"0\" d=\"m8.03.819c3.987 0 7.227 3.222 7.227 7.181s-3.239 7.181-7.227 7.181c-3.976 0-7.209-3.222-7.209-7.181s3.237-7.181 7.209-7.181\"></path><g fill=\"currentColor\"><path d=\"m0 8c0 4.416 3.572 8 7.991 8 4.425 0 8.009-3.581 8.009-8 0-4.416-3.581-8-8.009-8-4.416 0-7.991 3.581-7.991 8m8.031-6.4c3.553 0 6.441 2.872 6.441 6.4s-2.887 6.4-6.441 6.4c-3.544 0-6.425-2.872-6.425-6.4s2.885-6.4 6.425-6.4\"></path><path d=\"m10.988 9.024c.551 0 1-.449 1-1s-.449-1-1-1-1 .449-1 1 .449 1 1 1\"></path><path d=\"m7.991 9c .551 0 1-.449 1-1s-.449-1-1-1-1 .449-1 1 .449 1 1 1\"></path><path d=\"m4.994 9c .551 0 1-.449 1-1s-.449-1-1-1-1 .449-1 1 .449 1 1 1\"></path></g></svg>"
+module.exports = "<svg enable-background=\"new 0 0 16 16\" viewBox=\"0 0 16 16\" xmlns=\"http://www.w3.org/2000/svg\"><g fill=\"currentColor\"><path class=\"coveo-more-background-svg\" fill-opacity=\"0\" d=\"m8.03.819c3.987 0 7.227 3.222 7.227 7.181s-3.239 7.181-7.227 7.181c-3.976 0-7.209-3.222-7.209-7.181s3.237-7.181 7.209-7.181\"></path><path d=\"m0 8c0 4.416 3.572 8 7.991 8 4.425 0 8.009-3.581 8.009-8 0-4.416-3.581-8-8.009-8-4.416 0-7.991 3.581-7.991 8m8.031-6.4c3.553 0 6.441 2.872 6.441 6.4s-2.887 6.4-6.441 6.4c-3.544 0-6.425-2.872-6.425-6.4s2.885-6.4 6.425-6.4\"></path><path d=\"m10.988 9.024c.551 0 1-.449 1-1s-.449-1-1-1-1 .449-1 1 .449 1 1 1\"></path><path d=\"m7.991 9c .551 0 1-.449 1-1s-.449-1-1-1-1 .449-1 1 .449 1 1 1\"></path><path d=\"m4.994 9c .551 0 1-.449 1-1s-.449-1-1-1-1 .449-1 1 .449 1 1 1\"></path></g></svg>"
 
 /***/ }),
 /* 455 */

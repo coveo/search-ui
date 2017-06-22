@@ -41,10 +41,7 @@ var FacetSearchParameters = (function () {
             });
         });
         _.each(this.facet.getDisplayedFacetValues(), function (v) {
-            var expandedValues = FacetUtils_1.FacetUtils.getValuesToUseForSearchInFacet(v.value, _this.facet);
-            _.each(expandedValues, function (expanded) {
-                _this.alwaysExclude.push(expanded);
-            });
+            _this.alwaysExclude.push(v.value);
         });
     };
     FacetSearchParameters.prototype.getGroupByRequest = function () {
@@ -59,9 +56,6 @@ var FacetSearchParameters = (function () {
         }
         var completeFacetWithStandardValues = true;
         if (this.facet.options.lookupField != null) {
-            completeFacetWithStandardValues = false;
-        }
-        if (this.facet.options.allowedValues != null) {
             completeFacetWithStandardValues = false;
         }
         var request = {
@@ -115,7 +109,7 @@ var FacetSearchParameters = (function () {
     };
     FacetSearchParameters.prototype.getCurrentlyShowedValueInSearch = function (searchResults) {
         return _.map(Dom_1.$$(searchResults).findAll('.coveo-facet-value-caption'), function (val) {
-            return Dom_1.$$(val).text();
+            return Dom_1.$$(val).getAttribute('data-original-value') || Dom_1.$$(val).text();
         });
     };
     FacetSearchParameters.prototype.lowerCaseAll = function () {
@@ -370,10 +364,20 @@ var FacetQueryController = (function () {
         });
     };
     FacetQueryController.prototype.fetchMore = function (numberOfValuesToFetch) {
+        var _this = this;
         var params = new FacetSearchParameters_1.FacetSearchParameters(this.facet);
         params.alwaysInclude = this.facet.options.allowedValues || _.pluck(this.facet.values.getAll(), 'value');
         params.nbResults = numberOfValuesToFetch;
-        return this.facet.getEndpoint().search(params.getQuery());
+        return this.facet.getEndpoint().search(params.getQuery()).then(function (results) {
+            if (_this.facet.options.allowedValues && results && results.groupByResults && results.groupByResults[0]) {
+                var values = results.groupByResults[0].values;
+                values = _.filter(values, function (value) {
+                    return _.contains(_.map(_this.facet.options.allowedValues, function (allowedValue) { return allowedValue.toLowerCase(); }), value.value.toLowerCase());
+                });
+                results.groupByResults[0].values = values;
+            }
+            return results;
+        });
     };
     FacetQueryController.prototype.searchInFacetToUpdateDelta = function (facetValues) {
         var params = new FacetSearchParameters_1.FacetSearchParameters(this.facet);
@@ -2620,7 +2624,8 @@ var ValueElementRenderer = (function () {
         var caption = this.facet.getValueCaption(this.facetValue);
         var valueCaption = Dom_1.$$('span', {
             className: 'coveo-facet-value-caption',
-            title: caption
+            title: caption,
+            'data-original-value': this.facetValue.value
         }).el;
         Dom_1.$$(valueCaption).text(caption);
         return valueCaption;
@@ -4258,7 +4263,7 @@ module.exports = "<svg enable-background=\"new 0 0 13 13\" viewBox=\"0 0 13 13\"
 /***/ 454:
 /***/ (function(module, exports) {
 
-module.exports = "<svg enable-background=\"new 0 0 16 16\" viewBox=\"0 0 16 16\" xmlns=\"http://www.w3.org/2000/svg\"><path fill-opacity=\"0\" d=\"m8.03.819c3.987 0 7.227 3.222 7.227 7.181s-3.239 7.181-7.227 7.181c-3.976 0-7.209-3.222-7.209-7.181s3.237-7.181 7.209-7.181\"></path><g fill=\"currentColor\"><path d=\"m0 8c0 4.416 3.572 8 7.991 8 4.425 0 8.009-3.581 8.009-8 0-4.416-3.581-8-8.009-8-4.416 0-7.991 3.581-7.991 8m8.031-6.4c3.553 0 6.441 2.872 6.441 6.4s-2.887 6.4-6.441 6.4c-3.544 0-6.425-2.872-6.425-6.4s2.885-6.4 6.425-6.4\"></path><path d=\"m10.988 9.024c.551 0 1-.449 1-1s-.449-1-1-1-1 .449-1 1 .449 1 1 1\"></path><path d=\"m7.991 9c .551 0 1-.449 1-1s-.449-1-1-1-1 .449-1 1 .449 1 1 1\"></path><path d=\"m4.994 9c .551 0 1-.449 1-1s-.449-1-1-1-1 .449-1 1 .449 1 1 1\"></path></g></svg>"
+module.exports = "<svg enable-background=\"new 0 0 16 16\" viewBox=\"0 0 16 16\" xmlns=\"http://www.w3.org/2000/svg\"><g fill=\"currentColor\"><path class=\"coveo-more-background-svg\" fill-opacity=\"0\" d=\"m8.03.819c3.987 0 7.227 3.222 7.227 7.181s-3.239 7.181-7.227 7.181c-3.976 0-7.209-3.222-7.209-7.181s3.237-7.181 7.209-7.181\"></path><path d=\"m0 8c0 4.416 3.572 8 7.991 8 4.425 0 8.009-3.581 8.009-8 0-4.416-3.581-8-8.009-8-4.416 0-7.991 3.581-7.991 8m8.031-6.4c3.553 0 6.441 2.872 6.441 6.4s-2.887 6.4-6.441 6.4c-3.544 0-6.425-2.872-6.425-6.4s2.885-6.4 6.425-6.4\"></path><path d=\"m10.988 9.024c.551 0 1-.449 1-1s-.449-1-1-1-1 .449-1 1 .449 1 1 1\"></path><path d=\"m7.991 9c .551 0 1-.449 1-1s-.449-1-1-1-1 .449-1 1 .449 1 1 1\"></path><path d=\"m4.994 9c .551 0 1-.449 1-1s-.449-1-1-1-1 .449-1 1 .449 1 1 1\"></path></g></svg>"
 
 /***/ }),
 

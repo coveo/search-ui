@@ -221,6 +221,7 @@ var Utils_1 = __webpack_require__(5);
 var Dom_1 = __webpack_require__(3);
 var _ = __webpack_require__(1);
 var GlobalExports_1 = __webpack_require__(4);
+var StringUtils_1 = __webpack_require__(19);
 function showOnlyWithHelper(helpers, options) {
     if (options == null) {
         options = {};
@@ -327,6 +328,9 @@ var FieldValue = (function (_super) {
             if (fullDateStr) {
                 element.setAttribute('title', fullDateStr);
             }
+        }
+        if (this.options.helper == 'date' || this.options.helper == 'dateTime' || this.options.helper == 'emailDateTime') {
+            toRender = StringUtils_1.StringUtils.capitalizeFirstLetter(toRender);
         }
         if (this.options.htmlValue) {
             element.innerHTML = toRender;

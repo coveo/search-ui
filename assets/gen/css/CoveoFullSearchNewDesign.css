@@ -16195,8 +16195,8 @@ a.CoveoResultLink.coveo-selected *,
   outline: none;
 }
 
-.coveo-facet-settings-more:hover .coveo-facet-settings-more-svg > path,
-.coveo-facet-settings-more:focus .coveo-facet-settings-more-svg > path {
+.coveo-facet-settings-more:hover .coveo-more-background-svg,
+.coveo-facet-settings-more:focus .coveo-more-background-svg {
   fill-opacity: 1;
   fill: #E6ECf0;
 }
@@ -18660,6 +18660,7 @@ a.CoveoResultLink.coveo-selected *,
   position: absolute;
   white-space: nowrap;
   transform: translateX(-50%) translateX(-11px) translateY(100%) translateY(-6px);
+  z-index: 1;
 }
 
 .CoveoQuickview .coveo-caption-for-icon:before {

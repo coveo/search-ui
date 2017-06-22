@@ -11430,8 +11430,14 @@ var mobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.te
 var DeviceUtils = (function () {
     function DeviceUtils() {
     }
-    DeviceUtils.getDeviceName = function () {
-        var userAgent = navigator.userAgent;
+    DeviceUtils.getDeviceName = function (userAgent) {
+        if (userAgent === void 0) { userAgent = navigator.userAgent; }
+        if (userAgent.match(/Edge/i)) {
+            return 'Edge';
+        }
+        if (userAgent.match(/Opera Mini/i)) {
+            return 'Opera Mini';
+        }
         if (userAgent.match(/Android/i)) {
             return 'Android';
         }
@@ -11446,12 +11452,6 @@ var DeviceUtils = (function () {
         }
         if (userAgent.match(/iPod/i)) {
             return 'iPod';
-        }
-        if (userAgent.match(/Opera Mini/i)) {
-            return 'Opera Mini';
-        }
-        if (userAgent.match(/IEMobile/i)) {
-            return 'IE Mobile';
         }
         if (userAgent.match(/Chrome/i)) {
             return 'Chrome';
@@ -12065,6 +12065,9 @@ var StringUtils = (function () {
     // http://stackoverflow.com/a/25575009
     StringUtils.latinize = function (str) {
         return latinize(str);
+    };
+    StringUtils.capitalizeFirstLetter = function (str) {
+        return str.charAt(0).toUpperCase() + str.slice(1);
     };
     return StringUtils;
 }());
@@ -32262,8 +32265,8 @@ exports.SentryLogger = SentryLogger;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.version = {
-    'lib': '2.2900.5-beta',
-    'product': '2.2900.5-beta',
+    'lib': '2.2900.6-beta',
+    'product': '2.2900.6-beta',
     'supportedApiVersion': 2
 };
 
@@ -33926,6 +33929,7 @@ var Debug = (function (_super) {
             else {
                 this.debugHeader.moveTo(title);
                 this.debugHeader.setNewInfoToDebug(this.stackDebug);
+                this.debugHeader.setSearch(function (value) { return _this.search(value, build.body); });
             }
         }
         else {
@@ -34271,10 +34275,17 @@ var Debug = (function (_super) {
             });
         }
     };
-    Debug.prototype.highlightSearch = function (element, search) {
-        if (element != null) {
-            var match = element.innerText.split(new RegExp('(?=' + StringUtils_1.StringUtils.regexEncode(search) + ')', 'gi'));
-            element.innerHTML = '';
+    Debug.prototype.highlightSearch = function (elementToSearch, search) {
+        var asHTMLElement;
+        if (elementToSearch instanceof HTMLElement) {
+            asHTMLElement = elementToSearch;
+        }
+        else if (elementToSearch instanceof Dom_1.Dom) {
+            asHTMLElement = elementToSearch.el;
+        }
+        if (asHTMLElement != null && asHTMLElement.innerText != null) {
+            var match = asHTMLElement.innerText.split(new RegExp('(?=' + StringUtils_1.StringUtils.regexEncode(search) + ')', 'gi'));
+            asHTMLElement.innerHTML = '';
             match.forEach(function (value) {
                 var regex = new RegExp('(' + StringUtils_1.StringUtils.regexEncode(search) + ')', 'i');
                 var group = value.match(regex);
@@ -34284,15 +34295,15 @@ var Debug = (function (_super) {
                         className: 'coveo-debug-highlight'
                     });
                     span.text(group[1]);
-                    element.appendChild(span.el);
+                    asHTMLElement.appendChild(span.el);
                     span = Dom_1.$$('span');
                     span.text(value.substr(group[1].length));
-                    element.appendChild(span.el);
+                    asHTMLElement.appendChild(span.el);
                 }
                 else {
                     span = Dom_1.$$('span');
                     span.text(value);
-                    element.appendChild(span.el);
+                    asHTMLElement.appendChild(span.el);
                 }
             });
         }
@@ -34475,6 +34486,9 @@ var DebugHeader = (function () {
     DebugHeader.prototype.moveTo = function (newElement) {
         _.each(this.widgets, function (widget) { return newElement.appendChild(widget); });
         this.element = newElement;
+    };
+    DebugHeader.prototype.setSearch = function (onSearch) {
+        this.onSearch = onSearch;
     };
     DebugHeader.prototype.setNewInfoToDebug = function (newInfoToDebug) {
         this.infoToDebug = newInfoToDebug;
