@@ -55,7 +55,7 @@
 	</div>
 	<div class="bottomHeader">
 		<div id="searchBox">
-			<div class="CoveoSearchbox" data-enable-omnibox="true" data-inline="false" data-enable-wildcards="true" data-enable-search-as-you-type="false" data-enable-query-suggest-addon="false" data-enable-query-syntax="true" data-enable-field-addon="true"></div>
+			<div class="CoveoSearchbox" data-enable-omnibox="true" data-inline="false" data-enable-wildcards="true" data-enable-search-as-you-type="false" data-enable-reveal-query-suggest-addon="false" data-enable-query-syntax="true" data-enable-field-addon="true"></div>
 			<div class="CoveoFieldSuggestions" data-field="@systitle" data-header-title="Suggested topics"></div>
 		</div>
 	</div>
@@ -138,6 +138,9 @@
 								<a href="querybuilder.html#context" class="tsd-kind-icon">context</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class">
+								<a href="querybuilder.html#disablequerysyntax" class="tsd-kind-icon">disable<wbr>Query<wbr>Syntax</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class">
 								<a href="querybuilder.html#disjunctionexpression" class="tsd-kind-icon">disjunction<wbr>Expression</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class">
@@ -154,9 +157,6 @@
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class">
 								<a href="querybuilder.html#enablepartialmatch" class="tsd-kind-icon">enable<wbr>Partial<wbr>Match</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class">
-								<a href="querybuilder.html#enablequerysyntax" class="tsd-kind-icon">enable<wbr>Query<wbr>Syntax</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class">
 								<a href="querybuilder.html#enablequestionmarks" class="tsd-kind-icon">enable<wbr>Question<wbr>Marks</a>
@@ -243,8 +243,6 @@
 							<a href="querybuilder.html">QueryBuilder</a>
 						</li>
 					</ul>
-					<!-- Has to remain here for the playground to work -->
-					<h1 style="visibility: collapse; font-size:0">Class QueryBuilder</h1>
 					<h1>Class QueryBuilder</h1>
 				</div>
 			</div>
@@ -285,13 +283,13 @@
 								<li class="tsd-kind-property tsd-parent-kind-class"><a href="querybuilder.html#childfield" class="tsd-kind-icon">child<wbr>Field</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class"><a href="querybuilder.html#constantexpression" class="tsd-kind-icon">constant<wbr>Expression</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class"><a href="querybuilder.html#context" class="tsd-kind-icon">context</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="querybuilder.html#disablequerysyntax" class="tsd-kind-icon">disable<wbr>Query<wbr>Syntax</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class"><a href="querybuilder.html#disjunctionexpression" class="tsd-kind-icon">disjunction<wbr>Expression</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class"><a href="querybuilder.html#enablecollaborativerating" class="tsd-kind-icon">enable<wbr>Collaborative<wbr>Rating</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class"><a href="querybuilder.html#enabledebug" class="tsd-kind-icon">enable<wbr>Debug</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class"><a href="querybuilder.html#enabledidyoumean" class="tsd-kind-icon">enable<wbr>Did<wbr>You<wbr>Mean</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class"><a href="querybuilder.html#enablelowercaseoperators" class="tsd-kind-icon">enable<wbr>Lowercase<wbr>Operators</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class"><a href="querybuilder.html#enablepartialmatch" class="tsd-kind-icon">enable<wbr>Partial<wbr>Match</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class"><a href="querybuilder.html#enablequerysyntax" class="tsd-kind-icon">enable<wbr>Query<wbr>Syntax</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class"><a href="querybuilder.html#enablequestionmarks" class="tsd-kind-icon">enable<wbr>Question<wbr>Marks</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class"><a href="querybuilder.html#enablewildcards" class="tsd-kind-icon">enable<wbr>Wildcards</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class"><a href="querybuilder.html#excerptlength" class="tsd-kind-icon">excerpt<wbr>Length</a></li>
@@ -711,6 +709,25 @@
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
+					<a name="disablequerysyntax" class="tsd-anchor"></a>
+					<h3>disable<wbr>Query<wbr>Syntax</h3>
+					<div class="tsd-signature tsd-kind-icon">disable<wbr>Query<wbr>Syntax<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/QueryBuilder.ts#L109">src/ui/Base/QueryBuilder.ts
+							:109</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Whether to disable the special query syntax such as field references for the basic query expression (parameter q).
+								It is equivalent to a No syntax block applied to the basic query expression.
+							If not specified, the parameter defaults to false.</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 					<a name="disjunctionexpression" class="tsd-anchor"></a>
 					<h3>disjunction<wbr>Expression</h3>
 					<div class="tsd-signature tsd-kind-icon">disjunction<wbr>Expression<span class="tsd-signature-symbol">:</span> <a href="expressionbuilder.html" class="tsd-signature-type">ExpressionBuilder</a></div>
@@ -820,28 +837,9 @@
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
 							<p>Whether to enable partial matching of the basic expression keywords.<br/>
-								By activating this, when the basic expression contains at least <a href="../interfaces/iquery.html#partialmatchkeywords">IQuery.partialMatchKeywords</a>, items containing only the number of keywords specified by <a href="../interfaces/iquery.html#partialmatchthreshold">IQuery.partialMatchThreshold</a> will also match the query.<br/>
-								Without this option, items are required to contain all the keywords in order to match the query.<br/>
+								By activating this, when the basic expression contains at least <a href="../interfaces/iquery.html#partialmatchkeywords">IQuery.partialMatchKeywords</a>, documents containing only the number of keywords specified by <a href="../interfaces/iquery.html#partialmatchthreshold">IQuery.partialMatchThreshold</a> will also match the query.<br/>
+								Without this option, documents are required to contain all the keywords in order to match the query.<br/>
 							If not specified, this parameter defaults to false.</p>
-						</div>
-					</div>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
-					<a name="enablequerysyntax" class="tsd-anchor"></a>
-					<h3>enable<wbr>Query<wbr>Syntax</h3>
-					<div class="tsd-signature tsd-kind-icon">enable<wbr>Query<wbr>Syntax<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/QueryBuilder.ts#L109">src/ui/Base/QueryBuilder.ts
-							:109</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Whether to enable the special query syntax such as field references for the basic query expression (parameter q).
-								It is equivalent to a No syntax block applied to the basic query expression.
-							If not specified, the parameter defaults to false.</p>
 						</div>
 					</div>
 				</section>
@@ -897,7 +895,7 @@
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
 							<p>This specifies the length (in number of characters) of the excerpts generated by the indexer based on the keywords present in the query.<br/>
-								The index includes the top most interesting sentences (in the order they appear in the item) that fit in the specified number of characters.<br/>
+								The index includes the top most interesting sentences (in the order they appear in the document) that fit in the specified number of characters.<br/>
 							When not specified, the default value is 200.</p>
 						</div>
 					</div>
@@ -1105,8 +1103,8 @@
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>The threshold to use for matching items when partial match is enabled.<br/>
-								This specifies the minimum number of query keywords that an item must contain when partial match is enabled. This value can either be an absolute number or a percentage value based on the total number of keywords.<br/>
+							<p>The threshold to use for matching documents when partial match is enabled.<br/>
+								This specifies the minimum number of query keywords that a document must contain when partial match is enabled. This value can either be an absolute number or a percentage value based on the total number of keywords.<br/>
 							If not specified, this parameter defaults to 50%.</p>
 						</div>
 					</div>

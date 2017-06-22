@@ -55,7 +55,7 @@
 	</div>
 	<div class="bottomHeader">
 		<div id="searchBox">
-			<div class="CoveoSearchbox" data-enable-omnibox="true" data-inline="false" data-enable-wildcards="true" data-enable-search-as-you-type="false" data-enable-query-suggest-addon="false" data-enable-query-syntax="true" data-enable-field-addon="true"></div>
+			<div class="CoveoSearchbox" data-enable-omnibox="true" data-inline="false" data-enable-wildcards="true" data-enable-search-as-you-type="false" data-enable-reveal-query-suggest-addon="false" data-enable-query-syntax="true" data-enable-field-addon="true"></div>
 			<div class="CoveoFieldSuggestions" data-field="@systitle" data-header-title="Suggested topics"></div>
 		</div>
 	</div>
@@ -110,9 +110,6 @@
 							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="dropdown.html#select" class="tsd-kind-icon">select</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="dropdown.html#setvalue" class="tsd-kind-icon">set<wbr>Value</a>
-							</li>
 							<li class=" tsd-kind-constructor tsd-parent-kind-class">
 								<a href="dropdown.html#constructor" class="tsd-kind-icon">constructor</a>
 							</li>
@@ -138,16 +135,15 @@
 							<a href="dropdown.html">Dropdown</a>
 						</li>
 					</ul>
-					<!-- Has to remain here for the playground to work -->
-					<h1 style="visibility: collapse; font-size:0">Class Dropdown</h1>
 					<h1>Class Dropdown</h1>
 				</div>
 			</div>
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>A dropdown widget with standard styling.</p>
+						<p>This class will create a dropdown meant to be used inside the <a href="../components/advancedsearch.html">AdvancedSearch</a> component.</p>
 					</div>
+					<p>It can be, more specifically, used for external code using the <a href="advancedsearchevents.html#buildingadvancedsearch">AdvancedSearchEvents.buildingAdvancedSearch</a></p>
 				</div>
 			</section>
 			<div class="preview-container tsd-panel">
@@ -165,7 +161,6 @@
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="dropdown.html#getvalue" class="tsd-kind-icon">get<wbr>Value</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="dropdown.html#reset" class="tsd-kind-icon">reset</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="dropdown.html#select" class="tsd-kind-icon">select</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="dropdown.html#setvalue" class="tsd-kind-icon">set<wbr>Value</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
@@ -190,17 +185,16 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FormWidgets/Dropdown.ts#L79">src/ui/FormWidgets/Dropdown.ts
-									:79</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/AdvancedSearch/Form/Dropdown.ts#L69">src/ui/AdvancedSearch/Form/Dropdown.ts
+									:69</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Gets the element on which the dropdown is bound.</p>
+									<p>Return the element on which the dropdown is bound.</p>
 								</div>
 							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">HTMLElement</span></h4>
-							<p>The dropdown element.</p>
 						</li>
 					</ul>
 				</section>
@@ -215,17 +209,16 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FormWidgets/Dropdown.ts#L53">src/ui/FormWidgets/Dropdown.ts
-									:53</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/AdvancedSearch/Form/Dropdown.ts#L45">src/ui/AdvancedSearch/Form/Dropdown.ts
+									:45</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Gets the element on which the dropdown is bound.</p>
+									<p>Return the element on which the dropdown is bound.</p>
 								</div>
 							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">HTMLElement</span></h4>
-							<p>The dropdown element.</p>
 						</li>
 					</ul>
 				</section>
@@ -240,17 +233,16 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FormWidgets/Dropdown.ts#L61">src/ui/FormWidgets/Dropdown.ts
-									:61</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/AdvancedSearch/Form/Dropdown.ts#L53">src/ui/AdvancedSearch/Form/Dropdown.ts
+									:53</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Gets the currently selected dropdown value.</p>
+									<p>Get the currently selected value in the dropdown.</p>
 								</div>
 							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
-							<p>The currently selected dropdown value.</p>
 						</li>
 					</ul>
 				</section>
@@ -265,13 +257,13 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FormWidgets/Dropdown.ts#L41">src/ui/FormWidgets/Dropdown.ts
-									:41</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/AdvancedSearch/Form/Dropdown.ts#L33">src/ui/AdvancedSearch/Form/Dropdown.ts
+									:33</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Resets the dropdown.</p>
+									<p>Reset the dropdown</p>
 								</div>
 							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -289,13 +281,13 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FormWidgets/Dropdown.ts#L71">src/ui/FormWidgets/Dropdown.ts
-									:71</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/AdvancedSearch/Form/Dropdown.ts#L61">src/ui/AdvancedSearch/Form/Dropdown.ts
+									:61</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Selects a value from the dropdown [<code>listofValues</code>]{@link Dropdown.listOfValues}.</p>
+									<p>Select a value from it&#39;s 0 based index in the {@link Dropdown.listOfValues}.</p>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -303,48 +295,10 @@
 								<li>
 									<h5>index: <span class="tsd-signature-type">number</span></h5>
 									<div class="tsd-comment tsd-typography">
-										<p>The 0-based index position of the value to select in the <code>listOfValues</code>.</p>
 									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> executeOnChange: <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> =&nbsp;true</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>Indicates whether to execute the [<code>onChange</code>]{@link Dropdown.onChange} function when this
-										method changes the dropdown selection.</p>
-									</div>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-					<a name="setvalue" class="tsd-anchor"></a>
-					<h3>set<wbr>Value</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">set<wbr>Value<span class="tsd-signature-symbol">(</span>value<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FormWidgets/Dropdown.ts#L87">src/ui/FormWidgets/Dropdown.ts
-									:87</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Sets the dropdown value.</p>
-								</div>
-							</div>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>value: <span class="tsd-signature-type">string</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>The value to set the dropdown to.</p>
-									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -365,38 +319,31 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FormWidgets/Dropdown.ts#L20">src/ui/FormWidgets/Dropdown.ts
-									:20</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/AdvancedSearch/Form/Dropdown.ts#L14">src/ui/AdvancedSearch/Form/Dropdown.ts
+									:14</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Creates a new <code>Dropdown</code>.</p>
+									<p>Create a new dropdown.</p>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> onChange: <span class="tsd-signature-type">function</span><span class="tsd-signature-symbol"> =&nbsp;(dropdown: Dropdown) &#x3D;&gt; {}</span></h5>
+									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> onChange: <span class="tsd-signature-type">function</span><span class="tsd-signature-symbol"> =&nbsp;() &#x3D;&gt; {}</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<div class="lead">
-											<p>The function to call when the dropdown selected value changes. This function takes the current
-											<code>Dropdown</code> instance as an argument.</p>
+											<p>will be called every time the dropdown change it&#39;s value. <code>this</code> will be the <code>Dropdown</code> instance.</p>
 										</div>
 									</div>
 									<ul class="tsd-parameters">
 										<li class="tsd-parameter-siganture">
 											<ul class="tsd-signatures tsd-kind-type-literal tsd-is-not-exported">
-												<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>dropdown<span class="tsd-signature-symbol">: </span><a href="dropdown.html" class="tsd-signature-type">Dropdown</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+												<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 											</ul>
 											<ul class="tsd-descriptions">
 												<li class="tsd-description">
-													<h4 class="tsd-parameters-title">Parameters</h4>
-													<ul class="tsd-parameters">
-														<li>
-															<h5>dropdown: <a href="dropdown.html" class="tsd-signature-type">Dropdown</a></h5>
-														</li>
-													</ul>
 													<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 												</li>
 											</ul>
@@ -407,7 +354,7 @@
 									<h5>listOfValues: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<div class="lead">
-											<p>The selectable values to display in the dropdown.</p>
+											<p>will be the list of selectable values in the dropdown</p>
 										</div>
 									</div>
 								</li>
@@ -415,8 +362,7 @@
 									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> getDisplayValue: <span class="tsd-signature-type">function</span><span class="tsd-signature-symbol"> =&nbsp;l</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<div class="lead">
-											<p>An optional function to modify the display values, rather than using the values as they
-											appear in the <code>listOfValues</code>.</p>
+											<p>An optional function that allow to modify the display value vs the actual value from the <code>listOfValues</code></p>
 										</div>
 									</div>
 									<ul class="tsd-parameters">
@@ -442,7 +388,7 @@
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> label: <span class="tsd-signature-type">string</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<div class="lead">
-											<p>The label to display for the dropdown.</p>
+											<p>A label/title to display for this dropdown</p>
 										</div>
 									</div>
 								</li>
@@ -458,13 +404,6 @@
 					<li>
 						<span class="target">Dropdown</span>
 					</li>
-				</ul>
-			</section>
-			<section class="tsd-panel">
-				<h3>Implements</h3>
-				<ul class="tsd-hierarchy">
-					<li><a href="../interfaces/iformwidget.html" class="tsd-signature-type">IFormWidget</a></li>
-					<li><span class="tsd-signature-type">IFormWidgetSettable</span></li>
 				</ul>
 			</section>
 			<footer class="with-border-bottom">

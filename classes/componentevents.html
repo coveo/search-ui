@@ -55,7 +55,7 @@
 	</div>
 	<div class="bottomHeader">
 		<div id="searchBox">
-			<div class="CoveoSearchbox" data-enable-omnibox="true" data-inline="false" data-enable-wildcards="true" data-enable-search-as-you-type="false" data-enable-query-suggest-addon="false" data-enable-query-syntax="true" data-enable-field-addon="true"></div>
+			<div class="CoveoSearchbox" data-enable-omnibox="true" data-inline="false" data-enable-wildcards="true" data-enable-search-as-you-type="false" data-enable-reveal-query-suggest-addon="false" data-enable-query-syntax="true" data-enable-field-addon="true"></div>
 			<div class="CoveoFieldSuggestions" data-field="@systitle" data-header-title="Suggested topics"></div>
 		</div>
 	</div>
@@ -97,9 +97,6 @@
 						<ul>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="componentevents.html#on" class="tsd-kind-icon">on</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
-								<a href="componentevents.html#oncomponentoptions" class="tsd-kind-icon">on<wbr>Component<wbr>Options</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
 								<a href="componentevents.html#onquerystate" class="tsd-kind-icon">on<wbr>Query<wbr>State</a>
@@ -147,22 +144,19 @@
 							<a href="componentevents.html">ComponentEvents</a>
 						</li>
 					</ul>
-					<!-- Has to remain here for the playground to work -->
-					<h1 style="visibility: collapse; font-size:0">Class ComponentEvents</h1>
 					<h1>Class ComponentEvents</h1>
 				</div>
 			</div>
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>The <code>ComponentEvents</code> class is used by the various Coveo Component to trigger events and bind event handlers. It adds
-							logic to execute handlers or triggers only when a component is &quot;enabled&quot;, which serves as a way to avoid executing
-						handlers on components that are invisible and inactive in the query.</p>
+						<p>Used by the various Coveo Component to trigger and bind event.<br/>
+							It adds a small logic to execute handler or triggers only when the component is &quot;enabled&quot;.<br/>
+							A component is disabled by calling {Component.disable}<br/>
+							Typically, a component is disabled when it is not active in the current {Tab}.<br/>
+							It can also be disabled by external code.<br/>
+						The class serves as a way to not execute handler on component that are invisible and inactive in the query.</p>
 					</div>
-					<p>Typically, a component is disabled when it is not active in the current <a href="../components/tab.html"><code>Tab</code></a>. It can also be disabled
-					by external code, however.</p>
-					<p>To manually enable or disable a component, simply use its <a href="component.html#enable"><code>enable</code></a> or
-					<a href="component.html#disable"><code>disable</code></a> method.</p>
 				</div>
 			</section>
 			<div class="preview-container tsd-panel">
@@ -176,7 +170,6 @@
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="componentevents.html#on" class="tsd-kind-icon">on</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter"><a href="componentevents.html#oncomponentoptions" class="tsd-kind-icon">on<wbr>Component<wbr>Options</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter"><a href="componentevents.html#onquerystate" class="tsd-kind-icon">on<wbr>Query<wbr>State</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter"><a href="componentevents.html#onrootelement" class="tsd-kind-icon">on<wbr>Root<wbr>Element</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="componentevents.html#one" class="tsd-kind-icon">one</a></li>
@@ -208,28 +201,28 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L300">src/ui/Base/Component.ts
-									:300</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L290">src/ui/Base/Component.ts
+									:290</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Executes the handler for an event on a target element.</p>
+									<p>Execute the handler for the given event on the given target element.<br/>
+									Execute only if the component is &quot;enabled&quot; (see <a href="component.html#enable">Component.enable</a>).</p>
 								</div>
-								<p>Executes only if the component is enabled (see the <a href="component.html#enable"><code>enable</code></a> method).</p>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>el: <span class="tsd-signature-type">HTMLElement</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">Window</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">Document</span></h5>
 									<div class="tsd-comment tsd-typography">
-										<p>The element from which the event originates.</p>
+										<p>The target on which the event will originate.</p>
 									</div>
 								</li>
 								<li>
 									<h5>event: <span class="tsd-signature-type">string</span></h5>
 									<div class="tsd-comment tsd-typography">
-										<p>The event for which to register a handler.</p>
+										<p>The event for which to register an handler.</p>
 									</div>
 								</li>
 								<li>
@@ -244,76 +237,6 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
-					<a name="oncomponentoptions" class="tsd-anchor"></a>
-					<h3>on<wbr>Component<wbr>Options</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
-						<li class="tsd-signature tsd-kind-icon">on<wbr>Component<wbr>Options&lt;T&gt;<span class="tsd-signature-symbol">(</span>eventType<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, attribute<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">string</span>, handler<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">function</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L371">src/ui/Base/Component.ts
-									:371</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Bind an event related specially to the component option model.
-									This will build the correct string event and execute the handler only if the component is activated.</p>
-								</div>
-							</div>
-							<h4 class="tsd-type-parameters-title">Type parameters</h4>
-							<ul class="tsd-type-parameters">
-								<li>
-									<h4>T</h4>
-								</li>
-							</ul>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>eventType: <span class="tsd-signature-type">string</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>The event type for which to register an event.</p>
-									</div>
-								</li>
-								<li>
-									<h5><span class="tsd-flag ts-flagOptional">Optional</span> attribute: <span class="tsd-signature-type">string</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>The attribute for which to register an event.</p>
-									</div>
-								</li>
-								<li>
-									<h5><span class="tsd-flag ts-flagOptional">Optional</span> handler: <span class="tsd-signature-type">function</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>The handler to execute when the query state event is triggered.</p>
-									</div>
-									<ul class="tsd-parameters">
-										<li class="tsd-parameter-siganture">
-											<ul class="tsd-signatures tsd-kind-type-literal tsd-is-not-exported">
-												<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>args<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></li>
-											</ul>
-											<ul class="tsd-descriptions">
-												<li class="tsd-description">
-													<h4 class="tsd-parameters-title">Parameters</h4>
-													<ul class="tsd-parameters">
-														<li>
-															<h5>args: <span class="tsd-signature-type">T</span></h5>
-														</li>
-													</ul>
-													<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">any</span></h4>
-												</li>
-											</ul>
-										</li>
-									</ul>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
 					<a name="onquerystate" class="tsd-anchor"></a>
 					<h3>on<wbr>Query<wbr>State</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
@@ -324,8 +247,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L360">src/ui/Base/Component.ts
-									:360</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L350">src/ui/Base/Component.ts
+									:350</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -394,8 +317,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L338">src/ui/Base/Component.ts
-									:338</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L328">src/ui/Base/Component.ts
+									:328</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -458,13 +381,13 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L320">src/ui/Base/Component.ts
-									:320</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L310">src/ui/Base/Component.ts
+									:310</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Executes the handler for the given event on the given target element.<br/>
+									<p>Execute the handler for the given event on the given target element.<br/>
 										Execute only if the component is &quot;enabled&quot; (see <a href="component.html#enable">Component.enable</a>).<br/>
 									Execute the handler only ONE time.</p>
 								</div>
@@ -505,8 +428,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L383">src/ui/Base/Component.ts
-									:383</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L362">src/ui/Base/Component.ts
+									:362</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -576,8 +499,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L349">src/ui/Base/Component.ts
-									:349</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L339">src/ui/Base/Component.ts
+									:339</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -641,8 +564,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L393">src/ui/Base/Component.ts
-									:393</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L372">src/ui/Base/Component.ts
+									:372</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -686,8 +609,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L412">src/ui/Base/Component.ts
-									:412</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L391">src/ui/Base/Component.ts
+									:391</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -722,13 +645,13 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L282">src/ui/Base/Component.ts
-									:282</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L274">src/ui/Base/Component.ts
+									:274</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Creates a new <code>ComponentEvents</code> instance for a <a href="component.html"><code>Component</code></a>.</p>
+									<p>Create a new <code>ComponentEvents</code> for the given <a href="component.html">Component</a>.</p>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -737,7 +660,7 @@
 									<h5>owner: <a href="component.html" class="tsd-signature-type">Component</a></h5>
 									<div class="tsd-comment tsd-typography">
 										<div class="lead">
-											<p>The <a href="component.html"><code>Component</code></a> that owns the event handlers and triggers.</p>
+											<p>The <a href="component.html">Component</a> which owns those events handler and trigger.</p>
 										</div>
 									</div>
 								</li>

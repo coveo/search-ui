@@ -55,7 +55,7 @@
 	</div>
 	<div class="bottomHeader">
 		<div id="searchBox">
-			<div class="CoveoSearchbox" data-enable-omnibox="true" data-inline="false" data-enable-wildcards="true" data-enable-search-as-you-type="false" data-enable-query-suggest-addon="false" data-enable-query-syntax="true" data-enable-field-addon="true"></div>
+			<div class="CoveoSearchbox" data-enable-omnibox="true" data-inline="false" data-enable-wildcards="true" data-enable-search-as-you-type="false" data-enable-reveal-query-suggest-addon="false" data-enable-query-syntax="true" data-enable-field-addon="true"></div>
 			<div class="CoveoFieldSuggestions" data-field="@systitle" data-header-title="Suggested topics"></div>
 		</div>
 	</div>
@@ -108,9 +108,6 @@
 								<a href="numericspinner.html#getintvalue" class="tsd-kind-icon">get<wbr>Int<wbr>Value</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="numericspinner.html#getvalue" class="tsd-kind-icon">get<wbr>Value</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="numericspinner.html#reset" class="tsd-kind-icon">reset</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
@@ -141,16 +138,15 @@
 							<a href="numericspinner.html">NumericSpinner</a>
 						</li>
 					</ul>
-					<!-- Has to remain here for the playground to work -->
-					<h1 style="visibility: collapse; font-size:0">Class NumericSpinner</h1>
 					<h1>Class NumericSpinner</h1>
 				</div>
 			</div>
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>A numeric spinner widget with standard styling.</p>
+						<p>This class will create a numeric spinner meant to be used inside the <a href="../components/advancedsearch.html">AdvancedSearch</a> component.</p>
 					</div>
+					<p>It can be, more specifically, used for external code using the <a href="advancedsearchevents.html#buildingadvancedsearch">AdvancedSearchEvents.buildingAdvancedSearch</a></p>
 				</div>
 			</section>
 			<div class="preview-container tsd-panel">
@@ -167,7 +163,6 @@
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="numericspinner.html#getelement" class="tsd-kind-icon">get<wbr>Element</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="numericspinner.html#getfloatvalue" class="tsd-kind-icon">get<wbr>Float<wbr>Value</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="numericspinner.html#getintvalue" class="tsd-kind-icon">get<wbr>Int<wbr>Value</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="numericspinner.html#getvalue" class="tsd-kind-icon">get<wbr>Value</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="numericspinner.html#reset" class="tsd-kind-icon">reset</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="numericspinner.html#setvalue" class="tsd-kind-icon">set<wbr>Value</a></li>
 							</ul>
@@ -194,17 +189,16 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FormWidgets/NumericSpinner.ts#L94">src/ui/FormWidgets/NumericSpinner.ts
-									:94</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/AdvancedSearch/Form/NumericSpinner.ts#L76">src/ui/AdvancedSearch/Form/NumericSpinner.ts
+									:76</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Gets the element on which the numeric spinner is bound.</p>
+									<p>Return the element on which the spinner is bound.</p>
 								</div>
 							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">HTMLElement</span></h4>
-							<p>The numeric spinner element.</p>
 						</li>
 					</ul>
 				</section>
@@ -219,17 +213,16 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FormWidgets/NumericSpinner.ts#L44">src/ui/FormWidgets/NumericSpinner.ts
-									:44</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/AdvancedSearch/Form/NumericSpinner.ts#L37">src/ui/AdvancedSearch/Form/NumericSpinner.ts
+									:37</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Gets the element on which the numeric spinner is bound.</p>
+									<p>Return the element on which the spinner is bound.</p>
 								</div>
 							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">HTMLElement</span></h4>
-							<p>The numeric spinner element.</p>
 						</li>
 					</ul>
 				</section>
@@ -244,17 +237,16 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FormWidgets/NumericSpinner.ts#L68">src/ui/FormWidgets/NumericSpinner.ts
-									:68</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/AdvancedSearch/Form/NumericSpinner.ts#L53">src/ui/AdvancedSearch/Form/NumericSpinner.ts
+									:53</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Gets the numeric spinner currently selected value (as a float).</p>
+									<p>Return the current selected value in the spinner, as a float.</p>
 								</div>
 							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
-							<p>The numeric spinner value.</p>
 						</li>
 					</ul>
 				</section>
@@ -269,42 +261,16 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FormWidgets/NumericSpinner.ts#L60">src/ui/FormWidgets/NumericSpinner.ts
-									:60</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/AdvancedSearch/Form/NumericSpinner.ts#L45">src/ui/AdvancedSearch/Form/NumericSpinner.ts
+									:45</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Gets the numeric spinner currently selected value (as an integer).</p>
+									<p>Return the current selected value in the spinner, as an int.</p>
 								</div>
 							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
-							<p>The numeric spinner value.</p>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-					<a name="getvalue" class="tsd-anchor"></a>
-					<h3>get<wbr>Value</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">get<wbr>Value<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FormWidgets/NumericSpinner.ts#L52">src/ui/FormWidgets/NumericSpinner.ts
-									:52</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Gets the numeric spinner currently selected value (as a string).</p>
-								</div>
-							</div>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
-							<p>The numeric spinner value.</p>
 						</li>
 					</ul>
 				</section>
@@ -319,13 +285,13 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FormWidgets/NumericSpinner.ts#L35">src/ui/FormWidgets/NumericSpinner.ts
-									:35</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/AdvancedSearch/Form/NumericSpinner.ts#L29">src/ui/AdvancedSearch/Form/NumericSpinner.ts
+									:29</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Resets the numeric spinner.</p>
+									<p>Reset the spinner</p>
 								</div>
 							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -343,13 +309,13 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FormWidgets/NumericSpinner.ts#L79">src/ui/FormWidgets/NumericSpinner.ts
-									:79</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/AdvancedSearch/Form/NumericSpinner.ts#L62">src/ui/AdvancedSearch/Form/NumericSpinner.ts
+									:62</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Sets the numeric spinner value.</p>
+									<p>Set the value in the spinner.</p>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -357,9 +323,6 @@
 								<li>
 									<h5>value: <span class="tsd-signature-type">number</span></h5>
 									<div class="tsd-comment tsd-typography">
-										<p>The value to set the numeric spinner to. If <code>value</code> is greater than [<code>max</code>]{@link NumericSpinner.max},
-											this method sets the numeric spinner to its maximum value instead. Likewise, if value is lesser than
-										[<code>min</code>]{@link NumericSpinner.min}, the method sets the numeric spinner to its minimum value.</p>
 									</div>
 								</li>
 							</ul>
@@ -381,38 +344,31 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FormWidgets/NumericSpinner.ts#L17">src/ui/FormWidgets/NumericSpinner.ts
-									:17</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/AdvancedSearch/Form/NumericSpinner.ts#L11">src/ui/AdvancedSearch/Form/NumericSpinner.ts
+									:11</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Creates a new <code>NumericSpinner</code>.</p>
+									<p>Create a new numeric spinner.</p>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> onChange: <span class="tsd-signature-type">function</span><span class="tsd-signature-symbol"> =&nbsp;(numericSpinner: NumericSpinner) &#x3D;&gt; {}</span></h5>
+									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> onChange: <span class="tsd-signature-type">function</span><span class="tsd-signature-symbol"> =&nbsp;() &#x3D;&gt; {}</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<div class="lead">
-											<p>The function to call when the numeric spinner value changes. This function takes the current
-											<code>NumericSpinner</code> instance as an argument.</p>
+											<p>will be called every time the numeric spinner change it&#39;s value. <code>this</code> will be the <code>NumericSpinner</code> instance.</p>
 										</div>
 									</div>
 									<ul class="tsd-parameters">
 										<li class="tsd-parameter-siganture">
 											<ul class="tsd-signatures tsd-kind-type-literal tsd-is-not-exported">
-												<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>numericSpinner<span class="tsd-signature-symbol">: </span><a href="numericspinner.html" class="tsd-signature-type">NumericSpinner</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+												<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 											</ul>
 											<ul class="tsd-descriptions">
 												<li class="tsd-description">
-													<h4 class="tsd-parameters-title">Parameters</h4>
-													<ul class="tsd-parameters">
-														<li>
-															<h5>numericSpinner: <a href="numericspinner.html" class="tsd-signature-type">NumericSpinner</a></h5>
-														</li>
-													</ul>
 													<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 												</li>
 											</ul>
@@ -423,7 +379,7 @@
 									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> min: <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;0</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<div class="lead">
-											<p>The minimum possible value of the numeric spinner.</p>
+											<p>will be the minimum value selectable by the spinner</p>
 										</div>
 									</div>
 								</li>
@@ -431,7 +387,7 @@
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> max: <span class="tsd-signature-type">number</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<div class="lead">
-											<p>The maximum possible value of the numeric spinner.</p>
+											<p>will be the maximum value selectable by the spinner</p>
 										</div>
 									</div>
 								</li>
@@ -447,13 +403,6 @@
 					<li>
 						<span class="target">NumericSpinner</span>
 					</li>
-				</ul>
-			</section>
-			<section class="tsd-panel">
-				<h3>Implements</h3>
-				<ul class="tsd-hierarchy">
-					<li><a href="../interfaces/iformwidget.html" class="tsd-signature-type">IFormWidget</a></li>
-					<li><span class="tsd-signature-type">IFormWidgetSettable</span></li>
 				</ul>
 			</section>
 			<footer class="with-border-bottom">

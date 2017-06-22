@@ -55,7 +55,7 @@
 	</div>
 	<div class="bottomHeader">
 		<div id="searchBox">
-			<div class="CoveoSearchbox" data-enable-omnibox="true" data-inline="false" data-enable-wildcards="true" data-enable-search-as-you-type="false" data-enable-query-suggest-addon="false" data-enable-query-syntax="true" data-enable-field-addon="true"></div>
+			<div class="CoveoSearchbox" data-enable-omnibox="true" data-inline="false" data-enable-wildcards="true" data-enable-search-as-you-type="false" data-enable-reveal-query-suggest-addon="false" data-enable-query-syntax="true" data-enable-field-addon="true"></div>
 			<div class="CoveoFieldSuggestions" data-field="@systitle" data-header-title="Suggested topics"></div>
 		</div>
 	</div>
@@ -123,15 +123,13 @@
 							<a href="iratingrequest.html">IRatingRequest</a>
 						</li>
 					</ul>
-					<!-- Has to remain here for the playground to work -->
-					<h1 style="visibility: collapse; font-size:0">Interface IRatingRequest</h1>
 					<h1>Interface IRatingRequest</h1>
 				</div>
 			</div>
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>The <code>IRatingRequest</code> interface describes a request to rate an item in the index.</p>
+						<p>Describe a request to rate a document in the index</p>
 					</div>
 				</div>
 			</section>
@@ -161,15 +159,15 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/RatingRequest.ts#L16">src/rest/RatingRequest.ts
-							:16</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/RatingRequest.ts#L13">src/rest/RatingRequest.ts
+							:13</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Contains the rating description.</p>
+							<p>String to describe the rating.<br/>
+							Can be &#39;Undefined&#39; | &#39;Lowest&#39; | &#39;Low&#39; | &#39;Average&#39; | &#39;Good&#39; | &#39;Best&#39;</p>
 						</div>
-						<p>Possible values are <code>Undefined</code> | <code>Lowest</code> | <code>Low</code> | <code>Average</code> | <code>Good</code> | <code>Best</code>.</p>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
@@ -179,13 +177,13 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/RatingRequest.ts#L9">src/rest/RatingRequest.ts
-							:9</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/RatingRequest.ts#L8">src/rest/RatingRequest.ts
+							:8</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Contains the unique ID of the item to rate.</p>
+							<p>The uniqueId of the document to rate</p>
 						</div>
 					</div>
 				</section>

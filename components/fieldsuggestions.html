@@ -55,7 +55,7 @@
 	</div>
 	<div class="bottomHeader">
 		<div id="searchBox">
-			<div class="CoveoSearchbox" data-enable-omnibox="true" data-inline="false" data-enable-wildcards="true" data-enable-search-as-you-type="false" data-enable-query-suggest-addon="false" data-enable-query-syntax="true" data-enable-field-addon="true"></div>
+			<div class="CoveoSearchbox" data-enable-omnibox="true" data-inline="false" data-enable-wildcards="true" data-enable-search-as-you-type="false" data-enable-reveal-query-suggest-addon="false" data-enable-query-syntax="true" data-enable-field-addon="true"></div>
 			<div class="CoveoFieldSuggestions" data-field="@systitle" data-header-title="Suggested topics"></div>
 		</div>
 	</div>
@@ -174,18 +174,17 @@
 							<a href="fieldsuggestions.html">FieldSuggestions</a>
 						</li>
 					</ul>
-					<!-- Has to remain here for the playground to work -->
-					<h1 style="visibility: collapse; font-size:0">Coveo component FieldSuggestions</h1>
-					<h1>Coveo FieldSuggestions Component (CoveoFieldSuggestions)</h1>
+					<h1>Coveo component FieldSuggestions</h1>
 				</div>
 			</div>
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>The <code>FieldSuggestions</code> component provides query suggestions based on a particular facet field. For example, you could
-						use this component to provide auto-complete suggestions while the end user is typing the title of an item.</p>
+						<p>The FieldSuggestions component provides query suggestions based on a particular facet field. For example, you could
+							use this component to provide auto-complete suggestions while the end user is typing a document
+						title.</p>
 					</div>
-					<p>The query suggestions provided by this component appear in the <a href="omnibox.html"><code>Omnibox</code></a> component.</p>
+					<p>The query suggestions that this component provides appear in the <a href="omnibox.html">Omnibox</a> component.</p>
 				</div>
 			</section>
 			<div class="preview-container tsd-panel">
@@ -251,15 +250,15 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FieldSuggestions/FieldSuggestions.ts#L50">src/ui/FieldSuggestions/FieldSuggestions.ts
-							:50</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FieldSuggestions/FieldSuggestions.ts#L44">src/ui/FieldSuggestions/FieldSuggestions.ts
+							:44</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies the facet field from which to provide suggestions.</p>
+							<p>Specifies the field from which to provide suggestions.</p>
 						</div>
-						<p>Specifying a value for this option is required for the <code>FieldSuggestions</code> component to work.</p>
+						<p>Specifying a value for this option is required for the FieldSuggestions component to work.</p>
 					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
@@ -273,17 +272,17 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FieldSuggestions/FieldSuggestions.ts#L77">src/ui/FieldSuggestions/FieldSuggestions.ts
-							:77</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FieldSuggestions/FieldSuggestions.ts#L71">src/ui/FieldSuggestions/FieldSuggestions.ts
+							:71</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies the title of the result suggestions group in the <a href="omnibox.html"><code>Omnibox</code></a> component. This option is
-								not available when using the default Lightning Friendly Theme (see
+							<p>Specifies the title of the result suggestions group in the <a href="omnibox.html">Omnibox</a> component. This option is not
+								available when using the default Lightning Friendly Theme (see
 							<a href="https://developers.coveo.com/x/Y4EAAg">Lightning Friendly Theme</a>).</p>
 						</div>
-						<p>Default value is the localized string for <code>SuggestedResults</code>.</p>
+						<p>Default value is the localized string for <code>&quot;SuggestedResults&quot;</code>.</p>
 					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
@@ -297,13 +296,13 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FieldSuggestions/FieldSuggestions.ts#L84">src/ui/FieldSuggestions/FieldSuggestions.ts
-							:84</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FieldSuggestions/FieldSuggestions.ts#L78">src/ui/FieldSuggestions/FieldSuggestions.ts
+							:78</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies the number of suggestions to render in the <a href="omnibox.html"><code>Omnibox</code></a>.</p>
+							<p>Specifies the number of suggestions to render in the <a href="omnibox.html">Omnibox</a>.</p>
 						</div>
 						<p>Default value is <code>5</code>. Minimum value is <code>1</code>.</p>
 					</div>
@@ -319,16 +318,16 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FieldSuggestions/FieldSuggestions.ts#L68">src/ui/FieldSuggestions/FieldSuggestions.ts
-							:68</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FieldSuggestions/FieldSuggestions.ts#L62">src/ui/FieldSuggestions/FieldSuggestions.ts
+							:62</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies the z-index position at which the suggestions render themselves in the <a href="omnibox.html"><code>Omnibox</code></a>.</p>
+							<p>Specifies the z-index position at which the suggestions render themselves in the <a href="omnibox.html">Omnibox</a>.</p>
 						</div>
-						<p>When there are multiple suggestion providers, components with higher <code>omniboxZIndex</code> values render themselves
-						first.</p>
+						<p>When there are multiple suggestion providers (e.g., <a href="facet.html">Facet</a> or <a href="analyticssuggestions.html">AnalyticsSuggestions</a>), components
+						with a higher omniboxZIndex values render themselves first.</p>
 						<p>Default value is <code>51</code>. Minimum value is <code>0</code>.</p>
 					</div>
 					<div class="tsd-panel">
@@ -343,65 +342,43 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FieldSuggestions/FieldSuggestions.ts#L143">src/ui/FieldSuggestions/FieldSuggestions.ts
-							:143</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FieldSuggestions/FieldSuggestions.ts#L117">src/ui/FieldSuggestions/FieldSuggestions.ts
+							:117</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies the event handler function to execute when the end user selects a suggested value in the
-								<a href="omnibox.html"><code>Omnibox</code></a>. By default, the query box text is replaced by what the end user selected and a new
-								query is executed. You can, however, replace this default behavior by providing a callback function to execute
-							when the value is selected.</p>
+							<p>Specifies the event handler function to execute when the end user selects a suggested value un the
+								<a href="omnibox.html">Omnibox</a>. By default, the query box text is replaced by what the end user selected and a new query is
+								executed. You can, however, replace this default behavior by providing a callback function to execute when the
+							value is selected.</p>
 						</div>
-						<p><strong>Note:</strong></p>
-						<blockquote>
-							<p>You cannot set this option directly in the component markup as an HTML attribute. You must either set it in the
-								<a href="../globals.html#init"><code>init</code></a> call of your search interface (see
-								<a href="https://developers.coveo.com/x/PoGfAQ#Components-PassingComponentOptionsintheinitCall">Components - Passing Component Options in the init Call</a>),
-								or before the <code>init</code> call, using the <code>options</code> top-level function (see
-							<a href="https://developers.coveo.com/x/PoGfAQ#Components-PassingComponentOptionsBeforetheinitCall">Components - Passing Component Options Before the init Call</a>).</p>
-						</blockquote>
+						<p>You can only set this option in the <code>init</code> call of your search interface. You cannot set it directly in the
+						markup as an HTML attribute.</p>
 						<p><strong>Example:</strong></p>
-						<pre><code class="lang-javascript">
-<span class="hljs-keyword">var</span> myOnSelectFunction = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">selectedValue, populateOmniboxEventArgs</span>) </span>{
-
-  <span class="hljs-comment">// Close the suggestion list when the user clicks a suggestion.</span>
-  populateOmniboxEventArgs.closeOmnibox();
-
-  <span class="hljs-comment">// Search for matching title results in the default endpoint.</span>
-  Coveo.SearchEndpoint.endpoints[<span class="hljs-string">"default"</span>].search({
-    <span class="hljs-attr">q</span>: <span class="hljs-string">"@title=='"</span> + selectedValue + <span class="hljs-string">"'"</span>
-  }).done(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">results</span>) </span>{
-
-    <span class="hljs-comment">// If more than one result is found, select a result that matches the selected title.</span>
-    <span class="hljs-keyword">var</span> foundResult = Coveo._.find(results.results, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">result</span>) </span>{
-      <span class="hljs-keyword">return</span> selectedValue == result.raw.title;
-    });
-
-    <span class="hljs-comment">// Open the found result in the current window, or log an error.</span>
-    <span class="hljs-keyword">if</span> (foundResult) {
-      <span class="hljs-built_in">window</span>.location = foundResult.clickUri;
-    }
-    <span class="hljs-keyword">else</span> {
-      <span class="hljs-keyword">new</span> Coveo.Logger.warn(<span class="hljs-string">"Selected suggested result '"</span> + selectedValue + <span class="hljs-string">"' not found."</span>);
-    }
-  });
-};
-
-<span class="hljs-comment">// You can set the option in the 'init' call:</span>
-Coveo.init(<span class="hljs-built_in">document</span>.querySelector(<span class="hljs-string">"#search"</span>), {
+						<pre><code class="lang-javascript"><span class="hljs-comment">// You can call the init script using "pure" JavaScript:</span>
+Coveo.init(<span class="hljs-built_in">document</span>.querySelector(<span class="hljs-string">'#search'</span>), {
    <span class="hljs-attr">FieldSuggestions</span> : {
-     <span class="hljs-attr">onSelect</span> : myOnSelectFunction
+     <span class="hljs-attr">omniboxSuggestionOptions</span> : {
+       <span class="hljs-attr">onSelect</span> : <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">valueSelected, populateOmniBoxEventArgs</span>)</span>{
+         <span class="hljs-comment">// Do something special when a value is selected.</span>
+         <span class="hljs-comment">// You receive the selected value as the first argument, and the Omnibox object as the second argument.</span>
+       }
+     }
    }
-});
+})
 
-<span class="hljs-comment">// Or before the 'init' call, using the 'options' top-level function:</span>
-<span class="hljs-comment">// Coveo.options(document.querySelector("#search"), {</span>
-<span class="hljs-comment">//   FieldSuggestions : {</span>
-<span class="hljs-comment">//     onSelect : myOnSelectFunction</span>
-<span class="hljs-comment">//   }</span>
-<span class="hljs-comment">// });</span>
+<span class="hljs-comment">// Or you can call the init script using the jQuery extension:</span>
+$(<span class="hljs-string">'#mySearch'</span>).coveo(<span class="hljs-string">'init'</span>, {
+   <span class="hljs-attr">FieldSuggestions</span> : {
+     <span class="hljs-attr">omniboxSuggestionOptions</span> : {
+       <span class="hljs-attr">onSelect</span> : <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">valueSelected, populateOmniBoxEventArgs</span>)</span>{
+         <span class="hljs-comment">// Do something special when a value is selected.</span>
+         <span class="hljs-comment">// You receive the selected value as the first argument, and the Omnibox object as the second argument.</span>
+       }
+     }
+   }
+})
 </code></pre>
 					</div>
 				</section>
@@ -412,8 +389,8 @@ Coveo.init(<span class="hljs-built_in">document</span>.querySelector(<span class
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FieldSuggestions/FieldSuggestions.ts#L58">src/ui/FieldSuggestions/FieldSuggestions.ts
-							:58</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FieldSuggestions/FieldSuggestions.ts#L52">src/ui/FieldSuggestions/FieldSuggestions.ts
+							:52</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -421,7 +398,7 @@ Coveo.init(<span class="hljs-built_in">document</span>.querySelector(<span class
 							<p>Specifies a query override to apply when retrieving suggestions. You can use any valid query expression (see
 							<a href="http://www.coveo.com/go?dest=adminhelp70&amp;lcid=9&amp;context=10005">Coveo Query Syntax Reference</a>).</p>
 						</div>
-						<p>Default value is the empty string, and the component applies no query override.</p>
+						<p>Default value is <code>&#39;&#39;</code>, which means that the component applies no query override by default.</p>
 					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
@@ -522,8 +499,8 @@ Coveo.init(<span class="hljs-built_in">document</span>.querySelector(<span class
 								<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#getbindings">getBindings</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L129">src/ui/Base/Component.ts
-									:129</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L124">src/ui/Base/Component.ts
+									:124</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -546,8 +523,8 @@ Coveo.init(<span class="hljs-built_in">document</span>.querySelector(<span class
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FieldSuggestions/FieldSuggestions.ts#L233">src/ui/FieldSuggestions/FieldSuggestions.ts
-									:233</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FieldSuggestions/FieldSuggestions.ts#L207">src/ui/FieldSuggestions/FieldSuggestions.ts
+									:207</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -582,8 +559,8 @@ Coveo.init(<span class="hljs-built_in">document</span>.querySelector(<span class
 								<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#get">get</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L198">src/ui/Base/Component.ts
-									:198</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L193">src/ui/Base/Component.ts
+									:193</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -628,8 +605,8 @@ Coveo.init(<span class="hljs-built_in">document</span>.querySelector(<span class
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#bind">bind</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L67">src/ui/Base/Component.ts
-							:67</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L62">src/ui/Base/Component.ts
+							:62</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -653,8 +630,8 @@ Coveo.init(<span class="hljs-built_in">document</span>.querySelector(<span class
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#componentoptionsmodel">componentOptionsModel</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L95">src/ui/Base/Component.ts
-							:95</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L90">src/ui/Base/Component.ts
+							:90</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -671,8 +648,8 @@ Coveo.init(<span class="hljs-built_in">document</span>.querySelector(<span class
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#componentstatemodel">componentStateModel</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L79">src/ui/Base/Component.ts
-							:79</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L74">src/ui/Base/Component.ts
+							:74</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -732,8 +709,8 @@ Coveo.init(<span class="hljs-built_in">document</span>.querySelector(<span class
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#querycontroller">queryController</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L83">src/ui/Base/Component.ts
-							:83</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L78">src/ui/Base/Component.ts
+							:78</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -750,8 +727,8 @@ Coveo.init(<span class="hljs-built_in">document</span>.querySelector(<span class
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#querystatemodel">queryStateModel</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L75">src/ui/Base/Component.ts
-							:75</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L70">src/ui/Base/Component.ts
+							:70</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -768,8 +745,8 @@ Coveo.init(<span class="hljs-built_in">document</span>.querySelector(<span class
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#root">root</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L71">src/ui/Base/Component.ts
-							:71</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L66">src/ui/Base/Component.ts
+							:66</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -786,8 +763,8 @@ Coveo.init(<span class="hljs-built_in">document</span>.querySelector(<span class
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#searchinterface">searchInterface</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L87">src/ui/Base/Component.ts
-							:87</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L82">src/ui/Base/Component.ts
+							:82</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -804,8 +781,8 @@ Coveo.init(<span class="hljs-built_in">document</span>.querySelector(<span class
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#usageanalytics">usageAnalytics</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L91">src/ui/Base/Component.ts
-							:91</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L86">src/ui/Base/Component.ts
+							:86</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -848,13 +825,13 @@ Coveo.init(<span class="hljs-built_in">document</span>.querySelector(<span class
 								<p>Overwrites <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#constructor">constructor</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FieldSuggestions/FieldSuggestions.ts#L149">src/ui/FieldSuggestions/FieldSuggestions.ts
-									:149</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FieldSuggestions/FieldSuggestions.ts#L123">src/ui/FieldSuggestions/FieldSuggestions.ts
+									:123</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Creates a new <code>FieldSuggestions</code> component.</p>
+									<p>Creates a new FieldSuggestions component.</p>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -871,7 +848,7 @@ Coveo.init(<span class="hljs-built_in">document</span>.querySelector(<span class
 									<h5>options: <span class="tsd-signature-type">IFieldSuggestionsOptions</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<div class="lead">
-											<p>The options for the <code>FieldSuggestions</code> component.</p>
+											<p>The options for the FieldSuggestions component.</p>
 										</div>
 									</div>
 								</li>
