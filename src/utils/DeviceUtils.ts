@@ -4,8 +4,13 @@ const mobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.
 
 export class DeviceUtils {
 
-  static getDeviceName(): string {
-    var userAgent = navigator.userAgent;
+  static getDeviceName(userAgent = navigator.userAgent): string {
+    if (userAgent.match(/Edge/i)) {
+      return 'Edge';
+    }
+    if (userAgent.match(/Opera Mini/i)) {
+      return 'Opera Mini';
+    }
     if (userAgent.match(/Android/i)) {
       return 'Android';
     }
@@ -20,12 +25,6 @@ export class DeviceUtils {
     }
     if (userAgent.match(/iPod/i)) {
       return 'iPod';
-    }
-    if (userAgent.match(/Opera Mini/i)) {
-      return 'Opera Mini';
-    }
-    if (userAgent.match(/IEMobile/i)) {
-      return 'IE Mobile';
     }
     if (userAgent.match(/Chrome/i)) {
       return 'Chrome';
