@@ -81,7 +81,7 @@ export class PrintableUri extends ResultLink {
           stringAndHoles = StringAndHoles.shortenPath(result.printableUri, $$(element).width());
         }
         this.shortenedUri = HighlightUtils.highlightString(stringAndHoles.value, result.printableUriHighlights, stringAndHoles.holes, 'coveo-highlight');
-        const link = $$('div', { className: 'coveo-printable-uri-part', title: result.printableUri });
+        const link = $$('a', { className: 'coveo-printable-uri-part', title: result.printableUri });
         link.setHtml(this.shortenedUri);
         element.appendChild(link.el);
       } else if (this.options.titleTemplate) {
