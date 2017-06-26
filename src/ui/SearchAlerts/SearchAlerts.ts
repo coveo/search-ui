@@ -335,6 +335,10 @@ export class SearchAlerts extends Component {
     const row = $$('tr', {
       className: 'coveo-subscriptions-panel-subscription'
     });
+
+    const pluckFrequenciesValues = _.pluck(frequencies, 'value');
+    const valueToLabel = (valueMappedToLabel: string) => _.findWhere(frequencies, { value: valueMappedToLabel }).label;
+
     const buildDropdown = () => {
       return new Dropdown((dropdownInstance: Dropdown) => {
         this.usageAnalytics.logCustomEvent<IAnalyticsSearchAlertsUpdateMeta>(analyticsActionCauseList.searchAlertsUpdateSubscription, {
@@ -342,7 +346,7 @@ export class SearchAlerts extends Component {
           frequency: dropdownInstance.getValue()
         }, this.element);
         this.updateAndSyncSearchAlert(subscription);
-      }, _.map(frequencies, (frequency) => frequency.value)).build();
+      }, pluckFrequenciesValues, valueToLabel).build();
     };
 
     const contentTypeElement = $$('td', {
