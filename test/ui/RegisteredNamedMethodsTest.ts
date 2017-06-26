@@ -9,6 +9,7 @@ import { mockUsageAnalytics } from '../MockEnvironment';
 import { LazyInitialization } from '../../src/ui/Base/Initialization';
 import { NoopComponent } from '../../src/ui/NoopComponent/NoopComponent';
 import { Defer } from '../../src/misc/Defer';
+import { SearchInterface } from '../../src/ui/SearchInterface/SearchInterface';
 
 export function RegisteredNamedMethodsTest() {
   describe('RegisteredNamedMethods', () => {
@@ -84,6 +85,16 @@ export function RegisteredNamedMethodsTest() {
       expect((<Component>Component.get(searchbox)).options.triggerQueryOnClear).toBe(false);
     });
 
+    it('should allow to call initSearchbox if the searchbox is on the root of the element', () => {
+      expect(() => RegisteredNamedMethod.initSearchbox(searchbox, '/search', {
+        Searchbox: { addSearchButton: false },
+        SearchInterface: { autoTriggerQuery: false }
+      })).not.toThrow();
+
+      expect((<Component>Component.get(searchbox, Searchbox)) instanceof Searchbox).toBe(true);
+      expect((<Component>Component.get(searchbox, SearchInterface)) instanceof SearchInterface).toBe(true);
+    });
+
     it('should allow to call init recommendation correctly', (done) => {
       expect(() => RegisteredNamedMethod.initRecommendation(root, undefined, undefined, {
         Searchbox: { addSearchButton: false },
@@ -94,8 +105,6 @@ export function RegisteredNamedMethodsTest() {
         expect((<Component>Component.get(searchbox)).options.addSearchButton).toBe(false);
         done();
       });
-
-
     });
 
     it('should allow to call execute query', () => {
