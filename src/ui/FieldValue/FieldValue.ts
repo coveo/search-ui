@@ -13,6 +13,7 @@ import { Facet } from '../Facet/Facet';
 import { $$ } from '../../utils/Dom';
 import * as _ from 'underscore';
 import { exportGlobally } from '../../GlobalExports';
+import { StringUtils } from '../../utils/StringUtils';
 
 export interface IFieldValueOptions {
   field?: IFieldOption;
@@ -270,6 +271,9 @@ export class FieldValue extends Component {
       }
     }
 
+    if (this.options.helper == 'date' || this.options.helper == 'dateTime' || this.options.helper == 'emailDateTime') {
+      toRender = StringUtils.capitalizeFirstLetter(toRender);
+    }
     if (this.options.htmlValue) {
       element.innerHTML = toRender;
     } else {

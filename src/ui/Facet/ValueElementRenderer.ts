@@ -120,12 +120,8 @@ export class ValueElementRenderer {
     this.addFocusAndBlurEventListeners(excludeIcon);
 
     if (this.facet.searchInterface.isNewDesign()) {
-      excludeIcon.appendChild($$('span', {
-        className: 'coveo-icon'
-      }).el);
-    }
-    if (Utils.exists(this.facetValue.computedField)) {
-      $$(excludeIcon).addClass('coveo-facet-value-exclude-with-computed-field');
+      excludeIcon.innerHTML = SVGIcons.checkboxHookExclusionMore;
+      SVGDom.addClassToSVGInContainer(excludeIcon, 'coveo-facet-value-exclude-svg');
     }
     return excludeIcon;
   }
@@ -202,7 +198,8 @@ export class ValueElementRenderer {
     const caption = this.facet.getValueCaption(this.facetValue);
     const valueCaption = $$('span', {
       className: 'coveo-facet-value-caption',
-      title: caption
+      title: caption,
+      'data-original-value': this.facetValue.value
     }).el;
 
     $$(valueCaption).text(caption);

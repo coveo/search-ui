@@ -2,7 +2,7 @@ import { IComponentBindings } from '../Base/ComponentBindings';
 import { Checkbox } from '../FormWidgets/Checkbox';
 import { COMPONENT_OPTIONS_ATTRIBUTES } from '../../models/ComponentOptionsModel';
 import { TextInput } from '../FormWidgets/TextInput';
-import { $$ } from '../../utils/Dom';
+import { $$, Dom } from '../../utils/Dom';
 import { ResultListEvents, IDisplayedNewResultEventArgs } from '../../events/ResultListEvents';
 import { QueryEvents, IDoneBuildingQueryEventArgs } from '../../events/QueryEvents';
 import { InitializationEvents } from '../../events/InitializationEvents';
@@ -15,6 +15,7 @@ export class DebugHeader {
   private highlightRecommendation = false;
   private requestAllFields = false;
   private search: HTMLElement;
+  private downloadLink: Dom;
   private widgets: HTMLElement[] = [];
 
   constructor(public root: HTMLElement, public element: HTMLElement, public bindings: IComponentBindings, public onSearch: (value: string) => void, public infoToDebug: any) {
@@ -33,6 +34,21 @@ export class DebugHeader {
   public moveTo(newElement: HTMLElement) {
     _.each(this.widgets, (widget: HTMLElement) => newElement.appendChild(widget));
     this.element = newElement;
+  }
+
+  public setSearch(onSearch: (value: string) => void) {
+    this.onSearch = onSearch;
+  }
+
+  public setNewInfoToDebug(newInfoToDebug) {
+    this.infoToDebug = newInfoToDebug;
+    this.rebuildDownloadLink();
+  }
+
+  private rebuildDownloadLink() {
+    if (this.downloadLink) {
+      this.downloadLink.setAttribute('href', this.buildDownloadHref());
+    }
   }
 
   private handleNewResultDisplayed(args: IDisplayedNewResultEventArgs) {
@@ -60,8 +76,9 @@ export class DebugHeader {
   private buildDownloadLink() {
     const downloadLink = $$('a', {
       download: 'debug.json',
-      'href': this.downloadHref()
+      'href': this.buildDownloadHref()
     }, 'Download');
+    this.downloadLink = downloadLink;
     return downloadLink.el;
   }
 
@@ -121,7 +138,15 @@ export class DebugHeader {
     return checkbox.build();
   }
 
-  private downloadHref() {
-    return 'data:text/json;charset=utf-8,' + encodeURIComponent(stringify(this.infoToDebug));
+  private buildDownloadHref() {
+    const toDownload = {};
+    _.each(this.infoToDebug, (info, key) => {
+      if (info['bindings']) {
+        toDownload[key] = info['options'];
+      } else {
+        toDownload[key] = _.omit(info, 'state', 'searchInterface');
+      }
+    });
+    return 'data:text/json;charset=utf-8,' + encodeURIComponent(stringify(toDownload));
   }
 }
