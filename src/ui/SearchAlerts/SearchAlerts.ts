@@ -355,6 +355,7 @@ export class SearchAlerts extends Component {
 
     const contextElement = $$('td', {
       className: 'coveo-subscriptions-panel-context',
+      title : context
     });
     contextElement.setHtml(context);
 
