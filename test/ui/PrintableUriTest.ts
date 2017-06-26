@@ -46,26 +46,26 @@ export function PrintableUriTest() {
     it('should shorten the printable uri correctly if the title is not a uri', () => {
       fakeResult.printableUri = 'This is not a Uri';
       test = Mock.advancedResultComponentSetup<PrintableUri>(PrintableUri, fakeResult, undefined);
-      expect($$(test.cmp.element).find('div').innerText).toEqual('This is not a ...');
+      expect($$(test.cmp.element).find('a').innerText).toEqual('This is not a ...');
     });
 
     it('should shorten the printable uri correctly if the title is a single character', () => {
       fakeResult.printableUri = 'z';
       test = Mock.advancedResultComponentSetup<PrintableUri>(PrintableUri, fakeResult, undefined);
-      expect($$(test.cmp.element).find('div').innerText).toEqual('...');
+      expect($$(test.cmp.element).find('a').innerText).toEqual('...');
     });
 
     it('should shorten the printable uri correctly', () => {
       fakeResult.printableUri = 'http://a.very.very.very.very.very.very.very.very.very.very.long.printable.uri';
       test = Mock.advancedResultComponentSetup<PrintableUri>(PrintableUri, fakeResult, undefined);
-      expect($$(test.cmp.element).find('div').innerText).toEqual('http://a.very.very.very.very.very.very.very.very.very.very.long.printable....');
+      expect($$(test.cmp.element).find('a').innerText).toEqual('http://a.very.very.very.very.very.very.very.very.very.very.long.printable....');
     });
 
     it('should shorten the printable uri correctly if title template is an empty string', () => {
       test.cmp.options.titleTemplate = '';
       fakeResult.printableUri = 'http://a.very.very.very.very.very.very.very.very.very.very.long.printable.uri';
       test = Mock.advancedResultComponentSetup<PrintableUri>(PrintableUri, fakeResult, undefined);
-      expect($$(test.cmp.element).find('div').innerText).toEqual('http://a.very.very.very.very.very.very.very.very.very.very.long.printable....');
+      expect($$(test.cmp.element).find('a').innerText).toEqual('http://a.very.very.very.very.very.very.very.very.very.very.long.printable....');
     });
 
     it('can receive an onClick option to execute', (done) => {
