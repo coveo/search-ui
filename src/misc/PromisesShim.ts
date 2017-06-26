@@ -1,7 +1,8 @@
 /* istanbul ignore next */
 export function shim() {
-  if (typeof Promise.prototype['finally'] != 'function') {
-    Promise.prototype['finally'] = function finallyPolyfill(callback) {
+  const promiseInstance = window['Promise'] || Promise;
+  if (typeof promiseInstance.prototype['finally'] != 'function') {
+    promiseInstance.prototype['finally'] = function finallyPolyfill(callback) {
       let constructor = this.constructor;
       return this.then(function (value) {
         return constructor.resolve(callback()).then(function () {
@@ -23,16 +24,16 @@ export function shim() {
     });
   };
 
-  if (typeof Promise.prototype['done'] !== 'function') {
-    Promise.prototype['done'] = function (onFulfilled, onRejected) {
+  if (typeof promiseInstance.prototype['done'] !== 'function') {
+    promiseInstance.prototype['done'] = function (onFulfilled, onRejected) {
       let self = arguments.length ? this.then.apply(this, arguments) : this;
       rethrowError(self);
       return this;
     };
   }
 
-  if (typeof Promise.prototype['fail'] !== 'function') {
-    Promise.prototype['fail'] = function (onFulfilled, onRejected) {
+  if (typeof promiseInstance.prototype['fail'] !== 'function') {
+    promiseInstance.prototype['fail'] = function (onFulfilled, onRejected) {
       let self = arguments.length ? this.catch.apply(this, arguments) : this;
       rethrowError(self);
       return this;
