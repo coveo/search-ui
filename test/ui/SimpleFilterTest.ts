@@ -12,8 +12,10 @@ export function SimpleFilterTest() {
     beforeEach(() => {
       test = Mock.optionsComponentSetup<SimpleFilter, ISimpleFilterOptions>(SimpleFilter, <ISimpleFilterOptions>{
         field: '@field',
+        maximumNumberOfValues: 5,
         title: 'FooTitleBar',
         values: ['foo', 'bar'],
+        allowedValues: [],
         valueCaption: {
           'gmailmessage': 'Gmail Message',
           'lithiummessage': 'Lithium Message',
@@ -24,8 +26,10 @@ export function SimpleFilterTest() {
 
       test2 = Mock.optionsComponentSetup<SimpleFilter, ISimpleFilterOptions>(SimpleFilter, <ISimpleFilterOptions>{
         field: '@field',
+        maximumNumberOfValues: 5,
         title: 'FooTitleBar',
         values: ['foo', 'bar'],
+        allowedValues: [],
         valueCaption: {
           'gmailmessage': 'Gmail Message',
           'lithiummessage': 'Lithium Message',
@@ -33,6 +37,8 @@ export function SimpleFilterTest() {
           'message': 'Message'
         }
       });
+      test.cmp.toggle();
+      test2.cmp.toggle();
     });
 
     afterEach(() => {
@@ -59,20 +65,19 @@ export function SimpleFilterTest() {
     });
 
     it('should expand the component correctly', () => {
-      test.cmp.toggle();
+      test.cmp.openContainer();
       expect($$(test.cmp.checkboxContainer).hasClass('coveo-simplefilter-checkbox-container-expanded')).toBe(true);
 
     });
 
     it('should collapse the component correctly', () => {
-      test.cmp.toggle();
-      test.cmp.toggle();
+      test.cmp.closeContainer();
       expect($$(test.cmp.checkboxContainer).hasClass('coveo-simplefilter-checkbox-container-expanded')).toBe(false);
     });
 
     it('should use the correct selected values', () => {
       test.cmp.checkboxes[0].checkbox.select();
-      expect(test.cmp.getSelectedValues()).toEqual(['foo']);
+      expect(test.cmp.getSelectedCaptions()).toEqual(['foo']);
     });
 
     it('should trigger a query when a checkbox is checked', () => {
@@ -96,20 +101,18 @@ export function SimpleFilterTest() {
     });
 
     it('getDisplayedTitle should return the right title depending on values selected', () => {
-      test.cmp.setDisplayedTitle('FooBarre');
-      expect(test.cmp.getDisplayedTitle()).toEqual('FooBarre');
       test.cmp.checkboxes[0].checkbox.select();
-      expect(test.cmp.getDisplayedTitle()).toEqual('foo');
+      expect($$($$(test.cmp.root).find('.coveo-simplefilter-selecttext')).text()).toEqual('foo');
       test.cmp.checkboxes[1].checkbox.select();
-      expect(test.cmp.getDisplayedTitle()).toEqual(('FooTitleBar'));
+      expect($$($$(test.cmp.root).find('.coveo-simplefilter-selecttext')).text()).toEqual(('FooTitleBar'));
     });
 
     it('should handle the backdrop correctly', () => {
-      expect(test.cmp.getBackdrop()).not.toBe(undefined);
-      test.cmp.showBackdrop();
-      expect(test.cmp.getBackdrop().hasClass('coveo-dropdown-background-active')).toBe(true);
-      test.cmp.hideBackdrop();
-      expect(test.cmp.getBackdrop().hasClass('coveo-dropdown-background-active')).toBe(false);
+      expect($$(test.cmp.root).find('.coveo-dropdown-background')).not.toBe(undefined);
+      test.cmp.openContainer();
+      expect($$($$(test.cmp.root).find('.coveo-dropdown-background')).hasClass('coveo-dropdown-background-active')).toBe(true);
+      test.cmp.closeContainer();
+      expect($$($$(test.cmp.root).find('.coveo-dropdown-background')).hasClass('coveo-dropdown-background-active')).toBe(false);
     });
 
     it('should put all simple filters in the same wrapper if there is more than one', () => {
@@ -121,7 +124,7 @@ export function SimpleFilterTest() {
     });
 
     it('should link every simple filter to the same backdrop', () => {
-      expect(test.cmp.getBackdrop()).toEqual(test2.cmp.getBackdrop());
+      expect($$(test.cmp.root).findAll('.coveo-dropdown-background').length).toEqual(1);
     });
 
     it('should not create more than one backdrop for the simple filters', () => {
@@ -146,9 +149,9 @@ export function SimpleFilterTest() {
         breadcrumbs: []
       };
       $$(test.env.root).trigger(BreadcrumbEvents.populateBreadcrumb, args);
-      expect(test.cmp.getSelectedValues().length).toBe(2);
+      expect(test.cmp.getSelectedCaptions().length).toBe(2);
       $$(test.env.root).trigger(BreadcrumbEvents.clearBreadcrumb, args);
-      expect(test.cmp.getSelectedValues().length).toEqual(0);
+      expect(test.cmp.getSelectedCaptions().length).toEqual(0);
 
 
     });
