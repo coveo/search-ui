@@ -21,6 +21,7 @@ import * as _ from 'underscore';
 import { exportGlobally } from '../../GlobalExports';
 import ModalBox = Coveo.ModalBox.ModalBox;
 import { Dropdown } from '../FormWidgets/Dropdown';
+import { SVGIcons } from '../../utils/SVGIcons';
 
 export interface ISearchAlertsOptions {
   enableManagePanel?: boolean;
@@ -136,7 +137,9 @@ export class SearchAlerts extends Component {
             text: l('SearchAlerts_Panel'),
             className: 'coveo-subscriptions-panel',
             onOpen: () => this.openPanel(),
-            onClose: () => this.close()
+            onClose: () => this.close(),
+            svgIcon: SVGIcons.dropdownFollowQuery,
+            svgIconClassName: 'coveo-subscriptions-panel-svg'
           });
         }
       });
@@ -158,8 +161,9 @@ export class SearchAlerts extends Component {
                   className: 'coveo-follow-query',
                   tooltip: l('FollowQueryDescription'),
                   onOpen: () => this.followQuery(),
-                  onClose: () => {
-                  }
+                  onClose: () => { },
+                  svgIcon: SVGIcons.dropdownFollowQuery,
+                  svgIconClassName: 'coveo-follow-query'
                 });
               }
             });
