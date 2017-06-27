@@ -10,7 +10,7 @@ export class ResponsiveFacetSlider extends ResponsiveFacetColumn {
   private facetSliders: FacetSlider[] = [];
 
   public static init(root: HTMLElement, component, options: IResponsiveComponentOptions) {
-    ResponsiveFacetColumn.init(root, component, options, FacetSlider.ID);
+    ResponsiveFacetColumn.init(ResponsiveFacetSlider, root, component, options, FacetSlider.ID);
   }
 
   constructor(public coveoRoot: Dom, public ID: string, options: IResponsiveComponentOptions, responsiveDropdown?: ResponsiveDropdown) {

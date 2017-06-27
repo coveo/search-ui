@@ -537,6 +537,10 @@ export class Initialization {
     return Utils.exists(Component.get(element, null, true));
   }
 
+  public static isThereANonSearchInterfaceComponentBoundToThisElement(element: HTMLElement): boolean {
+    return Initialization.isThereASingleComponentBoundToThisElement(element) && !get(element, SearchInterface, true);
+  }
+
   private static dispatchMethodCallOnBoundComponent(methodName: string, element: HTMLElement, args: any[]): any {
     Assert.isNonEmptyString(methodName);
     Assert.exists(element);
@@ -697,20 +701,20 @@ export class LazyInitialization {
     Assert.isNonEmptyString(componentClassId);
     Assert.exists(element);
 
-    if (Initialization.isThereASingleComponentBoundToThisElement(element)) {
-      // This means a component already exists on this element.
-      // Do not re-initialize again.
+    // If another component exist on that element, we do not want to re-initialize again.
+    // The exception being the "SearchInterface", since in some case we want end user to initialize directly on the root of the interface
+    // For example, when we are initializing a standalone search box, we might want to target the div for the search box directly.
+    if (Initialization.isThereANonSearchInterfaceComponentBoundToThisElement(element)) {
       return null;
     }
 
     return LazyInitialization.getLazyRegisteredComponent(componentClassId).then((lazyLoadedComponent: IComponentDefinition) => {
       Assert.exists(lazyLoadedComponent);
 
-      if (Initialization.isThereASingleComponentBoundToThisElement(element)) {
-        // This means a component already exists on this element.
-        // Do not re-initialize again.
+      if (Initialization.isThereANonSearchInterfaceComponentBoundToThisElement(element)) {
         return null;
       }
+
       let bindings: IComponentBindings = {};
       let options = {};
       let result: IQueryResult = undefined;
@@ -778,10 +782,10 @@ export class EagerInitialization {
       result = initParameters.result;
     }
 
-    if (Initialization.isThereASingleComponentBoundToThisElement(element)) {
-      // This means a component already exists on this element.
-      // Do not re-initialize again.
-      EagerInitialization.logger.warn(`Skipping component of class ${componentClassId} because the element is already initialized as another component.`, element);
+    // If another component exist on that element, we do not want to re-initialize again.
+    // The exception being the "SearchInterface", since in some case we want end user to initialize directly on the root of the interface
+    // For example, when we are initializing a standalone search box, we might want to target the div for the search box directly.
+    if (Initialization.isThereANonSearchInterfaceComponentBoundToThisElement(element)) {
       return null;
     }
 
