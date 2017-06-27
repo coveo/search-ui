@@ -13,10 +13,11 @@ export interface IResponsiveComponentOptions {
   enableResponsiveMode?: boolean;
   responsiveBreakpoint?: number;
   dropdownHeaderLabel?: string;
+  initializationEventRoot?: Dom;
 }
 
 export interface IResponsiveComponentConstructor {
-  new (root: Dom, ID: string, options: IResponsiveComponentOptions): IResponsiveComponent;
+  new(root: Dom, ID: string, options: IResponsiveComponentOptions): IResponsiveComponent;
 }
 
 export interface IResponsiveComponent {
@@ -52,7 +53,10 @@ export class ResponsiveComponentsManager {
 
   // Register takes a class and will instantiate it after framework initialization has completed.
   public static register(responsiveComponentConstructor: IResponsiveComponentConstructor, root: Dom, ID: string, component: Component, options: IResponsiveComponentOptions): void {
-    root.on(InitializationEvents.afterInitialization, () => {
+    // options.initializationEventRoot can be set in some instance (like recommendation) where the root of the interface triggering the init event
+    // is different from the one that will be used for calculation size.
+    const initEventRoot = options.initializationEventRoot || root;
+    initEventRoot.on(InitializationEvents.afterInitialization, () => {
       if (this.shouldEnableResponsiveMode(root)) {
         let responsiveComponentsManager = _.find(this.componentManagers, (componentManager) => root.el == componentManager.coveoRoot.el);
         if (!responsiveComponentsManager) {
