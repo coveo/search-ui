@@ -21,6 +21,7 @@ import * as _ from 'underscore';
 import { exportGlobally } from '../../GlobalExports';
 import ModalBox = Coveo.ModalBox.ModalBox;
 import { Dropdown } from '../FormWidgets/Dropdown';
+import { SVGIcons } from '../../utils/SVGIcons';
 
 export interface ISearchAlertsOptions {
   enableManagePanel?: boolean;
@@ -136,7 +137,9 @@ export class SearchAlerts extends Component {
             text: l('SearchAlerts_Panel'),
             className: 'coveo-subscriptions-panel',
             onOpen: () => this.openPanel(),
-            onClose: () => this.close()
+            onClose: () => this.close(),
+            svgIcon: SVGIcons.dropdownFollowQuery,
+            svgIconClassName: 'coveo-subscriptions-panel-svg'
           });
         }
       });
@@ -158,8 +161,9 @@ export class SearchAlerts extends Component {
                   className: 'coveo-follow-query',
                   tooltip: l('FollowQueryDescription'),
                   onOpen: () => this.followQuery(),
-                  onClose: () => {
-                  }
+                  onClose: () => { },
+                  svgIcon: SVGIcons.dropdownFollowQuery,
+                  svgIconClassName: 'coveo-follow-query'
                 });
               }
             });
@@ -335,6 +339,10 @@ export class SearchAlerts extends Component {
     const row = $$('tr', {
       className: 'coveo-subscriptions-panel-subscription'
     });
+
+    const pluckFrequenciesValues = _.pluck(frequencies, 'value');
+    const valueToLabel = (valueMappedToLabel: string) => _.findWhere(frequencies, { value: valueMappedToLabel }).label;
+
     const buildDropdown = () => {
       return new Dropdown((dropdownInstance: Dropdown) => {
         this.usageAnalytics.logCustomEvent<IAnalyticsSearchAlertsUpdateMeta>(analyticsActionCauseList.searchAlertsUpdateSubscription, {
@@ -342,7 +350,7 @@ export class SearchAlerts extends Component {
           frequency: dropdownInstance.getValue()
         }, this.element);
         this.updateAndSyncSearchAlert(subscription);
-      }, _.map(frequencies, (frequency) => frequency.value)).build();
+      }, pluckFrequenciesValues, valueToLabel).build();
     };
 
     const contentTypeElement = $$('td', {
@@ -351,6 +359,7 @@ export class SearchAlerts extends Component {
 
     const contextElement = $$('td', {
       className: 'coveo-subscriptions-panel-context',
+      title : context
     });
     contextElement.setHtml(context);
 

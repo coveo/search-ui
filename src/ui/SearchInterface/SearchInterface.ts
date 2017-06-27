@@ -159,6 +159,10 @@ export class SearchInterface extends RootComponent implements IComponentBindings
      *
      * For more advanced features, see the {@link ResultsPerPage} component.
      *
+     * **Note:**
+     *
+     * > When the {@link ResultsPerPage} component is present in the page, this option gets overridden and is useless.
+     *
      * Default value is `10`. Minimum value is `0`.
      */
     resultsPerPage: ComponentOptions.buildNumberOption({ defaultValue: 10, min: 0 }),

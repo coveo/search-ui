@@ -33,13 +33,14 @@ export class ResponsiveFacetColumn implements IResponsiveComponent {
   protected dropdown: ResponsiveDropdown;
   private dropdownHeaderLabel: string;
 
-  public static init(root: HTMLElement, component, options: IResponsiveComponentOptions, ID: string) {
+  public static init(responsiveComponentConstructor, root: HTMLElement, component, options: IResponsiveComponentOptions, ID: string) {
     if (!$$(root).find('.coveo-facet-column')) {
       let logger = new Logger('ResponsiveFacets');
       logger.info('No element with class coveo-facet-column. Responsive facets cannot be enabled');
       return;
     }
-    ResponsiveComponentsManager.register(ResponsiveFacetColumn, $$(root), ID, component, options);
+    ResponsiveComponentsManager.register(ResponsiveFacetColumn, $$(root), 'ResponsiveFacetColumn', component, options);
+    ResponsiveComponentsManager.register(responsiveComponentConstructor, $$(root), ID, component, options);
   }
 
   constructor(public coveoRoot: Dom, public ID: string, options: IResponsiveComponentOptions, responsiveDropdown?: ResponsiveDropdown) {
