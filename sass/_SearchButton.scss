@@ -25,11 +25,7 @@
     display: inline-block;
   }
 
-  .coveo-search-button-svg {
-      width: 18px;
-      height: 18px;
-      color: $color-greyish-teal-blue;
-  }
+
 
   .coveo-search-button-loading-svg {
     display: none;
@@ -38,6 +34,12 @@
   &:hover .coveo-magnifier-circle-svg  {
     fill: $color-active-yellow;
   }
+}
+
+.coveo-search-button-svg {
+    width: 18px;
+    height: 18px;
+    color: $color-greyish-teal-blue;
 }
 
 .coveo-executing-query .CoveoSearchButton {

@@ -25,3 +25,25 @@
 .coveo-waiting-for-authentication-popup {
   padding: 50px 150px;
 }
+
+.coveo-authentication-provider {
+  &:hover {
+    .coveo-dropdown-authenticate-hover-svg {
+      fill: $color-greyish-teal-blue;
+    }
+    .coveo-dropdown-authenticate-svg {
+      fill: none;
+    }
+    .coveo-authentication-provider-svg {
+      width: 12px;
+      height: 16px;
+    }
+  }
+}
+.coveo-authentication-provider-svg {
+  .coveo-dropdown-authenticate-svg {
+    fill: $color-greyish-teal-blue;
+  }
+  width: 12px;
+  height: 14px;
+}
