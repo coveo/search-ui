@@ -93,11 +93,11 @@ export class Settings extends Component {
    * Closes the **Settings** popup menu.
    */
   public close() {
-  //   this.isOpened = false;
-  //   if (this.menu != null) {
-  //     $$(this.menu).detach();
-  //     this.menu = null;
-  //   }
+    this.isOpened = false;
+    if (this.menu != null) {
+      $$(this.menu).detach();
+      this.menu = null;
+    }
   }
 
   private init() {

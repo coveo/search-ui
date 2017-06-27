@@ -51,7 +51,7 @@
 }
 
 .coveo-facet-settings-section-sort {
-  @include iconWithHoverState2('coveo-facet-settings-section-sort-svg', 'none');
+  @include iconWithHoverState('coveo-facet-settings-section-sort-svg', 'none');
   &.coveo-facet-settings-section {
     margin-bottom: 15px;
     .coveo-icon-container {
@@ -71,7 +71,7 @@
   &.coveo-facet-settings-disabled {
     cursor: inherit;
   }
-  @include iconWithHoverState2('coveo-facet-settings-section-direction-ascending-svg', 'none', 'coveo-facet-settings-disabled');
+  @include iconWithHoverState('coveo-facet-settings-section-direction-ascending-svg', 'none', 'coveo-facet-settings-disabled');
 }
 
 .coveo-facet-settings-section-direction-ascending-svg {
@@ -91,13 +91,13 @@
   &.coveo-facet-settings-disabled {
     cursor: inherit;
   }
-  @include iconWithHoverState2('coveo-facet-settings-section-direction-descending-svg', 'none', 'coveo-facet-settings-disabled');
+  @include iconWithHoverState('coveo-facet-settings-section-direction-descending-svg', 'none', 'coveo-facet-settings-disabled');
 }
 
 .coveo-facet-settings-section-save-state {
   border-top: $default-border;
   cursor: pointer;
-  @include iconWithHoverState2('coveo-sprites-dropdown-more', 'none', 'coveo-facet-settings-disabled');
+  @include iconWithHoverState('coveo-sprites-dropdown-more', 'none', 'coveo-facet-settings-disabled');
 }
 
 .coveo-facet-settings-section-save-state-svg {
@@ -109,7 +109,7 @@
 .coveo-facet-settings-section-clear-state {
   border-top: $default-border;
   cursor: pointer;
-  @include iconWithHoverState2('.coveo-sprites-dropdown-less', 'none', 'coveo-facet-settings-disabled');
+  @include iconWithHoverState('.coveo-sprites-dropdown-less', 'none', 'coveo-facet-settings-disabled');
 }
 
 .coveo-facet-settings-section-clear-state-svg {
@@ -121,7 +121,7 @@
 .coveo-facet-settings-section-hide {
   border-top: $default-border;
   cursor: pointer;
-  @include iconWithHoverState2('coveo-facet-settings-section-hide-svg', 'none', 'coveo-facet-settings-disabled');
+  @include iconWithHoverState('coveo-facet-settings-section-hide-svg', 'none', 'coveo-facet-settings-disabled');
 }
 
 .coveo-facet-settings-section-hide-svg {
@@ -133,7 +133,7 @@
 .coveo-facet-settings-section-show {
   border-top: $default-border;
   cursor: pointer;
-  @include iconWithHoverState2('coveo-facet-settings-section-show-svg', 'none', 'coveo-facet-settings-disabled');
+  @include iconWithHoverState('coveo-facet-settings-section-show-svg', 'none', 'coveo-facet-settings-disabled');
 }
 
 .coveo-facet-settings-section-show-svg {

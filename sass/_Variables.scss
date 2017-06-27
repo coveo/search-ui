@@ -81,25 +81,7 @@ $standard-transition-timing-function: cubic-bezier(0.4, 0.0, 0.2, 1);
   }
 }
 
-@mixin iconWithHoverState($iconBase, $float:'left', $inactive : 'coveo-disabled') {
-  $iconActive: '#{$iconBase}-active';
-  .coveo-icon {
-    @include retina-sprite(map-get($retina-group-map, $iconBase));
-    float: #{$float};
-  }
-  &:hover {
-    .coveo-icon {
-      @include retina-sprite(map-get($retina-group-map, $iconActive));
-    }
-  }
-  &:hover.#{$inactive} {
-    .coveo-icon {
-      @include retina-sprite(map-get($retina-group-map, $iconBase));
-    }
-  }
-}
-
-@mixin iconWithHoverState2($iconClass, $float:'left', $inactive : 'coveo-disabled') {
+@mixin iconWithHoverState($iconClass, $float:'left', $inactive : 'coveo-disabled') {
   .#{$iconClass} {
     float: #{$float};
   }

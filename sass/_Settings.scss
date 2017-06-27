@@ -85,15 +85,15 @@
   }
 
   &.coveo-share-query {
-    @include iconWithHoverState2('coveo-share-query-svg', 'none');
+    @include iconWithHoverState('coveo-share-query-svg', 'none');
   }
 
-  &.coveo-advanced-seach {
-    @include iconWithHoverState2('coveo-advanced-search-svg', 'none');
+  &.coveo-advanced-search {
+    @include iconWithHoverState('coveo-advanced-search-svg', 'none');
   }
 
   &.coveo-preferences-panel {
-    @include iconWithHoverState2('coveo-preferences-panel-svg', 'none');
+    @include iconWithHoverState('coveo-preferences-panel-svg', 'none');
   }
 
   &.coveo-authentication-provider {
@@ -102,7 +102,7 @@
       margin-right: 8px;
     }
 
-    @include iconWithHoverState2('coveo-authentication-provider-svg', 'none');
+    @include iconWithHoverState('coveo-authentication-provider-svg', 'none');
   }
 
   &.coveo-export-to-excel {
@@ -111,14 +111,14 @@
       margin-right: 8px;
     }
 
-    @include iconWithHoverState2('coveo-export-to-excel-svg', 'none');
+    @include iconWithHoverState('coveo-export-to-excel-svg', 'none');
   }
 
   &.coveo-subscriptions-panel {
-    @include iconWithHoverState2('coveo-subscription-panel-svg', 'none');
+    @include iconWithHoverState('coveo-subscription-panel-svg', 'none');
   }
 
   &.coveo-follow-query {
-    @include iconWithHoverState2('coveo-follow-query-svg', 'none')
+    @include iconWithHoverState('coveo-follow-query-svg', 'none')
   }
 }
