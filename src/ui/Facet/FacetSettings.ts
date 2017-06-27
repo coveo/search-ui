@@ -295,7 +295,7 @@ export class FacetSettings extends FacetSort {
 
   private buildSaveStateSection() {
     const saveStateSection = this.buildSection('coveo-facet-settings-section-save-state');
-    const icon = this.buildIcon();
+    const icon = this.buildIcon('coveo-facet-settings-section-save-state-svg', SVGIcons.dropdownMore);
     const saveStateItems = this.buildItems();
 
     this.facetStateLocalStorage = new LocalStorageUtils<IFacetState>('facet-state-' + this.facet.options.id);
@@ -317,7 +317,7 @@ export class FacetSettings extends FacetSort {
 
   private buildClearStateSection() {
     const clearStateSection = this.buildSection('coveo-facet-settings-section-clear-state');
-    const icon = this.buildIcon();
+    const icon = this.buildIcon('coveo-facet-settings-section-clear-state-svg', SVGIcons.dropdownLess);
     const clearStateItems = this.buildItems();
     const clearStateItem = this.buildItem(l('ClearFacetState'));
     clearStateItems.appendChild(clearStateItem);
@@ -329,7 +329,7 @@ export class FacetSettings extends FacetSort {
 
   private buildHideSection() {
     const hideSection = this.buildSection('coveo-facet-settings-section-hide');
-    const icon = this.buildIcon();
+    const icon = this.buildIcon('coveo-facet-settings-section-hide-svg', SVGIcons.facetCollapse);
     const hideItems = this.buildItems();
     const hideItem = this.buildItem(l('Collapse'));
     hideItems.appendChild(hideItem);
@@ -345,7 +345,7 @@ export class FacetSettings extends FacetSort {
 
   private buildShowSection() {
     const showSection = this.buildSection('coveo-facet-settings-section-show');
-    const icon = this.buildIcon();
+    const icon = this.buildIcon('coveo-facet-settings-section-show-svg', SVGIcons.facetExpand);
     const showItems = this.buildItems();
     const showItem = this.buildItem(l('Expand'));
     showItems.appendChild(showItem);

@@ -10,6 +10,7 @@ import { Initialization } from '../Base/Initialization';
 import * as _ from 'underscore';
 import { exportGlobally } from '../../GlobalExports';
 import 'styling/_Settings';
+import { SVGDom } from '../../utils/SVGDom';
 
 export interface ISettingsPopulateMenuArgs {
   settings: Settings;
@@ -92,11 +93,11 @@ export class Settings extends Component {
    * Closes the **Settings** popup menu.
    */
   public close() {
-    this.isOpened = false;
-    if (this.menu != null) {
-      $$(this.menu).detach();
-      this.menu = null;
-    }
+  //   this.isOpened = false;
+  //   if (this.menu != null) {
+  //     $$(this.menu).detach();
+  //     this.menu = null;
+  //   }
   }
 
   private init() {
@@ -134,7 +135,14 @@ export class Settings extends Component {
         className: `coveo-settings-item ${menuItem.className}`,
         title: _.escape(menuItem.tooltip || '')
       }).el;
-      menuItemDom.appendChild($$('div', { className: 'coveo-icon' }).el);
+      let icon = $$('div', { className: 'coveo-icon' }).el;
+      if (menuItem.svgIcon) {
+        icon.innerHTML = menuItem.svgIcon;
+        if (menuItem.svgIconClassName) {
+          SVGDom.addClassToSVGInContainer(icon, menuItem.svgIconClassName);
+        }
+      }
+      menuItemDom.appendChild(icon);
       menuItemDom.appendChild($$('div', { className: 'coveo-settings-text' }, _.escape(menuItem.text)).el);
       $$(menuItemDom).on('click', () => {
         this.close();

@@ -42,10 +42,7 @@ export class FacetSearchParameters {
       });
     });
     _.each(this.facet.getDisplayedFacetValues(), (v) => {
-      const expandedValues = FacetUtils.getValuesToUseForSearchInFacet(v.value, this.facet);
-      _.each(expandedValues, (expanded) => {
-        this.alwaysExclude.push(expanded);
-      });
+      this.alwaysExclude.push(v.value);
     });
   }
 
@@ -63,10 +60,6 @@ export class FacetSearchParameters {
 
     let completeFacetWithStandardValues = true;
     if (this.facet.options.lookupField != null) {
-      completeFacetWithStandardValues = false;
-    }
-
-    if (this.facet.options.allowedValues != null) {
       completeFacetWithStandardValues = false;
     }
 
@@ -123,7 +116,7 @@ export class FacetSearchParameters {
 
   private getCurrentlyShowedValueInSearch(searchResults: HTMLElement) {
     return _.map($$(searchResults).findAll('.coveo-facet-value-caption'), (val) => {
-      return $$(val).text();
+      return $$(val).getAttribute('data-original-value') || $$(val).text();
     });
   }
 

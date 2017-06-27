@@ -12,6 +12,7 @@ import { exportGlobally } from '../../GlobalExports';
 import { ModalBox as ModalBoxModule } from '../../ExternalModulesShim';
 
 import 'styling/_ShareQuery';
+import { SVGIcons } from '../../utils/SVGIcons';
 
 export interface IShareQueryOptions {
 }
@@ -51,7 +52,9 @@ export class ShareQuery extends Component {
         className: 'coveo-share-query',
         text: l('ShareQuery'),
         onOpen: () => this.open(),
-        onClose: () => this.close()
+        onClose: () => this.close(),
+        svgIcon: SVGIcons.dropdownShareQuery,
+        svgIconClassName: 'coveo-share-query-svg'
       });
     });
   }
