@@ -13,6 +13,7 @@ import * as _ from 'underscore';
 
 import 'styling/_PreferencesPanel';
 import { InitializationEvents } from '../../events/InitializationEvents';
+import { SVGIcons } from '../../utils/SVGIcons';
 
 export interface IPreferencesPanelOptions {
 }
@@ -52,7 +53,9 @@ export class PreferencesPanel extends Component {
         className: 'coveo-preferences-panel',
         text: l('Preferences'),
         onOpen: () => this.open(),
-        onClose: () => this.close()
+        onClose: () => this.close(),
+        svgIcon: SVGIcons.dropdownPreferences,
+        svgIconClassName: 'coveo-preferences-panel-svg'
       });
     });
     this.bind.onRootElement(InitializationEvents.afterComponentsInitialization, () => {
