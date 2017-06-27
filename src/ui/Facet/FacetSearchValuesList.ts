@@ -5,7 +5,7 @@ import { FacetValue } from './FacetValues';
 import * as _ from 'underscore';
 
 export interface IFacetSearchValuesListKlass {
-  new(facet: Facet, facetValueElementKlass: IFacetValueElementKlass): FacetSearchValuesList;
+  new (facet: Facet, facetValueElementKlass: IFacetValueElementKlass): FacetSearchValuesList;
 }
 
 export class FacetSearchValuesList {

@@ -8,7 +8,7 @@ import { ValueElement } from './ValueElement';
 
 
 export interface IFacetValueElementKlass {
-  new(facet: Facet, facetValue: FacetValue, displayNextTime?: boolean): FacetValueElement;
+  new (facet: Facet, facetValue: FacetValue, displayNextTime?: boolean): FacetValueElement;
 }
 
 export class FacetValueElement extends ValueElement {

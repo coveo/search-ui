@@ -9,7 +9,7 @@ import * as _ from 'underscore';
 declare const Coveo;
 
 export interface IFacetSortKlass {
-  new(sorts: string[], facet: Facet): FacetSort;
+  new (sorts: string[], facet: Facet): FacetSort;
 }
 
 export interface IFacetSortDescription {

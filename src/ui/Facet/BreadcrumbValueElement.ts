@@ -12,7 +12,7 @@ import { SVGIcons } from '../../utils/SVGIcons';
 import { SVGDom } from '../../utils/SVGDom';
 
 export interface IBreadcrumbValueElementKlass {
-  new(facet: Facet, facetValue: FacetValue): BreadcrumbValueElement;
+  new (facet: Facet, facetValue: FacetValue): BreadcrumbValueElement;
 }
 
 export class BreadcrumbValueElement {

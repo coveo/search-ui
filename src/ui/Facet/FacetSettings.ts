@@ -15,7 +15,7 @@ import { SVGIcons } from '../../utils/SVGIcons';
 import { SVGDom } from '../../utils/SVGDom';
 
 export interface IFacetSettingsKlass {
-  new(sorts: string[], facet: Facet): FacetSettings;
+  new (sorts: string[], facet: Facet): FacetSettings;
 }
 
 export interface IFacetState {
