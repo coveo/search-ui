@@ -42,7 +42,7 @@ export class ResponsiveRecommendation implements IResponsiveComponent {
       return;
     }
 
-    ResponsiveComponentsManager.register(ResponsiveRecommendation, $$(coveoRoot), Recommendation.ID, component, options);
+    ResponsiveComponentsManager.register(ResponsiveRecommendation, $$(coveoRoot), Recommendation.ID, component, _.extend({}, options, { initializationEventRoot: $$(root) }));
   }
 
   private static findParentRootOfRecommendationComponent(root: HTMLElement): Dom {
@@ -65,6 +65,7 @@ export class ResponsiveRecommendation implements IResponsiveComponent {
     this.registerOnCloseHandler();
     this.registerQueryEvents();
     this.dropdownContainer = $$('div', { className: ResponsiveRecommendation.DROPDOWN_CONTAINER_CSS_CLASS_NAME });
+    this.handleResizeEvent();
   }
 
   public handleResizeEvent(): void {
