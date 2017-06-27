@@ -27520,7 +27520,7 @@ this.parse = parseRecursion;
 /* 172 */
 /***/ (function(module, exports) {
 
-var Coveo;!function(e){var o;!function(e){function o(e,o){void 0===o&&(o={});var n=o.body||document.body;n.className?n.className.indexOf("coveo-modal-opened")==-1&&(n.className+=" coveo-modal-opened"):n.className="coveo-modal-opened";var s=document.createElement("div");s.className="coveo-modal-container coveo-opened ","small"==o.sizeMod&&(s.className+=" coveo-mod-small"),"big"==o.sizeMod&&(s.className+=" coveo-mod-big"),setTimeout(function(){s.className+=" coveo-mod-fade-in-scale"},0),n.appendChild(s),o.fullscreen===!0&&(s.className+=" coveo-fullscreen");var r=document.createElement("div");r.className="coveo-modal-backdrop coveo-modal-transparent",n.appendChild(r),setTimeout(function(){c(r,"coveo-modal-transparent")},0);var m=document.createElement("div");m.className="coveo-modal-content",s.appendChild(m);var i=function(e,a){void 0===e&&(e=0),void 0===a&&(a=!1);var t=null==o.validation||o.validation(e);if(t!==!1||a){s.parentElement&&s.parentElement.removeChild(s);var l=d.indexOf(i);return l>=0&&d.splice(l,1),null==n.querySelector(".coveo-modal-container")&&c(n,"coveo-modal-opened"),r.remove(),!0}return!1},v=a(o,i),u=v.header,p=v.closeIcon;m.appendChild(u),m.appendChild(t(o,e)),p.addEventListener("click",function(){i()}),r.addEventListener("click",function(){i()});var N=function(e){27==e.keyCode&&n.className.indexOf("coveo-modal-opened")!=-1&&(i(),document.removeEventListener("keyup",N))};document.addEventListener("keyup",N);var f,h=function(e,o){var n=document.createElement("button");n.className="coveo-btn",n.textContent=e,n.addEventListener("click",function(){return i(o)}),f.appendChild(n)};return null!=o.buttons&&(f=document.createElement("footer"),f.className="coveo-modal-footer",m.appendChild(f),o.buttons&l.OK&&h("Ok",l.OK),o.buttons&l.APPLY&&h("Apply",l.APPLY),o.buttons&l.YES&&h("Yes",l.YES),o.buttons&l.NO&&h("No",l.NO),o.buttons&l.CANCEL&&h("Cancel",l.CANCEL)),d.push(i),null!=o.className&&(s.className+=" "+o.className),{modalBox:s,wrapper:m,buttons:f,content:m,overlay:r,close:i}}function n(e){void 0===e&&(e=!1);for(var o=0;d.length>o;){var n=d[o](0,e);n||o++}}function a(e,o){var n=document.createElement("header");if(n.className="coveo-modal-header",null!=e.title){var a=document.createElement("h1");n.appendChild(a),a.innerHTML=e.title,e.titleClose===!0&&a.addEventListener("click",function(){return o()})}var t=document.createElement("span");t.className="coveo-small-close",n.appendChild(t);var c='<svg viewBox="0 0 22 22" class="coveo-icon coveo-fill-pure-white">\n                    <g transform="matrix(.7071-.7071.7071.7071-3.142 11)">\n                        <path d="m9-3.4h2v26.9h-2z"></path>\n                        <path d="m-3.4 9h26.9v2h-26.9z"></path>\n                    </g>\n                </svg>';return t.innerHTML=c,{header:n,closeIcon:t}}function t(e,o){var n=document.createElement("div");return n.className="coveo-modal-body coveo-mod-header-paddding coveo-mod-form-top-bottom-padding",n.appendChild(o),n}function c(e,o){e.className=e.className.replace(new RegExp("(^|\\s)"+o+"(\\s|\\b)","g"),"$1")}!function(e){e[e.OK=1]="OK",e[e.APPLY=2]="APPLY",e[e.YES=4]="YES",e[e.NO=8]="NO",e[e.CANCEL=16]="CANCEL"}(e.BUTTON||(e.BUTTON={}));var l=e.BUTTON,d=[];e.open=o,e.close=n}(o=e.ModalBox||(e.ModalBox={}))}(Coveo||(Coveo={}));
+var Coveo;!function(e){var o;!function(e){function o(e,o){void 0===o&&(o={});var n=o.body||document.body;n.className?n.className.indexOf("coveo-modal-opened")==-1&&(n.className+=" coveo-modal-opened"):n.className="coveo-modal-opened";var r=document.createElement("div");r.className="coveo-modal-container coveo-opened ","small"==o.sizeMod&&(r.className+=" coveo-mod-small"),"big"==o.sizeMod&&(r.className+=" coveo-mod-big"),setTimeout(function(){r.className+=" coveo-mod-fade-in-scale"},0),n.appendChild(r),o.fullscreen===!0&&(r.className+=" coveo-fullscreen");var s=document.createElement("div");s.className="coveo-modal-backdrop coveo-modal-transparent",n.appendChild(s),setTimeout(function(){c(s,"coveo-modal-transparent")},0);var m=document.createElement("div");m.className="coveo-modal-content",r.appendChild(m);var i=function(e,a){void 0===e&&(e=0),void 0===a&&(a=!1);var t=null==o.validation||o.validation(e);if(t!==!1||a){r.parentElement&&r.parentElement.removeChild(r);var l=d.indexOf(i);return l>=0&&d.splice(l,1),null==n.querySelector(".coveo-modal-container")&&c(n,"coveo-modal-opened"),s.parentNode&&s.parentNode.removeChild(s),!0}return!1},v=a(o,i),u=v.header,p=v.closeIcon;m.appendChild(u),m.appendChild(t(o,e)),p.addEventListener("click",function(){i()}),s.addEventListener("click",function(){i()});var N=function(e){27==e.keyCode&&n.className.indexOf("coveo-modal-opened")!=-1&&(i(),document.removeEventListener("keyup",N))};document.addEventListener("keyup",N);var f,h=function(e,o){var n=document.createElement("button");n.className="coveo-btn",n.textContent=e,n.addEventListener("click",function(){return i(o)}),f.appendChild(n)};return null!=o.buttons&&(f=document.createElement("footer"),f.className="coveo-modal-footer",m.appendChild(f),o.buttons&l.OK&&h("Ok",l.OK),o.buttons&l.APPLY&&h("Apply",l.APPLY),o.buttons&l.YES&&h("Yes",l.YES),o.buttons&l.NO&&h("No",l.NO),o.buttons&l.CANCEL&&h("Cancel",l.CANCEL)),d.push(i),null!=o.className&&(r.className+=" "+o.className),{modalBox:r,wrapper:m,buttons:f,content:m,overlay:s,close:i}}function n(e){void 0===e&&(e=!1);for(var o=0;d.length>o;){var n=d[o](0,e);n||o++}}function a(e,o){var n=document.createElement("header");if(n.className="coveo-modal-header",null!=e.title){var a=document.createElement("h1");n.appendChild(a),a.innerHTML=e.title,e.titleClose===!0&&a.addEventListener("click",function(){return o()})}var t=document.createElement("span");t.className="coveo-small-close",n.appendChild(t);var c='<svg viewBox="0 0 22 22" class="coveo-icon coveo-fill-pure-white">\n                    <g transform="matrix(.7071-.7071.7071.7071-3.142 11)">\n                        <path d="m9-3.4h2v26.9h-2z"></path>\n                        <path d="m-3.4 9h26.9v2h-26.9z"></path>\n                    </g>\n                </svg>';return t.innerHTML=c,{header:n,closeIcon:t}}function t(e,o){var n=document.createElement("div");return n.className="coveo-modal-body coveo-mod-header-paddding coveo-mod-form-top-bottom-padding",n.appendChild(o),n}function c(e,o){e.className=e.className.replace(new RegExp("(^|\\s)"+o+"(\\s|\\b)","g"),"$1")}!function(e){e[e.OK=1]="OK",e[e.APPLY=2]="APPLY",e[e.YES=4]="YES",e[e.NO=8]="NO",e[e.CANCEL=16]="CANCEL"}(e.BUTTON||(e.BUTTON={}));var l=e.BUTTON,d=[];e.open=o,e.close=n}(o=e.ModalBox||(e.ModalBox={}))}(Coveo||(Coveo={}));
 
 /*** EXPORTS FROM exports-loader ***/
 module.exports = Coveo.ModalBox;
@@ -32156,40 +32156,50 @@ exports.Options = Options;
 Object.defineProperty(exports, "__esModule", { value: true });
 /* istanbul ignore next */
 function shim() {
-    if (typeof Promise.prototype['finally'] != 'function') {
-        Promise.prototype['finally'] = function finallyPolyfill(callback) {
-            var constructor = this.constructor;
-            return this.then(function (value) {
-                return constructor.resolve(callback()).then(function () {
-                    return value;
+    var doShim = function (promiseInstance) {
+        if (typeof promiseInstance.prototype['finally'] != 'function') {
+            promiseInstance.prototype['finally'] = function finallyPolyfill(callback) {
+                var constructor = this.constructor;
+                return this.then(function (value) {
+                    return constructor.resolve(callback()).then(function () {
+                        return value;
+                    });
+                }, function (reason) {
+                    return constructor.resolve(callback()).then(function () {
+                        throw reason;
+                    });
                 });
-            }, function (reason) {
-                return constructor.resolve(callback()).then(function () {
-                    throw reason;
-                });
+            };
+        }
+        var rethrowError = function (self) {
+            self.then(null, function (err) {
+                setTimeout(function () {
+                    throw err;
+                }, 0);
             });
         };
-    }
-    var rethrowError = function (self) {
-        self.then(null, function (err) {
-            setTimeout(function () {
-                throw err;
-            }, 0);
-        });
+        if (typeof promiseInstance.prototype['done'] !== 'function') {
+            promiseInstance.prototype['done'] = function (onFulfilled, onRejected) {
+                var self = arguments.length ? this.then.apply(this, arguments) : this;
+                rethrowError(self);
+                return this;
+            };
+        }
+        if (typeof promiseInstance.prototype['fail'] !== 'function') {
+            promiseInstance.prototype['fail'] = function (onFulfilled, onRejected) {
+                var self = arguments.length ? this.catch.apply(this, arguments) : this;
+                rethrowError(self);
+                return this;
+            };
+        }
     };
-    if (typeof Promise.prototype['done'] !== 'function') {
-        Promise.prototype['done'] = function (onFulfilled, onRejected) {
-            var self = arguments.length ? this.then.apply(this, arguments) : this;
-            rethrowError(self);
-            return this;
-        };
+    var globalPromise = window['Promise'];
+    var localPromise = Promise;
+    if (globalPromise) {
+        doShim(globalPromise);
     }
-    if (typeof Promise.prototype['fail'] !== 'function') {
-        Promise.prototype['fail'] = function (onFulfilled, onRejected) {
-            var self = arguments.length ? this.catch.apply(this, arguments) : this;
-            rethrowError(self);
-            return this;
-        };
+    if (localPromise) {
+        doShim(localPromise);
     }
 }
 exports.shim = shim;
@@ -32265,8 +32275,8 @@ exports.SentryLogger = SentryLogger;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.version = {
-    'lib': '2.2900.8-beta',
-    'product': '2.2900.8-beta',
+    'lib': '2.2900.9-beta',
+    'product': '2.2900.9-beta',
     'supportedApiVersion': 2
 };
 

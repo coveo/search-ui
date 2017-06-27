@@ -1,6 +1,6 @@
 webpackJsonpCoveo__temporary([39],{
 
-/***/ 268:
+/***/ 269:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14,7 +14,7 @@ exports.SUBSCRIPTION_TYPE = {
 
 /***/ }),
 
-/***/ 302:
+/***/ 303:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -34,7 +34,7 @@ var Component_1 = __webpack_require__(8);
 var ComponentOptions_1 = __webpack_require__(9);
 var Assert_1 = __webpack_require__(7);
 var SearchAlertEvents_1 = __webpack_require__(58);
-var Subscription_1 = __webpack_require__(268);
+var Subscription_1 = __webpack_require__(269);
 var Initialization_1 = __webpack_require__(2);
 var Strings_1 = __webpack_require__(10);
 var Dom_1 = __webpack_require__(3);

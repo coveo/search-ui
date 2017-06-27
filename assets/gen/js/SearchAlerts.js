@@ -1,6 +1,6 @@
 webpackJsonpCoveo__temporary([7,66],{
 
-/***/ 268:
+/***/ 269:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -66,7 +66,7 @@ exports.SVGIcons = SVGIcons;
 
 /***/ }),
 
-/***/ 322:
+/***/ 323:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -89,7 +89,7 @@ var SettingsEvents_1 = __webpack_require__(40);
 var QueryEvents_1 = __webpack_require__(11);
 var Assert_1 = __webpack_require__(7);
 var SearchAlertEvents_1 = __webpack_require__(58);
-var Subscription_1 = __webpack_require__(268);
+var Subscription_1 = __webpack_require__(269);
 var Initialization_1 = __webpack_require__(2);
 var Strings_1 = __webpack_require__(10);
 var Dom_1 = __webpack_require__(3);
@@ -319,6 +319,8 @@ var SearchAlerts = (function (_super) {
         var row = Dom_1.$$('tr', {
             className: 'coveo-subscriptions-panel-subscription'
         });
+        var pluckFrequenciesValues = _.pluck(frequencies, 'value');
+        var valueToLabel = function (valueMappedToLabel) { return _.findWhere(frequencies, { value: valueMappedToLabel }).label; };
         var buildDropdown = function () {
             return new Dropdown_1.Dropdown(function (dropdownInstance) {
                 _this.usageAnalytics.logCustomEvent(AnalyticsActionListMeta_1.analyticsActionCauseList.searchAlertsUpdateSubscription, {
@@ -326,13 +328,14 @@ var SearchAlerts = (function (_super) {
                     frequency: dropdownInstance.getValue()
                 }, _this.element);
                 _this.updateAndSyncSearchAlert(subscription);
-            }, _.map(frequencies, function (frequency) { return frequency.value; })).build();
+            }, pluckFrequenciesValues, valueToLabel).build();
         };
         var contentTypeElement = Dom_1.$$('td', {
             className: 'coveo-subscriptions-panel-content-type'
         }, Strings_1.l('SearchAlerts_Type_' + subscription.type));
         var contextElement = Dom_1.$$('td', {
             className: 'coveo-subscriptions-panel-context',
+            title: context
         });
         contextElement.setHtml(context);
         var frequencyElement = Dom_1.$$('td', null, Dom_1.$$('div', {
@@ -719,7 +722,7 @@ var Component_1 = __webpack_require__(8);
 var ComponentOptions_1 = __webpack_require__(9);
 var SearchAlertEvents_1 = __webpack_require__(58);
 var QueryEvents_1 = __webpack_require__(11);
-var Subscription_1 = __webpack_require__(268);
+var Subscription_1 = __webpack_require__(269);
 var PopupUtils_1 = __webpack_require__(49);
 var Strings_1 = __webpack_require__(10);
 var Dom_1 = __webpack_require__(3);

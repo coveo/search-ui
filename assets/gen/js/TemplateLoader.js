@@ -1,6 +1,6 @@
 webpackJsonpCoveo__temporary([60],{
 
-/***/ 327:
+/***/ 328:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";

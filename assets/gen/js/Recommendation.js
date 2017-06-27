@@ -26,7 +26,7 @@ var PreferencesPanelEvents_1 = __webpack_require__(67);
 var AnalyticsEvents_1 = __webpack_require__(62);
 var AnalyticsActionListMeta_1 = __webpack_require__(12);
 var BreadcrumbEvents_1 = __webpack_require__(43);
-var QuickviewEvents_1 = __webpack_require__(267);
+var QuickviewEvents_1 = __webpack_require__(268);
 var QueryStateModel_1 = __webpack_require__(14);
 var Model_1 = __webpack_require__(16);
 var Utils_1 = __webpack_require__(5);
@@ -39,7 +39,7 @@ var _ = __webpack_require__(1);
 var GlobalExports_1 = __webpack_require__(4);
 var DefaultRecommendationTemplate_1 = __webpack_require__(411);
 var RecommendationQuery_1 = __webpack_require__(625);
-var RecommendationAnalyticsClient_1 = __webpack_require__(257);
+var RecommendationAnalyticsClient_1 = __webpack_require__(258);
 __webpack_require__(580);
 /**
  * The Recommendation component is a {@link SearchInterface} that displays recommendations typically based on user
@@ -388,7 +388,7 @@ exports.Recommendation = Recommendation;
 
 /***/ }),
 
-/***/ 262:
+/***/ 263:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -424,7 +424,7 @@ exports.EventsUtils = EventsUtils;
 
 /***/ }),
 
-/***/ 267:
+/***/ 268:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -449,7 +449,7 @@ exports.QuickviewEvents = QuickviewEvents;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var Dom_1 = __webpack_require__(3);
-var EventsUtils_1 = __webpack_require__(262);
+var EventsUtils_1 = __webpack_require__(263);
 var _ = __webpack_require__(1);
 var ResponsiveDropdown = (function () {
     function ResponsiveDropdown(dropdownContent, dropdownHeader, coveoRoot) {

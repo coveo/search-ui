@@ -1,6 +1,6 @@
 webpackJsonpCoveo__temporary([18],{
 
-/***/ 267:
+/***/ 268:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18,7 +18,7 @@ exports.QuickviewEvents = QuickviewEvents;
 
 /***/ }),
 
-/***/ 314:
+/***/ 315:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -43,7 +43,7 @@ var ResultListEvents_1 = __webpack_require__(32);
 var StringUtils_1 = __webpack_require__(19);
 var QuickviewDocument_1 = __webpack_require__(624);
 var QueryStateModel_1 = __webpack_require__(14);
-var QuickviewEvents_1 = __webpack_require__(267);
+var QuickviewEvents_1 = __webpack_require__(268);
 var Initialization_1 = __webpack_require__(2);
 var KeyboardUtils_1 = __webpack_require__(21);
 var ExternalModulesShim_1 = __webpack_require__(22);
@@ -418,7 +418,7 @@ var ComponentOptions_1 = __webpack_require__(9);
 var AnalyticsActionListMeta_1 = __webpack_require__(12);
 var Assert_1 = __webpack_require__(7);
 var Dom_1 = __webpack_require__(3);
-var QuickviewEvents_1 = __webpack_require__(267);
+var QuickviewEvents_1 = __webpack_require__(268);
 var DeviceUtils_1 = __webpack_require__(18);
 var Utils_1 = __webpack_require__(5);
 var ColorUtils_1 = __webpack_require__(105);

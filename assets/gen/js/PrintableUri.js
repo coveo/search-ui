@@ -1,6 +1,6 @@
 webpackJsonpCoveo__temporary([22,50],{
 
-/***/ 311:
+/***/ 312:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26,6 +26,7 @@ __webpack_require__(576);
 var ResultLink_1 = __webpack_require__(79);
 var StreamHighlightUtils_1 = __webpack_require__(65);
 var _ = __webpack_require__(1);
+var ComponentOptionsModel_1 = __webpack_require__(25);
 /**
  * The `PrintableUri` component inherits from the [ `ResultLink` ]{@link ResultLink} component and supports all of its options.
  *
@@ -48,6 +49,7 @@ var PrintableUri = (function (_super) {
         _this.element = element;
         _this.options = options;
         _this.result = result;
+        _this.options = _.extend({}, _this.options, _this.componentOptionsModel.get(ComponentOptionsModel_1.ComponentOptionsModel.attributesEnum.resultLink));
         return _this;
     }
     PrintableUri.prototype.renderParentsXml = function (element, parentsXml) {
@@ -83,7 +85,7 @@ var PrintableUri = (function (_super) {
                     stringAndHoles = HighlightUtils_1.StringAndHoles.shortenPath(result.printableUri, Dom_1.$$(element).width());
                 }
                 this.shortenedUri = HighlightUtils_1.HighlightUtils.highlightString(stringAndHoles.value, result.printableUriHighlights, stringAndHoles.holes, 'coveo-highlight');
-                var link = Dom_1.$$('div', { className: 'coveo-printable-uri-part', href: result.clickUri, title: result.printableUri });
+                var link = Dom_1.$$('a', { className: 'coveo-printable-uri-part', title: result.printableUri });
                 link.setHtml(this.shortenedUri);
                 element.appendChild(link.el);
             }

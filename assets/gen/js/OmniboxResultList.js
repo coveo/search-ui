@@ -38,7 +38,7 @@ var DefaultRecommendationTemplate_1 = __webpack_require__(411);
 var TemplateList_1 = __webpack_require__(102);
 var TemplateCache_1 = __webpack_require__(48);
 var ResponsiveDefaultResultTemplate_1 = __webpack_require__(478);
-var ResultListRenderer_1 = __webpack_require__(265);
+var ResultListRenderer_1 = __webpack_require__(266);
 var ResultListTableRenderer_1 = __webpack_require__(480);
 var ResultListCardRenderer_1 = __webpack_require__(479);
 var _ = __webpack_require__(1);
@@ -721,7 +721,7 @@ Initialization_1.Initialization.registerAutoCreateComponent(ResultList);
 
 /***/ }),
 
-/***/ 265:
+/***/ 266:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -770,7 +770,7 @@ exports.ResultListRenderer = ResultListRenderer;
 
 /***/ }),
 
-/***/ 307:
+/***/ 308:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1206,7 +1206,7 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var ResultListRenderer_1 = __webpack_require__(265);
+var ResultListRenderer_1 = __webpack_require__(266);
 var Dom_1 = __webpack_require__(3);
 var _ = __webpack_require__(1);
 var ResultListCardRenderer = (function (_super) {
@@ -1287,7 +1287,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var ResultListRenderer_1 = __webpack_require__(265);
+var ResultListRenderer_1 = __webpack_require__(266);
 var TableTemplate_1 = __webpack_require__(412);
 var Dom_1 = __webpack_require__(3);
 var _ = __webpack_require__(1);

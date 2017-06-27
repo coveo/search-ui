@@ -162,7 +162,35 @@ exports.KeywordsInput = KeywordsInput;
 
 /***/ }),
 
-/***/ 279:
+/***/ 28:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var SVGDom = (function () {
+    function SVGDom() {
+    }
+    SVGDom.addClassToSVGInContainer = function (svgContainer, classToAdd) {
+        var svgElement = svgContainer.querySelector('svg');
+        svgElement.setAttribute('class', SVGDom.getClass(svgElement) + " " + classToAdd);
+    };
+    SVGDom.removeClassFromSVGInContainer = function (svgContainer, classToRemove) {
+        var svgElement = svgContainer.querySelector('svg');
+        svgElement.setAttribute('class', SVGDom.getClass(svgElement).replace(classToRemove, ''));
+    };
+    SVGDom.getClass = function (svgElement) {
+        var className = svgElement.getAttribute('class');
+        return className ? className : '';
+    };
+    return SVGDom;
+}());
+exports.SVGDom = SVGDom;
+
+
+/***/ }),
+
+/***/ 280:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -255,35 +283,7 @@ exports.DateInput = DateInput;
 
 /***/ }),
 
-/***/ 28:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var SVGDom = (function () {
-    function SVGDom() {
-    }
-    SVGDom.addClassToSVGInContainer = function (svgContainer, classToAdd) {
-        var svgElement = svgContainer.querySelector('svg');
-        svgElement.setAttribute('class', SVGDom.getClass(svgElement) + " " + classToAdd);
-    };
-    SVGDom.removeClassFromSVGInContainer = function (svgContainer, classToRemove) {
-        var svgElement = svgContainer.querySelector('svg');
-        svgElement.setAttribute('class', SVGDom.getClass(svgElement).replace(classToRemove, ''));
-    };
-    SVGDom.getClass = function (svgElement) {
-        var className = svgElement.getAttribute('class');
-        return className ? className : '';
-    };
-    return SVGDom;
-}());
-exports.SVGDom = SVGDom;
-
-
-/***/ }),
-
-/***/ 280:
+/***/ 281:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -331,7 +331,7 @@ exports.DocumentInput = DocumentInput;
 
 /***/ }),
 
-/***/ 281:
+/***/ 282:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2240,7 +2240,7 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var DateInput_1 = __webpack_require__(279);
+var DateInput_1 = __webpack_require__(280);
 var Strings_1 = __webpack_require__(10);
 var Dom_1 = __webpack_require__(3);
 var AdvancedSearchEvents_1 = __webpack_require__(60);
@@ -2292,7 +2292,7 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var DateInput_1 = __webpack_require__(279);
+var DateInput_1 = __webpack_require__(280);
 var DatePicker_1 = __webpack_require__(101);
 var Strings_1 = __webpack_require__(10);
 var Dom_1 = __webpack_require__(3);
@@ -2371,7 +2371,7 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var DateInput_1 = __webpack_require__(279);
+var DateInput_1 = __webpack_require__(280);
 var Dom_1 = __webpack_require__(3);
 var Strings_1 = __webpack_require__(10);
 var Dropdown_1 = __webpack_require__(52);
@@ -2440,7 +2440,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var Dropdown_1 = __webpack_require__(52);
 var TextInput_1 = __webpack_require__(47);
 var Dom_1 = __webpack_require__(3);
-var DocumentInput_1 = __webpack_require__(280);
+var DocumentInput_1 = __webpack_require__(281);
 var QueryBuilder_1 = __webpack_require__(44);
 var AdvancedFieldInput = (function (_super) {
     __extends(AdvancedFieldInput, _super);
@@ -2507,7 +2507,7 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var Dropdown_1 = __webpack_require__(52);
 var FacetUtils_1 = __webpack_require__(36);
-var DocumentInput_1 = __webpack_require__(280);
+var DocumentInput_1 = __webpack_require__(281);
 var Dom_1 = __webpack_require__(3);
 var _ = __webpack_require__(1);
 var QueryBuilder_1 = __webpack_require__(44);
@@ -2585,7 +2585,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var Dropdown_1 = __webpack_require__(52);
 var NumericSpinner_1 = __webpack_require__(83);
 var Dom_1 = __webpack_require__(3);
-var DocumentInput_1 = __webpack_require__(280);
+var DocumentInput_1 = __webpack_require__(281);
 var QueryBuilder_1 = __webpack_require__(44);
 var SizeInput = (function (_super) {
     __extends(SizeInput, _super);
