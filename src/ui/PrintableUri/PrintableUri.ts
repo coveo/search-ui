@@ -11,7 +11,7 @@ import { IResultLinkOptions } from '../ResultLink/ResultLinkOptions';
 import { IResultsComponentBindings } from '../Base/ResultsComponentBindings';
 import { StreamHighlightUtils } from '../../utils/StreamHighlightUtils';
 import * as _ from 'underscore';
-import {ComponentOptionsModel} from '../../models/ComponentOptionsModel';
+import { ComponentOptionsModel } from '../../models/ComponentOptionsModel';
 
 
 export interface IPrintableUriOptions extends IResultLinkOptions {
