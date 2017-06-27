@@ -185,7 +185,9 @@ export class AdvancedSearch extends Component {
       text: l('AdvancedSearch'),
       className: 'coveo-advanced-search',
       onOpen: () => this.open(),
-      onClose: () => this.close()
+      onClose: () => this.close(),
+      svgIcon: SVGIcons.dropdownPreferences,
+      svgIconClassName: 'coveo-advanced-search-svg'
     });
   }
 
