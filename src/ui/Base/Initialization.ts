@@ -538,7 +538,12 @@ export class Initialization {
   }
 
   public static isThereANonSearchInterfaceComponentBoundToThisElement(element: HTMLElement): boolean {
-    return Initialization.isThereASingleComponentBoundToThisElement(element) && !get(element, SearchInterface, true);
+    // We automatically consider "Recommendation" component to be a special case of search interface
+    // and thus do not check those.
+    if ($$(element).hasClass('CoveoRecommendation')) {
+      return true;
+    }
+    return Initialization.isThereASingleComponentBoundToThisElement(element) && !get(element, SearchInterface, true) && !$$(element).hasClass('CoveoRecommendation');
   }
 
   private static dispatchMethodCallOnBoundComponent(methodName: string, element: HTMLElement, args: any[]): any {

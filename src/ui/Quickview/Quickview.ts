@@ -198,7 +198,7 @@ export class Quickview extends Component {
     // If there is no content inside the Quickview div,
     // we need to add something that will show up in the result template itself
     if (/^\s*$/.test(this.element.innerHTML)) {
-      const iconForQuickview = $$('div', {className: 'coveo-icon-for-quickview'}, SVGIcons.quickview);
+      const iconForQuickview = $$('div', { className: 'coveo-icon-for-quickview' }, SVGIcons.quickview);
       SVGDom.addClassToSVGInContainer(iconForQuickview.el, 'coveo-icon-for-quickview-svg');
       if (this.searchInterface.isNewDesign()) {
         const captionForQuickview = $$(

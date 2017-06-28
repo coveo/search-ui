@@ -2,7 +2,6 @@ export { AdvancedSearchEvents } from './events/AdvancedSearchEvents';
 export { AnalyticsEvents } from './events/AnalyticsEvents';
 export { BreadcrumbEvents } from './events/BreadcrumbEvents';
 export { DebugEvents } from './events/DebugEvents';
-export { ImageResultListEvents } from './events/ImageResultListEvents';
 export { InitializationEvents } from './events/InitializationEvents';
 export { OmniboxEvents } from './events/OmniboxEvents';
 export { PreferencesPanelEvents } from './events/PreferencesPanelEvents';

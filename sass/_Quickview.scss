@@ -3,7 +3,6 @@
 @import "mixins/mediaQuery";
 
 .CoveoQuickview {
-  display: inline-block;
   @include clickable();
 
   &:hover .coveo-caption-for-icon {
@@ -20,8 +19,7 @@
     position: absolute;
     white-space: nowrap;
     // This equates to centering according to parent: 50% of width left - padding, and down 100% + 6px for the little arrow
-    transform: translateX(-50%) translateX(-11px) translateY(100%) translateY(-6px);
-
+    transform: translateX(-50%) translateY(100%) translateY(-27px);
     z-index: 1;
 
     &:before {
@@ -192,8 +190,8 @@
 }
 
 .coveo-icon-for-quickview-svg {
+  margin-top: 8px;
   width: 20px;
   height: 12px;
   color: $color-greyish-teal-blue;
-  display: inline-block;
 }
