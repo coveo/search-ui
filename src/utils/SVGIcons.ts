@@ -25,4 +25,5 @@ export class SVGIcons {
   public static dropdownAuthenticate = require('svg/dropdown-authenticate');
   public static dropdownExport = require('svg/dropdown-export');
   public static dropdownFollowQuery = require('svg/dropdown-follow-query');
+  public static quickview = require('svg/quickview');
 }
