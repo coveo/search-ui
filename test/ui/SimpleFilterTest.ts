@@ -8,6 +8,7 @@ export function SimpleFilterTest() {
   describe('SimpleFilter', () => {
     let test: Mock.IBasicComponentSetup<SimpleFilter>;
     let test2: Mock.IBasicComponentSetup<SimpleFilter>;
+    let test3: Mock.IBasicComponentSetup<SimpleFilter>;
 
     beforeEach(() => {
       test = Mock.optionsComponentSetup<SimpleFilter, ISimpleFilterOptions>(SimpleFilter, <ISimpleFilterOptions>{
@@ -37,6 +38,21 @@ export function SimpleFilterTest() {
           'message': 'Message'
         }
       });
+
+      test3 = Mock.optionsComponentSetup<SimpleFilter, ISimpleFilterOptions>(SimpleFilter, <ISimpleFilterOptions>{
+        field: '@field',
+        maximumNumberOfValues: 5,
+        title: 'FooTitleBar',
+        values: undefined,
+        allowedValues: [],
+        valueCaption: {
+          'gmailmessage': 'Gmail Message',
+          'lithiummessage': 'Lithium Message',
+          'youtubevideo': 'Youtube Video',
+          'message': 'Message'
+        }
+      });
+
       test.cmp.toggle();
       test2.cmp.toggle();
     });
@@ -86,7 +102,7 @@ export function SimpleFilterTest() {
     });
 
     it('should set the field in the query', () => {
-      let simulation = Simulate.query(test.env);
+      let simulation = Simulate.query(test3.env);
       expect(simulation.queryBuilder.groupByRequests).toEqual(jasmine.arrayContaining([
         jasmine.objectContaining({
           field: '@field'
