@@ -26,4 +26,6 @@ export class SVGIcons {
   public static dropdownExport = require('svg/dropdown-export');
   public static dropdownFollowQuery = require('svg/dropdown-follow-query');
   public static quickview = require('svg/quickview');
+  public static pagerRightArrow = require('svg/pager-right-arrow');
+  public static pagerLeftArrow = require('svg/pager-left-arrow');
 }
