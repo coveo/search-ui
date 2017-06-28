@@ -15,6 +15,7 @@ import { QueryEvents, IQuerySuccessEventArgs, INoResultsEventArgs } from '../../
 import * as _ from 'underscore';
 
 import 'styling/_ResponsiveRecommendation';
+import { Defer } from '../../MiscModules';
 
 export class ResponsiveRecommendation implements IResponsiveComponent {
 
@@ -42,7 +43,7 @@ export class ResponsiveRecommendation implements IResponsiveComponent {
       return;
     }
 
-    ResponsiveComponentsManager.register(ResponsiveRecommendation, $$(coveoRoot), Recommendation.ID, component, options);
+    ResponsiveComponentsManager.register(ResponsiveRecommendation, $$(coveoRoot), Recommendation.ID, component, _.extend({}, options, { initializationEventRoot: $$(root) }));
   }
 
   private static findParentRootOfRecommendationComponent(root: HTMLElement): Dom {
@@ -65,6 +66,7 @@ export class ResponsiveRecommendation implements IResponsiveComponent {
     this.registerOnCloseHandler();
     this.registerQueryEvents();
     this.dropdownContainer = $$('div', { className: ResponsiveRecommendation.DROPDOWN_CONTAINER_CSS_CLASS_NAME });
+    this.handleResizeEvent();
   }
 
   public handleResizeEvent(): void {
@@ -89,10 +91,17 @@ export class ResponsiveRecommendation implements IResponsiveComponent {
 
   private changeToSmallMode() {
     this.dropdown.close();
-    $$(this.coveoRoot.find(`.${ResponsiveComponentsManager.DROPDOWN_HEADER_WRAPPER_CSS_CLASS}`)).el.appendChild(this.dropdown.dropdownHeader.element.el);
-    this.disableFacetPreservePosition();
-    ResponsiveComponentsUtils.activateSmallRecommendation(this.coveoRoot);
-    ResponsiveComponentsUtils.activateSmallRecommendation(this.recommendationRoot);
+    const header = this.coveoRoot.find(`.${ResponsiveComponentsManager.DROPDOWN_HEADER_WRAPPER_CSS_CLASS}`);
+    if (!header) {
+      // It's possible that recommendation gets initialized before the main interface is completed.
+      // We defer the resize event execution in that case.
+      Defer.defer(() => this.handleResizeEvent());
+    } else {
+      $$(header).append(this.dropdown.dropdownHeader.element.el);
+      this.disableFacetPreservePosition();
+      ResponsiveComponentsUtils.activateSmallRecommendation(this.coveoRoot);
+      ResponsiveComponentsUtils.activateSmallRecommendation(this.recommendationRoot);
+    }
   }
 
   private changeToLargeMode() {

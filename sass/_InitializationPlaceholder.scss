@@ -67,12 +67,26 @@
     height: 42px;
     visibility: hidden;
   }
+
+  .coveo-recommendation-main-section {
+    .coveo-recommendation-column {
+      display: none;
+    }  
+  }
+  
   @include mediaSelector(800) {
     .coveo-results-header {
       height: 69px;
     }
     .coveo-facet-column {
       display: none;
+    }
+  }
+
+  @include mediaSelector(1020) {
+    .coveo-recommendation-results-column {
+      display: inherit;
+      width: inherit;
     }
   }
 }

@@ -63,8 +63,8 @@
   }
 }
 
-.coveo-small-recommendation, .coveo-small-facets {
-  #coveo-recommendation-results-column {
+.CoveoSearchInterface.coveo-small-recommendation, .CoveoSearchInterface.coveo-small-facets {
+  #coveo-recommendation-results-column, .coveo-recommendation-results-column {
     width: auto;
     display: block;
   }

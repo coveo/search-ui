@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, height=device-height" >
     <title>Recommendation</title>
     <link rel="stylesheet" href="./css/CoveoFullSearchNewDesign.css"/>
-    <script src="js/CoveoJsSearch.js"></script>
+    <script src="js/CoveoJsSearch.Lazy.js"></script>
     <script src="js/templates/templatesNew.js"></script>
     <script>
       document.addEventListener('DOMContentLoaded', function(){
@@ -25,15 +25,15 @@
         <div class="CoveoSettings"></div>
         <div class="CoveoSearchbox" data-enable-omnibox="true"></div>
       </div>
-      <div id="coveo-recommendation-main-section" class="coveo-main-section">
-        <div id="coveo-recommendation-facet-column" class="coveo-facet-column">
+      <div class="coveo-main-section coveo-recommendation-main-section">
+        <div class="coveo-facet-column coveo-recommendation-facet-column">
           <div class="CoveoFacet" data-title="Type" data-field="@objecttype" data-tab="All"></div>
           <div class="CoveoFacet" data-title="FileType" data-field="@filetype" data-tab="All"></div>
           <div class="CoveoFacet" data-title="Author" data-field="@author" data-tab="All"></div>
           <div class="CoveoFacet" data-title="Year" data-field="@year" data-tab="All"></div>
           <div class="CoveoFacet" data-title="Month" data-field="@month" data-tab="All"></div>
         </div>
-        <div id="coveo-recommendation-results-column" class="coveo-results-column">
+        <div class="coveo-results-column coveo-recommendation-results-column">
           <div class="CoveoShareQuery"></div>
           <div class="CoveoExportToExcel"></div>
           <div class="CoveoPreferencesPanel">
