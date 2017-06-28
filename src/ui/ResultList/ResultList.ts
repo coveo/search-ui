@@ -305,11 +305,9 @@ export class ResultList extends Component {
     this.initWaitAnimationContainer();
     Assert.exists(this.options.waitAnimationContainer);
 
-    if (this.searchInterface.isNewDesign()) {
-      this.setupTemplatesVersusLayouts();
-      this.setupRenderer();
-      $$(this.root).on(ResultLayoutEvents.populateResultLayout, (e, args) => args.layouts.push(this.options.layout));
-    }
+    this.setupTemplatesVersusLayouts();
+    $$(this.root).on(ResultLayoutEvents.populateResultLayout, (e, args) => args.layouts.push(this.options.layout));
+    this.setupRenderer();
   }
 
   /**

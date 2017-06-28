@@ -53,13 +53,6 @@ export class BreadcrumbValueList {
 
   private buildExpanded() {
     _.each(this.expanded, (value: FacetValue, index?: number) => {
-      if (index != 0 && !DeviceUtils.isMobileDevice() && !this.facet.searchInterface.isNewDesign()) {
-        let separator = $$('span', {
-          className: 'coveo-facet-breadcrumb-separator'
-        });
-        separator.text(', ');
-        this.valueContainer.appendChild(separator.el);
-      }
       var elementBreadcrumb = new this.breadcrumbValueElementKlass(this.facet, value).build();
       this.valueContainer.appendChild(elementBreadcrumb.el);
     });
@@ -73,13 +66,6 @@ export class BreadcrumbValueList {
     var elem = $$('div', {
       className: 'coveo-facet-breadcrumb-value'
     });
-    if (!DeviceUtils.isMobileDevice() && !this.facet.searchInterface.isNewDesign()) {
-      let sep = $$('span', {
-        className: 'coveo-separator'
-      });
-      sep.text(', ');
-      elem.el.appendChild(sep.el);
-    }
     if (numberOfSelected > 0) {
       let multi = $$('span', {
         className: 'coveo-facet-breadcrumb-multi-count'
@@ -119,13 +105,6 @@ export class BreadcrumbValueList {
     elem.on('click', () => {
       var elements: HTMLElement[] = [];
       _.forEach(valueElements, (valueElement) => {
-        if (!DeviceUtils.isMobileDevice() && !this.facet.searchInterface.isNewDesign()) {
-          let separatorsClicked = $$('span', {
-            className: 'coveo-facet-breadcrumb-separator'
-          });
-          separatorsClicked.text(', ');
-          elements.push(separatorsClicked.el);
-        }
         elements.push(valueElement.build(false).el);
       });
       _.each(elements, (el) => {

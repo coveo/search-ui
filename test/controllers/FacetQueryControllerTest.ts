@@ -140,9 +140,7 @@ export function FacetQueryControllerTest() {
         mockQueryController = Mock.mockQueryController();
 
         mockFacet.searchInterface = <SearchInterface>{};
-        mockFacet.searchInterface.isNewDesign = () => {
-          return true;
-        };
+
         mockFacet.queryController = mockQueryController;
         mockFacet.facetQueryController = facetQueryController;
         mockFacet.getEndpoint = jasmine.createSpy('endpoint');

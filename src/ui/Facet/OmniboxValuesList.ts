@@ -67,16 +67,7 @@ export class OmniboxValuesList {
     var header = $$('div', {
       className: 'coveo-omnibox-facet-header'
     }).el;
-    if (this.facet.searchInterface.isNewDesign()) {
-      $$(header).text(title);
-      return header;
-    } else {
-      var icon = $$('span', {
-        className: 'coveo-icon ' + this.facet.options.field.substr(1)
-      }).el;
-      header.appendChild(icon);
-      $$(header).text(title);
-    }
+    $$(header).text(title);
     return header;
   }
 

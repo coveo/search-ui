@@ -95,7 +95,7 @@ export class ResponsiveComponentsManager {
 
   private static shouldEnableResponsiveMode(root: Dom): boolean {
     let searchInterface = <SearchInterface>Component.get(root.el, SearchInterface, true);
-    return searchInterface instanceof SearchInterface && searchInterface.options.enableAutomaticResponsiveMode && searchInterface.isNewDesign();
+    return searchInterface instanceof SearchInterface && searchInterface.options.enableAutomaticResponsiveMode;
   }
 
   private static instantiateResponsiveComponents() {

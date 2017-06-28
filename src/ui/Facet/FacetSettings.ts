@@ -189,12 +189,12 @@ export class FacetSettings extends FacetSort {
     const sortSection = this.buildSection('coveo-facet-settings-section-sort');
     const sortSectionIcon = this.buildIcon('coveo-facet-settings-section-sort-svg', SVGIcons.sort);
     const sortSectionItems = this.buildItems();
-    if (this.facet.searchInterface.isNewDesign()) {
-      const sortTitle = document.createElement('div');
-      $$(sortTitle).addClass('coveo-facet-settings-section-sort-title');
-      $$(sortTitle).text(l('SortBy') + ' :');
-      sortSectionItems.appendChild(sortTitle);
-    }
+
+    const sortTitle = document.createElement('div');
+    $$(sortTitle).addClass('coveo-facet-settings-section-sort-title');
+    $$(sortTitle).text(l('SortBy') + ' :');
+    sortSectionItems.appendChild(sortTitle);
+
     const sortItems = this.buildSortSectionItems();
     _.each(sortItems, (s) => {
       sortSectionItems.appendChild(s);
@@ -239,58 +239,34 @@ export class FacetSettings extends FacetSort {
 
 
   private buildDirectionSection() {
-    if (this.facet.searchInterface.isNewDesign()) {
-      const directionAscendingSection = this.buildAscendingOrDescendingSection('Ascending');
-      const iconAscending = this.buildIcon('coveo-facet-settings-section-direction-ascending-svg', SVGIcons.ascending);
-      const iconDescending = this.buildIcon('coveo-facet-settings-section-direction-descending-svg', SVGIcons.descending);
-      const directionItemsAscending = this.buildItems();
-      const ascending = this.buildAscendingOrDescending('Ascending');
+    const directionAscendingSection = this.buildAscendingOrDescendingSection('Ascending');
+    const iconAscending = this.buildIcon('coveo-facet-settings-section-direction-ascending-svg', SVGIcons.ascending);
+    const iconDescending = this.buildIcon('coveo-facet-settings-section-direction-descending-svg', SVGIcons.descending);
+    const directionItemsAscending = this.buildItems();
+    const ascending = this.buildAscendingOrDescending('Ascending');
 
-      directionItemsAscending.appendChild(ascending);
-      directionAscendingSection.appendChild(iconAscending);
-      directionAscendingSection.appendChild(directionItemsAscending);
-      $$(directionAscendingSection).on('click', (e: Event) => this.handleDirectionClick(e, 'ascending'));
+    directionItemsAscending.appendChild(ascending);
+    directionAscendingSection.appendChild(iconAscending);
+    directionAscendingSection.appendChild(directionItemsAscending);
+    $$(directionAscendingSection).on('click', (e: Event) => this.handleDirectionClick(e, 'ascending'));
 
-      const directionDescendingSection = this.buildAscendingOrDescendingSection('Descending');
-      const directionItemsDescending = this.buildItems();
-      const descending = this.buildAscendingOrDescending('Descending');
+    const directionDescendingSection = this.buildAscendingOrDescendingSection('Descending');
+    const directionItemsDescending = this.buildItems();
+    const descending = this.buildAscendingOrDescending('Descending');
 
-      directionItemsDescending.appendChild(descending);
-      directionDescendingSection.appendChild(iconDescending);
-      directionDescendingSection.appendChild(directionItemsDescending);
-      $$(directionDescendingSection).on('click', (e: Event) => this.handleDirectionClick(e, 'descending'));
+    directionItemsDescending.appendChild(descending);
+    directionDescendingSection.appendChild(iconDescending);
+    directionDescendingSection.appendChild(directionItemsDescending);
+    $$(directionDescendingSection).on('click', (e: Event) => this.handleDirectionClick(e, 'descending'));
 
-      if (!this.activeSort.directionToggle) {
-        $$(directionAscendingSection).addClass('coveo-facet-settings-disabled');
-        $$(directionDescendingSection).addClass('coveo-facet-settings-disabled');
-      } else {
-        this.selectItem(this.getItems(directionAscendingSection)[0]);
-      }
-      return [directionAscendingSection, directionDescendingSection];
-
+    if (!this.activeSort.directionToggle) {
+      $$(directionAscendingSection).addClass('coveo-facet-settings-disabled');
+      $$(directionDescendingSection).addClass('coveo-facet-settings-disabled');
     } else {
-      const directionSection = this.buildSection('coveo-facet-settings-section-direction');
-      const icon = this.buildIcon();
-
-      const directionItems = this.buildItems();
-      const ascending = this.buildAscendingOrDescending('Ascending');
-      $$(ascending).on('click', (e: Event) => this.handleDirectionClick(e, 'ascending'));
-
-      const descending = this.buildAscendingOrDescending('Descending');
-      $$(descending).on('click', (e: Event) => this.handleDirectionClick(e, 'descending'));
-
-      directionItems.appendChild(ascending);
-      directionItems.appendChild(descending);
-      directionSection.appendChild(icon);
-      directionSection.appendChild(directionItems);
-
-      if (!this.activeSort.directionToggle) {
-        $$(directionSection).addClass('coveo-facet-settings-disabled');
-      } else {
-        this.selectItem(this.getCurrentDirectionItem([directionSection]));
-      }
-      return [directionSection];
+      this.selectItem(this.getItems(directionAscendingSection)[0]);
     }
+    return [directionAscendingSection, directionDescendingSection];
+
   }
 
   private buildSaveStateSection() {
@@ -360,7 +336,7 @@ export class FacetSettings extends FacetSort {
   }
 
   private buildIcon(iconClass?: string, svgIcon?: string) {
-    if (this.facet.searchInterface.isNewDesign() && iconClass && svgIcon) {
+    if (iconClass && svgIcon) {
       const icon = $$('div', { className: 'coveo-icon-container' }, svgIcon);
       SVGDom.addClassToSVGInContainer(icon.el, iconClass);
       return icon.el;

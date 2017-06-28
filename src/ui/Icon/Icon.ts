@@ -143,13 +143,12 @@ export class Icon extends Component {
   }
 
   static shouldDisplayLabel(options: IIconOptions, bindings: IComponentBindings) {
-    // Display only in new design.
     // If withLabel is explicitely set to false, the label will never display
     // If withLabel is explicitely set to true, the label will always display
     // If withLabel is set to default value (not a hard true or false), the label will display based on ./core/filetypes/**.json
     // with the property shouldDisplayLabel set on each file type/ objecttype
     // In this case, the generated css will take care of outputting the correct css to display : block
-    return bindings && bindings.searchInterface.isNewDesign() && options.withLabel !== false;
+    return options.withLabel !== false;
   }
 
   static preprocessIconInfo(options: IIconOptions, info: IFileTypeInfo) {
