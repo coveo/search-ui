@@ -7223,5 +7223,9 @@
     "tr": "Başlık",
     "zh-cn": "标题",
     "zh-tw": "題目"
+  },
+  "FiltersInAdvancedSearch": {
+    "en": "Filters in Advanced Search",
+    "fr": "Filtres pour la Recherche Avancée"
   }
 }

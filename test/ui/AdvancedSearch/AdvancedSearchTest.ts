@@ -172,6 +172,7 @@ export function AdvancedSearchTest() {
         });
 
         it('should call reset on each inputs when the breadcrumb is cleared', () => {
+          Simulate.query(test.env);
           $$(test.env.root).trigger(BreadcrumbEvents.clearBreadcrumb);
           expect(resetSpy).toHaveBeenCalled();
         });
