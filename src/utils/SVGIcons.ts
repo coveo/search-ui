@@ -28,4 +28,7 @@ export class SVGIcons {
   public static quickview = require('svg/quickview');
   public static pagerRightArrow = require('svg/pager-right-arrow');
   public static pagerLeftArrow = require('svg/pager-left-arrow');
+
+  public static coveoLogo = require('svg/coveo-logo');
+  public static coveoPoweredBy = require('svg/coveo-powered-by-logo');
 }

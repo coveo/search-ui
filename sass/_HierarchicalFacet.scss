@@ -13,9 +13,8 @@
 
         &.coveo-has-childs-selected {
           .coveo-facet-value-checkbox {
-            > span {
+            > svg {
               visibility : visible;
-              @include retina-sprite($line-group);
               position: relative;
               bottom: 7px;
               left: 0px;
