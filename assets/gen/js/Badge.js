@@ -1,4 +1,4 @@
-webpackJsonpCoveo__temporary([37,67],{
+webpackJsonpCoveo__temporary([42,67],{
 
 /***/ 287:
 /***/ (function(module, exports, __webpack_require__) {
@@ -214,7 +214,7 @@ var ComponentOptions_1 = __webpack_require__(9);
 var Initialization_1 = __webpack_require__(2);
 var TemplateHelpers_1 = __webpack_require__(69);
 var Assert_1 = __webpack_require__(7);
-var DateUtils_1 = __webpack_require__(27);
+var DateUtils_1 = __webpack_require__(29);
 var QueryStateModel_1 = __webpack_require__(14);
 var AnalyticsActionListMeta_1 = __webpack_require__(12);
 var Utils_1 = __webpack_require__(5);

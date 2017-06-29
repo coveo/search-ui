@@ -1,4 +1,4 @@
-webpackJsonpCoveo__temporary([49],{
+webpackJsonpCoveo__temporary([52],{
 
 /***/ 319:
 /***/ (function(module, exports, __webpack_require__) {
@@ -23,13 +23,13 @@ var Utils_1 = __webpack_require__(5);
 var Initialization_1 = __webpack_require__(2);
 var StringUtils_1 = __webpack_require__(19);
 var Strings_1 = __webpack_require__(10);
-var KeyboardUtils_1 = __webpack_require__(21);
+var KeyboardUtils_1 = __webpack_require__(22);
 var QueryStateModel_1 = __webpack_require__(14);
 var Dom_1 = __webpack_require__(3);
 var AnalyticsActionListMeta_1 = __webpack_require__(12);
 var _ = __webpack_require__(1);
 var GlobalExports_1 = __webpack_require__(4);
-__webpack_require__(586);
+__webpack_require__(597);
 /**
  * The ResultTagging component lists the current tag field values of its associated result and renders a control that
  * allows the end user to add values to a tag field.
@@ -424,7 +424,7 @@ Initialization_1.Initialization.registerAutoCreateComponent(ResultTagging);
 
 /***/ }),
 
-/***/ 586:
+/***/ 597:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

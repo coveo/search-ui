@@ -1,4 +1,4 @@
-webpackJsonpCoveo__temporary([39],{
+webpackJsonpCoveo__temporary([44],{
 
 /***/ 269:
 /***/ (function(module, exports, __webpack_require__) {
@@ -33,7 +33,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var Component_1 = __webpack_require__(8);
 var ComponentOptions_1 = __webpack_require__(9);
 var Assert_1 = __webpack_require__(7);
-var SearchAlertEvents_1 = __webpack_require__(58);
+var SearchAlertEvents_1 = __webpack_require__(59);
 var Subscription_1 = __webpack_require__(269);
 var Initialization_1 = __webpack_require__(2);
 var Strings_1 = __webpack_require__(10);
@@ -42,7 +42,7 @@ var AnalyticsActionListMeta_1 = __webpack_require__(12);
 var QueryUtils_1 = __webpack_require__(17);
 var _ = __webpack_require__(1);
 var Utils_1 = __webpack_require__(5);
-var KeyboardUtils_1 = __webpack_require__(21);
+var KeyboardUtils_1 = __webpack_require__(22);
 var GlobalExports_1 = __webpack_require__(4);
 /**
  * The FollowItem component renders a widget that the end user can click to follow a particular item. A user following

@@ -1,4 +1,4 @@
-webpackJsonpCoveo__temporary([17,41,43],{
+webpackJsonpCoveo__temporary([21,46,48],{
 
 /***/ 322:
 /***/ (function(module, exports, __webpack_require__) {
@@ -18,7 +18,7 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var Component_1 = __webpack_require__(8);
 var ComponentOptions_1 = __webpack_require__(9);
-var ComponentOptionsModel_1 = __webpack_require__(25);
+var ComponentOptionsModel_1 = __webpack_require__(26);
 var LocalStorageUtils_1 = __webpack_require__(37);
 var PreferencesPanelEvents_1 = __webpack_require__(67);
 var AnalyticsActionListMeta_1 = __webpack_require__(12);
@@ -28,7 +28,7 @@ var Strings_1 = __webpack_require__(10);
 var Dom_1 = __webpack_require__(3);
 var _ = __webpack_require__(1);
 var GlobalExports_1 = __webpack_require__(4);
-var Defer_1 = __webpack_require__(26);
+var Defer_1 = __webpack_require__(27);
 var Checkbox_1 = __webpack_require__(61);
 var RadioButton_1 = __webpack_require__(82);
 var FormGroup_1 = __webpack_require__(99);
@@ -269,14 +269,14 @@ Initialization_1.Initialization.registerAutoCreateComponent(ResultsPreferences);
 
 /***/ }),
 
-/***/ 465:
+/***/ 476:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
 
-/***/ 466:
+/***/ 477:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
@@ -290,7 +290,7 @@ Initialization_1.Initialization.registerAutoCreateComponent(ResultsPreferences);
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var Dom_1 = __webpack_require__(3);
-__webpack_require__(466);
+__webpack_require__(477);
 var GlobalExports_1 = __webpack_require__(4);
 /**
  * A radio button widget with standard styling.
@@ -404,7 +404,7 @@ exports.RadioButton = RadioButton;
 Object.defineProperty(exports, "__esModule", { value: true });
 var Dom_1 = __webpack_require__(3);
 var _ = __webpack_require__(1);
-__webpack_require__(465);
+__webpack_require__(476);
 var GlobalExports_1 = __webpack_require__(4);
 /**
  * A simple `fieldset` HTMLElement containing multiple form widgets.

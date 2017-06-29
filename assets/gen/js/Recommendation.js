@@ -1,6 +1,6 @@
-webpackJsonpCoveo__temporary([8],{
+webpackJsonpCoveo__temporary([16],{
 
-/***/ 253:
+/***/ 254:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -31,16 +31,16 @@ var QueryStateModel_1 = __webpack_require__(14);
 var Model_1 = __webpack_require__(16);
 var Utils_1 = __webpack_require__(5);
 var Dom_1 = __webpack_require__(3);
-var ResponsiveRecommendation_1 = __webpack_require__(628);
-var coveo_analytics_1 = __webpack_require__(256);
-var RegisteredNamedMethods_1 = __webpack_require__(59);
+var ResponsiveRecommendation_1 = __webpack_require__(639);
+var coveo_analytics_1 = __webpack_require__(257);
+var RegisteredNamedMethods_1 = __webpack_require__(46);
 var InitializationEvents_1 = __webpack_require__(15);
 var _ = __webpack_require__(1);
 var GlobalExports_1 = __webpack_require__(4);
-var DefaultRecommendationTemplate_1 = __webpack_require__(411);
-var RecommendationQuery_1 = __webpack_require__(625);
+var DefaultRecommendationTemplate_1 = __webpack_require__(410);
+var RecommendationQuery_1 = __webpack_require__(636);
 var RecommendationAnalyticsClient_1 = __webpack_require__(258);
-__webpack_require__(580);
+__webpack_require__(591);
 /**
  * The Recommendation component is a {@link SearchInterface} that displays recommendations typically based on user
  * history.
@@ -442,7 +442,7 @@ exports.QuickviewEvents = QuickviewEvents;
 
 /***/ }),
 
-/***/ 392:
+/***/ 391:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -556,14 +556,14 @@ exports.ResponsiveDropdown = ResponsiveDropdown;
 
 /***/ }),
 
-/***/ 393:
+/***/ 392:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var Dom_1 = __webpack_require__(3);
-var PopupUtils_1 = __webpack_require__(49);
+var PopupUtils_1 = __webpack_require__(50);
 var ResponsiveComponentsManager_1 = __webpack_require__(78);
 var ResponsiveDropdownContent = (function () {
     function ResponsiveDropdownContent(componentName, element, coveoRoot, minWidth, widthRatio) {
@@ -600,7 +600,7 @@ exports.ResponsiveDropdownContent = ResponsiveDropdownContent;
 
 /***/ }),
 
-/***/ 394:
+/***/ 393:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -637,7 +637,7 @@ exports.ResponsiveDropdownHeader = ResponsiveDropdownHeader;
 
 /***/ }),
 
-/***/ 411:
+/***/ 410:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -653,7 +653,7 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var Template_1 = __webpack_require__(23);
+var Template_1 = __webpack_require__(24);
 var DefaultRecommendationTemplate = (function (_super) {
     __extends(DefaultRecommendationTemplate, _super);
     function DefaultRecommendationTemplate() {
@@ -679,21 +679,21 @@ exports.DefaultRecommendationTemplate = DefaultRecommendationTemplate;
 
 /***/ }),
 
-/***/ 580:
+/***/ 591:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
 
-/***/ 581:
+/***/ 592:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
 
-/***/ 625:
+/***/ 636:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -753,13 +753,13 @@ Initialization_1.Initialization.registerAutoCreateComponent(RecommendationQuery)
 
 /***/ }),
 
-/***/ 626:
+/***/ 637:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var ResponsiveDropdownContent_1 = __webpack_require__(393);
+var ResponsiveDropdownContent_1 = __webpack_require__(392);
 var Dom_1 = __webpack_require__(3);
 var RecommendationDropdownContent = (function () {
     function RecommendationDropdownContent(componentName, element, coveoRoot) {
@@ -796,7 +796,7 @@ exports.RecommendationDropdownContent = RecommendationDropdownContent;
 
 /***/ }),
 
-/***/ 628:
+/***/ 639:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -808,16 +808,17 @@ var SearchInterface_1 = __webpack_require__(20);
 var Utils_1 = __webpack_require__(5);
 var Dom_1 = __webpack_require__(3);
 var Logger_1 = __webpack_require__(13);
-var Recommendation_1 = __webpack_require__(253);
-var RecommendationDropdownContent_1 = __webpack_require__(626);
-var ResponsiveDropdownHeader_1 = __webpack_require__(394);
-var ResponsiveDropdown_1 = __webpack_require__(392);
+var Recommendation_1 = __webpack_require__(254);
+var RecommendationDropdownContent_1 = __webpack_require__(637);
+var ResponsiveDropdownHeader_1 = __webpack_require__(393);
+var ResponsiveDropdown_1 = __webpack_require__(391);
 var Strings_1 = __webpack_require__(10);
 var Component_1 = __webpack_require__(8);
-var RegisteredNamedMethods_1 = __webpack_require__(59);
+var RegisteredNamedMethods_1 = __webpack_require__(46);
 var QueryEvents_1 = __webpack_require__(11);
 var _ = __webpack_require__(1);
-__webpack_require__(581);
+__webpack_require__(592);
+var MiscModules_1 = __webpack_require__(104);
 var ResponsiveRecommendation = (function () {
     function ResponsiveRecommendation(coveoRoot, ID, options, responsiveDropdown) {
         this.coveoRoot = coveoRoot;
@@ -834,6 +835,7 @@ var ResponsiveRecommendation = (function () {
         this.registerOnCloseHandler();
         this.registerQueryEvents();
         this.dropdownContainer = Dom_1.$$('div', { className: ResponsiveRecommendation.DROPDOWN_CONTAINER_CSS_CLASS_NAME });
+        this.handleResizeEvent();
     }
     ResponsiveRecommendation.init = function (root, component, options) {
         var logger = new Logger_1.Logger('ResponsiveRecommendation');
@@ -846,7 +848,7 @@ var ResponsiveRecommendation = (function () {
             logger.info('Cannot find element with class coveo-results-column. Disabling responsive mode for this component.');
             return;
         }
-        ResponsiveComponentsManager_1.ResponsiveComponentsManager.register(ResponsiveRecommendation, Dom_1.$$(coveoRoot), Recommendation_1.Recommendation.ID, component, options);
+        ResponsiveComponentsManager_1.ResponsiveComponentsManager.register(ResponsiveRecommendation, Dom_1.$$(coveoRoot), Recommendation_1.Recommendation.ID, component, _.extend({}, options, { initializationEventRoot: Dom_1.$$(root) }));
     };
     ResponsiveRecommendation.findParentRootOfRecommendationComponent = function (root) {
         var coveoRoot = Dom_1.$$(root).parents(Component_1.Component.computeCssClassName(SearchInterface_1.SearchInterface));
@@ -873,11 +875,20 @@ var ResponsiveRecommendation = (function () {
         return this.coveoRoot.width() <= this.breakpoint;
     };
     ResponsiveRecommendation.prototype.changeToSmallMode = function () {
+        var _this = this;
         this.dropdown.close();
-        Dom_1.$$(this.coveoRoot.find("." + ResponsiveComponentsManager_1.ResponsiveComponentsManager.DROPDOWN_HEADER_WRAPPER_CSS_CLASS)).el.appendChild(this.dropdown.dropdownHeader.element.el);
-        this.disableFacetPreservePosition();
-        ResponsiveComponentsUtils_1.ResponsiveComponentsUtils.activateSmallRecommendation(this.coveoRoot);
-        ResponsiveComponentsUtils_1.ResponsiveComponentsUtils.activateSmallRecommendation(this.recommendationRoot);
+        var header = this.coveoRoot.find("." + ResponsiveComponentsManager_1.ResponsiveComponentsManager.DROPDOWN_HEADER_WRAPPER_CSS_CLASS);
+        if (!header) {
+            // It's possible that recommendation gets initialized before the main interface is completed.
+            // We defer the resize event execution in that case.
+            MiscModules_1.Defer.defer(function () { return _this.handleResizeEvent(); });
+        }
+        else {
+            Dom_1.$$(header).append(this.dropdown.dropdownHeader.element.el);
+            this.disableFacetPreservePosition();
+            ResponsiveComponentsUtils_1.ResponsiveComponentsUtils.activateSmallRecommendation(this.coveoRoot);
+            ResponsiveComponentsUtils_1.ResponsiveComponentsUtils.activateSmallRecommendation(this.recommendationRoot);
+        }
     };
     ResponsiveRecommendation.prototype.changeToLargeMode = function () {
         this.enableFacetPreservePosition();
@@ -1045,7 +1056,10 @@ var ResponsiveComponentsManager = (function () {
     // Register takes a class and will instantiate it after framework initialization has completed.
     ResponsiveComponentsManager.register = function (responsiveComponentConstructor, root, ID, component, options) {
         var _this = this;
-        root.on(InitializationEvents_1.InitializationEvents.afterInitialization, function () {
+        // options.initializationEventRoot can be set in some instance (like recommendation) where the root of the interface triggering the init event
+        // is different from the one that will be used for calculation size.
+        var initEventRoot = options.initializationEventRoot || root;
+        initEventRoot.on(InitializationEvents_1.InitializationEvents.afterInitialization, function () {
             if (_this.shouldEnableResponsiveMode(root)) {
                 var responsiveComponentsManager = _.find(_this.componentManagers, function (componentManager) { return root.el == componentManager.coveoRoot.el; });
                 if (!responsiveComponentsManager) {

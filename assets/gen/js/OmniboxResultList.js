@@ -1,4 +1,4 @@
-webpackJsonpCoveo__temporary([9,14],{
+webpackJsonpCoveo__temporary([17,18],{
 
 /***/ 100:
 /***/ (function(module, exports, __webpack_require__) {
@@ -16,7 +16,7 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var TableTemplate_1 = __webpack_require__(412);
+var TableTemplate_1 = __webpack_require__(411);
 var DefaultResultTemplate_1 = __webpack_require__(86);
 var Component_1 = __webpack_require__(8);
 var ComponentOptions_1 = __webpack_require__(9);
@@ -28,26 +28,26 @@ var QueryUtils_1 = __webpack_require__(17);
 var Dom_1 = __webpack_require__(3);
 var AnalyticsActionListMeta_1 = __webpack_require__(12);
 var Initialization_1 = __webpack_require__(2);
-var Defer_1 = __webpack_require__(26);
+var Defer_1 = __webpack_require__(27);
 var DeviceUtils_1 = __webpack_require__(18);
 var ResultListEvents_1 = __webpack_require__(32);
 var ResultLayoutEvents_1 = __webpack_require__(103);
 var Utils_1 = __webpack_require__(5);
 var DomUtils_1 = __webpack_require__(45);
-var DefaultRecommendationTemplate_1 = __webpack_require__(411);
+var DefaultRecommendationTemplate_1 = __webpack_require__(410);
 var TemplateList_1 = __webpack_require__(102);
-var TemplateCache_1 = __webpack_require__(48);
-var ResponsiveDefaultResultTemplate_1 = __webpack_require__(478);
+var TemplateCache_1 = __webpack_require__(49);
+var ResponsiveDefaultResultTemplate_1 = __webpack_require__(489);
 var ResultListRenderer_1 = __webpack_require__(266);
-var ResultListTableRenderer_1 = __webpack_require__(480);
-var ResultListCardRenderer_1 = __webpack_require__(479);
+var ResultListTableRenderer_1 = __webpack_require__(491);
+var ResultListCardRenderer_1 = __webpack_require__(490);
 var _ = __webpack_require__(1);
 var GlobalExports_1 = __webpack_require__(4);
-__webpack_require__(471);
-__webpack_require__(470);
-__webpack_require__(469);
-var InitializationPlaceholder_1 = __webpack_require__(251);
-var RegisteredNamedMethods_1 = __webpack_require__(59);
+__webpack_require__(482);
+__webpack_require__(481);
+__webpack_require__(480);
+var InitializationPlaceholder_1 = __webpack_require__(252);
+var RegisteredNamedMethods_1 = __webpack_require__(46);
 /**
  * The ResultList component is responsible for displaying the results of the current query using one or more result
  * templates (see [Result Templates](https://developers.coveo.com/x/aIGfAQ)).
@@ -799,7 +799,7 @@ var Utils_1 = __webpack_require__(5);
 var Initialization_1 = __webpack_require__(2);
 var _ = __webpack_require__(1);
 var GlobalExports_1 = __webpack_require__(4);
-__webpack_require__(573);
+__webpack_require__(584);
 /**
  * The OmniboxResultList component behaves exactly like the {@link ResultList} component (which it extends), except that
  * it renders itself inside the {@link Omnibox} component.
@@ -990,7 +990,7 @@ Initialization_1.Initialization.registerAutoCreateComponent(OmniboxResultList);
 
 /***/ }),
 
-/***/ 411:
+/***/ 410:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1006,7 +1006,7 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var Template_1 = __webpack_require__(23);
+var Template_1 = __webpack_require__(24);
 var DefaultRecommendationTemplate = (function (_super) {
     __extends(DefaultRecommendationTemplate, _super);
     function DefaultRecommendationTemplate() {
@@ -1032,7 +1032,7 @@ exports.DefaultRecommendationTemplate = DefaultRecommendationTemplate;
 
 /***/ }),
 
-/***/ 412:
+/***/ 411:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1048,7 +1048,7 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var Template_1 = __webpack_require__(23);
+var Template_1 = __webpack_require__(24);
 var TemplateList_1 = __webpack_require__(102);
 var _ = __webpack_require__(1);
 var TableTemplate = (function (_super) {
@@ -1097,28 +1097,28 @@ exports.TableTemplate = TableTemplate;
 
 /***/ }),
 
-/***/ 469:
+/***/ 480:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
 
-/***/ 470:
+/***/ 481:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
 
-/***/ 471:
+/***/ 482:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
 
-/***/ 478:
+/***/ 489:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1190,7 +1190,7 @@ exports.ResponsiveDefaultResultTemplate = ResponsiveDefaultResultTemplate;
 
 /***/ }),
 
-/***/ 479:
+/***/ 490:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1236,7 +1236,7 @@ exports.ResultListCardRenderer = ResultListCardRenderer;
 
 /***/ }),
 
-/***/ 480:
+/***/ 491:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1288,7 +1288,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var ResultListRenderer_1 = __webpack_require__(266);
-var TableTemplate_1 = __webpack_require__(412);
+var TableTemplate_1 = __webpack_require__(411);
 var Dom_1 = __webpack_require__(3);
 var _ = __webpack_require__(1);
 var ResultListTableRenderer = (function (_super) {
@@ -1345,7 +1345,7 @@ exports.ResultListTableRenderer = ResultListTableRenderer;
 
 /***/ }),
 
-/***/ 573:
+/***/ 584:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
@@ -1399,7 +1399,10 @@ var ResponsiveComponentsManager = (function () {
     // Register takes a class and will instantiate it after framework initialization has completed.
     ResponsiveComponentsManager.register = function (responsiveComponentConstructor, root, ID, component, options) {
         var _this = this;
-        root.on(InitializationEvents_1.InitializationEvents.afterInitialization, function () {
+        // options.initializationEventRoot can be set in some instance (like recommendation) where the root of the interface triggering the init event
+        // is different from the one that will be used for calculation size.
+        var initEventRoot = options.initializationEventRoot || root;
+        initEventRoot.on(InitializationEvents_1.InitializationEvents.afterInitialization, function () {
             if (_this.shouldEnableResponsiveMode(root)) {
                 var responsiveComponentsManager = _.find(_this.componentManagers, function (componentManager) { return root.el == componentManager.coveoRoot.el; });
                 if (!responsiveComponentsManager) {

@@ -1,4 +1,4 @@
-webpackJsonpCoveo__temporary([55],{
+webpackJsonpCoveo__temporary([56],{
 
 /***/ 297:
 /***/ (function(module, exports, __webpack_require__) {
@@ -19,10 +19,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var Component_1 = __webpack_require__(8);
 var ComponentOptions_1 = __webpack_require__(9);
 var Assert_1 = __webpack_require__(7);
-var HighlightUtils_1 = __webpack_require__(46);
+var HighlightUtils_1 = __webpack_require__(47);
 var Initialization_1 = __webpack_require__(2);
 var GlobalExports_1 = __webpack_require__(4);
-__webpack_require__(566);
+__webpack_require__(577);
 /**
  * The Excerpt component renders an excerpt of its associated result and highlights the keywords from the query using
  * the appropriate template helpers.
@@ -65,7 +65,7 @@ Initialization_1.Initialization.registerAutoCreateComponent(Excerpt);
 
 /***/ }),
 
-/***/ 566:
+/***/ 577:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

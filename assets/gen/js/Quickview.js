@@ -1,4 +1,4 @@
-webpackJsonpCoveo__temporary([18],{
+webpackJsonpCoveo__temporary([22],{
 
 /***/ 268:
 /***/ (function(module, exports, __webpack_require__) {
@@ -38,17 +38,17 @@ var Component_1 = __webpack_require__(8);
 var ComponentOptions_1 = __webpack_require__(9);
 var DomUtils_1 = __webpack_require__(45);
 var Dom_1 = __webpack_require__(3);
-var DefaultQuickviewTemplate_1 = __webpack_require__(623);
+var DefaultQuickviewTemplate_1 = __webpack_require__(634);
 var ResultListEvents_1 = __webpack_require__(32);
 var StringUtils_1 = __webpack_require__(19);
-var QuickviewDocument_1 = __webpack_require__(624);
+var QuickviewDocument_1 = __webpack_require__(635);
 var QueryStateModel_1 = __webpack_require__(14);
 var QuickviewEvents_1 = __webpack_require__(268);
 var Initialization_1 = __webpack_require__(2);
-var KeyboardUtils_1 = __webpack_require__(21);
-var ExternalModulesShim_1 = __webpack_require__(22);
+var KeyboardUtils_1 = __webpack_require__(22);
+var ExternalModulesShim_1 = __webpack_require__(23);
 var GlobalExports_1 = __webpack_require__(4);
-__webpack_require__(579);
+__webpack_require__(590);
 /**
  * The `Quickview` component renders a button / link which the end user can click to open a modal box containing certain
  * content about a result. Most of the time, this component references a [`QuickviewDocument`]{@link QuickviewDocument}
@@ -358,14 +358,14 @@ Initialization_1.Initialization.registerAutoCreateComponent(Quickview);
 
 /***/ }),
 
-/***/ 579:
+/***/ 590:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
 
-/***/ 623:
+/***/ 634:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -381,7 +381,7 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var Template_1 = __webpack_require__(23);
+var Template_1 = __webpack_require__(24);
 var DefaultQuickviewTemplate = (function (_super) {
     __extends(DefaultQuickviewTemplate, _super);
     function DefaultQuickviewTemplate() {
@@ -397,7 +397,7 @@ exports.DefaultQuickviewTemplate = DefaultQuickviewTemplate;
 
 /***/ }),
 
-/***/ 624:
+/***/ 635:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -421,7 +421,7 @@ var Dom_1 = __webpack_require__(3);
 var QuickviewEvents_1 = __webpack_require__(268);
 var DeviceUtils_1 = __webpack_require__(18);
 var Utils_1 = __webpack_require__(5);
-var ColorUtils_1 = __webpack_require__(105);
+var ColorUtils_1 = __webpack_require__(106);
 var Initialization_1 = __webpack_require__(2);
 var Strings_1 = __webpack_require__(10);
 var _ = __webpack_require__(1);

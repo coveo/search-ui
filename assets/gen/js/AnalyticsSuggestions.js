@@ -1,4 +1,4 @@
-webpackJsonpCoveo__temporary([38],{
+webpackJsonpCoveo__temporary([43],{
 
 /***/ 284:
 /***/ (function(module, exports, __webpack_require__) {
@@ -16,7 +16,7 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var SuggestionForOmnibox_1 = __webpack_require__(414);
+var SuggestionForOmnibox_1 = __webpack_require__(413);
 var ComponentOptions_1 = __webpack_require__(9);
 var Component_1 = __webpack_require__(8);
 var Assert_1 = __webpack_require__(7);
@@ -274,7 +274,7 @@ Initialization_1.Initialization.registerAutoCreateComponent(AnalyticsSuggestions
 
 /***/ }),
 
-/***/ 414:
+/***/ 413:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";

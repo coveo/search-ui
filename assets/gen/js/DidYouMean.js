@@ -1,4 +1,4 @@
-webpackJsonpCoveo__temporary([57],{
+webpackJsonpCoveo__temporary([58],{
 
 /***/ 295:
 /***/ (function(module, exports, __webpack_require__) {
@@ -29,7 +29,7 @@ var AnalyticsActionListMeta_1 = __webpack_require__(12);
 var Strings_1 = __webpack_require__(10);
 var _ = __webpack_require__(1);
 var GlobalExports_1 = __webpack_require__(4);
-__webpack_require__(564);
+__webpack_require__(575);
 /**
  * The DidYouMean component is responsible for displaying query corrections. If this component is in the page and the
  * query returns no result but finds a possible query correction, the component either suggests the correction or
@@ -169,7 +169,7 @@ Initialization_1.Initialization.registerAutoCreateComponent(DidYouMean);
 
 /***/ }),
 
-/***/ 564:
+/***/ 575:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

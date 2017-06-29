@@ -1,6 +1,6 @@
-webpackJsonpCoveo__temporary([21],{
+webpackJsonpCoveo__temporary([25],{
 
-/***/ 254:
+/***/ 255:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28,13 +28,13 @@ var Dom_1 = __webpack_require__(3);
 var QueryStateModel_1 = __webpack_require__(14);
 var Model_1 = __webpack_require__(16);
 var AnalyticsActionListMeta_1 = __webpack_require__(12);
-var KeyboardUtils_1 = __webpack_require__(21);
-var ResponsiveResultLayout_1 = __webpack_require__(629);
+var KeyboardUtils_1 = __webpack_require__(22);
+var ResponsiveResultLayout_1 = __webpack_require__(640);
 var Utils_1 = __webpack_require__(5);
 var _ = __webpack_require__(1);
 var GlobalExports_1 = __webpack_require__(4);
 var Strings_1 = __webpack_require__(10);
-__webpack_require__(585);
+__webpack_require__(596);
 exports.defaultLayout = 'list';
 /**
  * The ResultLayout component allows the end user to switch between multiple {@link ResultList} components that have
@@ -307,14 +307,14 @@ Initialization_1.Initialization.registerAutoCreateComponent(ResultLayout);
 
 /***/ }),
 
-/***/ 585:
+/***/ 596:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
 
-/***/ 629:
+/***/ 640:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -323,7 +323,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var ResponsiveComponentsManager_1 = __webpack_require__(78);
 var Dom_1 = __webpack_require__(3);
 var Component_1 = __webpack_require__(8);
-var ResultLayout_1 = __webpack_require__(254);
+var ResultLayout_1 = __webpack_require__(255);
 var Logger_1 = __webpack_require__(13);
 var SearchInterface_1 = __webpack_require__(20);
 var _ = __webpack_require__(1);
@@ -425,7 +425,10 @@ var ResponsiveComponentsManager = (function () {
     // Register takes a class and will instantiate it after framework initialization has completed.
     ResponsiveComponentsManager.register = function (responsiveComponentConstructor, root, ID, component, options) {
         var _this = this;
-        root.on(InitializationEvents_1.InitializationEvents.afterInitialization, function () {
+        // options.initializationEventRoot can be set in some instance (like recommendation) where the root of the interface triggering the init event
+        // is different from the one that will be used for calculation size.
+        var initEventRoot = options.initializationEventRoot || root;
+        initEventRoot.on(InitializationEvents_1.InitializationEvents.afterInitialization, function () {
             if (_this.shouldEnableResponsiveMode(root)) {
                 var responsiveComponentsManager = _.find(_this.componentManagers, function (componentManager) { return root.el == componentManager.coveoRoot.el; });
                 if (!responsiveComponentsManager) {

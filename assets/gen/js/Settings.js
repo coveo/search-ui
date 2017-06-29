@@ -1,4 +1,32 @@
-webpackJsonpCoveo__temporary([47],{
+webpackJsonpCoveo__temporary([30],{
+
+/***/ 28:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var SVGDom = (function () {
+    function SVGDom() {
+    }
+    SVGDom.addClassToSVGInContainer = function (svgContainer, classToAdd) {
+        var svgElement = svgContainer.querySelector('svg');
+        svgElement.setAttribute('class', "" + SVGDom.getClass(svgElement) + classToAdd);
+    };
+    SVGDom.removeClassFromSVGInContainer = function (svgContainer, classToRemove) {
+        var svgElement = svgContainer.querySelector('svg');
+        svgElement.setAttribute('class', SVGDom.getClass(svgElement).replace(classToRemove, ''));
+    };
+    SVGDom.getClass = function (svgElement) {
+        var className = svgElement.getAttribute('class');
+        return className ? className + ' ' : '';
+    };
+    return SVGDom;
+}());
+exports.SVGDom = SVGDom;
+
+
+/***/ }),
 
 /***/ 325:
 /***/ (function(module, exports, __webpack_require__) {
@@ -20,12 +48,13 @@ var Component_1 = __webpack_require__(8);
 var ComponentOptions_1 = __webpack_require__(9);
 var InitializationEvents_1 = __webpack_require__(15);
 var Dom_1 = __webpack_require__(3);
-var PopupUtils_1 = __webpack_require__(49);
+var PopupUtils_1 = __webpack_require__(50);
 var SettingsEvents_1 = __webpack_require__(40);
 var Initialization_1 = __webpack_require__(2);
 var _ = __webpack_require__(1);
 var GlobalExports_1 = __webpack_require__(4);
-__webpack_require__(590);
+__webpack_require__(601);
+var SVGDom_1 = __webpack_require__(28);
 /**
  * The Settings component renders a **Settings** button that the end user can click to access a popup menu from which
  * it is possible to perform several contextual actions. The usual location of the **Settings** button in the page is to
@@ -116,7 +145,14 @@ var Settings = (function (_super) {
                 className: "coveo-settings-item " + menuItem.className,
                 title: _.escape(menuItem.tooltip || '')
             }).el;
-            menuItemDom.appendChild(Dom_1.$$('div', { className: 'coveo-icon' }).el);
+            var icon = Dom_1.$$('div', { className: 'coveo-icon' }).el;
+            if (menuItem.svgIcon) {
+                icon.innerHTML = menuItem.svgIcon;
+                if (menuItem.svgIconClassName) {
+                    SVGDom_1.SVGDom.addClassToSVGInContainer(icon, menuItem.svgIconClassName);
+                }
+            }
+            menuItemDom.appendChild(icon);
             menuItemDom.appendChild(Dom_1.$$('div', { className: 'coveo-settings-text' }, _.escape(menuItem.text)).el);
             Dom_1.$$(menuItemDom).on('click', function () {
                 _this.close();
@@ -172,7 +208,7 @@ Initialization_1.Initialization.registerAutoCreateComponent(Settings);
 
 /***/ }),
 
-/***/ 590:
+/***/ 601:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

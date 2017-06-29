@@ -1,6 +1,6 @@
-webpackJsonpCoveo__temporary([16],{
+webpackJsonpCoveo__temporary([20],{
 
-/***/ 255:
+/***/ 256:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16,7 +16,7 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var ResponsiveTabs_1 = __webpack_require__(630);
+var ResponsiveTabs_1 = __webpack_require__(641);
 var Component_1 = __webpack_require__(8);
 var ComponentOptions_1 = __webpack_require__(9);
 var Model_1 = __webpack_require__(16);
@@ -29,10 +29,10 @@ var Initialization_1 = __webpack_require__(2);
 var Utils_1 = __webpack_require__(5);
 var Assert_1 = __webpack_require__(7);
 var Dom_1 = __webpack_require__(3);
-var KeyboardUtils_1 = __webpack_require__(21);
+var KeyboardUtils_1 = __webpack_require__(22);
 var _ = __webpack_require__(1);
 var GlobalExports_1 = __webpack_require__(4);
-__webpack_require__(593);
+__webpack_require__(604);
 /**
  * The Tab component renders a bar that allows the end user to select a specific search interface.
  *
@@ -434,13 +434,6 @@ exports.EventsUtils = EventsUtils;
 
 /***/ }),
 
-/***/ 582:
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-
 /***/ 593:
 /***/ (function(module, exports) {
 
@@ -448,7 +441,14 @@ exports.EventsUtils = EventsUtils;
 
 /***/ }),
 
-/***/ 630:
+/***/ 604:
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+
+/***/ 641:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -456,19 +456,19 @@ exports.EventsUtils = EventsUtils;
 Object.defineProperty(exports, "__esModule", { value: true });
 var Dom_1 = __webpack_require__(3);
 var InitializationEvents_1 = __webpack_require__(15);
-var PopupUtils_1 = __webpack_require__(49);
+var PopupUtils_1 = __webpack_require__(50);
 var EventsUtils_1 = __webpack_require__(263);
 var Utils_1 = __webpack_require__(5);
 var Logger_1 = __webpack_require__(13);
 var Component_1 = __webpack_require__(8);
 var SearchInterface_1 = __webpack_require__(20);
-var Tab_1 = __webpack_require__(255);
+var Tab_1 = __webpack_require__(256);
 var ResponsiveComponentsManager_1 = __webpack_require__(78);
 var ResponsiveComponentsUtils_1 = __webpack_require__(89);
 var Strings_1 = __webpack_require__(10);
 var ResponsiveComponents_1 = __webpack_require__(41);
 var _ = __webpack_require__(1);
-__webpack_require__(582);
+__webpack_require__(593);
 var ResponsiveTabs = (function () {
     function ResponsiveTabs(coveoRoot, ID) {
         this.coveoRoot = coveoRoot;
@@ -839,7 +839,10 @@ var ResponsiveComponentsManager = (function () {
     // Register takes a class and will instantiate it after framework initialization has completed.
     ResponsiveComponentsManager.register = function (responsiveComponentConstructor, root, ID, component, options) {
         var _this = this;
-        root.on(InitializationEvents_1.InitializationEvents.afterInitialization, function () {
+        // options.initializationEventRoot can be set in some instance (like recommendation) where the root of the interface triggering the init event
+        // is different from the one that will be used for calculation size.
+        var initEventRoot = options.initializationEventRoot || root;
+        initEventRoot.on(InitializationEvents_1.InitializationEvents.afterInitialization, function () {
             if (_this.shouldEnableResponsiveMode(root)) {
                 var responsiveComponentsManager = _.find(_this.componentManagers, function (componentManager) { return root.el == componentManager.coveoRoot.el; });
                 if (!responsiveComponentsManager) {

@@ -1,4 +1,4 @@
-webpackJsonpCoveo__temporary([23],{
+webpackJsonpCoveo__temporary([27],{
 
 /***/ 307:
 /***/ (function(module, exports, __webpack_require__) {
@@ -18,18 +18,18 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var Component_1 = __webpack_require__(8);
 var ComponentOptions_1 = __webpack_require__(9);
-var Cell_1 = __webpack_require__(620);
-var DefaultMatrixResultPreviewTemplate_1 = __webpack_require__(621);
+var Cell_1 = __webpack_require__(631);
+var DefaultMatrixResultPreviewTemplate_1 = __webpack_require__(632);
 var Dom_1 = __webpack_require__(3);
 var QueryEvents_1 = __webpack_require__(11);
 var QueryStateModel_1 = __webpack_require__(14);
 var Utils_1 = __webpack_require__(5);
 var Initialization_1 = __webpack_require__(2);
 var QueryUtils_1 = __webpack_require__(17);
-var Globalize = __webpack_require__(24);
+var Globalize = __webpack_require__(25);
 var _ = __webpack_require__(1);
 var GlobalExports_1 = __webpack_require__(4);
-__webpack_require__(572);
+__webpack_require__(583);
 /**
  * The Matrix component uses the values of two fields (row and column) to display the results of the specified computed
  * field in a table.
@@ -813,14 +813,14 @@ Initialization_1.Initialization.registerAutoCreateComponent(Matrix);
 
 /***/ }),
 
-/***/ 572:
+/***/ 583:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
 
-/***/ 620:
+/***/ 631:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -915,7 +915,7 @@ exports.Cell = Cell;
 
 /***/ }),
 
-/***/ 621:
+/***/ 632:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -931,9 +931,9 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var Template_1 = __webpack_require__(23);
+var Template_1 = __webpack_require__(24);
 var Dom_1 = __webpack_require__(3);
-var Globalize = __webpack_require__(24);
+var Globalize = __webpack_require__(25);
 var DefaultMatrixResultPreviewTemplate = (function (_super) {
     __extends(DefaultMatrixResultPreviewTemplate, _super);
     function DefaultMatrixResultPreviewTemplate(computedField, format) {

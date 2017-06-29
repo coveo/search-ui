@@ -1,4 +1,4 @@
-webpackJsonpCoveo__temporary([48],{
+webpackJsonpCoveo__temporary([51],{
 
 /***/ 321:
 /***/ (function(module, exports, __webpack_require__) {
@@ -23,12 +23,12 @@ var QueryEvents_1 = __webpack_require__(11);
 var AnalyticsActionListMeta_1 = __webpack_require__(12);
 var Assert_1 = __webpack_require__(7);
 var Dom_1 = __webpack_require__(3);
-var KeyboardUtils_1 = __webpack_require__(21);
+var KeyboardUtils_1 = __webpack_require__(22);
 var DeviceUtils_1 = __webpack_require__(18);
 var _ = __webpack_require__(1);
 var GlobalExports_1 = __webpack_require__(4);
 var Strings_1 = __webpack_require__(10);
-__webpack_require__(588);
+__webpack_require__(599);
 /**
  * The ResultsPerPage component attaches itself to a `div` and allows the end user to choose how many results to
  * display per page.
@@ -196,7 +196,7 @@ Initialization_1.Initialization.registerAutoCreateComponent(ResultsPerPage);
 
 /***/ }),
 
-/***/ 588:
+/***/ 599:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

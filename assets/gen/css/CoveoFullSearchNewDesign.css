@@ -13204,14 +13204,10 @@ select.coveo-dropdown::-ms-expand {
   color: #fff;
 }
 
-.CoveoFollowQuery {
-  overflow: hidden;
-  margin-top: 10px;
-  display: none;
-}
-
-.CoveoFollowQuery.coveo-follow-query-opened {
-  display: block;
+.coveo-follow-query-svg {
+  width: 15px;
+  height: 12px;
+  color: #1D4F76;
 }
 
 .CoveoSubscriptionsPanel {
@@ -13351,6 +13347,12 @@ select.coveo-dropdown::-ms-expand {
   display: none;
 }
 
+.coveo-subscriptions-panel-svg {
+  width: 15px;
+  height: 12px;
+  color: #1D4F76;
+}
+
 /*
 * @param direction vertical or horizontal
 * @param position type of positioning to apply (relative/absolute)
@@ -13415,16 +13417,16 @@ select.coveo-dropdown::-ms-expand {
   vertical-align: middle;
   margin: 0 5px;
   cursor: pointer;
+  color: #1D4F76;
+}
+
+.coveo-subscriptions-messages-message .coveo-subscriptions-messages-info-close .coveo-exclusion-svg {
+  fill: #1D4F76;
 }
 
 .coveo-subscriptions-messages-message .coveo-subscriptions-messages-info-close svg {
-  color: #1D4F76;
   width: 12px;
   height: 12px;
-}
-
-.coveo-subscriptions-messages-message .coveo-subscriptions-messages-info-close svg .coveo-exclusion-svg {
-  fill: #1D4F76;
 }
 
 .coveo-subscriptions-messages-message .coveo-subscriptions-messages-info-close:hover {
@@ -13559,18 +13561,18 @@ body.coveo-modalBox-opened .CoveoSearchInterface {
   display: inline-block;
 }
 
-.CoveoSearchButton .coveo-search-button-svg {
-  width: 18px;
-  height: 18px;
-  color: #1D4F76;
-}
-
 .CoveoSearchButton .coveo-search-button-loading-svg {
   display: none;
 }
 
 .CoveoSearchButton:hover .coveo-magnifier-circle-svg {
   fill: #ECAD00;
+}
+
+.coveo-search-button-svg {
+  width: 18px;
+  height: 18px;
+  color: #1D4F76;
 }
 
 .coveo-executing-query .CoveoSearchButton .coveo-search-button-svg {
@@ -13714,6 +13716,10 @@ body.coveo-modalBox-opened .CoveoSearchInterface {
   visibility: hidden;
 }
 
+.CoveoSearchInterface.coveo-during-initialization .coveo-recommendation-main-section .coveo-recommendation-column {
+  display: none;
+}
+
 .CoveoSearchInterface.coveo-during-initialization .coveo-media-max-width-800 .coveo-results-header {
   height: 69px;
 }
@@ -13729,6 +13735,18 @@ body.coveo-modalBox-opened .CoveoSearchInterface {
 
   .CoveoSearchInterface.coveo-during-initialization .coveo-facet-column {
     display: none;
+  }
+}
+
+.CoveoSearchInterface.coveo-during-initialization .coveo-media-max-width-1020 .coveo-recommendation-results-column {
+  display: inherit;
+  width: inherit;
+}
+
+@media (max-width: 1020px) {
+  .CoveoSearchInterface.coveo-during-initialization .coveo-recommendation-results-column {
+    display: inherit;
+    width: inherit;
   }
 }
 
@@ -14088,17 +14106,6 @@ body.coveo-modalBox-opened .CoveoSearchInterface {
 * @param $size size of the icon to use
 */
 
-.CoveoAdvancedSearch {
-  position: relative;
-  text-align: left;
-}
-
-@media (max-width: 800px) {
-  .CoveoAdvancedSearch {
-    margin: 20px;
-  }
-}
-
 .coveo-advanced-search-section {
   margin: 20px 0;
 }
@@ -14261,16 +14268,16 @@ body.coveo-modalBox-opened .CoveoSearchInterface {
 .coveo-advanced-search-breadcrumb .coveo-advanced-search-breadcrumb-clear {
   position: relative;
   cursor: pointer;
+  color: #1D4F76;
+}
+
+.coveo-advanced-search-breadcrumb .coveo-advanced-search-breadcrumb-clear .coveo-exclusion-svg {
+  fill: #1D4F76;
 }
 
 .coveo-advanced-search-breadcrumb .coveo-advanced-search-breadcrumb-clear svg {
-  color: #1D4F76;
   width: 12px;
   height: 12px;
-}
-
-.coveo-advanced-search-breadcrumb .coveo-advanced-search-breadcrumb-clear svg .coveo-exclusion-svg {
-  fill: #1D4F76;
 }
 
 .coveo-advanced-search-breadcrumb .coveo-advanced-search-breadcrumb-clear:hover {
@@ -14285,6 +14292,12 @@ body.coveo-modalBox-opened .CoveoSearchInterface {
   position: absolute;
   top: 5px;
   left: 3px;
+}
+
+.coveo-advanced-search-svg {
+  width: 16px;
+  height: 16px;
+  color: #1D4F76;
 }
 
 /*
@@ -14322,6 +14335,28 @@ body.coveo-modalBox-opened .CoveoSearchInterface {
 
 .coveo-waiting-for-authentication-popup {
   padding: 50px 150px;
+}
+
+.coveo-authentication-provider:hover .coveo-dropdown-authenticate-hover-svg {
+  fill: #1D4F76;
+}
+
+.coveo-authentication-provider:hover .coveo-dropdown-authenticate-svg {
+  fill: none;
+}
+
+.coveo-authentication-provider:hover .coveo-authentication-provider-svg {
+  width: 12px;
+  height: 16px;
+}
+
+.coveo-authentication-provider-svg {
+  width: 12px;
+  height: 14px;
+}
+
+.coveo-authentication-provider-svg .coveo-dropdown-authenticate-svg {
+  fill: #1D4F76;
 }
 
 /*
@@ -14554,6 +14589,7 @@ a.CoveoResultLink.coveo-selected *,
   flex-shrink: 0;
   -ms-flex-negative: 0;
   cursor: pointer;
+  color: #1D4F76;
 }
 
 .coveo-breadcrumb-clear-all:hover,
@@ -14575,14 +14611,13 @@ a.CoveoResultLink.coveo-selected *,
   display: inline-block;
 }
 
-.coveo-breadcrumb-clear-all .coveo-breadcrumb-clear-all-icon svg {
-  color: #1D4F76;
-  width: 12px;
-  height: 12px;
+.coveo-breadcrumb-clear-all .coveo-exclusion-svg {
+  fill: #1D4F76;
 }
 
-.coveo-breadcrumb-clear-all .coveo-breadcrumb-clear-all-icon svg .coveo-exclusion-svg {
-  fill: #1D4F76;
+.coveo-breadcrumb-clear-all .coveo-breadcrumb-clear-all-icon svg {
+  width: 12px;
+  height: 12px;
 }
 
 .coveo-breadcrumb-clear-all:hover .coveo-breadcrumb-clear-all-icon {
@@ -14950,6 +14985,16 @@ a.CoveoResultLink.coveo-selected *,
   word-wrap: break-word;
 }
 
+/*
+* @param direction vertical or horizontal
+* @param position type of positioning to apply (relative/absolute)
+*/
+
+/*
+* @param $selector css selector on which to apply the icon. Can be '&' if the icon should be applied on the current element;
+* @param $size size of the icon to use
+*/
+
 .CoveoExportToExcel {
   overflow: hidden;
   margin-top: 10px;
@@ -14958,6 +15003,12 @@ a.CoveoResultLink.coveo-selected *,
 
 .CoveoExportToExcel.coveo-export-to-excel-opened {
   display: block;
+}
+
+.coveo-export-to-excel-svg {
+  width: 14px;
+  height: 14px;
+  color: #1D4F76;
 }
 
 /*
@@ -15464,16 +15515,16 @@ a.CoveoResultLink.coveo-selected *,
   opacity: 0.5;
   clear: none;
   cursor: pointer;
+  color: #1D4F76;
+}
+
+.coveo-facet-search-clear .coveo-exclusion-svg {
+  fill: #1D4F76;
 }
 
 .coveo-facet-search-clear svg {
-  color: #1D4F76;
   width: 8px;
   height: 8px;
-}
-
-.coveo-facet-search-clear svg .coveo-exclusion-svg {
-  fill: #1D4F76;
 }
 
 .coveo-facet-search-clear:hover {
@@ -15636,7 +15687,7 @@ a.CoveoResultLink.coveo-selected *,
   white-space: nowrap;
 }
 
-.coveo-facet-settings-section .coveo-icon {
+.coveo-facet-settings-section svg {
   margin: 10px;
 }
 
@@ -15674,59 +15725,16 @@ a.CoveoResultLink.coveo-selected *,
   background: white;
 }
 
-.coveo-facet-settings-section-sort .coveo-icon {
-  display: inline-block;
-  overflow: hidden;
-  background: no-repeat;
-  background-image: url( ../image/spritesNew.png);
-  background-position: -648px -996px;
-  width: 16px;
-  text-indent: 16px;
-  height: 16px;
+.coveo-facet-settings-section-sort .coveo-facet-settings-section-sort-svg {
   float: none;
 }
 
-@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
-  .coveo-facet-settings-section-sort .coveo-icon {
-    background-image: url( ../image/retinaNew.png);
-    background-size: 1094px 1025px;
-  }
+.coveo-facet-settings-section-sort:hover .coveo-active-shape-svg {
+  fill: #ECAD00;
 }
 
-.coveo-facet-settings-section-sort:hover .coveo-icon {
-  display: inline-block;
-  overflow: hidden;
-  background: no-repeat;
-  background-image: url( ../image/spritesNew.png);
-  background-position: -666px -996px;
-  width: 16px;
-  text-indent: 16px;
-  height: 16px;
-}
-
-@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
-  .coveo-facet-settings-section-sort:hover .coveo-icon {
-    background-image: url( ../image/retinaNew.png);
-    background-size: 1094px 1025px;
-  }
-}
-
-.coveo-facet-settings-section-sort:hover.coveo-disabled .coveo-icon {
-  display: inline-block;
-  overflow: hidden;
-  background: no-repeat;
-  background-image: url( ../image/spritesNew.png);
-  background-position: -648px -996px;
-  width: 16px;
-  text-indent: 16px;
-  height: 16px;
-}
-
-@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
-  .coveo-facet-settings-section-sort:hover.coveo-disabled .coveo-icon {
-    background-image: url( ../image/retinaNew.png);
-    background-size: 1094px 1025px;
-  }
+.coveo-facet-settings-section-sort:hover.coveo-disabled .coveo-active-shape-svg {
+  fill: currentColor;
 }
 
 .coveo-facet-settings-section-sort.coveo-facet-settings-section {
@@ -15737,6 +15745,12 @@ a.CoveoResultLink.coveo-selected *,
   vertical-align: top;
 }
 
+.coveo-facet-settings-section-sort-svg {
+  width: 15px;
+  height: 14px;
+  color: #1D4F76;
+}
+
 .coveo-facet-settings-section-direction-ascending {
   cursor: pointer;
 }
@@ -15745,59 +15759,28 @@ a.CoveoResultLink.coveo-selected *,
   cursor: inherit;
 }
 
-.coveo-facet-settings-section-direction-ascending .coveo-icon {
-  display: inline-block;
-  overflow: hidden;
-  background: no-repeat;
-  background-image: url( ../image/spritesNew.png);
-  background-position: -486px -996px;
-  width: 16px;
-  text-indent: 16px;
-  height: 16px;
+.coveo-facet-settings-section-direction-ascending .coveo-facet-settings-section-direction-ascending-svg {
   float: none;
 }
 
-@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
-  .coveo-facet-settings-section-direction-ascending .coveo-icon {
-    background-image: url( ../image/retinaNew.png);
-    background-size: 1094px 1025px;
-  }
+.coveo-facet-settings-section-direction-ascending:hover .coveo-active-shape-svg {
+  fill: #ECAD00;
 }
 
-.coveo-facet-settings-section-direction-ascending:hover .coveo-icon {
-  display: inline-block;
-  overflow: hidden;
-  background: no-repeat;
-  background-image: url( ../image/spritesNew.png);
-  background-position: -1077px -476px;
-  width: 16px;
-  text-indent: 16px;
-  height: 16px;
+.coveo-facet-settings-section-direction-ascending:hover.coveo-facet-settings-disabled .coveo-active-shape-svg {
+  fill: currentColor;
 }
 
-@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
-  .coveo-facet-settings-section-direction-ascending:hover .coveo-icon {
-    background-image: url( ../image/retinaNew.png);
-    background-size: 1094px 1025px;
-  }
+.coveo-facet-settings-section-direction-ascending-svg {
+  width: 15px;
+  height: 12px;
+  color: #1D4F76;
 }
 
-.coveo-facet-settings-section-direction-ascending:hover.coveo-facet-settings-disabled .coveo-icon {
-  display: inline-block;
-  overflow: hidden;
-  background: no-repeat;
-  background-image: url( ../image/spritesNew.png);
-  background-position: -486px -996px;
-  width: 16px;
-  text-indent: 16px;
-  height: 16px;
-}
-
-@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
-  .coveo-facet-settings-section-direction-ascending:hover.coveo-facet-settings-disabled .coveo-icon {
-    background-image: url( ../image/retinaNew.png);
-    background-size: 1094px 1025px;
-  }
+.coveo-facet-settings-section-direction-descending-svg {
+  width: 15px;
+  height: 12px;
+  color: #1D4F76;
 }
 
 .coveo-facet-settings-section-direction-descending {
@@ -15808,59 +15791,16 @@ a.CoveoResultLink.coveo-selected *,
   cursor: inherit;
 }
 
-.coveo-facet-settings-section-direction-descending .coveo-icon {
-  display: inline-block;
-  overflow: hidden;
-  background: no-repeat;
-  background-image: url( ../image/spritesNew.png);
-  background-position: -360px -996px;
-  width: 16px;
-  text-indent: 16px;
-  height: 16px;
+.coveo-facet-settings-section-direction-descending .coveo-facet-settings-section-direction-descending-svg {
   float: none;
 }
 
-@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
-  .coveo-facet-settings-section-direction-descending .coveo-icon {
-    background-image: url( ../image/retinaNew.png);
-    background-size: 1094px 1025px;
-  }
+.coveo-facet-settings-section-direction-descending:hover .coveo-active-shape-svg {
+  fill: #ECAD00;
 }
 
-.coveo-facet-settings-section-direction-descending:hover .coveo-icon {
-  display: inline-block;
-  overflow: hidden;
-  background: no-repeat;
-  background-image: url( ../image/spritesNew.png);
-  background-position: -378px -996px;
-  width: 16px;
-  text-indent: 16px;
-  height: 16px;
-}
-
-@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
-  .coveo-facet-settings-section-direction-descending:hover .coveo-icon {
-    background-image: url( ../image/retinaNew.png);
-    background-size: 1094px 1025px;
-  }
-}
-
-.coveo-facet-settings-section-direction-descending:hover.coveo-facet-settings-disabled .coveo-icon {
-  display: inline-block;
-  overflow: hidden;
-  background: no-repeat;
-  background-image: url( ../image/spritesNew.png);
-  background-position: -360px -996px;
-  width: 16px;
-  text-indent: 16px;
-  height: 16px;
-}
-
-@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
-  .coveo-facet-settings-section-direction-descending:hover.coveo-facet-settings-disabled .coveo-icon {
-    background-image: url( ../image/retinaNew.png);
-    background-size: 1094px 1025px;
-  }
+.coveo-facet-settings-section-direction-descending:hover.coveo-facet-settings-disabled .coveo-active-shape-svg {
+  fill: currentColor;
 }
 
 .coveo-facet-settings-section-save-state {
@@ -15868,59 +15808,22 @@ a.CoveoResultLink.coveo-selected *,
   cursor: pointer;
 }
 
-.coveo-facet-settings-section-save-state .coveo-icon {
-  display: inline-block;
-  overflow: hidden;
-  background: no-repeat;
-  background-image: url( ../image/spritesNew.png);
-  background-position: -612px -996px;
-  width: 16px;
-  text-indent: 16px;
-  height: 16px;
+.coveo-facet-settings-section-save-state .coveo-sprites-dropdown-more {
   float: none;
 }
 
-@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
-  .coveo-facet-settings-section-save-state .coveo-icon {
-    background-image: url( ../image/retinaNew.png);
-    background-size: 1094px 1025px;
-  }
+.coveo-facet-settings-section-save-state:hover .coveo-active-shape-svg {
+  fill: #ECAD00;
 }
 
-.coveo-facet-settings-section-save-state:hover .coveo-icon {
-  display: inline-block;
-  overflow: hidden;
-  background: no-repeat;
-  background-image: url( ../image/spritesNew.png);
-  background-position: -1077px -494px;
+.coveo-facet-settings-section-save-state:hover.coveo-facet-settings-disabled .coveo-active-shape-svg {
+  fill: currentColor;
+}
+
+.coveo-facet-settings-section-save-state-svg {
   width: 16px;
-  text-indent: 16px;
   height: 16px;
-}
-
-@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
-  .coveo-facet-settings-section-save-state:hover .coveo-icon {
-    background-image: url( ../image/retinaNew.png);
-    background-size: 1094px 1025px;
-  }
-}
-
-.coveo-facet-settings-section-save-state:hover.coveo-facet-settings-disabled .coveo-icon {
-  display: inline-block;
-  overflow: hidden;
-  background: no-repeat;
-  background-image: url( ../image/spritesNew.png);
-  background-position: -612px -996px;
-  width: 16px;
-  text-indent: 16px;
-  height: 16px;
-}
-
-@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
-  .coveo-facet-settings-section-save-state:hover.coveo-facet-settings-disabled .coveo-icon {
-    background-image: url( ../image/retinaNew.png);
-    background-size: 1094px 1025px;
-  }
+  color: #1D4F76;
 }
 
 .coveo-facet-settings-section-clear-state {
@@ -15928,59 +15831,18 @@ a.CoveoResultLink.coveo-selected *,
   cursor: pointer;
 }
 
-.coveo-facet-settings-section-clear-state .coveo-icon {
-  display: inline-block;
-  overflow: hidden;
-  background: no-repeat;
-  background-image: url( ../image/spritesNew.png);
-  background-position: -504px -996px;
+.coveo-facet-settings-section-clear-state:hover .coveo-active-shape-svg {
+  fill: #ECAD00;
+}
+
+.coveo-facet-settings-section-clear-state:hover.coveo-facet-settings-disabled .coveo-active-shape-svg {
+  fill: currentColor;
+}
+
+.coveo-facet-settings-section-clear-state-svg {
   width: 16px;
-  text-indent: 16px;
   height: 16px;
-  float: none;
-}
-
-@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
-  .coveo-facet-settings-section-clear-state .coveo-icon {
-    background-image: url( ../image/retinaNew.png);
-    background-size: 1094px 1025px;
-  }
-}
-
-.coveo-facet-settings-section-clear-state:hover .coveo-icon {
-  display: inline-block;
-  overflow: hidden;
-  background: no-repeat;
-  background-image: url( ../image/spritesNew.png);
-  background-position: -1077px -512px;
-  width: 16px;
-  text-indent: 16px;
-  height: 16px;
-}
-
-@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
-  .coveo-facet-settings-section-clear-state:hover .coveo-icon {
-    background-image: url( ../image/retinaNew.png);
-    background-size: 1094px 1025px;
-  }
-}
-
-.coveo-facet-settings-section-clear-state:hover.coveo-facet-settings-disabled .coveo-icon {
-  display: inline-block;
-  overflow: hidden;
-  background: no-repeat;
-  background-image: url( ../image/spritesNew.png);
-  background-position: -504px -996px;
-  width: 16px;
-  text-indent: 16px;
-  height: 16px;
-}
-
-@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
-  .coveo-facet-settings-section-clear-state:hover.coveo-facet-settings-disabled .coveo-icon {
-    background-image: url( ../image/retinaNew.png);
-    background-size: 1094px 1025px;
-  }
+  color: #1D4F76;
 }
 
 .coveo-facet-settings-section-hide {
@@ -15988,59 +15850,22 @@ a.CoveoResultLink.coveo-selected *,
   cursor: pointer;
 }
 
-.coveo-facet-settings-section-hide .coveo-icon {
-  display: inline-block;
-  overflow: hidden;
-  background: no-repeat;
-  background-image: url( ../image/spritesNew.png);
-  background-position: -414px -996px;
-  width: 16px;
-  text-indent: 16px;
-  height: 16px;
+.coveo-facet-settings-section-hide .coveo-facet-settings-section-hide-svg {
   float: none;
 }
 
-@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
-  .coveo-facet-settings-section-hide .coveo-icon {
-    background-image: url( ../image/retinaNew.png);
-    background-size: 1094px 1025px;
-  }
+.coveo-facet-settings-section-hide:hover .coveo-active-shape-svg {
+  fill: #ECAD00;
 }
 
-.coveo-facet-settings-section-hide:hover .coveo-icon {
-  display: inline-block;
-  overflow: hidden;
-  background: no-repeat;
-  background-image: url( ../image/spritesNew.png);
-  background-position: -432px -996px;
+.coveo-facet-settings-section-hide:hover.coveo-facet-settings-disabled .coveo-active-shape-svg {
+  fill: currentColor;
+}
+
+.coveo-facet-settings-section-hide-svg {
   width: 16px;
-  text-indent: 16px;
   height: 16px;
-}
-
-@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
-  .coveo-facet-settings-section-hide:hover .coveo-icon {
-    background-image: url( ../image/retinaNew.png);
-    background-size: 1094px 1025px;
-  }
-}
-
-.coveo-facet-settings-section-hide:hover.coveo-facet-settings-disabled .coveo-icon {
-  display: inline-block;
-  overflow: hidden;
-  background: no-repeat;
-  background-image: url( ../image/spritesNew.png);
-  background-position: -414px -996px;
-  width: 16px;
-  text-indent: 16px;
-  height: 16px;
-}
-
-@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
-  .coveo-facet-settings-section-hide:hover.coveo-facet-settings-disabled .coveo-icon {
-    background-image: url( ../image/retinaNew.png);
-    background-size: 1094px 1025px;
-  }
+  color: #1D4F76;
 }
 
 .coveo-facet-settings-section-show {
@@ -16048,59 +15873,22 @@ a.CoveoResultLink.coveo-selected *,
   cursor: pointer;
 }
 
-.coveo-facet-settings-section-show .coveo-icon {
-  display: inline-block;
-  overflow: hidden;
-  background: no-repeat;
-  background-image: url( ../image/spritesNew.png);
-  background-position: -324px -996px;
-  width: 16px;
-  text-indent: 16px;
-  height: 16px;
+.coveo-facet-settings-section-show .coveo-facet-settings-section-show-svg {
   float: none;
 }
 
-@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
-  .coveo-facet-settings-section-show .coveo-icon {
-    background-image: url( ../image/retinaNew.png);
-    background-size: 1094px 1025px;
-  }
+.coveo-facet-settings-section-show:hover .coveo-active-shape-svg {
+  fill: #ECAD00;
 }
 
-.coveo-facet-settings-section-show:hover .coveo-icon {
-  display: inline-block;
-  overflow: hidden;
-  background: no-repeat;
-  background-image: url( ../image/spritesNew.png);
-  background-position: -342px -996px;
+.coveo-facet-settings-section-show:hover.coveo-facet-settings-disabled .coveo-active-shape-svg {
+  fill: currentColor;
+}
+
+.coveo-facet-settings-section-show-svg {
   width: 16px;
-  text-indent: 16px;
   height: 16px;
-}
-
-@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
-  .coveo-facet-settings-section-show:hover .coveo-icon {
-    background-image: url( ../image/retinaNew.png);
-    background-size: 1094px 1025px;
-  }
-}
-
-.coveo-facet-settings-section-show:hover.coveo-facet-settings-disabled .coveo-icon {
-  display: inline-block;
-  overflow: hidden;
-  background: no-repeat;
-  background-image: url( ../image/spritesNew.png);
-  background-position: -324px -996px;
-  width: 16px;
-  text-indent: 16px;
-  height: 16px;
-}
-
-@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
-  .coveo-facet-settings-section-show:hover.coveo-facet-settings-disabled .coveo-icon {
-    background-image: url( ../image/retinaNew.png);
-    background-size: 1094px 1025px;
-  }
+  color: #1D4F76;
 }
 
 .coveo-facet-settings-section-sort-title {
@@ -16240,20 +16028,20 @@ a.CoveoResultLink.coveo-selected *,
   top: 0px;
   visibility: hidden;
   cursor: pointer;
+  color: #1D4F76;
 }
 
 .coveo-facet-header-eraser.coveo-facet-header-eraser-visible {
   visibility: visible;
 }
 
-.coveo-facet-header-eraser svg {
-  color: #1D4F76;
-  width: 15px;
-  height: 15px;
+.coveo-facet-header-eraser .coveo-exclusion-svg {
+  fill: #1D4F76;
 }
 
-.coveo-facet-header-eraser svg .coveo-exclusion-svg {
-  fill: #1D4F76;
+.coveo-facet-header-eraser svg {
+  width: 15px;
+  height: 15px;
 }
 
 .coveo-facet-header-eraser:hover {
@@ -16322,6 +16110,7 @@ a.CoveoResultLink.coveo-selected *,
   font-size: 14px;
   display: inline-block;
   cursor: pointer;
+  color: #1D4F76;
   color: #296896;
   text-decoration: none;
   cursor: pointer;
@@ -16333,16 +16122,15 @@ a.CoveoResultLink.coveo-selected *,
   text-decoration: line-through;
 }
 
-.coveo-facet-breadcrumb-value .coveo-facet-breadcrumb-clear svg,
-.coveo-facet-slider-breadcrumb-value .coveo-facet-breadcrumb-clear svg {
-  color: #1D4F76;
-  width: 12px;
-  height: 12px;
+.coveo-facet-breadcrumb-value .coveo-exclusion-svg,
+.coveo-facet-slider-breadcrumb-value .coveo-exclusion-svg {
+  fill: #1D4F76;
 }
 
-.coveo-facet-breadcrumb-value .coveo-facet-breadcrumb-clear svg .coveo-exclusion-svg,
-.coveo-facet-slider-breadcrumb-value .coveo-facet-breadcrumb-clear svg .coveo-exclusion-svg {
-  fill: #1D4F76;
+.coveo-facet-breadcrumb-value .coveo-facet-breadcrumb-clear svg,
+.coveo-facet-slider-breadcrumb-value .coveo-facet-breadcrumb-clear svg {
+  width: 12px;
+  height: 12px;
 }
 
 .coveo-facet-breadcrumb-value:hover .coveo-facet-breadcrumb-clear,
@@ -17148,16 +16936,16 @@ a.CoveoResultLink.coveo-selected *,
   display: inline-block;
   margin: 3px 0px 0px 5px;
   cursor: pointer;
+  color: #1D4F76;
+}
+
+.coveo-hidden-query-breadcrumb-clear .coveo-exclusion-svg {
+  fill: #1D4F76;
 }
 
 .coveo-hidden-query-breadcrumb-clear svg {
-  color: #1D4F76;
   width: 12px;
   height: 12px;
-}
-
-.coveo-hidden-query-breadcrumb-clear svg .coveo-exclusion-svg {
-  fill: #1D4F76;
 }
 
 .coveo-hidden-query-breadcrumb-clear:hover {
@@ -18434,6 +18222,12 @@ a.CoveoResultLink.coveo-selected *,
   cursor: pointer;
 }
 
+.coveo-preferences-panel-svg {
+  width: 16px;
+  height: 16px;
+  color: #1D4F76;
+}
+
 /*
 * @param direction vertical or horizontal
 * @param position type of positioning to apply (relative/absolute)
@@ -18930,14 +18724,16 @@ a.CoveoResultLink.coveo-selected *,
   color: #67768B;
 }
 
-.coveo-small-recommendation #coveo-recommendation-results-column,
-.coveo-small-facets #coveo-recommendation-results-column {
+.CoveoSearchInterface.coveo-small-recommendation #coveo-recommendation-results-column,
+.CoveoSearchInterface.coveo-small-recommendation .coveo-recommendation-results-column,
+.CoveoSearchInterface.coveo-small-facets #coveo-recommendation-results-column,
+.CoveoSearchInterface.coveo-small-facets .coveo-recommendation-results-column {
   width: auto;
   display: block;
 }
 
-.coveo-small-recommendation .coveo-recommendation-facet-column,
-.coveo-small-facets .coveo-recommendation-facet-column {
+.CoveoSearchInterface.coveo-small-recommendation .coveo-recommendation-facet-column,
+.CoveoSearchInterface.coveo-small-facets .coveo-recommendation-facet-column {
   width: 30%;
 }
 
@@ -18993,29 +18789,30 @@ a.CoveoResultLink.coveo-selected *,
 }
 
 .coveo-recommendation-column {
-  width: 25%;
+  width: 15%;
   display: inline-block;
   vertical-align: top;
   padding: 5px 15px;
 }
 
-#coveo-recommendation-results-column {
+#coveo-recommendation-results-column,
+.coveo-recommendation-results-column,
+.CoveoSearchInterface .coveo-recommendation-results-column {
   width: 49%;
   display: inline-block;
 }
 
-#coveo-recommendation-facet-column {
+#coveo-recommendation-facet-column,
+.coveo-recommendation-facet-column,
+.CoveoSearchInterface .coveo-recommendation-facet-column {
   display: inline-block;
-  width: 22%;
   vertical-align: top;
 }
 
-#coveo-recommendation-main-section {
+#coveo-recommendation-main-section,
+.coveo-recommendation-main-section,
+.CoveoSearchInterface .coveo-recommendation-main-section {
   max-width: 1450px;
-}
-
-body {
-  margin: 0;
 }
 
 /*
@@ -19611,19 +19408,19 @@ a.coveo-folding-show-less.coveo-selected * {
 
 .CoveoResultsFiltersPreferences .coveo-advanced-filters-builder .coveo-close-and-save .coveo-close {
   cursor: pointer;
+  color: #1D4F76;
   position: absolute;
   top: 6px;
   right: 10px;
 }
 
-.CoveoResultsFiltersPreferences .coveo-advanced-filters-builder .coveo-close-and-save .coveo-close svg {
-  color: #1D4F76;
-  width: 12px;
-  height: 12px;
+.CoveoResultsFiltersPreferences .coveo-advanced-filters-builder .coveo-close-and-save .coveo-close .coveo-exclusion-svg {
+  fill: #1D4F76;
 }
 
-.CoveoResultsFiltersPreferences .coveo-advanced-filters-builder .coveo-close-and-save .coveo-close svg .coveo-exclusion-svg {
-  fill: #1D4F76;
+.CoveoResultsFiltersPreferences .coveo-advanced-filters-builder .coveo-close-and-save .coveo-close svg {
+  width: 12px;
+  height: 12px;
 }
 
 .CoveoResultsFiltersPreferences .coveo-advanced-filters-builder .coveo-close-and-save .coveo-close:hover {
@@ -19656,20 +19453,20 @@ a.coveo-folding-show-less.coveo-selected * {
   font-size: 14px;
   display: inline-block;
   cursor: pointer;
+  color: #1D4F76;
   color: #296896;
   text-decoration: none;
   cursor: pointer;
   color: #009DDC;
 }
 
-.coveo-results-filter-preferences-breadcrumb .coveo-value .coveo-clear svg {
-  color: #1D4F76;
-  width: 12px;
-  height: 12px;
+.coveo-results-filter-preferences-breadcrumb .coveo-value .coveo-exclusion-svg {
+  fill: #1D4F76;
 }
 
-.coveo-results-filter-preferences-breadcrumb .coveo-value .coveo-clear svg .coveo-exclusion-svg {
-  fill: #1D4F76;
+.coveo-results-filter-preferences-breadcrumb .coveo-value .coveo-clear svg {
+  width: 12px;
+  height: 12px;
 }
 
 .coveo-results-filter-preferences-breadcrumb .coveo-value:hover .coveo-clear {
@@ -20195,7 +19992,10 @@ a.coveo-folding-show-less.coveo-selected * {
 }
 
 .coveo-settings-item .coveo-icon {
-  margin: 7px 10px 0px 10px;
+  min-width: 18px;
+  display: inline-block;
+  margin: 0px 10px 0px 10px;
+  vertical-align: middle;
 }
 
 .coveo-settings-item:hover,
@@ -20223,6 +20023,8 @@ a.coveo-folding-show-less.coveo-selected * {
 
 .coveo-settings-item .coveo-settings-text {
   overflow: hidden;
+  display: inline-block;
+  vertical-align: middle;
   padding: 8px 8px 8px 8px;
 }
 
@@ -20236,389 +20038,98 @@ a.coveo-folding-show-less.coveo-selected * {
   border-bottom-right-radius: 2px;
 }
 
-.coveo-settings-item.coveo-share-query .coveo-icon {
-  display: inline-block;
-  overflow: hidden;
-  background: no-repeat;
-  background-image: url( ../image/spritesNew.png);
-  background-position: -204px -996px;
-  width: 18px;
-  text-indent: 18px;
-  height: 18px;
-  float: left;
+.coveo-settings-item.coveo-share-query .coveo-share-query-svg {
+  float: none;
 }
 
-@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
-  .coveo-settings-item.coveo-share-query .coveo-icon {
-    background-image: url( ../image/retinaNew.png);
-    background-size: 1094px 1025px;
-  }
+.coveo-settings-item.coveo-share-query:hover .coveo-active-shape-svg {
+  fill: #ECAD00;
 }
 
-.coveo-settings-item.coveo-share-query:hover .coveo-icon {
-  display: inline-block;
-  overflow: hidden;
-  background: no-repeat;
-  background-image: url( ../image/spritesNew.png);
-  background-position: -224px -996px;
-  width: 18px;
-  text-indent: 18px;
-  height: 18px;
+.coveo-settings-item.coveo-share-query:hover.coveo-disabled .coveo-active-shape-svg {
+  fill: currentColor;
 }
 
-@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
-  .coveo-settings-item.coveo-share-query:hover .coveo-icon {
-    background-image: url( ../image/retinaNew.png);
-    background-size: 1094px 1025px;
-  }
+.coveo-settings-item.coveo-advanced-search .coveo-advanced-search-svg {
+  float: none;
 }
 
-.coveo-settings-item.coveo-share-query:hover.coveo-disabled .coveo-icon {
-  display: inline-block;
-  overflow: hidden;
-  background: no-repeat;
-  background-image: url( ../image/spritesNew.png);
-  background-position: -204px -996px;
-  width: 18px;
-  text-indent: 18px;
-  height: 18px;
+.coveo-settings-item.coveo-advanced-search:hover .coveo-active-shape-svg {
+  fill: #ECAD00;
 }
 
-@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
-  .coveo-settings-item.coveo-share-query:hover.coveo-disabled .coveo-icon {
-    background-image: url( ../image/retinaNew.png);
-    background-size: 1094px 1025px;
-  }
+.coveo-settings-item.coveo-advanced-search:hover.coveo-disabled .coveo-active-shape-svg {
+  fill: currentColor;
 }
 
-.coveo-settings-item.coveo-preferences-panel .coveo-icon {
-  display: inline-block;
-  overflow: hidden;
-  background: no-repeat;
-  background-image: url( ../image/spritesNew.png);
-  background-position: -244px -996px;
-  width: 18px;
-  text-indent: 18px;
-  height: 18px;
-  float: left;
+.coveo-settings-item.coveo-preferences-panel .coveo-preferences-panel-svg {
+  float: none;
 }
 
-@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
-  .coveo-settings-item.coveo-preferences-panel .coveo-icon {
-    background-image: url( ../image/retinaNew.png);
-    background-size: 1094px 1025px;
-  }
+.coveo-settings-item.coveo-preferences-panel:hover .coveo-active-shape-svg {
+  fill: #ECAD00;
 }
 
-.coveo-settings-item.coveo-preferences-panel:hover .coveo-icon {
-  display: inline-block;
-  overflow: hidden;
-  background: no-repeat;
-  background-image: url( ../image/spritesNew.png);
-  background-position: -264px -996px;
-  width: 18px;
-  text-indent: 18px;
-  height: 18px;
-}
-
-@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
-  .coveo-settings-item.coveo-preferences-panel:hover .coveo-icon {
-    background-image: url( ../image/retinaNew.png);
-    background-size: 1094px 1025px;
-  }
-}
-
-.coveo-settings-item.coveo-preferences-panel:hover.coveo-disabled .coveo-icon {
-  display: inline-block;
-  overflow: hidden;
-  background: no-repeat;
-  background-image: url( ../image/spritesNew.png);
-  background-position: -244px -996px;
-  width: 18px;
-  text-indent: 18px;
-  height: 18px;
-}
-
-@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
-  .coveo-settings-item.coveo-preferences-panel:hover.coveo-disabled .coveo-icon {
-    background-image: url( ../image/retinaNew.png);
-    background-size: 1094px 1025px;
-  }
-}
-
-.coveo-settings-item.coveo-advanced-search .coveo-icon {
-  display: inline-block;
-  overflow: hidden;
-  background: no-repeat;
-  background-image: url( ../image/spritesNew.png);
-  background-position: -244px -996px;
-  width: 18px;
-  text-indent: 18px;
-  height: 18px;
-  float: left;
-}
-
-@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
-  .coveo-settings-item.coveo-advanced-search .coveo-icon {
-    background-image: url( ../image/retinaNew.png);
-    background-size: 1094px 1025px;
-  }
-}
-
-.coveo-settings-item.coveo-advanced-search:hover .coveo-icon {
-  display: inline-block;
-  overflow: hidden;
-  background: no-repeat;
-  background-image: url( ../image/spritesNew.png);
-  background-position: -264px -996px;
-  width: 18px;
-  text-indent: 18px;
-  height: 18px;
-}
-
-@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
-  .coveo-settings-item.coveo-advanced-search:hover .coveo-icon {
-    background-image: url( ../image/retinaNew.png);
-    background-size: 1094px 1025px;
-  }
-}
-
-.coveo-settings-item.coveo-advanced-search:hover.coveo-disabled .coveo-icon {
-  display: inline-block;
-  overflow: hidden;
-  background: no-repeat;
-  background-image: url( ../image/spritesNew.png);
-  background-position: -244px -996px;
-  width: 18px;
-  text-indent: 18px;
-  height: 18px;
-}
-
-@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
-  .coveo-settings-item.coveo-advanced-search:hover.coveo-disabled .coveo-icon {
-    background-image: url( ../image/retinaNew.png);
-    background-size: 1094px 1025px;
-  }
+.coveo-settings-item.coveo-preferences-panel:hover.coveo-disabled .coveo-active-shape-svg {
+  fill: currentColor;
 }
 
 .coveo-settings-item.coveo-authentication-provider .coveo-icon {
-  display: inline-block;
-  overflow: hidden;
-  background: no-repeat;
-  background-image: url( ../image/spritesNew.png);
-  background-position: -450px -996px;
-  width: 16px;
-  text-indent: 16px;
-  height: 16px;
-  float: left;
+  margin-left: 12px;
+  margin-right: 8px;
 }
 
-@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
-  .coveo-settings-item.coveo-authentication-provider .coveo-icon {
-    background-image: url( ../image/retinaNew.png);
-    background-size: 1094px 1025px;
-  }
+.coveo-settings-item.coveo-authentication-provider .coveo-authentication-provider-svg {
+  float: none;
 }
 
-.coveo-settings-item.coveo-authentication-provider:hover .coveo-icon {
-  display: inline-block;
-  overflow: hidden;
-  background: no-repeat;
-  background-image: url( ../image/spritesNew.png);
-  background-position: -468px -996px;
-  width: 16px;
-  text-indent: 16px;
-  height: 16px;
+.coveo-settings-item.coveo-authentication-provider:hover .coveo-active-shape-svg {
+  fill: #ECAD00;
 }
 
-@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
-  .coveo-settings-item.coveo-authentication-provider:hover .coveo-icon {
-    background-image: url( ../image/retinaNew.png);
-    background-size: 1094px 1025px;
-  }
-}
-
-.coveo-settings-item.coveo-authentication-provider:hover.coveo-disabled .coveo-icon {
-  display: inline-block;
-  overflow: hidden;
-  background: no-repeat;
-  background-image: url( ../image/spritesNew.png);
-  background-position: -450px -996px;
-  width: 16px;
-  text-indent: 16px;
-  height: 16px;
-}
-
-@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
-  .coveo-settings-item.coveo-authentication-provider:hover.coveo-disabled .coveo-icon {
-    background-image: url( ../image/retinaNew.png);
-    background-size: 1094px 1025px;
-  }
+.coveo-settings-item.coveo-authentication-provider:hover.coveo-disabled .coveo-active-shape-svg {
+  fill: currentColor;
 }
 
 .coveo-settings-item.coveo-export-to-excel .coveo-icon {
-  display: inline-block;
-  overflow: hidden;
-  background: no-repeat;
-  background-image: url( ../image/spritesNew.png);
-  background-position: -144px -996px;
-  width: 18px;
-  text-indent: 18px;
-  height: 18px;
-  float: left;
+  margin-left: 12px;
+  margin-right: 8px;
 }
 
-@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
-  .coveo-settings-item.coveo-export-to-excel .coveo-icon {
-    background-image: url( ../image/retinaNew.png);
-    background-size: 1094px 1025px;
-  }
+.coveo-settings-item.coveo-export-to-excel .coveo-export-to-excel-svg {
+  float: none;
 }
 
-.coveo-settings-item.coveo-export-to-excel:hover .coveo-icon {
-  display: inline-block;
-  overflow: hidden;
-  background: no-repeat;
-  background-image: url( ../image/spritesNew.png);
-  background-position: -124px -996px;
-  width: 18px;
-  text-indent: 18px;
-  height: 18px;
+.coveo-settings-item.coveo-export-to-excel:hover .coveo-active-shape-svg {
+  fill: #ECAD00;
 }
 
-@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
-  .coveo-settings-item.coveo-export-to-excel:hover .coveo-icon {
-    background-image: url( ../image/retinaNew.png);
-    background-size: 1094px 1025px;
-  }
+.coveo-settings-item.coveo-export-to-excel:hover.coveo-disabled .coveo-active-shape-svg {
+  fill: currentColor;
 }
 
-.coveo-settings-item.coveo-export-to-excel:hover.coveo-disabled .coveo-icon {
-  display: inline-block;
-  overflow: hidden;
-  background: no-repeat;
-  background-image: url( ../image/spritesNew.png);
-  background-position: -144px -996px;
-  width: 18px;
-  text-indent: 18px;
-  height: 18px;
+.coveo-settings-item.coveo-subscriptions-panel .coveo-subscription-panel-svg {
+  float: none;
 }
 
-@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
-  .coveo-settings-item.coveo-export-to-excel:hover.coveo-disabled .coveo-icon {
-    background-image: url( ../image/retinaNew.png);
-    background-size: 1094px 1025px;
-  }
+.coveo-settings-item.coveo-subscriptions-panel:hover .coveo-active-shape-svg {
+  fill: #ECAD00;
 }
 
-.coveo-settings-item.coveo-follow-query .coveo-icon {
-  display: inline-block;
-  overflow: hidden;
-  background: no-repeat;
-  background-image: url( ../image/spritesNew.png);
-  background-position: -184px -996px;
-  width: 18px;
-  text-indent: 18px;
-  height: 18px;
-  float: left;
+.coveo-settings-item.coveo-subscriptions-panel:hover.coveo-disabled .coveo-active-shape-svg {
+  fill: currentColor;
 }
 
-@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
-  .coveo-settings-item.coveo-follow-query .coveo-icon {
-    background-image: url( ../image/retinaNew.png);
-    background-size: 1094px 1025px;
-  }
+.coveo-settings-item.coveo-follow-query .coveo-follow-query-svg {
+  float: none;
 }
 
-.coveo-settings-item.coveo-follow-query:hover .coveo-icon {
-  display: inline-block;
-  overflow: hidden;
-  background: no-repeat;
-  background-image: url( ../image/spritesNew.png);
-  background-position: -164px -996px;
-  width: 18px;
-  text-indent: 18px;
-  height: 18px;
+.coveo-settings-item.coveo-follow-query:hover .coveo-active-shape-svg {
+  fill: #ECAD00;
 }
 
-@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
-  .coveo-settings-item.coveo-follow-query:hover .coveo-icon {
-    background-image: url( ../image/retinaNew.png);
-    background-size: 1094px 1025px;
-  }
-}
-
-.coveo-settings-item.coveo-follow-query:hover.coveo-disabled .coveo-icon {
-  display: inline-block;
-  overflow: hidden;
-  background: no-repeat;
-  background-image: url( ../image/spritesNew.png);
-  background-position: -184px -996px;
-  width: 18px;
-  text-indent: 18px;
-  height: 18px;
-}
-
-@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
-  .coveo-settings-item.coveo-follow-query:hover.coveo-disabled .coveo-icon {
-    background-image: url( ../image/retinaNew.png);
-    background-size: 1094px 1025px;
-  }
-}
-
-.coveo-settings-item.coveo-subscriptions-panel .coveo-icon {
-  display: inline-block;
-  overflow: hidden;
-  background: no-repeat;
-  background-image: url( ../image/spritesNew.png);
-  background-position: -184px -996px;
-  width: 18px;
-  text-indent: 18px;
-  height: 18px;
-  float: left;
-}
-
-@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
-  .coveo-settings-item.coveo-subscriptions-panel .coveo-icon {
-    background-image: url( ../image/retinaNew.png);
-    background-size: 1094px 1025px;
-  }
-}
-
-.coveo-settings-item.coveo-subscriptions-panel:hover .coveo-icon {
-  display: inline-block;
-  overflow: hidden;
-  background: no-repeat;
-  background-image: url( ../image/spritesNew.png);
-  background-position: -164px -996px;
-  width: 18px;
-  text-indent: 18px;
-  height: 18px;
-}
-
-@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
-  .coveo-settings-item.coveo-subscriptions-panel:hover .coveo-icon {
-    background-image: url( ../image/retinaNew.png);
-    background-size: 1094px 1025px;
-  }
-}
-
-.coveo-settings-item.coveo-subscriptions-panel:hover.coveo-disabled .coveo-icon {
-  display: inline-block;
-  overflow: hidden;
-  background: no-repeat;
-  background-image: url( ../image/spritesNew.png);
-  background-position: -184px -996px;
-  width: 18px;
-  text-indent: 18px;
-  height: 18px;
-}
-
-@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
-  .coveo-settings-item.coveo-subscriptions-panel:hover.coveo-disabled .coveo-icon {
-    background-image: url( ../image/retinaNew.png);
-    background-size: 1094px 1025px;
-  }
+.coveo-settings-item.coveo-follow-query:hover.coveo-disabled .coveo-active-shape-svg {
+  fill: currentColor;
 }
 
 /*
@@ -20646,6 +20157,12 @@ a.coveo-folding-show-less.coveo-selected * {
   padding: 5px;
   height: 35px;
   font-size: 14px;
+}
+
+.coveo-share-query-svg {
+  width: 18px;
+  height: 14px;
+  color: #1D4F76;
 }
 
 /*

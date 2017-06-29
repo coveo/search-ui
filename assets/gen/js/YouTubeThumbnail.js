@@ -1,6 +1,6 @@
-webpackJsonpCoveo__temporary([26,50],{
+webpackJsonpCoveo__temporary([31,53],{
 
-/***/ 250:
+/***/ 251:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22,10 +22,10 @@ var ResultLink_1 = __webpack_require__(79);
 var Initialization_1 = __webpack_require__(2);
 var DomUtils_1 = __webpack_require__(45);
 var Dom_1 = __webpack_require__(3);
-var ExternalModulesShim_1 = __webpack_require__(22);
+var ExternalModulesShim_1 = __webpack_require__(23);
 var _ = __webpack_require__(1);
 var GlobalExports_1 = __webpack_require__(4);
-var RegisteredNamedMethods_1 = __webpack_require__(59);
+var RegisteredNamedMethods_1 = __webpack_require__(46);
 /**
  * The YouTubeThumbnail component automatically fetches the thumbnail of a YouTube video.
  *
@@ -155,7 +155,7 @@ Initialization_1.Initialization.registerAutoCreateComponent(YouTubeThumbnail);
 
 /***/ }),
 
-/***/ 457:
+/***/ 468:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
@@ -180,22 +180,22 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var Component_1 = __webpack_require__(8);
 var ComponentOptions_1 = __webpack_require__(9);
-var ComponentOptionsModel_1 = __webpack_require__(25);
+var ComponentOptionsModel_1 = __webpack_require__(26);
 var AnalyticsActionListMeta_1 = __webpack_require__(12);
 var ResultListEvents_1 = __webpack_require__(32);
-var HighlightUtils_1 = __webpack_require__(46);
+var HighlightUtils_1 = __webpack_require__(47);
 var DeviceUtils_1 = __webpack_require__(18);
-var OSUtils_1 = __webpack_require__(245);
+var OSUtils_1 = __webpack_require__(246);
 var Initialization_1 = __webpack_require__(2);
 var QueryUtils_1 = __webpack_require__(17);
 var Assert_1 = __webpack_require__(7);
 var Utils_1 = __webpack_require__(5);
-var Defer_1 = __webpack_require__(26);
+var Defer_1 = __webpack_require__(27);
 var Dom_1 = __webpack_require__(3);
 var StreamHighlightUtils_1 = __webpack_require__(65);
 var _ = __webpack_require__(1);
 var GlobalExports_1 = __webpack_require__(4);
-__webpack_require__(457);
+__webpack_require__(468);
 /**
  * The `ResultLink` component automatically transform a search result title into a clickable link pointing to the
  * original item.

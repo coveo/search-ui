@@ -1,4 +1,4 @@
-webpackJsonpCoveo__temporary([27],{
+webpackJsonpCoveo__temporary([32],{
 
 /***/ 317:
 /***/ (function(module, exports, __webpack_require__) {
@@ -18,7 +18,7 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var Component_1 = __webpack_require__(8);
 var ComponentOptions_1 = __webpack_require__(9);
-var DefaultFoldingTemplate_1 = __webpack_require__(632);
+var DefaultFoldingTemplate_1 = __webpack_require__(643);
 var Utils_1 = __webpack_require__(5);
 var QueryUtils_1 = __webpack_require__(17);
 var Initialization_1 = __webpack_require__(2);
@@ -27,7 +27,7 @@ var Dom_1 = __webpack_require__(3);
 var Strings_1 = __webpack_require__(10);
 var _ = __webpack_require__(1);
 var GlobalExports_1 = __webpack_require__(4);
-__webpack_require__(584);
+__webpack_require__(595);
 /**
  * The `ResultFolding` component renders folded result sets. It is usable inside a result template when there is an
  * active [`Folding`]{@link Folding} component in the page. This component takes care of rendering the parent result and
@@ -294,14 +294,14 @@ Initialization_1.Initialization.registerAutoCreateComponent(ResultFolding);
 
 /***/ }),
 
-/***/ 584:
+/***/ 595:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
 
-/***/ 632:
+/***/ 643:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -317,7 +317,7 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var Template_1 = __webpack_require__(23);
+var Template_1 = __webpack_require__(24);
 var DefaultFoldingTemplate = (function (_super) {
     __extends(DefaultFoldingTemplate, _super);
     function DefaultFoldingTemplate() {
