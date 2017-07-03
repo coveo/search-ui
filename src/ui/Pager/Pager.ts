@@ -317,7 +317,7 @@ export class Pager extends Component {
       const previous = document.createElement('li');
       $$(previous).addClass(['coveo-pager-previous', 'coveo-pager-anchor', 'coveo-pager-list-item']);
       const buttonLink = document.createElement('a');
-      const buttonIcon = $$('span', {className: 'coveo-pager-previous-icon'}, SVGIcons.pagerLeftArrow).el;
+      const buttonIcon = $$('span', { className: 'coveo-pager-previous-icon' }, SVGIcons.pagerLeftArrow).el;
       SVGDom.addClassToSVGInContainer(buttonIcon, 'coveo-pager-previous-icon-svg');
       buttonLink.appendChild(buttonIcon);
       buttonLink.setAttribute('title', l('Previous'));
@@ -330,7 +330,7 @@ export class Pager extends Component {
       const next = document.createElement('li');
       $$(next).addClass(['coveo-pager-next', 'coveo-pager-anchor', 'coveo-pager-list-item']);
       const buttonLink = document.createElement('a');
-      const buttonIcon = $$('span', {className: 'coveo-pager-next-icon'}, SVGIcons.pagerRightArrow).el;
+      const buttonIcon = $$('span', { className: 'coveo-pager-next-icon' }, SVGIcons.pagerRightArrow).el;
       SVGDom.addClassToSVGInContainer(buttonIcon, 'coveo-pager-next-icon-svg');
       buttonLink.appendChild(buttonIcon);
       buttonLink.setAttribute('title', l('Next'));
