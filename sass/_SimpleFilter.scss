@@ -1,0 +1,155 @@
+@import "bourbon/bourbon";
+@import "Variables";
+@import "../bin/sass/sprites";
+
+.coveo-simplefilter-header-wrapper {
+  width: 100%;
+  margin: auto;
+  padding-left: 15px;
+  max-width: 1200px;
+  position: relative;
+  display: block;
+  @include flex-wrap(nowrap);
+  @include justify-content(flex-start);
+}
+.coveo-dropdown-background {
+  display: none;
+}
+
+.coveo-dropdown-background-active {
+  opacity: 0.9;
+  display: block;
+}
+
+.CoveoSimpleFilter {
+  cursor: pointer;
+  display: inline-block;
+  position: relative;
+  border: $default-border;
+  background-color: white;
+  width: 160px;
+  &:hover {
+    background-color: $color-blueish-white-grey;
+  }
+}
+
+.coveo-simplefilter-selecttext {
+  max-width: 100px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  pointer-events:none;
+}
+
+.coveo-simplefilter-select {
+  color: $color-greyish-teal-blue;
+  @include display(flex);
+  justify-content: center;
+  overflow: hidden;
+  pointer-events:none;
+  text-overflow: ellipsis;
+  @include user-select(none);
+  white-space: nowrap;
+  padding: 3px 19px;
+}
+
+.coveo-simplefilter-circle {
+  display: inline-block;
+  letter-spacing: 0.4px;
+  background-color: white;
+  border: 2px solid $color-greyish-teal-blue;
+  border-radius: 50%;
+  color: $color-greyish-teal-blue;
+  font-size: 13px;
+  font-weight: bold;
+  min-height: 20px;
+  min-width: 20px;
+  line-height: 16px;
+  padding: 0 3px 0 3px;
+  text-align: center;
+  margin: 0 3px;
+  pointer-events:none;
+}
+
+.coveo-simplefilter-checkbox-container {
+  display: none;
+  border: $default-border;
+  position: absolute;
+  background-color: white;
+  top: 26px;
+  right: -1px;
+  width: 160px;
+  text-align: left;
+  .coveo-checkbox-button {
+    @include defaultRoundedBorder();
+  }
+
+  .coveo-checkbox-span-label {
+    white-space: nowrap;
+    vertical-align: middle;
+    text-overflow: ellipsis;
+    display: inline-block;
+    overflow: hidden;
+    max-width: 110px;
+    margin-left: 6px;
+  }
+
+  .coveo-checkbox-button {
+    vertical-align: middle;
+  }
+
+  .coveo-checkbox-label {
+    white-space: nowrap;
+    width:100%;
+    padding: 5px;
+    @include user-select(none);
+  }
+}
+
+.coveo-simplefilter-checkbox-container label {
+  display: inline-block;
+}
+
+.coveo-simplefilter-checkbox-container-expanded {
+  display: inline-block;
+  z-index: 20;
+}
+
+.coveo-simplefilter-checkbox-container label:hover {
+  background-color: $color-blueish-white-grey;
+}
+
+.coveo-simplefilter-breadcrumb-title {
+  @include breadcrumbTitle();
+}
+
+.coveo-simplefilter-breadcrumb-value {
+  @include clearButton('.coveo-simplefilter-breadcrumb-clear');
+  @include clickableVibrant();
+  display: inline-block;
+  font-size: $font-size-smaller;
+  margin-right: 20px;
+}
+
+.coveo-simplefilter-breadcrumb-clear {
+  display: inline-block;
+  margin-left: 5px;
+  position: relative;
+  top: 5px;
+  @include clearButton('.coveo-breadcrumb-clear-all-icon');
+}
+
+.coveo-simplefilter-breadcrumb-clear-svg {
+  position: absolute;
+  top: -15px;
+}
+
+.coveo-simplefilter-toggle-down-svg {
+  margin-left: 5px;
+  color: $color-greyish-teal-blue;
+  width: 10px;
+  height: 6px;
+}
+
+.coveo-simplefilter-empty {
+  visibility: hidden;
+}
