@@ -17,7 +17,6 @@ import { exportGlobally } from '../../GlobalExports';
 import 'styling/_Pager';
 import { Defer } from '../../misc/Defer';
 import { SVGIcons } from '../../utils/SVGIcons';
-import { advancedComponentSetup } from '../../../test/MockEnvironment';
 import { SVGDom } from '../../utils/SVGDom';
 
 export interface IPagerOptions {
