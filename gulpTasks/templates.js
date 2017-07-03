@@ -9,6 +9,8 @@ gulp.task('templates', (done) => {
   runsequence('buildTemplates', 'duplicateTemplatesFile', done);
 });
 
+// We duplicate template files to help on upgrade (deployments using the "NewDesign" file)
+// This should help mitigate 404 on those files, and hopefully possible maintenance case(s).
 gulp.task('buildTemplates', (done) => {
   templatesParser.compileTemplates('templates/', 'bin/js/templates/', 'templates', conditions, done);
 });
