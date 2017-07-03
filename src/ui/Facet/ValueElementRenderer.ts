@@ -44,27 +44,25 @@ export class ValueElementRenderer {
       className: 'coveo-facet-value coveo-facet-selectable'
     }).el;
     this.listItem.setAttribute('data-value', this.facetValue.value);
-    if (!this.facet.searchInterface.isNewDesign()) {
-      this.excludeIcon = this.buildExcludeIcon();
-      this.listItem.appendChild(this.excludeIcon);
-    }
+    this.excludeIcon = this.buildExcludeIcon();
+    this.listItem.appendChild(this.excludeIcon);
+
     this.label = $$('label', {
       className: 'coveo-facet-value-label'
     }).el;
     this.listItem.appendChild(this.label);
 
-    if (this.facet.searchInterface.isNewDesign()) {
-      this.excludeIcon = this.buildExcludeIcon();
-      this.listItem.appendChild(this.excludeIcon);
+    this.excludeIcon = this.buildExcludeIcon();
+    this.listItem.appendChild(this.excludeIcon);
 
-      $$(this.excludeIcon).on('mouseover', () => {
-        $$(this.listItem).addClass('coveo-facet-value-will-exclude');
-      });
+    $$(this.excludeIcon).on('mouseover', () => {
+      $$(this.listItem).addClass('coveo-facet-value-will-exclude');
+    });
 
-      $$(this.excludeIcon).on('mouseout', () => {
-        $$(this.listItem).removeClass('coveo-facet-value-will-exclude');
-      });
-    }
+    $$(this.excludeIcon).on('mouseout', () => {
+      $$(this.listItem).removeClass('coveo-facet-value-will-exclude');
+    });
+
     if (Utils.exists(this.facetValue.computedField)) {
       this.computedField = this.buildValueComputedField();
       if (this.computedField) {
@@ -82,25 +80,12 @@ export class ValueElementRenderer {
     this.stylishCheckbox = this.buildValueStylishCheckbox();
     labelDiv.appendChild(this.stylishCheckbox);
 
-    if (this.facet.options.showIcon && !this.facet.searchInterface.isNewDesign()) {
-      this.icon = this.buildValueIcon();
-      labelDiv.appendChild(this.icon);
+    this.valueCount = this.buildValueCount();
+    if (this.valueCount) {
+      labelDiv.appendChild(this.valueCount);
     }
-    if (this.facet.searchInterface.isNewDesign()) {
-      this.valueCount = this.buildValueCount();
-      if (this.valueCount) {
-        labelDiv.appendChild(this.valueCount);
-      }
-      this.valueCaption = this.buildValueCaption();
-      labelDiv.appendChild(this.valueCaption);
-    } else {
-      this.valueCaption = this.buildValueCaption();
-      labelDiv.appendChild(this.valueCaption);
-      this.valueCount = this.buildValueCount();
-      if (this.valueCount) {
-        labelDiv.appendChild(this.valueCount);
-      }
-    }
+    this.valueCaption = this.buildValueCaption();
+    labelDiv.appendChild(this.valueCaption);
 
     this.setCssClassOnListValueElement();
     return this;
@@ -118,11 +103,8 @@ export class ValueElementRenderer {
       tabindex: 0
     }).el;
     this.addFocusAndBlurEventListeners(excludeIcon);
-
-    if (this.facet.searchInterface.isNewDesign()) {
-      excludeIcon.innerHTML = SVGIcons.checkboxHookExclusionMore;
-      SVGDom.addClassToSVGInContainer(excludeIcon, 'coveo-facet-value-exclude-svg');
-    }
+    excludeIcon.innerHTML = SVGIcons.checkboxHookExclusionMore;
+    SVGDom.addClassToSVGInContainer(excludeIcon, 'coveo-facet-value-exclude-svg');
     return excludeIcon;
   }
 

@@ -22,9 +22,6 @@ export function FacetSearchTest() {
       Simulate.removeJQuery();
       mockFacet = Mock.basicComponentSetup<Facet>(Facet, options).cmp;
       mockFacet.searchInterface = <any>{};
-      mockFacet.searchInterface.isNewDesign = () => {
-        return true;
-      };
       facetSearch = new FacetSearch(mockFacet, FacetSearchValuesList, mockFacet.root);
     });
 

@@ -485,10 +485,10 @@ export class HierarchicalFacet extends Facet implements IComponentBindings {
     super.triggerUpdateDeltaQuery(facetValues);
   }
 
-  protected updateSearchInNewDesign(moreValuesAvailable = true) {
+  protected updateSearchElement(moreValuesAvailable = true) {
     // We always want to show search for hierarchical facet :
     // It's useful since child values are folded under their parent most of the time
-    super.updateSearchInNewDesign(true);
+    super.updateSearchElement(true);
   }
 
   protected facetValueHasChanged() {

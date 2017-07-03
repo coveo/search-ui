@@ -732,15 +732,6 @@ export class Facet extends Component {
     this.initSearchAlertEvents();
     this.updateNumberOfValues();
 
-
-    this.resize = () => {
-      if (!this.disabled) {
-        FacetUtils.clipCaptionsToAvoidOverflowingTheirContainer(this);
-      }
-    };
-    window.addEventListener('resize', _.debounce(this.resize, 200));
-    this.bind.onRootElement(InitializationEvents.nuke, () => this.handleNuke());
-
     this.bind.oneRootElement(QueryEvents.querySuccess, () => {
       this.firstQuery = false;
     });
@@ -1047,14 +1038,7 @@ export class Facet extends Component {
   public showWaitingAnimation() {
     this.ensureDom();
     if (!this.showingWaitAnimation) {
-      // in old design : icon before the facet title needs to be hidden to show animation
-      // new design : no need to hide this icon since it's not there
-      if (!this.searchInterface.isNewDesign()) {
-        $$(this.headerElement).find('.coveo-icon').style.display = 'none';
-        $$(this.headerElement).find('.coveo-facet-header-wait-animation').style.display = '';
-      } else {
-        $$(this.headerElement).find('.coveo-facet-header-wait-animation').style.visibility = 'visible';
-      }
+      $$(this.headerElement).find('.coveo-facet-header-wait-animation').style.visibility = 'visible';
       this.showingWaitAnimation = true;
     }
   }
@@ -1065,12 +1049,7 @@ export class Facet extends Component {
   public hideWaitingAnimation(): void {
     this.ensureDom();
     if (this.showingWaitAnimation) {
-      if (!this.searchInterface.isNewDesign()) {
-        $$(this.headerElement).find('.coveo-facet-header-wait-animation').style.display = 'none';
-        $$(this.headerElement).find('.coveo-icon').style.display = '';
-      } else {
-        $$(this.headerElement).find('.coveo-facet-header-wait-animation').style.visibility = 'hidden';
-      }
+      $$(this.headerElement).find('.coveo-facet-header-wait-animation').style.visibility = 'hidden';
       this.showingWaitAnimation = false;
     }
   }
@@ -1262,13 +1241,7 @@ export class Facet extends Component {
   protected updateAppearanceDependingOnState() {
     $$(this.element).toggleClass('coveo-active', this.values.hasSelectedOrExcludedValues());
     $$(this.element).toggleClass('coveo-facet-empty', !this.isAnyValueCurrentlyDisplayed());
-
-    if (this.searchInterface.isNewDesign()) {
-      $$(this.facetHeader.eraserElement).toggleClass('coveo-facet-header-eraser-visible', this.values.hasSelectedOrExcludedValues());
-    } else {
-      $$(this.facetHeader.eraserElement).toggle(this.values.hasSelectedOrExcludedValues());
-    }
-
+    $$(this.facetHeader.eraserElement).toggleClass('coveo-facet-header-eraser-visible', this.values.hasSelectedOrExcludedValues());
   }
 
   protected initQueryEvents() {
@@ -1366,24 +1339,18 @@ export class Facet extends Component {
   protected rebuildValueElements() {
     this.updateNumberOfValues();
     this.facetValuesList.rebuild(this.numberOfValues);
-    if (this.searchInterface.isNewDesign()) {
-      if (this.shouldRenderMoreLess()) {
-        this.updateMoreLess();
-        if (this.shouldRenderFacetSearch()) {
-          this.updateSearchInNewDesign(this.nbAvailableValues > this.numberOfValues);
-        }
-      } else if (this.shouldRenderFacetSearch()) {
-        this.updateSearchInNewDesign();
+    if (this.shouldRenderMoreLess()) {
+      this.updateMoreLess();
+      if (this.shouldRenderFacetSearch()) {
+        this.updateSearchElement(this.nbAvailableValues > this.numberOfValues);
       }
-    } else {
-      if (this.shouldRenderMoreLess()) {
-        this.updateMoreLess();
-      }
+    } else if (this.shouldRenderFacetSearch()) {
+      this.updateSearchElement();
     }
   }
 
-  protected updateSearchInNewDesign(moreValuesAvailable = true) {
-    if (this.searchInterface.isNewDesign() && moreValuesAvailable) {
+  protected updateSearchElement(moreValuesAvailable = true) {
+    if (moreValuesAvailable) {
       let renderer = new ValueElementRenderer(this, FacetValue.create(('Search')));
       let searchButton = renderer.build().withNo([renderer.excludeIcon, renderer.icon]);
       $$(searchButton.listItem).addClass('coveo-facet-search-button');
@@ -1437,10 +1404,6 @@ export class Facet extends Component {
 
   protected handleClickLess() {
     this.showLess();
-  }
-
-  private handleNuke() {
-    window.removeEventListener('resize', this.resize);
   }
 
   private checkForComputedFieldAndSort() {
@@ -1684,18 +1647,15 @@ export class Facet extends Component {
     }
     this.footerElement = this.buildFooter();
     this.element.appendChild(this.footerElement);
-    if (this.searchInterface.isNewDesign() && this.lessElement && this.moreElement) {
+    if (this.lessElement && this.moreElement) {
       this.footerElement.appendChild(this.lessElement);
       this.footerElement.appendChild(this.moreElement);
-    } else if (this.moreElement && this.lessElement) {
-      this.footerElement.appendChild(this.moreElement);
-      this.footerElement.appendChild(this.lessElement);
     }
   }
 
   private buildHeader() {
     let icon = this.options.headerIcon;
-    if (this.searchInterface.isNewDesign() && this.options.headerIcon == this.options.field) {
+    if (this.options.headerIcon == this.options.field) {
       icon = undefined;
     }
     this.facetHeader = new FacetHeader({
@@ -1708,8 +1668,7 @@ export class Facet extends Component {
       facet: this,
       settingsKlass: this.options.enableSettings ? FacetSettings : undefined,
       sortKlass: FacetSort,
-      availableSorts: this.options.availableSorts,
-      isNewDesign: this.getBindings().searchInterface.isNewDesign()
+      availableSorts: this.options.availableSorts
     });
     let built = this.facetHeader.build();
     this.facetSettings = this.facetHeader.settings;
@@ -1778,13 +1737,10 @@ export class Facet extends Component {
 
   private buildMore(): HTMLElement {
     let more: HTMLElement;
-    if (this.searchInterface.isNewDesign()) {
-      const svgContainer = $$('span', { className: 'coveo-facet-more-icon' }, SVGIcons.arrowDown).el;
-      SVGDom.addClassToSVGInContainer(svgContainer, 'coveo-facet-more-icon-svg');
-      more = $$('div', { className: 'coveo-facet-more', tabindex: 0 }, svgContainer).el;
-    } else {
-      more = $$('a', { className: 'coveo-facet-more' }, l('More')).el;
-    }
+    const svgContainer = $$('span', { className: 'coveo-facet-more-icon' }, SVGIcons.arrowDown).el;
+    SVGDom.addClassToSVGInContainer(svgContainer, 'coveo-facet-more-icon-svg');
+    more = $$('div', { className: 'coveo-facet-more', tabindex: 0 }, svgContainer).el;
+
     const moreAction = () => this.handleClickMore();
     $$(more).on('click', moreAction);
     $$(more).on('keyup', KeyboardUtils.keypressAction(KEYBOARD.ENTER, moreAction));
@@ -1793,13 +1749,10 @@ export class Facet extends Component {
 
   private buildLess(): HTMLElement {
     let less: HTMLElement;
-    if (this.searchInterface.isNewDesign()) {
-      const svgContainer = $$('span', { className: 'coveo-facet-less-icon' }, SVGIcons.arrowUp).el;
-      SVGDom.addClassToSVGInContainer(svgContainer, 'coveo-facet-less-icon-svg');
-      less = $$('div', { className: 'coveo-facet-less', tabIndex: 0 }, svgContainer).el;
-    } else {
-      less = $$('a', { className: 'coveo-facet-less' }, l('Less')).el;
-    }
+    const svgContainer = $$('span', { className: 'coveo-facet-less-icon' }, SVGIcons.arrowUp).el;
+    SVGDom.addClassToSVGInContainer(svgContainer, 'coveo-facet-less-icon-svg');
+    less = $$('div', { className: 'coveo-facet-less', tabIndex: 0 }, svgContainer).el;
+
     const lessAction = () => this.handleClickLess();
     $$(less).on('click', lessAction);
     $$(less).on('keyup', KeyboardUtils.keypressAction(KEYBOARD.ENTER, lessAction));
