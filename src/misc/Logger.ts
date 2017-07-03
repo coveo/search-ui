@@ -91,7 +91,15 @@ export class Logger {
 
   private log(level: string, stuff: any[]) {
     if (window['console'] && console.log) {
-      console.log([level, this.owner].concat(stuff));
+      if (console.error && level == 'ERROR') {
+        console.error([level, this.owner].concat(stuff));
+      } else if (console.info && level == 'INFO') {
+        console.info([level, this.owner].concat(stuff));
+      } else if (console.warn && level == 'WARN') {
+        console.warn([level, this.owner].concat(stuff));
+      } else {
+        console.log([level, this.owner].concat(stuff));
+      }
       if (Logger.executionTime) {
         console.timeEnd('Execution time');
         console.time('Execution time');
