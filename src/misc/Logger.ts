@@ -1,4 +1,6 @@
 // Ensure that we're not going to get console is undefined error in IE8-9
+
+/* istanbul ignore next */
 if (!window['console']) {
   console = <any>{
     log: function () {
@@ -44,7 +46,7 @@ if (!window['console']) {
   };
 }
 
-
+/* istanbul ignore next */
 export class Logger {
   static TRACE = 1;
   static DEBUG = 2;
