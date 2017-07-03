@@ -407,6 +407,7 @@ export class ResultList extends Component {
       if (resultElement != null) {
         Component.bindResultToElement(resultElement, result);
       }
+      this.currentlyDisplayedResults.push(result);
       return this.autoCreateComponentsInsideResult(resultElement, result).initResult.then(() => {
         return resultElement;
       });
@@ -545,7 +546,6 @@ export class ResultList extends Component {
     this.currentlyDisplayedResults = [];
     this.buildResults(data.results).then((elements: HTMLElement[]) => {
       this.renderResults(elements);
-      this.currentlyDisplayedResults = results.results;
       this.reachedTheEndOfResults = false;
       this.showOrHideElementsDependingOnState(true, this.currentlyDisplayedResults.length != 0);
 

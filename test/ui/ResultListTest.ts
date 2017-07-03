@@ -157,6 +157,27 @@ export function ResultListTest() {
       });
     });
 
+    it('should update the currentlyDisplayedResults when building a single result', (done) => {
+      const data = FakeResults.createFakeResult();
+      expect(test.cmp.getDisplayedResults().length).toEqual(0);
+      test.cmp.buildResult(data).then(() => {
+        expect(test.cmp.getDisplayedResults().length).toEqual(1);
+        expect(test.cmp.getDisplayedResults()[0]).toEqual(data);
+        done();
+      });
+    });
+
+    it('should update the currentlyDisplayedResults when building multiple results', (done) => {
+      const data = FakeResults.createFakeResults(5);
+      expect(test.cmp.getDisplayedResults().length).toEqual(0);
+      test.cmp.buildResults(data).then(() => {
+        expect(test.cmp.getDisplayedResults().length).toEqual(5);
+        expect(test.cmp.getDisplayedResults()[0]).toEqual(data.results[0]);
+        expect(test.cmp.getDisplayedResults()[4]).toEqual(data.results[4]);
+        done();
+      });
+    });
+
     it('should reset currently displayed on new query', (done) => {
       const data = FakeResults.createFakeResult();
       test.cmp.buildResult(data).then(() => {
