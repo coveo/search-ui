@@ -295,7 +295,7 @@ export class SimpleFilter extends Component {
       this.checkboxes = _.map(this.previouslySelected, (caption) => this.createCheckbox(caption));
       _.each(this.checkboxes, (checkbox) => {
         if (this.previouslySelected.indexOf(checkbox.label) >= 0) {
-          this.selectCheckbox(checkbox.label, false)
+          this.selectCheckbox(checkbox.label, false);
         }
       });
     } else if (this.options.values != undefined) {
