@@ -406,7 +406,8 @@ export class ResultsFiltersPreferences extends Component {
           className: 'coveo-delete'
         }, $$('span', {
           className: 'coveo-icon'
-        }).el).el;
+        }).el, SVGIcons.checkboxHookExclusionMore).el;
+        SVGDom.addClass
         const filterElement = this.getFilterElementByCaption(filter.caption);
         const insertInto = $$(filterElement).find('.coveo-section-edit-delete');
         insertInto.appendChild(deleteElement);

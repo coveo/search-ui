@@ -139,7 +139,7 @@ export class FollowItem extends Component {
         this.queryController.getEndpoint()
           .deleteSubscription(this.subscription)
           .then(() => {
-             const eventArgs: ISearchAlertsEventArgs = {
+            const eventArgs: ISearchAlertsEventArgs = {
               subscription: this.subscription,
               dom: this.element
             };
@@ -147,7 +147,7 @@ export class FollowItem extends Component {
           })
           .catch(() => {
             this.container.removeClass('coveo-follow-item-loading');
-             const eventArgs: ISearchAlertsFailEventArgs = {
+            const eventArgs: ISearchAlertsFailEventArgs = {
               dom: this.element
             };
             $$(this.root).trigger(SearchAlertsEvents.searchAlertsFail, eventArgs);
@@ -156,7 +156,7 @@ export class FollowItem extends Component {
         this.logAnalyticsEvent(analyticsActionCauseList.searchAlertsFollowDocument);
         this.queryController.getEndpoint().follow(this.subscription)
           .then((subscription: ISubscription) => {
-             const eventArgs: ISearchAlertsEventArgs = {
+            const eventArgs: ISearchAlertsEventArgs = {
               subscription: subscription,
               dom: this.element
             };
@@ -164,7 +164,7 @@ export class FollowItem extends Component {
           })
           .catch(() => {
             this.container.removeClass('coveo-follow-item-loading');
-             const eventArgs: ISearchAlertsFailEventArgs = {
+            const eventArgs: ISearchAlertsFailEventArgs = {
               dom: this.element
             };
             $$(this.root).trigger(SearchAlertsEvents.searchAlertsFail, eventArgs);
@@ -182,8 +182,8 @@ export class FollowItem extends Component {
       .listSubscriptions()
       .then((subscriptions: ISubscription[]) => {
         if (_.isArray(subscriptions)) {
-           const subscription: ISubscription = _.find(subscriptions, (subscription: ISubscription) => {
-             const typeConfig = <ISubscriptionItemRequest>subscription.typeConfig;
+          const subscription: ISubscription = _.find(subscriptions, (subscription: ISubscription) => {
+            const typeConfig = <ISubscriptionItemRequest>subscription.typeConfig;
             return typeConfig && typeConfig.id != null && typeConfig.id == this.getId();
           });
           if (subscription != null) {
@@ -206,14 +206,14 @@ export class FollowItem extends Component {
   }
 
   private buildLoadingIcon(): HTMLElement {
-    const loadingIcon = $$('span', {className: 'coveo-follow-item-icon-loading'}, SVGIcons.loading);
+    const loadingIcon = $$('span', { className: 'coveo-follow-item-icon-loading' }, SVGIcons.loading);
     SVGDom.addClassToSVGInContainer(loadingIcon.el, 'coveo-follow-item-icon-loading-svg');
     return loadingIcon.el;
   }
 
   private handleSubscriptionDeleted(args: ISearchAlertsEventArgs) {
     if (args.subscription && args.subscription.type == SUBSCRIPTION_TYPE.followDocument) {
-       const typeConfig = <ISubscriptionItemRequest>args.subscription.typeConfig;
+      const typeConfig = <ISubscriptionItemRequest>args.subscription.typeConfig;
       if (typeConfig.id == this.getId()) {
         this.setNotFollowed();
       }
@@ -222,7 +222,7 @@ export class FollowItem extends Component {
 
   private handleSubscriptionCreated(args: ISearchAlertsEventArgs) {
     if (args.subscription && args.subscription.type == SUBSCRIPTION_TYPE.followDocument) {
-       const typeConfig = <ISubscriptionItemRequest>args.subscription.typeConfig;
+      const typeConfig = <ISubscriptionItemRequest>args.subscription.typeConfig;
       if (typeConfig.id == this.getId()) {
         this.setFollowed(args.subscription);
       }
@@ -238,7 +238,7 @@ export class FollowItem extends Component {
   }
 
   private static buildFollowRequest(id: string, title: string, options: IFollowItemOptions): ISubscriptionRequest {
-     const typeCofig: ISubscriptionItemRequest = {
+    const typeCofig: ISubscriptionItemRequest = {
       id: id,
       title: title
     };

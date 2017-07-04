@@ -238,7 +238,7 @@ export class ResultFolding extends Component {
       footer.appendChild(this.showLess);
 
       let footerIconShowMore = $$('div', { className: 'coveo-more' }, $$('span', { className: 'coveo-folding-footer-icon' }, SVGIcons.arrowDown).el).el;
-      SVGDom.addClassToSVGInContainer(footerIconShowMore, 'coveo-more-svg')
+      SVGDom.addClassToSVGInContainer(footerIconShowMore, 'coveo-more-svg');
       let footerIconShowLess = $$('div', { className: 'coveo-less' }, $$('span', { className: 'coveo-folding-footer-icon' }, SVGIcons.arrowUp).el).el;
       SVGDom.addClassToSVGInContainer(footerIconShowLess, 'coveo-less-svg');
       let showMoreLink = $$('a', { className: 'coveo-folding-show-more' }, this.options.moreCaption).el;
