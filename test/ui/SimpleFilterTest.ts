@@ -3,6 +3,7 @@ import { ISimpleFilterOptions, SimpleFilter } from '../../src/ui/SimpleFilter/Si
 import { Simulate } from '../Simulate';
 import { $$ } from '../../src/utils/Dom';
 import { BreadcrumbEvents, IPopulateBreadcrumbEventArgs } from '../../src/events/BreadcrumbEvents';
+import { FakeResults } from '../Fake';
 
 export function SimpleFilterTest() {
   describe('SimpleFilter', () => {
@@ -16,7 +17,6 @@ export function SimpleFilterTest() {
         maximumNumberOfValues: 5,
         title: 'FooTitleBar',
         values: ['foo', 'bar'],
-        allowedValues: [],
         valueCaption: {
           'gmailmessage': 'Gmail Message',
           'lithiummessage': 'Lithium Message',
@@ -30,7 +30,6 @@ export function SimpleFilterTest() {
         maximumNumberOfValues: 5,
         title: 'FooTitleBar',
         values: ['foo', 'bar'],
-        allowedValues: [],
         valueCaption: {
           'gmailmessage': 'Gmail Message',
           'lithiummessage': 'Lithium Message',
@@ -44,7 +43,6 @@ export function SimpleFilterTest() {
         maximumNumberOfValues: 5,
         title: 'FooTitleBar',
         values: undefined,
-        allowedValues: [],
         valueCaption: {
           'gmailmessage': 'Gmail Message',
           'lithiummessage': 'Lithium Message',
@@ -168,8 +166,18 @@ export function SimpleFilterTest() {
       expect(test.cmp.getSelectedCaptions().length).toBe(2);
       $$(test.env.root).trigger(BreadcrumbEvents.clearBreadcrumb, args);
       expect(test.cmp.getSelectedCaptions().length).toEqual(0);
+    });
 
-
+    it('should redraw checkbox containers with the previously selected Values if they are present', () => {
+      var results = FakeResults.createFakeResults();
+      results.groupByResults = [FakeResults.createFakeGroupByResult('@field', 'foo', 5)];
+      Simulate.query(test3.env, {
+        results: results
+      });
+      test3.cmp.checkboxes[1].checkbox.select();
+      Simulate.query(test3.env);
+      expect(test3.cmp.checkboxes.length).toEqual(1);
+      expect(test3.cmp.getSelectedCaptions()[0]).toEqual('foo1');
     });
   });
 }
