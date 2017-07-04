@@ -194,7 +194,7 @@ export class SimpleFilter extends Component {
    */
   public selectCheckbox(value: string, triggerQuery = true) {
     _.each(this.checkboxes, (labeledCheckbox: ILabeledCheckbox) => {
-      if (l(labeledCheckbox.label) == value) {
+      if (labeledCheckbox.label == value) {
         labeledCheckbox.checkbox.select(triggerQuery);
       }
     });
@@ -206,7 +206,7 @@ export class SimpleFilter extends Component {
    */
   public resetCheckbox(value: string) {
     _.each(this.checkboxes, (labeledCheckbox: ILabeledCheckbox) => {
-      if (l(labeledCheckbox.label) == value) {
+      if (labeledCheckbox.label == value) {
         labeledCheckbox.checkbox.reset();
       }
     });
@@ -218,7 +218,7 @@ export class SimpleFilter extends Component {
    */
   public toggleCheckbox(value: string) {
     _.each(this.checkboxes, (labeledCheckbox: ILabeledCheckbox) => {
-      if (l(labeledCheckbox.label) == value) {
+      if (labeledCheckbox.label == value) {
         labeledCheckbox.checkbox.toggle();
       }
     });
@@ -295,7 +295,7 @@ export class SimpleFilter extends Component {
       this.checkboxes = _.map(this.previouslySelected, (caption) => this.createCheckbox(caption));
       _.each(this.checkboxes, (checkbox) => {
         if (this.previouslySelected.indexOf(checkbox.label) >= 0) {
-          this.selectCheckbox(checkbox.label, false);
+          this.selectCheckbox(checkbox.label, false)
         }
       });
     } else if (this.options.values != undefined) {
@@ -380,7 +380,7 @@ export class SimpleFilter extends Component {
 
     _.each(this.checkboxes, (labeledCheckbox: ILabeledCheckbox) => {
       if (l(labeledCheckbox.label) == label) {
-        this.resetCheckbox(labeledCheckbox.label);
+        this.resetCheckbox(l(labeledCheckbox.label));
         this.refreshCheckboxContainer();
       }
     });
