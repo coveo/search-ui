@@ -64,10 +64,15 @@
   display: inline-block;
   vertical-align: middle;
   .coveo-folding-footer-icon {
-    @include retina-sprite($arrow-down-group);
     position: relative;
-    top: 1px;
+    top: -2px;
   }
+}
+
+.coveo-more-svg {
+  width: 10px;
+  height: 6px;
+  color: $color-greyish-teal-blue;
 }
 
 .coveo-less {
@@ -76,10 +81,15 @@
   }
   display: inline-block;
   .coveo-folding-footer-icon {
-    @include retina-sprite($arrow-up-group);
     position: relative;
-    top: 1px;
+    top: -1px;
   }
+}
+
+.coveo-less-svg {
+  width: 10px;
+  height: 6px;
+  color: $color-greyish-teal-blue;
 }
 
 a.coveo-folding-show-more, a.coveo-folding-show-less {
