@@ -16673,6 +16673,22 @@ a.CoveoResultLink.coveo-selected *,
 * @param $size size of the icon to use
 */
 
+.coveo-top-field-suggestion-header {
+  width: 100%;
+  padding: 10px;
+  color: #1D4F76;
+}
+
+/*
+* @param direction vertical or horizontal
+* @param position type of positioning to apply (relative/absolute)
+*/
+
+/*
+* @param $selector css selector on which to apply the icon. Can be '&' if the icon should be applied on the current element;
+* @param $size size of the icon to use
+*/
+
 .CoveoFieldTable {
   border: 1px solid #BCC3CA;
   border-radius: 2px;
@@ -20505,4 +20521,4 @@ a.coveo-folding-show-less.coveo-selected * {
 }
 
 
-/*# sourceMappingURL=CoveoFullSearchNewDesign.css.map*/
+/*# sourceMappingURL=CoveoFullSearch.css.map*/

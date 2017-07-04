@@ -463,7 +463,7 @@ var ResponsiveComponentsManager = (function () {
     };
     ResponsiveComponentsManager.shouldEnableResponsiveMode = function (root) {
         var searchInterface = Component_1.Component.get(root.el, SearchInterface_1.SearchInterface, true);
-        return searchInterface instanceof SearchInterface_1.SearchInterface && searchInterface.options.enableAutomaticResponsiveMode && searchInterface.isNewDesign();
+        return searchInterface instanceof SearchInterface_1.SearchInterface && searchInterface.options.enableAutomaticResponsiveMode;
     };
     ResponsiveComponentsManager.instantiateResponsiveComponents = function () {
         _.each(this.componentInitializations, function (componentInitialization) {

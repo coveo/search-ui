@@ -19,7 +19,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var ComponentOptions_1 = __webpack_require__(9);
 var Initialization_1 = __webpack_require__(2);
 var FieldValue_1 = __webpack_require__(98);
-var StringUtils_1 = __webpack_require__(19);
+var StringUtils_1 = __webpack_require__(18);
 var Assert_1 = __webpack_require__(7);
 var Dom_1 = __webpack_require__(3);
 var _ = __webpack_require__(1);
@@ -111,23 +111,16 @@ var Badge = (function (_super) {
         var valueDom = _super.prototype.renderOneValue.call(this, value);
         Dom_1.$$(valueDom).addClass('coveo-value');
         var color = this.getColor(value);
-        if (this.searchInterface.isNewDesign()) {
-            var icon = Dom_1.$$('span', { className: 'coveo-badge-icon' }).el;
-            if (color.icon != null) {
-                icon.style.color = color.icon;
-            }
-        }
-        else if (color.icon != null) {
-            valueDom.style.background = color.icon;
+        var icon = Dom_1.$$('span', { className: 'coveo-badge-icon' }).el;
+        if (color.icon != null) {
+            icon.style.color = color.icon;
         }
         var label = Dom_1.$$('span', { className: 'coveo-badge-label' }, valueDom.innerHTML).el;
         if (color.text != null) {
             label.style.color = color.text;
         }
         Dom_1.$$(valueDom).empty();
-        if (this.searchInterface.isNewDesign()) {
-            valueDom.appendChild(icon);
-        }
+        valueDom.appendChild(icon);
         valueDom.appendChild(label);
         return valueDom;
     };
@@ -221,7 +214,7 @@ var Utils_1 = __webpack_require__(5);
 var Dom_1 = __webpack_require__(3);
 var _ = __webpack_require__(1);
 var GlobalExports_1 = __webpack_require__(4);
-var StringUtils_1 = __webpack_require__(19);
+var StringUtils_1 = __webpack_require__(18);
 function showOnlyWithHelper(helpers, options) {
     if (options == null) {
         options = {};

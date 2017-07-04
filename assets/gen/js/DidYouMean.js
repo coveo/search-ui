@@ -23,13 +23,13 @@ var QueryEvents_1 = __webpack_require__(11);
 var Dom_1 = __webpack_require__(3);
 var QueryStateModel_1 = __webpack_require__(14);
 var Initialization_1 = __webpack_require__(2);
-var StringUtils_1 = __webpack_require__(19);
+var StringUtils_1 = __webpack_require__(18);
 var Utils_1 = __webpack_require__(5);
 var AnalyticsActionListMeta_1 = __webpack_require__(12);
 var Strings_1 = __webpack_require__(10);
 var _ = __webpack_require__(1);
 var GlobalExports_1 = __webpack_require__(4);
-__webpack_require__(575);
+__webpack_require__(574);
 /**
  * The DidYouMean component is responsible for displaying query corrections. If this component is in the page and the
  * query returns no result but finds a possible query correction, the component either suggests the correction or
@@ -169,7 +169,7 @@ Initialization_1.Initialization.registerAutoCreateComponent(DidYouMean);
 
 /***/ }),
 
-/***/ 575:
+/***/ 574:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

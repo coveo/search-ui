@@ -26,7 +26,7 @@ __webpack_require__(587);
 var ResultLink_1 = __webpack_require__(79);
 var StreamHighlightUtils_1 = __webpack_require__(65);
 var _ = __webpack_require__(1);
-var ComponentOptionsModel_1 = __webpack_require__(26);
+var ComponentOptionsModel_1 = __webpack_require__(25);
 /**
  * The `PrintableUri` component inherits from the [ `ResultLink` ]{@link ResultLink} component and supports all of its options.
  *
@@ -122,7 +122,7 @@ Initialization_1.Initialization.registerAutoCreateComponent(PrintableUri);
 
 /***/ }),
 
-/***/ 468:
+/***/ 467:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
@@ -154,22 +154,22 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var Component_1 = __webpack_require__(8);
 var ComponentOptions_1 = __webpack_require__(9);
-var ComponentOptionsModel_1 = __webpack_require__(26);
+var ComponentOptionsModel_1 = __webpack_require__(25);
 var AnalyticsActionListMeta_1 = __webpack_require__(12);
 var ResultListEvents_1 = __webpack_require__(32);
 var HighlightUtils_1 = __webpack_require__(47);
-var DeviceUtils_1 = __webpack_require__(18);
+var DeviceUtils_1 = __webpack_require__(19);
 var OSUtils_1 = __webpack_require__(246);
 var Initialization_1 = __webpack_require__(2);
 var QueryUtils_1 = __webpack_require__(17);
 var Assert_1 = __webpack_require__(7);
 var Utils_1 = __webpack_require__(5);
-var Defer_1 = __webpack_require__(27);
+var Defer_1 = __webpack_require__(28);
 var Dom_1 = __webpack_require__(3);
 var StreamHighlightUtils_1 = __webpack_require__(65);
 var _ = __webpack_require__(1);
 var GlobalExports_1 = __webpack_require__(4);
-__webpack_require__(468);
+__webpack_require__(467);
 /**
  * The `ResultLink` component automatically transform a search result title into a clickable link pointing to the
  * original item.

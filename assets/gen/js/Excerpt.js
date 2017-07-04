@@ -22,7 +22,7 @@ var Assert_1 = __webpack_require__(7);
 var HighlightUtils_1 = __webpack_require__(47);
 var Initialization_1 = __webpack_require__(2);
 var GlobalExports_1 = __webpack_require__(4);
-__webpack_require__(577);
+__webpack_require__(576);
 /**
  * The Excerpt component renders an excerpt of its associated result and highlights the keywords from the query using
  * the appropriate template helpers.
@@ -65,7 +65,7 @@ Initialization_1.Initialization.registerAutoCreateComponent(Excerpt);
 
 /***/ }),
 
-/***/ 577:
+/***/ 576:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

@@ -91,13 +91,7 @@ var ResultRating = (function (_super) {
         else {
             star = Dom_1.$$(starElement);
         }
-        var basePath = '';
-        if (this.searchInterface.isNewDesign()) {
-            basePath = 'coveo-sprites-';
-        }
-        else {
-            basePath = 'coveo-sprites-common-';
-        }
+        var basePath = 'coveo-sprites-';
         star.toggleClass(basePath + 'star_placeholder', !isChecked);
         star.toggleClass(basePath + 'star_active', isChecked);
     };

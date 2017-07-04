@@ -1,4 +1,4 @@
-webpackJsonpCoveo__temporary([35],{
+webpackJsonpCoveo__temporary([36],{
 
 /***/ 290:
 /***/ (function(module, exports, __webpack_require__) {
@@ -24,7 +24,7 @@ var Dom_1 = __webpack_require__(3);
 var Assert_1 = __webpack_require__(7);
 var KeyboardUtils_1 = __webpack_require__(22);
 var GlobalExports_1 = __webpack_require__(4);
-__webpack_require__(574);
+__webpack_require__(573);
 /**
  * The CardOverlay component displays a button that the user can click to toggle the visibility of an overlay on top of
  * an {@link IQueryResult}. While this component typically populates a {@link CardActionBar} component, it is actually
@@ -159,7 +159,7 @@ Initialization_1.Initialization.registerAutoCreateComponent(CardOverlay);
 
 /***/ }),
 
-/***/ 574:
+/***/ 573:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

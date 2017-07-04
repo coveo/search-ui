@@ -1,6 +1,6 @@
 webpackJsonpCoveo__temporary([48],{
 
-/***/ 476:
+/***/ 475:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
@@ -15,7 +15,7 @@ webpackJsonpCoveo__temporary([48],{
 Object.defineProperty(exports, "__esModule", { value: true });
 var Dom_1 = __webpack_require__(3);
 var _ = __webpack_require__(1);
-__webpack_require__(476);
+__webpack_require__(475);
 var GlobalExports_1 = __webpack_require__(4);
 /**
  * A simple `fieldset` HTMLElement containing multiple form widgets.

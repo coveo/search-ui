@@ -200,7 +200,7 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var Template_1 = __webpack_require__(24);
+var Template_1 = __webpack_require__(23);
 var DefaultResultAttachmentTemplate = (function (_super) {
     __extends(DefaultResultAttachmentTemplate, _super);
     function DefaultResultAttachmentTemplate() {

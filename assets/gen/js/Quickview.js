@@ -40,13 +40,13 @@ var DomUtils_1 = __webpack_require__(45);
 var Dom_1 = __webpack_require__(3);
 var DefaultQuickviewTemplate_1 = __webpack_require__(634);
 var ResultListEvents_1 = __webpack_require__(32);
-var StringUtils_1 = __webpack_require__(19);
+var StringUtils_1 = __webpack_require__(18);
 var QuickviewDocument_1 = __webpack_require__(635);
 var QueryStateModel_1 = __webpack_require__(14);
 var QuickviewEvents_1 = __webpack_require__(268);
 var Initialization_1 = __webpack_require__(2);
 var KeyboardUtils_1 = __webpack_require__(22);
-var ExternalModulesShim_1 = __webpack_require__(23);
+var ExternalModulesShim_1 = __webpack_require__(26);
 var GlobalExports_1 = __webpack_require__(4);
 __webpack_require__(590);
 /**
@@ -123,17 +123,11 @@ var Quickview = (function (_super) {
         if (/^\s*$/.test(_this.element.innerHTML)) {
             var iconForQuickview = Dom_1.$$('div');
             iconForQuickview.addClass('coveo-icon-for-quickview');
-            if (_this.searchInterface.isNewDesign()) {
-                var captionForQuickview = Dom_1.$$('div', { className: 'coveo-caption-for-icon', tabindex: 0 }, 'Quickview'.toLocaleString()).el;
-                var div = Dom_1.$$('div');
-                div.append(iconForQuickview.el);
-                div.append(captionForQuickview);
-                Dom_1.$$(_this.element).append(div.el);
-            }
-            else {
-                iconForQuickview.text('Quickview'.toLocaleString());
-                Dom_1.$$(_this.element).append(iconForQuickview.el);
-            }
+            var captionForQuickview = Dom_1.$$('div', { className: 'coveo-caption-for-icon', tabindex: 0 }, 'Quickview'.toLocaleString()).el;
+            var div = Dom_1.$$('div');
+            div.append(iconForQuickview.el);
+            div.append(captionForQuickview);
+            Dom_1.$$(_this.element).append(div.el);
         }
         _this.bindClick(result);
         if (_this.bindings.resultElement) {
@@ -381,7 +375,7 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var Template_1 = __webpack_require__(24);
+var Template_1 = __webpack_require__(23);
 var DefaultQuickviewTemplate = (function (_super) {
     __extends(DefaultQuickviewTemplate, _super);
     function DefaultQuickviewTemplate() {
@@ -419,7 +413,7 @@ var AnalyticsActionListMeta_1 = __webpack_require__(12);
 var Assert_1 = __webpack_require__(7);
 var Dom_1 = __webpack_require__(3);
 var QuickviewEvents_1 = __webpack_require__(268);
-var DeviceUtils_1 = __webpack_require__(18);
+var DeviceUtils_1 = __webpack_require__(19);
 var Utils_1 = __webpack_require__(5);
 var ColorUtils_1 = __webpack_require__(106);
 var Initialization_1 = __webpack_require__(2);

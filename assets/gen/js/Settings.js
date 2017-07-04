@@ -1,6 +1,6 @@
 webpackJsonpCoveo__temporary([30],{
 
-/***/ 28:
+/***/ 27:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -49,12 +49,12 @@ var ComponentOptions_1 = __webpack_require__(9);
 var InitializationEvents_1 = __webpack_require__(15);
 var Dom_1 = __webpack_require__(3);
 var PopupUtils_1 = __webpack_require__(50);
-var SettingsEvents_1 = __webpack_require__(40);
+var SettingsEvents_1 = __webpack_require__(39);
 var Initialization_1 = __webpack_require__(2);
 var _ = __webpack_require__(1);
 var GlobalExports_1 = __webpack_require__(4);
 __webpack_require__(601);
-var SVGDom_1 = __webpack_require__(28);
+var SVGDom_1 = __webpack_require__(27);
 /**
  * The Settings component renders a **Settings** button that the end user can click to access a popup menu from which
  * it is possible to perform several contextual actions. The usual location of the **Settings** button in the page is to
@@ -111,16 +111,10 @@ var Settings = (function (_super) {
     };
     Settings.prototype.init = function () {
         var _this = this;
-        if (this.searchInterface.isNewDesign()) {
-            var square = Dom_1.$$('span', { className: 'coveo-settings-square' }).el;
-            var squares = Dom_1.$$('span', { className: 'coveo-settings-squares' }).el;
-            _.times(3, function () { return squares.appendChild(square.cloneNode()); });
-            this.element.appendChild(squares);
-        }
-        else {
-            var icon = Dom_1.$$('span', { className: 'coveo-settings-icon' }).el;
-            this.element.appendChild(icon);
-        }
+        var square = Dom_1.$$('span', { className: 'coveo-settings-square' }).el;
+        var squares = Dom_1.$$('span', { className: 'coveo-settings-squares' }).el;
+        _.times(3, function () { return squares.appendChild(square.cloneNode()); });
+        this.element.appendChild(squares);
         Dom_1.$$(this.element).on('click', function () {
             if (_this.isOpened) {
                 _this.close();

@@ -11,26 +11,26 @@ var SVGIcons = (function () {
     }
     return SVGIcons;
 }());
-SVGIcons.search = __webpack_require__(466);
-SVGIcons.more = __webpack_require__(464);
-SVGIcons.loading = __webpack_require__(462);
-SVGIcons.checkboxHookExclusionMore = __webpack_require__(451);
-SVGIcons.arrowUp = __webpack_require__(449);
-SVGIcons.arrowDown = __webpack_require__(448);
-SVGIcons.mainClear = __webpack_require__(463);
-SVGIcons.orAnd = __webpack_require__(465);
-SVGIcons.sort = __webpack_require__(467);
-SVGIcons.ascending = __webpack_require__(450);
-SVGIcons.descending = __webpack_require__(452);
-SVGIcons.dropdownMore = __webpack_require__(457);
-SVGIcons.dropdownLess = __webpack_require__(456);
-SVGIcons.facetCollapse = __webpack_require__(460);
-SVGIcons.facetExpand = __webpack_require__(461);
-SVGIcons.dropdownShareQuery = __webpack_require__(459);
-SVGIcons.dropdownPreferences = __webpack_require__(458);
-SVGIcons.dropdownAuthenticate = __webpack_require__(453);
-SVGIcons.dropdownExport = __webpack_require__(454);
-SVGIcons.dropdownFollowQuery = __webpack_require__(455);
+SVGIcons.search = __webpack_require__(465);
+SVGIcons.more = __webpack_require__(463);
+SVGIcons.loading = __webpack_require__(461);
+SVGIcons.checkboxHookExclusionMore = __webpack_require__(450);
+SVGIcons.arrowUp = __webpack_require__(448);
+SVGIcons.arrowDown = __webpack_require__(447);
+SVGIcons.mainClear = __webpack_require__(462);
+SVGIcons.orAnd = __webpack_require__(464);
+SVGIcons.sort = __webpack_require__(466);
+SVGIcons.ascending = __webpack_require__(449);
+SVGIcons.descending = __webpack_require__(451);
+SVGIcons.dropdownMore = __webpack_require__(456);
+SVGIcons.dropdownLess = __webpack_require__(455);
+SVGIcons.facetCollapse = __webpack_require__(459);
+SVGIcons.facetExpand = __webpack_require__(460);
+SVGIcons.dropdownShareQuery = __webpack_require__(458);
+SVGIcons.dropdownPreferences = __webpack_require__(457);
+SVGIcons.dropdownAuthenticate = __webpack_require__(452);
+SVGIcons.dropdownExport = __webpack_require__(453);
+SVGIcons.dropdownFollowQuery = __webpack_require__(454);
 exports.SVGIcons = SVGIcons;
 
 
@@ -44,7 +44,7 @@ exports.SVGIcons = SVGIcons;
 /// <reference path="Facet.ts" />
 Object.defineProperty(exports, "__esModule", { value: true });
 var Utils_1 = __webpack_require__(5);
-var FacetUtils_1 = __webpack_require__(36);
+var FacetUtils_1 = __webpack_require__(42);
 var QueryBuilder_1 = __webpack_require__(44);
 var Dom_1 = __webpack_require__(3);
 var _ = __webpack_require__(1);
@@ -58,7 +58,6 @@ var FacetSearchParameters = (function () {
         this.fetchMore = false;
         this.nbResults = facet.options.numberOfValuesInFacetSearch;
         this.ignoreAccents = facet.options.facetSearchIgnoreAccents;
-        this.searchEvenIfEmpty = facet.searchInterface.isNewDesign();
     }
     FacetSearchParameters.prototype.setValueToSearch = function (value) {
         this.valueToSearch = value;
@@ -83,9 +82,7 @@ var FacetSearchParameters = (function () {
     FacetSearchParameters.prototype.getGroupByRequest = function () {
         this.lowerCaseAll();
         var nbResults = this.nbResults;
-        if (this.facet.searchInterface.isNewDesign()) {
-            nbResults += this.alwaysExclude.length;
-        }
+        nbResults += this.alwaysExclude.length;
         var typedByUser = [];
         if (this.valueToSearch) {
             typedByUser = ['*' + this.valueToSearch + '*'];
@@ -211,7 +208,7 @@ exports.EventsUtils = EventsUtils;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var StringUtils_1 = __webpack_require__(19);
+var StringUtils_1 = __webpack_require__(18);
 var _ = __webpack_require__(1);
 var FacetValuesOrder = (function () {
     function FacetValuesOrder(facet, facetSort) {
@@ -274,7 +271,7 @@ var ExpressionBuilder_1 = __webpack_require__(68);
 var Utils_1 = __webpack_require__(5);
 var FacetSearchParameters_1 = __webpack_require__(241);
 var Assert_1 = __webpack_require__(7);
-var FacetUtils_1 = __webpack_require__(36);
+var FacetUtils_1 = __webpack_require__(42);
 var _ = __webpack_require__(1);
 var FacetQueryController = (function () {
     function FacetQueryController(facet) {
@@ -561,7 +558,7 @@ exports.FacetQueryController = FacetQueryController;
 
 /***/ }),
 
-/***/ 28:
+/***/ 27:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -617,7 +614,7 @@ var HierarchicalFacetValuesList_1 = __webpack_require__(628);
 var HierarchicalFacetQueryController_1 = __webpack_require__(609);
 var Utils_1 = __webpack_require__(5);
 var Dom_1 = __webpack_require__(3);
-var Defer_1 = __webpack_require__(27);
+var Defer_1 = __webpack_require__(28);
 var HierarchicalFacetSearchValuesList_1 = __webpack_require__(626);
 var HierarchicalFacetSearch_1 = __webpack_require__(624);
 var HierarchicalBreadcrumbValuesList_1 = __webpack_require__(623);
@@ -905,11 +902,11 @@ var HierarchicalFacet = (function (_super) {
         this.shouldReshuffleFacetValuesClientSide = this.keepDisplayedValuesNextTime;
         _super.prototype.triggerUpdateDeltaQuery.call(this, facetValues);
     };
-    HierarchicalFacet.prototype.updateSearchInNewDesign = function (moreValuesAvailable) {
+    HierarchicalFacet.prototype.updateSearchElement = function (moreValuesAvailable) {
         if (moreValuesAvailable === void 0) { moreValuesAvailable = true; }
         // We always want to show search for hierarchical facet :
         // It's useful since child values are folded under their parent most of the time
-        _super.prototype.updateSearchInNewDesign.call(this, true);
+        _super.prototype.updateSearchElement.call(this, true);
     };
     HierarchicalFacet.prototype.facetValueHasChanged = function () {
         var _this = this;
@@ -1448,7 +1445,7 @@ Initialization_1.Initialization.registerAutoCreateComponent(HierarchicalFacet);
 
 /***/ }),
 
-/***/ 391:
+/***/ 390:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1562,7 +1559,7 @@ exports.ResponsiveDropdown = ResponsiveDropdown;
 
 /***/ }),
 
-/***/ 392:
+/***/ 391:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1606,7 +1603,7 @@ exports.ResponsiveDropdownContent = ResponsiveDropdownContent;
 
 /***/ }),
 
-/***/ 393:
+/***/ 392:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1643,7 +1640,7 @@ exports.ResponsiveDropdownHeader = ResponsiveDropdownHeader;
 
 /***/ }),
 
-/***/ 394:
+/***/ 393:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1659,19 +1656,19 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var FacetSort_1 = __webpack_require__(395);
+var FacetSort_1 = __webpack_require__(394);
 var Dom_1 = __webpack_require__(3);
-var LocalStorageUtils_1 = __webpack_require__(37);
+var LocalStorageUtils_1 = __webpack_require__(36);
 var Utils_1 = __webpack_require__(5);
 var Strings_1 = __webpack_require__(10);
 var QueryStateModel_1 = __webpack_require__(14);
 var AnalyticsActionListMeta_1 = __webpack_require__(12);
-var DeviceUtils_1 = __webpack_require__(18);
+var DeviceUtils_1 = __webpack_require__(19);
 var PopupUtils_1 = __webpack_require__(50);
 var _ = __webpack_require__(1);
-__webpack_require__(475);
+__webpack_require__(474);
 var SVGIcons_1 = __webpack_require__(21);
-var SVGDom_1 = __webpack_require__(28);
+var SVGDom_1 = __webpack_require__(27);
 /**
  * Handle the rendering of the {@link Facet} settings menu (typically the ... in the facet header).
  */
@@ -1810,12 +1807,10 @@ var FacetSettings = (function (_super) {
         var sortSection = this.buildSection('coveo-facet-settings-section-sort');
         var sortSectionIcon = this.buildIcon('coveo-facet-settings-section-sort-svg', SVGIcons_1.SVGIcons.sort);
         var sortSectionItems = this.buildItems();
-        if (this.facet.searchInterface.isNewDesign()) {
-            var sortTitle = document.createElement('div');
-            Dom_1.$$(sortTitle).addClass('coveo-facet-settings-section-sort-title');
-            Dom_1.$$(sortTitle).text(Strings_1.l('SortBy') + ' :');
-            sortSectionItems.appendChild(sortTitle);
-        }
+        var sortTitle = document.createElement('div');
+        Dom_1.$$(sortTitle).addClass('coveo-facet-settings-section-sort-title');
+        Dom_1.$$(sortTitle).text(Strings_1.l('SortBy') + ' :');
+        sortSectionItems.appendChild(sortTitle);
         var sortItems = this.buildSortSectionItems();
         _.each(sortItems, function (s) {
             sortSectionItems.appendChild(s);
@@ -1859,52 +1854,30 @@ var FacetSettings = (function (_super) {
     };
     FacetSettings.prototype.buildDirectionSection = function () {
         var _this = this;
-        if (this.facet.searchInterface.isNewDesign()) {
-            var directionAscendingSection = this.buildAscendingOrDescendingSection('Ascending');
-            var iconAscending = this.buildIcon('coveo-facet-settings-section-direction-ascending-svg', SVGIcons_1.SVGIcons.ascending);
-            var iconDescending = this.buildIcon('coveo-facet-settings-section-direction-descending-svg', SVGIcons_1.SVGIcons.descending);
-            var directionItemsAscending = this.buildItems();
-            var ascending = this.buildAscendingOrDescending('Ascending');
-            directionItemsAscending.appendChild(ascending);
-            directionAscendingSection.appendChild(iconAscending);
-            directionAscendingSection.appendChild(directionItemsAscending);
-            Dom_1.$$(directionAscendingSection).on('click', function (e) { return _this.handleDirectionClick(e, 'ascending'); });
-            var directionDescendingSection = this.buildAscendingOrDescendingSection('Descending');
-            var directionItemsDescending = this.buildItems();
-            var descending = this.buildAscendingOrDescending('Descending');
-            directionItemsDescending.appendChild(descending);
-            directionDescendingSection.appendChild(iconDescending);
-            directionDescendingSection.appendChild(directionItemsDescending);
-            Dom_1.$$(directionDescendingSection).on('click', function (e) { return _this.handleDirectionClick(e, 'descending'); });
-            if (!this.activeSort.directionToggle) {
-                Dom_1.$$(directionAscendingSection).addClass('coveo-facet-settings-disabled');
-                Dom_1.$$(directionDescendingSection).addClass('coveo-facet-settings-disabled');
-            }
-            else {
-                this.selectItem(this.getItems(directionAscendingSection)[0]);
-            }
-            return [directionAscendingSection, directionDescendingSection];
+        var directionAscendingSection = this.buildAscendingOrDescendingSection('Ascending');
+        var iconAscending = this.buildIcon('coveo-facet-settings-section-direction-ascending-svg', SVGIcons_1.SVGIcons.ascending);
+        var iconDescending = this.buildIcon('coveo-facet-settings-section-direction-descending-svg', SVGIcons_1.SVGIcons.descending);
+        var directionItemsAscending = this.buildItems();
+        var ascending = this.buildAscendingOrDescending('Ascending');
+        directionItemsAscending.appendChild(ascending);
+        directionAscendingSection.appendChild(iconAscending);
+        directionAscendingSection.appendChild(directionItemsAscending);
+        Dom_1.$$(directionAscendingSection).on('click', function (e) { return _this.handleDirectionClick(e, 'ascending'); });
+        var directionDescendingSection = this.buildAscendingOrDescendingSection('Descending');
+        var directionItemsDescending = this.buildItems();
+        var descending = this.buildAscendingOrDescending('Descending');
+        directionItemsDescending.appendChild(descending);
+        directionDescendingSection.appendChild(iconDescending);
+        directionDescendingSection.appendChild(directionItemsDescending);
+        Dom_1.$$(directionDescendingSection).on('click', function (e) { return _this.handleDirectionClick(e, 'descending'); });
+        if (!this.activeSort.directionToggle) {
+            Dom_1.$$(directionAscendingSection).addClass('coveo-facet-settings-disabled');
+            Dom_1.$$(directionDescendingSection).addClass('coveo-facet-settings-disabled');
         }
         else {
-            var directionSection = this.buildSection('coveo-facet-settings-section-direction');
-            var icon = this.buildIcon();
-            var directionItems = this.buildItems();
-            var ascending = this.buildAscendingOrDescending('Ascending');
-            Dom_1.$$(ascending).on('click', function (e) { return _this.handleDirectionClick(e, 'ascending'); });
-            var descending = this.buildAscendingOrDescending('Descending');
-            Dom_1.$$(descending).on('click', function (e) { return _this.handleDirectionClick(e, 'descending'); });
-            directionItems.appendChild(ascending);
-            directionItems.appendChild(descending);
-            directionSection.appendChild(icon);
-            directionSection.appendChild(directionItems);
-            if (!this.activeSort.directionToggle) {
-                Dom_1.$$(directionSection).addClass('coveo-facet-settings-disabled');
-            }
-            else {
-                this.selectItem(this.getCurrentDirectionItem([directionSection]));
-            }
-            return [directionSection];
+            this.selectItem(this.getItems(directionAscendingSection)[0]);
         }
+        return [directionAscendingSection, directionDescendingSection];
     };
     FacetSettings.prototype.buildSaveStateSection = function () {
         var _this = this;
@@ -1968,7 +1941,7 @@ var FacetSettings = (function (_super) {
         return showSection;
     };
     FacetSettings.prototype.buildIcon = function (iconClass, svgIcon) {
-        if (this.facet.searchInterface.isNewDesign() && iconClass && svgIcon) {
+        if (iconClass && svgIcon) {
             var icon = Dom_1.$$('div', { className: 'coveo-icon-container' }, svgIcon);
             SVGDom_1.SVGDom.addClassToSVGInContainer(icon.el, iconClass);
             return icon.el;
@@ -2147,14 +2120,14 @@ exports.FacetSettings = FacetSettings;
 
 /***/ }),
 
-/***/ 395:
+/***/ 394:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var Strings_1 = __webpack_require__(10);
-var FacetSettings_1 = __webpack_require__(394);
+var FacetSettings_1 = __webpack_require__(393);
 var Utils_1 = __webpack_require__(5);
 var _ = __webpack_require__(1);
 var FacetSort = (function () {
@@ -2257,19 +2230,16 @@ exports.FacetSort = FacetSort;
 
 /***/ }),
 
-/***/ 396:
+/***/ 395:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var ValueElementRenderer_1 = __webpack_require__(397);
+var ValueElementRenderer_1 = __webpack_require__(396);
 var Utils_1 = __webpack_require__(5);
 var AnalyticsActionListMeta_1 = __webpack_require__(12);
 var Dom_1 = __webpack_require__(3);
-var DeviceUtils_1 = __webpack_require__(18);
-var Defer_1 = __webpack_require__(27);
-var ExternalModulesShim_1 = __webpack_require__(23);
 var KeyboardUtils_1 = __webpack_require__(22);
 var ValueElement = (function () {
     function ValueElement(facet, facetValue, onSelect, onExclude) {
@@ -2422,12 +2392,6 @@ var ValueElement = (function () {
                 _this.omniboxCloseEvent(eventBindings.omniboxObject);
             }
             _this.handleSelectValue(eventBindings);
-            if (DeviceUtils_1.DeviceUtils.isMobileDevice() && !_this.facet.searchInterface.isNewDesign() && _this.facet.options.enableFacetSearch) {
-                Defer_1.Defer.defer(function () {
-                    ExternalModulesShim_1.ModalBox.close(true);
-                    _this.facet.facetSearch.completelyDismissSearch();
-                });
-            }
         });
     };
     ValueElement.prototype.omniboxCloseEvent = function (eventArg) {
@@ -2448,7 +2412,7 @@ exports.ValueElement = ValueElement;
 
 /***/ }),
 
-/***/ 397:
+/***/ 396:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2460,7 +2424,7 @@ var Strings_1 = __webpack_require__(10);
 var Component_1 = __webpack_require__(8);
 var _ = __webpack_require__(1);
 var SVGIcons_1 = __webpack_require__(21);
-var SVGDom_1 = __webpack_require__(28);
+var SVGDom_1 = __webpack_require__(27);
 var ValueElementRenderer = (function () {
     function ValueElementRenderer(facet, facetValue) {
         this.facet = facet;
@@ -2487,24 +2451,20 @@ var ValueElementRenderer = (function () {
             className: 'coveo-facet-value coveo-facet-selectable'
         }).el;
         this.listItem.setAttribute('data-value', this.facetValue.value);
-        if (!this.facet.searchInterface.isNewDesign()) {
-            this.excludeIcon = this.buildExcludeIcon();
-            this.listItem.appendChild(this.excludeIcon);
-        }
+        this.excludeIcon = this.buildExcludeIcon();
+        this.listItem.appendChild(this.excludeIcon);
         this.label = Dom_1.$$('label', {
             className: 'coveo-facet-value-label'
         }).el;
         this.listItem.appendChild(this.label);
-        if (this.facet.searchInterface.isNewDesign()) {
-            this.excludeIcon = this.buildExcludeIcon();
-            this.listItem.appendChild(this.excludeIcon);
-            Dom_1.$$(this.excludeIcon).on('mouseover', function () {
-                Dom_1.$$(_this.listItem).addClass('coveo-facet-value-will-exclude');
-            });
-            Dom_1.$$(this.excludeIcon).on('mouseout', function () {
-                Dom_1.$$(_this.listItem).removeClass('coveo-facet-value-will-exclude');
-            });
-        }
+        this.excludeIcon = this.buildExcludeIcon();
+        this.listItem.appendChild(this.excludeIcon);
+        Dom_1.$$(this.excludeIcon).on('mouseover', function () {
+            Dom_1.$$(_this.listItem).addClass('coveo-facet-value-will-exclude');
+        });
+        Dom_1.$$(this.excludeIcon).on('mouseout', function () {
+            Dom_1.$$(_this.listItem).removeClass('coveo-facet-value-will-exclude');
+        });
         if (Utils_1.Utils.exists(this.facetValue.computedField)) {
             this.computedField = this.buildValueComputedField();
             if (this.computedField) {
@@ -2520,26 +2480,12 @@ var ValueElementRenderer = (function () {
         labelDiv.appendChild(this.checkbox);
         this.stylishCheckbox = this.buildValueStylishCheckbox();
         labelDiv.appendChild(this.stylishCheckbox);
-        if (this.facet.options.showIcon && !this.facet.searchInterface.isNewDesign()) {
-            this.icon = this.buildValueIcon();
-            labelDiv.appendChild(this.icon);
+        this.valueCount = this.buildValueCount();
+        if (this.valueCount) {
+            labelDiv.appendChild(this.valueCount);
         }
-        if (this.facet.searchInterface.isNewDesign()) {
-            this.valueCount = this.buildValueCount();
-            if (this.valueCount) {
-                labelDiv.appendChild(this.valueCount);
-            }
-            this.valueCaption = this.buildValueCaption();
-            labelDiv.appendChild(this.valueCaption);
-        }
-        else {
-            this.valueCaption = this.buildValueCaption();
-            labelDiv.appendChild(this.valueCaption);
-            this.valueCount = this.buildValueCount();
-            if (this.valueCount) {
-                labelDiv.appendChild(this.valueCount);
-            }
-        }
+        this.valueCaption = this.buildValueCaption();
+        labelDiv.appendChild(this.valueCaption);
         this.setCssClassOnListValueElement();
         return this;
     };
@@ -2554,10 +2500,8 @@ var ValueElementRenderer = (function () {
             tabindex: 0
         }).el;
         this.addFocusAndBlurEventListeners(excludeIcon);
-        if (this.facet.searchInterface.isNewDesign()) {
-            excludeIcon.innerHTML = SVGIcons_1.SVGIcons.checkboxHookExclusionMore;
-            SVGDom_1.SVGDom.addClassToSVGInContainer(excludeIcon, 'coveo-facet-value-exclude-svg');
-        }
+        excludeIcon.innerHTML = SVGIcons_1.SVGIcons.checkboxHookExclusionMore;
+        SVGDom_1.SVGDom.addClassToSVGInContainer(excludeIcon, 'coveo-facet-value-exclude-svg');
         return excludeIcon;
     };
     ValueElementRenderer.prototype.buildValueComputedField = function () {
@@ -2662,19 +2606,18 @@ exports.ValueElementRenderer = ValueElementRenderer;
 
 /***/ }),
 
-/***/ 399:
+/***/ 398:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var Dom_1 = __webpack_require__(3);
-var FacetUtils_1 = __webpack_require__(36);
 var Strings_1 = __webpack_require__(10);
 var AnalyticsActionListMeta_1 = __webpack_require__(12);
-__webpack_require__(469);
+__webpack_require__(468);
 var SVGIcons_1 = __webpack_require__(21);
-var SVGDom_1 = __webpack_require__(28);
+var SVGDom_1 = __webpack_require__(27);
 var FacetHeader = (function () {
     function FacetHeader(options) {
         this.options = options;
@@ -2682,54 +2625,6 @@ var FacetHeader = (function () {
         Dom_1.$$(this.element).addClass('coveo-facet-header');
     }
     FacetHeader.prototype.build = function () {
-        if (this.options.isNewDesign) {
-            return this.buildNewDesign();
-        }
-        else {
-            return this.buildOldDesign();
-        }
-    };
-    FacetHeader.prototype.switchToAnd = function () {
-        if (this.options.facet) {
-            this.options.facet.options.useAnd = true;
-            this.rebuildOperatorToggle();
-            this.updateOperatorQueryStateModel();
-        }
-    };
-    FacetHeader.prototype.switchToOr = function () {
-        if (this.options.facet) {
-            this.options.facet.options.useAnd = false;
-            this.rebuildOperatorToggle();
-            this.updateOperatorQueryStateModel();
-        }
-    };
-    FacetHeader.prototype.collapseFacet = function () {
-        if (this.collapseElement && this.expandElement) {
-            Dom_1.$$(this.collapseElement).hide();
-            Dom_1.$$(this.expandElement).show();
-        }
-        Dom_1.$$(this.options.facetElement).addClass('coveo-facet-collapsed');
-    };
-    FacetHeader.prototype.expandFacet = function () {
-        if (this.collapseElement && this.expandElement) {
-            Dom_1.$$(this.expandElement).hide();
-            Dom_1.$$(this.collapseElement).show();
-        }
-        Dom_1.$$(this.options.facetElement).removeClass('coveo-facet-collapsed');
-        if (this.options.facet) {
-            FacetUtils_1.FacetUtils.clipCaptionsToAvoidOverflowingTheirContainer(this.options.facet);
-        }
-    };
-    FacetHeader.prototype.updateOperatorQueryStateModel = function () {
-        if (this.options.facet && this.options.facet.options.enableTogglingOperator) {
-            var valueToSet = '';
-            if (this.options.facet.getSelectedValues().length != 0 || this.options.facet.getExcludedValues().length != 0) {
-                valueToSet = this.options.facet.options.useAnd ? 'and' : 'or';
-            }
-            this.options.facet.queryStateModel.set(this.options.facet.operatorAttributeId, valueToSet);
-        }
-    };
-    FacetHeader.prototype.buildNewDesign = function () {
         var titleSection = Dom_1.$$('div', {
             className: 'coveo-facet-header-title-section'
         });
@@ -2761,31 +2656,42 @@ var FacetHeader = (function () {
         this.element.appendChild(settingsSection.el);
         return this.element;
     };
-    FacetHeader.prototype.buildOldDesign = function () {
-        this.element.appendChild(this.buildIcon());
-        this.element.appendChild(this.buildWaitAnimation());
-        if (this.options.settingsKlass) {
-            this.sort = this.settings = new this.options.settingsKlass(this.options.availableSorts, this.options.facet);
-            this.element.appendChild(this.settings.build());
-        }
-        else if (this.options.sortKlass) {
-            this.sort = new this.options.sortKlass(this.options.availableSorts, this.options.facet);
-        }
-        if (this.options.enableCollapseElement) {
-            this.collapseElement = this.buildCollapse();
-            this.element.appendChild(this.collapseElement);
-            this.expandElement = this.buildExpand();
-            this.element.appendChild(this.expandElement);
-        }
+    FacetHeader.prototype.switchToAnd = function () {
         if (this.options.facet) {
-            this.operatorElement = this.buildOperatorToggle();
-            this.element.appendChild(this.operatorElement);
-            Dom_1.$$(this.operatorElement).toggle(this.options.facet.options.enableTogglingOperator);
+            this.options.facet.options.useAnd = true;
+            this.rebuildOperatorToggle();
+            this.updateOperatorQueryStateModel();
         }
-        this.eraserElement = this.buildEraser();
-        this.element.appendChild(this.eraserElement);
-        this.element.appendChild(this.buildTitle());
-        return this.element;
+    };
+    FacetHeader.prototype.switchToOr = function () {
+        if (this.options.facet) {
+            this.options.facet.options.useAnd = false;
+            this.rebuildOperatorToggle();
+            this.updateOperatorQueryStateModel();
+        }
+    };
+    FacetHeader.prototype.collapseFacet = function () {
+        if (this.collapseElement && this.expandElement) {
+            Dom_1.$$(this.collapseElement).hide();
+            Dom_1.$$(this.expandElement).show();
+        }
+        Dom_1.$$(this.options.facetElement).addClass('coveo-facet-collapsed');
+    };
+    FacetHeader.prototype.expandFacet = function () {
+        if (this.collapseElement && this.expandElement) {
+            Dom_1.$$(this.expandElement).hide();
+            Dom_1.$$(this.collapseElement).show();
+        }
+        Dom_1.$$(this.options.facetElement).removeClass('coveo-facet-collapsed');
+    };
+    FacetHeader.prototype.updateOperatorQueryStateModel = function () {
+        if (this.options.facet && this.options.facet.options.enableTogglingOperator) {
+            var valueToSet = '';
+            if (this.options.facet.getSelectedValues().length != 0 || this.options.facet.getExcludedValues().length != 0) {
+                valueToSet = this.options.facet.options.useAnd ? 'and' : 'or';
+            }
+            this.options.facet.queryStateModel.set(this.options.facet.operatorAttributeId, valueToSet);
+        }
     };
     FacetHeader.prototype.rebuildOperatorToggle = function () {
         var newElement = this.buildOperatorToggle();
@@ -2809,12 +2715,7 @@ var FacetHeader = (function () {
     FacetHeader.prototype.buildWaitAnimation = function () {
         this.waitElement = Dom_1.$$('div', { className: 'coveo-facet-header-wait-animation' }, SVGIcons_1.SVGIcons.loading).el;
         SVGDom_1.SVGDom.addClassToSVGInContainer(this.waitElement, 'coveo-facet-header-wait-animation-svg');
-        if (this.options.isNewDesign) {
-            this.waitElement.style.visibility = 'hidden';
-        }
-        else {
-            Dom_1.$$(this.waitElement).hide();
-        }
+        this.waitElement.style.visibility = 'hidden';
         return this.waitElement;
     };
     FacetHeader.prototype.buildCollapse = function () {
@@ -2895,7 +2796,7 @@ exports.FacetHeader = FacetHeader;
 
 /***/ }),
 
-/***/ 401:
+/***/ 400:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2908,14 +2809,14 @@ var Component_1 = __webpack_require__(8);
 var Logger_1 = __webpack_require__(13);
 var Strings_1 = __webpack_require__(10);
 var Utils_1 = __webpack_require__(5);
-var ResponsiveDropdown_1 = __webpack_require__(391);
-var ResponsiveDropdownContent_1 = __webpack_require__(392);
-var ResponsiveDropdownHeader_1 = __webpack_require__(393);
+var ResponsiveDropdown_1 = __webpack_require__(390);
+var ResponsiveDropdownContent_1 = __webpack_require__(391);
+var ResponsiveDropdownHeader_1 = __webpack_require__(392);
 var QueryEvents_1 = __webpack_require__(11);
 var SearchInterface_1 = __webpack_require__(20);
-var ResponsiveComponents_1 = __webpack_require__(41);
+var ResponsiveComponents_1 = __webpack_require__(40);
 var _ = __webpack_require__(1);
-__webpack_require__(470);
+__webpack_require__(469);
 var ResponsiveFacetColumn = (function () {
     function ResponsiveFacetColumn(coveoRoot, ID, options, responsiveDropdown) {
         this.coveoRoot = coveoRoot;
@@ -3100,7 +3001,7 @@ exports.ResponsiveFacetColumn = ResponsiveFacetColumn;
 
 /***/ }),
 
-/***/ 402:
+/***/ 401:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3108,13 +3009,13 @@ exports.ResponsiveFacetColumn = ResponsiveFacetColumn;
 /// <reference path="Facet.ts" />
 Object.defineProperty(exports, "__esModule", { value: true });
 var Assert_1 = __webpack_require__(7);
-var DeviceUtils_1 = __webpack_require__(18);
+var DeviceUtils_1 = __webpack_require__(19);
 var AnalyticsActionListMeta_1 = __webpack_require__(12);
 var Dom_1 = __webpack_require__(3);
 var _ = __webpack_require__(1);
-__webpack_require__(472);
+__webpack_require__(471);
 var SVGIcons_1 = __webpack_require__(21);
-var SVGDom_1 = __webpack_require__(28);
+var SVGDom_1 = __webpack_require__(27);
 var BreadcrumbValueElement = (function () {
     function BreadcrumbValueElement(facet, facetValue) {
         this.facet = facet;
@@ -3169,20 +3070,19 @@ exports.BreadcrumbValueElement = BreadcrumbValueElement;
 
 /***/ }),
 
-/***/ 403:
+/***/ 402:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var DeviceUtils_1 = __webpack_require__(18);
 var Assert_1 = __webpack_require__(7);
 var Strings_1 = __webpack_require__(10);
 var Dom_1 = __webpack_require__(3);
-var Globalize = __webpack_require__(25);
+var Globalize = __webpack_require__(24);
 var _ = __webpack_require__(1);
 var SVGIcons_1 = __webpack_require__(21);
-var SVGDom_1 = __webpack_require__(28);
+var SVGDom_1 = __webpack_require__(27);
 var BreadcrumbValueList = (function () {
     function BreadcrumbValueList(facet, facetValues, breadcrumbValueElementKlass) {
         this.facet = facet;
@@ -3220,13 +3120,6 @@ var BreadcrumbValueList = (function () {
     BreadcrumbValueList.prototype.buildExpanded = function () {
         var _this = this;
         _.each(this.expanded, function (value, index) {
-            if (index != 0 && !DeviceUtils_1.DeviceUtils.isMobileDevice() && !_this.facet.searchInterface.isNewDesign()) {
-                var separator = Dom_1.$$('span', {
-                    className: 'coveo-facet-breadcrumb-separator'
-                });
-                separator.text(', ');
-                _this.valueContainer.appendChild(separator.el);
-            }
             var elementBreadcrumb = new _this.breadcrumbValueElementKlass(_this.facet, value).build();
             _this.valueContainer.appendChild(elementBreadcrumb.el);
         });
@@ -3239,13 +3132,6 @@ var BreadcrumbValueList = (function () {
         var elem = Dom_1.$$('div', {
             className: 'coveo-facet-breadcrumb-value'
         });
-        if (!DeviceUtils_1.DeviceUtils.isMobileDevice() && !this.facet.searchInterface.isNewDesign()) {
-            var sep = Dom_1.$$('span', {
-                className: 'coveo-separator'
-            });
-            sep.text(', ');
-            elem.el.appendChild(sep.el);
-        }
         if (numberOfSelected > 0) {
             var multi = Dom_1.$$('span', {
                 className: 'coveo-facet-breadcrumb-multi-count'
@@ -3280,13 +3166,6 @@ var BreadcrumbValueList = (function () {
         elem.on('click', function () {
             var elements = [];
             _.forEach(valueElements, function (valueElement) {
-                if (!DeviceUtils_1.DeviceUtils.isMobileDevice() && !_this.facet.searchInterface.isNewDesign()) {
-                    var separatorsClicked = Dom_1.$$('span', {
-                        className: 'coveo-facet-breadcrumb-separator'
-                    });
-                    separatorsClicked.text(', ');
-                    elements.push(separatorsClicked.el);
-                }
                 elements.push(valueElement.build(false).el);
             });
             _.each(elements, function (el) {
@@ -3313,7 +3192,7 @@ exports.BreadcrumbValueList = BreadcrumbValueList;
 
 /***/ }),
 
-/***/ 404:
+/***/ 403:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3324,7 +3203,6 @@ var Facet_1 = __webpack_require__(57);
 var Dom_1 = __webpack_require__(3);
 var Utils_1 = __webpack_require__(5);
 var InitializationEvents_1 = __webpack_require__(15);
-var DeviceUtils_1 = __webpack_require__(18);
 var EventsUtils_1 = __webpack_require__(263);
 var FacetSearchParameters_1 = __webpack_require__(241);
 var AnalyticsActionListMeta_1 = __webpack_require__(12);
@@ -3333,18 +3211,17 @@ var PopupUtils_1 = __webpack_require__(50);
 var Strings_1 = __webpack_require__(10);
 var Assert_1 = __webpack_require__(7);
 var KeyboardUtils_1 = __webpack_require__(22);
-var FacetUtils_1 = __webpack_require__(36);
 var FacetValues_1 = __webpack_require__(91);
-var StringUtils_1 = __webpack_require__(19);
+var StringUtils_1 = __webpack_require__(18);
 var FacetValueElement_1 = __webpack_require__(90);
-var ExternalModulesShim_1 = __webpack_require__(23);
+var ExternalModulesShim_1 = __webpack_require__(26);
 var SearchInterface_1 = __webpack_require__(20);
 var ResponsiveComponentsUtils_1 = __webpack_require__(89);
 var FacetValuesOrder_1 = __webpack_require__(264);
 var _ = __webpack_require__(1);
-__webpack_require__(474);
+__webpack_require__(473);
 var SVGIcons_1 = __webpack_require__(21);
-var SVGDom_1 = __webpack_require__(28);
+var SVGDom_1 = __webpack_require__(27);
 /**
  * Used by the {@link Facet} component to render and handle the facet search part of each facet.
  */
@@ -3376,9 +3253,6 @@ var FacetSearch = (function () {
         document.addEventListener('click', function (e) { return _this.onDocumentClick(e); });
         Dom_1.$$(facet.root).on(InitializationEvents_1.InitializationEvents.nuke, function () { return _this.handleNuke(); });
     }
-    FacetSearch.prototype.isMobileDevice = function () {
-        return DeviceUtils_1.DeviceUtils.isMobileDevice() && !this.facet.searchInterface.isNewDesign();
-    };
     /**
      * Build the search component and return an `HTMLElement` which can be appended to the {@link Facet}.
      * @returns {HTMLElement}
@@ -3392,10 +3266,8 @@ var FacetSearch = (function () {
     FacetSearch.prototype.positionSearchResults = function (nextTo) {
         if (nextTo === void 0) { nextTo = this.search; }
         if (this.searchResults != null) {
-            if (!this.isMobileDevice()) {
-                this.searchResults.style.display = 'block';
-                this.searchResults.style.width = this.facet.element.clientWidth - 40 + 'px';
-            }
+            this.searchResults.style.display = 'block';
+            this.searchResults.style.width = this.facet.element.clientWidth - 40 + 'px';
             if (Dom_1.$$(this.searchResults).css('display') == 'none') {
                 this.searchResults.style.display = '';
             }
@@ -3470,7 +3342,7 @@ var FacetSearch = (function () {
         this.handleFacetSearchFocus();
     };
     FacetSearch.prototype.shouldPositionSearchResults = function () {
-        return !this.isMobileDevice() && !ResponsiveComponentsUtils_1.ResponsiveComponentsUtils.isSmallFacetActivated(Dom_1.$$(this.root))
+        return !ResponsiveComponentsUtils_1.ResponsiveComponentsUtils.isSmallFacetActivated(Dom_1.$$(this.root))
             && Dom_1.$$(this.facet.element).hasClass('coveo-facet-searching');
     };
     FacetSearch.prototype.buildBaseSearch = function () {
@@ -3499,7 +3371,6 @@ var FacetSearch = (function () {
         this.input.setAttribute('type', 'text');
         this.input.setAttribute('autocapitalize', 'off');
         this.input.setAttribute('autocorrect', 'off');
-        this.input.setAttribute('placeholder', this.facet.searchInterface.isNewDesign() ? '' : Strings_1.l('SearchIn', this.facet.options.title));
         Dom_1.$$(this.input).addClass('coveo-facet-search-input');
         Component_1.Component.pointElementsToDummyForm(this.input);
         this.middle.appendChild(this.input);
@@ -3515,34 +3386,22 @@ var FacetSearch = (function () {
         Assert_1.Assert.exists(event);
         var isEmpty = this.input.value.trim() == '';
         this.showOrHideClearElement(isEmpty);
-        if (!this.isMobileDevice()) {
-            this.handleKeyboardNavigation(event, isEmpty);
-        }
-        else {
-            this.startNewSearchTimeout(this.buildParamsForNormalSearch());
-        }
+        this.handleKeyboardNavigation(event, isEmpty);
     };
     FacetSearch.prototype.handleNuke = function () {
         window.removeEventListener('resize', this.onResize);
         document.removeEventListener('click', this.onDocumentClick);
     };
     FacetSearch.prototype.handleFacetSearchFocus = function () {
-        if (!this.isMobileDevice()) {
-            if (this.facet.searchInterface.isNewDesign()) {
-                // Trigger a query only if the results are not already rendered.
-                // Protect against the case where user can "focus" out of the search box by clicking not directly on a search results
-                // Then re-focusing the search box
-                if (this.currentlyDisplayedResults == null) {
-                    this.startNewSearchTimeout(this.buildParamsForExcludingCurrentlyDisplayedValues());
-                }
-            }
-            else {
-                this.startNewSearchTimeout(this.buildParamsForNormalSearch());
-            }
+        // Trigger a query only if the results are not already rendered.
+        // Protect against the case where user can "focus" out of the search box by clicking not directly on a search results
+        // Then re-focusing the search box
+        if (this.currentlyDisplayedResults == null) {
+            this.startNewSearchTimeout(this.buildParamsForExcludingCurrentlyDisplayedValues());
         }
     };
     FacetSearch.prototype.handleClickElsewhere = function (event) {
-        if (this.currentlyDisplayedResults && !this.isMobileDevice() && this.search != event.target && this.searchResults != event.target && this.input != event.target) {
+        if (this.currentlyDisplayedResults && this.search != event.target && this.searchResults != event.target && this.input != event.target) {
             this.completelyDismissSearch();
         }
     };
@@ -3620,17 +3479,7 @@ var FacetSearch = (function () {
         this.cancelAnyPendingSearchOperation();
         this.facetSearchTimeout = setTimeout(function () {
             var valueInInput = _this.getValueInInputForFacetSearch();
-            if (valueInInput == '') {
-                if (params.searchEvenIfEmpty) {
-                    _this.triggerNewFacetSearch(params);
-                }
-                else {
-                    _this.completelyDismissSearch();
-                }
-            }
-            else {
-                _this.triggerNewFacetSearch(params);
-            }
+            _this.triggerNewFacetSearch(params);
         }, this.facet.options.facetSearchDelay);
     };
     FacetSearch.prototype.cancelAnyPendingSearchOperation = function () {
@@ -3656,7 +3505,6 @@ var FacetSearch = (function () {
                 this.showSearchResultsElement();
             }
             this.highlightCurrentQueryWithinSearchResults();
-            FacetUtils_1.FacetUtils.clipCaptionsToAvoidOverflowingTheirContainer(this.facet, true);
             this.makeFirstSearchResultTheCurrentOne();
         }
         else {
@@ -3680,9 +3528,7 @@ var FacetSearch = (function () {
             Dom_1.$$(selectAll).addClass(['coveo-facet-selectable', 'coveo-facet-search-selectable', 'coveo-facet-search-select-all']);
             Dom_1.$$(selectAll).text(Strings_1.l('SelectAll'));
             Dom_1.$$(selectAll).on('click', function () { return _this.selectAllValuesMatchingSearch(); });
-            if (!this.isMobileDevice()) {
-                this.searchResults.appendChild(selectAll);
-            }
+            this.searchResults.appendChild(selectAll);
         }
         var facetValues = _.map(fieldValues, function (fieldValue) {
             return FacetValues_1.FacetValue.create(fieldValue);
@@ -3696,19 +3542,11 @@ var FacetSearch = (function () {
         else {
             this.currentlyDisplayedResults = _.pluck(facetValues, 'value');
         }
-        if (this.isMobileDevice()) {
-            var selectAllMobile = document.createElement('span');
-            Dom_1.$$(selectAllMobile).addClass('coveo-mobile-facet-search-select-all');
-            selectAll.appendChild(selectAllMobile);
-            this.searchResults.appendChild(selectAll);
-        }
         _.each(Dom_1.$$(this.searchResults).findAll('.coveo-facet-selectable'), function (elem) {
             Dom_1.$$(elem).addClass('coveo-facet-search-selectable');
             _this.setupFacetSearchResultsEvents(elem);
         });
-        if (this.facet.searchInterface.isNewDesign()) {
-            Dom_1.$$(this.searchResults).on('scroll', function () { return _this.handleFacetSearchResultsScroll(); });
-        }
+        Dom_1.$$(this.searchResults).on('scroll', function () { return _this.handleFacetSearchResultsScroll(); });
     };
     FacetSearch.prototype.setupFacetSearchResultsEvents = function (elem) {
         var _this = this;
@@ -3900,7 +3738,7 @@ exports.FacetSearch = FacetSearch;
 
 /***/ }),
 
-/***/ 405:
+/***/ 404:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3930,7 +3768,7 @@ exports.FacetSearchValuesList = FacetSearchValuesList;
 
 /***/ }),
 
-/***/ 406:
+/***/ 405:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3941,7 +3779,7 @@ var FacetValueElement_1 = __webpack_require__(90);
 var Dom_1 = __webpack_require__(3);
 var FacetValues_1 = __webpack_require__(91);
 var Utils_1 = __webpack_require__(5);
-var FacetUtils_1 = __webpack_require__(36);
+var FacetUtils_1 = __webpack_require__(42);
 var FacetValuesOrder_1 = __webpack_require__(264);
 var _ = __webpack_require__(1);
 var FacetValuesList = (function () {
@@ -4042,7 +3880,6 @@ var FacetValuesList = (function () {
         });
         this.valueContainer.appendChild(docFragment);
         FacetUtils_1.FacetUtils.addNoStateCssClassToFacetValues(this.facet, this.valueContainer);
-        FacetUtils_1.FacetUtils.clipCaptionsToAvoidOverflowingTheirContainer(this.facet);
     };
     FacetValuesList.prototype.getValuesToBuildWith = function () {
         if (this.facet.facetSort) {
@@ -4092,7 +3929,7 @@ exports.FacetValuesList = FacetValuesList;
 
 /***/ }),
 
-/***/ 407:
+/***/ 406:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4109,7 +3946,7 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var ValueElement_1 = __webpack_require__(396);
+var ValueElement_1 = __webpack_require__(395);
 var OmniboxValueElement = (function (_super) {
     __extends(OmniboxValueElement, _super);
     function OmniboxValueElement(facet, facetValue, eventArg, onSelect, onExclude) {
@@ -4129,7 +3966,7 @@ exports.OmniboxValueElement = OmniboxValueElement;
 
 /***/ }),
 
-/***/ 408:
+/***/ 407:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4137,7 +3974,7 @@ exports.OmniboxValueElement = OmniboxValueElement;
 Object.defineProperty(exports, "__esModule", { value: true });
 var Dom_1 = __webpack_require__(3);
 var Utils_1 = __webpack_require__(5);
-var FacetUtils_1 = __webpack_require__(36);
+var FacetUtils_1 = __webpack_require__(42);
 var _ = __webpack_require__(1);
 var OmniboxValuesList = (function () {
     function OmniboxValuesList(facet, facetValues, omniboxObject, omniboxValueElementKlass) {
@@ -4197,17 +4034,7 @@ var OmniboxValuesList = (function () {
         var header = Dom_1.$$('div', {
             className: 'coveo-omnibox-facet-header'
         }).el;
-        if (this.facet.searchInterface.isNewDesign()) {
-            Dom_1.$$(header).text(title);
-            return header;
-        }
-        else {
-            var icon = Dom_1.$$('span', {
-                className: 'coveo-icon ' + this.facet.options.field.substr(1)
-            }).el;
-            header.appendChild(icon);
-            Dom_1.$$(header).text(title);
-        }
+        Dom_1.$$(header).text(title);
         return header;
     };
     OmniboxValuesList.prototype.highlightOmniboxMatch = function (orignalStr, regex, valueToSearch) {
@@ -4233,143 +4060,150 @@ exports.OmniboxValuesList = OmniboxValuesList;
 
 /***/ }),
 
-/***/ 448:
+/***/ 447:
 /***/ (function(module, exports) {
 
 module.exports = "<svg enable-background=\"new 0 0 10 6\" viewBox=\"0 0 10 6\" xmlns=\"http://www.w3.org/2000/svg\"><g fill=\"currentColor\"><path d=\"m5 5.932c-.222 0-.443-.084-.612-.253l-4.134-4.134c-.338-.338-.338-.886 0-1.224s.886-.338 1.224 0l3.522 3.521 3.523-3.521c.336-.338.886-.338 1.224 0s .337.886-.001 1.224l-4.135 4.134c-.168.169-.39.253-.611.253z\"></path></g></svg>"
 
 /***/ }),
 
-/***/ 449:
+/***/ 448:
 /***/ (function(module, exports) {
 
 module.exports = "<svg enable-background=\"new 0 0 10 6\" viewBox=\"0 0 10 6\" xmlns=\"http://www.w3.org/2000/svg\"><g fill=\"currentColor\"><path d=\"m5 .068c.222 0 .443.084.612.253l4.134 4.134c.338.338.338.886 0 1.224s-.886.338-1.224 0l-3.522-3.521-3.523 3.521c-.336.338-.886.338-1.224 0s-.337-.886.001-1.224l4.134-4.134c.168-.169.39-.253.612-.253z\"></path></g></svg>"
 
 /***/ }),
 
-/***/ 450:
+/***/ 449:
 /***/ (function(module, exports) {
 
 module.exports = "<svg enable-background=\"new 0 0 15 12\" viewBox=\"0 0 15 12\" xmlns=\"http://www.w3.org/2000/svg\"><g fill=\"currentColor\"><path class=\"coveo-active-shape-svg\" d=\"m10.936 2.021 0 0c0 .549-.452.998-1.004.998h-1.004c-.552 0-1.004-.449-1.004-.998l0 0c0-.549.452-.998 1.004-.998h1.004c.552 0 1.004.449 1.004.998z\"></path><path class=\"coveo-active-shape-svg\" d=\"m12.943 5.015 0 0c0 .549-.452.998-1.004.998h-3.011c-.552 0-1.004-.449-1.004-.998l0 0c0-.549.452-.998 1.004-.998h3.011c.553 0 1.004.449 1.004.998z\"></path><path class=\"coveo-active-shape-svg\" d=\"m15 8.008 0 0c0 .549-.452.998-1.004.998h-5.068c-.552 0-1.004-.449-1.004-.998l0 0c0-.549.452-.998 1.004-.998h5.068c.552 0 1.004.449 1.004.998z\"></path><path d=\"m6.521 2.683-2.403-2.391c-.188-.187-.444-.292-.71-.292s-.521.105-.71.292l-2.404 2.391c-.392.39-.392 1.021 0 1.411s1.027.39 1.419 0l .691-.687v7.594c0 .55.452.999 1.004.999s1.004-.449 1.004-.998v-7.594l.691.687c.392.39 1.027.39 1.419 0s .392-1.021-.001-1.412z\"></path></g></svg>"
 
 /***/ }),
 
-/***/ 451:
+/***/ 450:
 /***/ (function(module, exports) {
 
 module.exports = "<svg enable-background=\"new 0 0 11 11\" viewBox=\"0 0 11 11\" xmlns=\"http://www.w3.org/2000/svg\"><g class=\"coveo-more-svg\" fill=\"none\"><path d=\"m10.083 4.583h-3.666v-3.666c0-.524-.393-.917-.917-.917s-.917.393-.917.917v3.667h-3.666c-.524-.001-.917.392-.917.916s.393.917.917.917h3.667v3.667c-.001.523.392.916.916.916s.917-.393.917-.917v-3.666h3.667c.523 0 .916-.393.916-.917-.001-.524-.394-.917-.917-.917z\"></path></g><g class=\"coveo-exclusion-svg\" fill=\"none\"><path d=\"m9.233 7.989-2.489-2.489 2.489-2.489c.356-.356.356-.889 0-1.244-.356-.356-.889-.356-1.244 0l-2.489 2.489-2.489-2.489c-.356-.356-.889-.356-1.244 0-.356.356-.356.889 0 1.244l2.489 2.489-2.489 2.489c-.356.356-.356.889 0 1.244.356.356.889.356 1.244 0l2.489-2.489 2.489 2.489c.356.356.889.356 1.244 0 .356-.355.356-.889 0-1.244z\"></path></g><g class=\"coveo-hook-svg\" fill=\"none\"><path d=\"m10.252 2.213c-.155-.142-.354-.211-.573-.213-.215.005-.414.091-.561.24l-4.873 4.932-2.39-2.19c-.154-.144-.385-.214-.57-.214-.214.004-.415.09-.563.24-.148.147-.227.343-.222.549.005.207.093.4.249.542l2.905 2.662c.168.154.388.239.618.239h.022.003c.237-.007.457-.101.618-.266l5.362-5.428c.148-.148.228-.344.223-.551s-.093-.399-.248-.542z\"></path></g></svg>"
 
 /***/ }),
 
-/***/ 452:
+/***/ 451:
 /***/ (function(module, exports) {
 
 module.exports = "<svg enable-background=\"new 0 0 15 12\" viewBox=\"0 0 15 12\" xmlns=\"http://www.w3.org/2000/svg\"><g fill=\"currentColor\"><path d=\"m6.521 7.906c-.392-.39-1.027-.39-1.419 0l-.69.686v-7.594c0-.549-.452-.998-1.004-.998s-1.004.449-1.004.998v7.594l-.69-.686c-.392-.39-1.027-.39-1.419 0-.392.39-.392 1.021 0 1.411l2.404 2.391c.188.187.443.292.709.292s.522-.105.71-.292l2.404-2.391c.392-.391.392-1.022-.001-1.411z\"></path><path class=\"coveo-active-shape-svg\" d=\"m9.932 11.001h-1.004c-.552 0-1.004-.449-1.004-.998l0 0c0-.549.452-.998 1.004-.998h1.004c.552 0 1.004.449 1.004.998l0 0c0 .549-.452.998-1.004.998z\"></path><path class=\"coveo-active-shape-svg\" d=\"m11.94 8.007h-3.012c-.552 0-1.004-.449-1.004-.998l0 0c0-.549.452-.998 1.004-.998h3.011c.552 0 1.004.449 1.004.998l0 0c0 .549-.451.998-1.003.998z\"></path><path class=\"coveo-active-shape-svg\" d=\"m13.996 5.014h-5.068c-.552 0-1.004-.449-1.004-.998l0 0c0-.549.452-.998 1.004-.998h5.068c.552 0 1.004.449 1.004.998l0 0c0 .548-.452.998-1.004.998z\"></path></g></svg>"
 
 /***/ }),
 
-/***/ 453:
+/***/ 452:
 /***/ (function(module, exports) {
 
 module.exports = "<svg enable-background=\"new 0 0 12 16\" viewBox=\"0 0 12 16\" xmlns=\"http://www.w3.org/2000/svg\"><g class=\"coveo-dropdown-authenticate-svg\" fill=\"none\"><path d=\"m10 5h-8c-1.1 0-2 .9-2 2v5c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2v-5c0-1.1-.9-2-2-2m0 1.5c.3 0 .5.2.5.5v5c0 .3-.2.5-.5.5h-8c-.3 0-.5-.2-.5-.5v-5c0-.3.2-.5.5-.5z\"></path><path d=\"m10 5h-1.6v-1.1c0-1.3-1.1-2.4-2.4-2.4s-2.4 1.1-2.4 2.4v1.1h-1.6v-1.1c0-2.1 1.8-3.9 4-3.9s4 1.8 4 3.9z\"></path></g><g class=\"coveo-dropdown-authenticate-hover-svg\" fill=\"none\"><path class=\"coveo-active-shape-svg\" d=\"m10 7h-8c-1.1 0-2 .9-2 2v5c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2v-5c0-1.1-.9-2-2-2m0 1.5c.3 0 .5.2.5.5v5c0 .3-.2.5-.5.5h-8c-.3 0-.5-.2-.5-.5v-5c0-.3.2-.5.5-.5z\"></path><path d=\"m5.1.1c-1.8.4-3.1 2.1-3.1 4v2.9h1.6v-3.1c0-1.7 1.8-3 3.6-2.1.8.4 1.2 1.3 1.2 2.2v.6c0 .4.4.8.8.8s.8-.4.8-.8v-.7c0-2.4-2.3-4.4-4.9-3.8z\"></path></g></svg>"
 
 /***/ }),
 
-/***/ 454:
+/***/ 453:
 /***/ (function(module, exports) {
 
 module.exports = "<svg enable-background=\"new 0 0 14 14\" viewBox=\"0 0 14 14\" xmlns=\"http://www.w3.org/2000/svg\"><g fill=\"currentColor\" transform=\"matrix(0 1 -1 0 20 0)\"><path d=\"m7.699 8.591 1.05 1.05c.49.49 1.05 0 1.05 0s .49-.56 0-1.05l-2.31-2.381c-.28-.28-.7-.28-.98 0l-2.309 2.451c-.49.49 0 .98 0 .98s.56.49 1.05 0l1.05-1.05v7.91c0 .42.35.7.7.7s.7-.35.7-.7z\"></path><path class=\"coveo-active-shape-svg\" d=\"m10.5 12.301h2.033l.065 6.301h-11.198v-6.301h2.1c.386 0 .7-.314.7-.7l0 0c0-.386-.314-.7-.7-.7h-2.806c-.383-.001-.694.31-.694.694v7.706c0 .385.318.699.694.699h12.607c.384 0 .699-.315.699-.699v-7.7c0-.386-.316-.699-.694-.699h-2.806c-.386 0-.7.314-.7.7l0 0c0 .385.314.699.7.699z\"></path></g></svg>"
 
 /***/ }),
 
-/***/ 455:
+/***/ 454:
 /***/ (function(module, exports) {
 
 module.exports = "<svg enable-background=\"new 0 0 15 12\" viewBox=\"0 0 15 12\" xmlns=\"http://www.w3.org/2000/svg\"><g fill=\"currentColor\"><path d=\"m9.224 11.999c-.198 0-.496-.103-.694-.308-.397-.411-.397-1.025 0-1.436l3.965-4.409-3.966-4.102c-.397-.411-.397-1.025 0-1.436s.991-.411 1.388 0l4.859 4.922c.298.308.298.718 0 1.025l-4.859 5.435c-.198.206-.496.309-.693.309\"></path><path class=\"coveo-active-shape-svg\" d=\"m4.958.411c-.397-.411-.991-.411-1.388 0s-.397 1.025 0 1.436l2.973 2.974h-5.552c-.594 0-.991.41-.991 1.025s.397 1.025.991 1.025h5.651l-3.074 3.384c-.397.411-.397 1.025 0 1.436.199.206.398.309.695.309.298 0 .495-.103.694-.308l4.859-5.333c.298-.308.298-.718 0-1.025z\"></path></g></svg>"
 
 /***/ }),
 
-/***/ 456:
+/***/ 455:
 /***/ (function(module, exports) {
 
 module.exports = "<svg enable-background=\"new 0 0 16 16\" viewBox=\"0 0 16 16\" xmlns=\"http://www.w3.org/2000/svg\"><g fill=\"currentColor\"><path class=\"coveo-active-shape-svg\" d=\"m14 2v12h-11.999v-12zm1.306-2h-14.607c-.386 0-.699.318-.699.694v14.607c0 .384.315.699.699.699h14.602c.385 0 .699-.316.699-.694v-14.612c0-.383-.311-.694-.694-.694z\"></path><path d=\"m10.969 9.055h-5.939c-.569 0-1.032-.448-1.032-1s .462-1 1.032-1h5.938c.57 0 1.032.448 1.032 1 .001.552-.46 1-1.031 1\"></path></g></svg>"
 
 /***/ }),
 
-/***/ 457:
+/***/ 456:
 /***/ (function(module, exports) {
 
 module.exports = "<svg enable-background=\"new 0 0 16 16\" viewBox=\"0 0 16 16\" xmlns=\"http://www.w3.org/2000/svg\"><g fill=\"currentColor\"><path class=\"coveo-active-shape-svg\" d=\"m14 2v12h-12v-12zm1.306-2h-14.607c-.386 0-.699.318-.699.694v14.607c0 .384.315.699.699.699h14.602c.385 0 .699-.316.699-.694v-14.612c0-.383-.311-.694-.694-.694z\"></path><path d=\"m10.969 7.055h-1.97v-1.968c0-.571-.448-1.032-1-1.032s-1 .462-1 1.032v1.969h-1.969c-.57 0-1.032.448-1.032 1s .463 1 1.032 1h1.97v1.969c0 .57.448 1.032 1 1.032s1-.463 1-1.032v-1.97h1.969c.571 0 1.032-.448 1.032-1 .001-.552-.462-1-1.032-1z\"></path></g></svg>"
 
 /***/ }),
 
-/***/ 458:
+/***/ 457:
 /***/ (function(module, exports) {
 
 module.exports = "<svg enable-background=\"new 0 0 22 22\" viewBox=\"0 0 22 22\" xmlns=\"http://www.w3.org/2000/svg\"><g fill=\"currentColor\"><path class=\"coveo-active-shape-svg\" d=\"m12.989 21.947h-3.978c-.752 0-1.388-.557-1.48-1.295l-.298-2.075c-.309-.154-.611-.33-.905-.526l-1.968.79c-.722.268-1.508-.028-1.858-.668l-1.977-3.419c-.366-.671-.207-1.47.365-1.922l1.669-1.306c-.013-.186-.019-.359-.019-.526s.006-.34.02-.526l-1.665-1.303c-.586-.462-.742-1.292-.365-1.932l1.985-3.434c.343-.633 1.136-.923 1.836-.65l1.98.796c.3-.2.6-.375.901-.527l.301-2.096c.089-.719.726-1.275 1.478-1.275h3.979c.753 0 1.39.557 1.479 1.296l.298 2.074c.31.154.611.33.905.526l1.968-.791c.721-.263 1.508.028 1.857.667l1.979 3.421c.365.671.207 1.47-.365 1.922l-1.669 1.305c.012.166.02.342.02.527s-.008.361-.02.526l1.665 1.302c.576.457.734 1.256.381 1.903l-2 3.463c-.35.636-1.146.922-1.84.649l-1.978-.794c-.301.199-.6.374-.902.526l-.3 2.095c-.088.72-.725 1.277-1.478 1.277m-3.539-2h3.1l.396-2.762.529-.217c.485-.2.964-.478 1.461-.851l.45-.337 2.585 1.038 1.554-2.688-2.198-1.718.071-.563c.035-.277.062-.555.062-.85s-.027-.572-.062-.85l-.071-.563 2.198-1.718-1.555-2.688-2.592 1.042-.452-.348c-.466-.358-.94-.633-1.451-.843l-.529-.217-.396-2.761h-3.1l-.396 2.762-.53.217c-.485.199-.962.477-1.46.85l-.451.337-2.584-1.038-1.554 2.688 2.196 1.718-.07.562c-.034.277-.061.564-.061.851s.027.573.062.852l.07.562-2.196 1.718 1.554 2.688 2.591-1.041.452.348c.465.356.939.632 1.452.843l.529.217z\"></path><path d=\"m11 15c-2.206 0-4-1.794-4-4s1.794-4 4-4 4 1.794 4 4-1.794 4-4 4m0-6c-1.103 0-2 .897-2 2s .897 2 2 2 2-.897 2-2-.897-2-2-2\"></path></g></svg>"
 
 /***/ }),
 
-/***/ 459:
+/***/ 458:
 /***/ (function(module, exports) {
 
 module.exports = "<svg viewBox=\"0 0 18 14\" xmlns=\"http://www.w3.org/2000/svg\"><g fill=\"currentColor\" fill-rule=\"evenodd\"><path class=\"coveo-active-shape-svg\" d=\"m12.1 13.5c-.426 0-.771-.332-.771-.74 0-.409.346-.74.771-.74h1.862c1.374 0 2.49-1.136 2.49-2.534v-.193c0-1.144-.756-2.15-1.839-2.448l-.488-.134-.066-.484c-.132-.979-1.11-1.673-2.041-1.458l-.635.143-.253-.578c-.626-1.429-2.024-2.352-3.562-2.352-2.147 0-3.892 1.769-3.892 3.944 0 .082.002.164.007.246l.032.541-.529.192c-.986.359-1.65 1.319-1.65 2.388v.192c0 1.398 1.117 2.535 2.49 2.535h.782c.426 0 .771.332.771.74 0 .409-.346.74-.771.74h-.782c-2.224 0-4.03-1.802-4.03-4.02v-.192c0-1.496.842-2.861 2.143-3.549.097-2.908 2.496-5.243 5.432-5.243 1.968 0 3.767 1.061 4.726 2.747 1.501-.024 2.798.945 3.198 2.327 1.495.61 2.501 2.077 2.501 3.717v.193c0 2.215-1.808 4.02-4.03 4.02h-1.863\"></path><path d=\"m9 5.234c-.098-.149-.3-.233-.511-.234-.212 0-.413.084-.561.232l-3.193 3.176c-.311.309-.312.812-.003 1.123.155.156.359.233.563.233.202 0 .406-.076.56-.231l1.822-1.813v5.485c0 .438.356.794.794.794.438 0 .794-.356.794-.794v-5.504l1.82 1.83c.309.311.812.312 1.122.002.31-.309.312-.812.002-1.123l-3.21-3.176\"></path></g></svg>"
 
 /***/ }),
 
-/***/ 460:
+/***/ 459:
 /***/ (function(module, exports) {
 
 module.exports = "<svg enable-background=\"new 0 0 16 16\" viewBox=\"0 0 16 16\" xmlns=\"http://www.w3.org/2000/svg\"><g fill=\"currentColor\"><path class=\"coveo-active-shape-svg\" d=\"m8.01 0c-4.425 0-8.01 3.581-8.01 7.992 0 4.425 3.581 8.01 7.999 8.01l.003-.003c4.417 0 7.999-3.581 7.999-7.999 0-4.417-3.581-7.999-7.992-7.999m.002 1.5c3.58 0 6.493 2.916 6.493 6.5s-2.916 6.5-6.5 6.5h-.172c-3.506-.09-6.331-2.975-6.331-6.508 0-3.58 2.92-6.493 6.51-6.492\"></path><path d=\"m11.04 10.27c-.192 0-.384-.073-.53-.22l-2.51-2.51-2.51 2.51c-.293.293-.768.293-1.061 0s-.293-.768 0-1.061l3.041-3.04c.141-.14.332-.219.53-.219l0 0c .199 0 .39.079.53.22l3.04 3.041c.293.293.293.768 0 1.061-.146.145-.337.218-.53.218z\"></path></g></svg>"
 
 /***/ }),
 
-/***/ 461:
+/***/ 460:
 /***/ (function(module, exports) {
 
 module.exports = "<svg enable-background=\"new 0 0 16 16\" viewBox=\"0 0 16 16\" xmlns=\"http://www.w3.org/2000/svg\"><g fill=\"currentColor\"><path class=\"coveo-active-shape-svg\" d=\"m7.991 16.002c4.425 0 8.01-3.581 8.01-7.992 0-4.425-3.581-8.01-7.999-8.01l-.003.003c-4.417 0-7.999 3.581-7.999 7.999 0 4.417 3.581 7.999 7.992 7.999m-.002-1.5c-3.58 0-6.493-2.916-6.493-6.5s2.916-6.5 6.5-6.5h.172c3.506.09 6.331 2.975 6.331 6.508 0 3.58-2.92 6.493-6.51 6.493\"></path><path d=\"m4.961 5.732c.192 0 .384.073.53.22l2.51 2.51 2.51-2.51c.293-.293.768-.293 1.061 0s .293.768 0 1.061l-3.041 3.04c-.141.14-.332.219-.53.219l0 0c-.199 0-.39-.079-.53-.22l-3.04-3.041c-.293-.293-.293-.768 0-1.061.146-.145.337-.218.53-.218z\"></path></g></svg>"
 
 /***/ }),
 
-/***/ 462:
+/***/ 461:
 /***/ (function(module, exports) {
 
 module.exports = "<svg enable-background=\"new 0 0 18 18\" viewBox=\"0 0 18 18\" xmlns=\"http://www.w3.org/2000/svg\"><g fill=\"currentColor\"><path d=\"m16.76 8.051c-.448 0-.855-.303-.969-.757-.78-3.117-3.573-5.294-6.791-5.294s-6.01 2.177-6.79 5.294c-.134.537-.679.861-1.213.727-.536-.134-.861-.677-.728-1.212 1.004-4.009 4.594-6.809 8.731-6.809 4.138 0 7.728 2.8 8.73 6.809.135.536-.191 1.079-.727 1.213-.081.02-.162.029-.243.029z\"></path><path d=\"m9 18c-4.238 0-7.943-3.007-8.809-7.149-.113-.541.234-1.071.774-1.184.541-.112 1.071.232 1.184.773.674 3.222 3.555 5.56 6.851 5.56s6.178-2.338 6.852-5.56c.113-.539.634-.892 1.184-.773.54.112.887.643.773 1.184-.866 4.142-4.57 7.149-8.809 7.149z\"></path></g></svg>"
 
 /***/ }),
 
-/***/ 463:
+/***/ 462:
 /***/ (function(module, exports) {
 
 module.exports = "<svg enable-background=\"new 0 0 13 13\" viewBox=\"0 0 13 13\" xmlns=\"http://www.w3.org/2000/svg\"><g fill=\"currentColor\"><path d=\"m7.881 6.501 4.834-4.834c.38-.38.38-1.001 0-1.381s-1.001-.38-1.381 0l-4.834 4.834-4.834-4.835c-.38-.38-1.001-.38-1.381 0s-.38 1.001 0 1.381l4.834 4.834-4.834 4.834c-.38.38-.38 1.001 0 1.381s1.001.38 1.381 0l4.834-4.834 4.834 4.834c.38.38 1.001.38 1.381 0s .38-1.001 0-1.381z\"></path></g></svg>"
 
 /***/ }),
 
-/***/ 464:
+/***/ 463:
 /***/ (function(module, exports) {
 
 module.exports = "<svg enable-background=\"new 0 0 16 16\" viewBox=\"0 0 16 16\" xmlns=\"http://www.w3.org/2000/svg\"><g fill=\"currentColor\"><path class=\"coveo-more-background-svg\" fill-opacity=\"0\" d=\"m8.03.819c3.987 0 7.227 3.222 7.227 7.181s-3.239 7.181-7.227 7.181c-3.976 0-7.209-3.222-7.209-7.181s3.237-7.181 7.209-7.181\"></path><path d=\"m0 8c0 4.416 3.572 8 7.991 8 4.425 0 8.009-3.581 8.009-8 0-4.416-3.581-8-8.009-8-4.416 0-7.991 3.581-7.991 8m8.031-6.4c3.553 0 6.441 2.872 6.441 6.4s-2.887 6.4-6.441 6.4c-3.544 0-6.425-2.872-6.425-6.4s2.885-6.4 6.425-6.4\"></path><path d=\"m10.988 9.024c.551 0 1-.449 1-1s-.449-1-1-1-1 .449-1 1 .449 1 1 1\"></path><path d=\"m7.991 9c .551 0 1-.449 1-1s-.449-1-1-1-1 .449-1 1 .449 1 1 1\"></path><path d=\"m4.994 9c .551 0 1-.449 1-1s-.449-1-1-1-1 .449-1 1 .449 1 1 1\"></path></g></svg>"
 
 /***/ }),
 
-/***/ 465:
+/***/ 464:
 /***/ (function(module, exports) {
 
 module.exports = "<svg enable-background=\"new 0 0 18 18\" viewBox=\"0 0 18 18\" xmlns=\"http://www.w3.org/2000/svg\"><g fill=\"currentColor\"><path class=\"coveo-and-svg\" d=\"m13.769 5.294h-1.063v-1.063c0-2.329-1.894-4.231-4.231-4.231h-4.244c-2.329 0-4.231 1.894-4.231 4.231v4.244c0 2.329 1.894 4.231 4.231 4.231h1.063v1.063c0 2.329 1.894 4.231 4.231 4.231h4.244c2.329 0 4.231-1.894 4.231-4.231v-4.244c0-2.329-1.894-4.231-4.231-4.231zm2.731 8.475c0 1.506-1.225 2.731-2.731 2.731h-4.244c-1.506 0-2.731-1.225-2.731-2.731v-2.563h-2.563c-1.506 0-2.731-1.225-2.731-2.731v-4.244c0-1.506 1.225-2.731 2.731-2.731h4.244c1.506 0 2.731 1.225 2.731 2.731v2.563h2.563c1.506 0 2.731 1.225 2.731 2.731z\"></path><path class=\"coveo-or-svg\" d=\"m11.206 6.794v1.909c0 1.38-1.123 2.503-2.503 2.503h-1.909v-1.909c0-1.38 1.123-2.503 2.503-2.503zm1.5-1.5h-3.409c-2.209 0-4.003 1.792-4.003 4.003v3.409h3.409c2.209 0 4.003-1.792 4.003-4.003z\"></path></g></svg>"
 
 /***/ }),
 
-/***/ 466:
+/***/ 465:
 /***/ (function(module, exports) {
 
 module.exports = "<svg enable-background=\"new 0 0 20 20\" viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><g fill=\"currentColor\"><path class=\"coveo-magnifier-circle-svg\" d=\"m8.368 16.736c-4.614 0-8.368-3.754-8.368-8.368s3.754-8.368 8.368-8.368 8.368 3.754 8.368 8.368-3.754 8.368-8.368 8.368m0-14.161c-3.195 0-5.793 2.599-5.793 5.793s2.599 5.793 5.793 5.793 5.793-2.599 5.793-5.793-2.599-5.793-5.793-5.793\"></path><path d=\"m18.713 20c-.329 0-.659-.126-.91-.377l-4.552-4.551c-.503-.503-.503-1.318 0-1.82.503-.503 1.318-.503 1.82 0l4.552 4.551c.503.503.503 1.318 0 1.82-.252.251-.581.377-.91.377\"></path></g></svg>"
 
 /***/ }),
 
-/***/ 467:
+/***/ 466:
 /***/ (function(module, exports) {
 
 module.exports = "<svg enable-background=\"new 0 0 15 14\" viewBox=\"0 0 15 14\" xmlns=\"http://www.w3.org/2000/svg\"><g fill=\"currentColor\"><path class=\"coveo-active-shape-svg\" d=\"m13.002 4.076 0 0c0 .536-.439.975-.975.975h-2.925c-.536 0-.975-.439-.975-.975l0 0c0-.536.439-.975.975-.975h2.925c.537 0 .975.438.975.975z\"></path><path class=\"coveo-active-shape-svg\" d=\"m13.002 9.925 0 0c0 .536-.439.975-.975.975h-2.925c-.536 0-.975-.439-.975-.975l0 0c0-.536.439-.975.975-.975h2.925c.537 0 .975.439.975.975z\"></path><path class=\"coveo-active-shape-svg\" d=\"m15 7 0 0c0 .536-.439.975-.975.975h-4.923c-.536 0-.974-.438-.974-.975l0 0c0-.536.439-.975.975-.975h4.923c.535.001.974.439.974.975z\"></path><path d=\"m4.956 9.837-.671.671v-7.015l.671.671c.381.381.997.381 1.379 0 .381-.38.381-.997 0-1.379l-2.335-2.336c-.183-.184-.431-.286-.69-.286s-.506.102-.689.286l-2.335 2.336c-.381.381-.381.997 0 1.379s.997.381 1.379 0l .671-.671v7.015l-.671-.671c-.381-.381-.997-.381-1.379 0-.381.38-.381.997 0 1.379l2.335 2.336c.182.183.431.286.689.286s.506-.103.69-.287l2.335-2.336c.381-.381.381-.997 0-1.379-.382-.381-.998-.381-1.379.001z\"></path></g></svg>"
+
+/***/ }),
+
+/***/ 468:
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
 
 /***/ }),
 
@@ -4415,14 +4249,7 @@ module.exports = "<svg enable-background=\"new 0 0 15 14\" viewBox=\"0 0 15 14\"
 
 /***/ }),
 
-/***/ 475:
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-
-/***/ 478:
+/***/ 477:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4438,7 +4265,7 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var ResponsiveFacetColumn_1 = __webpack_require__(401);
+var ResponsiveFacetColumn_1 = __webpack_require__(400);
 var Facet_1 = __webpack_require__(57);
 var ResponsiveFacets = (function (_super) {
     __extends(ResponsiveFacets, _super);
@@ -4474,45 +4301,44 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var Component_1 = __webpack_require__(8);
 var FacetValues_1 = __webpack_require__(91);
 var ComponentOptions_1 = __webpack_require__(9);
-var DeviceUtils_1 = __webpack_require__(18);
+var DeviceUtils_1 = __webpack_require__(19);
 var Strings_1 = __webpack_require__(10);
 var FacetQueryController_1 = __webpack_require__(265);
-var FacetSearch_1 = __webpack_require__(404);
-var FacetSettings_1 = __webpack_require__(394);
-var FacetSort_1 = __webpack_require__(395);
-var FacetValuesList_1 = __webpack_require__(406);
-var FacetHeader_1 = __webpack_require__(399);
-var FacetUtils_1 = __webpack_require__(36);
-var InitializationEvents_1 = __webpack_require__(15);
+var FacetSearch_1 = __webpack_require__(403);
+var FacetSettings_1 = __webpack_require__(393);
+var FacetSort_1 = __webpack_require__(394);
+var FacetValuesList_1 = __webpack_require__(405);
+var FacetHeader_1 = __webpack_require__(398);
+var FacetUtils_1 = __webpack_require__(42);
 var QueryEvents_1 = __webpack_require__(11);
 var Assert_1 = __webpack_require__(7);
 var Dom_1 = __webpack_require__(3);
 var AnalyticsActionListMeta_1 = __webpack_require__(12);
 var Utils_1 = __webpack_require__(5);
-var BreadcrumbValueElement_1 = __webpack_require__(402);
-var BreadcrumbValuesList_1 = __webpack_require__(403);
+var BreadcrumbValueElement_1 = __webpack_require__(401);
+var BreadcrumbValuesList_1 = __webpack_require__(402);
 var FacetValueElement_1 = __webpack_require__(90);
-var FacetSearchValuesList_1 = __webpack_require__(405);
-var Defer_1 = __webpack_require__(27);
+var FacetSearchValuesList_1 = __webpack_require__(404);
+var Defer_1 = __webpack_require__(28);
 var QueryStateModel_1 = __webpack_require__(14);
 var Model_1 = __webpack_require__(16);
 var OmniboxEvents_1 = __webpack_require__(33);
-var OmniboxValueElement_1 = __webpack_require__(407);
-var OmniboxValuesList_1 = __webpack_require__(408);
-var ValueElementRenderer_1 = __webpack_require__(397);
+var OmniboxValueElement_1 = __webpack_require__(406);
+var OmniboxValuesList_1 = __webpack_require__(407);
+var ValueElementRenderer_1 = __webpack_require__(396);
 var FacetSearchParameters_1 = __webpack_require__(241);
 var Initialization_1 = __webpack_require__(2);
 var BreadcrumbEvents_1 = __webpack_require__(43);
-var ResponsiveFacets_1 = __webpack_require__(478);
+var ResponsiveFacets_1 = __webpack_require__(477);
 var KeyboardUtils_1 = __webpack_require__(22);
 var FacetValuesOrder_1 = __webpack_require__(264);
 var SearchAlertEvents_1 = __webpack_require__(59);
 var _ = __webpack_require__(1);
 var GlobalExports_1 = __webpack_require__(4);
-__webpack_require__(471);
-__webpack_require__(473);
+__webpack_require__(470);
+__webpack_require__(472);
 var SVGIcons_1 = __webpack_require__(21);
-var SVGDom_1 = __webpack_require__(28);
+var SVGDom_1 = __webpack_require__(27);
 /**
  * The `Facet` component displays a *facet* of the results for the current query. A facet is a list of values for a
  * certain field occurring in the results, ordered using a configurable criteria (e.g., number of occurrences).
@@ -4574,13 +4400,6 @@ var Facet = (function (_super) {
         _this.initBreadCrumbEvents();
         _this.initSearchAlertEvents();
         _this.updateNumberOfValues();
-        _this.resize = function () {
-            if (!_this.disabled) {
-                FacetUtils_1.FacetUtils.clipCaptionsToAvoidOverflowingTheirContainer(_this);
-            }
-        };
-        window.addEventListener('resize', _.debounce(_this.resize, 200));
-        _this.bind.onRootElement(InitializationEvents_1.InitializationEvents.nuke, function () { return _this.handleNuke(); });
         _this.bind.oneRootElement(QueryEvents_1.QueryEvents.querySuccess, function () {
             _this.firstQuery = false;
         });
@@ -4776,15 +4595,7 @@ var Facet = (function (_super) {
     Facet.prototype.showWaitingAnimation = function () {
         this.ensureDom();
         if (!this.showingWaitAnimation) {
-            // in old design : icon before the facet title needs to be hidden to show animation
-            // new design : no need to hide this icon since it's not there
-            if (!this.searchInterface.isNewDesign()) {
-                Dom_1.$$(this.headerElement).find('.coveo-icon').style.display = 'none';
-                Dom_1.$$(this.headerElement).find('.coveo-facet-header-wait-animation').style.display = '';
-            }
-            else {
-                Dom_1.$$(this.headerElement).find('.coveo-facet-header-wait-animation').style.visibility = 'visible';
-            }
+            Dom_1.$$(this.headerElement).find('.coveo-facet-header-wait-animation').style.visibility = 'visible';
             this.showingWaitAnimation = true;
         }
     };
@@ -4794,13 +4605,7 @@ var Facet = (function (_super) {
     Facet.prototype.hideWaitingAnimation = function () {
         this.ensureDom();
         if (this.showingWaitAnimation) {
-            if (!this.searchInterface.isNewDesign()) {
-                Dom_1.$$(this.headerElement).find('.coveo-facet-header-wait-animation').style.display = 'none';
-                Dom_1.$$(this.headerElement).find('.coveo-icon').style.display = '';
-            }
-            else {
-                Dom_1.$$(this.headerElement).find('.coveo-facet-header-wait-animation').style.visibility = 'hidden';
-            }
+            Dom_1.$$(this.headerElement).find('.coveo-facet-header-wait-animation').style.visibility = 'hidden';
             this.showingWaitAnimation = false;
         }
     };
@@ -4968,12 +4773,7 @@ var Facet = (function (_super) {
     Facet.prototype.updateAppearanceDependingOnState = function () {
         Dom_1.$$(this.element).toggleClass('coveo-active', this.values.hasSelectedOrExcludedValues());
         Dom_1.$$(this.element).toggleClass('coveo-facet-empty', !this.isAnyValueCurrentlyDisplayed());
-        if (this.searchInterface.isNewDesign()) {
-            Dom_1.$$(this.facetHeader.eraserElement).toggleClass('coveo-facet-header-eraser-visible', this.values.hasSelectedOrExcludedValues());
-        }
-        else {
-            Dom_1.$$(this.facetHeader.eraserElement).toggle(this.values.hasSelectedOrExcludedValues());
-        }
+        Dom_1.$$(this.facetHeader.eraserElement).toggleClass('coveo-facet-header-eraser-visible', this.values.hasSelectedOrExcludedValues());
     };
     Facet.prototype.initQueryEvents = function () {
         var _this = this;
@@ -5065,27 +4865,20 @@ var Facet = (function (_super) {
     Facet.prototype.rebuildValueElements = function () {
         this.updateNumberOfValues();
         this.facetValuesList.rebuild(this.numberOfValues);
-        if (this.searchInterface.isNewDesign()) {
-            if (this.shouldRenderMoreLess()) {
-                this.updateMoreLess();
-                if (this.shouldRenderFacetSearch()) {
-                    this.updateSearchInNewDesign(this.nbAvailableValues > this.numberOfValues);
-                }
-            }
-            else if (this.shouldRenderFacetSearch()) {
-                this.updateSearchInNewDesign();
+        if (this.shouldRenderMoreLess()) {
+            this.updateMoreLess();
+            if (this.shouldRenderFacetSearch()) {
+                this.updateSearchElement(this.nbAvailableValues > this.numberOfValues);
             }
         }
-        else {
-            if (this.shouldRenderMoreLess()) {
-                this.updateMoreLess();
-            }
+        else if (this.shouldRenderFacetSearch()) {
+            this.updateSearchElement();
         }
     };
-    Facet.prototype.updateSearchInNewDesign = function (moreValuesAvailable) {
+    Facet.prototype.updateSearchElement = function (moreValuesAvailable) {
         var _this = this;
         if (moreValuesAvailable === void 0) { moreValuesAvailable = true; }
-        if (this.searchInterface.isNewDesign() && moreValuesAvailable) {
+        if (moreValuesAvailable) {
             var renderer = new ValueElementRenderer_1.ValueElementRenderer(this, FacetValues_1.FacetValue.create(('Search')));
             var searchButton_1 = renderer.build().withNo([renderer.excludeIcon, renderer.icon]);
             Dom_1.$$(searchButton_1.listItem).addClass('coveo-facet-search-button');
@@ -5138,9 +4931,6 @@ var Facet = (function (_super) {
     };
     Facet.prototype.handleClickLess = function () {
         this.showLess();
-    };
-    Facet.prototype.handleNuke = function () {
-        window.removeEventListener('resize', this.resize);
     };
     Facet.prototype.checkForComputedFieldAndSort = function () {
         if (this.options.sortCriteria.toLowerCase().indexOf('computedfield') != -1 && Utils_1.Utils.isNullOrUndefined(this.options.computedField)) {
@@ -5358,18 +5148,14 @@ var Facet = (function (_super) {
         }
         this.footerElement = this.buildFooter();
         this.element.appendChild(this.footerElement);
-        if (this.searchInterface.isNewDesign() && this.lessElement && this.moreElement) {
+        if (this.lessElement && this.moreElement) {
             this.footerElement.appendChild(this.lessElement);
             this.footerElement.appendChild(this.moreElement);
-        }
-        else if (this.moreElement && this.lessElement) {
-            this.footerElement.appendChild(this.moreElement);
-            this.footerElement.appendChild(this.lessElement);
         }
     };
     Facet.prototype.buildHeader = function () {
         var icon = this.options.headerIcon;
-        if (this.searchInterface.isNewDesign() && this.options.headerIcon == this.options.field) {
+        if (this.options.headerIcon == this.options.field) {
             icon = undefined;
         }
         this.facetHeader = new FacetHeader_1.FacetHeader({
@@ -5382,8 +5168,7 @@ var Facet = (function (_super) {
             facet: this,
             settingsKlass: this.options.enableSettings ? FacetSettings_1.FacetSettings : undefined,
             sortKlass: FacetSort_1.FacetSort,
-            availableSorts: this.options.availableSorts,
-            isNewDesign: this.getBindings().searchInterface.isNewDesign()
+            availableSorts: this.options.availableSorts
         });
         var built = this.facetHeader.build();
         this.facetSettings = this.facetHeader.settings;
@@ -5446,14 +5231,9 @@ var Facet = (function (_super) {
     Facet.prototype.buildMore = function () {
         var _this = this;
         var more;
-        if (this.searchInterface.isNewDesign()) {
-            var svgContainer = Dom_1.$$('span', { className: 'coveo-facet-more-icon' }, SVGIcons_1.SVGIcons.arrowDown).el;
-            SVGDom_1.SVGDom.addClassToSVGInContainer(svgContainer, 'coveo-facet-more-icon-svg');
-            more = Dom_1.$$('div', { className: 'coveo-facet-more', tabindex: 0 }, svgContainer).el;
-        }
-        else {
-            more = Dom_1.$$('a', { className: 'coveo-facet-more' }, Strings_1.l('More')).el;
-        }
+        var svgContainer = Dom_1.$$('span', { className: 'coveo-facet-more-icon' }, SVGIcons_1.SVGIcons.arrowDown).el;
+        SVGDom_1.SVGDom.addClassToSVGInContainer(svgContainer, 'coveo-facet-more-icon-svg');
+        more = Dom_1.$$('div', { className: 'coveo-facet-more', tabindex: 0 }, svgContainer).el;
         var moreAction = function () { return _this.handleClickMore(); };
         Dom_1.$$(more).on('click', moreAction);
         Dom_1.$$(more).on('keyup', KeyboardUtils_1.KeyboardUtils.keypressAction(KeyboardUtils_1.KEYBOARD.ENTER, moreAction));
@@ -5462,14 +5242,9 @@ var Facet = (function (_super) {
     Facet.prototype.buildLess = function () {
         var _this = this;
         var less;
-        if (this.searchInterface.isNewDesign()) {
-            var svgContainer = Dom_1.$$('span', { className: 'coveo-facet-less-icon' }, SVGIcons_1.SVGIcons.arrowUp).el;
-            SVGDom_1.SVGDom.addClassToSVGInContainer(svgContainer, 'coveo-facet-less-icon-svg');
-            less = Dom_1.$$('div', { className: 'coveo-facet-less', tabIndex: 0 }, svgContainer).el;
-        }
-        else {
-            less = Dom_1.$$('a', { className: 'coveo-facet-less' }, Strings_1.l('Less')).el;
-        }
+        var svgContainer = Dom_1.$$('span', { className: 'coveo-facet-less-icon' }, SVGIcons_1.SVGIcons.arrowUp).el;
+        SVGDom_1.SVGDom.addClassToSVGInContainer(svgContainer, 'coveo-facet-less-icon-svg');
+        less = Dom_1.$$('div', { className: 'coveo-facet-less', tabIndex: 0 }, svgContainer).el;
         var lessAction = function () { return _this.handleClickLess(); };
         Dom_1.$$(less).on('click', lessAction);
         Dom_1.$$(less).on('keyup', KeyboardUtils_1.KeyboardUtils.keypressAction(KeyboardUtils_1.KEYBOARD.ENTER, lessAction));
@@ -6103,7 +5878,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var FacetQueryController_1 = __webpack_require__(265);
-var FacetUtils_1 = __webpack_require__(36);
+var FacetUtils_1 = __webpack_require__(42);
 var _ = __webpack_require__(1);
 var HierarchicalFacetQueryController = (function (_super) {
     __extends(HierarchicalFacetQueryController, _super);
@@ -6157,7 +5932,7 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var BreadcrumbValueElement_1 = __webpack_require__(402);
+var BreadcrumbValueElement_1 = __webpack_require__(401);
 var _ = __webpack_require__(1);
 var HierarchicalBreadcrumbValueElement = (function (_super) {
     __extends(HierarchicalBreadcrumbValueElement, _super);
@@ -6202,7 +5977,7 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var BreadcrumbValuesList_1 = __webpack_require__(403);
+var BreadcrumbValuesList_1 = __webpack_require__(402);
 var HierarchicalBreadcrumbValueElement_1 = __webpack_require__(622);
 var Dom_1 = __webpack_require__(3);
 var _ = __webpack_require__(1);
@@ -6253,11 +6028,11 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var FacetSearch_1 = __webpack_require__(404);
+var FacetSearch_1 = __webpack_require__(403);
 var FacetSearchParameters_1 = __webpack_require__(241);
 var FacetValues_1 = __webpack_require__(91);
 var Utils_1 = __webpack_require__(5);
-var ExternalModulesShim_1 = __webpack_require__(23);
+var ExternalModulesShim_1 = __webpack_require__(26);
 var _ = __webpack_require__(1);
 var HierarchicalFacetSearch = (function (_super) {
     __extends(HierarchicalFacetSearch, _super);
@@ -6382,7 +6157,7 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var FacetSearchValuesList_1 = __webpack_require__(405);
+var FacetSearchValuesList_1 = __webpack_require__(404);
 var HierarchicalFacetSearchValueElement_1 = __webpack_require__(625);
 var HierarchicalFacetSearchValuesList = (function (_super) {
     __extends(HierarchicalFacetSearchValuesList, _super);
@@ -6449,7 +6224,7 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var FacetValuesList_1 = __webpack_require__(406);
+var FacetValuesList_1 = __webpack_require__(405);
 var _ = __webpack_require__(1);
 var HierarchicalFacetValuesList = (function (_super) {
     __extends(HierarchicalFacetValuesList, _super);
@@ -6542,7 +6317,7 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var OmniboxValueElement_1 = __webpack_require__(407);
+var OmniboxValueElement_1 = __webpack_require__(406);
 var OmniboxHierarchicalValueElement = (function (_super) {
     __extends(OmniboxHierarchicalValueElement, _super);
     function OmniboxHierarchicalValueElement(facet, facetValue, eventArg) {
@@ -6584,7 +6359,7 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var OmniboxValuesList_1 = __webpack_require__(408);
+var OmniboxValuesList_1 = __webpack_require__(407);
 var OmniboxHierarchicalValueElement_1 = __webpack_require__(629);
 var OmniboxHierarchicalValuesList = (function (_super) {
     __extends(OmniboxHierarchicalValuesList, _super);
@@ -6687,7 +6462,7 @@ var ResponsiveComponentsManager = (function () {
     };
     ResponsiveComponentsManager.shouldEnableResponsiveMode = function (root) {
         var searchInterface = Component_1.Component.get(root.el, SearchInterface_1.SearchInterface, true);
-        return searchInterface instanceof SearchInterface_1.SearchInterface && searchInterface.options.enableAutomaticResponsiveMode && searchInterface.isNewDesign();
+        return searchInterface instanceof SearchInterface_1.SearchInterface && searchInterface.options.enableAutomaticResponsiveMode;
     };
     ResponsiveComponentsManager.instantiateResponsiveComponents = function () {
         _.each(this.componentInitializations, function (componentInitialization) {
@@ -6855,7 +6630,7 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var QueryEvents_1 = __webpack_require__(11);
 var Dom_1 = __webpack_require__(3);
-var ValueElement_1 = __webpack_require__(396);
+var ValueElement_1 = __webpack_require__(395);
 var FacetValueElement = (function (_super) {
     __extends(FacetValueElement, _super);
     function FacetValueElement(facet, facetValue, keepDisplayedValueNextTime) {
@@ -6888,7 +6663,7 @@ exports.FacetValueElement = FacetValueElement;
 Object.defineProperty(exports, "__esModule", { value: true });
 var Assert_1 = __webpack_require__(7);
 var Utils_1 = __webpack_require__(5);
-var Globalize = __webpack_require__(25);
+var Globalize = __webpack_require__(24);
 var _ = __webpack_require__(1);
 /**
  * A class which holds information and operation available on a single facet value returned by a {@link IGroupByRequest}.<br/>

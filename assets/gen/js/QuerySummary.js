@@ -25,8 +25,8 @@ var Strings_1 = __webpack_require__(10);
 var AnalyticsActionListMeta_1 = __webpack_require__(12);
 var Initialization_1 = __webpack_require__(2);
 var QueryStateModel_1 = __webpack_require__(14);
-var Globalize = __webpack_require__(25);
-var QuerySummaryEvents_1 = __webpack_require__(412);
+var Globalize = __webpack_require__(24);
+var QuerySummaryEvents_1 = __webpack_require__(411);
 var _ = __webpack_require__(1);
 var GlobalExports_1 = __webpack_require__(4);
 __webpack_require__(589);
@@ -179,7 +179,7 @@ Initialization_1.Initialization.registerAutoCreateComponent(QuerySummary);
 
 /***/ }),
 
-/***/ 412:
+/***/ 411:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";

@@ -18,8 +18,8 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var Component_1 = __webpack_require__(8);
 var ComponentOptions_1 = __webpack_require__(9);
-var ComponentOptionsModel_1 = __webpack_require__(26);
-var LocalStorageUtils_1 = __webpack_require__(37);
+var ComponentOptionsModel_1 = __webpack_require__(25);
+var LocalStorageUtils_1 = __webpack_require__(36);
 var PreferencesPanelEvents_1 = __webpack_require__(67);
 var AnalyticsActionListMeta_1 = __webpack_require__(12);
 var Initialization_1 = __webpack_require__(2);
@@ -28,7 +28,7 @@ var Strings_1 = __webpack_require__(10);
 var Dom_1 = __webpack_require__(3);
 var _ = __webpack_require__(1);
 var GlobalExports_1 = __webpack_require__(4);
-var Defer_1 = __webpack_require__(27);
+var Defer_1 = __webpack_require__(28);
 var Checkbox_1 = __webpack_require__(61);
 var RadioButton_1 = __webpack_require__(82);
 var FormGroup_1 = __webpack_require__(99);
@@ -269,14 +269,14 @@ Initialization_1.Initialization.registerAutoCreateComponent(ResultsPreferences);
 
 /***/ }),
 
-/***/ 476:
+/***/ 475:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
 
-/***/ 477:
+/***/ 476:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
@@ -290,7 +290,7 @@ Initialization_1.Initialization.registerAutoCreateComponent(ResultsPreferences);
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var Dom_1 = __webpack_require__(3);
-__webpack_require__(477);
+__webpack_require__(476);
 var GlobalExports_1 = __webpack_require__(4);
 /**
  * A radio button widget with standard styling.
@@ -404,7 +404,7 @@ exports.RadioButton = RadioButton;
 Object.defineProperty(exports, "__esModule", { value: true });
 var Dom_1 = __webpack_require__(3);
 var _ = __webpack_require__(1);
-__webpack_require__(476);
+__webpack_require__(475);
 var GlobalExports_1 = __webpack_require__(4);
 /**
  * A simple `fieldset` HTMLElement containing multiple form widgets.

@@ -1,4 +1,4 @@
-webpackJsonpCoveo__temporary([38],{
+webpackJsonpCoveo__temporary([35],{
 
 /***/ 300:
 /***/ (function(module, exports, __webpack_require__) {
@@ -16,7 +16,7 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var SuggestionForOmnibox_1 = __webpack_require__(413);
+var SuggestionForOmnibox_1 = __webpack_require__(412);
 var Component_1 = __webpack_require__(8);
 var ComponentOptions_1 = __webpack_require__(9);
 var Assert_1 = __webpack_require__(7);
@@ -25,10 +25,10 @@ var OmniboxEvents_1 = __webpack_require__(33);
 var QueryStateModel_1 = __webpack_require__(14);
 var Initialization_1 = __webpack_require__(2);
 var AnalyticsActionListMeta_1 = __webpack_require__(12);
-var Strings_1 = __webpack_require__(10);
 var Dom_1 = __webpack_require__(3);
 var _ = __webpack_require__(1);
 var GlobalExports_1 = __webpack_require__(4);
+__webpack_require__(579);
 /**
  * The `FieldSuggestions` component provides query suggestions based on a particular facet field. For example, you could
  * use this component to provide auto-complete suggestions while the end user is typing the title of an item.
@@ -63,7 +63,7 @@ var FieldSuggestions = (function (_super) {
             return rowElement.el.outerHTML;
         };
         var suggestionStructure;
-        if (_this.searchInterface.isNewDesign()) {
+        if (_this.options.headerTitle == null) {
             suggestionStructure = {
                 row: rowTemplate
             };
@@ -214,13 +214,12 @@ FieldSuggestions.options = {
      */
     omniboxZIndex: ComponentOptions_1.ComponentOptions.buildNumberOption({ defaultValue: 51, min: 0 }),
     /**
-     * Specifies the title of the result suggestions group in the [`Omnibox`]{@link Omnibox} component. This option is
-     * not available when using the default Lightning Friendly Theme (see
-     * [Lightning Friendly Theme](https://developers.coveo.com/x/Y4EAAg)).
+     * Specifies the title of the result suggestions group in the [`Omnibox`]{@link Omnibox} component.
+     * If not provided, the component will simply not output any title.
      *
-     * Default value is the localized string for `SuggestedResults`.
+     * Default value is `null`.
      */
-    headerTitle: ComponentOptions_1.ComponentOptions.buildLocalizedStringOption({ defaultValue: Strings_1.l('SuggestedResults') }),
+    headerTitle: ComponentOptions_1.ComponentOptions.buildLocalizedStringOption(),
     /**
      * Specifies the number of suggestions to render in the [`Omnibox`]{@link Omnibox}.
      *
@@ -295,7 +294,7 @@ Initialization_1.Initialization.registerAutoCreateComponent(FieldSuggestions);
 
 /***/ }),
 
-/***/ 413:
+/***/ 412:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -355,6 +354,13 @@ var SuggestionForOmnibox = (function () {
 }());
 exports.SuggestionForOmnibox = SuggestionForOmnibox;
 
+
+/***/ }),
+
+/***/ 579:
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
 
 /***/ })
 

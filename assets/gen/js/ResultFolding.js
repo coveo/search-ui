@@ -317,7 +317,7 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var Template_1 = __webpack_require__(24);
+var Template_1 = __webpack_require__(23);
 var DefaultFoldingTemplate = (function (_super) {
     __extends(DefaultFoldingTemplate, _super);
     function DefaultFoldingTemplate() {

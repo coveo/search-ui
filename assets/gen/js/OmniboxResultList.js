@@ -16,7 +16,7 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var TableTemplate_1 = __webpack_require__(411);
+var TableTemplate_1 = __webpack_require__(410);
 var DefaultResultTemplate_1 = __webpack_require__(86);
 var Component_1 = __webpack_require__(8);
 var ComponentOptions_1 = __webpack_require__(9);
@@ -28,24 +28,24 @@ var QueryUtils_1 = __webpack_require__(17);
 var Dom_1 = __webpack_require__(3);
 var AnalyticsActionListMeta_1 = __webpack_require__(12);
 var Initialization_1 = __webpack_require__(2);
-var Defer_1 = __webpack_require__(27);
-var DeviceUtils_1 = __webpack_require__(18);
+var Defer_1 = __webpack_require__(28);
+var DeviceUtils_1 = __webpack_require__(19);
 var ResultListEvents_1 = __webpack_require__(32);
 var ResultLayoutEvents_1 = __webpack_require__(103);
 var Utils_1 = __webpack_require__(5);
 var DomUtils_1 = __webpack_require__(45);
-var DefaultRecommendationTemplate_1 = __webpack_require__(410);
+var DefaultRecommendationTemplate_1 = __webpack_require__(409);
 var TemplateList_1 = __webpack_require__(102);
 var TemplateCache_1 = __webpack_require__(49);
-var ResponsiveDefaultResultTemplate_1 = __webpack_require__(489);
+var ResponsiveDefaultResultTemplate_1 = __webpack_require__(488);
 var ResultListRenderer_1 = __webpack_require__(266);
-var ResultListTableRenderer_1 = __webpack_require__(491);
-var ResultListCardRenderer_1 = __webpack_require__(490);
+var ResultListTableRenderer_1 = __webpack_require__(490);
+var ResultListCardRenderer_1 = __webpack_require__(489);
 var _ = __webpack_require__(1);
 var GlobalExports_1 = __webpack_require__(4);
-__webpack_require__(482);
 __webpack_require__(481);
 __webpack_require__(480);
+__webpack_require__(479);
 var InitializationPlaceholder_1 = __webpack_require__(252);
 var RegisteredNamedMethods_1 = __webpack_require__(46);
 /**
@@ -107,11 +107,9 @@ var ResultList = (function (_super) {
         Assert_1.Assert.exists(_this.options.resultContainer);
         _this.initWaitAnimationContainer();
         Assert_1.Assert.exists(_this.options.waitAnimationContainer);
-        if (_this.searchInterface.isNewDesign()) {
-            _this.setupTemplatesVersusLayouts();
-            _this.setupRenderer();
-            Dom_1.$$(_this.root).on(ResultLayoutEvents_1.ResultLayoutEvents.populateResultLayout, function (e, args) { return args.layouts.push(_this.options.layout); });
-        }
+        _this.setupTemplatesVersusLayouts();
+        Dom_1.$$(_this.root).on(ResultLayoutEvents_1.ResultLayoutEvents.populateResultLayout, function (e, args) { return args.layouts.push(_this.options.layout); });
+        _this.setupRenderer();
         return _this;
     }
     ResultList.getDefaultTemplate = function (e) {
@@ -226,6 +224,7 @@ var ResultList = (function (_super) {
             if (resultElement != null) {
                 Component_1.Component.bindResultToElement(resultElement, result);
             }
+            _this.currentlyDisplayedResults.push(result);
             return _this.autoCreateComponentsInsideResult(resultElement, result).initResult.then(function () {
                 return resultElement;
             });
@@ -351,7 +350,6 @@ var ResultList = (function (_super) {
         this.currentlyDisplayedResults = [];
         this.buildResults(data.results).then(function (elements) {
             _this.renderResults(elements);
-            _this.currentlyDisplayedResults = results.results;
             _this.reachedTheEndOfResults = false;
             _this.showOrHideElementsDependingOnState(true, _this.currentlyDisplayedResults.length != 0);
             if (DeviceUtils_1.DeviceUtils.isMobileDevice() && _this.options.mobileScrollContainer != undefined) {
@@ -990,7 +988,7 @@ Initialization_1.Initialization.registerAutoCreateComponent(OmniboxResultList);
 
 /***/ }),
 
-/***/ 410:
+/***/ 409:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1006,7 +1004,7 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var Template_1 = __webpack_require__(24);
+var Template_1 = __webpack_require__(23);
 var DefaultRecommendationTemplate = (function (_super) {
     __extends(DefaultRecommendationTemplate, _super);
     function DefaultRecommendationTemplate() {
@@ -1032,7 +1030,7 @@ exports.DefaultRecommendationTemplate = DefaultRecommendationTemplate;
 
 /***/ }),
 
-/***/ 411:
+/***/ 410:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1048,7 +1046,7 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var Template_1 = __webpack_require__(24);
+var Template_1 = __webpack_require__(23);
 var TemplateList_1 = __webpack_require__(102);
 var _ = __webpack_require__(1);
 var TableTemplate = (function (_super) {
@@ -1097,6 +1095,13 @@ exports.TableTemplate = TableTemplate;
 
 /***/ }),
 
+/***/ 479:
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+
 /***/ 480:
 /***/ (function(module, exports) {
 
@@ -1111,14 +1116,7 @@ exports.TableTemplate = TableTemplate;
 
 /***/ }),
 
-/***/ 482:
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-
-/***/ 489:
+/***/ 488:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1190,7 +1188,7 @@ exports.ResponsiveDefaultResultTemplate = ResponsiveDefaultResultTemplate;
 
 /***/ }),
 
-/***/ 490:
+/***/ 489:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1236,7 +1234,7 @@ exports.ResultListCardRenderer = ResultListCardRenderer;
 
 /***/ }),
 
-/***/ 491:
+/***/ 490:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1288,7 +1286,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var ResultListRenderer_1 = __webpack_require__(266);
-var TableTemplate_1 = __webpack_require__(411);
+var TableTemplate_1 = __webpack_require__(410);
 var Dom_1 = __webpack_require__(3);
 var _ = __webpack_require__(1);
 var ResultListTableRenderer = (function (_super) {
@@ -1437,7 +1435,7 @@ var ResponsiveComponentsManager = (function () {
     };
     ResponsiveComponentsManager.shouldEnableResponsiveMode = function (root) {
         var searchInterface = Component_1.Component.get(root.el, SearchInterface_1.SearchInterface, true);
-        return searchInterface instanceof SearchInterface_1.SearchInterface && searchInterface.options.enableAutomaticResponsiveMode && searchInterface.isNewDesign();
+        return searchInterface instanceof SearchInterface_1.SearchInterface && searchInterface.options.enableAutomaticResponsiveMode;
     };
     ResponsiveComponentsManager.instantiateResponsiveComponents = function () {
         _.each(this.componentInitializations, function (componentInitialization) {

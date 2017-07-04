@@ -26,7 +26,7 @@ var QueryStateModel_1 = __webpack_require__(14);
 var Utils_1 = __webpack_require__(5);
 var Initialization_1 = __webpack_require__(2);
 var QueryUtils_1 = __webpack_require__(17);
-var Globalize = __webpack_require__(25);
+var Globalize = __webpack_require__(24);
 var _ = __webpack_require__(1);
 var GlobalExports_1 = __webpack_require__(4);
 __webpack_require__(583);
@@ -931,9 +931,9 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var Template_1 = __webpack_require__(24);
+var Template_1 = __webpack_require__(23);
 var Dom_1 = __webpack_require__(3);
-var Globalize = __webpack_require__(25);
+var Globalize = __webpack_require__(24);
 var DefaultMatrixResultPreviewTemplate = (function (_super) {
     __extends(DefaultMatrixResultPreviewTemplate, _super);
     function DefaultMatrixResultPreviewTemplate(computedField, format) {

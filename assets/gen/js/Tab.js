@@ -24,7 +24,7 @@ var QueryEvents_1 = __webpack_require__(11);
 var InitializationEvents_1 = __webpack_require__(15);
 var QueryStateModel_1 = __webpack_require__(14);
 var AnalyticsActionListMeta_1 = __webpack_require__(12);
-var SearchEndpoint_1 = __webpack_require__(38);
+var SearchEndpoint_1 = __webpack_require__(37);
 var Initialization_1 = __webpack_require__(2);
 var Utils_1 = __webpack_require__(5);
 var Assert_1 = __webpack_require__(7);
@@ -466,7 +466,7 @@ var Tab_1 = __webpack_require__(256);
 var ResponsiveComponentsManager_1 = __webpack_require__(78);
 var ResponsiveComponentsUtils_1 = __webpack_require__(89);
 var Strings_1 = __webpack_require__(10);
-var ResponsiveComponents_1 = __webpack_require__(41);
+var ResponsiveComponents_1 = __webpack_require__(40);
 var _ = __webpack_require__(1);
 __webpack_require__(593);
 var ResponsiveTabs = (function () {
@@ -877,7 +877,7 @@ var ResponsiveComponentsManager = (function () {
     };
     ResponsiveComponentsManager.shouldEnableResponsiveMode = function (root) {
         var searchInterface = Component_1.Component.get(root.el, SearchInterface_1.SearchInterface, true);
-        return searchInterface instanceof SearchInterface_1.SearchInterface && searchInterface.options.enableAutomaticResponsiveMode && searchInterface.isNewDesign();
+        return searchInterface instanceof SearchInterface_1.SearchInterface && searchInterface.options.enableAutomaticResponsiveMode;
     };
     ResponsiveComponentsManager.instantiateResponsiveComponents = function () {
         _.each(this.componentInitializations, function (componentInitialization) {

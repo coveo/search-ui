@@ -16,7 +16,7 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var SuggestionForOmnibox_1 = __webpack_require__(413);
+var SuggestionForOmnibox_1 = __webpack_require__(412);
 var ComponentOptions_1 = __webpack_require__(9);
 var Component_1 = __webpack_require__(8);
 var Assert_1 = __webpack_require__(7);
@@ -80,35 +80,9 @@ var AnalyticsSuggestions = (function (_super) {
             return rowElement.el.outerHTML;
         };
         _this.options.onSelect = _this.options.onSelect || _this.onRowSelection;
-        var suggestionStructure;
-        if (_this.searchInterface.isNewDesign()) {
-            suggestionStructure = {
-                row: rowTemplate
-            };
-        }
-        else {
-            var headerTemplate = function () {
-                var headerElement = Dom_1.$$('div', {
-                    className: 'coveo-top-analytics-suggestion-header'
-                });
-                var iconElement = Dom_1.$$('span', {
-                    className: 'coveo-icon-top-analytics'
-                });
-                var captionElement = Dom_1.$$('span', {
-                    className: 'coveo-caption'
-                });
-                if (_this.options.headerTitle) {
-                    captionElement.text(_this.options.headerTitle);
-                }
-                headerElement.append(iconElement.el);
-                headerElement.append(captionElement.el);
-                return headerElement.el.outerHTML;
-            };
-            suggestionStructure = {
-                header: { template: headerTemplate, title: _this.options.headerTitle },
-                row: rowTemplate
-            };
-        }
+        var suggestionStructure = {
+            row: rowTemplate
+        };
         _this.suggestionForOmnibox = new SuggestionForOmnibox_1.SuggestionForOmnibox(suggestionStructure, function (value, args) {
             _this.options.onSelect.call(_this, value, args);
         }, function (value, args) {
@@ -274,7 +248,7 @@ Initialization_1.Initialization.registerAutoCreateComponent(AnalyticsSuggestions
 
 /***/ }),
 
-/***/ 413:
+/***/ 412:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
