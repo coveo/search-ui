@@ -33,6 +33,9 @@
     overflow: hidden;
     text-overflow: ellipsis;
     padding: 0px;
+    &:hover {
+      text-decoration: none;
+    }
   }
 }
 
