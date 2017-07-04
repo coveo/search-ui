@@ -10,9 +10,7 @@ export interface ISimpleFilterOptions {
   field: IFieldOption;
   maximumNumberOfValues: number;
 }
-/**
- * This class is used to compute values through a groupByRequest to be used as filters for the SimpleFilter component.
- */
+
 export class SimpleFilterValues {
 
   static options: ISimpleFilterOptions = {
@@ -23,11 +21,6 @@ export class SimpleFilterValues {
   private computedValues: string[] = [];
   private position: number;
 
-  /**
-   * Creates a new SimpleFilterGroupBy
-   * @param simplefilter
-   * @param options
-   */
   constructor(public simplefilter: SimpleFilter, public options: ISimpleFilterOptions) {
     this.options.field = simplefilter.options.field;
     this.options.maximumNumberOfValues = simplefilter.options.maximumNumberOfValues;

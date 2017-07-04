@@ -51,8 +51,8 @@ export function SimpleFilterTest() {
         }
       });
 
-      test.cmp.toggle();
-      test2.cmp.toggle();
+      test.cmp.toggleContainer();
+      test2.cmp.toggleContainer();
     });
 
     afterEach(() => {
@@ -80,22 +80,22 @@ export function SimpleFilterTest() {
 
     it('should expand the component correctly', () => {
       test.cmp.openContainer();
-      expect($$(test.cmp.checkboxContainer).hasClass('coveo-simplefilter-checkbox-container-expanded')).toBe(true);
+      expect($$(test.cmp.getCheckboxContainer()).hasClass('coveo-simplefilter-checkbox-container-expanded')).toBe(true);
 
     });
 
     it('should collapse the component correctly', () => {
       test.cmp.closeContainer();
-      expect($$(test.cmp.checkboxContainer).hasClass('coveo-simplefilter-checkbox-container-expanded')).toBe(false);
+      expect($$(test.cmp.getCheckboxContainer()).hasClass('coveo-simplefilter-checkbox-container-expanded')).toBe(false);
     });
 
     it('should use the correct selected values', () => {
-      test.cmp.checkboxes[0].checkbox.select();
+      test.cmp.selectCheckbox('foo');
       expect(test.cmp.getSelectedCaptions()).toEqual(['foo']);
     });
 
     it('should trigger a query when a checkbox is checked', () => {
-      test.cmp.checkboxes[0].checkbox.toggle();
+      test.cmp.toggleCheckbox('foo');
       expect(test.env.queryController.executeQuery).toHaveBeenCalled();
     });
 
@@ -109,15 +109,15 @@ export function SimpleFilterTest() {
     });
 
     it('should set the selected values in the query', () => {
-      test.cmp.checkboxes[0].checkbox.select();
+      test.cmp.selectCheckbox('foo');
       let simulation = Simulate.query(test.env);
       expect(simulation.queryBuilder.advancedExpression.build()).toEqual('@field==foo');
     });
 
-    it('getDisplayedTitle should return the right title depending on values selected', () => {
-      test.cmp.checkboxes[0].checkbox.select();
+    it('should set the right title depending on values selected', () => {
+      test.cmp.selectCheckbox('foo');
       expect($$($$(test.cmp.root).find('.coveo-simplefilter-selecttext')).text()).toEqual('foo');
-      test.cmp.checkboxes[1].checkbox.select();
+      test.cmp.selectCheckbox('bar');
       expect($$($$(test.cmp.root).find('.coveo-simplefilter-selecttext')).text()).toEqual(('FooTitleBar'));
     });
 
@@ -146,7 +146,7 @@ export function SimpleFilterTest() {
     });
 
     it('should populate the breadcrumb when values are selected', () => {
-      test.cmp.checkboxes[1].checkbox.select();
+      test.cmp.selectCheckbox('bar');
 
       let args: IPopulateBreadcrumbEventArgs = {
         breadcrumbs: []
@@ -156,9 +156,8 @@ export function SimpleFilterTest() {
     });
 
     it('should reset checkboxes when clearBreadcrumb is triggered', () => {
-      test.cmp.checkboxes[0].checkbox.select();
-      test.cmp.checkboxes[1].checkbox.select();
-
+      test.cmp.selectCheckbox('foo');
+      test.cmp.selectCheckbox('bar');
       let args: IPopulateBreadcrumbEventArgs = {
         breadcrumbs: []
       };
@@ -174,9 +173,8 @@ export function SimpleFilterTest() {
       Simulate.query(test3.env, {
         results: results
       });
-      test3.cmp.checkboxes[1].checkbox.select();
+      test3.cmp.selectCheckbox('foo1');
       Simulate.query(test3.env);
-      expect(test3.cmp.checkboxes.length).toEqual(1);
       expect(test3.cmp.getSelectedCaptions()[0]).toEqual('foo1');
     });
   });
