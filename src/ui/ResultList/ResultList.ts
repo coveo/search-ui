@@ -305,11 +305,9 @@ export class ResultList extends Component {
     this.initWaitAnimationContainer();
     Assert.exists(this.options.waitAnimationContainer);
 
-    if (this.searchInterface.isNewDesign()) {
-      this.setupTemplatesVersusLayouts();
-      this.setupRenderer();
-      $$(this.root).on(ResultLayoutEvents.populateResultLayout, (e, args) => args.layouts.push(this.options.layout));
-    }
+    this.setupTemplatesVersusLayouts();
+    $$(this.root).on(ResultLayoutEvents.populateResultLayout, (e, args) => args.layouts.push(this.options.layout));
+    this.setupRenderer();
   }
 
   /**
@@ -409,6 +407,7 @@ export class ResultList extends Component {
       if (resultElement != null) {
         Component.bindResultToElement(resultElement, result);
       }
+      this.currentlyDisplayedResults.push(result);
       return this.autoCreateComponentsInsideResult(resultElement, result).initResult.then(() => {
         return resultElement;
       });
@@ -547,7 +546,6 @@ export class ResultList extends Component {
     this.currentlyDisplayedResults = [];
     this.buildResults(data.results).then((elements: HTMLElement[]) => {
       this.renderResults(elements);
-      this.currentlyDisplayedResults = results.results;
       this.reachedTheEndOfResults = false;
       this.showOrHideElementsDependingOnState(true, this.currentlyDisplayedResults.length != 0);
 

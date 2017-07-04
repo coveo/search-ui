@@ -101,15 +101,10 @@ export class Settings extends Component {
   }
 
   private init() {
-    if (this.searchInterface.isNewDesign()) {
-      var square = $$('span', { className: 'coveo-settings-square' }).el;
-      var squares = $$('span', { className: 'coveo-settings-squares' }).el;
-      _.times(3, () => squares.appendChild(square.cloneNode()));
-      this.element.appendChild(squares);
-    } else {
-      var icon = $$('span', { className: 'coveo-settings-icon' }).el;
-      this.element.appendChild(icon);
-    }
+    var square = $$('span', { className: 'coveo-settings-square' }).el;
+    var squares = $$('span', { className: 'coveo-settings-squares' }).el;
+    _.times(3, () => squares.appendChild(square.cloneNode()));
+    this.element.appendChild(squares);
 
     $$(this.element).on('click', () => {
       if (this.isOpened) {

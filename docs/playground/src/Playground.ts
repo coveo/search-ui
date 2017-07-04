@@ -1,7 +1,5 @@
 import {$$, Dom} from "../../../src/utils/Dom";
-import {Component} from "../../../src/ui/Base/Component";
 import {SearchEndpoint} from "../../../src/rest/SearchEndpoint";
-import { executeQuery } from "../../../src/ui/Base/RegisteredNamedMethods";
 import {IComponentPlaygroundConfiguration, PlaygroundConfiguration} from "./PlaygroundConfiguration";
 import {ResultList} from "../../../src/ui/ResultList/ResultList";
 import {QueryEvents, IBuildingQueryEventArgs} from "../../../src/events/QueryEvents";
@@ -97,7 +95,7 @@ export class Playground {
 
   public getSearchInterface(): Dom {
     let searchInterface = $$('div', {
-      className: Component.computeCssClassName(Coveo.SearchInterface),
+      className: 'CoveoSearchInterface',
       'data-design': 'new'
     });
     let configuration = this.getConfiguration();
@@ -129,7 +127,7 @@ export class Playground {
   }
 
   public insertElementIntoResultList(searchInterface: Dom) {
-    let resultListElement = $$('div', {className: Component.computeCssClassName(ResultList)});
+    let resultListElement = $$('div', {className: 'CoveoResultList'});
     let scriptElement = $$('script', {
       type: 'text/underscore',
       className: 'result-template'
@@ -149,7 +147,7 @@ export class Playground {
     if (this.getConfiguration().element) {
       return this.getConfiguration().element;
     }
-    return $$('div', {className: Component.computeCssClassName(Coveo[this.getComponentName()])});
+    return $$('div', {className: `Coveo${Coveo[this.getComponentName()].ID}`});
 
   }
 
@@ -172,6 +170,6 @@ export class Playground {
 
       $$(searchInterface).prepend(messageAboutQuery.el);
     }
-    executeQuery(searchInterface);
+    Coveo['executeQuery'](searchInterface);
   }
 }

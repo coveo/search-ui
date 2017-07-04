@@ -22,7 +22,6 @@ export interface IFacetHeaderOptions {
   settingsKlass?: IFacetSettingsKlass;
   sortKlass?: IFacetSortKlass;
   availableSorts?: string[];
-  isNewDesign: boolean;
 }
 
 export class FacetHeader {
@@ -42,60 +41,6 @@ export class FacetHeader {
   }
 
   public build(): HTMLElement {
-    if (this.options.isNewDesign) {
-      return this.buildNewDesign();
-    } else {
-      return this.buildOldDesign();
-    }
-  }
-
-
-  public switchToAnd(): void {
-    if (this.options.facet) {
-      this.options.facet.options.useAnd = true;
-      this.rebuildOperatorToggle();
-      this.updateOperatorQueryStateModel();
-    }
-  }
-
-  public switchToOr(): void {
-    if (this.options.facet) {
-      this.options.facet.options.useAnd = false;
-      this.rebuildOperatorToggle();
-      this.updateOperatorQueryStateModel();
-    }
-  }
-
-  public collapseFacet(): void {
-    if (this.collapseElement && this.expandElement) {
-      $$(this.collapseElement).hide();
-      $$(this.expandElement).show();
-    }
-    $$(this.options.facetElement).addClass('coveo-facet-collapsed');
-  }
-
-  public expandFacet(): void {
-    if (this.collapseElement && this.expandElement) {
-      $$(this.expandElement).hide();
-      $$(this.collapseElement).show();
-    }
-    $$(this.options.facetElement).removeClass('coveo-facet-collapsed');
-    if (this.options.facet) {
-      FacetUtils.clipCaptionsToAvoidOverflowingTheirContainer(this.options.facet);
-    }
-  }
-
-  public updateOperatorQueryStateModel(): void {
-    if (this.options.facet && this.options.facet.options.enableTogglingOperator) {
-      let valueToSet = '';
-      if (this.options.facet.getSelectedValues().length != 0 || this.options.facet.getExcludedValues().length != 0) {
-        valueToSet = this.options.facet.options.useAnd ? 'and' : 'or';
-      }
-      this.options.facet.queryStateModel.set(this.options.facet.operatorAttributeId, valueToSet);
-    }
-  }
-
-  private buildNewDesign() {
     let titleSection = $$('div', {
       className: 'coveo-facet-header-title-section'
     });
@@ -132,36 +77,47 @@ export class FacetHeader {
     return this.element;
   }
 
-  private buildOldDesign() {
-    this.element.appendChild(this.buildIcon());
-    this.element.appendChild(this.buildWaitAnimation());
 
-    if (this.options.settingsKlass) {
-      this.sort = this.settings = new this.options.settingsKlass(this.options.availableSorts, this.options.facet);
-      this.element.appendChild(this.settings.build());
-    } else if (this.options.sortKlass) {
-      this.sort = new this.options.sortKlass(this.options.availableSorts, this.options.facet);
-    }
-
-    if (this.options.enableCollapseElement) {
-      this.collapseElement = this.buildCollapse();
-      this.element.appendChild(this.collapseElement);
-
-      this.expandElement = this.buildExpand();
-      this.element.appendChild(this.expandElement);
-    }
-
+  public switchToAnd(): void {
     if (this.options.facet) {
-      this.operatorElement = this.buildOperatorToggle();
-      this.element.appendChild(this.operatorElement);
-      $$(this.operatorElement).toggle(this.options.facet.options.enableTogglingOperator);
+      this.options.facet.options.useAnd = true;
+      this.rebuildOperatorToggle();
+      this.updateOperatorQueryStateModel();
     }
+  }
 
-    this.eraserElement = this.buildEraser();
-    this.element.appendChild(this.eraserElement);
-    this.element.appendChild(this.buildTitle());
+  public switchToOr(): void {
+    if (this.options.facet) {
+      this.options.facet.options.useAnd = false;
+      this.rebuildOperatorToggle();
+      this.updateOperatorQueryStateModel();
+    }
+  }
 
-    return this.element;
+  public collapseFacet(): void {
+    if (this.collapseElement && this.expandElement) {
+      $$(this.collapseElement).hide();
+      $$(this.expandElement).show();
+    }
+    $$(this.options.facetElement).addClass('coveo-facet-collapsed');
+  }
+
+  public expandFacet(): void {
+    if (this.collapseElement && this.expandElement) {
+      $$(this.expandElement).hide();
+      $$(this.collapseElement).show();
+    }
+    $$(this.options.facetElement).removeClass('coveo-facet-collapsed');
+  }
+
+  public updateOperatorQueryStateModel(): void {
+    if (this.options.facet && this.options.facet.options.enableTogglingOperator) {
+      let valueToSet = '';
+      if (this.options.facet.getSelectedValues().length != 0 || this.options.facet.getExcludedValues().length != 0) {
+        valueToSet = this.options.facet.options.useAnd ? 'and' : 'or';
+      }
+      this.options.facet.queryStateModel.set(this.options.facet.operatorAttributeId, valueToSet);
+    }
   }
 
   private rebuildOperatorToggle(): void {
@@ -187,11 +143,7 @@ export class FacetHeader {
   private buildWaitAnimation(): HTMLElement {
     this.waitElement = $$('div', { className: 'coveo-facet-header-wait-animation' }, SVGIcons.loading).el;
     SVGDom.addClassToSVGInContainer(this.waitElement, 'coveo-facet-header-wait-animation-svg');
-    if (this.options.isNewDesign) {
-      this.waitElement.style.visibility = 'hidden';
-    } else {
-      $$(this.waitElement).hide();
-    }
+    this.waitElement.style.visibility = 'hidden';
     return this.waitElement;
   }
 

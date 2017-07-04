@@ -32,9 +32,9 @@ gulp.task('dev', ['setup', 'deleteCssFile'], (done)=> {
     contentBase: 'bin/',
     publicPath: 'http://localhost:8080/js/',
     disableHostCheck: true,
-    headers: {
+    /*headers: {
       'Content-Security-Policy': "script-src 'self' code.jquery.com static.cloud.coveo.com 'unsafe-inline'"
-    },
+    },*/
     stats: {
       colors: true,
       publicPath: true
@@ -47,9 +47,9 @@ gulp.task('dev', ['setup', 'deleteCssFile'], (done)=> {
 
 gulp.task('deleteCssFile', (done) => {
   // Rely on dynamically loaded style.
-  //fs.unlink('./bin/css/CoveoFullSearchNewDesign.css', () => {
-    done();
- // });
+  // fs.unlink('./bin/css/CoveoFullSearchNewDesign.css', () => {
+      done();
+  // });
 })
 
 gulp.task('devTest', ['setupTests'], function (done) {

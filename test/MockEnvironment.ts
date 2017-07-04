@@ -68,11 +68,6 @@ export class MockEnvironmentBuilder {
     return this;
   }
 
-  public withOldDesign() {
-    this.searchInterface.isNewDesign = () => false;
-    return this;
-  }
-
   public withCollaborativeRating() {
     this.searchInterface.options.enableCollaborativeRating = true;
     return this;
@@ -119,11 +114,6 @@ export class MockEnvironmentBuilder {
     this.queryController.getEndpoint = () => {
       return this.searchEndpoint;
     };
-
-    if (Utils.isNullOrUndefined(this.searchInterface.isNewDesign())) {
-      this.searchInterface.isNewDesign = () => true;
-    }
-
 
     if (this.result) {
       Component.bindResultToElement(this.element, this.result);
