@@ -565,21 +565,6 @@ export function ResultListTest() {
           });
         });
 
-        it('should add 3 empty div at the end of the results when it\'s a card template and infinite scroll is enabled', (done) => {
-          test = Mock.optionsComponentSetup<ResultList, IResultListOptions>(ResultList, {
-            layout: 'card',
-            enableInfiniteScroll: true
-          });
-          Simulate.query(test.env);
-          Defer.defer(() => {
-            const container = test.cmp.options.resultContainer;
-            expect(container.children.item(container.children.length - 1).innerHTML).not.toBe('');
-            expect(container.children.item(container.children.length - 2).innerHTML).not.toBe('');
-            expect(container.children.item(container.children.length - 3).innerHTML).not.toBe('');
-            done();
-          });
-        });
-
         it('should react to change layout event', () => {
           test = Mock.optionsComponentSetup<ResultList, IResultListOptions>(ResultList, {
             layout: 'card'
