@@ -7,12 +7,10 @@ import { FakeResults } from '../Fake';
 
 export function SimpleFilterTest() {
   describe('SimpleFilter', () => {
-    let test: Mock.IBasicComponentSetup<SimpleFilter>;
-    let test2: Mock.IBasicComponentSetup<SimpleFilter>;
-    let test3: Mock.IBasicComponentSetup<SimpleFilter>;
+    let aSimpleFilter: Mock.IBasicComponentSetup<SimpleFilter>;
 
     beforeEach(() => {
-      test = Mock.optionsComponentSetup<SimpleFilter, ISimpleFilterOptions>(SimpleFilter, <ISimpleFilterOptions>{
+      aSimpleFilter = Mock.optionsComponentSetup<SimpleFilter, ISimpleFilterOptions>(SimpleFilter, <ISimpleFilterOptions>{
         field: '@field',
         maximumNumberOfValues: 5,
         title: 'FooTitleBar',
@@ -25,82 +23,56 @@ export function SimpleFilterTest() {
         }
       });
 
-      test2 = Mock.optionsComponentSetup<SimpleFilter, ISimpleFilterOptions>(SimpleFilter, <ISimpleFilterOptions>{
-        field: '@field',
-        maximumNumberOfValues: 5,
-        title: 'FooTitleBar',
-        values: ['foo', 'bar'],
-        valueCaption: {
-          'gmailmessage': 'Gmail Message',
-          'lithiummessage': 'Lithium Message',
-          'youtubevideo': 'Youtube Video',
-          'message': 'Message'
-        }
-      });
-
-      test3 = Mock.optionsComponentSetup<SimpleFilter, ISimpleFilterOptions>(SimpleFilter, <ISimpleFilterOptions>{
-        field: '@field',
-        maximumNumberOfValues: 5,
-        title: 'FooTitleBar',
-        values: undefined,
-        valueCaption: {
-          'gmailmessage': 'Gmail Message',
-          'lithiummessage': 'Lithium Message',
-          'youtubevideo': 'Youtube Video',
-          'message': 'Message'
-        }
-      });
-
-      test.cmp.toggleContainer();
-      test2.cmp.toggleContainer();
+      aSimpleFilter.cmp.toggleContainer()
     });
 
     afterEach(() => {
-      test = null;
+      aSimpleFilter = null;
     });
 
     it('should set the title correctly', () => {
-      expect(test.cmp.options.title).toBe('FooTitleBar');
+      expect(aSimpleFilter.cmp.options.title).toBe('FooTitleBar');
     });
 
     it('should set the field correctly', () => {
-      expect(test.cmp.options.field).toBe('@field');
+      expect(aSimpleFilter.cmp.options.field).toBe('@field');
     });
 
     it('should allow to getValueCaption', () => {
-      test.cmp.options.field = '@filetype';
-      expect(test.cmp.getValueCaption('gmailmessage')).toBe('Gmail Message');
+      aSimpleFilter.cmp.options.field = '@filetype';
+      expect(aSimpleFilter.cmp.getValueCaption('gmailmessage')).toBe('Gmail Message');
 
     });
 
     it('should set the values correctly', () => {
-      expect(test.cmp.options.values).toEqual(['foo', 'bar']);
+      expect(aSimpleFilter.cmp.options.values).toEqual(['foo', 'bar']);
 
     });
 
     it('should expand the component correctly', () => {
-      test.cmp.openContainer();
-      expect($$(test.cmp.getCheckboxContainer()).hasClass('coveo-simplefilter-checkbox-container-expanded')).toBe(true);
+      aSimpleFilter.cmp.openContainer();
+      expect($$(aSimpleFilter.cmp.getCheckboxContainer()).hasClass('coveo-simplefilter-checkbox-container-expanded')).toBe(true);
 
     });
 
     it('should collapse the component correctly', () => {
-      test.cmp.closeContainer();
-      expect($$(test.cmp.getCheckboxContainer()).hasClass('coveo-simplefilter-checkbox-container-expanded')).toBe(false);
+      aSimpleFilter.cmp.closeContainer();
+      expect($$(aSimpleFilter.cmp.getCheckboxContainer()).hasClass('coveo-simplefilter-checkbox-container-expanded')).toBe(false);
     });
 
     it('should use the correct selected values', () => {
-      test.cmp.selectCheckbox('foo');
-      expect(test.cmp.getSelectedCaptions()).toEqual(['foo']);
+      aSimpleFilter.cmp.selectValue('foo');
+      expect(aSimpleFilter.cmp.getSelectedCaptions()).toEqual(['foo']);
     });
 
     it('should trigger a query when a checkbox is checked', () => {
-      test.cmp.toggleCheckbox('foo');
-      expect(test.env.queryController.executeQuery).toHaveBeenCalled();
+      aSimpleFilter.cmp.toggleValue('foo');
+      expect(aSimpleFilter.env.queryController.executeQuery).toHaveBeenCalled();
     });
 
     it('should set the field in the query', () => {
-      let simulation = Simulate.query(test3.env);
+      aSimpleFilter.cmp.options.values = undefined;
+      let simulation = Simulate.query(aSimpleFilter.env);
       expect(simulation.queryBuilder.groupByRequests).toEqual(jasmine.arrayContaining([
         jasmine.objectContaining({
           field: '@field'
@@ -109,73 +81,85 @@ export function SimpleFilterTest() {
     });
 
     it('should set the selected values in the query', () => {
-      test.cmp.selectCheckbox('foo');
-      let simulation = Simulate.query(test.env);
+      aSimpleFilter.cmp.selectValue('foo');
+      let simulation = Simulate.query(aSimpleFilter.env);
       expect(simulation.queryBuilder.advancedExpression.build()).toEqual('@field==foo');
     });
 
     it('should set the right title depending on values selected', () => {
-      test.cmp.selectCheckbox('foo');
-      expect($$($$(test.cmp.root).find('.coveo-simplefilter-selecttext')).text()).toEqual('foo');
-      test.cmp.selectCheckbox('bar');
-      expect($$($$(test.cmp.root).find('.coveo-simplefilter-selecttext')).text()).toEqual(('FooTitleBar'));
+      aSimpleFilter.cmp.selectValue('foo');
+      expect($$($$(aSimpleFilter.cmp.root).find('.coveo-simplefilter-selecttext')).text()).toEqual('foo');
+      aSimpleFilter.cmp.selectValue('bar');
+      expect($$($$(aSimpleFilter.cmp.root).find('.coveo-simplefilter-selecttext')).text()).toEqual(('FooTitleBar'));
     });
 
     it('should handle the backdrop correctly', () => {
-      expect($$(test.cmp.root).find('.coveo-dropdown-background')).not.toBe(undefined);
-      test.cmp.openContainer();
-      expect($$($$(test.cmp.root).find('.coveo-dropdown-background')).hasClass('coveo-dropdown-background-active')).toBe(true);
-      test.cmp.closeContainer();
-      expect($$($$(test.cmp.root).find('.coveo-dropdown-background')).hasClass('coveo-dropdown-background-active')).toBe(false);
-    });
-
-    it('should put all simple filters in the same wrapper if there is more than one', () => {
-      expect(test.cmp.element.parentElement).toEqual(test2.cmp.element.parentElement);
-    });
-
-    it('should not create more than one wrapper for the simple filters', () => {
-      expect($$(test.cmp.root).findAll('.coveo-simplefilter-header-wrapper').length).toEqual(1);
-    });
-
-    it('should link every simple filter to the same backdrop', () => {
-      expect($$(test.cmp.root).findAll('.coveo-dropdown-background').length).toEqual(1);
-    });
-
-    it('should not create more than one backdrop for the simple filters', () => {
-      expect($$(test.cmp.root).findAll('.coveo-dropdown-background').length).toEqual(1);
+      expect($$(aSimpleFilter.cmp.root).find('.coveo-dropdown-background')).not.toBe(undefined);
+      aSimpleFilter.cmp.openContainer();
+      expect($$($$(aSimpleFilter.cmp.root).find('.coveo-dropdown-background')).hasClass('coveo-dropdown-background-active')).toBe(true);
+      aSimpleFilter.cmp.closeContainer();
+      expect($$($$(aSimpleFilter.cmp.root).find('.coveo-dropdown-background')).hasClass('coveo-dropdown-background-active')).toBe(false);
     });
 
     it('should populate the breadcrumb when values are selected', () => {
-      test.cmp.selectCheckbox('bar');
+      aSimpleFilter.cmp.selectValue('bar');
 
       let args: IPopulateBreadcrumbEventArgs = {
         breadcrumbs: []
       };
-      $$(test.env.root).trigger(BreadcrumbEvents.populateBreadcrumb, args);
+      $$(aSimpleFilter.env.root).trigger(BreadcrumbEvents.populateBreadcrumb, args);
       expect(args.breadcrumbs.length).toBe(1);
     });
 
     it('should reset checkboxes when clearBreadcrumb is triggered', () => {
-      test.cmp.selectCheckbox('foo');
-      test.cmp.selectCheckbox('bar');
+      aSimpleFilter.cmp.selectValue('foo');
+      aSimpleFilter.cmp.selectValue('bar');
       let args: IPopulateBreadcrumbEventArgs = {
         breadcrumbs: []
       };
-      $$(test.env.root).trigger(BreadcrumbEvents.populateBreadcrumb, args);
-      expect(test.cmp.getSelectedCaptions().length).toBe(2);
-      $$(test.env.root).trigger(BreadcrumbEvents.clearBreadcrumb, args);
-      expect(test.cmp.getSelectedCaptions().length).toEqual(0);
+      $$(aSimpleFilter.env.root).trigger(BreadcrumbEvents.populateBreadcrumb, args);
+      $$(aSimpleFilter.env.root).trigger(BreadcrumbEvents.clearBreadcrumb, args);
+      expect(aSimpleFilter.cmp.getSelectedCaptions().length).toEqual(0);
     });
 
     it('should redraw checkbox containers with the previously selected Values if they are present', () => {
-      var results = FakeResults.createFakeResults();
+      aSimpleFilter.cmp.options.values = undefined;
+      aSimpleFilter.cmp.closeContainer();
+      const results = FakeResults.createFakeResults();
       results.groupByResults = [FakeResults.createFakeGroupByResult('@field', 'foo', 5)];
-      Simulate.query(test3.env, {
+      Simulate.query(aSimpleFilter.env, {
         results: results
       });
-      test3.cmp.selectCheckbox('foo1');
-      Simulate.query(test3.env);
-      expect(test3.cmp.getSelectedCaptions()[0]).toEqual('foo1');
+      aSimpleFilter.cmp.selectValue('foo1');
+      Simulate.query(aSimpleFilter.env);
+      expect(aSimpleFilter.cmp.getSelectedCaptions()[0]).toEqual('foo1');
+    });
+
+    describe ('with more than one instance', ()=> {
+      let anotherSimpleFilter: Mock.IBasicComponentSetup<SimpleFilter>;
+
+      beforeEach(() => {
+        anotherSimpleFilter = Mock.advancedComponentSetup<SimpleFilter>(SimpleFilter, new Mock.AdvancedComponentSetupOptions(null, aSimpleFilter.cmp.options , (builder: Mock.MockEnvironmentBuilder) => {
+          return builder.withRoot(aSimpleFilter.env.root);
+        }), );
+        anotherSimpleFilter.cmp.options.field = ('@field');
+      });
+
+      it('should put all simple filters in the same wrapper if there is more than one', () => {
+        expect(aSimpleFilter.cmp.element.parentElement).toEqual(anotherSimpleFilter.cmp.element.parentElement);
+      });
+
+      it('should not create more than one wrapper for the simple filters', () => {
+        expect($$(aSimpleFilter.cmp.root).findAll('.coveo-simplefilter-header-wrapper').length).toEqual(1);
+      });
+
+      it('should link every simple filter to the same backdrop', () => {
+        expect($$(aSimpleFilter.cmp.root).findAll('.coveo-dropdown-background').length).toEqual(1);
+      });
+
+      it('should not create more than one backdrop for the simple filters', () => {
+        expect($$(aSimpleFilter.cmp.root).findAll('.coveo-dropdown-background').length).toEqual(1);
+      });
     });
   });
 }

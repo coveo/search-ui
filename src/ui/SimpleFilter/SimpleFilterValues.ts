@@ -12,31 +12,23 @@ export interface ISimpleFilterOptions {
 }
 
 export class SimpleFilterValues {
-
-  static options: ISimpleFilterOptions = {
-    maximumNumberOfValues: ComponentOptions.buildNumberOption({ defaultValue: 5 }),
-    field: ComponentOptions.buildFieldOption({ required: true }),
-  };
-
-  private computedValues: string[] = [];
+  private groupByRequestValues: string[] = [];
   private position: number;
 
-  constructor(public simplefilter: SimpleFilter, public options: ISimpleFilterOptions) {
-    this.options.field = simplefilter.options.field;
-    this.options.maximumNumberOfValues = simplefilter.options.maximumNumberOfValues;
+  constructor(public simpleFilter: SimpleFilter, public options: ISimpleFilterOptions) {
   }
 
-  public getComputedValues(): string[] {
-    return this.computedValues;
+  public getValuesFromGroupBy(): string[] {
+    return this.groupByRequestValues;
   }
 
   public groupBy(data: IQuerySuccessEventArgs) {
-    this.computedValues = [];
+    this.groupByRequestValues = [];
     const groupByResult = data.results.groupByResults;
-    if (groupByResult.length > 0) {
+    if (groupByResult.length > 0 && this.position != undefined) {
       _.each(groupByResult[this.position].values, (value) => {
-        if (!(this.computedValues.indexOf(value.lookupValue) >= 0)) {
-          this.computedValues.push(value.lookupValue);
+        if (this.groupByRequestValues.indexOf(value.lookupValue) < 0) {
+          this.groupByRequestValues.push(value.lookupValue);
         }
       });
     }
@@ -47,14 +39,13 @@ export class SimpleFilterValues {
     this.putGroupByIntoQueryBuilder(queryBuilder);
   }
 
-
   private putGroupByIntoQueryBuilder(queryBuilder: QueryBuilder) {
     const groupByRequest = this.createBasicGroupByRequest();
     queryBuilder.groupByRequests.push(groupByRequest);
     this.position = queryBuilder.groupByRequests.length - 1;
   }
 
-  private createBasicGroupByRequest(addComputedField: boolean = true): IGroupByRequest {
+  private createBasicGroupByRequest(): IGroupByRequest {
     let groupByRequest: IGroupByRequest = {
       field: <string>this.options.field,
       maximumNumberOfValues: this.options.maximumNumberOfValues,
