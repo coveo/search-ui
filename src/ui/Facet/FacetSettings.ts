@@ -182,6 +182,12 @@ export class FacetSettings extends FacetSort {
     });
   }
 
+  public getSortItem(sortName: string): HTMLElement {
+    return _.find(this.sortSection.sortItems, (sortItem) => {
+      return $$(sortItem).getAttribute('data-sort-name').toLowerCase() == sortName.replace('ascending|descending', '').toLowerCase();
+    });
+  }
+
   private buildSortSection() {
     const sortSection = this.buildSection('coveo-facet-settings-section-sort');
     const sortSectionIcon = this.buildIcon('coveo-facet-settings-section-sort-svg', SVGIcons.sort);
@@ -526,11 +532,5 @@ export class FacetSettings extends FacetSort {
     if (!Utils.isNullOrUndefined(toAppend)) {
       this.settingsPopup.appendChild(toAppend);
     }
-  }
-
-  private getSortItem(sortName: string): HTMLElement {
-    return _.find(this.sortSection.sortItems, (sortItem) => {
-      return $$(sortItem).getAttribute('data-sort-name').toLowerCase() == sortName.replace('ascending|descending', '').toLowerCase();
-    })
   }
 }
