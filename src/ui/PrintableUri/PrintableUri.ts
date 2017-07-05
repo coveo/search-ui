@@ -93,7 +93,7 @@ export class PrintableUri extends ResultLink {
   }
 
   public buildSeparator() {
-    const separator = $$('span', { className: 'coveo-rpintable-uri-separator' }, ' > ');
+    const separator = $$('span', { className: 'coveo-printable-uri-separator' }, ' > ');
     return separator.el;
   }
 
