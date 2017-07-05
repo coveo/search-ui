@@ -16,7 +16,7 @@ import { BreadcrumbEvents, IPopulateBreadcrumbEventArgs } from '../../events/Bre
 import { SVGIcons } from '../../utils/SVGIcons';
 import { SVGDom } from '../../utils/SVGDom';
 import { SimpleFilterValues } from './SimpleFilterValues';
-import {FacetUtils} from '../Facet/FacetUtils';
+import { FacetUtils } from '../Facet/FacetUtils';
 
 
 export interface ISimpleFilterOptions {
@@ -166,7 +166,7 @@ export class SimpleFilter extends Component {
       ret = this.options.valueCaption[ret] || ret;
       return l(ret);
     } else {
-     return FacetUtils.tryToGetTranslatedCaption(this.options.field.toString() , ret)
+      return FacetUtils.tryToGetTranslatedCaption(this.options.field.toString(), ret);
     }
   }
 

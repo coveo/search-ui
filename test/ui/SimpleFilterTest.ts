@@ -23,7 +23,7 @@ export function SimpleFilterTest() {
         }
       });
 
-      aSimpleFilter.cmp.toggleContainer()
+      aSimpleFilter.cmp.toggleContainer();
     });
 
     afterEach(() => {
@@ -135,11 +135,11 @@ export function SimpleFilterTest() {
       expect(aSimpleFilter.cmp.getSelectedCaptions()[0]).toEqual('foo1');
     });
 
-    describe ('with more than one instance', ()=> {
+    describe('with more than one instance', () => {
       let anotherSimpleFilter: Mock.IBasicComponentSetup<SimpleFilter>;
 
       beforeEach(() => {
-        anotherSimpleFilter = Mock.advancedComponentSetup<SimpleFilter>(SimpleFilter, new Mock.AdvancedComponentSetupOptions(null, aSimpleFilter.cmp.options , (builder: Mock.MockEnvironmentBuilder) => {
+        anotherSimpleFilter = Mock.advancedComponentSetup<SimpleFilter>(SimpleFilter, new Mock.AdvancedComponentSetupOptions(null, aSimpleFilter.cmp.options, (builder: Mock.MockEnvironmentBuilder) => {
           return builder.withRoot(aSimpleFilter.env.root);
         }), );
         anotherSimpleFilter.cmp.options.field = ('@field');
