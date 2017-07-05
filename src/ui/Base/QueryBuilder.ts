@@ -89,46 +89,110 @@ export class QueryBuilder {
    * Otherwise, the query will be sent to the index.
    */
   public maximumAge: number;
+
   /**
-   * Whether to enable wildcards on the basic expression keywords.<br/>
-   * This enables the wildcard features of the index. Coveo Platform will expand keywords containing wildcard characters to the possible matching keywords to broaden the query.<br/>
-   * (see : https://onlinehelp.coveo.com/en/ces/7.0/user/using_wildcards_in_queries.htm).<br/>
-   * If not specified, this parameter defaults to false.
+   * Whether to interpret wildcard characters (`*`) in the basic [`expression`]{@link QueryBuilder.expression} keywords.
+   *
+   * Setting this attribute to `true` enables the wildcards features of the index, effectively expanding keywords
+   * containing wildcard characters (`*`) to the possible matching keywords in order to broaden the query (see
+   * [Using Wildcards in Queries](http://www.coveo.com/go?dest=cloudhelp&lcid=9&context=359)).
+   *
+   * See also [`enableQuestionMarks`]{@link QueryBuilder.enableQuestionMarks}.
+   *
+   * **Note:**
+   * > Normally, the [`enableWildcards`]{@link Querybox.options.enableWildcards} option of the
+   * > [`Querybox`]{@link Querybox} component determines the value of this attribute during the initialization of the
+   * > search page.
    */
   public enableWildcards: boolean;
+
   /**
-   * Whether to enable question marks with wildcards.<br/>
-   * This enables using the question mark ? character within wildcard expressions.
+   * Whether to interpret question mark characters (`?`) in the basic [`expression`]{@link QueryBuilder.expression}
+   * keywords (see [Using Wildcards in Queries](http://www.coveo.com/go?dest=cloudhelp&lcid=9&context=359).
+   *
+   * Setting this attribute to `true` has no effect unless [`enableWildcards`]{@link QueryBuilder.enableWildcards} is
+   * also `true`.
+   *
+   * **Note:**
+   * > Normally, the [`enableQuestionMarks`]{@link Querybox.options.enableQuestionMarks} option of the
+   * > [`Querybox`]{@link Querybox} component determines the value of this attribute during the initialization of the
+   * > search page.
    */
   public enableQuestionMarks: boolean;
+
   /**
-   * Whether to enable the special query syntax such as field references for the basic query expression (parameter q).
-   * It is equivalent to a No syntax block applied to the basic query expression.
-   * If not specified, the parameter defaults to false.
+   * Whether to interpret special query syntax (e.g., `@objecttype=message`) in the basic
+   * [`expression`]{@link QueryBuilder.expression} (see
+   * [Coveo Query Syntax Reference](http://www.coveo.com/go?dest=adminhelp70&lcid=9&context=10005)).
+   *
+   * See also [`enableLowercaseOperators`]{@link QueryBuilder.enableLowercaseOperators}.
+   *
+   * **Note:**
+   * > Normally, the [`enableQuerySyntax`]{@link Querybox.options.enableQuerySyntax} option of the
+   * > [`Querybox`]{@link Querybox} component determines the value of this attribute during the initialization of the
+   * search page. End user preferences can also modify the value of this attribute.
+   *
+   * Default value is `false`
    */
   public enableQuerySyntax: boolean = false;
+
   /**
-   * Whether to enable the support for operator in lowercase (AND OR -> and or).
+   * Whether to interpret the `AND`, `NOT`, `OR`, and `NEAR` keywords in the basic
+   * [`expression`]{@link QueryBuilder.expression} as query operators, even if those keywords are in lowercase.
+   *
+   * Setting this attribute to `true` has no effect unless [`enableQuerySyntax`]{@link QueryBuilder.enableQuerySyntax}
+   * is also `true`.
+   *
+   * **Note:**
+   * > Normally, the [`enableLowercaseOperators`]{@link Querybox.options.enableLowercaseOperators} option of the
+   * > [`Querybox`]{@link Querybox} component determines the value of this attribute during the initialization of the
+   * > search page.
    */
   public enableLowercaseOperators: boolean;
+
   /**
-   * Whether to enable partial matching of the basic expression keywords.<br/>
-   * By activating this, when the basic expression contains at least {@link IQuery.partialMatchKeywords}, items containing only the number of keywords specified by {@link IQuery.partialMatchThreshold} will also match the query.<br/>
-   * Without this option, items are required to contain all the keywords in order to match the query.<br/>
-   * If not specified, this parameter defaults to false.
+   * Whether to automatically convert the basic [`expression`]{@link QueryBuilder.expression} to a partial match
+   * expression if it contains at least a certain number of keywords (see
+   * [`partialMatchKeywords`]{@link QueryBuilder.partialMatchKeywords}), so that items containing at least a certain
+   * subset of those keywords (see [`partialMatchThreshold`]{@link QueryBuilder.partialMatchThreshold}) will match the
+   * query.
+   *
+   * **Note:**
+   * > Normally, the [`enablePartialMatch`]{@link Querybox.options.enablePartialMatch} option of the
+   * > [`Querybox`]{@link Querybox} component determines the value of this attribute during the initialization of the
+   * > search page.
    */
   public enablePartialMatch: boolean;
+
   /**
-   * The minimum number of keywords needed to activate partial match.<br/>
-   * This specifies the minimum number of keywords needed for the partial match feature to activate.<br/>
-   * If the basic expression contains less than this number of keywords, no transformation is applied on the query.<br/>
-   * If not specified, this parameter defaults to 5.
+   * The minimum number of keywords that need to be present in the basic [`expression`]{@link QueryBuilder.expression}
+   * to convert it to a partial match expression.
+   *
+   * The value of this attribute has no meaning unless [`enablePartialMatch`]{@link QueryBuilder.enablePartialMatch} is
+   * `true`.
+   *
+   * See also [`partialMatchThreshold`]{@link QueryBuilder.partialMatchThreshold}.
+   *
+   * **Note:**
+   * > Normally, the [`partialMatchKeywords`]{@link Querybox.options.partialMatchKeywords} option of the
+   * > [`Querybox`]{@link Querybox} component determines the value of this attribute during the initialization of the
+   * > search page.
    */
   public partialMatchKeywords: number;
+
   /**
-   * The threshold to use for matching items when partial match is enabled.<br/>
-   * This specifies the minimum number of query keywords that an item must contain when partial match is enabled. This value can either be an absolute number or a percentage value based on the total number of keywords.<br/>
-   * If not specified, this parameter defaults to 50%.
+   * An absolute or relative (percentage) value indicating the minimum number of partial match expression keywords an
+   * item must contain to match the query.
+   *
+   * The value of this attribute has no meaning unless [`enablePartialMatch`]{@link QueryBuilder.enablePartialMatch} is
+   * `true`.
+   *
+   * See also [`partialMatchKeywords`]{@link QueryBuilder.partialMatchKeywords}.
+   *
+   * **Note:**
+   * > Normally, the [`partialMatchThreshold`]{@link Querybox.options.partialMatchThreshold} option of the
+   * > [`Querybox`]{@link Querybox} component determines the value of this attribute during the initialization of the
+   * > search page.
    */
   public partialMatchThreshold: string;
   /**
