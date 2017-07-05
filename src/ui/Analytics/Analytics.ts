@@ -120,6 +120,12 @@ export class Analytics extends Component {
      * The Search Hub dimension is typically a name that refers to a specific search page. For example, you could use
      * the `CommunitySite` value to refer to a search page on a public community site.
      *
+     * **Note:**
+     * > If you wish to use the search hub dimension for security reasons (e.g., to provide different query suggestions
+     * > for internal and external users), you should specify the search hub when generating the search token for the
+     * > end user (in safe, server-side code), rather than setting it with this option (see
+     * > [Search Token Authentication](https://developers.coveo.com/x/XICE)).
+     *
      * Default value is `default`.
      */
     searchHub: ComponentOptions.buildStringOption({ defaultValue: 'default' }),
