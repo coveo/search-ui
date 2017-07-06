@@ -25,4 +25,13 @@ export class SVGIcons {
   public static dropdownAuthenticate = require('svg/dropdown-authenticate');
   public static dropdownExport = require('svg/dropdown-export');
   public static dropdownFollowQuery = require('svg/dropdown-follow-query');
+  public static quickview = require('svg/quickview');
+  public static pagerRightArrow = require('svg/pager-right-arrow');
+  public static pagerLeftArrow = require('svg/pager-left-arrow');
+
+  public static coveoLogo = require('svg/coveo-logo');
+  public static coveoPoweredBy = require('svg/coveo-powered-by-logo');
+
+  public static taggingOk = require('svg/tagging-ok');
+  public static edit = require('svg/edit');
 }
