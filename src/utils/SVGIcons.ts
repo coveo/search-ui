@@ -33,4 +33,5 @@ export class SVGIcons {
   public static coveoPoweredBy = require('svg/coveo-powered-by-logo');
 
   public static taggingOk = require('svg/tagging-ok');
+  public static edit = require('svg/edit');
 }
