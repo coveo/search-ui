@@ -8,7 +8,7 @@ export function lazyTriggers() {
       require.ensure(['./Triggers'], () => {
         let loaded = require<IComponentDefinition>('./Triggers.ts')['Triggers'];
         lazyExport(loaded, resolve);
-      }, LazyInitialization.buildErrorCallback('Triggers'), 'Triggers');
+      }, LazyInitialization.buildErrorCallback('Triggers', resolve), 'Triggers');
     });
   });
 }

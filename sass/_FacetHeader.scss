@@ -28,26 +28,34 @@
   font-size: $font-size-regular;
 }
 
-.coveo-facet-header-settings {
-  .coveo-icon {
-    @include retina-sprite($more-menu-group);
-  }
+.coveo-facet-settings-more {
   &:hover, &:focus {
-    .coveo-icon {
-      @include retina-sprite($more-menu-active-group);
-    }
     outline: none;
+    .coveo-more-background-svg {
+      fill-opacity: 1;
+      fill: $color-blueish-white-grey;
+    }
   }
 }
 
+.coveo-facet-settings-more-svg {
+  width: 18px;
+  height: 18px;
+  color: $color-greyish-teal-blue;
+}
 
 .coveo-facet-header-operator {
-  .coveo-icon.coveo-and {
-    @include retina-sprite($and-group);
+  color: $color-greyish-teal-blue;
+  .coveo-or-and-svg {
+    width: 18px;
+    height: 18px;
+  }
+  .coveo-and .coveo-and-svg {
+    fill: $color-active-yellow;
   }
 
-  .coveo-icon.coveo-or {
-    @include retina-sprite($or-group);
+  .coveo-or .coveo-or-svg {
+    fill: $color-active-yellow;
   }
 }
 
@@ -55,29 +63,39 @@
   cursor: pointer;
   margin-left: 10px;
   position: relative;
-  top:2px;
+  top: 4px;
 }
 
 .coveo-facet-header-eraser {
-  @include clearButton('&', 'bigger');
   position: relative;
-  top:0px;
+  top: 0px;
   visibility: hidden;
   &.coveo-facet-header-eraser-visible {
     visibility: visible;
   }
+  @include clearButton('&', 'big');  
+}
+
+.coveo-facet-header-eraser-svg {
+  display: block;
+  margin-top: 5px;
 }
 
 .coveo-facet-header-wait-animation {
-  margin: 2px 0px 0px 10px;
+  margin-left: 10px;
   position: relative;
   width: 16px;
   height: 16px;
-  @include retina-sprite($facet-loading-group);
   min-width: 16px;
   min-height: 16px;
-  @include animation-name(coveo-spin);
-  @include animation-timing-function(linear);
-  @include animation-duration(1s);
-  @include animation-iteration-count(infinite);
+
+  .coveo-facet-header-wait-animation-svg {
+    color: $color-greyish-teal-blue;
+    width: 18px;
+    height: 18px;
+    @include animation-name(coveo-spin);
+    @include animation-timing-function(linear);
+    @include animation-duration(1s);
+    @include animation-iteration-count(infinite);
+  }
 }

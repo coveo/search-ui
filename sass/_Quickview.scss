@@ -22,8 +22,10 @@
     padding: 6px 16px;
     position: absolute;
     white-space: nowrap;
-    /*This equates to centering according to parent: 50% of width left - padding, and down 100% + 6px for the little arrow*/
+    // This equates to centering according to parent: 50% of width left - padding, and down 100% + 6px for the little arrow
     transform: translateX(-50%) translateX(-11px) translateY(100%) translateY(-6px);
+
+    z-index: 1;
 
     &:before {
       border: solid;
@@ -45,11 +47,22 @@
     display: flex;
     align-items: center;
   }
+  .coveo-caption-for-icon {
+    position: relative;
+    transform: none;
+    display: inline;
+    padding: 0px 5px;
+    font-size: inherit;
+    &:before {
+      display: none;
+    }
+  }
   .coveo-caption-for-quickview {
     margin-top: 0;
     margin-left: 3px;
     font-size: 11px;
   }
+
 }
 
 .CoveoQuickviewDocument {
@@ -160,6 +173,14 @@
     div {
       height: 100%;
       width: 100%;
+    }
+    .coveo-logo {
+      height: 64px;
+      width: 178px;
+    }
+    .coveo-loading-dot {
+      height: 8px;
+      width: 8px;
     }
     .coveo-quickview-header {
       height: auto;

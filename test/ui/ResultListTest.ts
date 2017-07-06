@@ -157,6 +157,27 @@ export function ResultListTest() {
       });
     });
 
+    it('should update the currentlyDisplayedResults when building a single result', (done) => {
+      const data = FakeResults.createFakeResult();
+      expect(test.cmp.getDisplayedResults().length).toEqual(0);
+      test.cmp.buildResult(data).then(() => {
+        expect(test.cmp.getDisplayedResults().length).toEqual(1);
+        expect(test.cmp.getDisplayedResults()[0]).toEqual(data);
+        done();
+      });
+    });
+
+    it('should update the currentlyDisplayedResults when building multiple results', (done) => {
+      const data = FakeResults.createFakeResults(5);
+      expect(test.cmp.getDisplayedResults().length).toEqual(0);
+      test.cmp.buildResults(data).then(() => {
+        expect(test.cmp.getDisplayedResults().length).toEqual(5);
+        expect(test.cmp.getDisplayedResults()[0]).toEqual(data.results[0]);
+        expect(test.cmp.getDisplayedResults()[4]).toEqual(data.results[4]);
+        done();
+      });
+    });
+
     it('should reset currently displayed on new query', (done) => {
       const data = FakeResults.createFakeResult();
       test.cmp.buildResult(data).then(() => {
@@ -371,6 +392,32 @@ export function ResultListTest() {
         expect(test.cmp.getAutoSelectedFieldsToInclude()).toEqual(jasmine.arrayContaining(['author', 'language', 'urihash', 'objecttype', 'collection', 'source', 'language', 'permanentid']));
       });
 
+      it('should call auto select fields to include on other result list', () => {
+        test = Mock.optionsComponentSetup<ResultList, IResultListOptions>(ResultList, {
+          autoSelectFieldsToInclude: true
+        });
+
+        const otherResultList = Mock.mockComponent<ResultList>(ResultList);
+        otherResultList.element = document.createElement('div');
+        $$(otherResultList.element).addClass('CoveoResultList');
+        otherResultList.element['CoveoBoundComponents'] = [otherResultList];
+        $$(test.env.root).append(otherResultList.element);
+        const simulation = Simulate.query(test.env);
+        expect(otherResultList.getAutoSelectedFieldsToInclude).toHaveBeenCalled();
+      });
+
+      it('should not throw when finding auto select fields to include on another result list that is not initialized ', () => {
+        test = Mock.optionsComponentSetup<ResultList, IResultListOptions>(ResultList, {
+          autoSelectFieldsToInclude: true
+        });
+
+        const otherResultList = Mock.mockComponent<ResultList>(ResultList);
+        otherResultList.element = document.createElement('div');
+        $$(otherResultList.element).addClass('CoveoResultList');
+        $$(test.env.root).append(otherResultList.element);
+        expect(() => Simulate.query(test.env)).not.toThrow();
+      });
+
       it('resultTemplate allow to specify a template manually', (done) => {
         const tmpl: UnderscoreTemplate = Mock.mock<UnderscoreTemplate>(UnderscoreTemplate);
         const asSpy = <any>tmpl;
@@ -514,21 +561,6 @@ export function ResultListTest() {
             expect(container.children.item(container.children.length - 2).innerHTML).toBe('');
             expect(container.children.item(container.children.length - 3).innerHTML).toBe('');
             expect(container.children.item(container.children.length - 4).innerHTML).not.toBe('');
-            done();
-          });
-        });
-
-        it('should add 3 empty div at the end of the results when it\'s a card template and infinite scroll is enabled', (done) => {
-          test = Mock.optionsComponentSetup<ResultList, IResultListOptions>(ResultList, {
-            layout: 'card',
-            enableInfiniteScroll: true
-          });
-          Simulate.query(test.env);
-          Defer.defer(() => {
-            const container = test.cmp.options.resultContainer;
-            expect(container.children.item(container.children.length - 1).innerHTML).not.toBe('');
-            expect(container.children.item(container.children.length - 2).innerHTML).not.toBe('');
-            expect(container.children.item(container.children.length - 3).innerHTML).not.toBe('');
             done();
           });
         });

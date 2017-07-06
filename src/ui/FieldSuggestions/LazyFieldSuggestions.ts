@@ -8,7 +8,7 @@ export function lazyFieldSuggestions() {
       require.ensure(['./FieldSuggestions'], () => {
         let loaded = require<IComponentDefinition>('./FieldSuggestions.ts')['FieldSuggestions'];
         lazyExport(loaded, resolve);
-      }, LazyInitialization.buildErrorCallback('FieldSuggestions'), 'FieldSuggestions');
+      }, LazyInitialization.buildErrorCallback('FieldSuggestions', resolve), 'FieldSuggestions');
     });
   });
 }

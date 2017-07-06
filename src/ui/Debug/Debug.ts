@@ -38,6 +38,7 @@ export class Debug extends RootComponent {
   private modalBox: Coveo.ModalBox.ModalBox;
   private opened = false;
   private stackDebug: any;
+  private debugHeader: DebugHeader;
 
   public showDebugPanel: () => void;
 
@@ -197,7 +198,13 @@ export class Debug extends RootComponent {
 
     const title = $$(this.modalBox.wrapper).find('.coveo-modal-header');
     if (title) {
-      new DebugHeader(this.element, title, this.bindings, (value: string) => this.search(value, build.body), this.stackDebug);
+      if (!this.debugHeader) {
+        this.debugHeader = new DebugHeader(this.element, title, this.bindings, (value: string) => this.search(value, build.body), this.stackDebug);
+      } else {
+        this.debugHeader.moveTo(title);
+        this.debugHeader.setNewInfoToDebug(this.stackDebug);
+        this.debugHeader.setSearch((value: string) => this.search(value, build.body));
+      }
     } else {
       this.logger.warn('No title found in modal box.');
     }
@@ -551,10 +558,16 @@ export class Debug extends RootComponent {
     }
   }
 
-  private highlightSearch(element: HTMLElement, search: string) {
-    if (element != null) {
-      const match = element.innerText.split(new RegExp('(?=' + StringUtils.regexEncode(search) + ')', 'gi'));
-      element.innerHTML = '';
+  private highlightSearch(elementToSearch: HTMLElement | Dom, search: string) {
+    let asHTMLElement: HTMLElement;
+    if (elementToSearch instanceof HTMLElement) {
+      asHTMLElement = elementToSearch;
+    } else if (elementToSearch instanceof Dom) {
+      asHTMLElement = elementToSearch.el;
+    }
+    if (asHTMLElement != null && asHTMLElement.innerText != null) {
+      const match = asHTMLElement.innerText.split(new RegExp('(?=' + StringUtils.regexEncode(search) + ')', 'gi'));
+      asHTMLElement.innerHTML = '';
       match.forEach((value) => {
         const regex = new RegExp('(' + StringUtils.regexEncode(search) + ')', 'i');
         const group = value.match(regex);
@@ -565,17 +578,14 @@ export class Debug extends RootComponent {
             className: 'coveo-debug-highlight'
           });
           span.text(group[1]);
-          element.appendChild(span.el);
-
+          asHTMLElement.appendChild(span.el);
           span = $$('span');
           span.text(value.substr(group[1].length));
-          element.appendChild(span.el);
+          asHTMLElement.appendChild(span.el);
         } else {
-
           span = $$('span');
           span.text(value);
-          element.appendChild(span.el);
-
+          asHTMLElement.appendChild(span.el);
         }
       });
     }

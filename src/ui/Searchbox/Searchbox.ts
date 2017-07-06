@@ -11,7 +11,8 @@ import * as _ from 'underscore';
 import { exportGlobally } from '../../GlobalExports';
 
 import 'styling/_Searchbox';
-import 'styling/_SearchButton';
+import { SVGIcons } from '../../utils/SVGIcons';
+import { SVGDom } from '../../utils/SVGDom';
 
 export interface ISearchboxOptions extends IOmniboxOptions {
   addSearchButton?: boolean;
@@ -131,6 +132,10 @@ export class Searchbox extends Component {
     } else {
       this.searchbox = new Querybox(div, this.options, bindings);
     }
+
+    const magicBoxIcon = $$(this.element).find('.magic-box-icon');
+    magicBoxIcon.innerHTML = SVGIcons.mainClear;
+    SVGDom.addClassToSVGInContainer(magicBoxIcon, 'magic-box-clear-svg');
   }
 }
 

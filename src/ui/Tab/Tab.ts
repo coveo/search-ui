@@ -4,6 +4,7 @@ import { ComponentOptions } from '../Base/ComponentOptions';
 import { IComponentBindings } from '../Base/ComponentBindings';
 import { MODEL_EVENTS, IAttributeChangedEventArg } from '../../models/Model';
 import { QueryEvents, IBuildingQueryEventArgs } from '../../events/QueryEvents';
+import { InitializationEvents } from '../../events/InitializationEvents';
 import { QueryStateModel, QUERY_STATE_ATTRIBUTES } from '../../models/QueryStateModel';
 import { analyticsActionCauseList, IAnalyticsInterfaceChange } from '../Analytics/AnalyticsActionListMeta';
 import { SearchEndpoint } from '../../rest/SearchEndpoint';
@@ -249,6 +250,7 @@ export class Tab extends Component {
     this.options = ComponentOptions.initComponentOptions(element, Tab, options);
 
     this.bind.onRootElement(QueryEvents.buildingQuery, (args: IBuildingQueryEventArgs) => this.handleBuildingQuery(args));
+    this.bind.onRootElement(InitializationEvents.afterInitialization, () => this.handleAfterInitialization());
     this.bind.onQueryState(MODEL_EVENTS.CHANGE_ONE, QUERY_STATE_ATTRIBUTES.T, (args: IAttributeChangedEventArg) => this.handleQueryStateChanged(args));
     const clickAction = () => this.handleClick();
     this.bind.on(element, 'click', clickAction);
@@ -265,7 +267,7 @@ export class Tab extends Component {
    */
   public select() {
     if (!this.disabled) {
-      let currentLayout = this.queryStateModel.get(QUERY_STATE_ATTRIBUTES.LAYOUT);
+      const currentLayout = this.queryStateModel.get(QUERY_STATE_ATTRIBUTES.LAYOUT);
       this.queryStateModel.setMultiple({
         t: this.options.id,
         sort: this.options.sort || QueryStateModel.defaultAttributes.sort,
@@ -285,8 +287,8 @@ export class Tab extends Component {
   public isElementIncludedInTab(element: HTMLElement): boolean {
     Assert.exists(element);
 
-    var includedTabs = this.splitListOfTabs(element.getAttribute('data-tab'));
-    var excludedTabs = this.splitListOfTabs(element.getAttribute('data-tab-not'));
+    const includedTabs = this.splitListOfTabs(element.getAttribute('data-tab'));
+    const excludedTabs = this.splitListOfTabs(element.getAttribute('data-tab-not'));
     Assert.check(!(includedTabs.length != 0 && excludedTabs.length != 0), 'You cannot both explicitly include and exclude an element from tabs.');
 
     return (includedTabs.length != 0 && _.indexOf(includedTabs, this.options.id) != -1) ||
@@ -299,16 +301,16 @@ export class Tab extends Component {
   }
 
   private render() {
-    var icon = this.options.icon;
+    const icon = this.options.icon;
     if (Utils.isNonEmptyString(icon)) {
-      var iconSpan = $$('span').el;
+      const iconSpan = $$('span').el;
       $$(iconSpan).addClass(['coveo-icon', icon]);
       this.element.insertBefore(iconSpan, this.element.firstChild);
     }
 
-    var caption = this.options.caption;
+    const caption = this.options.caption;
     if (Utils.isNonEmptyString(caption)) {
-      var captionP = document.createElement('p');
+      const captionP = document.createElement('p');
       $$(captionP).text(caption);
       this.element.appendChild(captionP);
     }
@@ -354,14 +356,20 @@ export class Tab extends Component {
     }
   }
 
+  private handleAfterInitialization() {
+    if (this.isSelected() && this.options.layout) {
+      this.queryStateModel.set(QUERY_STATE_ATTRIBUTES.LAYOUT, this.options.layout);
+    }
+  }
+
   protected isSelected(): boolean {
-    var activeTab = this.queryStateModel.get(QueryStateModel.attributesEnum.t);
+    const activeTab = this.queryStateModel.get(QueryStateModel.attributesEnum.t);
     return activeTab == this.options.id;
   }
 
   private showAndHideAppropriateElements() {
-    var showElements = [];
-    var hideElements = [];
+    const showElements = [];
+    const hideElements = [];
 
     _.each($$(this.root).findAll('[data-tab],[data-tab-not]'), (element) => {
       if (this.isElementIncludedInTab(element)) {
@@ -390,8 +398,8 @@ export class Tab extends Component {
   private toggleAllComponentsUnder(element: HTMLElement, enable: boolean) {
     Assert.exists(element);
 
-    var togglePossibleComponent = (possibleComponent: HTMLElement) => {
-      var possibleCmp = Component.get(possibleComponent, undefined, true);
+    const togglePossibleComponent = (possibleComponent: HTMLElement) => {
+      const possibleCmp = Component.get(possibleComponent, undefined, true);
       if (possibleCmp) {
         if (enable) {
           possibleCmp.enable();

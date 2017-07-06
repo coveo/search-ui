@@ -5,4 +5,6 @@ export interface IMenuItem {
   index?: number;
   onOpen: () => void;
   onClose?: () => void;
+  svgIcon?: string;
+  svgIconClassName?: string;
 }

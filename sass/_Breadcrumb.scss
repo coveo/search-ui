@@ -20,15 +20,16 @@
   & > div {
     display: inline-block;
   }
-  @include clearButton('.coveo-breadcrumb-icon-clear-all');
   @include defaultRoundedBorder();
   padding: 5px;
   margin-left: 5px;
   @include flex-shrink(0);
+  @include clearButton('.coveo-breadcrumb-clear-all-icon');
 }
 
-.coveo-breadcrumb-icon-clear-all {
-  margin-right: 5px;
+.coveo-breadcrumb-clear-all-icon {
+  top: 1px;
+  margin-right: 5px;  
 }
 
 .coveo-breadcrumb-items {

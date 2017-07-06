@@ -2,13 +2,14 @@ import { DocumentInput } from '../../../../src/ui/AdvancedSearch/DocumentInput/D
 import { QueryBuilder } from '../../../../src/ui/Base/QueryBuilder';
 import { ExpressionBuilder } from '../../../../src/ui/Base/ExpressionBuilder';
 import * as Mock from '../../../MockEnvironment';
+import { $$ } from '../../../../src/utils/Dom';
 
 export function DocumentInputTest() {
   describe('DocumentInput', () => {
     let input: DocumentInput;
 
     beforeEach(function () {
-      input = new DocumentInput('test');
+      input = new DocumentInput('test', $$('div').el);
       input.build();
     });
 

@@ -22,6 +22,8 @@ import { Checkbox } from '../FormWidgets/Checkbox';
 import { TextInput } from '../FormWidgets/TextInput';
 import { MultiSelect } from '../FormWidgets/MultiSelect';
 import { FormGroup } from '../FormWidgets/FormGroup';
+import { SVGIcons } from '../../utils/SVGIcons';
+import { SVGDom } from '../../utils/SVGDom';
 
 export interface IResultFilterPreference {
   selected?: boolean;
@@ -305,7 +307,8 @@ export class ResultsFiltersPreferences extends Component {
 
     const closeFormButton = $$('span', {
       className: 'coveo-close'
-    });
+    }, SVGIcons.checkboxHookExclusionMore);
+    SVGDom.addClassToSVGInContainer(closeFormButton.el, 'coveo-close-svg');
 
     const saveAndCloseContainer = $$('div', {
       className: 'coveo-choice-container coveo-close-and-save'
@@ -346,6 +349,8 @@ export class ResultsFiltersPreferences extends Component {
         let tab = <Tab>Component.get(tabElement);
         return tab.options.id;
       });
+    } else {
+      return [];
     }
   }
 
@@ -431,7 +436,8 @@ export class ResultsFiltersPreferences extends Component {
     caption.text(filter.caption);
     elem.el.appendChild(caption.el);
 
-    const clear = $$('span', { className: 'coveo-clear' });
+    const clear = $$('span', { className: 'coveo-clear' }, SVGIcons.checkboxHookExclusionMore);
+    SVGDom.addClassToSVGInContainer(clear.el, 'coveo-clear-svg');
     elem.el.appendChild(clear.el);
 
     elem.on('click', () => {

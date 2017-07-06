@@ -1,6 +1,7 @@
 import { SimpleFieldInput } from '../../../../src/ui/AdvancedSearch/DocumentInput/SimpleFieldInput';
 import { SearchEndpoint } from '../../../../src/rest/SearchEndpoint';
 import * as Mock from '../../../MockEnvironment';
+import { $$ } from '../../../../src/utils/Dom';
 
 export function SimpleFieldInputTest() {
   describe('SimpleFieldInput', () => {
@@ -10,7 +11,7 @@ export function SimpleFieldInputTest() {
     beforeEach(function () {
       endpoint = Mock.mock<SearchEndpoint>(SearchEndpoint);
       mockListFieldValues();
-      input = new SimpleFieldInput('test', '@test', endpoint);
+      input = new SimpleFieldInput('test', '@test', endpoint, $$('div').el);
       input.build();
     });
 

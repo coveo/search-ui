@@ -9,8 +9,8 @@ export class InTheLastDateInput extends DateInput {
   public dropdown: Dropdown;
   public spinner: NumericSpinner;
 
-  constructor() {
-    super(l('InTheLast'));
+  constructor(public root: HTMLElement) {
+    super(l('InTheLast'), root);
   }
 
   public reset() {
@@ -26,11 +26,13 @@ export class InTheLastDateInput extends DateInput {
     this.spinner = new NumericSpinner(this.onChange.bind(this));
     input.append(this.spinner.getElement());
 
-    this.dropdown = new Dropdown(this.onChange.bind(this), ['days', 'months']);
+    this.dropdown = new Dropdown(this.onChange.bind(this), ['Days', 'Months']);
     this.dropdown.setId('coveo-advanced-search-in-the-last-select');
     input.append(this.dropdown.getElement());
 
     this.element.appendChild(input.el);
+
+    $$(this.getRadio()).on('change', this.onChange.bind(this));
     return this.element;
   }
 

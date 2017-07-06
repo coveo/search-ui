@@ -8,7 +8,7 @@ export function lazyFacetSlider() {
       require.ensure(['./FacetSlider'], () => {
         let loaded = require<IComponentDefinition>('./FacetSlider.ts')['FacetSlider'];
         lazyExport(loaded, resolve);
-      }, LazyInitialization.buildErrorCallback('FacetSlider'), 'FacetSlider');
+      }, LazyInitialization.buildErrorCallback('FacetSlider', resolve), 'FacetSlider');
     });
   });
 }

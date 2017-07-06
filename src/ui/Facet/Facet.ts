@@ -12,7 +12,7 @@ import { FacetValuesList } from './FacetValuesList';
 import { FacetHeader } from './FacetHeader';
 import { FacetUtils } from './FacetUtils';
 import { InitializationEvents } from '../../events/InitializationEvents';
-import { QueryEvents, INewQueryEventArgs, IQuerySuccessEventArgs, IBuildingQueryEventArgs, IDoneBuildingQueryEventArgs } from '../../events/QueryEvents';
+import { QueryEvents, INewQueryEventArgs, IQuerySuccessEventArgs, IDoneBuildingQueryEventArgs } from '../../events/QueryEvents';
 import { Assert } from '../../misc/Assert';
 import { ISearchEndpoint } from '../../rest/SearchEndpointInterface';
 import { $$ } from '../../utils/Dom';
@@ -47,6 +47,9 @@ import * as _ from 'underscore';
 import { exportGlobally } from '../../GlobalExports';
 import 'styling/_Facet';
 import 'styling/_FacetFooter';
+import { SVGIcons } from '../../utils/SVGIcons';
+import { SVGDom } from '../../utils/SVGDom';
+import { IQueryResults } from '../../rest/QueryResults';
 
 export interface IFacetOptions {
   title?: string;
@@ -461,7 +464,15 @@ export class Facet extends Component {
      *
      * Default value is `element.parentElement`.
      */
-    paddingContainer: ComponentOptions.buildSelectorOption({ defaultFunction: (element) => element.parentElement }),
+    paddingContainer: ComponentOptions.buildSelectorOption({
+      defaultFunction: (element) => {
+        const standardColumn = $$(element).parent('coveo-facet-column');
+        if (standardColumn != null) {
+          return standardColumn;
+        }
+        return element.parentElement;
+      }
+    }),
 
     /**
      * Specifies the HTML element (through a CSS selector) whose scroll amount the facet should adjust to preserve its
@@ -574,43 +585,42 @@ export class Facet extends Component {
      * Specifies a JSON object describing a mapping of facet values to their desired captions. See
      * [Normalizing Facet Value Captions](https://developers.coveo.com/x/jBsvAg).
      *
-     * **Notes:**
-     * > * You cannot set this option directly in the component markup as an HTML attribute. You must either set it in the
-     *    > [`init`]{@link init} call of your search interface (see
-     *    > [Components - Passing Component Options in the init Call](https://developers.coveo.com/x/PoGfAQ#Components-PassingComponentOptionsintheinitCall)),
-     *    > or before the `init` call, using the `options` top-level function (see
-     *    > [Components - Passing Component Options Before the init Call](https://developers.coveo.com/x/PoGfAQ#Components-PassingComponentOptionsBeforetheinitCall)).
+     * **Examples:**
      *
-     * > *  Using value captions will disable alphabetical sorts (see the [availableSorts]{@link Facet.options.availableSorts} option).
-     *
-     * **Example:**
-     *
+     * You can set the option in the ['init']{@link init} call:
      * ```javascript
-     *
      * var myValueCaptions = {
      *   "txt" : "Text files",
      *   "html" : "Web page",
      *   [ ... ]
      * };
      *
-     * // You can set the option in the 'init' call:
      * Coveo.init(document.querySelector("#search"), {
      *   Facet : {
      *     valueCaption : myValueCaptions
      *   }
      * });
-     *
-     * // Or before the 'init' call, using the 'options' top-level function:
-     * // Coveo.options(document.querySelector("#search"), {
-     * //  Facet : {
-     * //    valueCaption : myValueCaptions
-     * //  }
-     * // });
      * ```
+     *
+     * Or before the `init` call, using the ['options']{@link options} top-level function:
+     * ```javascript
+     * Coveo.options(document.querySelector("#search"), {
+     *   Facet : {
+     *     valueCaption : myValueCaptions
+     *   }
+     * });
+     * ```
+     *
+     * Or directly in the markup:
+     * ```html
+     * <!-- Ensure that the double quotes are properly handled in data-value-caption. -->
+     * <div class='CoveoFacet' data-field='@myotherfield' data-value-caption='{"txt":"Text files","html":"Web page"}></div>
+     * ```
+     *
+     * **Note:**
+     * > Using value captions will disable alphabetical sorts (see the [availableSorts]{@link Facet.options.availableSorts} option).
      */
-    valueCaption: ComponentOptions.buildCustomOption<IStringMap<string>>(() => {
-      return null;
-    }),
+    valueCaption: ComponentOptions.buildJsonObjectOption<IStringMap<string>>(),
 
     /**
      * Specifies whether to enable *responsive mode* for facets. Setting this options to `false` on any `Facet`, or
@@ -721,15 +731,6 @@ export class Facet extends Component {
     this.initBreadCrumbEvents();
     this.initSearchAlertEvents();
     this.updateNumberOfValues();
-
-
-    this.resize = () => {
-      if (!this.disabled) {
-        FacetUtils.clipCaptionsToAvoidOverflowingTheirContainer(this);
-      }
-    };
-    window.addEventListener('resize', _.debounce(this.resize, 200));
-    this.bind.onRootElement(InitializationEvents.nuke, () => this.handleNuke());
 
     this.bind.oneRootElement(QueryEvents.querySuccess, () => {
       this.firstQuery = false;
@@ -1037,14 +1038,7 @@ export class Facet extends Component {
   public showWaitingAnimation() {
     this.ensureDom();
     if (!this.showingWaitAnimation) {
-      // in old design : icon before the facet title needs to be hidden to show animation
-      // new design : no need to hide this icon since it's not there
-      if (!this.searchInterface.isNewDesign()) {
-        $$(this.headerElement).find('.coveo-icon').style.display = 'none';
-        $$(this.headerElement).find('.coveo-facet-header-wait-animation').style.display = '';
-      } else {
-        $$(this.headerElement).find('.coveo-facet-header-wait-animation').style.visibility = 'visible';
-      }
+      $$(this.headerElement).find('.coveo-facet-header-wait-animation').style.visibility = 'visible';
       this.showingWaitAnimation = true;
     }
   }
@@ -1055,12 +1049,7 @@ export class Facet extends Component {
   public hideWaitingAnimation(): void {
     this.ensureDom();
     if (this.showingWaitAnimation) {
-      $$(this.headerElement).find('.coveo-icon').style.display = '';
-      if (!this.searchInterface.isNewDesign()) {
-        $$(this.headerElement).find('.coveo-facet-header-wait-animation').style.display = 'none';
-      } else {
-        $$(this.headerElement).find('.coveo-facet-header-wait-animation').style.visibility = 'hidden';
-      }
+      $$(this.headerElement).find('.coveo-facet-header-wait-animation').style.visibility = 'hidden';
       this.showingWaitAnimation = false;
     }
   }
@@ -1251,20 +1240,13 @@ export class Facet extends Component {
 
   protected updateAppearanceDependingOnState() {
     $$(this.element).toggleClass('coveo-active', this.values.hasSelectedOrExcludedValues());
-    if (!$$(this.element).hasClass('coveo-with-placeholder')) {
-      $$(this.element).toggleClass('coveo-facet-empty', !this.isAnyValueCurrentlyDisplayed());
-    }
-    if (this.searchInterface.isNewDesign()) {
-      $$(this.facetHeader.eraserElement).toggleClass('coveo-facet-header-eraser-visible', this.values.hasSelectedOrExcludedValues());
-    } else {
-      $$(this.facetHeader.eraserElement).toggle(this.values.hasSelectedOrExcludedValues());
-    }
-
+    $$(this.element).toggleClass('coveo-facet-empty', !this.isAnyValueCurrentlyDisplayed());
+    $$(this.facetHeader.eraserElement).toggleClass('coveo-facet-header-eraser-visible', this.values.hasSelectedOrExcludedValues());
   }
 
   protected initQueryEvents() {
     this.bind.onRootElement(QueryEvents.duringQuery, () => this.handleDuringQuery());
-    this.bind.onRootElement(QueryEvents.buildingQuery, (args: IBuildingQueryEventArgs) => this.handleBuildingQuery(args));
+    this.bind.onRootElement(QueryEvents.buildingQuery, (args: IDoneBuildingQueryEventArgs) => this.handleBuildingQuery(args));
     this.bind.onRootElement(QueryEvents.doneBuildingQuery, (args: IDoneBuildingQueryEventArgs) => this.handleDoneBuildingQuery(args));
     this.bind.onRootElement(QueryEvents.deferredQuerySuccess, (args: IQuerySuccessEventArgs) => this.handleDeferredQuerySuccess(args));
   }
@@ -1357,25 +1339,19 @@ export class Facet extends Component {
   protected rebuildValueElements() {
     this.updateNumberOfValues();
     this.facetValuesList.rebuild(this.numberOfValues);
-    if (this.searchInterface.isNewDesign()) {
-      if (this.shouldRenderMoreLess()) {
-        this.updateMoreLess();
-        if (this.shouldRenderFacetSearch()) {
-          this.updateSearchInNewDesign(this.nbAvailableValues > this.numberOfValues);
-        }
-      } else if (this.shouldRenderFacetSearch()) {
-        this.updateSearchInNewDesign();
+    if (this.shouldRenderMoreLess()) {
+      this.updateMoreLess();
+      if (this.shouldRenderFacetSearch()) {
+        this.updateSearchElement(this.nbAvailableValues > this.numberOfValues);
       }
-    } else {
-      if (this.shouldRenderMoreLess()) {
-        this.updateMoreLess();
-      }
+    } else if (this.shouldRenderFacetSearch()) {
+      this.updateSearchElement();
     }
   }
 
-  protected updateSearchInNewDesign(moreValuesAvailable = true) {
-    if (this.searchInterface.isNewDesign() && moreValuesAvailable) {
-      let renderer = new ValueElementRenderer(this, FacetValue.create(l('Search')));
+  protected updateSearchElement(moreValuesAvailable = true) {
+    if (moreValuesAvailable) {
+      let renderer = new ValueElementRenderer(this, FacetValue.create(('Search')));
       let searchButton = renderer.build().withNo([renderer.excludeIcon, renderer.icon]);
       $$(searchButton.listItem).addClass('coveo-facet-search-button');
       searchButton.stylishCheckbox.removeAttribute('tabindex');
@@ -1428,10 +1404,6 @@ export class Facet extends Component {
 
   protected handleClickLess() {
     this.showLess();
-  }
-
-  private handleNuke() {
-    window.removeEventListener('resize', this.resize);
   }
 
   private checkForComputedFieldAndSort() {
@@ -1615,7 +1587,7 @@ export class Facet extends Component {
     }
   }
 
-  private handleBuildingQuery(data: IBuildingQueryEventArgs) {
+  private handleBuildingQuery(data: IDoneBuildingQueryEventArgs) {
     Assert.exists(data);
     Assert.exists(data.queryBuilder);
 
@@ -1675,18 +1647,15 @@ export class Facet extends Component {
     }
     this.footerElement = this.buildFooter();
     this.element.appendChild(this.footerElement);
-    if (this.searchInterface.isNewDesign() && this.lessElement && this.moreElement) {
+    if (this.lessElement && this.moreElement) {
       this.footerElement.appendChild(this.lessElement);
       this.footerElement.appendChild(this.moreElement);
-    } else if (this.moreElement && this.lessElement) {
-      this.footerElement.appendChild(this.moreElement);
-      this.footerElement.appendChild(this.lessElement);
     }
   }
 
   private buildHeader() {
     let icon = this.options.headerIcon;
-    if (this.searchInterface.isNewDesign() && this.options.headerIcon == this.options.field) {
+    if (this.options.headerIcon == this.options.field) {
       icon = undefined;
     }
     this.facetHeader = new FacetHeader({
@@ -1699,8 +1668,7 @@ export class Facet extends Component {
       facet: this,
       settingsKlass: this.options.enableSettings ? FacetSettings : undefined,
       sortKlass: FacetSort,
-      availableSorts: this.options.availableSorts,
-      isNewDesign: this.getBindings().searchInterface.isNewDesign()
+      availableSorts: this.options.availableSorts
     });
     let built = this.facetHeader.build();
     this.facetSettings = this.facetHeader.settings;
@@ -1751,28 +1719,12 @@ export class Facet extends Component {
       scrollToOffset();
       currentViewportPosition = this.element.getBoundingClientRect().top;
       offset = currentViewportPosition - this.pinnedViewportPosition;
-
       // If scrolling has worked (offset == 0), we're good to go, nothing to do anymore.
-      // Otherwise try other voodoo magic.
+
       if (offset < 0) {
         // This means the facet element is scrolled up in the viewport,
         // scroll it down by adding space in the top container
         this.pinnedTopSpace.style.height = (offset * -1) + 'px';
-      } else {
-        // Here, this means the facet element is scrolled down in the viewport,
-        // and there is not enough scroll space in the page / window to scroll far enough
-        // we need to add space at the bottom so that we can finally scroll there.
-        _.defer(() => {
-          let heightBottom = 0;
-          let attempts = 0;
-          while (offset > 0 && attempts++ < 100) {
-            heightBottom += 100;
-            this.pinnedBottomSpace.style.height = heightBottom + 'px';
-            currentViewportPosition = this.element.getBoundingClientRect().top;
-            offset = currentViewportPosition - this.pinnedViewportPosition;
-            scrollToOffset();
-          }
-        });
       }
       this.unpinnedViewportPosition = this.pinnedViewportPosition;
       this.pinnedViewportPosition = null;
@@ -1785,12 +1737,10 @@ export class Facet extends Component {
 
   private buildMore(): HTMLElement {
     let more: HTMLElement;
-    if (this.searchInterface.isNewDesign()) {
-      more = $$('div', { className: 'coveo-facet-more', tabindex: 0 },
-        $$('span', { className: 'coveo-icon' })).el;
-    } else {
-      more = $$('a', { className: 'coveo-facet-more' }, l('More')).el;
-    }
+    const svgContainer = $$('span', { className: 'coveo-facet-more-icon' }, SVGIcons.arrowDown).el;
+    SVGDom.addClassToSVGInContainer(svgContainer, 'coveo-facet-more-icon-svg');
+    more = $$('div', { className: 'coveo-facet-more', tabindex: 0 }, svgContainer).el;
+
     const moreAction = () => this.handleClickMore();
     $$(more).on('click', moreAction);
     $$(more).on('keyup', KeyboardUtils.keypressAction(KEYBOARD.ENTER, moreAction));
@@ -1799,12 +1749,10 @@ export class Facet extends Component {
 
   private buildLess(): HTMLElement {
     let less: HTMLElement;
-    if (this.searchInterface.isNewDesign()) {
-      less = $$('div', { className: 'coveo-facet-less', tabindex: 0 },
-        $$('span', { className: 'coveo-icon' })).el;
-    } else {
-      less = $$('a', { className: 'coveo-facet-less' }, l('Less')).el;
-    }
+    const svgContainer = $$('span', { className: 'coveo-facet-less-icon' }, SVGIcons.arrowUp).el;
+    SVGDom.addClassToSVGInContainer(svgContainer, 'coveo-facet-less-icon-svg');
+    less = $$('div', { className: 'coveo-facet-less', tabIndex: 0 }, svgContainer).el;
+
     const lessAction = () => this.handleClickLess();
     $$(less).on('click', lessAction);
     $$(less).on('keyup', KeyboardUtils.keypressAction(KEYBOARD.ENTER, lessAction));
@@ -1816,7 +1764,7 @@ export class Facet extends Component {
     this.showWaitingAnimation();
     // fetch 1 more value than we need, so we can see if there is more value to fetch still or if we have reached
     // the end of the availables values
-    this.facetQueryController.fetchMore(this.numberOfValues + 1).then((queryResults?) => {
+    this.facetQueryController.fetchMore(this.numberOfValues + 1).then((queryResults: IQueryResults) => {
       let facetValues = new FacetValues(queryResults.groupByResults[0]);
 
       facetValues.importActiveValuesFromOtherList(this.values);

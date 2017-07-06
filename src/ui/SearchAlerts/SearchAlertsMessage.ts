@@ -12,6 +12,8 @@ import { l } from '../../strings/Strings';
 import { $$, Dom } from '../../utils/Dom';
 import * as _ from 'underscore';
 import { ISearchAlertsPopulateMessageText } from '../../events/SearchAlertEvents';
+import { SVGIcons } from '../../utils/SVGIcons';
+import { SVGDom } from '../../utils/SVGDom';
 
 export interface ISearchAlertMessageOptions {
   closeDelay: number;
@@ -35,9 +37,9 @@ export class SearchAlertsMessage extends Component {
     /**
      * Specifies how long to display the search alerts messages (in milliseconds).
      *
-     * Default value is `3000`. Minimum value is `0`.
+     * Default value is `2000`. Minimum value is `0`.
      */
-    closeDelay: ComponentOptions.buildNumberOption({ defaultValue: 3000, min: 0 }),
+    closeDelay: ComponentOptions.buildNumberOption({ defaultValue: 2000, min: 0 }),
   };
 
   private message: Dom;
@@ -59,7 +61,6 @@ export class SearchAlertsMessage extends Component {
     this.bind.onRootElement(SearchAlertsEvents.searchAlertsCreated, (args: ISearchAlertsEventArgs) => this.handleSubscriptionCreated(args));
     this.bind.oneRootElement(SearchAlertsEvents.searchAlertsFail, (args: ISearchAlertsEventArgs) => this.handleSearchAlertsFail(args));
     this.bind.oneRootElement(SearchAlertsEvents.searchAlertsDeleted, () => this.close());
-
     this.bind.oneRootElement(QueryEvents.newQuery, () => this.close());
   }
 
@@ -110,15 +111,18 @@ export class SearchAlertsMessage extends Component {
    * @param error Specifies whether the message is an error message.
    */
   public showMessage(dom: Dom, message: string, error: boolean) {
-    this.message = $$('div');
+    this.message = $$('div', {
+      className: 'coveo-subscriptions-messages'
+    });
     this.message.el.innerHTML = `
       <div class='coveo-subscriptions-messages-message'>
-        <div class='coveo-subscriptions-messages-info-close'></div>
         <div class='coveo-subscriptions-messages-content'>${message}</div>
+        <div class='coveo-subscriptions-messages-info-close'>${SVGIcons.checkboxHookExclusionMore}</div>
       </div>`;
 
     this.message.toggleClass('coveo-subscriptions-messages-error', error);
     let closeButton = this.message.find('.coveo-subscriptions-messages-info-close');
+    SVGDom.addClassToSVGInContainer(closeButton, 'coveo-subscript-messages-info-close-svg');
     $$(closeButton).on('click', () => this.close());
 
     PopupUtils.positionPopup(this.message.el, dom.el, this.root, {

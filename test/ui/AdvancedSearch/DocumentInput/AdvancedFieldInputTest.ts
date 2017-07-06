@@ -1,4 +1,5 @@
 import { AdvancedFieldInput } from '../../../../src/ui/AdvancedSearch/DocumentInput/AdvancedFieldInput';
+import { $$ } from '../../../../src/utils/Dom';
 
 export function AdvancedFieldInputTest() {
   describe('AdvancedFieldInput', () => {
@@ -9,7 +10,7 @@ export function AdvancedFieldInputTest() {
     beforeEach(function () {
       value = 'what';
       fieldName = '@test';
-      input = new AdvancedFieldInput('test', fieldName);
+      input = new AdvancedFieldInput('test', fieldName, $$('div').el);
       input.build();
       input.input.setValue(value);
     });

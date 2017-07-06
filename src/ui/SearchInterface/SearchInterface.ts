@@ -32,6 +32,7 @@ import * as _ from 'underscore';
 import 'styling/Globals';
 import 'styling/_SearchInterface';
 import 'styling/_SearchModalBox';
+import 'styling/_SearchButton';
 
 export interface ISearchInterfaceOptions {
   enableHistory?: boolean;
@@ -157,6 +158,10 @@ export class SearchInterface extends RootComponent implements IComponentBindings
      * Specifies the number of results to display on each page.
      *
      * For more advanced features, see the {@link ResultsPerPage} component.
+     *
+     * **Note:**
+     *
+     * > When the {@link ResultsPerPage} component is present in the page, this option gets overridden and is useless.
      *
      * Default value is `10`. Minimum value is `0`.
      */
@@ -321,7 +326,6 @@ export class SearchInterface extends RootComponent implements IComponentBindings
   public static SMALL_INTERFACE_CLASS_NAME = 'coveo-small-search-interface';
 
   private attachedComponents: { [type: string]: BaseComponent[] };
-  private isNewDesignAttribute = false;
 
   public root: HTMLElement;
   public queryStateModel: QueryStateModel;
@@ -392,7 +396,6 @@ export class SearchInterface extends RootComponent implements IComponentBindings
     // shows the UI, since it's been hidden while loading
     this.element.style.display = element.style.display || 'block';
     this.setupDebugInfo();
-    this.isNewDesignAttribute = this.root.getAttribute('data-design') == 'new';
     this.responsiveComponents = new ResponsiveComponents();
   }
 
@@ -462,10 +465,12 @@ export class SearchInterface extends RootComponent implements IComponentBindings
   /**
    * Indicates whether the search interface is using the new design.
    * This changes the rendering of multiple components.
+   *
+   * @deprecated Old styling of the interface is no longer supported
    */
-  public isNewDesign() {
-    return this.isNewDesignAttribute;
-  }
+  // public isNewDesign() {
+  //  return false;
+  // }
 
   protected initializeAnalytics(): IAnalyticsClient {
     let analyticsRef = BaseComponent.getComponentRef('Analytics');
@@ -768,11 +773,15 @@ export class StandaloneSearchInterface extends SearchInterface {
 
     let link = document.createElement('a');
     link.href = searchPage;
+    link.href = link.href; // IE11 needs this to correctly fill the properties that are used below.
+
+    let pathname = link.pathname.indexOf('/') == 0 ? link.pathname : '/' + link.pathname; // IE11 does not add a leading slash to this property.
+    let hash = link.hash ? link.hash + '&' : '#';
 
     // By using a setTimeout, we allow other possible code related to the search box / magic box time to complete.
     // eg: onblur of the magic box.
     setTimeout(() => {
-      this._window.location.href = `${link.protocol}//${link.host}${link.pathname}${link.search}${link.hash ? link.hash + '&' : '#'}${HashUtils.encodeValues(stateValues)}`;
+      this._window.location.href = `${link.protocol}//${link.host}${pathname}${link.search}${hash}${HashUtils.encodeValues(stateValues)}`;
     }, 0);
   }
 

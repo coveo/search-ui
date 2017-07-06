@@ -8,8 +8,8 @@ declare var String: {
 export function L10NTest() {
 
 
-  describe('L10N', function () {
-    beforeEach(function () {
+  describe('L10N', () => {
+    beforeEach(() => {
       String.toLocaleString({
         'en': {
           'Foo': 'Bar',
@@ -23,22 +23,32 @@ export function L10NTest() {
         }
       });
     });
+    afterEach(() => {
+      String.toLocaleString({
+        'en': {
+          'Foo': 'Foo'
+        },
+        'fr': {
+          'Foo': 'Foo'
+        }
+      });
+    });
 
-    it('should work for simple localizations', function () {
+    it('should work for simple localizations', () => {
       String.locale = 'fr';
       expect(L10N.format('Foo')).toBe('Barre');
       String.locale = 'en';
       expect(L10N.format('Foo')).toBe('Bar');
     });
 
-    it('should put parameters in the outputted string properly', function () {
+    it('should put parameters in the outputted string properly', () => {
       String.locale = 'fr';
       expect(L10N.format('TwoNumbers', '37', '42')).toBe('37 et 42');
       String.locale = 'en';
       expect(L10N.format('TwoNumbers', '37', '42')).toBe('37 and 42');
     });
 
-    it('should automatically pluralize values higher than one', function () {
+    it('should automatically pluralize values higher than one', () => {
       String.locale = 'fr';
       expect(L10N.format('baby', 0, 0)).toBe('0 bébé');
       expect(L10N.format('baby', 0.42, 0.42)).toBe('0.42 bébé');
@@ -54,7 +64,7 @@ export function L10NTest() {
       expect(L10N.format('baby', 42, 42)).toBe('42 babies');
     });
 
-    it('should force pluralization or singularization when last argument is boolean', function () {
+    it('should force pluralization or singularization when last argument is boolean', () => {
       String.locale = 'fr';
       expect(L10N.format('baby', 1, true)).toBe('1 bébés');
       expect(L10N.format('baby', 37, false)).toBe('37 bébé');
@@ -62,6 +72,17 @@ export function L10NTest() {
       String.locale = 'en';
       expect(L10N.format('baby', 1, true)).toBe('1 babies');
       expect(L10N.format('baby', 37, false)).toBe('37 baby');
+    });
+
+    it('should try to find a soft match between strings', () => {
+      String.locale = 'fr';
+      expect(L10N.format('foo')).toBe('Barre');
+      expect(L10N.format('FOO')).toBe('Barre');
+      String.locale = 'en';
+    });
+
+    it('should try to remove parameters in the translated string if no parameters are passed', () => {
+      expect(L10N.format('baby')).toBe('baby');
     });
   });
 

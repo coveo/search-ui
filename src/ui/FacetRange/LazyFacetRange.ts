@@ -8,7 +8,7 @@ export function lazyFacetRange() {
       require.ensure(['./FacetRange'], () => {
         let loaded = require<IComponentDefinition>('./FacetRange.ts')['FacetRange'];
         lazyExport(loaded, resolve);
-      }, LazyInitialization.buildErrorCallback('FacetRange'), 'FacetRange');
+      }, LazyInitialization.buildErrorCallback('FacetRange', resolve), 'FacetRange');
     });
   });
 }

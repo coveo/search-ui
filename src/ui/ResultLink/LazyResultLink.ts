@@ -8,7 +8,7 @@ export function lazyResultLink() {
       require.ensure(['./ResultLink'], () => {
         let loaded = require<IComponentDefinition>('./ResultLink.ts')['ResultLink'];
         lazyExport(loaded, resolve);
-      }, LazyInitialization.buildErrorCallback('ResultLink'), 'ResultLink');
+      }, LazyInitialization.buildErrorCallback('ResultLink', resolve), 'ResultLink');
     });
   });
 }

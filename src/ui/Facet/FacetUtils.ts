@@ -7,6 +7,7 @@ import { Utils } from '../../utils/Utils';
 import { $$ } from '../../utils/Dom';
 import * as _ from 'underscore';
 import FacetModuleDefinition = require('./Facet');
+import { l } from '../../strings/Strings';
 
 declare const Coveo;
 
@@ -79,66 +80,19 @@ export class FacetUtils {
     let found: string;
 
     if (QueryUtils.isStratusAgnosticField(field.toLowerCase(), '@filetype')) {
-      found = FileTypes.getFileType(value.toLowerCase()).caption;
-    } else if (QueryUtils.isStratusAgnosticField(field.toLowerCase(), '@month')) {
+      found = FileTypes.getFileType(value).caption;
+    } else if (QueryUtils.isStratusAgnosticField(field.toLowerCase(), '@objecttype')) {
+      found = FileTypes.getObjectType(value).caption;
+    } else if (QueryUtils.isStratusAgnosticField(field.toLowerCase(), '@month') && value != 'Search') {
       try {
         let month = parseInt(value);
         found = DateUtils.monthToString(month - 1);
       } catch (ex) {
         // Do nothing
       }
+    } else {
+      found = l(value);
     }
     return found != undefined && Utils.isNonEmptyString(found) ? found : value;
-  }
-
-  static clipCaptionsToAvoidOverflowingTheirContainer(facet: FacetModuleDefinition.Facet, forceClip = false) {
-    // in new design, we don't need this : use flexbox instead (sorry IE user)
-    if (facet.getBindings && facet.getBindings().searchInterface && facet.getBindings().searchInterface.isNewDesign() && !forceClip) {
-      return;
-    }
-    if (!(Coveo.HierarchicalFacet && facet instanceof Coveo.HierarchicalFacet) || forceClip) {
-      facet.logger.trace('Clipping captions');
-      // force facet to show to calculate width
-      $$(facet.element).show();
-      let element = facet.element;
-      let captions = $$(element).findAll('.coveo-facet-value-caption');
-      for (let i = 0; i < captions.length; i++) {
-        if (captions[i].style.width != '') {
-          captions[i].style.width = '';
-        }
-      }
-      let labels = $$(element).findAll('.coveo-facet-value-label-wrapper');
-      let labelsMaxWidth: { element: HTMLElement; width: number; crop: number; label: HTMLElement; }[] = [];
-      for (let i = 0; i < labels.length; i++) {
-        let label: HTMLElement = labels[i];
-        let caption: HTMLElement = $$(label).find('.coveo-facet-value-caption');
-
-        let labelWidth = label.scrollWidth;
-        let labelVisibleWidth = label.clientWidth;
-
-        let captionWidth = caption.scrollWidth;
-
-        let crop = Math.max(0, labelWidth - labelVisibleWidth);
-        if (crop) {
-          labelsMaxWidth.push({
-            element: caption,
-            width: captionWidth,
-            crop: crop,
-            label: label
-          });
-        }
-      }
-      // remove the specific css class
-      element.style.display = '';
-      for (let i = 0; i < labelsMaxWidth.length; i++) {
-        let labelMaxWidth = labelsMaxWidth[i];
-        labelMaxWidth.element.style.width = labelMaxWidth.width - labelMaxWidth.crop + 'px';
-        if (labelMaxWidth.crop > 0) {
-          labelMaxWidth.label.setAttribute('title', $$(labelMaxWidth.element).text());
-        } else {
-          labelMaxWidth.label.setAttribute('title', null);
-        }
-      }
-    }
   }
 }

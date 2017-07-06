@@ -58,14 +58,6 @@ export function SearchInterfaceTest() {
       expect(cmp.root).toBe(cmp.element, 'Not an element');
     });
 
-    it('should return is new design properly', function () {
-      expect(cmp.isNewDesign()).toBe(false);
-      let newDesignDiv = document.createElement('div');
-      newDesignDiv.setAttribute('data-design', 'new');
-      let newDesignCmp = new SearchInterface(newDesignDiv);
-      expect(newDesignCmp.isNewDesign()).toBe(true);
-    });
-
     it('should allow to attach and detach component', function () {
       let cmpToAttach = Mock.mockComponent(Querybox);
       cmp.attachComponent('Querybox', cmpToAttach);

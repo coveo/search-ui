@@ -19,8 +19,7 @@ export function FacetHeaderTest() {
         title: 'foo',
         field: '@field',
         enableClearElement: true,
-        enableCollapseElement: true,
-        isNewDesign: true
+        enableCollapseElement: true
       };
     });
 

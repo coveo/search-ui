@@ -248,6 +248,10 @@ export var analyticsActionCauseList = {
     type: 'breadcrumb',
     metaMap: { facetId: 1, facetValue: 2, facetTitle: 3 }
   },
+  breadcrumbAdvancedSearch: <IAnalyticsActionCause>{
+    name: 'breadcrumbAdvancedSearch',
+    type: 'breadcrumb'
+  },
   breadcrumbResetAll: <IAnalyticsActionCause>{
     name: 'breadcrumbResetAll',
     type: 'breadcrumb',
@@ -535,5 +539,13 @@ export var analyticsActionCauseList = {
   resultsLayoutChange: <IAnalyticsActionCause>{
     name: 'changeResultsLayout',
     type: 'resultsLayout'
+  },
+  foldingShowMore: <IAnalyticsActionCause>{
+    name: 'showMoreFoldedResults',
+    type: 'folding'
+  },
+  foldingShowLess: <IAnalyticsActionCause>{
+    name: 'showLessFoldedResults',
+    type: 'folding'
   }
 };

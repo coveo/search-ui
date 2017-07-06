@@ -79,12 +79,7 @@ export class ResultRating extends Component {
       star = $$(starElement);
     }
 
-    let basePath: String = '';
-    if (this.searchInterface.isNewDesign()) {
-      basePath = 'coveo-sprites-';
-    } else {
-      basePath = 'coveo-sprites-common-';
-    }
+    let basePath: String = 'coveo-sprites-';
     star.toggleClass(basePath + 'star_placeholder', !isChecked);
     star.toggleClass(basePath + 'star_active', isChecked);
   }

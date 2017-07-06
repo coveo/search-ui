@@ -127,8 +127,10 @@ export class Recommendation extends SearchInterface implements IComponentBinding
      * However, setting this option to `false` can be useful to display side results in a search page.
      *
      * Default value is `true`.
+     *
+     * @deprecated This option is now deprecated. The correct way to control this behavior is to configure an appropriate machine learning model in the administration interface (Recommendation, Relevance tuning, Query suggestions).
      */
-    sendActionsHistory: ComponentOptions.buildBooleanOption({ defaultValue: true }),
+    sendActionsHistory: ComponentOptions.buildBooleanOption({ defaultValue: true, deprecated: 'This option is now deprecated. The correct way to control this behaviour is to configure an appropriate machine learning model in the administration interface (Recommendation, Relevance tuning, Query suggestions)' }),
 
     /**
      * Specifies whether to hide the Recommendations component if no result or recommendation is available.
@@ -313,7 +315,9 @@ export class Recommendation extends SearchInterface implements IComponentBinding
       this.mainQuerySearchUID = args.results.searchUid;
       this.mainQueryPipeline = args.results.pipeline;
       this.usageAnalytics.logSearchEvent<IAnalyticsNoMeta>(analyticsActionCauseList.recommendation, {});
-      this.queryController.executeQuery();
+      this.queryController.executeQuery({
+        closeModalBox: false
+      });
     });
   }
 
@@ -360,9 +364,6 @@ export class Recommendation extends SearchInterface implements IComponentBinding
   private addRecommendationInfoInQuery(data: IBuildingQueryEventArgs) {
     if (!_.isEmpty(this.options.userContext)) {
       data.queryBuilder.addContext(JSON.parse(this.options.userContext));
-    }
-    if (this.options.sendActionsHistory) {
-      data.queryBuilder.actionsHistory = this.getHistory();
     }
 
     data.queryBuilder.recommendation = this.options.id;

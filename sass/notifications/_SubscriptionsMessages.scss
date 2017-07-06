@@ -1,3 +1,9 @@
+@import "../_Variables";
+
+.coveo-subscriptions-messages {
+  z-index: 1;
+}
+
 .coveo-subscriptions-messages-message {
   background-color: #ecad00;
   border-radius: 2px;
@@ -25,26 +31,23 @@
     height: 0;
     border-style: solid;
     border-width: 0 7px 7px 7px;
-    border-color: transparent transparent #ecad00 transparent;
+    border-color: transparent transparent $color-active-yellow transparent;
     float: left;
   }
   
   .coveo-subscriptions-messages-content {
     line-height: 26px;
     vertical-align: middle;
-    display: block;
+    display: inline-block;
     overflow: hidden;
     text-overflow: ellipsis;
   }
 
   .coveo-subscriptions-messages-info-close {
-    float: right;
     display: inline-block;
     cursor: pointer;
-    padding: 0 4px;
-    &:before {
-      content: '';
-      vertical-align: middle;
-    }
+    vertical-align: middle;
+    margin: 0 5px;
+    @include clearButton('&');
   }
 }

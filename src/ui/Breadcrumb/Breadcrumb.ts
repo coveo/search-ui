@@ -12,6 +12,8 @@ import { KeyboardUtils, KEYBOARD } from '../../utils/KeyboardUtils';
 import * as _ from 'underscore';
 import { exportGlobally } from '../../GlobalExports';
 import 'styling/_Breadcrumb';
+import { SVGIcons } from '../../utils/SVGIcons';
+import { SVGDom } from '../../utils/SVGDom';
 
 export interface IBreadcrumbOptions {
 }
@@ -69,7 +71,7 @@ export class Breadcrumb extends Component {
    * @returns {IBreadcrumbItem[]} A populated breadcrumb item list.
    */
   public getBreadcrumbs(): IBreadcrumbItem[] {
-    let args = <IPopulateBreadcrumbEventArgs>{ breadcrumbs: [] };
+    const args = <IPopulateBreadcrumbEventArgs>{ breadcrumbs: [] };
     this.bind.trigger(this.root, BreadcrumbEvents.populateBreadcrumb, args);
     this.logger.debug('Retrieved breadcrumbs', args.breadcrumbs);
     this.lastBreadcrumbs = args.breadcrumbs;
@@ -82,7 +84,7 @@ export class Breadcrumb extends Component {
    * Also triggers a new query and logs the `breadcrumbResetAll` event in the usage analytics.
    */
   public clearBreadcrumbs() {
-    let args = <IClearBreadcrumbEventArgs>{};
+    const args = <IClearBreadcrumbEventArgs>{};
     this.bind.trigger(this.root, BreadcrumbEvents.clearBreadcrumb, args);
     this.logger.debug('Clearing breadcrumbs');
     this.usageAnalytics.logSearchEvent<IAnalyticsNoMeta>(analyticsActionCauseList.breadcrumbResetAll, {});
@@ -101,32 +103,28 @@ export class Breadcrumb extends Component {
       this.element.style.display = 'none';
     }
 
-    let breadcrumbItems = document.createElement('div');
+    const breadcrumbItems = document.createElement('div');
     $$(breadcrumbItems).addClass('coveo-breadcrumb-items');
     this.element.appendChild(breadcrumbItems);
     _.each(breadcrumbs, (bcrumb: IBreadcrumbItem) => {
-      let elem = bcrumb.element;
+      const elem = bcrumb.element;
       $$(elem).addClass('coveo-breadcrumb-item');
       breadcrumbItems.appendChild(elem);
     });
 
-    let clear = $$('div', {
+    const clear = $$('div', {
       className: 'coveo-breadcrumb-clear-all',
       title: l('ClearAllFilters'),
       tabindex: 0
     }).el;
 
-    let clearIcon = $$('div', { className: 'coveo-icon coveo-breadcrumb-icon-clear-all' }).el;
+    const clearIcon = $$('div', { className: 'coveo-icon coveo-breadcrumb-clear-all-icon' }, SVGIcons.checkboxHookExclusionMore).el;
+    SVGDom.addClassToSVGInContainer(clearIcon, 'coveo-breadcrumb-clear-all-svg');
     clear.appendChild(clearIcon);
-
-    if (this.searchInterface.isNewDesign()) {
-      let clearText = document.createElement('div');
-      $$(clearText).text(l('Clear', ''));
-      clear.appendChild(clearText);
-      this.element.appendChild(clear);
-    } else {
-      this.element.insertBefore(clear, this.element.firstChild);
-    }
+    const clearText = document.createElement('div');
+    $$(clearText).text(l('Clear', ''));
+    clear.appendChild(clearText);
+    this.element.appendChild(clear);
 
     const clearAction = () => this.clearBreadcrumbs();
     this.bind.on(clear, 'click', clearAction);
