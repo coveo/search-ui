@@ -167,13 +167,9 @@ export class Badge extends FieldValue implements IComponentBindings {
 
     let color = this.getColor(value);
 
-    if (this.searchInterface.isNewDesign()) {
-      var icon = $$('span', { className: 'coveo-badge-icon' }).el;
-      if (color.icon != null) {
-        icon.style.color = color.icon;
-      }
-    } else if (color.icon != null) {
-      valueDom.style.background = color.icon;
+    var icon = $$('span', { className: 'coveo-badge-icon' }).el;
+    if (color.icon != null) {
+      icon.style.color = color.icon;
     }
 
     let label = $$('span', { className: 'coveo-badge-label' }, valueDom.innerHTML).el;
@@ -184,9 +180,7 @@ export class Badge extends FieldValue implements IComponentBindings {
 
     $$(valueDom).empty();
 
-    if (this.searchInterface.isNewDesign()) {
-      valueDom.appendChild(icon);
-    }
+    valueDom.appendChild(icon);
     valueDom.appendChild(label);
     return valueDom;
   }

@@ -326,7 +326,6 @@ export class SearchInterface extends RootComponent implements IComponentBindings
   public static SMALL_INTERFACE_CLASS_NAME = 'coveo-small-search-interface';
 
   private attachedComponents: { [type: string]: BaseComponent[] };
-  private isNewDesignAttribute = false;
 
   public root: HTMLElement;
   public queryStateModel: QueryStateModel;
@@ -397,7 +396,6 @@ export class SearchInterface extends RootComponent implements IComponentBindings
     // shows the UI, since it's been hidden while loading
     this.element.style.display = element.style.display || 'block';
     this.setupDebugInfo();
-    this.isNewDesignAttribute = this.root.getAttribute('data-design') == 'new';
     this.responsiveComponents = new ResponsiveComponents();
   }
 
@@ -467,10 +465,12 @@ export class SearchInterface extends RootComponent implements IComponentBindings
   /**
    * Indicates whether the search interface is using the new design.
    * This changes the rendering of multiple components.
+   *
+   * @deprecated Old styling of the interface is no longer supported
    */
-  public isNewDesign() {
-    return this.isNewDesignAttribute;
-  }
+  // public isNewDesign() {
+  //  return false;
+  // }
 
   protected initializeAnalytics(): IAnalyticsClient {
     let analyticsRef = BaseComponent.getComponentRef('Analytics');

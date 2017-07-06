@@ -105,21 +105,6 @@ export function BadgeTest() {
         expect($$(fooVal).find('span.coveo-badge-icon').style.color).toBe('rgb(0, 0, 0)');
         expect($$(fooVal).find('span.coveo-badge-label').style.color).toBe('rgb(255, 255, 255)');
       });
-
-      describe('when isNewDesign is false', function () {
-        beforeEach(function () {
-          test.env.searchInterface.isNewDesign = () => false;
-        });
-
-        it('should not render an icon', function () {
-          expect($$(test.cmp.renderOneValue('foo')).find('span.coveo-badge-icon')).toBeNull();
-        });
-
-        it('should set the background color of the label instead of the icon color', function () {
-          expect(test.cmp.renderOneValue('bar').style.backgroundColor).toBe('blue');
-          expect($$(test.cmp.renderOneValue('bar')).find('span.coveo-badge-label').style.color).toBe('green');
-        });
-      });
     });
   });
 }

@@ -27,7 +27,7 @@ plugins.push(new webpack.ProvidePlugin({
 
 if (production) {
   const extractSass = new ExtractTextPlugin({
-    filename: '../css/CoveoFullSearchNewDesign.css'
+    filename: '../css/CoveoFullSearch.css'
   });
   additionalRules.push({
     test: /\.scss/,

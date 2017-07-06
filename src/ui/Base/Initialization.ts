@@ -18,7 +18,6 @@ import { IJQuery } from './CoveoJQuery';
 import * as _ from 'underscore';
 import { IStringMap } from '../../rest/GenericParam';
 import { InitializationPlaceholder } from './InitializationPlaceholder';
-import { NoopComponent } from '../NoopComponent/NoopComponent';
 import { get } from './RegisteredNamedMethods';
 declare const require: any;
 
@@ -399,6 +398,14 @@ export class Initialization {
       }
     });
 
+    // We log the fatal error on init, but then we try to continue the initialization for the rest of the components.
+    // In most case, this would be caused by a fatal error in a component constructor.
+    // In some cases, it might be for a minor component not essential to basic function of the interface, meaning we could still salvage things here.
+    const logFatalErrorOnComponentInitialization = (e: Error) => {
+      this.logger.error(e);
+      this.logger.warn(`Skipping initialization of previous component in error ... `);
+    };
+
     if (isLazyInit) {
       return {
         initResult: Promise.all(_.map(codeToExecute, (code) => {
@@ -408,11 +415,20 @@ export class Initialization {
           } else {
             return Promise.resolve(true);
           }
-        })).then(() => true),
+        })).then(() => true).catch((e: Error) => {
+          logFatalErrorOnComponentInitialization(e);
+          return true;
+        }),
         isLazyInit: true
       };
     } else {
-      _.each(codeToExecute, (code) => code());
+      _.each(codeToExecute, (code) => {
+        try {
+          code();
+        } catch (e) {
+          logFatalErrorOnComponentInitialization(e);
+        }
+      });
       return {
         initResult: Promise.resolve(true),
         isLazyInit: false
@@ -659,7 +675,7 @@ export class LazyInitialization {
   public static buildErrorCallback(chunkName: string, resolve: Function) {
     return (error) => {
       LazyInitialization.logger.warn(`Cannot load chunk for ${chunkName}. You may need to configure the paths of the ressources using Coveo.configureRessourceRoot. Current path is ${__webpack_public_path__}.`);
-      resolve(NoopComponent);
+      resolve(() => { });
     };
   }
 

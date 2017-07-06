@@ -48,38 +48,18 @@ export function ResultRatingTest() {
       expect($$(test.env.element).isEmpty()).toBe(true);
     });
 
-    it('should load new active stars when using new design', () => {
+    it('should load active stars', () => {
       test = Mock.basicResultComponentSetup<ResultRating>(ResultRating);
 
       let star = $$(test.env.element).find('a');
       expect($$(star).hasClass('coveo-sprites-star_active')).toBe(true);
     });
 
-    it('should load old active stars when using old design', () => {
-      test = Mock.advancedResultComponentSetup<ResultRating>(ResultRating, FakeResults.createFakeResult(),
-        new Mock.AdvancedComponentSetupOptions(undefined, undefined, (builder: Mock.MockEnvironmentBuilder) => {
-          return builder.withOldDesign();
-        }));
-
-      let star = $$(test.env.element).find('a');
-      expect($$(star).hasClass('coveo-sprites-common-star_active')).toBe(true);
-    });
-
-    it('should load new placeholder stars when using new design ', () => {
+    it('should load placeholder stars', () => {
       test = Mock.advancedResultComponentSetup<ResultRating>(ResultRating, fakeResultWithNoStars, undefined);
 
       let star = $$(test.env.element).find('a');
       expect($$(star).hasClass('coveo-sprites-star_placeholder')).toBe(true);
-    });
-
-    it('should load old placeholder stars when using old design', () => {
-      test = Mock.advancedResultComponentSetup<ResultRating>(ResultRating, fakeResultWithNoStars,
-        new Mock.AdvancedComponentSetupOptions(undefined, undefined, (builder: Mock.MockEnvironmentBuilder) => {
-          return builder.withOldDesign();
-        }));
-
-      let star = $$(test.env.element).find('a');
-      expect($$(star).hasClass('coveo-sprites-common-star_placeholder')).toBe(true);
     });
 
     it('should call query controller when rating a document', () => {

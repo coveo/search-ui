@@ -17,7 +17,6 @@ export function ResponsiveComponentsManagerTest() {
       let searchInterfaceMock = Mock.optionsSearchInterfaceSetup<SearchInterface, ISearchInterfaceOptions>(SearchInterface, {
         enableAutomaticResponsiveMode: true
       });
-      searchInterfaceMock.cmp.isNewDesign = () => true;
       root = $$(searchInterfaceMock.cmp.root);
       handleResizeEvent = jasmine.createSpy('handleResizeEvent');
       registerComponent = jasmine.createSpy('registerComponent');

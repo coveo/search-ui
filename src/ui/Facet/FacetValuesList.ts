@@ -131,7 +131,6 @@ export class FacetValuesList {
     this.valueContainer.appendChild(docFragment);
 
     FacetUtils.addNoStateCssClassToFacetValues(this.facet, this.valueContainer);
-    FacetUtils.clipCaptionsToAvoidOverflowingTheirContainer(this.facet);
   }
 
   protected getValuesToBuildWith() {

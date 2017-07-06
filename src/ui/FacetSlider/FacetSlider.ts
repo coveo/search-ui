@@ -419,7 +419,6 @@ export class FacetSlider extends Component {
       title: this.options.title,
       enableClearElement: true,
       enableCollapseElement: true,
-      isNewDesign: this.getBindings().searchInterface.isNewDesign(),
       facetSlider: this
     });
     this.element.appendChild(this.facetHeader.build());
