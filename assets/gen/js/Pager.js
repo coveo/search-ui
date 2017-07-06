@@ -18,11 +18,11 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var Component_1 = __webpack_require__(8);
 var ComponentOptions_1 = __webpack_require__(9);
-var DeviceUtils_1 = __webpack_require__(19);
+var DeviceUtils_1 = __webpack_require__(20);
 var QueryEvents_1 = __webpack_require__(11);
 var Model_1 = __webpack_require__(16);
-var QueryStateModel_1 = __webpack_require__(14);
-var QueryStateModel_2 = __webpack_require__(14);
+var QueryStateModel_1 = __webpack_require__(13);
+var QueryStateModel_2 = __webpack_require__(13);
 var AnalyticsActionListMeta_1 = __webpack_require__(12);
 var Initialization_1 = __webpack_require__(2);
 var Assert_1 = __webpack_require__(7);

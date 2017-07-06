@@ -23,11 +23,11 @@ var Assert_1 = __webpack_require__(7);
 var OmniboxEvents_1 = __webpack_require__(33);
 var QueryEvents_1 = __webpack_require__(11);
 var Strings_1 = __webpack_require__(10);
-var QueryStateModel_1 = __webpack_require__(14);
+var QueryStateModel_1 = __webpack_require__(13);
 var AnalyticsActionListMeta_1 = __webpack_require__(12);
 var Initialization_1 = __webpack_require__(2);
 var Dom_1 = __webpack_require__(3);
-var SearchInterface_1 = __webpack_require__(20);
+var SearchInterface_1 = __webpack_require__(19);
 var _ = __webpack_require__(1);
 var GlobalExports_1 = __webpack_require__(4);
 /**

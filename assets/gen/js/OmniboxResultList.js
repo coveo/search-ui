@@ -23,13 +23,13 @@ var ComponentOptions_1 = __webpack_require__(9);
 var Assert_1 = __webpack_require__(7);
 var QueryEvents_1 = __webpack_require__(11);
 var Model_1 = __webpack_require__(16);
-var QueryStateModel_1 = __webpack_require__(14);
+var QueryStateModel_1 = __webpack_require__(13);
 var QueryUtils_1 = __webpack_require__(17);
 var Dom_1 = __webpack_require__(3);
 var AnalyticsActionListMeta_1 = __webpack_require__(12);
 var Initialization_1 = __webpack_require__(2);
 var Defer_1 = __webpack_require__(28);
-var DeviceUtils_1 = __webpack_require__(19);
+var DeviceUtils_1 = __webpack_require__(20);
 var ResultListEvents_1 = __webpack_require__(32);
 var ResultLayoutEvents_1 = __webpack_require__(103);
 var Utils_1 = __webpack_require__(5);
@@ -526,6 +526,8 @@ var ResultList = (function (_super) {
     ResultList.prototype.showWaitingAnimationForInfiniteScrolling = function () {
         var spinner = DomUtils_1.DomUtils.getLoadingSpinner();
         if (this.options.layout == 'card' && this.options.enableInfiniteScroll) {
+            var previousSpinnerContainer = Dom_1.$$(this.options.waitAnimationContainer).findAll('.coveo-loading-spinner-container');
+            _.each(previousSpinnerContainer, function (previousSpinner) { return Dom_1.$$(previousSpinner).remove(); });
             var spinnerContainer = Dom_1.$$('div', {
                 className: 'coveo-loading-spinner-container'
             });
@@ -537,10 +539,10 @@ var ResultList = (function (_super) {
         }
     };
     ResultList.prototype.hideWaitingAnimationForInfiniteScrolling = function () {
-        var spinner = Dom_1.$$(this.options.waitAnimationContainer).find('.coveo-loading-spinner');
-        if (spinner) {
-            Dom_1.$$(spinner).detach();
-        }
+        var spinners = Dom_1.$$(this.options.waitAnimationContainer).findAll('.coveo-loading-spinner');
+        var containers = Dom_1.$$(this.options.waitAnimationContainer).findAll('.coveo-loading-spinner-container');
+        _.each(spinners, function (spinner) { return Dom_1.$$(spinner).remove(); });
+        _.each(containers, function (container) { return Dom_1.$$(container).remove(); });
     };
     ResultList.prototype.initResultContainer = function () {
         if (!this.options.resultContainer) {
@@ -1123,11 +1125,11 @@ exports.TableTemplate = TableTemplate;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var ResponsiveComponentsManager_1 = __webpack_require__(78);
-var SearchInterface_1 = __webpack_require__(20);
+var SearchInterface_1 = __webpack_require__(19);
 var ResultList_1 = __webpack_require__(100);
 var Dom_1 = __webpack_require__(3);
 var Component_1 = __webpack_require__(8);
-var Logger_1 = __webpack_require__(13);
+var Logger_1 = __webpack_require__(14);
 var ResponsiveDefaultResultTemplate = (function () {
     function ResponsiveDefaultResultTemplate(coveoRoot, ID, options, responsiveDropdown) {
         this.coveoRoot = coveoRoot;
@@ -1216,12 +1218,16 @@ var ResultListCardRenderer = (function (_super) {
         var _this = this;
         return new Promise(function (resolve) {
             if (!_.isEmpty(resultElements)) {
-                if (!_this.resultListOptions.enableInfiniteScroll) {
-                    // Used to prevent last card from spanning the grid's whole width
-                    var emptyCards_1 = document.createDocumentFragment();
-                    _.times(3, function () { return emptyCards_1.appendChild(Dom_1.$$('div', { className: 'coveo-card-layout' }).el); });
-                    resolve(emptyCards_1);
+                // with infinite scrolling, we want the additional results to append at the end of the previous query.
+                // For this, we need to remove the padding.
+                if (_this.resultListOptions.enableInfiniteScroll) {
+                    var needToBeRemoved = Dom_1.$$(_this.resultListOptions.resultContainer).findAll('.coveo-card-layout-padding');
+                    _.each(needToBeRemoved, function (toRemove) { return Dom_1.$$(toRemove).remove(); });
                 }
+                // Used to prevent last card from spanning the grid's whole width
+                var emptyCards_1 = document.createDocumentFragment();
+                _.times(3, function () { return emptyCards_1.appendChild(Dom_1.$$('div', { className: 'coveo-card-layout coveo-card-layout-padding' }).el); });
+                resolve(emptyCards_1);
             }
             resolve(null);
         });
@@ -1359,11 +1365,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var Dom_1 = __webpack_require__(3);
 var InitializationEvents_1 = __webpack_require__(15);
 var Component_1 = __webpack_require__(8);
-var SearchInterface_1 = __webpack_require__(20);
+var SearchInterface_1 = __webpack_require__(19);
 var Utils_1 = __webpack_require__(5);
 var _ = __webpack_require__(1);
 var QueryEvents_1 = __webpack_require__(11);
-var Logger_1 = __webpack_require__(13);
+var Logger_1 = __webpack_require__(14);
 var ResponsiveComponentsManager = (function () {
     function ResponsiveComponentsManager(root) {
         var _this = this;

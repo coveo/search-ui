@@ -25,7 +25,7 @@ var Assert_1 = __webpack_require__(7);
 var ResultListEvents_1 = __webpack_require__(32);
 var ResultLayoutEvents_1 = __webpack_require__(103);
 var Dom_1 = __webpack_require__(3);
-var QueryStateModel_1 = __webpack_require__(14);
+var QueryStateModel_1 = __webpack_require__(13);
 var Model_1 = __webpack_require__(16);
 var AnalyticsActionListMeta_1 = __webpack_require__(12);
 var KeyboardUtils_1 = __webpack_require__(22);
@@ -324,8 +324,8 @@ var ResponsiveComponentsManager_1 = __webpack_require__(78);
 var Dom_1 = __webpack_require__(3);
 var Component_1 = __webpack_require__(8);
 var ResultLayout_1 = __webpack_require__(255);
-var Logger_1 = __webpack_require__(13);
-var SearchInterface_1 = __webpack_require__(20);
+var Logger_1 = __webpack_require__(14);
+var SearchInterface_1 = __webpack_require__(19);
 var _ = __webpack_require__(1);
 var ResponsiveResultLayout = (function () {
     function ResponsiveResultLayout(coveoRoot, ID, options, responsiveDropdown) {
@@ -387,11 +387,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var Dom_1 = __webpack_require__(3);
 var InitializationEvents_1 = __webpack_require__(15);
 var Component_1 = __webpack_require__(8);
-var SearchInterface_1 = __webpack_require__(20);
+var SearchInterface_1 = __webpack_require__(19);
 var Utils_1 = __webpack_require__(5);
 var _ = __webpack_require__(1);
 var QueryEvents_1 = __webpack_require__(11);
-var Logger_1 = __webpack_require__(13);
+var Logger_1 = __webpack_require__(14);
 var ResponsiveComponentsManager = (function () {
     function ResponsiveComponentsManager(root) {
         var _this = this;

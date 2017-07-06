@@ -330,11 +330,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var Dom_1 = __webpack_require__(3);
 var InitializationEvents_1 = __webpack_require__(15);
 var Component_1 = __webpack_require__(8);
-var SearchInterface_1 = __webpack_require__(20);
+var SearchInterface_1 = __webpack_require__(19);
 var Utils_1 = __webpack_require__(5);
 var _ = __webpack_require__(1);
 var QueryEvents_1 = __webpack_require__(11);
-var Logger_1 = __webpack_require__(13);
+var Logger_1 = __webpack_require__(14);
 var ResponsiveComponentsManager = (function () {
     function ResponsiveComponentsManager(root) {
         var _this = this;
@@ -1118,7 +1118,7 @@ var BreadcrumbEvents_1 = __webpack_require__(43);
 var Model_1 = __webpack_require__(16);
 var Dom_1 = __webpack_require__(3);
 var AnalyticsActionListMeta_1 = __webpack_require__(12);
-var QueryStateModel_1 = __webpack_require__(14);
+var QueryStateModel_1 = __webpack_require__(13);
 var SliderEvents_1 = __webpack_require__(105);
 var Assert_1 = __webpack_require__(7);
 var Utils_1 = __webpack_require__(5);
@@ -3257,14 +3257,14 @@ var Dom_1 = __webpack_require__(3);
 var ResponsiveComponentsManager_1 = __webpack_require__(78);
 var ResponsiveComponentsUtils_1 = __webpack_require__(89);
 var Component_1 = __webpack_require__(8);
-var Logger_1 = __webpack_require__(13);
+var Logger_1 = __webpack_require__(14);
 var Strings_1 = __webpack_require__(10);
 var Utils_1 = __webpack_require__(5);
 var ResponsiveDropdown_1 = __webpack_require__(390);
 var ResponsiveDropdownContent_1 = __webpack_require__(391);
 var ResponsiveDropdownHeader_1 = __webpack_require__(392);
 var QueryEvents_1 = __webpack_require__(11);
-var SearchInterface_1 = __webpack_require__(20);
+var SearchInterface_1 = __webpack_require__(19);
 var ResponsiveComponents_1 = __webpack_require__(40);
 var _ = __webpack_require__(1);
 __webpack_require__(469);
@@ -24841,7 +24841,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var QueryEvents_1 = __webpack_require__(11);
 var ExpressionBuilder_1 = __webpack_require__(68);
 var DateUtils_1 = __webpack_require__(29);
-var Logger_1 = __webpack_require__(13);
+var Logger_1 = __webpack_require__(14);
 var QueryUtils_1 = __webpack_require__(17);
 var _ = __webpack_require__(1);
 var FacetSliderQueryController = (function () {
@@ -25148,14 +25148,14 @@ exports.FacetSliderQueryController = FacetSliderQueryController;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var Dom_1 = __webpack_require__(3);
-var DeviceUtils_1 = __webpack_require__(19);
+var DeviceUtils_1 = __webpack_require__(20);
 var SliderEvents_1 = __webpack_require__(105);
 var Utils_1 = __webpack_require__(5);
 var d3_scale_1 = __webpack_require__(534);
 var d3_1 = __webpack_require__(567);
 var Globalize = __webpack_require__(24);
 var _ = __webpack_require__(1);
-var Logger_1 = __webpack_require__(13);
+var Logger_1 = __webpack_require__(14);
 exports.MAX_NUMBER_OF_STEPS = 100;
 var Slider = (function () {
     function Slider(element, options, root) {
