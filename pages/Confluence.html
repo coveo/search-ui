@@ -19,8 +19,9 @@
   </head>
 
   <body id="search" class='CoveoSearchInterface' data-enable-history="true" data-design="new">
+    <div class="CoveoFolding" data-field="@confparentitemid" data-parent-field="@confitemid" data-child-field="@confparentitemid" data-expand-expression="@confitemtype==attachment" data-rearrange="date ascending" data-tab="Confluence" data-range="5"></div>
     <div class="coveo-tab-section">
-      <a class="CoveoTab" data-id="Confluence" data-caption="Confluence" data-expression="@connectortype==Confluence2Crawler"></a>
+      <a class="CoveoTab" data-id="Confluence" data-caption="Confluence" data-expression="@connectortype==Confluence2Crawler AND NOT @documenttype==Space"></a>
     </div>
     <div class='coveo-search-section'>
       <div class="CoveoSettings"></div>

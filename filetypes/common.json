@@ -1,7 +1,7 @@
 {
   "filetype": {
     "html": {
-      "icon": "salesforce-doctype-html",
+      "icon": "salesforce-doctype-link",
       "captions": {
         "en": "HTML File",
         "fr": "Fichier HTML",
