@@ -200,12 +200,12 @@ export class Quickview extends Component {
     if (/^\s*$/.test(this.element.innerHTML)) {
       const iconForQuickview = $$('div', { className: 'coveo-icon-for-quickview' }, SVGIcons.quickview);
       SVGDom.addClassToSVGInContainer(iconForQuickview.el, 'coveo-icon-for-quickview-svg');
-        const captionForQuickview = $$(
+      const captionForQuickview = $$(
         'div',
         { className: 'coveo-caption-for-icon', tabindex: 0 },
         'Quickview'.toLocaleString()
       ).el;
-        const div = $$('div');
+      const div = $$('div');
       div.append(iconForQuickview.el);
       div.append(captionForQuickview);
       $$(this.element).append(div.el);
