@@ -303,7 +303,8 @@ export class ResultsFiltersPreferences extends Component {
 
     const saveFormButton = $$('span', {
       className: 'coveo-save'
-    });
+    }, SVGIcons.checkboxHookExclusionMore);
+    SVGDom.addClassToSVGInContainer(saveFormButton.el, 'coveo-save-svg');
 
     const closeFormButton = $$('span', {
       className: 'coveo-close'
@@ -404,9 +405,8 @@ export class ResultsFiltersPreferences extends Component {
       if (filter.custom) {
         const deleteElement = $$('span', {
           className: 'coveo-delete'
-        }, $$('span', {
-          className: 'coveo-icon'
-        }).el).el;
+        }, SVGIcons.checkboxHookExclusionMore).el;
+        SVGDom.addClassToSVGInContainer(deleteElement, 'coveo-delete-svg');
         const filterElement = this.getFilterElementByCaption(filter.caption);
         const insertInto = $$(filterElement).find('.coveo-section-edit-delete');
         insertInto.appendChild(deleteElement);
@@ -420,7 +420,8 @@ export class ResultsFiltersPreferences extends Component {
       if (filter.custom) {
         const editElement = $$('span', {
           className: 'coveo-edit'
-        }, $$('span', { className: 'coveo-icon' }));
+        }, SVGIcons.edit);
+        SVGDom.addClassToSVGInContainer(editElement.el, 'coveo-edit-svg');
         const filterElement = this.getFilterElementByCaption(filter.caption);
         const insertInto = $$(filterElement).find('.coveo-section-edit-delete');
         insertInto.appendChild(editElement.el);
