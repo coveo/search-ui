@@ -789,8 +789,8 @@
     "feedcomment": {
       "icon": "salesforce-standard-post",
       "captions": {
-        "en": "Chatter",
-        "fr": "Chatter",
+        "en": "Comment",
+        "fr": "Commentaire",
         "cs": "Chatter",
         "da": "Chatter",
         "de": "Chatter",
@@ -1408,34 +1408,6 @@
         "tr": "İşbirliği grubu",
         "zh-cn": "协作组",
         "zh-tw": "協作組"
-      }
-    },
-    "topic": {
-      "icon": "salesforce-standard-topic",
-      "captions": {
-        "en": "Topic",
-        "fr": "Sujet"
-      }
-    },
-    "dashboard": {
-      "icon": "salesforce-standard-dashboard",
-      "captions": {
-        "en": "Dashboard",
-        "fr": "Tableau de bord"
-      }
-    },
-    "contentversion": {
-      "icon": "salesforce-standard-document",
-      "captions": {
-        "en": "Document",
-        "fr": "Document"
-      }
-    },
-    "collaborationgroup": {
-      "icon": "salesforce-standard-groups",
-      "captions": {
-        "en": "Collaboration group",
-        "fr": "Groupe de collaboration"
       }
     }
   }
