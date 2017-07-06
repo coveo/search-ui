@@ -51,13 +51,13 @@ export function SimpleFilterTest() {
 
     it('should expand the component correctly', () => {
       aSimpleFilter.cmp.openContainer();
-      expect($$(aSimpleFilter.cmp.getCheckboxContainer()).hasClass('coveo-simplefilter-checkbox-container-expanded')).toBe(true);
+      expect($$(aSimpleFilter.cmp.getValueContainer()).hasClass('coveo-simplefilter-value-container-expanded')).toBe(true);
 
     });
 
     it('should collapse the component correctly', () => {
       aSimpleFilter.cmp.closeContainer();
-      expect($$(aSimpleFilter.cmp.getCheckboxContainer()).hasClass('coveo-simplefilter-checkbox-container-expanded')).toBe(false);
+      expect($$(aSimpleFilter.cmp.getValueContainer()).hasClass('coveo-simplefilter-value-container-expanded')).toBe(false);
     });
 
     it('should use the correct selected values', () => {

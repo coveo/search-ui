@@ -53,7 +53,7 @@ export class SimpleFilter extends Component {
   static options: ISimpleFilterOptions = {
 
     /**
-     * Specifies the macimum number of field values to display by default in the SimpleFilter. Default value is 5.
+     * Specifies the maximum number of field values to display by default in the SimpleFilter. Default value is 5.
      */
     maximumNumberOfValues: ComponentOptions.buildNumberOption({ defaultValue: 5 }),
 
@@ -117,7 +117,7 @@ export class SimpleFilter extends Component {
     valueCaption: ComponentOptions.buildJsonOption()
   };
 
-  private checkboxContainer: Dom;
+  private valueContainer: Dom;
   private checkboxes: ILabeledCheckbox[];
   private previouslySelected: string[] = [];
   private circleElement: Dom;
@@ -147,11 +147,11 @@ export class SimpleFilter extends Component {
   }
 
   /**
-   * Gets the `SimpleFilter`'s CheckboxContainer
-   * @returns {Dom} The `SimpleFilter`'s CheckboxContainer
+   * Gets the `SimpleFilter` valueContainer
+   * @returns {Dom} The `SimpleFilter` valueContainer
    */
-  public getCheckboxContainer(): Dom {
-    return this.checkboxContainer;
+  public getValueContainer(): Dom {
+    return this.valueContainer;
   }
 
   /**
@@ -178,14 +178,14 @@ export class SimpleFilter extends Component {
   }
 
   /**
-   * Toggles the `SimpleFilter` container between its opened and closed state.
+   * Toggles the `SimpleFilter` valueContainer between its opened and closed state.
    */
   public toggleContainer() {
-    $$(this.checkboxContainer).hasClass('coveo-simplefilter-checkbox-container-expanded') ? this.closeContainer() : this.openContainer();
+    $$(this.valueContainer).hasClass('coveo-simplefilter-value-container-expanded') ? this.closeContainer() : this.openContainer();
   }
 
   /**
-   * Selects The checkbox with the matching value and triggers a query by default.
+   * Selects The value with the matching value and triggers a query by default.
    * @param value The value to select if a match is found.
    * @param triggerQuery `true` by default. If set to `false`, no query will be executed.
    */
@@ -198,7 +198,7 @@ export class SimpleFilter extends Component {
   }
 
   /**
-   * Resets The checkbox with the matching value.
+   * Resets The value with the matching value.
    * @param value The value to reset if a match is found.
    */
   public deselectValue(value: string) {
@@ -210,7 +210,7 @@ export class SimpleFilter extends Component {
   }
 
   /**
-   * Toggles the checkbox with the matching value.
+   * Toggles the value with the matching value.
    * @param value The value to toggle if a match is found.
    */
   public toggleValue(value: string) {
@@ -233,12 +233,12 @@ export class SimpleFilter extends Component {
   }
 
   /**
-   * Opens the `SimpleFilter's` [ `CheckboxContainer` ]{@link SimpleFilter.checkboxContainer}.
+   * Opens the `SimpleFilter's` [ `valueContainer` ]{@link SimpleFilter.valueContainer}.
    */
   public openContainer() {
-    $$(this.element).addClass('coveo-simplefilter-checkbox-container-expanded');
-    this.checkboxContainer.addClass('coveo-simplefilter-checkbox-container-expanded');
-    this.refreshCheckboxContainer();
+    $$(this.element).addClass('coveo-simplefilter-value-container-expanded');
+    this.valueContainer.addClass('coveo-simplefilter-value-container-expanded');
+    this.refreshValueContainer();
     this.isSticky = true;
     if (!this.backdrop.hasClass('coveo-dropdown-background-active')) {
       this.showBackdrop();
@@ -246,11 +246,11 @@ export class SimpleFilter extends Component {
   }
 
   /**
-   * Closes the `SimpleFilter's` [ `CheckboxContainer` ]{@link SimpleFilter.checkboxContainer}.
+   * Closes the `SimpleFilter's` [ `valueContainer` ]{@link SimpleFilter.valueContainer}.
    */
   public closeContainer() {
-    $$(this.element).removeClass('coveo-simplefilter-checkbox-container-expanded');
-    this.checkboxContainer.removeClass('coveo-simplefilter-checkbox-container-expanded');
+    $$(this.element).removeClass('coveo-simplefilter-value-container-expanded');
+    this.valueContainer.removeClass('coveo-simplefilter-value-container-expanded');
     if (this.backdrop.hasClass('coveo-dropdown-background-active')) {
       this.hideBackdrop();
     }
@@ -270,7 +270,7 @@ export class SimpleFilter extends Component {
     }
   }
 
-  private handleCheckboxToggle() {
+  private handleValueToggle() {
     const selectedValues = this.getSelectedValues();
     this.circleElement.text(selectedValues.length.toString());
     if (selectedValues.length == 1) {
@@ -284,7 +284,7 @@ export class SimpleFilter extends Component {
   private createCheckbox(label: string) {
 
     const checkbox = new Checkbox(() => {
-      this.handleCheckboxToggle();
+      this.handleValueToggle();
     }, this.getValueCaption(label));
 
     return { checkbox, label };
@@ -305,18 +305,18 @@ export class SimpleFilter extends Component {
       this.checkboxes = _.map(this.groupByRequestValues, (caption) => this.createCheckbox(caption));
     }
     _.each(this.checkboxes, (result) => {
-      this.checkboxContainer.append(result.checkbox.getElement());
+      this.valueContainer.append(result.checkbox.getElement());
     });
   }
 
-  private createCheckboxContainer() {
-    this.checkboxContainer = $$('div', { className: 'coveo-simplefilter-checkbox-container' });
+  private createValueContainer() {
+    this.valueContainer = $$('div', { className: 'coveo-simplefilter-value-container' });
   }
 
   private buildContent() {
-    this.createCheckboxContainer();
+    this.createValueContainer();
     this.element.appendChild(this.buildSelect());
-    this.element.appendChild(this.checkboxContainer.el);
+    this.element.appendChild(this.valueContainer.el);
     this.findOrCreateWrapper().append(this.element);
     this.createBackdrop();
   }
@@ -380,7 +380,7 @@ export class SimpleFilter extends Component {
 
   private handleRemoveFromBreadcrumb(labeledCheckbox: ILabeledCheckbox) {
     labeledCheckbox.checkbox.reset();
-    this.refreshCheckboxContainer();
+    this.refreshValueContainer();
   }
 
   private handleClearBreadcrumb() {
@@ -392,8 +392,8 @@ export class SimpleFilter extends Component {
     if (this.options.values == undefined) {
       this.groupByBuilder.groupBy(data);
       this.groupByRequestValues = this.groupByBuilder.getValuesFromGroupBy();
-      this.refreshCheckboxContainer();
-      if (!$$(this.element).hasClass('coveo-simplefilter-checkbox-container-expanded')) {
+      this.refreshValueContainer();
+      if (!$$(this.element).hasClass('coveo-simplefilter-value-container-expanded')) {
         this.isSticky = false;
       }
     }
@@ -456,10 +456,10 @@ export class SimpleFilter extends Component {
     }
   }
 
-  private refreshCheckboxContainer() {
+  private refreshValueContainer() {
 
     if (!this.isSticky) {
-      this.checkboxContainer.empty();
+      this.valueContainer.empty();
       this.createCheckboxes();
     }
 

@@ -70,7 +70,7 @@
   pointer-events:none;
 }
 
-.coveo-simplefilter-checkbox-container {
+.coveo-simplefilter-value-container {
   display: none;
   border: $default-border;
   position: absolute;
@@ -105,16 +105,16 @@
   }
 }
 
-.coveo-simplefilter-checkbox-container label {
+.coveo-simplefilter-value-container label {
   display: inline-block;
 }
 
-.coveo-simplefilter-checkbox-container-expanded {
+.coveo-simplefilter-value-container-expanded {
   display: inline-block;
   z-index: 20;
 }
 
-.coveo-simplefilter-checkbox-container label:hover {
+.coveo-simplefilter-value-container label:hover {
   background-color: $color-blueish-white-grey;
 }
 
