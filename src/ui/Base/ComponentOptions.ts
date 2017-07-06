@@ -730,7 +730,11 @@ export class ComponentOptions {
           values[name] = value;
         }
       }
+      if (values[name] == undefined && optionDefinition.required) {
+        logger.warn(`Option "${name}" is *REQUIRED* on the component "${componentID}". The component or the search page might *NOT WORK PROPERLY*.`, element);
+      }
     }
+
     for (let i = 0; i < names.length; i++) {
       let name = names[i];
       let optionDefinition = options[name];
