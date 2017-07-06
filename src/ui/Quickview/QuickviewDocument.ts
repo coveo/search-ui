@@ -200,7 +200,7 @@ export class QuickviewDocument extends Component {
   private writeToIFrame(iframe: HTMLIFrameElement, content: HTMLDocument);
   private writeToIFrame(iframe: HTMLIFrameElement, content: String);
   private writeToIFrame(iframe: HTMLIFrameElement, content: any) {
-    _.each($$(content.body).findAll('a') , (link) => {
+    _.each($$(content.body).findAll('a'), (link) => {
       link.setAttribute('target', '_top');
     });
     let toWrite = content;
