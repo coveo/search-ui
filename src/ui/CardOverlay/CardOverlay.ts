@@ -8,6 +8,8 @@ import { Assert } from '../../misc/Assert';
 import { KeyboardUtils, KEYBOARD } from '../../utils/KeyboardUtils';
 import { exportGlobally } from '../../GlobalExports';
 import 'styling/_CardOverlay';
+import { SVGIcons } from '../../utils/SVGIcons';
+import { SVGDom } from '../../utils/SVGDom';
 
 export interface ICardOverlayOptions {
   title: string;
@@ -133,8 +135,9 @@ export class CardOverlay extends Component {
     this.overlay.appendChild(overlayBody);
 
     // Create footer
-    let overlayFooter = $$('div', { className: 'coveo-card-overlay-footer', tabindex: '0' },
-      $$('span', { className: 'coveo-icon coveo-sprites-arrow-down' }));
+    const icon = $$('span', { className: 'coveo-icon coveo-open-card-overlay'}, SVGIcons.arrowDown);
+    SVGDom.addClassToSVGInContainer(icon.el, 'coveo-open-card-overlay-svg');
+    let overlayFooter = $$('div', { className: 'coveo-card-overlay-footer', tabindex: '0' }, icon.el);
     overlayFooter.on('click', () => this.toggleOverlay(false));
     this.bind.on(overlayFooter.el, 'keyup', KeyboardUtils.keypressAction(KEYBOARD.ENTER, () => this.toggleOverlay(false)));
 
