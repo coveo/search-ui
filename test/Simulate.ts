@@ -15,6 +15,8 @@ import { IOmniboxData } from '../src/ui/Omnibox/OmniboxInterface';
 import { OmniboxEvents } from '../src/events/OmniboxEvents';
 import { IBreadcrumbItem, IPopulateBreadcrumbEventArgs, BreadcrumbEvents } from '../src/events/BreadcrumbEvents';
 import { JQuery } from '../test/JQueryModule';
+import { Component } from '../src/ui/Base/Component';
+import { NoopComponent } from './NoopComponent';
 import _ = require('underscore');
 
 export interface ISimulateQueryData {

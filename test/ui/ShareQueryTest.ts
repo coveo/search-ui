@@ -23,9 +23,6 @@ export function ShareQueryTest() {
 
     it('should update according to result', function () {
       Simulate.query(test.env, <ISimulateQueryData>{
-        results: <IQueryResults>{
-          totalCount: 5
-        },
         query: <IQuery>{
           firstResult: 0,
           q: 'query',
