@@ -31,8 +31,8 @@
     "spsite": {
       "icon": "salesforce-doctype-link",
       "captions": {
-        "en": "Site",
-        "fr": "Site",
+        "en": "SharePoint Site",
+        "fr": "Site SharePoint",
         "cs": "Web",
         "da": "Websted",
         "de": "Site",
