@@ -486,7 +486,7 @@ export class QueryController extends RootComponent {
   private cancelAnyCurrentPendingQuery() {
     if (Utils.exists(this.currentPendingQuery)) {
       this.logger.debug('Cancelling current pending query');
-      Promise.reject(this.currentPendingQuery);
+      Promise.reject('Cancelling current pending query');
       this.currentPendingQuery = undefined;
       return true;
     }
