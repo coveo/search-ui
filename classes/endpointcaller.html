@@ -55,7 +55,7 @@
 	</div>
 	<div class="bottomHeader">
 		<div id="searchBox">
-			<div class="CoveoSearchbox" data-enable-omnibox="true" data-inline="false" data-enable-wildcards="true" data-enable-search-as-you-type="false" data-enable-query-suggest-addon="false" data-enable-query-syntax="true" data-enable-field-addon="true"></div>
+			<div class="CoveoSearchbox" data-enable-omnibox="true" data-inline="false" data-enable-wildcards="true" data-enable-search-as-you-type="false" data-enable-reveal-query-suggest-addon="false" data-enable-query-syntax="true" data-enable-field-addon="true"></div>
 			<div class="CoveoFieldSuggestions" data-field="@systitle" data-header-title="Suggested topics"></div>
 		</div>
 	</div>
@@ -135,8 +135,6 @@
 							<a href="endpointcaller.html">EndpointCaller</a>
 						</li>
 					</ul>
-					<!-- Has to remain here for the playground to work -->
-					<h1 style="visibility: collapse; font-size:0">Class EndpointCaller</h1>
 					<h1>Class EndpointCaller</h1>
 				</div>
 			</div>
@@ -192,15 +190,15 @@
 					<a name="call" class="tsd-anchor"></a>
 					<h3>call</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
-						<li class="tsd-signature tsd-kind-icon">call&lt;T&gt;<span class="tsd-signature-symbol">(</span>params<span class="tsd-signature-symbol">: </span><a href="../interfaces/iendpointcallparameters.html" class="tsd-signature-type">IEndpointCallParameters</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span></li>
+						<li class="tsd-signature tsd-kind-icon">call&lt;T&gt;<span class="tsd-signature-symbol">(</span>params<span class="tsd-signature-symbol">: </span><a href="../interfaces/iendpointcallparameters.html" class="tsd-signature-type">IEndpointCallParameters</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/isuccessresponse.html" class="tsd-signature-type">ISuccessResponse</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/rest/EndpointCaller.ts#L218">src/rest/EndpointCaller.ts
-									:218</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/rest/EndpointCaller.ts#L219">src/rest/EndpointCaller.ts
+									:219</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -227,7 +225,7 @@
 									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/isuccessresponse.html" class="tsd-signature-type">ISuccessResponse</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span></h4>
 							<p>A promise of the given type</p>
 						</li>
 					</ul>
@@ -236,15 +234,15 @@
 					<a name="callusingajaxjsonp" class="tsd-anchor"></a>
 					<h3>call<wbr>Using<wbr>Ajax<wbr>JsonP</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
-						<li class="tsd-signature tsd-kind-icon">call<wbr>Using<wbr>Ajax<wbr>JsonP&lt;T&gt;<span class="tsd-signature-symbol">(</span>requestInfo<span class="tsd-signature-symbol">: </span><a href="../interfaces/irequestinfo.html" class="tsd-signature-type">IRequestInfo</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span></li>
+						<li class="tsd-signature tsd-kind-icon">call<wbr>Using<wbr>Ajax<wbr>JsonP&lt;T&gt;<span class="tsd-signature-symbol">(</span>requestInfo<span class="tsd-signature-symbol">: </span><a href="../interfaces/irequestinfo.html" class="tsd-signature-type">IRequestInfo</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/iresponse.html" class="tsd-signature-type">IResponse</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/rest/EndpointCaller.ts#L404">src/rest/EndpointCaller.ts
-									:404</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/rest/EndpointCaller.ts#L405">src/rest/EndpointCaller.ts
+									:405</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -268,7 +266,7 @@
 									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/iresponse.html" class="tsd-signature-type">IResponse</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -276,15 +274,15 @@
 					<a name="callusingxdomainrequest" class="tsd-anchor"></a>
 					<h3>call<wbr>UsingXDomain<wbr>Request</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
-						<li class="tsd-signature tsd-kind-icon">call<wbr>UsingXDomain<wbr>Request&lt;T&gt;<span class="tsd-signature-symbol">(</span>requestInfo<span class="tsd-signature-symbol">: </span><a href="../interfaces/irequestinfo.html" class="tsd-signature-type">IRequestInfo</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span></li>
+						<li class="tsd-signature tsd-kind-icon">call<wbr>UsingXDomain<wbr>Request&lt;T&gt;<span class="tsd-signature-symbol">(</span>requestInfo<span class="tsd-signature-symbol">: </span><a href="../interfaces/irequestinfo.html" class="tsd-signature-type">IRequestInfo</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/iresponse.html" class="tsd-signature-type">IResponse</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/rest/EndpointCaller.ts#L357">src/rest/EndpointCaller.ts
-									:357</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/rest/EndpointCaller.ts#L358">src/rest/EndpointCaller.ts
+									:358</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -308,7 +306,7 @@
 									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/iresponse.html" class="tsd-signature-type">IResponse</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -316,15 +314,15 @@
 					<a name="callusingxmlhttprequest" class="tsd-anchor"></a>
 					<h3>call<wbr>UsingXMLHttp<wbr>Request</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
-						<li class="tsd-signature tsd-kind-icon">call<wbr>UsingXMLHttp<wbr>Request&lt;T&gt;<span class="tsd-signature-symbol">(</span>requestInfo<span class="tsd-signature-symbol">: </span><a href="../interfaces/irequestinfo.html" class="tsd-signature-type">IRequestInfo</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span>, responseType<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span></li>
+						<li class="tsd-signature tsd-kind-icon">call<wbr>UsingXMLHttp<wbr>Request&lt;T&gt;<span class="tsd-signature-symbol">(</span>requestInfo<span class="tsd-signature-symbol">: </span><a href="../interfaces/irequestinfo.html" class="tsd-signature-type">IRequestInfo</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span>, responseType<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/isuccessresponse.html" class="tsd-signature-type">ISuccessResponse</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/rest/EndpointCaller.ts#L263">src/rest/EndpointCaller.ts
-									:263</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/rest/EndpointCaller.ts#L264">src/rest/EndpointCaller.ts
+									:264</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -355,7 +353,7 @@
 									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/isuccessresponse.html" class="tsd-signature-type">ISuccessResponse</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -369,8 +367,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/EndpointCaller.ts#L198">src/rest/EndpointCaller.ts
-							:198</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/EndpointCaller.ts#L199">src/rest/EndpointCaller.ts
+							:199</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -402,8 +400,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/rest/EndpointCaller.ts#L200">src/rest/EndpointCaller.ts
-									:200</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/rest/EndpointCaller.ts#L201">src/rest/EndpointCaller.ts
+									:201</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">

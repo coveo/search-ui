@@ -55,7 +55,7 @@
 	</div>
 	<div class="bottomHeader">
 		<div id="searchBox">
-			<div class="CoveoSearchbox" data-enable-omnibox="true" data-inline="false" data-enable-wildcards="true" data-enable-search-as-you-type="false" data-enable-query-suggest-addon="false" data-enable-query-syntax="true" data-enable-field-addon="true"></div>
+			<div class="CoveoSearchbox" data-enable-omnibox="true" data-inline="false" data-enable-wildcards="true" data-enable-search-as-you-type="false" data-enable-reveal-query-suggest-addon="false" data-enable-query-syntax="true" data-enable-field-addon="true"></div>
 			<div class="CoveoFieldSuggestions" data-field="@systitle" data-header-title="Suggested topics"></div>
 		</div>
 	</div>
@@ -141,18 +141,16 @@
 							<a href="ianalyticsclient.html">IAnalyticsClient</a>
 						</li>
 					</ul>
-					<!-- Has to remain here for the playground to work -->
-					<h1 style="visibility: collapse; font-size:0">Interface IAnalyticsClient</h1>
 					<h1>Interface IAnalyticsClient</h1>
 				</div>
 			</div>
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>The <code>IAnalyticsClient</code> interface describes an analytics client that can log events to, or return information from the
+						<p>The IAnalyticsClient interface describes an analytics client that can log events to, or return information from the
 						usage analytics service.</p>
 					</div>
-					<p>See also the <a href="../components/analytics.html"><code>Analytics</code></a> component.</p>
+					<p>See also the <a href="../components/analytics.html">Analytics</a> component.</p>
 				</div>
 			</section>
 			<div class="preview-container tsd-panel">
@@ -184,7 +182,7 @@
 					<a name="getcurrentvisitidpromise" class="tsd-anchor"></a>
 					<h3>get<wbr>Current<wbr>Visit<wbr>IdPromise</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
-						<li class="tsd-signature tsd-kind-icon">get<wbr>Current<wbr>Visit<wbr>IdPromise<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span></li>
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Current<wbr>Visit<wbr>IdPromise<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
@@ -200,7 +198,7 @@
 									<p>Gets the current visitor ID for tracking purpose in the Coveo Usage Analytics service.</p>
 								</div>
 							</div>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -208,7 +206,7 @@
 					<a name="gettopqueries" class="tsd-anchor"></a>
 					<h3>get<wbr>Top<wbr>Queries</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
-						<li class="tsd-signature tsd-kind-icon">get<wbr>Top<wbr>Queries<span class="tsd-signature-symbol">(</span>params<span class="tsd-signature-symbol">: </span><a href="itopqueries.html" class="tsd-signature-type">ITopQueries</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span></li>
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Top<wbr>Queries<span class="tsd-signature-symbol">(</span>params<span class="tsd-signature-symbol">: </span><a href="itopqueries.html" class="tsd-signature-type">ITopQueries</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
@@ -232,7 +230,7 @@
 									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">&gt;</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -247,14 +245,14 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Analytics/AnalyticsClient.ts#L19">src/ui/Analytics/AnalyticsClient.ts
-									:19</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Analytics/AnalyticsClient.ts#L20">src/ui/Analytics/AnalyticsClient.ts
+									:20</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Indicates whether there is an <a href="../components/analytics.html"><code>Analytics</code></a> component in the search page. Returns <code>true</code> if an
-									<code>Analytics</code> component is present, and <code>false</code> otherwise.</p>
+									<p>Indicates whether there is an <a href="../components/analytics.html">Analytics</a> component in your page. Returns <code>true</code> if an Analytics component
+									is present and <code>false</code> otherwise.</p>
 								</div>
 							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
@@ -278,8 +276,8 @@
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Logs a Click event. You can understand click events as item views (e.g., clicking on a
-									<a href="../components/resultlink.html"><code>ResultLink</code></a> or opening a <a href="../components/quickview.html"><code>Quickview</code></a>).</p>
+									<p>Logs a Click event. You can understand click events as document views (e.g., clicking on a <a href="../components/resultlink.html">ResultLink</a> or
+									opening a <a href="../components/quickview.html">Quickview</a>).</p>
 								</div>
 								<p>This event is logged immediately on the service.</p>
 							</div>
@@ -303,9 +301,9 @@
 										<p>The metadata which you want to use to create custom dimensions. Metadata can contain as many key-value
 											pairs as you need. Each key must contain only alphanumeric characters and underscores. The Coveo Usage Analytics
 											API automatically converts uppercase characters to lowercase characters in key names. Each value must be a simple
-											string. You do not have to pass an <a href="ianalyticsdocumentviewmeta.html"><code>AnalyticsDocumentViewMeta</code></a> as meta when
-											logging a custom Click event. You can actually send any arbitrary meta. If you do not need to log metadata, you can
-										simply pass an empty JSON ( <code>{}</code> ).</p>
+											string. You do not have to pass an <a href="ianalyticsdocumentviewmeta.html">IAnalyticsDocumentViewMeta</a> as meta when logging a custom Click event.
+											You can actually send any arbitrary meta. If you do not need to log metadata, you can simply pass an empty JSON
+										( <code>{}</code> ).</p>
 									</div>
 								</li>
 								<li>
@@ -342,8 +340,8 @@
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Logs a custom event on the service. You can use custom events to create custom reports, or to track events
-									that are not queries or item views.</p>
+									<p>Logs a Custom event on the service. You can use custom events to create custom reports, or to track events
+									that are not queries or document views.</p>
 								</div>
 							</div>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -398,17 +396,16 @@
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Logs a SearchAsYouType event on the service, using an <a href="ianalyticsactioncause.html"><code>AnalyticsActionCause</code></a> and a
-									meta object.</p>
+									<p>Logs a SearchAsYouType event on the service, using an <a href="ianalyticsactioncause.html">IAnalyticsActionCause</a> and a meta object.</p>
 								</div>
-								<p>This method is very similar to the <a href="ianalyticsclient.html#logsearchevent"><code>logSearchEvent</code></a> method, except that
-								<code>logSearchAsYouType</code> is, by definition, more frequently called.</p>
-								<p>The <code>PendingSearchAsYouTypeEvent</code> takes care of logging only the &quot;relevant&quot; last event (i.e., an event that occurs
-									after 5 seconds elapse without any event being logged, or an event that occurs after another part of the interface
-									triggers a search event). This avoids logging every single partial query, which would make reporting very
+								<p>This method is very similar to the <a href="ianalyticsclient.html#logsearchevent">logSearchEvent</a> method, except that logSearchAsYouType is, by definition,
+								more frequently called.</p>
+								<p>The <code>PendingSearchAsYouTypeEvent</code> takes care of logging only the &quot;relevant&quot; last event: an event that occurs after
+									5 seconds elapse without any event being logged, or an event that occurs after another part of the interface
+									triggers a search event. This avoids logging every single partial query, which would make the reporting very
 								confusing.</p>
-								<p>It is important to call this method <strong>before</strong> executing the query. Otherwise the service will log no
-								SearchAsYouType event and you will get a warning message in the console.</p>
+								<p>It is important to call this method before executing the query. Otherwise the service will log no SearchAsYouType
+								event and you will get a warning message in the console.</p>
 								<p>See <a href="https://developers.coveo.com/x/KoGfAQ">Sending Custom Analytics Events</a>.</p>
 							</div>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -451,18 +448,18 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Analytics/AnalyticsClient.ts#L40">src/ui/Analytics/AnalyticsClient.ts
-									:40</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Analytics/AnalyticsClient.ts#L41">src/ui/Analytics/AnalyticsClient.ts
+									:41</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Logs a Search event on the service, using an <a href="a href=&quot;ianalyticsactioncause.html&quot;&gt;IAnalyticsActionCause&lt;/a"><code>AnalyticsActionCause</code></a> and a meta
+									<p>Logs a Search event on the service, using an <a href="a href=&quot;ianalyticsactioncause.html&quot;&gt;IAnalyticsActionCause&lt;/a">AnalyticsActionCause</a> and a meta
 									object.</p>
 								</div>
-								<p>Note that the Search event is only sent to the service when the query successfully returns, not immediately after
-									calling this method. Therefore, it is important to call this method <strong>before</strong> executing the query. Otherwise the
-								service will log no search event and you will get a warning message in the console.</p>
+								<p>Note that the search event is only sent to the service when the query successfully returns, not immediately after
+									calling this method. Therefore, it is important to call this method before executing the query. Otherwise the
+								service will log no Search event and you will get a warning message in the console.</p>
 								<p>See <a href="https://developers.coveo.com/x/KoGfAQ">Sending Custom Analytics Events</a>.</p>
 							</div>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -505,16 +502,16 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Analytics/AnalyticsClient.ts#L127">src/ui/Analytics/AnalyticsClient.ts
-									:127</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Analytics/AnalyticsClient.ts#L126">src/ui/Analytics/AnalyticsClient.ts
+									:126</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
 									<p>Sets the Origin Context dimension on the analytic events.</p>
 								</div>
-								<p>You can use this dimension to specify the context of your application.</p>
-								<p>Suggested values are <code>Search</code>, <code>InternalSearch</code>, or <code>CommunitySearch</code>.</p>
+								<p>You can use this dimension to specify the context of your application.
+								Suggested values are &quot;Search&quot;, &quot;InternalSearch&quot; and &quot;CommunitySearch&quot;</p>
 								<p>Default value is <code>Search</code>.</p>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -522,7 +519,7 @@
 								<li>
 									<h5>originContext: <span class="tsd-signature-type">string</span></h5>
 									<div class="tsd-comment tsd-typography">
-										<p>The origin context value.</p>
+										<p>The origin context value</p>
 									</div>
 								</li>
 							</ul>

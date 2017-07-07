@@ -55,7 +55,7 @@
 	</div>
 	<div class="bottomHeader">
 		<div id="searchBox">
-			<div class="CoveoSearchbox" data-enable-omnibox="true" data-inline="false" data-enable-wildcards="true" data-enable-search-as-you-type="false" data-enable-query-suggest-addon="false" data-enable-query-syntax="true" data-enable-field-addon="true"></div>
+			<div class="CoveoSearchbox" data-enable-omnibox="true" data-inline="false" data-enable-wildcards="true" data-enable-search-as-you-type="false" data-enable-reveal-query-suggest-addon="false" data-enable-query-syntax="true" data-enable-field-addon="true"></div>
 			<div class="CoveoFieldSuggestions" data-field="@systitle" data-header-title="Suggested topics"></div>
 		</div>
 	</div>
@@ -102,9 +102,6 @@
 								<a href="textinput.html#getelement" class="tsd-kind-icon">get<wbr>Element</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="textinput.html#getinput" class="tsd-kind-icon">get<wbr>Input</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="textinput.html#getvalue" class="tsd-kind-icon">get<wbr>Value</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
@@ -138,16 +135,15 @@
 							<a href="textinput.html">TextInput</a>
 						</li>
 					</ul>
-					<!-- Has to remain here for the playground to work -->
-					<h1 style="visibility: collapse; font-size:0">Class TextInput</h1>
 					<h1>Class TextInput</h1>
 				</div>
 			</div>
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>A text input widget with standard styling.</p>
+						<p>This class will create a text input meant to be used inside the <a href="../components/advancedsearch.html">AdvancedSearch</a> component.</p>
 					</div>
+					<p>It can be, more specifically, used for external code using the <a href="advancedsearchevents.html#buildingadvancedsearch">AdvancedSearchEvents.buildingAdvancedSearch</a></p>
 				</div>
 			</section>
 			<div class="preview-container tsd-panel">
@@ -162,7 +158,6 @@
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="textinput.html#build" class="tsd-kind-icon">build</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="textinput.html#getelement" class="tsd-kind-icon">get<wbr>Element</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="textinput.html#getinput" class="tsd-kind-icon">get<wbr>Input</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="textinput.html#getvalue" class="tsd-kind-icon">get<wbr>Value</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="textinput.html#reset" class="tsd-kind-icon">reset</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="textinput.html#setvalue" class="tsd-kind-icon">set<wbr>Value</a></li>
@@ -190,17 +185,16 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FormWidgets/TextInput.ts#L75">src/ui/FormWidgets/TextInput.ts
-									:75</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/AdvancedSearch/Form/TextInput.ts#L58">src/ui/AdvancedSearch/Form/TextInput.ts
+									:58</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Gets the element on which the text input is bound.</p>
+									<p>Return the element on which the dropdown is bound.</p>
 								</div>
 							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">HTMLElement</span></h4>
-							<p>The text input element.</p>
 						</li>
 					</ul>
 				</section>
@@ -215,42 +209,16 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FormWidgets/TextInput.ts#L35">src/ui/FormWidgets/TextInput.ts
-									:35</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/AdvancedSearch/Form/TextInput.ts#L27">src/ui/AdvancedSearch/Form/TextInput.ts
+									:27</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Gets the element on which the text input is bound.</p>
+									<p>Return the element on which the dropdown is bound.</p>
 								</div>
 							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">HTMLElement</span></h4>
-							<p>The text input element.</p>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-					<a name="getinput" class="tsd-anchor"></a>
-					<h3>get<wbr>Input</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">get<wbr>Input<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">HTMLInputElement</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FormWidgets/TextInput.ts#L83">src/ui/FormWidgets/TextInput.ts
-									:83</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Gets the <code>input</code> element (the text input itself).</p>
-								</div>
-							</div>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">HTMLInputElement</span></h4>
-							<p>The <code>input</code> element.</p>
 						</li>
 					</ul>
 				</section>
@@ -265,17 +233,16 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FormWidgets/TextInput.ts#L43">src/ui/FormWidgets/TextInput.ts
-									:43</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/AdvancedSearch/Form/TextInput.ts#L35">src/ui/AdvancedSearch/Form/TextInput.ts
+									:35</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Gets the value currently entered in the text input.</p>
+									<p>Get the currently entered value in the text input.</p>
 								</div>
 							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
-							<p>The text input current value.</p>
 						</li>
 					</ul>
 				</section>
@@ -290,13 +257,13 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FormWidgets/TextInput.ts#L62">src/ui/FormWidgets/TextInput.ts
-									:62</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/AdvancedSearch/Form/TextInput.ts#L50">src/ui/AdvancedSearch/Form/TextInput.ts
+									:50</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Resets the text input.</p>
+									<p>Reset the text input</p>
 								</div>
 							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -314,13 +281,13 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FormWidgets/TextInput.ts#L51">src/ui/FormWidgets/TextInput.ts
-									:51</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/AdvancedSearch/Form/TextInput.ts#L43">src/ui/AdvancedSearch/Form/TextInput.ts
+									:43</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Sets the value in the text input.</p>
+									<p>Set the value in the text input.</p>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -328,7 +295,6 @@
 								<li>
 									<h5>value: <span class="tsd-signature-type">string</span></h5>
 									<div class="tsd-comment tsd-typography">
-										<p>The value to set the text input to.</p>
 									</div>
 								</li>
 							</ul>
@@ -350,38 +316,31 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FormWidgets/TextInput.ts#L18">src/ui/FormWidgets/TextInput.ts
-									:18</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/AdvancedSearch/Form/TextInput.ts#L12">src/ui/AdvancedSearch/Form/TextInput.ts
+									:12</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Creates a new <code>TextInput</code>.</p>
+									<p>Create a new text input.</p>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> onChange: <span class="tsd-signature-type">function</span><span class="tsd-signature-symbol"> =&nbsp;(textInput: TextInput) &#x3D;&gt; {}</span></h5>
+									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> onChange: <span class="tsd-signature-type">function</span><span class="tsd-signature-symbol"> =&nbsp;() &#x3D;&gt; { }</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<div class="lead">
-											<p>The function to call when the value entered in the text input changes. This function takes the
-											current <code>TextInput</code> instance as an argument.</p>
+											<p>will be called every time the text input change it&#39;s value. <code>this</code> will be the <code>TextInput</code> instance.</p>
 										</div>
 									</div>
 									<ul class="tsd-parameters">
 										<li class="tsd-parameter-siganture">
 											<ul class="tsd-signatures tsd-kind-type-literal tsd-is-not-exported">
-												<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>textInput<span class="tsd-signature-symbol">: </span><a href="textinput.html" class="tsd-signature-type">TextInput</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+												<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 											</ul>
 											<ul class="tsd-descriptions">
 												<li class="tsd-description">
-													<h4 class="tsd-parameters-title">Parameters</h4>
-													<ul class="tsd-parameters">
-														<li>
-															<h5>textInput: <a href="textinput.html" class="tsd-signature-type">TextInput</a></h5>
-														</li>
-													</ul>
 													<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 												</li>
 											</ul>
@@ -392,7 +351,6 @@
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> name: <span class="tsd-signature-type">string</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<div class="lead">
-											<p>The text to display in the text input label.</p>
 										</div>
 									</div>
 								</li>
@@ -408,13 +366,6 @@
 					<li>
 						<span class="target">TextInput</span>
 					</li>
-				</ul>
-			</section>
-			<section class="tsd-panel">
-				<h3>Implements</h3>
-				<ul class="tsd-hierarchy">
-					<li><a href="../interfaces/iformwidget.html" class="tsd-signature-type">IFormWidget</a></li>
-					<li><span class="tsd-signature-type">IFormWidgetSettable</span></li>
 				</ul>
 			</section>
 			<footer class="with-border-bottom">
