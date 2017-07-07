@@ -32,12 +32,12 @@ export class RecommendationAnalyticsClient extends LiveAnalyticsClient {
     super.logSearchEvent(actionCause, meta);
   }
 
-  public logClickEvent<TMeta>(actionCause: IAnalyticsActionCause, meta: TMeta, result: IQueryResult, element: HTMLElement) {
+  public logClickEvent<TMeta>(actionCause: IAnalyticsActionCause, meta: TMeta, result: IQueryResult, element: HTMLElement): Promise<any> {
     if (actionCause == analyticsActionCauseList.documentOpen) {
       actionCause = analyticsActionCauseList.recommendationOpen;
     }
 
-    super.logClickEvent(actionCause, meta, result, element);
+    var promises = [super.logClickEvent(actionCause, meta, result, element)];
 
 
     if (this.recommendation.mainQuerySearchUID && this.recommendation.mainQueryPipeline != null) {
@@ -45,8 +45,9 @@ export class RecommendationAnalyticsClient extends LiveAnalyticsClient {
       let mainInterface = <SearchInterface>Component.get(this.recommendation.options.mainSearchInterface, SearchInterface);
       result.queryUid = this.recommendation.mainQuerySearchUID;
       result.pipeline = this.recommendation.mainQueryPipeline;
-      mainInterface.usageAnalytics.logClickEvent(actionCause, meta, result, element);
+      promises.push(mainInterface.usageAnalytics.logClickEvent(actionCause, meta, result, element));
     }
+    return Promise.all(promises);
   }
 
   protected getOriginLevel2(element: HTMLElement): string {

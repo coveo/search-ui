@@ -30,12 +30,18 @@ export class NoopAnalyticsClient implements IAnalyticsClient {
     this.setNoopCauseAndMeta(actionCause.name, meta);
   }
 
-  logClickEvent<TMeta>(actionCause: IAnalyticsActionCause, meta: TMeta, result?: IQueryResult, element?: HTMLElement) {
-    this.setNoopCauseAndMeta(actionCause.name, meta);
+  logClickEvent<TMeta>(actionCause: IAnalyticsActionCause, meta: TMeta, result?: IQueryResult, element?: HTMLElement): Promise<any> {
+    return new Promise((resolve, reject) => {
+      this.setNoopCauseAndMeta(actionCause.name, meta);
+      resolve(null);
+    });
   }
 
-  logCustomEvent<TMeta>(actionCause: IAnalyticsActionCause, meta: TMeta, element?: HTMLElement) {
-    this.setNoopCauseAndMeta(actionCause.name, meta);
+  logCustomEvent<TMeta>(actionCause: IAnalyticsActionCause, meta: TMeta, element?: HTMLElement): Promise<any> {
+    return new Promise((resolve, reject) => {
+      this.setNoopCauseAndMeta(actionCause.name, meta);
+      resolve(null);
+    });
   }
 
   getTopQueries(params: ITopQueries): Promise<string[]> {

@@ -91,8 +91,9 @@ export interface IAnalyticsClient {
    * @param result The result that was clicked.
    * @param element The HTMLElement that the user has clicked in the interface. Default value is the element on which
    * the `Analytics` component is bound.
+   * @returns {Promise<Any>|Promise<IAPIAnalyticsEventResponse>|Promise<IAPIAnalyticsEventResponse[]>}
    */
-  logClickEvent<TMeta>(actionCause: IAnalyticsActionCause, meta: TMeta, result: IQueryResult, element: HTMLElement): void;
+  logClickEvent<TMeta>(actionCause: IAnalyticsActionCause, meta: TMeta, result: IQueryResult, element: HTMLElement): Promise<any>;
 
   /**
    * Logs a `Custom` usage analytics event on the service.
@@ -115,8 +116,9 @@ export interface IAnalyticsClient {
    * ( `{}` ).
    * @param element The HTMLElement that the user has interacted with for this custom event. Default value is the
    * element on which the `Analytics` component is bound.
+   * @returns {Promise<Any>|Promise<IAPIAnalyticsEventResponse>|Promise<IAPIAnalyticsEventResponse[]>}
    */
-  logCustomEvent<TMeta>(actionCause: IAnalyticsActionCause, meta: TMeta, element: HTMLElement): void;
+  logCustomEvent<TMeta>(actionCause: IAnalyticsActionCause, meta: TMeta, element: HTMLElement): Promise<any>;
 
   /**
    * Gets suggested queries from the Coveo Usage Analytics service.
