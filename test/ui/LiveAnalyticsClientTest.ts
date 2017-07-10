@@ -29,7 +29,7 @@ export function LiveAnalyticsClientTest() {
       }
 
       env = new Mock.MockEnvironmentBuilder().build();
-      endpoint = Mock.mock<AnalyticsEndpoint>(AnalyticsEndpoint);
+      endpoint = Mock.mockAnalyticsEndpoint();
       client = new LiveAnalyticsClient(endpoint, env.root, 'foo', 'foo display', false, 'foo run name', 'foo run version', 'default', true);
       promise = new Promise((resolve, reject) => {
         resolve(FakeResults.createFakeResults(3));

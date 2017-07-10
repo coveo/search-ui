@@ -72,21 +72,29 @@
 
   .coveo-delete {
     margin-left: 10px;
-    .coveo-icon {
-      @include retina-sprite($clear-active-filters-group);
-    }
     &:hover {
       cursor: pointer;
     }
   }
 
-  .coveo-edit {
-    .coveo-icon {
-      @include retina-sprite($settings-group);
+  .coveo-delete-svg {
+    width: 12px;
+    height: 12px;
+    .coveo-exclusion-svg {
+      fill: $color-red;
     }
+  }
+
+  .coveo-edit {
     &:hover {
       cursor: pointer;
     }
+  }
+
+  .coveo-edit-svg {
+    width: 13px;
+    height: 13px;
+    color: $color-greyish-teal-blue;
   }
 
   .coveo-advanced-filters-builder {
@@ -124,7 +132,6 @@
     .coveo-close-and-save {
 
       .coveo-save {
-        @include retina-sprite($checkbox-hook-active-group);
         @include clickable();
         position: absolute;
         top: 6px;
@@ -136,6 +143,14 @@
         position: absolute;
         top: 6px;
         right: 10px;
+      }
+    }
+
+    .coveo-save-svg {
+      width: 14px;
+      height: 12px;
+      .coveo-hook-svg {
+        fill: $color-greyish-teal-blue;
       }
     }
 

@@ -27,6 +27,46 @@ export function IconTest() {
       expect($$(test.cmp.element).hasClass('unknown')).toBe(true);
     });
 
+    describe('with an objecttype', function(){
+
+      it('objecttype should have priority over filetype', function () {
+        result.raw.objecttype = 'user';
+        test = Mock.optionsResultComponentSetup<Icon, IIconOptions>(Icon, undefined, result);
+        expect($$(test.cmp.element).hasClass('coveo-icon')).toBe(true);
+        expect($$(test.cmp.element).hasClass('filetype')).toBe(false);
+        expect($$(test.cmp.element).hasClass('objecttype')).toBe(true);
+        expect($$(test.cmp.element).hasClass('user')).toBe(true);
+      });
+
+      it('should fallback on filetype when objecttype is "Document"', function () {
+        result.raw.objecttype = 'Document';
+        test = Mock.optionsResultComponentSetup<Icon, IIconOptions>(Icon, undefined, result);
+        expect($$(test.cmp.element).hasClass('coveo-icon')).toBe(true);
+        expect($$(test.cmp.element).hasClass('objecttype')).toBe(false);
+        expect($$(test.cmp.element).hasClass('filetype')).toBe(true);
+        expect($$(test.cmp.element).hasClass('unknown')).toBe(true);
+      });
+
+      it('should fallback on filetype when objecttype is "File"', function () {
+        result.raw.objecttype = 'File';
+        test = Mock.optionsResultComponentSetup<Icon, IIconOptions>(Icon, undefined, result);
+        expect($$(test.cmp.element).hasClass('coveo-icon')).toBe(true);
+        expect($$(test.cmp.element).hasClass('objecttype')).toBe(false);
+        expect($$(test.cmp.element).hasClass('filetype')).toBe(true);
+        expect($$(test.cmp.element).hasClass('unknown')).toBe(true);
+      });
+
+      it('should fallback on filetype when objecttype is "contentversion" case insensitive', function () {
+        result.raw.objecttype = 'contentversion';
+        test = Mock.optionsResultComponentSetup<Icon, IIconOptions>(Icon, undefined, result);
+        expect($$(test.cmp.element).hasClass('coveo-icon')).toBe(true);
+        expect($$(test.cmp.element).hasClass('objecttype')).toBe(false);
+        expect($$(test.cmp.element).hasClass('filetype')).toBe(true);
+        expect($$(test.cmp.element).hasClass('unknown')).toBe(true);
+      });
+
+    });
+
     describe('with a quickview inside', function () {
       beforeEach(function () {
         test = Mock.advancedResultComponentSetup<Icon>(Icon, result, new Mock.AdvancedComponentSetupOptions($$('div', undefined, $$('div', { className: 'CoveoQuickview' }).el).el, undefined, undefined));
