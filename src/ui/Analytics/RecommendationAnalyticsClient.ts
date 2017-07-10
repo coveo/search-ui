@@ -2,6 +2,7 @@ import { LiveAnalyticsClient } from './LiveAnalyticsClient';
 import { IAnalyticsActionCause, analyticsActionCauseList } from './AnalyticsActionListMeta';
 import { IQueryResult } from '../../rest/QueryResult';
 import { AnalyticsEndpoint } from '../../rest/AnalyticsEndpoint';
+import { IAPIAnalyticsEventResponse } from '../../rest/APIAnalyticsEventResponse';
 import { Component } from '../Base/Component';
 import { IComponentBindings } from '../Base/ComponentBindings';
 import { Recommendation } from '../Recommendation/Recommendation';
@@ -32,21 +33,21 @@ export class RecommendationAnalyticsClient extends LiveAnalyticsClient {
     super.logSearchEvent(actionCause, meta);
   }
 
-  public logClickEvent<TMeta>(actionCause: IAnalyticsActionCause, meta: TMeta, result: IQueryResult, element: HTMLElement) {
+  public logClickEvent<TMeta>(actionCause: IAnalyticsActionCause, meta: TMeta, result: IQueryResult, element: HTMLElement): Promise<IAPIAnalyticsEventResponse|IAPIAnalyticsEventResponse[]> {
     if (actionCause == analyticsActionCauseList.documentOpen) {
       actionCause = analyticsActionCauseList.recommendationOpen;
     }
 
-    super.logClickEvent(actionCause, meta, result, element);
-
+    const promises = [super.logClickEvent(actionCause, meta, result, element)];
 
     if (this.recommendation.mainQuerySearchUID && this.recommendation.mainQueryPipeline != null) {
       // We log a second click associated with the main interface query to tell the analytics that the query was a success.
       let mainInterface = <SearchInterface>Component.get(this.recommendation.options.mainSearchInterface, SearchInterface);
       result.queryUid = this.recommendation.mainQuerySearchUID;
       result.pipeline = this.recommendation.mainQueryPipeline;
-      mainInterface.usageAnalytics.logClickEvent(actionCause, meta, result, element);
+      promises.push(mainInterface.usageAnalytics.logClickEvent(actionCause, meta, result, element));
     }
+    return Promise.all(promises);
   }
 
   protected getOriginLevel2(element: HTMLElement): string {
