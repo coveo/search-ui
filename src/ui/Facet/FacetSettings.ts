@@ -240,7 +240,7 @@ export class FacetSettings extends FacetSort {
       return facetSortDescription.directionToggle;
     });
     const allowToggle = _.filter(allEnabledSortsWithPossibleDirectionToggle, (possibleDirectionToggle) => {
-      return _.findWhere(this.enabledSorts, { name: possibleDirectionToggle.relatedSort }) != null;
+      return _.findWhere(this.enabledSorts, { name: possibleDirectionToggle.relatedSort }) != undefined;
     });
     return allowToggle.length > 0;
   }
