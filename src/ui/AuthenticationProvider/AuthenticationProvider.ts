@@ -126,7 +126,7 @@ export class AuthenticationProvider extends Component {
         text: l('Reauthenticate', this.options.caption),
         className: 'coveo-authentication-provider',
         onOpen: () => this.authenticateWithProvider(),
-        svgIcon: SVGIcons.dropdownAuthenticate,
+        svgIcon: SVGIcons.icons.dropdownAuthenticate,
         svgIconClassName: 'coveo-authentication-provider-svg'
       });
     });

@@ -32,7 +32,7 @@ export class ResponsiveTabs implements IResponsiveComponent {
   private searchInterface: SearchInterface;
   private dropdownHeaderLabel: string;
 
- constructor(private coveoRoot: Dom, public ID: string) {
+  constructor(private coveoRoot: Dom, public ID: string) {
     this.dropdownHeaderLabel = this.getDropdownHeaderLabel();
     this.searchInterface = <SearchInterface>Component.get(this.coveoRoot.el, SearchInterface, false);
     this.searchBoxElement = this.getSearchBoxElement();
@@ -205,8 +205,8 @@ export class ResponsiveTabs implements IResponsiveComponent {
     const dropdownHeader = $$('a', { className: 'coveo-dropdown-header coveo-tab-dropdown-header' });
     const content = $$('p');
     content.text(this.dropdownHeaderLabel);
-    const icon = $$('span', { className: 'coveo-more-tabs' }, SVGIcons.arrowDown);
-    SVGDom.addClassToSVGInContainer(icon.el, 'coveo-more-tabs-svg')
+    const icon = $$('span', { className: 'coveo-more-tabs' }, SVGIcons.icons.arrowDown);
+    SVGDom.addClassToSVGInContainer(icon.el, 'coveo-more-tabs-svg');
     content.el.appendChild(icon.el);
     dropdownHeader.el.appendChild(content.el);
     return dropdownHeader;

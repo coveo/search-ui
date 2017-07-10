@@ -118,7 +118,7 @@ export class Breadcrumb extends Component {
       tabindex: 0
     }).el;
 
-    const clearIcon = $$('div', { className: 'coveo-icon coveo-breadcrumb-clear-all-icon' }, SVGIcons.checkboxHookExclusionMore).el;
+    const clearIcon = $$('div', { className: 'coveo-icon coveo-breadcrumb-clear-all-icon' }, SVGIcons.icons.checkboxHookExclusionMore).el;
     SVGDom.addClassToSVGInContainer(clearIcon, 'coveo-breadcrumb-clear-all-svg');
     clear.appendChild(clearIcon);
     const clearText = document.createElement('div');

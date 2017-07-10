@@ -54,7 +54,7 @@ export class PreferencesPanel extends Component {
         text: l('Preferences'),
         onOpen: () => this.open(),
         onClose: () => this.close(),
-        svgIcon: SVGIcons.dropdownPreferences,
+        svgIcon: SVGIcons.icons.dropdownPreferences,
         svgIconClassName: 'coveo-preferences-panel-svg'
       });
     });

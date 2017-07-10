@@ -69,6 +69,8 @@ export class Utils {
   }
 
   static parseFloatIfNotUndefined(str: string): number {
+    let a: any = 't';
+    a instanceof HTMLDocument;
     if (Utils.isNonEmptyString(str)) {
       return parseFloat(str);
     } else {

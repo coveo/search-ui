@@ -176,7 +176,7 @@ export class ResultTagging extends Component {
     tag.el.appendChild(this.buildShortenedTagWithTitle(tagValue));
     let deleteIcon = $$('span', {
       className: 'coveo-result-tagging-delete-icon'
-    }, SVGIcons.checkboxHookExclusionMore);
+    }, SVGIcons.icons.checkboxHookExclusionMore);
     SVGDom.addClassToSVGInContainer(deleteIcon.el, 'coveo-result-tagging-delete-icon-svg');
     tag.el.appendChild(deleteIcon.el);
     deleteIcon.on('click', () => {
@@ -226,7 +226,7 @@ export class ResultTagging extends Component {
   private buildAddIcon(): HTMLElement {
     let icon = $$('div', {
       className: 'coveo-result-tagging-add-tag-tick-icon'
-    }, SVGIcons.taggingOk);
+    }, SVGIcons.icons.taggingOk);
     SVGDom.addClassToSVGInContainer(icon.el, 'coveo-result-tagging-add-tag-tick-icon-svg');
     let clickable = $$('span');
     clickable.on('click', () => {
@@ -239,7 +239,7 @@ export class ResultTagging extends Component {
   private buildClearIcon(): HTMLElement {
     let icon = $$('div', {
       className: 'coveo-result-tagging-clear-icon'
-    }, SVGIcons.checkboxHookExclusionMore);
+    }, SVGIcons.icons.checkboxHookExclusionMore);
     SVGDom.addClassToSVGInContainer(icon.el, 'coveo-result-tagging-clear-icon-svg');
     let clickable = $$('span');
     clickable.on('click', () => {

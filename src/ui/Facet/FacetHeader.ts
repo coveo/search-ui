@@ -141,7 +141,7 @@ export class FacetHeader {
   }
 
   private buildWaitAnimation(): HTMLElement {
-    this.waitElement = $$('div', { className: 'coveo-facet-header-wait-animation' }, SVGIcons.loading).el;
+    this.waitElement = $$('div', { className: 'coveo-facet-header-wait-animation' }, SVGIcons.icons.loading).el;
     SVGDom.addClassToSVGInContainer(this.waitElement, 'coveo-facet-header-wait-animation-svg');
     this.waitElement.style.visibility = 'hidden';
     return this.waitElement;
@@ -172,7 +172,7 @@ export class FacetHeader {
   }
 
   private buildOperatorToggle(): HTMLElement {
-    const icon = $$('span', { className: 'coveo-' + (this.options.facet.options.useAnd ? 'and' : 'or') }, SVGIcons.orAnd);
+    const icon = $$('span', { className: 'coveo-' + (this.options.facet.options.useAnd ? 'and' : 'or') }, SVGIcons.icons.orAnd);
     SVGDom.addClassToSVGInContainer(icon.el, 'coveo-or-and-svg');
     const toggle = $$('div', { className: 'coveo-facet-header-operator', title: l('SwitchTo', this.options.facet.options.useAnd ? l('Or') : l('And')) });
     toggle.append(icon.el);
@@ -209,7 +209,7 @@ export class FacetHeader {
   }
 
   public buildEraser(): HTMLElement {
-    const eraser = $$('div', { title: l('Clear', this.options.title), className: 'coveo-facet-header-eraser' }, SVGIcons.mainClear);
+    const eraser = $$('div', { title: l('Clear', this.options.title), className: 'coveo-facet-header-eraser' }, SVGIcons.icons.mainClear);
     SVGDom.addClassToSVGInContainer(eraser.el, 'coveo-facet-header-eraser-svg');
 
     eraser.on('click', () => {

@@ -53,7 +53,7 @@ export class ShareQuery extends Component {
         text: l('ShareQuery'),
         onOpen: () => this.open(),
         onClose: () => this.close(),
-        svgIcon: SVGIcons.dropdownShareQuery,
+        svgIcon: SVGIcons.icons.dropdownShareQuery,
         svgIconClassName: 'coveo-share-query-svg'
       });
     });

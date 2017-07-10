@@ -1,6 +1,8 @@
 import { $$ } from '../../utils/Dom';
 import { IFormWidget, IFormWidgetSettable } from './FormWidgets';
 import { exportGlobally } from '../../GlobalExports';
+import { SVGIcons } from '../../utils/SVGIcons';
+import { SVGDom } from '../../utils/SVGDom';
 
 /**
  * A numeric spinner widget with standard styling.
@@ -99,12 +101,12 @@ export class NumericSpinner implements IFormWidget, IFormWidgetSettable {
     let numericSpinner = $$('div', { className: 'coveo-numeric-spinner' });
     let numberInput = $$('input', { className: 'coveo-number-input', type: 'text' });
     let addOn = $$('span', { className: 'coveo-add-on' });
-    addOn.el.innerHTML = `<div class="coveo-spinner-up">
-                              <i class="coveo-sprites-arrow-up"></i>
-                          </div>
-                          <div class="coveo-spinner-down">
-                              <i class="coveo-sprites-arrow-down"></i>
-                          </div>`;
+    const arrowUp = $$('div', { className: 'coveo-spinner-up'}, SVGIcons.icons.arrowUp);
+    SVGDom.addClassToSVGInContainer(arrowUp.el, 'coveo-spinner-up-svg');
+    const arrowDown = $$('div', { className: 'coveo-spinner-down'}, SVGIcons.icons.arrowDown);
+    SVGDom.addClassToSVGInContainer(arrowDown.el, 'coveo-spinner-down-svg');
+    addOn.append(arrowUp.el);
+    addOn.append(arrowDown.el);
     numericSpinner.append(numberInput.el);
     numericSpinner.append(addOn.el);
     this.element = numericSpinner.el;

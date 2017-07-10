@@ -135,7 +135,7 @@ export class CardOverlay extends Component {
     this.overlay.appendChild(overlayBody);
 
     // Create footer
-    const icon = $$('span', { className: 'coveo-icon coveo-open-card-overlay'}, SVGIcons.arrowDown);
+    const icon = $$('span', { className: 'coveo-icon coveo-open-card-overlay' }, SVGIcons.icons.arrowDown);
     SVGDom.addClassToSVGInContainer(icon.el, 'coveo-open-card-overlay-svg');
     let overlayFooter = $$('div', { className: 'coveo-card-overlay-footer', tabindex: '0' }, icon.el);
     overlayFooter.on('click', () => this.toggleOverlay(false));

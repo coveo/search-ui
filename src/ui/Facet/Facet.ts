@@ -1737,7 +1737,7 @@ export class Facet extends Component {
 
   private buildMore(): HTMLElement {
     let more: HTMLElement;
-    const svgContainer = $$('span', { className: 'coveo-facet-more-icon' }, SVGIcons.arrowDown).el;
+    const svgContainer = $$('span', { className: 'coveo-facet-more-icon' }, SVGIcons.icons.arrowDown).el;
     SVGDom.addClassToSVGInContainer(svgContainer, 'coveo-facet-more-icon-svg');
     more = $$('div', { className: 'coveo-facet-more', tabindex: 0 }, svgContainer).el;
 
@@ -1749,7 +1749,7 @@ export class Facet extends Component {
 
   private buildLess(): HTMLElement {
     let less: HTMLElement;
-    const svgContainer = $$('span', { className: 'coveo-facet-less-icon' }, SVGIcons.arrowUp).el;
+    const svgContainer = $$('span', { className: 'coveo-facet-less-icon' }, SVGIcons.icons.arrowUp).el;
     SVGDom.addClassToSVGInContainer(svgContainer, 'coveo-facet-less-icon-svg');
     less = $$('div', { className: 'coveo-facet-less', tabIndex: 0 }, svgContainer).el;
 
