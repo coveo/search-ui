@@ -29,21 +29,11 @@ export function LiveAnalyticsClientTest() {
       }
 
       env = new Mock.MockEnvironmentBuilder().build();
-      endpoint = Mock.mock<AnalyticsEndpoint>(AnalyticsEndpoint);
+      endpoint = Mock.mockAnalyticsEndpoint();
       client = new LiveAnalyticsClient(endpoint, env.root, 'foo', 'foo display', false, 'foo run name', 'foo run version', 'default', true);
       promise = new Promise((resolve, reject) => {
         resolve(FakeResults.createFakeResults(3));
       });
-
-      // Spy return Promise instead of void
-      // In order to chain Promise (ex: see pushCustomEvent)
-      const spyCustomEvent = jasmine.createSpy('sendCustomEvent');
-      spyCustomEvent.and.returnValue(Promise.resolve(null));
-      endpoint['sendCustomEvent'] = spyCustomEvent;
-
-      const spyDocumentViewEvent = jasmine.createSpy('sendDocumentViewEvent');
-      spyDocumentViewEvent.and.returnValue(Promise.resolve(null));
-      endpoint['sendDocumentViewEvent'] = spyDocumentViewEvent;      
     });
 
     afterEach(function () {
