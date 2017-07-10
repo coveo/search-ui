@@ -10380,8 +10380,8 @@ var playground =
 	"use strict";
 	Object.defineProperty(exports, "__esModule", { value: true });
 	exports.version = {
-	    'lib': '1.2537.22-beta',
-	    'product': '1.2537.22-beta',
+	    'lib': '1.2537.23-beta',
+	    'product': '1.2537.23-beta',
 	    'supportedApiVersion': 2
 	};
 
@@ -14728,9 +14728,11 @@ var playground =
 	    };
 	    NoopAnalyticsClient.prototype.logClickEvent = function (actionCause, meta, result, element) {
 	        this.setNoopCauseAndMeta(actionCause.name, meta);
+	        return es6_promise_1.Promise.resolve(null);
 	    };
 	    NoopAnalyticsClient.prototype.logCustomEvent = function (actionCause, meta, element) {
 	        this.setNoopCauseAndMeta(actionCause.name, meta);
+	        return es6_promise_1.Promise.resolve(null);
 	    };
 	    NoopAnalyticsClient.prototype.getTopQueries = function (params) {
 	        return new es6_promise_1.Promise(function (resolve, reject) {
@@ -18934,11 +18936,11 @@ var playground =
 	    };
 	    LiveAnalyticsClient.prototype.logClickEvent = function (actionCause, meta, result, element) {
 	        var metaObject = this.buildMetaObject(meta, result);
-	        this.pushClickEvent(actionCause, metaObject, result, element);
+	        return this.pushClickEvent(actionCause, metaObject, result, element);
 	    };
 	    LiveAnalyticsClient.prototype.logCustomEvent = function (actionCause, meta, element) {
 	        var metaObject = this.buildMetaObject(meta);
-	        this.pushCustomEvent(actionCause, metaObject, element);
+	        return this.pushCustomEvent(actionCause, metaObject, element);
 	    };
 	    LiveAnalyticsClient.prototype.getTopQueries = function (params) {
 	        return this.endpoint.getTopQueries(params);
@@ -18979,16 +18981,11 @@ var playground =
 	        this.originContext = originContext;
 	    };
 	    LiveAnalyticsClient.prototype.pushCustomEvent = function (actionCause, metaObject, element) {
-	        var _this = this;
 	        var customEvent = this.buildCustomEvent(actionCause, metaObject, element);
 	        this.triggerChangeAnalyticsCustomData('CustomEvent', metaObject, customEvent);
 	        this.checkToSendAnyPendingSearchAsYouType(actionCause);
-	        Defer_1.Defer.defer(function () {
-	            if (_this.sendToCloud) {
-	                _this.endpoint.sendCustomEvent(customEvent);
-	            }
-	            Dom_1.$$(_this.rootElement).trigger(AnalyticsEvents_1.AnalyticsEvents.customEvent, { customEvent: APIAnalyticsBuilder_1.APIAnalyticsBuilder.convertCustomEventToAPI(customEvent) });
-	        });
+	        Dom_1.$$(this.rootElement).trigger(AnalyticsEvents_1.AnalyticsEvents.customEvent, { customEvent: APIAnalyticsBuilder_1.APIAnalyticsBuilder.convertCustomEventToAPI(customEvent) });
+	        return this.sendToCloud ? this.endpoint.sendCustomEvent(customEvent) : Promise.resolve(null);
 	    };
 	    LiveAnalyticsClient.prototype.pushSearchEvent = function (actionCause, metaObject) {
 	        var _this = this;
@@ -19026,7 +19023,6 @@ var playground =
 	        this.pendingSearchAsYouTypeSearchEvent = new PendingSearchAsYouTypeSearchEvent_1.PendingSearchAsYouTypeSearchEvent(this.rootElement, this.endpoint, searchEvent, this.sendToCloud);
 	    };
 	    LiveAnalyticsClient.prototype.pushClickEvent = function (actionCause, metaObject, result, element) {
-	        var _this = this;
 	        var event = this.buildClickEvent(actionCause, metaObject, result, element);
 	        this.checkToSendAnyPendingSearchAsYouType(actionCause);
 	        this.triggerChangeAnalyticsCustomData('ClickEvent', metaObject, event, { resultData: result });
@@ -19034,14 +19030,10 @@ var playground =
 	        Assert_1.Assert.isNonEmptyString(event.collectionName);
 	        Assert_1.Assert.isNonEmptyString(event.sourceName);
 	        Assert_1.Assert.isNumber(event.documentPosition);
-	        Defer_1.Defer.defer(function () {
-	            if (_this.sendToCloud) {
-	                _this.endpoint.sendDocumentViewEvent(event);
-	            }
-	            Dom_1.$$(_this.rootElement).trigger(AnalyticsEvents_1.AnalyticsEvents.documentViewEvent, {
-	                documentViewEvent: APIAnalyticsBuilder_1.APIAnalyticsBuilder.convertDocumentViewToAPI(event)
-	            });
+	        Dom_1.$$(this.rootElement).trigger(AnalyticsEvents_1.AnalyticsEvents.documentViewEvent, {
+	            documentViewEvent: APIAnalyticsBuilder_1.APIAnalyticsBuilder.convertDocumentViewToAPI(event)
 	        });
+	        return this.sendToCloud ? this.endpoint.sendDocumentViewEvent(event) : Promise.resolve(null);
 	    };
 	    LiveAnalyticsClient.prototype.buildAnalyticsEvent = function (actionCause, metaObject) {
 	        return {
@@ -19582,10 +19574,14 @@ var playground =
 	        _.each(this.analyticsClients, function (analyticsClient) { return analyticsClient.logSearchEvent(actionCause, meta); });
 	    };
 	    MultiAnalyticsClient.prototype.logClickEvent = function (actionCause, meta, result, element) {
-	        _.each(this.analyticsClients, function (analyticsClient) { return analyticsClient.logClickEvent(actionCause, meta, result, element); });
+	        return Promise.all(_.map(this.analyticsClients, function (analyticsClient) {
+	            return analyticsClient.logClickEvent(actionCause, meta, result, element);
+	        }));
 	    };
 	    MultiAnalyticsClient.prototype.logCustomEvent = function (actionCause, meta, element) {
-	        _.each(this.analyticsClients, function (analyticsClient) { return analyticsClient.logCustomEvent(actionCause, meta, element); });
+	        return Promise.all(_.map(this.analyticsClients, function (analyticsClient) {
+	            return analyticsClient.logCustomEvent(actionCause, meta, element);
+	        }));
 	    };
 	    MultiAnalyticsClient.prototype.getTopQueries = function (params) {
 	        var _this = this;
@@ -49722,14 +49718,15 @@ var playground =
 	        if (actionCause == AnalyticsActionListMeta_1.analyticsActionCauseList.documentOpen) {
 	            actionCause = AnalyticsActionListMeta_1.analyticsActionCauseList.recommendationOpen;
 	        }
-	        _super.prototype.logClickEvent.call(this, actionCause, meta, result, element);
+	        var promises = [_super.prototype.logClickEvent.call(this, actionCause, meta, result, element)];
 	        if (this.recommendation.mainQuerySearchUID && this.recommendation.mainQueryPipeline != null) {
 	            // We log a second click associated with the main interface query to tell the analytics that the query was a success.
 	            var mainInterface = Component_1.Component.get(this.recommendation.options.mainSearchInterface, SearchInterface_1.SearchInterface);
 	            result.queryUid = this.recommendation.mainQuerySearchUID;
 	            result.pipeline = this.recommendation.mainQueryPipeline;
-	            mainInterface.usageAnalytics.logClickEvent(actionCause, meta, result, element);
+	            promises.push(mainInterface.usageAnalytics.logClickEvent(actionCause, meta, result, element));
 	        }
+	        return Promise.all(promises);
 	    };
 	    RecommendationAnalyticsClient.prototype.getOriginLevel2 = function (element) {
 	        return this.recommendation.getId();
