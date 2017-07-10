@@ -2,14 +2,14 @@
 <html>
 
   <head>
-    <title>Dropbox</title>
-    <meta about="Search Dropbox content." />
+    <title>Confluence</title>
+    <meta about="Search Confluence content." />
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, height=device-height" >
-    <link rel="stylesheet" href="./css/CoveoFullSearch.css"/>
-    <script src="js/CoveoJsSearch.Lazy.js"></script>
-    <script src="js/templates/templates.js"></script>
+    <script src="js/CoveoJsSearch.js"></script>
+    <script src="js/templates/templatesNew.js"></script>
+    <link rel="stylesheet" href="css/CoveoFullSearchNewDesign.css" />
     <script>
       document.addEventListener('DOMContentLoaded', function(){
         Coveo.SearchEndpoint.configureSampleEndpointV2();
@@ -18,9 +18,10 @@
     </script>
   </head>
 
-  <body id="search" class='CoveoSearchInterface' data-enable-history="true">
+  <body id="search" class='CoveoSearchInterface' data-enable-history="true" data-design="new">
+    <div class="CoveoFolding" data-field="@confparentitemid" data-parent-field="@confitemid" data-child-field="@confparentitemid" data-expand-expression="@confitemtype==attachment" data-rearrange="date ascending" data-tab="Confluence" data-range="5"></div>
     <div class="coveo-tab-section">
-      <a class="CoveoTab" data-id="Dropbox" data-caption="Dropbox" data-expression="@connectortype==DropboxCrawler AND @objecttype==File"></a>
+      <a class="CoveoTab" data-id="Confluence" data-caption="Confluence" data-expression="@connectortype==Confluence2Crawler AND NOT @documenttype==Space"></a>
     </div>
     <div class='coveo-search-section'>
       <div class="CoveoSettings"></div>
@@ -28,11 +29,10 @@
     </div>
     <div class="coveo-main-section">
       <div class="coveo-facet-column">
-        <div class="CoveoFacet" data-title="File Type" data-field="@filetype" data-tab="Dropbox"></div>
-        <div class="CoveoFacet" data-title="Author" data-field="@author" data-tab="Dropbox"></div>
-        <div class="CoveoFacet" data-title="Language" data-field="@language" data-tab="Dropbox"></div>
-        <div class="CoveoFacet" data-title="Year" data-field="@year" data-tab="Dropbox"></div>
-        <div class="CoveoFacet" data-title="Month" data-field="@month" data-tab="Dropbox"></div>
+        <div class="CoveoFacet" data-title="Type" data-field="@confdocumenttype" data-tab="Confluence"></div>
+        <div class="CoveoFacet" data-title="Space" data-field="@confspacename" data-tab="Confluence"></div>
+        <div class="CoveoFacet" data-title="File Type" data-field="@filetype" data-tab="Confluence"></div>
+        <div class="CoveoFacet" data-title="Author" data-field="@author" data-tab="Confluence"></div>
       </div>
       <div class="coveo-results-column">
         <div class="CoveoShareQuery"></div>

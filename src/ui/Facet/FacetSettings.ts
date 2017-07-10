@@ -29,13 +29,12 @@ export interface IFacetState {
  */
 export class FacetSettings extends FacetSort {
   public loadedFromSettings: { [attribute: string]: any };
+  public settingsPopup: HTMLElement;
 
   private facetStateLocalStorage: LocalStorageUtils<IFacetState>;
   private includedStateAttribute: string;
   private excludedStateAttribute: string;
   private operatorStateAttribute: string;
-
-  private settingsPopup: HTMLElement;
   private settingsIcon: HTMLElement;
   private settingsButton: HTMLElement;
   private directionSection: HTMLElement[];
@@ -72,7 +71,6 @@ export class FacetSettings extends FacetSort {
 
     if (Utils.isNonEmptyArray(this.enabledSorts)) {
       this.sortSection = this.buildSortSection();
-
       if (this.enabledSortsAllowDirection()) {
         this.directionSection = this.buildDirectionSection();
       }
@@ -174,14 +172,19 @@ export class FacetSettings extends FacetSort {
     if (this.facet.options.enableSettingsFacetState) {
       $$(this.clearStateSection).toggle(!Utils.isNullOrUndefined(this.facetStateLocalStorage.load()));
     }
+
     _.each(this.enabledSorts, (criteria: IFacetSortDescription, i) => {
-      if (!Utils.isNullOrUndefined(this.sortSection.sortItems[i])) {
-        if (this.activeSort.name == criteria.name.toLowerCase() || this.activeSort.relatedSort == criteria.name.toLowerCase()) {
-          this.selectItem(this.sortSection.sortItems[i]);
-        } else {
-          this.unselectItem(this.sortSection.sortItems[i]);
-        }
+      if (this.activeSort.name == criteria.name.toLowerCase()) {
+        this.selectItem(this.getSortItem(criteria.name));
+      } else {
+        this.unselectItem(this.getSortItem(criteria.name));
       }
+    });
+  }
+
+  public getSortItem(sortName: string): HTMLElement {
+    return _.find(this.sortSection.sortItems, (sortItem) => {
+      return $$(sortItem).getAttribute('data-sort-name').toLowerCase() == sortName.replace('ascending|descending', '').toLowerCase();
     });
   }
 
@@ -211,6 +214,7 @@ export class FacetSettings extends FacetSort {
       } else {
         const elem = this.buildItem(l(enabledSort.label), enabledSort.description);
         $$(elem).on('click', (e: Event) => this.handleClickSortButton(e, enabledSort));
+        $$(elem).setAttribute('data-sort-name', enabledSort.name.toLowerCase().replace('ascending|descending', ''));
         return elem;
       }
     });
@@ -232,9 +236,13 @@ export class FacetSettings extends FacetSort {
   }
 
   private enabledSortsAllowDirection() {
-    return _.some(this.enabledSorts, (facetSortDescription: IFacetSortDescription) => {
+    const allEnabledSortsWithPossibleDirectionToggle = _.filter(this.enabledSorts, (facetSortDescription: IFacetSortDescription) => {
       return facetSortDescription.directionToggle;
     });
+    const allowToggle = _.filter(allEnabledSortsWithPossibleDirectionToggle, (possibleDirectionToggle) => {
+      return _.findWhere(this.enabledSorts, { name: possibleDirectionToggle.relatedSort }) != undefined;
+    });
+    return allowToggle.length > 0;
   }
 
 
@@ -486,11 +494,16 @@ export class FacetSettings extends FacetSort {
   }
 
   private selectItem(item: HTMLElement) {
-    $$(item).addClass('coveo-selected');
+    if (item) {
+      $$(item).addClass('coveo-selected');
+    }
+
   }
 
   private unselectItem(item: HTMLElement) {
-    $$(item).removeClass('coveo-selected');
+    if (item) {
+      $$(item).removeClass('coveo-selected');
+    }
   }
 
   private getPopupAlignment() {

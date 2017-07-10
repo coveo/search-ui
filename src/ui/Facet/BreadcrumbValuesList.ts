@@ -72,12 +72,6 @@ export class BreadcrumbValueList {
       });
       multi.text(l('NMore', Globalize.format(numberOfSelected, 'n0')));
       elem.el.appendChild(multi.el);
-
-      let multiIcon = $$('div', {
-        className: 'coveo-selected coveo-facet-breadcrumb-multi-icon'
-      }, SVGIcons.icons.checkboxHookExclusionMore);
-      SVGDom.addClassToSVGInContainer(multiIcon.el, 'coveo-facet-breadcrumb-multi-icon-svg');
-      elem.el.appendChild(multiIcon.el);
     }
     if (numberOfExcluded > 0) {
       let multiExcluded = $$('span', {
@@ -86,11 +80,6 @@ export class BreadcrumbValueList {
       multiExcluded.text(l('NMore', Globalize.format(numberOfExcluded, 'n0')));
       elem.el.appendChild(multiExcluded.el);
 
-      let multiExcludedIcon = $$('div', {
-        className: 'coveo-excluded coveo-facet-breadcrumb-multi-icon'
-      }, SVGIcons.icons.checkboxHookExclusionMore);
-      SVGDom.addClassToSVGInContainer(multiExcludedIcon.el, 'coveo-facet-breadcrumb-multi-icon-svg');
-      elem.el.appendChild(multiExcludedIcon.el);
     }
 
     let valueElements = _.map(this.collapsed, (facetValue) => {

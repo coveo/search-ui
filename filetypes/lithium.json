@@ -1,7 +1,7 @@
 {
   "filetype": {
     "lithiummessage": {
-      "icon": "mail",
+      "icon": "salesforce-standard-feedback",
       "captions": {
         "en": "Lithium Message",
         "fr": "Message Lithium",
@@ -29,7 +29,7 @@
       }
     },
     "lithiumthread": {
-      "icon": "list",
+      "icon": "salesforce-standard-feedback",
       "captions": {
         "en": "Lithium Thread",
         "fr": "Fil de conversation Lithium",
@@ -57,7 +57,7 @@
       }
     },
     "lithiumboard": {
-      "icon": "list",
+      "icon": "salesforce-standard-groups",
       "captions": {
         "en": "Lithium Board",
         "fr": "Babillard électronique Lithium",
@@ -85,7 +85,7 @@
       }
     },
     "lithiumcategory": {
-      "icon": "list",
+      "icon": "salesforce-standard-related-list",
       "captions": {
         "en": "Lithium Category",
         "fr": "Catégorie Lithium",
@@ -113,7 +113,7 @@
       }
     },
     "lithiumcommunity": {
-      "icon": "custom",
+      "icon": "salesforce-standard-team-member",
       "captions": {
         "en": "Lithium Community",
         "fr": "Communauté Lithium",
