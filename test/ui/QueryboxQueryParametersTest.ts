@@ -10,6 +10,7 @@ export function QueryboxQueryParametersTest() {
 
     afterEach(() => {
       builder = null;
+      QueryboxQueryParameters.allowDuplicateQuery();
     });
 
     it('should add enableLowercaseOperators to builder', () => {
@@ -43,6 +44,8 @@ export function QueryboxQueryParametersTest() {
 
       expect(builder.enableQuerySyntax).toBe(true);
 
+      QueryboxQueryParameters.allowDuplicateQuery();
+
       new QueryboxQueryParameters({
         enableQuerySyntax: false
       }).addParameters(builder, 'foobar');
@@ -61,6 +64,22 @@ export function QueryboxQueryParametersTest() {
       expect(builder.enablePartialMatch).toBe(true);
       expect(builder.partialMatchKeywords).toBe(123);
       expect(builder.partialMatchThreshold).toBe('12%');
+    });
+
+    it('should block duplicate execution of the query parameters', () => {
+      const param1 = new QueryboxQueryParameters({
+        enableQuerySyntax: false
+      });
+      const param2 = new QueryboxQueryParameters({
+        enableQuerySyntax: true
+      });
+
+      param1.addParameters(builder, 'foobar');
+      // param2 should be blocked, since it's the same call stack
+      param2.addParameters(builder, 'foobar2');
+
+      expect(builder.enableQuerySyntax).toBe(false);
+      expect(builder.build().q).toBe('foobar');
     });
   });
 }

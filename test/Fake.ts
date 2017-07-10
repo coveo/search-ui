@@ -256,6 +256,7 @@ export class FakeResults {
     result.raw.sffeeditemid = token + 'id';
     result.clickUri = 'myURI/' + result.raw.sffeeditemid;
     result.raw.sfcreatedby = 'createdby';
+    result.raw.sfcreatedbyname = 'createdby';
     result.raw.sfcreatedbyid = 'createdbyid';
     result.raw.sfinsertedbyid = 'createdbyid';
 
