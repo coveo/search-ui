@@ -201,7 +201,7 @@ export class QuickviewDocument extends Component {
   private writeToIFrame(iframe: HTMLIFrameElement, content: String);
   private writeToIFrame(iframe: HTMLIFrameElement, content: any) {
 
-    if (content.type == HTMLDocument) {
+    if (content instanceof HTMLDocument) {
       _.each($$(content.body).findAll('a'), (link) => {
         link.setAttribute('target', '_top');
       });
