@@ -1,5 +1,6 @@
 import { IAnalyticsClient } from './AnalyticsClient';
 import { IAnalyticsActionCause } from './AnalyticsActionListMeta';
+import { IAPIAnalyticsEventResponse } from '../../rest/APIAnalyticsEventResponse';
 import { IQueryResult } from '../../rest/QueryResult';
 import { ITopQueries } from '../../rest/TopQueries';
 import { Promise } from 'es6-promise';
@@ -31,12 +32,14 @@ export class NoopAnalyticsClient implements IAnalyticsClient {
     this.setNoopCauseAndMeta(actionCause.name, meta);
   }
 
-  logClickEvent<TMeta>(actionCause: IAnalyticsActionCause, meta: TMeta, result?: IQueryResult, element?: HTMLElement) {
+  logClickEvent<TMeta>(actionCause: IAnalyticsActionCause, meta: TMeta, result?: IQueryResult, element?: HTMLElement): Promise<IAPIAnalyticsEventResponse> {
     this.setNoopCauseAndMeta(actionCause.name, meta);
+    return Promise.resolve(null);
   }
 
-  logCustomEvent<TMeta>(actionCause: IAnalyticsActionCause, meta: TMeta, element?: HTMLElement) {
+  logCustomEvent<TMeta>(actionCause: IAnalyticsActionCause, meta: TMeta, element?: HTMLElement): Promise<IAPIAnalyticsEventResponse> {
     this.setNoopCauseAndMeta(actionCause.name, meta);
+    return Promise.resolve(null);
   }
 
   getTopQueries(params: ITopQueries): Promise<string[]> {

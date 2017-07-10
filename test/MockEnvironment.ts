@@ -12,6 +12,7 @@ import { Component } from '../src/ui/Base/Component';
 import { Utils } from '../src/utils/Utils';
 import { BaseComponent } from '../src/ui/Base/BaseComponent';
 import { NoopAnalyticsClient } from '../src/ui/Analytics/NoopAnalyticsClient';
+import { AnalyticsEndpoint } from '../src/rest/AnalyticsEndpoint';
 import { SearchEndpoint } from '../src/rest/SearchEndpoint';
 import { QueryController } from '../src/controllers/QueryController';
 import { ResponsiveComponents } from '../src/ui/ResponsiveComponents/ResponsiveComponents';
@@ -260,6 +261,14 @@ export function mockUsageAnalytics(): IAnalyticsClient {
   var m = mock<any>(NoopAnalyticsClient, 'AnalyticsClient');
   m.getTopQueries.and.returnValue(new Promise((resolve, reject) => {
   }));
+  return m;
+}
+
+export function mockAnalyticsEndpoint(): AnalyticsEndpoint {
+  const m = mock<any>(AnalyticsEndpoint, 'AnalyticsEndpoint');
+  // Spy return Promise instead of void in order to chain Promises
+  m.sendCustomEvent.and.returnValue(Promise.resolve(null));
+  m.sendDocumentViewEvent.and.returnValue(Promise.resolve(null));
   return m;
 }
 
