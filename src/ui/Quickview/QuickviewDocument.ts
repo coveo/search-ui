@@ -205,8 +205,8 @@ export class QuickviewDocument extends Component {
     if (content instanceof HTMLDocument) {
       _.each($$(content.body).findAll('a'), (link) => {
         link.setAttribute('target', '_top');
-        toWrite = content.getElementsByTagName('html')[0].outerHTML;
       });
+      toWrite = content.getElementsByTagName('html')[0].outerHTML;
     }
 
     iframe.contentWindow.document.open();
