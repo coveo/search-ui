@@ -163,7 +163,7 @@ export class SearchAlerts extends Component {
                   onOpen: () => this.followQuery(),
                   onClose: () => { },
                   svgIcon: SVGIcons.dropdownFollowQuery,
-                  svgIconClassName: 'coveo-follow-query'
+                  svgIconClassName: 'coveo-follow-query-svg'
                 });
               }
             });

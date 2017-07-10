@@ -16,6 +16,8 @@ import * as _ from 'underscore';
 import { Utils } from '../../utils/Utils';
 import { KeyboardUtils, KEYBOARD } from '../../utils/KeyboardUtils';
 import { exportGlobally } from '../../GlobalExports';
+import { SVGIcons } from '../../utils/SVGIcons';
+import { SVGDom } from '../../utils/SVGDom';
 
 
 export interface IFollowItemOptions {
@@ -91,6 +93,10 @@ export class FollowItem extends Component {
 
     this.container = $$(this.element);
     this.text = $$('span');
+    const icon = this.buildIcon();
+    const loadingIcon = this.buildLoadingIcon();
+    this.container.append(icon);
+    this.container.append(loadingIcon);
     this.container.append(this.text.el);
     this.container.on('click', () => this.toggleFollow());
     this.container.setAttribute('tabindex', '0');
@@ -133,7 +139,7 @@ export class FollowItem extends Component {
         this.queryController.getEndpoint()
           .deleteSubscription(this.subscription)
           .then(() => {
-            let eventArgs: ISearchAlertsEventArgs = {
+            const eventArgs: ISearchAlertsEventArgs = {
               subscription: this.subscription,
               dom: this.element
             };
@@ -141,7 +147,7 @@ export class FollowItem extends Component {
           })
           .catch(() => {
             this.container.removeClass('coveo-follow-item-loading');
-            let eventArgs: ISearchAlertsFailEventArgs = {
+            const eventArgs: ISearchAlertsFailEventArgs = {
               dom: this.element
             };
             $$(this.root).trigger(SearchAlertsEvents.searchAlertsFail, eventArgs);
@@ -150,7 +156,7 @@ export class FollowItem extends Component {
         this.logAnalyticsEvent(analyticsActionCauseList.searchAlertsFollowDocument);
         this.queryController.getEndpoint().follow(this.subscription)
           .then((subscription: ISubscription) => {
-            let eventArgs: ISearchAlertsEventArgs = {
+            const eventArgs: ISearchAlertsEventArgs = {
               subscription: subscription,
               dom: this.element
             };
@@ -158,7 +164,7 @@ export class FollowItem extends Component {
           })
           .catch(() => {
             this.container.removeClass('coveo-follow-item-loading');
-            let eventArgs: ISearchAlertsFailEventArgs = {
+            const eventArgs: ISearchAlertsFailEventArgs = {
               dom: this.element
             };
             $$(this.root).trigger(SearchAlertsEvents.searchAlertsFail, eventArgs);
@@ -176,8 +182,8 @@ export class FollowItem extends Component {
       .listSubscriptions()
       .then((subscriptions: ISubscription[]) => {
         if (_.isArray(subscriptions)) {
-          let subscription: ISubscription = _.find(subscriptions, (subscription: ISubscription) => {
-            let typeConfig = <ISubscriptionItemRequest>subscription.typeConfig;
+          const subscription: ISubscription = _.find(subscriptions, (subscription: ISubscription) => {
+            const typeConfig = <ISubscriptionItemRequest>subscription.typeConfig;
             return typeConfig && typeConfig.id != null && typeConfig.id == this.getId();
           });
           if (subscription != null) {
@@ -193,10 +199,21 @@ export class FollowItem extends Component {
         this.remove();
       });
   }
+  private buildIcon(): HTMLElement {
+    const icon = $$('span', { className: 'coveo-follow-item-icon' }, SVGIcons.dropdownFollowQuery);
+    SVGDom.addClassToSVGInContainer(icon.el, 'coveo-follow-item-icon-svg');
+    return icon.el;
+  }
+
+  private buildLoadingIcon(): HTMLElement {
+    const loadingIcon = $$('span', { className: 'coveo-follow-item-icon-loading' }, SVGIcons.loading);
+    SVGDom.addClassToSVGInContainer(loadingIcon.el, 'coveo-follow-item-icon-loading-svg');
+    return loadingIcon.el;
+  }
 
   private handleSubscriptionDeleted(args: ISearchAlertsEventArgs) {
     if (args.subscription && args.subscription.type == SUBSCRIPTION_TYPE.followDocument) {
-      let typeConfig = <ISubscriptionItemRequest>args.subscription.typeConfig;
+      const typeConfig = <ISubscriptionItemRequest>args.subscription.typeConfig;
       if (typeConfig.id == this.getId()) {
         this.setNotFollowed();
       }
@@ -205,7 +222,7 @@ export class FollowItem extends Component {
 
   private handleSubscriptionCreated(args: ISearchAlertsEventArgs) {
     if (args.subscription && args.subscription.type == SUBSCRIPTION_TYPE.followDocument) {
-      let typeConfig = <ISubscriptionItemRequest>args.subscription.typeConfig;
+      const typeConfig = <ISubscriptionItemRequest>args.subscription.typeConfig;
       if (typeConfig.id == this.getId()) {
         this.setFollowed(args.subscription);
       }
@@ -221,7 +238,7 @@ export class FollowItem extends Component {
   }
 
   private static buildFollowRequest(id: string, title: string, options: IFollowItemOptions): ISubscriptionRequest {
-    let typeCofig: ISubscriptionItemRequest = {
+    const typeCofig: ISubscriptionItemRequest = {
       id: id,
       title: title
     };

@@ -74,7 +74,7 @@ export class ResultList extends Component {
       return template;
     }
 
-    let component = <ResultList>Component.get(e);
+    const component = <ResultList>Component.get(e);
     if (Coveo['Recommendation'] && component.searchInterface instanceof Coveo['Recommendation']) {
       return new DefaultRecommendationTemplate();
     }
@@ -324,7 +324,7 @@ export class ResultList extends Component {
   }
 
   private setupTemplatesVersusLayouts() {
-    let layoutClassToAdd = `coveo-${this.options.layout}-layout-container`;
+    const layoutClassToAdd = `coveo-${this.options.layout}-layout-container`;
     $$(this.options.resultContainer).addClass(layoutClassToAdd);
 
     if (this.options.layout === 'table') {
@@ -370,8 +370,8 @@ export class ResultList extends Component {
    * @param results the result set to build an array of HTMLElement from.
    */
   public buildResults(results: IQueryResults): Promise<HTMLElement[]> {
-    let res: { elem: HTMLElement, idx: number }[] = [];
-    let resultsPromises = _.map(results.results, (result: IQueryResult, index: number) => {
+    const res: { elem: HTMLElement, idx: number }[] = [];
+    const resultsPromises = _.map(results.results, (result: IQueryResult, index: number) => {
       return this.buildResult(result).then((resultElement: HTMLElement) => {
         if (resultElement != null) {
           res.push({ elem: resultElement, idx: index });
@@ -443,7 +443,7 @@ export class ResultList extends Component {
     this.fetchingMoreResults.then((data: IQueryResults) => {
       Assert.exists(data);
       this.usageAnalytics.logCustomEvent<IAnalyticsNoMeta>(analyticsActionCauseList.pagerScrolling, {}, this.element);
-      let results = data.results;
+      const results = data.results;
       this.reachedTheEndOfResults = count > data.results.length;
       this.buildResults(data).then((elements: HTMLElement[]) => {
         this.renderResults(elements, true);
@@ -499,11 +499,11 @@ export class ResultList extends Component {
   protected autoCreateComponentsInsideResult(element: HTMLElement, result: IQueryResult): IInitResult {
     Assert.exists(element);
 
-    let initOptions = this.searchInterface.options.originalOptionsObject;
-    let resultComponentBindings: IResultsComponentBindings = _.extend({}, this.getBindings(), {
+    const initOptions = this.searchInterface.options.originalOptionsObject;
+    const resultComponentBindings: IResultsComponentBindings = _.extend({}, this.getBindings(), {
       resultElement: element
     });
-    let initParameters: IInitializationParameters = {
+    const initParameters: IInitializationParameters = {
       options: initOptions,
       bindings: resultComponentBindings,
       result: result
@@ -512,7 +512,7 @@ export class ResultList extends Component {
   }
 
   protected triggerNewResultDisplayed(result: IQueryResult, resultElement: HTMLElement) {
-    let args: IDisplayedNewResultEventArgs = {
+    const args: IDisplayedNewResultEventArgs = {
       result: result,
       item: resultElement
     };
@@ -539,7 +539,7 @@ export class ResultList extends Component {
   private handleQuerySuccess(data: IQuerySuccessEventArgs) {
     Assert.exists(data);
     Assert.exists(data.results);
-    let results = data.results;
+    const results = data.results;
     this.logger.trace('Received query results from new query', results);
     this.hideWaitingAnimation();
     ResultList.resultCurrentlyBeingRendered = undefined;
@@ -580,10 +580,10 @@ export class ResultList extends Component {
 
   private scrollBackToTop() {
     if (this.options.infiniteScrollContainer instanceof Window) {
-      let win = <Window>this.options.infiniteScrollContainer;
+      const win = <Window>this.options.infiniteScrollContainer;
       win.scrollTo(0, 0);
     } else {
-      let el = <HTMLElement>this.options.infiniteScrollContainer;
+      const el = <HTMLElement>this.options.infiniteScrollContainer;
       el.scrollTop = 0;
     }
   }
@@ -656,18 +656,18 @@ export class ResultList extends Component {
   }
 
   private isScrollAtBottomForWindowElement() {
-    let win = new Win(window);
-    let windowHeight = win.height();
-    let scrollTop = win.scrollY();
-    let bodyHeight = new Doc(document).height();
+    const win = new Win(window);
+    const windowHeight = win.height();
+    const scrollTop = win.scrollY();
+    const bodyHeight = new Doc(document).height();
     return bodyHeight - (windowHeight + scrollTop) < windowHeight / 2;
   }
 
   private isScrollAtBottomForHtmlElement() {
-    let el = <HTMLElement>this.options.infiniteScrollContainer;
-    let elementHeight = el.clientHeight;
-    let scrollHeight = el.scrollHeight;
-    let bottomPosition = el.scrollTop + elementHeight;
+    const el = <HTMLElement>this.options.infiniteScrollContainer;
+    const elementHeight = el.clientHeight;
+    const scrollHeight = el.scrollHeight;
+    const bottomPosition = el.scrollTop + elementHeight;
     return (scrollHeight - bottomPosition) < elementHeight / 2;
   }
 
@@ -684,10 +684,10 @@ export class ResultList extends Component {
   }
 
   private showOrHideElementsDependingOnState(hasQuery: boolean, hasResults: boolean) {
-    let showIfQuery = $$(this.element).findAll('.coveo-show-if-query');
-    let showIfNoQuery = $$(this.element).findAll('.coveo-show-if-no-query');
-    let showIfResults = $$(this.element).findAll('.coveo-show-if-results');
-    let showIfNoResults = $$(this.element).findAll('.coveo-show-if-no-results');
+    const showIfQuery = $$(this.element).findAll('.coveo-show-if-query');
+    const showIfNoQuery = $$(this.element).findAll('.coveo-show-if-no-query');
+    const showIfResults = $$(this.element).findAll('.coveo-show-if-results');
+    const showIfNoResults = $$(this.element).findAll('.coveo-show-if-no-results');
 
     _.each(showIfQuery, (s: HTMLElement) => {
       $$(s).toggle(hasQuery);
@@ -725,7 +725,7 @@ export class ResultList extends Component {
         $$(this.options.waitAnimationContainer).removeClass('coveo-fade-out');
         break;
       case 'spinner':
-        let spinner = $$(this.options.waitAnimationContainer).find('.coveo-loading-spinner');
+        const spinner = $$(this.options.waitAnimationContainer).find('.coveo-loading-spinner');
         if (spinner) {
           $$(spinner).detach();
         }
@@ -734,9 +734,11 @@ export class ResultList extends Component {
   }
 
   private showWaitingAnimationForInfiniteScrolling() {
-    let spinner = DomUtils.getLoadingSpinner();
+    const spinner = DomUtils.getLoadingSpinner();
     if (this.options.layout == 'card' && this.options.enableInfiniteScroll) {
-      let spinnerContainer = $$('div', {
+      const previousSpinnerContainer = $$(this.options.waitAnimationContainer).findAll('.coveo-loading-spinner-container');
+      _.each(previousSpinnerContainer, previousSpinner => $$(previousSpinner).remove());
+      const spinnerContainer = $$('div', {
         className: 'coveo-loading-spinner-container'
       });
       spinnerContainer.append(spinner);
@@ -748,10 +750,10 @@ export class ResultList extends Component {
   }
 
   private hideWaitingAnimationForInfiniteScrolling() {
-    let spinner = $$(this.options.waitAnimationContainer).find('.coveo-loading-spinner');
-    if (spinner) {
-      $$(spinner).detach();
-    }
+    const spinners = $$(this.options.waitAnimationContainer).findAll('.coveo-loading-spinner');
+    const containers = $$(this.options.waitAnimationContainer).findAll('.coveo-loading-spinner-container');
+    _.each(spinners, spinner => $$(spinner).remove());
+    _.each(containers, container => $$(container).remove());
   }
 
   private initResultContainer() {

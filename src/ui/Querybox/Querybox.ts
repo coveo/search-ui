@@ -33,8 +33,8 @@ export interface IQueryboxOptions {
 /**
  * The `Querybox` component renders an input which the end user can interact with to enter and submit queries.
  *
- * When the user submits a query, the `Querybox` component triggers a query and logs the corresponding usage analytics
- * data.
+ * When the end user submits a search request, the `Querybox` component triggers a query and logs the corresponding
+ * usage analytics data.
  *
  * For technical reasons, it is necessary to instantiate this component on a `div` element rather than on an `input`
  * element.
@@ -74,10 +74,12 @@ export class Querybox extends Component {
     searchAsYouTypeDelay: ComponentOptions.buildNumberOption({ defaultValue: 50, min: 0 }),
 
     /**
-     * Specifies whether the Coveo Platform should try to interpret special query syntax (e.g., `@objecttype=message`)
-     * when the end user types a query in the `Querybox` (see
-     * [Coveo Query Syntax Reference](http://www.coveo.com/go?dest=adminhelp70&lcid=9&context=10005)). Enabling query
-     * syntax also causes the `Querybox` to highlight any query syntax.
+     * Specifies whether to interpret special query syntax (e.g., `@objecttype=message`) when the end user types
+     * a query in the `Querybox` (see
+     * [Coveo Query Syntax Reference](http://www.coveo.com/go?dest=adminhelp70&lcid=9&context=10005)). Setting this
+     * option to `true` also causes the `Querybox` to highlight any query syntax.
+     *
+     * See also [`enableLowercaseOperators`]{@link Querybox.options.enableLowercaseOperators}.
      *
      * **Note:**
      * > End user preferences can override the value you specify for this option.
@@ -92,26 +94,29 @@ export class Querybox extends Component {
     enableQuerySyntax: ComponentOptions.buildBooleanOption({ defaultValue: false }),
 
     /**
-     * Specifies whether the Coveo Platform should expand keywords containing wildcard characters (`*`) to the possible
+     * Specifies whether to expand basic expression keywords containing wildcards characters (`*`) to the possible
      * matching keywords in order to broaden the query (see
-     * [Coveo Query Syntax Reference](http://www.coveo.com/go?dest=adminhelp70&lcid=9&context=10005)).
+     * [Using Wildcards in Queries](http://www.coveo.com/go?dest=cloudhelp&lcid=9&context=359)).
+     *
+     * See also [`enableQuestionMarks`]{@link Querybox.options.enableQuestionMarks}.
      *
      * Default value is `false`.
      */
     enableWildcards: ComponentOptions.buildBooleanOption({ defaultValue: false }),
 
     /**
-     * Specifies whether the Coveo Platform should expand keywords containing question mark characters (`?`) to the
-     * possible matching keywords in order to broaden the query (see
-     * [Coveo Query Syntax Reference](http://www.coveo.com/go?dest=adminhelp70&lcid=9&context=10005)).
+     * If [`enableWildcards`]{@link Querybox.options.enableWildcards} is `true`, specifies whether to expand basic
+     * expression keywords containing question mark characters (`?`) to the possible matching keywords in order to
+     * broaden the query (see
+     * [Using Wildcards in Queries](http://www.coveo.com/go?dest=cloudhelp&lcid=9&context=359)).
      *
      * Default value is `false`.
      */
-    enableQuestionMarks: ComponentOptions.buildBooleanOption({ defaultValue: false }),
+    enableQuestionMarks: ComponentOptions.buildBooleanOption({ defaultValue: false, depend: 'enableWildcards' }),
 
     /**
      * If the [`enableQuerySyntax`]{@link Querybox.options.enableQuerySyntax} option is `true`, specifies whether to
-     * treat the `AND`, `NOT`, `OR`, and `NEAR` keywords in the `Querybox` as query operators in the query, even if
+     * interpret the `AND`, `NOT`, `OR`, and `NEAR` keywords in the `Querybox` as query operators in the query, even if
      * the end user types those keywords in lowercase.
      *
      * This option applies to all query operators (see
@@ -144,7 +149,8 @@ export class Querybox extends Component {
      * > For instance, if the basic expression is `Coveo custom component configuration help`, items containing
      * > all 5 of those keywords, or 4 of them (75% of 5 rounded up) will match the query.
      *
-     * Default value is `false`.
+     * Default value is `false`, which implies that an item must contain all of the basic expression keywords to match
+     * the query.
      */
     enablePartialMatch: ComponentOptions.buildBooleanOption({ defaultValue: false }),
 

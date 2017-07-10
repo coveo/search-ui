@@ -32,6 +32,9 @@ export var L10N = {
         value = L10N.formatPlSn(value, last);
       }
       _.each(args, (arg, i) => value = value.replace(`{${i}}`, arg));
+    } else {
+      // If there was no parameters passed, we try to cleanup the possible parameters in the translated string.
+      value = value.replace(/{[0-9]}|<pl>[a-zA-Z]+<\/pl>|<sn>|<\/sn>/g, '').trim();
     }
     return value;
   },

@@ -5,6 +5,7 @@ import { DateUtils } from './DateUtils';
 import { FileTypes } from '../ui/Misc/FileTypes';
 import { Utils } from './Utils';
 import { StringUtils } from './StringUtils';
+import { SVGIcons } from './SVGIcons';
 
 export class DomUtils {
   static getPopUpCloseButton(captionForClose: string, captionForReminder: string): string {
@@ -33,7 +34,7 @@ export class DomUtils {
     let loadDotClass = 'coveo-loading-dot';
     let dom = document.createElement('div');
     dom.className = 'coveo-first-loading-animation';
-    dom.innerHTML = `<div class='coveo-logo' ></div>
+    dom.innerHTML = `<div class='coveo-logo'>${SVGIcons.coveoLogo}</div>
     <div class='coveo-loading-container'>
       <div class='${loadDotClass}'></div>
       <div class='${loadDotClass}'></div>
