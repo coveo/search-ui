@@ -16,6 +16,8 @@ import * as _ from 'underscore';
 import { exportGlobally } from '../../GlobalExports';
 
 import 'styling/_Sort';
+import { SVGIcons } from '../../utils/SVGIcons';
+import { SVGDom } from '../../utils/SVGDom';
 
 export interface ISortOptions {
   sortCriteria?: SortCriteria[];
@@ -111,6 +113,12 @@ export class Sort extends Component {
 
     if (this.isToggle()) {
       this.icon = $$('span', { className: 'coveo-icon' }).el;
+      const iconAscending = $$('span', { className: 'coveo-sort-icon-ascending' }, SVGIcons.arrowUp);
+      SVGDom.addClassToSVGInContainer(iconAscending.el, 'coveo-sort-icon-ascending-svg');
+      const iconDescending = $$('span', { className: 'coveo-sort-icon-descending' }, SVGIcons.arrowDown);
+      SVGDom.addClassToSVGInContainer(iconDescending.el, 'coveo-sort-icon-descending-svg');
+      this.icon.appendChild(iconAscending.el);
+      this.icon.appendChild(iconDescending.el);
       this.element.appendChild(this.icon);
     }
 
