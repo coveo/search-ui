@@ -33,7 +33,7 @@ export class RecommendationAnalyticsClient extends LiveAnalyticsClient {
     super.logSearchEvent(actionCause, meta);
   }
 
-  public logClickEvent<TMeta>(actionCause: IAnalyticsActionCause, meta: TMeta, result: IQueryResult, element: HTMLElement): Promise<IAPIAnalyticsEventResponse|IAPIAnalyticsEventResponse[]> {
+  public logClickEvent<TMeta>(actionCause: IAnalyticsActionCause, meta: TMeta, result: IQueryResult, element: HTMLElement): Promise<IAPIAnalyticsEventResponse | IAPIAnalyticsEventResponse[]> {
     if (actionCause == analyticsActionCauseList.documentOpen) {
       actionCause = analyticsActionCauseList.recommendationOpen;
     }

@@ -101,9 +101,9 @@ export class NumericSpinner implements IFormWidget, IFormWidgetSettable {
     let numericSpinner = $$('div', { className: 'coveo-numeric-spinner' });
     let numberInput = $$('input', { className: 'coveo-number-input', type: 'text' });
     let addOn = $$('span', { className: 'coveo-add-on' });
-    const arrowUp = $$('div', { className: 'coveo-spinner-up'}, SVGIcons.icons.arrowUp);
+    const arrowUp = $$('div', { className: 'coveo-spinner-up' }, SVGIcons.icons.arrowUp);
     SVGDom.addClassToSVGInContainer(arrowUp.el, 'coveo-spinner-up-svg');
-    const arrowDown = $$('div', { className: 'coveo-spinner-down'}, SVGIcons.icons.arrowDown);
+    const arrowDown = $$('div', { className: 'coveo-spinner-down' }, SVGIcons.icons.arrowDown);
     SVGDom.addClassToSVGInContainer(arrowDown.el, 'coveo-spinner-down-svg');
     addOn.append(arrowUp.el);
     addOn.append(arrowDown.el);

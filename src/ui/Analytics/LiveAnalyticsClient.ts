@@ -202,10 +202,10 @@ export class LiveAnalyticsClient implements IAnalyticsClient {
     Assert.isNonEmptyString(event.collectionName);
     Assert.isNonEmptyString(event.sourceName);
     Assert.isNumber(event.documentPosition);
-    
+
     $$(this.rootElement).trigger(AnalyticsEvents.documentViewEvent, {
       documentViewEvent: APIAnalyticsBuilder.convertDocumentViewToAPI(event)
-    });    
+    });
     return this.sendToCloud ? this.endpoint.sendDocumentViewEvent(event) : Promise.resolve(null);
   }
 

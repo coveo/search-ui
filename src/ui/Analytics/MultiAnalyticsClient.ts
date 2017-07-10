@@ -39,7 +39,7 @@ export class MultiAnalyticsClient implements IAnalyticsClient {
   }
 
   public logCustomEvent<TMeta>(actionCause: IAnalyticsActionCause, meta?: TMeta, element?: HTMLElement): Promise<IAPIAnalyticsEventResponse[]> {
-    return Promise.all(_.map(this.analyticsClients, (analyticsClient: IAnalyticsClient) => { 
+    return Promise.all(_.map(this.analyticsClients, (analyticsClient: IAnalyticsClient) => {
       return analyticsClient.logCustomEvent<TMeta>(actionCause, meta, element);
     }));
   }

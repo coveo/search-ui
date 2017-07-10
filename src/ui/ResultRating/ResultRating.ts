@@ -9,7 +9,7 @@ import { IRatingRequest } from '../../rest/RatingRequest';
 import { exportGlobally } from '../../GlobalExports';
 import { SVGIcons } from '../../utils/SVGIcons';
 import { SVGDom } from '../../utils/SVGDom';
-import 'styling/_ResultRating'
+import 'styling/_ResultRating';
 
 export enum RatingValues { Undefined, Lowest, Low, Average, Good, Best };
 
@@ -58,7 +58,7 @@ export class ResultRating extends Component {
     let star: Dom;
     const starElement = $$(element).find('a[rating-value="' + value + '"]');
     if (starElement == null) {
-      star = $$('a', { className: 'coveo-result-rating-star'}, SVGIcons.icons.star);
+      star = $$('a', { className: 'coveo-result-rating-star' }, SVGIcons.icons.star);
       SVGDom.addClassToSVGInContainer(star.el, 'coveo-result-rating-star-svg');
       element.appendChild(star.el);
 

@@ -27,7 +27,7 @@ export function IconTest() {
       expect($$(test.cmp.element).hasClass('unknown')).toBe(true);
     });
 
-    describe('with an objecttype', function(){
+    describe('with an objecttype', function () {
 
       it('objecttype should have priority over filetype', function () {
         result.raw.objecttype = 'user';

@@ -1,6 +1,6 @@
 import { $$, Dom } from './Dom';
 
-declare var require: (svgPath: string)=> string;
+declare var require: (svgPath: string) => string;
 
 export class SVGIcons {
   public static icons = {
@@ -40,5 +40,5 @@ export class SVGIcons {
     listLayout: require('svg/list-layout'),
     cardLayout: require('svg/card-layout'),
     tableLayout: require('svg/table-layout')
-  }
+  };
 }
