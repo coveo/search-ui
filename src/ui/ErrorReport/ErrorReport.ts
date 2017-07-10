@@ -111,11 +111,12 @@ export class ErrorReport extends Component {
     this.queryController.executeQuery();
   }
 
-  private setErrorTitle(): void {
+  private setErrorTitle(errorName?: string): void {
     let errorTitle = {
-      h3: l('OopsError'),
+      h3: errorName ? l(errorName) : l('OopsError'),
       h4: l('ProblemPersists')
     };
+
     let h3 = $$(this.element).find('h3');
     let h4 = $$(this.element).find('h4');
     if (h3 && h4) {
@@ -166,10 +167,14 @@ export class ErrorReport extends Component {
     if ((<MissingAuthenticationError>data.error).isMissingAuthentication) {
       return;
     }
+    
+    if (data.error.name == 'NoEndpointsException') {
+      this.setErrorTitle(data.error.message);
+    } else {
+      this.setErrorTitle();
+    }
 
     this.message.empty();
-    this.setErrorTitle();
-
     if (this.options.showDetailedError) {
       let moreInfo = $$('span', {
         className: 'coveo-error-report-more-info'
