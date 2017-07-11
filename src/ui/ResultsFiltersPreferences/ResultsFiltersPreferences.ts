@@ -303,12 +303,12 @@ export class ResultsFiltersPreferences extends Component {
 
     const saveFormButton = $$('span', {
       className: 'coveo-save'
-    }, SVGIcons.checkboxHookExclusionMore);
+    }, SVGIcons.icons.checkboxHookExclusionMore);
     SVGDom.addClassToSVGInContainer(saveFormButton.el, 'coveo-save-svg');
 
     const closeFormButton = $$('span', {
       className: 'coveo-close'
-    }, SVGIcons.checkboxHookExclusionMore);
+    }, SVGIcons.icons.checkboxHookExclusionMore);
     SVGDom.addClassToSVGInContainer(closeFormButton.el, 'coveo-close-svg');
 
     const saveAndCloseContainer = $$('div', {
@@ -405,7 +405,7 @@ export class ResultsFiltersPreferences extends Component {
       if (filter.custom) {
         const deleteElement = $$('span', {
           className: 'coveo-delete'
-        }, SVGIcons.checkboxHookExclusionMore).el;
+        }, SVGIcons.icons.checkboxHookExclusionMore).el;
         SVGDom.addClassToSVGInContainer(deleteElement, 'coveo-delete-svg');
         const filterElement = this.getFilterElementByCaption(filter.caption);
         const insertInto = $$(filterElement).find('.coveo-section-edit-delete');
@@ -420,7 +420,7 @@ export class ResultsFiltersPreferences extends Component {
       if (filter.custom) {
         const editElement = $$('span', {
           className: 'coveo-edit'
-        }, SVGIcons.edit);
+        }, SVGIcons.icons.edit);
         SVGDom.addClassToSVGInContainer(editElement.el, 'coveo-edit-svg');
         const filterElement = this.getFilterElementByCaption(filter.caption);
         const insertInto = $$(filterElement).find('.coveo-section-edit-delete');
@@ -437,7 +437,7 @@ export class ResultsFiltersPreferences extends Component {
     caption.text(filter.caption);
     elem.el.appendChild(caption.el);
 
-    const clear = $$('span', { className: 'coveo-clear' }, SVGIcons.checkboxHookExclusionMore);
+    const clear = $$('span', { className: 'coveo-clear' }, SVGIcons.icons.checkboxHookExclusionMore);
     SVGDom.addClassToSVGInContainer(clear.el, 'coveo-clear-svg');
     elem.el.appendChild(clear.el);
 

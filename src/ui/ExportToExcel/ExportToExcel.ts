@@ -67,7 +67,7 @@ export class ExportToExcel extends Component {
         className: 'coveo-export-to-excel',
         tooltip: l('ExportToExcelDescription'),
         onOpen: () => this.download(),
-        svgIcon: SVGIcons.dropdownExport,
+        svgIcon: SVGIcons.icons.dropdownExport,
         svgIconClassName: 'coveo-export-to-excel-svg'
       });
     });
