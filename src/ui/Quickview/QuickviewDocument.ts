@@ -201,9 +201,11 @@ export class QuickviewDocument extends Component {
   private writeToIFrame(iframe: HTMLIFrameElement, content: String);
   private writeToIFrame(iframe: HTMLIFrameElement, content: any) {
     let toWrite = content;
-    // This sucks because we can't do instanceof HTMLDocument
-    // lib.d.ts declare HTMLDocument as an interface, not an actual object
-    if (typeof content == 'object') {
+
+    if (content instanceof HTMLDocument) {
+      _.each($$(content.body).findAll('a'), (link) => {
+        link.setAttribute('target', '_top');
+      });
       toWrite = content.getElementsByTagName('html')[0].outerHTML;
     }
 
@@ -524,7 +526,7 @@ export class QuickviewDocument extends Component {
 
   private buildIFrame(): Dom {
     let iFrame = $$('iframe');
-    iFrame.setAttribute('sandbox', 'allow-same-origin');
+    iFrame.setAttribute('sandbox', 'allow-same-origin allow-top-navigation');
     let iFrameWrapper = $$('div');
     iFrameWrapper.addClass('coveo-iframeWrapper');
     iFrameWrapper.el.appendChild(iFrame.el);
