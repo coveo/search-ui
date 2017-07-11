@@ -37,14 +37,14 @@ interface IQuickviewOpenerObject {
 }
 
 /**
- * The `Quickview` component renders a button / link which the end user can click to open a modal box containing certain
- * content about a result. Most of the time, this component references a [`QuickviewDocument`]{@link QuickviewDocument}
- * in its [`contentTemplate`]{@link Quickview.options.contentTemplate}.
+ * The `Quickview` component renders a button/link which the end user can click to open a modal box containing certain
+ * information about a result. Most of the time, this component references a
+ * [`QuickviewDocument`]{@link QuickviewDocument} in its [`contentTemplate`]{@link Quickview.options.contentTemplate}.
  *
  * **Note:**
- * > - You can change the appearance of the `Quickview` link / button by adding HTML inside the body of its `div`.
- * > - You can change the content of the `Quickview` modal box link by specifying a template ID or selector (see the
- * > [`contentTemplate`]{@link Quickview.options.contentTemplate} option).
+ * > - You can change the appearance of the `Quickview` link/button by adding elements in the inner HTML of its `div`.
+ * > - You can change the content of the `Quickview` modal box link by specifying a template `id` or CSS selector (see
+ * > the [`contentTemplate`]{@link Quickview.options.contentTemplate} option).
  *
  * **Example:**
  * ```html
@@ -52,7 +52,7 @@ interface IQuickviewOpenerObject {
  *
  * <script class='result-template' type='text/underscore' id='myContentTemplateId'>
  *   <div>
- *     <span>This content will be displayed when then end user opens the Quickview modal box. It could also include other Coveo component, and use core helpers.</span>
+ *     <span>This content will be displayed when then end user opens the quickview modal box. It could also include other Coveo component, and use core helpers.</span>
  *     <table class="CoveoFieldTable">
  *       <tr data-field="@liboardshorttitle" data-caption="Board" />
  *       <tr data-field="@licategoryshorttitle" data-caption="Category" />
@@ -68,16 +68,16 @@ interface IQuickviewOpenerObject {
  *
  *   [ ... ]
  *
- *     <!-- The `myContentTemplateId` template applies when displaying content in the Quickview modal box. -->
+ *     <!-- The `myContentTemplateId` template applies when displaying content in the quickview modal box. -->
  *       <div class='CoveoQuickview' data-template-id='myContentTemplateId'>
  *         <!-- This changes the appearance of the Quickview button itself in the results -->
- *         <span>Click here for a Quickview</span>
+ *         <span>Click here for a quickview</span>
  *       </div>
  *   </script>
  *
  *   [ ... ]
  *
- * <!-- Note that this is all optional. Simply including `<div class='CoveoQuickview'></div>` in the markup suffices most of the time and includes a default template, and default button appearance. -->
+ * <!-- Note that simply including `<div class='CoveoQuickview'></div>` in the markup will be enough most of the time, since the component includes a default template and a default button appearance. -->
  * ```
  *
  * This component is a result template component (see [Result Templates](https://developers.coveo.com/x/aIGfAQ)).
@@ -98,7 +98,7 @@ export class Quickview extends Component {
   static options: IQuickviewOptions = {
 
     /**
-     * Specifies whether to always show the `Quickview` button / link, even when the index body of an item is empty.
+     * Specifies whether to always show the `Quickview` button/link, even when the index body of an item is empty.
      *
      * In such cases, the [`contentTemplate`]{@link Quickview.options.contentTemplate} defines what appears in the
      * `Quickview` modal box. Consequently, if there is no quickview for the item, you *MUST* specify a custom
@@ -111,7 +111,7 @@ export class Quickview extends Component {
     /**
      * Specifies the title that should appear in the `Quickview` modal box header.
      *
-     * Default value is `undefined`.
+     * Default value is undefined, which is equivalent to the empty string.
      */
     title: ComponentOptions.buildStringOption(),
 
@@ -121,6 +121,14 @@ export class Quickview extends Component {
      * Default value is `true`.
      */
     showDate: ComponentOptions.buildBooleanOption({ defaultValue: true }),
+
+    /**
+     * Specifies whether to enable the loading animation.
+     *
+     * See also [`loadingAnimation`]{Quickview.options.loadingAnimation}.
+     *
+     * Default value is `true`.
+     */
     enableLoadingAnimation: ComponentOptions.buildBooleanOption({ defaultValue: true }),
 
     /**
@@ -134,13 +142,13 @@ export class Quickview extends Component {
      *
      * **Example:**
      *
-     * Specifying a previously registered template by referring to its HTML `id` attribute:
+     * * Specifying a previously registered template by referring to its HTML `id` attribute:
      *
      * ```html
      * <div class="CoveoQuickview" data-template-id="myContentTemplateId"></div>
      * ```
      *
-     * Specifying a previously registered template by referring to a CSS selector:
+     * * Specifying a previously registered template by referring to a CSS selector:
      *
      * ```html
      * <div class='CoveoQuickview' data-template-selector=".myContentTemplateSelector"></div>
@@ -152,6 +160,32 @@ export class Quickview extends Component {
       selectorAttr: 'data-template-selector',
       idAttr: 'data-template-id'
     }),
+
+    /**
+     * If [`enableLoadingAnimation`]{@link Quickview.options.enableLoadingAnimation} is `true`, specifies a custom
+     * animation to display while the content of the quickview modal window is loading. You can either specify the CSS
+     * selector of the HTML element you wish to display, or the `id` of a previously registered template (see
+     * [`TemplateCache`]{@link TemplateCache}).
+     *
+     * See [Branding Customization - Customizing the Quickview Loading Animation](https://developers.coveo.com/x/EoGfAQ#BrandingCustomization-CustomizingtheQuickviewLoadingAnimation).
+     *
+     * **Examples:**
+     *
+     * * Specifying the CSS selector of the HTML element to display:
+     *
+     * ```html
+     * <div class="CoveoQuickview" data-loading-animation-selector=".my-loading-animation"></div>
+     * ```
+     *
+     * * Specifying the `id` of a previously registered template:
+     *
+     * ```html
+     * <div class="CoveoQuickview" data-loading-animation-template-id="my-loading-animation-template"></div>
+     * ```
+     *
+     * By default, the loading animation is a Coveo animation, which you can customize with CSS (see
+     * [Branding Customization - Customizing the Default Loading Animation](https://developers.coveo.com/x/EoGfAQ#BrandingCustomization-CustomizingtheDefaultLoadingAnimation).
+     */
     loadingAnimation: ComponentOptions.buildOption<HTMLElement | Promise<HTMLElement>>(ComponentOptionsType.NONE, (element: HTMLElement) => {
       const loadingAnimationSelector = element.getAttribute('data-loading-animation-selector');
       if (loadingAnimationSelector != null) {
