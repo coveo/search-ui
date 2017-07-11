@@ -10,7 +10,6 @@ import { $$ } from '../../utils/Dom';
 import * as _ from 'underscore';
 
 export class FacetSearchParameters {
-  public searchEvenIfEmpty: boolean;
   public nbResults: number;
   public ignoreAccents: boolean;
   public valueToSearch: string = '';
@@ -22,7 +21,6 @@ export class FacetSearchParameters {
   constructor(public facet: Facet) {
     this.nbResults = facet.options.numberOfValuesInFacetSearch;
     this.ignoreAccents = facet.options.facetSearchIgnoreAccents;
-    this.searchEvenIfEmpty = facet.searchInterface.isNewDesign();
   }
 
   public setValueToSearch(value: string) {
@@ -49,9 +47,7 @@ export class FacetSearchParameters {
   public getGroupByRequest(): IGroupByRequest {
     this.lowerCaseAll();
     let nbResults = this.nbResults;
-    if (this.facet.searchInterface.isNewDesign()) {
-      nbResults += this.alwaysExclude.length;
-    }
+    nbResults += this.alwaysExclude.length;
 
     let typedByUser = [];
     if (this.valueToSearch) {

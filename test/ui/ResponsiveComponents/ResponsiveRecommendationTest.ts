@@ -79,6 +79,8 @@ export function ResponsiveRecommendationTest() {
 
       it('activates small recommendation when handleResizeEvent is called', () => {
         spyOn(ResponsiveComponentsUtils, 'activateSmallRecommendation');
+
+        responsiveRecommendation.coveoRoot.removeClass('coveo-small-recommendation');
         shouldSwitchToSmallMode();
         responsiveRecommendation.handleResizeEvent();
         expect(ResponsiveComponentsUtils.activateSmallRecommendation).toHaveBeenCalledTimes(2);

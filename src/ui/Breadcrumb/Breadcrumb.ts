@@ -121,15 +121,10 @@ export class Breadcrumb extends Component {
     const clearIcon = $$('div', { className: 'coveo-icon coveo-breadcrumb-clear-all-icon' }, SVGIcons.checkboxHookExclusionMore).el;
     SVGDom.addClassToSVGInContainer(clearIcon, 'coveo-breadcrumb-clear-all-svg');
     clear.appendChild(clearIcon);
-
-    if (this.searchInterface.isNewDesign()) {
-      const clearText = document.createElement('div');
-      $$(clearText).text(l('Clear', ''));
-      clear.appendChild(clearText);
-      this.element.appendChild(clear);
-    } else {
-      this.element.insertBefore(clear, this.element.firstChild);
-    }
+    const clearText = document.createElement('div');
+    $$(clearText).text(l('Clear', ''));
+    clear.appendChild(clearText);
+    this.element.appendChild(clear);
 
     const clearAction = () => this.clearBreadcrumbs();
     this.bind.on(clear, 'click', clearAction);

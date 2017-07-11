@@ -9,7 +9,6 @@ export function SettingsTest() {
     var test: Mock.IBasicComponentSetup<Settings>;
     beforeEach(function () {
       test = Mock.basicComponentSetup<Settings>(Settings);
-      test.env.searchInterface.isNewDesign = () => true;
       $$(test.env.root).trigger(InitializationEvents.afterInitialization);
     });
 

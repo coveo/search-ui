@@ -10,6 +10,7 @@ import { Initialization } from '../Base/Initialization';
 import * as _ from 'underscore';
 import { exportGlobally } from '../../GlobalExports';
 import 'styling/_Settings';
+import { SVGDom } from '../../utils/SVGDom';
 
 export interface ISettingsPopulateMenuArgs {
   settings: Settings;
@@ -100,15 +101,10 @@ export class Settings extends Component {
   }
 
   private init() {
-    if (this.searchInterface.isNewDesign()) {
-      var square = $$('span', { className: 'coveo-settings-square' }).el;
-      var squares = $$('span', { className: 'coveo-settings-squares' }).el;
-      _.times(3, () => squares.appendChild(square.cloneNode()));
-      this.element.appendChild(squares);
-    } else {
-      var icon = $$('span', { className: 'coveo-settings-icon' }).el;
-      this.element.appendChild(icon);
-    }
+    var square = $$('span', { className: 'coveo-settings-square' }).el;
+    var squares = $$('span', { className: 'coveo-settings-squares' }).el;
+    _.times(3, () => squares.appendChild(square.cloneNode()));
+    this.element.appendChild(squares);
 
     $$(this.element).on('click', () => {
       if (this.isOpened) {
@@ -134,7 +130,14 @@ export class Settings extends Component {
         className: `coveo-settings-item ${menuItem.className}`,
         title: _.escape(menuItem.tooltip || '')
       }).el;
-      menuItemDom.appendChild($$('div', { className: 'coveo-icon' }).el);
+      let icon = $$('div', { className: 'coveo-icon' }).el;
+      if (menuItem.svgIcon) {
+        icon.innerHTML = menuItem.svgIcon;
+        if (menuItem.svgIconClassName) {
+          SVGDom.addClassToSVGInContainer(icon, menuItem.svgIconClassName);
+        }
+      }
+      menuItemDom.appendChild(icon);
       menuItemDom.appendChild($$('div', { className: 'coveo-settings-text' }, _.escape(menuItem.text)).el);
       $$(menuItemDom).on('click', () => {
         this.close();

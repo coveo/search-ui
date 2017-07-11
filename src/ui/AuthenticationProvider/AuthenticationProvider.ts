@@ -15,6 +15,7 @@ import { MissingAuthenticationError } from '../../rest/MissingAuthenticationErro
 import * as _ from 'underscore';
 import { exportGlobally } from '../../GlobalExports';
 import 'styling/_AuthenticationProvider';
+import { SVGIcons } from '../../utils/SVGIcons';
 
 export interface IAuthenticationProviderOptions {
   name?: string;
@@ -124,7 +125,9 @@ export class AuthenticationProvider extends Component {
       args.menuData.push({
         text: l('Reauthenticate', this.options.caption),
         className: 'coveo-authentication-provider',
-        onOpen: () => this.authenticateWithProvider()
+        onOpen: () => this.authenticateWithProvider(),
+        svgIcon: SVGIcons.dropdownAuthenticate,
+        svgIconClassName: 'coveo-authentication-provider-svg'
       });
     });
   }

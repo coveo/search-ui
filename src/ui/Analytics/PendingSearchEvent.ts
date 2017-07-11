@@ -47,7 +47,7 @@ export class PendingSearchEvent {
     this.cancelled = true;
   }
 
-  protected handleDuringQuery(evt: Event, args: IDuringQueryEventArgs) {
+  protected handleDuringQuery(evt: Event, args: IDuringQueryEventArgs, queryBoxContentToUse?: string) {
     Assert.check(!this.finished);
     Assert.check(!this.cancelled);
 
@@ -58,27 +58,29 @@ export class PendingSearchEvent {
 
     this.searchPromises.push(args.promise);
 
-    // TODO: Maybe a better way to grab the search interface?
-    let eventTarget: HTMLElement;
-    eventTarget = <HTMLElement>evt.target;
-    let searchInterface = <SearchInterface>Component.get(eventTarget, SearchInterface);
+    const eventTarget = <HTMLElement>evt.target;
+    const searchInterface = <SearchInterface>Component.get(eventTarget, SearchInterface);
     Assert.exists(searchInterface);
-    // TODO: Maybe a better way to grab the query controller?
-    let queryController = Component.get(eventTarget, QueryController);
+    // We try to grab ahead of time the content of the search box before the query returns
+    // This is because it's possible that the content of the search box gets modified when the query returns (for example : DidYouMean)
+    if (!queryBoxContentToUse) {
+      queryBoxContentToUse = searchInterface.queryStateModel.get(QueryStateModel.attributesEnum.q);
+    }
+    const queryController = Component.get(eventTarget, QueryController);
     Assert.exists(queryController);
 
     args.promise.then((queryResults: IQueryResults) => {
       Assert.exists(queryResults);
       Assert.check(!this.finished);
       if (queryResults._reusedSearchUid !== true || this.templateSearchEvent.actionCause == analyticsActionCauseList.recommendation.name) {
-        let searchEvent = <ISearchEvent>_.extend({}, this.templateSearchEvent);
-        this.fillSearchEvent(searchEvent, searchInterface, args.query, queryResults);
+        const searchEvent = <ISearchEvent>_.extend({}, this.templateSearchEvent);
+        this.fillSearchEvent(searchEvent, searchInterface, args.query, queryResults, queryBoxContentToUse);
         this.searchEvents.push(searchEvent);
         this.results.push(queryResults);
         return queryResults;
       }
     }).finally(() => {
-      let index = _.indexOf(this.searchPromises, args.promise);
+      const index = _.indexOf(this.searchPromises, args.promise);
       this.searchPromises.splice(index, 1);
       if (this.searchPromises.length == 0) {
         this.flush();
@@ -104,7 +106,7 @@ export class PendingSearchEvent {
         if (this.sendToCloud) {
           this.endpoint.sendSearchEvents(this.searchEvents);
         }
-        let apiSearchEvents = _.map(this.searchEvents, (searchEvent: ISearchEvent) => {
+        const apiSearchEvents = _.map(this.searchEvents, (searchEvent: ISearchEvent) => {
           return APIAnalyticsBuilder.convertSearchEventToAPI(searchEvent);
         });
         $$(this.root).trigger(AnalyticsEvents.searchEvent, <IAnalyticsSearchEventsArgs>{ searchEvents: apiSearchEvents });
@@ -112,18 +114,18 @@ export class PendingSearchEvent {
     }
   }
 
-  private fillSearchEvent(searchEvent: ISearchEvent, searchInterface: SearchInterface, query: IQuery, queryResults: IQueryResults) {
+  private fillSearchEvent(searchEvent: ISearchEvent, searchInterface: SearchInterface, query: IQuery, queryResults: IQueryResults, queryBoxContentToUse?: string) {
     Assert.exists(searchEvent);
     Assert.exists(searchInterface);
     Assert.exists(query);
     Assert.exists(queryResults);
 
-    let currentQuery = <string>searchInterface.queryStateModel.get(QueryStateModel.attributesEnum.q);
+    const currentQuery = <string>searchInterface.queryStateModel.get(QueryStateModel.attributesEnum.q);
     searchEvent.queryPipeline = queryResults.pipeline;
     searchEvent.splitTestRunName = searchEvent.splitTestRunName || queryResults.splitTestRun;
     searchEvent.splitTestRunVersion = searchEvent.splitTestRunVersion || (queryResults.splitTestRun != undefined ? queryResults.pipeline : undefined);
     searchEvent.originLevel2 = searchEvent.originLevel2 || searchInterface.queryStateModel.get('t') || 'default';
-    searchEvent.queryText = currentQuery || query.q || ''; // do not log the query sent to the server if possible; it may contain added syntax depending on options
+    searchEvent.queryText = queryBoxContentToUse || currentQuery || query.q || ''; // do not log the query sent to the server if possible; it may contain added syntax depending on options
     searchEvent.advancedQuery = query.aq || '';
     searchEvent.didYouMean = query.enableDidYouMean;
     searchEvent.numberOfResults = queryResults.totalCount;

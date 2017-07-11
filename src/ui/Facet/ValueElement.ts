@@ -181,14 +181,7 @@ export class ValueElement {
       if (eventBindings.omniboxObject) {
         this.omniboxCloseEvent(eventBindings.omniboxObject);
       }
-
       this.handleSelectValue(eventBindings);
-      if (DeviceUtils.isMobileDevice() && !this.facet.searchInterface.isNewDesign() && this.facet.options.enableFacetSearch) {
-        Defer.defer(() => {
-          ModalBox.close(true);
-          this.facet.facetSearch.completelyDismissSearch();
-        });
-      }
     });
   }
 

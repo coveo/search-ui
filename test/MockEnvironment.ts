@@ -12,6 +12,7 @@ import { Component } from '../src/ui/Base/Component';
 import { Utils } from '../src/utils/Utils';
 import { BaseComponent } from '../src/ui/Base/BaseComponent';
 import { NoopAnalyticsClient } from '../src/ui/Analytics/NoopAnalyticsClient';
+import { AnalyticsEndpoint } from '../src/rest/AnalyticsEndpoint';
 import { SearchEndpoint } from '../src/rest/SearchEndpoint';
 import { QueryController } from '../src/controllers/QueryController';
 import { ResponsiveComponents } from '../src/ui/ResponsiveComponents/ResponsiveComponents';
@@ -68,11 +69,6 @@ export class MockEnvironmentBuilder {
     return this;
   }
 
-  public withOldDesign() {
-    this.searchInterface.isNewDesign = () => false;
-    return this;
-  }
-
   public withCollaborativeRating() {
     this.searchInterface.options.enableCollaborativeRating = true;
     return this;
@@ -119,11 +115,6 @@ export class MockEnvironmentBuilder {
     this.queryController.getEndpoint = () => {
       return this.searchEndpoint;
     };
-
-    if (Utils.isNullOrUndefined(this.searchInterface.isNewDesign())) {
-      this.searchInterface.isNewDesign = () => true;
-    }
-
 
     if (this.result) {
       Component.bindResultToElement(this.element, this.result);
@@ -266,6 +257,14 @@ export function mockUsageAnalytics(): IAnalyticsClient {
   const m = mock<any>(NoopAnalyticsClient, 'AnalyticsClient');
   m.getTopQueries.and.returnValue(new Promise((resolve, reject) => {
   }));
+  return m;
+}
+
+export function mockAnalyticsEndpoint(): AnalyticsEndpoint {
+  const m = mock<any>(AnalyticsEndpoint, 'AnalyticsEndpoint');
+  // Spy return Promise instead of void in order to chain Promises
+  m.sendCustomEvent.and.returnValue(Promise.resolve(null));
+  m.sendDocumentViewEvent.and.returnValue(Promise.resolve(null));
   return m;
 }
 

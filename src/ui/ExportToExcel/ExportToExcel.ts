@@ -9,6 +9,7 @@ import { l } from '../../strings/Strings';
 import * as _ from 'underscore';
 import { exportGlobally } from '../../GlobalExports';
 import 'styling/_ExportToExcel';
+import { SVGIcons } from '../../utils/SVGIcons';
 
 export interface IExportToExcelOptions {
   numberOfResults?: number;
@@ -65,7 +66,9 @@ export class ExportToExcel extends Component {
         text: l('ExportToExcel'),
         className: 'coveo-export-to-excel',
         tooltip: l('ExportToExcelDescription'),
-        onOpen: () => this.download()
+        onOpen: () => this.download(),
+        svgIcon: SVGIcons.dropdownExport,
+        svgIconClassName: 'coveo-export-to-excel-svg'
       });
     });
   }

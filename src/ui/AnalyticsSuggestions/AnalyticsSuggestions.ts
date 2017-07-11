@@ -114,34 +114,9 @@ export class AnalyticsSuggestions extends Component {
 
     this.options.onSelect = this.options.onSelect || this.onRowSelection;
 
-    let suggestionStructure: ISuggestionForOmniboxTemplate;
-    if (this.searchInterface.isNewDesign()) {
-      suggestionStructure = {
-        row: rowTemplate
-      };
-    } else {
-      let headerTemplate = () => {
-        let headerElement = $$('div', {
-          className: 'coveo-top-analytics-suggestion-header'
-        });
-        let iconElement = $$('span', {
-          className: 'coveo-icon-top-analytics'
-        });
-        let captionElement = $$('span', {
-          className: 'coveo-caption'
-        });
-        if (this.options.headerTitle) {
-          captionElement.text(this.options.headerTitle);
-        }
-        headerElement.append(iconElement.el);
-        headerElement.append(captionElement.el);
-        return headerElement.el.outerHTML;
-      };
-      suggestionStructure = {
-        header: { template: headerTemplate, title: this.options.headerTitle },
-        row: rowTemplate
-      };
-    }
+    let suggestionStructure: ISuggestionForOmniboxTemplate = {
+      row: rowTemplate
+    };
 
     this.suggestionForOmnibox = new SuggestionForOmnibox(suggestionStructure, (value: string, args: IPopulateOmniboxEventArgs) => {
       this.options.onSelect.call(this, value, args);

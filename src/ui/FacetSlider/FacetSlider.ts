@@ -27,6 +27,7 @@ import { ResponsiveFacetSlider } from '../ResponsiveComponents/ResponsiveFacetSl
 
 import 'styling/_FacetSlider';
 import { IGroupByResult } from '../../rest/GroupByResult';
+import { Defer } from '../../MiscModules';
 
 
 export interface IFacetSliderOptions extends ISliderOptions {
@@ -418,7 +419,6 @@ export class FacetSlider extends Component {
       title: this.options.title,
       enableClearElement: true,
       enableCollapseElement: true,
-      isNewDesign: this.getBindings().searchInterface.isNewDesign(),
       facetSlider: this
     });
     this.element.appendChild(this.facetHeader.build());
@@ -772,7 +772,9 @@ export class FacetSlider extends Component {
       }
       this.updateAppearanceDependingOnState();
     } else if (graphData != undefined && !this.isDropdownHidden()) {
-      this.slider.drawGraph(graphData);
+      // This is deferred since it might be called on initialization with a placehoder over the facet during load time
+      // We need to wait that the animation is gone so that the width/height calculation done by the graph are okay.
+      Defer.defer(() => this.slider.drawGraph(graphData));
     } else if (graphData != undefined && this.isDropdownHidden()) {
       this.delayedGraphData = graphData;
     }

@@ -1,6 +1,6 @@
 {
   "name": "coveo-search-ui",
-  "version": "2.2900.8",
+  "version": "2.2900.14",
   "description": "Coveo JavaScript Search Framework",
   "main": "./bin/js/CoveoJsSearch.js",
   "types": "./bin/ts/CoveoJsSearch.d.ts",
@@ -125,7 +125,7 @@
     "through2": "^2.0.3",
     "ts-loader": "^2.0.3",
     "typedoc": "https://github.com/coveord/typedoc/tarball/master",
-    "typescript": "^2.1.5",
+    "typescript": "2.3.x",
     "walk": "^2.3.9",
     "webpack": "^2.2.1",
     "webpack-dev-server": "^1.14.1",

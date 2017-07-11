@@ -88,6 +88,11 @@ export class AdvancedSearch extends Component {
   private externalSections: IExternalAdvancedSearchSection[] = [];
   private modalbox: Coveo.ModalBox.ModalBox;
   private needToPopulateBreadcrumb = false;
+  // Used as an internal flag to determine if the component should execute the advanced search event
+  // This flag is typically set to false when the breadcrumb is resetting, for example.
+  // This is because the query will already be executed anyway from external code.
+  // Without this, we might get analytics event being sent multiple time, or multiple query being triggered (which gets cancelled).
+  private needToExecuteAdvancedSearch = true;
   /**
    * Creates a new `AdvancedSearch` component.
    *
@@ -110,10 +115,12 @@ export class AdvancedSearch extends Component {
    * {@link Analytics.logSearchEvent}).
    */
   public executeAdvancedSearch() {
-    this.usageAnalytics.logSearchEvent<IAnalyticsNoMeta>(analyticsActionCauseList.advancedSearch, {});
-    this.queryController.executeQuery({
-      closeModalBox: false
-    });
+    if (this.needToExecuteAdvancedSearch) {
+      this.usageAnalytics.logSearchEvent<IAnalyticsNoMeta>(analyticsActionCauseList.advancedSearch, {});
+      this.queryController.executeQuery({
+        closeModalBox: false
+      });
+    }
   }
 
   /**
@@ -177,7 +184,17 @@ export class AdvancedSearch extends Component {
   }
 
   private handleClearBreadcrumb() {
+    if (this.needToPopulateBreadcrumb) {
+      this.needToExecuteAdvancedSearch = false;
+      this.reset();
+      this.needToExecuteAdvancedSearch = true;
+    }
+  }
+
+  private handleQuerySummaryCancelLastAction() {
+    this.needToExecuteAdvancedSearch = false;
     this.reset();
+    this.needToExecuteAdvancedSearch = true;
   }
 
   private handlePopulateMenu(args: ISettingsPopulateMenuArgs) {
@@ -185,7 +202,9 @@ export class AdvancedSearch extends Component {
       text: l('AdvancedSearch'),
       className: 'coveo-advanced-search',
       onOpen: () => this.open(),
-      onClose: () => this.close()
+      onClose: () => this.close(),
+      svgIcon: SVGIcons.dropdownPreferences,
+      svgIconClassName: 'coveo-advanced-search-svg'
     });
   }
 
@@ -315,7 +334,7 @@ export class AdvancedSearch extends Component {
     this.bind.onRootElement(SettingsEvents.settingsPopulateMenu, (args: ISettingsPopulateMenuArgs) => this.handlePopulateMenu(args));
     this.bind.onRootElement(QueryEvents.buildingQuery, (data: IBuildingQueryEventArgs) => this.handleBuildingQuery(data));
     this.bind.onRootElement(AdvancedSearchEvents.executeAdvancedSearch, () => this.executeAdvancedSearch());
-    this.bind.onRootElement(QuerySummaryEvents.cancelLastAction, () => this.reset());
+    this.bind.onRootElement(QuerySummaryEvents.cancelLastAction, () => this.handleQuerySummaryCancelLastAction());
   }
 }
 

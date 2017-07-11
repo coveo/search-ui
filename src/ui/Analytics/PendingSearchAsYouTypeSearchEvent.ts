@@ -5,6 +5,9 @@ import { InitializationEvents } from '../../events/InitializationEvents';
 import { ISearchEvent } from '../../rest/SearchEvent';
 import { IDuringQueryEventArgs } from '../../events/QueryEvents';
 import { IAnalyticsActionCause } from './AnalyticsActionListMeta';
+import { SearchInterface } from '../SearchInterface/SearchInterface';
+import { Component } from '../Base/Component';
+import { QueryStateModel } from '../../models/QueryStateModel';
 import * as _ from 'underscore';
 
 export class PendingSearchAsYouTypeSearchEvent extends PendingSearchEvent {
@@ -25,11 +28,17 @@ export class PendingSearchAsYouTypeSearchEvent extends PendingSearchEvent {
 
   protected handleDuringQuery(e: Event, args: IDuringQueryEventArgs) {
     var event = _.clone(e);
+    // We need to "snapshot" the current query before the delay is applied
+    // Otherwise, this means that after 5 second, the original query is possibly modified
+    // For example, DidYouMean would be wrong in that case.
+    const eventTarget: HTMLElement = <HTMLElement>e.target;
+    const searchInterface = <SearchInterface>Component.get(eventTarget, SearchInterface);
+    const currentQueryBeforeDelay = searchInterface.queryStateModel.get(QueryStateModel.attributesEnum.q);
     this.beforeResolve = new Promise((resolve) => {
       this.toSendRightNow = () => {
         if (!this.isCancelledOrFinished()) {
           resolve(this);
-          super.handleDuringQuery(event, args);
+          super.handleDuringQuery(event, args, currentQueryBeforeDelay);
         }
       };
       _.delay(() => {

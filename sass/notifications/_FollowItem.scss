@@ -5,27 +5,48 @@
   color: #adadad;
   padding-left: 7px;
   cursor: pointer;
-  &:before {
-    content: '';
-    @include retina-sprite($result-follow-group);
+  span {
     vertical-align: middle;
-    margin-right: 6px;
   }
-  &.coveo-follow-item-followed:before {
-    @include retina-sprite($result-follow-active-group);
+}
+
+.coveo-follow-item-icon-loading-svg {
+  display: none;
+  color: $color-greyish-teal-blue;
+}
+.coveo-follow-item-loading {
+  .coveo-follow-item-icon-loading {
+    margin: 1px 9px 1px 3px;
   }
-  &.coveo-follow-item-loading:before {
-    @include retina-sprite($facet-loading-group);
+
+  .coveo-follow-item-icon-svg {
+    display: none;
+  }
+  .coveo-follow-item-icon-loading-svg {
+    display: inline-block;
+    width: 15px;
+    height: 15px;
+    color: $color-greyish-teal-blue;
     @include animation-name(coveo-spin);
     @include animation-timing-function(linear);
     @include animation-duration(1s);
     @include animation-iteration-count(infinite);
-    width: 16px;
-    height: 16px;
-    margin: 1px 9px 1px 3px;
   }
-  span {
-    vertical-align: middle;
+}
+.coveo-follow-item-icon {
+  vertical-align: middle;
+  margin-right: 6px;
+}
+
+.coveo-follow-item-icon-svg {
+  width: 15px;
+  height: 12px;
+  color: $color-greyish-teal-blue;
+}
+
+.coveo-follow-item-followed {
+  .coveo-active-shape-svg {
+    color: $color-active-yellow;
   }
 }
 
@@ -33,4 +54,10 @@
   display: flex;
   padding-left: 0;
   color: #fff;
+}
+
+.coveo-follow-query-svg {
+  width: 15px;
+  height: 12px;
+  color: $color-greyish-teal-blue;
 }

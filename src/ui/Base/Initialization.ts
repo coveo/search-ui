@@ -18,7 +18,6 @@ import { IJQuery } from './CoveoJQuery';
 import * as _ from 'underscore';
 import { IStringMap } from '../../rest/GenericParam';
 import { InitializationPlaceholder } from './InitializationPlaceholder';
-import { NoopComponent } from '../NoopComponent/NoopComponent';
 import { get } from './RegisteredNamedMethods';
 declare const require: any;
 
@@ -399,6 +398,14 @@ export class Initialization {
       }
     });
 
+    // We log the fatal error on init, but then we try to continue the initialization for the rest of the components.
+    // In most case, this would be caused by a fatal error in a component constructor.
+    // In some cases, it might be for a minor component not essential to basic function of the interface, meaning we could still salvage things here.
+    const logFatalErrorOnComponentInitialization = (e: Error) => {
+      this.logger.error(e);
+      this.logger.warn(`Skipping initialization of previous component in error ... `);
+    };
+
     if (isLazyInit) {
       return {
         initResult: Promise.all(_.map(codeToExecute, (code) => {
@@ -408,11 +415,20 @@ export class Initialization {
           } else {
             return Promise.resolve(true);
           }
-        })).then(() => true),
+        })).then(() => true).catch((e: Error) => {
+          logFatalErrorOnComponentInitialization(e);
+          return true;
+        }),
         isLazyInit: true
       };
     } else {
-      _.each(codeToExecute, (code) => code());
+      _.each(codeToExecute, (code) => {
+        try {
+          code();
+        } catch (e) {
+          logFatalErrorOnComponentInitialization(e);
+        }
+      });
       return {
         initResult: Promise.resolve(true),
         isLazyInit: false
@@ -537,6 +553,15 @@ export class Initialization {
     return Utils.exists(Component.get(element, null, true));
   }
 
+  public static isThereANonSearchInterfaceComponentBoundToThisElement(element: HTMLElement): boolean {
+    // We automatically consider "Recommendation" component to be a special case of search interface
+    // and thus do not check those.
+    if ($$(element).hasClass('CoveoRecommendation')) {
+      return true;
+    }
+    return Initialization.isThereASingleComponentBoundToThisElement(element) && !get(element, SearchInterface, true) && !$$(element).hasClass('CoveoRecommendation');
+  }
+
   private static dispatchMethodCallOnBoundComponent(methodName: string, element: HTMLElement, args: any[]): any {
     Assert.isNonEmptyString(methodName);
     Assert.exists(element);
@@ -650,7 +675,7 @@ export class LazyInitialization {
   public static buildErrorCallback(chunkName: string, resolve: Function) {
     return (error) => {
       LazyInitialization.logger.warn(`Cannot load chunk for ${chunkName}. You may need to configure the paths of the ressources using Coveo.configureRessourceRoot. Current path is ${__webpack_public_path__}.`);
-      resolve(NoopComponent);
+      resolve(() => { });
     };
   }
 
@@ -697,20 +722,20 @@ export class LazyInitialization {
     Assert.isNonEmptyString(componentClassId);
     Assert.exists(element);
 
-    if (Initialization.isThereASingleComponentBoundToThisElement(element)) {
-      // This means a component already exists on this element.
-      // Do not re-initialize again.
+    // If another component exist on that element, we do not want to re-initialize again.
+    // The exception being the "SearchInterface", since in some case we want end user to initialize directly on the root of the interface
+    // For example, when we are initializing a standalone search box, we might want to target the div for the search box directly.
+    if (Initialization.isThereANonSearchInterfaceComponentBoundToThisElement(element)) {
       return null;
     }
 
     return LazyInitialization.getLazyRegisteredComponent(componentClassId).then((lazyLoadedComponent: IComponentDefinition) => {
       Assert.exists(lazyLoadedComponent);
 
-      if (Initialization.isThereASingleComponentBoundToThisElement(element)) {
-        // This means a component already exists on this element.
-        // Do not re-initialize again.
+      if (Initialization.isThereANonSearchInterfaceComponentBoundToThisElement(element)) {
         return null;
       }
+
       let bindings: IComponentBindings = {};
       let options = {};
       let result: IQueryResult = undefined;
@@ -778,10 +803,10 @@ export class EagerInitialization {
       result = initParameters.result;
     }
 
-    if (Initialization.isThereASingleComponentBoundToThisElement(element)) {
-      // This means a component already exists on this element.
-      // Do not re-initialize again.
-      EagerInitialization.logger.warn(`Skipping component of class ${componentClassId} because the element is already initialized as another component.`, element);
+    // If another component exist on that element, we do not want to re-initialize again.
+    // The exception being the "SearchInterface", since in some case we want end user to initialize directly on the root of the interface
+    // For example, when we are initializing a standalone search box, we might want to target the div for the search box directly.
+    if (Initialization.isThereANonSearchInterfaceComponentBoundToThisElement(element)) {
       return null;
     }
 

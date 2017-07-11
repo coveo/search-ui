@@ -1,4 +1,5 @@
 import { IAnalyticsActionCause } from '../Analytics/AnalyticsActionListMeta';
+import { IAPIAnalyticsEventResponse } from '../../rest/APIAnalyticsEventResponse';
 import { IQueryResult } from '../../rest/QueryResult';
 import { ITopQueries } from '../../rest/TopQueries';
 import { PendingSearchEvent } from './PendingSearchEvent';
@@ -81,7 +82,7 @@ export interface IAnalyticsClient {
    * @param result The result that the user has clicked.
    * @param element The HTMLElement that the user has clicked in the interface.
    */
-  logClickEvent<TMeta>(actionCause: IAnalyticsActionCause, meta: TMeta, result: IQueryResult, element: HTMLElement): void;
+  logClickEvent<TMeta>(actionCause: IAnalyticsActionCause, meta: TMeta, result: IQueryResult, element: HTMLElement): Promise<IAPIAnalyticsEventResponse | IAPIAnalyticsEventResponse[]>;
 
   /**
    * Logs a custom event on the service. You can use custom events to create custom reports, or to track events
@@ -95,7 +96,7 @@ export interface IAnalyticsClient {
    * ( `{}` ).
    * @param element The HTMLElement that the user has interacted with for this custom event.
    */
-  logCustomEvent<TMeta>(actionCause: IAnalyticsActionCause, meta: TMeta, element: HTMLElement): void;
+  logCustomEvent<TMeta>(actionCause: IAnalyticsActionCause, meta: TMeta, element: HTMLElement): Promise<IAPIAnalyticsEventResponse | IAPIAnalyticsEventResponse[]>;
 
   /**
    * Gets suggested queries from the Coveo Usage Analytics service.
