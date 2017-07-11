@@ -10380,8 +10380,8 @@ var playground =
 	"use strict";
 	Object.defineProperty(exports, "__esModule", { value: true });
 	exports.version = {
-	    'lib': '1.2537.23-beta',
-	    'product': '1.2537.23-beta',
+	    'lib': '1.2537.24',
+	    'product': '1.2537.24',
 	    'supportedApiVersion': 2
 	};
 
