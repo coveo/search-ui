@@ -281,7 +281,7 @@
       }
     },
     "case": {
-      "icon": "salesforce-standard-case",
+      "icon": "case",
       "captions": {
         "en": "Case",
         "fr": "Cas",
@@ -393,7 +393,7 @@
       }
     },
     "email": {
-      "icon": "salesforce-standard-email",
+      "icon": "mail",
       "captions": {
         "en": "Email",
         "fr": "Email",
@@ -449,7 +449,7 @@
       }
     },
     "incident": {
-      "icon": "salesforce-standard-case",
+      "icon": "case",
       "captions": {
         "en": "Case",
         "fr": "Cas",
@@ -619,7 +619,7 @@
       "shouldDisplayLabel": true
     },
     "user": {
-      "icon": "salesforce-standard-user",
+      "icon": "user",
       "captions": {
         "en": "User",
         "fr": "Utilisateur",
@@ -647,7 +647,7 @@
       }
     },
     "attachment": {
-      "icon": "salesforce-doctype-attachment",
+      "icon": "attachment",
       "captions": {
         "en": "Attachment",
         "fr": "Pièce jointe",
@@ -1355,7 +1355,7 @@
       }
     },
     "contentversion": {
-      "icon": "salesforce-standard-document",
+      "icon": "document",
       "captions": {
         "en": "Document",
         "fr": "Document",

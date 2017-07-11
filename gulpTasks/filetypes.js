@@ -34,86 +34,79 @@ function readJsonForAllRepositories(callback, path) {
   });
 }
 
-function generateSass(json, legacy) {
+function generateSass(json) {
   // Be careful to output lowercase object types, since the JS UI helpers do the same,
   // and CSS class names are case sensitive. I do that because I can't expect to
   // match all the time the casing output by the connectors.
   var sass = '';
-  if (legacy == undefined) {
-    legacy = false;
-  }
 
-  if (!legacy) {
-    sass += '@import "' + __dirname + '/../bin/sass/sprites";\n';
-    sass += '@import "' + __dirname + '/../bin/css/retinaNew";\n';
-    sass += '@import "' + __dirname + '/../bin/css/spritesNew";\n';
-  }
+  sass += '@import "' + __dirname + '/../bin/sass/sprites";\n';
+  sass += '@import "' + __dirname + '/../bin/css/retinaNew";\n';
+  sass += '@import "' + __dirname + '/../bin/css/spritesNew";\n';
 
   sass += '@mixin GeneratedIcons() {\n';
   sass += '  .coveo-icon-caption-overlay { display: none; }';
 
-  var defaultIcon = legacy ? '.coveo-sprites-fileType-default' : '.coveo-sprites-custom';
+  var defaultIcon = '.coveo-sprites-custom';
 
   sass += '  &.objecttype {\n';
   sass += '    @extend ' + defaultIcon + ';\n';
-  sass += generateInnerObjecttype(json, legacy, false);
+  sass += generateInnerObjecttype(json, false);
   sass += '  }\n';
 
-  if (!legacy) {
-    sass += '  &.objecttype.coveo-small {\n';
-    sass += '    @extend ' + defaultIcon + '-small;\n';
-    sass += generateInnerObjecttype(json, legacy, true);
-    sass += '  }\n';
-  }
+  sass += '  &.objecttype.coveo-small {\n';
+  sass += '    @extend ' + defaultIcon + '-small;\n';
+  sass += generateInnerObjecttype(json, true);
+  sass += '  }\n';
 
   sass += '  &.filetype, &.sysfiletype {\n'; // we include the version with a sys prefix for backward compatibility
   sass += '    @extend ' + defaultIcon + ';\n';
-  sass += generateInnerFiletype(json, legacy, false)
+  sass += generateInnerFiletype(json, false)
   sass += '  }\n';
 
-  if (!legacy) {
-    sass += '  &.filetype.coveo-small, &.sysfiletype.coveo-small {\n';
-    sass += '    @extend ' + defaultIcon + '-small;\n';
-    sass += generateInnerFiletype(json, legacy, true);
-    sass += '  }\n';
-  }
+  sass += '  &.filetype.coveo-small, &.sysfiletype.coveo-small {\n';
+  sass += '    @extend ' + defaultIcon + '-small;\n';
+  sass += generateInnerFiletype(json, true);
+  sass += '  }\n';
 
   sass += '}\n';
 
   return sass;
 }
 
-function generateInnerObjecttype(json, legacy, small) {
+function generateInnerObjecttype(json, small) {
   var ret = '';
   _.each(_.keys(json.objecttype), function (objecttype) {
-    ensureImageIsValid(objecttype, json.objecttype[objecttype].icon, legacy);
+    ensureImageIsValid(objecttype, json.objecttype[objecttype].icon);
     // This is a special case that we still need to support
     // Old templates in salesforce are using something like this
     // <div class="coveo-icon objecttype <%-raw.objecttype%> "></div>
     // instead of the template helper : <%= fromFileTypeToIcon() %>
     ret += '    &.' + removeSpace(capitalizeFirstLetter(objecttype)) + " , ";
+    // https://css-tricks.com/using-svg/
+    // add border radius
     ret += '    &.' + objecttype.toLowerCase() +
-        ' { @extend .coveo-sprites-' + (legacy ? 'fileType-' : '' ) +
-        json.objecttype[objecttype].icon + (small ? '-small; ' : '; ') +
-        generateShouldDisplayLabel(json.objecttype[objecttype].shouldDisplayLabel) +
-        ' }\n';
+      ' { @extend .coveo-sprites-' +
+      json.objecttype[objecttype].icon + (small ? '-small; ' : '; ') +
+      generateShouldDisplayLabel(json.objecttype[objecttype].shouldDisplayLabel) +
+      ' }\n';
   });
   return ret;
 }
 
-function generateInnerFiletype(json, legacy, small) {
+function generateInnerFiletype(json, small) {
   var ret = '';
   _.each(_.keys(json.filetype), function (filetype) {
 
     // Be careful to output lowercase filetypes, since the JS UI helpers do the same,
     // and CSS class names are case sensitive. I do that because I can't expect to
     // match all the time the casing output by the connectors.
-    ensureImageIsValid(filetype, json.filetype[filetype].icon, legacy);
+    ensureImageIsValid(filetype, json.filetype[filetype].icon);
     ret += '    &.' + removeSpace(filetype.toLowerCase()) +
-        ' { @extend .coveo-sprites-' + (legacy ? 'fileType-' : '' ) +
-        json.filetype[filetype].icon + (small ? '-small; ' : '; ') +
-        generateShouldDisplayLabel(json.filetype[filetype].shouldDisplayLabel) +
-        '}\n';
+      ' { @extend .coveo-sprites-' + 
+      json.filetype[filetype].icon + (small ? '-small; ' : '; ') +
+      generateShouldDisplayLabel(json.filetype[filetype].shouldDisplayLabel) +
+      '}\n';
 
   });
   return ret;
@@ -145,26 +138,17 @@ function generateShouldDisplayLabel(shouldDisplayLabel) {
   }
 }
 
-function ensureImageIsValid(filetype, image, legacy) {
+function ensureImageIsValid(filetype, image) {
   var path = './image/sprites/' + image.replace(/-/g, '/') + '.png';
 
-  // DO not validate legacy because this pollutes the build console
-  // with useless stuff
-  if (!legacy) {
-    if (!fs.existsSync(path)) {
-      console.warn('WARNING: Icon ' + path + ' is referenced by file type ' + filetype + ' but cannot be found!');
-    }
+  if (!fs.existsSync(path)) {
+    console.warn('WARNING: Icon ' + path + ' is referenced by file type ' + filetype + ' but cannot be found!');
   }
 
-
   var retinaPath = './image/retina/' + image.replace('-', '/') + '.png';
-  // DO not validate legacy because this pollutes the build console
-  // with useless stuff
 
-  if (!legacy) {
-    if (!fs.existsSync(retinaPath)) {
-      console.warn('WARNING: Icon ' + path + ' is referenced by file type ' + filetype + ' but cannot be found in Retina sprites!');
-    }
+  if (!fs.existsSync(retinaPath)) {
+    console.warn('WARNING: Icon ' + path + ' is referenced by file type ' + filetype + ' but cannot be found in Retina sprites!');
   }
 }
 
