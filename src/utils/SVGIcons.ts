@@ -3,35 +3,42 @@ import { $$, Dom } from './Dom';
 declare var require: (svgPath: string) => string;
 
 export class SVGIcons {
-  public static search = require('svg/search');
-  public static more = require('svg/more');
-  public static loading = require('svg/loading');
-  public static checkboxHookExclusionMore = require('svg/checkbox-hook-exclusion-more');
-  public static arrowUp = require('svg/arrow-up');
-  public static arrowDown = require('svg/arrow-down');
+  public static icons = {
+    search: require('svg/search'),
+    more: require('svg/more'),
+    loading: require('svg/loading'),
+    checkboxHookExclusionMore: require('svg/checkbox-hook-exclusion-more'),
+    arrowUp: require('svg/arrow-up'),
+    arrowDown: require('svg/arrow-down'),
 
-  public static mainClear = require('svg/main-clear');
-  public static orAnd = require('svg/or-and');
-  public static sort = require('svg/sort');
-  public static ascending = require('svg/ascending');
-  public static descending = require('svg/descending');
-  public static dropdownMore = require('svg/dropdown-more');
-  public static dropdownLess = require('svg/dropdown-less');
-  public static facetCollapse = require('svg/facet-collapse');
-  public static facetExpand = require('svg/facet-expand');
+    mainClear: require('svg/main-clear'),
+    orAnd: require('svg/or-and'),
+    sort: require('svg/sort'),
+    ascending: require('svg/ascending'),
+    descending: require('svg/descending'),
+    dropdownMore: require('svg/dropdown-more'),
+    dropdownLess: require('svg/dropdown-less'),
+    facetCollapse: require('svg/facet-collapse'),
+    facetExpand: require('svg/facet-expand'),
 
-  public static dropdownShareQuery = require('svg/dropdown-share-query');
-  public static dropdownPreferences = require('svg/dropdown-preferences');
-  public static dropdownAuthenticate = require('svg/dropdown-authenticate');
-  public static dropdownExport = require('svg/dropdown-export');
-  public static dropdownFollowQuery = require('svg/dropdown-follow-query');
-  public static quickview = require('svg/quickview');
-  public static pagerRightArrow = require('svg/pager-right-arrow');
-  public static pagerLeftArrow = require('svg/pager-left-arrow');
+    dropdownShareQuery: require('svg/dropdown-share-query'),
+    dropdownPreferences: require('svg/dropdown-preferences'),
+    dropdownAuthenticate: require('svg/dropdown-authenticate'),
+    dropdownExport: require('svg/dropdown-export'),
+    dropdownFollowQuery: require('svg/dropdown-follow-query'),
+    quickview: require('svg/quickview'),
+    pagerRightArrow: require('svg/pager-right-arrow'),
+    pagerLeftArrow: require('svg/pager-left-arrow'),
 
-  public static coveoLogo = require('svg/coveo-logo');
-  public static coveoPoweredBy = require('svg/coveo-powered-by-logo');
+    coveoLogo: require('svg/coveo-logo'),
+    coveoPoweredBy: require('svg/coveo-powered-by-logo'),
 
-  public static taggingOk = require('svg/tagging-ok');
-  public static edit = require('svg/edit');
+    taggingOk: require('svg/tagging-ok'),
+    edit: require('svg/edit'),
+    star: require('svg/star'),
+
+    listLayout: require('svg/list-layout'),
+    cardLayout: require('svg/card-layout'),
+    tableLayout: require('svg/table-layout')
+  };
 }

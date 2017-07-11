@@ -40,7 +40,7 @@ export class Logo extends Component {
     let link = $$('a', {
       className: 'coveo-powered-by coveo-footer-logo',
       href: 'http://www.coveo.com/'
-    }, SVGIcons.coveoPoweredBy);
+    }, SVGIcons.icons.coveoPoweredBy);
     SVGDom.addClassToSVGInContainer(link.el, 'coveo-powered-by-svg');
     this.element.appendChild(link.el);
 

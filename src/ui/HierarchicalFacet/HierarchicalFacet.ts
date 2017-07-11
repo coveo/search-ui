@@ -651,8 +651,8 @@ export class HierarchicalFacet extends Facet implements IComponentBindings {
     if (hierarchy.hasChildSelected) {
       $$(hierarchyElement).addClass('coveo-has-childs-selected');
     }
-    const expandChilds = $$('span', { className: 'coveo-hierarchical-facet-expand' }, SVGIcons.facetExpand);
-    const collapseChilds = $$('span', { className: 'coveo-hierarchical-facet-collapse' }, SVGIcons.facetCollapse);
+    const expandChilds = $$('span', { className: 'coveo-hierarchical-facet-expand' }, SVGIcons.icons.facetExpand);
+    const collapseChilds = $$('span', { className: 'coveo-hierarchical-facet-collapse' }, SVGIcons.icons.facetCollapse);
     SVGDom.addClassToSVGInContainer(expandChilds.el, 'coveo-hierarchical-facet-expand-svg');
     SVGDom.addClassToSVGInContainer(collapseChilds.el, 'coveo-hierarchical-facet-collapse-svg');
     let openAndCloseChilds = $$('div', {

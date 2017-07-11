@@ -200,13 +200,13 @@ export class FollowItem extends Component {
       });
   }
   private buildIcon(): HTMLElement {
-    const icon = $$('span', { className: 'coveo-follow-item-icon' }, SVGIcons.dropdownFollowQuery);
+    const icon = $$('span', { className: 'coveo-follow-item-icon' }, SVGIcons.icons.dropdownFollowQuery);
     SVGDom.addClassToSVGInContainer(icon.el, 'coveo-follow-item-icon-svg');
     return icon.el;
   }
 
   private buildLoadingIcon(): HTMLElement {
-    const loadingIcon = $$('span', { className: 'coveo-follow-item-icon-loading' }, SVGIcons.loading);
+    const loadingIcon = $$('span', { className: 'coveo-follow-item-icon-loading' }, SVGIcons.icons.loading);
     SVGDom.addClassToSVGInContainer(loadingIcon.el, 'coveo-follow-item-icon-loading-svg');
     return loadingIcon.el;
   }
