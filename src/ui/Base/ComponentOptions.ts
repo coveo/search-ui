@@ -10,6 +10,7 @@ import { HtmlTemplate } from '../Templates/HtmlTemplate';
 import { Utils } from '../../utils/Utils';
 import { l } from '../../strings/Strings';
 import * as _ from 'underscore';
+import { SVGIcons } from '../../utils/SVGIcons';
 
 /**
  * The `IFieldOption` interface declares a type for options that should contain a field to be used in a query.
@@ -371,24 +372,20 @@ export class ComponentOptions {
   /**
    * Builds an icon option.
    *
-   * Normally, this simply builds a string that matches a CSS class for an icon.
+   * This loads an SVG icon from its name.
    *
-   * **Note:**
-   *
-   * > In the markup, this offers no advantage over using a plain string. This is mostly useful for the Coveo JavaScript
-   * > Interface Editor.
    *
    * **Markup Examples:**
    *
-   * > `data-foo="coveo-sprites-user"`
+   * > `data-foo="user"`
    *
-   * > `data-foo="coveo-sprites-database"`
+   * > `data-foo="database"`
    *
    * @param optionArgs The arguments to apply when building the option.
    * @returns {string} The resulting option value.
    */
   static buildIconOption(optionArgs?: IComponentOptions<string>): string {
-    return ComponentOptions.buildOption<string>(ComponentOptionsType.ICON, ComponentOptions.loadStringOption, optionArgs);
+    return ComponentOptions.buildOption<string>(ComponentOptionsType.ICON, ComponentOptions.loadIconOption, optionArgs);
   }
 
   /**
@@ -747,6 +744,12 @@ export class ComponentOptions {
 
   static loadStringOption(element: HTMLElement, name: string, option: IComponentOptions<any>): string {
     return element.getAttribute(ComponentOptions.attrNameFromName(name, option)) || ComponentOptions.getAttributeFromAlias(element, option);
+  }
+
+  static loadIconOption(element: HTMLElement, name: string, option: IComponentOptions<any>): string {
+    const svgIconName = ComponentOptions.loadStringOption(element, name, option);
+    Assert.check(!Utils.isUndefined(SVGIcons.icons[svgIconName]), svgIconName + ' is not a valid icon');
+    return SVGIcons.icons[svgIconName];
   }
 
   static loadFieldOption(element: HTMLElement, name: string, option: IComponentOptionsOption<any>): string {

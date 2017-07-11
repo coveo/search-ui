@@ -48,7 +48,7 @@ export class Icon extends Component {
      * Default value is `undefined`, which means that the Coveo JavaScript Search Framework outputs a suitable icon
      * depending on the result file type.
      */
-    value: ComponentOptions.buildIconOption(),
+    value: ComponentOptions.buildStringOption(),
 
     /**
      * Specifies whether the Icon component should output the smaller version of the icon instead of the regular one.

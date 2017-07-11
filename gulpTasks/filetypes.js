@@ -178,7 +178,6 @@ function generateShouldDisplayLabel(shouldDisplayLabel) {
 }
 
 function ensureImageIsValid(svgName, filetype) {
-
   if (!fs.existsSync(getSVGPath(svgName))) {
     console.warn('WARNING: Icon ' + svgName + ' is referenced by file type ' + filetype + ' but cannot be found!');
   }

@@ -4,6 +4,25 @@
   cursor: pointer;
 }
 
+.CoveoCardOverlay[data-icon="search"] {
+  svg {
+    color: $color-blueish-gray;
+    width: 20px;
+    height: 20px;
+    .coveo-magnifier-circle-svg {
+      fill: $color-active-yellow;
+    }
+  }
+}
+
+.CoveoCardOverlay[data-icon="replies"]{
+  svg {
+    color: $color-blueish-gray;
+    width: 20px;
+    height: 20px;
+  }
+}
+
 .coveo-card-overlay {
   position: absolute;
   height: 100%;
