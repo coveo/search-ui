@@ -55,7 +55,7 @@
 	</div>
 	<div class="bottomHeader">
 		<div id="searchBox">
-			<div class="CoveoSearchbox" data-enable-omnibox="true" data-inline="false" data-enable-wildcards="true" data-enable-search-as-you-type="false" data-enable-reveal-query-suggest-addon="false" data-enable-query-syntax="true" data-enable-field-addon="true"></div>
+			<div class="CoveoSearchbox" data-enable-omnibox="true" data-inline="false" data-enable-wildcards="true" data-enable-search-as-you-type="false" data-enable-query-suggest-addon="false" data-enable-query-syntax="true" data-enable-field-addon="true"></div>
 			<div class="CoveoFieldSuggestions" data-field="@systitle" data-header-title="Suggested topics"></div>
 		</div>
 	</div>
@@ -261,18 +261,20 @@
 							<a href="hierarchicalfacet.html">HierarchicalFacet</a>
 						</li>
 					</ul>
-					<h1>Coveo component HierarchicalFacet</h1>
+					<!-- Has to remain here for the playground to work -->
+					<h1 style="visibility: collapse; font-size:0">Coveo component HierarchicalFacet</h1>
+					<h1>Coveo HierarchicalFacet Component (CoveoHierarchicalFacet)</h1>
 				</div>
 			</div>
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>The HierarchicalFacet component inherits all of its options and behavior from the normal <a href="facet.html">Facet</a> component, but
-						is meant to be used for hierarchical values.</p>
+						<p>The <code>HierarchicalFacet</code> component inherits all of its options and behaviors from the <a href="facet.html"><code>Facet</code></a>
+						component, but is meant to be used to render hierarchical values.</p>
 					</div>
-					<p>The HierarchicalFacet component could be used to display files in a file system, or categories for documents in a
+					<p>You can use the <code>HierarchicalFacet</code> component to display files in a file system, or categories for items in a
 					hierarchy.</p>
-					<p>This facet requires a group by field with a special format in order to work correctly.</p>
+					<p>This facet requires a group by field with a special format to work correctly.</p>
 					<p><strong>Example:</strong></p>
 					<p>If you have the following files indexed on a file system:</p>
 					<pre><code>c:<span class="hljs-string">\</span>
@@ -281,13 +283,13 @@
    folder2<span class="hljs-string">\</span>
      folder3<span class="hljs-string">\</span>
        text2.txt
-</code></pre><p>The document <code>text1.txt</code> would need to have a field with the following format:
+</code></pre><p>The <code>text1.txt</code> item would need to have a field with the following format:
 					<code>@field : c; c|folder1;</code></p>
-					<p>The document <code>text2.txt</code> would have a field with the following format:
+					<p>The <code>text2.txt</code> item would have a field with the following format:
 					<code>@field: c; c|folder2; c|folder2|folder3;</code></p>
-					<p>The | character allows the facet to build its hierarchy (<code>folder3</code> inside <code>folder2</code> inside <code>c</code>).</p>
-					<p>Since both documents contain the <code>c</code> value, selecting that value in the facet would return both documents.</p>
-					<p>Selecting the <code>folder3</code> value in the facet would only return the <code>text2.txt</code> document.</p>
+					<p>The <code>|</code> character allows the facet to build its hierarchy (<code>folder3</code> inside <code>folder2</code> inside <code>c</code>).</p>
+					<p>Since both items contain the <code>c</code> value, selecting this value in the facet would return both items.</p>
+					<p>Selecting the <code>folder3</code> value in the facet would only return the <code>text2.txt</code> item.</p>
 				</div>
 			</section>
 			<div class="preview-container tsd-panel">
@@ -380,8 +382,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/HierarchicalFacet/HierarchicalFacet.ts#L110">src/ui/HierarchicalFacet/HierarchicalFacet.ts
-							:110</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/HierarchicalFacet/HierarchicalFacet.ts#L120">src/ui/HierarchicalFacet/HierarchicalFacet.ts
+							:120</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -391,7 +393,7 @@
 						<p><strong>Example:</strong></p>
 						<p>If your field has the following values:</p>
 						<p><code>@field: c; c&gt;folder2; c&gt;folder2&gt;folder3;</code></p>
-						<p>Then your delimiting character is <code>&gt;</code>.</p>
+						<p>The delimiting character is <code>&gt;</code>.</p>
 						<p>Default value is <code>|</code>.</p>
 					</div>
 					<div class="tsd-panel">
@@ -406,16 +408,16 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/HierarchicalFacet/HierarchicalFacet.ts#L140">src/ui/HierarchicalFacet/HierarchicalFacet.ts
-							:140</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/HierarchicalFacet/HierarchicalFacet.ts#L150">src/ui/HierarchicalFacet/HierarchicalFacet.ts
+							:150</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies at which level (0-based index) of the hierarchy the HierarchicalFacet should stop displaying its
+							<p>Specifies at which level (0-based index) of the hierarchy the <code>HierarchicalFacet</code> should stop displaying its
 							values.</p>
 						</div>
-						<p>Default value is <code>undefined</code>, which means the HierarchicalFacet component renders all hierarchical levels.
+						<p>Default value is <code>undefined</code>, which means the <code>HierarchicalFacet</code> component renders all hierarchical levels.
 						Minimum value is <code>0</code>.</p>
 					</div>
 					<div class="tsd-panel">
@@ -430,13 +432,13 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/HierarchicalFacet/HierarchicalFacet.ts#L131">src/ui/HierarchicalFacet/HierarchicalFacet.ts
-							:131</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/HierarchicalFacet/HierarchicalFacet.ts#L141">src/ui/HierarchicalFacet/HierarchicalFacet.ts
+							:141</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies at which level (0-based index) of the hierarchy the HierarchicalFacet should start displaying its
+							<p>Specifies at which level (0-based index) of the hierarchy the <code>HierarchicalFacet</code> should start displaying its
 							values.</p>
 						</div>
 						<p><strong>Example:</strong></p>
@@ -447,7 +449,7 @@
    folder2<span class="hljs-string">\</span>
      folder3<span class="hljs-string">\</span>
        text2.txt
-</code></pre><p>Then, setting levelStart to <code>1</code> displays <code>folder1</code> and <code>folder2</code> in the HierarchicalFacet, but omits <code>c:</code>.</p>
+</code></pre><p>Setting <code>levelStart</code> to <code>1</code> displays <code>folder1</code> and <code>folder2</code> in the <code>HierarchicalFacet</code>, but omits <code>c:</code>.</p>
 						<p>Default (and minimum) value is <code>0</code>.</p>
 					</div>
 					<div class="tsd-panel">
@@ -462,8 +464,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/HierarchicalFacet/HierarchicalFacet.ts#L147">src/ui/HierarchicalFacet/HierarchicalFacet.ts
-							:147</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/HierarchicalFacet/HierarchicalFacet.ts#L157">src/ui/HierarchicalFacet/HierarchicalFacet.ts
+							:157</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -491,8 +493,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/HierarchicalFacet/HierarchicalFacet.ts#L427">src/ui/HierarchicalFacet/HierarchicalFacet.ts
-									:427</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/HierarchicalFacet/HierarchicalFacet.ts#L442">src/ui/HierarchicalFacet/HierarchicalFacet.ts
+									:442</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -525,13 +527,13 @@
 								<p>Inherited from <a href="facet.html">Facet</a>.<a href="facet.html#collapse">collapse</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L1062">src/ui/Facet/Facet.ts
-									:1062</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L1148">src/ui/Facet/Facet.ts
+									:1148</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Collapses the Facet.</p>
+									<p>Collapses the facet.</p>
 								</div>
 							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -575,8 +577,8 @@
 								<p>Overwrites <a href="facet.html">Facet</a>.<a href="facet.html#deselectmultiplevalues">deselectMultipleValues</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/HierarchicalFacet/HierarchicalFacet.ts#L299">src/ui/HierarchicalFacet/HierarchicalFacet.ts
-									:299</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/HierarchicalFacet/HierarchicalFacet.ts#L310">src/ui/HierarchicalFacet/HierarchicalFacet.ts
+									:310</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -596,7 +598,7 @@
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> deselectChildren: <span class="tsd-signature-type">boolean</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>Specifies whether to also deselect all child values (if any). Default value is the opposite
-										of the <a href="facet.html#options.useand">Facet.options.useAnd</a> value set for this HierarchicalFacet.</p>
+										of the <a href="facet.html#options.useand"><code>useAnd</code></a> option value set for this <code>HierarchicalFacet</code>.</p>
 									</div>
 								</li>
 							</ul>
@@ -616,8 +618,8 @@
 								<p>Overwrites <a href="facet.html">Facet</a>.<a href="facet.html#deselectvalue">deselectValue</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/HierarchicalFacet/HierarchicalFacet.ts#L228">src/ui/HierarchicalFacet/HierarchicalFacet.ts
-									:228</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/HierarchicalFacet/HierarchicalFacet.ts#L239">src/ui/HierarchicalFacet/HierarchicalFacet.ts
+									:239</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -710,8 +712,8 @@
 								<p>Inherited from <a href="facet.html">Facet</a>.<a href="facet.html#excludemultiplevalues">excludeMultipleValues</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L757">src/ui/Facet/Facet.ts
-									:757</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L849">src/ui/Facet/Facet.ts
+									:849</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -725,7 +727,7 @@
 								<li>
 									<h5>values: <a href="../classes/facetvalue.html" class="tsd-signature-type">FacetValue</a><span class="tsd-signature-symbol">[]</span></h5>
 									<div class="tsd-comment tsd-typography">
-										<p>Can be an array of <a href="../classes/facetvalue.html">FacetValue</a> or a string array.</p>
+										<p>Can be an array of <a href="../classes/facetvalue.html"><code>FacetValue</code></a> or an array of strings.</p>
 									</div>
 								</li>
 							</ul>
@@ -745,8 +747,8 @@
 								<p>Overwrites <a href="facet.html">Facet</a>.<a href="facet.html#excludevalue">excludeValue</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/HierarchicalFacet/HierarchicalFacet.ts#L258">src/ui/HierarchicalFacet/HierarchicalFacet.ts
-									:258</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/HierarchicalFacet/HierarchicalFacet.ts#L269">src/ui/HierarchicalFacet/HierarchicalFacet.ts
+									:269</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -766,7 +768,7 @@
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> excludeChildren: <span class="tsd-signature-type">boolean</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>Specifies whether to also exclude all child values (if any). Default value is the opposite
-										of the <a href="facet.html#options.useand">Facet.options.useAnd</a> value set for this HierarchicalFacet.</p>
+										of the <a href="facet.html#options.useand"><code>useAnd</code></a> option value set for this <code>HierarchicalFacet</code>.</p>
 									</div>
 								</li>
 							</ul>
@@ -786,8 +788,8 @@
 								<p>Inherited from <a href="facet.html">Facet</a>.<a href="facet.html#expand">expand</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L1072">src/ui/Facet/Facet.ts
-									:1072</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L1158">src/ui/Facet/Facet.ts
+									:1158</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -811,8 +813,8 @@
 								<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#getbindings">getBindings</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L124">src/ui/Base/Component.ts
-									:124</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L129">src/ui/Base/Component.ts
+									:129</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -836,13 +838,13 @@
 								<p>Inherited from <a href="facet.html">Facet</a>.<a href="facet.html#getdisplayedfacetvalues">getDisplayedFacetValues</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L849">src/ui/Facet/Facet.ts
-									:849</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L941">src/ui/Facet/Facet.ts
+									:941</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Returns the currently displayed values as an array of <a href="../classes/facetvalue.html">FacetValue</a>.</p>
+									<p>Returns the currently displayed values as an array of <a href="../classes/facetvalue.html"><code>FacetValue</code></a>.</p>
 								</div>
 							</div>
 							<h4 class="tsd-returns-title">Returns <a href="../classes/facetvalue.html" class="tsd-signature-type">FacetValue</a><span class="tsd-signature-symbol">[]</span></h4>
@@ -862,17 +864,17 @@
 								<p>Overwrites <a href="facet.html">Facet</a>.<a href="facet.html#getdisplayedvalues">getDisplayedValues</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/HierarchicalFacet/HierarchicalFacet.ts#L376">src/ui/HierarchicalFacet/HierarchicalFacet.ts
-									:376</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/HierarchicalFacet/HierarchicalFacet.ts#L387">src/ui/HierarchicalFacet/HierarchicalFacet.ts
+									:387</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Gets the values that the HierarchicalFacet is currently displaying.</p>
+									<p>Gets the values that the <code>HierarchicalFacet</code> is currently displaying.</p>
 								</div>
 							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></h4>
-							<p>An array containing all the values that the HierarchicalFacet is currently displaying.</p>
+							<p>An array containing all the values that the <code>HierarchicalFacet</code> is currently displaying.</p>
 						</li>
 					</ul>
 				</section>
@@ -888,17 +890,17 @@
 								<p>Inherited from <a href="facet.html">Facet</a>.<a href="facet.html#getendpoint">getEndpoint</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L912">src/ui/Facet/Facet.ts
-									:912</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L1006">src/ui/Facet/Facet.ts
+									:1006</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Returns the endpoint for the Facet.</p>
+									<p>Returns the endpoint for the facet.</p>
 								</div>
 							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">ISearchEndpoint</span></h4>
-							<p>The endpoint for the Facet.</p>
+							<p>The endpoint for the Ffcet.</p>
 						</li>
 					</ul>
 				</section>
@@ -914,13 +916,13 @@
 								<p>Inherited from <a href="facet.html">Facet</a>.<a href="facet.html#getexcludedvalues">getExcludedValues</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L870">src/ui/Facet/Facet.ts
-									:870</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L962">src/ui/Facet/Facet.ts
+									:962</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Returns the currently excluded values as an array of string.</p>
+									<p>Returns the currently excluded values as an array of strings.</p>
 								</div>
 							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></h4>
@@ -940,13 +942,13 @@
 								<p>Inherited from <a href="facet.html">Facet</a>.<a href="facet.html#getselectedvalues">getSelectedValues</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L861">src/ui/Facet/Facet.ts
-									:861</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L953">src/ui/Facet/Facet.ts
+									:953</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Returns the currently selected values as an array of string.</p>
+									<p>Returns the currently selected values as an array of strings.</p>
 								</div>
 							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></h4>
@@ -966,8 +968,8 @@
 								<p>Overwrites <a href="facet.html">Facet</a>.<a href="facet.html#getvaluecaption">getValueCaption</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/HierarchicalFacet/HierarchicalFacet.ts#L356">src/ui/HierarchicalFacet/HierarchicalFacet.ts
-									:356</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/HierarchicalFacet/HierarchicalFacet.ts#L367">src/ui/HierarchicalFacet/HierarchicalFacet.ts
+									:367</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1001,13 +1003,13 @@
 								<p>Inherited from <a href="facet.html">Facet</a>.<a href="facet.html#hidewaitinganimation">hideWaitingAnimation</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L962">src/ui/Facet/Facet.ts
-									:962</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L1049">src/ui/Facet/Facet.ts
+									:1049</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Hides the waiting animation in the Facet header.</p>
+									<p>Hides the waiting animation in the facet header.</p>
 								</div>
 							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -1025,8 +1027,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/HierarchicalFacet/HierarchicalFacet.ts#L401">src/ui/HierarchicalFacet/HierarchicalFacet.ts
-									:401</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/HierarchicalFacet/HierarchicalFacet.ts#L416">src/ui/HierarchicalFacet/HierarchicalFacet.ts
+									:416</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1059,13 +1061,13 @@
 								<p>Overwrites <a href="facet.html">Facet</a>.<a href="facet.html#reset">reset</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/HierarchicalFacet/HierarchicalFacet.ts#L452">src/ui/HierarchicalFacet/HierarchicalFacet.ts
-									:452</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/HierarchicalFacet/HierarchicalFacet.ts#L467">src/ui/HierarchicalFacet/HierarchicalFacet.ts
+									:467</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Resets the HierarchicalFacet state.</p>
+									<p>Resets the <code>HierarchicalFacet</code> state.</p>
 								</div>
 							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -1084,8 +1086,8 @@
 								<p>Overwrites <a href="facet.html">Facet</a>.<a href="facet.html#selectmultiplevalues">selectMultipleValues</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/HierarchicalFacet/HierarchicalFacet.ts#L206">src/ui/HierarchicalFacet/HierarchicalFacet.ts
-									:206</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/HierarchicalFacet/HierarchicalFacet.ts#L217">src/ui/HierarchicalFacet/HierarchicalFacet.ts
+									:217</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1105,7 +1107,7 @@
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> selectChildren: <span class="tsd-signature-type">boolean</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>Specifies whether to also select all child values (if any). Default value is the opposite of
-										the <a href="facet.html#options.useand">Facet.options.useAnd</a> value set for this HierarchicalFacet.</p>
+										the <a href="facet.html#options.useand"><code>useAnd</code></a> option value set for this <code>HierarchicalFacet</code>.</p>
 									</div>
 								</li>
 							</ul>
@@ -1125,8 +1127,8 @@
 								<p>Overwrites <a href="facet.html">Facet</a>.<a href="facet.html#selectvalue">selectValue</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/HierarchicalFacet/HierarchicalFacet.ts#L187">src/ui/HierarchicalFacet/HierarchicalFacet.ts
-									:187</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/HierarchicalFacet/HierarchicalFacet.ts#L198">src/ui/HierarchicalFacet/HierarchicalFacet.ts
+									:198</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1146,7 +1148,7 @@
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> selectChildren: <span class="tsd-signature-type">boolean</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>Specifies whether to also select all child values (if any). Default value is the opposite of
-										the <a href="facet.html#options.useand">Facet.options.useAnd</a> value set for this HierarchicalFacet.</p>
+										the <a href="facet.html#options.useand"><code>useAnd</code></a> option value set for this <code>HierarchicalFacet</code>.</p>
 									</div>
 								</li>
 							</ul>
@@ -1166,15 +1168,16 @@
 								<p>Inherited from <a href="facet.html">Facet</a>.<a href="facet.html#showless">showLess</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L1050">src/ui/Facet/Facet.ts
-									:1050</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L1136">src/ui/Facet/Facet.ts
+									:1136</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
 									<p>Shows less elements in the Facet (up to the original number of values).</p>
 								</div>
-								<p>See <a href="facet.html#options.numberofvalues">Facet.options.numberOfValues</a>.</p>
+								<p>See the <a href="facet.html#options.enablemoreless"><code>enableMoreLess</code></a>, and
+								<a href="facet.html#options.numberofvalues"><code>numberOfValues</code></a> options.</p>
 							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
@@ -1192,14 +1195,16 @@
 								<p>Inherited from <a href="facet.html">Facet</a>.<a href="facet.html#showmore">showMore</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L1035">src/ui/Facet/Facet.ts
-									:1035</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L1120">src/ui/Facet/Facet.ts
+									:1120</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Shows the next page of results in the Facet.</p>
+									<p>Shows the next page of results in the facet.</p>
 								</div>
+								<p>See the <a href="facet.html#options.enablemoreless"><code>enableMoreLess</code></a>, and <a href="facet.html#options.pagesize"><code>pageSize</code></a>
+								options.</p>
 								<p>Triggers a query if needed, or displays the already available values.</p>
 							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -1218,13 +1223,13 @@
 								<p>Inherited from <a href="facet.html">Facet</a>.<a href="facet.html#showwaitinganimation">showWaitingAnimation</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L944">src/ui/Facet/Facet.ts
-									:944</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L1038">src/ui/Facet/Facet.ts
+									:1038</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Shows a waiting animation in the Facet header (a spinner).</p>
+									<p>Shows a waiting animation in the facet header (a spinner).</p>
 								</div>
 							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -1243,15 +1248,16 @@
 								<p>Inherited from <a href="facet.html">Facet</a>.<a href="facet.html#switchtoand">switchToAnd</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L891">src/ui/Facet/Facet.ts
-									:891</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L984">src/ui/Facet/Facet.ts
+									:984</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Switches the Facet to <code>AND</code> mode.</p>
+									<p>Switches the facet to <code>AND</code> mode.</p>
 								</div>
-								<p>See <a href="facet.html#options.useand">Facet.options.useAnd</a> and <a href="facet.html#options.enabletogglingoperator">Facet.options.enableTogglingOperator</a>.</p>
+								<p>See the <a href="facet.html#options.useand"><code>useAnd</code></a>, and
+								<a href="facet.html#options.enabletogglingoperator"><code>enableTogglingOperator</code></a> options.</p>
 							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
@@ -1269,15 +1275,16 @@
 								<p>Inherited from <a href="facet.html">Facet</a>.<a href="facet.html#switchtoor">switchToOr</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L902">src/ui/Facet/Facet.ts
-									:902</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L996">src/ui/Facet/Facet.ts
+									:996</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Switches the Facet to <code>OR</code> mode.</p>
+									<p>Switches the facet to <code>OR</code> mode.</p>
 								</div>
-								<p>See <a href="facet.html#options.useand">Facet.options.useAnd</a> and <a href="facet.html#options.enabletogglingoperator">Facet.options.enableTogglingOperator</a>.</p>
+								<p>See the <a href="facet.html#options.useand"><code>useAnd</code></a>, and
+								<a href="facet.html#options.enabletogglingoperator"><code>enableTogglingOperator</code></a> options.</p>
 							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
@@ -1295,8 +1302,8 @@
 								<p>Overwrites <a href="facet.html">Facet</a>.<a href="facet.html#toggleexcludevalue">toggleExcludeValue</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/HierarchicalFacet/HierarchicalFacet.ts#L339">src/ui/HierarchicalFacet/HierarchicalFacet.ts
-									:339</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/HierarchicalFacet/HierarchicalFacet.ts#L350">src/ui/HierarchicalFacet/HierarchicalFacet.ts
+									:350</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1329,8 +1336,8 @@
 								<p>Overwrites <a href="facet.html">Facet</a>.<a href="facet.html#toggleselectvalue">toggleSelectValue</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/HierarchicalFacet/HierarchicalFacet.ts#L323">src/ui/HierarchicalFacet/HierarchicalFacet.ts
-									:323</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/HierarchicalFacet/HierarchicalFacet.ts#L334">src/ui/HierarchicalFacet/HierarchicalFacet.ts
+									:334</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1363,8 +1370,8 @@
 								<p>Inherited from <a href="facet.html">Facet</a>.<a href="facet.html#unexcludemultiplevalues">unexcludeMultipleValues</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L791">src/ui/Facet/Facet.ts
-									:791</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L883">src/ui/Facet/Facet.ts
+									:883</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1378,7 +1385,7 @@
 								<li>
 									<h5>values: <a href="../classes/facetvalue.html" class="tsd-signature-type">FacetValue</a><span class="tsd-signature-symbol">[]</span></h5>
 									<div class="tsd-comment tsd-typography">
-										<p>Can be an array of <a href="../classes/facetvalue.html">FacetValue</a> or a string array.</p>
+										<p>Can be an array of <a href="../classes/facetvalue.html"><code>FacetValue</code></a> or an array of strings.</p>
 									</div>
 								</li>
 							</ul>
@@ -1398,8 +1405,8 @@
 								<p>Overwrites <a href="facet.html">Facet</a>.<a href="facet.html#unexcludevalue">unexcludeValue</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/HierarchicalFacet/HierarchicalFacet.ts#L280">src/ui/HierarchicalFacet/HierarchicalFacet.ts
-									:280</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/HierarchicalFacet/HierarchicalFacet.ts#L291">src/ui/HierarchicalFacet/HierarchicalFacet.ts
+									:291</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1419,7 +1426,7 @@
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> unexludeChildren: <span class="tsd-signature-type">boolean</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>Specifies whether to also un-exclude all child values (if any). Default value is the
-										opposite of the <a href="facet.html#options.useand">Facet.options.useAnd</a> value set for this HierarchicalFacet.</p>
+										opposite of the <a href="facet.html#options.useand"><code>useAnd</code></a> option value set for this <code>HierarchicalFacet</code>.</p>
 									</div>
 								</li>
 							</ul>
@@ -1439,14 +1446,16 @@
 								<p>Overwrites <a href="facet.html">Facet</a>.<a href="facet.html#updatesort">updateSort</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/HierarchicalFacet/HierarchicalFacet.ts#L392">src/ui/HierarchicalFacet/HierarchicalFacet.ts
-									:392</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/HierarchicalFacet/HierarchicalFacet.ts#L407">src/ui/HierarchicalFacet/HierarchicalFacet.ts
+									:407</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Updates the sort criteria for the HierarchicalFacet.</p>
+									<p>Updates the sort criteria for the <code>HierarchicalFacet</code>.</p>
 								</div>
+								<p>See the <a href="../interfaces/igroupbyrequest.html#sortcriteria"><code>sortCriteria</code></a> property of the [<code>IGroupByRequest</code>] interface for the
+								list and description of possible values.</p>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
@@ -1473,8 +1482,8 @@
 								<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#get">get</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L193">src/ui/Base/Component.ts
-									:193</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L198">src/ui/Base/Component.ts
+									:198</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1519,8 +1528,8 @@
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#bind">bind</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L62">src/ui/Base/Component.ts
-							:62</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L67">src/ui/Base/Component.ts
+							:67</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -1544,8 +1553,8 @@
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#componentoptionsmodel">componentOptionsModel</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L90">src/ui/Base/Component.ts
-							:90</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L95">src/ui/Base/Component.ts
+							:95</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -1562,8 +1571,8 @@
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#componentstatemodel">componentStateModel</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L74">src/ui/Base/Component.ts
-							:74</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L79">src/ui/Base/Component.ts
+							:79</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -1605,13 +1614,13 @@
 						<p>Inherited from <a href="facet.html">Facet</a>.<a href="facet.html#facetsearch">facetSearch</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L567">src/ui/Facet/Facet.ts
-							:567</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L666">src/ui/Facet/Facet.ts
+							:666</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Renders and handles the Facet <strong>Search</strong> part of the component.</p>
+							<p>Renders and handles the facet <strong>Search</strong> part of the component.</p>
 						</div>
 					</div>
 				</section>
@@ -1623,13 +1632,13 @@
 						<p>Inherited from <a href="facet.html">Facet</a>.<a href="facet.html#facetsettings">facetSettings</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L572">src/ui/Facet/Facet.ts
-							:572</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L671">src/ui/Facet/Facet.ts
+							:671</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Renders and handles the Facet <strong>Settings</strong> part of the component</p>
+							<p>Renders and handles the facet <strong>Settings</strong> part of the component</p>
 						</div>
 					</div>
 				</section>
@@ -1659,8 +1668,8 @@
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#querycontroller">queryController</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L78">src/ui/Base/Component.ts
-							:78</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L83">src/ui/Base/Component.ts
+							:83</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -1677,8 +1686,8 @@
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#querystatemodel">queryStateModel</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L70">src/ui/Base/Component.ts
-							:70</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L75">src/ui/Base/Component.ts
+							:75</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -1695,8 +1704,8 @@
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#root">root</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L66">src/ui/Base/Component.ts
-							:66</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L71">src/ui/Base/Component.ts
+							:71</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -1713,8 +1722,8 @@
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#searchinterface">searchInterface</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L82">src/ui/Base/Component.ts
-							:82</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L87">src/ui/Base/Component.ts
+							:87</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -1731,8 +1740,8 @@
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#usageanalytics">usageAnalytics</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L86">src/ui/Base/Component.ts
-							:86</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L91">src/ui/Base/Component.ts
+							:91</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -1775,27 +1784,39 @@
 								<p>Overwrites <a href="facet.html">Facet</a>.<a href="facet.html#constructor">constructor</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/HierarchicalFacet/HierarchicalFacet.ts#L163">src/ui/HierarchicalFacet/HierarchicalFacet.ts
-									:163</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/HierarchicalFacet/HierarchicalFacet.ts#L173">src/ui/HierarchicalFacet/HierarchicalFacet.ts
+									:173</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Creates a new HierarchicalFacet.</p>
+									<p>Creates a new <code>HierarchicalFacet</code> component.</p>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>element: <span class="tsd-signature-type">HTMLElement</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<div class="lead">
+											<p>The HTMLElement on which to instantiate the component.</p>
+										</div>
+									</div>
 								</li>
 								<li>
 									<h5>options: <span class="tsd-signature-type">IHierarchicalFacetOptions</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<div class="lead">
+											<p>The options for the <code>HierarchicalFacet</code> component.</p>
+										</div>
+									</div>
 								</li>
 								<li>
 									<h5>bindings: <a href="../interfaces/icomponentbindings.html" class="tsd-signature-type">IComponentBindings</a></h5>
 									<div class="tsd-comment tsd-typography">
 										<div class="lead">
+											<p>The bindings that the component requires to function normally. If not set, these will be
+											automatically resolved (with a slower execution time).</p>
 										</div>
 									</div>
 								</li>

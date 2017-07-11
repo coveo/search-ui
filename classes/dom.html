@@ -55,7 +55,7 @@
 	</div>
 	<div class="bottomHeader">
 		<div id="searchBox">
-			<div class="CoveoSearchbox" data-enable-omnibox="true" data-inline="false" data-enable-wildcards="true" data-enable-search-as-you-type="false" data-enable-reveal-query-suggest-addon="false" data-enable-query-syntax="true" data-enable-field-addon="true"></div>
+			<div class="CoveoSearchbox" data-enable-omnibox="true" data-inline="false" data-enable-wildcards="true" data-enable-search-as-you-type="false" data-enable-query-suggest-addon="false" data-enable-query-syntax="true" data-enable-field-addon="true"></div>
 			<div class="CoveoFieldSuggestions" data-field="@systitle" data-header-title="Suggested topics"></div>
 		</div>
 	</div>
@@ -103,6 +103,9 @@
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="dom.html#children" class="tsd-kind-icon">children</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="dom.html#clone" class="tsd-kind-icon">clone</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="dom.html#closest" class="tsd-kind-icon">closest</a>
@@ -252,6 +255,8 @@
 							<a href="dom.html">Dom</a>
 						</li>
 					</ul>
+					<!-- Has to remain here for the playground to work -->
+					<h1 style="visibility: collapse; font-size:0">Class Dom</h1>
 					<h1>Class Dom</h1>
 				</div>
 			</div>
@@ -278,6 +283,7 @@
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="dom.html#addclass" class="tsd-kind-icon">add<wbr>Class</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="dom.html#append" class="tsd-kind-icon">append</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="dom.html#children" class="tsd-kind-icon">children</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="dom.html#clone" class="tsd-kind-icon">clone</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="dom.html#closest" class="tsd-kind-icon">closest</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="dom.html#css" class="tsd-kind-icon">css</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="dom.html#detach" class="tsd-kind-icon">detach</a></li>
@@ -343,8 +349,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/utils/Dom.ts#L332">src/utils/Dom.ts
-									:332</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/utils/Dom.ts#L334">src/utils/Dom.ts
+									:334</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -406,8 +412,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/utils/Dom.ts#L266">src/utils/Dom.ts
-									:266</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/utils/Dom.ts#L268">src/utils/Dom.ts
+									:268</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -416,6 +422,39 @@
 								</div>
 							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">HTMLElement</span><span class="tsd-signature-symbol">[]</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="clone" class="tsd-anchor"></a>
+					<h3>clone</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">clone<span class="tsd-signature-symbol">(</span>deep<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="dom.html" class="tsd-signature-type">Dom</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in
+										<a href="https://github.com/coveo/search-ui/tree/master/src/utils/Dom.ts#L676">src/utils/Dom.ts
+									:676</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Clone the node</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> deep: <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> =&nbsp;false</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>true if the children of the node should also be cloned, or false to clone only the specified node.</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="dom.html" class="tsd-signature-type">Dom</a></h4>
 						</li>
 					</ul>
 				</section>
@@ -430,8 +469,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/utils/Dom.ts#L228">src/utils/Dom.ts
-									:228</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/utils/Dom.ts#L230">src/utils/Dom.ts
+									:230</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -497,8 +536,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/utils/Dom.ts#L407">src/utils/Dom.ts
-									:407</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/utils/Dom.ts#L409">src/utils/Dom.ts
+									:409</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -545,8 +584,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/utils/Dom.ts#L194">src/utils/Dom.ts
-									:194</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/utils/Dom.ts#L196">src/utils/Dom.ts
+									:196</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -578,8 +617,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/utils/Dom.ts#L302">src/utils/Dom.ts
-									:302</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/utils/Dom.ts#L304">src/utils/Dom.ts
+									:304</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -611,8 +650,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/utils/Dom.ts#L311">src/utils/Dom.ts
-									:311</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/utils/Dom.ts#L313">src/utils/Dom.ts
+									:313</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -644,8 +683,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/utils/Dom.ts#L324">src/utils/Dom.ts
-									:324</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/utils/Dom.ts#L326">src/utils/Dom.ts
+									:326</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -677,8 +716,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/utils/Dom.ts#L176">src/utils/Dom.ts
-									:176</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/utils/Dom.ts#L178">src/utils/Dom.ts
+									:178</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -710,8 +749,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/utils/Dom.ts#L391">src/utils/Dom.ts
-									:391</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/utils/Dom.ts#L393">src/utils/Dom.ts
+									:393</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -734,8 +773,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/utils/Dom.ts#L400">src/utils/Dom.ts
-									:400</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/utils/Dom.ts#L402">src/utils/Dom.ts
+									:402</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -767,8 +806,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/utils/Dom.ts#L666">src/utils/Dom.ts
-									:666</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/utils/Dom.ts#L667">src/utils/Dom.ts
+									:667</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -791,8 +830,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/utils/Dom.ts#L147">src/utils/Dom.ts
-									:147</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/utils/Dom.ts#L149">src/utils/Dom.ts
+									:149</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -815,8 +854,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/utils/Dom.ts#L415">src/utils/Dom.ts
-									:415</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/utils/Dom.ts#L417">src/utils/Dom.ts
+									:417</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -847,8 +886,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/utils/Dom.ts#L423">src/utils/Dom.ts
-									:423</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/utils/Dom.ts#L425">src/utils/Dom.ts
+									:425</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -879,8 +918,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/utils/Dom.ts#L203">src/utils/Dom.ts
-									:203</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/utils/Dom.ts#L205">src/utils/Dom.ts
+									:205</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -911,8 +950,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/utils/Dom.ts#L555">src/utils/Dom.ts
-									:555</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/utils/Dom.ts#L557">src/utils/Dom.ts
+									:557</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -941,8 +980,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/utils/Dom.ts#L547">src/utils/Dom.ts
-									:547</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/utils/Dom.ts#L549">src/utils/Dom.ts
+									:549</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -999,8 +1038,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/utils/Dom.ts#L497">src/utils/Dom.ts
-									:497</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/utils/Dom.ts#L499">src/utils/Dom.ts
+									:499</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1059,8 +1098,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/utils/Dom.ts#L635">src/utils/Dom.ts
-									:635</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/utils/Dom.ts#L637">src/utils/Dom.ts
+									:637</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1083,8 +1122,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/utils/Dom.ts#L617">src/utils/Dom.ts
-									:617</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/utils/Dom.ts#L619">src/utils/Dom.ts
+									:619</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1108,8 +1147,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/utils/Dom.ts#L444">src/utils/Dom.ts
-									:444</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/utils/Dom.ts#L446">src/utils/Dom.ts
+									:446</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1168,8 +1207,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/utils/Dom.ts#L476">src/utils/Dom.ts
-									:476</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/utils/Dom.ts#L478">src/utils/Dom.ts
+									:478</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1229,8 +1268,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/utils/Dom.ts#L238">src/utils/Dom.ts
-									:238</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/utils/Dom.ts#L240">src/utils/Dom.ts
+									:240</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1260,8 +1299,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/utils/Dom.ts#L252">src/utils/Dom.ts
-									:252</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/utils/Dom.ts#L254">src/utils/Dom.ts
+									:254</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1291,8 +1330,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/utils/Dom.ts#L582">src/utils/Dom.ts
-									:582</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/utils/Dom.ts#L584">src/utils/Dom.ts
+									:584</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1315,8 +1354,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/utils/Dom.ts#L431">src/utils/Dom.ts
-									:431</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/utils/Dom.ts#L433">src/utils/Dom.ts
+									:433</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1371,8 +1410,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/utils/Dom.ts#L354">src/utils/Dom.ts
-									:354</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/utils/Dom.ts#L356">src/utils/Dom.ts
+									:356</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1404,8 +1443,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/utils/Dom.ts#L570">src/utils/Dom.ts
-									:570</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/utils/Dom.ts#L572">src/utils/Dom.ts
+									:572</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1436,8 +1475,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/utils/Dom.ts#L185">src/utils/Dom.ts
-									:185</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/utils/Dom.ts#L187">src/utils/Dom.ts
+									:187</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1475,8 +1514,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/utils/Dom.ts#L383">src/utils/Dom.ts
-									:383</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/utils/Dom.ts#L385">src/utils/Dom.ts
+									:385</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1508,8 +1547,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/utils/Dom.ts#L140">src/utils/Dom.ts
-									:140</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/utils/Dom.ts#L142">src/utils/Dom.ts
+									:142</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1532,8 +1571,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/utils/Dom.ts#L274">src/utils/Dom.ts
-									:274</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/utils/Dom.ts#L276">src/utils/Dom.ts
+									:276</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1595,8 +1634,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/utils/Dom.ts#L156">src/utils/Dom.ts
-									:156</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/utils/Dom.ts#L158">src/utils/Dom.ts
+									:158</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1629,8 +1668,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/utils/Dom.ts#L363">src/utils/Dom.ts
-									:363</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/utils/Dom.ts#L365">src/utils/Dom.ts
+									:365</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1672,8 +1711,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/utils/Dom.ts#L531">src/utils/Dom.ts
-									:531</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/utils/Dom.ts#L533">src/utils/Dom.ts
+									:533</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1715,8 +1754,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/utils/Dom.ts#L659">src/utils/Dom.ts
-									:659</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/utils/Dom.ts#L660">src/utils/Dom.ts
+									:660</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">

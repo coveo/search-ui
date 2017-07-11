@@ -55,7 +55,7 @@
 	</div>
 	<div class="bottomHeader">
 		<div id="searchBox">
-			<div class="CoveoSearchbox" data-enable-omnibox="true" data-inline="false" data-enable-wildcards="true" data-enable-search-as-you-type="false" data-enable-reveal-query-suggest-addon="false" data-enable-query-syntax="true" data-enable-field-addon="true"></div>
+			<div class="CoveoSearchbox" data-enable-omnibox="true" data-inline="false" data-enable-wildcards="true" data-enable-search-as-you-type="false" data-enable-query-suggest-addon="false" data-enable-query-syntax="true" data-enable-field-addon="true"></div>
 			<div class="CoveoFieldSuggestions" data-field="@systitle" data-header-title="Suggested topics"></div>
 		</div>
 	</div>
@@ -113,6 +113,9 @@
 							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="radiobutton.html#reset" class="tsd-kind-icon">reset</a>
 							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="radiobutton.html#select" class="tsd-kind-icon">select</a>
+							</li>
 							<li class=" tsd-kind-constructor tsd-parent-kind-class">
 								<a href="radiobutton.html#constructor" class="tsd-kind-icon">constructor</a>
 							</li>
@@ -138,15 +141,16 @@
 							<a href="radiobutton.html">RadioButton</a>
 						</li>
 					</ul>
+					<!-- Has to remain here for the playground to work -->
+					<h1 style="visibility: collapse; font-size:0">Class RadioButton</h1>
 					<h1>Class RadioButton</h1>
 				</div>
 			</div>
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>This class will create a radio button meant to be used inside the <a href="../components/advancedsearch.html">AdvancedSearch</a> component.</p>
+						<p>A radio button widget with standard styling.</p>
 					</div>
-					<p>It can be, more specifically, used for external code using the <a href="advancedsearchevents.html#buildingadvancedsearch">AdvancedSearchEvents.buildingAdvancedSearch</a></p>
 				</div>
 			</section>
 			<div class="preview-container tsd-panel">
@@ -165,6 +169,7 @@
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="radiobutton.html#getradio" class="tsd-kind-icon">get<wbr>Radio</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="radiobutton.html#isselected" class="tsd-kind-icon">is<wbr>Selected</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="radiobutton.html#reset" class="tsd-kind-icon">reset</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="radiobutton.html#select" class="tsd-kind-icon">select</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
@@ -189,16 +194,17 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/AdvancedSearch/Form/RadioButton.ts#L33">src/ui/AdvancedSearch/Form/RadioButton.ts
-									:33</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FormWidgets/RadioButton.ts#L58">src/ui/FormWidgets/RadioButton.ts
+									:58</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Return the element on which the dropdown is bound.</p>
+									<p>Gets the element on which the radio button is bound.</p>
 								</div>
 							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">HTMLElement</span></h4>
+							<p>The radio button element.</p>
 						</li>
 					</ul>
 				</section>
@@ -213,16 +219,17 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/AdvancedSearch/Form/RadioButton.ts#L41">src/ui/AdvancedSearch/Form/RadioButton.ts
-									:41</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FormWidgets/RadioButton.ts#L66">src/ui/FormWidgets/RadioButton.ts
+									:66</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Return the element on which the dropdown is bound.</p>
+									<p>Gets the element on which the radio button is bound.</p>
 								</div>
 							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">HTMLElement</span></h4>
+							<p>The radio button element.</p>
 						</li>
 					</ul>
 				</section>
@@ -237,16 +244,17 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/AdvancedSearch/Form/RadioButton.ts#L69">src/ui/AdvancedSearch/Form/RadioButton.ts
-									:69</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FormWidgets/RadioButton.ts#L94">src/ui/FormWidgets/RadioButton.ts
+									:94</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Get the label element.</p>
+									<p>Gets the radio button [<code>label</code>]{@link RadioButton.label} element.</p>
 								</div>
 							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">HTMLLabelElement</span></h4>
+							<p>The <code>label</code> element.</p>
 						</li>
 					</ul>
 				</section>
@@ -261,16 +269,17 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/AdvancedSearch/Form/RadioButton.ts#L61">src/ui/AdvancedSearch/Form/RadioButton.ts
-									:61</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FormWidgets/RadioButton.ts#L86">src/ui/FormWidgets/RadioButton.ts
+									:86</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Get the input element (the radio button itself).</p>
+									<p>Gets the <code>input</code> element (the radio button itself).</p>
 								</div>
 							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">HTMLInputElement</span></h4>
+							<p>The <code>input</code> element.</p>
 						</li>
 					</ul>
 				</section>
@@ -285,16 +294,17 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/AdvancedSearch/Form/RadioButton.ts#L53">src/ui/AdvancedSearch/Form/RadioButton.ts
-									:53</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FormWidgets/RadioButton.ts#L78">src/ui/FormWidgets/RadioButton.ts
+									:78</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Return true if the radio button is selected.</p>
+									<p>Indicates whether the radio button is selected.</p>
 								</div>
 							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
+							<p><code>true</code> if the radio button is selected, <code>false</code> otherwise.</p>
 						</li>
 					</ul>
 				</section>
@@ -309,15 +319,48 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/AdvancedSearch/Form/RadioButton.ts#L25">src/ui/AdvancedSearch/Form/RadioButton.ts
-									:25</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FormWidgets/RadioButton.ts#L34">src/ui/FormWidgets/RadioButton.ts
+									:34</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Reset the radio button</p>
+									<p>Resets the radio button.</p>
 								</div>
 							</div>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="select" class="tsd-anchor"></a>
+					<h3>select</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">select<span class="tsd-signature-symbol">(</span>triggerChange<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FormWidgets/RadioButton.ts#L46">src/ui/FormWidgets/RadioButton.ts
+									:46</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Select the radio button</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> triggerChange: <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> =&nbsp;true</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>will trigger change event if specified and the radio button is not already selected</p>
+									</div>
+								</li>
+							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
@@ -329,38 +372,45 @@
 					<a name="constructor" class="tsd-anchor"></a>
 					<h3>constructor</h3>
 					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">new <wbr>Radio<wbr>Button<span class="tsd-signature-symbol">(</span>onChange<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">function</span>, label<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="radiobutton.html" class="tsd-signature-type">RadioButton</a></li>
+						<li class="tsd-signature tsd-kind-icon">new <wbr>Radio<wbr>Button<span class="tsd-signature-symbol">(</span>onChange<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">function</span>, label<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, name<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="radiobutton.html" class="tsd-signature-type">RadioButton</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/AdvancedSearch/Form/RadioButton.ts#L10">src/ui/AdvancedSearch/Form/RadioButton.ts
-									:10</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FormWidgets/RadioButton.ts#L17">src/ui/FormWidgets/RadioButton.ts
+									:17</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Create a new Radio button.</p>
+									<p>Creates a new <code>RadioButton</code>.</p>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> onChange: <span class="tsd-signature-type">function</span><span class="tsd-signature-symbol"> =&nbsp;() &#x3D;&gt; {}</span></h5>
+									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> onChange: <span class="tsd-signature-type">function</span><span class="tsd-signature-symbol"> =&nbsp;(radioButton: RadioButton) &#x3D;&gt; {}</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<div class="lead">
-											<p>will be called every time the radio button change it&#39;s value. <code>this</code> will be the <code>RadioButton</code> instance.</p>
+											<p>The function to call when the radio button value changes. This function takes the current
+											<code>RadioButton</code> instance as an argument.</p>
 										</div>
 									</div>
 									<ul class="tsd-parameters">
 										<li class="tsd-parameter-siganture">
 											<ul class="tsd-signatures tsd-kind-type-literal tsd-is-not-exported">
-												<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+												<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>radioButton<span class="tsd-signature-symbol">: </span><a href="radiobutton.html" class="tsd-signature-type">RadioButton</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 											</ul>
 											<ul class="tsd-descriptions">
 												<li class="tsd-description">
+													<h4 class="tsd-parameters-title">Parameters</h4>
+													<ul class="tsd-parameters">
+														<li>
+															<h5>radioButton: <a href="radiobutton.html" class="tsd-signature-type">RadioButton</a></h5>
+														</li>
+													</ul>
 													<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 												</li>
 											</ul>
@@ -371,7 +421,15 @@
 									<h5>label: <span class="tsd-signature-type">string</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<div class="lead">
-											<p>The label for the choice.</p>
+											<p>The label to display next to the radio button.</p>
+										</div>
+									</div>
+								</li>
+								<li>
+									<h5>name: <span class="tsd-signature-type">any</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<div class="lead">
+											<p>The value to set the <code>input</code> HTMLElement <code>name</code> attribute to.</p>
 										</div>
 									</div>
 								</li>
@@ -387,6 +445,13 @@
 					<li>
 						<span class="target">RadioButton</span>
 					</li>
+				</ul>
+			</section>
+			<section class="tsd-panel">
+				<h3>Implements</h3>
+				<ul class="tsd-hierarchy">
+					<li><span class="tsd-signature-type">IFormWidgetWithLabel</span></li>
+					<li><span class="tsd-signature-type">IFormWidgetSelectable</span></li>
 				</ul>
 			</section>
 			<footer class="with-border-bottom">
