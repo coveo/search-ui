@@ -97,7 +97,7 @@ var PrintableUri = (function (_super) {
         element.title = this.result.printableUri;
     };
     PrintableUri.prototype.buildSeparator = function () {
-        var separator = Dom_1.$$('span', { className: 'coveo-rpintable-uri-separator' }, ' > ');
+        var separator = Dom_1.$$('span', { className: 'coveo-printable-uri-separator' }, ' > ');
         return separator.el;
     };
     PrintableUri.prototype.buildHtmlToken = function (name, uri) {

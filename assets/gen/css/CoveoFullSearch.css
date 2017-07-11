@@ -18039,8 +18039,13 @@ a.CoveoResultLink.coveo-selected *,
   color: #263E55;
 }
 
+.CoveoPrintableUri.CoveoResultLink:hover {
+  text-decoration: none;
+  color: #296896;
+}
+
 .CoveoPrintableUri .coveo-printable-uri-separator {
-  font-size: 9px;
+  font-size: 12px;
 }
 
 .CoveoPrintableUri .coveo-hidden {
@@ -18048,27 +18053,26 @@ a.CoveoResultLink.coveo-selected *,
 }
 
 .CoveoPrintableUri .coveo-printable-uri-part:nth-of-type(1) {
-  font-size: 12px;
   -webkit-flex-shrink: 1;
   -moz-flex-shrink: 1;
   flex-shrink: 1;
   -ms-flex-negative: 1;
-  min-width: 50px;
+  min-width: 15px;
 }
 
 .CoveoPrintableUri .coveo-printable-uri-part:last-of-type {
-  font-size: 12px;
   -webkit-flex-shrink: 1;
   -moz-flex-shrink: 1;
   flex-shrink: 1;
   -ms-flex-negative: 1;
-  min-width: 50px;
+  min-width: 15px;
 }
 
 .CoveoPrintableUri .coveo-printable-uri-part {
-  margin: 1px;
+  color: #009DDC;
+  margin: 0px;
   flex: 0 15 auto;
-  min-width: 30px;
+  min-width: 10px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;

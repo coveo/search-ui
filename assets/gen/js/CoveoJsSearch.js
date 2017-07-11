@@ -19665,8 +19665,8 @@ exports.DebugEvents = DebugEvents;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.version = {
-    'lib': '2.2900.14-beta',
-    'product': '2.2900.14-beta',
+    'lib': '2.2900.15-beta',
+    'product': '2.2900.15-beta',
     'supportedApiVersion': 2
 };
 
@@ -50014,7 +50014,7 @@ var PrintableUri = (function (_super) {
         element.title = this.result.printableUri;
     };
     PrintableUri.prototype.buildSeparator = function () {
-        var separator = Dom_1.$$('span', { className: 'coveo-rpintable-uri-separator' }, ' > ');
+        var separator = Dom_1.$$('span', { className: 'coveo-printable-uri-separator' }, ' > ');
         return separator.el;
     };
     PrintableUri.prototype.buildHtmlToken = function (name, uri) {
