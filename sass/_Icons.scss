@@ -69,7 +69,7 @@
   @if $id == 'task-2' {
     $id: 'task2';
   }
-  .coveo-sprites-salesforce-standard-#{$id}, .coveo-sprites-salesforce-standard-#{$id}-small {
+  .coveo-filetype-salesforce-standard-#{$id}, .coveo-filetype-salesforce-standard-#{$id}-small {
     background-color: $color;
     border-radius: $default-border-radius;
   }

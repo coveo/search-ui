@@ -14,11 +14,11 @@ gulp.task('fileTypes', function (done) {
        .pipe(gulp.dest('./bin/image'));
 
   readJsonForAllRepositories(function (json) {
-    var sass = generateSass(json);
+    const sass = generateSass(json);
     utilities.ensureDirectory('bin/sass');
     fs.writeFileSync('bin/sass/_GeneratedIconsNew.scss', sass);
 
-    var str = generateStrings(json);
+    const str = generateStrings(json);
     utilities.ensureDirectory('bin/strings');
     fs.writeFileSync('bin/strings/filetypesNew.json', str);
 
@@ -28,9 +28,9 @@ gulp.task('fileTypes', function (done) {
 
 function readJsonForAllRepositories(callback, path) {
   glob(path, function (err, files) {
-    var json = {};
+    const json = {};
     _.each(files, function (file) {
-      var data = JSON.parse(fs.readFileSync(file));
+      const data = JSON.parse(fs.readFileSync(file));
       json.objecttype = _.extend(json.objecttype || {}, data.objecttype);
       json.filetype = _.extend(json.filetype || {}, data.filetype);
     });
@@ -43,89 +43,90 @@ function generateSass(json) {
   // Be careful to output lowercase object types, since the JS UI helpers do the same,
   // and CSS class names are case sensitive. I do that because I can't expect to
   // match all the time the casing output by the connectors.
-  var sass = '';
-
-  sass += '@import "../node_modules/@salesforce-ux/design-system/scss/design-tokens";\n';
-  
-  sass += '.coveo-filetype-custom { background-image: url(../../image/svg/filetypes/custom.svg); width: 60px; height: 60px; background-size: 60px 60px;\n &.coveo-small {width: 30px; height: 30px;} background-size: 30px 30px;};\n';
-  
-  sass += '@mixin background-color($id) { background-color: map-get($bg-standard-map, $id) };\n';
+  let sass = '';
+  let iconClasses = {};
 
   sass += '@mixin GeneratedIcons() {\n';
   sass += '  .coveo-icon-caption-overlay { display: none; }';
 
-  var defaultIcon = '.coveo-sprites-custom';
+  const defaultIcon = '.coveo-sprites-custom';
 
   sass += '  &.objecttype {\n';
-  sass += '@extend .coveo-filetype-custom;\n'
-  sass +=     'display: inline-block;\n'
-  sass += generateInnerObjecttype(json, false);
+  sass += '    @extend .coveo-filetype-custom;\n'
+  sass += '    display: inline-block;\n'
+  sass += generateInnerObjecttype(json, false, iconClasses);
   sass += '  }\n';
 
   sass += '  &.objecttype.coveo-small {\n';
-  sass += '@extend .coveo-filetype-custom;\n'
+  sass += '    @extend .coveo-filetype-custom;\n'
   sass += '    display: inline-block;\n'
-  sass += generateInnerObjecttype(json, true);
+  sass += generateInnerObjecttype(json, true, iconClasses);
   sass += '  }\n';
 
   sass += '  &.filetype, &.sysfiletype {\n'; // we include the version with a sys prefix for backward compatibility
-  sass += '@extend .coveo-filetype-custom;\n'
+  sass += '    @extend .coveo-filetype-custom;\n'
   sass += '    display: inline-block;\n'
-  sass += generateInnerFiletype(json, false)
+  sass += generateInnerFiletype(json, false, iconClasses)
   sass += '  }\n';
 
   sass += '  &.filetype.coveo-small, &.sysfiletype.coveo-small {\n';
-  sass += '@extend .coveo-filetype-custom;\n'
-  sass += 'display: inline-block;\n'
-  sass += generateInnerFiletype(json, true);
+  sass += '    @extend .coveo-filetype-custom;\n'
+  sass += '    display: inline-block;\n'
+  sass += generateInnerFiletype(json, true, iconClasses);
   sass += '  }\n';
 
   sass += '}\n';
 
-  return sass;
+  let sassIconClasses = '';
+  for (const className in iconClasses) {
+    sassIconClasses += `.${className} ${iconClasses[className]};\n`;
+  }
+
+  return sassIconClasses + sass;
 }
-function generateInnerObjecttype(json, small) {
+function generateInnerObjecttype(json, small, iconClasses) {
   let ret = '';
   _.each(_.keys(json.objecttype), function (objecttype) {
     const svgName = json.objecttype[objecttype].icon;
-    let backgroundColor = '';
-    if (svgName.indexOf('salesforce') != -1) {
-      let basename = svgName.split('-').slice(2).join('-');
-      backgroundColor = '@include background-color(\'' + basename + '\'); border-radius: $default-border-radius; ';
+    let className = 'coveo-filetype-' + svgName;
+    className += small ? '-small' : '';
+    let width, height;
+    ({width, height} = getSVGSize(svgName, small));
+    if (iconClasses[className] == undefined) {
+      iconClasses[className] = ` { width: ${width}px; height: ${height}px; background-size: ${width}px ${height}px; background-image: url(../../image/svg/filetypes/${svgName}.svg); }`;
     }
+
     ensureImageIsValid(svgName, objecttype);
     // This is a special case that we still need to support
     // Old templates in salesforce are using something like this
     // <div class="coveo-icon objecttype <%-raw.objecttype%> "></div>
     // instead of the template helper : <%= fromFileTypeToIcon() %>
     ret += '    &.' + removeSpace(capitalizeFirstLetter(objecttype)) + " , ";
-    let width, height;
-    ({width, height} = getSVGSize(svgName, small));
     ret += '    &.' + objecttype.toLowerCase() +
-      ` { ${backgroundColor}width: ${width}px; height: ${height}px; background-size: ${width}px ${height}px; background-image: url(../../image/svg/filetypes/${svgName}.svg);` +
-      generateShouldDisplayLabel(json.objecttype[objecttype].shouldDisplayLabel) +
-      ' }\n';
+        `{ @extend .${className};` +
+        generateShouldDisplayLabel(json.objecttype[objecttype].shouldDisplayLabel) +
+        ' }\n';
   });
   return ret;
 }
 
-function generateInnerFiletype(json, small) {
+function generateInnerFiletype(json, small, iconClasses) {
    let ret = '';
   _.each(_.keys(json.filetype), function (filetype) {
     const svgName = json.filetype[filetype].icon;
-    let backgroundColor = '';
-    if (svgName.indexOf('salesforce') != -1) {
-      let basename = svgName.split('-').slice(2).join('-');
-      backgroundColor = '@include background-color(\'' + basename + '\'); border-radius: $default-border-radius; ';
-    }
+    let className = 'coveo-filetype-' + svgName;
+    className += small ? '-small' : '';
     ensureImageIsValid(svgName, filetype);
     // Be careful to output lowercase filetypes, since the JS UI helpers do the same,
     // and CSS class names are case sensitive. I do that because I can't expect to
     // match all the time the casing output by the connectors.
     let width, height;
     ({width, height} = getSVGSize(svgName,small));
-    ret += '    &.' + removeSpace(filetype.toLowerCase()) +
-      ` { ${backgroundColor}width: ${width}px; height: ${height}px; background-size: ${width}px ${height}px; background-image: url(../../image/svg/filetypes/${svgName}.svg);` +
+    if (iconClasses[className] == undefined) {
+      iconClasses[className] = ` { width: ${width}px; height: ${height}px; background-size: ${width}px ${height}px; background-image: url(../../image/svg/filetypes/${svgName}.svg); }`;
+    }
+    ret += ' &.' + removeSpace(filetype.toLowerCase()) +
+      `{ @extend .${className};` +
       generateShouldDisplayLabel(json.filetype[filetype].shouldDisplayLabel) +
       '}\n';
 
@@ -152,7 +153,7 @@ function getSVGSize(svgName, small) {
 }
 
 function generateStrings(json) {
-  var out = {};
+  const out = {};
 
   // Be careful to output lowercase filetypes and objecttypes, since the JS UI
   // helpers do the same, and string lookups are case sensitive. I do that because
@@ -171,7 +172,7 @@ function generateStrings(json) {
 
 function generateShouldDisplayLabel(shouldDisplayLabel) {
   if (shouldDisplayLabel) {
-    return '    .coveo-icon-caption-overlay { display: block; }'
+    return ' .coveo-icon-caption-overlay { display: block; }'
   } else {
     return '';
   }
