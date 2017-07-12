@@ -251,7 +251,7 @@ export function mockSearchEndpoint(): SearchEndpoint {
   m.getViewAsDatastreamUri.and.returnValue('http://datastream.uri');
   m.options = {
     queryStringArguments: {
-      organizationId : 'foobar'
+      organizationId: 'foobar'
     }
   };
   return m;

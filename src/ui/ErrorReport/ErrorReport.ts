@@ -65,7 +65,7 @@ export class ErrorReport extends Component {
     this.element.appendChild(this.container.el);
     this.container.append(title.el);
 
-    if(this.options.showDetailedError) {
+    if (this.options.showDetailedError) {
       this.message = $$('div', {
         className: 'coveo-error-report-message'
       });
@@ -115,7 +115,7 @@ export class ErrorReport extends Component {
   private setErrorTitle(errorName?: string, helpSuggestion?: string): void {
     const errorTitle = {
       h1: errorName ? l(errorName) : l('OopsError'),
-      h3: helpSuggestion? l(helpSuggestion) :l('ProblemPersists')
+      h3: helpSuggestion ? l(helpSuggestion) : l('ProblemPersists')
     };
 
     const h1 = $$(this.element).find('h1');
@@ -163,7 +163,7 @@ export class ErrorReport extends Component {
     Assert.exists(data);
     Assert.exists(data.error);
 
-    if(data.endpoint.options.queryStringArguments.organizationId) {
+    if (data.endpoint.options.queryStringArguments.organizationId) {
       this.organizationId = data.endpoint.options.queryStringArguments.organizationId;
     } else {
       this.organizationId = 'Coveo organization';
@@ -174,8 +174,8 @@ export class ErrorReport extends Component {
     if ((<MissingAuthenticationError>data.error).isMissingAuthentication) {
       return;
     }
-    
-    switch(data.error.name) {
+
+    switch (data.error.name) {
       case 'NoEndpointsException':
         this.options.showDetailedError = false;
         this.buildEndpointErrorElements('http://www.coveo.com/go?dest=cloudhelp&lcid=9&context=257');
@@ -239,7 +239,7 @@ export class ErrorReport extends Component {
     const defaultHelpLink = 'http://www.coveo.com/go?dest=cloudhelp&lcid=9&context=254';
 
     const link = $$('a', {
-      href: helpLink? helpLink: defaultHelpLink,
+      href: helpLink ? helpLink : defaultHelpLink,
       className: 'coveo-error-report-help-link'
     });
 
