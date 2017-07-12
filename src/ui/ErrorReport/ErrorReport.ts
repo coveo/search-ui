@@ -193,8 +193,8 @@ export class ErrorReport extends Component {
         this.setErrorTitle();
     }
 
-    this.message.empty();
     if (this.options.showDetailedError) {
+      this.message.empty();
       const moreInfo = $$('span', {
         className: 'coveo-error-report-more-info'
       }, l('MoreInfo'));
