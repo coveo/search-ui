@@ -7227,5 +7227,28 @@
   "FiltersInAdvancedSearch": {
     "en": "Filters in Advanced Search",
     "fr": "Filtres pour la Recherche Avancée"
-  }
+  },
+  "NoEndpoints": {
+    "en": "has no registered endpoints.",
+    "fr": "n'a pas de point de terminaison unique."
+  },
+  "InvalidToken": {
+    "en": "The token used is invalid.",
+    "fr": "Le jeton d'identification est invalide."
+  },
+  "AddSources": {
+    "en": "You will need to add sources in your index, or wait for the created sources to finish indexing.",
+    "fr": "Vous devrez ajouter des source à votre index, ou attendre la fin de l'indexation des sources créées."
+  },
+  "TryAgain": {
+    "en": "Please try again.",
+    "fr": "Veuillez essayer de nouveau."
+  },
+  "CoveoOnlineHelp": {
+    "en": "Coveo Online Help",
+    "fr": "Aide en ligne Coveo"
+  },
+  "CannotAccess": {
+  "en": "could not be accessed."
+}
 }

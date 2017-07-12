@@ -248,7 +248,11 @@ export function mockSearchEndpoint(): SearchEndpoint {
   m.extensions.and.returnValue(new Promise((resolve, reject) => {
   }));
   m.getViewAsDatastreamUri.and.returnValue('http://datastream.uri');
-  m.options = {};
+  m.options = {
+    queryStringArguments: {
+      organizationId : 'foobar'
+    }
+  };
   return m;
 }
 

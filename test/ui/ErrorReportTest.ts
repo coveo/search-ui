@@ -32,11 +32,12 @@ export function ErrorReportTest() {
             }
           })
         });
-        expect($$(test.cmp.element).text()).not.toEqual(jasmine.stringMatching('More Information'));
+        expect($$(test.cmp.element).find('.coveo-error-report-message')).toBe(null);
 
         test = Mock.optionsComponentSetup<ErrorReport, IErrorReportOptions>(ErrorReport, {
           showDetailedError: true
         });
+
         Simulate.query(test.env, {
           error: new QueryError({
             statusCode: 401,
@@ -46,7 +47,7 @@ export function ErrorReportTest() {
             }
           })
         });
-        expect($$(test.cmp.element).text()).toEqual(jasmine.stringMatching('More Information'));
+        expect($$(test.cmp.element).find('.coveo-error-report-message')).not.toBe(null);
       });
     });
 
@@ -64,7 +65,7 @@ export function ErrorReportTest() {
           }
         })
       });
-      expect($$(test.cmp.element).text()).toEqual(jasmine.stringMatching('Something went wrong.'));
+      expect(test.cmp.element.style.display).toBe('block');
     });
 
     it('should send analytics event on retry', function () {
