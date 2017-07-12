@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <title>Confluence</title>
+    <meta about="Search Confluence content." />
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, height=device-height" >
+    <script src="js/CoveoJsSearch.js"></script>
+    <script src="js/templates/templatesNew.js"></script>
+    <link rel="stylesheet" href="css/CoveoFullSearchNewDesign.css" />
+    <script>
+      document.addEventListener('DOMContentLoaded', function(){
+        Coveo.SearchEndpoint.configureSampleEndpointV2();
+        Coveo.init(document.body);
+      })
+    </script>
+  </head>
+
+  <body id="search" class='CoveoSearchInterface' data-enable-history="true" data-design="new">
+    <div class="CoveoFolding" data-field="@confparentitemid" data-parent-field="@confitemid" data-child-field="@confparentitemid" data-expand-expression="@confitemtype==attachment" data-rearrange="date ascending" data-tab="Confluence" data-range="5"></div>
+    <div class="coveo-tab-section">
+      <a class="CoveoTab" data-id="Confluence" data-caption="Confluence" data-expression="@connectortype==Confluence2Crawler AND NOT @documenttype==Space"></a>
+    </div>
+    <div class='coveo-search-section'>
+      <div class="CoveoSettings"></div>
+      <div class="CoveoSearchbox" data-enable-omnibox="true"></div>
+    </div>
+    <div class="coveo-main-section">
+      <div class="coveo-facet-column">
+        <div class="CoveoFacet" data-title="Type" data-field="@confdocumenttype" data-tab="Confluence"></div>
+        <div class="CoveoFacet" data-title="Space" data-field="@confspacename" data-tab="Confluence"></div>
+        <div class="CoveoFacet" data-title="File Type" data-field="@filetype" data-tab="Confluence"></div>
+        <div class="CoveoFacet" data-title="Author" data-field="@author" data-tab="Confluence"></div>
+      </div>
+      <div class="coveo-results-column">
+        <div class="CoveoShareQuery"></div>
+        <div class="CoveoExportToExcel"></div>
+        <div class="CoveoPreferencesPanel">
+          <div class="CoveoResultsPreferences"></div>
+          <div class="CoveoResultsFiltersPreferences"></div>
+        </div>
+        <div class="CoveoBreadcrumb"></div>
+        <div class="coveo-results-header">
+          <div class="coveo-summary-section">
+            <span class="CoveoQuerySummary"></span>
+            <span class="CoveoQueryDuration"></span>
+          </div>
+          <div class="coveo-result-layout-section">
+            <span class="CoveoResultLayout"></span>
+          </div>
+          <div class="coveo-sort-section">
+            <span class="CoveoSort" data-sort-criteria="relevancy" data-caption="Relevance"></span>
+            <span class="CoveoSort" data-sort-criteria="date descending,date ascending" data-caption="Date"></span>
+          </div>
+        </div>
+        <div class="CoveoHiddenQuery"></div>
+        <div class="CoveoDidYouMean"></div>
+        <div class="CoveoErrorReport"></div>
+        <div class="CoveoResultList" data-layout="list" data-wait-animation="fade" data-auto-select-fields-to-include="true"></div>
+        <div class="CoveoResultList" data-layout="card" data-wait-animation="fade" data-auto-select-fields-to-include="true"></div>
+        <div class="CoveoPager"></div>
+        <div class="CoveoLogo"></div>
+        <div class="CoveoResultsPerPage"></div>
+      </div>
+    </div>
+  </body>
+</html>

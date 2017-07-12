@@ -86,14 +86,6 @@
   color: $color-greyish-teal-blue;
 }
 
-.coveo-facet-settings-section-direction-descending {
-  cursor: pointer;
-  &.coveo-facet-settings-disabled {
-    cursor: inherit;
-  }
-  @include iconWithHoverState('coveo-facet-settings-section-direction-descending-svg', 'none', 'coveo-facet-settings-disabled');
-}
-
 .coveo-facet-settings-section-save-state {
   border-top: $default-border;
   cursor: pointer;
@@ -104,12 +96,6 @@
   width: 16px;
   height: 16px;
   color: $color-greyish-teal-blue;
-}
-
-.coveo-facet-settings-section-clear-state {
-  border-top: $default-border;
-  cursor: pointer;
-  @include iconWithHoverState('.coveo-sprites-dropdown-less', 'none', 'coveo-facet-settings-disabled');
 }
 
 .coveo-facet-settings-section-clear-state-svg {

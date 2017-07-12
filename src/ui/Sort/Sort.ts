@@ -113,9 +113,9 @@ export class Sort extends Component {
 
     if (this.isToggle()) {
       this.icon = $$('span', { className: 'coveo-icon' }).el;
-      const iconAscending = $$('span', { className: 'coveo-sort-icon-ascending' }, SVGIcons.arrowUp);
+      const iconAscending = $$('span', { className: 'coveo-sort-icon-ascending' }, SVGIcons.icons.arrowUp);
       SVGDom.addClassToSVGInContainer(iconAscending.el, 'coveo-sort-icon-ascending-svg');
-      const iconDescending = $$('span', { className: 'coveo-sort-icon-descending' }, SVGIcons.arrowDown);
+      const iconDescending = $$('span', { className: 'coveo-sort-icon-descending' }, SVGIcons.icons.arrowDown);
       SVGDom.addClassToSVGInContainer(iconDescending.el, 'coveo-sort-icon-descending-svg');
       this.icon.appendChild(iconAscending.el);
       this.icon.appendChild(iconDescending.el);

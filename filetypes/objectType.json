@@ -1,7 +1,7 @@
 {
   "objecttype": {
     "people": {
-      "icon": "user",
+      "icon": "salesforce-standard-user",
       "captions": {
         "en": "User",
         "fr": "Utilisateur",
@@ -57,7 +57,7 @@
       }
     },
     "feed": {
-      "icon": "list",
+      "icon": "salesforce-standard-feed",
       "captions": {
         "en": "RSS Feed",
         "fr": "Flux RSS",
@@ -85,7 +85,7 @@
       }
     },
     "thread": {
-      "icon": "list",
+      "icon": "salesforce-standard-feedback",
       "captions": {
         "en": "Thread",
         "fr": "Fil de conversation",
@@ -113,7 +113,7 @@
       }
     },
     "file": {
-      "icon": "file",
+      "icon": "salesforce-standard-file",
       "captions": {
         "en": "File",
         "fr": "Fichier",
@@ -225,7 +225,7 @@
       }
     },
     "annotation": {
-      "icon": "file",
+      "icon": "salesforce-standard-file",
       "captions": {
         "en": "Note",
         "fr": "Note",
@@ -253,7 +253,7 @@
       }
     },
     "campaign": {
-      "icon": "calendar",
+      "icon": "salesforce-standard-campaign",
       "captions": {
         "en": "Campaign",
         "fr": "Campagne",
@@ -393,7 +393,7 @@
       }
     },
     "email": {
-      "icon": "mail",
+      "icon": "salesforce-standard-email",
       "captions": {
         "en": "Email",
         "fr": "Email",
@@ -533,7 +533,7 @@
       }
     },
     "list": {
-      "icon": "list",
+      "icon": "salesforce-standard-related-list",
       "captions": {
         "en": "Marketing List",
         "fr": "Liste marketing",
@@ -619,7 +619,7 @@
       "shouldDisplayLabel": true
     },
     "user": {
-      "icon": "user",
+      "icon": "salesforce-standard-user",
       "captions": {
         "en": "User",
         "fr": "Utilisateur",
@@ -647,7 +647,7 @@
       }
     },
     "attachment": {
-      "icon": "attachment",
+      "icon": "salesforce-doctype-attachment",
       "captions": {
         "en": "Attachment",
         "fr": "Pièce jointe",
@@ -789,8 +789,8 @@
     "feedcomment": {
       "icon": "salesforce-standard-post",
       "captions": {
-        "en": "Chatter",
-        "fr": "Chatter",
+        "en": "Comment",
+        "fr": "Commentaire",
         "cs": "Chatter",
         "da": "Chatter",
         "de": "Chatter",
@@ -843,7 +843,7 @@
       }
     },
     "product": {
-      "icon": "product",
+      "icon": "salesforce-standard-product",
       "captions": {
         "en": "Product",
         "fr": "Produit",
@@ -955,7 +955,7 @@
       }
     },
     "salesliterature": {
-      "icon": "kb",
+      "icon": "salesforce-standard-article",
       "captions": {
         "en": "Sales Literature",
         "fr": "Documentation commerciale",
@@ -1042,7 +1042,7 @@
       "shouldDisplayLabel": true
     },
     "socialprofile": {
-      "icon": "user",
+      "icon": "salesforce-standard-user",
       "captions": {
         "en": "Social Profile",
         "fr": "Profil social",
@@ -1073,8 +1073,8 @@
     "kbdocumentation": {
       "icon": "salesforce-standard-article",
       "captions": {
-        "en": "Documentation",
-        "fr": "Documentation",
+        "en": "Knowledge Document",
+        "fr": "Article de Documentation",
         "cs": "Dokumentace",
         "da": "Dokumentation",
         "de": "Dokumentation",
@@ -1102,8 +1102,8 @@
     "kbtechnicalarticle": {
       "icon": "salesforce-standard-article",
       "captions": {
-        "en": "Documentation",
-        "fr": "Documentation",
+        "en": "Technical Documentation",
+        "fr": "Documentation Technique",
         "cs": "Dokumentace",
         "da": "Dokumentation",
         "de": "Dokumentation",
@@ -1243,7 +1243,7 @@
       }
     },
     "kbarticlecomment": {
-      "icon": "list",
+      "icon": "salesforce-standard-feedback",
       "captions": {
         "en": "Article Comment",
         "fr": "Commentaire d'article",

@@ -12,7 +12,7 @@
     <script src="js/templates/templates.js"></script>
     <script>
       document.addEventListener('DOMContentLoaded', function(){
-        Coveo.SearchEndpoint.configureSampleEndpoint();
+        Coveo.SearchEndpoint.configureSampleEndpointV2();
         Coveo.init(document.body);
       })
     </script>
@@ -20,7 +20,7 @@
 
   <body id="search" class='CoveoSearchInterface' data-enable-history="true">
     <div class="coveo-tab-section">
-      <a class="CoveoTab" data-id="GoogleDrive" data-caption="Google Drive" data-expression="@connectortype==GoogleDriveCrawler"></a>
+      <a class="CoveoTab" data-id="GoogleDrive" data-caption="Google Drive" data-expression="@connectortype==GoogleDriveCrawler AND @documenttype==(File,Folder)"></a>
     </div>
     <div class='coveo-search-section'>
       <div class="CoveoSettings"></div>

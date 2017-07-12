@@ -21,6 +21,8 @@ import { exportGlobally } from '../../GlobalExports';
 import { l } from '../../strings/Strings';
 
 import 'styling/_ResultLayout';
+import { SVGIcons } from '../../utils/SVGIcons';
+import { SVGDom } from '../../utils/SVGDom';
 
 interface IActiveLayouts {
   button: {
@@ -288,7 +290,9 @@ export class ResultLayout extends Component {
       className: 'coveo-result-layout-selector',
       tabindex: 0
     }, $$('span', { className: 'coveo-result-layout-selector-caption' }, l(layout)));
-    btn.prepend($$('span', { className: `coveo-icon coveo-sprites-${layout}-layout` }).el);
+    const icon = $$('span', { className: `coveo-icon coveo-${layout}-layout-icon` }, SVGIcons.icons[`${layout}Layout`]);
+    SVGDom.addClassToSVGInContainer(icon.el, `coveo-${layout}-svg`);
+    btn.prepend(icon.el);
     if (layout === this.currentLayout) {
       btn.addClass('coveo-selected');
     }

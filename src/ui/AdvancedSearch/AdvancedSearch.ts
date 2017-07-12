@@ -166,7 +166,7 @@ export class AdvancedSearch extends Component {
       title.text(l('FiltersInAdvancedSearch') + ' : ');
       const clear = $$('span', {
         className: 'coveo-advanced-search-breadcrumb-clear'
-      }, SVGIcons.checkboxHookExclusionMore);
+      }, SVGIcons.icons.checkboxHookExclusionMore);
       SVGDom.addClassToSVGInContainer(clear.el, 'coveo-advanced-search-breadcrumb-clear-svg');
       clear.on('click', () => {
         this.handleClearBreadcrumb();
@@ -203,7 +203,7 @@ export class AdvancedSearch extends Component {
       className: 'coveo-advanced-search',
       onOpen: () => this.open(),
       onClose: () => this.close(),
-      svgIcon: SVGIcons.dropdownPreferences,
+      svgIcon: SVGIcons.icons.dropdownPreferences,
       svgIconClassName: 'coveo-advanced-search-svg'
     });
   }

@@ -29,10 +29,10 @@
       }
     },
     "spsite": {
-      "icon": "webpage",
+      "icon": "salesforce-doctype-link",
       "captions": {
-        "en": "Site",
-        "fr": "Site",
+        "en": "SharePoint Site",
+        "fr": "Site SharePoint",
         "cs": "Web",
         "da": "Websted",
         "de": "Site",
@@ -309,7 +309,7 @@
       }
     },
     "spdocumentlibrarylist": {
-      "icon": "folder",
+      "icon": "salesforce-standard-folder",
       "captions": {
         "en": "Document Library",
         "fr": "Bibliothèque de documents",
@@ -2213,7 +2213,7 @@
       }
     },
     "spwikipagelibrarylist": {
-      "icon": "folder",
+      "icon": "salesforce-standard-related-list",
       "captions": {
         "en": "Wiki Page Library",
         "fr": "Bibliothèque de pages Wiki",

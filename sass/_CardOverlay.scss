@@ -87,3 +87,13 @@
   min-height: 180px;
 }
 
+.coveo-open-card-overlay {
+  display: inline-block;
+  margin-bottom: 4px;
+}
+
+.coveo-open-card-overlay-svg {
+  width: 10px;
+  height: 6px;
+  color: $color-blueish-gray;
+}

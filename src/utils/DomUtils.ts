@@ -34,7 +34,7 @@ export class DomUtils {
     let loadDotClass = 'coveo-loading-dot';
     let dom = document.createElement('div');
     dom.className = 'coveo-first-loading-animation';
-    dom.innerHTML = `<div class='coveo-logo'>${SVGIcons.coveoLogo}</div>
+    dom.innerHTML = `<div class='coveo-logo'>${SVGIcons.icons.coveoLogo}</div>
     <div class='coveo-loading-container'>
       <div class='${loadDotClass}'></div>
       <div class='${loadDotClass}'></div>
