@@ -573,8 +573,8 @@ export class ComponentOptions {
   }
 
   static buildCustomOption<T>(converter: (value: string) => T, optionArgs?: IComponentOptions<T>): T {
-    let loadOption: IComponentOptionsLoadOption<T> = (element: HTMLElement, name: string, option: IComponentOptionsOption<T>) => {
-      let stringvalue = ComponentOptions.loadStringOption(element, name, option);
+    const loadOption: IComponentOptionsLoadOption<T> = (element: HTMLElement, name: string, option: IComponentOptionsOption<T>) => {
+      const stringvalue = ComponentOptions.loadStringOption(element, name, option);
       if (!Utils.isNullOrEmptyString(stringvalue)) {
         return converter(stringvalue);
       }
@@ -587,37 +587,37 @@ export class ComponentOptions {
   }
 
   static buildCustomListOption<T>(converter: (value: string[]) => T, optionArgs?: IComponentOptionsCustomListOptionArgs<T>): T {
-    let loadOption: IComponentOptionsLoadOption<T> = (element: HTMLElement, name: string, option: any) => {
-      let stringvalue = ComponentOptions.loadListOption(element, name, option);
+    const loadOption: IComponentOptionsLoadOption<T> = (element: HTMLElement, name: string, option: any) => {
+      const stringvalue = ComponentOptions.loadListOption(element, name, option);
       return converter(stringvalue);
     };
     return ComponentOptions.buildOption<any>(ComponentOptionsType.LIST, loadOption, optionArgs);
   }
 
   static buildObjectOption(optionArgs?: IComponentOptionsObjectOptionArgs): any {
-    let loadOption: IComponentOptionsLoadOption<{
+    const loadOption: IComponentOptionsLoadOption<{
       [key: string]: any
     }> = (element: HTMLElement, name: string, option: IComponentOptionsOption<any>) => {
-      let keys = _.keys(optionArgs.subOptions);
-      let scopedOptions: {
+      const keys = _.keys(optionArgs.subOptions);
+      const scopedOptions: {
         [name: string]: IComponentOptionsOption<any>
       } = {};
-      let scopedValues: {
+      const scopedValues: {
         [name: string]: any
       } = {};
       for (let i = 0; i < keys.length; i++) {
-        let key = keys[i];
-        let scopedkey = ComponentOptions.mergeCamelCase(name, key);
+        const key = keys[i];
+        const scopedkey = ComponentOptions.mergeCamelCase(name, key);
         scopedOptions[scopedkey] = optionArgs.subOptions[key];
       }
       ComponentOptions.initOptions(element, scopedOptions, scopedValues);
-      let resultValues: {
+      const resultValues: {
         [name: string]: any
       } = {};
       let resultFound = false;
       for (let i = 0; i < keys.length; i++) {
-        let key = keys[i];
-        let scopedkey = ComponentOptions.mergeCamelCase(name, key);
+        const key = keys[i];
+        const scopedkey = ComponentOptions.mergeCamelCase(name, key);
         if (scopedValues[scopedkey] != null) {
           resultValues[key] = scopedValues[scopedkey];
           resultFound = true;
@@ -631,7 +631,7 @@ export class ComponentOptions {
   }
 
   static buildOption<T>(type: ComponentOptionsType, load: IComponentOptionsLoadOption<T>, optionArg: IComponentOptions<T> = {}): T {
-    let option: IComponentOptionsOption<T> = <any>optionArg;
+    const option: IComponentOptionsOption<T> = <any>optionArg;
     option.type = type;
     option.load = load;
     return <any>option;
@@ -672,16 +672,16 @@ export class ComponentOptions {
   static initOptions(element: HTMLElement, options: {
     [name: string]: IComponentOptionsOption<any>
   }, values?: any, componentID?: any) {
-    let logger = new Logger(this);
+    const logger = new Logger(this);
     if (values == null) {
       values = {};
     }
-    let names: string[] = _.keys(options);
+    const names: string[] = _.keys(options);
     for (let i = 0; i < names.length; i++) {
-      let name = names[i];
-      let optionDefinition = options[name];
+      const name = names[i];
+      const optionDefinition = options[name];
       let value: any;
-      let loadFromAttribute = optionDefinition.load;
+      const loadFromAttribute = optionDefinition.load;
 
       if (loadFromAttribute != null) {
         value = loadFromAttribute(element, name, optionDefinition);
@@ -709,7 +709,7 @@ export class ComponentOptions {
       }
       if (value != null) {
         if (optionDefinition.validator) {
-          let isValid = optionDefinition.validator(value);
+          const isValid = optionDefinition.validator(value);
           if (!isValid) {
             logger.warn(`${componentID} .${name} has invalid value: ${value}`);
             if (optionDefinition.required) {
@@ -733,8 +733,8 @@ export class ComponentOptions {
     }
 
     for (let i = 0; i < names.length; i++) {
-      let name = names[i];
-      let optionDefinition = options[name];
+      const name = names[i];
+      const optionDefinition = options[name];
       if (optionDefinition.postProcessing) {
         values[name] = optionDefinition.postProcessing(values[name], values);
       }
@@ -748,22 +748,21 @@ export class ComponentOptions {
 
   static loadIconOption(element: HTMLElement, name: string, option: IComponentOptions<any>): string {
     const svgIconName = ComponentOptions.loadStringOption(element, name, option);
-    Assert.check(!Utils.isUndefined(SVGIcons.icons[svgIconName]), svgIconName + ' is not a valid icon');
     return SVGIcons.icons[svgIconName];
   }
 
   static loadFieldOption(element: HTMLElement, name: string, option: IComponentOptionsOption<any>): string {
-    let field = ComponentOptions.loadStringOption(element, name, option);
+    const field = ComponentOptions.loadStringOption(element, name, option);
     Assert.check(!Utils.isNonEmptyString(field) || Utils.isCoveoField(field), field + ' is not a valid field');
     return field;
   }
 
   static loadFieldsOption(element: HTMLElement, name: string, option: IComponentOptionsOption<any>): string[] {
-    let fieldsAttr = ComponentOptions.loadStringOption(element, name, option);
+    const fieldsAttr = ComponentOptions.loadStringOption(element, name, option);
     if (fieldsAttr == null) {
       return null;
     }
-    let fields = fieldsAttr.split(fieldsSeperator);
+    const fields = fieldsAttr.split(fieldsSeperator);
     _.each(fields, (field: string) => {
       Assert.check(Utils.isCoveoField(field), field + ' is not a valid field');
     });
@@ -771,17 +770,17 @@ export class ComponentOptions {
   }
 
   static loadLocalizedStringOption(element: HTMLElement, name: string, option: IComponentOptionsOption<any>): string {
-    let attributeValue = ComponentOptions.loadStringOption(element, name, option);
-    let locale: string = String['locale'] || String['defaultLocale'];
+    const attributeValue = ComponentOptions.loadStringOption(element, name, option);
+    const locale: string = String['locale'] || String['defaultLocale'];
     if (locale != null && attributeValue != null) {
-      let localeParts = locale.toLowerCase().split('-');
-      let locales = _.map(localeParts, (part, i) => localeParts.slice(0, i + 1).join('-'));
-      let localizers = attributeValue.match(localizer);
+      const localeParts = locale.toLowerCase().split('-');
+      const locales = _.map(localeParts, (part, i) => localeParts.slice(0, i + 1).join('-'));
+      const localizers = attributeValue.match(localizer);
       if (localizers != null) {
         for (let i = 0; i < localizers.length; i++) {
-          let groups = localizer.exec(localizers[i]);
+          const groups = localizer.exec(localizers[i]);
           if (groups != null) {
-            let lang = groups[1].toLowerCase();
+            const lang = groups[1].toLowerCase();
             if (_.contains(locales, lang)) {
               return groups[2].replace(/^\s+|\s+$/g, '');
             }
@@ -794,7 +793,7 @@ export class ComponentOptions {
   }
 
   static loadNumberOption(element: HTMLElement, name: string, option: IComponentOptionsNumberOption): number {
-    let attributeValue = ComponentOptions.loadStringOption(element, name, option);
+    const attributeValue = ComponentOptions.loadStringOption(element, name, option);
     if (attributeValue == null) {
       return null;
     }
@@ -815,13 +814,13 @@ export class ComponentOptions {
   }
 
   static loadListOption(element: HTMLElement, name: string, option: IComponentOptionsListOption): string[] {
-    let separator = option.separator || /\s*,\s*/;
-    let attributeValue = ComponentOptions.loadStringOption(element, name, option);
+    const separator = option.separator || /\s*,\s*/;
+    const attributeValue = ComponentOptions.loadStringOption(element, name, option);
     return Utils.isNonEmptyString(attributeValue) ? attributeValue.split(separator) : null;
   }
 
   static loadEnumOption(element: HTMLElement, name: string, option: IComponentOptionsOption<any>, _enum: any): number {
-    let enumAsString = ComponentOptions.loadStringOption(element, name, option);
+    const enumAsString = ComponentOptions.loadStringOption(element, name, option);
     return enumAsString != null ? _enum[enumAsString] : null;
   }
 
@@ -839,15 +838,15 @@ export class ComponentOptions {
   }
 
   static loadSelectorOption(element: HTMLElement, name: string, option: IComponentOptionsOption<any>, doc: Document = document): HTMLElement {
-    let attributeValue = ComponentOptions.loadStringOption(element, name, option);
+    const attributeValue = ComponentOptions.loadStringOption(element, name, option);
     return Utils.isNonEmptyString(attributeValue) ? <HTMLElement>doc.querySelector(attributeValue) : null;
   }
 
   static loadChildHtmlElementOption(element: HTMLElement, name: string, option: IComponentOptionsChildHtmlElementOption, doc: Document = document): HTMLElement {
     let htmlElement: HTMLElement;
     // Attribute: selector
-    let selectorAttr = option.selectorAttr || ComponentOptions.attrNameFromName(name, option) + '-selector';
-    let selector = element.getAttribute(selectorAttr) || ComponentOptions.getAttributeFromAlias(element, option);
+    const selectorAttr = option.selectorAttr || ComponentOptions.attrNameFromName(name, option) + '-selector';
+    const selector = element.getAttribute(selectorAttr) || ComponentOptions.getAttributeFromAlias(element, option);
     if (selector != null) {
       htmlElement = <HTMLElement>doc.body.querySelector(selector);
     }
@@ -880,18 +879,18 @@ export class ComponentOptions {
     let template: Template;
 
     // Attribute: template selector
-    let selectorAttr = option.selectorAttr || ComponentOptions.attrNameFromName(name, option) + '-selector';
-    let selector = element.getAttribute(selectorAttr) || ComponentOptions.getAttributeFromAlias(element, option);
+    const selectorAttr = option.selectorAttr || ComponentOptions.attrNameFromName(name, option) + '-selector';
+    const selector = element.getAttribute(selectorAttr) || ComponentOptions.getAttributeFromAlias(element, option);
     if (selector != null) {
-      let templateElement = <HTMLElement>doc.querySelector(selector);
+      const templateElement = <HTMLElement>doc.querySelector(selector);
       if (templateElement != null) {
         template = ComponentOptions.createResultTemplateFromElement(templateElement);
       }
     }
     // Attribute: template id
     if (template == null) {
-      let idAttr = option.idAttr || ComponentOptions.attrNameFromName(name, option) + '-id';
-      let id = element.getAttribute(idAttr) || ComponentOptions.getAttributeFromAlias(element, option);
+      const idAttr = option.idAttr || ComponentOptions.attrNameFromName(name, option) + '-id';
+      const id = element.getAttribute(idAttr) || ComponentOptions.getAttributeFromAlias(element, option);
       if (id != null) {
         template = ComponentOptions.loadResultTemplateFromId(id);
       }
@@ -912,7 +911,7 @@ export class ComponentOptions {
   }
 
   static loadChildrenResultTemplateFromSelector(element: HTMLElement, selector: string): Template {
-    let foundElements = ComponentOptions.loadChildrenHtmlElementFromSelector(element, selector);
+    const foundElements = ComponentOptions.loadChildrenHtmlElementFromSelector(element, selector);
     if (foundElements.length > 0) {
       return new TemplateList(_.compact(_.map(foundElements, (element) => ComponentOptions.createResultTemplateFromElement(element))));
     }
@@ -953,8 +952,8 @@ export class ComponentOptions {
 
   static createResultTemplateFromElement(element: HTMLElement): Template {
     Assert.exists(element);
-    let type = element.getAttribute('type');
-    let mimeTypes = 'You must specify the type of template. Valid values are:' +
+    const type = element.getAttribute('type');
+    const mimeTypes = 'You must specify the type of template. Valid values are:' +
       ' ' + UnderscoreTemplate.mimeTypes.toString() +
       ' ' + HtmlTemplate.mimeTypes.toString();
     Assert.check(Utils.isNonEmptyString(type), mimeTypes);

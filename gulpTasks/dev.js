@@ -41,6 +41,7 @@ gulp.task('dev', ['setup', 'deleteCssFile'], (done)=> {
     }
   });
   server.listen(8080, 'localhost', ()=> {
+    console.log('Available on http://localhost:8080')
   });
   done();
 });
@@ -59,6 +60,7 @@ gulp.task('devTest', ['setupTests'], function (done) {
     compress: true
   });
   serverTests.listen(8081, 'localhost', ()=> {
+    console.log(`Available on http://localhost:8081/tests/SpecRunner.html`);
   });
   done();
 });
