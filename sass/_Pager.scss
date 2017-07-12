@@ -1,6 +1,5 @@
 @import "Variables";
 @import "mixins/pagerList";
-@import "../bin/sass/sprites.scss";
 
 .coveo-pager-list {
   @include pager-list;
