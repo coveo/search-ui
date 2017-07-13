@@ -29,7 +29,7 @@
       }
     },
     "spsite": {
-      "icon": "salesforce-doctype-link",
+      "icon": "link",
       "captions": {
         "en": "SharePoint Site",
         "fr": "Site SharePoint",
@@ -309,7 +309,7 @@
       }
     },
     "spdocumentlibrarylist": {
-      "icon": "salesforce-standard-folder",
+      "icon": "folder",
       "captions": {
         "en": "Document Library",
         "fr": "Bibliothèque de documents",

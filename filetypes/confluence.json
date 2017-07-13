@@ -17,7 +17,7 @@
       "shouldDisplayLabel": true
     },
     "cfspace": {
-      "icon": "salesforce-standard-folder",
+      "icon": "folder",
       "captions": {
         "en": "Confluence Space",
         "fr": "Espace Confluence"
@@ -33,7 +33,7 @@
       "shouldDisplayLabel": true
     },
     "confluencespace": {
-      "icon": "salesforce-standard-folder",
+      "icon": "folder",
       "captions": {
         "en": "Confluence Space",
         "fr": "Espace Confluence"
