@@ -54,7 +54,7 @@ export class CardOverlay extends Component {
     /**
      * Specifies the icon to use for the overlay icon and for the button icon.
      */
-    icon: ComponentOptions.buildIconOption()
+    icon: ComponentOptions.buildSVGIconOption()
   };
 
   /**

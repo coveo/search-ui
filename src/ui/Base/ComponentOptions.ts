@@ -370,7 +370,7 @@ export class ComponentOptions {
   }
 
   /**
-   * Builds an icon option.
+   * Builds a SVG icon option.
    *
    * This loads an SVG icon from its name.
    *
@@ -384,8 +384,8 @@ export class ComponentOptions {
    * @param optionArgs The arguments to apply when building the option.
    * @returns {string} The resulting option value.
    */
-  static buildIconOption(optionArgs?: IComponentOptions<string>): string {
-    return ComponentOptions.buildOption<string>(ComponentOptionsType.ICON, ComponentOptions.loadIconOption, optionArgs);
+  static buildSVGIconOption(optionArgs?: IComponentOptions<string>): string {
+    return ComponentOptions.buildOption<string>(ComponentOptionsType.ICON, ComponentOptions.loadSVGIconoption, optionArgs);
   }
 
   /**
@@ -746,7 +746,7 @@ export class ComponentOptions {
     return element.getAttribute(ComponentOptions.attrNameFromName(name, option)) || ComponentOptions.getAttributeFromAlias(element, option);
   }
 
-  static loadIconOption(element: HTMLElement, name: string, option: IComponentOptions<any>): string {
+  static loadSVGIconoption(element: HTMLElement, name: string, option: IComponentOptions<any>): string {
     const svgIconName = ComponentOptions.loadStringOption(element, name, option);
     return SVGIcons.icons[svgIconName];
   }
