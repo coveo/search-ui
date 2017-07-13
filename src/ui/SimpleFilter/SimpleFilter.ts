@@ -331,7 +331,7 @@ export class SimpleFilter extends Component {
   }
 
   private buildSvgToggleUpIcon(): HTMLElement {
-    let svgIcon = $$('span', null, SVGIcons.arrowDown).el;
+    let svgIcon = $$('span', null, SVGIcons.icons.arrowDown).el;
     SVGDom.addClassToSVGInContainer(svgIcon, 'coveo-simplefilter-toggle-down-svg');
     return svgIcon;
   }
@@ -365,7 +365,7 @@ export class SimpleFilter extends Component {
       _.each(this.getSelectedLabeledCheckboxes(), (selectedlabeledCheckbox) => {
         const value = $$('span', { className: 'coveo-simplefilter-breadcrumb-value' }, this.getValueCaption(selectedlabeledCheckbox.label));
         values.append(value.el);
-        const svgContainer = $$('span', { className: 'coveo-simplefilter-breadcrumb-clear' }, SVGIcons.checkboxHookExclusionMore);
+        const svgContainer = $$('span', { className: 'coveo-simplefilter-breadcrumb-clear' }, SVGIcons.icons.checkboxHookExclusionMore);
         SVGDom.addClassToSVGInContainer(svgContainer.el, 'coveo-simplefilter-breadcrumb-clear-svg');
         value.append(svgContainer.el);
         value.el.title = this.getValueCaption(selectedlabeledCheckbox.label);
