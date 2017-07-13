@@ -102,7 +102,7 @@ export class Tab extends Component {
      *
      * @deprecated This options is mostly kept for legacy reasons. If possible, you should avoid using it.
      */
-    icon: ComponentOptions.buildIconOption(),
+    icon: ComponentOptions.buildStringOption(),
 
     /**
      * Specifies an advanced expression or filter that the Tab should add to any outgoing query.

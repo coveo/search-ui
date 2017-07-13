@@ -34,6 +34,12 @@
   }
 }
 
+.coveo-card-action-bar-arrow-svg {
+  width: 10px;
+  height: 9px;
+  color: $color-blueish-gray;
+}
+
 .coveo-card-action-bar-arrow-container {
   position: absolute;
   text-align: center;
@@ -43,3 +49,13 @@
   color: #fff;
   left: 0;
 }
+.CoveoCardActionBar {
+  .coveo-icon-for-quickview-svg {
+    margin-top: 4px;
+    color: $color-blueish-gray;
+  }
+   .coveo-follow-item-icon-svg {
+    color: $color-blueish-gray;
+  }
+}
+

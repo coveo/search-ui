@@ -1,5 +1,4 @@
 @import "Variables";
-@import "../bin/sass/sprites";
 
 .CoveoResultFolding {
 
@@ -57,29 +56,39 @@
   margin-left: 5px;
 }
 
-.coveo-more {
+.coveo-folding-more {
   &:hover {
     cursor: pointer;
   }
   display: inline-block;
   vertical-align: middle;
   .coveo-folding-footer-icon {
-    @include retina-sprite($arrow-down-group);
     position: relative;
-    top: 1px;
+    top: -2px;
   }
 }
 
-.coveo-less {
+.coveo-folding-more-svg {
+  width: 10px;
+  height: 6px;
+  color: $color-greyish-teal-blue;
+}
+
+.coveo-folding-less {
   &:hover {
     cursor: pointer;
   }
   display: inline-block;
   .coveo-folding-footer-icon {
-    @include retina-sprite($arrow-up-group);
     position: relative;
-    top: 1px;
+    top: -1px;
   }
+}
+
+.coveo-folding-less-svg {
+  width: 10px;
+  height: 6px;
+  color: $color-greyish-teal-blue;
 }
 
 a.coveo-folding-show-more, a.coveo-folding-show-less {

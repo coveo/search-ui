@@ -134,7 +134,7 @@ export class Searchbox extends Component {
     }
 
     const magicBoxIcon = $$(this.element).find('.magic-box-icon');
-    magicBoxIcon.innerHTML = SVGIcons.mainClear;
+    magicBoxIcon.innerHTML = SVGIcons.icons.mainClear;
     SVGDom.addClassToSVGInContainer(magicBoxIcon, 'magic-box-clear-svg');
   }
 }

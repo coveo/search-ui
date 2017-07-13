@@ -181,20 +181,20 @@ export class FacetSearch {
     $$(this.search).addClass('coveo-facet-search');
 
     this.magnifier = document.createElement('div');
-    this.magnifier.innerHTML = SVGIcons.search;
+    this.magnifier.innerHTML = SVGIcons.icons.search;
     $$(this.magnifier).addClass('coveo-facet-search-magnifier');
     SVGDom.addClassToSVGInContainer(this.magnifier, 'coveo-facet-search-magnifier-svg');
     this.search.appendChild(this.magnifier);
 
     this.wait = document.createElement('div');
-    this.wait.innerHTML = SVGIcons.loading;
+    this.wait.innerHTML = SVGIcons.icons.loading;
     $$(this.wait).addClass('coveo-facet-search-wait-animation');
     SVGDom.addClassToSVGInContainer(this.wait, 'coveo-facet-search-wait-animation-svg');
     this.search.appendChild(this.wait);
     this.hideFacetSearchWaitingAnimation();
 
     this.clear = $$('div', { className: 'coveo-facet-search-clear', title: l('Clear', l('Search')) },
-      SVGIcons.checkboxHookExclusionMore).el;
+      SVGIcons.icons.checkboxHookExclusionMore).el;
     SVGDom.addClassToSVGInContainer(this.clear, 'coveo-facet-search-clear-svg');
     this.clear.style.display = 'none';
     this.search.appendChild(this.clear);

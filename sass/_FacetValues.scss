@@ -1,5 +1,4 @@
 @import "Variables";
-@import "../bin/sass/sprites";
 
 @mixin facetValuesCheckboxes($size: 'normal') {
   $pixel-size: '18px';
@@ -35,7 +34,7 @@
     }
   }
 
-  &:hover:not(.coveo-facet-search-button):not(.coveo-excluded):not(.coveo-facet-value-will-exclude) .coveo-facet-value-checkbox {
+  &:hover:not(.coveo-facet-search-button):not(.coveo-excluded):not(.coveo-facet-value-will-exclude):not(.coveo-has-childs-selected) .coveo-facet-value-checkbox {
     svg {
       @include coveo-hook($size);
     }

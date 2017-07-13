@@ -1,12 +1,17 @@
 @import 'Variables';
-@import "../bin/sass/sprites";
 
-.coveo-logo{
-  @include retina-sprite($coveo-logo-group);
+.coveo-logo {
+  display: inline-block;
 }
 
-.coveo-powered-by {
-  @include retina-sprite($coveo-powered-by-logo-group);
+.coveo-logo-svg {
+  width: 178;
+  height: 64;
+}
+
+.coveo-powered-by-svg {
+  width: 100px;
+  height: 28px;
 }
 
 .CoveoLogo {

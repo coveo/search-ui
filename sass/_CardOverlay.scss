@@ -4,6 +4,25 @@
   cursor: pointer;
 }
 
+.CoveoCardOverlay[data-icon="search"] {
+  svg {
+    color: $color-blueish-gray;
+    width: 20px;
+    height: 20px;
+    .coveo-magnifier-circle-svg {
+      fill: $color-active-yellow;
+    }
+  }
+}
+
+.CoveoCardOverlay[data-icon="replies"]{
+  svg {
+    color: $color-blueish-gray;
+    width: 20px;
+    height: 20px;
+  }
+}
+
 .coveo-card-overlay {
   position: absolute;
   height: 100%;
@@ -87,3 +106,13 @@
   min-height: 180px;
 }
 
+.coveo-open-card-overlay {
+  display: inline-block;
+  margin-bottom: 4px;
+}
+
+.coveo-open-card-overlay-svg {
+  width: 10px;
+  height: 6px;
+  color: $color-blueish-gray;
+}

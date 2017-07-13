@@ -138,7 +138,7 @@ export class SearchAlerts extends Component {
             className: 'coveo-subscriptions-panel',
             onOpen: () => this.openPanel(),
             onClose: () => this.close(),
-            svgIcon: SVGIcons.dropdownFollowQuery,
+            svgIcon: SVGIcons.icons.dropdownFollowQuery,
             svgIconClassName: 'coveo-subscriptions-panel-svg'
           });
         }
@@ -162,8 +162,8 @@ export class SearchAlerts extends Component {
                   tooltip: l('FollowQueryDescription'),
                   onOpen: () => this.followQuery(),
                   onClose: () => { },
-                  svgIcon: SVGIcons.dropdownFollowQuery,
-                  svgIconClassName: 'coveo-follow-query'
+                  svgIcon: SVGIcons.icons.dropdownFollowQuery,
+                  svgIconClassName: 'coveo-follow-query-svg'
                 });
               }
             });

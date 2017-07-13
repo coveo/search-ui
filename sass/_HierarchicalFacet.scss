@@ -1,5 +1,5 @@
 @import "bourbon/bourbon";
-@import "../bin/sass/sprites.scss";
+@import "Variables";
 
 .CoveoHierarchicalFacet {
   
@@ -11,48 +11,43 @@
       position: relative;
       &.coveo-has-childs {
 
-        &.coveo-has-childs-selected {
-          .coveo-facet-value-checkbox {
-            > span {
-              visibility : visible;
-              @include retina-sprite($line-group);
-              position: relative;
-              bottom: 7px;
-              left: 0px;
-            }
+        &.coveo-has-childs-selected:not(.coveo-selected) {
+          .coveo-facet-value-checkbox-svg {
+            width: 12px;
+            height: 14px;
+            visibility : visible;
+            position: relative;
+            bottom: 2px;
+            left: 0px;
           }
-          &.coveo-selected {
-            .coveo-facet-value-checkbox {
-              > span {
-                bottom: 1px;
-                left: -1px;
-                @include retina-sprite($checkbox-hook-active-group);
-              }
-            }
-            &:hover {
-              .coveo-facet-value-checkbox {
-                > span {
-                  @include retina-sprite($checkbox-exclusion-group);
-                }
-              }
-            }
+          .coveo-line-svg {
+            fill: $color-light-grey-transparent;
           }
         }
 
         .coveo-has-childs-toggle {
+          .coveo-hierarchical-facet-expand-svg, .coveo-hierarchical-facet-collapse-svg {
+            width: 16px;
+            height: 16px;
+            color: $color-greyish-teal-blue
+          }
+          .coveo-hierarchical-facet-collapse-svg {
+            display: none;
+          }
           position: absolute;
           display: inline-block;
           top: 8px;
           left: 7px;
-          @include retina-sprite($dropdown-expand-group);
           &:hover {
             cursor: pointer;
           }
         }
-
         &.coveo-open {
-          .coveo-has-childs-toggle {
-            @include retina-sprite($dropdown-collapse-group);
+          .coveo-hierarchical-facet-collapse-svg {
+            display: inline-block;
+          }
+          .coveo-hierarchical-facet-expand-svg {
+            display: none;
           }
         }
       }

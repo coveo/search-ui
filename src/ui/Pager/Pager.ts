@@ -16,6 +16,8 @@ import { exportGlobally } from '../../GlobalExports';
 
 import 'styling/_Pager';
 import { Defer } from '../../misc/Defer';
+import { SVGIcons } from '../../utils/SVGIcons';
+import { SVGDom } from '../../utils/SVGDom';
 
 export interface IPagerOptions {
   numberOfPages: number;
@@ -314,8 +316,9 @@ export class Pager extends Component {
       const previous = document.createElement('li');
       $$(previous).addClass(['coveo-pager-previous', 'coveo-pager-anchor', 'coveo-pager-list-item']);
       const buttonLink = document.createElement('a');
-      const buttonImg = document.createElement('span');
-      buttonLink.appendChild(buttonImg);
+      const buttonIcon = $$('span', { className: 'coveo-pager-previous-icon' }, SVGIcons.icons.pagerLeftArrow).el;
+      SVGDom.addClassToSVGInContainer(buttonIcon, 'coveo-pager-previous-icon-svg');
+      buttonLink.appendChild(buttonIcon);
       buttonLink.setAttribute('title', l('Previous'));
       previous.appendChild(buttonLink);
       $$(previous).on('click', () => this.handleClickPrevious());
@@ -326,8 +329,9 @@ export class Pager extends Component {
       const next = document.createElement('li');
       $$(next).addClass(['coveo-pager-next', 'coveo-pager-anchor', 'coveo-pager-list-item']);
       const buttonLink = document.createElement('a');
-      const buttonImg = document.createElement('span');
-      buttonLink.appendChild(buttonImg);
+      const buttonIcon = $$('span', { className: 'coveo-pager-next-icon' }, SVGIcons.icons.pagerRightArrow).el;
+      SVGDom.addClassToSVGInContainer(buttonIcon, 'coveo-pager-next-icon-svg');
+      buttonLink.appendChild(buttonIcon);
       buttonLink.setAttribute('title', l('Next'));
       next.appendChild(buttonLink);
       $$(next).on('click', () => this.handleClickNext());
