@@ -68,7 +68,13 @@ export class Playground {
 
   public initializeComponent() {
     let configuration = this.getConfiguration();
-    SearchEndpoint.configureSampleEndpointV2();
+    // `@hierarchicfield` does not exist in the sample Coveo Cloud V2 organization.
+    if (this.getComponentName() === "HierarchicalFacet") {
+      SearchEndpoint.configureSampleEndpoint();
+    }
+    else {
+      SearchEndpoint.configureSampleEndpointV2();
+    }
     let searchInterface = this.getSearchInterface();
     this.componentContainer.append(searchInterface.el);
     Coveo.SearchEndpoint.endpoints['default'] = SearchEndpoint.endpoints['default'];
