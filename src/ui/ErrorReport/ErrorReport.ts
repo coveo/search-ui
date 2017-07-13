@@ -166,7 +166,7 @@ export class ErrorReport extends Component {
     if (data.endpoint.options.queryStringArguments.organizationId) {
       this.organizationId = data.endpoint.options.queryStringArguments.organizationId;
     } else {
-      this.organizationId = 'Coveo organization';
+      this.organizationId = l('CoveoOrganization');
     }
 
     // Do not display the panel if the error is for missing authentication. The
@@ -179,13 +179,13 @@ export class ErrorReport extends Component {
       case 'NoEndpointsException':
         this.options.showDetailedError = false;
         this.buildEndpointErrorElements('http://www.coveo.com/go?dest=cloudhelp&lcid=9&context=257');
-        this.setErrorTitle(this.organizationId + ' ' + l('NoEndpoints'), l('AddSources'));
+        this.setErrorTitle(l('NoEndpoints', this.organizationId), l('AddSources'));
         break;
 
       case 'InvalidTokenException':
         this.options.showDetailedError = false;
         this.buildEndpointErrorElements('https://developers.coveo.com/x/XICE');
-        this.setErrorTitle(this.organizationId + ' ' + l('CannotAccess'), l('InvalidToken'));
+        this.setErrorTitle(l('CannotAccess', this.organizationId), l('InvalidToken'));
         break;
 
       default:
@@ -234,12 +234,11 @@ export class ErrorReport extends Component {
     this.container.append(optionsElement.el);
   }
 
-  private buildEndpointErrorElements(helpLink?: string) {
+  private buildEndpointErrorElements(helpLink: string = 'http://www.coveo.com/go?dest=cloudhelp&lcid=9&context=254') {
     this.helpSuggestion.empty();
-    const defaultHelpLink = 'http://www.coveo.com/go?dest=cloudhelp&lcid=9&context=254';
 
     const link = $$('a', {
-      href: helpLink ? helpLink : defaultHelpLink,
+      href: helpLink,
       className: 'coveo-error-report-help-link'
     });
 

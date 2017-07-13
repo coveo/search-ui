@@ -7229,8 +7229,8 @@
     "fr": "Filtres pour la Recherche Avancée"
   },
   "NoEndpoints": {
-    "en": "has no registered endpoints.",
-    "fr": "n'a pas de point de terminaison unique."
+    "en": "{0} has no registered endpoints.",
+    "fr": "{0} n'a pas de point de terminaison unique."
   },
   "InvalidToken": {
     "en": "The token used is invalid.",
@@ -7249,6 +7249,11 @@
     "fr": "Aide en ligne Coveo"
   },
   "CannotAccess": {
-  "en": "could not be accessed."
-}
+    "en": "{0} cannot be accessed.",
+    "fr": "{0} est inaccessible"
+  },
+  "CoveoOrganization": {
+    "en": "Coveo Organization",
+    "fr": "Organisation Coveo"
+  }
 }

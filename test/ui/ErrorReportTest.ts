@@ -5,6 +5,7 @@ import { Simulate } from '../Simulate';
 import { QueryError } from '../../src/rest/QueryError';
 import { $$ } from '../../src/utils/Dom';
 import { analyticsActionCauseList } from '../../src/ui/Analytics/AnalyticsActionListMeta';
+import { l } from '../../src/strings/Strings';
 
 export function ErrorReportTest() {
   describe('ErrorReport', function () {
@@ -94,6 +95,33 @@ export function ErrorReportTest() {
       });
       test.cmp.reset();
       expect(test.cmp.usageAnalytics.logSearchEvent).toHaveBeenCalledWith(analyticsActionCauseList.errorClearQuery, {});
+    });
+    it('should display a different error message if the error is a NoEndpointsException', function () {
+      Simulate.query(test.env, {
+        error: new QueryError({
+          statusCode: 408,
+          data: {
+            message: 'the message',
+            type: 'NoEndpointsException',
+            name: 'NoEndpointsException'
+          }
+        })
+      });
+      expect($$($$(test.cmp.root).find('.coveo-error-report-title')).text()).toEqual(l('NoEndpoints', 'foobar') + l('AddSources'));
+    });
+
+    it('should display a different error message is cause by an invalid token', function () {
+      Simulate.query(test.env, {
+        error: new QueryError({
+          statusCode: 408,
+          data: {
+            message: 'the message',
+            type: 'InvalidTokenException',
+            name: 'InvalidTokenException'
+          }
+        })
+      });
+      expect($$($$(test.cmp.root).find('.coveo-error-report-title')).text()).toEqual(l('CannotAccess', 'foobar') + l('InvalidToken'));
     });
   });
 }
