@@ -159,7 +159,7 @@ export class Facet extends Component {
      */
     field: ComponentOptions.buildFieldOption({ required: true, groupByField: true, section: 'Identification' }),
 
-    headerIcon: ComponentOptions.buildIconOption({ deprecated: 'This option is exposed for legacy reasons, and the recommendation is to not use this option.' }),
+    headerIcon: ComponentOptions.buildStringOption({ deprecated: 'This option is exposed for legacy reasons, and the recommendation is to not use this option.' }),
 
     /**
      * Specifies a unique identifier for the facet. Among other things, this identifier serves the purpose of saving
