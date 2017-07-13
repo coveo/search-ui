@@ -158,7 +158,7 @@ module.exports = {
         }
       }]
     }, {
-      test: /\.(gif|png|jpe?g|ttf|woff2?|eot)$/,
+      test: /(\.png|filetypes\/.*\.svg)$/,
       use: [{
         loader: 'file-loader',
         options: {

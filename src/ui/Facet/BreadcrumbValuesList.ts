@@ -75,7 +75,7 @@ export class BreadcrumbValueList {
 
       let multiIcon = $$('div', {
         className: 'coveo-selected coveo-facet-breadcrumb-multi-icon'
-      }, SVGIcons.checkboxHookExclusionMore);
+      }, SVGIcons.icons.checkboxHookExclusionMore);
       SVGDom.addClassToSVGInContainer(multiIcon.el, 'coveo-facet-breadcrumb-multi-icon-svg');
       elem.el.appendChild(multiIcon.el);
     }
@@ -88,7 +88,7 @@ export class BreadcrumbValueList {
 
       let multiExcludedIcon = $$('div', {
         className: 'coveo-excluded coveo-facet-breadcrumb-multi-icon'
-      }, SVGIcons.checkboxHookExclusionMore);
+      }, SVGIcons.icons.checkboxHookExclusionMore);
       SVGDom.addClassToSVGInContainer(multiExcludedIcon.el, 'coveo-facet-breadcrumb-multi-icon-svg');
       elem.el.appendChild(multiExcludedIcon.el);
     }

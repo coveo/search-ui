@@ -1,21 +1,21 @@
 {
   "filetype": {
     "html": {
-      "icon": "webpage",
+      "icon": "link",
       "captions": {
         "en": "HTML File",
         "fr": "Fichier HTML"
       }
     },
     "wiki": {
-      "icon": "webpage",
+      "icon": "link",
       "captions": {
         "en": "Wiki",
         "fr": "Wiki"
       }
     },
     "webscraperwebpage": {
-      "icon": "webpage",
+      "icon": "link",
       "captions": {
         "en": "Web Page",
         "fr": "Page Web"
@@ -171,7 +171,7 @@
       }
     },
     "dynamicscrmitem": {
-      "icon": "list",
+      "icon": "link",
       "captions": {
         "en": "Dynamics CRM",
         "fr": "Dynamics CRM"
@@ -191,6 +191,20 @@
         "fr": "Document Open Text"
       },
       "shouldDisplayLabel": true
+    },
+    "box": {
+      "icon": "user",
+      "captions": {
+        "en": "User",
+        "fr": "Utilisateur"
+      }
+    },
+    "jiraissue": {
+      "icon": "custom",
+      "captions": {
+        "en": "Jira Issue",
+        "fr": "Issue Jira"
+      }
     }
   }
 }
