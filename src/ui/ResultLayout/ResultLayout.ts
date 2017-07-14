@@ -262,6 +262,7 @@ export class ResultLayout extends Component {
   }
 
   private handleQueryError(args: IQueryErrorEventArgs) {
+    this.hasNoResults = true;
     this.hide();
   }
 

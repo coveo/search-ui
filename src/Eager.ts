@@ -257,5 +257,8 @@ RadioButton.doExport();
 import { TextInput } from './ui/FormWidgets/TextInput';
 TextInput.doExport();
 
+import { SimpleFilter } from './ui/SimpleFilter/SimpleFilter';
+SimpleFilter.doExport();
+
 import { swapVar } from './SwapVar';
 swapVar(this);
