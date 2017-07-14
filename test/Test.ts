@@ -471,5 +471,9 @@ DebugHeaderTest();
 import { FacetValuesTest } from './ui/FacetValuesTest';
 FacetValuesTest();
 
+import { SimpleFilterTest } from './ui/SimpleFilterTest';
+SimpleFilterTest();
+
 import { DeviceUtilsTest } from './utils/DeviceUtilsTest';
 DeviceUtilsTest();
+
