@@ -94,7 +94,7 @@ function generateInnerObjecttype(json, small, iconClasses) {
     let width, height;
     ({width, height} = getSVGSize(svgName, small));
     if (iconClasses[className] == undefined) {
-      iconClasses[className] = ` { width: ${width}px; height: ${height}px; background-size: ${width}px ${height}px; background-image: url(../../image/svg/filetypes/${svgName}.svg); }`;
+      iconClasses[className] = ` { display: inline-block; width: ${width}px; height: ${height}px; background-size: ${width}px ${height}px; background-image: url(../../image/svg/filetypes/${svgName}.svg); }`;
     }
 
     // This is a special case that we still need to support
@@ -123,7 +123,7 @@ function generateInnerFiletype(json, small, iconClasses) {
     let width, height;
     ({width, height} = getSVGSize(svgName,small));
     if (iconClasses[className] == undefined) {
-      iconClasses[className] = ` { width: ${width}px; height: ${height}px; background-size: ${width}px ${height}px; background-image: url(../../image/svg/filetypes/${svgName}.svg); }`;
+      iconClasses[className] = ` { display: inline-block; width: ${width}px; height: ${height}px; background-size: ${width}px ${height}px; background-image: url(../../image/svg/filetypes/${svgName}.svg); }`;
     }
     ret += ' &.' + removeSpace(filetype.toLowerCase()) +
       `{ @extend .${className};` +
