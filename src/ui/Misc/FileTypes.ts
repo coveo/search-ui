@@ -46,7 +46,7 @@ export class FileTypes {
       localizedString = l(objecttype);
     }
     return {
-      'icon': 'coveo-icon objecttype ' + objecttype.replace(' ', '-'),
+      'icon': 'coveo-icon objecttype ' + loweredCaseObjecttype.replace(' ', '-'),
       caption: localizedString
     };
   }
@@ -71,7 +71,7 @@ export class FileTypes {
       localizedString = l(filetype);
     }
     return {
-      'icon': 'coveo-icon filetype ' + filetype.replace(' ', '-'),
+      'icon': 'coveo-icon filetype ' + loweredCaseFiletype.replace(' ', '-'),
       caption: localizedString
     };
   }
