@@ -1,26 +1,49 @@
 @import 'Variables';
 
 .CoveoErrorReport {
-  padding: 10px;
   text-align: center;
   h1, h2, h3, h4, h5, h6 {
+    font-weight: normal;
     display: block;
-    margin: 20px 0px 20px 0px;
+    margin: 0 0 20px 0;
+  }
+}
+
+.coveo-error-report-help-link {
+  display: inline-block;
+  border:1px solid $coveo-orange;
+  border-radius: 2px;
+  text-decoration:none;
+  background-color: $coveo-orange;
+  padding: 10px;
+  font-weight:700;
+  color:white;
+  &:hover {
+    background-color: #F68E38;
   }
 }
 
 .coveo-error-report-title {
-  margin-bottom: 30px;
+  color: $color-greyish-teal-blue;
+  margin-bottom: 20px;
+  font-size: 12px;
+
 }
 
 .coveo-error-report-message {
-  margin-top: 30px;
+  margin-top: 0px;
   margin-right: 30px;
   margin-left: 30px;
   pre {
     font-size: 12px;
     text-align: left;
   }
+}
+
+.coveo-error-report-container {
+  padding: 45px;
+  background-color: #F1F3F4;
+  border: 1px solid $color-greyish-teal-blue;
 }
 
 .coveo-error-report-previous, .coveo-error-report-clear, .coveo-error-report-retry, .coveo-error-report-more-info {
