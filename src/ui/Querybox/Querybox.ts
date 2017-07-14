@@ -79,15 +79,21 @@ export class Querybox extends Component {
      * [Coveo Query Syntax Reference](http://www.coveo.com/go?dest=adminhelp70&lcid=9&context=10005)). Setting this
      * option to `true` also causes the `Querybox` to highlight any query syntax.
      *
+     * Regardless of the value of this option, the Coveo Cloud REST Search API always interprets expressions surrounded
+     * by double quotes (`"`) as exact phrase match requests.
+     *
      * See also [`enableLowercaseOperators`]{@link Querybox.options.enableLowercaseOperators}.
      *
-     * **Note:**
-     * > End user preferences can override the value you specify for this option.
+     * **Notes:**
+     * > * End user preferences can override the value you specify for this option.
      * >
      * > If the end user selects a value other than **Automatic** for the **Enable query syntax** setting (see
      * > the [`enableQuerySyntax`]{@link ResultsPreferences.options.enableQuerySyntax} option of the
      * > [`ResultsPreferences`]{@link ResultsPreferences} component), the end user preference takes precedence over this
      * > option.
+     * >
+     * > * On-premises versions of the Coveo Search API require this option to be set to `true` in order to interpret
+     * > expressions surrounded by double quotes (`"`) as exact phrase match requests.
      *
      * Default value is `false`.
      */
@@ -100,6 +106,11 @@ export class Querybox extends Component {
      *
      * See also [`enableQuestionMarks`]{@link Querybox.options.enableQuestionMarks}.
      *
+     *  **Note:**
+     * > If you are using an on-premises version of the Coveo Search API, you need to set the
+     * > [`enableQuerySyntax`]{@link Querybox.options.enableQuerySyntax} option to `true` to be able to set
+     * > `enableWildcards` to `true`.
+     *
      * Default value is `false`.
      */
     enableWildcards: ComponentOptions.buildBooleanOption({ defaultValue: false }),
@@ -109,6 +120,11 @@ export class Querybox extends Component {
      * expression keywords containing question mark characters (`?`) to the possible matching keywords in order to
      * broaden the query (see
      * [Using Wildcards in Queries](http://www.coveo.com/go?dest=cloudhelp&lcid=9&context=359)).
+     *
+     * **Note:**
+     * > If you are using an on-premises version of the Coveo Search API, you also need to set the
+     * > [`enableQuerySyntax`]{@link Querybox.options.enableQuerySyntax} option to `true` in order to be able to set
+     * > `enableQuestionMarks` to `true`.
      *
      * Default value is `false`.
      */
