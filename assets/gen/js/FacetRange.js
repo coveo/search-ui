@@ -1,6 +1,6 @@
 webpackJsonpCoveo__temporary([2,3],{
 
-/***/ 20:
+/***/ 16:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -200,7 +200,7 @@ exports.EventsUtils = EventsUtils;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var StringUtils_1 = __webpack_require__(19);
+var StringUtils_1 = __webpack_require__(20);
 var _ = __webpack_require__(1);
 var FacetValuesOrder = (function () {
     function FacetValuesOrder(facet, facetSort) {
@@ -572,7 +572,7 @@ var ComponentOptions_1 = __webpack_require__(9);
 var Utils_1 = __webpack_require__(6);
 var TemplateHelpers_1 = __webpack_require__(69);
 var DateUtils_1 = __webpack_require__(29);
-var FacetRangeQueryController_1 = __webpack_require__(614);
+var FacetRangeQueryController_1 = __webpack_require__(620);
 var Initialization_1 = __webpack_require__(2);
 var Globalize = __webpack_require__(25);
 var GlobalExports_1 = __webpack_require__(4);
@@ -747,7 +747,7 @@ Initialization_1.Initialization.registerAutoCreateComponent(FacetRange);
 
 /***/ }),
 
-/***/ 417:
+/***/ 422:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -861,7 +861,7 @@ exports.ResponsiveDropdown = ResponsiveDropdown;
 
 /***/ }),
 
-/***/ 418:
+/***/ 423:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -905,7 +905,7 @@ exports.ResponsiveDropdownContent = ResponsiveDropdownContent;
 
 /***/ }),
 
-/***/ 419:
+/***/ 424:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -942,7 +942,7 @@ exports.ResponsiveDropdownHeader = ResponsiveDropdownHeader;
 
 /***/ }),
 
-/***/ 420:
+/***/ 425:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -958,7 +958,7 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var FacetSort_1 = __webpack_require__(421);
+var FacetSort_1 = __webpack_require__(426);
 var Dom_1 = __webpack_require__(3);
 var LocalStorageUtils_1 = __webpack_require__(36);
 var Utils_1 = __webpack_require__(6);
@@ -968,9 +968,9 @@ var AnalyticsActionListMeta_1 = __webpack_require__(12);
 var DeviceUtils_1 = __webpack_require__(22);
 var PopupUtils_1 = __webpack_require__(50);
 var _ = __webpack_require__(1);
-__webpack_require__(481);
+__webpack_require__(486);
 var SVGIcons_1 = __webpack_require__(15);
-var SVGDom_1 = __webpack_require__(20);
+var SVGDom_1 = __webpack_require__(16);
 /**
  * Handle the rendering of the {@link Facet} settings menu (typically the ... in the facet header).
  */
@@ -996,7 +996,7 @@ var FacetSettings = (function (_super) {
             title: Strings_1.l('Settings'),
         }).el;
         this.settingsIcon = Dom_1.$$('span', { className: 'coveo-facet-settings-more' }).el;
-        this.settingsIcon.innerHTML = SVGIcons_1.SVGIcons.more;
+        this.settingsIcon.innerHTML = SVGIcons_1.SVGIcons.icons.more;
         SVGDom_1.SVGDom.addClassToSVGInContainer(this.settingsIcon, 'coveo-facet-settings-more-svg');
         this.settingsButton.appendChild(this.settingsIcon);
         this.settingsPopup = Dom_1.$$('div', { className: 'coveo-facet-settings-popup' }).el;
@@ -1107,7 +1107,7 @@ var FacetSettings = (function (_super) {
     };
     FacetSettings.prototype.buildSortSection = function () {
         var sortSection = this.buildSection('coveo-facet-settings-section-sort');
-        var sortSectionIcon = this.buildIcon('coveo-facet-settings-section-sort-svg', SVGIcons_1.SVGIcons.sort);
+        var sortSectionIcon = this.buildIcon('coveo-facet-settings-section-sort-svg', SVGIcons_1.SVGIcons.icons.sort);
         var sortSectionItems = this.buildItems();
         var sortTitle = document.createElement('div');
         Dom_1.$$(sortTitle).addClass('coveo-facet-settings-section-sort-title');
@@ -1157,8 +1157,8 @@ var FacetSettings = (function (_super) {
     FacetSettings.prototype.buildDirectionSection = function () {
         var _this = this;
         var directionAscendingSection = this.buildAscendingOrDescendingSection('Ascending');
-        var iconAscending = this.buildIcon('coveo-facet-settings-section-direction-ascending-svg', SVGIcons_1.SVGIcons.ascending);
-        var iconDescending = this.buildIcon('coveo-facet-settings-section-direction-descending-svg', SVGIcons_1.SVGIcons.descending);
+        var iconAscending = this.buildIcon('coveo-facet-settings-section-direction-ascending-svg', SVGIcons_1.SVGIcons.icons.ascending);
+        var iconDescending = this.buildIcon('coveo-facet-settings-section-direction-descending-svg', SVGIcons_1.SVGIcons.icons.descending);
         var directionItemsAscending = this.buildItems();
         var ascending = this.buildAscendingOrDescending('Ascending');
         directionItemsAscending.appendChild(ascending);
@@ -1184,7 +1184,7 @@ var FacetSettings = (function (_super) {
     FacetSettings.prototype.buildSaveStateSection = function () {
         var _this = this;
         var saveStateSection = this.buildSection('coveo-facet-settings-section-save-state');
-        var icon = this.buildIcon('coveo-facet-settings-section-save-state-svg', SVGIcons_1.SVGIcons.dropdownMore);
+        var icon = this.buildIcon('coveo-facet-settings-section-save-state-svg', SVGIcons_1.SVGIcons.icons.dropdownMore);
         var saveStateItems = this.buildItems();
         this.facetStateLocalStorage = new LocalStorageUtils_1.LocalStorageUtils('facet-state-' + this.facet.options.id);
         this.includedStateAttribute = QueryStateModel_1.QueryStateModel.getFacetId(this.facet.options.id);
@@ -1203,7 +1203,7 @@ var FacetSettings = (function (_super) {
     FacetSettings.prototype.buildClearStateSection = function () {
         var _this = this;
         var clearStateSection = this.buildSection('coveo-facet-settings-section-clear-state');
-        var icon = this.buildIcon('coveo-facet-settings-section-clear-state-svg', SVGIcons_1.SVGIcons.dropdownLess);
+        var icon = this.buildIcon('coveo-facet-settings-section-clear-state-svg', SVGIcons_1.SVGIcons.icons.dropdownLess);
         var clearStateItems = this.buildItems();
         var clearStateItem = this.buildItem(Strings_1.l('ClearFacetState'));
         clearStateItems.appendChild(clearStateItem);
@@ -1215,7 +1215,7 @@ var FacetSettings = (function (_super) {
     FacetSettings.prototype.buildHideSection = function () {
         var _this = this;
         var hideSection = this.buildSection('coveo-facet-settings-section-hide');
-        var icon = this.buildIcon('coveo-facet-settings-section-hide-svg', SVGIcons_1.SVGIcons.facetCollapse);
+        var icon = this.buildIcon('coveo-facet-settings-section-hide-svg', SVGIcons_1.SVGIcons.icons.facetCollapse);
         var hideItems = this.buildItems();
         var hideItem = this.buildItem(Strings_1.l('Collapse'));
         hideItems.appendChild(hideItem);
@@ -1230,7 +1230,7 @@ var FacetSettings = (function (_super) {
     FacetSettings.prototype.buildShowSection = function () {
         var _this = this;
         var showSection = this.buildSection('coveo-facet-settings-section-show');
-        var icon = this.buildIcon('coveo-facet-settings-section-show-svg', SVGIcons_1.SVGIcons.facetExpand);
+        var icon = this.buildIcon('coveo-facet-settings-section-show-svg', SVGIcons_1.SVGIcons.icons.facetExpand);
         var showItems = this.buildItems();
         var showItem = this.buildItem(Strings_1.l('Expand'));
         showItems.appendChild(showItem);
@@ -1422,14 +1422,14 @@ exports.FacetSettings = FacetSettings;
 
 /***/ }),
 
-/***/ 421:
+/***/ 426:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var Strings_1 = __webpack_require__(10);
-var FacetSettings_1 = __webpack_require__(420);
+var FacetSettings_1 = __webpack_require__(425);
 var Utils_1 = __webpack_require__(6);
 var _ = __webpack_require__(1);
 var FacetSort = (function () {
@@ -1532,13 +1532,13 @@ exports.FacetSort = FacetSort;
 
 /***/ }),
 
-/***/ 422:
+/***/ 427:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var ValueElementRenderer_1 = __webpack_require__(423);
+var ValueElementRenderer_1 = __webpack_require__(428);
 var Utils_1 = __webpack_require__(6);
 var AnalyticsActionListMeta_1 = __webpack_require__(12);
 var Dom_1 = __webpack_require__(3);
@@ -1714,7 +1714,7 @@ exports.ValueElement = ValueElement;
 
 /***/ }),
 
-/***/ 423:
+/***/ 428:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1726,7 +1726,7 @@ var Strings_1 = __webpack_require__(10);
 var Component_1 = __webpack_require__(8);
 var _ = __webpack_require__(1);
 var SVGIcons_1 = __webpack_require__(15);
-var SVGDom_1 = __webpack_require__(20);
+var SVGDom_1 = __webpack_require__(16);
 var ValueElementRenderer = (function () {
     function ValueElementRenderer(facet, facetValue) {
         this.facet = facet;
@@ -1802,7 +1802,7 @@ var ValueElementRenderer = (function () {
             tabindex: 0
         }).el;
         this.addFocusAndBlurEventListeners(excludeIcon);
-        excludeIcon.innerHTML = SVGIcons_1.SVGIcons.checkboxHookExclusionMore;
+        excludeIcon.innerHTML = SVGIcons_1.SVGIcons.icons.checkboxHookExclusionMore;
         SVGDom_1.SVGDom.addClassToSVGInContainer(excludeIcon, 'coveo-facet-value-exclude-svg');
         return excludeIcon;
     };
@@ -1843,7 +1843,7 @@ var ValueElementRenderer = (function () {
             className: 'coveo-facet-value-checkbox',
             tabindex: 0
         }).el;
-        checkbox.innerHTML = SVGIcons_1.SVGIcons.checkboxHookExclusionMore;
+        checkbox.innerHTML = SVGIcons_1.SVGIcons.icons.checkboxHookExclusionMore;
         SVGDom_1.SVGDom.addClassToSVGInContainer(checkbox, 'coveo-facet-value-checkbox-svg');
         this.addFocusAndBlurEventListeners(checkbox);
         return checkbox;
@@ -1908,7 +1908,7 @@ exports.ValueElementRenderer = ValueElementRenderer;
 
 /***/ }),
 
-/***/ 425:
+/***/ 430:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1917,9 +1917,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var Dom_1 = __webpack_require__(3);
 var Strings_1 = __webpack_require__(10);
 var AnalyticsActionListMeta_1 = __webpack_require__(12);
-__webpack_require__(475);
+__webpack_require__(480);
 var SVGIcons_1 = __webpack_require__(15);
-var SVGDom_1 = __webpack_require__(20);
+var SVGDom_1 = __webpack_require__(16);
 var FacetHeader = (function () {
     function FacetHeader(options) {
         this.options = options;
@@ -2015,7 +2015,7 @@ var FacetHeader = (function () {
         return this.iconElement;
     };
     FacetHeader.prototype.buildWaitAnimation = function () {
-        this.waitElement = Dom_1.$$('div', { className: 'coveo-facet-header-wait-animation' }, SVGIcons_1.SVGIcons.loading).el;
+        this.waitElement = Dom_1.$$('div', { className: 'coveo-facet-header-wait-animation' }, SVGIcons_1.SVGIcons.icons.loading).el;
         SVGDom_1.SVGDom.addClassToSVGInContainer(this.waitElement, 'coveo-facet-header-wait-animation-svg');
         this.waitElement.style.visibility = 'hidden';
         return this.waitElement;
@@ -2042,7 +2042,7 @@ var FacetHeader = (function () {
     };
     FacetHeader.prototype.buildOperatorToggle = function () {
         var _this = this;
-        var icon = Dom_1.$$('span', { className: 'coveo-' + (this.options.facet.options.useAnd ? 'and' : 'or') }, SVGIcons_1.SVGIcons.orAnd);
+        var icon = Dom_1.$$('span', { className: 'coveo-' + (this.options.facet.options.useAnd ? 'and' : 'or') }, SVGIcons_1.SVGIcons.icons.orAnd);
         SVGDom_1.SVGDom.addClassToSVGInContainer(icon.el, 'coveo-or-and-svg');
         var toggle = Dom_1.$$('div', { className: 'coveo-facet-header-operator', title: Strings_1.l('SwitchTo', this.options.facet.options.useAnd ? Strings_1.l('Or') : Strings_1.l('And')) });
         toggle.append(icon.el);
@@ -2078,7 +2078,7 @@ var FacetHeader = (function () {
     };
     FacetHeader.prototype.buildEraser = function () {
         var _this = this;
-        var eraser = Dom_1.$$('div', { title: Strings_1.l('Clear', this.options.title), className: 'coveo-facet-header-eraser' }, SVGIcons_1.SVGIcons.mainClear);
+        var eraser = Dom_1.$$('div', { title: Strings_1.l('Clear', this.options.title), className: 'coveo-facet-header-eraser' }, SVGIcons_1.SVGIcons.icons.mainClear);
         SVGDom_1.SVGDom.addClassToSVGInContainer(eraser.el, 'coveo-facet-header-eraser-svg');
         eraser.on('click', function () {
             var cmp = _this.options.facet || _this.options.facetSlider;
@@ -2098,7 +2098,7 @@ exports.FacetHeader = FacetHeader;
 
 /***/ }),
 
-/***/ 427:
+/***/ 432:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2111,14 +2111,14 @@ var Component_1 = __webpack_require__(8);
 var Logger_1 = __webpack_require__(14);
 var Strings_1 = __webpack_require__(10);
 var Utils_1 = __webpack_require__(6);
-var ResponsiveDropdown_1 = __webpack_require__(417);
-var ResponsiveDropdownContent_1 = __webpack_require__(418);
-var ResponsiveDropdownHeader_1 = __webpack_require__(419);
+var ResponsiveDropdown_1 = __webpack_require__(422);
+var ResponsiveDropdownContent_1 = __webpack_require__(423);
+var ResponsiveDropdownHeader_1 = __webpack_require__(424);
 var QueryEvents_1 = __webpack_require__(11);
 var SearchInterface_1 = __webpack_require__(21);
 var ResponsiveComponents_1 = __webpack_require__(40);
 var _ = __webpack_require__(1);
-__webpack_require__(476);
+__webpack_require__(481);
 var ResponsiveFacetColumn = (function () {
     function ResponsiveFacetColumn(coveoRoot, ID, options, responsiveDropdown) {
         this.coveoRoot = coveoRoot;
@@ -2303,7 +2303,7 @@ exports.ResponsiveFacetColumn = ResponsiveFacetColumn;
 
 /***/ }),
 
-/***/ 428:
+/***/ 433:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2315,9 +2315,9 @@ var DeviceUtils_1 = __webpack_require__(22);
 var AnalyticsActionListMeta_1 = __webpack_require__(12);
 var Dom_1 = __webpack_require__(3);
 var _ = __webpack_require__(1);
-__webpack_require__(478);
+__webpack_require__(483);
 var SVGIcons_1 = __webpack_require__(15);
-var SVGDom_1 = __webpack_require__(20);
+var SVGDom_1 = __webpack_require__(16);
 var BreadcrumbValueElement = (function () {
     function BreadcrumbValueElement(facet, facetValue) {
         this.facet = facet;
@@ -2339,7 +2339,7 @@ var BreadcrumbValueElement = (function () {
         elem.el.appendChild(caption.el);
         var clear = Dom_1.$$('span', {
             className: 'coveo-facet-breadcrumb-clear'
-        }, SVGIcons_1.SVGIcons.checkboxHookExclusionMore);
+        }, SVGIcons_1.SVGIcons.icons.checkboxHookExclusionMore);
         SVGDom_1.SVGDom.addClassToSVGInContainer(clear.el, 'coveo-facet-breadcrumb-clear-svg');
         elem.el.appendChild(clear.el);
         var clicked = false;
@@ -2372,7 +2372,7 @@ exports.BreadcrumbValueElement = BreadcrumbValueElement;
 
 /***/ }),
 
-/***/ 429:
+/***/ 434:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2384,7 +2384,7 @@ var Dom_1 = __webpack_require__(3);
 var Globalize = __webpack_require__(25);
 var _ = __webpack_require__(1);
 var SVGIcons_1 = __webpack_require__(15);
-var SVGDom_1 = __webpack_require__(20);
+var SVGDom_1 = __webpack_require__(16);
 var BreadcrumbValueList = (function () {
     function BreadcrumbValueList(facet, facetValues, breadcrumbValueElementKlass) {
         this.facet = facet;
@@ -2442,7 +2442,7 @@ var BreadcrumbValueList = (function () {
             elem.el.appendChild(multi.el);
             var multiIcon = Dom_1.$$('div', {
                 className: 'coveo-selected coveo-facet-breadcrumb-multi-icon'
-            }, SVGIcons_1.SVGIcons.checkboxHookExclusionMore);
+            }, SVGIcons_1.SVGIcons.icons.checkboxHookExclusionMore);
             SVGDom_1.SVGDom.addClassToSVGInContainer(multiIcon.el, 'coveo-facet-breadcrumb-multi-icon-svg');
             elem.el.appendChild(multiIcon.el);
         }
@@ -2454,7 +2454,7 @@ var BreadcrumbValueList = (function () {
             elem.el.appendChild(multiExcluded.el);
             var multiExcludedIcon = Dom_1.$$('div', {
                 className: 'coveo-excluded coveo-facet-breadcrumb-multi-icon'
-            }, SVGIcons_1.SVGIcons.checkboxHookExclusionMore);
+            }, SVGIcons_1.SVGIcons.icons.checkboxHookExclusionMore);
             SVGDom_1.SVGDom.addClassToSVGInContainer(multiExcludedIcon.el, 'coveo-facet-breadcrumb-multi-icon-svg');
             elem.el.appendChild(multiExcludedIcon.el);
         }
@@ -2494,7 +2494,7 @@ exports.BreadcrumbValueList = BreadcrumbValueList;
 
 /***/ }),
 
-/***/ 430:
+/***/ 435:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2504,7 +2504,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var Facet_1 = __webpack_require__(57);
 var Dom_1 = __webpack_require__(3);
 var Utils_1 = __webpack_require__(6);
-var InitializationEvents_1 = __webpack_require__(16);
+var InitializationEvents_1 = __webpack_require__(17);
 var EventsUtils_1 = __webpack_require__(263);
 var FacetSearchParameters_1 = __webpack_require__(241);
 var AnalyticsActionListMeta_1 = __webpack_require__(12);
@@ -2514,16 +2514,16 @@ var Strings_1 = __webpack_require__(10);
 var Assert_1 = __webpack_require__(7);
 var KeyboardUtils_1 = __webpack_require__(23);
 var FacetValues_1 = __webpack_require__(91);
-var StringUtils_1 = __webpack_require__(19);
+var StringUtils_1 = __webpack_require__(20);
 var FacetValueElement_1 = __webpack_require__(90);
 var ExternalModulesShim_1 = __webpack_require__(27);
 var SearchInterface_1 = __webpack_require__(21);
 var ResponsiveComponentsUtils_1 = __webpack_require__(89);
 var FacetValuesOrder_1 = __webpack_require__(264);
 var _ = __webpack_require__(1);
-__webpack_require__(480);
+__webpack_require__(485);
 var SVGIcons_1 = __webpack_require__(15);
-var SVGDom_1 = __webpack_require__(20);
+var SVGDom_1 = __webpack_require__(16);
 /**
  * Used by the {@link Facet} component to render and handle the facet search part of each facet.
  */
@@ -2652,17 +2652,17 @@ var FacetSearch = (function () {
         this.search = document.createElement('div');
         Dom_1.$$(this.search).addClass('coveo-facet-search');
         this.magnifier = document.createElement('div');
-        this.magnifier.innerHTML = SVGIcons_1.SVGIcons.search;
+        this.magnifier.innerHTML = SVGIcons_1.SVGIcons.icons.search;
         Dom_1.$$(this.magnifier).addClass('coveo-facet-search-magnifier');
         SVGDom_1.SVGDom.addClassToSVGInContainer(this.magnifier, 'coveo-facet-search-magnifier-svg');
         this.search.appendChild(this.magnifier);
         this.wait = document.createElement('div');
-        this.wait.innerHTML = SVGIcons_1.SVGIcons.loading;
+        this.wait.innerHTML = SVGIcons_1.SVGIcons.icons.loading;
         Dom_1.$$(this.wait).addClass('coveo-facet-search-wait-animation');
         SVGDom_1.SVGDom.addClassToSVGInContainer(this.wait, 'coveo-facet-search-wait-animation-svg');
         this.search.appendChild(this.wait);
         this.hideFacetSearchWaitingAnimation();
-        this.clear = Dom_1.$$('div', { className: 'coveo-facet-search-clear', title: Strings_1.l('Clear', Strings_1.l('Search')) }, SVGIcons_1.SVGIcons.checkboxHookExclusionMore).el;
+        this.clear = Dom_1.$$('div', { className: 'coveo-facet-search-clear', title: Strings_1.l('Clear', Strings_1.l('Search')) }, SVGIcons_1.SVGIcons.icons.checkboxHookExclusionMore).el;
         SVGDom_1.SVGDom.addClassToSVGInContainer(this.clear, 'coveo-facet-search-clear-svg');
         this.clear.style.display = 'none';
         this.search.appendChild(this.clear);
@@ -3040,7 +3040,7 @@ exports.FacetSearch = FacetSearch;
 
 /***/ }),
 
-/***/ 431:
+/***/ 436:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3070,7 +3070,7 @@ exports.FacetSearchValuesList = FacetSearchValuesList;
 
 /***/ }),
 
-/***/ 432:
+/***/ 437:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3231,7 +3231,7 @@ exports.FacetValuesList = FacetValuesList;
 
 /***/ }),
 
-/***/ 433:
+/***/ 438:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3248,7 +3248,7 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var ValueElement_1 = __webpack_require__(422);
+var ValueElement_1 = __webpack_require__(427);
 var OmniboxValueElement = (function (_super) {
     __extends(OmniboxValueElement, _super);
     function OmniboxValueElement(facet, facetValue, eventArg, onSelect, onExclude) {
@@ -3268,7 +3268,7 @@ exports.OmniboxValueElement = OmniboxValueElement;
 
 /***/ }),
 
-/***/ 434:
+/***/ 439:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3362,41 +3362,6 @@ exports.OmniboxValuesList = OmniboxValuesList;
 
 /***/ }),
 
-/***/ 475:
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-
-/***/ 476:
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-
-/***/ 477:
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-
-/***/ 478:
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-
-/***/ 479:
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-
 /***/ 480:
 /***/ (function(module, exports) {
 
@@ -3411,7 +3376,42 @@ exports.OmniboxValuesList = OmniboxValuesList;
 
 /***/ }),
 
+/***/ 482:
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+
+/***/ 483:
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+
 /***/ 484:
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+
+/***/ 485:
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+
+/***/ 486:
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+
+/***/ 489:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3427,7 +3427,7 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var ResponsiveFacetColumn_1 = __webpack_require__(427);
+var ResponsiveFacetColumn_1 = __webpack_require__(432);
 var Facet_1 = __webpack_require__(57);
 var ResponsiveFacets = (function (_super) {
     __extends(ResponsiveFacets, _super);
@@ -3466,41 +3466,41 @@ var ComponentOptions_1 = __webpack_require__(9);
 var DeviceUtils_1 = __webpack_require__(22);
 var Strings_1 = __webpack_require__(10);
 var FacetQueryController_1 = __webpack_require__(265);
-var FacetSearch_1 = __webpack_require__(430);
-var FacetSettings_1 = __webpack_require__(420);
-var FacetSort_1 = __webpack_require__(421);
-var FacetValuesList_1 = __webpack_require__(432);
-var FacetHeader_1 = __webpack_require__(425);
+var FacetSearch_1 = __webpack_require__(435);
+var FacetSettings_1 = __webpack_require__(425);
+var FacetSort_1 = __webpack_require__(426);
+var FacetValuesList_1 = __webpack_require__(437);
+var FacetHeader_1 = __webpack_require__(430);
 var FacetUtils_1 = __webpack_require__(42);
 var QueryEvents_1 = __webpack_require__(11);
 var Assert_1 = __webpack_require__(7);
 var Dom_1 = __webpack_require__(3);
 var AnalyticsActionListMeta_1 = __webpack_require__(12);
 var Utils_1 = __webpack_require__(6);
-var BreadcrumbValueElement_1 = __webpack_require__(428);
-var BreadcrumbValuesList_1 = __webpack_require__(429);
+var BreadcrumbValueElement_1 = __webpack_require__(433);
+var BreadcrumbValuesList_1 = __webpack_require__(434);
 var FacetValueElement_1 = __webpack_require__(90);
-var FacetSearchValuesList_1 = __webpack_require__(431);
+var FacetSearchValuesList_1 = __webpack_require__(436);
 var Defer_1 = __webpack_require__(28);
 var QueryStateModel_1 = __webpack_require__(13);
-var Model_1 = __webpack_require__(17);
+var Model_1 = __webpack_require__(18);
 var OmniboxEvents_1 = __webpack_require__(33);
-var OmniboxValueElement_1 = __webpack_require__(433);
-var OmniboxValuesList_1 = __webpack_require__(434);
-var ValueElementRenderer_1 = __webpack_require__(423);
+var OmniboxValueElement_1 = __webpack_require__(438);
+var OmniboxValuesList_1 = __webpack_require__(439);
+var ValueElementRenderer_1 = __webpack_require__(428);
 var FacetSearchParameters_1 = __webpack_require__(241);
 var Initialization_1 = __webpack_require__(2);
 var BreadcrumbEvents_1 = __webpack_require__(43);
-var ResponsiveFacets_1 = __webpack_require__(484);
+var ResponsiveFacets_1 = __webpack_require__(489);
 var KeyboardUtils_1 = __webpack_require__(23);
 var FacetValuesOrder_1 = __webpack_require__(264);
 var SearchAlertEvents_1 = __webpack_require__(59);
 var _ = __webpack_require__(1);
 var GlobalExports_1 = __webpack_require__(4);
-__webpack_require__(477);
-__webpack_require__(479);
+__webpack_require__(482);
+__webpack_require__(484);
 var SVGIcons_1 = __webpack_require__(15);
-var SVGDom_1 = __webpack_require__(20);
+var SVGDom_1 = __webpack_require__(16);
 /**
  * The `Facet` component displays a *facet* of the results for the current query. A facet is a list of values for a
  * certain field occurring in the results, ordered using a configurable criteria (e.g., number of occurrences).
@@ -4393,7 +4393,7 @@ var Facet = (function (_super) {
     Facet.prototype.buildMore = function () {
         var _this = this;
         var more;
-        var svgContainer = Dom_1.$$('span', { className: 'coveo-facet-more-icon' }, SVGIcons_1.SVGIcons.arrowDown).el;
+        var svgContainer = Dom_1.$$('span', { className: 'coveo-facet-more-icon' }, SVGIcons_1.SVGIcons.icons.arrowDown).el;
         SVGDom_1.SVGDom.addClassToSVGInContainer(svgContainer, 'coveo-facet-more-icon-svg');
         more = Dom_1.$$('div', { className: 'coveo-facet-more', tabindex: 0 }, svgContainer).el;
         var moreAction = function () { return _this.handleClickMore(); };
@@ -4404,7 +4404,7 @@ var Facet = (function (_super) {
     Facet.prototype.buildLess = function () {
         var _this = this;
         var less;
-        var svgContainer = Dom_1.$$('span', { className: 'coveo-facet-less-icon' }, SVGIcons_1.SVGIcons.arrowUp).el;
+        var svgContainer = Dom_1.$$('span', { className: 'coveo-facet-less-icon' }, SVGIcons_1.SVGIcons.icons.arrowUp).el;
         SVGDom_1.SVGDom.addClassToSVGInContainer(svgContainer, 'coveo-facet-less-icon-svg');
         less = Dom_1.$$('div', { className: 'coveo-facet-less', tabIndex: 0 }, svgContainer).el;
         var lessAction = function () { return _this.handleClickLess(); };
@@ -4552,7 +4552,7 @@ Facet.options = {
      * Specifying a value for this option is required for the `Facet` component to work.
      */
     field: ComponentOptions_1.ComponentOptions.buildFieldOption({ required: true, groupByField: true, section: 'Identification' }),
-    headerIcon: ComponentOptions_1.ComponentOptions.buildIconOption({ deprecated: 'This option is exposed for legacy reasons, and the recommendation is to not use this option.' }),
+    headerIcon: ComponentOptions_1.ComponentOptions.buildStringOption({ deprecated: 'This option is exposed for legacy reasons, and the recommendation is to not use this option.' }),
     /**
      * Specifies a unique identifier for the facet. Among other things, this identifier serves the purpose of saving
      * the facet state in the URL hash.
@@ -5014,7 +5014,7 @@ Facet.doExport();
 
 /***/ }),
 
-/***/ 614:
+/***/ 620:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5078,7 +5078,7 @@ exports.FacetRangeQueryController = FacetRangeQueryController;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var Dom_1 = __webpack_require__(3);
-var InitializationEvents_1 = __webpack_require__(16);
+var InitializationEvents_1 = __webpack_require__(17);
 var Component_1 = __webpack_require__(8);
 var SearchInterface_1 = __webpack_require__(21);
 var Utils_1 = __webpack_require__(6);
@@ -5324,7 +5324,7 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var QueryEvents_1 = __webpack_require__(11);
 var Dom_1 = __webpack_require__(3);
-var ValueElement_1 = __webpack_require__(422);
+var ValueElement_1 = __webpack_require__(427);
 var FacetValueElement = (function (_super) {
     __extends(FacetValueElement, _super);
     function FacetValueElement(facet, facetValue, keepDisplayedValueNextTime) {

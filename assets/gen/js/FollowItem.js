@@ -1,6 +1,6 @@
-webpackJsonpCoveo__temporary([24],{
+webpackJsonpCoveo__temporary([25],{
 
-/***/ 20:
+/***/ 16:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -67,13 +67,13 @@ var Initialization_1 = __webpack_require__(2);
 var Strings_1 = __webpack_require__(10);
 var Dom_1 = __webpack_require__(3);
 var AnalyticsActionListMeta_1 = __webpack_require__(12);
-var QueryUtils_1 = __webpack_require__(18);
+var QueryUtils_1 = __webpack_require__(19);
 var _ = __webpack_require__(1);
 var Utils_1 = __webpack_require__(6);
 var KeyboardUtils_1 = __webpack_require__(23);
 var GlobalExports_1 = __webpack_require__(4);
 var SVGIcons_1 = __webpack_require__(15);
-var SVGDom_1 = __webpack_require__(20);
+var SVGDom_1 = __webpack_require__(16);
 /**
  * The FollowItem component renders a widget that the end user can click to follow a particular item. A user following
  * an item receives email notifications when the item changes.
@@ -210,12 +210,12 @@ var FollowItem = (function (_super) {
         });
     };
     FollowItem.prototype.buildIcon = function () {
-        var icon = Dom_1.$$('span', { className: 'coveo-follow-item-icon' }, SVGIcons_1.SVGIcons.dropdownFollowQuery);
+        var icon = Dom_1.$$('span', { className: 'coveo-follow-item-icon' }, SVGIcons_1.SVGIcons.icons.dropdownFollowQuery);
         SVGDom_1.SVGDom.addClassToSVGInContainer(icon.el, 'coveo-follow-item-icon-svg');
         return icon.el;
     };
     FollowItem.prototype.buildLoadingIcon = function () {
-        var loadingIcon = Dom_1.$$('span', { className: 'coveo-follow-item-icon-loading' }, SVGIcons_1.SVGIcons.loading);
+        var loadingIcon = Dom_1.$$('span', { className: 'coveo-follow-item-icon-loading' }, SVGIcons_1.SVGIcons.icons.loading);
         SVGDom_1.SVGDom.addClassToSVGInContainer(loadingIcon.el, 'coveo-follow-item-icon-loading-svg');
         return loadingIcon.el;
     };

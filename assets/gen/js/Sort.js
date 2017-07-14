@@ -1,6 +1,6 @@
-webpackJsonpCoveo__temporary([16],{
+webpackJsonpCoveo__temporary([17],{
 
-/***/ 20:
+/***/ 16:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -45,12 +45,12 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var Component_1 = __webpack_require__(8);
-var SortCriteria_1 = __webpack_require__(435);
+var SortCriteria_1 = __webpack_require__(440);
 var ComponentOptions_1 = __webpack_require__(9);
 var Assert_1 = __webpack_require__(7);
 var Utils_1 = __webpack_require__(6);
 var Dom_1 = __webpack_require__(3);
-var Model_1 = __webpack_require__(17);
+var Model_1 = __webpack_require__(18);
 var QueryStateModel_1 = __webpack_require__(13);
 var QueryEvents_1 = __webpack_require__(11);
 var Initialization_1 = __webpack_require__(2);
@@ -58,9 +58,9 @@ var AnalyticsActionListMeta_1 = __webpack_require__(12);
 var KeyboardUtils_1 = __webpack_require__(23);
 var _ = __webpack_require__(1);
 var GlobalExports_1 = __webpack_require__(4);
-__webpack_require__(610);
+__webpack_require__(616);
 var SVGIcons_1 = __webpack_require__(15);
-var SVGDom_1 = __webpack_require__(20);
+var SVGDom_1 = __webpack_require__(16);
 /**
  * The Sort component renders a widget that the end user can interact with to sort query results according to a single
  * criterion or list of criteria.
@@ -93,9 +93,9 @@ var Sort = (function (_super) {
         }
         if (_this.isToggle()) {
             _this.icon = Dom_1.$$('span', { className: 'coveo-icon' }).el;
-            var iconAscending = Dom_1.$$('span', { className: 'coveo-sort-icon-ascending' }, SVGIcons_1.SVGIcons.arrowUp);
+            var iconAscending = Dom_1.$$('span', { className: 'coveo-sort-icon-ascending' }, SVGIcons_1.SVGIcons.icons.arrowUp);
             SVGDom_1.SVGDom.addClassToSVGInContainer(iconAscending.el, 'coveo-sort-icon-ascending-svg');
-            var iconDescending = Dom_1.$$('span', { className: 'coveo-sort-icon-descending' }, SVGIcons_1.SVGIcons.arrowDown);
+            var iconDescending = Dom_1.$$('span', { className: 'coveo-sort-icon-descending' }, SVGIcons_1.SVGIcons.icons.arrowDown);
             SVGDom_1.SVGDom.addClassToSVGInContainer(iconDescending.el, 'coveo-sort-icon-descending-svg');
             _this.icon.appendChild(iconAscending.el);
             _this.icon.appendChild(iconDescending.el);
@@ -267,7 +267,7 @@ Initialization_1.Initialization.registerAutoCreateComponent(Sort);
 
 /***/ }),
 
-/***/ 435:
+/***/ 440:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -373,7 +373,7 @@ exports.SortCriteria = SortCriteria;
 
 /***/ }),
 
-/***/ 610:
+/***/ 616:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

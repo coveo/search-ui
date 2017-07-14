@@ -1,4 +1,32 @@
-webpackJsonpCoveo__temporary([33],{
+webpackJsonpCoveo__temporary([23],{
+
+/***/ 16:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var SVGDom = (function () {
+    function SVGDom() {
+    }
+    SVGDom.addClassToSVGInContainer = function (svgContainer, classToAdd) {
+        var svgElement = svgContainer.querySelector('svg');
+        svgElement.setAttribute('class', "" + SVGDom.getClass(svgElement) + classToAdd);
+    };
+    SVGDom.removeClassFromSVGInContainer = function (svgContainer, classToRemove) {
+        var svgElement = svgContainer.querySelector('svg');
+        svgElement.setAttribute('class', SVGDom.getClass(svgElement).replace(classToRemove, ''));
+    };
+    SVGDom.getClass = function (svgElement) {
+        var className = svgElement.getAttribute('class');
+        return className ? className + ' ' : '';
+    };
+    return SVGDom;
+}());
+exports.SVGDom = SVGDom;
+
+
+/***/ }),
 
 /***/ 290:
 /***/ (function(module, exports, __webpack_require__) {
@@ -19,12 +47,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var Component_1 = __webpack_require__(8);
 var ComponentOptions_1 = __webpack_require__(9);
 var Initialization_1 = __webpack_require__(2);
-var CardOverlayEvents_1 = __webpack_require__(617);
+var CardOverlayEvents_1 = __webpack_require__(623);
 var Dom_1 = __webpack_require__(3);
 var Assert_1 = __webpack_require__(7);
 var KeyboardUtils_1 = __webpack_require__(23);
 var GlobalExports_1 = __webpack_require__(4);
-__webpack_require__(580);
+__webpack_require__(585);
+var SVGIcons_1 = __webpack_require__(15);
+var SVGDom_1 = __webpack_require__(16);
 /**
  * The CardOverlay component displays a button that the user can click to toggle the visibility of an overlay on top of
  * an {@link IQueryResult}. While this component typically populates a {@link CardActionBar} component, it is actually
@@ -114,7 +144,9 @@ var CardOverlay = (function (_super) {
         }
         this.overlay.appendChild(overlayBody);
         // Create footer
-        var overlayFooter = Dom_1.$$('div', { className: 'coveo-card-overlay-footer', tabindex: '0' }, Dom_1.$$('span', { className: 'coveo-icon coveo-sprites-arrow-down' }));
+        var icon = Dom_1.$$('span', { className: 'coveo-icon coveo-open-card-overlay' }, SVGIcons_1.SVGIcons.icons.arrowDown);
+        SVGDom_1.SVGDom.addClassToSVGInContainer(icon.el, 'coveo-open-card-overlay-svg');
+        var overlayFooter = Dom_1.$$('div', { className: 'coveo-card-overlay-footer', tabindex: '0' }, icon.el);
         overlayFooter.on('click', function () { return _this.toggleOverlay(false); });
         this.bind.on(overlayFooter.el, 'keyup', KeyboardUtils_1.KeyboardUtils.keypressAction(KeyboardUtils_1.KEYBOARD.ENTER, function () { return _this.toggleOverlay(false); }));
         this.overlay.appendChild(overlayFooter.el);
@@ -123,7 +155,7 @@ var CardOverlay = (function (_super) {
     CardOverlay.prototype.createButton = function (element) {
         var _this = this;
         if (this.options.icon) {
-            element.appendChild(Dom_1.$$('span', { className: 'coveo-icon ' + this.options.icon }).el);
+            element.appendChild(Dom_1.$$('span', { className: 'coveo-icon ' }, this.options.icon).el);
         }
         element.appendChild(Dom_1.$$('span', { className: 'coveo-label' }, this.options.title).el);
         element.setAttribute('tabindex', '0');
@@ -159,14 +191,14 @@ Initialization_1.Initialization.registerAutoCreateComponent(CardOverlay);
 
 /***/ }),
 
-/***/ 580:
+/***/ 585:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
 
-/***/ 617:
+/***/ 623:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";

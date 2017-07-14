@@ -16,15 +16,15 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var TableTemplate_1 = __webpack_require__(437);
+var TableTemplate_1 = __webpack_require__(442);
 var DefaultResultTemplate_1 = __webpack_require__(86);
 var Component_1 = __webpack_require__(8);
 var ComponentOptions_1 = __webpack_require__(9);
 var Assert_1 = __webpack_require__(7);
 var QueryEvents_1 = __webpack_require__(11);
-var Model_1 = __webpack_require__(17);
+var Model_1 = __webpack_require__(18);
 var QueryStateModel_1 = __webpack_require__(13);
-var QueryUtils_1 = __webpack_require__(18);
+var QueryUtils_1 = __webpack_require__(19);
 var Dom_1 = __webpack_require__(3);
 var AnalyticsActionListMeta_1 = __webpack_require__(12);
 var Initialization_1 = __webpack_require__(2);
@@ -34,18 +34,18 @@ var ResultListEvents_1 = __webpack_require__(32);
 var ResultLayoutEvents_1 = __webpack_require__(103);
 var Utils_1 = __webpack_require__(6);
 var DomUtils_1 = __webpack_require__(45);
-var DefaultRecommendationTemplate_1 = __webpack_require__(436);
+var DefaultRecommendationTemplate_1 = __webpack_require__(441);
 var TemplateList_1 = __webpack_require__(102);
 var TemplateCache_1 = __webpack_require__(49);
-var ResponsiveDefaultResultTemplate_1 = __webpack_require__(495);
+var ResponsiveDefaultResultTemplate_1 = __webpack_require__(500);
 var ResultListRenderer_1 = __webpack_require__(266);
-var ResultListTableRenderer_1 = __webpack_require__(497);
-var ResultListCardRenderer_1 = __webpack_require__(496);
+var ResultListTableRenderer_1 = __webpack_require__(502);
+var ResultListCardRenderer_1 = __webpack_require__(501);
 var _ = __webpack_require__(1);
 var GlobalExports_1 = __webpack_require__(4);
-__webpack_require__(488);
-__webpack_require__(487);
-__webpack_require__(486);
+__webpack_require__(493);
+__webpack_require__(492);
+__webpack_require__(491);
 var InitializationPlaceholder_1 = __webpack_require__(252);
 var RegisteredNamedMethods_1 = __webpack_require__(46);
 /**
@@ -799,7 +799,7 @@ var Utils_1 = __webpack_require__(6);
 var Initialization_1 = __webpack_require__(2);
 var _ = __webpack_require__(1);
 var GlobalExports_1 = __webpack_require__(4);
-__webpack_require__(591);
+__webpack_require__(596);
 /**
  * The OmniboxResultList component behaves exactly like the {@link ResultList} component (which it extends), except that
  * it renders itself inside the {@link Omnibox} component.
@@ -990,7 +990,7 @@ Initialization_1.Initialization.registerAutoCreateComponent(OmniboxResultList);
 
 /***/ }),
 
-/***/ 436:
+/***/ 441:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1032,7 +1032,7 @@ exports.DefaultRecommendationTemplate = DefaultRecommendationTemplate;
 
 /***/ }),
 
-/***/ 437:
+/***/ 442:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1097,28 +1097,28 @@ exports.TableTemplate = TableTemplate;
 
 /***/ }),
 
-/***/ 486:
+/***/ 491:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
 
-/***/ 487:
+/***/ 492:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
 
-/***/ 488:
+/***/ 493:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
 
-/***/ 495:
+/***/ 500:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1190,7 +1190,7 @@ exports.ResponsiveDefaultResultTemplate = ResponsiveDefaultResultTemplate;
 
 /***/ }),
 
-/***/ 496:
+/***/ 501:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1240,7 +1240,7 @@ exports.ResultListCardRenderer = ResultListCardRenderer;
 
 /***/ }),
 
-/***/ 497:
+/***/ 502:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1292,7 +1292,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var ResultListRenderer_1 = __webpack_require__(266);
-var TableTemplate_1 = __webpack_require__(437);
+var TableTemplate_1 = __webpack_require__(442);
 var Dom_1 = __webpack_require__(3);
 var _ = __webpack_require__(1);
 var ResultListTableRenderer = (function (_super) {
@@ -1349,7 +1349,7 @@ exports.ResultListTableRenderer = ResultListTableRenderer;
 
 /***/ }),
 
-/***/ 591:
+/***/ 596:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
@@ -1363,7 +1363,7 @@ exports.ResultListTableRenderer = ResultListTableRenderer;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var Dom_1 = __webpack_require__(3);
-var InitializationEvents_1 = __webpack_require__(16);
+var InitializationEvents_1 = __webpack_require__(17);
 var Component_1 = __webpack_require__(8);
 var SearchInterface_1 = __webpack_require__(21);
 var Utils_1 = __webpack_require__(6);

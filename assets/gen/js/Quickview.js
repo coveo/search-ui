@@ -1,6 +1,6 @@
 webpackJsonpCoveo__temporary([12],{
 
-/***/ 20:
+/***/ 16:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -66,19 +66,19 @@ var Component_1 = __webpack_require__(8);
 var ComponentOptions_1 = __webpack_require__(9);
 var DomUtils_1 = __webpack_require__(45);
 var Dom_1 = __webpack_require__(3);
-var DefaultQuickviewTemplate_1 = __webpack_require__(641);
+var DefaultQuickviewTemplate_1 = __webpack_require__(647);
 var ResultListEvents_1 = __webpack_require__(32);
-var StringUtils_1 = __webpack_require__(19);
-var QuickviewDocument_1 = __webpack_require__(642);
+var StringUtils_1 = __webpack_require__(20);
+var QuickviewDocument_1 = __webpack_require__(648);
 var QueryStateModel_1 = __webpack_require__(13);
 var QuickviewEvents_1 = __webpack_require__(268);
 var Initialization_1 = __webpack_require__(2);
 var KeyboardUtils_1 = __webpack_require__(23);
 var ExternalModulesShim_1 = __webpack_require__(27);
 var GlobalExports_1 = __webpack_require__(4);
-__webpack_require__(597);
+__webpack_require__(602);
 var SVGIcons_1 = __webpack_require__(15);
-var SVGDom_1 = __webpack_require__(20);
+var SVGDom_1 = __webpack_require__(16);
 /**
  * The `Quickview` component renders a button / link which the end user can click to open a modal box containing certain
  * content about a result. Most of the time, this component references a [`QuickviewDocument`]{@link QuickviewDocument}
@@ -151,7 +151,7 @@ var Quickview = (function (_super) {
         // If there is no content inside the Quickview div,
         // we need to add something that will show up in the result template itself
         if (/^\s*$/.test(_this.element.innerHTML)) {
-            var iconForQuickview = Dom_1.$$('div', { className: 'coveo-icon-for-quickview' }, SVGIcons_1.SVGIcons.quickview);
+            var iconForQuickview = Dom_1.$$('div', { className: 'coveo-icon-for-quickview' }, SVGIcons_1.SVGIcons.icons.quickview);
             SVGDom_1.SVGDom.addClassToSVGInContainer(iconForQuickview.el, 'coveo-icon-for-quickview-svg');
             var captionForQuickview = Dom_1.$$('div', { className: 'coveo-caption-for-icon', tabindex: 0 }, 'Quickview'.toLocaleString()).el;
             var div = Dom_1.$$('div');
@@ -382,14 +382,14 @@ Initialization_1.Initialization.registerAutoCreateComponent(Quickview);
 
 /***/ }),
 
-/***/ 597:
+/***/ 602:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
 
-/***/ 641:
+/***/ 647:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -421,7 +421,7 @@ exports.DefaultQuickviewTemplate = DefaultQuickviewTemplate;
 
 /***/ }),
 
-/***/ 642:
+/***/ 648:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";

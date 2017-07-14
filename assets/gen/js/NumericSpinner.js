@@ -1,4 +1,32 @@
-webpackJsonpCoveo__temporary([65],{
+webpackJsonpCoveo__temporary([40],{
+
+/***/ 16:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var SVGDom = (function () {
+    function SVGDom() {
+    }
+    SVGDom.addClassToSVGInContainer = function (svgContainer, classToAdd) {
+        var svgElement = svgContainer.querySelector('svg');
+        svgElement.setAttribute('class', "" + SVGDom.getClass(svgElement) + classToAdd);
+    };
+    SVGDom.removeClassFromSVGInContainer = function (svgContainer, classToRemove) {
+        var svgElement = svgContainer.querySelector('svg');
+        svgElement.setAttribute('class', SVGDom.getClass(svgElement).replace(classToRemove, ''));
+    };
+    SVGDom.getClass = function (svgElement) {
+        var className = svgElement.getAttribute('class');
+        return className ? className + ' ' : '';
+    };
+    return SVGDom;
+}());
+exports.SVGDom = SVGDom;
+
+
+/***/ }),
 
 /***/ 83:
 /***/ (function(module, exports, __webpack_require__) {
@@ -8,6 +36,8 @@ webpackJsonpCoveo__temporary([65],{
 Object.defineProperty(exports, "__esModule", { value: true });
 var Dom_1 = __webpack_require__(3);
 var GlobalExports_1 = __webpack_require__(4);
+var SVGIcons_1 = __webpack_require__(15);
+var SVGDom_1 = __webpack_require__(16);
 /**
  * A numeric spinner widget with standard styling.
  */
@@ -97,7 +127,12 @@ var NumericSpinner = (function () {
         var numericSpinner = Dom_1.$$('div', { className: 'coveo-numeric-spinner' });
         var numberInput = Dom_1.$$('input', { className: 'coveo-number-input', type: 'text' });
         var addOn = Dom_1.$$('span', { className: 'coveo-add-on' });
-        addOn.el.innerHTML = "<div class=\"coveo-spinner-up\">\n                              <i class=\"coveo-sprites-arrow-up\"></i>\n                          </div>\n                          <div class=\"coveo-spinner-down\">\n                              <i class=\"coveo-sprites-arrow-down\"></i>\n                          </div>";
+        var arrowUp = Dom_1.$$('div', { className: 'coveo-spinner-up' }, SVGIcons_1.SVGIcons.icons.arrowUp);
+        SVGDom_1.SVGDom.addClassToSVGInContainer(arrowUp.el, 'coveo-spinner-up-svg');
+        var arrowDown = Dom_1.$$('div', { className: 'coveo-spinner-down' }, SVGIcons_1.SVGIcons.icons.arrowDown);
+        SVGDom_1.SVGDom.addClassToSVGInContainer(arrowDown.el, 'coveo-spinner-down-svg');
+        addOn.append(arrowUp.el);
+        addOn.append(arrowDown.el);
         numericSpinner.append(numberInput.el);
         numericSpinner.append(addOn.el);
         this.element = numericSpinner.el;

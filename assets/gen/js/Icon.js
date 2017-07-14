@@ -1,4 +1,4 @@
-webpackJsonpCoveo__temporary([64],{
+webpackJsonpCoveo__temporary([65],{
 
 /***/ 249:
 /***/ (function(module, exports, __webpack_require__) {
@@ -19,7 +19,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var Component_1 = __webpack_require__(8);
 var ComponentOptions_1 = __webpack_require__(9);
 var Assert_1 = __webpack_require__(7);
-var QueryUtils_1 = __webpack_require__(18);
+var QueryUtils_1 = __webpack_require__(19);
 var Initialization_1 = __webpack_require__(2);
 var Utils_1 = __webpack_require__(6);
 var FileTypes_1 = __webpack_require__(85);
@@ -136,7 +136,7 @@ Icon.options = {
      * Default value is `undefined`, which means that the Coveo JavaScript Search Framework outputs a suitable icon
      * depending on the result file type.
      */
-    value: ComponentOptions_1.ComponentOptions.buildIconOption(),
+    value: ComponentOptions_1.ComponentOptions.buildStringOption(),
     /**
      * Specifies whether the Icon component should output the smaller version of the icon instead of the regular one.
      *

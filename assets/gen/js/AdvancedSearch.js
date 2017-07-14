@@ -1,4 +1,4 @@
-webpackJsonpCoveo__temporary([4,44,45,65,66],{
+webpackJsonpCoveo__temporary([4,40,47,48,66],{
 
 /***/ 101:
 /***/ (function(module, exports, __webpack_require__) {
@@ -11,7 +11,7 @@ var DateUtils_1 = __webpack_require__(29);
 var GlobalExports_1 = __webpack_require__(4);
 var Strings_1 = __webpack_require__(10);
 var Globalize = __webpack_require__(25);
-var Pikaday = __webpack_require__(490);
+var Pikaday = __webpack_require__(495);
 /**
  * A date picker widget with standard styling.
  */
@@ -111,7 +111,7 @@ exports.DatePicker = DatePicker;
 
 /***/ }),
 
-/***/ 20:
+/***/ 16:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -355,12 +355,12 @@ var SettingsEvents_1 = __webpack_require__(39);
 var Initialization_1 = __webpack_require__(2);
 var Strings_1 = __webpack_require__(10);
 var Dom_1 = __webpack_require__(3);
-var AdvancedSearchInputFactory_1 = __webpack_require__(618);
+var AdvancedSearchInputFactory_1 = __webpack_require__(624);
 var AnalyticsActionListMeta_1 = __webpack_require__(12);
-var QuerySummaryEvents_1 = __webpack_require__(438);
+var QuerySummaryEvents_1 = __webpack_require__(443);
 var _ = __webpack_require__(1);
 var GlobalExports_1 = __webpack_require__(4);
-__webpack_require__(575);
+__webpack_require__(580);
 var NumericSpinner_1 = __webpack_require__(83);
 var DatePicker_1 = __webpack_require__(101);
 var Dropdown_1 = __webpack_require__(53);
@@ -369,7 +369,7 @@ var RadioButton_1 = __webpack_require__(82);
 var ExternalModulesShim_1 = __webpack_require__(27);
 var BreadcrumbEvents_1 = __webpack_require__(43);
 var SVGIcons_1 = __webpack_require__(15);
-var SVGDom_1 = __webpack_require__(20);
+var SVGDom_1 = __webpack_require__(16);
 /**
  * The `AdvancedSearch` component is meant to render a section in the [`Settings`]{@link Settings} menu to allow the end
  * user to easily create complex queries to send to the index.
@@ -463,7 +463,7 @@ var AdvancedSearch = (function (_super) {
             title.text(Strings_1.l('FiltersInAdvancedSearch') + ' : ');
             var clear = Dom_1.$$('span', {
                 className: 'coveo-advanced-search-breadcrumb-clear'
-            }, SVGIcons_1.SVGIcons.checkboxHookExclusionMore);
+            }, SVGIcons_1.SVGIcons.icons.checkboxHookExclusionMore);
             SVGDom_1.SVGDom.addClassToSVGInContainer(clear.el, 'coveo-advanced-search-breadcrumb-clear-svg');
             clear.on('click', function () {
                 _this.handleClearBreadcrumb();
@@ -496,7 +496,7 @@ var AdvancedSearch = (function (_super) {
             className: 'coveo-advanced-search',
             onOpen: function () { return _this.open(); },
             onClose: function () { return _this.close(); },
-            svgIcon: SVGIcons_1.SVGIcons.dropdownPreferences,
+            svgIcon: SVGIcons_1.SVGIcons.icons.dropdownPreferences,
             svgIconClassName: 'coveo-advanced-search-svg'
         });
     };
@@ -659,7 +659,7 @@ Initialization_1.Initialization.registerAutoCreateComponent(AdvancedSearch);
 
 /***/ }),
 
-/***/ 438:
+/***/ 443:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -685,14 +685,14 @@ exports.QuerySummaryEvents = QuerySummaryEvents;
 
 /***/ }),
 
-/***/ 483:
+/***/ 488:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
 
-/***/ 490:
+/***/ 495:
 /***/ (function(module, exports, __webpack_require__) {
 
 /*!
@@ -2071,29 +2071,29 @@ exports.Dropdown = Dropdown;
 
 /***/ }),
 
-/***/ 575:
+/***/ 580:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
 
-/***/ 618:
+/***/ 624:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var AllKeywordsInput_1 = __webpack_require__(625);
-var ExactKeywordsInput_1 = __webpack_require__(627);
-var AnyKeywordsInput_1 = __webpack_require__(626);
-var NoneKeywordsInput_1 = __webpack_require__(628);
-var AnytimeDateInput_1 = __webpack_require__(619);
-var InTheLastDateInput_1 = __webpack_require__(621);
-var BetweenDateInput_1 = __webpack_require__(620);
-var SimpleFieldInput_1 = __webpack_require__(623);
-var AdvancedFieldInput_1 = __webpack_require__(622);
-var SizeInput_1 = __webpack_require__(624);
+var AllKeywordsInput_1 = __webpack_require__(631);
+var ExactKeywordsInput_1 = __webpack_require__(633);
+var AnyKeywordsInput_1 = __webpack_require__(632);
+var NoneKeywordsInput_1 = __webpack_require__(634);
+var AnytimeDateInput_1 = __webpack_require__(625);
+var InTheLastDateInput_1 = __webpack_require__(627);
+var BetweenDateInput_1 = __webpack_require__(626);
+var SimpleFieldInput_1 = __webpack_require__(629);
+var AdvancedFieldInput_1 = __webpack_require__(628);
+var SizeInput_1 = __webpack_require__(630);
 var AdvancedSearchInputFactory = (function () {
     function AdvancedSearchInputFactory(endpoint, root) {
         this.endpoint = endpoint;
@@ -2162,7 +2162,7 @@ exports.AdvancedSearchInputFactory = AdvancedSearchInputFactory;
 
 /***/ }),
 
-/***/ 619:
+/***/ 625:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2214,7 +2214,7 @@ exports.AnytimeDateInput = AnytimeDateInput;
 
 /***/ }),
 
-/***/ 620:
+/***/ 626:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2293,7 +2293,7 @@ exports.BetweenDateInput = BetweenDateInput;
 
 /***/ }),
 
-/***/ 621:
+/***/ 627:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2359,7 +2359,7 @@ exports.InTheLastDateInput = InTheLastDateInput;
 
 /***/ }),
 
-/***/ 622:
+/***/ 628:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2427,7 +2427,7 @@ exports.AdvancedFieldInput = AdvancedFieldInput;
 
 /***/ }),
 
-/***/ 623:
+/***/ 629:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2504,7 +2504,7 @@ exports.SimpleFieldInput = SimpleFieldInput;
 
 /***/ }),
 
-/***/ 624:
+/***/ 630:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2586,7 +2586,7 @@ exports.SizeInput = SizeInput;
 
 /***/ }),
 
-/***/ 625:
+/***/ 631:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2618,7 +2618,7 @@ exports.AllKeywordsInput = AllKeywordsInput;
 
 /***/ }),
 
-/***/ 626:
+/***/ 632:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2661,7 +2661,7 @@ exports.AnyKeywordsInput = AnyKeywordsInput;
 
 /***/ }),
 
-/***/ 627:
+/***/ 633:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2697,7 +2697,7 @@ exports.ExactKeywordsInput = ExactKeywordsInput;
 
 /***/ }),
 
-/***/ 628:
+/***/ 634:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2749,7 +2749,7 @@ exports.NoneKeywordsInput = NoneKeywordsInput;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var Dom_1 = __webpack_require__(3);
-__webpack_require__(483);
+__webpack_require__(488);
 var GlobalExports_1 = __webpack_require__(4);
 /**
  * A radio button widget with standard styling.
@@ -2863,6 +2863,8 @@ exports.RadioButton = RadioButton;
 Object.defineProperty(exports, "__esModule", { value: true });
 var Dom_1 = __webpack_require__(3);
 var GlobalExports_1 = __webpack_require__(4);
+var SVGIcons_1 = __webpack_require__(15);
+var SVGDom_1 = __webpack_require__(16);
 /**
  * A numeric spinner widget with standard styling.
  */
@@ -2952,7 +2954,12 @@ var NumericSpinner = (function () {
         var numericSpinner = Dom_1.$$('div', { className: 'coveo-numeric-spinner' });
         var numberInput = Dom_1.$$('input', { className: 'coveo-number-input', type: 'text' });
         var addOn = Dom_1.$$('span', { className: 'coveo-add-on' });
-        addOn.el.innerHTML = "<div class=\"coveo-spinner-up\">\n                              <i class=\"coveo-sprites-arrow-up\"></i>\n                          </div>\n                          <div class=\"coveo-spinner-down\">\n                              <i class=\"coveo-sprites-arrow-down\"></i>\n                          </div>";
+        var arrowUp = Dom_1.$$('div', { className: 'coveo-spinner-up' }, SVGIcons_1.SVGIcons.icons.arrowUp);
+        SVGDom_1.SVGDom.addClassToSVGInContainer(arrowUp.el, 'coveo-spinner-up-svg');
+        var arrowDown = Dom_1.$$('div', { className: 'coveo-spinner-down' }, SVGIcons_1.SVGIcons.icons.arrowDown);
+        SVGDom_1.SVGDom.addClassToSVGInContainer(arrowDown.el, 'coveo-spinner-down-svg');
+        addOn.append(arrowUp.el);
+        addOn.append(arrowDown.el);
         numericSpinner.append(numberInput.el);
         numericSpinner.append(addOn.el);
         this.element = numericSpinner.el;

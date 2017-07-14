@@ -1,4 +1,4 @@
-webpackJsonpCoveo__temporary([14,45,47],{
+webpackJsonpCoveo__temporary([14,48,50],{
 
 /***/ 322:
 /***/ (function(module, exports, __webpack_require__) {
@@ -269,14 +269,14 @@ Initialization_1.Initialization.registerAutoCreateComponent(ResultsPreferences);
 
 /***/ }),
 
-/***/ 482:
+/***/ 487:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
 
-/***/ 483:
+/***/ 488:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
@@ -290,7 +290,7 @@ Initialization_1.Initialization.registerAutoCreateComponent(ResultsPreferences);
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var Dom_1 = __webpack_require__(3);
-__webpack_require__(483);
+__webpack_require__(488);
 var GlobalExports_1 = __webpack_require__(4);
 /**
  * A radio button widget with standard styling.
@@ -404,7 +404,7 @@ exports.RadioButton = RadioButton;
 Object.defineProperty(exports, "__esModule", { value: true });
 var Dom_1 = __webpack_require__(3);
 var _ = __webpack_require__(1);
-__webpack_require__(482);
+__webpack_require__(487);
 var GlobalExports_1 = __webpack_require__(4);
 /**
  * A simple `fieldset` HTMLElement containing multiple form widgets.

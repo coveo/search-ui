@@ -1,4 +1,4 @@
-webpackJsonpCoveo__temporary([54],{
+webpackJsonpCoveo__temporary([57],{
 
 /***/ 311:
 /***/ (function(module, exports, __webpack_require__) {
@@ -26,8 +26,8 @@ var Dom_1 = __webpack_require__(3);
 var GlobalExports_1 = __webpack_require__(4);
 var ExternalModulesShim_1 = __webpack_require__(27);
 var _ = __webpack_require__(1);
-__webpack_require__(593);
-var InitializationEvents_1 = __webpack_require__(16);
+__webpack_require__(598);
+var InitializationEvents_1 = __webpack_require__(17);
 var SVGIcons_1 = __webpack_require__(15);
 /**
  * The PreferencesPanel component renders a **Preferences** item inside the {@link Settings} component which the end
@@ -59,7 +59,7 @@ var PreferencesPanel = (function (_super) {
                 text: Strings_1.l('Preferences'),
                 onOpen: function () { return _this.open(); },
                 onClose: function () { return _this.close(); },
-                svgIcon: SVGIcons_1.SVGIcons.dropdownPreferences,
+                svgIcon: SVGIcons_1.SVGIcons.icons.dropdownPreferences,
                 svgIconClassName: 'coveo-preferences-panel-svg'
             });
         });
@@ -126,7 +126,7 @@ Initialization_1.Initialization.registerAutoCreateComponent(PreferencesPanel);
 
 /***/ }),
 
-/***/ 593:
+/***/ 598:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

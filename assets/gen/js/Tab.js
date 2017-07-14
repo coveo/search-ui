@@ -1,4 +1,32 @@
-webpackJsonpCoveo__temporary([11],{
+webpackJsonpCoveo__temporary([10],{
+
+/***/ 16:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var SVGDom = (function () {
+    function SVGDom() {
+    }
+    SVGDom.addClassToSVGInContainer = function (svgContainer, classToAdd) {
+        var svgElement = svgContainer.querySelector('svg');
+        svgElement.setAttribute('class', "" + SVGDom.getClass(svgElement) + classToAdd);
+    };
+    SVGDom.removeClassFromSVGInContainer = function (svgContainer, classToRemove) {
+        var svgElement = svgContainer.querySelector('svg');
+        svgElement.setAttribute('class', SVGDom.getClass(svgElement).replace(classToRemove, ''));
+    };
+    SVGDom.getClass = function (svgElement) {
+        var className = svgElement.getAttribute('class');
+        return className ? className + ' ' : '';
+    };
+    return SVGDom;
+}());
+exports.SVGDom = SVGDom;
+
+
+/***/ }),
 
 /***/ 256:
 /***/ (function(module, exports, __webpack_require__) {
@@ -16,12 +44,12 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var ResponsiveTabs_1 = __webpack_require__(648);
+var ResponsiveTabs_1 = __webpack_require__(654);
 var Component_1 = __webpack_require__(8);
 var ComponentOptions_1 = __webpack_require__(9);
-var Model_1 = __webpack_require__(17);
+var Model_1 = __webpack_require__(18);
 var QueryEvents_1 = __webpack_require__(11);
-var InitializationEvents_1 = __webpack_require__(16);
+var InitializationEvents_1 = __webpack_require__(17);
 var QueryStateModel_1 = __webpack_require__(13);
 var AnalyticsActionListMeta_1 = __webpack_require__(12);
 var SearchEndpoint_1 = __webpack_require__(37);
@@ -32,7 +60,7 @@ var Dom_1 = __webpack_require__(3);
 var KeyboardUtils_1 = __webpack_require__(23);
 var _ = __webpack_require__(1);
 var GlobalExports_1 = __webpack_require__(4);
-__webpack_require__(611);
+__webpack_require__(617);
 /**
  * The Tab component renders a bar that allows the end user to select a specific search interface.
  *
@@ -271,7 +299,7 @@ Tab.options = {
      *
      * @deprecated This options is mostly kept for legacy reasons. If possible, you should avoid using it.
      */
-    icon: ComponentOptions_1.ComponentOptions.buildIconOption(),
+    icon: ComponentOptions_1.ComponentOptions.buildStringOption(),
     /**
      * Specifies an advanced expression or filter that the Tab should add to any outgoing query.
      *
@@ -434,28 +462,28 @@ exports.EventsUtils = EventsUtils;
 
 /***/ }),
 
-/***/ 600:
+/***/ 605:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
 
-/***/ 611:
+/***/ 617:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
 
-/***/ 648:
+/***/ 654:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var Dom_1 = __webpack_require__(3);
-var InitializationEvents_1 = __webpack_require__(16);
+var InitializationEvents_1 = __webpack_require__(17);
 var PopupUtils_1 = __webpack_require__(50);
 var EventsUtils_1 = __webpack_require__(263);
 var Utils_1 = __webpack_require__(6);
@@ -468,7 +496,9 @@ var ResponsiveComponentsUtils_1 = __webpack_require__(89);
 var Strings_1 = __webpack_require__(10);
 var ResponsiveComponents_1 = __webpack_require__(40);
 var _ = __webpack_require__(1);
-__webpack_require__(600);
+__webpack_require__(605);
+var SVGIcons_1 = __webpack_require__(15);
+var SVGDom_1 = __webpack_require__(16);
 var ResponsiveTabs = (function () {
     function ResponsiveTabs(coveoRoot, ID) {
         this.coveoRoot = coveoRoot;
@@ -624,7 +654,9 @@ var ResponsiveTabs = (function () {
         var dropdownHeader = Dom_1.$$('a', { className: 'coveo-dropdown-header coveo-tab-dropdown-header' });
         var content = Dom_1.$$('p');
         content.text(this.dropdownHeaderLabel);
-        content.el.appendChild(Dom_1.$$('span', { className: 'coveo-sprites-more-tabs' }).el);
+        var icon = Dom_1.$$('span', { className: 'coveo-more-tabs' }, SVGIcons_1.SVGIcons.icons.arrowDown);
+        SVGDom_1.SVGDom.addClassToSVGInContainer(icon.el, 'coveo-more-tabs-svg');
+        content.el.appendChild(icon.el);
         dropdownHeader.el.appendChild(content.el);
         return dropdownHeader;
     };
@@ -799,7 +831,7 @@ exports.ResponsiveTabs = ResponsiveTabs;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var Dom_1 = __webpack_require__(3);
-var InitializationEvents_1 = __webpack_require__(16);
+var InitializationEvents_1 = __webpack_require__(17);
 var Component_1 = __webpack_require__(8);
 var SearchInterface_1 = __webpack_require__(21);
 var Utils_1 = __webpack_require__(6);

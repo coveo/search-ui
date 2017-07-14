@@ -1,6 +1,6 @@
-webpackJsonpCoveo__temporary([36],{
+webpackJsonpCoveo__temporary([38],{
 
-/***/ 20:
+/***/ 16:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -52,7 +52,7 @@ var AnalyticsActionListMeta_1 = __webpack_require__(12);
 var Initialization_1 = __webpack_require__(2);
 var GlobalExports_1 = __webpack_require__(4);
 var SVGIcons_1 = __webpack_require__(15);
-var SVGDom_1 = __webpack_require__(20);
+var SVGDom_1 = __webpack_require__(16);
 /**
  * The SearchButton component renders a search icon that the end user can click to trigger a new query.
  *
@@ -76,9 +76,9 @@ var SearchButton = (function (_super) {
         _this.bind.on(element, 'click', function () { return _this.handleClick(); });
         // Provide a magnifier icon if element contains nothing
         if (Utils_1.Utils.trim(Dom_1.$$(_this.element).text()) == '') {
-            var svgMagnifierContainer = Dom_1.$$('span', { className: 'coveo-search-button' }, SVGIcons_1.SVGIcons.search).el;
+            var svgMagnifierContainer = Dom_1.$$('span', { className: 'coveo-search-button' }, SVGIcons_1.SVGIcons.icons.search).el;
             SVGDom_1.SVGDom.addClassToSVGInContainer(svgMagnifierContainer, 'coveo-search-button-svg');
-            var svgLoadingAnimationContainer = Dom_1.$$('span', { className: 'coveo-search-button-loading' }, SVGIcons_1.SVGIcons.loading).el;
+            var svgLoadingAnimationContainer = Dom_1.$$('span', { className: 'coveo-search-button-loading' }, SVGIcons_1.SVGIcons.icons.loading).el;
             SVGDom_1.SVGDom.addClassToSVGInContainer(svgLoadingAnimationContainer, 'coveo-search-button-loading-svg');
             element.appendChild(svgMagnifierContainer);
             element.appendChild(svgLoadingAnimationContainer);

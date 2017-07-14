@@ -1,4 +1,4 @@
-webpackJsonpCoveo__temporary([53],{
+webpackJsonpCoveo__temporary([56],{
 
 /***/ 313:
 /***/ (function(module, exports, __webpack_require__) {
@@ -25,7 +25,7 @@ var Strings_1 = __webpack_require__(10);
 var Initialization_1 = __webpack_require__(2);
 var Globalize = __webpack_require__(25);
 var GlobalExports_1 = __webpack_require__(4);
-__webpack_require__(595);
+__webpack_require__(600);
 /**
  * The QueryDuration component displays the duration of the last query execution.
  *
@@ -102,7 +102,7 @@ Initialization_1.Initialization.registerAutoCreateComponent(QueryDuration);
 
 /***/ }),
 
-/***/ 595:
+/***/ 600:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

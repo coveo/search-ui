@@ -1,4 +1,4 @@
-webpackJsonpCoveo__temporary([39],{
+webpackJsonpCoveo__temporary([42],{
 
 /***/ 267:
 /***/ (function(module, exports, __webpack_require__) {

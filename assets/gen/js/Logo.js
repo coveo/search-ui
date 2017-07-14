@@ -1,6 +1,6 @@
-webpackJsonpCoveo__temporary([37],{
+webpackJsonpCoveo__temporary([39],{
 
-/***/ 20:
+/***/ 16:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -51,7 +51,7 @@ var Dom_1 = __webpack_require__(3);
 var QueryEvents_1 = __webpack_require__(11);
 var GlobalExports_1 = __webpack_require__(4);
 var SVGIcons_1 = __webpack_require__(15);
-var SVGDom_1 = __webpack_require__(20);
+var SVGDom_1 = __webpack_require__(16);
 /**
  * The Logo component adds a clickable Coveo logo in the search interface.
  */
@@ -72,7 +72,7 @@ var Logo = (function (_super) {
         var link = Dom_1.$$('a', {
             className: 'coveo-powered-by coveo-footer-logo',
             href: 'http://www.coveo.com/'
-        }, SVGIcons_1.SVGIcons.coveoPoweredBy);
+        }, SVGIcons_1.SVGIcons.icons.coveoPoweredBy);
         SVGDom_1.SVGDom.addClassToSVGInContainer(link.el, 'coveo-powered-by-svg');
         _this.element.appendChild(link.el);
         _this.bind.onRootElement(QueryEvents_1.QueryEvents.noResults, function () { return _this.hide(); });

@@ -1,4 +1,4 @@
-webpackJsonpCoveo__temporary([29],{
+webpackJsonpCoveo__temporary([31],{
 
 /***/ 314:
 /***/ (function(module, exports, __webpack_require__) {
@@ -26,10 +26,10 @@ var AnalyticsActionListMeta_1 = __webpack_require__(12);
 var Initialization_1 = __webpack_require__(2);
 var QueryStateModel_1 = __webpack_require__(13);
 var Globalize = __webpack_require__(25);
-var QuerySummaryEvents_1 = __webpack_require__(438);
+var QuerySummaryEvents_1 = __webpack_require__(443);
 var _ = __webpack_require__(1);
 var GlobalExports_1 = __webpack_require__(4);
-__webpack_require__(596);
+__webpack_require__(601);
 /**
  * The QuerySummary component can display information about the currently displayed range of results (e.g., "Results
  * 1-10 of 123").
@@ -179,7 +179,7 @@ Initialization_1.Initialization.registerAutoCreateComponent(QuerySummary);
 
 /***/ }),
 
-/***/ 438:
+/***/ 443:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -205,7 +205,7 @@ exports.QuerySummaryEvents = QuerySummaryEvents;
 
 /***/ }),
 
-/***/ 596:
+/***/ 601:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

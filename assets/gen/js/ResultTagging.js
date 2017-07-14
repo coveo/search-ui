@@ -1,6 +1,6 @@
-webpackJsonpCoveo__temporary([26],{
+webpackJsonpCoveo__temporary([27],{
 
-/***/ 20:
+/***/ 16:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -49,7 +49,7 @@ var ComponentOptions_1 = __webpack_require__(9);
 var Assert_1 = __webpack_require__(7);
 var Utils_1 = __webpack_require__(6);
 var Initialization_1 = __webpack_require__(2);
-var StringUtils_1 = __webpack_require__(19);
+var StringUtils_1 = __webpack_require__(20);
 var Strings_1 = __webpack_require__(10);
 var KeyboardUtils_1 = __webpack_require__(23);
 var QueryStateModel_1 = __webpack_require__(13);
@@ -57,9 +57,9 @@ var Dom_1 = __webpack_require__(3);
 var AnalyticsActionListMeta_1 = __webpack_require__(12);
 var _ = __webpack_require__(1);
 var GlobalExports_1 = __webpack_require__(4);
-__webpack_require__(604);
+__webpack_require__(610);
 var SVGIcons_1 = __webpack_require__(15);
-var SVGDom_1 = __webpack_require__(20);
+var SVGDom_1 = __webpack_require__(16);
 /**
  * The ResultTagging component lists the current tag field values of its associated result and renders a control that
  * allows the end user to add values to a tag field.
@@ -158,7 +158,7 @@ var ResultTagging = (function (_super) {
         tag.el.appendChild(this.buildShortenedTagWithTitle(tagValue));
         var deleteIcon = Dom_1.$$('span', {
             className: 'coveo-result-tagging-delete-icon'
-        }, SVGIcons_1.SVGIcons.checkboxHookExclusionMore);
+        }, SVGIcons_1.SVGIcons.icons.checkboxHookExclusionMore);
         SVGDom_1.SVGDom.addClassToSVGInContainer(deleteIcon.el, 'coveo-result-tagging-delete-icon-svg');
         tag.el.appendChild(deleteIcon.el);
         deleteIcon.on('click', function () {
@@ -206,7 +206,7 @@ var ResultTagging = (function (_super) {
         var _this = this;
         var icon = Dom_1.$$('div', {
             className: 'coveo-result-tagging-add-tag-tick-icon'
-        }, SVGIcons_1.SVGIcons.taggingOk);
+        }, SVGIcons_1.SVGIcons.icons.taggingOk);
         SVGDom_1.SVGDom.addClassToSVGInContainer(icon.el, 'coveo-result-tagging-add-tag-tick-icon-svg');
         var clickable = Dom_1.$$('span');
         clickable.on('click', function () {
@@ -219,7 +219,7 @@ var ResultTagging = (function (_super) {
         var _this = this;
         var icon = Dom_1.$$('div', {
             className: 'coveo-result-tagging-clear-icon'
-        }, SVGIcons_1.SVGIcons.checkboxHookExclusionMore);
+        }, SVGIcons_1.SVGIcons.icons.checkboxHookExclusionMore);
         SVGDom_1.SVGDom.addClassToSVGInContainer(icon.el, 'coveo-result-tagging-clear-icon-svg');
         var clickable = Dom_1.$$('span');
         clickable.on('click', function () {
@@ -457,7 +457,7 @@ Initialization_1.Initialization.registerAutoCreateComponent(ResultTagging);
 
 /***/ }),
 
-/***/ 604:
+/***/ 610:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

@@ -18,18 +18,18 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var Component_1 = __webpack_require__(8);
 var ComponentOptions_1 = __webpack_require__(9);
-var Cell_1 = __webpack_require__(638);
-var DefaultMatrixResultPreviewTemplate_1 = __webpack_require__(639);
+var Cell_1 = __webpack_require__(644);
+var DefaultMatrixResultPreviewTemplate_1 = __webpack_require__(645);
 var Dom_1 = __webpack_require__(3);
 var QueryEvents_1 = __webpack_require__(11);
 var QueryStateModel_1 = __webpack_require__(13);
 var Utils_1 = __webpack_require__(6);
 var Initialization_1 = __webpack_require__(2);
-var QueryUtils_1 = __webpack_require__(18);
+var QueryUtils_1 = __webpack_require__(19);
 var Globalize = __webpack_require__(25);
 var _ = __webpack_require__(1);
 var GlobalExports_1 = __webpack_require__(4);
-__webpack_require__(590);
+__webpack_require__(595);
 /**
  * The Matrix component uses the values of two fields (row and column) to display the results of the specified computed
  * field in a table.
@@ -813,14 +813,14 @@ Initialization_1.Initialization.registerAutoCreateComponent(Matrix);
 
 /***/ }),
 
-/***/ 590:
+/***/ 595:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
 
-/***/ 638:
+/***/ 644:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -915,7 +915,7 @@ exports.Cell = Cell;
 
 /***/ }),
 
-/***/ 639:
+/***/ 645:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";

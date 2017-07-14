@@ -1,6 +1,6 @@
-webpackJsonpCoveo__temporary([30],{
+webpackJsonpCoveo__temporary([32],{
 
-/***/ 20:
+/***/ 16:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -48,7 +48,7 @@ var Component_1 = __webpack_require__(8);
 var ComponentOptions_1 = __webpack_require__(9);
 var DeviceUtils_1 = __webpack_require__(22);
 var QueryEvents_1 = __webpack_require__(11);
-var Model_1 = __webpack_require__(17);
+var Model_1 = __webpack_require__(18);
 var QueryStateModel_1 = __webpack_require__(13);
 var QueryStateModel_2 = __webpack_require__(13);
 var AnalyticsActionListMeta_1 = __webpack_require__(12);
@@ -58,9 +58,9 @@ var Strings_1 = __webpack_require__(10);
 var Dom_1 = __webpack_require__(3);
 var KeyboardUtils_1 = __webpack_require__(23);
 var GlobalExports_1 = __webpack_require__(4);
-__webpack_require__(592);
+__webpack_require__(597);
 var SVGIcons_1 = __webpack_require__(15);
-var SVGDom_1 = __webpack_require__(20);
+var SVGDom_1 = __webpack_require__(16);
 /**
  * The Pager component attaches itself to a `div` element and renders widgets that allow the end user to navigate
  * through the different result pages.
@@ -267,7 +267,7 @@ var Pager = (function (_super) {
             var previous = document.createElement('li');
             Dom_1.$$(previous).addClass(['coveo-pager-previous', 'coveo-pager-anchor', 'coveo-pager-list-item']);
             var buttonLink = document.createElement('a');
-            var buttonIcon = Dom_1.$$('span', { className: 'coveo-pager-previous-icon' }, SVGIcons_1.SVGIcons.pagerLeftArrow).el;
+            var buttonIcon = Dom_1.$$('span', { className: 'coveo-pager-previous-icon' }, SVGIcons_1.SVGIcons.icons.pagerLeftArrow).el;
             SVGDom_1.SVGDom.addClassToSVGInContainer(buttonIcon, 'coveo-pager-previous-icon-svg');
             buttonLink.appendChild(buttonIcon);
             buttonLink.setAttribute('title', Strings_1.l('Previous'));
@@ -279,7 +279,7 @@ var Pager = (function (_super) {
             var next = document.createElement('li');
             Dom_1.$$(next).addClass(['coveo-pager-next', 'coveo-pager-anchor', 'coveo-pager-list-item']);
             var buttonLink = document.createElement('a');
-            var buttonIcon = Dom_1.$$('span', { className: 'coveo-pager-next-icon' }, SVGIcons_1.SVGIcons.pagerRightArrow).el;
+            var buttonIcon = Dom_1.$$('span', { className: 'coveo-pager-next-icon' }, SVGIcons_1.SVGIcons.icons.pagerRightArrow).el;
             SVGDom_1.SVGDom.addClassToSVGInContainer(buttonIcon, 'coveo-pager-next-icon-svg');
             buttonLink.appendChild(buttonIcon);
             buttonLink.setAttribute('title', Strings_1.l('Next'));
@@ -393,7 +393,7 @@ Initialization_1.Initialization.registerAutoCreateComponent(Pager);
 
 /***/ }),
 
-/***/ 592:
+/***/ 597:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

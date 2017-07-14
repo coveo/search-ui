@@ -1793,6 +1793,8 @@ var Utils = (function () {
         }
     };
     Utils.parseFloatIfNotUndefined = function (str) {
+        var a = 't';
+        a instanceof HTMLDocument;
         if (Utils.isNonEmptyString(str)) {
             return parseFloat(str);
         }
@@ -3715,8 +3717,8 @@ exports.shim = shim;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.version = {
-    'lib': '2.2900.15-beta',
-    'product': '2.2900.15-beta',
+    'lib': '2.2900.16-beta',
+    'product': '2.2900.16-beta',
     'supportedApiVersion': 2
 };
 
@@ -5599,6 +5601,8 @@ var dict = {
     "filetype_dynamicscrmitem": "Dynamics CRM",
     "filetype_salesforceitem": "Salesforce",
     "filetype_odt": "Open Text Document",
+    "filetype_box": "User",
+    "filetype_jiraissue": "Jira Issue",
     "filetype_cfpage": "Confluence Page",
     "filetype_cfcomment": "Confluence Comment",
     "filetype_cfspace": "Confluence Space",

@@ -1,6 +1,6 @@
-webpackJsonpCoveo__temporary([34],{
+webpackJsonpCoveo__temporary([36],{
 
-/***/ 20:
+/***/ 16:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -46,7 +46,7 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var Component_1 = __webpack_require__(8);
 var ComponentOptions_1 = __webpack_require__(9);
-var InitializationEvents_1 = __webpack_require__(16);
+var InitializationEvents_1 = __webpack_require__(17);
 var BreadcrumbEvents_1 = __webpack_require__(43);
 var AnalyticsActionListMeta_1 = __webpack_require__(12);
 var Dom_1 = __webpack_require__(3);
@@ -56,9 +56,9 @@ var QueryEvents_1 = __webpack_require__(11);
 var KeyboardUtils_1 = __webpack_require__(23);
 var _ = __webpack_require__(1);
 var GlobalExports_1 = __webpack_require__(4);
-__webpack_require__(578);
+__webpack_require__(583);
 var SVGIcons_1 = __webpack_require__(15);
-var SVGDom_1 = __webpack_require__(20);
+var SVGDom_1 = __webpack_require__(16);
 /**
  * The Breadcrumb component displays a summary of the currently active query filters.
  *
@@ -146,7 +146,7 @@ var Breadcrumb = (function (_super) {
             title: Strings_1.l('ClearAllFilters'),
             tabindex: 0
         }).el;
-        var clearIcon = Dom_1.$$('div', { className: 'coveo-icon coveo-breadcrumb-clear-all-icon' }, SVGIcons_1.SVGIcons.checkboxHookExclusionMore).el;
+        var clearIcon = Dom_1.$$('div', { className: 'coveo-icon coveo-breadcrumb-clear-all-icon' }, SVGIcons_1.SVGIcons.icons.checkboxHookExclusionMore).el;
         SVGDom_1.SVGDom.addClassToSVGInContainer(clearIcon, 'coveo-breadcrumb-clear-all-svg');
         clear.appendChild(clearIcon);
         var clearText = document.createElement('div');
@@ -184,7 +184,7 @@ Initialization_1.Initialization.registerAutoCreateComponent(Breadcrumb);
 
 /***/ }),
 
-/***/ 578:
+/***/ 583:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

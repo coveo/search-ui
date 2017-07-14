@@ -1,6 +1,6 @@
 webpackJsonpCoveo__temporary([19],{
 
-/***/ 20:
+/***/ 16:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -46,18 +46,18 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var Component_1 = __webpack_require__(8);
 var ComponentOptions_1 = __webpack_require__(9);
-var DefaultFoldingTemplate_1 = __webpack_require__(650);
+var DefaultFoldingTemplate_1 = __webpack_require__(656);
 var Utils_1 = __webpack_require__(6);
-var QueryUtils_1 = __webpack_require__(18);
+var QueryUtils_1 = __webpack_require__(19);
 var Initialization_1 = __webpack_require__(2);
 var Assert_1 = __webpack_require__(7);
 var Dom_1 = __webpack_require__(3);
 var Strings_1 = __webpack_require__(10);
 var _ = __webpack_require__(1);
 var GlobalExports_1 = __webpack_require__(4);
-__webpack_require__(602);
+__webpack_require__(607);
 var SVGIcons_1 = __webpack_require__(15);
-var SVGDom_1 = __webpack_require__(20);
+var SVGDom_1 = __webpack_require__(16);
 /**
  * The `ResultFolding` component renders folded result sets. It is usable inside a result template when there is an
  * active [`Folding`]{@link Folding} component in the page. This component takes care of rendering the parent result and
@@ -163,9 +163,9 @@ var ResultFolding = (function (_super) {
             this.showLess = Dom_1.$$('div', { className: 'coveo-folding-footer-section-for-more' }).el;
             Dom_1.$$(this.showLess).on('click', function () { return _this.showLessResults(); });
             footer.appendChild(this.showLess);
-            var footerIconShowMore = Dom_1.$$('div', { className: 'coveo-folding-more' }, Dom_1.$$('span', { className: 'coveo-folding-footer-icon' }, SVGIcons_1.SVGIcons.arrowDown).el).el;
+            var footerIconShowMore = Dom_1.$$('div', { className: 'coveo-folding-more' }, Dom_1.$$('span', { className: 'coveo-folding-footer-icon' }, SVGIcons_1.SVGIcons.icons.arrowDown).el).el;
             SVGDom_1.SVGDom.addClassToSVGInContainer(footerIconShowMore, 'coveo-folding-more-svg');
-            var footerIconShowLess = Dom_1.$$('div', { className: 'coveo-folding-less' }, Dom_1.$$('span', { className: 'coveo-folding-footer-icon' }, SVGIcons_1.SVGIcons.arrowUp).el).el;
+            var footerIconShowLess = Dom_1.$$('div', { className: 'coveo-folding-less' }, Dom_1.$$('span', { className: 'coveo-folding-footer-icon' }, SVGIcons_1.SVGIcons.icons.arrowUp).el).el;
             SVGDom_1.SVGDom.addClassToSVGInContainer(footerIconShowLess, 'coveo-folding-less-svg');
             var showMoreLink = Dom_1.$$('a', { className: 'coveo-folding-show-more' }, this.options.moreCaption).el;
             var showLessLink = Dom_1.$$('a', { className: 'coveo-folding-show-less' }, this.options.lessCaption).el;
@@ -326,14 +326,14 @@ Initialization_1.Initialization.registerAutoCreateComponent(ResultFolding);
 
 /***/ }),
 
-/***/ 602:
+/***/ 607:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
 
-/***/ 650:
+/***/ 656:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";

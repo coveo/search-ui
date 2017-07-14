@@ -1,6 +1,6 @@
-webpackJsonpCoveo__temporary([31],{
+webpackJsonpCoveo__temporary([33],{
 
-/***/ 20:
+/***/ 16:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -57,9 +57,9 @@ var Initialization_1 = __webpack_require__(2);
 var Assert_1 = __webpack_require__(7);
 var _ = __webpack_require__(1);
 var GlobalExports_1 = __webpack_require__(4);
-__webpack_require__(588);
+__webpack_require__(593);
 var SVGIcons_1 = __webpack_require__(15);
-var SVGDom_1 = __webpack_require__(20);
+var SVGDom_1 = __webpack_require__(16);
 /**
  * The HiddenQuery component handles a "hidden" query parameter (`hq`) and its description (`hd`).
  *
@@ -123,7 +123,7 @@ var HiddenQuery = (function (_super) {
             elem.appendChild(values);
             var value = Dom_1.$$('span', { className: 'coveo-hidden-query-breadcrumb-value' }, description);
             values.appendChild(value.el);
-            var svgContainer = Dom_1.$$('span', { className: 'coveo-hidden-query-breadcrum-clear-icon' }, SVGIcons_1.SVGIcons.checkboxHookExclusionMore);
+            var svgContainer = Dom_1.$$('span', { className: 'coveo-hidden-query-breadcrum-clear-icon' }, SVGIcons_1.SVGIcons.icons.checkboxHookExclusionMore);
             SVGDom_1.SVGDom.addClassToSVGInContainer(svgContainer.el, 'coveo-hidden-query-breadcrumb-clear-svg');
             var clear = Dom_1.$$('span', { className: 'coveo-hidden-query-breadcrumb-clear' });
             clear.append(svgContainer.el);
@@ -182,7 +182,7 @@ Initialization_1.Initialization.registerAutoCreateComponent(HiddenQuery);
 
 /***/ }),
 
-/***/ 588:
+/***/ 593:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

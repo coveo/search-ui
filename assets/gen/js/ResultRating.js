@@ -1,4 +1,32 @@
-webpackJsonpCoveo__temporary([62],{
+webpackJsonpCoveo__temporary([28],{
+
+/***/ 16:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var SVGDom = (function () {
+    function SVGDom() {
+    }
+    SVGDom.addClassToSVGInContainer = function (svgContainer, classToAdd) {
+        var svgElement = svgContainer.querySelector('svg');
+        svgElement.setAttribute('class', "" + SVGDom.getClass(svgElement) + classToAdd);
+    };
+    SVGDom.removeClassFromSVGInContainer = function (svgContainer, classToRemove) {
+        var svgElement = svgContainer.querySelector('svg');
+        svgElement.setAttribute('class', SVGDom.getClass(svgElement).replace(classToRemove, ''));
+    };
+    SVGDom.getClass = function (svgElement) {
+        var className = svgElement.getAttribute('class');
+        return className ? className + ' ' : '';
+    };
+    return SVGDom;
+}());
+exports.SVGDom = SVGDom;
+
+
+/***/ }),
 
 /***/ 318:
 /***/ (function(module, exports, __webpack_require__) {
@@ -22,6 +50,9 @@ var Dom_1 = __webpack_require__(3);
 var Initialization_1 = __webpack_require__(2);
 var Utils_1 = __webpack_require__(6);
 var GlobalExports_1 = __webpack_require__(4);
+var SVGIcons_1 = __webpack_require__(15);
+var SVGDom_1 = __webpack_require__(16);
+__webpack_require__(609);
 var RatingValues;
 (function (RatingValues) {
     RatingValues[RatingValues["Undefined"] = 0] = "Undefined";
@@ -71,7 +102,8 @@ var ResultRating = (function (_super) {
         var star;
         var starElement = Dom_1.$$(element).find('a[rating-value="' + value + '"]');
         if (starElement == null) {
-            star = Dom_1.$$('a');
+            star = Dom_1.$$('a', { className: 'coveo-result-rating-star' }, SVGIcons_1.SVGIcons.icons.star);
+            SVGDom_1.SVGDom.addClassToSVGInContainer(star.el, 'coveo-result-rating-star-svg');
             element.appendChild(star.el);
             if (this.bindings.searchInterface.options.enableCollaborativeRating) {
                 star.on('click', function (e) {
@@ -91,9 +123,7 @@ var ResultRating = (function (_super) {
         else {
             star = Dom_1.$$(starElement);
         }
-        var basePath = 'coveo-sprites-';
-        star.toggleClass(basePath + 'star_placeholder', !isChecked);
-        star.toggleClass(basePath + 'star_active', isChecked);
+        star.toggleClass('coveo-result-rating-star-active', isChecked);
     };
     /**
      * Rates an item using the the specified `rating` value.
@@ -134,6 +164,13 @@ ResultRating.doExport = function () {
 exports.ResultRating = ResultRating;
 Initialization_1.Initialization.registerAutoCreateComponent(ResultRating);
 
+
+/***/ }),
+
+/***/ 609:
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
 
 /***/ })
 

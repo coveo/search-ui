@@ -1,6 +1,6 @@
 webpackJsonpCoveo__temporary([13,66],{
 
-/***/ 20:
+/***/ 16:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -60,7 +60,7 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var Component_1 = __webpack_require__(8);
 var ComponentOptions_1 = __webpack_require__(9);
-var SearchAlertsMessage_1 = __webpack_require__(651);
+var SearchAlertsMessage_1 = __webpack_require__(657);
 var SettingsEvents_1 = __webpack_require__(39);
 var QueryEvents_1 = __webpack_require__(11);
 var Assert_1 = __webpack_require__(7);
@@ -112,7 +112,7 @@ var SearchAlerts = (function (_super) {
                         className: 'coveo-subscriptions-panel',
                         onOpen: function () { return _this.openPanel(); },
                         onClose: function () { return _this.close(); },
-                        svgIcon: SVGIcons_1.SVGIcons.dropdownFollowQuery,
+                        svgIcon: SVGIcons_1.SVGIcons.icons.dropdownFollowQuery,
                         svgIconClassName: 'coveo-subscriptions-panel-svg'
                     });
                 }
@@ -135,7 +135,7 @@ var SearchAlerts = (function (_super) {
                                 tooltip: Strings_1.l('FollowQueryDescription'),
                                 onOpen: function () { return _this.followQuery(); },
                                 onClose: function () { },
-                                svgIcon: SVGIcons_1.SVGIcons.dropdownFollowQuery,
+                                svgIcon: SVGIcons_1.SVGIcons.icons.dropdownFollowQuery,
                                 svgIconClassName: 'coveo-follow-query-svg'
                             });
                         }
@@ -626,7 +626,7 @@ exports.Dropdown = Dropdown;
 
 /***/ }),
 
-/***/ 651:
+/***/ 657:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -652,7 +652,7 @@ var Strings_1 = __webpack_require__(10);
 var Dom_1 = __webpack_require__(3);
 var _ = __webpack_require__(1);
 var SVGIcons_1 = __webpack_require__(15);
-var SVGDom_1 = __webpack_require__(20);
+var SVGDom_1 = __webpack_require__(16);
 /**
  * The SearchAlertsMessage component allows the {@link SearchAlerts} component to display messages.
  *
@@ -722,7 +722,7 @@ var SearchAlertsMessage = (function (_super) {
         this.message = Dom_1.$$('div', {
             className: 'coveo-subscriptions-messages'
         });
-        this.message.el.innerHTML = "\n      <div class='coveo-subscriptions-messages-message'>\n        <div class='coveo-subscriptions-messages-content'>" + message + "</div>\n        <div class='coveo-subscriptions-messages-info-close'>" + SVGIcons_1.SVGIcons.checkboxHookExclusionMore + "</div>\n      </div>";
+        this.message.el.innerHTML = "\n      <div class='coveo-subscriptions-messages-message'>\n        <div class='coveo-subscriptions-messages-content'>" + message + "</div>\n        <div class='coveo-subscriptions-messages-info-close'>" + SVGIcons_1.SVGIcons.icons.checkboxHookExclusionMore + "</div>\n      </div>";
         this.message.toggleClass('coveo-subscriptions-messages-error', error);
         var closeButton = this.message.find('.coveo-subscriptions-messages-info-close');
         SVGDom_1.SVGDom.addClassToSVGInContainer(closeButton, 'coveo-subscript-messages-info-close-svg');

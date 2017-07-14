@@ -1,6 +1,6 @@
-webpackJsonpCoveo__temporary([10,46,47],{
+webpackJsonpCoveo__temporary([11,49,50],{
 
-/***/ 20:
+/***/ 16:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -37,7 +37,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var Dom_1 = __webpack_require__(3);
 var _ = __webpack_require__(1);
 var Strings_1 = __webpack_require__(10);
-__webpack_require__(489);
+__webpack_require__(494);
 var Utils_1 = __webpack_require__(6);
 var GlobalExports_1 = __webpack_require__(4);
 /**
@@ -175,9 +175,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var Component_1 = __webpack_require__(8);
 var ComponentOptions_1 = __webpack_require__(9);
 var LocalStorageUtils_1 = __webpack_require__(36);
-var InitializationEvents_1 = __webpack_require__(16);
+var InitializationEvents_1 = __webpack_require__(17);
 var PreferencesPanelEvents_1 = __webpack_require__(67);
-var Model_1 = __webpack_require__(17);
+var Model_1 = __webpack_require__(18);
 var QueryEvents_1 = __webpack_require__(11);
 var QueryStateModel_1 = __webpack_require__(13);
 var BreadcrumbEvents_1 = __webpack_require__(43);
@@ -188,13 +188,13 @@ var Utils_1 = __webpack_require__(6);
 var Dom_1 = __webpack_require__(3);
 var _ = __webpack_require__(1);
 var GlobalExports_1 = __webpack_require__(4);
-__webpack_require__(605);
+__webpack_require__(611);
 var Checkbox_1 = __webpack_require__(61);
 var TextInput_1 = __webpack_require__(48);
 var MultiSelect_1 = __webpack_require__(248);
 var FormGroup_1 = __webpack_require__(99);
 var SVGIcons_1 = __webpack_require__(15);
-var SVGDom_1 = __webpack_require__(20);
+var SVGDom_1 = __webpack_require__(16);
 /**
  * The `ResultFiltersPreferences` component allows end users to create custom filters to apply to queries. These filters
  * are saved to local storage.
@@ -343,11 +343,11 @@ var ResultsFiltersPreferences = (function (_super) {
         });
         var saveFormButton = Dom_1.$$('span', {
             className: 'coveo-save'
-        }, SVGIcons_1.SVGIcons.checkboxHookExclusionMore);
+        }, SVGIcons_1.SVGIcons.icons.checkboxHookExclusionMore);
         SVGDom_1.SVGDom.addClassToSVGInContainer(saveFormButton.el, 'coveo-save-svg');
         var closeFormButton = Dom_1.$$('span', {
             className: 'coveo-close'
-        }, SVGIcons_1.SVGIcons.checkboxHookExclusionMore);
+        }, SVGIcons_1.SVGIcons.icons.checkboxHookExclusionMore);
         SVGDom_1.SVGDom.addClassToSVGInContainer(closeFormButton.el, 'coveo-close-svg');
         var saveAndCloseContainer = Dom_1.$$('div', {
             className: 'coveo-choice-container coveo-close-and-save'
@@ -431,7 +431,7 @@ var ResultsFiltersPreferences = (function (_super) {
             if (filter.custom) {
                 var deleteElement = Dom_1.$$('span', {
                     className: 'coveo-delete'
-                }, SVGIcons_1.SVGIcons.checkboxHookExclusionMore).el;
+                }, SVGIcons_1.SVGIcons.icons.checkboxHookExclusionMore).el;
                 SVGDom_1.SVGDom.addClassToSVGInContainer(deleteElement, 'coveo-delete-svg');
                 var filterElement_1 = _this.getFilterElementByCaption(filter.caption);
                 var insertInto = Dom_1.$$(filterElement_1).find('.coveo-section-edit-delete');
@@ -446,7 +446,7 @@ var ResultsFiltersPreferences = (function (_super) {
             if (filter.custom) {
                 var editElement = Dom_1.$$('span', {
                     className: 'coveo-edit'
-                }, SVGIcons_1.SVGIcons.edit);
+                }, SVGIcons_1.SVGIcons.icons.edit);
                 SVGDom_1.SVGDom.addClassToSVGInContainer(editElement.el, 'coveo-edit-svg');
                 var filterElement_2 = _this.getFilterElementByCaption(filter.caption);
                 var insertInto = Dom_1.$$(filterElement_2).find('.coveo-section-edit-delete');
@@ -461,7 +461,7 @@ var ResultsFiltersPreferences = (function (_super) {
         var caption = Dom_1.$$('span', { className: 'coveo-caption' });
         caption.text(filter.caption);
         elem.el.appendChild(caption.el);
-        var clear = Dom_1.$$('span', { className: 'coveo-clear' }, SVGIcons_1.SVGIcons.checkboxHookExclusionMore);
+        var clear = Dom_1.$$('span', { className: 'coveo-clear' }, SVGIcons_1.SVGIcons.icons.checkboxHookExclusionMore);
         SVGDom_1.SVGDom.addClassToSVGInContainer(clear.el, 'coveo-clear-svg');
         elem.el.appendChild(clear.el);
         elem.on('click', function () {
@@ -748,21 +748,21 @@ Initialization_1.Initialization.registerAutoCreateComponent(ResultsFiltersPrefer
 
 /***/ }),
 
-/***/ 482:
+/***/ 487:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
 
-/***/ 489:
+/***/ 494:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
 
-/***/ 605:
+/***/ 611:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
@@ -777,7 +777,7 @@ Initialization_1.Initialization.registerAutoCreateComponent(ResultsFiltersPrefer
 Object.defineProperty(exports, "__esModule", { value: true });
 var Dom_1 = __webpack_require__(3);
 var _ = __webpack_require__(1);
-__webpack_require__(482);
+__webpack_require__(487);
 var GlobalExports_1 = __webpack_require__(4);
 /**
  * A simple `fieldset` HTMLElement containing multiple form widgets.
