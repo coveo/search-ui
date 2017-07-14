@@ -1,7 +1,6 @@
 import {$$, Dom} from "../../../src/utils/Dom";
 import {SearchEndpoint} from "../../../src/rest/SearchEndpoint";
 import {IComponentPlaygroundConfiguration, PlaygroundConfiguration} from "./PlaygroundConfiguration";
-import {ResultList} from "../../../src/ui/ResultList/ResultList";
 import {QueryEvents, IBuildingQueryEventArgs} from "../../../src/events/QueryEvents";
 import { setLanguageAfterPageLoaded } from '../../../src/strings/DefaultLanguage';
 setLanguageAfterPageLoaded();
@@ -68,13 +67,7 @@ export class Playground {
 
   public initializeComponent() {
     let configuration = this.getConfiguration();
-    // `@hierarchicfield` does not exist in the sample Coveo Cloud V2 organization.
-    if (this.getComponentName() === "HierarchicalFacet") {
-      SearchEndpoint.configureSampleEndpoint();
-    }
-    else {
-      SearchEndpoint.configureSampleEndpointV2();
-    }
+    SearchEndpoint.configureSampleEndpointV2();
     let searchInterface = this.getSearchInterface();
     this.componentContainer.append(searchInterface.el);
     Coveo.SearchEndpoint.endpoints['default'] = SearchEndpoint.endpoints['default'];
