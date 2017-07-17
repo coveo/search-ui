@@ -164,7 +164,7 @@
 .coveo-modal-container.coveo-quick-view {
   .coveo-modal-body {
     height: 90%;
-    div {
+    > div, .coveo-list-layout, .CoveoQuickviewDocument, .coveo-quick-view-full-height {
       height: 100%;
       width: 100%;
     }
