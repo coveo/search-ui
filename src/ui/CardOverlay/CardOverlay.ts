@@ -10,6 +10,7 @@ import { exportGlobally } from '../../GlobalExports';
 import 'styling/_CardOverlay';
 import { SVGIcons } from '../../utils/SVGIcons';
 import { SVGDom } from '../../utils/SVGDom';
+import { Utils } from '../../utils/Utils';
 
 export interface ICardOverlayOptions {
   title: string;
@@ -53,6 +54,8 @@ export class CardOverlay extends Component {
 
     /**
      * Specifies the icon to use for the overlay icon and for the button icon.
+     *
+     * The name of the icon to use should be specified in lowerCamelCase.
      */
     icon: ComponentOptions.buildIconOption()
   };
@@ -148,7 +151,9 @@ export class CardOverlay extends Component {
 
   private createButton(element: HTMLElement) {
     if (this.options.icon) {
-      element.appendChild($$('span', { className: 'coveo-icon ' }, this.options.icon).el);
+      const icon = $$('span', { className: 'coveo-icon ' }, SVGIcons.icons[this.options.icon]).el;
+      element.appendChild(icon);
+      SVGDom.addClassToSVGInContainer(element, `coveo-${Utils.toDashCase(this.options.icon)}-svg`);
     }
     element.appendChild($$('span', { className: 'coveo-label' }, this.options.title).el);
     element.setAttribute('tabindex', '0');
