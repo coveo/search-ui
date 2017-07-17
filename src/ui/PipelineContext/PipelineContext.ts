@@ -92,7 +92,7 @@ export class PipelineContext extends Component {
    */
   public getContextValue(key: string): string | string[] {
     if (_.isArray(this.content[key])) {
-      let contextValues = [];
+      const contextValues = [];
       _.each(this.content[key], (value) => {
         contextValues.push(this.getModifiedData(value));
       });
@@ -110,6 +110,7 @@ export class PipelineContext extends Component {
     });
   }
 
+  // We need to modify the data to escape special salesforce characters. eg: {! }
   private getModifiedData(value: string) {
     return value.replace(/\{\!([^\}]+)\}/g, (all: string, contextKey: string) => {
       if (Coveo.context != null && contextKey in Coveo.context) {
