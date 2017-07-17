@@ -372,14 +372,12 @@ export class ComponentOptions {
   /**
    * Builds an icon option.
    *
-   * This loads an SVG icon from its name.
-   *
-   *
+   * This takes an SVG icon name, validates it and returns the name of the icon.
    * **Markup Examples:**
    *
-   * > `data-foo="user"`
+   * > `data-foo="search"`
    *
-   * > `data-foo="database"`
+   * > `data-foo="facetExpand"`
    *
    * @param optionArgs The arguments to apply when building the option.
    * @returns {string} The resulting option value.
@@ -748,7 +746,10 @@ export class ComponentOptions {
 
   static loadIconOption(element: HTMLElement, name: string, option: IComponentOptions<any>): string {
     const svgIconName = ComponentOptions.loadStringOption(element, name, option);
-    return SVGIcons.icons[svgIconName];
+    if (Utils.isNullOrUndefined(SVGIcons.icons[svgIconName])) {
+      new Logger(element).warn(`Icon with name ${svgIconName} not found.`);
+    }
+    return svgIconName;
   }
 
   static loadFieldOption(element: HTMLElement, name: string, option: IComponentOptionsOption<any>): string {
