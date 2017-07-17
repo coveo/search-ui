@@ -1,10 +1,10 @@
 $color-placeholder-star: #E1E1E1;
 $color-active-star: #D9AF00;
 
-.CoveoResultRating {
-  display: flex;
-  justify-content: space-between;
+.coveo-result-rating-star + .coveo-result-rating-star {
+  margin-left: 2px;
 }
+
 .coveo-result-rating-star-svg {
   width: 16px;
   height: 16px;
