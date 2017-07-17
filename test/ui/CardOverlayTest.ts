@@ -43,11 +43,11 @@ export function CardOverlayTest() {
             return b.withElement(<HTMLElement>parentResult.firstChild);
           },
           cmpOptions: {
-            icon: '<svg class=\'some-svg\'></sig>'
+            icon: 'search'
           }
         });
-        expect($$(test.cmp.element).find('.some-svg')).not.toBeNull();
-        expect($$($$(parentResult).find('.coveo-card-overlay')).find('.some-svg')).not.toBeNull();
+        expect($$(test.cmp.element).find('.coveo-search-svg')).not.toBeNull();
+        expect($$($$(parentResult).find('.coveo-card-overlay')).find('.coveo-search-svg')).not.toBeNull();
       });
     });
 
