@@ -4,24 +4,21 @@
   cursor: pointer;
 }
 
-.CoveoCardOverlay[data-icon="search"] {
-  svg {
-    color: $color-blueish-gray;
-    width: 20px;
-    height: 20px;
-    .coveo-magnifier-circle-svg {
-      fill: $color-active-yellow;
-    }
+.coveo-search-svg {
+  color: $color-blueish-gray;
+  width: 18px;
+  height: 18px;
+  .coveo-magnifier-circle-svg {
+    fill: $color-active-yellow;
   }
 }
 
-.CoveoCardOverlay[data-icon="replies"]{
-  svg {
-    color: $color-blueish-gray;
-    width: 20px;
-    height: 20px;
-  }
+.coveo-replies-svg {
+  color: $color-blueish-gray;
+  width: 20px;
+  height: 20px;
 }
+
 
 .coveo-card-overlay {
   position: absolute;
