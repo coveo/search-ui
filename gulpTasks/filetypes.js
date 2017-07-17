@@ -58,7 +58,7 @@ function generateSass(json) {
   sass += '  }\n';
 
   sass += '  &.objecttype.coveo-small {\n';
-  sass += '    @extend .coveo-filetype-custom;\n'
+  sass += '    @extend .coveo-filetype-custom-small;\n'
   sass += '    display: inline-block;\n'
   sass += generateInnerObjecttype(json, true, iconClasses);
   sass += '  }\n';
@@ -70,7 +70,7 @@ function generateSass(json) {
   sass += '  }\n';
 
   sass += '  &.filetype.coveo-small, &.sysfiletype.coveo-small {\n';
-  sass += '    @extend .coveo-filetype-custom;\n'
+  sass += '    @extend .coveo-filetype-custom-small;\n'
   sass += '    display: inline-block;\n'
   sass += generateInnerFiletype(json, true, iconClasses);
   sass += '  }\n';
