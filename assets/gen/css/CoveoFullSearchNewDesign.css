@@ -1210,6 +1210,7 @@ input[type=checkbox].coveo-checkbox + button {
 .coveo-icon.sysfiletype.spuserinformation,
 .coveo-icon.filetype.spuserinformationlist,
 .coveo-icon.sysfiletype.spuserinformationlist {
+  display: inline-block;
   width: 60px;
   height: 60px;
   background-size: 60px 60px;
@@ -1235,6 +1236,7 @@ input[type=checkbox].coveo-checkbox + button {
 .coveo-icon.sysfiletype.exchangejunkmessage,
 .coveo-icon.filetype.lithiummessage,
 .coveo-icon.sysfiletype.lithiummessage {
+  display: inline-block;
   width: 60px;
   height: 60px;
   background-size: 60px 60px;
@@ -1326,6 +1328,7 @@ input[type=checkbox].coveo-checkbox + button {
 .coveo-icon.sysfiletype.spmicrofeedpost,
 .coveo-icon.filetype.spmicrofeedlist,
 .coveo-icon.sysfiletype.spmicrofeedlist {
+  display: inline-block;
   width: 52px;
   height: 52px;
   background-size: 52px 52px;
@@ -1365,6 +1368,7 @@ input[type=checkbox].coveo-checkbox + button {
 .coveo-icon.sysfiletype.spresource,
 .coveo-icon.filetype.spresourcelist,
 .coveo-icon.sysfiletype.spresourcelist {
+  display: inline-block;
   width: 60px;
   height: 60px;
   background-size: 60px 60px;
@@ -1374,6 +1378,7 @@ input[type=checkbox].coveo-checkbox + button {
 .coveo-filetype-salesforce-standard-account,
 .coveo-icon.objecttype.Account,
 .coveo-icon.objecttype.account {
+  display: inline-block;
   width: 60px;
   height: 60px;
   background-size: 60px 60px;
@@ -1411,6 +1416,7 @@ input[type=checkbox].coveo-checkbox + button {
 .coveo-icon.sysfiletype.spworkflowhistory,
 .coveo-icon.filetype.spworkflowhistorylist,
 .coveo-icon.sysfiletype.spworkflowhistorylist {
+  display: inline-block;
   width: 60px;
   height: 60px;
   background-size: 60px 60px;
@@ -1428,6 +1434,7 @@ input[type=checkbox].coveo-checkbox + button {
 .coveo-icon.sysfiletype.spprojecttask,
 .coveo-icon.filetype.spprojecttasklist,
 .coveo-icon.sysfiletype.spprojecttasklist {
+  display: inline-block;
   width: 60px;
   height: 60px;
   background-size: 60px 60px;
@@ -1437,6 +1444,7 @@ input[type=checkbox].coveo-checkbox + button {
 .coveo-filetype-document,
 .coveo-icon.objecttype.Contentversion,
 .coveo-icon.objecttype.contentversion {
+  display: inline-block;
   width: 60px;
   height: 60px;
   background-size: 60px 60px;
@@ -1446,6 +1454,7 @@ input[type=checkbox].coveo-checkbox + button {
 .coveo-filetype-salesforce-standard-contact,
 .coveo-icon.objecttype.Contact,
 .coveo-icon.objecttype.contact {
+  display: inline-block;
   width: 60px;
   height: 60px;
   background-size: 60px 60px;
@@ -1455,6 +1464,7 @@ input[type=checkbox].coveo-checkbox + button {
 .coveo-filetype-salesforce-standard-contract,
 .coveo-icon.objecttype.Contract,
 .coveo-icon.objecttype.contract {
+  display: inline-block;
   width: 60px;
   height: 60px;
   background-size: 60px 60px;
@@ -1464,6 +1474,7 @@ input[type=checkbox].coveo-checkbox + button {
 .coveo-filetype-salesforce-standard-event,
 .coveo-icon.objecttype.Event,
 .coveo-icon.objecttype.event {
+  display: inline-block;
   width: 60px;
   height: 60px;
   background-size: 60px 60px;
@@ -1473,6 +1484,7 @@ input[type=checkbox].coveo-checkbox + button {
 .coveo-filetype-salesforce-standard-goals,
 .coveo-icon.objecttype.Goal,
 .coveo-icon.objecttype.goal {
+  display: inline-block;
   width: 60px;
   height: 60px;
   background-size: 60px 60px;
@@ -1482,6 +1494,7 @@ input[type=checkbox].coveo-checkbox + button {
 .coveo-filetype-salesforce-standard-lead,
 .coveo-icon.objecttype.Lead,
 .coveo-icon.objecttype.lead {
+  display: inline-block;
   width: 60px;
   height: 60px;
   background-size: 60px 60px;
@@ -1505,6 +1518,7 @@ input[type=checkbox].coveo-checkbox + button {
 .coveo-icon.objecttype.kbarticle,
 .coveo-icon.objecttype.Knowledgearticle,
 .coveo-icon.objecttype.knowledgearticle {
+  display: inline-block;
   width: 60px;
   height: 60px;
   background-size: 60px 60px;
@@ -1514,6 +1528,7 @@ input[type=checkbox].coveo-checkbox + button {
 .coveo-filetype-salesforce-standard-task,
 .coveo-icon.objecttype.Task,
 .coveo-icon.objecttype.task {
+  display: inline-block;
   width: 60px;
   height: 60px;
   background-size: 60px 60px;
@@ -1523,6 +1538,7 @@ input[type=checkbox].coveo-checkbox + button {
 .coveo-filetype-attachment,
 .coveo-icon.objecttype.Attachment,
 .coveo-icon.objecttype.attachment {
+  display: inline-block;
   width: 60px;
   height: 60px;
   background-size: 60px 60px;
@@ -1532,6 +1548,7 @@ input[type=checkbox].coveo-checkbox + button {
 .coveo-filetype-salesforce-standard-feedback,
 .coveo-icon.objecttype.Casecomment,
 .coveo-icon.objecttype.casecomment {
+  display: inline-block;
   width: 60px;
   height: 60px;
   background-size: 60px 60px;
@@ -1543,6 +1560,7 @@ input[type=checkbox].coveo-checkbox + button {
 .coveo-icon.objecttype.opportunity,
 .coveo-icon.objecttype.Opportunityproduct,
 .coveo-icon.objecttype.opportunityproduct {
+  display: inline-block;
   width: 60px;
   height: 60px;
   background-size: 60px 60px;
@@ -1554,6 +1572,7 @@ input[type=checkbox].coveo-checkbox + button {
 .coveo-icon.objecttype.feeditem,
 .coveo-icon.objecttype.Feedcomment,
 .coveo-icon.objecttype.feedcomment {
+  display: inline-block;
   width: 60px;
   height: 60px;
   background-size: 60px 60px;
@@ -1563,6 +1582,7 @@ input[type=checkbox].coveo-checkbox + button {
 .coveo-filetype-salesforce-standard-note,
 .coveo-icon.objecttype.Note,
 .coveo-icon.objecttype.note {
+  display: inline-block;
   width: 60px;
   height: 60px;
   background-size: 60px 60px;
@@ -1572,6 +1592,7 @@ input[type=checkbox].coveo-checkbox + button {
 .coveo-filetype-salesforce-standard-product,
 .coveo-icon.objecttype.Product,
 .coveo-icon.objecttype.product {
+  display: inline-block;
   width: 60px;
   height: 60px;
   background-size: 60px 60px;
@@ -1581,6 +1602,7 @@ input[type=checkbox].coveo-checkbox + button {
 .coveo-filetype-salesforce-standard-quotes,
 .coveo-icon.objecttype.Quote,
 .coveo-icon.objecttype.quote {
+  display: inline-block;
   width: 60px;
   height: 60px;
   background-size: 60px 60px;
@@ -1598,6 +1620,7 @@ input[type=checkbox].coveo-checkbox + button {
 .coveo-icon.sysfiletype.spdataconnectionlibrarylist,
 .coveo-icon.filetype.spipfslist,
 .coveo-icon.sysfiletype.spipfslist {
+  display: inline-block;
   width: 60px;
   height: 60px;
   background-size: 60px 60px;
@@ -1607,6 +1630,7 @@ input[type=checkbox].coveo-checkbox + button {
 .coveo-filetype-salesforce-standard-orders,
 .coveo-icon.objecttype.Salesorder,
 .coveo-icon.objecttype.salesorder {
+  display: inline-block;
   width: 60px;
   height: 60px;
   background-size: 60px 60px;
@@ -1646,6 +1670,7 @@ input[type=checkbox].coveo-checkbox + button {
 .coveo-icon.sysfiletype.coveo-small.spuserinformation,
 .coveo-icon.filetype.coveo-small.spuserinformationlist,
 .coveo-icon.sysfiletype.coveo-small.spuserinformationlist {
+  display: inline-block;
   width: 30px;
   height: 30px;
   background-size: 30px 30px;
@@ -1671,6 +1696,7 @@ input[type=checkbox].coveo-checkbox + button {
 .coveo-icon.sysfiletype.coveo-small.exchangejunkmessage,
 .coveo-icon.filetype.coveo-small.lithiummessage,
 .coveo-icon.sysfiletype.coveo-small.lithiummessage {
+  display: inline-block;
   width: 30px;
   height: 30px;
   background-size: 30px 30px;
@@ -1762,6 +1788,7 @@ input[type=checkbox].coveo-checkbox + button {
 .coveo-icon.sysfiletype.coveo-small.spmicrofeedpost,
 .coveo-icon.filetype.coveo-small.spmicrofeedlist,
 .coveo-icon.sysfiletype.coveo-small.spmicrofeedlist {
+  display: inline-block;
   width: 26px;
   height: 26px;
   background-size: 26px 26px;
@@ -1801,6 +1828,7 @@ input[type=checkbox].coveo-checkbox + button {
 .coveo-icon.sysfiletype.coveo-small.spresource,
 .coveo-icon.filetype.coveo-small.spresourcelist,
 .coveo-icon.sysfiletype.coveo-small.spresourcelist {
+  display: inline-block;
   width: 30px;
   height: 30px;
   background-size: 30px 30px;
@@ -1810,6 +1838,7 @@ input[type=checkbox].coveo-checkbox + button {
 .coveo-filetype-salesforce-standard-account-small,
 .coveo-icon.objecttype.coveo-small.Account,
 .coveo-icon.objecttype.coveo-small.account {
+  display: inline-block;
   width: 30px;
   height: 30px;
   background-size: 30px 30px;
@@ -1847,6 +1876,7 @@ input[type=checkbox].coveo-checkbox + button {
 .coveo-icon.sysfiletype.coveo-small.spworkflowhistory,
 .coveo-icon.filetype.coveo-small.spworkflowhistorylist,
 .coveo-icon.sysfiletype.coveo-small.spworkflowhistorylist {
+  display: inline-block;
   width: 30px;
   height: 30px;
   background-size: 30px 30px;
@@ -1864,6 +1894,7 @@ input[type=checkbox].coveo-checkbox + button {
 .coveo-icon.sysfiletype.coveo-small.spprojecttask,
 .coveo-icon.filetype.coveo-small.spprojecttasklist,
 .coveo-icon.sysfiletype.coveo-small.spprojecttasklist {
+  display: inline-block;
   width: 30px;
   height: 30px;
   background-size: 30px 30px;
@@ -1873,6 +1904,7 @@ input[type=checkbox].coveo-checkbox + button {
 .coveo-filetype-document-small,
 .coveo-icon.objecttype.coveo-small.Contentversion,
 .coveo-icon.objecttype.coveo-small.contentversion {
+  display: inline-block;
   width: 30px;
   height: 30px;
   background-size: 30px 30px;
@@ -1882,6 +1914,7 @@ input[type=checkbox].coveo-checkbox + button {
 .coveo-filetype-salesforce-standard-contact-small,
 .coveo-icon.objecttype.coveo-small.Contact,
 .coveo-icon.objecttype.coveo-small.contact {
+  display: inline-block;
   width: 30px;
   height: 30px;
   background-size: 30px 30px;
@@ -1891,6 +1924,7 @@ input[type=checkbox].coveo-checkbox + button {
 .coveo-filetype-salesforce-standard-contract-small,
 .coveo-icon.objecttype.coveo-small.Contract,
 .coveo-icon.objecttype.coveo-small.contract {
+  display: inline-block;
   width: 30px;
   height: 30px;
   background-size: 30px 30px;
@@ -1900,6 +1934,7 @@ input[type=checkbox].coveo-checkbox + button {
 .coveo-filetype-salesforce-standard-event-small,
 .coveo-icon.objecttype.coveo-small.Event,
 .coveo-icon.objecttype.coveo-small.event {
+  display: inline-block;
   width: 30px;
   height: 30px;
   background-size: 30px 30px;
@@ -1909,6 +1944,7 @@ input[type=checkbox].coveo-checkbox + button {
 .coveo-filetype-salesforce-standard-goals-small,
 .coveo-icon.objecttype.coveo-small.Goal,
 .coveo-icon.objecttype.coveo-small.goal {
+  display: inline-block;
   width: 30px;
   height: 30px;
   background-size: 30px 30px;
@@ -1918,6 +1954,7 @@ input[type=checkbox].coveo-checkbox + button {
 .coveo-filetype-salesforce-standard-lead-small,
 .coveo-icon.objecttype.coveo-small.Lead,
 .coveo-icon.objecttype.coveo-small.lead {
+  display: inline-block;
   width: 30px;
   height: 30px;
   background-size: 30px 30px;
@@ -1941,6 +1978,7 @@ input[type=checkbox].coveo-checkbox + button {
 .coveo-icon.objecttype.coveo-small.kbarticle,
 .coveo-icon.objecttype.coveo-small.Knowledgearticle,
 .coveo-icon.objecttype.coveo-small.knowledgearticle {
+  display: inline-block;
   width: 30px;
   height: 30px;
   background-size: 30px 30px;
@@ -1950,6 +1988,7 @@ input[type=checkbox].coveo-checkbox + button {
 .coveo-filetype-salesforce-standard-task-small,
 .coveo-icon.objecttype.coveo-small.Task,
 .coveo-icon.objecttype.coveo-small.task {
+  display: inline-block;
   width: 30px;
   height: 30px;
   background-size: 30px 30px;
@@ -1959,6 +1998,7 @@ input[type=checkbox].coveo-checkbox + button {
 .coveo-filetype-attachment-small,
 .coveo-icon.objecttype.coveo-small.Attachment,
 .coveo-icon.objecttype.coveo-small.attachment {
+  display: inline-block;
   width: 30px;
   height: 30px;
   background-size: 30px 30px;
@@ -1968,6 +2008,7 @@ input[type=checkbox].coveo-checkbox + button {
 .coveo-filetype-salesforce-standard-feedback-small,
 .coveo-icon.objecttype.coveo-small.Casecomment,
 .coveo-icon.objecttype.coveo-small.casecomment {
+  display: inline-block;
   width: 30px;
   height: 30px;
   background-size: 30px 30px;
@@ -1979,6 +2020,7 @@ input[type=checkbox].coveo-checkbox + button {
 .coveo-icon.objecttype.coveo-small.opportunity,
 .coveo-icon.objecttype.coveo-small.Opportunityproduct,
 .coveo-icon.objecttype.coveo-small.opportunityproduct {
+  display: inline-block;
   width: 30px;
   height: 30px;
   background-size: 30px 30px;
@@ -1990,6 +2032,7 @@ input[type=checkbox].coveo-checkbox + button {
 .coveo-icon.objecttype.coveo-small.feeditem,
 .coveo-icon.objecttype.coveo-small.Feedcomment,
 .coveo-icon.objecttype.coveo-small.feedcomment {
+  display: inline-block;
   width: 30px;
   height: 30px;
   background-size: 30px 30px;
@@ -1999,6 +2042,7 @@ input[type=checkbox].coveo-checkbox + button {
 .coveo-filetype-salesforce-standard-note-small,
 .coveo-icon.objecttype.coveo-small.Note,
 .coveo-icon.objecttype.coveo-small.note {
+  display: inline-block;
   width: 30px;
   height: 30px;
   background-size: 30px 30px;
@@ -2008,6 +2052,7 @@ input[type=checkbox].coveo-checkbox + button {
 .coveo-filetype-salesforce-standard-product-small,
 .coveo-icon.objecttype.coveo-small.Product,
 .coveo-icon.objecttype.coveo-small.product {
+  display: inline-block;
   width: 30px;
   height: 30px;
   background-size: 30px 30px;
@@ -2017,6 +2062,7 @@ input[type=checkbox].coveo-checkbox + button {
 .coveo-filetype-salesforce-standard-quotes-small,
 .coveo-icon.objecttype.coveo-small.Quote,
 .coveo-icon.objecttype.coveo-small.quote {
+  display: inline-block;
   width: 30px;
   height: 30px;
   background-size: 30px 30px;
@@ -2034,6 +2080,7 @@ input[type=checkbox].coveo-checkbox + button {
 .coveo-icon.sysfiletype.coveo-small.spdataconnectionlibrarylist,
 .coveo-icon.filetype.coveo-small.spipfslist,
 .coveo-icon.sysfiletype.coveo-small.spipfslist {
+  display: inline-block;
   width: 30px;
   height: 30px;
   background-size: 30px 30px;
@@ -2043,6 +2090,7 @@ input[type=checkbox].coveo-checkbox + button {
 .coveo-filetype-salesforce-standard-orders-small,
 .coveo-icon.objecttype.coveo-small.Salesorder,
 .coveo-icon.objecttype.coveo-small.salesorder {
+  display: inline-block;
   width: 30px;
   height: 30px;
   background-size: 30px 30px;
@@ -2070,6 +2118,7 @@ input[type=checkbox].coveo-checkbox + button {
 .coveo-icon.sysfiletype.splinklist,
 .coveo-icon.filetype.spdocumentlink,
 .coveo-icon.sysfiletype.spdocumentlink {
+  display: inline-block;
   width: 60px;
   height: 60px;
   background-size: 60px 60px;
@@ -2083,6 +2132,7 @@ input[type=checkbox].coveo-checkbox + button {
 .coveo-icon.sysfiletype.svg,
 .coveo-icon.filetype.sppicturelibrarylist,
 .coveo-icon.sysfiletype.sppicturelibrarylist {
+  display: inline-block;
   width: 60px;
   height: 60px;
   background-size: 60px 60px;
@@ -2154,6 +2204,7 @@ input[type=checkbox].coveo-checkbox + button {
 .coveo-icon.sysfiletype.spdocumentset,
 .coveo-icon.filetype.splistfolder,
 .coveo-icon.sysfiletype.splistfolder {
+  display: inline-block;
   width: 60px;
   height: 60px;
   background-size: 60px 60px;
@@ -2163,6 +2214,7 @@ input[type=checkbox].coveo-checkbox + button {
 .coveo-filetype-salesforce-doctype-flash,
 .coveo-icon.filetype.swf,
 .coveo-icon.sysfiletype.swf {
+  display: inline-block;
   width: 56px;
   height: 64px;
   background-size: 56px 64px;
@@ -2172,6 +2224,7 @@ input[type=checkbox].coveo-checkbox + button {
 .coveo-filetype-salesforce-doctype-visio,
 .coveo-icon.filetype.vsd,
 .coveo-icon.sysfiletype.vsd {
+  display: inline-block;
   width: 56px;
   height: 64px;
   background-size: 56px 64px;
@@ -2181,6 +2234,7 @@ input[type=checkbox].coveo-checkbox + button {
 .coveo-filetype-salesforce-doctype-word,
 .coveo-icon.filetype.svm,
 .coveo-icon.sysfiletype.svm {
+  display: inline-block;
   width: 56px;
   height: 64px;
   background-size: 56px 64px;
@@ -2196,6 +2250,7 @@ input[type=checkbox].coveo-checkbox + button {
 .coveo-icon.sysfiletype.youtubevideo,
 .coveo-icon.filetype.youtubeplaylistitem,
 .coveo-icon.sysfiletype.youtubeplaylistitem {
+  display: inline-block;
   width: 60px;
   height: 60px;
   background-size: 60px 60px;
@@ -2205,6 +2260,7 @@ input[type=checkbox].coveo-checkbox + button {
 .coveo-filetype-salesforce-standard-default,
 .coveo-icon.filetype.salesforceitem,
 .coveo-icon.sysfiletype.salesforceitem {
+  display: inline-block;
   width: 60px;
   height: 60px;
   background-size: 60px 60px;
@@ -2278,6 +2334,7 @@ input[type=checkbox].coveo-checkbox + button {
 .coveo-icon.sysfiletype.spwhereaboutlist,
 .coveo-icon.filetype.coveo-small,
 .coveo-icon.sysfiletype.coveo-small {
+  display: inline-block;
   width: 60px;
   height: 60px;
   background-size: 60px 60px;
@@ -2289,6 +2346,7 @@ input[type=checkbox].coveo-checkbox + button {
 .coveo-icon.sysfiletype.cfpage,
 .coveo-icon.filetype.spportal,
 .coveo-icon.sysfiletype.spportal {
+  display: inline-block;
   width: 60px;
   height: 60px;
   background-size: 60px 60px;
@@ -2298,6 +2356,7 @@ input[type=checkbox].coveo-checkbox + button {
 .coveo-filetype-salesforce-standard-question-feed,
 .coveo-icon.filetype.cfcomment,
 .coveo-icon.sysfiletype.cfcomment {
+  display: inline-block;
   width: 60px;
   height: 60px;
   background-size: 60px 60px;
@@ -2325,6 +2384,7 @@ input[type=checkbox].coveo-checkbox + button {
 .coveo-icon.sysfiletype.coveo-small.splinklist,
 .coveo-icon.filetype.coveo-small.spdocumentlink,
 .coveo-icon.sysfiletype.coveo-small.spdocumentlink {
+  display: inline-block;
   width: 30px;
   height: 30px;
   background-size: 30px 30px;
@@ -2338,6 +2398,7 @@ input[type=checkbox].coveo-checkbox + button {
 .coveo-icon.sysfiletype.coveo-small.svg,
 .coveo-icon.filetype.coveo-small.sppicturelibrarylist,
 .coveo-icon.sysfiletype.coveo-small.sppicturelibrarylist {
+  display: inline-block;
   width: 30px;
   height: 30px;
   background-size: 30px 30px;
@@ -2409,6 +2470,7 @@ input[type=checkbox].coveo-checkbox + button {
 .coveo-icon.sysfiletype.coveo-small.spdocumentset,
 .coveo-icon.filetype.coveo-small.splistfolder,
 .coveo-icon.sysfiletype.coveo-small.splistfolder {
+  display: inline-block;
   width: 30px;
   height: 30px;
   background-size: 30px 30px;
@@ -2418,6 +2480,7 @@ input[type=checkbox].coveo-checkbox + button {
 .coveo-filetype-salesforce-doctype-flash-small,
 .coveo-icon.filetype.coveo-small.swf,
 .coveo-icon.sysfiletype.coveo-small.swf {
+  display: inline-block;
   width: 28px;
   height: 32px;
   background-size: 28px 32px;
@@ -2427,6 +2490,7 @@ input[type=checkbox].coveo-checkbox + button {
 .coveo-filetype-salesforce-doctype-visio-small,
 .coveo-icon.filetype.coveo-small.vsd,
 .coveo-icon.sysfiletype.coveo-small.vsd {
+  display: inline-block;
   width: 28px;
   height: 32px;
   background-size: 28px 32px;
@@ -2436,6 +2500,7 @@ input[type=checkbox].coveo-checkbox + button {
 .coveo-filetype-salesforce-doctype-word-small,
 .coveo-icon.filetype.coveo-small.svm,
 .coveo-icon.sysfiletype.coveo-small.svm {
+  display: inline-block;
   width: 28px;
   height: 32px;
   background-size: 28px 32px;
@@ -2451,6 +2516,7 @@ input[type=checkbox].coveo-checkbox + button {
 .coveo-icon.sysfiletype.coveo-small.youtubevideo,
 .coveo-icon.filetype.coveo-small.youtubeplaylistitem,
 .coveo-icon.sysfiletype.coveo-small.youtubeplaylistitem {
+  display: inline-block;
   width: 30px;
   height: 30px;
   background-size: 30px 30px;
@@ -2460,6 +2526,7 @@ input[type=checkbox].coveo-checkbox + button {
 .coveo-filetype-salesforce-standard-default-small,
 .coveo-icon.filetype.coveo-small.salesforceitem,
 .coveo-icon.sysfiletype.coveo-small.salesforceitem {
+  display: inline-block;
   width: 30px;
   height: 30px;
   background-size: 30px 30px;
@@ -2527,6 +2594,7 @@ input[type=checkbox].coveo-checkbox + button {
 .coveo-icon.sysfiletype.coveo-small.spwhereabout,
 .coveo-icon.filetype.coveo-small.spwhereaboutlist,
 .coveo-icon.sysfiletype.coveo-small.spwhereaboutlist {
+  display: inline-block;
   width: 30px;
   height: 30px;
   background-size: 30px 30px;
@@ -2538,6 +2606,7 @@ input[type=checkbox].coveo-checkbox + button {
 .coveo-icon.sysfiletype.coveo-small.cfpage,
 .coveo-icon.filetype.coveo-small.spportal,
 .coveo-icon.sysfiletype.coveo-small.spportal {
+  display: inline-block;
   width: 30px;
   height: 30px;
   background-size: 30px 30px;
@@ -2547,452 +2616,22 @@ input[type=checkbox].coveo-checkbox + button {
 .coveo-filetype-salesforce-standard-question-feed-small,
 .coveo-icon.filetype.coveo-small.cfcomment,
 .coveo-icon.sysfiletype.coveo-small.cfcomment {
+  display: inline-block;
   width: 30px;
   height: 30px;
   background-size: 30px 30px;
   background-image: url( ../image/salesforce-standard-question-feed.svg);
 }
 
-.coveo-icon {
-  position: relative;
-}
-
-.coveo-icon .coveo-icon-caption-overlay {
-  display: none;
-}
-
-.coveo-icon.objecttype {
-  display: inline-block;
-}
-
-.coveo-icon.objecttype.Solution .coveo-icon-caption-overlay,
-.coveo-icon.objecttype.solution .coveo-icon-caption-overlay {
-  display: block;
-}
-
-.coveo-icon.objecttype.Task .coveo-icon-caption-overlay,
-.coveo-icon.objecttype.task .coveo-icon-caption-overlay {
-  display: block;
-}
-
-.coveo-icon.objecttype.Salesliterature .coveo-icon-caption-overlay,
-.coveo-icon.objecttype.salesliterature .coveo-icon-caption-overlay {
-  display: block;
-}
-
-.coveo-icon.objecttype.Salesorder .coveo-icon-caption-overlay,
-.coveo-icon.objecttype.salesorder .coveo-icon-caption-overlay {
-  display: block;
-}
-
-.coveo-icon.objecttype.Service .coveo-icon-caption-overlay,
-.coveo-icon.objecttype.service .coveo-icon-caption-overlay {
-  display: block;
-}
-
-.coveo-icon.objecttype.Socialprofile .coveo-icon-caption-overlay,
-.coveo-icon.objecttype.socialprofile .coveo-icon-caption-overlay {
-  display: block;
-}
-
-.coveo-icon.objecttype.Kbdocumentation .coveo-icon-caption-overlay,
-.coveo-icon.objecttype.kbdocumentation .coveo-icon-caption-overlay {
-  display: block;
-}
-
-.coveo-icon.objecttype.Kbtechnicalarticle .coveo-icon-caption-overlay,
-.coveo-icon.objecttype.kbtechnicalarticle .coveo-icon-caption-overlay {
-  display: block;
-}
-
-.coveo-icon.objecttype.Kbsolution .coveo-icon-caption-overlay,
-.coveo-icon.objecttype.kbsolution .coveo-icon-caption-overlay {
-  display: block;
-}
-
-.coveo-icon.objecttype.Kbknowledgearticle .coveo-icon-caption-overlay,
-.coveo-icon.objecttype.kbknowledgearticle .coveo-icon-caption-overlay {
-  display: block;
-}
-
-.coveo-icon.objecttype.coveo-small {
-  display: inline-block;
-}
-
-.coveo-icon.objecttype.coveo-small.Solution .coveo-icon-caption-overlay,
-.coveo-icon.objecttype.coveo-small.solution .coveo-icon-caption-overlay {
-  display: block;
-}
-
-.coveo-icon.objecttype.coveo-small.Task .coveo-icon-caption-overlay,
-.coveo-icon.objecttype.coveo-small.task .coveo-icon-caption-overlay {
-  display: block;
-}
-
-.coveo-icon.objecttype.coveo-small.Salesliterature .coveo-icon-caption-overlay,
-.coveo-icon.objecttype.coveo-small.salesliterature .coveo-icon-caption-overlay {
-  display: block;
-}
-
-.coveo-icon.objecttype.coveo-small.Salesorder .coveo-icon-caption-overlay,
-.coveo-icon.objecttype.coveo-small.salesorder .coveo-icon-caption-overlay {
-  display: block;
-}
-
-.coveo-icon.objecttype.coveo-small.Service .coveo-icon-caption-overlay,
-.coveo-icon.objecttype.coveo-small.service .coveo-icon-caption-overlay {
-  display: block;
-}
-
-.coveo-icon.objecttype.coveo-small.Socialprofile .coveo-icon-caption-overlay,
-.coveo-icon.objecttype.coveo-small.socialprofile .coveo-icon-caption-overlay {
-  display: block;
-}
-
-.coveo-icon.objecttype.coveo-small.Kbdocumentation .coveo-icon-caption-overlay,
-.coveo-icon.objecttype.coveo-small.kbdocumentation .coveo-icon-caption-overlay {
-  display: block;
-}
-
-.coveo-icon.objecttype.coveo-small.Kbtechnicalarticle .coveo-icon-caption-overlay,
-.coveo-icon.objecttype.coveo-small.kbtechnicalarticle .coveo-icon-caption-overlay {
-  display: block;
-}
-
-.coveo-icon.objecttype.coveo-small.Kbsolution .coveo-icon-caption-overlay,
-.coveo-icon.objecttype.coveo-small.kbsolution .coveo-icon-caption-overlay {
-  display: block;
-}
-
-.coveo-icon.objecttype.coveo-small.Kbknowledgearticle .coveo-icon-caption-overlay,
-.coveo-icon.objecttype.coveo-small.kbknowledgearticle .coveo-icon-caption-overlay {
-  display: block;
-}
-
-.coveo-icon.filetype,
-.coveo-icon.sysfiletype {
-  display: inline-block;
-}
-
-.coveo-icon.filetype.txt .coveo-icon-caption-overlay,
-.coveo-icon.sysfiletype.txt .coveo-icon-caption-overlay {
-  display: block;
-}
-
-.coveo-icon.filetype.zip .coveo-icon-caption-overlay,
-.coveo-icon.sysfiletype.zip .coveo-icon-caption-overlay {
-  display: block;
-}
-
-.coveo-icon.filetype.pdf .coveo-icon-caption-overlay,
-.coveo-icon.sysfiletype.pdf .coveo-icon-caption-overlay {
-  display: block;
-}
-
-.coveo-icon.filetype.xml .coveo-icon-caption-overlay,
-.coveo-icon.sysfiletype.xml .coveo-icon-caption-overlay {
-  display: block;
-}
-
-.coveo-icon.filetype.rssitem .coveo-icon-caption-overlay,
-.coveo-icon.sysfiletype.rssitem .coveo-icon-caption-overlay {
-  display: block;
-}
-
-.coveo-icon.filetype.doc .coveo-icon-caption-overlay,
-.coveo-icon.sysfiletype.doc .coveo-icon-caption-overlay {
-  display: block;
-}
-
-.coveo-icon.filetype.docx .coveo-icon-caption-overlay,
-.coveo-icon.sysfiletype.docx .coveo-icon-caption-overlay {
-  display: block;
-}
-
-.coveo-icon.filetype.xls .coveo-icon-caption-overlay,
-.coveo-icon.sysfiletype.xls .coveo-icon-caption-overlay {
-  display: block;
-}
-
-.coveo-icon.filetype.ppt .coveo-icon-caption-overlay,
-.coveo-icon.sysfiletype.ppt .coveo-icon-caption-overlay {
-  display: block;
-}
-
-.coveo-icon.filetype.odt .coveo-icon-caption-overlay,
-.coveo-icon.sysfiletype.odt .coveo-icon-caption-overlay {
-  display: block;
-}
-
-.coveo-icon.filetype.cfpage .coveo-icon-caption-overlay,
-.coveo-icon.sysfiletype.cfpage .coveo-icon-caption-overlay {
-  display: block;
-}
-
-.coveo-icon.filetype.cfcomment .coveo-icon-caption-overlay,
-.coveo-icon.sysfiletype.cfcomment .coveo-icon-caption-overlay {
-  display: block;
-}
-
-.coveo-icon.filetype.cfspace .coveo-icon-caption-overlay,
-.coveo-icon.sysfiletype.cfspace .coveo-icon-caption-overlay {
-  display: block;
-}
-
-.coveo-icon.filetype.cfblogentry .coveo-icon-caption-overlay,
-.coveo-icon.sysfiletype.cfblogentry .coveo-icon-caption-overlay {
-  display: block;
-}
-
-.coveo-icon.filetype.confluencespace .coveo-icon-caption-overlay,
-.coveo-icon.sysfiletype.confluencespace .coveo-icon-caption-overlay {
-  display: block;
-}
-
-.coveo-icon.filetype.coveo-small,
-.coveo-icon.sysfiletype.coveo-small {
-  display: inline-block;
-}
-
-.coveo-icon.filetype.coveo-small.txt .coveo-icon-caption-overlay,
-.coveo-icon.sysfiletype.coveo-small.txt .coveo-icon-caption-overlay {
-  display: block;
-}
-
-.coveo-icon.filetype.coveo-small.zip .coveo-icon-caption-overlay,
-.coveo-icon.sysfiletype.coveo-small.zip .coveo-icon-caption-overlay {
-  display: block;
-}
-
-.coveo-icon.filetype.coveo-small.pdf .coveo-icon-caption-overlay,
-.coveo-icon.sysfiletype.coveo-small.pdf .coveo-icon-caption-overlay {
-  display: block;
-}
-
-.coveo-icon.filetype.coveo-small.xml .coveo-icon-caption-overlay,
-.coveo-icon.sysfiletype.coveo-small.xml .coveo-icon-caption-overlay {
-  display: block;
-}
-
-.coveo-icon.filetype.coveo-small.rssitem .coveo-icon-caption-overlay,
-.coveo-icon.sysfiletype.coveo-small.rssitem .coveo-icon-caption-overlay {
-  display: block;
-}
-
-.coveo-icon.filetype.coveo-small.doc .coveo-icon-caption-overlay,
-.coveo-icon.sysfiletype.coveo-small.doc .coveo-icon-caption-overlay {
-  display: block;
-}
-
-.coveo-icon.filetype.coveo-small.docx .coveo-icon-caption-overlay,
-.coveo-icon.sysfiletype.coveo-small.docx .coveo-icon-caption-overlay {
-  display: block;
-}
-
-.coveo-icon.filetype.coveo-small.xls .coveo-icon-caption-overlay,
-.coveo-icon.sysfiletype.coveo-small.xls .coveo-icon-caption-overlay {
-  display: block;
-}
-
-.coveo-icon.filetype.coveo-small.ppt .coveo-icon-caption-overlay,
-.coveo-icon.sysfiletype.coveo-small.ppt .coveo-icon-caption-overlay {
-  display: block;
-}
-
-.coveo-icon.filetype.coveo-small.odt .coveo-icon-caption-overlay,
-.coveo-icon.sysfiletype.coveo-small.odt .coveo-icon-caption-overlay {
-  display: block;
-}
-
-.coveo-icon.filetype.coveo-small.cfpage .coveo-icon-caption-overlay,
-.coveo-icon.sysfiletype.coveo-small.cfpage .coveo-icon-caption-overlay {
-  display: block;
-}
-
-.coveo-icon.filetype.coveo-small.cfcomment .coveo-icon-caption-overlay,
-.coveo-icon.sysfiletype.coveo-small.cfcomment .coveo-icon-caption-overlay {
-  display: block;
-}
-
-.coveo-icon.filetype.coveo-small.cfspace .coveo-icon-caption-overlay,
-.coveo-icon.sysfiletype.coveo-small.cfspace .coveo-icon-caption-overlay {
-  display: block;
-}
-
-.coveo-icon.filetype.coveo-small.cfblogentry .coveo-icon-caption-overlay,
-.coveo-icon.sysfiletype.coveo-small.cfblogentry .coveo-icon-caption-overlay {
-  display: block;
-}
-
-.coveo-icon.filetype.coveo-small.confluencespace .coveo-icon-caption-overlay,
-.coveo-icon.sysfiletype.coveo-small.confluencespace .coveo-icon-caption-overlay {
-  display: block;
-}
-
-.coveo-icon-caption-overlay {
-  background-color: white;
-  border: 1px solid #BCC3CA;
-  border-radius: 2px;
-  font-size: 11px;
-  position: absolute;
-  top: -16px;
-  left: -10px;
-  text-indent: 0;
-  padding: 2px;
-  color: #67768B;
-  width: 60px;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  overflow: hidden;
-}
-
-.coveo-icon.coveo-small .coveo-icon-caption-overlay {
-  width: 40px;
-  top: -18px;
-  left: -10px;
-}
-
-.coveo-icon[data-with-label="true"] .coveo-icon-caption-overlay {
-  display: block;
-}
-
-.coveo-icon[data-with-label="true"].coveo-small .coveo-icon-caption-overlay {
-  display: none;
-}
-
-.CoveoIcon .CoveoQuickview,
-.CoveoIcon.coveo-icon .CoveoQuickview,
-.CoveoIcon.coveo-icon.filetype .CoveoQuickview,
-.CoveoIcon.coveo-icon.objecttype .CoveoQuickview,
-.CoveoIcon.coveo-icon.sysfiletype .CoveoQuickview {
-  position: absolute;
-  text-indent: 0;
-  left: 2px;
-  right: 2px;
-  position: "absolute";
-  top: 50%;
-  -webkit-transform: translateY(-50%);
-  -moz-transform: translateY(-50%);
-  -ms-transform: translateY(-50%);
-  -o-transform: translateY(-50%);
-  transform: translateY(-50%);
-  display: none;
-}
-
-.CoveoIcon:hover.coveo-with-quickview,
-.CoveoIcon.coveo-icon:hover.coveo-with-quickview,
-.CoveoIcon.coveo-icon.filetype:hover.coveo-with-quickview,
-.CoveoIcon.coveo-icon.objecttype:hover.coveo-with-quickview,
-.CoveoIcon.coveo-icon.sysfiletype:hover.coveo-with-quickview {
-  background-image: none;
-  border: 1px solid #BCC3CA;
-  border-radius: 2px;
-  background-color: #F7F8F9;
-}
-
-.CoveoIcon:hover.coveo-with-quickview .CoveoQuickview,
-.CoveoIcon.coveo-icon:hover.coveo-with-quickview .CoveoQuickview,
-.CoveoIcon.coveo-icon.filetype:hover.coveo-with-quickview .CoveoQuickview,
-.CoveoIcon.coveo-icon.objecttype:hover.coveo-with-quickview .CoveoQuickview,
-.CoveoIcon.coveo-icon.sysfiletype:hover.coveo-with-quickview .CoveoQuickview {
-  display: block;
-}
-
-.CoveoIcon:hover.coveo-with-quickview .CoveoQuickview:hover,
-.CoveoIcon.coveo-icon:hover.coveo-with-quickview .CoveoQuickview:hover,
-.CoveoIcon.coveo-icon.filetype:hover.coveo-with-quickview .CoveoQuickview:hover,
-.CoveoIcon.coveo-icon.objecttype:hover.coveo-with-quickview .CoveoQuickview:hover,
-.CoveoIcon.coveo-icon.sysfiletype:hover.coveo-with-quickview .CoveoQuickview:hover {
-  text-decoration: none;
-}
-
-.coveo-filetype-list,
-.coveo-icon.objecttype.Feed,
-.coveo-icon.objecttype.feed,
-.coveo-icon.objecttype.Thread,
-.coveo-icon.objecttype.thread,
-.coveo-icon.objecttype.Board,
-.coveo-icon.objecttype.board,
-.coveo-icon.objecttype.Category,
-.coveo-icon.objecttype.category,
-.coveo-icon.objecttype.Invoice,
-.coveo-icon.objecttype.invoice,
-.coveo-icon.objecttype.List,
-.coveo-icon.objecttype.list,
-.coveo-icon.objecttype.Queueitem,
-.coveo-icon.objecttype.queueitem,
-.coveo-icon.objecttype.Service,
-.coveo-icon.objecttype.service,
-.coveo-icon.objecttype.Kbarticlecomment,
-.coveo-icon.objecttype.kbarticlecomment,
-.coveo-icon.filetype.saleforceitem,
-.coveo-icon.sysfiletype.saleforceitem,
-.coveo-icon.filetype.cfblogentry,
-.coveo-icon.sysfiletype.cfblogentry,
-.coveo-icon.filetype.exchangenote,
-.coveo-icon.sysfiletype.exchangenote,
-.coveo-icon.filetype.exchangeactivity,
-.coveo-icon.sysfiletype.exchangeactivity,
-.coveo-icon.filetype.exchangerssfeed,
-.coveo-icon.sysfiletype.exchangerssfeed,
-.coveo-icon.filetype.exchangeofficecom,
-.coveo-icon.sysfiletype.exchangeofficecom,
-.coveo-icon.filetype.lithiumthread,
-.coveo-icon.sysfiletype.lithiumthread,
-.coveo-icon.filetype.lithiumboard,
-.coveo-icon.sysfiletype.lithiumboard,
-.coveo-icon.filetype.lithiumcategory,
-.coveo-icon.sysfiletype.lithiumcategory,
-.coveo-icon.filetype.spannouncement,
-.coveo-icon.sysfiletype.spannouncement,
-.coveo-icon.filetype.spannouncementlist,
-.coveo-icon.sysfiletype.spannouncementlist,
-.coveo-icon.filetype.spdiscussionboard,
-.coveo-icon.sysfiletype.spdiscussionboard,
-.coveo-icon.filetype.spdiscussionboardlist,
-.coveo-icon.sysfiletype.spdiscussionboardlist,
-.coveo-icon.filetype.sptextbox,
-.coveo-icon.sysfiletype.sptextbox,
-.coveo-icon.filetype.sptextboxlist,
-.coveo-icon.sysfiletype.sptextboxlist,
-.coveo-icon.filetype.spblogcategory,
-.coveo-icon.sysfiletype.spblogcategory,
-.coveo-icon.filetype.spblogcategorylist,
-.coveo-icon.sysfiletype.spblogcategorylist,
-.coveo-icon.filetype.spblogcomment,
-.coveo-icon.sysfiletype.spblogcomment,
-.coveo-icon.filetype.spblogcommentlist,
-.coveo-icon.sysfiletype.spblogcommentlist,
-.coveo-icon.filetype.spblogpost,
-.coveo-icon.sysfiletype.spblogpost,
-.coveo-icon.filetype.spblogpostlist,
-.coveo-icon.sysfiletype.spblogpostlist,
-.coveo-icon.filetype.splanguagesandtranslator,
-.coveo-icon.sysfiletype.splanguagesandtranslator,
-.coveo-icon.filetype.splanguagesandtranslatorlist,
-.coveo-icon.sysfiletype.splanguagesandtranslatorlist,
-.coveo-icon.filetype.sphealthreport,
-.coveo-icon.sysfiletype.sphealthreport,
-.coveo-icon.filetype.sphealthreportlist,
-.coveo-icon.sysfiletype.sphealthreportlist,
-.coveo-icon.filetype.sphealthrule,
-.coveo-icon.sysfiletype.sphealthrule,
-.coveo-icon.filetype.sphealthrulelist,
-.coveo-icon.sysfiletype.sphealthrulelist,
-.coveo-icon.filetype.spperformancepointcontent,
-.coveo-icon.sysfiletype.spperformancepointcontent,
-.coveo-icon.filetype.spperformancepointcontentlist,
-.coveo-icon.sysfiletype.spperformancepointcontentlist,
-.coveo-icon.filetype.spphonecallmemo,
-.coveo-icon.sysfiletype.spphonecallmemo,
-.coveo-icon.filetype.spphonecallmemolist,
-.coveo-icon.sysfiletype.spphonecallmemolist,
-.coveo-icon.filetype.spmicrofeedpost,
-.coveo-icon.sysfiletype.spmicrofeedpost,
-.coveo-icon.filetype.spmicrofeedlist,
-.coveo-icon.sysfiletype.spmicrofeedlist {
-  border-radius: 2px;
-}
+/*
+* @param direction vertical or horizontal
+* @param position type of positioning to apply (relative/absolute)
+*/
+
+/*
+* @param $selector css selector on which to apply the icon. Can be '&' if the icon should be applied on the current element;
+* @param $size size of the icon to use
+*/
 
 .coveo-filetype-salesforce-standard-log-a-call,
 .coveo-filetype-salesforce-standard-log-a-call-small {
@@ -3701,6 +3340,447 @@ input[type=checkbox].coveo-checkbox + button {
 .coveo-filetype-salesforce-standard-folder,
 .coveo-filetype-salesforce-standard-folder-small {
   background-color: #8b9ae3;
+  border-radius: 2px;
+}
+
+.coveo-icon {
+  position: relative;
+}
+
+.coveo-icon .coveo-icon-caption-overlay {
+  display: none;
+}
+
+.coveo-icon.objecttype {
+  display: inline-block;
+}
+
+.coveo-icon.objecttype.Solution .coveo-icon-caption-overlay,
+.coveo-icon.objecttype.solution .coveo-icon-caption-overlay {
+  display: block;
+}
+
+.coveo-icon.objecttype.Task .coveo-icon-caption-overlay,
+.coveo-icon.objecttype.task .coveo-icon-caption-overlay {
+  display: block;
+}
+
+.coveo-icon.objecttype.Salesliterature .coveo-icon-caption-overlay,
+.coveo-icon.objecttype.salesliterature .coveo-icon-caption-overlay {
+  display: block;
+}
+
+.coveo-icon.objecttype.Salesorder .coveo-icon-caption-overlay,
+.coveo-icon.objecttype.salesorder .coveo-icon-caption-overlay {
+  display: block;
+}
+
+.coveo-icon.objecttype.Service .coveo-icon-caption-overlay,
+.coveo-icon.objecttype.service .coveo-icon-caption-overlay {
+  display: block;
+}
+
+.coveo-icon.objecttype.Socialprofile .coveo-icon-caption-overlay,
+.coveo-icon.objecttype.socialprofile .coveo-icon-caption-overlay {
+  display: block;
+}
+
+.coveo-icon.objecttype.Kbdocumentation .coveo-icon-caption-overlay,
+.coveo-icon.objecttype.kbdocumentation .coveo-icon-caption-overlay {
+  display: block;
+}
+
+.coveo-icon.objecttype.Kbtechnicalarticle .coveo-icon-caption-overlay,
+.coveo-icon.objecttype.kbtechnicalarticle .coveo-icon-caption-overlay {
+  display: block;
+}
+
+.coveo-icon.objecttype.Kbsolution .coveo-icon-caption-overlay,
+.coveo-icon.objecttype.kbsolution .coveo-icon-caption-overlay {
+  display: block;
+}
+
+.coveo-icon.objecttype.Kbknowledgearticle .coveo-icon-caption-overlay,
+.coveo-icon.objecttype.kbknowledgearticle .coveo-icon-caption-overlay {
+  display: block;
+}
+
+.coveo-icon.objecttype.coveo-small {
+  display: inline-block;
+}
+
+.coveo-icon.objecttype.coveo-small.Solution .coveo-icon-caption-overlay,
+.coveo-icon.objecttype.coveo-small.solution .coveo-icon-caption-overlay {
+  display: block;
+}
+
+.coveo-icon.objecttype.coveo-small.Task .coveo-icon-caption-overlay,
+.coveo-icon.objecttype.coveo-small.task .coveo-icon-caption-overlay {
+  display: block;
+}
+
+.coveo-icon.objecttype.coveo-small.Salesliterature .coveo-icon-caption-overlay,
+.coveo-icon.objecttype.coveo-small.salesliterature .coveo-icon-caption-overlay {
+  display: block;
+}
+
+.coveo-icon.objecttype.coveo-small.Salesorder .coveo-icon-caption-overlay,
+.coveo-icon.objecttype.coveo-small.salesorder .coveo-icon-caption-overlay {
+  display: block;
+}
+
+.coveo-icon.objecttype.coveo-small.Service .coveo-icon-caption-overlay,
+.coveo-icon.objecttype.coveo-small.service .coveo-icon-caption-overlay {
+  display: block;
+}
+
+.coveo-icon.objecttype.coveo-small.Socialprofile .coveo-icon-caption-overlay,
+.coveo-icon.objecttype.coveo-small.socialprofile .coveo-icon-caption-overlay {
+  display: block;
+}
+
+.coveo-icon.objecttype.coveo-small.Kbdocumentation .coveo-icon-caption-overlay,
+.coveo-icon.objecttype.coveo-small.kbdocumentation .coveo-icon-caption-overlay {
+  display: block;
+}
+
+.coveo-icon.objecttype.coveo-small.Kbtechnicalarticle .coveo-icon-caption-overlay,
+.coveo-icon.objecttype.coveo-small.kbtechnicalarticle .coveo-icon-caption-overlay {
+  display: block;
+}
+
+.coveo-icon.objecttype.coveo-small.Kbsolution .coveo-icon-caption-overlay,
+.coveo-icon.objecttype.coveo-small.kbsolution .coveo-icon-caption-overlay {
+  display: block;
+}
+
+.coveo-icon.objecttype.coveo-small.Kbknowledgearticle .coveo-icon-caption-overlay,
+.coveo-icon.objecttype.coveo-small.kbknowledgearticle .coveo-icon-caption-overlay {
+  display: block;
+}
+
+.coveo-icon.filetype,
+.coveo-icon.sysfiletype {
+  display: inline-block;
+}
+
+.coveo-icon.filetype.txt .coveo-icon-caption-overlay,
+.coveo-icon.sysfiletype.txt .coveo-icon-caption-overlay {
+  display: block;
+}
+
+.coveo-icon.filetype.zip .coveo-icon-caption-overlay,
+.coveo-icon.sysfiletype.zip .coveo-icon-caption-overlay {
+  display: block;
+}
+
+.coveo-icon.filetype.pdf .coveo-icon-caption-overlay,
+.coveo-icon.sysfiletype.pdf .coveo-icon-caption-overlay {
+  display: block;
+}
+
+.coveo-icon.filetype.xml .coveo-icon-caption-overlay,
+.coveo-icon.sysfiletype.xml .coveo-icon-caption-overlay {
+  display: block;
+}
+
+.coveo-icon.filetype.rssitem .coveo-icon-caption-overlay,
+.coveo-icon.sysfiletype.rssitem .coveo-icon-caption-overlay {
+  display: block;
+}
+
+.coveo-icon.filetype.doc .coveo-icon-caption-overlay,
+.coveo-icon.sysfiletype.doc .coveo-icon-caption-overlay {
+  display: block;
+}
+
+.coveo-icon.filetype.docx .coveo-icon-caption-overlay,
+.coveo-icon.sysfiletype.docx .coveo-icon-caption-overlay {
+  display: block;
+}
+
+.coveo-icon.filetype.xls .coveo-icon-caption-overlay,
+.coveo-icon.sysfiletype.xls .coveo-icon-caption-overlay {
+  display: block;
+}
+
+.coveo-icon.filetype.ppt .coveo-icon-caption-overlay,
+.coveo-icon.sysfiletype.ppt .coveo-icon-caption-overlay {
+  display: block;
+}
+
+.coveo-icon.filetype.odt .coveo-icon-caption-overlay,
+.coveo-icon.sysfiletype.odt .coveo-icon-caption-overlay {
+  display: block;
+}
+
+.coveo-icon.filetype.cfpage .coveo-icon-caption-overlay,
+.coveo-icon.sysfiletype.cfpage .coveo-icon-caption-overlay {
+  display: block;
+}
+
+.coveo-icon.filetype.cfcomment .coveo-icon-caption-overlay,
+.coveo-icon.sysfiletype.cfcomment .coveo-icon-caption-overlay {
+  display: block;
+}
+
+.coveo-icon.filetype.cfspace .coveo-icon-caption-overlay,
+.coveo-icon.sysfiletype.cfspace .coveo-icon-caption-overlay {
+  display: block;
+}
+
+.coveo-icon.filetype.cfblogentry .coveo-icon-caption-overlay,
+.coveo-icon.sysfiletype.cfblogentry .coveo-icon-caption-overlay {
+  display: block;
+}
+
+.coveo-icon.filetype.confluencespace .coveo-icon-caption-overlay,
+.coveo-icon.sysfiletype.confluencespace .coveo-icon-caption-overlay {
+  display: block;
+}
+
+.coveo-icon.filetype.coveo-small,
+.coveo-icon.sysfiletype.coveo-small {
+  display: inline-block;
+}
+
+.coveo-icon.filetype.coveo-small.txt .coveo-icon-caption-overlay,
+.coveo-icon.sysfiletype.coveo-small.txt .coveo-icon-caption-overlay {
+  display: block;
+}
+
+.coveo-icon.filetype.coveo-small.zip .coveo-icon-caption-overlay,
+.coveo-icon.sysfiletype.coveo-small.zip .coveo-icon-caption-overlay {
+  display: block;
+}
+
+.coveo-icon.filetype.coveo-small.pdf .coveo-icon-caption-overlay,
+.coveo-icon.sysfiletype.coveo-small.pdf .coveo-icon-caption-overlay {
+  display: block;
+}
+
+.coveo-icon.filetype.coveo-small.xml .coveo-icon-caption-overlay,
+.coveo-icon.sysfiletype.coveo-small.xml .coveo-icon-caption-overlay {
+  display: block;
+}
+
+.coveo-icon.filetype.coveo-small.rssitem .coveo-icon-caption-overlay,
+.coveo-icon.sysfiletype.coveo-small.rssitem .coveo-icon-caption-overlay {
+  display: block;
+}
+
+.coveo-icon.filetype.coveo-small.doc .coveo-icon-caption-overlay,
+.coveo-icon.sysfiletype.coveo-small.doc .coveo-icon-caption-overlay {
+  display: block;
+}
+
+.coveo-icon.filetype.coveo-small.docx .coveo-icon-caption-overlay,
+.coveo-icon.sysfiletype.coveo-small.docx .coveo-icon-caption-overlay {
+  display: block;
+}
+
+.coveo-icon.filetype.coveo-small.xls .coveo-icon-caption-overlay,
+.coveo-icon.sysfiletype.coveo-small.xls .coveo-icon-caption-overlay {
+  display: block;
+}
+
+.coveo-icon.filetype.coveo-small.ppt .coveo-icon-caption-overlay,
+.coveo-icon.sysfiletype.coveo-small.ppt .coveo-icon-caption-overlay {
+  display: block;
+}
+
+.coveo-icon.filetype.coveo-small.odt .coveo-icon-caption-overlay,
+.coveo-icon.sysfiletype.coveo-small.odt .coveo-icon-caption-overlay {
+  display: block;
+}
+
+.coveo-icon.filetype.coveo-small.cfpage .coveo-icon-caption-overlay,
+.coveo-icon.sysfiletype.coveo-small.cfpage .coveo-icon-caption-overlay {
+  display: block;
+}
+
+.coveo-icon.filetype.coveo-small.cfcomment .coveo-icon-caption-overlay,
+.coveo-icon.sysfiletype.coveo-small.cfcomment .coveo-icon-caption-overlay {
+  display: block;
+}
+
+.coveo-icon.filetype.coveo-small.cfspace .coveo-icon-caption-overlay,
+.coveo-icon.sysfiletype.coveo-small.cfspace .coveo-icon-caption-overlay {
+  display: block;
+}
+
+.coveo-icon.filetype.coveo-small.cfblogentry .coveo-icon-caption-overlay,
+.coveo-icon.sysfiletype.coveo-small.cfblogentry .coveo-icon-caption-overlay {
+  display: block;
+}
+
+.coveo-icon.filetype.coveo-small.confluencespace .coveo-icon-caption-overlay,
+.coveo-icon.sysfiletype.coveo-small.confluencespace .coveo-icon-caption-overlay {
+  display: block;
+}
+
+.coveo-icon-caption-overlay {
+  background-color: white;
+  border: 1px solid #BCC3CA;
+  border-radius: 2px;
+  font-size: 11px;
+  position: absolute;
+  top: -16px;
+  left: -10px;
+  text-indent: 0;
+  padding: 2px;
+  color: #67768B;
+  width: 60px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.coveo-icon.coveo-small .coveo-icon-caption-overlay {
+  width: 40px;
+  top: -18px;
+  left: -10px;
+}
+
+.coveo-icon[data-with-label="true"] .coveo-icon-caption-overlay {
+  display: block;
+}
+
+.coveo-icon[data-with-label="true"].coveo-small .coveo-icon-caption-overlay {
+  display: none;
+}
+
+.CoveoIcon .CoveoQuickview,
+.CoveoIcon.coveo-icon .CoveoQuickview,
+.CoveoIcon.coveo-icon.filetype .CoveoQuickview,
+.CoveoIcon.coveo-icon.objecttype .CoveoQuickview,
+.CoveoIcon.coveo-icon.sysfiletype .CoveoQuickview {
+  position: absolute;
+  text-indent: 0;
+  left: 2px;
+  right: 2px;
+  position: "absolute";
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+  -moz-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+  -o-transform: translateY(-50%);
+  transform: translateY(-50%);
+  display: none;
+}
+
+.CoveoIcon:hover.coveo-with-quickview,
+.CoveoIcon.coveo-icon:hover.coveo-with-quickview,
+.CoveoIcon.coveo-icon.filetype:hover.coveo-with-quickview,
+.CoveoIcon.coveo-icon.objecttype:hover.coveo-with-quickview,
+.CoveoIcon.coveo-icon.sysfiletype:hover.coveo-with-quickview {
+  background-image: none;
+  border: 1px solid #BCC3CA;
+  border-radius: 2px;
+  background-color: #F7F8F9;
+}
+
+.CoveoIcon:hover.coveo-with-quickview .CoveoQuickview,
+.CoveoIcon.coveo-icon:hover.coveo-with-quickview .CoveoQuickview,
+.CoveoIcon.coveo-icon.filetype:hover.coveo-with-quickview .CoveoQuickview,
+.CoveoIcon.coveo-icon.objecttype:hover.coveo-with-quickview .CoveoQuickview,
+.CoveoIcon.coveo-icon.sysfiletype:hover.coveo-with-quickview .CoveoQuickview {
+  display: block;
+}
+
+.CoveoIcon:hover.coveo-with-quickview .CoveoQuickview:hover,
+.CoveoIcon.coveo-icon:hover.coveo-with-quickview .CoveoQuickview:hover,
+.CoveoIcon.coveo-icon.filetype:hover.coveo-with-quickview .CoveoQuickview:hover,
+.CoveoIcon.coveo-icon.objecttype:hover.coveo-with-quickview .CoveoQuickview:hover,
+.CoveoIcon.coveo-icon.sysfiletype:hover.coveo-with-quickview .CoveoQuickview:hover {
+  text-decoration: none;
+}
+
+.coveo-filetype-list,
+.coveo-icon.objecttype.Feed,
+.coveo-icon.objecttype.feed,
+.coveo-icon.objecttype.Thread,
+.coveo-icon.objecttype.thread,
+.coveo-icon.objecttype.Board,
+.coveo-icon.objecttype.board,
+.coveo-icon.objecttype.Category,
+.coveo-icon.objecttype.category,
+.coveo-icon.objecttype.Invoice,
+.coveo-icon.objecttype.invoice,
+.coveo-icon.objecttype.List,
+.coveo-icon.objecttype.list,
+.coveo-icon.objecttype.Queueitem,
+.coveo-icon.objecttype.queueitem,
+.coveo-icon.objecttype.Service,
+.coveo-icon.objecttype.service,
+.coveo-icon.objecttype.Kbarticlecomment,
+.coveo-icon.objecttype.kbarticlecomment,
+.coveo-icon.filetype.saleforceitem,
+.coveo-icon.sysfiletype.saleforceitem,
+.coveo-icon.filetype.cfblogentry,
+.coveo-icon.sysfiletype.cfblogentry,
+.coveo-icon.filetype.exchangenote,
+.coveo-icon.sysfiletype.exchangenote,
+.coveo-icon.filetype.exchangeactivity,
+.coveo-icon.sysfiletype.exchangeactivity,
+.coveo-icon.filetype.exchangerssfeed,
+.coveo-icon.sysfiletype.exchangerssfeed,
+.coveo-icon.filetype.exchangeofficecom,
+.coveo-icon.sysfiletype.exchangeofficecom,
+.coveo-icon.filetype.lithiumthread,
+.coveo-icon.sysfiletype.lithiumthread,
+.coveo-icon.filetype.lithiumboard,
+.coveo-icon.sysfiletype.lithiumboard,
+.coveo-icon.filetype.lithiumcategory,
+.coveo-icon.sysfiletype.lithiumcategory,
+.coveo-icon.filetype.spannouncement,
+.coveo-icon.sysfiletype.spannouncement,
+.coveo-icon.filetype.spannouncementlist,
+.coveo-icon.sysfiletype.spannouncementlist,
+.coveo-icon.filetype.spdiscussionboard,
+.coveo-icon.sysfiletype.spdiscussionboard,
+.coveo-icon.filetype.spdiscussionboardlist,
+.coveo-icon.sysfiletype.spdiscussionboardlist,
+.coveo-icon.filetype.sptextbox,
+.coveo-icon.sysfiletype.sptextbox,
+.coveo-icon.filetype.sptextboxlist,
+.coveo-icon.sysfiletype.sptextboxlist,
+.coveo-icon.filetype.spblogcategory,
+.coveo-icon.sysfiletype.spblogcategory,
+.coveo-icon.filetype.spblogcategorylist,
+.coveo-icon.sysfiletype.spblogcategorylist,
+.coveo-icon.filetype.spblogcomment,
+.coveo-icon.sysfiletype.spblogcomment,
+.coveo-icon.filetype.spblogcommentlist,
+.coveo-icon.sysfiletype.spblogcommentlist,
+.coveo-icon.filetype.spblogpost,
+.coveo-icon.sysfiletype.spblogpost,
+.coveo-icon.filetype.spblogpostlist,
+.coveo-icon.sysfiletype.spblogpostlist,
+.coveo-icon.filetype.splanguagesandtranslator,
+.coveo-icon.sysfiletype.splanguagesandtranslator,
+.coveo-icon.filetype.splanguagesandtranslatorlist,
+.coveo-icon.sysfiletype.splanguagesandtranslatorlist,
+.coveo-icon.filetype.sphealthreport,
+.coveo-icon.sysfiletype.sphealthreport,
+.coveo-icon.filetype.sphealthreportlist,
+.coveo-icon.sysfiletype.sphealthreportlist,
+.coveo-icon.filetype.sphealthrule,
+.coveo-icon.sysfiletype.sphealthrule,
+.coveo-icon.filetype.sphealthrulelist,
+.coveo-icon.sysfiletype.sphealthrulelist,
+.coveo-icon.filetype.spperformancepointcontent,
+.coveo-icon.sysfiletype.spperformancepointcontent,
+.coveo-icon.filetype.spperformancepointcontentlist,
+.coveo-icon.sysfiletype.spperformancepointcontentlist,
+.coveo-icon.filetype.spphonecallmemo,
+.coveo-icon.sysfiletype.spphonecallmemo,
+.coveo-icon.filetype.spphonecallmemolist,
+.coveo-icon.sysfiletype.spphonecallmemolist,
+.coveo-icon.filetype.spmicrofeedpost,
+.coveo-icon.sysfiletype.spmicrofeedpost,
+.coveo-icon.filetype.spmicrofeedlist,
+.coveo-icon.sysfiletype.spmicrofeedlist {
   border-radius: 2px;
 }
 

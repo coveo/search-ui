@@ -3717,8 +3717,8 @@ exports.shim = shim;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.version = {
-    'lib': '2.2900.17-beta',
-    'product': '2.2900.17-beta',
+    'lib': '2.2900.18-beta',
+    'product': '2.2900.18-beta',
     'supportedApiVersion': 2
 };
 

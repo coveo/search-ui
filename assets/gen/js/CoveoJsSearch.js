@@ -19680,8 +19680,8 @@ exports.DebugEvents = DebugEvents;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.version = {
-    'lib': '2.2900.17-beta',
-    'product': '2.2900.17-beta',
+    'lib': '2.2900.18-beta',
+    'product': '2.2900.18-beta',
     'supportedApiVersion': 2
 };
 
@@ -22184,7 +22184,7 @@ var FileTypes = (function () {
             localizedString = Strings_1.l(objecttype);
         }
         return {
-            'icon': 'coveo-icon objecttype ' + objecttype.replace(' ', '-'),
+            'icon': 'coveo-icon objecttype ' + loweredCaseObjecttype.replace(' ', '-'),
             caption: localizedString
         };
     };
@@ -22206,7 +22206,7 @@ var FileTypes = (function () {
             localizedString = Strings_1.l(filetype);
         }
         return {
-            'icon': 'coveo-icon filetype ' + filetype.replace(' ', '-'),
+            'icon': 'coveo-icon filetype ' + loweredCaseFiletype.replace(' ', '-'),
             caption: localizedString
         };
     };
