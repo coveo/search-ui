@@ -373,10 +373,9 @@ export class ComponentOptions {
    * Builds an icon option.
    *
    * This takes an SVG icon name, validates it and returns the name of the icon.
-   * > `data-foo="search"`
-   *
    * **Markup Examples:**
-   *
+   * 
+   * > `data-foo="search"`
    *
    * > `data-foo="facetExpand"`
    *
