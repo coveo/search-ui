@@ -276,12 +276,11 @@ export class ComponentOptions {
   /**
    * Build an icon option.
    *
-   * This loads an SVG icon from its name.
-   * > `data-foo="user"`
+   * This takes an SVG icon name, validates it and returns the name of the icon.
+   * > `data-foo="search"`
    *
-   * > `data-foo="database"`
+   * > `data-foo="facetExpand"`
    *
-   * `data-foo="coveo-sprites-user"` or `data-foo="coveo-sprites-database"`.
    */
   static buildIconOption(optionArgs?: IComponentOptions<string>): string {
     return ComponentOptions.buildOption<string>(ComponentOptionsType.ICON, ComponentOptions.loadIconOption, optionArgs);
@@ -567,7 +566,10 @@ export class ComponentOptions {
 
   static loadIconOption(element: HTMLElement, name: string, option: IComponentOptions<any>): string {
     const svgIconName = ComponentOptions.loadStringOption(element, name, option);
-    return SVGIcons.icons[svgIconName];
+    if (Utils.isNullOrUndefined(SVGIcons.icons[svgIconName])) {
+      new Logger(element).warn(`Icon with name ${svgIconName} not found.`);
+    }
+    return svgIconName;
   }
 
   static loadFieldOption(element: HTMLElement, name: string, option: IComponentOptionsOption<any>): string {
