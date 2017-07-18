@@ -378,7 +378,7 @@ Quickview.resultCurrentlyBeingRendered = null;
 exports.Quickview = Quickview;
 Initialization_1.Initialization.registerAutoCreateComponent(Quickview);
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(6)))
 
 /***/ }),
 
@@ -444,7 +444,7 @@ var Assert_1 = __webpack_require__(7);
 var Dom_1 = __webpack_require__(3);
 var QuickviewEvents_1 = __webpack_require__(268);
 var DeviceUtils_1 = __webpack_require__(22);
-var Utils_1 = __webpack_require__(6);
+var Utils_1 = __webpack_require__(5);
 var ColorUtils_1 = __webpack_require__(106);
 var Initialization_1 = __webpack_require__(2);
 var Strings_1 = __webpack_require__(10);

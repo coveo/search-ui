@@ -55,6 +55,7 @@ var GlobalExports_1 = __webpack_require__(4);
 __webpack_require__(585);
 var SVGIcons_1 = __webpack_require__(15);
 var SVGDom_1 = __webpack_require__(16);
+var Utils_1 = __webpack_require__(5);
 /**
  * The CardOverlay component displays a button that the user can click to toggle the visibility of an overlay on top of
  * an {@link IQueryResult}. While this component typically populates a {@link CardActionBar} component, it is actually
@@ -155,7 +156,9 @@ var CardOverlay = (function (_super) {
     CardOverlay.prototype.createButton = function (element) {
         var _this = this;
         if (this.options.icon) {
-            element.appendChild(Dom_1.$$('span', { className: 'coveo-icon ' }, this.options.icon).el);
+            var icon = Dom_1.$$('span', { className: 'coveo-icon ' }, SVGIcons_1.SVGIcons.icons[this.options.icon]).el;
+            element.appendChild(icon);
+            SVGDom_1.SVGDom.addClassToSVGInContainer(element, "coveo-" + Utils_1.Utils.toDashCase(this.options.icon) + "-svg");
         }
         element.appendChild(Dom_1.$$('span', { className: 'coveo-label' }, this.options.title).el);
         element.setAttribute('tabindex', '0');
@@ -182,6 +185,8 @@ CardOverlay.options = {
     title: ComponentOptions_1.ComponentOptions.buildLocalizedStringOption({ required: true, defaultValue: 'NoTitle' }),
     /**
      * Specifies the icon to use for the overlay icon and for the button icon.
+     *
+     * The name of the icon to use should be specified in lowerCamelCase.
      */
     icon: ComponentOptions_1.ComponentOptions.buildIconOption()
 };

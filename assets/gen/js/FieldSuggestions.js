@@ -20,7 +20,7 @@ var SuggestionForOmnibox_1 = __webpack_require__(444);
 var Component_1 = __webpack_require__(8);
 var ComponentOptions_1 = __webpack_require__(9);
 var Assert_1 = __webpack_require__(7);
-var Utils_1 = __webpack_require__(6);
+var Utils_1 = __webpack_require__(5);
 var OmniboxEvents_1 = __webpack_require__(33);
 var QueryStateModel_1 = __webpack_require__(13);
 var Initialization_1 = __webpack_require__(2);
@@ -290,7 +290,7 @@ FieldSuggestions.options = {
 exports.FieldSuggestions = FieldSuggestions;
 Initialization_1.Initialization.registerAutoCreateComponent(FieldSuggestions);
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(6)))
 
 /***/ }),
 

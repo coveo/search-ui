@@ -47,7 +47,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var Component_1 = __webpack_require__(8);
 var ComponentOptions_1 = __webpack_require__(9);
 var DefaultFoldingTemplate_1 = __webpack_require__(656);
-var Utils_1 = __webpack_require__(6);
+var Utils_1 = __webpack_require__(5);
 var QueryUtils_1 = __webpack_require__(19);
 var Initialization_1 = __webpack_require__(2);
 var Assert_1 = __webpack_require__(7);
@@ -322,7 +322,7 @@ ResultFolding.options = {
 exports.ResultFolding = ResultFolding;
 Initialization_1.Initialization.registerAutoCreateComponent(ResultFolding);
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(6)))
 
 /***/ }),
 

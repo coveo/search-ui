@@ -648,39 +648,39 @@ input[type=checkbox].coveo-checkbox + button {
   color: inherit !important;
 }
 
-.coveo-modalBox .coveo-email-from,
-.coveo-modalBox .coveo-email-to {
+.coveo-modal-container .coveo-email-from,
+.coveo-modal-container .coveo-email-to {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif, sans-serif;
   padding: 5px 16px;
   font-size: 13px;
   font-size: 14px;
 }
 
-.coveo-modalBox .coveo-email-from a,
-.coveo-modalBox .coveo-email-to a {
+.coveo-modal-container .coveo-email-from a,
+.coveo-modal-container .coveo-email-to a {
   color: #296896;
   text-decoration: none;
   cursor: pointer;
   white-space: nowrap;
 }
 
-.coveo-modalBox .coveo-email-from a:hover,
-.coveo-modalBox .coveo-email-from a:visited,
-.coveo-modalBox .coveo-email-to a:hover,
-.coveo-modalBox .coveo-email-to a:visited {
+.coveo-modal-container .coveo-email-from a:hover,
+.coveo-modal-container .coveo-email-from a:visited,
+.coveo-modal-container .coveo-email-to a:hover,
+.coveo-modal-container .coveo-email-to a:visited {
   text-decoration: none;
   color: #263E55;
 }
 
-.coveo-modalBox .coveo-email-from a:hover,
-.coveo-modalBox .coveo-email-from a:hover a,
-.coveo-modalBox .coveo-email-to a:hover,
-.coveo-modalBox .coveo-email-to a:hover a {
+.coveo-modal-container .coveo-email-from a:hover,
+.coveo-modal-container .coveo-email-from a:hover a,
+.coveo-modal-container .coveo-email-to a:hover,
+.coveo-modal-container .coveo-email-to a:hover a {
   text-decoration: underline;
 }
 
-.coveo-modalBox .coveo-email-from a.coveo-selected *,
-.coveo-modalBox .coveo-email-to a.coveo-selected * {
+.coveo-modal-container .coveo-email-from a.coveo-selected *,
+.coveo-modal-container .coveo-email-to a.coveo-selected * {
   color: #263E55;
 }
 
@@ -2269,7 +2269,6 @@ input[type=checkbox].coveo-checkbox + button {
 
 .coveo-filetype-custom,
 .coveo-icon.objecttype,
-.coveo-icon.objecttype.coveo-small,
 .coveo-icon.filetype,
 .coveo-icon.sysfiletype,
 .coveo-icon.filetype.jiraissue,
@@ -2331,9 +2330,7 @@ input[type=checkbox].coveo-checkbox + button {
 .coveo-icon.filetype.spwhereabout,
 .coveo-icon.sysfiletype.spwhereabout,
 .coveo-icon.filetype.spwhereaboutlist,
-.coveo-icon.sysfiletype.spwhereaboutlist,
-.coveo-icon.filetype.coveo-small,
-.coveo-icon.sysfiletype.coveo-small {
+.coveo-icon.sysfiletype.spwhereaboutlist {
   display: inline-block;
   width: 60px;
   height: 60px;
@@ -2534,6 +2531,9 @@ input[type=checkbox].coveo-checkbox + button {
 }
 
 .coveo-filetype-custom-small,
+.coveo-icon.objecttype.coveo-small,
+.coveo-icon.filetype.coveo-small,
+.coveo-icon.sysfiletype.coveo-small,
 .coveo-icon.filetype.coveo-small.jiraissue,
 .coveo-icon.sysfiletype.coveo-small.jiraissue,
 .coveo-icon.filetype.coveo-small.exchangefreebusy,
@@ -6915,17 +6915,17 @@ a.CoveoResultLink.coveo-selected *,
   cursor: pointer;
 }
 
-.CoveoCardOverlay[data-icon="search"] svg {
+.coveo-search-svg {
   color: #67768B;
-  width: 20px;
-  height: 20px;
+  width: 18px;
+  height: 18px;
 }
 
-.CoveoCardOverlay[data-icon="search"] svg .coveo-magnifier-circle-svg {
+.coveo-search-svg .coveo-magnifier-circle-svg {
   fill: #ECAD00;
 }
 
-.CoveoCardOverlay[data-icon="replies"] svg {
+.coveo-replies-svg {
   color: #67768B;
   width: 20px;
   height: 20px;
@@ -10737,7 +10737,10 @@ a.CoveoResultLink.coveo-selected *,
   height: 90%;
 }
 
-.coveo-modal-container.coveo-quick-view .coveo-modal-body div {
+.coveo-modal-container.coveo-quick-view .coveo-modal-body > div,
+.coveo-modal-container.coveo-quick-view .coveo-modal-body .coveo-list-layout,
+.coveo-modal-container.coveo-quick-view .coveo-modal-body .CoveoQuickviewDocument,
+.coveo-modal-container.coveo-quick-view .coveo-modal-body .coveo-quick-view-full-height {
   height: 100%;
   width: 100%;
 }
@@ -11256,9 +11259,8 @@ a.coveo-folding-show-less.coveo-selected * {
   fill: black;
 }
 
-.CoveoResultRating {
-  display: flex;
-  justify-content: space-between;
+.coveo-result-rating-star + .coveo-result-rating-star {
+  margin-left: 2px;
 }
 
 .coveo-result-rating-star-svg {

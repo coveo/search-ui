@@ -8,7 +8,7 @@ r.className="magic-box-input",e.appendChild(this.clearDom),e.appendChild(r)),thi
 
 /*** EXPORTS FROM exports-loader ***/
 module.exports = Coveo.MagicBox;
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(6)))
 
 /***/ }),
 
@@ -255,7 +255,7 @@ var FieldAddon = (function () {
 FieldAddon.INDEX = 64;
 exports.FieldAddon = FieldAddon;
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(6)))
 
 /***/ }),
 
@@ -267,7 +267,7 @@ exports.FieldAddon = FieldAddon;
 Object.defineProperty(exports, "__esModule", { value: true });
 var OmniboxEvents_1 = __webpack_require__(33);
 var Dom_1 = __webpack_require__(3);
-var Utils_1 = __webpack_require__(6);
+var Utils_1 = __webpack_require__(5);
 var _ = __webpack_require__(1);
 var OldOmniboxAddon = (function () {
     function OldOmniboxAddon(omnibox) {
@@ -409,7 +409,7 @@ var OldOmniboxAddon = (function () {
 }());
 exports.OldOmniboxAddon = OldOmniboxAddon;
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(6)))
 
 /***/ }),
 
@@ -704,7 +704,7 @@ var QuerySuggestAddon_1 = __webpack_require__(499);
 var OldOmniboxAddon_1 = __webpack_require__(497);
 var QueryboxQueryParameters_1 = __webpack_require__(431);
 var PendingSearchAsYouTypeSearchEvent_1 = __webpack_require__(84);
-var Utils_1 = __webpack_require__(6);
+var Utils_1 = __webpack_require__(5);
 var SearchInterface_1 = __webpack_require__(21);
 var _ = __webpack_require__(1);
 var GlobalExports_1 = __webpack_require__(4);

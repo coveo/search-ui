@@ -23,7 +23,7 @@ var DefaultMatrixResultPreviewTemplate_1 = __webpack_require__(645);
 var Dom_1 = __webpack_require__(3);
 var QueryEvents_1 = __webpack_require__(11);
 var QueryStateModel_1 = __webpack_require__(13);
-var Utils_1 = __webpack_require__(6);
+var Utils_1 = __webpack_require__(5);
 var Initialization_1 = __webpack_require__(2);
 var QueryUtils_1 = __webpack_require__(19);
 var Globalize = __webpack_require__(25);
@@ -809,7 +809,7 @@ Matrix.options = {
 exports.Matrix = Matrix;
 Initialization_1.Initialization.registerAutoCreateComponent(Matrix);
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(6)))
 
 /***/ }),
 
@@ -968,7 +968,7 @@ var DefaultMatrixResultPreviewTemplate = (function (_super) {
 }(Template_1.Template));
 exports.DefaultMatrixResultPreviewTemplate = DefaultMatrixResultPreviewTemplate;
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(6)))
 
 /***/ })
 

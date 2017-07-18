@@ -8,7 +8,7 @@ r.className="magic-box-input",e.appendChild(this.clearDom),e.appendChild(r)),thi
 
 /*** EXPORTS FROM exports-loader ***/
 module.exports = Coveo.MagicBox;
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(6)))
 
 /***/ }),
 

@@ -29,7 +29,7 @@ var BreadcrumbEvents_1 = __webpack_require__(43);
 var QuickviewEvents_1 = __webpack_require__(268);
 var QueryStateModel_1 = __webpack_require__(13);
 var Model_1 = __webpack_require__(18);
-var Utils_1 = __webpack_require__(6);
+var Utils_1 = __webpack_require__(5);
 var Dom_1 = __webpack_require__(3);
 var ResponsiveRecommendation_1 = __webpack_require__(652);
 var coveo_analytics_1 = __webpack_require__(257);
@@ -675,7 +675,7 @@ var DefaultRecommendationTemplate = (function (_super) {
 }(Template_1.Template));
 exports.DefaultRecommendationTemplate = DefaultRecommendationTemplate;
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(6)))
 
 /***/ }),
 
@@ -711,7 +711,7 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var Component_1 = __webpack_require__(8);
 var ComponentOptions_1 = __webpack_require__(9);
-var Utils_1 = __webpack_require__(6);
+var Utils_1 = __webpack_require__(5);
 var QueryEvents_1 = __webpack_require__(11);
 var Initialization_1 = __webpack_require__(2);
 var Dom_1 = __webpack_require__(3);
@@ -805,7 +805,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var ResponsiveComponentsManager_1 = __webpack_require__(78);
 var ResponsiveComponentsUtils_1 = __webpack_require__(89);
 var SearchInterface_1 = __webpack_require__(21);
-var Utils_1 = __webpack_require__(6);
+var Utils_1 = __webpack_require__(5);
 var Dom_1 = __webpack_require__(3);
 var Logger_1 = __webpack_require__(14);
 var Recommendation_1 = __webpack_require__(254);
@@ -1019,7 +1019,7 @@ var Dom_1 = __webpack_require__(3);
 var InitializationEvents_1 = __webpack_require__(17);
 var Component_1 = __webpack_require__(8);
 var SearchInterface_1 = __webpack_require__(21);
-var Utils_1 = __webpack_require__(6);
+var Utils_1 = __webpack_require__(5);
 var _ = __webpack_require__(1);
 var QueryEvents_1 = __webpack_require__(11);
 var Logger_1 = __webpack_require__(14);

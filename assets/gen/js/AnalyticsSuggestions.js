@@ -244,7 +244,7 @@ AnalyticsSuggestions.options = {
 exports.AnalyticsSuggestions = AnalyticsSuggestions;
 Initialization_1.Initialization.registerAutoCreateComponent(AnalyticsSuggestions);
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(6)))
 
 /***/ }),
 

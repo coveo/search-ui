@@ -48,7 +48,7 @@ var Component_1 = __webpack_require__(8);
 var SortCriteria_1 = __webpack_require__(440);
 var ComponentOptions_1 = __webpack_require__(9);
 var Assert_1 = __webpack_require__(7);
-var Utils_1 = __webpack_require__(6);
+var Utils_1 = __webpack_require__(5);
 var Dom_1 = __webpack_require__(3);
 var Model_1 = __webpack_require__(18);
 var QueryStateModel_1 = __webpack_require__(13);
@@ -274,7 +274,7 @@ Initialization_1.Initialization.registerAutoCreateComponent(Sort);
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var Assert_1 = __webpack_require__(7);
-var Utils_1 = __webpack_require__(6);
+var Utils_1 = __webpack_require__(5);
 var _ = __webpack_require__(1);
 var SortCriteria = (function () {
     /**
