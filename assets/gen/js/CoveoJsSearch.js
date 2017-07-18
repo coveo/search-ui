@@ -7914,6 +7914,9 @@ var Utils = (function () {
     Utils.toDashCase = function (camelCased) {
         return camelCased.replace(/([a-z][A-Z])/g, function (g) { return g[0] + '-' + g[1].toLowerCase(); });
     };
+    Utils.toCamelCase = function (dashCased) {
+        return dashCased.replace(/-([a-z])/g, function (g) { return g[1].toUpperCase(); });
+    };
     // Based on http://stackoverflow.com/a/8412989
     Utils.parseXml = function (xml) {
         if (typeof DOMParser != 'undefined') {
@@ -9692,7 +9695,7 @@ var ComponentOptions = (function () {
      * This takes an SVG icon name, validates it and returns the name of the icon.
      * > `data-foo="search"`
      *
-     * > `data-foo="facetExpand"`
+     * > `data-foo="facet-expand"`
      *
      * `data-foo="coveo-sprites-user"` or `data-foo="coveo-sprites-database"`.
      */
@@ -9951,7 +9954,13 @@ var ComponentOptions = (function () {
         var svgIconName = ComponentOptions.loadStringOption(element, name, option);
         if (Utils_1.Utils.isNullOrUndefined(SVGIcons_1.SVGIcons.icons[svgIconName])) {
             new Logger_1.Logger(element).warn("Icon with name " + svgIconName + " not found.");
+            return undefined;
         }
+        // Old card templates icons used these values as the icon option. These names have changed since we moved to SVG.
+        // This avoids breaking old default templates that people may still have after moving to 2.0.
+        svgIconName = svgIconName.replace('coveo-sprites-replies', 'replies');
+        svgIconName = svgIconName.replace('coveo-sprites-main-search-active', 'search');
+        svgIconName = Utils_1.Utils.toCamelCase(svgIconName);
         return svgIconName;
     };
     ComponentOptions.loadFieldOption = function (element, name, option) {
@@ -19683,8 +19692,8 @@ exports.DebugEvents = DebugEvents;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.version = {
-    'lib': '2.2900.19-beta',
-    'product': '2.2900.19-beta',
+    'lib': '2.2900.20-beta',
+    'product': '2.2900.20-beta',
     'supportedApiVersion': 2
 };
 
@@ -45271,7 +45280,7 @@ CardOverlay.options = {
     /**
      * Specifies the icon to use for the overlay icon and for the button icon.
      *
-     * The name of the icon to use should be specified in lowerCamelCase.
+     * The name of the icon to use should be specified in dashed case. ie: facet-expand
      */
     icon: ComponentOptions_1.ComponentOptions.buildIconOption()
 };

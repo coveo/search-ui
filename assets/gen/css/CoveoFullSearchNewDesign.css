@@ -10569,8 +10569,14 @@ a.CoveoResultLink.coveo-selected *,
   color: #263E55;
 }
 
-.CoveoQuickview:hover .coveo-caption-for-icon {
+.CoveoQuickview > div {
+  position: relative;
+}
+
+.coveo-list-layout .CoveoQuickview:hover .coveo-caption-for-icon {
   display: inline;
+  top: 26px;
+  left: -30px;
 }
 
 .CoveoQuickview .coveo-caption-for-icon {
@@ -10582,7 +10588,6 @@ a.CoveoResultLink.coveo-selected *,
   padding: 6px 16px;
   position: absolute;
   white-space: nowrap;
-  transform: translateX(-50%) translateY(100%) translateY(-27px);
   z-index: 1;
 }
 

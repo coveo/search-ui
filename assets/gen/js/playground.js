@@ -2046,6 +2046,9 @@ var Utils = (function () {
     Utils.toDashCase = function (camelCased) {
         return camelCased.replace(/([a-z][A-Z])/g, function (g) { return g[0] + '-' + g[1].toLowerCase(); });
     };
+    Utils.toCamelCase = function (dashCased) {
+        return dashCased.replace(/-([a-z])/g, function (g) { return g[1].toUpperCase(); });
+    };
     // Based on http://stackoverflow.com/a/8412989
     Utils.parseXml = function (xml) {
         if (typeof DOMParser != 'undefined') {
@@ -3717,8 +3720,8 @@ exports.shim = shim;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.version = {
-    'lib': '2.2900.19-beta',
-    'product': '2.2900.19-beta',
+    'lib': '2.2900.20-beta',
+    'product': '2.2900.20-beta',
     'supportedApiVersion': 2
 };
 
