@@ -1,6 +1,6 @@
 ///<reference path='Omnibox.ts'/>
-import { Omnibox, IPopulateOmniboxSuggestionsEventArgs, IOmniboxSuggestion, MagicBox } from './Omnibox';
-import { OmniboxEvents } from '../../events/OmniboxEvents';
+import { Omnibox, IOmniboxSuggestion, MagicBox } from './Omnibox';
+import { OmniboxEvents, IPopulateOmniboxSuggestionsEventArgs } from '../../events/OmniboxEvents';
 import { IFieldDescription } from '../../rest/FieldDescription';
 import { IEndpointError } from '../../rest/EndpointError';
 import * as _ from 'underscore';
