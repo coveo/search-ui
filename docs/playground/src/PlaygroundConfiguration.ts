@@ -1,5 +1,6 @@
 import {IStringMap} from "../../../src/rest/GenericParam";
 import {$$, Dom} from "../../../src/utils/Dom";
+import {SearchEndpoint} from "../../../src/rest/SearchEndpoint";
 
 export interface IComponentPlaygroundConfiguration {
   show: boolean; // should we show a preview for this component. False is assumed if not specified.
@@ -193,6 +194,12 @@ export const PlaygroundConfiguration: IStringMap<IComponentPlaygroundConfigurati
     options: {
       field: '@hierarchicfield',
       title: 'Hierarchical Facet with random values'
+    },
+    toExecute: ()=> {  // `@hierarchicfield` does not exist in the sample Coveo Cloud V2 organization.
+      $$(document.body).on('newQuery', function(e, args) {
+        SearchEndpoint.configureSampleEndpoint();
+        Coveo.get($$(document.body).find(".CoveoHierarchicalFacet")).queryController.setEndpoint(SearchEndpoint.endpoints['default']);
+      });
     },
     advancedExpression: "@hierarchicfield"
   },

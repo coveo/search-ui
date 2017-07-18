@@ -1,9 +1,9 @@
 ///<reference path="Omnibox.ts"/>
-import { Omnibox, IPopulateOmniboxSuggestionsEventArgs, IOmniboxSuggestion } from './Omnibox';
+import { Omnibox, IOmniboxSuggestion } from './Omnibox';
 import { $$, Dom } from '../../utils/Dom';
 import { IQuerySuggestCompletion, IQuerySuggestRequest, IQuerySuggestResponse } from '../../rest/QuerySuggest';
 import { ComponentOptionsModel } from '../../models/ComponentOptionsModel';
-import { OmniboxEvents } from '../../events/OmniboxEvents';
+import { OmniboxEvents, IPopulateOmniboxSuggestionsEventArgs } from '../../events/OmniboxEvents';
 import { StringUtils } from '../../utils/StringUtils';
 import * as _ from 'underscore';
 
