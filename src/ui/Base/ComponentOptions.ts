@@ -750,8 +750,12 @@ export class ComponentOptions {
       new Logger(element).warn(`Icon with name ${svgIconName} not found.`);
       return undefined;
     }
+
+    // Old card templates icons used these values as the icon option. These names have changed since we moved to SVG.
+    // This avoids breaking old default templates that people may still have after moving to 2.0.
     svgIconName = svgIconName.replace('coveo-sprites-replies', 'replies');
     svgIconName = svgIconName.replace('coveo-sprites-main-search-active', 'search');
+
     svgIconName = Utils.toCamelCase(svgIconName);
     return svgIconName;
   }
