@@ -158,11 +158,12 @@ module.exports = {
         }
       }]
     }, {
-      test: /(\.png|filetypes\/.*\.svg)$/,
+      test: /(filetypes\/.*\.svg)$/,
       use: [{
         loader: 'file-loader',
         options: {
-          name: production ? '../image/[name].[ext]' : 'http://localhost:8080/image/[name].[ext]',
+          // name: production ? '../image/[name].[ext]' : 'http://10.0.2.2:8080/image/[name].[ext]',
+          name: '../image/[name].[ext]',
           emitFile: false,
           publicPath: ' ',
         }
