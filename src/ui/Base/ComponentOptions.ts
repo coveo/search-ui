@@ -377,7 +377,7 @@ export class ComponentOptions {
    *
    * > `data-foo="search"`
    *
-   * > `data-foo="facetExpand"`
+   * > `data-foo="facet-expand"`
    *
    * @param optionArgs The arguments to apply when building the option.
    * @returns {string} The resulting option value.
@@ -745,9 +745,13 @@ export class ComponentOptions {
   }
 
   static loadIconOption(element: HTMLElement, name: string, option: IComponentOptions<any>): string {
-    const svgIconName = ComponentOptions.loadStringOption(element, name, option);
+    let svgIconName = ComponentOptions.loadStringOption(element, name, option);
+    svgIconName = svgIconName.replace('coveo-sprites-replies', 'replies');
+    svgIconName = svgIconName.replace('coveo-main-search-active', 'search');
+    svgIconName = Utils.toCamelCase(svgIconName);
     if (Utils.isNullOrUndefined(SVGIcons.icons[svgIconName])) {
       new Logger(element).warn(`Icon with name ${svgIconName} not found.`);
+      svgIconName = undefined;
     }
     return svgIconName;
   }
