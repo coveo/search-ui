@@ -279,7 +279,7 @@ export class ComponentOptions {
    * This takes an SVG icon name, validates it and returns the name of the icon.
    * > `data-foo="search"`
    *
-   * > `data-foo="facetExpand"`
+   * > `data-foo="facet-expand"`
    *
    * `data-foo="coveo-sprites-user"` or `data-foo="coveo-sprites-database"`.
    */
@@ -566,10 +566,18 @@ export class ComponentOptions {
   }
 
   static loadIconOption(element: HTMLElement, name: string, option: IComponentOptions<any>): string {
-    const svgIconName = ComponentOptions.loadStringOption(element, name, option);
+    let svgIconName = ComponentOptions.loadStringOption(element, name, option);
     if (Utils.isNullOrUndefined(SVGIcons.icons[svgIconName])) {
       new Logger(element).warn(`Icon with name ${svgIconName} not found.`);
+      return undefined;
     }
+
+    // Old card templates icons used these values as the icon option. These names have changed since we moved to SVG.
+    // This avoids breaking old default templates that people may still have after moving to 2.0.
+    svgIconName = svgIconName.replace('coveo-sprites-replies', 'replies');
+    svgIconName = svgIconName.replace('coveo-sprites-main-search-active', 'search');
+
+    svgIconName = Utils.toCamelCase(svgIconName);
     return svgIconName;
   }
 

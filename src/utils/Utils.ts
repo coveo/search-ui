@@ -325,6 +325,10 @@ export class Utils {
     return camelCased.replace(/([a-z][A-Z])/g, (g) => g[0] + '-' + g[1].toLowerCase());
   }
 
+  static toCamelCase(dashCased: string) {
+    return dashCased.replace(/-([a-z])/g, (g) => g[1].toUpperCase());
+  }
+
   // Based on http://stackoverflow.com/a/8412989
   static parseXml(xml: string): XMLDocument {
     if (typeof DOMParser != 'undefined') {
