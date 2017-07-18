@@ -38,6 +38,9 @@ export interface IAnalyticsResultTaggingMeta {
  * allows the end user to add values to a tag field.
  *
  * This component is a result template component (see [Result Templates](https://developers.coveo.com/x/aIGfAQ)).
+ *
+ * **Note:**
+ * > The ResultTagging component is not supported with Coveo Cloud V2. To implement the ResultTagging component in Coveo Cloud V1, contact [Coveo Support](https://support.coveo.com/s/).
  */
 export class ResultTagging extends Component {
   static ID = 'ResultTagging';
