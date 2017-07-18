@@ -747,7 +747,7 @@ export class ComponentOptions {
   static loadIconOption(element: HTMLElement, name: string, option: IComponentOptions<any>): string {
     let svgIconName = ComponentOptions.loadStringOption(element, name, option);
     svgIconName = svgIconName.replace('coveo-sprites-replies', 'replies');
-    svgIconName = svgIconName.replace('coveo-main-search-active', 'search');
+    svgIconName = svgIconName.replace('coveo-sprites-main-search-active', 'search');
     svgIconName = Utils.toCamelCase(svgIconName);
     if (Utils.isNullOrUndefined(SVGIcons.icons[svgIconName])) {
       new Logger(element).warn(`Icon with name ${svgIconName} not found.`);
