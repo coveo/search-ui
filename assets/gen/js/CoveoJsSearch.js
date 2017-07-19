@@ -9952,14 +9952,17 @@ var ComponentOptions = (function () {
     };
     ComponentOptions.loadIconOption = function (element, name, option) {
         var svgIconName = ComponentOptions.loadStringOption(element, name, option);
-        if (Utils_1.Utils.isNullOrUndefined(SVGIcons_1.SVGIcons.icons[svgIconName])) {
-            new Logger_1.Logger(element).warn("Icon with name " + svgIconName + " not found.");
-            return undefined;
+        if (svgIconName == null) {
+            return null;
         }
         // Old card templates icons used these values as the icon option. These names have changed since we moved to SVG.
         // This avoids breaking old default templates that people may still have after moving to 2.0.
         svgIconName = svgIconName.replace('coveo-sprites-replies', 'replies');
         svgIconName = svgIconName.replace('coveo-sprites-main-search-active', 'search');
+        if (Utils_1.Utils.isNullOrUndefined(SVGIcons_1.SVGIcons.icons[svgIconName])) {
+            new Logger_1.Logger(element).warn("Icon with name " + svgIconName + " not found.");
+            return null;
+        }
         svgIconName = Utils_1.Utils.toCamelCase(svgIconName);
         return svgIconName;
     };
@@ -19692,8 +19695,8 @@ exports.DebugEvents = DebugEvents;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.version = {
-    'lib': '2.2900.21-beta',
-    'product': '2.2900.21-beta',
+    'lib': '2.2900.22-beta',
+    'product': '2.2900.22-beta',
     'supportedApiVersion': 2
 };
 

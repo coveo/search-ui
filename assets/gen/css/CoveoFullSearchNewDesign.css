@@ -10576,7 +10576,7 @@ a.CoveoResultLink.coveo-selected *,
 .coveo-list-layout .CoveoQuickview:hover .coveo-caption-for-icon {
   display: inline;
   top: 26px;
-  left: -30px;
+  left: -4px;
 }
 
 .CoveoQuickview .coveo-caption-for-icon {
