@@ -61,10 +61,15 @@ export interface IResultListOptions {
 }
 
 /**
- * The ResultList component is responsible for displaying the results of the current query using one or more result
- * templates (see [Result Templates](https://developers.coveo.com/x/aIGfAQ)).
+ * The `ResultList` component is responsible for displaying query results by applying one or several result templates
+ * (see [Result Templates](https://developers.coveo.com/x/aIGfAQ)).
  *
- * This component supports many additional features, such as infinite scrolling.
+ * It is possible to include multiple `ResultList` components along with a single [`ResultLayout`]{@link ResultLayout}
+ * component in a search page to provide different result layouts (see
+ * [Result Layouts](https://developers.coveo.com/x/yQUvAg)).
+ *
+ * This component supports infinite scrolling (see the
+ * [`enableInfiniteScroll`]{@link ResultList.options.enableInfiniteScroll} option).
  */
 export class ResultList extends Component {
 
@@ -105,7 +110,7 @@ export class ResultList extends Component {
   static options: IResultListOptions = {
 
     /**
-     * Specifies the element within which to insert the rendered templates for results.
+     * Specifies the element inside which to insert the rendered result templates.
      *
      * Performing a new query clears the content of this element.
      *
@@ -126,70 +131,73 @@ export class ResultList extends Component {
      * - `spinner`: Shows a spinning animation while the query is executing.
      * - `none`: Use no animation during queries.
      *
-     * See also {@link ResultList.options.waitAnimationContainer}.
+     * See also the [`waitAnimationContainer`]{@link ResultList.options.waitAnimationContainer} option.
      *
      * Default value is `none`.
      */
     waitAnimation: ComponentOptions.buildStringOption({ defaultValue: 'none' }),
 
     /**
-     * Specifies the element inside which to display the {@link ResultList.options.waitAnimation}.
+     * Specifies the element inside which to display the [`waitAnimation`]{@link ResultList.options.waitAnimation}.
      *
      * You can change this by specifying a CSS selector (e.g.,
      * `data-wait-animation-container-selector='#someCssSelector'`).
      *
-     * Default value is the value of {@link ResultList.options.resultContainer}.
+     * Default value is the value of the [`resultContainer`]{@link ResultList.options.resultContainer} option.
      */
     waitAnimationContainer: ComponentOptions.buildChildHtmlElementOption({ postProcessing: (value, options: IResultListOptions) => value || options.resultContainer }),
 
     /**
      * Specifies whether to automatically retrieve an additional page of results and append it to the
-     * results that the ResultList is currently displaying when the user scrolls down to the bottom of the infinite
-     * scroll container.
+     * results that the `ResultList` is currently displaying when the user scrolls down to the bottom of the
+     * [`infiniteScrollContainer`]{@link ResultList.options.infiniteScrollContainer}.
      *
-     * See also {@link ResultList.options.infiniteScrollPageSize}, {@link ResultList.options.infiniteScrollContainer}
-     * and {@link ResultList.options.enableInfiniteScrollWaitingAnimation}.
+     * See also the [`infiniteScrollPageSize`]{@link ResultList.options.infiniteScrollPageSize} and
+     * [`enableInfiniteScrollWaitingAnimation`]{@link ResultList.options.enableInfiniteScrollWaitingAnimation} options.
      *
-     * It is important to specify the {@link ResultList.options.infiniteScrollContainer} manually if you want the scrolling
-     * element to be something else than the default `window` element.
-     * Otherwise, you might get in a weird state where the framework will rapidly trigger multiple successive query.
+     * It is important to specify the `infiniteScrollContainer` option manually if you want the scrolling element to be
+     * something else than the default `window` element. Otherwise, you might find yourself in a strange state where the
+     * framework rapidly triggers multiple successive query.
      *
      * Default value is `false`.
      */
     enableInfiniteScroll: ComponentOptions.buildBooleanOption({ defaultValue: false }),
 
     /**
-     * If {@link ResultList.options.enableInfiniteScroll} is `true`, specifies the number of additional results to fetch
-     * when the user scrolls down to the bottom of the {@link ResultList.options.infiniteScrollContainer}.
+     * If the [`enableInfiniteScroll`]{@link ResultList.options.enableInfiniteScroll} option is `true`, specifies the
+     * number of additional results to fetch when the user scrolls down to the bottom of the
+     * [`infiniteScrollContainer`]{@link ResultList.options.infiniteScrollContainer}.
      *
      * Default value is `10`. Minimum value is `1`.
      */
     infiniteScrollPageSize: ComponentOptions.buildNumberOption({ defaultValue: 10, min: 1, depend: 'enableInfiniteScroll' }),
 
     /**
-     * If {@link ResultList.options.enableInfiniteScroll} is `true`, specifies the element that triggers the fetching of
-     * additional results when the end user scrolls down to its bottom.
+     * If the [`enableInfiniteScroll`]{@link ResultList.options.enableInfiniteScroll} option is `true`, specifies the
+     * element that triggers fetching additional results when the end user scrolls down to its bottom.
      *
      * You can change the container by specifying its selector (e.g.,
      * `data-infinite-scroll-container-selector='#someCssSelector'`).
      *
      * By default, the framework uses the first vertically scrollable parent element it finds, starting from the
-     * ResultList element itself. A vertically scrollable element is an element whose CSS `overflow-y` attribute is
+     * `ResultList` element itself. A vertically scrollable element is an element whose CSS `overflow-y` attribute is
      * `scroll`.
      *
-     * This implies that if the framework can find no scrollable parent, it uses the window itself as a scrollable
+     * This implies that if the framework can find no scrollable parent, it uses the `window` itself as a scrollable
      * container.
      *
-     * This heuristic is not perfect, for technical reasons. There are always some corner case CSS combination which the framework will
-     * not be able to detect correctly as 'scrollable'.
+     * This heuristic is not perfect, for technical reasons. There are always some corner case CSS combination which the
+     * framework will not be able to correctly detect as 'scrollable'.
      *
-     * It is highly recommended that you manually set this option if you wish to have something else than `window` be the scrollable element.
+     * It is highly recommended that you manually set this option if you wish something else than the `window` to be the
+     * scrollable element.
      */
     infiniteScrollContainer: ComponentOptions.buildChildHtmlElementOption({ depend: 'enableInfiniteScroll', defaultFunction: (element) => ComponentOptions.findParentScrolling(element) }),
 
     /**
-     * If {@link ResultList.options.enableInfiniteScroll} is `true`, specifies whether to display the
-     * {@link ResultList.options.waitAnimation} while fetching additional results.
+     * If the [`enableInfiniteScroll`]{@link ResultList.options.enableInfiniteScroll} option is `true`, specifies
+     * whether to display the [`waitingAnimation`]{@link ResultList.options.waitAnimation} while fetching additional
+     * results.
      *
      * Default value is `true`.
      */
@@ -197,42 +205,45 @@ export class ResultList extends Component {
     mobileScrollContainer: ComponentOptions.buildSelectorOption({ defaultFunction: () => <HTMLElement>document.querySelector('.coveo-results-column') }),
 
     /**
-     * Specifies a list of fields to include in the query.
+     * Specifies a list of fields to include in the query results.
      *
-     * Specifying a list of values for this option ensures that the Search API does not send fields that are unnecessary
-     * for the UI to function.
+     * If you set the [`autoSelectFieldsToInclude`]{@link ResultList.options.autoSelectFieldsToInclude} option to
+     * `true`, the Coveo Search API returns the fields you specify for this option (if those fields are available) in
+     * addition to the fields which the `ResultList` automatically requests.
      *
-     * See also {@link ResultList.options.autoSelectFieldsToInclude}.
-     *
-     * Default value is `undefined`.
+     * Otherwise, the Coveo Search API only returns the fields you specify for this option (if those fields are
+     * available), unless you leave this option undefined, in which case the Coveo Search API returns all available
+     * fields.
      */
     fieldsToInclude: ComponentOptions.buildFieldsOption({ includeInResults: true }),
 
     /**
-     * Specifies whether the ResultList should scan its template and discover which fields it needs to render all
-     * results.
+     * Specifies whether the `ResultList` should scan its result templates to discover which fields it must request to
+     * be able to render all results.
      *
-     * Setting this option to `true` ensures that the Search API does not send fields that are unnecessary for the UI to
-     * function.
+     * Setting this option to `true` ensures that the Coveo Search API does not return fields that are unnecessary for
+     * the UI to function.
      *
-     * See also {@link ResultList.options.fieldsToInclude}.
+     * Default value is `false`, which means that for each result, the Coveo Search API returns all available fields
+     * (unless you specify a list of values in the [`fieldsToInclude`]{@link ResultList.options.fieldsToInclude} option,
+     * in which case the Coveo Search API only returns those fields, if they are available).
      *
-     * Default value is `false`.
-     *
-     * **Note:**
-     * > Many interfaces created with the Interface Editor explicitly set this option to `true`.
+     * **Notes:**
+     * > * Many interfaces created with the JavaScript Search Interface Editor explicitly set this option to `true`.
+     * > * You cannot set this option to `true` in the Coveo for Sitecore integration.
      */
     autoSelectFieldsToInclude: ComponentOptions.buildBooleanOption({ defaultValue: false }),
 
     /**
-     * Specifies the layout to use for displaying the results within this ResultList. Specifying a value for this option
-     * automatically populates a {@link ResultLayout} component with a switcher for the layout.
+     * Specifies the layout to use when displaying results in this `ResultList` (see
+     * [Result Layouts](https://developers.coveo.com/x/yQUvAg)). Specifying a value for this option automatically
+     * populates a [`ResultLayout`]{@link ResultLayout} component with a switcher for the layout.
      *
-     * For example, if there are two {@link ResultList} components in the page, one with its
-     * {@link ResultList.options.layout} set to `list` and the other with the same option set to `card`, then the
-     * ResultLayout component will render two buttons respectively titled **List** and **Card**.
+     * For example, if there are two `ResultList` components in the page, one with its `layout` set to `list` and the
+     * other with the same option set to `card`, then the `ResultLayout` component will render two buttons respectively
+     * entitled **List** and **Card**.
      *
-     * See the {@link ValidLayout} type for the list of possible values.
+     * See the [`ValidLayout`]{@link ValidLayout} type for the list of possible values.
      *
      * Default value is `list`.
      */
@@ -262,10 +273,11 @@ export class ResultList extends Component {
   private static MAX_AMOUNT_OF_SUCESSIVE_REQUESTS = 5;
 
   /**
-   * Creates a new ResultList component. Binds various event related to queries (e.g., on querySuccess ->
-   * renderResults). Binds scroll event if {@link ResultList.options.enableInfiniteScroll} is `true`.
+   * Creates a new `ResultList` component. Binds various event related to queries (e.g., on querySuccess ->
+   * renderResults). Binds scroll event if the [`enableInfiniteScroll`]{@link ResultList.options.enableInfiniteScroll}
+   * option is `true`.
    * @param element The HTMLElement on which to instantiate the component.
-   * @param options The options for the ResultList component.
+   * @param options The options for the `ResultList` component.
    * @param bindings The bindings that the component requires to function normally. If not set, these will be
    * automatically resolved (with a slower execution time).
    * @param elementClassId The class that this component should instantiate. Components that extend the base ResultList
@@ -420,7 +432,7 @@ export class ResultList extends Component {
    * Asserts that there are more results to display by verifying whether the last query has returned as many results as
    * requested.
    *
-   * Asserts that the ResultList is not currently fetching results.
+   * Asserts that the `ResultList` is not currently fetching results.
    * @param count The number of results to fetch and display.
    */
   public displayMoreResults(count: number) {
