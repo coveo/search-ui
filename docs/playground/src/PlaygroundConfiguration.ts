@@ -320,6 +320,10 @@ export const PlaygroundConfiguration: IStringMap<IComponentPlaygroundConfigurati
       $$(document.body).find('.CoveoSearchInterface').style.minHeight = '300px';
     }
   },
+  SimpleFilter: {
+    show: true,
+    element: $$('div', undefined, `<div class="CoveoSimpleFilter" data-field="@filetype" data-title="File Type"></div><div class="CoveoResultList"></div>`),
+  },
   Sort: {
     show: true,
     element: $$('div', undefined, `<span class="CoveoSort" data-sort-criteria="relevancy" data-caption="Relevance"></span><span class="CoveoSort" data-sort-criteria="date descending,date ascending" data-caption="Date"></span>`),

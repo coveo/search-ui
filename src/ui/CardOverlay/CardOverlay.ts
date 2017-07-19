@@ -55,7 +55,7 @@ export class CardOverlay extends Component {
     /**
      * Specifies the icon to use for the overlay icon and for the button icon.
      *
-     * The name of the icon to use should be specified in lowerCamelCase.
+     * The name of the icon to use should be specified in dashed case. ie: facet-expand
      */
     icon: ComponentOptions.buildIconOption()
   };
