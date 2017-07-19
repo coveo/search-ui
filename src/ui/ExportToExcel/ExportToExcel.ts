@@ -46,6 +46,10 @@ export class ExportToExcel extends Component {
      * Default value is `100`. Minimum value is `1`.
      */
     numberOfResults: ComponentOptions.buildNumberOption({ defaultValue: 100, min: 1 }),
+	/**
+	 * Specifies the field you want to include in the export.
+	 * By default all the fields are included. When you specify a field it will be added to the default fields always included.
+	 */
     fieldsToInclude: ComponentOptions.buildFieldsOption()
   };
 
