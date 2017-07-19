@@ -11,6 +11,9 @@
   &.CoveoResultLink:hover {
     text-decoration: none;
     color: $color-teal;
+    a {
+      text-decoration: none;
+    }
   }
 
   .coveo-printable-uri-separator {
