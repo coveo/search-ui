@@ -27,7 +27,8 @@ export function PipelineContextText() {
       describe('when it contains valid JSON context', () => {
         let context = {
           'qwerty': 'azerty',
-          'a key': 'a value'
+          'a key': 'a value',
+          'another key': ['multiple', 'values', 'in', 'array']
         };
 
         beforeEach(() => {
@@ -40,7 +41,8 @@ export function PipelineContextText() {
           let simulation = Simulate.query(test.env);
           expect(simulation.queryBuilder.build().context).toEqual(jasmine.objectContaining({
             'qwerty': 'azerty',
-            'a key': 'a value'
+            'a key': 'a value',
+            'another key': ['multiple', 'values', 'in', 'array']
           }));
         });
 
