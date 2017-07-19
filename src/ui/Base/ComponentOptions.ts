@@ -372,14 +372,12 @@ export class ComponentOptions {
   /**
    * Builds an icon option.
    *
-   * This loads an SVG icon from its name.
-   *
-   *
+   * This takes an SVG icon name, validates it and returns the name of the icon.
    * **Markup Examples:**
    *
-   * > `data-foo="user"`
+   * > `data-foo="search"`
    *
-   * > `data-foo="database"`
+   * > `data-foo="facet-expand"`
    *
    * @param optionArgs The arguments to apply when building the option.
    * @returns {string} The resulting option value.
@@ -747,8 +745,19 @@ export class ComponentOptions {
   }
 
   static loadIconOption(element: HTMLElement, name: string, option: IComponentOptions<any>): string {
-    const svgIconName = ComponentOptions.loadStringOption(element, name, option);
-    return SVGIcons.icons[svgIconName];
+    let svgIconName = ComponentOptions.loadStringOption(element, name, option);
+    if (Utils.isNullOrUndefined(SVGIcons.icons[svgIconName])) {
+      new Logger(element).warn(`Icon with name ${svgIconName} not found.`);
+      return undefined;
+    }
+
+    // Old card templates icons used these values as the icon option. These names have changed since we moved to SVG.
+    // This avoids breaking old default templates that people may still have after moving to 2.0.
+    svgIconName = svgIconName.replace('coveo-sprites-replies', 'replies');
+    svgIconName = svgIconName.replace('coveo-sprites-main-search-active', 'search');
+
+    svgIconName = Utils.toCamelCase(svgIconName);
+    return svgIconName;
   }
 
   static loadFieldOption(element: HTMLElement, name: string, option: IComponentOptionsOption<any>): string {
