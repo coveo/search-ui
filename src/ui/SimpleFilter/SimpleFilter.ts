@@ -285,6 +285,7 @@ export class SimpleFilter extends Component {
         this.setDisplayedTitle(this.options.title);
       }
     } else {
+      this.setDisplayedTitle(this.options.title);
       this.circleElement.addClass('coveo-simplefilter-circle-hidden');
     }
     this.queryController.executeQuery();
