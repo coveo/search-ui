@@ -11,6 +11,7 @@
   @include flex-wrap(nowrap);
   @include justify-content(flex-start);
 }
+
 .coveo-dropdown-background {
   display: none;
 }
@@ -22,6 +23,7 @@
 
 .CoveoSimpleFilter {
   cursor: pointer;
+  margin-right: 15px;
   display: inline-block;
   position: relative;
   border: $default-border;
