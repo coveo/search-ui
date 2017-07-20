@@ -10,6 +10,7 @@
   @include flex-wrap(nowrap);
   @include justify-content(flex-start);
 }
+
 .coveo-dropdown-background {
   display: none;
 }
@@ -67,6 +68,9 @@
   text-align: center;
   margin: 0 3px;
   pointer-events:none;
+}
+.coveo-simplefilter-circle-hidden {
+  display: none;
 }
 
 .coveo-simplefilter-value-container {
