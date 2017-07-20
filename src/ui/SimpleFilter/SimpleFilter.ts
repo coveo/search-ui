@@ -277,16 +277,20 @@ export class SimpleFilter extends Component {
   private handleValueToggle() {
     const selectedValues = this.getSelectedValues();
     this.circleElement.text(selectedValues.length.toString());
+    
     if(selectedValues.length > 0) {
       this.circleElement.removeClass('coveo-simplefilter-circle-hidden');
       if (selectedValues.length == 1) {
         this.setDisplayedTitle(this.getValueCaption(selectedValues[0]));
+        this.element.title = this.getValueCaption((selectedValues[0]));
       } else  {
         this.setDisplayedTitle(this.options.title);
+        this.element.title = this.options.title;
       }
     } else {
       this.setDisplayedTitle(this.options.title);
       this.circleElement.addClass('coveo-simplefilter-circle-hidden');
+      this.element.title = this.options.title;
     }
     this.queryController.executeQuery();
   }
