@@ -296,7 +296,7 @@ export class SimpleFilter extends Component {
     const checkbox = new Checkbox(() => {
       this.handleValueToggle();
     }, this.getValueCaption(label));
-
+    checkbox.getElement().title = l(label);
     return { checkbox, label };
   }
 
