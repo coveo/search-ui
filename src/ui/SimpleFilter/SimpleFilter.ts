@@ -280,8 +280,10 @@ export class SimpleFilter extends Component {
     this.circleElement.removeClass('coveo-simplefilter-circle-hidden');
     if(selectedValues.length == 1) {
       this.setDisplayedTitle(this.getValueCaption(selectedValues[0]));
+      this.element.title = this.getValueCaption((selectedValues[0]));
     } else {
       this.setDisplayedTitle(this.options.title);
+      this.element.title = this.options.title;
       if(selectedValues.length < 1) {
         this.circleElement.addClass('coveo-simplefilter-circle-hidden');
       }
