@@ -17,7 +17,6 @@ import { SVGDom } from '../../utils/SVGDom';
 import { SimpleFilterValues } from './SimpleFilterValues';
 import { FacetUtils } from '../Facet/FacetUtils';
 
-
 export interface ISimpleFilterOptions {
   title: string;
   values: string[];
@@ -478,7 +477,6 @@ export class SimpleFilter extends Component {
     }
     $$(this.circleElement).text(this.getSelectedLabeledCheckboxes().length.toString());
   }
-
 }
 
 Initialization.registerAutoCreateComponent(SimpleFilter);
