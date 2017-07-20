@@ -276,10 +276,14 @@ export class SimpleFilter extends Component {
   private handleValueToggle() {
     const selectedValues = this.getSelectedValues();
     this.circleElement.text(selectedValues.length.toString());
-    if (selectedValues.length == 1) {
+    this.circleElement.removeClass('coveo-simplefilter-circle-hidden');
+    if(selectedValues.length == 1) {
       this.setDisplayedTitle(this.getValueCaption(selectedValues[0]));
     } else {
       this.setDisplayedTitle(this.options.title);
+      if(selectedValues.length < 1) {
+        this.circleElement.addClass('coveo-simplefilter-circle-hidden');
+      }
     }
     this.queryController.executeQuery();
   }
@@ -340,7 +344,7 @@ export class SimpleFilter extends Component {
   }
 
   private buildCircleElement(): HTMLElement {
-    this.circleElement = $$('span', { className: 'coveo-simplefilter-circle' }, this.getSelectedLabeledCheckboxes().length.toString());
+    this.circleElement = $$('span', { className: 'coveo-simplefilter-circle coveo-simplefilter-circle-hidden' }, this.getSelectedLabeledCheckboxes().length.toString());
     return this.circleElement.el;
   }
 
