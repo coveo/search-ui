@@ -17,7 +17,6 @@ import { SVGDom } from '../../utils/SVGDom';
 import { SimpleFilterValues } from './SimpleFilterValues';
 import { FacetUtils } from '../Facet/FacetUtils';
 
-
 export interface ISimpleFilterOptions {
   title: string;
   values: string[];
@@ -277,10 +276,17 @@ export class SimpleFilter extends Component {
   private handleValueToggle() {
     const selectedValues = this.getSelectedValues();
     this.circleElement.text(selectedValues.length.toString());
-    if (selectedValues.length == 1) {
+    this.circleElement.removeClass('coveo-simplefilter-circle-hidden');
+    if(selectedValues.length == 1) {
       this.setDisplayedTitle(this.getValueCaption(selectedValues[0]));
+      this.element.title = this.getValueCaption((selectedValues[0]));
     } else {
       this.setDisplayedTitle(this.options.title);
+      this.element.title = this.options.title;
+
+      if(selectedValues.length < 1) {
+        this.circleElement.addClass('coveo-simplefilter-circle-hidden');
+      }
     }
     this.queryController.executeQuery();
   }
@@ -290,7 +296,7 @@ export class SimpleFilter extends Component {
     const checkbox = new Checkbox(() => {
       this.handleValueToggle();
     }, this.getValueCaption(label));
-
+    checkbox.getElement().title = l(label);
     return { checkbox, label };
   }
 
@@ -341,7 +347,7 @@ export class SimpleFilter extends Component {
   }
 
   private buildCircleElement(): HTMLElement {
-    this.circleElement = $$('span', { className: 'coveo-simplefilter-circle' }, this.getSelectedLabeledCheckboxes().length.toString());
+    this.circleElement = $$('span', { className: 'coveo-simplefilter-circle coveo-simplefilter-circle-hidden' }, this.getSelectedLabeledCheckboxes().length.toString());
     return this.circleElement.el;
   }
 
@@ -474,7 +480,6 @@ export class SimpleFilter extends Component {
     }
     $$(this.circleElement).text(this.getSelectedLabeledCheckboxes().length.toString());
   }
-
 }
 
 Initialization.registerAutoCreateComponent(SimpleFilter);
