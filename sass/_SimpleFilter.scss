@@ -4,13 +4,13 @@
 .coveo-simplefilter-header-wrapper {
   width: 100%;
   margin: auto;
-  padding-left: 15px;
   max-width: 1200px;
   position: relative;
   display: block;
   @include flex-wrap(nowrap);
   @include justify-content(flex-start);
 }
+
 .coveo-dropdown-background {
   display: none;
 }
@@ -22,6 +22,7 @@
 
 .CoveoSimpleFilter {
   cursor: pointer;
+  margin-right: 15px;
   display: inline-block;
   position: relative;
   border: $default-border;
@@ -67,6 +68,9 @@
   text-align: center;
   margin: 0 3px;
   pointer-events:none;
+}
+.coveo-simplefilter-circle-hidden {
+  display: none;
 }
 
 .coveo-simplefilter-value-container {
