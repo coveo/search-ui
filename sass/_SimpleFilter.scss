@@ -34,7 +34,8 @@
 }
 
 .coveo-simplefilter-selecttext {
-  max-width: 100px;
+  margin-left: 5px;
+  max-width: 250px;
   overflow: hidden;
   text-overflow: ellipsis;
   pointer-events:none;
@@ -147,7 +148,7 @@
 }
 
 .coveo-simplefilter-toggle-down-svg {
-  margin-left: 5px;
+  margin: 0 5px;
   color: $color-greyish-teal-blue;
   width: 10px;
   height: 6px;

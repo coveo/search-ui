@@ -16,6 +16,7 @@ import { SVGIcons } from '../../utils/SVGIcons';
 import { SVGDom } from '../../utils/SVGDom';
 import { SimpleFilterValues } from './SimpleFilterValues';
 import { FacetUtils } from '../Facet/FacetUtils';
+import { KeyboardUtils, KEYBOARD } from '../../utils/KeyboardUtils';
 
 export interface ISimpleFilterOptions {
   title: string;
@@ -141,6 +142,13 @@ export class SimpleFilter extends Component {
     this.element.title = this.options.title;
     this.buildContent();
     $$(this.element).on('click', (e: Event) => this.handleClick(e));
+    this.element.tabIndex = 0;
+
+    $$(this.element).on('keyup', KeyboardUtils.keypressAction(KEYBOARD.ENTER, (e) => {
+      if(e.target == this.element) {
+        this.toggleContainer();
+      }
+    }));
     this.bind.onRootElement(BreadcrumbEvents.populateBreadcrumb, (args: IPopulateBreadcrumbEventArgs) => this.handlePopulateBreadcrumb(args));
     this.bind.onRootElement(BreadcrumbEvents.clearBreadcrumb, () => this.handleClearBreadcrumb());
     this.bind.onRootElement(QueryEvents.buildingQuery, (args: IBuildingQueryEventArgs) => this.handleBuildingQuery(args));
@@ -296,7 +304,8 @@ export class SimpleFilter extends Component {
     const checkbox = new Checkbox(() => {
       this.handleValueToggle();
     }, this.getValueCaption(label));
-
+    checkbox.getElement().title = l(label);
+    checkbox.getElement().tabIndex = 0;
     return { checkbox, label };
   }
 
@@ -317,6 +326,11 @@ export class SimpleFilter extends Component {
     _.each(this.checkboxes, (result) => {
       this.valueContainer.append(result.checkbox.getElement());
     });
+    if(this.checkboxes.length > 0) {
+      $$($$(this.checkboxes[this.checkboxes.length - 1].checkbox.getElement()).find('.coveo-checkbox-button')).on('blur', () => {
+        this.closeContainer();
+      })
+    }
   }
 
   private createValueContainer() {
