@@ -145,7 +145,7 @@ export class SimpleFilter extends Component {
     this.element.tabIndex = 0;
 
     $$(this.element).on('keyup', KeyboardUtils.keypressAction(KEYBOARD.ENTER, (e) => {
-      if(e.target == this.element) {
+      if (e.target == this.element) {
         this.toggleContainer();
       }
     }));
@@ -326,10 +326,10 @@ export class SimpleFilter extends Component {
     _.each(this.checkboxes, (result) => {
       this.valueContainer.append(result.checkbox.getElement());
     });
-    if(this.checkboxes.length > 0) {
+    if (this.checkboxes.length > 0) {
       $$($$(this.checkboxes[this.checkboxes.length - 1].checkbox.getElement()).find('.coveo-checkbox-button')).on('blur', () => {
         this.closeContainer();
-      })
+      });
     }
   }
 
