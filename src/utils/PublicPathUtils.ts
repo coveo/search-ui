@@ -27,7 +27,7 @@ export class PublicPathUtils {
     }
   }
 
-  public static configureRessourceRoot(path: string) {
+  public static configureResourceRoot(path: string) {
     this.pathHasBeenConfigured = true;
     __webpack_public_path__ = path;
   }
