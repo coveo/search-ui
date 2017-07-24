@@ -19,17 +19,17 @@ export function PublicPathUtilsTest() {
       DomUtils.getCurrentScript = currentScript;
     });
 
-    it('should set webpack public path when configuring ressource root', () => {
-      PublicPathUtils.configureRessourceRoot(configuredPath);
+    it('should set webpack public path when configuring resource root', () => {
+      PublicPathUtils.configureResourceRoot(configuredPath);
       expect(__webpack_public_path__).toBe(configuredPath);
     });
 
-    it('should get the ressource root', () => {
+    it('should get the resource root', () => {
       const result = PublicPathUtils.getDynamicPublicPath();
       expect(result).toBe(detectedPath);
     });
 
-    it('should get the ressource root with a hash value', () => {
+    it('should get the resource root with a hash value', () => {
       let fakeScriptWithHashValue = <HTMLScriptElement>{ src: `${detectedPath}script.js#some=value&other=value` };
       DomUtils.getCurrentScript = () => fakeScriptWithHashValue;
 
@@ -38,7 +38,7 @@ export function PublicPathUtilsTest() {
       expect(result).toBe(detectedPath);
     });
 
-    it('should get the public path from the ressource root with a url parameter', () => {
+    it('should get the public path from the resource root with a url parameter', () => {
       const fakeScriptWithUrlParam = <HTMLScriptElement>{ src: `${detectedPath}script.js?someParam=1&otherParam=2` };
       DomUtils.getCurrentScript = () => fakeScriptWithUrlParam;
 
@@ -47,20 +47,20 @@ export function PublicPathUtilsTest() {
       expect(result).toBe(detectedPath);
     });
 
-    it('should set webpack public path to the detected ressource root', () => {
+    it('should set webpack public path to the detected resource root', () => {
       PublicPathUtils.detectPublicPath();
       expect(__webpack_public_path__).toBe(detectedPath);
     });
 
     it('should use the manually configured path even after detecting the path', () => {
-      PublicPathUtils.configureRessourceRoot(configuredPath);
+      PublicPathUtils.configureResourceRoot(configuredPath);
       PublicPathUtils.detectPublicPath();
 
       expect(__webpack_public_path__).toBe(configuredPath);
     });
 
     it('should detect the script after reseting the configured state', () => {
-      PublicPathUtils.configureRessourceRoot(configuredPath);
+      PublicPathUtils.configureResourceRoot(configuredPath);
       PublicPathUtils.reset();
       PublicPathUtils.detectPublicPath();
 
