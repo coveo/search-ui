@@ -41,12 +41,13 @@
   overflow: hidden;
   text-overflow: ellipsis;
   pointer-events:none;
+  @include justify-content(flex-start);
 }
 
 .coveo-simplefilter-select {
   color: $color-greyish-teal-blue;
   @include display(flex);
-  justify-content: center;
+  @include justify-content(center);
   overflow: hidden;
   width: inherit;
   pointer-events:none;
@@ -152,6 +153,7 @@
 }
 
 .coveo-simplefilter-toggle-down-svg {
+  @include justify-content(flex-end);
   margin-left: 5px;
   color: $color-greyish-teal-blue;
   width: 10px;
