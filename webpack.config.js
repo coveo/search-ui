@@ -62,7 +62,7 @@ if (production) {
       loader: 'style-loader',
       options: {
         publicPath: '',
-        transform: './gulpTasks/style.transform.js'
+        transform: './style.transform.js'
       }
     }, {
       loader: 'css-loader',
