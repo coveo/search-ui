@@ -142,7 +142,7 @@ export class SimpleFilter extends Component {
     this.element.title = this.options.title;
     this.buildContent();
     $$(this.element).on('click', (e: Event) => this.handleClick(e));
-    this.element.tabIndex = 0;
+    $$(this.element).setAttribute('tabindex', '0');
 
     $$(this.element).on('keyup', KeyboardUtils.keypressAction(KEYBOARD.ENTER, (e) => {
       if (e.target == this.element) {
@@ -305,7 +305,7 @@ export class SimpleFilter extends Component {
       this.handleValueToggle();
     }, this.getValueCaption(label));
     checkbox.getElement().title = l(label);
-    checkbox.getElement().tabIndex = 0;
+    $$(checkbox.getElement()).setAttribute('tabindex', '0');
     return { checkbox, label };
   }
 
