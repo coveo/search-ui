@@ -21,35 +21,40 @@
 }
 
 .CoveoSimpleFilter {
+  padding: 3px 0;
   cursor: pointer;
+  box-sizing: content-box;
   margin-right: 15px;
   display: inline-block;
   position: relative;
   border: $default-border;
   background-color: white;
-  width: 160px;
+  max-width: 250px;
+  min-width: 150px;
   &:hover {
     background-color: $color-blueish-white-grey;
   }
 }
 
 .coveo-simplefilter-selecttext {
-  max-width: 100px;
+  margin-left: 5px;
+  max-width: 250px;
   overflow: hidden;
   text-overflow: ellipsis;
   pointer-events:none;
+  @include justify-content(flex-start);
 }
 
 .coveo-simplefilter-select {
   color: $color-greyish-teal-blue;
   @include display(flex);
-  justify-content: center;
+  @include justify-content(center);
   overflow: hidden;
+  width: inherit;
   pointer-events:none;
   text-overflow: ellipsis;
   @include user-select(none);
   white-space: nowrap;
-  padding: 3px 19px;
 }
 
 .coveo-simplefilter-circle {
@@ -69,6 +74,7 @@
   margin: 0 3px;
   pointer-events:none;
 }
+
 .coveo-simplefilter-circle-hidden {
   display: none;
 }
@@ -77,10 +83,11 @@
   display: none;
   border: $default-border;
   position: absolute;
-  background-color: white;
-  top: 26px;
   right: -1px;
-  width: 160px;
+  box-sizing: content-box;
+  background-color: white;
+  top: 24px;
+  width: 100%;
   text-align: left;
   .coveo-checkbox-button {
     @include defaultRoundedBorder();
@@ -92,7 +99,7 @@
     text-overflow: ellipsis;
     display: inline-block;
     overflow: hidden;
-    max-width: 110px;
+    width: 75%;
     margin-left: 6px;
   }
 
@@ -147,7 +154,8 @@
 }
 
 .coveo-simplefilter-toggle-down-svg {
-  margin-left: 5px;
+  margin: 0 5px;
+  @include justify-content(flex-end);
   color: $color-greyish-teal-blue;
   width: 10px;
   height: 6px;
