@@ -28,13 +28,14 @@ export interface IPipelineContextOptions {
  * <script class='CoveoPipelineContext' type='text/context'>
  *   {
  *      "foo" : "bar"
+ *      "foobar" : "{foo, bar}"
  *   }
  * </script>
  * ```
  *
  * You can also simply use JavaScript code to pass context values, using the {@link QueryBuilder.addContextValue} method.
  *
- * This mean you do not necessarily need to use this component to pass context.
+ * This means you do not necessarily need to use this component to pass context.
  * ```
  * Coveo.$$(root).on('buildingQuery', function(args) {
  *     args.queryBuilder.addContextValue('foo', 'bar');
