@@ -172,7 +172,7 @@ export class SimpleFilter extends Component {
   public getValueCaption(value: string): string {
     let ret = value;
 
-    if (_.contains(this.options.valueCaption, value)) {
+    if (_.contains(_.keys(this.options.valueCaption), value)) {
       ret = this.options.valueCaption[ret] || ret;
       return l(ret);
     } else {
