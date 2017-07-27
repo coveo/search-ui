@@ -340,6 +340,10 @@ export class ComponentOptions {
    *
    * A number option can be an integer or a float in the markup.
    *
+   * **Note:**
+   * 
+   * > To build a float option, you need to set the `float` property in the [`IComponentOptionsNumberOptionArgs`]{@link IComponentOptionsNumberOptionArgs} to `true`.
+   * 
    * **Markup Examples:**
    *
    * > `data-foo="3"`
