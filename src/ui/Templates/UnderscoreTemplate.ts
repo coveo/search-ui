@@ -7,6 +7,7 @@ import { TemplateFromAScriptTag, ITemplateFromStringProperties } from './Templat
 import { DefaultResultTemplate } from './DefaultResultTemplate';
 import * as _ from 'underscore';
 import { $$ } from '../../utils/Dom';
+import { l } from '../../strings/Strings';
 
 export class UnderscoreTemplate extends Template {
   private template: (data: any) => string;
@@ -34,7 +35,13 @@ export class UnderscoreTemplate extends Template {
     this.dataToString = (object) => {
       var extended = _.extend({}, object, UnderscoreTemplate.templateHelpers);
       if (this.template) {
-        return this.template(extended);
+        try {
+          return this.template(extended);
+        } catch (e) {
+          new Logger(this).error(l('CannotInstanciateTemplate', (element.id != '' ? element.id : 'ID undefined')), e.message, element);
+          new Logger(this).warn('A default template was used');
+          return new DefaultResultTemplate().getFallbackTemplate();
+        }
       } else {
         return new DefaultResultTemplate().getFallbackTemplate();
       }

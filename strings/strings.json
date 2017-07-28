@@ -7255,5 +7255,9 @@
   "CoveoOrganization": {
     "en": "Coveo Organization",
     "fr": "Organisation Coveo"
+  },
+  "CannotInstanciateTemplate": {
+    "en": "Cannot instanciate template '{0}'",
+    "fr": "Impossible d'instancier le modèle '{0}'"
   }
 }
