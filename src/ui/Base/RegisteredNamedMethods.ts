@@ -120,15 +120,49 @@ Initialization.registerNamedMethod('executeQuery', (element: HTMLElement) => {
 });
 
 /**
- * Perform operation on the state ({@link QueryStateModel} of the interface.<br/>
- * Get the complete {@link QueryStateModel} object: <code>Coveo.state(element)</code><br/>.
- * Get an attribute from the {@link QueryStateModel}: <code>Coveo.state(element, 'q')</code> Can be any attribute.<br/>
- * Set an attribute on the {@link QueryStateModel}: <code>Coveo.state(element, 'q', 'foobar')</code>. Can be any attribute.<br/>
- * Set multiple attribute on the {@link QueryStateModel}: <code>Coveo.state(element, {'q' : 'foobar' , sort : 'relevancy'})</code>. Can be any attribute.<br/>
- * If using the jQuery extension, this is called using <code>$('#root').coveo('state');</code>.
- * @param element The root of the interface for which to access the {@link QueryStateModel}.
- * @param args
- * @returns {any}
+ * Performs read and write operations on the [`QueryStateModel`]{@link QueryStateModel} instance of the search
+ * interface. See [State](https://developers.coveo.com/x/RYGfAQ).
+ *
+ * Can perform the following actions:
+ *
+ * - Get the `QueryStateModel` instance:
+ * ```javascript
+ * Coveo.state(element);
+ * ```
+ *
+ * - Get the value of a single state attribute from the `QueryStateModel` instance:
+ * ```javascript
+ * // You can replace `q` with any registered state attribute.
+ * Coveo.state(element, "q");
+ * ```
+ *
+ * - Set the value of a single state attribute in the `QueryStateModel` instance:
+ * ```javascript
+ * // You can replace `q` with any registered state attribute.
+ * Coveo.state(element, "q", "my new value");
+ * ```
+ *
+ * - Set multiple state attribute values in the `QueryStateModel` instance:
+ * ```javascript
+ * // You can replace `q` and `sort` with any registered state attributes.
+ * Coveo.state(element, {
+ *     "q" : "my new value",
+ *     "sort" : "relevancy"
+ * });
+ * ```
+ *
+ * **Note:**
+ * > When setting one or several state attribute values with this function, you can pass an additional argument to set
+ * > the `silent` attribute to `true` in order to prevent the state change from triggering state change events.
+ * >
+ * > **Example:**
+ * > ```javascript
+ * > Coveo.state(element, "q", "my new value", { "silent" : true });
+ * > ```
+ *
+ * @param element The root of the interface whose `QueryStateModel` instance the function should interact with.
+ * @param args The arguments that determine the action to perform on the `QueryStateModel` instance.
+ * @returns {any} Depends on the action performed.
  */
 export function state(element: HTMLElement, ...args: any[]): any {
   Assert.exists(element);
