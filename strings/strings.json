@@ -7238,7 +7238,7 @@
   },
   "AddSources": {
     "en": "You will need to add sources in your index, or wait for the created sources to finish indexing.",
-    "fr": "Vous devrez ajouter des source à votre index, ou attendre la fin de l'indexation des sources créées."
+    "fr": "Vous devrez ajouter des sources à votre index, ou attendre la fin de l'indexation des sources créées."
   },
   "TryAgain": {
     "en": "Please try again.",
@@ -7250,7 +7250,7 @@
   },
   "CannotAccess": {
     "en": "{0} cannot be accessed.",
-    "fr": "{0} est inaccessible"
+    "fr": "{0} est inaccessible."
   },
   "CoveoOrganization": {
     "en": "Coveo Organization",

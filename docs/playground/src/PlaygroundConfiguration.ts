@@ -326,9 +326,12 @@ export const PlaygroundConfiguration: IStringMap<IComponentPlaygroundConfigurati
   },
   Sort: {
     show: true,
-    element: $$('div', undefined, `<span class="CoveoSort" data-sort-criteria="relevancy" data-caption="Relevance"></span><span class="CoveoSort" data-sort-criteria="date descending,date ascending" data-caption="Date"></span>`),
+    element: $$('div', undefined, `<div class="coveo-sort-section"><span class="CoveoSort" data-sort-criteria="relevancy" data-caption="Relevance"></span><span class="CoveoSort" data-sort-criteria="date descending,date ascending" data-caption="Date"></span></div><div class="CoveoResultList"></div>`),
     toExecute: ()=> {
-      $$(document.body).find('.CoveoSearchInterface').style.padding = '20px';
+      $$(document.body).find('.preview-container .CoveoSearchInterface').style.padding = '20px';
+      $$(document.body).on('buildingQuery', function(e, args) {
+        args.queryBuilder.numberOfResults = 3;
+      });
     }
   },
   Thumbnail: {
