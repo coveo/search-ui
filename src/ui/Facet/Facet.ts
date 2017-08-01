@@ -549,7 +549,7 @@ export class Facet extends Component {
      *
      * Example: `@date>=2014/01/01`
      */
-    additionalFilter: ComponentOptions.buildStringOption({section: 'Filtering'}),
+    additionalFilter: ComponentOptions.buildStringOption({ section: 'Filtering' }),
 
     /**
      * Specifies whether this facet only appears when a value is selected in its "parent" facet.
@@ -651,7 +651,7 @@ export class Facet extends Component {
      *
      * Default value is `Filters`.
      */
-    dropdownHeaderLabel: ComponentOptions.buildLocalizedStringOption({ section: 'ResponsiveOptions'})
+    dropdownHeaderLabel: ComponentOptions.buildLocalizedStringOption({ section: 'ResponsiveOptions' })
   };
 
   public facetQueryController: FacetQueryController;

@@ -65,7 +65,7 @@ export class DefaultInstantiateTemplateOptions implements IInstantiateTemplateOp
   }
 }
 
-export abstract class Template implements ITemplateProperties {
+export class Template implements ITemplateProperties {
 
   private logger: Logger = new Logger(this);
   public condition: Function;
