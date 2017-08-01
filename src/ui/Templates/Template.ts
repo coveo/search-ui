@@ -20,7 +20,6 @@ export interface ITemplateProperties {
   desktop?: boolean;
   fieldsToMatch?: IFieldsToMatch[];
   role?: TemplateRole;
-  element?: HTMLElement;
 }
 
 export interface IFieldsToMatch {
@@ -78,7 +77,6 @@ export class Template implements ITemplateProperties {
   public fields: string[] = [];
   public layout: ValidLayout;
   public role: TemplateRole;
-  public element: HTMLElement;
 
   constructor(public dataToString?: (object?: any) => string) {
   }
