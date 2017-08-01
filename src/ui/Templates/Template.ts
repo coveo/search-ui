@@ -8,7 +8,6 @@ import { ResponsiveComponents } from '../ResponsiveComponents/ResponsiveComponen
 import * as _ from 'underscore';
 import { Initialization, LazyInitialization } from '../Base/Initialization';
 import { Utils } from '../../utils/Utils';
-import { l } from '../../strings/Strings';
 
 export type TemplateRole = 'table-header' | 'table-footer';
 
@@ -150,7 +149,7 @@ export class Template implements ITemplateProperties {
           return this.dataToString(object);
         }
       } catch (e) {
-        new Logger(this).error(l('CannotInstanciateTemplate', (this.element.id != '' ? this.element.id : 'ID undefined')), e.message, this.element);
+        new Logger(this).error('Cannot instantiate template', e.message, this.getTemplateInfo());
         new Logger(this).warn('A default template was used');
         return null;
       }
@@ -234,5 +233,9 @@ export class Template implements ITemplateProperties {
     } catch (e) {
       this.conditionToParse = condition;
     }
+  }
+
+  getTemplateInfo() {
+    return null;
   }
 }
