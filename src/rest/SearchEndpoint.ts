@@ -26,6 +26,7 @@ import { Utils } from '../utils/Utils';
 import * as _ from 'underscore';
 import { shim } from '../misc/PromisesShim';
 import { history } from 'coveo.analytics';
+import { Cookie } from '../utils/CookieUtils';
 shim();
 
 export class DefaultSearchEndpointOptions implements ISearchEndpointOptions {
@@ -286,6 +287,9 @@ export class SearchEndpoint implements ISearchEndpoint {
   @method('POST')
   @responseType('text')
   @includeActionsHistory()
+  @includeReferrer()
+  @includeVisitorId()
+  @includeIsGuestUser()
   public search(query: IQuery, callOptions?: IEndpointCallOptions, callParams?: IEndpointCallParameters): Promise<IQueryResults> {
     Assert.exists(query);
 
@@ -605,6 +609,9 @@ export class SearchEndpoint implements ISearchEndpoint {
   @method('POST')
   @responseType('text')
   @includeActionsHistory()
+  @includeReferrer()
+  @includeVisitorId()
+  @includeIsGuestUser()
   public getQuerySuggest(request: IQuerySuggestRequest, callOptions?: IEndpointCallOptions, callParams?: IEndpointCallParameters): Promise<IQuerySuggestResponse> {
     this.logger.info('Get Query Suggest', request);
 
@@ -1089,6 +1096,69 @@ function includeActionsHistory(historyStore: CoveoAnalytics.HistoryStore = new h
         args[nbParams - 1].requestData.actionsHistory = historyFromStore;
       } else {
         const endpointCallParams = _.extend(defaultDecoratorEndpointCallParameters(), { requestData: { actionsHistory: historyFromStore } });
+        args[nbParams - 1] = endpointCallParams;
+      }
+      return originalMethod.apply(this, args);
+    };
+
+    return descriptor;
+  };
+}
+
+function includeReferrer() {
+  return function (target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
+    const { originalMethod, nbParams } = decoratorSetup(target, key, descriptor);
+    descriptor.value = function (...args: any[]) {
+      let referrer = document.referrer;
+      if (referrer == null) {
+        referrer = '';
+      }
+
+      if (args[nbParams - 1]) {
+        args[nbParams - 1].requestData.referrer = referrer;
+      } else {
+        const endpointCallParams = _.extend(defaultDecoratorEndpointCallParameters(), { requestData: { referrer: referrer } });
+        args[nbParams - 1] = endpointCallParams;
+      }
+      return originalMethod.apply(this, args);
+    };
+
+    return descriptor;
+  };
+}
+
+function includeVisitorId() {
+  return function (target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
+    const { originalMethod, nbParams } = decoratorSetup(target, key, descriptor);
+    descriptor.value = function (...args: any[]) {
+      let visitorId = Cookie.get('visitorId');
+      if (visitorId == null) {
+        visitorId = '';
+      }
+
+      if (args[nbParams - 1]) {
+        args[nbParams - 1].requestData.visitorId = visitorId;
+      } else {
+        const endpointCallParams = _.extend(defaultDecoratorEndpointCallParameters(), { requestData: { visitorId: visitorId } });
+        args[nbParams - 1] = endpointCallParams;
+      }
+      return originalMethod.apply(this, args);
+    };
+
+    return descriptor;
+  };
+}
+
+function includeIsGuestUser() {
+  return function (target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
+    const { originalMethod, nbParams } = decoratorSetup(target, key, descriptor);
+    descriptor.value = function (...args: any[]) {
+      let isGuestUser = this.options.isGuestUser;
+
+      if (args[nbParams - 1]) {
+        args[nbParams - 1].requestData.isGuestUser = isGuestUser;
+      } else {
+        const endpointCallParams = _.extend(defaultDecoratorEndpointCallParameters(), { requestData: { isGuestUser: isGuestUser } });
         args[nbParams - 1] = endpointCallParams;
       }
       return originalMethod.apply(this, args);
