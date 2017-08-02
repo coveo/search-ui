@@ -27,10 +27,10 @@ export interface IQueryStateExcludedAttribute {
 }
 
 /**
- * The `QueryStateModel` class is a key-value store which contains the current state of the Coveo JavaScript Search
- * Framework components that can affect the query (see [State](https://developers.coveo.com/x/RYGfAQ)). This class
- * inherits from the [`Model`]{@link Model} superclass. Optionally, it is possible to persist the state in the query
- * string in order to enable browser history management (see the [`HistoryController`]{@link HistoryController} class).
+ * The `QueryStateModel` class is a key-value store which contains the current state of the components that can affect
+ * the query (see [State](https://developers.coveo.com/x/RYGfAQ)). This class inherits from the [`Model`]{@link Model}
+ * class. Optionally, it is possible to persist the state in the query string in order to enable browser history
+ * management (see the [`HistoryController`]{@link HistoryController} class).
  *
  * Components set values in the `QueryStateModel` instance to reflect their current state. The `QueryStateModel`
  * triggers state events (see [`eventTypes`]{@link Model.eventTypes}) whenever one of its values is modified. Components
@@ -48,7 +48,7 @@ export interface IQueryStateExcludedAttribute {
  * >
  * > Components or external code can attach handlers to those events:
  * > ```javascript
- * > Coveo.$$(document).on('state:change'q', function() {
+ * > Coveo.$$(document).on('state:change:q', function() {
  * >   [ ... ]
  * > });
  * > ```
