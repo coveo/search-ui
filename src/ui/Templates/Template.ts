@@ -233,7 +233,7 @@ export class Template implements ITemplateProperties {
     }
   }
 
-  getTemplateInfo(): any {
+  protected getTemplateInfo(): any {
     // Try to get info on the template by returning the first parameter found that is not undefined.
    return (this.conditionToParse != undefined? this.conditionToParse : this.condition != undefined? this.condition : this.fieldsToMatch);
   }
