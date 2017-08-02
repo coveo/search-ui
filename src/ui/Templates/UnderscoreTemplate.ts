@@ -58,7 +58,7 @@ export class UnderscoreTemplate extends Template {
     return 'UnderscoreTemplate';
   }
 
-  getTemplateInfo() {
+  protected getTemplateInfo() {
     return this.element;
   }
 

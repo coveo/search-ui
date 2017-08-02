@@ -44,7 +44,7 @@ export class HtmlTemplate extends Template {
     return new HtmlTemplate(script);
   }
 
-  getTemplateInfo() {
+  protected getTemplateInfo() {
     return this.element;
   }
 }
