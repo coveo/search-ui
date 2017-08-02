@@ -182,8 +182,11 @@ export const PlaygroundConfiguration: IStringMap<IComponentPlaygroundConfigurati
   },
   HiddenQuery: {
     show: true,
+    options: {
+      title: 'This is the filter title'
+    },
     toExecute: ()=> {
-      let searchInterface = $$(document.body).find('.CoveoSearchInterface')
+      let searchInterface = $$(document.body).find('.component-container .CoveoSearchInterface');
       Coveo.state(searchInterface, 'hd', 'This is the filter description');
       Coveo.state(searchInterface, 'hq', '@uri');
     },
