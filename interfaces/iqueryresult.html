@@ -55,7 +55,7 @@
 	</div>
 	<div class="bottomHeader">
 		<div id="searchBox">
-			<div class="CoveoSearchbox" data-enable-omnibox="true" data-inline="false" data-enable-wildcards="true" data-enable-search-as-you-type="false" data-enable-query-suggest-addon="false" data-enable-query-syntax="true" data-enable-field-addon="true"></div>
+			<div class="CoveoSearchbox" data-enable-omnibox="true" data-inline="false" data-enable-wildcards="true" data-enable-search-as-you-type="false" data-enable-reveal-query-suggest-addon="false" data-enable-query-syntax="true" data-enable-field-addon="true"></div>
 			<div class="CoveoFieldSuggestions" data-field="@systitle" data-header-title="Suggested topics"></div>
 		</div>
 	</div>
@@ -171,15 +171,13 @@
 							<a href="iqueryresult.html">IQueryResult</a>
 						</li>
 					</ul>
-					<!-- Has to remain here for the playground to work -->
-					<h1 style="visibility: collapse; font-size:0">Interface IQueryResult</h1>
 					<h1>Interface IQueryResult</h1>
 				</div>
 			</div>
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>The <code>IQueryResult</code> interface describes a single result returned by the Coveo REST Search API.</p>
+						<p>The IQueryResult interface describes a single result returned by the Coveo REST Search API.</p>
 					</div>
 				</div>
 			</section>
@@ -231,9 +229,9 @@
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Contains the child results of the item, if parent-child loading was performed.</p>
+							<p>Contains the child results if parent-child loading was performed.</p>
 						</div>
-						<p>See the <a href="../components/folding.html"><code>Folding</code></a> component.</p>
+						<p>See the <a href="../components/folding.html">Folding</a> component.</p>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
@@ -243,15 +241,15 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/QueryResult.ts#L31">src/rest/QueryResult.ts
-							:31</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/QueryResult.ts#L32">src/rest/QueryResult.ts
+							:32</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Contains the clickable URI of the item, which you can set on an <code>href</code> in your search interface.</p>
+							<p>Contains the clickable URI of the document, which you can set on an <code>href</code> in your search interface.</p>
 						</div>
-						<p>See the <a href="../components/resultlink.html"><code>ResultLink</code></a> component.</p>
+						<p>See the <a href="../components/resultlink.html">ResultLink</a> document.</p>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
@@ -261,15 +259,15 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/QueryResult.ts#L45">src/rest/QueryResult.ts
-							:45</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/QueryResult.ts#L46">src/rest/QueryResult.ts
+							:46</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Contains an excerpt of the item. Can be empty for certain types of items (e.g., images, videos, etc.).</p>
+							<p>Contains the excerpt of the document. Can be empty for certain types of documents (e.g., images, videos, etc.).</p>
 						</div>
-						<p>See the <a href="../components/excerpt.html"><code>Excerpt</code></a> component.</p>
+						<p>See the <a href="../components/excerpt.html">Excerpt</a> component.</p>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
@@ -279,13 +277,13 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/QueryResult.ts#L61">src/rest/QueryResult.ts
-							:61</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/QueryResult.ts#L62">src/rest/QueryResult.ts
+							:62</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Contains the list of flags for the item. Values are separated by a semicolon characters (<code>;</code>).</p>
+							<p>Contains the list of flags that the document has. Each value is separated by a semicolon (<code>;</code>).</p>
 						</div>
 					</div>
 				</section>
@@ -296,15 +294,15 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/QueryResult.ts#L55">src/rest/QueryResult.ts
-							:55</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/QueryResult.ts#L56">src/rest/QueryResult.ts
+							:56</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Contains a value specifying whether the item has an HTML version.</p>
+							<p>Contains a value specifying whether the document has an HTML version.</p>
 						</div>
-						<p>See the <a href="../components/quickview.html"><code>Quickview</code></a> component.</p>
+						<p>See the <a href="../components/quickview.html">Quickview</a> component.</p>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
@@ -314,8 +312,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/QueryResult.ts#L113">src/rest/QueryResult.ts
-							:113</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/QueryResult.ts#L111">src/rest/QueryResult.ts
+							:111</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -331,16 +329,15 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/QueryResult.ts#L104">src/rest/QueryResult.ts
-							:104</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/QueryResult.ts#L102">src/rest/QueryResult.ts
+							:102</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
 							<p>Contains a value that specifies whether the result was recommended by the Coveo Machine Learning service.</p>
 						</div>
-						<p>See the <a href="../components/recommendation.html"><code>Recommendation</code></a> component.</p>
-						<p>See also <a href="http://www.coveo.com/go?dest=cloudhelp&amp;lcid=9&amp;context=177">Coveo Machine Learning</a>.</p>
+						<p>See <a href="http://www.coveo.com/go?dest=cloudhelp&amp;lcid=9&amp;context=177">Coveo Machine Learning</a>.</p>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
@@ -356,9 +353,9 @@
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Contains the parent result of the item, if parent-child loading was performed.</p>
+							<p>Contains the parent result if parent-child loading was performed.</p>
 						</div>
-						<p>See the <a href="../components/folding.html"><code>Folding</code></a> component.</p>
+						<p>See the <a href="../components/folding.html">Folding</a> component.</p>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
@@ -368,13 +365,13 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/QueryResult.ts#L23">src/rest/QueryResult.ts
-							:23</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/QueryResult.ts#L24">src/rest/QueryResult.ts
+							:24</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Contains a printable URI (or path) to the item.</p>
+							<p>Contains a printable URI (or path) to the document.</p>
 						</div>
 					</div>
 				</section>
@@ -385,13 +382,13 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/QueryResult.ts#L122">src/rest/QueryResult.ts
-							:122</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/QueryResult.ts#L120">src/rest/QueryResult.ts
+							:120</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Contains the query UID, as returned by the Coveo REST Search API.</p>
+							<p>Contains The query UID, as returned by the Coveo REST Search API.</p>
 						</div>
 						<p>This value is used mainly for usage analytics.</p>
 						<p>The Coveo JavaScript Search Framework adds this property client-side to each result.</p>
@@ -410,8 +407,7 @@
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Contains ranking information, which the Coveo REST Search API returns along with the item when the query
-							<a href="iquery.html#debug"><code>debug</code></a> property is <code>true</code>.</p>
+							<p>Contains a ranking information which is returned along the document if <a href="iquery.html#debug">IQuery.debug</a> is <code>true</code>.</p>
 						</div>
 					</div>
 				</section>
@@ -428,9 +424,9 @@
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Contains the collaborative rating value for the item.</p>
+							<p>Contains the rating of the document.</p>
 						</div>
-						<p>See the <a href="../components/resultrating.html"><code>ResultRating</code></a> component.</p>
+						<p>See the <a href="../components/resultrating.html">ResultRating</a> component.</p>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
@@ -446,7 +442,7 @@
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Contains the raw field values of the item, expressed as key-value pairs.</p>
+							<p>Contains the raw field values of the document, expressed as key-value pairs.</p>
 						</div>
 					</div>
 				</section>
@@ -457,13 +453,13 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/QueryResult.ts#L146">src/rest/QueryResult.ts
-							:146</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/QueryResult.ts#L144">src/rest/QueryResult.ts
+							:144</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>The <a href="../components/searchinterface.html"><code>SearchInterface</code></a> inside which this result is rendered.</p>
+							<p>The <a href="../components/searchinterface.html">SearchInterface</a> inside which this result is rendered.</p>
 						</div>
 						<p>This value is used mainly to allow for conditional rendering of results templates.</p>
 						<p>The Coveo JavaScript Search Framework adds this property client-side to each result.</p>
@@ -476,13 +472,13 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/QueryResult.ts#L137">src/rest/QueryResult.ts
-							:137</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/QueryResult.ts#L135">src/rest/QueryResult.ts
+							:135</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Contains the query state of the <a href="../components/searchinterface.html"><code>SearchInterface</code></a> inside which this result is rendered.</p>
+							<p>Contains the query state of the <a href="../components/searchinterface.html">SearchInterface</a> inside which this result is rendered.</p>
 						</div>
 						<p>This value is used mainly to allow for conditional rendering of results templates.</p>
 						<p>The Coveo JavaScript Search Framework adds this property client-side to each result.</p>
@@ -503,13 +499,13 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/QueryResult.ts#L12">src/rest/QueryResult.ts
-							:12</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/QueryResult.ts#L13">src/rest/QueryResult.ts
+							:13</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Contains the title of the item.</p>
+							<p>Contains the title of the document</p>
 						</div>
 					</div>
 				</section>
@@ -520,15 +516,15 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/QueryResult.ts#L38">src/rest/QueryResult.ts
-							:38</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/QueryResult.ts#L39">src/rest/QueryResult.ts
+							:39</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Contains the unique ID of the item.</p>
+							<p>Contains a unique ID for the document.</p>
 						</div>
-						<p>This parameter is useful when making certain calls to a <a href="../classes/searchendpoint.html"><code>SearchEndpoint</code></a>.</p>
+						<p>This parameter is useful when making certain calls to a <a href="../classes/searchendpoint.html">SearchEndpoint</a>.</p>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
@@ -538,13 +534,13 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/QueryResult.ts#L18">src/rest/QueryResult.ts
-							:18</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/QueryResult.ts#L19">src/rest/QueryResult.ts
+							:19</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Contains the URI of the item.</p>
+							<p>Contains the URI of the document.</p>
 						</div>
 					</div>
 				</section>
