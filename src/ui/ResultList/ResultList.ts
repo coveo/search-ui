@@ -567,7 +567,12 @@ export class ResultList extends Component {
     if (this.options.autoSelectFieldsToInclude) {
       const otherResultListsElements = _.reject($$(this.root).findAll(`.${Component.computeCssClassName(ResultList)}`), resultListElement => resultListElement == this.element);
       const otherFields = _.flatten(_.map(otherResultListsElements, (otherResultListElement) => {
-        return (<ResultList>get(otherResultListElement)).getAutoSelectedFieldsToInclude();
+        const otherResultListInstance = <ResultList>get(otherResultListElement);
+        if (otherResultListInstance) {
+          return otherResultListInstance.getAutoSelectedFieldsToInclude();
+        } else {
+          return [];
+        }
       }));
 
       args.queryBuilder.addRequiredFields(_.unique(otherFields.concat(this.getAutoSelectedFieldsToInclude())));

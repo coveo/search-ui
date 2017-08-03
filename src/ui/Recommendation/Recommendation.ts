@@ -215,6 +215,9 @@ export class Recommendation extends SearchInterface implements IComponentBinding
       this.ensureCurrentPageViewExistsInStore();
     }
     ResponsiveRecommendation.init(this.root, this, options);
+    if (this.options.hideIfNoResults) {
+      this.hide();
+    }
   }
 
   public getId(): string {

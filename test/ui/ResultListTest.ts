@@ -300,6 +300,32 @@ export function ResultListTest() {
         expect(test.cmp.getAutoSelectedFieldsToInclude()).toEqual(jasmine.arrayContaining(['author', 'language', 'urihash', 'objecttype', 'collection', 'source', 'language', 'permanentid']));
       });
 
+      it('should call auto select fields to include on other result list', () => {
+        test = Mock.optionsComponentSetup<ResultList, IResultListOptions>(ResultList, {
+          autoSelectFieldsToInclude: true
+        });
+
+        const otherResultList = Mock.mockComponent<ResultList>(ResultList);
+        otherResultList.element = document.createElement('div');
+        $$(otherResultList.element).addClass('CoveoResultList');
+        otherResultList.element['CoveoBoundComponents'] = [otherResultList];
+        $$(test.env.root).append(otherResultList.element);
+        const simulation = Simulate.query(test.env);
+        expect(otherResultList.getAutoSelectedFieldsToInclude).toHaveBeenCalled();
+      });
+
+      it('should not throw when finding auto select fields to include on another result list that is not initialized ', () => {
+        test = Mock.optionsComponentSetup<ResultList, IResultListOptions>(ResultList, {
+          autoSelectFieldsToInclude: true
+        });
+
+        const otherResultList = Mock.mockComponent<ResultList>(ResultList);
+        otherResultList.element = document.createElement('div');
+        $$(otherResultList.element).addClass('CoveoResultList');
+        $$(test.env.root).append(otherResultList.element);
+        expect(() => Simulate.query(test.env)).not.toThrow();
+      });
+
       it('resultTemplate allow to specify a template manually', () => {
         let tmpl: UnderscoreTemplate = Mock.mock<UnderscoreTemplate>(UnderscoreTemplate);
         let asSpy = <any>tmpl;
