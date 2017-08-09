@@ -56,7 +56,7 @@ export interface IGroupByRequest {
    * Consequently, specifying a high value for this parameter may negatively impact query performance.
    *
    * Default value is `1000`. Minimum value is `0`.
-   * */
+   */
   injectionDepth?: number;
 
   /**
