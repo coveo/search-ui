@@ -76,7 +76,11 @@ export interface IAnalyticsOmniboxFacetMeta {
   suggestionRanking: number;
   query: string;
 }
-
+export interface IAnalyticsSimpleFilterMeta {
+  simpleFilterTitle: string;
+  simpleFilterSelectedValue?: string;
+  simpleFilterField: string;
+}
 export interface IAnalyticsFacetMeta {
   facetId: string;
   facetValue?: string;
@@ -535,6 +539,21 @@ export var analyticsActionCauseList = {
   searchAlertsUnfollowQuery: <IAnalyticsActionCause>{
     name: 'unfollowQuery',
     type: 'searchAlerts'
+  },
+  simpleFilterSelectValue: <IAnalyticsActionCause>{
+    name: 'selectValue',
+    type: 'simpleFilter',
+    metaMap: { simpleFilterTitle: 1, simpleFilterValue: 2, simpleFilterField: 3 }
+  },
+  simpleFilterDeselectValue: <IAnalyticsActionCause>{
+    name: 'selectValue',
+    type: 'simpleFilter',
+    metaMap: { simpleFilterTitle: 1, simpleFilterValues: 2, simpleFilterField: 3 }
+  },
+  simpleFilterClearAll: <IAnalyticsActionCause>{
+    name: 'selectValue',
+    type: 'simpleFilter',
+    metaMap: { simpleFilterTitle: 1, simpleFilterField: 3 }
   },
   resultsLayoutChange: <IAnalyticsActionCause>{
     name: 'changeResultsLayout',
