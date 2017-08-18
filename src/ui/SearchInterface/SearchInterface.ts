@@ -212,8 +212,68 @@ export class SearchInterface extends RootComponent implements IComponentBindings
      */
     filterField: ComponentOptions.buildFieldOption({ defaultValue: '' }),
 
-    hideUntilFirstQuery: ComponentOptions.buildBooleanOption({ deprecated: 'Exposed for legacy reasons. The loading animation is now composed of placeholders, and this option is obsolete.' }),
+     /**
+      * Specifies whether to display a loading animation before the first query successfully returns.
+      *
+      * **Note:**
+      *
+      * > If you do not set this options to `false`, the loading animation will still run until the first query
+      * > successfully returns even if the [autoTriggerQuery]{@link SearchInterface.options.autoTriggerQuery} option is
+      * `false`.
+      *
+      * See also the [firstLoadingAnimation]{@link SearchInterface.options.firstLoadingAnimation} option.
+      *
+      * Default value is `true`.
+      *
+      * @deprecated This option is exposed for legacy reasons. Since the
+      * [July 2017 Release (v2.2900.23)](https://developers.coveo.com/x/gSMvAg), the loading animation is composed of
+      * placeholders, making this option is obsolete.
+      */
+     hideUntilFirstQuery: ComponentOptions.buildBooleanOption({ deprecated: 'Exposed for legacy reasons. The loading animation is now composed of placeholders, and this option is obsolete.' }),
 
+    /**
+     * Specifies the animation that you wish to display while your interface is loading.
+     *
+     * You can either specify the CSS selector of an HTML element that matches the default CSS class
+     * (`coveo-first-loading-animation`), or add `-selector` to the markup attribute of this option to specify the CSS
+     * selector of an HTML element that matches any CSS class.
+     *
+     * See also the [hideUntilFirstQuery]{@link SearchInterface.options.hideUntilFirstQuery} option.
+     *
+     * **Examples:**
+     *
+     * In this first case, the SearchInterface uses the HTML element whose `id` attribute is `MyAnimation` as the
+     * loading animation only if the `class` attribute of this element also matches `coveo-first-loading-animation`.
+     * Default loading animation CSS, which you can customize as you see fit, applies to this HTML element.
+     * ```html
+     * <div class='CoveoSearchInterface' data-first-loading-animation='#MyAnimation'>
+     *   <div id='MyAnimation' class='coveo-first-loading-animation'>
+     *     <!-- ... -->
+     *   </div>
+     *   <!-- ... -->
+     * </div>
+     * ```
+     *
+     * In this second case, the SearchInterface uses the HTML element whose `id` attribute is `MyAnimation` as the
+     * loading animation no matter what CSS class it matches. However, if the `class` attribute of the HTML element does
+     * not match `coveo-first-loading-animation`, no default loading animation CSS applies to this HTML element.
+     * Normally, you should only use `data-first-loading-animation-selector` if you want to completely override the
+     * default loading animation CSS.
+     * ```html
+     * <div class='CoveoSearchInterface' data-first-loading-animation-selector='#MyAnimation'>
+     *   <div id='MyAnimation' class='my-custom-loading-animation-class'>
+     *     <!-- ... -->
+     *   </div>
+     *   <!-- ... -->
+     * </div>
+     * ```
+     *
+     * By default, the loading animation is a Coveo CSS animation (which you can customize with CSS).
+     *
+     * @deprecated This option is exposed for legacy reasons. Since the
+     * [July 2017 Release (v2.2900.23)](https://developers.coveo.com/x/gSMvAg), the loading animation is composed of
+     * placeholders, making this option is obsolete.
+     */
     firstLoadingAnimation: ComponentOptions.buildChildHtmlElementOption({
       deprecated: 'Exposed for legacy reasons. The loading animation is now composed of placeholder, and this options is obsolete.'
     }),
