@@ -197,3 +197,9 @@
   height: 12px;
   color: $color-greyish-teal-blue;
 }
+
+.coveo-computed-modal-box-content {
+ > div {
+  height: 100%
+ }
+}

@@ -282,6 +282,7 @@ export class Quickview extends Component {
 
   private createModalBox(openerObject: IQuickviewOpenerObject) {
     const computedModalBoxContent = $$('div');
+    computedModalBoxContent.addClass('coveo-computed-modal-box-content');
     return openerObject.content.then((builtContent) => {
       computedModalBoxContent.append(builtContent.el);
       this.modalbox = this.ModalBox.open(computedModalBoxContent.el, {
