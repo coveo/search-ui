@@ -17,6 +17,7 @@ import { SVGDom } from '../../utils/SVGDom';
 import { SimpleFilterValues } from './SimpleFilterValues';
 import { FacetUtils } from '../Facet/FacetUtils';
 import { KeyboardUtils, KEYBOARD } from '../../utils/KeyboardUtils';
+import { analyticsActionCauseList, IAnalyticsSimpleFilterMeta } from '../Analytics/AnalyticsActionListMeta';
 
 export interface ISimpleFilterOptions {
   title: string;
@@ -281,7 +282,7 @@ export class SimpleFilter extends Component {
     }
   }
 
-  private handleValueToggle() {
+  private handleValueToggle(checkbox: Checkbox) {
     const selectedValues = this.getSelectedValues();
     this.circleElement.text(selectedValues.length.toString());
     this.circleElement.removeClass('coveo-simplefilter-circle-hidden');
@@ -296,13 +297,19 @@ export class SimpleFilter extends Component {
         this.circleElement.addClass('coveo-simplefilter-circle-hidden');
       }
     }
+    const action = checkbox.isSelected() ? analyticsActionCauseList.simpleFilterSelectValue : analyticsActionCauseList.simpleFilterDeselectValue;
+    this.usageAnalytics.logSearchEvent<IAnalyticsSimpleFilterMeta>(action, {
+      simpleFilterTitle: this.options.title,
+      simpleFilterSelectedValue: checkbox.label,
+      simpleFilterField: <string>this.options.field
+    });
     this.queryController.executeQuery();
   }
 
   private createCheckbox(label: string) {
 
     const checkbox = new Checkbox(() => {
-      this.handleValueToggle();
+      this.handleValueToggle(checkbox);
     }, this.getValueCaption(label));
     checkbox.getElement().title = l(label);
     $$(checkbox.getElement()).setAttribute('tabindex', '0');
@@ -408,6 +415,10 @@ export class SimpleFilter extends Component {
   }
 
   private handleClearBreadcrumb() {
+    this.usageAnalytics.logSearchEvent<IAnalyticsSimpleFilterMeta>(analyticsActionCauseList.simpleFilterClearAll, {
+      simpleFilterTitle: this.options.title,
+      simpleFilterField: <string>this.options.field
+    });
     this.resetSimpleFilter();
   }
 
