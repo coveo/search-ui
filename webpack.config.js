@@ -94,6 +94,7 @@ module.exports = {
     filename: minimize ? '[name].min.js' : '[name].js',
     chunkFilename: minimize ? '[name].min.js' : '[name].js',
     libraryTarget: 'umd',
+    umdNamedDefine: true,
     // See SwapVar.ts as for why this need to be a temporary variable
     library: 'Coveo__temporary',
     publicPath: 'js/',
