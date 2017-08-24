@@ -212,24 +212,24 @@ export class SearchInterface extends RootComponent implements IComponentBindings
      */
     filterField: ComponentOptions.buildFieldOption({ defaultValue: '' }),
 
-     /**
-      * Specifies whether to display a loading animation before the first query successfully returns.
-      *
-      * **Note:**
-      *
-      * > If you do not set this options to `false`, the loading animation will still run until the first query
-      * > successfully returns even if the [autoTriggerQuery]{@link SearchInterface.options.autoTriggerQuery} option is
-      * `false`.
-      *
-      * See also the [firstLoadingAnimation]{@link SearchInterface.options.firstLoadingAnimation} option.
-      *
-      * Default value is `true`.
-      *
-      * @deprecated This option is exposed for legacy reasons. Since the
-      * [July 2017 Release (v2.2900.23)](https://developers.coveo.com/x/gSMvAg), the loading animation is composed of
-      * placeholders, making this option is obsolete.
-      */
-     hideUntilFirstQuery: ComponentOptions.buildBooleanOption({ deprecated: 'Exposed for legacy reasons. The loading animation is now composed of placeholders, and this option is obsolete.' }),
+    /**
+     * Specifies whether to display a loading animation before the first query successfully returns.
+     *
+     * **Note:**
+     *
+     * > If you do not set this options to `false`, the loading animation will still run until the first query
+     * > successfully returns even if the [autoTriggerQuery]{@link SearchInterface.options.autoTriggerQuery} option is
+     * `false`.
+     *
+     * See also the [firstLoadingAnimation]{@link SearchInterface.options.firstLoadingAnimation} option.
+     *
+     * Default value is `true`.
+     *
+     * @deprecated This option is exposed for legacy reasons. Since the
+     * [July 2017 Release (v2.2900.23)](https://developers.coveo.com/x/gSMvAg), the loading animation is composed of
+     * placeholders, making this option is obsolete.
+     */
+    hideUntilFirstQuery: ComponentOptions.buildBooleanOption({ deprecated: 'Exposed for legacy reasons. The loading animation is now composed of placeholders, and this option is obsolete.' }),
 
     /**
      * Specifies the animation that you wish to display while your interface is loading.
@@ -721,7 +721,7 @@ export class SearchInterface extends RootComponent implements IComponentBindings
     }
 
     if (Utils.isNonEmptyString(this.options.expression)) {
-      data.queryBuilder.advancedExpression.add(this.options.expression);
+      data.queryBuilder.constantExpression.add(this.options.expression);
     }
 
     if (Utils.isNonEmptyString(<string>this.options.filterField)) {
