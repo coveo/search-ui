@@ -261,9 +261,9 @@ export class ResultLayout extends Component {
   private populate() {
     let populateArgs: IResultLayoutPopulateArgs = { layouts: [] };
     $$(this.root).trigger(ResultLayoutEvents.populateResultLayout, populateArgs);
-    _.each(populateArgs.layouts, l => Assert.check(_.contains(ResultLayout.validLayouts, l), 'Invalid layout'));
+    _.each(populateArgs.layouts, layout => Assert.check(_.contains(ResultLayout.validLayouts, layout), 'Invalid layout'));
     if (!_.isEmpty(populateArgs.layouts)) {
-      _.each(populateArgs.layouts, l => this.addButton(l));
+      _.each(populateArgs.layouts, layout => this.addButton(layout));
       if (!this.shouldShowSelector()) {
         this.hide();
       }

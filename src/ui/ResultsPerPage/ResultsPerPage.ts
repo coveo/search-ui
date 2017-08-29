@@ -9,6 +9,7 @@ import { $$ } from '../../utils/Dom';
 import { KeyboardUtils, KEYBOARD } from '../../utils/KeyboardUtils';
 import { DeviceUtils } from '../../utils/DeviceUtils';
 import _ = require('underscore');
+import { l } from '../../strings/Strings';
 
 export interface IResultsPerPageOptions {
   choicesDisplayed?: number[];
@@ -120,7 +121,7 @@ export class ResultsPerPage extends Component {
   private initComponent(element: HTMLElement) {
     this.span = $$('span', {
       className: 'coveo-results-per-page-text'
-    }, 'Results per page').el;
+    }, l('Results per page')).el;
     element.appendChild(this.span);
     this.list = $$('ul', {
       className: 'coveo-results-per-page-list'
