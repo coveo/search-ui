@@ -105,10 +105,9 @@ module.exports = {
     alias: {
       'l10n': __dirname + '/lib/l10n/l10n.min.js',
       'globalize': globalizePath,
-      'modal-box': __dirname + '/node_modules/modal-box/bin/ModalBox.min.js',
-      'magic-box': __dirname + '/node_modules/coveomagicbox/bin/MagicBox.min.js',
+      'modal-box': __dirname + '/node_modules/modal-box/bin/ModalBox' + (production ? '.min.js' : '.js'),
+      'magic-box': __dirname + '/node_modules/coveomagicbox/bin/MagicBox' + (production ? '.min.js' : '.js'),
       'default-language': __dirname + '/src/strings/DefaultLanguage.js',
-      'jQuery': __dirname + '/test/lib/jquery.js',
       'styling': __dirname + '/sass',
       'svg': __dirname + '/image/svg'
     },
