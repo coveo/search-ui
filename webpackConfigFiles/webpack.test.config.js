@@ -14,7 +14,7 @@ conf = _.extend(conf, {
     devtoolModuleFilenameTemplate: '[resource-path]'
   },
   ts: {
-    configFileName: 'test.tsconfig.json'
+    configFile: 'test.tsconfig.json'
   }
 })
 
