@@ -1,5 +1,4 @@
 @import "Variables";
-@import "../bin/sass/sprites";
 
 .CoveoResultAttachments {
 
@@ -14,30 +13,6 @@
     min-height: 16px;
     position: relative;
     top: 3px;
-  }
-
-  .coveo-thumbnail-icon {
-    @include retina-sprite($quickview-group);
-    position: relative;
-    margin-left: 5px;
-    top: 5px;
-    overflow: visible;
-
-    img {
-      border: $default-border;
-      box-shadow: 0px 0px 3px 0px rgb(171, 170, 169);
-      position: absolute;
-      left: 100%;
-      display: none;
-      z-index:1;
-    }
-
-    &:hover {
-      cursor: pointer;
-      img {
-        display: block;
-      }
-    }
   }
 }
 

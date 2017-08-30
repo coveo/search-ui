@@ -1,7 +1,7 @@
 {
   "filetype": {
     "cfpage": {
-      "icon": "webpage",
+      "icon": "salesforce-standard-article",
       "captions": {
         "en": "Confluence Page",
         "fr": "Page Confluence"
@@ -25,7 +25,7 @@
       "shouldDisplayLabel": true
     },
     "cfblogentry": {
-      "icon": "list",
+      "icon": "salesforce-standard-insights",
       "captions": {
         "en": "Confluence Blog Entry",
         "fr": "Blogue Confluence"

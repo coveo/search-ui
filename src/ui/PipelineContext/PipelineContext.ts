@@ -28,13 +28,14 @@ export interface IPipelineContextOptions {
  * <script class='CoveoPipelineContext' type='text/context'>
  *   {
  *      "foo" : "bar"
+ *      "foobar" : "{foo, bar}"
  *   }
  * </script>
  * ```
  *
  * You can also simply use JavaScript code to pass context values, using the {@link QueryBuilder.addContextValue} method.
  *
- * This mean you do not necessarily need to use this component to pass context.
+ * This means you do not necessarily need to use this component to pass context.
  * ```
  * Coveo.$$(root).on('buildingQuery', function(args) {
  *     args.queryBuilder.addContextValue('foo', 'bar');
@@ -90,8 +91,29 @@ export class PipelineContext extends Component {
    * @param key
    * @returns {string}
    */
-  public getContextValue(key: string): string {
-    return this.content[key].replace(/\{\!([^\}]+)\}/g, (all: string, contextKey: string) => {
+  public getContextValue(key: string): string | string[] {
+    if (_.isArray(this.content[key])) {
+      const contextValues = [];
+      _.each(this.content[key], (value) => {
+        contextValues.push(this.getModifiedData(value));
+      });
+      return contextValues;
+    } else {
+      return this.getModifiedData(this.content[key]);
+    }
+  }
+
+  private handleBuildingQuery(args: IBuildingQueryEventArgs) {
+    let keys = this.getContextKeys();
+    _.each(keys, (key: string) => {
+      args.queryBuilder.addContextValue(key, this.getContextValue(key));
+
+    });
+  }
+
+  // We need to modify the data to escape special salesforce characters. eg: {! }
+  private getModifiedData(value: string) {
+    return value.replace(/\{\!([^\}]+)\}/g, (all: string, contextKey: string) => {
       if (Coveo.context != null && contextKey in Coveo.context) {
         return Coveo.context[contextKey];
       } else if (contextKey == PipelineContext.CURRENT_URL) {
@@ -100,14 +122,6 @@ export class PipelineContext extends Component {
       return '';
     });
   }
-
-  private handleBuildingQuery(args: IBuildingQueryEventArgs) {
-    let keys = this.getContextKeys();
-    _.each(keys, (key: string) => {
-      args.queryBuilder.addContextValue(key, this.getContextValue(key));
-    });
-  }
-
 
 }
 

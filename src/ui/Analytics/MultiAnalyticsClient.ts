@@ -3,6 +3,7 @@ import { PendingSearchEvent } from './PendingSearchEvent';
 import { IAnalyticsActionCause, IAnalyticsDocumentViewMeta } from './AnalyticsActionListMeta';
 import { IQueryResult } from '../../rest/QueryResult';
 import { ITopQueries } from '../../rest/TopQueries';
+import { IAPIAnalyticsEventResponse } from '../../rest/APIAnalyticsEventResponse';
 import * as _ from 'underscore';
 
 export class MultiAnalyticsClient implements IAnalyticsClient {
@@ -31,12 +32,16 @@ export class MultiAnalyticsClient implements IAnalyticsClient {
     _.each(this.analyticsClients, (analyticsClient: IAnalyticsClient) => analyticsClient.logSearchEvent<TMeta>(actionCause, meta));
   }
 
-  public logClickEvent(actionCause: IAnalyticsActionCause, meta?: IAnalyticsDocumentViewMeta, result?: IQueryResult, element?: HTMLElement) {
-    _.each(this.analyticsClients, (analyticsClient: IAnalyticsClient) => analyticsClient.logClickEvent(actionCause, meta, result, element));
+  public logClickEvent(actionCause: IAnalyticsActionCause, meta?: IAnalyticsDocumentViewMeta, result?: IQueryResult, element?: HTMLElement): Promise<IAPIAnalyticsEventResponse[]> {
+    return Promise.all(_.map(this.analyticsClients, (analyticsClient: IAnalyticsClient) => {
+      return analyticsClient.logClickEvent(actionCause, meta, result, element);
+    }));
   }
 
-  public logCustomEvent<TMeta>(actionCause: IAnalyticsActionCause, meta?: TMeta, element?: HTMLElement) {
-    _.each(this.analyticsClients, (analyticsClient: IAnalyticsClient) => analyticsClient.logCustomEvent<TMeta>(actionCause, meta, element));
+  public logCustomEvent<TMeta>(actionCause: IAnalyticsActionCause, meta?: TMeta, element?: HTMLElement): Promise<IAPIAnalyticsEventResponse[]> {
+    return Promise.all(_.map(this.analyticsClients, (analyticsClient: IAnalyticsClient) => {
+      return analyticsClient.logCustomEvent<TMeta>(actionCause, meta, element);
+    }));
   }
 
   public getTopQueries(params: ITopQueries): Promise<string[]> {

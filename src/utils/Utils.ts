@@ -69,6 +69,8 @@ export class Utils {
   }
 
   static parseFloatIfNotUndefined(str: string): number {
+    let a: any = 't';
+    a instanceof HTMLDocument;
     if (Utils.isNonEmptyString(str)) {
       return parseFloat(str);
     } else {
@@ -321,6 +323,10 @@ export class Utils {
 
   static toDashCase(camelCased: string) {
     return camelCased.replace(/([a-z][A-Z])/g, (g) => g[0] + '-' + g[1].toLowerCase());
+  }
+
+  static toCamelCase(dashCased: string) {
+    return dashCased.replace(/-([a-z])/g, (g) => g[1].toUpperCase());
   }
 
   // Based on http://stackoverflow.com/a/8412989

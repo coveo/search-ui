@@ -1,7 +1,12 @@
 ///<reference path="Omnibox.ts"/>
-import { Omnibox, IPopulateOmniboxSuggestionsEventArgs, IOmniboxSuggestion } from './Omnibox';
+import { Omnibox, IOmniboxSuggestion } from './Omnibox';
 import { IOmniboxDataRow } from './OmniboxInterface';
-import { OmniboxEvents, IPopulateOmniboxEventArgs, IPopulateOmniboxEventRow } from '../../events/OmniboxEvents';
+import {
+  OmniboxEvents,
+  IPopulateOmniboxEventArgs,
+  IPopulateOmniboxEventRow,
+  IPopulateOmniboxSuggestionsEventArgs
+} from '../../events/OmniboxEvents';
 import { $$ } from '../../utils/Dom';
 import { Utils } from '../../utils/Utils';
 import * as _ from 'underscore';

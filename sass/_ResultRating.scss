@@ -1,0 +1,18 @@
+$color-placeholder-star: #E1E1E1;
+$color-active-star: #D9AF00;
+
+.coveo-result-rating-star + .coveo-result-rating-star {
+  margin-left: 2px;
+}
+
+.coveo-result-rating-star-svg {
+  width: 16px;
+  height: 16px;
+  color: $color-placeholder-star;
+}
+
+.coveo-result-rating-star-active {
+  .coveo-result-rating-star-svg {
+    color: $color-active-star;
+  }
+}

@@ -43,4 +43,8 @@ export class HtmlTemplate extends Template {
     // 2) The HTML Template is the default one.
     return new HtmlTemplate(script);
   }
+
+  protected getTemplateInfo() {
+    return this.element;
+  }
 }

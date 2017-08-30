@@ -192,13 +192,13 @@ export class FieldTable extends Component {
     this.toggleCaption = $$('span', { className: 'coveo-field-table-toggle-caption', tabindex: 0 }).el;
 
     this.toggleButton = $$('div', { className: 'coveo-field-table-toggle coveo-field-table-toggle-down' }).el;
-    this.toggleButtonSVGContainer = $$('span', null, SVGIcons.arrowDown).el;
+    this.toggleButtonSVGContainer = $$('span', null, SVGIcons.icons.arrowDown).el;
     SVGDom.addClassToSVGInContainer(this.toggleButtonSVGContainer, 'coveo-field-table-toggle-down-svg');
     this.toggleButton.appendChild(this.toggleCaption);
     this.toggleButton.appendChild(this.toggleButtonSVGContainer);
     $$(this.toggleButton).insertBefore(this.element);
 
-    this.toggleButtonInsideTable = $$('span', { className: 'coveo-field-table-toggle coveo-field-table-toggle-up' }, SVGIcons.arrowUp).el;
+    this.toggleButtonInsideTable = $$('span', { className: 'coveo-field-table-toggle coveo-field-table-toggle-up' }, SVGIcons.icons.arrowUp).el;
     SVGDom.addClassToSVGInContainer(this.toggleButtonInsideTable, 'coveo-field-table-toggle-up-svg');
 
     if (this.options.minimizedByDefault === true) {

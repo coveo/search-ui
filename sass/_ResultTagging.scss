@@ -1,5 +1,4 @@
 @import "Variables";
-@import "../bin/sass/sprites";
 
 .coveo-result-tagging-add-tag {
   display: inline-block;
@@ -43,9 +42,13 @@
   line-height: 22px;
   height: 22px;
   span {
-    @include retina-sprite($tagging-ok-group);
     cursor: pointer;
   }
+}
+.coveo-result-tagging-add-tag-tick-icon-svg {
+  width: 9px;
+  height: 7px;
+  color: $color-white-transparent;
 }
 
 .coveo-result-tagging-clear-icon {
@@ -57,8 +60,14 @@
   border-bottom-right-radius: 3px;
   border-top-right-radius: 3px;
   span {
-    @include retina-sprite($tagging-clear-group);
     cursor: pointer;
+  }
+}
+.coveo-result-tagging-clear-icon-svg {
+  width: 8px;
+  height: 8px;
+  .coveo-exclusion-svg {
+    fill: $color-white-transparent;
   }
 }
 
@@ -85,9 +94,15 @@
 }
 
 .coveo-result-tagging-delete-icon {
-  @include retina-sprite($tagging-clear-group);
   cursor: pointer;
   margin-left: 2px;
+}
+.coveo-result-tagging-delete-icon-svg {
+   width: 8px;
+   height: 8px;
+  .coveo-exclusion-svg {
+    fill: $color-white-transparent;
+  }
 }
 
 .coveo-result-tagging-auto-complete {

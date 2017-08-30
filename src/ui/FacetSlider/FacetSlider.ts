@@ -513,6 +513,7 @@ export class FacetSlider extends Component {
 
   public isSimpleSliderConfig() {
     return this.options.start != null && this.options.end != null;
+    // return false;
   }
 
   public hasAGraph() {

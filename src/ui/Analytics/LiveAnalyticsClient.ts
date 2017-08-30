@@ -14,6 +14,7 @@ import { $$ } from '../../utils/Dom';
 import { AnalyticsEvents, IAnalyticsCustomEventArgs } from '../../events/AnalyticsEvents';
 import { APIAnalyticsBuilder } from '../../rest/APIAnalyticsBuilder';
 import { IAnalyticsEvent } from '../../rest/AnalyticsEvent';
+import { IAPIAnalyticsEventResponse } from '../../rest/APIAnalyticsEventResponse';
 import { ISearchEvent } from '../../rest/SearchEvent';
 import { IClickEvent } from '../../rest/ClickEvent';
 import { ICustomEvent } from '../../rest/CustomEvent';
@@ -94,14 +95,14 @@ export class LiveAnalyticsClient implements IAnalyticsClient {
     this.pushSearchAsYouTypeEvent(actionCause, metaObject);
   }
 
-  public logClickEvent<TMeta>(actionCause: IAnalyticsActionCause, meta: TMeta, result: IQueryResult, element: HTMLElement) {
+  public logClickEvent<TMeta>(actionCause: IAnalyticsActionCause, meta: TMeta, result: IQueryResult, element: HTMLElement): Promise<IAPIAnalyticsEventResponse> {
     let metaObject = this.buildMetaObject(meta, result);
-    this.pushClickEvent(actionCause, metaObject, result, element);
+    return this.pushClickEvent(actionCause, metaObject, result, element);
   }
 
-  public logCustomEvent<TMeta>(actionCause: IAnalyticsActionCause, meta: TMeta, element: HTMLElement) {
+  public logCustomEvent<TMeta>(actionCause: IAnalyticsActionCause, meta: TMeta, element: HTMLElement): Promise<IAPIAnalyticsEventResponse> {
     var metaObject = this.buildMetaObject(meta);
-    this.pushCustomEvent(actionCause, metaObject, element);
+    return this.pushCustomEvent(actionCause, metaObject, element);
   }
 
   public getTopQueries(params: ITopQueries): Promise<string[]> {
@@ -147,16 +148,12 @@ export class LiveAnalyticsClient implements IAnalyticsClient {
     this.originContext = originContext;
   }
 
-  private pushCustomEvent(actionCause: IAnalyticsActionCause, metaObject: IChangeableAnalyticsMetaObject, element?: HTMLElement) {
+  private pushCustomEvent(actionCause: IAnalyticsActionCause, metaObject: IChangeableAnalyticsMetaObject, element?: HTMLElement): Promise<IAPIAnalyticsEventResponse> {
     var customEvent = this.buildCustomEvent(actionCause, metaObject, element);
     this.triggerChangeAnalyticsCustomData('CustomEvent', metaObject, customEvent);
     this.checkToSendAnyPendingSearchAsYouType(actionCause);
-    Defer.defer(() => {
-      if (this.sendToCloud) {
-        this.endpoint.sendCustomEvent(customEvent);
-      }
-      $$(this.rootElement).trigger(AnalyticsEvents.customEvent, <IAnalyticsCustomEventArgs>{ customEvent: APIAnalyticsBuilder.convertCustomEventToAPI(customEvent) });
-    });
+    $$(this.rootElement).trigger(AnalyticsEvents.customEvent, <IAnalyticsCustomEventArgs>{ customEvent: APIAnalyticsBuilder.convertCustomEventToAPI(customEvent) });
+    return this.sendToCloud ? this.endpoint.sendCustomEvent(customEvent) : Promise.resolve(null);
   }
 
   private pushSearchEvent(actionCause: IAnalyticsActionCause, metaObject: IChangeableAnalyticsMetaObject) {
@@ -197,7 +194,7 @@ export class LiveAnalyticsClient implements IAnalyticsClient {
     this.pendingSearchAsYouTypeSearchEvent = new PendingSearchAsYouTypeSearchEvent(this.rootElement, this.endpoint, searchEvent, this.sendToCloud);
   }
 
-  private pushClickEvent(actionCause: IAnalyticsActionCause, metaObject: IChangeableAnalyticsMetaObject, result: IQueryResult, element: HTMLElement) {
+  private pushClickEvent(actionCause: IAnalyticsActionCause, metaObject: IChangeableAnalyticsMetaObject, result: IQueryResult, element: HTMLElement): Promise<IAPIAnalyticsEventResponse> {
     var event = this.buildClickEvent(actionCause, metaObject, result, element);
     this.checkToSendAnyPendingSearchAsYouType(actionCause);
     this.triggerChangeAnalyticsCustomData('ClickEvent', metaObject, event, { resultData: result });
@@ -205,14 +202,11 @@ export class LiveAnalyticsClient implements IAnalyticsClient {
     Assert.isNonEmptyString(event.collectionName);
     Assert.isNonEmptyString(event.sourceName);
     Assert.isNumber(event.documentPosition);
-    Defer.defer(() => {
-      if (this.sendToCloud) {
-        this.endpoint.sendDocumentViewEvent(event);
-      }
-      $$(this.rootElement).trigger(AnalyticsEvents.documentViewEvent, {
-        documentViewEvent: APIAnalyticsBuilder.convertDocumentViewToAPI(event)
-      });
+
+    $$(this.rootElement).trigger(AnalyticsEvents.documentViewEvent, {
+      documentViewEvent: APIAnalyticsBuilder.convertDocumentViewToAPI(event)
     });
+    return this.sendToCloud ? this.endpoint.sendDocumentViewEvent(event) : Promise.resolve(null);
   }
 
   private buildAnalyticsEvent(actionCause: IAnalyticsActionCause, metaObject: IChangeableAnalyticsMetaObject): IAnalyticsEvent {

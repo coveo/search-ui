@@ -61,7 +61,8 @@ if (production) {
     use: [{
       loader: 'style-loader',
       options: {
-        publicPath: ''
+        publicPath: '',
+        transform: './style.transform.js'
       }
     }, {
       loader: 'css-loader',
@@ -93,6 +94,7 @@ module.exports = {
     filename: minimize ? '[name].min.js' : '[name].js',
     chunkFilename: minimize ? '[name].min.js' : '[name].js',
     libraryTarget: 'umd',
+    umdNamedDefine: true,
     // See SwapVar.ts as for why this need to be a temporary variable
     library: 'Coveo__temporary',
     publicPath: 'js/',
@@ -158,12 +160,11 @@ module.exports = {
         }
       }]
     }, {
-      test: /\.(gif|png|jpe?g|ttf|woff2?|eot)$/,
+      test: /(filetypes\/.*\.svg)$/,
       use: [{
         loader: 'file-loader',
         options: {
-          // name: production ? '../image/[name].[ext]' : 'http://localhost:8080/image/[name].[ext]',
-          name: '../image/[name].[ext]',
+          name: production ? '../image/[name].[ext]' : 'http://localhost:8080/image/[name].[ext]',
           emitFile: false,
           publicPath: ' ',
         }

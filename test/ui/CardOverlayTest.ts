@@ -43,11 +43,11 @@ export function CardOverlayTest() {
             return b.withElement(<HTMLElement>parentResult.firstChild);
           },
           cmpOptions: {
-            icon: 'my-foobar-icon'
+            icon: 'search'
           }
         });
-        expect($$(test.cmp.element).find('.my-foobar-icon')).not.toBeNull();
-        expect($$($$(parentResult).find('.coveo-card-overlay')).find('.my-foobar-icon')).not.toBeNull();
+        expect($$(test.cmp.element).find('.coveo-search-svg')).not.toBeNull();
+        expect($$($$(parentResult).find('.coveo-card-overlay')).find('.coveo-search-svg')).not.toBeNull();
       });
     });
 

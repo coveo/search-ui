@@ -20,7 +20,7 @@
 
   <body id="search" class='CoveoSearchInterface' data-enable-history="true">
     <div class="coveo-tab-section">
-      <a class="CoveoTab" data-id="Dropbox" data-caption="Dropbox" data-expression="@connectortype==DropboxCrawler"></a>
+      <a class="CoveoTab" data-id="Dropbox" data-caption="Dropbox" data-expression="@connectortype==DropboxCrawler AND @objecttype==File"></a>
     </div>
     <div class='coveo-search-section'>
       <div class="CoveoSettings"></div>
@@ -30,6 +30,7 @@
       <div class="coveo-facet-column">
         <div class="CoveoFacet" data-title="File Type" data-field="@filetype" data-tab="Dropbox"></div>
         <div class="CoveoFacet" data-title="Author" data-field="@author" data-tab="Dropbox"></div>
+        <div class="CoveoFacet" data-title="Language" data-field="@language" data-tab="Dropbox"></div>
         <div class="CoveoFacet" data-title="Year" data-field="@year" data-tab="Dropbox"></div>
         <div class="CoveoFacet" data-title="Month" data-field="@month" data-tab="Dropbox"></div>
       </div>

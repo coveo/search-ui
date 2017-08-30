@@ -1,5 +1,4 @@
 @import "bourbon/bourbon";
-@import "../bin/sass/sprites.scss";
 
 // https://app.frontify.com/d/GthysWU8RY0Q/brand-guidelines#/basics/colors
 
@@ -34,6 +33,8 @@ $color-green: #4caf50;
 $color-red: #CC0D00;
 $color-active-yellow: #ECAD00;
 $color-transparent-background: rgba(28, 79, 118, 0.9);
+$color-white-transparent: rgba(255, 255, 255, 0.5);
+$color-light-grey-transparent: rgba($color-light-grey, 0.74);
 
 // Font sizes
 $font-size-huge: 24px;

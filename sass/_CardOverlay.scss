@@ -4,6 +4,22 @@
   cursor: pointer;
 }
 
+.coveo-search-svg {
+  color: $color-blueish-gray;
+  width: 18px;
+  height: 18px;
+  .coveo-magnifier-circle-svg {
+    fill: $color-active-yellow;
+  }
+}
+
+.coveo-replies-svg {
+  color: $color-blueish-gray;
+  width: 20px;
+  height: 20px;
+}
+
+
 .coveo-card-overlay {
   position: absolute;
   height: 100%;
@@ -87,3 +103,13 @@
   min-height: 180px;
 }
 
+.coveo-open-card-overlay {
+  display: inline-block;
+  margin-bottom: 4px;
+}
+
+.coveo-open-card-overlay-svg {
+  width: 10px;
+  height: 6px;
+  color: $color-blueish-gray;
+}

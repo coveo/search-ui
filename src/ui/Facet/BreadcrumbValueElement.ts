@@ -36,7 +36,7 @@ export class BreadcrumbValueElement {
 
     const clear = $$('span', {
       className: 'coveo-facet-breadcrumb-clear'
-    }, SVGIcons.checkboxHookExclusionMore);
+    }, SVGIcons.icons.checkboxHookExclusionMore);
     SVGDom.addClassToSVGInContainer(clear.el, 'coveo-facet-breadcrumb-clear-svg');
     elem.el.appendChild(clear.el);
 

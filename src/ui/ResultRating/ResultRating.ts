@@ -7,6 +7,9 @@ import { Initialization } from '../Base/Initialization';
 import { Utils } from '../../utils/Utils';
 import { IRatingRequest } from '../../rest/RatingRequest';
 import { exportGlobally } from '../../GlobalExports';
+import { SVGIcons } from '../../utils/SVGIcons';
+import { SVGDom } from '../../utils/SVGDom';
+import 'styling/_ResultRating';
 
 export enum RatingValues { Undefined, Lowest, Low, Average, Good, Best };
 
@@ -53,19 +56,20 @@ export class ResultRating extends Component {
 
   private renderStar(element: HTMLElement, isChecked: boolean, value: number) {
     let star: Dom;
-    let starElement = $$(element).find('a[rating-value="' + value + '"]');
+    const starElement = $$(element).find('a[rating-value="' + value + '"]');
     if (starElement == null) {
-      star = $$('a');
+      star = $$('a', { className: 'coveo-result-rating-star' }, SVGIcons.icons.star);
+      SVGDom.addClassToSVGInContainer(star.el, 'coveo-result-rating-star-svg');
       element.appendChild(star.el);
 
       if (this.bindings.searchInterface.options.enableCollaborativeRating) {
         star.on('click', (e) => {
-          let targetElement: HTMLElement = <HTMLElement>e.currentTarget;
+          const targetElement: HTMLElement = <HTMLElement>e.currentTarget;
           this.rateDocument(parseInt(targetElement.getAttribute('rating-value')));
         });
 
         star.on('mouseover', (e) => {
-          let targetElement: HTMLElement = <HTMLElement>e.currentTarget;
+          const targetElement: HTMLElement = <HTMLElement>e.currentTarget;
           this.renderComponent(element, parseInt(targetElement.getAttribute('rating-value')));
         });
 
@@ -79,9 +83,7 @@ export class ResultRating extends Component {
       star = $$(starElement);
     }
 
-    let basePath: String = 'coveo-sprites-';
-    star.toggleClass(basePath + 'star_placeholder', !isChecked);
-    star.toggleClass(basePath + 'star_active', isChecked);
+    star.toggleClass('coveo-result-rating-star-active', isChecked);
   }
 
   /**
@@ -98,7 +100,7 @@ export class ResultRating extends Component {
    * - `5`: renders 5 stars.
    */
   public rateDocument(rating: RatingValues) {
-    let request: IRatingRequest = {
+    const request: IRatingRequest = {
       rating: RatingValues[rating],
       uniqueId: this.result.uniqueId
     };

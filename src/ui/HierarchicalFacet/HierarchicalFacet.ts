@@ -29,6 +29,8 @@ import { ISearchAlertsPopulateMessageEventArgs } from '../../events/SearchAlertE
 import * as _ from 'underscore';
 import { exportGlobally } from '../../GlobalExports';
 import 'styling/_HierarchicalFacet';
+import { SVGIcons } from '../../utils/SVGIcons';
+import { SVGDom } from '../../utils/SVGDom';
 
 export interface IHierarchicalFacetOptions extends IFacetOptions {
   delimitingCharacter?: string;
@@ -649,9 +651,13 @@ export class HierarchicalFacet extends Facet implements IComponentBindings {
     if (hierarchy.hasChildSelected) {
       $$(hierarchyElement).addClass('coveo-has-childs-selected');
     }
+    const expandChilds = $$('span', { className: 'coveo-hierarchical-facet-expand' }, SVGIcons.icons.facetExpand);
+    const collapseChilds = $$('span', { className: 'coveo-hierarchical-facet-collapse' }, SVGIcons.icons.facetCollapse);
+    SVGDom.addClassToSVGInContainer(expandChilds.el, 'coveo-hierarchical-facet-expand-svg');
+    SVGDom.addClassToSVGInContainer(collapseChilds.el, 'coveo-hierarchical-facet-collapse-svg');
     let openAndCloseChilds = $$('div', {
       className: 'coveo-has-childs-toggle'
-    }).el;
+    }, expandChilds.el, collapseChilds.el).el;
 
     $$(openAndCloseChilds).on('click', () => {
       $$(hierarchyElement).hasClass('coveo-open') ? this.close(hierarchy) : this.open(hierarchy);

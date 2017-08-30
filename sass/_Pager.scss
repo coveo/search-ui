@@ -1,6 +1,5 @@
 @import "Variables";
 @import "mixins/pagerList";
-@import "../bin/sass/sprites.scss";
 
 .coveo-pager-list {
   @include pager-list;
@@ -24,18 +23,15 @@
   }
 }
 
-.coveo-pager-next > a > span {
-  @include retina-sprite($pager-right-arrow-group);
-  vertical-align: middle;
-}
-
-.coveo-pager-previous > a > span {
-  @include retina-sprite($pager-left-arrow-group);
-  vertical-align: middle;
-}
-
 .CoveoPager {
   margin-top: 0px;
   margin-left: 25px;
   display: inline-block;
+}
+
+.coveo-pager-next-icon-svg, .coveo-pager-previous-icon-svg {
+  width: 11px;
+  height: 20px;
+  color: $color-greyish-teal-blue;
+  vertical-align: middle
 }

@@ -14,7 +14,7 @@ import { StandaloneSearchInterfaceEvents } from '../../events/StandaloneSearchIn
 import { MODEL_EVENTS, IAttributeChangedEventArg } from '../../models/Model';
 import { QUERY_STATE_ATTRIBUTES } from '../../models/QueryStateModel';
 import { IAnalyticsNoMeta, analyticsActionCauseList, IAnalyticsOmniboxSuggestionMeta } from '../Analytics/AnalyticsActionListMeta';
-import { OmniboxEvents, IOmniboxPreprocessResultForQueryEventArgs } from '../../events/OmniboxEvents';
+import { OmniboxEvents, IOmniboxPreprocessResultForQueryEventArgs, IPopulateOmniboxSuggestionsEventArgs } from '../../events/OmniboxEvents';
 import { $$ } from '../../utils/Dom';
 import { Assert } from '../../misc/Assert';
 import { QueryStateModel } from '../../models/QueryStateModel';
@@ -33,12 +33,6 @@ import { StandaloneSearchInterface } from '../SearchInterface/SearchInterface';
 import * as _ from 'underscore';
 import { exportGlobally } from '../../GlobalExports';
 import 'styling/_Omnibox';
-import { InitializationEvents } from '../../events/InitializationEvents';
-
-export interface IPopulateOmniboxSuggestionsEventArgs {
-  omnibox: Omnibox;
-  suggestions: Array<Coveo.MagicBox.Suggestion[] | Promise<Coveo.MagicBox.Suggestion[]>>;
-}
 
 export interface IOmniboxSuggestion extends Coveo.MagicBox.Suggestion {
   executableConfidence?: number;
@@ -60,19 +54,20 @@ export interface IOmniboxOptions extends IQueryboxOptions {
 const MINIMUM_EXECUTABLE_CONFIDENCE = 0.8;
 
 /**
- * The Omnibox component is very similar to the simpler {@link Querybox} component. It supports all of the same options
- * and behaviors.
+ * The `Omnibox` component extends the [`Querybox`]{@link Querybox}, and thus provides the same basic options and
+ * behaviors. Furthermore, the `Omnibox` adds a type-ahead capability to the search input.
  *
- * The Omnibox component takes care of adding type-ahead capability to the search input. Custom components can extend
- * and customize the type-ahead and the suggestions it provides.
+ * You can configure the type-ahead feature by enabling or disabling certain addons, which the Coveo JavaScript Search
+ * Framework provides out-of-the-box (see the [`enableFieldAddon`]{@link Omnibox.options.enableFieldAddon},
+ * [`enableQueryExtension`]{@link Omnibox.options.enableQueryExtensionAddon}, and
+ * [`enableQuerySuggestAddon`]{@link Omnibox.options.enableQuerySuggestAddon} options).
  *
- * The type-ahead is configurable by activating addons, which the Coveo JavaScript Search Framework provides OOTB
- * (facets, analytics suggestions, Coveo Machine Learning suggestions and advanced Coveo syntax suggestions).
+ * Custom components and external code can also extend or customize the type-ahead feature and the query completion
+ * suggestions it provides by attaching their own handlers to the
+ * [`populateOmniboxSuggestions`]{@link OmniboxEvents.populateOmniboxSuggestions`] event.
  *
- * It is also possible for external code to provide type-ahead suggestions.
- *
- * See also the {@link Searchbox} component, which can automatically instantiate an Omnibox component along with an
- * optional {@link SearchButton} component.
+ * See also the [`Searchbox`]{@link Searchbox} component, which can automatically instantiate an `Omnibox` along with an
+ * optional {@link SearchButton}.
  */
 export class Omnibox extends Component {
   public static ID = 'Omnibox';
@@ -91,8 +86,8 @@ export class Omnibox extends Component {
   static options: IOmniboxOptions = {
 
     /**
-     * Specifies whether suggestions appearing in the Omnibox should push the result down instead of appearing over the
-     * results.
+     * Specifies whether query completion suggestions appearing in the `Omnibox` should push the result list and facets
+     * down, rather than rendering themselves over them (and partially hiding them).
      *
      * Set this option as well as {@link Omnibox.options.enableSearchAsYouType} and
      * {@link Omnibox.options.enableQuerySuggestAddon} to `true` for a cool effect!
@@ -102,7 +97,9 @@ export class Omnibox extends Component {
     inline: ComponentOptions.buildBooleanOption({ defaultValue: false }),
 
     /**
-     * Specifies whether to automatically trigger a new query whenever the end user types new text inside the Omnibox.
+     * Specifies whether to automatically trigger a new query whenever the end user types in the `Omnibox`.
+     *
+     * See also the [`searchAsYouTypeDelay`]{@link Omnibox.options.searchAsYouTypeDelay} option.
      *
      * Set this option as well a {@link Omnibox.options.inline} and
      * {@link Omnibox.options.enableQuerySuggestAddon} to `true` for a cool effect!
@@ -113,7 +110,7 @@ export class Omnibox extends Component {
 
     /**
      * If {@link Omnibox.options.enableSearchAsYouType} is `true`, specifies the delay (in milliseconds) before
-     * triggering a new query when the user types new text inside the Omnibox.
+     * triggering a new query when the end user types in the `Omnibox`.
      *
      * Default value is `2000`. Minimum value is `0`.
      */
@@ -126,13 +123,15 @@ export class Omnibox extends Component {
     /**
      * If {@link Querybox.options.enableQuerySyntax} is `true`, specifies whether to enable the `field` addon.
      *
-     * The `field` addon allows the search box to highlight and complete field syntax.
+     * The `field` addon makes the `Omnibox` highlight and complete field syntax.
      *
      * **Example:**
-     *
-     * > Suppose you want to filter on a certain file type. You start typing `@sysf` in the input. The Omnibox provides
-     * > you with several matching fields. You select the `@sysfiletype` suggestion and type `=`. If this option is set
-     * > to `true`, then the Omnibox provides you with suggestions for available matching file types.
+     * > Suppose you want to search for PDF files. You start typing `@f` in the search box. The `Omnibox` provides
+     * > you with several matching fields. You select the `@filetype` field. Then, you start typing `=p` in the input.
+     * > This time, the `Omnibox` provides you with several matching values for the `@filetype` field. You select the
+     * > `pdf` suggestion, and submit your search request. Since the `enableQuerySyntax` option is set to `true`, the
+     * > Coveo Search API interprets the basic expression as query syntax and returns the items whose `@filetype` field
+     * > matches the `pdf` value.
      *
      * Default value is `false`.
      */
