@@ -74,7 +74,8 @@ export class Simulate {
     var newQueryEventArgs: INewQueryEventArgs = {
       searchAsYouType: options.searchAsYouType,
       cancel: options.cancel,
-      origin: options.origin
+      origin: options.origin,
+      shouldRedirectStandaloneSearchbox: true
     };
     $$(env.root).trigger(QueryEvents.newQuery, newQueryEventArgs);
 
