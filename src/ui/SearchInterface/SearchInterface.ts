@@ -394,7 +394,7 @@ export class SearchInterface extends RootComponent implements IComponentBindings
   public componentOptionsModel: ComponentOptionsModel;
   public usageAnalytics: IAnalyticsClient;
   /**
-   * Allows to get and set the different breakpoints for mobile and tabconst devices.
+   * Allows to get and set the different breakpoints for mobile and tablet devices.
    *
    * This is useful, amongst other, for {@link Facet}, {@link Tab} and {@link ResultList}
    */
