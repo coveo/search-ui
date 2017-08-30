@@ -54,6 +54,7 @@ export interface IQueryOptions {
   isFirstQuery?: boolean;
   keepLastSearchUid?: boolean;
   closeModalBox?: boolean;
+  shouldRedirectStandaloneSearchbox?: boolean;
 }
 
 interface ILastQueryLocalStorage {
@@ -68,6 +69,7 @@ class DefaultQueryOptions implements IQueryOptions {
   closeModalBox = true;
   cancel = false;
   logInActionsHistory = false;
+  shouldRedirectStandaloneSearchbox = true;
 }
 
 /**
@@ -176,7 +178,8 @@ export class QueryController extends RootComponent {
     let dataToSendOnNewQuery: INewQueryEventArgs = {
       searchAsYouType: options.searchAsYouType,
       cancel: options.cancel,
-      origin: options.origin
+      origin: options.origin,
+      shouldRedirectStandaloneSearchbox: options.shouldRedirectStandaloneSearchbox
     };
 
     this.newQueryEvent(dataToSendOnNewQuery);
