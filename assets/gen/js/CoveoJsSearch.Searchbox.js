@@ -1549,8 +1549,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	"use strict";
 	Object.defineProperty(exports, "__esModule", { value: true });
 	exports.version = {
-	    'lib': '1.2537.25-beta',
-	    'product': '1.2537.25-beta',
+	    'lib': '1.2537.26-beta',
+	    'product': '1.2537.26-beta',
 	    'supportedApiVersion': 2
 	};
 
@@ -5994,9 +5994,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	    "DoesNotContain": "does not contain",
 	    "Matches": "matches",
 	    "Bytes": "bytes",
-	    "List": "List",
-	    "Card": "Card",
-	    "Table": "Table",
+	    "list": "List",
+	    "card": "Card",
+	    "table": "Table",
+	    "ResultLinks": "Result links",
+	    "EnableQuerySyntax": "Enable query syntax",
+	    "On": "On",
+	    "Off": "Off",
+	    "Automatic": "Automatic",
+	    "ResultsPerPage": "Results per page",
 	    "objecttype_people": "People",
 	    "objecttype_message": "Message",
 	    "objecttype_feed": "RSS Feed",
@@ -7919,11 +7925,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	            });
 	        }
 	        else {
-	            var once = function (e, args) {
-	                _this.off(type, once);
+	            var once_1 = function (e, args) {
+	                _this.off(type, once_1);
 	                return eventHandle(e, args);
 	            };
-	            this.on(type, once);
+	            this.on(type, once_1);
 	        }
 	    };
 	    Dom.prototype.off = function (type, eventHandle) {
@@ -7939,16 +7945,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	                jq(this.el).off(type, eventHandle);
 	            }
 	            else if (this.el.removeEventListener) {
-	                var idx = 0;
+	                var idx_1 = 0;
 	                var found = _.find(Dom.handlers, function (handlerObj, i) {
 	                    if (handlerObj.eventHandle == eventHandle) {
-	                        idx = i;
+	                        idx_1 = i;
 	                        return true;
 	                    }
 	                });
 	                if (found) {
 	                    this.el.removeEventListener(type, found.fn, false);
-	                    Dom.handlers.splice(idx, 1);
+	                    Dom.handlers.splice(idx_1, 1);
 	                }
 	            }
 	            else if (this.el['off']) {
@@ -7967,8 +7973,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	            jq(this.el).trigger(type, data);
 	        }
 	        else if (CustomEvent !== undefined) {
-	            var event = new CustomEvent(type, { detail: data, bubbles: true });
-	            this.el.dispatchEvent(event);
+	            var event_1 = new CustomEvent(type, { detail: data, bubbles: true });
+	            this.el.dispatchEvent(event_1);
 	        }
 	        else {
 	            new Logger_1.Logger(this).error('CANNOT TRIGGER EVENT FOR OLDER BROWSER');
@@ -8012,8 +8018,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	     */
 	    Dom.prototype.position = function () {
 	        var offsetParent = this.offsetParent();
-	        var parentOffset = { top: 0, left: 0 };
 	        var offset = this.offset();
+	        var parentOffset = { top: 0, left: 0 };
 	        if (!$$(offsetParent).is('html')) {
 	            parentOffset = $$(offsetParent).offset();
 	        }
@@ -8081,6 +8087,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	     */
 	    Dom.prototype.height = function () {
 	        return this.el.offsetHeight;
+	    };
+	    /**
+	     * Clone the node
+	     * @param deep true if the children of the node should also be cloned, or false to clone only the specified node.
+	     * @returns {Dom}
+	     */
+	    Dom.prototype.clone = function (deep) {
+	        if (deep === void 0) { deep = false; }
+	        return $$(this.el.cloneNode(deep));
 	    };
 	    Dom.prototype.traverseAncestorForClass = function (current, className) {
 	        if (current === void 0) { current = this.el; }
@@ -13357,10 +13372,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	            maximumNumberOfValues = this.facet.options.graph.steps;
 	        }
 	        var rangeValues = undefined;
+	        var _a = this.formatStartAndEnd(), start = _a.start, end = _a.end;
 	        if (this.facet.isSimpleSliderConfig()) {
 	            rangeValues = [{
-	                    start: this.facet.options.start,
-	                    end: this.facet.options.end,
+	                    start: start,
+	                    end: end,
 	                    label: 'slider',
 	                    endInclusive: false
 	                }];
@@ -13374,12 +13390,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        queryBuilder.groupByRequests.push(basicGroupByRequestForSlider);
 	    };
 	    FacetSliderQueryController.prototype.createRangeValuesForGraphUsingStartAndEnd = function () {
-	        var start = this.facet.options.start;
-	        var end = this.facet.options.end;
-	        if (this.facet.options.dateField) {
-	            start = this.getISOFormat(start);
-	            end = this.getISOFormat(end);
-	        }
+	        var _a = this.formatStartAndEnd(), start = _a.start, end = _a.end;
 	        var oneRange = {
 	            start: start,
 	            end: end,
@@ -13430,6 +13441,18 @@ return /******/ (function(modules) { // webpackBootstrap
 	                end: newEnd
 	            };
 	        });
+	    };
+	    FacetSliderQueryController.prototype.formatStartAndEnd = function () {
+	        var start = this.facet.options.start;
+	        var end = this.facet.options.end;
+	        if (this.facet.options.dateField) {
+	            start = this.getISOFormat(start);
+	            end = this.getISOFormat(end);
+	        }
+	        return {
+	            start: start,
+	            end: end
+	        };
 	    };
 	    FacetSliderQueryController.prototype.getISOFormat = function (value) {
 	        if (value) {
