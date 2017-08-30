@@ -20,7 +20,7 @@ plugins.push(new webpack.DefinePlugin({
 }));
 
 plugins.push(new webpack.ProvidePlugin({
-  'Promise' : 'es6-promise/dist/es6-promise.auto'
+  'Promise' : __dirname + '/node_modules/es6-promise/dist/es6-promise.auto'
 }));
 
 // SpritesmithPlugin takes care of outputting the stylesheets.
