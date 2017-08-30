@@ -4,7 +4,7 @@
 ///<reference path="OldOmniboxAddon.ts" />
 
 import { ComponentOptionsModel, COMPONENT_OPTIONS_ATTRIBUTES } from '../../models/ComponentOptionsModel';
-export const MagicBox: any = require('exports-loader?Coveo.MagicBox!../../../node_modules/coveomagicbox/bin/MagicBox.js');
+export const MagicBox: any = require('exports-loader?Coveo.MagicBox!../../../node_modules/coveomagicbox/bin/MagicBox.min.js');
 import { IQueryboxOptions } from '../Querybox/Querybox';
 import { Component } from '../Base/Component';
 import { IComponentBindings } from '../Base/ComponentBindings';
