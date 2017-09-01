@@ -121,7 +121,7 @@ export class ResultsPerPage extends Component {
   private initComponent(element: HTMLElement) {
     this.span = $$('span', {
       className: 'coveo-results-per-page-text'
-    }, l('Results per page')).el;
+    }, l('ResultsPerPage')).el;
     element.appendChild(this.span);
     this.list = $$('ul', {
       className: 'coveo-results-per-page-list'
