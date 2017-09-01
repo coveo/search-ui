@@ -1549,8 +1549,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	"use strict";
 	Object.defineProperty(exports, "__esModule", { value: true });
 	exports.version = {
-	    'lib': '1.2537.28-beta',
-	    'product': '1.2537.28-beta',
+	    'lib': '1.2537.29-beta',
+	    'product': '1.2537.29-beta',
 	    'supportedApiVersion': 2
 	};
 

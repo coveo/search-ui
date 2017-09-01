@@ -1763,8 +1763,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	"use strict";
 	Object.defineProperty(exports, "__esModule", { value: true });
 	exports.version = {
-	    'lib': '1.2537.28-beta',
-	    'product': '1.2537.28-beta',
+	    'lib': '1.2537.29-beta',
+	    'product': '1.2537.29-beta',
 	    'supportedApiVersion': 2
 	};
 
@@ -56463,7 +56463,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    ResultsPerPage.prototype.initComponent = function (element) {
 	        this.span = Dom_1.$$('span', {
 	            className: 'coveo-results-per-page-text'
-	        }, Strings_1.l('Results per page')).el;
+	        }, Strings_1.l('ResultsPerPage')).el;
 	        element.appendChild(this.span);
 	        this.list = Dom_1.$$('ul', {
 	            className: 'coveo-results-per-page-list'

@@ -4036,38 +4036,30 @@
   .coveo-new-to-coveo-section .coveo-demo-section-arrow-forward,
   .coveo-demo-section-arrow-backward,
   .coveo-sprites-box-icon_external,
-  .coveo-sprites-fileType-salesforce-item,
-  .coveo-icon.filetype.saleforceitem,
-  .coveo-icon.sysfiletype.saleforceitem,
-  .coveo-sprites-fileType-objectType-task,
-  .coveo-icon.objecttype.Task,
-  .coveo-icon.objecttype.task,
-  .coveo-sprites-fileType-objectType-rss,
-  .coveo-icon.objecttype.Feed,
-  .coveo-icon.objecttype.feed,
-  .coveo-sprites-fileType-objectType-product,
-  .coveo-icon.objecttype.Product,
-  .coveo-icon.objecttype.product,
-  .coveo-sprites-fileType-objectType-user,
-  .coveo-icon.objecttype.People,
-  .coveo-icon.objecttype.people,
-  .coveo-icon.objecttype.User,
-  .coveo-icon.objecttype.user,
-  .coveo-sprites-common-amount,
-  .coveo-sprites-common-checkmark_selected-on_dark_bg,
-  .CoveoTab.coveo-selected:after,
-  .coveo-selected.coveo-tab-section-spacer:after,
-  .coveo-selected.coveo-demo-back-to-login:after,
-  .coveo-selected.CoveoLogin:after,
   .coveo-sprites-fileType-objectType-thread,
   .coveo-icon.objecttype.Thread,
   .coveo-icon.objecttype.thread,
+  .coveo-sprites-fileType-objectType-product,
+  .coveo-icon.objecttype.Product,
+  .coveo-icon.objecttype.product,
   .coveo-sprites-fileType-objectType-opportunity,
   .coveo-icon.objecttype.Opportunity,
   .coveo-icon.objecttype.opportunity,
   .coveo-sprites-fileType-objectType-note,
   .coveo-icon.objecttype.Note,
   .coveo-icon.objecttype.note,
+  .coveo-sprites-fileType-objectType-task,
+  .coveo-icon.objecttype.Task,
+  .coveo-icon.objecttype.task,
+  .coveo-sprites-common-amount,
+  .coveo-sprites-common-checkmark_selected-on_dark_bg,
+  .CoveoTab.coveo-selected:after,
+  .coveo-selected.coveo-tab-section-spacer:after,
+  .coveo-selected.coveo-demo-back-to-login:after,
+  .coveo-selected.CoveoLogin:after,
+  .coveo-sprites-fileType-objectType-rss,
+  .coveo-icon.objecttype.Feed,
+  .coveo-icon.objecttype.feed,
   .coveo-sprites-fileType-objectType-message,
   .coveo-icon.objecttype.Message,
   .coveo-icon.objecttype.message,
@@ -4082,70 +4074,78 @@
   .coveo-sprites-fileType-objectType-contract,
   .coveo-icon.objecttype.Contract,
   .coveo-icon.objecttype.contract,
-  .coveo-sprites-facet-clear_facet,
-  .coveo-facet-header-eraser .coveo-icon,
-  .coveo-facet-settings-section-hide .coveo-icon,
-  .coveo-share-query-summary-info-close span,
-  .coveo-subscriptions-panel .coveo-subscriptions-panel-close span,
   .coveo-sprites-fileType-objectType-contact,
   .coveo-icon.objecttype.Contact,
   .coveo-icon.objecttype.contact,
   .coveo-sprites-fileType-objectType-comment,
   .coveo-icon.objecttype.Casecomment,
   .coveo-icon.objecttype.casecomment,
+  .coveo-sprites-facet-clear_facet,
+  .coveo-facet-header-eraser .coveo-icon,
+  .coveo-facet-settings-section-hide .coveo-icon,
+  .coveo-share-query-summary-info-close span,
+  .coveo-subscriptions-panel .coveo-subscriptions-panel-close span,
   .coveo-sprites-fileType-objectType-case,
   .coveo-icon.objecttype.Case,
   .coveo-icon.objecttype.case,
-  .coveo-sprites-facet-collapsed,
-  .coveo-facet-header-expand .coveo-icon,
-  .coveo-mobile-device .CoveoFacet .coveo-facet-footer .coveo-facet-more:after,
-  .CoveoHierarchicalFacet ul.coveo-facet-values .coveo-facet-value.coveo-has-childs .coveo-has-childs-toggle,
-  .CoveoFacet .coveo-facet-footer .coveo-facet-more:after,
   .coveo-sprites-fileType-objectType-campaign,
   .coveo-icon.objecttype.Campaign,
   .coveo-icon.objecttype.campaign,
   .coveo-sprites-fileType-objectType-board,
   .coveo-icon.objecttype.Board,
   .coveo-icon.objecttype.board,
-  .coveo-sprites-facet-expanded,
-  .coveo-facet-header-collapse .coveo-icon,
-  .coveo-mobile-device .CoveoFacet .coveo-facet-footer .coveo-facet-less:after,
-  .CoveoHierarchicalFacet ul.coveo-facet-values .coveo-facet-value.coveo-has-childs.coveo-open .coveo-has-childs-toggle,
-  .CoveoFacet .coveo-facet-footer .coveo-facet-less:after,
+  .coveo-sprites-facet-collapsed,
+  .coveo-facet-header-expand .coveo-icon,
+  .coveo-mobile-device .CoveoFacet .coveo-facet-footer .coveo-facet-more:after,
+  .CoveoHierarchicalFacet ul.coveo-facet-values .coveo-facet-value.coveo-has-childs .coveo-has-childs-toggle,
+  .CoveoFacet .coveo-facet-footer .coveo-facet-more:after,
   .coveo-sprites-fileType-objectType-answer,
   .coveo-icon.objecttype.Solution,
   .coveo-icon.objecttype.solution,
   .coveo-icon.objecttype.Kbsolution,
   .coveo-icon.objecttype.kbsolution,
+  .coveo-sprites-fileType-objectType-account,
+  .coveo-icon.objecttype.Account,
+  .coveo-icon.objecttype.account,
+  .coveo-sprites-facet-expanded,
+  .coveo-facet-header-collapse .coveo-icon,
+  .coveo-mobile-device .CoveoFacet .coveo-facet-footer .coveo-facet-less:after,
+  .CoveoHierarchicalFacet ul.coveo-facet-values .coveo-facet-value.coveo-has-childs.coveo-open .coveo-has-childs-toggle,
+  .CoveoFacet .coveo-facet-footer .coveo-facet-less:after,
+  .coveo-sprites-fileType-youtube-youtube,
+  .coveo-icon.filetype.youtube,
+  .coveo-icon.sysfiletype.youtube,
   .coveo-sprites-facet-modeand,
   .coveo-facet-header-operator .coveo-icon.coveo-and,
   .coveo-sprites-facet-modeor,
   .coveo-facet-header-operator .coveo-icon.coveo-or,
   .coveo-sprites-facet-moreoption,
   .coveo-facet-header-settings .coveo-icon,
-  .coveo-sprites-fileType-objectType-account,
-  .coveo-icon.objecttype.Account,
-  .coveo-icon.objecttype.account,
-  .coveo-sprites-fileType-lithium-thread,
-  .coveo-icon.filetype.lithiumthread,
-  .coveo-icon.sysfiletype.lithiumthread,
+  .coveo-sprites-fileType-salesforce-item,
+  .coveo-icon.filetype.saleforceitem,
+  .coveo-icon.sysfiletype.saleforceitem,
+  .coveo-sprites-fileType-formats-zip,
+  .coveo-icon.filetype.zip,
+  .coveo-icon.sysfiletype.zip,
   .coveo-sprites-facet-openfacets,
   .coveo-search-section-facets-icon,
   .coveo-sprites-facet-openinterfaces,
   .coveo-search-section-tab-icon,
   .coveo-sprites-facet-show_facet,
   .coveo-facet-settings-section-show .coveo-icon,
-  .coveo-sprites-fileType-lithium-message,
-  .coveo-icon.filetype.lithiummessage,
-  .coveo-icon.sysfiletype.lithiummessage,
-  .coveo-sprites-fileType-lithium-board,
-  .coveo-icon.filetype.lithiumboard,
-  .coveo-icon.sysfiletype.lithiumboard,
+  .coveo-sprites-fileType-formats-xml,
+  .coveo-icon.filetype.xml,
+  .coveo-icon.sysfiletype.xml,
+  .coveo-sprites-fileType-formats-video,
+  .coveo-icon.filetype.video,
+  .coveo-icon.sysfiletype.video,
   .coveo-sprites-facet-spin,
   .coveo-facet-header-wait-animation,
-  .coveo-sprites-fileType-formats-zip,
-  .coveo-icon.filetype.zip,
-  .coveo-icon.sysfiletype.zip,
+  .coveo-sprites-fileType-formats-text,
+  .coveo-icon.filetype.txt,
+  .coveo-icon.sysfiletype.txt,
+  .coveo-icon.filetype.doc,
+  .coveo-icon.sysfiletype.doc,
   .coveo-sprites-menu-menu_avancedsearch,
   .coveo-sprites-menu-menu_opencontactinfoin,
   .coveo-sprites-menu-menu_saveoption,
@@ -4153,9 +4153,9 @@
   .coveo-settings-item.coveo-export-to-excel .coveo-icon,
   .coveo-sprites-menu-menu_searchin,
   .coveo-sprites-menu-menu_shareresult,
-  .coveo-sprites-fileType-formats-xml,
-  .coveo-icon.filetype.xml,
-  .coveo-icon.sysfiletype.xml,
+  .coveo-sprites-fileType-formats-spreadsheet,
+  .coveo-icon.filetype.xls,
+  .coveo-icon.sysfiletype.xls,
   .coveo-sprites-menu-menu_sortdirection,
   .coveo-facet-settings-section-direction .coveo-icon,
   .coveo-sprites-pager-next,
@@ -4177,9 +4177,9 @@
   .coveo-sprites-common-copy,
   .coveo-sprites-querybox-clear,
   .coveo-query-box-clear .coveo-icon,
-  .coveo-sprites-fileType-formats-video,
-  .coveo-icon.filetype.video,
-  .coveo-icon.sysfiletype.video,
+  .coveo-sprites-fileType-formats-slideshow,
+  .coveo-icon.filetype.ppt,
+  .coveo-icon.sysfiletype.ppt,
   .coveo-sprites-quickview-quickview,
   .CoveoResultAttachments .coveo-thumbnail-icon,
   .coveo-feedItem-result .coveo-thumbnail-icon,
@@ -4188,23 +4188,23 @@
   .coveo-mobile-device .coveo-modalBox.coveo-mobile-facet-search > .coveo-wrapper > .coveo-body > .coveo-facet-search-results .coveo-facet-search-select-all .coveo-mobile-facet-search-select-all,
   .coveo-modalBox.coveo-mobile-facet-search > .coveo-wrapper > .coveo-body > .coveo-facet-search-results .coveo-facet-search-select-all .coveo-mobile-facet-search-select-all,
   .coveo-sprites-quickview-quickview_previous,
-  .coveo-sprites-fileType-youtube-youtube,
-  .coveo-icon.filetype.youtube,
-  .coveo-icon.sysfiletype.youtube,
+  .coveo-sprites-fileType-objectType-user,
+  .coveo-icon.objecttype.People,
+  .coveo-icon.objecttype.people,
+  .coveo-icon.objecttype.User,
+  .coveo-icon.objecttype.user,
   .coveo-sprites-common-datepicker,
   .coveo-sprites-searchButton-spin,
   .coveo-executing-query .CoveoSearchButton > .coveo-icon,
   .coveo-submit > .coveo-waiting,
   .coveo-login-demo > .coveo-waiting,
   .coveo-sprites-searchButton-spin_gray,
-  .coveo-sprites-fileType-formats-text,
-  .coveo-icon.filetype.txt,
-  .coveo-icon.sysfiletype.txt,
-  .coveo-icon.filetype.doc,
-  .coveo-icon.sysfiletype.doc,
-  .coveo-sprites-fileType-formats-spreadsheet,
-  .coveo-icon.filetype.xls,
-  .coveo-icon.sysfiletype.xls,
+  .coveo-sprites-fileType-formats-pdf,
+  .coveo-icon.filetype.pdf,
+  .coveo-icon.sysfiletype.pdf,
+  .coveo-sprites-fileType-formats-image,
+  .coveo-icon.filetype.image,
+  .coveo-icon.sysfiletype.image,
   .coveo-sprites-tab-all-content,
   .coveo-sprites-tab-dropbox,
   .coveo-sprites-tab-email,
@@ -4214,21 +4214,21 @@
   .coveo-sprites-tab-salesforce,
   .coveo-sprites-tab-sharepoint,
   .coveo-sprites-tab-youtube,
+  .coveo-sprites-fileType-lithium-board,
+  .coveo-icon.filetype.lithiumboard,
+  .coveo-icon.sysfiletype.lithiumboard,
+  .coveo-sprites-fileType-lithium-message,
+  .coveo-icon.filetype.lithiummessage,
+  .coveo-icon.sysfiletype.lithiummessage,
+  .coveo-sprites-fileType-lithium-thread,
+  .coveo-icon.filetype.lithiumthread,
+  .coveo-icon.sysfiletype.lithiumthread,
   .coveo-sprites-fileType-formats-folder,
   .coveo-icon.filetype.folder,
   .coveo-icon.sysfiletype.folder,
   .coveo-sprites-fileType-formats-html,
   .coveo-icon.filetype.html,
   .coveo-icon.sysfiletype.html,
-  .coveo-sprites-fileType-formats-image,
-  .coveo-icon.filetype.image,
-  .coveo-icon.sysfiletype.image,
-  .coveo-sprites-fileType-formats-pdf,
-  .coveo-icon.filetype.pdf,
-  .coveo-icon.sysfiletype.pdf,
-  .coveo-sprites-fileType-formats-slideshow,
-  .coveo-icon.filetype.ppt,
-  .coveo-icon.sysfiletype.ppt,
   .coveo-sprites-facet-checkmark_disabled,
   .coveo-sprites-facet-disable,
   .coveo-facet-value-exclude,
@@ -4485,27 +4485,27 @@
     width: 13px;
     height: 12px;
     text-indent: 13px; }
-  .coveo-sprites-fileType-salesforce-item, .coveo-icon.filetype.saleforceitem, .coveo-icon.sysfiletype.saleforceitem {
+  .coveo-sprites-fileType-objectType-thread, .coveo-icon.objecttype.Thread, .coveo-icon.objecttype.thread {
     background-position: -359px 0px;
     width: 16px;
     height: 16px;
     text-indent: 16px; }
-  .coveo-sprites-fileType-objectType-task, .coveo-icon.objecttype.Task, .coveo-icon.objecttype.task {
+  .coveo-sprites-fileType-objectType-product, .coveo-icon.objecttype.Product, .coveo-icon.objecttype.product {
     background-position: -359px -16px;
     width: 16px;
     height: 16px;
     text-indent: 16px; }
-  .coveo-sprites-fileType-objectType-rss, .coveo-icon.objecttype.Feed, .coveo-icon.objecttype.feed {
+  .coveo-sprites-fileType-objectType-opportunity, .coveo-icon.objecttype.Opportunity, .coveo-icon.objecttype.opportunity {
     background-position: -359px -32px;
     width: 16px;
     height: 16px;
     text-indent: 16px; }
-  .coveo-sprites-fileType-objectType-product, .coveo-icon.objecttype.Product, .coveo-icon.objecttype.product {
+  .coveo-sprites-fileType-objectType-note, .coveo-icon.objecttype.Note, .coveo-icon.objecttype.note {
     background-position: -359px -48px;
     width: 16px;
     height: 16px;
     text-indent: 16px; }
-  .coveo-sprites-fileType-objectType-user, .coveo-icon.objecttype.People, .coveo-icon.objecttype.people, .coveo-icon.objecttype.User, .coveo-icon.objecttype.user {
+  .coveo-sprites-fileType-objectType-task, .coveo-icon.objecttype.Task, .coveo-icon.objecttype.task {
     background-position: -359px -64px;
     width: 16px;
     height: 16px;
@@ -4520,37 +4520,37 @@
     width: 16px;
     height: 16px;
     text-indent: 16px; }
-  .coveo-sprites-fileType-objectType-thread, .coveo-icon.objecttype.Thread, .coveo-icon.objecttype.thread {
+  .coveo-sprites-fileType-objectType-rss, .coveo-icon.objecttype.Feed, .coveo-icon.objecttype.feed {
     background-position: -375px 0px;
     width: 16px;
     height: 16px;
     text-indent: 16px; }
-  .coveo-sprites-fileType-objectType-opportunity, .coveo-icon.objecttype.Opportunity, .coveo-icon.objecttype.opportunity {
+  .coveo-sprites-fileType-objectType-message, .coveo-icon.objecttype.Message, .coveo-icon.objecttype.message {
     background-position: -375px -16px;
     width: 16px;
     height: 16px;
     text-indent: 16px; }
-  .coveo-sprites-fileType-objectType-note, .coveo-icon.objecttype.Note, .coveo-icon.objecttype.note {
+  .coveo-sprites-fileType-objectType-lead, .coveo-icon.objecttype.Lead, .coveo-icon.objecttype.lead {
     background-position: -375px -32px;
     width: 16px;
     height: 16px;
     text-indent: 16px; }
-  .coveo-sprites-fileType-objectType-message, .coveo-icon.objecttype.Message, .coveo-icon.objecttype.message {
+  .coveo-sprites-fileType-objectType-kb, .coveo-icon.objecttype.Kbdocumentation, .coveo-icon.objecttype.kbdocumentation, .coveo-icon.objecttype.Kbknowledgearticle, .coveo-icon.objecttype.kbknowledgearticle {
     background-position: -375px -48px;
     width: 16px;
     height: 16px;
     text-indent: 16px; }
-  .coveo-sprites-fileType-objectType-lead, .coveo-icon.objecttype.Lead, .coveo-icon.objecttype.lead {
+  .coveo-sprites-fileType-objectType-contract, .coveo-icon.objecttype.Contract, .coveo-icon.objecttype.contract {
     background-position: -375px -64px;
     width: 16px;
     height: 16px;
     text-indent: 16px; }
-  .coveo-sprites-fileType-objectType-kb, .coveo-icon.objecttype.Kbdocumentation, .coveo-icon.objecttype.kbdocumentation, .coveo-icon.objecttype.Kbknowledgearticle, .coveo-icon.objecttype.kbknowledgearticle {
+  .coveo-sprites-fileType-objectType-contact, .coveo-icon.objecttype.Contact, .coveo-icon.objecttype.contact {
     background-position: -375px -80px;
     width: 16px;
     height: 16px;
     text-indent: 16px; }
-  .coveo-sprites-fileType-objectType-contract, .coveo-icon.objecttype.Contract, .coveo-icon.objecttype.contract {
+  .coveo-sprites-fileType-objectType-comment, .coveo-icon.objecttype.Casecomment, .coveo-icon.objecttype.casecomment {
     background-position: -375px -96px;
     width: 16px;
     height: 16px;
@@ -4560,17 +4560,17 @@
     width: 16px;
     height: 16px;
     text-indent: 16px; }
-  .coveo-sprites-fileType-objectType-contact, .coveo-icon.objecttype.Contact, .coveo-icon.objecttype.contact {
+  .coveo-sprites-fileType-objectType-case, .coveo-icon.objecttype.Case, .coveo-icon.objecttype.case {
     background-position: -391px -16px;
     width: 16px;
     height: 16px;
     text-indent: 16px; }
-  .coveo-sprites-fileType-objectType-comment, .coveo-icon.objecttype.Casecomment, .coveo-icon.objecttype.casecomment {
+  .coveo-sprites-fileType-objectType-campaign, .coveo-icon.objecttype.Campaign, .coveo-icon.objecttype.campaign {
     background-position: -391px -32px;
     width: 16px;
     height: 16px;
     text-indent: 16px; }
-  .coveo-sprites-fileType-objectType-case, .coveo-icon.objecttype.Case, .coveo-icon.objecttype.case {
+  .coveo-sprites-fileType-objectType-board, .coveo-icon.objecttype.Board, .coveo-icon.objecttype.board {
     background-position: -391px -48px;
     width: 16px;
     height: 16px;
@@ -4580,12 +4580,12 @@
     width: 16px;
     height: 16px;
     text-indent: 16px; }
-  .coveo-sprites-fileType-objectType-campaign, .coveo-icon.objecttype.Campaign, .coveo-icon.objecttype.campaign {
+  .coveo-sprites-fileType-objectType-answer, .coveo-icon.objecttype.Solution, .coveo-icon.objecttype.solution, .coveo-icon.objecttype.Kbsolution, .coveo-icon.objecttype.kbsolution {
     background-position: -391px -80px;
     width: 16px;
     height: 16px;
     text-indent: 16px; }
-  .coveo-sprites-fileType-objectType-board, .coveo-icon.objecttype.Board, .coveo-icon.objecttype.board {
+  .coveo-sprites-fileType-objectType-account, .coveo-icon.objecttype.Account, .coveo-icon.objecttype.account {
     background-position: -391px -96px;
     width: 16px;
     height: 16px;
@@ -4595,7 +4595,7 @@
     width: 16px;
     height: 16px;
     text-indent: 16px; }
-  .coveo-sprites-fileType-objectType-answer, .coveo-icon.objecttype.Solution, .coveo-icon.objecttype.solution, .coveo-icon.objecttype.Kbsolution, .coveo-icon.objecttype.kbsolution {
+  .coveo-sprites-fileType-youtube-youtube, .coveo-icon.filetype.youtube, .coveo-icon.sysfiletype.youtube {
     background-position: -407px -16px;
     width: 16px;
     height: 16px;
@@ -4615,12 +4615,12 @@
     width: 16px;
     height: 16px;
     text-indent: 16px; }
-  .coveo-sprites-fileType-objectType-account, .coveo-icon.objecttype.Account, .coveo-icon.objecttype.account {
+  .coveo-sprites-fileType-salesforce-item, .coveo-icon.filetype.saleforceitem, .coveo-icon.sysfiletype.saleforceitem {
     background-position: -407px -80px;
     width: 16px;
     height: 16px;
     text-indent: 16px; }
-  .coveo-sprites-fileType-lithium-thread, .coveo-icon.filetype.lithiumthread, .coveo-icon.sysfiletype.lithiumthread {
+  .coveo-sprites-fileType-formats-zip, .coveo-icon.filetype.zip, .coveo-icon.sysfiletype.zip {
     background-position: -407px -96px;
     width: 16px;
     height: 16px;
@@ -4640,12 +4640,12 @@
     width: 16px;
     height: 16px;
     text-indent: 16px; }
-  .coveo-sprites-fileType-lithium-message, .coveo-icon.filetype.lithiummessage, .coveo-icon.sysfiletype.lithiummessage {
+  .coveo-sprites-fileType-formats-xml, .coveo-icon.filetype.xml, .coveo-icon.sysfiletype.xml {
     background-position: -423px -48px;
     width: 16px;
     height: 16px;
     text-indent: 16px; }
-  .coveo-sprites-fileType-lithium-board, .coveo-icon.filetype.lithiumboard, .coveo-icon.sysfiletype.lithiumboard {
+  .coveo-sprites-fileType-formats-video, .coveo-icon.filetype.video, .coveo-icon.sysfiletype.video {
     background-position: -423px -64px;
     width: 16px;
     height: 16px;
@@ -4655,7 +4655,7 @@
     width: 16px;
     height: 16px;
     text-indent: 16px; }
-  .coveo-sprites-fileType-formats-zip, .coveo-icon.filetype.zip, .coveo-icon.sysfiletype.zip {
+  .coveo-sprites-fileType-formats-text, .coveo-icon.filetype.txt, .coveo-icon.sysfiletype.txt, .coveo-icon.filetype.doc, .coveo-icon.sysfiletype.doc {
     background-position: -423px -96px;
     width: 16px;
     height: 16px;
@@ -4685,7 +4685,7 @@
     width: 16px;
     height: 16px;
     text-indent: 16px; }
-  .coveo-sprites-fileType-formats-xml, .coveo-icon.filetype.xml, .coveo-icon.sysfiletype.xml {
+  .coveo-sprites-fileType-formats-spreadsheet, .coveo-icon.filetype.xls, .coveo-icon.sysfiletype.xls {
     background-position: -446px -80px;
     width: 16px;
     height: 16px;
@@ -4745,7 +4745,7 @@
     width: 16px;
     height: 16px;
     text-indent: 16px; }
-  .coveo-sprites-fileType-formats-video, .coveo-icon.filetype.video, .coveo-icon.sysfiletype.video {
+  .coveo-sprites-fileType-formats-slideshow, .coveo-icon.filetype.ppt, .coveo-icon.sysfiletype.ppt {
     background-position: -478px -48px;
     width: 16px;
     height: 16px;
@@ -4765,7 +4765,7 @@
     width: 16px;
     height: 16px;
     text-indent: 16px; }
-  .coveo-sprites-fileType-youtube-youtube, .coveo-icon.filetype.youtube, .coveo-icon.sysfiletype.youtube {
+  .coveo-sprites-fileType-objectType-user, .coveo-icon.objecttype.People, .coveo-icon.objecttype.people, .coveo-icon.objecttype.User, .coveo-icon.objecttype.user {
     background-position: -494px 0px;
     width: 16px;
     height: 16px;
@@ -4785,12 +4785,12 @@
     width: 16px;
     height: 16px;
     text-indent: 16px; }
-  .coveo-sprites-fileType-formats-text, .coveo-icon.filetype.txt, .coveo-icon.sysfiletype.txt, .coveo-icon.filetype.doc, .coveo-icon.sysfiletype.doc {
+  .coveo-sprites-fileType-formats-pdf, .coveo-icon.filetype.pdf, .coveo-icon.sysfiletype.pdf {
     background-position: -494px -64px;
     width: 16px;
     height: 16px;
     text-indent: 16px; }
-  .coveo-sprites-fileType-formats-spreadsheet, .coveo-icon.filetype.xls, .coveo-icon.sysfiletype.xls {
+  .coveo-sprites-fileType-formats-image, .coveo-icon.filetype.image, .coveo-icon.sysfiletype.image {
     background-position: -494px -80px;
     width: 16px;
     height: 16px;
@@ -4840,27 +4840,27 @@
     width: 16px;
     height: 16px;
     text-indent: 16px; }
-  .coveo-sprites-fileType-formats-folder, .coveo-icon.filetype.folder, .coveo-icon.sysfiletype.folder {
+  .coveo-sprites-fileType-lithium-board, .coveo-icon.filetype.lithiumboard, .coveo-icon.sysfiletype.lithiumboard {
     background-position: -526px -16px;
     width: 16px;
     height: 16px;
     text-indent: 16px; }
-  .coveo-sprites-fileType-formats-html, .coveo-icon.filetype.html, .coveo-icon.sysfiletype.html {
+  .coveo-sprites-fileType-lithium-message, .coveo-icon.filetype.lithiummessage, .coveo-icon.sysfiletype.lithiummessage {
     background-position: -526px -32px;
     width: 16px;
     height: 16px;
     text-indent: 16px; }
-  .coveo-sprites-fileType-formats-image, .coveo-icon.filetype.image, .coveo-icon.sysfiletype.image {
+  .coveo-sprites-fileType-lithium-thread, .coveo-icon.filetype.lithiumthread, .coveo-icon.sysfiletype.lithiumthread {
     background-position: -526px -48px;
     width: 16px;
     height: 16px;
     text-indent: 16px; }
-  .coveo-sprites-fileType-formats-pdf, .coveo-icon.filetype.pdf, .coveo-icon.sysfiletype.pdf {
+  .coveo-sprites-fileType-formats-folder, .coveo-icon.filetype.folder, .coveo-icon.sysfiletype.folder {
     background-position: -526px -64px;
     width: 16px;
     height: 16px;
     text-indent: 16px; }
-  .coveo-sprites-fileType-formats-slideshow, .coveo-icon.filetype.ppt, .coveo-icon.sysfiletype.ppt {
+  .coveo-sprites-fileType-formats-html, .coveo-icon.filetype.html, .coveo-icon.sysfiletype.html {
     background-position: -526px -80px;
     width: 16px;
     height: 16px;
