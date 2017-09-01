@@ -30,13 +30,14 @@
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 check_versions() {
-  packageVersion=$(ruby -rjson -e "j = JSON.parse(File.read('package.json')); puts j['version']")
+  source read.version.sh
+  packageVersion=${PACKAGE_JSON_VERSION}
   npmVersion=$(npm view coveo-search-ui version)
   compare_versions ${packageVersion} ${npmVersion}
   retval=$?
   if [ ${retval} == 2 ]; then
-    echo "Package version (${packageVersion}) is lower than current npm version (${npmVersion}). Aborting." >&2
-    exit 2
+    echo "Package version (${packageVersion}) is lower than current npm version (${npmVersion}). Skipping documentation site deployment."
+    exit 0
   fi
 }
 
