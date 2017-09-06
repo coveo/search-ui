@@ -145,7 +145,7 @@ export class Facet extends Component {
      */
     title: ComponentOptions.buildLocalizedStringOption({
       defaultValue: l('NoTitle'),
-      section: 'Identification',
+      section: 'Common Options',
       priority: 10
     }),
 
@@ -157,7 +157,7 @@ export class Facet extends Component {
      *
      * Specifying a value for this option is required for the `Facet` component to work.
      */
-    field: ComponentOptions.buildFieldOption({ required: true, groupByField: true, section: 'Identification' }),
+    field: ComponentOptions.buildFieldOption({ required: true, groupByField: true, section: 'Common Options' }),
 
     headerIcon: ComponentOptions.buildStringOption({ deprecated: 'This option is exposed for legacy reasons, and the recommendation is to not use this option.' }),
 
@@ -272,7 +272,7 @@ export class Facet extends Component {
      *
      * See also the [`enableMoreLess`]{@link Facet.options.enableMoreLess} option.
      */
-    numberOfValues: ComponentOptions.buildNumberOption({ defaultValue: 5, min: 0, section: 'Identification' }),
+    numberOfValues: ComponentOptions.buildNumberOption({ defaultValue: 5, min: 0, section: 'Common Options' }),
 
     /**
      * Specifies the *injection depth* to use for the [`GroupByRequest`]{@link IGroupByRequest} operation.
