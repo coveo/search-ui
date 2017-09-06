@@ -41,7 +41,7 @@ export interface IComponentDefinition {
    * @param bindings The bindings (or environment) for the component.For exemple, the {@link QueryController} or {@link SearchInterface}. Optional, if not provided, the component will resolve those automatically. This has a cost on performance, though, since it has to traverses it's parents to find the correct elements.
    * @param args Optional arguments, depending on the component type. For example, ResultComponent will receive the result there.
    */
-  new (element: HTMLElement, options: any, bindings: IComponentBindings, ...args: any[]): Component;
+  new(element: HTMLElement, options: any, bindings: IComponentBindings, ...args: any[]): Component;
   /**
    * The available options for the component.
    */

@@ -7,7 +7,7 @@ import { Component } from '../Base/Component';
 import { IComponentBindings } from '../Base/ComponentBindings';
 import { Recommendation } from '../Recommendation/Recommendation';
 import { SearchInterface } from '../SearchInterface/SearchInterface';
-
+import * as _ from 'underscore';
 export class RecommendationAnalyticsClient extends LiveAnalyticsClient {
 
   private recommendation: Recommendation;
@@ -33,7 +33,7 @@ export class RecommendationAnalyticsClient extends LiveAnalyticsClient {
     super.logSearchEvent(actionCause, meta);
   }
 
-  public logClickEvent<TMeta>(actionCause: IAnalyticsActionCause, meta: TMeta, result: IQueryResult, element: HTMLElement): Promise<IAPIAnalyticsEventResponse | IAPIAnalyticsEventResponse[]> {
+  public logClickEvent<TMeta>(actionCause: IAnalyticsActionCause, meta: TMeta, result: IQueryResult, element: HTMLElement): Promise<IAPIAnalyticsEventResponse> {
     if (actionCause == analyticsActionCauseList.documentOpen) {
       actionCause = analyticsActionCauseList.recommendationOpen;
     }
@@ -47,7 +47,7 @@ export class RecommendationAnalyticsClient extends LiveAnalyticsClient {
       result.pipeline = this.recommendation.mainQueryPipeline;
       promises.push(mainInterface.usageAnalytics.logClickEvent(actionCause, meta, result, element));
     }
-    return Promise.all(promises);
+    return Promise.all(promises).then(responses => _.first(responses));
   }
 
   protected getOriginLevel2(element: HTMLElement): string {

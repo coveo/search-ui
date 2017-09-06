@@ -354,7 +354,7 @@ export class EndpointCaller {
    * @param requestInfo The info about the request
    * @returns {Promise<T>|Promise}
    */
-  public callUsingXDomainRequest<T>(requestInfo: IRequestInfo<T>): Promise<IResponse<T>> {
+  public callUsingXDomainRequest<T>(requestInfo: IRequestInfo<T>): Promise<ISuccessResponse<T>> {
     return new Promise((resolve, reject) => {
       var queryString = requestInfo.queryString.concat([]);
 
@@ -401,7 +401,7 @@ export class EndpointCaller {
    * @param requestInfo The info about the request
    * @returns {Promise<T>|Promise}
    */
-  public callUsingAjaxJsonP<T>(requestInfo: IRequestInfo<T>): Promise<IResponse<T>> {
+  public callUsingAjaxJsonP<T>(requestInfo: IRequestInfo<T>): Promise<ISuccessResponse<T>> {
     let jQuery = JQueryUtils.getJQuery();
     Assert.check(jQuery, 'Using jsonp without having included jQuery is not supported.');
     return new Promise((resolve, reject) => {

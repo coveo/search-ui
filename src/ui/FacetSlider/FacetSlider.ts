@@ -4,7 +4,7 @@
 import { ISliderOptions, Slider, IEndSlideEventArgs, IDuringSlideEventArgs, ISliderGraphData } from '../Misc/Slider';
 import { Component } from '../Base/Component';
 import { IComponentBindings } from '../Base/ComponentBindings';
-import { ComponentOptions, IFieldOption } from '../Base/ComponentOptions';
+import { ComponentOptions, IFieldOption, IComponentOptionsObjectOptionArgs } from '../Base/ComponentOptions';
 import { FacetHeader } from '../Facet/FacetHeader';
 import { l } from '../../strings/Strings';
 import { InitializationEvents } from '../../events/InitializationEvents';
@@ -190,7 +190,7 @@ export class FacetSlider extends Component {
      * - separator (`data-display-as-value-separator`): string; specifies the character(s) to use as a separator in the
      * caption. Default value is `"-"`.
      */
-    displayAsValue: ComponentOptions.buildObjectOption({
+    displayAsValue: ComponentOptions.buildObjectOption(<IComponentOptionsObjectOptionArgs>{
       subOptions: {
         enable: ComponentOptions.buildBooleanOption({ defaultValue: true }),
         unitSign: ComponentOptions.buildStringOption(),
@@ -207,7 +207,7 @@ export class FacetSlider extends Component {
      * separator (`data-display-as-percent-separator`): string; specifies the character(s) to use as a separator in the
      * caption. Default value is `"-"`.
      */
-    displayAsPercent: ComponentOptions.buildObjectOption({
+    displayAsPercent: ComponentOptions.buildObjectOption(<IComponentOptionsObjectOptionArgs>{
       subOptions: {
         enable: ComponentOptions.buildBooleanOption({ defaultValue: false }),
         separator: ComponentOptions.buildStringOption({ defaultValue: '-' })
@@ -221,11 +221,11 @@ export class FacetSlider extends Component {
      * - steps (`data-graph-steps`): number; specifies the number of steps/columns to display in your graph. Default
      * value is `10`. Minimum value is `2`.
      */
-    graph: ComponentOptions.buildObjectOption({
+    graph: ComponentOptions.buildObjectOption(<IComponentOptionsObjectOptionArgs>{
       subOptions: {
         steps: ComponentOptions.buildNumberOption({ min: 2 }),
         animationDuration: ComponentOptions.buildNumberOption({ min: 0 }),
-        margin: ComponentOptions.buildObjectOption({
+        margin: ComponentOptions.buildObjectOption(<IComponentOptionsObjectOptionArgs>{
           subOptions: {
             top: ComponentOptions.buildNumberOption({ min: 0 }),
             bottom: ComponentOptions.buildNumberOption({ min: 0 }),

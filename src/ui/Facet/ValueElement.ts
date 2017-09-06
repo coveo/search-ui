@@ -12,7 +12,7 @@ import { ModalBox } from '../../ExternalModulesShim';
 import { KeyboardUtils, KEYBOARD } from '../../utils/KeyboardUtils';
 
 export interface IValueElementKlass {
-  new (facet: Facet, facetValue: FacetValue): ValueElement;
+  new(facet: Facet, facetValue: FacetValue): ValueElement;
 }
 
 export interface IValueElementEventsBinding {

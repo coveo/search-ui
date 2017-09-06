@@ -17,7 +17,7 @@ export interface IResponsiveComponentOptions {
 }
 
 export interface IResponsiveComponentConstructor {
-  new (root: Dom, ID: string, options: IResponsiveComponentOptions): IResponsiveComponent;
+  new(root: Dom, ID: string, options: IResponsiveComponentOptions): IResponsiveComponent;
 }
 
 export interface IResponsiveComponent {

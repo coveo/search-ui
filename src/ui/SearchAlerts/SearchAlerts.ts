@@ -22,6 +22,8 @@ import { exportGlobally } from '../../GlobalExports';
 import ModalBox = Coveo.ModalBox.ModalBox;
 import { Dropdown } from '../FormWidgets/Dropdown';
 import { SVGIcons } from '../../utils/SVGIcons';
+import { get } from '../Base/RegisteredNamedMethods';
+import { SearchInterface } from '../SearchInterface/SearchInterface';
 
 export interface ISearchAlertsOptions {
   enableManagePanel?: boolean;
@@ -483,7 +485,7 @@ export class SearchAlerts extends Component {
 
   static create(element: HTMLElement, options?: ISearchAlertsOptions, root?: HTMLElement): SearchAlerts {
     Assert.exists(element);
-    return new SearchAlerts(element, options, root);
+    return new SearchAlerts(element, options, (<SearchInterface>get(root, SearchInterface)).getBindings());
   }
 }
 

@@ -1,45 +1,47 @@
 import { $$, Dom } from './Dom';
 
-declare var require: (svgPath: string) => string;
+declare const require: (svgPath: string) => string;
+
+const path = '../../image/svg';
 
 export class SVGIcons {
   public static icons = {
-    search: require('svg/search'),
-    more: require('svg/more'),
-    loading: require('svg/loading'),
-    checkboxHookExclusionMore: require('svg/checkbox-hook-exclusion-more'),
-    arrowUp: require('svg/arrow-up'),
-    arrowDown: require('svg/arrow-down'),
+    search: require(`${path}/search`),
+    more: require(`${path}/more`),
+    loading: require(`${path}/loading`),
+    checkboxHookExclusionMore: require(`${path}/checkbox-hook-exclusion-more`),
+    arrowUp: require(`${path}/arrow-up`),
+    arrowDown: require(`${path}/arrow-down`),
 
-    mainClear: require('svg/main-clear'),
-    orAnd: require('svg/or-and'),
-    sort: require('svg/sort'),
-    ascending: require('svg/ascending'),
-    descending: require('svg/descending'),
-    dropdownMore: require('svg/dropdown-more'),
-    dropdownLess: require('svg/dropdown-less'),
-    facetCollapse: require('svg/facet-collapse'),
-    facetExpand: require('svg/facet-expand'),
+    mainClear: require(`${path}/main-clear`),
+    orAnd: require(`${path}/or-and`),
+    sort: require(`${path}/sort`),
+    ascending: require(`${path}/ascending`),
+    descending: require(`${path}/descending`),
+    dropdownMore: require(`${path}/dropdown-more`),
+    dropdownLess: require(`${path}/dropdown-less`),
+    facetCollapse: require(`${path}/facet-collapse`),
+    facetExpand: require(`${path}/facet-expand`),
 
-    dropdownShareQuery: require('svg/dropdown-share-query'),
-    dropdownPreferences: require('svg/dropdown-preferences'),
-    dropdownAuthenticate: require('svg/dropdown-authenticate'),
-    dropdownExport: require('svg/dropdown-export'),
-    dropdownFollowQuery: require('svg/dropdown-follow-query'),
-    quickview: require('svg/quickview'),
-    pagerRightArrow: require('svg/pager-right-arrow'),
-    pagerLeftArrow: require('svg/pager-left-arrow'),
-    replies: require('svg/replies'),
+    dropdownShareQuery: require(`${path}/dropdown-share-query`),
+    dropdownPreferences: require(`${path}/dropdown-preferences`),
+    dropdownAuthenticate: require(`${path}/dropdown-authenticate`),
+    dropdownExport: require(`${path}/dropdown-export`),
+    dropdownFollowQuery: require(`${path}/dropdown-follow-query`),
+    quickview: require(`${path}/quickview`),
+    pagerRightArrow: require(`${path}/pager-right-arrow`),
+    pagerLeftArrow: require(`${path}/pager-left-arrow`),
+    replies: require(`${path}/replies`),
 
-    coveoLogo: require('svg/coveo-logo'),
-    coveoPoweredBy: require('svg/coveo-powered-by-logo'),
+    coveoLogo: require(`${path}/coveo-logo`),
+    coveoPoweredBy: require(`${path}/coveo-powered-by-logo`),
 
-    taggingOk: require('svg/tagging-ok'),
-    edit: require('svg/edit'),
-    star: require('svg/star'),
+    taggingOk: require(`${path}/tagging-ok`),
+    edit: require(`${path}/edit`),
+    star: require(`${path}/star`),
 
-    listLayout: require('svg/list-layout'),
-    cardLayout: require('svg/card-layout'),
-    tableLayout: require('svg/table-layout')
+    listLayout: require(`${path}/list-layout`),
+    cardLayout: require(`${path}/card-layout`),
+    tableLayout: require(`${path}/table-layout`)
   };
 }

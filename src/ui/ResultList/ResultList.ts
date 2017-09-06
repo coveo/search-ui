@@ -355,7 +355,7 @@ export class ResultList extends Component {
         }
       });
     } else if (this.options.resultTemplate instanceof DefaultResultTemplate && this.options.layout == 'list') {
-      ResponsiveDefaultResultTemplate.init(this.root, this, this.options);
+      ResponsiveDefaultResultTemplate.init(this.root, this, {});
     }
   }
 

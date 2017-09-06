@@ -133,7 +133,7 @@ export class ResultLayout extends Component {
     this.bind.oneRootElement(InitializationEvents.afterComponentsInitialization, () => this.populate());
     this.bind.oneRootElement(InitializationEvents.afterInitialization, () => this.handleQueryStateChanged());
 
-    ResponsiveResultLayout.init(this.root, this, this.options);
+    ResponsiveResultLayout.init(this.root, this, {});
   }
 
   /**

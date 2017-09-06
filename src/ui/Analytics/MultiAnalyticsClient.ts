@@ -32,16 +32,16 @@ export class MultiAnalyticsClient implements IAnalyticsClient {
     _.each(this.analyticsClients, (analyticsClient: IAnalyticsClient) => analyticsClient.logSearchEvent<TMeta>(actionCause, meta));
   }
 
-  public logClickEvent(actionCause: IAnalyticsActionCause, meta?: IAnalyticsDocumentViewMeta, result?: IQueryResult, element?: HTMLElement): Promise<IAPIAnalyticsEventResponse[]> {
+  public logClickEvent<TMeta>(actionCause: IAnalyticsActionCause, meta: TMeta, result: IQueryResult, element: HTMLElement): Promise<IAPIAnalyticsEventResponse> {
     return Promise.all(_.map(this.analyticsClients, (analyticsClient: IAnalyticsClient) => {
       return analyticsClient.logClickEvent(actionCause, meta, result, element);
-    }));
+    })).then((responses) => _.first(responses));
   }
 
-  public logCustomEvent<TMeta>(actionCause: IAnalyticsActionCause, meta?: TMeta, element?: HTMLElement): Promise<IAPIAnalyticsEventResponse[]> {
+  public logCustomEvent<TMeta>(actionCause: IAnalyticsActionCause, meta?: TMeta, element?: HTMLElement): Promise<IAPIAnalyticsEventResponse> {
     return Promise.all(_.map(this.analyticsClients, (analyticsClient: IAnalyticsClient) => {
       return analyticsClient.logCustomEvent<TMeta>(actionCause, meta, element);
-    }));
+    })).then(responses => _.first(responses));
   }
 
   public getTopQueries(params: ITopQueries): Promise<string[]> {
