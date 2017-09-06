@@ -29,6 +29,41 @@
 # (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+check_versions() {
+  source read.version.sh
+  packageVersion=${PACKAGE_JSON_VERSION}
+  npmVersion=$(npm view coveo-search-ui version)
+  compare_versions ${packageVersion} ${npmVersion}
+  retval=$?
+  if [ ${retval} == 2 ]; then
+    echo "Package version (${packageVersion}) is lower than current npm version (${npmVersion}). Skipping documentation site deployment."
+    exit 0
+  fi
+}
+
+compare_versions() {
+  local v1=( $(echo "$1" | tr '.' ' ') )
+  local v2=( $(echo "$2" | tr '.' ' ') )
+  local len="$(min "${#v1[*]}" "${#v2[*]}")"
+  for ((i=0; i<len; i++))
+  do
+    [ "${v1[i]:-0}" -gt "${v2[i]:-0}" ] && return 1
+    [ "${v1[i]:-0}" -lt "${v2[i]:-0}" ] && return 2
+  done
+  return 0
+}
+
+min() {
+  local m="$1"
+  for n in "$@"
+  do
+    [ "$n" -lt "$m" ] && m="$n"
+  done
+  echo "$m"
+}
+
+check_versions
+
 set -o errexit #abort if any command fails
 me=$(basename "$0")
 

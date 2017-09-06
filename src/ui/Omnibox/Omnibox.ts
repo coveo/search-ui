@@ -97,12 +97,14 @@ export class Omnibox extends Component {
     inline: ComponentOptions.buildBooleanOption({ defaultValue: false }),
 
     /**
-     * Specifies whether to automatically trigger a new query whenever the end user types in the `Omnibox`.
+     * Whether to automatically trigger a new query whenever the end user types additional text in the search box input.
      *
      * See also the [`searchAsYouTypeDelay`]{@link Omnibox.options.searchAsYouTypeDelay} option.
      *
-     * Set this option as well a {@link Omnibox.options.inline} and
-     * {@link Omnibox.options.enableQuerySuggestAddon} to `true` for a cool effect!
+     * **Note:**
+     * > If you set this option and the [`enableQuerySuggestAddon`]{@link Omnibox.options.enableQuerySuggestAddon}
+     * > option to `true`, the query suggestion feature returns the auto-completion of the currently typed keyword as
+     * > its first suggestion.
      *
      * Default value is `false`.
      */
@@ -149,10 +151,16 @@ export class Omnibox extends Component {
     listOfFields: ComponentOptions.buildFieldsOption({ depend: 'enableFieldAddon' }),
 
     /**
-     * Specifies whether to enable the Coveo Machine Learning (Coveo ML) query suggestions.
+     * Whether to display Coveo Machine Learning (Coveo ML) query suggestions in the `Omnibox`.
      *
-     * This implies that you have a proper Coveo ML integration configured (see
+     * The corresponding Coveo ML model must be properly configured in your Coveo Cloud organization, otherwise this
+     * option has no effect (see
      * [Managing Machine Learning Query Suggestions in a Query Pipeline](http://www.coveo.com/go?dest=cloudhelp&lcid=9&context=168)).
+     *
+     * **Note:**
+     * > When you set this option and the [`enableSearchAsYouType`]{@link Omnibox.options.enableSearchAsYouType} option
+     * > to `true`, the query suggestion feature returns the auto-completion of the currently typed keyword as its first
+     * > query suggestion.
      *
      * Default value is `true`.
      */
