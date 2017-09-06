@@ -262,7 +262,7 @@ export function OmniboxTest() {
         test.cmp.setText('foobar');
         expect(test.cmp.magicBox.onchange).toBeDefined();
         test.cmp.magicBox.onchange();
-        test.cmp.magicBox.onselect(['a']);
+        test.cmp.magicBox.onselect(<Suggestion>['a']);
         expect(test.env.usageAnalytics.logSearchEvent).toHaveBeenCalledWith(analyticsActionCauseList.omniboxAnalytics, jasmine.objectContaining({
           partialQuery: undefined,
           suggestionRanking: jasmine.any(Number),
