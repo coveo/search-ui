@@ -1,5 +1,5 @@
 import { ComponentOptions } from '../../src/ui/Base/ComponentOptions';
-import { ComponentOptionsType } from '../../src/ui/Base/ComponentOptions';
+import { ComponentOptionsType, IComponentOptions } from '../../src/ui/Base/ComponentOptions';
 import { Dom } from '../../src/utils/Dom';
 import { TemplateCache } from '../../src/ui/Templates/TemplateCache';
 
@@ -313,7 +313,7 @@ export function ComponentOptionsTest() {
 
       describe('initOptions', () => {
         it('which initializes the options of a component', () => {
-          let initOptions = ComponentOptions.initOptions(elem, {
+          let initOptions = ComponentOptions.initOptions(elem, <{ [name: string]: IComponentOptions<any> }>{
             myAttr: ComponentOptions.buildStringOption(),
             myBool: ComponentOptions.buildBooleanOption()
           }, {}, 'fooID');
