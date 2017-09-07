@@ -57,7 +57,7 @@ export class PipelineContext extends Component {
     });
   }
 
-  private content: { [id: string]: string };
+  private content: { [id: string]: string | Array<string> };
 
   public constructor(public element: HTMLElement, public options?: IPipelineContextOptions, public bindings?: IComponentBindings) {
     super(element, PipelineContext.ID, bindings);
@@ -92,14 +92,15 @@ export class PipelineContext extends Component {
    * @returns {string}
    */
   public getContextValue(key: string): string | string[] {
-    if (_.isArray(this.content[key])) {
+    const contextValue = this.content[key];
+    if (_.isArray(contextValue)) {
       const contextValues = [];
       _.each(this.content[key], (value) => {
         contextValues.push(this.getModifiedData(value));
       });
       return contextValues;
-    } else {
-      return this.getModifiedData(this.content[key]);
+    } else if (_.isString(contextValue)) {
+      return this.getModifiedData(contextValue);
     }
   }
 

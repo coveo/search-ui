@@ -25,7 +25,6 @@ export interface IQueryboxOptions {
   enablePartialMatch?: boolean;
   partialMatchKeywords?: number;
   partialMatchThreshold?: string;
-  autoFocus?: boolean;
   placeholder?: string;
   triggerQueryOnClear?: boolean;
 }
