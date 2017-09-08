@@ -44,6 +44,10 @@ export class Simulate {
     return navigator.userAgent.indexOf('PhantomJS') != -1;
   }
 
+  static isChromeHeadless() {
+    return navigator.userAgent.indexOf('HeadlessChrome') != -1;
+  }
+
   static query(env: IMockEnvironment, options?: ISimulateQueryData): ISimulateQueryData {
 
     options = _.extend({}, {
