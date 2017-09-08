@@ -8,7 +8,7 @@ var configuration = {
   singleRun: true,
   browsers: ['ChromeHeadless'],
   frameworks: ['jasmine'],
-  browserNoActivityTimeout: 30000,
+  browserNoActivityTimeout: 90000,
   files: [{
     pattern: './node_modules/es6-promise/dist/es6-promise.auto.js',
     watched: false
