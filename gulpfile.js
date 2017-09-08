@@ -6,14 +6,14 @@ requireDir('./gulpTasks');
 
 gulp.task('default', ['buildLegacy', 'build']);
 
-gulp.task('build', ['linkGitHooks', 'setNodeProdEnv'], (done) => {
-  runsequence('clean', ['fileTypes', 'iconList', 'strings', 'setup', 'templates'], 'src', done);
+gulp.task('build', ['linkGitHooks', 'setNodeProdEnv'], done => {
+  runsequence(['fileTypes', 'iconList', 'strings', 'setup', 'templates'], 'src', done);
 });
 
-gulp.task('src', (done) => {
+gulp.task('src', done => {
   runsequence('compile', 'definitions', done);
 });
 
-gulp.task('buildLegacy', (done) => {
+gulp.task('buildLegacy', done => {
   runsequence('legacy', done);
 });
