@@ -1,7 +1,4 @@
-import {
-  IResponsiveComponent, IResponsiveComponentOptions,
-  ResponsiveComponentsManager
-} from './ResponsiveComponentsManager';
+import { IResponsiveComponent, IResponsiveComponentOptions, ResponsiveComponentsManager } from './ResponsiveComponentsManager';
 import { Dom, $$ } from '../../utils/Dom';
 import { ResponsiveDropdown } from './ResponsiveDropdown/ResponsiveDropdown';
 import { Component } from '../Base/Component';

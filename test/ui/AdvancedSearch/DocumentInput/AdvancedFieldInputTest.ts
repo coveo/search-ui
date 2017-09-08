@@ -7,7 +7,7 @@ export function AdvancedFieldInputTest() {
     let fieldName: string;
     let value: string;
 
-    beforeEach(function () {
+    beforeEach(function() {
       value = 'what';
       fieldName = '@test';
       input = new AdvancedFieldInput('test', fieldName, $$('div').el);
@@ -15,7 +15,7 @@ export function AdvancedFieldInputTest() {
       input.input.setValue(value);
     });
 
-    afterEach(function () {
+    afterEach(function() {
       input = null;
       fieldName = null;
       value = null;

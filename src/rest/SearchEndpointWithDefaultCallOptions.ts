@@ -1,4 +1,10 @@
-import { ISearchEndpoint, IEndpointCallOptions, IGetDocumentOptions, ISearchEndpointOptions, IViewAsHtmlOptions } from './SearchEndpointInterface';
+import {
+  ISearchEndpoint,
+  IEndpointCallOptions,
+  IGetDocumentOptions,
+  ISearchEndpointOptions,
+  IViewAsHtmlOptions
+} from './SearchEndpointInterface';
 import { IQuery } from './Query';
 import { ITaggingRequest } from './TaggingRequest';
 import { IRatingRequest } from './RatingRequest';

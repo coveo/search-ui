@@ -69,7 +69,12 @@ Initialization.registerNamedMethod('initSearchbox', (element: HTMLElement, searc
  * @param options JSON options for the framework (e.g.: <code>{Searchbox : {enableSearchAsYouType: true}}</code>).
  * @returns {Promise<{elem: HTMLElement}>}
  */
-export function initRecommendation(element: HTMLElement, mainSearchInterface?: HTMLElement, userContext?: { [name: string]: any }, options: any = {}) {
+export function initRecommendation(
+  element: HTMLElement,
+  mainSearchInterface?: HTMLElement,
+  userContext?: { [name: string]: any },
+  options: any = {}
+) {
   var recommendationOptions = <IRecommendationOptions>{};
   recommendationOptions.mainSearchInterface = mainSearchInterface;
   recommendationOptions.userContext = JSON.stringify(userContext);
@@ -91,9 +96,12 @@ export function initRecommendation(element: HTMLElement, mainSearchInterface?: H
   });
 }
 
-Initialization.registerNamedMethod('initRecommendation', (element: HTMLElement, mainSearchInterface: HTMLElement, userContext: any = {}, options: any = {}) => {
-  initRecommendation(element, mainSearchInterface, userContext, options);
-});
+Initialization.registerNamedMethod(
+  'initRecommendation',
+  (element: HTMLElement, mainSearchInterface: HTMLElement, userContext: any = {}, options: any = {}) => {
+    initRecommendation(element, mainSearchInterface, userContext, options);
+  }
+);
 
 /**
  * Execute a standard query. Active component in the interface will react to events/ push data in the query / handle the query success or failure as needed.
@@ -269,9 +277,12 @@ export function logSearchEvent(element: HTMLElement, searchEventCause: IAnalytic
   }
 }
 
-Initialization.registerNamedMethod('logSearchEvent', (element: HTMLElement, searchEventCause: IAnalyticsActionCause, metadata: IStringMap<string>) => {
-  logSearchEvent(element, searchEventCause, metadata);
-});
+Initialization.registerNamedMethod(
+  'logSearchEvent',
+  (element: HTMLElement, searchEventCause: IAnalyticsActionCause, metadata: IStringMap<string>) => {
+    logSearchEvent(element, searchEventCause, metadata);
+  }
+);
 
 /**
  * Finds the [`Analytics`]{@link Analytics} component instance, and uses it to log a `SearchAsYouType` usage analytics
@@ -295,16 +306,23 @@ Initialization.registerNamedMethod('logSearchEvent', (element: HTMLElement, sear
  * names. Each value must be a simple string. If you do not need to log metadata, you can simply pass an empty JSON
  * ( `{}` ).
  */
-export function logSearchAsYouTypeEvent(element: HTMLElement, searchAsYouTypeEventCause: IAnalyticsActionCause, metadata: IStringMap<string>) {
+export function logSearchAsYouTypeEvent(
+  element: HTMLElement,
+  searchAsYouTypeEventCause: IAnalyticsActionCause,
+  metadata: IStringMap<string>
+) {
   var client = getCoveoAnalyticsClient(element);
   if (client) {
     client.logSearchAsYouType<any>(searchAsYouTypeEventCause, metadata);
   }
 }
 
-Initialization.registerNamedMethod('logSearchAsYouTypeEvent', (element: HTMLElement, searchAsYouTypeEventCause: IAnalyticsActionCause, metadata: IStringMap<string>) => {
-  logSearchAsYouTypeEvent(element, searchAsYouTypeEventCause, metadata);
-});
+Initialization.registerNamedMethod(
+  'logSearchAsYouTypeEvent',
+  (element: HTMLElement, searchAsYouTypeEventCause: IAnalyticsActionCause, metadata: IStringMap<string>) => {
+    logSearchAsYouTypeEvent(element, searchAsYouTypeEventCause, metadata);
+  }
+);
 
 /**
  * Finds the [`Analytics`]{@link Analytics} component instance, and uses it to log a `Click` usage analytics event.
@@ -322,16 +340,24 @@ Initialization.registerNamedMethod('logSearchAsYouTypeEvent', (element: HTMLElem
  * ( `{}` ).
  * @param result The result that was clicked.
  */
-export function logClickEvent(element: HTMLElement, clickEventCause: IAnalyticsActionCause, metadata: IStringMap<any>, result: IQueryResult) {
+export function logClickEvent(
+  element: HTMLElement,
+  clickEventCause: IAnalyticsActionCause,
+  metadata: IStringMap<any>,
+  result: IQueryResult
+) {
   var client = getCoveoAnalyticsClient(element);
   if (client) {
     client.logClickEvent(clickEventCause, <IAnalyticsDocumentViewMeta>metadata, result, element);
   }
 }
 
-Initialization.registerNamedMethod('logClickEvent', (element: HTMLElement, clickEventCause: IAnalyticsActionCause, metadata: IStringMap<string>, result: IQueryResult) => {
-  logClickEvent(element, clickEventCause, metadata, result);
-});
+Initialization.registerNamedMethod(
+  'logClickEvent',
+  (element: HTMLElement, clickEventCause: IAnalyticsActionCause, metadata: IStringMap<string>, result: IQueryResult) => {
+    logClickEvent(element, clickEventCause, metadata, result);
+  }
+);
 
 /**
  * Pass options to the framework, before it is initialized ({@link init}).<br/>
@@ -362,24 +388,29 @@ Initialization.registerNamedMethod('patch', (element?: HTMLElement, methodName?:
 });
 
 export function initBox(element: HTMLElement, ...args: any[]) {
-  var type, options: any = {}, injectMarkup;
+  var type,
+    options: any = {},
+    injectMarkup;
   // This means : initBox, no type (no injection) and no options
   if (args.length == 0) {
     type = 'Standard';
     injectMarkup = false;
-  } else if (args.length == 1) { // 1 arg, might be options or type
+  } else if (args.length == 1) {
+    // 1 arg, might be options or type
     // This mean a type (with injection) and no options
     if (typeof args[0] == 'string') {
       type = args[0];
       injectMarkup = true;
-    } else if (typeof args[0] == 'object') { // This means no type(no injection) and with options
+    } else if (typeof args[0] == 'object') {
+      // This means no type(no injection) and with options
       type = 'Standard';
       injectMarkup = false;
       options = args[0];
     } else {
       Assert.fail('Invalid parameters to init a box');
     }
-  } else if (args.length == 2) { // 2 args means both options and type (with injection);
+  } else if (args.length == 2) {
+    // 2 args means both options and type (with injection);
     type = args[0];
     options = args[1];
     injectMarkup = true;
@@ -391,7 +422,6 @@ export function initBox(element: HTMLElement, ...args: any[]) {
     return Initialization.initBoxInterface(element, options, type, injectMarkup);
   });
 }
-
 
 Initialization.registerNamedMethod('initBox', (element?: HTMLElement, ...args: any[]) => {
   initBox(element, args);

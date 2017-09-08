@@ -2,7 +2,6 @@ import { IResponsiveDropdownContent, ResponsiveDropdownContent } from './Respons
 import { $$, Dom } from '../../../utils/Dom';
 
 export class RecommendationDropdownContent implements IResponsiveDropdownContent {
-
   public static OPENED_DROPDOWN_CSS_CLASS_NAME = 'coveo-open-dropdown-content';
 
   private cssClassName: string;

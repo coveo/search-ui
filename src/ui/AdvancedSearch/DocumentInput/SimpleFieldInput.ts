@@ -8,7 +8,6 @@ import * as _ from 'underscore';
 import { QueryBuilder } from '../../Base/QueryBuilder';
 
 export class SimpleFieldInput extends DocumentInput {
-
   protected element: HTMLElement;
   public dropDown: Dropdown;
 
@@ -41,18 +40,19 @@ export class SimpleFieldInput extends DocumentInput {
   }
 
   private buildFieldSelect() {
-    return this.endpoint.listFieldValues({
-      field: this.fieldName,
-      maximumNumberOfValues: 50
-    }).then((values: IIndexFieldValue[]) => {
-      let options = [''];
-      _.each(values, (value: IIndexFieldValue) => {
-        options.push(value.value);
+    return this.endpoint
+      .listFieldValues({
+        field: this.fieldName,
+        maximumNumberOfValues: 50
+      })
+      .then((values: IIndexFieldValue[]) => {
+        let options = [''];
+        _.each(values, (value: IIndexFieldValue) => {
+          options.push(value.value);
+        });
+        this.dropDown = new Dropdown(this.onChange.bind(this), options, (str: string) => {
+          return FacetUtils.tryToGetTranslatedCaption(this.fieldName, str);
+        });
       });
-      this.dropDown = new Dropdown(this.onChange.bind(this), options, (str: string) => {
-        return FacetUtils.tryToGetTranslatedCaption(this.fieldName, str);
-      });
-    });
   }
-
 }

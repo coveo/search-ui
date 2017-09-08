@@ -53,7 +53,6 @@ export class DefaultSearchEndpointOptions implements ISearchEndpointOptions {
  * [`QueryController`]{@link QueryController} class instead.
  */
 export class SearchEndpoint implements ISearchEndpoint {
-
   /**
    * Contains a map of all initialized `SearchEndpoint` instances.
    *
@@ -61,7 +60,7 @@ export class SearchEndpoint implements ISearchEndpoint {
    * > `Coveo.SearchEndpoint.endpoints['default']` returns the default endpoint that was created at initialization.
    * @type {{}}
    */
-  static endpoints: { [endpoint: string]: SearchEndpoint; } = {};
+  static endpoints: { [endpoint: string]: SearchEndpoint } = {};
 
   /**
    * Configures a sample search endpoint on a Coveo Cloud index containing a set of public sources with no secured
@@ -75,17 +74,27 @@ export class SearchEndpoint implements ISearchEndpoint {
   static configureSampleEndpoint(otherOptions?: ISearchEndpointOptions) {
     if (SearchEndpoint.isUseLocalArgumentPresent()) {
       // This is a handy flag to quickly test a local search API and alerts
-      SearchEndpoint.endpoints['default'] = new SearchEndpoint(_.extend({
-        restUri: 'http://localhost:8100/rest/search',
-        searchAlertsUri: 'http://localhost:8088/rest/search/alerts/'
-      }, otherOptions));
+      SearchEndpoint.endpoints['default'] = new SearchEndpoint(
+        _.extend(
+          {
+            restUri: 'http://localhost:8100/rest/search',
+            searchAlertsUri: 'http://localhost:8088/rest/search/alerts/'
+          },
+          otherOptions
+        )
+      );
     } else {
       // This OAuth token points to the organization used for samples.
       // It contains a set of harmless content sources.
-      SearchEndpoint.endpoints['default'] = new SearchEndpoint(_.extend({
-        restUri: 'https://cloudplatform.coveo.com/rest/search',
-        accessToken: '52d806a2-0f64-4390-a3f2-e0f41a4a73ec'
-      }, otherOptions));
+      SearchEndpoint.endpoints['default'] = new SearchEndpoint(
+        _.extend(
+          {
+            restUri: 'https://cloudplatform.coveo.com/rest/search',
+            accessToken: '52d806a2-0f64-4390-a3f2-e0f41a4a73ec'
+          },
+          otherOptions
+        )
+      );
     }
   }
 
@@ -99,14 +108,16 @@ export class SearchEndpoint implements ISearchEndpoint {
    * @param otherOptions A set of additional options to use when configuring this endpoint.
    */
   static configureSampleEndpointV2(optionsOPtions?: ISearchEndpointOptions) {
-    SearchEndpoint.endpoints['default'] = new SearchEndpoint(_.extend({
-      restUri: 'https://platform.cloud.coveo.com/rest/search',
-      accessToken: 'xx564559b1-0045-48e1-953c-3addd1ee4457',
-      queryStringArguments: {
-        organizationId: 'searchuisamples',
-        viewAllContent: 1
-      }
-    }));
+    SearchEndpoint.endpoints['default'] = new SearchEndpoint(
+      _.extend({
+        restUri: 'https://platform.cloud.coveo.com/rest/search',
+        accessToken: 'xx564559b1-0045-48e1-953c-3addd1ee4457',
+        queryStringArguments: {
+          organizationId: 'searchuisamples',
+          viewAllContent: 1
+        }
+      })
+    );
   }
 
   /**
@@ -116,7 +127,12 @@ export class SearchEndpoint implements ISearchEndpoint {
    * @param uri The URI of the Coveo Cloud REST Search API. By default, this points to the production environment.
    * @param otherOptions A set of additional options to use when configuring this endpoint.
    */
-  static configureCloudEndpoint(organization?: string, token?: string, uri: string = 'https://cloudplatform.coveo.com/rest/search', otherOptions?: ISearchEndpointOptions) {
+  static configureCloudEndpoint(
+    organization?: string,
+    token?: string,
+    uri: string = 'https://cloudplatform.coveo.com/rest/search',
+    otherOptions?: ISearchEndpointOptions
+  ) {
     let options: ISearchEndpointOptions = {
       restUri: uri,
       accessToken: token,
@@ -135,7 +151,12 @@ export class SearchEndpoint implements ISearchEndpoint {
    * @param uri The URI of the Coveo Cloud REST Search API. By default, this points to the production environment.
    * @param otherOptions A set of additional options to use when configuring this endpoint.
    */
-  static configureCloudV2Endpoint(organization?: string, token?: string, uri: string = 'https://platform.cloud.coveo.com/rest/search', otherOptions?: ISearchEndpointOptions) {
+  static configureCloudV2Endpoint(
+    organization?: string,
+    token?: string,
+    uri: string = 'https://platform.cloud.coveo.com/rest/search',
+    otherOptions?: ISearchEndpointOptions
+  ) {
     return SearchEndpoint.configureCloudEndpoint(organization, token, uri, otherOptions);
   }
 
@@ -147,16 +168,19 @@ export class SearchEndpoint implements ISearchEndpoint {
    * @param otherOptions A set of additional options to use when configuring this endpoint.
    */
   static configureOnPremiseEndpoint(uri: string, token?: string, otherOptions?: ISearchEndpointOptions) {
-    let merged = SearchEndpoint.mergeConfigOptions({
-      restUri: uri,
-      accessToken: token
-    }, otherOptions);
+    let merged = SearchEndpoint.mergeConfigOptions(
+      {
+        restUri: uri,
+        accessToken: token
+      },
+      otherOptions
+    );
 
     SearchEndpoint.endpoints['default'] = new SearchEndpoint(SearchEndpoint.removeUndefinedConfigOption(merged));
   }
 
   static removeUndefinedConfigOption(config: ISearchEndpointOptions) {
-    _.each(_.keys(config), (key) => {
+    _.each(_.keys(config), key => {
       if (config[key] == undefined) {
         delete config[key];
       }
@@ -249,7 +273,13 @@ export class SearchEndpoint implements ISearchEndpoint {
    */
   @path('/login/')
   @accessTokenInUrl()
-  public getAuthenticationProviderUri(provider: string, returnUri?: string, message?: string, callOptions?: IEndpointCallOptions, callParams?: IEndpointCallParameters): string {
+  public getAuthenticationProviderUri(
+    provider: string,
+    returnUri?: string,
+    message?: string,
+    callOptions?: IEndpointCallOptions,
+    callParams?: IEndpointCallParameters
+  ): string {
     let queryString = this.buildBaseQueryString(callOptions);
     callParams.queryString = callParams.queryString.concat(queryString);
 
@@ -293,7 +323,7 @@ export class SearchEndpoint implements ISearchEndpoint {
   public search(query: IQuery, callOptions?: IEndpointCallOptions, callParams?: IEndpointCallParameters): Promise<IQueryResults> {
     Assert.exists(query);
 
-    callParams.requestData = _.extend({}, callParams.requestData, _.omit(query, (queryParam) => Utils.isNullOrUndefined(queryParam)));
+    callParams.requestData = _.extend({}, callParams.requestData, _.omit(query, queryParam => Utils.isNullOrUndefined(queryParam)));
 
     this.logger.info('Performing REST query', query);
 
@@ -334,7 +364,12 @@ export class SearchEndpoint implements ISearchEndpoint {
    */
   @path('/')
   @accessTokenInUrl()
-  public getExportToExcelLink(query: IQuery, numberOfResults: number, callOptions?: IEndpointCallOptions, callParams?: IEndpointCallParameters): string {
+  public getExportToExcelLink(
+    query: IQuery,
+    numberOfResults: number,
+    callOptions?: IEndpointCallOptions,
+    callParams?: IEndpointCallParameters
+  ): string {
     let queryString = this.buildBaseQueryString(callOptions);
     callParams.queryString = callParams.queryString.concat(queryString);
 
@@ -370,7 +405,12 @@ export class SearchEndpoint implements ISearchEndpoint {
   @accessTokenInUrl()
   @method('GET')
   @responseType('arraybuffer')
-  public getRawDataStream(documentUniqueId: string, dataStreamType: string, callOptions?: IViewAsHtmlOptions, callParams?: IEndpointCallParameters): Promise<ArrayBuffer> {
+  public getRawDataStream(
+    documentUniqueId: string,
+    dataStreamType: string,
+    callOptions?: IViewAsHtmlOptions,
+    callParams?: IEndpointCallParameters
+  ): Promise<ArrayBuffer> {
     Assert.exists(documentUniqueId);
 
     let queryString = this.buildViewAsHtmlQueryString(documentUniqueId, callOptions);
@@ -396,7 +436,12 @@ export class SearchEndpoint implements ISearchEndpoint {
    */
   @path('/datastream')
   @accessTokenInUrl()
-  public getViewAsDatastreamUri(documentUniqueID: string, dataStreamType: string, callOptions?: IViewAsHtmlOptions, callParams?: IEndpointCallParameters): string {
+  public getViewAsDatastreamUri(
+    documentUniqueID: string,
+    dataStreamType: string,
+    callOptions?: IViewAsHtmlOptions,
+    callParams?: IEndpointCallParameters
+  ): string {
     callOptions = _.extend({}, callOptions);
 
     let queryString = this.buildBaseQueryString(callOptions);
@@ -407,7 +452,6 @@ export class SearchEndpoint implements ISearchEndpoint {
 
     queryString = this.buildCompleteQueryString(callOptions.query, callOptions.queryObject);
     callParams.queryString = callParams.queryString.concat(queryString);
-
 
     return callParams.url + '?' + callParams.queryString.join('&') + '&dataStream=' + encodeURIComponent(dataStreamType);
   }
@@ -422,7 +466,11 @@ export class SearchEndpoint implements ISearchEndpoint {
   @path('/document')
   @method('GET')
   @responseType('text')
-  public getDocument(documentUniqueID: string, callOptions?: IEndpointCallOptions, callParams?: IEndpointCallParameters): Promise<IQueryResult> {
+  public getDocument(
+    documentUniqueID: string,
+    callOptions?: IEndpointCallOptions,
+    callParams?: IEndpointCallParameters
+  ): Promise<IQueryResult> {
     let queryString = this.buildViewAsHtmlQueryString(documentUniqueID, callOptions);
     callParams.queryString = callParams.queryString.concat(queryString);
 
@@ -439,14 +487,17 @@ export class SearchEndpoint implements ISearchEndpoint {
   @path('/text')
   @method('GET')
   @responseType('text')
-  public getDocumentText(documentUniqueID: string, callOptions?: IEndpointCallOptions, callParams?: IEndpointCallParameters): Promise<string> {
+  public getDocumentText(
+    documentUniqueID: string,
+    callOptions?: IEndpointCallOptions,
+    callParams?: IEndpointCallParameters
+  ): Promise<string> {
     let queryString = this.buildViewAsHtmlQueryString(documentUniqueID, callOptions);
     callParams.queryString = callParams.queryString.concat(queryString);
 
-    return this.performOneCall<{ content: string, duration: number }>(callParams)
-      .then((data) => {
-        return data.content;
-      });
+    return this.performOneCall<{ content: string; duration: number }>(callParams).then(data => {
+      return data.content;
+    });
   }
 
   /**
@@ -459,7 +510,11 @@ export class SearchEndpoint implements ISearchEndpoint {
   @path('/html')
   @method('POST')
   @responseType('document')
-  public getDocumentHtml(documentUniqueID: string, callOptions?: IViewAsHtmlOptions, callParams?: IEndpointCallParameters): Promise<HTMLDocument> {
+  public getDocumentHtml(
+    documentUniqueID: string,
+    callOptions?: IViewAsHtmlOptions,
+    callParams?: IEndpointCallParameters
+  ): Promise<HTMLDocument> {
     callOptions = _.extend({}, callOptions);
 
     let queryString = this.buildViewAsHtmlQueryString(documentUniqueID, callOptions);
@@ -492,14 +547,17 @@ export class SearchEndpoint implements ISearchEndpoint {
   @path('/values')
   @method('POST')
   @responseType('text')
-  public batchFieldValues(request: IListFieldValuesRequest, callOptions?: IEndpointCallOptions, callParams?: IEndpointCallParameters): Promise<IIndexFieldValue[]> {
+  public batchFieldValues(
+    request: IListFieldValuesRequest,
+    callOptions?: IEndpointCallOptions,
+    callParams?: IEndpointCallParameters
+  ): Promise<IIndexFieldValue[]> {
     Assert.exists(request);
 
-    return this.performOneCall<any>(callParams)
-      .then((data) => {
-        this.logger.info('REST list field values successful', data.values, request);
-        return data.values;
-      });
+    return this.performOneCall<any>(callParams).then(data => {
+      this.logger.info('REST list field values successful', data.values, request);
+      return data.values;
+    });
   }
 
   /**
@@ -512,18 +570,21 @@ export class SearchEndpoint implements ISearchEndpoint {
   @path('/values')
   @method('POST')
   @responseType('text')
-  public listFieldValues(request: IListFieldValuesRequest, callOptions?: IEndpointCallOptions, callParams?: IEndpointCallParameters): Promise<IIndexFieldValue[]> {
+  public listFieldValues(
+    request: IListFieldValuesRequest,
+    callOptions?: IEndpointCallOptions,
+    callParams?: IEndpointCallParameters
+  ): Promise<IIndexFieldValue[]> {
     Assert.exists(request);
 
     callParams.requestData = request;
 
     this.logger.info('Listing field values', request);
 
-    return this.performOneCall<any>(callParams)
-      .then((data) => {
-        this.logger.info('REST list field values successful', data.values, request);
-        return data.values;
-      });
+    return this.performOneCall<any>(callParams).then(data => {
+      this.logger.info('REST list field values successful', data.values, request);
+      return data.values;
+    });
   }
 
   /**
@@ -538,7 +599,7 @@ export class SearchEndpoint implements ISearchEndpoint {
   public listFields(callOptions?: IEndpointCallOptions, callParams?: IEndpointCallParameters): Promise<IFieldDescription[]> {
     this.logger.info('Listing fields');
 
-    return this.performOneCall<IListFieldsResult>(callParams).then((data) => {
+    return this.performOneCall<IListFieldsResult>(callParams).then(data => {
       return data.fields;
     });
   }
@@ -568,7 +629,11 @@ export class SearchEndpoint implements ISearchEndpoint {
   @path('/rating')
   @method('POST')
   @responseType('text')
-  public rateDocument(ratingRequest: IRatingRequest, callOptions?: IEndpointCallOptions, callParams?: IEndpointCallParameters): Promise<boolean> {
+  public rateDocument(
+    ratingRequest: IRatingRequest,
+    callOptions?: IEndpointCallOptions,
+    callParams?: IEndpointCallParameters
+  ): Promise<boolean> {
     this.logger.info('Rating a document', ratingRequest);
 
     callParams.requestData = ratingRequest;
@@ -588,7 +653,11 @@ export class SearchEndpoint implements ISearchEndpoint {
   @path('/tag')
   @method('POST')
   @responseType('text')
-  public tagDocument(taggingRequest: ITaggingRequest, callOptions?: IEndpointCallOptions, callParams?: IEndpointCallParameters): Promise<boolean> {
+  public tagDocument(
+    taggingRequest: ITaggingRequest,
+    callOptions?: IEndpointCallOptions,
+    callParams?: IEndpointCallParameters
+  ): Promise<boolean> {
     this.logger.info('Tagging an item', taggingRequest);
 
     callParams.requestData = taggingRequest;
@@ -612,16 +681,24 @@ export class SearchEndpoint implements ISearchEndpoint {
   @includeReferrer()
   @includeVisitorId()
   @includeIsGuestUser()
-  public getQuerySuggest(request: IQuerySuggestRequest, callOptions?: IEndpointCallOptions, callParams?: IEndpointCallParameters): Promise<IQuerySuggestResponse> {
+  public getQuerySuggest(
+    request: IQuerySuggestRequest,
+    callOptions?: IEndpointCallOptions,
+    callParams?: IEndpointCallParameters
+  ): Promise<IQuerySuggestResponse> {
     this.logger.info('Get Query Suggest', request);
 
-    callParams.requestData = _.extend({}, callParams.requestData, _.omit(request, (parameter) => Utils.isNullOrUndefined(parameter)));
+    callParams.requestData = _.extend({}, callParams.requestData, _.omit(request, parameter => Utils.isNullOrUndefined(parameter)));
     return this.performOneCall<IQuerySuggestResponse>(callParams, callOptions);
   }
 
   // This is a non documented method to ensure backward compatibility for the old query suggest call.
   // It simply calls the "real" official and documented method.
-  public getRevealQuerySuggest(request: IQuerySuggestRequest, callOptions?: IEndpointCallOptions, callParams?: IEndpointCallParameters): Promise<IQuerySuggestResponse> {
+  public getRevealQuerySuggest(
+    request: IQuerySuggestRequest,
+    callOptions?: IEndpointCallOptions,
+    callParams?: IEndpointCallParameters
+  ): Promise<IQuerySuggestResponse> {
     return this.getQuerySuggest(request, callOptions, callParams);
   }
 
@@ -637,7 +714,11 @@ export class SearchEndpoint implements ISearchEndpoint {
   @method('POST')
   @requestDataType('application/json')
   @responseType('text')
-  public follow(request: ISubscriptionRequest, callOptions?: IEndpointCallOptions, callParams?: IEndpointCallParameters): Promise<ISubscription> {
+  public follow(
+    request: ISubscriptionRequest,
+    callOptions?: IEndpointCallOptions,
+    callParams?: IEndpointCallParameters
+  ): Promise<ISubscription> {
     callParams.requestData = request;
 
     this.logger.info('Following an item or a query', request);
@@ -659,7 +740,11 @@ export class SearchEndpoint implements ISearchEndpoint {
   @method('GET')
   @requestDataType('application/json')
   @responseType('text')
-  public listSubscriptions(page?: number, callOptions?: IEndpointCallOptions, callParams?: IEndpointCallParameters): Promise<ISubscription[]> {
+  public listSubscriptions(
+    page?: number,
+    callOptions?: IEndpointCallOptions,
+    callParams?: IEndpointCallParameters
+  ): Promise<ISubscription[]> {
     if (this.options.isGuestUser) {
       return new Promise((resolve, reject) => {
         reject();
@@ -669,17 +754,19 @@ export class SearchEndpoint implements ISearchEndpoint {
       callParams.queryString.push('page=' + (page || 0));
 
       this.currentListSubscriptions = this.performOneCall<ISubscription[]>(callParams);
-      this.currentListSubscriptions.then((data: any) => {
-        this.currentListSubscriptions = null;
-        return data;
-      }).catch((e: AjaxError) => {
-        // Trap 403 error, as the listSubscription call is called on every page initialization
-        // to check for current subscriptions. By default, the search alert service is not enabled for most organization
-        // Don't want to pollute the console with un-needed noise and confusion
-        if (e.status != 403) {
-          throw e;
-        }
-      });
+      this.currentListSubscriptions
+        .then((data: any) => {
+          this.currentListSubscriptions = null;
+          return data;
+        })
+        .catch((e: AjaxError) => {
+          // Trap 403 error, as the listSubscription call is called on every page initialization
+          // to check for current subscriptions. By default, the search alert service is not enabled for most organization
+          // Don't want to pollute the console with un-needed noise and confusion
+          if (e.status != 403) {
+            throw e;
+          }
+        });
     }
     return this.currentListSubscriptions;
   }
@@ -696,7 +783,11 @@ export class SearchEndpoint implements ISearchEndpoint {
   @method('PUT')
   @requestDataType('application/json')
   @responseType('text')
-  public updateSubscription(subscription: ISubscription, callOptions?: IEndpointCallOptions, callParams?: IEndpointCallParameters): Promise<ISubscription> {
+  public updateSubscription(
+    subscription: ISubscription,
+    callOptions?: IEndpointCallOptions,
+    callParams?: IEndpointCallParameters
+  ): Promise<ISubscription> {
     callParams.requestData = subscription;
 
     this.logger.info('Updating a subscription', subscription);
@@ -718,7 +809,11 @@ export class SearchEndpoint implements ISearchEndpoint {
   @method('DELETE')
   @requestDataType('application/json')
   @responseType('text')
-  public deleteSubscription(subscription: ISubscription, callOptions?: IEndpointCallOptions, callParams?: IEndpointCallParameters): Promise<ISubscription> {
+  public deleteSubscription(
+    subscription: ISubscription,
+    callOptions?: IEndpointCallOptions,
+    callParams?: IEndpointCallParameters
+  ): Promise<ISubscription> {
     callParams.url += subscription.id;
 
     return this.performOneCall<ISubscription>(callParams);
@@ -813,7 +908,7 @@ export class SearchEndpoint implements ISearchEndpoint {
     // Therefore, we cherry-pick parts of the query to include in a 'query string' instead of a body payload.
     let queryString: string[] = [];
     if (queryObject) {
-      _.each(['q', 'aq', 'cq', 'dq', 'searchHub', 'tab', 'language', 'pipeline', 'lowercaseOperators'], (key) => {
+      _.each(['q', 'aq', 'cq', 'dq', 'searchHub', 'tab', 'language', 'pipeline', 'lowercaseOperators'], key => {
         if (queryObject[key]) {
           queryString.push(key + '=' + encodeURIComponent(queryObject[key]));
         }
@@ -824,9 +919,12 @@ export class SearchEndpoint implements ISearchEndpoint {
       });
 
       if (queryObject.fieldsToInclude) {
-        queryString.push(`fieldsToInclude=[${_.map(queryObject.fieldsToInclude, (field) => '"' + encodeURIComponent(field.replace('@', '')) + '"').join(',')}]`);
+        queryString.push(
+          `fieldsToInclude=[${_.map(queryObject.fieldsToInclude, field => '"' + encodeURIComponent(field.replace('@', '')) + '"').join(
+            ','
+          )}]`
+        );
       }
-
     } else if (query) {
       queryString.push('q=' + encodeURIComponent(query));
     }
@@ -859,7 +957,8 @@ export class SearchEndpoint implements ISearchEndpoint {
     params.queryString = _.uniq(params.queryString);
 
     const startTime = new Date();
-    return this.caller.call(params)
+    return this.caller
+      .call(params)
       .then((response?: ISuccessResponse<T>) => {
         if (response.data == null) {
           response.data = <any>{};
@@ -870,18 +969,20 @@ export class SearchEndpoint implements ISearchEndpoint {
           (<any>response.data).duration = response.duration || timeToExecute;
         }
         return response.data;
-      }).catch((error?: IErrorResponse) => {
+      })
+      .catch((error?: IErrorResponse) => {
         if (autoRenewToken && this.canRenewAccessToken() && this.isAccessTokenExpiredStatus(error.statusCode)) {
-          return this.renewAccessToken().then(() => {
-            return this.performOneCall(params, callOptions, autoRenewToken);
-          })
+          return this.renewAccessToken()
+            .then(() => {
+              return this.performOneCall(params, callOptions, autoRenewToken);
+            })
             .catch(() => {
               return Promise.reject(this.handleErrorResponse(error));
             });
         } else if (error.statusCode == 0 && this.isRedirecting) {
           // The page is getting redirected
           // Set timeout on return with empty string, since it does not really matter
-          _.defer(function () {
+          _.defer(function() {
             return '';
           });
         } else {
@@ -908,15 +1009,18 @@ export class SearchEndpoint implements ISearchEndpoint {
 
   private renewAccessToken(): Promise<string> {
     this.logger.info('Renewing expired access token');
-    return this.options.renewAccessToken().then((token: string) => {
-      Assert.isNonEmptyString(token);
-      this.options.accessToken = token;
-      this.createEndpointCaller();
-      return token;
-    }).catch((e: string) => {
-      this.logger.error('Failed to renew access token', e);
-      return e;
-    });
+    return this.options
+      .renewAccessToken()
+      .then((token: string) => {
+        Assert.isNonEmptyString(token);
+        this.options.accessToken = token;
+        this.createEndpointCaller();
+        return token;
+      })
+      .catch((e: string) => {
+        this.logger.error('Failed to renew access token', e);
+        return e;
+      });
   }
 
   private removeTrailingSlash(uri: string) {
@@ -938,7 +1042,6 @@ export class SearchEndpoint implements ISearchEndpoint {
     return status == 419;
   }
 }
-
 
 // It's taken for granted that methods using decorators have :
 // IEndpointCallOptions as their second to last parameter
@@ -971,12 +1074,11 @@ function defaultDecoratorEndpointCallParameters() {
   return params;
 }
 
-
 function path(path: string) {
-  return function (target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
+  return function(target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
     const { originalMethod, nbParams } = decoratorSetup(target, key, descriptor);
 
-    descriptor.value = function (...args: any[]) {
+    descriptor.value = function(...args: any[]) {
       const url = this.buildBaseUri(path);
       if (args[nbParams - 1]) {
         args[nbParams - 1].url = url;
@@ -992,10 +1094,10 @@ function path(path: string) {
 }
 
 function alertsPath(path: string) {
-  return function (target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
+  return function(target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
     const { originalMethod, nbParams } = decoratorSetup(target, key, descriptor);
 
-    descriptor.value = function (...args: any[]) {
+    descriptor.value = function(...args: any[]) {
       const url = this.buildSearchAlertsUri(path);
       if (args[nbParams - 1]) {
         args[nbParams - 1].url = url;
@@ -1011,10 +1113,10 @@ function alertsPath(path: string) {
 }
 
 function requestDataType(type: string) {
-  return function (target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
+  return function(target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
     const { originalMethod, nbParams } = decoratorSetup(target, key, descriptor);
 
-    descriptor.value = function (...args: any[]) {
+    descriptor.value = function(...args: any[]) {
       if (args[nbParams - 1]) {
         args[nbParams - 1].requestDataType = type;
       } else {
@@ -1028,10 +1130,10 @@ function requestDataType(type: string) {
 }
 
 function method(met: string) {
-  return function (target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
+  return function(target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
     const { originalMethod, nbParams } = decoratorSetup(target, key, descriptor);
 
-    descriptor.value = function (...args: any[]) {
+    descriptor.value = function(...args: any[]) {
       if (args[nbParams - 1]) {
         args[nbParams - 1].method = met;
       } else {
@@ -1046,10 +1148,10 @@ function method(met: string) {
 }
 
 function responseType(resp: string) {
-  return function (target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
+  return function(target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
     const { originalMethod, nbParams } = decoratorSetup(target, key, descriptor);
 
-    descriptor.value = function (...args: any[]) {
+    descriptor.value = function(...args: any[]) {
       if (args[nbParams - 1]) {
         args[nbParams - 1].responseType = resp;
       } else {
@@ -1064,10 +1166,10 @@ function responseType(resp: string) {
 }
 
 function accessTokenInUrl(tokenKey: string = 'access_token') {
-  return function (target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
+  return function(target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
     const { originalMethod, nbParams } = decoratorSetup(target, key, descriptor);
 
-    descriptor.value = function (...args: any[]) {
+    descriptor.value = function(...args: any[]) {
       const queryString = this.buildAccessToken(tokenKey);
       if (args[nbParams - 1]) {
         args[nbParams - 1].queryString = args[nbParams - 1].queryString.concat(queryString);
@@ -1083,10 +1185,10 @@ function accessTokenInUrl(tokenKey: string = 'access_token') {
 }
 
 function includeActionsHistory(historyStore: CoveoAnalytics.HistoryStore = new history.HistoryStore()) {
-  return function (target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
+  return function(target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
     const { originalMethod, nbParams } = decoratorSetup(target, key, descriptor);
 
-    descriptor.value = function (...args: any[]) {
+    descriptor.value = function(...args: any[]) {
       let historyFromStore = historyStore.getHistory();
       if (historyFromStore == null) {
         historyFromStore = [];
@@ -1095,7 +1197,9 @@ function includeActionsHistory(historyStore: CoveoAnalytics.HistoryStore = new h
       if (args[nbParams - 1]) {
         args[nbParams - 1].requestData.actionsHistory = historyFromStore;
       } else {
-        const endpointCallParams = _.extend(defaultDecoratorEndpointCallParameters(), { requestData: { actionsHistory: historyFromStore } });
+        const endpointCallParams = _.extend(defaultDecoratorEndpointCallParameters(), {
+          requestData: { actionsHistory: historyFromStore }
+        });
         args[nbParams - 1] = endpointCallParams;
       }
       return originalMethod.apply(this, args);
@@ -1106,9 +1210,9 @@ function includeActionsHistory(historyStore: CoveoAnalytics.HistoryStore = new h
 }
 
 function includeReferrer() {
-  return function (target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
+  return function(target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
     const { originalMethod, nbParams } = decoratorSetup(target, key, descriptor);
-    descriptor.value = function (...args: any[]) {
+    descriptor.value = function(...args: any[]) {
       let referrer = document.referrer;
       if (referrer == null) {
         referrer = '';
@@ -1117,7 +1221,9 @@ function includeReferrer() {
       if (args[nbParams - 1]) {
         args[nbParams - 1].requestData.referrer = referrer;
       } else {
-        const endpointCallParams = _.extend(defaultDecoratorEndpointCallParameters(), { requestData: { referrer: referrer } });
+        const endpointCallParams = _.extend(defaultDecoratorEndpointCallParameters(), {
+          requestData: { referrer: referrer }
+        });
         args[nbParams - 1] = endpointCallParams;
       }
       return originalMethod.apply(this, args);
@@ -1128,9 +1234,9 @@ function includeReferrer() {
 }
 
 function includeVisitorId() {
-  return function (target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
+  return function(target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
     const { originalMethod, nbParams } = decoratorSetup(target, key, descriptor);
-    descriptor.value = function (...args: any[]) {
+    descriptor.value = function(...args: any[]) {
       let visitorId = Cookie.get('visitorId');
       if (visitorId == null) {
         visitorId = '';
@@ -1139,7 +1245,9 @@ function includeVisitorId() {
       if (args[nbParams - 1]) {
         args[nbParams - 1].requestData.visitorId = visitorId;
       } else {
-        const endpointCallParams = _.extend(defaultDecoratorEndpointCallParameters(), { requestData: { visitorId: visitorId } });
+        const endpointCallParams = _.extend(defaultDecoratorEndpointCallParameters(), {
+          requestData: { visitorId: visitorId }
+        });
         args[nbParams - 1] = endpointCallParams;
       }
       return originalMethod.apply(this, args);
@@ -1150,15 +1258,17 @@ function includeVisitorId() {
 }
 
 function includeIsGuestUser() {
-  return function (target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
+  return function(target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
     const { originalMethod, nbParams } = decoratorSetup(target, key, descriptor);
-    descriptor.value = function (...args: any[]) {
+    descriptor.value = function(...args: any[]) {
       let isGuestUser = this.options.isGuestUser;
 
       if (args[nbParams - 1]) {
         args[nbParams - 1].requestData.isGuestUser = isGuestUser;
       } else {
-        const endpointCallParams = _.extend(defaultDecoratorEndpointCallParameters(), { requestData: { isGuestUser: isGuestUser } });
+        const endpointCallParams = _.extend(defaultDecoratorEndpointCallParameters(), {
+          requestData: { isGuestUser: isGuestUser }
+        });
         args[nbParams - 1] = endpointCallParams;
       }
       return originalMethod.apply(this, args);

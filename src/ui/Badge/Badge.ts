@@ -36,16 +36,15 @@ export class Badge extends FieldValue implements IComponentBindings {
 
   static doExport = () => {
     exportGlobally({
-      'Badge': Badge
+      Badge: Badge
     });
-  }
+  };
 
   /**
    * The options for the component
    * @componentOptions
    */
   static options: IBadgeOptions = {
-
     /**
      * Specifies the colors for the Badge component.
      *
@@ -71,7 +70,9 @@ export class Badge extends FieldValue implements IComponentBindings {
      *
      * Colors can be specified in HTML or hexadecimal format.
      */
-    colors: ComponentOptions.buildCustomOption<IBadgeColors>((value: string) => Badge.parseColors(value), { defaultValue: { values: {} } }),
+    colors: ComponentOptions.buildCustomOption<IBadgeColors>((value: string) => Badge.parseColors(value), {
+      defaultValue: { values: {} }
+    }),
     textCaption: ComponentOptions.buildLocalizedStringOption()
   };
 
@@ -151,7 +152,7 @@ export class Badge extends FieldValue implements IComponentBindings {
     var color: IBadgeColor = colorKey ? this.options.colors.values[colorKey] : {};
     return {
       icon: color.icon || this.options.colors.icon,
-      text: color.text || this.options.colors.text,
+      text: color.text || this.options.colors.text
     };
   }
 

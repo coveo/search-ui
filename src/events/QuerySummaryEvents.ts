@@ -1,8 +1,7 @@
 /**
  * Argument sent to all handlers bound on {@link QuerySummaryEvents.cancelLastAction}
  */
-export interface IQuerySummaryCancelLastActionArgs {
-}
+export interface IQuerySummaryCancelLastActionArgs {}
 
 /**
  * This static class is there to contains the different string definition for all the events related to the {@link AdvancedSearch} component.

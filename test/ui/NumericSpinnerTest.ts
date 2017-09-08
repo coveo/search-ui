@@ -5,12 +5,12 @@ export function NumericSpinnerTest() {
   describe('NumericSpinner', () => {
     let spinner: NumericSpinner;
 
-    beforeEach(function () {
+    beforeEach(function() {
       spinner = new NumericSpinner();
       spinner.setValue(5);
     });
 
-    afterEach(function () {
+    afterEach(function() {
       spinner = null;
     });
 

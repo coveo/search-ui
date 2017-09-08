@@ -58,7 +58,7 @@ export interface ISliderOptions {
       bottom?: number;
       left?: number;
       right?: number;
-    }
+    };
   };
   dateField?: boolean;
   rounded?: number;
@@ -214,7 +214,11 @@ export class Slider {
       this.sliderCaption.setFromString(this.options.valueCaption(this.getValues()));
     } else if (this.options.percentCaption != undefined) {
       this.sliderCaption.setFromString(this.options.percentCaption(this.getPercentPosition()));
-    } else if (this.options.displayAsPercent != undefined && this.options.displayAsPercent.separator != undefined && this.options.displayAsPercent.enable) {
+    } else if (
+      this.options.displayAsPercent != undefined &&
+      this.options.displayAsPercent.separator != undefined &&
+      this.options.displayAsPercent.enable
+    ) {
       this.sliderCaption.setAsPercent();
     } else {
       this.sliderCaption.setAsValue();
@@ -250,8 +254,7 @@ class SliderLine {
   private backGround: HTMLElement;
   private activePart: HTMLElement;
 
-  constructor(public slider: Slider) {
-  }
+  constructor(public slider: Slider) {}
 
   public build(): HTMLElement[] {
     this.backGround = $$('div', {
@@ -297,8 +300,7 @@ export class SliderButton {
   private eventMouseMove = DeviceUtils.isMobileDevice() ? 'touchmove' : 'mousemove';
   private eventMouseUp = DeviceUtils.isMobileDevice() ? 'touchend' : 'mouseup';
 
-  constructor(public slider: Slider, private which: number) {
-  }
+  constructor(public slider: Slider, private which: number) {}
 
   public build() {
     this.element = $$('div', {
@@ -326,7 +328,7 @@ export class SliderButton {
   public getPosition() {
     const left = this.element.style.left;
     if (left.indexOf('%') != -1) {
-      return (parseFloat(left) / 100) * this.slider.element.clientWidth;
+      return parseFloat(left) / 100 * this.slider.element.clientWidth;
     } else {
       return parseFloat(left);
     }
@@ -345,12 +347,12 @@ export class SliderButton {
   }
 
   public fromValueToPercent(value: number) {
-    return 1 - ((this.slider.options.end - value) / (this.slider.options.end - this.slider.options.start));
+    return 1 - (this.slider.options.end - value) / (this.slider.options.end - this.slider.options.start);
   }
 
   public fromPositionToValue(position: number) {
     const percent = this.getPercent(position);
-    return this.slider.options.start + (percent * (this.slider.options.end - this.slider.options.start));
+    return this.slider.options.start + percent * (this.slider.options.end - this.slider.options.start);
   }
 
   public fromValueToPosition(value: number) {
@@ -392,7 +394,7 @@ export class SliderButton {
     const position = this.getMousePosition(e);
     this.isMouseDown = true;
     this.startPositionX = position.x;
-    this.lastElementLeft = (parseInt(this.element.style.left, 10) / 100) * this.slider.element.clientWidth;
+    this.lastElementLeft = parseInt(this.element.style.left, 10) / 100 * this.slider.element.clientWidth;
     this.origUserSelect = document.body.style[this.getUserSelect()];
     this.origCursor = document.body.style.cursor;
     document.body.style[this.getUserSelect()] = 'none';
@@ -566,10 +568,13 @@ class SliderCaption {
     this.separator = '-';
     this.unitSign = '';
     if (this.slider.options.displayAsPercent && this.slider.options.displayAsPercent.enable) {
-      this.separator = this.slider.options.displayAsPercent.separator != undefined ? this.slider.options.displayAsPercent.separator : this.separator;
+      this.separator =
+        this.slider.options.displayAsPercent.separator != undefined ? this.slider.options.displayAsPercent.separator : this.separator;
     } else if (this.slider.options.displayAsValue && this.slider.options.displayAsValue.enable) {
-      this.separator = this.slider.options.displayAsValue.separator != undefined ? this.slider.options.displayAsValue.separator : this.separator;
-      this.unitSign = this.slider.options.displayAsValue.unitSign != undefined ? this.slider.options.displayAsValue.unitSign : this.unitSign;
+      this.separator =
+        this.slider.options.displayAsValue.separator != undefined ? this.slider.options.displayAsValue.separator : this.separator;
+      this.unitSign =
+        this.slider.options.displayAsValue.unitSign != undefined ? this.slider.options.displayAsValue.unitSign : this.unitSign;
     }
   }
 
@@ -598,7 +603,15 @@ class SliderCaption {
 
   public setAsPercent() {
     const values = this.slider.getPercentPosition();
-    $$(this.caption).text([(values[0] * 100).toFixed(this.slider.options.rounded), '%', this.separator, (values[1] * 100).toFixed(this.slider.options.rounded), '%'].join(' '));
+    $$(this.caption).text(
+      [
+        (values[0] * 100).toFixed(this.slider.options.rounded),
+        '%',
+        this.separator,
+        (values[1] * 100).toFixed(this.slider.options.rounded),
+        '%'
+      ].join(' ')
+    );
   }
 
   public setFromString(str: string) {
@@ -633,15 +646,20 @@ class SliderGraph {
   private tooltip: HTMLElement;
 
   constructor(public slider: Slider) {
-    this.svg = d3select(slider.element).append('svg').append('g');
+    this.svg = d3select(slider.element)
+      .append('svg')
+      .append('g');
     this.x = scaleBand();
     this.y = scaleLinear();
-    this.slider.options.graph.margin = Utils.extendDeep({
-      top: 20,
-      right: 0,
-      left: 0,
-      bottom: 20
-    }, this.slider.options.graph.margin || {});
+    this.slider.options.graph.margin = Utils.extendDeep(
+      {
+        top: 20,
+        right: 0,
+        left: 0,
+        bottom: 20
+      },
+      this.slider.options.graph.margin || {}
+    );
     this.slider.options.graph.animationDuration = this.slider.options.graph.animationDuration || 500;
 
     this.tooltip = $$('div', {
@@ -701,12 +719,17 @@ class SliderGraph {
 
   private setXAndYDomain(data: ISliderGraphData[]) {
     this.padGraphWithEmptyData(data);
-    this.x.domain(_.map(data, (d) => {
-      return d.start;
-    }));
-    this.y.domain([0, d3max(data, (d) => {
-      return d.y;
-    })]);
+    this.x.domain(
+      _.map(data, d => {
+        return d.start;
+      })
+    );
+    this.y.domain([
+      0,
+      d3max(data, d => {
+        return d.y;
+      })
+    ]);
   }
 
   private padGraphWithEmptyData(data: ISliderGraphData[]) {
@@ -748,7 +771,9 @@ class SliderGraph {
   }
 
   private renderGraphBars(bars: d3.selection.Update<ISliderGraphData>, width: number, height: number, currentSliderValues: number[]) {
-    bars.enter().append('rect')
+    bars
+      .enter()
+      .append('rect')
       .attr('class', this.getFunctionForClass(currentSliderValues))
       .attr('width', this.x.bandwidth())
       .attr('height', this.getFunctionForHeight(height))
@@ -798,8 +823,8 @@ class SliderGraph {
     this.tooltip.appendChild(count.el);
 
     this.tooltip.style.display = 'block';
-    this.tooltip.style.left = (this.x(d.start) - (0.2 * this.slider.options.graph.steps)) + 'px';
-    this.tooltip.style.top = (this.y(d.y) - height) + 'px';
+    this.tooltip.style.left = this.x(d.start) - 0.2 * this.slider.options.graph.steps + 'px';
+    this.tooltip.style.top = this.y(d.y) - height + 'px';
   }
 
   private getFunctionForX() {

@@ -22,7 +22,6 @@ export var L10N = {
       } else if (tryTranslationAfterCapitalization != key.charAt(0).toUpperCase() + key.toLowerCase().slice(1)) {
         value = tryTranslationAfterCapitalization;
       }
-
     }
     if (args.length > 0) {
       let last = _.last(args);
@@ -31,7 +30,7 @@ export var L10N = {
         args.pop();
         value = L10N.formatPlSn(value, last);
       }
-      _.each(args, (arg, i) => value = value.replace(`{${i}}`, arg));
+      _.each(args, (arg, i) => (value = value.replace(`{${i}}`, arg)));
     } else {
       // If there was no parameters passed, we try to cleanup the possible parameters in the translated string.
       value = value.replace(/{[0-9]}|<pl>[a-zA-Z]+<\/pl>|<sn>|<\/sn>/g, '').trim();

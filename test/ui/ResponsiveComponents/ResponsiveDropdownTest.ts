@@ -50,7 +50,7 @@ export function ResponsiveDropdownTest() {
       expect(root.find(`.${ResponsiveDropdown.DROPDOWN_BACKGROUND_CSS_CLASS_NAME}`)).toBeNull();
     });
 
-    it('should hide the background when close is called', (done) => {
+    it('should hide the background when close is called', done => {
       responsiveDropdown.open();
       responsiveDropdown.close();
       // The element is removed from the page on transtionend. For the test, the elements are not in the dom which causes this event
@@ -81,6 +81,5 @@ export function ResponsiveDropdownTest() {
 
       expect(handler).toHaveBeenCalled();
     });
-
   });
 }

@@ -55,7 +55,8 @@ export class Utils {
   static isHtmlElement(obj: any): boolean {
     if (window['HTMLElement'] != undefined) {
       return obj instanceof HTMLElement;
-    } else { // IE 8 FIX
+    } else {
+      // IE 8 FIX
       return obj && obj.nodeType && obj.nodeType == 1;
     }
   }
@@ -121,7 +122,7 @@ export class Utils {
   }
 
   static decodeHTMLEntities(rawString: string) {
-    return rawString.replace(/&#(\d+);/g, function (match, dec) {
+    return rawString.replace(/&#(\d+);/g, function(match, dec) {
       return String.fromCharCode(dec);
     });
   }
@@ -140,7 +141,6 @@ export class Utils {
   static objectEqual(obj1: Object, obj2: Object): boolean {
     return _.isEqual(obj1, obj2);
   }
-
 
   static isCoveoField(field: string): boolean {
     return isCoveoFieldRegex.test(field);
@@ -205,16 +205,16 @@ export class Utils {
     return value;
   }
 
-  static throttle(func, wait, options: { leading?: boolean; trailing?: boolean; } = {}, context?, args?) {
+  static throttle(func, wait, options: { leading?: boolean; trailing?: boolean } = {}, context?, args?) {
     let result;
     let timeout: number = null;
     let previous = 0;
-    let later = function () {
+    let later = function() {
       previous = options.leading === false ? 0 : new Date().getTime();
       timeout = null;
       result = func.apply(context, args);
     };
-    return function () {
+    return function() {
       let now = new Date().getTime();
       if (!previous && options.leading === false) {
         previous = now;
@@ -239,7 +239,7 @@ export class Utils {
       target = {};
     }
     let isArray = _.isArray(src);
-    let toReturn = isArray && [] || {};
+    let toReturn = (isArray && []) || {};
     if (isArray) {
       target = target || [];
       toReturn = toReturn['concat'](target);
@@ -256,11 +256,11 @@ export class Utils {
       });
     } else {
       if (target && typeof target === 'object') {
-        _.each(_.keys(target), (key) => {
+        _.each(_.keys(target), key => {
           toReturn[key] = target[key];
         });
       }
-      _.each(_.keys(src), (key) => {
+      _.each(_.keys(src), key => {
         if (typeof src[key] !== 'object' || !src[key]) {
           toReturn[key] = src[key];
         } else {
@@ -287,7 +287,7 @@ export class Utils {
   static debounce(func: Function, wait: number) {
     let timeout: number;
     let stackTraceTimeout: number;
-    return function (...args: any[]) {
+    return function(...args: any[]) {
       if (timeout == null) {
         timeout = setTimeout(() => {
           timeout = null;
@@ -322,17 +322,17 @@ export class Utils {
   }
 
   static toDashCase(camelCased: string) {
-    return camelCased.replace(/([a-z][A-Z])/g, (g) => g[0] + '-' + g[1].toLowerCase());
+    return camelCased.replace(/([a-z][A-Z])/g, g => g[0] + '-' + g[1].toLowerCase());
   }
 
   static toCamelCase(dashCased: string) {
-    return dashCased.replace(/-([a-z])/g, (g) => g[1].toUpperCase());
+    return dashCased.replace(/-([a-z])/g, g => g[1].toUpperCase());
   }
 
   // Based on http://stackoverflow.com/a/8412989
   static parseXml(xml: string): XMLDocument {
     if (typeof DOMParser != 'undefined') {
-      return (new DOMParser()).parseFromString(xml, 'text/xml');
+      return new DOMParser().parseFromString(xml, 'text/xml');
     } else if (typeof ActiveXObject != 'undefined' && new ActiveXObject('Microsoft.XMLDOM')) {
       var xmlDoc = new ActiveXObject('Microsoft.XMLDOM');
       xmlDoc.async = 'false';

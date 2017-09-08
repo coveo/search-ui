@@ -32,16 +32,15 @@ export class QuerySummary extends Component {
 
   static doExport = () => {
     exportGlobally({
-      'QuerySummary': QuerySummary
+      QuerySummary: QuerySummary
     });
-  }
+  };
 
   /**
    * Options for the component
    * @componentOptions
    */
   static options: IQuerySummaryOptions = {
-
     /**
      * Specifies whether to display the search tips to the end user when there are no search results.
      *
@@ -102,7 +101,13 @@ export class QuerySummary extends Component {
         let highlightLast = $$('span', { className: 'coveo-highlight' }, last).el;
         let highlightTotal = $$('span', { className: 'coveo-highlight' }, totalCount).el;
 
-        this.textContainer.innerHTML = l('ShowingResultsOf', highlightFirst.outerHTML, highlightLast.outerHTML, highlightTotal.outerHTML, data.results.results.length);
+        this.textContainer.innerHTML = l(
+          'ShowingResultsOf',
+          highlightFirst.outerHTML,
+          highlightLast.outerHTML,
+          highlightTotal.outerHTML,
+          data.results.results.length
+        );
       }
     }
 
@@ -121,13 +126,21 @@ export class QuerySummary extends Component {
     let noResultsForString: Dom;
 
     if (queryEscaped != '') {
-      noResultsForString = $$('div', {
-        className: 'coveo-query-summary-no-results-string'
-      }, l('noResultFor', $$('span', { className: 'coveo-highlight' }, queryEscaped).el.outerHTML));
+      noResultsForString = $$(
+        'div',
+        {
+          className: 'coveo-query-summary-no-results-string'
+        },
+        l('noResultFor', $$('span', { className: 'coveo-highlight' }, queryEscaped).el.outerHTML)
+      );
     }
-    let cancelLastAction = $$('div', {
-      className: 'coveo-query-summary-cancel-last'
-    }, l('CancelLastAction'));
+    let cancelLastAction = $$(
+      'div',
+      {
+        className: 'coveo-query-summary-cancel-last'
+      },
+      l('CancelLastAction')
+    );
 
     cancelLastAction.on('click', () => {
       this.usageAnalytics.logCustomEvent<IAnalyticsNoMeta>(analyticsActionCauseList.noResultsBack, {}, this.root);

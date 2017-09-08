@@ -6,12 +6,12 @@ export function DatePickerTest() {
     let picker: DatePicker;
     let spy: jasmine.Spy;
 
-    beforeEach(function () {
+    beforeEach(function() {
       spy = jasmine.createSpy('spy');
       picker = new DatePicker(spy);
     });
 
-    afterEach(function () {
+    afterEach(function() {
       picker = null;
     });
 
@@ -50,7 +50,6 @@ export function DatePickerTest() {
     });
 
     describe('reset', () => {
-
       it('should allow to reset', () => {
         const date = new Date();
         picker.setValue(date);

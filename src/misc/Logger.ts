@@ -3,46 +3,26 @@
 /* istanbul ignore next */
 if (!window['console']) {
   console = <any>{
-    log: function () {
-    },
-    debug: function () {
-    },
-    info: function () {
-    },
-    warn: function () {
-    },
-    error: function () {
-    },
-    assert: function () {
-    },
-    clear: function () {
-    },
-    count: function () {
-    },
-    dir: function () {
-    },
-    dirxml: function () {
-    },
-    group: function () {
-    },
-    groupCollapsed: function () {
-    },
-    groupEnd: function () {
-    },
-    msIsIndependentlyComposed: function (element: any): any {
-    },
-    profile: function () {
-    },
-    profileEnd: function () {
-    },
-    select: function () {
-    },
-    time: function () {
-    },
-    timeEnd: function () {
-    },
-    trace: function () {
-    }
+    log: function() {},
+    debug: function() {},
+    info: function() {},
+    warn: function() {},
+    error: function() {},
+    assert: function() {},
+    clear: function() {},
+    count: function() {},
+    dir: function() {},
+    dirxml: function() {},
+    group: function() {},
+    groupCollapsed: function() {},
+    groupEnd: function() {},
+    msIsIndependentlyComposed: function(element: any): any {},
+    profile: function() {},
+    profileEnd: function() {},
+    select: function() {},
+    time: function() {},
+    timeEnd: function() {},
+    trace: function() {}
   };
 }
 
@@ -58,8 +38,7 @@ export class Logger {
   static level = Logger.INFO;
   static executionTime = false;
 
-  constructor(private owner: any) {
-  }
+  constructor(private owner: any) {}
 
   trace(...stuff: any[]) {
     if (Logger.level <= Logger.TRACE) {

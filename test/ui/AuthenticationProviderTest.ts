@@ -12,27 +12,33 @@ import { MissingAuthenticationError } from '../../src/rest/MissingAuthentication
 import _ = require('underscore');
 
 export function AuthenticationProviderTest() {
-  describe('AuthenticationProvider', function () {
+  describe('AuthenticationProvider', function() {
     let test: Mock.IBasicComponentSetup<AuthenticationProvider>;
 
-    beforeEach(function () {
-      spyOn(ModalBox, 'open').and.callFake(() => { });
-      spyOn(ModalBox, 'close').and.callFake(() => { });
+    beforeEach(function() {
+      spyOn(ModalBox, 'open').and.callFake(() => {});
+      spyOn(ModalBox, 'close').and.callFake(() => {});
 
-      test = Mock.optionsComponentSetup<AuthenticationProvider, IAuthenticationProviderOptions>(AuthenticationProvider, <IAuthenticationProviderOptions>{
+      test = Mock.optionsComponentSetup<
+        AuthenticationProvider,
+        IAuthenticationProviderOptions
+      >(AuthenticationProvider, <IAuthenticationProviderOptions>{
         name: 'foo',
         caption: 'foobar',
         useIFrame: true
       });
     });
 
-    afterEach(function () {
+    afterEach(function() {
       test = null;
     });
 
-    describe('exposes options', function () {
-      it('name should push name in buildingCallOptions', function () {
-        test = Mock.optionsComponentSetup<AuthenticationProvider, IAuthenticationProviderOptions>(AuthenticationProvider, <IAuthenticationProviderOptions>{
+    describe('exposes options', function() {
+      it('name should push name in buildingCallOptions', function() {
+        test = Mock.optionsComponentSetup<
+          AuthenticationProvider,
+          IAuthenticationProviderOptions
+        >(AuthenticationProvider, <IAuthenticationProviderOptions>{
           name: 'testpatate'
         });
         let eventArgs: IBuildingCallOptionsEventArgs = {
@@ -44,36 +50,41 @@ export function AuthenticationProviderTest() {
         expect(eventArgs.options.authentication).toEqual(jasmine.arrayContaining(['testpatate']));
       });
 
-      describe('caption', function () {
-        it('should set itself in the menu', function () {
+      describe('caption', function() {
+        it('should set itself in the menu', function() {
           let populateMenuArgs: ISettingsPopulateMenuArgs = {
             settings: null,
             menuData: []
           };
           $$(test.cmp.root).trigger(SettingsEvents.settingsPopulateMenu, populateMenuArgs);
-          expect(populateMenuArgs.menuData).toEqual(jasmine.arrayContaining([
-            jasmine.objectContaining({
-              text: l('Reauthenticate', 'foobar'),
-              className: 'coveo-authentication-provider',
-              onOpen: jasmine.any(Function)
-            })
-          ]));
+          expect(populateMenuArgs.menuData).toEqual(
+            jasmine.arrayContaining([
+              jasmine.objectContaining({
+                text: l('Reauthenticate', 'foobar'),
+                className: 'coveo-authentication-provider',
+                onOpen: jasmine.any(Function)
+              })
+            ])
+          );
         });
 
-        it('should be the title of the modal box when iFrame is enabled', function () {
+        it('should be the title of the modal box when iFrame is enabled', function() {
           test = Mock.optionsComponentSetup<AuthenticationProvider, IAuthenticationProviderOptions>(AuthenticationProvider, {
             name: 'foo',
             caption: 'foobar',
-            useIFrame: true,
+            useIFrame: true
           });
           $$(test.cmp.root).trigger(QueryEvents.queryError, { error: new MissingAuthenticationError('foo') });
-          expect(ModalBox.open).toHaveBeenCalledWith(jasmine.anything(), jasmine.objectContaining({
-            title: l('Authenticating', 'foobar')
-          }));
+          expect(ModalBox.open).toHaveBeenCalledWith(
+            jasmine.anything(),
+            jasmine.objectContaining({
+              title: l('Authenticating', 'foobar')
+            })
+          );
         });
       });
 
-      it('useIFrame set to false should redirect to auth provider URL', function () {
+      it('useIFrame set to false should redirect to auth provider URL', function() {
         let fakeWindow = Mock.mockWindow();
 
         test = Mock.optionsComponentSetup<AuthenticationProvider, IAuthenticationProviderOptions>(AuthenticationProvider, {
@@ -88,7 +99,7 @@ export function AuthenticationProviderTest() {
         expect(fakeWindow.location.href).toBe('coveo.com');
       });
 
-      it('useIFrame and showIFrame set to true should display a ModalBox containing iframe', function () {
+      it('useIFrame and showIFrame set to true should display a ModalBox containing iframe', function() {
         test = Mock.optionsComponentSetup<AuthenticationProvider, IAuthenticationProviderOptions>(AuthenticationProvider, {
           name: 'foo',
           caption: 'foobar',
@@ -100,7 +111,7 @@ export function AuthenticationProviderTest() {
         expect(ModalBox.open['calls'].mostRecent().args[0].children[0].src).toBe('http://coveo.com/');
       });
 
-      it('showIFrame set to false should show a waiting popup not containing the iframe', function () {
+      it('showIFrame set to false should show a waiting popup not containing the iframe', function() {
         test = Mock.optionsComponentSetup<AuthenticationProvider, IAuthenticationProviderOptions>(AuthenticationProvider, {
           name: 'foo',
           caption: 'foobar',
@@ -109,18 +120,23 @@ export function AuthenticationProviderTest() {
         });
         $$(test.env.root).trigger(QueryEvents.queryError, { error: new MissingAuthenticationError('foo') });
 
-        expect(ModalBox.open).toHaveBeenCalledWith(jasmine.objectContaining({
-          className: 'coveo-waiting-for-authentication-popup'
-        }), jasmine.anything());
+        expect(ModalBox.open).toHaveBeenCalledWith(
+          jasmine.objectContaining({
+            className: 'coveo-waiting-for-authentication-popup'
+          }),
+          jasmine.anything()
+        );
       });
     });
 
-    it('should stop a redirect loop after 3 redirects', function () {
+    it('should stop a redirect loop after 3 redirects', function() {
       spyOn(test.cmp.logger, 'error').and.returnValue(null);
       _.times(3, () => $$(test.env.root).trigger(QueryEvents.queryError, { error: { provider: 'foo' } }));
 
       $$(test.env.root).trigger(QueryEvents.queryError, { error: new MissingAuthenticationError('foo') });
-      expect(test.cmp.logger.error).toHaveBeenCalledWith('The AuthenticationProvider is in a redirect loop. This may be due to a back-end configuration problem.');
+      expect(test.cmp.logger.error).toHaveBeenCalledWith(
+        'The AuthenticationProvider is in a redirect loop. This may be due to a back-end configuration problem.'
+      );
     });
   });
 }

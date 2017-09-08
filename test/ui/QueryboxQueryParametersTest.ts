@@ -53,7 +53,6 @@ export function QueryboxQueryParametersTest() {
       expect(builder.enableQuerySyntax).toBe(false);
     });
 
-
     it('should add enablePartialMatch to builder', () => {
       new QueryboxQueryParameters({
         enablePartialMatch: true,

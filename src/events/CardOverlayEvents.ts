@@ -2,7 +2,6 @@
  * The CardOverlayEvents class contains string definitions for all events related to the {@link CardOverlay} component.
  */
 export class CardOverlayEvents {
-
   /**
    * Opening a {@link CardOverlay} component triggers this event (see {@link CardOverlay.openOverlay}).
    *

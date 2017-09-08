@@ -8,13 +8,12 @@ import { SVGDom } from '../../utils/SVGDom';
  * A numeric spinner widget with standard styling.
  */
 export class NumericSpinner implements IFormWidget, IFormWidgetSettable {
-
   private element: HTMLElement;
   public name: string;
 
   public static doExport() {
     exportGlobally({
-      'NumericSpinner': NumericSpinner
+      NumericSpinner: NumericSpinner
     });
   }
 
@@ -25,8 +24,11 @@ export class NumericSpinner implements IFormWidget, IFormWidgetSettable {
    * @param min The minimum possible value of the numeric spinner.
    * @param max The maximum possible value of the numeric spinner.
    */
-  constructor(public onChange: (numericSpinner: NumericSpinner) => void = (numericSpinner: NumericSpinner) => {
-  }, public min: number = 0, public max?: number) {
+  constructor(
+    public onChange: (numericSpinner: NumericSpinner) => void = (numericSpinner: NumericSpinner) => {},
+    public min: number = 0,
+    public max?: number
+  ) {
     this.buildContent();
     this.bindEvents();
   }
@@ -132,6 +134,6 @@ export class NumericSpinner implements IFormWidget, IFormWidgetSettable {
   }
 
   private getSpinnerInput(): HTMLInputElement {
-    return (<HTMLInputElement>$$(this.element).find('.coveo-number-input'));
+    return <HTMLInputElement>$$(this.element).find('.coveo-number-input');
   }
 }

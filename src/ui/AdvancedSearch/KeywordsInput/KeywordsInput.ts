@@ -5,11 +5,9 @@ import { AdvancedSearchEvents } from '../../../events/AdvancedSearchEvents';
 import { $$ } from '../../../utils/Dom';
 
 export class KeywordsInput implements IAdvancedSearchInput {
-
   protected input: TextInput;
 
-  constructor(public inputName: string, public root: HTMLElement) {
-  }
+  constructor(public inputName: string, public root: HTMLElement) {}
 
   public reset() {
     this.clear();

@@ -7,12 +7,10 @@ import { l } from '../../strings/Strings';
 const Globalize = require('globalize');
 const Pikaday = require('pikaday');
 
-
 /**
  * A date picker widget with standard styling.
  */
 export class DatePicker implements IFormWidget, IFormWidgetSettable {
-
   private element: HTMLInputElement;
   private picker: Pikaday;
   public name: string;
@@ -20,17 +18,16 @@ export class DatePicker implements IFormWidget, IFormWidgetSettable {
 
   static doExport = () => {
     exportGlobally({
-      'DatePicker': DatePicker
+      DatePicker: DatePicker
     });
-  }
+  };
 
   /**
    * Creates a new `DatePicker`.
    * @param onChange The function to call when a new value is selected in the date picker. This function takes the
    * current `DatePicker` instance as an argument.
    */
-  constructor(public onChange: (datePicker: DatePicker) => void = () => {
-  }) {
+  constructor(public onChange: (datePicker: DatePicker) => void = () => {}) {
     this.buildContent();
   }
 

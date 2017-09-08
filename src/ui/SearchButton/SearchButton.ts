@@ -9,8 +9,7 @@ import { exportGlobally } from '../../GlobalExports';
 import { SVGIcons } from '../../utils/SVGIcons';
 import { SVGDom } from '../../utils/SVGDom';
 
-export interface ISearchButtonOptions {
-}
+export interface ISearchButtonOptions {}
 
 /**
  * The SearchButton component renders a search icon that the end user can click to trigger a new query.
@@ -23,9 +22,9 @@ export class SearchButton extends Component {
 
   static doExport = () => {
     exportGlobally({
-      'SearchButton': SearchButton
+      SearchButton: SearchButton
     });
-  }
+  };
 
   static options: ISearchButtonOptions = {};
 

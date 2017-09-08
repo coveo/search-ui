@@ -14,7 +14,7 @@ export class MultiSelect implements IFormWidget, IFormWidgetSettable {
 
   static doExport() {
     exportGlobally({
-      'MultiSelect': MultiSelect
+      MultiSelect: MultiSelect
     });
   }
 
@@ -25,8 +25,11 @@ export class MultiSelect implements IFormWidget, IFormWidgetSettable {
    * @param options The values which can be selected with the multi select.
    * @param label The label to display for the multi select.
    */
-  constructor(public onChange: (multiSelect: MultiSelect) => void = (multiSelect: MultiSelect) => {
-  }, public options: string[], public label: string) {
+  constructor(
+    public onChange: (multiSelect: MultiSelect) => void = (multiSelect: MultiSelect) => {},
+    public options: string[],
+    public label: string
+  ) {
     this.buildContent();
   }
 
@@ -77,11 +80,13 @@ export class MultiSelect implements IFormWidget, IFormWidgetSettable {
   public setValue(values: string[]) {
     const currentlySelected = this.getValue();
 
-    const currentStateSplit = _.partition(_.toArray(this.element.options), (opt: HTMLOptionElement) => _.contains(currentlySelected, opt.value));
+    const currentStateSplit = _.partition(_.toArray(this.element.options), (opt: HTMLOptionElement) =>
+      _.contains(currentlySelected, opt.value)
+    );
     const newStateToApplySplit = _.partition(_.toArray(this.element.options), (opt: HTMLOptionElement) => _.contains(values, opt.value));
 
-    _.each(newStateToApplySplit[0], (toSelect: HTMLOptionElement) => toSelect.selected = true);
-    _.each(newStateToApplySplit[1], (toUnSelect: HTMLOptionElement) => toUnSelect.selected = false);
+    _.each(newStateToApplySplit[0], (toSelect: HTMLOptionElement) => (toSelect.selected = true));
+    _.each(newStateToApplySplit[1], (toUnSelect: HTMLOptionElement) => (toUnSelect.selected = false));
 
     let hasChanged = false;
     if (!Utils.arrayEqual(currentStateSplit[0], newStateToApplySplit[0], false)) {
@@ -117,10 +122,10 @@ export class MultiSelect implements IFormWidget, IFormWidgetSettable {
       className: 'mdc-list-group',
       label: this.label
     });
-    const options = _.map(this.options, (opt) => {
+    const options = _.map(this.options, opt => {
       return $$('option', { value: opt, className: 'mdc-list-item' }, l(opt));
     });
-    _.each(options, (opt) => optgroup.append(opt.el));
+    _.each(options, opt => optgroup.append(opt.el));
     this.element.appendChild(optgroup.el);
     $$(this.element).on('change', () => this.onChange(this));
   }

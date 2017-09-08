@@ -52,8 +52,20 @@ export function ResponsiveFacetsTest() {
       root = $$('div');
       root.append($$('div', { className: 'coveo-facet-column' }).el);
       root.append($$('div', { className: ResponsiveComponentsManager.DROPDOWN_HEADER_WRAPPER_CSS_CLASS }).el);
-      responsiveDropdown = jasmine.createSpyObj('responsiveDropdown', ['registerOnOpenHandler', 'registerOnCloseHandler', 'cleanUp', 'open', 'close', 'disablePopupBackground']);
-      responsiveDropdownContent = jasmine.createSpyObj('responsiveDropdownContent', ['positionDropdown', 'hideDropdown', 'cleanUp', 'element']);
+      responsiveDropdown = jasmine.createSpyObj('responsiveDropdown', [
+        'registerOnOpenHandler',
+        'registerOnCloseHandler',
+        'cleanUp',
+        'open',
+        'close',
+        'disablePopupBackground'
+      ]);
+      responsiveDropdownContent = jasmine.createSpyObj('responsiveDropdownContent', [
+        'positionDropdown',
+        'hideDropdown',
+        'cleanUp',
+        'element'
+      ]);
       responsiveDropdownContent.element = $$('div');
       responsiveDropdownHeader = jasmine.createSpyObj('responsiveDropdownHeader', ['open', 'close', 'cleanUp', 'show', 'hide']);
       responsiveDropdownHeader.element = $$('div', { className: dropdownHeaderClassName });
@@ -64,7 +76,7 @@ export function ResponsiveFacetsTest() {
       registerFacet();
     });
 
-    it('when a facet is registered then position search results is called on scroll', (done) => {
+    it('when a facet is registered then position search results is called on scroll', done => {
       spyOn(facet.facetSearch, 'positionSearchResults');
 
       $$(responsiveDropdownContent.element).trigger('scroll');

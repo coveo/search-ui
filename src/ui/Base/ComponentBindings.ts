@@ -1,4 +1,5 @@
-import { QueryStateModel } from '../../models/QueryStateModel'; import { ComponentStateModel } from '../../models/ComponentStateModel';
+import { QueryStateModel } from '../../models/QueryStateModel';
+import { ComponentStateModel } from '../../models/ComponentStateModel';
 import { QueryController } from '../../controllers/QueryController';
 import { SearchInterface } from '../SearchInterface/SearchInterface';
 import { IAnalyticsClient } from '../Analytics/AnalyticsClient';

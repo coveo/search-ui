@@ -32,27 +32,28 @@ export function RegisteredNamedMethodsTest() {
     });
 
     it('should allow to load an arbitrary module', () => {
-      const fooModule = jasmine.createSpy('foo').and.callFake(() => new Promise((resolve, reject) => {
-      }));
+      const fooModule = jasmine.createSpy('foo').and.callFake(() => new Promise((resolve, reject) => {}));
 
       LazyInitialization.registerLazyModule('foo', fooModule);
 
       RegisteredNamedMethod.load('foo');
       expect(fooModule).toHaveBeenCalled();
-
     });
 
     it('should allow to load an arbitrary component', () => {
-      const barComponent = jasmine.createSpy('bar').and.callFake(() => new Promise((resolve, reject) => {
-        resolve(NoopComponent);
-      }));
+      const barComponent = jasmine.createSpy('bar').and.callFake(
+        () =>
+          new Promise((resolve, reject) => {
+            resolve(NoopComponent);
+          })
+      );
 
       LazyInitialization.registerLazyComponent('bar', barComponent);
       RegisteredNamedMethod.load('bar');
       expect(barComponent).toHaveBeenCalled();
     });
 
-    it('promise should throw when loading something that does not exist', (done) => {
+    it('promise should throw when loading something that does not exist', done => {
       RegisteredNamedMethod.load('does not exist').catch(() => {
         expect(true).toBe(true);
         done();
@@ -68,38 +69,46 @@ export function RegisteredNamedMethodsTest() {
     });
 
     it('should allow to call init correctly', () => {
-      expect(() => RegisteredNamedMethod.init(root, {
-        Searchbox: { addSearchButton: false },
-        SearchInterface: { autoTriggerQuery: false }
-      })).not.toThrow();
+      expect(() =>
+        RegisteredNamedMethod.init(root, {
+          Searchbox: { addSearchButton: false },
+          SearchInterface: { autoTriggerQuery: false }
+        })
+      ).not.toThrow();
       expect((<Component>Component.get(searchbox)).options.addSearchButton).toBe(false);
     });
 
     it('should allow to call initSearchbox correctly', () => {
-      expect(() => RegisteredNamedMethod.initSearchbox(root, '/search', {
-        Searchbox: { addSearchButton: false },
-        SearchInterface: { autoTriggerQuery: false }
-      })).not.toThrow();
+      expect(() =>
+        RegisteredNamedMethod.initSearchbox(root, '/search', {
+          Searchbox: { addSearchButton: false },
+          SearchInterface: { autoTriggerQuery: false }
+        })
+      ).not.toThrow();
 
       expect((<Component>Component.get(searchbox)).options.addSearchButton).toBe(false);
       expect((<Component>Component.get(searchbox)).options.triggerQueryOnClear).toBe(false);
     });
 
     it('should allow to call initSearchbox if the searchbox is on the root of the element', () => {
-      expect(() => RegisteredNamedMethod.initSearchbox(searchbox, '/search', {
-        Searchbox: { addSearchButton: false },
-        SearchInterface: { autoTriggerQuery: false }
-      })).not.toThrow();
+      expect(() =>
+        RegisteredNamedMethod.initSearchbox(searchbox, '/search', {
+          Searchbox: { addSearchButton: false },
+          SearchInterface: { autoTriggerQuery: false }
+        })
+      ).not.toThrow();
 
-      expect((<Component>Component.get(searchbox, Searchbox)) instanceof Searchbox).toBe(true);
-      expect((<Component>Component.get(searchbox, SearchInterface)) instanceof SearchInterface).toBe(true);
+      expect(<Component>Component.get(searchbox, Searchbox) instanceof Searchbox).toBe(true);
+      expect(<Component>Component.get(searchbox, SearchInterface) instanceof SearchInterface).toBe(true);
     });
 
-    it('should allow to call init recommendation correctly', (done) => {
-      expect(() => RegisteredNamedMethod.initRecommendation(root, undefined, undefined, {
-        Searchbox: { addSearchButton: false },
-        SearchInterface: { autoTriggerQuery: false }
-      })).not.toThrow();
+    it('should allow to call init recommendation correctly', done => {
+      expect(() =>
+        RegisteredNamedMethod.initRecommendation(root, undefined, undefined, {
+          Searchbox: { addSearchButton: false },
+          SearchInterface: { autoTriggerQuery: false }
+        })
+      ).not.toThrow();
 
       Defer.defer(() => {
         expect((<Component>Component.get(searchbox)).options.addSearchButton).toBe(false);
@@ -177,35 +186,50 @@ export function RegisteredNamedMethodsTest() {
 
       it('should allow to log search event', () => {
         RegisteredNamedMethod.logSearchEvent(env.root, { name: 'foo', type: 'bar' }, {});
-        expect(analytics['client'].logSearchEvent).toHaveBeenCalledWith(jasmine.objectContaining({
-          name: 'foo',
-          type: 'bar'
-        }), jasmine.any(Object));
+        expect(analytics['client'].logSearchEvent).toHaveBeenCalledWith(
+          jasmine.objectContaining({
+            name: 'foo',
+            type: 'bar'
+          }),
+          jasmine.any(Object)
+        );
       });
 
       it('should allow to log a custom event', () => {
         RegisteredNamedMethod.logCustomEvent(env.root, { name: 'foo', type: 'bar' }, {});
-        expect(analytics['client'].logCustomEvent).toHaveBeenCalledWith(jasmine.objectContaining({
-          name: 'foo',
-          type: 'bar'
-        }), jasmine.any(Object), env.root);
+        expect(analytics['client'].logCustomEvent).toHaveBeenCalledWith(
+          jasmine.objectContaining({
+            name: 'foo',
+            type: 'bar'
+          }),
+          jasmine.any(Object),
+          env.root
+        );
       });
 
       it('should allow to log a search as you type event', () => {
         RegisteredNamedMethod.logSearchAsYouTypeEvent(env.root, { name: 'foo', type: 'bar' }, {});
-        expect(analytics['client'].logSearchAsYouType).toHaveBeenCalledWith(jasmine.objectContaining({
-          name: 'foo',
-          type: 'bar'
-        }), jasmine.any(Object));
+        expect(analytics['client'].logSearchAsYouType).toHaveBeenCalledWith(
+          jasmine.objectContaining({
+            name: 'foo',
+            type: 'bar'
+          }),
+          jasmine.any(Object)
+        );
       });
 
       it('should allow to log a click event', () => {
         let fakeResult = FakeResults.createFakeResult();
         RegisteredNamedMethod.logClickEvent(env.root, { name: 'foo', type: 'bar' }, {}, fakeResult);
-        expect(analytics['client'].logClickEvent).toHaveBeenCalledWith(jasmine.objectContaining({
-          name: 'foo',
-          type: 'bar'
-        }), jasmine.any(Object), fakeResult, env.root);
+        expect(analytics['client'].logClickEvent).toHaveBeenCalledWith(
+          jasmine.objectContaining({
+            name: 'foo',
+            type: 'bar'
+          }),
+          jasmine.any(Object),
+          fakeResult,
+          env.root
+        );
       });
     });
   });

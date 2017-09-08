@@ -12,9 +12,13 @@ export function ResultTaggingTest() {
     beforeEach(() => {
       result = FakeResults.createFakeResult();
       result.raw['foo'] = 'value1;value2;value3';
-      test = Mock.optionsResultComponentSetup<ResultTagging, IResultTaggingOptions>(ResultTagging, <IResultTaggingOptions>{
-        field: '@foo'
-      }, result);
+      test = Mock.optionsResultComponentSetup<ResultTagging, IResultTaggingOptions>(
+        ResultTagging,
+        <IResultTaggingOptions>{
+          field: '@foo'
+        },
+        result
+      );
     });
 
     afterEach(() => {

@@ -1,7 +1,6 @@
 import { Dom } from '../../utils/Dom';
 
 export class ResponsiveComponentsUtils {
-
   private static smallTabsClassName: string = 'coveo-small-tabs';
   private static smallFacetClassName: string = 'coveo-small-facets';
   private static smallRecommendationClassName: string = 'coveo-small-recommendation';

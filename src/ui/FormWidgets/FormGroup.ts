@@ -13,7 +13,7 @@ export class FormGroup {
 
   static doExport() {
     exportGlobally({
-      'FormGroup': FormGroup
+      FormGroup: FormGroup
     });
   }
 

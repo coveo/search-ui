@@ -13,7 +13,7 @@ export class NoneKeywordsInput extends KeywordsInput {
 
     if (value) {
       let splitValues = value.split(' ');
-      _.each(splitValues, (splitValue) => {
+      _.each(splitValues, splitValue => {
         generatedValue += ' NOT ' + splitValue;
       });
       generatedValue = generatedValue.substr(1);

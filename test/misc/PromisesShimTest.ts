@@ -1,8 +1,8 @@
 import { Simulate } from '../Simulate';
 
 export function PromisesShimTest() {
-  describe('PromisesShim', function () {
-    it('should shim finally', (done) => {
+  describe('PromisesShim', function() {
+    it('should shim finally', done => {
       new Promise((resolve, reject) => {
         resolve(true);
       }).finally(() => {
@@ -12,7 +12,7 @@ export function PromisesShimTest() {
       });
     });
 
-    it('should shim done', (done) => {
+    it('should shim done', done => {
       // In a normal browser, this would require
       // to import es6-promises.
       // Testing for phantom js is good enough
@@ -21,7 +21,7 @@ export function PromisesShimTest() {
           resolve(true);
         });
 
-        p.done((value) => {
+        p.done(value => {
           expect(value).toBe(true);
           done();
         });
@@ -31,7 +31,7 @@ export function PromisesShimTest() {
       }
     });
 
-    it('should shim fail', (done) => {
+    it('should shim fail', done => {
       // In a normal browser, this would require
       // to import es6-promises.
       // Testing for phantom js is good enough
@@ -40,7 +40,7 @@ export function PromisesShimTest() {
           reject(false);
         });
 
-        p.fail((value) => {
+        p.fail(value => {
           expect(value).toBe(false);
           done();
         });

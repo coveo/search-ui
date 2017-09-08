@@ -8,7 +8,11 @@ import { Logger } from '../../misc/Logger';
 import { IAnalyticsActionCause, analyticsActionCauseList } from './AnalyticsActionListMeta';
 import { IQueryResult } from '../../rest/QueryResult';
 import { ITopQueries } from '../../rest/TopQueries';
-import { IChangeableAnalyticsMetaObject, IChangeableAnalyticsDataObject, IChangeAnalyticsCustomDataEventArgs } from '../../events/AnalyticsEvents';
+import {
+  IChangeableAnalyticsMetaObject,
+  IChangeableAnalyticsDataObject,
+  IChangeAnalyticsCustomDataEventArgs
+} from '../../events/AnalyticsEvents';
 import { Defer } from '../../misc/Defer';
 import { $$ } from '../../utils/Dom';
 import { AnalyticsEvents, IAnalyticsCustomEventArgs } from '../../events/AnalyticsEvents';
@@ -35,7 +39,8 @@ export class LiveAnalyticsClient implements IAnalyticsClient {
   private pendingSearchAsYouTypeSearchEvent: PendingSearchAsYouTypeSearchEvent;
   private logger: Logger;
 
-  constructor(public endpoint: AnalyticsEndpoint,
+  constructor(
+    public endpoint: AnalyticsEndpoint,
     public rootElement: HTMLElement,
     public userId: string,
     public userDisplayName: string,
@@ -43,8 +48,8 @@ export class LiveAnalyticsClient implements IAnalyticsClient {
     public splitTestRunName: string,
     public splitTestRunVersion: string,
     public originLevel1: string,
-    public sendToCloud: boolean) {
-
+    public sendToCloud: boolean
+  ) {
     Assert.exists(endpoint);
     Assert.exists(rootElement);
     Assert.isNonEmptyString(this.language);
@@ -95,7 +100,12 @@ export class LiveAnalyticsClient implements IAnalyticsClient {
     this.pushSearchAsYouTypeEvent(actionCause, metaObject);
   }
 
-  public logClickEvent<TMeta>(actionCause: IAnalyticsActionCause, meta: TMeta, result: IQueryResult, element: HTMLElement): Promise<IAPIAnalyticsEventResponse> {
+  public logClickEvent<TMeta>(
+    actionCause: IAnalyticsActionCause,
+    meta: TMeta,
+    result: IQueryResult,
+    element: HTMLElement
+  ): Promise<IAPIAnalyticsEventResponse> {
     let metaObject = this.buildMetaObject(meta, result);
     return this.pushClickEvent(actionCause, metaObject, result, element);
   }
@@ -137,7 +147,10 @@ export class LiveAnalyticsClient implements IAnalyticsClient {
 
   public warnAboutSearchEvent() {
     if (_.isUndefined(this.pendingSearchEvent) && _.isUndefined(this.pendingSearchAsYouTypeSearchEvent)) {
-      this.logger.warn('A search was triggered, but no analytics event was logged. If you wish to have consistent analytics data, consider logging a search event using the methods provided by the framework', 'https://developers.coveo.com/x/TwA5');
+      this.logger.warn(
+        'A search was triggered, but no analytics event was logged. If you wish to have consistent analytics data, consider logging a search event using the methods provided by the framework',
+        'https://developers.coveo.com/x/TwA5'
+      );
       if (window['console'] && console.trace) {
         console.trace();
       }
@@ -148,11 +161,17 @@ export class LiveAnalyticsClient implements IAnalyticsClient {
     this.originContext = originContext;
   }
 
-  private pushCustomEvent(actionCause: IAnalyticsActionCause, metaObject: IChangeableAnalyticsMetaObject, element?: HTMLElement): Promise<IAPIAnalyticsEventResponse> {
+  private pushCustomEvent(
+    actionCause: IAnalyticsActionCause,
+    metaObject: IChangeableAnalyticsMetaObject,
+    element?: HTMLElement
+  ): Promise<IAPIAnalyticsEventResponse> {
     var customEvent = this.buildCustomEvent(actionCause, metaObject, element);
     this.triggerChangeAnalyticsCustomData('CustomEvent', metaObject, customEvent);
     this.checkToSendAnyPendingSearchAsYouType(actionCause);
-    $$(this.rootElement).trigger(AnalyticsEvents.customEvent, <IAnalyticsCustomEventArgs>{ customEvent: APIAnalyticsBuilder.convertCustomEventToAPI(customEvent) });
+    $$(this.rootElement).trigger(AnalyticsEvents.customEvent, <IAnalyticsCustomEventArgs>{
+      customEvent: APIAnalyticsBuilder.convertCustomEventToAPI(customEvent)
+    });
     return this.sendToCloud ? this.endpoint.sendCustomEvent(customEvent) : Promise.resolve(null);
   }
 
@@ -167,7 +186,12 @@ export class LiveAnalyticsClient implements IAnalyticsClient {
     if (!this.pendingSearchEvent) {
       var searchEvent = this.buildSearchEvent(actionCause, metaObject);
       this.triggerChangeAnalyticsCustomData('SearchEvent', metaObject, searchEvent);
-      var pendingSearchEvent = this.pendingSearchEvent = new PendingSearchEvent(this.rootElement, this.endpoint, searchEvent, this.sendToCloud);
+      var pendingSearchEvent = (this.pendingSearchEvent = new PendingSearchEvent(
+        this.rootElement,
+        this.endpoint,
+        searchEvent,
+        this.sendToCloud
+      ));
 
       Defer.defer(() => {
         // At this point all `duringQuery` events should have been fired, so we can forget
@@ -191,10 +215,20 @@ export class LiveAnalyticsClient implements IAnalyticsClient {
     this.cancelAnyPendingSearchAsYouTypeEvent();
     var searchEvent = this.buildSearchEvent(actionCause, metaObject);
     this.triggerChangeAnalyticsCustomData('SearchEvent', metaObject, searchEvent);
-    this.pendingSearchAsYouTypeSearchEvent = new PendingSearchAsYouTypeSearchEvent(this.rootElement, this.endpoint, searchEvent, this.sendToCloud);
+    this.pendingSearchAsYouTypeSearchEvent = new PendingSearchAsYouTypeSearchEvent(
+      this.rootElement,
+      this.endpoint,
+      searchEvent,
+      this.sendToCloud
+    );
   }
 
-  private pushClickEvent(actionCause: IAnalyticsActionCause, metaObject: IChangeableAnalyticsMetaObject, result: IQueryResult, element: HTMLElement): Promise<IAPIAnalyticsEventResponse> {
+  private pushClickEvent(
+    actionCause: IAnalyticsActionCause,
+    metaObject: IChangeableAnalyticsMetaObject,
+    result: IQueryResult,
+    element: HTMLElement
+  ): Promise<IAPIAnalyticsEventResponse> {
     var event = this.buildClickEvent(actionCause, metaObject, result, element);
     this.checkToSendAnyPendingSearchAsYouType(actionCause);
     this.triggerChangeAnalyticsCustomData('ClickEvent', metaObject, event, { resultData: result });
@@ -246,7 +280,12 @@ export class LiveAnalyticsClient implements IAnalyticsClient {
     });
   }
 
-  private buildClickEvent(actionCause: IAnalyticsActionCause, metaObject: IChangeableAnalyticsMetaObject, result: IQueryResult, element: HTMLElement): IClickEvent {
+  private buildClickEvent(
+    actionCause: IAnalyticsActionCause,
+    metaObject: IChangeableAnalyticsMetaObject,
+    result: IQueryResult,
+    element: HTMLElement
+  ): IClickEvent {
     return this.merge<IClickEvent>(this.buildAnalyticsEvent(actionCause, metaObject), {
       searchQueryUid: result.queryUid,
       queryPipeline: result.pipeline,
@@ -267,7 +306,11 @@ export class LiveAnalyticsClient implements IAnalyticsClient {
     });
   }
 
-  private buildCustomEvent(actionCause: IAnalyticsActionCause, metaObject: IChangeableAnalyticsMetaObject, element: HTMLElement): ICustomEvent {
+  private buildCustomEvent(
+    actionCause: IAnalyticsActionCause,
+    metaObject: IChangeableAnalyticsMetaObject,
+    element: HTMLElement
+  ): ICustomEvent {
     return this.merge<ICustomEvent>(this.buildAnalyticsEvent(actionCause, metaObject), {
       eventType: actionCause.type,
       eventValue: actionCause.name,
@@ -303,7 +346,7 @@ export class LiveAnalyticsClient implements IAnalyticsClient {
   private resolveActiveTabFromElement(element: HTMLElement): string {
     Assert.exists(element);
     var queryStateModel = this.resolveQueryStateModel(element);
-    return (queryStateModel && <string>queryStateModel.get(QueryStateModel.attributesEnum.t));
+    return queryStateModel && <string>queryStateModel.get(QueryStateModel.attributesEnum.t);
   }
 
   private resolveQueryStateModel(rootElement: HTMLElement): QueryStateModel {
@@ -330,12 +373,16 @@ export class LiveAnalyticsClient implements IAnalyticsClient {
       metaObject: metaObject
     };
 
-
-    var args: IChangeAnalyticsCustomDataEventArgs = _.extend({}, {
-      type: type,
-      actionType: event.actionType,
-      actionCause: event.actionCause
-    }, changeableAnalyticsDataObject, data);
+    var args: IChangeAnalyticsCustomDataEventArgs = _.extend(
+      {},
+      {
+        type: type,
+        actionType: event.actionType,
+        actionCause: event.actionCause
+      },
+      changeableAnalyticsDataObject,
+      data
+    );
     $$(this.rootElement).trigger(AnalyticsEvents.changeAnalyticsCustomData, args);
 
     event.language = args.language;
@@ -351,14 +398,18 @@ export class LiveAnalyticsClient implements IAnalyticsClient {
 
     var metaDataAsString = event.customData['metaDataAsString'];
     if (_.keys(metaDataAsString).length > 0) {
-      this.logger.warn('Using deprecated \'metaDataAsString\' key to log custom analytics data. Custom meta should now be put at the root of the object.');
+      this.logger.warn(
+        "Using deprecated 'metaDataAsString' key to log custom analytics data. Custom meta should now be put at the root of the object."
+      );
       _.extend(event.customData, metaDataAsString);
     }
     delete event.customData['metaDataAsString'];
 
     var metaDataAsNumber = event.customData['metaDataAsNumber'];
     if (_.keys(metaDataAsNumber).length > 0) {
-      this.logger.warn('Using deprecated \'metaDataAsNumber\' key to log custom analytics data. Custom meta should now be put at the root of the object.');
+      this.logger.warn(
+        "Using deprecated 'metaDataAsNumber' key to log custom analytics data. Custom meta should now be put at the root of the object."
+      );
       _.extend(event.customData, metaDataAsNumber);
     }
     delete event.customData['metaDataAsNumber'];

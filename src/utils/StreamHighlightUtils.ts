@@ -8,7 +8,7 @@ import * as _ from 'underscore';
 
 // \u2011: http://graphemica.com/%E2%80%91
 // Used to split terms and phrases. Should match characters that can separate words.
-const wordBoundary = '[\\.\\-\\u2011\\s~=,.\\|\\/:\'`’;_()!?&+]';
+const wordBoundary = "[\\.\\-\\u2011\\s~=,.\\|\\/:'`’;_()!?&+]";
 const regexStart = '(' + wordBoundary + '|^)(';
 
 /**
@@ -34,14 +34,24 @@ class DefaultStreamHighlightOptions extends Options implements IStreamHighlightO
 }
 
 export class StreamHighlightUtils {
-  static highlightStreamHTML(stream: string, termsToHighlight: { [originalTerm: string]: string[] }, phrasesToHighlight: { [phrase: string]: { [originalTerm: string]: string[] } }, options?: IStreamHighlightOptions) {
+  static highlightStreamHTML(
+    stream: string,
+    termsToHighlight: { [originalTerm: string]: string[] },
+    phrasesToHighlight: { [phrase: string]: { [originalTerm: string]: string[] } },
+    options?: IStreamHighlightOptions
+  ) {
     const opts = new DefaultStreamHighlightOptions().merge(options);
     const container = createStreamHTMLContainer(stream);
     const allElements = $$(container).findAll('*');
     if (allElements.length > 0) {
       _.each(allElements, (elem: HTMLElement, i: number) => {
         const text = $$(elem).text();
-        elem.innerHTML = HighlightUtils.highlightString(text, getRestHighlightsForAllTerms(text, termsToHighlight, phrasesToHighlight, opts), [], opts.cssClass);
+        elem.innerHTML = HighlightUtils.highlightString(
+          text,
+          getRestHighlightsForAllTerms(text, termsToHighlight, phrasesToHighlight, opts),
+          [],
+          opts.cssClass
+        );
       });
     } else {
       return StreamHighlightUtils.highlightStreamText(stream, termsToHighlight, phrasesToHighlight, options);
@@ -49,19 +59,33 @@ export class StreamHighlightUtils {
     return container.innerHTML;
   }
 
-  static highlightStreamText(stream: string, termsToHighlight: { [originalTerm: string]: string[] }, phrasesToHighlight: { [phrase: string]: { [originalTerm: string]: string[] } }, options?: IStreamHighlightOptions) {
+  static highlightStreamText(
+    stream: string,
+    termsToHighlight: { [originalTerm: string]: string[] },
+    phrasesToHighlight: { [phrase: string]: { [originalTerm: string]: string[] } },
+    options?: IStreamHighlightOptions
+  ) {
     const opts = new DefaultStreamHighlightOptions().merge(options);
-    return HighlightUtils.highlightString(stream, getRestHighlightsForAllTerms(stream, termsToHighlight, phrasesToHighlight, opts), [], opts.cssClass);
+    return HighlightUtils.highlightString(
+      stream,
+      getRestHighlightsForAllTerms(stream, termsToHighlight, phrasesToHighlight, opts),
+      [],
+      opts.cssClass
+    );
   }
 }
 
-
-function getRestHighlightsForAllTerms(toHighlight: string, termsToHighlight: { [originalTerm: string]: string[] }, phrasesToHighlight: { [phrase: string]: { [originalTerm: string]: string[] } }, opts: IStreamHighlightOptions): IHighlight[] {
+function getRestHighlightsForAllTerms(
+  toHighlight: string,
+  termsToHighlight: { [originalTerm: string]: string[] },
+  phrasesToHighlight: { [phrase: string]: { [originalTerm: string]: string[] } },
+  opts: IStreamHighlightOptions
+): IHighlight[] {
   const indexes = [];
   const sortedTerms = _.keys(termsToHighlight).sort(termsSorting);
   _.each(sortedTerms, (term: string) => {
     let termsToIterate = _.compact([term].concat(termsToHighlight[term]).sort(termsSorting));
-    termsToIterate = _.map(termsToIterate, (term) => Utils.escapeRegexCharacter(term));
+    termsToIterate = _.map(termsToIterate, term => Utils.escapeRegexCharacter(term));
     let regex = regexStart;
     regex += termsToIterate.join('|') + ')(?=(?:' + wordBoundary + '|$)+)';
     const indexesFound = StringUtils.getHighlights(toHighlight, new RegExp(regex, opts.regexFlags), term);
@@ -102,7 +126,7 @@ function getRestHighlightsForAllTerms(toHighlight: string, termsToHighlight: { [
     .sortBy((highlight: IHighlight) => {
       return highlight.offset;
     })
-    .map((highlight) => {
+    .map(highlight => {
       const keysFromTerms = _.keys(termsToHighlight);
       const keysFromPhrases = _.keys(phrasesToHighlight);
       const keys = keysFromTerms.concat(keysFromPhrases);

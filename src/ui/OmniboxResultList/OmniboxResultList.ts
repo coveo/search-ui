@@ -50,16 +50,15 @@ export class OmniboxResultList extends ResultList implements IComponentBindings 
 
   static doExport = () => {
     exportGlobally({
-      'OmniboxResultList': OmniboxResultList
+      OmniboxResultList: OmniboxResultList
     });
-  }
+  };
 
   /**
    * The options for the component
    * @componentOptions
    */
   static options: IOmniboxResultListOptions = {
-
     /**
      * Specifies the z-index at which to render the ResultList inside the Omnibox.
      *
@@ -117,12 +116,14 @@ export class OmniboxResultList extends ResultList implements IComponentBindings 
      * })
      * ```
      */
-    onSelect: ComponentOptions.buildCustomOption<(result: IQueryResult, resultElement: HTMLElement, omniboxObject: IPopulateOmniboxEventArgs) => void>(() => {
+    onSelect: ComponentOptions.buildCustomOption<
+      (result: IQueryResult, resultElement: HTMLElement, omniboxObject: IPopulateOmniboxEventArgs) => void
+    >(() => {
       return null;
     })
   };
 
-  private lastOmniboxRequest: { omniboxObject: IPopulateOmniboxEventArgs; resolve: (...args: any[]) => void; };
+  private lastOmniboxRequest: { omniboxObject: IPopulateOmniboxEventArgs; resolve: (...args: any[]) => void };
 
   /**
    * Creates a new OmniboxResultList component.
@@ -186,10 +187,14 @@ export class OmniboxResultList extends ResultList implements IComponentBindings 
     if (this.lastOmniboxRequest) {
       const content = $$('div').el;
       if (this.options.headerTitle) {
-        content.appendChild($$('div', { className: 'coveo-omnibox-result-list-header' },
-          $$('span', { className: 'coveo-icon-omnibox-result-list' }).el,
-          $$('span', { className: 'coveo-caption' }, l(this.options.headerTitle)).el
-        ).el);
+        content.appendChild(
+          $$(
+            'div',
+            { className: 'coveo-omnibox-result-list-header' },
+            $$('span', { className: 'coveo-icon-omnibox-result-list' }).el,
+            $$('span', { className: 'coveo-caption' }, l(this.options.headerTitle)).el
+          ).el
+        );
       }
       _.each(resultsElement, (resultElement: HTMLElement) => {
         content.appendChild(resultElement);
@@ -215,7 +220,7 @@ export class OmniboxResultList extends ResultList implements IComponentBindings 
     const promise = new Promise((resolve, reject) => {
       this.queryController.executeQuery({
         shouldRedirectStandaloneSearchbox: false,
-        beforeExecuteQuery: () => this.usageAnalytics.logSearchAsYouType<IAnalyticsNoMeta>(analyticsActionCauseList.searchboxSubmit, {}),
+        beforeExecuteQuery: () => this.usageAnalytics.logSearchAsYouType<IAnalyticsNoMeta>(analyticsActionCauseList.searchboxSubmit, {})
       });
       this.lastOmniboxRequest = { omniboxObject: args, resolve: resolve };
     });
@@ -232,7 +237,12 @@ export class OmniboxResultList extends ResultList implements IComponentBindings 
   }
 
   private onRowSelection(result: IQueryResult, resultElement: HTMLElement, omniboxObject: IPopulateOmniboxEventArgs) {
-    this.usageAnalytics.logClickEvent(analyticsActionCauseList.documentOpen, { author: Utils.getFieldValue(result, 'author') }, result, this.root);
+    this.usageAnalytics.logClickEvent(
+      analyticsActionCauseList.documentOpen,
+      { author: Utils.getFieldValue(result, 'author') },
+      result,
+      this.root
+    );
     window.location.href = result.clickUri;
   }
 }

@@ -56,7 +56,10 @@ export class FacetSliderQueryController {
   private handleQuerySuccess(args: IQuerySuccessEventArgs) {
     if (!this.isAValidRangeResponse(args)) {
       const logger = new Logger(this);
-      logger.error(`Cannot instantiate FacetSlider for this field : ${this.facet.options.field}. It needs to be configured as a numerical field in the index`);
+      logger.error(
+        `Cannot instantiate FacetSlider for this field : ${this.facet.options
+          .field}. It needs to be configured as a numerical field in the index`
+      );
       logger.error(`Disabling the FacetSlider`, this.facet);
       this.facet.disable();
       return;
@@ -65,7 +68,7 @@ export class FacetSliderQueryController {
     if (this.facet.options && this.facet.options.graph && this.rangeValuesForGraphToUse == undefined) {
       this.rangeValuesForGraphToUse = [];
       const rawValues = args.results.groupByResults[this.graphGroupByQueriesIndex].values;
-      _.each(rawValues, (rawValue) => {
+      _.each(rawValues, rawValue => {
         const rawSplit = rawValue.value.split('..');
         this.rangeValuesForGraphToUse.push({
           start: this.facet.options.dateField ? this.getISOFormat(rawSplit[0].replace('@', ' ')) : parseInt(rawSplit[0], 10),
@@ -134,7 +137,6 @@ export class FacetSliderQueryController {
     const filter = this.computeOurFilterExpression(this.facet.getSliderBoundaryForQuery());
     this.processQueryOverride(filter, basicGroupByRequestForGraph, queryBuilder);
 
-
     basicGroupByRequestForGraph.sortCriteria = 'nosort';
     basicGroupByRequestForGraph.maximumNumberOfValues = this.facet.options.graph.steps;
     queryBuilder.groupByRequests.push(basicGroupByRequestForGraph);
@@ -151,12 +153,14 @@ export class FacetSliderQueryController {
     let rangeValues = undefined;
     const { start, end } = this.formatStartAndEnd();
     if (this.facet.isSimpleSliderConfig()) {
-      rangeValues = [{
-        start: start,
-        end: end,
-        label: 'slider',
-        endInclusive: false
-      }];
+      rangeValues = [
+        {
+          start: start,
+          end: end,
+          label: 'slider',
+          endInclusive: false
+        }
+      ];
     }
 
     // A basic group by request that takes into account the current query
@@ -191,7 +195,7 @@ export class FacetSliderQueryController {
       if (groupByRequest.queryOverride == undefined) {
         groupByRequest.queryOverride = this.facet.options.queryOverride || '@uri';
       } else {
-        groupByRequest.queryOverride += (this.facet.options.queryOverride ? ' ' + this.facet.options.queryOverride : '');
+        groupByRequest.queryOverride += this.facet.options.queryOverride ? ' ' + this.facet.options.queryOverride : '';
       }
     } else if (this.facet.options.queryOverride != null) {
       const completeExpression = queryBuilder.computeCompleteExpression();
@@ -225,7 +229,7 @@ export class FacetSliderQueryController {
   }
 
   private usePrebuiltRange(basicRangeRequest: IRangeValue) {
-    return _.map(this.rangeValuesForGraphToUse, (value) => {
+    return _.map(this.rangeValuesForGraphToUse, value => {
       return {
         start: value.start,
         end: value.end,
@@ -238,9 +242,9 @@ export class FacetSliderQueryController {
   private buildRange(basicRangeRequest: IRangeValue) {
     const start = this.facet.options.start;
     const oneStep = (this.facet.options.end - this.facet.options.start) / this.facet.options.graph.steps;
-    return _.map(_.range(0, this.facet.options.graph.steps, 1), (step) => {
-      let newStart = start + (step * oneStep);
-      let newEnd = start + ((step + 1) * oneStep);
+    return _.map(_.range(0, this.facet.options.graph.steps, 1), step => {
+      let newStart = start + step * oneStep;
+      let newEnd = start + (step + 1) * oneStep;
       if (this.facet.options.dateField) {
         newStart = this.getISOFormat(newStart);
         newEnd = this.getISOFormat(newEnd);
@@ -289,7 +293,10 @@ export class FacetSliderQueryController {
 
   private getFilterDateFormat(rawValue: any) {
     if (rawValue) {
-      return this.getISOFormat(rawValue).replace('T', '@').replace('.000Z', '').replace(/-/g, '/');
+      return this.getISOFormat(rawValue)
+        .replace('T', '@')
+        .replace('.000Z', '')
+        .replace(/-/g, '/');
     } else {
       return undefined;
     }

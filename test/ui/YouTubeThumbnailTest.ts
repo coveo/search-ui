@@ -9,7 +9,6 @@ import { IResultsComponentBindings } from '../../src/ui/Base/ResultsComponentBin
 import { Simulate } from '../Simulate';
 
 export function YouTubeThumbnailTest() {
-
   describe('YouTubeThumbnail', () => {
     let test: Mock.IBasicComponentSetup<YouTubeThumbnail>;
     let result: IQueryResult;
@@ -17,7 +16,11 @@ export function YouTubeThumbnailTest() {
     beforeEach(() => {
       result = FakeResults.createFakeResult();
       result.raw['ytthumbnailurl'] = 'someurl';
-      test = Mock.optionsResultComponentSetup<YouTubeThumbnail, IYouTubeThumbnailOptions>(YouTubeThumbnail, <IYouTubeThumbnailOptions>{}, result);
+      test = Mock.optionsResultComponentSetup<YouTubeThumbnail, IYouTubeThumbnailOptions>(
+        YouTubeThumbnail,
+        <IYouTubeThumbnailOptions>{},
+        result
+      );
     });
 
     afterEach(() => {
@@ -38,19 +41,25 @@ export function YouTubeThumbnailTest() {
     });
 
     describe('exposes options', () => {
-
       it('width should allow to specify the width on the image', () => {
-        test = Mock.optionsResultComponentSetup<YouTubeThumbnail, IYouTubeThumbnailOptions>(YouTubeThumbnail, <IYouTubeThumbnailOptions>{ width: '123px' }, result);
+        test = Mock.optionsResultComponentSetup<YouTubeThumbnail, IYouTubeThumbnailOptions>(
+          YouTubeThumbnail,
+          <IYouTubeThumbnailOptions>{ width: '123px' },
+          result
+        );
         const img = $$(test.cmp.element).find('img');
         expect($$(img).css('width')).toBe('123px');
       });
 
       it('height should allow to specify the height on the image', () => {
-        test = Mock.optionsResultComponentSetup<YouTubeThumbnail, IYouTubeThumbnailOptions>(YouTubeThumbnail, <IYouTubeThumbnailOptions>{ height: '123px' }, result);
+        test = Mock.optionsResultComponentSetup<YouTubeThumbnail, IYouTubeThumbnailOptions>(
+          YouTubeThumbnail,
+          <IYouTubeThumbnailOptions>{ height: '123px' },
+          result
+        );
         const img = $$(test.cmp.element).find('img');
         expect($$(img).css('height')).toBe('123px');
       });
-
     });
 
     describe('with a fake modal box module', () => {
@@ -65,27 +74,40 @@ export function YouTubeThumbnailTest() {
       });
 
       it('should not open the modal box if embed is set to false', () => {
-        test = Mock.optionsResultComponentSetup<YouTubeThumbnail, IYouTubeThumbnailOptions>(YouTubeThumbnail, <IYouTubeThumbnailOptions>{ embed: false }, result);
+        test = Mock.optionsResultComponentSetup<YouTubeThumbnail, IYouTubeThumbnailOptions>(
+          YouTubeThumbnail,
+          <IYouTubeThumbnailOptions>{ embed: false },
+          result
+        );
         test.cmp.ModalBox = modalBox;
         test.cmp.openResultLink();
         expect(modalBox.open).not.toHaveBeenCalled();
       });
 
       it('should open the modal box if embed is set to true', () => {
-        test = Mock.optionsResultComponentSetup<YouTubeThumbnail, IYouTubeThumbnailOptions>(YouTubeThumbnail, <IYouTubeThumbnailOptions>{ embed: true }, result);
+        test = Mock.optionsResultComponentSetup<YouTubeThumbnail, IYouTubeThumbnailOptions>(
+          YouTubeThumbnail,
+          <IYouTubeThumbnailOptions>{ embed: true },
+          result
+        );
         test.cmp.ModalBox = modalBox;
         test.cmp.openResultLink();
         expect(modalBox.open).toHaveBeenCalled();
       });
     });
 
-    it('should call whatever method is associated on the result link when we try to open it', (done) => {
-      let fakeResultLink = new ResultLink($$('div').el, {
-        onClick: () => {
-          expect(true).toBe(true);
-          done();
-        }
-      }, <IResultsComponentBindings>test.cmp.getBindings(), result);
+    it('should call whatever method is associated on the result link when we try to open it', done => {
+      let fakeResultLink = new ResultLink(
+        $$('div').el,
+        {
+          onClick: () => {
+            expect(true).toBe(true);
+            done();
+          }
+        },
+        <IResultsComponentBindings>test.cmp.getBindings(),
+        result
+      );
       test.cmp.resultLink = $$(fakeResultLink.element);
       test.cmp.openResultLink();
     });
