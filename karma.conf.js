@@ -15,10 +15,6 @@ var configuration = {
       watched: false
     },
     {
-      pattern: './node_modules/phantomjs-polyfill/bind-polyfill.js',
-      watched: false
-    },
-    {
       pattern: './test/lib/jasmine-ajax/jasmine-ajax.js',
       watched: false
     },
