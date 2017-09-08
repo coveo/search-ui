@@ -8,7 +8,7 @@ import { analyticsActionCauseList } from '../../src/ui/Analytics/AnalyticsAction
 import { PendingSearchAsYouTypeSearchEvent } from '../../src/ui/Analytics/PendingSearchAsYouTypeSearchEvent';
 import { PendingSearchEvent } from '../../src/ui/Analytics/PendingSearchEvent';
 import { IQuery } from '../../src/rest/Query';
-import { Simulate } from '../Simulate';
+import { Simulate, ISimulateQueryData } from '../Simulate';
 import { $$ } from '../../src/utils/Dom';
 import { AnalyticsEvents } from '../../src/events/AnalyticsEvents';
 import { Defer } from '../../src/misc/Defer';
@@ -329,7 +329,7 @@ export function LiveAnalyticsClientTest() {
           },
           deferSuccess: true
         });
-        Simulate.query(env2, {
+        Simulate.query(env2, <ISimulateQueryData>{
           promise: promise2,
           query: {
             q: 'the query 2'

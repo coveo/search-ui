@@ -10,6 +10,8 @@ import * as _ from 'underscore';
 import { exportGlobally } from '../../GlobalExports';
 import 'styling/_ExportToExcel';
 import { SVGIcons } from '../../utils/SVGIcons';
+import { SearchInterface } from '../SearchInterface/SearchInterface';
+import { get } from '../Base/RegisteredNamedMethods';
 
 export interface IExportToExcelOptions {
   numberOfResults?: number;
@@ -102,7 +104,7 @@ export class ExportToExcel extends Component {
   }
 
   static create(element: HTMLElement, options?: IExportToExcelOptions, root?: HTMLElement): ExportToExcel {
-    return new ExportToExcel(element, options, root);
+    return new ExportToExcel(element, options, (<SearchInterface>get(root, SearchInterface)).getBindings());
   }
 }
 

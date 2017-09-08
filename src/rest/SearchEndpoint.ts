@@ -379,7 +379,7 @@ export class SearchEndpoint implements ISearchEndpoint {
     this.logger.info('Performing REST query for datastream ' + dataStreamType + ' on item uniqueID ' + documentUniqueId);
 
     callParams.queryString.push('dataStream=' + dataStreamType);
-    return this.performOneCall(callParams).then((results) => {
+    return this.performOneCall(callParams).then((results: ArrayBuffer) => {
       this.logger.info('REST query successful', results, documentUniqueId);
       return results;
     });
@@ -659,7 +659,7 @@ export class SearchEndpoint implements ISearchEndpoint {
   @method('GET')
   @requestDataType('application/json')
   @responseType('text')
-  public listSubscriptions(page: number, callOptions?: IEndpointCallOptions, callParams?: IEndpointCallParameters) {
+  public listSubscriptions(page?: number, callOptions?: IEndpointCallOptions, callParams?: IEndpointCallParameters): Promise<ISubscription[]> {
     if (this.options.isGuestUser) {
       return new Promise((resolve, reject) => {
         reject();

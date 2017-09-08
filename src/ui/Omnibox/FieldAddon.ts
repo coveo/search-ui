@@ -15,8 +15,7 @@ interface IFieldAddonHash {
 
 export class FieldAddon {
   static INDEX = 64;
-
-  cache: { [hash: string]: Promise<string[]> } = {};
+  cache: { [hash: string]: Promise<IOmniboxSuggestion[]> } = {};
 
   constructor(public omnibox: Omnibox) {
     this.omnibox.bind.on(this.omnibox.element, OmniboxEvents.populateOmniboxSuggestions, (args: IPopulateOmniboxSuggestionsEventArgs) => {
@@ -25,15 +24,15 @@ export class FieldAddon {
   }
 
   public getSuggestion(): Promise<IOmniboxSuggestion[]> {
-    var hash = this.getHash();
+    const hash = this.getHash();
     if (hash == null) {
       return null;
     }
-    var hashString = this.hashToString(hash);
+    const hashString = this.hashToString(hash);
     if (this.cache[hashString] != null) {
       return this.hashValueToSuggestion(hash, this.cache[hashString]);
     }
-    var values: Promise<IOmniboxSuggestion[]>;
+    let values: Promise<IOmniboxSuggestion[]>;
     if (hash.type == 'FieldName') {
       values = this.fieldNames(hash.current);
     }
@@ -51,36 +50,36 @@ export class FieldAddon {
   }
 
   private getHash(): IFieldAddonHash {
-    var fieldName: Coveo.MagicBox.Result = _.last(this.omnibox.resultAtCursor('FieldName'));
+    let fieldName: Coveo.MagicBox.Result = _.last(this.omnibox.resultAtCursor('FieldName'));
     if (fieldName != null) {
       fieldName = fieldName.findParent('Field') || fieldName;
-      var currentField = fieldName.toString();
-      var before = fieldName.before();
-      var after = fieldName.after();
+      const currentField = fieldName.toString();
+      const before = fieldName.before();
+      const after = fieldName.after();
       return { type: 'FieldName', current: currentField, before: before, after: after };
     }
-    var fieldValue: Coveo.MagicBox.Result = _.last(this.omnibox.resultAtCursor('FieldValue'));
+    const fieldValue: Coveo.MagicBox.Result = _.last(this.omnibox.resultAtCursor('FieldValue'));
     if (fieldValue) {
-      var fieldQuery = fieldValue.findParent('FieldQuery') || (this.omnibox.options.enableSimpleFieldAddon && fieldValue.findParent('FieldSimpleQuery'));
+      const fieldQuery = fieldValue.findParent('FieldQuery') || (this.omnibox.options.enableSimpleFieldAddon && fieldValue.findParent('FieldSimpleQuery'));
       if (fieldQuery) {
-        var field = fieldQuery.find('FieldName').toString();
+        let field = fieldQuery.find('FieldName').toString();
         if (this.omnibox.options.fieldAlias) {
           if (field in this.omnibox.options.fieldAlias) {
             field = this.omnibox.options.fieldAlias[field];
           }
         }
-        var value = fieldValue.toString();
-        var before = fieldValue.before();
-        var after = fieldValue.after();
+        const value = fieldValue.toString();
+        const before = fieldValue.before();
+        const after = fieldValue.after();
         return { type: 'FieldValue', field: field, current: value, before: before, after: after };
       }
     }
     if (this.omnibox.options.enableSimpleFieldAddon) {
-      var word: Coveo.MagicBox.Result = _.last(this.omnibox.resultAtCursor('Word'));
+      const word: Coveo.MagicBox.Result = _.last(this.omnibox.resultAtCursor('Word'));
       if (word != null) {
-        var currentField = word.toString();
-        var before = word.before();
-        var after = word.after();
+        const currentField = word.toString();
+        const before = word.before();
+        const after = word.after();
         return { type: 'SimpleFieldName', current: currentField, before: before, after: after };
       }
     }
@@ -93,30 +92,31 @@ export class FieldAddon {
     return hash.type + hash.current + (hash.field || '');
   }
 
-  private hashValueToSuggestion(hash: IFieldAddonHash, promise: Promise<string[]>): Promise<IOmniboxSuggestion[]> {
+  private hashValueToSuggestion(hash: IFieldAddonHash, promise: Promise<IOmniboxSuggestion[]>): Promise<IOmniboxSuggestion[]> {
     return promise.then((values) => {
-      var suggestions: IOmniboxSuggestion[] = _.map(values, (value: string, i) => {
-        return {
+      const suggestions = _.map<any, IOmniboxSuggestion>(values, (value: string, i): IOmniboxSuggestion => {
+        const suggestion: IOmniboxSuggestion = {
           text: hash.before + (hash.current.toLowerCase().indexOf(value.toLowerCase()) == 0 ? hash.current + value.substr(hash.current.length) : value) + hash.after,
           html: MagicBox.Utils.highlightText(value, hash.current, true),
           index: FieldAddon.INDEX - i / values.length
         };
+        return suggestion;
       });
       return suggestions;
     });
   }
 
-  private fields: Promise<string[]>;
+  private fields: Promise<IOmniboxSuggestion[]>;
 
-  private getFields(): Promise<string[]> {
+  private getFields(): Promise<IOmniboxSuggestion[]> {
     if (this.fields == null) {
-      this.fields = new Promise<string[]>((resolve, reject) => {
+      this.fields = new Promise<any[]>((resolve, reject) => {
         if (this.omnibox.options.listOfFields != null) {
           resolve(<string[]>this.omnibox.options.listOfFields);
         } else {
-          var promise: Promise<IFieldDescription[] | IEndpointError> = this.omnibox.queryController.getEndpoint().listFields();
+          const promise: Promise<IFieldDescription[] | IEndpointError> = this.omnibox.queryController.getEndpoint().listFields();
           promise.then((fieldDescriptions: IFieldDescription[]) => {
-            var fieldNames = _.chain(fieldDescriptions)
+            const fieldNames = _.chain(fieldDescriptions)
               .filter((fieldDescription: IFieldDescription) => fieldDescription.includeInQuery && fieldDescription.groupByField)
               .map((fieldDescription: IFieldDescription) => fieldDescription.name.substr(1))
               .value();
@@ -132,13 +132,13 @@ export class FieldAddon {
   }
 
   private fieldNames(current: string): Promise<IOmniboxSuggestion[]> {
-    var withAt = current.length > 0 && current[0] == '@';
-    var fieldName = withAt ? current.substr(1) : current;
-    var fieldNameLC = fieldName.toLowerCase();
+    const withAt = current.length > 0 && current[0] == '@';
+    const fieldName = withAt ? current.substr(1) : current;
+    const fieldNameLC = fieldName.toLowerCase();
 
-    return this.getFields().then((fields: string[]) => {
-      var matchFields = _.chain(fields)
-        .map((field: string) => {
+    return this.getFields().then((fields: string[] | IOmniboxSuggestion[]): any[] => {
+      let matchFields = _.chain(fields)
+        .map((field: any) => {
           return {
             index: field.toLowerCase().indexOf(fieldNameLC),
             field: withAt ? field : '@' + field
@@ -155,7 +155,7 @@ export class FieldAddon {
     });
   }
 
-  private fieldValues(field: string, current: string): Promise<IOmniboxSuggestion[]> {
+  private fieldValues(field: string, current: string): Promise<any[]> {
     return this.omnibox.queryController.getEndpoint().listFieldValues({
       pattern: '.*' + current + '.*',
       patternType: 'RegularExpression',
@@ -182,11 +182,11 @@ export class FieldAddon {
   }
 
   private simpleFieldNames(current: string): Promise<IOmniboxSuggestion[]> {
-    var fieldName = current;
-    var fieldNameLC = fieldName.toLowerCase();
+    const fieldName = current;
+    const fieldNameLC = fieldName.toLowerCase();
 
-    return this.getFields().then((fields: string[]) => {
-      var matchFields = _.chain(fields)
+    return this.getFields().then((fields: any[]): IOmniboxSuggestion[] => {
+      let matchFields: any = _.chain(fields)
         .map((field: string) => {
           return {
             index: field.toLowerCase().indexOf(fieldNameLC),

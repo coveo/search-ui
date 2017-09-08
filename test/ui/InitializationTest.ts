@@ -2,7 +2,7 @@ import * as Mock from '../MockEnvironment';
 import { SearchEndpoint } from '../../src/rest/SearchEndpoint';
 import { $$ } from '../../src/utils/Dom';
 import { Querybox } from '../../src/ui/Querybox/Querybox';
-import { Component } from '../../src/ui/Base/Component';
+import { Component, IComponentDefinition } from '../../src/ui/Base/Component';
 import { Initialization, LazyInitialization } from '../../src/ui/Base/Initialization';
 import { Facet } from '../../src/ui/Facet/Facet';
 import { Pager } from '../../src/ui/Pager/Pager';
@@ -66,7 +66,7 @@ export function InitializationTest() {
     });
 
     it('should wait before resolving lazy init function to continue the framework initialization', (done) => {
-      let promiseToResolve = new Promise((resolve, reject) => {
+      let promiseToResolve = new Promise<boolean>((resolve, reject) => {
         setTimeout(resolve(true), 500);
       });
 

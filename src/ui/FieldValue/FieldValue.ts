@@ -1,6 +1,6 @@
 import { Component } from '../Base/Component';
 import { IComponentBindings } from '../Base/ComponentBindings';
-import { ComponentOptions, IFieldOption } from '../Base/ComponentOptions';
+import { ComponentOptions, IFieldOption, IComponentOptionsObjectOptionArgs } from '../Base/ComponentOptions';
 import { IQueryResult } from '../../rest/QueryResult';
 import { Initialization } from '../Base/Initialization';
 import { TemplateHelpers } from '../Templates/TemplateHelpers';
@@ -134,7 +134,7 @@ export class FieldValue extends Component {
     /**
      * Specifies the options to call on the specified helper.
      */
-    helperOptions: ComponentOptions.buildObjectOption({
+    helperOptions: ComponentOptions.buildObjectOption(<IComponentOptionsObjectOptionArgs>{
       subOptions: {
         text: ComponentOptions.buildStringOption(showOnlyWithHelper(['anchor'])),
         target: ComponentOptions.buildStringOption(showOnlyWithHelper(['anchor'])),
