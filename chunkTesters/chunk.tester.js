@@ -8,6 +8,11 @@ const fs = require('fs');
 const colors = require('colors');
 const readDir = Promise.promisify(fs.readdir);
 const writeFile = Promise.promisify(fs.writeFile);
+const ChromiumRevision = require('puppeteer/package.json').puppeteer.chromium_revision
+const Downloader = require('puppeteer/utils/ChromiumDownloader')
+const revisionInfo = Downloader.revisionInfo(Downloader.currentPlatform(), ChromiumRevision)
+
+process.env.CHROME_BIN = revisionInfo.executablePath
 
 const filesToSkip = ['CoveoJsSearch.Lazy.js', 'CoveoJsSearch.Dependencies.js', 'CoveoJsSearch.js', 'Checkbox.js', 'DatePicker.js', 'Dropdown.js', 'FormGroup.js', 'MultiSelect.js', 'NumericSpinner.js', 'RadioButton.js', 'TextInput.js'];
 
@@ -124,7 +129,7 @@ const executeTests = () => {
             }, {
               pattern: path.resolve(`chunkTesters/gen/${fileToExecute}`)
             }],
-            browsers: ['PhantomJS'],
+            browsers: ['ChromeHeadless'],
             frameworks: ['jasmine'],
             singleRun: true,
             reporters: ['spec'],

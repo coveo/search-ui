@@ -1,6 +1,12 @@
+const ChromiumRevision = require('puppeteer/package.json').puppeteer.chromium_revision
+const Downloader = require('puppeteer/utils/ChromiumDownloader')
+const revisionInfo = Downloader.revisionInfo(Downloader.currentPlatform(), ChromiumRevision)
+
+process.env.CHROME_BIN = revisionInfo.executablePath
+
 var configuration = {
   singleRun: true,
-  browsers: ['PhantomJS'],
+  browsers: ['ChromeHeadless'],
   frameworks: ['jasmine'],
   files: [{
     pattern: './node_modules/es6-promise/dist/es6-promise.auto.js',
@@ -20,7 +26,7 @@ var configuration = {
   }],
   plugins: [
     'karma-jasmine',
-    'karma-phantomjs-launcher',
+    'karma-chrome-launcher',
     'karma-coverage',
     'karma-spec-reporter'
   ],
