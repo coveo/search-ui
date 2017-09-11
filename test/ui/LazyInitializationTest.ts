@@ -28,7 +28,7 @@ export function LazyInitializationTest() {
       expect(LazyInitialization.getLazyRegisteredComponent('MyStuff')).toEqual(loadPromise);
     });
 
-    it('should allow to create a component with a factory', (done) => {
+    it('should allow to create a component with a factory', done => {
       const myStuff = () => new Promise<IComponentDefinition>((resolve, reject) => resolve(Querybox));
       LazyInitialization.registerLazyComponent('MyStuff', myStuff);
       const elementOne = $$('div', { className: 'CoveoMyStuff' });
@@ -43,4 +43,3 @@ export function LazyInitializationTest() {
     });
   });
 }
-

@@ -6,18 +6,18 @@ import { registerCustomMatcher } from '../CustomMatchers';
 import { $$ } from '../../src/utils/Dom';
 
 export function FacetSettingsTest() {
-  describe('FacetSettings', function () {
+  describe('FacetSettings', function() {
     let facet: Facet;
     let facetSettings: FacetSettings;
 
-    beforeEach(function () {
+    beforeEach(function() {
       facet = Mock.optionsComponentSetup<Facet, IFacetOptions>(Facet, {
         field: '@field'
       }).cmp;
       registerCustomMatcher();
     });
 
-    afterEach(function () {
+    afterEach(function() {
       facet = null;
       facetSettings = null;
     });
@@ -91,7 +91,7 @@ export function FacetSettingsTest() {
       expect($$(facetSettings.facet.root).find('.coveo-facet-settings-section-show')).toBeNull();
     });
 
-    it('should show direction section if there\'s two linked parameters that require changing direction', () => {
+    it("should show direction section if there's two linked parameters that require changing direction", () => {
       facetSettings = new FacetSettings(['alphaascending', 'alphadescending'], facet);
       const built = facetSettings.build();
       facetSettings.open();
@@ -99,7 +99,7 @@ export function FacetSettingsTest() {
       expect($$(facetSettings.settingsPopup).find('.coveo-facet-settings-section-direction-descending')).not.toBeNull();
     });
 
-    it('should not show direction section if there\'s a single ascending or descending parameter', () => {
+    it("should not show direction section if there's a single ascending or descending parameter", () => {
       facetSettings = new FacetSettings(['alphaascending'], facet);
       const built = facetSettings.build();
       facetSettings.open();
@@ -107,7 +107,7 @@ export function FacetSettingsTest() {
       expect($$(facetSettings.settingsPopup).find('.coveo-facet-settings-section-direction-descending')).toBeNull();
     });
 
-    it('should not show direction section if there\'s two parameters allowing changing direction, but both parameters are not linked', () => {
+    it("should not show direction section if there's two parameters allowing changing direction, but both parameters are not linked", () => {
       facetSettings = new FacetSettings(['alphaascending', 'computedfieldascending'], facet);
       const built = facetSettings.build();
       facetSettings.open();

@@ -6,14 +6,14 @@ import { SettingsEvents } from '../../src/events/SettingsEvents';
 import { $$ } from '../../src/utils/Dom';
 
 export function ShareQueryTest() {
-  describe('ShareQuery', function () {
+  describe('ShareQuery', function() {
     var test: Mock.IBasicComponentSetupWithModalBox<ShareQuery>;
 
-    beforeEach(function () {
+    beforeEach(function() {
       test = Mock.basicComponentSetupWithModalBox<ShareQuery>(ShareQuery);
     });
 
-    it('should open', function () {
+    it('should open', function() {
       test.cmp.open();
       expect(test.modalBox.open).toHaveBeenCalledWith(test.cmp.dialogBoxContent, {
         title: l('Share Query'),
@@ -27,14 +27,13 @@ export function ShareQueryTest() {
       expect(menus.menuData[0].className).toEqual('coveo-share-query');
     });
 
-    it('should close', function () {
+    it('should close', function() {
       test.cmp.open();
       test.cmp.close();
       expect(test.modalBox.close).toHaveBeenCalled();
     });
 
-    it('should update according to result', function () {
-
+    it('should update according to result', function() {
       test.env.queryController.getLastQuery = () => {
         return <IQuery>{
           firstResult: 0,

@@ -12,12 +12,11 @@ import { SVGIcons } from '../../utils/SVGIcons';
 import { SVGDom } from '../../utils/SVGDom';
 
 export interface IBreadcrumbValueElementKlass {
-  new(facet: Facet, facetValue: FacetValue): BreadcrumbValueElement;
+  new (facet: Facet, facetValue: FacetValue): BreadcrumbValueElement;
 }
 
 export class BreadcrumbValueElement {
-  constructor(public facet: Facet, public facetValue: FacetValue) {
-  }
+  constructor(public facet: Facet, public facetValue: FacetValue) {}
 
   public build(tooltip = true): Dom {
     Assert.exists(this.facetValue);
@@ -34,9 +33,13 @@ export class BreadcrumbValueElement {
     caption.text(this.facet.getValueCaption(this.facetValue));
     elem.el.appendChild(caption.el);
 
-    const clear = $$('span', {
-      className: 'coveo-facet-breadcrumb-clear'
-    }, SVGIcons.icons.checkboxHookExclusionMore);
+    const clear = $$(
+      'span',
+      {
+        className: 'coveo-facet-breadcrumb-clear'
+      },
+      SVGIcons.icons.checkboxHookExclusionMore
+    );
     SVGDom.addClassToSVGInContainer(clear.el, 'coveo-facet-breadcrumb-clear-svg');
     elem.el.appendChild(clear.el);
 
@@ -49,11 +52,13 @@ export class BreadcrumbValueElement {
         } else {
           this.facet.deselectValue(this.facetValue.value);
         }
-        this.facet.triggerNewQuery(() => this.facet.usageAnalytics.logSearchEvent<IAnalyticsFacetMeta>(analyticsActionCauseList.breadcrumbFacet, {
-          facetId: this.facet.options.id,
-          facetValue: this.facetValue.value,
-          facetTitle: this.facet.options.title
-        }));
+        this.facet.triggerNewQuery(() =>
+          this.facet.usageAnalytics.logSearchEvent<IAnalyticsFacetMeta>(analyticsActionCauseList.breadcrumbFacet, {
+            facetId: this.facet.options.id,
+            facetValue: this.facetValue.value,
+            facetTitle: this.facet.options.title
+          })
+        );
       }
     });
 
@@ -61,7 +66,11 @@ export class BreadcrumbValueElement {
   }
 
   public getBreadcrumbTooltip(): string {
-    const tooltipParts = [this.facet.getValueCaption(this.facetValue), this.facetValue.getFormattedCount(), this.facetValue.getFormattedComputedField(this.facet.options.computedFieldFormat)];
+    const tooltipParts = [
+      this.facet.getValueCaption(this.facetValue),
+      this.facetValue.getFormattedCount(),
+      this.facetValue.getFormattedComputedField(this.facet.options.computedFieldFormat)
+    ];
     return _.compact(tooltipParts).join(' ');
   }
 }

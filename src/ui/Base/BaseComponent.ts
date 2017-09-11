@@ -97,5 +97,4 @@ export class BaseComponent {
   static getComponentRef(component: string): any {
     return Coveo[component];
   }
-
 }

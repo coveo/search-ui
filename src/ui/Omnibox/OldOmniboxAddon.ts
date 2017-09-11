@@ -14,7 +14,7 @@ import * as _ from 'underscore';
 export class OldOmniboxAddon {
   constructor(public omnibox: Omnibox) {
     this.omnibox.bind.on(this.omnibox.element, OmniboxEvents.populateOmniboxSuggestions, (args: IPopulateOmniboxSuggestionsEventArgs) => {
-      _.each(this.getSuggestion(), (suggestion) => {
+      _.each(this.getSuggestion(), suggestion => {
         args.suggestions.push(suggestion);
       });
     });
@@ -39,7 +39,7 @@ export class OldOmniboxAddon {
     let eventArgs = this.buildPopulateOmniboxEventArgs();
     $$(this.omnibox.root).trigger(OmniboxEvents.populateOmnibox, eventArgs);
 
-    return this.lastSuggestions = this.rowsToSuggestions(eventArgs.rows);
+    return (this.lastSuggestions = this.rowsToSuggestions(eventArgs.rows));
   }
 
   private getCurrentQueryExpression() {
@@ -70,7 +70,7 @@ export class OldOmniboxAddon {
   private getQueryExpressionBreakDown() {
     let ret = [];
     let queryWords = this.omnibox.getText().split(' ');
-    _.each(queryWords, (word) => {
+    _.each(queryWords, word => {
       ret.push({
         word: word,
         regex: this.getRegexToSearch(word)
@@ -136,20 +136,24 @@ export class OldOmniboxAddon {
   private rowsToSuggestions(rows: IOmniboxDataRow[]): Promise<IOmniboxSuggestion[]>[] {
     return _.map(rows, (row: IPopulateOmniboxEventRow) => {
       if (!Utils.isNullOrUndefined(row.element)) {
-        return new Promise<IOmniboxSuggestion[]>((resolve) => {
-          resolve([{
-            dom: row.element,
-            index: row.zIndex
-          }]);
+        return new Promise<IOmniboxSuggestion[]>(resolve => {
+          resolve([
+            {
+              dom: row.element,
+              index: row.zIndex
+            }
+          ]);
         });
       } else if (!Utils.isNullOrUndefined(row.deferred)) {
-        return new Promise<IOmniboxSuggestion[]>((resolve) => {
-          row.deferred.then((row) => {
+        return new Promise<IOmniboxSuggestion[]>(resolve => {
+          row.deferred.then(row => {
             if (row.element != null) {
-              resolve([{
-                dom: row.element,
-                index: row.zIndex
-              }]);
+              resolve([
+                {
+                  dom: row.element,
+                  index: row.zIndex
+                }
+              ]);
             } else {
               resolve(null);
             }

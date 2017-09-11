@@ -6,11 +6,11 @@ export function LogoTest() {
   describe('Logo', () => {
     var test: Mock.IBasicComponentSetup<Logo>;
 
-    beforeEach(function () {
+    beforeEach(function() {
       test = Mock.basicComponentSetup<Logo>(Logo);
     });
 
-    afterEach(function () {
+    afterEach(function() {
       test = null;
     });
 

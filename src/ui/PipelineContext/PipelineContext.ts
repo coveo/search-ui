@@ -11,8 +11,7 @@ import { exportGlobally } from '../../GlobalExports';
 export var context: any;
 declare var Coveo;
 
-export interface IPipelineContextOptions {
-}
+export interface IPipelineContextOptions {}
 
 /**
  * A PipelineContext is used to add contextual information about the environment inside which the query is executed.
@@ -52,10 +51,10 @@ export class PipelineContext extends Component {
 
   static doExport = () => {
     exportGlobally({
-      'PipelineContext': PipelineContext,
-      'context': context
+      PipelineContext: PipelineContext,
+      context: context
     });
-  }
+  };
 
   private content: { [id: string]: string | Array<string> };
 
@@ -95,7 +94,7 @@ export class PipelineContext extends Component {
     const contextValue = this.content[key];
     if (_.isArray(contextValue)) {
       const contextValues = [];
-      _.each(this.content[key], (value) => {
+      _.each(this.content[key], value => {
         contextValues.push(this.getModifiedData(value));
       });
       return contextValues;
@@ -108,7 +107,6 @@ export class PipelineContext extends Component {
     let keys = this.getContextKeys();
     _.each(keys, (key: string) => {
       args.queryBuilder.addContextValue(key, this.getContextValue(key));
-
     });
   }
 
@@ -123,7 +121,6 @@ export class PipelineContext extends Component {
       return '';
     });
   }
-
 }
 
 Initialization.registerAutoCreateComponent(PipelineContext);

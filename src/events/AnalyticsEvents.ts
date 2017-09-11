@@ -23,7 +23,6 @@ export interface IAnalyticsCustomEventArgs {
  * > External code **cannot** modify this object.
  */
 export interface IChangeAnalyticsCustomDataEventArgs extends IChangeableAnalyticsDataObject {
-
   /**
    * The type of the usage analytics event.
    *
@@ -64,7 +63,6 @@ export interface IChangeAnalyticsCustomDataEventArgs extends IChangeableAnalytic
  * analytics event.
  */
 export interface IChangeableAnalyticsMetaObject {
-
   /**
    * A metadata key-value pair to send along with the usage analytics event.
    *
@@ -82,7 +80,6 @@ export interface IChangeableAnalyticsMetaObject {
  * [`changeAnalyticsCustomData`]{@link AnalyticsEvents.changeAnalyticsCustomData} event handlers receive as an argument.
  */
 export interface IChangeableAnalyticsDataObject {
-
   /**
    * The metadata to send along with the usage analytics event.
    *

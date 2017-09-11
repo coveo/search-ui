@@ -4,7 +4,7 @@ const fields = [
   'outlookformacuri',
   'outlookuri',
   'connectortype',
-  'urihash',  //     ⎫
+  'urihash', //     ⎫
   'collection', //   ⎬--- analytics
   'source' //        ⎭
 ];

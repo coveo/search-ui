@@ -12,26 +12,26 @@ export function DomTests() {
   describe('Dom', () => {
     var el: HTMLElement;
 
-    beforeEach(function () {
+    beforeEach(function() {
       el = document.createElement('div');
       registerCustomMatcher();
     });
 
-    afterEach(function () {
+    afterEach(function() {
       el = undefined;
     });
 
-    describe('without jquery', function () {
-      beforeEach(function () {
+    describe('without jquery', function() {
+      beforeEach(function() {
         // we want to test the basic event, not jquery one
         Simulate.removeJQuery();
       });
 
-      afterEach(function () {
+      afterEach(function() {
         Simulate.removeJQuery();
       });
 
-      it('insert after should work properly', function () {
+      it('insert after should work properly', function() {
         var parent = document.createElement('div');
         var sibling = document.createElement('div');
         parent.appendChild(sibling);
@@ -48,7 +48,7 @@ export function DomTests() {
         expect(el.previousSibling).toBe(anotherSibling);
       });
 
-      it('insert before should work properly', function () {
+      it('insert before should work properly', function() {
         var parent = document.createElement('div');
         var sibling = document.createElement('div');
         parent.appendChild(sibling);
@@ -66,7 +66,7 @@ export function DomTests() {
         expect(el.previousSibling).toBe(sibling);
       });
 
-      it('replace should work properly', function () {
+      it('replace should work properly', function() {
         var other = document.createElement('div');
         var sibling = document.createElement('div');
         var otherSibling = document.createElement('div');
@@ -86,8 +86,8 @@ export function DomTests() {
         expect(other.nextSibling).toBe(otherSibling);
       });
 
-      describe('prepend', function () {
-        it('should work properly', function () {
+      describe('prepend', function() {
+        it('should work properly', function() {
           var firstChild = document.createElement('div');
           el.appendChild(firstChild);
           expect(el.firstChild).toBe(firstChild);
@@ -98,14 +98,14 @@ export function DomTests() {
           expect(toPrepend.nextSibling).toBe(firstChild);
         });
 
-        it('should work even if there if parent element is empty', function () {
+        it('should work even if there if parent element is empty', function() {
           var parent = $$('div');
           var toPrepend = $$('span', { className: 'foo' }).el;
           parent.prepend(toPrepend);
           expect(parent.el.firstChild).toBe(toPrepend);
         });
 
-        it('should work even if parent element contains text', function () {
+        it('should work even if parent element contains text', function() {
           var parent = $$('div', {}, 'thisissometext');
           var toPrepend = $$('span', { className: 'foo' }).el;
           parent.prepend(toPrepend);
@@ -113,7 +113,7 @@ export function DomTests() {
         });
       });
 
-      it('should give the correct text content', function () {
+      it('should give the correct text content', function() {
         el.innerHTML = '<div>this is the content</div>';
         expect(new Dom(el).text()).toEqual('this is the content');
         el = document.createElement('div');
@@ -121,7 +121,7 @@ export function DomTests() {
         expect(new Dom(el).text()).toEqual('this is the content');
       });
 
-      it('should allow to set the text content', function () {
+      it('should allow to set the text content', function() {
         var dom = new Dom(el).text('this is the content');
         expect(el.innerHTML).toEqual('this is the content');
 
@@ -131,13 +131,17 @@ export function DomTests() {
         expect(el.childNodes[0].nodeValue).toEqual('<div>this is the content</div>');
       });
 
-      describe('createElement', function () {
-        it('should properly create a single HTMLElement', function () {
-          var elem = Dom.createElement('div', {
-            id: 'heidi',
-            className: 'kloss',
-            'data-my-attr': 'baz'
-          }, 'foobar2000');
+      describe('createElement', function() {
+        it('should properly create a single HTMLElement', function() {
+          var elem = Dom.createElement(
+            'div',
+            {
+              id: 'heidi',
+              className: 'kloss',
+              'data-my-attr': 'baz'
+            },
+            'foobar2000'
+          );
           expect(elem.tagName).toEqual('DIV');
           expect(elem.id).toEqual('heidi');
           expect(elem.className).toEqual('kloss');
@@ -145,10 +149,12 @@ export function DomTests() {
           expect(elem.innerHTML).toEqual('foobar2000');
         });
 
-        it('should properly create nested HTMLElement\'s', function () {
-          var elem = Dom.createElement('header', undefined,
-            Dom.createElement('div', undefined,
-              Dom.createElement('span', undefined, 'foo')));
+        it("should properly create nested HTMLElement's", function() {
+          var elem = Dom.createElement(
+            'header',
+            undefined,
+            Dom.createElement('div', undefined, Dom.createElement('span', undefined, 'foo'))
+          );
           expect(elem.tagName).toEqual('HEADER');
           expect(elem.firstChild.nodeName).toEqual('DIV');
           expect(elem.firstChild.firstChild.nodeName).toEqual('SPAN');
@@ -156,7 +162,7 @@ export function DomTests() {
         });
       });
 
-      it('should find a child using a query selector', function () {
+      it('should find a child using a query selector', function() {
         var toFind = document.createElement('div');
         toFind.className = 'qwerty';
         el.appendChild(toFind);
@@ -183,7 +189,7 @@ export function DomTests() {
         expect(new Dom(el).find('#qwerty')).toBe(toFind);
       });
 
-      it('should find all child using a query selector', function () {
+      it('should find all child using a query selector', function() {
         var toFind = document.createElement('div');
         toFind.className = 'qwerty';
         var toFind2 = document.createElement('div');
@@ -194,7 +200,7 @@ export function DomTests() {
         expect(new Dom(el).findAll('.qwerty')).toContain(toFind2);
       });
 
-      it('using findClass should find the child element', function () {
+      it('using findClass should find the child element', function() {
         var toFind = document.createElement('div');
         toFind.className = 'qwerty';
         var toFind2 = document.createElement('div');
@@ -207,7 +213,7 @@ export function DomTests() {
         expect(new Dom(el).findClass('shouldNotBeFound').length).toBe(0);
       });
 
-      it('using addClass should work properly', function () {
+      it('using addClass should work properly', function() {
         el.className = 'qwerty';
         new Dom(el).addClass('notqwerty');
         expect(el.className).toBe('qwerty notqwerty');
@@ -226,7 +232,7 @@ export function DomTests() {
         expect(el.className).toBe('a b c');
       });
 
-      it('using removeClass should work properly', function () {
+      it('using removeClass should work properly', function() {
         el.className = 'qwerty';
         new Dom(el).removeClass('qwerty');
         expect(el.className).toBe('');
@@ -251,7 +257,7 @@ export function DomTests() {
         expect(el.className).toBe('popoqwerty notqwerty');
       });
 
-      it('using getClass should return the correct array with all classes', function () {
+      it('using getClass should return the correct array with all classes', function() {
         el.className = 'qwerty';
         expect(new Dom(el).getClass()).toContain('qwerty');
 
@@ -261,7 +267,7 @@ export function DomTests() {
         expect(new Dom(el).getClass()).toContain('notqwerty');
       });
 
-      it('using hasClass should return properly', function () {
+      it('using hasClass should return properly', function() {
         el.className = 'qwerty';
         expect(new Dom(el).hasClass('qwerty')).toBe(true);
 
@@ -288,7 +294,7 @@ export function DomTests() {
         expect(new Dom(el).hasClass('qwerty')).toBe(false);
       });
 
-      it('using toggleClass without switch should work properly', function () {
+      it('using toggleClass without switch should work properly', function() {
         el.className = 'qwerty';
         var domEl = new Dom(el);
         domEl.toggleClass('qwerty');
@@ -300,7 +306,7 @@ export function DomTests() {
         expect(domEl.hasClass('foobar2000')).toBe(true);
       });
 
-      it('using toggleClass with switch should work properly', function () {
+      it('using toggleClass with switch should work properly', function() {
         var domEl = new Dom(el);
         domEl.toggleClass('qwerty', false);
         expect(domEl.hasClass('qwerty')).toBe(false);
@@ -309,10 +315,9 @@ export function DomTests() {
         domEl.addClass('foobar2000');
         domEl.toggleClass('foobar2000', true);
         expect(domEl.hasClass('foobar2000')).toBe(true);
-
       });
 
-      it('using detach should work properly', function () {
+      it('using detach should work properly', function() {
         var parent = document.createElement('div');
         parent.appendChild(el);
         expect(parent.children).toContain(el);
@@ -321,7 +326,7 @@ export function DomTests() {
         expect(parent.children).not.toContain(el);
       });
 
-      it('using on should work properly', function () {
+      it('using on should work properly', function() {
         var spy = jasmine.createSpy('spy');
         new Dom(el).on('click', spy);
         el.click();
@@ -338,19 +343,18 @@ export function DomTests() {
         el.dispatchEvent(event);
         expect(spy2).toHaveBeenCalledWith(event, event.detail);
 
-
         var spy3 = jasmine.createSpy('spy3');
         new Dom(el).on(['1', '2', '3'], spy3);
-        var events = ['1', '2', '3'].map((evt) => {
+        var events = ['1', '2', '3'].map(evt => {
           return new CustomEvent(evt);
         });
-        events.forEach((evt) => {
+        events.forEach(evt => {
           el.dispatchEvent(evt);
         });
         expect(spy3).toHaveBeenCalledTimes(3);
       });
 
-      it('using one should work properly', function () {
+      it('using one should work properly', function() {
         var spy = jasmine.createSpy('spy');
         new Dom(el).one('click', spy);
         el.click();
@@ -361,7 +365,7 @@ export function DomTests() {
         expect(spy).not.toHaveBeenCalledTimes(3);
       });
 
-      it('using off should work properly', function () {
+      it('using off should work properly', function() {
         var spy = jasmine.createSpy('spy');
         new Dom(el).on('click', spy);
         new Dom(el).off('click', spy);
@@ -370,17 +374,17 @@ export function DomTests() {
 
         var spy2 = jasmine.createSpy('spy2');
         new Dom(el).on(['1', '2', '3'], spy2);
-        var events = ['1', '2', '3'].map((evt) => {
+        var events = ['1', '2', '3'].map(evt => {
           return new CustomEvent(evt);
         });
         new Dom(el).off(['1', '2', '3'], spy2);
-        events.forEach((evt) => {
+        events.forEach(evt => {
           el.dispatchEvent(evt);
         });
         expect(spy).not.toHaveBeenCalled();
       });
 
-      it('using trigger should work properly', function () {
+      it('using trigger should work properly', function() {
         registerCustomMatcher();
         var spy = jasmine.createSpy('spy');
         new Dom(el).on('click', spy);
@@ -393,7 +397,7 @@ export function DomTests() {
         expect(spy2).eventHandlerToHaveBeenCalledWith({ bar: 'baz' });
       });
 
-      it('using isEmpty should work properly', function () {
+      it('using isEmpty should work properly', function() {
         expect(new Dom(el).isEmpty()).toBe(true);
         el.appendChild(document.createElement('div'));
         expect(new Dom(el).isEmpty()).toBe(false);
@@ -403,14 +407,14 @@ export function DomTests() {
         expect(new Dom(el).isEmpty()).toBe(true);
       });
 
-      it('should find ancestor element using closest', function () {
+      it('should find ancestor element using closest', function() {
         var root = document.createElement('div');
         root.className = 'findme';
         root.appendChild(el);
         expect(new Dom(el).closest('findme')).toBe(root);
       });
 
-      it('should find the first ancestor element using parent', function () {
+      it('should find the first ancestor element using parent', function() {
         let root = document.createElement('div');
         let parentOne = $$('div', { className: 'foo' });
         let parentTwo = $$('div', { className: 'foo' });
@@ -426,12 +430,12 @@ export function DomTests() {
         expect(child.parent('foo')).toEqual(parentThree.el);
       });
 
-      it('should not throw if there are no parent element using parent', function () {
+      it('should not throw if there are no parent element using parent', function() {
         let root = $$('div');
         expect(() => root.parent('bar')).not.toThrow();
       });
 
-      it('should return undefined if there is no match using parent', function () {
+      it('should return undefined if there is no match using parent', function() {
         let root = document.createElement('div');
         let parentOne = $$('div', { className: 'foo' });
         let parentTwo = $$('div', { className: 'foo' });
@@ -447,7 +451,7 @@ export function DomTests() {
         expect(child.parent('bar')).toBeUndefined();
       });
 
-      it('should find all ancestor elements using parents', function () {
+      it('should find all ancestor elements using parents', function() {
         let root = document.createElement('div');
         let parentOne = $$('div', { className: 'foo' });
         let parentTwo = $$('div', { className: 'foo' });
@@ -463,7 +467,7 @@ export function DomTests() {
         expect(child.parents('foo')).toEqual([parentThree.el, parentTwo.el, parentOne.el]);
       });
 
-      it('should return empty array if there is no match using parents', function () {
+      it('should return empty array if there is no match using parents', function() {
         let root = document.createElement('div');
         let parentOne = $$('div', { className: 'foo' });
         let parentTwo = $$('div', { className: 'foo' });
@@ -479,12 +483,12 @@ export function DomTests() {
         expect(child.parents('bar')).toEqual([]);
       });
 
-      it('should not fail if there is no parent element using parents', function () {
+      it('should not fail if there is no parent element using parents', function() {
         let root = $$('div');
         expect(() => root.parents('bar')).not.toThrow();
       });
 
-      it('should be able to tell if an element matches a selector', function () {
+      it('should be able to tell if an element matches a selector', function() {
         el = document.createElement('div');
         el.className = 'foo bar foobar';
         el.setAttribute('id', 'batman');
@@ -504,7 +508,7 @@ export function DomTests() {
         expect(new Dom(el).is('input')).toBe(false);
       });
 
-      it('should be able to empty an element', function () {
+      it('should be able to empty an element', function() {
         var append1 = document.createElement('div');
         var append2 = document.createElement('div');
         el.appendChild(append1);
@@ -517,18 +521,17 @@ export function DomTests() {
       });
     });
 
-    describe('with jquery', function () {
-
-      beforeEach(function () {
+    describe('with jquery', function() {
+      beforeEach(function() {
         // we want to test the basic event, not jquery one
         Simulate.addJQuery();
       });
 
-      afterEach(function () {
+      afterEach(function() {
         Simulate.removeJQuery();
       });
 
-      it('using on should work properly', function () {
+      it('using on should work properly', function() {
         var spy = jasmine.createSpy('spy');
         new Dom(el).on('click', spy);
         el.click();
@@ -542,25 +545,27 @@ export function DomTests() {
           }
         });
 
-        expect(spy2).toHaveBeenCalledWith(jasmine.any(jQuery.Event), jasmine.objectContaining({
-          detail: {
-            lorem: 'ipsum'
-          }
-        }));
-
+        expect(spy2).toHaveBeenCalledWith(
+          jasmine.any(jQuery.Event),
+          jasmine.objectContaining({
+            detail: {
+              lorem: 'ipsum'
+            }
+          })
+        );
 
         var spy3 = jasmine.createSpy('spy3');
         new Dom(el).on(['1', '2', '3'], spy3);
-        var events = ['1', '2', '3'].map((evt) => {
+        var events = ['1', '2', '3'].map(evt => {
           return new CustomEvent(evt);
         });
-        events.forEach((evt) => {
+        events.forEach(evt => {
           el.dispatchEvent(evt);
         });
         expect(spy3).toHaveBeenCalledTimes(3);
       });
 
-      it('using one should work properly', function () {
+      it('using one should work properly', function() {
         var spy = jasmine.createSpy('spy');
         new Dom(el).one('click', spy);
         el.click();
@@ -571,7 +576,7 @@ export function DomTests() {
         expect(spy).not.toHaveBeenCalledTimes(3);
       });
 
-      it('using off should work properly', function () {
+      it('using off should work properly', function() {
         var spy = jasmine.createSpy('spy');
         new Dom(el).on('click', spy);
         new Dom(el).off('click', spy);
@@ -581,13 +586,13 @@ export function DomTests() {
         var spy2 = jasmine.createSpy('spy2');
         new Dom(el).on(['1', '2', '3'], spy2);
         new Dom(el).off(['1', '2', '3'], spy2);
-        ['1', '2', '3'].forEach((evt) => {
+        ['1', '2', '3'].forEach(evt => {
           new Dom(el).trigger(evt);
         });
         expect(spy).not.toHaveBeenCalled();
       });
 
-      it('using trigger should work properly', function () {
+      it('using trigger should work properly', function() {
         var spy = jasmine.createSpy('spy');
         new Dom(el).on('click', spy);
         new Dom(el).trigger('click');

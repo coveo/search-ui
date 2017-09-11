@@ -6,7 +6,6 @@ import { RadioButton } from '../../FormWidgets/RadioButton';
 import * as _ from 'underscore';
 
 export abstract class DateInput implements IAdvancedSearchInput {
-
   protected element: HTMLElement;
   private radio: RadioButton;
   private error: HTMLElement;
@@ -49,12 +48,15 @@ export abstract class DateInput implements IAdvancedSearchInput {
     return <HTMLInputElement>$$(this.element).find('input');
   }
 
-
   private setErrorMessage(message: string) {
     this.removeErrorMessage();
-    this.error = $$('div', {
-      className: 'coveo-error coveo-error-date-input'
-    }, message).el;
+    this.error = $$(
+      'div',
+      {
+        className: 'coveo-error coveo-error-date-input'
+      },
+      message
+    ).el;
     $$(this.element).append(this.error);
   }
 
@@ -65,10 +67,14 @@ export abstract class DateInput implements IAdvancedSearchInput {
   }
 
   private buildContent() {
-    this.radio = new RadioButton(() => {
-      this.deactivateAllInputs();
-      this.activateSelectedInput();
-    }, this.inputName, 'coveo-advanced-search-date-input');
+    this.radio = new RadioButton(
+      () => {
+        this.deactivateAllInputs();
+        this.activateSelectedInput();
+      },
+      this.inputName,
+      'coveo-advanced-search-date-input'
+    );
     this.element = this.radio.getElement();
     $$(this.element).addClass('coveo-advanced-search-date-input-section');
     $$(this.radio.getRadio()).addClass('coveo-advanced-search-date');
@@ -77,14 +83,14 @@ export abstract class DateInput implements IAdvancedSearchInput {
 
   private deactivateAllInputs() {
     let elements = $$(this.element.parentElement).findAll('fieldset');
-    _.each(elements, (element) => {
+    _.each(elements, element => {
       (<HTMLInputElement>element).disabled = true;
     });
   }
 
   private activateSelectedInput() {
     let elements = $$(this.element).findAll('fieldset');
-    _.each(elements, (element) => {
+    _.each(elements, element => {
       (<HTMLInputElement>element).disabled = false;
     });
   }

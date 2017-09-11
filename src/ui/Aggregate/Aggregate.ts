@@ -25,7 +25,7 @@ export class Aggregate extends Component {
 
   static doExport() {
     exportGlobally({
-      'Aggregate': Aggregate
+      Aggregate: Aggregate
     });
   }
 
@@ -34,7 +34,6 @@ export class Aggregate extends Component {
    * @componentOptions
    */
   static options: IAggregateOptions = {
-
     /**
      * Specifies the field on which to do the aggregate operation. This parameter is mandatory.
      */
@@ -92,10 +91,12 @@ export class Aggregate extends Component {
     var request: IGroupByRequest = {
       field: <string>this.options.field,
       maximumNumberOfValues: 0,
-      computedFields: [{
-        field: <string>this.options.field,
-        operation: this.options.operation
-      }]
+      computedFields: [
+        {
+          field: <string>this.options.field,
+          operation: this.options.operation
+        }
+      ]
     };
 
     this.index = args.queryBuilder.groupByRequests.length;

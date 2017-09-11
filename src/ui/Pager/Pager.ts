@@ -2,7 +2,14 @@ import { Component } from '../Base/Component';
 import { IComponentBindings } from '../Base/ComponentBindings';
 import { ComponentOptions } from '../Base/ComponentOptions';
 import { DeviceUtils } from '../../utils/DeviceUtils';
-import { QueryEvents, INewQueryEventArgs, IBuildingQueryEventArgs, IQuerySuccessEventArgs, INoResultsEventArgs, IDoneBuildingQueryEventArgs } from '../../events/QueryEvents';
+import {
+  QueryEvents,
+  INewQueryEventArgs,
+  IBuildingQueryEventArgs,
+  IQuerySuccessEventArgs,
+  INoResultsEventArgs,
+  IDoneBuildingQueryEventArgs
+} from '../../events/QueryEvents';
 import { MODEL_EVENTS, IAttributeChangedEventArg } from '../../models/Model';
 import { QueryStateModel } from '../../models/QueryStateModel';
 import { QUERY_STATE_ATTRIBUTES } from '../../models/QueryStateModel';
@@ -38,16 +45,15 @@ export class Pager extends Component {
 
   static doExport = () => {
     exportGlobally({
-      'Pager': Pager
+      Pager: Pager
     });
-  }
+  };
 
   /**
    * The options for the Pager
    * @componentOptions
    */
   static options: IPagerOptions = {
-
     /**
      * Specifies how many page links to display in the pager.
      *
@@ -81,7 +87,8 @@ export class Pager extends Component {
      */
     maxNumberOfPages: ComponentOptions.buildNumberOption({
       defaultValue: undefined,
-      deprecated: 'This is a deprecated option. The pager will automatically adapt itself on each new query. You no longer need to specify this option. Use maximumNumberOfResultsFromIndex instead.'
+      deprecated:
+        'This is a deprecated option. The pager will automatically adapt itself on each new query. You no longer need to specify this option. Use maximumNumberOfResultsFromIndex instead.'
     }),
     /**
      * Specifies the maximum number of results that the index can return for any query.
@@ -112,7 +119,6 @@ export class Pager extends Component {
 
   private list: HTMLElement;
 
-
   /**
    * Creates a new Pager. Binds multiple query events ({@link QueryEvents.newQuery}, {@link QueryEvents.buildingQuery},
    * {@link QueryEvents.querySuccess}, {@link QueryEvents.queryError} and {@link QueryEvents.noResults}. Renders itself
@@ -133,7 +139,9 @@ export class Pager extends Component {
     this.bind.onRootElement(QueryEvents.querySuccess, (args: IQuerySuccessEventArgs) => this.handleQuerySuccess(args));
     this.bind.onRootElement(QueryEvents.queryError, () => this.handleQueryError());
     this.bind.onRootElement(QueryEvents.noResults, (args: INoResultsEventArgs) => this.handleNoResults(args));
-    this.bind.onQueryState(MODEL_EVENTS.CHANGE_ONE, QUERY_STATE_ATTRIBUTES.FIRST, (data: IAttributeChangedEventArg) => this.handleQueryStateModelChanged(data));
+    this.bind.onQueryState(MODEL_EVENTS.CHANGE_ONE, QUERY_STATE_ATTRIBUTES.FIRST, (data: IAttributeChangedEventArg) =>
+      this.handleQueryStateModelChanged(data)
+    );
 
     this.list = document.createElement('ul');
     $$(this.list).addClass('coveo-pager-list');
@@ -179,7 +187,6 @@ export class Pager extends Component {
   }
 
   private getMaxNumberOfPagesForCurrentResultsPerPage() {
-
     return Math.ceil(this.options.maximumNumberOfResultsFromIndex / this.getNumberOfResultsPerPage());
   }
 
@@ -216,7 +223,6 @@ export class Pager extends Component {
       this.currentPage = pagerBoundary.currentPage;
       if (pagerBoundary.end - pagerBoundary.start > 0) {
         for (let i = pagerBoundary.start; i <= pagerBoundary.end; i++) {
-
           const listItemValue = document.createElement('a');
           $$(listItemValue).addClass(['coveo-pager-list-item-text', 'coveo-pager-anchor']);
           $$(listItemValue).text(i.toString(10));
@@ -293,7 +299,10 @@ export class Pager extends Component {
     this.lastNumberOfResultsPerPage = data.queryBuilder.numberOfResults;
   }
 
-  private computePagerBoundary(firstResult: number, totalCount: number): { start: number; end: number; lastResultPage: number; currentPage: number; } {
+  private computePagerBoundary(
+    firstResult: number,
+    totalCount: number
+  ): { start: number; end: number; lastResultPage: number; currentPage: number } {
     const resultPerPage: number = this.getNumberOfResultsPerPage();
     const currentPage = Math.floor(firstResult / resultPerPage) + 1;
     let lastPageNumber: number = Math.min(Math.ceil(totalCount / resultPerPage), this.getMaxNumberOfPagesForCurrentResultsPerPage());
@@ -311,7 +320,10 @@ export class Pager extends Component {
     };
   }
 
-  private renderNavigationButton(pagerBoundary: { start: number; end: number; lastResultPage: number; currentPage: number; }, list: HTMLElement) {
+  private renderNavigationButton(
+    pagerBoundary: { start: number; end: number; lastResultPage: number; currentPage: number },
+    list: HTMLElement
+  ) {
     if (this.currentPage > 1) {
       const previous = document.createElement('li');
       $$(previous).addClass(['coveo-pager-previous', 'coveo-pager-anchor', 'coveo-pager-list-item']);
@@ -363,7 +375,7 @@ export class Pager extends Component {
   }
 
   private fromFirstResultsToPageNumber(firstResult: number): number {
-    return (firstResult / this.getNumberOfResultsPerPage()) + 1;
+    return firstResult / this.getNumberOfResultsPerPage() + 1;
   }
 
   private getNumberOfResultsPerPage() {

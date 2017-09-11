@@ -6,7 +6,6 @@ import { InitializationEvents } from '../../src/events/InitializationEvents';
 import { ResultListEvents } from '../../src/events/ResultListEvents';
 import { QueryBuilder } from '../../src/ui/Base/QueryBuilder';
 export function DebugHeaderTest() {
-
   describe('DebugHeader', () => {
     let env: IMockEnvironment;
     let elem: Dom;
@@ -18,7 +17,7 @@ export function DebugHeaderTest() {
       elem = $$('div');
       searchSpy = jasmine.createSpy('search');
       debugHeader = new DebugHeader(env.root, elem.el, env, searchSpy, {
-        'foo': 'bar'
+        foo: 'bar'
       });
     });
 
@@ -43,16 +42,19 @@ export function DebugHeaderTest() {
     };
 
     it('should create a download button', () => {
-
       expect($$(elem.el).find('a[download="debug.json"]')).not.toBeNull();
     });
 
     it('should change the download button when providing new info', () => {
-      const firstLinkToDownload = $$(elem.el).find('a[download="debug.json"]').getAttribute('href');
+      const firstLinkToDownload = $$(elem.el)
+        .find('a[download="debug.json"]')
+        .getAttribute('href');
       debugHeader.setNewInfoToDebug({
-        'baz': 'buzz'
+        baz: 'buzz'
       });
-      const secondLinkToDownload = $$(elem.el).find('a[download="debug.json"]').getAttribute('href');
+      const secondLinkToDownload = $$(elem.el)
+        .find('a[download="debug.json"]')
+        .getAttribute('href');
       expect(firstLinkToDownload).not.toEqual(secondLinkToDownload);
     });
 
@@ -122,9 +124,12 @@ export function DebugHeaderTest() {
       const querySyntax = getQuerySyntaxCheckbox(elem.el);
       querySyntax.setAttribute('checked', 'checked');
       $$(querySyntax).trigger('change');
-      expect(env.componentOptionsModel.set).toHaveBeenCalledWith('searchBox', jasmine.objectContaining({
-        enableQuerySyntax: true
-      }));
+      expect(env.componentOptionsModel.set).toHaveBeenCalledWith(
+        'searchBox',
+        jasmine.objectContaining({
+          enableQuerySyntax: true
+        })
+      );
     });
   });
 }

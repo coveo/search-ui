@@ -29,7 +29,10 @@ export class LocalStorageHistoryController extends RootComponent {
   constructor(element: HTMLElement, public windoh: Window, public model: Model, public queryController: QueryController) {
     super(element, LocalStorageHistoryController.ID);
     if (!windoh['localStorage']) {
-      new Logger(element).info('No local storage available in current browser. LocalStorageHistoryController cannot initialize itself', this);
+      new Logger(element).info(
+        'No local storage available in current browser. LocalStorageHistoryController cannot initialize itself',
+        this
+      );
     } else {
       this.storage = new LocalStorageUtils<{ [key: string]: any }>(LocalStorageHistoryController.ID);
       Assert.exists(this.model);

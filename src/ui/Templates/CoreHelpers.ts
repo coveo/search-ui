@@ -94,10 +94,12 @@ export interface ICoreHelpers {
    * - `phraseToHighlight`: Optional. The phrases to highlight (see {@link IHighlightPhrase})
    * - `options`: Optional. The options defined below as {@link IStreamHighlightOptions}
    */
-  highlightStreamText: (content: string,
+  highlightStreamText: (
+    content: string,
     termsToHighlight: IHighlightTerm,
     phrasesToHighlight: IHighlightPhrase,
-    options?: IStreamHighlightOptions) => string;
+    options?: IStreamHighlightOptions
+  ) => string;
   /**
    * This helper operates exactly like the {@link highlightStreamText} helper, except
    * that it should be used to highlight HTML content. The helper takes care
@@ -108,10 +110,12 @@ export interface ICoreHelpers {
    * - `phraseToHighlight`: Optional. The phrases to highlight (see {@link IHighlightPhrase})
    * - `options`: Optional. The options defined below as {@link IStreamHighlightOptions}
    */
-  highlightStreamHTML: (content: string,
+  highlightStreamHTML: (
+    content: string,
     termsToHighlight: IHighlightTerm,
     phrasesToHighlight: IHighlightPhrase,
-    options?: IStreamHighlightOptions) => string;
+    options?: IStreamHighlightOptions
+  ) => string;
   /**
    * Formats a numeric value using the format string.
    *
@@ -290,9 +294,7 @@ export interface ICoreHelpers {
    * If it's a mobile device, return the type of device (Android, iPhone, iPad) etc.
    */
   isMobileDevice: () => string;
-
 }
-
 
 /**
  * Available options for the size templateHelpers.
@@ -309,8 +311,7 @@ export interface ISizeOptions {
 }
 
 export class CoreHelpers {
-  public constructor() {
-  }
+  public constructor() {}
 
   /**
    * For backward compatibility reason, the "global" template helper should be available under the
@@ -372,29 +373,45 @@ TemplateHelpers.registerTemplateHelper('highlight', (content: string, highlights
   }
 });
 
-TemplateHelpers.registerTemplateHelper('highlightStreamText', (content: string, termsToHighlight = resolveTermsToHighlight(), phrasesToHighlight = resolvePhrasesToHighlight(), opts?: IStreamHighlightOptions) => {
-  if (Utils.exists(content) && Utils.exists(termsToHighlight) && Utils.exists(phrasesToHighlight)) {
-    if (termsToHighlightAreDefined(termsToHighlight, phrasesToHighlight)) {
-      return StreamHighlightUtils.highlightStreamText(content, termsToHighlight, phrasesToHighlight, opts);
+TemplateHelpers.registerTemplateHelper(
+  'highlightStreamText',
+  (
+    content: string,
+    termsToHighlight = resolveTermsToHighlight(),
+    phrasesToHighlight = resolvePhrasesToHighlight(),
+    opts?: IStreamHighlightOptions
+  ) => {
+    if (Utils.exists(content) && Utils.exists(termsToHighlight) && Utils.exists(phrasesToHighlight)) {
+      if (termsToHighlightAreDefined(termsToHighlight, phrasesToHighlight)) {
+        return StreamHighlightUtils.highlightStreamText(content, termsToHighlight, phrasesToHighlight, opts);
+      } else {
+        return content;
+      }
     } else {
-      return content;
+      return undefined;
     }
-  } else {
-    return undefined;
   }
-});
+);
 
-TemplateHelpers.registerTemplateHelper('highlightStreamHTML', (content: string, termsToHighlight = resolveTermsToHighlight(), phrasesToHighlight = resolvePhrasesToHighlight(), opts?: IStreamHighlightOptions) => {
-  if (Utils.exists(content) && Utils.exists(termsToHighlight) && Utils.exists(phrasesToHighlight)) {
-    if (termsToHighlightAreDefined(termsToHighlight, phrasesToHighlight)) {
-      return StreamHighlightUtils.highlightStreamHTML(content, termsToHighlight, phrasesToHighlight, opts);
+TemplateHelpers.registerTemplateHelper(
+  'highlightStreamHTML',
+  (
+    content: string,
+    termsToHighlight = resolveTermsToHighlight(),
+    phrasesToHighlight = resolvePhrasesToHighlight(),
+    opts?: IStreamHighlightOptions
+  ) => {
+    if (Utils.exists(content) && Utils.exists(termsToHighlight) && Utils.exists(phrasesToHighlight)) {
+      if (termsToHighlightAreDefined(termsToHighlight, phrasesToHighlight)) {
+        return StreamHighlightUtils.highlightStreamHTML(content, termsToHighlight, phrasesToHighlight, opts);
+      } else {
+        return content;
+      }
     } else {
-      return content;
+      return undefined;
     }
-  } else {
-    return undefined;
   }
-});
+);
 
 TemplateHelpers.registerFieldHelper('number', (value: any, options?: any) => {
   var numberValue = Number(value);
@@ -472,12 +489,12 @@ TemplateHelpers.registerFieldHelper('email', (value: string | string[], ...args:
 TemplateHelpers.registerTemplateHelper('excessEmailToggle', (target: HTMLElement) => {
   $$(target).removeClass('coveo-active');
   if ($$(target).hasClass('coveo-emails-excess-collapsed')) {
-    _.each($$(target).siblings('.coveo-emails-excess-expanded'), (sibling) => {
+    _.each($$(target).siblings('.coveo-emails-excess-expanded'), sibling => {
       $$(sibling).addClass('coveo-active');
     });
   } else if ($$(target).hasClass('coveo-hide-expanded')) {
     $$(target.parentElement).addClass('coveo-inactive');
-    _.each($$(target.parentElement).siblings('.coveo-emails-excess-collapsed'), (sibling) => {
+    _.each($$(target.parentElement).siblings('.coveo-emails-excess-collapsed'), sibling => {
       $$(sibling).addClass('coveo-active');
     });
   }
@@ -492,11 +509,14 @@ TemplateHelpers.registerFieldHelper('image', (src: string, options?: IImageUtils
   return ImageUtils.buildImage(src, options);
 });
 
-TemplateHelpers.registerTemplateHelper('thumbnail', (result: IQueryResult = resolveQueryResult(), endpoint: string = 'default', options?: IImageUtilsOptions) => {
-  if (QueryUtils.hasThumbnail(result)) {
-    return ImageUtils.buildImageFromResult(result, SearchEndpoint.endpoints[endpoint], options);
+TemplateHelpers.registerTemplateHelper(
+  'thumbnail',
+  (result: IQueryResult = resolveQueryResult(), endpoint: string = 'default', options?: IImageUtilsOptions) => {
+    if (QueryUtils.hasThumbnail(result)) {
+      return ImageUtils.buildImageFromResult(result, SearchEndpoint.endpoints[endpoint], options);
+    }
   }
-});
+);
 
 TemplateHelpers.registerTemplateHelper('fromFileTypeToIcon', (result: IQueryResult = resolveQueryResult(), options = {}) => {
   let icon = Component.getComponentRef('Icon');
@@ -506,9 +526,9 @@ TemplateHelpers.registerTemplateHelper('fromFileTypeToIcon', (result: IQueryResu
 });
 
 TemplateHelpers.registerTemplateHelper('attrEncode', (value: string) => {
-  return ('' + value)/* Forces the conversion to string. */
-    .replace(/&/g, '&amp;')/* This MUST be the 1st replacement. */
-    .replace(/'/g, '&apos;')/* The 4 other predefined entities, required. */
+  return ('' + value) /* Forces the conversion to string. */
+    .replace(/&/g, '&amp;') /* This MUST be the 1st replacement. */
+    .replace(/'/g, '&apos;') /* The 4 other predefined entities, required. */
     .replace(/'/g, '&quot;')
     .replace(/</g, '&lt;')
     .replace(/>/g, '&gt;');
@@ -544,8 +564,8 @@ const byteMeasure = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB'];
 
 TemplateHelpers.registerFieldHelper('size', (value: any, options?: ISizeOptions) => {
   var size = parseInt(value, 10);
-  var precision = (options != null && options.precision != null ? options.precision : 2);
-  var base = (options != null && options.base != null ? options.base : 0);
+  var precision = options != null && options.precision != null ? options.precision : 2;
+  var base = options != null && options.base != null ? options.base : 0;
   while (size > 1024 && base + 1 < byteMeasure.length) {
     size /= 1024;
     base++;

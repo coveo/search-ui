@@ -5,9 +5,10 @@ import { ResponsiveComponents } from '../../src/ui/ResponsiveComponents/Responsi
 
 export function TemplateConditionEvaluatorTest() {
   describe('TemplateConditionEvaluator', () => {
-
     it('should be able to extract the coveo fields from a given arbitrary string', () => {
-      expect(TemplateConditionEvaluator.getFieldFromString('raw.foo @foobar test test raw["baz"] not a field')).toEqual(jasmine.arrayContaining(['foo', 'foobar', 'baz']));
+      expect(TemplateConditionEvaluator.getFieldFromString('raw.foo @foobar test test raw["baz"] not a field')).toEqual(
+        jasmine.arrayContaining(['foo', 'foobar', 'baz'])
+      );
     });
 
     describe('should be able to evaluate a basic boolean condition', () => {
@@ -47,22 +48,38 @@ export function TemplateConditionEvaluatorTest() {
 
         it('if it needs a small device and the device is small', () => {
           responsiveComponents.isSmallScreenWidth = () => true;
-          expect(TemplateConditionEvaluator.evaluateCondition('Coveo.DeviceUtils.isSmallScreenWidth()', fakeResults, responsiveComponents)).toBe(true);
+          expect(
+            TemplateConditionEvaluator.evaluateCondition('Coveo.DeviceUtils.isSmallScreenWidth()', fakeResults, responsiveComponents)
+          ).toBe(true);
         });
 
         it('if it needs a small device and the device is not small', () => {
           responsiveComponents.isSmallScreenWidth = () => false;
-          expect(TemplateConditionEvaluator.evaluateCondition('Coveo.DeviceUtils.isSmallScreenWidth()', fakeResults, responsiveComponents)).toBe(false);
+          expect(
+            TemplateConditionEvaluator.evaluateCondition('Coveo.DeviceUtils.isSmallScreenWidth()', fakeResults, responsiveComponents)
+          ).toBe(false);
         });
 
         it('if it needs a small device, but the field is matching', () => {
           responsiveComponents.isSmallScreenWidth = () => false;
-          expect(TemplateConditionEvaluator.evaluateCondition('raw.foo == "bar" && Coveo.DeviceUtils.isSmallScreenWidth()', fakeResults, responsiveComponents)).toBe(false);
+          expect(
+            TemplateConditionEvaluator.evaluateCondition(
+              'raw.foo == "bar" && Coveo.DeviceUtils.isSmallScreenWidth()',
+              fakeResults,
+              responsiveComponents
+            )
+          ).toBe(false);
         });
 
         it('if it needs a small device, but the field is not matching', () => {
           responsiveComponents.isSmallScreenWidth = () => true;
-          expect(TemplateConditionEvaluator.evaluateCondition('raw.foo == "baz" && Coveo.DeviceUtils.isSmallScreenWidth()', fakeResults, responsiveComponents)).toBe(false);
+          expect(
+            TemplateConditionEvaluator.evaluateCondition(
+              'raw.foo == "baz" && Coveo.DeviceUtils.isSmallScreenWidth()',
+              fakeResults,
+              responsiveComponents
+            )
+          ).toBe(false);
         });
       });
     });

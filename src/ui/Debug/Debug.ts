@@ -42,7 +42,12 @@ export class Debug extends RootComponent {
 
   public showDebugPanel: () => void;
 
-  constructor(public element: HTMLElement, public bindings: IComponentBindings, public options?: IDebugOptions, public ModalBox = ModalBoxModule) {
+  constructor(
+    public element: HTMLElement,
+    public bindings: IComponentBindings,
+    public options?: IDebugOptions,
+    public ModalBox = ModalBoxModule
+  ) {
     super(element, Debug.ID);
     this.options = ComponentOptions.initComponentOptions(element, Debug, options);
 
@@ -52,7 +57,9 @@ export class Debug extends RootComponent {
     // Then, openModalBox, even if it's called from multiple different caller will be opened only once all the info has been merged together correctly
     this.showDebugPanel = _.debounce(() => this.openModalBox(), 100);
 
-    $$(this.element).on(ResultListEvents.newResultDisplayed, (e, args: IDisplayedNewResultEventArgs) => this.handleNewResultDisplayed(args));
+    $$(this.element).on(ResultListEvents.newResultDisplayed, (e, args: IDisplayedNewResultEventArgs) =>
+      this.handleNewResultDisplayed(args)
+    );
     $$(this.element).on(DebugEvents.showDebugPanel, (e, args) => this.handleShowDebugPanel(args));
     $$(this.element).on(QueryEvents.querySuccess, (e, args: IQuerySuccessEventArgs) => this.handleQuerySuccess(args));
     $$(this.element).on(QueryEvents.newQuery, () => this.handleNewQuery());
@@ -84,11 +91,12 @@ export class Debug extends RootComponent {
 
       const template = args.item['template'];
 
-      const findResult = (results?: IQueryResults) => results != null ? _.find(results.results, (result: IQueryResult) => result.index == index) : args.result;
+      const findResult = (results?: IQueryResults) =>
+        results != null ? _.find(results.results, (result: IQueryResult) => result.index == index) : args.result;
 
       const debugInfo = _.extend(new DebugForResult(this.bindings).generateDebugInfoForResult(args.result), {
         findResult: findResult,
-        template: this.templateToJson(template),
+        template: this.templateToJson(template)
       });
 
       this.addInfoToDebugPanel(debugInfo);
@@ -117,7 +125,7 @@ export class Debug extends RootComponent {
     this.showDebugPanel();
   }
 
-  private buildStackPanel(): { body: HTMLElement; json: any; } {
+  private buildStackPanel(): { body: HTMLElement; json: any } {
     const body = $$('div', {
       className: 'coveo-debug'
     });
@@ -199,7 +207,13 @@ export class Debug extends RootComponent {
     const title = $$(this.modalBox.wrapper).find('.coveo-modal-header');
     if (title) {
       if (!this.debugHeader) {
-        this.debugHeader = new DebugHeader(this.element, title, this.bindings, (value: string) => this.search(value, build.body), this.stackDebug);
+        this.debugHeader = new DebugHeader(
+          this.element,
+          title,
+          this.bindings,
+          (value: string) => this.search(value, build.body),
+          this.stackDebug
+        );
       } else {
         this.debugHeader.moveTo(title);
         this.debugHeader.setNewInfoToDebug(this.stackDebug);
@@ -215,7 +229,7 @@ export class Debug extends RootComponent {
     this.opened = false;
   }
 
-  private buildStackPanelSection(value: any, results: IQueryResults): { section: HTMLElement; json?: any; } {
+  private buildStackPanelSection(value: any, results: IQueryResults): { section: HTMLElement; json?: any } {
     if (value instanceof HTMLElement) {
       return { section: value };
     } else if (_.isFunction(value)) {
@@ -276,7 +290,6 @@ export class Debug extends RootComponent {
       $$(dom).addClass('coveo-debug-collapsed');
     }
 
-
     header.on('click', () => {
       $$(dom).toggleClass('coveo-debug-collapsed');
       if (_.contains(this.collapsedSections, id)) {
@@ -297,7 +310,7 @@ export class Debug extends RootComponent {
   private buildProperty(value: any, label?: string): HTMLElement {
     if (value instanceof Promise) {
       return this.buildPromise(value, label);
-    } else if ((_.isArray(value) || (_.isObject(value))) && !_.isString(value)) {
+    } else if ((_.isArray(value) || _.isObject(value)) && !_.isString(value)) {
       return this.buildObjectProperty(value, label);
     } else {
       return this.buildBasicProperty(value, label);
@@ -309,7 +322,7 @@ export class Debug extends RootComponent {
       className: 'coveo-property coveo-property-promise'
     });
 
-    promise.then((value) => {
+    promise.then(value => {
       const resolvedDom = this.buildProperty(value, label);
       dom.replaceWith(resolvedDom);
     });
@@ -455,7 +468,7 @@ export class Debug extends RootComponent {
       return this.templateToJson(value);
     }
     if (value instanceof Promise) {
-      return value.then((value) => {
+      return value.then(value => {
         return this.toJson(value, depth, done);
       });
     }
@@ -515,7 +528,7 @@ export class Debug extends RootComponent {
     }
     const element: HTMLElement = template['element'];
     const templateObject: any = {
-      type: template.getType(),
+      type: template.getType()
     };
     if (element != null) {
       templateObject.id = element.id;
@@ -541,9 +554,11 @@ export class Debug extends RootComponent {
 
   private search(value: string, body: HTMLElement) {
     if (_.isEmpty(value)) {
-      $$(body).findAll('.coveo-search-match, .coveo-search-submatch').forEach((el) => {
-        $$(el).removeClass('coveo-search-match, coveo-search-submatch');
-      });
+      $$(body)
+        .findAll('.coveo-search-match, .coveo-search-submatch')
+        .forEach(el => {
+          $$(el).removeClass('coveo-search-match, coveo-search-submatch');
+        });
       $$(body).removeClass('coveo-searching');
     } else {
       $$(body).addClass('coveo-searching-loading');
@@ -568,7 +583,7 @@ export class Debug extends RootComponent {
     if (asHTMLElement != null && asHTMLElement.innerText != null) {
       const match = asHTMLElement.innerText.split(new RegExp('(?=' + StringUtils.regexEncode(search) + ')', 'gi'));
       asHTMLElement.innerHTML = '';
-      match.forEach((value) => {
+      match.forEach(value => {
         const regex = new RegExp('(' + StringUtils.regexEncode(search) + ')', 'i');
         const group = value.match(regex);
         let span;

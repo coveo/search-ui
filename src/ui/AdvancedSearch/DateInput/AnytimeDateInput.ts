@@ -25,5 +25,4 @@ export class AnytimeDateInput extends DateInput {
     });
     return this.element;
   }
-
 }

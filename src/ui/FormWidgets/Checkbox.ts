@@ -12,9 +12,9 @@ export class Checkbox implements IFormWidgetWithLabel, IFormWidgetSelectable {
 
   static doExport = () => {
     exportGlobally({
-      'Checkbox': Checkbox
+      Checkbox: Checkbox
     });
-  }
+  };
 
   /**
    * Creates a new `Checkbox`.
@@ -22,8 +22,7 @@ export class Checkbox implements IFormWidgetWithLabel, IFormWidgetSelectable {
    * instance as an argument.
    * @param label The label to display next to the checkbox.
    */
-  constructor(public onChange: (checkbox: Checkbox) => void = (checkbox: Checkbox) => {
-  }, public label: string) {
+  constructor(public onChange: (checkbox: Checkbox) => void = (checkbox: Checkbox) => {}, public label: string) {
     this.buildContent();
   }
 

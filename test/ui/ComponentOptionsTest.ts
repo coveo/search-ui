@@ -5,7 +5,6 @@ import { TemplateCache } from '../../src/ui/Templates/TemplateCache';
 
 export function ComponentOptionsTest() {
   describe('ComponentOptions', () => {
-
     describe('can build', () => {
       it('a boolean option', () => {
         let option = ComponentOptions.buildBooleanOption();
@@ -73,12 +72,16 @@ export function ComponentOptionsTest() {
       });
 
       it('a custom string option', () => {
-        let option = ComponentOptions.buildCustomOption((value: string) => { return value; });
+        let option = ComponentOptions.buildCustomOption((value: string) => {
+          return value;
+        });
         expect((<any>option).type).toBe(ComponentOptionsType.STRING);
       });
 
       it('a custom string list option', () => {
-        let option = ComponentOptions.buildCustomListOption((value: string[]) => { return value.join(', '); });
+        let option = ComponentOptions.buildCustomListOption((value: string[]) => {
+          return value.join(', ');
+        });
         expect((<any>option).type).toBe(ComponentOptionsType.LIST);
       });
 
@@ -99,7 +102,6 @@ export function ComponentOptionsTest() {
     });
 
     describe('exposes method', () => {
-
       describe('attrNameFromName', () => {
         it('which returns the attribute name from the given name', () => {
           let name = ComponentOptions.attrNameFromName('fooBar');
@@ -224,7 +226,8 @@ export function ComponentOptionsTest() {
               }
             }),
             testObject: ComponentOptions.buildObjectOption({
-              subOptions: {}, defaultFunction: (elem: HTMLElement) => {
+              subOptions: {},
+              defaultFunction: (elem: HTMLElement) => {
                 return { john: 'doe' };
               }
             })
@@ -233,13 +236,15 @@ export function ComponentOptionsTest() {
           expect(initOptions).toEqual({ testString: 'fooBrak', testList: ['fooBrak', 'fooBar'], testObject: { john: 'doe' } });
         });
 
-        it('which initializes a component\'s undefined required option', () => {
+        it("which initializes a component's undefined required option", () => {
           let options = {
             testRequired: ComponentOptions.buildStringOption({
               required: true
             })
           };
-          expect(() => { ComponentOptions.initComponentOptions(elem, { options, ID: 'fooID' }); }).not.toThrow();
+          expect(() => {
+            ComponentOptions.initComponentOptions(elem, { options, ID: 'fooID' });
+          }).not.toThrow();
         });
 
         it('which initializes the options of a component with postProcessing', () => {
@@ -313,10 +318,15 @@ export function ComponentOptionsTest() {
 
       describe('initOptions', () => {
         it('which initializes the options of a component', () => {
-          let initOptions = ComponentOptions.initOptions(elem, <{ [name: string]: IComponentOptions<any> }>{
-            myAttr: ComponentOptions.buildStringOption(),
-            myBool: ComponentOptions.buildBooleanOption()
-          }, {}, 'fooID');
+          let initOptions = ComponentOptions.initOptions(
+            elem,
+            <{ [name: string]: IComponentOptions<any> }>{
+              myAttr: ComponentOptions.buildStringOption(),
+              myBool: ComponentOptions.buildBooleanOption()
+            },
+            {},
+            'fooID'
+          );
           expect(initOptions).toEqual({ myAttr: 'baz', myBool: true });
         });
       });
@@ -326,11 +336,11 @@ export function ComponentOptionsTest() {
           let option = ComponentOptions.loadStringOption(elem, 'myAttr', {});
           expect(option).toBe('baz');
         });
-        it('which loads a string option from the IComponentOptions\'s option attrName', () => {
+        it("which loads a string option from the IComponentOptions's option attrName", () => {
           let option = ComponentOptions.loadStringOption(elem, 'myAttr', { attrName: 'data-my-bool' });
           expect(option).toBe('true');
         });
-        it('which loads a string option from the IComponentOptions\'s option alias', () => {
+        it("which loads a string option from the IComponentOptions's option alias", () => {
           let option = ComponentOptions.loadStringOption(elem, null, { alias: 'myAttr' });
           expect(option).toBe('baz');
         });
@@ -395,7 +405,7 @@ export function ComponentOptionsTest() {
           expect(option).toEqual(['@foobar', '@foobrak']);
         });
         it('which loads a list option using a custom separator', () => {
-          let separator: RegExp = new RegExp('\s*&\s*');
+          let separator: RegExp = new RegExp('s*&s*');
           let option = ComponentOptions.loadListOption(elem, 'myList', { separator });
           expect(option).toEqual(['foo', 'bar', 'brak']);
         });
@@ -446,11 +456,11 @@ export function ComponentOptionsTest() {
           let option = ComponentOptions.loadChildHtmlElementOption(elem, 'my', {}, doc);
           expect(option).toBe(testDiv);
         });
-        it('which loads an html element option from the IComponentOptionsChildHtmlElementOption\'s option selectorAttr', () => {
+        it("which loads an html element option from the IComponentOptionsChildHtmlElementOption's option selectorAttr", () => {
           let option = ComponentOptions.loadChildHtmlElementOption(elem, '', { selectorAttr: 'data-my-selector' }, doc);
           expect(option).toBe(testDiv);
         });
-        it('which loads a child html element option from the IComponentOptionsChildHtmlElementOption\'s option childSelector', () => {
+        it("which loads a child html element option from the IComponentOptionsChildHtmlElementOption's option childSelector", () => {
           let option = ComponentOptions.loadChildHtmlElementOption(elem, '', { childSelector: '#CoveoSearchboxChild' }, doc);
           expect(option).toBe(childElem);
         });

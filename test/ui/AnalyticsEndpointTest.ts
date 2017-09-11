@@ -26,8 +26,9 @@ export function AnalyticsEndpointTest() {
       jasmine.Ajax.uninstall();
     });
 
-    it('allow to get the current visit id', (done) => {
-      endpoint.getCurrentVisitIdPromise()
+    it('allow to get the current visit id', done => {
+      endpoint
+        .getCurrentVisitIdPromise()
         .then((res: string) => {
           expect(res).toBe('visitid');
           // Here, the current visit id is already set, so it should return immediately.
@@ -47,9 +48,10 @@ export function AnalyticsEndpointTest() {
       });
     });
 
-    it('allow to sendSearchEvents', (done) => {
+    it('allow to sendSearchEvents', done => {
       let fakeSearchEvent = FakeResults.createFakeSearchEvent();
-      endpoint.sendSearchEvents([fakeSearchEvent])
+      endpoint
+        .sendSearchEvents([fakeSearchEvent])
         .then((res: IAPIAnalyticsSearchEventsResponse) => {
           expect(res.searchEventResponses[0].visitId).toBe('visitid');
           // Here, the current visit id is already set, so it should return immediately.
@@ -74,9 +76,10 @@ export function AnalyticsEndpointTest() {
       });
     });
 
-    it('allow to sendDocumentViewEvent', (done) => {
+    it('allow to sendDocumentViewEvent', done => {
       let fakeClickEvent = FakeResults.createFakeClickEvent();
-      endpoint.sendDocumentViewEvent(fakeClickEvent)
+      endpoint
+        .sendDocumentViewEvent(fakeClickEvent)
         .then((res: IAPIAnalyticsEventResponse) => {
           expect(res.visitId).toBe('visitid');
           // Here, the current visit id is already set, so it should return immediately.
@@ -109,7 +112,6 @@ export function AnalyticsEndpointTest() {
       expect(jasmine.Ajax.requests.mostRecent().url.indexOf('org=organization') != -1).toBe(true);
     });
 
-
     it('sends organization as parameter when sending a search event', () => {
       let fakeSearchEvent = FakeResults.createFakeSearchEvent();
       endpoint.sendSearchEvents([fakeSearchEvent]);
@@ -117,8 +119,9 @@ export function AnalyticsEndpointTest() {
       expect(jasmine.Ajax.requests.mostRecent().url.indexOf('org=organization') != -1).toBe(true);
     });
 
-    it('allow to getTopQueries', (done) => {
-      endpoint.getTopQueries({ pageSize: 10, queryText: 'foobar' })
+    it('allow to getTopQueries', done => {
+      endpoint
+        .getTopQueries({ pageSize: 10, queryText: 'foobar' })
         .then((res: string[]) => {
           expect(res.length).toBe(3);
           expect(res[0]).toBe('foo');
@@ -129,7 +132,9 @@ export function AnalyticsEndpointTest() {
         })
         .then(() => done());
 
-      expect(jasmine.Ajax.requests.mostRecent().url).toBe(buildUrl(endpoint, '/stats/topQueries?org=organization&access_token=token&pageSize=10&queryText=foobar'));
+      expect(jasmine.Ajax.requests.mostRecent().url).toBe(
+        buildUrl(endpoint, '/stats/topQueries?org=organization&access_token=token&pageSize=10&queryText=foobar')
+      );
       expect(jasmine.Ajax.requests.mostRecent().method).toBe('GET');
       jasmine.Ajax.requests.mostRecent().respondWith({
         status: 200,

@@ -9,7 +9,13 @@ import { ComponentStateModel } from '../../models/ComponentStateModel';
 import { ComponentOptionsModel } from '../../models/ComponentOptionsModel';
 import { QueryController } from '../../controllers/QueryController';
 import { Model, IAttributeChangedEventArg } from '../../models/Model';
-import { QueryEvents, IBuildingQueryEventArgs, INewQueryEventArgs, IQuerySuccessEventArgs, IQueryErrorEventArgs } from '../../events/QueryEvents';
+import {
+  QueryEvents,
+  IBuildingQueryEventArgs,
+  INewQueryEventArgs,
+  IQuerySuccessEventArgs,
+  IQueryErrorEventArgs
+} from '../../events/QueryEvents';
 import { IBeforeRedirectEventArgs, StandaloneSearchInterfaceEvents } from '../../events/StandaloneSearchInterfaceEvents';
 import { HistoryController } from '../../controllers/HistoryController';
 import { LocalStorageHistoryController } from '../../controllers/LocalStorageHistoryController';
@@ -108,7 +114,6 @@ export class SearchInterface extends RootComponent implements IComponentBindings
    * @componentOptions
    */
   static options: ISearchInterfaceOptions = {
-
     /**
      * Specifies whether to allow the end user to navigate search history using the **Back** and **Forward** buttons
      * of the browser.
@@ -229,7 +234,9 @@ export class SearchInterface extends RootComponent implements IComponentBindings
      * [July 2017 Release (v2.2900.23)](https://developers.coveo.com/x/gSMvAg), the loading animation is composed of
      * placeholders, making this option is obsolete.
      */
-    hideUntilFirstQuery: ComponentOptions.buildBooleanOption({ deprecated: 'Exposed for legacy reasons. The loading animation is now composed of placeholders, and this option is obsolete.' }),
+    hideUntilFirstQuery: ComponentOptions.buildBooleanOption({
+      deprecated: 'Exposed for legacy reasons. The loading animation is now composed of placeholders, and this option is obsolete.'
+    }),
 
     /**
      * Specifies the animation that you wish to display while your interface is loading.
@@ -284,7 +291,10 @@ export class SearchInterface extends RootComponent implements IComponentBindings
      * Default value is `true`.
      */
     autoTriggerQuery: ComponentOptions.buildBooleanOption({ defaultValue: true }),
-    endpoint: ComponentOptions.buildCustomOption((endpoint) => endpoint != null && endpoint in SearchEndpoint.endpoints ? SearchEndpoint.endpoints[endpoint] : null, { defaultFunction: () => SearchEndpoint.endpoints['default'] }),
+    endpoint: ComponentOptions.buildCustomOption(
+      endpoint => (endpoint != null && endpoint in SearchEndpoint.endpoints ? SearchEndpoint.endpoints[endpoint] : null),
+      { defaultFunction: () => SearchEndpoint.endpoints['default'] }
+    ),
 
     /**
      * Specifies the timezone in which the search interface is loaded. This allows the index to recognize some special
@@ -448,7 +458,9 @@ export class SearchInterface extends RootComponent implements IComponentBindings
         new LocalStorageHistoryController(element, _window, this.queryStateModel, this.queryController);
       }
     } else {
-      $$(this.element).on(InitializationEvents.restoreHistoryState, () => this.queryStateModel.setMultiple(this.queryStateModel.defaultAttributes));
+      $$(this.element).on(InitializationEvents.restoreHistoryState, () =>
+        this.queryStateModel.setMultiple(this.queryStateModel.defaultAttributes)
+      );
     }
 
     const eventNameQuickview = this.queryStateModel.getEventName(Model.eventTypes.changeOne + QueryStateModel.attributesEnum.quickview);
@@ -585,7 +597,10 @@ export class SearchInterface extends RootComponent implements IComponentBindings
     if (tabGroupRef) {
       const tabGroups = this.getComponents<any>(tabGroupRef.ID);
       // check if the tabgroup is correct
-      if (tabGroupId != QueryStateModel.defaultAttributes.tg && _.any(tabGroups, (tabGroup: any) => !tabGroup.disabled && tabGroupId == tabGroup.options.id)) {
+      if (
+        tabGroupId != QueryStateModel.defaultAttributes.tg &&
+        _.any(tabGroups, (tabGroup: any) => !tabGroup.disabled && tabGroupId == tabGroup.options.id)
+      ) {
         return tabGroupId;
       }
       // select the first tabGroup
@@ -607,7 +622,10 @@ export class SearchInterface extends RootComponent implements IComponentBindings
           const tabGroups = this.getComponents<any>(tabGroupRef.ID);
           const tabGroup = _.find(tabGroups, (tabGroup: any) => tabGroupId == tabGroup.options.id);
           // check if the tabgroup contain this tab
-          if (tabId != QueryStateModel.defaultAttributes.t && _.any(tabs, (tab: any) => tabId == tab.options.id && tabGroup.isElementIncludedInTabGroup(tab.element))) {
+          if (
+            tabId != QueryStateModel.defaultAttributes.t &&
+            _.any(tabs, (tab: any) => tabId == tab.options.id && tabGroup.isElementIncludedInTabGroup(tab.element))
+          ) {
             return tabId;
           }
           // select the first tab in the tabGroup
@@ -643,7 +661,10 @@ export class SearchInterface extends RootComponent implements IComponentBindings
           const sortCriteria = tab.options.sort;
 
           // check if the tab contain this sort
-          if (sortId != QueryStateModel.defaultAttributes.sort && _.any(sorts, (sort: any) => tab.isElementIncludedInTab(sort.element) && sort.match(sortId))) {
+          if (
+            sortId != QueryStateModel.defaultAttributes.sort &&
+            _.any(sorts, (sort: any) => tab.isElementIncludedInTab(sort.element) && sort.match(sortId))
+          ) {
             return sortId;
           } else if (sortCriteria != null) {
             // if not and tab.options.sort is set apply it
@@ -685,14 +706,14 @@ export class SearchInterface extends RootComponent implements IComponentBindings
     if (quickviewRef) {
       const quickviews = this.getComponents<any>(quickviewRef.ID);
       if (args.value != '') {
-        const quickviewsPartition = _.partition(quickviews, (quickview) => quickview.getHashId() == args.value);
+        const quickviewsPartition = _.partition(quickviews, quickview => quickview.getHashId() == args.value);
         if (quickviewsPartition[0].length != 0) {
           _.first(quickviewsPartition[0]).open();
-          _.forEach(_.tail(quickviewsPartition[0]), (quickview) => quickview.close());
+          _.forEach(_.tail(quickviewsPartition[0]), quickview => quickview.close());
         }
-        _.forEach(quickviewsPartition[1], (quickview) => quickview.close());
+        _.forEach(quickviewsPartition[1], quickview => quickview.close());
       } else {
-        _.forEach(quickviews, (quickview) => {
+        _.forEach(quickviews, quickview => {
           quickview.close();
         });
       }
@@ -770,13 +791,12 @@ export class SearchInterface extends RootComponent implements IComponentBindings
       $$(resultsHeader).toggleClass(cssClass, toggle && !this.queryStateModel.atLeastOneFacetIsActive());
     }
     if (facetSearchs && facetSearchs.length > 0) {
-      _.each(facetSearchs, (facetSearch) => {
+      _.each(facetSearchs, facetSearch => {
         $$(facetSearch).toggleClass(cssClass, toggle && !this.queryStateModel.atLeastOneFacetIsActive());
       });
     }
   }
 }
-
 
 export interface IStandaloneSearchInterfaceOptions extends ISearchInterfaceOptions {
   redirectIfEmpty?: boolean;
@@ -789,7 +809,12 @@ export class StandaloneSearchInterface extends SearchInterface {
     redirectIfEmpty: ComponentOptions.buildBooleanOption({ defaultValue: true })
   };
 
-  constructor(public element: HTMLElement, public options?: IStandaloneSearchInterfaceOptions, public analyticsOptions?, public _window = window) {
+  constructor(
+    public element: HTMLElement,
+    public options?: IStandaloneSearchInterfaceOptions,
+    public analyticsOptions?,
+    public _window = window
+  ) {
     super(element, ComponentOptions.initComponentOptions(element, StandaloneSearchInterface, options), analyticsOptions, _window);
     $$(this.root).on(QueryEvents.newQuery, (e: Event, args: INewQueryEventArgs) => this.handleRedirect(e, args));
   }

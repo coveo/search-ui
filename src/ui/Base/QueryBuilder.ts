@@ -358,7 +358,10 @@ export class QueryBuilder {
     var withoutConstant = ExpressionBuilder.merge(this.expression, this.advancedExpression);
 
     return {
-      full: ExpressionBuilder.mergeUsingOr(ExpressionBuilder.merge(withoutConstant, this.constantExpression), this.disjunctionExpression).build(),
+      full: ExpressionBuilder.mergeUsingOr(
+        ExpressionBuilder.merge(withoutConstant, this.constantExpression),
+        this.disjunctionExpression
+      ).build(),
       withoutConstant: ExpressionBuilder.mergeUsingOr(withoutConstant, this.disjunctionExpression).build(),
       basic: ExpressionBuilder.mergeUsingOr(this.expression, this.disjunctionExpression).build(),
       advanced: ExpressionBuilder.mergeUsingOr(this.advancedExpression, this.disjunctionExpression).build(),
@@ -395,7 +398,10 @@ export class QueryBuilder {
     advancedAndExcept.remove(except);
 
     return {
-      full: ExpressionBuilder.mergeUsingOr(ExpressionBuilder.merge(withoutConstantAndExcept, this.constantExpression), this.disjunctionExpression).build(),
+      full: ExpressionBuilder.mergeUsingOr(
+        ExpressionBuilder.merge(withoutConstantAndExcept, this.constantExpression),
+        this.disjunctionExpression
+      ).build(),
       withoutConstant: ExpressionBuilder.mergeUsingOr(withoutConstantAndExcept, this.disjunctionExpression).build(),
       basic: ExpressionBuilder.mergeUsingOr(basicAndExcept, this.disjunctionExpression).build(),
       advanced: ExpressionBuilder.mergeUsingOr(advancedAndExcept, this.disjunctionExpression).build(),

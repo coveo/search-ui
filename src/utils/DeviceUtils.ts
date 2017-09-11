@@ -3,7 +3,6 @@ import { ResponsiveComponents } from '../ui/ResponsiveComponents/ResponsiveCompo
 const mobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 
 export class DeviceUtils {
-
   static getDeviceName(userAgent = navigator.userAgent): string {
     if (userAgent.match(/Edge/i)) {
       return 'Edge';

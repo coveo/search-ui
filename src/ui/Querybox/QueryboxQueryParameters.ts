@@ -6,8 +6,7 @@ import { Defer } from '../../MiscModules';
 export class QueryboxQueryParameters {
   private static queryIsCurrentlyBlocked = false;
 
-  constructor(private options: IQueryboxOptions) {
-  }
+  constructor(private options: IQueryboxOptions) {}
 
   private static queryIsBlocked() {
     // This code runs on some assumption :
