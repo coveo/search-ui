@@ -6,9 +6,8 @@ import { QueryEvents } from '../../events/QueryEvents';
 import { $$ } from '../../utils/Dom';
 import { ValueElement } from './ValueElement';
 
-
 export interface IFacetValueElementKlass {
-  new(facet: Facet, facetValue: FacetValue, displayNextTime?: boolean): FacetValueElement;
+  new (facet: Facet, facetValue: FacetValue, displayNextTime?: boolean): FacetValueElement;
 }
 
 export class FacetValueElement extends ValueElement {
@@ -23,6 +22,9 @@ export class FacetValueElement extends ValueElement {
   }
 
   public bindEvent() {
-    super.bindEvent({ displayNextTime: this.keepDisplayedValueNextTime, pinFacet: this.facet.options.preservePosition });
+    super.bindEvent({
+      displayNextTime: this.keepDisplayedValueNextTime,
+      pinFacet: this.facet.options.preservePosition
+    });
   }
 }

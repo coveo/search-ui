@@ -37,15 +37,14 @@ export class Backdrop extends Component {
 
   static doExport = () => {
     exportGlobally({
-      'Backdrop': Backdrop
+      Backdrop: Backdrop
     });
-  }
+  };
 
   /**
    * @componentOptions
    */
   static options: IBackdropOptions = {
-
     /**
      * Specifies a direct URL from which the background image will be sourced.
      *
@@ -75,7 +74,7 @@ export class Backdrop extends Component {
      *
      * Default value is `false`.
      */
-    overlayGradient: ComponentOptions.buildBooleanOption({ defaultValue: false, depend: 'overlayColor' }),
+    overlayGradient: ComponentOptions.buildBooleanOption({ defaultValue: false, depend: 'overlayColor' })
   };
 
   /**
@@ -86,7 +85,14 @@ export class Backdrop extends Component {
    * resolved (with a slower execution time).
    * @param result The {@link IQueryResult}.
    */
-  constructor(public element: HTMLElement, public options?: IBackdropOptions, bindings?: IComponentBindings, public result?: IQueryResult, public _window?: Window, public ModalBox = ModalBoxModule) {
+  constructor(
+    public element: HTMLElement,
+    public options?: IBackdropOptions,
+    bindings?: IComponentBindings,
+    public result?: IQueryResult,
+    public _window?: Window,
+    public ModalBox = ModalBoxModule
+  ) {
     super(element, Backdrop.ID, bindings);
     this.options = ComponentOptions.initComponentOptions(element, Backdrop, options);
 
@@ -94,8 +100,10 @@ export class Backdrop extends Component {
 
     let background = '';
     if (this.options.overlayColor) {
-      background += `linear-gradient(${this.options.overlayColor}, `
-        + (this.options.overlayGradient ? 'rgba(0,0,0,0)' : this.options.overlayColor) + '), ';
+      background +=
+        `linear-gradient(${this.options.overlayColor}, ` +
+        (this.options.overlayGradient ? 'rgba(0,0,0,0)' : this.options.overlayColor) +
+        '), ';
     }
 
     const imageSource = this.options.imageUrl || Utils.getFieldValue(result, <string>this.options.imageField);
@@ -120,14 +128,19 @@ export class Backdrop extends Component {
   }
 
   private configureSpecialBackdropActions() {
-
     // If the current backdrop is used for a youtube thumbnail, we automatically configure a component for this
     if (Utils.getFieldValue(this.result, 'ytthumbnailurl')) {
       // We create the element "in memory", but do not append it to the DOM.
       // We don't want to see a duplicate of the preview for youtube : the backdrop already renders a preview.
-      let thumbnailYouTube = new YouTubeThumbnail($$('div').el, <IYouTubeThumbnailOptions>{
-        embed: true
-      }, <IResultsComponentBindings>this.getBindings(), this.result, this.ModalBox);
+      let thumbnailYouTube = new YouTubeThumbnail(
+        $$('div').el,
+        <IYouTubeThumbnailOptions>{
+          embed: true
+        },
+        <IResultsComponentBindings>this.getBindings(),
+        this.result,
+        this.ModalBox
+      );
 
       $$(this.element).on('click', (e: MouseEvent) => {
         // Since the backdrop often contain a result link, we must make sure the click did no originate from one.

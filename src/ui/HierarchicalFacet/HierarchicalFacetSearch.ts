@@ -42,7 +42,7 @@ export class HierarchicalFacetSearch extends FacetSearch {
 
   private getFacetValues(fieldValues: IIndexFieldValue[]): FacetValue[] {
     var values = [];
-    _.each(fieldValues, (fieldValue) => {
+    _.each(fieldValues, fieldValue => {
       var hierarchy = this.facet.getValueFromHierarchy(fieldValue.value);
       values.push(this.createFacetValuesFromHierarchy(hierarchy));
     });
@@ -60,7 +60,7 @@ export class HierarchicalFacetSearch extends FacetSearch {
     facetValue.excluded = false;
     values.push(facetValue);
     var childs = hierarchy.childs;
-    _.each(childs, (child) => {
+    _.each(childs, child => {
       var childHierarchy = this.facet.getValueFromHierarchy(child.facetValue.value);
       values.push(this.createFacetValuesFromHierarchy(childHierarchy));
     });

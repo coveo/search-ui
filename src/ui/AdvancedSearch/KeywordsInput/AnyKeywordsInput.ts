@@ -11,7 +11,7 @@ export class AnyKeywordsInput extends KeywordsInput {
     let value = super.getValue();
     let splitValues = value.split(' ');
     let generatedValue = '';
-    _.each(splitValues, (splitValue) => {
+    _.each(splitValues, splitValue => {
       generatedValue += splitValue + ' OR ';
     });
     generatedValue = generatedValue.substr(0, generatedValue.length - 4);

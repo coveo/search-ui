@@ -13,7 +13,12 @@ import { QueryEvents, IQuerySuccessEventArgs, IBuildingQueryEventArgs, IDoneBuil
 import { BreadcrumbEvents, IPopulateBreadcrumbEventArgs, IBreadcrumbItem } from '../../events/BreadcrumbEvents';
 import { IAttributeChangedEventArg, Model } from '../../models/Model';
 import { $$ } from '../../utils/Dom';
-import { analyticsActionCauseList, IAnalyticsFacetMeta, IAnalyticsFacetSliderChangeMeta, IAnalyticsFacetGraphSelectedMeta } from '../Analytics/AnalyticsActionListMeta';
+import {
+  analyticsActionCauseList,
+  IAnalyticsFacetMeta,
+  IAnalyticsFacetSliderChangeMeta,
+  IAnalyticsFacetGraphSelectedMeta
+} from '../Analytics/AnalyticsActionListMeta';
 import { QueryStateModel } from '../../models/QueryStateModel';
 import { SliderEvents, IGraphValueSelectedArgs } from '../../events/SliderEvents';
 import { Assert } from '../../misc/Assert';
@@ -28,7 +33,6 @@ import { ResponsiveFacetSlider } from '../ResponsiveComponents/ResponsiveFacetSl
 import 'styling/_FacetSlider';
 import { IGroupByResult } from '../../rest/GroupByResult';
 import { Defer } from '../../MiscModules';
-
 
 export interface IFacetSliderOptions extends ISliderOptions {
   dateField?: boolean;
@@ -56,13 +60,11 @@ export interface IFacetSliderOptions extends ISliderOptions {
  * > [Components - Passing Component Options Before the init Call](https://developers.coveo.com/x/PoGfAQ#Components-PassingComponentOptionsBeforetheinitCall)).
  */
 export class FacetSlider extends Component {
-
   /**
    * The component options
    * @componentOptions
    */
   static options: IFacetSliderOptions = {
-
     /**
      * Specifies the title to display on top of the `FacetSlider`.
      *
@@ -313,7 +315,6 @@ export class FacetSlider extends Component {
      */
     valueCaption: ComponentOptions.buildCustomOption<(values: number[]) => string>(() => {
       return null;
-
     }),
 
     /**
@@ -344,10 +345,10 @@ export class FacetSlider extends Component {
 
   static doExport = () => {
     exportGlobally({
-      'FacetSlider': FacetSlider,
-      'Slider': Slider
+      FacetSlider: FacetSlider,
+      Slider: Slider
     });
-  }
+  };
 
   public static DEBOUNCED_RESIZE_DELAY = 250;
 
@@ -383,11 +384,15 @@ export class FacetSlider extends Component {
     }
 
     if (this.options.start) {
-      this.options.start = this.options.dateField ? <any>new Date(this.options.start.replace(/-/g, '/')).getTime() : <any>Number(this.options.start);
+      this.options.start = this.options.dateField
+        ? <any>new Date(this.options.start.replace(/-/g, '/')).getTime()
+        : <any>Number(this.options.start);
     }
 
     if (this.options.end) {
-      this.options.end = this.options.dateField ? <any>new Date(this.options.end.replace(/-/g, '/')).getTime() : <any>Number(this.options.end);
+      this.options.end = this.options.dateField
+        ? <any>new Date(this.options.end.replace(/-/g, '/')).getTime()
+        : <any>Number(this.options.end);
     }
 
     this.facetQueryController = new FacetSliderQueryController(this);
@@ -397,8 +402,12 @@ export class FacetSlider extends Component {
     this.bind.onRootElement(QueryEvents.deferredQuerySuccess, (args: IQuerySuccessEventArgs) => this.handleDeferredQuerySuccess(args));
     this.bind.onRootElement(QueryEvents.buildingQuery, (args: IBuildingQueryEventArgs) => this.handleBuildingQuery(args));
     this.bind.onRootElement(QueryEvents.doneBuildingQuery, (args: IDoneBuildingQueryEventArgs) => this.handleDoneBuildingQuery(args));
-    this.bind.onRootElement(BreadcrumbEvents.populateBreadcrumb, (args: IPopulateBreadcrumbEventArgs) => this.handlePopulateBreadcrumb(args));
-    this.bind.onRootElement(SearchAlertsEvents.searchAlertsPopulateMessage, (args: ISearchAlertsPopulateMessageEventArgs) => this.handlePopulateSearchAlerts(args));
+    this.bind.onRootElement(BreadcrumbEvents.populateBreadcrumb, (args: IPopulateBreadcrumbEventArgs) =>
+      this.handlePopulateBreadcrumb(args)
+    );
+    this.bind.onRootElement(SearchAlertsEvents.searchAlertsPopulateMessage, (args: ISearchAlertsPopulateMessageEventArgs) =>
+      this.handlePopulateSearchAlerts(args)
+    );
     this.bind.onRootElement(BreadcrumbEvents.clearBreadcrumb, () => this.reset());
 
     this.onResize = _.debounce(() => {
@@ -482,11 +491,13 @@ export class FacetSlider extends Component {
    * @returns {boolean} `true` if the FacetSlider is active; `false` otherwise.
    */
   public isActive(): boolean {
-    return !isNaN(this.startOfSlider)
-      && !isNaN(this.endOfSlider)
-      && !isNaN(this.initialStartOfSlider)
-      && !isNaN(this.initialEndOfSlider)
-      && (this.startOfSlider != this.initialStartOfSlider || this.endOfSlider != this.initialEndOfSlider);
+    return (
+      !isNaN(this.startOfSlider) &&
+      !isNaN(this.endOfSlider) &&
+      !isNaN(this.initialStartOfSlider) &&
+      !isNaN(this.initialEndOfSlider) &&
+      (this.startOfSlider != this.initialStartOfSlider || this.endOfSlider != this.initialEndOfSlider)
+    );
   }
 
   public getSliderBoundaryForQuery(): number[] {
@@ -627,7 +638,9 @@ export class FacetSlider extends Component {
     }
     const sliderDiv = $$('div').el;
 
-    this.slider = this.slider ? this.slider : new Slider(sliderDiv, _.extend({}, this.options, { dateField: this.options.dateField }), this.root);
+    this.slider = this.slider
+      ? this.slider
+      : new Slider(sliderDiv, _.extend({}, this.options, { dateField: this.options.dateField }), this.root);
     $$(sliderDiv).on(SliderEvents.endSlide, (e: MouseEvent, args: IEndSlideEventArgs) => {
       this.handleEndSlide(args);
     });
@@ -742,7 +755,7 @@ export class FacetSlider extends Component {
     let graphData: ISliderGraphData[];
     let totalGraphResults = 0;
     if (rawGroupByResults) {
-      graphData = _.map(rawGroupByResults.values, (value) => {
+      graphData = _.map(rawGroupByResults.values, value => {
         totalGraphResults += value.numberOfResults;
         let start: any = value.value.split('..')[0];
         let end: any = value.value.split('..')[1];
@@ -830,7 +843,10 @@ export class FacetSlider extends Component {
     if (endFromState != undefined) {
       end = endFromState;
     }
-    if (start != this.queryStateModel.getDefault(this.rangeQueryStateAttribute)[0] || end != this.queryStateModel.getDefault(this.rangeQueryStateAttribute)[1]) {
+    if (
+      start != this.queryStateModel.getDefault(this.rangeQueryStateAttribute)[0] ||
+      end != this.queryStateModel.getDefault(this.rangeQueryStateAttribute)[1]
+    ) {
       return [start, end];
     } else {
       return [undefined, undefined];
@@ -869,7 +885,9 @@ export class FacetSlider extends Component {
 
   private setupSliderStateVariables() {
     if (isNaN(this.initialStartOfSlider) || isNaN(this.initialEndOfSlider)) {
-      this.logger.warn('Cannnot initialize slider with those values : start: ' + this.initialStartOfSlider + ' end: ' + this.initialEndOfSlider);
+      this.logger.warn(
+        'Cannnot initialize slider with those values : start: ' + this.initialStartOfSlider + ' end: ' + this.initialEndOfSlider
+      );
     } else {
       this.initialStartOfSlider = Number(this.initialStartOfSlider);
       this.initialEndOfSlider = Number(this.initialEndOfSlider);
@@ -926,7 +944,7 @@ export class FacetSlider extends Component {
   private setupInitialSliderStateEnd(value: any) {
     if (this.initialEndOfSlider == undefined) {
       this.initialEndOfSlider = value;
-      if (this.options.dateField && isNaN((value))) {
+      if (this.options.dateField && isNaN(value)) {
         this.initialEndOfSlider = new Date(value.replace('@', ' ')).getTime();
       }
     }
@@ -955,7 +973,12 @@ export class FacetSlider extends Component {
   }
 
   private isFacetEmpty(groupByResults: IGroupByResult, data: IQuerySuccessEventArgs) {
-    return groupByResults == null || groupByResults.values[0] == null || groupByResults.values[0].numberOfResults == 0 || data.results.results.length == 0;
+    return (
+      groupByResults == null ||
+      groupByResults.values[0] == null ||
+      groupByResults.values[0].numberOfResults == 0 ||
+      data.results.results.length == 0
+    );
   }
 }
 

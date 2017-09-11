@@ -71,8 +71,7 @@ export interface IEndpointCallOptions {
  * The `IGetDocumentOptions` interface describes the available options when calling against a
  * [`SearchEndpoint`]{@link SearchEndpoint} to get an item.
  */
-export interface IGetDocumentOptions extends IEndpointCallOptions {
-}
+export interface IGetDocumentOptions extends IEndpointCallOptions {}
 
 /**
  * The `IViewAsHtmlOptions` interface describes the available options when calling against a

@@ -19,7 +19,6 @@ export function FieldSuggestionsTest() {
       test = Mock.optionsComponentSetup<FieldSuggestions, IFieldSuggestionsOptions>(FieldSuggestions, {
         field: '@foobar'
       });
-
     });
 
     afterEach(() => {
@@ -29,9 +28,11 @@ export function FieldSuggestionsTest() {
 
     it('should do a request on the endpoint', () => {
       Simulate.omnibox(test.env);
-      expect(test.env.searchEndpoint.listFieldValues).toHaveBeenCalledWith(jasmine.objectContaining({
-        field: '@foobar'
-      }));
+      expect(test.env.searchEndpoint.listFieldValues).toHaveBeenCalledWith(
+        jasmine.objectContaining({
+          field: '@foobar'
+        })
+      );
     });
 
     it('should throw when there is no field', () => {
@@ -42,14 +43,16 @@ export function FieldSuggestionsTest() {
       }).toThrow();
     });
 
-    it('should trigger an analytics event on suggestion', (done) => {
+    it('should trigger an analytics event on suggestion', done => {
       test.env.searchEndpoint.listFieldValues = jasmine.createSpy('search');
-      (<jasmine.Spy>test.env.searchEndpoint.listFieldValues).and.returnValue(new Promise((resolve) => {
-        resolve([{ value: 'foo' }, { value: 'bar' }, { value: 'baz' }]);
-      }));
+      (<jasmine.Spy>test.env.searchEndpoint.listFieldValues).and.returnValue(
+        new Promise(resolve => {
+          resolve([{ value: 'foo' }, { value: 'bar' }, { value: 'baz' }]);
+        })
+      );
       var simulation = Simulate.omnibox(test.env);
       test.cmp.selectSuggestion(0);
-      simulation.rows[0].deferred.then((elementResolved) => {
+      simulation.rows[0].deferred.then(elementResolved => {
         test.cmp.selectSuggestion(0);
         expect(test.env.usageAnalytics.logSearchEvent).toHaveBeenCalledWith(analyticsActionCauseList.omniboxField, {});
         done();
@@ -57,31 +60,34 @@ export function FieldSuggestionsTest() {
     });
 
     describe('exposes options', () => {
-
       it('queryOverride should be passed in the list field value', () => {
         test = Mock.optionsComponentSetup<FieldSuggestions, IFieldSuggestionsOptions>(FieldSuggestions, {
           field: '@foobar',
           queryOverride: 'some override'
         });
         Simulate.omnibox(test.env);
-        expect(test.env.searchEndpoint.listFieldValues).toHaveBeenCalledWith(jasmine.objectContaining({
-          field: '@foobar',
-          queryOverride: 'some override'
-        }));
+        expect(test.env.searchEndpoint.listFieldValues).toHaveBeenCalledWith(
+          jasmine.objectContaining({
+            field: '@foobar',
+            queryOverride: 'some override'
+          })
+        );
       });
 
-      it('omniboxZIndex should be taken into account', (done) => {
+      it('omniboxZIndex should be taken into account', done => {
         test = Mock.optionsComponentSetup<FieldSuggestions, IFieldSuggestionsOptions>(FieldSuggestions, {
           field: '@foobar',
           omniboxZIndex: 333
         });
         test.env.searchEndpoint.listFieldValues = jasmine.createSpy('search');
-        (<jasmine.Spy>test.env.searchEndpoint.listFieldValues).and.returnValue(new Promise((resolve) => {
-          resolve([{ value: 'foo' }, { value: 'bar' }, { value: 'baz' }]);
-        }));
+        (<jasmine.Spy>test.env.searchEndpoint.listFieldValues).and.returnValue(
+          new Promise(resolve => {
+            resolve([{ value: 'foo' }, { value: 'bar' }, { value: 'baz' }]);
+          })
+        );
         var simulation = Simulate.omnibox(test.env);
         test.cmp.selectSuggestion(0);
-        simulation.rows[0].deferred.then((elementResolved) => {
+        simulation.rows[0].deferred.then(elementResolved => {
           expect(elementResolved.zIndex).toBe(333);
           done();
         });
@@ -93,10 +99,12 @@ export function FieldSuggestionsTest() {
           numberOfSuggestions: 333
         });
         Simulate.omnibox(test.env);
-        expect(test.env.searchEndpoint.listFieldValues).toHaveBeenCalledWith(jasmine.objectContaining({
-          field: '@foobar',
-          maximumNumberOfValues: 333
-        }));
+        expect(test.env.searchEndpoint.listFieldValues).toHaveBeenCalledWith(
+          jasmine.objectContaining({
+            field: '@foobar',
+            maximumNumberOfValues: 333
+          })
+        );
       });
 
       describe('when data is returned for a field', () => {
@@ -105,7 +113,7 @@ export function FieldSuggestionsTest() {
           fakeListField = Promise.resolve([{ value: 'foo' }, { value: 'bar' }, { value: 'baz' }]);
         });
 
-        it('should not provide a header if not configured as an option', (done) => {
+        it('should not provide a header if not configured as an option', done => {
           test = Mock.optionsComponentSetup<FieldSuggestions, IFieldSuggestionsOptions>(FieldSuggestions, {
             field: '@foobar'
           });
@@ -113,13 +121,13 @@ export function FieldSuggestionsTest() {
           (<jasmine.Spy>test.env.searchEndpoint.listFieldValues).and.returnValue(fakeListField);
 
           const simulation = Simulate.omnibox(test.env);
-          simulation.rows[0].deferred.then((elementResolved) => {
+          simulation.rows[0].deferred.then(elementResolved => {
             expect($$(elementResolved.element).find('.coveo-top-field-suggestion-header')).toBeNull();
             done();
           });
         });
 
-        it('should provide a header if configured as an option', (done) => {
+        it('should provide a header if configured as an option', done => {
           test = Mock.optionsComponentSetup<FieldSuggestions, IFieldSuggestionsOptions>(FieldSuggestions, {
             field: '@foobar',
             headerTitle: 'my suggestion'
@@ -128,7 +136,7 @@ export function FieldSuggestionsTest() {
           (<jasmine.Spy>test.env.searchEndpoint.listFieldValues).and.returnValue(fakeListField);
 
           const simulation = Simulate.omnibox(test.env);
-          simulation.rows[0].deferred.then((elementResolved) => {
+          simulation.rows[0].deferred.then(elementResolved => {
             const header = $$(elementResolved.element).find('.coveo-top-field-suggestion-header');
             expect(header).not.toBeNull();
             expect($$(header).text()).toBe('my suggestion');

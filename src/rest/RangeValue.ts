@@ -2,7 +2,6 @@
  * The IRangeValue interface describes a single range of values in a group by clause.
  */
 export interface IRangeValue {
-
   /**
    * Specifies the start of the range.
    *

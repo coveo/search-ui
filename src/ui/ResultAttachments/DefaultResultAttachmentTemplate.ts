@@ -1,9 +1,7 @@
 import { Template } from '../Templates/Template';
 import { IQueryResult } from '../../rest/QueryResult';
 
-
 export class DefaultResultAttachmentTemplate extends Template {
-
   constructor() {
     super();
   }

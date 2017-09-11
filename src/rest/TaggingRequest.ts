@@ -2,7 +2,6 @@
  * The `ITaggingRequest` interface describes a tag request on an item.
  */
 export interface ITaggingRequest {
-
   /**
    * Contains the field name to tag.
    */

@@ -6,13 +6,13 @@ export function InTheLastDateInputTest() {
   describe('InTheLastDateInput', () => {
     let input: InTheLastDateInput;
 
-    beforeEach(function () {
+    beforeEach(function() {
       input = new InTheLastDateInput($$('div').el);
       input.build();
-      (<HTMLInputElement>$$((input.getElement())).find('input')).checked = true;
+      (<HTMLInputElement>$$(input.getElement()).find('input')).checked = true;
     });
 
-    afterEach(function () {
+    afterEach(function() {
       input = null;
     });
 

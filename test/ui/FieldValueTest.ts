@@ -32,21 +32,31 @@ export function FieldValueTest() {
 
     describe('exposes options', () => {
       it('field not specified should default to @field', () => {
-        test = Mock.optionsResultComponentSetup<FieldValue, IFieldValueOptions>(FieldValue, <IFieldValueOptions>{
-          field: undefined
-        }, FakeResults.createFakeResult());
+        test = Mock.optionsResultComponentSetup<FieldValue, IFieldValueOptions>(
+          FieldValue,
+          <IFieldValueOptions>{
+            field: undefined
+          },
+          FakeResults.createFakeResult()
+        );
         expect(test.cmp.options.field).toBe('@field');
       });
 
       it('facet should use the field value by default', () => {
-        test = Mock.optionsResultComponentSetup<FieldValue, IFieldValueOptions>(FieldValue, <IFieldValueOptions>{
-          field: '@foobarde'
-        }, FakeResults.createFakeResult());
+        test = Mock.optionsResultComponentSetup<FieldValue, IFieldValueOptions>(
+          FieldValue,
+          <IFieldValueOptions>{
+            field: '@foobarde'
+          },
+          FakeResults.createFakeResult()
+        );
         expect(test.cmp.options.facet).toBe('@foobarde');
       });
 
-      it('htmlValue set to true should set the element\'s innerHTML value properly', () => {
-        test = Mock.advancedResultComponentSetup<FieldValue>(FieldValue, FakeResults.createFakeResult(), <Mock.AdvancedComponentSetupOptions>{
+      it("htmlValue set to true should set the element's innerHTML value properly", () => {
+        test = Mock.advancedResultComponentSetup<
+          FieldValue
+        >(FieldValue, FakeResults.createFakeResult(), <Mock.AdvancedComponentSetupOptions>{
           element: element,
           cmpOptions: <IFieldValueOptions>{
             field: '@foobarde',
@@ -57,7 +67,9 @@ export function FieldValueTest() {
       });
 
       it('htmlValue set to false should set the value in text node', () => {
-        test = Mock.advancedResultComponentSetup<FieldValue>(FieldValue, FakeResults.createFakeResult(), <Mock.AdvancedComponentSetupOptions>{
+        test = Mock.advancedResultComponentSetup<
+          FieldValue
+        >(FieldValue, FakeResults.createFakeResult(), <Mock.AdvancedComponentSetupOptions>{
           element: element,
           cmpOptions: <IFieldValueOptions>{
             field: '@foobarde',
@@ -143,7 +155,9 @@ export function FieldValueTest() {
       });
 
       it('helper should render using the specified helper', () => {
-        test = Mock.advancedResultComponentSetup<FieldValue>(FieldValue, FakeResults.createFakeResult(), <Mock.AdvancedComponentSetupOptions>{
+        test = Mock.advancedResultComponentSetup<
+          FieldValue
+        >(FieldValue, FakeResults.createFakeResult(), <Mock.AdvancedComponentSetupOptions>{
           element: element,
           cmpOptions: <IFieldValueOptions>{
             field: '@foobarde',
@@ -155,7 +169,9 @@ export function FieldValueTest() {
       });
 
       it('helper should eliminate helperOptions that do not match the current helper', () => {
-        test = Mock.advancedResultComponentSetup<FieldValue>(FieldValue, FakeResults.createFakeResult(), <Mock.AdvancedComponentSetupOptions>{
+        test = Mock.advancedResultComponentSetup<
+          FieldValue
+        >(FieldValue, FakeResults.createFakeResult(), <Mock.AdvancedComponentSetupOptions>{
           element: element,
           cmpOptions: <IFieldValueOptions>{
             field: '@author',
@@ -170,7 +186,9 @@ export function FieldValueTest() {
       });
 
       it('textCaption should render a text value', () => {
-        test = Mock.advancedResultComponentSetup<FieldValue>(FieldValue, FakeResults.createFakeResult(), <Mock.AdvancedComponentSetupOptions>{
+        test = Mock.advancedResultComponentSetup<
+          FieldValue
+        >(FieldValue, FakeResults.createFakeResult(), <Mock.AdvancedComponentSetupOptions>{
           element: element,
           cmpOptions: <IFieldValueOptions>{
             field: '@title',
@@ -182,7 +200,9 @@ export function FieldValueTest() {
       });
 
       it('textCaption should render in front of the fieldValue', () => {
-        test = Mock.advancedResultComponentSetup<FieldValue>(FieldValue, FakeResults.createFakeResult(), <Mock.AdvancedComponentSetupOptions>{
+        test = Mock.advancedResultComponentSetup<
+          FieldValue
+        >(FieldValue, FakeResults.createFakeResult(), <Mock.AdvancedComponentSetupOptions>{
           element: element,
           cmpOptions: <IFieldValueOptions>{
             field: '@title',
@@ -193,7 +213,9 @@ export function FieldValueTest() {
       });
 
       it('textCaption option should add the class coveo-with-label to the CoveoFieldValue', () => {
-        test = Mock.advancedResultComponentSetup<FieldValue>(FieldValue, FakeResults.createFakeResult(), <Mock.AdvancedComponentSetupOptions>{
+        test = Mock.advancedResultComponentSetup<
+          FieldValue
+        >(FieldValue, FakeResults.createFakeResult(), <Mock.AdvancedComponentSetupOptions>{
           element: element,
           cmpOptions: <IFieldValueOptions>{
             field: '@title',
@@ -228,7 +250,9 @@ export function FieldValueTest() {
 
       it('should display the field value as clickable when its facet is enabled', () => {
         facet.disabled = false;
-        test = Mock.advancedResultComponentSetup<FieldValue>(FieldValue, FakeResults.createFakeResult(), <Mock.AdvancedComponentSetupOptions>{
+        test = Mock.advancedResultComponentSetup<
+          FieldValue
+        >(FieldValue, FakeResults.createFakeResult(), <Mock.AdvancedComponentSetupOptions>{
           element: element,
           modifyBuilder: (builder: Mock.MockEnvironmentBuilder) => {
             builder.componentStateModel.get = () => [facet];
@@ -244,7 +268,9 @@ export function FieldValueTest() {
 
       it('should not display the field value as clickable when its facet is disabled', () => {
         facet.disabled = true;
-        test = Mock.advancedResultComponentSetup<FieldValue>(FieldValue, FakeResults.createFakeResult(), <Mock.AdvancedComponentSetupOptions>{
+        test = Mock.advancedResultComponentSetup<
+          FieldValue
+        >(FieldValue, FakeResults.createFakeResult(), <Mock.AdvancedComponentSetupOptions>{
           element: element,
           modifyBuilder: (builder: Mock.MockEnvironmentBuilder) => {
             builder.componentStateModel.get = () => [facet];
@@ -277,22 +303,42 @@ export function FieldValueTest() {
       let dateTimeString = DateUtils.dateTimeToString(new Date(parseInt(fakeResult.raw.date)), fullDateOptions);
 
       test = Mock.optionsResultComponentSetup<FieldValue, IFieldValueOptions>(FieldValue, options, fakeResult);
-      expect($$(test.cmp.element).find('span').getAttribute('title')).toEqual(dateString);
+      expect(
+        $$(test.cmp.element)
+          .find('span')
+          .getAttribute('title')
+      ).toEqual(dateString);
 
       options.helper = 'dateTime';
       test = Mock.optionsResultComponentSetup<FieldValue, IFieldValueOptions>(FieldValue, options, fakeResult);
-      expect($$(test.cmp.element).find('span').getAttribute('title')).toEqual(dateTimeString);
+      expect(
+        $$(test.cmp.element)
+          .find('span')
+          .getAttribute('title')
+      ).toEqual(dateTimeString);
 
       options.helper = 'emailDateTime';
       test = Mock.optionsResultComponentSetup<FieldValue, IFieldValueOptions>(FieldValue, options, fakeResult);
-      expect($$(test.cmp.element).find('span').getAttribute('title')).toEqual(dateTimeString);
+      expect(
+        $$(test.cmp.element)
+          .find('span')
+          .getAttribute('title')
+      ).toEqual(dateTimeString);
     });
 
-    it('should not show a full date tooltip if it doesn\'t have the helper is not a date', () => {
-      test = Mock.optionsResultComponentSetup<FieldValue, IFieldValueOptions>(FieldValue, <IFieldValueOptions>{
-        field: '@string'
-      }, FakeResults.createFakeResult());
-      expect($$(test.cmp.element).find('span').hasAttribute('title')).toBe(false);
+    it("should not show a full date tooltip if it doesn't have the helper is not a date", () => {
+      test = Mock.optionsResultComponentSetup<FieldValue, IFieldValueOptions>(
+        FieldValue,
+        <IFieldValueOptions>{
+          field: '@string'
+        },
+        FakeResults.createFakeResult()
+      );
+      expect(
+        $$(test.cmp.element)
+          .find('span')
+          .hasAttribute('title')
+      ).toBe(false);
     });
   });
 }

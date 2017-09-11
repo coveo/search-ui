@@ -17,7 +17,7 @@ export interface IResponsiveComponentOptions {
 }
 
 export interface IResponsiveComponentConstructor {
-  new(root: Dom, ID: string, options: IResponsiveComponentOptions): IResponsiveComponent;
+  new (root: Dom, ID: string, options: IResponsiveComponentOptions): IResponsiveComponent;
 }
 
 export interface IResponsiveComponent {
@@ -33,7 +33,6 @@ interface IComponentInitialization {
 }
 
 export class ResponsiveComponentsManager {
-
   public static DROPDOWN_HEADER_WRAPPER_CSS_CLASS = 'coveo-dropdown-header-wrapper';
   public static RESIZE_DEBOUNCE_DELAY = 200;
 
@@ -52,13 +51,19 @@ export class ResponsiveComponentsManager {
   private logger: Logger;
 
   // Register takes a class and will instantiate it after framework initialization has completed.
-  public static register(responsiveComponentConstructor: IResponsiveComponentConstructor, root: Dom, ID: string, component: Component, options: IResponsiveComponentOptions): void {
+  public static register(
+    responsiveComponentConstructor: IResponsiveComponentConstructor,
+    root: Dom,
+    ID: string,
+    component: Component,
+    options: IResponsiveComponentOptions
+  ): void {
     // options.initializationEventRoot can be set in some instance (like recommendation) where the root of the interface triggering the init event
     // is different from the one that will be used for calculation size.
     const initEventRoot = options.initializationEventRoot || root;
     initEventRoot.on(InitializationEvents.afterInitialization, () => {
       if (this.shouldEnableResponsiveMode(root)) {
-        let responsiveComponentsManager = _.find(this.componentManagers, (componentManager) => root.el == componentManager.coveoRoot.el);
+        let responsiveComponentsManager = _.find(this.componentManagers, componentManager => root.el == componentManager.coveoRoot.el);
         if (!responsiveComponentsManager) {
           responsiveComponentsManager = new ResponsiveComponentsManager(root);
           this.componentManagers.push(responsiveComponentsManager);
@@ -114,32 +119,45 @@ export class ResponsiveComponentsManager {
   constructor(root: Dom) {
     this.coveoRoot = root;
     this.searchInterface = <SearchInterface>Component.get(this.coveoRoot.el, SearchInterface, false);
-    this.dropdownHeadersWrapper = $$('div', { className: ResponsiveComponentsManager.DROPDOWN_HEADER_WRAPPER_CSS_CLASS });
+    this.dropdownHeadersWrapper = $$('div', {
+      className: ResponsiveComponentsManager.DROPDOWN_HEADER_WRAPPER_CSS_CLASS
+    });
     this.searchBoxElement = this.getSearchBoxElement();
     this.logger = new Logger(this);
-    this.resizeListener = _.debounce(() => {
-      if (this.coveoRoot.width() != 0) {
-        this.addDropdownHeaderWrapperIfNeeded();
-        if (this.shouldSwitchToSmallMode()) {
-          this.coveoRoot.addClass('coveo-small-interface');
-        } else if (!this.shouldSwitchToSmallMode()) {
-          this.coveoRoot.removeClass('coveo-small-interface');
-        }
-        _.each(this.responsiveComponents, responsiveComponent => {
-          responsiveComponent.handleResizeEvent();
-        });
-      } else {
-        this.logger.warn(`The width of the search interface is 0, cannot dispatch resize events to responsive components. This means that the tabs will not
+    this.resizeListener = _.debounce(
+      () => {
+        if (this.coveoRoot.width() != 0) {
+          this.addDropdownHeaderWrapperIfNeeded();
+          if (this.shouldSwitchToSmallMode()) {
+            this.coveoRoot.addClass('coveo-small-interface');
+          } else if (!this.shouldSwitchToSmallMode()) {
+            this.coveoRoot.removeClass('coveo-small-interface');
+          }
+          _.each(this.responsiveComponents, responsiveComponent => {
+            responsiveComponent.handleResizeEvent();
+          });
+        } else {
+          this.logger
+            .warn(`The width of the search interface is 0, cannot dispatch resize events to responsive components. This means that the tabs will not
         automatically fit in the tab section. Also, the facet and recommendation component will not hide in a menu. Could the search
         interface display property be none? Could its visibility property be set to hidden? Also, if either of these scenarios happen during
         loading, it could be the cause of this issue.`);
-      }
-    }, ResponsiveComponentsManager.RESIZE_DEBOUNCE_DELAY, true);
+        }
+      },
+      ResponsiveComponentsManager.RESIZE_DEBOUNCE_DELAY,
+      true
+    );
     window.addEventListener('resize', this.resizeListener);
     this.bindNukeEvents();
   }
 
-  public register(responsiveComponentConstructor: IResponsiveComponentConstructor, root: Dom, ID: string, component: Component, options: IResponsiveComponentOptions): void {
+  public register(
+    responsiveComponentConstructor: IResponsiveComponentConstructor,
+    root: Dom,
+    ID: string,
+    component: Component,
+    options: IResponsiveComponentOptions
+  ): void {
     if (this.isDisabled(ID)) {
       return;
     }

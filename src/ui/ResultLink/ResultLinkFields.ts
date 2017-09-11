@@ -13,4 +13,3 @@ export const fields = [
 export function registerFields() {
   Initialization.registerComponentFields('ResultLink', fields);
 }
-

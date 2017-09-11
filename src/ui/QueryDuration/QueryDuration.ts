@@ -11,8 +11,7 @@ import { exportGlobally } from '../../GlobalExports';
 
 import 'styling/_QueryDuration';
 
-export interface IQueryDurationOptions {
-}
+export interface IQueryDurationOptions {}
 
 /**
  * The QueryDuration component displays the duration of the last query execution.
@@ -27,12 +26,11 @@ export class QueryDuration extends Component {
 
   static doExport = () => {
     exportGlobally({
-      'QueryDuration': QueryDuration
+      QueryDuration: QueryDuration
     });
-  }
-
-  static options: IQueryDurationOptions = {
   };
+
+  static options: IQueryDurationOptions = {};
 
   private textContainer: HTMLElement;
 

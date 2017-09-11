@@ -33,9 +33,7 @@ export function FoldingTest() {
       fakeResults = null;
     });
 
-
     describe('exposes options', () => {
-
       describe('field', () => {
         it('should send the correct field to the outgoing query', () => {
           test = Mock.optionsComponentSetup<Folding, IFoldingOptions>(Folding, {
@@ -46,9 +44,11 @@ export function FoldingTest() {
         });
 
         it('should throw an error when not specified', () => {
-          expect(() => Mock.optionsComponentSetup<Folding, IFoldingOptions>(Folding, {
-            field: null
-          })).toThrow();
+          expect(() =>
+            Mock.optionsComponentSetup<Folding, IFoldingOptions>(Folding, {
+              field: null
+            })
+          ).toThrow();
         });
       });
 
@@ -69,9 +69,11 @@ export function FoldingTest() {
         const data = Simulate.query(test.env, { results: fakeResults });
 
         data.results.results[0].moreResults();
-        expect(test.env.queryController.getEndpoint().search).toHaveBeenCalledWith(jasmine.objectContaining({
-          cq: 'myExpandExpression'
-        }));
+        expect(test.env.queryController.getEndpoint().search).toHaveBeenCalledWith(
+          jasmine.objectContaining({
+            cq: 'myExpandExpression'
+          })
+        );
       });
 
       it('maximumExpandedResults should set the number of results properly to the expand query', () => {
@@ -141,65 +143,83 @@ export function FoldingTest() {
         });
 
         it('and modify q', () => {
-          expect(test.env.queryController.getEndpoint().search).toHaveBeenCalledWith(jasmine.objectContaining({
-            aq: '@fieldname=fieldvalue',
-            fieldsToInclude: jasmine.arrayContaining(['should', 'be', 'included']),
-            filterField: null,
-            filterFieldRange: null,
-            q: '( <@- should be there -@> ) OR @uri'
-          }));
+          expect(test.env.queryController.getEndpoint().search).toHaveBeenCalledWith(
+            jasmine.objectContaining({
+              aq: '@fieldname=fieldvalue',
+              fieldsToInclude: jasmine.arrayContaining(['should', 'be', 'included']),
+              filterField: null,
+              filterFieldRange: null,
+              q: '( <@- should be there -@> ) OR @uri'
+            })
+          );
         });
 
         it('and modify firstResult', () => {
-          expect(test.env.queryController.getEndpoint().search).toHaveBeenCalledWith(jasmine.objectContaining({
-            firstResult: 0
-          }));
+          expect(test.env.queryController.getEndpoint().search).toHaveBeenCalledWith(
+            jasmine.objectContaining({
+              firstResult: 0
+            })
+          );
         });
 
         it('and modify aq', () => {
-          expect(test.env.queryController.getEndpoint().search).toHaveBeenCalledWith(jasmine.objectContaining({
-            aq: '@fieldname=fieldvalue'
-          }));
+          expect(test.env.queryController.getEndpoint().search).toHaveBeenCalledWith(
+            jasmine.objectContaining({
+              aq: '@fieldname=fieldvalue'
+            })
+          );
         });
 
         it('and modify fieldsToInclude', () => {
-          expect(test.env.queryController.getEndpoint().search).toHaveBeenCalledWith(jasmine.objectContaining({
-            fieldsToInclude: jasmine.arrayContaining(['should', 'be', 'included']),
-          }));
+          expect(test.env.queryController.getEndpoint().search).toHaveBeenCalledWith(
+            jasmine.objectContaining({
+              fieldsToInclude: jasmine.arrayContaining(['should', 'be', 'included'])
+            })
+          );
         });
 
         it('and modify filterFieldRange', () => {
-          expect(test.env.queryController.getEndpoint().search).toHaveBeenCalledWith(jasmine.objectContaining({
-            filterFieldRange: null
-          }));
+          expect(test.env.queryController.getEndpoint().search).toHaveBeenCalledWith(
+            jasmine.objectContaining({
+              filterFieldRange: null
+            })
+          );
         });
 
         it('and modify query syntax', () => {
-          expect(test.env.queryController.getEndpoint().search).toHaveBeenCalledWith(jasmine.objectContaining({
-            enableQuerySyntax: true
-          }));
+          expect(test.env.queryController.getEndpoint().search).toHaveBeenCalledWith(
+            jasmine.objectContaining({
+              enableQuerySyntax: true
+            })
+          );
         });
       });
 
       it('should perform query with expected expression when moreResults is called', () => {
         queryData.results.results[0].moreResults();
-        expect(test.env.queryController.getEndpoint().search).toHaveBeenCalledWith(jasmine.objectContaining({
-          aq: '@fieldname=fieldvalue'
-        }));
+        expect(test.env.queryController.getEndpoint().search).toHaveBeenCalledWith(
+          jasmine.objectContaining({
+            aq: '@fieldname=fieldvalue'
+          })
+        );
       });
 
       it('should include query keywords for highlighting', () => {
         queryData.results.results[0].moreResults();
-        expect(test.env.queryController.getEndpoint().search).toHaveBeenCalledWith(jasmine.objectContaining({
-          q: '( <@- foo bar -@> ) OR @uri'
-        }));
+        expect(test.env.queryController.getEndpoint().search).toHaveBeenCalledWith(
+          jasmine.objectContaining({
+            q: '( <@- foo bar -@> ) OR @uri'
+          })
+        );
       });
 
       it('should use the specified maximum number of results', () => {
         queryData.results.results[0].moreResults();
-        expect(test.env.queryController.getEndpoint().search).toHaveBeenCalledWith(jasmine.objectContaining({
-          numberOfResults: 7
-        }));
+        expect(test.env.queryController.getEndpoint().search).toHaveBeenCalledWith(
+          jasmine.objectContaining({
+            numberOfResults: 7
+          })
+        );
       });
     });
 
@@ -221,7 +241,7 @@ export function FoldingTest() {
 
     it('should set the proper childResults and attachments in multiple folded results', () => {
       const results: IQueryResult[] = [];
-      _.times(7, (n) => results.push(FakeResults.createFakeResult(n.toString())));
+      _.times(7, n => results.push(FakeResults.createFakeResult(n.toString())));
 
       // 0 - 1
       //   - 2 - 3
@@ -237,43 +257,45 @@ export function FoldingTest() {
 
       topResult = Folding.defaultGetResult(topResult);
 
-      expect(topResult).toEqual(jasmine.objectContaining({
-        uniqueId: 'uniqueId0',
-        attachments: [
-          jasmine.objectContaining({
-            uniqueId: 'uniqueId1',
-            attachments: []
-          }),
-          jasmine.objectContaining({
-            uniqueId: 'uniqueId2',
-            attachments: [
-              jasmine.objectContaining({
-                uniqueId: 'uniqueId3',
-                attachments: []
-              })
-            ]
-          })
-        ],
-        childResults: [
-          jasmine.objectContaining({
-            uniqueId: 'uniqueId4',
-            attachments: [
-              jasmine.objectContaining({
-                uniqueId: 'uniqueId5'
-              })
-            ]
-          }),
-          jasmine.objectContaining({
-            uniqueId: 'uniqueId6',
-            attachments: []
-          })
-        ]
-      }));
+      expect(topResult).toEqual(
+        jasmine.objectContaining({
+          uniqueId: 'uniqueId0',
+          attachments: [
+            jasmine.objectContaining({
+              uniqueId: 'uniqueId1',
+              attachments: []
+            }),
+            jasmine.objectContaining({
+              uniqueId: 'uniqueId2',
+              attachments: [
+                jasmine.objectContaining({
+                  uniqueId: 'uniqueId3',
+                  attachments: []
+                })
+              ]
+            })
+          ],
+          childResults: [
+            jasmine.objectContaining({
+              uniqueId: 'uniqueId4',
+              attachments: [
+                jasmine.objectContaining({
+                  uniqueId: 'uniqueId5'
+                })
+              ]
+            }),
+            jasmine.objectContaining({
+              uniqueId: 'uniqueId6',
+              attachments: []
+            })
+          ]
+        })
+      );
     });
 
     it('should sort by the original position', () => {
       const results: IQueryResult[] = [];
-      _.times(7, (n) => results.push(FakeResults.createFakeResult(n.toString())));
+      _.times(7, n => results.push(FakeResults.createFakeResult(n.toString())));
 
       // Priority is : 6, 3, 5, 4, 1, 2, 0
       // Give :
@@ -287,54 +309,49 @@ export function FoldingTest() {
       results[3].parentResult = results[2];
       results[5].parentResult = results[4];
       let topResult = results[6];
-      topResult.childResults = [
-        results[3],
-        results[5],
-        results[4],
-        results[1],
-        results[2],
-        results[0],
-      ];
+      topResult.childResults = [results[3], results[5], results[4], results[1], results[2], results[0]];
 
       topResult = Folding.defaultGetResult(topResult);
 
-      expect(topResult).toEqual(jasmine.objectContaining({
-        uniqueId: 'uniqueId6',
-        attachments: [],
-        childResults: [
-          jasmine.objectContaining({
-            uniqueId: 'uniqueId0',
-            attachments: [
-              jasmine.objectContaining({
-                uniqueId: 'uniqueId2',
-                attachments: [
-                  jasmine.objectContaining({
-                    uniqueId: 'uniqueId3'
-                  })
-                ]
-              }),
-              jasmine.objectContaining({
-                uniqueId: 'uniqueId1',
-                attachments: []
-              })
-            ]
-          }),
-          jasmine.objectContaining({
-            uniqueId: 'uniqueId4',
-            attachments: [
-              jasmine.objectContaining({
-                uniqueId: 'uniqueId5',
-                attachments: []
-              })
-            ]
-          })
-        ]
-      }));
+      expect(topResult).toEqual(
+        jasmine.objectContaining({
+          uniqueId: 'uniqueId6',
+          attachments: [],
+          childResults: [
+            jasmine.objectContaining({
+              uniqueId: 'uniqueId0',
+              attachments: [
+                jasmine.objectContaining({
+                  uniqueId: 'uniqueId2',
+                  attachments: [
+                    jasmine.objectContaining({
+                      uniqueId: 'uniqueId3'
+                    })
+                  ]
+                }),
+                jasmine.objectContaining({
+                  uniqueId: 'uniqueId1',
+                  attachments: []
+                })
+              ]
+            }),
+            jasmine.objectContaining({
+              uniqueId: 'uniqueId4',
+              attachments: [
+                jasmine.objectContaining({
+                  uniqueId: 'uniqueId5',
+                  attachments: []
+                })
+              ]
+            })
+          ]
+        })
+      );
     });
 
     it('should remove duplicate from the result set if one is loaded through the parentResult field', () => {
       const results: IQueryResult[] = [];
-      _.times(7, (n) => results.push(FakeResults.createFakeResult(n.toString())));
+      _.times(7, n => results.push(FakeResults.createFakeResult(n.toString())));
 
       // 0 - 1
       //   - 2 - 3
@@ -352,37 +369,39 @@ export function FoldingTest() {
 
       topResult = Folding.defaultGetResult(topResult);
 
-      expect(topResult).toEqual(jasmine.objectContaining({
-        uniqueId: 'uniqueId0',
-        attachments: [
-          jasmine.objectContaining({
-            uniqueId: 'uniqueId1',
-            attachments: []
-          }),
-          jasmine.objectContaining({
-            uniqueId: 'uniqueId2',
-            attachments: [
-              jasmine.objectContaining({
-                uniqueId: 'uniqueId3'
-              })
-            ]
-          })
-        ],
-        childResults: [
-          jasmine.objectContaining({
-            uniqueId: 'uniqueId4',
-            attachments: [
-              jasmine.objectContaining({
-                uniqueId: 'uniqueId5'
-              })
-            ]
-          }),
-          jasmine.objectContaining({
-            uniqueId: 'uniqueId6',
-            attachments: []
-          })
-        ]
-      }));
+      expect(topResult).toEqual(
+        jasmine.objectContaining({
+          uniqueId: 'uniqueId0',
+          attachments: [
+            jasmine.objectContaining({
+              uniqueId: 'uniqueId1',
+              attachments: []
+            }),
+            jasmine.objectContaining({
+              uniqueId: 'uniqueId2',
+              attachments: [
+                jasmine.objectContaining({
+                  uniqueId: 'uniqueId3'
+                })
+              ]
+            })
+          ],
+          childResults: [
+            jasmine.objectContaining({
+              uniqueId: 'uniqueId4',
+              attachments: [
+                jasmine.objectContaining({
+                  uniqueId: 'uniqueId5'
+                })
+              ]
+            }),
+            jasmine.objectContaining({
+              uniqueId: 'uniqueId6',
+              attachments: []
+            })
+          ]
+        })
+      );
     });
   });
 }

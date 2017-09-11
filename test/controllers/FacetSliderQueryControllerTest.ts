@@ -5,7 +5,6 @@ import { IFieldOption } from '../../src/ui/Base/ComponentOptions';
 import { QueryBuilder } from '../../src/ui/Base/QueryBuilder';
 
 export function FacetSliderQueryControllerTest() {
-
   describe('FacetSliderQueryController', () => {
     let facet: FacetSlider;
     let controller: FacetSliderQueryController;
@@ -65,21 +64,25 @@ export function FacetSliderQueryControllerTest() {
       facet.isSimpleSliderConfig = () => true;
       const builder = new QueryBuilder();
       controller.putGroupByIntoQueryBuilder(builder);
-      expect(builder.groupByRequests).toEqual(jasmine.arrayContaining([jasmine.objectContaining({
-        field: '@foo',
-        generateAutomaticRanges: false,
-        maximumNumberOfValues: 1,
-        rangeValues: jasmine.arrayContaining([
+      expect(builder.groupByRequests).toEqual(
+        jasmine.arrayContaining([
           jasmine.objectContaining({
-            start: 0,
-            end: 100,
-            endInclusive: false
+            field: '@foo',
+            generateAutomaticRanges: false,
+            maximumNumberOfValues: 1,
+            rangeValues: jasmine.arrayContaining([
+              jasmine.objectContaining({
+                start: 0,
+                end: 100,
+                endInclusive: false
+              })
+            ])
           })
         ])
-      })]));
+      );
     });
 
-    it('should add a group by for graph if needed if it\'s not a simple slider config', () => {
+    it("should add a group by for graph if needed if it's not a simple slider config", () => {
       facet.isSimpleSliderConfig = () => false;
       facet.options.graph = {};
       facet.options.graph.steps = 10;
@@ -87,13 +90,15 @@ export function FacetSliderQueryControllerTest() {
 
       const builder = new QueryBuilder();
       controller.putGroupByIntoQueryBuilder(builder);
-      expect(builder.groupByRequests[0]).toEqual(jasmine.objectContaining({
-        field: '@foo',
-        generateAutomaticRanges: true,
-        maximumNumberOfValues: 10,
-        queryOverride: '@uri',
-        sortCriteria: 'nosort'
-      }));
+      expect(builder.groupByRequests[0]).toEqual(
+        jasmine.objectContaining({
+          field: '@foo',
+          generateAutomaticRanges: true,
+          maximumNumberOfValues: 10,
+          queryOverride: '@uri',
+          sortCriteria: 'nosort'
+        })
+      );
     });
 
     it('should add a group by for graph using the query override if specified', () => {
@@ -105,13 +110,15 @@ export function FacetSliderQueryControllerTest() {
 
       const builder = new QueryBuilder();
       controller.putGroupByIntoQueryBuilder(builder);
-      expect(builder.groupByRequests[0]).toEqual(jasmine.objectContaining({
-        field: '@foo',
-        generateAutomaticRanges: true,
-        maximumNumberOfValues: 10,
-        queryOverride: 'my query override',
-        sortCriteria: 'nosort'
-      }));
+      expect(builder.groupByRequests[0]).toEqual(
+        jasmine.objectContaining({
+          field: '@foo',
+          generateAutomaticRanges: true,
+          maximumNumberOfValues: 10,
+          queryOverride: 'my query override',
+          sortCriteria: 'nosort'
+        })
+      );
     });
 
     it('should add a range request if needed for graph', () => {
@@ -124,20 +131,25 @@ export function FacetSliderQueryControllerTest() {
 
       const builder = new QueryBuilder();
       controller.putGroupByIntoQueryBuilder(builder);
-      expect(builder.groupByRequests[0]).toEqual(jasmine.objectContaining({
-        rangeValues: jasmine.arrayContaining([jasmine.objectContaining({
-          'start': 0,
-          'end': 10,
-          endInclusive: true
-        }), jasmine.objectContaining({
-          'start': 10,
-          'end': 20,
-          endInclusive: true
-        })])
-      }));
+      expect(builder.groupByRequests[0]).toEqual(
+        jasmine.objectContaining({
+          rangeValues: jasmine.arrayContaining([
+            jasmine.objectContaining({
+              start: 0,
+              end: 10,
+              endInclusive: true
+            }),
+            jasmine.objectContaining({
+              start: 10,
+              end: 20,
+              endInclusive: true
+            })
+          ])
+        })
+      );
     });
 
-    it('should add a group by for graph if it\'s a date', () => {
+    it("should add a group by for graph if it's a date", () => {
       facet.isSimpleSliderConfig = () => true;
       facet.options.graph = {};
       facet.options.graph.steps = 10;
@@ -148,17 +160,21 @@ export function FacetSliderQueryControllerTest() {
 
       const builder = new QueryBuilder();
       controller.putGroupByIntoQueryBuilder(builder);
-      expect(builder.groupByRequests[0]).toEqual(jasmine.objectContaining({
-        field: '@foo',
-        maximumNumberOfValues: 10,
-        sortCriteria: 'nosort',
-        generateAutomaticRanges: false,
-        rangeValues: jasmine.arrayContaining([jasmine.objectContaining({
-          'start': jasmine.stringMatching('1970'),
-          'end': jasmine.stringMatching('1970'),
-          endInclusive: true
-        })])
-      }));
+      expect(builder.groupByRequests[0]).toEqual(
+        jasmine.objectContaining({
+          field: '@foo',
+          maximumNumberOfValues: 10,
+          sortCriteria: 'nosort',
+          generateAutomaticRanges: false,
+          rangeValues: jasmine.arrayContaining([
+            jasmine.objectContaining({
+              start: jasmine.stringMatching('1970'),
+              end: jasmine.stringMatching('1970'),
+              endInclusive: true
+            })
+          ])
+        })
+      );
     });
   });
 }

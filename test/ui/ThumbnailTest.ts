@@ -14,44 +14,51 @@ import { Icon } from '../../src/ui/Icon/Icon';
 import { FakeResults } from '../Fake';
 
 export function ThumbnailTest() {
-  describe('Thumbnail', function () {
-
+  describe('Thumbnail', function() {
     let test: Mock.IBasicComponentSetup<Thumbnail>;
     let endpoint: SearchEndpoint;
     let getRawDataStreamPromise: Promise<ArrayBuffer>;
 
     beforeEach(() => {
       endpoint = Mock.mockSearchEndpoint();
-      getRawDataStreamPromise = new Promise<ArrayBuffer>((resolve, reject) => { });
+      getRawDataStreamPromise = new Promise<ArrayBuffer>((resolve, reject) => {});
       endpoint.getRawDataStream = () => getRawDataStreamPromise;
       test = Mock.advancedResultComponentSetup<Thumbnail>(Thumbnail, undefined, <Mock.AdvancedComponentSetupOptions>{
-        modifyBuilder: (builder: Mock.MockEnvironmentBuilder) => builder.withElement($$('img').el).withResult().withEndpoint(endpoint)
+        modifyBuilder: (builder: Mock.MockEnvironmentBuilder) =>
+          builder
+            .withElement($$('img').el)
+            .withResult()
+            .withEndpoint(endpoint)
       });
     });
 
     describe('without JSONP', () => {
-      beforeEach(function () {
+      beforeEach(function() {
         endpoint.isJsonp = () => false;
         endpoint.getRawDataStream = () => new Promise<ArrayBuffer>((resolve, reject) => resolve(new ArrayBuffer(0)));
         test = Mock.advancedResultComponentSetup<Thumbnail>(Thumbnail, undefined, <Mock.AdvancedComponentSetupOptions>{
-          modifyBuilder: (builder: Mock.MockEnvironmentBuilder) => builder.withElement($$('img').el).withResult().withEndpoint(endpoint)
+          modifyBuilder: (builder: Mock.MockEnvironmentBuilder) =>
+            builder
+              .withElement($$('img').el)
+              .withResult()
+              .withEndpoint(endpoint)
         });
       });
 
-      it('should use async call by default', (done) => {
-        setTimeout(function () {
+      it('should use async call by default', done => {
+        setTimeout(function() {
           expect(test.cmp.element.getAttribute('src')).toBe('data:image/png;base64, ');
           done();
         }, 0);
       });
 
-      it('should try to resize FieldTable content if it\'s contained in one', (done) => {
+      it("should try to resize FieldTable content if it's contained in one", done => {
         let fakeFieldTable = Mock.basicResultComponentSetup<FieldTable>(FieldTable);
         let spyResize = jasmine.createSpy('spyResize');
         fakeFieldTable.cmp.updateToggleHeight = spyResize;
         fakeFieldTable.cmp.element.appendChild(test.cmp.element);
 
-        setTimeout(function () {
+        setTimeout(function() {
           expect(spyResize).toHaveBeenCalled();
           done();
         }, 0);
@@ -59,10 +66,14 @@ export function ThumbnailTest() {
     });
 
     describe('with JSONP', () => {
-      beforeEach(function () {
+      beforeEach(function() {
         endpoint.isJsonp = () => true;
         test = Mock.advancedResultComponentSetup<Thumbnail>(Thumbnail, undefined, <Mock.AdvancedComponentSetupOptions>{
-          modifyBuilder: (builder: Mock.MockEnvironmentBuilder) => builder.withElement($$('img').el).withResult().withEndpoint(endpoint)
+          modifyBuilder: (builder: Mock.MockEnvironmentBuilder) =>
+            builder
+              .withElement($$('img').el)
+              .withResult()
+              .withEndpoint(endpoint)
         });
       });
 
@@ -82,8 +93,11 @@ export function ThumbnailTest() {
     });
 
     describe('exposes options', () => {
-      it('noThumbnailClass should set the appropriate CSS class when no thumbnail is available', (done) => {
-        endpoint.getRawDataStream = () => new Promise<ArrayBuffer>((resolve, reject) => { reject(); });
+      it('noThumbnailClass should set the appropriate CSS class when no thumbnail is available', done => {
+        endpoint.getRawDataStream = () =>
+          new Promise<ArrayBuffer>((resolve, reject) => {
+            reject();
+          });
 
         test = Mock.advancedResultComponentSetup<Thumbnail>(Thumbnail, undefined, <Mock.AdvancedComponentSetupOptions>{
           cmpOptions: <IThumbnailOptions>{ noThumbnailClass: 'coveo-heyo-there-is-no-class' },
@@ -98,31 +112,54 @@ export function ThumbnailTest() {
       });
 
       it('should create a result link if the element is not an image', () => {
-        test = Mock.advancedResultComponentSetup<Thumbnail>(Thumbnail, undefined, new Mock.AdvancedComponentSetupOptions($$('div').el, {
-          clickable: true
-        }, (builder: Mock.MockEnvironmentBuilder) => builder.withResult().withEndpoint(endpoint)));
+        test = Mock.advancedResultComponentSetup<Thumbnail>(
+          Thumbnail,
+          undefined,
+          new Mock.AdvancedComponentSetupOptions(
+            $$('div').el,
+            {
+              clickable: true
+            },
+            (builder: Mock.MockEnvironmentBuilder) => builder.withResult().withEndpoint(endpoint)
+          )
+        );
         expect(get(test.cmp.element, ResultLink) instanceof ResultLink).toBe(true);
       });
 
       it('should create a result link if the element is an image', () => {
-        test = Mock.advancedResultComponentSetup<Thumbnail>(Thumbnail, undefined, new Mock.AdvancedComponentSetupOptions($$('img').el, {
-          clickable: true
-        }, (builder: Mock.MockEnvironmentBuilder) => builder.withResult().withEndpoint(endpoint)));
+        test = Mock.advancedResultComponentSetup<Thumbnail>(
+          Thumbnail,
+          undefined,
+          new Mock.AdvancedComponentSetupOptions(
+            $$('img').el,
+            {
+              clickable: true
+            },
+            (builder: Mock.MockEnvironmentBuilder) => builder.withResult().withEndpoint(endpoint)
+          )
+        );
         expect(get(test.cmp.element, ResultLink) instanceof ResultLink).toBe(false);
         expect(get($$(test.env.root).find(`.${Component.computeCssClassName(ResultLink)}`)) instanceof ResultLink).toBe(true);
       });
 
       it('should accept resultlink option, and pass them correctly', () => {
-        test = Mock.advancedResultComponentSetup<Thumbnail>(Thumbnail, undefined, new Mock.AdvancedComponentSetupOptions($$('div').el, {
-          clickable: true,
-          hrefTemplate: 'foo'
-        }, (builder: Mock.MockEnvironmentBuilder) => builder.withResult().withEndpoint(endpoint)));
+        test = Mock.advancedResultComponentSetup<Thumbnail>(
+          Thumbnail,
+          undefined,
+          new Mock.AdvancedComponentSetupOptions(
+            $$('div').el,
+            {
+              clickable: true,
+              hrefTemplate: 'foo'
+            },
+            (builder: Mock.MockEnvironmentBuilder) => builder.withResult().withEndpoint(endpoint)
+          )
+        );
         let resultLink = <ResultLink>get(test.cmp.element, ResultLink);
         expect(resultLink instanceof ResultLink).toBe(true);
         expect(resultLink.options.hrefTemplate).toBe('foo');
       });
     });
-
 
     it('should put in an empty image while loading', () => {
       expect(test.cmp.img.getAttribute('src')).toEqual('data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==');

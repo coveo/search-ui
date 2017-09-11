@@ -21,7 +21,6 @@ export interface IBuildingAdvancedSearchEventArgs {
  * This static class is there to contains the different string definition for all the events related to the {@link AdvancedSearch} component.
  */
 export class AdvancedSearchEvents {
-
   /**
    * Triggered when the {@link AdvancedSearch} component is being built.
    *

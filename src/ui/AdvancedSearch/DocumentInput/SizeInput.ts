@@ -4,9 +4,7 @@ import { $$ } from '../../../utils/Dom';
 import { DocumentInput } from './DocumentInput';
 import { QueryBuilder } from '../../Base/QueryBuilder';
 
-
 export class SizeInput extends DocumentInput {
-
   public static modes = ['AtLeast', 'AtMost'];
   public static sizes = ['KB', 'MB', 'Bytes'];
 
@@ -68,5 +66,4 @@ export class SizeInput extends DocumentInput {
         return size;
     }
   }
-
 }

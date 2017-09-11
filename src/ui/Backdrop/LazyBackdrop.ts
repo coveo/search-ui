@@ -5,10 +5,15 @@ import { lazyExport } from '../../GlobalExports';
 export function lazyBackdrop() {
   LazyInitialization.registerLazyComponent('Backdrop', () => {
     return new Promise((resolve, reject) => {
-      require.ensure(['./Backdrop'], () => {
-        let loaded = require<IComponentDefinition>('./Backdrop.ts')['Backdrop'];
-        lazyExport(loaded, resolve);
-      }, LazyInitialization.buildErrorCallback('Backdrop', resolve), 'Backdrop');
+      require.ensure(
+        ['./Backdrop'],
+        () => {
+          let loaded = require<IComponentDefinition>('./Backdrop.ts')['Backdrop'];
+          lazyExport(loaded, resolve);
+        },
+        LazyInitialization.buildErrorCallback('Backdrop', resolve),
+        'Backdrop'
+      );
     });
   });
 }

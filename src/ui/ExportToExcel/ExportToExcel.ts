@@ -27,16 +27,15 @@ export class ExportToExcel extends Component {
 
   static doExport = () => {
     exportGlobally({
-      'ExportToExcel': ExportToExcel
+      ExportToExcel: ExportToExcel
     });
-  }
+  };
 
   /**
    * The options for the ExportToExcel
    * @componentOptions
    */
   static options: IExportToExcelOptions = {
-
     /**
      * Specifies the number of results to include in the resulting Excel file.
      *
@@ -66,7 +65,12 @@ export class ExportToExcel extends Component {
    * automatically resolved (with a slower execution time).
    * @param _window The global Window object (used to download the Excel link).
    */
-  constructor(public element: HTMLElement, public options: IExportToExcelOptions, public bindings?: IComponentBindings, public _window?: Window) {
+  constructor(
+    public element: HTMLElement,
+    public options: IExportToExcelOptions,
+    public bindings?: IComponentBindings,
+    public _window?: Window
+  ) {
     super(element, ExportToExcel.ID, bindings);
     this._window = this._window || window;
     this.options = ComponentOptions.initComponentOptions(element, ExportToExcel, options);
@@ -95,7 +99,7 @@ export class ExportToExcel extends Component {
       if (this.options.fieldsToInclude) {
         query.fieldsToInclude = <string[]>this.options.fieldsToInclude;
       }
-      this.logger.debug('Performing query following \'Export to Excel\' click');
+      this.logger.debug("Performing query following 'Export to Excel' click");
 
       let endpoint = this.queryController.getEndpoint();
       this.usageAnalytics.logCustomEvent<IAnalyticsNoMeta>(analyticsActionCauseList.exportToExcel, {}, this.element);

@@ -56,7 +56,6 @@ export class APIAnalyticsBuilder {
   }
 
   public static convertCustomEventToAPI(customEvent: ICustomEvent): IAPICustomEvent {
-
     var apiCustomEvent: IAPICustomEvent = {
       actionCause: customEvent.actionCause,
       actionType: customEvent.actionType,

@@ -93,7 +93,12 @@ export interface IAnalyticsClient {
    * @param element The HTMLElement that the user has clicked in the interface. Default value is the element on which
    * the `Analytics` component is bound.
    */
-  logClickEvent<TMeta>(actionCause: IAnalyticsActionCause, meta: TMeta, result: IQueryResult, element: HTMLElement): Promise<IAPIAnalyticsEventResponse>;
+  logClickEvent<TMeta>(
+    actionCause: IAnalyticsActionCause,
+    meta: TMeta,
+    result: IQueryResult,
+    element: HTMLElement
+  ): Promise<IAPIAnalyticsEventResponse>;
 
   /**
    * Logs a `Custom` usage analytics event on the service.

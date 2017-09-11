@@ -8,12 +8,12 @@ export function DocumentInputTest() {
   describe('DocumentInput', () => {
     let input: DocumentInput;
 
-    beforeEach(function () {
+    beforeEach(function() {
       input = new DocumentInput('test', $$('div').el);
       input.build();
     });
 
-    afterEach(function () {
+    afterEach(function() {
       input = null;
     });
 

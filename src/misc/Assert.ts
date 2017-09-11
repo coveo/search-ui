@@ -17,7 +17,7 @@ export class Assert {
     } else {
       throw new PreconditionFailedException('Assertion Failed!');
     }
-  }
+  };
 
   static fail(message?: string) {
     Assert.failureHandler(message);

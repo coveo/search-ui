@@ -12,7 +12,7 @@ import { ModalBox } from '../../ExternalModulesShim';
 import { KeyboardUtils, KEYBOARD } from '../../utils/KeyboardUtils';
 
 export interface IValueElementKlass {
-  new(facet: Facet, facetValue: FacetValue): ValueElement;
+  new (facet: Facet, facetValue: FacetValue): ValueElement;
 }
 
 export interface IValueElementEventsBinding {
@@ -25,8 +25,12 @@ export class ValueElement {
   public renderer: ValueElementRenderer;
   private isOmnibox: boolean;
 
-  constructor(public facet: Facet, public facetValue: FacetValue, public onSelect?: (elem: ValueElement, cause: IAnalyticsActionCause) => void, public onExclude?: (elem: ValueElement, cause: IAnalyticsActionCause) => void) {
-  }
+  constructor(
+    public facet: Facet,
+    public facetValue: FacetValue,
+    public onSelect?: (elem: ValueElement, cause: IAnalyticsActionCause) => void,
+    public onExclude?: (elem: ValueElement, cause: IAnalyticsActionCause) => void
+  ) {}
 
   public build(): ValueElement {
     this.renderer = new ValueElementRenderer(this.facet, this.facetValue).build();
@@ -85,7 +89,9 @@ export class ValueElement {
     if (this.onExclude) {
       this.facet.triggerNewQuery(() => this.onExclude(this, actionCause));
     } else {
-      this.facet.triggerNewQuery(() => this.facet.usageAnalytics.logSearchEvent<IAnalyticsFacetMeta>(actionCause, this.getAnalyticsFacetMeta()));
+      this.facet.triggerNewQuery(() =>
+        this.facet.usageAnalytics.logSearchEvent<IAnalyticsFacetMeta>(actionCause, this.getAnalyticsFacetMeta())
+      );
     }
   }
 
@@ -106,7 +112,9 @@ export class ValueElement {
     if (this.onSelect) {
       this.facet.triggerNewQuery(() => this.onSelect(this, actionCause));
     } else {
-      this.facet.triggerNewQuery(() => this.facet.usageAnalytics.logSearchEvent<IAnalyticsFacetMeta>(actionCause, this.getAnalyticsFacetMeta()));
+      this.facet.triggerNewQuery(() =>
+        this.facet.usageAnalytics.logSearchEvent<IAnalyticsFacetMeta>(actionCause, this.getAnalyticsFacetMeta())
+      );
     }
   }
 
@@ -132,10 +140,7 @@ export class ValueElement {
       clickEvent(e);
     });
 
-    $$(this.renderer.stylishCheckbox).on('keydown', KeyboardUtils.keypressAction([
-      KEYBOARD.SPACEBAR,
-      KEYBOARD.ENTER
-    ], clickEvent));
+    $$(this.renderer.stylishCheckbox).on('keydown', KeyboardUtils.keypressAction([KEYBOARD.SPACEBAR, KEYBOARD.ENTER], clickEvent));
   }
 
   protected handleEventForValueElement(eventBindings: IValueElementEventsBinding) {
@@ -154,10 +159,7 @@ export class ValueElement {
     };
     $$(this.renderer.excludeIcon).on('click', excludeAction);
 
-    $$(this.renderer.excludeIcon).on('keydown', KeyboardUtils.keypressAction([
-      KEYBOARD.SPACEBAR,
-      KEYBOARD.ENTER
-    ], excludeAction));
+    $$(this.renderer.excludeIcon).on('keydown', KeyboardUtils.keypressAction([KEYBOARD.SPACEBAR, KEYBOARD.ENTER], excludeAction));
 
     let selectAction = (event: Event) => {
       if (eventBindings.pinFacet) {
@@ -170,10 +172,7 @@ export class ValueElement {
 
     $$(this.renderer.label).on('click', selectAction);
 
-    $$(this.renderer.stylishCheckbox).on('keydown', KeyboardUtils.keypressAction([
-      KEYBOARD.SPACEBAR,
-      KEYBOARD.ENTER
-    ], selectAction));
+    $$(this.renderer.stylishCheckbox).on('keydown', KeyboardUtils.keypressAction([KEYBOARD.SPACEBAR, KEYBOARD.ENTER], selectAction));
   }
 
   protected handleEventForCheckboxChange(eventBindings: IValueElementEventsBinding) {

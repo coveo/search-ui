@@ -9,7 +9,6 @@ import { $$ } from '../../utils/Dom';
 import _ = require('underscore');
 
 export class ResultListTableRenderer extends ResultListRenderer {
-
   private shouldDisplayHeader: boolean = true;
   private shouldDisplayFooter: boolean = false;
 
@@ -20,7 +19,10 @@ export class ResultListTableRenderer extends ResultListRenderer {
         this.shouldDisplayFooter = true;
       }
       // If custom templates are defined but no header template, do not display it.
-      if (this.resultListOptions.resultTemplate.templates.length !== 0 && !this.resultListOptions.resultTemplate.hasTemplateWithRole('table-header')) {
+      if (
+        this.resultListOptions.resultTemplate.templates.length !== 0 &&
+        !this.resultListOptions.resultTemplate.hasTemplateWithRole('table-header')
+      ) {
         this.shouldDisplayHeader = false;
       }
     }

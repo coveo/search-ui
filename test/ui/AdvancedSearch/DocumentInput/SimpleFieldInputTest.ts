@@ -8,14 +8,14 @@ export function SimpleFieldInputTest() {
     let input: SimpleFieldInput;
     let endpoint: SearchEndpoint;
 
-    beforeEach(function () {
+    beforeEach(function() {
       endpoint = Mock.mock<SearchEndpoint>(SearchEndpoint);
       mockListFieldValues();
       input = new SimpleFieldInput('test', '@test', endpoint, $$('div').el);
       input.build();
     });
 
-    afterEach(function () {
+    afterEach(function() {
       input = null;
       endpoint = null;
     });
@@ -30,10 +30,10 @@ export function SimpleFieldInputTest() {
     function mockListFieldValues() {
       (<jasmine.Spy>endpoint.listFieldValues).and.callFake(() => {
         return {
-          then: (callback) => {
+          then: callback => {
             callback([{ value: 'what', numberOfResults: 100 }, { value: 'how', numberOfResults: 50 }]);
             return {
-              then: (callback) => {
+              then: callback => {
                 callback();
               }
             };

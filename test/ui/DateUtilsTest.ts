@@ -4,7 +4,6 @@ import * as moment from 'moment';
 import { l } from '../../src/strings/Strings';
 
 export function DateUtilsTest() {
-
   describe('DateUtils', () => {
     let options: IDateToStringOptions;
     beforeEach(() => {
@@ -79,6 +78,5 @@ export function DateUtilsTest() {
     it('should display the right amount of time between two dates using `timeBetween`', () => {
       expect(DateUtils.timeBetween(new Date('2017-03-07T16:17:43'), new Date('2017-03-07T16:45:45'))).toEqual(l('00:28:02'));
     });
-
   });
 }

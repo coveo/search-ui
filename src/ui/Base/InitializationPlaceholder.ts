@@ -115,12 +115,15 @@ export class InitializationPlaceholder {
   public static NUMBER_OF_RESULTS_RECOMMENDATION = 5;
   public static INITIALIZATION_CLASS = 'coveo-during-initialization';
 
-  constructor(public root: HTMLElement, public options: InitializationPlaceholderOption = {
-    facet: true,
-    searchbox: true,
-    resultList: true,
-    searchInterface: true
-  }) {
+  constructor(
+    public root: HTMLElement,
+    public options: InitializationPlaceholderOption = {
+      facet: true,
+      searchbox: true,
+      resultList: true,
+      searchInterface: true
+    }
+  ) {
     if (options.searchInterface) {
       $$(this.root).addClass(InitializationPlaceholder.INITIALIZATION_CLASS);
     }
@@ -138,7 +141,6 @@ export class InitializationPlaceholder {
         $$(this.root).removeClass(InitializationPlaceholder.INITIALIZATION_CLASS);
       });
     }
-
   }
   private createPlaceholderForFacets() {
     // Render an arbitrary number of placeholder facet.
@@ -162,7 +164,9 @@ export class InitializationPlaceholder {
       $$(this.root).one(InitializationEvents.afterComponentsInitialization, () => {
         $$(this.root).one(QueryEvents.deferredQuerySuccess, () => {
           _.each(placeholders, (placeholder: Dom) => placeholder.remove());
-          _.each(facetElements, (facetElement: HTMLElement) => $$(facetElement).removeClass(InitializationPlaceholder.INITIALIZATION_CLASS));
+          _.each(facetElements, (facetElement: HTMLElement) =>
+            $$(facetElement).removeClass(InitializationPlaceholder.INITIALIZATION_CLASS)
+          );
           _.each(facetElements, (facetElement: HTMLElement) => $$(facetElement).removeClass('coveo-with-placeholder'));
         });
       });
@@ -175,7 +179,7 @@ export class InitializationPlaceholder {
 
     const searchBoxElements = $$(this.root).findAll('.CoveoSearchbox');
     if (Utils.isNonEmptyArray(searchBoxElements)) {
-      _.each(searchBoxElements, (el) => {
+      _.each(searchBoxElements, el => {
         $$(el).addClass(InitializationPlaceholder.INITIALIZATION_CLASS);
       });
       $$(this.root).one(InitializationEvents.afterComponentsInitialization, () => {
@@ -196,9 +200,14 @@ export class InitializationPlaceholder {
       $$(resultListToUse).append(rootToUse);
       $$(resultListToUse).addClass('coveo-with-placeholder');
 
-      _.times(this.isRecommendationRoot() ? InitializationPlaceholder.NUMBER_OF_RESULTS_RECOMMENDATION : InitializationPlaceholder.NUMBER_OF_RESULTS, () => {
-        rootToUse.innerHTML += placeholderToUse;
-      });
+      _.times(
+        this.isRecommendationRoot()
+          ? InitializationPlaceholder.NUMBER_OF_RESULTS_RECOMMENDATION
+          : InitializationPlaceholder.NUMBER_OF_RESULTS,
+        () => {
+          rootToUse.innerHTML += placeholderToUse;
+        }
+      );
       const reset = () => {
         $$(rootToUse).remove();
         _.each(resultListsElements, el => $$(el).removeClass(InitializationPlaceholder.INITIALIZATION_CLASS));
@@ -282,4 +291,3 @@ export class InitializationPlaceholder {
     return $$(this.root).hasClass('CoveoRecommendation');
   }
 }
-

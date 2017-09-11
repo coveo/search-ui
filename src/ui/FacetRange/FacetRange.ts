@@ -56,16 +56,15 @@ export class FacetRange extends Facet implements IComponentBindings {
 
   static doExport = () => {
     exportGlobally({
-      'FacetRange': FacetRange
+      FacetRange: FacetRange
     });
-  }
+  };
 
   /**
    * The options for the component
    * @componentOptions
    */
   static options: IFacetRangeOptions = {
-
     /**
      * Specifies whether the field for which you require ranges is a date field.
      *
@@ -125,7 +124,7 @@ export class FacetRange extends Facet implements IComponentBindings {
      * function (see [Query Function](https://developers.coveo.com/x/XQCq)). When this is the case, you must specify the
      * ranges at query time.
      */
-    ranges: ComponentOptions.buildJsonObjectOption<IRangeValue[]>(),
+    ranges: ComponentOptions.buildJsonObjectOption<IRangeValue[]>()
   };
 
   public options: IFacetRangeOptions;
@@ -159,8 +158,12 @@ export class FacetRange extends Facet implements IComponentBindings {
         if (helper != null) {
           ret = helper.call(this, startEnd[1]) + ' - ' + helper.call(this, startEnd[2]);
         } else {
-          const start = startEnd[1].match(/^[\+\-]?[0-9]+(\.[0-9]+)?$/) ? <any>Number(startEnd[1]) : <any>DateUtils.convertFromJsonDateIfNeeded(startEnd[1]);
-          const end = startEnd[2].match(/^[\+\-]?[0-9]+(\.[0-9]+)?$/) ? <any>Number(startEnd[2]) : <any>DateUtils.convertFromJsonDateIfNeeded(startEnd[2]);
+          const start = startEnd[1].match(/^[\+\-]?[0-9]+(\.[0-9]+)?$/)
+            ? <any>Number(startEnd[1])
+            : <any>DateUtils.convertFromJsonDateIfNeeded(startEnd[1]);
+          const end = startEnd[2].match(/^[\+\-]?[0-9]+(\.[0-9]+)?$/)
+            ? <any>Number(startEnd[2])
+            : <any>DateUtils.convertFromJsonDateIfNeeded(startEnd[2]);
           ret = Globalize.format(start, this.options.valueCaption) + ' - ' + Globalize.format(end, this.options.valueCaption);
         }
       }

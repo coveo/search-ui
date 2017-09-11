@@ -2,7 +2,6 @@ import { Template } from '../Templates/Template';
 import { IQueryResult } from '../../rest/QueryResult';
 
 export class DefaultQuickviewTemplate extends Template {
-
   constructor() {
     super();
   }
