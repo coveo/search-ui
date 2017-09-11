@@ -75,7 +75,8 @@ export class Omnibox extends Component {
   static doExport = () => {
     exportGlobally({
       'Omnibox': Omnibox,
-      'MagicBox': MagicBox
+      'MagicBox': MagicBox,
+      'QueryboxQueryParameters': QueryboxQueryParameters
     });
   }
 
