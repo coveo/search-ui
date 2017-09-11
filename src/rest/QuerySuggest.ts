@@ -69,7 +69,7 @@ export interface IQuerySuggestRequest {
    * Specifies the context to use for the request.
    */
   context?: IStringMap<any>;
-  locale?: string;
+  language?: string;
   autoCompleter?: string;
   additionalData?: any;
   format?: string;

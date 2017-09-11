@@ -399,7 +399,7 @@ export class QueryController extends RootComponent {
     let queryBuilder = new QueryBuilder();
 
     // Default values, components will probably override them if they exists
-    queryBuilder.locale = String['locale'];
+    queryBuilder.language = <string>String['locale'];
     queryBuilder.firstResult = queryBuilder.firstResult || 0;
 
     // Allow outside code to customize the query builder. We provide two events,
