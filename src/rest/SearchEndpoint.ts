@@ -808,12 +808,13 @@ export class SearchEndpoint implements ISearchEndpoint {
   }
 
   private buildCompleteQueryString(query?: string, queryObject?: IQuery): string[] {
+    console.log('queryObject', queryObject);
     // In an ideal parallel reality, the entire query used in the 'search' call is used here.
     // In this reality however, we must support GET calls (ex: GET /html) for CORS/JSONP/IE reasons.
     // Therefore, we cherry-pick parts of the query to include in a 'query string' instead of a body payload.
     let queryString: string[] = [];
     if (queryObject) {
-      _.each(['q', 'aq', 'cq', 'dq', 'searchHub', 'tab', 'language', 'pipeline', 'lowercaseOperators'], (key) => {
+      _.each(['q', 'aq', 'cq', 'dq', 'searchHub', 'tab', 'locale', 'pipeline', 'lowercaseOperators'], (key) => {
         if (queryObject[key]) {
           queryString.push(key + '=' + encodeURIComponent(queryObject[key]));
         }
