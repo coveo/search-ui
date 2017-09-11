@@ -33,7 +33,7 @@ export function initCoveoJQuery() {
     window['Coveo']['$'] = jQueryInstance;
   }
 
-  jQueryInstance.fn.coveo = function (...args: any[]) {
+  jQueryInstance.fn.coveo = function(...args: any[]) {
     var returnValue: any;
     this.each((index: number, element: HTMLElement) => {
       var returnValueForThisElement: any;

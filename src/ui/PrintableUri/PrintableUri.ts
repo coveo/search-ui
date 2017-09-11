@@ -13,9 +13,7 @@ import { StreamHighlightUtils } from '../../utils/StreamHighlightUtils';
 import * as _ from 'underscore';
 import { ComponentOptionsModel } from '../../models/ComponentOptionsModel';
 
-
-export interface IPrintableUriOptions extends IResultLinkOptions {
-}
+export interface IPrintableUriOptions extends IResultLinkOptions {}
 
 /**
  * The `PrintableUri` component inherits from the [ `ResultLink` ]{@link ResultLink} component and supports all of its options.
@@ -29,9 +27,9 @@ export class PrintableUri extends ResultLink {
   static options: IPrintableUriOptions = {};
   static doExport = () => {
     exportGlobally({
-      'PrintableUri': PrintableUri
+      PrintableUri: PrintableUri
     });
-  }
+  };
   private shortenedUri: string;
   private uri: string;
 
@@ -43,7 +41,12 @@ export class PrintableUri extends ResultLink {
    * automatically resolved (with a slower execution time).
    * @param result The result to associate the component with.
    */
-  constructor(public element: HTMLElement, public options: IPrintableUriOptions, bindings?: IResultsComponentBindings, public result?: IQueryResult) {
+  constructor(
+    public element: HTMLElement,
+    public options: IPrintableUriOptions,
+    bindings?: IResultsComponentBindings,
+    public result?: IQueryResult
+  ) {
     super(element, ComponentOptions.initComponentOptions(element, PrintableUri, options), bindings, result);
     this.options = _.extend({}, this.options, this.componentOptionsModel.get(ComponentOptionsModel.attributesEnum.resultLink));
   }
@@ -80,13 +83,20 @@ export class PrintableUri extends ResultLink {
         } else {
           stringAndHoles = StringAndHoles.shortenPath(result.printableUri, $$(element).width());
         }
-        this.shortenedUri = HighlightUtils.highlightString(stringAndHoles.value, result.printableUriHighlights, stringAndHoles.holes, 'coveo-highlight');
+        this.shortenedUri = HighlightUtils.highlightString(
+          stringAndHoles.value,
+          result.printableUriHighlights,
+          stringAndHoles.holes,
+          'coveo-highlight'
+        );
         const link = $$('a', { className: 'coveo-printable-uri-part', title: result.printableUri });
         link.setHtml(this.shortenedUri);
         element.appendChild(link.el);
       } else if (this.options.titleTemplate) {
         const newTitle = this.parseStringTemplate(this.options.titleTemplate);
-        this.element.innerHTML = newTitle ? StreamHighlightUtils.highlightStreamText(newTitle, this.result.termsToHighlight, this.result.phrasesToHighlight) : this.result.clickUri;
+        this.element.innerHTML = newTitle
+          ? StreamHighlightUtils.highlightStreamText(newTitle, this.result.termsToHighlight, this.result.phrasesToHighlight)
+          : this.result.clickUri;
       }
     }
     element.title = this.result.printableUri;
@@ -97,16 +107,12 @@ export class PrintableUri extends ResultLink {
     return separator.el;
   }
 
-
   public buildHtmlToken(name: string, uri: string) {
     let modifiedName = name.charAt(0).toUpperCase() + name.slice(1);
     const link = $$('span', { className: 'coveo-printable-uri-part' }, modifiedName);
     this.uri = uri;
     return link.el;
   }
-
-
-
 }
 PrintableUri.options = _.extend({}, PrintableUri.options, ResultLink.options);
 Initialization.registerAutoCreateComponent(PrintableUri);

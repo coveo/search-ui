@@ -55,16 +55,15 @@ export class FieldValue extends Component {
 
   static doExport = () => {
     exportGlobally({
-      'FieldValue': FieldValue
+      FieldValue: FieldValue
     });
-  }
+  };
 
   /**
    * The options for the component
    * @componentOptions
    */
   static options: IFieldValueOptions = {
-
     /**
      * Specifies the field that the FieldValue should display.
      *
@@ -138,18 +137,32 @@ export class FieldValue extends Component {
       subOptions: {
         text: ComponentOptions.buildStringOption(showOnlyWithHelper(['anchor'])),
         target: ComponentOptions.buildStringOption(showOnlyWithHelper(['anchor'])),
-        'class': ComponentOptions.buildStringOption(showOnlyWithHelper(['anchor'])),
+        class: ComponentOptions.buildStringOption(showOnlyWithHelper(['anchor'])),
 
         decimals: ComponentOptions.buildNumberOption(showOnlyWithHelper(['currency'], { min: 0 })),
         symbol: ComponentOptions.buildStringOption(showOnlyWithHelper(['currency'])),
 
-        useTodayYesterdayAndTomorrow: ComponentOptions.buildBooleanOption(showOnlyWithHelper(['date', 'dateTime', 'emailDateTime', 'time'], { defaultValue: true })),
-        useWeekdayIfThisWeek: ComponentOptions.buildBooleanOption(showOnlyWithHelper(['date', 'dateTime', 'emailDateTime', 'time'], { defaultValue: true })),
-        omitYearIfCurrentOne: ComponentOptions.buildBooleanOption(showOnlyWithHelper(['date', 'dateTime', 'emailDateTime', 'time'], { defaultValue: true })),
-        useLongDateFormat: ComponentOptions.buildBooleanOption(showOnlyWithHelper(['date', 'dateTime', 'emailDateTime', 'time'], { defaultValue: false })),
-        includeTimeIfToday: ComponentOptions.buildBooleanOption(showOnlyWithHelper(['date', 'dateTime', 'emailDateTime', 'time'], { defaultValue: true })),
-        includeTimeIfThisWeek: ComponentOptions.buildBooleanOption(showOnlyWithHelper(['date', 'dateTime', 'emailDateTime', 'time'], { defaultValue: true })),
-        alwaysIncludeTime: ComponentOptions.buildBooleanOption(showOnlyWithHelper(['date', 'dateTime', 'emailDateTime', 'time'], { defaultValue: false })),
+        useTodayYesterdayAndTomorrow: ComponentOptions.buildBooleanOption(
+          showOnlyWithHelper(['date', 'dateTime', 'emailDateTime', 'time'], { defaultValue: true })
+        ),
+        useWeekdayIfThisWeek: ComponentOptions.buildBooleanOption(
+          showOnlyWithHelper(['date', 'dateTime', 'emailDateTime', 'time'], { defaultValue: true })
+        ),
+        omitYearIfCurrentOne: ComponentOptions.buildBooleanOption(
+          showOnlyWithHelper(['date', 'dateTime', 'emailDateTime', 'time'], { defaultValue: true })
+        ),
+        useLongDateFormat: ComponentOptions.buildBooleanOption(
+          showOnlyWithHelper(['date', 'dateTime', 'emailDateTime', 'time'], { defaultValue: false })
+        ),
+        includeTimeIfToday: ComponentOptions.buildBooleanOption(
+          showOnlyWithHelper(['date', 'dateTime', 'emailDateTime', 'time'], { defaultValue: true })
+        ),
+        includeTimeIfThisWeek: ComponentOptions.buildBooleanOption(
+          showOnlyWithHelper(['date', 'dateTime', 'emailDateTime', 'time'], { defaultValue: true })
+        ),
+        alwaysIncludeTime: ComponentOptions.buildBooleanOption(
+          showOnlyWithHelper(['date', 'dateTime', 'emailDateTime', 'time'], { defaultValue: false })
+        ),
         predefinedFormat: ComponentOptions.buildStringOption(showOnlyWithHelper(['date', 'dateTime', 'emailDateTime', 'time'])),
 
         companyDomain: ComponentOptions.buildStringOption(showOnlyWithHelper(['email'])),
@@ -162,7 +175,7 @@ export class FieldValue extends Component {
 
         presision: ComponentOptions.buildNumberOption(showOnlyWithHelper(['size'], { min: 0, defaultValue: 2 })),
         base: ComponentOptions.buildNumberOption(showOnlyWithHelper(['size'], { min: 0, defaultValue: 0 })),
-        isMilliseconds: ComponentOptions.buildBooleanOption(showOnlyWithHelper(['timeSpan'])),
+        isMilliseconds: ComponentOptions.buildBooleanOption(showOnlyWithHelper(['timeSpan']))
       }
     }),
 
@@ -188,7 +201,13 @@ export class FieldValue extends Component {
    * automatically resolved (with a slower execution time).
    * @param result The result to associate the component with.
    */
-  constructor(public element: HTMLElement, public options: IFieldValueOptions, bindings?: IComponentBindings, public result?: IQueryResult, fieldValueClassId: string = FieldValue.ID) {
+  constructor(
+    public element: HTMLElement,
+    public options: IFieldValueOptions,
+    bindings?: IComponentBindings,
+    public result?: IQueryResult,
+    fieldValueClassId: string = FieldValue.ID
+  ) {
     super(element, fieldValueClassId, bindings);
 
     this.options = ComponentOptions.initOptions(element, FieldValue.simpleOptions, options);
@@ -196,7 +215,7 @@ export class FieldValue extends Component {
     if (this.options.helper != null) {
       this.options = ComponentOptions.initOptions(element, FieldValue.helperOptions, this.options);
       let toFilter = _.keys(FieldValue.options.helperOptions['subOptions']);
-      let toKeep = _.filter(toFilter, (optionKey) => {
+      let toKeep = _.filter(toFilter, optionKey => {
         let optionDefinition = FieldValue.options.helperOptions['subOptions'][optionKey];
         if (optionDefinition) {
           let helpers = optionDefinition.helpers;
@@ -357,10 +376,11 @@ export class FieldValue extends Component {
           _.each(facets, (facet: Facet) => facet.selectValue(value));
         }
         this.queryController.deferExecuteQuery({
-          beforeExecuteQuery: () => this.usageAnalytics.logSearchEvent<IAnalyticsFieldValueMeta>(analyticsActionCauseList.documentField, {
-            facetId: this.options.facet,
-            facetValue: value.toLowerCase()
-          })
+          beforeExecuteQuery: () =>
+            this.usageAnalytics.logSearchEvent<IAnalyticsFieldValueMeta>(analyticsActionCauseList.documentField, {
+              facetId: this.options.facet,
+              facetValue: value.toLowerCase()
+            })
         });
       });
 
@@ -370,7 +390,6 @@ export class FieldValue extends Component {
       $$(element).addClass('coveo-clickable');
     }
   }
-
 }
 
 Initialization.registerAutoCreateComponent(FieldValue);

@@ -6,13 +6,13 @@ export function DropdownTest() {
     let values: string[];
     let changeSpy: jasmine.Spy;
 
-    beforeEach(function () {
+    beforeEach(function() {
       values = ['one', 'two', 'three'];
       changeSpy = jasmine.createSpy('changeSpy');
       dropdown = new Dropdown(changeSpy, values);
     });
 
-    afterEach(function () {
+    afterEach(function() {
       values = null;
       dropdown = null;
       changeSpy = null;
@@ -59,7 +59,7 @@ export function DropdownTest() {
         expect(dropdown.getValue()).toEqual('three');
       });
 
-      it('should not change selection if the value doesn\'t exist', () => {
+      it("should not change selection if the value doesn't exist", () => {
         dropdown.setValue('random');
         expect(dropdown.getValue()).toEqual(values[0]);
       });

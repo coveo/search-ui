@@ -46,17 +46,16 @@ export class Querybox extends Component {
 
   static doExport = () => {
     exportGlobally({
-      'Querybox': Querybox,
-      'MagicBox': MagicBox
+      Querybox: Querybox,
+      MagicBox: MagicBox
     });
-  }
+  };
 
   /**
    * The options for the Querybox.
    * @componentOptions
    */
   public static options: IQueryboxOptions = {
-
     /**
      * Specifies whether to enable the search-as-you-type feature.
      *
@@ -217,7 +216,7 @@ export class Querybox extends Component {
      *
      * Default value is `true`.
      */
-    triggerQueryOnClear: ComponentOptions.buildBooleanOption({ defaultValue: true }),
+    triggerQueryOnClear: ComponentOptions.buildBooleanOption({ defaultValue: true })
   };
 
   public magicBox: Coveo.MagicBox.Instance;
@@ -243,18 +242,24 @@ export class Querybox extends Component {
     this.options = ComponentOptions.initComponentOptions(element, Querybox, options);
     this.options = _.extend({}, this.options, this.componentOptionsModel.get(ComponentOptionsModel.attributesEnum.searchBox));
 
-    this.magicBox = MagicBox.create(element, new MagicBox.Grammar('Query', {
-      Query: '[Term*][Spaces?]',
-      Term: '[Spaces?][Word]',
-      Spaces: / +/,
-      Word: /[^ ]+/
-    }), {
+    this.magicBox = MagicBox.create(
+      element,
+      new MagicBox.Grammar('Query', {
+        Query: '[Term*][Spaces?]',
+        Term: '[Spaces?][Word]',
+        Spaces: / +/,
+        Word: /[^ ]+/
+      }),
+      {
         inline: true
-      });
+      }
+    );
 
     this.bind.onRootElement(QueryEvents.buildingQuery, (args: IBuildingQueryEventArgs) => this.handleBuildingQuery(args));
     this.bind.onRootElement(StandaloneSearchInterfaceEvents.beforeRedirect, () => this.updateQueryState());
-    this.bind.onQueryState(MODEL_EVENTS.CHANGE_ONE, QUERY_STATE_ATTRIBUTES.Q, (args: IAttributeChangedEventArg) => this.handleQueryStateChanged(args));
+    this.bind.onQueryState(MODEL_EVENTS.CHANGE_ONE, QUERY_STATE_ATTRIBUTES.Q, (args: IAttributeChangedEventArg) =>
+      this.handleQueryStateChanged(args)
+    );
 
     if (this.options.enableSearchAsYouType) {
       $$(this.element).addClass('coveo-search-as-you-type');
@@ -355,7 +360,7 @@ export class Querybox extends Component {
    *
    * @returns {Result[]} The result.
    */
-  public resultAtCursor(match?: string | { (result): boolean; }) {
+  public resultAtCursor(match?: string | { (result): boolean }) {
     return this.magicBox.resultAtCursor(match);
   }
 

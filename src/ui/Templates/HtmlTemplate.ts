@@ -4,11 +4,7 @@ import { TemplateFromAScriptTag, ITemplateFromStringProperties } from './Templat
 import * as _ from 'underscore';
 
 export class HtmlTemplate extends Template {
-
-  public static mimeTypes = [
-    'text/html',
-    'text/HTML'
-  ];
+  public static mimeTypes = ['text/html', 'text/HTML'];
 
   private templateFromAScriptTag: TemplateFromAScriptTag;
 

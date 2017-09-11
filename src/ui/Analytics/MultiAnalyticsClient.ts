@@ -9,19 +9,24 @@ import * as _ from 'underscore';
 export class MultiAnalyticsClient implements IAnalyticsClient {
   public isContextual = false;
 
-  constructor(private analyticsClients: IAnalyticsClient[] = []) {
-  }
+  constructor(private analyticsClients: IAnalyticsClient[] = []) {}
 
   public isActivated(): boolean {
     return _.some(this.analyticsClients, (analyticsClient: IAnalyticsClient) => analyticsClient.isActivated());
   }
 
   public getCurrentEventCause(): string {
-    return _.find(_.map(this.analyticsClients, (analyticsClient: IAnalyticsClient) => analyticsClient.getCurrentEventCause()), (currentEventCause: string) => currentEventCause != null);
+    return _.find(
+      _.map(this.analyticsClients, (analyticsClient: IAnalyticsClient) => analyticsClient.getCurrentEventCause()),
+      (currentEventCause: string) => currentEventCause != null
+    );
   }
 
   public getCurrentEventMeta(): { [key: string]: any } {
-    return _.find(_.map(this.analyticsClients, (analyticsClient: IAnalyticsClient) => analyticsClient.getCurrentEventMeta()), (currentEventMeta: { [key: string]: any }) => currentEventMeta != null);
+    return _.find(
+      _.map(this.analyticsClients, (analyticsClient: IAnalyticsClient) => analyticsClient.getCurrentEventMeta()),
+      (currentEventMeta: { [key: string]: any }) => currentEventMeta != null
+    );
   }
 
   public logSearchEvent<TMeta>(actionCause: IAnalyticsActionCause, meta: TMeta) {
@@ -32,25 +37,39 @@ export class MultiAnalyticsClient implements IAnalyticsClient {
     _.each(this.analyticsClients, (analyticsClient: IAnalyticsClient) => analyticsClient.logSearchEvent<TMeta>(actionCause, meta));
   }
 
-  public logClickEvent<TMeta>(actionCause: IAnalyticsActionCause, meta: TMeta, result: IQueryResult, element: HTMLElement): Promise<IAPIAnalyticsEventResponse> {
-    return Promise.all(_.map(this.analyticsClients, (analyticsClient: IAnalyticsClient) => {
-      return analyticsClient.logClickEvent(actionCause, meta, result, element);
-    })).then((responses) => _.first(responses));
+  public logClickEvent<TMeta>(
+    actionCause: IAnalyticsActionCause,
+    meta: TMeta,
+    result: IQueryResult,
+    element: HTMLElement
+  ): Promise<IAPIAnalyticsEventResponse> {
+    return Promise.all(
+      _.map(this.analyticsClients, (analyticsClient: IAnalyticsClient) => {
+        return analyticsClient.logClickEvent(actionCause, meta, result, element);
+      })
+    ).then(responses => _.first(responses));
   }
 
-  public logCustomEvent<TMeta>(actionCause: IAnalyticsActionCause, meta?: TMeta, element?: HTMLElement): Promise<IAPIAnalyticsEventResponse> {
-    return Promise.all(_.map(this.analyticsClients, (analyticsClient: IAnalyticsClient) => {
-      return analyticsClient.logCustomEvent<TMeta>(actionCause, meta, element);
-    })).then(responses => _.first(responses));
+  public logCustomEvent<TMeta>(
+    actionCause: IAnalyticsActionCause,
+    meta?: TMeta,
+    element?: HTMLElement
+  ): Promise<IAPIAnalyticsEventResponse> {
+    return Promise.all(
+      _.map(this.analyticsClients, (analyticsClient: IAnalyticsClient) => {
+        return analyticsClient.logCustomEvent<TMeta>(actionCause, meta, element);
+      })
+    ).then(responses => _.first(responses));
   }
 
   public getTopQueries(params: ITopQueries): Promise<string[]> {
-    return Promise.all(_.map(this.analyticsClients, (client) => {
-      return client.getTopQueries(params);
-    }))
-      .then((values: string[][]) => {
-        return this.mergeTopQueries(values, params.pageSize);
-      });
+    return Promise.all(
+      _.map(this.analyticsClients, client => {
+        return client.getTopQueries(params);
+      })
+    ).then((values: string[][]) => {
+      return this.mergeTopQueries(values, params.pageSize);
+    });
   }
 
   public getCurrentVisitIdPromise(): Promise<string> {

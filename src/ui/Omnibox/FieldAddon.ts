@@ -60,7 +60,8 @@ export class FieldAddon {
     }
     const fieldValue: Coveo.MagicBox.Result = _.last(this.omnibox.resultAtCursor('FieldValue'));
     if (fieldValue) {
-      const fieldQuery = fieldValue.findParent('FieldQuery') || (this.omnibox.options.enableSimpleFieldAddon && fieldValue.findParent('FieldSimpleQuery'));
+      const fieldQuery =
+        fieldValue.findParent('FieldQuery') || (this.omnibox.options.enableSimpleFieldAddon && fieldValue.findParent('FieldSimpleQuery'));
       if (fieldQuery) {
         let field = fieldQuery.find('FieldName').toString();
         if (this.omnibox.options.fieldAlias) {
@@ -93,10 +94,13 @@ export class FieldAddon {
   }
 
   private hashValueToSuggestion(hash: IFieldAddonHash, promise: Promise<IOmniboxSuggestion[]>): Promise<IOmniboxSuggestion[]> {
-    return promise.then((values) => {
+    return promise.then(values => {
       const suggestions = _.map<any, IOmniboxSuggestion>(values, (value: string, i): IOmniboxSuggestion => {
         const suggestion: IOmniboxSuggestion = {
-          text: hash.before + (hash.current.toLowerCase().indexOf(value.toLowerCase()) == 0 ? hash.current + value.substr(hash.current.length) : value) + hash.after,
+          text:
+            hash.before +
+            (hash.current.toLowerCase().indexOf(value.toLowerCase()) == 0 ? hash.current + value.substr(hash.current.length) : value) +
+            hash.after,
           html: MagicBox.Utils.highlightText(value, hash.current, true),
           index: FieldAddon.INDEX - i / values.length
         };
@@ -115,16 +119,18 @@ export class FieldAddon {
           resolve(<string[]>this.omnibox.options.listOfFields);
         } else {
           const promise: Promise<IFieldDescription[] | IEndpointError> = this.omnibox.queryController.getEndpoint().listFields();
-          promise.then((fieldDescriptions: IFieldDescription[]) => {
-            const fieldNames = _.chain(fieldDescriptions)
-              .filter((fieldDescription: IFieldDescription) => fieldDescription.includeInQuery && fieldDescription.groupByField)
-              .map((fieldDescription: IFieldDescription) => fieldDescription.name.substr(1))
-              .value();
+          promise
+            .then((fieldDescriptions: IFieldDescription[]) => {
+              const fieldNames = _.chain(fieldDescriptions)
+                .filter((fieldDescription: IFieldDescription) => fieldDescription.includeInQuery && fieldDescription.groupByField)
+                .map((fieldDescription: IFieldDescription) => fieldDescription.name.substr(1))
+                .value();
 
-            resolve(fieldNames);
-          }).catch(() => {
-            reject();
-          });
+              resolve(fieldNames);
+            })
+            .catch(() => {
+              reject();
+            });
         }
       });
     }
@@ -144,11 +150,11 @@ export class FieldAddon {
             field: withAt ? field : '@' + field
           };
         })
-        .filter((field) => {
+        .filter(field => {
           return field.index != -1 && field.field.length > current.length;
         })
         .sortBy('index')
-        .map((field) => field.field)
+        .map(field => field.field)
         .value();
       matchFields = _.first(matchFields, 5);
       return matchFields;
@@ -156,29 +162,32 @@ export class FieldAddon {
   }
 
   private fieldValues(field: string, current: string): Promise<any[]> {
-    return this.omnibox.queryController.getEndpoint().listFieldValues({
-      pattern: '.*' + current + '.*',
-      patternType: 'RegularExpression',
-      sortCriteria: 'occurrences',
-      field: '@' + field,
-      maximumNumberOfValues: 5
-    }).then((values) => {
-      return _.chain(values)
-        .map((value) => {
-          return {
-            index: value.value.toLowerCase().indexOf(current),
-            value: value.value
-          };
-        })
-        .filter((value) => {
-          return value.value.length > current.length;
-        })
-        .sortBy('index')
-        .map((value) => {
-          return value.value.replace(/ /g, '\u00A0');
-        })
-        .value();
-    });
+    return this.omnibox.queryController
+      .getEndpoint()
+      .listFieldValues({
+        pattern: '.*' + current + '.*',
+        patternType: 'RegularExpression',
+        sortCriteria: 'occurrences',
+        field: '@' + field,
+        maximumNumberOfValues: 5
+      })
+      .then(values => {
+        return _.chain(values)
+          .map(value => {
+            return {
+              index: value.value.toLowerCase().indexOf(current),
+              value: value.value
+            };
+          })
+          .filter(value => {
+            return value.value.length > current.length;
+          })
+          .sortBy('index')
+          .map(value => {
+            return value.value.replace(/ /g, '\u00A0');
+          })
+          .value();
+      });
   }
 
   private simpleFieldNames(current: string): Promise<IOmniboxSuggestion[]> {
@@ -193,11 +202,11 @@ export class FieldAddon {
             field: field + ':'
           };
         })
-        .filter((field) => {
+        .filter(field => {
           return field.index != -1 && field.field.length > current.length;
         })
         .sortBy('index')
-        .map((field) => field.field)
+        .map(field => field.field)
         .value();
       matchFields = _.first(matchFields, 5);
       return matchFields;

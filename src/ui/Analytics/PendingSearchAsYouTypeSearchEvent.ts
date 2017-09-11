@@ -34,7 +34,7 @@ export class PendingSearchAsYouTypeSearchEvent extends PendingSearchEvent {
     const eventTarget: HTMLElement = <HTMLElement>e.target;
     const searchInterface = <SearchInterface>Component.get(eventTarget, SearchInterface);
     const currentQueryBeforeDelay = searchInterface.queryStateModel.get(QueryStateModel.attributesEnum.q);
-    this.beforeResolve = new Promise((resolve) => {
+    this.beforeResolve = new Promise(resolve => {
       this.toSendRightNow = () => {
         if (!this.isCancelledOrFinished()) {
           resolve(this);

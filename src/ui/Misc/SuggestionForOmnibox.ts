@@ -27,9 +27,11 @@ export interface ISuggestionForOmniboxResult {
 }
 
 export class SuggestionForOmnibox {
-
-  constructor(public structure: ISuggestionForOmniboxTemplate, public onSelect: (value: string, args: IPopulateOmniboxEventArgs) => void, public onTabPress: (value: string, args: IPopulateOmniboxEventArgs) => void) {
-  }
+  constructor(
+    public structure: ISuggestionForOmniboxTemplate,
+    public onSelect: (value: string, args: IPopulateOmniboxEventArgs) => void,
+    public onTabPress: (value: string, args: IPopulateOmniboxEventArgs) => void
+  ) {}
 
   public buildOmniboxElement(results: ISuggestionForOmniboxResult[], args: IPopulateOmniboxEventArgs): HTMLElement {
     let element: HTMLElement;
@@ -40,7 +42,7 @@ export class SuggestionForOmnibox {
         element.appendChild(header);
       }
       let rows = this.buildRowElements(results, args);
-      _.each(rows, (row) => {
+      _.each(rows, row => {
         element.appendChild(row);
       });
     }
@@ -48,18 +50,26 @@ export class SuggestionForOmnibox {
   }
 
   private buildElementHeader(): HTMLElement {
-    return $$('div', undefined, this.structure.header.template({
-      headerTitle: this.structure.header.title
-    })).el;
+    return $$(
+      'div',
+      undefined,
+      this.structure.header.template({
+        headerTitle: this.structure.header.title
+      })
+    ).el;
   }
 
   private buildRowElements(results: ISuggestionForOmniboxResult[], args: IPopulateOmniboxEventArgs): HTMLElement[] {
     let ret = [];
-    _.each(results, (result) => {
-      let row = $$('div', undefined, this.structure.row({
-        rawValue: result.value,
-        data: DomUtils.highlightElement(result.value, args.completeQueryExpression.word)
-      })).el;
+    _.each(results, result => {
+      let row = $$(
+        'div',
+        undefined,
+        this.structure.row({
+          rawValue: result.value,
+          data: DomUtils.highlightElement(result.value, args.completeQueryExpression.word)
+        })
+      ).el;
       $$(row).on('click', () => {
         this.onSelect.call(this, result.value, args);
       });

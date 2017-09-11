@@ -13,7 +13,6 @@ import { mockSearchInterface } from './MockEnvironment';
 import _ = require('underscore');
 
 export class FakeResults {
-
   static createFakeResults(count = 10, token = ''): IQueryResults {
     var results: IQueryResult[] = [];
     for (var i = 0; i < count; ++i) {
@@ -82,16 +81,16 @@ export class FakeResults {
       summaryHighlights: [],
       rankingInfo: '',
       raw: {
-        'string': 'string value',
-        'date': new Date(1980, 2, 11, 8, 30).valueOf(),
-        'number': 123,
-        'emails': 'mlaporte@coveo.com;dlavoie@coveo.com',
-        'empty': '',
-        'randomNumber': Math.random(),
-        'urihash': QueryUtils.createGuid(),
-        'source': 'the source',
-        'collection': 'the collection',
-        'author': 'o.o'
+        string: 'string value',
+        date: new Date(1980, 2, 11, 8, 30).valueOf(),
+        number: 123,
+        emails: 'mlaporte@coveo.com;dlavoie@coveo.com',
+        empty: '',
+        randomNumber: Math.random(),
+        urihash: QueryUtils.createGuid(),
+        source: 'the source',
+        collection: 'the collection',
+        author: 'o.o'
       },
       childResults: [],
       termsToHighlight: {},
@@ -116,12 +115,14 @@ export class FakeResults {
     return ret;
   }
 
-  static createFakeResultWithAttachments(token = 'test',
+  static createFakeResultWithAttachments(
+    token = 'test',
     numberOfAttachments = 3,
     attachmentType = ['xml', 'pdf', 'txt'],
     flags = 'HasThumbnail',
     attachmentsFlags = ['IsAttachment', 'IsAttachment', 'IsAttachment'],
-    withSubAttachments = false): IQueryResult {
+    withSubAttachments = false
+  ): IQueryResult {
     var fake = FakeResults.createFakeResult(token);
     fake.flags = flags;
     if (withSubAttachments) {
@@ -153,7 +154,9 @@ export class FakeResults {
 
     var groupByValues: IGroupByValue[] = [];
     for (var i = 0; i < count; ++i) {
-      groupByValues.push(FakeResults.createFakeGroupByValue(token + i.toString(), i + 1, 100 + i, includeComputedValues ? 1000 + i : undefined));
+      groupByValues.push(
+        FakeResults.createFakeGroupByValue(token + i.toString(), i + 1, 100 + i, includeComputedValues ? 1000 + i : undefined)
+      );
     }
 
     return {
@@ -164,7 +167,7 @@ export class FakeResults {
 
   static createFakeRangeGroupByResult(field: string, start = 1, end = 100, steps = 25): IGroupByResult {
     var groupByValues: IGroupByValue[] = [];
-    for (var i = start; i <= end; i += (steps)) {
+    for (var i = start; i <= end; i += steps) {
       groupByValues.push(FakeResults.createFakeGroupByRangeValue(i, i + (steps - 1), 'foobar' + i.toString(), i));
     }
     return {
@@ -183,7 +186,15 @@ export class FakeResults {
     return value;
   }
 
-  static createFakeHierarchicalGroupByResult(field: string, token: string, numberOfLevel = 2, countByLevel = 3, delimitingCharacter = '|', includeComputedValues = false, weirdCasing = true): IGroupByResult {
+  static createFakeHierarchicalGroupByResult(
+    field: string,
+    token: string,
+    numberOfLevel = 2,
+    countByLevel = 3,
+    delimitingCharacter = '|',
+    includeComputedValues = false,
+    weirdCasing = true
+  ): IGroupByResult {
     var groupByValues: IGroupByValue[] = [];
     // i == level
     for (var i = 0; i < numberOfLevel; ++i) {
@@ -191,7 +202,10 @@ export class FakeResults {
       for (var j = 0; j < countByLevel; j++) {
         let currentValue = FakeResults.createFakeHierarchicalValue(`${token}${j.toString()}`, i);
         if (weirdCasing) {
-          currentValue = _.map(currentValue.split(delimitingCharacter), (value, k) => (i + j + k) % 2 == 0 ? value.toLowerCase() : value.toUpperCase()).join(delimitingCharacter);
+          currentValue = _.map(
+            currentValue.split(delimitingCharacter),
+            (value, k) => ((i + j + k) % 2 == 0 ? value.toLowerCase() : value.toUpperCase())
+          ).join(delimitingCharacter);
         }
         var currentGroupByValue = FakeResults.createFakeGroupByValue(currentValue, j + 1, 100, includeComputedValues ? 1000 : undefined);
         groupByValues.push(currentGroupByValue);
@@ -216,8 +230,14 @@ export class FakeResults {
     };
   }
 
-  static createFakeGroupByRangeValue(from: number, to: number, token: string, count: number, score?: number, computedValue?: number): IGroupByValue {
-
+  static createFakeGroupByRangeValue(
+    from: number,
+    to: number,
+    token: string,
+    count: number,
+    score?: number,
+    computedValue?: number
+  ): IGroupByValue {
     return {
       value: from + '..' + to,
       lookupValue: token,
@@ -295,7 +315,6 @@ export class FakeResults {
       result.raw.coveochatterfeedtopics = 'PostAttachment';
       result.raw.sfcontentfilename = 'fileName';
       result.raw.sfcontentversionid = token;
-
     }
 
     return result;
@@ -354,25 +373,23 @@ export class FakeResults {
     };
   }
 
-  static createPopulateOmniboxEventArgs(queryboxContent: string, cursorPosition: number, rows: IOmniboxDataRow[] = []): IPopulateOmniboxEventArgs {
+  static createPopulateOmniboxEventArgs(
+    queryboxContent: string,
+    cursorPosition: number,
+    rows: IOmniboxDataRow[] = []
+  ): IPopulateOmniboxEventArgs {
     return {
       completeQueryExpression: { word: queryboxContent, regex: new RegExp(queryboxContent, 'gi') },
       allQueryExpressions: undefined,
       currentQueryExpression: { word: queryboxContent, regex: new RegExp(queryboxContent, 'gi') },
       cursorPosition: cursorPosition,
       rows: [],
-      clear: () => {
-      },
-      clearCurrentExpression: () => {
-      },
-      closeOmnibox: () => {
-      },
-      insertAt: () => {
-      },
-      replace: () => {
-      },
-      replaceCurrentExpression: () => {
-      }
+      clear: () => {},
+      clearCurrentExpression: () => {},
+      closeOmnibox: () => {},
+      insertAt: () => {},
+      replace: () => {},
+      replaceCurrentExpression: () => {}
     };
   }
 }

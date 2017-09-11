@@ -112,9 +112,11 @@ export class QueryStateModel extends Model {
    * @returns {boolean} `true` if at least one facet is active; `false` otherwise.
    */
   public atLeastOneFacetIsActive() {
-    return !_.isUndefined(_.find(this.attributes, (value, key: any) => {
-      return key.indexOf('f:') == 0 && Utils.isNonEmptyArray(value);
-    }));
+    return !_.isUndefined(
+      _.find(this.attributes, (value, key: any) => {
+        return key.indexOf('f:') == 0 && Utils.isNonEmptyArray(value);
+      })
+    );
   }
 
   public set(attribute: string, value: any, options?: IModelSetOptions) {

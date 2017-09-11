@@ -5,21 +5,23 @@ import { FakeResults } from '../Fake';
 import { HighlightUtils } from '../../src/utils/HighlightUtils';
 
 export function ExcerptTest() {
-  describe('Excerpt', function () {
+  describe('Excerpt', function() {
     let test: Mock.IBasicComponentSetup<Excerpt>;
     let fakeResult: IQueryResult;
 
     beforeEach(() => {
       fakeResult = FakeResults.createFakeResult();
       fakeResult.excerpt = 'This is the excerpt';
-      fakeResult.excerptHighlights = [{
-        offset: 12,
-        length: 7
-      }];
+      fakeResult.excerptHighlights = [
+        {
+          offset: 12,
+          length: 7
+        }
+      ];
       test = Mock.advancedResultComponentSetup<Excerpt>(Excerpt, fakeResult, undefined);
     });
 
-    afterEach(function () {
+    afterEach(function() {
       test = null;
       fakeResult = null;
     });

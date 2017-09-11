@@ -4,46 +4,46 @@ import { registerCustomMatcher } from '../CustomMatchers';
 import { $$ } from '../../src/utils/Dom';
 
 export function ModelTest() {
-  describe('Model', function () {
+  describe('Model', function() {
     let model: Model;
     let div: HTMLDivElement;
     let env: Mock.IMockEnvironment;
 
-    beforeEach(function () {
+    beforeEach(function() {
       div = document.createElement('div');
       env = new Mock.MockEnvironmentBuilder().withRoot(div).build();
       registerCustomMatcher();
     });
 
-    afterEach(function () {
+    afterEach(function() {
       div = null;
       env = null;
       model = null;
     });
 
-    describe('with basic setup', function () {
+    describe('with basic setup', function() {
       let spy: jasmine.Spy;
-      beforeEach(function () {
+      beforeEach(function() {
         model = new Model(div, 'test', {
           foo: 'bar'
         });
         spy = jasmine.createSpy('spy');
       });
 
-      it('can be built with attributes', function () {
+      it('can be built with attributes', function() {
         expect(model.attributes).toEqual({
           foo: 'bar'
         });
       });
 
-      it('will trigger event on changeOne', function () {
+      it('will trigger event on changeOne', function() {
         $$(div).on('test:change:foo', spy);
         model.set('foo', 'new value');
         model.set('foo', 'new value');
         expect(spy).toHaveBeenCalledTimes(1);
       });
 
-      it('will trigger event on change any', function () {
+      it('will trigger event on change any', function() {
         $$(div).on('test:change', spy);
         model.registerNewAttribute('newAttr', 'something');
         model.set('foo', 'bar2');
@@ -53,13 +53,13 @@ export function ModelTest() {
         expect(spy).toHaveBeenCalledTimes(3);
       });
 
-      it('will trigger event on reset', function () {
+      it('will trigger event on reset', function() {
         $$(div).on('test:reset', spy);
         model.reset();
         expect(spy).toHaveBeenCalledTimes(1);
       });
 
-      it('will trigger event on all', function () {
+      it('will trigger event on all', function() {
         $$(div).on('test:all', spy);
         model.set('foo', 'bar2');
         model.reset();
@@ -69,14 +69,14 @@ export function ModelTest() {
         expect(spy).toHaveBeenCalledTimes(4);
       });
 
-      it('will not throw on type mismatch', function () {
+      it('will not throw on type mismatch', function() {
         expect(() => model.set('foo', 1)).not.toThrow();
         expect(() => model.set('foo', {})).not.toThrow();
         expect(() => model.set('foo', true)).not.toThrow();
         expect(() => model.set('foo', false)).not.toThrow();
       });
 
-      it('can setMultiple', function () {
+      it('can setMultiple', function() {
         model.registerNewAttribute('newAttr', 'newValue');
         model.setMultiple({
           foo: 'new stuff',
@@ -86,11 +86,11 @@ export function ModelTest() {
         expect(model.get('newAttr')).toBe('new stuff too');
       });
 
-      it('can return all attributes that are not at their default state', function () {
+      it('can return all attributes that are not at their default state', function() {
         model.registerNewAttribute('newAttr', 'newValue');
         model.set('foo', 'new stuff');
         expect(model.getAttributes()).toEqual({
-          'foo': 'new stuff'
+          foo: 'new stuff'
         });
       });
 

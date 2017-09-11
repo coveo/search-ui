@@ -28,7 +28,7 @@ export function QuickviewTest() {
       modalBox = null;
     });
 
-    it('creates a modal box on open', (done) => {
+    it('creates a modal box on open', done => {
       quickview.open();
       Defer.defer(() => {
         expect(modalBox.open).toHaveBeenCalled();
@@ -36,8 +36,7 @@ export function QuickviewTest() {
       });
     });
 
-    it('closes the modal box on close', (done) => {
-
+    it('closes the modal box on close', done => {
       quickview.open();
       Defer.defer(() => {
         quickview.close();
@@ -56,6 +55,4 @@ export function QuickviewTest() {
       return template;
     }
   });
-
-
 }

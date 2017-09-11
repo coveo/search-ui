@@ -4,7 +4,6 @@ import * as Mock from '../../MockEnvironment';
 import { SearchInterface, ISearchInterfaceOptions } from '../../../src/ui/SearchInterface/SearchInterface';
 
 export function ResponsiveComponentsManagerTest() {
-
   let root: Dom;
   let handleResizeEvent: any;
   let registerComponent: any;
@@ -20,8 +19,8 @@ export function ResponsiveComponentsManagerTest() {
       root = $$(searchInterfaceMock.cmp.root);
       handleResizeEvent = jasmine.createSpy('handleResizeEvent');
       registerComponent = jasmine.createSpy('registerComponent');
-      responsiveComponent = function () {
-        this.needDrodpownWrapper = () => { };
+      responsiveComponent = function() {
+        this.needDrodpownWrapper = () => {};
         this.handleResizeEvent = handleResizeEvent;
         this.registerComponent = registerComponent;
         this.ID = 'id';
@@ -30,7 +29,7 @@ export function ResponsiveComponentsManagerTest() {
       responsiveComponentsManager = new ResponsiveComponentsManager(root);
     });
 
-    it('calls handle resize event when resize listener is called', (done) => {
+    it('calls handle resize event when resize listener is called', done => {
       root.width = () => 400;
       responsiveComponentsManager.register(responsiveComponent, root, 'id', component, {});
 
@@ -40,10 +39,9 @@ export function ResponsiveComponentsManagerTest() {
         expect(handleResizeEvent).toHaveBeenCalled();
         done();
       }, ResponsiveComponentsManager.RESIZE_DEBOUNCE_DELAY + 1);
-
     });
 
-    it('does not calls handle resize event when resize listener is called and width is zero', (done) => {
+    it('does not calls handle resize event when resize listener is called and width is zero', done => {
       root.width = () => 0;
       responsiveComponentsManager.register(responsiveComponent, root, 'id', component, {});
 
@@ -53,7 +51,6 @@ export function ResponsiveComponentsManagerTest() {
         expect(handleResizeEvent).not.toHaveBeenCalled();
         done();
       }, ResponsiveComponentsManager.RESIZE_DEBOUNCE_DELAY + 1);
-
     });
 
     it('registers component even when the corresponding responsive class has already been instanciated', () => {

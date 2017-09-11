@@ -189,7 +189,7 @@ export class DateUtils {
     let currentLocale = String['locale'];
 
     // Our cultures.js directory contains 'no' which is the equivalent to 'nn' for momentJS
-    if (currentLocale.toLowerCase() == ('no')) {
+    if (currentLocale.toLowerCase() == 'no') {
       currentLocale = 'nn';
     } else if (currentLocale.toLowerCase() == 'es-es') {
       // Our cultures.js directory contains 'es-es' which is the equivalent to 'es' for momentJS
@@ -236,7 +236,9 @@ export class DateUtils {
    * @returns {Date} An offset Date object corresponding to the `date` argument value plus the `offset` value.
    */
   static offsetDateByDays(date: Date, offset: number): Date {
-    return moment(date).add(offset, 'days').toDate();
+    return moment(date)
+      .add(offset, 'days')
+      .toDate();
   }
 
   private static isTodayYesterdayOrTomorrow(d: Date, options?: IDateToStringOptions): boolean {
@@ -271,7 +273,6 @@ export class DateUtils {
       // yyyy was used to format dates before implementing moment.js, which only recognizes YYYY.
       return dateOnly.format(options.predefinedFormat.replace(/yyyy/g, 'YYYY'));
     }
-
 
     if (options.useTodayYesterdayAndTomorrow) {
       if (DateUtils.isTodayYesterdayOrTomorrow(date, options)) {
@@ -338,8 +339,12 @@ export class DateUtils {
     const datePart = DateUtils.dateToString(date, options);
     const dateWithoutTime = DateUtils.keepOnlyDatePart(date);
 
-    if (moment(date).isValid() && (options.alwaysIncludeTime == true || (options.includeTimeIfThisWeek == true && isThisWeek)
-      || (options.includeTimeIfToday == true && dateWithoutTime.valueOf() == today.valueOf()))) {
+    if (
+      moment(date).isValid() &&
+      (options.alwaysIncludeTime == true ||
+        (options.includeTimeIfThisWeek == true && isThisWeek) ||
+        (options.includeTimeIfToday == true && dateWithoutTime.valueOf() == today.valueOf()))
+    ) {
       return datePart + ', ' + DateUtils.timeToString(date);
     } else {
       return datePart;
@@ -385,8 +390,12 @@ export class DateUtils {
       return '';
     }
 
-    return ('0' + ((moment(to).valueOf() - moment(from).valueOf()) / (1000 * 60 * 60)).toFixed()).slice(-2) +
-      ':' + ('0' + ((moment(to).valueOf() - moment(from).valueOf()) % (1000 * 60 * 60) / (1000 * 60)).toFixed()).slice(-2) +
-      ':' + ('0' + ((moment(to).valueOf() - moment(from).valueOf()) % (1000 * 60) / (1000)).toFixed()).slice(-2);
+    return (
+      ('0' + ((moment(to).valueOf() - moment(from).valueOf()) / (1000 * 60 * 60)).toFixed()).slice(-2) +
+      ':' +
+      ('0' + (((moment(to).valueOf() - moment(from).valueOf()) % (1000 * 60 * 60)) / (1000 * 60)).toFixed()).slice(-2) +
+      ':' +
+      ('0' + (((moment(to).valueOf() - moment(from).valueOf()) % (1000 * 60)) / 1000).toFixed()).slice(-2)
+    );
   }
 }

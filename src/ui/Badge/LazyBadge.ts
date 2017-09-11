@@ -5,10 +5,15 @@ import { lazyExport } from '../../GlobalExports';
 export function lazyBadge() {
   LazyInitialization.registerLazyComponent('Badge', () => {
     return new Promise((resolve, reject) => {
-      require.ensure(['./Badge'], () => {
-        let loaded = require<IComponentDefinition>('./Badge.ts')['Badge'];
-        lazyExport(loaded, resolve);
-      }, LazyInitialization.buildErrorCallback('Badge', resolve), 'Badge');
+      require.ensure(
+        ['./Badge'],
+        () => {
+          let loaded = require<IComponentDefinition>('./Badge.ts')['Badge'];
+          lazyExport(loaded, resolve);
+        },
+        LazyInitialization.buildErrorCallback('Badge', resolve),
+        'Badge'
+      );
     });
   });
 }

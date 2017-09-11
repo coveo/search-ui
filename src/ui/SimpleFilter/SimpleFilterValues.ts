@@ -15,8 +15,7 @@ export class SimpleFilterValues {
   private groupByRequestValues: string[] = [];
   private position: number;
 
-  constructor(public simpleFilter: SimpleFilter, public options: ISimpleFilterOptions) {
-  }
+  constructor(public simpleFilter: SimpleFilter, public options: ISimpleFilterOptions) {}
 
   public getValuesFromGroupBy(): string[] {
     return this.groupByRequestValues;
@@ -26,7 +25,7 @@ export class SimpleFilterValues {
     this.groupByRequestValues = [];
     const groupByResult = data.results.groupByResults;
     if (groupByResult.length > 0 && this.position != undefined) {
-      _.each(groupByResult[this.position].values, (value) => {
+      _.each(groupByResult[this.position].values, value => {
         if (this.groupByRequestValues.indexOf(value.lookupValue) < 0) {
           this.groupByRequestValues.push(value.lookupValue);
         }
@@ -49,7 +48,7 @@ export class SimpleFilterValues {
     let groupByRequest: IGroupByRequest = {
       field: <string>this.options.field,
       maximumNumberOfValues: this.options.maximumNumberOfValues,
-      injectionDepth: 1000,
+      injectionDepth: 1000
     };
     return groupByRequest;
   }

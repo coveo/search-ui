@@ -24,17 +24,23 @@ export class HierarchicalFacetValuesList extends FacetValuesList {
 
       // If we exclude the top level, the alpha order is not respected (since it is done by the index, and the first level is omitted by client side code).
       // Do the ordering client side, in the precise case where its alpha ordering and the starting level is not 0;
-      if (this.facet.options.levelStart != 0 && this.facet.options.sortCriteria && this.facet.options.sortCriteria.toLowerCase().indexOf('alpha') != -1) {
+      if (
+        this.facet.options.levelStart != 0 &&
+        this.facet.options.sortCriteria &&
+        this.facet.options.sortCriteria.toLowerCase().indexOf('alpha') != -1
+      ) {
         let reversed = this.facet.options.sortCriteria.toLowerCase().indexOf('descending') != -1;
 
         sortArray = sortArray.sort((first, second) => {
-          let firstInTopLevel = _.find(this.facet.topLevelHierarchy, (hierarchy: IValueHierarchy) => {
-            return hierarchy.facetValue.value.toLowerCase() == first.hierarchy.value.toLowerCase();
-          }) != null;
+          let firstInTopLevel =
+            _.find(this.facet.topLevelHierarchy, (hierarchy: IValueHierarchy) => {
+              return hierarchy.facetValue.value.toLowerCase() == first.hierarchy.value.toLowerCase();
+            }) != null;
 
-          let secondInTopLevel = _.find(this.facet.topLevelHierarchy, (hierarchy: IValueHierarchy) => {
-            return hierarchy.facetValue.value.toLowerCase() == first.hierarchy.value.toLowerCase();
-          }) != null;
+          let secondInTopLevel =
+            _.find(this.facet.topLevelHierarchy, (hierarchy: IValueHierarchy) => {
+              return hierarchy.facetValue.value.toLowerCase() == first.hierarchy.value.toLowerCase();
+            }) != null;
 
           if (firstInTopLevel && secondInTopLevel) {
             let firstValue = this.facet.getValueCaption(first.hierarchy);

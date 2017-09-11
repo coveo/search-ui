@@ -21,7 +21,6 @@ export function DefaultResultTemplateTest() {
     });
 
     describe('if the template cache is empty', () => {
-
       it('should be able to instantiate to string', () => {
         expect(() => new DefaultResultTemplate().instantiateToString(result)).not.toThrowError();
       });
@@ -54,7 +53,7 @@ export function DefaultResultTemplateTest() {
           expect(created).toEqual(dataToString(result));
         });
 
-        describe('if there\'s template with conditions', () => {
+        describe("if there's template with conditions", () => {
           let templateWithCondition: Template;
 
           beforeEach(() => {
@@ -77,9 +76,7 @@ export function DefaultResultTemplateTest() {
           it('should order template with fields to match first', () => {
             // Test that the Hello world template is rendered before the fallback template
             result.raw['foo'] = 'bar';
-            templateWithCondition.fieldsToMatch = [
-              { field: 'foo', values: ['bar'] }
-            ];
+            templateWithCondition.fieldsToMatch = [{ field: 'foo', values: ['bar'] }];
             TemplateCache.registerTemplate('dummy2', templateWithCondition, true, true);
             let created = new DefaultResultTemplate().instantiateToString(result);
             expect(created).toEqual(`Hello world`);
@@ -96,9 +93,7 @@ export function DefaultResultTemplateTest() {
 
           it('should still fallback on default template if fields to match does not match', () => {
             result.raw['foo'] = 'nomatch';
-            templateWithCondition.fieldsToMatch = [
-              { field: 'foo', values: ['bar'] }
-            ];
+            templateWithCondition.fieldsToMatch = [{ field: 'foo', values: ['bar'] }];
             TemplateCache.registerTemplate('dummy2', templateWithCondition, true, true);
             let created = new DefaultResultTemplate().instantiateToString(result);
             expect(created).toEqual(dataToString(result));

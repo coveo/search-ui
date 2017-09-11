@@ -34,15 +34,14 @@ export class FieldSuggestions extends Component {
 
   static doExport = () => {
     exportGlobally({
-      'FieldSuggestions': FieldSuggestions
+      FieldSuggestions: FieldSuggestions
     });
-  }
+  };
 
   /**
    * @componentOptions
    */
   static options: IFieldSuggestionsOptions = {
-
     /**
      * Specifies the facet field from which to provide suggestions.
      *
@@ -146,7 +145,7 @@ export class FieldSuggestions extends Component {
   };
 
   private suggestionForOmnibox: SuggestionForOmnibox;
-  private currentlyDisplayedSuggestions: { [suggestion: string]: { element: HTMLElement, pos: number } };
+  private currentlyDisplayedSuggestions: { [suggestion: string]: { element: HTMLElement; pos: number } };
 
   /**
    * Creates a new `FieldSuggestions` component.
@@ -213,11 +212,15 @@ export class FieldSuggestions extends Component {
       };
     }
 
-    this.suggestionForOmnibox = new SuggestionForOmnibox(suggestionStructure, (value: string, args: IPopulateOmniboxEventArgs) => {
-      this.options.onSelect.call(this, value, args);
-    }, (value: string, args: IPopulateOmniboxEventArgs) => {
-      this.onRowTab(value, args);
-    });
+    this.suggestionForOmnibox = new SuggestionForOmnibox(
+      suggestionStructure,
+      (value: string, args: IPopulateOmniboxEventArgs) => {
+        this.options.onSelect.call(this, value, args);
+      },
+      (value: string, args: IPopulateOmniboxEventArgs) => {
+        this.onRowTab(value, args);
+      }
+    );
     this.bind.onRootElement(OmniboxEvents.populateOmnibox, (args: IPopulateOmniboxEventArgs) => this.handlePopulateOmnibox(args));
   }
 
@@ -237,7 +240,9 @@ export class FieldSuggestions extends Component {
           $$(this.currentlyDisplayedSuggestions[suggestion].element).trigger('click');
         }
       } else {
-        let currentlySuggested = <{ element: HTMLElement, pos: number }>_.findWhere(<any>this.currentlyDisplayedSuggestions, { pos: suggestion });
+        let currentlySuggested = <{ element: HTMLElement; pos: number }>_.findWhere(<any>this.currentlyDisplayedSuggestions, {
+          pos: suggestion
+        });
         if (currentlySuggested) {
           $$(currentlySuggested.element).trigger('click');
         }
@@ -249,31 +254,35 @@ export class FieldSuggestions extends Component {
     Assert.exists(args);
 
     let valueToSearch = args.completeQueryExpression.word;
-    let promise = new Promise((resolve) => {
-      this.queryController.getEndpoint().listFieldValues(this.buildListFieldValueRequest(valueToSearch)).then((results: IIndexFieldValue[]) => {
-        let element = this.suggestionForOmnibox.buildOmniboxElement(results, args);
-        this.currentlyDisplayedSuggestions = {};
-        if (element) {
-          _.map($$(element).findAll('.coveo-omnibox-selectable'), (selectable, i?) => {
-            this.currentlyDisplayedSuggestions[$$(selectable).text()] = {
-              element: selectable,
-              pos: i
-            };
-          });
-          resolve({
-            element: element,
-            zIndex: this.options.omniboxZIndex
-          });
-        } else {
+    let promise = new Promise(resolve => {
+      this.queryController
+        .getEndpoint()
+        .listFieldValues(this.buildListFieldValueRequest(valueToSearch))
+        .then((results: IIndexFieldValue[]) => {
+          let element = this.suggestionForOmnibox.buildOmniboxElement(results, args);
+          this.currentlyDisplayedSuggestions = {};
+          if (element) {
+            _.map($$(element).findAll('.coveo-omnibox-selectable'), (selectable, i?) => {
+              this.currentlyDisplayedSuggestions[$$(selectable).text()] = {
+                element: selectable,
+                pos: i
+              };
+            });
+            resolve({
+              element: element,
+              zIndex: this.options.omniboxZIndex
+            });
+          } else {
+            resolve({
+              element: undefined
+            });
+          }
+        })
+        .catch(() => {
           resolve({
             element: undefined
           });
-        }
-      }).catch(() => {
-        resolve({
-          element: undefined
         });
-      });
     });
     args.rows.push({
       deferred: promise

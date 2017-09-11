@@ -8,13 +8,25 @@ import * as _ from 'underscore';
  * Holds a reference to all template available in the framework
  */
 export class TemplateCache {
-  private static templates: { [templateName: string]: Template; } = {};
+  private static templates: { [templateName: string]: Template } = {};
   private static templateNames: string[] = [];
   private static resultListTemplateNames: string[] = [];
-  private static defaultTemplates: { [templateName: string]: Template; } = {};
+  private static defaultTemplates: { [templateName: string]: Template } = {};
 
-  public static registerTemplate(name: string, template: Template, publicTemplate?: boolean, defaultTemplate?: boolean, pageTemplate?: boolean);
-  public static registerTemplate(name: string, template: (data: {}) => string, publicTemplate?: boolean, defaultTemplate?: boolean, pageTemplate?: boolean);
+  public static registerTemplate(
+    name: string,
+    template: Template,
+    publicTemplate?: boolean,
+    defaultTemplate?: boolean,
+    pageTemplate?: boolean
+  );
+  public static registerTemplate(
+    name: string,
+    template: (data: {}) => string,
+    publicTemplate?: boolean,
+    defaultTemplate?: boolean,
+    pageTemplate?: boolean
+  );
   /**
    * Register a new template in the framework, which will be available to render any results.
    * @param name
@@ -23,7 +35,13 @@ export class TemplateCache {
    * @param defaultTemplate
    * @param pageTemplate
    */
-  public static registerTemplate(name: string, template: any, publicTemplate: boolean = true, defaultTemplate: boolean = false, resultListTemplate: boolean = false) {
+  public static registerTemplate(
+    name: string,
+    template: any,
+    publicTemplate: boolean = true,
+    defaultTemplate: boolean = false,
+    resultListTemplate: boolean = false
+  ) {
     Assert.isNonEmptyString(name);
     Assert.exists(template);
     if (!(template instanceof Template)) {
@@ -81,7 +99,7 @@ export class TemplateCache {
    * Get all templates currently registered in the framework.
    * @returns {{}}
    */
-  public static getTemplates(): { [templateName: string]: Template; } {
+  public static getTemplates(): { [templateName: string]: Template } {
     return TemplateCache.templates;
   }
 
@@ -130,7 +148,7 @@ export class TemplateCache {
   }
 
   private static scanAndRegisterUnderscoreTemplates() {
-    _.each(UnderscoreTemplate.mimeTypes, (type) => {
+    _.each(UnderscoreTemplate.mimeTypes, type => {
       let scriptList = document.querySelectorAll(`script[id][type='${type}']`);
       let i = scriptList.length;
       let arr: HTMLElement[] = new Array(i);
@@ -145,7 +163,7 @@ export class TemplateCache {
   }
 
   private static scanAndRegisterHtmlTemplates() {
-    _.each(HtmlTemplate.mimeTypes, (type) => {
+    _.each(HtmlTemplate.mimeTypes, type => {
       let scriptList = document.querySelectorAll(`script[id][type='${type}']`);
       let i = scriptList.length;
       let arr: HTMLElement[] = new Array(i);

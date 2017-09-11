@@ -5,10 +5,15 @@ import { lazyExport } from '../../GlobalExports';
 export function lazyLogo() {
   LazyInitialization.registerLazyComponent('Logo', () => {
     return new Promise((resolve, reject) => {
-      require.ensure(['./Logo'], () => {
-        let loaded = require<IComponentDefinition>('./Logo.ts')['Logo'];
-        lazyExport(loaded, resolve);
-      }, LazyInitialization.buildErrorCallback('Logo', resolve), 'Logo');
+      require.ensure(
+        ['./Logo'],
+        () => {
+          let loaded = require<IComponentDefinition>('./Logo.ts')['Logo'];
+          lazyExport(loaded, resolve);
+        },
+        LazyInitialization.buildErrorCallback('Logo', resolve),
+        'Logo'
+      );
     });
   });
 }

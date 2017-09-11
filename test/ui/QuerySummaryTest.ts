@@ -6,13 +6,13 @@ import { $$ } from '../../src/utils/Dom';
 import { IQuerySummaryOptions } from '../../src/ui/QuerySummary/QuerySummary';
 
 export function QuerySummaryTest() {
-  describe('QuerySummary', function () {
+  describe('QuerySummary', function() {
     var test: Mock.IBasicComponentSetup<QuerySummary>;
-    beforeEach(function () {
+    beforeEach(function() {
       test = Mock.basicComponentSetup<QuerySummary>(QuerySummary);
     });
 
-    it('should not display tips when there are results', function () {
+    it('should not display tips when there are results', function() {
       var results = FakeResults.createFakeResults(10);
       Simulate.query(test.env, {
         results: results
@@ -26,7 +26,7 @@ export function QuerySummaryTest() {
       expect($$(test.cmp.element).find('.coveo-query-summary-search-tips-info')).not.toBeNull();
     });
 
-    it('should display result range when there are results', function () {
+    it('should display result range when there are results', function() {
       var results = FakeResults.createFakeResults(10);
       Simulate.query(test.env, {
         results: results
@@ -40,9 +40,8 @@ export function QuerySummaryTest() {
       expect($$(test.cmp.element).text()).not.toEqual(jasmine.stringMatching(/^Results.*of.*/));
     });
 
-
-    describe('exposes options', function () {
-      it('enableSearchTips allow to display search tips on no results', function () {
+    describe('exposes options', function() {
+      it('enableSearchTips allow to display search tips on no results', function() {
         test = Mock.optionsComponentSetup<QuerySummary, IQuerySummaryOptions>(QuerySummary, {
           enableSearchTips: false
         });
@@ -64,7 +63,7 @@ export function QuerySummaryTest() {
         expect($$(test.cmp.element).find('.coveo-query-summary-search-tips-info')).not.toBeNull();
       });
 
-      it('onlyDisplaySearchTips allow to not render the results range', function () {
+      it('onlyDisplaySearchTips allow to not render the results range', function() {
         test = Mock.optionsComponentSetup<QuerySummary, IQuerySummaryOptions>(QuerySummary, {
           onlyDisplaySearchTips: false
         });

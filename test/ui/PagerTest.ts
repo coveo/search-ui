@@ -56,9 +56,12 @@ export function PagerTest() {
     });
 
     it('should update page when state is changed', () => {
-      test = Mock.advancedComponentSetup<Pager>(Pager, new Mock.AdvancedComponentSetupOptions(undefined, undefined, (env) => {
-        return env.withLiveQueryStateModel();
-      }));
+      test = Mock.advancedComponentSetup<Pager>(
+        Pager,
+        new Mock.AdvancedComponentSetupOptions(undefined, undefined, env => {
+          return env.withLiveQueryStateModel();
+        })
+      );
       test.cmp.setPage(7);
       expect(test.cmp.currentPage).toBe(7);
       test.env.queryStateModel.set('first', 30);
@@ -120,7 +123,7 @@ export function PagerTest() {
       Simulate.query(test.env, {
         query: builder.build(),
         queryBuilder: builder,
-        results: FakeResults.createFakeResults(1000),
+        results: FakeResults.createFakeResults(1000)
       });
 
       // 10 results per page : show full pager
@@ -137,7 +140,7 @@ export function PagerTest() {
       Simulate.query(test.env, {
         query: builder.build(),
         queryBuilder: builder,
-        results: FakeResults.createFakeResults(1000),
+        results: FakeResults.createFakeResults(1000)
       });
       anchors = $$(test.cmp.element).findAll('a.coveo-pager-list-item-text');
       expect($$(anchors[0]).text()).toBe('1');
@@ -178,7 +181,7 @@ export function PagerTest() {
       expect(test.cmp.currentPage).toBe(10);
     });
 
-    it('should return to the last valid page when there are less results than expected', (done) => {
+    it('should return to the last valid page when there are less results than expected', done => {
       let builder = new QueryBuilder();
       test.cmp.currentPage = 4;
       builder.numberOfResults = 10;
@@ -203,26 +206,36 @@ export function PagerTest() {
     });
 
     describe('analytics', () => {
-
       it('should log the proper event when selecting a page directly', () => {
         test.cmp.setPage(15);
-        expect(test.env.usageAnalytics.logCustomEvent).toHaveBeenCalledWith(analyticsActionCauseList.pagerNumber, { pagerNumber: 15 }, test.cmp.element);
+        expect(test.env.usageAnalytics.logCustomEvent).toHaveBeenCalledWith(
+          analyticsActionCauseList.pagerNumber,
+          { pagerNumber: 15 },
+          test.cmp.element
+        );
       });
 
       it('should log the proper event when hitting next page', () => {
         test.cmp.nextPage();
-        expect(test.env.usageAnalytics.logCustomEvent).toHaveBeenCalledWith(analyticsActionCauseList.pagerNext, { pagerNumber: 2 }, test.cmp.element);
+        expect(test.env.usageAnalytics.logCustomEvent).toHaveBeenCalledWith(
+          analyticsActionCauseList.pagerNext,
+          { pagerNumber: 2 },
+          test.cmp.element
+        );
       });
 
       it('should log the proper event when hitting previous page', () => {
         test.cmp.setPage(3);
         test.cmp.previousPage();
-        expect(test.env.usageAnalytics.logCustomEvent).toHaveBeenCalledWith(analyticsActionCauseList.pagerPrevious, { pagerNumber: 2 }, test.cmp.element);
+        expect(test.env.usageAnalytics.logCustomEvent).toHaveBeenCalledWith(
+          analyticsActionCauseList.pagerPrevious,
+          { pagerNumber: 2 },
+          test.cmp.element
+        );
       });
     });
 
     describe('exposes options', () => {
-
       it('numberOfPages allow to specify the number of pages to render', () => {
         test = Mock.optionsComponentSetup<Pager, IPagerOptions>(Pager, <IPagerOptions>{
           numberOfPages: 22

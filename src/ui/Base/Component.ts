@@ -41,7 +41,7 @@ export interface IComponentDefinition {
    * @param bindings The bindings (or environment) for the component.For exemple, the {@link QueryController} or {@link SearchInterface}. Optional, if not provided, the component will resolve those automatically. This has a cost on performance, though, since it has to traverses it's parents to find the correct elements.
    * @param args Optional arguments, depending on the component type. For example, ResultComponent will receive the result there.
    */
-  new(element: HTMLElement, options: any, bindings: IComponentBindings, ...args: any[]): Component;
+  new (element: HTMLElement, options: any, bindings: IComponentBindings, ...args: any[]): Component;
   /**
    * The available options for the component.
    */
@@ -169,7 +169,7 @@ export class Component extends BaseComponent {
 
   public resolveUA(): IAnalyticsClient {
     var searchInterface = this.resolveSearchInterface();
-    return (searchInterface && searchInterface.usageAnalytics) ? searchInterface.usageAnalytics : new NoopAnalyticsClient();
+    return searchInterface && searchInterface.usageAnalytics ? searchInterface.usageAnalytics : new NoopAnalyticsClient();
   }
 
   public resolveResult(): IQueryResult {
@@ -208,7 +208,10 @@ export class Component extends BaseComponent {
       // if there is exactly one.
       var boundComponents = BaseComponent.getBoundComponentsForElement(element);
       if (!noThrow) {
-        Assert.check(boundComponents.length <= 1, 'More than one component is bound to this element. You need to specify the component type.');
+        Assert.check(
+          boundComponents.length <= 1,
+          'More than one component is bound to this element. You need to specify the component type.'
+        );
       }
       return boundComponents[0];
     }
@@ -229,7 +232,6 @@ export class Component extends BaseComponent {
     if (jQuery) {
       jQuery(element).data(result);
     }
-
   }
 
   static resolveBinding(element: HTMLElement, componentClass: any): BaseComponent {
@@ -258,11 +260,10 @@ export class Component extends BaseComponent {
     }
   }
 
-
   static pointElementsToDummyForm(element: HTMLElement) {
     let inputs = $$(element).is('input') ? [element] : [];
     inputs = inputs.concat($$(element).findAll('input'));
-    _.each(_.compact(inputs), (input) => {
+    _.each(_.compact(inputs), input => {
       input.setAttribute('form', 'coveo-dummy-form');
     });
   }
@@ -280,7 +281,6 @@ export class Component extends BaseComponent {
  * [`disable`]{@link Component.disable} method.
  */
 export class ComponentEvents {
-
   /**
    * Creates a new `ComponentEvents` instance for a [`Component`]{@link Component}.
    * @param owner The [`Component`]{@link Component} that owns the event handlers and triggers.

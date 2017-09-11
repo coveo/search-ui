@@ -2,7 +2,6 @@
  * The `IRatingRequest` interface describes a request to rate an item in the index.
  */
 export interface IRatingRequest {
-
   /**
    * Contains the unique ID of the item to rate.
    */

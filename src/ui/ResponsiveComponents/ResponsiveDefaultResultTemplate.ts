@@ -1,7 +1,4 @@
-import {
-  IResponsiveComponent, IResponsiveComponentOptions,
-  ResponsiveComponentsManager
-} from './ResponsiveComponentsManager';
+import { IResponsiveComponent, IResponsiveComponentOptions, ResponsiveComponentsManager } from './ResponsiveComponentsManager';
 import { SearchInterface } from '../SearchInterface/SearchInterface';
 import { ResultList } from '../ResultList/ResultList';
 import { $$, Dom } from '../../utils/Dom';

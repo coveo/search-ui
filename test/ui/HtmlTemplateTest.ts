@@ -2,8 +2,6 @@ import { HtmlTemplate } from '../../src/ui/Templates/HtmlTemplate';
 import { ITemplateFromStringProperties } from '../../src/ui/Templates/TemplateFromAScriptTag';
 export function HtmlTemplateTest() {
   describe('HtmlTemplate', () => {
-
-
     it('should instantiate from a script element', () => {
       let element = document.createElement('script');
       element.setAttribute('data-layout', 'card');
@@ -14,9 +12,12 @@ export function HtmlTemplateTest() {
     });
 
     it('should instantiate from a string', () => {
-      let createdTemplate = HtmlTemplate.fromString(`<div class="CoveoResultLink" data-field="@foo"></div>`, <ITemplateFromStringProperties>{
-        mobile: true
-      });
+      let createdTemplate = HtmlTemplate.fromString(
+        `<div class="CoveoResultLink" data-field="@foo"></div>`,
+        <ITemplateFromStringProperties>{
+          mobile: true
+        }
+      );
       expect(createdTemplate.getFields()).toEqual(jasmine.arrayContaining(['foo', 'author', 'source']));
       expect(createdTemplate.layout).toEqual('list');
       expect(createdTemplate.mobile).toBe(true);
@@ -30,7 +31,10 @@ export function HtmlTemplateTest() {
     });
 
     it('created element from string should have no attribute type', () => {
-      let createdTemplate = HtmlTemplate.fromString(`<div class="CoveoResultLink" data-field="@foo"></div>`, <ITemplateFromStringProperties>{});
+      let createdTemplate = HtmlTemplate.fromString(
+        `<div class="CoveoResultLink" data-field="@foo"></div>`,
+        <ITemplateFromStringProperties>{}
+      );
       expect(createdTemplate.element.getAttribute('type')).toEqual(null);
     });
   });

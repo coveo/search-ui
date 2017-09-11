@@ -4,14 +4,12 @@ import { IFieldsToMatch } from '../../src/ui/Templates/Template';
 import { FakeResults } from '../Fake';
 export function TemplateFieldsEvaluatorTest() {
   describe('TemplateFieldsEvaluatorTest', () => {
-
     let result: IQueryResult;
     let fieldsToMatch: IFieldsToMatch[];
 
     beforeEach(() => {
       result = FakeResults.createFakeResult();
       result.raw['foo'] = 'bar';
-
     });
 
     afterEach(() => {

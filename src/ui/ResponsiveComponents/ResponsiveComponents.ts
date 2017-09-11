@@ -19,15 +19,17 @@ export class ResponsiveComponents {
   private smallScreenWidth: number;
   private mediumScreenWidth: number;
 
-  constructor(public windoh: Window = window) {
-  }
+  constructor(public windoh: Window = window) {}
 
   /**
    * Set the breakpoint for small screen size.
    * @param width
    */
   public setSmallScreenWidth(width: number) {
-    Assert.check(width < this.getMediumScreenWidth(), `Cannot set small screen width (${width}) larger or equal to the current medium screen width (${this.getMediumScreenWidth()})`);
+    Assert.check(
+      width < this.getMediumScreenWidth(),
+      `Cannot set small screen width (${width}) larger or equal to the current medium screen width (${this.getMediumScreenWidth()})`
+    );
     this.smallScreenWidth = width;
   }
 
@@ -36,7 +38,10 @@ export class ResponsiveComponents {
    * @param width
    */
   public setMediumScreenWidth(width: number) {
-    Assert.check(width > this.getSmallScreenWidth(), `Cannot set medium screen width (${width}) smaller or equal to the current small screen width (${this.getSmallScreenWidth()})`);
+    Assert.check(
+      width > this.getSmallScreenWidth(),
+      `Cannot set medium screen width (${width}) smaller or equal to the current small screen width (${this.getSmallScreenWidth()})`
+    );
     this.mediumScreenWidth = width;
   }
 

@@ -63,12 +63,11 @@ export function RecommendationTest() {
 
     it('should copy component options model when bound to a main search interface', () => {
       expect(mainSearchInterface.cmp.componentOptionsModel.getAttributes).toHaveBeenCalled();
-      mainSearchInterface.cmp.componentOptionsModel.setMultiple({ 'resultLink': { 'alwaysOpenInNewWindow': true } });
+      mainSearchInterface.cmp.componentOptionsModel.setMultiple({ resultLink: { alwaysOpenInNewWindow: true } });
       expect(mainSearchInterface.cmp.componentOptionsModel.getAttributes).toHaveBeenCalled();
     });
 
     describe('when the mainInterface triggered a query', () => {
-
       it('should trigger a query', () => {
         Simulate.query(mainSearchInterface.env);
         expect(test.cmp.queryController.executeQuery).toHaveBeenCalled();
@@ -88,7 +87,6 @@ export function RecommendationTest() {
       });
 
       it('should only copy the optionsToUse', () => {
-
         _.extend(options, { optionsToUse: ['expression'] });
         test = Mock.optionsSearchInterfaceSetup<Recommendation, IRecommendationOptions>(Recommendation, options);
 

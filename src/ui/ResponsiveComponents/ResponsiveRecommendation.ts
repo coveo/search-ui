@@ -18,7 +18,6 @@ import 'styling/_ResponsiveRecommendation';
 import { Defer } from '../../MiscModules';
 
 export class ResponsiveRecommendation implements IResponsiveComponent {
-
   public static DROPDOWN_CONTAINER_CSS_CLASS_NAME: string = 'coveo-recommendation-dropdown-container';
   public static RESPONSIVE_BREAKPOINT = 1000;
 
@@ -43,7 +42,13 @@ export class ResponsiveRecommendation implements IResponsiveComponent {
       return;
     }
 
-    ResponsiveComponentsManager.register(ResponsiveRecommendation, $$(coveoRoot), Recommendation.ID, component, _.extend({}, options, { initializationEventRoot: $$(root) }));
+    ResponsiveComponentsManager.register(
+      ResponsiveRecommendation,
+      $$(coveoRoot),
+      Recommendation.ID,
+      component,
+      _.extend({}, options, { initializationEventRoot: $$(root) })
+    );
   }
 
   private static findParentRootOfRecommendationComponent(root: HTMLElement): Dom {
@@ -54,7 +59,12 @@ export class ResponsiveRecommendation implements IResponsiveComponent {
     return null;
   }
 
-  constructor(public coveoRoot: Dom, public ID: string, options: IResponsiveComponentOptions, public responsiveDropdown?: ResponsiveDropdown) {
+  constructor(
+    public coveoRoot: Dom,
+    public ID: string,
+    options: IResponsiveComponentOptions,
+    public responsiveDropdown?: ResponsiveDropdown
+  ) {
     this.recommendationRoot = this.getRecommendationRoot();
     this.dropdownHeaderLabel = options.dropdownHeaderLabel;
     this.breakpoint = this.defineResponsiveBreakpoint(options);
@@ -178,11 +188,11 @@ export class ResponsiveRecommendation implements IResponsiveComponent {
   }
 
   private enableFacetPreservePosition(): void {
-    _.each(this.facets, facet => facet.options.preservePosition = true);
+    _.each(this.facets, facet => (facet.options.preservePosition = true));
   }
 
   private disableFacetPreservePosition(): void {
-    _.each(this.facets, facet => facet.options.preservePosition = false);
+    _.each(this.facets, facet => (facet.options.preservePosition = false));
   }
 
   private drawFacetSliderGraphs(): void {
