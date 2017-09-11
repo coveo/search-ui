@@ -136,7 +136,7 @@ export interface IChangeableAnalyticsDataObject {
    * **Note:**
    * > External code **can** modify the value of this attribute.
    */
-  language: string;
+  locale: string;
 }
 
 /**

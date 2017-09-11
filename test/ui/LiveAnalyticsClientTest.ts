@@ -406,7 +406,7 @@ export function LiveAnalyticsClientTest() {
         originLevel1: 'default',
         originLevel2: 'default',
         originLevel3: jasmine.any(String),
-        language: String['locale'],
+        locale: String['locale'],
         type: 'CustomEvent',
         metaObject: jasmine.any(Object)
       }));
@@ -434,7 +434,7 @@ export function LiveAnalyticsClientTest() {
           originLevel1: 'default',
           originLevel2: 'default',
           originLevel3: jasmine.any(String),
-          language: String['locale'],
+          locale: String['locale'],
           type: 'ClickEvent',
           metaObject: jasmine.any(Object),
           resultData: fakeResult

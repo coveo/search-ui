@@ -77,7 +77,8 @@ export class QueryBuilder {
    * The tab value set from the {@link Tab} component.
    */
   public tab: string;
-  public language: string;
+  public locale: string;
+
   /**
    * Name of the query pipeline to use.<br/>
    * This specifies the name of the query pipeline to use for the query. If not specified, the default value is default, which means the default query pipeline will be used.
@@ -302,7 +303,7 @@ export class QueryBuilder {
 
       searchHub: this.searchHub,
       tab: this.tab,
-      language: this.language,
+      locale: this.locale,
       pipeline: this.pipeline,
       maximumAge: this.maximumAge,
 

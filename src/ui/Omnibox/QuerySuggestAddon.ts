@@ -76,14 +76,14 @@ export class QuerySuggestAddon {
 
   private getQuerySuggest(text: string): Promise<IOmniboxSuggestion[]> {
     let payload = <IQuerySuggestRequest>{ q: text };
-    let language = <string>String['locale'];
+    let locale = <string>String['locale'];
     let searchHub = this.omnibox.getBindings().componentOptionsModel.get(ComponentOptionsModel.attributesEnum.searchHub);
     let pipeline = this.omnibox.getBindings().searchInterface.options.pipeline;
     let enableWordCompletion = this.omnibox.options.enableSearchAsYouType;
     let context = this.omnibox.getBindings().queryController.getLastQuery().context;
 
-    if (language) {
-      payload.language = language;
+    if (locale) {
+      payload.locale = locale;
     }
 
     if (searchHub) {

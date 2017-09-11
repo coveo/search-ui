@@ -1,5 +1,5 @@
 export interface IAPISearchEvent {
-  language: string;
+  locale: string;
   device: string;
   searchInterface: string;
   searchHub: string;

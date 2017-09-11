@@ -28,7 +28,7 @@ export class LiveAnalyticsClient implements IAnalyticsClient {
   public isContextual: boolean = false;
   public originContext: string = 'Search';
 
-  private language = <string>String['locale'];
+  private locale = <string>String['locale'];
   private device = DeviceUtils.getDeviceName();
   private mobile = DeviceUtils.isMobileDevice();
   private pendingSearchEvent: PendingSearchEvent;
@@ -47,7 +47,7 @@ export class LiveAnalyticsClient implements IAnalyticsClient {
 
     Assert.exists(endpoint);
     Assert.exists(rootElement);
-    Assert.isNonEmptyString(this.language);
+    Assert.isNonEmptyString(this.locale);
     Assert.isNonEmptyString(this.device);
     Assert.isNonEmptyString(this.originLevel1);
     this.logger = new Logger(this);
@@ -218,7 +218,7 @@ export class LiveAnalyticsClient implements IAnalyticsClient {
       anonymous: this.anonymous,
       device: this.device,
       mobile: this.mobile,
-      language: this.language,
+      locale: this.locale,
       responseTime: undefined,
       originLevel1: this.originLevel1,
       originLevel2: this.getOriginLevel2(this.rootElement),
@@ -323,7 +323,7 @@ export class LiveAnalyticsClient implements IAnalyticsClient {
     (<any>metaObject)['metaDataAsNumber'] = {};
 
     var changeableAnalyticsDataObject: IChangeableAnalyticsDataObject = {
-      language: event.language,
+      locale: event.locale,
       originLevel1: event.originLevel1,
       originLevel2: event.originLevel2,
       originLevel3: event.originLevel3,
@@ -338,7 +338,7 @@ export class LiveAnalyticsClient implements IAnalyticsClient {
     }, changeableAnalyticsDataObject, data);
     $$(this.rootElement).trigger(AnalyticsEvents.changeAnalyticsCustomData, args);
 
-    event.language = args.language;
+    event.locale = args.locale;
     event.originLevel1 = args.originLevel1;
     event.originLevel2 = args.originLevel2;
     event.originLevel3 = args.originLevel3;

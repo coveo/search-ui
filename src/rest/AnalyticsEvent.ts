@@ -10,7 +10,7 @@ export interface IAnalyticsEvent {
   originLevel2: string;
   originLevel3?: string;
   originContext: string;
-  language: string;
+  locale: string;
   responseTime: number;
   userAgent?: string;
   userGroups?: string;
