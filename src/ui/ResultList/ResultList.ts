@@ -205,19 +205,6 @@ export class ResultList extends Component {
     mobileScrollContainer: ComponentOptions.buildSelectorOption({ defaultFunction: () => <HTMLElement>document.querySelector('.coveo-results-column') }),
 
     /**
-     * Specifies a list of fields to include in the query results.
-     *
-     * If you set the [`autoSelectFieldsToInclude`]{@link ResultList.options.autoSelectFieldsToInclude} option to
-     * `true`, the Coveo Search API returns the fields you specify for this option (if those fields are available) in
-     * addition to the fields which the `ResultList` automatically requests.
-     *
-     * Otherwise, the Coveo Search API only returns the fields you specify for this option (if those fields are
-     * available), unless you leave this option undefined, in which case the Coveo Search API returns all available
-     * fields.
-     */
-    fieldsToInclude: ComponentOptions.buildFieldsOption({ includeInResults: true }),
-
-    /**
      * Specifies whether the `ResultList` should scan its result templates to discover which fields it must request to
      * be able to render all results.
      *
@@ -233,6 +220,19 @@ export class ResultList extends Component {
      * > * You cannot set this option to `true` in the Coveo for Sitecore integration.
      */
     autoSelectFieldsToInclude: ComponentOptions.buildBooleanOption({ defaultValue: false }),
+
+    /**
+     * Specifies a list of fields to include in the query results.
+     *
+     * If you set the [`autoSelectFieldsToInclude`]{@link ResultList.options.autoSelectFieldsToInclude} option to
+     * `true`, the Coveo Search API returns the fields you specify for this option (if those fields are available) in
+     * addition to the fields which the `ResultList` automatically requests.
+     *
+     * Otherwise, the Coveo Search API only returns the fields you specify for this option (if those fields are
+     * available), unless you leave this option undefined, in which case the Coveo Search API returns all available
+     * fields.
+     */
+    fieldsToInclude: ComponentOptions.buildFieldsOption({ includeInResults: true }),
 
     /**
      * Specifies the layout to use when displaying results in this `ResultList` (see

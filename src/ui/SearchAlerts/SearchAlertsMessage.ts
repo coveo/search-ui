@@ -116,7 +116,7 @@ export class SearchAlertsMessage extends Component {
     });
     this.message.el.innerHTML = `
       <div class='coveo-subscriptions-messages-message'>
-        <div class='coveo-subscriptions-messages-content'>${message}</div>
+        <div class='coveo-subscriptions-messages-content'><span>${message}</span></div>
         <div class='coveo-subscriptions-messages-info-close'>${SVGIcons.icons.checkboxHookExclusionMore}</div>
       </div>`;
 
@@ -160,8 +160,7 @@ export class SearchAlertsMessage extends Component {
         let typeConfig = <ISubscriptionQueryRequest>args.subscription.typeConfig;
         this.showMessage($$(args.dom), l('SubscriptionsMessageFollowQuery', this.getFollowQueryMessage(typeConfig.query.q, true)), false);
       } else {
-        let typeConfig = <ISubscriptionItemRequest>args.subscription.typeConfig;
-        this.showMessage($$(args.dom), l('SubscriptionsMessageFollow', _.escape(typeConfig.title)), false);
+        this.showMessage($$(args.dom), l('SubscriptionsMessageFollow'), false);
       }
     }
   }

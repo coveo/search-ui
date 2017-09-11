@@ -1,5 +1,5 @@
 import { ComponentOptionsModel } from '../../models/ComponentOptionsModel';
-export const MagicBox: any = require('exports-loader?Coveo.MagicBox!../../../node_modules/coveomagicbox/bin/MagicBox.min.js');
+export const MagicBox: any = require('exports-loader?Coveo.MagicBox!magic-box');
 import { Initialization } from '../Base/Initialization';
 import { Component } from '../Base/Component';
 import { IComponentBindings } from '../Base/ComponentBindings';
@@ -25,7 +25,6 @@ export interface IQueryboxOptions {
   enablePartialMatch?: boolean;
   partialMatchKeywords?: number;
   partialMatchThreshold?: string;
-  autoFocus?: boolean;
   placeholder?: string;
   triggerQueryOnClear?: boolean;
 }

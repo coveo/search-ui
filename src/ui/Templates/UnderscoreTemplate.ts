@@ -34,7 +34,13 @@ export class UnderscoreTemplate extends Template {
     this.dataToString = (object) => {
       var extended = _.extend({}, object, UnderscoreTemplate.templateHelpers);
       if (this.template) {
-        return this.template(extended);
+        try {
+          return this.template(extended);
+        } catch (e) {
+          new Logger(this).error('Cannot instantiate template', e.message, this.getTemplateInfo());
+          new Logger(this).warn('A default template was used');
+          return new DefaultResultTemplate().getFallbackTemplate();
+        }
       } else {
         return new DefaultResultTemplate().getFallbackTemplate();
       }
@@ -50,6 +56,10 @@ export class UnderscoreTemplate extends Template {
 
   getType() {
     return 'UnderscoreTemplate';
+  }
+
+  protected getTemplateInfo() {
+    return this.element;
   }
 
   static registerTemplateHelper(helperName: string, helper: ITemplateHelperFunction) {

@@ -182,8 +182,11 @@ export const PlaygroundConfiguration: IStringMap<IComponentPlaygroundConfigurati
   },
   HiddenQuery: {
     show: true,
+    options: {
+      title: 'This is the filter title'
+    },
     toExecute: ()=> {
-      let searchInterface = $$(document.body).find('.CoveoSearchInterface')
+      let searchInterface = $$(document.body).find('.component-container .CoveoSearchInterface');
       Coveo.state(searchInterface, 'hd', 'This is the filter description');
       Coveo.state(searchInterface, 'hq', '@uri');
     },
@@ -326,9 +329,12 @@ export const PlaygroundConfiguration: IStringMap<IComponentPlaygroundConfigurati
   },
   Sort: {
     show: true,
-    element: $$('div', undefined, `<span class="CoveoSort" data-sort-criteria="relevancy" data-caption="Relevance"></span><span class="CoveoSort" data-sort-criteria="date descending,date ascending" data-caption="Date"></span>`),
+    element: $$('div', undefined, `<div class="coveo-sort-section"><span class="CoveoSort" data-sort-criteria="relevancy" data-caption="Relevance"></span><span class="CoveoSort" data-sort-criteria="date descending,date ascending" data-caption="Date"></span></div><div class="CoveoResultList"></div>`),
     toExecute: ()=> {
-      $$(document.body).find('.CoveoSearchInterface').style.padding = '20px';
+      $$(document.body).find('.preview-container .CoveoSearchInterface').style.padding = '20px';
+      $$(document.body).on('buildingQuery', function(e, args) {
+        args.queryBuilder.numberOfResults = 3;
+      });
     }
   },
   Thumbnail: {

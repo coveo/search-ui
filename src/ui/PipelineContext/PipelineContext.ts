@@ -28,13 +28,14 @@ export interface IPipelineContextOptions {
  * <script class='CoveoPipelineContext' type='text/context'>
  *   {
  *      "foo" : "bar"
+ *      "foobar" : "{foo, bar}"
  *   }
  * </script>
  * ```
  *
  * You can also simply use JavaScript code to pass context values, using the {@link QueryBuilder.addContextValue} method.
  *
- * This mean you do not necessarily need to use this component to pass context.
+ * This means you do not necessarily need to use this component to pass context.
  * ```
  * Coveo.$$(root).on('buildingQuery', function(args) {
  *     args.queryBuilder.addContextValue('foo', 'bar');
@@ -56,7 +57,7 @@ export class PipelineContext extends Component {
     });
   }
 
-  private content: { [id: string]: string };
+  private content: { [id: string]: string | Array<string> };
 
   public constructor(public element: HTMLElement, public options?: IPipelineContextOptions, public bindings?: IComponentBindings) {
     super(element, PipelineContext.ID, bindings);
@@ -91,14 +92,15 @@ export class PipelineContext extends Component {
    * @returns {string}
    */
   public getContextValue(key: string): string | string[] {
-    if (_.isArray(this.content[key])) {
+    const contextValue = this.content[key];
+    if (_.isArray(contextValue)) {
       const contextValues = [];
       _.each(this.content[key], (value) => {
         contextValues.push(this.getModifiedData(value));
       });
       return contextValues;
-    } else {
-      return this.getModifiedData(this.content[key]);
+    } else if (_.isString(contextValue)) {
+      return this.getModifiedData(contextValue);
     }
   }
 

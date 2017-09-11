@@ -60,6 +60,7 @@ export class DebugHeader {
   private handleDoneBuildingQuery(args: IDoneBuildingQueryEventArgs) {
     args.queryBuilder.enableDebug = this.debug || args.queryBuilder.enableDebug;
     if (this.requestAllFields) {
+      args.queryBuilder.fieldsToInclude = undefined;
       args.queryBuilder.includeRequiredFields = false;
     }
   }
