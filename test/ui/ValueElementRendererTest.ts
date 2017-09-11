@@ -7,8 +7,7 @@ import { FakeResults } from '../Fake';
 import { $$ } from '../../src/utils/Dom';
 
 export function ValueElementRendererTest() {
-
-  describe('ValueElementRenderer', function () {
+  describe('ValueElementRenderer', function() {
     var facet: Facet;
     var valueRenderer: ValueElementRenderer;
 
@@ -18,7 +17,7 @@ export function ValueElementRendererTest() {
       }).cmp;
     });
 
-    afterEach(function () {
+    afterEach(function() {
       facet = null;
       valueRenderer = null;
     });
@@ -57,7 +56,10 @@ export function ValueElementRendererTest() {
     });
 
     it('should build a caption', () => {
-      valueRenderer = new ValueElementRenderer(facet, FacetValue.createFromFieldValue(FakeResults.createFakeFieldValue('this is a nice value', 123)));
+      valueRenderer = new ValueElementRenderer(
+        facet,
+        FacetValue.createFromFieldValue(FakeResults.createFakeFieldValue('this is a nice value', 123))
+      );
       expect(valueRenderer.build().valueCaption).toBeDefined();
       expect($$(valueRenderer.build().valueCaption).text()).toBe('this is a nice value');
     });

@@ -5,7 +5,6 @@ import { Simulate } from '../Simulate';
 
 export function RecommendationQueryTest() {
   describe('RecommendationQuery', () => {
-
     it('should be able to modify the advanced query based on its content', () => {
       let script = $$('script');
       script.text('@sysfiletype="youtube"');

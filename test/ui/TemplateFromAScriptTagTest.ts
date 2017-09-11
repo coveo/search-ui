@@ -5,7 +5,6 @@ export function TemplateFromAScriptTagTest() {
   describe('TemplateFromAScriptTag', () => {
     let tmpl: Template;
 
-
     beforeEach(() => {
       tmpl = new Template(() => 'Hello World');
     });
@@ -38,7 +37,6 @@ export function TemplateFromAScriptTagTest() {
       });
 
       it('should work with a condition', () => {
-
         let createdScriptElement = TemplateFromAScriptTag.fromString(tmplString, {
           condition: `raw.foo != null`
         });
@@ -80,29 +78,41 @@ export function TemplateFromAScriptTagTest() {
 
       it('should work with fields to match', () => {
         let createdScriptElement = TemplateFromAScriptTag.fromString(tmplString, {
-          fieldsToMatch: [{
-            field: 'foo',
-            values: ['bar', 'baz']
-          }]
+          fieldsToMatch: [
+            {
+              field: 'foo',
+              values: ['bar', 'baz']
+            }
+          ]
         });
         let created = new TemplateFromAScriptTag(tmpl, createdScriptElement);
-        expect(created.template.fieldsToMatch).toEqual(jasmine.arrayContaining([jasmine.objectContaining({
-          field: 'foo',
-          values: ['bar', 'baz']
-        })]));
+        expect(created.template.fieldsToMatch).toEqual(
+          jasmine.arrayContaining([
+            jasmine.objectContaining({
+              field: 'foo',
+              values: ['bar', 'baz']
+            })
+          ])
+        );
       });
 
       it('should work with fields to match with no values', () => {
         let createdScriptElement = TemplateFromAScriptTag.fromString(tmplString, {
-          fieldsToMatch: [{
-            field: 'foo'
-          }]
+          fieldsToMatch: [
+            {
+              field: 'foo'
+            }
+          ]
         });
         let created = new TemplateFromAScriptTag(tmpl, createdScriptElement);
-        expect(created.template.fieldsToMatch).toEqual(jasmine.arrayContaining([jasmine.objectContaining({
-          field: 'foo',
-          values: undefined
-        })]));
+        expect(created.template.fieldsToMatch).toEqual(
+          jasmine.arrayContaining([
+            jasmine.objectContaining({
+              field: 'foo',
+              values: undefined
+            })
+          ])
+        );
       });
     });
   });

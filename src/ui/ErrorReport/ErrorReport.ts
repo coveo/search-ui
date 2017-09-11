@@ -27,16 +27,15 @@ export class ErrorReport extends Component {
 
   static doExport = () => {
     exportGlobally({
-      'ErrorReport': ErrorReport
+      ErrorReport: ErrorReport
     });
-  }
+  };
 
   /**
    * The options for the component
    * @componentOptions
    */
   static options: IErrorReportOptions = {
-
     /**
      * Specifies whether to display a detailed error message as a JSON in a text content area.
      *
@@ -133,9 +132,13 @@ export class ErrorReport extends Component {
   }
 
   private buildReset(): HTMLElement {
-    const reset = $$('span', {
-      className: 'coveo-error-report-clear'
-    }, l('Reset'));
+    const reset = $$(
+      'span',
+      {
+        className: 'coveo-error-report-clear'
+      },
+      l('Reset')
+    );
 
     reset.on('click', () => this.reset());
 
@@ -143,9 +146,13 @@ export class ErrorReport extends Component {
   }
 
   private buildRetry(): HTMLElement {
-    const retry = $$('span', {
-      className: 'coveo-error-report-retry'
-    }, l('Retry'));
+    const retry = $$(
+      'span',
+      {
+        className: 'coveo-error-report-retry'
+      },
+      l('Retry')
+    );
 
     retry.on('click', () => this.retry());
 
@@ -195,9 +202,13 @@ export class ErrorReport extends Component {
 
     if (this.options.showDetailedError) {
       this.message.empty();
-      const moreInfo = $$('span', {
-        className: 'coveo-error-report-more-info'
-      }, l('MoreInfo'));
+      const moreInfo = $$(
+        'span',
+        {
+          className: 'coveo-error-report-more-info'
+        },
+        l('MoreInfo')
+      );
 
       moreInfo.on('click', () => {
         moreInfo.empty();
@@ -218,9 +229,13 @@ export class ErrorReport extends Component {
     let textArea = $$('textarea', undefined, JSON.stringify(data, null, 2));
     errorInfo.el.appendChild(textArea.el);
 
-    const infoLabel = $$('div', {
-      className: 'coveo-error-info-label'
-    }, l('CopyPasteToSupport'));
+    const infoLabel = $$(
+      'div',
+      {
+        className: 'coveo-error-info-label'
+      },
+      l('CopyPasteToSupport')
+    );
     errorInfo.el.appendChild(infoLabel.el);
 
     return errorInfo.el;

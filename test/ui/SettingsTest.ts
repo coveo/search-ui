@@ -5,23 +5,23 @@ import { InitializationEvents } from '../../src/events/InitializationEvents';
 import { ISettingsOptions } from '../../src/ui/Settings/Settings';
 
 export function SettingsTest() {
-  describe('Settings', function () {
+  describe('Settings', function() {
     var test: Mock.IBasicComponentSetup<Settings>;
-    beforeEach(function () {
+    beforeEach(function() {
       test = Mock.basicComponentSetup<Settings>(Settings);
       $$(test.env.root).trigger(InitializationEvents.afterInitialization);
     });
 
-    it('should be rendered', function () {
+    it('should be rendered', function() {
       expect($$(test.env.element).find('span.coveo-settings-squares')).not.toBeNull();
     });
 
-    it('should render a popup when opened', function () {
+    it('should render a popup when opened', function() {
       test.cmp.open();
       expect($$(test.env.root).find('.coveo-settings-advanced-menu')).not.toBeNull();
     });
 
-    it('should remove the popup when closed', function () {
+    it('should remove the popup when closed', function() {
       test.cmp.open();
       test.cmp.close();
       expect($$(test.env.root).find('.coveo-settings-advanced-menu')).toBeNull();
@@ -41,10 +41,9 @@ export function SettingsTest() {
       expect($$(test.env.root).find('.coveo-settings-advanced-menu')).not.toBeNull();
     });
 
-    describe('exposes options', function () {
-
-      describe('menuDelay', function () {
-        it('should wait the duration of \'menuDelay\' before closing the popup on mouseleave', function (done) {
+    describe('exposes options', function() {
+      describe('menuDelay', function() {
+        it("should wait the duration of 'menuDelay' before closing the popup on mouseleave", function(done) {
           test = Mock.optionsComponentSetup<Settings, ISettingsOptions>(Settings, <ISettingsOptions>{
             menuDelay: 999999
           });
@@ -56,7 +55,7 @@ export function SettingsTest() {
           }, 0);
         });
 
-        it('should close the popup after the menuDelay is expired', function (done) {
+        it('should close the popup after the menuDelay is expired', function(done) {
           test = Mock.optionsComponentSetup<Settings, ISettingsOptions>(Settings, <ISettingsOptions>{
             menuDelay: 2
           });
@@ -68,7 +67,6 @@ export function SettingsTest() {
           }, 3);
         });
       });
-
     });
   });
 }

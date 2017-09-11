@@ -14,7 +14,7 @@ export function DebugTest() {
       test = null;
     });
 
-    it('should allow to open the debug panel after a delay', (done) => {
+    it('should allow to open the debug panel after a delay', done => {
       test.cmp.showDebugPanel();
       setTimeout(() => {
         expect(test.modalBox.open).toHaveBeenCalled();
@@ -22,10 +22,10 @@ export function DebugTest() {
       }, 200);
     });
 
-    it('should allow to add additional info of content HTML and they should render correctly', (done) => {
+    it('should allow to add additional info of content HTML and they should render correctly', done => {
       let headerDiv = $$('div', { className: 'some-header' }, 'the content of the header').el;
       test.cmp.addInfoToDebugPanel({
-        'Header': headerDiv
+        Header: headerDiv
       });
       test.cmp.showDebugPanel();
 
@@ -37,15 +37,21 @@ export function DebugTest() {
       }, 200);
     });
 
-    it('should allow to add additional info of as a function and they should render correctly', (done) => {
+    it('should allow to add additional info of as a function and they should render correctly', done => {
       let func = jasmine.createSpy('func');
 
-      func.and.returnValue($$('div', {
-        className: 'my-function'
-      }, 'my-function-content').el);
+      func.and.returnValue(
+        $$(
+          'div',
+          {
+            className: 'my-function'
+          },
+          'my-function-content'
+        ).el
+      );
 
       test.cmp.addInfoToDebugPanel({
-        'HeaderFunc': func
+        HeaderFunc: func
       });
       test.cmp.showDebugPanel();
 
@@ -58,18 +64,18 @@ export function DebugTest() {
       }, 200);
     });
 
-    it('shoud allow to add additional info as a JSON and it should render correctly', (done) => {
+    it('shoud allow to add additional info as a JSON and it should render correctly', done => {
       test.cmp.addInfoToDebugPanel({
-        'HeaderJSON': {
-          'foo': 'bar',
-          'sup': 'hello',
-          'baz': {
-            'buzz': 'bizz'
+        HeaderJSON: {
+          foo: 'bar',
+          sup: 'hello',
+          baz: {
+            buzz: 'bizz'
           },
-          'date': new Date(),
-          'number': 1,
-          'boolean': true,
-          'nothing': null
+          date: new Date(),
+          number: 1,
+          boolean: true,
+          nothing: null
         }
       });
       test.cmp.showDebugPanel();
@@ -90,11 +96,9 @@ export function DebugTest() {
     it('should allow to search', () => {
       let headerDiv = $$('div', { className: 'some-header' }, 'the content of the header').el;
       test.cmp.addInfoToDebugPanel({
-        'Header': headerDiv
+        Header: headerDiv
       });
       test.cmp.showDebugPanel();
-
-
     });
   });
 }

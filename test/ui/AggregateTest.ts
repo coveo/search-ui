@@ -7,42 +7,50 @@ import { Simulate } from '../Simulate';
 import * as Globalize from 'globalize';
 
 export function AggregateTest() {
-  describe('Aggregate', function () {
+  describe('Aggregate', function() {
     let test: Mock.IBasicComponentSetup<Aggregate>;
 
-    afterEach(function () {
+    afterEach(function() {
       test = null;
     });
 
-    describe('exposes options', function () {
-      it('field allows to set a field in the group by request', function () {
+    describe('exposes options', function() {
+      it('field allows to set a field in the group by request', function() {
         test = Mock.optionsComponentSetup<Aggregate, IAggregateOptions>(Aggregate, {
           field: '@foobar'
         });
         var simulation = Simulate.query(test.env);
-        expect(simulation.queryBuilder.build().groupBy).toEqual(jasmine.arrayContaining([jasmine.objectContaining({
-          field: '@foobar'
-        })]));
+        expect(simulation.queryBuilder.build().groupBy).toEqual(
+          jasmine.arrayContaining([
+            jasmine.objectContaining({
+              field: '@foobar'
+            })
+          ])
+        );
       });
 
-      it('operation allows to set an operation in the group by request', function () {
+      it('operation allows to set an operation in the group by request', function() {
         test = Mock.optionsComponentSetup<Aggregate, IAggregateOptions>(Aggregate, {
           field: '@foobar',
           operation: 'something'
         });
 
         var simulation = Simulate.query(test.env);
-        expect(simulation.queryBuilder.build().groupBy).toEqual(jasmine.arrayContaining([jasmine.objectContaining({
-          computedFields: jasmine.arrayContaining([
+        expect(simulation.queryBuilder.build().groupBy).toEqual(
+          jasmine.arrayContaining([
             jasmine.objectContaining({
-              operation: 'something',
-              field: '@foobar'
+              computedFields: jasmine.arrayContaining([
+                jasmine.objectContaining({
+                  operation: 'something',
+                  field: '@foobar'
+                })
+              ])
             })
           ])
-        })]));
+        );
       });
 
-      it('format should allow to render the result using the provided format', function () {
+      it('format should allow to render the result using the provided format', function() {
         test = Mock.optionsComponentSetup<Aggregate, IAggregateOptions>(Aggregate, {
           field: '@foobar',
           format: 'n0'

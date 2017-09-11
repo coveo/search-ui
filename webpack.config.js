@@ -149,7 +149,7 @@ module.exports = {
         }
       }]
     }, {
-      test: /coveo\.analytics\/dist\/.*\.js/,
+      test: /coveo\.analytics[\/\\]dist[\/\\].*\.js/,
       use: [{
         loader: 'string-replace-loader',
         options: {
@@ -159,7 +159,7 @@ module.exports = {
         }
       }]
     }, {
-      test: /(filetypes\/.*\.svg)$/,
+      test: /(filetypes[\/\/].*\.svg)$/,
       use: [{
         loader: 'file-loader',
         options: {

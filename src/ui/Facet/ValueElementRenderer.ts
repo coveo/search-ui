@@ -19,8 +19,7 @@ export class ValueElementRenderer {
   public excludeIcon: HTMLElement;
   public computedField: HTMLElement;
 
-  constructor(public facet: Facet, public facetValue: FacetValue) {
-  }
+  constructor(public facet: Facet, public facetValue: FacetValue) {}
 
   public withNo(element: HTMLElement[]): ValueElementRenderer;
   public withNo(element: HTMLElement): ValueElementRenderer;

@@ -65,16 +65,15 @@ export class Folding extends Component {
 
   static doExport = () => {
     exportGlobally({
-      'Folding': Folding
+      Folding: Folding
     });
-  }
+  };
 
   /**
    * The options for the component
    * @componentOptions
    */
   static options: IFoldingOptions = {
-
     /**
      * Specifies the name of the field on which to do the folding.
      *
@@ -122,7 +121,7 @@ export class Folding extends Component {
      *
      * By default, the component displays the results in the order that the index returns them.
      */
-    rearrange: ComponentOptions.buildCustomOption((value) => Utils.isNonEmptyString(value) ? SortCriteria.parse(value) : null),
+    rearrange: ComponentOptions.buildCustomOption(value => (Utils.isNonEmptyString(value) ? SortCriteria.parse(value) : null)),
 
     /**
      * Specifies whether to add a callback function on the top result, allowing to make an additional query to load all
@@ -135,8 +134,7 @@ export class Folding extends Component {
      *
      * Default value is `true`.
      */
-    enableExpand: ComponentOptions.buildBooleanOption({ defaultValue: true })
-    ,
+    enableExpand: ComponentOptions.buildBooleanOption({ defaultValue: true }),
     /**
      * If the [`enableExpand`]{@link Folding.options.enableExpand} option is `true`, specifies a custom constant
      * expression to send when querying the expanded results.
@@ -288,7 +286,7 @@ export class Folding extends Component {
     });
     let rootResult = Folding.resultNodeToQueryResult(rootNode);
     // Remove the root from all results
-    _.each(rootResult.attachments, (attachment) => attachment.parentResult = null);
+    _.each(rootResult.attachments, attachment => (attachment.parentResult = null));
     return rootResult.attachments;
   }
 
@@ -335,7 +333,6 @@ export class Folding extends Component {
     return null;
   }
 
-
   private handleBuildingQuery(data: IBuildingQueryEventArgs) {
     Assert.exists(data);
 
@@ -357,7 +354,10 @@ export class Folding extends Component {
 
   private handlepreprocessResults(data: IPreprocessResultsEventArgs) {
     Assert.exists(data);
-    Assert.check(!data.results._folded, 'Two or more Folding components are active at the same time for the same Tab. Cannot process the results.');
+    Assert.check(
+      !data.results._folded,
+      'Two or more Folding components are active at the same time for the same Tab. Cannot process the results.'
+    );
     data.results._folded = true;
 
     let queryResults = data.results;
@@ -368,7 +368,7 @@ export class Folding extends Component {
   }
 
   private addLoadMoreHandler(results: IQueryResult[], originalQuery: IQuery) {
-    return _.map(results, (result) => {
+    return _.map(results, result => {
       if (this.options.enableExpand && !Utils.isNullOrUndefined(Utils.getFieldValue(result, <string>this.options.field))) {
         result.moreResults = () => {
           return this.moreResults(result, originalQuery);
@@ -377,7 +377,6 @@ export class Folding extends Component {
       return result;
     });
   }
-
 
   private moreResults(result: IQueryResult, originalQuery: IQuery): Promise<IQueryResult[]> {
     let query = _.clone(originalQuery);
@@ -392,7 +391,6 @@ export class Folding extends Component {
     }
 
     if (Utils.isNonEmptyString(originalQuery.q)) {
-
       // We add keywords to get the highlight and we add @uri to get all results
       // To ensure it plays nicely with query syntax, we ensure that the needed part of the query
       // are correctly surrounded with the no syntax block
@@ -429,7 +427,9 @@ export class Folding extends Component {
       query.sortField = originalQuery.sortField;
     }
 
-    return this.queryController.getEndpoint().search(query)
+    return this.queryController
+      .getEndpoint()
+      .search(query)
       .then((results: IQueryResults) => {
         this.handlePreprocessMoreResults(results);
         return results.results;

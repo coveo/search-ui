@@ -67,4 +67,4 @@ export function PublicPathUtilsTest() {
       expect(__webpack_public_path__).toBe(detectedPath);
     });
   });
-};
+}

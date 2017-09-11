@@ -5,7 +5,6 @@ import { SearchInterface } from '../ui/SearchInterface/SearchInterface';
  * The `IQueryResult` interface describes a single result returned by the Coveo REST Search API.
  */
 export interface IQueryResult {
-
   /**
    * Contains the title of the item.
    */
@@ -134,7 +133,7 @@ export interface IQueryResult {
    *
    * The Coveo JavaScript Search Framework adds this property client-side to each result.
    */
-  state: { [attribute: string]: any; };
+  state: { [attribute: string]: any };
 
   /**
    * The [`SearchInterface`]{@link SearchInterface} inside which this result is rendered.

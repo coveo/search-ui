@@ -15,8 +15,7 @@ import { IStringMap } from '../../rest/GenericParam';
 import * as _ from 'underscore';
 import { exportGlobally } from '../../GlobalExports';
 
-export interface IAnalyticsSuggestionsOptions extends ISuggestionForOmniboxOptions {
-}
+export interface IAnalyticsSuggestionsOptions extends ISuggestionForOmniboxOptions {}
 
 /**
  * The AnalyticsSuggestion component provides query suggestions based on the queries that a Coveo Analytics service most
@@ -39,7 +38,7 @@ export class AnalyticsSuggestions extends Component {
 
   static doExport() {
     exportGlobally({
-      'AnalyticsSuggestions': AnalyticsSuggestions
+      AnalyticsSuggestions: AnalyticsSuggestions
     });
   }
 
@@ -48,7 +47,6 @@ export class AnalyticsSuggestions extends Component {
    * @componentOptions
    */
   static options: IAnalyticsSuggestionsOptions = {
-
     /**
      * Specifies the z-index position at which the query suggestions render themselves in the {@link Omnibox}
      * component. Higher values are placed first.
@@ -78,7 +76,7 @@ export class AnalyticsSuggestions extends Component {
   private partialQueries: string[] = [];
   private lastSuggestions: string[] = [];
   private resultsToBuildWith = [];
-  private currentlyDisplayedSuggestions: { [suggestion: string]: { element: HTMLElement, pos: number } };
+  private currentlyDisplayedSuggestions: { [suggestion: string]: { element: HTMLElement; pos: number } };
 
   /**
    * Creates a new AnalyticsSuggestions component.
@@ -94,7 +92,6 @@ export class AnalyticsSuggestions extends Component {
    */
   constructor(element: HTMLElement, public options: IAnalyticsSuggestionsOptions, bindings?: IComponentBindings) {
     super(element, AnalyticsSuggestions.ID, bindings);
-
 
     if (this.options && 'omniboxSuggestionOptions' in this.options) {
       this.options = _.extend(this.options, this.options['omniboxSuggestionOptions']);
@@ -118,13 +115,17 @@ export class AnalyticsSuggestions extends Component {
       row: rowTemplate
     };
 
-    this.suggestionForOmnibox = new SuggestionForOmnibox(suggestionStructure, (value: string, args: IPopulateOmniboxEventArgs) => {
-      this.options.onSelect.call(this, value, args);
-    }, (value: string, args: IPopulateOmniboxEventArgs) => {
-      this.onRowTab.call(this, value, args);
-    });
+    this.suggestionForOmnibox = new SuggestionForOmnibox(
+      suggestionStructure,
+      (value: string, args: IPopulateOmniboxEventArgs) => {
+        this.options.onSelect.call(this, value, args);
+      },
+      (value: string, args: IPopulateOmniboxEventArgs) => {
+        this.onRowTab.call(this, value, args);
+      }
+    );
     this.bind.onRootElement(OmniboxEvents.populateOmnibox, (args: IPopulateOmniboxEventArgs) => this.handlePopulateOmnibox(args));
-    this.bind.onRootElement(QueryEvents.querySuccess, () => this.partialQueries = []);
+    this.bind.onRootElement(QueryEvents.querySuccess, () => (this.partialQueries = []));
   }
 
   /**
@@ -143,7 +144,9 @@ export class AnalyticsSuggestions extends Component {
           $$(this.currentlyDisplayedSuggestions[suggestion].element).trigger('click');
         }
       } else {
-        let currentlySuggested = <{ element: HTMLElement, pos: number }>_.findWhere(<any>this.currentlyDisplayedSuggestions, { pos: suggestion });
+        let currentlySuggested = <{ element: HTMLElement; pos: number }>_.findWhere(<any>this.currentlyDisplayedSuggestions, {
+          pos: suggestion
+        });
         if (currentlySuggested) {
           $$(currentlySuggested.element).trigger('click');
         }
@@ -161,7 +164,7 @@ export class AnalyticsSuggestions extends Component {
       });
 
       searchPromise.then((results: string[]) => {
-        this.resultsToBuildWith = _.map(results, (result) => {
+        this.resultsToBuildWith = _.map(results, result => {
           return {
             value: result
           };
@@ -212,35 +215,45 @@ export class AnalyticsSuggestions extends Component {
     args.clear();
     args.closeOmnibox();
     this.queryStateModel.set(QueryStateModel.attributesEnum.q, `${value}`);
-    this.usageAnalytics.logCustomEvent<IAnalyticsTopSuggestionMeta>(this.getOmniboxAnalyticsEventCause(), {
-      partialQueries: this.cleanCustomData(this.partialQueries),
-      suggestionRanking: _.indexOf(_.pluck(this.resultsToBuildWith, 'value'), value),
-      suggestions: this.cleanCustomData(this.lastSuggestions),
-      partialQuery: args.completeQueryExpression.word
-    }, this.element);
+    this.usageAnalytics.logCustomEvent<IAnalyticsTopSuggestionMeta>(
+      this.getOmniboxAnalyticsEventCause(),
+      {
+        partialQueries: this.cleanCustomData(this.partialQueries),
+        suggestionRanking: _.indexOf(_.pluck(this.resultsToBuildWith, 'value'), value),
+        suggestions: this.cleanCustomData(this.lastSuggestions),
+        partialQuery: args.completeQueryExpression.word
+      },
+      this.element
+    );
   }
 
   private cleanCustomData(toClean: string[], rejectLength = 256) {
     // Filter out only consecutive values that are the identical
-    toClean = _.compact(_.filter(toClean, (partial: string, pos?: number, array?: string[]) => {
-      return pos === 0 || partial !== array[pos - 1];
-    }));
+    toClean = _.compact(
+      _.filter(toClean, (partial: string, pos?: number, array?: string[]) => {
+        return pos === 0 || partial !== array[pos - 1];
+      })
+    );
 
     // Custom dimensions cannot be an array in analytics service: Send a string joined by ; instead.
     // Need to replace ;
-    toClean = _.map(toClean, (partial) => {
+    toClean = _.map(toClean, partial => {
       return partial.replace(/;/g, '');
     });
 
     // Reduce right to get the last X words that adds to less then rejectLength
     let reducedToRejectLengthOrLess = [];
-    _.reduceRight(toClean, (memo: number, partial: string) => {
-      let totalSoFar = memo + partial.length;
-      if (totalSoFar <= rejectLength) {
-        reducedToRejectLengthOrLess.push(partial);
-      }
-      return totalSoFar;
-    }, 0);
+    _.reduceRight(
+      toClean,
+      (memo: number, partial: string) => {
+        let totalSoFar = memo + partial.length;
+        if (totalSoFar <= rejectLength) {
+          reducedToRejectLengthOrLess.push(partial);
+        }
+        return totalSoFar;
+      },
+      0
+    );
     toClean = reducedToRejectLengthOrLess.reverse();
     let ret = toClean.join(';');
 

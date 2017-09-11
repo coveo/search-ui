@@ -25,7 +25,6 @@ export function TemplateTest() {
     });
 
     describe('with extensive configuration', () => {
-
       it('should not instantiate to string with false condition check', () => {
         tmpl.condition = () => false;
         expect(tmpl.instantiateToString(result)).toBeNull();
@@ -65,14 +64,14 @@ export function TemplateTest() {
         expect(tmpl.instantiateToString(result)).toBeNull();
       });
 
-      it('should instantiate to element', (done) => {
+      it('should instantiate to element', done => {
         tmpl.instantiateToElement(result).then(created => {
           expect($$(created).text()).toBe(`Hello World`);
           done();
         });
       });
 
-      it('should correctly return the root HTMLElement when not wrapping in a div', (done) => {
+      it('should correctly return the root HTMLElement when not wrapping in a div', done => {
         tmpl = new Template(() => '<div class="my-stuff"></div>');
         tmpl.instantiateToElement(result, { wrapInDiv: false }).then(created => {
           expect($$(created).hasClass('my-stuff')).toBe(true);
@@ -80,7 +79,7 @@ export function TemplateTest() {
         });
       });
 
-      it('should correctly return the root HTMLElement when not wrapping in a div even if there is a leading whitespace in the content', (done) => {
+      it('should correctly return the root HTMLElement when not wrapping in a div even if there is a leading whitespace in the content', done => {
         tmpl = new Template(() => '     <div class="my-stuff"></div>');
         tmpl.instantiateToElement(result, { wrapInDiv: false }).then(created => {
           expect($$(created).hasClass('my-stuff')).toBe(true);
@@ -88,16 +87,15 @@ export function TemplateTest() {
         });
       });
 
-      it('should add the correct layout class', (done) => {
+      it('should add the correct layout class', done => {
         tmpl.layout = 'card';
         tmpl.instantiateToElement(result).then(created => {
           expect($$(created).hasClass('coveo-card-layout')).toBe(true);
           done();
         });
-
       });
 
-      it('should add the correct layout class when specified in instantiateOptions', (done) => {
+      it('should add the correct layout class when specified in instantiateOptions', done => {
         tmpl.instantiateToElement(result, { currentLayout: 'table' }).then(created => {
           expect($$(created).hasClass('coveo-table-layout')).toBe(true);
           done();
@@ -112,7 +110,6 @@ export function TemplateTest() {
         let responsiveComponents: ResponsiveComponents;
 
         beforeEach(() => {
-
           responsiveComponents = new ResponsiveComponents();
         });
 
@@ -125,14 +122,18 @@ export function TemplateTest() {
             tmpl.mobile = true;
           });
 
-          it('should not accept a template if it\'s not small screen width', () => {
+          it("should not accept a template if it's not small screen width", () => {
             responsiveComponents.isSmallScreenWidth = () => false;
-            expect(tmpl.instantiateToString(result, <IInstantiateTemplateOptions>{ responsiveComponents: responsiveComponents })).toBeNull();
+            expect(
+              tmpl.instantiateToString(result, <IInstantiateTemplateOptions>{ responsiveComponents: responsiveComponents })
+            ).toBeNull();
           });
 
-          it('should accept a template if it\'s small screen width', () => {
+          it("should accept a template if it's small screen width", () => {
             responsiveComponents.isSmallScreenWidth = () => true;
-            expect(tmpl.instantiateToString(result, <IInstantiateTemplateOptions>{ responsiveComponents: responsiveComponents })).toBe(`Hello World`);
+            expect(tmpl.instantiateToString(result, <IInstantiateTemplateOptions>{ responsiveComponents: responsiveComponents })).toBe(
+              `Hello World`
+            );
           });
         });
 
@@ -140,14 +141,18 @@ export function TemplateTest() {
           beforeEach(() => {
             tmpl.mobile = false;
           });
-          it('should accept a template if it\'s not small screen width', () => {
+          it("should accept a template if it's not small screen width", () => {
             responsiveComponents.isSmallScreenWidth = () => false;
-            expect(tmpl.instantiateToString(result, <IInstantiateTemplateOptions>{ responsiveComponents: responsiveComponents })).toBe(`Hello World`);
+            expect(tmpl.instantiateToString(result, <IInstantiateTemplateOptions>{ responsiveComponents: responsiveComponents })).toBe(
+              `Hello World`
+            );
           });
 
-          it('should not accept a template if it\'s small screen width', () => {
+          it("should not accept a template if it's small screen width", () => {
             responsiveComponents.isSmallScreenWidth = () => true;
-            expect(tmpl.instantiateToString(result, <IInstantiateTemplateOptions>{ responsiveComponents: responsiveComponents })).toBeNull();
+            expect(
+              tmpl.instantiateToString(result, <IInstantiateTemplateOptions>{ responsiveComponents: responsiveComponents })
+            ).toBeNull();
           });
         });
 
@@ -156,14 +161,18 @@ export function TemplateTest() {
             tmpl.tablet = true;
           });
 
-          it('should not accept a template if it\'s not medium screen width', () => {
+          it("should not accept a template if it's not medium screen width", () => {
             responsiveComponents.isMediumScreenWidth = () => false;
-            expect(tmpl.instantiateToString(result, <IInstantiateTemplateOptions>{ responsiveComponents: responsiveComponents })).toBeNull();
+            expect(
+              tmpl.instantiateToString(result, <IInstantiateTemplateOptions>{ responsiveComponents: responsiveComponents })
+            ).toBeNull();
           });
 
-          it('should accept a template if it\'s medium screen width', () => {
+          it("should accept a template if it's medium screen width", () => {
             responsiveComponents.isMediumScreenWidth = () => true;
-            expect(tmpl.instantiateToString(result, <IInstantiateTemplateOptions>{ responsiveComponents: responsiveComponents })).toBe(`Hello World`);
+            expect(tmpl.instantiateToString(result, <IInstantiateTemplateOptions>{ responsiveComponents: responsiveComponents })).toBe(
+              `Hello World`
+            );
           });
         });
 
@@ -172,14 +181,18 @@ export function TemplateTest() {
             tmpl.tablet = false;
           });
 
-          it('should accept a template if it\'s not medium screen width', () => {
+          it("should accept a template if it's not medium screen width", () => {
             responsiveComponents.isMediumScreenWidth = () => false;
-            expect(tmpl.instantiateToString(result, <IInstantiateTemplateOptions>{ responsiveComponents: responsiveComponents })).toBe(`Hello World`);
+            expect(tmpl.instantiateToString(result, <IInstantiateTemplateOptions>{ responsiveComponents: responsiveComponents })).toBe(
+              `Hello World`
+            );
           });
 
-          it('should not accept a template if it\'s medium screen width', () => {
+          it("should not accept a template if it's medium screen width", () => {
             responsiveComponents.isMediumScreenWidth = () => true;
-            expect(tmpl.instantiateToString(result, <IInstantiateTemplateOptions>{ responsiveComponents: responsiveComponents })).toBeNull();
+            expect(
+              tmpl.instantiateToString(result, <IInstantiateTemplateOptions>{ responsiveComponents: responsiveComponents })
+            ).toBeNull();
           });
         });
 
@@ -188,14 +201,18 @@ export function TemplateTest() {
             tmpl.desktop = true;
           });
 
-          it('should not accept a template if it\'s not large screen width', () => {
+          it("should not accept a template if it's not large screen width", () => {
             responsiveComponents.isLargeScreenWidth = () => false;
-            expect(tmpl.instantiateToString(result, <IInstantiateTemplateOptions>{ responsiveComponents: responsiveComponents })).toBeNull();
+            expect(
+              tmpl.instantiateToString(result, <IInstantiateTemplateOptions>{ responsiveComponents: responsiveComponents })
+            ).toBeNull();
           });
 
-          it('should accept a template if it\'s large screen width', () => {
+          it("should accept a template if it's large screen width", () => {
             responsiveComponents.isLargeScreenWidth = () => true;
-            expect(tmpl.instantiateToString(result, <IInstantiateTemplateOptions>{ responsiveComponents: responsiveComponents })).toBe(`Hello World`);
+            expect(tmpl.instantiateToString(result, <IInstantiateTemplateOptions>{ responsiveComponents: responsiveComponents })).toBe(
+              `Hello World`
+            );
           });
         });
 
@@ -204,20 +221,23 @@ export function TemplateTest() {
             tmpl.desktop = false;
           });
 
-          it('should accept a template if it\'s not large screen width', () => {
+          it("should accept a template if it's not large screen width", () => {
             responsiveComponents.isLargeScreenWidth = () => false;
-            expect(tmpl.instantiateToString(result, <IInstantiateTemplateOptions>{ responsiveComponents: responsiveComponents })).toBe(`Hello World`);
+            expect(tmpl.instantiateToString(result, <IInstantiateTemplateOptions>{ responsiveComponents: responsiveComponents })).toBe(
+              `Hello World`
+            );
           });
 
-          it('should not accept a template if it\'s large screen width', () => {
+          it("should not accept a template if it's large screen width", () => {
             responsiveComponents.isLargeScreenWidth = () => true;
-            expect(tmpl.instantiateToString(result, <IInstantiateTemplateOptions>{ responsiveComponents: responsiveComponents })).toBeNull();
+            expect(
+              tmpl.instantiateToString(result, <IInstantiateTemplateOptions>{ responsiveComponents: responsiveComponents })
+            ).toBeNull();
           });
         });
       });
 
       describe('when checking for layout', () => {
-
         it('should not check for layout if not set', () => {
           tmpl.layout = null;
           expect(tmpl.instantiateToString(result, <IInstantiateTemplateOptions>{ currentLayout: 'card' })).toBe(`Hello World`);

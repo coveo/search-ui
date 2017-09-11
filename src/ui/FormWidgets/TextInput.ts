@@ -7,13 +7,12 @@ import { exportGlobally } from '../../GlobalExports';
  * A text input widget with standard styling.
  */
 export class TextInput implements IFormWidget, IFormWidgetSettable {
-
   private element: HTMLElement;
   private lastQueryText: string = '';
 
   static doExport() {
     exportGlobally({
-      'TextInput': TextInput
+      TextInput: TextInput
     });
   }
 
@@ -23,8 +22,7 @@ export class TextInput implements IFormWidget, IFormWidgetSettable {
    * current `TextInput` instance as an argument.
    * @param name The text to display in the text input label.
    */
-  constructor(public onChange: (textInput: TextInput) => void = (textInput: TextInput) => {
-  }, public name?: string) {
+  constructor(public onChange: (textInput: TextInput) => void = (textInput: TextInput) => {}, public name?: string) {
     this.buildContent();
   }
 
@@ -65,7 +63,6 @@ export class TextInput implements IFormWidget, IFormWidgetSettable {
     if (currentValue != '') {
       this.onChange(this);
     }
-
   }
 
   /**

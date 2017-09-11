@@ -94,16 +94,15 @@ export class HierarchicalFacet extends Facet implements IComponentBindings {
 
   static doExport = () => {
     exportGlobally({
-      'HierarchicalFacet': HierarchicalFacet
+      HierarchicalFacet: HierarchicalFacet
     });
-  }
+  };
 
   /**
    * The options for the component
    * @componentOptions
    */
   static options: IHierarchicalFacetOptions = {
-
     /**
      * The character that allows to specify the hierarchical dependency.
      *
@@ -182,7 +181,7 @@ export class HierarchicalFacet extends Facet implements IComponentBindings {
   public constructor(public element: HTMLElement, options: IHierarchicalFacetOptions, public bindings: IComponentBindings) {
     super(element, options, bindings, HierarchicalFacet.ID);
     this.options = ComponentOptions.initComponentOptions(element, HierarchicalFacet, this.options);
-    this.numberOfValuesToShow = this.originalNumberOfValuesToShow = (this.options.numberOfValues || 5);
+    this.numberOfValuesToShow = this.originalNumberOfValuesToShow = this.options.numberOfValues || 5;
     this.numberOfValues = Math.max(this.options.numberOfValues, 10000);
     this.options.injectionDepth = Math.max(this.options.injectionDepth, 10000);
     this.logger.info('Hierarchy facet: Set number of values very high in order to build hierarchy', this.numberOfValues, this);
@@ -219,11 +218,11 @@ export class HierarchicalFacet extends Facet implements IComponentBindings {
   public selectMultipleValues(values: any[], selectChildren = !this.options.useAnd): void {
     this.ensureDom();
     this.ensureValueHierarchyExists(values);
-    _.each(values, (value) => {
+    _.each(values, value => {
       let valueHierarchy = this.getValueFromHierarchy(value);
       this.flagParentForSelection(valueHierarchy);
       if (selectChildren) {
-        _.each(valueHierarchy.childs, (child) => {
+        _.each(valueHierarchy.childs, child => {
           this.selectValue(child.facetValue);
         });
       }
@@ -245,7 +244,7 @@ export class HierarchicalFacet extends Facet implements IComponentBindings {
     if (deselectChildren) {
       let hasChilds = valueHierarchy.childs != undefined;
       if (hasChilds) {
-        let activeChilds = _.filter<IValueHierarchy>(valueHierarchy.childs, (child) => {
+        let activeChilds = _.filter<IValueHierarchy>(valueHierarchy.childs, child => {
           let valueToCompare = this.getFacetValueFromHierarchy(child.facetValue);
           return valueToCompare.selected || valueToCompare.excluded;
         });
@@ -312,12 +311,12 @@ export class HierarchicalFacet extends Facet implements IComponentBindings {
   public deselectMultipleValues(values: any[], deselectChildren = !this.options.useAnd): void {
     this.ensureDom();
     this.ensureValueHierarchyExists(values);
-    _.each(values, (value) => {
+    _.each(values, value => {
       let valueHierarchy = this.getValueFromHierarchy(value);
       valueHierarchy.hasChildSelected = false;
       this.unflagParentForSelection(valueHierarchy);
       if (deselectChildren) {
-        _.each(valueHierarchy.childs, (child) => {
+        _.each(valueHierarchy.childs, child => {
           let childInHierarchy = this.getValueFromHierarchy(child.facetValue);
           childInHierarchy.hasChildSelected = false;
           this.deselectValue(child.facetValue);
@@ -385,7 +384,7 @@ export class HierarchicalFacet extends Facet implements IComponentBindings {
    * @returns {any[]} An array containing all the values that the `HierarchicalFacet` is currently displaying.
    */
   public getDisplayedValues(): string[] {
-    let displayed = _.filter(this.values.getAll(), (v) => {
+    let displayed = _.filter(this.values.getAll(), v => {
       let valFromHierarchy = this.getValueFromHierarchy(v);
       if (valFromHierarchy) {
         let elem = this.getElementFromFacetValueList(v);
@@ -465,13 +464,13 @@ export class HierarchicalFacet extends Facet implements IComponentBindings {
    * Resets the `HierarchicalFacet` state.
    */
   public reset() {
-    _.each(this.getAllValueHierarchy(), (valueHierarchy) => {
+    _.each(this.getAllValueHierarchy(), valueHierarchy => {
       valueHierarchy.hasChildSelected = false;
       valueHierarchy.allChildShouldBeSelected = false;
     });
     // Need to close all values, otherwise we might end up with orphan(s)
     // if a parent value, after reset, is no longer visible.
-    _.each(this.getAllValueHierarchy(), (valueHierarchy) => {
+    _.each(this.getAllValueHierarchy(), valueHierarchy => {
       this.close(valueHierarchy);
     });
     super.reset();
@@ -500,7 +499,6 @@ export class HierarchicalFacet extends Facet implements IComponentBindings {
     });
   }
 
-
   protected initFacetQueryController() {
     this.facetQueryController = new HierarchicalFacetQueryController(this);
   }
@@ -517,14 +515,24 @@ export class HierarchicalFacet extends Facet implements IComponentBindings {
 
   protected handlePopulateSearchAlerts(args: ISearchAlertsPopulateMessageEventArgs) {
     if (this.values.hasSelectedOrExcludedValues()) {
-      args.text.push(new HierarchicalBreadcrumbValuesList(this, this.values.getSelected().concat(this.values.getExcluded()), this.getAllValueHierarchy()).buildAsString());
+      args.text.push(
+        new HierarchicalBreadcrumbValuesList(
+          this,
+          this.values.getSelected().concat(this.values.getExcluded()),
+          this.getAllValueHierarchy()
+        ).buildAsString()
+      );
     }
   }
 
   protected handlePopulateBreadcrumb(args: IPopulateBreadcrumbEventArgs) {
     Assert.exists(args);
     if (this.values.hasSelectedOrExcludedValues()) {
-      let element = new HierarchicalBreadcrumbValuesList(this, this.values.getSelected().concat(this.values.getExcluded()), this.getAllValueHierarchy()).build();
+      let element = new HierarchicalBreadcrumbValuesList(
+        this,
+        this.values.getSelected().concat(this.values.getExcluded()),
+        this.getAllValueHierarchy()
+      ).build();
       args.breadcrumbs.push({
         element: element
       });
@@ -533,13 +541,18 @@ export class HierarchicalFacet extends Facet implements IComponentBindings {
 
   protected handleOmniboxWithStaticValue(eventArg: IPopulateOmniboxEventArgs) {
     let regex = eventArg.completeQueryExpression.regex;
-    let match = _.first(_.filter<IValueHierarchy>(this.getAllValueHierarchy(), (existingValue) => {
-      return regex.test(this.getValueCaption(existingValue.facetValue));
-    }), this.options.numberOfValuesInOmnibox);
-    let facetValues = _.compact(_.map(match, (gotAMatch) => {
-      let fromList = this.getFromFacetValueList(gotAMatch.facetValue);
-      return fromList ? fromList.facetValue : undefined;
-    }));
+    let match = _.first(
+      _.filter<IValueHierarchy>(this.getAllValueHierarchy(), existingValue => {
+        return regex.test(this.getValueCaption(existingValue.facetValue));
+      }),
+      this.options.numberOfValuesInOmnibox
+    );
+    let facetValues = _.compact(
+      _.map(match, gotAMatch => {
+        let fromList = this.getFromFacetValueList(gotAMatch.facetValue);
+        return fromList ? fromList.facetValue : undefined;
+      })
+    );
     let element = new OmniboxHierarchicalValuesList(this, facetValues, eventArg).build();
     eventArg.rows.push({
       element: element,
@@ -626,7 +639,7 @@ export class HierarchicalFacet extends Facet implements IComponentBindings {
     let toIterateOver = hierarchy.childs;
     if (toIterateOver) {
       let toIterateOverSorted = this.facetValuesList.sortFacetValues(_.pluck(toIterateOver, 'facetValue')).reverse();
-      _.each(toIterateOverSorted, (child) => {
+      _.each(toIterateOverSorted, child => {
         let childFromHierarchy = this.getValueFromHierarchy(child);
         if (childFromHierarchy) {
           let childElement = this.getElementFromFacetValueList(child);
@@ -655,9 +668,14 @@ export class HierarchicalFacet extends Facet implements IComponentBindings {
     const collapseChilds = $$('span', { className: 'coveo-hierarchical-facet-collapse' }, SVGIcons.icons.facetCollapse);
     SVGDom.addClassToSVGInContainer(expandChilds.el, 'coveo-hierarchical-facet-expand-svg');
     SVGDom.addClassToSVGInContainer(collapseChilds.el, 'coveo-hierarchical-facet-collapse-svg');
-    let openAndCloseChilds = $$('div', {
-      className: 'coveo-has-childs-toggle'
-    }, expandChilds.el, collapseChilds.el).el;
+    let openAndCloseChilds = $$(
+      'div',
+      {
+        className: 'coveo-has-childs-toggle'
+      },
+      expandChilds.el,
+      collapseChilds.el
+    ).el;
 
     $$(openAndCloseChilds).on('click', () => {
       $$(hierarchyElement).hasClass('coveo-open') ? this.close(hierarchy) : this.open(hierarchy);
@@ -680,14 +698,14 @@ export class HierarchicalFacet extends Facet implements IComponentBindings {
       } else {
         $$(hierarchyElement).addClass('coveo-no-childs');
       }
-      hierarchyElement.style.marginLeft = (this.options.marginByLevel * (hierarchy.level - this.options.levelStart)) + 'px';
+      hierarchyElement.style.marginLeft = this.options.marginByLevel * (hierarchy.level - this.options.levelStart) + 'px';
     });
 
     $$(<any>fragment).insertAfter(this.headerElement);
   }
 
   private setValueListContent() {
-    this.facetValuesList.hierarchyFacetValues = _.map(this.correctLevels, (hierarchy) => {
+    this.facetValuesList.hierarchyFacetValues = _.map(this.correctLevels, hierarchy => {
       if (!this.values.contains(hierarchy.facetValue.value)) {
         hierarchy.facetValue.occurrences = 0;
         this.values.add(hierarchy.facetValue);
@@ -708,7 +726,7 @@ export class HierarchicalFacet extends Facet implements IComponentBindings {
       };
     });
     this.setInHierarchy(flatHierarchy);
-    _.each(this.getAllValueHierarchy(), (valueHierarchy) => {
+    _.each(this.getAllValueHierarchy(), valueHierarchy => {
       if (valueHierarchy.facetValue.selected) {
         this.flagParentForSelection(valueHierarchy);
       }
@@ -726,27 +744,33 @@ export class HierarchicalFacet extends Facet implements IComponentBindings {
   }
 
   private setInHierarchy(flatHierarchy: IFlatHierarchy[]) {
-    this.correctLevels = _.filter<IFlatHierarchy>(flatHierarchy, (hierarchy) => {
+    this.correctLevels = _.filter<IFlatHierarchy>(flatHierarchy, hierarchy => {
       let isCorrectMinimumLevel = this.options.levelStart == undefined || hierarchy.level >= this.options.levelStart;
       let isCorrectMaximumLevel = this.options.levelEnd == undefined || hierarchy.level < this.options.levelEnd;
       return isCorrectMinimumLevel && isCorrectMaximumLevel;
     });
     _.each(this.correctLevels, (hierarchy: IFlatHierarchy) => {
-      let childs = _.map(_.filter<IFlatHierarchy>(this.correctLevels, (possibleChild: IFlatHierarchy) => {
-        return possibleChild.parent != null && possibleChild.parent.toLowerCase() == hierarchy.self.toLowerCase();
-      }), (child): IValueHierarchy => {
-        return {
-          facetValue: child.facetValue,
-          level: child.level,
-          keepOpened: false,
-          hasChildSelected: false,
-          allChildShouldBeSelected: false
-        };
-      });
+      let childs = _.map(
+        _.filter<IFlatHierarchy>(this.correctLevels, (possibleChild: IFlatHierarchy) => {
+          return possibleChild.parent != null && possibleChild.parent.toLowerCase() == hierarchy.self.toLowerCase();
+        }),
+        (child): IValueHierarchy => {
+          return {
+            facetValue: child.facetValue,
+            level: child.level,
+            keepOpened: false,
+            hasChildSelected: false,
+            allChildShouldBeSelected: false
+          };
+        }
+      );
 
-      let parent = hierarchy.parent != null ? _.find<IFlatHierarchy>(this.correctLevels, (possibleParent) => {
-        return possibleParent.self.toLowerCase() == hierarchy.parent.toLowerCase();
-      }) : null;
+      let parent =
+        hierarchy.parent != null
+          ? _.find<IFlatHierarchy>(this.correctLevels, possibleParent => {
+              return possibleParent.self.toLowerCase() == hierarchy.parent.toLowerCase();
+            })
+          : null;
 
       let hierarchyThatAlreadyExists = this.getValueHierarchy(hierarchy.facetValue.value);
       if (hierarchyThatAlreadyExists && hierarchyThatAlreadyExists.childs.length != childs.length) {
@@ -758,14 +782,19 @@ export class HierarchicalFacet extends Facet implements IComponentBindings {
       }
       this.setValueHierarchy(hierarchy.facetValue.value, {
         childs: childs,
-        parent: parent == undefined ? undefined : {
-          facetValue: parent.facetValue,
-          level: parent.level,
-          keepOpened: hierarchyThatAlreadyExistsAtParent ? hierarchyThatAlreadyExistsAtParent.keepOpened : false,
-          hasChildSelected: hierarchyThatAlreadyExistsAtParent ? hierarchyThatAlreadyExistsAtParent.hasChildSelected : false,
-          originalPosition: hierarchyThatAlreadyExistsAtParent ? hierarchyThatAlreadyExistsAtParent.originalPosition : undefined,
-          allChildShouldBeSelected: hierarchyThatAlreadyExistsAtParent ? hierarchyThatAlreadyExistsAtParent.allChildShouldBeSelected : false
-        },
+        parent:
+          parent == undefined
+            ? undefined
+            : {
+                facetValue: parent.facetValue,
+                level: parent.level,
+                keepOpened: hierarchyThatAlreadyExistsAtParent ? hierarchyThatAlreadyExistsAtParent.keepOpened : false,
+                hasChildSelected: hierarchyThatAlreadyExistsAtParent ? hierarchyThatAlreadyExistsAtParent.hasChildSelected : false,
+                originalPosition: hierarchyThatAlreadyExistsAtParent ? hierarchyThatAlreadyExistsAtParent.originalPosition : undefined,
+                allChildShouldBeSelected: hierarchyThatAlreadyExistsAtParent
+                  ? hierarchyThatAlreadyExistsAtParent.allChildShouldBeSelected
+                  : false
+              },
         facetValue: hierarchy.facetValue,
         level: hierarchy.level,
         keepOpened: hierarchyThatAlreadyExists ? hierarchyThatAlreadyExists.keepOpened : false,
@@ -817,13 +846,13 @@ export class HierarchicalFacet extends Facet implements IComponentBindings {
   }
 
   private hideChilds(children: IValueHierarchy[]) {
-    _.each(children, (child) => {
+    _.each(children, child => {
       this.hideFacetValue(child);
     });
   }
 
   private showChilds(children: IValueHierarchy[]) {
-    _.each(children, (child) => {
+    _.each(children, child => {
       this.showFacetValue(child);
     });
   }
@@ -831,29 +860,37 @@ export class HierarchicalFacet extends Facet implements IComponentBindings {
   private selectChilds(parent: IValueHierarchy, children: IValueHierarchy[]) {
     this.flagParentForSelection(parent);
     parent.allChildShouldBeSelected = true;
-    this.selectMultipleValues(_.map(children, (child) => {
-      return child.facetValue;
-    }));
+    this.selectMultipleValues(
+      _.map(children, child => {
+        return child.facetValue;
+      })
+    );
   }
 
   private deselectChilds(parent: IValueHierarchy, children: IValueHierarchy[]) {
     parent.hasChildSelected = false;
     parent.allChildShouldBeSelected = false;
-    this.deselectMultipleValues(_.map(children, (child) => {
-      return child.facetValue;
-    }));
+    this.deselectMultipleValues(
+      _.map(children, child => {
+        return child.facetValue;
+      })
+    );
   }
 
   private excludeChilds(children: IValueHierarchy[]) {
-    this.excludeMultipleValues(_.map(children, (child) => {
-      return child.facetValue;
-    }));
+    this.excludeMultipleValues(
+      _.map(children, child => {
+        return child.facetValue;
+      })
+    );
   }
 
   private unexcludeChilds(children: IValueHierarchy[]) {
-    this.unexcludeMultipleValues(_.map(children, (child) => {
-      return child.facetValue;
-    }));
+    this.unexcludeMultipleValues(
+      _.map(children, child => {
+        return child.facetValue;
+      })
+    );
   }
 
   private selectParent(parent: IValueHierarchy) {
@@ -894,11 +931,13 @@ export class HierarchicalFacet extends Facet implements IComponentBindings {
     let parent = valueHierarchy.parent;
     while (parent) {
       let parentInHierarchy = this.getValueHierarchy(parent.facetValue.value);
-      let otherSelectedChilds = _.filter<IValueHierarchy>(parentInHierarchy.childs, (child) => {
+      let otherSelectedChilds = _.filter<IValueHierarchy>(parentInHierarchy.childs, child => {
         let childInHierarchy = this.getValueHierarchy(child.facetValue.value);
         if (childInHierarchy != undefined) {
-          return childInHierarchy.facetValue.value != valueHierarchy.facetValue.value
-            && (childInHierarchy.facetValue.selected || childInHierarchy.facetValue.excluded || childInHierarchy.hasChildSelected);
+          return (
+            childInHierarchy.facetValue.value != valueHierarchy.facetValue.value &&
+            (childInHierarchy.facetValue.selected || childInHierarchy.facetValue.excluded || childInHierarchy.hasChildSelected)
+          );
         }
       });
 
@@ -976,7 +1015,10 @@ export class HierarchicalFacet extends Facet implements IComponentBindings {
     _.each(this.valueHierarchy, (v: IValueHierarchy) => {
       if (this.getLevel(v.facetValue) != this.options.levelStart) {
         if (this.getValueHierarchy(this.getParent(v.facetValue)) == undefined) {
-          this.logger.error(`Orphan value found in HierarchicalFacet : ${v.facetValue.value}`, `Needed : ${this.getParent(v.facetValue)} but not found`);
+          this.logger.error(
+            `Orphan value found in HierarchicalFacet : ${v.facetValue.value}`,
+            `Needed : ${this.getParent(v.facetValue)} but not found`
+          );
           this.logger.warn(`Removing incoherent facet value : ${v.facetValue.value}`);
           this.hideFacetValue(v);
         }
@@ -988,7 +1030,7 @@ export class HierarchicalFacet extends Facet implements IComponentBindings {
     // It's possible that after checking a facet value, the index returns new facet values (because of injection depth);
     _.each(this.valueHierarchy, (v: IValueHierarchy) => {
       if (v.allChildShouldBeSelected) {
-        let notAlreadySelected = _.find((v.childs), (child: IValueHierarchy) => {
+        let notAlreadySelected = _.find(v.childs, (child: IValueHierarchy) => {
           return child.facetValue.selected != true;
         });
         if (notAlreadySelected) {

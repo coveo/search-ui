@@ -85,7 +85,6 @@ export class FacetSearch {
    */
   public positionSearchResults(nextTo: HTMLElement = this.search) {
     if (this.searchResults != null) {
-
       this.searchResults.style.display = 'block';
       this.searchResults.style.width = this.facet.element.clientWidth - 40 + 'px';
 
@@ -98,15 +97,17 @@ export class FacetSearch {
           this.searchResults.style.display = '';
         }
         EventsUtils.addPrefixedEvent(this.search, 'AnimationEnd', evt => {
-          PopupUtils.positionPopup(this.searchResults, nextTo, this.root,
-            { horizontal: HorizontalAlignment.CENTER, vertical: VerticalAlignment.BOTTOM }
-          );
+          PopupUtils.positionPopup(this.searchResults, nextTo, this.root, {
+            horizontal: HorizontalAlignment.CENTER,
+            vertical: VerticalAlignment.BOTTOM
+          });
           EventsUtils.removePrefixedEvent(this.search, 'AnimationEnd', this);
         });
       } else {
-        PopupUtils.positionPopup(this.searchResults, nextTo, this.root,
-          { horizontal: HorizontalAlignment.CENTER, vertical: VerticalAlignment.BOTTOM }
-        );
+        PopupUtils.positionPopup(this.searchResults, nextTo, this.root, {
+          horizontal: HorizontalAlignment.CENTER,
+          vertical: VerticalAlignment.BOTTOM
+        });
       }
     }
   }
@@ -140,25 +141,31 @@ export class FacetSearch {
     this.facetSearchPromise = this.facet.facetQueryController.search(params);
 
     if (this.facetSearchPromise) {
-      this.facetSearchPromise.then((fieldValues: IIndexFieldValue[]) => {
-        this.facet.usageAnalytics.logCustomEvent<IAnalyticsFacetMeta>(analyticsActionCauseList.facetSearch, {
-          facetId: this.facet.options.id,
-          facetTitle: this.facet.options.title
-        }, this.facet.root);
-        this.facet.logger.debug('Received field values', fieldValues);
-        this.processNewFacetSearchResults(fieldValues, params);
-        this.hideFacetSearchWaitingAnimation();
-        this.facetSearchPromise = undefined;
-      }).catch((error: IEndpointError) => {
-        // The request might be normally cancelled if another search is triggered.
-        // In this case we do not hide the animation to prevent flicking.
-        if (Utils.exists(error)) {
-          this.facet.logger.error('Error while retrieving facet values', error);
+      this.facetSearchPromise
+        .then((fieldValues: IIndexFieldValue[]) => {
+          this.facet.usageAnalytics.logCustomEvent<IAnalyticsFacetMeta>(
+            analyticsActionCauseList.facetSearch,
+            {
+              facetId: this.facet.options.id,
+              facetTitle: this.facet.options.title
+            },
+            this.facet.root
+          );
+          this.facet.logger.debug('Received field values', fieldValues);
+          this.processNewFacetSearchResults(fieldValues, params);
           this.hideFacetSearchWaitingAnimation();
-        }
-        this.facetSearchPromise = undefined;
-        return null;
-      });
+          this.facetSearchPromise = undefined;
+        })
+        .catch((error: IEndpointError) => {
+          // The request might be normally cancelled if another search is triggered.
+          // In this case we do not hide the animation to prevent flicking.
+          if (Utils.exists(error)) {
+            this.facet.logger.error('Error while retrieving facet values', error);
+            this.hideFacetSearchWaitingAnimation();
+          }
+          this.facetSearchPromise = undefined;
+          return null;
+        });
     }
   }
 
@@ -171,8 +178,7 @@ export class FacetSearch {
   }
 
   private shouldPositionSearchResults(): boolean {
-    return !ResponsiveComponentsUtils.isSmallFacetActivated($$(this.root))
-      && $$(this.facet.element).hasClass('coveo-facet-searching');
+    return !ResponsiveComponentsUtils.isSmallFacetActivated($$(this.root)) && $$(this.facet.element).hasClass('coveo-facet-searching');
   }
 
   private buildBaseSearch(): HTMLElement {
@@ -192,8 +198,11 @@ export class FacetSearch {
     this.search.appendChild(this.wait);
     this.hideFacetSearchWaitingAnimation();
 
-    this.clear = $$('div', { className: 'coveo-facet-search-clear', title: l('Clear', l('Search')) },
-      SVGIcons.icons.checkboxHookExclusionMore).el;
+    this.clear = $$(
+      'div',
+      { className: 'coveo-facet-search-clear', title: l('Clear', l('Search')) },
+      SVGIcons.icons.checkboxHookExclusionMore
+    ).el;
     SVGDom.addClassToSVGInContainer(this.clear, 'coveo-facet-search-clear-svg');
     this.clear.style.display = 'none';
     this.search.appendChild(this.clear);
@@ -232,7 +241,6 @@ export class FacetSearch {
     window.removeEventListener('resize', this.onResize);
     document.removeEventListener('click', this.onDocumentClick);
   }
-
 
   private handleFacetSearchFocus() {
     // Trigger a query only if the results are not already rendered.
@@ -293,7 +301,6 @@ export class FacetSearch {
           $$(this.searchResults).empty();
           this.lastSearchWasEmpty = true;
           this.startNewSearchTimeout(this.buildParamsForFetchingMore());
-
         }
 
         break;
@@ -335,8 +342,7 @@ export class FacetSearch {
       this.facetSearchTimeout = undefined;
     }
     if (Utils.exists(this.facetSearchPromise)) {
-      Promise.reject(this.facetSearchPromise).catch(() => {
-      });
+      Promise.reject(this.facetSearchPromise).catch(() => {});
       this.facetSearchPromise = undefined;
     }
 
@@ -377,7 +383,7 @@ export class FacetSearch {
       $$(selectAll).on('click', () => this.selectAllValuesMatchingSearch());
       this.searchResults.appendChild(selectAll);
     }
-    let facetValues = _.map(fieldValues, (fieldValue) => {
+    let facetValues = _.map(fieldValues, fieldValue => {
       return FacetValue.create(fieldValue);
     });
     _.each(new this.facetSearchValuesListKlass(this.facet, FacetValueElement).build(facetValues), (listElement: HTMLElement) => {
@@ -404,9 +410,9 @@ export class FacetSearch {
     // Prevent closing the search results on the end of a touch drag
     let touchDragging = false;
     let mouseDragging = false;
-    $$(elem).on('mousedown', () => mouseDragging = false);
-    $$(elem).on('mousemove', () => mouseDragging = true);
-    $$(elem).on('touchmove', () => touchDragging = true);
+    $$(elem).on('mousedown', () => (mouseDragging = false));
+    $$(elem).on('mousemove', () => (mouseDragging = true));
+    $$(elem).on('touchmove', () => (touchDragging = true));
 
     $$(elem).on('mouseup touchend', () => {
       if (!touchDragging && !mouseDragging) {
@@ -427,7 +433,7 @@ export class FacetSearch {
     let elementHeight = this.searchResults.clientHeight;
     let scrollHeight = this.searchResults.scrollHeight;
     let bottomPosition = this.searchResults.scrollTop + elementHeight;
-    if ((scrollHeight - bottomPosition) < elementHeight / 2) {
+    if (scrollHeight - bottomPosition < elementHeight / 2) {
       this.triggerNewFacetSearch(this.buildParamsForFetchingMore());
     }
   }
@@ -501,7 +507,7 @@ export class FacetSearch {
 
   private moveCurrentResultUp() {
     let current = $$(this.searchResults).find('.coveo-current');
-    _.each($$(this.searchResults).findAll('.coveo-facet-selectable'), (s) => {
+    _.each($$(this.searchResults).findAll('.coveo-facet-selectable'), s => {
       $$(s).removeClass('coveo-current');
     });
 
@@ -560,7 +566,7 @@ export class FacetSearch {
     this.facet.facetQueryController.search(searchParameters).then((fieldValues: IIndexFieldValue[]) => {
       this.completelyDismissSearch();
       ModalBox.close(true);
-      let facetValues = _.map(fieldValues, (fieldValue) => {
+      let facetValues = _.map(fieldValues, fieldValue => {
         let facetValue = this.facet.values.get(fieldValue.value);
         if (!Utils.exists(facetValue)) {
           facetValue = FacetValue.create(fieldValue);
@@ -587,13 +593,13 @@ export class FacetSearch {
   }
 
   private detectSearchBarAnimation() {
-    EventsUtils.addPrefixedEvent(this.search, 'AnimationStart', (event) => {
+    EventsUtils.addPrefixedEvent(this.search, 'AnimationStart', event => {
       if (event.animationName == 'grow') {
         this.searchBarIsAnimating = true;
       }
     });
 
-    EventsUtils.addPrefixedEvent(this.search, 'AnimationEnd', (event) => {
+    EventsUtils.addPrefixedEvent(this.search, 'AnimationEnd', event => {
       if (event.animationName == 'grow') {
         this.searchBarIsAnimating = false;
       }

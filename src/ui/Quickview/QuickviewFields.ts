@@ -10,5 +10,3 @@ const fields = [
 export function registerFields() {
   Initialization.registerComponentFields('Quickview', fields);
 }
-
-

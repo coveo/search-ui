@@ -7,12 +7,11 @@ import { exportGlobally } from '../../GlobalExports';
  * A radio button widget with standard styling.
  */
 export class RadioButton implements IFormWidgetWithLabel, IFormWidgetSelectable {
-
   protected element: HTMLElement;
 
   static doExport() {
     exportGlobally({
-      'RadioButton': RadioButton
+      RadioButton: RadioButton
     });
   }
 
@@ -23,8 +22,7 @@ export class RadioButton implements IFormWidgetWithLabel, IFormWidgetSelectable 
    * @param label The label to display next to the radio button.
    * @param name The value to set the `input` HTMLElement `name` attribute to.
    */
-  constructor(public onChange: (radioButton: RadioButton) => void = (radioButton: RadioButton) => {
-  }, public label: string, public name) {
+  constructor(public onChange: (radioButton: RadioButton) => void = (radioButton: RadioButton) => {}, public label: string, public name) {
     this.buildContent();
   }
 
@@ -98,7 +96,7 @@ export class RadioButton implements IFormWidgetWithLabel, IFormWidgetSelectable 
   private buildContent() {
     const radioOption = $$('div', { className: 'coveo-radio' });
     const radioInput = $$('input', { type: 'radio', name: this.name, id: this.label });
-    const labelInput = $$('label', { className: 'coveo-radio-input-label', 'for': this.label });
+    const labelInput = $$('label', { className: 'coveo-radio-input-label', for: this.label });
     labelInput.text(this.label);
     radioInput.on('change', () => {
       this.onChange(this);

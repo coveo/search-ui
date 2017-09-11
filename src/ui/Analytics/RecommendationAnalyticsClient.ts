@@ -9,10 +9,10 @@ import { Recommendation } from '../Recommendation/Recommendation';
 import { SearchInterface } from '../SearchInterface/SearchInterface';
 import * as _ from 'underscore';
 export class RecommendationAnalyticsClient extends LiveAnalyticsClient {
-
   private recommendation: Recommendation;
 
-  constructor(public endpoint: AnalyticsEndpoint,
+  constructor(
+    public endpoint: AnalyticsEndpoint,
     public rootElement: HTMLElement,
     public userId: string,
     public userDisplayName: string,
@@ -21,7 +21,8 @@ export class RecommendationAnalyticsClient extends LiveAnalyticsClient {
     public splitTestRunVersion: string,
     public originLevel1: string,
     public sendToCloud: boolean,
-    public bindings: IComponentBindings) {
+    public bindings: IComponentBindings
+  ) {
     super(endpoint, rootElement, userId, userDisplayName, anonymous, splitTestRunName, splitTestRunVersion, originLevel1, sendToCloud);
     this.recommendation = <Recommendation>this.bindings.searchInterface;
   }
@@ -33,7 +34,12 @@ export class RecommendationAnalyticsClient extends LiveAnalyticsClient {
     super.logSearchEvent(actionCause, meta);
   }
 
-  public logClickEvent<TMeta>(actionCause: IAnalyticsActionCause, meta: TMeta, result: IQueryResult, element: HTMLElement): Promise<IAPIAnalyticsEventResponse> {
+  public logClickEvent<TMeta>(
+    actionCause: IAnalyticsActionCause,
+    meta: TMeta,
+    result: IQueryResult,
+    element: HTMLElement
+  ): Promise<IAPIAnalyticsEventResponse> {
     if (actionCause == analyticsActionCauseList.documentOpen) {
       actionCause = analyticsActionCauseList.recommendationOpen;
     }

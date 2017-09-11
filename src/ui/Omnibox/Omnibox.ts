@@ -48,7 +48,9 @@ export interface IOmniboxOptions extends IQueryboxOptions {
   enableQueryExtensionAddon?: boolean;
   omniboxTimeout?: number;
   placeholder?: string;
-  grammar?: (grammar: { start: string; expressions: { [id: string]: Coveo.MagicBox.ExpressionDef }; }) => { start: string; expressions: { [id: string]: Coveo.MagicBox.ExpressionDef } };
+  grammar?: (
+    grammar: { start: string; expressions: { [id: string]: Coveo.MagicBox.ExpressionDef } }
+  ) => { start: string; expressions: { [id: string]: Coveo.MagicBox.ExpressionDef } };
 }
 
 const MINIMUM_EXECUTABLE_CONFIDENCE = 0.8;
@@ -74,17 +76,16 @@ export class Omnibox extends Component {
 
   static doExport = () => {
     exportGlobally({
-      'Omnibox': Omnibox,
-      'MagicBox': MagicBox
+      Omnibox: Omnibox,
+      MagicBox: MagicBox
     });
-  }
+  };
 
   /**
    * The options for the omnibox
    * @componentOptions
    */
   static options: IOmniboxOptions = {
-
     /**
      * Specifies whether query completion suggestions appearing in the `Omnibox` should push the result list and facets
      * down, rather than rendering themselves over them (and partially hiding them).
@@ -209,7 +210,7 @@ export class Omnibox extends Component {
      */
     enableQuerySyntax: ComponentOptions.buildBooleanOption({
       defaultValue: false
-    }),
+    })
   };
 
   public magicBox: Coveo.MagicBox.Instance;
@@ -245,7 +246,9 @@ export class Omnibox extends Component {
     this.bind.onRootElement(QueryEvents.buildingQuery, (args: IBuildingQueryEventArgs) => this.handleBuildingQuery(args));
     this.bind.onRootElement(StandaloneSearchInterfaceEvents.beforeRedirect, () => this.handleBeforeRedirect());
     this.bind.onRootElement(QueryEvents.querySuccess, () => this.handleQuerySuccess());
-    this.bind.onQueryState(MODEL_EVENTS.CHANGE_ONE, QUERY_STATE_ATTRIBUTES.Q, (args: IAttributeChangedEventArg) => this.handleQueryStateChanged(args));
+    this.bind.onQueryState(MODEL_EVENTS.CHANGE_ONE, QUERY_STATE_ATTRIBUTES.Q, (args: IAttributeChangedEventArg) =>
+      this.handleQueryStateChanged(args)
+    );
     if (this.isAutoSuggestion()) {
       this.bind.onRootElement(QueryEvents.duringQuery, (args: IDuringQueryEventArgs) => this.handleDuringQuery(args));
     }
@@ -316,7 +319,7 @@ export class Omnibox extends Component {
     return this.magicBox.getCursor();
   }
 
-  public resultAtCursor(match?: string | { (result: Coveo.MagicBox.Result): boolean; }) {
+  public resultAtCursor(match?: string | { (result: Coveo.MagicBox.Result): boolean }) {
     return this.magicBox.resultAtCursor(match);
   }
 
@@ -412,7 +415,6 @@ export class Omnibox extends Component {
       } else {
         this.clear();
       }
-
     };
 
     if (this.options.placeholder) {
@@ -429,7 +431,7 @@ export class Omnibox extends Component {
 
     this.magicBox.onselect = (suggestion: IOmniboxSuggestion) => {
       let index = _.indexOf(this.lastSuggestions, suggestion);
-      let suggestions = _.compact(_.map(this.lastSuggestions, (suggestion) => suggestion.text));
+      let suggestions = _.compact(_.map(this.lastSuggestions, suggestion => suggestion.text));
       this.magicBox.clearSuggestion();
       this.updateQueryState();
       // A bit tricky here : When it's machine learning auto suggestions
@@ -440,7 +442,10 @@ export class Omnibox extends Component {
       if (!this.isAutoSuggestion()) {
         this.usageAnalytics.cancelAllPendingEvents();
         this.triggerNewQuery(false, () => {
-          this.usageAnalytics.logSearchEvent<IAnalyticsOmniboxSuggestionMeta>(this.getOmniboxAnalyticsEventCause(), this.buildCustomDataForPartialQueries(index, suggestions));
+          this.usageAnalytics.logSearchEvent<IAnalyticsOmniboxSuggestionMeta>(
+            this.getOmniboxAnalyticsEventCause(),
+            this.buildCustomDataForPartialQueries(index, suggestions)
+          );
         });
       } else if (this.isAutoSuggestion() && this.movedOnce) {
         this.handleAutoSuggestionWithKeyboard(index, suggestions);
@@ -478,7 +483,6 @@ export class Omnibox extends Component {
       this.handleTabPress();
     };
 
-
     this.magicBox.getSuggestions = () => this.handleSuggestions();
   }
 
@@ -491,9 +495,11 @@ export class Omnibox extends Component {
       clearTimeout(this.searchAsYouTypeTimeout);
       this.searchAsYouTypeTimeout = undefined;
       this.triggerNewQuery(false, () => {
-        this.usageAnalytics.logSearchEvent<IAnalyticsOmniboxSuggestionMeta>(this.getOmniboxAnalyticsEventCause(), this.buildCustomDataForPartialQueries(index, suggestions));
+        this.usageAnalytics.logSearchEvent<IAnalyticsOmniboxSuggestionMeta>(
+          this.getOmniboxAnalyticsEventCause(),
+          this.buildCustomDataForPartialQueries(index, suggestions)
+        );
       });
-
     } else {
       // Here, the search as you type query has returned, but the analytics event has not ye been sent.
       // Think : user typed slowly, the query returned, and then the user selected a suggestion.
@@ -514,9 +520,11 @@ export class Omnibox extends Component {
       this.clearSearchAsYouType();
       this.usageAnalytics.cancelAllPendingEvents();
       this.triggerNewQuery(false, () => {
-        this.usageAnalytics.logSearchEvent<IAnalyticsOmniboxSuggestionMeta>(this.getOmniboxAnalyticsEventCause(), this.buildCustomDataForPartialQueries(index, suggestions));
+        this.usageAnalytics.logSearchEvent<IAnalyticsOmniboxSuggestionMeta>(
+          this.getOmniboxAnalyticsEventCause(),
+          this.buildCustomDataForPartialQueries(index, suggestions)
+        );
       });
-
     } else {
       // Here : the user either very slowly chose a suggestion, and there is no search as you typed queued up
       // AND
@@ -534,7 +542,10 @@ export class Omnibox extends Component {
       // kick in and do the query automatically.
       if (this.lastQuery != this.getText()) {
         this.triggerNewQuery(false, () => {
-          this.usageAnalytics.logSearchEvent<IAnalyticsOmniboxSuggestionMeta>(this.getOmniboxAnalyticsEventCause(), this.buildCustomDataForPartialQueries(index, suggestions));
+          this.usageAnalytics.logSearchEvent<IAnalyticsOmniboxSuggestionMeta>(
+            this.getOmniboxAnalyticsEventCause(),
+            this.buildCustomDataForPartialQueries(index, suggestions)
+          );
         });
       }
     }
@@ -561,25 +572,31 @@ export class Omnibox extends Component {
 
   private cleanCustomData(toClean: string[], rejectLength = 256) {
     // Filter out only consecutive values that are the identical
-    toClean = _.compact(_.filter(toClean, (partial: string, pos?: number, array?: string[]) => {
-      return pos === 0 || partial !== array[pos - 1];
-    }));
+    toClean = _.compact(
+      _.filter(toClean, (partial: string, pos?: number, array?: string[]) => {
+        return pos === 0 || partial !== array[pos - 1];
+      })
+    );
 
     // Custom dimensions cannot be an array in analytics service: Send a string joined by ; instead.
     // Need to replace ;
-    toClean = _.map(toClean, (partial) => {
+    toClean = _.map(toClean, partial => {
       return partial.replace(/;/g, '');
     });
 
     // Reduce right to get the last X words that adds to less then rejectLength
     let reducedToRejectLengthOrLess = [];
-    _.reduceRight(toClean, (memo: number, partial: string) => {
-      let totalSoFar = memo + partial.length;
-      if (totalSoFar <= rejectLength) {
-        reducedToRejectLengthOrLess.push(partial);
-      }
-      return totalSoFar;
-    }, 0);
+    _.reduceRight(
+      toClean,
+      (memo: number, partial: string) => {
+        let totalSoFar = memo + partial.length;
+        if (totalSoFar <= rejectLength) {
+          reducedToRejectLengthOrLess.push(partial);
+        }
+        return totalSoFar;
+      },
+      0
+    );
     toClean = reducedToRejectLengthOrLess.reverse();
     let ret = toClean.join(';');
 
@@ -615,16 +632,21 @@ export class Omnibox extends Component {
     this.updateQueryState();
     this.lastQuery = this.getQuery(data.searchAsYouType);
 
-    let result: Coveo.MagicBox.Result = this.lastQuery == this.magicBox.getDisplayedResult().input ? this.magicBox.getDisplayedResult().clone() : this.magicBox.grammar.parse(this.lastQuery).clean();
+    let result: Coveo.MagicBox.Result =
+      this.lastQuery == this.magicBox.getDisplayedResult().input
+        ? this.magicBox.getDisplayedResult().clone()
+        : this.magicBox.grammar.parse(this.lastQuery).clean();
     let preprocessResultForQueryArgs: IOmniboxPreprocessResultForQueryEventArgs = {
       result: result
     };
 
     if (this.options.enableQuerySyntax) {
       let notQuotedValues = preprocessResultForQueryArgs.result.findAll('FieldValueNotQuoted');
-      _.each(notQuotedValues, (value: Coveo.MagicBox.Result) => value.value = '"' + value.value.replace(/"|\u00A0/g, ' ') + '"');
+      _.each(notQuotedValues, (value: Coveo.MagicBox.Result) => (value.value = '"' + value.value.replace(/"|\u00A0/g, ' ') + '"'));
       if (this.options.fieldAlias) {
-        let fieldNames = preprocessResultForQueryArgs.result.findAll((result: Coveo.MagicBox.Result) => result.expression.id == 'FieldName' && result.isSuccess());
+        let fieldNames = preprocessResultForQueryArgs.result.findAll(
+          (result: Coveo.MagicBox.Result) => result.expression.id == 'FieldName' && result.isSuccess()
+        );
         _.each(fieldNames, (result: Coveo.MagicBox.Result) => {
           let alias = _.find(_.keys(this.options.fieldAlias), (alias: string) => alias.toLowerCase() == result.value.toLowerCase());
           if (alias != null) {
@@ -649,8 +671,12 @@ export class Omnibox extends Component {
 
   private handleTabPressForSuggestions() {
     if (!this.options.enableSearchAsYouType) {
-      let suggestions = _.compact(_.map(this.lastSuggestions, (suggestion) => suggestion.text));
-      this.usageAnalytics.logCustomEvent(this.getOmniboxAnalyticsEventCause(), this.buildCustomDataForPartialQueries(0, suggestions), this.element);
+      let suggestions = _.compact(_.map(this.lastSuggestions, suggestion => suggestion.text));
+      this.usageAnalytics.logCustomEvent(
+        this.getOmniboxAnalyticsEventCause(),
+        this.buildCustomDataForPartialQueries(0, suggestions),
+        this.element
+      );
     }
   }
 
@@ -717,7 +743,7 @@ export class Omnibox extends Component {
       // Get a handle on a pending search as you type (those events are delayed, not sent instantly)
       let pendingEvent = this.usageAnalytics.getPendingSearchEvent();
       if (pendingEvent instanceof PendingSearchAsYouTypeSearchEvent) {
-        (<PendingSearchAsYouTypeSearchEvent>pendingEvent).beforeResolve.then((evt) => {
+        (<PendingSearchAsYouTypeSearchEvent>pendingEvent).beforeResolve.then(evt => {
           // Check if we need to modify the event type beforeResolving it
           args.promise.then(() => {
             if (this.modifyEventTo) {
@@ -735,14 +761,16 @@ export class Omnibox extends Component {
     if (this.shouldExecuteQuery(true)) {
       this.searchAsYouTypeTimeout = setTimeout(() => {
         if (this.suggestionShouldTriggerQuery() || forceExecuteQuery) {
-          let suggestions = _.map(this.lastSuggestions, (suggestion) => suggestion.text);
+          let suggestions = _.map(this.lastSuggestions, suggestion => suggestion.text);
           let index = _.indexOf(suggestions, this.magicBox.getWordCompletion());
           this.triggerNewQuery(true, () => {
-            this.usageAnalytics.logSearchAsYouType<IAnalyticsOmniboxSuggestionMeta>(analyticsActionCauseList.searchboxAsYouType, this.buildCustomDataForPartialQueries(index, suggestions));
+            this.usageAnalytics.logSearchAsYouType<IAnalyticsOmniboxSuggestionMeta>(
+              analyticsActionCauseList.searchboxAsYouType,
+              this.buildCustomDataForPartialQueries(index, suggestions)
+            );
           });
           this.clearSearchAsYouType();
         }
-
       }, this.options.searchAsYouTypeDelay);
     }
   }

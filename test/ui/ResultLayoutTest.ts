@@ -8,7 +8,6 @@ import { QueryStateModel } from '../../src/models/QueryStateModel';
 import { $$, Dom } from '../../src/utils/Dom';
 
 export function ResultLayoutTest() {
-
   describe('ResultLayout', () => {
     let test: Mock.IBasicComponentSetup<ResultLayout>;
 

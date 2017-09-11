@@ -61,7 +61,7 @@ export class QuickviewDocument extends Component {
      *
      * Default value is `0`, and the index returns the entire preview. Minimum value is `0`.
      */
-    maximumDocumentSize: ComponentOptions.buildNumberOption({ defaultValue: 0, min: 0 }),
+    maximumDocumentSize: ComponentOptions.buildNumberOption({ defaultValue: 0, min: 0 })
   };
 
   private iframe: Dom;
@@ -77,7 +77,12 @@ export class QuickviewDocument extends Component {
    * automatically resolved (with a slower execution time).
    * @param result The current result.
    */
-  constructor(public element: HTMLElement, public options?: IQuickviewDocumentOptions, bindings?: IComponentBindings, public result?: IQueryResult) {
+  constructor(
+    public element: HTMLElement,
+    public options?: IQuickviewDocumentOptions,
+    bindings?: IComponentBindings,
+    public result?: IQueryResult
+  ) {
     super(element, QuickviewDocument.ID, bindings);
 
     this.options = ComponentOptions.initComponentOptions(element, QuickviewDocument, options);
@@ -104,12 +109,17 @@ export class QuickviewDocument extends Component {
     if (documentURL == undefined || documentURL == '') {
       documentURL = this.result.clickUri;
     }
-    this.usageAnalytics.logClickEvent(analyticsActionCauseList.documentQuickview, {
-      author: Utils.getFieldValue(this.result, 'author'),
-      documentURL: documentURL,
-      documentTitle: this.result.title
-    }, this.result, this.queryController.element);
-    let beforeLoad = (new Date()).getTime();
+    this.usageAnalytics.logClickEvent(
+      analyticsActionCauseList.documentQuickview,
+      {
+        author: Utils.getFieldValue(this.result, 'author'),
+        documentURL: documentURL,
+        documentTitle: this.result.title
+      },
+      this.result,
+      this.queryController.element
+    );
+    let beforeLoad = new Date().getTime();
     let iframe = <HTMLIFrameElement>this.iframe.find('iframe');
     iframe.src = 'about:blank';
     let endpoint = this.queryController.getEndpoint();
@@ -133,7 +143,8 @@ export class QuickviewDocument extends Component {
       requestedOutputSize: this.options.maximumDocumentSize
     };
 
-    endpoint.getDocumentHtml(this.result.uniqueId, callOptions)
+    endpoint
+      .getDocumentHtml(this.result.uniqueId, callOptions)
       .then((html: HTMLDocument) => {
         // If the contentDocument is null at this point it means that the Quick View
         // was closed before we've finished loading it. In this case do nothing.
@@ -185,7 +196,6 @@ export class QuickviewDocument extends Component {
     this.wrapPreElementsInIframe(iframe);
   }
 
-
   private renderErrorReport(iframe: HTMLIFrameElement, errorStatus: number) {
     let errorString = '';
     if (errorStatus == 400) {
@@ -193,7 +203,9 @@ export class QuickviewDocument extends Component {
     } else {
       errorString = 'OopsError';
     }
-    let errorMessage = `<html><body style='font-family: Arimo, \'Helvetica Neue\', Helvetica, Arial, sans-serif; -webkit-text-size-adjust: none;' >${l(errorString)} </body></html>`;
+    let errorMessage = `<html><body style='font-family: Arimo, \'Helvetica Neue\', Helvetica, Arial, sans-serif; -webkit-text-size-adjust: none;' >${l(
+      errorString
+    )} </body></html>`;
     this.writeToIFrame(iframe, errorMessage);
   }
 
@@ -203,7 +215,7 @@ export class QuickviewDocument extends Component {
     let toWrite = content;
 
     if (content instanceof HTMLDocument) {
-      _.each($$(content.body).findAll('a'), (link) => {
+      _.each($$(content.body).findAll('a'), link => {
         link.setAttribute('target', '_top');
       });
       toWrite = content.getElementsByTagName('html')[0].outerHTML;
@@ -226,10 +238,11 @@ export class QuickviewDocument extends Component {
       style.type = 'text/css';
 
       // This CSS forces <pre> tags used in some emails to wrap by default
-      let cssText = 'html pre { white-space: pre-wrap; white-space: -moz-pre-wrap; white-space: -pre-wrap; white-space: -o-pre-wrap; word-wrap: break-word; }';
+      let cssText =
+        'html pre { white-space: pre-wrap; white-space: -moz-pre-wrap; white-space: -pre-wrap; white-space: -o-pre-wrap; word-wrap: break-word; }';
 
       // Some people react strongly when presented with their browser's default font, so let's fix that
-      cssText += 'body, html { font-family: Arimo, \'Helvetica Neue\', Helvetica, Arial, sans-serif; -webkit-text-size-adjust: none; }';
+      cssText += "body, html { font-family: Arimo, 'Helvetica Neue', Helvetica, Arial, sans-serif; -webkit-text-size-adjust: none; }";
 
       if (DeviceUtils.isIos()) {
         // Safari on iOS forces resize iframes to fit their content, even if an explicit size
@@ -261,7 +274,7 @@ export class QuickviewDocument extends Component {
   }
 
   private triggerQuickviewLoaded(beforeLoad: number) {
-    let afterLoad = (new Date()).getTime();
+    let afterLoad = new Date().getTime();
     let eventArgs: IQuickviewLoadedEventArgs = { duration: afterLoad - beforeLoad };
     $$(this.element).trigger(QuickviewEvents.quickviewLoaded, eventArgs);
   }
@@ -319,9 +332,9 @@ export class QuickviewDocument extends Component {
       let idParts = this.getHighlightIdParts(element);
 
       if (idParts) {
-        let idIndexPart = idParts[1];                    // X
-        let idOccurencePart = parseInt(idParts[2], 10);  // Y
-        let idTermPart = parseInt(idParts[3], 10);       // Z in <span id='CoveoHighlight:X.Y.Z'>a</span>
+        let idIndexPart = idParts[1]; // X
+        let idOccurencePart = parseInt(idParts[2], 10); // Y
+        let idTermPart = parseInt(idParts[3], 10); // Z in <span id='CoveoHighlight:X.Y.Z'>a</span>
 
         let word = words[idIndexPart];
 
@@ -379,7 +392,7 @@ export class QuickviewDocument extends Component {
 
     let resolvedWords = [];
 
-    _.each(words, (word) => {
+    _.each(words, word => {
       // When possible, take care to find the original term from the query instead of the
       // first highlighted version we encounter. This relies on a recent feature by the
       // Search API, but will fallback properly on older versions.
@@ -402,18 +415,15 @@ export class QuickviewDocument extends Component {
   }
 
   private getHighlightIdParts(element: HTMLElement): string[] {
-    let parts = element
-      .id
-      .substr(HIGHLIGHT_PREFIX.length + 1)
-      .match(/^([0-9]+)\.([0-9]+)\.([0-9]+)$/);
+    let parts = element.id.substr(HIGHLIGHT_PREFIX.length + 1).match(/^([0-9]+)\.([0-9]+)\.([0-9]+)$/);
 
-    return (parts && parts.length > 3) ? parts : null;
+    return parts && parts.length > 3 ? parts : null;
   }
 
   private getHighlightInnerText(element: HTMLElement): string {
     if (element.nodeName.toLowerCase() == 'coveotaggedword') {
       // only immediate text without children.
-      return element.childNodes.length >= 1 ? (element.childNodes.item(0).textContent || '') : '';
+      return element.childNodes.length >= 1 ? element.childNodes.item(0).textContent || '' : '';
     } else {
       return element.textContent || '';
     }
@@ -432,12 +442,16 @@ export class QuickviewDocument extends Component {
     if (this.result.termsToHighlight) {
       // We look for the term expansion and we'll return the corresponding
       // original term is one is found.
-      found = _.find(_.keys(this.result.termsToHighlight), (originalTerm: string) => {
-        // The expansions do NOT include the original term (makes sense), so be sure to check
-        // the original term for a match too.
-        return (originalTerm.toLowerCase() == highlight.toLowerCase()) ||
-          (_.find(this.result.termsToHighlight[originalTerm], (expansion: string) => expansion.toLowerCase() == highlight.toLowerCase()) != undefined);
-      }) || found;
+      found =
+        _.find(_.keys(this.result.termsToHighlight), (originalTerm: string) => {
+          // The expansions do NOT include the original term (makes sense), so be sure to check
+          // the original term for a match too.
+          return (
+            originalTerm.toLowerCase() == highlight.toLowerCase() ||
+            _.find(this.result.termsToHighlight[originalTerm], (expansion: string) => expansion.toLowerCase() == highlight.toLowerCase()) !=
+              undefined
+          );
+        }) || found;
     }
     return found;
   }
@@ -515,7 +529,6 @@ export class QuickviewDocument extends Component {
 
     document.body.scrollLeft = 0;
     document.body.scrollTop = 0;
-
   }
 
   private buildHeader(): Dom {
@@ -551,7 +564,7 @@ export class QuickviewDocument extends Component {
   }
 
   private isNewQuickviewDocument(iframeWindow: Window): boolean {
-    let meta = $$(iframeWindow.document.head).find('meta[name=\'generator\']');
+    let meta = $$(iframeWindow.document.head).find("meta[name='generator']");
     return meta && meta.getAttribute('content') == 'pdf2htmlEX';
   }
 
@@ -560,7 +573,7 @@ export class QuickviewDocument extends Component {
       delete this.result.termsToHighlight[term];
     }
     let query = '';
-    _.each(termsToHighlight, (term) => {
+    _.each(termsToHighlight, term => {
       query += term + ' ';
       this.result.termsToHighlight[term] = new Array<string>(term);
     });

@@ -5,17 +5,16 @@ export function SizeInputTest() {
   describe('SizeInput', () => {
     let input: SizeInput;
 
-    beforeEach(function () {
+    beforeEach(function() {
       input = new SizeInput($$('div').el);
       input.build();
     });
 
-    afterEach(function () {
+    afterEach(function() {
       input = null;
     });
 
     describe('getValue', () => {
-
       it('AtLeast should return @date>=', () => {
         input.modeSelect.setValue('AtLeast');
         input.sizeInput.setValue(5);
@@ -51,7 +50,7 @@ export function SizeInputTest() {
         input.modeSelect.setValue('AtLeast');
         input.sizeInput.setValue(size);
         input.sizeSelect.setValue('Bytes');
-        expect(input.getValue()).toContain((size).toString());
+        expect(input.getValue()).toContain(size.toString());
       });
     });
   });

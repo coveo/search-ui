@@ -48,7 +48,9 @@ export class DomUtils {
     let regex = new RegExp(Utils.escapeRegexCharacter(StringUtils.latinize(valueToSearch)), 'i');
     let firstChar = StringUtils.latinize(initialString).search(regex);
     let lastChar = firstChar + valueToSearch.length;
-    return `${StringUtils.htmlEncode(initialString.slice(0, firstChar))}<span class='coveo-highlight'>${StringUtils.htmlEncode(initialString.slice(firstChar, lastChar))}</span>${StringUtils.htmlEncode(initialString.slice(lastChar))}`;
+    return `${StringUtils.htmlEncode(initialString.slice(0, firstChar))}<span class='coveo-highlight'>${StringUtils.htmlEncode(
+      initialString.slice(firstChar, lastChar)
+    )}</span>${StringUtils.htmlEncode(initialString.slice(lastChar))}`;
   }
 
   static getLoadingSpinner(): HTMLElement {
@@ -88,7 +90,12 @@ export class DomUtils {
         <span class='coveo-quickview-icon coveo-small ${fileType.icon}'></span>
         <a class='coveo-quickview-pop-up-reminder'> ${options.title || ''}</a>
       </div>`;
-    new Coveo[Coveo['Salesforce'] ? 'SalesforceResultLink' : 'ResultLink'](header.find('.coveo-quickview-pop-up-reminder'), undefined, bindings, result);
+    new Coveo[Coveo['Salesforce'] ? 'SalesforceResultLink' : 'ResultLink'](
+      header.find('.coveo-quickview-pop-up-reminder'),
+      undefined,
+      bindings,
+      result
+    );
     return header;
   }
 

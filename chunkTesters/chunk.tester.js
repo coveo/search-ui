@@ -8,13 +8,25 @@ const fs = require('fs');
 const colors = require('colors');
 const readDir = Promise.promisify(fs.readdir);
 const writeFile = Promise.promisify(fs.writeFile);
-const ChromiumRevision = require('puppeteer/package.json').puppeteer.chromium_revision
-const Downloader = require('puppeteer/utils/ChromiumDownloader')
-const revisionInfo = Downloader.revisionInfo(Downloader.currentPlatform(), ChromiumRevision)
+const ChromiumRevision = require('puppeteer/package.json').puppeteer.chromium_revision;
+const Downloader = require('puppeteer/utils/ChromiumDownloader');
+const revisionInfo = Downloader.revisionInfo(Downloader.currentPlatform(), ChromiumRevision);
 
-process.env.CHROME_BIN = revisionInfo.executablePath
+process.env.CHROME_BIN = revisionInfo.executablePath;
 
-const filesToSkip = ['CoveoJsSearch.Lazy.js', 'CoveoJsSearch.Dependencies.js', 'CoveoJsSearch.js', 'Checkbox.js', 'DatePicker.js', 'Dropdown.js', 'FormGroup.js', 'MultiSelect.js', 'NumericSpinner.js', 'RadioButton.js', 'TextInput.js'];
+const filesToSkip = [
+  'CoveoJsSearch.Lazy.js',
+  'CoveoJsSearch.Dependencies.js',
+  'CoveoJsSearch.js',
+  'Checkbox.js',
+  'DatePicker.js',
+  'Dropdown.js',
+  'FormGroup.js',
+  'MultiSelect.js',
+  'NumericSpinner.js',
+  'RadioButton.js',
+  'TextInput.js'
+];
 
 const exceptions = {
   'Backdrop.js': {
@@ -61,7 +73,6 @@ const exceptions = {
   }
 };
 
-
 const testTmpl = `'use strict';
 describe('<%- componentName %>', function () {
   it('should load only the needed dependencies', function (done) {
@@ -78,7 +89,7 @@ describe('<%- componentName %>', function () {
 
 const getAllComponentsFilesToGenerate = () => {
   return readDir(path.resolve('bin/js')).then(files => {
-    return _.filter(files, (f) => {
+    return _.filter(files, f => {
       return f.indexOf('.map') == -1 && f.indexOf('.min') == -1 && !_.contains(filesToSkip, f) && f.indexOf('.js') != -1;
     });
   });
@@ -117,44 +128,53 @@ const executeTests = () => {
       return () => {
         port++;
         return new Promise((resolve, reject) => {
-          new TestServer({
-            files: [{
-              pattern: path.resolve(`node_modules/es6-promise/dist/es6-promise.auto.js`)
-            }, {
-              pattern: path.resolve(`node_modules/phantomjs-polyfill/bind-polyfill.js`)
-            }, {
-              pattern: path.resolve(`bin/js/CoveoJsSearch.Lazy.js`)
-            }, {
-              pattern: path.resolve(`bin/js/${fileToExecute}`)
-            }, {
-              pattern: path.resolve(`chunkTesters/gen/${fileToExecute}`)
-            }],
-            browsers: ['ChromeHeadless'],
-            frameworks: ['jasmine'],
-            singleRun: true,
-            reporters: ['spec'],
-            port: port
-          }, (exitCode) => {
-            if (exitCode) {
-              reject(exitCode);
-            } else {
-              resolve('Success');
+          new TestServer(
+            {
+              files: [
+                {
+                  pattern: path.resolve(`node_modules/es6-promise/dist/es6-promise.auto.js`)
+                },
+                {
+                  pattern: path.resolve(`node_modules/phantomjs-polyfill/bind-polyfill.js`)
+                },
+                {
+                  pattern: path.resolve(`bin/js/CoveoJsSearch.Lazy.js`)
+                },
+                {
+                  pattern: path.resolve(`bin/js/${fileToExecute}`)
+                },
+                {
+                  pattern: path.resolve(`chunkTesters/gen/${fileToExecute}`)
+                }
+              ],
+              browsers: ['ChromeHeadless'],
+              frameworks: ['jasmine'],
+              singleRun: true,
+              reporters: ['spec'],
+              port: port
+            },
+            exitCode => {
+              if (exitCode) {
+                reject(exitCode);
+              } else {
+                resolve('Success');
+              }
             }
-          }
-          ).start()
+          ).start();
         });
-      }
+      };
     });
 
-    return Promise.mapSeries(testsToExecute, (aSingleTest) => {
+    return Promise.mapSeries(testsToExecute, aSingleTest => {
       return aSingleTest();
     });
   });
 };
 
-
-generateTestFiles().then(() => executeTests()).then(testExecutionsReport => {
-  console.log(`\n\n*****************************`.white.bold);
-  console.log(`!!! ${testExecutionsReport.length} components tested successfully !!!`.blue.bgGreen);
-  console.log(`*****************************\n\n`.white.bold);
-})
+generateTestFiles()
+  .then(() => executeTests())
+  .then(testExecutionsReport => {
+    console.log(`\n\n*****************************`.white.bold);
+    console.log(`!!! ${testExecutionsReport.length} components tested successfully !!!`.blue.bgGreen);
+    console.log(`*****************************\n\n`.white.bold);
+  });

@@ -2,7 +2,7 @@ import { IQuery } from './Query';
 
 export const SUBSCRIPTION_TYPE = {
   followQuery: 'followQuery',
-  followDocument: 'followDocument',
+  followDocument: 'followDocument'
 };
 
 export interface ISearchAlertsEndpointOptions {
@@ -39,7 +39,6 @@ export interface ISubscription extends ISubscriptionRequest {
  * Describe a user associated with a subscription to the Coveo Search alerts service
  */
 export interface ISubscriptionUser {
-
   /**
    * The email of the user
    */
@@ -92,7 +91,6 @@ export interface ISubscriptionQueryRequest {
  * The `ISubscriptionItemRequest` interface describes a subscription to a single item (a result).
  */
 export interface ISubscriptionItemRequest {
-
   /**
    * Contains the unique ID of the item to subscribe to.
    */

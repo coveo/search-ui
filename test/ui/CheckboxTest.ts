@@ -2,7 +2,6 @@ import { Checkbox } from '../../src/ui/FormWidgets/Checkbox';
 
 export function CheckboxTest() {
   describe('Checkbox', () => {
-
     let spyChange: jasmine.Spy;
     let checkbox: Checkbox;
 
@@ -15,7 +14,6 @@ export function CheckboxTest() {
       spyChange = null;
       checkbox = null;
     });
-
 
     it('should allow to build', () => {
       expect(checkbox.build()).not.toBeNull();
@@ -30,7 +28,6 @@ export function CheckboxTest() {
     });
 
     describe('select', () => {
-
       it('should allow to select', () => {
         checkbox.select();
         expect(checkbox.isSelected()).toBe(true);

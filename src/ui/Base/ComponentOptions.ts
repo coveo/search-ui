@@ -17,7 +17,7 @@ import { SVGIcons } from '../../utils/SVGIcons';
  *
  * The only constraint this type has over a basic string is that it should start with the `@` character.
  */
-export interface IFieldOption extends String { };
+export interface IFieldOption extends String {}
 
 export interface IComponentOptionsLoadOption<T> {
   (element: HTMLElement, name: string, option: IComponentOptionsOption<T>): T;
@@ -28,7 +28,6 @@ export interface IComponentOptionsLoadOption<T> {
  * option to further modify its own value once all other options of that component have been built.
  */
 export interface IComponentOptionsPostProcessing<T> {
-
   /**
    * Specifies a function that should allow a component option to further modify its own value once all other options
    * of that component have been built.
@@ -48,7 +47,6 @@ export interface IComponentOptionsOption<T> extends IComponentOptions<T> {
  * option.
  */
 export interface IComponentOptions<T> {
-
   /**
    * Specifies the value the option must take when no other value is explicitly specified.
    */
@@ -139,15 +137,13 @@ export interface IComponentOptions<T> {
   validator?: (value: T) => boolean;
 }
 
-export interface IComponentOptionsNumberOption extends IComponentOptionsOption<number>, IComponentOptionsNumberOptionArgs {
-}
+export interface IComponentOptionsNumberOption extends IComponentOptionsOption<number>, IComponentOptionsNumberOptionArgs {}
 
 /**
  * The `IComponentOptionsNumberOptionArgs` interface describes the available parameters when building a
  * [number option]{@link ComponentOptions.buildNumberOption).
  */
 export interface IComponentOptionsNumberOptionArgs extends IComponentOptions<number> {
-
   /**
    * Specifies the exclusive minimum value the option can take.
    *
@@ -170,15 +166,13 @@ export interface IComponentOptionsNumberOptionArgs extends IComponentOptions<num
   float?: boolean;
 }
 
-export interface IComponentOptionsListOption extends IComponentOptionsOption<string[]>, IComponentOptionsListOptionArgs {
-}
+export interface IComponentOptionsListOption extends IComponentOptionsOption<string[]>, IComponentOptionsListOptionArgs {}
 
 /**
  * The `IComponentOptionsListOptionArgs` interface describes the available parameters when building a
  * [list option]{@link ComponentOptions.buildListOption).
  */
 export interface IComponentOptionsListOptionArgs extends IComponentOptions<string[]> {
-
   /**
    * Specifies the regular expression to use to separate the elements of the list option.
    *
@@ -197,23 +191,22 @@ export interface IComponentOptionsCustomListOptionArgs<T> extends IComponentOpti
   values?: any;
 }
 
-export interface IComponentOptionsChildHtmlElementOption extends IComponentOptionsOption<HTMLElement>, IComponentOptionsChildHtmlElementOptionArgs {
-}
+export interface IComponentOptionsChildHtmlElementOption
+  extends IComponentOptionsOption<HTMLElement>,
+    IComponentOptionsChildHtmlElementOptionArgs {}
 
 export interface IComponentOptionsChildHtmlElementOptionArgs extends IComponentOptions<HTMLElement> {
   selectorAttr?: string;
   childSelector?: string;
 }
 
-export interface IComponentOptionsTemplateOption extends IComponentOptionsOption<Template>, IComponentOptionsTemplateOptionArgs {
-}
+export interface IComponentOptionsTemplateOption extends IComponentOptionsOption<Template>, IComponentOptionsTemplateOptionArgs {}
 
 /**
  * The `IComponentOptionsTemplateOptionArgs` interface describes the available parameters when building a
  * [template option]{@link ComponentOptions.buildTemplateOption}.
  */
 export interface IComponentOptionsTemplateOptionArgs extends IComponentOptions<Template> {
-
   /**
    * Specifies the CSS selector the template must match. The first matching element in the page is used as the template
    * option value, if this element is a valid template.
@@ -241,8 +234,7 @@ export interface IComponentOptionsTemplateOptionArgs extends IComponentOptions<T
   idAttr?: string;
 }
 
-export interface IComponentOptionsFieldOption extends IComponentOptionsOption<string>, IComponentOptionsFieldOptionArgs {
-}
+export interface IComponentOptionsFieldOption extends IComponentOptionsOption<string>, IComponentOptionsFieldOptionArgs {}
 
 /**
  * The `IComponentOptionsFieldOptionArgs` interface describes the available parameters when building a
@@ -256,8 +248,7 @@ export interface IComponentOptionsFieldOptionArgs extends IComponentOptions<stri
   match?: (field: IFieldDescription) => boolean;
 }
 
-export interface IComponentOptionsFieldsOption extends IComponentOptionsOption<string[]>, IComponentOptionsFieldsOptionArgs {
-}
+export interface IComponentOptionsFieldsOption extends IComponentOptionsOption<string[]>, IComponentOptionsFieldsOptionArgs {}
 
 /**
  * The `IComponentOptionsFieldsOptionArgs` interface describes the available parameters when building a
@@ -271,14 +262,12 @@ export interface IComponentOptionsFieldsOptionArgs extends IComponentOptions<str
   match?: (field: IFieldDescription) => boolean;
 }
 
-export interface IComponentOptionsObjectOption extends IComponentOptionsOption<{ [key: string]: any }>, IComponentOptionsObjectOptionArgs {
-}
+export interface IComponentOptionsObjectOption extends IComponentOptionsOption<{ [key: string]: any }>, IComponentOptionsObjectOptionArgs {}
 export interface IComponentOptionsObjectOptionArgs extends IComponentOptions<{ [key: string]: any }> {
   subOptions: { [key: string]: IComponentOptionsOption<any> };
 }
 
-export interface IComponentJsonObjectOption<T> extends IComponentOptions<T> {
-}
+export interface IComponentJsonObjectOption<T> extends IComponentOptions<T> {}
 
 export enum ComponentOptionsType {
   BOOLEAN,
@@ -318,7 +307,6 @@ const localizer = /([a-zA-Z\-]+)\s*:\s*(([^,]|,\s*(?!([a-zA-Z\-]+)\s*:))+)/g;
  * [`buildStringOption`]{@link ComponentOptions.buildStringOption}, etc.)
  */
 export class ComponentOptions {
-
   /**
    * Builds a boolean option.
    *
@@ -477,7 +465,11 @@ export class ComponentOptions {
    * @returns {string} The resulting option value.
    */
   static buildLocalizedStringOption(optionArgs?: IComponentOptions<string>): string {
-    return ComponentOptions.buildOption<string>(ComponentOptionsType.LOCALIZED_STRING, ComponentOptions.loadLocalizedStringOption, optionArgs);
+    return ComponentOptions.buildOption<string>(
+      ComponentOptionsType.LOCALIZED_STRING,
+      ComponentOptions.loadLocalizedStringOption,
+      optionArgs
+    );
   }
 
   /**
@@ -549,7 +541,11 @@ export class ComponentOptions {
   }
 
   static buildChildHtmlElementOption(optionArgs?: IComponentOptionsChildHtmlElementOptionArgs): HTMLElement {
-    return ComponentOptions.buildOption<HTMLElement>(ComponentOptionsType.CHILD_HTML_ELEMENT, ComponentOptions.loadChildHtmlElementOption, optionArgs);
+    return ComponentOptions.buildOption<HTMLElement>(
+      ComponentOptionsType.CHILD_HTML_ELEMENT,
+      ComponentOptions.loadChildHtmlElementOption,
+      optionArgs
+    );
   }
 
   /**
@@ -598,14 +594,14 @@ export class ComponentOptions {
 
   static buildObjectOption(optionArgs?: IComponentOptionsObjectOptionArgs): any {
     const loadOption: IComponentOptionsLoadOption<{
-      [key: string]: any
+      [key: string]: any;
     }> = (element: HTMLElement, name: string, option: IComponentOptionsOption<any>) => {
       const keys = _.keys(optionArgs.subOptions);
       const scopedOptions: {
-        [name: string]: IComponentOptionsOption<any>
+        [name: string]: IComponentOptionsOption<any>;
       } = {};
       const scopedValues: {
-        [name: string]: any
+        [name: string]: any;
       } = {};
       for (let i = 0; i < keys.length; i++) {
         const key = keys[i];
@@ -614,7 +610,7 @@ export class ComponentOptions {
       }
       ComponentOptions.initOptions(element, scopedOptions, scopedValues);
       const resultValues: {
-        [name: string]: any
+        [name: string]: any;
       } = {};
       let resultFound = false;
       for (let i = 0; i < keys.length; i++) {
@@ -628,7 +624,7 @@ export class ComponentOptions {
       return resultFound ? resultValues : null;
     };
     return ComponentOptions.buildOption<{
-      [key: string]: any
+      [key: string]: any;
     }>(ComponentOptionsType.OBJECT, loadOption, optionArgs);
   }
 
@@ -671,9 +667,14 @@ export class ComponentOptions {
     return ComponentOptions.initOptions(element, component.options, values, component.ID);
   }
 
-  static initOptions(element: HTMLElement, options: {
-    [name: string]: IComponentOptionsOption<any>
-  }, values?: any, componentID?: any) {
+  static initOptions(
+    element: HTMLElement,
+    options: {
+      [name: string]: IComponentOptionsOption<any>;
+    },
+    values?: any,
+    componentID?: any
+  ) {
     const logger = new Logger(this);
     if (values == null) {
       values = {};
@@ -730,7 +731,10 @@ export class ComponentOptions {
         }
       }
       if (values[name] == undefined && optionDefinition.required) {
-        logger.warn(`Option "${name}" is *REQUIRED* on the component "${componentID}". The component or the search page might *NOT WORK PROPERLY*.`, element);
+        logger.warn(
+          `Option "${name}" is *REQUIRED* on the component "${componentID}". The component or the search page might *NOT WORK PROPERLY*.`,
+          element
+        );
       }
     }
 
@@ -816,11 +820,17 @@ export class ComponentOptions {
     }
     let numberValue = option.float === true ? Utils.parseFloatIfNotUndefined(attributeValue) : Utils.parseIntIfNotUndefined(attributeValue);
     if (option.min != null && option.min > numberValue) {
-      new Logger(element).info(`Value for option ${name} is less than the possible minimum (Value is ${numberValue}, minimum is ${option.min}). It has been forced to its minimum value.`, option);
+      new Logger(element).info(
+        `Value for option ${name} is less than the possible minimum (Value is ${numberValue}, minimum is ${option.min}). It has been forced to its minimum value.`,
+        option
+      );
       numberValue = option.min;
     }
     if (option.max != null && option.max < numberValue) {
-      new Logger(element).info(`Value for option ${name} is higher than the possible maximum (Value is ${numberValue}, maximum is ${option.max}). It has been forced to its maximum value.`, option);
+      new Logger(element).info(
+        `Value for option ${name} is higher than the possible maximum (Value is ${numberValue}, maximum is ${option.max}). It has been forced to its maximum value.`,
+        option
+      );
       numberValue = option.max;
     }
     return numberValue;
@@ -849,17 +859,30 @@ export class ComponentOptions {
     try {
       return JSON.parse(jsonAsString) as T;
     } catch (exception) {
-      new Logger(element).info(`Value for option ${name} is not a valid JSON string (Value is ${jsonAsString}). It has been disabled.`, exception);
+      new Logger(element).info(
+        `Value for option ${name} is not a valid JSON string (Value is ${jsonAsString}). It has been disabled.`,
+        exception
+      );
       return null;
     }
   }
 
-  static loadSelectorOption(element: HTMLElement, name: string, option: IComponentOptionsOption<any>, doc: Document = document): HTMLElement {
+  static loadSelectorOption(
+    element: HTMLElement,
+    name: string,
+    option: IComponentOptionsOption<any>,
+    doc: Document = document
+  ): HTMLElement {
     const attributeValue = ComponentOptions.loadStringOption(element, name, option);
     return Utils.isNonEmptyString(attributeValue) ? <HTMLElement>doc.querySelector(attributeValue) : null;
   }
 
-  static loadChildHtmlElementOption(element: HTMLElement, name: string, option: IComponentOptionsChildHtmlElementOption, doc: Document = document): HTMLElement {
+  static loadChildHtmlElementOption(
+    element: HTMLElement,
+    name: string,
+    option: IComponentOptionsChildHtmlElementOption,
+    doc: Document = document
+  ): HTMLElement {
     let htmlElement: HTMLElement;
     // Attribute: selector
     const selectorAttr = option.selectorAttr || ComponentOptions.attrNameFromName(name, option) + '-selector';
@@ -891,8 +914,12 @@ export class ComponentOptions {
     return $$(element).findAll(selector);
   }
 
-  static loadTemplateOption(element: HTMLElement, name: string, option: IComponentOptionsTemplateOption, doc: Document = document): Template {
-
+  static loadTemplateOption(
+    element: HTMLElement,
+    name: string,
+    option: IComponentOptionsTemplateOption,
+    doc: Document = document
+  ): Template {
     let template: Template;
 
     // Attribute: template selector
@@ -930,7 +957,7 @@ export class ComponentOptions {
   static loadChildrenResultTemplateFromSelector(element: HTMLElement, selector: string): Template {
     const foundElements = ComponentOptions.loadChildrenHtmlElementFromSelector(element, selector);
     if (foundElements.length > 0) {
-      return new TemplateList(_.compact(_.map(foundElements, (element) => ComponentOptions.createResultTemplateFromElement(element))));
+      return new TemplateList(_.compact(_.map(foundElements, element => ComponentOptions.createResultTemplateFromElement(element))));
     }
     return null;
   }
@@ -970,9 +997,12 @@ export class ComponentOptions {
   static createResultTemplateFromElement(element: HTMLElement): Template {
     Assert.exists(element);
     const type = element.getAttribute('type');
-    const mimeTypes = 'You must specify the type of template. Valid values are:' +
-      ' ' + UnderscoreTemplate.mimeTypes.toString() +
-      ' ' + HtmlTemplate.mimeTypes.toString();
+    const mimeTypes =
+      'You must specify the type of template. Valid values are:' +
+      ' ' +
+      UnderscoreTemplate.mimeTypes.toString() +
+      ' ' +
+      HtmlTemplate.mimeTypes.toString();
     Assert.check(Utils.isNonEmptyString(type), mimeTypes);
 
     if (_.indexOf(UnderscoreTemplate.mimeTypes, type.toLowerCase()) != -1) {

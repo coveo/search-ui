@@ -8,12 +8,12 @@ export function KeywordsInputTest() {
   describe('KeywordsInput', () => {
     let input: KeywordsInput;
 
-    beforeEach(function () {
+    beforeEach(function() {
       input = new KeywordsInput('test', $$('div').el);
       input.build();
     });
 
-    afterEach(function () {
+    afterEach(function() {
       input = null;
     });
 

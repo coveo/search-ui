@@ -7,7 +7,6 @@ import { IRangeValue } from './RangeValue';
  * See [Group By Parameters](https://developers.coveo.com/x/jQEv).
  */
 export interface IGroupByRequest {
-
   /**
    * Specifies the field on which to perform the Group By request. The Group By request returns a Group By value for
    * each distinct value of this field within the result set.

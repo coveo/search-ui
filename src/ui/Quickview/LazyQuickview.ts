@@ -5,10 +5,15 @@ import { lazyExport } from '../../GlobalExports';
 export function lazyQuickview() {
   LazyInitialization.registerLazyComponent('Quickview', () => {
     return new Promise((resolve, reject) => {
-      require.ensure(['./Quickview'], () => {
-        let loaded = require<IComponentDefinition>('./Quickview.ts')['Quickview'];
-        lazyExport(loaded, resolve);
-      }, LazyInitialization.buildErrorCallback('Quickview', resolve), 'Quickview');
+      require.ensure(
+        ['./Quickview'],
+        () => {
+          let loaded = require<IComponentDefinition>('./Quickview.ts')['Quickview'];
+          lazyExport(loaded, resolve);
+        },
+        LazyInitialization.buildErrorCallback('Quickview', resolve),
+        'Quickview'
+      );
     });
   });
 }

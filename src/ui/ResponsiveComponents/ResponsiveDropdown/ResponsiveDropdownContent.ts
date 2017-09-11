@@ -37,8 +37,13 @@ export class ResponsiveDropdownContent implements IResponsiveDropdownContent {
     }
     this.element.el.style.width = width.toString() + 'px';
 
-    PopupUtils.positionPopup(this.element.el, $$(this.coveoRoot.find(`.${ResponsiveComponentsManager.DROPDOWN_HEADER_WRAPPER_CSS_CLASS}`)).el, this.coveoRoot.el,
-      { horizontal: HorizontalAlignment.INNERRIGHT, vertical: VerticalAlignment.BOTTOM, verticalOffset: 15 }, this.coveoRoot.el);
+    PopupUtils.positionPopup(
+      this.element.el,
+      $$(this.coveoRoot.find(`.${ResponsiveComponentsManager.DROPDOWN_HEADER_WRAPPER_CSS_CLASS}`)).el,
+      this.coveoRoot.el,
+      { horizontal: HorizontalAlignment.INNERRIGHT, vertical: VerticalAlignment.BOTTOM, verticalOffset: 15 },
+      this.coveoRoot.el
+    );
   }
 
   public hideDropdown() {

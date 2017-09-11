@@ -5,12 +5,10 @@ import { Tab } from '../../../src/ui/Tab/Tab';
 import { ResponsiveComponents } from '../../../src/ui/ResponsiveComponents/ResponsiveComponents';
 
 export function ResponsiveTabsTest() {
-
   let root: Dom;
   let responsiveTabs: ResponsiveTabs;
 
   describe('ResponsiveTabs', () => {
-
     beforeEach(() => {
       root = $$('div');
       root.append($$('div', { className: 'coveo-tab-section' }).el);
