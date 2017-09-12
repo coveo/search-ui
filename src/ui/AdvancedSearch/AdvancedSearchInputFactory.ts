@@ -13,9 +13,7 @@ import { SizeInput } from './DocumentInput/SizeInput';
 import { IFieldInputParameters } from './AdvancedSearchInput';
 
 export class AdvancedSearchInputFactory {
-
-  constructor(private endpoint: ISearchEndpoint, private root: HTMLElement) {
-  }
+  constructor(private endpoint: ISearchEndpoint, private root: HTMLElement) {}
 
   public create(name: string, options?: IFieldInputParameters): IAdvancedSearchInput {
     switch (name) {
@@ -83,5 +81,4 @@ export class AdvancedSearchInputFactory {
   public createSizeInput() {
     return new SizeInput(this.root);
   }
-
 }

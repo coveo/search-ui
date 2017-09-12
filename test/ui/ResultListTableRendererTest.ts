@@ -16,17 +16,16 @@ export function ResultListTableRendererTest() {
       renderer = null;
     });
 
-    it('should only instantiate table-header by default', (done) => {
+    it('should only instantiate table-header by default', done => {
       const fakeTemplateList = new TableTemplate([]);
       renderer = new ResultListTableRenderer({ resultTemplate: fakeTemplateList, resultContainer: resultContainer }, () => null);
-      renderer.renderResults([$$('div', { className: 'CoveoResult' }).el], false, () => null)
-        .then(() => {
-          expect($$(resultContainer).find('.coveo-result-list-table-header')).not.toBeNull();
-          done();
-        });
+      renderer.renderResults([$$('div', { className: 'CoveoResult' }).el], false, () => null).then(() => {
+        expect($$(resultContainer).find('.coveo-result-list-table-header')).not.toBeNull();
+        done();
+      });
     });
 
-    it('should render a table footer if one is present in an embedded TemplateList', (done) => {
+    it('should render a table footer if one is present in an embedded TemplateList', done => {
       const fakeTemplateList = new TableTemplate([]);
       spyOn(fakeTemplateList, 'hasTemplateWithRole').and.callFake(a => {
         if (a == 'table-footer') {
@@ -34,11 +33,10 @@ export function ResultListTableRendererTest() {
         }
       });
       renderer = new ResultListTableRenderer({ resultTemplate: fakeTemplateList, resultContainer: resultContainer }, () => null);
-      renderer.renderResults([$$('div', { className: 'CoveoResult' }).el], false, () => null)
-        .then(() => {
-          expect($$(resultContainer).find('.coveo-result-list-table-footer')).not.toBeNull();
-          done();
-        });
+      renderer.renderResults([$$('div', { className: 'CoveoResult' }).el], false, () => null).then(() => {
+        expect($$(resultContainer).find('.coveo-result-list-table-footer')).not.toBeNull();
+        done();
+      });
     });
 
     it('should not render a table header if custom templates are specified but no header template', () => {

@@ -8,10 +8,8 @@ import { NoopAnalyticsClient } from '../../src/ui/Analytics/NoopAnalyticsClient'
 import { LiveAnalyticsClient } from '../../src/ui/Analytics/LiveAnalyticsClient';
 import { MultiAnalyticsClient } from '../../src/ui/Analytics/MultiAnalyticsClient';
 
-
 export function AnalyticsTest() {
   describe('Analytics', () => {
-
     describe('with default setup', () => {
       let test: Mock.IBasicComponentSetup<Analytics>;
       beforeEach(() => {
@@ -51,7 +49,11 @@ export function AnalyticsTest() {
             name: 'oops pretty bad'
           }
         });
-        expect(test.cmp.client.logCustomEvent).toHaveBeenCalledWith(analyticsActionCauseList.queryError, jasmine.any(Object), jasmine.any(HTMLElement));
+        expect(test.cmp.client.logCustomEvent).toHaveBeenCalledWith(
+          analyticsActionCauseList.queryError,
+          jasmine.any(Object),
+          jasmine.any(HTMLElement)
+        );
       });
     });
 
@@ -183,7 +185,7 @@ export function AnalyticsTest() {
         expect(simulation.queryBuilder.build().searchHub).toBe('yoo');
       });
 
-      it('searchhub should be put in the component options model for other component to see it\'s value', () => {
+      it("searchhub should be put in the component options model for other component to see it's value", () => {
         test = Mock.optionsComponentSetup<Analytics, IAnalyticsOptions>(Analytics, {
           searchHub: 'mama mia'
         });

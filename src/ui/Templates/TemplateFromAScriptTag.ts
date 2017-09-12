@@ -42,16 +42,20 @@ export class TemplateFromAScriptTag {
     this.template.addFields(TemplateConditionEvaluator.getFieldFromString(scriptTag.innerHTML + ' ' + condition) || []);
 
     // Additional fields that might be specified directly on the script element
-    const additionalFields = ComponentOptions.loadFieldsOption(scriptTag, 'fields', <IComponentOptionsFieldsOption>{ includeInResults: true });
+    const additionalFields = ComponentOptions.loadFieldsOption(scriptTag, 'fields', <IComponentOptionsFieldsOption>{
+      includeInResults: true
+    });
     if (additionalFields != null) {
       // remove the @
-      this.template.addFields(_.map(additionalFields, (field) => field.substr(1)));
+      this.template.addFields(_.map(additionalFields, field => field.substr(1)));
     }
 
     // Additional fields that might be used to conditionally load the template when it's going to be rendered.
-    this.template.addFields(_.map(this.template.fieldsToMatch, (toMatch: IFieldsToMatch) => {
-      return toMatch.field;
-    }));
+    this.template.addFields(
+      _.map(this.template.fieldsToMatch, (toMatch: IFieldsToMatch) => {
+        return toMatch.field;
+      })
+    );
 
     // Scan components in this template
     // return the fields needed for the content of this template
@@ -108,7 +112,11 @@ export class TemplateFromAScriptTag {
     return <ValidLayout>layout;
   }
 
-  static fromString(template: string, properties: ITemplateFromStringProperties = {}, container = document.createElement('code')): HTMLElement {
+  static fromString(
+    template: string,
+    properties: ITemplateFromStringProperties = {},
+    container = document.createElement('code')
+  ): HTMLElement {
     container.innerHTML = template;
     if (properties.condition != null) {
       container.setAttribute('data-condition', properties.condition);
@@ -134,7 +142,6 @@ export class TemplateFromAScriptTag {
         } else {
           container.setAttribute(`data-field-${fieldToMatch.field.toLowerCase()}`, null);
         }
-
       });
     }
     if (properties.role != null) {

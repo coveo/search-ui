@@ -11,15 +11,9 @@ import { $$ } from '../../utils/Dom';
 export class UnderscoreTemplate extends Template {
   private template: (data: any) => string;
   private templateFromAScriptTag: TemplateFromAScriptTag;
-  public static templateHelpers: { [templateName: string]: ITemplateHelperFunction; } = {};
+  public static templateHelpers: { [templateName: string]: ITemplateHelperFunction } = {};
 
-
-  public static mimeTypes = [
-    'text/underscore',
-    'text/underscore-template',
-    'text/x-underscore',
-    'text/x-underscore-template'
-  ];
+  public static mimeTypes = ['text/underscore', 'text/underscore-template', 'text/x-underscore', 'text/x-underscore-template'];
 
   constructor(public element: HTMLElement) {
     super();
@@ -28,10 +22,13 @@ export class UnderscoreTemplate extends Template {
     try {
       this.template = _.template(templateString);
     } catch (e) {
-      new Logger(this).error('Cannot instantiate underscore template. Might be caused by strict Content-Security-Policy. Will fallback on a default template...', e);
+      new Logger(this).error(
+        'Cannot instantiate underscore template. Might be caused by strict Content-Security-Policy. Will fallback on a default template...',
+        e
+      );
     }
     this.templateFromAScriptTag = new TemplateFromAScriptTag(this, this.element);
-    this.dataToString = (object) => {
+    this.dataToString = object => {
       var extended = _.extend({}, object, UnderscoreTemplate.templateHelpers);
       if (this.template) {
         try {
@@ -44,7 +41,6 @@ export class UnderscoreTemplate extends Template {
       } else {
         return new DefaultResultTemplate().getFallbackTemplate();
       }
-
     };
   }
 

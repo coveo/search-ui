@@ -55,7 +55,7 @@ export class StringAndHoles {
   static shortenPath(uriOrig: string, length: number): StringAndHoles {
     const strAndHoles = new StringAndHoles();
     let uri = uriOrig;
-    if (Utils.isNullOrEmptyString(uri) || (uri.length <= length)) {
+    if (Utils.isNullOrEmptyString(uri) || uri.length <= length) {
       strAndHoles.value = uri;
       return strAndHoles;
     }
@@ -155,7 +155,7 @@ export class StringAndHoles {
    */
   static shortenUri(uri: string, length: number): StringAndHoles {
     const strAndHoles = new StringAndHoles();
-    if (Utils.isNullOrEmptyString(uri) || (uri.length <= length)) {
+    if (Utils.isNullOrEmptyString(uri) || uri.length <= length) {
       strAndHoles.value = uri;
       return strAndHoles;
     }

@@ -3,19 +3,17 @@ import { IQueryResults } from '../../src/rest/QueryResults';
 import { FakeResults } from '../Fake';
 
 export function EndpointCallerTest() {
-  describe('EndpointCaller', function () {
-
-    describe('using generic call', function () {
-
-      beforeEach(function () {
+  describe('EndpointCaller', function() {
+    describe('using generic call', function() {
+      beforeEach(function() {
         jasmine.Ajax.install();
       });
 
-      afterEach(function () {
+      afterEach(function() {
         jasmine.Ajax.uninstall();
       });
 
-      it('should use XMLHTTPRequest by default', function () {
+      it('should use XMLHTTPRequest by default', function() {
         var endpointCaller = new EndpointCaller();
         endpointCaller.call({
           method: 'POST',
@@ -28,8 +26,8 @@ export function EndpointCallerTest() {
         expect(jasmine.Ajax.requests.mostRecent().url).toBe('this is an XMLHTTPRequest');
       });
 
-      it('should use the provided XMLHTTPRequest', function () {
-        class CustomXMLHttpRequest extends XMLHttpRequest { }
+      it('should use the provided XMLHTTPRequest', function() {
+        class CustomXMLHttpRequest extends XMLHttpRequest {}
 
         var endpointCaller = new EndpointCaller({ xmlHttpRequest: CustomXMLHttpRequest });
         endpointCaller.call({
@@ -43,7 +41,7 @@ export function EndpointCallerTest() {
         expect(jasmine.Ajax.requests.mostRecent() instanceof CustomXMLHttpRequest).toBe(true);
       });
 
-      it('should set the auth if provided', function () {
+      it('should set the auth if provided', function() {
         var endpointCaller = new EndpointCaller({
           accessToken: 'myToken'
         });
@@ -73,23 +71,23 @@ export function EndpointCallerTest() {
       });
     });
 
-    describe('using XMLHTTPRequest', function () {
-      beforeEach(function () {
+    describe('using XMLHTTPRequest', function() {
+      beforeEach(function() {
         jasmine.Ajax.install();
       });
 
-      afterEach(function () {
+      afterEach(function() {
         jasmine.Ajax.uninstall();
       });
 
-      it('should set the correct requested params on the XMLHTTPRequest', function () {
+      it('should set the correct requested params on the XMLHTTPRequest', function() {
         var endpointCaller = new EndpointCaller();
         endpointCaller.call({
           method: 'POST',
           requestData: {
-            'foo': 'bar',
-            'bar': 'foo',
-            'bahh': 'bohh'
+            foo: 'bar',
+            bar: 'foo',
+            bahh: 'bohh'
           },
           url: 'foo.bar.com',
           queryString: [],
@@ -119,8 +117,8 @@ export function EndpointCallerTest() {
         endpointCaller.call({
           method: 'GET',
           requestData: {
-            'e': 'f',
-            'g': 'h'
+            e: 'f',
+            g: 'h'
           },
           url: 'foo.bar.com',
           queryString: ['a=b', 'c=d'],
@@ -134,15 +132,15 @@ export function EndpointCallerTest() {
         expect(Object.keys(fakeRequest.requestHeaders).length).toBe(0);
       });
 
-      describe('using response type text', function () {
-        beforeEach(function () {
+      describe('using response type text', function() {
+        beforeEach(function() {
           this.endpointCaller = new EndpointCaller();
           this.promise = this.endpointCaller.call({
             method: 'POST',
             requestData: {
-              'foo': 'bar',
-              'bar': 'foo',
-              'bahh': 'bohh'
+              foo: 'bar',
+              bar: 'foo',
+              bahh: 'bohh'
             },
             url: 'foo.bar.com',
             queryString: [],
@@ -151,18 +149,20 @@ export function EndpointCallerTest() {
           });
         });
 
-        afterEach(function () {
+        afterEach(function() {
           this.endpointCaller = undefined;
           this.promise = undefined;
         });
 
-        it('should work if responseContentType is text', function (done) {
-          this.promise.then((response: ISuccessResponse<IQueryResults>) => {
-            expect(response.data.results.length).toBe(10);
-            expect(response.duration).toBeDefined();
-          }).then(() => {
-            done();
-          });
+        it('should work if responseContentType is text', function(done) {
+          this.promise
+            .then((response: ISuccessResponse<IQueryResults>) => {
+              expect(response.data.results.length).toBe(10);
+              expect(response.duration).toBeDefined();
+            })
+            .then(() => {
+              done();
+            });
 
           jasmine.Ajax.requests.mostRecent().respondWith({
             status: 200,
@@ -171,13 +171,15 @@ export function EndpointCallerTest() {
           });
         });
 
-        it('should work if responseContentType is application/json', function (done) {
-          this.promise.then((response: ISuccessResponse<IQueryResults>) => {
-            expect(response.data.results.length).toBe(10);
-            expect(response.duration).toBeDefined();
-          }).then(() => {
-            done();
-          });
+        it('should work if responseContentType is application/json', function(done) {
+          this.promise
+            .then((response: ISuccessResponse<IQueryResults>) => {
+              expect(response.data.results.length).toBe(10);
+              expect(response.duration).toBeDefined();
+            })
+            .then(() => {
+              done();
+            });
           var fakeRequest = jasmine.Ajax.requests.mostRecent();
           fakeRequest.respondWith({
             status: 200,
@@ -186,7 +188,7 @@ export function EndpointCallerTest() {
           });
         });
 
-        it('should behave properly if there is an error', function (done) {
+        it('should behave properly if there is an error', function(done) {
           this.promise
             .then((response: ISuccessResponse<IQueryResults>) => {
               // This should never execute, and always go to the catch statement
@@ -205,7 +207,7 @@ export function EndpointCallerTest() {
           });
         });
 
-        it('should behave properly if there is an error in the body', function (done) {
+        it('should behave properly if there is an error in the body', function(done) {
           this.promise
             .then((response: ISuccessResponse<IQueryResults>) => {
               // This should never execute, and always go to the catch statement
@@ -229,15 +231,15 @@ export function EndpointCallerTest() {
         });
       });
 
-      describe('using response type json', function () {
-        beforeEach(function () {
+      describe('using response type json', function() {
+        beforeEach(function() {
           this.endpointCaller = new EndpointCaller();
           this.promise = this.endpointCaller.call({
             method: 'POST',
             requestData: {
-              'foo': 'bar',
-              'bar': 'foo',
-              'bahh': 'bohh'
+              foo: 'bar',
+              bar: 'foo',
+              bahh: 'bohh'
             },
             url: 'foo.bar.com',
             queryString: [],
@@ -245,19 +247,21 @@ export function EndpointCallerTest() {
             errorsAsSuccess: false
           });
         });
-        afterEach(function () {
+        afterEach(function() {
           this.endpointCaller = undefined;
           this.promise = undefined;
         });
 
-        it('should work if responseContentType is text', function (done) {
-          this.promise.then((response: ISuccessResponse<IQueryResults>) => {
-            expect(response.data.results.length).toBe(10);
-            expect(response.duration).toBeDefined();
-            return response.duration;
-          }).then(() => {
-            done();
-          });
+        it('should work if responseContentType is text', function(done) {
+          this.promise
+            .then((response: ISuccessResponse<IQueryResults>) => {
+              expect(response.data.results.length).toBe(10);
+              expect(response.duration).toBeDefined();
+              return response.duration;
+            })
+            .then(() => {
+              done();
+            });
 
           jasmine.Ajax.requests.mostRecent().respondWith({
             status: 200,
@@ -266,14 +270,16 @@ export function EndpointCallerTest() {
           });
         });
 
-        it('should work if responseContentType is application/json', function (done) {
-          this.promise.then((response: ISuccessResponse<IQueryResults>) => {
-            expect(response.data.results.length).toBe(10);
-            expect(response.duration).toBeDefined();
-            return response.duration;
-          }).then(() => {
-            done();
-          });
+        it('should work if responseContentType is application/json', function(done) {
+          this.promise
+            .then((response: ISuccessResponse<IQueryResults>) => {
+              expect(response.data.results.length).toBe(10);
+              expect(response.duration).toBeDefined();
+              return response.duration;
+            })
+            .then(() => {
+              done();
+            });
 
           var fakeRequest = jasmine.Ajax.requests.mostRecent();
           fakeRequest.respondWith({
@@ -283,10 +289,10 @@ export function EndpointCallerTest() {
           });
         });
 
-        it('should allow to modify the request with an option', function () {
+        it('should allow to modify the request with an option', function() {
           let endpointCaller = new EndpointCaller({
             accessToken: 'myToken',
-            requestModifier: (requestInfo) => {
+            requestModifier: requestInfo => {
               requestInfo.method = 'GET';
               return requestInfo;
             }
@@ -303,7 +309,5 @@ export function EndpointCallerTest() {
         });
       });
     });
-
-
   });
 }

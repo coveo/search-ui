@@ -11,10 +11,16 @@ import { SVGIcons } from '../../utils/SVGIcons';
 import { SVGDom } from '../../utils/SVGDom';
 import 'styling/_ResultRating';
 
-export enum RatingValues { Undefined, Lowest, Low, Average, Good, Best };
-
-export interface IResultRatingOptions {
+export enum RatingValues {
+  Undefined,
+  Lowest,
+  Low,
+  Average,
+  Good,
+  Best
 }
+
+export interface IResultRatingOptions {}
 /**
  * The `ResultRating` component renders a 5-star rating widget. Interactive rating is possible if
  * the [`enableCollaborativeRating`]{@link SearchInterface.options.enableCollaborativeRating} option of your
@@ -27,9 +33,9 @@ export class ResultRating extends Component {
 
   static doExport = () => {
     exportGlobally({
-      'ResultRating': ResultRating
+      ResultRating: ResultRating
     });
-  }
+  };
 
   /**
    * Creates a new `ResultRating` component.
@@ -39,7 +45,12 @@ export class ResultRating extends Component {
    * automatically resolved (with a slower execution time).
    * @param result The result to associate the component with.
    */
-  constructor(public element: HTMLElement, public options?: IResultRatingOptions, public bindings?: IComponentBindings, public result?: IQueryResult) {
+  constructor(
+    public element: HTMLElement,
+    public options?: IResultRatingOptions,
+    public bindings?: IComponentBindings,
+    public result?: IQueryResult
+  ) {
     super(element, ResultRating.ID, bindings);
     this.options = ComponentOptions.initComponentOptions(element, ResultRating, options);
 
@@ -63,12 +74,12 @@ export class ResultRating extends Component {
       element.appendChild(star.el);
 
       if (this.bindings.searchInterface.options.enableCollaborativeRating) {
-        star.on('click', (e) => {
+        star.on('click', e => {
           const targetElement: HTMLElement = <HTMLElement>e.currentTarget;
           this.rateDocument(parseInt(targetElement.getAttribute('rating-value')));
         });
 
-        star.on('mouseover', (e) => {
+        star.on('mouseover', e => {
           const targetElement: HTMLElement = <HTMLElement>e.currentTarget;
           this.renderComponent(element, parseInt(targetElement.getAttribute('rating-value')));
         });
@@ -105,7 +116,9 @@ export class ResultRating extends Component {
       uniqueId: this.result.uniqueId
     };
 
-    this.queryController.getEndpoint().rateDocument(request)
+    this.queryController
+      .getEndpoint()
+      .rateDocument(request)
       .then(() => {
         this.result.rating = rating;
         this.renderComponent(this.element, rating);

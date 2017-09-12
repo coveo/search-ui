@@ -6,9 +6,7 @@ import { analyticsActionCauseList } from '../../src/ui/Analytics/AnalyticsAction
 import { ValueElementRenderer } from '../../src/ui/Facet/ValueElementRenderer';
 
 export function ValueElementTest() {
-
   describe('ValueElementTest', () => {
-
     let facet: Facet;
     let facetValue: FacetValue;
     let valueElementRenderer: ValueElementRenderer;
@@ -28,7 +26,6 @@ export function ValueElementTest() {
       valueElement.renderer = valueElementRenderer;
     });
 
-
     it('should send one exclude UA event when excluding a facet value', () => {
       facetValue.excluded = false;
       facet.queryController.executeQuery = options => {
@@ -41,7 +38,6 @@ export function ValueElementTest() {
       expect(facet.usageAnalytics.logSearchEvent).toHaveBeenCalledTimes(1);
       expect(facet.usageAnalytics.logSearchEvent).toHaveBeenCalledWith(analyticsActionCauseList.facetExclude, jasmine.any(Object));
     });
-
 
     it('should select facet value when select is called', () => {
       valueElement.select();

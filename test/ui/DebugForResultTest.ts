@@ -52,20 +52,22 @@ export function DebugForResultTest() {
       result.rankingInfo = info;
 
       expect(() => debugForResult.generateDebugInfoForResult(result)).not.toThrow();
-      expect(debugForResult.generateDebugInfoForResult(result).rankingInfo()).toEqual(jasmine.objectContaining({
-        'Document weights': jasmine.objectContaining({
-          Title: 0,
-          Quality: 180,
-          Date: 405,
-          Adjacency: 0,
-          Source: 500,
-          Custom: 400,
-          'Collaborative rating': 0,
-          QRE: 890,
-          'Ranking functions': 0
-        }),
-        'Total weight': 2375
-      }));
+      expect(debugForResult.generateDebugInfoForResult(result).rankingInfo()).toEqual(
+        jasmine.objectContaining({
+          'Document weights': jasmine.objectContaining({
+            Title: 0,
+            Quality: 180,
+            Date: 405,
+            Adjacency: 0,
+            Source: 500,
+            Custom: 400,
+            'Collaborative rating': 0,
+            QRE: 890,
+            'Ranking functions': 0
+          }),
+          'Total weight': 2375
+        })
+      );
     });
 
     it('should return the ranking info if it can parse it properly with no QRE', () => {
@@ -77,20 +79,22 @@ export function DebugForResultTest() {
       result.rankingInfo = info;
 
       expect(() => debugForResult.generateDebugInfoForResult(result)).not.toThrow();
-      expect(debugForResult.generateDebugInfoForResult(result).rankingInfo()).toEqual(jasmine.objectContaining({
-        'Document weights': jasmine.objectContaining({
-          Title: 0,
-          Quality: 180,
-          Date: 405,
-          Adjacency: 0,
-          Source: 500,
-          Custom: 400,
-          'Collaborative rating': 0,
-          QRE: 890,
-          'Ranking functions': 0
-        }),
-        'Total weight': 2375
-      }));
+      expect(debugForResult.generateDebugInfoForResult(result).rankingInfo()).toEqual(
+        jasmine.objectContaining({
+          'Document weights': jasmine.objectContaining({
+            Title: 0,
+            Quality: 180,
+            Date: 405,
+            Adjacency: 0,
+            Source: 500,
+            Custom: 400,
+            'Collaborative rating': 0,
+            QRE: 890,
+            'Ranking functions': 0
+          }),
+          'Total weight': 2375
+        })
+      );
     });
 
     it('should return the ranking info if it can parse it properly with no QRE', () => {
@@ -108,20 +112,22 @@ export function DebugForResultTest() {
       result.rankingInfo = info;
 
       expect(() => debugForResult.generateDebugInfoForResult(result)).not.toThrow();
-      expect(debugForResult.generateDebugInfoForResult(result).rankingInfo()).toEqual(jasmine.objectContaining({
-        'Document weights': jasmine.objectContaining({
-          Title: 303,
-          Quality: 180,
-          Date: 255,
-          Adjacency: 1350,
-          Source: 500,
-          Custom: 400,
-          'Collaborative rating': 0,
-          QRE: 0,
-          'Ranking functions': 0
-        }),
-        'Total weight': 5930
-      }));
+      expect(debugForResult.generateDebugInfoForResult(result).rankingInfo()).toEqual(
+        jasmine.objectContaining({
+          'Document weights': jasmine.objectContaining({
+            Title: 303,
+            Quality: 180,
+            Date: 255,
+            Adjacency: 1350,
+            Source: 500,
+            Custom: 400,
+            'Collaborative rating': 0,
+            QRE: 0,
+            'Ranking functions': 0
+          }),
+          'Total weight': 5930
+        })
+      );
     });
 
     it('should contain a reference to the original result', () => {
@@ -133,30 +139,48 @@ export function DebugForResultTest() {
       expect(env.searchEndpoint.listFields).toHaveBeenCalled();
     });
 
-    it('should return a correct field description for field of date type', (done) => {
+    it('should return a correct field description for field of date type', done => {
       result.raw.date = 1;
-      (<jasmine.Spy>env.searchEndpoint.listFields).and.returnValue(Promise.resolve([{
-        fieldType: 'Date',
-        name: '@date'
-      }]));
+      (<jasmine.Spy>env.searchEndpoint.listFields).and.returnValue(
+        Promise.resolve([
+          {
+            fieldType: 'Date',
+            name: '@date'
+          }
+        ])
+      );
 
-      expect(debugForResult.generateDebugInfoForResult(result).fields().then((formattedField) => {
-        expect(formattedField['@date'].getTime()).toEqual(1);
-        done();
-      }));
+      expect(
+        debugForResult
+          .generateDebugInfoForResult(result)
+          .fields()
+          .then(formattedField => {
+            expect(formattedField['@date'].getTime()).toEqual(1);
+            done();
+          })
+      );
     });
 
-    it('should return a correct field description for a split group by', (done) => {
+    it('should return a correct field description for a split group by', done => {
       result.raw.split = 'a;b;c';
-      (<jasmine.Spy>env.searchEndpoint.listFields).and.returnValue(Promise.resolve([{
-        splitGroupByField: true,
-        name: '@split'
-      }]));
+      (<jasmine.Spy>env.searchEndpoint.listFields).and.returnValue(
+        Promise.resolve([
+          {
+            splitGroupByField: true,
+            name: '@split'
+          }
+        ])
+      );
 
-      expect(debugForResult.generateDebugInfoForResult(result).fields().then((formattedField) => {
-        expect(formattedField['@split']).toEqual(jasmine.arrayContaining(['a', 'b', 'c']));
-        done();
-      }));
+      expect(
+        debugForResult
+          .generateDebugInfoForResult(result)
+          .fields()
+          .then(formattedField => {
+            expect(formattedField['@split']).toEqual(jasmine.arrayContaining(['a', 'b', 'c']));
+            done();
+          })
+      );
     });
   });
 }

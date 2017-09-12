@@ -216,7 +216,6 @@ export class EndpointCaller {
    * @returns {any} A promise of the given type
    */
   public call<T>(params: IEndpointCallParameters): Promise<ISuccessResponse<T>> {
-
     var requestInfo: IRequestInfo<T> = {
       url: params.url,
       queryString: params.errorsAsSuccess ? params.queryString.concat(['errorsAsSuccess=1']) : params.queryString,
@@ -230,13 +229,12 @@ export class EndpointCaller {
       requestInfo = this.options.requestModifier(requestInfo);
     }
 
-
     this.logger.trace('Performing REST request', requestInfo);
     var urlObject = this.parseURL(requestInfo.url);
     // In IE8, hostname and port return "" when we are on the same domain.
-    var isLocalHost = (window.location.hostname === urlObject.hostname) || (urlObject.hostname === '');
+    var isLocalHost = window.location.hostname === urlObject.hostname || urlObject.hostname === '';
 
-    var currentPort = (window.location.port != '' ? window.location.port : (window.location.protocol == 'https:' ? '443' : '80'));
+    var currentPort = window.location.port != '' ? window.location.port : window.location.protocol == 'https:' ? '443' : '80';
     var isSamePort = currentPort == urlObject.port;
     var isCrossOrigin = !(isLocalHost && isSamePort);
     if (!this.useJsonp) {
@@ -270,7 +268,7 @@ export class EndpointCaller {
       // This sent variable allowed to remove the second call of onreadystatechange with the state OPENED in IE11
       var sent = false;
 
-      xmlHttpRequest.onreadystatechange = (ev) => {
+      xmlHttpRequest.onreadystatechange = ev => {
         if (xmlHttpRequest.readyState == XMLHttpRequestStatus.OPENED && !sent) {
           sent = true;
           xmlHttpRequest.withCredentials = true;
@@ -354,7 +352,7 @@ export class EndpointCaller {
    * @param requestInfo The info about the request
    * @returns {Promise<T>|Promise}
    */
-  public callUsingXDomainRequest<T>(requestInfo: IRequestInfo<T>): Promise<IResponse<T>> {
+  public callUsingXDomainRequest<T>(requestInfo: IRequestInfo<T>): Promise<ISuccessResponse<T>> {
     return new Promise((resolve, reject) => {
       var queryString = requestInfo.queryString.concat([]);
 
@@ -401,7 +399,7 @@ export class EndpointCaller {
    * @param requestInfo The info about the request
    * @returns {Promise<T>|Promise}
    */
-  public callUsingAjaxJsonP<T>(requestInfo: IRequestInfo<T>): Promise<IResponse<T>> {
+  public callUsingAjaxJsonP<T>(requestInfo: IRequestInfo<T>): Promise<ISuccessResponse<T>> {
     let jQuery = JQueryUtils.getJQuery();
     Assert.check(jQuery, 'Using jsonp without having included jQuery is not supported.');
     return new Promise((resolve, reject) => {
@@ -436,7 +434,7 @@ export class EndpointCaller {
     return new newXmlHttpRequest();
   }
 
-  private convertJsonToQueryString(json: { [key: string]: any; }): string[] {
+  private convertJsonToQueryString(json: { [key: string]: any }): string[] {
     Assert.exists(json);
 
     var result: string[] = [];
@@ -453,7 +451,7 @@ export class EndpointCaller {
     return result;
   }
 
-  private convertJsonToFormBody(json: { [key: string]: any; }): string {
+  private convertJsonToFormBody(json: { [key: string]: any }): string {
     return this.convertJsonToQueryString(json).join('&');
   }
 
@@ -501,7 +499,7 @@ export class EndpointCaller {
   }
 
   private isSuccessHttpStatus(status: number): boolean {
-    return status >= 200 && status < 300 || status === 304;
+    return (status >= 200 && status < 300) || status === 304;
   }
 
   private tryParseResponseText(json: string, contentType: string): any {

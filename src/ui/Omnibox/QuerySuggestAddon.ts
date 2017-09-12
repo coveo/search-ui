@@ -8,7 +8,6 @@ import { StringUtils } from '../../utils/StringUtils';
 import * as _ from 'underscore';
 
 export class QuerySuggestAddon {
-
   static INDEX = 60;
 
   private static suggestiontHtml(suggestion: IQuerySuggestCompletion) {
@@ -55,7 +54,6 @@ export class QuerySuggestAddon {
   }
 
   public getSuggestion(): Promise<IOmniboxSuggestion[]> {
-
     var text = this.omnibox.magicBox.getText();
 
     if (text.length == 0) {
@@ -100,7 +98,8 @@ export class QuerySuggestAddon {
 
     payload.enableWordCompletion = enableWordCompletion;
 
-    return this.omnibox.queryController.getEndpoint()
+    return this.omnibox.queryController
+      .getEndpoint()
       .getQuerySuggest(payload)
       .then((result: IQuerySuggestResponse) => {
         var completions = result.completions;

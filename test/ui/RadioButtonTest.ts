@@ -6,12 +6,12 @@ export function RadioButtonTest() {
     let radioButton: RadioButton;
     let onChange: jasmine.Spy;
 
-    beforeEach(function () {
+    beforeEach(function() {
       onChange = jasmine.createSpy('onchange');
       radioButton = new RadioButton(onChange, 'Hello world', 'same-name');
     });
 
-    afterEach(function () {
+    afterEach(function() {
       onChange = null;
       radioButton = null;
     });
@@ -33,7 +33,6 @@ export function RadioButtonTest() {
     });
 
     describe('select', () => {
-
       it('should return is selected correctly', () => {
         radioButton.select();
         expect(radioButton.isSelected()).toBe(true);

@@ -3,7 +3,6 @@
  * [`quickviewLoaded`]{@link QuickviewEvents.quickviewLoaded} event handlers receive as an argument.
  */
 export interface IQuickviewLoadedEventArgs {
-
   /**
    * The amount of time it took to download the content to display in the quickview modal window (in milliseconds).
    */
@@ -15,7 +14,6 @@ export interface IQuickviewLoadedEventArgs {
  * [`Quickview`]{@link Quickview} component.
  */
 export class QuickviewEvents {
-
   /**
    * Triggered by the [`QuickviewDocument`]{@link QuickviewDocument} component when the content to display in the
    * quickview modal window has just finished downloading.

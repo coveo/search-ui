@@ -30,7 +30,7 @@ export class Dom {
     this.el = el;
   }
 
-  private static handlers: { eventHandle: Function, fn: EventListener }[] = [];
+  private static handlers: { eventHandle: Function; fn: EventListener }[] = [];
 
   /**
    * Helper function to quickly create an HTMLElement
@@ -509,7 +509,7 @@ export class Dom {
         jq(this.el).off(type, eventHandle);
       } else if (this.el.removeEventListener) {
         let idx = 0;
-        const found = _.find(Dom.handlers, (handlerObj: { eventHandle: Function, fn: EventListener }, i) => {
+        const found = _.find(Dom.handlers, (handlerObj: { eventHandle: Function; fn: EventListener }, i) => {
           if (handlerObj.eventHandle == eventHandle) {
             idx = i;
             return true;
@@ -704,8 +704,7 @@ export class Dom {
 }
 
 export class Win {
-  constructor(public win: Window) {
-  }
+  constructor(public win: Window) {}
 
   public height(): number {
     return this.win.innerHeight;
@@ -716,11 +715,15 @@ export class Win {
   }
 
   public scrollY(): number {
-    return this.supportPageOffset() ? this.win.pageYOffset : this.isCSS1Compat() ? this.win.document.documentElement.scrollTop : this.win.document.body.scrollTop;
+    return this.supportPageOffset()
+      ? this.win.pageYOffset
+      : this.isCSS1Compat() ? this.win.document.documentElement.scrollTop : this.win.document.body.scrollTop;
   }
 
   public scrollX(): number {
-    return this.supportPageOffset() ? window.pageXOffset : this.isCSS1Compat() ? document.documentElement.scrollLeft : document.body.scrollLeft;
+    return this.supportPageOffset()
+      ? window.pageXOffset
+      : this.isCSS1Compat() ? document.documentElement.scrollLeft : document.body.scrollLeft;
   }
 
   private isCSS1Compat() {
@@ -733,8 +736,7 @@ export class Win {
 }
 
 export class Doc {
-  constructor(public doc: Document) {
-  }
+  constructor(public doc: Document) {}
 
   public height(): number {
     const body = this.doc.body;
@@ -761,7 +763,7 @@ export function $$(type: string, props?: Object, ...children: Array<string | HTM
 export function $$(...args: any[]): Dom {
   if (args.length === 1 && args[0] instanceof Dom) {
     return args[0];
-  } else if (args.length === 1 && (!_.isString(args[0]))) {
+  } else if (args.length === 1 && !_.isString(args[0])) {
     return new Dom(<HTMLElement>args[0]);
   } else {
     return new Dom(Dom.createElement.apply(Dom, args));

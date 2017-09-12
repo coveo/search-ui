@@ -44,9 +44,9 @@ export class CardActionBar extends Component {
 
   static doExport = () => {
     exportGlobally({
-      'CardActionBar': CardActionBar
+      CardActionBar: CardActionBar
     });
-  }
+  };
 
   parentResult: HTMLElement;
   arrowContainer: HTMLElement;
@@ -56,7 +56,6 @@ export class CardActionBar extends Component {
    * @componentOptions
    */
   static options: ICardActionBarOptions = {
-
     /**
      * Specifies whether to hide the CardActionBar by default, unless the user clicks its parent {@link IQueryResult}.
      *
@@ -82,7 +81,12 @@ export class CardActionBar extends Component {
    * automatically resolved (with a slower execution time).
    * @param result The parent result.
    */
-  constructor(public element: HTMLElement, public options?: ICardActionBarOptions, bindings?: IComponentBindings, public result?: IQueryResult) {
+  constructor(
+    public element: HTMLElement,
+    public options?: ICardActionBarOptions,
+    bindings?: IComponentBindings,
+    public result?: IQueryResult
+  ) {
     super(element, CardActionBar.ID, bindings);
     this.options = ComponentOptions.initComponentOptions(element, CardActionBar, options);
 
@@ -100,7 +104,6 @@ export class CardActionBar extends Component {
           elem.removeAttribute('tabindex');
         }
       });
-
     } else {
       this.element.style.transition = 'none';
       this.element.style.transform = 'none';

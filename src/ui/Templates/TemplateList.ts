@@ -5,7 +5,6 @@ import { Assert } from '../../misc/Assert';
 import * as _ from 'underscore';
 
 export class TemplateList extends Template {
-
   constructor(public templates: Template[]) {
     super();
     Assert.exists(templates);

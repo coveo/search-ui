@@ -2,7 +2,6 @@ import { Utils } from './Utils';
 import { DomUtils } from './DomUtils';
 
 export class PublicPathUtils {
-
   private static pathHasBeenConfigured = false;
 
   // Dynamically set the public path to load the chunks relative to the Coveo script

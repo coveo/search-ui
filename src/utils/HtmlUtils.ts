@@ -85,8 +85,9 @@ export class ImageUtils {
   }
 
   static buildImageWithBase64SrcAttribute(endpoint: SearchEndpoint, result: IQueryResult) {
-    endpoint.getRawDataStream(result.uniqueId, '$Thumbnail$')
-      .then((response) => {
+    endpoint
+      .getRawDataStream(result.uniqueId, '$Thumbnail$')
+      .then(response => {
         var rawBinary = String.fromCharCode.apply(null, new Uint8Array(response));
         ImageUtils.selectImageFromResult(result).setAttribute('src', 'data:image/png;base64, ' + btoa(rawBinary));
       })

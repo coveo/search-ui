@@ -78,7 +78,7 @@ export class FacetValue {
         return FacetValue.createFromFieldValue(value);
       }
     } else {
-      throw new Error('Can\'t create value from ' + value);
+      throw new Error("Can't create value from " + value);
     }
   }
 

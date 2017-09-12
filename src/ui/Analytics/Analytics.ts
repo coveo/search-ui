@@ -54,13 +54,13 @@ export class Analytics extends Component {
 
   static doExport() {
     exportGlobally({
-      'PendingSearchEvent': PendingSearchEvent,
-      'PendingSearchAsYouTypeSearchEvent': PendingSearchAsYouTypeSearchEvent,
-      'analyticsActionCauseList': analyticsActionCauseList,
-      'NoopAnalyticsClient': NoopAnalyticsClient,
-      'LiveAnalyticsClient': LiveAnalyticsClient,
-      'MultiAnalyticsClient': MultiAnalyticsClient,
-      'Analytics': Analytics
+      PendingSearchEvent: PendingSearchEvent,
+      PendingSearchAsYouTypeSearchEvent: PendingSearchAsYouTypeSearchEvent,
+      analyticsActionCauseList: analyticsActionCauseList,
+      NoopAnalyticsClient: NoopAnalyticsClient,
+      LiveAnalyticsClient: LiveAnalyticsClient,
+      MultiAnalyticsClient: MultiAnalyticsClient,
+      Analytics: Analytics
     });
   }
 
@@ -72,7 +72,6 @@ export class Analytics extends Component {
    * @componentOptions
    */
   static options: IAnalyticsOptions = {
-
     /**
      * Specifies the name of the user for the usage analytics logs.
      *
@@ -304,7 +303,12 @@ export class Analytics extends Component {
    * @param element The HTMLElement that the user has clicked in the interface. Default value is the element on which
    * the `Analytics` component is bound.
    */
-  public logClickEvent(actionCause: IAnalyticsActionCause, meta: IAnalyticsDocumentViewMeta, result: IQueryResult, element: HTMLElement = this.element) {
+  public logClickEvent(
+    actionCause: IAnalyticsActionCause,
+    meta: IAnalyticsDocumentViewMeta,
+    result: IQueryResult,
+    element: HTMLElement = this.element
+  ) {
     this.client.logClickEvent(actionCause, meta, result, element);
   }
 
@@ -340,12 +344,10 @@ export class Analytics extends Component {
         } else {
           elementToInitializeClient = this.element;
         }
-
       }
 
       let isRecommendation = $$(this.root).hasClass(Component.computeCssClassNameForType(`Recommendation`));
       this.instantiateAnalyticsClient(endpoint, elementToInitializeClient, isRecommendation);
-
     } else {
       this.client = new NoopAnalyticsClient();
     }
@@ -353,7 +355,9 @@ export class Analytics extends Component {
 
   private instantiateAnalyticsClient(endpoint: AnalyticsEndpoint, elementToInitializeClient: HTMLElement, isRecommendation: boolean) {
     if (isRecommendation) {
-      this.client = new RecommendationAnalyticsClient(endpoint, elementToInitializeClient,
+      this.client = new RecommendationAnalyticsClient(
+        endpoint,
+        elementToInitializeClient,
         this.options.user,
         this.options.userDisplayName,
         this.options.anonymous,
@@ -361,16 +365,20 @@ export class Analytics extends Component {
         this.options.splitTestRunVersion,
         this.options.searchHub,
         this.options.sendToCloud,
-        this.getBindings());
+        this.getBindings()
+      );
     } else {
-      this.client = new LiveAnalyticsClient(endpoint, elementToInitializeClient,
+      this.client = new LiveAnalyticsClient(
+        endpoint,
+        elementToInitializeClient,
         this.options.user,
         this.options.userDisplayName,
         this.options.anonymous,
         this.options.splitTestRunName,
         this.options.splitTestRunVersion,
         this.options.searchHub,
-        this.options.sendToCloud);
+        this.options.sendToCloud
+      );
     }
   }
 
@@ -398,14 +406,18 @@ export class Analytics extends Component {
   private handleQueryError(data: IQueryErrorEventArgs) {
     Assert.exists(data);
 
-    this.client.logCustomEvent<IAnalyticsQueryErrorMeta>(analyticsActionCauseList.queryError, {
-      query: data.query.q,
-      aq: data.query.aq,
-      cq: data.query.cq,
-      dq: data.query.dq,
-      errorType: data.error.type,
-      errorMessage: data.error.message
-    }, this.element);
+    this.client.logCustomEvent<IAnalyticsQueryErrorMeta>(
+      analyticsActionCauseList.queryError,
+      {
+        query: data.query.q,
+        aq: data.query.aq,
+        cq: data.query.cq,
+        dq: data.query.dq,
+        errorType: data.error.type,
+        errorMessage: data.error.message
+      },
+      this.element
+    );
   }
 
   public static create(element: HTMLElement, options: IAnalyticsOptions, bindings: IComponentBindings): IAnalyticsClient {
@@ -424,14 +436,14 @@ export class Analytics extends Component {
     if (found.length == 1) {
       return Analytics.getClient(found[0], options, bindings);
     } else if (found.length > 1) {
-      return new MultiAnalyticsClient(_.map(found, (el) => Analytics.getClient(el, options, bindings)));
+      return new MultiAnalyticsClient(_.map(found, el => Analytics.getClient(el, options, bindings)));
     } else {
       return new NoopAnalyticsClient();
     }
   }
 
   private static ignoreElementsInsideRecommendationInterface(found: HTMLElement[]): HTMLElement[] {
-    return _.filter(found, (element) => {
+    return _.filter(found, element => {
       return $$(element).closest(Component.computeCssClassNameForType('Recommendation')) === undefined;
     });
   }

@@ -41,10 +41,10 @@ export function PendingSearchAsYouTypeSearchEventTest() {
     it('should allow to modify custom data', () => {
       pendingEvent = new PendingSearchAsYouTypeSearchEvent(root, endpoint, FakeResults.createFakeSearchEvent(), true);
       pendingEvent.modifyCustomData('foo', 'bar');
-      expect(pendingEvent.getEventMeta()).toEqual(jasmine.objectContaining({ 'foo': 'bar' }));
+      expect(pendingEvent.getEventMeta()).toEqual(jasmine.objectContaining({ foo: 'bar' }));
     });
 
-    it('should keep the original value for "q" before sending the event', (done) => {
+    it('should keep the original value for "q" before sending the event', done => {
       endpoint['sendSearchEvents'] = jasmine.createSpy('sendSearchEvents');
       pendingEvent = new PendingSearchAsYouTypeSearchEvent(root, endpoint, FakeResults.createFakeSearchEvent(), true);
 
@@ -52,7 +52,6 @@ export function PendingSearchAsYouTypeSearchEventTest() {
 
       // Set initial value for search box
       searchInterface.queryStateModel.set('q', 'foo');
-
 
       // arm the pending search event
       var duringQueryEventArgs = {
@@ -69,9 +68,13 @@ export function PendingSearchAsYouTypeSearchEventTest() {
 
       setTimeout(() => {
         // check that the original query is preserved
-        expect(endpoint.sendSearchEvents).toHaveBeenCalledWith(jasmine.arrayContaining([jasmine.objectContaining({
-          queryText: 'foo'
-        })]));
+        expect(endpoint.sendSearchEvents).toHaveBeenCalledWith(
+          jasmine.arrayContaining([
+            jasmine.objectContaining({
+              queryText: 'foo'
+            })
+          ])
+        );
         done();
       }, 100);
 

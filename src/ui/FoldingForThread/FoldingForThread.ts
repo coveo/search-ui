@@ -24,9 +24,9 @@ export class FoldingForThread extends Folding {
 
   static doExport = () => {
     exportGlobally({
-      'FoldingForThread': FoldingForThread
+      FoldingForThread: FoldingForThread
     });
-  }
+  };
 
   /**
    * Creates a new `FoldingForThread` component

@@ -67,16 +67,15 @@ export class TemplateLoader extends Component {
 
   static doExport = () => {
     exportGlobally({
-      'TemplateLoader': TemplateLoader
+      TemplateLoader: TemplateLoader
     });
-  }
+  };
 
   /**
    * The possible options for a TemplateLoader.
    * @componentOptions
    */
   static options: ITemplateLoaderOptions = {
-
     /**
      * Specifies how to find the template. This can be either a CSS selector or an HTML `id` attribute.
      *
@@ -105,7 +104,12 @@ export class TemplateLoader extends Component {
    * automatically resolved (with a slower execution time).
    * @param result The result to associate the component with.
    */
-  constructor(public element: HTMLElement, public options?: ITemplateLoaderOptions, public bindings?: IComponentBindings, public result?: IQueryResult) {
+  constructor(
+    public element: HTMLElement,
+    public options?: ITemplateLoaderOptions,
+    public bindings?: IComponentBindings,
+    public result?: IQueryResult
+  ) {
     super(element, TemplateLoader.ID, bindings);
     this.options = ComponentOptions.initComponentOptions(element, TemplateLoader, options);
     this.result = this.result || this.resolveResult();

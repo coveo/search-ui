@@ -5,14 +5,11 @@ import { AdvancedSearchEvents } from '../../../events/AdvancedSearchEvents';
 import { l } from '../../../strings/Strings';
 
 export class DocumentInput implements IAdvancedSearchInput {
-
   protected element: HTMLElement;
 
-  constructor(public inputName: string, public root: HTMLElement) {
-  }
+  constructor(public inputName: string, public root: HTMLElement) {}
 
-  public reset() {
-  }
+  public reset() {}
 
   public build(): HTMLElement {
     let documentInput = $$('div', { className: 'coveo-advanced-search-document-input-section' });

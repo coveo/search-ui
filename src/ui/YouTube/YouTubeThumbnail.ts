@@ -34,15 +34,14 @@ export class YouTubeThumbnail extends Component {
 
   static doExport = () => {
     exportGlobally({
-      'YouTubeThumbnail': YouTubeThumbnail
+      YouTubeThumbnail: YouTubeThumbnail
     });
-  }
+  };
 
   /**
    * @componentOptions
    */
   static options: IYouTubeThumbnailOptions = {
-
     /**
      * Specifies the width (in pixels) of the YouTube thumbnail.
      *
@@ -72,7 +71,13 @@ export class YouTubeThumbnail extends Component {
 
   private modalbox: Coveo.ModalBox.ModalBox;
 
-  constructor(public element: HTMLElement, public options?: IYouTubeThumbnailOptions, public bindings?: IResultsComponentBindings, public result?: IQueryResult, public ModalBox = ModalBoxModule) {
+  constructor(
+    public element: HTMLElement,
+    public options?: IYouTubeThumbnailOptions,
+    public bindings?: IResultsComponentBindings,
+    public result?: IQueryResult,
+    public ModalBox = ModalBoxModule
+  ) {
     super(element, YouTubeThumbnail.ID, bindings);
     this.options = ComponentOptions.initComponentOptions(element, YouTubeThumbnail, options);
     this.resultLink = $$('a');
@@ -93,7 +98,6 @@ export class YouTubeThumbnail extends Component {
     span.addClass('coveo-youtube-thumbnail-play-button');
     thumbnailDiv.append(span.el);
 
-
     $$(this.element).append(this.resultLink.el);
 
     if (this.options.embed) {
@@ -112,7 +116,6 @@ export class YouTubeThumbnail extends Component {
       result: result
     };
     Initialization.automaticallyCreateComponentsInside(element, initParameters);
-
   }
 
   /**
@@ -127,7 +130,8 @@ export class YouTubeThumbnail extends Component {
 
   private openYoutubeIframe() {
     // need to put iframe inside div : iframe with position absolute and left:0, right : 0 , bottom: 0 is not standard/supported
-    let iframe = $$('iframe'), div = $$('div');
+    let iframe = $$('iframe'),
+      div = $$('div');
     iframe.setAttribute('src', 'https://www.youtube.com/embed/' + this.extractVideoId() + '?autoplay=1');
     iframe.setAttribute('allowfullscreen', 'allowfullscreen');
     iframe.setAttribute('webkitallowfullscreen', 'webkitallowfullscreen');

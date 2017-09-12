@@ -5,12 +5,12 @@ export function NoneKeywordsInputTest() {
   describe('NoneKeywordsInput', () => {
     let input: NoneKeywordsInput;
 
-    beforeEach(function () {
+    beforeEach(function() {
       input = new NoneKeywordsInput($$('div').el);
       input.build();
     });
 
-    afterEach(function () {
+    afterEach(function() {
       input = null;
     });
 

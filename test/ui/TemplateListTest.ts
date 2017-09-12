@@ -21,8 +21,7 @@ export function TemplateListTest() {
     });
 
     describe('when there are no templates', () => {
-
-      it('should return a default result template when instantiating to element', (done) => {
+      it('should return a default result template when instantiating to element', done => {
         let templateList = new TemplateList([]);
         templateList.instantiateToElement(result).then(element => {
           expect(element.innerHTML).toEqual(new DefaultResultTemplate().instantiateToString(result));
@@ -55,7 +54,7 @@ export function TemplateListTest() {
       });
 
       it('should skip the first one if condition does not match', () => {
-        templates[0].condition = (result) => result.raw['foo'] == 'baz';
+        templates[0].condition = result => result.raw['foo'] == 'baz';
         let templateList = new TemplateList(templates);
         expect(templateList.instantiateToString(result)).toEqual(`Template 2`);
       });
@@ -67,10 +66,12 @@ export function TemplateListTest() {
       });
 
       it('should skip the first one if the fieldsToMatch does not match', () => {
-        templates[0].fieldsToMatch = [{
-          field: 'foo',
-          values: ['bar', 'baz']
-        }];
+        templates[0].fieldsToMatch = [
+          {
+            field: 'foo',
+            values: ['bar', 'baz']
+          }
+        ];
         let templateList = new TemplateList(templates);
         expect(templateList.instantiateToString(result)).toEqual(`Template 2`);
       });

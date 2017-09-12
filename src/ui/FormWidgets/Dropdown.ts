@@ -8,14 +8,13 @@ import { exportGlobally } from '../../GlobalExports';
  * A dropdown widget with standard styling.
  */
 export class Dropdown implements IFormWidget, IFormWidgetSettable {
-
   private element: HTMLElement;
   private selectElement: HTMLSelectElement;
   private optionsElement: HTMLOptionElement[] = [];
 
   static doExport() {
     exportGlobally({
-      'Dropdown': Dropdown
+      Dropdown: Dropdown
     });
   }
 
@@ -28,8 +27,12 @@ export class Dropdown implements IFormWidget, IFormWidgetSettable {
    * appear in the `listOfValues`.
    * @param label The label to display for the dropdown.
    */
-  constructor(public onChange: (dropdown: Dropdown) => void = (dropdown: Dropdown) => {
-  }, protected listOfValues: string[], private getDisplayValue: (string) => string = l, private label?: string) {
+  constructor(
+    public onChange: (dropdown: Dropdown) => void = (dropdown: Dropdown) => {},
+    protected listOfValues: string[],
+    private getDisplayValue: (string) => string = l,
+    private label?: string
+  ) {
     this.buildContent();
     this.select(0, false);
     this.bindEvents();
@@ -85,7 +88,7 @@ export class Dropdown implements IFormWidget, IFormWidgetSettable {
    * @param value The value to set the dropdown to.
    */
   public setValue(value: string) {
-    _.each(this.optionsElement, (option) => {
+    _.each(this.optionsElement, option => {
       if ($$(option).getAttribute('data-value') == value) {
         this.selectOption(option);
       }
@@ -102,7 +105,7 @@ export class Dropdown implements IFormWidget, IFormWidgetSettable {
   private buildContent() {
     this.selectElement = <HTMLSelectElement>$$('select', { className: 'coveo-dropdown' }).el;
     let selectOptions = this.buildOptions();
-    _.each(selectOptions, (opt) => {
+    _.each(selectOptions, opt => {
       $$(this.selectElement).append(opt);
     });
     this.element = this.selectElement;

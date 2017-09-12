@@ -61,12 +61,10 @@ export class DefaultInstantiateTemplateOptions implements IInstantiateTemplateOp
       return _.extend(this.get(), other);
     }
     return this.get();
-
   }
 }
 
 export class Template implements ITemplateProperties {
-
   private logger: Logger = new Logger(this);
   public condition: Function;
   public conditionToParse: string;
@@ -78,10 +76,12 @@ export class Template implements ITemplateProperties {
   public layout: ValidLayout;
   public role: TemplateRole;
 
-  constructor(public dataToString?: (object?: any) => string) {
-  }
+  constructor(public dataToString?: (object?: any) => string) {}
 
-  instantiateToString(object: IQueryResult, instantiateOptions: IInstantiateTemplateOptions = new DefaultInstantiateTemplateOptions()): string {
+  instantiateToString(
+    object: IQueryResult,
+    instantiateOptions: IInstantiateTemplateOptions = new DefaultInstantiateTemplateOptions()
+  ): string {
     if (this.dataToString) {
       if (instantiateOptions.checkCondition === false) {
         return this.dataToString(object);
@@ -132,7 +132,10 @@ export class Template implements ITemplateProperties {
           return this.dataToString(object);
         }
         // Condition (as a string) is parsed, if available.
-        if (this.conditionToParse != null && TemplateConditionEvaluator.evaluateCondition(this.conditionToParse, object, instantiateOptions.responsiveComponents)) {
+        if (
+          this.conditionToParse != null &&
+          TemplateConditionEvaluator.evaluateCondition(this.conditionToParse, object, instantiateOptions.responsiveComponents)
+        ) {
           this.logger.trace('Template was loaded because condition was :', this.conditionToParse, object);
           return this.dataToString(object);
         }
@@ -190,7 +193,7 @@ export class Template implements ITemplateProperties {
     }
 
     let allComponentsLazyLoaded = _.map(this.getComponentsInside(html), (component: string) => {
-      return LazyInitialization.getLazyRegisteredComponent(component).then((lazyLoadedComponent) => {
+      return LazyInitialization.getLazyRegisteredComponent(component).then(lazyLoadedComponent => {
         return lazyLoadedComponent;
       });
     });
@@ -235,6 +238,6 @@ export class Template implements ITemplateProperties {
 
   protected getTemplateInfo(): any {
     // Try to get info on the template by returning the first parameter found that is not undefined.
-    return (this.conditionToParse != undefined ? this.conditionToParse : this.condition != undefined ? this.condition : this.fieldsToMatch);
+    return this.conditionToParse != undefined ? this.conditionToParse : this.condition != undefined ? this.condition : this.fieldsToMatch;
   }
 }

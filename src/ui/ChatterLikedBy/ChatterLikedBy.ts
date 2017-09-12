@@ -20,9 +20,9 @@ export class ChatterLikedBy extends Component {
 
   static doExport = () => {
     exportGlobally({
-      'ChatterLikedBy': ChatterLikedBy
+      ChatterLikedBy: ChatterLikedBy
     });
-  }
+  };
 
   static options: IChatterLikedByOptions = {
     nbLikesToRender: ComponentOptions.buildNumberOption({ defaultValue: 2, min: 0 }),
@@ -30,11 +30,19 @@ export class ChatterLikedBy extends Component {
     openInSubTab: ComponentOptions.buildBooleanOption({ defaultValue: true })
   };
 
-  constructor(public element: HTMLElement, public options?: IChatterLikedByOptions, public bindings?: IComponentBindings, public result?: IQueryResult) {
+  constructor(
+    public element: HTMLElement,
+    public options?: IChatterLikedByOptions,
+    public bindings?: IComponentBindings,
+    public result?: IQueryResult
+  ) {
     super(element, ChatterLikedBy.ID, bindings);
     this.options = ComponentOptions.initComponentOptions(element, ChatterLikedBy, options);
 
-    if (!Utils.isNullOrUndefined(Utils.getFieldValue(result, 'sflikedby')) && !Utils.isNullOrUndefined(Utils.getFieldValue(result, 'sflikedbyid'))) {
+    if (
+      !Utils.isNullOrUndefined(Utils.getFieldValue(result, 'sflikedby')) &&
+      !Utils.isNullOrUndefined(Utils.getFieldValue(result, 'sflikedbyid'))
+    ) {
       let likeNames = Utils.getFieldValue(result, 'sflikedby').split(';');
       let likeIds = Utils.getFieldValue(result, 'sflikedbyid').split(';');
 

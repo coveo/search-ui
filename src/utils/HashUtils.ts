@@ -10,14 +10,14 @@ interface IHashUtils {
 
 export class HashUtils {
   private static DELIMITER = {
-    'objectStart': '{',
-    'objectEnd': '}',
-    'arrayStart': '[',
-    'arrayEnd': ']',
-    'objectStartRegExp': '^{',
-    'objectEndRegExp': '}+$',
-    'arrayStartRegExp': '^[',
-    'arrayEndRegExp': ']+$'
+    objectStart: '{',
+    objectEnd: '}',
+    arrayStart: '[',
+    arrayEnd: ']',
+    objectStartRegExp: '^{',
+    objectEndRegExp: '}+$',
+    arrayStartRegExp: '^[',
+    arrayEndRegExp: ']+$'
   };
 
   public static getHash(w = window): string {
@@ -132,7 +132,10 @@ export class HashUtils {
   }
 
   private static isArrayEndEncoded(value: string) {
-    return value.indexOf(encodeURIComponent(HashUtils.DELIMITER.arrayEnd)) == value.length - encodeURIComponent(HashUtils.DELIMITER.arrayEnd).length;
+    return (
+      value.indexOf(encodeURIComponent(HashUtils.DELIMITER.arrayEnd)) ==
+      value.length - encodeURIComponent(HashUtils.DELIMITER.arrayEnd).length
+    );
   }
 
   private static isObjectStartNotEncoded(value: string) {
@@ -148,7 +151,10 @@ export class HashUtils {
   }
 
   private static isObjectEndEncoded(value: string) {
-    return value.indexOf(encodeURIComponent(HashUtils.DELIMITER.objectEnd)) == value.length - encodeURIComponent(HashUtils.DELIMITER.objectEnd).length;
+    return (
+      value.indexOf(encodeURIComponent(HashUtils.DELIMITER.objectEnd)) ==
+      value.length - encodeURIComponent(HashUtils.DELIMITER.objectEnd).length
+    );
   }
 
   private static isObject(value: string) {
@@ -164,7 +170,7 @@ export class HashUtils {
   }
 
   public static encodeArray(array: string[]): string {
-    let arrayReturn = _.map(array, (value) => {
+    let arrayReturn = _.map(array, value => {
       return encodeURIComponent(value);
     });
     return HashUtils.DELIMITER.arrayStart + arrayReturn.join(',') + HashUtils.DELIMITER.arrayEnd;
@@ -207,7 +213,7 @@ export class HashUtils {
     value = value.substr(1);
     value = value.substr(0, value.length - 1);
     let array = value.split(',');
-    return _.map(array, (val) => {
+    return _.map(array, val => {
       return decodeURIComponent(val);
     });
   }
