@@ -1,0 +1,477 @@
+<!doctype html>
+<html class="default no-js">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>IDateToStringOptions | Coveo JavaScript Search Framework - Reference Documentation</title>
+	<meta name="description" content="">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link href='https://fonts.googleapis.com/css?family=Lato:300,400,700' rel='stylesheet' type='text/css'/>
+	<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+	<link rel="stylesheet" type="text/css" href="https://s3.amazonaws.com/coveostatic/community-unified-navigation/css/styles.css" media="screen" charset="utf-8">
+	<link rel="stylesheet" href="../assets/css/main.css">
+	<link rel="stylesheet" href="../assets/css/overrides.css">
+	<link rel="stylesheet" href="../assets/gen/css/CoveoFullSearchNewDesign.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+	<script type="text/javascript" src="https://static.cloud.coveo.com/coveo.analytics.js/coveoua.js"></script>
+	<script src="../assets/js/modernizr.js"></script>
+	<script src="../assets/gen/js/CoveoJsSearch.js"></script>
+	<script src="../assets/gen/js/templates/templatesNew.js"></script>
+	<script src="../assets/js/header.js"></script>
+	<script src="../assets/gen/js/playground.js"></script>
+	<script src="../assets/js/searchUIrefDoc.js"></script>
+	<link href="https://s3.amazonaws.com/coveostatic/Developers.png" rel="shortcut icon" type="image/png">
+	<link href="https://s3.amazonaws.com/coveostatic/Developers.ico" rel="shortcut icon" type="image/x-icon">
+</head>
+<body>
+<header>
+	<div class="upHeader clear">
+		<div class="logos">
+			<a href="http://www.coveo.com" class="logo" title="Coveo community"></a>
+			<h3>
+				<a href="https://support.coveo.com" id="communityLink" title="Coveo Community">Community</a>
+			</h3>
+		</div>
+		<h1 class="currentSiteName"><em>Support</em> <span>Menu<i class="arrow"></i></span></h1>
+		<nav>
+			<ul id="siteSelection" class="menu floated">
+				<li><a id="jsSupport" href="https://support.coveo.com"  target="_blank">Support</a></li>
+				<li><a id="jsProductDocs" href="https://onlinehelp.coveo.com" target="_blank">Product docs</a></li>
+				<li><a id="jsDevDocs" href="https://developers.coveo.com" target="_blank">Developer docs</a></li>
+				<li><a id="jsAnswers" href="https://answers.coveo.com" target="_blank">Answers</a></li>
+				<li><a id="jsTraining" href="http://www.coveo.com/training" target="_blank">Training</a></li>
+			</ul>
+			<ul id="siteSelection2" class="externalbox with-sub">
+				<li>
+					<a href="#" class="sub">More <i class="arrow"></i></a>
+					<ul>
+						<li><a target="_blank" href="https://cloud.coveo.com">Cloud V1 Administration Console</a></li>
+						<li><a target="_blank" href="https://platform.cloud.coveo.com">Cloud V2 Administration Console</a></li>
+						<li><a target="_blank" href="http://source.coveo.com">Technical Blog</a></li>
+					</ul>
+				</li>
+			</ul>
+		</nav>
+	</div>
+	<div class="bottomHeader">
+		<div id="searchBox">
+			<div class="CoveoSearchbox" data-enable-omnibox="true" data-inline="false" data-enable-wildcards="true" data-enable-search-as-you-type="false" data-enable-query-suggest-addon="false" data-enable-query-syntax="true" data-enable-field-addon="true"></div>
+			<div class="CoveoFieldSuggestions" data-field="@systitle" data-header-title="Suggested topics"></div>
+		</div>
+	</div>
+	<!-- Do not focus on Querybox when URL contains hash to ensure page scrolls down to corresponding anchor. -->
+	<script>
+        if (document.location.hash) {
+            $('.CoveoSearchbox').attr('data-auto-focus', 'false');
+        }
+    </script>
+</header>
+<div class="container container-main">
+	<div class="row">
+		<div id="toc-column" class="col-1 col-menu menu-sticky-wrap menu-highlight">
+			<div id="filter-box-container">
+				<div id="filter-box-header">Filter</div>
+				<div id="filter-box-body">
+					<div class="container">
+						<div class="table-wrap">
+							<div class="table-cell" id="tsd-widgets">
+								<div id="tsd-filter">
+									<div class="ctr-box-filter">
+										<input type="checkbox" id="tsd-filter-inherited" checked />
+										<label class="tsd-widget" for="tsd-filter-inherited" title="Display inherited methods and properties">  Inherited</label><br>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div id="filter-box-footer"></div>
+			</div>
+			<nav class="tsd-navigation secondary menu-sticky">
+				<ul class="before-current">
+					<a id="globals-toc-link" href=../globals.html><b>Globals</b></a>
+				</ul>
+				<ul class="current">
+					<li class="current tsd-kind-interface">
+						<a href="idatetostringoptions.html" class="tsd-kind-icon">IDate<wbr>ToString<wbr>Options</a>
+						<ul>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="idatetostringoptions.html#alwaysincludetime" class="tsd-kind-icon">always<wbr>Include<wbr>Time</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="idatetostringoptions.html#includetimeifthisweek" class="tsd-kind-icon">include<wbr>Time<wbr>IfThis<wbr>Week</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="idatetostringoptions.html#includetimeiftoday" class="tsd-kind-icon">include<wbr>Time<wbr>IfToday</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="idatetostringoptions.html#now" class="tsd-kind-icon">now</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="idatetostringoptions.html#omityearifcurrentone" class="tsd-kind-icon">omit<wbr>Year<wbr>IfCurrent<wbr>One</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="idatetostringoptions.html#uselongdateformat" class="tsd-kind-icon">use<wbr>Long<wbr>Date<wbr>Format</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="idatetostringoptions.html#usetodayyesterdayandtomorrow" class="tsd-kind-icon">use<wbr>Today<wbr>Yesterday<wbr>And<wbr>Tomorrow</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="idatetostringoptions.html#useweekdayifthisweek" class="tsd-kind-icon">use<wbr>Weekday<wbr>IfThis<wbr>Week</a>
+							</li>
+						</ul>
+					</li>
+				</ul>
+				<ul class="after-current">
+				</ul>
+			</nav>
+		</div>
+		<div id="separator"></div>
+		<div class="col-2 col-content">
+			<div class="tsd-page-title">
+				<div class="container">
+					<ul class="tsd-breadcrumb">
+						<a id="home-menu-link" class="aui-nav-link" title="Go to the home page" href=..>
+							<i class="fa fa-home" aria-hidden="true"></i>
+						</a>
+						<li>
+							<a href="../globals.html">Globals</a>
+						</li>
+						<li>
+							<a href="idatetostringoptions.html">IDateToStringOptions</a>
+						</li>
+					</ul>
+					<!-- Has to remain here for the playground to work -->
+					<h1 style="visibility: collapse; font-size:0">Interface IDateToStringOptions</h1>
+					<h1>Interface IDateToStringOptions</h1>
+				</div>
+			</div>
+			<section class="tsd-panel tsd-comment">
+				<div class="tsd-comment tsd-typography">
+					<div class="lead">
+						<p>The <code>IDateToStringOptions</code> interface describes a set of options to use when converting a standard Date object to a
+							string using the <a href="../classes/dateutils.html#datetostring"> <code>dateToString</code> </a>, or the
+							<a href="../classes/dateutils.html#datetimetostring"> <code>dateTimeToString</code> </a> method from the <a href="../classes/dateutils.html"> <code>DateUtils</code> </a> class.
+							The precedence orders for the options are:
+							<a href="idatetostringoptions.html#usetodayyesterdayandtomorrow"> <code>useTodayYesterdayAndTomorrow</code> </a>
+							-&gt; <a href="idatetostringoptions.html#useweekdayifthisweek"> <code>useWeekdayIfThisWeek</code> </a>
+							-&gt; <a href="idatetostringoptions.html#omityearifcurrentone"> <code>omitYearIfCurrentOne</code> </a>
+							-&gt; <a href="idatetostringoptions.html#uselongdateformat"> <code>useLongDateFormat</code> </a>
+							and <a href="idatetostringoptions.html#alwaysincludetime"> <code>alwaysIncludeTime</code> </a>
+							-&gt; <a href="idatetostringoptions.html#includetimeifthisweek"> <code>includeTimeIfThisWeek</code> </a>
+						-&gt; <a href="idatetostringoptions.html#includetimeiftoday"> <code>includeTimeIfToday</code> </a>.</p>
+					</div>
+				</div>
+			</section>
+			<div class="preview-container tsd-panel">
+				<div class="overlay"></div>
+			</div>
+			<section class="tsd-panel-group tsd-index-group">
+				<h2>Index</h2>
+				<section class="tsd-panel tsd-index-panel">
+					<div class="tsd-index-content">
+						<section class="tsd-index-section ">
+							<h3>Properties</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="idatetostringoptions.html#alwaysincludetime" class="tsd-kind-icon">always<wbr>Include<wbr>Time</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="idatetostringoptions.html#includetimeifthisweek" class="tsd-kind-icon">include<wbr>Time<wbr>IfThis<wbr>Week</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="idatetostringoptions.html#includetimeiftoday" class="tsd-kind-icon">include<wbr>Time<wbr>IfToday</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="idatetostringoptions.html#now" class="tsd-kind-icon">now</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="idatetostringoptions.html#omityearifcurrentone" class="tsd-kind-icon">omit<wbr>Year<wbr>IfCurrent<wbr>One</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="idatetostringoptions.html#uselongdateformat" class="tsd-kind-icon">use<wbr>Long<wbr>Date<wbr>Format</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="idatetostringoptions.html#usetodayyesterdayandtomorrow" class="tsd-kind-icon">use<wbr>Today<wbr>Yesterday<wbr>And<wbr>Tomorrow</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="idatetostringoptions.html#useweekdayifthisweek" class="tsd-kind-icon">use<wbr>Weekday<wbr>IfThis<wbr>Week</a></li>
+							</ul>
+						</section>
+					</div>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group ">
+				<h2>Properties</h2>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="alwaysincludetime" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> always<wbr>Include<wbr>Time</h3>
+					<div class="tsd-signature tsd-kind-icon">always<wbr>Include<wbr>Time<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in
+								<a href="https://github.com/coveo/search-ui/tree/master/src/utils/DateUtils.ts#L144">src/utils/DateUtils.ts
+							:144</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Specifies whether to always include the time in the resulting string when converting the Date object (e.g. <code>May 15, 4:17 PM</code>)
+							This option takes precedence over <a href="idatetostringoptions.html#includetimeifthisweek"> <code>includeTimeIfThisWeek</code> </a>.</p>
+						</div>
+						<p><strong>Example</strong></p>
+						<p>If <a href="idatetostringoptions.html#includetimeiftoday"> <code>includeTimeIfToday</code> </a> is <code>true</code>
+						and <a href="idatetostringoptions.html#now"> <code>now</code> </a> contains a Date object equivalent to <code>Monday, March 8, 2017</code>, then:</p>
+						<ul>
+							<li>If the Date object to convert is equivalent to <code>2010/03/08 17:23:11</code>, the resulting string is <code>3/8/2010, 5:23 PM</code>.</li>
+						</ul>
+						<p>Default value is <code>false</code>.</p>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="includetimeifthisweek" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> include<wbr>Time<wbr>IfThis<wbr>Week</h3>
+					<div class="tsd-signature tsd-kind-icon">include<wbr>Time<wbr>IfThis<wbr>Week<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in
+								<a href="https://github.com/coveo/search-ui/tree/master/src/utils/DateUtils.ts#L129">src/utils/DateUtils.ts
+							:129</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Specifies whether to include the time in the resulting string when converting the Date object (e.g. <code>May 15, 4:17 PM</code>)
+								if the date to convert within a week from <a href="idatetostringoptions.html#now"> <code>now</code> </a>. This option takes precedence over
+							<a href="idatetostringoptions.html#includetimeiftoday"> <code>includeTimeIfToday</code> </a>.</p>
+						</div>
+						<p><strong>Examples</strong></p>
+						<p>If <a href="idatetostringoptions.html#includetimeiftoday"> <code>includeTimeIfToday</code> </a> is <code>true</code>
+						and <a href="idatetostringoptions.html#now"> <code>now</code> </a> contains a Date object equivalent to <code>Monday, March 8, 2017</code>, then:</p>
+						<ul>
+							<li><p>If the Date object to convert is equivalent to <code>2017/03/08 17:23:11</code>, the resulting string is <code>3/8/2017, 5:23 PM</code>.</p>
+							</li>
+							<li><p>If the Date object to convert is equivalent to <code>2017/03/09 17:23:11</code>, the resulting string is <code>3/9/2017 ,5:23 PM</code>.</p>
+							</li>
+						</ul>
+						<p>Default value is <code>true</code>.</p>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="includetimeiftoday" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> include<wbr>Time<wbr>IfToday</h3>
+					<div class="tsd-signature tsd-kind-icon">include<wbr>Time<wbr>IfToday<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in
+								<a href="https://github.com/coveo/search-ui/tree/master/src/utils/DateUtils.ts#L111">src/utils/DateUtils.ts
+							:111</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Specifies whether to include the time in the resulting string when converting the Date object (e.g. <code>May 15, 4:17 PM</code>)
+							if the date to convert is equivalent to <a href="idatetostringoptions.html#now"> <code>now</code> </a>.</p>
+						</div>
+						<p><strong>Examples</strong></p>
+						<p>If <a href="idatetostringoptions.html#includetimeiftoday"> <code>includeTimeIfToday</code> </a> is <code>true</code>
+						and <a href="idatetostringoptions.html#now"> <code>now</code> </a> contains a Date object equivalent to <code>Monday, March 8, 2017</code>, then:</p>
+						<ul>
+							<li><p>If the Date object to convert is equivalent to <code>2017/03/08 17:23:11</code>, the resulting string is <code>3/8/2017, 5:23 PM</code>.</p>
+							</li>
+							<li><p>If the Date object to convert is equivalent to <code>2017/03/09 17:23:11</code>, the resulting string is <code>3/9/2017</code>.</p>
+							</li>
+						</ul>
+						<p>Default value is <code>true</code>.</p>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="now" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> now</h3>
+					<div class="tsd-signature tsd-kind-icon">now<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Date</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in
+								<a href="https://github.com/coveo/search-ui/tree/master/src/utils/DateUtils.ts#L27">src/utils/DateUtils.ts
+							:27</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Contains a standard Date object that specifies the current date and time.</p>
+						</div>
+						<p>Default value is <code>undefined</code>.</p>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="omityearifcurrentone" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> omit<wbr>Year<wbr>IfCurrent<wbr>One</h3>
+					<div class="tsd-signature tsd-kind-icon">omit<wbr>Year<wbr>IfCurrent<wbr>One<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in
+								<a href="https://github.com/coveo/search-ui/tree/master/src/utils/DateUtils.ts#L87">src/utils/DateUtils.ts
+							:87</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Specifies whether to omit the year from the resulting string when converting the Date object, if the year
+								is the current one. This option takes precedence over
+							<a href="idatetostringoptions.html#uselongdateformat"> <code>useLongDateFormat</code> </a>.</p>
+						</div>
+						<p><strong>Examples</strong></p>
+						<ul>
+							<li><p>If the Date object to convert is equivalent to <code>September 22, 2017</code>, the resulting string does not contain
+								the year (e.g., <code>September 22</code>).</p>
+							</li>
+							<li><p>If the Date object to convert is equivalent to <code>September 22, 2016</code>, the resulting string contains the year
+								(e.g., <code>September 22, 2016</code>).</p>
+							</li>
+						</ul>
+						<p>Default value is <code>true</code>.</p>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="uselongdateformat" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> use<wbr>Long<wbr>Date<wbr>Format</h3>
+					<div class="tsd-signature tsd-kind-icon">use<wbr>Long<wbr>Date<wbr>Format<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in
+								<a href="https://github.com/coveo/search-ui/tree/master/src/utils/DateUtils.ts#L94">src/utils/DateUtils.ts
+							:94</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Specifies whether to format the resulting string in the long date format (e.g., <code>Friday, August 04, 2017</code>).</p>
+						</div>
+						<p>Default value is <code>false</code>.</p>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="usetodayyesterdayandtomorrow" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> use<wbr>Today<wbr>Yesterday<wbr>And<wbr>Tomorrow</h3>
+					<div class="tsd-signature tsd-kind-icon">use<wbr>Today<wbr>Yesterday<wbr>And<wbr>Tomorrow<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in
+								<a href="https://github.com/coveo/search-ui/tree/master/src/utils/DateUtils.ts#L50">src/utils/DateUtils.ts
+							:50</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Specifies whether to convert the Date object to the localized version of <code>Today</code>, <code>Yesterday</code>, or <code>Tomorrow</code>,
+								if possible. This option takes precedence over
+							<a href="idatetostringoptions.html#useweekdayifthisweek"> <code>useWeekdayIfThisWeek</code> </a>.</p>
+						</div>
+						<p><strong>Examples</strong></p>
+						<p>If <a href="idatetostringoptions.html#usetodayyesterdayandtomorrow"> <code>useTodayYesterdayAndTomorrow</code> </a> is <code>true</code>,
+						and <a href="idatetostringoptions.html#now"> <code>now</code> </a> contains a Date object equivalent to <code>March 8, 2017</code>, then:</p>
+						<ul>
+							<li><p>If the Date object to convert contains a value equivalent to <code>March 7, 2017</code>, the resulting string is the
+								localized version of <code>Yesterday</code>.</p>
+							</li>
+							<li><p>If the Date object to convert contains a value equivalent to <code>March 8, 2017</code>, the resulting string is the
+								localized version of <code>Today</code>.</p>
+							</li>
+							<li><p>If the Date object to convert contains a value equivalent to <code>March 9, 2017</code>, the resulting string is the
+								localized version of <code>Tomorrow</code>.</p>
+							</li>
+						</ul>
+						<p>Default value is <code>true</code>.</p>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="useweekdayifthisweek" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> use<wbr>Weekday<wbr>IfThis<wbr>Week</h3>
+					<div class="tsd-signature tsd-kind-icon">use<wbr>Weekday<wbr>IfThis<wbr>Week<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in
+								<a href="https://github.com/coveo/search-ui/tree/master/src/utils/DateUtils.ts#L70">src/utils/DateUtils.ts
+							:70</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Specifies whether to convert the Date object to the localized version of the corresponding day of the week,
+								if the date to convert is part of the current week. This option takes precedence over
+							<a href="idatetostringoptions.html#omityearifcurrentone"> <code>omitYearIfCurrentOne</code> </a>.</p>
+						</div>
+						<p><strong>Examples</strong></p>
+						<p> If <a href="idatetostringoptions.html#useweekdayifthisweek"> <code>useWeekdayIfThisWeek</code> </a> is <code>true</code>
+						and <a href="idatetostringoptions.html#now"> <code>now</code> </a> contains a Date object equivalent to <code>Monday, March 8, 2017</code>, then:</p>
+						<ul>
+							<li><p>If the date to convert is equivalent to <code>Saturday, March 6, 2017</code>, the resulting string is the localized
+								version of <code>Last Saturday</code>.</p>
+							</li>
+							<li><p>If the date to convert is equivalent to <code>Thursday, March 11, 2017</code>, the resulting string is the localized
+								version of <code>Next Thursday</code>.</p>
+							</li>
+						</ul>
+						<p>Default value is <code>true</code>.</p>
+					</div>
+				</section>
+			</section>
+			<section class="tsd-panel tsd-hierarchy">
+				<h3>Hierarchy</h3>
+				<ul class="tsd-hierarchy">
+					<li>
+						<span class="target">IDateToStringOptions</span>
+					</li>
+				</ul>
+			</section>
+			<footer class="with-border-bottom">
+				<div class="container">
+					<h2>Legend</h2>
+					<div class="tsd-legend-group">
+						<ul class="tsd-legend">
+							<li class="tsd-kind-module"><span class="tsd-kind-icon">Module</span></li>
+							<li class="tsd-kind-object-literal"><span class="tsd-kind-icon">Object literal</span></li>
+							<li class="tsd-kind-variable"><span class="tsd-kind-icon">Variable</span></li>
+							<li class="tsd-kind-function"><span class="tsd-kind-icon">Function</span></li>
+							<li class="tsd-kind-function tsd-has-type-parameter"><span class="tsd-kind-icon">Function with type parameter</span></li>
+							<li class="tsd-kind-index-signature"><span class="tsd-kind-icon">Index signature</span></li>
+							<li class="tsd-kind-type-alias"><span class="tsd-kind-icon">Type alias</span></li>
+						</ul>
+						<ul class="tsd-legend">
+							<li class="tsd-kind-enum"><span class="tsd-kind-icon">Enumeration</span></li>
+							<li class="tsd-kind-enum-member"><span class="tsd-kind-icon">Enumeration member</span></li>
+							<li class="tsd-kind-property tsd-parent-kind-enum"><span class="tsd-kind-icon">Property</span></li>
+							<li class="tsd-kind-method tsd-parent-kind-enum"><span class="tsd-kind-icon">Method</span></li>
+						</ul>
+						<ul class="tsd-legend">
+							<li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li>
+							<li class="tsd-kind-interface tsd-has-type-parameter"><span class="tsd-kind-icon">Interface with type parameter</span></li>
+							<li class="tsd-kind-constructor tsd-parent-kind-interface"><span class="tsd-kind-icon">Constructor</span></li>
+							<li class="tsd-kind-property tsd-parent-kind-interface"><span class="tsd-kind-icon">Property</span></li>
+							<li class="tsd-kind-method tsd-parent-kind-interface"><span class="tsd-kind-icon">Method</span></li>
+							<li class="tsd-kind-index-signature tsd-parent-kind-interface"><span class="tsd-kind-icon">Index signature</span></li>
+						</ul>
+						<ul class="tsd-legend">
+							<li class="tsd-kind-class"><span class="tsd-kind-icon">Class</span></li>
+							<li class="tsd-kind-class tsd-has-type-parameter"><span class="tsd-kind-icon">Class with type parameter</span></li>
+							<li class="tsd-kind-constructor tsd-parent-kind-class"><span class="tsd-kind-icon">Constructor</span></li>
+							<li class="tsd-kind-property tsd-parent-kind-class"><span class="tsd-kind-icon">Property</span></li>
+							<li class="tsd-kind-method tsd-parent-kind-class"><span class="tsd-kind-icon">Method</span></li>
+							<li class="tsd-kind-accessor tsd-parent-kind-class"><span class="tsd-kind-icon">Accessor</span></li>
+							<li class="tsd-kind-index-signature tsd-parent-kind-class"><span class="tsd-kind-icon">Index signature</span></li>
+						</ul>
+						<ul class="tsd-legend">
+							<li class="tsd-kind-constructor tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited constructor</span></li>
+							<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited property</span></li>
+							<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited method</span></li>
+							<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited accessor</span></li>
+						</ul>
+						<ul class="tsd-legend">
+							<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected property</span></li>
+							<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected method</span></li>
+							<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected accessor</span></li>
+						</ul>
+						<ul class="tsd-legend">
+							<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private property</span></li>
+							<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private method</span></li>
+							<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private accessor</span></li>
+						</ul>
+						<ul class="tsd-legend">
+							<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static property</span></li>
+							<li class="tsd-kind-call-signature tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static method</span></li>
+						</ul>
+					</div>
+				</div>
+		</footer>        </div>
+	</div>
+</div>
+<script src="../assets/js/main.js"></script>
+<script>if (location.protocol == 'file:') document.write('<script src="../assets/js/search.js"><' + '/script>');</script>
+<script src="../assets/js/generateMetaData.js"></script>
+</body>
+</html>

@@ -55,7 +55,7 @@
 	</div>
 	<div class="bottomHeader">
 		<div id="searchBox">
-			<div class="CoveoSearchbox" data-enable-omnibox="true" data-inline="false" data-enable-wildcards="true" data-enable-search-as-you-type="false" data-enable-reveal-query-suggest-addon="false" data-enable-query-syntax="true" data-enable-field-addon="true"></div>
+			<div class="CoveoSearchbox" data-enable-omnibox="true" data-inline="false" data-enable-wildcards="true" data-enable-search-as-you-type="false" data-enable-query-suggest-addon="false" data-enable-query-syntax="true" data-enable-field-addon="true"></div>
 			<div class="CoveoFieldSuggestions" data-field="@systitle" data-header-title="Suggested topics"></div>
 		</div>
 	</div>
@@ -255,24 +255,27 @@
 							<a href="facet.html">Facet</a>
 						</li>
 					</ul>
-					<h1>Coveo component Facet</h1>
+					<!-- Has to remain here for the playground to work -->
+					<h1 style="visibility: collapse; font-size:0">Coveo component Facet</h1>
+					<h1>Coveo Facet Component (CoveoFacet)</h1>
 				</div>
 			</div>
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>The Facet component displays a <em>facet</em> of the results for the current query. A facet consists of a list of values for
-						a given field occurring in the results, ordered using a configurable criteria.</p>
+						<p>The <code>Facet</code> component displays a <em>facet</em> of the results for the current query. A facet is a list of values for a
+						certain field occurring in the results, ordered using a configurable criteria (e.g., number of occurrences).</p>
 					</div>
-					<p>The list of values is obtained using an <a href="../interfaces/igroupbyrequest.html">IGroupByRequest</a> operation performed at the same time as the main
-					query.</p>
-					<p>The Facet component allows the user to drill down inside results by restricting them to certain field values. It also
-						allows filtering out values from the Facet itself, and can provide a search box to look for specific values inside
-					larger sets.</p>
+					<p>The list of values is obtained using a <a href="../interfaces/igroupbyrequest.html"><code>GroupByRequest</code></a> operation performed at the same time
+					as the main query.</p>
+					<p>The <code>Facet</code> component allows the end user to drill down inside a result set by restricting the result to certain
+						field values. It also allows filtering out values from the facet itself, and can provide a search box to look for
+					specific values inside larger sets.</p>
 					<p>This is probably the most complex component in the Coveo JavaScript Search Framework and as such, it allows for many
-					different configuration options.</p>
-					<p>See also <a href="facetrange.html">FacetRange</a> and <a href="hierarchicalfacet.html">HierarchicalFacet</a> (which extend this component), and <a href="facetslider.html">FacetSlider</a>
-					(which does not properly extend this component, but is very similar).</p>
+					configuration options.</p>
+					<p>See also the <a href="facetrange.html"><code>FacetRange</code></a> and <a href="hierarchicalfacet.html"><code>HierarchicalFacet</code></a> components (which
+						extend this component), and the <a href="facetslider.html"><code>FacetSlider</code></a> component (which does not properly extend this
+					component, but is very similar).</p>
 				</div>
 			</section>
 			<div class="preview-container tsd-panel">
@@ -394,14 +397,14 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L464">src/ui/Facet/Facet.ts
-							:464</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L550">src/ui/Facet/Facet.ts
+							:550</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies an additional query expression (query override) to add to each <a href="../interfaces/igroupbyrequest.html">IGroupByRequest</a> that this Facet
-							performs.</p>
+							<p>Specifies an additional query expression (query override) to add to each
+							<a href="../interfaces/igroupbyrequest.html"><code>GroupByRequest</code></a> that this facet performs.</p>
 						</div>
 						<p>Example: <code>@date&gt;=2014/01/01</code></p>
 					</div>
@@ -417,16 +420,26 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L456">src/ui/Facet/Facet.ts
-							:456</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L542">src/ui/Facet/Facet.ts
+							:542</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies an explicit list of <a href="../interfaces/igroupbyrequest.html#allowedvalues">IGroupByRequest.allowedValues</a> in the <a href="../interfaces/igroupbyrequest.html">IGroupByRequest</a>.</p>
+							<p>Specifies an explicit list of <a href="../interfaces/igroupbyrequest.html#allowedvalues"><code>allowedValues</code></a> in the
+							<a href="../interfaces/igroupbyrequest.html"><code>GroupByRequest</code></a>.</p>
 						</div>
-						<p>This will whitelist the Facet content to some specific values.</p>
-						<p>Example: <code>[&quot;File&quot;, &quot;People&quot;]</code>.</p>
+						<p>If you specify a list of values for this option, the facet uses only these values (if they are available in
+						the current result set).</p>
+						<p><strong>Example:</strong></p>
+						<p>The following facet only uses the <code>Contact</code>, <code>Account</code>, and <code>File</code> values of the <code>@objecttype</code> field. Even if the
+							current result set contains other <code>@objecttype</code> values, such as <code>Message</code>, or <code>Product</code>, the facet does not use
+						those other values.</p>
+						<pre><code class="lang-html">
+<span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"CoveoFacet"</span> <span class="hljs-attr">data-field</span>=<span class="hljs-string">"@objecttype"</span> <span class="hljs-attr">data-title</span>=<span class="hljs-string">"Object Type"</span> <span class="hljs-attr">data-tab</span>=<span class="hljs-string">"All"</span> <span class="hljs-attr">data-allowed-values</span>=<span class="hljs-string">"Contact,Account,File"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+</code></pre>
+						<p>Default value is <code>undefined</code>, and the facet uses all available values for its
+						<a href="facet.html#options.field"><code>field</code></a> in the current result set.</p>
 					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
@@ -440,14 +453,14 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L210">src/ui/Facet/Facet.ts
-							:210</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L234">src/ui/Facet/Facet.ts
+							:234</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>If <a href="facet.html#options.enablesettings">Facet.options.enableSettings</a> is <code>true</code>, specifies the sort criteria options to display in the Facet
-							<strong>Settings</strong> menu.</p>
+							<p>If the <a href="facet.html#options.enablesettings"><code>enableSettings</code></a> option is <code>true</code>, specifies the sort criteria
+							options to display in the facet <strong>Settings</strong> menu.</p>
 						</div>
 						<p>Possible values are:</p>
 						<ul>
@@ -459,7 +472,17 @@
 							<li><code>&quot;computedfielddescending&quot;</code></li>
 							<li><code>&quot;custom&quot;</code></li>
 						</ul>
-						<p>Default value is <code>&quot;occurrences,score,alphaAscending,alphaDescending&quot;</code>.</p>
+						<p>See <a href="../interfaces/igroupbyrequest.html#sortcriteria">IGroupByRequest.sortCriteria</a> for a description of each possible value.</p>
+						<p><strong>Notes:</strong></p>
+						<blockquote>
+							<ul>
+								<li><p>The <a href="facetrange.html"><code>FacetRange</code></a> component does not support this option.</p>
+								</li>
+								<li><p>Using value captions will disable alphabetical sorts (see the <a href="facet.html#options.valuecaption">valueCaption</a> option).</p>
+								</li>
+							</ul>
+						</blockquote>
+						<p>Default value is <code>occurrences,score,alphaAscending,alphaDescending</code>.</p>
 					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
@@ -476,19 +499,20 @@ data-available-sorts&#x3D;&#x27;occurrences,score,alphaascending,alphadescending
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L345">src/ui/Facet/Facet.ts
-							:345</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L394">src/ui/Facet/Facet.ts
+							:394</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies the name of a field on which to execute an aggregate operation for all distinct values of the Facet
-							field.</p>
+							<p>Specifies the name of a field on which to execute an aggregate operation for all distinct values of the facet
+							<a href="facet.html#options.field"><code>field</code></a>.</p>
 						</div>
-						<p>The Facet displays the result of the operation along with the number of occurrences for each value.</p>
-						<p>You can use this option to compute the sum of a field (like a money amount) for each listed Facet value.</p>
-						<p>Works in conjunction with <a href="facet.html#options.computedfieldoperation">Facet.options.computedFieldOperation</a>,
-						<a href="facet.html#options.computedfieldformat">Facet.options.computedFieldFormat</a> and <a href="facet.html#options.computedfieldcaption">Facet.options.computedFieldCaption</a>.</p>
+						<p>The facet displays the result of the operation along with the number of occurrences for each value.</p>
+						<p>You can use this option to compute the sum of a field (like a money amount) for each listed facet value.</p>
+						<p>Works in conjunction with the <a href="facet.html#options.computedfieldoperation"><code>computedFieldOperation</code></a>,
+							<a href="facet.html#options.computedfieldformat"><code>computedFieldFormat</code></a>, and
+						<a href="facet.html#options.computedfieldcaption"><code>computedFieldCaption</code></a> options.</p>
 					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
@@ -502,16 +526,21 @@ data-available-sorts&#x3D;&#x27;occurrences,score,alphaascending,alphadescending
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L382">src/ui/Facet/Facet.ts
-							:382</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L436">src/ui/Facet/Facet.ts
+							:436</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies what the caption of the <a href="facet.html#options.computedfield">Facet.options.computedField</a> should be in the settings menu for sorting.</p>
+							<p>Specifies what the caption of the <a href="facet.html#options.computedfield"><code>computedField</code></a> should be in the facet
+							<strong>Settings</strong> menu for sorting.</p>
 						</div>
 						<p>For example, setting this option to <code>&quot;Money&quot;</code> will display <code>&quot;Money Ascending&quot;</code> for computed field ascending.</p>
-						<p>Default value is the localized string for <code>&quot;ComputedField&quot;</code>.</p>
+						<p><strong>Note:</strong></p>
+						<blockquote>
+							<p>The <a href="facetrange.html"><code>FacetRange</code></a> component does not support this option.</p>
+						</blockquote>
+						<p>Default value is the localized string for <code>ComputedField</code>.</p>
 					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
@@ -525,21 +554,22 @@ data-available-sorts&#x3D;&#x27;occurrences,score,alphaascending,alphadescending
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L373">src/ui/Facet/Facet.ts
-							:373</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L423">src/ui/Facet/Facet.ts
+							:423</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies how to format the values resulting from a <a href="facet.html#options.computedfieldoperation">Facet.options.computedFieldOperation</a>.</p>
+							<p>Specifies how to format the values resulting from a
+							<a href="facet.html#options.computedfieldoperation"><code>computedFieldOperation</code></a>.</p>
 						</div>
 						<p>The Globalize library defines all available formats (see
 						<a href="https://github.com/klaaspieter/jquery-global#globalizeformat-value-format-culture-">Globalize</a>).</p>
 						<p>The most commonly used formats are:</p>
 						<ul>
-							<li><code>&quot;c0&quot;</code> - Formats the value as a currency.</li>
-							<li><code>&quot;n0&quot;</code> - Formats the value as an integer.</li>
-							<li><code>&quot;n2&quot;</code> - Formats the value as a floating point with 2 decimal digits.</li>
+							<li><code>c0</code> - Formats the value as a currency.</li>
+							<li><code>n0</code> - Formats the value as an integer.</li>
+							<li><code>n2</code> - Formats the value as a floating point with 2 decimal digits.</li>
 						</ul>
 						<p>Default value is <code>&quot;c0&quot;</code>.</p>
 					</div>
@@ -555,22 +585,22 @@ data-available-sorts&#x3D;&#x27;occurrences,score,alphaascending,alphadescending
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L358">src/ui/Facet/Facet.ts
-							:358</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L407">src/ui/Facet/Facet.ts
+							:407</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies the type of aggregate operation to perform on the <a href="facet.html#options.computedfield">Facet.options.computedField</a>.</p>
+							<p>Specifies the type of aggregate operation to perform on the <a href="facet.html#options.computedfield"><code>computedField</code></a>.</p>
 						</div>
 						<p>The possible values are:</p>
 						<ul>
-							<li><code>&quot;sum&quot;</code> - Computes the sum of the computed field values.</li>
-							<li><code>&quot;average&quot;</code> - Computes the average of the computed field values.</li>
-							<li><code>&quot;minimum&quot;</code> - Finds the minimum value of the computed field values.</li>
-							<li><code>&quot;maximum&quot;</code> - Finds the maximum value of the computed field values.</li>
+							<li><code>sum</code> - Computes the sum of the computed field values.</li>
+							<li><code>average</code> - Computes the average of the computed field values.</li>
+							<li><code>minimum</code> - Finds the minimum value of the computed field values.</li>
+							<li><code>maximum</code> - Finds the maximum value of the computed field values.</li>
 						</ul>
-						<p>Default value is <code>&quot;sum&quot;</code>.</p>
+						<p>Default value is <code>sum</code>.</p>
 					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
@@ -584,16 +614,22 @@ data-available-sorts&#x3D;&#x27;occurrences,score,alphaascending,alphadescending
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L232">src/ui/Facet/Facet.ts
-							:232</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L263">src/ui/Facet/Facet.ts
+							:263</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies a custom order by which to sort the Facet values.</p>
+							<p>Specifies a custom order by which to sort the facet values.</p>
 						</div>
-						<p>For example, you could use this to specify a logical order for support tickets, such as
-						<code>customSort : [&quot;New&quot;,&quot;Opened&quot;,&quot;Feedback&quot;,&quot;Resolved&quot;,&quot;Feedback&quot;]</code></p>
+						<p><strong>Example:</strong></p>
+						<p>You could use this option to specify a logical order for support tickets, such as:</p>
+						<pre><code class="lang-html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"CoveoFacet"</span> <span class="hljs-attr">data-field</span>=<span class="hljs-string">"@ticketstatus"</span> <span class="hljs-attr">data-title</span>=<span class="hljs-string">"Ticket Status"</span> <span class="hljs-attr">data-tab</span>=<span class="hljs-string">"All"</span> <span class="hljs-attr">data-custom-sort</span>=<span class="hljs-string">"New,Opened,Feedback,Resolved"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+</code></pre>
+						<p><strong>Note:</strong></p>
+						<blockquote>
+							<p>The <a href="facetrange.html"><code>FacetRange</code></a> component does not support this option.</p>
+						</blockquote>
 					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
@@ -607,25 +643,26 @@ data-available-sorts&#x3D;&#x27;occurrences,score,alphaascending,alphadescending
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L495">src/ui/Facet/Facet.ts
-							:495</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L582">src/ui/Facet/Facet.ts
+							:582</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies whether this Facet only appears when a value is selected in its &quot;parent&quot; Facet.</p>
+							<p>Specifies whether this facet only appears when a value is selected in its &quot;parent&quot; facet.</p>
 						</div>
-						<p>To specify the parent Facet, use its <a href="facet.html#options.id">id</a>.</p>
-						<p>Remember that by default, a Facet id is the same as its <a href="facet.html#options.field">field</a>.</p>
+						<p>To specify the parent facet, use its <a href="facet.html#options.id"><code>id</code></a>.</p>
+						<p>Remember that by default, a facet <code>id</code> value is the same as its <a href="facet.html#options.field"><code>field</code></a> option
+						value.</p>
 						<p><strong>Examples:</strong></p>
-						<p>First case: the &quot;parent&quot; Facet has no custom <code>id</code>:</p>
+						<p>First case: the &quot;parent&quot; facet has no custom <code>id</code>:</p>
 						<pre><code class="lang-html"><span class="hljs-comment">&lt;!-- "Parent" Facet: --&gt;</span>
 <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">'CoveoFacet'</span> <span class="hljs-attr">data-field</span>=<span class="hljs-string">'@myfield'</span> <span class="hljs-attr">data-title</span>=<span class="hljs-string">'My Parent Facet'</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
 
 <span class="hljs-comment">&lt;!-- The "dependent" Facet must refer to the default `id` of its "parent" Facet, which is the name of its field. --&gt;</span>
 <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">'CoveoFacet'</span> <span class="hljs-attr">data-field</span>=<span class="hljs-string">'@myotherfield'</span> <span class="hljs-attr">data-title</span>=<span class="hljs-string">'My Dependent Facet'</span> <span class="hljs-attr">data-depends-on</span>=<span class="hljs-string">'@myfield'</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
 </code></pre>
-						<p>Second case: the &quot;parent&quot; Facet has a custom <code>id</code>:</p>
+						<p>Second case: the &quot;parent&quot; facet has a custom <code>id</code>:</p>
 						<pre><code class="lang-html"><span class="hljs-comment">&lt;!-- "Parent" Facet: --&gt;</span>
 <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">'CoveoFacet'</span> <span class="hljs-attr">data-field</span>=<span class="hljs-string">'@myfield'</span> <span class="hljs-attr">data-title</span>=<span class="hljs-string">'My Parent Facet'</span> <span class="hljs-attr">data-id</span>=<span class="hljs-string">'myParentCustomId'</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
 
@@ -646,18 +683,18 @@ data-available-sorts&#x3D;&#x27;occurrences,score,alphaascending,alphadescending
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L553">src/ui/Facet/Facet.ts
-							:553</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L652">src/ui/Facet/Facet.ts
+							:652</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>If <a href="facet.html#options.enableresponsivemode">Facet.options.enableResponsiveMode</a> is <code>true</code> for all facets and
+							<p>If the <a href="facet.html#options.enableresponsivemode"><code>enableResponsiveMode</code></a> option is <code>true</code> for all facets and
 								<a href="facetslider.html#options.enableresponsivemode">FacetSlider.options.enableResponsiveMode</a> is also <code>true</code> for all sliders, specifies the label of the
 							dropdown button that allows to display the facets when in responsive mode.</p>
 						</div>
-						<p>If more than one Facet or <a href="facetslider.html">FacetSlider</a> in the search interface specifies a value for this option, then the
-						framework uses the first occurrence of the option.</p>
+						<p>If more than one <code>Facet</code> or <a href="facetslider.html">FacetSlider</a> component in the search interface specifies a value for this
+						option, the framework uses the first occurrence of the option.</p>
 						<p>Default value is <code>Filters</code>.</p>
 					</div>
 					<div class="tsd-panel">
@@ -672,15 +709,19 @@ data-available-sorts&#x3D;&#x27;occurrences,score,alphaascending,alphadescending
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L447">src/ui/Facet/Facet.ts
-							:447</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L519">src/ui/Facet/Facet.ts
+							:519</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>If <a href="facet.html#options.enablesettings">Facet.options.enableSettings</a> is <code>true</code>, specifies whether the <strong>Collapse \ Expand</strong> menu option is
-							available in the Facet <strong>Settings</strong> menu.</p>
+							<p>If the <a href="facet.html#options.enablesettings"><code>enableSettings</code></a> option is <code>true</code>, specifies whether the
+							<strong>Collapse \ Expand</strong> menu option is available in the facet <strong>Settings</strong> menu.</p>
 						</div>
+						<p><strong>Note:</strong></p>
+						<blockquote>
+							<p>The <a href="facetrange.html"><code>FacetRange</code></a> component does not support this option.</p>
+						</blockquote>
 						<p>Default value is <code>true</code>.</p>
 					</div>
 					<div class="tsd-panel">
@@ -696,16 +737,22 @@ data-enable-collapse&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L284">src/ui/Facet/Facet.ts
-							:284</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L322">src/ui/Facet/Facet.ts
+							:322</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies whether to display a search box at the bottom of the Facet for searching among the available values.</p>
+							<p>Specifies whether to display a search box at the bottom of the facet for searching among the available facet
+							<a href="facet.html#options.field"><code>field</code></a> values.</p>
 						</div>
-						<p>See also <a href="facet.html#options.facetsearchdelay">Facet.options.facetSearchDelay</a>, <a href="facet.html#options.facetsearchignoreaccents">Facet.options.facetSearchIgnoreAccents</a>,
-						<a href="facet.html#options.numberofvaluesinfacetsearch">Facet.options.numberOfValuesInFacetSearch</a>.</p>
+						<p>See also the <a href="facet.html#options.facetsearchdelay"><code>facetSearchDelay</code></a>,
+							<a href="facet.html#options.facetsearchignoreaccents"><code>facetSearchIgnoreAccents</code></a>, and
+						<a href="facet.html#options.numberofvaluesinfacetsearch"><code>numberOfValuesInFacetSearch</code></a> options.</p>
+						<p><strong>Note:</strong></p>
+						<blockquote>
+							<p>The <a href="facetrange.html"><code>FacetRange</code></a> component does not support this option.</p>
+						</blockquote>
 						<p>Default value is <code>true</code>.</p>
 					</div>
 					<div class="tsd-panel">
@@ -721,15 +768,19 @@ data-enable-facet-search&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L431">src/ui/Facet/Facet.ts
-							:431</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L497">src/ui/Facet/Facet.ts
+							:497</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
 							<p>Specifies whether to enable the <strong>More</strong> and <strong>Less</strong> buttons in the Facet.</p>
 						</div>
-						<p>See also <a href="facet.html#options.pagesize">Facet.options.pageSize</a>.</p>
+						<p>See also the <a href="facet.html#options.pagesize"><code>pageSize</code></a> option.</p>
+						<p><strong>Note:</strong></p>
+						<blockquote>
+							<p>The <a href="facetrange.html"><code>FacetRange</code></a> component does not support this option.</p>
+						</blockquote>
 						<p>Default value is <code>true</code>.</p>
 					</div>
 					<div class="tsd-panel">
@@ -745,19 +796,20 @@ data-enable-more-less&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L539">src/ui/Facet/Facet.ts
-							:539</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L638">src/ui/Facet/Facet.ts
+							:638</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies whether to enable <em>responsive mode</em> for facets. Setting this options to <code>false</code> on any Facet or
-							<a href="facetslider.html">FacetSlider</a> in a search interface disables responsive mode for all other facets in the search interface.</p>
+							<p>Specifies whether to enable <em>responsive mode</em> for facets. Setting this options to <code>false</code> on any <code>Facet</code>, or
+								<a href="facetslider.html"><code>FacetSlider</code></a> component in a search interface disables responsive mode for all other facets
+							in the search interface.</p>
 						</div>
 						<p>Responsive mode displays all facets under a single dropdown button whenever the width of the HTML element which
 							the search interface is bound to reaches or falls behind a certain threshold (see
 						<a href="searchinterface.html#responsivecomponents">SearchInterface.responsiveComponents</a>).</p>
-						<p>See also <a href="facet.html#options.dropdownheaderlabel">Facet.options.dropdownHeaderLabel</a>.</p>
+						<p>See also the <a href="facet.html#options.dropdownheaderlabel"><code>dropdownHeaderLabel</code></a> option.</p>
 						<p>Default value is <code>true</code>.</p>
 					</div>
 					<div class="tsd-panel">
@@ -773,16 +825,21 @@ data-enable-responsive-mode&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L185">src/ui/Facet/Facet.ts
-							:185</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L199">src/ui/Facet/Facet.ts
+							:199</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies whether to display the Facet <strong>Settings</strong> menu.</p>
+							<p>Specifies whether to display the facet <strong>Settings</strong> menu.</p>
 						</div>
-						<p>See also <a href="facet.html#options.enablesettingsfacetstate">Facet.options.enableSettingsFacetState</a>, <a href="facet.html#options.availablesorts">Facet.options.availableSorts</a> and
-						<a href="facet.html#options.enablecollapse">Facet.options.enableCollapse</a>.</p>
+						<p>See also the <a href="facet.html#options.enablesettingsfacetstate"><code>enableSettingsFacetState</code></a>,
+							<a href="facet.html#options.availablesorts"><code>availableSorts</code></a>, and
+						<a href="facet.html#options.enablecollapse"><code>enableCollapse</code></a> options.</p>
+						<p><strong>Note:</strong></p>
+						<blockquote>
+							<p>The <a href="facetrange.html"><code>FacetRange</code></a> component does not support this option.</p>
+						</blockquote>
 						<p>Default value is <code>true</code>.</p>
 					</div>
 					<div class="tsd-panel">
@@ -798,15 +855,19 @@ data-enable-settings&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L193">src/ui/Facet/Facet.ts
-							:193</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L210">src/ui/Facet/Facet.ts
+							:210</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>If <a href="facet.html#options.enablesettings">Facet.options.enableSettings</a> is <code>true</code>, specifies whether the <strong>Save state</strong> menu option is available
-							in the Facet <strong>Settings</strong> menu.</p>
+							<p>If the <a href="facet.html#options.enablesettings"><code>enableSettings</code></a> option is <code>true</code>, specifies whether the
+							<strong>Save state</strong> menu option is available in the facet <strong>Settings</strong> menu.</p>
 						</div>
+						<p><strong>Note:</strong></p>
+						<blockquote>
+							<p>The <a href="facetrange.html"><code>FacetRange</code></a> component does not support this option.</p>
+						</blockquote>
 						<p>Default value is <code>false</code>.</p>
 					</div>
 					<div class="tsd-panel">
@@ -822,15 +883,15 @@ data-enable-settings-facet-state&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L274">src/ui/Facet/Facet.ts
-							:274</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L307">src/ui/Facet/Facet.ts
+							:307</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies whether to allow the user to toggle between the <code>OR</code> and <code>AND</code> modes in the Facet.</p>
+							<p>Specifies whether to allow the user to toggle between the <code>OR</code> and <code>AND</code> modes in the facet.</p>
 						</div>
-						<p>Setting this option to <code>true</code> displays an icon in the top right corner of the Facet. The user can click this icon
+						<p>Setting this option to <code>true</code> displays an icon in the top right corner of the facet. The user can click this icon
 						to toggle between between the two modes.</p>
 						<p>Default value is <code>false</code>.</p>
 					</div>
@@ -847,17 +908,21 @@ data-enable-toggling-operator&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L295">src/ui/Facet/Facet.ts
-							:295</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L336">src/ui/Facet/Facet.ts
+							:336</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>If <a href="facet.html#options.enablefacetsearch">Facet.options.enableFacetSearch</a> is <code>true</code>, specifies the delay (in milliseconds) before sending a
-							search request to the server when the user starts typing in the Facet search box.</p>
+							<p>If the <a href="facet.html#options.enablefacetsearch"><code>enableFacetSearch</code></a> option is <code>true</code>, specifies the delay (in
+							milliseconds) before sending a search request to the server when the user starts typing in the facet search box.</p>
 						</div>
-						<p>Specifying a smaller value means results will arrive faster. However, chances of having to cancel many requests
-						sent to the server will increase as the user keeps on typing new characters.</p>
+						<p>Specifying a smaller value makes results appear faster. However, chances of having to cancel many requests
+						sent to the server increase as the user keeps on typing new characters.</p>
+						<p><strong>Note:</strong></p>
+						<blockquote>
+							<p>The <a href="facetrange.html"><code>FacetRange</code></a> component does not support this option.</p>
+						</blockquote>
 						<p>Default value is <code>100</code>. Minimum value is <code>0</code>.</p>
 					</div>
 					<div class="tsd-panel">
@@ -872,15 +937,19 @@ data-enable-toggling-operator&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L303">src/ui/Facet/Facet.ts
-							:303</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L347">src/ui/Facet/Facet.ts
+							:347</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>If <a href="facet.html#options.enablefacetsearch">Facet.options.enableFacetSearch</a> is <code>true</code>, specifies whether to ignore accents in the Facet search
-							box.</p>
+							<p>If the <a href="facet.html#options.enablefacetsearch"><code>enableFacetSearch</code></a> option is <code>true</code>, specifies whether to ignore
+							accents in the facet search box.</p>
 						</div>
+						<p><strong>Note:</strong></p>
+						<blockquote>
+							<p>The <a href="facetrange.html"><code>FacetRange</code></a> component does not support this option.</p>
+						</blockquote>
 						<p>Default value is <code>false</code>.</p>
 					</div>
 					<div class="tsd-panel">
@@ -896,17 +965,17 @@ data-facet-search-ignore-accents&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L150">src/ui/Facet/Facet.ts
-							:150</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L160">src/ui/Facet/Facet.ts
+							:160</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies the index field whose values the Facet should use.</p>
+							<p>Specifies the index field whose values the facet should use.</p>
 						</div>
-						<p>This requires the given field to be configured correctly in the index as a Facet field (see
+						<p>This requires the given field to be configured correctly in the index as a <em>Facet field</em> (see
 						<a href="http://www.coveo.com/go?dest=cloudhelp&amp;lcid=9&amp;context=137">Adding Fields to a Source</a>).</p>
-						<p>Specifying a value for this option is required for the Facet component to work.</p>
+						<p>Specifying a value for this option is required for the <code>Facet</code> component to work.</p>
 					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
@@ -920,18 +989,18 @@ data-facet-search-ignore-accents&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L163">src/ui/Facet/Facet.ts
-							:163</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L173">src/ui/Facet/Facet.ts
+							:173</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies a unique identifier for the Facet. Among other things, this identifier serves the purpose of saving the
-							facet state in the URL hash.</p>
+							<p>Specifies a unique identifier for the facet. Among other things, this identifier serves the purpose of saving
+							the facet state in the URL hash.</p>
 						</div>
-						<p>If you have two facets with the same field on the same page, you should specify an id value for at least one of
-						those two facets. This id must be unique in the page.</p>
-						<p>Default value is the <a href="facet.html#options.field">Facet.options.field</a> option value.</p>
+						<p>If you have two facets with the same field on the same page, you should specify an <code>id</code> value for at least one of
+						those two facets. This <code>id</code> must be unique in the page.</p>
+						<p>Default value is the <a href="facet.html#options.field"><code>field</code></a> option value.</p>
 					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
@@ -945,15 +1014,15 @@ data-facet-search-ignore-accents&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L320">src/ui/Facet/Facet.ts
-							:320</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L367">src/ui/Facet/Facet.ts
+							:367</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies whether the Facet should push data to the <a href="breadcrumb.html">Breadcrumb</a> component.</p>
+							<p>Specifies whether the facet should push data to the <a href="breadcrumb.html"><code>Breadcrumb</code></a> component.</p>
 						</div>
-						<p>See also <a href="facet.html#options.numberofvaluesinbreadcrumb">Facet.options.numberOfValuesInBreadcrumb</a>.</p>
+						<p>See also the <a href="facet.html#options.numberofvaluesinbreadcrumb"><code>numberOfValuesInBreadcrumb</code></a> option.</p>
 						<p>Default value is <code>true</code>.</p>
 					</div>
 					<div class="tsd-panel">
@@ -969,13 +1038,13 @@ data-include-in-breadcrumb&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L250">src/ui/Facet/Facet.ts
-							:250</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L283">src/ui/Facet/Facet.ts
+							:283</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies the <em>injection depth</em> to use for the <a href="../interfaces/igroupbyrequest.html">IGroupByRequest</a> operation.</p>
+							<p>Specifies the <em>injection depth</em> to use for the <a href="../interfaces/igroupbyrequest.html"><code>GroupByRequest</code></a> operation.</p>
 						</div>
 						<p>The injection depth determines how many results to scan in the index to ensure that the facet lists all potential
 						facet values. Increasing this value enhances the accuracy of the listed values at the cost of performance.</p>
@@ -993,14 +1062,14 @@ data-include-in-breadcrumb&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L173">src/ui/Facet/Facet.ts
-							:173</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L183">src/ui/Facet/Facet.ts
+							:183</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies whether the field is configured in the index as a multi-value field (semicolon separated values such as
-							<code>abc;def;ghi</code>).</p>
+							<p>Specifies whether the facet <a href="facet.html#options.field"><code>field</code></a> is configured in the index as a multi-value
+							field (semicolon separated values such as <code>abc;def;ghi</code>).</p>
 						</div>
 						<p>Default value is <code>false</code>.</p>
 					</div>
@@ -1017,15 +1086,16 @@ data-is-multi-value-field&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L240">src/ui/Facet/Facet.ts
-							:240</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L273">src/ui/Facet/Facet.ts
+							:273</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies the maximum number of field values to display by default in the Facet before the user
-							clicks <strong>More</strong>.</p>
+							<p>Specifies the maximum number of field values to display by default in the facet before the user
+							clicks the arrow to show more.</p>
 						</div>
+						<p>See also the <a href="facet.html#options.enablemoreless"><code>enableMoreLess</code></a> option.</p>
 						<p>Default value is <code>5</code>. Minimum value is <code>0</code>.</p>
 					</div>
 					<div class="tsd-panel">
@@ -1040,14 +1110,15 @@ data-is-multi-value-field&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L328">src/ui/Facet/Facet.ts
-							:328</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L376">src/ui/Facet/Facet.ts
+							:376</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>If <a href="facet.html#options.includeinbreadcrumb">Facet.options.includeInBreadcrumb</a> is <code>true</code>, specifies the maximum number of values that the Facet
-							should display in the <a href="breadcrumb.html">Breadcrumb</a> before outputting a <strong>See more</strong> button.</p>
+							<p>If the <a href="facet.html#options.includeinbreadcrumb"><code>includeInBreadcrumb</code></a> option is <code>true</code>, specifies the maximum
+								number of values that the facet should display in the <a href="breadcrumb.html"><code>Breadcrumb</code></a> before outputting a
+							<strong>more...</strong> button.</p>
 						</div>
 						<p>Default value is <code>5</code> on a desktop computer and <code>3</code> on a mobile device. Minimum value is <code>0</code>.</p>
 					</div>
@@ -1063,15 +1134,19 @@ data-is-multi-value-field&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L311">src/ui/Facet/Facet.ts
-							:311</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L358">src/ui/Facet/Facet.ts
+							:358</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>If <a href="facet.html#options.enablefacetsearch">Facet.options.enableFacetSearch</a> is <code>true</code>, specifies the number of values to display in the Facet
-							search results popup.</p>
+							<p>If the <a href="facet.html#options.enablefacetsearch"><code>enableFacetSearch</code></a> option is <code>true</code>, specifies the number of v
+							alues to display in the facet search results popup.</p>
 						</div>
+						<p><strong>Note:</strong></p>
+						<blockquote>
+							<p>The <a href="facetrange.html"><code>FacetRange</code></a> component does not support this option.</p>
+						</blockquote>
 						<p>Default value is <code>15</code>. Minimum value is <code>1</code>.</p>
 					</div>
 					<div class="tsd-panel">
@@ -1086,15 +1161,15 @@ data-is-multi-value-field&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L412">src/ui/Facet/Facet.ts
-							:412</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L467">src/ui/Facet/Facet.ts
+							:467</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
 							<p>Specifies the parent container of the facets.</p>
 						</div>
-						<p>Used by the <a href="facet.html#options.preserveposition">Facet.options.preservePosition</a>.</p>
+						<p>Used by the <a href="facet.html#options.preserveposition"><code>preservePosition</code></a> option.</p>
 						<p>Default value is <code>element.parentElement</code>.</p>
 					</div>
 				</section>
@@ -1105,15 +1180,19 @@ data-is-multi-value-field&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L439">src/ui/Facet/Facet.ts
-							:439</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L508">src/ui/Facet/Facet.ts
+							:508</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>If <a href="facet.html#options.enablemoreless">Facet.options.enableMoreLess</a> is <code>true</code>, specifies the number of additional results to fetch when
-							clicking on the <strong>More</strong> button in the Facet.</p>
+							<p>If the <a href="facet.html#options.enablemoreless"><code>enableMoreLess</code></a> option is <code>true</code>, specifies the number of
+							additional results to fetch when clicking the <strong>More</strong> button.</p>
 						</div>
+						<p><strong>Note:</strong></p>
+						<blockquote>
+							<p>The <a href="facetrange.html"><code>FacetRange</code></a> component does not support this option.</p>
+						</blockquote>
 						<p>Default value is <code>10</code>. Minimum value is <code>1</code>.</p>
 					</div>
 					<div class="tsd-panel">
@@ -1128,13 +1207,13 @@ data-is-multi-value-field&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L403">src/ui/Facet/Facet.ts
-							:403</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L458">src/ui/Facet/Facet.ts
+							:458</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies whether the Facet should remain stable in its current position in the viewport while the mouse cursor
+							<p>Specifies whether the facet should remain stable in its current position in the viewport while the mouse cursor
 							is over it.</p>
 						</div>
 						<p>Whenever the value selection changes in a facet, the search interface automatically performs a query. This new
@@ -1143,9 +1222,10 @@ data-is-multi-value-field&#x3D;&#x27;false&#x27;</pre>
 						<p>This option is responsible for adding the <code>&lt;div class=&#39;coveo-topSpace&#39;&gt;</code> and
 							<code>&lt;div class=&#39;coveo-bottomSpace&#39;&gt;</code> around the Facet container. The Facet adjusts the scroll amount of the page to
 						ensure that it does not move relatively to the mouse when the results are updated.</p>
-						<p>In some cases, the Facet also adds margins to the scrollContainer, if scrolling alone is not enough to
+						<p>In some cases, the facet also adds margins to the <code>scrollContainer</code>, if scrolling alone is not enough to
 						preserve position.</p>
-						<p>See also <a href="facet.html#options.paddingcontainer">Facet.options.paddingContainer</a> and <a href="facet.html#options.scrollcontainer">Facet.options.scrollContainer</a>.</p>
+						<p>See also the <a href="facet.html#options.paddingcontainer"><code>paddingContainer</code></a>, and
+						<a href="facet.html#options.scrollcontainer"><code>scrollContainer</code></a> options.</p>
 						<p>Default value is <code>true</code>.</p>
 					</div>
 					<div class="tsd-panel">
@@ -1161,16 +1241,16 @@ data-preserve-position&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L422">src/ui/Facet/Facet.ts
-							:422</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L485">src/ui/Facet/Facet.ts
+							:485</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies the HTML element (through a CSS selector) whose scroll amount the Facet should adjust to preserve its
+							<p>Specifies the HTML element (through a CSS selector) whose scroll amount the facet should adjust to preserve its
 							position when results are updated.</p>
 						</div>
-						<p>Used by <a href="facet.html#options.preserveposition">Facet.options.preservePosition</a>.</p>
+						<p>Used by the <a href="facet.html#options.preserveposition"><code>preservePosition</code></a> option.</p>
 						<p>Default value is <code>document.body</code>.</p>
 					</div>
 				</section>
@@ -1181,17 +1261,17 @@ data-preserve-position&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L224">src/ui/Facet/Facet.ts
-							:224</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L248">src/ui/Facet/Facet.ts
+							:248</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies the criteria to use to sort the Facet values.</p>
+							<p>Specifies the criteria to use to sort the facet values.</p>
 						</div>
-						<p>See <a href="../interfaces/igroupbyrequest.html">IGroupByRequest</a> for the list of possible values.</p>
-						<p>Default value is the first sort criteria specified in the <a href="facet.html#options.availablesorts">Facet.options.availableSorts</a> option, or
-						<code>&quot;occurrences&quot;</code> if no sort criteria is specified.</p>
+						<p>See <a href="../interfaces/igroupbyrequest.html#sortcriteria">IGroupByRequest.sortCriteria</a> for the list and description of possible values.</p>
+						<p>Default value is the first sort criteria specified in the <a href="facet.html#options.availablesorts"><code>availableSorts</code></a>
+						option, or <code>occurrences</code> if no sort criteria is specified.</p>
 					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
@@ -1205,15 +1285,15 @@ data-preserve-position&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L136">src/ui/Facet/Facet.ts
-							:136</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L146">src/ui/Facet/Facet.ts
+							:146</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies the title to display at the top of the Facet.</p>
+							<p>Specifies the title to display at the top of the facet.</p>
 						</div>
-						<p>Default value is the localized string for <code>&quot;NoTitle&quot;</code>.</p>
+						<p>Default value is the localized string for <code>NoTitle</code>.</p>
 					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
@@ -1227,18 +1307,18 @@ data-preserve-position&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L264">src/ui/Facet/Facet.ts
-							:264</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L297">src/ui/Facet/Facet.ts
+							:297</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
 							<p>Specifies whether to use the <code>AND</code> operator in the resulting filter when multiple values are selected in the
-							Facet.</p>
+							facet.</p>
 						</div>
-						<p>Setting this option to <code>true</code> means that documents must have all of the selected values to match the resulting
+						<p>Setting this option to <code>true</code> means that items must have all of the selected values to match the resulting
 						query.</p>
-						<p>Default value is <code>false</code>, which means that the filter uses the <code>OR</code> operator. Thus, by default, documents must
+						<p>Default value is <code>false</code>, which means that the filter uses the <code>OR</code> operator. Thus, by default, items must
 						have at least one of the selected values to match the query.</p>
 					</div>
 					<div class="tsd-panel">
@@ -1254,34 +1334,44 @@ data-use-and&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L523">src/ui/Facet/Facet.ts
-							:523</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L623">src/ui/Facet/Facet.ts
+							:623</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies a JSON object describing a mapping of Facet values to their desired captions.</p>
+							<p>Specifies a JSON object describing a mapping of facet values to their desired captions. See
+							<a href="https://developers.coveo.com/x/jBsvAg">Normalizing Facet Value Captions</a>.</p>
 						</div>
-						<p>You can only set this option in the <a href="../globals.html#init">init</a> call of your search interface. You cannot set it directly in the
-						markup as an HTML attribute.</p>
-						<p>Example:</p>
-						<pre><code><span class="hljs-comment">// Using a Facet for file types</span>
-<span class="hljs-keyword">var</span> myValueCaption = {  <span class="hljs-string">"txt"</span>: <span class="hljs-string">"Text files"</span>,<span class="hljs-string">"html"</span>: <span class="hljs-string">"Web page"</span>, [ etc ... ]};
+						<p><strong>Examples:</strong></p>
+						<p>You can set the option in the <a href="../globals.html#init">&#39;init&#39;</a> call:</p>
+						<pre><code class="lang-javascript"><span class="hljs-keyword">var</span> myValueCaptions = {
+  <span class="hljs-string">"txt"</span> : <span class="hljs-string">"Text files"</span>,
+  <span class="hljs-string">"html"</span> : <span class="hljs-string">"Web page"</span>,
+  [ ... ]
+};
 
-<span class="hljs-comment">// You can set the option in the 'init' call using 'pure' JavaScript:</span>
-Coveo.init(<span class="hljs-built_in">document</span>.<span class="hljs-built_in">querySelector</span>(<span class="hljs-string">'#search'</span>), {
-   Facet : {
-     valueCaption: myValueCaption
-   }
-})
-
-<span class="hljs-comment">// Or  the jQuery extension</span>
-$(<span class="hljs-string">"#search"</span>).coveo(<span class="hljs-string">"init"</span>, {
-   Facet: {
-     valueCaption: myValueCaption
-   }
-})
+Coveo.init(<span class="hljs-built_in">document</span>.querySelector(<span class="hljs-string">"#search"</span>), {
+  <span class="hljs-attr">Facet</span> : {
+    <span class="hljs-attr">valueCaption</span> : myValueCaptions
+  }
+});
 </code></pre>
+						<p>Or before the <code>init</code> call, using the <a href="facet.html#options">&#39;options&#39;</a> top-level function:</p>
+						<pre><code class="lang-javascript">Coveo.options(<span class="hljs-built_in">document</span>.querySelector(<span class="hljs-string">"#search"</span>), {
+  <span class="hljs-attr">Facet</span> : {
+    <span class="hljs-attr">valueCaption</span> : myValueCaptions
+  }
+});
+</code></pre>
+						<p>Or directly in the markup:</p>
+						<pre><code class="lang-html"><span class="hljs-comment">&lt;!-- Ensure that the double quotes are properly handled in data-value-caption. --&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">'CoveoFacet'</span> <span class="hljs-attr">data-field</span>=<span class="hljs-string">'@myotherfield'</span> <span class="hljs-attr">data-value-caption</span>=<span class="hljs-string">'{"txt":"Text files","html":"Web page"}&gt;&lt;/div&gt;</span></span>
+</code></pre>
+						<p><strong>Note:</strong></p>
+						<blockquote>
+							<p>Using value captions will disable alphabetical sorts (see the <a href="facet.html#options.availablesorts">availableSorts</a> option).</p>
+						</blockquote>
 					</div>
 				</section>
 			</section>
@@ -1298,13 +1388,13 @@ $(<span class="hljs-string">"#search"</span>).coveo(<span class="hljs-string">"i
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L1062">src/ui/Facet/Facet.ts
-									:1062</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L1148">src/ui/Facet/Facet.ts
+									:1148</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Collapses the Facet.</p>
+									<p>Collapses the facet.</p>
 								</div>
 							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -1347,8 +1437,8 @@ $(<span class="hljs-string">"#search"</span>).coveo(<span class="hljs-string">"i
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L722">src/ui/Facet/Facet.ts
-									:722</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L814">src/ui/Facet/Facet.ts
+									:814</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1362,7 +1452,7 @@ $(<span class="hljs-string">"#search"</span>).coveo(<span class="hljs-string">"i
 								<li>
 									<h5>values: <a href="../classes/facetvalue.html" class="tsd-signature-type">FacetValue</a><span class="tsd-signature-symbol">[]</span></h5>
 									<div class="tsd-comment tsd-typography">
-										<p>Can be an array of <a href="../classes/facetvalue.html">FacetValue</a> or a string array.</p>
+										<p>Can be an array of <a href="../classes/facetvalue.html"><code>FacetValue</code></a> or an array of strings.</p>
 									</div>
 								</li>
 							</ul>
@@ -1381,8 +1471,8 @@ $(<span class="hljs-string">"#search"</span>).coveo(<span class="hljs-string">"i
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L706">src/ui/Facet/Facet.ts
-									:706</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L798">src/ui/Facet/Facet.ts
+									:798</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1396,7 +1486,7 @@ $(<span class="hljs-string">"#search"</span>).coveo(<span class="hljs-string">"i
 								<li>
 									<h5>value: <a href="../classes/facetvalue.html" class="tsd-signature-type">FacetValue</a></h5>
 									<div class="tsd-comment tsd-typography">
-										<p>Can be a <a href="../classes/facetvalue.html">FacetValue</a> or a string (e.g., <code>deselectValue(&#39;foobar&#39;)</code> or
+										<p>Can be a <a href="../classes/facetvalue.html"><code>FacetValue</code></a> or a string (e.g., <code>deselectValue(&#39;foobar&#39;)</code> or
 										<code>deselectValue(new FacetValue(&#39;foobar&#39;))</code>).</p>
 									</div>
 								</li>
@@ -1470,8 +1560,8 @@ $(<span class="hljs-string">"#search"</span>).coveo(<span class="hljs-string">"i
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L757">src/ui/Facet/Facet.ts
-									:757</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L849">src/ui/Facet/Facet.ts
+									:849</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1485,7 +1575,7 @@ $(<span class="hljs-string">"#search"</span>).coveo(<span class="hljs-string">"i
 								<li>
 									<h5>values: <a href="../classes/facetvalue.html" class="tsd-signature-type">FacetValue</a><span class="tsd-signature-symbol">[]</span></h5>
 									<div class="tsd-comment tsd-typography">
-										<p>Can be an array of <a href="../classes/facetvalue.html">FacetValue</a> or a string array.</p>
+										<p>Can be an array of <a href="../classes/facetvalue.html"><code>FacetValue</code></a> or an array of strings.</p>
 									</div>
 								</li>
 							</ul>
@@ -1504,8 +1594,8 @@ $(<span class="hljs-string">"#search"</span>).coveo(<span class="hljs-string">"i
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L741">src/ui/Facet/Facet.ts
-									:741</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L833">src/ui/Facet/Facet.ts
+									:833</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1519,7 +1609,7 @@ $(<span class="hljs-string">"#search"</span>).coveo(<span class="hljs-string">"i
 								<li>
 									<h5>value: <a href="../classes/facetvalue.html" class="tsd-signature-type">FacetValue</a></h5>
 									<div class="tsd-comment tsd-typography">
-										<p>Can be a <a href="../classes/facetvalue.html">FacetValue</a> or a string (e.g., <code>excludeValue(&#39;foobar&#39;)</code> or
+										<p>Can be a <a href="../classes/facetvalue.html"><code>FacetValue</code></a> or a string (e.g., <code>excludeValue(&#39;foobar&#39;)</code> or
 										<code>excludeValue(new FacetValue(&#39;foobar&#39;))</code>).</p>
 									</div>
 								</li>
@@ -1539,8 +1629,8 @@ $(<span class="hljs-string">"#search"</span>).coveo(<span class="hljs-string">"i
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L1072">src/ui/Facet/Facet.ts
-									:1072</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L1158">src/ui/Facet/Facet.ts
+									:1158</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1564,8 +1654,8 @@ $(<span class="hljs-string">"#search"</span>).coveo(<span class="hljs-string">"i
 								<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#getbindings">getBindings</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L124">src/ui/Base/Component.ts
-									:124</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L129">src/ui/Base/Component.ts
+									:129</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1588,13 +1678,13 @@ $(<span class="hljs-string">"#search"</span>).coveo(<span class="hljs-string">"i
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L849">src/ui/Facet/Facet.ts
-									:849</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L941">src/ui/Facet/Facet.ts
+									:941</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Returns the currently displayed values as an array of <a href="../classes/facetvalue.html">FacetValue</a>.</p>
+									<p>Returns the currently displayed values as an array of <a href="../classes/facetvalue.html"><code>FacetValue</code></a>.</p>
 								</div>
 							</div>
 							<h4 class="tsd-returns-title">Returns <a href="../classes/facetvalue.html" class="tsd-signature-type">FacetValue</a><span class="tsd-signature-symbol">[]</span></h4>
@@ -1613,13 +1703,13 @@ $(<span class="hljs-string">"#search"</span>).coveo(<span class="hljs-string">"i
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L840">src/ui/Facet/Facet.ts
-									:840</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L932">src/ui/Facet/Facet.ts
+									:932</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Returns the currently displayed values as a string array.</p>
+									<p>Returns the currently displayed values as an array of strings.</p>
 								</div>
 							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></h4>
@@ -1638,17 +1728,17 @@ $(<span class="hljs-string">"#search"</span>).coveo(<span class="hljs-string">"i
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L912">src/ui/Facet/Facet.ts
-									:912</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L1006">src/ui/Facet/Facet.ts
+									:1006</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Returns the endpoint for the Facet.</p>
+									<p>Returns the endpoint for the facet.</p>
 								</div>
 							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">ISearchEndpoint</span></h4>
-							<p>The endpoint for the Facet.</p>
+							<p>The endpoint for the Ffcet.</p>
 						</li>
 					</ul>
 				</section>
@@ -1663,13 +1753,13 @@ $(<span class="hljs-string">"#search"</span>).coveo(<span class="hljs-string">"i
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L870">src/ui/Facet/Facet.ts
-									:870</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L962">src/ui/Facet/Facet.ts
+									:962</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Returns the currently excluded values as an array of string.</p>
+									<p>Returns the currently excluded values as an array of strings.</p>
 								</div>
 							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></h4>
@@ -1688,13 +1778,13 @@ $(<span class="hljs-string">"#search"</span>).coveo(<span class="hljs-string">"i
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L861">src/ui/Facet/Facet.ts
-									:861</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L953">src/ui/Facet/Facet.ts
+									:953</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Returns the currently selected values as an array of string.</p>
+									<p>Returns the currently selected values as an array of strings.</p>
 								</div>
 							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></h4>
@@ -1713,13 +1803,13 @@ $(<span class="hljs-string">"#search"</span>).coveo(<span class="hljs-string">"i
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L1010">src/ui/Facet/Facet.ts
-									:1010</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L1092">src/ui/Facet/Facet.ts
+									:1092</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Returns the configured caption for the given <a href="../classes/facetvalue.html">FacetValue</a>.</p>
+									<p>Returns the configured caption for the given <a href="../classes/facetvalue.html"><code>FacetValue</code></a>.</p>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1727,7 +1817,7 @@ $(<span class="hljs-string">"#search"</span>).coveo(<span class="hljs-string">"i
 								<li>
 									<h5>facetValue: <a href="../interfaces/iindexfieldvalue.html" class="tsd-signature-type">IIndexFieldValue</a></h5>
 									<div class="tsd-comment tsd-typography">
-										<p>The FacetValue whose caption the method should return.</p>
+										<p>The <code>FacetValue</code> whose caption the method should return.</p>
 									</div>
 								</li>
 							</ul>
@@ -1746,13 +1836,13 @@ $(<span class="hljs-string">"#search"</span>).coveo(<span class="hljs-string">"i
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L962">src/ui/Facet/Facet.ts
-									:962</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L1049">src/ui/Facet/Facet.ts
+									:1049</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Hides the waiting animation in the Facet header.</p>
+									<p>Hides the waiting animation in the facet header.</p>
 								</div>
 							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -1770,13 +1860,13 @@ $(<span class="hljs-string">"#search"</span>).coveo(<span class="hljs-string">"i
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L878">src/ui/Facet/Facet.ts
-									:878</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L970">src/ui/Facet/Facet.ts
+									:970</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Resets the Facet by un-selecting all values, une-xcluding all values, and redrawing the Facet.</p>
+									<p>Resets the facet by un-selecting all values, un-excluding all values, and redrawing the facet.</p>
 								</div>
 							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -1794,8 +1884,8 @@ $(<span class="hljs-string">"#search"</span>).coveo(<span class="hljs-string">"i
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L687">src/ui/Facet/Facet.ts
-									:687</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L779">src/ui/Facet/Facet.ts
+									:779</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1809,7 +1899,7 @@ $(<span class="hljs-string">"#search"</span>).coveo(<span class="hljs-string">"i
 								<li>
 									<h5>values: <a href="../classes/facetvalue.html" class="tsd-signature-type">FacetValue</a><span class="tsd-signature-symbol">[]</span></h5>
 									<div class="tsd-comment tsd-typography">
-										<p>Can be an array of <a href="../classes/facetvalue.html">FacetValue</a> or a string array.</p>
+										<p>Can be an array of <a href="../classes/facetvalue.html"><code>FacetValue</code></a> or an array of strings.</p>
 									</div>
 								</li>
 							</ul>
@@ -1828,8 +1918,8 @@ $(<span class="hljs-string">"#search"</span>).coveo(<span class="hljs-string">"i
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L671">src/ui/Facet/Facet.ts
-									:671</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L763">src/ui/Facet/Facet.ts
+									:763</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1843,7 +1933,7 @@ $(<span class="hljs-string">"#search"</span>).coveo(<span class="hljs-string">"i
 								<li>
 									<h5>value: <a href="../classes/facetvalue.html" class="tsd-signature-type">FacetValue</a></h5>
 									<div class="tsd-comment tsd-typography">
-										<p>Can be a <a href="../classes/facetvalue.html">FacetValue</a> or a string (e.g., <code>selectValue(&#39;foobar&#39;)</code> or
+										<p>Can be a <a href="../classes/facetvalue.html"><code>FacetValue</code></a> or a string (e.g., <code>selectValue(&#39;foobar&#39;)</code> or
 										<code>selectValue(new FacetValue(&#39;foobar&#39;))</code>).</p>
 									</div>
 								</li>
@@ -1863,15 +1953,16 @@ $(<span class="hljs-string">"#search"</span>).coveo(<span class="hljs-string">"i
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L1050">src/ui/Facet/Facet.ts
-									:1050</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L1136">src/ui/Facet/Facet.ts
+									:1136</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
 									<p>Shows less elements in the Facet (up to the original number of values).</p>
 								</div>
-								<p>See <a href="facet.html#options.numberofvalues">Facet.options.numberOfValues</a>.</p>
+								<p>See the <a href="facet.html#options.enablemoreless"><code>enableMoreLess</code></a>, and
+								<a href="facet.html#options.numberofvalues"><code>numberOfValues</code></a> options.</p>
 							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
@@ -1888,14 +1979,16 @@ $(<span class="hljs-string">"#search"</span>).coveo(<span class="hljs-string">"i
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L1035">src/ui/Facet/Facet.ts
-									:1035</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L1120">src/ui/Facet/Facet.ts
+									:1120</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Shows the next page of results in the Facet.</p>
+									<p>Shows the next page of results in the facet.</p>
 								</div>
+								<p>See the <a href="facet.html#options.enablemoreless"><code>enableMoreLess</code></a>, and <a href="facet.html#options.pagesize"><code>pageSize</code></a>
+								options.</p>
 								<p>Triggers a query if needed, or displays the already available values.</p>
 							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -1913,13 +2006,13 @@ $(<span class="hljs-string">"#search"</span>).coveo(<span class="hljs-string">"i
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L944">src/ui/Facet/Facet.ts
-									:944</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L1038">src/ui/Facet/Facet.ts
+									:1038</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Shows a waiting animation in the Facet header (a spinner).</p>
+									<p>Shows a waiting animation in the facet header (a spinner).</p>
 								</div>
 							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -1937,15 +2030,16 @@ $(<span class="hljs-string">"#search"</span>).coveo(<span class="hljs-string">"i
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L891">src/ui/Facet/Facet.ts
-									:891</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L984">src/ui/Facet/Facet.ts
+									:984</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Switches the Facet to <code>AND</code> mode.</p>
+									<p>Switches the facet to <code>AND</code> mode.</p>
 								</div>
-								<p>See <a href="facet.html#options.useand">Facet.options.useAnd</a> and <a href="facet.html#options.enabletogglingoperator">Facet.options.enableTogglingOperator</a>.</p>
+								<p>See the <a href="facet.html#options.useand"><code>useAnd</code></a>, and
+								<a href="facet.html#options.enabletogglingoperator"><code>enableTogglingOperator</code></a> options.</p>
 							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
@@ -1962,15 +2056,16 @@ $(<span class="hljs-string">"#search"</span>).coveo(<span class="hljs-string">"i
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L902">src/ui/Facet/Facet.ts
-									:902</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L996">src/ui/Facet/Facet.ts
+									:996</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Switches the Facet to <code>OR</code> mode.</p>
+									<p>Switches the facet to <code>OR</code> mode.</p>
 								</div>
-								<p>See <a href="facet.html#options.useand">Facet.options.useAnd</a> and <a href="facet.html#options.enabletogglingoperator">Facet.options.enableTogglingOperator</a>.</p>
+								<p>See the <a href="facet.html#options.useand"><code>useAnd</code></a>, and
+								<a href="facet.html#options.enabletogglingoperator"><code>enableTogglingOperator</code></a> options.</p>
 							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
@@ -1987,8 +2082,8 @@ $(<span class="hljs-string">"#search"</span>).coveo(<span class="hljs-string">"i
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L826">src/ui/Facet/Facet.ts
-									:826</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L918">src/ui/Facet/Facet.ts
+									:918</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2003,7 +2098,7 @@ $(<span class="hljs-string">"#search"</span>).coveo(<span class="hljs-string">"i
 								<li>
 									<h5>value: <a href="../classes/facetvalue.html" class="tsd-signature-type">FacetValue</a></h5>
 									<div class="tsd-comment tsd-typography">
-										<p>Can be a <a href="../classes/facetvalue.html">FacetValue</a> or a string.</p>
+										<p>Can be a <a href="../classes/facetvalue.html"><code>FacetValue</code></a> or a string.</p>
 									</div>
 								</li>
 							</ul>
@@ -2022,8 +2117,8 @@ $(<span class="hljs-string">"#search"</span>).coveo(<span class="hljs-string">"i
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L809">src/ui/Facet/Facet.ts
-									:809</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L901">src/ui/Facet/Facet.ts
+									:901</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2038,7 +2133,7 @@ $(<span class="hljs-string">"#search"</span>).coveo(<span class="hljs-string">"i
 								<li>
 									<h5>value: <a href="../classes/facetvalue.html" class="tsd-signature-type">FacetValue</a></h5>
 									<div class="tsd-comment tsd-typography">
-										<p>Can be a <a href="../classes/facetvalue.html">FacetValue</a> or a string.</p>
+										<p>Can be a <a href="../classes/facetvalue.html"><code>FacetValue</code></a> or a string.</p>
 									</div>
 								</li>
 							</ul>
@@ -2057,8 +2152,8 @@ $(<span class="hljs-string">"#search"</span>).coveo(<span class="hljs-string">"i
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L791">src/ui/Facet/Facet.ts
-									:791</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L883">src/ui/Facet/Facet.ts
+									:883</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2072,7 +2167,7 @@ $(<span class="hljs-string">"#search"</span>).coveo(<span class="hljs-string">"i
 								<li>
 									<h5>values: <a href="../classes/facetvalue.html" class="tsd-signature-type">FacetValue</a><span class="tsd-signature-symbol">[]</span></h5>
 									<div class="tsd-comment tsd-typography">
-										<p>Can be an array of <a href="../classes/facetvalue.html">FacetValue</a> or a string array.</p>
+										<p>Can be an array of <a href="../classes/facetvalue.html"><code>FacetValue</code></a> or an array of strings.</p>
 									</div>
 								</li>
 							</ul>
@@ -2091,8 +2186,8 @@ $(<span class="hljs-string">"#search"</span>).coveo(<span class="hljs-string">"i
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L775">src/ui/Facet/Facet.ts
-									:775</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L867">src/ui/Facet/Facet.ts
+									:867</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2106,7 +2201,7 @@ $(<span class="hljs-string">"#search"</span>).coveo(<span class="hljs-string">"i
 								<li>
 									<h5>value: <a href="../classes/facetvalue.html" class="tsd-signature-type">FacetValue</a></h5>
 									<div class="tsd-comment tsd-typography">
-										<p>Can be a <a href="../classes/facetvalue.html">FacetValue</a> or a string.</p>
+										<p>Can be a <a href="../classes/facetvalue.html"><code>FacetValue</code></a> or a string.</p>
 									</div>
 								</li>
 							</ul>
@@ -2125,13 +2220,13 @@ $(<span class="hljs-string">"#search"</span>).coveo(<span class="hljs-string">"i
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L925">src/ui/Facet/Facet.ts
-									:925</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L1019">src/ui/Facet/Facet.ts
+									:1019</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Changes the sort parameter for the Facet.</p>
+									<p>Changes the sort parameter for the facet.</p>
 								</div>
 								<p>See <a href="facet.html#options.availablesorts">Facet.options.availableSorts</a> for the list of possible values.</p>
 								<p>Also triggers a new query.</p>
@@ -2141,7 +2236,7 @@ $(<span class="hljs-string">"#search"</span>).coveo(<span class="hljs-string">"i
 								<li>
 									<h5>criteria: <span class="tsd-signature-type">string</span></h5>
 									<div class="tsd-comment tsd-typography">
-										<p>The new sort parameter for the Facet.</p>
+										<p>The new sort parameter for the facet.</p>
 									</div>
 								</li>
 							</ul>
@@ -2161,8 +2256,8 @@ $(<span class="hljs-string">"#search"</span>).coveo(<span class="hljs-string">"i
 								<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#get">get</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L193">src/ui/Base/Component.ts
-									:193</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L198">src/ui/Base/Component.ts
+									:198</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2207,8 +2302,8 @@ $(<span class="hljs-string">"#search"</span>).coveo(<span class="hljs-string">"i
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#bind">bind</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L62">src/ui/Base/Component.ts
-							:62</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L67">src/ui/Base/Component.ts
+							:67</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -2232,8 +2327,8 @@ $(<span class="hljs-string">"#search"</span>).coveo(<span class="hljs-string">"i
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#componentoptionsmodel">componentOptionsModel</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L90">src/ui/Base/Component.ts
-							:90</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L95">src/ui/Base/Component.ts
+							:95</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -2250,8 +2345,8 @@ $(<span class="hljs-string">"#search"</span>).coveo(<span class="hljs-string">"i
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#componentstatemodel">componentStateModel</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L74">src/ui/Base/Component.ts
-							:74</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L79">src/ui/Base/Component.ts
+							:79</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -2292,13 +2387,13 @@ $(<span class="hljs-string">"#search"</span>).coveo(<span class="hljs-string">"i
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L567">src/ui/Facet/Facet.ts
-							:567</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L666">src/ui/Facet/Facet.ts
+							:666</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Renders and handles the Facet <strong>Search</strong> part of the component.</p>
+							<p>Renders and handles the facet <strong>Search</strong> part of the component.</p>
 						</div>
 					</div>
 				</section>
@@ -2309,13 +2404,13 @@ $(<span class="hljs-string">"#search"</span>).coveo(<span class="hljs-string">"i
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L572">src/ui/Facet/Facet.ts
-							:572</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L671">src/ui/Facet/Facet.ts
+							:671</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Renders and handles the Facet <strong>Settings</strong> part of the component</p>
+							<p>Renders and handles the facet <strong>Settings</strong> part of the component</p>
 						</div>
 					</div>
 				</section>
@@ -2345,8 +2440,8 @@ $(<span class="hljs-string">"#search"</span>).coveo(<span class="hljs-string">"i
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#querycontroller">queryController</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L78">src/ui/Base/Component.ts
-							:78</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L83">src/ui/Base/Component.ts
+							:83</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -2363,8 +2458,8 @@ $(<span class="hljs-string">"#search"</span>).coveo(<span class="hljs-string">"i
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#querystatemodel">queryStateModel</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L70">src/ui/Base/Component.ts
-							:70</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L75">src/ui/Base/Component.ts
+							:75</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -2381,8 +2476,8 @@ $(<span class="hljs-string">"#search"</span>).coveo(<span class="hljs-string">"i
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#root">root</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L66">src/ui/Base/Component.ts
-							:66</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L71">src/ui/Base/Component.ts
+							:71</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -2399,8 +2494,8 @@ $(<span class="hljs-string">"#search"</span>).coveo(<span class="hljs-string">"i
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#searchinterface">searchInterface</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L82">src/ui/Base/Component.ts
-							:82</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L87">src/ui/Base/Component.ts
+							:87</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -2417,8 +2512,8 @@ $(<span class="hljs-string">"#search"</span>).coveo(<span class="hljs-string">"i
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#usageanalytics">usageAnalytics</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L86">src/ui/Base/Component.ts
-							:86</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L91">src/ui/Base/Component.ts
+							:91</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -2461,13 +2556,13 @@ $(<span class="hljs-string">"#search"</span>).coveo(<span class="hljs-string">"i
 								<p>Overwrites <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#constructor">constructor</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L598">src/ui/Facet/Facet.ts
-									:598</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L697">src/ui/Facet/Facet.ts
+									:697</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Creates a new Facet component. Binds multiple query events as well.</p>
+									<p>Creates a new <code>Facet</code> component. Binds multiple query events as well.</p>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -2484,7 +2579,7 @@ $(<span class="hljs-string">"#search"</span>).coveo(<span class="hljs-string">"i
 									<h5>options: <span class="tsd-signature-type">IFacetOptions</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<div class="lead">
-											<p>The options for the Facet component.</p>
+											<p>The options for the <code>Facet</code> component.</p>
 										</div>
 									</div>
 								</li>
@@ -2501,8 +2596,8 @@ $(<span class="hljs-string">"#search"</span>).coveo(<span class="hljs-string">"i
 									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> facetClassId: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;Facet.ID</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<div class="lead">
-											<p>The ID to use for this facet (as Facet inherited from by other component
-											(e.g.: <a href="facetrange.html">FacetRange</a>). Default value is <code>Facet</code>.</p>
+											<p>The ID to use for this facet (as <code>Facet</code> inherited from by other component
+											(e.g., <a href="facetrange.html"><code>FacetRange</code></a>). Default value is <code>Facet</code>.</p>
 										</div>
 									</div>
 								</li>
