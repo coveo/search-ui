@@ -47,7 +47,8 @@ export class Querybox extends Component {
   static doExport = () => {
     exportGlobally({
       Querybox: Querybox,
-      MagicBox: MagicBox
+      MagicBox: MagicBox,
+      QueryboxQueryParameters: QueryboxQueryParameters
     });
   };
 
