@@ -9,6 +9,7 @@ var configuration = {
   browsers: ['ChromeHeadless'],
   frameworks: ['jasmine'],
   browserNoActivityTimeout: 90000,
+  browserDisconnectTolerance : 10,
   files: [
     {
       pattern: './node_modules/es6-promise/dist/es6-promise.auto.js',
