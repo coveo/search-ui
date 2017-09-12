@@ -19,6 +19,41 @@ export function ResultLayoutTest() {
       test = null;
     });
 
+    describe('with duplicate result layouts', () => {
+      let noOfActiveLayouts: number;
+      
+      beforeEach(() => {
+        noOfActiveLayouts = 0;
+      });
+
+      const addResultLayouts = (layouts: string[]) => {
+        expect(layouts.length).toEqual(2);
+        
+        test = Mock.advancedComponentSetup<ResultLayout>(ResultLayout, <Mock.AdvancedComponentSetupOptions>{
+          modifyBuilder: (builder: Mock.MockEnvironmentBuilder) => {
+            $$(builder.root).on(ResultLayoutEvents.populateResultLayout, (e, args) => {
+              layouts.forEach(l => args.layouts.push(l));
+            });
+            return builder;
+          }
+        });
+        $$(test.env.root).trigger(InitializationEvents.afterComponentsInitialization);
+        
+        const activeLayouts = test.cmp.activeLayouts;
+        noOfActiveLayouts = Object.keys(activeLayouts).length;
+      };
+      
+      it('removes duplicates having the same case', () => {
+        addResultLayouts(['list', 'list']);
+        expect(noOfActiveLayouts).toEqual(1);
+      });
+
+      it('removes duplicates having different cases', () => {
+        addResultLayouts(['table', 'Table']);
+        expect(noOfActiveLayouts).toEqual(1);
+      });
+    });
+
     describe('with "card" and "list" layouts available', () => {
       beforeEach(() => {
         test = Mock.advancedComponentSetup<ResultLayout>(ResultLayout, <Mock.AdvancedComponentSetupOptions>{

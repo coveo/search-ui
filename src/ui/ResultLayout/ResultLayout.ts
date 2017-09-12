@@ -69,6 +69,7 @@ export class ResultLayout extends Component {
   public currentLayout: string;
 
   private currentActiveLayouts: { [key: string]: IActiveLayouts };
+  
   private resultLayoutSection: HTMLElement;
   private hasNoResults: boolean;
 
@@ -134,6 +135,10 @@ export class ResultLayout extends Component {
     this.bind.oneRootElement(InitializationEvents.afterInitialization, () => this.handleQueryStateChanged());
 
     ResponsiveResultLayout.init(this.root, this, {});
+  }
+
+  public get activeLayouts(): { [key: string]: IActiveLayouts } {
+    return this.currentActiveLayouts;
   }
 
   /**
@@ -281,7 +286,7 @@ export class ResultLayout extends Component {
   private populate() {
     let populateArgs: IResultLayoutPopulateArgs = { layouts: [] };
     $$(this.root).trigger(ResultLayoutEvents.populateResultLayout, populateArgs);
-    const layouts = _.uniq(populateArgs.layouts);
+    const layouts = _.uniq(populateArgs.layouts.map(l => l.toLowerCase()));
 
     _.each(layouts, layout => Assert.check(_.contains(ResultLayout.validLayouts, layout), 'Invalid layout'));
     if (!_.isEmpty(layouts)) {
