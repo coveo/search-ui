@@ -29,7 +29,12 @@ gulp.task('test', ['setupTests', 'buildTest'], function (done) {
   new TestServer({
     configFile: path.resolve('./karma.conf.js')
   }, (exitCode) => {
-    done();
+    if (exitCode) {
+      // Fail CI builds if any test fails (since karma will exit 1 on any error) 
+      throw new Error(exitCode);
+    } else {
+      done();
+    }
   }).start();
 });
 
