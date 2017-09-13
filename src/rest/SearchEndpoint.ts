@@ -279,7 +279,7 @@ export class SearchEndpoint implements ISearchEndpoint {
     message?: string,
     callOptions?: IEndpointCallOptions,
     callParams?: IEndpointCallParameters
-  ): string {
+    ): string {
     let queryString = this.buildBaseQueryString(callOptions);
     callParams.queryString = callParams.queryString.concat(queryString);
 
@@ -369,7 +369,7 @@ export class SearchEndpoint implements ISearchEndpoint {
     numberOfResults: number,
     callOptions?: IEndpointCallOptions,
     callParams?: IEndpointCallParameters
-  ): string {
+    ): string {
     let queryString = this.buildBaseQueryString(callOptions);
     callParams.queryString = callParams.queryString.concat(queryString);
 
@@ -410,7 +410,7 @@ export class SearchEndpoint implements ISearchEndpoint {
     dataStreamType: string,
     callOptions?: IViewAsHtmlOptions,
     callParams?: IEndpointCallParameters
-  ): Promise<ArrayBuffer> {
+    ): Promise<ArrayBuffer> {
     Assert.exists(documentUniqueId);
 
     let queryString = this.buildViewAsHtmlQueryString(documentUniqueId, callOptions);
@@ -441,7 +441,7 @@ export class SearchEndpoint implements ISearchEndpoint {
     dataStreamType: string,
     callOptions?: IViewAsHtmlOptions,
     callParams?: IEndpointCallParameters
-  ): string {
+    ): string {
     callOptions = _.extend({}, callOptions);
 
     let queryString = this.buildBaseQueryString(callOptions);
@@ -470,7 +470,7 @@ export class SearchEndpoint implements ISearchEndpoint {
     documentUniqueID: string,
     callOptions?: IEndpointCallOptions,
     callParams?: IEndpointCallParameters
-  ): Promise<IQueryResult> {
+    ): Promise<IQueryResult> {
     let queryString = this.buildViewAsHtmlQueryString(documentUniqueID, callOptions);
     callParams.queryString = callParams.queryString.concat(queryString);
 
@@ -491,7 +491,7 @@ export class SearchEndpoint implements ISearchEndpoint {
     documentUniqueID: string,
     callOptions?: IEndpointCallOptions,
     callParams?: IEndpointCallParameters
-  ): Promise<string> {
+    ): Promise<string> {
     let queryString = this.buildViewAsHtmlQueryString(documentUniqueID, callOptions);
     callParams.queryString = callParams.queryString.concat(queryString);
 
@@ -514,7 +514,7 @@ export class SearchEndpoint implements ISearchEndpoint {
     documentUniqueID: string,
     callOptions?: IViewAsHtmlOptions,
     callParams?: IEndpointCallParameters
-  ): Promise<HTMLDocument> {
+    ): Promise<HTMLDocument> {
     callOptions = _.extend({}, callOptions);
 
     let queryString = this.buildViewAsHtmlQueryString(documentUniqueID, callOptions);
@@ -551,7 +551,7 @@ export class SearchEndpoint implements ISearchEndpoint {
     request: IListFieldValuesRequest,
     callOptions?: IEndpointCallOptions,
     callParams?: IEndpointCallParameters
-  ): Promise<IIndexFieldValue[]> {
+    ): Promise<IIndexFieldValue[]> {
     Assert.exists(request);
 
     return this.performOneCall<any>(callParams).then(data => {
@@ -574,7 +574,7 @@ export class SearchEndpoint implements ISearchEndpoint {
     request: IListFieldValuesRequest,
     callOptions?: IEndpointCallOptions,
     callParams?: IEndpointCallParameters
-  ): Promise<IIndexFieldValue[]> {
+    ): Promise<IIndexFieldValue[]> {
     Assert.exists(request);
 
     callParams.requestData = request;
@@ -633,7 +633,7 @@ export class SearchEndpoint implements ISearchEndpoint {
     ratingRequest: IRatingRequest,
     callOptions?: IEndpointCallOptions,
     callParams?: IEndpointCallParameters
-  ): Promise<boolean> {
+    ): Promise<boolean> {
     this.logger.info('Rating a document', ratingRequest);
 
     callParams.requestData = ratingRequest;
@@ -657,7 +657,7 @@ export class SearchEndpoint implements ISearchEndpoint {
     taggingRequest: ITaggingRequest,
     callOptions?: IEndpointCallOptions,
     callParams?: IEndpointCallParameters
-  ): Promise<boolean> {
+    ): Promise<boolean> {
     this.logger.info('Tagging an item', taggingRequest);
 
     callParams.requestData = taggingRequest;
@@ -685,7 +685,7 @@ export class SearchEndpoint implements ISearchEndpoint {
     request: IQuerySuggestRequest,
     callOptions?: IEndpointCallOptions,
     callParams?: IEndpointCallParameters
-  ): Promise<IQuerySuggestResponse> {
+    ): Promise<IQuerySuggestResponse> {
     this.logger.info('Get Query Suggest', request);
 
     callParams.requestData = _.extend({}, callParams.requestData, _.omit(request, parameter => Utils.isNullOrUndefined(parameter)));
@@ -718,7 +718,7 @@ export class SearchEndpoint implements ISearchEndpoint {
     request: ISubscriptionRequest,
     callOptions?: IEndpointCallOptions,
     callParams?: IEndpointCallParameters
-  ): Promise<ISubscription> {
+    ): Promise<ISubscription> {
     callParams.requestData = request;
 
     this.logger.info('Following an item or a query', request);
@@ -744,7 +744,7 @@ export class SearchEndpoint implements ISearchEndpoint {
     page?: number,
     callOptions?: IEndpointCallOptions,
     callParams?: IEndpointCallParameters
-  ): Promise<ISubscription[]> {
+    ): Promise<ISubscription[]> {
     if (this.options.isGuestUser) {
       return new Promise((resolve, reject) => {
         reject();
@@ -787,7 +787,7 @@ export class SearchEndpoint implements ISearchEndpoint {
     subscription: ISubscription,
     callOptions?: IEndpointCallOptions,
     callParams?: IEndpointCallParameters
-  ): Promise<ISubscription> {
+    ): Promise<ISubscription> {
     callParams.requestData = subscription;
 
     this.logger.info('Updating a subscription', subscription);
@@ -813,7 +813,7 @@ export class SearchEndpoint implements ISearchEndpoint {
     subscription: ISubscription,
     callOptions?: IEndpointCallOptions,
     callParams?: IEndpointCallParameters
-  ): Promise<ISubscription> {
+    ): Promise<ISubscription> {
     callParams.url += subscription.id;
 
     return this.performOneCall<ISubscription>(callParams);
@@ -908,7 +908,7 @@ export class SearchEndpoint implements ISearchEndpoint {
     // Therefore, we cherry-pick parts of the query to include in a 'query string' instead of a body payload.
     let queryString: string[] = [];
     if (queryObject) {
-      _.each(['q', 'aq', 'cq', 'dq', 'searchHub', 'tab', 'language', 'pipeline', 'lowercaseOperators'], key => {
+      _.each(['q', 'aq', 'cq', 'dq', 'searchHub', 'tab', 'locale', 'pipeline', 'lowercaseOperators'], key => {
         if (queryObject[key]) {
           queryString.push(key + '=' + encodeURIComponent(queryObject[key]));
         }
@@ -982,7 +982,7 @@ export class SearchEndpoint implements ISearchEndpoint {
         } else if (error.statusCode == 0 && this.isRedirecting) {
           // The page is getting redirected
           // Set timeout on return with empty string, since it does not really matter
-          _.defer(function() {
+          _.defer(function () {
             return '';
           });
         } else {
@@ -1075,10 +1075,10 @@ function defaultDecoratorEndpointCallParameters() {
 }
 
 function path(path: string) {
-  return function(target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
+  return function (target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
     const { originalMethod, nbParams } = decoratorSetup(target, key, descriptor);
 
-    descriptor.value = function(...args: any[]) {
+    descriptor.value = function (...args: any[]) {
       const url = this.buildBaseUri(path);
       if (args[nbParams - 1]) {
         args[nbParams - 1].url = url;
@@ -1094,10 +1094,10 @@ function path(path: string) {
 }
 
 function alertsPath(path: string) {
-  return function(target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
+  return function (target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
     const { originalMethod, nbParams } = decoratorSetup(target, key, descriptor);
 
-    descriptor.value = function(...args: any[]) {
+    descriptor.value = function (...args: any[]) {
       const url = this.buildSearchAlertsUri(path);
       if (args[nbParams - 1]) {
         args[nbParams - 1].url = url;
@@ -1113,10 +1113,10 @@ function alertsPath(path: string) {
 }
 
 function requestDataType(type: string) {
-  return function(target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
+  return function (target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
     const { originalMethod, nbParams } = decoratorSetup(target, key, descriptor);
 
-    descriptor.value = function(...args: any[]) {
+    descriptor.value = function (...args: any[]) {
       if (args[nbParams - 1]) {
         args[nbParams - 1].requestDataType = type;
       } else {
@@ -1130,10 +1130,10 @@ function requestDataType(type: string) {
 }
 
 function method(met: string) {
-  return function(target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
+  return function (target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
     const { originalMethod, nbParams } = decoratorSetup(target, key, descriptor);
 
-    descriptor.value = function(...args: any[]) {
+    descriptor.value = function (...args: any[]) {
       if (args[nbParams - 1]) {
         args[nbParams - 1].method = met;
       } else {
@@ -1148,10 +1148,10 @@ function method(met: string) {
 }
 
 function responseType(resp: string) {
-  return function(target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
+  return function (target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
     const { originalMethod, nbParams } = decoratorSetup(target, key, descriptor);
 
-    descriptor.value = function(...args: any[]) {
+    descriptor.value = function (...args: any[]) {
       if (args[nbParams - 1]) {
         args[nbParams - 1].responseType = resp;
       } else {
@@ -1166,10 +1166,10 @@ function responseType(resp: string) {
 }
 
 function accessTokenInUrl(tokenKey: string = 'access_token') {
-  return function(target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
+  return function (target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
     const { originalMethod, nbParams } = decoratorSetup(target, key, descriptor);
 
-    descriptor.value = function(...args: any[]) {
+    descriptor.value = function (...args: any[]) {
       const queryString = this.buildAccessToken(tokenKey);
       if (args[nbParams - 1]) {
         args[nbParams - 1].queryString = args[nbParams - 1].queryString.concat(queryString);
@@ -1185,10 +1185,10 @@ function accessTokenInUrl(tokenKey: string = 'access_token') {
 }
 
 function includeActionsHistory(historyStore: CoveoAnalytics.HistoryStore = new history.HistoryStore()) {
-  return function(target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
+  return function (target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
     const { originalMethod, nbParams } = decoratorSetup(target, key, descriptor);
 
-    descriptor.value = function(...args: any[]) {
+    descriptor.value = function (...args: any[]) {
       let historyFromStore = historyStore.getHistory();
       if (historyFromStore == null) {
         historyFromStore = [];
@@ -1210,9 +1210,9 @@ function includeActionsHistory(historyStore: CoveoAnalytics.HistoryStore = new h
 }
 
 function includeReferrer() {
-  return function(target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
+  return function (target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
     const { originalMethod, nbParams } = decoratorSetup(target, key, descriptor);
-    descriptor.value = function(...args: any[]) {
+    descriptor.value = function (...args: any[]) {
       let referrer = document.referrer;
       if (referrer == null) {
         referrer = '';
@@ -1234,9 +1234,9 @@ function includeReferrer() {
 }
 
 function includeVisitorId() {
-  return function(target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
+  return function (target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
     const { originalMethod, nbParams } = decoratorSetup(target, key, descriptor);
-    descriptor.value = function(...args: any[]) {
+    descriptor.value = function (...args: any[]) {
       let visitorId = Cookie.get('visitorId');
       if (visitorId == null) {
         visitorId = '';
@@ -1258,9 +1258,9 @@ function includeVisitorId() {
 }
 
 function includeIsGuestUser() {
-  return function(target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
+  return function (target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
     const { originalMethod, nbParams } = decoratorSetup(target, key, descriptor);
-    descriptor.value = function(...args: any[]) {
+    descriptor.value = function (...args: any[]) {
       let isGuestUser = this.options.isGuestUser;
 
       if (args[nbParams - 1]) {
