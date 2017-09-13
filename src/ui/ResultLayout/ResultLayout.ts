@@ -24,7 +24,7 @@ import 'styling/_ResultLayout';
 import { SVGIcons } from '../../utils/SVGIcons';
 import { SVGDom } from '../../utils/SVGDom';
 
-interface IActiveLayouts {
+export interface IActiveLayouts {
   button: {
     el: HTMLElement;
     visible: boolean;

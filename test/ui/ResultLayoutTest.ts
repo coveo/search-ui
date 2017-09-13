@@ -3,6 +3,7 @@ import { ResultLayout } from '../../src/ui/ResultLayout/ResultLayout';
 import { ResultLayoutEvents } from '../../src/events/ResultLayoutEvents';
 import { QueryEvents, IQuerySuccessEventArgs } from '../../src/events/QueryEvents';
 import { InitializationEvents } from '../../src/events/InitializationEvents';
+import { IResultLayoutPopulateArgs } from '../../src/events/ResultLayoutEvents'
 import { FakeResults } from '../Fake';
 import { QueryStateModel } from '../../src/models/QueryStateModel';
 import { $$, Dom } from '../../src/utils/Dom';
@@ -29,11 +30,12 @@ export function ResultLayoutTest() {
       const addResultLayouts = (layouts: string[]) => {
         expect(layouts.length).toEqual(2);
         
+        const root = $$('div');
+        root.on(ResultLayoutEvents.populateResultLayout, (e, args: IResultLayoutPopulateArgs) => args.layouts = layouts);
+
         test = Mock.advancedComponentSetup<ResultLayout>(ResultLayout, <Mock.AdvancedComponentSetupOptions>{
           modifyBuilder: (builder: Mock.MockEnvironmentBuilder) => {
-            $$(builder.root).on(ResultLayoutEvents.populateResultLayout, (e, args) => {
-              layouts.forEach(l => args.layouts.push(l));
-            });
+            builder.withRoot(root.el);
             return builder;
           }
         });
