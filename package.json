@@ -20,19 +20,43 @@
     "uploadCoverage": "gulp uploadCoverage"
   },
   "lint-staged": {
-    "*.{js,ts,json}": ["prettier --single-quote --print-width 140 --write", "git add"]
+    "*.{js,ts,json}": [
+      "prettier --single-quote --print-width 140 --write",
+      "git add"
+    ]
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/coveo/search-ui.git"
   },
-  "keywords": ["coveo", "search", "ui", "framework", "js", "typescript", "jssearch", "jsui"],
+  "keywords": [
+    "coveo",
+    "search",
+    "ui",
+    "framework",
+    "js",
+    "typescript",
+    "jssearch",
+    "jsui"
+  ],
   "author": "Coveo <sandbox_JSUI@coveo.com> (http://source.coveo.com/)",
   "license": "Apache-2.0",
   "bugs": {
     "url": "https://github.com/coveo/search-ui/issues"
   },
-  "files": ["bin", "pages", "gulpTasks", "docgen", "images", "templates", "strings", "filetypes", "lib", "src", "typings"],
+  "files": [
+    "bin",
+    "pages",
+    "gulpTasks",
+    "docgen",
+    "images",
+    "templates",
+    "strings",
+    "filetypes",
+    "lib",
+    "src",
+    "typings"
+  ],
   "homepage": "https://github.com/coveo/search-ui#readme",
   "engines": {
     "node": "6.10.0"
@@ -89,7 +113,7 @@
     "prettier": "^1.6.1",
     "puppeteer": "^0.10.2",
     "q": "^1.4.1",
-    "remap-istanbul": "^0.6.4",
+    "remap-istanbul": "https://github.com/coveord/remap-istanbul/tarball/master",
     "require-dir": "^0.3.0",
     "resolve-url-loader": "^2.0",
     "rimraf": "^2.5.4",
