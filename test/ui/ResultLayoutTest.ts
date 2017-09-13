@@ -21,15 +21,8 @@ export function ResultLayoutTest() {
     });
 
     describe('with duplicate result layouts', () => {
-      let noOfActiveLayouts: number;
       
-      beforeEach(() => {
-        noOfActiveLayouts = 0;
-      });
-
       const addResultLayouts = (layouts: string[]) => {
-        expect(layouts.length).toEqual(2);
-        
         const root = $$('div');
         root.on(ResultLayoutEvents.populateResultLayout, (e, args: IResultLayoutPopulateArgs) => args.layouts = layouts);
 
@@ -39,19 +32,23 @@ export function ResultLayoutTest() {
             return builder;
           }
         });
-        $$(test.env.root).trigger(InitializationEvents.afterComponentsInitialization);
-        
-        const activeLayouts = test.cmp.activeLayouts;
-        noOfActiveLayouts = Object.keys(activeLayouts).length;
       };
       
       it('removes duplicates having the same case', () => {
         addResultLayouts(['list', 'list']);
+        $$(test.env.root).trigger(InitializationEvents.afterComponentsInitialization);
+        
+        const activeLayouts = test.cmp.activeLayouts;
+        const noOfActiveLayouts = Object.keys(activeLayouts).length;
         expect(noOfActiveLayouts).toEqual(1);
       });
 
       it('removes duplicates having different cases', () => {
         addResultLayouts(['table', 'Table']);
+        $$(test.env.root).trigger(InitializationEvents.afterComponentsInitialization);
+        
+        const activeLayouts = test.cmp.activeLayouts;
+        const noOfActiveLayouts = Object.keys(activeLayouts).length;
         expect(noOfActiveLayouts).toEqual(1);
       });
     });

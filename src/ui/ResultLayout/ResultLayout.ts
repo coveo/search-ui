@@ -286,7 +286,7 @@ export class ResultLayout extends Component {
   private populate() {
     let populateArgs: IResultLayoutPopulateArgs = { layouts: [] };
     $$(this.root).trigger(ResultLayoutEvents.populateResultLayout, populateArgs);
-    const layouts = _.uniq(populateArgs.layouts.map(l => l.toLowerCase()));
+    const layouts = _.uniq(populateArgs.layouts.map(layout => layout.toLowerCase()));
 
     _.each(layouts, layout => Assert.check(_.contains(ResultLayout.validLayouts, layout), 'Invalid layout'));
     if (!_.isEmpty(layouts)) {
