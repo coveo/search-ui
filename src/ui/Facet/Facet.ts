@@ -143,7 +143,7 @@ export class Facet extends Component {
      */
     title: ComponentOptions.buildLocalizedStringOption({
       defaultValue: l('NoTitle'),
-      section: 'Common Options',
+      section: 'CommonOptions',
       priority: 10
     }),
 
@@ -155,7 +155,7 @@ export class Facet extends Component {
      *
      * Specifying a value for this option is required for the `Facet` component to work.
      */
-    field: ComponentOptions.buildFieldOption({ required: true, groupByField: true, section: 'Common Options' }),
+    field: ComponentOptions.buildFieldOption({ required: true, groupByField: true, section: 'CommonOptions' }),
 
     headerIcon: ComponentOptions.buildStringOption({
       deprecated: 'This option is exposed for legacy reasons, and the recommendation is to not use this option.'
@@ -244,16 +244,9 @@ export class Facet extends Component {
       | 'nosort'
     >({
       defaultValue: ['occurrences', 'score', 'alphaAscending', 'alphaDescending'],
-      values: [
       depend: 'enableSettings',
-      section: 'Sorting'
-        'AlphaAscending',
-        'AlphaDescending',
-        'ComputedFieldAscending',
-        'ComputedFieldDescending',
-        'ChiSquare',
-        'NoSort'
-      ],
+      section: 'Sorting',
+      values: ['AlphaAscending', 'AlphaDescending', 'ComputedFieldAscending', 'ComputedFieldDescending', 'ChiSquare', 'NoSort']
     }),
 
     /**
@@ -265,7 +258,8 @@ export class Facet extends Component {
      * option, or `occurrences` if no sort criteria is specified.
      */
     sortCriteria: ComponentOptions.buildStringOption({
-      postProcessing: (value, options: IFacetOptions) => value || (options.availableSorts.length > 0 ? options.availableSorts[0] : 'occurrences'),
+      postProcessing: (value, options: IFacetOptions) =>
+        value || (options.availableSorts.length > 0 ? options.availableSorts[0] : 'occurrences'),
       section: 'Sorting'
     }),
 
@@ -290,7 +284,7 @@ export class Facet extends Component {
      *
      * See also the [`enableMoreLess`]{@link Facet.options.enableMoreLess} option.
      */
-    numberOfValues: ComponentOptions.buildNumberOption({ defaultValue: 5, min: 0, section: 'Common Options' }),
+    numberOfValues: ComponentOptions.buildNumberOption({ defaultValue: 5, min: 0, section: 'CommonOptions' }),
 
     /**
      * Specifies the *injection depth* to use for the [`GroupByRequest`]{@link IGroupByRequest} operation.
@@ -327,9 +321,10 @@ export class Facet extends Component {
      *
      * Default value is `false`.
      */
-    enableTogglingOperator: ComponentOptions.buildBooleanOption({ defaultValue: false, alias: 'allowTogglingOperator', section: 'Filtering' }),
+    enableTogglingOperator: ComponentOptions.buildBooleanOption({
       defaultValue: false,
-      alias: 'allowTogglingOperator'
+      alias: 'allowTogglingOperator',
+      section: 'Filtering'
     }),
 
     /**
