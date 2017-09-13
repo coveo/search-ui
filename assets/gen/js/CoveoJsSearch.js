@@ -20507,8 +20507,8 @@ exports.DebugEvents = DebugEvents;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.version = {
-    'lib': '2.2900.24',
-    'product': '2.2900.24',
+    'lib': '2.2900.25',
+    'product': '2.2900.25',
     'supportedApiVersion': 2
 };
 
