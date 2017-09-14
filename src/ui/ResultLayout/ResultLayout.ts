@@ -24,7 +24,7 @@ import 'styling/_ResultLayout';
 import { SVGIcons } from '../../utils/SVGIcons';
 import { SVGDom } from '../../utils/SVGDom';
 
-interface IActiveLayouts {
+export interface IActiveLayouts {
   button: {
     el: HTMLElement;
     visible: boolean;
@@ -69,6 +69,7 @@ export class ResultLayout extends Component {
   public currentLayout: string;
 
   private currentActiveLayouts: { [key: string]: IActiveLayouts };
+  
   private resultLayoutSection: HTMLElement;
   private hasNoResults: boolean;
 
@@ -134,6 +135,10 @@ export class ResultLayout extends Component {
     this.bind.oneRootElement(InitializationEvents.afterInitialization, () => this.handleQueryStateChanged());
 
     ResponsiveResultLayout.init(this.root, this, {});
+  }
+
+  public get activeLayouts(): { [key: string]: IActiveLayouts } {
+    return this.currentActiveLayouts;
   }
 
   /**
@@ -281,9 +286,11 @@ export class ResultLayout extends Component {
   private populate() {
     let populateArgs: IResultLayoutPopulateArgs = { layouts: [] };
     $$(this.root).trigger(ResultLayoutEvents.populateResultLayout, populateArgs);
-    _.each(populateArgs.layouts, layout => Assert.check(_.contains(ResultLayout.validLayouts, layout), 'Invalid layout'));
-    if (!_.isEmpty(populateArgs.layouts)) {
-      _.each(populateArgs.layouts, layout => this.addButton(layout));
+    const layouts = _.uniq(populateArgs.layouts.map(layout => layout.toLowerCase()));
+
+    _.each(layouts, layout => Assert.check(_.contains(ResultLayout.validLayouts, layout), 'Invalid layout'));
+    if (!_.isEmpty(layouts)) {
+      _.each(layouts, layout => this.addButton(layout));
       if (!this.shouldShowSelector()) {
         this.hide();
       }
