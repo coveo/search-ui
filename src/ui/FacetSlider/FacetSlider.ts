@@ -70,7 +70,7 @@ export class FacetSlider extends Component {
      *
      * Default value is the localized string for `NoTitle`.
      */
-    title: ComponentOptions.buildLocalizedStringOption({ defaultValue: l('NoTitle') }),
+    title: ComponentOptions.buildLocalizedStringOption({ defaultValue: l('NoTitle'), section: 'CommonOptions' }),
 
     /**
      * Specifies whether the [`field`]{@link FacetSlider.options.field} for which you are requesting a range is a date
@@ -79,7 +79,7 @@ export class FacetSlider extends Component {
      *
      * Default value is `false`.
      */
-    dateField: ComponentOptions.buildBooleanOption({ defaultValue: false }),
+    dateField: ComponentOptions.buildBooleanOption({ defaultValue: false, section: 'CommonOptions' }),
 
     /**
      * Specifies the index field whose values the `FacetSlider` should use.
@@ -89,7 +89,7 @@ export class FacetSlider extends Component {
      *
      * Specifying a value for this option is required for the `FacetSlider` component to work.
      */
-    field: ComponentOptions.buildFieldOption({ groupByField: true, required: true }),
+    field: ComponentOptions.buildFieldOption({ groupByField: true, required: true, section: 'CommonOptions' }),
 
     /**
      * Specifies a unique identifier for the `FacetSlider`. Among other things, this identifier serves the purpose of
@@ -111,7 +111,7 @@ export class FacetSlider extends Component {
      *
      * Default value is `MMM dd, yyyy`.
      */
-    dateFormat: ComponentOptions.buildStringOption(),
+    dateFormat: ComponentOptions.buildStringOption({ section: 'Display' }),
 
     /**
      * Specifies a query to filter automatic minimum and maximum values for the slider range.
@@ -126,7 +126,7 @@ export class FacetSlider extends Component {
      * <div class="CoveoFacetSlider" data-field="@date" data-date-field="true" data-query-override="@date>2000/01/01"></div>
      * ```
      */
-    queryOverride: ComponentOptions.buildStringOption(),
+    queryOverride: ComponentOptions.buildStringOption({ section: 'Filtering' }),
 
     /**
      * Specifies the starting boundary of the slider.
@@ -136,7 +136,7 @@ export class FacetSlider extends Component {
      *
      * Default value is the lowest available field value in the index.
      */
-    start: ComponentOptions.buildStringOption(),
+    start: ComponentOptions.buildStringOption({ section: 'Filtering' }),
 
     /**
      * Specifies the ending boundary of the slider.
@@ -146,21 +146,21 @@ export class FacetSlider extends Component {
      *
      * Default value is the highest available field value in the index.
      */
-    end: ComponentOptions.buildStringOption(),
+    end: ComponentOptions.buildStringOption({ section: 'Filtering' }),
 
     /**
      * Specifies whether to exclude the outer bounds of the slider in the generated query when they are not active.
      *
      * Default value is `false`.
      */
-    excludeOuterBounds: ComponentOptions.buildBooleanOption({ defaultValue: false }),
+    excludeOuterBounds: ComponentOptions.buildBooleanOption({ defaultValue: false, section: 'Filtering' }),
 
     /**
      * Specifies the number of decimal places to round the displayed numerical values to.
      *
      * Default (and minimum) value is `0`.
      */
-    rounded: ComponentOptions.buildNumberOption({ min: 0 }),
+    rounded: ComponentOptions.buildNumberOption({ min: 0, section: 'Filtering' }),
 
     /**
      * Specifies the number of steps to split the slider into.
@@ -197,7 +197,8 @@ export class FacetSlider extends Component {
         enable: ComponentOptions.buildBooleanOption({ defaultValue: true }),
         unitSign: ComponentOptions.buildStringOption(),
         separator: ComponentOptions.buildStringOption({ defaultValue: '-' })
-      }
+      },
+      section: 'Display'
     }),
 
     /**
@@ -213,7 +214,8 @@ export class FacetSlider extends Component {
       subOptions: {
         enable: ComponentOptions.buildBooleanOption({ defaultValue: false }),
         separator: ComponentOptions.buildStringOption({ defaultValue: '-' })
-      }
+      },
+      section: 'Display'
     }),
 
     /**
@@ -235,7 +237,8 @@ export class FacetSlider extends Component {
             right: ComponentOptions.buildNumberOption({ min: 0 })
           }
         })
-      }
+      },
+      section: 'Graph'
     }),
 
     /**
@@ -330,7 +333,7 @@ export class FacetSlider extends Component {
      *
      * Default value is `true`.
      */
-    enableResponsiveMode: ComponentOptions.buildBooleanOption({ defaultValue: true }),
+    enableResponsiveMode: ComponentOptions.buildBooleanOption({ defaultValue: true, section: 'ResponsiveOptions' }),
 
     /**
      * Specifies the label of the button which the end user can click to display the facets when in responsive mode. If
@@ -338,7 +341,7 @@ export class FacetSlider extends Component {
      *
      * Default value is "Filters".
      */
-    dropdownHeaderLabel: ComponentOptions.buildLocalizedStringOption()
+    dropdownHeaderLabel: ComponentOptions.buildLocalizedStringOption({ section: 'ResponsiveOptions' })
   };
 
   static ID = 'FacetSlider';
