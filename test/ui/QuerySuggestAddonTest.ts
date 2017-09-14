@@ -49,12 +49,12 @@ export function QuerySuggestAddonTest() {
     });
 
     describe('should call the query suggest service', () => {
-      it('with the language', () => {
+      it('with the locale', () => {
         let querySuggest = new QuerySuggestAddon(omnibox);
         querySuggest.getSuggestion();
         expect(endpoint.getQuerySuggest).toHaveBeenCalledWith(
           jasmine.objectContaining({
-            language: jasmine.any(String)
+            locale: jasmine.any(String)
           })
         );
       });
