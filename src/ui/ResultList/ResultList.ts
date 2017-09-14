@@ -25,7 +25,7 @@ import { Initialization, IInitializationParameters, IInitResult } from '../Base/
 import { Defer } from '../../misc/Defer';
 import { DeviceUtils } from '../../utils/DeviceUtils';
 import { ResultListEvents, IDisplayedNewResultEventArgs, IChangeLayoutEventArgs } from '../../events/ResultListEvents';
-import { ResultLayoutEvents } from '../../events/ResultLayoutEvents';
+import { ResultLayoutEvents, IResultLayoutPopulateArgs } from '../../events/ResultLayoutEvents';
 import { Utils } from '../../utils/Utils';
 import { DomUtils } from '../../utils/DomUtils';
 import { DefaultRecommendationTemplate } from '../Templates/DefaultRecommendationTemplate';
@@ -338,7 +338,7 @@ export class ResultList extends Component {
     Assert.exists(this.options.waitAnimationContainer);
 
     this.setupTemplatesVersusLayouts();
-    $$(this.root).on(ResultLayoutEvents.populateResultLayout, (e, args) => args.layouts.push(this.options.layout));
+    $$(this.root).on(ResultLayoutEvents.populateResultLayout, (e, args: IResultLayoutPopulateArgs) => args.layouts.push(this.options.layout));
     this.setupRenderer();
   }
 
