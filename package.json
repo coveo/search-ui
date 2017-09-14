@@ -20,43 +20,23 @@
     "uploadCoverage": "gulp uploadCoverage"
   },
   "lint-staged": {
-    "*.{js,ts,json}": [
-      "prettier --single-quote --print-width 140 --write",
-      "git add"
-    ]
+    "*.{js,ts,json}": ["prettier --write", "git add"]
+  },
+  "prettier": {
+    "printWidth": 140,
+    "singleQuote": true
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/coveo/search-ui.git"
   },
-  "keywords": [
-    "coveo",
-    "search",
-    "ui",
-    "framework",
-    "js",
-    "typescript",
-    "jssearch",
-    "jsui"
-  ],
+  "keywords": ["coveo", "search", "ui", "framework", "js", "typescript", "jssearch", "jsui"],
   "author": "Coveo <sandbox_JSUI@coveo.com> (http://source.coveo.com/)",
   "license": "Apache-2.0",
   "bugs": {
     "url": "https://github.com/coveo/search-ui/issues"
   },
-  "files": [
-    "bin",
-    "pages",
-    "gulpTasks",
-    "docgen",
-    "images",
-    "templates",
-    "strings",
-    "filetypes",
-    "lib",
-    "src",
-    "typings"
-  ],
+  "files": ["bin", "pages", "gulpTasks", "docgen", "images", "templates", "strings", "filetypes", "lib", "src", "typings"],
   "homepage": "https://github.com/coveo/search-ui#readme",
   "engines": {
     "node": "6.10.0"
@@ -105,6 +85,7 @@
     "karma-coverage": "^1.0.0",
     "karma-jasmine": "^1.0.2",
     "karma-spec-reporter": "0.0.26",
+    "lint-staged": "^4.1.3",
     "node-fetch": "^1.5.3",
     "node-sass": "^4.0",
     "npm-cli-login": "0.0.10",

@@ -69,6 +69,8 @@ gulp.task('lcovCoverage', ['remapCoverage'], function (done) {
 });
 
 function filesToExclude(fileName) {
-  const whiteList = /search-ui[\/\\](bin|src|test)/;
-  return !whiteList.test(fileName);
+  const entryFile = /search-ui[\/\\]bin[\/\\]tests[\/\\]tests.js/;
+  const whiteList = /search-ui[\/\\](src|test)/;
+  
+  return !entryFile.test(fileName) && !whiteList.test(fileName);
 }
