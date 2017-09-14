@@ -53,7 +53,7 @@ export interface IQuery {
    * The tab value set from the {@link Tab} component.
    */
   tab?: string;
-  language?: string;
+  locale?: string;
   /**
    * Name of the query pipeline to use.<br/>
    * This specifies the name of the query pipeline to use for the query. If not specified, the default value is default, which means the default query pipeline will be used.

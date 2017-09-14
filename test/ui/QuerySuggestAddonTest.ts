@@ -49,12 +49,12 @@ export function QuerySuggestAddonTest() {
     });
 
     describe('should call the query suggest service', () => {
-      it('with the language', () => {
+      it('with the locale', () => {
         let querySuggest = new QuerySuggestAddon(omnibox);
         querySuggest.getSuggestion();
         expect(endpoint.getQuerySuggest).toHaveBeenCalledWith(
           jasmine.objectContaining({
-            language: jasmine.any(String)
+            locale: jasmine.any(String)
           })
         );
       });
@@ -104,14 +104,14 @@ export function QuerySuggestAddonTest() {
         describe('with a cache', () => {
           it('should cache the result', done => {
             let querySuggest = new QuerySuggestAddon(omnibox);
-            let firstPromise = new Promise((resolve, reject) => {});
+            let firstPromise = new Promise((resolve, reject) => { });
 
             (<any>endpoint).getQuerySuggest.and.returnValue(firstPromise);
             let firstPromiseReturned = querySuggest.getSuggestion();
             expect(firstPromiseReturned).toEqual(firstPromise);
 
             setTimeout(() => {
-              let secondPromise = new Promise((resolve, reject) => {});
+              let secondPromise = new Promise((resolve, reject) => { });
               (<any>endpoint).getQuerySuggest.and.returnValue(secondPromise);
               let secondPromiseReturned = querySuggest.getSuggestion();
               expect(secondPromiseReturned).toBe(firstPromiseReturned);
@@ -130,7 +130,7 @@ export function QuerySuggestAddonTest() {
             expect(firstPromiseReturned).toEqual(firstPromise);
 
             setTimeout(() => {
-              let secondPromise = new Promise((resolve, reject) => {});
+              let secondPromise = new Promise((resolve, reject) => { });
               (<any>endpoint).getQuerySuggest.and.returnValue(secondPromise);
               let secondPromiseReturned = querySuggest.getSuggestion();
               expect(secondPromiseReturned).not.toBe(firstPromiseReturned);
