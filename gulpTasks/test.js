@@ -49,7 +49,8 @@ gulp.task('uploadCoverage', ['lcovCoverage'], shell.task([
 gulp.task('remapCoverage', function (done) {
   return gulp.src(`${COVERAGE_DIR}/coverage-es5.json`)
     .pipe(remapIstanbul({
-      exclude: /(webpack|~\/d3\/|~\/es6-promise\/dist\/|~\/process\/|~\/underscore\/|vertx|~\/coveomagicbox\/|~\/d3-.*\/|~\/modal-box\/|~\/moment\/|~\/pikaday\/|test\/|lib\/|es6-promise|analytics|jstimezonedetect|latinize|whatwg|circular-json)/
+      basePath: '.',
+      exclude: filesToExclude
     }))
     .pipe(rename('coverage.json'))
     .pipe(gulp.dest(COVERAGE_DIR));
@@ -66,3 +67,10 @@ gulp.task('lcovCoverage', ['remapCoverage'], function (done) {
     print: 'summary'
   }).then(() => done());
 });
+
+function filesToExclude(fileName) {
+  const entryFile = /search-ui[\/\\]bin[\/\\]tests[\/\\]tests.js/;
+  const whiteList = /search-ui[\/\\](src|test)/;
+  
+  return !entryFile.test(fileName) && !whiteList.test(fileName);
+}
