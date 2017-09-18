@@ -298,7 +298,7 @@ export function initBox(element: HTMLElement, ...args: any[]) {
 
 
 Initialization.registerNamedMethod('initBox', (element?: HTMLElement, ...args: any[]) => {
-  initBox(element, args);
+  initBox(element, ...args);
 });
 
 export function nuke(element: HTMLElement) {
