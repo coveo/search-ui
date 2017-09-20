@@ -755,7 +755,7 @@ export class SearchInterface extends RootComponent implements IComponentBindings
     }
 
     if (Utils.isNonEmptyString(this.options.expression)) {
-      data.queryBuilder.advancedExpression.add(this.options.expression);
+      data.queryBuilder.constantExpression.add(this.options.expression);
     }
 
     if (Utils.isNonEmptyString(<string>this.options.filterField)) {

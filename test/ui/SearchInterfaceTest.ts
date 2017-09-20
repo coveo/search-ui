@@ -223,19 +223,19 @@ export function SearchInterfaceTest() {
       it('expression allow to specify and advanced expression to add to the query', function () {
         new SearchInterface(div, { expression: 'foobar' }, undefined, mockWindow);
         let simulation = Simulate.query(env);
-        expect(simulation.queryBuilder.advancedExpression.build()).toBe('foobar');
+        expect(simulation.queryBuilder.constantExpression.build()).toBe('foobar');
       });
 
       it('expression should not be added if empty', function () {
         new SearchInterface(div, { expression: '' }, undefined, mockWindow);
         let simulation = Simulate.query(env);
-        expect(simulation.queryBuilder.advancedExpression.build()).toBeUndefined();
+        expect(simulation.queryBuilder.constantExpression.build()).toBeUndefined();
       });
 
       it('expression should be empty by default', function () {
         new SearchInterface(div, undefined, undefined, mockWindow);
         let simulation = Simulate.query(env);
-        expect(simulation.queryBuilder.advancedExpression.build()).toBeUndefined();
+        expect(simulation.queryBuilder.constantExpression.build()).toBeUndefined();
       });
 
       it('filterField allow to specify a filtering field', function () {
