@@ -55,7 +55,7 @@
 	</div>
 	<div class="bottomHeader">
 		<div id="searchBox">
-			<div class="CoveoSearchbox" data-enable-omnibox="true" data-inline="false" data-enable-wildcards="true" data-enable-search-as-you-type="false" data-enable-query-suggest-addon="false" data-enable-query-syntax="true" data-enable-field-addon="true"></div>
+			<div class="CoveoSearchbox" data-enable-omnibox="true" data-inline="false" data-enable-wildcards="true" data-enable-search-as-you-type="false" data-enable-reveal-query-suggest-addon="false" data-enable-query-syntax="true" data-enable-field-addon="true"></div>
 			<div class="CoveoFieldSuggestions" data-field="@systitle" data-header-title="Suggested topics"></div>
 		</div>
 	</div>
@@ -171,9 +171,7 @@
 							<a href="querysummary.html">QuerySummary</a>
 						</li>
 					</ul>
-					<!-- Has to remain here for the playground to work -->
-					<h1 style="visibility: collapse; font-size:0">Coveo component QuerySummary</h1>
-					<h1>Coveo QuerySummary Component (CoveoQuerySummary)</h1>
+					<h1>Coveo component QuerySummary</h1>
 				</div>
 			</div>
 			<section class="tsd-panel tsd-comment">
@@ -182,7 +180,7 @@
 						<p>The QuerySummary component can display information about the currently displayed range of results (e.g., &quot;Results
 						1-10 of 123&quot;).</p>
 					</div>
-					<p>If the query matches no item, the QuerySummary component can instead display tips to help the end user formulate
+					<p>If the query matches no document, the QuerySummary component can instead display tips to help the end user formulate
 					a better query.</p>
 				</div>
 			</section>
@@ -244,8 +242,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/QuerySummary/QuerySummary.ts#L50">src/ui/QuerySummary/QuerySummary.ts
-							:50</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/QuerySummary/QuerySummary.ts#L41">src/ui/QuerySummary/QuerySummary.ts
+							:41</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -267,8 +265,8 @@ data-enable-search-tips&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/QuerySummary/QuerySummary.ts#L58">src/ui/QuerySummary/QuerySummary.ts
-							:58</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/QuerySummary/QuerySummary.ts#L49">src/ui/QuerySummary/QuerySummary.ts
+							:49</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -378,8 +376,8 @@ data-only-display-search-tips&#x3D;&#x27;false&#x27;</pre>
 								<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#getbindings">getBindings</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L129">src/ui/Base/Component.ts
-									:129</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L124">src/ui/Base/Component.ts
+									:124</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -403,8 +401,8 @@ data-only-display-search-tips&#x3D;&#x27;false&#x27;</pre>
 								<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#get">get</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L198">src/ui/Base/Component.ts
-									:198</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L193">src/ui/Base/Component.ts
+									:193</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -449,8 +447,8 @@ data-only-display-search-tips&#x3D;&#x27;false&#x27;</pre>
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#bind">bind</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L67">src/ui/Base/Component.ts
-							:67</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L62">src/ui/Base/Component.ts
+							:62</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -474,8 +472,8 @@ data-only-display-search-tips&#x3D;&#x27;false&#x27;</pre>
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#componentoptionsmodel">componentOptionsModel</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L95">src/ui/Base/Component.ts
-							:95</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L90">src/ui/Base/Component.ts
+							:90</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -492,8 +490,8 @@ data-only-display-search-tips&#x3D;&#x27;false&#x27;</pre>
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#componentstatemodel">componentStateModel</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L79">src/ui/Base/Component.ts
-							:79</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L74">src/ui/Base/Component.ts
+							:74</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -553,8 +551,8 @@ data-only-display-search-tips&#x3D;&#x27;false&#x27;</pre>
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#querycontroller">queryController</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L83">src/ui/Base/Component.ts
-							:83</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L78">src/ui/Base/Component.ts
+							:78</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -571,8 +569,8 @@ data-only-display-search-tips&#x3D;&#x27;false&#x27;</pre>
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#querystatemodel">queryStateModel</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L75">src/ui/Base/Component.ts
-							:75</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L70">src/ui/Base/Component.ts
+							:70</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -589,8 +587,8 @@ data-only-display-search-tips&#x3D;&#x27;false&#x27;</pre>
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#root">root</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L71">src/ui/Base/Component.ts
-							:71</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L66">src/ui/Base/Component.ts
+							:66</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -607,8 +605,8 @@ data-only-display-search-tips&#x3D;&#x27;false&#x27;</pre>
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#searchinterface">searchInterface</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L87">src/ui/Base/Component.ts
-							:87</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L82">src/ui/Base/Component.ts
+							:82</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -625,8 +623,8 @@ data-only-display-search-tips&#x3D;&#x27;false&#x27;</pre>
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#usageanalytics">usageAnalytics</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L91">src/ui/Base/Component.ts
-							:91</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L86">src/ui/Base/Component.ts
+							:86</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -669,8 +667,8 @@ data-only-display-search-tips&#x3D;&#x27;false&#x27;</pre>
 								<p>Overwrites <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#constructor">constructor</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/QuerySummary/QuerySummary.ts#L62">src/ui/QuerySummary/QuerySummary.ts
-									:62</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/QuerySummary/QuerySummary.ts#L53">src/ui/QuerySummary/QuerySummary.ts
+									:53</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">

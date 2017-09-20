@@ -55,7 +55,7 @@
 	</div>
 	<div class="bottomHeader">
 		<div id="searchBox">
-			<div class="CoveoSearchbox" data-enable-omnibox="true" data-inline="false" data-enable-wildcards="true" data-enable-search-as-you-type="false" data-enable-query-suggest-addon="false" data-enable-query-syntax="true" data-enable-field-addon="true"></div>
+			<div class="CoveoSearchbox" data-enable-omnibox="true" data-inline="false" data-enable-wildcards="true" data-enable-search-as-you-type="false" data-enable-reveal-query-suggest-addon="false" data-enable-query-syntax="true" data-enable-field-addon="true"></div>
 			<div class="CoveoFieldSuggestions" data-field="@systitle" data-header-title="Suggested topics"></div>
 		</div>
 	</div>
@@ -152,7 +152,7 @@
 							<li class=" tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited tsd-is-static">
 								<a href="quickview.html#id" class="tsd-kind-icon">ID</a>
 							</li>
-							<li class=" tsd-kind-constructor tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-overwrite">
+							<li class=" tsd-kind-constructor tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited">
 								<a href="quickview.html#constructor" class="tsd-kind-icon">constructor</a>
 							</li>
 						</ul>
@@ -177,32 +177,36 @@
 							<a href="quickview.html">Quickview</a>
 						</li>
 					</ul>
-					<!-- Has to remain here for the playground to work -->
-					<h1 style="visibility: collapse; font-size:0">Coveo component Quickview</h1>
-					<h1>Coveo Quickview Component (CoveoQuickview)</h1>
+					<h1>Coveo component Quickview</h1>
 				</div>
 			</div>
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>The <code>Quickview</code> component renders a button / link which the end user can click to open a modal box containing certain
-							content about a result. Most of the time, this component references a <a href="quickviewdocument.html"><code>QuickviewDocument</code></a>
-						in its <a href="quickview.html#options.contenttemplate"><code>contentTemplate</code></a>.</p>
+						<p>This component is meant to exist within a result template.
+						It allows to create a button/link inside the result list that opens a modal box for a given result.</p>
 					</div>
-					<p><strong>Note:</strong></p>
-					<blockquote>
-						<ul>
-							<li>You can change the appearance of the <code>Quickview</code> link / button by adding HTML inside the body of its <code>div</code>.</li>
-							<li>You can change the content of the <code>Quickview</code> modal box link by specifying a template ID or selector (see the
-							<a href="quickview.html#options.contenttemplate"><code>contentTemplate</code></a> option).</li>
-						</ul>
-					</blockquote>
-					<p><strong>Example:</strong></p>
-					<pre><code class="lang-html">[ ... ]
+					<p>Most of the time, this component will reference a <a href="quickviewdocument.html">QuickviewDocument</a> in its content template.</p>
+					<h2 id="choosing-what-to-display-for-the-quickview">Choosing what to display for the Quickview</h2>
+					<p>The Quick View uses any HTML structure you put inside its tag and uses that as the content of the dialog box. This content can thus be any element you decide, using your CSS and your structure.</p>
+					<h2 id="example">Example</h2>
+					<ul>
+						<li><p>You can change the appearance of the Quick View link by adding HTML inside the body of the div.</p>
+						</li>
+						<li><p>You can change the content of the Quick View link by specifying a template ID.</p>
+						</li>
+						<li><p>You can use the methods of the <a href="../interfaces/icorehelpers.html">CoreHelpers</a> in the template.</p>
+						</li>
+					</ul>
+					<pre><code class="lang-html"><span class="hljs-comment">&lt;!-- This would change the appearance of the quickview button itself in the result. --&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"CoveoQuickview"</span> <span class="hljs-attr">data-template-id</span>=<span class="hljs-string">"TemplateId"</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">span</span>&gt;</span>Click here for Quickview<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
 
-<span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">class</span>=<span class="hljs-string">'result-template'</span> <span class="hljs-attr">type</span>=<span class="hljs-string">'text/underscore'</span> <span class="hljs-attr">id</span>=<span class="hljs-string">'myContentTemplateId'</span>&gt;</span><span class="javascript">
+<span class="hljs-comment">&lt;!-- This would modify the content of the quickview when it is opened in the modal box --&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">class</span>=<span class="hljs-string">'result-template'</span> <span class="hljs-attr">type</span>=<span class="hljs-string">'text/underscore'</span> <span class="hljs-attr">id</span>=<span class="hljs-string">'TemplateId'</span> &gt;</span><span class="javascript">
   &lt;div&gt;
-    <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">span</span>&gt;</span>This content will be displayed when then end user opens the Quickview modal box. It could also include other Coveo component, and use core helpers.<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span></span>
+    <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">span</span>&gt;</span>This is the content that will be displayed when you open the Quick View. You can also include any other Coveo components.<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span></span>
     &lt;table <span class="hljs-class"><span class="hljs-keyword">class</span></span>=<span class="hljs-string">"CoveoFieldTable"</span>&gt;
       <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">tr</span> <span class="hljs-attr">data-field</span>=<span class="hljs-string">"@liboardshorttitle"</span> <span class="hljs-attr">data-caption</span>=<span class="hljs-string">"Board"</span> /&gt;</span>
       <span class="hljs-tag">&lt;<span class="hljs-name">tr</span> <span class="hljs-attr">data-field</span>=<span class="hljs-string">"@licategoryshorttitle"</span> <span class="hljs-attr">data-caption</span>=<span class="hljs-string">"Category"</span> /&gt;</span>
@@ -211,25 +215,8 @@
   <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
 </span></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
 
-[ ... ]
-
-<span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">'CoveoResultList'</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">class</span>=<span class="hljs-string">'result-template'</span> <span class="hljs-attr">type</span>=<span class="hljs-string">'text/underscore'</span> <span class="hljs-attr">id</span>=<span class="hljs-string">'myResultTemplateId'</span>&gt;</span><span class="handlebars"><span class="xml">
-
-  [ ... ]
-
-    <span class="hljs-comment">&lt;!-- The `myContentTemplateId` template applies when displaying content in the Quickview modal box. --&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">'CoveoQuickview'</span> <span class="hljs-attr">data-template-id</span>=<span class="hljs-string">'myContentTemplateId'</span>&gt;</span>
-        <span class="hljs-comment">&lt;!-- This changes the appearance of the Quickview button itself in the results --&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-name">span</span>&gt;</span>Click here for a Quickview<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>
-      <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
-  </span></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
-
-  [ ... ]
-
-<span class="hljs-comment">&lt;!-- Note that this is all optional. Simply including `&lt;div class='CoveoQuickview'&gt;&lt;/div&gt;` in the markup suffices most of the time and includes a default template, and default button appearance. --&gt;</span>
+<span class="hljs-comment">&lt;!-- Note that this is all optional: Just including a &lt;div class='CoveoQuickview'&gt;&lt;/div&gt; will do the job most of the time, and will include a default template and default button appearance --&gt;</span>
 </code></pre>
-					<p>This component is a result template component (see <a href="https://developers.coveo.com/x/aIGfAQ">Result Templates</a>).</p>
 				</div>
 			</section>
 			<div class="preview-container tsd-panel">
@@ -245,6 +232,7 @@
 								<li class="tsd-kind-variable tsd-parent-kind-object-literal"><a href="quickview.html#options.alwaysshow" class="tsd-kind-icon">always<wbr>Show</a></li>
 								<li class="tsd-kind-variable tsd-parent-kind-object-literal"><a href="quickview.html#options.contenttemplate" class="tsd-kind-icon">content<wbr>Template</a></li>
 								<li class="tsd-kind-variable tsd-parent-kind-object-literal"><a href="quickview.html#options.showdate" class="tsd-kind-icon">show<wbr>Date</a></li>
+								<li class="tsd-kind-variable tsd-parent-kind-object-literal"><a href="quickview.html#options.size" class="tsd-kind-icon">size</a></li>
 								<li class="tsd-kind-variable tsd-parent-kind-object-literal"><a href="quickview.html#options.title" class="tsd-kind-icon">title</a></li>
 							</ul>
 						</section>
@@ -276,10 +264,10 @@
 								<li class="tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited tsd-is-static"><a href="quickview.html#id" class="tsd-kind-icon">ID</a></li>
 							</ul>
 						</section>
-						<section class="tsd-index-section ">
+						<section class="tsd-index-section tsd-is-inherited">
 							<h3>Constructors</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-constructor tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-overwrite"><a href="quickview.html#constructor" class="tsd-kind-icon">constructor</a></li>
+								<li class="tsd-kind-constructor tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited"><a href="quickview.html#constructor" class="tsd-kind-icon">constructor</a></li>
 							</ul>
 						</section>
 					</div>
@@ -294,18 +282,16 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Quickview/Quickview.ts#L109">src/ui/Quickview/Quickview.ts
-							:109</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Quickview/Quickview.ts#L90">src/ui/Quickview/Quickview.ts
+							:90</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies whether to always show the <code>Quickview</code> button / link, even when the index body of an item is empty.</p>
+							<p>Specifies whether the quickview is always shown, even when the index body for a document is empty.<br/>
+								In such cases, the <a href="quickview.html#options.contenttemplate">Quickview.options.contentTemplate</a> specifies what appears in the quickview.<br/>
+							If there is no quickview for the document, you <em>MUST</em> specify a contentTemplate otherwise the component will throw an error when opened.</p>
 						</div>
-						<p>In such cases, the <a href="quickview.html#options.contenttemplate"><code>contentTemplate</code></a> defines what appears in the
-							<code>Quickview</code> modal box. Consequently, if there is no quickview for the item, you <em>MUST</em> specify a custom
-						<code>contentTemplate</code>, otherwise the component will throw an error when opened.</p>
-						<p>Default value is <code>false</code>.</p>
 					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
@@ -320,28 +306,17 @@ data-always-show&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Quickview/Quickview.ts#L151">src/ui/Quickview/Quickview.ts
-							:151</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Quickview/Quickview.ts#L107">src/ui/Quickview/Quickview.ts
+							:107</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies a custom template to use when displaying content in the <code>Quickview</code> modal box.</p>
+							<p>Specifies the template to use to present the Quick View content in the modal window.<br/>
+								e.g.: <br/>
+								<div class="CoveoQuickview" data-template-id="TemplateId"></div>
+							<div class="CoveoQuickview" data-template-selector=".templateSelector"></div></p>
 						</div>
-						<p><strong>Note:</strong></p>
-						<blockquote>
-							<p>You can use <a href="../interfaces/icorehelpers.html"><code>CoreHelpers</code></a> methods in your content template.</p>
-						</blockquote>
-						<p>You can specify a previously registered template to use either by referring to its HTML <code>id</code> attribute or to a
-						CSS selector (see <a href="../classes/templatecache.html"><code>TemplateCache</code></a>).</p>
-						<p><strong>Example:</strong></p>
-						<p>Specifying a previously registered template by referring to its HTML <code>id</code> attribute:</p>
-						<pre><code class="lang-html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"CoveoQuickview"</span> <span class="hljs-attr">data-template-id</span>=<span class="hljs-string">"myContentTemplateId"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
-</code></pre>
-						<p>Specifying a previously registered template by referring to a CSS selector:</p>
-						<pre><code class="lang-html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">'CoveoQuickview'</span> <span class="hljs-attr">data-template-selector</span>=<span class="hljs-string">".myContentTemplateSelector"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
-</code></pre>
-						<p>If you do not specify a custom content template, the component uses its default template.</p>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
@@ -351,20 +326,42 @@ data-always-show&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Quickview/Quickview.ts#L123">src/ui/Quickview/Quickview.ts
-							:123</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Quickview/Quickview.ts#L99">src/ui/Quickview/Quickview.ts
+							:99</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies whether to display the item date in the <code>Quickview</code> modal box header.</p>
+							<p>Specifies whether to show the document date in the Quick View modal window header.<br/>
+							The default value is <code>true</code>.</p>
 						</div>
-						<p>Default value is <code>true</code>.</p>
 					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
 						<pre>data-show-date&#x3D;&#x27;true&#x27;
 data-show-date&#x3D;&#x27;false&#x27;</pre>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
+					<a name="options.size" class="tsd-anchor"></a>
+					<h3>size</h3>
+					<div class="tsd-signature tsd-kind-icon">size<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Quickview/Quickview.ts#L135">src/ui/Quickview/Quickview.ts
+							:135</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Specifies the Quick View modal window size (width and height) relative to the full window.<br/>
+							The default value is 95% on a desktop and 100% on a mobile device.</p>
+						</div>
+					</div>
+					<div class="tsd-panel">
+						<div class="tsd-signature-type">Markup configuration example(s) :</div>
+						<pre>data-size&#x3D;&#x27;foo&#x27;</pre>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
@@ -374,15 +371,14 @@ data-show-date&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Quickview/Quickview.ts#L116">src/ui/Quickview/Quickview.ts
-							:116</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Quickview/Quickview.ts#L94">src/ui/Quickview/Quickview.ts
+							:94</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies the title that should appear in the <code>Quickview</code> modal box header.</p>
+							<p>Specifies the title of your choice that appears at the top of the Quick View modal window.</p>
 						</div>
-						<p>Default value is <code>undefined</code>.</p>
 					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
@@ -403,13 +399,13 @@ data-show-date&#x3D;&#x27;false&#x27;</pre>
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Quickview/Quickview.ts#L242">src/ui/Quickview/Quickview.ts
-									:242</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Quickview/Quickview.ts#L199">src/ui/Quickview/Quickview.ts
+									:199</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Closes the <code>Quickview</code> modal box.</p>
+									<p>Close the quickview</p>
 								</div>
 							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -507,8 +503,8 @@ data-show-date&#x3D;&#x27;false&#x27;</pre>
 								<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#getbindings">getBindings</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L129">src/ui/Base/Component.ts
-									:129</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L124">src/ui/Base/Component.ts
+									:124</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -531,13 +527,13 @@ data-show-date&#x3D;&#x27;false&#x27;</pre>
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Quickview/Quickview.ts#L223">src/ui/Quickview/Quickview.ts
-									:223</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Quickview/Quickview.ts#L181">src/ui/Quickview/Quickview.ts
+									:181</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Opens the <code>Quickview</code> modal box.</p>
+									<p>Open the quickview</p>
 								</div>
 							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -556,8 +552,8 @@ data-show-date&#x3D;&#x27;false&#x27;</pre>
 								<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#get">get</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L198">src/ui/Base/Component.ts
-									:198</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L193">src/ui/Base/Component.ts
+									:193</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -602,8 +598,8 @@ data-show-date&#x3D;&#x27;false&#x27;</pre>
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#bind">bind</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L67">src/ui/Base/Component.ts
-							:67</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L62">src/ui/Base/Component.ts
+							:62</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -627,8 +623,8 @@ data-show-date&#x3D;&#x27;false&#x27;</pre>
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#componentoptionsmodel">componentOptionsModel</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L95">src/ui/Base/Component.ts
-							:95</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L90">src/ui/Base/Component.ts
+							:90</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -645,8 +641,8 @@ data-show-date&#x3D;&#x27;false&#x27;</pre>
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#componentstatemodel">componentStateModel</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L79">src/ui/Base/Component.ts
-							:79</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L74">src/ui/Base/Component.ts
+							:74</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -706,8 +702,8 @@ data-show-date&#x3D;&#x27;false&#x27;</pre>
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#querycontroller">queryController</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L83">src/ui/Base/Component.ts
-							:83</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L78">src/ui/Base/Component.ts
+							:78</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -724,8 +720,8 @@ data-show-date&#x3D;&#x27;false&#x27;</pre>
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#querystatemodel">queryStateModel</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L75">src/ui/Base/Component.ts
-							:75</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L70">src/ui/Base/Component.ts
+							:70</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -742,8 +738,8 @@ data-show-date&#x3D;&#x27;false&#x27;</pre>
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#root">root</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L71">src/ui/Base/Component.ts
-							:71</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L66">src/ui/Base/Component.ts
+							:66</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -760,8 +756,8 @@ data-show-date&#x3D;&#x27;false&#x27;</pre>
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#searchinterface">searchInterface</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L87">src/ui/Base/Component.ts
-							:87</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L82">src/ui/Base/Component.ts
+							:82</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -778,8 +774,8 @@ data-show-date&#x3D;&#x27;false&#x27;</pre>
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#usageanalytics">usageAnalytics</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L91">src/ui/Base/Component.ts
-							:91</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L86">src/ui/Base/Component.ts
+							:86</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -808,27 +804,29 @@ data-show-date&#x3D;&#x27;false&#x27;</pre>
 					</div>
 				</section>
 			</section>
-			<section class="tsd-panel-group tsd-member-group ">
+			<section class="tsd-panel-group tsd-member-group tsd-is-inherited">
 				<h2>Constructors</h2>
-				<section class="tsd-panel tsd-member tsd-kind-constructor tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-overwrite">
+				<section class="tsd-panel tsd-member tsd-kind-constructor tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited">
 					<a name="constructor" class="tsd-anchor"></a>
 					<h3>constructor</h3>
-					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-overwrite">
-						<li class="tsd-signature tsd-kind-icon">new <wbr>Quickview<span class="tsd-signature-symbol">(</span>element<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">HTMLElement</span>, options<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">IQuickviewOptions</span>, bindings<span class="tsd-signature-symbol">?: </span><a href="../interfaces/iresultscomponentbindings.html" class="tsd-signature-type">IResultsComponentBindings</a>, result<span class="tsd-signature-symbol">?: </span><a href="../interfaces/iqueryresult.html" class="tsd-signature-type">IQueryResult</a>, ModalBox<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="quickview.html" class="tsd-signature-type">Quickview</a></li>
+					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited">
+						<li class="tsd-signature tsd-kind-icon">new <wbr>Quickview<span class="tsd-signature-symbol">(</span>element<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">HTMLElement</span>, type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, bindings<span class="tsd-signature-symbol">?: </span><a href="../interfaces/icomponentbindings.html" class="tsd-signature-type">IComponentBindings</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="quickview.html" class="tsd-signature-type">Quickview</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Overwrites <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#constructor">constructor</a></p>
+								<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#constructor">constructor</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Quickview/Quickview.ts#L179">src/ui/Quickview/Quickview.ts
-									:179</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L92">src/ui/Base/Component.ts
+									:92</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Creates a new <code>Quickview</code> component.</p>
+									<p>Create a new Component. Resolve all <a href="../interfaces/icomponentbindings.html">IComponentBindings</a> if not provided.<br/>
+										Create a new Logger for this component.
+									Attach the component to the <a href="searchinterface.html">SearchInterface</a>.<br/></p>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -837,40 +835,23 @@ data-show-date&#x3D;&#x27;false&#x27;</pre>
 									<h5>element: <span class="tsd-signature-type">HTMLElement</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<div class="lead">
-											<p>The HTMLElement on which to instantiate the component.</p>
+											<p>The HTMLElement on which to create the component. Used to bind data on the element.</p>
 										</div>
 									</div>
 								</li>
 								<li>
-									<h5><span class="tsd-flag ts-flagOptional">Optional</span> options: <span class="tsd-signature-type">IQuickviewOptions</span></h5>
+									<h5>type: <span class="tsd-signature-type">string</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<div class="lead">
-											<p>The options for the <code>Quickview</code> component.</p>
+											<p>The unique identifier for this component. See : <a href="../interfaces/icomponentdefinition.html#id">IComponentDefinition.ID</a>. Used to generate the unique Coveo CSS class associated with every component.</p>
 										</div>
 									</div>
 								</li>
 								<li>
-									<h5><span class="tsd-flag ts-flagOptional">Optional</span> bindings: <a href="../interfaces/iresultscomponentbindings.html" class="tsd-signature-type">IResultsComponentBindings</a></h5>
+									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> bindings: <a href="../interfaces/icomponentbindings.html" class="tsd-signature-type">IComponentBindings</a><span class="tsd-signature-symbol"> =&nbsp;{}</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<div class="lead">
-											<p>The bindings that the component requires to function normally. If not set, these will be
-											automatically resolved (with a slower execution time).</p>
-										</div>
-									</div>
-								</li>
-								<li>
-									<h5><span class="tsd-flag ts-flagOptional">Optional</span> result: <a href="../interfaces/iqueryresult.html" class="tsd-signature-type">IQueryResult</a></h5>
-									<div class="tsd-comment tsd-typography">
-										<div class="lead">
-											<p>The result to associate the component with.</p>
-										</div>
-									</div>
-								</li>
-								<li>
-									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> ModalBox: <span class="tsd-signature-type">any</span><span class="tsd-signature-symbol"> =&nbsp;ModalBoxModule</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<div class="lead">
-											<p>The quickview modal box.</p>
+											<p>The environment for every component. Optional, but omitting to provide one will impact performance.</p>
 										</div>
 									</div>
 								</li>
