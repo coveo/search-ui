@@ -3,7 +3,7 @@ import { ResultLayout } from '../../src/ui/ResultLayout/ResultLayout';
 import { ResultLayoutEvents } from '../../src/events/ResultLayoutEvents';
 import { QueryEvents, IQuerySuccessEventArgs } from '../../src/events/QueryEvents';
 import { InitializationEvents } from '../../src/events/InitializationEvents';
-import { IResultLayoutPopulateArgs } from '../../src/events/ResultLayoutEvents'
+import { IResultLayoutPopulateArgs } from '../../src/events/ResultLayoutEvents';
 import { FakeResults } from '../Fake';
 import { QueryStateModel } from '../../src/models/QueryStateModel';
 import { $$, Dom } from '../../src/utils/Dom';
@@ -21,10 +21,9 @@ export function ResultLayoutTest() {
     });
 
     describe('with duplicate result layouts', () => {
-      
       const addResultLayouts = (layouts: string[]) => {
         const root = $$('div');
-        root.on(ResultLayoutEvents.populateResultLayout, (e, args: IResultLayoutPopulateArgs) => args.layouts = layouts);
+        root.on(ResultLayoutEvents.populateResultLayout, (e, args: IResultLayoutPopulateArgs) => (args.layouts = layouts));
 
         test = Mock.advancedComponentSetup<ResultLayout>(ResultLayout, <Mock.AdvancedComponentSetupOptions>{
           modifyBuilder: (builder: Mock.MockEnvironmentBuilder) => {
@@ -33,11 +32,11 @@ export function ResultLayoutTest() {
           }
         });
       };
-      
+
       it('removes duplicates having the same case', () => {
         addResultLayouts(['list', 'list']);
         $$(test.env.root).trigger(InitializationEvents.afterComponentsInitialization);
-        
+
         const activeLayouts = test.cmp.activeLayouts;
         const noOfActiveLayouts = Object.keys(activeLayouts).length;
         expect(noOfActiveLayouts).toEqual(1);
@@ -46,7 +45,7 @@ export function ResultLayoutTest() {
       it('removes duplicates having different cases', () => {
         addResultLayouts(['table', 'Table']);
         $$(test.env.root).trigger(InitializationEvents.afterComponentsInitialization);
-        
+
         const activeLayouts = test.cmp.activeLayouts;
         const noOfActiveLayouts = Object.keys(activeLayouts).length;
         expect(noOfActiveLayouts).toEqual(1);

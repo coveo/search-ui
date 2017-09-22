@@ -110,7 +110,7 @@ export class Omnibox extends Component {
      *
      * Default value is `false`.
      */
-    enableSearchAsYouType: ComponentOptions.buildBooleanOption({ defaultValue: false }),
+    enableSearchAsYouType: ComponentOptions.buildBooleanOption({ defaultValue: false, section: 'SearchAsYouType' }),
 
     /**
      * If {@link Omnibox.options.enableSearchAsYouType} is `true`, specifies the delay (in milliseconds) before
@@ -121,7 +121,8 @@ export class Omnibox extends Component {
     searchAsYouTypeDelay: ComponentOptions.buildNumberOption({
       defaultValue: 2000,
       min: 0,
-      depend: 'enableSearchAsYouType'
+      depend: 'enableSearchAsYouType',
+      section: 'SearchAsYouType'
     }),
 
     /**
@@ -147,7 +148,8 @@ export class Omnibox extends Component {
           options.enableQuerySyntax = true;
         }
         return value;
-      }
+      },
+      section: 'QuerySyntax'
     }),
     enableSimpleFieldAddon: ComponentOptions.buildBooleanOption({ defaultValue: false, depend: 'enableFieldAddon' }),
     listOfFields: ComponentOptions.buildFieldsOption({ depend: 'enableFieldAddon' }),
@@ -186,7 +188,8 @@ export class Omnibox extends Component {
           options.enableQuerySyntax = true;
         }
         return value;
-      }
+      },
+      section: 'QuerySyntax'
     }),
 
     /**
@@ -210,7 +213,8 @@ export class Omnibox extends Component {
      * Default value is `false`.
      */
     enableQuerySyntax: ComponentOptions.buildBooleanOption({
-      defaultValue: false
+      defaultValue: false,
+      section: 'QuerySyntax'
     })
   };
 

@@ -69,7 +69,7 @@ export class ResultLayout extends Component {
   public currentLayout: string;
 
   private currentActiveLayouts: { [key: string]: IActiveLayouts };
-  
+
   private resultLayoutSection: HTMLElement;
   private hasNoResults: boolean;
 

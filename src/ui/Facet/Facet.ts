@@ -143,7 +143,7 @@ export class Facet extends Component {
      */
     title: ComponentOptions.buildLocalizedStringOption({
       defaultValue: l('NoTitle'),
-      section: 'Identification',
+      section: 'CommonOptions',
       priority: 10
     }),
 
@@ -155,7 +155,7 @@ export class Facet extends Component {
      *
      * Specifying a value for this option is required for the `Facet` component to work.
      */
-    field: ComponentOptions.buildFieldOption({ required: true, groupByField: true, section: 'Identification' }),
+    field: ComponentOptions.buildFieldOption({ required: true, groupByField: true, section: 'CommonOptions' }),
 
     headerIcon: ComponentOptions.buildStringOption({
       deprecated: 'This option is exposed for legacy reasons, and the recommendation is to not use this option.'
@@ -244,17 +244,9 @@ export class Facet extends Component {
       | 'nosort'
     >({
       defaultValue: ['occurrences', 'score', 'alphaAscending', 'alphaDescending'],
-      values: [
-        'Occurrences',
-        'Score',
-        'AlphaAscending',
-        'AlphaDescending',
-        'ComputedFieldAscending',
-        'ComputedFieldDescending',
-        'ChiSquare',
-        'NoSort'
-      ],
-      depend: 'enableSettings'
+      depend: 'enableSettings',
+      section: 'Sorting',
+      values: ['AlphaAscending', 'AlphaDescending', 'ComputedFieldAscending', 'ComputedFieldDescending', 'ChiSquare', 'NoSort']
     }),
 
     /**
@@ -267,7 +259,8 @@ export class Facet extends Component {
      */
     sortCriteria: ComponentOptions.buildStringOption({
       postProcessing: (value, options: IFacetOptions) =>
-        value || (options.availableSorts.length > 0 ? options.availableSorts[0] : 'occurrences')
+        value || (options.availableSorts.length > 0 ? options.availableSorts[0] : 'occurrences'),
+      section: 'Sorting'
     }),
 
     /**
@@ -283,17 +276,15 @@ export class Facet extends Component {
      * **Note:**
      * > The [`FacetRange`]{@link FacetRange} component does not support this option.
      */
-    customSort: ComponentOptions.buildListOption<string>({ section: 'Identification' }),
+    customSort: ComponentOptions.buildListOption<string>({ section: 'Sorting' }),
 
     /**
      * Specifies the maximum number of field values to display by default in the facet before the user
      * clicks the arrow to show more.
      *
      * See also the [`enableMoreLess`]{@link Facet.options.enableMoreLess} option.
-     *
-     * Default value is `5`. Minimum value is `0`.
      */
-    numberOfValues: ComponentOptions.buildNumberOption({ defaultValue: 5, min: 0, section: 'Identification' }),
+    numberOfValues: ComponentOptions.buildNumberOption({ defaultValue: 5, min: 0, section: 'CommonOptions' }),
 
     /**
      * Specifies the *injection depth* to use for the [`GroupByRequest`]{@link IGroupByRequest} operation.
@@ -320,7 +311,7 @@ export class Facet extends Component {
      * Default value is `false`, which means that the filter uses the `OR` operator. Thus, by default, items must
      * have at least one of the selected values to match the query.
      */
-    useAnd: ComponentOptions.buildBooleanOption({ defaultValue: false }),
+    useAnd: ComponentOptions.buildBooleanOption({ defaultValue: false, section: 'Filtering' }),
 
     /**
      * Specifies whether to allow the user to toggle between the `OR` and `AND` modes in the facet.
@@ -332,7 +323,8 @@ export class Facet extends Component {
      */
     enableTogglingOperator: ComponentOptions.buildBooleanOption({
       defaultValue: false,
-      alias: 'allowTogglingOperator'
+      alias: 'allowTogglingOperator',
+      section: 'Filtering'
     }),
 
     /**
@@ -384,7 +376,7 @@ export class Facet extends Component {
      *
      * Default value is `15`. Minimum value is `1`.
      */
-    numberOfValuesInFacetSearch: ComponentOptions.buildNumberOption({ defaultValue: 15, min: 1 }),
+    numberOfValuesInFacetSearch: ComponentOptions.buildNumberOption({ defaultValue: 15, min: 1, section: 'FacetSearch' }),
 
     /**
      * Specifies whether the facet should push data to the [`Breadcrumb`]{@link Breadcrumb} component.
@@ -591,7 +583,7 @@ export class Facet extends Component {
      *
      * Example: `@date>=2014/01/01`
      */
-    additionalFilter: ComponentOptions.buildStringOption(),
+    additionalFilter: ComponentOptions.buildStringOption({ section: 'Filtering' }),
 
     /**
      * Specifies whether this facet only appears when a value is selected in its "parent" facet.
@@ -679,7 +671,7 @@ export class Facet extends Component {
      *
      * Default value is `true`.
      */
-    enableResponsiveMode: ComponentOptions.buildBooleanOption({ defaultValue: true }),
+    enableResponsiveMode: ComponentOptions.buildBooleanOption({ defaultValue: true, section: 'ResponsiveOptions' }),
 
     responsiveBreakpoint: ComponentOptions.buildNumberOption({
       defaultValue: 800,
@@ -696,7 +688,7 @@ export class Facet extends Component {
      *
      * Default value is `Filters`.
      */
-    dropdownHeaderLabel: ComponentOptions.buildLocalizedStringOption()
+    dropdownHeaderLabel: ComponentOptions.buildLocalizedStringOption({ section: 'ResponsiveOptions' })
   };
 
   public facetQueryController: FacetQueryController;
