@@ -1,6 +1,6 @@
 {
   "name": "coveo-search-ui",
-  "version": "2.0.2",
+  "version": "2.0.3",
   "description": "Coveo JavaScript Search Framework",
   "main": "./bin/js/CoveoJsSearch.js",
   "types": "./bin/ts/CoveoJsSearch.d.ts",
@@ -20,7 +20,7 @@
     "uploadCoverage": "gulp uploadCoverage"
   },
   "lint-staged": {
-    "*.{js,ts,json}": ["prettier --write", "git add"]
+    "*.{js,ts,json,.scss}": ["prettier --write", "git add"]
   },
   "prettier": {
     "printWidth": 140,
@@ -122,7 +122,7 @@
     "circular-json": "^0.3.1",
     "coveo-styleguide": "1.13.4",
     "coveo.analytics": "^0.7.0",
-    "coveomagicbox": "1.0.x",
+    "coveomagicbox": "^1.0.32",
     "d3": "^4.2.1",
     "d3-scale": "^1.0.3",
     "es6-promise": "^4.0.5",
