@@ -251,29 +251,29 @@ export class Initialization {
     $$(element).trigger(InitializationEvents.beforeInitialization);
 
     const toExecuteOnceSearchInterfaceIsInitialized = () => {
-      Initialization.initExternalComponents(element, options);
+      Initialization.initExternalComponents(element, options).then(result => {
+        Initialization.performInitFunctionsOption(options, InitializationEvents.afterComponentsInitialization);
+        $$(element).trigger(InitializationEvents.afterComponentsInitialization);
 
-      Initialization.performInitFunctionsOption(options, InitializationEvents.afterComponentsInitialization);
-      $$(element).trigger(InitializationEvents.afterComponentsInitialization);
+        $$(element).trigger(InitializationEvents.restoreHistoryState);
 
-      $$(element).trigger(InitializationEvents.restoreHistoryState);
+        Initialization.performInitFunctionsOption(options, InitializationEvents.afterInitialization);
+        $$(element).trigger(InitializationEvents.afterInitialization);
 
-      Initialization.performInitFunctionsOption(options, InitializationEvents.afterInitialization);
-      $$(element).trigger(InitializationEvents.afterInitialization);
-
-      let searchInterface = <SearchInterface>Component.get(element, SearchInterface);
-      if (searchInterface.options.autoTriggerQuery) {
-        Initialization.logFirstQueryCause(searchInterface);
-        let shouldLogInActionHistory = true;
-        // We should not log an action history if the interface is a standalone recommendation component.
-        if (Coveo['Recommendation']) {
-          shouldLogInActionHistory = !(searchInterface instanceof Coveo['Recommendation']);
+        let searchInterface = <SearchInterface>Component.get(element, SearchInterface);
+        if (searchInterface.options.autoTriggerQuery) {
+          Initialization.logFirstQueryCause(searchInterface);
+          let shouldLogInActionHistory = true;
+          // We should not log an action history if the interface is a standalone recommendation component.
+          if (Coveo['Recommendation']) {
+            shouldLogInActionHistory = !(searchInterface instanceof Coveo['Recommendation']);
+          }
+          (<QueryController>Component.get(element, QueryController)).executeQuery({
+            logInActionsHistory: shouldLogInActionHistory,
+            isFirstQuery: true
+          });
         }
-        (<QueryController>Component.get(element, QueryController)).executeQuery({
-          logInActionsHistory: shouldLogInActionHistory,
-          isFirstQuery: true
-        });
-      }
+      });
     };
 
     const resultOfSearchInterfaceInitialization = initSearchInterfaceFunction(element, options);
@@ -636,7 +636,7 @@ export class Initialization {
     }
   }
 
-  private static initExternalComponents(element: HTMLElement, options?: any) {
+  private static initExternalComponents(element: HTMLElement, options?: any): Promise<Boolean> {
     if (options && options['externalComponents']) {
       let searchInterface = <SearchInterface>Component.get(element, SearchInterface);
       let queryStateModel = <QueryStateModel>Component.get(element, QueryStateModel);
@@ -661,14 +661,18 @@ export class Initialization {
           root: element
         }
       };
-      _.each(options['externalComponents'], (externalComponent: HTMLElement | IJQuery) => {
+      const initializationOfExternalComponents = _.map(options['externalComponents'], (externalComponent: HTMLElement | IJQuery) => {
         let elementToInstantiate = externalComponent;
         if (Utils.isHtmlElement(elementToInstantiate)) {
-          return Initialization.automaticallyCreateComponentsInside(<HTMLElement>elementToInstantiate, initParameters);
+          return Initialization.automaticallyCreateComponentsInside(<HTMLElement>elementToInstantiate, initParameters).initResult;
         } else if (JQueryUtils.isInstanceOfJQuery(elementToInstantiate)) {
-          return Initialization.automaticallyCreateComponentsInside(<HTMLElement>(<any>elementToInstantiate).get(0), initParameters);
+          return Initialization.automaticallyCreateComponentsInside(<HTMLElement>(<any>elementToInstantiate).get(0), initParameters)
+            .initResult;
         }
       });
+      return Promise.all(initializationOfExternalComponents).then(results => _.first(results));
+    } else {
+      return Promise.resolve(false);
     }
   }
 }
