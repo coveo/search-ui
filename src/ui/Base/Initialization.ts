@@ -670,7 +670,12 @@ export class Initialization {
             .initResult;
         }
       });
-      return Promise.all(initializationOfExternalComponents).then(results => _.first(results));
+      return Promise.all(initializationOfExternalComponents)
+        .then(results => _.first(results))
+        .catch(err => {
+          this.logger.error(err);
+          return false;
+        });
     } else {
       return Promise.resolve(false);
     }
