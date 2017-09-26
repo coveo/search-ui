@@ -490,7 +490,7 @@ export class SearchInterface extends RootComponent implements IComponentBindings
     let t = tFromModel;
 
     // if you want to set the tab group
-    if (args.tg !== undefined) {
+    if (args && args.tg !== undefined) {
       args.tg = this.getTabGroupId(args.tg);
       if (tg != args.tg) {
         args.t = args.t || QueryStateModel.defaultAttributes.t;
@@ -499,7 +499,7 @@ export class SearchInterface extends RootComponent implements IComponentBindings
       }
     }
 
-    if (args.t !== undefined) {
+    if (args && args.t !== undefined) {
       args.t = this.getTabId(tg, args.t);
       if (t != args.t) {
         args.sort = args.sort || QueryStateModel.defaultAttributes.sort;
@@ -507,11 +507,11 @@ export class SearchInterface extends RootComponent implements IComponentBindings
       }
     }
 
-    if (args.sort !== undefined) {
+    if (args && args.sort !== undefined) {
       args.sort = this.getSort(t, args.sort);
     }
 
-    if (args.quickview !== undefined) {
+    if (args && args.quickview !== undefined) {
       args.quickview = this.getQuickview(args.quickview);
     }
   }
