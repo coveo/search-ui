@@ -7,6 +7,11 @@ import { exportGlobally } from '../../GlobalExports';
 
 export interface INavigatorPositionProviderOptions {}
 
+/**
+ * The `NavigatorPositionProvider` component provides the user's position to a [`DistanceResources`]{@link DistanceResources} component according to the current navigator.
+ *
+ * Note that most browser requires your site to be in HTTPS to use this API.
+ */
 export class NavigatorPositionProvider extends Component {
   public static ID = 'NavigatorPositionProvider';
   static doExport = () => {
@@ -14,8 +19,20 @@ export class NavigatorPositionProvider extends Component {
       NavigatorPositionProvider: NavigatorPositionProvider
     });
   };
+
+  /**
+   * The possible options for a navigator position provider.
+   * @componentOptions
+   */
   public static options: INavigatorPositionProviderOptions = {};
 
+  /**
+   * Creates a new `NavigatorPositionProvider` component.
+   * @param element The HTMLElement on which to instantiate the component.
+   * @param options The options for the `NavigatorPositionProvider` component.
+   * @param bindings The bindings that the component requires to function normally. If not set, these will be
+   * automatically resolved (with a slower execution time).
+   */
   constructor(public element: HTMLElement, public options: INavigatorPositionProviderOptions, public bindings: IComponentBindings) {
     super(element, NavigatorPositionProvider.ID, bindings);
 

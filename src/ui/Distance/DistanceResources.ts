@@ -21,11 +21,19 @@ export interface IDistanceOptions {
   distanceField: string;
   latitudeField: string;
   longitudeField: string;
-  unitDisplayName: string;
   unitConversionFactor: number;
   disabledDistanceCssClass: string;
 }
 
+/**
+ * The `DistanceResources` component defines a field that computes the distance according to the user's position.
+ *
+ * You must use a position provider to provide a position to this component.
+ * 
+ * Components that uses the current distance should be disabled until a distance is provided by this component.
+ * 
+ * See also [`DistanceEvents`]{@link DistanceEvents} for events triggered by this component, 
+ */
 export class DistanceResources extends Component {
   public static ID = 'DistanceResources';
   static doExport = () => {
@@ -38,28 +46,66 @@ export class DistanceResources extends Component {
 
   private lastPositionRequest: Promise<IPosition | void>;
 
+  /**
+   * The possible options for a DistanceResources.
+   * @componentOptions
+   */
   public static options: IDistanceOptions = {
+    /**
+     * Specifies the field that will contain the distance value.
+     *
+     * Specifying a value for this option is required for the `DistanceResources` component to work.
+     */
     distanceField: ComponentOptions.buildStringOption({
       required: true
     }),
+    /**
+     * Specifies the field that contains the latitude value.
+     *
+     * Specifying a value for this option is required for the `DistanceResources` component to work.
+     */
     latitudeField: ComponentOptions.buildStringOption({
       required: true
     }),
+    /**
+     * Specifies the field that contains the longitude value.
+     *
+     * Specifying a value for this option is required for the `DistanceResources` component to work.
+     */
     longitudeField: ComponentOptions.buildStringOption({
       required: true
     }),
-    unitDisplayName: ComponentOptions.buildStringOption(),
+    /**
+     * The conversion factor to use for the distance according to the base unit, in meters.
+     *
+     * If you want to have Kilometers, you should set 1000 as the value.
+     * If you want to have your distance in miles, you should set 1610 as the value, since a mile is approximately 1610 meters.
+     *
+     * The default value is `1000`.
+     */
     unitConversionFactor: ComponentOptions.buildNumberOption({
       defaultValue: 1000,
       validator: value => {
         return !!value && value > 0;
       }
     }),
+    /**
+     * The CSS class for components that needs to be reenabled when the distance is provided.
+     * 
+     * The default value is `coveo-distance-disabled`.
+     */
     disabledDistanceCssClass: ComponentOptions.buildStringOption({
       defaultValue: 'coveo-distance-disabled'
     })
   };
 
+  /**
+   * Creates a new `DistanceResources` component.
+   * @param element The HTMLElement on which to instantiate the component.
+   * @param options The options for the `DistanceResources` component.
+   * @param bindings The bindings that the component requires to function normally. If not set, these will be
+   * automatically resolved (with a slower execution time).
+   */
   constructor(public element: HTMLElement, public options: IDistanceOptions, public bindings: IComponentBindings) {
     super(element, DistanceResources.ID, bindings);
 
@@ -67,6 +113,13 @@ export class DistanceResources extends Component {
     this.bind.onRootElement(InitializationEvents.afterComponentsInitialization, () => this.onAfterComponentsInitialization());
   }
 
+  /**
+   * Override the current position with the provided values.
+   *
+   * Triggers a query automatically.
+   * @param latitude The latitude to set.
+   * @param latitude The longitude to set.
+   */
   public setPosition(latitude: number, longitude: number): void {
     this.latitude = latitude;
     this.longitude = longitude;
@@ -83,8 +136,13 @@ export class DistanceResources extends Component {
     this.queryController.executeQuery();
   }
 
+  /**
+   * Returns a promise of the last position resolved using the registered position providers.
+   * 
+   * @returns {Promise<IPosition | void>} Promise for the last resolved position value.
+   */
   public getLastPositionRequest(): Promise<IPosition | void> {
-    return this.lastPositionRequest;
+    return this.lastPositionRequest || Promise.reject('No position request was executed yet.');
   }
 
   private onAfterComponentsInitialization(): void {

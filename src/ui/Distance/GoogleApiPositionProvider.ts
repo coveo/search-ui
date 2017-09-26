@@ -20,6 +20,9 @@ interface IGeolocationResponseLocation {
   lng: number;
 }
 
+/**
+ * The `GoogleApiPositionProvider` component provides the user's position to a [`DistanceResources`]{@link DistanceResources} component using Google's geolocation API.
+ */
 export class GoogleApiPositionProvider extends Component {
   public static ID = 'GoogleApiPositionProvider';
   static doExport = () => {
@@ -27,12 +30,29 @@ export class GoogleApiPositionProvider extends Component {
       GoogleApiPositionProvider: GoogleApiPositionProvider
     });
   };
+
+  /**
+   * The possible options for a static position provider.
+   * @componentOptions
+   */
   public static options: IGoogleApiPositionProviderOptions = {
+    /**
+     * Specifies the API key to use to call the Google API geolocation service.
+     *
+     * Specifying a value for this option is required for the `GoogleApiPositionProvider` component to work.
+     */
     googleApiKey: ComponentOptions.buildStringOption({
       required: true
     })
   };
 
+  /**
+   * Creates a new `GoogleApiPositionProvider` component.
+   * @param element The HTMLElement on which to instantiate the component.
+   * @param options The options for the `GoogleApiPositionProvider` component.
+   * @param bindings The bindings that the component requires to function normally. If not set, these will be
+   * automatically resolved (with a slower execution time).
+   */
   constructor(public element: HTMLElement, public options: IGoogleApiPositionProviderOptions, public bindings: IComponentBindings) {
     super(element, GoogleApiPositionProvider.ID, bindings);
 
