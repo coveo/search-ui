@@ -74,12 +74,14 @@ export function InitializationTest() {
     });
 
     it('should wait before resolving lazy init function to continue the framework initialization', done => {
-      let promiseToResolve = new Promise<boolean>((resolve, reject) => {
-        setTimeout(resolve(true), 500);
-      });
-
       let spy = jasmine.createSpy('spy');
       $$(root).on(InitializationEvents.afterInitialization, spy);
+
+      let promiseToResolve = new Promise<boolean>((resolve, reject) => {
+        setTimeout(() => {
+          resolve(true);
+        }, 500);
+      });
 
       Initialization.initializeFramework(root, searchInterfaceOptions, () => {
         return {
@@ -90,8 +92,10 @@ export function InitializationTest() {
 
       expect(spy).not.toHaveBeenCalled();
       promiseToResolve.then(() => {
-        expect(spy).toHaveBeenCalled();
-        done();
+        setTimeout(() => {
+          expect(spy).toHaveBeenCalled();
+          done();
+        }, 0);
       });
     });
 
@@ -312,6 +316,7 @@ export function InitializationTest() {
       }).el;
 
       searchInterfaceOptions['externalComponents'] = [external];
+      searchInterfaceOptions['SearchInterface'].autoTriggerQuery = false;
       Initialization.initializeFramework(root, searchInterfaceOptions, () => {
         return Initialization.initSearchInterface(root, searchInterfaceOptions);
       });
@@ -322,6 +327,7 @@ export function InitializationTest() {
       Simulate.addJQuery();
       let external = $('<div class="CoveoPager"></div>');
       searchInterfaceOptions['externalComponents'] = [external];
+      searchInterfaceOptions['SearchInterface'].autoTriggerQuery = false;
       Initialization.initializeFramework(root, searchInterfaceOptions, () => {
         return Initialization.initSearchInterface(root, searchInterfaceOptions);
       });
