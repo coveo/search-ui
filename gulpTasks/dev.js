@@ -9,11 +9,11 @@ const path = require('path');
 const fs = require('fs');
 
 let webpackConfig = require('../webpack.config.js');
-webpackConfig.entry['CoveoJsSearch.Lazy'].unshift('webpack-dev-server/client?http://localhost:1080/');
+webpackConfig.entry['CoveoJsSearch.Lazy'].unshift('webpack-dev-server/client?http://localhost:8080/');
 const compiler = webpack(webpackConfig);
 
 let webpackConfigTest = require('../webpack.test.config.js');
-webpackConfigTest.entry['tests'].unshift('webpack-dev-server/client?http://localhost:1081/');
+webpackConfigTest.entry['tests'].unshift('webpack-dev-server/client?http://localhost:8081/');
 const compilerTest = webpack(webpackConfigTest);
 
 let debouncedLinkToExternal = _.debounce(() => {
@@ -29,7 +29,7 @@ gulp.task('dev', ['setup', 'deleteCssFile'], done => {
   let server = new WebpackDevServer(compiler, {
     compress: true,
     contentBase: 'bin/',
-    publicPath: 'http://localhost:1080/js/',
+    publicPath: 'http://localhost:8080/js/',
     disableHostCheck: true,
     /*headers: {
       'Content-Security-Policy': "script-src 'self' code.jquery.com static.cloud.coveo.com 'unsafe-inline'"
@@ -39,7 +39,7 @@ gulp.task('dev', ['setup', 'deleteCssFile'], done => {
       publicPath: true
     }
   });
-  server.listen(1080, 'localhost', () => {});
+  server.listen(8080, 'localhost', () => {});
   done();
 });
 
@@ -56,7 +56,7 @@ gulp.task('devTest', ['setupTests'], function(done) {
     publicPath: '/tests/',
     compress: true
   });
-  serverTests.listen(1081, 'localhost', () => {});
+  serverTests.listen(8081, 'localhost', () => {});
   done();
 });
 /*
