@@ -283,12 +283,10 @@ export class Initialization {
     // eg : CoveoJsSearch.Lazy.js was included in the page
     // this means that we can only execute the function after the promise has resolved
     if (resultOfSearchInterfaceInitialization.isLazyInit) {
-      return resultOfSearchInterfaceInitialization.initResult.then(() => {
-        return toExecuteOnceSearchInterfaceIsInitialized().then(() => {
-          return {
-            elem: element
-          };
-        });
+      return resultOfSearchInterfaceInitialization.initResult.then(toExecuteOnceSearchInterfaceIsInitialized).then(() => {
+        return {
+          elem: element
+        };
       });
     } else {
       // Else, we are executing an "eager" initialization, which returns void;

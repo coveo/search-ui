@@ -316,6 +316,7 @@ export function InitializationTest() {
       }).el;
 
       searchInterfaceOptions['externalComponents'] = [external];
+      searchInterfaceOptions['SearchInterface'].autoTriggerQuery = false;
       Initialization.initializeFramework(root, searchInterfaceOptions, () => {
         return Initialization.initSearchInterface(root, searchInterfaceOptions);
       });
