@@ -251,7 +251,7 @@ export class Initialization {
     $$(element).trigger(InitializationEvents.beforeInitialization);
 
     const toExecuteOnceSearchInterfaceIsInitialized = () => {
-      Initialization.initExternalComponents(element, options).then(result => {
+      return Initialization.initExternalComponents(element, options).then(result => {
         Initialization.performInitFunctionsOption(options, InitializationEvents.afterComponentsInitialization);
         $$(element).trigger(InitializationEvents.afterComponentsInitialization);
 
@@ -273,6 +273,7 @@ export class Initialization {
             isFirstQuery: true
           });
         }
+        return result;
       });
     };
 
@@ -283,18 +284,20 @@ export class Initialization {
     // this means that we can only execute the function after the promise has resolved
     if (resultOfSearchInterfaceInitialization.isLazyInit) {
       return resultOfSearchInterfaceInitialization.initResult.then(() => {
-        toExecuteOnceSearchInterfaceIsInitialized();
-        return {
-          elem: element
-        };
+        return toExecuteOnceSearchInterfaceIsInitialized().then(() => {
+          return {
+            elem: element
+          };
+        });
       });
     } else {
       // Else, we are executing an "eager" initialization, which returns void;
       // eg : CoveoJsSearch.js was included in the page
       // this mean that this function gets executed immediately
-      toExecuteOnceSearchInterfaceIsInitialized();
-      return new Promise((resolve, reject) => {
-        resolve({ elem: element });
+      return toExecuteOnceSearchInterfaceIsInitialized().then(() => {
+        return {
+          elem: element
+        };
       });
     }
   }
