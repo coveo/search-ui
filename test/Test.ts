@@ -186,6 +186,9 @@ FoldingTest();
 import { FollowItemTest } from './ui/FollowItemTest';
 FollowItemTest();
 
+import { GoogleApiPositionProviderTest } from './ui/GoogleApiPositionProviderTest';
+GoogleApiPositionProviderTest();
+
 import { HiddenQueryTest } from './ui/HiddenQueryTest';
 HiddenQueryTest();
 
@@ -206,6 +209,9 @@ LiveAnalyticsClientTest();
 
 import { MatrixTest } from './ui/MatrixTest';
 MatrixTest();
+
+import { NavigatorPositionProviderTest } from './ui/NavigatorPositionProviderTest';
+NavigatorPositionProviderTest();
 
 import { OmniboxTest } from './ui/OmniboxTest';
 OmniboxTest();
@@ -293,6 +299,9 @@ SortCriteriaTest();
 
 import { SortTest } from './ui/SortTest';
 SortTest();
+
+import { StaticPositionProviderTest } from './ui/StaticPositionProviderTest';
+StaticPositionProviderTest();
 
 import { TabTest } from './ui/TabTest';
 TabTest();
