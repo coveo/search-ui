@@ -27,6 +27,9 @@ export interface IPositionResolvedEventArgs {
   position: IPosition;
 }
 
+/**
+ * This static class contains the different string definitions for all the events related to distance.
+ */
 export class DistanceEvents {
   /**
    * Triggered when the [`DistanceResources`]{@link DistanceResources} component sucessfully resolves the position.

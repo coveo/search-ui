@@ -33,6 +33,12 @@ export interface IDistanceOptions {
  * Components that uses the current distance should be disabled until a distance is provided by this component.
  * 
  * See also [`DistanceEvents`]{@link DistanceEvents} for events triggered by this component, 
+ *
+ * See also the components that can provide a position.
+ * 
+ * * [`GoogleApiPositionProvider`]{@link GoogleApiPositionProvider}
+ * * [`NavigatorPositionProvider`]{@link NavigatorPositionProvider}
+ * * [`StaticPositionProvider`]{@link StaticPositionProvider}
  */
 export class DistanceResources extends Component {
   public static ID = 'DistanceResources';
@@ -118,7 +124,7 @@ export class DistanceResources extends Component {
    *
    * Triggers a query automatically.
    * @param latitude The latitude to set.
-   * @param latitude The longitude to set.
+   * @param longitude The longitude to set.
    */
   public setPosition(latitude: number, longitude: number): void {
     this.latitude = latitude;
