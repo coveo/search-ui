@@ -53,7 +53,12 @@ export function DistanceResourcesTest() {
         latitudeField: latitudeField,
         longitudeField: longitudeField,
         unitConversionFactor: defaultUnitConversionFactor,
-        disabledDistanceCssClass: disabledComponentsClass
+        disabledDistanceCssClass: disabledComponentsClass,
+        googleApiKey: '',
+        latitudeValue: 0,
+        longitudeValue: 0,
+        triggerNewQueryOnNewPosition: false,
+        useNavigator: false
       });
     });
 

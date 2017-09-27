@@ -68,15 +68,6 @@ lazyDidYouMean();
 import { lazyDistanceResources } from './ui/Distance/LazyDistanceResources';
 lazyDistanceResources();
 
-import { lazyGoogleApiPositionProvider } from './ui/Distance/LazyGoogleApiPositionProvider';
-lazyGoogleApiPositionProvider();
-
-import { lazyNavigatorPositionProvider } from './ui/Distance/LazyNavigatorPositionProvider';
-lazyNavigatorPositionProvider();
-
-import { lazyStaticPositionProvider } from './ui/Distance/LazyStaticPositionProvider';
-lazyStaticPositionProvider();
-
 import { lazyErrorReport } from './ui/ErrorReport/LazyErrorReport';
 lazyErrorReport();
 

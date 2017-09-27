@@ -70,15 +70,6 @@ DidYouMean.doExport();
 import { DistanceResources } from './ui/Distance/DistanceResources';
 DistanceResources.doExport();
 
-import { GoogleApiPositionProvider } from './ui/Distance/GoogleApiPositionProvider';
-GoogleApiPositionProvider.doExport();
-
-import { NavigatorPositionProvider } from './ui/Distance/NavigatorPositionProvider';
-NavigatorPositionProvider.doExport();
-
-import { StaticPositionProvider } from './ui/Distance/StaticPositionProvider';
-StaticPositionProvider.doExport();
-
 import { ErrorReport } from './ui/ErrorReport/ErrorReport';
 ErrorReport.doExport();
 
