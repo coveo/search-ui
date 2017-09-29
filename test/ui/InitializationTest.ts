@@ -218,6 +218,23 @@ export function InitializationTest() {
       expect(Component.get(queryBox) instanceof Querybox).toBe(false);
     });
 
+    it('allow to automaticallyCreateComponentsInside and can ignore multiple repetitive components', () => {
+      let env = new Mock.MockEnvironmentBuilder().build();
+      const queryBox2 = $$('div', { className: 'CoveoQuerybox' }).el;
+      expect(Component.get(queryBox) instanceof Querybox).toBe(false);
+      expect(Component.get(queryBox2) instanceof Querybox).toBe(false);
+      Initialization.automaticallyCreateComponentsInside(
+        root,
+        {
+          options: {},
+          bindings: env
+        },
+        [Querybox.ID]
+      );
+      expect(Component.get(queryBox) instanceof Querybox).toBe(false);
+      expect(Component.get(queryBox2) instanceof Querybox).toBe(false);
+    });
+
     it('allow to automaticallyCreateComponentInside can ignore child components', () => {
       let env = new Mock.MockEnvironmentBuilder().build();
       let resultList = $$('div', { className: Component.computeCssClassNameForType(ResultList.ID) });

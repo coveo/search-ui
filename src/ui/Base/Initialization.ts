@@ -389,10 +389,12 @@ export class Initialization {
     // When a component is ignored, all it's children component should be ignored too.
     // Add them to the array of html elements that should be skipped.
     _.each(ignore, toIgnore => {
-      let rootToIgnore = $$(element).find(`.${Component.computeCssClassNameForType(toIgnore)}`);
-      if (rootToIgnore) {
-        let childsElementsToIgnore = $$(rootToIgnore).findAll('*');
-        htmlElementsToIgnore = htmlElementsToIgnore.concat(childsElementsToIgnore);
+      let rootsToIgnore = $$(element).findAll(`.${Component.computeCssClassNameForType(toIgnore)}`);
+      if (rootsToIgnore && rootsToIgnore.length > 0) {
+        _.each(rootsToIgnore, rootToIgnore => {
+          let childsElementsToIgnore = $$(rootToIgnore).findAll('*');
+          htmlElementsToIgnore = htmlElementsToIgnore.concat(childsElementsToIgnore);
+        });
       }
     });
 
