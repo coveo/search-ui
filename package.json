@@ -1,6 +1,6 @@
 {
   "name": "coveo-search-ui",
-  "version": "2.2900.27",
+  "version": "2.2900.28",
   "description": "Coveo JavaScript Search Framework",
   "main": "./bin/js/CoveoJsSearch.js",
   "types": "./bin/ts/CoveoJsSearch.d.ts",
