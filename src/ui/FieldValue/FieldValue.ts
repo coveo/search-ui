@@ -14,6 +14,7 @@ import { $$ } from '../../utils/Dom';
 import * as _ from 'underscore';
 import { exportGlobally } from '../../GlobalExports';
 import { StringUtils } from '../../utils/StringUtils';
+import { FacetUtils } from '../Facet/FacetUtils';
 
 export interface IFieldValueOptions {
   field?: IFieldOption;
@@ -280,7 +281,7 @@ export class FieldValue extends Component {
    */
   public renderOneValue(value: string): HTMLElement {
     let element = $$('span').el;
-    let toRender = value;
+    let toRender = FacetUtils.tryToGetTranslatedCaption(this.options.field as string, value);
     if (this.options.helper) {
       toRender = TemplateHelpers.getHelper(this.options.helper).call(this, value, this.getHelperOptions());
 
@@ -293,6 +294,7 @@ export class FieldValue extends Component {
     if (this.options.helper == 'date' || this.options.helper == 'dateTime' || this.options.helper == 'emailDateTime') {
       toRender = StringUtils.capitalizeFirstLetter(toRender);
     }
+
     if (this.options.htmlValue) {
       element.innerHTML = toRender;
     } else {
@@ -354,13 +356,13 @@ export class FieldValue extends Component {
   }
 
   private bindEventOnValue(element: HTMLElement, value: string) {
-    if (Utils.isUndefined(Coveo['FacetRange'])) {
-      return;
-    }
-
     let facetAttributeName = QueryStateModel.getFacetId(this.options.facet);
     let facets: Component[] = _.filter(this.componentStateModel.get(facetAttributeName), (facet: Component) => {
-      return !facet.disabled && Coveo['FacetRange'] && !(facet instanceof Coveo['FacetRange']);
+      if (Coveo['FacetRange']) {
+        return !facet.disabled && Coveo['FacetRange'] && !(facet instanceof Coveo['FacetRange']);
+      } else {
+        return !facet.disabled;
+      }
     });
     let atLeastOneFacetIsEnabled = facets.length > 0;
 

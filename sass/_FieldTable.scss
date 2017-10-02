@@ -105,6 +105,14 @@
   }
 }
 
+.CoveoBackdrop {
+  .CoveoFieldValue {
+    .coveo-clickable {
+      @include clickableVibrant($dark-background: true);
+    }
+  }
+}
+
 .coveo-card-overlay {
   .CoveoFieldTable {
     background-color: transparent;
@@ -116,6 +124,6 @@
     }
   }
   .coveo-clickable {
-    @include clickableVibrant($dark-background: true);
+    @include clickable($dark-background: true);
   }
 }
