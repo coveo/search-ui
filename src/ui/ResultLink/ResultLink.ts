@@ -126,7 +126,7 @@ export class ResultLink extends Component {
      * - The following markup generates an `href` value such as `http://uri.com?id=itemTitle`:
      *
      * ```html
-     * <a class='CoveoResultLink' data-href-template='${clickUri}?id=${title}'></a>
+     * <a class='CoveoResultLink' data-href-template='${clickUri}?id=${raw.title}'></a>
      * ```
      *
      * - The following markup generates an `href` value such as `localhost/fooBar`:
