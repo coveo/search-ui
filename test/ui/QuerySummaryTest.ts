@@ -49,7 +49,7 @@ export function QuerySummaryTest() {
       expect($$(test.cmp.element).text()).not.toEqual(jasmine.stringMatching(/for/));
     });
 
-    it('should not display query recall if there is a query', () => {
+    it('should display query recall if there is a query', () => {
       const queryBuilder = new QueryBuilder();
       queryBuilder.expression.add('foo');
       const results = FakeResults.createFakeResults(10);
