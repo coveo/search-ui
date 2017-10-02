@@ -14,7 +14,6 @@ import { l } from '../../strings/Strings';
 
 import 'styling/_ResultsPerPage';
 
-
 export interface IResultsPerPageOptions {
   choicesDisplayed?: number[];
   initialChoice?: number;
@@ -32,16 +31,15 @@ export class ResultsPerPage extends Component {
 
   static doExport = () => {
     exportGlobally({
-      'ResultsPerPage': ResultsPerPage
+      ResultsPerPage: ResultsPerPage
     });
-  }
+  };
 
   /**
    * The options for the ResultsPerPage
    * @componentOptions
    */
   static options: IResultsPerPageOptions = {
-
     /**
      * Specifies the possible values of number of results to display per page that the end user can select from.
      *
@@ -49,20 +47,23 @@ export class ResultsPerPage extends Component {
      *
      * Default value is `[10, 25, 50, 100]`.
      */
-    choicesDisplayed: ComponentOptions.buildCustomListOption<number[]>(function (list: string[]) {
-      let values = _.map(list, function (value) {
-        return parseInt(value, 10);
-      });
-      return values.length == 0 ? null : values;
-    }, {
+    choicesDisplayed: ComponentOptions.buildCustomListOption<number[]>(
+      function(list: string[]) {
+        let values = _.map(list, function(value) {
+          return parseInt(value, 10);
+        });
+        return values.length == 0 ? null : values;
+      },
+      {
         defaultFunction: () => {
           if (DeviceUtils.isMobileDevice()) {
             return [10, 25, 50];
           } else {
             return [10, 25, 50, 100];
           }
-        },
-      }),
+        }
+      }
+    ),
     /**
      * Specifies the value to select by default for the number of results to display per page.
      *
@@ -105,10 +106,17 @@ export class ResultsPerPage extends Component {
    */
   public setResultsPerPage(resultsPerPage: number, analyticCause: IAnalyticsActionCause = analyticsActionCauseList.pagerResize) {
     Assert.exists(resultsPerPage);
-    Assert.check(this.options.choicesDisplayed.indexOf(resultsPerPage) != -1, 'The specified number of results is not available in the options.');
+    Assert.check(
+      this.options.choicesDisplayed.indexOf(resultsPerPage) != -1,
+      'The specified number of results is not available in the options.'
+    );
     this.currentResultsPerPage = resultsPerPage;
     this.queryController.options.resultsPerPage = this.currentResultsPerPage;
-    this.usageAnalytics.logCustomEvent<IAnalyticsResultsPerPageMeta>(analyticCause, { currentResultsPerPage: this.currentResultsPerPage }, this.element);
+    this.usageAnalytics.logCustomEvent<IAnalyticsResultsPerPageMeta>(
+      analyticCause,
+      { currentResultsPerPage: this.currentResultsPerPage },
+      this.element
+    );
     this.queryController.executeQuery({
       ignoreWarningSearchEvent: true,
       keepLastSearchUid: true,
@@ -122,16 +130,22 @@ export class ResultsPerPage extends Component {
       if (this.options.choicesDisplayed.indexOf(this.options.initialChoice) > -1) {
         initialChoice = this.options.initialChoice;
       } else {
-        this.logger.warn('The initial number of results is not within the choices displayed. Consider setting a value that can be selected. The first choice will be selected instead.');
+        this.logger.warn(
+          'The initial number of results is not within the choices displayed. Consider setting a value that can be selected. The first choice will be selected instead.'
+        );
       }
     }
     return initialChoice;
   }
 
   private initComponent(element: HTMLElement) {
-    this.span = $$('span', {
-      className: 'coveo-results-per-page-text'
-    }, l('ResultsPerPage')).el;
+    this.span = $$(
+      'span',
+      {
+        className: 'coveo-results-per-page-text'
+      },
+      l('ResultsPerPage')
+    ).el;
     element.appendChild(this.span);
     this.list = $$('ul', {
       className: 'coveo-results-per-page-list'
@@ -143,7 +157,6 @@ export class ResultsPerPage extends Component {
     $$(this.span).removeClass('coveo-results-per-page-no-results');
     let numResultsList: number[] = this.options.choicesDisplayed;
     for (var i = 0; i < numResultsList.length; i++) {
-
       let listItem = $$('li', {
         className: 'coveo-results-per-page-list-item',
         tabindex: 0
@@ -158,9 +171,15 @@ export class ResultsPerPage extends Component {
         listItem.on('keyup', KeyboardUtils.keypressAction(KEYBOARD.ENTER, clickAction));
       })(i);
 
-      listItem.el.appendChild($$('a', {
-        className: 'coveo-results-per-page-list-item-text'
-      }, numResultsList[i].toString()).el);
+      listItem.el.appendChild(
+        $$(
+          'a',
+          {
+            className: 'coveo-results-per-page-list-item-text'
+          },
+          numResultsList[i].toString()
+        ).el
+      );
       this.list.appendChild(listItem.el);
     }
   }

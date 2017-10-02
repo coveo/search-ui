@@ -7,7 +7,6 @@ import { ValidLayout } from '../ui/ResultLayout/ResultLayout';
  * [`newResultDisplayed`]{@link ResultListEvents.newResultDisplayed} event handlers receive as an argument.
  */
 export interface IDisplayedNewResultEventArgs {
-
   /**
    * The query result that was just displayed by the [`ResultList`]{@link ResultList} component.
    */
@@ -24,7 +23,6 @@ export interface IDisplayedNewResultEventArgs {
  * [`openQuickview`]{@link ResultList.openQuickview} event handlers receive as an argument.
  */
 export interface IOpenQuickviewEventArgs {
-
   /**
    * The array of query expression terms to highlight in the quickview modal window.
    */
@@ -36,7 +34,6 @@ export interface IOpenQuickviewEventArgs {
  * [`ChangeLayout`]{@link ResultListEvents.changeLayout} event handlers receive as an argument.
  */
 export interface IChangeLayoutEventArgs {
-
   /**
    * The name of the new layout.
    *
@@ -56,7 +53,6 @@ export interface IChangeLayoutEventArgs {
  * See [Events](https://developers.coveo.com/x/bYGfAQ).
  */
 export class ResultListEvents {
-
   /**
    * Triggered when the result list has just finished rendering the current page of results.
    *

@@ -7,12 +7,7 @@
     "outDir": "./bin",
     "sourceMap": true,
     "forceConsistentCasingInFileNames": true,
-    "typeRoots": [
-      "lib",
-      "node_modules/@types"
-    ]
+    "typeRoots": ["lib", "node_modules/@types"]
   },
-  "include": [
-    "src/**/*.ts"
-  ]
+  "include": ["src/**/*.ts"]
 }

@@ -5,12 +5,12 @@ export function AnyKeywordsInputTest() {
   describe('AnyKeywordsInput', () => {
     let input: AnyKeywordsInput;
 
-    beforeEach(function () {
+    beforeEach(function() {
       input = new AnyKeywordsInput($$('div').el);
       input.build();
     });
 
-    afterEach(function () {
+    afterEach(function() {
       input = null;
     });
 

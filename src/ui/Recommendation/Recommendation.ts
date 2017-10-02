@@ -66,19 +66,18 @@ export class Recommendation extends SearchInterface implements IComponentBinding
 
   static doExport = () => {
     exportGlobally({
-      'Recommendation': Recommendation,
-      'DefaultRecommendationTemplate': DefaultRecommendationTemplate,
-      'RecommendationQuery': RecommendationQuery,
-      'RecommendationAnalyticsClient': RecommendationAnalyticsClient
+      Recommendation: Recommendation,
+      DefaultRecommendationTemplate: DefaultRecommendationTemplate,
+      RecommendationQuery: RecommendationQuery,
+      RecommendationAnalyticsClient: RecommendationAnalyticsClient
     });
-  }
+  };
 
   /**
    * The options for the recommendation component
    * @componentOptions
    */
   static options: IRecommendationOptions = {
-
     /**
      * Specifies the main {@link SearchInterface} to listen to.
      */
@@ -116,7 +115,9 @@ export class Recommendation extends SearchInterface implements IComponentBinding
      *
      * Default value is `expression`.
      */
-    optionsToUse: ComponentOptions.buildListOption<'expression' | 'advancedExpression' | 'constantExpression' | 'disjunctionExpression'>({ defaultValue: ['expression'] }),
+    optionsToUse: ComponentOptions.buildListOption<'expression' | 'advancedExpression' | 'constantExpression' | 'disjunctionExpression'>({
+      defaultValue: ['expression']
+    }),
 
     /**
      * Specifies whether to send the actions history along with the triggered query.
@@ -130,7 +131,11 @@ export class Recommendation extends SearchInterface implements IComponentBinding
      *
      * @deprecated This option is now deprecated. The correct way to control this behavior is to configure an appropriate machine learning model in the administration interface (Recommendation, Relevance tuning, Query suggestions).
      */
-    sendActionsHistory: ComponentOptions.buildBooleanOption({ defaultValue: true, deprecated: 'This option is now deprecated. The correct way to control this behaviour is to configure an appropriate machine learning model in the administration interface (Recommendation, Relevance tuning, Query suggestions)' }),
+    sendActionsHistory: ComponentOptions.buildBooleanOption({
+      defaultValue: true,
+      deprecated:
+        'This option is now deprecated. The correct way to control this behaviour is to configure an appropriate machine learning model in the administration interface (Recommendation, Relevance tuning, Query suggestions)'
+    }),
 
     /**
      * Specifies whether to hide the Recommendations component if no result or recommendation is available.
@@ -220,11 +225,12 @@ export class Recommendation extends SearchInterface implements IComponentBinding
       this.bindToMainSearchInterface();
     }
 
-    $$(this.element).on(QueryEvents.buildingQuery, (e: Event, args: IBuildingQueryEventArgs) => this.handleRecommendationBuildingQuery(args));
+    $$(this.element).on(QueryEvents.buildingQuery, (e: Event, args: IBuildingQueryEventArgs) =>
+      this.handleRecommendationBuildingQuery(args)
+    );
     $$(this.element).on(QueryEvents.querySuccess, (e: Event, args: IQuerySuccessEventArgs) => this.handleRecommendationQuerySuccess(args));
     $$(this.element).on(QueryEvents.noResults, (e: Event, args: INoResultsEventArgs) => this.handleRecommendationNoResults());
     $$(this.element).on(QueryEvents.queryError, (e: Event, args: IQueryErrorEventArgs) => this.handleRecommendationQueryError());
-
 
     this.historyStore = new history.HistoryStore();
     if (!this.options.mainSearchInterface) {
@@ -326,7 +332,6 @@ export class Recommendation extends SearchInterface implements IComponentBinding
       this.modifyQueryForRecommendation(data);
       this.addRecommendationInfoInQuery(data);
     }
-
   }
 
   private handleRecommendationQuerySuccess(data: IQuerySuccessEventArgs) {
@@ -390,7 +395,12 @@ export class Recommendation extends SearchInterface implements IComponentBinding
     this.preventEventPropagationOn(this.getAllModelEvents());
   }
 
-  private preventEventPropagationOn(eventType, eventName = (event: string) => { return event; }) {
+  private preventEventPropagationOn(
+    eventType,
+    eventName = (event: string) => {
+      return event;
+    }
+  ) {
     for (let event in eventType) {
       $$(this.root).on(eventName(event), (e: Event) => e.stopPropagation());
     }
@@ -398,8 +408,8 @@ export class Recommendation extends SearchInterface implements IComponentBinding
 
   private getAllModelEvents() {
     let events = {};
-    _.each(_.values(Model.eventTypes), (event) => {
-      _.each(_.values(QUERY_STATE_ATTRIBUTES), (attribute) => {
+    _.each(_.values(Model.eventTypes), event => {
+      _.each(_.values(QUERY_STATE_ATTRIBUTES), attribute => {
         let eventName = this.getBindings().queryStateModel.getEventName(event + attribute);
         events[eventName] = eventName;
       });
@@ -410,7 +420,10 @@ export class Recommendation extends SearchInterface implements IComponentBinding
   private generateDefaultId() {
     let id = 'Recommendation';
     if (Recommendation.NEXT_ID !== 1) {
-      this.logger.warn('Generating another recommendation default id', 'Consider configuring a human friendly / meaningful id for this interface');
+      this.logger.warn(
+        'Generating another recommendation default id',
+        'Consider configuring a human friendly / meaningful id for this interface'
+      );
       id = id + '_' + Recommendation.NEXT_ID;
     }
     Recommendation.NEXT_ID++;

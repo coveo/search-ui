@@ -16,7 +16,6 @@ import { Initialization } from '../Base/Initialization';
  * `condition` of `raw.filetype == 'YoutubeVideo'`.
  */
 export class DefaultResultTemplate extends Template {
-
   constructor() {
     super();
     // For default result template, register everything since it's not possible to "scan" them before they are rendered.
@@ -28,7 +27,6 @@ export class DefaultResultTemplate extends Template {
     Assert.exists(object);
     let mergedOptions = new DefaultInstantiateTemplateOptions().merge(instantiateOptions);
     object = _.extend({}, object, UnderscoreTemplate.templateHelpers);
-
 
     const templates = _.chain(TemplateCache.getDefaultTemplates())
       .map(name => TemplateCache.getTemplate(name))
@@ -51,7 +49,7 @@ export class DefaultResultTemplate extends Template {
   }
 
   getFields() {
-    var defaultTemplates = _.map(TemplateCache.getDefaultTemplates(), (name) => TemplateCache.getTemplate(name));
+    var defaultTemplates = _.map(TemplateCache.getDefaultTemplates(), name => TemplateCache.getTemplate(name));
     return _.flatten(_.map(defaultTemplates, (template: Template) => template.getFields()));
   }
 

@@ -19,23 +19,19 @@ export function AdvancedSearchTest() {
   describe('AdvancedSearch', () => {
     var test: Mock.IBasicComponentSetupWithModalBox<AdvancedSearch>;
 
-    beforeEach(function () {
+    beforeEach(function() {
       test = Mock.basicComponentSetupWithModalBox<AdvancedSearch>(AdvancedSearch);
     });
 
-    afterEach(function () {
+    afterEach(function() {
       test = null;
     });
 
     it('shoud allow to customize inputs', () => {
-
       let root = $$('div').el;
-      let textInput = new TextInput(() => {
-      }, 'MyTextInput');
-      let numericInput = new NumericSpinner(() => {
-      }, 0, 10);
-      let dpicker = new DatePicker(() => {
-      });
+      let textInput = new TextInput(() => {}, 'MyTextInput');
+      let numericInput = new NumericSpinner(() => {}, 0, 10);
+      let dpicker = new DatePicker(() => {});
 
       let sectionElement = $$('div');
 
@@ -56,13 +52,15 @@ export function AdvancedSearchTest() {
         });
       });
 
-      test = Mock.advancedComponentSetupWithModalBox<AdvancedSearch>(AdvancedSearch, new AdvancedComponentSetupOptions(undefined, undefined, (builder: MockEnvironmentBuilder) => {
-        builder.root = root;
-        return builder;
-      }));
+      test = Mock.advancedComponentSetupWithModalBox<AdvancedSearch>(
+        AdvancedSearch,
+        new AdvancedComponentSetupOptions(undefined, undefined, (builder: MockEnvironmentBuilder) => {
+          builder.root = root;
+          return builder;
+        })
+      );
 
       Simulate.query(test.env);
-
     });
 
     it('should open the modal box on open', () => {
@@ -75,8 +73,6 @@ export function AdvancedSearchTest() {
       test.cmp.close();
       expect(test.modalBox.close).toHaveBeenCalled();
     });
-
-
 
     describe('exposes includeKeywords', () => {
       it('should include the keywords section by default', () => {
@@ -109,7 +105,6 @@ export function AdvancedSearchTest() {
     });
 
     describe('executeAdvancedSearch', () => {
-
       beforeEach(() => {
         test.cmp.inputs = [jasmine.createSpyObj('input', ['build', 'updateQueryState'])];
       });
@@ -121,7 +116,10 @@ export function AdvancedSearchTest() {
 
       it('should log an analytics event', () => {
         test.cmp.executeAdvancedSearch();
-        expect(test.env.usageAnalytics.logSearchEvent).toHaveBeenCalledWith(analyticsActionCauseList.advancedSearch, jasmine.objectContaining({}));
+        expect(test.env.usageAnalytics.logSearchEvent).toHaveBeenCalledWith(
+          analyticsActionCauseList.advancedSearch,
+          jasmine.objectContaining({})
+        );
       });
 
       describe('on a new query event', () => {
@@ -148,7 +146,7 @@ export function AdvancedSearchTest() {
           expect(simulation.queryBuilder.build().aq).toEqual('foo');
         });
 
-        it('should populate breadcrumb if the query is modified by any input', (done) => {
+        it('should populate breadcrumb if the query is modified by any input', done => {
           $$(test.env.root).on(BreadcrumbEvents.populateBreadcrumb, (e, args: IPopulateBreadcrumbEventArgs) => {
             expect(args.breadcrumbs.length).toEqual(1);
             done();
@@ -158,7 +156,7 @@ export function AdvancedSearchTest() {
           Simulate.breadcrumb(test.env);
         });
 
-        it('should not populate breadcrumb if the query is not modified by any input', (done) => {
+        it('should not populate breadcrumb if the query is not modified by any input', done => {
           $$(test.env.root).on(BreadcrumbEvents.populateBreadcrumb, (e, args: IPopulateBreadcrumbEventArgs) => {
             expect(args.breadcrumbs.length).toEqual(0);
             done();
@@ -177,16 +175,18 @@ export function AdvancedSearchTest() {
           expect(resetSpy).toHaveBeenCalled();
         });
 
-        it('should call reset on each inputs when only this part of the breadcrumb is cleared', (done) => {
+        it('should call reset on each inputs when only this part of the breadcrumb is cleared', done => {
           $$(test.env.root).on(BreadcrumbEvents.populateBreadcrumb, (e, args: IPopulateBreadcrumbEventArgs) => {
             expect(args.breadcrumbs.length).toEqual(1);
 
             const clear = $$(args.breadcrumbs[0].element).find('.coveo-advanced-search-breadcrumb-clear');
             $$(clear).trigger('click');
             expect(test.env.queryController.executeQuery).toHaveBeenCalled();
-            expect(test.env.usageAnalytics.logSearchEvent).toHaveBeenCalledWith(analyticsActionCauseList.breadcrumbAdvancedSearch, jasmine.any(Object));
+            expect(test.env.usageAnalytics.logSearchEvent).toHaveBeenCalledWith(
+              analyticsActionCauseList.breadcrumbAdvancedSearch,
+              jasmine.any(Object)
+            );
             done();
-
           });
           Simulate.query(test.env);
           Simulate.breadcrumb(test.env);
@@ -196,7 +196,7 @@ export function AdvancedSearchTest() {
 
     function getSection(section: string) {
       let sectionsTitle = $$(test.cmp.content).findAll('.coveo-advanced-search-section-title');
-      let title = _.find(sectionsTitle, (title) => {
+      let title = _.find(sectionsTitle, title => {
         return title.innerText == section;
       });
       return title ? title.parentElement : undefined;

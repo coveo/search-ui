@@ -15,8 +15,7 @@ export interface IPopulateBreadcrumbEventArgs {
   breadcrumbs: IBreadcrumbItem[];
 }
 
-export interface IClearBreadcrumbEventArgs {
-}
+export interface IClearBreadcrumbEventArgs {}
 
 /**
  * This static class is there to contains the different string definition for all the events related to {@link Breadcrumb}.

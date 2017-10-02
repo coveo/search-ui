@@ -36,7 +36,6 @@ export function OmniboxTest() {
     });
 
     describe('exposes options', () => {
-
       it('inline should be passed down to magic box', () => {
         test = Mock.optionsComponentSetup<Omnibox, IOmniboxOptions>(Omnibox, {
           inline: true
@@ -48,7 +47,7 @@ export function OmniboxTest() {
         expect(test.cmp.magicBox.options.inline).toBe(false);
       });
 
-      it('enableSearchAsYouType should allow to to trigger a query after a delay', function (done) {
+      it('enableSearchAsYouType should allow to to trigger a query after a delay', function(done) {
         test = Mock.optionsComponentSetup<Omnibox, IOmniboxOptions>(Omnibox, {
           enableSearchAsYouType: true,
           enableQuerySuggestAddon: false
@@ -62,7 +61,7 @@ export function OmniboxTest() {
         }, test.cmp.options.searchAsYouTypeDelay);
       });
 
-      it('enableQuerySyntax should modify the enableQuerySyntax parameter', function () {
+      it('enableQuerySyntax should modify the enableQuerySyntax parameter', function() {
         test = Mock.optionsComponentSetup<Omnibox, IOmniboxOptions>(Omnibox, {
           enableQuerySyntax: false
         });
@@ -78,7 +77,6 @@ export function OmniboxTest() {
 
         simulation = Simulate.query(test.env);
         expect(simulation.queryBuilder.enableQuerySyntax).toBe(true);
-
       });
 
       it('enablePartialMatch should modify the enablePartialMatch parameters', () => {
@@ -96,7 +94,6 @@ export function OmniboxTest() {
         test.cmp.setText('@field==Batman');
         simulation = Simulate.query(test.env);
         expect(simulation.queryBuilder.enablePartialMatch).toBe(true);
-
       });
 
       it('partialMatchKeywords should modify the query builder', () => {
@@ -169,7 +166,7 @@ export function OmniboxTest() {
         expect(test.env.searchEndpoint.listFieldValues).toHaveBeenCalled();
       });
 
-      it('listOfFields should show specified fields when field addon is enabled', (done) => {
+      it('listOfFields should show specified fields when field addon is enabled', done => {
         test = Mock.optionsComponentSetup<Omnibox, IOmniboxOptions>(Omnibox, {
           enableFieldAddon: true,
           listOfFields: ['@field', '@another_field']
@@ -179,7 +176,7 @@ export function OmniboxTest() {
 
         const fieldSuggestion = test.cmp.magicBox.getSuggestions()[1] as Promise<Suggestion[]>;
 
-        fieldSuggestion.then((fields) => {
+        fieldSuggestion.then(fields => {
           expect(fields[0].text).toEqual('@field');
           expect(fields[1].text).toEqual('@another_field');
           done();
@@ -262,12 +259,15 @@ export function OmniboxTest() {
         test.cmp.setText('foobar');
         expect(test.cmp.magicBox.onchange).toBeDefined();
         test.cmp.magicBox.onchange();
-        test.cmp.magicBox.onselect(['a']);
-        expect(test.env.usageAnalytics.logSearchEvent).toHaveBeenCalledWith(analyticsActionCauseList.omniboxAnalytics, jasmine.objectContaining({
-          partialQuery: undefined,
-          suggestionRanking: jasmine.any(Number),
-          partialQueries: ''
-        }));
+        test.cmp.magicBox.onselect(<Suggestion>['a']);
+        expect(test.env.usageAnalytics.logSearchEvent).toHaveBeenCalledWith(
+          analyticsActionCauseList.omniboxAnalytics,
+          jasmine.objectContaining({
+            partialQuery: undefined,
+            suggestionRanking: jasmine.any(Number),
+            partialQueries: ''
+          })
+        );
       });
 
       it('triggerQueryOnClear should trigger a query on clear', () => {
@@ -285,20 +285,21 @@ export function OmniboxTest() {
         test.cmp.magicBox.clear();
         expect(test.cmp.queryController.executeQuery).not.toHaveBeenCalled();
       });
-
     });
 
-    it('should execute query automatically when confidence level is > 0.8 on suggestion', (done) => {
+    it('should execute query automatically when confidence level is > 0.8 on suggestion', done => {
       test = Mock.optionsComponentSetup<Omnibox, IOmniboxOptions>(Omnibox, {
         enableSearchAsYouType: true,
         enableQuerySuggestAddon: true
       });
       test.cmp.setText('foobar');
       expect(test.cmp.magicBox.onsuggestions).toBeDefined();
-      test.cmp.magicBox.onsuggestions(<IOmniboxSuggestion[]>[{
-        executableConfidence: 1,
-        text: 'foobar'
-      }]);
+      test.cmp.magicBox.onsuggestions(<IOmniboxSuggestion[]>[
+        {
+          executableConfidence: 1,
+          text: 'foobar'
+        }
+      ]);
 
       setTimeout(() => {
         expect(test.cmp.queryController.executeQuery).toHaveBeenCalled();
@@ -306,17 +307,19 @@ export function OmniboxTest() {
       }, test.cmp.options.searchAsYouTypeDelay);
     });
 
-    it('should execute query automatically when confidence level is = 0.8 on suggestion', (done) => {
+    it('should execute query automatically when confidence level is = 0.8 on suggestion', done => {
       test = Mock.optionsComponentSetup<Omnibox, IOmniboxOptions>(Omnibox, {
         enableSearchAsYouType: true,
         enableQuerySuggestAddon: true
       });
       test.cmp.setText('foobar');
       expect(test.cmp.magicBox.onsuggestions).toBeDefined();
-      test.cmp.magicBox.onsuggestions(<IOmniboxSuggestion[]>[{
-        executableConfidence: 0.8,
-        text: 'foobar'
-      }]);
+      test.cmp.magicBox.onsuggestions(<IOmniboxSuggestion[]>[
+        {
+          executableConfidence: 0.8,
+          text: 'foobar'
+        }
+      ]);
 
       setTimeout(() => {
         expect(test.cmp.queryController.executeQuery).toHaveBeenCalled();
@@ -324,17 +327,19 @@ export function OmniboxTest() {
       }, test.cmp.options.searchAsYouTypeDelay);
     });
 
-    it('should not execute query automatically when confidence level is < 0.8 on suggestion', (done) => {
+    it('should not execute query automatically when confidence level is < 0.8 on suggestion', done => {
       test = Mock.optionsComponentSetup<Omnibox, IOmniboxOptions>(Omnibox, {
         enableSearchAsYouType: true,
         enableQuerySuggestAddon: true
       });
       test.cmp.setText('foobar');
       expect(test.cmp.magicBox.onsuggestions).toBeDefined();
-      test.cmp.magicBox.onsuggestions(<IOmniboxSuggestion[]>[{
-        executableConfidence: 0.7,
-        text: 'foobar'
-      }]);
+      test.cmp.magicBox.onsuggestions(<IOmniboxSuggestion[]>[
+        {
+          executableConfidence: 0.7,
+          text: 'foobar'
+        }
+      ]);
 
       setTimeout(() => {
         expect(test.cmp.queryController.executeQuery).not.toHaveBeenCalled();
@@ -342,16 +347,18 @@ export function OmniboxTest() {
       }, test.cmp.options.searchAsYouTypeDelay);
     });
 
-    it('should execute query automatically when confidence level is not provided and the suggestion does not match the typed text', (done) => {
+    it('should execute query automatically when confidence level is not provided and the suggestion does not match the typed text', done => {
       test = Mock.optionsComponentSetup<Omnibox, IOmniboxOptions>(Omnibox, {
         enableSearchAsYouType: true,
         enableQuerySuggestAddon: true
       });
       test.cmp.setText('baz');
       expect(test.cmp.magicBox.onsuggestions).toBeDefined();
-      test.cmp.magicBox.onsuggestions(<IOmniboxSuggestion[]>[{
-        text: 'foobar'
-      }]);
+      test.cmp.magicBox.onsuggestions(<IOmniboxSuggestion[]>[
+        {
+          text: 'foobar'
+        }
+      ]);
 
       setTimeout(() => {
         expect(test.cmp.queryController.executeQuery).not.toHaveBeenCalled();
@@ -359,16 +366,18 @@ export function OmniboxTest() {
       }, test.cmp.options.searchAsYouTypeDelay);
     });
 
-    it('should not execute query automatically when confidence level is not provided but the suggestion match the typed text', (done) => {
+    it('should not execute query automatically when confidence level is not provided but the suggestion match the typed text', done => {
       test = Mock.optionsComponentSetup<Omnibox, IOmniboxOptions>(Omnibox, {
         enableSearchAsYouType: true,
         enableQuerySuggestAddon: true
       });
       test.cmp.setText('foo');
       expect(test.cmp.magicBox.onsuggestions).toBeDefined();
-      test.cmp.magicBox.onsuggestions(<IOmniboxSuggestion[]>[{
-        text: 'foobar'
-      }]);
+      test.cmp.magicBox.onsuggestions(<IOmniboxSuggestion[]>[
+        {
+          text: 'foobar'
+        }
+      ]);
 
       setTimeout(() => {
         expect(test.cmp.queryController.executeQuery).toHaveBeenCalled();
@@ -378,9 +387,12 @@ export function OmniboxTest() {
 
     describe('with live query state model', () => {
       beforeEach(() => {
-        test = Mock.advancedComponentSetup<Omnibox>(Omnibox, new Mock.AdvancedComponentSetupOptions(undefined, undefined, (builder: Mock.MockEnvironmentBuilder) => {
-          return builder.withLiveQueryStateModel();
-        }));
+        test = Mock.advancedComponentSetup<Omnibox>(
+          Omnibox,
+          new Mock.AdvancedComponentSetupOptions(undefined, undefined, (builder: Mock.MockEnvironmentBuilder) => {
+            return builder.withLiveQueryStateModel();
+          })
+        );
       });
 
       afterEach(() => {

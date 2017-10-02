@@ -64,16 +64,15 @@ export class Matrix extends Component {
 
   static doExport = () => {
     exportGlobally({
-      'Matrix': Matrix
+      Matrix: Matrix
     });
-  }
+  };
 
   /**
    * The possible options for the component
    * @componentOptions
    */
   static options: IMatrixOptions = {
-
     /**
      * Specifies the text to display at the top of the Matrix.
      */
@@ -325,7 +324,10 @@ export class Matrix extends Component {
     this.options = ComponentOptions.initComponentOptions(element, Matrix, options);
 
     if (!this.options.previewTemplate) {
-      this.options.previewTemplate = new DefaultMatrixResultPreviewTemplate(<string>this.options.computedField, this.options.computedFieldFormat);
+      this.options.previewTemplate = new DefaultMatrixResultPreviewTemplate(
+        <string>this.options.computedField,
+        this.options.computedFieldFormat
+      );
     }
 
     if (!this.options.previewSortField) {
@@ -338,11 +340,11 @@ export class Matrix extends Component {
 
     this.buildMatrix();
     if (this.options.rowField == null) {
-      this.logger.error('\'rowField\' option is required in the Matrix component');
+      this.logger.error("'rowField' option is required in the Matrix component");
     } else if (this.options.columnField == null) {
-      this.logger.error('\'columnField\' option is required in the Matrix component');
+      this.logger.error("'columnField' option is required in the Matrix component");
     } else if (this.options.computedField == null) {
-      this.logger.error('\'computedField\' option is required in the Matrix component');
+      this.logger.error("'computedField' option is required in the Matrix component");
     } else {
       this.bindEvents();
       this.initQueryState();
@@ -466,9 +468,13 @@ export class Matrix extends Component {
 
   private buildTitle() {
     let title = this.options.title ? this.options.title : '';
-    let titleHtml = $$('div', {
-      className: 'coveo-matrix-title'
-    }, title).el;
+    let titleHtml = $$(
+      'div',
+      {
+        className: 'coveo-matrix-title'
+      },
+      title
+    ).el;
     this.element.appendChild(titleHtml);
   }
 
@@ -524,7 +530,8 @@ export class Matrix extends Component {
         field: <string>this.options.rowField,
         sortCriteria: this.options.sortCriteria,
         computedFields: this.getComputedFields(),
-        queryOverride: '(' + this.buildExpression(queryBuilder) + ')' + '(' + this.options.columnField + '=\'' + this.options.columnFieldValues[i] + '\')',
+        queryOverride:
+          '(' + this.buildExpression(queryBuilder) + ')' + '(' + this.options.columnField + "='" + this.options.columnFieldValues[i] + "')",
         maximumNumberOfValues: this.options.maximumNumberOfValuesInGroupBy
       };
 
@@ -551,10 +558,12 @@ export class Matrix extends Component {
   }
 
   private getComputedFields() {
-    let computedFields = [{
-      field: <string>this.options.computedField,
-      operation: this.options.computedFieldOperation
-    }];
+    let computedFields = [
+      {
+        field: <string>this.options.computedField,
+        operation: this.options.computedFieldOperation
+      }
+    ];
     return computedFields;
   }
 
@@ -799,7 +808,6 @@ export class Matrix extends Component {
         }
       }
     }
-
   }
 
   private drawRow(row: HTMLElement, rowNumber: number) {
@@ -807,7 +815,7 @@ export class Matrix extends Component {
     for (let i = 0; i < this.numberOfColumns; i++) {
       let cell = this.data[rowNumber][i].getHTML();
       $$(cell).on('click', () => {
-        let handler = (num) => {
+        let handler = num => {
           this.handleClick(rowNumber, num);
         };
         handler(i);
@@ -856,7 +864,7 @@ export class Matrix extends Component {
         return this.instantiateTemplate(r);
       });
       let html = '';
-      _.each(instantiatedResults, (result) => {
+      _.each(instantiatedResults, result => {
         result.then((builtResultElement: HTMLElement) => {
           html += builtResultElement.outerHTML;
         });
@@ -868,25 +876,28 @@ export class Matrix extends Component {
   }
 
   private instantiateTemplate(result: IQueryResult): Promise<HTMLElement> {
-    return this.options.previewTemplate.instantiateToElement(result, {
-      checkCondition: false,
-      responsiveComponents: this.searchInterface.responsiveComponents
-    }).then((content: HTMLElement) => {
-      let initParameters: IInitializationParameters = {
-        options: this.options,
-        bindings: this.getBindings(),
-        result: result
-      };
+    return this.options.previewTemplate
+      .instantiateToElement(result, {
+        checkCondition: false,
+        responsiveComponents: this.searchInterface.responsiveComponents
+      })
+      .then((content: HTMLElement) => {
+        let initParameters: IInitializationParameters = {
+          options: this.options,
+          bindings: this.getBindings(),
+          result: result
+        };
 
-      return Initialization.automaticallyCreateComponentsInside(content, initParameters).initResult.then(() => {
-        return content;
+        return Initialization.automaticallyCreateComponentsInside(content, initParameters).initResult.then(() => {
+          return content;
+        });
       });
-    });
   }
 
   private createPreviewQuery(rowNumber: number, columnNumber: number): IQuery {
     let rowFieldExpression = '(' + QueryUtils.buildFieldExpression(<string>this.options.rowField, '=', [this.getRowValue(rowNumber)]) + ')';
-    let columnFieldExpression = '(' + QueryUtils.buildFieldExpression(<string>this.options.columnField, '=', [this.getColumnValue(columnNumber)]) + ')';
+    let columnFieldExpression =
+      '(' + QueryUtils.buildFieldExpression(<string>this.options.columnField, '=', [this.getColumnValue(columnNumber)]) + ')';
     let query = this.queryController.getLastQuery();
     query.aq = rowFieldExpression;
     query.aq += columnFieldExpression;
@@ -919,7 +930,6 @@ export class Matrix extends Component {
   private isDataAvailable(row: number, column: number) {
     return this.data[row] !== undefined && this.data[row][column] !== undefined;
   }
-
 }
 
 Initialization.registerAutoCreateComponent(Matrix);

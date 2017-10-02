@@ -9,8 +9,7 @@ export class Defer {
   }
 
   static flush() {
-    while (Defer.popOne()) {
-    }
+    while (Defer.popOne()) {}
   }
 
   private static arm() {

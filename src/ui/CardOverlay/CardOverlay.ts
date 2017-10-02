@@ -33,9 +33,9 @@ export class CardOverlay extends Component {
 
   static doExport = () => {
     exportGlobally({
-      'CardOverlay': CardOverlay
+      CardOverlay: CardOverlay
     });
-  }
+  };
 
   private parentCard: HTMLElement;
   private overlay: HTMLElement;
@@ -44,7 +44,6 @@ export class CardOverlay extends Component {
    * @componentOptions
    */
   static options: ICardOverlayOptions = {
-
     /**
      * Specifies the string to use for the overlay title and for the button text.
      *
@@ -55,7 +54,7 @@ export class CardOverlay extends Component {
     /**
      * Specifies the icon to use for the overlay icon and for the button icon.
      *
-     * The name of the icon to use should be specified in lowerCamelCase.
+     * The name of the icon to use should be specified in dashed case. ie: facet-expand
      */
     icon: ComponentOptions.buildIconOption()
   };
@@ -159,7 +158,6 @@ export class CardOverlay extends Component {
     element.setAttribute('tabindex', '0');
     $$(element).on('click', () => this.toggleOverlay());
     this.bind.on(element, 'keyup', KeyboardUtils.keypressAction(KEYBOARD.ENTER, () => this.toggleOverlay()));
-
   }
 }
 

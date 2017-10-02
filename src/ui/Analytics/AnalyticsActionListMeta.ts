@@ -4,7 +4,6 @@
  * See the {@link Analytics} component
  */
 export interface IAnalyticsActionCause {
-
   /**
    * Specifies the name of the event. While you can actually set this property to any arbitrary string value, its value
    * should uniquely identify the precise action that triggers the event. Thus, each individual event should have its
@@ -25,8 +24,7 @@ export interface IAnalyticsActionCause {
   metaMap?: { [name: string]: number };
 }
 
-export interface IAnalyticsNoMeta {
-}
+export interface IAnalyticsNoMeta {}
 
 export interface IAnalyticsInterfaceChange {
   interfaceChangeTo: string;
@@ -51,7 +49,6 @@ export interface IAnalyticsResultsSortMeta {
  * [`logClickEvent`]{@link Analytics.logClickEvent} method.
  */
 export interface IAnalyticsDocumentViewMeta {
-
   /**
    * The URL of the clicked item.
    */
@@ -76,7 +73,11 @@ export interface IAnalyticsOmniboxFacetMeta {
   suggestionRanking: number;
   query: string;
 }
-
+export interface IAnalyticsSimpleFilterMeta {
+  simpleFilterTitle: string;
+  simpleFilterSelectedValue?: string;
+  simpleFilterField: string;
+}
 export interface IAnalyticsFacetMeta {
   facetId: string;
   facetValue?: string;
@@ -112,8 +113,7 @@ export interface IAnalyticsFacetSliderChangeMeta {
   facetRangeEnd: any;
 }
 
-export interface IAnalyticsFacetGraphSelectedMeta extends IAnalyticsFacetSliderChangeMeta {
-}
+export interface IAnalyticsFacetGraphSelectedMeta extends IAnalyticsFacetSliderChangeMeta {}
 
 export interface IAnalyticsFacetOperatorMeta extends IAnalyticsFacetMeta {
   facetOperatorBefore: string;
@@ -146,8 +146,7 @@ export interface IAnalyticsCaseContextRemoveMeta {
   caseID: string;
 }
 
-export interface IAnalyticsCaseDetachMeta extends IAnalyticsCaseAttachMeta {
-}
+export interface IAnalyticsCaseDetachMeta extends IAnalyticsCaseAttachMeta {}
 
 export interface IAnalyticsCaseCreationInputChangeMeta {
   inputTitle: string;
@@ -254,7 +253,7 @@ export var analyticsActionCauseList = {
   },
   breadcrumbResetAll: <IAnalyticsActionCause>{
     name: 'breadcrumbResetAll',
-    type: 'breadcrumb',
+    type: 'breadcrumb'
   },
   documentTag: <IAnalyticsActionCause>{
     name: 'documentTag',
@@ -447,17 +446,17 @@ export var analyticsActionCauseList = {
   pagerNumber: <IAnalyticsActionCause>{
     name: 'pagerNumber',
     type: 'getMoreResults',
-    metaMap: { 'pagerNumber': 1 }
+    metaMap: { pagerNumber: 1 }
   },
   pagerNext: <IAnalyticsActionCause>{
     name: 'pagerNext',
     type: 'getMoreResults',
-    metaMap: { 'pagerNumber': 1 }
+    metaMap: { pagerNumber: 1 }
   },
   pagerPrevious: <IAnalyticsActionCause>{
     name: 'pagerPrevious',
     type: 'getMoreResults',
-    metaMap: { 'pagerNumber': 1 }
+    metaMap: { pagerNumber: 1 }
   },
   pagerScrolling: <IAnalyticsActionCause>{
     name: 'pagerScrolling',
@@ -490,7 +489,7 @@ export var analyticsActionCauseList = {
   queryError: <IAnalyticsActionCause>{
     name: 'query',
     type: 'errors',
-    metaMap: { 'query': 1, 'aq': 2, 'cq': 3, 'dq': 4, 'errorType': 5, 'errorMessage': 6 }
+    metaMap: { query: 1, aq: 2, cq: 3, dq: 4, errorType: 5, errorMessage: 6 }
   },
   exportToExcel: <IAnalyticsActionCause>{
     name: 'exportToExcel',
@@ -535,6 +534,21 @@ export var analyticsActionCauseList = {
   searchAlertsUnfollowQuery: <IAnalyticsActionCause>{
     name: 'unfollowQuery',
     type: 'searchAlerts'
+  },
+  simpleFilterSelectValue: <IAnalyticsActionCause>{
+    name: 'selectValue',
+    type: 'simpleFilter',
+    metaMap: { simpleFilterTitle: 1, simpleFilterValue: 2, simpleFilterField: 3 }
+  },
+  simpleFilterDeselectValue: <IAnalyticsActionCause>{
+    name: 'selectValue',
+    type: 'simpleFilter',
+    metaMap: { simpleFilterTitle: 1, simpleFilterValues: 2, simpleFilterField: 3 }
+  },
+  simpleFilterClearAll: <IAnalyticsActionCause>{
+    name: 'selectValue',
+    type: 'simpleFilter',
+    metaMap: { simpleFilterTitle: 1, simpleFilterField: 3 }
   },
   resultsLayoutChange: <IAnalyticsActionCause>{
     name: 'changeResultsLayout',

@@ -18,7 +18,6 @@ import { SVGIcons } from '../../utils/SVGIcons';
 import { SVGDom } from '../../utils/SVGDom';
 
 export class ResponsiveTabs implements IResponsiveComponent {
-
   private static DROPDOWN_HEADER_LABEL_DEFAULT_VALUE = 'More';
   private static logger: Logger;
 
@@ -72,10 +71,12 @@ export class ResponsiveTabs implements IResponsiveComponent {
     if (this.dropdownHeader.hasClass('coveo-dropdown-header-active')) {
       this.positionPopup();
     }
-  };
+  }
 
   private needSmallMode(): boolean {
-    const mediumWidth = this.searchInterface ? this.searchInterface.responsiveComponents.getMediumScreenWidth() : new ResponsiveComponents().getMediumScreenWidth();
+    const mediumWidth = this.searchInterface
+      ? this.searchInterface.responsiveComponents.getMediumScreenWidth()
+      : new ResponsiveComponents().getMediumScreenWidth();
     if (this.coveoRoot.width() <= mediumWidth) {
       return true;
     } else if (!ResponsiveComponentsUtils.isSmallTabsActivated(this.coveoRoot)) {
@@ -125,7 +126,9 @@ export class ResponsiveTabs implements IResponsiveComponent {
   }
 
   private shouldRemoveTabsFromDropdown(): boolean {
-    return !this.isOverflowing(this.tabSection.el) && ResponsiveComponentsUtils.isSmallTabsActivated(this.coveoRoot) && !this.isDropdownEmpty();
+    return (
+      !this.isOverflowing(this.tabSection.el) && ResponsiveComponentsUtils.isSmallTabsActivated(this.coveoRoot) && !this.isDropdownEmpty()
+    );
   }
 
   private removeTabsFromDropdown(tabs: HTMLElement[]) {
@@ -192,7 +195,6 @@ export class ResponsiveTabs implements IResponsiveComponent {
     const isOverflowing = this.isOverflowing(virtualTabSection.el);
     ResponsiveComponentsUtils.activateSmallTabs(this.coveoRoot);
 
-
     virtualTabSection.detach();
     return isOverflowing;
   }
@@ -224,7 +226,9 @@ export class ResponsiveTabs implements IResponsiveComponent {
   }
 
   private buildDropdownContent() {
-    const dropdownContent = $$('div', { className: 'coveo-tab-list-container ' + SearchInterface.SMALL_INTERFACE_CLASS_NAME });
+    const dropdownContent = $$('div', {
+      className: 'coveo-tab-list-container ' + SearchInterface.SMALL_INTERFACE_CLASS_NAME
+    });
     const contentList = $$('ol', { className: 'coveo-tab-list' });
     dropdownContent.el.appendChild(contentList.el);
     return dropdownContent;
@@ -234,7 +238,11 @@ export class ResponsiveTabs implements IResponsiveComponent {
     this.documentClickListener = event => {
       if (Utils.isHtmlElement(event.target)) {
         const eventTarget = $$(<HTMLElement>event.target);
-        if (!eventTarget.closest('coveo-tab-list-container') && !eventTarget.closest('coveo-tab-dropdown-header') && !eventTarget.closest('coveo-tab-dropdown')) {
+        if (
+          !eventTarget.closest('coveo-tab-list-container') &&
+          !eventTarget.closest('coveo-tab-dropdown-header') &&
+          !eventTarget.closest('coveo-tab-dropdown')
+        ) {
           this.closeDropdown();
         }
       }
@@ -281,13 +289,12 @@ export class ResponsiveTabs implements IResponsiveComponent {
   private manageTabSwapping() {
     _.each(this.coveoRoot.findAll('.' + Component.computeCssClassNameForType(this.ID)), tabElement => {
       const tab = $$(tabElement);
-      const fadeOutFadeIn = (event) => {
+      const fadeOutFadeIn = event => {
         const tabsInSection = this.getTabsInTabSection();
         const lastTabInSection = tabsInSection.pop();
         const lastTabSectionSibling = lastTabInSection.previousSibling;
         if (event.propertyName == 'opacity') {
           if (tab.el.style.opacity == '0') {
-
             $$(lastTabInSection).addClass('coveo-tab-dropdown');
             tab.replaceWith(lastTabInSection);
             tab.removeClass('coveo-tab-dropdown');
@@ -342,8 +349,13 @@ export class ResponsiveTabs implements IResponsiveComponent {
   }
 
   private positionPopup() {
-    PopupUtils.positionPopup(this.dropdownContent.el, this.dropdownHeader.el, this.coveoRoot.el,
-      { horizontal: HorizontalAlignment.INNERRIGHT, vertical: VerticalAlignment.BOTTOM }, this.coveoRoot.el);
+    PopupUtils.positionPopup(
+      this.dropdownContent.el,
+      this.dropdownHeader.el,
+      this.coveoRoot.el,
+      { horizontal: HorizontalAlignment.INNERRIGHT, vertical: VerticalAlignment.BOTTOM },
+      this.coveoRoot.el
+    );
   }
 
   private getTabsInTabSection(): HTMLElement[] {

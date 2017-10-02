@@ -1,4 +1,10 @@
-import { ISearchEndpoint, IEndpointCallOptions, IGetDocumentOptions, ISearchEndpointOptions, IViewAsHtmlOptions } from './SearchEndpointInterface';
+import {
+  ISearchEndpoint,
+  IEndpointCallOptions,
+  IGetDocumentOptions,
+  ISearchEndpointOptions,
+  IViewAsHtmlOptions
+} from './SearchEndpointInterface';
 import { IQuery } from './Query';
 import { ITaggingRequest } from './TaggingRequest';
 import { IRatingRequest } from './RatingRequest';
@@ -47,7 +53,7 @@ export class SearchEndpointWithDefaultCallOptions implements ISearchEndpoint {
   }
 
   public tagDocument(taggingRequest: ITaggingRequest, callOptions?: IEndpointCallOptions): Promise<boolean> {
-    return this.endpoint.tagDocument(taggingRequest, this.enrichCallOptions(taggingRequest));
+    return this.endpoint.tagDocument(taggingRequest, this.enrichCallOptions(callOptions));
   }
 
   public getQuerySuggest(request: IQuerySuggestRequest, callOptions?: IEndpointCallOptions): Promise<IQuerySuggestResponse> {

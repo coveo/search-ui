@@ -145,6 +145,5 @@ export function InitializationPlaceholderTest() {
         expect($$(secondResultList.el).hasClass('coveo-with-placeholder')).toBe(false);
       });
     });
-
   });
 }

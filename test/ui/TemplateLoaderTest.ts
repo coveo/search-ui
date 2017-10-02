@@ -7,7 +7,7 @@ import { $$ } from '../../src/utils/Dom';
 export function TemplateLoaderTest() {
   describe('TemplateLoder', () => {
     let test;
-    it('should not load a template into itself for template-ception', function () {
+    it('should not load a template into itself for template-ception', function() {
       let badTemplateId = 'badTemplate';
       let badTemplate = new Template(() => {
         return `<div class='CoveoTemplateLoader' data-template-id='${badTemplateId}'></div>`;
@@ -15,9 +15,14 @@ export function TemplateLoaderTest() {
       TemplateCache.registerTemplate(badTemplateId, badTemplate);
 
       expect(() => {
-        test = Mock.advancedComponentSetup<TemplateLoader>(TemplateLoader, new Mock.AdvancedComponentSetupOptions($$('div', {
-          'data-template-id': badTemplateId
-        }).el));
+        test = Mock.advancedComponentSetup<TemplateLoader>(
+          TemplateLoader,
+          new Mock.AdvancedComponentSetupOptions(
+            $$('div', {
+              'data-template-id': badTemplateId
+            }).el
+          )
+        );
       }).toThrow();
       TemplateCache.unregisterTemplate(badTemplateId);
     });

@@ -43,15 +43,14 @@ export class Text extends Component {
 
   static doExport = () => {
     exportGlobally({
-      'Text': Text
+      Text: Text
     });
-  }
+  };
 
   /**
    * @componentOptions
    */
   static options: ITextOptions = {
-
     /**
      * Specifies the localized string value that the component should render.
      */

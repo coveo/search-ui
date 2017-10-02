@@ -5,10 +5,15 @@ import { lazyExport } from '../../GlobalExports';
 export function lazyResultTagging() {
   LazyInitialization.registerLazyComponent('ResultTagging', () => {
     return new Promise((resolve, reject) => {
-      require.ensure(['./ResultTagging'], () => {
-        let loaded = require<IComponentDefinition>('./ResultTagging.ts')['ResultTagging'];
-        lazyExport(loaded, resolve);
-      }, LazyInitialization.buildErrorCallback('ResultTagging', resolve), 'ResultTagging');
+      require.ensure(
+        ['./ResultTagging'],
+        () => {
+          let loaded = require<IComponentDefinition>('./ResultTagging.ts')['ResultTagging'];
+          lazyExport(loaded, resolve);
+        },
+        LazyInitialization.buildErrorCallback('ResultTagging', resolve),
+        'ResultTagging'
+      );
     });
   });
 }

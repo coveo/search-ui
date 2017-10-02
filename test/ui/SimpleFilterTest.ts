@@ -16,10 +16,11 @@ export function SimpleFilterTest() {
         title: 'FooTitleBar',
         values: ['foo', 'bar'],
         valueCaption: {
-          'gmailmessage': 'Gmail Message',
-          'lithiummessage': 'Lithium Message',
-          'youtubevideo': 'Youtube Video',
-          'message': 'Message'
+          bar: 'foo',
+          gmailmessage: 'Gmail Message',
+          lithiummessage: 'Lithium Message',
+          youtubevideo: 'Youtube Video',
+          message: 'Message'
         }
       });
 
@@ -40,19 +41,16 @@ export function SimpleFilterTest() {
 
     it('should allow to getValueCaption', () => {
       aSimpleFilter.cmp.options.field = '@filetype';
-      expect(aSimpleFilter.cmp.getValueCaption('gmailmessage')).toBe('Gmail Message');
-
+      expect(aSimpleFilter.cmp.getValueCaption('bar')).toBe('foo');
     });
 
     it('should set the values correctly', () => {
       expect(aSimpleFilter.cmp.options.values).toEqual(['foo', 'bar']);
-
     });
 
     it('should expand the component correctly', () => {
       aSimpleFilter.cmp.openContainer();
       expect($$(aSimpleFilter.cmp.getValueContainer()).hasClass('coveo-simplefilter-value-container-expanded')).toBe(true);
-
     });
 
     it('should collapse the component correctly', () => {
@@ -73,11 +71,13 @@ export function SimpleFilterTest() {
     it('should set the field in the query', () => {
       aSimpleFilter.cmp.options.values = undefined;
       let simulation = Simulate.query(aSimpleFilter.env);
-      expect(simulation.queryBuilder.groupByRequests).toEqual(jasmine.arrayContaining([
-        jasmine.objectContaining({
-          field: '@field'
-        })
-      ]));
+      expect(simulation.queryBuilder.groupByRequests).toEqual(
+        jasmine.arrayContaining([
+          jasmine.objectContaining({
+            field: '@field'
+          })
+        ])
+      );
     });
 
     it('should set the selected values in the query', () => {
@@ -90,7 +90,7 @@ export function SimpleFilterTest() {
       aSimpleFilter.cmp.selectValue('foo');
       expect($$($$(aSimpleFilter.cmp.root).find('.coveo-simplefilter-selecttext')).text()).toEqual('foo');
       aSimpleFilter.cmp.selectValue('bar');
-      expect($$($$(aSimpleFilter.cmp.root).find('.coveo-simplefilter-selecttext')).text()).toEqual(('FooTitleBar'));
+      expect($$($$(aSimpleFilter.cmp.root).find('.coveo-simplefilter-selecttext')).text()).toEqual('FooTitleBar');
     });
 
     it('should handle the backdrop correctly', () => {
@@ -139,10 +139,13 @@ export function SimpleFilterTest() {
       let anotherSimpleFilter: Mock.IBasicComponentSetup<SimpleFilter>;
 
       beforeEach(() => {
-        anotherSimpleFilter = Mock.advancedComponentSetup<SimpleFilter>(SimpleFilter, new Mock.AdvancedComponentSetupOptions(null, aSimpleFilter.cmp.options, (builder: Mock.MockEnvironmentBuilder) => {
-          return builder.withRoot(aSimpleFilter.env.root);
-        }), );
-        anotherSimpleFilter.cmp.options.field = ('@field');
+        anotherSimpleFilter = Mock.advancedComponentSetup<SimpleFilter>(
+          SimpleFilter,
+          new Mock.AdvancedComponentSetupOptions(null, aSimpleFilter.cmp.options, (builder: Mock.MockEnvironmentBuilder) => {
+            return builder.withRoot(aSimpleFilter.env.root);
+          })
+        );
+        anotherSimpleFilter.cmp.options.field = '@field';
       });
 
       it('should put all simple filters in the same wrapper if there is more than one', () => {

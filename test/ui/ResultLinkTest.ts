@@ -9,7 +9,7 @@ import { OS_NAME } from '../../src/utils/OSUtils';
 import { FakeResults } from '../Fake';
 
 export function ResultLinkTest() {
-  describe('ResultLink', function () {
+  describe('ResultLink', function() {
     let test: Mock.IBasicComponentSetup<ResultLink>;
     let fakeResult: IQueryResult;
 
@@ -20,7 +20,7 @@ export function ResultLinkTest() {
       spyOn(window, 'open');
     });
 
-    afterEach(function () {
+    afterEach(function() {
       test = null;
       fakeResult = null;
     });
@@ -30,7 +30,9 @@ export function ResultLinkTest() {
     });
 
     it('should hightlight the result title', () => {
-      expect(test.cmp.element.innerHTML).toEqual(HighlightUtils.highlightString(fakeResult.title, fakeResult.titleHighlights, null, 'coveo-highlight'));
+      expect(test.cmp.element.innerHTML).toEqual(
+        HighlightUtils.highlightString(fakeResult.title, fakeResult.titleHighlights, null, 'coveo-highlight')
+      );
     });
 
     it('should contain the clickUri if the result has no title', () => {
@@ -39,13 +41,17 @@ export function ResultLinkTest() {
       expect(test.cmp.element.innerHTML).toEqual(fakeResult.clickUri);
     });
 
-    it('can receive an onClick option to execute', (done) => {
-      test = Mock.advancedResultComponentSetup<ResultLink>(ResultLink, fakeResult, new Mock.AdvancedComponentSetupOptions($$('div').el, {
-        onClick: () => {
-          expect(true).toBe(true);
-          done();
-        }
-      }));
+    it('can receive an onClick option to execute', done => {
+      test = Mock.advancedResultComponentSetup<ResultLink>(
+        ResultLink,
+        fakeResult,
+        new Mock.AdvancedComponentSetupOptions($$('div').el, {
+          onClick: () => {
+            expect(true).toBe(true);
+            done();
+          }
+        })
+      );
       $$(test.cmp.element).trigger('click');
     });
 
@@ -55,7 +61,6 @@ export function ResultLinkTest() {
     });
 
     describe('exposes hrefTemplate', () => {
-
       it('should not modify the href template if there are no field specified', () => {
         let hrefTemplate = 'test';
         test = Mock.optionsResultComponentSetup<ResultLink, IResultLinkOptions>(ResultLink, { hrefTemplate: hrefTemplate }, fakeResult);
@@ -101,11 +106,9 @@ export function ResultLinkTest() {
         expect(window.open).toHaveBeenCalledWith('testExternal', jasmine.anything());
         window['Coveo']['test'] = undefined;
       });
-
     });
 
     describe('exposes the titleTemplate', () => {
-
       it('should replaces fields in the title template by the results equivalent', () => {
         let titleTemplate = '${clickUri}';
         test = Mock.optionsResultComponentSetup<ResultLink, IResultLinkOptions>(ResultLink, { titleTemplate: titleTemplate }, fakeResult);
@@ -151,7 +154,6 @@ export function ResultLinkTest() {
         test = Mock.optionsResultComponentSetup<ResultLink, IResultLinkOptions>(ResultLink, { titleTemplate: titleTemplate }, fakeResult);
         expect($$(test.cmp.element).text()).toEqual('${doesNotExist}');
       });
-
     });
 
     it('sends an analytics event on context menu', () => {
@@ -169,18 +171,27 @@ export function ResultLinkTest() {
 
         $$(test.cmp.element).trigger('click');
 
-        expect(test.cmp.usageAnalytics.logClickEvent).toHaveBeenCalledWith(analyticsActionCauseList.documentOpen, jasmine.objectContaining({ documentURL: href }), fakeResult, test.cmp.root);
+        expect(test.cmp.usageAnalytics.logClickEvent).toHaveBeenCalledWith(
+          analyticsActionCauseList.documentOpen,
+          jasmine.objectContaining({ documentURL: href }),
+          fakeResult,
+          test.cmp.root
+        );
       });
 
       it('should use the clickUri if the href is empty', () => {
         $$(test.cmp.element).trigger('click');
 
-        expect(test.cmp.usageAnalytics.logClickEvent).toHaveBeenCalledWith(analyticsActionCauseList.documentOpen, jasmine.objectContaining({ documentURL: fakeResult.clickUri }), fakeResult, test.cmp.root);
+        expect(test.cmp.usageAnalytics.logClickEvent).toHaveBeenCalledWith(
+          analyticsActionCauseList.documentOpen,
+          jasmine.objectContaining({ documentURL: fakeResult.clickUri }),
+          fakeResult,
+          test.cmp.root
+        );
       });
     });
 
     describe('when the element is a hyperlink', () => {
-
       beforeEach(() => {
         test = Mock.advancedResultComponentSetup<ResultLink>(ResultLink, fakeResult, new Mock.AdvancedComponentSetupOptions($$('a').el));
       });
@@ -199,49 +210,52 @@ export function ResultLinkTest() {
       });
 
       describe('and the result has the outlookfield', () => {
-
         beforeEach(() => {
           fakeResult.raw['outlookuri'] = 'uri.for.outlook';
           fakeResult.raw['outlookformacuri'] = 'uri.for.outlook.for.mac';
         });
 
         it('should generate the correct href if the os is windows and the option is openInOutlook', () => {
-          test = Mock.advancedResultComponentSetup<ResultLink>(ResultLink, fakeResult,
-            new Mock.AdvancedComponentSetupOptions($$('a').el,
-              { openInOutlook: true },
-              (env: Mock.MockEnvironmentBuilder) => {
-                return env.withOs(OS_NAME.WINDOWS);
-              }));
+          test = Mock.advancedResultComponentSetup<ResultLink>(
+            ResultLink,
+            fakeResult,
+            new Mock.AdvancedComponentSetupOptions($$('a').el, { openInOutlook: true }, (env: Mock.MockEnvironmentBuilder) => {
+              return env.withOs(OS_NAME.WINDOWS);
+            })
+          );
           expect(test.cmp.element.getAttribute('href')).toEqual(fakeResult.raw['outlookuri']);
         });
 
         it('should generate the correct href if the os is windows and the option is not openInOutlook', () => {
-          test = Mock.advancedResultComponentSetup<ResultLink>(ResultLink, fakeResult,
-            new Mock.AdvancedComponentSetupOptions($$('a').el,
-              { openInOutlook: false },
-              (env: Mock.MockEnvironmentBuilder) => {
-                return env.withOs(OS_NAME.WINDOWS);
-              }));
+          test = Mock.advancedResultComponentSetup<ResultLink>(
+            ResultLink,
+            fakeResult,
+            new Mock.AdvancedComponentSetupOptions($$('a').el, { openInOutlook: false }, (env: Mock.MockEnvironmentBuilder) => {
+              return env.withOs(OS_NAME.WINDOWS);
+            })
+          );
           expect(test.cmp.element.getAttribute('href')).not.toEqual(fakeResult.raw['outlookuri']);
         });
 
         it('should generate the correct href if the os is mac and the option is openInOutlook', () => {
-          test = Mock.advancedResultComponentSetup<ResultLink>(ResultLink, fakeResult,
-            new Mock.AdvancedComponentSetupOptions($$('a').el,
-              { openInOutlook: true },
-              (env: Mock.MockEnvironmentBuilder) => {
-                return env.withOs(OS_NAME.MACOSX);
-              }));
+          test = Mock.advancedResultComponentSetup<ResultLink>(
+            ResultLink,
+            fakeResult,
+            new Mock.AdvancedComponentSetupOptions($$('a').el, { openInOutlook: true }, (env: Mock.MockEnvironmentBuilder) => {
+              return env.withOs(OS_NAME.MACOSX);
+            })
+          );
           expect(test.cmp.element.getAttribute('href')).toEqual(fakeResult.raw['outlookformacuri']);
         });
 
         it('should generate the correct href if the os is mac and the option is not openInOutlook', () => {
-          test = Mock.advancedResultComponentSetup<ResultLink>(ResultLink, fakeResult,
-            new Mock.AdvancedComponentSetupOptions($$('a').el,
-              { openInOutlook: false },
-              (env: Mock.MockEnvironmentBuilder) => {
-                return env.withOs(OS_NAME.MACOSX);
-              }));
+          test = Mock.advancedResultComponentSetup<ResultLink>(
+            ResultLink,
+            fakeResult,
+            new Mock.AdvancedComponentSetupOptions($$('a').el, { openInOutlook: false }, (env: Mock.MockEnvironmentBuilder) => {
+              return env.withOs(OS_NAME.MACOSX);
+            })
+          );
           expect(test.cmp.element.getAttribute('href')).not.toEqual(fakeResult.raw['outlookformacuri']);
         });
       });

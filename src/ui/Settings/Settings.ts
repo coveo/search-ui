@@ -38,17 +38,15 @@ export class Settings extends Component {
 
   static doExport = () => {
     exportGlobally({
-      'Settings': Settings
+      Settings: Settings
     });
-  }
-
+  };
 
   /**
    * The options for Settings
    * @componentOptions
    */
   static options: ISettingsOptions = {
-
     /**
      * Specifies the delay (in milliseconds) before hiding the popup menu when the cursor is not hovering over it.
      *
@@ -86,7 +84,6 @@ export class Settings extends Component {
     $$(this.menu).on('mouseleave', () => this.mouseleave());
     $$(this.menu).on('mouseenter', () => this.mouseenter());
     PopupUtils.positionPopup(this.menu, this.element, this.root, this.getPopupPositioning(), this.root);
-
   }
 
   /**
@@ -125,7 +122,7 @@ export class Settings extends Component {
       menuData: []
     };
     $$(this.root).trigger(SettingsEvents.settingsPopulateMenu, settingsPopulateMenuArgs);
-    _.each(settingsPopulateMenuArgs.menuData, (menuItem) => {
+    _.each(settingsPopulateMenuArgs.menuData, menuItem => {
       var menuItemDom = $$('div', {
         className: `coveo-settings-item ${menuItem.className}`,
         title: _.escape(menuItem.tooltip || '')
@@ -141,7 +138,7 @@ export class Settings extends Component {
       menuItemDom.appendChild($$('div', { className: 'coveo-settings-text' }, _.escape(menuItem.text)).el);
       $$(menuItemDom).on('click', () => {
         this.close();
-        _.each(settingsPopulateMenuArgs.menuData, (menuItem) => {
+        _.each(settingsPopulateMenuArgs.menuData, menuItem => {
           menuItem.onClose && menuItem.onClose();
         });
         menuItem.onOpen();

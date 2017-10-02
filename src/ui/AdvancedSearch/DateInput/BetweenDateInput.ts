@@ -6,7 +6,6 @@ import { DateUtils } from '../../../utils/DateUtils';
 import { TimeSpan } from '../../../utils/TimeSpanUtils';
 
 export class BetweenDateInput extends DateInput {
-
   public firstDatePicker: DatePicker = new DatePicker(this.onChange.bind(this));
   public secondDatePicker: DatePicker = new DatePicker(this.onChange.bind(this));
 
@@ -42,7 +41,10 @@ export class BetweenDateInput extends DateInput {
 
     if (this.isSelected()) {
       if (firstDate && secondDate) {
-        const timespan = TimeSpan.fromDates(DateUtils.convertFromJsonDateIfNeeded(firstDate), DateUtils.convertFromJsonDateIfNeeded(secondDateAsString));
+        const timespan = TimeSpan.fromDates(
+          DateUtils.convertFromJsonDateIfNeeded(firstDate),
+          DateUtils.convertFromJsonDateIfNeeded(secondDateAsString)
+        );
         if (timespan.getMilliseconds() < 0) {
           throw l('QueryExceptionInvalidDate');
         }

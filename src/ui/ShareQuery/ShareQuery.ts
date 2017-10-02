@@ -14,8 +14,7 @@ import { ModalBox as ModalBoxModule } from '../../ExternalModulesShim';
 import 'styling/_ShareQuery';
 import { SVGIcons } from '../../utils/SVGIcons';
 
-export interface IShareQueryOptions {
-}
+export interface IShareQueryOptions {}
 
 /**
  * The ShareQuery component populates the {@link Settings} popup menu with the **Share Query** menu item. When the end
@@ -28,9 +27,9 @@ export class ShareQuery extends Component {
 
   static doExport = () => {
     exportGlobally({
-      'ShareQuery': ShareQuery
+      ShareQuery: ShareQuery
     });
-  }
+  };
 
   public dialogBoxContent: HTMLElement;
   private linkToThisQuery: HTMLInputElement;
@@ -44,7 +43,12 @@ export class ShareQuery extends Component {
    * @param bindings The bindings that the component requires to function normally. If not set, these will be
    * automatically resolved (with a slower execution time).
    */
-  constructor(public element: HTMLElement, public options: IShareQueryOptions, bindings?: IComponentBindings, private ModalBox = ModalBoxModule) {
+  constructor(
+    public element: HTMLElement,
+    public options: IShareQueryOptions,
+    bindings?: IComponentBindings,
+    private ModalBox = ModalBoxModule
+  ) {
     super(element, ShareQuery.ID, bindings);
 
     this.bind.onRootElement(SettingsEvents.settingsPopulateMenu, (args: ISettingsPopulateMenuArgs) => {
@@ -157,7 +161,9 @@ export class ShareQuery extends Component {
     }).el;
 
     const lastQuery = this.queryController.getLastQuery();
-    this.completeQuery.value = Utils.trim(`${this.outputIfNotNull(lastQuery.q)} ${this.outputIfNotNull(lastQuery.aq)} ${this.outputIfNotNull(lastQuery.cq)}`);
+    this.completeQuery.value = Utils.trim(
+      `${this.outputIfNotNull(lastQuery.q)} ${this.outputIfNotNull(lastQuery.aq)} ${this.outputIfNotNull(lastQuery.cq)}`
+    );
   }
 
   private buildLinkToThisQuery() {

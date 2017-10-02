@@ -15,8 +15,7 @@ import 'styling/_Breadcrumb';
 import { SVGIcons } from '../../utils/SVGIcons';
 import { SVGDom } from '../../utils/SVGDom';
 
-export interface IBreadcrumbOptions {
-}
+export interface IBreadcrumbOptions {}
 
 /**
  * The Breadcrumb component displays a summary of the currently active query filters.
@@ -39,9 +38,9 @@ export class Breadcrumb extends Component {
 
   static doExport = () => {
     exportGlobally({
-      'Breadcrumb': Breadcrumb
+      Breadcrumb: Breadcrumb
     });
-  }
+  };
 
   private lastBreadcrumbs: IBreadcrumbItem[];
 

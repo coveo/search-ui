@@ -22,27 +22,36 @@ export class FacetUtils {
     if (facet.options.valueCaption) {
       _.chain(facet.options.valueCaption)
         .pairs()
-        .filter((pair) => {
+        .filter(pair => {
           return regex.test(pair[1]);
         })
-        .each((match) => {
+        .each(match => {
           ret.push(match[0]);
         });
-      if (QueryUtils.isStratusAgnosticField(<string>facet.options.field, '@objecttype') || QueryUtils.isStratusAgnosticField(<string>facet.options.field, '@filetype')) {
+      if (
+        QueryUtils.isStratusAgnosticField(<string>facet.options.field, '@objecttype') ||
+        QueryUtils.isStratusAgnosticField(<string>facet.options.field, '@filetype')
+      ) {
         _.each(FileTypes.getFileTypeCaptions(), (value: string, key: string) => {
           if (!(key in facet.options.valueCaption) && regex.test(value)) {
             ret.push(key);
           }
         });
       }
-    } else if (QueryUtils.isStratusAgnosticField(<string>facet.options.field, '@objecttype') || QueryUtils.isStratusAgnosticField(<string>facet.options.field, '@filetype')) {
-      _.each(_.filter(_.pairs(FileTypes.getFileTypeCaptions()), (pair) => {
-        return regex.test(pair[1]);
-      }), (match) => {
-        ret.push(match[0]);
-      });
+    } else if (
+      QueryUtils.isStratusAgnosticField(<string>facet.options.field, '@objecttype') ||
+      QueryUtils.isStratusAgnosticField(<string>facet.options.field, '@filetype')
+    ) {
+      _.each(
+        _.filter(_.pairs(FileTypes.getFileTypeCaptions()), pair => {
+          return regex.test(pair[1]);
+        }),
+        match => {
+          ret.push(match[0]);
+        }
+      );
     } else if (QueryUtils.isStratusAgnosticField(<string>facet.options.field, '@month')) {
-      _.each(_.range(1, 13), (month) => {
+      _.each(_.range(1, 13), month => {
         if (regex.test(DateUtils.monthToString(month - 1))) {
           ret.push(('0' + month.toString()).substr(-2));
         }
@@ -52,14 +61,19 @@ export class FacetUtils {
   }
 
   static buildFacetSearchPattern(values: string[]) {
-    values = _.map(values, (value) => {
+    values = _.map(values, value => {
       return Utils.escapeRegexCharacter(value);
     });
     values[0] = '.*' + values[0] + '.*';
     return values.join('|');
   }
 
-  static needAnotherFacetSearch(currentSearchLength: number, newSearchLength: number, oldSearchLength: number, desiredSearchLength: number) {
+  static needAnotherFacetSearch(
+    currentSearchLength: number,
+    newSearchLength: number,
+    oldSearchLength: number,
+    desiredSearchLength: number
+  ) {
     // Something was removed (currentSearch < newSearch)
     // && we might want to display more facet search result(currentSearch < desiredSearch)
     // && the new query returned more stuff than the old one so there's still more results(currentSearchLength > oldLength)
@@ -70,7 +84,7 @@ export class FacetUtils {
     // This takes care of adding the correct css class on each facet value checkbox (empty white box) if at least one value is selected in that facet
     if (facet.values.getSelected().length != 0) {
       let noStates = $$(container).findAll('li:not(.coveo-selected)');
-      _.each(noStates, (noState) => {
+      _.each(noStates, noState => {
         $$(noState).addClass('coveo-no-state');
       });
     }

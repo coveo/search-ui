@@ -10,7 +10,6 @@ import { Omnibox } from '../ui/Omnibox/Omnibox';
  * [`populateOmniboxSuggestions`]{@link OmniboxEvents.populateOmniboxSuggestions} event handlers receive as an argument.
  */
 export interface IPopulateOmniboxSuggestionsEventArgs {
-
   /**
    * The [`Omnibox`]{@link Omnibox} component instance.
    */
@@ -22,11 +21,9 @@ export interface IPopulateOmniboxSuggestionsEventArgs {
   suggestions: Array<Coveo.MagicBox.Suggestion[] | Promise<Coveo.MagicBox.Suggestion[]>>;
 }
 
-export interface IPopulateOmniboxEventArgs extends IOmniboxData {
-}
+export interface IPopulateOmniboxEventArgs extends IOmniboxData {}
 
-export interface IPopulateOmniboxEventRow extends IOmniboxDataRow {
-}
+export interface IPopulateOmniboxEventRow extends IOmniboxDataRow {}
 
 export interface IOmniboxPreprocessResultForQueryEventArgs {
   result: Coveo.MagicBox.Result;
@@ -37,7 +34,6 @@ export interface IOmniboxPreprocessResultForQueryEventArgs {
  * [`Omnibox`]{@link Omnibox} component.
  */
 export class OmniboxEvents {
-
   public static populateOmnibox = 'populateOmnibox';
 
   /**

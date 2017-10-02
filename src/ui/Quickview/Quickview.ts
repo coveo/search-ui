@@ -87,16 +87,15 @@ export class Quickview extends Component {
 
   static doExport = () => {
     exportGlobally({
-      'Quickview': Quickview,
-      'QuickviewDocument': QuickviewDocument
+      Quickview: Quickview,
+      QuickviewDocument: QuickviewDocument
     });
-  }
+  };
 
   /**
    * @componentOptions
    */
   static options: IQuickviewOptions = {
-
     /**
      * Specifies whether to always show the `Quickview` button/link, even when the index body of an item is empty.
      *
@@ -186,7 +185,9 @@ export class Quickview extends Component {
      * By default, the loading animation is a Coveo animation, which you can customize with CSS (see
      * [Branding Customization - Customizing the Default Loading Animation](https://developers.coveo.com/x/EoGfAQ#BrandingCustomization-CustomizingtheDefaultLoadingAnimation).
      */
-    loadingAnimation: ComponentOptions.buildOption<HTMLElement | Promise<HTMLElement>>(ComponentOptionsType.NONE, (element: HTMLElement) => {
+    loadingAnimation: ComponentOptions.buildOption<
+      HTMLElement | Promise<HTMLElement>
+    >(ComponentOptionsType.NONE, (element: HTMLElement) => {
       const loadingAnimationSelector = element.getAttribute('data-loading-animation-selector');
       if (loadingAnimationSelector != null) {
         const loadingAnimation = $$(document.documentElement).find(loadingAnimationSelector);
@@ -221,7 +222,13 @@ export class Quickview extends Component {
    * @param result The result to associate the component with.
    * @param ModalBox The quickview modal box.
    */
-  constructor(public element: HTMLElement, public options?: IQuickviewOptions, public bindings?: IResultsComponentBindings, public result?: IQueryResult, private ModalBox = ModalBoxModule) {
+  constructor(
+    public element: HTMLElement,
+    public options?: IQuickviewOptions,
+    public bindings?: IResultsComponentBindings,
+    public result?: IQueryResult,
+    private ModalBox = ModalBoxModule
+  ) {
     super(element, Quickview.ID, bindings);
     this.options = ComponentOptions.initComponentOptions(element, Quickview, options);
 
@@ -234,11 +241,7 @@ export class Quickview extends Component {
     if (/^\s*$/.test(this.element.innerHTML)) {
       const iconForQuickview = $$('div', { className: 'coveo-icon-for-quickview' }, SVGIcons.icons.quickview);
       SVGDom.addClassToSVGInContainer(iconForQuickview.el, 'coveo-icon-for-quickview-svg');
-      const captionForQuickview = $$(
-        'div',
-        { className: 'coveo-caption-for-icon', tabindex: 0 },
-        'Quickview'.toLocaleString()
-      ).el;
+      const captionForQuickview = $$('div', { className: 'coveo-caption-for-icon', tabindex: 0 }, 'Quickview'.toLocaleString()).el;
       const div = $$('div');
       div.append(iconForQuickview.el);
       div.append(captionForQuickview);
@@ -295,12 +298,11 @@ export class Quickview extends Component {
   }
 
   private bindQuickviewEvents(openerObject: IQuickviewOpenerObject) {
-
     $$(this.modalbox.content).on(QuickviewEvents.quickviewLoaded, () => {
       if (openerObject.loadingAnimation instanceof HTMLElement) {
         $$(openerObject.loadingAnimation).remove();
       } else if (openerObject.loadingAnimation instanceof Promise) {
-        openerObject.loadingAnimation.then((anim) => {
+        openerObject.loadingAnimation.then(anim => {
           $$(anim).remove();
         });
       }
@@ -316,13 +318,18 @@ export class Quickview extends Component {
 
   private createModalBox(openerObject: IQuickviewOpenerObject) {
     const computedModalBoxContent = $$('div');
-    return openerObject.content.then((builtContent) => {
+    computedModalBoxContent.addClass('coveo-computed-modal-box-content');
+    return openerObject.content.then(builtContent => {
       computedModalBoxContent.append(builtContent.el);
       this.modalbox = this.ModalBox.open(computedModalBoxContent.el, {
-        title: DomUtils.getQuickviewHeader(this.result, {
-          showDate: this.options.showDate,
-          title: this.options.title
-        }, this.bindings).el.outerHTML,
+        title: DomUtils.getQuickviewHeader(
+          this.result,
+          {
+            showDate: this.options.showDate,
+            title: this.options.title
+          },
+          this.bindings
+        ).el.outerHTML,
         className: 'coveo-quick-view',
         validation: () => {
           this.closeQuickview();
@@ -359,7 +366,7 @@ export class Quickview extends Component {
           if (loadingAnimation instanceof HTMLElement) {
             content.prepend(loadingAnimation);
           } else if (loadingAnimation instanceof Promise) {
-            loadingAnimation.then((anim) => {
+            loadingAnimation.then(anim => {
               content.prepend(anim);
             });
           }

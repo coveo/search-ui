@@ -1,5 +1,5 @@
 import { ComponentOptionsModel } from '../../models/ComponentOptionsModel';
-export const MagicBox: any = require('exports-loader?Coveo.MagicBox!../../../node_modules/coveomagicbox/bin/MagicBox.min.js');
+export const MagicBox: any = require('exports-loader?Coveo.MagicBox!magic-box');
 import { Initialization } from '../Base/Initialization';
 import { Component } from '../Base/Component';
 import { IComponentBindings } from '../Base/ComponentBindings';
@@ -25,7 +25,6 @@ export interface IQueryboxOptions {
   enablePartialMatch?: boolean;
   partialMatchKeywords?: number;
   partialMatchThreshold?: string;
-  autoFocus?: boolean;
   placeholder?: string;
   triggerQueryOnClear?: boolean;
 }
@@ -47,23 +46,23 @@ export class Querybox extends Component {
 
   static doExport = () => {
     exportGlobally({
-      'Querybox': Querybox,
-      'MagicBox': MagicBox
+      Querybox: Querybox,
+      MagicBox: MagicBox,
+      QueryboxQueryParameters: QueryboxQueryParameters
     });
-  }
+  };
 
   /**
    * The options for the Querybox.
    * @componentOptions
    */
   public static options: IQueryboxOptions = {
-
     /**
      * Specifies whether to enable the search-as-you-type feature.
      *
      * Default value is `false`.
      */
-    enableSearchAsYouType: ComponentOptions.buildBooleanOption({ defaultValue: false }),
+    enableSearchAsYouType: ComponentOptions.buildBooleanOption({ defaultValue: false, section: 'SearchAsYouType' }),
 
     /**
      * If the [`enableSearchAsYouType`]{@link Querybox.options.enableSearchAsYouType} option is `true`, specifies how
@@ -71,7 +70,7 @@ export class Querybox extends Component {
      *
      * Default value is `50`. Minimum value is `0`
      */
-    searchAsYouTypeDelay: ComponentOptions.buildNumberOption({ defaultValue: 50, min: 0 }),
+    searchAsYouTypeDelay: ComponentOptions.buildNumberOption({ defaultValue: 50, min: 0, section: 'SearchAsYouType' }),
 
     /**
      * Specifies whether to interpret special query syntax (e.g., `@objecttype=message`) when the end user types
@@ -97,7 +96,7 @@ export class Querybox extends Component {
      *
      * Default value is `false`.
      */
-    enableQuerySyntax: ComponentOptions.buildBooleanOption({ defaultValue: false }),
+    enableQuerySyntax: ComponentOptions.buildBooleanOption({ defaultValue: false, section: 'QuerySyntax' }),
 
     /**
      * Specifies whether to expand basic expression keywords containing wildcards characters (`*`) to the possible
@@ -113,7 +112,7 @@ export class Querybox extends Component {
      *
      * Default value is `false`.
      */
-    enableWildcards: ComponentOptions.buildBooleanOption({ defaultValue: false }),
+    enableWildcards: ComponentOptions.buildBooleanOption({ defaultValue: false, section: 'QuerySyntax' }),
 
     /**
      * If [`enableWildcards`]{@link Querybox.options.enableWildcards} is `true`, specifies whether to expand basic
@@ -186,7 +185,7 @@ export class Querybox extends Component {
      *
      * Default value is `5`.
      */
-    partialMatchKeywords: ComponentOptions.buildNumberOption({ defaultValue: 5, min: 1 }),
+    partialMatchKeywords: ComponentOptions.buildNumberOption({ defaultValue: 5, min: 1, depend: 'enablePartialMatch' }),
 
     /**
      * When the [`enablePartialMatch`]{@link Querybox.options.enablePartialMatch} option is `true`, specifies an
@@ -211,14 +210,14 @@ export class Querybox extends Component {
      *
      * Default value is `50%`.
      */
-    partialMatchThreshold: ComponentOptions.buildStringOption({ defaultValue: '50%' }),
+    partialMatchThreshold: ComponentOptions.buildStringOption({ defaultValue: '50%', depend: 'enablePartialMatch' }),
 
     /**
      * Specifies whether to trigger a query when clearing the `Querybox`.
      *
      * Default value is `true`.
      */
-    triggerQueryOnClear: ComponentOptions.buildBooleanOption({ defaultValue: true }),
+    triggerQueryOnClear: ComponentOptions.buildBooleanOption({ defaultValue: true })
   };
 
   public magicBox: Coveo.MagicBox.Instance;
@@ -244,18 +243,24 @@ export class Querybox extends Component {
     this.options = ComponentOptions.initComponentOptions(element, Querybox, options);
     this.options = _.extend({}, this.options, this.componentOptionsModel.get(ComponentOptionsModel.attributesEnum.searchBox));
 
-    this.magicBox = MagicBox.create(element, new MagicBox.Grammar('Query', {
-      Query: '[Term*][Spaces?]',
-      Term: '[Spaces?][Word]',
-      Spaces: / +/,
-      Word: /[^ ]+/
-    }), {
+    this.magicBox = MagicBox.create(
+      element,
+      new MagicBox.Grammar('Query', {
+        Query: '[Term*][Spaces?]',
+        Term: '[Spaces?][Word]',
+        Spaces: / +/,
+        Word: /[^ ]+/
+      }),
+      {
         inline: true
-      });
+      }
+    );
 
     this.bind.onRootElement(QueryEvents.buildingQuery, (args: IBuildingQueryEventArgs) => this.handleBuildingQuery(args));
     this.bind.onRootElement(StandaloneSearchInterfaceEvents.beforeRedirect, () => this.updateQueryState());
-    this.bind.onQueryState(MODEL_EVENTS.CHANGE_ONE, QUERY_STATE_ATTRIBUTES.Q, (args: IAttributeChangedEventArg) => this.handleQueryStateChanged(args));
+    this.bind.onQueryState(MODEL_EVENTS.CHANGE_ONE, QUERY_STATE_ATTRIBUTES.Q, (args: IAttributeChangedEventArg) =>
+      this.handleQueryStateChanged(args)
+    );
 
     if (this.options.enableSearchAsYouType) {
       $$(this.element).addClass('coveo-search-as-you-type');
@@ -356,7 +361,7 @@ export class Querybox extends Component {
    *
    * @returns {Result[]} The result.
    */
-  public resultAtCursor(match?: string | { (result): boolean; }) {
+  public resultAtCursor(match?: string | { (result): boolean }) {
     return this.magicBox.resultAtCursor(match);
   }
 

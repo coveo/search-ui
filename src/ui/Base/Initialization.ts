@@ -49,11 +49,15 @@ export class Initialization {
   // We need the 2 different mode for a specific reason :
   // In eager mode, when someone calls Coveo.init, this means the initialization is synchronous, and someone can then immediately start interacting with components.
   // In lazy mode, when someone calls Coveo.init, they have to wait for the returned promise to resolve before interacting with components.
-  public static componentsFactory: (elements: HTMLElement[], componentClassId: string, initParameters: IInitializationParameters) => { factory: () => Promise<Component>[] | void, isLazyInit: boolean };
+  public static componentsFactory: (
+    elements: HTMLElement[],
+    componentClassId: string,
+    initParameters: IInitializationParameters
+  ) => { factory: () => Promise<Component>[] | void; isLazyInit: boolean };
 
   private static logger = new Logger('Initialization');
   public static registeredComponents: String[] = [];
-  private static namedMethods: { [s: string]: any; } = {};
+  private static namedMethods: { [s: string]: any } = {};
 
   // List of every fields that are needed by components when doing a query (the fieldsToInclude property in the query)
   // Since results components are lazy loaded after the first query (when doing the rendering) we need to register the needed fields before their implementation are loaded in the page.
@@ -61,7 +65,6 @@ export class Initialization {
   // List of every fields that are needed by components when doing a query (the fieldsToInclude property in the query), linked to the component that needs them
   // It is a bit different from `fieldsNeededForQuery` because we can, in some scenarios, optimize to only get fields for components that are actually in the page
   private static fieldsNeededForQueryByComponent: IStringMap<string[]> = {};
-
 
   /**
    * Register a new set of options for a given element.<br/>
@@ -137,11 +140,14 @@ export class Initialization {
 
     // Register with both name (eg : Facet and CoveoFacet) to reduce possible confusion.
     // The id concept for component is fuzzy for a lot of people (include the Coveo prefix or not)
-    let registerById = (id) => {
+    let registerById = id => {
       if (Initialization.fieldsNeededForQueryByComponent[id] == null) {
         Initialization.fieldsNeededForQueryByComponent[id] = fields;
       } else {
-        Initialization.fieldsNeededForQueryByComponent[id] = Utils.concatWithoutDuplicate(Initialization.fieldsNeededForQueryByComponent[id], fields);
+        Initialization.fieldsNeededForQueryByComponent[id] = Utils.concatWithoutDuplicate(
+          Initialization.fieldsNeededForQueryByComponent[id],
+          fields
+        );
       }
     };
 
@@ -182,7 +188,10 @@ export class Initialization {
    * @returns {boolean}
    */
   public static isComponentClassIdRegistered(componentClassId: string): boolean {
-    return _.contains(Initialization.registeredComponents, componentClassId) || _.contains(Initialization.registeredComponents, Component.computeCssClassNameForType(componentClassId));
+    return (
+      _.contains(Initialization.registeredComponents, componentClassId) ||
+      _.contains(Initialization.registeredComponents, Component.computeCssClassNameForType(componentClassId))
+    );
   }
 
   /**
@@ -220,7 +229,11 @@ export class Initialization {
    * @param options The options for all components (eg: {Searchbox : {enableSearchAsYouType : true}}).
    * @param initSearchInterfaceFunction The function to execute to create the {@link SearchInterface} component. Different init call will create different {@link SearchInterface}.
    */
-  public static initializeFramework(element: HTMLElement, options: any, initSearchInterfaceFunction: (...args: any[]) => IInitResult): Promise<{ elem: HTMLElement }> {
+  public static initializeFramework(
+    element: HTMLElement,
+    options: any,
+    initSearchInterfaceFunction: (...args: any[]) => IInitResult
+  ): Promise<{ elem: HTMLElement }> {
     Assert.exists(element);
     let alreadyInitialized = Component.get(element, QueryController, true);
     if (alreadyInitialized) {
@@ -238,29 +251,30 @@ export class Initialization {
     $$(element).trigger(InitializationEvents.beforeInitialization);
 
     const toExecuteOnceSearchInterfaceIsInitialized = () => {
-      Initialization.initExternalComponents(element, options);
+      return Initialization.initExternalComponents(element, options).then(result => {
+        Initialization.performInitFunctionsOption(options, InitializationEvents.afterComponentsInitialization);
+        $$(element).trigger(InitializationEvents.afterComponentsInitialization);
 
-      Initialization.performInitFunctionsOption(options, InitializationEvents.afterComponentsInitialization);
-      $$(element).trigger(InitializationEvents.afterComponentsInitialization);
+        $$(element).trigger(InitializationEvents.restoreHistoryState);
 
-      $$(element).trigger(InitializationEvents.restoreHistoryState);
+        Initialization.performInitFunctionsOption(options, InitializationEvents.afterInitialization);
+        $$(element).trigger(InitializationEvents.afterInitialization);
 
-      Initialization.performInitFunctionsOption(options, InitializationEvents.afterInitialization);
-      $$(element).trigger(InitializationEvents.afterInitialization);
-
-      let searchInterface = <SearchInterface>Component.get(element, SearchInterface);
-      if (searchInterface.options.autoTriggerQuery) {
-        Initialization.logFirstQueryCause(searchInterface);
-        let shouldLogInActionHistory = true;
-        // We should not log an action history if the interface is a standalone recommendation component.
-        if (Coveo['Recommendation']) {
-          shouldLogInActionHistory = !(searchInterface instanceof Coveo['Recommendation']);
+        let searchInterface = <SearchInterface>Component.get(element, SearchInterface);
+        if (searchInterface.options.autoTriggerQuery) {
+          Initialization.logFirstQueryCause(searchInterface);
+          let shouldLogInActionHistory = true;
+          // We should not log an action history if the interface is a standalone recommendation component.
+          if (Coveo['Recommendation']) {
+            shouldLogInActionHistory = !(searchInterface instanceof Coveo['Recommendation']);
+          }
+          (<QueryController>Component.get(element, QueryController)).executeQuery({
+            logInActionsHistory: shouldLogInActionHistory,
+            isFirstQuery: true
+          });
         }
-        (<QueryController>Component.get(element, QueryController)).executeQuery({
-          logInActionsHistory: shouldLogInActionHistory,
-          isFirstQuery: true
-        });
-      }
+        return result;
+      });
     };
 
     const resultOfSearchInterfaceInitialization = initSearchInterfaceFunction(element, options);
@@ -269,8 +283,7 @@ export class Initialization {
     // eg : CoveoJsSearch.Lazy.js was included in the page
     // this means that we can only execute the function after the promise has resolved
     if (resultOfSearchInterfaceInitialization.isLazyInit) {
-      return resultOfSearchInterfaceInitialization.initResult.then(() => {
-        toExecuteOnceSearchInterfaceIsInitialized();
+      return resultOfSearchInterfaceInitialization.initResult.then(toExecuteOnceSearchInterfaceIsInitialized).then(() => {
         return {
           elem: element
         };
@@ -279,11 +292,11 @@ export class Initialization {
       // Else, we are executing an "eager" initialization, which returns void;
       // eg : CoveoJsSearch.js was included in the page
       // this mean that this function gets executed immediately
-      toExecuteOnceSearchInterfaceIsInitialized();
-      return new Promise((resolve, reject) => {
-        resolve({ elem: element });
+      return toExecuteOnceSearchInterfaceIsInitialized().then(() => {
+        return {
+          elem: element
+        };
       });
-
     }
   }
 
@@ -361,7 +374,11 @@ export class Initialization {
    * @param ignore
    * @returns {IInitResult}
    */
-  public static automaticallyCreateComponentsInside(element: HTMLElement, initParameters: IInitializationParameters, ignore?: string[]): IInitResult {
+  public static automaticallyCreateComponentsInside(
+    element: HTMLElement,
+    initParameters: IInitializationParameters,
+    ignore?: string[]
+  ): IInitResult {
     Assert.exists(element);
 
     let codeToExecute: { (): Promise<Component>[] | void }[] = [];
@@ -371,7 +388,7 @@ export class Initialization {
     // Scan for elements to ignore which can be a container component (with other component inside)
     // When a component is ignored, all it's children component should be ignored too.
     // Add them to the array of html elements that should be skipped.
-    _.each(ignore, (toIgnore) => {
+    _.each(ignore, toIgnore => {
       let rootToIgnore = $$(element).find(`.${Component.computeCssClassNameForType(toIgnore)}`);
       if (rootToIgnore) {
         let childsElementsToIgnore = $$(rootToIgnore).findAll('*');
@@ -408,21 +425,25 @@ export class Initialization {
 
     if (isLazyInit) {
       return {
-        initResult: Promise.all(_.map(codeToExecute, (code) => {
-          const resultsOfFactory = code();
-          if (_.isArray(resultsOfFactory)) {
-            return Promise.all(resultsOfFactory).then(() => true);
-          } else {
-            return Promise.resolve(true);
-          }
-        })).then(() => true).catch((e: Error) => {
-          logFatalErrorOnComponentInitialization(e);
-          return true;
-        }),
+        initResult: Promise.all(
+          _.map(codeToExecute, code => {
+            const resultsOfFactory = code();
+            if (_.isArray(resultsOfFactory)) {
+              return Promise.all(resultsOfFactory).then(() => true);
+            } else {
+              return Promise.resolve(true);
+            }
+          })
+        )
+          .then(() => true)
+          .catch((e: Error) => {
+            logFatalErrorOnComponentInitialization(e);
+            return true;
+          }),
         isLazyInit: true
       };
     } else {
-      _.each(codeToExecute, (code) => {
+      _.each(codeToExecute, code => {
         try {
           code();
         } catch (e) {
@@ -488,7 +509,12 @@ export class Initialization {
     boundComponent[methodName] = handler;
   }
 
-  public static initBoxInterface(element: HTMLElement, options: any = {}, type: string = 'Standard', injectMarkup: boolean = true): IInitResult {
+  public static initBoxInterface(
+    element: HTMLElement,
+    options: any = {},
+    type: string = 'Standard',
+    injectMarkup: boolean = true
+  ): IInitResult {
     options = Initialization.resolveDefaultOptions(element, options);
     let fromInitTypeToBoxReference = 'Box';
     if (type != 'Standard') {
@@ -497,8 +523,7 @@ export class Initialization {
     const boxRef = Component.getComponentRef(fromInitTypeToBoxReference);
     if (boxRef) {
       new Logger(element).info('Initializing box of type ' + fromInitTypeToBoxReference);
-      let injectFunction: () => any = injectMarkup ? boxRef.getInjection : () => {
-      };
+      let injectFunction: () => any = injectMarkup ? boxRef.getInjection : () => {};
       let box = new boxRef(element, options[fromInitTypeToBoxReference], options.Analytics, injectFunction, options);
       box.options.originalOptionsObject = options;
       let initParameters: IInitializationParameters = { options: options, bindings: box.getBindings() };
@@ -506,7 +531,9 @@ export class Initialization {
     } else {
       return {
         initResult: new Promise((resolve, reject) => {
-          new Logger(element).error('Trying to initialize box of type : ' + fromInitTypeToBoxReference + ' but not found in code (not compiled)!');
+          new Logger(element).error(
+            'Trying to initialize box of type : ' + fromInitTypeToBoxReference + ' but not found in code (not compiled)!'
+          );
           Assert.fail('Cannot initialize unknown type of box');
           reject(false);
         }),
@@ -528,7 +555,6 @@ export class Initialization {
     } else {
       return namedMethodHandler.apply(null, [element]);
     }
-
   }
 
   public static dispatchNamedMethodCallOrComponentCreation(token: string, element: HTMLElement, args: any[]): any {
@@ -559,7 +585,11 @@ export class Initialization {
     if ($$(element).hasClass('CoveoRecommendation')) {
       return true;
     }
-    return Initialization.isThereASingleComponentBoundToThisElement(element) && !get(element, SearchInterface, true) && !$$(element).hasClass('CoveoRecommendation');
+    return (
+      Initialization.isThereASingleComponentBoundToThisElement(element) &&
+      !get(element, SearchInterface, true) &&
+      !$$(element).hasClass('CoveoRecommendation')
+    );
   }
 
   private static dispatchMethodCallOnBoundComponent(methodName: string, element: HTMLElement, args: any[]): any {
@@ -576,7 +606,6 @@ export class Initialization {
       Assert.fail('No method named ' + methodName + ' exist on component ' + boundComponent.type);
     }
   }
-
 
   private static logFirstQueryCause(searchInterface: SearchInterface) {
     let firstQueryCause = HashUtils.getValue('firstQueryCause', HashUtils.getHash());
@@ -608,7 +637,7 @@ export class Initialization {
     }
   }
 
-  private static initExternalComponents(element: HTMLElement, options?: any) {
+  private static initExternalComponents(element: HTMLElement, options?: any): Promise<Boolean> {
     if (options && options['externalComponents']) {
       let searchInterface = <SearchInterface>Component.get(element, SearchInterface);
       let queryStateModel = <QueryStateModel>Component.get(element, QueryStateModel);
@@ -633,14 +662,23 @@ export class Initialization {
           root: element
         }
       };
-      _.each(options['externalComponents'], (externalComponent: HTMLElement | IJQuery) => {
+      const initializationOfExternalComponents = _.map(options['externalComponents'], (externalComponent: HTMLElement | IJQuery) => {
         let elementToInstantiate = externalComponent;
         if (Utils.isHtmlElement(elementToInstantiate)) {
-          return Initialization.automaticallyCreateComponentsInside(<HTMLElement>elementToInstantiate, initParameters);
+          return Initialization.automaticallyCreateComponentsInside(<HTMLElement>elementToInstantiate, initParameters).initResult;
         } else if (JQueryUtils.isInstanceOfJQuery(elementToInstantiate)) {
-          return Initialization.automaticallyCreateComponentsInside(<HTMLElement>((<any>elementToInstantiate).get(0)), initParameters);
+          return Initialization.automaticallyCreateComponentsInside(<HTMLElement>(<any>elementToInstantiate).get(0), initParameters)
+            .initResult;
         }
       });
+      return Promise.all(initializationOfExternalComponents)
+        .then(results => _.first(results))
+        .catch(err => {
+          this.logger.error(err);
+          return false;
+        });
+    } else {
+      return Promise.resolve(false);
     }
   }
 }
@@ -673,9 +711,11 @@ export class LazyInitialization {
   }
 
   public static buildErrorCallback(chunkName: string, resolve: Function) {
-    return (error) => {
-      LazyInitialization.logger.warn(`Cannot load chunk for ${chunkName}. You may need to configure the paths of the ressources using Coveo.configureRessourceRoot. Current path is ${__webpack_public_path__}.`);
-      resolve(() => { });
+    return error => {
+      LazyInitialization.logger.warn(
+        `Cannot load chunk for ${chunkName}. You may need to configure the paths of the resources using Coveo.configureResourceRoot. Current path is ${__webpack_public_path__}.`
+      );
+      resolve(() => {});
     };
   }
 
@@ -688,11 +728,14 @@ export class LazyInitialization {
     }
   }
 
-  public static componentsFactory(elements: Element[], componentClassId: string, initParameters: IInitializationParameters): { factory: () => Promise<Component>[], isLazyInit: boolean } {
+  public static componentsFactory(
+    elements: Element[],
+    componentClassId: string,
+    initParameters: IInitializationParameters
+  ): { factory: () => Promise<Component>[]; isLazyInit: boolean } {
     const factory = () => {
       let promises: Promise<Component>[] = [];
       _.each(elements, (matchingElement: HTMLElement) => {
-
         if (Component.get(matchingElement, componentClassId) == null) {
           // If options were provided, lookup options for this component class and
           // also for the element id. Merge them and pass those to the factory method.
@@ -718,7 +761,11 @@ export class LazyInitialization {
     };
   }
 
-  private static createComponentOfThisClassOnElement(componentClassId: string, element: HTMLElement, initParameters?: IInitializationParameters): Promise<Component> {
+  private static createComponentOfThisClassOnElement(
+    componentClassId: string,
+    element: HTMLElement,
+    initParameters?: IInitializationParameters
+  ): Promise<Component> {
     Assert.isNonEmptyString(componentClassId);
     Assert.exists(element);
 
@@ -760,7 +807,11 @@ export class EagerInitialization {
   // Map of every component with their implementation (eagerly loaded)
   public static eagerlyLoadedComponents: IStringMap<IComponentDefinition> = {};
 
-  public static componentsFactory(elements: Element[], componentClassId: string, initParameters: IInitializationParameters): { factory: () => void, isLazyInit: boolean } {
+  public static componentsFactory(
+    elements: Element[],
+    componentClassId: string,
+    initParameters: IInitializationParameters
+  ): { factory: () => void; isLazyInit: boolean } {
     const factory = () => {
       _.each(elements, (matchingElement: HTMLElement) => {
         if (Component.get(matchingElement, componentClassId) == null) {
@@ -786,7 +837,11 @@ export class EagerInitialization {
     };
   }
 
-  private static createComponentOfThisClassOnElement(componentClassId: string, element: HTMLElement, initParameters?: IInitializationParameters): Component {
+  private static createComponentOfThisClassOnElement(
+    componentClassId: string,
+    element: HTMLElement,
+    initParameters?: IInitializationParameters
+  ): Component {
     Assert.isNonEmptyString(componentClassId);
     Assert.exists(element);
 
@@ -815,12 +870,18 @@ export class EagerInitialization {
     // If we do not find the eager component registered, we can instead try to load the one found in lazy mode.
     // If it still fails there... tough luck. The component simply won't work.
     if (eagerlyLoadedComponent == null) {
-      LazyInitialization.getLazyRegisteredComponent(componentClassId).then((lazyLoadedComponent) => {
-        EagerInitialization.logger.warn(`Component of class ${componentClassId} was not found in "Eager" mode. Using lazy mode as a fallback.`);
-        new lazyLoadedComponent(element, options, bindings, result);
-      }).catch(() => {
-        EagerInitialization.logger.error(`Component of class ${componentClassId} was not found in "Eager" mode nor "Lazy" mode. It will not be initialized properly...`);
-      });
+      LazyInitialization.getLazyRegisteredComponent(componentClassId)
+        .then(lazyLoadedComponent => {
+          EagerInitialization.logger.warn(
+            `Component of class ${componentClassId} was not found in "Eager" mode. Using lazy mode as a fallback.`
+          );
+          new lazyLoadedComponent(element, options, bindings, result);
+        })
+        .catch(() => {
+          EagerInitialization.logger.error(
+            `Component of class ${componentClassId} was not found in "Eager" mode nor "Lazy" mode. It will not be initialized properly...`
+          );
+        });
       return null;
     } else {
       return new eagerlyLoadedComponent(element, options, bindings, result);

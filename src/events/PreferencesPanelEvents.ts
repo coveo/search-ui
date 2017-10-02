@@ -1,6 +1,4 @@
-
-export interface ISavePreferencesEventArgs {
-}
+export interface ISavePreferencesEventArgs {}
 
 export class PreferencesPanelEvents {
   public static savePreferences = 'savePreferences';

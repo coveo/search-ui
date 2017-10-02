@@ -4,11 +4,7 @@ import { TemplateFromAScriptTag, ITemplateFromStringProperties } from './Templat
 import * as _ from 'underscore';
 
 export class HtmlTemplate extends Template {
-
-  public static mimeTypes = [
-    'text/html',
-    'text/HTML'
-  ];
+  public static mimeTypes = ['text/html', 'text/HTML'];
 
   private templateFromAScriptTag: TemplateFromAScriptTag;
 
@@ -42,5 +38,9 @@ export class HtmlTemplate extends Template {
     // 1) LockerService doesn't like when we set it.
     // 2) The HTML Template is the default one.
     return new HtmlTemplate(script);
+  }
+
+  protected getTemplateInfo() {
+    return this.element;
   }
 }

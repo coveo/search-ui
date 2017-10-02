@@ -3,9 +3,7 @@ import { ResponsiveComponentsManager } from '../../../src/ui/ResponsiveComponent
 import { $$, Dom } from '../../../src/utils/Dom';
 
 export function ResponsiveDropdownContentTest() {
-
   describe('ResponsiveDropdownContent', () => {
-
     let minWidth = 50;
     let widthRatio = 0.5;
     let componentName = 'name';

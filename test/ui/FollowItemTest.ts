@@ -11,7 +11,7 @@ import { KEYBOARD } from '../../src/utils/KeyboardUtils';
 import { SearchAlertsEvents } from '../../src/events/SearchAlertEvents';
 
 export function FollowItemTest() {
-  describe('FollowItem', function () {
+  describe('FollowItem', function() {
     let test: Mock.IBasicComponentSetup<FollowItem>;
     let endpointMock: SearchEndpoint;
     let result: IQueryResult;
@@ -22,9 +22,13 @@ export function FollowItemTest() {
       endpointMock = Mock.mockSearchEndpoint();
       (<jasmine.Spy>endpointMock.listSubscriptions).and.returnValue(Promise.resolve([]));
 
-      test = Mock.advancedResultComponentSetup<FollowItem>(FollowItem, result, new Mock.AdvancedComponentSetupOptions(null, null, (env) => {
-        return env.withEndpoint(endpointMock);
-      }));
+      test = Mock.advancedResultComponentSetup<FollowItem>(
+        FollowItem,
+        result,
+        new Mock.AdvancedComponentSetupOptions(null, null, env => {
+          return env.withEndpoint(endpointMock);
+        })
+      );
     });
 
     afterEach(() => {
@@ -33,11 +37,15 @@ export function FollowItemTest() {
       result = null;
     });
 
-    it('should set the item as followed if it is followed', (done) => {
+    it('should set the item as followed if it is followed', done => {
       (<jasmine.Spy>endpointMock.listSubscriptions).and.returnValue(Promise.resolve([{ typeConfig: { id: result.raw.urihash } }]));
-      test = Mock.advancedResultComponentSetup<FollowItem>(FollowItem, result, new Mock.AdvancedComponentSetupOptions(null, null, (env) => {
-        return env.withEndpoint(endpointMock);
-      }));
+      test = Mock.advancedResultComponentSetup<FollowItem>(
+        FollowItem,
+        result,
+        new Mock.AdvancedComponentSetupOptions(null, null, env => {
+          return env.withEndpoint(endpointMock);
+        })
+      );
 
       Promise.resolve().then(() => {
         expect($$(test.cmp.element).hasClass('coveo-follow-item-followed')).toBe(true);
@@ -45,20 +53,24 @@ export function FollowItemTest() {
       });
     });
 
-    it('should set the item as not followed if it is not followed', (done) => {
+    it('should set the item as not followed if it is not followed', done => {
       Promise.resolve().then(() => {
         expect($$(test.cmp.element).hasClass('coveo-follow-item-followed')).toBe(false);
         done();
       });
     });
 
-    it('should remove the component if the search alerts service is unavailable', (done) => {
+    it('should remove the component if the search alerts service is unavailable', done => {
       (<jasmine.Spy>endpointMock.listSubscriptions).and.returnValue(Promise.resolve('Error'));
       let root = $$('div').el;
       spyOn(root, 'removeChild');
-      test = Mock.advancedResultComponentSetup<FollowItem>(FollowItem, result, new Mock.AdvancedComponentSetupOptions(null, null, (env) => {
-        return env.withEndpoint(endpointMock).withRoot(root);
-      }));
+      test = Mock.advancedResultComponentSetup<FollowItem>(
+        FollowItem,
+        result,
+        new Mock.AdvancedComponentSetupOptions(null, null, env => {
+          return env.withEndpoint(endpointMock).withRoot(root);
+        })
+      );
 
       Promise.resolve({}).then(() => {
         expect(root.removeChild).toHaveBeenCalled();
@@ -67,13 +79,18 @@ export function FollowItemTest() {
     });
 
     describe('toggleFollow', () => {
-
-      it('should delete the subscription if the document is followed', (done) => {
-        (<jasmine.Spy>endpointMock.listSubscriptions).and.returnValue(Promise.resolve([{ id: '123', typeConfig: { id: result.raw.urihash } }]));
+      it('should delete the subscription if the document is followed', done => {
+        (<jasmine.Spy>endpointMock.listSubscriptions).and.returnValue(
+          Promise.resolve([{ id: '123', typeConfig: { id: result.raw.urihash } }])
+        );
         (<jasmine.Spy>endpointMock.deleteSubscription).and.returnValue(Promise.resolve());
-        test = Mock.advancedResultComponentSetup<FollowItem>(FollowItem, result, new Mock.AdvancedComponentSetupOptions(null, null, (env) => {
-          return env.withEndpoint(endpointMock);
-        }));
+        test = Mock.advancedResultComponentSetup<FollowItem>(
+          FollowItem,
+          result,
+          new Mock.AdvancedComponentSetupOptions(null, null, env => {
+            return env.withEndpoint(endpointMock);
+          })
+        );
 
         Promise.resolve().then(() => {
           test.cmp.toggleFollow();
@@ -82,11 +99,15 @@ export function FollowItemTest() {
         });
       });
 
-      it('should create a subscription if the document is not followed', (done) => {
+      it('should create a subscription if the document is not followed', done => {
         (<jasmine.Spy>endpointMock.follow).and.returnValue(Promise.resolve());
-        test = Mock.advancedResultComponentSetup<FollowItem>(FollowItem, result, new Mock.AdvancedComponentSetupOptions(null, null, (env) => {
-          return env.withEndpoint(endpointMock);
-        }));
+        test = Mock.advancedResultComponentSetup<FollowItem>(
+          FollowItem,
+          result,
+          new Mock.AdvancedComponentSetupOptions(null, null, env => {
+            return env.withEndpoint(endpointMock);
+          })
+        );
 
         Promise.resolve().then(() => {
           test.cmp.toggleFollow();
@@ -95,11 +116,15 @@ export function FollowItemTest() {
         });
       });
 
-      it('should follow the document on click', (done) => {
+      it('should follow the document on click', done => {
         (<jasmine.Spy>endpointMock.follow).and.returnValue(Promise.resolve());
-        test = Mock.advancedResultComponentSetup<FollowItem>(FollowItem, result, new Mock.AdvancedComponentSetupOptions(null, null, (env) => {
-          return env.withEndpoint(endpointMock);
-        }));
+        test = Mock.advancedResultComponentSetup<FollowItem>(
+          FollowItem,
+          result,
+          new Mock.AdvancedComponentSetupOptions(null, null, env => {
+            return env.withEndpoint(endpointMock);
+          })
+        );
 
         Promise.resolve().then(() => {
           $$(test.cmp.element).trigger('click');
@@ -108,16 +133,20 @@ export function FollowItemTest() {
         });
       });
 
-      it('should follow the document when pressing enter', (done) => {
+      it('should follow the document when pressing enter', done => {
         if (Simulate.isPhantomJs()) {
           // Keypress simulation doesn't work well in phantom js
           expect(true).toBe(true);
           done();
         } else {
           (<jasmine.Spy>endpointMock.follow).and.returnValue(Promise.resolve());
-          test = Mock.advancedResultComponentSetup<FollowItem>(FollowItem, result, new Mock.AdvancedComponentSetupOptions(null, null, (env) => {
-            return env.withEndpoint(endpointMock);
-          }));
+          test = Mock.advancedResultComponentSetup<FollowItem>(
+            FollowItem,
+            result,
+            new Mock.AdvancedComponentSetupOptions(null, null, env => {
+              return env.withEndpoint(endpointMock);
+            })
+          );
 
           Promise.resolve().then(() => {
             Simulate.keyUp(test.cmp.element, KEYBOARD.ENTER);
@@ -127,59 +156,84 @@ export function FollowItemTest() {
         }
       });
 
-      it('should log an analytics event if the document is followed', (done) => {
-
+      it('should log an analytics event if the document is followed', done => {
         let fake = FakeResults.createFakeResult();
 
         (<jasmine.Spy>endpointMock.follow).and.returnValue(Promise.resolve());
-        test = Mock.advancedResultComponentSetup<FollowItem>(FollowItem, result, new Mock.AdvancedComponentSetupOptions(null, null, (env) => {
-          return env.withEndpoint(endpointMock);
-        }));
+        test = Mock.advancedResultComponentSetup<FollowItem>(
+          FollowItem,
+          result,
+          new Mock.AdvancedComponentSetupOptions(null, null, env => {
+            return env.withEndpoint(endpointMock);
+          })
+        );
 
         Promise.resolve().then(() => {
           test.cmp.toggleFollow();
-          expect(test.cmp.usageAnalytics.logCustomEvent).toHaveBeenCalledWith(analyticsActionCauseList.searchAlertsFollowDocument, jasmine.objectContaining({
-            author: QueryUtils.getAuthor(fake),
-            documentLanguage: QueryUtils.getLanguage(fake),
-            documentSource: QueryUtils.getSource(fake),
-            documentTitle: fake.title,
-            contentIDKey: QueryUtils.getPermanentId(fake).fieldUsed,
-            contentIDValue: jasmine.any(String)
-          }), test.cmp.element);
+          expect(test.cmp.usageAnalytics.logCustomEvent).toHaveBeenCalledWith(
+            analyticsActionCauseList.searchAlertsFollowDocument,
+            jasmine.objectContaining({
+              author: QueryUtils.getAuthor(fake),
+              documentLanguage: QueryUtils.getLanguage(fake),
+              documentSource: QueryUtils.getSource(fake),
+              documentTitle: fake.title,
+              contentIDKey: QueryUtils.getPermanentId(fake).fieldUsed,
+              contentIDValue: jasmine.any(String)
+            }),
+            test.cmp.element
+          );
           done();
         });
       });
 
-      it('should log an analytics event if the document is unfollowed', (done) => {
+      it('should log an analytics event if the document is unfollowed', done => {
         let fake = FakeResults.createFakeResult();
 
-        (<jasmine.Spy>endpointMock.listSubscriptions).and.returnValue(Promise.resolve([{ id: '123', typeConfig: { id: result.raw.urihash } }]));
+        (<jasmine.Spy>endpointMock.listSubscriptions).and.returnValue(
+          Promise.resolve([{ id: '123', typeConfig: { id: result.raw.urihash } }])
+        );
         (<jasmine.Spy>endpointMock.deleteSubscription).and.returnValue(Promise.resolve());
-        test = Mock.advancedResultComponentSetup<FollowItem>(FollowItem, result, new Mock.AdvancedComponentSetupOptions(null, null, (env) => {
-          return env.withEndpoint(endpointMock);
-        }));
+        test = Mock.advancedResultComponentSetup<FollowItem>(
+          FollowItem,
+          result,
+          new Mock.AdvancedComponentSetupOptions(null, null, env => {
+            return env.withEndpoint(endpointMock);
+          })
+        );
 
         Promise.resolve().then(() => {
           test.cmp.toggleFollow();
-          expect(test.cmp.usageAnalytics.logCustomEvent).toHaveBeenCalledWith(analyticsActionCauseList.searchAlertsUnfollowDocument, jasmine.objectContaining({
-            author: QueryUtils.getAuthor(fake),
-            documentLanguage: QueryUtils.getLanguage(fake),
-            documentSource: QueryUtils.getSource(fake),
-            documentTitle: fake.title
-          }), test.cmp.element);
+          expect(test.cmp.usageAnalytics.logCustomEvent).toHaveBeenCalledWith(
+            analyticsActionCauseList.searchAlertsUnfollowDocument,
+            jasmine.objectContaining({
+              author: QueryUtils.getAuthor(fake),
+              documentLanguage: QueryUtils.getLanguage(fake),
+              documentSource: QueryUtils.getSource(fake),
+              documentTitle: fake.title
+            }),
+            test.cmp.element
+          );
           done();
         });
       });
 
-      it('should not throw if delete subscription fails from the endpoint', (done) => {
-        (<jasmine.Spy>endpointMock.listSubscriptions).and.returnValue(Promise.resolve([{
-          id: '123',
-          typeConfig: { id: result.raw.urihash }
-        }]));
+      it('should not throw if delete subscription fails from the endpoint', done => {
+        (<jasmine.Spy>endpointMock.listSubscriptions).and.returnValue(
+          Promise.resolve([
+            {
+              id: '123',
+              typeConfig: { id: result.raw.urihash }
+            }
+          ])
+        );
         (<jasmine.Spy>endpointMock.deleteSubscription).and.returnValue(Promise.reject('oh no it fails'));
-        test = Mock.advancedResultComponentSetup<FollowItem>(FollowItem, result, new Mock.AdvancedComponentSetupOptions(null, null, (env) => {
-          return env.withEndpoint(endpointMock);
-        }));
+        test = Mock.advancedResultComponentSetup<FollowItem>(
+          FollowItem,
+          result,
+          new Mock.AdvancedComponentSetupOptions(null, null, env => {
+            return env.withEndpoint(endpointMock);
+          })
+        );
 
         Promise.resolve().then(() => {
           expect(() => {
@@ -189,11 +243,15 @@ export function FollowItemTest() {
         });
       });
 
-      it('should not throw if follow subscription fails from the endpoint', (done) => {
+      it('should not throw if follow subscription fails from the endpoint', done => {
         (<jasmine.Spy>endpointMock.follow).and.returnValue(Promise.reject('oh no it fails'));
-        test = Mock.advancedResultComponentSetup<FollowItem>(FollowItem, result, new Mock.AdvancedComponentSetupOptions(null, null, (env) => {
-          return env.withEndpoint(endpointMock);
-        }));
+        test = Mock.advancedResultComponentSetup<FollowItem>(
+          FollowItem,
+          result,
+          new Mock.AdvancedComponentSetupOptions(null, null, env => {
+            return env.withEndpoint(endpointMock);
+          })
+        );
 
         Promise.resolve().then(() => {
           expect(() => {

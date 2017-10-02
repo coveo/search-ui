@@ -24,7 +24,7 @@ export function SliderTest() {
     }
 
     function buildGraphData(): ISliderGraphData[] {
-      let graphData: ISliderGraphData[] = _.map(_.range(0, 10, 1), (range) => {
+      let graphData: ISliderGraphData[] = _.map(_.range(0, 10, 1), range => {
         return {
           start: range * 10,
           end: (range + 1) * 10,
@@ -51,11 +51,15 @@ export function SliderTest() {
       // Since it's all simulated, those test cannot give the correct position value.
       // Instead for those methods, we simply test that it does not throw, at least ...
       beforeEach(() => {
-        slider = new Slider(el, {
-          start: 0,
-          end: 100,
-          rangeSlider: true
-        }, root);
+        slider = new Slider(
+          el,
+          {
+            start: 0,
+            end: 100,
+            rangeSlider: true
+          },
+          root
+        );
 
         slider.element.style.width = '100px';
         slider.element.style.height = '100px';
@@ -92,29 +96,40 @@ export function SliderTest() {
     });
 
     describe('exposes options', () => {
-
       it('rangeSlider allows to have one or two button', () => {
-        slider = new Slider(el, {
-          start: 0,
-          end: 100,
-          rangeSlider: false
-        }, root);
+        slider = new Slider(
+          el,
+          {
+            start: 0,
+            end: 100,
+            rangeSlider: false
+          },
+          root
+        );
 
         expect(getSliderButton(slider.element).length).toBe(1);
-        slider = new Slider(document.createElement('div'), {
-          start: 0,
-          end: 100,
-          rangeSlider: true
-        }, root);
+        slider = new Slider(
+          document.createElement('div'),
+          {
+            start: 0,
+            end: 100,
+            rangeSlider: true
+          },
+          root
+        );
 
         expect(getSliderButton(slider.element).length).toBe(2);
       });
 
       it('start and end allow to set the max values', () => {
-        slider = new Slider(el, {
-          start: 10,
-          end: 156
-        }, root);
+        slider = new Slider(
+          el,
+          {
+            start: 10,
+            end: 156
+          },
+          root
+        );
 
         slider.initializeState();
         expect(slider.currentValues).toEqual(jasmine.arrayContaining([10, 156]));
@@ -130,64 +145,88 @@ export function SliderTest() {
       });
 
       it('step allows to divide the range by a number of steps', () => {
-        slider = new Slider(el, {
-          start: 0,
-          end: 100,
-          steps: 2
-        }, root);
+        slider = new Slider(
+          el,
+          {
+            start: 0,
+            end: 100,
+            steps: 2
+          },
+          root
+        );
 
         expect(slider.steps).toEqual(jasmine.arrayContaining([0, 50, 100]));
 
-        slider = new Slider(el, {
-          start: 0,
-          end: 100,
-          steps: 25
-        }, root);
+        slider = new Slider(
+          el,
+          {
+            start: 0,
+            end: 100,
+            steps: 25
+          },
+          root
+        );
         expect(slider.steps).toEqual(jasmine.arrayContaining(_.range(0, 104, 4)));
       });
 
       it('step should not go above 100 for performance reason', () => {
-        slider = new Slider(el, {
-          start: 0,
-          end: 1000,
-          steps: 1000
-        }, root);
+        slider = new Slider(
+          el,
+          {
+            start: 0,
+            end: 1000,
+            steps: 1000
+          },
+          root
+        );
 
         expect(slider.steps).toEqual(jasmine.arrayContaining(_.range(0, 1000, 10)));
       });
 
       it('getSteps allow to provide a function to generate steps', () => {
         var getStep = jasmine.createSpy('getStep');
-        slider = new Slider(el, {
-          start: 0,
-          end: 100,
-          getSteps: getStep
-        }, root);
+        slider = new Slider(
+          el,
+          {
+            start: 0,
+            end: 100,
+            getSteps: getStep
+          },
+          root
+        );
 
         expect(getStep).toHaveBeenCalledWith(0, 100);
       });
 
       it('displayAsValue allows to modify the caption', () => {
-        slider = new Slider(el, {
-          start: 0,
-          end: 100,
-          displayAsValue: {
-            unitSign: 'GIGAFLOPETABYTE',
-            separator: '!!',
-            enable: true
-          }
-        }, root);
+        slider = new Slider(
+          el,
+          {
+            start: 0,
+            end: 100,
+            displayAsValue: {
+              unitSign: 'GIGAFLOPETABYTE',
+              separator: '!!',
+              enable: true
+            }
+          },
+          root
+        );
         slider.initializeState();
         expect($$(getSliderCaption(slider.element)).text()).toBe('0 GIGAFLOPETABYTE !! 100 GIGAFLOPETABYTE');
       });
 
       it('valueCaption allow to provide a function to generate captions', () => {
         var valueCaption = jasmine.createSpy('valueCaption');
-        slider = new Slider(el, {
-          start: 0,
-          end: 100,
-          valueCaption: valueCaption
-        }, root);
+        slider = new Slider(
+          el,
+          {
+            start: 0,
+            end: 100,
+            valueCaption: valueCaption
+          },
+          root
+        );
         slider.initializeState();
         expect(valueCaption).toHaveBeenCalledWith(jasmine.arrayContaining([0, 100]));
       });
@@ -196,34 +235,44 @@ export function SliderTest() {
         var start = new Date(1, 1, 1),
           end = new Date(2, 2, 2);
 
-        slider = new Slider(el, {
-          start: start,
-          end: end,
-          dateField: true,
-          dateFormat: 'm/d/yyyy'
-        }, root);
+        slider = new Slider(
+          el,
+          {
+            start: start,
+            end: end,
+            dateField: true,
+            dateFormat: 'm/d/yyyy'
+          },
+          root
+        );
 
         slider.initializeState();
-        expect($$(getSliderCaption(slider.element)).text()).toBe(Globalize.format(start, 'm/d/yyyy') + '  - ' + Globalize.format(end, 'm/d/yyyy') + ' ');
+        expect($$(getSliderCaption(slider.element)).text()).toBe(
+          Globalize.format(start, 'm/d/yyyy') + '  - ' + Globalize.format(end, 'm/d/yyyy') + ' '
+        );
       });
 
       describe('with graph data', () => {
         let graphData: ISliderGraphData[];
 
         beforeEach(() => {
-          slider = new Slider(el, {
-            start: 0,
-            end: 100,
-            graph: {
-              steps: 10,
-              margin: {
-                left: 0,
-                right: 0,
-                top: 0,
-                bottom: 0
+          slider = new Slider(
+            el,
+            {
+              start: 0,
+              end: 100,
+              graph: {
+                steps: 10,
+                margin: {
+                  left: 0,
+                  right: 0,
+                  top: 0,
+                  bottom: 0
+                }
               }
-            }
-          }, root);
+            },
+            root
+          );
           new SearchInterface(root);
 
           slider.element.style.width = '100px';

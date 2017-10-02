@@ -121,7 +121,7 @@ If you need to modify the content of the search page (i.e., the markup itself, n
 breaking anything. However, if you feel like you have a good reason to modify the original `index.html`, feel free to 
 do so.
 
-<h3 class="home-section-with-ordered-list">I Want to Add a New Component!</h2> 
+<h3 class="home-section-with-ordered-list">I Want to Add a New Component!</h3> 
 
 1. Fork the `coveo/search-ui` repository.
 2. Install Plop globally with `npm install -g plop`.

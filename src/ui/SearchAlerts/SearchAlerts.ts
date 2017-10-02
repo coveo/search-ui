@@ -9,19 +9,30 @@ import { IQuery } from '../../rest/Query';
 import { AjaxError } from '../../rest/AjaxError';
 import { ISettingsPopulateMenuArgs } from '../Settings/Settings';
 import { SearchAlertsEvents, ISearchAlertsEventArgs, ISearchAlertsFailEventArgs } from '../../events/SearchAlertEvents';
-import { ISubscription, ISubscriptionItemRequest, SUBSCRIPTION_TYPE, ISubscriptionRequest, ISubscriptionQueryRequest } from '../../rest/Subscription';
+import {
+  ISubscription,
+  ISubscriptionItemRequest,
+  SUBSCRIPTION_TYPE,
+  ISubscriptionRequest,
+  ISubscriptionQueryRequest
+} from '../../rest/Subscription';
 import { Initialization } from '../Base/Initialization';
 import { l } from '../../strings/Strings';
 import { $$, Dom } from '../../utils/Dom';
 import { ModalBox as ModalBoxModule } from '../../ExternalModulesShim';
 import {
-  analyticsActionCauseList, IAnalyticsSearchAlertsUpdateMeta, IAnalyticsSearchAlertsMeta, IAnalyticsActionCause
+  analyticsActionCauseList,
+  IAnalyticsSearchAlertsUpdateMeta,
+  IAnalyticsSearchAlertsMeta,
+  IAnalyticsActionCause
 } from '../Analytics/AnalyticsActionListMeta';
 import * as _ from 'underscore';
 import { exportGlobally } from '../../GlobalExports';
 import ModalBox = Coveo.ModalBox.ModalBox;
 import { Dropdown } from '../FormWidgets/Dropdown';
 import { SVGIcons } from '../../utils/SVGIcons';
+import { get } from '../Base/RegisteredNamedMethods';
+import { SearchInterface } from '../SearchInterface/SearchInterface';
 
 export interface ISearchAlertsOptions {
   enableManagePanel?: boolean;
@@ -46,17 +57,16 @@ export class SearchAlerts extends Component {
 
   static doExport = () => {
     exportGlobally({
-      'SearchAlerts': SearchAlerts,
-      'SearchAlertsMessage': SearchAlertsMessage
+      SearchAlerts: SearchAlerts,
+      SearchAlertsMessage: SearchAlertsMessage
     });
-  }
+  };
 
   /**
    * The options for the search alerts
    * @componentOptions
    */
   static options: ISearchAlertsOptions = {
-
     /**
      * Specifies whether to add the **Manage Alerts** item in the {@link Settings} menu to allow the end user to manage
      * search alerts.
@@ -103,7 +113,7 @@ export class SearchAlerts extends Component {
      *
      * Default value is `2000`. Minimum value is `0`.
      */
-    messageCloseDelay: ComponentOptions.buildNumberOption({ defaultValue: 2000, min: 0, depend: 'enableMessage' }),
+    messageCloseDelay: ComponentOptions.buildNumberOption({ defaultValue: 2000, min: 0, depend: 'enableMessage' })
   };
 
   private modal: ModalBox;
@@ -120,8 +130,12 @@ export class SearchAlerts extends Component {
    * @param bindings The bindings that the component requires to function normally. If not set, these will be
    * automatically resolved (with a slower execution time).
    */
-  constructor(public element: HTMLElement, public options: ISearchAlertsOptions, bindings?: IComponentBindings, private ModalBox = ModalBoxModule) {
-
+  constructor(
+    public element: HTMLElement,
+    public options: ISearchAlertsOptions,
+    bindings?: IComponentBindings,
+    private ModalBox = ModalBoxModule
+  ) {
     super(element, SearchAlerts.ID, bindings);
 
     this.options = ComponentOptions.initComponentOptions(element, SearchAlerts, options);
@@ -152,7 +166,9 @@ export class SearchAlerts extends Component {
     this.bind.onRootElement(QueryEvents.querySuccess, () => {
       if (!once) {
         once = true;
-        this.queryController.getEndpoint().listSubscriptions()
+        this.queryController
+          .getEndpoint()
+          .listSubscriptions()
           .then(() => {
             this.bind.onRootElement(SettingsEvents.settingsPopulateMenu, (args: ISettingsPopulateMenuArgs) => {
               if (this.options.enableFollowQuery) {
@@ -161,7 +177,7 @@ export class SearchAlerts extends Component {
                   className: 'coveo-follow-query',
                   tooltip: l('FollowQueryDescription'),
                   onOpen: () => this.followQuery(),
-                  onClose: () => { },
+                  onClose: () => {},
                   svgIcon: SVGIcons.icons.dropdownFollowQuery,
                   svgIconClassName: 'coveo-follow-query-svg'
                 });
@@ -189,11 +205,17 @@ export class SearchAlerts extends Component {
     const queryBuilder = this.queryController.createQueryBuilder({});
     const request = this.buildFollowQueryRequest(queryBuilder.build(), this.options);
 
-    this.usageAnalytics.logCustomEvent<IAnalyticsSearchAlertsMeta>(analyticsActionCauseList.searchAlertsFollowQuery, {
-      subscription: request.name
-    }, this.element);
+    this.usageAnalytics.logCustomEvent<IAnalyticsSearchAlertsMeta>(
+      analyticsActionCauseList.searchAlertsFollowQuery,
+      {
+        subscription: request.name
+      },
+      this.element
+    );
 
-    this.queryController.getEndpoint().follow(request)
+    this.queryController
+      .getEndpoint()
+      .follow(request)
       .then((subscription: ISubscription) => {
         if (subscription) {
           const eventArgs: ISearchAlertsEventArgs = {
@@ -217,9 +239,13 @@ export class SearchAlerts extends Component {
   public openPanel(): Promise<ISubscription> {
     const title = $$('div');
 
-    const titleInfo = $$('div', {
-      className: 'coveo-subscriptions-panel-title'
-    }, l('SearchAlerts_Panel'));
+    const titleInfo = $$(
+      'div',
+      {
+        className: 'coveo-subscriptions-panel-title'
+      },
+      l('SearchAlerts_Panel')
+    );
 
     title.append(titleInfo.el);
 
@@ -235,60 +261,97 @@ export class SearchAlerts extends Component {
     const rowHead = $$('tr');
     tableHead.append(rowHead.el);
 
-    const headerType = $$('th', {
-      className: 'coveo-subscriptions-panel-content-type',
-    }, l('SearchAlerts_Type'));
+    const headerType = $$(
+      'th',
+      {
+        className: 'coveo-subscriptions-panel-content-type'
+      },
+      l('SearchAlerts_Type')
+    );
     const headerContent = $$('th', null, l('SearchAlerts_Content'));
     const headerFrequency = $$('th', null, l('SearchAlerts_Frequency'));
-    const headerActions = $$('th', {
-      className: 'coveo-subscriptions-panel-content-actions'
-    }, l('SearchAlerts_Actions'));
+    const headerActions = $$(
+      'th',
+      {
+        className: 'coveo-subscriptions-panel-content-actions'
+      },
+      l('SearchAlerts_Actions')
+    );
 
     rowHead.append(headerType.el);
     rowHead.append(headerContent.el);
     rowHead.append(headerFrequency.el);
     rowHead.append(headerActions.el);
 
-    const tableBodySpacer = $$('tbody', {
-      className: 'coveo-subscriptions-panel-spacer'
-    }, $$('tr', null, $$('td', {
-      colsspan: 3
-    })));
+    const tableBodySpacer = $$(
+      'tbody',
+      {
+        className: 'coveo-subscriptions-panel-spacer'
+      },
+      $$(
+        'tr',
+        null,
+        $$('td', {
+          colsspan: 3
+        })
+      )
+    );
 
     table.append(tableBodySpacer.el);
 
-    const tableBodySubscriptions = $$('tbody', {
-      className: 'coveo-subscriptions-panel-subscriptions'
-    }, $$('tr', {
-      className: 'coveo-subscriptions-panel-no-subscriptions'
-    }, $$('td', {
-      colspan: 3
-    }, l('SearchAlerts_PanelNoSearchAlerts'))));
+    const tableBodySubscriptions = $$(
+      'tbody',
+      {
+        className: 'coveo-subscriptions-panel-subscriptions'
+      },
+      $$(
+        'tr',
+        {
+          className: 'coveo-subscriptions-panel-no-subscriptions'
+        },
+        $$(
+          'td',
+          {
+            colspan: 3
+          },
+          l('SearchAlerts_PanelNoSearchAlerts')
+        )
+      )
+    );
 
     table.append(tableBodySubscriptions.el);
     let sizeModForModalBox = 'big';
 
-    return this.queryController.getEndpoint().listSubscriptions().then((subscriptions: ISubscription[]) => {
-      _.each(subscriptions, (subscription) => {
-        this.addSearchAlert(subscription, container);
+    return this.queryController
+      .getEndpoint()
+      .listSubscriptions()
+      .then((subscriptions: ISubscription[]) => {
+        _.each(subscriptions, subscription => {
+          this.addSearchAlert(subscription, container);
+        });
+      })
+      .catch(() => {
+        sizeModForModalBox = 'small';
+        container.empty();
+        container.append(this.getFailureMessage().el);
+      })
+      .finally(() => {
+        this.modal = this.ModalBox.open(container.el, {
+          title: title.el.outerHTML,
+          className: 'coveo-subscriptions-panel',
+          sizeMod: sizeModForModalBox
+        });
       });
-    }).catch(() => {
-      sizeModForModalBox = 'small';
-      container.empty();
-      container.append(this.getFailureMessage().el);
-    }).finally(() => {
-      this.modal = this.ModalBox.open(container.el, {
-        title: title.el.outerHTML,
-        className: 'coveo-subscriptions-panel',
-        sizeMod: sizeModForModalBox
-      });
-    });
   }
 
   private getFailureMessage(): Dom {
-    return $$('div', {
-      className: 'coveo-subscriptions-panel-fail'
-    }, l('SearchAlerts_Fail'));
+    return $$(
+      'div',
+      {
+        className: 'coveo-subscriptions-panel-fail'
+      },
+      l('SearchAlerts_Fail')
+    );
   }
 
   private handleSearchAlertsFail() {
@@ -344,18 +407,30 @@ export class SearchAlerts extends Component {
     const valueToLabel = (valueMappedToLabel: string) => _.findWhere(frequencies, { value: valueMappedToLabel }).label;
 
     const buildDropdown = () => {
-      return new Dropdown((dropdownInstance: Dropdown) => {
-        this.usageAnalytics.logCustomEvent<IAnalyticsSearchAlertsUpdateMeta>(analyticsActionCauseList.searchAlertsUpdateSubscription, {
-          subscription: context,
-          frequency: dropdownInstance.getValue()
-        }, this.element);
-        this.updateAndSyncSearchAlert(subscription);
-      }, pluckFrequenciesValues, valueToLabel).build();
+      return new Dropdown(
+        (dropdownInstance: Dropdown) => {
+          this.usageAnalytics.logCustomEvent<IAnalyticsSearchAlertsUpdateMeta>(
+            analyticsActionCauseList.searchAlertsUpdateSubscription,
+            {
+              subscription: context,
+              frequency: dropdownInstance.getValue()
+            },
+            this.element
+          );
+          this.updateAndSyncSearchAlert(subscription);
+        },
+        pluckFrequenciesValues,
+        valueToLabel
+      ).build();
     };
 
-    const contentTypeElement = $$('td', {
-      className: 'coveo-subscriptions-panel-content-type'
-    }, l('SearchAlerts_Type_' + subscription.type));
+    const contentTypeElement = $$(
+      'td',
+      {
+        className: 'coveo-subscriptions-panel-content-type'
+      },
+      l('SearchAlerts_Type_' + subscription.type)
+    );
 
     const contextElement = $$('td', {
       className: 'coveo-subscriptions-panel-context',
@@ -363,17 +438,39 @@ export class SearchAlerts extends Component {
     });
     contextElement.setHtml(context);
 
-    const frequencyElement = $$('td', null, $$('div', {
-      className: 'coveo-subscriptions-panel-frequency'
-    }, buildDropdown()));
+    const frequencyElement = $$(
+      'td',
+      null,
+      $$(
+        'div',
+        {
+          className: 'coveo-subscriptions-panel-frequency'
+        },
+        buildDropdown()
+      )
+    );
 
-    const contentActionsElement = $$('td', {
-      className: 'coveo-subscriptions-panel-content-actions'
-    }, null, $$('div', {
-      className: 'coveo-subscriptions-panel-action coveo-subscriptions-panel-action-unfollow'
-    }, l('SearchAlerts_unFollowing')), $$('div', {
-      className: 'coveo-subscriptions-panel-action coveo-subscriptions-panel-action-follow'
-    }, l('SearchAlerts_follow')));
+    const contentActionsElement = $$(
+      'td',
+      {
+        className: 'coveo-subscriptions-panel-content-actions'
+      },
+      null,
+      $$(
+        'div',
+        {
+          className: 'coveo-subscriptions-panel-action coveo-subscriptions-panel-action-unfollow'
+        },
+        l('SearchAlerts_unFollowing')
+      ),
+      $$(
+        'div',
+        {
+          className: 'coveo-subscriptions-panel-action coveo-subscriptions-panel-action-follow'
+        },
+        l('SearchAlerts_follow')
+      )
+    );
 
     row.append(contentTypeElement.el);
     row.append(contextElement.el);
@@ -390,7 +487,8 @@ export class SearchAlerts extends Component {
     $$(row.find('.coveo-subscriptions-panel-action-unfollow')).on('click', () => {
       row.addClass('coveo-subscription-unfollowed');
 
-      this.queryController.getEndpoint()
+      this.queryController
+        .getEndpoint()
         .deleteSubscription(subscription)
         .then(() => {
           if (subscription.type == SUBSCRIPTION_TYPE.followDocument) {
@@ -411,9 +509,10 @@ export class SearchAlerts extends Component {
     $$(row.find('.coveo-subscriptions-panel-action-follow')).on('click', () => {
       row.removeClass('coveo-subscription-unfollowed');
 
-      this.queryController.getEndpoint()
+      this.queryController
+        .getEndpoint()
         .follow(subscription)
-        .then((updatedSearchAlert) => {
+        .then(updatedSearchAlert => {
           if (subscription.type == SUBSCRIPTION_TYPE.followDocument) {
             this.logAnalyticsEvent(analyticsActionCauseList.searchAlertsFollowDocument, subscription);
           } else if (subscription.type == SUBSCRIPTION_TYPE.followQuery) {
@@ -430,7 +529,8 @@ export class SearchAlerts extends Component {
   }
 
   private updateAndSyncSearchAlert(subscription: ISubscription) {
-    this.queryController.getEndpoint()
+    this.queryController
+      .getEndpoint()
       .updateSubscription(subscription)
       .then((updated: ISubscription) => _.extend(subscription, updated))
       .catch(() => {
@@ -476,14 +576,18 @@ export class SearchAlerts extends Component {
   }
 
   private logAnalyticsEvent(cause: IAnalyticsActionCause, subscription: ISubscription) {
-    this.usageAnalytics.logCustomEvent<IAnalyticsSearchAlertsMeta>(cause, {
-      subscription: subscription.name
-    }, this.element);
+    this.usageAnalytics.logCustomEvent<IAnalyticsSearchAlertsMeta>(
+      cause,
+      {
+        subscription: subscription.name
+      },
+      this.element
+    );
   }
 
   static create(element: HTMLElement, options?: ISearchAlertsOptions, root?: HTMLElement): SearchAlerts {
     Assert.exists(element);
-    return new SearchAlerts(element, options, root);
+    return new SearchAlerts(element, options, (<SearchInterface>get(root, SearchInterface)).getBindings());
   }
 }
 

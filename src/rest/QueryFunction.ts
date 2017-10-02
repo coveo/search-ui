@@ -6,7 +6,7 @@ export interface IQueryFunction {
   /**
    * Function to execute, as a string
    */
-  'function': string;
+  function: string;
   /**
    * The field name on which to store the query function result when the query returns
    */

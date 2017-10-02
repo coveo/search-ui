@@ -35,9 +35,9 @@ export function QuerySuggestAddonTest() {
 
       omnibox.getBindings = () => {
         return {
-          'componentOptionsModel': cmpOptionsModel,
-          'searchInterface': searchInterface,
-          'queryController': queryController
+          componentOptionsModel: cmpOptionsModel,
+          searchInterface: searchInterface,
+          queryController: queryController
         };
       };
       omnibox.options = {};
@@ -49,12 +49,14 @@ export function QuerySuggestAddonTest() {
     });
 
     describe('should call the query suggest service', () => {
-      it('with the language', () => {
+      it('with the locale', () => {
         let querySuggest = new QuerySuggestAddon(omnibox);
         querySuggest.getSuggestion();
-        expect(endpoint.getQuerySuggest).toHaveBeenCalledWith(jasmine.objectContaining({
-          language: jasmine.any(String)
-        }));
+        expect(endpoint.getQuerySuggest).toHaveBeenCalledWith(
+          jasmine.objectContaining({
+            locale: jasmine.any(String)
+          })
+        );
       });
 
       it('with the search hub', () => {
@@ -62,9 +64,11 @@ export function QuerySuggestAddonTest() {
 
         let querySuggest = new QuerySuggestAddon(omnibox);
         querySuggest.getSuggestion();
-        expect(endpoint.getQuerySuggest).toHaveBeenCalledWith(jasmine.objectContaining({
-          searchHub: 'a search hub'
-        }));
+        expect(endpoint.getQuerySuggest).toHaveBeenCalledWith(
+          jasmine.objectContaining({
+            searchHub: 'a search hub'
+          })
+        );
       });
 
       it('with the pipeline', () => {
@@ -72,9 +76,11 @@ export function QuerySuggestAddonTest() {
 
         let querySuggest = new QuerySuggestAddon(omnibox);
         querySuggest.getSuggestion();
-        expect(endpoint.getQuerySuggest).toHaveBeenCalledWith(jasmine.objectContaining({
-          pipeline: 'a pipeline'
-        }));
+        expect(endpoint.getQuerySuggest).toHaveBeenCalledWith(
+          jasmine.objectContaining({
+            pipeline: 'a pipeline'
+          })
+        );
       });
 
       it('with the context', () => {
@@ -86,26 +92,26 @@ export function QuerySuggestAddonTest() {
 
         let querySuggest = new QuerySuggestAddon(omnibox);
         querySuggest.getSuggestion();
-        expect(endpoint.getQuerySuggest).toHaveBeenCalledWith(jasmine.objectContaining({
-          context: 'a context'
-        }));
+        expect(endpoint.getQuerySuggest).toHaveBeenCalledWith(
+          jasmine.objectContaining({
+            context: 'a context'
+          })
+        );
       });
 
       // PhantomJS faulty Promise implementation causes issues here
       if (!Simulate.isPhantomJs()) {
         describe('with a cache', () => {
-          it('should cache the result', (done) => {
+          it('should cache the result', done => {
             let querySuggest = new QuerySuggestAddon(omnibox);
-            let firstPromise = new Promise((resolve, reject) => {
-            });
+            let firstPromise = new Promise((resolve, reject) => {});
 
             (<any>endpoint).getQuerySuggest.and.returnValue(firstPromise);
             let firstPromiseReturned = querySuggest.getSuggestion();
             expect(firstPromiseReturned).toEqual(firstPromise);
 
             setTimeout(() => {
-              let secondPromise = new Promise((resolve, reject) => {
-              });
+              let secondPromise = new Promise((resolve, reject) => {});
               (<any>endpoint).getQuerySuggest.and.returnValue(secondPromise);
               let secondPromiseReturned = querySuggest.getSuggestion();
               expect(secondPromiseReturned).toBe(firstPromiseReturned);
@@ -113,7 +119,7 @@ export function QuerySuggestAddonTest() {
             }, 10);
           });
 
-          it('should not cache the result if the query fails', (done) => {
+          it('should not cache the result if the query fails', done => {
             let querySuggest = new QuerySuggestAddon(omnibox);
             let firstPromise = new Promise((resolve, reject) => {
               reject(false);
@@ -124,8 +130,7 @@ export function QuerySuggestAddonTest() {
             expect(firstPromiseReturned).toEqual(firstPromise);
 
             setTimeout(() => {
-              let secondPromise = new Promise((resolve, reject) => {
-              });
+              let secondPromise = new Promise((resolve, reject) => {});
               (<any>endpoint).getQuerySuggest.and.returnValue(secondPromise);
               let secondPromiseReturned = querySuggest.getSuggestion();
               expect(secondPromiseReturned).not.toBe(firstPromiseReturned);
@@ -139,47 +144,51 @@ export function QuerySuggestAddonTest() {
         beforeEach(() => {
           let results = new Promise((resolve, reject) => {
             resolve({
-              'completions': [{
-                'expression': 'properly',
-                'score': 1012.5762345619406,
-                'highlighted': '{pr}[operly]'
-              }, {
-                'expression': 'properly \'didn\'t',
-                'score': 12.576234561940641,
-                'highlighted': '{pr}[operly] [\'didn\'t]'
-              }, {
-                'expression': 'pointers',
-                'score': 10.783334340677321,
-                'highlighted': '(pointers)'
-              }, {
-                'expression': 'pages',
-                'score': 10.485485771662475,
-                'highlighted': '(pages)'
-              }]
+              completions: [
+                {
+                  expression: 'properly',
+                  score: 1012.5762345619406,
+                  highlighted: '{pr}[operly]'
+                },
+                {
+                  expression: "properly 'didn't",
+                  score: 12.576234561940641,
+                  highlighted: "{pr}[operly] ['didn't]"
+                },
+                {
+                  expression: 'pointers',
+                  score: 10.783334340677321,
+                  highlighted: '(pointers)'
+                },
+                {
+                  expression: 'pages',
+                  score: 10.485485771662475,
+                  highlighted: '(pages)'
+                }
+              ]
             });
           });
           (<any>endpoint).getQuerySuggest.and.returnValue(results);
         });
 
-        it('should contain the text', (done) => {
+        it('should contain the text', done => {
           let querySuggest = new QuerySuggestAddon(omnibox);
           let results = querySuggest.getSuggestion();
-          results.then((completions) => {
+          results.then(completions => {
             expect(completions[0].text).toBe('properly');
             done();
           });
         });
 
-        it('should contain an html version of the completion', (done) => {
+        it('should contain an html version of the completion', done => {
           let querySuggest = new QuerySuggestAddon(omnibox);
           let results = querySuggest.getSuggestion();
-          results.then((completions) => {
+          results.then(completions => {
             expect(completions[0].html).toBeDefined();
             done();
           });
         });
       });
     });
-
   });
 }

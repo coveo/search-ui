@@ -7,8 +7,6 @@ import { Simulate } from '../Simulate';
 import { BreadcrumbEvents, IBreadcrumbItem } from '../../src/events/BreadcrumbEvents';
 
 export function ResultsFiltersPreferencesTest() {
-
-
   describe('ResultsFiltersPreferences', () => {
     let test: Mock.IBasicComponentSetup<ResultsFiltersPreferences>;
     let preferencesPanelElement: HTMLElement;
@@ -17,9 +15,12 @@ export function ResultsFiltersPreferencesTest() {
     beforeEach(() => {
       preferencesPanelElement = $$('div', { className: 'CoveoPreferencesPanel' }).el;
       testPreferencesPanel = Mock.basicComponentSetup<PreferencesPanel>(PreferencesPanel);
-      test = Mock.advancedComponentSetup<ResultsFiltersPreferences>(ResultsFiltersPreferences, new Mock.AdvancedComponentSetupOptions(undefined, undefined, (env) => {
-        return env.withElement(testPreferencesPanel.cmp.element);
-      }));
+      test = Mock.advancedComponentSetup<ResultsFiltersPreferences>(
+        ResultsFiltersPreferences,
+        new Mock.AdvancedComponentSetupOptions(undefined, undefined, env => {
+          return env.withElement(testPreferencesPanel.cmp.element);
+        })
+      );
     });
 
     afterEach(() => {
@@ -39,11 +40,18 @@ export function ResultsFiltersPreferencesTest() {
 
     describe('with a predetermined filter', () => {
       beforeEach(() => {
-        test = Mock.advancedComponentSetup<ResultsFiltersPreferences>(ResultsFiltersPreferences, new Mock.AdvancedComponentSetupOptions(undefined, {
-          filters: { 'Test filter': { 'expression': 'test expression' } }
-        }, (env) => {
-          return env.withElement(testPreferencesPanel.cmp.element);
-        }));
+        test = Mock.advancedComponentSetup<ResultsFiltersPreferences>(
+          ResultsFiltersPreferences,
+          new Mock.AdvancedComponentSetupOptions(
+            undefined,
+            {
+              filters: { 'Test filter': { expression: 'test expression' } }
+            },
+            env => {
+              return env.withElement(testPreferencesPanel.cmp.element);
+            }
+          )
+        );
       });
 
       it('should allow to create the filter', () => {
