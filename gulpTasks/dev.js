@@ -22,9 +22,6 @@ const server = new WebpackDevServer(compiler, {
   contentBase: 'bin/',
   publicPath: 'http://localhost:8080/js/',
   disableHostCheck: true,
-  /*headers: {
-    'Content-Security-Policy': "script-src 'self' code.jquery.com static.cloud.coveo.com 'unsafe-inline'"
-  },*/
   stats: {
     colors: true,
     publicPath: true
