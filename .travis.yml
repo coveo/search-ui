@@ -26,3 +26,5 @@ deploy:
   - provider: heroku
     api_key: RP/mo4THF42/kvVni43q/FRiZ5dcMHQdhGpYBGv5QCm3tQNdOV5p7t54go1ho/vocKqjCa7xSPG/VbUUFErXdfNylx4sbOr/7hzJzdisaRi1p9ZqMgXON7YI/TDCe5DBMkVliE/ZW0NXXRfIgo+e3bJz8iYYBIdKZbxmPRkfkNHenyfU05H3i83hJHNzWIsVMbQGCUo/scQZorTdoZbYcdQl6q0f3T32VpLSVsn9BQoAlYz5xzkOpbO4SJJvQhAM4M+ecbYK355yBO0/DCx9QAbuGX8GlEIJuY+HBXwm78MDH59vfYZVuIKSM+8GS+sGSkCW6gMErIb+8nBNZsUO9N03N86flx18y4X/DUWj/hhM+jUhARfZzzq/kzUg4JK2QTvb34WU9UUCWAftKrJCgIPdX6ogzjGK7CDHGYz9VwmUT5CsM/C14ptEoFZ2RWGdZK8kVrvKtLQ8XsV0N1oW3pyhJbq/hM9QhY77t+5rXCxVxkCovIOAHMzBI8VafffoTpMsOAs5FwEbQuAQU6awcK+8p2R/DYuwk5pJBXkhLeTBPQERf4RufezGeW8Up0dgiNZFJli4vmyP7Gci6pTewyFdga17b8dn1HfzWLSsIVSV6J0smtlqXkRMqzRa8grtCrH4efIGJirBkx8HdguKWB2wpFxJ8FXKirLP6h6ocTg=
     app: search-ui-qa-tests
+    on:
+      all_branches: true
