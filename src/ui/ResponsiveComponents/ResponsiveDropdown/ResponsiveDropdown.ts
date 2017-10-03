@@ -81,6 +81,7 @@ export class ResponsiveDropdown {
       this.coveoRoot.el.appendChild(this.popupBackground.el);
       window.getComputedStyle(this.popupBackground.el).opacity;
       this.popupBackground.el.style.opacity = ResponsiveDropdown.TRANSPARENT_BACKGROUND_OPACITY;
+      this.popupBackground.addClass('coveo-dropdown-background-active');
     }
   }
 
@@ -89,6 +90,7 @@ export class ResponsiveDropdown {
       // forces the browser to reflow the element, so that the transition is applied.
       window.getComputedStyle(this.popupBackground.el).opacity;
       this.popupBackground.el.style.opacity = '0';
+      this.popupBackground.removeClass('coveo-dropdown-background-active');
     }
   }
 
