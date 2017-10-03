@@ -16,17 +16,16 @@ let webpackConfigTest = require('../webpack.test.config.js');
 webpackConfigTest.entry['tests'].unshift('webpack-dev-server/client?http://localhost:8081/');
 const compilerTest = webpack(webpackConfigTest);
 
-let debouncedLinkToExternal = _.debounce(()=> {
+let debouncedLinkToExternal = _.debounce(() => {
   console.log('... Compiler done ... Linking external projects'.black.bgGreen);
-  buildUtilities.exec('node', ['./environments/link.externally.js'], undefined, function () {
-  })
+  buildUtilities.exec('node', ['./environments/link.externally.js'], undefined, function() {});
 }, 1000);
 
-compiler.plugin('done', ()=> {
+compiler.plugin('done', () => {
   debouncedLinkToExternal();
 });
 
-gulp.task('dev', ['setup', 'deleteCssFile'], (done)=> {
+gulp.task('dev', ['setup', 'deleteCssFile'], done => {
   let server = new WebpackDevServer(compiler, {
     compress: true,
     contentBase: 'bin/',
@@ -40,26 +39,24 @@ gulp.task('dev', ['setup', 'deleteCssFile'], (done)=> {
       publicPath: true
     }
   });
-  server.listen(8080, 'localhost', ()=> {
-  });
+  server.listen(8080, 'localhost', () => {});
   done();
 });
 
-gulp.task('deleteCssFile', (done) => {
+gulp.task('deleteCssFile', done => {
   // Rely on dynamically loaded style.
   // fs.unlink('./bin/css/CoveoFullSearchNewDesign.css', () => {
-      done();
+  done();
   // });
-})
+});
 
-gulp.task('devTest', ['setupTests'], function (done) {
+gulp.task('devTest', ['setupTests'], function(done) {
   var serverTests = new WebpackDevServer(compilerTest, {
     contentBase: 'bin/',
     publicPath: '/tests/',
     compress: true
   });
-  serverTests.listen(8081, 'localhost', ()=> {
-  });
+  serverTests.listen(8081, 'localhost', () => {});
   done();
 });
 /*
