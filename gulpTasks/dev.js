@@ -17,16 +17,7 @@ const webpackConfigTest = require('../webpack.test.config.js');
 webpackConfigTest.entry['tests'].unshift('webpack-dev-server/client?http://localhost:8081/');
 const compilerTest = webpack(webpackConfigTest);
 
-const server = new WebpackDevServer(compiler, {
-  compress: true,
-  contentBase: 'bin/',
-  publicPath: 'http://localhost:8080/js/',
-  disableHostCheck: true,
-  stats: {
-    colors: true,
-    publicPath: true
-  }
-});
+let server;
 
 const debouncedLinkToExternal = _.debounce(() => {
   console.log('... Compiler done ... Linking external projects'.black.bgGreen);
@@ -52,6 +43,16 @@ compiler.plugin('done', () => {
 });
 
 gulp.task('dev', ['setup', 'deleteCssFile'], done => {
+  server = new WebpackDevServer(compiler, {
+    compress: true,
+    contentBase: 'bin/',
+    publicPath: 'http://localhost:8080/js/',
+    disableHostCheck: true,
+    stats: {
+      colors: true,
+      publicPath: true
+    }
+  });
   server.listen(8080, 'localhost', () => {});
   done();
 });
