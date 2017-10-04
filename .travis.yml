@@ -21,7 +21,6 @@ script:
 env:
   global:
   - COMMIT_AUTHOR_EMAIL: sandbox_JSUI@coveo.com
-before_deploy: "echo '' > .gitignore"
 deploy:
   - provider: heroku
     api_key: 
