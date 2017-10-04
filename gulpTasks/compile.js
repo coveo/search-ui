@@ -25,7 +25,7 @@ gulp.task('compile', done => {
 gulp.task(
   'executeWebpack',
   ['addEolDependencies', 'deprecatedDependencies', 'prepareSass'],
-  shell.task(['node node_modules/webpack/bin/webpack.js --display-optimization-bailout'])
+  shell.task(['node node_modules/webpack/bin/webpack.js'])
 );
 
 gulp.task('compileTSOnly', shell.task(['node node_modules/webpack/bin/webpack.js --config ./webpack.tsonly.config.js']));
