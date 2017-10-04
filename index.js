@@ -36,7 +36,7 @@ app.get('/qa/:pagename', function(request, response) {
 });
 
 app.post('/qa/:pagename', function(request, response) {
-  if (request.body) {
+  if (request.body && request.headers.authentication == `Bearer ${process.env.UPLOAD_KEY}`) {
     client.query(`SELECT 1 FROM pages WHERE name LIKE $1;`, [request.params.pagename], (err, res) => {
       if (res.rowCount == 1) {
         client.query(`UPDATE pages SET content=$1 WHERE name LIKE $2;`, [request.body, request.params.pagename], (err, res) => {
@@ -48,6 +48,8 @@ app.post('/qa/:pagename', function(request, response) {
         });
       }
     });
+  } else {
+    response.sendStatus(403);
   }
 });
 
