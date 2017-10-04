@@ -14,7 +14,7 @@
     "doc": "gulp doc",
     "docsitemap": "gulp docsitemap",
     "injectTag": "gulp injectTag",
-    "heroku-postbuild": "rm -r node_modules && npm install && npm run build",
+    "heroku-postbuild": "npm run build",
     "start": "node index.js",
     "zipForGitReleases": "gulp zip",
     "uploadCoverage": "gulp uploadCoverage"
