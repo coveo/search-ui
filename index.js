@@ -24,13 +24,11 @@ app.use('/', express.static(__dirname + '/bin'));
 app.get('/qa/:pagename', function(request, response) {
   client.query(`SELECT content FROM pages WHERE name LIKE $1 LIMIT 1;`, [request.params.pagename], (err, res) => {
     if (err) {
-      response.send(err.message);
+      response.status(500).send(err.message);
+    } else if (res.rowCount == 1) {
+      return response.send(res.rows[0].content);
     } else {
-      if (res.rowCount == 1) {
-        return response.send(res.rows[0].content);
-      } else {
-        return response.sendStatus(404);
-      }
+      return response.sendStatus(404);
     }
   });
 });
@@ -38,7 +36,9 @@ app.get('/qa/:pagename', function(request, response) {
 app.post('/qa/:pagename', function(request, response) {
   if (request.body && request.headers.authentication == `Bearer ${process.env.UPLOAD_KEY}`) {
     client.query(`SELECT 1 FROM pages WHERE name LIKE $1;`, [request.params.pagename], (err, res) => {
-      if (res.rowCount == 1) {
+      if (err) {
+        response.status(500).send(err.message);
+      } else if (res.rowCount == 1) {
         client.query(`UPDATE pages SET content=$1 WHERE name LIKE $2;`, [request.body, request.params.pagename], (err, res) => {
           response.sendStatus(200);
         });
@@ -60,7 +60,7 @@ app.get('/', function(request, response) {
 
 app.get(/^(.+)$/, function(req, res) {
   console.log('accessing ' + __dirname + req.params[0]);
-  res.sendfile(__dirname + req.params[0]);
+  res.sendFile(__dirname + req.params[0]);
 });
 
 app.listen(app.get('port'), function() {
