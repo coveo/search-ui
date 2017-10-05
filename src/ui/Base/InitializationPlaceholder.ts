@@ -124,7 +124,7 @@ export class InitializationPlaceholder {
   };
 
   constructor(public root: HTMLElement, public options: InitializationPlaceholderOption = InitializationPlaceholder.DEFAULT_OPTIONS) {
-    this.options = _.extend(InitializationPlaceholder.DEFAULT_OPTIONS, this.options);
+    options = _.extend({}, InitializationPlaceholder.DEFAULT_OPTIONS, options);
 
     if (options.searchInterface) {
       $$(this.root).addClass(InitializationPlaceholder.INITIALIZATION_CLASS);
