@@ -166,6 +166,7 @@ export class FieldValue extends Component {
         predefinedFormat: ComponentOptions.buildStringOption(showOnlyWithHelper(['date', 'dateTime', 'emailDateTime', 'time'])),
 
         companyDomain: ComponentOptions.buildStringOption(showOnlyWithHelper(['email'])),
+        me: ComponentOptions.buildStringOption(showOnlyWithHelper(['email'])),
         lengthLimit: ComponentOptions.buildNumberOption(showOnlyWithHelper(['email'], { min: 1 })),
         truncateName: ComponentOptions.buildBooleanOption(showOnlyWithHelper(['email'])),
 
@@ -173,9 +174,11 @@ export class FieldValue extends Component {
         height: ComponentOptions.buildStringOption(showOnlyWithHelper(['image'])),
         width: ComponentOptions.buildStringOption(showOnlyWithHelper(['image'])),
 
-        presision: ComponentOptions.buildNumberOption(showOnlyWithHelper(['size'], { min: 0, defaultValue: 2 })),
+        precision: ComponentOptions.buildNumberOption(showOnlyWithHelper(['size'], { min: 0, defaultValue: 2 })),
         base: ComponentOptions.buildNumberOption(showOnlyWithHelper(['size'], { min: 0, defaultValue: 0 })),
-        isMilliseconds: ComponentOptions.buildBooleanOption(showOnlyWithHelper(['timeSpan']))
+        isMilliseconds: ComponentOptions.buildBooleanOption(showOnlyWithHelper(['timeSpan'])),
+
+        length: ComponentOptions.buildNumberOption(showOnlyWithHelper(['shorten', 'shortenPath', 'shortenUri'], { defaultValue: 200 }))
       }
     }),
 
@@ -213,20 +216,7 @@ export class FieldValue extends Component {
     this.options = ComponentOptions.initOptions(element, FieldValue.simpleOptions, options);
 
     if (this.options.helper != null) {
-      this.options = ComponentOptions.initOptions(element, FieldValue.helperOptions, this.options);
-      let toFilter = _.keys(FieldValue.options.helperOptions['subOptions']);
-      let toKeep = _.filter(toFilter, optionKey => {
-        let optionDefinition = FieldValue.options.helperOptions['subOptions'][optionKey];
-        if (optionDefinition) {
-          let helpers = optionDefinition.helpers;
-          return helpers != null && _.contains(helpers, this.options.helper);
-        }
-        return false;
-      });
-
-      this.options.helperOptions = _.omit(this.options.helperOptions, (value, key) => {
-        return !_.contains(toKeep, key);
-      });
+      this.normalizeHelperAndOptions();
     }
 
     this.result = this.result || this.resolveResult();
@@ -279,20 +269,30 @@ export class FieldValue extends Component {
    * @returns {HTMLElement} The element containing the rendered value.
    */
   public renderOneValue(value: string): HTMLElement {
-    let element = $$('span').el;
+    const element = $$('span').el;
     let toRender = value;
     if (this.options.helper) {
-      toRender = TemplateHelpers.getHelper(this.options.helper).call(this, value, this.getHelperOptions());
+      // Try to resolve and execute version 2 of each helper function if available
+      const helper = TemplateHelpers.getHelper(`${this.options.helper}v2`) || TemplateHelpers.getHelper(`${this.options.helper}`);
 
-      let fullDateStr = this.getFullDate(value, this.options.helper);
+      if (Utils.exists(helper)) {
+        toRender = helper.call(this, value, this.getHelperOptions());
+      } else {
+        this.logger.warn(
+          `Helper ${this.options.helper} is not found in available helpers. The list of supported helpers is :`,
+          this.supportedHelpers
+        );
+      }
+
+      const fullDateStr = this.getFullDate(value, this.options.helper);
       if (fullDateStr) {
         element.setAttribute('title', fullDateStr);
       }
+      if (this.options.helper == 'date' || this.options.helper == 'dateTime' || this.options.helper == 'emailDateTime') {
+        toRender = StringUtils.capitalizeFirstLetter(toRender);
+      }
     }
 
-    if (this.options.helper == 'date' || this.options.helper == 'dateTime' || this.options.helper == 'emailDateTime') {
-      toRender = StringUtils.capitalizeFirstLetter(toRender);
-    }
     if (this.options.htmlValue) {
       element.innerHTML = toRender;
     } else {
@@ -306,8 +306,24 @@ export class FieldValue extends Component {
     return this.element;
   }
 
+  private normalizeHelperAndOptions() {
+    this.options = ComponentOptions.initOptions(this.element, FieldValue.helperOptions, this.options);
+    const toFilter = _.keys(FieldValue.options.helperOptions['subOptions']);
+    const toKeep = _.filter(toFilter, optionKey => {
+      const optionDefinition = FieldValue.options.helperOptions['subOptions'][optionKey];
+      if (optionDefinition) {
+        const helpers = optionDefinition.helpers;
+        return helpers != null && _.contains(helpers, this.options.helper);
+      }
+      return false;
+    });
+    this.options.helperOptions = _.omit(this.options.helperOptions, (value, key) => {
+      return !_.contains(toKeep, key);
+    });
+  }
+
   private getHelperOptions() {
-    let inlineOptions = ComponentOptions.loadStringOption(this.element, 'helperOptions', {});
+    const inlineOptions = ComponentOptions.loadStringOption(this.element, 'helperOptions', {});
     if (Utils.isNonEmptyString(inlineOptions)) {
       return _.extend({}, this.options.helperOptions, eval('(' + inlineOptions + ')'));
     }
@@ -315,7 +331,7 @@ export class FieldValue extends Component {
   }
 
   private getFullDate(date: string, helper: string) {
-    let fullDateOptions: IDateToStringOptions = {
+    const fullDateOptions: IDateToStringOptions = {
       useLongDateFormat: true,
       useTodayYesterdayAndTomorrow: false,
       useWeekdayIfThisWeek: false,
@@ -342,12 +358,12 @@ export class FieldValue extends Component {
   }
 
   private renderTextCaption(): HTMLElement {
-    let element = $$('span', { className: 'coveo-field-caption' }, _.escape(this.options.textCaption));
+    const element = $$('span', { className: 'coveo-field-caption' }, _.escape(this.options.textCaption));
     return element.el;
   }
 
   protected prependTextCaptionToDom(): void {
-    let elem = this.getValueContainer();
+    const elem = this.getValueContainer();
     $$(elem).prepend(this.renderTextCaption());
     // Add a class to the container so the value and the caption wrap together.
     $$(elem).addClass('coveo-with-label');
@@ -358,15 +374,15 @@ export class FieldValue extends Component {
       return;
     }
 
-    let facetAttributeName = QueryStateModel.getFacetId(this.options.facet);
-    let facets: Component[] = _.filter(this.componentStateModel.get(facetAttributeName), (facet: Component) => {
+    const facetAttributeName = QueryStateModel.getFacetId(this.options.facet);
+    const facets: Component[] = _.filter(this.componentStateModel.get(facetAttributeName), (facet: Component) => {
       return !facet.disabled && Coveo['FacetRange'] && !(facet instanceof Coveo['FacetRange']);
     });
-    let atLeastOneFacetIsEnabled = facets.length > 0;
+    const atLeastOneFacetIsEnabled = facets.length > 0;
 
     if (atLeastOneFacetIsEnabled) {
-      let selected = _.find(facets, (facet: Facet) => {
-        let facetValue = facet.values.get(value);
+      const selected = _.find(facets, (facet: Facet) => {
+        const facetValue = facet.values.get(value);
         return facetValue && facetValue.selected;
       });
       $$(element).on('click', () => {
