@@ -33,6 +33,7 @@ import { SentryLogger } from '../../misc/SentryLogger';
 import { IComponentBindings } from '../Base/ComponentBindings';
 import { analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
 import { ResponsiveComponents } from '../ResponsiveComponents/ResponsiveComponents';
+import { InitializationPlaceholder } from '../Base/InitializationPlaceholder';
 import * as _ from 'underscore';
 
 import 'styling/Globals';
@@ -436,6 +437,12 @@ export class SearchInterface extends RootComponent implements IComponentBindings
     this.options = ComponentOptions.initComponentOptions(element, SearchInterface, options);
     Assert.exists(element);
     Assert.exists(this.options);
+
+    new InitializationPlaceholder(element, {
+      facet: true,
+      resultList: true,
+      waitForFirstQuery: !this.options.autoTriggerQuery
+    });
 
     this.root = element;
     this.queryStateModel = new QueryStateModel(element);

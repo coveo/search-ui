@@ -8,6 +8,7 @@ import { ResultListEvents } from '../../events/ResultListEvents';
 import { HashUtils } from '../../utils/HashUtils';
 
 export interface InitializationPlaceholderOption {
+  waitForFirstQuery?: boolean;
   searchInterface?: boolean;
   facet?: boolean;
   searchbox?: boolean;
@@ -114,34 +115,66 @@ export class InitializationPlaceholder {
   public static NUMBER_OF_RESULTS = 10;
   public static NUMBER_OF_RESULTS_RECOMMENDATION = 5;
   public static INITIALIZATION_CLASS = 'coveo-during-initialization';
+  public static DEFAULT_OPTIONS: InitializationPlaceholderOption = {
+    waitForFirstQuery: false,
+    facet: true,
+    searchbox: true,
+    resultList: true,
+    searchInterface: true
+  };
 
-  constructor(
-    public root: HTMLElement,
-    public options: InitializationPlaceholderOption = {
-      facet: true,
-      searchbox: true,
-      resultList: true,
-      searchInterface: true
-    }
-  ) {
+  constructor(public root: HTMLElement, public options: InitializationPlaceholderOption = InitializationPlaceholder.DEFAULT_OPTIONS) {
+    this.options = _.extend(InitializationPlaceholder.DEFAULT_OPTIONS, this.options);
+
     if (options.searchInterface) {
       $$(this.root).addClass(InitializationPlaceholder.INITIALIZATION_CLASS);
     }
     if (options.facet) {
-      this.createPlaceholderForFacets();
+      if (options.waitForFirstQuery) {
+        this.hideFacetsUntilFirstQuery();
+      } else {
+        this.createPlaceholderForFacets();
+      }
     }
+
     if (options.searchbox) {
       this.createPlaceholderSearchbox();
     }
-    if (options.resultList) {
+
+    if (options.resultList && !options.waitForFirstQuery) {
       this.createPlaceholderForResultList();
     }
+
     if (options.searchbox) {
       $$(this.root).one(InitializationEvents.afterComponentsInitialization, () => {
         $$(this.root).removeClass(InitializationPlaceholder.INITIALIZATION_CLASS);
       });
     }
+
+    if (this.options.waitForFirstQuery) {
+      $$(this.root).one(QueryEvents.newQuery, (evt: Event) => {
+        if (options.facet) {
+          this.createPlaceholderForFacets();
+        }
+
+        if (options.resultList) {
+          this.createPlaceholderForResultList();
+        }
+      });
+    }
   }
+
+  private hideFacetsUntilFirstQuery() {
+    let facetElements = $$(this.root).findAll('.CoveoFacet');
+    facetElements = facetElements.concat($$(this.root).findAll('.CoveoFacetRange'));
+    facetElements = facetElements.concat($$(this.root).findAll('.CoveoFacetSlider'));
+    facetElements = facetElements.concat($$(this.root).findAll('.CoveoHierarchicalFacet'));
+
+    _.each(facetElements, (facetElement: HTMLElement) => {
+      $$(facetElement).addClass('coveo-facet-empty');
+    });
+  }
+
   private createPlaceholderForFacets() {
     // Render an arbitrary number of placeholder facet.
     // Facets should become usable on the first deferredQuerySuccess
@@ -153,7 +186,12 @@ export class InitializationPlaceholder {
 
     if (Utils.isNonEmptyArray(facetElements)) {
       const placeholders: Dom[] = [];
-      _.each(facetElements, (facetElement: HTMLElement) => $$(facetElement).addClass(InitializationPlaceholder.INITIALIZATION_CLASS));
+
+      _.each(facetElements, (facetElement: HTMLElement) => {
+        $$(facetElement).addClass(InitializationPlaceholder.INITIALIZATION_CLASS);
+        $$(facetElement).removeClass('coveo-facet-empty');
+      });
+
       _.each(_.first(facetElements, InitializationPlaceholder.NUMBER_OF_FACETS), (facetElement: HTMLElement) => {
         $$(facetElement).addClass('coveo-with-placeholder');
         const placeHolder = $$('div', { className: 'coveo-facet-placeholder' }, this.facetPlaceholder);
@@ -161,7 +199,7 @@ export class InitializationPlaceholder {
         placeholders.push(placeHolder);
       });
 
-      $$(this.root).one(InitializationEvents.afterComponentsInitialization, () => {
+      var registerRemovePlaceholder = () => {
         $$(this.root).one(QueryEvents.deferredQuerySuccess, () => {
           _.each(placeholders, (placeholder: Dom) => placeholder.remove());
           _.each(facetElements, (facetElement: HTMLElement) =>
@@ -169,7 +207,15 @@ export class InitializationPlaceholder {
           );
           _.each(facetElements, (facetElement: HTMLElement) => $$(facetElement).removeClass('coveo-with-placeholder'));
         });
-      });
+      };
+
+      if (this.options.waitForFirstQuery) {
+        registerRemovePlaceholder();
+      } else {
+        $$(this.root).one(InitializationEvents.afterComponentsInitialization, () => {
+          registerRemovePlaceholder();
+        });
+      }
     }
   }
 
