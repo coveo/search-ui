@@ -109,7 +109,7 @@ export class PrintableUri extends ResultLink {
 
   public buildHtmlToken(name: string, uri: string) {
     let modifiedName = name.charAt(0).toUpperCase() + name.slice(1);
-    const resultPart = _.extend({}, this.result, { clickUri: uri, title: name });
+    const resultPart = _.extend({}, this.result, { clickUri: uri, title: modifiedName });
     const link = new ResultLink(
       $$('a', { className: 'CoveoResultLink coveo-printable-uri-part' }).el,
       this.options,
