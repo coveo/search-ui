@@ -391,7 +391,7 @@ TemplateHelpers.registerFieldHelper('shortenPathv2', (content: string, options: 
 });
 
 const executeShortenUri = (content: string, options: IShortenOptions) => {
-  const strAndHoles = StringAndHoles.shortenUri(content, length);
+  const strAndHoles = StringAndHoles.shortenUri(content, options.length);
 
   if (Utils.exists(options.highlights)) {
     return HighlightUtils.highlightString(strAndHoles.value, options.highlights, strAndHoles.holes, options.cssClass || 'highlight');
@@ -464,7 +464,12 @@ TemplateHelpers.registerTemplateHelper(
 );
 
 TemplateHelpers.registerTemplateHelper('highlightStreamTextv2', (content: string, options: IHelperStreamHighlightOptions) => {
-  return executeHighlightStreamText(content, options);
+  const mergedOptions = {
+    termsToHighlight: resolveTermsToHighlight(),
+    phrasesToHighlight: resolvePhrasesToHighlight(),
+    ...options
+  };
+  return executeHighlightStreamText(content, mergedOptions);
 });
 
 const executeHighlightStreamHTML = (content: string, options: IHelperStreamHighlightOptions) => {

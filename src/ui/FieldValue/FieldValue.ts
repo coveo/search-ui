@@ -280,7 +280,7 @@ export class FieldValue extends Component {
       } else {
         this.logger.warn(
           `Helper ${this.options.helper} is not found in available helpers. The list of supported helpers is :`,
-          this.supportedHelpers
+          _.keys(TemplateHelpers.getHelpers())
         );
       }
 
