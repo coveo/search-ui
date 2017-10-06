@@ -309,7 +309,7 @@
       }
     },
     "spdocumentlibrarylist": {
-      "icon": "salesforce-standard-folder",
+      "icon": "folder",
       "captions": {
         "en": "Document Library",
         "fr": "Bibliothèque de documents",
