@@ -1,7 +1,7 @@
 {
   "objecttype": {
     "people": {
-      "icon": "salesforce-standard-user",
+      "icon": "user",
       "captions": {
         "en": "User",
         "fr": "Utilisateur",
@@ -393,7 +393,7 @@
       }
     },
     "email": {
-      "icon": "salesforce-standard-email",
+      "icon": "mail",
       "captions": {
         "en": "Email",
         "fr": "Email",
@@ -626,7 +626,7 @@
       "shouldDisplayLabel": true
     },
     "user": {
-      "icon": "salesforce-standard-user",
+      "icon": "user",
       "captions": {
         "en": "User",
         "fr": "Utilisateur",
@@ -654,7 +654,7 @@
       }
     },
     "attachment": {
-      "icon": "salesforce-doctype-attachment",
+      "icon": "attachment",
       "captions": {
         "en": "Attachment",
         "fr": "Pièce jointe",
@@ -1049,7 +1049,7 @@
       "shouldDisplayLabel": true
     },
     "socialprofile": {
-      "icon": "salesforce-standard-user",
+      "icon": "user",
       "captions": {
         "en": "Social Profile",
         "fr": "Profil social",

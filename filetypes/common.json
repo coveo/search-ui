@@ -113,7 +113,7 @@
       }
     },
     "folder": {
-      "icon": "salesforce-standard-folder",
+      "icon": "folder",
       "captions": {
         "en": "Folder",
         "fr": "Dossier",
@@ -570,7 +570,7 @@
       "shouldDisplayLabel": true
     },
     "video": {
-      "icon": "salesforce-doctype-video",
+      "icon": "video",
       "captions": {
         "en": "Video",
         "fr": "Vidéo",
