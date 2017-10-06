@@ -67,6 +67,9 @@ chatterTopicRegisterFields();
 import { DidYouMean } from './ui/DidYouMean/DidYouMean';
 DidYouMean.doExport();
 
+import { DistanceResources } from './ui/Distance/DistanceResources';
+DistanceResources.doExport();
+
 import { ErrorReport } from './ui/ErrorReport/ErrorReport';
 ErrorReport.doExport();
 

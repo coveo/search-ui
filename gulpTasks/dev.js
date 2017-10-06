@@ -37,6 +37,7 @@ const watchHtmlPagesOnce = _.once(() => {
   });
 });
 
+
 compiler.plugin('done', () => {
   debouncedLinkToExternal();
   watchHtmlPagesOnce();
