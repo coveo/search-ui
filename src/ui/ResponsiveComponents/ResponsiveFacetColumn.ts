@@ -1,9 +1,5 @@
 import { $$, Dom } from '../../utils/Dom';
-import {
-  IResponsiveComponent,
-  ResponsiveComponentsManager,
-  IResponsiveComponentOptions
-} from './ResponsiveComponentsManager';
+import { IResponsiveComponent, ResponsiveComponentsManager, IResponsiveComponentOptions } from './ResponsiveComponentsManager';
 import { ResponsiveComponentsUtils } from './ResponsiveComponentsUtils';
 import { Component } from '../Base/Component';
 import { Logger } from '../../misc/Logger';
@@ -52,7 +48,9 @@ export class ResponsiveFacetColumn implements IResponsiveComponent {
     this.registerQueryEvents();
     this.logger = new Logger(this);
     if (Utils.isNullOrUndefined(options.responsiveBreakpoint)) {
-      this.breakpoint = this.searchInterface ? this.searchInterface.responsiveComponents.getMediumScreenWidth() : new ResponsiveComponents().getMediumScreenWidth();
+      this.breakpoint = this.searchInterface
+        ? this.searchInterface.responsiveComponents.getMediumScreenWidth()
+        : new ResponsiveComponents().getMediumScreenWidth();
     } else {
       this.breakpoint = options.responsiveBreakpoint;
     }
@@ -94,7 +92,9 @@ export class ResponsiveFacetColumn implements IResponsiveComponent {
   private changeToSmallMode() {
     this.dropdown.close();
     this.disableFacetPreservePosition();
-    $$(this.coveoRoot.find(`.${ResponsiveComponentsManager.DROPDOWN_HEADER_WRAPPER_CSS_CLASS}`)).append(this.dropdown.dropdownHeader.element.el);
+    $$(this.coveoRoot.find(`.${ResponsiveComponentsManager.DROPDOWN_HEADER_WRAPPER_CSS_CLASS}`)).append(
+      this.dropdown.dropdownHeader.element.el
+    );
     ResponsiveComponentsUtils.activateSmallFacet(this.coveoRoot);
   }
 
@@ -118,7 +118,13 @@ export class ResponsiveFacetColumn implements IResponsiveComponent {
     filterBy.text(l('Filter by:'));
     filterByContainer.append(filterBy.el);
     dropdownContentElement.prepend(filterByContainer.el);
-    let dropdownContent = new ResponsiveDropdownContent('facet', dropdownContentElement, this.coveoRoot, ResponsiveFacetColumn.DROPDOWN_MIN_WIDTH, ResponsiveFacetColumn.DROPDOWN_WIDTH_RATIO);
+    let dropdownContent = new ResponsiveDropdownContent(
+      'facet',
+      dropdownContentElement,
+      this.coveoRoot,
+      ResponsiveFacetColumn.DROPDOWN_MIN_WIDTH,
+      ResponsiveFacetColumn.DROPDOWN_WIDTH_RATIO
+    );
     return dropdownContent;
   }
 
@@ -142,16 +148,19 @@ export class ResponsiveFacetColumn implements IResponsiveComponent {
   }
 
   private bindDropdownContentEvents() {
-    this.dropdown.dropdownContent.element.on('scroll', _.debounce(() => {
-      _.each(this.componentsInFacetColumn, component => {
-        let facetSearch = component.facetSearch;
-        if (facetSearch && facetSearch.currentlyDisplayedResults && !this.isFacetSearchScrolledIntoView(facetSearch.search)) {
-          component.facetSearch.positionSearchResults(this.dropdown.dropdownContent.element.el);
-        } else if (facetSearch && component.facetSearch.currentlyDisplayedResults) {
-          component.facetSearch.positionSearchResults();
-        }
-      });
-    }, ResponsiveFacetColumn.DEBOUNCE_SCROLL_WAIT));
+    this.dropdown.dropdownContent.element.on(
+      'scroll',
+      _.debounce(() => {
+        _.each(this.componentsInFacetColumn, component => {
+          let facetSearch = component.facetSearch;
+          if (facetSearch && facetSearch.currentlyDisplayedResults && !this.isFacetSearchScrolledIntoView(facetSearch.search)) {
+            component.facetSearch.positionSearchResults(this.dropdown.dropdownContent.element.el);
+          } else if (facetSearch && component.facetSearch.currentlyDisplayedResults) {
+            component.facetSearch.positionSearchResults();
+          }
+        });
+      }, ResponsiveFacetColumn.DEBOUNCE_SCROLL_WAIT)
+    );
   }
 
   private restoreFacetPreservePositionValue() {
@@ -178,7 +187,7 @@ export class ResponsiveFacetColumn implements IResponsiveComponent {
 
     dropdownTop = dropdownTop >= 0 ? dropdownTop : 0;
 
-    return (facetTop >= dropdownTop) && (facetBottom <= dropdownBottom);
+    return facetTop >= dropdownTop && facetBottom <= dropdownBottom;
   }
 
   private getDropdownHeaderLabel() {

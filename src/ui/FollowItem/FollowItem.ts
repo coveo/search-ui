@@ -9,7 +9,9 @@ import { Initialization } from '../Base/Initialization';
 import { l } from '../../strings/Strings';
 import { $$, Dom } from '../../utils/Dom';
 import {
-  analyticsActionCauseList, IAnalyticsSearchAlertsFollowDocumentMeta, IAnalyticsActionCause
+  analyticsActionCauseList,
+  IAnalyticsSearchAlertsFollowDocumentMeta,
+  IAnalyticsActionCause
 } from '../Analytics/AnalyticsActionListMeta';
 import { QueryUtils } from '../../utils/QueryUtils';
 import * as _ from 'underscore';
@@ -18,7 +20,6 @@ import { KeyboardUtils, KEYBOARD } from '../../utils/KeyboardUtils';
 import { exportGlobally } from '../../GlobalExports';
 import { SVGIcons } from '../../utils/SVGIcons';
 import { SVGDom } from '../../utils/SVGDom';
-
 
 export interface IFollowItemOptions {
   watchedFields?: IFieldOption[];
@@ -41,16 +42,15 @@ export class FollowItem extends Component {
 
   static doExport = () => {
     exportGlobally({
-      'FollowItem': FollowItem
+      FollowItem: FollowItem
     });
-  }
+  };
 
   /**
    * The options for the follow item component
    * @componentOptions
    */
   static options: IFollowItemOptions = {
-
     /**
      * Specifies the {@link ISubscriptionItemRequest.watchedFields} to use when sending the
      * {@link ISubscriptionItemRequest}.
@@ -65,7 +65,7 @@ export class FollowItem extends Component {
      *
      * Default value is `undefined`.
      */
-    modifiedDateField: ComponentOptions.buildStringOption(),
+    modifiedDateField: ComponentOptions.buildStringOption()
   };
 
   private container: Dom;
@@ -80,11 +80,12 @@ export class FollowItem extends Component {
    * automatically resolved (with a slower execution time)
    * @param result The result to associate the component with.
    */
-  constructor(public element: HTMLElement,
+  constructor(
+    public element: HTMLElement,
     public options?: IFollowItemOptions,
     public bindings?: IResultsComponentBindings,
-    public result?: IQueryResult) {
-
+    public result?: IQueryResult
+  ) {
     super(element, FollowItem.ID, bindings);
 
     this.options = ComponentOptions.initComponentOptions(element, FollowItem, options);
@@ -136,7 +137,8 @@ export class FollowItem extends Component {
       this.container.addClass('coveo-follow-item-loading');
       if (this.subscription.id) {
         this.logAnalyticsEvent(analyticsActionCauseList.searchAlertsUnfollowDocument);
-        this.queryController.getEndpoint()
+        this.queryController
+          .getEndpoint()
           .deleteSubscription(this.subscription)
           .then(() => {
             const eventArgs: ISearchAlertsEventArgs = {
@@ -154,7 +156,9 @@ export class FollowItem extends Component {
           });
       } else {
         this.logAnalyticsEvent(analyticsActionCauseList.searchAlertsFollowDocument);
-        this.queryController.getEndpoint().follow(this.subscription)
+        this.queryController
+          .getEndpoint()
+          .follow(this.subscription)
           .then((subscription: ISubscription) => {
             const eventArgs: ISearchAlertsEventArgs = {
               subscription: subscription,
@@ -178,7 +182,8 @@ export class FollowItem extends Component {
   }
 
   private updateIsFollowed() {
-    this.queryController.getEndpoint()
+    this.queryController
+      .getEndpoint()
       .listSubscriptions()
       .then((subscriptions: ISubscription[]) => {
         if (_.isArray(subscriptions)) {
@@ -200,13 +205,13 @@ export class FollowItem extends Component {
       });
   }
   private buildIcon(): HTMLElement {
-    const icon = $$('span', { className: 'coveo-follow-item-icon' }, SVGIcons.dropdownFollowQuery);
+    const icon = $$('span', { className: 'coveo-follow-item-icon' }, SVGIcons.icons.dropdownFollowQuery);
     SVGDom.addClassToSVGInContainer(icon.el, 'coveo-follow-item-icon-svg');
     return icon.el;
   }
 
   private buildLoadingIcon(): HTMLElement {
-    const loadingIcon = $$('span', { className: 'coveo-follow-item-icon-loading' }, SVGIcons.loading);
+    const loadingIcon = $$('span', { className: 'coveo-follow-item-icon-loading' }, SVGIcons.icons.loading);
     SVGDom.addClassToSVGInContainer(loadingIcon.el, 'coveo-follow-item-icon-loading-svg');
     return loadingIcon.el;
   }
@@ -259,14 +264,18 @@ export class FollowItem extends Component {
   }
 
   private logAnalyticsEvent(type: IAnalyticsActionCause) {
-    this.usageAnalytics.logCustomEvent<IAnalyticsSearchAlertsFollowDocumentMeta>(type, {
-      author: QueryUtils.getAuthor(this.result),
-      documentLanguage: QueryUtils.getLanguage(this.result),
-      documentSource: QueryUtils.getSource(this.result),
-      documentTitle: this.result.title,
-      contentIDValue: QueryUtils.getPermanentId(this.result).fieldValue,
-      contentIDKey: QueryUtils.getPermanentId(this.result).fieldUsed
-    }, this.element);
+    this.usageAnalytics.logCustomEvent<IAnalyticsSearchAlertsFollowDocumentMeta>(
+      type,
+      {
+        author: QueryUtils.getAuthor(this.result),
+        documentLanguage: QueryUtils.getLanguage(this.result),
+        documentSource: QueryUtils.getSource(this.result),
+        documentTitle: this.result.title,
+        contentIDValue: QueryUtils.getPermanentId(this.result).fieldValue,
+        contentIDKey: QueryUtils.getPermanentId(this.result).fieldUsed
+      },
+      this.element
+    );
   }
 }
 

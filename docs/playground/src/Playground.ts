@@ -1,7 +1,6 @@
 import {$$, Dom} from "../../../src/utils/Dom";
 import {SearchEndpoint} from "../../../src/rest/SearchEndpoint";
 import {IComponentPlaygroundConfiguration, PlaygroundConfiguration} from "./PlaygroundConfiguration";
-import {ResultList} from "../../../src/ui/ResultList/ResultList";
 import {QueryEvents, IBuildingQueryEventArgs} from "../../../src/events/QueryEvents";
 import { setLanguageAfterPageLoaded } from '../../../src/strings/DefaultLanguage';
 setLanguageAfterPageLoaded();

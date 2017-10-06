@@ -77,7 +77,7 @@ export class QueryBuilder {
    * The tab value set from the {@link Tab} component.
    */
   public tab: string;
-  public language: string;
+  public locale: string;
   /**
    * Name of the query pipeline to use.<br/>
    * This specifies the name of the query pipeline to use for the query. If not specified, the default value is default, which means the default query pipeline will be used.
@@ -302,7 +302,7 @@ export class QueryBuilder {
 
       searchHub: this.searchHub,
       tab: this.tab,
-      language: this.language,
+      locale: this.locale,
       pipeline: this.pipeline,
       maximumAge: this.maximumAge,
 
@@ -358,7 +358,10 @@ export class QueryBuilder {
     var withoutConstant = ExpressionBuilder.merge(this.expression, this.advancedExpression);
 
     return {
-      full: ExpressionBuilder.mergeUsingOr(ExpressionBuilder.merge(withoutConstant, this.constantExpression), this.disjunctionExpression).build(),
+      full: ExpressionBuilder.mergeUsingOr(
+        ExpressionBuilder.merge(withoutConstant, this.constantExpression),
+        this.disjunctionExpression
+      ).build(),
       withoutConstant: ExpressionBuilder.mergeUsingOr(withoutConstant, this.disjunctionExpression).build(),
       basic: ExpressionBuilder.mergeUsingOr(this.expression, this.disjunctionExpression).build(),
       advanced: ExpressionBuilder.mergeUsingOr(this.advancedExpression, this.disjunctionExpression).build(),
@@ -395,7 +398,10 @@ export class QueryBuilder {
     advancedAndExcept.remove(except);
 
     return {
-      full: ExpressionBuilder.mergeUsingOr(ExpressionBuilder.merge(withoutConstantAndExcept, this.constantExpression), this.disjunctionExpression).build(),
+      full: ExpressionBuilder.mergeUsingOr(
+        ExpressionBuilder.merge(withoutConstantAndExcept, this.constantExpression),
+        this.disjunctionExpression
+      ).build(),
       withoutConstant: ExpressionBuilder.mergeUsingOr(withoutConstantAndExcept, this.disjunctionExpression).build(),
       basic: ExpressionBuilder.mergeUsingOr(basicAndExcept, this.disjunctionExpression).build(),
       advanced: ExpressionBuilder.mergeUsingOr(advancedAndExcept, this.disjunctionExpression).build(),

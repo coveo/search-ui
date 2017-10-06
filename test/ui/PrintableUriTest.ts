@@ -6,7 +6,7 @@ import { analyticsActionCauseList } from '../../src/ui/Analytics/AnalyticsAction
 import { FakeResults } from '../Fake';
 
 export function PrintableUriTest() {
-  describe('PrintableUri', function () {
+  describe('PrintableUri', function() {
     let test: Mock.IBasicComponentSetup<PrintableUri>;
     let fakeResult: IQueryResult;
 
@@ -17,7 +17,7 @@ export function PrintableUriTest() {
       spyOn(window, 'open');
     });
 
-    afterEach(function () {
+    afterEach(function() {
       test = null;
       fakeResult = null;
     });
@@ -27,20 +27,21 @@ export function PrintableUriTest() {
     });
 
     it('should display the XML correctly if the result has a non-null parents field', () => {
-      fakeResult.raw.parents = '<?xml version="1.0" encoding="utf-16"?><parents><parent name="My Drive" uri="https://drive.google.com/#my-drive" /></parents>';
+      fakeResult.raw.parents =
+        '<?xml version="1.0" encoding="utf-16"?><parents><parent name="My Drive" uri="https://drive.google.com/#my-drive" /></parents>';
       test = Mock.advancedResultComponentSetup<PrintableUri>(PrintableUri, fakeResult, undefined);
-      expect($$(test.cmp.element).find('span').innerText).toEqual('My Drive');
+      expect($$(test.cmp.element).find('.CoveoResultLink').innerText).toEqual('My Drive');
     });
 
     it('should display the XML correctly if the result has a very long parents field', () => {
-      fakeResult.raw.parents = '<?xml version="1.0" encoding="utf-16"?><parents><parent name="Organization" uri="https://na17.salesforce.com/home/home.jsp" />`' +
+      fakeResult.raw.parents =
+        '<?xml version="1.0" encoding="utf-16"?><parents><parent name="Organization" uri="https://na17.salesforce.com/home/home.jsp" />`' +
         '<parent name="Technical_Article__ka" uri="http://www.salesforce.com/org:organization/articletype:Technical_Article" />`' +
         '<parent name="Generator became sentient and refuses to cut power"`' +
         ' uri="https://na17.salesforce.com/kA0o00000003Wpk" /><parent name="un autre test" uri="http//:google.ca" /></parents>';
       test = Mock.advancedResultComponentSetup<PrintableUri>(PrintableUri, fakeResult, undefined);
-      expect($$(test.cmp.element).findAll('span.coveo-printable-uri-part')[0].innerText).toEqual('Organization');
-      expect($$(test.cmp.element).findAll('span.coveo-printable-uri-part')[1].innerText).toEqual('Technical_Article__ka');
-
+      expect($$(test.cmp.element).findAll('.CoveoResultLink.coveo-printable-uri-part')[0].innerText).toEqual('Organization');
+      expect($$(test.cmp.element).findAll('.CoveoResultLink.coveo-printable-uri-part')[1].innerText).toEqual('Technical_Article__ka');
     });
 
     it('should shorten the printable uri correctly if the title is not a uri', () => {
@@ -58,23 +59,31 @@ export function PrintableUriTest() {
     it('should shorten the printable uri correctly', () => {
       fakeResult.printableUri = 'http://a.very.very.very.very.very.very.very.very.very.very.long.printable.uri';
       test = Mock.advancedResultComponentSetup<PrintableUri>(PrintableUri, fakeResult, undefined);
-      expect($$(test.cmp.element).find('a').innerText).toEqual('http://a.very.very.very.very.very.very.very.very.very.very.long.printable....');
+      expect($$(test.cmp.element).find('a').innerText).toEqual(
+        'http://a.very.very.very.very.very.very.very.very.very.very.long.printable....'
+      );
     });
 
     it('should shorten the printable uri correctly if title template is an empty string', () => {
       test.cmp.options.titleTemplate = '';
       fakeResult.printableUri = 'http://a.very.very.very.very.very.very.very.very.very.very.long.printable.uri';
       test = Mock.advancedResultComponentSetup<PrintableUri>(PrintableUri, fakeResult, undefined);
-      expect($$(test.cmp.element).find('a').innerText).toEqual('http://a.very.very.very.very.very.very.very.very.very.very.long.printable....');
+      expect($$(test.cmp.element).find('a').innerText).toEqual(
+        'http://a.very.very.very.very.very.very.very.very.very.very.long.printable....'
+      );
     });
 
-    it('can receive an onClick option to execute', (done) => {
-      test = Mock.advancedResultComponentSetup<PrintableUri>(PrintableUri, fakeResult, new Mock.AdvancedComponentSetupOptions($$('div').el, {
-        onClick: () => {
-          expect(true).toBe(true);
-          done();
-        }
-      }));
+    it('can receive an onClick option to execute', done => {
+      test = Mock.advancedResultComponentSetup<PrintableUri>(
+        PrintableUri,
+        fakeResult,
+        new Mock.AdvancedComponentSetupOptions($$('div').el, {
+          onClick: () => {
+            expect(true).toBe(true);
+            done();
+          }
+        })
+      );
       $$(test.cmp.element).trigger('click');
     });
 
@@ -84,31 +93,46 @@ export function PrintableUriTest() {
     });
 
     describe('exposes hrefTemplate', () => {
-
       it('should not modify the href template if there are no field specified', () => {
         let hrefTemplate = 'test';
-        test = Mock.optionsResultComponentSetup<PrintableUri, IPrintableUriOptions>(PrintableUri, { hrefTemplate: hrefTemplate }, fakeResult);
+        test = Mock.optionsResultComponentSetup<PrintableUri, IPrintableUriOptions>(
+          PrintableUri,
+          { hrefTemplate: hrefTemplate },
+          fakeResult
+        );
         test.cmp.openLinkInNewWindow();
         expect(window.open).toHaveBeenCalledWith(hrefTemplate, jasmine.anything());
       });
 
       it('should replace fields in the href template by the results equivalent', () => {
         let hrefTemplate = '${title}';
-        test = Mock.optionsResultComponentSetup<PrintableUri, IPrintableUriOptions>(PrintableUri, { hrefTemplate: hrefTemplate }, fakeResult);
+        test = Mock.optionsResultComponentSetup<PrintableUri, IPrintableUriOptions>(
+          PrintableUri,
+          { hrefTemplate: hrefTemplate },
+          fakeResult
+        );
         test.cmp.openLinkInNewWindow();
         expect(window.open).toHaveBeenCalledWith(fakeResult.title, jasmine.anything());
       });
 
       it('should support nested values in result', () => {
         let hrefTemplate = '${raw.number}';
-        test = Mock.optionsResultComponentSetup<PrintableUri, IPrintableUriOptions>(PrintableUri, { hrefTemplate: hrefTemplate }, fakeResult);
+        test = Mock.optionsResultComponentSetup<PrintableUri, IPrintableUriOptions>(
+          PrintableUri,
+          { hrefTemplate: hrefTemplate },
+          fakeResult
+        );
         test.cmp.openLinkInNewWindow();
         expect(window.open).toHaveBeenCalledWith(fakeResult.raw['number'].toString(), jasmine.anything());
       });
 
       it('should not parse standalone accolades', () => {
         let hrefTemplate = '${raw.number}{test}';
-        test = Mock.optionsResultComponentSetup<PrintableUri, IPrintableUriOptions>(PrintableUri, { hrefTemplate: hrefTemplate }, fakeResult);
+        test = Mock.optionsResultComponentSetup<PrintableUri, IPrintableUriOptions>(
+          PrintableUri,
+          { hrefTemplate: hrefTemplate },
+          fakeResult
+        );
         test.cmp.openLinkInNewWindow();
         expect(window.open).toHaveBeenCalledWith(fakeResult.raw['number'] + '{test}', jasmine.anything());
       });
@@ -116,7 +140,11 @@ export function PrintableUriTest() {
       it('should support external fields', () => {
         window['Coveo']['test'] = 'testExternal';
         let hrefTemplate = '${Coveo.test}';
-        test = Mock.optionsResultComponentSetup<PrintableUri, IPrintableUriOptions>(PrintableUri, { hrefTemplate: hrefTemplate }, fakeResult);
+        test = Mock.optionsResultComponentSetup<PrintableUri, IPrintableUriOptions>(
+          PrintableUri,
+          { hrefTemplate: hrefTemplate },
+          fakeResult
+        );
         test.cmp.openLinkInNewWindow();
         expect(window.open).toHaveBeenCalledWith('testExternal', jasmine.anything());
         window['Coveo']['test'] = undefined;
@@ -125,38 +153,56 @@ export function PrintableUriTest() {
       it('should support nested external fields with more than 2 keys', () => {
         window['Coveo']['test'] = { key: 'testExternal' };
         let hrefTemplate = '${Coveo.test.key}';
-        test = Mock.optionsResultComponentSetup<PrintableUri, IPrintableUriOptions>(PrintableUri, { hrefTemplate: hrefTemplate }, fakeResult);
+        test = Mock.optionsResultComponentSetup<PrintableUri, IPrintableUriOptions>(
+          PrintableUri,
+          { hrefTemplate: hrefTemplate },
+          fakeResult
+        );
         test.cmp.openLinkInNewWindow();
         expect(window.open).toHaveBeenCalledWith('testExternal', jasmine.anything());
         window['Coveo']['test'] = undefined;
       });
-
     });
 
     describe('exposes the titleTemplate', () => {
-
       it('should replace fields in the title template by the results equivalent', () => {
         let titleTemplate = '${clickUri}';
-        test = Mock.optionsResultComponentSetup<PrintableUri, IPrintableUriOptions>(PrintableUri, { titleTemplate: titleTemplate }, fakeResult);
+        test = Mock.optionsResultComponentSetup<PrintableUri, IPrintableUriOptions>(
+          PrintableUri,
+          { titleTemplate: titleTemplate },
+          fakeResult
+        );
         expect($$(test.cmp.element).text()).toEqual(fakeResult.clickUri);
       });
 
       it('should support nested values in result', () => {
         let titleTemplate = '${raw.number}';
-        test = Mock.optionsResultComponentSetup<PrintableUri, IPrintableUriOptions>(PrintableUri, { titleTemplate: titleTemplate }, fakeResult);
+        test = Mock.optionsResultComponentSetup<PrintableUri, IPrintableUriOptions>(
+          PrintableUri,
+          { titleTemplate: titleTemplate },
+          fakeResult
+        );
         expect(test.cmp.element.innerHTML).toEqual(fakeResult.raw['number'].toString());
       });
 
       it('should not parse standalone accolades', () => {
         let titleTemplate = '${raw.number}{test}';
-        test = Mock.optionsResultComponentSetup<PrintableUri, IPrintableUriOptions>(PrintableUri, { titleTemplate: titleTemplate }, fakeResult);
+        test = Mock.optionsResultComponentSetup<PrintableUri, IPrintableUriOptions>(
+          PrintableUri,
+          { titleTemplate: titleTemplate },
+          fakeResult
+        );
         expect(test.cmp.element.innerHTML).toEqual(fakeResult.raw['number'].toString() + '{test}');
       });
 
       it('should support external fields', () => {
         window['Coveo']['test'] = 'testExternal';
         let titleTemplate = '${Coveo.test}';
-        test = Mock.optionsResultComponentSetup<PrintableUri, IPrintableUriOptions>(PrintableUri, { titleTemplate: titleTemplate }, fakeResult);
+        test = Mock.optionsResultComponentSetup<PrintableUri, IPrintableUriOptions>(
+          PrintableUri,
+          { titleTemplate: titleTemplate },
+          fakeResult
+        );
         expect(test.cmp.element.innerHTML).toEqual('testExternal');
         window['Coveo']['test'] = undefined;
       });
@@ -164,17 +210,24 @@ export function PrintableUriTest() {
       it('should support external fields with more than 2 keys', () => {
         window['Coveo']['test'] = { key: 'testExternal' };
         let titleTemplate = '${Coveo.test.key}';
-        test = Mock.optionsResultComponentSetup<PrintableUri, IPrintableUriOptions>(PrintableUri, { titleTemplate: titleTemplate }, fakeResult);
+        test = Mock.optionsResultComponentSetup<PrintableUri, IPrintableUriOptions>(
+          PrintableUri,
+          { titleTemplate: titleTemplate },
+          fakeResult
+        );
         expect(test.cmp.element.innerHTML).toEqual('testExternal');
         window['Coveo']['test'] = undefined;
       });
 
       it('should print the template if the key used in the template is undefined', () => {
         let titleTemplate = '${doesNotExist}';
-        test = Mock.optionsResultComponentSetup<PrintableUri, IPrintableUriOptions>(PrintableUri, { titleTemplate: titleTemplate }, fakeResult);
+        test = Mock.optionsResultComponentSetup<PrintableUri, IPrintableUriOptions>(
+          PrintableUri,
+          { titleTemplate: titleTemplate },
+          fakeResult
+        );
         expect($$(test.cmp.element).text()).toEqual('${doesNotExist}');
       });
-
     });
 
     it('sends an analytics event on context menu', () => {
@@ -187,25 +240,42 @@ export function PrintableUriTest() {
         let element = $$('a');
         let href = 'javascript:void(0)';
         element.setAttribute('href', href);
-        test = Mock.advancedResultComponentSetup<PrintableUri>(PrintableUri, fakeResult, new Mock.AdvancedComponentSetupOptions(element.el));
+        test = Mock.advancedResultComponentSetup<PrintableUri>(
+          PrintableUri,
+          fakeResult,
+          new Mock.AdvancedComponentSetupOptions(element.el)
+        );
         spyOn(test.cmp, 'openLink');
 
         $$(test.cmp.element).trigger('click');
 
-        expect(test.cmp.usageAnalytics.logClickEvent).toHaveBeenCalledWith(analyticsActionCauseList.documentOpen, jasmine.objectContaining({ documentURL: href }), fakeResult, test.cmp.root);
+        expect(test.cmp.usageAnalytics.logClickEvent).toHaveBeenCalledWith(
+          analyticsActionCauseList.documentOpen,
+          jasmine.objectContaining({ documentURL: href }),
+          fakeResult,
+          test.cmp.root
+        );
       });
 
       it('should use the clickUri if the href is empty', () => {
         $$(test.cmp.element).trigger('click');
 
-        expect(test.cmp.usageAnalytics.logClickEvent).toHaveBeenCalledWith(analyticsActionCauseList.documentOpen, jasmine.objectContaining({ documentURL: fakeResult.clickUri }), fakeResult, test.cmp.root);
+        expect(test.cmp.usageAnalytics.logClickEvent).toHaveBeenCalledWith(
+          analyticsActionCauseList.documentOpen,
+          jasmine.objectContaining({ documentURL: fakeResult.clickUri }),
+          fakeResult,
+          test.cmp.root
+        );
       });
     });
 
     describe('when the element is a hyperlink', () => {
-
       beforeEach(() => {
-        test = Mock.advancedResultComponentSetup<PrintableUri>(PrintableUri, fakeResult, new Mock.AdvancedComponentSetupOptions($$('a').el));
+        test = Mock.advancedResultComponentSetup<PrintableUri>(
+          PrintableUri,
+          fakeResult,
+          new Mock.AdvancedComponentSetupOptions($$('a').el)
+        );
       });
 
       it('should set the href to the result click uri', () => {
@@ -216,7 +286,11 @@ export function PrintableUriTest() {
         let element = $$('a');
         let href = 'javascript:void(0)';
         element.setAttribute('href', href);
-        test = Mock.advancedResultComponentSetup<PrintableUri>(PrintableUri, fakeResult, new Mock.AdvancedComponentSetupOptions(element.el));
+        test = Mock.advancedResultComponentSetup<PrintableUri>(
+          PrintableUri,
+          fakeResult,
+          new Mock.AdvancedComponentSetupOptions(element.el)
+        );
 
         expect(test.cmp.element.getAttribute('href')).toEqual(href);
       });

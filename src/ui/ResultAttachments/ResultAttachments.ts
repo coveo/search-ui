@@ -32,17 +32,16 @@ export class ResultAttachments extends Component {
 
   static doExport = () => {
     exportGlobally({
-      'ResultAttachments': ResultAttachments,
-      'DefaultResultAttachmentTemplate': DefaultResultAttachmentTemplate
+      ResultAttachments: ResultAttachments,
+      DefaultResultAttachmentTemplate: DefaultResultAttachmentTemplate
     });
-  }
+  };
 
   /**
    * The options for the component
    * @componentOptions
    */
   static options: IResultAttachmentsOptions = {
-
     /**
      * Specifies the template to use to render each attachment for a top result.
      *
@@ -65,7 +64,9 @@ export class ResultAttachments extends Component {
      *
      * If you do not specify a custom folding template, the component uses the default result attachment template.
      */
-    resultTemplate: ComponentOptions.buildTemplateOption({ defaultFunction: (e) => new DefaultResultAttachmentTemplate() }),
+    resultTemplate: ComponentOptions.buildTemplateOption({
+      defaultFunction: e => new DefaultResultAttachmentTemplate()
+    }),
 
     /**
      * Specifies the template to use to render sub-attachments, which are attachments within attachments, for example
@@ -94,7 +95,9 @@ export class ResultAttachments extends Component {
      * By default, this option uses the same template you specify for the
      * [`resultTemplate`]{@link ResultAttachments.options.resultTemplate} option.
      */
-    subResultTemplate: ComponentOptions.buildTemplateOption({ postProcessing: (value: Template, options: IResultAttachmentsOptions) => value != null ? value : options.resultTemplate }),
+    subResultTemplate: ComponentOptions.buildTemplateOption({
+      postProcessing: (value: Template, options: IResultAttachmentsOptions) => (value != null ? value : options.resultTemplate)
+    }),
 
     /**
      * Specifies the maximum nesting depth. Beyond this depth, the component stops rendering sub-attachments.
@@ -115,7 +118,13 @@ export class ResultAttachments extends Component {
    * @param result The result to associate the component with.
    * @param attachmentLevel The nesting depth.
    */
-  constructor(public element: HTMLElement, public options?: IResultAttachmentsOptions, public bindings?: IComponentBindings, result?: IQueryResult, public attachmentLevel = 0) {
+  constructor(
+    public element: HTMLElement,
+    public options?: IResultAttachmentsOptions,
+    public bindings?: IComponentBindings,
+    result?: IQueryResult,
+    public attachmentLevel = 0
+  ) {
     super(element, ResultAttachments.ID, bindings);
 
     this.options = ComponentOptions.initComponentOptions(element, ResultAttachments, options);
@@ -127,10 +136,13 @@ export class ResultAttachments extends Component {
   }
 
   private renderAttachments() {
-    _.each(this.attachments, (attachment) => {
+    _.each(this.attachments, attachment => {
       QueryUtils.setStateObjectOnQueryResult(this.queryStateModel.get(), attachment);
       QueryUtils.setSearchInterfaceObjectOnQueryResult(this.searchInterface, attachment);
-      let subTemplatePromise = this.attachmentLevel > 0 ? this.options.subResultTemplate.instantiateToElement(attachment) : this.options.resultTemplate.instantiateToElement(attachment);
+      let subTemplatePromise =
+        this.attachmentLevel > 0
+          ? this.options.subResultTemplate.instantiateToElement(attachment)
+          : this.options.resultTemplate.instantiateToElement(attachment);
 
       subTemplatePromise.then((container: HTMLElement) => {
         this.autoCreateComponentsInsideResult(container, _.extend({}, attachment, { attachments: [] }));

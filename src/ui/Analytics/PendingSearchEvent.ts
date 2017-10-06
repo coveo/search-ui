@@ -23,7 +23,12 @@ export class PendingSearchEvent {
   protected finished = false;
   protected searchEvents: ISearchEvent[] = [];
 
-  constructor(public root: HTMLElement, public endpoint: AnalyticsEndpoint, public templateSearchEvent: ISearchEvent, public sendToCloud: boolean) {
+  constructor(
+    public root: HTMLElement,
+    public endpoint: AnalyticsEndpoint,
+    public templateSearchEvent: ISearchEvent,
+    public sendToCloud: boolean
+  ) {
     Assert.exists(root);
     Assert.exists(endpoint);
     Assert.exists(templateSearchEvent);
@@ -69,23 +74,28 @@ export class PendingSearchEvent {
     const queryController = Component.get(eventTarget, QueryController);
     Assert.exists(queryController);
 
-    args.promise.then((queryResults: IQueryResults) => {
-      Assert.exists(queryResults);
-      Assert.check(!this.finished);
-      if (queryResults._reusedSearchUid !== true || this.templateSearchEvent.actionCause == analyticsActionCauseList.recommendation.name) {
-        const searchEvent = <ISearchEvent>_.extend({}, this.templateSearchEvent);
-        this.fillSearchEvent(searchEvent, searchInterface, args.query, queryResults, queryBoxContentToUse);
-        this.searchEvents.push(searchEvent);
-        this.results.push(queryResults);
-        return queryResults;
-      }
-    }).finally(() => {
-      const index = _.indexOf(this.searchPromises, args.promise);
-      this.searchPromises.splice(index, 1);
-      if (this.searchPromises.length == 0) {
-        this.flush();
-      }
-    });
+    args.promise
+      .then((queryResults: IQueryResults) => {
+        Assert.exists(queryResults);
+        Assert.check(!this.finished);
+        if (
+          queryResults._reusedSearchUid !== true ||
+          this.templateSearchEvent.actionCause == analyticsActionCauseList.recommendation.name
+        ) {
+          const searchEvent = <ISearchEvent>_.extend({}, this.templateSearchEvent);
+          this.fillSearchEvent(searchEvent, searchInterface, args.query, queryResults, queryBoxContentToUse);
+          this.searchEvents.push(searchEvent);
+          this.results.push(queryResults);
+          return queryResults;
+        }
+      })
+      .finally(() => {
+        const index = _.indexOf(this.searchPromises, args.promise);
+        this.searchPromises.splice(index, 1);
+        if (this.searchPromises.length == 0) {
+          this.flush();
+        }
+      });
   }
 
   public stopRecording() {
@@ -109,12 +119,20 @@ export class PendingSearchEvent {
         const apiSearchEvents = _.map(this.searchEvents, (searchEvent: ISearchEvent) => {
           return APIAnalyticsBuilder.convertSearchEventToAPI(searchEvent);
         });
-        $$(this.root).trigger(AnalyticsEvents.searchEvent, <IAnalyticsSearchEventsArgs>{ searchEvents: apiSearchEvents });
+        $$(this.root).trigger(AnalyticsEvents.searchEvent, <IAnalyticsSearchEventsArgs>{
+          searchEvents: apiSearchEvents
+        });
       });
     }
   }
 
-  private fillSearchEvent(searchEvent: ISearchEvent, searchInterface: SearchInterface, query: IQuery, queryResults: IQueryResults, queryBoxContentToUse?: string) {
+  private fillSearchEvent(
+    searchEvent: ISearchEvent,
+    searchInterface: SearchInterface,
+    query: IQuery,
+    queryResults: IQueryResults,
+    queryBoxContentToUse?: string
+  ) {
     Assert.exists(searchEvent);
     Assert.exists(searchInterface);
     Assert.exists(query);
@@ -123,14 +141,15 @@ export class PendingSearchEvent {
     const currentQuery = <string>searchInterface.queryStateModel.get(QueryStateModel.attributesEnum.q);
     searchEvent.queryPipeline = queryResults.pipeline;
     searchEvent.splitTestRunName = searchEvent.splitTestRunName || queryResults.splitTestRun;
-    searchEvent.splitTestRunVersion = searchEvent.splitTestRunVersion || (queryResults.splitTestRun != undefined ? queryResults.pipeline : undefined);
+    searchEvent.splitTestRunVersion =
+      searchEvent.splitTestRunVersion || (queryResults.splitTestRun != undefined ? queryResults.pipeline : undefined);
     searchEvent.originLevel2 = searchEvent.originLevel2 || searchInterface.queryStateModel.get('t') || 'default';
     searchEvent.queryText = queryBoxContentToUse || currentQuery || query.q || ''; // do not log the query sent to the server if possible; it may contain added syntax depending on options
     searchEvent.advancedQuery = query.aq || '';
     searchEvent.didYouMean = query.enableDidYouMean;
     searchEvent.numberOfResults = queryResults.totalCount;
     searchEvent.responseTime = queryResults.duration;
-    searchEvent.pageNumber = (query.firstResult / query.numberOfResults);
+    searchEvent.pageNumber = query.firstResult / query.numberOfResults;
     searchEvent.resultsPerPage = query.numberOfResults;
     searchEvent.searchQueryUid = queryResults.searchUid;
     searchEvent.queryPipeline = queryResults.pipeline;

@@ -1,12 +1,16 @@
 @import "Variables";
-@import "../bin/sass/sprites";
 @import "mixins/mediaQuery";
 
 .CoveoQuickview {
   @include clickable();
 
-  &:hover .coveo-caption-for-icon {
+  > div {
+    position: relative;
+  }
+  .coveo-list-layout &:hover .coveo-caption-for-icon {
     display: inline;
+    top: 26px;
+    left: -30px;
   }
   
   .coveo-caption-for-icon {
@@ -18,8 +22,6 @@
     padding: 6px 16px;
     position: absolute;
     white-space: nowrap;
-    // This equates to centering according to parent: 50% of width left - padding, and down 100% + 6px for the little arrow
-    transform: translateX(-50%) translateY(100%) translateY(-27px);
     z-index: 1;
 
     &:before {
@@ -165,7 +167,7 @@
 .coveo-modal-container.coveo-quick-view {
   .coveo-modal-body {
     height: 90%;
-    div {
+    > div, .coveo-list-layout, .CoveoQuickviewDocument, .coveo-quick-view-full-height {
       height: 100%;
       width: 100%;
     }
@@ -194,4 +196,10 @@
   width: 20px;
   height: 12px;
   color: $color-greyish-teal-blue;
+}
+
+.coveo-computed-modal-box-content {
+ > div {
+  height: 100%
+ }
 }

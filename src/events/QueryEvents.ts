@@ -17,6 +17,7 @@ export interface INewQueryEventArgs {
    * If this property is set to true by any handlers, the query will not be executed.
    */
   cancel: boolean;
+  shouldRedirectStandaloneSearchbox: boolean;
   origin?: Component;
 }
 

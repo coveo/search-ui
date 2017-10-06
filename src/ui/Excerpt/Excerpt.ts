@@ -19,9 +19,9 @@ export class Excerpt extends Component {
 
   static doExport = () => {
     exportGlobally({
-      'Excerpt': Excerpt
+      Excerpt: Excerpt
     });
-  }
+  };
 
   /**
    * Creates a new Excerpt component.

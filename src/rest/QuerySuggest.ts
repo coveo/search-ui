@@ -4,7 +4,6 @@ import { IStringMap } from './GenericParam';
  * service (see [Coveo Machine Learning](http://www.coveo.com/go?dest=cloudhelp&lcid=9&context=177).
  */
 export interface IQuerySuggestCompletion {
-
   /**
    * Contains the expression to complete.
    */
@@ -32,7 +31,6 @@ export interface IQuerySuggestCompletion {
  * suggestions.
  */
 export interface IQuerySuggestResponse {
-
   /**
    * Contains an array of completions.
    */
@@ -43,7 +41,6 @@ export interface IQuerySuggestResponse {
  * The IQuerySuggestRequest interface describes a request to the Coveo Machine Learning service query suggest.
  */
 export interface IQuerySuggestRequest {
-
   /**
    * Specifies the query / word for which to get completion.
    */
@@ -69,7 +66,7 @@ export interface IQuerySuggestRequest {
    * Specifies the context to use for the request.
    */
   context?: IStringMap<any>;
-  language?: string;
+  locale?: string;
   autoCompleter?: string;
   additionalData?: any;
   format?: string;

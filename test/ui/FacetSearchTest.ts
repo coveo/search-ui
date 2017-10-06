@@ -11,11 +11,11 @@ import { Simulate } from '../Simulate';
 import { KEYBOARD } from '../../src/utils/KeyboardUtils';
 
 export function FacetSearchTest() {
-  describe('FacetSearch', function () {
+  describe('FacetSearch', function() {
     var mockFacet: Facet;
     var facetSearch: FacetSearch;
 
-    beforeEach(function () {
+    beforeEach(function() {
       let options = {
         field: '@field'
       };
@@ -25,38 +25,48 @@ export function FacetSearchTest() {
       facetSearch = new FacetSearch(mockFacet, FacetSearchValuesList, mockFacet.root);
     });
 
-    afterEach(function () {
+    afterEach(function() {
       mockFacet = null;
       facetSearch = null;
     });
 
-    it('input should have correct attributes', function () {
+    it('input should have correct attributes', function() {
       var built = facetSearch.build();
-      expect($$(built).find('input').getAttribute('autocapitalize')).toBe('off');
-      expect($$(built).find('input').getAttribute('autocorrect')).toBe('off');
-      expect($$(built).find('input').getAttribute('form')).toBe('coveo-dummy-form');
+      expect(
+        $$(built)
+          .find('input')
+          .getAttribute('autocapitalize')
+      ).toBe('off');
+      expect(
+        $$(built)
+          .find('input')
+          .getAttribute('autocorrect')
+      ).toBe('off');
+      expect(
+        $$(built)
+          .find('input')
+          .getAttribute('form')
+      ).toBe('coveo-dummy-form');
     });
 
-    describe('perform search on the index', function () {
-      beforeEach(function () {
+    describe('perform search on the index', function() {
+      beforeEach(function() {
         mockFacet.facetQueryController = Mock.mock<FacetQueryController>(FacetQueryController);
         facetSearch.build();
       });
 
-      afterEach(function () {
+      afterEach(function() {
         mockFacet = null;
         facetSearch = null;
       });
 
-      it('should display facet search results', function (done) {
+      it('should display facet search results', function(done) {
         var pr = new Promise((resolve, reject) => {
           var results = FakeResults.createFakeFieldValues('foo', 10);
           resolve(results);
         });
 
-        (<jasmine.Spy>mockFacet.facetQueryController.search)
-          .and
-          .returnValue(pr);
+        (<jasmine.Spy>mockFacet.facetQueryController.search).and.returnValue(pr);
 
         var params = new FacetSearchParameters(mockFacet);
         expect($$(facetSearch.searchResults).findAll('li').length).toBe(0);
@@ -69,15 +79,13 @@ export function FacetSearchTest() {
         });
       });
 
-      it('should hide facet search results', function (done) {
+      it('should hide facet search results', function(done) {
         var pr = new Promise((resolve, reject) => {
           var results = FakeResults.createFakeFieldValues('foo', 10);
           resolve(results);
         });
 
-        (<jasmine.Spy>mockFacet.facetQueryController.search)
-          .and
-          .returnValue(pr);
+        (<jasmine.Spy>mockFacet.facetQueryController.search).and.returnValue(pr);
 
         var params = new FacetSearchParameters(mockFacet);
         expect($$(facetSearch.searchResults).findAll('li').length).toBe(0);
@@ -93,14 +101,12 @@ export function FacetSearchTest() {
         });
       });
 
-      it('should handle error', function (done) {
+      it('should handle error', function(done) {
         var pr = new Promise((resolve, reject) => {
           reject(new Error('woops !'));
         });
 
-        (<jasmine.Spy>mockFacet.facetQueryController.search)
-          .and
-          .returnValue(pr);
+        (<jasmine.Spy>mockFacet.facetQueryController.search).and.returnValue(pr);
 
         var params = new FacetSearchParameters(mockFacet);
         facetSearch.triggerNewFacetSearch(params);
@@ -114,10 +120,10 @@ export function FacetSearchTest() {
       // KeyboardEvent simulation does not work well in phantom js
       // The KeyboardEvent constructor is not even defined ...
       if (!Simulate.isPhantomJs()) {
-        describe('hook user events', function () {
+        describe('hook user events', function() {
           var searchPromise: Promise<IIndexFieldValue[]>;
           var built: HTMLElement;
-          beforeEach(function () {
+          beforeEach(function() {
             Simulate.removeJQuery();
             mockFacet.options.facetSearchDelay = 50;
             searchPromise = new Promise((resolve, reject) => {
@@ -125,21 +131,18 @@ export function FacetSearchTest() {
               resolve(results);
             });
 
-            (<jasmine.Spy>mockFacet.facetQueryController.search)
-              .and
-              .returnValue(searchPromise);
+            (<jasmine.Spy>mockFacet.facetQueryController.search).and.returnValue(searchPromise);
 
             built = facetSearch.build();
             var params = new FacetSearchParameters(mockFacet);
             facetSearch.triggerNewFacetSearch(params);
           });
 
-          afterEach(function () {
+          afterEach(function() {
             searchPromise = null;
           });
 
-          it('arrow navigation', function (done) {
-
+          it('arrow navigation', function(done) {
             searchPromise.then(() => {
               expect($$($$(facetSearch.searchResults).findAll('li')[0]).hasClass('coveo-current')).toBe(true);
 
@@ -162,7 +165,7 @@ export function FacetSearchTest() {
             });
           });
 
-          it('escape close results', function (done) {
+          it('escape close results', function(done) {
             searchPromise.then(() => {
               expect(facetSearch.currentlyDisplayedResults.length).toBe(10);
 
@@ -173,7 +176,7 @@ export function FacetSearchTest() {
             });
           });
 
-          it('other key should start a search', function (done) {
+          it('other key should start a search', function(done) {
             Simulate.keyUp($$(built).find('input'), KEYBOARD.CTRL);
             setTimeout(() => {
               expect(facetSearch.facet.facetQueryController.search).toHaveBeenCalled();

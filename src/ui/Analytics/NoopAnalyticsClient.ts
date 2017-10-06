@@ -1,5 +1,6 @@
 import { IAnalyticsClient } from './AnalyticsClient';
 import { IAnalyticsActionCause } from './AnalyticsActionListMeta';
+import { IAPIAnalyticsEventResponse } from '../../rest/APIAnalyticsEventResponse';
 import { IQueryResult } from '../../rest/QueryResult';
 import { ITopQueries } from '../../rest/TopQueries';
 import { IStringMap } from '../../rest/GenericParam';
@@ -30,12 +31,19 @@ export class NoopAnalyticsClient implements IAnalyticsClient {
     this.setNoopCauseAndMeta(actionCause.name, meta);
   }
 
-  logClickEvent<TMeta>(actionCause: IAnalyticsActionCause, meta: TMeta, result?: IQueryResult, element?: HTMLElement) {
+  logClickEvent<TMeta>(
+    actionCause: IAnalyticsActionCause,
+    meta: TMeta,
+    result?: IQueryResult,
+    element?: HTMLElement
+  ): Promise<IAPIAnalyticsEventResponse> {
     this.setNoopCauseAndMeta(actionCause.name, meta);
+    return Promise.resolve(null);
   }
 
-  logCustomEvent<TMeta>(actionCause: IAnalyticsActionCause, meta: TMeta, element?: HTMLElement) {
+  logCustomEvent<TMeta>(actionCause: IAnalyticsActionCause, meta: TMeta, element?: HTMLElement): Promise<IAPIAnalyticsEventResponse> {
     this.setNoopCauseAndMeta(actionCause.name, meta);
+    return Promise.resolve(null);
   }
 
   getTopQueries(params: ITopQueries): Promise<string[]> {
@@ -54,21 +62,17 @@ export class NoopAnalyticsClient implements IAnalyticsClient {
     return null;
   }
 
-  sendAllPendingEvents() {
-  }
+  sendAllPendingEvents() {}
 
-  cancelAllPendingEvents() {
-  }
+  cancelAllPendingEvents() {}
 
-  warnAboutSearchEvent() {
-  }
+  warnAboutSearchEvent() {}
 
   getPendingSearchEvent() {
     return null;
   }
 
-  setOriginContext(originContext: string) {
-  }
+  setOriginContext(originContext: string) {}
 
   private setNoopCauseAndMeta(cause: string, meta: IStringMap<any>) {
     this.currentEventCause = cause;

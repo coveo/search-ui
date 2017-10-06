@@ -11,8 +11,7 @@ import { exportGlobally } from '../../GlobalExports';
 export var context: any;
 declare var Coveo;
 
-export interface IPipelineContextOptions {
-}
+export interface IPipelineContextOptions {}
 
 /**
  * A PipelineContext is used to add contextual information about the environment inside which the query is executed.
@@ -28,13 +27,14 @@ export interface IPipelineContextOptions {
  * <script class='CoveoPipelineContext' type='text/context'>
  *   {
  *      "foo" : "bar"
+ *      "foobar" : "{foo, bar}"
  *   }
  * </script>
  * ```
  *
  * You can also simply use JavaScript code to pass context values, using the {@link QueryBuilder.addContextValue} method.
  *
- * This mean you do not necessarily need to use this component to pass context.
+ * This means you do not necessarily need to use this component to pass context.
  * ```
  * Coveo.$$(root).on('buildingQuery', function(args) {
  *     args.queryBuilder.addContextValue('foo', 'bar');
@@ -51,12 +51,12 @@ export class PipelineContext extends Component {
 
   static doExport = () => {
     exportGlobally({
-      'PipelineContext': PipelineContext,
-      'context': context
+      PipelineContext: PipelineContext,
+      context: context
     });
-  }
+  };
 
-  private content: { [id: string]: string };
+  private content: { [id: string]: string | Array<string> };
 
   public constructor(public element: HTMLElement, public options?: IPipelineContextOptions, public bindings?: IComponentBindings) {
     super(element, PipelineContext.ID, bindings);
@@ -90,15 +90,17 @@ export class PipelineContext extends Component {
    * @param key
    * @returns {string}
    */
-  public getContextValue(key: string): string {
-    return this.content[key].replace(/\{\!([^\}]+)\}/g, (all: string, contextKey: string) => {
-      if (Coveo.context != null && contextKey in Coveo.context) {
-        return Coveo.context[contextKey];
-      } else if (contextKey == PipelineContext.CURRENT_URL) {
-        return window.location.href;
-      }
-      return '';
-    });
+  public getContextValue(key: string): string | string[] {
+    const contextValue = this.content[key];
+    if (_.isArray(contextValue)) {
+      const contextValues = [];
+      _.each(this.content[key], value => {
+        contextValues.push(this.getModifiedData(value));
+      });
+      return contextValues;
+    } else if (_.isString(contextValue)) {
+      return this.getModifiedData(contextValue);
+    }
   }
 
   private handleBuildingQuery(args: IBuildingQueryEventArgs) {
@@ -108,7 +110,17 @@ export class PipelineContext extends Component {
     });
   }
 
-
+  // We need to modify the data to escape special salesforce characters. eg: {! }
+  private getModifiedData(value: string) {
+    return value.replace(/\{\!([^\}]+)\}/g, (all: string, contextKey: string) => {
+      if (Coveo.context != null && contextKey in Coveo.context) {
+        return Coveo.context[contextKey];
+      } else if (contextKey == PipelineContext.CURRENT_URL) {
+        return window.location.href;
+      }
+      return '';
+    });
+  }
 }
 
 Initialization.registerAutoCreateComponent(PipelineContext);

@@ -15,8 +15,7 @@ import 'styling/_Breadcrumb';
 import { SVGIcons } from '../../utils/SVGIcons';
 import { SVGDom } from '../../utils/SVGDom';
 
-export interface IBreadcrumbOptions {
-}
+export interface IBreadcrumbOptions {}
 
 /**
  * The Breadcrumb component displays a summary of the currently active query filters.
@@ -39,9 +38,9 @@ export class Breadcrumb extends Component {
 
   static doExport = () => {
     exportGlobally({
-      'Breadcrumb': Breadcrumb
+      Breadcrumb: Breadcrumb
     });
-  }
+  };
 
   private lastBreadcrumbs: IBreadcrumbItem[];
 
@@ -118,7 +117,7 @@ export class Breadcrumb extends Component {
       tabindex: 0
     }).el;
 
-    const clearIcon = $$('div', { className: 'coveo-icon coveo-breadcrumb-clear-all-icon' }, SVGIcons.checkboxHookExclusionMore).el;
+    const clearIcon = $$('div', { className: 'coveo-icon coveo-breadcrumb-clear-all-icon' }, SVGIcons.icons.checkboxHookExclusionMore).el;
     SVGDom.addClassToSVGInContainer(clearIcon, 'coveo-breadcrumb-clear-all-svg');
     clear.appendChild(clearIcon);
     const clearText = document.createElement('div');

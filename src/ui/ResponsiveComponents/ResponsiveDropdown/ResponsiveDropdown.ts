@@ -4,10 +4,9 @@ import { $$, Dom } from '../../../utils/Dom';
 import { EventsUtils } from '../../../utils/EventsUtils';
 import * as _ from 'underscore';
 
-type HandlerCall = { handler: Function, context: any };
+type HandlerCall = { handler: Function; context: any };
 
 export class ResponsiveDropdown {
-
   public static TRANSPARENT_BACKGROUND_OPACITY: string = '0.9';
   public static DROPDOWN_BACKGROUND_CSS_CLASS_NAME: string = 'coveo-dropdown-background';
 
@@ -82,6 +81,7 @@ export class ResponsiveDropdown {
       this.coveoRoot.el.appendChild(this.popupBackground.el);
       window.getComputedStyle(this.popupBackground.el).opacity;
       this.popupBackground.el.style.opacity = ResponsiveDropdown.TRANSPARENT_BACKGROUND_OPACITY;
+      this.popupBackground.addClass('coveo-dropdown-background-active');
     }
   }
 
@@ -90,6 +90,7 @@ export class ResponsiveDropdown {
       // forces the browser to reflow the element, so that the transition is applied.
       window.getComputedStyle(this.popupBackground.el).opacity;
       this.popupBackground.el.style.opacity = '0';
+      this.popupBackground.removeClass('coveo-dropdown-background-active');
     }
   }
 

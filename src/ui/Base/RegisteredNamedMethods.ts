@@ -69,7 +69,12 @@ Initialization.registerNamedMethod('initSearchbox', (element: HTMLElement, searc
  * @param options JSON options for the framework (e.g.: <code>{Searchbox : {enableSearchAsYouType: true}}</code>).
  * @returns {Promise<{elem: HTMLElement}>}
  */
-export function initRecommendation(element: HTMLElement, mainSearchInterface?: HTMLElement, userContext?: { [name: string]: any }, options: any = {}) {
+export function initRecommendation(
+  element: HTMLElement,
+  mainSearchInterface?: HTMLElement,
+  userContext?: { [name: string]: any },
+  options: any = {}
+) {
   var recommendationOptions = <IRecommendationOptions>{};
   recommendationOptions.mainSearchInterface = mainSearchInterface;
   recommendationOptions.userContext = JSON.stringify(userContext);
@@ -91,9 +96,12 @@ export function initRecommendation(element: HTMLElement, mainSearchInterface?: H
   });
 }
 
-Initialization.registerNamedMethod('initRecommendation', (element: HTMLElement, mainSearchInterface: HTMLElement, userContext: any = {}, options: any = {}) => {
-  initRecommendation(element, mainSearchInterface, userContext, options);
-});
+Initialization.registerNamedMethod(
+  'initRecommendation',
+  (element: HTMLElement, mainSearchInterface: HTMLElement, userContext: any = {}, options: any = {}) => {
+    initRecommendation(element, mainSearchInterface, userContext, options);
+  }
+);
 
 /**
  * Execute a standard query. Active component in the interface will react to events/ push data in the query / handle the query success or failure as needed.
@@ -120,15 +128,49 @@ Initialization.registerNamedMethod('executeQuery', (element: HTMLElement) => {
 });
 
 /**
- * Perform operation on the state ({@link QueryStateModel} of the interface.<br/>
- * Get the complete {@link QueryStateModel} object: <code>Coveo.state(element)</code><br/>.
- * Get an attribute from the {@link QueryStateModel}: <code>Coveo.state(element, 'q')</code> Can be any attribute.<br/>
- * Set an attribute on the {@link QueryStateModel}: <code>Coveo.state(element, 'q', 'foobar')</code>. Can be any attribute.<br/>
- * Set multiple attribute on the {@link QueryStateModel}: <code>Coveo.state(element, {'q' : 'foobar' , sort : 'relevancy'})</code>. Can be any attribute.<br/>
- * If using the jQuery extension, this is called using <code>$('#root').coveo('state');</code>.
- * @param element The root of the interface for which to access the {@link QueryStateModel}.
- * @param args
- * @returns {any}
+ * Performs read and write operations on the [`QueryStateModel`]{@link QueryStateModel} instance of the search
+ * interface. See [State](https://developers.coveo.com/x/RYGfAQ).
+ *
+ * Can perform the following actions:
+ *
+ * - Get the `QueryStateModel` instance:
+ * ```javascript
+ * Coveo.state(element);
+ * ```
+ *
+ * - Get the value of a single state attribute from the `QueryStateModel` instance:
+ * ```javascript
+ * // You can replace `q` with any registered state attribute.
+ * Coveo.state(element, "q");
+ * ```
+ *
+ * - Set the value of a single state attribute in the `QueryStateModel` instance:
+ * ```javascript
+ * // You can replace `q` with any registered state attribute.
+ * Coveo.state(element, "q", "my new value");
+ * ```
+ *
+ * - Set multiple state attribute values in the `QueryStateModel` instance:
+ * ```javascript
+ * // You can replace `q` and `sort` with any registered state attributes.
+ * Coveo.state(element, {
+ *     "q" : "my new value",
+ *     "sort" : "relevancy"
+ * });
+ * ```
+ *
+ * **Note:**
+ * > When setting one or several state attribute values with this function, you can pass an additional argument to set
+ * > the `silent` attribute to `true` in order to prevent the state change from triggering state change events.
+ * >
+ * > **Example:**
+ * > ```javascript
+ * > Coveo.state(element, "q", "my new value", { "silent" : true });
+ * > ```
+ *
+ * @param element The root of the interface whose `QueryStateModel` instance the function should interact with.
+ * @param args The arguments that determine the action to perform on the `QueryStateModel` instance.
+ * @returns {any} Depends on the action performed.
  */
 export function state(element: HTMLElement, ...args: any[]): any {
   Assert.exists(element);
@@ -235,9 +277,12 @@ export function logSearchEvent(element: HTMLElement, searchEventCause: IAnalytic
   }
 }
 
-Initialization.registerNamedMethod('logSearchEvent', (element: HTMLElement, searchEventCause: IAnalyticsActionCause, metadata: IStringMap<string>) => {
-  logSearchEvent(element, searchEventCause, metadata);
-});
+Initialization.registerNamedMethod(
+  'logSearchEvent',
+  (element: HTMLElement, searchEventCause: IAnalyticsActionCause, metadata: IStringMap<string>) => {
+    logSearchEvent(element, searchEventCause, metadata);
+  }
+);
 
 /**
  * Finds the [`Analytics`]{@link Analytics} component instance, and uses it to log a `SearchAsYouType` usage analytics
@@ -261,16 +306,23 @@ Initialization.registerNamedMethod('logSearchEvent', (element: HTMLElement, sear
  * names. Each value must be a simple string. If you do not need to log metadata, you can simply pass an empty JSON
  * ( `{}` ).
  */
-export function logSearchAsYouTypeEvent(element: HTMLElement, searchAsYouTypeEventCause: IAnalyticsActionCause, metadata: IStringMap<string>) {
+export function logSearchAsYouTypeEvent(
+  element: HTMLElement,
+  searchAsYouTypeEventCause: IAnalyticsActionCause,
+  metadata: IStringMap<string>
+) {
   var client = getCoveoAnalyticsClient(element);
   if (client) {
     client.logSearchAsYouType<any>(searchAsYouTypeEventCause, metadata);
   }
 }
 
-Initialization.registerNamedMethod('logSearchAsYouTypeEvent', (element: HTMLElement, searchAsYouTypeEventCause: IAnalyticsActionCause, metadata: IStringMap<string>) => {
-  logSearchAsYouTypeEvent(element, searchAsYouTypeEventCause, metadata);
-});
+Initialization.registerNamedMethod(
+  'logSearchAsYouTypeEvent',
+  (element: HTMLElement, searchAsYouTypeEventCause: IAnalyticsActionCause, metadata: IStringMap<string>) => {
+    logSearchAsYouTypeEvent(element, searchAsYouTypeEventCause, metadata);
+  }
+);
 
 /**
  * Finds the [`Analytics`]{@link Analytics} component instance, and uses it to log a `Click` usage analytics event.
@@ -288,16 +340,24 @@ Initialization.registerNamedMethod('logSearchAsYouTypeEvent', (element: HTMLElem
  * ( `{}` ).
  * @param result The result that was clicked.
  */
-export function logClickEvent(element: HTMLElement, clickEventCause: IAnalyticsActionCause, metadata: IStringMap<any>, result: IQueryResult) {
+export function logClickEvent(
+  element: HTMLElement,
+  clickEventCause: IAnalyticsActionCause,
+  metadata: IStringMap<any>,
+  result: IQueryResult
+) {
   var client = getCoveoAnalyticsClient(element);
   if (client) {
     client.logClickEvent(clickEventCause, <IAnalyticsDocumentViewMeta>metadata, result, element);
   }
 }
 
-Initialization.registerNamedMethod('logClickEvent', (element: HTMLElement, clickEventCause: IAnalyticsActionCause, metadata: IStringMap<string>, result: IQueryResult) => {
-  logClickEvent(element, clickEventCause, metadata, result);
-});
+Initialization.registerNamedMethod(
+  'logClickEvent',
+  (element: HTMLElement, clickEventCause: IAnalyticsActionCause, metadata: IStringMap<string>, result: IQueryResult) => {
+    logClickEvent(element, clickEventCause, metadata, result);
+  }
+);
 
 /**
  * Pass options to the framework, before it is initialized ({@link init}).<br/>
@@ -328,24 +388,29 @@ Initialization.registerNamedMethod('patch', (element?: HTMLElement, methodName?:
 });
 
 export function initBox(element: HTMLElement, ...args: any[]) {
-  var type, options: any = {}, injectMarkup;
+  var type,
+    options: any = {},
+    injectMarkup;
   // This means : initBox, no type (no injection) and no options
   if (args.length == 0) {
     type = 'Standard';
     injectMarkup = false;
-  } else if (args.length == 1) { // 1 arg, might be options or type
+  } else if (args.length == 1) {
+    // 1 arg, might be options or type
     // This mean a type (with injection) and no options
     if (typeof args[0] == 'string') {
       type = args[0];
       injectMarkup = true;
-    } else if (typeof args[0] == 'object') { // This means no type(no injection) and with options
+    } else if (typeof args[0] == 'object') {
+      // This means no type(no injection) and with options
       type = 'Standard';
       injectMarkup = false;
       options = args[0];
     } else {
       Assert.fail('Invalid parameters to init a box');
     }
-  } else if (args.length == 2) { // 2 args means both options and type (with injection);
+  } else if (args.length == 2) {
+    // 2 args means both options and type (with injection);
     type = args[0];
     options = args[1];
     injectMarkup = true;
@@ -357,7 +422,6 @@ export function initBox(element: HTMLElement, ...args: any[]) {
     return Initialization.initBoxInterface(element, options, type, injectMarkup);
   });
 }
-
 
 Initialization.registerNamedMethod('initBox', (element?: HTMLElement, ...args: any[]) => {
   initBox(element, args);
@@ -375,12 +439,12 @@ Initialization.registerNamedMethod('nuke', (element: HTMLElement) => {
  * Sets the path from where the chunks used for lazy loading will be loaded. In some cases, in IE11, we cannot automatically detect it, use this instead.
  * @param path This should be the path of the Coveo script. It should also have a trailing slash.
  */
-export function configureRessourceRoot(path: string) {
-  PublicPathUtils.configureRessourceRoot(path);
+export function configureResourceRoot(path: string) {
+  PublicPathUtils.configureResourceRoot(path);
 }
 
-Initialization.registerNamedMethod('configureRessourceRoot', (path: string) => {
-  configureRessourceRoot(path);
+Initialization.registerNamedMethod('configureResourceRoot', (path: string) => {
+  configureResourceRoot(path);
 });
 
 /**

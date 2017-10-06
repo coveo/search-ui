@@ -59,11 +59,11 @@ export class FacetSettings extends FacetSort {
   public build() {
     this.settingsButton = $$('div', {
       className: 'coveo-facet-header-settings',
-      title: l('Settings'),
+      title: l('Settings')
     }).el;
 
     this.settingsIcon = $$('span', { className: 'coveo-facet-settings-more' }).el;
-    this.settingsIcon.innerHTML = SVGIcons.more;
+    this.settingsIcon.innerHTML = SVGIcons.icons.more;
     SVGDom.addClassToSVGInContainer(this.settingsIcon, 'coveo-facet-settings-more-svg');
     this.settingsButton.appendChild(this.settingsIcon);
 
@@ -94,7 +94,7 @@ export class FacetSettings extends FacetSort {
     this.handleMouseEventOnButton(this.sortSection);
     if (Utils.isNonEmptyArray(this.enabledSorts)) {
       this.settingsPopup.appendChild(this.sortSection.element);
-      _.each(this.directionSection, (d) => {
+      _.each(this.directionSection, d => {
         this.appendIfNotUndefined(d);
       });
       appendCommon();
@@ -115,10 +115,12 @@ export class FacetSettings extends FacetSort {
       const currentStateIncluded = this.facet.queryStateModel.get(this.includedStateAttribute);
       const currentStateExcluded = this.facet.queryStateModel.get(this.excludedStateAttribute);
       const currentStateOperator = this.facet.queryStateModel.get(this.operatorStateAttribute);
-      if (!Utils.isNullOrUndefined(state)
-        && Utils.isEmptyArray(currentStateIncluded)
-        && Utils.isEmptyArray(currentStateExcluded)
-        && !Utils.isNonEmptyString(currentStateOperator)) {
+      if (
+        !Utils.isNullOrUndefined(state) &&
+        Utils.isEmptyArray(currentStateIncluded) &&
+        Utils.isEmptyArray(currentStateExcluded) &&
+        !Utils.isNonEmptyString(currentStateOperator)
+      ) {
         const toSet: { [key: string]: any } = {};
         toSet[this.includedStateAttribute] = state.included;
         toSet[this.excludedStateAttribute] = state.excluded;
@@ -139,12 +141,11 @@ export class FacetSettings extends FacetSort {
       this.facetStateLocalStorage.save({
         included: this.facet.queryStateModel.get(this.includedStateAttribute),
         excluded: this.facet.queryStateModel.get(this.excludedStateAttribute),
-        operator: this.facet.queryStateModel.get(this.operatorStateAttribute),
+        operator: this.facet.queryStateModel.get(this.operatorStateAttribute)
       });
     } else {
       this.facet.logger.info('Facet state local storage not enabled : See Facet.options.enableSettingsFacetState');
     }
-
   }
 
   /**
@@ -158,11 +159,7 @@ export class FacetSettings extends FacetSort {
    * Open the settings menu
    */
   public open() {
-    PopupUtils.positionPopup(
-      this.settingsPopup,
-      this.settingsButton,
-      this.facet.root,
-      this.getPopupAlignment(), this.facet.root);
+    PopupUtils.positionPopup(this.settingsPopup, this.settingsButton, this.facet.root, this.getPopupAlignment(), this.facet.root);
 
     if (this.hideSection && this.showSection) {
       $$(this.hideSection).toggle(!$$(this.facet.element).hasClass('coveo-facet-collapsed'));
@@ -183,14 +180,18 @@ export class FacetSettings extends FacetSort {
   }
 
   public getSortItem(sortName: string): HTMLElement {
-    return _.find(this.sortSection.sortItems, (sortItem) => {
-      return $$(sortItem).getAttribute('data-sort-name').toLowerCase() == sortName.replace('ascending|descending', '').toLowerCase();
+    return _.find(this.sortSection.sortItems, sortItem => {
+      return (
+        $$(sortItem)
+          .getAttribute('data-sort-name')
+          .toLowerCase() == sortName.replace('ascending|descending', '').toLowerCase()
+      );
     });
   }
 
   private buildSortSection() {
     const sortSection = this.buildSection('coveo-facet-settings-section-sort');
-    const sortSectionIcon = this.buildIcon('coveo-facet-settings-section-sort-svg', SVGIcons.sort);
+    const sortSectionIcon = this.buildIcon('coveo-facet-settings-section-sort-svg', SVGIcons.icons.sort);
     const sortSectionItems = this.buildItems();
 
     const sortTitle = document.createElement('div');
@@ -199,7 +200,7 @@ export class FacetSettings extends FacetSort {
     sortSectionItems.appendChild(sortTitle);
 
     const sortItems = this.buildSortSectionItems();
-    _.each(sortItems, (s) => {
+    _.each(sortItems, s => {
       sortSectionItems.appendChild(s);
     });
     sortSection.appendChild(sortSectionIcon);
@@ -208,7 +209,7 @@ export class FacetSettings extends FacetSort {
   }
 
   private buildSortSectionItems() {
-    let elems = _.map(this.enabledSorts, (enabledSort) => {
+    let elems = _.map(this.enabledSorts, enabledSort => {
       if (_.contains(this.enabledSortsIgnoreRenderBecauseOfPairs, enabledSort)) {
         return undefined;
       } else {
@@ -239,17 +240,16 @@ export class FacetSettings extends FacetSort {
     const allEnabledSortsWithPossibleDirectionToggle = _.filter(this.enabledSorts, (facetSortDescription: IFacetSortDescription) => {
       return facetSortDescription.directionToggle;
     });
-    const allowToggle = _.filter(allEnabledSortsWithPossibleDirectionToggle, (possibleDirectionToggle) => {
+    const allowToggle = _.filter(allEnabledSortsWithPossibleDirectionToggle, possibleDirectionToggle => {
       return _.findWhere(this.enabledSorts, { name: possibleDirectionToggle.relatedSort }) != undefined;
     });
     return allowToggle.length > 0;
   }
 
-
   private buildDirectionSection() {
     const directionAscendingSection = this.buildAscendingOrDescendingSection('Ascending');
-    const iconAscending = this.buildIcon('coveo-facet-settings-section-direction-ascending-svg', SVGIcons.ascending);
-    const iconDescending = this.buildIcon('coveo-facet-settings-section-direction-descending-svg', SVGIcons.descending);
+    const iconAscending = this.buildIcon('coveo-facet-settings-section-direction-ascending-svg', SVGIcons.icons.ascending);
+    const iconDescending = this.buildIcon('coveo-facet-settings-section-direction-descending-svg', SVGIcons.icons.descending);
     const directionItemsAscending = this.buildItems();
     const ascending = this.buildAscendingOrDescending('Ascending');
 
@@ -274,12 +274,11 @@ export class FacetSettings extends FacetSort {
       this.selectItem(this.getItems(directionAscendingSection)[0]);
     }
     return [directionAscendingSection, directionDescendingSection];
-
   }
 
   private buildSaveStateSection() {
     const saveStateSection = this.buildSection('coveo-facet-settings-section-save-state');
-    const icon = this.buildIcon('coveo-facet-settings-section-save-state-svg', SVGIcons.dropdownMore);
+    const icon = this.buildIcon('coveo-facet-settings-section-save-state-svg', SVGIcons.icons.dropdownMore);
     const saveStateItems = this.buildItems();
 
     this.facetStateLocalStorage = new LocalStorageUtils<IFacetState>('facet-state-' + this.facet.options.id);
@@ -301,7 +300,7 @@ export class FacetSettings extends FacetSort {
 
   private buildClearStateSection() {
     const clearStateSection = this.buildSection('coveo-facet-settings-section-clear-state');
-    const icon = this.buildIcon('coveo-facet-settings-section-clear-state-svg', SVGIcons.dropdownLess);
+    const icon = this.buildIcon('coveo-facet-settings-section-clear-state-svg', SVGIcons.icons.dropdownLess);
     const clearStateItems = this.buildItems();
     const clearStateItem = this.buildItem(l('ClearFacetState'));
     clearStateItems.appendChild(clearStateItem);
@@ -313,7 +312,7 @@ export class FacetSettings extends FacetSort {
 
   private buildHideSection() {
     const hideSection = this.buildSection('coveo-facet-settings-section-hide');
-    const icon = this.buildIcon('coveo-facet-settings-section-hide-svg', SVGIcons.facetCollapse);
+    const icon = this.buildIcon('coveo-facet-settings-section-hide-svg', SVGIcons.icons.facetCollapse);
     const hideItems = this.buildItems();
     const hideItem = this.buildItem(l('Collapse'));
     hideItems.appendChild(hideItem);
@@ -329,7 +328,7 @@ export class FacetSettings extends FacetSort {
 
   private buildShowSection() {
     const showSection = this.buildSection('coveo-facet-settings-section-show');
-    const icon = this.buildIcon('coveo-facet-settings-section-show-svg', SVGIcons.facetExpand);
+    const icon = this.buildIcon('coveo-facet-settings-section-show-svg', SVGIcons.icons.facetExpand);
     const showItems = this.buildItems();
     const showItem = this.buildItem(l('Expand'));
     showItems.appendChild(showItem);
@@ -364,10 +363,14 @@ export class FacetSettings extends FacetSort {
   }
 
   private buildItem(label: string, title = label) {
-    return $$('div', {
-      className: 'coveo-facet-settings-item',
-      title: _.escape(title),
-    }, _.escape(label)).el;
+    return $$(
+      'div',
+      {
+        className: 'coveo-facet-settings-item',
+        title: _.escape(title)
+      },
+      _.escape(label)
+    ).el;
   }
 
   private buildItems() {
@@ -404,9 +407,12 @@ export class FacetSettings extends FacetSort {
   }
 
   private handleDirectionClick(e: Event, direction: string) {
-    if (!$$((<HTMLElement>e.target).parentElement.parentElement).hasClass('coveo-facet-settings-disabled') && this.activeSort.name.indexOf(direction) == -1) {
+    if (
+      !$$((<HTMLElement>e.target).parentElement.parentElement).hasClass('coveo-facet-settings-disabled') &&
+      this.activeSort.name.indexOf(direction) == -1
+    ) {
       this.activeSort = FacetSettings.availableSorts[this.activeSort.relatedSort];
-      _.each(this.directionSection, (d) => {
+      _.each(this.directionSection, d => {
         this.unselectSection(d);
       });
       this.selectItem(<HTMLElement>e.target);
@@ -427,10 +433,12 @@ export class FacetSettings extends FacetSort {
     this.facetStateLocalStorage.remove();
     this.facet.reset();
     this.close();
-    this.facet.triggerNewQuery(() => this.facet.usageAnalytics.logSearchEvent<IAnalyticsFacetMeta>(analyticsActionCauseList.facetClearAll, {
-      facetId: this.facet.options.id,
-      facetTitle: this.facet.options.title
-    }));
+    this.facet.triggerNewQuery(() =>
+      this.facet.usageAnalytics.logSearchEvent<IAnalyticsFacetMeta>(analyticsActionCauseList.facetClearAll, {
+        facetId: this.facet.options.id,
+        facetTitle: this.facet.options.title
+      })
+    );
   }
 
   private handleMouseEventOnButton(sortSection: { element: HTMLElement; sortItems: HTMLElement[] }) {
@@ -454,7 +462,7 @@ export class FacetSettings extends FacetSort {
 
   public getCurrentDirectionItem(directionSection = this.directionSection) {
     let found: HTMLElement;
-    _.each(directionSection, (direction) => {
+    _.each(directionSection, direction => {
       if (!found) {
         found = _.find(this.getItems(direction), (direction: HTMLElement) => {
           return this.activeSort.name.indexOf(direction.getAttribute('data-direction')) != -1;
@@ -468,7 +476,7 @@ export class FacetSettings extends FacetSort {
   }
 
   private activateDirectionSection() {
-    _.each(this.directionSection, (direction) => {
+    _.each(this.directionSection, direction => {
       $$(direction).removeClass('coveo-facet-settings-disabled');
       this.unselectSection(direction);
     });
@@ -476,11 +484,10 @@ export class FacetSettings extends FacetSort {
   }
 
   private disableDirectionSection() {
-    _.each(this.directionSection, (direction) => {
+    _.each(this.directionSection, direction => {
       $$(direction).addClass('coveo-facet-settings-disabled');
       this.unselectSection(direction);
     });
-
   }
 
   private getItems(section: HTMLElement) {
@@ -488,7 +495,7 @@ export class FacetSettings extends FacetSort {
   }
 
   private unselectSection(section: HTMLElement) {
-    _.each(this.getItems(section), (i) => {
+    _.each(this.getItems(section), i => {
       $$(i).removeClass('coveo-selected');
     });
   }
@@ -497,7 +504,6 @@ export class FacetSettings extends FacetSort {
     if (item) {
       $$(item).addClass('coveo-selected');
     }
-
   }
 
   private unselectItem(item: HTMLElement) {

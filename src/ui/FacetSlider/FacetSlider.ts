@@ -4,7 +4,7 @@
 import { ISliderOptions, Slider, IEndSlideEventArgs, IDuringSlideEventArgs, ISliderGraphData } from '../Misc/Slider';
 import { Component } from '../Base/Component';
 import { IComponentBindings } from '../Base/ComponentBindings';
-import { ComponentOptions, IFieldOption } from '../Base/ComponentOptions';
+import { ComponentOptions, IFieldOption, IComponentOptionsObjectOptionArgs } from '../Base/ComponentOptions';
 import { FacetHeader } from '../Facet/FacetHeader';
 import { l } from '../../strings/Strings';
 import { InitializationEvents } from '../../events/InitializationEvents';
@@ -13,7 +13,12 @@ import { QueryEvents, IQuerySuccessEventArgs, IBuildingQueryEventArgs, IDoneBuil
 import { BreadcrumbEvents, IPopulateBreadcrumbEventArgs, IBreadcrumbItem } from '../../events/BreadcrumbEvents';
 import { IAttributeChangedEventArg, Model } from '../../models/Model';
 import { $$ } from '../../utils/Dom';
-import { analyticsActionCauseList, IAnalyticsFacetMeta, IAnalyticsFacetSliderChangeMeta, IAnalyticsFacetGraphSelectedMeta } from '../Analytics/AnalyticsActionListMeta';
+import {
+  analyticsActionCauseList,
+  IAnalyticsFacetMeta,
+  IAnalyticsFacetSliderChangeMeta,
+  IAnalyticsFacetGraphSelectedMeta
+} from '../Analytics/AnalyticsActionListMeta';
 import { QueryStateModel } from '../../models/QueryStateModel';
 import { SliderEvents, IGraphValueSelectedArgs } from '../../events/SliderEvents';
 import { Assert } from '../../misc/Assert';
@@ -28,7 +33,6 @@ import { ResponsiveFacetSlider } from '../ResponsiveComponents/ResponsiveFacetSl
 import 'styling/_FacetSlider';
 import { IGroupByResult } from '../../rest/GroupByResult';
 import { Defer } from '../../MiscModules';
-
 
 export interface IFacetSliderOptions extends ISliderOptions {
   dateField?: boolean;
@@ -56,19 +60,17 @@ export interface IFacetSliderOptions extends ISliderOptions {
  * > [Components - Passing Component Options Before the init Call](https://developers.coveo.com/x/PoGfAQ#Components-PassingComponentOptionsBeforetheinitCall)).
  */
 export class FacetSlider extends Component {
-
   /**
    * The component options
    * @componentOptions
    */
   static options: IFacetSliderOptions = {
-
     /**
      * Specifies the title to display on top of the `FacetSlider`.
      *
      * Default value is the localized string for `NoTitle`.
      */
-    title: ComponentOptions.buildLocalizedStringOption({ defaultValue: l('NoTitle') }),
+    title: ComponentOptions.buildLocalizedStringOption({ defaultValue: l('NoTitle'), section: 'CommonOptions' }),
 
     /**
      * Specifies whether the [`field`]{@link FacetSlider.options.field} for which you are requesting a range is a date
@@ -77,7 +79,7 @@ export class FacetSlider extends Component {
      *
      * Default value is `false`.
      */
-    dateField: ComponentOptions.buildBooleanOption({ defaultValue: false }),
+    dateField: ComponentOptions.buildBooleanOption({ defaultValue: false, section: 'CommonOptions' }),
 
     /**
      * Specifies the index field whose values the `FacetSlider` should use.
@@ -87,7 +89,7 @@ export class FacetSlider extends Component {
      *
      * Specifying a value for this option is required for the `FacetSlider` component to work.
      */
-    field: ComponentOptions.buildFieldOption({ groupByField: true, required: true }),
+    field: ComponentOptions.buildFieldOption({ groupByField: true, required: true, section: 'CommonOptions' }),
 
     /**
      * Specifies a unique identifier for the `FacetSlider`. Among other things, this identifier serves the purpose of
@@ -109,7 +111,7 @@ export class FacetSlider extends Component {
      *
      * Default value is `MMM dd, yyyy`.
      */
-    dateFormat: ComponentOptions.buildStringOption(),
+    dateFormat: ComponentOptions.buildStringOption({ section: 'Display' }),
 
     /**
      * Specifies a query to filter automatic minimum and maximum values for the slider range.
@@ -124,7 +126,7 @@ export class FacetSlider extends Component {
      * <div class="CoveoFacetSlider" data-field="@date" data-date-field="true" data-query-override="@date>2000/01/01"></div>
      * ```
      */
-    queryOverride: ComponentOptions.buildStringOption(),
+    queryOverride: ComponentOptions.buildStringOption({ section: 'Filtering' }),
 
     /**
      * Specifies the starting boundary of the slider.
@@ -134,7 +136,7 @@ export class FacetSlider extends Component {
      *
      * Default value is the lowest available field value in the index.
      */
-    start: ComponentOptions.buildStringOption(),
+    start: ComponentOptions.buildStringOption({ section: 'Filtering' }),
 
     /**
      * Specifies the ending boundary of the slider.
@@ -144,21 +146,21 @@ export class FacetSlider extends Component {
      *
      * Default value is the highest available field value in the index.
      */
-    end: ComponentOptions.buildStringOption(),
+    end: ComponentOptions.buildStringOption({ section: 'Filtering' }),
 
     /**
      * Specifies whether to exclude the outer bounds of the slider in the generated query when they are not active.
      *
      * Default value is `false`.
      */
-    excludeOuterBounds: ComponentOptions.buildBooleanOption({ defaultValue: false }),
+    excludeOuterBounds: ComponentOptions.buildBooleanOption({ defaultValue: false, section: 'Filtering' }),
 
     /**
      * Specifies the number of decimal places to round the displayed numerical values to.
      *
      * Default (and minimum) value is `0`.
      */
-    rounded: ComponentOptions.buildNumberOption({ min: 0 }),
+    rounded: ComponentOptions.buildNumberOption({ min: 0, section: 'Filtering' }),
 
     /**
      * Specifies the number of steps to split the slider into.
@@ -190,12 +192,13 @@ export class FacetSlider extends Component {
      * - separator (`data-display-as-value-separator`): string; specifies the character(s) to use as a separator in the
      * caption. Default value is `"-"`.
      */
-    displayAsValue: ComponentOptions.buildObjectOption({
+    displayAsValue: ComponentOptions.buildObjectOption(<IComponentOptionsObjectOptionArgs>{
       subOptions: {
         enable: ComponentOptions.buildBooleanOption({ defaultValue: true }),
         unitSign: ComponentOptions.buildStringOption(),
         separator: ComponentOptions.buildStringOption({ defaultValue: '-' })
-      }
+      },
+      section: 'Display'
     }),
 
     /**
@@ -207,11 +210,12 @@ export class FacetSlider extends Component {
      * separator (`data-display-as-percent-separator`): string; specifies the character(s) to use as a separator in the
      * caption. Default value is `"-"`.
      */
-    displayAsPercent: ComponentOptions.buildObjectOption({
+    displayAsPercent: ComponentOptions.buildObjectOption(<IComponentOptionsObjectOptionArgs>{
       subOptions: {
         enable: ComponentOptions.buildBooleanOption({ defaultValue: false }),
         separator: ComponentOptions.buildStringOption({ defaultValue: '-' })
-      }
+      },
+      section: 'Display'
     }),
 
     /**
@@ -221,11 +225,11 @@ export class FacetSlider extends Component {
      * - steps (`data-graph-steps`): number; specifies the number of steps/columns to display in your graph. Default
      * value is `10`. Minimum value is `2`.
      */
-    graph: ComponentOptions.buildObjectOption({
+    graph: ComponentOptions.buildObjectOption(<IComponentOptionsObjectOptionArgs>{
       subOptions: {
         steps: ComponentOptions.buildNumberOption({ min: 2 }),
         animationDuration: ComponentOptions.buildNumberOption({ min: 0 }),
-        margin: ComponentOptions.buildObjectOption({
+        margin: ComponentOptions.buildObjectOption(<IComponentOptionsObjectOptionArgs>{
           subOptions: {
             top: ComponentOptions.buildNumberOption({ min: 0 }),
             bottom: ComponentOptions.buildNumberOption({ min: 0 }),
@@ -233,7 +237,8 @@ export class FacetSlider extends Component {
             right: ComponentOptions.buildNumberOption({ min: 0 })
           }
         })
-      }
+      },
+      section: 'Graph'
     }),
 
     /**
@@ -313,7 +318,6 @@ export class FacetSlider extends Component {
      */
     valueCaption: ComponentOptions.buildCustomOption<(values: number[]) => string>(() => {
       return null;
-
     }),
 
     /**
@@ -329,7 +333,7 @@ export class FacetSlider extends Component {
      *
      * Default value is `true`.
      */
-    enableResponsiveMode: ComponentOptions.buildBooleanOption({ defaultValue: true }),
+    enableResponsiveMode: ComponentOptions.buildBooleanOption({ defaultValue: true, section: 'ResponsiveOptions' }),
 
     /**
      * Specifies the label of the button which the end user can click to display the facets when in responsive mode. If
@@ -337,17 +341,17 @@ export class FacetSlider extends Component {
      *
      * Default value is "Filters".
      */
-    dropdownHeaderLabel: ComponentOptions.buildLocalizedStringOption()
+    dropdownHeaderLabel: ComponentOptions.buildLocalizedStringOption({ section: 'ResponsiveOptions' })
   };
 
   static ID = 'FacetSlider';
 
   static doExport = () => {
     exportGlobally({
-      'FacetSlider': FacetSlider,
-      'Slider': Slider
+      FacetSlider: FacetSlider,
+      Slider: Slider
     });
-  }
+  };
 
   public static DEBOUNCED_RESIZE_DELAY = 250;
 
@@ -383,11 +387,15 @@ export class FacetSlider extends Component {
     }
 
     if (this.options.start) {
-      this.options.start = this.options.dateField ? <any>new Date(this.options.start.replace(/-/g, '/')).getTime() : <any>Number(this.options.start);
+      this.options.start = this.options.dateField
+        ? <any>new Date(this.options.start.replace(/-/g, '/')).getTime()
+        : <any>Number(this.options.start);
     }
 
     if (this.options.end) {
-      this.options.end = this.options.dateField ? <any>new Date(this.options.end.replace(/-/g, '/')).getTime() : <any>Number(this.options.end);
+      this.options.end = this.options.dateField
+        ? <any>new Date(this.options.end.replace(/-/g, '/')).getTime()
+        : <any>Number(this.options.end);
     }
 
     this.facetQueryController = new FacetSliderQueryController(this);
@@ -397,8 +405,12 @@ export class FacetSlider extends Component {
     this.bind.onRootElement(QueryEvents.deferredQuerySuccess, (args: IQuerySuccessEventArgs) => this.handleDeferredQuerySuccess(args));
     this.bind.onRootElement(QueryEvents.buildingQuery, (args: IBuildingQueryEventArgs) => this.handleBuildingQuery(args));
     this.bind.onRootElement(QueryEvents.doneBuildingQuery, (args: IDoneBuildingQueryEventArgs) => this.handleDoneBuildingQuery(args));
-    this.bind.onRootElement(BreadcrumbEvents.populateBreadcrumb, (args: IPopulateBreadcrumbEventArgs) => this.handlePopulateBreadcrumb(args));
-    this.bind.onRootElement(SearchAlertsEvents.searchAlertsPopulateMessage, (args: ISearchAlertsPopulateMessageEventArgs) => this.handlePopulateSearchAlerts(args));
+    this.bind.onRootElement(BreadcrumbEvents.populateBreadcrumb, (args: IPopulateBreadcrumbEventArgs) =>
+      this.handlePopulateBreadcrumb(args)
+    );
+    this.bind.onRootElement(SearchAlertsEvents.searchAlertsPopulateMessage, (args: ISearchAlertsPopulateMessageEventArgs) =>
+      this.handlePopulateSearchAlerts(args)
+    );
     this.bind.onRootElement(BreadcrumbEvents.clearBreadcrumb, () => this.reset());
 
     this.onResize = _.debounce(() => {
@@ -482,11 +494,13 @@ export class FacetSlider extends Component {
    * @returns {boolean} `true` if the FacetSlider is active; `false` otherwise.
    */
   public isActive(): boolean {
-    return !isNaN(this.startOfSlider)
-      && !isNaN(this.endOfSlider)
-      && !isNaN(this.initialStartOfSlider)
-      && !isNaN(this.initialEndOfSlider)
-      && (this.startOfSlider != this.initialStartOfSlider || this.endOfSlider != this.initialEndOfSlider);
+    return (
+      !isNaN(this.startOfSlider) &&
+      !isNaN(this.endOfSlider) &&
+      !isNaN(this.initialStartOfSlider) &&
+      !isNaN(this.initialEndOfSlider) &&
+      (this.startOfSlider != this.initialStartOfSlider || this.endOfSlider != this.initialEndOfSlider)
+    );
   }
 
   public getSliderBoundaryForQuery(): number[] {
@@ -513,6 +527,7 @@ export class FacetSlider extends Component {
 
   public isSimpleSliderConfig() {
     return this.options.start != null && this.options.end != null;
+    // return false;
   }
 
   public hasAGraph() {
@@ -626,7 +641,9 @@ export class FacetSlider extends Component {
     }
     const sliderDiv = $$('div').el;
 
-    this.slider = this.slider ? this.slider : new Slider(sliderDiv, _.extend({}, this.options, { dateField: this.options.dateField }), this.root);
+    this.slider = this.slider
+      ? this.slider
+      : new Slider(sliderDiv, _.extend({}, this.options, { dateField: this.options.dateField }), this.root);
     $$(sliderDiv).on(SliderEvents.endSlide, (e: MouseEvent, args: IEndSlideEventArgs) => {
       this.handleEndSlide(args);
     });
@@ -741,7 +758,7 @@ export class FacetSlider extends Component {
     let graphData: ISliderGraphData[];
     let totalGraphResults = 0;
     if (rawGroupByResults) {
-      graphData = _.map(rawGroupByResults.values, (value) => {
+      graphData = _.map(rawGroupByResults.values, value => {
         totalGraphResults += value.numberOfResults;
         let start: any = value.value.split('..')[0];
         let end: any = value.value.split('..')[1];
@@ -829,7 +846,10 @@ export class FacetSlider extends Component {
     if (endFromState != undefined) {
       end = endFromState;
     }
-    if (start != this.queryStateModel.getDefault(this.rangeQueryStateAttribute)[0] || end != this.queryStateModel.getDefault(this.rangeQueryStateAttribute)[1]) {
+    if (
+      start != this.queryStateModel.getDefault(this.rangeQueryStateAttribute)[0] ||
+      end != this.queryStateModel.getDefault(this.rangeQueryStateAttribute)[1]
+    ) {
       return [start, end];
     } else {
       return [undefined, undefined];
@@ -868,7 +888,9 @@ export class FacetSlider extends Component {
 
   private setupSliderStateVariables() {
     if (isNaN(this.initialStartOfSlider) || isNaN(this.initialEndOfSlider)) {
-      this.logger.warn('Cannnot initialize slider with those values : start: ' + this.initialStartOfSlider + ' end: ' + this.initialEndOfSlider);
+      this.logger.warn(
+        'Cannnot initialize slider with those values : start: ' + this.initialStartOfSlider + ' end: ' + this.initialEndOfSlider
+      );
     } else {
       this.initialStartOfSlider = Number(this.initialStartOfSlider);
       this.initialEndOfSlider = Number(this.initialEndOfSlider);
@@ -925,7 +947,7 @@ export class FacetSlider extends Component {
   private setupInitialSliderStateEnd(value: any) {
     if (this.initialEndOfSlider == undefined) {
       this.initialEndOfSlider = value;
-      if (this.options.dateField && isNaN((value))) {
+      if (this.options.dateField && isNaN(value)) {
         this.initialEndOfSlider = new Date(value.replace('@', ' ')).getTime();
       }
     }
@@ -954,7 +976,12 @@ export class FacetSlider extends Component {
   }
 
   private isFacetEmpty(groupByResults: IGroupByResult, data: IQuerySuccessEventArgs) {
-    return groupByResults == null || groupByResults.values[0] == null || groupByResults.values[0].numberOfResults == 0 || data.results.results.length == 0;
+    return (
+      groupByResults == null ||
+      groupByResults.values[0] == null ||
+      groupByResults.values[0].numberOfResults == 0 ||
+      data.results.results.length == 0
+    );
   }
 }
 

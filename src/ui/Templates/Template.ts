@@ -61,12 +61,10 @@ export class DefaultInstantiateTemplateOptions implements IInstantiateTemplateOp
       return _.extend(this.get(), other);
     }
     return this.get();
-
   }
 }
 
 export class Template implements ITemplateProperties {
-
   private logger: Logger = new Logger(this);
   public condition: Function;
   public conditionToParse: string;
@@ -78,10 +76,12 @@ export class Template implements ITemplateProperties {
   public layout: ValidLayout;
   public role: TemplateRole;
 
-  constructor(public dataToString?: (object?: any) => string) {
-  }
+  constructor(public dataToString?: (object?: any) => string) {}
 
-  instantiateToString(object: IQueryResult, instantiateOptions: IInstantiateTemplateOptions = new DefaultInstantiateTemplateOptions()): string {
+  instantiateToString(
+    object: IQueryResult,
+    instantiateOptions: IInstantiateTemplateOptions = new DefaultInstantiateTemplateOptions()
+  ): string {
     if (this.dataToString) {
       if (instantiateOptions.checkCondition === false) {
         return this.dataToString(object);
@@ -124,30 +124,37 @@ export class Template implements ITemplateProperties {
         this.logger.trace('Template was skipped because layout does not match', this, this.layout);
         return null;
       }
-
-      this.logger.trace('Evaluating template ...');
-      // Condition (as a function) is eval'ed, first
-      if (this.condition != null && this.condition(object)) {
-        this.logger.trace('Template was loaded because condition was :', this.condition, object);
-        return this.dataToString(object);
-      }
-      // Condition (as a string) is parsed, if available.
-      if (this.conditionToParse != null && TemplateConditionEvaluator.evaluateCondition(this.conditionToParse, object, instantiateOptions.responsiveComponents)) {
-        this.logger.trace('Template was loaded because condition was :', this.conditionToParse, object);
-        return this.dataToString(object);
-      }
-      // fieldsToMatch is yet another fallback that allows to specify if a template should be loaded.
-      if (this.fieldsToMatch != null && TemplateFieldsEvaluator.evaluateFieldsToMatch(this.fieldsToMatch, object)) {
-        this.logger.trace('Template was loaded because condition was :', this.fieldsToMatch, object);
-        return this.dataToString(object);
-      }
-      // If there is no condition at all, this means "true"
-      if (this.condition == null && this.conditionToParse == null && this.fieldsToMatch == null) {
-        this.logger.trace('Template was loaded because there was *NO* condition', this.condition, object);
-        return this.dataToString(object);
+      try {
+        this.logger.trace('Evaluating template ...');
+        // Condition (as a function) is eval'ed, first
+        if (this.condition != null && this.condition(object)) {
+          this.logger.trace('Template was loaded because condition was :', this.condition, object);
+          return this.dataToString(object);
+        }
+        // Condition (as a string) is parsed, if available.
+        if (
+          this.conditionToParse != null &&
+          TemplateConditionEvaluator.evaluateCondition(this.conditionToParse, object, instantiateOptions.responsiveComponents)
+        ) {
+          this.logger.trace('Template was loaded because condition was :', this.conditionToParse, object);
+          return this.dataToString(object);
+        }
+        // fieldsToMatch is yet another fallback that allows to specify if a template should be loaded.
+        if (this.fieldsToMatch != null && TemplateFieldsEvaluator.evaluateFieldsToMatch(this.fieldsToMatch, object)) {
+          this.logger.trace('Template was loaded because condition was :', this.fieldsToMatch, object);
+          return this.dataToString(object);
+        }
+        // If there is no condition at all, this means "true"
+        if (this.condition == null && this.conditionToParse == null && this.fieldsToMatch == null) {
+          this.logger.trace('Template was loaded because there was *NO* condition', this.condition, object);
+          return this.dataToString(object);
+        }
+      } catch (e) {
+        new Logger(this).error('Cannot instantiate template', e.message, this.getTemplateInfo());
+        new Logger(this).warn('A default template was used');
+        return null;
       }
     }
-
     this.logger.trace('Template was skipped because it did not match any condition', this);
     return null;
   }
@@ -186,7 +193,7 @@ export class Template implements ITemplateProperties {
     }
 
     let allComponentsLazyLoaded = _.map(this.getComponentsInside(html), (component: string) => {
-      return LazyInitialization.getLazyRegisteredComponent(component).then((lazyLoadedComponent) => {
+      return LazyInitialization.getLazyRegisteredComponent(component).then(lazyLoadedComponent => {
         return lazyLoadedComponent;
       });
     });
@@ -227,5 +234,10 @@ export class Template implements ITemplateProperties {
     } catch (e) {
       this.conditionToParse = condition;
     }
+  }
+
+  protected getTemplateInfo(): any {
+    // Try to get info on the template by returning the first parameter found that is not undefined.
+    return this.conditionToParse != undefined ? this.conditionToParse : this.condition != undefined ? this.condition : this.fieldsToMatch;
   }
 }

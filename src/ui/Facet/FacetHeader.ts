@@ -77,7 +77,6 @@ export class FacetHeader {
     return this.element;
   }
 
-
   public switchToAnd(): void {
     if (this.options.facet) {
       this.options.facet.options.useAnd = true;
@@ -141,7 +140,7 @@ export class FacetHeader {
   }
 
   private buildWaitAnimation(): HTMLElement {
-    this.waitElement = $$('div', { className: 'coveo-facet-header-wait-animation' }, SVGIcons.loading).el;
+    this.waitElement = $$('div', { className: 'coveo-facet-header-wait-animation' }, SVGIcons.icons.loading).el;
     SVGDom.addClassToSVGInContainer(this.waitElement, 'coveo-facet-header-wait-animation-svg');
     this.waitElement.style.visibility = 'hidden';
     return this.waitElement;
@@ -172,9 +171,12 @@ export class FacetHeader {
   }
 
   private buildOperatorToggle(): HTMLElement {
-    const icon = $$('span', { className: 'coveo-' + (this.options.facet.options.useAnd ? 'and' : 'or') }, SVGIcons.orAnd);
+    const icon = $$('span', { className: 'coveo-' + (this.options.facet.options.useAnd ? 'and' : 'or') }, SVGIcons.icons.orAnd);
     SVGDom.addClassToSVGInContainer(icon.el, 'coveo-or-and-svg');
-    const toggle = $$('div', { className: 'coveo-facet-header-operator', title: l('SwitchTo', this.options.facet.options.useAnd ? l('Or') : l('And')) });
+    const toggle = $$('div', {
+      className: 'coveo-facet-header-operator',
+      title: l('SwitchTo', this.options.facet.options.useAnd ? l('Or') : l('And'))
+    });
     toggle.append(icon.el);
     $$(toggle).on('click', () => this.handleOperatorClick());
 
@@ -190,12 +192,14 @@ export class FacetHeader {
     if (this.options.facet.getSelectedValues().length != 0) {
       const operatorNow = this.options.facet.options.useAnd ? 'AND' : 'OR';
       const operatorBefore = this.options.facet.options.useAnd ? 'OR' : 'AND';
-      this.options.facet.triggerNewQuery(() => this.options.facet.usageAnalytics.logSearchEvent<IAnalyticsFacetOperatorMeta>(analyticsActionCauseList.facetToggle, {
-        facetId: this.options.facet.options.id,
-        facetOperatorBefore: operatorBefore,
-        facetOperatorAfter: operatorNow,
-        facetTitle: this.options.title
-      }));
+      this.options.facet.triggerNewQuery(() =>
+        this.options.facet.usageAnalytics.logSearchEvent<IAnalyticsFacetOperatorMeta>(analyticsActionCauseList.facetToggle, {
+          facetId: this.options.facet.options.id,
+          facetOperatorBefore: operatorBefore,
+          facetOperatorAfter: operatorNow,
+          facetTitle: this.options.title
+        })
+      );
     }
   }
 
@@ -209,7 +213,7 @@ export class FacetHeader {
   }
 
   public buildEraser(): HTMLElement {
-    const eraser = $$('div', { title: l('Clear', this.options.title), className: 'coveo-facet-header-eraser' }, SVGIcons.mainClear);
+    const eraser = $$('div', { title: l('Clear', this.options.title), className: 'coveo-facet-header-eraser' }, SVGIcons.icons.mainClear);
     SVGDom.addClassToSVGInContainer(eraser.el, 'coveo-facet-header-eraser-svg');
 
     eraser.on('click', () => {

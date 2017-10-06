@@ -8,7 +8,12 @@ import { ISettingsPopulateMenuArgs } from '../Settings/Settings';
 import { Initialization } from '../Base/Initialization';
 import { l } from '../../strings/Strings';
 import { $$, Dom } from '../../utils/Dom';
-import { IAdvancedSearchInput, IAdvancedSearchPrebuiltInput, IAdvancedSearchSection, IExternalAdvancedSearchSection } from './AdvancedSearchInput';
+import {
+  IAdvancedSearchInput,
+  IAdvancedSearchPrebuiltInput,
+  IAdvancedSearchSection,
+  IExternalAdvancedSearchSection
+} from './AdvancedSearchInput';
 import { AdvancedSearchInputFactory } from './AdvancedSearchInputFactory';
 import { IQueryOptions } from '../../controllers/QueryController';
 import { IAnalyticsNoMeta, analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
@@ -45,20 +50,19 @@ export class AdvancedSearch extends Component {
 
   static doExport = () => {
     exportGlobally({
-      'AdvancedSearch': AdvancedSearch,
-      'NumericSpinner': NumericSpinner,
-      'DatePicker': DatePicker,
-      'Dropdown': Dropdown,
-      'TextInput': TextInput,
-      'RadioButton': RadioButton
+      AdvancedSearch: AdvancedSearch,
+      NumericSpinner: NumericSpinner,
+      DatePicker: DatePicker,
+      Dropdown: Dropdown,
+      TextInput: TextInput,
+      RadioButton: RadioButton
     });
-  }
+  };
 
   /**
    * @componentOptions
    */
   static options: IAdvancedSearchOptions = {
-
     /**
      * Specifies whether to include the built-in **Keywords** section.
      *
@@ -102,7 +106,12 @@ export class AdvancedSearch extends Component {
    * @param bindings The bindings that the component requires to function normally. If not set, these will be
    * automatically resolved (with a slower execution time).
    */
-  constructor(public element: HTMLElement, public options?: IAdvancedSearchOptions, bindings?: IComponentBindings, private ModalBox = ModalBoxModule) {
+  constructor(
+    public element: HTMLElement,
+    public options?: IAdvancedSearchOptions,
+    bindings?: IComponentBindings,
+    private ModalBox = ModalBoxModule
+  ) {
     super(element, AdvancedSearch.ID, bindings);
     this.options = ComponentOptions.initComponentOptions(element, AdvancedSearch, options);
     this.bindEvents();
@@ -127,7 +136,7 @@ export class AdvancedSearch extends Component {
    * Resets the state of all form inputs inside the `AdvancedSearch` component.
    */
   public reset() {
-    _.each(this.inputs, (input) => {
+    _.each(this.inputs, input => {
       input.reset();
     });
   }
@@ -164,9 +173,13 @@ export class AdvancedSearch extends Component {
         className: 'coveo-title'
       });
       title.text(l('FiltersInAdvancedSearch') + ' : ');
-      const clear = $$('span', {
-        className: 'coveo-advanced-search-breadcrumb-clear'
-      }, SVGIcons.checkboxHookExclusionMore);
+      const clear = $$(
+        'span',
+        {
+          className: 'coveo-advanced-search-breadcrumb-clear'
+        },
+        SVGIcons.icons.checkboxHookExclusionMore
+      );
       SVGDom.addClassToSVGInContainer(clear.el, 'coveo-advanced-search-breadcrumb-clear-svg');
       clear.on('click', () => {
         this.handleClearBreadcrumb();
@@ -203,7 +216,7 @@ export class AdvancedSearch extends Component {
       className: 'coveo-advanced-search',
       onOpen: () => this.open(),
       onClose: () => this.close(),
-      svgIcon: SVGIcons.dropdownPreferences,
+      svgIcon: SVGIcons.icons.dropdownPreferences,
       svgIconClassName: 'coveo-advanced-search-svg'
     });
   }
@@ -215,7 +228,7 @@ export class AdvancedSearch extends Component {
         section.updateQuery(<any>section.inputs, data.queryBuilder);
       }
     });
-    _.each(this.inputs, (input) => {
+    _.each(this.inputs, input => {
       if (input.updateQuery) {
         input.updateQuery(data.queryBuilder);
       }
@@ -250,7 +263,7 @@ export class AdvancedSearch extends Component {
       component.append(this.buildExternalSection(section));
     });
 
-    _.each(inputSections, (section) => {
+    _.each(inputSections, section => {
       component.append(this.buildInternalSection(section));
     });
 
@@ -297,11 +310,11 @@ export class AdvancedSearch extends Component {
   private buildInternalSection(section: IAdvancedSearchSection): HTMLElement {
     let sectionHTML = this.buildSectionTitle(section);
     let sectionInputs = [];
-    _.each(section.inputs, (input) => {
+    _.each(section.inputs, input => {
       sectionInputs.push(this.buildDefaultInput(input));
     });
     this.inputs = _.union(this.inputs, sectionInputs);
-    _.each(sectionInputs, (input) => {
+    _.each(sectionInputs, input => {
       $$(sectionHTML).append(input.build());
     });
 
@@ -329,7 +342,9 @@ export class AdvancedSearch extends Component {
   }
 
   private bindEvents() {
-    this.bind.onRootElement(BreadcrumbEvents.populateBreadcrumb, (args: IPopulateBreadcrumbEventArgs) => this.handlePopulateBreadcrumb(args));
+    this.bind.onRootElement(BreadcrumbEvents.populateBreadcrumb, (args: IPopulateBreadcrumbEventArgs) =>
+      this.handlePopulateBreadcrumb(args)
+    );
     this.bind.onRootElement(BreadcrumbEvents.clearBreadcrumb, (args: IClearBreadcrumbEventArgs) => this.handleClearBreadcrumb());
     this.bind.onRootElement(SettingsEvents.settingsPopulateMenu, (args: ISettingsPopulateMenuArgs) => this.handlePopulateMenu(args));
     this.bind.onRootElement(QueryEvents.buildingQuery, (data: IBuildingQueryEventArgs) => this.handleBuildingQuery(data));

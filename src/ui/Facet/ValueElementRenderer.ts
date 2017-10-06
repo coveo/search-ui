@@ -19,8 +19,7 @@ export class ValueElementRenderer {
   public excludeIcon: HTMLElement;
   public computedField: HTMLElement;
 
-  constructor(public facet: Facet, public facetValue: FacetValue) {
-  }
+  constructor(public facet: Facet, public facetValue: FacetValue) {}
 
   public withNo(element: HTMLElement[]): ValueElementRenderer;
   public withNo(element: HTMLElement): ValueElementRenderer;
@@ -103,7 +102,7 @@ export class ValueElementRenderer {
       tabindex: 0
     }).el;
     this.addFocusAndBlurEventListeners(excludeIcon);
-    excludeIcon.innerHTML = SVGIcons.checkboxHookExclusionMore;
+    excludeIcon.innerHTML = SVGIcons.icons.checkboxHookExclusionMore;
     SVGDom.addClassToSVGInContainer(excludeIcon, 'coveo-facet-value-exclude-svg');
     return excludeIcon;
   }
@@ -144,7 +143,7 @@ export class ValueElementRenderer {
       className: 'coveo-facet-value-checkbox',
       tabindex: 0
     }).el;
-    checkbox.innerHTML = SVGIcons.checkboxHookExclusionMore;
+    checkbox.innerHTML = SVGIcons.icons.checkboxHookExclusionMore;
     SVGDom.addClassToSVGInContainer(checkbox, 'coveo-facet-value-checkbox-svg');
     this.addFocusAndBlurEventListeners(checkbox);
     return checkbox;

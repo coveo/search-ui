@@ -4,7 +4,7 @@
 ///<reference path="OldOmniboxAddon.ts" />
 
 import { ComponentOptionsModel, COMPONENT_OPTIONS_ATTRIBUTES } from '../../models/ComponentOptionsModel';
-export const MagicBox: any = require('exports-loader?Coveo.MagicBox!../../../node_modules/coveomagicbox/bin/MagicBox.min.js');
+export const MagicBox: any = require('exports-loader?Coveo.MagicBox!magic-box');
 import { IQueryboxOptions } from '../Querybox/Querybox';
 import { Component } from '../Base/Component';
 import { IComponentBindings } from '../Base/ComponentBindings';
@@ -14,7 +14,7 @@ import { StandaloneSearchInterfaceEvents } from '../../events/StandaloneSearchIn
 import { MODEL_EVENTS, IAttributeChangedEventArg } from '../../models/Model';
 import { QUERY_STATE_ATTRIBUTES } from '../../models/QueryStateModel';
 import { IAnalyticsNoMeta, analyticsActionCauseList, IAnalyticsOmniboxSuggestionMeta } from '../Analytics/AnalyticsActionListMeta';
-import { OmniboxEvents, IOmniboxPreprocessResultForQueryEventArgs } from '../../events/OmniboxEvents';
+import { OmniboxEvents, IOmniboxPreprocessResultForQueryEventArgs, IPopulateOmniboxSuggestionsEventArgs } from '../../events/OmniboxEvents';
 import { $$ } from '../../utils/Dom';
 import { Assert } from '../../misc/Assert';
 import { QueryStateModel } from '../../models/QueryStateModel';
@@ -33,12 +33,6 @@ import { StandaloneSearchInterface } from '../SearchInterface/SearchInterface';
 import * as _ from 'underscore';
 import { exportGlobally } from '../../GlobalExports';
 import 'styling/_Omnibox';
-import { InitializationEvents } from '../../events/InitializationEvents';
-
-export interface IPopulateOmniboxSuggestionsEventArgs {
-  omnibox: Omnibox;
-  suggestions: Array<Coveo.MagicBox.Suggestion[] | Promise<Coveo.MagicBox.Suggestion[]>>;
-}
 
 export interface IOmniboxSuggestion extends Coveo.MagicBox.Suggestion {
   executableConfidence?: number;
@@ -54,45 +48,48 @@ export interface IOmniboxOptions extends IQueryboxOptions {
   enableQueryExtensionAddon?: boolean;
   omniboxTimeout?: number;
   placeholder?: string;
-  grammar?: (grammar: { start: string; expressions: { [id: string]: Coveo.MagicBox.ExpressionDef }; }) => { start: string; expressions: { [id: string]: Coveo.MagicBox.ExpressionDef } };
+  grammar?: (
+    grammar: { start: string; expressions: { [id: string]: Coveo.MagicBox.ExpressionDef } }
+  ) => { start: string; expressions: { [id: string]: Coveo.MagicBox.ExpressionDef } };
 }
 
 const MINIMUM_EXECUTABLE_CONFIDENCE = 0.8;
 
 /**
- * The Omnibox component is very similar to the simpler {@link Querybox} component. It supports all of the same options
- * and behaviors.
+ * The `Omnibox` component extends the [`Querybox`]{@link Querybox}, and thus provides the same basic options and
+ * behaviors. Furthermore, the `Omnibox` adds a type-ahead capability to the search input.
  *
- * The Omnibox component takes care of adding type-ahead capability to the search input. Custom components can extend
- * and customize the type-ahead and the suggestions it provides.
+ * You can configure the type-ahead feature by enabling or disabling certain addons, which the Coveo JavaScript Search
+ * Framework provides out-of-the-box (see the [`enableFieldAddon`]{@link Omnibox.options.enableFieldAddon},
+ * [`enableQueryExtension`]{@link Omnibox.options.enableQueryExtensionAddon}, and
+ * [`enableQuerySuggestAddon`]{@link Omnibox.options.enableQuerySuggestAddon} options).
  *
- * The type-ahead is configurable by activating addons, which the Coveo JavaScript Search Framework provides OOTB
- * (facets, analytics suggestions, Coveo Machine Learning suggestions and advanced Coveo syntax suggestions).
+ * Custom components and external code can also extend or customize the type-ahead feature and the query completion
+ * suggestions it provides by attaching their own handlers to the
+ * [`populateOmniboxSuggestions`]{@link OmniboxEvents.populateOmniboxSuggestions`] event.
  *
- * It is also possible for external code to provide type-ahead suggestions.
- *
- * See also the {@link Searchbox} component, which can automatically instantiate an Omnibox component along with an
- * optional {@link SearchButton} component.
+ * See also the [`Searchbox`]{@link Searchbox} component, which can automatically instantiate an `Omnibox` along with an
+ * optional {@link SearchButton}.
  */
 export class Omnibox extends Component {
   public static ID = 'Omnibox';
 
   static doExport = () => {
     exportGlobally({
-      'Omnibox': Omnibox,
-      'MagicBox': MagicBox
+      Omnibox: Omnibox,
+      MagicBox: MagicBox,
+      QueryboxQueryParameters: QueryboxQueryParameters
     });
-  }
+  };
 
   /**
    * The options for the omnibox
    * @componentOptions
    */
   static options: IOmniboxOptions = {
-
     /**
-     * Specifies whether suggestions appearing in the Omnibox should push the result down instead of appearing over the
-     * results.
+     * Specifies whether query completion suggestions appearing in the `Omnibox` should push the result list and facets
+     * down, rather than rendering themselves over them (and partially hiding them).
      *
      * Set this option as well as {@link Omnibox.options.enableSearchAsYouType} and
      * {@link Omnibox.options.enableQuerySuggestAddon} to `true` for a cool effect!
@@ -102,37 +99,44 @@ export class Omnibox extends Component {
     inline: ComponentOptions.buildBooleanOption({ defaultValue: false }),
 
     /**
-     * Specifies whether to automatically trigger a new query whenever the end user types new text inside the Omnibox.
+     * Whether to automatically trigger a new query whenever the end user types additional text in the search box input.
      *
-     * Set this option as well a {@link Omnibox.options.inline} and
-     * {@link Omnibox.options.enableQuerySuggestAddon} to `true` for a cool effect!
+     * See also the [`searchAsYouTypeDelay`]{@link Omnibox.options.searchAsYouTypeDelay} option.
+     *
+     * **Note:**
+     * > If you set this option and the [`enableQuerySuggestAddon`]{@link Omnibox.options.enableQuerySuggestAddon}
+     * > option to `true`, the query suggestion feature returns the auto-completion of the currently typed keyword as
+     * > its first suggestion.
      *
      * Default value is `false`.
      */
-    enableSearchAsYouType: ComponentOptions.buildBooleanOption({ defaultValue: false }),
+    enableSearchAsYouType: ComponentOptions.buildBooleanOption({ defaultValue: false, section: 'SearchAsYouType' }),
 
     /**
      * If {@link Omnibox.options.enableSearchAsYouType} is `true`, specifies the delay (in milliseconds) before
-     * triggering a new query when the user types new text inside the Omnibox.
+     * triggering a new query when the end user types in the `Omnibox`.
      *
      * Default value is `2000`. Minimum value is `0`.
      */
     searchAsYouTypeDelay: ComponentOptions.buildNumberOption({
       defaultValue: 2000,
       min: 0,
-      depend: 'enableSearchAsYouType'
+      depend: 'enableSearchAsYouType',
+      section: 'SearchAsYouType'
     }),
 
     /**
      * If {@link Querybox.options.enableQuerySyntax} is `true`, specifies whether to enable the `field` addon.
      *
-     * The `field` addon allows the search box to highlight and complete field syntax.
+     * The `field` addon makes the `Omnibox` highlight and complete field syntax.
      *
      * **Example:**
-     *
-     * > Suppose you want to filter on a certain file type. You start typing `@sysf` in the input. The Omnibox provides
-     * > you with several matching fields. You select the `@sysfiletype` suggestion and type `=`. If this option is set
-     * > to `true`, then the Omnibox provides you with suggestions for available matching file types.
+     * > Suppose you want to search for PDF files. You start typing `@f` in the search box. The `Omnibox` provides
+     * > you with several matching fields. You select the `@filetype` field. Then, you start typing `=p` in the input.
+     * > This time, the `Omnibox` provides you with several matching values for the `@filetype` field. You select the
+     * > `pdf` suggestion, and submit your search request. Since the `enableQuerySyntax` option is set to `true`, the
+     * > Coveo Search API interprets the basic expression as query syntax and returns the items whose `@filetype` field
+     * > matches the `pdf` value.
      *
      * Default value is `false`.
      */
@@ -144,16 +148,23 @@ export class Omnibox extends Component {
           options.enableQuerySyntax = true;
         }
         return value;
-      }
+      },
+      section: 'QuerySyntax'
     }),
     enableSimpleFieldAddon: ComponentOptions.buildBooleanOption({ defaultValue: false, depend: 'enableFieldAddon' }),
     listOfFields: ComponentOptions.buildFieldsOption({ depend: 'enableFieldAddon' }),
 
     /**
-     * Specifies whether to enable the Coveo Machine Learning (Coveo ML) query suggestions.
+     * Whether to display Coveo Machine Learning (Coveo ML) query suggestions in the `Omnibox`.
      *
-     * This implies that you have a proper Coveo ML integration configured (see
+     * The corresponding Coveo ML model must be properly configured in your Coveo Cloud organization, otherwise this
+     * option has no effect (see
      * [Managing Machine Learning Query Suggestions in a Query Pipeline](http://www.coveo.com/go?dest=cloudhelp&lcid=9&context=168)).
+     *
+     * **Note:**
+     * > When you set this option and the [`enableSearchAsYouType`]{@link Omnibox.options.enableSearchAsYouType} option
+     * > to `true`, the query suggestion feature returns the auto-completion of the currently typed keyword as its first
+     * > query suggestion.
      *
      * Default value is `true`.
      */
@@ -177,7 +188,8 @@ export class Omnibox extends Component {
           options.enableQuerySyntax = true;
         }
         return value;
-      }
+      },
+      section: 'QuerySyntax'
     }),
 
     /**
@@ -201,8 +213,9 @@ export class Omnibox extends Component {
      * Default value is `false`.
      */
     enableQuerySyntax: ComponentOptions.buildBooleanOption({
-      defaultValue: false
-    }),
+      defaultValue: false,
+      section: 'QuerySyntax'
+    })
   };
 
   public magicBox: Coveo.MagicBox.Instance;
@@ -238,7 +251,9 @@ export class Omnibox extends Component {
     this.bind.onRootElement(QueryEvents.buildingQuery, (args: IBuildingQueryEventArgs) => this.handleBuildingQuery(args));
     this.bind.onRootElement(StandaloneSearchInterfaceEvents.beforeRedirect, () => this.handleBeforeRedirect());
     this.bind.onRootElement(QueryEvents.querySuccess, () => this.handleQuerySuccess());
-    this.bind.onQueryState(MODEL_EVENTS.CHANGE_ONE, QUERY_STATE_ATTRIBUTES.Q, (args: IAttributeChangedEventArg) => this.handleQueryStateChanged(args));
+    this.bind.onQueryState(MODEL_EVENTS.CHANGE_ONE, QUERY_STATE_ATTRIBUTES.Q, (args: IAttributeChangedEventArg) =>
+      this.handleQueryStateChanged(args)
+    );
     if (this.isAutoSuggestion()) {
       this.bind.onRootElement(QueryEvents.duringQuery, (args: IDuringQueryEventArgs) => this.handleDuringQuery(args));
     }
@@ -309,7 +324,7 @@ export class Omnibox extends Component {
     return this.magicBox.getCursor();
   }
 
-  public resultAtCursor(match?: string | { (result: Coveo.MagicBox.Result): boolean; }) {
+  public resultAtCursor(match?: string | { (result: Coveo.MagicBox.Result): boolean }) {
     return this.magicBox.resultAtCursor(match);
   }
 
@@ -405,7 +420,6 @@ export class Omnibox extends Component {
       } else {
         this.clear();
       }
-
     };
 
     if (this.options.placeholder) {
@@ -422,7 +436,7 @@ export class Omnibox extends Component {
 
     this.magicBox.onselect = (suggestion: IOmniboxSuggestion) => {
       let index = _.indexOf(this.lastSuggestions, suggestion);
-      let suggestions = _.compact(_.map(this.lastSuggestions, (suggestion) => suggestion.text));
+      let suggestions = _.compact(_.map(this.lastSuggestions, suggestion => suggestion.text));
       this.magicBox.clearSuggestion();
       this.updateQueryState();
       // A bit tricky here : When it's machine learning auto suggestions
@@ -433,7 +447,10 @@ export class Omnibox extends Component {
       if (!this.isAutoSuggestion()) {
         this.usageAnalytics.cancelAllPendingEvents();
         this.triggerNewQuery(false, () => {
-          this.usageAnalytics.logSearchEvent<IAnalyticsOmniboxSuggestionMeta>(this.getOmniboxAnalyticsEventCause(), this.buildCustomDataForPartialQueries(index, suggestions));
+          this.usageAnalytics.logSearchEvent<IAnalyticsOmniboxSuggestionMeta>(
+            this.getOmniboxAnalyticsEventCause(),
+            this.buildCustomDataForPartialQueries(index, suggestions)
+          );
         });
       } else if (this.isAutoSuggestion() && this.movedOnce) {
         this.handleAutoSuggestionWithKeyboard(index, suggestions);
@@ -471,7 +488,6 @@ export class Omnibox extends Component {
       this.handleTabPress();
     };
 
-
     this.magicBox.getSuggestions = () => this.handleSuggestions();
   }
 
@@ -484,9 +500,11 @@ export class Omnibox extends Component {
       clearTimeout(this.searchAsYouTypeTimeout);
       this.searchAsYouTypeTimeout = undefined;
       this.triggerNewQuery(false, () => {
-        this.usageAnalytics.logSearchEvent<IAnalyticsOmniboxSuggestionMeta>(this.getOmniboxAnalyticsEventCause(), this.buildCustomDataForPartialQueries(index, suggestions));
+        this.usageAnalytics.logSearchEvent<IAnalyticsOmniboxSuggestionMeta>(
+          this.getOmniboxAnalyticsEventCause(),
+          this.buildCustomDataForPartialQueries(index, suggestions)
+        );
       });
-
     } else {
       // Here, the search as you type query has returned, but the analytics event has not ye been sent.
       // Think : user typed slowly, the query returned, and then the user selected a suggestion.
@@ -507,9 +525,11 @@ export class Omnibox extends Component {
       this.clearSearchAsYouType();
       this.usageAnalytics.cancelAllPendingEvents();
       this.triggerNewQuery(false, () => {
-        this.usageAnalytics.logSearchEvent<IAnalyticsOmniboxSuggestionMeta>(this.getOmniboxAnalyticsEventCause(), this.buildCustomDataForPartialQueries(index, suggestions));
+        this.usageAnalytics.logSearchEvent<IAnalyticsOmniboxSuggestionMeta>(
+          this.getOmniboxAnalyticsEventCause(),
+          this.buildCustomDataForPartialQueries(index, suggestions)
+        );
       });
-
     } else {
       // Here : the user either very slowly chose a suggestion, and there is no search as you typed queued up
       // AND
@@ -527,7 +547,10 @@ export class Omnibox extends Component {
       // kick in and do the query automatically.
       if (this.lastQuery != this.getText()) {
         this.triggerNewQuery(false, () => {
-          this.usageAnalytics.logSearchEvent<IAnalyticsOmniboxSuggestionMeta>(this.getOmniboxAnalyticsEventCause(), this.buildCustomDataForPartialQueries(index, suggestions));
+          this.usageAnalytics.logSearchEvent<IAnalyticsOmniboxSuggestionMeta>(
+            this.getOmniboxAnalyticsEventCause(),
+            this.buildCustomDataForPartialQueries(index, suggestions)
+          );
         });
       }
     }
@@ -554,25 +577,31 @@ export class Omnibox extends Component {
 
   private cleanCustomData(toClean: string[], rejectLength = 256) {
     // Filter out only consecutive values that are the identical
-    toClean = _.compact(_.filter(toClean, (partial: string, pos?: number, array?: string[]) => {
-      return pos === 0 || partial !== array[pos - 1];
-    }));
+    toClean = _.compact(
+      _.filter(toClean, (partial: string, pos?: number, array?: string[]) => {
+        return pos === 0 || partial !== array[pos - 1];
+      })
+    );
 
     // Custom dimensions cannot be an array in analytics service: Send a string joined by ; instead.
     // Need to replace ;
-    toClean = _.map(toClean, (partial) => {
+    toClean = _.map(toClean, partial => {
       return partial.replace(/;/g, '');
     });
 
     // Reduce right to get the last X words that adds to less then rejectLength
     let reducedToRejectLengthOrLess = [];
-    _.reduceRight(toClean, (memo: number, partial: string) => {
-      let totalSoFar = memo + partial.length;
-      if (totalSoFar <= rejectLength) {
-        reducedToRejectLengthOrLess.push(partial);
-      }
-      return totalSoFar;
-    }, 0);
+    _.reduceRight(
+      toClean,
+      (memo: number, partial: string) => {
+        let totalSoFar = memo + partial.length;
+        if (totalSoFar <= rejectLength) {
+          reducedToRejectLengthOrLess.push(partial);
+        }
+        return totalSoFar;
+      },
+      0
+    );
     toClean = reducedToRejectLengthOrLess.reverse();
     let ret = toClean.join(';');
 
@@ -608,16 +637,21 @@ export class Omnibox extends Component {
     this.updateQueryState();
     this.lastQuery = this.getQuery(data.searchAsYouType);
 
-    let result: Coveo.MagicBox.Result = this.lastQuery == this.magicBox.getDisplayedResult().input ? this.magicBox.getDisplayedResult().clone() : this.magicBox.grammar.parse(this.lastQuery).clean();
+    let result: Coveo.MagicBox.Result =
+      this.lastQuery == this.magicBox.getDisplayedResult().input
+        ? this.magicBox.getDisplayedResult().clone()
+        : this.magicBox.grammar.parse(this.lastQuery).clean();
     let preprocessResultForQueryArgs: IOmniboxPreprocessResultForQueryEventArgs = {
       result: result
     };
 
     if (this.options.enableQuerySyntax) {
       let notQuotedValues = preprocessResultForQueryArgs.result.findAll('FieldValueNotQuoted');
-      _.each(notQuotedValues, (value: Coveo.MagicBox.Result) => value.value = '"' + value.value.replace(/"|\u00A0/g, ' ') + '"');
+      _.each(notQuotedValues, (value: Coveo.MagicBox.Result) => (value.value = '"' + value.value.replace(/"|\u00A0/g, ' ') + '"'));
       if (this.options.fieldAlias) {
-        let fieldNames = preprocessResultForQueryArgs.result.findAll((result: Coveo.MagicBox.Result) => result.expression.id == 'FieldName' && result.isSuccess());
+        let fieldNames = preprocessResultForQueryArgs.result.findAll(
+          (result: Coveo.MagicBox.Result) => result.expression.id == 'FieldName' && result.isSuccess()
+        );
         _.each(fieldNames, (result: Coveo.MagicBox.Result) => {
           let alias = _.find(_.keys(this.options.fieldAlias), (alias: string) => alias.toLowerCase() == result.value.toLowerCase());
           if (alias != null) {
@@ -642,8 +676,12 @@ export class Omnibox extends Component {
 
   private handleTabPressForSuggestions() {
     if (!this.options.enableSearchAsYouType) {
-      let suggestions = _.compact(_.map(this.lastSuggestions, (suggestion) => suggestion.text));
-      this.usageAnalytics.logCustomEvent(this.getOmniboxAnalyticsEventCause(), this.buildCustomDataForPartialQueries(0, suggestions), this.element);
+      let suggestions = _.compact(_.map(this.lastSuggestions, suggestion => suggestion.text));
+      this.usageAnalytics.logCustomEvent(
+        this.getOmniboxAnalyticsEventCause(),
+        this.buildCustomDataForPartialQueries(0, suggestions),
+        this.element
+      );
     }
   }
 
@@ -710,7 +748,7 @@ export class Omnibox extends Component {
       // Get a handle on a pending search as you type (those events are delayed, not sent instantly)
       let pendingEvent = this.usageAnalytics.getPendingSearchEvent();
       if (pendingEvent instanceof PendingSearchAsYouTypeSearchEvent) {
-        (<PendingSearchAsYouTypeSearchEvent>pendingEvent).beforeResolve.then((evt) => {
+        (<PendingSearchAsYouTypeSearchEvent>pendingEvent).beforeResolve.then(evt => {
           // Check if we need to modify the event type beforeResolving it
           args.promise.then(() => {
             if (this.modifyEventTo) {
@@ -728,14 +766,16 @@ export class Omnibox extends Component {
     if (this.shouldExecuteQuery(true)) {
       this.searchAsYouTypeTimeout = setTimeout(() => {
         if (this.suggestionShouldTriggerQuery() || forceExecuteQuery) {
-          let suggestions = _.map(this.lastSuggestions, (suggestion) => suggestion.text);
+          let suggestions = _.map(this.lastSuggestions, suggestion => suggestion.text);
           let index = _.indexOf(suggestions, this.magicBox.getWordCompletion());
           this.triggerNewQuery(true, () => {
-            this.usageAnalytics.logSearchAsYouType<IAnalyticsOmniboxSuggestionMeta>(analyticsActionCauseList.searchboxAsYouType, this.buildCustomDataForPartialQueries(index, suggestions));
+            this.usageAnalytics.logSearchAsYouType<IAnalyticsOmniboxSuggestionMeta>(
+              analyticsActionCauseList.searchboxAsYouType,
+              this.buildCustomDataForPartialQueries(index, suggestions)
+            );
           });
           this.clearSearchAsYouType();
         }
-
       }, this.options.searchAsYouTypeDelay);
     }
   }

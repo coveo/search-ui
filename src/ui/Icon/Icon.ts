@@ -32,23 +32,22 @@ export class Icon extends Component {
 
   static doExport = () => {
     exportGlobally({
-      'Icon': Icon
+      Icon: Icon
     });
-  }
+  };
 
   /**
    * The options for the Icon
    * @componentOptions
    */
   static options: IIconOptions = {
-
     /**
      * Specifies the value that the Icon component should output as its CSS class instead of the auto-selected value.
      *
      * Default value is `undefined`, which means that the Coveo JavaScript Search Framework outputs a suitable icon
      * depending on the result file type.
      */
-    value: ComponentOptions.buildIconOption(),
+    value: ComponentOptions.buildStringOption(),
 
     /**
      * Specifies whether the Icon component should output the smaller version of the icon instead of the regular one.
@@ -109,7 +108,6 @@ export class Icon extends Component {
   static createIcon(result: IQueryResult, options: IIconOptions = {}, element: HTMLElement = $$('div').el, bindings?: IComponentBindings) {
     var info = FileTypes.get(result);
 
-
     if (!bindings && result.searchInterface) {
       // try to resolve results bindings automatically
       bindings = result.searchInterface.getBindings();
@@ -133,9 +131,15 @@ export class Icon extends Component {
     element.setAttribute('title', info.caption);
 
     if (Icon.shouldDisplayLabel(options, bindings)) {
-      element.appendChild($$('span', {
-        className: 'coveo-icon-caption-overlay'
-      }, info.caption).el);
+      element.appendChild(
+        $$(
+          'span',
+          {
+            className: 'coveo-icon-caption-overlay'
+          },
+          info.caption
+        ).el
+      );
       $$(element).addClass('coveo-icon-with-caption-overlay');
       $$(element).setAttribute('data-with-label', 'true');
     }

@@ -33,16 +33,15 @@ export class HiddenQuery extends Component {
 
   static doExport = () => {
     exportGlobally({
-      'HiddenQuery': HiddenQuery
+      HiddenQuery: HiddenQuery
     });
-  }
+  };
 
   /**
    * Possible options for the `HiddenQuery` component
    * @componentOptions
    */
   static options: IHiddenQueryOptions = {
-
     /**
      * Specifies the maximum number of characters from the hidden query description (`hd`) to display in the
      * {@link Breadcrumb}.
@@ -71,12 +70,13 @@ export class HiddenQuery extends Component {
    * automatically resolved (with a slower execution time).
    */
   constructor(public element: HTMLElement, public options?: IHiddenQueryOptions, bindings?: IComponentBindings) {
-
     super(element, HiddenQuery.ID, bindings);
     this.options = ComponentOptions.initComponentOptions(element, HiddenQuery, options);
 
     this.bind.onRootElement(QueryEvents.buildingQuery, (args: IBuildingQueryEventArgs) => this.handleBuildingQuery(args));
-    this.bind.onRootElement(BreadcrumbEvents.populateBreadcrumb, (args: IPopulateBreadcrumbEventArgs) => this.handlePopulateBreadcrumb(args));
+    this.bind.onRootElement(BreadcrumbEvents.populateBreadcrumb, (args: IPopulateBreadcrumbEventArgs) =>
+      this.handlePopulateBreadcrumb(args)
+    );
     this.bind.onRootElement(BreadcrumbEvents.clearBreadcrumb, () => this.setStateEmpty());
   }
 
@@ -87,7 +87,9 @@ export class HiddenQuery extends Component {
   public clear() {
     this.setStateEmpty();
     const hiddenDescriptionRemoved = this.getDescription();
-    this.usageAnalytics.logSearchEvent<IAnalyticsContextRemoveMeta>(analyticsActionCauseList.contextRemove, { contextName: hiddenDescriptionRemoved });
+    this.usageAnalytics.logSearchEvent<IAnalyticsContextRemoveMeta>(analyticsActionCauseList.contextRemove, {
+      contextName: hiddenDescriptionRemoved
+    });
     this.queryController.executeQuery();
   }
 
@@ -122,7 +124,7 @@ export class HiddenQuery extends Component {
       const value = $$('span', { className: 'coveo-hidden-query-breadcrumb-value' }, description);
       values.appendChild(value.el);
 
-      const svgContainer = $$('span', { className: 'coveo-hidden-query-breadcrum-clear-icon' }, SVGIcons.checkboxHookExclusionMore);
+      const svgContainer = $$('span', { className: 'coveo-hidden-query-breadcrum-clear-icon' }, SVGIcons.icons.checkboxHookExclusionMore);
       SVGDom.addClassToSVGInContainer(svgContainer.el, 'coveo-hidden-query-breadcrumb-clear-svg');
       const clear = $$('span', { className: 'coveo-hidden-query-breadcrumb-clear' });
       clear.append(svgContainer.el);

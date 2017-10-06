@@ -44,16 +44,15 @@ export class ResultsPreferences extends Component {
 
   static doExport = () => {
     exportGlobally({
-      'ResultsPreferences': ResultsPreferences
+      ResultsPreferences: ResultsPreferences
     });
-  }
+  };
 
   /**
    * The options for the component
    * @componentOptions
    */
   static options: IResultsPreferencesOptions = {
-
     /**
      * Specifies whether to make the option to open results in Microsoft Outlook available.
      *
@@ -143,22 +142,24 @@ export class ResultsPreferences extends Component {
 
   private buildRadiosInput() {
     if (this.options.enableQuerySyntax) {
-
       const createRadioButton = (label: string) => {
-        const radio = new RadioButton((radioButtonInstance) => {
-          this.fromPreferenceChangeEventToUsageAnalyticsLog(radioButtonInstance.isSelected() ? 'selected' : 'unselected', label);
-          this.save();
+        const radio = new RadioButton(
+          radioButtonInstance => {
+            this.fromPreferenceChangeEventToUsageAnalyticsLog(radioButtonInstance.isSelected() ? 'selected' : 'unselected', label);
+            this.save();
 
-          this.queryController.executeQuery({
-            closeModalBox: false
-          });
-
-        }, label, 'coveo-results-preferences-query-syntax');
+            this.queryController.executeQuery({
+              closeModalBox: false
+            });
+          },
+          label,
+          'coveo-results-preferences-query-syntax'
+        );
         return radio;
       };
 
       const translatedLabels = _.map(['On', 'Off', 'Automatic'], label => l(label));
-      const radios = _.map(translatedLabels, (label) => {
+      const radios = _.map(translatedLabels, label => {
         const radio = createRadioButton(label);
         this.preferencePanelRadioInputs[label] = radio;
         return radio;
@@ -171,9 +172,8 @@ export class ResultsPreferences extends Component {
   }
 
   private buildCheckboxesInput() {
-
     const createCheckbox = (label: string) => {
-      const checkbox = new Checkbox((checkboxInstance) => {
+      const checkbox = new Checkbox(checkboxInstance => {
         this.fromPreferenceChangeEventToUsageAnalyticsLog(checkboxInstance.isSelected() ? 'selected' : 'unselected', label);
         this.save();
         this.queryController.executeQuery({
@@ -188,7 +188,6 @@ export class ResultsPreferences extends Component {
 
     if (this.options.enableOpenInOutlook) {
       checkboxes.push(createCheckbox(l('OpenInOutlookWhenPossible')));
-
     }
     if (this.options.enableOpenInNewWindow) {
       checkboxes.push(createCheckbox(l('AlwaysOpenInNewWindow')));
@@ -229,7 +228,6 @@ export class ResultsPreferences extends Component {
         delete this.preferences.enableQuerySyntax;
       }
     });
-
   }
 
   private fromPreferencesToCheckboxInput() {
@@ -252,8 +250,15 @@ export class ResultsPreferences extends Component {
   }
 
   private fromPreferenceChangeEventToUsageAnalyticsLog(type: 'selected' | 'unselected', preference: string) {
-    this.usageAnalytics.logCustomEvent<IAnalyticsPreferencesChangeMeta>(analyticsActionCauseList.preferencesChange, { preferenceName: preference, preferenceType: type }, this.element);
-    this.usageAnalytics.logSearchEvent<IAnalyticsPreferencesChangeMeta>(analyticsActionCauseList.preferencesChange, { preferenceName: preference, preferenceType: type });
+    this.usageAnalytics.logCustomEvent<IAnalyticsPreferencesChangeMeta>(
+      analyticsActionCauseList.preferencesChange,
+      { preferenceName: preference, preferenceType: type },
+      this.element
+    );
+    this.usageAnalytics.logSearchEvent<IAnalyticsPreferencesChangeMeta>(analyticsActionCauseList.preferencesChange, {
+      preferenceName: preference,
+      preferenceType: type
+    });
   }
 
   private adjustPreferencesToComponentConfig() {

@@ -2,7 +2,7 @@ import * as Mock from '../MockEnvironment';
 import { SearchEndpoint } from '../../src/rest/SearchEndpoint';
 import { $$ } from '../../src/utils/Dom';
 import { Querybox } from '../../src/ui/Querybox/Querybox';
-import { Component } from '../../src/ui/Base/Component';
+import { Component, IComponentDefinition } from '../../src/ui/Base/Component';
 import { Initialization, LazyInitialization } from '../../src/ui/Base/Initialization';
 import { Facet } from '../../src/ui/Facet/Facet';
 import { Pager } from '../../src/ui/Pager/Pager';
@@ -11,7 +11,7 @@ import { Simulate } from '../Simulate';
 import { InitializationEvents } from '../../src/events/InitializationEvents';
 import { init } from '../../src/ui/Base/RegisteredNamedMethods';
 import { NoopComponent } from '../../src/ui/NoopComponent/NoopComponent';
-declare let $;
+declare const $;
 
 export function InitializationTest() {
   describe('Initialization', () => {
@@ -41,7 +41,9 @@ export function InitializationTest() {
     it('should allow to registerComponentFields', () => {
       Initialization.registerComponentFields('MyComponent', ['myfirstfield', 'mysecondfield']);
       expect(Initialization.getRegisteredFieldsForQuery()).toEqual(jasmine.arrayContaining(['myfirstfield', 'mysecondfield']));
-      expect(Initialization.getRegisteredFieldsComponentForQuery('MyComponent')).toEqual(jasmine.arrayContaining(['myfirstfield', 'mysecondfield']));
+      expect(Initialization.getRegisteredFieldsComponentForQuery('MyComponent')).toEqual(
+        jasmine.arrayContaining(['myfirstfield', 'mysecondfield'])
+      );
     });
 
     it('should allow to register componentsFields with duplicate without complaining', () => {
@@ -49,8 +51,12 @@ export function InitializationTest() {
       Initialization.registerComponentFields('ANewComponent', ['afield', 'anotherfield']);
       Initialization.registerComponentFields('AComponent', ['afield', 'yetanotherfield']);
       expect(Initialization.getRegisteredFieldsForQuery()).toEqual(jasmine.arrayContaining(['afield', 'anotherfield', 'yetanotherfield']));
-      expect(Initialization.getRegisteredFieldsComponentForQuery('AComponent')).toEqual(jasmine.arrayContaining(['afield', 'anotherfield', 'yetanotherfield']));
-      expect(Initialization.getRegisteredFieldsComponentForQuery('ANewComponent')).toEqual(jasmine.arrayContaining(['afield', 'anotherfield']));
+      expect(Initialization.getRegisteredFieldsComponentForQuery('AComponent')).toEqual(
+        jasmine.arrayContaining(['afield', 'anotherfield', 'yetanotherfield'])
+      );
+      expect(Initialization.getRegisteredFieldsComponentForQuery('ANewComponent')).toEqual(
+        jasmine.arrayContaining(['afield', 'anotherfield'])
+      );
     });
 
     it('should allow to register components fields with the standard and special coveo id and it should be interchangeable', () => {
@@ -58,20 +64,24 @@ export function InitializationTest() {
       Initialization.registerComponentFields('CoveoMyStandardId', ['3', '4']);
       expect(Initialization.getRegisteredFieldsForQuery()).toEqual(jasmine.arrayContaining(['1', '2', '3', '4']));
       expect(Initialization.getRegisteredFieldsComponentForQuery('MyStandardId')).toEqual(jasmine.arrayContaining(['1', '2', '3', '4']));
-      expect(Initialization.getRegisteredFieldsComponentForQuery('CoveoMyStandardId')).toEqual(jasmine.arrayContaining(['1', '2', '3', '4']));
+      expect(Initialization.getRegisteredFieldsComponentForQuery('CoveoMyStandardId')).toEqual(
+        jasmine.arrayContaining(['1', '2', '3', '4'])
+      );
     });
 
     it('should allow to return the list of eagerly loaded components', () => {
       expect(Initialization.getListOfLoadedComponents()).toEqual(jasmine.arrayContaining(['Searchbox']));
     });
 
-    it('should wait before resolving lazy init function to continue the framework initialization', (done) => {
-      let promiseToResolve = new Promise((resolve, reject) => {
-        setTimeout(resolve(true), 500);
-      });
-
-      let spy = jasmine.createSpy('spy');
+    it('should wait before resolving lazy init function to continue the framework initialization', done => {
+      const spy = jasmine.createSpy('spy');
       $$(root).on(InitializationEvents.afterInitialization, spy);
+
+      const promiseToResolve = new Promise<boolean>((resolve, reject) => {
+        setTimeout(() => {
+          resolve(true);
+        }, 500);
+      });
 
       Initialization.initializeFramework(root, searchInterfaceOptions, () => {
         return {
@@ -82,12 +92,14 @@ export function InitializationTest() {
 
       expect(spy).not.toHaveBeenCalled();
       promiseToResolve.then(() => {
-        expect(spy).toHaveBeenCalled();
-        done();
+        setTimeout(() => {
+          expect(spy).toHaveBeenCalled();
+          done();
+        }, 0);
       });
     });
 
-    it('can initialize search interface and component', (done) => {
+    it('can initialize search interface and component', done => {
       expect(Component.get(queryBox) instanceof Querybox).toBe(false);
       Initialization.initializeFramework(root, searchInterfaceOptions, () => {
         return Initialization.initSearchInterface(root, searchInterfaceOptions);
@@ -97,14 +109,14 @@ export function InitializationTest() {
       });
     });
 
-    it('should not initialize a search interface twice', (done) => {
+    it('should not initialize a search interface twice', done => {
       expect(Component.get(queryBox) instanceof Querybox).toBe(false);
       // First initialization
       Initialization.initializeFramework(root, searchInterfaceOptions, () => {
         return Initialization.initSearchInterface(root, searchInterfaceOptions);
       }).then(() => {
         expect(Component.get(queryBox) instanceof Querybox).toBe(true);
-        let newQueryBox = document.createElement('div');
+        const newQueryBox = document.createElement('div');
         $$(newQueryBox).addClass('CoveoQuerybox');
         root.appendChild(newQueryBox);
         expect(Component.get(newQueryBox) instanceof Querybox).toBe(false);
@@ -117,8 +129,6 @@ export function InitializationTest() {
           done();
         });
       });
-
-
     });
 
     it('allows to register default options ahead of init call, and merge them', () => {
@@ -138,15 +148,15 @@ export function InitializationTest() {
         return Initialization.initSearchInterface(root, searchInterfaceOptions);
       });
       expect(Component.get(queryBox) instanceof Querybox).toBe(true);
-      let sBox = <Querybox>Component.get(queryBox);
+      const sBox = <Querybox>Component.get(queryBox);
       expect(sBox.options.enableSearchAsYouType).toBe(true);
       expect(sBox.options.enablePartialMatch).toBe(true);
     });
 
     it('allows to registerAutoCreateComponent', () => {
-      let dummyCmp: any = jasmine.createSpy('foobar');
+      const dummyCmp: any = jasmine.createSpy('foobar');
       dummyCmp.ID = 'FooBar';
-      let dummyElem = document.createElement('div');
+      const dummyElem = document.createElement('div');
       $$(dummyElem).addClass('CoveoFooBar');
       root.appendChild(dummyElem);
 
@@ -158,8 +168,7 @@ export function InitializationTest() {
     });
 
     it('allows to check if isComponentClassIdRegistered', () => {
-      let dummyCmp: any = () => {
-      };
+      const dummyCmp: any = () => {};
       dummyCmp.ID = 'CheckRegistration';
       Initialization.registerAutoCreateComponent(dummyCmp);
       expect(Initialization.isComponentClassIdRegistered('CheckRegistration')).toBe(true);
@@ -174,7 +183,7 @@ export function InitializationTest() {
     });
 
     it('allow to automaticallyCreateComponentsInside', () => {
-      let env = new Mock.MockEnvironmentBuilder().build();
+      const env = new Mock.MockEnvironmentBuilder().build();
       expect(Component.get(queryBox) instanceof Querybox).toBe(false);
       Initialization.automaticallyCreateComponentsInside(root, {
         options: {},
@@ -184,10 +193,10 @@ export function InitializationTest() {
     });
 
     it('allow to automaticallyCreateComponentInside, as well as childs components', () => {
-      let env = new Mock.MockEnvironmentBuilder().build();
-      let resultList = $$('div', { className: Component.computeCssClassNameForType(ResultList.ID) });
+      const env = new Mock.MockEnvironmentBuilder().build();
+      const resultList = $$('div', { className: Component.computeCssClassNameForType(ResultList.ID) });
       $$(queryBox).append(resultList.el);
-      expect((Component.get(resultList.el) instanceof ResultList)).toBe(false);
+      expect(Component.get(resultList.el) instanceof ResultList).toBe(false);
       Initialization.automaticallyCreateComponentsInside(root, {
         options: {},
         bindings: env
@@ -196,30 +205,55 @@ export function InitializationTest() {
     });
 
     it('allow to automaticallyCreateComponentsInside and can ignore some components', () => {
-      let env = new Mock.MockEnvironmentBuilder().build();
+      const env = new Mock.MockEnvironmentBuilder().build();
       expect(Component.get(queryBox) instanceof Querybox).toBe(false);
-      Initialization.automaticallyCreateComponentsInside(root, {
-        options: {},
-        bindings: env
-      }, [Querybox.ID]);
+      Initialization.automaticallyCreateComponentsInside(
+        root,
+        {
+          options: {},
+          bindings: env
+        },
+        [Querybox.ID]
+      );
       expect(Component.get(queryBox) instanceof Querybox).toBe(false);
+    });
+
+    it('allow to automaticallyCreateComponentsInside and can ignore multiple repetitive components', () => {
+      const env = new Mock.MockEnvironmentBuilder().build();
+      const queryBox2 = $$('div', { className: 'CoveoQuerybox' }).el;
+      env.root.appendChild(queryBox2);
+      expect(Component.get(queryBox) instanceof Querybox).toBe(false);
+      expect(Component.get(queryBox2) instanceof Querybox).toBe(false);
+      Initialization.automaticallyCreateComponentsInside(
+        root,
+        {
+          options: {},
+          bindings: env
+        },
+        [Querybox.ID]
+      );
+      expect(Component.get(queryBox) instanceof Querybox).toBe(false);
+      expect(Component.get(queryBox2) instanceof Querybox).toBe(false);
     });
 
     it('allow to automaticallyCreateComponentInside can ignore child components', () => {
-      let env = new Mock.MockEnvironmentBuilder().build();
-      let resultList = $$('div', { className: Component.computeCssClassNameForType(ResultList.ID) });
+      const env = new Mock.MockEnvironmentBuilder().build();
+      const resultList = $$('div', { className: Component.computeCssClassNameForType(ResultList.ID) });
       $$(queryBox).append(resultList.el);
-      expect((Component.get(resultList.el) instanceof ResultList)).toBe(false);
-      Initialization.automaticallyCreateComponentsInside(root, {
-        options: {},
-        bindings: env
-      }, [Querybox.ID]);
       expect(Component.get(resultList.el) instanceof ResultList).toBe(false);
-
+      Initialization.automaticallyCreateComponentsInside(
+        root,
+        {
+          options: {},
+          bindings: env
+        },
+        [Querybox.ID]
+      );
+      expect(Component.get(resultList.el) instanceof ResultList).toBe(false);
     });
 
     it('allow to automaticallyCreateComponentInside and will ignore elements that are already components', () => {
-      let env = new Mock.MockEnvironmentBuilder().build();
+      const env = new Mock.MockEnvironmentBuilder().build();
       expect(Component.get(queryBox) instanceof Querybox).toBe(false);
       Initialization.automaticallyCreateComponentsInside(root, {
         options: {},
@@ -233,14 +267,13 @@ export function InitializationTest() {
       });
       expect(Component.get(queryBox) instanceof Querybox).toBe(true);
       expect(Component.get(queryBox) instanceof ResultList).toBe(false);
-
     });
 
     it('allow to monkeyPatchComponentMethod', () => {
       Initialization.initializeFramework(root, searchInterfaceOptions, () => {
         return Initialization.initSearchInterface(root, searchInterfaceOptions);
       });
-      let patch = jasmine.createSpy('patch');
+      const patch = jasmine.createSpy('patch');
       Initialization.monkeyPatchComponentMethod('submit', queryBox, patch);
       (<Querybox>Component.get(queryBox)).submit();
       expect(patch).toHaveBeenCalled();
@@ -250,7 +283,7 @@ export function InitializationTest() {
       Initialization.initializeFramework(root, searchInterfaceOptions, () => {
         return Initialization.initSearchInterface(root, searchInterfaceOptions);
       });
-      let patch = jasmine.createSpy('patch');
+      const patch = jasmine.createSpy('patch');
       Initialization.monkeyPatchComponentMethod('Querybox.submit', queryBox, patch);
       (<Querybox>Component.get(queryBox)).submit();
       expect(patch).toHaveBeenCalled();
@@ -262,10 +295,10 @@ export function InitializationTest() {
       });
     });
 
-    it('should allow to init a box interface (and throw because it\'s only used in salesforce)', (done) => {
+    it("should allow to init a box interface (and throw because it's only used in salesforce)", done => {
       const init = Initialization.initBoxInterface(root, searchInterfaceOptions);
       expect(init.isLazyInit).toBe(false);
-      init.initResult.catch((success) => {
+      init.initResult.catch(success => {
         expect(success).not.toBeNull();
         done();
       });
@@ -296,11 +329,12 @@ export function InitializationTest() {
     });
 
     it('can initialize external components', () => {
-      let external = $$('div', {
+      const external = $$('div', {
         className: 'CoveoPager'
       }).el;
 
       searchInterfaceOptions['externalComponents'] = [external];
+      searchInterfaceOptions['SearchInterface'].autoTriggerQuery = false;
       Initialization.initializeFramework(root, searchInterfaceOptions, () => {
         return Initialization.initSearchInterface(root, searchInterfaceOptions);
       });
@@ -309,8 +343,9 @@ export function InitializationTest() {
 
     it('can initialize external components passed in as a jquery instance', () => {
       Simulate.addJQuery();
-      let external = $('<div class="CoveoPager"></div>');
+      const external = $('<div class="CoveoPager"></div>');
       searchInterfaceOptions['externalComponents'] = [external];
+      searchInterfaceOptions['SearchInterface'].autoTriggerQuery = false;
       Initialization.initializeFramework(root, searchInterfaceOptions, () => {
         return Initialization.initSearchInterface(root, searchInterfaceOptions);
       });
@@ -318,17 +353,16 @@ export function InitializationTest() {
       Simulate.removeJQuery();
     });
 
-    it('will trigger a query automatically by default', (done) => {
+    it('will trigger a query automatically by default', done => {
       Initialization.initializeFramework(root, searchInterfaceOptions, () => {
         return Initialization.initSearchInterface(root, searchInterfaceOptions);
       }).then(() => {
         expect(endpoint.search).toHaveBeenCalled();
         done();
       });
-
     });
 
-    it('will not trigger a query automatically if specified', (done) => {
+    it('will not trigger a query automatically if specified', done => {
       searchInterfaceOptions['SearchInterface'].autoTriggerQuery = false;
       Initialization.initializeFramework(root, searchInterfaceOptions, () => {
         return Initialization.initSearchInterface(root, searchInterfaceOptions);
@@ -336,10 +370,9 @@ export function InitializationTest() {
         expect(endpoint.search).not.toHaveBeenCalled();
         done();
       });
-
     });
 
-    it('will send action history on automatic query', (done) => {
+    it('will send action history on automatic query', done => {
       localStorage.removeItem('__coveo.analytics.history');
       expect(localStorage.getItem('__coveo.analytics.history')).toBeNull();
       Initialization.initializeFramework(root, searchInterfaceOptions, () => {
@@ -350,7 +383,6 @@ export function InitializationTest() {
         expect(JSON.parse(actionHistory)[0].name).toEqual('Query');
         done();
       });
-
     });
 
     describe('when initializing recommendation interface', () => {
@@ -385,16 +417,18 @@ export function InitializationTest() {
       });
     });
 
-    it('should fallback on lazy registered component if it\'s only registered as lazy', (done) => {
-      const lazyCustomStuff = jasmine.createSpy('customstuff').and.callFake(() => new Promise((resolve, reject) => {
-        resolve(NoopComponent);
-      }));
+    it("should fallback on lazy registered component if it's only registered as lazy", done => {
+      const lazyCustomStuff = jasmine.createSpy('customstuff').and.callFake(
+        () =>
+          new Promise((resolve, reject) => {
+            resolve(NoopComponent);
+          })
+      );
 
       // We register the component only as "lazy", but then do an initialization "eager" style.
       // Normally, the fallback should kick in and the component should still be initialized
       root.appendChild($$('div', { className: 'CoveoMyCustomStuff' }).el);
       LazyInitialization.registerLazyComponent('MyCustomStuff', lazyCustomStuff);
-
 
       Initialization.initializeFramework(root, searchInterfaceOptions, () => {
         return Initialization.initSearchInterface(root, searchInterfaceOptions);

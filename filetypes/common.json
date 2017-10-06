@@ -1,7 +1,7 @@
 {
   "filetype": {
     "html": {
-      "icon": "salesforce-doctype-link",
+      "icon": "link",
       "captions": {
         "en": "HTML File",
         "fr": "Fichier HTML",
@@ -29,7 +29,7 @@
       }
     },
     "wiki": {
-      "icon": "salesforce-doctype-link",
+      "icon": "link",
       "captions": {
         "en": "Wiki",
         "fr": "Wiki",
@@ -57,7 +57,7 @@
       }
     },
     "webscraperwebpage": {
-      "icon": "salesforce-doctype-link",
+      "icon": "link",
       "captions": {
         "en": "Web Page",
         "fr": "Page Web",
@@ -654,7 +654,7 @@
       }
     },
     "dynamicscrmitem": {
-      "icon": "salesforce-doctype-link",
+      "icon": "link",
       "captions": {
         "en": "Dynamics CRM",
         "fr": "Dynamics CRM",
@@ -746,7 +746,7 @@
       }
     },
     "jiraissue": {
-      "icon": "salesforce-standard-custom",
+      "icon": "custom",
       "captions": {
         "en": "Jira Issue",
         "fr": "Issue Jira"

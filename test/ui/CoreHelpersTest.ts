@@ -10,17 +10,20 @@ import { IIconOptions } from '../../src/ui/Icon/Icon';
 
 export function CoreHelperTest() {
   describe('CoreHelpers', () => {
-
     it('shorten should work correctly', () => {
       expect(TemplateHelpers.getHelper('shorten')('a string that is too long', 20)).toEqual('a string that is...');
     });
 
     it('shorten should work correctly with higlights', () => {
-      let highlights: IHighlight[] = [{
-        offset: 2,
-        length: 6
-      }];
-      expect(TemplateHelpers.getHelper('shorten')('a string that is too long', 20, highlights)).toEqual('a <span class="highlight">string</span> that is...');
+      let highlights: IHighlight[] = [
+        {
+          offset: 2,
+          length: 6
+        }
+      ];
+      expect(TemplateHelpers.getHelper('shorten')('a string that is too long', 20, highlights)).toEqual(
+        'a <span class="highlight">string</span> that is...'
+      );
     });
 
     it('javascriptencode should work correctly', () => {
@@ -36,23 +39,31 @@ export function CoreHelperTest() {
     });
 
     it('highlight should work correctly', () => {
-      let highlights: IHighlight[] = [{
-        offset: 2,
-        length: 6
-      }];
-      expect(TemplateHelpers.getHelper('highlight')('a string that is too long', highlights)).toEqual('a <span class="highlight">string</span> that is too long');
+      let highlights: IHighlight[] = [
+        {
+          offset: 2,
+          length: 6
+        }
+      ];
+      expect(TemplateHelpers.getHelper('highlight')('a string that is too long', highlights)).toEqual(
+        'a <span class="highlight">string</span> that is too long'
+      );
     });
 
     it('highlightStreamText should work correctly', () => {
       var toHighlight = 'a b';
-      var terms: { [originalTerm: string]: string[]; } = { 'a': [], 'b': [] };
-      expect(TemplateHelpers.getHelper('highlightStreamText')(toHighlight, terms, {})).toEqual('<span class="coveo-highlight" data-highlight-group="1" data-highlight-group-term="a">a</span> <span class="coveo-highlight" data-highlight-group="2" data-highlight-group-term="b">b</span>');
+      var terms: { [originalTerm: string]: string[] } = { a: [], b: [] };
+      expect(TemplateHelpers.getHelper('highlightStreamText')(toHighlight, terms, {})).toEqual(
+        '<span class="coveo-highlight" data-highlight-group="1" data-highlight-group-term="a">a</span> <span class="coveo-highlight" data-highlight-group="2" data-highlight-group-term="b">b</span>'
+      );
     });
 
     it('highlightStreamHTML should work correctly', () => {
       var toHighlight = '<div>a b</div>';
-      var terms: { [originalTerm: string]: string[]; } = { 'a': [], 'b': [] };
-      expect(TemplateHelpers.getHelper('highlightStreamHTML')(toHighlight, terms, {})).toEqual('<div><span class="coveo-highlight" data-highlight-group="1" data-highlight-group-term="a">a</span> <span class="coveo-highlight" data-highlight-group="2" data-highlight-group-term="b">b</span></div>');
+      var terms: { [originalTerm: string]: string[] } = { a: [], b: [] };
+      expect(TemplateHelpers.getHelper('highlightStreamHTML')(toHighlight, terms, {})).toEqual(
+        '<div><span class="coveo-highlight" data-highlight-group="1" data-highlight-group-term="a">a</span> <span class="coveo-highlight" data-highlight-group="2" data-highlight-group-term="b">b</span></div>'
+      );
     });
 
     it('number should work correctly', () => {
@@ -112,7 +123,6 @@ export function CoreHelperTest() {
         it('should return empty string for an undefined value', () => {
           expect(TemplateHelpers.getHelper('time')(undefined, options)).toEqual('');
         });
-
       });
 
       describe('dateTime', () => {
@@ -186,34 +196,45 @@ export function CoreHelperTest() {
     });
 
     describe('email', () => {
-
       it('should work with name and address', () => {
-        expect(TemplateHelpers.getHelper('email')('Foo Bar <foo@bar.com>')).toEqual('<a title="Foo Bar <foo@bar.com>" href="mailto:foo@bar.com">Foo Bar</a>');
+        expect(TemplateHelpers.getHelper('email')('Foo Bar <foo@bar.com>')).toEqual(
+          '<a title="Foo Bar <foo@bar.com>" href="mailto:foo@bar.com">Foo Bar</a>'
+        );
       });
 
       it('should work if the value is an array', () => {
-        expect(TemplateHelpers.getHelper('email')(['Foo Bar <foo@bar.com>', 'Foo Baz <foo@baz.com>'])).toEqual('<a title="Foo Bar <foo@bar.com>" href="mailto:foo@bar.com">Foo Bar</a>, <a title="Foo Baz <foo@baz.com>" href="mailto:foo@baz.com">Foo Baz</a>');
+        expect(TemplateHelpers.getHelper('email')(['Foo Bar <foo@bar.com>', 'Foo Baz <foo@baz.com>'])).toEqual(
+          '<a title="Foo Bar <foo@bar.com>" href="mailto:foo@bar.com">Foo Bar</a>, <a title="Foo Baz <foo@baz.com>" href="mailto:foo@baz.com">Foo Baz</a>'
+        );
       });
 
       it('should work when we specify a length limit', () => {
-        expect(TemplateHelpers.getHelper('email')(['Foo Bar <foo@bar.com>', 'Foo Baz <foo@baz.com>'], {
-          lengthLimit: 1
-        })).toContain('coveo-emails-excess-collapsed');
+        expect(
+          TemplateHelpers.getHelper('email')(['Foo Bar <foo@bar.com>', 'Foo Baz <foo@baz.com>'], {
+            lengthLimit: 1
+          })
+        ).toContain('coveo-emails-excess-collapsed');
       });
 
       it('should work with address only', () => {
-        expect(TemplateHelpers.getHelper('email')('foo@bar.com')).toEqual('<a title="foo@bar.com" href="mailto:foo@bar.com">foo@bar.com</a>');
+        expect(TemplateHelpers.getHelper('email')('foo@bar.com')).toEqual(
+          '<a title="foo@bar.com" href="mailto:foo@bar.com">foo@bar.com</a>'
+        );
       });
 
       it('should work with company domain and "me"', () => {
-        expect(TemplateHelpers.getHelper('email')('Foo Bar <foo@bar.com>', {
-          me: 'foo@bar.com',
-          companyDomain: 'bar.com'
-        })).toEqual('<a title="Foo Bar <foo@bar.com>" href="mailto:foo@bar.com">Me</a>');
+        expect(
+          TemplateHelpers.getHelper('email')('Foo Bar <foo@bar.com>', {
+            me: 'foo@bar.com',
+            companyDomain: 'bar.com'
+          })
+        ).toEqual('<a title="Foo Bar <foo@bar.com>" href="mailto:foo@bar.com">Me</a>');
       });
 
       it('should work with list of email address separated by semi-colon', () => {
-        expect(TemplateHelpers.getHelper('email')('Foo Bar <foo@bar.com>; spam@stuff.com')).toEqual('<a title="Foo Bar <foo@bar.com>" href="mailto:foo@bar.com">Foo Bar</a>, <a title="spam@stuff.com" href="mailto:spam@stuff.com">spam@stuff.com</a>');
+        expect(TemplateHelpers.getHelper('email')('Foo Bar <foo@bar.com>; spam@stuff.com')).toEqual(
+          '<a title="Foo Bar <foo@bar.com>" href="mailto:foo@bar.com">Foo Bar</a>, <a title="spam@stuff.com" href="mailto:spam@stuff.com">spam@stuff.com</a>'
+        );
       });
     });
 
@@ -223,39 +244,49 @@ export function CoreHelperTest() {
       });
 
       it('should accept target option', () => {
-        expect(TemplateHelpers.getHelper('anchor')('foo bar', {
-          target: '_top'
-        })).toEqual(`<a href='foo bar' target="_top">foo bar</a>`);
+        expect(
+          TemplateHelpers.getHelper('anchor')('foo bar', {
+            target: '_top'
+          })
+        ).toEqual(`<a href='foo bar' target="_top">foo bar</a>`);
       });
 
       it('should accept text option', () => {
-        expect(TemplateHelpers.getHelper('anchor')('foo bar', {
-          text: 'baz'
-        })).toEqual(`<a href='foo bar' >baz</a>`);
+        expect(
+          TemplateHelpers.getHelper('anchor')('foo bar', {
+            text: 'baz'
+          })
+        ).toEqual(`<a href='foo bar' >baz</a>`);
       });
     });
 
     describe('image', () => {
       it('should render a valid image', () => {
-        expect(TemplateHelpers.getHelper('image')('foo bar')).toEqual('<img src=\'foo bar\' />');
+        expect(TemplateHelpers.getHelper('image')('foo bar')).toEqual("<img src='foo bar' />");
       });
 
       it('should allow to specify an alt option', () => {
-        expect(TemplateHelpers.getHelper('image')('foo bar', {
-          alt: 'hello'
-        })).toEqual('<img src=\'foo bar\' alt="hello"/>');
+        expect(
+          TemplateHelpers.getHelper('image')('foo bar', {
+            alt: 'hello'
+          })
+        ).toEqual('<img src=\'foo bar\' alt="hello"/>');
       });
 
       it('should allow to specify height', () => {
-        expect(TemplateHelpers.getHelper('image')('foo bar', {
-          height: '100px'
-        })).toEqual('<img src=\'foo bar\' height="100px"/>');
+        expect(
+          TemplateHelpers.getHelper('image')('foo bar', {
+            height: '100px'
+          })
+        ).toEqual('<img src=\'foo bar\' height="100px"/>');
       });
 
       it('should allow to specify width', () => {
-        expect(TemplateHelpers.getHelper('image')('foo bar', {
-          width: '100px'
-        })).toEqual('<img src=\'foo bar\' width="100px"/>');
+        expect(
+          TemplateHelpers.getHelper('image')('foo bar', {
+            width: '100px'
+          })
+        ).toEqual('<img src=\'foo bar\' width="100px"/>');
       });
     });
 
@@ -268,8 +299,7 @@ export function CoreHelperTest() {
         result = FakeResults.createFakeResult();
 
         let spy = jasmine.createSpy('getRawDataStream');
-        spy.and.returnValue(new Promise((resolve, reject) => {
-        }));
+        spy.and.returnValue(new Promise((resolve, reject) => {}));
         endpoint.getRawDataStream = spy;
         SearchEndpoint.endpoints['default'] = endpoint;
       });
@@ -322,14 +352,18 @@ export function CoreHelperTest() {
         options.withLabel = true;
         options.labelValue = 'foo';
         expect(TemplateHelpers.getHelper('fromFileTypeToIcon')(result, options)).toContain('coveo-icon-with-caption-overlay');
-        expect(TemplateHelpers.getHelper('fromFileTypeToIcon')(result, options)).toContain('<span class="coveo-icon-caption-overlay">foo</span>');
+        expect(TemplateHelpers.getHelper('fromFileTypeToIcon')(result, options)).toContain(
+          '<span class="coveo-icon-caption-overlay">foo</span>'
+        );
       });
 
       it('should not use the label if not specified', () => {
         options.withLabel = false;
         options.labelValue = 'foo';
         expect(TemplateHelpers.getHelper('fromFileTypeToIcon')(result, options)).not.toContain('coveo-icon-with-caption-overlay');
-        expect(TemplateHelpers.getHelper('fromFileTypeToIcon')(result, options)).not.toContain('<span class="coveo-icon-caption-overlay">foo</span>');
+        expect(TemplateHelpers.getHelper('fromFileTypeToIcon')(result, options)).not.toContain(
+          '<span class="coveo-icon-caption-overlay">foo</span>'
+        );
       });
     });
 
@@ -352,7 +386,9 @@ export function CoreHelperTest() {
 
     describe('encodeCarriageReturn', () => {
       it('should replace carriage return with a &lt;br /&gt; tag', () => {
-        expect(TemplateHelpers.getHelper('encodeCarriageReturn')('this contains a carriage \n return')).toEqual('this contains a carriage <br/> return');
+        expect(TemplateHelpers.getHelper('encodeCarriageReturn')('this contains a carriage \n return')).toEqual(
+          'this contains a carriage <br/> return'
+        );
       });
     });
 

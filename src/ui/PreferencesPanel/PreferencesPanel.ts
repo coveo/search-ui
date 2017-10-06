@@ -15,8 +15,7 @@ import 'styling/_PreferencesPanel';
 import { InitializationEvents } from '../../events/InitializationEvents';
 import { SVGIcons } from '../../utils/SVGIcons';
 
-export interface IPreferencesPanelOptions {
-}
+export interface IPreferencesPanelOptions {}
 
 /**
  * The PreferencesPanel component renders a **Preferences** item inside the {@link Settings} component which the end
@@ -30,9 +29,9 @@ export class PreferencesPanel extends Component {
 
   static doExport = () => {
     exportGlobally({
-      'PreferencesPanel': PreferencesPanel
+      PreferencesPanel: PreferencesPanel
     });
-  }
+  };
 
   static options: IPreferencesPanelOptions = {};
   private modalbox: Coveo.ModalBox.ModalBox;
@@ -45,7 +44,12 @@ export class PreferencesPanel extends Component {
    * @param bindings The bindings that the component requires to function normally. If not set, these will be
    * automatically resolved (with a slower execution time).
    */
-  constructor(public element: HTMLElement, public options: IPreferencesPanelOptions, bindings?: IComponentBindings, private ModalBox = ModalBoxModule) {
+  constructor(
+    public element: HTMLElement,
+    public options: IPreferencesPanelOptions,
+    bindings?: IComponentBindings,
+    private ModalBox = ModalBoxModule
+  ) {
     super(element, PreferencesPanel.ID, bindings);
     this.options = ComponentOptions.initComponentOptions(element, PreferencesPanel, options);
     this.bind.onRootElement(SettingsEvents.settingsPopulateMenu, (args: ISettingsPopulateMenuArgs) => {
@@ -54,7 +58,7 @@ export class PreferencesPanel extends Component {
         text: l('Preferences'),
         onOpen: () => this.open(),
         onClose: () => this.close(),
-        svgIcon: SVGIcons.dropdownPreferences,
+        svgIcon: SVGIcons.icons.dropdownPreferences,
         svgIconClassName: 'coveo-preferences-panel-svg'
       });
     });
@@ -69,7 +73,7 @@ export class PreferencesPanel extends Component {
   public open(): void {
     if (this.modalbox == null) {
       let root = $$('div');
-      _.each(this.content, (oneChild) => {
+      _.each(this.content, oneChild => {
         root.append(oneChild);
       });
 

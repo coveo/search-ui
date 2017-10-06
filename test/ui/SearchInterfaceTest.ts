@@ -19,14 +19,13 @@ import _ = require('underscore');
 
 export function SearchInterfaceTest() {
   describe('SearchInterface', () => {
-
     let cmp: SearchInterface;
 
-    beforeEach(function () {
+    beforeEach(function() {
       cmp = new SearchInterface(document.createElement('div'));
     });
 
-    afterEach(function () {
+    afterEach(function() {
       cmp = null;
     });
 
@@ -58,7 +57,7 @@ export function SearchInterfaceTest() {
       expect(cmp.root).toBe(cmp.element, 'Not an element');
     });
 
-    it('should allow to attach and detach component', function () {
+    it('should allow to attach and detach component', function() {
       let cmpToAttach = Mock.mockComponent(Querybox);
       cmp.attachComponent('Querybox', cmpToAttach);
       expect(cmp.getComponents('Querybox')).toContain(cmpToAttach);
@@ -66,22 +65,22 @@ export function SearchInterfaceTest() {
       expect(cmp.getComponents('Querybox')).not.toContain(cmpToAttach);
     });
 
-    describe('usage analytics', function () {
+    describe('usage analytics', function() {
       let searchInterfaceDiv: HTMLDivElement;
       let analyticsDiv: HTMLDivElement;
 
-      beforeEach(function () {
+      beforeEach(function() {
         searchInterfaceDiv = document.createElement('div');
         analyticsDiv = document.createElement('div');
         analyticsDiv.className = 'CoveoAnalytics';
       });
 
-      afterEach(function () {
+      afterEach(function() {
         searchInterfaceDiv = null;
         analyticsDiv = null;
       });
 
-      it('should initialize if found inside the root', function () {
+      it('should initialize if found inside the root', function() {
         searchInterfaceDiv.appendChild(analyticsDiv);
         let searchInterface = new SearchInterface(searchInterfaceDiv);
         expect(searchInterface.usageAnalytics instanceof Coveo['LiveAnalyticsClient']).toBe(true);
@@ -113,7 +112,7 @@ export function SearchInterfaceTest() {
       expect(resultsSection.hasClass('coveo-no-results')).toBe(false);
     });
 
-    describe('exposes options', function () {
+    describe('exposes options', function() {
       let div: HTMLDivElement;
       let mockWindow: Window;
       let env: Mock.IMockEnvironment;
@@ -130,152 +129,186 @@ export function SearchInterfaceTest() {
         mockWindow = null;
       });
 
-      it('enableHistory allow to enable history in the url', function () {
-        let cmp = new SearchInterface(div, {
-          enableHistory: true
-        }, undefined, mockWindow);
+      it('enableHistory allow to enable history in the url', function() {
+        let cmp = new SearchInterface(
+          div,
+          {
+            enableHistory: true
+          },
+          undefined,
+          mockWindow
+        );
         expect(Component.resolveBinding(cmp.element, HistoryController)).toBeDefined();
       });
 
-      it('enableHistory can be disabled and won\'t save history in the url', function () {
-        let cmp = new SearchInterface(div, {
-          enableHistory: false
-        }, undefined, mockWindow);
+      it("enableHistory can be disabled and won't save history in the url", function() {
+        let cmp = new SearchInterface(
+          div,
+          {
+            enableHistory: false
+          },
+          undefined,
+          mockWindow
+        );
         expect(Component.resolveBinding(cmp.element, HistoryController)).toBeUndefined();
       });
 
-      it('useLocalStorageForHistory allow to use local storage for history', function () {
-        let cmp = new SearchInterface(div, {
-          enableHistory: true,
-          useLocalStorageForHistory: true
-        }, undefined, mockWindow);
+      it('useLocalStorageForHistory allow to use local storage for history', function() {
+        let cmp = new SearchInterface(
+          div,
+          {
+            enableHistory: true,
+            useLocalStorageForHistory: true
+          },
+          undefined,
+          mockWindow
+        );
         expect(Component.resolveBinding(cmp.element, HistoryController)).toBeUndefined();
         expect(Component.resolveBinding(cmp.element, LocalStorageHistoryController)).toBeDefined();
       });
 
-      it('useLocalStorageForHistory allow to use local storage for history, but not if history is disabled', function () {
-        let cmp = new SearchInterface(div, {
-          enableHistory: false,
-          useLocalStorageForHistory: true
-        }, undefined, mockWindow);
+      it('useLocalStorageForHistory allow to use local storage for history, but not if history is disabled', function() {
+        let cmp = new SearchInterface(
+          div,
+          {
+            enableHistory: false,
+            useLocalStorageForHistory: true
+          },
+          undefined,
+          mockWindow
+        );
         expect(Component.resolveBinding(cmp.element, HistoryController)).toBeUndefined();
         expect(Component.resolveBinding(cmp.element, LocalStorageHistoryController)).toBeUndefined();
       });
 
-      it('resultsPerPage allow to specify the number of results in query', function () {
+      it('resultsPerPage allow to specify the number of results in query', function() {
         new SearchInterface(div, { resultsPerPage: 123 }, undefined, mockWindow);
         let simulation = Simulate.query(env);
         expect(simulation.queryBuilder.numberOfResults).toBe(123);
       });
 
-      it('resultsPerPage should be 10 by default', function () {
+      it('resultsPerPage should be 10 by default', function() {
         new SearchInterface(div, undefined, undefined, mockWindow);
         let simulation = Simulate.query(env);
         expect(simulation.queryBuilder.numberOfResults).toBe(10);
       });
 
-      it('excerptLength allow to specify the excerpt length of results in a query', function () {
-        new SearchInterface(div, {
-          excerptLength: 123
-        }, undefined, mockWindow);
+      it('excerptLength allow to specify the excerpt length of results in a query', function() {
+        new SearchInterface(
+          div,
+          {
+            excerptLength: 123
+          },
+          undefined,
+          mockWindow
+        );
         let simulation = Simulate.query(env);
         expect(simulation.queryBuilder.excerptLength).toBe(123);
       });
 
-      it('excerptLength should be 200 by default', function () {
+      it('excerptLength should be 200 by default', function() {
         new SearchInterface(div, undefined, undefined, mockWindow);
         let simulation = Simulate.query(env);
         expect(simulation.queryBuilder.excerptLength).toBe(200);
       });
 
-      it('expression allow to specify and advanced expression to add to the query', function () {
+      it('expression allow to specify and advanced expression to add to the query', function() {
         new SearchInterface(div, { expression: 'foobar' }, undefined, mockWindow);
         let simulation = Simulate.query(env);
-        expect(simulation.queryBuilder.advancedExpression.build()).toBe('foobar');
+        expect(simulation.queryBuilder.constantExpression.build()).toBe('foobar');
       });
 
-      it('expression should not be added if empty', function () {
+      it('expression should not be added if empty', function() {
         new SearchInterface(div, { expression: '' }, undefined, mockWindow);
         let simulation = Simulate.query(env);
-        expect(simulation.queryBuilder.advancedExpression.build()).toBeUndefined();
+        expect(simulation.queryBuilder.constantExpression.build()).toBeUndefined();
       });
 
-      it('expression should be empty by default', function () {
+      it('expression should be empty by default', function() {
         new SearchInterface(div, undefined, undefined, mockWindow);
         let simulation = Simulate.query(env);
-        expect(simulation.queryBuilder.advancedExpression.build()).toBeUndefined();
+        expect(simulation.queryBuilder.constantExpression.build()).toBeUndefined();
       });
 
-      it('filterField allow to specify a filtering field', function () {
+      it('filterField allow to specify a filtering field', function() {
         new SearchInterface(div, { filterField: '@foobar' }, undefined, mockWindow);
         let simulation = Simulate.query(env);
         expect(simulation.queryBuilder.filterField).toBe('@foobar');
       });
 
-      it('filterField should be empty by default', function () {
+      it('filterField should be empty by default', function() {
         new SearchInterface(div, undefined, mockWindow);
         let simulation = Simulate.query(env);
         expect(simulation.queryBuilder.filterField).toBeUndefined();
       });
 
-
-      it('timezone allow to specify a timezone in the query', function () {
+      it('timezone allow to specify a timezone in the query', function() {
         new SearchInterface(div, { timezone: 'aa-bb' }, undefined, mockWindow);
         let simulation = Simulate.query(env);
         expect(simulation.queryBuilder.timezone).toBe('aa-bb');
       });
 
-      it('enableDebugInfo should create a debug component', function (done) {
-        let cmp = new SearchInterface(div, {
-          enableDebugInfo: true
-        }, undefined, mockWindow);
+      it('enableDebugInfo should create a debug component', function(done) {
+        let cmp = new SearchInterface(
+          div,
+          {
+            enableDebugInfo: true
+          },
+          undefined,
+          mockWindow
+        );
         _.defer(() => {
           expect(Component.resolveBinding(cmp.element, Debug)).toBeDefined();
           done();
         });
       });
 
-      it('enableDebugInfo disabled should not create a debug component', function (done) {
-        let cmp = new SearchInterface(div, {
-          enableDebugInfo: false
-        }, undefined, mockWindow);
+      it('enableDebugInfo disabled should not create a debug component', function(done) {
+        let cmp = new SearchInterface(
+          div,
+          {
+            enableDebugInfo: false
+          },
+          undefined,
+          mockWindow
+        );
         _.defer(() => {
           expect(Component.resolveBinding(cmp.element, Debug)).toBeUndefined();
           done();
         });
       });
 
-      it('enableCollaborativeRating allow to specify the collaborative rating in the query', function () {
+      it('enableCollaborativeRating allow to specify the collaborative rating in the query', function() {
         new SearchInterface(div, { enableCollaborativeRating: true }, undefined, mockWindow);
         let simulation = Simulate.query(env);
         expect(simulation.queryBuilder.enableCollaborativeRating).toBe(true);
       });
 
-      it('enableCollaborativeRating to false allow to disable the collaborative rating in the query', function () {
+      it('enableCollaborativeRating to false allow to disable the collaborative rating in the query', function() {
         new SearchInterface(div, { enableCollaborativeRating: false }, undefined, mockWindow);
         let simulation = Simulate.query(env);
         expect(simulation.queryBuilder.enableCollaborativeRating).toBe(false);
       });
 
-      it('enableDuplicateFiltering allow to filter duplicate in the query', function () {
+      it('enableDuplicateFiltering allow to filter duplicate in the query', function() {
         new SearchInterface(div, { enableDuplicateFiltering: true }, undefined, mockWindow);
         let simulation = Simulate.query(env);
         expect(simulation.queryBuilder.enableDuplicateFiltering).toBe(true);
       });
 
-      it('enableDuplicateFiltering to false allow to disable the filter duplicate in the query', function () {
+      it('enableDuplicateFiltering to false allow to disable the filter duplicate in the query', function() {
         new SearchInterface(div, { enableDuplicateFiltering: false }, undefined, mockWindow);
         let simulation = Simulate.query(env);
         expect(simulation.queryBuilder.enableDuplicateFiltering).toBe(false);
       });
 
-      it('pipeline allow to specify the pipeline to use in a query', function () {
+      it('pipeline allow to specify the pipeline to use in a query', function() {
         new SearchInterface(div, { pipeline: 'foobar' }, undefined, mockWindow);
         let simulation = Simulate.query(env);
         expect(simulation.queryBuilder.pipeline).toBe('foobar');
       });
 
-      it('maximumAge allow to specify the duration of the cache in a query', function () {
+      it('maximumAge allow to specify the duration of the cache in a query', function() {
         new SearchInterface(div, { maximumAge: 123 }, undefined, mockWindow);
         let simulation = Simulate.query(env);
         expect(simulation.queryBuilder.maximumAge).toBe(123);

@@ -67,6 +67,9 @@ chatterTopicRegisterFields();
 import { DidYouMean } from './ui/DidYouMean/DidYouMean';
 DidYouMean.doExport();
 
+import { DistanceResources } from './ui/Distance/DistanceResources';
+DistanceResources.doExport();
+
 import { ErrorReport } from './ui/ErrorReport/ErrorReport';
 ErrorReport.doExport();
 
@@ -256,6 +259,9 @@ RadioButton.doExport();
 
 import { TextInput } from './ui/FormWidgets/TextInput';
 TextInput.doExport();
+
+import { SimpleFilter } from './ui/SimpleFilter/SimpleFilter';
+SimpleFilter.doExport();
 
 import { swapVar } from './SwapVar';
 swapVar(this);

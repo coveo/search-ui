@@ -1,14 +1,13 @@
 ///<reference path="Omnibox.ts"/>
-import { Omnibox, IPopulateOmniboxSuggestionsEventArgs, IOmniboxSuggestion } from './Omnibox';
+import { Omnibox, IOmniboxSuggestion } from './Omnibox';
 import { $$, Dom } from '../../utils/Dom';
 import { IQuerySuggestCompletion, IQuerySuggestRequest, IQuerySuggestResponse } from '../../rest/QuerySuggest';
 import { ComponentOptionsModel } from '../../models/ComponentOptionsModel';
-import { OmniboxEvents } from '../../events/OmniboxEvents';
+import { OmniboxEvents, IPopulateOmniboxSuggestionsEventArgs } from '../../events/OmniboxEvents';
 import { StringUtils } from '../../utils/StringUtils';
 import * as _ from 'underscore';
 
 export class QuerySuggestAddon {
-
   static INDEX = 60;
 
   private static suggestiontHtml(suggestion: IQuerySuggestCompletion) {
@@ -55,7 +54,6 @@ export class QuerySuggestAddon {
   }
 
   public getSuggestion(): Promise<IOmniboxSuggestion[]> {
-
     var text = this.omnibox.magicBox.getText();
 
     if (text.length == 0) {
@@ -76,14 +74,14 @@ export class QuerySuggestAddon {
 
   private getQuerySuggest(text: string): Promise<IOmniboxSuggestion[]> {
     let payload = <IQuerySuggestRequest>{ q: text };
-    let language = <string>String['locale'];
+    let locale = <string>String['locale'];
     let searchHub = this.omnibox.getBindings().componentOptionsModel.get(ComponentOptionsModel.attributesEnum.searchHub);
     let pipeline = this.omnibox.getBindings().searchInterface.options.pipeline;
     let enableWordCompletion = this.omnibox.options.enableSearchAsYouType;
     let context = this.omnibox.getBindings().queryController.getLastQuery().context;
 
-    if (language) {
-      payload.language = language;
+    if (locale) {
+      payload.locale = locale;
     }
 
     if (searchHub) {
@@ -100,7 +98,8 @@ export class QuerySuggestAddon {
 
     payload.enableWordCompletion = enableWordCompletion;
 
-    return this.omnibox.queryController.getEndpoint()
+    return this.omnibox.queryController
+      .getEndpoint()
       .getQuerySuggest(payload)
       .then((result: IQuerySuggestResponse) => {
         var completions = result.completions;

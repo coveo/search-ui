@@ -33,7 +33,13 @@ export class HistoryController extends RootComponent {
    * @param queryController
    * @param hashUtilsModule For mock / test purposes.
    */
-  constructor(element: HTMLElement, public windoh: Window, public model: Model, public queryController: QueryController, private hashUtils: typeof HashUtils = HashUtils) {
+  constructor(
+    element: HTMLElement,
+    public windoh: Window,
+    public model: Model,
+    public queryController: QueryController,
+    private hashUtils: typeof HashUtils = HashUtils
+  ) {
     super(element, HistoryController.ID);
 
     this.windoh = this.windoh || window;
@@ -149,7 +155,7 @@ export class HistoryController extends RootComponent {
 
   public debugInfo() {
     return {
-      'state': this.model.getAttributes()
+      state: this.model.getAttributes()
     };
   }
 }

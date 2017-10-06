@@ -35,19 +35,18 @@ export class Searchbox extends Component {
 
   static doExport = () => {
     exportGlobally({
-      'Searchbox': Searchbox,
-      'SearchButton': SearchButton,
-      'Omnibox': Omnibox,
-      'Querybox': Querybox
+      Searchbox: Searchbox,
+      SearchButton: SearchButton,
+      Omnibox: Omnibox,
+      Querybox: Querybox
     });
-  }
+  };
 
   /**
    * Possible options for the {@link Searchbox}
    * @componentOptions
    */
   static options: ISearchboxOptions = {
-
     /**
      * Specifies whether to instantiate a [`SearchButton`]{@link SearchButton} component.
      *
@@ -134,7 +133,7 @@ export class Searchbox extends Component {
     }
 
     const magicBoxIcon = $$(this.element).find('.magic-box-icon');
-    magicBoxIcon.innerHTML = SVGIcons.mainClear;
+    magicBoxIcon.innerHTML = SVGIcons.icons.mainClear;
     SVGDom.addClassToSVGInContainer(magicBoxIcon, 'magic-box-clear-svg');
   }
 }

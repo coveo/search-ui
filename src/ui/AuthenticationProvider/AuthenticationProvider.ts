@@ -39,16 +39,15 @@ export class AuthenticationProvider extends Component {
 
   static doExport = () => {
     exportGlobally({
-      'AuthenticationProvider': AuthenticationProvider
+      AuthenticationProvider: AuthenticationProvider
     });
-  }
+  };
 
   /**
    * The options for the component.
    * @componentOptions
    */
   static options: IAuthenticationProviderOptions = {
-
     /**
      * Specifies the name of the authentication provider.
      *
@@ -105,7 +104,12 @@ export class AuthenticationProvider extends Component {
    * @param bindings The bindings that the component requires to function normally. If not set, these will be
    * automatically resolved (with a slower execution time).
    */
-  constructor(public element: HTMLElement, public options: IAuthenticationProviderOptions = {}, bindings?: IComponentBindings, public _window?: Window) {
+  constructor(
+    public element: HTMLElement,
+    public options: IAuthenticationProviderOptions = {},
+    bindings?: IComponentBindings,
+    public _window?: Window
+  ) {
     super(element, AuthenticationProvider.ID, bindings);
 
     this.options = ComponentOptions.initComponentOptions(element, AuthenticationProvider, options);
@@ -126,7 +130,7 @@ export class AuthenticationProvider extends Component {
         text: l('Reauthenticate', this.options.caption),
         className: 'coveo-authentication-provider',
         onOpen: () => this.authenticateWithProvider(),
-        svgIcon: SVGIcons.dropdownAuthenticate,
+        svgIcon: SVGIcons.icons.dropdownAuthenticate,
         svgIconClassName: 'coveo-authentication-provider-svg'
       });
     });
@@ -139,7 +143,12 @@ export class AuthenticationProvider extends Component {
   private handleQueryError(args: IQueryErrorEventArgs) {
     let missingAuthError = <MissingAuthenticationError>args.error;
 
-    if (missingAuthError.isMissingAuthentication && missingAuthError.provider === this.options.name && this.redirectCount < 2 && this.redirectCount !== -1) {
+    if (
+      missingAuthError.isMissingAuthentication &&
+      missingAuthError.provider === this.options.name &&
+      this.redirectCount < 2 &&
+      this.redirectCount !== -1
+    ) {
       ++this.redirectCount;
       this.authenticateWithProvider();
     } else {
@@ -161,7 +170,7 @@ export class AuthenticationProvider extends Component {
     this.logger.info(`Using iframe to retrieve authentication for provider ${this.options.name}`);
 
     let iframe = $$('iframe', {
-      'src': this.getAuthenticationProviderUriForIFrame()
+      src: this.getAuthenticationProviderUriForIFrame()
     }).el;
 
     let modalbox: Coveo.ModalBox.ModalBox;
@@ -186,9 +195,13 @@ export class AuthenticationProvider extends Component {
   }
 
   private createPopupForWaitMessage(iframe: HTMLElement): Coveo.ModalBox.ModalBox {
-    let popup = $$('div', {
-      className: 'coveo-waiting-for-authentication-popup'
-    }, DomUtils.getBasicLoadingAnimation()).el;
+    let popup = $$(
+      'div',
+      {
+        className: 'coveo-waiting-for-authentication-popup'
+      },
+      DomUtils.getBasicLoadingAnimation()
+    ).el;
 
     $$(iframe).hide();
     document.body.appendChild(iframe);

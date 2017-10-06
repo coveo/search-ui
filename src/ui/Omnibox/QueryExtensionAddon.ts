@@ -1,6 +1,6 @@
 ///<reference path='Omnibox.ts'/>
-import { OmniboxEvents } from '../../events/OmniboxEvents';
-import { Omnibox, IPopulateOmniboxSuggestionsEventArgs, IOmniboxSuggestion, MagicBox } from './Omnibox';
+import { OmniboxEvents, IPopulateOmniboxSuggestionsEventArgs } from '../../events/OmniboxEvents';
+import { Omnibox, IOmniboxSuggestion, MagicBox } from './Omnibox';
 import { IExtension } from '../../rest/Extension';
 import * as _ from 'underscore';
 
@@ -33,7 +33,7 @@ export class QueryExtensionAddon {
     if (this.cache[hashString] != null) {
       return this.hashValueToSuggestion(hash, this.cache[hashString]);
     }
-    var values = (hash.type == 'QueryExtensionName' ? this.names(hash.current) : this.attributeNames(hash.name, hash.current, hash.used));
+    var values = hash.type == 'QueryExtensionName' ? this.names(hash.current) : this.attributeNames(hash.name, hash.current, hash.used);
     this.cache[hashString] = values;
     values.catch(() => {
       delete this.cache[hashString];
@@ -57,9 +57,8 @@ export class QueryExtensionAddon {
 
       current = _.last(magicBox.resultAtCursor('QueryExtensionArgumentName'));
       if (current != null) {
-
         var used: string[] = _.chain(queryExtensionArgumentResults)
-          .map((result) => {
+          .map(result => {
             var name = result.find('QueryExtensionArgumentName');
             return name && name.toString();
           })
@@ -85,11 +84,11 @@ export class QueryExtensionAddon {
     if (hash == null) {
       return null;
     }
-    return [hash.type, hash.current, (hash.name || ''), (hash.used ? hash.used.join() : '')].join();
+    return [hash.type, hash.current, hash.name || '', hash.used ? hash.used.join() : ''].join();
   }
 
   private hashValueToSuggestion(hash: IQueryExtensionAddonHash, promise: Promise<string[]>): Promise<IOmniboxSuggestion[]> {
-    return promise.then((values) => {
+    return promise.then(values => {
       var suggestions: IOmniboxSuggestion[] = _.map(values, (value, i) => {
         return {
           html: MagicBox.Utils.highlightText(value, hash.current, true),
@@ -120,7 +119,7 @@ export class QueryExtensionAddon {
             extension: extension.name
           };
         })
-        .filter((extension) => {
+        .filter(extension => {
           return extension.index != -1 && extension.extension.length > extensionName.length;
         })
         .sortBy('index')

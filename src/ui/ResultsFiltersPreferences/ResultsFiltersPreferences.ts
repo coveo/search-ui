@@ -35,7 +35,7 @@ export interface IResultFilterPreference {
 
 export interface IResultsFiltersPreferencesOptions {
   filters?: {
-    [caption: string]: { expression: string; tab?: string[]; };
+    [caption: string]: { expression: string; tab?: string[] };
   };
   includeInBreadcrumb?: boolean;
   showAdvancedFilters?: boolean;
@@ -58,16 +58,15 @@ export class ResultsFiltersPreferences extends Component {
 
   static doExport = () => {
     exportGlobally({
-      'ResultsFiltersPreferences': ResultsFiltersPreferences
+      ResultsFiltersPreferences: ResultsFiltersPreferences
     });
-  }
+  };
 
   /**
    * The options for the component
    * @componentOptions
    */
   static options: IResultsFiltersPreferencesOptions = {
-
     /**
      * Specifies whether to display the active filter(s) in the [`Breadcrumb`]{@link Breadcrumb}.
      *
@@ -210,7 +209,9 @@ export class ResultsFiltersPreferences extends Component {
 
   private bindBreadcrumbEvent() {
     if (this.options.includeInBreadcrumb) {
-      this.bind.onRootElement(BreadcrumbEvents.populateBreadcrumb, (args: IPopulateBreadcrumbEventArgs) => this.handlePopulateBreadcrumb(args));
+      this.bind.onRootElement(BreadcrumbEvents.populateBreadcrumb, (args: IPopulateBreadcrumbEventArgs) =>
+        this.handlePopulateBreadcrumb(args)
+      );
       this.bind.onRootElement(BreadcrumbEvents.clearBreadcrumb, () => this.handleClearBreadcrumb());
     }
   }
@@ -220,7 +221,7 @@ export class ResultsFiltersPreferences extends Component {
   }
 
   private handleBuildingQuery(args: IBuildingQueryEventArgs) {
-    _.each(this.getActiveFilters(), (filter) => {
+    _.each(this.getActiveFilters(), filter => {
       if (Utils.isNonEmptyString(filter.expression)) {
         args.queryBuilder.advancedExpression.add(filter.expression);
       }
@@ -253,7 +254,7 @@ export class ResultsFiltersPreferences extends Component {
   }
 
   private handleClearBreadcrumb() {
-    _.each(this.getActiveFilters(), (filter) => {
+    _.each(this.getActiveFilters(), filter => {
       filter.selected = false;
     });
     this.fromPreferencesToCheckboxInput();
@@ -266,10 +267,14 @@ export class ResultsFiltersPreferences extends Component {
     this.advancedFiltersBuilder = $$('div', { className: 'coveo-advanced-filters-builder' }).el;
     this.advancedFiltersBuilder.appendChild(this.advancedFilterFormValidate);
     $$(this.advancedFilters).on('click', () => this.openAdvancedFilterSectionOrSaveFilters());
-    const onlineHelp = $$('a', {
-      href: 'http://www.coveo.com/go?dest=adminhelp70&lcid=9&context=10006',
-      className: 'coveo-online-help'
-    }, '?');
+    const onlineHelp = $$(
+      'a',
+      {
+        href: 'http://www.coveo.com/go?dest=adminhelp70&lcid=9&context=10006',
+        className: 'coveo-online-help'
+      },
+      '?'
+    );
 
     const title = $$(this.container).find('.coveo-form-group-label');
 
@@ -279,19 +284,15 @@ export class ResultsFiltersPreferences extends Component {
   }
 
   private buildAdvancedFilterInput() {
-
-    this.advancedFiltersTextInputCaption = new TextInput(() => {
-    }, l('Caption'));
+    this.advancedFiltersTextInputCaption = new TextInput(() => {}, l('Caption'));
 
     this.advancedFiltersTextInputCaption.getInput().setAttribute('required', '');
 
-    this.advancedFiltersTextInputExpression = new TextInput(() => {
-    }, l('Expression'));
+    this.advancedFiltersTextInputExpression = new TextInput(() => {}, l('Expression'));
 
     this.advancedFiltersTextInputExpression.getInput().setAttribute('required', '');
 
-    this.advancedFiltersTabSelect = new MultiSelect(() => {
-    }, this.getAllTabs(), l('Tab'));
+    this.advancedFiltersTabSelect = new MultiSelect(() => {}, this.getAllTabs(), l('Tab'));
   }
 
   private buildAdvancedFilterFormValidate() {
@@ -301,14 +302,22 @@ export class ResultsFiltersPreferences extends Component {
       type: 'submit'
     });
 
-    const saveFormButton = $$('span', {
-      className: 'coveo-save'
-    }, SVGIcons.checkboxHookExclusionMore);
+    const saveFormButton = $$(
+      'span',
+      {
+        className: 'coveo-save'
+      },
+      SVGIcons.icons.checkboxHookExclusionMore
+    );
     SVGDom.addClassToSVGInContainer(saveFormButton.el, 'coveo-save-svg');
 
-    const closeFormButton = $$('span', {
-      className: 'coveo-close'
-    }, SVGIcons.checkboxHookExclusionMore);
+    const closeFormButton = $$(
+      'span',
+      {
+        className: 'coveo-close'
+      },
+      SVGIcons.icons.checkboxHookExclusionMore
+    );
     SVGDom.addClassToSVGInContainer(closeFormButton.el, 'coveo-close-svg');
 
     const saveAndCloseContainer = $$('div', {
@@ -335,7 +344,6 @@ export class ResultsFiltersPreferences extends Component {
       formSubmit.el.click();
     });
     closeFormButton.on('click', () => {
-
       this.hideAdvancedFilterBuilder();
     });
 
@@ -375,7 +383,7 @@ export class ResultsFiltersPreferences extends Component {
         className: 'coveo-choices-container'
       }).el;
 
-      _.each(toBuild, (filterToBuild) => {
+      _.each(toBuild, filterToBuild => {
         const checkbox = new Checkbox((checkbox: Checkbox) => {
           this.save();
           const filter = this.preferences[checkbox.getValue()];
@@ -401,11 +409,15 @@ export class ResultsFiltersPreferences extends Component {
   }
 
   private buildDeleteAdvancedFilter() {
-    _.each(this.preferences, (filter) => {
+    _.each(this.preferences, filter => {
       if (filter.custom) {
-        const deleteElement = $$('span', {
-          className: 'coveo-delete'
-        }, SVGIcons.checkboxHookExclusionMore).el;
+        const deleteElement = $$(
+          'span',
+          {
+            className: 'coveo-delete'
+          },
+          SVGIcons.icons.checkboxHookExclusionMore
+        ).el;
         SVGDom.addClassToSVGInContainer(deleteElement, 'coveo-delete-svg');
         const filterElement = this.getFilterElementByCaption(filter.caption);
         const insertInto = $$(filterElement).find('.coveo-section-edit-delete');
@@ -416,11 +428,15 @@ export class ResultsFiltersPreferences extends Component {
   }
 
   private buildEditAdvancedFilter() {
-    _.each(this.preferences, (filter) => {
+    _.each(this.preferences, filter => {
       if (filter.custom) {
-        const editElement = $$('span', {
-          className: 'coveo-edit'
-        }, SVGIcons.edit);
+        const editElement = $$(
+          'span',
+          {
+            className: 'coveo-edit'
+          },
+          SVGIcons.icons.edit
+        );
         SVGDom.addClassToSVGInContainer(editElement.el, 'coveo-edit-svg');
         const filterElement = this.getFilterElementByCaption(filter.caption);
         const insertInto = $$(filterElement).find('.coveo-section-edit-delete');
@@ -437,7 +453,7 @@ export class ResultsFiltersPreferences extends Component {
     caption.text(filter.caption);
     elem.el.appendChild(caption.el);
 
-    const clear = $$('span', { className: 'coveo-clear' }, SVGIcons.checkboxHookExclusionMore);
+    const clear = $$('span', { className: 'coveo-clear' }, SVGIcons.icons.checkboxHookExclusionMore);
     SVGDom.addClassToSVGInContainer(clear.el, 'coveo-clear-svg');
     elem.el.appendChild(clear.el);
 
@@ -537,7 +553,10 @@ export class ResultsFiltersPreferences extends Component {
 
   private fromCheckboxInputToPreferences() {
     if (this.preferencePanelCheckboxInput) {
-      const selecteds = _.map(_.filter(this.preferencePanelCheckboxInput, (checkbox: Checkbox) => checkbox.isSelected()), (selected: Checkbox) => selected.getValue());
+      const selecteds = _.map(
+        _.filter(this.preferencePanelCheckboxInput, (checkbox: Checkbox) => checkbox.isSelected()),
+        (selected: Checkbox) => selected.getValue()
+      );
       _.each(this.preferences, (filter: IResultFilterPreference) => {
         if (_.contains(selecteds, filter.caption)) {
           filter.selected = true;
@@ -579,7 +598,7 @@ export class ResultsFiltersPreferences extends Component {
   }
 
   private getFilterElementByCaption(caption: string): HTMLElement {
-    return $$(this.preferenceContainer).find('input[value=\'' + caption + '\']').parentElement;
+    return $$(this.preferenceContainer).find("input[value='" + caption + "']").parentElement;
   }
 
   private fromResultsFilterOptionToResultsPreferenceInterface() {
@@ -599,9 +618,9 @@ export class ResultsFiltersPreferences extends Component {
   private mergeLocalPreferencesWithStaticPreferences() {
     const staticPreferences = this.fromResultsFilterOptionToResultsPreferenceInterface();
     const localPreferences = this.preferencePanelLocalStorage.load();
-    const localPreferencesWithoutRemoved = _.filter<IResultFilterPreference>(localPreferences, (preference) => {
+    const localPreferencesWithoutRemoved = _.filter<IResultFilterPreference>(localPreferences, preference => {
       const isCustom = preference.custom;
-      const existsInStatic = _.find<IResultFilterPreference>(staticPreferences, (staticPreference) => {
+      const existsInStatic = _.find<IResultFilterPreference>(staticPreferences, staticPreference => {
         return staticPreference.caption == preference.caption;
       });
       return isCustom || existsInStatic != undefined;
@@ -617,7 +636,7 @@ export class ResultsFiltersPreferences extends Component {
         caption: filter.caption
       };
     });
-    this.preferences = <{ [caption: string]: IResultFilterPreference; }>Utils.extendDeep(staticPreferences, localToMerge);
+    this.preferences = <{ [caption: string]: IResultFilterPreference }>Utils.extendDeep(staticPreferences, localToMerge);
   }
 
   private fromFilterToAnalyticsEvent(filter: IResultFilterPreference, type: string) {

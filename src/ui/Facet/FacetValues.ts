@@ -8,7 +8,7 @@ import * as _ from 'underscore';
 
 /**
  * A class which holds information and operation available on a single facet value returned by a {@link IGroupByRequest}.<br/>
- * This class is used extensibely in the {@link Facet} component.
+ * This class is used extensively in the {@link Facet} component.
  */
 export class FacetValue {
   value: string;
@@ -78,7 +78,7 @@ export class FacetValue {
         return FacetValue.createFromFieldValue(value);
       }
     } else {
-      throw new Error('Can\'t create value from ' + value);
+      throw new Error("Can't create value from " + value);
     }
   }
 

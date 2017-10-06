@@ -17,8 +17,7 @@ export class FacetValuesList {
   public valueContainer: HTMLElement;
   private currentlyDisplayed: ValueElement[] = [];
 
-  constructor(public facet: Facet, public facetValueElementKlass: IFacetValueElementKlass) {
-  }
+  constructor(public facet: Facet, public facetValueElementKlass: IFacetValueElementKlass) {}
 
   public build(): HTMLElement {
     this.valueContainer = document.createElement('ul');
@@ -142,11 +141,13 @@ export class FacetValuesList {
   }
 
   private facetValueShouldBeRemoved(facetValue: FacetValue): boolean {
-    return facetValue.occurrences == 0 &&
+    return (
+      facetValue.occurrences == 0 &&
       (facetValue.delta == 0 || facetValue.delta == undefined) &&
       !facetValue.selected &&
       !facetValue.excluded &&
-      !this.facet.keepDisplayedValuesNextTime;
+      !this.facet.keepDisplayedValuesNextTime
+    );
   }
 
   private ensureFacetValueIsInList(value: any) {

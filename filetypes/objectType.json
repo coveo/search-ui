@@ -281,7 +281,7 @@
       }
     },
     "case": {
-      "icon": "salesforce-standard-case",
+      "icon": "case",
       "captions": {
         "en": "Case",
         "fr": "Cas",
@@ -449,7 +449,7 @@
       }
     },
     "incident": {
-      "icon": "salesforce-standard-case",
+      "icon": "case",
       "captions": {
         "en": "Case",
         "fr": "Cas",
@@ -588,6 +588,13 @@
         "zh-tw": "解決方案"
       },
       "shouldDisplayLabel": true
+    },
+    "report": {
+      "icon": "salesforce-standard-report",
+      "captions": {
+        "en": "Report",
+        "fr": "Rapport"
+      }
     },
     "task": {
       "icon": "salesforce-standard-task",
@@ -1355,7 +1362,7 @@
       }
     },
     "contentversion": {
-      "icon": "salesforce-standard-document",
+      "icon": "document",
       "captions": {
         "en": "Document",
         "fr": "Document",

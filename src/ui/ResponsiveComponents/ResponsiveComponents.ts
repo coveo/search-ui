@@ -7,11 +7,11 @@ export const SMALL_SCREEN_WIDTH = 480;
 /**
  * This class serves as a way to get and set the different screen size breakpoints for the interface.
  *
- * By settings those, you can impact, amongst other, the {@link Facet}, {@link Tab} or {@link ResultList} behaviour.
+ * By setting those, you can impact, amongst others, the {@link Facet}'s, {@link Tab}'s or the {@link ResultList}'s behaviour.
  *
  * For example, the {@link Facet} components of your interface will switch to a dropdown menu when the screen size reaches 800px or less.
  *
- * You could modify this value using this calls
+ * You could modify this value using `this` calls
  *
  * Normally, you would interact with this class using the instance bound to {@link SearchInterface.responsiveComponents}
  */
@@ -19,15 +19,17 @@ export class ResponsiveComponents {
   private smallScreenWidth: number;
   private mediumScreenWidth: number;
 
-  constructor(public windoh: Window = window) {
-  }
+  constructor(public windoh: Window = window) {}
 
   /**
    * Set the breakpoint for small screen size.
    * @param width
    */
   public setSmallScreenWidth(width: number) {
-    Assert.check(width < this.getMediumScreenWidth(), `Cannot set small screen width (${width}) larger or equal to the current medium screen width (${this.getMediumScreenWidth()})`);
+    Assert.check(
+      width < this.getMediumScreenWidth(),
+      `Cannot set small screen width (${width}) larger or equal to the current medium screen width (${this.getMediumScreenWidth()})`
+    );
     this.smallScreenWidth = width;
   }
 
@@ -36,7 +38,10 @@ export class ResponsiveComponents {
    * @param width
    */
   public setMediumScreenWidth(width: number) {
-    Assert.check(width > this.getSmallScreenWidth(), `Cannot set medium screen width (${width}) smaller or equal to the current small screen width (${this.getSmallScreenWidth()})`);
+    Assert.check(
+      width > this.getSmallScreenWidth(),
+      `Cannot set medium screen width (${width}) smaller or equal to the current small screen width (${this.getSmallScreenWidth()})`
+    );
     this.mediumScreenWidth = width;
   }
 

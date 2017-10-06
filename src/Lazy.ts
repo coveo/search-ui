@@ -65,6 +65,9 @@ chatterTopicRegisterFields();
 import { lazyDidYouMean } from './ui/DidYouMean/LazyDidYouMean';
 lazyDidYouMean();
 
+import { lazyDistanceResources } from './ui/Distance/LazyDistanceResources';
+lazyDistanceResources();
+
 import { lazyErrorReport } from './ui/ErrorReport/LazyErrorReport';
 lazyErrorReport();
 
@@ -252,6 +255,9 @@ lazyRadioButton();
 
 import { lazyTextInput } from './ui/FormWidgets/LazyTextInput';
 lazyTextInput();
+
+import { lazySimpleFilter } from './ui/SimpleFilter/LazySimpleFilter';
+lazySimpleFilter();
 
 import { swapVar } from './SwapVar';
 swapVar(this);

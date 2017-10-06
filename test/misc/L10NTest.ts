@@ -6,30 +6,28 @@ declare var String: {
 };
 
 export function L10NTest() {
-
-
   describe('L10N', () => {
     beforeEach(() => {
       String.toLocaleString({
-        'en': {
-          'Foo': 'Bar',
-          'TwoNumbers': '{0} and {1}',
-          'baby': '{0} bab<sn>y</sn><pl>ies</pl>'
+        en: {
+          Foo: 'Bar',
+          TwoNumbers: '{0} and {1}',
+          baby: '{0} bab<sn>y</sn><pl>ies</pl>'
         },
-        'fr': {
-          'Foo': 'Barre',
-          'TwoNumbers': '{0} et {1}',
-          'baby': '{0} bébé<pl>s</pl>'
+        fr: {
+          Foo: 'Barre',
+          TwoNumbers: '{0} et {1}',
+          baby: '{0} bébé<pl>s</pl>'
         }
       });
     });
     afterEach(() => {
       String.toLocaleString({
-        'en': {
-          'Foo': 'Foo'
+        en: {
+          Foo: 'Foo'
         },
-        'fr': {
-          'Foo': 'Foo'
+        fr: {
+          Foo: 'Foo'
         }
       });
     });
@@ -85,5 +83,4 @@ export function L10NTest() {
       expect(L10N.format('baby')).toBe('baby');
     });
   });
-
 }

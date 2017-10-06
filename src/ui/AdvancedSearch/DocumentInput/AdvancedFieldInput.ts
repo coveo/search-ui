@@ -5,7 +5,6 @@ import { DocumentInput } from './DocumentInput';
 import { QueryBuilder } from '../../Base/QueryBuilder';
 
 export class AdvancedFieldInput extends DocumentInput {
-
   protected element: HTMLElement;
   public mode: Dropdown;
   public input: TextInput;
@@ -48,5 +47,4 @@ export class AdvancedFieldInput extends DocumentInput {
     }
     return '';
   }
-
 }

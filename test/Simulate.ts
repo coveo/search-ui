@@ -8,7 +8,15 @@ import { IMockEnvironment } from './MockEnvironment';
 import { FakeResults } from './Fake';
 import { $$ } from '../src/utils/Dom';
 import { QueryEvents } from '../src/events/QueryEvents';
-import { INewQueryEventArgs, IBuildingQueryEventArgs, IDuringQueryEventArgs, IQueryErrorEventArgs, IPreprocessResultsEventArgs, INoResultsEventArgs, IQuerySuccessEventArgs } from '../src/events/QueryEvents';
+import {
+  INewQueryEventArgs,
+  IBuildingQueryEventArgs,
+  IDuringQueryEventArgs,
+  IQueryErrorEventArgs,
+  IPreprocessResultsEventArgs,
+  INoResultsEventArgs,
+  IQuerySuccessEventArgs
+} from '../src/events/QueryEvents';
 import { Utils } from '../src/utils/Utils';
 import { Defer } from '../src/misc/Defer';
 import { IOmniboxData } from '../src/ui/Omnibox/OmniboxInterface';
@@ -38,31 +46,33 @@ export interface ISimulateQueryData {
   origin?: Component;
 }
 
-
 export class Simulate {
   static isPhantomJs() {
     return navigator.userAgent.indexOf('PhantomJS') != -1;
   }
 
-  static query(env: IMockEnvironment, options?: ISimulateQueryData): ISimulateQueryData {
+  static isChromeHeadless() {
+    return navigator.userAgent.indexOf('HeadlessChrome') != -1;
+  }
 
-    options = _.extend({}, {
-      query: new QueryBuilder().build(),
-      queryBuilder: new QueryBuilder(),
-      searchAsYouType: false,
-      promise: new Promise(() => {
-      }),
-      results: FakeResults.createFakeResults(),
-      callbackDuringQuery: () => {
+  static query(env: IMockEnvironment, options?: ISimulateQueryData): ISimulateQueryData {
+    options = _.extend(
+      {},
+      {
+        query: new QueryBuilder().build(),
+        queryBuilder: new QueryBuilder(),
+        searchAsYouType: false,
+        promise: new Promise(() => {}),
+        results: FakeResults.createFakeResults(),
+        callbackDuringQuery: () => {},
+        callbackAfterNoResults: () => {},
+        callbackAfterQuery: () => {},
+        deferSuccess: false,
+        cancel: false,
+        origin: NoopComponent
       },
-      callbackAfterNoResults: () => {
-      },
-      callbackAfterQuery: () => {
-      },
-      deferSuccess: false,
-      cancel: false,
-      origin: NoopComponent
-    }, options);
+      options
+    );
 
     if (options.queryCorrections) {
       options.results.queryCorrections = options.queryCorrections;
@@ -74,7 +84,8 @@ export class Simulate {
     var newQueryEventArgs: INewQueryEventArgs = {
       searchAsYouType: options.searchAsYouType,
       cancel: options.cancel,
-      origin: options.origin
+      origin: options.origin,
+      shouldRedirectStandaloneSearchbox: true
     };
     $$(env.root).trigger(QueryEvents.newQuery, newQueryEventArgs);
 
@@ -104,8 +115,7 @@ export class Simulate {
           error: options.error,
           searchAsYouType: options.searchAsYouType
         };
-        Promise.reject(options.promise).catch((e) => {
-        });
+        Promise.reject(options.promise).catch(e => {});
         $$(env.root).trigger(QueryEvents.queryError, queryErrorEventArgs);
       } else {
         var preprocessResultsEventArgs: IPreprocessResultsEventArgs = {
@@ -115,9 +125,11 @@ export class Simulate {
           searchAsYouType: options.searchAsYouType
         };
         $$(env.root).trigger(QueryEvents.preprocessResults, preprocessResultsEventArgs);
-        Promise.resolve(new Promise((resolve, reject) => {
-          resolve(options.results);
-        }));
+        Promise.resolve(
+          new Promise((resolve, reject) => {
+            resolve(options.results);
+          })
+        );
 
         var noResultsEventArgs: INoResultsEventArgs = {
           query: options.query,
@@ -144,8 +156,6 @@ export class Simulate {
           $$(env.root).trigger(QueryEvents.querySuccess, querySuccessEventArgs);
           $$(env.root).trigger(QueryEvents.deferredQuerySuccess, querySuccessEventArgs);
         }
-
-
       }
 
       if (!options.doNotFlushDefer) {
@@ -180,15 +190,12 @@ export class Simulate {
 
   static analyticsStoreModule(actionsHistory = []) {
     return {
-      addElement: (query: IQuery) => {
-      },
+      addElement: (query: IQuery) => {},
       getHistory: () => {
         return actionsHistory;
       },
-      setHistory: (history: any[]) => {
-      },
-      clear: () => {
-      },
+      setHistory: (history: any[]) => {},
+      clear: () => {},
       getMostRecentElement: () => {
         return null;
       }
@@ -201,19 +208,23 @@ export class Simulate {
       regex: /foo/
     };
 
-    var fakeOmniboxArgs = _.extend({}, {
-      rows: [],
-      completeQueryExpression: expression,
-      allQueryExpression: expression,
-      currentQueryExpression: expression,
-      cursorPosition: 3,
-      clear: jasmine.createSpy('clear'),
-      clearCurrentExpression: jasmine.createSpy('clearCurrent'),
-      replace: jasmine.createSpy('replace'),
-      replaceCurrentExpression: jasmine.createSpy('replaceCurrentExpression'),
-      insertAt: jasmine.createSpy('insertAt'),
-      closeOmnibox: jasmine.createSpy('closeOmnibox')
-    }, options);
+    var fakeOmniboxArgs = _.extend(
+      {},
+      {
+        rows: [],
+        completeQueryExpression: expression,
+        allQueryExpression: expression,
+        currentQueryExpression: expression,
+        cursorPosition: 3,
+        clear: jasmine.createSpy('clear'),
+        clearCurrentExpression: jasmine.createSpy('clearCurrent'),
+        replace: jasmine.createSpy('replace'),
+        replaceCurrentExpression: jasmine.createSpy('replaceCurrentExpression'),
+        insertAt: jasmine.createSpy('insertAt'),
+        closeOmnibox: jasmine.createSpy('closeOmnibox')
+      },
+      options
+    );
 
     $$(env.root).trigger(OmniboxEvents.populateOmnibox, fakeOmniboxArgs);
 

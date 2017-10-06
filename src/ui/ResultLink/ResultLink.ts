@@ -32,16 +32,15 @@ export class ResultLink extends Component {
 
   static doExport = () => {
     exportGlobally({
-      'ResultLink': ResultLink
+      ResultLink: ResultLink
     });
-  }
+  };
 
   /**
    * The options for the ResultLink
    * @componentOptions
    */
   static options: IResultLinkOptions = {
-
     /**
      * Specifies the field to use to output the component `href` attribute value.
      *
@@ -127,7 +126,7 @@ export class ResultLink extends Component {
      * - The following markup generates an `href` value such as `http://uri.com?id=itemTitle`:
      *
      * ```html
-     * <a class='CoveoResultLink' data-href-template='${clickUri}?id=${title}'></a>
+     * <a class='CoveoResultLink' data-href-template='${clickUri}?id=${raw.title}'></a>
      * ```
      *
      * - The following markup generates an `href` value such as `localhost/fooBar`:
@@ -238,7 +237,13 @@ export class ResultLink extends Component {
    * @param result The result to associate the component with.
    * @param os
    */
-  constructor(public element: HTMLElement, public options: IResultLinkOptions, public bindings?: IResultsComponentBindings, public result?: IQueryResult, public os?: OS_NAME) {
+  constructor(
+    public element: HTMLElement,
+    public options: IResultLinkOptions,
+    public bindings?: IResultsComponentBindings,
+    public result?: IQueryResult,
+    public os?: OS_NAME
+  ) {
     super(element, ResultLink.ID, bindings);
     this.options = ComponentOptions.initComponentOptions(element, ResultLink, options);
     this.options = _.extend({}, this.options, this.componentOptionsModel.get(ComponentOptionsModel.attributesEnum.resultLink));
@@ -268,16 +273,18 @@ export class ResultLink extends Component {
     this.bindEventToOpen();
   }
   public renderUri(element: HTMLElement, result?: IQueryResult) {
-
     if (/^\s*$/.test(this.element.innerHTML)) {
       if (!this.options.titleTemplate) {
-        this.element.innerHTML = this.result.title ? HighlightUtils.highlightString(this.result.title, this.result.titleHighlights, null, 'coveo-highlight') : this.result.clickUri;
+        this.element.innerHTML = this.result.title
+          ? HighlightUtils.highlightString(this.result.title, this.result.titleHighlights, null, 'coveo-highlight')
+          : this.result.clickUri;
       } else {
         let newTitle = this.parseStringTemplate(this.options.titleTemplate);
-        this.element.innerHTML = newTitle ? StreamHighlightUtils.highlightStreamText(newTitle, this.result.termsToHighlight, this.result.phrasesToHighlight) : this.result.clickUri;
+        this.element.innerHTML = newTitle
+          ? StreamHighlightUtils.highlightStreamText(newTitle, this.result.termsToHighlight, this.result.phrasesToHighlight)
+          : this.result.clickUri;
       }
     }
-
   }
   /**
    * Opens the result in the same window, no matter how the actual component is configured for the end user.
@@ -335,7 +342,12 @@ export class ResultLink extends Component {
   }
 
   protected bindEventToOpen(): boolean {
-    return this.bindOnClickIfNotUndefined() || this.bindOpenQuickviewIfNotUndefined() || this.setHrefIfNotAlready() || this.openLinkThatIsNotAnAnchor();
+    return (
+      this.bindOnClickIfNotUndefined() ||
+      this.bindOpenQuickviewIfNotUndefined() ||
+      this.setHrefIfNotAlready() ||
+      this.openLinkThatIsNotAnAnchor()
+    );
   }
 
   private bindOnClickIfNotUndefined() {
@@ -409,19 +421,28 @@ export class ResultLink extends Component {
     }
   }
 
-  private logOpenDocument = _.debounce(() => {
-    this.queryController.saveLastQuery();
-    let documentURL = $$(this.element).getAttribute('href');
-    if (documentURL == undefined || documentURL == '') {
-      documentURL = this.result.clickUri;
-    }
-    this.usageAnalytics.logClickEvent(analyticsActionCauseList.documentOpen, {
-      documentURL: documentURL,
-      documentTitle: this.result.title,
-      author: Utils.getFieldValue(this.result, 'author'),
-    }, this.result, this.root);
-    Defer.flush();
-  }, 1500, true);
+  private logOpenDocument = _.debounce(
+    () => {
+      this.queryController.saveLastQuery();
+      let documentURL = $$(this.element).getAttribute('href');
+      if (documentURL == undefined || documentURL == '') {
+        documentURL = this.result.clickUri;
+      }
+      this.usageAnalytics.logClickEvent(
+        analyticsActionCauseList.documentOpen,
+        {
+          documentURL: documentURL,
+          documentTitle: this.result.title,
+          author: Utils.getFieldValue(this.result, 'author')
+        },
+        this.result,
+        this.root
+      );
+      Defer.flush();
+    },
+    1500,
+    true
+  );
 
   private getResultUri(): string {
     if (this.options.hrefTemplate) {

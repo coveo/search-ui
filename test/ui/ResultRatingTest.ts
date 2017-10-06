@@ -8,7 +8,8 @@ import { IRatingRequest } from '../../src/rest/RatingRequest';
 import { Simulate } from '../Simulate';
 
 export function ResultRatingTest() {
-  describe('ResultRating', function () {
+  describe('ResultRating', function() {
+    const activeStarClass = 'coveo-result-rating-star-active';
     let test: Mock.IBasicComponentSetup<ResultRating>;
     let averageFakeResult: IQueryResult;
     let fakeResultWithNoStars: IQueryResult;
@@ -24,12 +25,12 @@ export function ResultRatingTest() {
       test = Mock.advancedResultComponentSetup<ResultRating>(ResultRating, averageFakeResult, undefined);
     });
 
-    let numberOActivatedStarsIs = (n: number) => {
-      let resultRatings = $$(test.env.element).findAll('a');
+    const numberOActivatedStarsIs = (n: number) => {
+      const resultRatings = $$(test.env.element).findAll('a');
       let numberOfActivatedStars = 0;
 
       for (let i = 0; i < resultRatings.length; i++) {
-        if ($$(resultRatings[i]).hasClass('coveo-sprites-star_active')) {
+        if ($$(resultRatings[i]).hasClass(activeStarClass)) {
           numberOfActivatedStars++;
         } else {
           break;
@@ -39,8 +40,8 @@ export function ResultRatingTest() {
       return numberOfActivatedStars == n;
     };
 
-    it('should have empty result rating element when there\'s no rating ', () => {
-      let fakeResultWithNoResultRating: IQueryResult = FakeResults.createFakeResult();
+    it("should have empty result rating element when there's no rating ", () => {
+      const fakeResultWithNoResultRating: IQueryResult = FakeResults.createFakeResult();
       fakeResultWithNoResultRating.rating = undefined;
 
       test = Mock.advancedResultComponentSetup<ResultRating>(ResultRating, fakeResultWithNoResultRating, undefined);
@@ -51,26 +52,28 @@ export function ResultRatingTest() {
     it('should load active stars', () => {
       test = Mock.basicResultComponentSetup<ResultRating>(ResultRating);
 
-      let star = $$(test.env.element).find('a');
-      expect($$(star).hasClass('coveo-sprites-star_active')).toBe(true);
+      const star = $$(test.env.element).find('a');
+      expect($$(star).hasClass(activeStarClass)).toBe(true);
     });
 
     it('should load placeholder stars', () => {
       test = Mock.advancedResultComponentSetup<ResultRating>(ResultRating, fakeResultWithNoStars, undefined);
 
-      let star = $$(test.env.element).find('a');
-      expect($$(star).hasClass('coveo-sprites-star_placeholder')).toBe(true);
+      const star = $$(test.env.element).find('a');
+      expect($$(star).hasClass('coveo-result-rating-star')).toBe(true);
     });
 
     it('should call query controller when rating a document', () => {
-      let expectedRequest: IRatingRequest = {
+      const expectedRequest: IRatingRequest = {
         rating: RatingValues[RatingValues.Undefined],
         uniqueId: averageFakeResult.uniqueId
       };
-      let spy = <jasmine.Spy>test.env.searchEndpoint.rateDocument;
-      spy.and.returnValue(new Promise((resolve, reject) => {
-        resolve();
-      }));
+      const spy = <jasmine.Spy>test.env.searchEndpoint.rateDocument;
+      spy.and.returnValue(
+        new Promise((resolve, reject) => {
+          resolve();
+        })
+      );
 
       test.cmp.rateDocument(RatingValues.Undefined);
 
@@ -78,7 +81,7 @@ export function ResultRatingTest() {
     });
 
     it('should activate zero stars with undefined rating', () => {
-      let fakeResult: IQueryResult = FakeResults.createFakeResult();
+      const fakeResult: IQueryResult = FakeResults.createFakeResult();
       fakeResult.rating = RatingValues.Undefined;
 
       test = Mock.advancedResultComponentSetup<ResultRating>(ResultRating, fakeResult, undefined);
@@ -87,7 +90,7 @@ export function ResultRatingTest() {
     });
 
     it('should activate one star with lowest rating', () => {
-      let fakeResult: IQueryResult = FakeResults.createFakeResult();
+      const fakeResult: IQueryResult = FakeResults.createFakeResult();
       fakeResult.rating = RatingValues.Lowest;
 
       test = Mock.advancedResultComponentSetup<ResultRating>(ResultRating, fakeResult, undefined);
@@ -96,7 +99,7 @@ export function ResultRatingTest() {
     });
 
     it('should activate two stars with low rating', () => {
-      let fakeResult: IQueryResult = FakeResults.createFakeResult();
+      const fakeResult: IQueryResult = FakeResults.createFakeResult();
       fakeResult.rating = RatingValues.Low;
 
       test = Mock.advancedResultComponentSetup<ResultRating>(ResultRating, fakeResult, undefined);
@@ -105,7 +108,7 @@ export function ResultRatingTest() {
     });
 
     it('should activate three stars with average rating', () => {
-      let fakeResult: IQueryResult = FakeResults.createFakeResult();
+      const fakeResult: IQueryResult = FakeResults.createFakeResult();
       fakeResult.rating = RatingValues.Average;
 
       test = Mock.advancedResultComponentSetup<ResultRating>(ResultRating, fakeResult, undefined);
@@ -114,7 +117,7 @@ export function ResultRatingTest() {
     });
 
     it('should activate fours stars with good rating', () => {
-      let fakeResult: IQueryResult = FakeResults.createFakeResult();
+      const fakeResult: IQueryResult = FakeResults.createFakeResult();
       fakeResult.rating = RatingValues.Good;
 
       test = Mock.advancedResultComponentSetup<ResultRating>(ResultRating, fakeResult, undefined);
@@ -123,7 +126,7 @@ export function ResultRatingTest() {
     });
 
     it('should activate five stars with best rating', () => {
-      let fakeResult: IQueryResult = FakeResults.createFakeResult();
+      const fakeResult: IQueryResult = FakeResults.createFakeResult();
       fakeResult.rating = RatingValues.Best;
 
       test = Mock.advancedResultComponentSetup<ResultRating>(ResultRating, fakeResult, undefined);
@@ -132,11 +135,14 @@ export function ResultRatingTest() {
     });
 
     it('should activate star on mouseover with collaborative rating and placeholder star', () => {
-      test = Mock.advancedResultComponentSetup<ResultRating>(ResultRating, fakeResultWithNoStars,
+      test = Mock.advancedResultComponentSetup<ResultRating>(
+        ResultRating,
+        fakeResultWithNoStars,
         new Mock.AdvancedComponentSetupOptions(undefined, undefined, (builder: Mock.MockEnvironmentBuilder) => {
           return builder.withCollaborativeRating();
-        }));
-      let firstStar = $$($$(test.env.element).find('a'));
+        })
+      );
+      const firstStar = $$($$(test.env.element).find('a'));
 
       firstStar.trigger('mouseover');
 
@@ -144,11 +150,14 @@ export function ResultRatingTest() {
     });
 
     it('should activate one star on mouseover with collaborative rating and average rating', () => {
-      test = Mock.advancedResultComponentSetup<ResultRating>(ResultRating, averageFakeResult,
+      test = Mock.advancedResultComponentSetup<ResultRating>(
+        ResultRating,
+        averageFakeResult,
         new Mock.AdvancedComponentSetupOptions(undefined, undefined, (builder: Mock.MockEnvironmentBuilder) => {
           return builder.withCollaborativeRating();
-        }));
-      let firstStar = $$($$(test.env.element).find('a'));
+        })
+      );
+      const firstStar = $$($$(test.env.element).find('a'));
 
       firstStar.trigger('mouseover');
 
@@ -156,11 +165,14 @@ export function ResultRatingTest() {
     });
 
     it('should show three activated stars on mouseleave after mouseover with collaborative rating and average rating', () => {
-      test = Mock.advancedResultComponentSetup<ResultRating>(ResultRating, averageFakeResult,
+      test = Mock.advancedResultComponentSetup<ResultRating>(
+        ResultRating,
+        averageFakeResult,
         new Mock.AdvancedComponentSetupOptions(undefined, undefined, (builder: Mock.MockEnvironmentBuilder) => {
           return builder.withCollaborativeRating();
-        }));
-      let firstStar = $$($$(test.env.element).find('a'));
+        })
+      );
+      const firstStar = $$($$(test.env.element).find('a'));
 
       firstStar.trigger('mouseover');
       firstStar.trigger('mouseout');
@@ -169,11 +181,14 @@ export function ResultRatingTest() {
     });
 
     it('should deactivate star on mouseleave after mouseover with collaborative rating and placeholder star', () => {
-      test = Mock.advancedResultComponentSetup<ResultRating>(ResultRating, fakeResultWithNoStars,
+      test = Mock.advancedResultComponentSetup<ResultRating>(
+        ResultRating,
+        fakeResultWithNoStars,
         new Mock.AdvancedComponentSetupOptions(undefined, undefined, (builder: Mock.MockEnvironmentBuilder) => {
           return builder.withCollaborativeRating();
-        }));
-      let firstStar = $$($$(test.env.element).find('a'));
+        })
+      );
+      const firstStar = $$($$(test.env.element).find('a'));
 
       firstStar.trigger('mouseover');
       firstStar.trigger('mouseout');
@@ -183,7 +198,7 @@ export function ResultRatingTest() {
 
     it('should not activate star on mouseover with no collaborative rating', () => {
       test = Mock.advancedResultComponentSetup<ResultRating>(ResultRating, fakeResultWithNoStars, undefined);
-      let firstStar = $$($$(test.env.element).find('a'));
+      const firstStar = $$($$(test.env.element).find('a'));
 
       firstStar.trigger('mouseover');
 

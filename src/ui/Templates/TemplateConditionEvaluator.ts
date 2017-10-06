@@ -7,10 +7,12 @@ import * as _ from 'underscore';
 
 export class TemplateConditionEvaluator {
   static getFieldFromString(text: string): string[] {
-
-    var fields: string[] = _.map(StringUtils.match(text, /(?:(?!\b@)@([a-z0-9]+(?:\.[a-z0-9]+)*\b))|\braw.([a-z0-9]+)|\braw\['([^']+)'\]|\braw\["([^"]+)"\]/gi), (field) => {
-      return field[1] || field[2] || field[3] || field[4] || null;
-    });
+    var fields: string[] = _.map(
+      StringUtils.match(text, /(?:(?!\b@)@([a-z0-9]+(?:\.[a-z0-9]+)*\b))|\braw.([a-z0-9]+)|\braw\['([^']+)'\]|\braw\["([^"]+)"\]/gi),
+      field => {
+        return field[1] || field[2] || field[3] || field[4] || null;
+      }
+    );
 
     return fields;
   }
@@ -22,7 +24,8 @@ export class TemplateConditionEvaluator {
 
     _.each(fieldsInCondition, (fieldInCondition: string) => {
       let matchingFieldValues = TemplateConditionEvaluator.evaluateMatchingFieldValues(fieldInCondition, condition);
-      let fieldShouldNotBeNull = matchingFieldValues.length != 0 || TemplateConditionEvaluator.evaluateFieldShouldNotBeNull(fieldInCondition, condition);
+      let fieldShouldNotBeNull =
+        matchingFieldValues.length != 0 || TemplateConditionEvaluator.evaluateFieldShouldNotBeNull(fieldInCondition, condition);
 
       if (fieldShouldNotBeNull) {
         templateShouldBeLoaded = templateShouldBeLoaded && result.raw[fieldInCondition] != null;
@@ -50,7 +53,7 @@ export class TemplateConditionEvaluator {
     let secondRegexToGetValue = new RegExp(`raw\[["|']${field}["|']\]\\s*=+\\s*["|']([a-zA-Z]+)["|']`, 'gi');
 
     let matches = StringUtils.match(condition, firstRegexToGetValue).concat(StringUtils.match(condition, secondRegexToGetValue));
-    matches.forEach((match) => {
+    matches.forEach(match => {
       foundForCurrentField = foundForCurrentField.concat(match[1]);
     });
     return _.unique(foundForCurrentField);

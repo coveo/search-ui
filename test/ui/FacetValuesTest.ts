@@ -4,8 +4,6 @@ import * as _ from 'underscore';
 
 export function FacetValuesTest() {
   describe('FacetValues', () => {
-
-
     it('should allow to updateCountsFromNewValues', () => {
       const oldValues = new FacetValues(FakeResults.createFakeGroupByResult('@field', '@token', 10));
       expect(oldValues.get('@token0').occurrences).toEqual(1);

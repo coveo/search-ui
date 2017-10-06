@@ -3,7 +3,6 @@ import { StandaloneSearchInterface } from '../../src/ui/SearchInterface/SearchIn
 import { analyticsActionCauseList } from '../../src/ui/Analytics/AnalyticsActionListMeta';
 export function StandaloneSearchInterfaceTest() {
   describe('StandaloneSearchInterface', () => {
-
     let cmp: StandaloneSearchInterface;
     let windoh = window;
 
@@ -17,8 +16,7 @@ export function StandaloneSearchInterfaceTest() {
     });
 
     describe('with a complex search page uri', () => {
-
-      it('should merge the url fragments with the state', (done) => {
+      it('should merge the url fragments with the state', done => {
         cmp = new StandaloneSearchInterface(document.createElement('div'), { searchPageUri: '/mypage#t=MyTab' }, undefined, windoh);
         expect(windoh.location.href).not.toContain('key=value');
         expect(windoh.location.href).not.toContain('t=MyTab');
@@ -38,7 +36,7 @@ export function StandaloneSearchInterfaceTest() {
         }, 0);
       });
 
-      it('should merge the url query string correctly', (done) => {
+      it('should merge the url query string correctly', done => {
         cmp = new StandaloneSearchInterface(document.createElement('div'), { searchPageUri: '/mypage?debug=true' }, undefined, windoh);
         expect(windoh.location.href).not.toContain('debug=true');
 
@@ -57,8 +55,13 @@ export function StandaloneSearchInterfaceTest() {
         }, 0);
       });
 
-      it('should merge the fragment and query string parameter correctly', (done) => {
-        cmp = new StandaloneSearchInterface(document.createElement('div'), { searchPageUri: '/mypage?debug=true#t=MyTab' }, undefined, windoh);
+      it('should merge the fragment and query string parameter correctly', done => {
+        cmp = new StandaloneSearchInterface(
+          document.createElement('div'),
+          { searchPageUri: '/mypage?debug=true#t=MyTab' },
+          undefined,
+          windoh
+        );
         expect(windoh.location.href).not.toContain('debug=true');
 
         let spy = jasmine.createSpy('foo');
@@ -82,17 +85,16 @@ export function StandaloneSearchInterfaceTest() {
         cmp = new StandaloneSearchInterface(document.createElement('div'), { searchPageUri: 'foo' }, undefined, windoh);
       });
 
-      it('should redirect on new query', (done) => {
+      it('should redirect on new query', done => {
         expect(windoh.location.href).not.toContain('foo');
         cmp.queryController.executeQuery();
         setTimeout(() => {
           expect(windoh.location.href).toContain('foo');
           done();
         }, 0);
-
       });
 
-      it('should set the state in the new location', (done) => {
+      it('should set the state in the new location', done => {
         expect(windoh.location.href).not.toContain('key=value');
         let spy = jasmine.createSpy('foo');
         spy.and.returnValue({
@@ -107,8 +109,8 @@ export function StandaloneSearchInterfaceTest() {
         }, 0);
       });
 
-      it('should get the meta from the analytics client', (done) => {
-        cmp.usageAnalytics.logSearchEvent(analyticsActionCauseList.omniboxAnalytics, { 'foo': 'bar' });
+      it('should get the meta from the analytics client', done => {
+        cmp.usageAnalytics.logSearchEvent(analyticsActionCauseList.omniboxAnalytics, { foo: 'bar' });
         cmp.queryController.executeQuery();
         setTimeout(() => {
           expect(windoh.location.href).toContain('firstQueryMeta={"foo":"bar"}');
@@ -116,8 +118,8 @@ export function StandaloneSearchInterfaceTest() {
         }, 0);
       });
 
-      it('should get the cause from the analytics client', (done) => {
-        cmp.usageAnalytics.logSearchEvent(analyticsActionCauseList.omniboxAnalytics, { 'foo': 'bar' });
+      it('should get the cause from the analytics client', done => {
+        cmp.usageAnalytics.logSearchEvent(analyticsActionCauseList.omniboxAnalytics, { foo: 'bar' });
         cmp.queryController.executeQuery();
         setTimeout(() => {
           expect(windoh.location.href).toContain('firstQueryCause=omniboxAnalytics');
@@ -125,9 +127,9 @@ export function StandaloneSearchInterfaceTest() {
         }, 0);
       });
 
-      it('should transform search box submit to search from link', (done) => {
+      it('should transform search box submit to search from link', done => {
         // for legacy reason, searchbox submit were always logged a search from link in an external search box.
-        cmp.usageAnalytics.logSearchEvent(analyticsActionCauseList.searchboxSubmit, { 'foo': 'bar' });
+        cmp.usageAnalytics.logSearchEvent(analyticsActionCauseList.searchboxSubmit, { foo: 'bar' });
         cmp.queryController.executeQuery();
         setTimeout(() => {
           expect(windoh.location.href).toContain('firstQueryCause=searchFromLink');

@@ -8,7 +8,6 @@ export function PipelineContextText() {
   describe('PipelineContext', () => {
     let test: Mock.IBasicComponentSetup<PipelineContext>;
 
-
     afterEach(() => {
       test = null;
     });
@@ -26,8 +25,9 @@ export function PipelineContextText() {
 
       describe('when it contains valid JSON context', () => {
         let context = {
-          'qwerty': 'azerty',
-          'a key': 'a value'
+          qwerty: 'azerty',
+          'a key': 'a value',
+          'another key': ['multiple', 'values', 'in', 'array']
         };
 
         beforeEach(() => {
@@ -38,10 +38,13 @@ export function PipelineContextText() {
 
         it('should add the JSON content in the query', () => {
           let simulation = Simulate.query(test.env);
-          expect(simulation.queryBuilder.build().context).toEqual(jasmine.objectContaining({
-            'qwerty': 'azerty',
-            'a key': 'a value'
-          }));
+          expect(simulation.queryBuilder.build().context).toEqual(
+            jasmine.objectContaining({
+              qwerty: 'azerty',
+              'a key': 'a value',
+              'another key': ['multiple', 'values', 'in', 'array']
+            })
+          );
         });
 
         it('should return the context keys', () => {
@@ -55,7 +58,7 @@ export function PipelineContextText() {
 
       it('should add JSON content in the query if it HTML encoded', () => {
         let context = {
-          'qwerty': 'azerty'
+          qwerty: 'azerty'
         };
         let encoded = Utils.encodeHTMLEntities(JSON.stringify(context));
         $$(scriptTag).text(encoded);
@@ -63,20 +66,24 @@ export function PipelineContextText() {
         test = Mock.advancedComponentSetup<PipelineContext>(PipelineContext, new Mock.AdvancedComponentSetupOptions(scriptTag));
 
         let simulation = Simulate.query(test.env);
-        expect(simulation.queryBuilder.build().context).toEqual(jasmine.objectContaining({
-          'qwerty': 'azerty'
-        }));
+        expect(simulation.queryBuilder.build().context).toEqual(
+          jasmine.objectContaining({
+            qwerty: 'azerty'
+          })
+        );
       });
 
       it('should not throw an error if the context is malformed', () => {
         $$(scriptTag).text('this is not JSON');
 
-        expect(() => Mock.advancedComponentSetup<PipelineContext>(PipelineContext, new Mock.AdvancedComponentSetupOptions(scriptTag))).not.toThrowError();
+        expect(() =>
+          Mock.advancedComponentSetup<PipelineContext>(PipelineContext, new Mock.AdvancedComponentSetupOptions(scriptTag))
+        ).not.toThrowError();
       });
     });
 
     it('should not throw an error if the context is not a script tag', () => {
-      expect(() => test = Mock.basicComponentSetup<PipelineContext>(PipelineContext)).not.toThrowError();
+      expect(() => (test = Mock.basicComponentSetup<PipelineContext>(PipelineContext))).not.toThrowError();
     });
   });
 }

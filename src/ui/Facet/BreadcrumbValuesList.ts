@@ -44,9 +44,12 @@ export class BreadcrumbValueList {
   public buildAsString(): string {
     this.build();
     if (this.elem) {
-      return `${this.facet.options.title}: ` + _.map($$(this.elem).findAll('.coveo-facet-breadcrumb-value'), (value: HTMLElement) => {
-        return $$(value).text();
-      }).join(', ');
+      return (
+        `${this.facet.options.title}: ` +
+        _.map($$(this.elem).findAll('.coveo-facet-breadcrumb-value'), (value: HTMLElement) => {
+          return $$(value).text();
+        }).join(', ')
+      );
     }
     return '';
   }
@@ -79,24 +82,23 @@ export class BreadcrumbValueList {
       });
       multiExcluded.text(l('NMore', Globalize.format(numberOfExcluded, 'n0')));
       elem.el.appendChild(multiExcluded.el);
-
     }
 
-    let valueElements = _.map(this.collapsed, (facetValue) => {
+    let valueElements = _.map(this.collapsed, facetValue => {
       return new this.breadcrumbValueElementKlass(this.facet, facetValue);
     });
 
-    let toolTips = _.map(valueElements, (valueElement) => {
+    let toolTips = _.map(valueElements, valueElement => {
       return valueElement.getBreadcrumbTooltip();
     });
 
     elem.el.setAttribute('title', toolTips.join('\n'));
     elem.on('click', () => {
       var elements: HTMLElement[] = [];
-      _.forEach(valueElements, (valueElement) => {
+      _.forEach(valueElements, valueElement => {
         elements.push(valueElement.build(false).el);
       });
-      _.each(elements, (el) => {
+      _.each(elements, el => {
         $$(el).insertBefore(elem.el);
       });
       elem.detach();

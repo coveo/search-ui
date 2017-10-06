@@ -8,6 +8,6 @@ export class ExactKeywordsInput extends KeywordsInput {
 
   public getValue(): string {
     let value = super.getValue();
-    return value ? '\"' + value + '\"' : '';
+    return value ? '"' + value + '"' : '';
   }
 }

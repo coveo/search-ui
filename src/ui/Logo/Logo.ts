@@ -9,8 +9,7 @@ import { exportGlobally } from '../../GlobalExports';
 import { SVGIcons } from '../../utils/SVGIcons';
 import { SVGDom } from '../../utils/SVGDom';
 
-export interface ILogoOptions {
-}
+export interface ILogoOptions {}
 
 /**
  * The Logo component adds a clickable Coveo logo in the search interface.
@@ -20,9 +19,9 @@ export class Logo extends Component {
 
   static doExport = () => {
     exportGlobally({
-      'Logo': Logo
+      Logo: Logo
     });
-  }
+  };
 
   static options: ILogoOptions = {};
 
@@ -37,10 +36,14 @@ export class Logo extends Component {
     super(element, Logo.ID, bindings);
     this.options = ComponentOptions.initComponentOptions(element, Logo, options);
 
-    let link = $$('a', {
-      className: 'coveo-powered-by coveo-footer-logo',
-      href: 'http://www.coveo.com/'
-    }, SVGIcons.coveoPoweredBy);
+    let link = $$(
+      'a',
+      {
+        className: 'coveo-powered-by coveo-footer-logo',
+        href: 'http://www.coveo.com/'
+      },
+      SVGIcons.icons.coveoPoweredBy
+    );
     SVGDom.addClassToSVGInContainer(link.el, 'coveo-powered-by-svg');
     this.element.appendChild(link.el);
 

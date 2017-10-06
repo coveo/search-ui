@@ -7,11 +7,20 @@ import { Initialization } from '../Base/Initialization';
 import { Utils } from '../../utils/Utils';
 import { IRatingRequest } from '../../rest/RatingRequest';
 import { exportGlobally } from '../../GlobalExports';
+import { SVGIcons } from '../../utils/SVGIcons';
+import { SVGDom } from '../../utils/SVGDom';
+import 'styling/_ResultRating';
 
-export enum RatingValues { Undefined, Lowest, Low, Average, Good, Best };
-
-export interface IResultRatingOptions {
+export enum RatingValues {
+  Undefined,
+  Lowest,
+  Low,
+  Average,
+  Good,
+  Best
 }
+
+export interface IResultRatingOptions {}
 /**
  * The `ResultRating` component renders a 5-star rating widget. Interactive rating is possible if
  * the [`enableCollaborativeRating`]{@link SearchInterface.options.enableCollaborativeRating} option of your
@@ -24,9 +33,9 @@ export class ResultRating extends Component {
 
   static doExport = () => {
     exportGlobally({
-      'ResultRating': ResultRating
+      ResultRating: ResultRating
     });
-  }
+  };
 
   /**
    * Creates a new `ResultRating` component.
@@ -36,7 +45,12 @@ export class ResultRating extends Component {
    * automatically resolved (with a slower execution time).
    * @param result The result to associate the component with.
    */
-  constructor(public element: HTMLElement, public options?: IResultRatingOptions, public bindings?: IComponentBindings, public result?: IQueryResult) {
+  constructor(
+    public element: HTMLElement,
+    public options?: IResultRatingOptions,
+    public bindings?: IComponentBindings,
+    public result?: IQueryResult
+  ) {
     super(element, ResultRating.ID, bindings);
     this.options = ComponentOptions.initComponentOptions(element, ResultRating, options);
 
@@ -53,19 +67,20 @@ export class ResultRating extends Component {
 
   private renderStar(element: HTMLElement, isChecked: boolean, value: number) {
     let star: Dom;
-    let starElement = $$(element).find('a[rating-value="' + value + '"]');
+    const starElement = $$(element).find('a[rating-value="' + value + '"]');
     if (starElement == null) {
-      star = $$('a');
+      star = $$('a', { className: 'coveo-result-rating-star' }, SVGIcons.icons.star);
+      SVGDom.addClassToSVGInContainer(star.el, 'coveo-result-rating-star-svg');
       element.appendChild(star.el);
 
       if (this.bindings.searchInterface.options.enableCollaborativeRating) {
-        star.on('click', (e) => {
-          let targetElement: HTMLElement = <HTMLElement>e.currentTarget;
+        star.on('click', e => {
+          const targetElement: HTMLElement = <HTMLElement>e.currentTarget;
           this.rateDocument(parseInt(targetElement.getAttribute('rating-value')));
         });
 
-        star.on('mouseover', (e) => {
-          let targetElement: HTMLElement = <HTMLElement>e.currentTarget;
+        star.on('mouseover', e => {
+          const targetElement: HTMLElement = <HTMLElement>e.currentTarget;
           this.renderComponent(element, parseInt(targetElement.getAttribute('rating-value')));
         });
 
@@ -79,9 +94,7 @@ export class ResultRating extends Component {
       star = $$(starElement);
     }
 
-    let basePath: String = 'coveo-sprites-';
-    star.toggleClass(basePath + 'star_placeholder', !isChecked);
-    star.toggleClass(basePath + 'star_active', isChecked);
+    star.toggleClass('coveo-result-rating-star-active', isChecked);
   }
 
   /**
@@ -98,12 +111,14 @@ export class ResultRating extends Component {
    * - `5`: renders 5 stars.
    */
   public rateDocument(rating: RatingValues) {
-    let request: IRatingRequest = {
+    const request: IRatingRequest = {
       rating: RatingValues[rating],
       uniqueId: this.result.uniqueId
     };
 
-    this.queryController.getEndpoint().rateDocument(request)
+    this.queryController
+      .getEndpoint()
+      .rateDocument(request)
       .then(() => {
         this.result.rating = rating;
         this.renderComponent(this.element, rating);

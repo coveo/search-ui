@@ -6,19 +6,23 @@ import { Initialization } from '../Base/Initialization';
 import { $$ } from '../../utils/Dom';
 import { exportGlobally } from '../../GlobalExports';
 
-export interface IChatterTopicOption {
-}
+export interface IChatterTopicOption {}
 
 export class ChatterTopic extends Component {
   static ID = 'ChatterTopic';
 
   static doExport = () => {
     exportGlobally({
-      'ChatterTopic': ChatterTopic
+      ChatterTopic: ChatterTopic
     });
-  }
+  };
 
-  constructor(public element: HTMLElement, public options?: IChatterTopicOption, public bindings?: IResultsComponentBindings, public result?: IQueryResult) {
+  constructor(
+    public element: HTMLElement,
+    public options?: IChatterTopicOption,
+    public bindings?: IResultsComponentBindings,
+    public result?: IQueryResult
+  ) {
     super(element, ChatterTopic.ID, bindings);
 
     if (!Utils.isNullOrUndefined(Utils.getFieldValue(this.result, 'coveochatterfeedtopics'))) {

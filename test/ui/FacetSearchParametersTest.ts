@@ -29,8 +29,8 @@ export function FacetSearchParametersTest() {
       expect(params.alwaysInclude).toContain('test');
 
       mockFacet.options.valueCaption = {
-        'foo': 'test',
-        'bar': 'testing'
+        foo: 'test',
+        bar: 'testing'
       };
       params = new FacetSearchParameters(mockFacet);
       params.setValueToSearch('test');
@@ -62,8 +62,8 @@ export function FacetSearchParametersTest() {
 
       beforeEach(() => {
         mockFacet.options.valueCaption = {
-          'foo': 'test',
-          'bar': 'testing'
+          foo: 'test',
+          bar: 'testing'
         };
         const spy = <jasmine.Spy>mockFacet.getDisplayedFacetValues;
         spy.and.returnValue([FacetValue.createFromValue('a'), FacetValue.createFromValue('b'), FacetValue.createFromValue('c')]);
@@ -194,7 +194,6 @@ export function FacetSearchParametersTest() {
           mockFacet.options.sortCriteria = 'occurences';
           expect(params.getQuery().groupBy[0].sortCriteria).toBe('occurences');
         });
-
       });
     });
   });

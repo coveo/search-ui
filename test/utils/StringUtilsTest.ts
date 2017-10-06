@@ -2,7 +2,6 @@ import { StringUtils } from '../../src/utils/StringUtils';
 
 export function StringUtilsTests() {
   describe('StringUtils', () => {
-
     it('should latinize string correctly', () => {
       expect(StringUtils.latinize('ćäñadå')).toBe('canada');
     });
@@ -42,4 +41,4 @@ export function StringUtilsTests() {
       expect(StringUtils.equalsCaseInsensitive('A', 'B')).toBe(false);
     });
   });
-};
+}

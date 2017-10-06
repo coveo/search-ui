@@ -5,10 +5,13 @@ import { IResultListOptions } from './ResultList';
 import _ = require('underscore');
 
 export class ResultListRenderer {
-  constructor(protected resultListOptions: IResultListOptions, protected autoCreateComponentsFn: Function) {
-  }
+  constructor(protected resultListOptions: IResultListOptions, protected autoCreateComponentsFn: Function) {}
 
-  renderResults(resultElements: HTMLElement[], append = false, resultDisplayedCallback: (result: IQueryResult, resultElem: HTMLElement) => any) {
+  renderResults(
+    resultElements: HTMLElement[],
+    append = false,
+    resultDisplayedCallback: (result: IQueryResult, resultElem: HTMLElement) => any
+  ) {
     return Promise.all([
       this.getStartFragment(resultElements, append),
       this.getEndFragment(resultElements, append)

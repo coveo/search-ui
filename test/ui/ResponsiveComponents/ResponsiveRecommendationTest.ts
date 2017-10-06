@@ -12,7 +12,6 @@ import { mockComponent } from '../../MockEnvironment';
 import { FakeResults } from '../../Fake';
 
 export function ResponsiveRecommendationTest() {
-
   describe('ResponsiveRecommendation', () => {
     let dropdownHeaderClassName = 'dropdown-header';
     let smallWidth: number;
@@ -41,8 +40,20 @@ export function ResponsiveRecommendationTest() {
       recommendation = mockComponent<Recommendation>(Recommendation);
       recommendation.options = { hideIfNoResults: true };
       root.find(`.${Component.computeCssClassName(Recommendation)}`)['CoveoSearchInterface'] = recommendation;
-      responsiveDropdown = jasmine.createSpyObj('responsiveDropdown', ['registerOnOpenHandler', 'registerOnCloseHandler', 'cleanUp', 'open', 'close', 'disablePopupBackground']);
-      responsiveDropdownContent = jasmine.createSpyObj('responsiveDropdownContent', ['positionDropdown', 'hideDropdown', 'cleanUp', 'element']);
+      responsiveDropdown = jasmine.createSpyObj('responsiveDropdown', [
+        'registerOnOpenHandler',
+        'registerOnCloseHandler',
+        'cleanUp',
+        'open',
+        'close',
+        'disablePopupBackground'
+      ]);
+      responsiveDropdownContent = jasmine.createSpyObj('responsiveDropdownContent', [
+        'positionDropdown',
+        'hideDropdown',
+        'cleanUp',
+        'element'
+      ]);
       responsiveDropdownContent.element = $$('div');
       responsiveDropdownHeader = jasmine.createSpyObj('responsiveDropdownHeader', ['open', 'close', 'cleanUp', 'show', 'hide']);
       responsiveDropdownHeader.element = $$('div', { className: dropdownHeaderClassName });

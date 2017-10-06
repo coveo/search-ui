@@ -1,6 +1,6 @@
 @import "Variables";
 @import "../bin/sass/_GeneratedIconsNew.scss";
-@import "../node_modules/@salesforce-ux/design-system/scss/design-tokens";
+@import "mixins/salesforceIconsBackgroundColor";
 
 .coveo-icon {
   @include GeneratedIcons();
@@ -63,14 +63,3 @@
   }
 }
 
-@each $name, $color in $bg-standard-map {
-  $id: $name;
-  // Wtf... The only one not following the standard format.
-  @if $id == 'task-2' {
-    $id: 'task2';
-  }
-  .coveo-sprites-salesforce-standard-#{$id}, .coveo-sprites-salesforce-standard-#{$id}-small {
-    background-color: $color;
-    border-radius: $default-border-radius;
-  }
-}

@@ -2,7 +2,6 @@ import { Utils } from './Utils';
 import { DomUtils } from './DomUtils';
 
 export class PublicPathUtils {
-
   private static pathHasBeenConfigured = false;
 
   // Dynamically set the public path to load the chunks relative to the Coveo script
@@ -27,7 +26,7 @@ export class PublicPathUtils {
     }
   }
 
-  public static configureRessourceRoot(path: string) {
+  public static configureResourceRoot(path: string) {
     this.pathHasBeenConfigured = true;
     __webpack_public_path__ = path;
   }

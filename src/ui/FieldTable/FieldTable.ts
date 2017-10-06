@@ -44,17 +44,16 @@ export class FieldTable extends Component {
 
   static doExport = () => {
     exportGlobally({
-      'FieldTable': FieldTable,
-      'FieldValue': FieldValue
+      FieldTable: FieldTable,
+      FieldValue: FieldValue
     });
-  }
+  };
 
   /**
    * The options for the component
    * @componentOptions
    */
   static options: IFieldTableOptions = {
-
     /**
      * Specifies whether to allow the minimization (collapsing) of the FieldTable.
      *
@@ -73,7 +72,10 @@ export class FieldTable extends Component {
      *
      * Default value is `"Details"`.
      */
-    expandedTitle: ComponentOptions.buildLocalizedStringOption({ defaultValue: 'Details', depend: 'allowMinimization' }),
+    expandedTitle: ComponentOptions.buildLocalizedStringOption({
+      defaultValue: 'Details',
+      depend: 'allowMinimization'
+    }),
 
     /**
      * If {@link FieldTable.options.allowMinimization} is `true`, specifies the caption to show on the **Expand** link
@@ -81,7 +83,10 @@ export class FieldTable extends Component {
      *
      * Default value is `"Details"`.
      */
-    minimizedTitle: ComponentOptions.buildLocalizedStringOption({ defaultValue: 'Details', depend: 'allowMinimization' }),
+    minimizedTitle: ComponentOptions.buildLocalizedStringOption({
+      defaultValue: 'Details',
+      depend: 'allowMinimization'
+    }),
 
     /**
      * If {@link FieldTable.options.allowMinimization} is `true`, specifies whether to minimize the table by default.
@@ -108,7 +113,12 @@ export class FieldTable extends Component {
    * automatically resolved (with a slower execution time).
    * @param result The result to associate the component with.
    */
-  constructor(public element: HTMLElement, public options?: IFieldTableOptions, bindings?: IComponentBindings, public result?: IQueryResult) {
+  constructor(
+    public element: HTMLElement,
+    public options?: IFieldTableOptions,
+    bindings?: IComponentBindings,
+    public result?: IQueryResult
+  ) {
     super(element, ValueRow.ID, bindings);
     this.options = ComponentOptions.initComponentOptions(element, FieldTable, options);
 
@@ -192,13 +202,17 @@ export class FieldTable extends Component {
     this.toggleCaption = $$('span', { className: 'coveo-field-table-toggle-caption', tabindex: 0 }).el;
 
     this.toggleButton = $$('div', { className: 'coveo-field-table-toggle coveo-field-table-toggle-down' }).el;
-    this.toggleButtonSVGContainer = $$('span', null, SVGIcons.arrowDown).el;
+    this.toggleButtonSVGContainer = $$('span', null, SVGIcons.icons.arrowDown).el;
     SVGDom.addClassToSVGInContainer(this.toggleButtonSVGContainer, 'coveo-field-table-toggle-down-svg');
     this.toggleButton.appendChild(this.toggleCaption);
     this.toggleButton.appendChild(this.toggleButtonSVGContainer);
     $$(this.toggleButton).insertBefore(this.element);
 
-    this.toggleButtonInsideTable = $$('span', { className: 'coveo-field-table-toggle coveo-field-table-toggle-up' }, SVGIcons.arrowUp).el;
+    this.toggleButtonInsideTable = $$(
+      'span',
+      { className: 'coveo-field-table-toggle coveo-field-table-toggle-up' },
+      SVGIcons.icons.arrowUp
+    ).el;
     SVGDom.addClassToSVGInContainer(this.toggleButtonInsideTable, 'coveo-field-table-toggle-up-svg');
 
     if (this.options.minimizedByDefault === true) {
@@ -250,7 +264,9 @@ export interface IValueRowOptions extends IFieldValueOptions {
 class ValueRow extends FieldValue {
   static ID = 'ValueRow';
   static options: IValueRowOptions = {
-    caption: ComponentOptions.buildStringOption({ postProcessing: (value, options) => value || options.field.substr(1) })
+    caption: ComponentOptions.buildStringOption({
+      postProcessing: (value, options) => value || options.field.substr(1)
+    })
   };
 
   static parent = FieldValue;

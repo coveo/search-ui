@@ -12,6 +12,7 @@ import { Component } from '../src/ui/Base/Component';
 import { Utils } from '../src/utils/Utils';
 import { BaseComponent } from '../src/ui/Base/BaseComponent';
 import { NoopAnalyticsClient } from '../src/ui/Analytics/NoopAnalyticsClient';
+import { AnalyticsEndpoint } from '../src/rest/AnalyticsEndpoint';
 import { SearchEndpoint } from '../src/rest/SearchEndpoint';
 import { QueryController } from '../src/controllers/QueryController';
 import { ResponsiveComponents } from '../src/ui/ResponsiveComponents/ResponsiveComponents';
@@ -151,11 +152,13 @@ export interface IBasicComponentSetupWithModalBox<T extends BaseComponent> exten
 }
 
 export class AdvancedComponentSetupOptions {
-
-  constructor(public element: HTMLElement = $$('div').el, public cmpOptions: any = {}, public modifyBuilder = (env: MockEnvironmentBuilder) => {
-    return env;
-  }) {
-  }
+  constructor(
+    public element: HTMLElement = $$('div').el,
+    public cmpOptions: any = {},
+    public modifyBuilder = (env: MockEnvironmentBuilder) => {
+      return env;
+    }
+  ) {}
 
   public merge(toMerge: AdvancedComponentSetupOptions) {
     if (toMerge) {
@@ -178,8 +181,8 @@ export function mock<T>(contructorFunc, name = 'mock'): T {
 export function mockWindow(): Window {
   const mockWindow = <any>mock(window);
   mockWindow.location = <Location>{
-    'href': '',
-    'hash': ''
+    href: '',
+    hash: ''
   };
   mockWindow.location.replace = (newHref: string) => {
     newHref = newHref || '';
@@ -230,32 +233,38 @@ export function mockQueryController(): QueryController {
   const spy = <any>m;
   spy.options = {};
   spy.options.resultsPerPage = 10;
-  spy.fetchMore.and.returnValue(new Promise((resolve, reject) => { }));
+  spy.fetchMore.and.returnValue(new Promise((resolve, reject) => {}));
   spy.getLastQuery.and.returnValue(new QueryBuilder().build());
   return m;
 }
 
 export function mockSearchEndpoint(): SearchEndpoint {
   const m = mock<any>(SearchEndpoint, 'SearchEndpoint');
-  m.listFields.and.returnValue(new Promise((resolve, reject) => {
-  }));
-  m.listFieldValues.and.returnValue(new Promise((resolve, reject) => {
-  }));
-  m.search.and.returnValue(new Promise((resolve, reject) => {
-  }));
-  m.getQuerySuggest.and.returnValue(new Promise((resolve, reject) => {
-  }));
-  m.extensions.and.returnValue(new Promise((resolve, reject) => {
-  }));
+  m.listFields.and.returnValue(new Promise((resolve, reject) => {}));
+  m.listFieldValues.and.returnValue(new Promise((resolve, reject) => {}));
+  m.search.and.returnValue(new Promise((resolve, reject) => {}));
+  m.getQuerySuggest.and.returnValue(new Promise((resolve, reject) => {}));
+  m.extensions.and.returnValue(new Promise((resolve, reject) => {}));
   m.getViewAsDatastreamUri.and.returnValue('http://datastream.uri');
-  m.options = {};
+  m.options = {
+    queryStringArguments: {
+      organizationId: 'foobar'
+    }
+  };
   return m;
 }
 
 export function mockUsageAnalytics(): IAnalyticsClient {
   const m = mock<any>(NoopAnalyticsClient, 'AnalyticsClient');
-  m.getTopQueries.and.returnValue(new Promise((resolve, reject) => {
-  }));
+  m.getTopQueries.and.returnValue(new Promise((resolve, reject) => {}));
+  return m;
+}
+
+export function mockAnalyticsEndpoint(): AnalyticsEndpoint {
+  const m = mock<any>(AnalyticsEndpoint, 'AnalyticsEndpoint');
+  // Spy return Promise instead of void in order to chain Promises
+  m.sendCustomEvent.and.returnValue(Promise.resolve(null));
+  m.sendDocumentViewEvent.and.returnValue(Promise.resolve(null));
   return m;
 }
 

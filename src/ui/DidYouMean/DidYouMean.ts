@@ -29,23 +29,22 @@ export class DidYouMean extends Component {
 
   static doExport = () => {
     exportGlobally({
-      'DidYouMean': DidYouMean
+      DidYouMean: DidYouMean
     });
-  }
+  };
 
   /**
    * The options for the component
    * @componentOptions
    */
   static options: IDidYouMeanOptions = {
-
     /**
      * Specifies whether the DidYouMean component automatically triggers a new query when a query returns no result and
      * a possible correction is available.
      *
      * Default value is `true`.
      */
-    enableAutoCorrection: ComponentOptions.buildBooleanOption({ defaultValue: true }),
+    enableAutoCorrection: ComponentOptions.buildBooleanOption({ defaultValue: true })
   };
 
   public correctedTerm: string;
@@ -60,7 +59,6 @@ export class DidYouMean extends Component {
    * automatically resolved (with a slower execution time).
    */
   constructor(public element: HTMLElement, public options?: IDidYouMeanOptions, public bindings?: IComponentBindings) {
-
     super(element, DidYouMean.ID, bindings);
 
     this.options = ComponentOptions.initComponentOptions(element, DidYouMean, options);
@@ -117,7 +115,10 @@ export class DidYouMean extends Component {
       this.hideNext = false;
 
       let noResultsFor = $$('div', { className: 'coveo-did-you-mean-no-results-for' }).el;
-      noResultsFor.innerHTML = l('noResultFor', '<span class="coveo-highlight coveo-did-you-mean-highlight">' + StringUtils.htmlEncode(originalQuery) + '</span>');
+      noResultsFor.innerHTML = l(
+        'noResultFor',
+        '<span class="coveo-highlight coveo-did-you-mean-highlight">' + StringUtils.htmlEncode(originalQuery) + '</span>'
+      );
       this.element.appendChild(noResultsFor);
 
       let automaticCorrect = $$('div', { className: 'coveo-did-you-mean-automatic-correct' }).el;
@@ -155,10 +156,10 @@ export class DidYouMean extends Component {
 
   private buildCorrectedSentence(correction: IQueryCorrection) {
     let toReturn = [];
-    let tagStart = '<span class=\'coveo-did-you-mean-word-correction\'>';
+    let tagStart = "<span class='coveo-did-you-mean-word-correction'>";
     let tagEnd = '</span>';
     let currentOffset = 0;
-    _.each(correction.wordCorrections, (wordCorrection) => {
+    _.each(correction.wordCorrections, wordCorrection => {
       toReturn.push(StringUtils.htmlEncode(correction.correctedQuery.slice(currentOffset, wordCorrection.offset)));
       currentOffset = wordCorrection.offset;
       toReturn.push(tagStart);

@@ -8,6 +8,9 @@ import { Assert } from '../../misc/Assert';
 import { KeyboardUtils, KEYBOARD } from '../../utils/KeyboardUtils';
 import { exportGlobally } from '../../GlobalExports';
 import 'styling/_CardOverlay';
+import { SVGIcons } from '../../utils/SVGIcons';
+import { SVGDom } from '../../utils/SVGDom';
+import { Utils } from '../../utils/Utils';
 
 export interface ICardOverlayOptions {
   title: string;
@@ -30,9 +33,9 @@ export class CardOverlay extends Component {
 
   static doExport = () => {
     exportGlobally({
-      'CardOverlay': CardOverlay
+      CardOverlay: CardOverlay
     });
-  }
+  };
 
   private parentCard: HTMLElement;
   private overlay: HTMLElement;
@@ -41,7 +44,6 @@ export class CardOverlay extends Component {
    * @componentOptions
    */
   static options: ICardOverlayOptions = {
-
     /**
      * Specifies the string to use for the overlay title and for the button text.
      *
@@ -51,6 +53,8 @@ export class CardOverlay extends Component {
 
     /**
      * Specifies the icon to use for the overlay icon and for the button icon.
+     *
+     * The name of the icon to use should be specified in dashed case. ie: facet-expand
      */
     icon: ComponentOptions.buildIconOption()
   };
@@ -133,8 +137,9 @@ export class CardOverlay extends Component {
     this.overlay.appendChild(overlayBody);
 
     // Create footer
-    let overlayFooter = $$('div', { className: 'coveo-card-overlay-footer', tabindex: '0' },
-      $$('span', { className: 'coveo-icon coveo-sprites-arrow-down' }));
+    const icon = $$('span', { className: 'coveo-icon coveo-open-card-overlay' }, SVGIcons.icons.arrowDown);
+    SVGDom.addClassToSVGInContainer(icon.el, 'coveo-open-card-overlay-svg');
+    let overlayFooter = $$('div', { className: 'coveo-card-overlay-footer', tabindex: '0' }, icon.el);
     overlayFooter.on('click', () => this.toggleOverlay(false));
     this.bind.on(overlayFooter.el, 'keyup', KeyboardUtils.keypressAction(KEYBOARD.ENTER, () => this.toggleOverlay(false)));
 
@@ -145,13 +150,14 @@ export class CardOverlay extends Component {
 
   private createButton(element: HTMLElement) {
     if (this.options.icon) {
-      element.appendChild($$('span', { className: 'coveo-icon ' + this.options.icon }).el);
+      const icon = $$('span', { className: 'coveo-icon ' }, SVGIcons.icons[this.options.icon]).el;
+      element.appendChild(icon);
+      SVGDom.addClassToSVGInContainer(element, `coveo-${Utils.toDashCase(this.options.icon)}-svg`);
     }
     element.appendChild($$('span', { className: 'coveo-label' }, this.options.title).el);
     element.setAttribute('tabindex', '0');
     $$(element).on('click', () => this.toggleOverlay());
     this.bind.on(element, 'keyup', KeyboardUtils.keypressAction(KEYBOARD.ENTER, () => this.toggleOverlay()));
-
   }
 }
 

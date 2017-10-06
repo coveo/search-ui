@@ -1,0 +1,14 @@
+@import "../node_modules/@salesforce-ux/design-system/scss/design-tokens";
+@import "Variables";
+
+@each $name, $color in $bg-standard-map {
+    $id: $name;
+  // Wtf... The only one not following the standard format.
+  @if $id == 'task-2' {
+    $id: 'task2';
+  }
+  .coveo-filetype-salesforce-standard-#{$id}, .coveo-filetype-salesforce-standard-#{$id}-small {
+    background-color: $color;
+    border-radius: $default-border-radius;
+  }
+}

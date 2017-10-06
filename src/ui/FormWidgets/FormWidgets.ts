@@ -23,6 +23,3 @@ export interface IFormWidgetSelectable extends IFormWidget {
 export interface IFormWidgetSettable extends IFormWidget {
   setValue: (value: any) => void;
 }
-
-
-

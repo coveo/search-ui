@@ -32,17 +32,16 @@ export class Sort extends Component {
 
   static doExport = () => {
     exportGlobally({
-      'Sort': Sort,
-      'SortCriteria': SortCriteria
+      Sort: Sort,
+      SortCriteria: SortCriteria
     });
-  }
+  };
 
   /**
    * Options for the component
    * @componentOptions
    */
   static options: ISortOptions = {
-
     /**
      * Specifies the criterion (or criteria) for sorting.
      *
@@ -62,15 +61,19 @@ export class Sort extends Component {
      *
      * It is necessary to specify a value for this option in order for this component to work.
      */
-    sortCriteria: ComponentOptions.buildCustomListOption((values: string[] | SortCriteria[]) => {
-      return _.map(<any>values, (criteria) => { // 'any' because Underscore won't accept the union type as an argument.
-        if (typeof criteria === 'string') {
-          return SortCriteria.parse(criteria);
-        } else {
-          return <SortCriteria>criteria;
-        }
-      });
-    }, { required: true }),
+    sortCriteria: ComponentOptions.buildCustomListOption(
+      (values: string[] | SortCriteria[]) => {
+        return _.map(<any>values, criteria => {
+          // 'any' because Underscore won't accept the union type as an argument.
+          if (typeof criteria === 'string') {
+            return SortCriteria.parse(criteria);
+          } else {
+            return <SortCriteria>criteria;
+          }
+        });
+      },
+      { required: true }
+    ),
 
     /**
      * Specifies the caption to display on the element.
@@ -98,7 +101,9 @@ export class Sort extends Component {
 
     Assert.isLargerOrEqualsThan(1, this.options.sortCriteria.length);
 
-    this.bind.onQueryState(MODEL_EVENTS.CHANGE_ONE, QUERY_STATE_ATTRIBUTES.SORT, (args: IAttributesChangedEventArg) => this.handleQueryStateChanged(args));
+    this.bind.onQueryState(MODEL_EVENTS.CHANGE_ONE, QUERY_STATE_ATTRIBUTES.SORT, (args: IAttributesChangedEventArg) =>
+      this.handleQueryStateChanged(args)
+    );
     this.bind.onRootElement(QueryEvents.querySuccess, (args: IQuerySuccessEventArgs) => this.handleQuerySuccess(args));
     this.bind.onRootElement(QueryEvents.buildingQuery, (args: IBuildingQueryEventArgs) => this.handleBuildingQuery(args));
     this.bind.onRootElement(QueryEvents.queryError, (args: IQueryErrorEventArgs) => this.handleQueryError(args));
@@ -113,9 +118,9 @@ export class Sort extends Component {
 
     if (this.isToggle()) {
       this.icon = $$('span', { className: 'coveo-icon' }).el;
-      const iconAscending = $$('span', { className: 'coveo-sort-icon-ascending' }, SVGIcons.arrowUp);
+      const iconAscending = $$('span', { className: 'coveo-sort-icon-ascending' }, SVGIcons.icons.arrowUp);
       SVGDom.addClassToSVGInContainer(iconAscending.el, 'coveo-sort-icon-ascending-svg');
-      const iconDescending = $$('span', { className: 'coveo-sort-icon-descending' }, SVGIcons.arrowDown);
+      const iconDescending = $$('span', { className: 'coveo-sort-icon-descending' }, SVGIcons.icons.arrowDown);
       SVGDom.addClassToSVGInContainer(iconDescending.el, 'coveo-sort-icon-descending-svg');
       this.icon.appendChild(iconAscending.el);
       this.icon.appendChild(iconDescending.el);
@@ -218,8 +223,10 @@ export class Sort extends Component {
     this.select();
     if (oldCriteria != this.currentCriteria) {
       this.queryController.deferExecuteQuery({
-        beforeExecuteQuery: () => this.usageAnalytics.logSearchEvent<IAnalyticsResultsSortMeta>(analyticsActionCauseList.resultsSort,
-          { resultsSortBy: this.currentCriteria.sort + this.currentCriteria.direction })
+        beforeExecuteQuery: () =>
+          this.usageAnalytics.logSearchEvent<IAnalyticsResultsSortMeta>(analyticsActionCauseList.resultsSort, {
+            resultsSortBy: this.currentCriteria.sort + this.currentCriteria.direction
+          })
       });
     }
   }

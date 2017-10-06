@@ -33,13 +33,13 @@ export class FacetSearchParameters {
   }
 
   public excludeCurrentlyDisplayedValuesInSearch(searchResults: HTMLElement) {
-    _.each(this.getCurrentlyShowedValueInSearch(searchResults), (v) => {
+    _.each(this.getCurrentlyShowedValueInSearch(searchResults), v => {
       const expandedValues = FacetUtils.getValuesToUseForSearchInFacet(v, this.facet);
-      _.each(expandedValues, (expanded) => {
+      _.each(expandedValues, expanded => {
         this.alwaysExclude.push(expanded);
       });
     });
-    _.each(this.facet.getDisplayedFacetValues(), (v) => {
+    _.each(this.facet.getDisplayedFacetValues(), v => {
       this.alwaysExclude.push(v.value);
     });
   }
@@ -65,7 +65,7 @@ export class FacetSearchParameters {
       completeFacetWithStandardValues: completeFacetWithStandardValues,
       field: <string>this.facet.options.field,
       sortCriteria: this.facet.options.sortCriteria || this.sortCriteria,
-      injectionDepth: this.facet.options.injectionDepth,
+      injectionDepth: this.facet.options.injectionDepth
     };
 
     if (this.facet.options.lookupField) {
@@ -73,10 +73,12 @@ export class FacetSearchParameters {
     }
 
     if (this.facet.options.computedField) {
-      request.computedFields = [{
-        field: <string>this.facet.options.computedField,
-        operation: this.facet.options.computedFieldOperation
-      }];
+      request.computedFields = [
+        {
+          field: <string>this.facet.options.computedField,
+          operation: this.facet.options.computedFieldOperation
+        }
+      ];
     }
     return request;
   }
@@ -111,21 +113,21 @@ export class FacetSearchParameters {
   }
 
   private getCurrentlyShowedValueInSearch(searchResults: HTMLElement) {
-    return _.map($$(searchResults).findAll('.coveo-facet-value-caption'), (val) => {
+    return _.map($$(searchResults).findAll('.coveo-facet-value-caption'), val => {
       return $$(val).getAttribute('data-original-value') || $$(val).text();
     });
   }
 
   private lowerCaseAll() {
     this.alwaysExclude = _.chain(this.alwaysExclude)
-      .map((v) => {
+      .map(v => {
         return v.toLowerCase();
       })
       .uniq()
       .value();
 
     this.alwaysInclude = _.chain(this.alwaysInclude)
-      .map((v) => {
+      .map(v => {
         return v.toLowerCase();
       })
       .uniq()
