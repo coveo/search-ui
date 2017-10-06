@@ -36,7 +36,7 @@ export function DistanceResourcesTest() {
       getPosition: () => Promise.resolve(aNicePlace)
     };
     const badPositionProvider: IPositionProvider = {
-      getPosition: () => Promise.reject("Wow I'm so bad")
+      getPosition: () => Promise.reject(`Wow I'm so bad`)
     };
 
     function triggerOnBuildingQuery() {

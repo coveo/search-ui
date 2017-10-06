@@ -7,6 +7,7 @@ import {
   IPositionResolvedEventArgs
 } from '../../events/DistanceEvents';
 
+import { analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
 import { Component } from '../Base/Component';
 import { IFieldOption, ComponentOptions } from '../Base/ComponentOptions';
 import { IComponentBindings } from '../Base/ComponentBindings';
@@ -189,10 +190,11 @@ export class DistanceResources extends Component {
     this.bind.trigger(this.element, DistanceEvents.onPositionResolved, args);
 
     const shouldTriggerQuery = this.shouldTriggerQueryWhenPositionSet();
+    this.isPositionSet = true;
     if (shouldTriggerQuery) {
+      this.usageAnalytics.logSearchEvent(analyticsActionCauseList.positionSet, {});
       this.queryController.executeQuery();
     }
-    this.isPositionSet = true;
   }
 
   private shouldTriggerQueryWhenPositionSet() {
@@ -287,17 +289,18 @@ export class DistanceResources extends Component {
   private registerDistanceQuery(): void {
     this.bind.onRootElement(QueryEvents.buildingQuery, (args: IBuildingQueryEventArgs) => {
       if (this.isPositionSet) {
-        const geoQueryFunction: IQueryFunction = {
-          function: this.getConvertedUnitsFunction(
-            `dist(${this.options.latitudeField}, ${this.options.longitudeField}, ${this.latitude}, ${this.longitude})`
-          ),
-          fieldName: `${this.options.distanceField}`
-        };
         if (args && args.queryBuilder) {
+          const geoQueryFunction: IQueryFunction = {
+            function: this.getConvertedUnitsFunction(
+              `dist(${this.options.latitudeField}, ${this.options.longitudeField}, ${this.latitude}, ${this.longitude})`
+            ),
+            fieldName: `${this.options.distanceField}`
+          };
           args.queryBuilder.queryFunctions.push(geoQueryFunction);
           this.enableDistanceComponents();
         }
       } else if (this.options.cancelQueryUntilPositionResolved) {
+        this.logger.info('Query cancelled, waiting for position');
         args.cancel = true;
       }
     });
