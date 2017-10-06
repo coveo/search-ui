@@ -87,7 +87,7 @@ export class Tab extends Component {
      *
      * Specifying a value for this option is necessary for this component to work.
      */
-    id: ComponentOptions.buildStringOption({ required: true, section: 'Common Options'}),
+    id: ComponentOptions.buildStringOption({ required: true, section: 'Common Options' }),
 
     /**
      * Specifies the caption of the Tab.

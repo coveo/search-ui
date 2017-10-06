@@ -11,8 +11,8 @@ export class NavigatorPositionProvider implements IPositionProvider {
       navigator.geolocation.getCurrentPosition(
         position => {
           resolve({
-            lat: position.coords.latitude,
-            long: position.coords.longitude
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude
           });
         },
         error => {

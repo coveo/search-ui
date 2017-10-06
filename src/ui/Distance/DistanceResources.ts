@@ -32,22 +32,15 @@ export interface IDistanceOptions {
   googleApiKey: string;
   useNavigator: boolean;
   triggerNewQueryOnNewPosition: boolean;
+  cancelQueryUntilPositionResolved: boolean;
 }
 
 /**
  * The `DistanceResources` component defines a field that computes the distance according to the user's position.
  *
- * You must use a position provider to provide a position to this component.
- * 
  * Components that uses the current distance should be disabled until a distance is provided by this component.
- * 
- * See also [`DistanceEvents`]{@link DistanceEvents} for events triggered by this component, 
  *
- * See also the components that can provide a position.
- * 
- * * [`GoogleApiPositionProvider`]{@link GoogleApiPositionProvider}
- * * [`NavigatorPositionProvider`]{@link NavigatorPositionProvider}
- * * [`StaticPositionProvider`]{@link StaticPositionProvider}
+ * See also [`DistanceEvents`]{@link DistanceEvents} for events triggered by this component.
  */
 export class DistanceResources extends Component {
   public static ID = 'DistanceResources';
@@ -59,7 +52,7 @@ export class DistanceResources extends Component {
   private latitude: number;
   private longitude: number;
   private lastPositionRequest: Promise<IPosition | void>;
-  private hasAlreadyRegisteredBuildingQueryEvent = false;
+  private isPositionSet = false;
 
   /**
    * The possible options for a DistanceResources.
@@ -106,7 +99,7 @@ export class DistanceResources extends Component {
     }),
     /**
      * The CSS class for components that needs to be reenabled when the distance is provided.
-     * 
+     *
      * The default value is `coveo-distance-disabled`.
      */
     disabledDistanceCssClass: ComponentOptions.buildStringOption({
@@ -114,7 +107,7 @@ export class DistanceResources extends Component {
     }),
     /**
      * The latitude to use if no other position was provided.
-     * 
+     *
      * You must also set `longitudeValue` if you specify this value.
      */
     latitudeValue: ComponentOptions.buildNumberOption({
@@ -122,7 +115,7 @@ export class DistanceResources extends Component {
     }),
     /**
      * The longitude to use if no other position was provided.
-     * 
+     *
      * You must also set `latitude` if you specify this value.
      */
     longitudeValue: ComponentOptions.buildNumberOption({
@@ -130,25 +123,33 @@ export class DistanceResources extends Component {
     }),
     /**
      * The API key to use to request the Google API geolocation service.
-     * 
+     *
      * If not defined, will not try to request the service.
      */
     googleApiKey: ComponentOptions.buildStringOption(),
     /**
      * Whether to request the browser's geolocation service.
-     * 
+     *
      * If not defined, will not try to request the service.
-     * 
+     *
      * Note that most recent browsers requires your site to be in HTTPS to use its geolocation service.
      */
     useNavigator: ComponentOptions.buildBooleanOption(),
     /**
      * Whether to execute a new query when a new position has been provided.
-     * 
-     * Default value is `false`.
+     *
+     * Default value is `true`.
      */
     triggerNewQueryOnNewPosition: ComponentOptions.buildBooleanOption({
       defaultValue: false
+    }),
+    /**
+     * Whether to cancel all the queries until the position is resolved.
+     *
+     * Default value is `true`
+     */
+    cancelQueryUntilPositionResolved: ComponentOptions.buildBooleanOption({
+      defaultValue: true
     })
   };
 
@@ -163,6 +164,7 @@ export class DistanceResources extends Component {
     super(element, DistanceResources.ID, bindings);
 
     this.options = ComponentOptions.initComponentOptions(element, DistanceResources, options);
+    this.registerDistanceQuery();
     this.bind.onRootElement(InitializationEvents.afterComponentsInitialization, () => this.onAfterComponentsInitialization());
   }
 
@@ -179,24 +181,32 @@ export class DistanceResources extends Component {
 
     const args: IPositionResolvedEventArgs = {
       position: {
-        lat: latitude,
-        long: longitude
+        latitude: latitude,
+        longitude: longitude
       }
     };
 
     this.bind.trigger(this.element, DistanceEvents.onPositionResolved, args);
-    this.registerDistanceQuery();
-    if (this.options.triggerNewQueryOnNewPosition) {
+
+    const shouldTriggerQuery = this.shouldTriggerQueryWhenPositionSet();
+    if (shouldTriggerQuery) {
       this.queryController.executeQuery();
     }
+    this.isPositionSet = true;
+  }
+
+  private shouldTriggerQueryWhenPositionSet() {
+    // If query has been cancelled, we need to trigger the first one.
+    const triggerFirstQueryWithPosition = this.options.cancelQueryUntilPositionResolved && !this.isPositionSet;
+    return this.options.triggerNewQueryOnNewPosition || triggerFirstQueryWithPosition;
   }
 
   /**
    * Returns a promise of the last position resolved using the registered position providers.
-   * 
-   * @returns {Promise<IPosition | void>} Promise for the last resolved position value.
+   *
+   * @returns {Promise<IPosition>} Promise for the last resolved position value.
    */
-  public getLastPositionRequest(): Promise<IPosition | void> {
+  public getLastPositionRequest(): Promise<IPosition> {
     return this.lastPositionRequest || Promise.reject('No position request was executed yet.');
   }
 
@@ -210,7 +220,7 @@ export class DistanceResources extends Component {
     this.lastPositionRequest = this.tryGetPositionFromProviders(args.providers)
       .then(position => {
         if (position) {
-          this.setPosition(position.lat, position.long);
+          this.setPosition(position.latitude, position.longitude);
         } else {
           this.triggerDistanceNotSet();
         }
@@ -240,7 +250,7 @@ export class DistanceResources extends Component {
     return providers;
   }
 
-  private tryGetPositionFromProviders(providers: IPositionProvider[]): Promise<IPosition | void> {
+  private tryGetPositionFromProviders(providers: IPositionProvider[]): Promise<IPosition> {
     return new Promise<IPosition>((resolve, reject) => {
       const tryNextProvider = () => {
         if (providers.length > 0) {
@@ -248,7 +258,7 @@ export class DistanceResources extends Component {
           provider
             .getPosition()
             .then(position => {
-              if (!!position.lat && !!position.long) {
+              if (!!position.latitude && !!position.longitude) {
                 resolve(position);
               } else {
                 tryNextProvider();
@@ -267,15 +277,16 @@ export class DistanceResources extends Component {
   }
 
   private triggerDistanceNotSet(): void {
+    this.isPositionSet = false;
     this.logger.warn(
-      "None of the given position providers could resolve the current position. The distance field will not be calculated and the distance components will be disabled until the next call to 'setPosition'."
+      `None of the given position providers could resolve the current position. The distance field will not be calculated and the distance components will be disabled until the next call to 'setPosition'.`
     );
     this.bind.trigger(this.element, DistanceEvents.onPositionNotResolved, {});
   }
 
   private registerDistanceQuery(): void {
-    if (!this.hasAlreadyRegisteredBuildingQueryEvent) {
-      this.bind.onRootElement(QueryEvents.buildingQuery, (args: IBuildingQueryEventArgs) => {
+    this.bind.onRootElement(QueryEvents.buildingQuery, (args: IBuildingQueryEventArgs) => {
+      if (this.isPositionSet) {
         const geoQueryFunction: IQueryFunction = {
           function: this.getConvertedUnitsFunction(
             `dist(${this.options.latitudeField}, ${this.options.longitudeField}, ${this.latitude}, ${this.longitude})`
@@ -286,9 +297,10 @@ export class DistanceResources extends Component {
           args.queryBuilder.queryFunctions.push(geoQueryFunction);
           this.enableDistanceComponents();
         }
-      });
-      this.hasAlreadyRegisteredBuildingQueryEvent = true;
-    }
+      } else if (this.options.cancelQueryUntilPositionResolved) {
+        args.cancel = true;
+      }
+    });
   }
 
   private enableDistanceComponents(): void {

@@ -8,8 +8,8 @@ export class StaticPositionProvider implements IPositionProvider {
 
   public getPosition(): Promise<IPosition> {
     return Promise.resolve({
-      long: this.longitude,
-      lat: this.latitude
+      longitude: this.longitude,
+      latitude: this.latitude
     });
   }
 }

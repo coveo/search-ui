@@ -1,6 +1,5 @@
 import { EndpointCaller } from '../../rest/EndpointCaller';
-import { IComponentBindings } from '../Base/ComponentBindings';
-import { DistanceEvents, IResolvingPositionEventArgs, IPosition, IPositionProvider } from '../../events/DistanceEvents';
+import { IPosition, IPositionProvider } from '../../events/DistanceEvents';
 
 const GOOGLE_MAP_BASE_URL = 'https://www.googleapis.com/geolocation/v1/geolocate';
 
@@ -32,8 +31,8 @@ export class GoogleApiPositionProvider implements IPositionProvider {
       .then(responseData => {
         const location = responseData.data.location;
         return {
-          lat: location.lat,
-          long: location.lng
+          longitude: location.lng,
+          latitude: location.lat
         };
       });
   }

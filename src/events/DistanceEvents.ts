@@ -1,6 +1,6 @@
 export interface IPosition {
-  long: number;
-  lat: number;
+  longitude: number;
+  latitude: number;
 }
 
 export interface IPositionProvider {
@@ -42,7 +42,7 @@ export class DistanceEvents {
   public static onPositionResolved = 'onPositionResolved';
   /**
    * Triggered when the [`DistanceResources`]{@link DistanceResources} component tries to resolve the position.
-   * 
+   *
    * Use this event to register new position providers.
    *
    * All bound handlers will receive {@link IResolvingPositionEventArgs} as an argument.
@@ -53,7 +53,7 @@ export class DistanceEvents {
   public static onResolvingPosition = 'onResolvingPosition';
   /**
    * Triggered when the [`DistanceResources`]{@link DistanceResources} component fails to resolve the position.
-   * 
+   *
    * Use this event to show an error to the end user, or hide components that cannot be used.
    *
    * The string value is `onPositionNotResolved`.

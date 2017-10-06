@@ -26,7 +26,11 @@ export function DistanceResourcesTest() {
     const longitudeField = 'longitude';
     const defaultUnitConversionFactor = 1000;
     const disabledComponentsClass = 'bloupbloup';
-    const aNicePlace: IPosition = { lat: latitudeForANicePlace, long: longitudeForANicePlace };
+    const aNicePlace = <IPosition>{ latitude: latitudeForANicePlace, longitude: longitudeForANicePlace };
+    const expectedQueryFunctionForANicePlace = <IQueryFunction>{
+      function: `dist(${latitudeField}, ${longitudeField}, ${latitudeForANicePlace}, ${longitudeForANicePlace})/${defaultUnitConversionFactor}`,
+      fieldName: distanceField
+    };
 
     const aValidPositionProvider: IPositionProvider = {
       getPosition: () => Promise.resolve(aNicePlace)
@@ -39,7 +43,8 @@ export function DistanceResourcesTest() {
       $$(test.env.root).trigger(QueryEvents.buildingQuery, buildingQueryArgs);
     }
 
-    let buildingQueryArgs;
+    let buildingQueryArgs: IBuildingQueryEventArgs;
+    let defaultMockOptions: IDistanceOptions;
     let test: Mock.IBasicComponentSetup<DistanceResources>;
 
     beforeEach(() => {
@@ -48,7 +53,7 @@ export function DistanceResourcesTest() {
         queryBuilder: new QueryBuilder(),
         searchAsYouType: false
       };
-      test = Mock.optionsComponentSetup<DistanceResources, IDistanceOptions>(DistanceResources, <IDistanceOptions>{
+      defaultMockOptions = <IDistanceOptions>{
         distanceField: distanceField,
         latitudeField: latitudeField,
         longitudeField: longitudeField,
@@ -57,13 +62,60 @@ export function DistanceResourcesTest() {
         googleApiKey: '',
         latitudeValue: 0,
         longitudeValue: 0,
+        useNavigator: false,
         triggerNewQueryOnNewPosition: false,
-        useNavigator: false
-      });
+        cancelQueryUntilPositionResolved: false
+      };
+      test = Mock.optionsComponentSetup<DistanceResources, IDistanceOptions>(DistanceResources, defaultMockOptions);
     });
 
     afterEach(() => {
       test = null;
+    });
+
+    describe('when the cancelQuery option is set', () => {
+      beforeEach(() => {
+        defaultMockOptions.cancelQueryUntilPositionResolved = true;
+        test = Mock.optionsComponentSetup<DistanceResources, IDistanceOptions>(DistanceResources, defaultMockOptions);
+      });
+
+      it('should cancel the query when the position is not set', () => {
+        triggerOnBuildingQuery();
+
+        expect(buildingQueryArgs.cancel).toBe(true);
+      });
+
+      it('should trigger a query the first time the position is resolved', () => {
+        test.cmp.setPosition(latitudeForANicePlace, longitudeForANicePlace);
+        test.cmp.setPosition(1.1, 2.3);
+
+        expect(test.env.queryController.executeQuery).toHaveBeenCalledTimes(1);
+      });
+
+      it('should add a new query function with the given position after the position is set', () => {
+        test.cmp.setPosition(latitudeForANicePlace, longitudeForANicePlace);
+
+        triggerOnBuildingQuery();
+
+        expect(buildingQueryArgs.queryBuilder.queryFunctions).toContain(expectedQueryFunctionForANicePlace);
+      });
+    });
+
+    describe('when the triggerNewQuery option is set', () => {
+      beforeEach(() => {
+        defaultMockOptions.triggerNewQueryOnNewPosition = true;
+        test = Mock.optionsComponentSetup<DistanceResources, IDistanceOptions>(DistanceResources, defaultMockOptions);
+      });
+
+      it('should trigger one query per setPosition', () => {
+        test.cmp.setPosition(latitudeForANicePlace, longitudeForANicePlace);
+
+        expect(test.env.queryController.executeQuery).toHaveBeenCalled();
+
+        test.cmp.setPosition(latitudeForANicePlace, longitudeForANicePlace);
+
+        expect(test.env.queryController.executeQuery).toHaveBeenCalledTimes(2);
+      });
     });
 
     it('should trigger onPositionResolved event with the new position when setting a position', () => {
@@ -82,10 +134,7 @@ export function DistanceResourcesTest() {
 
       triggerOnBuildingQuery();
 
-      expect(buildingQueryArgs.queryBuilder.queryFunctions).toContain(<IQueryFunction>{
-        function: `dist(${latitudeField}, ${longitudeField}, ${latitudeForANicePlace}, ${longitudeForANicePlace})/${defaultUnitConversionFactor}`,
-        fieldName: distanceField
-      });
+      expect(buildingQueryArgs.queryBuilder.queryFunctions).toContain(expectedQueryFunctionForANicePlace);
     });
 
     it('should reactivate disabled distance components', () => {
@@ -139,7 +188,7 @@ export function DistanceResourcesTest() {
 
     describe('when two position providers are registered', () => {
       const anotherProviderThatShouldNotBeUsed: IPositionProvider = {
-        getPosition: () => Promise.resolve({ lat: 0, long: 0 })
+        getPosition: () => Promise.resolve(<IPosition>{ latitude: 0, longitude: 0 })
       };
 
       beforeEach(() => {
