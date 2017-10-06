@@ -7,33 +7,48 @@ const buildUtilities = require('../gulpTasks/buildUtilities.js');
 const _ = require('underscore');
 const path = require('path');
 const fs = require('fs');
+const glob = require('glob');
 
-let webpackConfig = require('../webpack.config.js');
+const webpackConfig = require('../webpack.config.js');
 webpackConfig.entry['CoveoJsSearch.Lazy'].unshift('webpack-dev-server/client?http://localhost:8080/');
 const compiler = webpack(webpackConfig);
 
-let webpackConfigTest = require('../webpack.test.config.js');
+const webpackConfigTest = require('../webpack.test.config.js');
 webpackConfigTest.entry['tests'].unshift('webpack-dev-server/client?http://localhost:8081/');
 const compilerTest = webpack(webpackConfigTest);
 
-let debouncedLinkToExternal = _.debounce(() => {
+let server;
+
+const debouncedLinkToExternal = _.debounce(() => {
   console.log('... Compiler done ... Linking external projects'.black.bgGreen);
   buildUtilities.exec('node', ['./environments/link.externally.js'], undefined, function() {});
 }, 1000);
 
+const watchHtmlPagesOnce = _.once(() => {
+  glob('bin/*.html', (err, files) => {
+    files.forEach(file => {
+      fs.watch(file, () => {
+        server.sockets.forEach(socket => {
+          // Sending an "ok" message triggers a simple page reload in the client
+          socket.write(JSON.stringify({ type: 'ok' }));
+        });
+      });
+    });
+  });
+});
+
+
 compiler.plugin('done', () => {
   debouncedLinkToExternal();
+  watchHtmlPagesOnce();
 });
 
 gulp.task('dev', ['setup', 'deleteCssFile'], done => {
-  let server = new WebpackDevServer(compiler, {
+  server = new WebpackDevServer(compiler, {
     compress: true,
     contentBase: 'bin/',
     publicPath: 'http://localhost:8080/js/',
     disableHostCheck: true,
-    /*headers: {
-      'Content-Security-Policy': "script-src 'self' code.jquery.com static.cloud.coveo.com 'unsafe-inline'"
-    },*/
     stats: {
       colors: true,
       publicPath: true
@@ -59,15 +74,3 @@ gulp.task('devTest', ['setupTests'], function(done) {
   serverTests.listen(8081, 'localhost', () => {});
   done();
 });
-/*
-gulp.task('devPlayground', function (done) {
-  var serverPlayground = new WebpackDevServer(compilerPlayground, {
-    contentBase: 'docgen/',
-    publicPath: '/assets/gen/js/',
-    compress: true
- });
-  serverPlayground.listen(8082, 'localhost', ()=> {
- });
-  done();
- });
- */

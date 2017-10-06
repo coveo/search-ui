@@ -242,6 +242,10 @@ export class ErrorReport extends Component {
   }
 
   private buildOptionsElement() {
+    const oldOptions = this.container.find('.coveo-error-report-options');
+    if (oldOptions) {
+      $$(oldOptions).remove();
+    }
     const optionsElement = $$('div', { className: 'coveo-error-report-options' });
     optionsElement.el.appendChild(this.buildPrevious());
     optionsElement.el.appendChild(this.buildReset());
