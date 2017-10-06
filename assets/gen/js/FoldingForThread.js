@@ -1,6 +1,6 @@
-webpackJsonpCoveo__temporary([24,41],{
+webpackJsonpCoveo__temporary([26,43],{
 
-/***/ 280:
+/***/ 241:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17,14 +17,14 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var Component_1 = __webpack_require__(8);
-var SortCriteria_1 = __webpack_require__(506);
+var SortCriteria_1 = __webpack_require__(425);
 var ComponentOptions_1 = __webpack_require__(9);
-var Utils_1 = __webpack_require__(5);
+var Utils_1 = __webpack_require__(6);
 var Assert_1 = __webpack_require__(7);
 var QueryEvents_1 = __webpack_require__(11);
 var Initialization_1 = __webpack_require__(2);
 var Dom_1 = __webpack_require__(3);
-var QueryBuilder_1 = __webpack_require__(51);
+var QueryBuilder_1 = __webpack_require__(48);
 var _ = __webpack_require__(1);
 var GlobalExports_1 = __webpack_require__(4);
 /**
@@ -43,7 +43,7 @@ var GlobalExports_1 = __webpack_require__(4);
  * **Note:**
  * > There can only be one `Folding` component per [`Tab`]{@link Tab} component.
  */
-var Folding = (function (_super) {
+var Folding = /** @class */ (function (_super) {
     __extends(Folding, _super);
     /**
      * Creates a new `Folding` component.
@@ -125,7 +125,7 @@ var Folding = (function (_super) {
         });
         var rootResult = Folding.resultNodeToQueryResult(rootNode);
         // Remove the root from all results
-        _.each(rootResult.attachments, function (attachment) { return attachment.parentResult = null; });
+        _.each(rootResult.attachments, function (attachment) { return (attachment.parentResult = null); });
         return rootResult.attachments;
     };
     // 99.9% of the folding case will be alright with those default functions.
@@ -246,7 +246,9 @@ var Folding = (function (_super) {
             query.sortCriteria = originalQuery.sortCriteria;
             query.sortField = originalQuery.sortField;
         }
-        return this.queryController.getEndpoint().search(query)
+        return this.queryController
+            .getEndpoint()
+            .search(query)
             .then(function (results) {
             _this.handlePreprocessMoreResults(results);
             return results.results;
@@ -259,148 +261,148 @@ var Folding = (function (_super) {
             results: queryResults
         });
     };
+    Folding.ID = 'Folding';
+    Folding.doExport = function () {
+        GlobalExports_1.exportGlobally({
+            Folding: Folding
+        });
+    };
+    /**
+     * The options for the component
+     * @componentOptions
+     */
+    Folding.options = {
+        /**
+         * Specifies the name of the field on which to do the folding.
+         *
+         * Specifying a value for this option is required for this component to work.
+         */
+        field: ComponentOptions_1.ComponentOptions.buildFieldOption({ required: true }),
+        /**
+         * Specifies the field that determines whether a certain result is a child of another top result.
+         *
+         * Default value is `@topparentid`.
+         */
+        childField: ComponentOptions_1.ComponentOptions.buildFieldOption({ defaultValue: '@topparentid' }),
+        /**
+         * Specifies the field that determines whether a certain result is a top result containing other child results.
+         *
+         * Default value is `@containsattachment`.
+         */
+        parentField: ComponentOptions_1.ComponentOptions.buildFieldOption({ defaultValue: '@containsattachment' }),
+        /**
+         * Specifies the maximum number of child results to fold.
+         *
+         * **Example:**
+         * > For an email thread with a total of 20 messages, using the default value of `2` means that the component loads
+         * > up to a maximum of 2 child messages under the original message, unless the end user expands the entire
+         * > conversation using the **Show More** link (see the [`enableExpand`]{@link Folding.options.enableExpand}
+         * > option).
+         *
+         * Default value is `2`. Minimum value is `0`.
+         */
+        range: ComponentOptions_1.ComponentOptions.buildNumberOption({ defaultValue: 2, min: 0 }),
+        /**
+         * Specifies the sort criteria to apply to the top result and its child results (e.g., `date ascending`,
+         * `@myfield descending`, etc. [See
+         * Query Parameters - sortCriteria](https://developers.coveo.com/x/iwEv#QueryParameters-sortCriteriasortCriteria)).
+         *
+         * **Example**
+         * > If you are folding email results by conversation and you specify `date descending` as the `rearrange` value of
+         * > the `Folding` component, the component re-arranges email conversations so that the newest email is always the
+         * > top result. Specifying `date ascending` instead always makes the original email the top result, as it is also
+         * > necessarily the oldest.
+         *
+         * By default, the component displays the results in the order that the index returns them.
+         */
+        rearrange: ComponentOptions_1.ComponentOptions.buildCustomOption(function (value) { return (Utils_1.Utils.isNonEmptyString(value) ? SortCriteria_1.SortCriteria.parse(value) : null); }),
+        /**
+         * Specifies whether to add a callback function on the top result, allowing to make an additional query to load all
+         * of its child results (e.g., to load all conversations of a given thread).
+         *
+         * Concretely, the [`ResultFolding`]{@link ResultFolding} component uses this for its **Show More** link.
+         *
+         * See also the [`expandExpression`]{@link Folding.options.expandExpression} and
+         * [`maximumExpandedResults`]{@link Folding.options.maximumExpandedResults} options.
+         *
+         * Default value is `true`.
+         */
+        enableExpand: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: true }),
+        /**
+         * If the [`enableExpand`]{@link Folding.options.enableExpand} option is `true`, specifies a custom constant
+         * expression to send when querying the expanded results.
+         *
+         * Default value is `undefined`.
+         */
+        expandExpression: ComponentOptions_1.ComponentOptions.buildStringOption({ depend: 'enableExpand' }),
+        /**
+         * If the [`enableExpand`]{@link Folding.options.enableExpand} option is `true`, specifies the maximum number of
+         * results to load when expanding.
+         *
+         * Default value is `100`. Minimum value is `1`.
+         */
+        maximumExpandedResults: ComponentOptions_1.ComponentOptions.buildNumberOption({ defaultValue: 100, min: 1, depend: 'enableExpand' }),
+        /**
+         * Specifies the function that manages the individual folding of each result.
+         *
+         * Default value is:
+         *
+         * ```javascript
+         * var results = result.childResults || [];
+         * // Add the top result at the top of the list.
+         * results.unshift(result);
+         * // Empty childResults just to clean it.
+         * result.childResults = [];
+         * // Fold those results.
+         * results = Coveo.Folding.foldWithParent(results);
+         * // The first result is the top one.
+         * var topResult = results.shift();
+         * // All other results are childResults.
+         * topResult.childResults = results;
+         * return topResult;
+         * ```
+         *
+         * You can pre-process all the result with this option in the [`init`]{@link init} call of your search interface:
+         *
+         * ```javascript
+         * Coveo.init(document.querySelector('#search'), {
+         *    Folding: {
+         *      getResult: function(result) {
+         *        result = Coveo.Folding.defaultGetResult(result);
+         *        // Your code here
+         *      }
+         *    }
+         * })
+         * ```
+         */
+        getResult: ComponentOptions_1.ComponentOptions.buildCustomOption(function () {
+            return null;
+        }),
+        /**
+         * Specifies the function that manages the folding of all results.
+         *
+         * Default value is:
+         *
+         * ```javascript
+         * Coveo.Folding.defaultGetMoreResults = function(results) {
+         *    // The results are flat, just do the folding.
+         *    return Coveo.Folding.foldWithParent(results);
+         * }
+         * ```
+         */
+        getMoreResults: ComponentOptions_1.ComponentOptions.buildCustomOption(function () {
+            return null;
+        })
+    };
     return Folding;
 }(Component_1.Component));
-Folding.ID = 'Folding';
-Folding.doExport = function () {
-    GlobalExports_1.exportGlobally({
-        'Folding': Folding
-    });
-};
-/**
- * The options for the component
- * @componentOptions
- */
-Folding.options = {
-    /**
-     * Specifies the name of the field on which to do the folding.
-     *
-     * Specifying a value for this option is required for this component to work.
-     */
-    field: ComponentOptions_1.ComponentOptions.buildFieldOption({ required: true }),
-    /**
-     * Specifies the field that determines whether a certain result is a child of another top result.
-     *
-     * Default value is `@topparentid`.
-     */
-    childField: ComponentOptions_1.ComponentOptions.buildFieldOption({ defaultValue: '@topparentid' }),
-    /**
-     * Specifies the field that determines whether a certain result is a top result containing other child results.
-     *
-     * Default value is `@containsattachment`.
-     */
-    parentField: ComponentOptions_1.ComponentOptions.buildFieldOption({ defaultValue: '@containsattachment' }),
-    /**
-     * Specifies the maximum number of child results to fold.
-     *
-     * **Example:**
-     * > For an email thread with a total of 20 messages, using the default value of `2` means that the component loads
-     * > up to a maximum of 2 child messages under the original message, unless the end user expands the entire
-     * > conversation using the **Show More** link (see the [`enableExpand`]{@link Folding.options.enableExpand}
-     * > option).
-     *
-     * Default value is `2`. Minimum value is `0`.
-     */
-    range: ComponentOptions_1.ComponentOptions.buildNumberOption({ defaultValue: 2, min: 0 }),
-    /**
-     * Specifies the sort criteria to apply to the top result and its child results (e.g., `date ascending`,
-     * `@myfield descending`, etc. [See
-     * Query Parameters - sortCriteria](https://developers.coveo.com/x/iwEv#QueryParameters-sortCriteriasortCriteria)).
-     *
-     * **Example**
-     * > If you are folding email results by conversation and you specify `date descending` as the `rearrange` value of
-     * > the `Folding` component, the component re-arranges email conversations so that the newest email is always the
-     * > top result. Specifying `date ascending` instead always makes the original email the top result, as it is also
-     * > necessarily the oldest.
-     *
-     * By default, the component displays the results in the order that the index returns them.
-     */
-    rearrange: ComponentOptions_1.ComponentOptions.buildCustomOption(function (value) { return Utils_1.Utils.isNonEmptyString(value) ? SortCriteria_1.SortCriteria.parse(value) : null; }),
-    /**
-     * Specifies whether to add a callback function on the top result, allowing to make an additional query to load all
-     * of its child results (e.g., to load all conversations of a given thread).
-     *
-     * Concretely, the [`ResultFolding`]{@link ResultFolding} component uses this for its **Show More** link.
-     *
-     * See also the [`expandExpression`]{@link Folding.options.expandExpression} and
-     * [`maximumExpandedResults`]{@link Folding.options.maximumExpandedResults} options.
-     *
-     * Default value is `true`.
-     */
-    enableExpand: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: true }),
-    /**
-     * If the [`enableExpand`]{@link Folding.options.enableExpand} option is `true`, specifies a custom constant
-     * expression to send when querying the expanded results.
-     *
-     * Default value is `undefined`.
-     */
-    expandExpression: ComponentOptions_1.ComponentOptions.buildStringOption({ depend: 'enableExpand' }),
-    /**
-     * If the [`enableExpand`]{@link Folding.options.enableExpand} option is `true`, specifies the maximum number of
-     * results to load when expanding.
-     *
-     * Default value is `100`. Minimum value is `1`.
-     */
-    maximumExpandedResults: ComponentOptions_1.ComponentOptions.buildNumberOption({ defaultValue: 100, min: 1, depend: 'enableExpand' }),
-    /**
-     * Specifies the function that manages the individual folding of each result.
-     *
-     * Default value is:
-     *
-     * ```javascript
-     * var results = result.childResults || [];
-     * // Add the top result at the top of the list.
-     * results.unshift(result);
-     * // Empty childResults just to clean it.
-     * result.childResults = [];
-     * // Fold those results.
-     * results = Coveo.Folding.foldWithParent(results);
-     * // The first result is the top one.
-     * var topResult = results.shift();
-     * // All other results are childResults.
-     * topResult.childResults = results;
-     * return topResult;
-     * ```
-     *
-     * You can pre-process all the result with this option in the [`init`]{@link init} call of your search interface:
-     *
-     * ```javascript
-     * Coveo.init(document.querySelector('#search'), {
-     *    Folding: {
-     *      getResult: function(result) {
-     *        result = Coveo.Folding.defaultGetResult(result);
-     *        // Your code here
-     *      }
-     *    }
-     * })
-     * ```
-     */
-    getResult: ComponentOptions_1.ComponentOptions.buildCustomOption(function () {
-        return null;
-    }),
-    /**
-     * Specifies the function that manages the folding of all results.
-     *
-     * Default value is:
-     *
-     * ```javascript
-     * Coveo.Folding.defaultGetMoreResults = function(results) {
-     *    // The results are flat, just do the folding.
-     *    return Coveo.Folding.foldWithParent(results);
-     * }
-     * ```
-     */
-    getMoreResults: ComponentOptions_1.ComponentOptions.buildCustomOption(function () {
-        return null;
-    })
-};
 exports.Folding = Folding;
 Initialization_1.Initialization.registerAutoCreateComponent(Folding);
 
 
 /***/ }),
 
-/***/ 368:
+/***/ 287:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -416,7 +418,7 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var Folding_1 = __webpack_require__(280);
+var Folding_1 = __webpack_require__(241);
 var Initialization_1 = __webpack_require__(2);
 var GlobalExports_1 = __webpack_require__(4);
 /**
@@ -434,7 +436,7 @@ var GlobalExports_1 = __webpack_require__(4);
  *
  * See [Folding Results](https://developers.coveo.com/x/7hUvAg).
  */
-var FoldingForThread = (function (_super) {
+var FoldingForThread = /** @class */ (function (_super) {
     __extends(FoldingForThread, _super);
     /**
      * Creates a new `FoldingForThread` component
@@ -458,30 +460,30 @@ var FoldingForThread = (function (_super) {
         };
         return _this;
     }
+    FoldingForThread.ID = 'FoldingForThread';
+    FoldingForThread.doExport = function () {
+        GlobalExports_1.exportGlobally({
+            FoldingForThread: FoldingForThread
+        });
+    };
     return FoldingForThread;
 }(Folding_1.Folding));
-FoldingForThread.ID = 'FoldingForThread';
-FoldingForThread.doExport = function () {
-    GlobalExports_1.exportGlobally({
-        'FoldingForThread': FoldingForThread
-    });
-};
 exports.FoldingForThread = FoldingForThread;
 Initialization_1.Initialization.registerAutoCreateComponent(FoldingForThread);
 
 
 /***/ }),
 
-/***/ 506:
+/***/ 425:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var Assert_1 = __webpack_require__(7);
-var Utils_1 = __webpack_require__(5);
+var Utils_1 = __webpack_require__(6);
 var _ = __webpack_require__(1);
-var SortCriteria = (function () {
+var SortCriteria = /** @class */ (function () {
     /**
      * Create a new SortCriteria
      * @param sort The sort criteria (e.g.: relevancy, date)
@@ -568,11 +570,11 @@ var SortCriteria = (function () {
     SortCriteria.sortNeedsDirection = function (sort) {
         return _.contains(SortCriteria.sortsNeedingDirection, sort) || SortCriteria.sortIsField(sort);
     };
+    SortCriteria.validSorts = ['relevancy', 'date', 'qre'];
+    SortCriteria.sortsNeedingDirection = ['date'];
+    SortCriteria.validDirections = ['ascending', 'descending'];
     return SortCriteria;
 }());
-SortCriteria.validSorts = ['relevancy', 'date', 'qre'];
-SortCriteria.sortsNeedingDirection = ['date'];
-SortCriteria.validDirections = ['ascending', 'descending'];
 exports.SortCriteria = SortCriteria;
 
 

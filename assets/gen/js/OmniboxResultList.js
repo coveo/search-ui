@@ -1,6 +1,55 @@
 webpackJsonpCoveo__temporary([6,8],{
 
-/***/ 122:
+/***/ 258:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(Promise) {
+Object.defineProperty(exports, "__esModule", { value: true });
+var Component_1 = __webpack_require__(8);
+var _ = __webpack_require__(1);
+var ResultListRenderer = /** @class */ (function () {
+    function ResultListRenderer(resultListOptions, autoCreateComponentsFn) {
+        this.resultListOptions = resultListOptions;
+        this.autoCreateComponentsFn = autoCreateComponentsFn;
+    }
+    ResultListRenderer.prototype.renderResults = function (resultElements, append, resultDisplayedCallback) {
+        var _this = this;
+        if (append === void 0) { append = false; }
+        return Promise.all([
+            this.getStartFragment(resultElements, append),
+            this.getEndFragment(resultElements, append)
+        ]).then(function (_a) {
+            var startFrag = _a[0], endFrag = _a[1];
+            var resultsFragment = document.createDocumentFragment();
+            if (startFrag) {
+                resultsFragment.appendChild(startFrag);
+            }
+            _.each(resultElements, function (resultElement) {
+                resultsFragment.appendChild(resultElement);
+                resultDisplayedCallback(Component_1.Component.getResult(resultElement), resultElement);
+            });
+            if (endFrag) {
+                resultsFragment.appendChild(endFrag);
+            }
+            _this.resultListOptions.resultContainer.appendChild(resultsFragment);
+        });
+    };
+    ResultListRenderer.prototype.getStartFragment = function (resultElements, append) {
+        return Promise.resolve(document.createDocumentFragment());
+    };
+    ResultListRenderer.prototype.getEndFragment = function (resultElements, append) {
+        return Promise.resolve(document.createDocumentFragment());
+    };
+    return ResultListRenderer;
+}());
+exports.ResultListRenderer = ResultListRenderer;
+
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5)))
+
+/***/ }),
+
+/***/ 292:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16,51 +65,852 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var TableTemplate_1 = __webpack_require__(508);
-var DefaultResultTemplate_1 = __webpack_require__(100);
+var Component_1 = __webpack_require__(8);
+var Dom_1 = __webpack_require__(3);
+var Strings_1 = __webpack_require__(10);
+var ResultList_1 = __webpack_require__(94);
+var OmniboxEvents_1 = __webpack_require__(33);
+var ComponentOptions_1 = __webpack_require__(9);
+var QueryEvents_1 = __webpack_require__(11);
+var AnalyticsActionListMeta_1 = __webpack_require__(12);
+var Assert_1 = __webpack_require__(7);
+var Utils_1 = __webpack_require__(6);
+var Initialization_1 = __webpack_require__(2);
+var _ = __webpack_require__(1);
+var GlobalExports_1 = __webpack_require__(4);
+__webpack_require__(505);
+var EventsModules_1 = __webpack_require__(99);
+/**
+ * The OmniboxResultList component behaves exactly like the {@link ResultList} component (which it extends), except that
+ * it renders itself inside the {@link Omnibox} component.
+ *
+ * This component can provide a kind of search-as-you-type functionality, allowing you to easily render complex Result
+ * Templates inside the Omnibox component.
+ *
+ * **Example:**
+ *
+ * ```html
+ * <div class="CoveoOmniboxResultList">
+ *   <script class="result-template" type="text/x-underscore">
+ *     <div>
+ *       <a class='CoveoResultLink'></a>
+ *     </div>
+ *   </script>
+ * </div>
+ * ```
+ */
+var OmniboxResultList = /** @class */ (function (_super) {
+    __extends(OmniboxResultList, _super);
+    /**
+     * Creates a new OmniboxResultList component.
+     * @param element The HTMLElement on which to instantiate the component.
+     * @param options The options for the OmniboxResultList component.
+     * @param bindings The bindings that the component requires to function normally. If not set, these will be
+     * automatically resolved (with a slower execution time).
+     */
+    function OmniboxResultList(element, options, bindings) {
+        var _this = _super.call(this, element, options, bindings, OmniboxResultList.ID) || this;
+        _this.element = element;
+        _this.options = options;
+        _this.bindings = bindings;
+        _this.options = ComponentOptions_1.ComponentOptions.initComponentOptions(element, OmniboxResultList, options);
+        _this.setupOptions();
+        _this.bind.onRootElement(OmniboxEvents_1.OmniboxEvents.populateOmnibox, function (args) { return _this.handlePopulateOmnibox(args); });
+        _this.bind.onRootElement(QueryEvents_1.QueryEvents.buildingQuery, function (args) { return _this.handleQueryOverride(args); });
+        var omniboxElement = Dom_1.$$(_this.root).find("." + Component_1.Component.computeCssClassNameForType('Omnibox'));
+        if (omniboxElement) {
+            _this.bind.onRootElement(EventsModules_1.InitializationEvents.afterComponentsInitialization, function () {
+                var omnibox = Component_1.Component.get(omniboxElement);
+                var magicBox = omnibox.magicBox;
+                magicBox.onsubmit = function () {
+                    _this.usageAnalytics.logSearchEvent(AnalyticsActionListMeta_1.analyticsActionCauseList.searchboxSubmit, {});
+                    _this.queryController.executeQuery();
+                };
+            });
+        }
+        return _this;
+    }
+    /**
+     * Builds and returns an array of `HTMLElement` from the {@link IQueryResults} set received as an argument.
+     * @param results The IQueryResults set to build an array of `HTMLElement` from.
+     */
+    OmniboxResultList.prototype.buildResults = function (results) {
+        var _this = this;
+        var builtResults = [];
+        var builtPromises = _.map(results.results, function (result) {
+            return _this.buildResult(result).then(function (resultElement) {
+                Dom_1.$$(resultElement).addClass('coveo-omnibox-selectable');
+                resultElement['no-text-suggestion'] = true;
+                Dom_1.$$(resultElement).on(['keyboardSelect', 'click'], function () {
+                    _this.options.onSelect.call(_this, result, resultElement, _this.lastOmniboxRequest.omniboxObject);
+                });
+                return _this.autoCreateComponentsInsideResult(resultElement, result).initResult.then(function () {
+                    builtResults.push(resultElement);
+                    return resultElement;
+                });
+            });
+        });
+        return Promise.all(builtPromises).then(function () {
+            return builtResults;
+        });
+    };
+    /**
+     * Creates a result container and appends each element from the received `HTMLElement` array to it. For each element
+     * it appends to the result container, this method triggers a `newResultDisplayed` event. Once all elements have been
+     * appended to the result container, the method triggers a `newResultsDisplayed` event.
+     * @param resultsElement The array of `HTMLElement` to render.
+     * @param append
+     */
+    OmniboxResultList.prototype.renderResults = function (resultsElement, append) {
+        var _this = this;
+        if (append === void 0) { append = false; }
+        if (this.lastOmniboxRequest) {
+            var content_1 = Dom_1.$$('div').el;
+            if (this.options.headerTitle) {
+                content_1.appendChild(Dom_1.$$('div', { className: 'coveo-omnibox-result-list-header' }, Dom_1.$$('span', { className: 'coveo-icon-omnibox-result-list' }).el, Dom_1.$$('span', { className: 'coveo-caption' }, Strings_1.l(this.options.headerTitle)).el).el);
+            }
+            _.each(resultsElement, function (resultElement) {
+                content_1.appendChild(resultElement);
+                _this.triggerNewResultDisplayed(Component_1.Component.getResult(resultElement), resultElement);
+            });
+            this.triggerNewResultsDisplayed();
+            if (Dom_1.$$(content_1).findAll('.coveo-omnibox-selectable').length == 0) {
+                this.lastOmniboxRequest.resolve({ element: null, zIndex: this.options.omniboxZIndex });
+            }
+            else {
+                this.lastOmniboxRequest.resolve({ element: content_1, zIndex: this.options.omniboxZIndex });
+            }
+            return Promise.resolve(null);
+        }
+    };
+    OmniboxResultList.prototype.setupOptions = function () {
+        this.logger.info('Disabling infinite scroll for OmniboxResultList', this);
+        this.options.enableInfiniteScroll = false;
+        this.options.onSelect = this.options.onSelect || this.onRowSelection;
+    };
+    OmniboxResultList.prototype.handlePopulateOmnibox = function (args) {
+        var _this = this;
+        var promise = new Promise(function (resolve, reject) {
+            _this.queryController.executeQuery({
+                shouldRedirectStandaloneSearchbox: false,
+                beforeExecuteQuery: function () { return _this.usageAnalytics.logSearchAsYouType(AnalyticsActionListMeta_1.analyticsActionCauseList.searchboxSubmit, {}); }
+            });
+            _this.lastOmniboxRequest = { omniboxObject: args, resolve: resolve };
+        });
+        args.rows.push({
+            deferred: promise
+        });
+    };
+    OmniboxResultList.prototype.handleQueryOverride = function (args) {
+        Assert_1.Assert.exists(args);
+        if (Utils_1.Utils.isNonEmptyString(this.options.queryOverride)) {
+            args.queryBuilder.constantExpression.add(this.options.queryOverride);
+        }
+    };
+    OmniboxResultList.prototype.onRowSelection = function (result, resultElement, omniboxObject) {
+        this.usageAnalytics.logClickEvent(AnalyticsActionListMeta_1.analyticsActionCauseList.documentOpen, { author: Utils_1.Utils.getFieldValue(result, 'author') }, result, this.root);
+        window.location.href = result.clickUri;
+    };
+    OmniboxResultList.ID = 'OmniboxResultList';
+    OmniboxResultList.doExport = function () {
+        GlobalExports_1.exportGlobally({
+            OmniboxResultList: OmniboxResultList
+        });
+    };
+    /**
+     * The options for the component
+     * @componentOptions
+     */
+    OmniboxResultList.options = {
+        /**
+         * Specifies the z-index at which to render the ResultList inside the Omnibox.
+         *
+         * Default value is `51`. Minimum value is `16` ({@link Facet} components are at `50` by default)
+         */
+        omniboxZIndex: ComponentOptions_1.ComponentOptions.buildNumberOption({ defaultValue: 51, min: 16 }),
+        /**
+         * Specifies the title to use for this section.
+         *
+         * Default value is the localized string for `Suggested Results`.
+         */
+        headerTitle: ComponentOptions_1.ComponentOptions.buildStringOption(),
+        /**
+         * Specifies the override to use on the query sent to the OmniboxResultList component.
+         *
+         * Default value is `undefined`, which means no default override is specified.
+         */
+        queryOverride: ComponentOptions_1.ComponentOptions.buildStringOption(),
+        /**
+         * Specifies the function to execute when the user selects a result suggestion.
+         *
+         * The default function opens the corresponding result URI in the browser.
+         *
+         * It is only possible to specify a value for this option in the {@link init} call of your search interface. You
+         * cannot set it directly as an HTML attribute.
+         *
+         * **Example:**
+         *
+         * ```javascript
+         * // You can call the init script using "pure" JavaScript:
+         * Coveo.init(document.querySelector('#search'), {
+         *    OmniboxResultList : {
+         *        //Close the omnibox, change the selected HTMLElement background color and alert the result title.
+         *        onSelect : function(result, resultElement, omniBoxObject) {
+         *            omniBoxObject.close();
+         *            resultElement.css('background-color', 'red');
+         *            alert(result.title);
+         *        }
+         *     }
+         * })
+         *
+         * // Or you can call the init script using the jQuery extension:
+         * $("#search").coveo("init", {
+         *    OmniboxResultList : {
+         *        //Close the Omnibox, change the selected HTMLElement background color and alert the result title.
+         *        onSelect : function(result, resultElement, omniBoxObject) {
+         *            omniBoxObject.close();
+         *            resultElement.css('background-color', 'red');
+         *            alert(result.title);
+         *        }
+         *     }
+         * })
+         * ```
+         */
+        onSelect: ComponentOptions_1.ComponentOptions.buildCustomOption(function () {
+            return null;
+        })
+    };
+    return OmniboxResultList;
+}(ResultList_1.ResultList));
+exports.OmniboxResultList = OmniboxResultList;
+Initialization_1.Initialization.registerAutoCreateComponent(OmniboxResultList);
+
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5)))
+
+/***/ }),
+
+/***/ 426:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var Template_1 = __webpack_require__(24);
+var TemplateList_1 = __webpack_require__(96);
+var _ = __webpack_require__(1);
+var TableTemplate = /** @class */ (function (_super) {
+    __extends(TableTemplate, _super);
+    function TableTemplate() {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.defaultTemplate = "<td><a class=\"CoveoResultLink\"></a></td>\n                             <td><span class=\"CoveoExcerpt\"></span></td>\n                             <td><span class=\"CoveoFieldValue\" data-field=\"@date\" data-helper=\"date\"></span></td>";
+        _this.defaultRoledTemplates = {
+            'table-header': "<th style=\"width: 40%\">Link</th>\n                     <th>Excerpt</th>\n                     <th style=\"width: 20%\"\n                         class=\"CoveoSort coveo-table-header-sort\"\n                         data-sort-criteria=\"date ascending,date descending\"\n                         data-display-unselected-icon=\"false\">Date</th>",
+            'table-footer': "<th>Link</th>\n                     <th>Excerpt</th>\n                     <th>Date</th>"
+        };
+        return _this;
+    }
+    TableTemplate.prototype.instantiateRoleToString = function (role) {
+        var roledTemplate = _.find(this.templates, function (t) { return t.role === role; });
+        if (roledTemplate) {
+            return roledTemplate.instantiateToString(undefined, {});
+        }
+        else {
+            return this.defaultRoledTemplates[role];
+        }
+    };
+    TableTemplate.prototype.instantiateRoleToElement = function (role) {
+        var _this = this;
+        var roledTemplate = _.find(this.templates, function (t) { return t.role === role; });
+        if (roledTemplate) {
+            return roledTemplate.instantiateToElement(undefined, {});
+        }
+        else {
+            var tmpl = new Template_1.Template(function () { return _this.defaultRoledTemplates[role]; });
+            tmpl.layout = 'table';
+            return tmpl.instantiateToElement(undefined);
+        }
+    };
+    TableTemplate.prototype.getFallbackTemplate = function () {
+        var _this = this;
+        return new Template_1.Template(function () { return _this.defaultTemplate; });
+    };
+    TableTemplate.prototype.hasTemplateWithRole = function (role) {
+        return _.find(this.templates, function (t) { return t.role === role; });
+    };
+    return TableTemplate;
+}(TemplateList_1.TemplateList));
+exports.TableTemplate = TableTemplate;
+
+
+/***/ }),
+
+/***/ 427:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(Promise) {
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var Template_1 = __webpack_require__(24);
+var DefaultRecommendationTemplate = /** @class */ (function (_super) {
+    __extends(DefaultRecommendationTemplate, _super);
+    function DefaultRecommendationTemplate() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    DefaultRecommendationTemplate.prototype.instantiateToString = function (object) {
+        var template = "<div class=\"coveo-result-frame\">\n        <div class=\"coveo-result-row\">\n          <div class=\"coveo-result-cell\" style=\"width:40px;text-align:center;vertical-align:middle;\">\n            <span class=\"CoveoIcon\" data-small=\"true\">\n            </span>\n          </div>\n          <div class=\"coveo-result-cell\" style=\"padding:0 0 3px 5px;vertical-align:middle\">\n            <div class=\"coveo-result-row\">\n              <div class=\"coveo-result-cell\" style=\"font-size:10pt;\">\n                <a class=\"CoveoResultLink\" style=\"display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis\">\n                </a>\n              </div>\n            </div>\n          </div>\n        </div>\n      </div>";
+        return template;
+    };
+    DefaultRecommendationTemplate.prototype.instantiateToElement = function (object) {
+        var _this = this;
+        return new Promise(function (resolve, reject) {
+            var div = document.createElement('div');
+            div.innerHTML = _this.instantiateToString(object);
+            resolve(div);
+        });
+    };
+    return DefaultRecommendationTemplate;
+}(Template_1.Template));
+exports.DefaultRecommendationTemplate = DefaultRecommendationTemplate;
+
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5)))
+
+/***/ }),
+
+/***/ 449:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var ResponsiveComponentsManager_1 = __webpack_require__(77);
+var SearchInterface_1 = __webpack_require__(20);
+var ResultList_1 = __webpack_require__(94);
+var Dom_1 = __webpack_require__(3);
+var Component_1 = __webpack_require__(8);
+var Logger_1 = __webpack_require__(14);
+var ResponsiveDefaultResultTemplate = /** @class */ (function () {
+    function ResponsiveDefaultResultTemplate(coveoRoot, ID, options, responsiveDropdown) {
+        this.coveoRoot = coveoRoot;
+        this.ID = ID;
+        this.searchInterface = Component_1.Component.get(this.coveoRoot.el, SearchInterface_1.SearchInterface, false);
+        this.currentMode = 'large';
+    }
+    ResponsiveDefaultResultTemplate.init = function (root, component, options) {
+        if (!Dom_1.$$(root).find("." + Component_1.Component.computeCssClassName(ResultList_1.ResultList))) {
+            var logger = new Logger_1.Logger('ResponsiveDefaultResultTemplate');
+            logger.trace('No ResultLayout component found : Cannot instantiate ResponsiveResultLayout');
+            return;
+        }
+        ResponsiveComponentsManager_1.ResponsiveComponentsManager.register(ResponsiveDefaultResultTemplate, Dom_1.$$(root), ResultList_1.ResultList.ID, component, options);
+    };
+    ResponsiveDefaultResultTemplate.prototype.registerComponent = function (accept) {
+        if (accept instanceof ResultList_1.ResultList) {
+            this.resultList = accept;
+            return true;
+        }
+        return false;
+    };
+    ResponsiveDefaultResultTemplate.prototype.handleResizeEvent = function () {
+        var _this = this;
+        var lastResults = this.resultList.queryController.getLastResults();
+        if (this.needSmallMode()) {
+            Dom_1.$$(this.resultList.options.resultContainer).addClass('coveo-card-layout-container');
+            Dom_1.$$(this.resultList.options.resultContainer).removeClass("coveo-list-layout-container");
+            if (this.currentMode != 'small') {
+                if (lastResults) {
+                    this.resultList.buildResults(lastResults).then(function (elements) {
+                        _this.resultList.renderResults(elements);
+                    });
+                }
+                this.currentMode = 'small';
+            }
+        }
+        else {
+            Dom_1.$$(this.resultList.options.resultContainer).removeClass('coveo-card-layout-container');
+            Dom_1.$$(this.resultList.options.resultContainer).addClass("coveo-list-layout-container");
+            if (this.currentMode != 'large') {
+                if (lastResults) {
+                    this.resultList.buildResults(lastResults).then(function (elements) {
+                        _this.resultList.renderResults(elements);
+                    });
+                }
+                this.currentMode = 'large';
+            }
+        }
+    };
+    ResponsiveDefaultResultTemplate.prototype.needSmallMode = function () {
+        return this.coveoRoot.width() <= this.searchInterface.responsiveComponents.getSmallScreenWidth();
+    };
+    return ResponsiveDefaultResultTemplate;
+}());
+exports.ResponsiveDefaultResultTemplate = ResponsiveDefaultResultTemplate;
+
+
+/***/ }),
+
+/***/ 450:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(Promise) {
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __generator = (this && this.__generator) || function (thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (_) try {
+            if (f = 1, y && (t = y[op[0] & 2 ? "return" : op[0] ? "throw" : "next"]) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [0, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+    }
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var ResultListRenderer_1 = __webpack_require__(258);
+var TableTemplate_1 = __webpack_require__(426);
+var Dom_1 = __webpack_require__(3);
+var _ = __webpack_require__(1);
+var ResultListTableRenderer = /** @class */ (function (_super) {
+    __extends(ResultListTableRenderer, _super);
+    function ResultListTableRenderer(resultListOptions, autoCreateComponentsFn) {
+        var _this = _super.call(this, resultListOptions, autoCreateComponentsFn) || this;
+        _this.resultListOptions = resultListOptions;
+        _this.autoCreateComponentsFn = autoCreateComponentsFn;
+        _this.shouldDisplayHeader = true;
+        _this.shouldDisplayFooter = false;
+        if (_this.resultListOptions.resultTemplate instanceof TableTemplate_1.TableTemplate) {
+            if (_this.resultListOptions.resultTemplate.hasTemplateWithRole('table-footer')) {
+                _this.shouldDisplayFooter = true;
+            }
+            // If custom templates are defined but no header template, do not display it.
+            if (_this.resultListOptions.resultTemplate.templates.length !== 0 &&
+                !_this.resultListOptions.resultTemplate.hasTemplateWithRole('table-header')) {
+                _this.shouldDisplayHeader = false;
+            }
+        }
+        return _this;
+    }
+    ResultListTableRenderer.prototype.getStartFragment = function (resultElements, append) {
+        if (!append && !_.isEmpty(resultElements) && this.shouldDisplayHeader) {
+            return this.renderRoledTemplate('table-header');
+        }
+    };
+    ResultListTableRenderer.prototype.getEndFragment = function (resultElements, append) {
+        if (!append && !_.isEmpty(resultElements) && this.shouldDisplayFooter) {
+            return this.renderRoledTemplate('table-footer');
+        }
+    };
+    ResultListTableRenderer.prototype.renderRoledTemplate = function (role) {
+        return __awaiter(this, void 0, void 0, function () {
+            var elem, frag;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.resultListOptions.resultTemplate.instantiateRoleToElement(role)];
+                    case 1:
+                        elem = _a.sent();
+                        Dom_1.$$(elem).addClass("coveo-result-list-" + role);
+                        this.autoCreateComponentsFn(elem, undefined);
+                        frag = document.createDocumentFragment();
+                        frag.appendChild(elem);
+                        return [2 /*return*/, frag];
+                }
+            });
+        });
+    };
+    return ResultListTableRenderer;
+}(ResultListRenderer_1.ResultListRenderer));
+exports.ResultListTableRenderer = ResultListTableRenderer;
+
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5)))
+
+/***/ }),
+
+/***/ 451:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(Promise) {
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var ResultListRenderer_1 = __webpack_require__(258);
+var Dom_1 = __webpack_require__(3);
+var _ = __webpack_require__(1);
+var ResultListCardRenderer = /** @class */ (function (_super) {
+    __extends(ResultListCardRenderer, _super);
+    function ResultListCardRenderer() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    ResultListCardRenderer.prototype.getEndFragment = function (resultElements) {
+        var _this = this;
+        return new Promise(function (resolve) {
+            if (!_.isEmpty(resultElements)) {
+                // with infinite scrolling, we want the additional results to append at the end of the previous query.
+                // For this, we need to remove the padding.
+                if (_this.resultListOptions.enableInfiniteScroll) {
+                    var needToBeRemoved = Dom_1.$$(_this.resultListOptions.resultContainer).findAll('.coveo-card-layout-padding');
+                    _.each(needToBeRemoved, function (toRemove) { return Dom_1.$$(toRemove).remove(); });
+                }
+                // Used to prevent last card from spanning the grid's whole width
+                var emptyCards_1 = document.createDocumentFragment();
+                _.times(3, function () { return emptyCards_1.appendChild(Dom_1.$$('div', { className: 'coveo-card-layout coveo-card-layout-padding' }).el); });
+                resolve(emptyCards_1);
+            }
+            resolve(null);
+        });
+    };
+    return ResultListCardRenderer;
+}(ResultListRenderer_1.ResultListRenderer));
+exports.ResultListCardRenderer = ResultListCardRenderer;
+
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5)))
+
+/***/ }),
+
+/***/ 452:
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+
+/***/ 453:
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+
+/***/ 454:
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+
+/***/ 505:
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+
+/***/ 77:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var Dom_1 = __webpack_require__(3);
+var InitializationEvents_1 = __webpack_require__(17);
+var Component_1 = __webpack_require__(8);
+var SearchInterface_1 = __webpack_require__(20);
+var Utils_1 = __webpack_require__(6);
+var _ = __webpack_require__(1);
+var QueryEvents_1 = __webpack_require__(11);
+var Logger_1 = __webpack_require__(14);
+var ResponsiveComponentsManager = /** @class */ (function () {
+    function ResponsiveComponentsManager(root) {
+        var _this = this;
+        this.disabledComponents = [];
+        this.responsiveComponents = [];
+        this.coveoRoot = root;
+        this.searchInterface = Component_1.Component.get(this.coveoRoot.el, SearchInterface_1.SearchInterface, false);
+        this.dropdownHeadersWrapper = Dom_1.$$('div', {
+            className: ResponsiveComponentsManager.DROPDOWN_HEADER_WRAPPER_CSS_CLASS
+        });
+        this.searchBoxElement = this.getSearchBoxElement();
+        this.logger = new Logger_1.Logger(this);
+        this.resizeListener = _.debounce(function () {
+            if (_this.coveoRoot.width() != 0) {
+                _this.addDropdownHeaderWrapperIfNeeded();
+                if (_this.shouldSwitchToSmallMode()) {
+                    _this.coveoRoot.addClass('coveo-small-interface');
+                }
+                else if (!_this.shouldSwitchToSmallMode()) {
+                    _this.coveoRoot.removeClass('coveo-small-interface');
+                }
+                _.each(_this.responsiveComponents, function (responsiveComponent) {
+                    responsiveComponent.handleResizeEvent();
+                });
+            }
+            else {
+                _this.logger
+                    .warn("The width of the search interface is 0, cannot dispatch resize events to responsive components. This means that the tabs will not\n        automatically fit in the tab section. Also, the facet and recommendation component will not hide in a menu. Could the search\n        interface display property be none? Could its visibility property be set to hidden? Also, if either of these scenarios happen during\n        loading, it could be the cause of this issue.");
+            }
+        }, ResponsiveComponentsManager.RESIZE_DEBOUNCE_DELAY, true);
+        window.addEventListener('resize', this.resizeListener);
+        this.bindNukeEvents();
+    }
+    // Register takes a class and will instantiate it after framework initialization has completed.
+    ResponsiveComponentsManager.register = function (responsiveComponentConstructor, root, ID, component, options) {
+        var _this = this;
+        // options.initializationEventRoot can be set in some instance (like recommendation) where the root of the interface triggering the init event
+        // is different from the one that will be used for calculation size.
+        var initEventRoot = options.initializationEventRoot || root;
+        initEventRoot.on(InitializationEvents_1.InitializationEvents.afterInitialization, function () {
+            if (_this.shouldEnableResponsiveMode(root)) {
+                var responsiveComponentsManager = _.find(_this.componentManagers, function (componentManager) { return root.el == componentManager.coveoRoot.el; });
+                if (!responsiveComponentsManager) {
+                    responsiveComponentsManager = new ResponsiveComponentsManager(root);
+                    _this.componentManagers.push(responsiveComponentsManager);
+                }
+                if (!Utils_1.Utils.isNullOrUndefined(options.enableResponsiveMode) && !options.enableResponsiveMode) {
+                    responsiveComponentsManager.disableComponent(ID);
+                    return;
+                }
+                _this.componentInitializations.push({
+                    responsiveComponentsManager: responsiveComponentsManager,
+                    arguments: [responsiveComponentConstructor, root, ID, component, options]
+                });
+            }
+            _this.remainingComponentInitializations--;
+            if (_this.remainingComponentInitializations == 0) {
+                _this.instantiateResponsiveComponents(); // necessary to verify if all components are disabled before they are initialized.
+                if (root.width() == 0) {
+                    var logger = new Logger_1.Logger('ResponsiveComponentsManager');
+                    logger.info("Search interface width is 0, cannot dispatch resize events to responsive components. Will try again after first\n          query success.");
+                    root.one(QueryEvents_1.QueryEvents.querySuccess, function () {
+                        _this.resizeAllComponentsManager();
+                    });
+                }
+                else {
+                    _this.resizeAllComponentsManager();
+                }
+            }
+        });
+        this.remainingComponentInitializations++;
+    };
+    ResponsiveComponentsManager.shouldEnableResponsiveMode = function (root) {
+        var searchInterface = Component_1.Component.get(root.el, SearchInterface_1.SearchInterface, true);
+        return searchInterface instanceof SearchInterface_1.SearchInterface && searchInterface.options.enableAutomaticResponsiveMode;
+    };
+    ResponsiveComponentsManager.instantiateResponsiveComponents = function () {
+        _.each(this.componentInitializations, function (componentInitialization) {
+            var responsiveComponentsManager = componentInitialization.responsiveComponentsManager;
+            responsiveComponentsManager.register.apply(responsiveComponentsManager, componentInitialization.arguments);
+        });
+    };
+    ResponsiveComponentsManager.resizeAllComponentsManager = function () {
+        _.each(this.componentManagers, function (componentManager) {
+            componentManager.resizeListener();
+        });
+    };
+    ResponsiveComponentsManager.prototype.register = function (responsiveComponentConstructor, root, ID, component, options) {
+        if (this.isDisabled(ID)) {
+            return;
+        }
+        if (!this.isActivated(ID)) {
+            var responsiveComponent = new responsiveComponentConstructor(root, ID, options);
+            if (this.isTabs(ID)) {
+                this.responsiveComponents.push(responsiveComponent);
+            }
+            else {
+                // Tabs need to be rendered last, so any dropdown header(eg: facet) is already there when the responsive tabs check for overflow.
+                this.responsiveComponents.unshift(responsiveComponent);
+            }
+        }
+        _.each(this.responsiveComponents, function (responsiveComponent) {
+            if (responsiveComponent.registerComponent != null) {
+                responsiveComponent.registerComponent(component);
+            }
+        });
+    };
+    ResponsiveComponentsManager.prototype.disableComponent = function (ID) {
+        this.disabledComponents.push(ID);
+    };
+    ResponsiveComponentsManager.prototype.isDisabled = function (ID) {
+        return _.indexOf(this.disabledComponents, ID) != -1;
+    };
+    ResponsiveComponentsManager.prototype.shouldSwitchToSmallMode = function () {
+        var aComponentNeedsTabSection = this.needDropdownWrapper();
+        var reachedBreakpoint = this.coveoRoot.width() <= this.searchInterface.responsiveComponents.getMediumScreenWidth();
+        return aComponentNeedsTabSection || reachedBreakpoint;
+    };
+    ResponsiveComponentsManager.prototype.needDropdownWrapper = function () {
+        for (var i = 0; i < this.responsiveComponents.length; i++) {
+            var responsiveComponent = this.responsiveComponents[i];
+            if (responsiveComponent.needDropdownWrapper && responsiveComponent.needDropdownWrapper()) {
+                return true;
+            }
+        }
+        return false;
+    };
+    ResponsiveComponentsManager.prototype.addDropdownHeaderWrapperIfNeeded = function () {
+        if (this.needDropdownWrapper()) {
+            var tabSection = Dom_1.$$(this.coveoRoot).find('.coveo-tab-section');
+            if (this.searchBoxElement) {
+                this.dropdownHeadersWrapper.insertAfter(this.searchBoxElement);
+            }
+            else if (tabSection) {
+                this.dropdownHeadersWrapper.insertAfter(tabSection);
+            }
+            else {
+                this.coveoRoot.prepend(this.dropdownHeadersWrapper.el);
+            }
+        }
+    };
+    ResponsiveComponentsManager.prototype.isTabs = function (ID) {
+        return ID == 'Tab';
+    };
+    ResponsiveComponentsManager.prototype.isActivated = function (ID) {
+        return _.find(this.responsiveComponents, function (current) { return current.ID == ID; }) != undefined;
+    };
+    ResponsiveComponentsManager.prototype.getSearchBoxElement = function () {
+        var searchBoxElement = this.coveoRoot.find('.coveo-search-section');
+        if (searchBoxElement) {
+            return searchBoxElement;
+        }
+        else {
+            return this.coveoRoot.find('.CoveoSearchbox');
+        }
+    };
+    ResponsiveComponentsManager.prototype.bindNukeEvents = function () {
+        var _this = this;
+        Dom_1.$$(this.coveoRoot).on(InitializationEvents_1.InitializationEvents.nuke, function () {
+            window.removeEventListener('resize', _this.resizeListener);
+        });
+    };
+    ResponsiveComponentsManager.DROPDOWN_HEADER_WRAPPER_CSS_CLASS = 'coveo-dropdown-header-wrapper';
+    ResponsiveComponentsManager.RESIZE_DEBOUNCE_DELAY = 200;
+    ResponsiveComponentsManager.componentManagers = [];
+    ResponsiveComponentsManager.remainingComponentInitializations = 0;
+    ResponsiveComponentsManager.componentInitializations = [];
+    return ResponsiveComponentsManager;
+}());
+exports.ResponsiveComponentsManager = ResponsiveComponentsManager;
+
+
+/***/ }),
+
+/***/ 94:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(Promise) {
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var TableTemplate_1 = __webpack_require__(426);
+var DefaultResultTemplate_1 = __webpack_require__(84);
 var Component_1 = __webpack_require__(8);
 var ComponentOptions_1 = __webpack_require__(9);
 var Assert_1 = __webpack_require__(7);
 var QueryEvents_1 = __webpack_require__(11);
-var Model_1 = __webpack_require__(19);
+var Model_1 = __webpack_require__(18);
 var QueryStateModel_1 = __webpack_require__(13);
-var QueryUtils_1 = __webpack_require__(20);
+var QueryUtils_1 = __webpack_require__(19);
 var Dom_1 = __webpack_require__(3);
 var AnalyticsActionListMeta_1 = __webpack_require__(12);
 var Initialization_1 = __webpack_require__(2);
-var Defer_1 = __webpack_require__(30);
-var DeviceUtils_1 = __webpack_require__(23);
-var ResultListEvents_1 = __webpack_require__(35);
-var ResultLayoutEvents_1 = __webpack_require__(125);
-var Utils_1 = __webpack_require__(5);
-var DomUtils_1 = __webpack_require__(52);
-var DefaultRecommendationTemplate_1 = __webpack_require__(507);
-var TemplateList_1 = __webpack_require__(124);
-var TemplateCache_1 = __webpack_require__(56);
-var ResponsiveDefaultResultTemplate_1 = __webpack_require__(614);
-var ResultListRenderer_1 = __webpack_require__(299);
-var ResultListTableRenderer_1 = __webpack_require__(616);
-var ResultListCardRenderer_1 = __webpack_require__(615);
+var Defer_1 = __webpack_require__(28);
+var DeviceUtils_1 = __webpack_require__(22);
+var ResultListEvents_1 = __webpack_require__(32);
+var ResultLayoutEvents_1 = __webpack_require__(98);
+var Utils_1 = __webpack_require__(6);
+var DomUtils_1 = __webpack_require__(47);
+var DefaultRecommendationTemplate_1 = __webpack_require__(427);
+var TemplateList_1 = __webpack_require__(96);
+var TemplateCache_1 = __webpack_require__(51);
+var ResponsiveDefaultResultTemplate_1 = __webpack_require__(449);
+var ResultListRenderer_1 = __webpack_require__(258);
+var ResultListTableRenderer_1 = __webpack_require__(450);
+var ResultListCardRenderer_1 = __webpack_require__(451);
 var _ = __webpack_require__(1);
 var GlobalExports_1 = __webpack_require__(4);
-__webpack_require__(607);
-__webpack_require__(606);
-__webpack_require__(605);
-var InitializationPlaceholder_1 = __webpack_require__(285);
-var RegisteredNamedMethods_1 = __webpack_require__(53);
+__webpack_require__(452);
+__webpack_require__(453);
+__webpack_require__(454);
+var InitializationPlaceholder_1 = __webpack_require__(245);
+var RegisteredNamedMethods_1 = __webpack_require__(34);
 /**
- * The ResultList component is responsible for displaying the results of the current query using one or more result
- * templates (see [Result Templates](https://developers.coveo.com/x/aIGfAQ)).
+ * The `ResultList` component is responsible for displaying query results by applying one or several result templates
+ * (see [Result Templates](https://developers.coveo.com/x/aIGfAQ)).
  *
- * This component supports many additional features, such as infinite scrolling.
+ * It is possible to include multiple `ResultList` components along with a single [`ResultLayout`]{@link ResultLayout}
+ * component in a search page to provide different result layouts (see
+ * [Result Layouts](https://developers.coveo.com/x/yQUvAg)).
+ *
+ * This component supports infinite scrolling (see the
+ * [`enableInfiniteScroll`]{@link ResultList.options.enableInfiniteScroll} option).
  */
-var ResultList = (function (_super) {
+var ResultList = /** @class */ (function (_super) {
     __extends(ResultList, _super);
     /**
-     * Creates a new ResultList component. Binds various event related to queries (e.g., on querySuccess ->
-     * renderResults). Binds scroll event if {@link ResultList.options.enableInfiniteScroll} is `true`.
+     * Creates a new `ResultList` component. Binds various event related to queries (e.g., on querySuccess ->
+     * renderResults). Binds scroll event if the [`enableInfiniteScroll`]{@link ResultList.options.enableInfiniteScroll}
+     * option is `true`.
      * @param element The HTMLElement on which to instantiate the component.
-     * @param options The options for the ResultList component.
+     * @param options The options for the `ResultList` component.
      * @param bindings The bindings that the component requires to function normally. If not set, these will be
      * automatically resolved (with a slower execution time).
      * @param elementClassId The class that this component should instantiate. Components that extend the base ResultList
@@ -90,8 +940,12 @@ var ResultList = (function (_super) {
         Assert_1.Assert.exists(_this.options.infiniteScrollContainer);
         _this.showOrHideElementsDependingOnState(false, false);
         _this.bind.onRootElement(QueryEvents_1.QueryEvents.newQuery, function (args) { return _this.handleNewQuery(); });
-        _this.bind.onRootElement(QueryEvents_1.QueryEvents.buildingQuery, function (args) { return _this.handleBuildingQuery(args); });
-        _this.bind.onRootElement(QueryEvents_1.QueryEvents.querySuccess, function (args) { return _this.handleQuerySuccess(args); });
+        _this.bind.onRootElement(QueryEvents_1.QueryEvents.buildingQuery, function (args) {
+            return _this.handleBuildingQuery(args);
+        });
+        _this.bind.onRootElement(QueryEvents_1.QueryEvents.querySuccess, function (args) {
+            return _this.handleQuerySuccess(args);
+        });
         _this.bind.onRootElement(QueryEvents_1.QueryEvents.duringQuery, function (args) { return _this.handleDuringQuery(); });
         _this.bind.onRootElement(QueryEvents_1.QueryEvents.queryError, function (args) { return _this.handleQueryError(); });
         Dom_1.$$(_this.root).on(ResultListEvents_1.ResultListEvents.changeLayout, function (e, args) { return _this.handleChangeLayout(args); });
@@ -108,7 +962,9 @@ var ResultList = (function (_super) {
         _this.initWaitAnimationContainer();
         Assert_1.Assert.exists(_this.options.waitAnimationContainer);
         _this.setupTemplatesVersusLayouts();
-        Dom_1.$$(_this.root).on(ResultLayoutEvents_1.ResultLayoutEvents.populateResultLayout, function (e, args) { return args.layouts.push(_this.options.layout); });
+        Dom_1.$$(_this.root).on(ResultLayoutEvents_1.ResultLayoutEvents.populateResultLayout, function (e, args) {
+            return args.layouts.push(_this.options.layout);
+        });
         _this.setupRenderer();
         return _this;
     }
@@ -161,7 +1017,7 @@ var ResultList = (function (_super) {
             });
         }
         else if (this.options.resultTemplate instanceof DefaultResultTemplate_1.DefaultResultTemplate && this.options.layout == 'list') {
-            ResponsiveDefaultResultTemplate_1.ResponsiveDefaultResultTemplate.init(this.root, this, this.options);
+            ResponsiveDefaultResultTemplate_1.ResponsiveDefaultResultTemplate.init(this.root, this, {});
         }
     };
     /**
@@ -179,7 +1035,8 @@ var ResultList = (function (_super) {
         if (!append) {
             this.options.resultContainer.innerHTML = '';
         }
-        return this.renderer.renderResults(resultElements, append, this.triggerNewResultDisplayed.bind(this))
+        return this.renderer
+            .renderResults(resultElements, append, this.triggerNewResultDisplayed.bind(this))
             .then(function () { return _this.triggerNewResultsDisplayed(); });
     };
     /**
@@ -215,12 +1072,14 @@ var ResultList = (function (_super) {
         QueryUtils_1.QueryUtils.setStateObjectOnQueryResult(this.queryStateModel.get(), result);
         QueryUtils_1.QueryUtils.setSearchInterfaceObjectOnQueryResult(this.searchInterface, result);
         ResultList.resultCurrentlyBeingRendered = result;
-        return this.options.resultTemplate.instantiateToElement(result, {
+        return this.options.resultTemplate
+            .instantiateToElement(result, {
             wrapInDiv: true,
             checkCondition: true,
             currentLayout: this.options.layout,
             responsiveComponents: this.searchInterface.responsiveComponents
-        }).then(function (resultElement) {
+        })
+            .then(function (resultElement) {
             if (resultElement != null) {
                 Component_1.Component.bindResultToElement(resultElement, result);
             }
@@ -236,18 +1095,18 @@ var ResultList = (function (_super) {
      * Asserts that there are more results to display by verifying whether the last query has returned as many results as
      * requested.
      *
-     * Asserts that the ResultList is not currently fetching results.
+     * Asserts that the `ResultList` is not currently fetching results.
      * @param count The number of results to fetch and display.
      */
     ResultList.prototype.displayMoreResults = function (count) {
         var _this = this;
         Assert_1.Assert.isLargerOrEqualsThan(1, count);
         if (this.isCurrentlyFetchingMoreResults()) {
-            this.logger.warn('Ignoring request to display more results since we\'re already doing so');
+            this.logger.warn("Ignoring request to display more results since we're already doing so");
             return;
         }
         if (!this.hasPotentiallyMoreResultsToDisplay()) {
-            this.logger.warn('Ignoring request to display more results since we know there aren\'t more to display');
+            this.logger.warn("Ignoring request to display more results since we know there aren't more to display");
             return;
         }
         if (this.options.enableInfiniteScrollWaitingAnimation) {
@@ -465,7 +1324,7 @@ var ResultList = (function (_super) {
         var elementHeight = el.clientHeight;
         var scrollHeight = el.scrollHeight;
         var bottomPosition = el.scrollTop + elementHeight;
-        return (scrollHeight - bottomPosition) < elementHeight / 2;
+        return scrollHeight - bottomPosition < elementHeight / 2;
     };
     ResultList.prototype.hasPotentiallyMoreResultsToDisplay = function () {
         return this.currentlyDisplayedResults.length > 0 && !this.reachedTheEndOfResults;
@@ -571,973 +1430,173 @@ var ResultList = (function (_super) {
                 break;
         }
     };
+    ResultList.ID = 'ResultList';
+    ResultList.doExport = function () {
+        GlobalExports_1.exportGlobally({
+            ResultList: ResultList
+        });
+    };
+    /**
+     * The options for the ResultList
+     * @componentOptions
+     */
+    ResultList.options = {
+        /**
+         * Specifies the element inside which to insert the rendered result templates.
+         *
+         * Performing a new query clears the content of this element.
+         *
+         * You can change the container by specifying its selector (e.g.,
+         * `data-result-container-selector='#someCssSelector'`).
+         *
+         * If you specify no value for this option, a `div` element will be dynamically created and appended to the result
+         * list. This element will then be used as a result container.
+         */
+        resultContainer: ComponentOptions_1.ComponentOptions.buildChildHtmlElementOption(),
+        resultTemplate: ComponentOptions_1.ComponentOptions.buildTemplateOption({ defaultFunction: ResultList.getDefaultTemplate }),
+        /**
+         * Specifies the type of animation to display while waiting for a query to return.
+         *
+         * The possible values are:
+         * - `fade`: Fades out the current list of results while the query is executing.
+         * - `spinner`: Shows a spinning animation while the query is executing.
+         * - `none`: Use no animation during queries.
+         *
+         * See also the [`waitAnimationContainer`]{@link ResultList.options.waitAnimationContainer} option.
+         *
+         * Default value is `none`.
+         */
+        waitAnimation: ComponentOptions_1.ComponentOptions.buildStringOption({ defaultValue: 'none' }),
+        /**
+         * Specifies the element inside which to display the [`waitAnimation`]{@link ResultList.options.waitAnimation}.
+         *
+         * You can change this by specifying a CSS selector (e.g.,
+         * `data-wait-animation-container-selector='#someCssSelector'`).
+         *
+         * Default value is the value of the [`resultContainer`]{@link ResultList.options.resultContainer} option.
+         */
+        waitAnimationContainer: ComponentOptions_1.ComponentOptions.buildChildHtmlElementOption({
+            postProcessing: function (value, options) { return value || options.resultContainer; }
+        }),
+        /**
+         * Specifies whether to automatically retrieve an additional page of results and append it to the
+         * results that the `ResultList` is currently displaying when the user scrolls down to the bottom of the
+         * [`infiniteScrollContainer`]{@link ResultList.options.infiniteScrollContainer}.
+         *
+         * See also the [`infiniteScrollPageSize`]{@link ResultList.options.infiniteScrollPageSize} and
+         * [`enableInfiniteScrollWaitingAnimation`]{@link ResultList.options.enableInfiniteScrollWaitingAnimation} options.
+         *
+         * It is important to specify the `infiniteScrollContainer` option manually if you want the scrolling element to be
+         * something else than the default `window` element. Otherwise, you might find yourself in a strange state where the
+         * framework rapidly triggers multiple successive query.
+         *
+         * Default value is `false`.
+         */
+        enableInfiniteScroll: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: false }),
+        /**
+         * If the [`enableInfiniteScroll`]{@link ResultList.options.enableInfiniteScroll} option is `true`, specifies the
+         * number of additional results to fetch when the user scrolls down to the bottom of the
+         * [`infiniteScrollContainer`]{@link ResultList.options.infiniteScrollContainer}.
+         *
+         * Default value is `10`. Minimum value is `1`.
+         */
+        infiniteScrollPageSize: ComponentOptions_1.ComponentOptions.buildNumberOption({
+            defaultValue: 10,
+            min: 1,
+            depend: 'enableInfiniteScroll'
+        }),
+        /**
+         * If the [`enableInfiniteScroll`]{@link ResultList.options.enableInfiniteScroll} option is `true`, specifies the
+         * element that triggers fetching additional results when the end user scrolls down to its bottom.
+         *
+         * You can change the container by specifying its selector (e.g.,
+         * `data-infinite-scroll-container-selector='#someCssSelector'`).
+         *
+         * By default, the framework uses the first vertically scrollable parent element it finds, starting from the
+         * `ResultList` element itself. A vertically scrollable element is an element whose CSS `overflow-y` attribute is
+         * `scroll`.
+         *
+         * This implies that if the framework can find no scrollable parent, it uses the `window` itself as a scrollable
+         * container.
+         *
+         * This heuristic is not perfect, for technical reasons. There are always some corner case CSS combination which the
+         * framework will not be able to correctly detect as 'scrollable'.
+         *
+         * It is highly recommended that you manually set this option if you wish something else than the `window` to be the
+         * scrollable element.
+         */
+        infiniteScrollContainer: ComponentOptions_1.ComponentOptions.buildChildHtmlElementOption({
+            depend: 'enableInfiniteScroll',
+            defaultFunction: function (element) { return ComponentOptions_1.ComponentOptions.findParentScrolling(element); }
+        }),
+        /**
+         * If the [`enableInfiniteScroll`]{@link ResultList.options.enableInfiniteScroll} option is `true`, specifies
+         * whether to display the [`waitingAnimation`]{@link ResultList.options.waitAnimation} while fetching additional
+         * results.
+         *
+         * Default value is `true`.
+         */
+        enableInfiniteScrollWaitingAnimation: ComponentOptions_1.ComponentOptions.buildBooleanOption({
+            depend: 'enableInfiniteScroll',
+            defaultValue: true
+        }),
+        mobileScrollContainer: ComponentOptions_1.ComponentOptions.buildSelectorOption({
+            defaultFunction: function () { return document.querySelector('.coveo-results-column'); }
+        }),
+        /**
+         * Specifies whether the `ResultList` should scan its result templates to discover which fields it must request to
+         * be able to render all results.
+         *
+         * Setting this option to `true` ensures that the Coveo Search API does not return fields that are unnecessary for
+         * the UI to function.
+         *
+         * Default value is `false`, which means that for each result, the Coveo Search API returns all available fields
+         * (unless you specify a list of values in the [`fieldsToInclude`]{@link ResultList.options.fieldsToInclude} option,
+         * in which case the Coveo Search API only returns those fields, if they are available).
+         *
+         * **Notes:**
+         * > * Many interfaces created with the JavaScript Search Interface Editor explicitly set this option to `true`.
+         * > * You cannot set this option to `true` in the Coveo for Sitecore integration.
+         */
+        autoSelectFieldsToInclude: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: false }),
+        /**
+         * Specifies a list of fields to include in the query results.
+         *
+         * If you set the [`autoSelectFieldsToInclude`]{@link ResultList.options.autoSelectFieldsToInclude} option to
+         * `true`, the Coveo Search API returns the fields you specify for this option (if those fields are available) in
+         * addition to the fields which the `ResultList` automatically requests.
+         *
+         * Otherwise, the Coveo Search API only returns the fields you specify for this option (if those fields are
+         * available), unless you leave this option undefined, in which case the Coveo Search API returns all available
+         * fields.
+         */
+        fieldsToInclude: ComponentOptions_1.ComponentOptions.buildFieldsOption({ includeInResults: true }),
+        /**
+         * Specifies the layout to use when displaying results in this `ResultList` (see
+         * [Result Layouts](https://developers.coveo.com/x/yQUvAg)). Specifying a value for this option automatically
+         * populates a [`ResultLayout`]{@link ResultLayout} component with a switcher for the layout.
+         *
+         * For example, if there are two `ResultList` components in the page, one with its `layout` set to `list` and the
+         * other with the same option set to `card`, then the `ResultLayout` component will render two buttons respectively
+         * entitled **List** and **Card**.
+         *
+         * See the [`ValidLayout`]{@link ValidLayout} type for the list of possible values.
+         *
+         * Default value is `list`.
+         */
+        layout: ComponentOptions_1.ComponentOptions.buildStringOption({
+            defaultValue: 'list',
+            required: true
+        })
+    };
+    ResultList.resultCurrentlyBeingRendered = null;
+    ResultList.MAX_AMOUNT_OF_SUCESSIVE_REQUESTS = 5;
     return ResultList;
 }(Component_1.Component));
-ResultList.ID = 'ResultList';
-ResultList.doExport = function () {
-    GlobalExports_1.exportGlobally({
-        'ResultList': ResultList
-    });
-};
-/**
- * The options for the ResultList
- * @componentOptions
- */
-ResultList.options = {
-    /**
-     * Specifies the element within which to insert the rendered templates for results.
-     *
-     * Performing a new query clears the content of this element.
-     *
-     * You can change the container by specifying its selector (e.g.,
-     * `data-result-container-selector='#someCssSelector'`).
-     *
-     * If you specify no value for this option, a `div` element will be dynamically created and appended to the result
-     * list. This element will then be used as a result container.
-     */
-    resultContainer: ComponentOptions_1.ComponentOptions.buildChildHtmlElementOption(),
-    resultTemplate: ComponentOptions_1.ComponentOptions.buildTemplateOption({ defaultFunction: ResultList.getDefaultTemplate }),
-    /**
-     * Specifies the type of animation to display while waiting for a query to return.
-     *
-     * The possible values are:
-     * - `fade`: Fades out the current list of results while the query is executing.
-     * - `spinner`: Shows a spinning animation while the query is executing.
-     * - `none`: Use no animation during queries.
-     *
-     * See also {@link ResultList.options.waitAnimationContainer}.
-     *
-     * Default value is `none`.
-     */
-    waitAnimation: ComponentOptions_1.ComponentOptions.buildStringOption({ defaultValue: 'none' }),
-    /**
-     * Specifies the element inside which to display the {@link ResultList.options.waitAnimation}.
-     *
-     * You can change this by specifying a CSS selector (e.g.,
-     * `data-wait-animation-container-selector='#someCssSelector'`).
-     *
-     * Default value is the value of {@link ResultList.options.resultContainer}.
-     */
-    waitAnimationContainer: ComponentOptions_1.ComponentOptions.buildChildHtmlElementOption({ postProcessing: function (value, options) { return value || options.resultContainer; } }),
-    /**
-     * Specifies whether to automatically retrieve an additional page of results and append it to the
-     * results that the ResultList is currently displaying when the user scrolls down to the bottom of the infinite
-     * scroll container.
-     *
-     * See also {@link ResultList.options.infiniteScrollPageSize}, {@link ResultList.options.infiniteScrollContainer}
-     * and {@link ResultList.options.enableInfiniteScrollWaitingAnimation}.
-     *
-     * It is important to specify the {@link ResultList.options.infiniteScrollContainer} manually if you want the scrolling
-     * element to be something else than the default `window` element.
-     * Otherwise, you might get in a weird state where the framework will rapidly trigger multiple successive query.
-     *
-     * Default value is `false`.
-     */
-    enableInfiniteScroll: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: false }),
-    /**
-     * If {@link ResultList.options.enableInfiniteScroll} is `true`, specifies the number of additional results to fetch
-     * when the user scrolls down to the bottom of the {@link ResultList.options.infiniteScrollContainer}.
-     *
-     * Default value is `10`. Minimum value is `1`.
-     */
-    infiniteScrollPageSize: ComponentOptions_1.ComponentOptions.buildNumberOption({ defaultValue: 10, min: 1, depend: 'enableInfiniteScroll' }),
-    /**
-     * If {@link ResultList.options.enableInfiniteScroll} is `true`, specifies the element that triggers the fetching of
-     * additional results when the end user scrolls down to its bottom.
-     *
-     * You can change the container by specifying its selector (e.g.,
-     * `data-infinite-scroll-container-selector='#someCssSelector'`).
-     *
-     * By default, the framework uses the first vertically scrollable parent element it finds, starting from the
-     * ResultList element itself. A vertically scrollable element is an element whose CSS `overflow-y` attribute is
-     * `scroll`.
-     *
-     * This implies that if the framework can find no scrollable parent, it uses the window itself as a scrollable
-     * container.
-     *
-     * This heuristic is not perfect, for technical reasons. There are always some corner case CSS combination which the framework will
-     * not be able to detect correctly as 'scrollable'.
-     *
-     * It is highly recommended that you manually set this option if you wish to have something else than `window` be the scrollable element.
-     */
-    infiniteScrollContainer: ComponentOptions_1.ComponentOptions.buildChildHtmlElementOption({ depend: 'enableInfiniteScroll', defaultFunction: function (element) { return ComponentOptions_1.ComponentOptions.findParentScrolling(element); } }),
-    /**
-     * If {@link ResultList.options.enableInfiniteScroll} is `true`, specifies whether to display the
-     * {@link ResultList.options.waitAnimation} while fetching additional results.
-     *
-     * Default value is `true`.
-     */
-    enableInfiniteScrollWaitingAnimation: ComponentOptions_1.ComponentOptions.buildBooleanOption({ depend: 'enableInfiniteScroll', defaultValue: true }),
-    mobileScrollContainer: ComponentOptions_1.ComponentOptions.buildSelectorOption({ defaultFunction: function () { return document.querySelector('.coveo-results-column'); } }),
-    /**
-     * Specifies a list of fields to include in the query.
-     *
-     * Specifying a list of values for this option ensures that the Search API does not send fields that are unnecessary
-     * for the UI to function.
-     *
-     * See also {@link ResultList.options.autoSelectFieldsToInclude}.
-     *
-     * Default value is `undefined`.
-     */
-    fieldsToInclude: ComponentOptions_1.ComponentOptions.buildFieldsOption({ includeInResults: true }),
-    /**
-     * Specifies whether the ResultList should scan its template and discover which fields it needs to render all
-     * results.
-     *
-     * Setting this option to `true` ensures that the Search API does not send fields that are unnecessary for the UI to
-     * function.
-     *
-     * See also {@link ResultList.options.fieldsToInclude}.
-     *
-     * Default value is `false`.
-     *
-     * **Note:**
-     * > Many interfaces created with the Interface Editor explicitly set this option to `true`.
-     */
-    autoSelectFieldsToInclude: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: false }),
-    /**
-     * Specifies the layout to use for displaying the results within this ResultList. Specifying a value for this option
-     * automatically populates a {@link ResultLayout} component with a switcher for the layout.
-     *
-     * For example, if there are two {@link ResultList} components in the page, one with its
-     * {@link ResultList.options.layout} set to `list` and the other with the same option set to `card`, then the
-     * ResultLayout component will render two buttons respectively titled **List** and **Card**.
-     *
-     * See the {@link ValidLayout} type for the list of possible values.
-     *
-     * Default value is `list`.
-     */
-    layout: ComponentOptions_1.ComponentOptions.buildStringOption({
-        defaultValue: 'list',
-        required: true,
-    }),
-};
-ResultList.resultCurrentlyBeingRendered = null;
-ResultList.MAX_AMOUNT_OF_SUCESSIVE_REQUESTS = 5;
 exports.ResultList = ResultList;
 Initialization_1.Initialization.registerAutoCreateComponent(ResultList);
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(6)))
-
-/***/ }),
-
-/***/ 299:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function(Promise) {
-Object.defineProperty(exports, "__esModule", { value: true });
-var Component_1 = __webpack_require__(8);
-var _ = __webpack_require__(1);
-var ResultListRenderer = (function () {
-    function ResultListRenderer(resultListOptions, autoCreateComponentsFn) {
-        this.resultListOptions = resultListOptions;
-        this.autoCreateComponentsFn = autoCreateComponentsFn;
-    }
-    ResultListRenderer.prototype.renderResults = function (resultElements, append, resultDisplayedCallback) {
-        var _this = this;
-        if (append === void 0) { append = false; }
-        return Promise.all([
-            this.getStartFragment(resultElements, append),
-            this.getEndFragment(resultElements, append)
-        ]).then(function (_a) {
-            var startFrag = _a[0], endFrag = _a[1];
-            var resultsFragment = document.createDocumentFragment();
-            if (startFrag) {
-                resultsFragment.appendChild(startFrag);
-            }
-            _.each(resultElements, function (resultElement) {
-                resultsFragment.appendChild(resultElement);
-                resultDisplayedCallback(Component_1.Component.getResult(resultElement), resultElement);
-            });
-            if (endFrag) {
-                resultsFragment.appendChild(endFrag);
-            }
-            _this.resultListOptions.resultContainer.appendChild(resultsFragment);
-        });
-    };
-    ResultListRenderer.prototype.getStartFragment = function (resultElements, append) {
-        return Promise.resolve(document.createDocumentFragment());
-    };
-    ResultListRenderer.prototype.getEndFragment = function (resultElements, append) {
-        return Promise.resolve(document.createDocumentFragment());
-    };
-    return ResultListRenderer;
-}());
-exports.ResultListRenderer = ResultListRenderer;
-
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(6)))
-
-/***/ }),
-
-/***/ 374:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function(Promise) {
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-Object.defineProperty(exports, "__esModule", { value: true });
-var Component_1 = __webpack_require__(8);
-var Dom_1 = __webpack_require__(3);
-var Strings_1 = __webpack_require__(10);
-var ResultList_1 = __webpack_require__(122);
-var OmniboxEvents_1 = __webpack_require__(36);
-var ComponentOptions_1 = __webpack_require__(9);
-var QueryEvents_1 = __webpack_require__(11);
-var AnalyticsActionListMeta_1 = __webpack_require__(12);
-var Assert_1 = __webpack_require__(7);
-var Utils_1 = __webpack_require__(5);
-var Initialization_1 = __webpack_require__(2);
-var _ = __webpack_require__(1);
-var GlobalExports_1 = __webpack_require__(4);
-__webpack_require__(922);
-/**
- * The OmniboxResultList component behaves exactly like the {@link ResultList} component (which it extends), except that
- * it renders itself inside the {@link Omnibox} component.
- *
- * This component can provide a kind of search-as-you-type functionality, allowing you to easily render complex Result
- * Templates inside the Omnibox component.
- *
- * **Example:**
- *
- * ```html
- * <div class="CoveoOmniboxResultList">
- *   <script class="result-template" type="text/x-underscore">
- *     <div>
- *       <a class='CoveoResultLink'></a>
- *     </div>
- *   </script>
- * </div>
- * ```
- */
-var OmniboxResultList = (function (_super) {
-    __extends(OmniboxResultList, _super);
-    /**
-     * Creates a new OmniboxResultList component.
-     * @param element The HTMLElement on which to instantiate the component.
-     * @param options The options for the OmniboxResultList component.
-     * @param bindings The bindings that the component requires to function normally. If not set, these will be
-     * automatically resolved (with a slower execution time).
-     */
-    function OmniboxResultList(element, options, bindings) {
-        var _this = _super.call(this, element, options, bindings, OmniboxResultList.ID) || this;
-        _this.element = element;
-        _this.options = options;
-        _this.bindings = bindings;
-        _this.options = ComponentOptions_1.ComponentOptions.initComponentOptions(element, OmniboxResultList, options);
-        _this.setupOptions();
-        _this.bind.onRootElement(OmniboxEvents_1.OmniboxEvents.populateOmnibox, function (args) { return _this.handlePopulateOmnibox(args); });
-        _this.bind.onRootElement(QueryEvents_1.QueryEvents.buildingQuery, function (args) { return _this.handleQueryOverride(args); });
-        return _this;
-    }
-    /**
-     * Builds and returns an array of `HTMLElement` from the {@link IQueryResults} set received as an argument.
-     * @param results The IQueryResults set to build an array of `HTMLElement` from.
-     */
-    OmniboxResultList.prototype.buildResults = function (results) {
-        var _this = this;
-        var builtResults = [];
-        var builtPromises = _.map(results.results, function (result) {
-            return _this.buildResult(result).then(function (resultElement) {
-                Dom_1.$$(resultElement).addClass('coveo-omnibox-selectable');
-                Dom_1.$$(resultElement).on('keyboardSelect', function () {
-                    _this.options.onSelect.call(_this, result, resultElement, _this.lastOmniboxRequest.omniboxObject);
-                });
-                return _this.autoCreateComponentsInsideResult(resultElement, result).initResult.then(function () {
-                    builtResults.push(resultElement);
-                    return resultElement;
-                });
-            });
-        });
-        return Promise.all(builtPromises).then(function () {
-            return builtResults;
-        });
-    };
-    /**
-     * Creates a result container and appends each element from the received `HTMLElement` array to it. For each element
-     * it appends to the result container, this method triggers a `newResultDisplayed` event. Once all elements have been
-     * appended to the result container, the method triggers a `newResultsDisplayed` event.
-     * @param resultsElement The array of `HTMLElement` to render.
-     * @param append
-     */
-    OmniboxResultList.prototype.renderResults = function (resultsElement, append) {
-        var _this = this;
-        if (append === void 0) { append = false; }
-        if (this.lastOmniboxRequest) {
-            var content_1 = Dom_1.$$('div').el;
-            content_1.appendChild(Dom_1.$$('div', { className: 'coveo-omnibox-result-list-header' }, Dom_1.$$('span', { className: 'coveo-icon-omnibox-result-list' }).el, Dom_1.$$('span', { className: 'coveo-caption' }, (this.options.headerTitle || Strings_1.l('SuggestedResults'))).el).el);
-            _.each(resultsElement, function (resultElement) {
-                content_1.appendChild(resultElement);
-                _this.triggerNewResultDisplayed(Component_1.Component.getResult(resultElement), resultElement);
-            });
-            this.triggerNewResultsDisplayed();
-            this.lastOmniboxRequest.resolve({ element: content_1, zIndex: this.options.omniboxZIndex });
-            return Promise.resolve(null);
-        }
-    };
-    OmniboxResultList.prototype.setupOptions = function () {
-        this.logger.info('Disabling infinite scroll for OmniboxResultList', this);
-        this.options.enableInfiniteScroll = false;
-        this.options.onSelect = this.options.onSelect || this.onRowSelection;
-    };
-    OmniboxResultList.prototype.handlePopulateOmnibox = function (args) {
-        var _this = this;
-        var promise = new Promise(function (resolve, reject) {
-            _this.queryController.executeQuery({
-                beforeExecuteQuery: function () { return _this.usageAnalytics.logSearchAsYouType(AnalyticsActionListMeta_1.analyticsActionCauseList.searchboxSubmit, {}); },
-                searchAsYouType: true
-            });
-            _this.lastOmniboxRequest = { omniboxObject: args, resolve: resolve };
-        });
-        args.rows.push({
-            deferred: promise
-        });
-    };
-    OmniboxResultList.prototype.handleQueryOverride = function (args) {
-        Assert_1.Assert.exists(args);
-        if (Utils_1.Utils.isNonEmptyString(this.options.queryOverride)) {
-            args.queryBuilder.constantExpression.add(this.options.queryOverride);
-        }
-    };
-    OmniboxResultList.prototype.onRowSelection = function (result, resultElement, omniboxObject) {
-        this.usageAnalytics.logClickEvent(AnalyticsActionListMeta_1.analyticsActionCauseList.documentOpen, { author: Utils_1.Utils.getFieldValue(result, 'author') }, result, this.root);
-        window.location.href = result.clickUri;
-    };
-    return OmniboxResultList;
-}(ResultList_1.ResultList));
-OmniboxResultList.ID = 'OmniboxResultList';
-OmniboxResultList.doExport = function () {
-    GlobalExports_1.exportGlobally({
-        'OmniboxResultList': OmniboxResultList
-    });
-};
-/**
- * The options for the component
- * @componentOptions
- */
-OmniboxResultList.options = {
-    /**
-     * Specifies the z-index at which to render the ResultList inside the Omnibox.
-     *
-     * Default value is `51`. Minimum value is `16` ({@link Facet} components are at `50` by default)
-     */
-    omniboxZIndex: ComponentOptions_1.ComponentOptions.buildNumberOption({ defaultValue: 51, min: 16 }),
-    /**
-     * Specifies the title to use for this section.
-     *
-     * Default value is the localized string for `Suggested Results`.
-     */
-    headerTitle: ComponentOptions_1.ComponentOptions.buildStringOption(),
-    /**
-     * Specifies the override to use on the query sent to the OmniboxResultList component.
-     *
-     * Default value is `undefined`, which means no default override is specified.
-     */
-    queryOverride: ComponentOptions_1.ComponentOptions.buildStringOption(),
-    /**
-     * Specifies the function to execute when the user selects a result suggestion.
-     *
-     * The default function opens the corresponding result URI in the browser.
-     *
-     * It is only possible to specify a value for this option in the {@link init} call of your search interface. You
-     * cannot set it directly as an HTML attribute.
-     *
-     * **Example:**
-     *
-     * ```javascript
-     * // You can call the init script using "pure" JavaScript:
-     * Coveo.init(document.querySelector('#search'), {
-     *    OmniboxResultList : {
-     *        //Close the omnibox, change the selected HTMLElement background color and alert the result title.
-     *        onSelect : function(result, resultElement, omniBoxObject) {
-     *            omniBoxObject.close();
-     *            resultElement.css('background-color', 'red');
-     *            alert(result.title);
-     *        }
-     *     }
-     * })
-     *
-     * // Or you can call the init script using the jQuery extension:
-     * $("#search").coveo("init", {
-     *    OmniboxResultList : {
-     *        //Close the Omnibox, change the selected HTMLElement background color and alert the result title.
-     *        onSelect : function(result, resultElement, omniBoxObject) {
-     *            omniBoxObject.close();
-     *            resultElement.css('background-color', 'red');
-     *            alert(result.title);
-     *        }
-     *     }
-     * })
-     * ```
-     */
-    onSelect: ComponentOptions_1.ComponentOptions.buildCustomOption(function () {
-        return null;
-    })
-};
-exports.OmniboxResultList = OmniboxResultList;
-Initialization_1.Initialization.registerAutoCreateComponent(OmniboxResultList);
-
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(6)))
-
-/***/ }),
-
-/***/ 507:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function(Promise) {
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-Object.defineProperty(exports, "__esModule", { value: true });
-var Template_1 = __webpack_require__(25);
-var DefaultRecommendationTemplate = (function (_super) {
-    __extends(DefaultRecommendationTemplate, _super);
-    function DefaultRecommendationTemplate() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    DefaultRecommendationTemplate.prototype.instantiateToString = function (object) {
-        var template = "<div class=\"coveo-result-frame\">\n        <div class=\"coveo-result-row\">\n          <div class=\"coveo-result-cell\" style=\"width:40px;text-align:center;vertical-align:middle;\">\n            <span class=\"CoveoIcon\" data-small=\"true\">\n            </span>\n          </div>\n          <div class=\"coveo-result-cell\" style=\"padding:0 0 3px 5px;vertical-align:middle\">\n            <div class=\"coveo-result-row\">\n              <div class=\"coveo-result-cell\" style=\"font-size:10pt;\">\n                <a class=\"CoveoResultLink\" style=\"display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis\">\n                </a>\n              </div>\n            </div>\n          </div>\n        </div>\n      </div>";
-        return template;
-    };
-    DefaultRecommendationTemplate.prototype.instantiateToElement = function (object) {
-        var _this = this;
-        return new Promise(function (resolve, reject) {
-            var div = document.createElement('div');
-            div.innerHTML = _this.instantiateToString(object);
-            resolve(div);
-        });
-    };
-    return DefaultRecommendationTemplate;
-}(Template_1.Template));
-exports.DefaultRecommendationTemplate = DefaultRecommendationTemplate;
-
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(6)))
-
-/***/ }),
-
-/***/ 508:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-Object.defineProperty(exports, "__esModule", { value: true });
-var Template_1 = __webpack_require__(25);
-var TemplateList_1 = __webpack_require__(124);
-var _ = __webpack_require__(1);
-var TableTemplate = (function (_super) {
-    __extends(TableTemplate, _super);
-    function TableTemplate() {
-        var _this = _super !== null && _super.apply(this, arguments) || this;
-        _this.defaultTemplate = "<td><a class=\"CoveoResultLink\"></a></td>\n                             <td><span class=\"CoveoExcerpt\"></span></td>\n                             <td><span class=\"CoveoFieldValue\" data-field=\"@date\" data-helper=\"date\"></span></td>";
-        _this.defaultRoledTemplates = {
-            'table-header': "<th style=\"width: 40%\">Link</th>\n                     <th>Excerpt</th>\n                     <th style=\"width: 20%\"\n                         class=\"CoveoSort coveo-table-header-sort\"\n                         data-sort-criteria=\"date ascending,date descending\"\n                         data-display-unselected-icon=\"false\">Date</th>",
-            'table-footer': "<th>Link</th>\n                     <th>Excerpt</th>\n                     <th>Date</th>"
-        };
-        return _this;
-    }
-    TableTemplate.prototype.instantiateRoleToString = function (role) {
-        var roledTemplate = _.find(this.templates, function (t) { return t.role === role; });
-        if (roledTemplate) {
-            return roledTemplate.instantiateToString(undefined, {});
-        }
-        else {
-            return this.defaultRoledTemplates[role];
-        }
-    };
-    TableTemplate.prototype.instantiateRoleToElement = function (role) {
-        var _this = this;
-        var roledTemplate = _.find(this.templates, function (t) { return t.role === role; });
-        if (roledTemplate) {
-            return roledTemplate.instantiateToElement(undefined, {});
-        }
-        else {
-            var tmpl = new Template_1.Template(function () { return _this.defaultRoledTemplates[role]; });
-            tmpl.layout = 'table';
-            return tmpl.instantiateToElement(undefined);
-        }
-    };
-    TableTemplate.prototype.getFallbackTemplate = function () {
-        var _this = this;
-        return new Template_1.Template(function () { return _this.defaultTemplate; });
-    };
-    TableTemplate.prototype.hasTemplateWithRole = function (role) {
-        return _.find(this.templates, function (t) { return t.role === role; });
-    };
-    return TableTemplate;
-}(TemplateList_1.TemplateList));
-exports.TableTemplate = TableTemplate;
-
-
-/***/ }),
-
-/***/ 605:
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-
-/***/ 606:
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-
-/***/ 607:
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-
-/***/ 614:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var ResponsiveComponentsManager_1 = __webpack_require__(90);
-var SearchInterface_1 = __webpack_require__(22);
-var ResultList_1 = __webpack_require__(122);
-var Dom_1 = __webpack_require__(3);
-var Component_1 = __webpack_require__(8);
-var Logger_1 = __webpack_require__(14);
-var ResponsiveDefaultResultTemplate = (function () {
-    function ResponsiveDefaultResultTemplate(coveoRoot, ID, options, responsiveDropdown) {
-        this.coveoRoot = coveoRoot;
-        this.ID = ID;
-        this.searchInterface = Component_1.Component.get(this.coveoRoot.el, SearchInterface_1.SearchInterface, false);
-        this.currentMode = 'large';
-    }
-    ResponsiveDefaultResultTemplate.init = function (root, component, options) {
-        if (!Dom_1.$$(root).find("." + Component_1.Component.computeCssClassName(ResultList_1.ResultList))) {
-            var logger = new Logger_1.Logger('ResponsiveDefaultResultTemplate');
-            logger.trace('No ResultLayout component found : Cannot instantiate ResponsiveResultLayout');
-            return;
-        }
-        ResponsiveComponentsManager_1.ResponsiveComponentsManager.register(ResponsiveDefaultResultTemplate, Dom_1.$$(root), ResultList_1.ResultList.ID, component, options);
-    };
-    ResponsiveDefaultResultTemplate.prototype.registerComponent = function (accept) {
-        if (accept instanceof ResultList_1.ResultList) {
-            this.resultList = accept;
-            return true;
-        }
-        return false;
-    };
-    ResponsiveDefaultResultTemplate.prototype.handleResizeEvent = function () {
-        var _this = this;
-        var lastResults = this.resultList.queryController.getLastResults();
-        if (this.needSmallMode()) {
-            Dom_1.$$(this.resultList.options.resultContainer).addClass('coveo-card-layout-container');
-            Dom_1.$$(this.resultList.options.resultContainer).removeClass("coveo-list-layout-container");
-            if (this.currentMode != 'small') {
-                if (lastResults) {
-                    this.resultList.buildResults(lastResults).then(function (elements) {
-                        _this.resultList.renderResults(elements);
-                    });
-                }
-                this.currentMode = 'small';
-            }
-        }
-        else {
-            Dom_1.$$(this.resultList.options.resultContainer).removeClass('coveo-card-layout-container');
-            Dom_1.$$(this.resultList.options.resultContainer).addClass("coveo-list-layout-container");
-            if (this.currentMode != 'large') {
-                if (lastResults) {
-                    this.resultList.buildResults(lastResults).then(function (elements) {
-                        _this.resultList.renderResults(elements);
-                    });
-                }
-                this.currentMode = 'large';
-            }
-        }
-    };
-    ResponsiveDefaultResultTemplate.prototype.needSmallMode = function () {
-        return this.coveoRoot.width() <= this.searchInterface.responsiveComponents.getSmallScreenWidth();
-    };
-    return ResponsiveDefaultResultTemplate;
-}());
-exports.ResponsiveDefaultResultTemplate = ResponsiveDefaultResultTemplate;
-
-
-/***/ }),
-
-/***/ 615:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function(Promise) {
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-Object.defineProperty(exports, "__esModule", { value: true });
-var ResultListRenderer_1 = __webpack_require__(299);
-var Dom_1 = __webpack_require__(3);
-var _ = __webpack_require__(1);
-var ResultListCardRenderer = (function (_super) {
-    __extends(ResultListCardRenderer, _super);
-    function ResultListCardRenderer() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    ResultListCardRenderer.prototype.getEndFragment = function (resultElements) {
-        var _this = this;
-        return new Promise(function (resolve) {
-            if (!_.isEmpty(resultElements)) {
-                // with infinite scrolling, we want the additional results to append at the end of the previous query.
-                // For this, we need to remove the padding.
-                if (_this.resultListOptions.enableInfiniteScroll) {
-                    var needToBeRemoved = Dom_1.$$(_this.resultListOptions.resultContainer).findAll('.coveo-card-layout-padding');
-                    _.each(needToBeRemoved, function (toRemove) { return Dom_1.$$(toRemove).remove(); });
-                }
-                // Used to prevent last card from spanning the grid's whole width
-                var emptyCards_1 = document.createDocumentFragment();
-                _.times(3, function () { return emptyCards_1.appendChild(Dom_1.$$('div', { className: 'coveo-card-layout coveo-card-layout-padding' }).el); });
-                resolve(emptyCards_1);
-            }
-            resolve(null);
-        });
-    };
-    return ResultListCardRenderer;
-}(ResultListRenderer_1.ResultListRenderer));
-exports.ResultListCardRenderer = ResultListCardRenderer;
-
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(6)))
-
-/***/ }),
-
-/***/ 616:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function(Promise) {
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
-var __generator = (this && this.__generator) || function (thisArg, body) {
-    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
-    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
-    function verb(n) { return function (v) { return step([n, v]); }; }
-    function step(op) {
-        if (f) throw new TypeError("Generator is already executing.");
-        while (_) try {
-            if (f = 1, y && (t = y[op[0] & 2 ? "return" : op[0] ? "throw" : "next"]) && !(t = t.call(y, op[1])).done) return t;
-            if (y = 0, t) op = [0, t.value];
-            switch (op[0]) {
-                case 0: case 1: t = op; break;
-                case 4: _.label++; return { value: op[1], done: false };
-                case 5: _.label++; y = op[1]; op = [0]; continue;
-                case 7: op = _.ops.pop(); _.trys.pop(); continue;
-                default:
-                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
-                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
-                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
-                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
-                    if (t[2]) _.ops.pop();
-                    _.trys.pop(); continue;
-            }
-            op = body.call(thisArg, _);
-        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
-        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
-    }
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-var ResultListRenderer_1 = __webpack_require__(299);
-var TableTemplate_1 = __webpack_require__(508);
-var Dom_1 = __webpack_require__(3);
-var _ = __webpack_require__(1);
-var ResultListTableRenderer = (function (_super) {
-    __extends(ResultListTableRenderer, _super);
-    function ResultListTableRenderer(resultListOptions, autoCreateComponentsFn) {
-        var _this = _super.call(this, resultListOptions, autoCreateComponentsFn) || this;
-        _this.resultListOptions = resultListOptions;
-        _this.autoCreateComponentsFn = autoCreateComponentsFn;
-        _this.shouldDisplayHeader = true;
-        _this.shouldDisplayFooter = false;
-        if (_this.resultListOptions.resultTemplate instanceof TableTemplate_1.TableTemplate) {
-            if (_this.resultListOptions.resultTemplate.hasTemplateWithRole('table-footer')) {
-                _this.shouldDisplayFooter = true;
-            }
-            // If custom templates are defined but no header template, do not display it.
-            if (_this.resultListOptions.resultTemplate.templates.length !== 0 && !_this.resultListOptions.resultTemplate.hasTemplateWithRole('table-header')) {
-                _this.shouldDisplayHeader = false;
-            }
-        }
-        return _this;
-    }
-    ResultListTableRenderer.prototype.getStartFragment = function (resultElements, append) {
-        if (!append && !_.isEmpty(resultElements) && this.shouldDisplayHeader) {
-            return this.renderRoledTemplate('table-header');
-        }
-    };
-    ResultListTableRenderer.prototype.getEndFragment = function (resultElements, append) {
-        if (!append && !_.isEmpty(resultElements) && this.shouldDisplayFooter) {
-            return this.renderRoledTemplate('table-footer');
-        }
-    };
-    ResultListTableRenderer.prototype.renderRoledTemplate = function (role) {
-        return __awaiter(this, void 0, void 0, function () {
-            var elem, frag;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.resultListOptions.resultTemplate.instantiateRoleToElement(role)];
-                    case 1:
-                        elem = _a.sent();
-                        Dom_1.$$(elem).addClass("coveo-result-list-" + role);
-                        this.autoCreateComponentsFn(elem, undefined);
-                        frag = document.createDocumentFragment();
-                        frag.appendChild(elem);
-                        return [2 /*return*/, frag];
-                }
-            });
-        });
-    };
-    return ResultListTableRenderer;
-}(ResultListRenderer_1.ResultListRenderer));
-exports.ResultListTableRenderer = ResultListTableRenderer;
-
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(6)))
-
-/***/ }),
-
-/***/ 90:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var Dom_1 = __webpack_require__(3);
-var InitializationEvents_1 = __webpack_require__(18);
-var Component_1 = __webpack_require__(8);
-var SearchInterface_1 = __webpack_require__(22);
-var Utils_1 = __webpack_require__(5);
-var _ = __webpack_require__(1);
-var QueryEvents_1 = __webpack_require__(11);
-var Logger_1 = __webpack_require__(14);
-var ResponsiveComponentsManager = (function () {
-    function ResponsiveComponentsManager(root) {
-        var _this = this;
-        this.disabledComponents = [];
-        this.responsiveComponents = [];
-        this.coveoRoot = root;
-        this.searchInterface = Component_1.Component.get(this.coveoRoot.el, SearchInterface_1.SearchInterface, false);
-        this.dropdownHeadersWrapper = Dom_1.$$('div', { className: ResponsiveComponentsManager.DROPDOWN_HEADER_WRAPPER_CSS_CLASS });
-        this.searchBoxElement = this.getSearchBoxElement();
-        this.logger = new Logger_1.Logger(this);
-        this.resizeListener = _.debounce(function () {
-            if (_this.coveoRoot.width() != 0) {
-                _this.addDropdownHeaderWrapperIfNeeded();
-                if (_this.shouldSwitchToSmallMode()) {
-                    _this.coveoRoot.addClass('coveo-small-interface');
-                }
-                else if (!_this.shouldSwitchToSmallMode()) {
-                    _this.coveoRoot.removeClass('coveo-small-interface');
-                }
-                _.each(_this.responsiveComponents, function (responsiveComponent) {
-                    responsiveComponent.handleResizeEvent();
-                });
-            }
-            else {
-                _this.logger.warn("The width of the search interface is 0, cannot dispatch resize events to responsive components. This means that the tabs will not\n        automatically fit in the tab section. Also, the facet and recommendation component will not hide in a menu. Could the search\n        interface display property be none? Could its visibility property be set to hidden? Also, if either of these scenarios happen during\n        loading, it could be the cause of this issue.");
-            }
-        }, ResponsiveComponentsManager.RESIZE_DEBOUNCE_DELAY, true);
-        window.addEventListener('resize', this.resizeListener);
-        this.bindNukeEvents();
-    }
-    // Register takes a class and will instantiate it after framework initialization has completed.
-    ResponsiveComponentsManager.register = function (responsiveComponentConstructor, root, ID, component, options) {
-        var _this = this;
-        // options.initializationEventRoot can be set in some instance (like recommendation) where the root of the interface triggering the init event
-        // is different from the one that will be used for calculation size.
-        var initEventRoot = options.initializationEventRoot || root;
-        initEventRoot.on(InitializationEvents_1.InitializationEvents.afterInitialization, function () {
-            if (_this.shouldEnableResponsiveMode(root)) {
-                var responsiveComponentsManager = _.find(_this.componentManagers, function (componentManager) { return root.el == componentManager.coveoRoot.el; });
-                if (!responsiveComponentsManager) {
-                    responsiveComponentsManager = new ResponsiveComponentsManager(root);
-                    _this.componentManagers.push(responsiveComponentsManager);
-                }
-                if (!Utils_1.Utils.isNullOrUndefined(options.enableResponsiveMode) && !options.enableResponsiveMode) {
-                    responsiveComponentsManager.disableComponent(ID);
-                    return;
-                }
-                _this.componentInitializations.push({
-                    responsiveComponentsManager: responsiveComponentsManager,
-                    arguments: [responsiveComponentConstructor, root, ID, component, options]
-                });
-            }
-            _this.remainingComponentInitializations--;
-            if (_this.remainingComponentInitializations == 0) {
-                _this.instantiateResponsiveComponents(); // necessary to verify if all components are disabled before they are initialized.
-                if (root.width() == 0) {
-                    var logger = new Logger_1.Logger('ResponsiveComponentsManager');
-                    logger.info("Search interface width is 0, cannot dispatch resize events to responsive components. Will try again after first\n          query success.");
-                    root.one(QueryEvents_1.QueryEvents.querySuccess, function () {
-                        _this.resizeAllComponentsManager();
-                    });
-                }
-                else {
-                    _this.resizeAllComponentsManager();
-                }
-            }
-        });
-        this.remainingComponentInitializations++;
-    };
-    ResponsiveComponentsManager.shouldEnableResponsiveMode = function (root) {
-        var searchInterface = Component_1.Component.get(root.el, SearchInterface_1.SearchInterface, true);
-        return searchInterface instanceof SearchInterface_1.SearchInterface && searchInterface.options.enableAutomaticResponsiveMode;
-    };
-    ResponsiveComponentsManager.instantiateResponsiveComponents = function () {
-        _.each(this.componentInitializations, function (componentInitialization) {
-            var responsiveComponentsManager = componentInitialization.responsiveComponentsManager;
-            responsiveComponentsManager.register.apply(responsiveComponentsManager, componentInitialization.arguments);
-        });
-    };
-    ResponsiveComponentsManager.resizeAllComponentsManager = function () {
-        _.each(this.componentManagers, function (componentManager) {
-            componentManager.resizeListener();
-        });
-    };
-    ResponsiveComponentsManager.prototype.register = function (responsiveComponentConstructor, root, ID, component, options) {
-        if (this.isDisabled(ID)) {
-            return;
-        }
-        if (!this.isActivated(ID)) {
-            var responsiveComponent = new responsiveComponentConstructor(root, ID, options);
-            if (this.isTabs(ID)) {
-                this.responsiveComponents.push(responsiveComponent);
-            }
-            else {
-                // Tabs need to be rendered last, so any dropdown header(eg: facet) is already there when the responsive tabs check for overflow.
-                this.responsiveComponents.unshift(responsiveComponent);
-            }
-        }
-        _.each(this.responsiveComponents, function (responsiveComponent) {
-            if (responsiveComponent.registerComponent != null) {
-                responsiveComponent.registerComponent(component);
-            }
-        });
-    };
-    ResponsiveComponentsManager.prototype.disableComponent = function (ID) {
-        this.disabledComponents.push(ID);
-    };
-    ResponsiveComponentsManager.prototype.isDisabled = function (ID) {
-        return _.indexOf(this.disabledComponents, ID) != -1;
-    };
-    ResponsiveComponentsManager.prototype.shouldSwitchToSmallMode = function () {
-        var aComponentNeedsTabSection = this.needDropdownWrapper();
-        var reachedBreakpoint = this.coveoRoot.width() <= this.searchInterface.responsiveComponents.getMediumScreenWidth();
-        return aComponentNeedsTabSection || reachedBreakpoint;
-    };
-    ResponsiveComponentsManager.prototype.needDropdownWrapper = function () {
-        for (var i = 0; i < this.responsiveComponents.length; i++) {
-            var responsiveComponent = this.responsiveComponents[i];
-            if (responsiveComponent.needDropdownWrapper && responsiveComponent.needDropdownWrapper()) {
-                return true;
-            }
-        }
-        return false;
-    };
-    ResponsiveComponentsManager.prototype.addDropdownHeaderWrapperIfNeeded = function () {
-        if (this.needDropdownWrapper()) {
-            var tabSection = Dom_1.$$(this.coveoRoot).find('.coveo-tab-section');
-            if (this.searchBoxElement) {
-                this.dropdownHeadersWrapper.insertAfter(this.searchBoxElement);
-            }
-            else if (tabSection) {
-                this.dropdownHeadersWrapper.insertAfter(tabSection);
-            }
-            else {
-                this.coveoRoot.prepend(this.dropdownHeadersWrapper.el);
-            }
-        }
-    };
-    ResponsiveComponentsManager.prototype.isTabs = function (ID) {
-        return ID == 'Tab';
-    };
-    ResponsiveComponentsManager.prototype.isActivated = function (ID) {
-        return _.find(this.responsiveComponents, function (current) { return current.ID == ID; }) != undefined;
-    };
-    ResponsiveComponentsManager.prototype.getSearchBoxElement = function () {
-        var searchBoxElement = this.coveoRoot.find('.coveo-search-section');
-        if (searchBoxElement) {
-            return searchBoxElement;
-        }
-        else {
-            return this.coveoRoot.find('.CoveoSearchbox');
-        }
-    };
-    ResponsiveComponentsManager.prototype.bindNukeEvents = function () {
-        var _this = this;
-        Dom_1.$$(this.coveoRoot).on(InitializationEvents_1.InitializationEvents.nuke, function () {
-            window.removeEventListener('resize', _this.resizeListener);
-        });
-    };
-    return ResponsiveComponentsManager;
-}());
-ResponsiveComponentsManager.DROPDOWN_HEADER_WRAPPER_CSS_CLASS = 'coveo-dropdown-header-wrapper';
-ResponsiveComponentsManager.RESIZE_DEBOUNCE_DELAY = 200;
-ResponsiveComponentsManager.componentManagers = [];
-ResponsiveComponentsManager.remainingComponentInitializations = 0;
-ResponsiveComponentsManager.componentInitializations = [];
-exports.ResponsiveComponentsManager = ResponsiveComponentsManager;
-
-
-/***/ }),
-
-/***/ 922:
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5)))
 
 /***/ })
 

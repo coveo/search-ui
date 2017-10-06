@@ -1,6 +1,6 @@
-webpackJsonpCoveo__temporary([57],{
+webpackJsonpCoveo__temporary([59],{
 
-/***/ 377:
+/***/ 295:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18,16 +18,16 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var Component_1 = __webpack_require__(8);
 var ComponentOptions_1 = __webpack_require__(9);
-var SettingsEvents_1 = __webpack_require__(45);
-var PreferencesPanelEvents_1 = __webpack_require__(79);
+var SettingsEvents_1 = __webpack_require__(43);
+var PreferencesPanelEvents_1 = __webpack_require__(67);
 var Initialization_1 = __webpack_require__(2);
 var Strings_1 = __webpack_require__(10);
 var Dom_1 = __webpack_require__(3);
 var GlobalExports_1 = __webpack_require__(4);
-var ExternalModulesShim_1 = __webpack_require__(28);
+var ExternalModulesShim_1 = __webpack_require__(27);
 var _ = __webpack_require__(1);
-__webpack_require__(924);
-var InitializationEvents_1 = __webpack_require__(18);
+__webpack_require__(507);
+var InitializationEvents_1 = __webpack_require__(17);
 var SVGIcons_1 = __webpack_require__(15);
 /**
  * The PreferencesPanel component renders a **Preferences** item inside the {@link Settings} component which the end
@@ -36,7 +36,7 @@ var SVGIcons_1 = __webpack_require__(15);
  *
  * See also the {@link ResultsFiltersPreferences} and {@link ResultsPreferences} components.
  */
-var PreferencesPanel = (function (_super) {
+var PreferencesPanel = /** @class */ (function (_super) {
     __extends(PreferencesPanel, _super);
     /**
      * Creates a new PreferencesPanel.
@@ -111,22 +111,22 @@ var PreferencesPanel = (function (_super) {
     PreferencesPanel.prototype.cleanupOnExit = function () {
         Dom_1.$$(this.element).trigger(PreferencesPanelEvents_1.PreferencesPanelEvents.exitPreferencesWithoutSave);
     };
+    PreferencesPanel.ID = 'PreferencesPanel';
+    PreferencesPanel.doExport = function () {
+        GlobalExports_1.exportGlobally({
+            PreferencesPanel: PreferencesPanel
+        });
+    };
+    PreferencesPanel.options = {};
     return PreferencesPanel;
 }(Component_1.Component));
-PreferencesPanel.ID = 'PreferencesPanel';
-PreferencesPanel.doExport = function () {
-    GlobalExports_1.exportGlobally({
-        'PreferencesPanel': PreferencesPanel
-    });
-};
-PreferencesPanel.options = {};
 exports.PreferencesPanel = PreferencesPanel;
 Initialization_1.Initialization.registerAutoCreateComponent(PreferencesPanel);
 
 
 /***/ }),
 
-/***/ 924:
+/***/ 507:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

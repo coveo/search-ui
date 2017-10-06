@@ -56,7 +56,7 @@
 	<div class="bottomHeader">
 		<div id="searchBox">
 			<div class="CoveoSearchbox" data-enable-omnibox="true" data-inline="false" data-enable-wildcards="true" data-enable-search-as-you-type="false" data-enable-query-suggest-addon="false" data-enable-query-syntax="true" data-enable-field-addon="true"></div>
-			<div class="CoveoFieldSuggestions" data-field="@systitle" data-header-title="Suggested topics"></div>
+			<div class="CoveoFieldSuggestions" data-field="@jsuipagetopic" data-header-title="Suggested topics"></div>
 		</div>
 	</div>
 	<!-- Do not focus on Querybox when URL contains hash to ensure page scrolls down to corresponding anchor. -->
@@ -191,10 +191,11 @@
 					<pre><code><span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">class</span>=<span class="hljs-string">'CoveoPipelineContext'</span> <span class="hljs-attr">type</span>=<span class="hljs-string">'text/context'</span>&gt;</span><span class="actionscript">
   {
      <span class="hljs-string">"foo"</span> : <span class="hljs-string">"bar"</span>
+     <span class="hljs-string">"foobar"</span> : <span class="hljs-string">"{foo, bar}"</span>
   }
 </span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
 </code></pre><p>You can also simply use JavaScript code to pass context values, using the <a href="../classes/querybuilder.html#addcontextvalue">QueryBuilder.addContextValue</a> method.</p>
-					<p>This mean you do not necessarily need to use this component to pass context.</p>
+					<p>This means you do not necessarily need to use this component to pass context.</p>
 					<pre><code>Coveo.$$(root).on(<span class="hljs-string">'buildingQuery'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">args</span>) </span>{
     args.queryBuilder.addContextValue(<span class="hljs-string">'foo'</span>, <span class="hljs-string">'bar'</span>);
 })
@@ -380,7 +381,7 @@
 					<a name="getcontextvalue" class="tsd-anchor"></a>
 					<h3>get<wbr>Context<wbr>Value</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">get<wbr>Context<wbr>Value<span class="tsd-signature-symbol">(</span>key<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Context<wbr>Value<span class="tsd-signature-symbol">(</span>key<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
@@ -402,7 +403,10 @@
 									<h5>key: <span class="tsd-signature-type">string</span></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span>
+								<span class="tsd-signature-symbol"> | </span>
+								<span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span>
+							</h4>
 						</li>
 					</ul>
 				</section>

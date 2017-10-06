@@ -781,7 +781,7 @@ input[type=checkbox].coveo-checkbox + button {
 }
 
 .CoveoSearchInterface .coveo-results-column.coveo-no-results {
-  max-width: 50%;
+  max-width: 75%;
   margin: auto;
   text-align: center;
 }
@@ -1233,9 +1233,7 @@ input[type=checkbox].coveo-checkbox + button {
 .coveo-icon.filetype.exchangerecallreport,
 .coveo-icon.sysfiletype.exchangerecallreport,
 .coveo-icon.filetype.exchangejunkmessage,
-.coveo-icon.sysfiletype.exchangejunkmessage,
-.coveo-icon.filetype.lithiummessage,
-.coveo-icon.sysfiletype.lithiummessage {
+.coveo-icon.sysfiletype.exchangejunkmessage {
   display: inline-block;
   width: 60px;
   height: 60px;
@@ -1243,29 +1241,57 @@ input[type=checkbox].coveo-checkbox + button {
   background-image: url( ../image/mail.svg);
 }
 
-.coveo-filetype-list,
+.coveo-filetype-salesforce-standard-feed,
 .coveo-icon.objecttype.Feed,
-.coveo-icon.objecttype.feed,
+.coveo-icon.objecttype.feed {
+  display: inline-block;
+  width: 60px;
+  height: 60px;
+  background-size: 60px 60px;
+  background-image: url( ../image/salesforce-standard-feed.svg);
+}
+
+.coveo-filetype-salesforce-standard-feedback,
 .coveo-icon.objecttype.Thread,
 .coveo-icon.objecttype.thread,
+.coveo-icon.objecttype.Casecomment,
+.coveo-icon.objecttype.casecomment,
+.coveo-icon.objecttype.Kbarticlecomment,
+.coveo-icon.objecttype.kbarticlecomment,
+.coveo-icon.filetype.lithiummessage,
+.coveo-icon.sysfiletype.lithiummessage,
+.coveo-icon.filetype.lithiumthread,
+.coveo-icon.sysfiletype.lithiumthread {
+  display: inline-block;
+  width: 60px;
+  height: 60px;
+  background-size: 60px 60px;
+  background-image: url( ../image/salesforce-standard-feedback.svg);
+}
+
+.coveo-filetype-salesforce-standard-file,
+.coveo-icon.objecttype.File,
+.coveo-icon.objecttype.file,
+.coveo-icon.objecttype.Annotation,
+.coveo-icon.objecttype.annotation {
+  display: inline-block;
+  width: 60px;
+  height: 60px;
+  background-size: 60px 60px;
+  background-image: url( ../image/salesforce-standard-file.svg);
+}
+
+.coveo-filetype-list,
 .coveo-icon.objecttype.Board,
 .coveo-icon.objecttype.board,
 .coveo-icon.objecttype.Category,
 .coveo-icon.objecttype.category,
 .coveo-icon.objecttype.Invoice,
 .coveo-icon.objecttype.invoice,
-.coveo-icon.objecttype.List,
-.coveo-icon.objecttype.list,
 .coveo-icon.objecttype.Queueitem,
 .coveo-icon.objecttype.queueitem,
 .coveo-icon.objecttype.Service,
 .coveo-icon.objecttype.service,
-.coveo-icon.objecttype.Kbarticlecomment,
-.coveo-icon.objecttype.kbarticlecomment,
-.coveo-icon.filetype.saleforceitem,
-.coveo-icon.sysfiletype.saleforceitem,
-.coveo-icon.filetype.cfblogentry,
-.coveo-icon.sysfiletype.cfblogentry,
 .coveo-icon.filetype.exchangenote,
 .coveo-icon.sysfiletype.exchangenote,
 .coveo-icon.filetype.exchangeactivity,
@@ -1274,12 +1300,6 @@ input[type=checkbox].coveo-checkbox + button {
 .coveo-icon.sysfiletype.exchangerssfeed,
 .coveo-icon.filetype.exchangeofficecom,
 .coveo-icon.sysfiletype.exchangeofficecom,
-.coveo-icon.filetype.lithiumthread,
-.coveo-icon.sysfiletype.lithiumthread,
-.coveo-icon.filetype.lithiumboard,
-.coveo-icon.sysfiletype.lithiumboard,
-.coveo-icon.filetype.lithiumcategory,
-.coveo-icon.sysfiletype.lithiumcategory,
 .coveo-icon.filetype.spannouncement,
 .coveo-icon.sysfiletype.spannouncement,
 .coveo-icon.filetype.spannouncementlist,
@@ -1335,46 +1355,6 @@ input[type=checkbox].coveo-checkbox + button {
   background-image: url( ../image/list.svg);
 }
 
-.coveo-filetype-file,
-.coveo-icon.objecttype.File,
-.coveo-icon.objecttype.file,
-.coveo-icon.objecttype.Annotation,
-.coveo-icon.objecttype.annotation,
-.coveo-icon.filetype.txt,
-.coveo-icon.sysfiletype.txt,
-.coveo-icon.filetype.zip,
-.coveo-icon.sysfiletype.zip,
-.coveo-icon.filetype.olefile,
-.coveo-icon.sysfiletype.olefile,
-.coveo-icon.filetype.pdf,
-.coveo-icon.sysfiletype.pdf,
-.coveo-icon.filetype.xml,
-.coveo-icon.sysfiletype.xml,
-.coveo-icon.filetype.rssitem,
-.coveo-icon.sysfiletype.rssitem,
-.coveo-icon.filetype.doc,
-.coveo-icon.sysfiletype.doc,
-.coveo-icon.filetype.docx,
-.coveo-icon.sysfiletype.docx,
-.coveo-icon.filetype.xls,
-.coveo-icon.sysfiletype.xls,
-.coveo-icon.filetype.ppt,
-.coveo-icon.sysfiletype.ppt,
-.coveo-icon.filetype.odt,
-.coveo-icon.sysfiletype.odt,
-.coveo-icon.filetype.exchangedocument,
-.coveo-icon.sysfiletype.exchangedocument,
-.coveo-icon.filetype.spresource,
-.coveo-icon.sysfiletype.spresource,
-.coveo-icon.filetype.spresourcelist,
-.coveo-icon.sysfiletype.spresourcelist {
-  display: inline-block;
-  width: 60px;
-  height: 60px;
-  background-size: 60px 60px;
-  background-image: url( ../image/file.svg);
-}
-
 .coveo-filetype-salesforce-standard-account,
 .coveo-icon.objecttype.Account,
 .coveo-icon.objecttype.account {
@@ -1385,42 +1365,14 @@ input[type=checkbox].coveo-checkbox + button {
   background-image: url( ../image/salesforce-standard-account.svg);
 }
 
-.coveo-filetype-calendar,
+.coveo-filetype-salesforce-standard-campaign,
 .coveo-icon.objecttype.Campaign,
-.coveo-icon.objecttype.campaign,
-.coveo-icon.filetype.exchangeappointment,
-.coveo-icon.sysfiletype.exchangeappointment,
-.coveo-icon.filetype.exchangecalendarmessage,
-.coveo-icon.sysfiletype.exchangecalendarmessage,
-.coveo-icon.filetype.spevent,
-.coveo-icon.sysfiletype.spevent,
-.coveo-icon.filetype.speventlist,
-.coveo-icon.sysfiletype.speventlist,
-.coveo-icon.filetype.sptask,
-.coveo-icon.sysfiletype.sptask,
-.coveo-icon.filetype.sptasklist,
-.coveo-icon.sysfiletype.sptasklist,
-.coveo-icon.filetype.spagenda,
-.coveo-icon.sysfiletype.spagenda,
-.coveo-icon.filetype.spagendalist,
-.coveo-icon.sysfiletype.spagendalist,
-.coveo-icon.filetype.spmeetingserie,
-.coveo-icon.sysfiletype.spmeetingserie,
-.coveo-icon.filetype.spmeetingserielist,
-.coveo-icon.sysfiletype.spmeetingserielist,
-.coveo-icon.filetype.spadministratortask,
-.coveo-icon.sysfiletype.spadministratortask,
-.coveo-icon.filetype.spadministratortasklist,
-.coveo-icon.sysfiletype.spadministratortasklist,
-.coveo-icon.filetype.spworkflowhistory,
-.coveo-icon.sysfiletype.spworkflowhistory,
-.coveo-icon.filetype.spworkflowhistorylist,
-.coveo-icon.sysfiletype.spworkflowhistorylist {
+.coveo-icon.objecttype.campaign {
   display: inline-block;
   width: 60px;
   height: 60px;
   background-size: 60px 60px;
-  background-image: url( ../image/calendar.svg);
+  background-image: url( ../image/salesforce-standard-campaign.svg);
 }
 
 .coveo-filetype-case,
@@ -1439,16 +1391,6 @@ input[type=checkbox].coveo-checkbox + button {
   height: 60px;
   background-size: 60px 60px;
   background-image: url( ../image/case.svg);
-}
-
-.coveo-filetype-document,
-.coveo-icon.objecttype.Contentversion,
-.coveo-icon.objecttype.contentversion {
-  display: inline-block;
-  width: 60px;
-  height: 60px;
-  background-size: 60px 60px;
-  background-image: url( ../image/document.svg);
 }
 
 .coveo-filetype-salesforce-standard-contact,
@@ -1501,9 +1443,27 @@ input[type=checkbox].coveo-checkbox + button {
   background-image: url( ../image/salesforce-standard-lead.svg);
 }
 
+.coveo-filetype-salesforce-standard-related-list,
+.coveo-icon.objecttype.List,
+.coveo-icon.objecttype.list,
+.coveo-icon.filetype.saleforceitem,
+.coveo-icon.sysfiletype.saleforceitem,
+.coveo-icon.filetype.lithiumcategory,
+.coveo-icon.sysfiletype.lithiumcategory,
+.coveo-icon.filetype.spwikipagelibrarylist,
+.coveo-icon.sysfiletype.spwikipagelibrarylist {
+  display: inline-block;
+  width: 60px;
+  height: 60px;
+  background-size: 60px 60px;
+  background-image: url( ../image/salesforce-standard-related-list.svg);
+}
+
 .coveo-filetype-salesforce-standard-article,
 .coveo-icon.objecttype.Solution,
 .coveo-icon.objecttype.solution,
+.coveo-icon.objecttype.Salesliterature,
+.coveo-icon.objecttype.salesliterature,
 .coveo-icon.objecttype.Kbdocumentation,
 .coveo-icon.objecttype.kbdocumentation,
 .coveo-icon.objecttype.Kbtechnicalarticle,
@@ -1517,12 +1477,24 @@ input[type=checkbox].coveo-checkbox + button {
 .coveo-icon.objecttype.Kbarticle,
 .coveo-icon.objecttype.kbarticle,
 .coveo-icon.objecttype.Knowledgearticle,
-.coveo-icon.objecttype.knowledgearticle {
+.coveo-icon.objecttype.knowledgearticle,
+.coveo-icon.filetype.cfpage,
+.coveo-icon.sysfiletype.cfpage {
   display: inline-block;
   width: 60px;
   height: 60px;
   background-size: 60px 60px;
   background-image: url( ../image/salesforce-standard-article.svg);
+}
+
+.coveo-filetype-salesforce-standard-report,
+.coveo-icon.objecttype.Report,
+.coveo-icon.objecttype.report {
+  display: inline-block;
+  width: 100px;
+  height: 100px;
+  background-size: 100px 100px;
+  background-image: url( ../image/salesforce-standard-report.svg);
 }
 
 .coveo-filetype-salesforce-standard-task,
@@ -1543,16 +1515,6 @@ input[type=checkbox].coveo-checkbox + button {
   height: 60px;
   background-size: 60px 60px;
   background-image: url( ../image/attachment.svg);
-}
-
-.coveo-filetype-salesforce-standard-feedback,
-.coveo-icon.objecttype.Casecomment,
-.coveo-icon.objecttype.casecomment {
-  display: inline-block;
-  width: 60px;
-  height: 60px;
-  background-size: 60px 60px;
-  background-image: url( ../image/salesforce-standard-feedback.svg);
 }
 
 .coveo-filetype-salesforce-standard-opportunity,
@@ -1609,24 +1571,6 @@ input[type=checkbox].coveo-checkbox + button {
   background-image: url( ../image/salesforce-standard-quotes.svg);
 }
 
-.coveo-filetype-kb,
-.coveo-icon.objecttype.Salesliterature,
-.coveo-icon.objecttype.salesliterature,
-.coveo-icon.filetype.spdatasource,
-.coveo-icon.sysfiletype.spdatasource,
-.coveo-icon.filetype.spdatasourcelist,
-.coveo-icon.sysfiletype.spdatasourcelist,
-.coveo-icon.filetype.spdataconnectionlibrarylist,
-.coveo-icon.sysfiletype.spdataconnectionlibrarylist,
-.coveo-icon.filetype.spipfslist,
-.coveo-icon.sysfiletype.spipfslist {
-  display: inline-block;
-  width: 60px;
-  height: 60px;
-  background-size: 60px 60px;
-  background-image: url( ../image/kb.svg);
-}
-
 .coveo-filetype-salesforce-standard-orders,
 .coveo-icon.objecttype.Salesorder,
 .coveo-icon.objecttype.salesorder {
@@ -1635,6 +1579,48 @@ input[type=checkbox].coveo-checkbox + button {
   height: 60px;
   background-size: 60px 60px;
   background-image: url( ../image/salesforce-standard-orders.svg);
+}
+
+.coveo-filetype-salesforce-standard-topic,
+.coveo-icon.objecttype.Topic,
+.coveo-icon.objecttype.topic {
+  display: inline-block;
+  width: 60px;
+  height: 60px;
+  background-size: 60px 60px;
+  background-image: url( ../image/salesforce-standard-topic.svg);
+}
+
+.coveo-filetype-salesforce-standard-dashboard,
+.coveo-icon.objecttype.Dashboard,
+.coveo-icon.objecttype.dashboard {
+  display: inline-block;
+  width: 60px;
+  height: 60px;
+  background-size: 60px 60px;
+  background-image: url( ../image/salesforce-standard-dashboard.svg);
+}
+
+.coveo-filetype-document,
+.coveo-icon.objecttype.Contentversion,
+.coveo-icon.objecttype.contentversion {
+  display: inline-block;
+  width: 60px;
+  height: 60px;
+  background-size: 60px 60px;
+  background-image: url( ../image/document.svg);
+}
+
+.coveo-filetype-salesforce-standard-groups,
+.coveo-icon.objecttype.Collaborationgroup,
+.coveo-icon.objecttype.collaborationgroup,
+.coveo-icon.filetype.lithiumboard,
+.coveo-icon.sysfiletype.lithiumboard {
+  display: inline-block;
+  width: 60px;
+  height: 60px;
+  background-size: 60px 60px;
+  background-image: url( ../image/salesforce-standard-groups.svg);
 }
 
 .coveo-filetype-user-small,
@@ -1693,9 +1679,7 @@ input[type=checkbox].coveo-checkbox + button {
 .coveo-icon.filetype.coveo-small.exchangerecallreport,
 .coveo-icon.sysfiletype.coveo-small.exchangerecallreport,
 .coveo-icon.filetype.coveo-small.exchangejunkmessage,
-.coveo-icon.sysfiletype.coveo-small.exchangejunkmessage,
-.coveo-icon.filetype.coveo-small.lithiummessage,
-.coveo-icon.sysfiletype.coveo-small.lithiummessage {
+.coveo-icon.sysfiletype.coveo-small.exchangejunkmessage {
   display: inline-block;
   width: 30px;
   height: 30px;
@@ -1703,29 +1687,57 @@ input[type=checkbox].coveo-checkbox + button {
   background-image: url( ../image/mail.svg);
 }
 
-.coveo-filetype-list-small,
+.coveo-filetype-salesforce-standard-feed-small,
 .coveo-icon.objecttype.coveo-small.Feed,
-.coveo-icon.objecttype.coveo-small.feed,
+.coveo-icon.objecttype.coveo-small.feed {
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  background-size: 30px 30px;
+  background-image: url( ../image/salesforce-standard-feed.svg);
+}
+
+.coveo-filetype-salesforce-standard-feedback-small,
 .coveo-icon.objecttype.coveo-small.Thread,
 .coveo-icon.objecttype.coveo-small.thread,
+.coveo-icon.objecttype.coveo-small.Casecomment,
+.coveo-icon.objecttype.coveo-small.casecomment,
+.coveo-icon.objecttype.coveo-small.Kbarticlecomment,
+.coveo-icon.objecttype.coveo-small.kbarticlecomment,
+.coveo-icon.filetype.coveo-small.lithiummessage,
+.coveo-icon.sysfiletype.coveo-small.lithiummessage,
+.coveo-icon.filetype.coveo-small.lithiumthread,
+.coveo-icon.sysfiletype.coveo-small.lithiumthread {
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  background-size: 30px 30px;
+  background-image: url( ../image/salesforce-standard-feedback.svg);
+}
+
+.coveo-filetype-salesforce-standard-file-small,
+.coveo-icon.objecttype.coveo-small.File,
+.coveo-icon.objecttype.coveo-small.file,
+.coveo-icon.objecttype.coveo-small.Annotation,
+.coveo-icon.objecttype.coveo-small.annotation {
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  background-size: 30px 30px;
+  background-image: url( ../image/salesforce-standard-file.svg);
+}
+
+.coveo-filetype-list-small,
 .coveo-icon.objecttype.coveo-small.Board,
 .coveo-icon.objecttype.coveo-small.board,
 .coveo-icon.objecttype.coveo-small.Category,
 .coveo-icon.objecttype.coveo-small.category,
 .coveo-icon.objecttype.coveo-small.Invoice,
 .coveo-icon.objecttype.coveo-small.invoice,
-.coveo-icon.objecttype.coveo-small.List,
-.coveo-icon.objecttype.coveo-small.list,
 .coveo-icon.objecttype.coveo-small.Queueitem,
 .coveo-icon.objecttype.coveo-small.queueitem,
 .coveo-icon.objecttype.coveo-small.Service,
 .coveo-icon.objecttype.coveo-small.service,
-.coveo-icon.objecttype.coveo-small.Kbarticlecomment,
-.coveo-icon.objecttype.coveo-small.kbarticlecomment,
-.coveo-icon.filetype.coveo-small.saleforceitem,
-.coveo-icon.sysfiletype.coveo-small.saleforceitem,
-.coveo-icon.filetype.coveo-small.cfblogentry,
-.coveo-icon.sysfiletype.coveo-small.cfblogentry,
 .coveo-icon.filetype.coveo-small.exchangenote,
 .coveo-icon.sysfiletype.coveo-small.exchangenote,
 .coveo-icon.filetype.coveo-small.exchangeactivity,
@@ -1734,12 +1746,6 @@ input[type=checkbox].coveo-checkbox + button {
 .coveo-icon.sysfiletype.coveo-small.exchangerssfeed,
 .coveo-icon.filetype.coveo-small.exchangeofficecom,
 .coveo-icon.sysfiletype.coveo-small.exchangeofficecom,
-.coveo-icon.filetype.coveo-small.lithiumthread,
-.coveo-icon.sysfiletype.coveo-small.lithiumthread,
-.coveo-icon.filetype.coveo-small.lithiumboard,
-.coveo-icon.sysfiletype.coveo-small.lithiumboard,
-.coveo-icon.filetype.coveo-small.lithiumcategory,
-.coveo-icon.sysfiletype.coveo-small.lithiumcategory,
 .coveo-icon.filetype.coveo-small.spannouncement,
 .coveo-icon.sysfiletype.coveo-small.spannouncement,
 .coveo-icon.filetype.coveo-small.spannouncementlist,
@@ -1795,46 +1801,6 @@ input[type=checkbox].coveo-checkbox + button {
   background-image: url( ../image/list.svg);
 }
 
-.coveo-filetype-file-small,
-.coveo-icon.objecttype.coveo-small.File,
-.coveo-icon.objecttype.coveo-small.file,
-.coveo-icon.objecttype.coveo-small.Annotation,
-.coveo-icon.objecttype.coveo-small.annotation,
-.coveo-icon.filetype.coveo-small.txt,
-.coveo-icon.sysfiletype.coveo-small.txt,
-.coveo-icon.filetype.coveo-small.zip,
-.coveo-icon.sysfiletype.coveo-small.zip,
-.coveo-icon.filetype.coveo-small.olefile,
-.coveo-icon.sysfiletype.coveo-small.olefile,
-.coveo-icon.filetype.coveo-small.pdf,
-.coveo-icon.sysfiletype.coveo-small.pdf,
-.coveo-icon.filetype.coveo-small.xml,
-.coveo-icon.sysfiletype.coveo-small.xml,
-.coveo-icon.filetype.coveo-small.rssitem,
-.coveo-icon.sysfiletype.coveo-small.rssitem,
-.coveo-icon.filetype.coveo-small.doc,
-.coveo-icon.sysfiletype.coveo-small.doc,
-.coveo-icon.filetype.coveo-small.docx,
-.coveo-icon.sysfiletype.coveo-small.docx,
-.coveo-icon.filetype.coveo-small.xls,
-.coveo-icon.sysfiletype.coveo-small.xls,
-.coveo-icon.filetype.coveo-small.ppt,
-.coveo-icon.sysfiletype.coveo-small.ppt,
-.coveo-icon.filetype.coveo-small.odt,
-.coveo-icon.sysfiletype.coveo-small.odt,
-.coveo-icon.filetype.coveo-small.exchangedocument,
-.coveo-icon.sysfiletype.coveo-small.exchangedocument,
-.coveo-icon.filetype.coveo-small.spresource,
-.coveo-icon.sysfiletype.coveo-small.spresource,
-.coveo-icon.filetype.coveo-small.spresourcelist,
-.coveo-icon.sysfiletype.coveo-small.spresourcelist {
-  display: inline-block;
-  width: 30px;
-  height: 30px;
-  background-size: 30px 30px;
-  background-image: url( ../image/file.svg);
-}
-
 .coveo-filetype-salesforce-standard-account-small,
 .coveo-icon.objecttype.coveo-small.Account,
 .coveo-icon.objecttype.coveo-small.account {
@@ -1845,42 +1811,14 @@ input[type=checkbox].coveo-checkbox + button {
   background-image: url( ../image/salesforce-standard-account.svg);
 }
 
-.coveo-filetype-calendar-small,
+.coveo-filetype-salesforce-standard-campaign-small,
 .coveo-icon.objecttype.coveo-small.Campaign,
-.coveo-icon.objecttype.coveo-small.campaign,
-.coveo-icon.filetype.coveo-small.exchangeappointment,
-.coveo-icon.sysfiletype.coveo-small.exchangeappointment,
-.coveo-icon.filetype.coveo-small.exchangecalendarmessage,
-.coveo-icon.sysfiletype.coveo-small.exchangecalendarmessage,
-.coveo-icon.filetype.coveo-small.spevent,
-.coveo-icon.sysfiletype.coveo-small.spevent,
-.coveo-icon.filetype.coveo-small.speventlist,
-.coveo-icon.sysfiletype.coveo-small.speventlist,
-.coveo-icon.filetype.coveo-small.sptask,
-.coveo-icon.sysfiletype.coveo-small.sptask,
-.coveo-icon.filetype.coveo-small.sptasklist,
-.coveo-icon.sysfiletype.coveo-small.sptasklist,
-.coveo-icon.filetype.coveo-small.spagenda,
-.coveo-icon.sysfiletype.coveo-small.spagenda,
-.coveo-icon.filetype.coveo-small.spagendalist,
-.coveo-icon.sysfiletype.coveo-small.spagendalist,
-.coveo-icon.filetype.coveo-small.spmeetingserie,
-.coveo-icon.sysfiletype.coveo-small.spmeetingserie,
-.coveo-icon.filetype.coveo-small.spmeetingserielist,
-.coveo-icon.sysfiletype.coveo-small.spmeetingserielist,
-.coveo-icon.filetype.coveo-small.spadministratortask,
-.coveo-icon.sysfiletype.coveo-small.spadministratortask,
-.coveo-icon.filetype.coveo-small.spadministratortasklist,
-.coveo-icon.sysfiletype.coveo-small.spadministratortasklist,
-.coveo-icon.filetype.coveo-small.spworkflowhistory,
-.coveo-icon.sysfiletype.coveo-small.spworkflowhistory,
-.coveo-icon.filetype.coveo-small.spworkflowhistorylist,
-.coveo-icon.sysfiletype.coveo-small.spworkflowhistorylist {
+.coveo-icon.objecttype.coveo-small.campaign {
   display: inline-block;
   width: 30px;
   height: 30px;
   background-size: 30px 30px;
-  background-image: url( ../image/calendar.svg);
+  background-image: url( ../image/salesforce-standard-campaign.svg);
 }
 
 .coveo-filetype-case-small,
@@ -1899,16 +1837,6 @@ input[type=checkbox].coveo-checkbox + button {
   height: 30px;
   background-size: 30px 30px;
   background-image: url( ../image/case.svg);
-}
-
-.coveo-filetype-document-small,
-.coveo-icon.objecttype.coveo-small.Contentversion,
-.coveo-icon.objecttype.coveo-small.contentversion {
-  display: inline-block;
-  width: 30px;
-  height: 30px;
-  background-size: 30px 30px;
-  background-image: url( ../image/document.svg);
 }
 
 .coveo-filetype-salesforce-standard-contact-small,
@@ -1961,9 +1889,27 @@ input[type=checkbox].coveo-checkbox + button {
   background-image: url( ../image/salesforce-standard-lead.svg);
 }
 
+.coveo-filetype-salesforce-standard-related-list-small,
+.coveo-icon.objecttype.coveo-small.List,
+.coveo-icon.objecttype.coveo-small.list,
+.coveo-icon.filetype.coveo-small.saleforceitem,
+.coveo-icon.sysfiletype.coveo-small.saleforceitem,
+.coveo-icon.filetype.coveo-small.lithiumcategory,
+.coveo-icon.sysfiletype.coveo-small.lithiumcategory,
+.coveo-icon.filetype.coveo-small.spwikipagelibrarylist,
+.coveo-icon.sysfiletype.coveo-small.spwikipagelibrarylist {
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  background-size: 30px 30px;
+  background-image: url( ../image/salesforce-standard-related-list.svg);
+}
+
 .coveo-filetype-salesforce-standard-article-small,
 .coveo-icon.objecttype.coveo-small.Solution,
 .coveo-icon.objecttype.coveo-small.solution,
+.coveo-icon.objecttype.coveo-small.Salesliterature,
+.coveo-icon.objecttype.coveo-small.salesliterature,
 .coveo-icon.objecttype.coveo-small.Kbdocumentation,
 .coveo-icon.objecttype.coveo-small.kbdocumentation,
 .coveo-icon.objecttype.coveo-small.Kbtechnicalarticle,
@@ -1977,12 +1923,24 @@ input[type=checkbox].coveo-checkbox + button {
 .coveo-icon.objecttype.coveo-small.Kbarticle,
 .coveo-icon.objecttype.coveo-small.kbarticle,
 .coveo-icon.objecttype.coveo-small.Knowledgearticle,
-.coveo-icon.objecttype.coveo-small.knowledgearticle {
+.coveo-icon.objecttype.coveo-small.knowledgearticle,
+.coveo-icon.filetype.coveo-small.cfpage,
+.coveo-icon.sysfiletype.coveo-small.cfpage {
   display: inline-block;
   width: 30px;
   height: 30px;
   background-size: 30px 30px;
   background-image: url( ../image/salesforce-standard-article.svg);
+}
+
+.coveo-filetype-salesforce-standard-report-small,
+.coveo-icon.objecttype.coveo-small.Report,
+.coveo-icon.objecttype.coveo-small.report {
+  display: inline-block;
+  width: 50px;
+  height: 50px;
+  background-size: 50px 50px;
+  background-image: url( ../image/salesforce-standard-report.svg);
 }
 
 .coveo-filetype-salesforce-standard-task-small,
@@ -2003,16 +1961,6 @@ input[type=checkbox].coveo-checkbox + button {
   height: 30px;
   background-size: 30px 30px;
   background-image: url( ../image/attachment.svg);
-}
-
-.coveo-filetype-salesforce-standard-feedback-small,
-.coveo-icon.objecttype.coveo-small.Casecomment,
-.coveo-icon.objecttype.coveo-small.casecomment {
-  display: inline-block;
-  width: 30px;
-  height: 30px;
-  background-size: 30px 30px;
-  background-image: url( ../image/salesforce-standard-feedback.svg);
 }
 
 .coveo-filetype-salesforce-standard-opportunity-small,
@@ -2069,24 +2017,6 @@ input[type=checkbox].coveo-checkbox + button {
   background-image: url( ../image/salesforce-standard-quotes.svg);
 }
 
-.coveo-filetype-kb-small,
-.coveo-icon.objecttype.coveo-small.Salesliterature,
-.coveo-icon.objecttype.coveo-small.salesliterature,
-.coveo-icon.filetype.coveo-small.spdatasource,
-.coveo-icon.sysfiletype.coveo-small.spdatasource,
-.coveo-icon.filetype.coveo-small.spdatasourcelist,
-.coveo-icon.sysfiletype.coveo-small.spdatasourcelist,
-.coveo-icon.filetype.coveo-small.spdataconnectionlibrarylist,
-.coveo-icon.sysfiletype.coveo-small.spdataconnectionlibrarylist,
-.coveo-icon.filetype.coveo-small.spipfslist,
-.coveo-icon.sysfiletype.coveo-small.spipfslist {
-  display: inline-block;
-  width: 30px;
-  height: 30px;
-  background-size: 30px 30px;
-  background-image: url( ../image/kb.svg);
-}
-
 .coveo-filetype-salesforce-standard-orders-small,
 .coveo-icon.objecttype.coveo-small.Salesorder,
 .coveo-icon.objecttype.coveo-small.salesorder {
@@ -2095,6 +2025,48 @@ input[type=checkbox].coveo-checkbox + button {
   height: 30px;
   background-size: 30px 30px;
   background-image: url( ../image/salesforce-standard-orders.svg);
+}
+
+.coveo-filetype-salesforce-standard-topic-small,
+.coveo-icon.objecttype.coveo-small.Topic,
+.coveo-icon.objecttype.coveo-small.topic {
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  background-size: 30px 30px;
+  background-image: url( ../image/salesforce-standard-topic.svg);
+}
+
+.coveo-filetype-salesforce-standard-dashboard-small,
+.coveo-icon.objecttype.coveo-small.Dashboard,
+.coveo-icon.objecttype.coveo-small.dashboard {
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  background-size: 30px 30px;
+  background-image: url( ../image/salesforce-standard-dashboard.svg);
+}
+
+.coveo-filetype-document-small,
+.coveo-icon.objecttype.coveo-small.Contentversion,
+.coveo-icon.objecttype.coveo-small.contentversion {
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  background-size: 30px 30px;
+  background-image: url( ../image/document.svg);
+}
+
+.coveo-filetype-salesforce-standard-groups-small,
+.coveo-icon.objecttype.coveo-small.Collaborationgroup,
+.coveo-icon.objecttype.coveo-small.collaborationgroup,
+.coveo-icon.filetype.coveo-small.lithiumboard,
+.coveo-icon.sysfiletype.coveo-small.lithiumboard {
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  background-size: 30px 30px;
+  background-image: url( ../image/salesforce-standard-groups.svg);
 }
 
 .coveo-filetype-link,
@@ -2125,18 +2097,14 @@ input[type=checkbox].coveo-checkbox + button {
   background-image: url( ../image/link.svg);
 }
 
-.coveo-filetype-images,
+.coveo-filetype-salesforce-doctype-image,
 .coveo-icon.filetype.image,
-.coveo-icon.sysfiletype.image,
-.coveo-icon.filetype.svg,
-.coveo-icon.sysfiletype.svg,
-.coveo-icon.filetype.sppicturelibrarylist,
-.coveo-icon.sysfiletype.sppicturelibrarylist {
+.coveo-icon.sysfiletype.image {
   display: inline-block;
-  width: 60px;
-  height: 60px;
-  background-size: 60px 60px;
-  background-image: url( ../image/images.svg);
+  width: 56px;
+  height: 64px;
+  background-size: 56px 64px;
+  background-image: url( ../image/salesforce-doctype-image.svg);
 }
 
 .coveo-filetype-folder,
@@ -2178,8 +2146,6 @@ input[type=checkbox].coveo-checkbox + button {
 .coveo-icon.sysfiletype.spslidelibrarylist,
 .coveo-icon.filetype.sptranslationmanagementlibrarylist,
 .coveo-icon.sysfiletype.sptranslationmanagementlibrarylist,
-.coveo-icon.filetype.spwikipagelibrarylist,
-.coveo-icon.sysfiletype.spwikipagelibrarylist,
 .coveo-icon.filetype.sppublishingimageslibrarylist,
 .coveo-icon.sysfiletype.sppublishingimageslibrarylist,
 .coveo-icon.filetype.spdashboardslibrarylist,
@@ -2211,6 +2177,60 @@ input[type=checkbox].coveo-checkbox + button {
   background-image: url( ../image/folder.svg);
 }
 
+.coveo-filetype-salesforce-doctype-gdoc,
+.coveo-icon.filetype.txt,
+.coveo-icon.sysfiletype.txt,
+.coveo-icon.filetype.doc,
+.coveo-icon.sysfiletype.doc {
+  display: inline-block;
+  width: 56px;
+  height: 64px;
+  background-size: 56px 64px;
+  background-image: url( ../image/salesforce-doctype-gdoc.svg);
+}
+
+.coveo-filetype-salesforce-doctype-pack,
+.coveo-icon.filetype.zip,
+.coveo-icon.sysfiletype.zip {
+  display: inline-block;
+  width: 56px;
+  height: 64px;
+  background-size: 56px 64px;
+  background-image: url( ../image/salesforce-doctype-pack.svg);
+}
+
+.coveo-filetype-file,
+.coveo-icon.filetype.olefile,
+.coveo-icon.sysfiletype.olefile,
+.coveo-icon.filetype.rssitem,
+.coveo-icon.sysfiletype.rssitem,
+.coveo-icon.filetype.docx,
+.coveo-icon.sysfiletype.docx,
+.coveo-icon.filetype.odt,
+.coveo-icon.sysfiletype.odt,
+.coveo-icon.filetype.exchangedocument,
+.coveo-icon.sysfiletype.exchangedocument,
+.coveo-icon.filetype.spresource,
+.coveo-icon.sysfiletype.spresource,
+.coveo-icon.filetype.spresourcelist,
+.coveo-icon.sysfiletype.spresourcelist {
+  display: inline-block;
+  width: 60px;
+  height: 60px;
+  background-size: 60px 60px;
+  background-image: url( ../image/file.svg);
+}
+
+.coveo-filetype-salesforce-doctype-pdf,
+.coveo-icon.filetype.pdf,
+.coveo-icon.sysfiletype.pdf {
+  display: inline-block;
+  width: 56px;
+  height: 64px;
+  background-size: 56px 64px;
+  background-image: url( ../image/salesforce-doctype-pdf.svg);
+}
+
 .coveo-filetype-salesforce-doctype-flash,
 .coveo-icon.filetype.swf,
 .coveo-icon.sysfiletype.swf {
@@ -2219,6 +2239,16 @@ input[type=checkbox].coveo-checkbox + button {
   height: 64px;
   background-size: 56px 64px;
   background-image: url( ../image/salesforce-doctype-flash.svg);
+}
+
+.coveo-filetype-salesforce-doctype-html,
+.coveo-icon.filetype.xml,
+.coveo-icon.sysfiletype.xml {
+  display: inline-block;
+  width: 56px;
+  height: 64px;
+  background-size: 56px 64px;
+  background-image: url( ../image/salesforce-doctype-html.svg);
 }
 
 .coveo-filetype-salesforce-doctype-visio,
@@ -2231,6 +2261,18 @@ input[type=checkbox].coveo-checkbox + button {
   background-image: url( ../image/salesforce-doctype-visio.svg);
 }
 
+.coveo-filetype-images,
+.coveo-icon.filetype.svg,
+.coveo-icon.sysfiletype.svg,
+.coveo-icon.filetype.sppicturelibrarylist,
+.coveo-icon.sysfiletype.sppicturelibrarylist {
+  display: inline-block;
+  width: 60px;
+  height: 60px;
+  background-size: 60px 60px;
+  background-image: url( ../image/images.svg);
+}
+
 .coveo-filetype-salesforce-doctype-word,
 .coveo-icon.filetype.svm,
 .coveo-icon.sysfiletype.svm {
@@ -2239,6 +2281,26 @@ input[type=checkbox].coveo-checkbox + button {
   height: 64px;
   background-size: 56px 64px;
   background-image: url( ../image/salesforce-doctype-word.svg);
+}
+
+.coveo-filetype-salesforce-doctype-excel,
+.coveo-icon.filetype.xls,
+.coveo-icon.sysfiletype.xls {
+  display: inline-block;
+  width: 56px;
+  height: 64px;
+  background-size: 56px 64px;
+  background-image: url( ../image/salesforce-doctype-excel.svg);
+}
+
+.coveo-filetype-salesforce-doctype-ppt,
+.coveo-icon.filetype.ppt,
+.coveo-icon.sysfiletype.ppt {
+  display: inline-block;
+  width: 56px;
+  height: 64px;
+  background-size: 56px 64px;
+  background-image: url( ../image/salesforce-doctype-ppt.svg);
 }
 
 .coveo-filetype-video,
@@ -2279,8 +2341,6 @@ input[type=checkbox].coveo-checkbox + button {
 .coveo-icon.sysfiletype.exchangemdn,
 .coveo-icon.filetype.exchangeobject,
 .coveo-icon.sysfiletype.exchangeobject,
-.coveo-icon.filetype.lithiumcommunity,
-.coveo-icon.sysfiletype.lithiumcommunity,
 .coveo-icon.filetype.sparea,
 .coveo-icon.sysfiletype.sparea,
 .coveo-icon.filetype.spcustomlist,
@@ -2338,9 +2398,73 @@ input[type=checkbox].coveo-checkbox + button {
   background-image: url( ../image/custom.svg);
 }
 
+.coveo-filetype-salesforce-standard-question-feed,
+.coveo-icon.filetype.cfcomment,
+.coveo-icon.sysfiletype.cfcomment {
+  display: inline-block;
+  width: 60px;
+  height: 60px;
+  background-size: 60px 60px;
+  background-image: url( ../image/salesforce-standard-question-feed.svg);
+}
+
+.coveo-filetype-salesforce-standard-insights,
+.coveo-icon.filetype.cfblogentry,
+.coveo-icon.sysfiletype.cfblogentry {
+  display: inline-block;
+  width: 60px;
+  height: 60px;
+  background-size: 60px 60px;
+  background-image: url( ../image/salesforce-standard-insights.svg);
+}
+
+.coveo-filetype-calendar,
+.coveo-icon.filetype.exchangeappointment,
+.coveo-icon.sysfiletype.exchangeappointment,
+.coveo-icon.filetype.exchangecalendarmessage,
+.coveo-icon.sysfiletype.exchangecalendarmessage,
+.coveo-icon.filetype.spevent,
+.coveo-icon.sysfiletype.spevent,
+.coveo-icon.filetype.speventlist,
+.coveo-icon.sysfiletype.speventlist,
+.coveo-icon.filetype.sptask,
+.coveo-icon.sysfiletype.sptask,
+.coveo-icon.filetype.sptasklist,
+.coveo-icon.sysfiletype.sptasklist,
+.coveo-icon.filetype.spagenda,
+.coveo-icon.sysfiletype.spagenda,
+.coveo-icon.filetype.spagendalist,
+.coveo-icon.sysfiletype.spagendalist,
+.coveo-icon.filetype.spmeetingserie,
+.coveo-icon.sysfiletype.spmeetingserie,
+.coveo-icon.filetype.spmeetingserielist,
+.coveo-icon.sysfiletype.spmeetingserielist,
+.coveo-icon.filetype.spadministratortask,
+.coveo-icon.sysfiletype.spadministratortask,
+.coveo-icon.filetype.spadministratortasklist,
+.coveo-icon.sysfiletype.spadministratortasklist,
+.coveo-icon.filetype.spworkflowhistory,
+.coveo-icon.sysfiletype.spworkflowhistory,
+.coveo-icon.filetype.spworkflowhistorylist,
+.coveo-icon.sysfiletype.spworkflowhistorylist {
+  display: inline-block;
+  width: 60px;
+  height: 60px;
+  background-size: 60px 60px;
+  background-image: url( ../image/calendar.svg);
+}
+
+.coveo-filetype-salesforce-standard-team-member,
+.coveo-icon.filetype.lithiumcommunity,
+.coveo-icon.sysfiletype.lithiumcommunity {
+  display: inline-block;
+  width: 100px;
+  height: 100px;
+  background-size: 100px 100px;
+  background-image: url( ../image/salesforce-standard-team-member.svg);
+}
+
 .coveo-filetype-webpage,
-.coveo-icon.filetype.cfpage,
-.coveo-icon.sysfiletype.cfpage,
 .coveo-icon.filetype.spportal,
 .coveo-icon.sysfiletype.spportal {
   display: inline-block;
@@ -2350,14 +2474,20 @@ input[type=checkbox].coveo-checkbox + button {
   background-image: url( ../image/webpage.svg);
 }
 
-.coveo-filetype-salesforce-standard-question-feed,
-.coveo-icon.filetype.cfcomment,
-.coveo-icon.sysfiletype.cfcomment {
+.coveo-filetype-kb,
+.coveo-icon.filetype.spdatasource,
+.coveo-icon.sysfiletype.spdatasource,
+.coveo-icon.filetype.spdatasourcelist,
+.coveo-icon.sysfiletype.spdatasourcelist,
+.coveo-icon.filetype.spdataconnectionlibrarylist,
+.coveo-icon.sysfiletype.spdataconnectionlibrarylist,
+.coveo-icon.filetype.spipfslist,
+.coveo-icon.sysfiletype.spipfslist {
   display: inline-block;
   width: 60px;
   height: 60px;
   background-size: 60px 60px;
-  background-image: url( ../image/salesforce-standard-question-feed.svg);
+  background-image: url( ../image/kb.svg);
 }
 
 .coveo-filetype-link-small,
@@ -2388,18 +2518,14 @@ input[type=checkbox].coveo-checkbox + button {
   background-image: url( ../image/link.svg);
 }
 
-.coveo-filetype-images-small,
+.coveo-filetype-salesforce-doctype-image-small,
 .coveo-icon.filetype.coveo-small.image,
-.coveo-icon.sysfiletype.coveo-small.image,
-.coveo-icon.filetype.coveo-small.svg,
-.coveo-icon.sysfiletype.coveo-small.svg,
-.coveo-icon.filetype.coveo-small.sppicturelibrarylist,
-.coveo-icon.sysfiletype.coveo-small.sppicturelibrarylist {
+.coveo-icon.sysfiletype.coveo-small.image {
   display: inline-block;
-  width: 30px;
-  height: 30px;
-  background-size: 30px 30px;
-  background-image: url( ../image/images.svg);
+  width: 28px;
+  height: 32px;
+  background-size: 28px 32px;
+  background-image: url( ../image/salesforce-doctype-image.svg);
 }
 
 .coveo-filetype-folder-small,
@@ -2441,8 +2567,6 @@ input[type=checkbox].coveo-checkbox + button {
 .coveo-icon.sysfiletype.coveo-small.spslidelibrarylist,
 .coveo-icon.filetype.coveo-small.sptranslationmanagementlibrarylist,
 .coveo-icon.sysfiletype.coveo-small.sptranslationmanagementlibrarylist,
-.coveo-icon.filetype.coveo-small.spwikipagelibrarylist,
-.coveo-icon.sysfiletype.coveo-small.spwikipagelibrarylist,
 .coveo-icon.filetype.coveo-small.sppublishingimageslibrarylist,
 .coveo-icon.sysfiletype.coveo-small.sppublishingimageslibrarylist,
 .coveo-icon.filetype.coveo-small.spdashboardslibrarylist,
@@ -2474,6 +2598,60 @@ input[type=checkbox].coveo-checkbox + button {
   background-image: url( ../image/folder.svg);
 }
 
+.coveo-filetype-salesforce-doctype-gdoc-small,
+.coveo-icon.filetype.coveo-small.txt,
+.coveo-icon.sysfiletype.coveo-small.txt,
+.coveo-icon.filetype.coveo-small.doc,
+.coveo-icon.sysfiletype.coveo-small.doc {
+  display: inline-block;
+  width: 28px;
+  height: 32px;
+  background-size: 28px 32px;
+  background-image: url( ../image/salesforce-doctype-gdoc.svg);
+}
+
+.coveo-filetype-salesforce-doctype-pack-small,
+.coveo-icon.filetype.coveo-small.zip,
+.coveo-icon.sysfiletype.coveo-small.zip {
+  display: inline-block;
+  width: 28px;
+  height: 32px;
+  background-size: 28px 32px;
+  background-image: url( ../image/salesforce-doctype-pack.svg);
+}
+
+.coveo-filetype-file-small,
+.coveo-icon.filetype.coveo-small.olefile,
+.coveo-icon.sysfiletype.coveo-small.olefile,
+.coveo-icon.filetype.coveo-small.rssitem,
+.coveo-icon.sysfiletype.coveo-small.rssitem,
+.coveo-icon.filetype.coveo-small.docx,
+.coveo-icon.sysfiletype.coveo-small.docx,
+.coveo-icon.filetype.coveo-small.odt,
+.coveo-icon.sysfiletype.coveo-small.odt,
+.coveo-icon.filetype.coveo-small.exchangedocument,
+.coveo-icon.sysfiletype.coveo-small.exchangedocument,
+.coveo-icon.filetype.coveo-small.spresource,
+.coveo-icon.sysfiletype.coveo-small.spresource,
+.coveo-icon.filetype.coveo-small.spresourcelist,
+.coveo-icon.sysfiletype.coveo-small.spresourcelist {
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  background-size: 30px 30px;
+  background-image: url( ../image/file.svg);
+}
+
+.coveo-filetype-salesforce-doctype-pdf-small,
+.coveo-icon.filetype.coveo-small.pdf,
+.coveo-icon.sysfiletype.coveo-small.pdf {
+  display: inline-block;
+  width: 28px;
+  height: 32px;
+  background-size: 28px 32px;
+  background-image: url( ../image/salesforce-doctype-pdf.svg);
+}
+
 .coveo-filetype-salesforce-doctype-flash-small,
 .coveo-icon.filetype.coveo-small.swf,
 .coveo-icon.sysfiletype.coveo-small.swf {
@@ -2482,6 +2660,16 @@ input[type=checkbox].coveo-checkbox + button {
   height: 32px;
   background-size: 28px 32px;
   background-image: url( ../image/salesforce-doctype-flash.svg);
+}
+
+.coveo-filetype-salesforce-doctype-html-small,
+.coveo-icon.filetype.coveo-small.xml,
+.coveo-icon.sysfiletype.coveo-small.xml {
+  display: inline-block;
+  width: 28px;
+  height: 32px;
+  background-size: 28px 32px;
+  background-image: url( ../image/salesforce-doctype-html.svg);
 }
 
 .coveo-filetype-salesforce-doctype-visio-small,
@@ -2494,6 +2682,18 @@ input[type=checkbox].coveo-checkbox + button {
   background-image: url( ../image/salesforce-doctype-visio.svg);
 }
 
+.coveo-filetype-images-small,
+.coveo-icon.filetype.coveo-small.svg,
+.coveo-icon.sysfiletype.coveo-small.svg,
+.coveo-icon.filetype.coveo-small.sppicturelibrarylist,
+.coveo-icon.sysfiletype.coveo-small.sppicturelibrarylist {
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  background-size: 30px 30px;
+  background-image: url( ../image/images.svg);
+}
+
 .coveo-filetype-salesforce-doctype-word-small,
 .coveo-icon.filetype.coveo-small.svm,
 .coveo-icon.sysfiletype.coveo-small.svm {
@@ -2502,6 +2702,26 @@ input[type=checkbox].coveo-checkbox + button {
   height: 32px;
   background-size: 28px 32px;
   background-image: url( ../image/salesforce-doctype-word.svg);
+}
+
+.coveo-filetype-salesforce-doctype-excel-small,
+.coveo-icon.filetype.coveo-small.xls,
+.coveo-icon.sysfiletype.coveo-small.xls {
+  display: inline-block;
+  width: 28px;
+  height: 32px;
+  background-size: 28px 32px;
+  background-image: url( ../image/salesforce-doctype-excel.svg);
+}
+
+.coveo-filetype-salesforce-doctype-ppt-small,
+.coveo-icon.filetype.coveo-small.ppt,
+.coveo-icon.sysfiletype.coveo-small.ppt {
+  display: inline-block;
+  width: 28px;
+  height: 32px;
+  background-size: 28px 32px;
+  background-image: url( ../image/salesforce-doctype-ppt.svg);
 }
 
 .coveo-filetype-video-small,
@@ -2542,8 +2762,6 @@ input[type=checkbox].coveo-checkbox + button {
 .coveo-icon.sysfiletype.coveo-small.exchangemdn,
 .coveo-icon.filetype.coveo-small.exchangeobject,
 .coveo-icon.sysfiletype.coveo-small.exchangeobject,
-.coveo-icon.filetype.coveo-small.lithiumcommunity,
-.coveo-icon.sysfiletype.coveo-small.lithiumcommunity,
 .coveo-icon.filetype.coveo-small.sparea,
 .coveo-icon.sysfiletype.coveo-small.sparea,
 .coveo-icon.filetype.coveo-small.spcustomlist,
@@ -2601,9 +2819,73 @@ input[type=checkbox].coveo-checkbox + button {
   background-image: url( ../image/custom.svg);
 }
 
+.coveo-filetype-salesforce-standard-question-feed-small,
+.coveo-icon.filetype.coveo-small.cfcomment,
+.coveo-icon.sysfiletype.coveo-small.cfcomment {
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  background-size: 30px 30px;
+  background-image: url( ../image/salesforce-standard-question-feed.svg);
+}
+
+.coveo-filetype-salesforce-standard-insights-small,
+.coveo-icon.filetype.coveo-small.cfblogentry,
+.coveo-icon.sysfiletype.coveo-small.cfblogentry {
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  background-size: 30px 30px;
+  background-image: url( ../image/salesforce-standard-insights.svg);
+}
+
+.coveo-filetype-calendar-small,
+.coveo-icon.filetype.coveo-small.exchangeappointment,
+.coveo-icon.sysfiletype.coveo-small.exchangeappointment,
+.coveo-icon.filetype.coveo-small.exchangecalendarmessage,
+.coveo-icon.sysfiletype.coveo-small.exchangecalendarmessage,
+.coveo-icon.filetype.coveo-small.spevent,
+.coveo-icon.sysfiletype.coveo-small.spevent,
+.coveo-icon.filetype.coveo-small.speventlist,
+.coveo-icon.sysfiletype.coveo-small.speventlist,
+.coveo-icon.filetype.coveo-small.sptask,
+.coveo-icon.sysfiletype.coveo-small.sptask,
+.coveo-icon.filetype.coveo-small.sptasklist,
+.coveo-icon.sysfiletype.coveo-small.sptasklist,
+.coveo-icon.filetype.coveo-small.spagenda,
+.coveo-icon.sysfiletype.coveo-small.spagenda,
+.coveo-icon.filetype.coveo-small.spagendalist,
+.coveo-icon.sysfiletype.coveo-small.spagendalist,
+.coveo-icon.filetype.coveo-small.spmeetingserie,
+.coveo-icon.sysfiletype.coveo-small.spmeetingserie,
+.coveo-icon.filetype.coveo-small.spmeetingserielist,
+.coveo-icon.sysfiletype.coveo-small.spmeetingserielist,
+.coveo-icon.filetype.coveo-small.spadministratortask,
+.coveo-icon.sysfiletype.coveo-small.spadministratortask,
+.coveo-icon.filetype.coveo-small.spadministratortasklist,
+.coveo-icon.sysfiletype.coveo-small.spadministratortasklist,
+.coveo-icon.filetype.coveo-small.spworkflowhistory,
+.coveo-icon.sysfiletype.coveo-small.spworkflowhistory,
+.coveo-icon.filetype.coveo-small.spworkflowhistorylist,
+.coveo-icon.sysfiletype.coveo-small.spworkflowhistorylist {
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  background-size: 30px 30px;
+  background-image: url( ../image/calendar.svg);
+}
+
+.coveo-filetype-salesforce-standard-team-member-small,
+.coveo-icon.filetype.coveo-small.lithiumcommunity,
+.coveo-icon.sysfiletype.coveo-small.lithiumcommunity {
+  display: inline-block;
+  width: 50px;
+  height: 50px;
+  background-size: 50px 50px;
+  background-image: url( ../image/salesforce-standard-team-member.svg);
+}
+
 .coveo-filetype-webpage-small,
-.coveo-icon.filetype.coveo-small.cfpage,
-.coveo-icon.sysfiletype.coveo-small.cfpage,
 .coveo-icon.filetype.coveo-small.spportal,
 .coveo-icon.sysfiletype.coveo-small.spportal {
   display: inline-block;
@@ -2613,14 +2895,20 @@ input[type=checkbox].coveo-checkbox + button {
   background-image: url( ../image/webpage.svg);
 }
 
-.coveo-filetype-salesforce-standard-question-feed-small,
-.coveo-icon.filetype.coveo-small.cfcomment,
-.coveo-icon.sysfiletype.coveo-small.cfcomment {
+.coveo-filetype-kb-small,
+.coveo-icon.filetype.coveo-small.spdatasource,
+.coveo-icon.sysfiletype.coveo-small.spdatasource,
+.coveo-icon.filetype.coveo-small.spdatasourcelist,
+.coveo-icon.sysfiletype.coveo-small.spdatasourcelist,
+.coveo-icon.filetype.coveo-small.spdataconnectionlibrarylist,
+.coveo-icon.sysfiletype.coveo-small.spdataconnectionlibrarylist,
+.coveo-icon.filetype.coveo-small.spipfslist,
+.coveo-icon.sysfiletype.coveo-small.spipfslist {
   display: inline-block;
   width: 30px;
   height: 30px;
   background-size: 30px 30px;
-  background-image: url( ../image/salesforce-standard-question-feed.svg);
+  background-image: url( ../image/kb.svg);
 }
 
 /*
@@ -2724,6 +3012,8 @@ input[type=checkbox].coveo-checkbox + button {
 .coveo-filetype-salesforce-standard-article,
 .coveo-icon.objecttype.Solution,
 .coveo-icon.objecttype.solution,
+.coveo-icon.objecttype.Salesliterature,
+.coveo-icon.objecttype.salesliterature,
 .coveo-icon.objecttype.Kbdocumentation,
 .coveo-icon.objecttype.kbdocumentation,
 .coveo-icon.objecttype.Kbtechnicalarticle,
@@ -2738,9 +3028,13 @@ input[type=checkbox].coveo-checkbox + button {
 .coveo-icon.objecttype.kbarticle,
 .coveo-icon.objecttype.Knowledgearticle,
 .coveo-icon.objecttype.knowledgearticle,
+.coveo-icon.filetype.cfpage,
+.coveo-icon.sysfiletype.cfpage,
 .coveo-filetype-salesforce-standard-article-small,
 .coveo-icon.objecttype.coveo-small.Solution,
 .coveo-icon.objecttype.coveo-small.solution,
+.coveo-icon.objecttype.coveo-small.Salesliterature,
+.coveo-icon.objecttype.coveo-small.salesliterature,
 .coveo-icon.objecttype.coveo-small.Kbdocumentation,
 .coveo-icon.objecttype.coveo-small.kbdocumentation,
 .coveo-icon.objecttype.coveo-small.Kbtechnicalarticle,
@@ -2754,7 +3048,9 @@ input[type=checkbox].coveo-checkbox + button {
 .coveo-icon.objecttype.coveo-small.Kbarticle,
 .coveo-icon.objecttype.coveo-small.kbarticle,
 .coveo-icon.objecttype.coveo-small.Knowledgearticle,
-.coveo-icon.objecttype.coveo-small.knowledgearticle {
+.coveo-icon.objecttype.coveo-small.knowledgearticle,
+.coveo-icon.filetype.coveo-small.cfpage,
+.coveo-icon.sysfiletype.coveo-small.cfpage {
   background-color: #f2cf5b;
   border-radius: 2px;
 }
@@ -2784,7 +3080,11 @@ input[type=checkbox].coveo-checkbox + button {
 }
 
 .coveo-filetype-salesforce-standard-campaign,
-.coveo-filetype-salesforce-standard-campaign-small {
+.coveo-icon.objecttype.Campaign,
+.coveo-icon.objecttype.campaign,
+.coveo-filetype-salesforce-standard-campaign-small,
+.coveo-icon.objecttype.coveo-small.Campaign,
+.coveo-icon.objecttype.coveo-small.campaign {
   background-color: #f49756;
   border-radius: 2px;
 }
@@ -2948,7 +3248,11 @@ input[type=checkbox].coveo-checkbox + button {
 }
 
 .coveo-filetype-salesforce-standard-dashboard,
-.coveo-filetype-salesforce-standard-dashboard-small {
+.coveo-icon.objecttype.Dashboard,
+.coveo-icon.objecttype.dashboard,
+.coveo-filetype-salesforce-standard-dashboard-small,
+.coveo-icon.objecttype.coveo-small.Dashboard,
+.coveo-icon.objecttype.coveo-small.dashboard {
   background-color: #ef6e64;
   border-radius: 2px;
 }
@@ -3020,23 +3324,51 @@ input[type=checkbox].coveo-checkbox + button {
 }
 
 .coveo-filetype-salesforce-standard-feed,
-.coveo-filetype-salesforce-standard-feed-small {
+.coveo-icon.objecttype.Feed,
+.coveo-icon.objecttype.feed,
+.coveo-filetype-salesforce-standard-feed-small,
+.coveo-icon.objecttype.coveo-small.Feed,
+.coveo-icon.objecttype.coveo-small.feed {
   background-color: #62b7ed;
   border-radius: 2px;
 }
 
 .coveo-filetype-salesforce-standard-feedback,
+.coveo-icon.objecttype.Thread,
+.coveo-icon.objecttype.thread,
 .coveo-icon.objecttype.Casecomment,
 .coveo-icon.objecttype.casecomment,
+.coveo-icon.objecttype.Kbarticlecomment,
+.coveo-icon.objecttype.kbarticlecomment,
+.coveo-icon.filetype.lithiummessage,
+.coveo-icon.sysfiletype.lithiummessage,
+.coveo-icon.filetype.lithiumthread,
+.coveo-icon.sysfiletype.lithiumthread,
 .coveo-filetype-salesforce-standard-feedback-small,
+.coveo-icon.objecttype.coveo-small.Thread,
+.coveo-icon.objecttype.coveo-small.thread,
 .coveo-icon.objecttype.coveo-small.Casecomment,
-.coveo-icon.objecttype.coveo-small.casecomment {
+.coveo-icon.objecttype.coveo-small.casecomment,
+.coveo-icon.objecttype.coveo-small.Kbarticlecomment,
+.coveo-icon.objecttype.coveo-small.kbarticlecomment,
+.coveo-icon.filetype.coveo-small.lithiummessage,
+.coveo-icon.sysfiletype.coveo-small.lithiummessage,
+.coveo-icon.filetype.coveo-small.lithiumthread,
+.coveo-icon.sysfiletype.coveo-small.lithiumthread {
   background-color: #6da1ea;
   border-radius: 2px;
 }
 
 .coveo-filetype-salesforce-standard-file,
-.coveo-filetype-salesforce-standard-file-small {
+.coveo-icon.objecttype.File,
+.coveo-icon.objecttype.file,
+.coveo-icon.objecttype.Annotation,
+.coveo-icon.objecttype.annotation,
+.coveo-filetype-salesforce-standard-file-small,
+.coveo-icon.objecttype.coveo-small.File,
+.coveo-icon.objecttype.coveo-small.file,
+.coveo-icon.objecttype.coveo-small.Annotation,
+.coveo-icon.objecttype.coveo-small.annotation {
   background-color: #baac93;
   border-radius: 2px;
 }
@@ -3052,7 +3384,15 @@ input[type=checkbox].coveo-checkbox + button {
 }
 
 .coveo-filetype-salesforce-standard-groups,
-.coveo-filetype-salesforce-standard-groups-small {
+.coveo-icon.objecttype.Collaborationgroup,
+.coveo-icon.objecttype.collaborationgroup,
+.coveo-icon.filetype.lithiumboard,
+.coveo-icon.sysfiletype.lithiumboard,
+.coveo-filetype-salesforce-standard-groups-small,
+.coveo-icon.objecttype.coveo-small.Collaborationgroup,
+.coveo-icon.objecttype.coveo-small.collaborationgroup,
+.coveo-icon.filetype.coveo-small.lithiumboard,
+.coveo-icon.sysfiletype.coveo-small.lithiumboard {
   background-color: #779ef2;
   border-radius: 2px;
 }
@@ -3070,7 +3410,11 @@ input[type=checkbox].coveo-checkbox + button {
 }
 
 .coveo-filetype-salesforce-standard-insights,
-.coveo-filetype-salesforce-standard-insights-small {
+.coveo-icon.filetype.cfblogentry,
+.coveo-icon.sysfiletype.cfblogentry,
+.coveo-filetype-salesforce-standard-insights-small,
+.coveo-icon.filetype.coveo-small.cfblogentry,
+.coveo-icon.sysfiletype.coveo-small.cfblogentry {
   background-color: #ec94ed;
   border-radius: 2px;
 }
@@ -3234,7 +3578,23 @@ input[type=checkbox].coveo-checkbox + button {
 }
 
 .coveo-filetype-salesforce-standard-related-list,
-.coveo-filetype-salesforce-standard-related-list-small {
+.coveo-icon.objecttype.List,
+.coveo-icon.objecttype.list,
+.coveo-icon.filetype.saleforceitem,
+.coveo-icon.sysfiletype.saleforceitem,
+.coveo-icon.filetype.lithiumcategory,
+.coveo-icon.sysfiletype.lithiumcategory,
+.coveo-icon.filetype.spwikipagelibrarylist,
+.coveo-icon.sysfiletype.spwikipagelibrarylist,
+.coveo-filetype-salesforce-standard-related-list-small,
+.coveo-icon.objecttype.coveo-small.List,
+.coveo-icon.objecttype.coveo-small.list,
+.coveo-icon.filetype.coveo-small.saleforceitem,
+.coveo-icon.sysfiletype.coveo-small.saleforceitem,
+.coveo-icon.filetype.coveo-small.lithiumcategory,
+.coveo-icon.sysfiletype.coveo-small.lithiumcategory,
+.coveo-icon.filetype.coveo-small.spwikipagelibrarylist,
+.coveo-icon.sysfiletype.coveo-small.spwikipagelibrarylist {
   background-color: #59bcab;
   border-radius: 2px;
 }
@@ -3252,7 +3612,11 @@ input[type=checkbox].coveo-checkbox + button {
 }
 
 .coveo-filetype-salesforce-standard-report,
-.coveo-filetype-salesforce-standard-report-small {
+.coveo-icon.objecttype.Report,
+.coveo-icon.objecttype.report,
+.coveo-filetype-salesforce-standard-report-small,
+.coveo-icon.objecttype.coveo-small.Report,
+.coveo-icon.objecttype.coveo-small.report {
   background-color: #2ecbbe;
   border-radius: 2px;
 }
@@ -3284,7 +3648,11 @@ input[type=checkbox].coveo-checkbox + button {
 }
 
 .coveo-filetype-salesforce-standard-team-member,
-.coveo-filetype-salesforce-standard-team-member-small {
+.coveo-icon.filetype.lithiumcommunity,
+.coveo-icon.sysfiletype.lithiumcommunity,
+.coveo-filetype-salesforce-standard-team-member-small,
+.coveo-icon.filetype.coveo-small.lithiumcommunity,
+.coveo-icon.sysfiletype.coveo-small.lithiumcommunity {
   background-color: #f2cf5b;
   border-radius: 2px;
 }
@@ -3314,7 +3682,11 @@ input[type=checkbox].coveo-checkbox + button {
 }
 
 .coveo-filetype-salesforce-standard-topic,
-.coveo-filetype-salesforce-standard-topic-small {
+.coveo-icon.objecttype.Topic,
+.coveo-icon.objecttype.topic,
+.coveo-filetype-salesforce-standard-topic-small,
+.coveo-icon.objecttype.coveo-small.Topic,
+.coveo-icon.objecttype.coveo-small.topic {
   background-color: #56aadf;
   border-radius: 2px;
 }
@@ -3694,94 +4066,6 @@ input[type=checkbox].coveo-checkbox + button {
 .CoveoIcon.coveo-icon.objecttype:hover.coveo-with-quickview .CoveoQuickview:hover,
 .CoveoIcon.coveo-icon.sysfiletype:hover.coveo-with-quickview .CoveoQuickview:hover {
   text-decoration: none;
-}
-
-.coveo-filetype-list,
-.coveo-icon.objecttype.Feed,
-.coveo-icon.objecttype.feed,
-.coveo-icon.objecttype.Thread,
-.coveo-icon.objecttype.thread,
-.coveo-icon.objecttype.Board,
-.coveo-icon.objecttype.board,
-.coveo-icon.objecttype.Category,
-.coveo-icon.objecttype.category,
-.coveo-icon.objecttype.Invoice,
-.coveo-icon.objecttype.invoice,
-.coveo-icon.objecttype.List,
-.coveo-icon.objecttype.list,
-.coveo-icon.objecttype.Queueitem,
-.coveo-icon.objecttype.queueitem,
-.coveo-icon.objecttype.Service,
-.coveo-icon.objecttype.service,
-.coveo-icon.objecttype.Kbarticlecomment,
-.coveo-icon.objecttype.kbarticlecomment,
-.coveo-icon.filetype.saleforceitem,
-.coveo-icon.sysfiletype.saleforceitem,
-.coveo-icon.filetype.cfblogentry,
-.coveo-icon.sysfiletype.cfblogentry,
-.coveo-icon.filetype.exchangenote,
-.coveo-icon.sysfiletype.exchangenote,
-.coveo-icon.filetype.exchangeactivity,
-.coveo-icon.sysfiletype.exchangeactivity,
-.coveo-icon.filetype.exchangerssfeed,
-.coveo-icon.sysfiletype.exchangerssfeed,
-.coveo-icon.filetype.exchangeofficecom,
-.coveo-icon.sysfiletype.exchangeofficecom,
-.coveo-icon.filetype.lithiumthread,
-.coveo-icon.sysfiletype.lithiumthread,
-.coveo-icon.filetype.lithiumboard,
-.coveo-icon.sysfiletype.lithiumboard,
-.coveo-icon.filetype.lithiumcategory,
-.coveo-icon.sysfiletype.lithiumcategory,
-.coveo-icon.filetype.spannouncement,
-.coveo-icon.sysfiletype.spannouncement,
-.coveo-icon.filetype.spannouncementlist,
-.coveo-icon.sysfiletype.spannouncementlist,
-.coveo-icon.filetype.spdiscussionboard,
-.coveo-icon.sysfiletype.spdiscussionboard,
-.coveo-icon.filetype.spdiscussionboardlist,
-.coveo-icon.sysfiletype.spdiscussionboardlist,
-.coveo-icon.filetype.sptextbox,
-.coveo-icon.sysfiletype.sptextbox,
-.coveo-icon.filetype.sptextboxlist,
-.coveo-icon.sysfiletype.sptextboxlist,
-.coveo-icon.filetype.spblogcategory,
-.coveo-icon.sysfiletype.spblogcategory,
-.coveo-icon.filetype.spblogcategorylist,
-.coveo-icon.sysfiletype.spblogcategorylist,
-.coveo-icon.filetype.spblogcomment,
-.coveo-icon.sysfiletype.spblogcomment,
-.coveo-icon.filetype.spblogcommentlist,
-.coveo-icon.sysfiletype.spblogcommentlist,
-.coveo-icon.filetype.spblogpost,
-.coveo-icon.sysfiletype.spblogpost,
-.coveo-icon.filetype.spblogpostlist,
-.coveo-icon.sysfiletype.spblogpostlist,
-.coveo-icon.filetype.splanguagesandtranslator,
-.coveo-icon.sysfiletype.splanguagesandtranslator,
-.coveo-icon.filetype.splanguagesandtranslatorlist,
-.coveo-icon.sysfiletype.splanguagesandtranslatorlist,
-.coveo-icon.filetype.sphealthreport,
-.coveo-icon.sysfiletype.sphealthreport,
-.coveo-icon.filetype.sphealthreportlist,
-.coveo-icon.sysfiletype.sphealthreportlist,
-.coveo-icon.filetype.sphealthrule,
-.coveo-icon.sysfiletype.sphealthrule,
-.coveo-icon.filetype.sphealthrulelist,
-.coveo-icon.sysfiletype.sphealthrulelist,
-.coveo-icon.filetype.spperformancepointcontent,
-.coveo-icon.sysfiletype.spperformancepointcontent,
-.coveo-icon.filetype.spperformancepointcontentlist,
-.coveo-icon.sysfiletype.spperformancepointcontentlist,
-.coveo-icon.filetype.spphonecallmemo,
-.coveo-icon.sysfiletype.spphonecallmemo,
-.coveo-icon.filetype.spphonecallmemolist,
-.coveo-icon.sysfiletype.spphonecallmemolist,
-.coveo-icon.filetype.spmicrofeedpost,
-.coveo-icon.sysfiletype.spmicrofeedpost,
-.coveo-icon.filetype.spmicrofeedlist,
-.coveo-icon.sysfiletype.spmicrofeedlist {
-  border-radius: 2px;
 }
 
 .coveo-btn {
@@ -5532,8 +5816,14 @@ select.coveo-dropdown::-ms-expand {
 
 .coveo-subscriptions-messages-message {
   background-color: #ecad00;
+  display: -webkit-box;
+  display: -moz-box;
+  display: box;
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: -ms-flexbox;
+  display: flex;
   border-radius: 2px;
-  padding: 7px;
   color: #fff;
   white-space: nowrap;
 }
@@ -5567,18 +5857,32 @@ select.coveo-dropdown::-ms-expand {
 }
 
 .coveo-subscriptions-messages-message .coveo-subscriptions-messages-content {
-  line-height: 26px;
-  vertical-align: middle;
+  padding: 7px 0;
+  font-size: 12px;
   display: inline-block;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.coveo-subscriptions-messages-message .coveo-subscriptions-messages-content span {
+  vertical-align: middle;
+}
+
+.coveo-subscriptions-messages-message .coveo-subscriptions-messages-content .coveo-media-max-width-800 {
+  font-size: 10px;
+}
+
+@media (max-width: 800px) {
+  .coveo-subscriptions-messages-message .coveo-subscriptions-messages-content {
+    font-size: 10px;
+  }
 }
 
 .coveo-subscriptions-messages-message .coveo-subscriptions-messages-info-close {
   display: inline-block;
   cursor: pointer;
   vertical-align: middle;
-  margin: 0 5px;
+  margin: 6px 6px;
   cursor: pointer;
   color: #1D4F76;
 }
@@ -5877,6 +6181,10 @@ body.coveo-modalBox-opened .CoveoSearchInterface {
 .CoveoSearchInterface.coveo-during-initialization .coveo-results-header {
   height: 42px;
   visibility: hidden;
+}
+
+.CoveoSearchInterface.coveo-during-initialization .CoveoSimpleFilter {
+  display: none;
 }
 
 .CoveoSearchInterface.coveo-during-initialization .coveo-recommendation-main-section .coveo-recommendation-column {
@@ -7107,7 +7415,6 @@ a.CoveoResultLink.coveo-selected *,
 */
 
 .CoveoErrorReport {
-  padding: 10px;
   text-align: center;
 }
 
@@ -7117,16 +7424,34 @@ a.CoveoResultLink.coveo-selected *,
 .CoveoErrorReport h4,
 .CoveoErrorReport h5,
 .CoveoErrorReport h6 {
+  font-weight: normal;
   display: block;
-  margin: 20px 0px 20px 0px;
+  margin: 0 0 20px 0;
+}
+
+.coveo-error-report-help-link {
+  display: inline-block;
+  border: 1px solid #f58020;
+  border-radius: 2px;
+  text-decoration: none;
+  background-color: #f58020;
+  padding: 10px;
+  font-weight: 700;
+  color: white;
+}
+
+.coveo-error-report-help-link:hover {
+  background-color: #F68E38;
 }
 
 .coveo-error-report-title {
-  margin-bottom: 30px;
+  color: #1D4F76;
+  margin-bottom: 20px;
+  font-size: 12px;
 }
 
 .coveo-error-report-message {
-  margin-top: 30px;
+  margin-top: 0px;
   margin-right: 30px;
   margin-left: 30px;
 }
@@ -7134,6 +7459,12 @@ a.CoveoResultLink.coveo-selected *,
 .coveo-error-report-message pre {
   font-size: 12px;
   text-align: left;
+}
+
+.coveo-error-report-container {
+  padding: 45px;
+  background-color: #F1F3F4;
+  border: 1px solid #1D4F76;
 }
 
 .coveo-error-report-previous,
@@ -9923,10 +10254,6 @@ a.CoveoResultLink.coveo-selected *,
 * @param $size size of the icon to use
 */
 
-.CoveoResult {
-  position: relative;
-}
-
 .CoveoResult.coveo-omnibox-selectable {
   padding: 10px 10px 10px 15px;
   margin: 0;
@@ -10114,12 +10441,12 @@ a.CoveoResultLink.coveo-selected *,
 }
 
 .CoveoResult.coveo-is-recommendation {
-  box-shadow: 0 0 0 5px #263E55;
+  box-shadow: 0 0 1px 1px #263E55;
 }
 
 .coveo-list-layout.CoveoResult {
   border-bottom: 1px solid #BCC3CA;
-  margin: 20px 0px 20px 20px;
+  padding: 16px 0px 16px 16px;
 }
 
 .coveo-card-layout {
@@ -10257,6 +10584,12 @@ a.CoveoResultLink.coveo-selected *,
   background-color: white;
   border: 1px solid #BCC3CA;
   border-width: 3px;
+}
+
+.coveo-omnibox-result-list-header {
+  width: 100%;
+  padding: 10px;
+  color: #1D4F76;
 }
 
 /*
@@ -10428,8 +10761,13 @@ a.CoveoResultLink.coveo-selected *,
   color: #296896;
 }
 
+.CoveoPrintableUri.CoveoResultLink:hover a {
+  text-decoration: none;
+}
+
 .CoveoPrintableUri .coveo-printable-uri-separator {
   font-size: 12px;
+  margin: 0 3px;
 }
 
 .CoveoPrintableUri .coveo-hidden {
@@ -10576,7 +10914,7 @@ a.CoveoResultLink.coveo-selected *,
 .coveo-list-layout .CoveoQuickview:hover .coveo-caption-for-icon {
   display: inline;
   top: 26px;
-  left: -4px;
+  left: -30px;
 }
 
 .CoveoQuickview .coveo-caption-for-icon {
@@ -11238,6 +11576,11 @@ a.coveo-folding-show-less.coveo-selected * {
   border-bottom: 2px solid #263E55;
 }
 
+.coveo-result-layout-selector:focus {
+  outline-width: 1px;
+  outline-color: #BCC3CA;
+}
+
 .coveo-result-layout-selector:hover {
   color: #263E55;
 }
@@ -11615,7 +11958,7 @@ a.coveo-folding-show-less.coveo-selected * {
  Copyright (c) 2017 Google Inc.
  License: Apache-2.0
 */
-.mdc-select{-moz-osx-font-smoothing:grayscale;-webkit-font-smoothing:antialiased;font-size:1rem;font-weight:400;letter-spacing:.04em;line-height:1.75rem;text-decoration:inherit;text-transform:inherit;color:rgba(0,0,0,.87);color:var(--mdc-theme-text-primary-on-light,rgba(0,0,0,.87));padding-left:0;padding-right:24px;-webkit-appearance:none;-moz-appearance:none;appearance:none;display:-webkit-inline-box;display:-ms-inline-flexbox;display:inline-flex;-webkit-box-align:center;-ms-flex-align:center;align-items:center;-webkit-box-pack:start;-ms-flex-pack:start;justify-content:flex-start;max-width:calc(100% - 24px);height:32px;-webkit-transition:border-bottom-color .15s cubic-bezier(.4,0,.6,1) 0ms,background-color .15s cubic-bezier(.4,0,.6,1) 0ms;transition:border-bottom-color .15s cubic-bezier(.4,0,.6,1) 0ms,background-color .15s cubic-bezier(.4,0,.6,1) 0ms;border:none;border-bottom:1px solid rgba(0,0,0,.12);border-radius:0;background:none;background-repeat:no-repeat;background-position:100%;background-image:url("data:image/svg+xml;charset=utf-8,%3Csvg width='10' height='5' viewBox='7 10 10 5' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill='%230' fill-rule='evenodd' opacity='.54' d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");font-family:Roboto,sans-serif;font-size:.936rem;cursor:pointer}.mdc-select[dir=rtl],[dir=rtl] .mdc-select{padding-left:24px;padding-right:0}.mdc-select::-ms-expand{display:none}.mdc-select:focus{border-bottom-color:#3f51b5;border-bottom-color:var(--mdc-theme-primary,#3f51b5);outline:none;background-color:rgba(0,0,0,.06)}.mdc-select[dir=rtl],[dir=rtl] .mdc-select{background-position:0}.mdc-select--theme-dark,.mdc-theme--dark .mdc-select{color:#fff;color:var(--mdc-theme-text-primary-on-dark,#fff);background-image:url("data:image/svg+xml;charset=utf-8,%3Csvg width='10' height='5' viewBox='7 10 10 5' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill='%23fff' fill-rule='evenodd' opacity='.54' d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");border-bottom:1px solid hsla(0,0%,100%,.12)}.mdc-select--theme-dark:focus,.mdc-theme--dark .mdc-select:focus{border-bottom-color:#3f51b5;border-bottom-color:var(--mdc-theme-primary,#3f51b5);background-color:hsla(0,0%,100%,.09)}.mdc-select__menu{position:fixed;top:0;left:0;max-height:100%;-webkit-transform-origin:center center;transform-origin:center center;overflow-y:scroll;z-index:4}.mdc-select__selected-text{-webkit-transition:opacity 125ms cubic-bezier(.4,0,.6,1) 0ms,-webkit-transform 125ms cubic-bezier(.4,0,.6,1) 0ms;transition:opacity 125ms cubic-bezier(.4,0,.6,1) 0ms,-webkit-transform 125ms cubic-bezier(.4,0,.6,1) 0ms;transition:opacity 125ms cubic-bezier(.4,0,.6,1) 0ms,transform 125ms cubic-bezier(.4,0,.6,1) 0ms;transition:opacity 125ms cubic-bezier(.4,0,.6,1) 0ms,transform 125ms cubic-bezier(.4,0,.6,1) 0ms,-webkit-transform 125ms cubic-bezier(.4,0,.6,1) 0ms;white-space:nowrap;overflow:hidden}.mdc-select--open .mdc-select__selected-text{-webkit-transform:translateY(8px);transform:translateY(8px);-webkit-transition:opacity 125ms cubic-bezier(0,0,.2,1) 125ms,-webkit-transform 125ms cubic-bezier(0,0,.2,1) 125ms;transition:opacity 125ms cubic-bezier(0,0,.2,1) 125ms,-webkit-transform 125ms cubic-bezier(0,0,.2,1) 125ms;transition:opacity 125ms cubic-bezier(0,0,.2,1) 125ms,transform 125ms cubic-bezier(0,0,.2,1) 125ms;transition:opacity 125ms cubic-bezier(0,0,.2,1) 125ms,transform 125ms cubic-bezier(0,0,.2,1) 125ms,-webkit-transform 125ms cubic-bezier(0,0,.2,1) 125ms;opacity:0}.mdc-select--disabled,.mdc-select[disabled]{color:rgba(0,0,0,.38);color:var(--mdc-theme-text-disabled-on-light,rgba(0,0,0,.38));background-image:url("data:image/svg+xml;charset=utf-8,%3Csvg width='10' height='5' viewBox='7 10 10 5' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill='%230' fill-rule='evenodd' opacity='.38' d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");border-bottom-style:dotted;cursor:default;pointer-events:none;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}.mdc-select--theme-dark.mdc-select--disabled,.mdc-select--theme-dark.mdc-select[disabled],.mdc-theme--dark .mdc-select--disabled,.mdc-theme--dark .mdc-select[disabled]{color:hsla(0,0%,100%,.5);color:var(--mdc-theme-text-disabled-on-dark,hsla(0,0%,100%,.5));background-image:url("data:image/svg+xml;charset=utf-8,%3Csvg width='10' height='5' viewBox='7 10 10 5' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill='%23fff' fill-rule='evenodd' opacity='.38' d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");border-bottom:1px dotted hsla(0,0%,100%,.38)}.mdc-select__menu .mdc-list-item{font-family:Roboto,sans-serif;-moz-osx-font-smoothing:grayscale;-webkit-font-smoothing:antialiased;font-size:1rem;font-weight:400;letter-spacing:.04em;line-height:1.75rem;text-decoration:inherit;text-transform:inherit;color:rgba(0,0,0,.54);color:var(--mdc-theme-text-secondary-on-light,rgba(0,0,0,.54))}.mdc-select__menu .mdc-list-item[aria-selected=true]{color:rgba(0,0,0,.87);color:var(--mdc-theme-text-primary-on-light,rgba(0,0,0,.87))}.mdc-select--theme-dark .mdc-select__menu .mdc-list-item,.mdc-theme--dark .mdc-select__menu .mdc-list-item{color:hsla(0,0%,100%,.7);color:var(--mdc-theme-text-secondary-on-dark,hsla(0,0%,100%,.7))}.mdc-select--theme-dark .mdc-select__menu .mdc-list-item[aria-selected=true],.mdc-theme--dark .mdc-select__menu .mdc-list-item[aria-selected=true]{color:#fff;color:var(--mdc-theme-text-primary-on-dark,#fff)}.mdc-select__menu .mdc-list-group,.mdc-select__menu .mdc-list-group>.mdc-list-item:first-child{margin-top:12px}.mdc-select__menu .mdc-list-group{color:rgba(0,0,0,.38);color:var(--mdc-theme-text-hint-on-light,rgba(0,0,0,.38));font-weight:400}.mdc-select__menu .mdc-list-group .mdc-list-item{color:rgba(0,0,0,.87);color:var(--mdc-theme-text-primary-on-light,rgba(0,0,0,.87))}.mdc-select--theme-dark .mdc-select__menu .mdc-list-group,.mdc-theme--dark .mdc-select__menu .mdc-list-group{color:hsla(0,0%,100%,.5);color:var(--mdc-theme-text-hint-on-dark,hsla(0,0%,100%,.5))}.mdc-select--theme-dark .mdc-select__menu .mdc-list-group .mdc-list-item,.mdc-theme--dark .mdc-select__menu .mdc-list-group .mdc-list-item{color:#fff;color:var(--mdc-theme-text-primary-on-dark,#fff)}.mdc-multi-select{-webkit-appearance:none;-moz-appearance:none;appearance:none;width:250px;padding:0;border:1px solid;border-color:rgba(0,0,0,.38);border-color:var(--mdc-theme-text-hint-on-light,rgba(0,0,0,.38));outline:none}.mdc-multi-select--theme-dark,.mdc-theme--dark .mdc-multi-select{border-color:hsla(0,0%,100%,.5);border-color:var(--mdc-theme-text-hint-on-dark,hsla(0,0%,100%,.5))}.mdc-multi-select .mdc-list-group{margin:16px 0 0;padding:0 0 0 16px;color:rgba(0,0,0,.38);color:var(--mdc-theme-text-hint-on-light,rgba(0,0,0,.38));font-weight:400}.mdc-multi-select .mdc-list-group--theme-dark,.mdc-theme--dark .mdc-multi-select .mdc-list-group{color:hsla(0,0%,100%,.5);color:var(--mdc-theme-text-hint-on-dark,hsla(0,0%,100%,.5))}.mdc-multi-select .mdc-list-group:last-child{margin-bottom:16px}.mdc-multi-select .mdc-list-group .mdc-list-divider{margin-left:-16px}.mdc-multi-select .mdc-list-item{margin:0 0 0 -16px;padding:0 16px;color:rgba(0,0,0,.87);color:var(--mdc-theme-text-primary-on-light,rgba(0,0,0,.87))}.mdc-multi-select .mdc-list-item--theme-dark,.mdc-theme--dark .mdc-multi-select .mdc-list-item{color:#fff;color:var(--mdc-theme-text-primary-on-dark,#fff)}.mdc-multi-select .mdc-list-item:first-child{margin-top:12px}.mdc-multi-select .mdc-list-item:last-child{margin-bottom:8px}.mdc-multi-select .mdc-list-item:checked{background-color:rgba(0,0,0,.12);background-color:#fff;background-color:var(--mdc-theme-background,#fff)}.mdc-multi-select .mdc-list-item:checked--theme-dark,.mdc-theme--dark .mdc-multi-select .mdc-list-item:checked{background-color:#fff;background-color:var(--mdc-theme-text-primary-on-dark,#fff)}.mdc-multi-select .mdc-list-divider{margin-bottom:8px;padding-top:8px;font-size:0}.mdc-multi-select:focus .mdc-list-item:checked{background-color:#3f51b5;background-color:var(--mdc-theme-primary,#3f51b5)}.mdc-multi-select:focus .mdc-list-item:checked--theme-dark,.mdc-theme--dark .mdc-multi-select:focus .mdc-list-item:checked{background-color:#fff;background-color:var(--mdc-theme-text-primary-on-dark,#fff)}.mdc-list-item {
+.mdc-select{-moz-osx-font-smoothing:grayscale;-webkit-font-smoothing:antialiased;font-size:1rem;font-weight:400;letter-spacing:.04em;line-height:1.75rem;text-decoration:inherit;text-transform:inherit;color:rgba(0,0,0,.87);color:var(--mdc-theme-text-primary-on-light,rgba(0,0,0,.87));padding-left:0;padding-right:24px;background-image:url("data:image/svg+xml;charset=utf-8,%3Csvg width='10' height='5' viewBox='7 10 10 5' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill='%230' fill-rule='evenodd' opacity='.54' d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");display:-webkit-inline-box;display:-ms-inline-flexbox;display:inline-flex;-webkit-box-align:center;-ms-flex-align:center;align-items:center;-webkit-box-pack:start;-ms-flex-pack:start;justify-content:flex-start;max-width:calc(100% - 24px);height:32px;-webkit-transition:border-bottom-color .15s cubic-bezier(.4,0,.6,1) 0ms,background-color .15s cubic-bezier(.4,0,.6,1) 0ms;transition:border-bottom-color .15s cubic-bezier(.4,0,.6,1) 0ms,background-color .15s cubic-bezier(.4,0,.6,1) 0ms;border:none;border-bottom:1px solid rgba(0,0,0,.12);border-radius:0;background-repeat:no-repeat;background-position:100%;font-family:Roboto,sans-serif;font-size:.936rem;cursor:pointer;-webkit-appearance:none;-moz-appearance:none;appearance:none}.mdc-select[dir=rtl],[dir=rtl] .mdc-select{padding-left:24px;padding-right:0}.mdc-select::-ms-expand{display:none}.mdc-select:focus{border-bottom-color:#3f51b5;border-bottom-color:var(--mdc-theme-primary,#3f51b5);outline:none;background-color:rgba(0,0,0,.06)}.mdc-select[dir=rtl],[dir=rtl] .mdc-select{background-position:0}.mdc-select--theme-dark,.mdc-theme--dark .mdc-select{color:#fff;color:var(--mdc-theme-text-primary-on-dark,#fff);background-image:url("data:image/svg+xml;charset=utf-8,%3Csvg width='10' height='5' viewBox='7 10 10 5' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill='%23fff' fill-rule='evenodd' opacity='.54' d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");border-bottom:1px solid hsla(0,0%,100%,.12)}.mdc-select--theme-dark:focus,.mdc-theme--dark .mdc-select:focus{border-bottom-color:#3f51b5;border-bottom-color:var(--mdc-theme-primary,#3f51b5);background-color:hsla(0,0%,100%,.09)}.mdc-select__menu{position:fixed;top:0;left:0;max-height:100%;-webkit-transform-origin:center center;transform-origin:center center;z-index:4}.mdc-select__selected-text{-webkit-transition:opacity 125ms cubic-bezier(.4,0,.6,1) 0ms,-webkit-transform 125ms cubic-bezier(.4,0,.6,1) 0ms;transition:opacity 125ms cubic-bezier(.4,0,.6,1) 0ms,-webkit-transform 125ms cubic-bezier(.4,0,.6,1) 0ms;transition:opacity 125ms cubic-bezier(.4,0,.6,1) 0ms,transform 125ms cubic-bezier(.4,0,.6,1) 0ms;transition:opacity 125ms cubic-bezier(.4,0,.6,1) 0ms,transform 125ms cubic-bezier(.4,0,.6,1) 0ms,-webkit-transform 125ms cubic-bezier(.4,0,.6,1) 0ms;white-space:nowrap;overflow:hidden}.mdc-select--open .mdc-select__selected-text{-webkit-transform:translateY(8px);transform:translateY(8px);-webkit-transition:opacity 125ms cubic-bezier(0,0,.2,1) 125ms,-webkit-transform 125ms cubic-bezier(0,0,.2,1) 125ms;transition:opacity 125ms cubic-bezier(0,0,.2,1) 125ms,-webkit-transform 125ms cubic-bezier(0,0,.2,1) 125ms;transition:opacity 125ms cubic-bezier(0,0,.2,1) 125ms,transform 125ms cubic-bezier(0,0,.2,1) 125ms;transition:opacity 125ms cubic-bezier(0,0,.2,1) 125ms,transform 125ms cubic-bezier(0,0,.2,1) 125ms,-webkit-transform 125ms cubic-bezier(0,0,.2,1) 125ms;opacity:0}.mdc-select--disabled,.mdc-select[disabled]{color:rgba(0,0,0,.38);color:var(--mdc-theme-text-disabled-on-light,rgba(0,0,0,.38));background-image:url("data:image/svg+xml;charset=utf-8,%3Csvg width='10' height='5' viewBox='7 10 10 5' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill='%230' fill-rule='evenodd' opacity='.38' d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");border-bottom-style:dotted;cursor:default;pointer-events:none;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}.mdc-select--theme-dark.mdc-select--disabled,.mdc-select--theme-dark.mdc-select[disabled],.mdc-theme--dark .mdc-select--disabled,.mdc-theme--dark .mdc-select[disabled]{color:hsla(0,0%,100%,.5);color:var(--mdc-theme-text-disabled-on-dark,hsla(0,0%,100%,.5));background-image:url("data:image/svg+xml;charset=utf-8,%3Csvg width='10' height='5' viewBox='7 10 10 5' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill='%23fff' fill-rule='evenodd' opacity='.38' d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");border-bottom:1px dotted hsla(0,0%,100%,.38)}.mdc-select__menu .mdc-list-item{font-family:Roboto,sans-serif;-moz-osx-font-smoothing:grayscale;-webkit-font-smoothing:antialiased;font-size:1rem;font-weight:400;letter-spacing:.04em;line-height:1.75rem;text-decoration:inherit;text-transform:inherit;color:rgba(0,0,0,.54);color:var(--mdc-theme-text-secondary-on-light,rgba(0,0,0,.54))}.mdc-select__menu .mdc-list-item[aria-selected=true]{color:rgba(0,0,0,.87);color:var(--mdc-theme-text-primary-on-light,rgba(0,0,0,.87))}.mdc-select--theme-dark .mdc-select__menu .mdc-list-item,.mdc-theme--dark .mdc-select__menu .mdc-list-item{color:hsla(0,0%,100%,.7);color:var(--mdc-theme-text-secondary-on-dark,hsla(0,0%,100%,.7))}.mdc-select--theme-dark .mdc-select__menu .mdc-list-item[aria-selected=true],.mdc-theme--dark .mdc-select__menu .mdc-list-item[aria-selected=true]{color:#fff;color:var(--mdc-theme-text-primary-on-dark,#fff)}.mdc-select__menu .mdc-list-group,.mdc-select__menu .mdc-list-group>.mdc-list-item:first-child{margin-top:12px}.mdc-select__menu .mdc-list-group{color:rgba(0,0,0,.38);color:var(--mdc-theme-text-hint-on-light,rgba(0,0,0,.38));font-weight:400}.mdc-select__menu .mdc-list-group .mdc-list-item{color:rgba(0,0,0,.87);color:var(--mdc-theme-text-primary-on-light,rgba(0,0,0,.87))}.mdc-select--theme-dark .mdc-select__menu .mdc-list-group,.mdc-theme--dark .mdc-select__menu .mdc-list-group{color:hsla(0,0%,100%,.5);color:var(--mdc-theme-text-hint-on-dark,hsla(0,0%,100%,.5))}.mdc-select--theme-dark .mdc-select__menu .mdc-list-group .mdc-list-item,.mdc-theme--dark .mdc-select__menu .mdc-list-group .mdc-list-item{color:#fff;color:var(--mdc-theme-text-primary-on-dark,#fff)}.mdc-multi-select{border-color:rgba(0,0,0,.38);border:1px solid var(--mdc-theme-text-hint-on-light,rgba(0,0,0,.38));width:250px;padding:0;outline:none;-webkit-appearance:none;-moz-appearance:none;appearance:none}.mdc-multi-select--theme-dark,.mdc-theme--dark .mdc-multi-select{border-color:hsla(0,0%,100%,.5);border-color:var(--mdc-theme-text-hint-on-dark,hsla(0,0%,100%,.5))}.mdc-multi-select .mdc-list-group{color:rgba(0,0,0,.38);color:var(--mdc-theme-text-hint-on-light,rgba(0,0,0,.38));margin:16px 0 0;padding:0 0 0 16px;font-weight:400}.mdc-multi-select .mdc-list-group--theme-dark,.mdc-theme--dark .mdc-multi-select .mdc-list-group{color:hsla(0,0%,100%,.5);color:var(--mdc-theme-text-hint-on-dark,hsla(0,0%,100%,.5))}.mdc-multi-select .mdc-list-group:last-child{margin-bottom:16px}.mdc-multi-select .mdc-list-group .mdc-list-divider{margin-left:-16px}.mdc-multi-select .mdc-list-item{color:rgba(0,0,0,.87);color:var(--mdc-theme-text-primary-on-light,rgba(0,0,0,.87));margin:0 0 0 -16px;padding:0 16px}.mdc-multi-select .mdc-list-item--theme-dark,.mdc-theme--dark .mdc-multi-select .mdc-list-item{color:#fff;color:var(--mdc-theme-text-primary-on-dark,#fff)}.mdc-multi-select .mdc-list-item:first-child{margin-top:12px}.mdc-multi-select .mdc-list-item:last-child{margin-bottom:8px}.mdc-multi-select .mdc-list-item:checked{background-color:#fff;background-color:var(--mdc-theme-background,#fff)}.mdc-multi-select .mdc-list-item:checked--theme-dark,.mdc-theme--dark .mdc-multi-select .mdc-list-item:checked{background-color:#fff;background-color:var(--mdc-theme-text-primary-on-dark,#fff)}.mdc-multi-select .mdc-list-divider{margin-bottom:8px;padding-top:8px;font-size:0}.mdc-multi-select:focus .mdc-list-item:checked{background-color:#3f51b5;background-color:var(--mdc-theme-primary,#3f51b5)}.mdc-multi-select:focus .mdc-list-item:checked--theme-dark,.mdc-theme--dark .mdc-multi-select:focus .mdc-list-item:checked{background-color:#fff;background-color:var(--mdc-theme-text-primary-on-dark,#fff)}.mdc-list-item {
   height: 30px;
   display: -webkit-box;
   display: -moz-box;
@@ -12296,6 +12639,11 @@ a.coveo-folding-show-less.coveo-selected * {
   border-bottom: 2px solid #263E55;
 }
 
+.CoveoSort:focus {
+  outline-width: 1px;
+  outline-color: #BCC3CA;
+}
+
 .CoveoSort:hover {
   color: #263E55;
 }
@@ -12552,6 +12900,296 @@ a.coveo-folding-show-less.coveo-selected * {
 
 .CoveoTriggers a.coveo-selected * {
   color: #263E55;
+}
+
+/*
+* @param direction vertical or horizontal
+* @param position type of positioning to apply (relative/absolute)
+*/
+
+/*
+* @param $selector css selector on which to apply the icon. Can be '&' if the icon should be applied on the current element;
+* @param $size size of the icon to use
+*/
+
+.coveo-simplefilter-header-wrapper {
+  width: 100%;
+  margin: auto;
+  max-width: 1200px;
+  position: relative;
+  display: block;
+  -webkit-box-lines: single;
+  -moz-box-lines: single;
+  box-lines: single;
+  -webkit-flex-wrap: nowrap;
+  -moz-flex-wrap: nowrap;
+  -ms-flex-wrap: nowrap;
+  flex-wrap: nowrap;
+  -webkit-box-pack: start;
+  -moz-box-pack: start;
+  box-pack: start;
+  -webkit-justify-content: flex-start;
+  -moz-justify-content: flex-start;
+  -ms-justify-content: flex-start;
+  -o-justify-content: flex-start;
+  justify-content: flex-start;
+  -ms-flex-pack: start;
+}
+
+.coveo-dropdown-background {
+  display: none;
+}
+
+.coveo-dropdown-background-active {
+  opacity: 0.9;
+  display: block;
+}
+
+.CoveoSimpleFilter {
+  padding: 3px 0;
+  cursor: pointer;
+  box-sizing: content-box;
+  margin-right: 15px;
+  display: inline-block;
+  position: relative;
+  border: 1px solid #BCC3CA;
+  background-color: white;
+  max-width: 250px;
+  min-width: 150px;
+}
+
+.CoveoSimpleFilter:hover {
+  background-color: #E6ECf0;
+}
+
+.coveo-simplefilter-selecttext {
+  margin-left: 5px;
+  max-width: 250px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  pointer-events: none;
+  -webkit-box-pack: start;
+  -moz-box-pack: start;
+  box-pack: start;
+  -webkit-justify-content: flex-start;
+  -moz-justify-content: flex-start;
+  -ms-justify-content: flex-start;
+  -o-justify-content: flex-start;
+  justify-content: flex-start;
+  -ms-flex-pack: start;
+}
+
+.coveo-simplefilter-select {
+  color: #1D4F76;
+  display: -webkit-box;
+  display: -moz-box;
+  display: box;
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -moz-box-pack: center;
+  box-pack: center;
+  -webkit-justify-content: center;
+  -moz-justify-content: center;
+  -ms-justify-content: center;
+  -o-justify-content: center;
+  justify-content: center;
+  -ms-flex-pack: center;
+  overflow: hidden;
+  width: inherit;
+  pointer-events: none;
+  text-overflow: ellipsis;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  white-space: nowrap;
+}
+
+.coveo-simplefilter-circle {
+  display: inline-block;
+  letter-spacing: 0.4px;
+  background-color: white;
+  border: 2px solid #1D4F76;
+  border-radius: 50%;
+  color: #1D4F76;
+  font-size: 13px;
+  font-weight: bold;
+  min-height: 20px;
+  min-width: 20px;
+  line-height: 16px;
+  padding: 0 3px 0 3px;
+  text-align: center;
+  margin: 0 3px;
+  pointer-events: none;
+}
+
+.coveo-simplefilter-circle-hidden {
+  display: none;
+}
+
+.coveo-simplefilter-value-container {
+  display: none;
+  border: 1px solid #BCC3CA;
+  position: absolute;
+  right: -1px;
+  box-sizing: content-box;
+  background-color: white;
+  top: 24px;
+  width: 100%;
+  text-align: left;
+}
+
+.coveo-simplefilter-value-container .coveo-checkbox-button {
+  border: 1px solid #BCC3CA;
+  border-radius: 2px;
+}
+
+.coveo-simplefilter-value-container .coveo-checkbox-span-label {
+  white-space: nowrap;
+  vertical-align: middle;
+  text-overflow: ellipsis;
+  display: inline-block;
+  overflow: hidden;
+  width: 75%;
+  margin-left: 6px;
+}
+
+.coveo-simplefilter-value-container .coveo-checkbox-button {
+  vertical-align: middle;
+}
+
+.coveo-simplefilter-value-container .coveo-checkbox-label {
+  white-space: nowrap;
+  width: 100%;
+  padding: 5px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.coveo-simplefilter-value-container label {
+  display: inline-block;
+}
+
+.coveo-simplefilter-value-container-expanded {
+  display: inline-block;
+  z-index: 20;
+}
+
+.coveo-simplefilter-value-container label:hover {
+  background-color: #E6ECf0;
+}
+
+.coveo-simplefilter-breadcrumb-title {
+  color: #67768B;
+  margin-right: 14px;
+}
+
+.coveo-simplefilter-breadcrumb-value {
+  cursor: pointer;
+  color: #1D4F76;
+  color: #296896;
+  text-decoration: none;
+  cursor: pointer;
+  color: #009DDC;
+  display: inline-block;
+  font-size: 14px;
+  margin-right: 20px;
+}
+
+.coveo-simplefilter-breadcrumb-value .coveo-exclusion-svg {
+  fill: #1D4F76;
+}
+
+.coveo-simplefilter-breadcrumb-value .coveo-simplefilter-breadcrumb-clear svg {
+  width: 12px;
+  height: 12px;
+}
+
+.coveo-simplefilter-breadcrumb-value:hover .coveo-simplefilter-breadcrumb-clear {
+  color: #CC0D00;
+}
+
+.coveo-simplefilter-breadcrumb-value:hover .coveo-simplefilter-breadcrumb-clear .coveo-exclusion-svg {
+  fill: #CC0D00;
+}
+
+.coveo-simplefilter-breadcrumb-value:hover,
+.coveo-simplefilter-breadcrumb-value:visited {
+  text-decoration: none;
+  color: #263E55;
+}
+
+.coveo-simplefilter-breadcrumb-value:hover,
+.coveo-simplefilter-breadcrumb-value:hover a {
+  text-decoration: underline;
+}
+
+.coveo-simplefilter-breadcrumb-value.coveo-selected * {
+  color: #263E55;
+}
+
+.coveo-simplefilter-breadcrumb-value:hover {
+  color: #009DDC;
+}
+
+.coveo-simplefilter-breadcrumb-value.coveo-selected * {
+  color: #009DDC;
+}
+
+.coveo-simplefilter-breadcrumb-clear {
+  display: inline-block;
+  margin-left: 5px;
+  position: relative;
+  top: 5px;
+  cursor: pointer;
+  color: #1D4F76;
+}
+
+.coveo-simplefilter-breadcrumb-clear .coveo-exclusion-svg {
+  fill: #1D4F76;
+}
+
+.coveo-simplefilter-breadcrumb-clear .coveo-breadcrumb-clear-all-icon svg {
+  width: 12px;
+  height: 12px;
+}
+
+.coveo-simplefilter-breadcrumb-clear:hover .coveo-breadcrumb-clear-all-icon {
+  color: #CC0D00;
+}
+
+.coveo-simplefilter-breadcrumb-clear:hover .coveo-breadcrumb-clear-all-icon .coveo-exclusion-svg {
+  fill: #CC0D00;
+}
+
+.coveo-simplefilter-breadcrumb-clear-svg {
+  position: absolute;
+  top: -15px;
+}
+
+.coveo-simplefilter-toggle-down-svg {
+  margin: 0 5px;
+  -webkit-box-pack: end;
+  -moz-box-pack: end;
+  box-pack: end;
+  -webkit-justify-content: flex-end;
+  -moz-justify-content: flex-end;
+  -ms-justify-content: flex-end;
+  -o-justify-content: flex-end;
+  justify-content: flex-end;
+  -ms-flex-pack: end;
+  color: #1D4F76;
+  width: 10px;
+  height: 6px;
+}
+
+.coveo-simplefilter-empty {
+  visibility: hidden;
 }
 
 

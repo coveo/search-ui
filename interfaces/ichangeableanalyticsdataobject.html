@@ -56,7 +56,7 @@
 	<div class="bottomHeader">
 		<div id="searchBox">
 			<div class="CoveoSearchbox" data-enable-omnibox="true" data-inline="false" data-enable-wildcards="true" data-enable-search-as-you-type="false" data-enable-query-suggest-addon="false" data-enable-query-syntax="true" data-enable-field-addon="true"></div>
-			<div class="CoveoFieldSuggestions" data-field="@systitle" data-header-title="Suggested topics"></div>
+			<div class="CoveoFieldSuggestions" data-field="@jsuipagetopic" data-header-title="Suggested topics"></div>
 		</div>
 	</div>
 	<!-- Do not focus on Querybox when URL contains hash to ensure page scrolls down to corresponding anchor. -->
@@ -140,7 +140,8 @@
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>The interface that describe part of the analytics event that can be modified.</p>
+						<p>The <code>IChangeableAnalyticsDataObject</code> interface describes the modifiable part of the object that all
+						<a href="../classes/analyticsevents.html#changeanalyticscustomdata"><code>changeAnalyticsCustomData</code></a> event handlers receive as an argument.</p>
 					</div>
 				</div>
 			</section>
@@ -173,15 +174,20 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/events/AnalyticsEvents.ts#L100">src/events/AnalyticsEvents.ts
-							:100</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/events/AnalyticsEvents.ts#L136">src/events/AnalyticsEvents.ts
+							:136</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>The language of the search interface.</p>
+							<p>The language of the search interface from which the usage analytics event originates.</p>
 						</div>
-						<p>By default, this will be populated by the currently loaded localization and culture file for the search interface.</p>
+						<p>By default, the framework populates this attribute with the currently loaded localization and culture file of the
+						search interface from which the usage analytics event originates.</p>
+						<p><strong>Note:</strong></p>
+						<blockquote>
+							<p>External code <strong>can</strong> modify the value of this attribute.</p>
+						</blockquote>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
@@ -191,15 +197,18 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/events/AnalyticsEvents.ts#L74">src/events/AnalyticsEvents.ts
-							:74</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/events/AnalyticsEvents.ts#L89">src/events/AnalyticsEvents.ts
+							:89</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>The metadata for the current event.</p>
+							<p>The metadata to send along with the usage analytics event.</p>
 						</div>
-						<p>External code can modify an existing value, or add a new key - value pair.</p>
+						<p><strong>Note:</strong></p>
+						<blockquote>
+							<p>External code <strong>can</strong> modify existing values, or add new key-value pairs in this attribute.</p>
+						</blockquote>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
@@ -209,16 +218,21 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/events/AnalyticsEvents.ts#L82">src/events/AnalyticsEvents.ts
-							:82</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/events/AnalyticsEvents.ts#L102">src/events/AnalyticsEvents.ts
+							:102</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>The originLevel1 property can be used to describe the high level origin of the event.</p>
+							<p>The high-level origin of the usage analytics event.</p>
 						</div>
-						<p>For example, this can be the location of the search page, or any name that allows you to uniquely identify a search interface.</p>
-						<p>If not provided, this value will be <code>default</code>.</p>
+						<p>For instance, this could be the name of the search hub, or a name that can uniquely identify the search page from
+						which the usage analytics event originates.</p>
+						<p>Default value is <code>default</code>.</p>
+						<p><strong>Note:</strong></p>
+						<blockquote>
+							<p>External code <strong>can</strong> modify the value of this attribute.</p>
+						</blockquote>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
@@ -228,15 +242,20 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/events/AnalyticsEvents.ts#L88">src/events/AnalyticsEvents.ts
-							:88</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/events/AnalyticsEvents.ts#L113">src/events/AnalyticsEvents.ts
+							:113</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>The originLevel2 property can be used to describe the mid level origin of the event.</p>
+							<p>The mid-level origin of the usage analytics event.</p>
 						</div>
-						<p>By default, the framework will populate this with the currently selected tab.</p>
+						<p>By default, the framework populates this attribute with the <code>data-id</code> of the currently selected tab in the search
+						interface from which the usage analytics event originates.</p>
+						<p><strong>Note:</strong></p>
+						<blockquote>
+							<p>External code <strong>can</strong> modify the value of this attribute.</p>
+						</blockquote>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
@@ -246,15 +265,20 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/events/AnalyticsEvents.ts#L94">src/events/AnalyticsEvents.ts
-							:94</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/events/AnalyticsEvents.ts#L125">src/events/AnalyticsEvents.ts
+							:125</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>The originLevel3 property can be used to describe the low level origin of the event.</p>
+							<p>The low-level origin of the usage analytics event.</p>
 						</div>
-						<p>By default, this property will be left empty.</p>
+						<p>For instance, this could be the HTTP identifier of the page from which the usage analytics event originates.</p>
+						<p>Default value is the empty string.</p>
+						<p><strong>Note:</strong></p>
+						<blockquote>
+							<p>External code <strong>can</strong> modify the value of this attribute.</p>
+						</blockquote>
 					</div>
 				</section>
 			</section>

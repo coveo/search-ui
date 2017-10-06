@@ -1,123 +1,12 @@
-webpackJsonpCoveo__temporary([4,40,47,48,66],{
+webpackJsonpCoveo__temporary([4,42,49,50,68],{
 
-/***/ 123:
+/***/ 16:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var Dom_1 = __webpack_require__(3);
-var DateUtils_1 = __webpack_require__(31);
-var GlobalExports_1 = __webpack_require__(4);
-var Strings_1 = __webpack_require__(10);
-var Globalize = __webpack_require__(26);
-var Pikaday = __webpack_require__(609);
-/**
- * A date picker widget with standard styling.
- */
-var DatePicker = (function () {
-    /**
-     * Creates a new `DatePicker`.
-     * @param onChange The function to call when a new value is selected in the date picker. This function takes the
-     * current `DatePicker` instance as an argument.
-     */
-    function DatePicker(onChange) {
-        if (onChange === void 0) { onChange = function () {
-        }; }
-        this.onChange = onChange;
-        this.wasReset = true;
-        this.buildContent();
-    }
-    /**
-     * Resets the date picker.
-     */
-    DatePicker.prototype.reset = function () {
-        this.picker.setDate(undefined);
-        this.wasReset = true;
-        this.onChange(this);
-    };
-    /**
-     * Gets the element on which the date picker is bound.
-     * @returns {HTMLInputElement} The date picker element.
-     */
-    DatePicker.prototype.getElement = function () {
-        return this.element;
-    };
-    /**
-     * Gets the currently selected value in the date picker.
-     * @returns {string} A textual representation of the currently selected value (`YYYY-MM-DD` format).
-     */
-    DatePicker.prototype.getValue = function () {
-        if (this.wasReset) {
-            return '';
-        }
-        var date = this.picker.getDate();
-        return date ? DateUtils_1.DateUtils.dateForQuery(this.picker.getDate()) : '';
-    };
-    /**
-     * Get the currently selected value in the date picker, as a Date object
-     * @returns {Date} A Date object for the current value, or null if the date picker was reset or a date has not been selected initially.
-     */
-    DatePicker.prototype.getDateValue = function () {
-        if (this.wasReset) {
-            return null;
-        }
-        return this.picker.getDate();
-    };
-    /**
-     * Sets the date picker value.
-     * @param date The value to set the date picker to. Must be a
-     * [Date](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Date) object.
-     */
-    DatePicker.prototype.setValue = function (date) {
-        this.picker.setDate(date);
-        this.wasReset = false;
-    };
-    /**
-     * Gets the element on which the date picker is bound.
-     * @returns {HTMLInputElement} The date picker element.
-     */
-    DatePicker.prototype.build = function () {
-        return this.element;
-    };
-    DatePicker.prototype.buildContent = function () {
-        var _this = this;
-        this.element = Dom_1.$$('input', { className: 'coveo-button' }).el;
-        this.element.readOnly = true;
-        this.picker = new Pikaday({
-            field: this.element,
-            onSelect: function () {
-                _this.wasReset = false;
-                _this.onChange.call(_this, _this);
-            },
-            i18n: {
-                previousMonth: Strings_1.l('PreviousMonth'),
-                nextMonth: Strings_1.l('NextMonth'),
-                months: Globalize.culture().calendar.months.names,
-                weekdays: Globalize.culture().calendar.days.names,
-                weekdaysShort: Globalize.culture().calendar.days.namesAbbr
-            }
-        });
-    };
-    return DatePicker;
-}());
-DatePicker.doExport = function () {
-    GlobalExports_1.exportGlobally({
-        'DatePicker': DatePicker
-    });
-};
-exports.DatePicker = DatePicker;
-
-
-/***/ }),
-
-/***/ 17:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var SVGDom = (function () {
+var SVGDom = /** @class */ (function () {
     function SVGDom() {
     }
     SVGDom.addClassToSVGInContainer = function (svgContainer, classToAdd) {
@@ -139,16 +28,16 @@ exports.SVGDom = SVGDom;
 
 /***/ }),
 
-/***/ 278:
+/***/ 238:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var TextInput_1 = __webpack_require__(55);
-var AdvancedSearchEvents_1 = __webpack_require__(68);
+var TextInput_1 = __webpack_require__(50);
+var AdvancedSearchEvents_1 = __webpack_require__(60);
 var Dom_1 = __webpack_require__(3);
-var KeywordsInput = (function () {
+var KeywordsInput = /** @class */ (function () {
     function KeywordsInput(inputName, root) {
         this.inputName = inputName;
         this.root = root;
@@ -190,17 +79,17 @@ exports.KeywordsInput = KeywordsInput;
 
 /***/ }),
 
-/***/ 346:
+/***/ 262:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var AdvancedSearchEvents_1 = __webpack_require__(68);
+var AdvancedSearchEvents_1 = __webpack_require__(60);
 var Dom_1 = __webpack_require__(3);
-var RadioButton_1 = __webpack_require__(96);
+var RadioButton_1 = __webpack_require__(80);
 var _ = __webpack_require__(1);
-var DateInput = (function () {
+var DateInput = /** @class */ (function () {
     function DateInput(inputName, root) {
         this.inputName = inputName;
         this.root = root;
@@ -283,22 +172,21 @@ exports.DateInput = DateInput;
 
 /***/ }),
 
-/***/ 347:
+/***/ 263:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var Dom_1 = __webpack_require__(3);
-var AdvancedSearchEvents_1 = __webpack_require__(68);
+var AdvancedSearchEvents_1 = __webpack_require__(60);
 var Strings_1 = __webpack_require__(10);
-var DocumentInput = (function () {
+var DocumentInput = /** @class */ (function () {
     function DocumentInput(inputName, root) {
         this.inputName = inputName;
         this.root = root;
     }
-    DocumentInput.prototype.reset = function () {
-    };
+    DocumentInput.prototype.reset = function () { };
     DocumentInput.prototype.build = function () {
         var documentInput = Dom_1.$$('div', { className: 'coveo-advanced-search-document-input-section' });
         var label = Dom_1.$$('span', { className: 'coveo-advanced-search-label' });
@@ -331,7 +219,7 @@ exports.DocumentInput = DocumentInput;
 
 /***/ }),
 
-/***/ 348:
+/***/ 266:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -350,26 +238,26 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var Component_1 = __webpack_require__(8);
 var ComponentOptions_1 = __webpack_require__(9);
 var QueryEvents_1 = __webpack_require__(11);
-var AdvancedSearchEvents_1 = __webpack_require__(68);
-var SettingsEvents_1 = __webpack_require__(45);
+var AdvancedSearchEvents_1 = __webpack_require__(60);
+var SettingsEvents_1 = __webpack_require__(43);
 var Initialization_1 = __webpack_require__(2);
 var Strings_1 = __webpack_require__(10);
 var Dom_1 = __webpack_require__(3);
-var AdvancedSearchInputFactory_1 = __webpack_require__(950);
+var AdvancedSearchInputFactory_1 = __webpack_require__(456);
 var AnalyticsActionListMeta_1 = __webpack_require__(12);
-var QuerySummaryEvents_1 = __webpack_require__(509);
+var QuerySummaryEvents_1 = __webpack_require__(428);
 var _ = __webpack_require__(1);
 var GlobalExports_1 = __webpack_require__(4);
-__webpack_require__(906);
-var NumericSpinner_1 = __webpack_require__(97);
-var DatePicker_1 = __webpack_require__(123);
-var Dropdown_1 = __webpack_require__(60);
-var TextInput_1 = __webpack_require__(55);
-var RadioButton_1 = __webpack_require__(96);
-var ExternalModulesShim_1 = __webpack_require__(28);
-var BreadcrumbEvents_1 = __webpack_require__(50);
+__webpack_require__(467);
+var NumericSpinner_1 = __webpack_require__(82);
+var DatePicker_1 = __webpack_require__(97);
+var Dropdown_1 = __webpack_require__(53);
+var TextInput_1 = __webpack_require__(50);
+var RadioButton_1 = __webpack_require__(80);
+var ExternalModulesShim_1 = __webpack_require__(27);
+var BreadcrumbEvents_1 = __webpack_require__(42);
 var SVGIcons_1 = __webpack_require__(15);
-var SVGDom_1 = __webpack_require__(17);
+var SVGDom_1 = __webpack_require__(16);
 /**
  * The `AdvancedSearch` component is meant to render a section in the [`Settings`]{@link Settings} menu to allow the end
  * user to easily create complex queries to send to the index.
@@ -378,7 +266,7 @@ var SVGDom_1 = __webpack_require__(17);
  * > You can write custom code to add new sections in the **Advanced Search** modal box generated by this component by
  * > attaching a handler to the [`buildingAdvancedSearch`]{@link AdvancedSearchEvents.buildingAdvancedSearch} event.
  */
-var AdvancedSearch = (function (_super) {
+var AdvancedSearch = /** @class */ (function (_super) {
     __extends(AdvancedSearch, _super);
     /**
      * Creates a new `AdvancedSearch` component.
@@ -610,56 +498,58 @@ var AdvancedSearch = (function (_super) {
     };
     AdvancedSearch.prototype.bindEvents = function () {
         var _this = this;
-        this.bind.onRootElement(BreadcrumbEvents_1.BreadcrumbEvents.populateBreadcrumb, function (args) { return _this.handlePopulateBreadcrumb(args); });
+        this.bind.onRootElement(BreadcrumbEvents_1.BreadcrumbEvents.populateBreadcrumb, function (args) {
+            return _this.handlePopulateBreadcrumb(args);
+        });
         this.bind.onRootElement(BreadcrumbEvents_1.BreadcrumbEvents.clearBreadcrumb, function (args) { return _this.handleClearBreadcrumb(); });
         this.bind.onRootElement(SettingsEvents_1.SettingsEvents.settingsPopulateMenu, function (args) { return _this.handlePopulateMenu(args); });
         this.bind.onRootElement(QueryEvents_1.QueryEvents.buildingQuery, function (data) { return _this.handleBuildingQuery(data); });
         this.bind.onRootElement(AdvancedSearchEvents_1.AdvancedSearchEvents.executeAdvancedSearch, function () { return _this.executeAdvancedSearch(); });
         this.bind.onRootElement(QuerySummaryEvents_1.QuerySummaryEvents.cancelLastAction, function () { return _this.handleQuerySummaryCancelLastAction(); });
     };
+    AdvancedSearch.ID = 'AdvancedSearch';
+    AdvancedSearch.doExport = function () {
+        GlobalExports_1.exportGlobally({
+            AdvancedSearch: AdvancedSearch,
+            NumericSpinner: NumericSpinner_1.NumericSpinner,
+            DatePicker: DatePicker_1.DatePicker,
+            Dropdown: Dropdown_1.Dropdown,
+            TextInput: TextInput_1.TextInput,
+            RadioButton: RadioButton_1.RadioButton
+        });
+    };
+    /**
+     * @componentOptions
+     */
+    AdvancedSearch.options = {
+        /**
+         * Specifies whether to include the built-in **Keywords** section.
+         *
+         * Default value is `true`.
+         */
+        includeKeywords: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: true }),
+        /**
+         * Specifies whether to include the built-in **Date** section.
+         *
+         * Default value is `true`.
+         */
+        includeDate: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: true }),
+        /**
+         * Specifies whether to include the built-in **Document** section.
+         *
+         * Default value is `true`.
+         */
+        includeDocument: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: true })
+    };
     return AdvancedSearch;
 }(Component_1.Component));
-AdvancedSearch.ID = 'AdvancedSearch';
-AdvancedSearch.doExport = function () {
-    GlobalExports_1.exportGlobally({
-        'AdvancedSearch': AdvancedSearch,
-        'NumericSpinner': NumericSpinner_1.NumericSpinner,
-        'DatePicker': DatePicker_1.DatePicker,
-        'Dropdown': Dropdown_1.Dropdown,
-        'TextInput': TextInput_1.TextInput,
-        'RadioButton': RadioButton_1.RadioButton
-    });
-};
-/**
- * @componentOptions
- */
-AdvancedSearch.options = {
-    /**
-     * Specifies whether to include the built-in **Keywords** section.
-     *
-     * Default value is `true`.
-     */
-    includeKeywords: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: true }),
-    /**
-     * Specifies whether to include the built-in **Date** section.
-     *
-     * Default value is `true`.
-     */
-    includeDate: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: true }),
-    /**
-     * Specifies whether to include the built-in **Document** section.
-     *
-     * Default value is `true`.
-     */
-    includeDocument: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: true })
-};
 exports.AdvancedSearch = AdvancedSearch;
 Initialization_1.Initialization.registerAutoCreateComponent(AdvancedSearch);
 
 
 /***/ }),
 
-/***/ 509:
+/***/ 428:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -668,167 +558,31 @@ Object.defineProperty(exports, "__esModule", { value: true });
 /**
  * This static class is there to contains the different string definition for all the events related to the {@link AdvancedSearch} component.
  */
-var QuerySummaryEvents = (function () {
+var QuerySummaryEvents = /** @class */ (function () {
     function QuerySummaryEvents() {
     }
+    /**
+     * Triggered when the last action is being cancelled by the query summary component
+     *
+     * Allows external code to revert their last action.
+     * @type {string}
+     */
+    QuerySummaryEvents.cancelLastAction = 'cancelLastAction';
     return QuerySummaryEvents;
 }());
-/**
- * Triggered when the last action is being cancelled by the query summary component
- *
- * Allows external code to revert their last action.
- * @type {string}
- */
-QuerySummaryEvents.cancelLastAction = 'cancelLastAction';
 exports.QuerySummaryEvents = QuerySummaryEvents;
 
 
 /***/ }),
 
-/***/ 60:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var Dom_1 = __webpack_require__(3);
-var Strings_1 = __webpack_require__(10);
-var _ = __webpack_require__(1);
-var GlobalExports_1 = __webpack_require__(4);
-/**
- * A dropdown widget with standard styling.
- */
-var Dropdown = (function () {
-    /**
-     * Creates a new `Dropdown`.
-     * @param onChange The function to call when the dropdown selected value changes. This function takes the current
-     * `Dropdown` instance as an argument.
-     * @param listOfValues The selectable values to display in the dropdown.
-     * @param getDisplayValue An optional function to modify the display values, rather than using the values as they
-     * appear in the `listOfValues`.
-     * @param label The label to display for the dropdown.
-     */
-    function Dropdown(onChange, listOfValues, getDisplayValue, label) {
-        if (onChange === void 0) { onChange = function (dropdown) {
-        }; }
-        if (getDisplayValue === void 0) { getDisplayValue = Strings_1.l; }
-        this.onChange = onChange;
-        this.listOfValues = listOfValues;
-        this.getDisplayValue = getDisplayValue;
-        this.label = label;
-        this.optionsElement = [];
-        this.buildContent();
-        this.select(0, false);
-        this.bindEvents();
-    }
-    Dropdown.doExport = function () {
-        GlobalExports_1.exportGlobally({
-            'Dropdown': Dropdown
-        });
-    };
-    /**
-     * Resets the dropdown.
-     */
-    Dropdown.prototype.reset = function () {
-        this.select(0, false);
-    };
-    Dropdown.prototype.setId = function (id) {
-        Dom_1.$$(this.element).setAttribute('id', id);
-    };
-    /**
-     * Gets the element on which the dropdown is bound.
-     * @returns {HTMLElement} The dropdown element.
-     */
-    Dropdown.prototype.getElement = function () {
-        return this.element;
-    };
-    /**
-     * Gets the currently selected dropdown value.
-     * @returns {string} The currently selected dropdown value.
-     */
-    Dropdown.prototype.getValue = function () {
-        return this.selectElement.value;
-    };
-    /**
-     * Selects a value from the dropdown [`listofValues`]{@link Dropdown.listOfValues}.
-     * @param index The 0-based index position of the value to select in the `listOfValues`.
-     * @param executeOnChange Indicates whether to execute the [`onChange`]{@link Dropdown.onChange} function when this
-     * method changes the dropdown selection.
-     */
-    Dropdown.prototype.select = function (index, executeOnChange) {
-        if (executeOnChange === void 0) { executeOnChange = true; }
-        this.selectOption(this.optionsElement[index], executeOnChange);
-    };
-    /**
-     * Gets the element on which the dropdown is bound.
-     * @returns {HTMLElement} The dropdown element.
-     */
-    Dropdown.prototype.build = function () {
-        return this.element;
-    };
-    /**
-     * Sets the dropdown value.
-     * @param value The value to set the dropdown to.
-     */
-    Dropdown.prototype.setValue = function (value) {
-        var _this = this;
-        _.each(this.optionsElement, function (option) {
-            if (Dom_1.$$(option).getAttribute('data-value') == value) {
-                _this.selectOption(option);
-            }
-        });
-    };
-    Dropdown.prototype.selectOption = function (option, executeOnChange) {
-        if (executeOnChange === void 0) { executeOnChange = true; }
-        this.selectElement.value = option.value;
-        if (executeOnChange) {
-            this.onChange(this);
-        }
-    };
-    Dropdown.prototype.buildContent = function () {
-        var _this = this;
-        this.selectElement = Dom_1.$$('select', { className: 'coveo-dropdown' }).el;
-        var selectOptions = this.buildOptions();
-        _.each(selectOptions, function (opt) {
-            Dom_1.$$(_this.selectElement).append(opt);
-        });
-        this.element = this.selectElement;
-    };
-    Dropdown.prototype.buildOptions = function () {
-        var _this = this;
-        var ret = [];
-        _.each(this.listOfValues, function (value) {
-            ret.push(_this.buildOption(value));
-        });
-        return ret;
-    };
-    Dropdown.prototype.buildOption = function (value) {
-        var option = Dom_1.$$('option');
-        option.setAttribute('data-value', value);
-        option.setAttribute('value', value);
-        option.text(this.getDisplayValue(value));
-        this.optionsElement.push(option.el);
-        return option.el;
-    };
-    Dropdown.prototype.bindEvents = function () {
-        var _this = this;
-        Dom_1.$$(this.selectElement).on('change', function () { return _this.onChange(_this); });
-    };
-    return Dropdown;
-}());
-exports.Dropdown = Dropdown;
-
-
-/***/ }),
-
-/***/ 602:
+/***/ 435:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
 
-/***/ 609:
+/***/ 443:
 /***/ (function(module, exports, __webpack_require__) {
 
 /*!
@@ -2071,30 +1825,23 @@ exports.Dropdown = Dropdown;
 
 /***/ }),
 
-/***/ 906:
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-
-/***/ 950:
+/***/ 456:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var AllKeywordsInput_1 = __webpack_require__(957);
-var ExactKeywordsInput_1 = __webpack_require__(959);
-var AnyKeywordsInput_1 = __webpack_require__(958);
-var NoneKeywordsInput_1 = __webpack_require__(960);
-var AnytimeDateInput_1 = __webpack_require__(951);
-var InTheLastDateInput_1 = __webpack_require__(953);
-var BetweenDateInput_1 = __webpack_require__(952);
-var SimpleFieldInput_1 = __webpack_require__(955);
-var AdvancedFieldInput_1 = __webpack_require__(954);
-var SizeInput_1 = __webpack_require__(956);
-var AdvancedSearchInputFactory = (function () {
+var AllKeywordsInput_1 = __webpack_require__(457);
+var ExactKeywordsInput_1 = __webpack_require__(458);
+var AnyKeywordsInput_1 = __webpack_require__(459);
+var NoneKeywordsInput_1 = __webpack_require__(460);
+var AnytimeDateInput_1 = __webpack_require__(461);
+var InTheLastDateInput_1 = __webpack_require__(462);
+var BetweenDateInput_1 = __webpack_require__(463);
+var SimpleFieldInput_1 = __webpack_require__(464);
+var AdvancedFieldInput_1 = __webpack_require__(465);
+var SizeInput_1 = __webpack_require__(466);
+var AdvancedSearchInputFactory = /** @class */ (function () {
     function AdvancedSearchInputFactory(endpoint, root) {
         this.endpoint = endpoint;
         this.root = root;
@@ -2162,7 +1909,7 @@ exports.AdvancedSearchInputFactory = AdvancedSearchInputFactory;
 
 /***/ }),
 
-/***/ 951:
+/***/ 457:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2178,11 +1925,167 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var DateInput_1 = __webpack_require__(346);
+var KeywordsInput_1 = __webpack_require__(238);
+var Strings_1 = __webpack_require__(10);
+var AllKeywordsInput = /** @class */ (function (_super) {
+    __extends(AllKeywordsInput, _super);
+    function AllKeywordsInput(root) {
+        var _this = _super.call(this, Strings_1.l('AllTheseWords'), root) || this;
+        _this.root = root;
+        return _this;
+    }
+    return AllKeywordsInput;
+}(KeywordsInput_1.KeywordsInput));
+exports.AllKeywordsInput = AllKeywordsInput;
+
+
+/***/ }),
+
+/***/ 458:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var KeywordsInput_1 = __webpack_require__(238);
+var Strings_1 = __webpack_require__(10);
+var ExactKeywordsInput = /** @class */ (function (_super) {
+    __extends(ExactKeywordsInput, _super);
+    function ExactKeywordsInput(root) {
+        var _this = _super.call(this, Strings_1.l('ExactPhrase'), root) || this;
+        _this.root = root;
+        return _this;
+    }
+    ExactKeywordsInput.prototype.getValue = function () {
+        var value = _super.prototype.getValue.call(this);
+        return value ? '"' + value + '"' : '';
+    };
+    return ExactKeywordsInput;
+}(KeywordsInput_1.KeywordsInput));
+exports.ExactKeywordsInput = ExactKeywordsInput;
+
+
+/***/ }),
+
+/***/ 459:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var KeywordsInput_1 = __webpack_require__(238);
+var Strings_1 = __webpack_require__(10);
+var _ = __webpack_require__(1);
+var AnyKeywordsInput = /** @class */ (function (_super) {
+    __extends(AnyKeywordsInput, _super);
+    function AnyKeywordsInput(root) {
+        var _this = _super.call(this, Strings_1.l('AnyOfTheseWords'), root) || this;
+        _this.root = root;
+        return _this;
+    }
+    AnyKeywordsInput.prototype.getValue = function () {
+        var value = _super.prototype.getValue.call(this);
+        var splitValues = value.split(' ');
+        var generatedValue = '';
+        _.each(splitValues, function (splitValue) {
+            generatedValue += splitValue + ' OR ';
+        });
+        generatedValue = generatedValue.substr(0, generatedValue.length - 4);
+        return generatedValue;
+    };
+    return AnyKeywordsInput;
+}(KeywordsInput_1.KeywordsInput));
+exports.AnyKeywordsInput = AnyKeywordsInput;
+
+
+/***/ }),
+
+/***/ 460:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var KeywordsInput_1 = __webpack_require__(238);
+var Strings_1 = __webpack_require__(10);
+var _ = __webpack_require__(1);
+var NoneKeywordsInput = /** @class */ (function (_super) {
+    __extends(NoneKeywordsInput, _super);
+    function NoneKeywordsInput(root) {
+        var _this = _super.call(this, Strings_1.l('NoneOfTheseWords'), root) || this;
+        _this.root = root;
+        return _this;
+    }
+    NoneKeywordsInput.prototype.getValue = function () {
+        var value = _super.prototype.getValue.call(this);
+        var generatedValue = '';
+        if (value) {
+            var splitValues = value.split(' ');
+            _.each(splitValues, function (splitValue) {
+                generatedValue += ' NOT ' + splitValue;
+            });
+            generatedValue = generatedValue.substr(1);
+        }
+        return generatedValue;
+    };
+    return NoneKeywordsInput;
+}(KeywordsInput_1.KeywordsInput));
+exports.NoneKeywordsInput = NoneKeywordsInput;
+
+
+/***/ }),
+
+/***/ 461:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var DateInput_1 = __webpack_require__(262);
 var Strings_1 = __webpack_require__(10);
 var Dom_1 = __webpack_require__(3);
-var AdvancedSearchEvents_1 = __webpack_require__(68);
-var AnytimeDateInput = (function (_super) {
+var AdvancedSearchEvents_1 = __webpack_require__(60);
+var AnytimeDateInput = /** @class */ (function (_super) {
     __extends(AnytimeDateInput, _super);
     function AnytimeDateInput(root) {
         var _this = _super.call(this, Strings_1.l('Anytime'), root) || this;
@@ -2214,7 +2117,7 @@ exports.AnytimeDateInput = AnytimeDateInput;
 
 /***/ }),
 
-/***/ 952:
+/***/ 462:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2230,13 +2133,79 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var DateInput_1 = __webpack_require__(346);
-var DatePicker_1 = __webpack_require__(123);
+var DateInput_1 = __webpack_require__(262);
+var Dom_1 = __webpack_require__(3);
+var Strings_1 = __webpack_require__(10);
+var Dropdown_1 = __webpack_require__(53);
+var NumericSpinner_1 = __webpack_require__(82);
+var DateUtils_1 = __webpack_require__(29);
+var InTheLastDateInput = /** @class */ (function (_super) {
+    __extends(InTheLastDateInput, _super);
+    function InTheLastDateInput(root) {
+        var _this = _super.call(this, Strings_1.l('InTheLast'), root) || this;
+        _this.root = root;
+        return _this;
+    }
+    InTheLastDateInput.prototype.reset = function () {
+        this.dropdown.reset();
+        this.spinner.reset();
+    };
+    InTheLastDateInput.prototype.build = function () {
+        _super.prototype.build.call(this);
+        var input = Dom_1.$$('fieldset', { className: 'coveo-advanced-search-date-input' });
+        input.el.disabled = true;
+        this.spinner = new NumericSpinner_1.NumericSpinner(this.onChange.bind(this));
+        input.append(this.spinner.getElement());
+        this.dropdown = new Dropdown_1.Dropdown(this.onChange.bind(this), ['Days', 'Months']);
+        this.dropdown.setId('coveo-advanced-search-in-the-last-select');
+        input.append(this.dropdown.getElement());
+        this.element.appendChild(input.el);
+        Dom_1.$$(this.getRadio()).on('change', this.onChange.bind(this));
+        return this.element;
+    };
+    InTheLastDateInput.prototype.getValue = function () {
+        var currentDate = new Date();
+        var time = this.spinner.getIntValue();
+        var size = this.dropdown.getValue().toLowerCase();
+        var date = new Date();
+        if (size == 'months') {
+            date.setMonth(currentDate.getMonth() - time);
+        }
+        else {
+            date.setDate(currentDate.getDate() - time);
+        }
+        return this.isSelected() && time ? '@date>=' + DateUtils_1.DateUtils.dateForQuery(date) : '';
+    };
+    return InTheLastDateInput;
+}(DateInput_1.DateInput));
+exports.InTheLastDateInput = InTheLastDateInput;
+
+
+/***/ }),
+
+/***/ 463:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var DateInput_1 = __webpack_require__(262);
+var DatePicker_1 = __webpack_require__(97);
 var Strings_1 = __webpack_require__(10);
 var Dom_1 = __webpack_require__(3);
-var DateUtils_1 = __webpack_require__(31);
-var TimeSpanUtils_1 = __webpack_require__(71);
-var BetweenDateInput = (function (_super) {
+var DateUtils_1 = __webpack_require__(29);
+var TimeSpanUtils_1 = __webpack_require__(62);
+var BetweenDateInput = /** @class */ (function (_super) {
     __extends(BetweenDateInput, _super);
     function BetweenDateInput(root) {
         var _this = _super.call(this, Strings_1.l('Between'), root) || this;
@@ -2293,7 +2262,7 @@ exports.BetweenDateInput = BetweenDateInput;
 
 /***/ }),
 
-/***/ 953:
+/***/ 464:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2309,57 +2278,70 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var DateInput_1 = __webpack_require__(346);
+var Dropdown_1 = __webpack_require__(53);
+var FacetUtils_1 = __webpack_require__(40);
+var DocumentInput_1 = __webpack_require__(263);
 var Dom_1 = __webpack_require__(3);
-var Strings_1 = __webpack_require__(10);
-var Dropdown_1 = __webpack_require__(60);
-var NumericSpinner_1 = __webpack_require__(97);
-var DateUtils_1 = __webpack_require__(31);
-var InTheLastDateInput = (function (_super) {
-    __extends(InTheLastDateInput, _super);
-    function InTheLastDateInput(root) {
-        var _this = _super.call(this, Strings_1.l('InTheLast'), root) || this;
+var _ = __webpack_require__(1);
+var QueryBuilder_1 = __webpack_require__(48);
+var SimpleFieldInput = /** @class */ (function (_super) {
+    __extends(SimpleFieldInput, _super);
+    function SimpleFieldInput(inputName, fieldName, endpoint, root) {
+        var _this = _super.call(this, inputName, root) || this;
+        _this.inputName = inputName;
+        _this.fieldName = fieldName;
+        _this.endpoint = endpoint;
         _this.root = root;
         return _this;
     }
-    InTheLastDateInput.prototype.reset = function () {
-        this.dropdown.reset();
-        this.spinner.reset();
+    SimpleFieldInput.prototype.reset = function () {
+        this.dropDown.reset();
     };
-    InTheLastDateInput.prototype.build = function () {
-        _super.prototype.build.call(this);
-        var input = Dom_1.$$('fieldset', { className: 'coveo-advanced-search-date-input' });
-        input.el.disabled = true;
-        this.spinner = new NumericSpinner_1.NumericSpinner(this.onChange.bind(this));
-        input.append(this.spinner.getElement());
-        this.dropdown = new Dropdown_1.Dropdown(this.onChange.bind(this), ['Days', 'Months']);
-        this.dropdown.setId('coveo-advanced-search-in-the-last-select');
-        input.append(this.dropdown.getElement());
-        this.element.appendChild(input.el);
-        Dom_1.$$(this.getRadio()).on('change', this.onChange.bind(this));
+    SimpleFieldInput.prototype.build = function () {
+        var _this = this;
+        var fieldInput = Dom_1.$$(_super.prototype.build.call(this));
+        this.buildFieldSelect().then(function () {
+            fieldInput.append(_this.dropDown.getElement());
+        });
+        this.element = fieldInput.el;
         return this.element;
     };
-    InTheLastDateInput.prototype.getValue = function () {
-        var currentDate = new Date();
-        var time = this.spinner.getIntValue();
-        var size = this.dropdown.getValue().toLowerCase();
-        var date = new Date();
-        if (size == 'months') {
-            date.setMonth(currentDate.getMonth() - time);
+    SimpleFieldInput.prototype.getValue = function () {
+        var value = this.dropDown ? this.dropDown.getValue() : '';
+        var queryBuilder = new QueryBuilder_1.QueryBuilder();
+        if (value) {
+            queryBuilder.advancedExpression.addFieldExpression(this.fieldName, '==', [value]);
+            return queryBuilder.build().aq;
         }
         else {
-            date.setDate(currentDate.getDate() - time);
+            return '';
         }
-        return this.isSelected() && time ? '@date>=' + DateUtils_1.DateUtils.dateForQuery(date) : '';
     };
-    return InTheLastDateInput;
-}(DateInput_1.DateInput));
-exports.InTheLastDateInput = InTheLastDateInput;
+    SimpleFieldInput.prototype.buildFieldSelect = function () {
+        var _this = this;
+        return this.endpoint
+            .listFieldValues({
+            field: this.fieldName,
+            maximumNumberOfValues: 50
+        })
+            .then(function (values) {
+            var options = [''];
+            _.each(values, function (value) {
+                options.push(value.value);
+            });
+            _this.dropDown = new Dropdown_1.Dropdown(_this.onChange.bind(_this), options, function (str) {
+                return FacetUtils_1.FacetUtils.tryToGetTranslatedCaption(_this.fieldName, str);
+            });
+        });
+    };
+    return SimpleFieldInput;
+}(DocumentInput_1.DocumentInput));
+exports.SimpleFieldInput = SimpleFieldInput;
 
 
 /***/ }),
 
-/***/ 954:
+/***/ 465:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2375,12 +2357,12 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var Dropdown_1 = __webpack_require__(60);
-var TextInput_1 = __webpack_require__(55);
+var Dropdown_1 = __webpack_require__(53);
+var TextInput_1 = __webpack_require__(50);
 var Dom_1 = __webpack_require__(3);
-var DocumentInput_1 = __webpack_require__(347);
-var QueryBuilder_1 = __webpack_require__(51);
-var AdvancedFieldInput = (function (_super) {
+var DocumentInput_1 = __webpack_require__(263);
+var QueryBuilder_1 = __webpack_require__(48);
+var AdvancedFieldInput = /** @class */ (function (_super) {
     __extends(AdvancedFieldInput, _super);
     function AdvancedFieldInput(inputName, fieldName, root) {
         var _this = _super.call(this, inputName, root) || this;
@@ -2427,7 +2409,7 @@ exports.AdvancedFieldInput = AdvancedFieldInput;
 
 /***/ }),
 
-/***/ 955:
+/***/ 466:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2443,89 +2425,12 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var Dropdown_1 = __webpack_require__(60);
-var FacetUtils_1 = __webpack_require__(48);
-var DocumentInput_1 = __webpack_require__(347);
+var Dropdown_1 = __webpack_require__(53);
+var NumericSpinner_1 = __webpack_require__(82);
 var Dom_1 = __webpack_require__(3);
-var _ = __webpack_require__(1);
-var QueryBuilder_1 = __webpack_require__(51);
-var SimpleFieldInput = (function (_super) {
-    __extends(SimpleFieldInput, _super);
-    function SimpleFieldInput(inputName, fieldName, endpoint, root) {
-        var _this = _super.call(this, inputName, root) || this;
-        _this.inputName = inputName;
-        _this.fieldName = fieldName;
-        _this.endpoint = endpoint;
-        _this.root = root;
-        return _this;
-    }
-    SimpleFieldInput.prototype.reset = function () {
-        this.dropDown.reset();
-    };
-    SimpleFieldInput.prototype.build = function () {
-        var _this = this;
-        var fieldInput = Dom_1.$$(_super.prototype.build.call(this));
-        this.buildFieldSelect().then(function () {
-            fieldInput.append(_this.dropDown.getElement());
-        });
-        this.element = fieldInput.el;
-        return this.element;
-    };
-    SimpleFieldInput.prototype.getValue = function () {
-        var value = this.dropDown ? this.dropDown.getValue() : '';
-        var queryBuilder = new QueryBuilder_1.QueryBuilder();
-        if (value) {
-            queryBuilder.advancedExpression.addFieldExpression(this.fieldName, '==', [value]);
-            return queryBuilder.build().aq;
-        }
-        else {
-            return '';
-        }
-    };
-    SimpleFieldInput.prototype.buildFieldSelect = function () {
-        var _this = this;
-        return this.endpoint.listFieldValues({
-            field: this.fieldName,
-            maximumNumberOfValues: 50
-        }).then(function (values) {
-            var options = [''];
-            _.each(values, function (value) {
-                options.push(value.value);
-            });
-            _this.dropDown = new Dropdown_1.Dropdown(_this.onChange.bind(_this), options, function (str) {
-                return FacetUtils_1.FacetUtils.tryToGetTranslatedCaption(_this.fieldName, str);
-            });
-        });
-    };
-    return SimpleFieldInput;
-}(DocumentInput_1.DocumentInput));
-exports.SimpleFieldInput = SimpleFieldInput;
-
-
-/***/ }),
-
-/***/ 956:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-Object.defineProperty(exports, "__esModule", { value: true });
-var Dropdown_1 = __webpack_require__(60);
-var NumericSpinner_1 = __webpack_require__(97);
-var Dom_1 = __webpack_require__(3);
-var DocumentInput_1 = __webpack_require__(347);
-var QueryBuilder_1 = __webpack_require__(51);
-var SizeInput = (function (_super) {
+var DocumentInput_1 = __webpack_require__(263);
+var QueryBuilder_1 = __webpack_require__(48);
+var SizeInput = /** @class */ (function (_super) {
     __extends(SizeInput, _super);
     function SizeInput(root) {
         var _this = _super.call(this, 'Size', root) || this;
@@ -2577,139 +2482,170 @@ var SizeInput = (function (_super) {
                 return size;
         }
     };
+    SizeInput.modes = ['AtLeast', 'AtMost'];
+    SizeInput.sizes = ['KB', 'MB', 'Bytes'];
     return SizeInput;
 }(DocumentInput_1.DocumentInput));
-SizeInput.modes = ['AtLeast', 'AtMost'];
-SizeInput.sizes = ['KB', 'MB', 'Bytes'];
 exports.SizeInput = SizeInput;
 
 
 /***/ }),
 
-/***/ 957:
-/***/ (function(module, exports, __webpack_require__) {
+/***/ 467:
+/***/ (function(module, exports) {
 
-"use strict";
-
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-Object.defineProperty(exports, "__esModule", { value: true });
-var KeywordsInput_1 = __webpack_require__(278);
-var Strings_1 = __webpack_require__(10);
-var AllKeywordsInput = (function (_super) {
-    __extends(AllKeywordsInput, _super);
-    function AllKeywordsInput(root) {
-        var _this = _super.call(this, Strings_1.l('AllTheseWords'), root) || this;
-        _this.root = root;
-        return _this;
-    }
-    return AllKeywordsInput;
-}(KeywordsInput_1.KeywordsInput));
-exports.AllKeywordsInput = AllKeywordsInput;
-
+// removed by extract-text-webpack-plugin
 
 /***/ }),
 
-/***/ 958:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-Object.defineProperty(exports, "__esModule", { value: true });
-var KeywordsInput_1 = __webpack_require__(278);
-var Strings_1 = __webpack_require__(10);
-var _ = __webpack_require__(1);
-var AnyKeywordsInput = (function (_super) {
-    __extends(AnyKeywordsInput, _super);
-    function AnyKeywordsInput(root) {
-        var _this = _super.call(this, Strings_1.l('AnyOfTheseWords'), root) || this;
-        _this.root = root;
-        return _this;
-    }
-    AnyKeywordsInput.prototype.getValue = function () {
-        var value = _super.prototype.getValue.call(this);
-        var splitValues = value.split(' ');
-        var generatedValue = '';
-        _.each(splitValues, function (splitValue) {
-            generatedValue += splitValue + ' OR ';
-        });
-        generatedValue = generatedValue.substr(0, generatedValue.length - 4);
-        return generatedValue;
-    };
-    return AnyKeywordsInput;
-}(KeywordsInput_1.KeywordsInput));
-exports.AnyKeywordsInput = AnyKeywordsInput;
-
-
-/***/ }),
-
-/***/ 959:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-Object.defineProperty(exports, "__esModule", { value: true });
-var KeywordsInput_1 = __webpack_require__(278);
-var Strings_1 = __webpack_require__(10);
-var ExactKeywordsInput = (function (_super) {
-    __extends(ExactKeywordsInput, _super);
-    function ExactKeywordsInput(root) {
-        var _this = _super.call(this, Strings_1.l('ExactPhrase'), root) || this;
-        _this.root = root;
-        return _this;
-    }
-    ExactKeywordsInput.prototype.getValue = function () {
-        var value = _super.prototype.getValue.call(this);
-        return value ? '\"' + value + '\"' : '';
-    };
-    return ExactKeywordsInput;
-}(KeywordsInput_1.KeywordsInput));
-exports.ExactKeywordsInput = ExactKeywordsInput;
-
-
-/***/ }),
-
-/***/ 96:
+/***/ 53:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var Dom_1 = __webpack_require__(3);
-__webpack_require__(602);
+var Strings_1 = __webpack_require__(10);
+var _ = __webpack_require__(1);
+var GlobalExports_1 = __webpack_require__(4);
+/**
+ * A dropdown widget with standard styling.
+ */
+var Dropdown = /** @class */ (function () {
+    /**
+     * Creates a new `Dropdown`.
+     * @param onChange The function to call when the dropdown selected value changes. This function takes the current
+     * `Dropdown` instance as an argument.
+     * @param listOfValues The selectable values to display in the dropdown.
+     * @param getDisplayValue An optional function to modify the display values, rather than using the values as they
+     * appear in the `listOfValues`.
+     * @param label The label to display for the dropdown.
+     */
+    function Dropdown(onChange, listOfValues, getDisplayValue, label) {
+        if (onChange === void 0) { onChange = function (dropdown) { }; }
+        if (getDisplayValue === void 0) { getDisplayValue = Strings_1.l; }
+        this.onChange = onChange;
+        this.listOfValues = listOfValues;
+        this.getDisplayValue = getDisplayValue;
+        this.label = label;
+        this.optionsElement = [];
+        this.buildContent();
+        this.select(0, false);
+        this.bindEvents();
+    }
+    Dropdown.doExport = function () {
+        GlobalExports_1.exportGlobally({
+            Dropdown: Dropdown
+        });
+    };
+    /**
+     * Resets the dropdown.
+     */
+    Dropdown.prototype.reset = function () {
+        this.select(0, false);
+    };
+    Dropdown.prototype.setId = function (id) {
+        Dom_1.$$(this.element).setAttribute('id', id);
+    };
+    /**
+     * Gets the element on which the dropdown is bound.
+     * @returns {HTMLElement} The dropdown element.
+     */
+    Dropdown.prototype.getElement = function () {
+        return this.element;
+    };
+    /**
+     * Gets the currently selected dropdown value.
+     * @returns {string} The currently selected dropdown value.
+     */
+    Dropdown.prototype.getValue = function () {
+        return this.selectElement.value;
+    };
+    /**
+     * Selects a value from the dropdown [`listofValues`]{@link Dropdown.listOfValues}.
+     * @param index The 0-based index position of the value to select in the `listOfValues`.
+     * @param executeOnChange Indicates whether to execute the [`onChange`]{@link Dropdown.onChange} function when this
+     * method changes the dropdown selection.
+     */
+    Dropdown.prototype.select = function (index, executeOnChange) {
+        if (executeOnChange === void 0) { executeOnChange = true; }
+        this.selectOption(this.optionsElement[index], executeOnChange);
+    };
+    /**
+     * Gets the element on which the dropdown is bound.
+     * @returns {HTMLElement} The dropdown element.
+     */
+    Dropdown.prototype.build = function () {
+        return this.element;
+    };
+    /**
+     * Sets the dropdown value.
+     * @param value The value to set the dropdown to.
+     */
+    Dropdown.prototype.setValue = function (value) {
+        var _this = this;
+        _.each(this.optionsElement, function (option) {
+            if (Dom_1.$$(option).getAttribute('data-value') == value) {
+                _this.selectOption(option);
+            }
+        });
+    };
+    Dropdown.prototype.selectOption = function (option, executeOnChange) {
+        if (executeOnChange === void 0) { executeOnChange = true; }
+        this.selectElement.value = option.value;
+        if (executeOnChange) {
+            this.onChange(this);
+        }
+    };
+    Dropdown.prototype.buildContent = function () {
+        var _this = this;
+        this.selectElement = Dom_1.$$('select', { className: 'coveo-dropdown' }).el;
+        var selectOptions = this.buildOptions();
+        _.each(selectOptions, function (opt) {
+            Dom_1.$$(_this.selectElement).append(opt);
+        });
+        this.element = this.selectElement;
+    };
+    Dropdown.prototype.buildOptions = function () {
+        var _this = this;
+        var ret = [];
+        _.each(this.listOfValues, function (value) {
+            ret.push(_this.buildOption(value));
+        });
+        return ret;
+    };
+    Dropdown.prototype.buildOption = function (value) {
+        var option = Dom_1.$$('option');
+        option.setAttribute('data-value', value);
+        option.setAttribute('value', value);
+        option.text(this.getDisplayValue(value));
+        this.optionsElement.push(option.el);
+        return option.el;
+    };
+    Dropdown.prototype.bindEvents = function () {
+        var _this = this;
+        Dom_1.$$(this.selectElement).on('change', function () { return _this.onChange(_this); });
+    };
+    return Dropdown;
+}());
+exports.Dropdown = Dropdown;
+
+
+/***/ }),
+
+/***/ 80:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var Dom_1 = __webpack_require__(3);
+__webpack_require__(435);
 var GlobalExports_1 = __webpack_require__(4);
 /**
  * A radio button widget with standard styling.
  */
-var RadioButton = (function () {
+var RadioButton = /** @class */ (function () {
     /**
      * Creates a new `RadioButton`.
      * @param onChange The function to call when the radio button value changes. This function takes the current
@@ -2718,8 +2654,7 @@ var RadioButton = (function () {
      * @param name The value to set the `input` HTMLElement `name` attribute to.
      */
     function RadioButton(onChange, label, name) {
-        if (onChange === void 0) { onChange = function (radioButton) {
-        }; }
+        if (onChange === void 0) { onChange = function (radioButton) { }; }
         this.onChange = onChange;
         this.label = label;
         this.name = name;
@@ -2727,7 +2662,7 @@ var RadioButton = (function () {
     }
     RadioButton.doExport = function () {
         GlobalExports_1.exportGlobally({
-            'RadioButton': RadioButton
+            RadioButton: RadioButton
         });
     };
     /**
@@ -2794,7 +2729,7 @@ var RadioButton = (function () {
         var _this = this;
         var radioOption = Dom_1.$$('div', { className: 'coveo-radio' });
         var radioInput = Dom_1.$$('input', { type: 'radio', name: this.name, id: this.label });
-        var labelInput = Dom_1.$$('label', { className: 'coveo-radio-input-label', 'for': this.label });
+        var labelInput = Dom_1.$$('label', { className: 'coveo-radio-input-label', for: this.label });
         labelInput.text(this.label);
         radioInput.on('change', function () {
             _this.onChange(_this);
@@ -2810,52 +2745,7 @@ exports.RadioButton = RadioButton;
 
 /***/ }),
 
-/***/ 960:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-Object.defineProperty(exports, "__esModule", { value: true });
-var KeywordsInput_1 = __webpack_require__(278);
-var Strings_1 = __webpack_require__(10);
-var _ = __webpack_require__(1);
-var NoneKeywordsInput = (function (_super) {
-    __extends(NoneKeywordsInput, _super);
-    function NoneKeywordsInput(root) {
-        var _this = _super.call(this, Strings_1.l('NoneOfTheseWords'), root) || this;
-        _this.root = root;
-        return _this;
-    }
-    NoneKeywordsInput.prototype.getValue = function () {
-        var value = _super.prototype.getValue.call(this);
-        var generatedValue = '';
-        if (value) {
-            var splitValues = value.split(' ');
-            _.each(splitValues, function (splitValue) {
-                generatedValue += ' NOT ' + splitValue;
-            });
-            generatedValue = generatedValue.substr(1);
-        }
-        return generatedValue;
-    };
-    return NoneKeywordsInput;
-}(KeywordsInput_1.KeywordsInput));
-exports.NoneKeywordsInput = NoneKeywordsInput;
-
-
-/***/ }),
-
-/***/ 97:
+/***/ 82:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2864,11 +2754,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var Dom_1 = __webpack_require__(3);
 var GlobalExports_1 = __webpack_require__(4);
 var SVGIcons_1 = __webpack_require__(15);
-var SVGDom_1 = __webpack_require__(17);
+var SVGDom_1 = __webpack_require__(16);
 /**
  * A numeric spinner widget with standard styling.
  */
-var NumericSpinner = (function () {
+var NumericSpinner = /** @class */ (function () {
     /**
      * Creates a new `NumericSpinner`.
      * @param onChange The function to call when the numeric spinner value changes. This function takes the current
@@ -2877,8 +2767,7 @@ var NumericSpinner = (function () {
      * @param max The maximum possible value of the numeric spinner.
      */
     function NumericSpinner(onChange, min, max) {
-        if (onChange === void 0) { onChange = function (numericSpinner) {
-        }; }
+        if (onChange === void 0) { onChange = function (numericSpinner) { }; }
         if (min === void 0) { min = 0; }
         this.onChange = onChange;
         this.min = min;
@@ -2888,7 +2777,7 @@ var NumericSpinner = (function () {
     }
     NumericSpinner.doExport = function () {
         GlobalExports_1.exportGlobally({
-            'NumericSpinner': NumericSpinner
+            NumericSpinner: NumericSpinner
         });
     };
     /**
@@ -2987,6 +2876,116 @@ var NumericSpinner = (function () {
     return NumericSpinner;
 }());
 exports.NumericSpinner = NumericSpinner;
+
+
+/***/ }),
+
+/***/ 97:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var Dom_1 = __webpack_require__(3);
+var DateUtils_1 = __webpack_require__(29);
+var GlobalExports_1 = __webpack_require__(4);
+var Strings_1 = __webpack_require__(10);
+var Globalize = __webpack_require__(25);
+var Pikaday = __webpack_require__(443);
+/**
+ * A date picker widget with standard styling.
+ */
+var DatePicker = /** @class */ (function () {
+    /**
+     * Creates a new `DatePicker`.
+     * @param onChange The function to call when a new value is selected in the date picker. This function takes the
+     * current `DatePicker` instance as an argument.
+     */
+    function DatePicker(onChange) {
+        if (onChange === void 0) { onChange = function () { }; }
+        this.onChange = onChange;
+        this.wasReset = true;
+        this.buildContent();
+    }
+    /**
+     * Resets the date picker.
+     */
+    DatePicker.prototype.reset = function () {
+        this.picker.setDate(undefined);
+        this.wasReset = true;
+        this.onChange(this);
+    };
+    /**
+     * Gets the element on which the date picker is bound.
+     * @returns {HTMLInputElement} The date picker element.
+     */
+    DatePicker.prototype.getElement = function () {
+        return this.element;
+    };
+    /**
+     * Gets the currently selected value in the date picker.
+     * @returns {string} A textual representation of the currently selected value (`YYYY-MM-DD` format).
+     */
+    DatePicker.prototype.getValue = function () {
+        if (this.wasReset) {
+            return '';
+        }
+        var date = this.picker.getDate();
+        return date ? DateUtils_1.DateUtils.dateForQuery(this.picker.getDate()) : '';
+    };
+    /**
+     * Get the currently selected value in the date picker, as a Date object
+     * @returns {Date} A Date object for the current value, or null if the date picker was reset or a date has not been selected initially.
+     */
+    DatePicker.prototype.getDateValue = function () {
+        if (this.wasReset) {
+            return null;
+        }
+        return this.picker.getDate();
+    };
+    /**
+     * Sets the date picker value.
+     * @param date The value to set the date picker to. Must be a
+     * [Date](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Date) object.
+     */
+    DatePicker.prototype.setValue = function (date) {
+        this.picker.setDate(date);
+        this.wasReset = false;
+    };
+    /**
+     * Gets the element on which the date picker is bound.
+     * @returns {HTMLInputElement} The date picker element.
+     */
+    DatePicker.prototype.build = function () {
+        return this.element;
+    };
+    DatePicker.prototype.buildContent = function () {
+        var _this = this;
+        this.element = Dom_1.$$('input', { className: 'coveo-button' }).el;
+        this.element.readOnly = true;
+        this.picker = new Pikaday({
+            field: this.element,
+            onSelect: function () {
+                _this.wasReset = false;
+                _this.onChange.call(_this, _this);
+            },
+            i18n: {
+                previousMonth: Strings_1.l('PreviousMonth'),
+                nextMonth: Strings_1.l('NextMonth'),
+                months: Globalize.culture().calendar.months.names,
+                weekdays: Globalize.culture().calendar.days.names,
+                weekdaysShort: Globalize.culture().calendar.days.namesAbbr
+            }
+        });
+    };
+    DatePicker.doExport = function () {
+        GlobalExports_1.exportGlobally({
+            DatePicker: DatePicker
+        });
+    };
+    return DatePicker;
+}());
+exports.DatePicker = DatePicker;
 
 
 /***/ })

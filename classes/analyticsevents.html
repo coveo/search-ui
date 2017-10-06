@@ -56,7 +56,7 @@
 	<div class="bottomHeader">
 		<div id="searchBox">
 			<div class="CoveoSearchbox" data-enable-omnibox="true" data-inline="false" data-enable-wildcards="true" data-enable-search-as-you-type="false" data-enable-query-suggest-addon="false" data-enable-query-syntax="true" data-enable-field-addon="true"></div>
-			<div class="CoveoFieldSuggestions" data-field="@systitle" data-header-title="Suggested topics"></div>
+			<div class="CoveoFieldSuggestions" data-field="@jsuipagetopic" data-header-title="Suggested topics"></div>
 		</div>
 	</div>
 	<!-- Do not focus on Querybox when URL contains hash to ensure page scrolls down to corresponding anchor. -->
@@ -128,8 +128,10 @@
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>This static class is there to contains the different string definition for all the events related to analytics.</p>
+						<p>The <code>AnalyticsEvents</code> static class contains the string definitions of all events that strongly relate to usage
+						analytics.</p>
 					</div>
+					<p>See <a href="https://developers.coveo.com/x/bYGfAQ">Events</a>.</p>
 				</div>
 			</section>
 			<div class="preview-container tsd-panel">
@@ -157,16 +159,25 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/events/AnalyticsEvents.ts#L117">src/events/AnalyticsEvents.ts
-							:117</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/events/AnalyticsEvents.ts#L161">src/events/AnalyticsEvents.ts
+							:161</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-deprecated">
+						</dl>
 						<div class="lead">
-							<p>Triggered whenever an analytics event is logged. This event allows external code to modify the analytics data.</p>
+							<p>Triggered whenever an analytics event is about to be logged.</p>
 						</div>
-						<p>All bound handlers will receive <a href="../interfaces/ichangeanalyticscustomdataeventargs.html">IChangeAnalyticsCustomDataEventArgs</a> as an argument.</p>
-						<p>The string value is <code>changeAnalyticsCustomData</code>.</p>
+						<p>This event allows external code to modify the analytics data before it is sent to the Coveo Usage Analytics REST
+						service.</p>
+						<p>All <code>changeAnalyticsCustomData</code> event handlers receive a
+						<a href="../interfaces/ichangeanalyticscustomdataeventargs.html"><code>ChangeAnalyticsCustomDataEventArgs</code></a> object as an argument.</p>
+						<dl class="tsd-comment-tags">
+							<dt>type</dt>
+							<dd><p>{string} The string value is <code>changeAnalyticsCustomData</code>.</p>
+							</dd>
+						</dl>
 					</div>
 				</section>
 			</section>

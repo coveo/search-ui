@@ -56,7 +56,7 @@
 	<div class="bottomHeader">
 		<div id="searchBox">
 			<div class="CoveoSearchbox" data-enable-omnibox="true" data-inline="false" data-enable-wildcards="true" data-enable-search-as-you-type="false" data-enable-query-suggest-addon="false" data-enable-query-syntax="true" data-enable-field-addon="true"></div>
-			<div class="CoveoFieldSuggestions" data-field="@systitle" data-header-title="Suggested topics"></div>
+			<div class="CoveoFieldSuggestions" data-field="@jsuipagetopic" data-header-title="Suggested topics"></div>
 		</div>
 	</div>
 	<!-- Do not focus on Querybox when URL contains hash to ensure page scrolls down to corresponding anchor. -->
@@ -197,7 +197,7 @@
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>The Analytics component logs user actions performed in the search interface and sends them to a REST web service
+						<p>The <code>Analytics</code> component can log user actions performed in the search interface and send them to a REST web service
 						exposed through the Coveo Cloud Platform.</p>
 					</div>
 					<p>You can use analytics data to evaluate how users are interacting with your search interface, improve relevance and
@@ -278,8 +278,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Analytics/Analytics.ts#L115">src/ui/Analytics/Analytics.ts
-							:115</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Analytics/Analytics.ts#L114">src/ui/Analytics/Analytics.ts
+							:114</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -287,7 +287,7 @@
 							<p>Specifies whether to convert search user identities to unique hash when logging analytics data, so that
 							analytics reviewers and managers will not be able to clearly identify which user is performing which query.</p>
 						</div>
-						<p>When this option is <code>true</code>, the Coveo Usage Analytics Platform can still properly differentiate sessions
+						<p>When you set this option to <code>true</code>, the Coveo Usage Analytics service can still properly differentiate sessions
 							made by anonymous users from sessions made by users authenticated in some way on the site containing the search
 						page.</p>
 						<p>Default value is <code>false</code>.</p>
@@ -305,14 +305,14 @@ data-anonymous&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Analytics/Analytics.ts#L103">src/ui/Analytics/Analytics.ts
-							:103</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Analytics/Analytics.ts#L102">src/ui/Analytics/Analytics.ts
+							:102</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies the URL of the usage analytics logger to cover exceptional cases in which this location could differ
-							from the default Coveo Cloud Usage Analytics endpoint (<a href="https://usageanalytics.coveo.com">https://usageanalytics.coveo.com</a>).</p>
+							<p>Specifies the URL of the Usage Analytics service. You do not have to specify a value for this option, unless
+							the location of the service you use differs from the default Coveo Cloud Usage Analytics endpoint.</p>
 						</div>
 						<p>Default value is <code>https://usageanalytics.coveo.com</code>.</p>
 					</div>
@@ -328,8 +328,8 @@ data-anonymous&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Analytics/Analytics.ts#L155">src/ui/Analytics/Analytics.ts
-							:155</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Analytics/Analytics.ts#L160">src/ui/Analytics/Analytics.ts
+							:160</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -352,8 +352,8 @@ data-anonymous&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Analytics/Analytics.ts#L125">src/ui/Analytics/Analytics.ts
-							:125</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Analytics/Analytics.ts#L130">src/ui/Analytics/Analytics.ts
+							:130</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -361,7 +361,14 @@ data-anonymous&#x3D;&#x27;false&#x27;</pre>
 							<p>Sets the Search Hub dimension on the search events.</p>
 						</div>
 						<p>The Search Hub dimension is typically a name that refers to a specific search page. For example, you could use
-						the <code>CommunitySite</code> value to refer to a search page on a company&#39;s public community site.</p>
+						the <code>CommunitySite</code> value to refer to a search page on a public community site.</p>
+						<p><strong>Note:</strong></p>
+						<blockquote>
+							<p>If you wish to use the search hub dimension for security reasons (e.g., to provide different query suggestions
+								for internal and external users), you should specify the search hub when generating the search token for the
+								end user (in safe, server-side code), rather than setting it with this option (see
+							<a href="https://developers.coveo.com/x/XICE">Search Token Authentication</a>).</p>
+						</blockquote>
 						<p>Default value is <code>default</code>.</p>
 					</div>
 					<div class="tsd-panel">
@@ -376,8 +383,8 @@ data-anonymous&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Analytics/Analytics.ts#L135">src/ui/Analytics/Analytics.ts
-							:135</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Analytics/Analytics.ts#L140">src/ui/Analytics/Analytics.ts
+							:140</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -386,7 +393,7 @@ data-anonymous&#x3D;&#x27;false&#x27;</pre>
 						</div>
 						<p>You can use this dimension to perform A/B testing using different search page layouts and features inside the
 						Coveo Query pipeline.</p>
-						<p>Default value is <code>undefined</code> and no split test run name is reported to the Coveo Usage Analytics Platform.</p>
+						<p>Default value is <code>undefined</code> and no split test run name is reported to the Coveo Usage Analytics service.</p>
 					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
@@ -400,8 +407,8 @@ data-anonymous&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Analytics/Analytics.ts#L145">src/ui/Analytics/Analytics.ts
-							:145</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Analytics/Analytics.ts#L150">src/ui/Analytics/Analytics.ts
+							:150</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -424,8 +431,8 @@ data-anonymous&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Analytics/Analytics.ts#L95">src/ui/Analytics/Analytics.ts
-							:95</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Analytics/Analytics.ts#L94">src/ui/Analytics/Analytics.ts
+							:94</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -446,8 +453,8 @@ data-anonymous&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Analytics/Analytics.ts#L81">src/ui/Analytics/Analytics.ts
-							:81</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Analytics/Analytics.ts#L80">src/ui/Analytics/Analytics.ts
+							:80</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -468,8 +475,8 @@ data-anonymous&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Analytics/Analytics.ts#L88">src/ui/Analytics/Analytics.ts
-							:88</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Analytics/Analytics.ts#L87">src/ui/Analytics/Analytics.ts
+							:87</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -601,23 +608,30 @@ data-anonymous&#x3D;&#x27;false&#x27;</pre>
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Analytics/Analytics.ts#L278">src/ui/Analytics/Analytics.ts
-									:278</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Analytics/Analytics.ts#L306">src/ui/Analytics/Analytics.ts
+									:306</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Logs a Click event. You can understand click events as item views (e.g., clicking on a <a href="resultlink.html">ResultLink</a> or
-									opening a <a href="quickview.html">Quickview</a>).</p>
+									<p>Logs a <code>Click</code> usage analytics event.</p>
 								</div>
-								<p>This event is logged immediately on the service.</p>
+								<p>A <code>Click</code> event corresponds to an item view (e.g., clicking on a <a href="resultlink.html">ResultLink</a> or opening a
+								<a href="quickview.html">Quickview</a>).</p>
+								<p><code>Click</code> events are immediately sent to the Coveo Usage Analytics service.</p>
+								<p><strong>Note:</strong></p>
+								<blockquote>
+									<p>When logging custom <code>Click</code> events, you should use the <code>Coveo.logClickEvent</code> top-level function rather than
+										calling this method directly from the <code>Analytics</code> component instance. See
+									<a href="https://developers.coveo.com/x/KoGfAQ">Sending Custom Analytics Events</a>.</p>
+								</blockquote>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>actionCause: <a href="../interfaces/ianalyticsactioncause.html" class="tsd-signature-type">IAnalyticsActionCause</a></h5>
 									<div class="tsd-comment tsd-typography">
-										<p>Describes the cause of the event.</p>
+										<p>The cause of the event.</p>
 									</div>
 								</li>
 								<li>
@@ -625,8 +639,8 @@ data-anonymous&#x3D;&#x27;false&#x27;</pre>
 									<div class="tsd-comment tsd-typography">
 										<p>The metadata which you want to use to create custom dimensions. Metadata can contain as many key-value
 											pairs as you need. Each key must contain only alphanumeric characters and underscores. The Coveo Usage Analytics
-											API automatically converts uppercase characters to lowercase characters in key names. Each value must be a simple
-											string. You do not have to pass an <a href="../interfaces/ianalyticsdocumentviewmeta.html">IAnalyticsDocumentViewMeta</a> as meta when logging a custom Click event.
+											service automatically converts uppercase characters to lowercase characters in key names. Each value must be a
+											simple string. You do not have to pass an <a href="../interfaces/ianalyticsdocumentviewmeta.html">IAnalyticsDocumentViewMeta</a> as meta when logging a <code>Click</code> event.
 											You can actually send any arbitrary meta. If you do not need to log metadata, you can simply pass an empty JSON
 										( <code>{}</code> ).</p>
 									</div>
@@ -634,13 +648,14 @@ data-anonymous&#x3D;&#x27;false&#x27;</pre>
 								<li>
 									<h5>result: <a href="../interfaces/iqueryresult.html" class="tsd-signature-type">IQueryResult</a></h5>
 									<div class="tsd-comment tsd-typography">
-										<p>The result that the user has clicked.</p>
+										<p>The result that was clicked.</p>
 									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> element: <span class="tsd-signature-type">HTMLElement</span><span class="tsd-signature-symbol"> =&nbsp;this.element</span></h5>
 									<div class="tsd-comment tsd-typography">
-										<p>The HTMLElement that the user has clicked in the interface.</p>
+										<p>The HTMLElement that the user has clicked in the interface. Default value is the element on which
+										the <code>Analytics</code> component is bound.</p>
 									</div>
 								</li>
 							</ul>
@@ -659,15 +674,24 @@ data-anonymous&#x3D;&#x27;false&#x27;</pre>
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Analytics/Analytics.ts#L258">src/ui/Analytics/Analytics.ts
-									:258</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Analytics/Analytics.ts#L278">src/ui/Analytics/Analytics.ts
+									:278</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Logs a Custom event on the service. You can use custom events to create custom reports, or to track events
-									that are not queries or item views.</p>
+									<p>Logs a <code>Custom</code> usage analytics event on the service.</p>
 								</div>
+								<p>You can use <code>Custom</code> events to create custom reports, or to track events which are neither queries (see
+									<a href="analytics.html#logsearchevent"><code>logSearchEvent</code></a> and
+									<a href="analytics.html#logsearchasyoutype"><code>logSearchAsYouType</code></a>), nor item views (see
+								<a href="analytics.html#logclickevent"><code>logClickEvent</code></a>).</p>
+								<p><strong>Note:</strong></p>
+								<blockquote>
+									<p>When logging <code>Custom</code> events, you should use the <code>Coveo.logClickEvent</code> top-level function rather than calling
+										this method directly from the <code>Analytics</code> component instance. See
+									<a href="https://developers.coveo.com/x/KoGfAQ">Sending Custom Analytics Events</a>.</p>
+								</blockquote>
 							</div>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
 							<ul class="tsd-type-parameters">
@@ -680,7 +704,7 @@ data-anonymous&#x3D;&#x27;false&#x27;</pre>
 								<li>
 									<h5>actionCause: <a href="../interfaces/ianalyticsactioncause.html" class="tsd-signature-type">IAnalyticsActionCause</a></h5>
 									<div class="tsd-comment tsd-typography">
-										<p>Describes the cause of the event.</p>
+										<p>The cause of the event.</p>
 									</div>
 								</li>
 								<li>
@@ -688,7 +712,7 @@ data-anonymous&#x3D;&#x27;false&#x27;</pre>
 									<div class="tsd-comment tsd-typography">
 										<p>The metadata which you want to use to create custom dimensions. Metadata can contain as many key-value
 											pairs as you need. Each key must contain only alphanumeric characters and underscores. The Coveo Usage Analytics
-											API automatically converts white spaces to underscores and uppercase characters to lowercase characters in key
+											service automatically converts white spaces to underscores and uppercase characters to lowercase characters in key
 											names. Each value must be a simple string. If you do not need to log metadata, you can simply pass an empty JSON
 										( <code>{}</code> ).</p>
 									</div>
@@ -696,7 +720,8 @@ data-anonymous&#x3D;&#x27;false&#x27;</pre>
 								<li>
 									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> element: <span class="tsd-signature-type">HTMLElement</span><span class="tsd-signature-symbol"> =&nbsp;this.element</span></h5>
 									<div class="tsd-comment tsd-typography">
-										<p>The HTMLElement that the user has interacted with for this custom event.</p>
+										<p>The HTMLElement that the user has interacted with for this custom event. Default value is the
+										element on which the <code>Analytics</code> component is bound.</p>
 									</div>
 								</li>
 							</ul>
@@ -715,23 +740,27 @@ data-anonymous&#x3D;&#x27;false&#x27;</pre>
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Analytics/Analytics.ts#L242">src/ui/Analytics/Analytics.ts
-									:242</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Analytics/Analytics.ts#L252">src/ui/Analytics/Analytics.ts
+									:252</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Logs a SearchAsYouType event on the service, using an <a href="../interfaces/ianalyticsactioncause.html">IAnalyticsActionCause</a> and a meta object.</p>
+									<p>Logs a <code>SearchAsYouType</code> usage analytics event.</p>
 								</div>
-								<p>This method is very similar to the <a href="analytics.html#logsearchevent">logSearchEvent</a> method, except that logSearchAsYouType is, by definition,
-								more frequently called.</p>
-								<p>The <code>PendingSearchAsYouTypeEvent</code> takes care of logging only the &quot;relevant&quot; last event: an event that occurs after
-									5 seconds elapse without any event being logged, or an event that occurs after another part of the interface
-									triggers a search event. This avoids logging every single partial query, which would make the reporting very
-								confusing.</p>
-								<p>It is important to call this method before executing the query. Otherwise the service will log no SearchAsYouType
-								event and you will get a warning message in the console.</p>
-								<p>See <a href="https://developers.coveo.com/x/KoGfAQ">Sending Custom Analytics Events</a>.</p>
+								<p>This method is very similar to the <a href="analytics.html#logsearchevent"><code>logSearchEvent</code></a> method, except that
+									<code>logSearchAsYouType</code> should, by definition, be called more frequently. Consequently, in order to avoid logging
+									every single partial query, the <code>PendingSearchAsYouTypeEvent</code> takes care of logging only the &quot;relevant&quot; last event:
+									an event that occurs after 5 seconds have elapsed without any event being logged, or an event that occurs after
+								another part of the interface triggers a search event.</p>
+								<p>It is important to call this method <strong>before</strong> executing the query. Otherwise, no <code>SearchAsYouType</code> event will be
+								logged, and you will get a warning message in the console.</p>
+								<p><strong>Note:</strong></p>
+								<blockquote>
+									<p>When logging custom <code>SearchAsYouType</code> events, you should use the <code>Coveo.logSearchAsYouTypeEvent</code> top-level
+										function rather than calling this method directly from the <code>Analytics</code> component instance. See
+									<a href="https://developers.coveo.com/x/KoGfAQ">Sending Custom Analytics Events</a>.</p>
+								</blockquote>
 							</div>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
 							<ul class="tsd-type-parameters">
@@ -744,7 +773,7 @@ data-anonymous&#x3D;&#x27;false&#x27;</pre>
 								<li>
 									<h5>actionCause: <a href="../interfaces/ianalyticsactioncause.html" class="tsd-signature-type">IAnalyticsActionCause</a></h5>
 									<div class="tsd-comment tsd-typography">
-										<p>Describes the cause of the event.</p>
+										<p>The cause of the event.</p>
 									</div>
 								</li>
 								<li>
@@ -752,7 +781,7 @@ data-anonymous&#x3D;&#x27;false&#x27;</pre>
 									<div class="tsd-comment tsd-typography">
 										<p>The metadata which you want to use to create custom dimensions. Metadata can contain as many key-value
 											pairs as you need. Each key must contain only alphanumeric characters and underscores. The Coveo Usage Analytics
-											API automatically converts white spaces to underscores and uppercase characters to lowercase characters in key
+											service automatically converts white spaces to underscores and uppercase characters to lowercase characters in key
 											names. Each value must be a simple string. If you do not need to log metadata, you can simply pass an empty JSON
 										( <code>{}</code> ).</p>
 									</div>
@@ -773,19 +802,23 @@ data-anonymous&#x3D;&#x27;false&#x27;</pre>
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Analytics/Analytics.ts#L215">src/ui/Analytics/Analytics.ts
-									:215</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Analytics/Analytics.ts#L223">src/ui/Analytics/Analytics.ts
+									:223</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Logs a Search event on the service, using an <a href="a href=&quot;../interfaces/ianalyticsactioncause.html&quot;&gt;IAnalyticsActionCause&lt;/a">AnalyticsActionCause</a> and a meta
-									object.</p>
+									<p>Logs a <code>Search</code> usage analytics event.</p>
 								</div>
-								<p>Note that the search event is only sent to the service when the query successfully returns, not immediately after
-									calling this method. Therefore, it is important to call this method before executing the query. Otherwise the
-								service will log no Search event and you will get a warning message in the console.</p>
-								<p>See <a href="https://developers.coveo.com/x/KoGfAQ">Sending Custom Analytics Events</a>.</p>
+								<p>A <code>Search</code> event is actually sent to the Coveo Usage Analytics service only after the query successfully returns
+									(not immediately after calling this method). Therefore, it is important to call this method <strong>before</strong> executing
+								the query. Otherwise, the <code>Search</code> event will not be logged, and you will get a warning message in the console.</p>
+								<p><strong>Note:</strong></p>
+								<blockquote>
+									<p>When logging custom <code>Search</code> events, you should use the <code>Coveo.logSearchEvent</code> top-level function rather than
+										calling this method directly from the <code>Analytics</code> component instance. See
+									<a href="https://developers.coveo.com/x/KoGfAQ">Sending Custom Analytics Events</a>.</p>
+								</blockquote>
 							</div>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
 							<ul class="tsd-type-parameters">
@@ -798,15 +831,15 @@ data-anonymous&#x3D;&#x27;false&#x27;</pre>
 								<li>
 									<h5>actionCause: <a href="../interfaces/ianalyticsactioncause.html" class="tsd-signature-type">IAnalyticsActionCause</a></h5>
 									<div class="tsd-comment tsd-typography">
-										<p>Describes the cause of the event.</p>
+										<p>The cause of the event.</p>
 									</div>
 								</li>
 								<li>
 									<h5>meta: <span class="tsd-signature-type">T</span></h5>
 									<div class="tsd-comment tsd-typography">
-										<p>The metadata which you want to use to create custom dimensions. Metadata can contain as many key-value
+										<p>The metadata you want to use to create custom dimensions. Metadata can contain as many key-value
 											pairs as you need. Each key must contain only alphanumeric characters and underscores. The Coveo Usage Analytics
-											API automatically converts white spaces to underscores and uppercase characters to lowercase characters in key
+											service automatically converts white spaces to underscores, and uppercase characters to lowercase characters in key
 											names. Each value must be a simple string. If you do not need to log metadata, you can simply pass an empty JSON
 										( <code>{}</code> ).</p>
 									</div>
@@ -827,8 +860,8 @@ data-anonymous&#x3D;&#x27;false&#x27;</pre>
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Analytics/Analytics.ts#L292">src/ui/Analytics/Analytics.ts
-									:292</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Analytics/Analytics.ts#L325">src/ui/Analytics/Analytics.ts
+									:325</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -934,14 +967,14 @@ data-anonymous&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Analytics/Analytics.ts#L162">src/ui/Analytics/Analytics.ts
-							:162</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Analytics/Analytics.ts#L167">src/ui/Analytics/Analytics.ts
+							:167</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>A reference to the <code>analyticsClient</code>, which performs the heavy duty part of logging the actual events on the
-							service.</p>
+							<p>A reference to the <code>AnalyticsClient</code>, which performs the heavy duty part of sending the usage analytics events to
+							the Coveo Usage Analytics service.</p>
 						</div>
 					</div>
 				</section>
@@ -1148,13 +1181,13 @@ data-anonymous&#x3D;&#x27;false&#x27;</pre>
 								<p>Overwrites <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#constructor">constructor</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Analytics/Analytics.ts#L162">src/ui/Analytics/Analytics.ts
-									:162</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Analytics/Analytics.ts#L167">src/ui/Analytics/Analytics.ts
+									:167</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Creates a new Analytics component. Creates the <a href="../interfaces/ianalyticsclient.html">IAnalyticsClient</a>.</p>
+									<p>Creates a new <code>Analytics</code> component. Creates the <a href="../interfaces/ianalyticsclient.html"><code>AnalyticsClient</code></a>.</p>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1171,7 +1204,7 @@ data-anonymous&#x3D;&#x27;false&#x27;</pre>
 									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> options: <span class="tsd-signature-type">IAnalyticsOptions</span><span class="tsd-signature-symbol"> =&nbsp;{}</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<div class="lead">
-											<p>The options for the Analytics component.</p>
+											<p>The options for the <code>Analytics</code> component.</p>
 										</div>
 									</div>
 								</li>

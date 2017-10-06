@@ -1,12 +1,12 @@
-webpackJsonpCoveo__temporary([32],{
+webpackJsonpCoveo__temporary([34],{
 
-/***/ 17:
+/***/ 16:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var SVGDom = (function () {
+var SVGDom = /** @class */ (function () {
     function SVGDom() {
     }
     SVGDom.addClassToSVGInContainer = function (svgContainer, classToAdd) {
@@ -28,7 +28,7 @@ exports.SVGDom = SVGDom;
 
 /***/ }),
 
-/***/ 375:
+/***/ 293:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -46,9 +46,9 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var Component_1 = __webpack_require__(8);
 var ComponentOptions_1 = __webpack_require__(9);
-var DeviceUtils_1 = __webpack_require__(23);
+var DeviceUtils_1 = __webpack_require__(22);
 var QueryEvents_1 = __webpack_require__(11);
-var Model_1 = __webpack_require__(19);
+var Model_1 = __webpack_require__(18);
 var QueryStateModel_1 = __webpack_require__(13);
 var QueryStateModel_2 = __webpack_require__(13);
 var AnalyticsActionListMeta_1 = __webpack_require__(12);
@@ -56,11 +56,11 @@ var Initialization_1 = __webpack_require__(2);
 var Assert_1 = __webpack_require__(7);
 var Strings_1 = __webpack_require__(10);
 var Dom_1 = __webpack_require__(3);
-var KeyboardUtils_1 = __webpack_require__(24);
+var KeyboardUtils_1 = __webpack_require__(23);
 var GlobalExports_1 = __webpack_require__(4);
-__webpack_require__(923);
+__webpack_require__(506);
 var SVGIcons_1 = __webpack_require__(15);
-var SVGDom_1 = __webpack_require__(17);
+var SVGDom_1 = __webpack_require__(16);
 /**
  * The Pager component attaches itself to a `div` element and renders widgets that allow the end user to navigate
  * through the different result pages.
@@ -68,7 +68,7 @@ var SVGDom_1 = __webpack_require__(17);
  * This component takes care of triggering a query with the correct result range whenever the end user selects a page or
  * uses the navigation buttons (**Previous** and **Next**).
  */
-var Pager = (function (_super) {
+var Pager = /** @class */ (function (_super) {
     __extends(Pager, _super);
     /**
      * Creates a new Pager. Binds multiple query events ({@link QueryEvents.newQuery}, {@link QueryEvents.buildingQuery},
@@ -99,7 +99,9 @@ var Pager = (function (_super) {
         _this.bind.onRootElement(QueryEvents_1.QueryEvents.querySuccess, function (args) { return _this.handleQuerySuccess(args); });
         _this.bind.onRootElement(QueryEvents_1.QueryEvents.queryError, function () { return _this.handleQueryError(); });
         _this.bind.onRootElement(QueryEvents_1.QueryEvents.noResults, function (args) { return _this.handleNoResults(args); });
-        _this.bind.onQueryState(Model_1.MODEL_EVENTS.CHANGE_ONE, QueryStateModel_2.QUERY_STATE_ATTRIBUTES.FIRST, function (data) { return _this.handleQueryStateModelChanged(data); });
+        _this.bind.onQueryState(Model_1.MODEL_EVENTS.CHANGE_ONE, QueryStateModel_2.QUERY_STATE_ATTRIBUTES.FIRST, function (data) {
+            return _this.handleQueryStateModelChanged(data);
+        });
         _this.list = document.createElement('ul');
         Dom_1.$$(_this.list).addClass('coveo-pager-list');
         element.appendChild(_this.list);
@@ -308,7 +310,7 @@ var Pager = (function (_super) {
         this.nextPage();
     };
     Pager.prototype.fromFirstResultsToPageNumber = function (firstResult) {
-        return (firstResult / this.getNumberOfResultsPerPage()) + 1;
+        return firstResult / this.getNumberOfResultsPerPage() + 1;
     };
     Pager.prototype.getNumberOfResultsPerPage = function () {
         // If there was no query successful yet, we use the query controller value as a fallback.
@@ -329,71 +331,71 @@ var Pager = (function (_super) {
             first: this.getFirstResultNumber()
         };
     };
+    Pager.ID = 'Pager';
+    Pager.doExport = function () {
+        GlobalExports_1.exportGlobally({
+            Pager: Pager
+        });
+    };
+    /**
+     * The options for the Pager
+     * @componentOptions
+     */
+    Pager.options = {
+        /**
+         * Specifies how many page links to display in the pager.
+         *
+         * Default value is `5` on a desktop computers and `3` on a mobile device. Minimum value is `1`.
+         */
+        numberOfPages: ComponentOptions_1.ComponentOptions.buildNumberOption({
+            defaultFunction: function () {
+                if (DeviceUtils_1.DeviceUtils.isMobileDevice()) {
+                    return 3;
+                }
+                else {
+                    return 5;
+                }
+            },
+            min: 1
+        }),
+        /**
+         * Specifies whether the **Previous** and **Next** buttons should appear at each end of the pager when appropriate.
+         *
+         * The default value is `true`.
+         */
+        enableNavigationButton: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: true }),
+        /**
+         * Specifies the maximum number of pages to display if enough results are available.
+         *
+         * This property is typically set when the default number of accessible results from the index has been changed from its default value of `1000` (10 results per page X 100 `maxNumberOfPages`).
+         * Default value is `100`
+         *
+         * @deprecated This is a deprecated option. The `Pager` now automatically adapts itself on each new query, so you no longer need to specify a value for this option. However, if the default maximum number of accessible results value was changed on your Coveo index, you should use the [`maximumNumberOfResultsFromIndex`]{@link Pager.options.maximumNumberOfResultsFromIndex} option to specify the new value.
+         */
+        maxNumberOfPages: ComponentOptions_1.ComponentOptions.buildNumberOption({
+            defaultValue: undefined,
+            deprecated: 'This is a deprecated option. The pager will automatically adapt itself on each new query. You no longer need to specify this option. Use maximumNumberOfResultsFromIndex instead.'
+        }),
+        /**
+         * Specifies the maximum number of results that the index can return for any query.
+         *
+         * Default value is `1000` in a Coveo index.
+         *
+         * If this value was modified in your Coveo index, you must specify the new value in this option for the Pager component to work properly
+         */
+        maximumNumberOfResultsFromIndex: ComponentOptions_1.ComponentOptions.buildNumberOption({
+            defaultValue: 1000
+        })
+    };
     return Pager;
 }(Component_1.Component));
-Pager.ID = 'Pager';
-Pager.doExport = function () {
-    GlobalExports_1.exportGlobally({
-        'Pager': Pager
-    });
-};
-/**
- * The options for the Pager
- * @componentOptions
- */
-Pager.options = {
-    /**
-     * Specifies how many page links to display in the pager.
-     *
-     * Default value is `5` on a desktop computers and `3` on a mobile device. Minimum value is `1`.
-     */
-    numberOfPages: ComponentOptions_1.ComponentOptions.buildNumberOption({
-        defaultFunction: function () {
-            if (DeviceUtils_1.DeviceUtils.isMobileDevice()) {
-                return 3;
-            }
-            else {
-                return 5;
-            }
-        },
-        min: 1
-    }),
-    /**
-     * Specifies whether the **Previous** and **Next** buttons should appear at each end of the pager when appropriate.
-     *
-     * The default value is `true`.
-     */
-    enableNavigationButton: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: true }),
-    /**
-     * Specifies the maximum number of pages to display if enough results are available.
-     *
-     * This property is typically set when the default number of accessible results from the index has been changed from its default value of `1000` (10 results per page X 100 `maxNumberOfPages`).
-     * Default value is `100`
-     *
-     * @deprecated This is a deprecated option. The `Pager` now automatically adapts itself on each new query, so you no longer need to specify a value for this option. However, if the default maximum number of accessible results value was changed on your Coveo index, you should use the [`maximumNumberOfResultsFromIndex`]{@link Pager.options.maximumNumberOfResultsFromIndex} option to specify the new value.
-     */
-    maxNumberOfPages: ComponentOptions_1.ComponentOptions.buildNumberOption({
-        defaultValue: undefined,
-        deprecated: 'This is a deprecated option. The pager will automatically adapt itself on each new query. You no longer need to specify this option. Use maximumNumberOfResultsFromIndex instead.'
-    }),
-    /**
-     * Specifies the maximum number of results that the index can return for any query.
-     *
-     * Default value is `1000` in a Coveo index.
-     *
-     * If this value was modified in your Coveo index, you must specify the new value in this option for the Pager component to work properly
-     */
-    maximumNumberOfResultsFromIndex: ComponentOptions_1.ComponentOptions.buildNumberOption({
-        defaultValue: 1000
-    })
-};
 exports.Pager = Pager;
 Initialization_1.Initialization.registerAutoCreateComponent(Pager);
 
 
 /***/ }),
 
-/***/ 923:
+/***/ 506:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

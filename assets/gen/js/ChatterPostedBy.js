@@ -1,12 +1,12 @@
-webpackJsonpCoveo__temporary([42],{
+webpackJsonpCoveo__temporary([44],{
 
-/***/ 300:
+/***/ 259:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var ChatterUtils = (function () {
+var ChatterUtils = /** @class */ (function () {
     function ChatterUtils() {
     }
     ChatterUtils.buildURI = function (objectURI, objectId, newObjectId) {
@@ -22,7 +22,7 @@ exports.ChatterUtils = ChatterUtils;
 
 /***/ }),
 
-/***/ 359:
+/***/ 277:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -40,13 +40,13 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var Component_1 = __webpack_require__(8);
 var ComponentOptions_1 = __webpack_require__(9);
-var ChatterUtils_1 = __webpack_require__(300);
+var ChatterUtils_1 = __webpack_require__(259);
 var Initialization_1 = __webpack_require__(2);
 var Strings_1 = __webpack_require__(10);
-var Utils_1 = __webpack_require__(5);
+var Utils_1 = __webpack_require__(6);
 var Dom_1 = __webpack_require__(3);
 var GlobalExports_1 = __webpack_require__(4);
-var ChatterPostedBy = (function (_super) {
+var ChatterPostedBy = /** @class */ (function (_super) {
     __extends(ChatterPostedBy, _super);
     function ChatterPostedBy(element, options, bindings, result) {
         var _this = _super.call(this, element, ChatterPostedBy.ID, bindings) || this;
@@ -55,14 +55,17 @@ var ChatterPostedBy = (function (_super) {
         _this.bindings = bindings;
         _this.result = result;
         _this.options = ComponentOptions_1.ComponentOptions.initComponentOptions(element, ChatterPostedBy, options);
-        if (Utils_1.Utils.getFieldValue(_this.result, 'sfcreatedby') != null) {
+        if (Utils_1.Utils.getFieldValue(_this.result, 'sfcreatedbyname') != null) {
             var from = Dom_1.$$('span');
             from.text((_this.options.useFromInstead ? Strings_1.l('From') : Strings_1.l('PostedBy')) + " ");
             Dom_1.$$(element).append(from.el);
-            Dom_1.$$(element).append(_this.renderLink(Utils_1.Utils.getFieldValue(_this.result, 'sfcreatedby'), Utils_1.Utils.getFieldValue(_this.result, 'sfcreatedbyid')));
-            if (_this.options.enablePostedOn && !Utils_1.Utils.isNullOrUndefined(Utils_1.Utils.getFieldValue(_this.result, 'sfparentname')) && !Utils_1.Utils.isNullOrUndefined(Utils_1.Utils.getFieldValue(_this.result, 'sfparentid'))) {
+            Dom_1.$$(element).append(_this.renderLink(Utils_1.Utils.getFieldValue(_this.result, 'sfcreatedbyname'), Utils_1.Utils.getFieldValue(_this.result, 'sfcreatedbyid')));
+            if (_this.options.enablePostedOn &&
+                !Utils_1.Utils.isNullOrUndefined(Utils_1.Utils.getFieldValue(_this.result, 'sfparentname')) &&
+                !Utils_1.Utils.isNullOrUndefined(Utils_1.Utils.getFieldValue(_this.result, 'sfparentid'))) {
                 // Post on user's wall
-                if (!Utils_1.Utils.isNullOrUndefined(Utils_1.Utils.getFieldValue(_this.result, 'sfuserid')) && Utils_1.Utils.getFieldValue(_this.result, 'sfuserid') != Utils_1.Utils.getFieldValue(_this.result, 'sfinsertedbyid')) {
+                if (!Utils_1.Utils.isNullOrUndefined(Utils_1.Utils.getFieldValue(_this.result, 'sfuserid')) &&
+                    Utils_1.Utils.getFieldValue(_this.result, 'sfuserid') != Utils_1.Utils.getFieldValue(_this.result, 'sfinsertedbyid')) {
                     var onFeed = Dom_1.$$('span');
                     var content = " " + Strings_1.l('OnFeed', _this.renderLink(Utils_1.Utils.getFieldValue(_this.result, 'sfparentname'), Utils_1.Utils.getFieldValue(_this.result, 'sfparentid')).outerHTML);
                     onFeed.el.innerHTML = content;
@@ -85,20 +88,21 @@ var ChatterPostedBy = (function (_super) {
         link.text(text);
         return ChatterUtils_1.ChatterUtils.bindClickEventToElement(link.el, this.options.openInPrimaryTab, this.options.openInSubTab);
     };
+    ChatterPostedBy.ID = 'ChatterPostedBy';
+    ChatterPostedBy.doExport = function () {
+        GlobalExports_1.exportGlobally({
+            ChatterPostedBy: ChatterPostedBy
+        });
+    };
+    ChatterPostedBy.options = {
+        enablePostedOn: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: true }),
+        useFromInstead: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: false }),
+        openInPrimaryTab: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: false }),
+        openInSubTab: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: true })
+    };
+    ChatterPostedBy.fields = ['sfcreatedbyname', 'sfcreatedbyid', 'sffeeditemid', 'sfuserid', 'sfinsertedbyid', 'sfparentid', 'sfparentname'];
     return ChatterPostedBy;
 }(Component_1.Component));
-ChatterPostedBy.ID = 'ChatterPostedBy';
-ChatterPostedBy.doExport = function () {
-    GlobalExports_1.exportGlobally({
-        'ChatterPostedBy': ChatterPostedBy
-    });
-};
-ChatterPostedBy.options = {
-    enablePostedOn: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: true }),
-    useFromInstead: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: false }),
-    openInPrimaryTab: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: false }),
-    openInSubTab: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: true }),
-};
 exports.ChatterPostedBy = ChatterPostedBy;
 Initialization_1.Initialization.registerAutoCreateComponent(ChatterPostedBy);
 

@@ -1,6 +1,13 @@
-webpackJsonpCoveo__temporary([50],{
+webpackJsonpCoveo__temporary([52],{
 
-/***/ 121:
+/***/ 442:
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+
+/***/ 95:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8,12 +15,12 @@ webpackJsonpCoveo__temporary([50],{
 Object.defineProperty(exports, "__esModule", { value: true });
 var Dom_1 = __webpack_require__(3);
 var _ = __webpack_require__(1);
-__webpack_require__(601);
+__webpack_require__(442);
 var GlobalExports_1 = __webpack_require__(4);
 /**
  * A simple `fieldset` HTMLElement containing multiple form widgets.
  */
-var FormGroup = (function () {
+var FormGroup = /** @class */ (function () {
     /**
      * Creates a new `FormGroup`.
      * @param contents The form widgets to include in the form group.
@@ -28,7 +35,7 @@ var FormGroup = (function () {
     }
     FormGroup.doExport = function () {
         GlobalExports_1.exportGlobally({
-            'FormGroup': FormGroup
+            FormGroup: FormGroup
         });
     };
     /**
@@ -42,13 +49,6 @@ var FormGroup = (function () {
 }());
 exports.FormGroup = FormGroup;
 
-
-/***/ }),
-
-/***/ 601:
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
 
 /***/ })
 

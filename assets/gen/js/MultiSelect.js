@@ -1,6 +1,6 @@
-webpackJsonpCoveo__temporary([49],{
+webpackJsonpCoveo__temporary([51],{
 
-/***/ 281:
+/***/ 243:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9,13 +9,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var Dom_1 = __webpack_require__(3);
 var _ = __webpack_require__(1);
 var Strings_1 = __webpack_require__(10);
-__webpack_require__(608);
-var Utils_1 = __webpack_require__(5);
+__webpack_require__(455);
+var Utils_1 = __webpack_require__(6);
 var GlobalExports_1 = __webpack_require__(4);
 /**
  * A multi select widget with standard styling.
  */
-var MultiSelect = (function () {
+var MultiSelect = /** @class */ (function () {
     /**
      * Creates a new `MultiSelect`.
      * @param onChange The function to call when the widget selected values change. This function takes the current
@@ -24,8 +24,7 @@ var MultiSelect = (function () {
      * @param label The label to display for the multi select.
      */
     function MultiSelect(onChange, options, label) {
-        if (onChange === void 0) { onChange = function (multiSelect) {
-        }; }
+        if (onChange === void 0) { onChange = function (multiSelect) { }; }
         this.onChange = onChange;
         this.options = options;
         this.label = label;
@@ -33,7 +32,7 @@ var MultiSelect = (function () {
     }
     MultiSelect.doExport = function () {
         GlobalExports_1.exportGlobally({
-            'MultiSelect': MultiSelect
+            MultiSelect: MultiSelect
         });
     };
     /**
@@ -78,10 +77,12 @@ var MultiSelect = (function () {
      */
     MultiSelect.prototype.setValue = function (values) {
         var currentlySelected = this.getValue();
-        var currentStateSplit = _.partition(_.toArray(this.element.options), function (opt) { return _.contains(currentlySelected, opt.value); });
+        var currentStateSplit = _.partition(_.toArray(this.element.options), function (opt) {
+            return _.contains(currentlySelected, opt.value);
+        });
         var newStateToApplySplit = _.partition(_.toArray(this.element.options), function (opt) { return _.contains(values, opt.value); });
-        _.each(newStateToApplySplit[0], function (toSelect) { return toSelect.selected = true; });
-        _.each(newStateToApplySplit[1], function (toUnSelect) { return toUnSelect.selected = false; });
+        _.each(newStateToApplySplit[0], function (toSelect) { return (toSelect.selected = true); });
+        _.each(newStateToApplySplit[1], function (toUnSelect) { return (toUnSelect.selected = false); });
         var hasChanged = false;
         if (!Utils_1.Utils.arrayEqual(currentStateSplit[0], newStateToApplySplit[0], false)) {
             hasChanged = true;
@@ -128,7 +129,7 @@ exports.MultiSelect = MultiSelect;
 
 /***/ }),
 
-/***/ 608:
+/***/ 455:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

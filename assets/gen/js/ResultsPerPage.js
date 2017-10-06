@@ -1,6 +1,6 @@
-webpackJsonpCoveo__temporary([54],{
+webpackJsonpCoveo__temporary([56],{
 
-/***/ 387:
+/***/ 304:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23,12 +23,12 @@ var QueryEvents_1 = __webpack_require__(11);
 var AnalyticsActionListMeta_1 = __webpack_require__(12);
 var Assert_1 = __webpack_require__(7);
 var Dom_1 = __webpack_require__(3);
-var KeyboardUtils_1 = __webpack_require__(24);
-var DeviceUtils_1 = __webpack_require__(23);
+var KeyboardUtils_1 = __webpack_require__(23);
+var DeviceUtils_1 = __webpack_require__(22);
 var _ = __webpack_require__(1);
 var GlobalExports_1 = __webpack_require__(4);
 var Strings_1 = __webpack_require__(10);
-__webpack_require__(938);
+__webpack_require__(527);
 /**
  * The ResultsPerPage component attaches itself to a `div` and allows the end user to choose how many results to
  * display per page.
@@ -36,7 +36,7 @@ __webpack_require__(938);
  * **Note:** Adding a ResultPerPage component to your page overrides the value of
  * {@link SearchInterface.options.resultsPerPage}.
  */
-var ResultsPerPage = (function (_super) {
+var ResultsPerPage = /** @class */ (function (_super) {
     __extends(ResultsPerPage, _super);
     /**
      * Creates a new ResultsPerPage. The component renders itself on every query success.
@@ -148,55 +148,55 @@ var ResultsPerPage = (function (_super) {
         Dom_1.$$(this.span).addClass('coveo-results-per-page-no-results');
         Dom_1.$$(this.list).empty();
     };
+    ResultsPerPage.ID = 'ResultsPerPage';
+    ResultsPerPage.doExport = function () {
+        GlobalExports_1.exportGlobally({
+            ResultsPerPage: ResultsPerPage
+        });
+    };
+    /**
+     * The options for the ResultsPerPage
+     * @componentOptions
+     */
+    ResultsPerPage.options = {
+        /**
+         * Specifies the possible values of number of results to display per page that the end user can select from.
+         *
+         * See also {@link ResultsPerPage.options.initialChoice}.
+         *
+         * Default value is `[10, 25, 50, 100]`.
+         */
+        choicesDisplayed: ComponentOptions_1.ComponentOptions.buildCustomListOption(function (list) {
+            var values = _.map(list, function (value) {
+                return parseInt(value, 10);
+            });
+            return values.length == 0 ? null : values;
+        }, {
+            defaultFunction: function () {
+                if (DeviceUtils_1.DeviceUtils.isMobileDevice()) {
+                    return [10, 25, 50];
+                }
+                else {
+                    return [10, 25, 50, 100];
+                }
+            }
+        }),
+        /**
+         * Specifies the value to select by default for the number of results to display per page.
+         *
+         * Default value is the first value of {@link ResultsPerPage.options.choicesDisplayed}.
+         */
+        initialChoice: ComponentOptions_1.ComponentOptions.buildNumberOption()
+    };
     return ResultsPerPage;
 }(Component_1.Component));
-ResultsPerPage.ID = 'ResultsPerPage';
-ResultsPerPage.doExport = function () {
-    GlobalExports_1.exportGlobally({
-        'ResultsPerPage': ResultsPerPage
-    });
-};
-/**
- * The options for the ResultsPerPage
- * @componentOptions
- */
-ResultsPerPage.options = {
-    /**
-     * Specifies the possible values of number of results to display per page that the end user can select from.
-     *
-     * See also {@link ResultsPerPage.options.initialChoice}.
-     *
-     * Default value is `[10, 25, 50, 100]`.
-     */
-    choicesDisplayed: ComponentOptions_1.ComponentOptions.buildCustomListOption(function (list) {
-        var values = _.map(list, function (value) {
-            return parseInt(value, 10);
-        });
-        return values.length == 0 ? null : values;
-    }, {
-        defaultFunction: function () {
-            if (DeviceUtils_1.DeviceUtils.isMobileDevice()) {
-                return [10, 25, 50];
-            }
-            else {
-                return [10, 25, 50, 100];
-            }
-        },
-    }),
-    /**
-     * Specifies the value to select by default for the number of results to display per page.
-     *
-     * Default value is the first value of {@link ResultsPerPage.options.choicesDisplayed}.
-     */
-    initialChoice: ComponentOptions_1.ComponentOptions.buildNumberOption()
-};
 exports.ResultsPerPage = ResultsPerPage;
 Initialization_1.Initialization.registerAutoCreateComponent(ResultsPerPage);
 
 
 /***/ }),
 
-/***/ 938:
+/***/ 527:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

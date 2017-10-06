@@ -1,6 +1,6 @@
-webpackJsonpCoveo__temporary([34],{
+webpackJsonpCoveo__temporary([36],{
 
-/***/ 366:
+/***/ 285:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16,26 +16,26 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var SuggestionForOmnibox_1 = __webpack_require__(510);
+var SuggestionForOmnibox_1 = __webpack_require__(429);
 var Component_1 = __webpack_require__(8);
 var ComponentOptions_1 = __webpack_require__(9);
 var Assert_1 = __webpack_require__(7);
-var Utils_1 = __webpack_require__(5);
-var OmniboxEvents_1 = __webpack_require__(36);
+var Utils_1 = __webpack_require__(6);
+var OmniboxEvents_1 = __webpack_require__(33);
 var QueryStateModel_1 = __webpack_require__(13);
 var Initialization_1 = __webpack_require__(2);
 var AnalyticsActionListMeta_1 = __webpack_require__(12);
 var Dom_1 = __webpack_require__(3);
 var _ = __webpack_require__(1);
 var GlobalExports_1 = __webpack_require__(4);
-__webpack_require__(917);
+__webpack_require__(488);
 /**
  * The `FieldSuggestions` component provides query suggestions based on a particular facet field. For example, you could
  * use this component to provide auto-complete suggestions while the end user is typing the title of an item.
  *
  * The query suggestions provided by this component appear in the [`Omnibox`]{@link Omnibox} component.
  */
-var FieldSuggestions = (function (_super) {
+var FieldSuggestions = /** @class */ (function (_super) {
     __extends(FieldSuggestions, _super);
     /**
      * Creates a new `FieldSuggestions` component.
@@ -113,7 +113,9 @@ var FieldSuggestions = (function (_super) {
                 }
             }
             else {
-                var currentlySuggested = _.findWhere(this.currentlyDisplayedSuggestions, { pos: suggestion });
+                var currentlySuggested = _.findWhere(this.currentlyDisplayedSuggestions, {
+                    pos: suggestion
+                });
                 if (currentlySuggested) {
                     Dom_1.$$(currentlySuggested.element).trigger('click');
                 }
@@ -125,7 +127,10 @@ var FieldSuggestions = (function (_super) {
         Assert_1.Assert.exists(args);
         var valueToSearch = args.completeQueryExpression.word;
         var promise = new Promise(function (resolve) {
-            _this.queryController.getEndpoint().listFieldValues(_this.buildListFieldValueRequest(valueToSearch)).then(function (results) {
+            _this.queryController
+                .getEndpoint()
+                .listFieldValues(_this.buildListFieldValueRequest(valueToSearch))
+                .then(function (results) {
                 var element = _this.suggestionForOmnibox.buildOmniboxElement(results, args);
                 _this.currentlyDisplayedSuggestions = {};
                 if (element) {
@@ -145,7 +150,8 @@ var FieldSuggestions = (function (_super) {
                         element: undefined
                     });
                 }
-            }).catch(function () {
+            })
+                .catch(function () {
                 resolve({
                     element: undefined
                 });
@@ -179,131 +185,131 @@ var FieldSuggestions = (function (_super) {
             queryOverride: this.options.queryOverride
         };
     };
+    FieldSuggestions.ID = 'FieldSuggestions';
+    FieldSuggestions.doExport = function () {
+        GlobalExports_1.exportGlobally({
+            FieldSuggestions: FieldSuggestions
+        });
+    };
+    /**
+     * @componentOptions
+     */
+    FieldSuggestions.options = {
+        /**
+         * Specifies the facet field from which to provide suggestions.
+         *
+         * Specifying a value for this option is required for the `FieldSuggestions` component to work.
+         */
+        field: ComponentOptions_1.ComponentOptions.buildFieldOption({ required: true }),
+        /**
+         * Specifies a query override to apply when retrieving suggestions. You can use any valid query expression (see
+         * [Coveo Query Syntax Reference](http://www.coveo.com/go?dest=adminhelp70&lcid=9&context=10005)).
+         *
+         * Default value is the empty string, and the component applies no query override.
+         */
+        queryOverride: ComponentOptions_1.ComponentOptions.buildStringOption({ defaultValue: '' }),
+        /**
+         * Specifies the z-index position at which the suggestions render themselves in the [`Omnibox`]{@link Omnibox}.
+         *
+         * When there are multiple suggestion providers, components with higher `omniboxZIndex` values render themselves
+         * first.
+         *
+         * Default value is `51`. Minimum value is `0`.
+         */
+        omniboxZIndex: ComponentOptions_1.ComponentOptions.buildNumberOption({ defaultValue: 51, min: 0 }),
+        /**
+         * Specifies the title of the result suggestions group in the [`Omnibox`]{@link Omnibox} component.
+         * If not provided, the component will simply not output any title.
+         *
+         * Default value is `null`.
+         */
+        headerTitle: ComponentOptions_1.ComponentOptions.buildLocalizedStringOption(),
+        /**
+         * Specifies the number of suggestions to render in the [`Omnibox`]{@link Omnibox}.
+         *
+         * Default value is `5`. Minimum value is `1`.
+         */
+        numberOfSuggestions: ComponentOptions_1.ComponentOptions.buildNumberOption({ defaultValue: 5, min: 1 }),
+        /**
+         * Specifies the event handler function to execute when the end user selects a suggested value in the
+         * [`Omnibox`]{@link Omnibox}. By default, the query box text is replaced by what the end user selected and a new
+         * query is executed. You can, however, replace this default behavior by providing a callback function to execute
+         * when the value is selected.
+         *
+         * **Note:**
+         * > You cannot set this option directly in the component markup as an HTML attribute. You must either set it in the
+         * > [`init`]{@link init} call of your search interface (see
+         * > [Components - Passing Component Options in the init Call](https://developers.coveo.com/x/PoGfAQ#Components-PassingComponentOptionsintheinitCall)),
+         * > or before the `init` call, using the `options` top-level function (see
+         * > [Components - Passing Component Options Before the init Call](https://developers.coveo.com/x/PoGfAQ#Components-PassingComponentOptionsBeforetheinitCall)).
+         *
+         * **Example:**
+         *
+         * ```javascript
+         *
+         * var myOnSelectFunction = function(selectedValue, populateOmniboxEventArgs) {
+         *
+         *   // Close the suggestion list when the user clicks a suggestion.
+         *   populateOmniboxEventArgs.closeOmnibox();
+         *
+         *   // Search for matching title results in the default endpoint.
+         *   Coveo.SearchEndpoint.endpoints["default"].search({
+         *     q: "@title=='" + selectedValue + "'"
+         *   }).done(function(results) {
+         *
+         *     // If more than one result is found, select a result that matches the selected title.
+         *     var foundResult = Coveo._.find(results.results, function(result) {
+         *       return selectedValue == result.raw.title;
+         *     });
+         *
+         *     // Open the found result in the current window, or log an error.
+         *     if (foundResult) {
+         *       window.location = foundResult.clickUri;
+         *     }
+         *     else {
+         *       new Coveo.Logger.warn("Selected suggested result '" + selectedValue + "' not found.");
+         *     }
+         *   });
+         * };
+         *
+         * // You can set the option in the 'init' call:
+         * Coveo.init(document.querySelector("#search"), {
+         *    FieldSuggestions : {
+         *      onSelect : myOnSelectFunction
+         *    }
+         * });
+         *
+         * // Or before the 'init' call, using the 'options' top-level function:
+         * // Coveo.options(document.querySelector("#search"), {
+         * //   FieldSuggestions : {
+         * //     onSelect : myOnSelectFunction
+         * //   }
+         * // });
+         * ```
+         */
+        onSelect: ComponentOptions_1.ComponentOptions.buildCustomOption(function () {
+            return null;
+        })
+    };
     return FieldSuggestions;
 }(Component_1.Component));
-FieldSuggestions.ID = 'FieldSuggestions';
-FieldSuggestions.doExport = function () {
-    GlobalExports_1.exportGlobally({
-        'FieldSuggestions': FieldSuggestions
-    });
-};
-/**
- * @componentOptions
- */
-FieldSuggestions.options = {
-    /**
-     * Specifies the facet field from which to provide suggestions.
-     *
-     * Specifying a value for this option is required for the `FieldSuggestions` component to work.
-     */
-    field: ComponentOptions_1.ComponentOptions.buildFieldOption({ required: true }),
-    /**
-     * Specifies a query override to apply when retrieving suggestions. You can use any valid query expression (see
-     * [Coveo Query Syntax Reference](http://www.coveo.com/go?dest=adminhelp70&lcid=9&context=10005)).
-     *
-     * Default value is the empty string, and the component applies no query override.
-     */
-    queryOverride: ComponentOptions_1.ComponentOptions.buildStringOption({ defaultValue: '' }),
-    /**
-     * Specifies the z-index position at which the suggestions render themselves in the [`Omnibox`]{@link Omnibox}.
-     *
-     * When there are multiple suggestion providers, components with higher `omniboxZIndex` values render themselves
-     * first.
-     *
-     * Default value is `51`. Minimum value is `0`.
-     */
-    omniboxZIndex: ComponentOptions_1.ComponentOptions.buildNumberOption({ defaultValue: 51, min: 0 }),
-    /**
-     * Specifies the title of the result suggestions group in the [`Omnibox`]{@link Omnibox} component.
-     * If not provided, the component will simply not output any title.
-     *
-     * Default value is `null`.
-     */
-    headerTitle: ComponentOptions_1.ComponentOptions.buildLocalizedStringOption(),
-    /**
-     * Specifies the number of suggestions to render in the [`Omnibox`]{@link Omnibox}.
-     *
-     * Default value is `5`. Minimum value is `1`.
-     */
-    numberOfSuggestions: ComponentOptions_1.ComponentOptions.buildNumberOption({ defaultValue: 5, min: 1 }),
-    /**
-     * Specifies the event handler function to execute when the end user selects a suggested value in the
-     * [`Omnibox`]{@link Omnibox}. By default, the query box text is replaced by what the end user selected and a new
-     * query is executed. You can, however, replace this default behavior by providing a callback function to execute
-     * when the value is selected.
-     *
-     * **Note:**
-     * > You cannot set this option directly in the component markup as an HTML attribute. You must either set it in the
-     * > [`init`]{@link init} call of your search interface (see
-     * > [Components - Passing Component Options in the init Call](https://developers.coveo.com/x/PoGfAQ#Components-PassingComponentOptionsintheinitCall)),
-     * > or before the `init` call, using the `options` top-level function (see
-     * > [Components - Passing Component Options Before the init Call](https://developers.coveo.com/x/PoGfAQ#Components-PassingComponentOptionsBeforetheinitCall)).
-     *
-     * **Example:**
-     *
-     * ```javascript
-     *
-     * var myOnSelectFunction = function(selectedValue, populateOmniboxEventArgs) {
-     *
-     *   // Close the suggestion list when the user clicks a suggestion.
-     *   populateOmniboxEventArgs.closeOmnibox();
-     *
-     *   // Search for matching title results in the default endpoint.
-     *   Coveo.SearchEndpoint.endpoints["default"].search({
-     *     q: "@title=='" + selectedValue + "'"
-     *   }).done(function(results) {
-     *
-     *     // If more than one result is found, select a result that matches the selected title.
-     *     var foundResult = Coveo._.find(results.results, function(result) {
-     *       return selectedValue == result.raw.title;
-     *     });
-     *
-     *     // Open the found result in the current window, or log an error.
-     *     if (foundResult) {
-     *       window.location = foundResult.clickUri;
-     *     }
-     *     else {
-     *       new Coveo.Logger.warn("Selected suggested result '" + selectedValue + "' not found.");
-     *     }
-     *   });
-     * };
-     *
-     * // You can set the option in the 'init' call:
-     * Coveo.init(document.querySelector("#search"), {
-     *    FieldSuggestions : {
-     *      onSelect : myOnSelectFunction
-     *    }
-     * });
-     *
-     * // Or before the 'init' call, using the 'options' top-level function:
-     * // Coveo.options(document.querySelector("#search"), {
-     * //   FieldSuggestions : {
-     * //     onSelect : myOnSelectFunction
-     * //   }
-     * // });
-     * ```
-     */
-    onSelect: ComponentOptions_1.ComponentOptions.buildCustomOption(function () {
-        return null;
-    })
-};
 exports.FieldSuggestions = FieldSuggestions;
 Initialization_1.Initialization.registerAutoCreateComponent(FieldSuggestions);
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(6)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5)))
 
 /***/ }),
 
-/***/ 510:
+/***/ 429:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var DomUtils_1 = __webpack_require__(52);
+var DomUtils_1 = __webpack_require__(47);
 var Dom_1 = __webpack_require__(3);
 var _ = __webpack_require__(1);
-var SuggestionForOmnibox = (function () {
+var SuggestionForOmnibox = /** @class */ (function () {
     function SuggestionForOmnibox(structure, onSelect, onTabPress) {
         this.structure = structure;
         this.onSelect = onSelect;
@@ -357,7 +363,7 @@ exports.SuggestionForOmnibox = SuggestionForOmnibox;
 
 /***/ }),
 
-/***/ 917:
+/***/ 488:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

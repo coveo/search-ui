@@ -1,12 +1,12 @@
-webpackJsonpCoveo__temporary([38],{
+webpackJsonpCoveo__temporary([40],{
 
-/***/ 17:
+/***/ 16:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var SVGDom = (function () {
+var SVGDom = /** @class */ (function () {
     function SVGDom() {
     }
     SVGDom.addClassToSVGInContainer = function (svgContainer, classToAdd) {
@@ -28,7 +28,7 @@ exports.SVGDom = SVGDom;
 
 /***/ }),
 
-/***/ 283:
+/***/ 244:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -45,21 +45,21 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var Component_1 = __webpack_require__(8);
-var Utils_1 = __webpack_require__(5);
+var Utils_1 = __webpack_require__(6);
 var Dom_1 = __webpack_require__(3);
 var Strings_1 = __webpack_require__(10);
 var AnalyticsActionListMeta_1 = __webpack_require__(12);
 var Initialization_1 = __webpack_require__(2);
 var GlobalExports_1 = __webpack_require__(4);
 var SVGIcons_1 = __webpack_require__(15);
-var SVGDom_1 = __webpack_require__(17);
+var SVGDom_1 = __webpack_require__(16);
 /**
  * The SearchButton component renders a search icon that the end user can click to trigger a new query.
  *
  * See also the {@link Searchbox} component, which can automatically instantiate a SearchButton component along with a
  * {@link Querybox} component or an {@link Omnibox} component.
  */
-var SearchButton = (function (_super) {
+var SearchButton = /** @class */ (function (_super) {
     __extends(SearchButton, _super);
     /**
      * Creates a new SearchButton. Binds a `click` event on the element. Adds a search icon on the element.
@@ -97,15 +97,15 @@ var SearchButton = (function (_super) {
         this.usageAnalytics.logSearchEvent(AnalyticsActionListMeta_1.analyticsActionCauseList.searchboxSubmit, {});
         this.queryController.executeQuery();
     };
+    SearchButton.ID = 'SearchButton';
+    SearchButton.doExport = function () {
+        GlobalExports_1.exportGlobally({
+            SearchButton: SearchButton
+        });
+    };
+    SearchButton.options = {};
     return SearchButton;
 }(Component_1.Component));
-SearchButton.ID = 'SearchButton';
-SearchButton.doExport = function () {
-    GlobalExports_1.exportGlobally({
-        'SearchButton': SearchButton
-    });
-};
-SearchButton.options = {};
 exports.SearchButton = SearchButton;
 Initialization_1.Initialization.registerAutoCreateComponent(SearchButton);
 

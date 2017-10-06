@@ -1,6 +1,6 @@
-webpackJsonpCoveo__temporary([30],{
+webpackJsonpCoveo__temporary([32],{
 
-/***/ 382:
+/***/ 300:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18,15 +18,15 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var Component_1 = __webpack_require__(8);
 var ComponentOptions_1 = __webpack_require__(9);
-var DefaultResultAttachmentTemplate_1 = __webpack_require__(981);
-var Utils_1 = __webpack_require__(5);
-var QueryUtils_1 = __webpack_require__(20);
+var DefaultResultAttachmentTemplate_1 = __webpack_require__(519);
+var Utils_1 = __webpack_require__(6);
+var QueryUtils_1 = __webpack_require__(19);
 var Initialization_1 = __webpack_require__(2);
 var Assert_1 = __webpack_require__(7);
 var Dom_1 = __webpack_require__(3);
 var _ = __webpack_require__(1);
 var GlobalExports_1 = __webpack_require__(4);
-__webpack_require__(932);
+__webpack_require__(520);
 /**
  * The `ResultAttachments` component renders attachments in a result set, for example when displaying emails. This
  * component is usable inside a result template when there is an active [`Folding`]{@link Folding} component in the
@@ -34,7 +34,7 @@ __webpack_require__(932);
  *
  * This component is a result template component (see [Result Templates](https://developers.coveo.com/x/aIGfAQ)).
  */
-var ResultAttachments = (function (_super) {
+var ResultAttachments = /** @class */ (function (_super) {
     __extends(ResultAttachments, _super);
     /**
      * Creates a new `ResultAttachments` component.
@@ -64,7 +64,9 @@ var ResultAttachments = (function (_super) {
         _.each(this.attachments, function (attachment) {
             QueryUtils_1.QueryUtils.setStateObjectOnQueryResult(_this.queryStateModel.get(), attachment);
             QueryUtils_1.QueryUtils.setSearchInterfaceObjectOnQueryResult(_this.searchInterface, attachment);
-            var subTemplatePromise = _this.attachmentLevel > 0 ? _this.options.subResultTemplate.instantiateToElement(attachment) : _this.options.resultTemplate.instantiateToElement(attachment);
+            var subTemplatePromise = _this.attachmentLevel > 0
+                ? _this.options.subResultTemplate.instantiateToElement(attachment)
+                : _this.options.resultTemplate.instantiateToElement(attachment);
             subTemplatePromise.then(function (container) {
                 _this.autoCreateComponentsInsideResult(container, _.extend({}, attachment, { attachments: [] }));
                 Dom_1.$$(container).addClass('coveo-result-attachments-container');
@@ -99,92 +101,89 @@ var ResultAttachments = (function (_super) {
         };
         Initialization_1.Initialization.automaticallyCreateComponentsInside(element, initParameters, [ResultAttachments.ID]);
     };
+    ResultAttachments.ID = 'ResultAttachments';
+    ResultAttachments.doExport = function () {
+        GlobalExports_1.exportGlobally({
+            ResultAttachments: ResultAttachments,
+            DefaultResultAttachmentTemplate: DefaultResultAttachmentTemplate_1.DefaultResultAttachmentTemplate
+        });
+    };
+    /**
+     * The options for the component
+     * @componentOptions
+     */
+    ResultAttachments.options = {
+        /**
+         * Specifies the template to use to render each attachment for a top result.
+         *
+         * You can specify a previously registered template to use either by referring to its HTML `id` attribute or to a
+         * CSS selector (see {@link TemplateCache}).
+         *
+         * **Examples:**
+         *
+         * Specifying a previously registered template by referring to its HTML `id` attribute:
+         *
+         * ```html
+         * <div class="CoveoResultAttachments" data-result-template-id="Foo"></div>
+         * ```
+         *
+         * Specifying a previously registered template by referring to a CSS selector:
+         *
+         * ```html
+         * <div class='CoveoResultAttachments' data-result-template-selector=".Foo"></div>
+         * ```
+         *
+         * If you do not specify a custom folding template, the component uses the default result attachment template.
+         */
+        resultTemplate: ComponentOptions_1.ComponentOptions.buildTemplateOption({
+            defaultFunction: function (e) { return new DefaultResultAttachmentTemplate_1.DefaultResultAttachmentTemplate(); }
+        }),
+        /**
+         * Specifies the template to use to render sub-attachments, which are attachments within attachments, for example
+         * when multiple files are embedded within a `.zip` attachment.
+         *
+         * Sub-attachments can themselves contain sub-attachments, and so on up to a certain level (see the
+         * [`maximumAttachmentLevel`]{@link ResultAttachments.options.maximumAttachmentLevel} option).
+         *
+         * You can specify a previously registered template to use either by referring to its HTML `id` attribute or to a
+         * CSS selector (see {@link TemplateCache}).
+         *
+         * **Example:**
+         *
+         * Specifying a previously registered template by referring to its HTML `id` attribute:
+         *
+         * ```html
+         * <div class="CoveoResultAttachments" data-sub-result-template-id="Foo"></div>
+         * ```
+         *
+         * Specifying a previously registered template by referring to a CSS selector:
+         *
+         * ```html
+         * <div class="CoveoResultAttachments" data-sub-result-template-selector=".Foo"></div>
+         * ```
+         *
+         * By default, this option uses the same template you specify for the
+         * [`resultTemplate`]{@link ResultAttachments.options.resultTemplate} option.
+         */
+        subResultTemplate: ComponentOptions_1.ComponentOptions.buildTemplateOption({
+            postProcessing: function (value, options) { return (value != null ? value : options.resultTemplate); }
+        }),
+        /**
+         * Specifies the maximum nesting depth. Beyond this depth, the component stops rendering sub-attachments.
+         *
+         * Default value is `5`. Minimum value is `0`.
+         */
+        maximumAttachmentLevel: ComponentOptions_1.ComponentOptions.buildNumberOption({ defaultValue: 5, min: 0 })
+    };
     return ResultAttachments;
 }(Component_1.Component));
-ResultAttachments.ID = 'ResultAttachments';
-ResultAttachments.doExport = function () {
-    GlobalExports_1.exportGlobally({
-        'ResultAttachments': ResultAttachments,
-        'DefaultResultAttachmentTemplate': DefaultResultAttachmentTemplate_1.DefaultResultAttachmentTemplate
-    });
-};
-/**
- * The options for the component
- * @componentOptions
- */
-ResultAttachments.options = {
-    /**
-     * Specifies the template to use to render each attachment for a top result.
-     *
-     * You can specify a previously registered template to use either by referring to its HTML `id` attribute or to a
-     * CSS selector (see {@link TemplateCache}).
-     *
-     * **Examples:**
-     *
-     * Specifying a previously registered template by referring to its HTML `id` attribute:
-     *
-     * ```html
-     * <div class="CoveoResultAttachments" data-result-template-id="Foo"></div>
-     * ```
-     *
-     * Specifying a previously registered template by referring to a CSS selector:
-     *
-     * ```html
-     * <div class='CoveoResultAttachments' data-result-template-selector=".Foo"></div>
-     * ```
-     *
-     * If you do not specify a custom folding template, the component uses the default result attachment template.
-     */
-    resultTemplate: ComponentOptions_1.ComponentOptions.buildTemplateOption({ defaultFunction: function (e) { return new DefaultResultAttachmentTemplate_1.DefaultResultAttachmentTemplate(); } }),
-    /**
-     * Specifies the template to use to render sub-attachments, which are attachments within attachments, for example
-     * when multiple files are embedded within a `.zip` attachment.
-     *
-     * Sub-attachments can themselves contain sub-attachments, and so on up to a certain level (see the
-     * [`maximumAttachmentLevel`]{@link ResultAttachments.options.maximumAttachmentLevel} option).
-     *
-     * You can specify a previously registered template to use either by referring to its HTML `id` attribute or to a
-     * CSS selector (see {@link TemplateCache}).
-     *
-     * **Example:**
-     *
-     * Specifying a previously registered template by referring to its HTML `id` attribute:
-     *
-     * ```html
-     * <div class="CoveoResultAttachments" data-sub-result-template-id="Foo"></div>
-     * ```
-     *
-     * Specifying a previously registered template by referring to a CSS selector:
-     *
-     * ```html
-     * <div class="CoveoResultAttachments" data-sub-result-template-selector=".Foo"></div>
-     * ```
-     *
-     * By default, this option uses the same template you specify for the
-     * [`resultTemplate`]{@link ResultAttachments.options.resultTemplate} option.
-     */
-    subResultTemplate: ComponentOptions_1.ComponentOptions.buildTemplateOption({ postProcessing: function (value, options) { return value != null ? value : options.resultTemplate; } }),
-    /**
-     * Specifies the maximum nesting depth. Beyond this depth, the component stops rendering sub-attachments.
-     *
-     * Default value is `5`. Minimum value is `0`.
-     */
-    maximumAttachmentLevel: ComponentOptions_1.ComponentOptions.buildNumberOption({ defaultValue: 5, min: 0 })
-};
 exports.ResultAttachments = ResultAttachments;
 Initialization_1.Initialization.registerAutoCreateComponent(ResultAttachments);
 
 
 /***/ }),
 
-/***/ 932:
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-
-/***/ 981:
+/***/ 519:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -200,8 +199,8 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var Template_1 = __webpack_require__(25);
-var DefaultResultAttachmentTemplate = (function (_super) {
+var Template_1 = __webpack_require__(24);
+var DefaultResultAttachmentTemplate = /** @class */ (function (_super) {
     __extends(DefaultResultAttachmentTemplate, _super);
     function DefaultResultAttachmentTemplate() {
         return _super.call(this) || this;
@@ -213,6 +212,13 @@ var DefaultResultAttachmentTemplate = (function (_super) {
 }(Template_1.Template));
 exports.DefaultResultAttachmentTemplate = DefaultResultAttachmentTemplate;
 
+
+/***/ }),
+
+/***/ 520:
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
 
 /***/ })
 

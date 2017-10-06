@@ -1,12 +1,12 @@
-webpackJsonpCoveo__temporary([27],{
+webpackJsonpCoveo__temporary([29],{
 
-/***/ 17:
+/***/ 16:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var SVGDom = (function () {
+var SVGDom = /** @class */ (function () {
     function SVGDom() {
     }
     SVGDom.addClassToSVGInContainer = function (svgContainer, classToAdd) {
@@ -28,7 +28,7 @@ exports.SVGDom = SVGDom;
 
 /***/ }),
 
-/***/ 385:
+/***/ 306:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -47,26 +47,29 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var Component_1 = __webpack_require__(8);
 var ComponentOptions_1 = __webpack_require__(9);
 var Assert_1 = __webpack_require__(7);
-var Utils_1 = __webpack_require__(5);
+var Utils_1 = __webpack_require__(6);
 var Initialization_1 = __webpack_require__(2);
 var StringUtils_1 = __webpack_require__(21);
 var Strings_1 = __webpack_require__(10);
-var KeyboardUtils_1 = __webpack_require__(24);
+var KeyboardUtils_1 = __webpack_require__(23);
 var QueryStateModel_1 = __webpack_require__(13);
 var Dom_1 = __webpack_require__(3);
 var AnalyticsActionListMeta_1 = __webpack_require__(12);
 var _ = __webpack_require__(1);
 var GlobalExports_1 = __webpack_require__(4);
-__webpack_require__(936);
+__webpack_require__(528);
 var SVGIcons_1 = __webpack_require__(15);
-var SVGDom_1 = __webpack_require__(17);
+var SVGDom_1 = __webpack_require__(16);
 /**
  * The ResultTagging component lists the current tag field values of its associated result and renders a control that
  * allows the end user to add values to a tag field.
  *
  * This component is a result template component (see [Result Templates](https://developers.coveo.com/x/aIGfAQ)).
+ *
+ * **Note:**
+ * > The ResultTagging component is not supported with Coveo Cloud V2. To implement the ResultTagging component in Coveo Cloud V1, contact [Coveo Support](https://support.coveo.com/s/).
  */
-var ResultTagging = (function (_super) {
+var ResultTagging = /** @class */ (function (_super) {
     __extends(ResultTagging, _super);
     /**
      * Creates a new ResultTagging component.
@@ -188,7 +191,7 @@ var ResultTagging = (function (_super) {
         }).el;
         this.autoCompleteZone.appendChild(this.autoCompletePopup);
         this.manageAutocompleteAutoHide();
-        Dom_1.$$(this.textBox).on('keyup', (function (e) {
+        Dom_1.$$(this.textBox).on('keyup', function (e) {
             if (e.keyCode == KeyboardUtils_1.KEYBOARD.UP_ARROW || e.keyCode == KeyboardUtils_1.KEYBOARD.DOWN_ARROW || e.keyCode == KeyboardUtils_1.KEYBOARD.ENTER) {
                 _this.manageUpDownEnter(e.keyCode);
             }
@@ -196,7 +199,7 @@ var ResultTagging = (function (_super) {
                 _this.populateSuggestions();
             }
             Dom_1.$$(_this.element).removeClass('coveo-error');
-        }));
+        });
         Dom_1.$$(this.textBox).on('click', function () {
             _this.populateSuggestions();
         });
@@ -243,10 +246,12 @@ var ResultTagging = (function (_super) {
                     _this.queryStateModel.set(facetAttributeName, _.union(facetModel, [value]));
                 }
                 _this.queryController.deferExecuteQuery({
-                    beforeExecuteQuery: function () { return _this.usageAnalytics.logSearchEvent(AnalyticsActionListMeta_1.analyticsActionCauseList.documentTag, {
-                        facetId: _this.options.field,
-                        facetValue: value
-                    }); }
+                    beforeExecuteQuery: function () {
+                        return _this.usageAnalytics.logSearchEvent(AnalyticsActionListMeta_1.analyticsActionCauseList.documentTag, {
+                            facetId: _this.options.field,
+                            facetValue: value
+                        });
+                    }
                 });
             });
             if (_.contains(facetModel, value)) {
@@ -290,34 +295,34 @@ var ResultTagging = (function (_super) {
         Dom_1.$$(this.textBox).on('mouseover', function () {
             clearTimeout(timeout);
         });
-        Dom_1.$$(this.autoCompletePopup).on('mouseout', (function (e) {
+        Dom_1.$$(this.autoCompletePopup).on('mouseout', function (e) {
             if (Dom_1.$$(e.target).hasClass(ResultTagging.autoCompleteClass)) {
                 timeout = setTimeout(function () {
                     _this.clearPopup();
                 }, _this.options.autoCompleteTimer);
             }
-        }));
-        Dom_1.$$(this.autoCompletePopup).on('mouseenter', (function () {
+        });
+        Dom_1.$$(this.autoCompletePopup).on('mouseenter', function () {
             clearTimeout(timeout);
-        }));
-        Dom_1.$$(this.element).on('mouseenter', (function () {
+        });
+        Dom_1.$$(this.element).on('mouseenter', function () {
             _this.clearPopup();
             Dom_1.$$(_this.element).addClass('coveo-opened');
-        }));
-        Dom_1.$$(Dom_1.$$(this.element).closest('.CoveoResult')).on('mouseleave', (function () {
+        });
+        Dom_1.$$(Dom_1.$$(this.element).closest('.CoveoResult')).on('mouseleave', function () {
             _this.clearPopup();
             if (_this.textBox.value == '') {
                 Dom_1.$$(_this.element).removeClass('coveo-opened');
             }
-        }));
-        Dom_1.$$(Dom_1.$$(this.element).closest('.CoveoResult')).on('focusout', (function (e) {
-            if (_this.textBox.value != '' && (Dom_1.$$(e.target).closest('.CoveoResult') != Dom_1.$$(_this.element).closest('.CoveoResult'))) {
+        });
+        Dom_1.$$(Dom_1.$$(this.element).closest('.CoveoResult')).on('focusout', function (e) {
+            if (_this.textBox.value != '' && Dom_1.$$(e.target).closest('.CoveoResult') != Dom_1.$$(_this.element).closest('.CoveoResult')) {
                 Dom_1.$$(_this.element).addClass('coveo-error');
             }
-        }));
-        Dom_1.$$(Dom_1.$$(this.element).closest('.CoveoResult')).on('focusin', (function () {
+        });
+        Dom_1.$$(Dom_1.$$(this.element).closest('.CoveoResult')).on('focusin', function () {
             Dom_1.$$(_this.element).removeClass('coveo-error');
-        }));
+        });
     };
     // Exclude tags that are already on the result (Since we can tag with the same value twice.
     ResultTagging.prototype.buildRegEx = function (searchTerm) {
@@ -376,7 +381,10 @@ var ResultTagging = (function (_super) {
             doAdd: false,
             uniqueId: this.result.uniqueId
         };
-        this.queryController.getEndpoint().tagDocument(request).then(function () {
+        this.queryController
+            .getEndpoint()
+            .tagDocument(request)
+            .then(function () {
             _this.tags.splice(_.indexOf(_this.tags, tagValue), 1);
             Dom_1.$$(element).detach();
         });
@@ -401,11 +409,15 @@ var ResultTagging = (function (_super) {
             doAdd: true,
             uniqueId: this.result.uniqueId
         };
-        this.queryController.getEndpoint().tagDocument(request).then(function () {
+        this.queryController
+            .getEndpoint()
+            .tagDocument(request)
+            .then(function () {
             _this.tagZone.appendChild(_this.buildTagValue(tagValue));
             _this.textBox.value = '';
             Dom_1.$$(_this.element).removeClass('coveo-error');
-        }).catch(function () {
+        })
+            .catch(function () {
             // We do this otherwise it's possible to add the same tag while we wait for the server's response
             _this.tags = _.without(_this.tags, _.findWhere(_this.tags, tagValue));
         });
@@ -414,50 +426,50 @@ var ResultTagging = (function (_super) {
         var tagValue = Utils_1.Utils.trim(this.textBox.value.toLowerCase());
         this.doAddTagWithValue(tagValue);
     };
+    ResultTagging.ID = 'ResultTagging';
+    ResultTagging.autoCompleteClass = 'coveo-result-tagging-auto-complete';
+    ResultTagging.doExport = function () {
+        GlobalExports_1.exportGlobally({
+            ResultTagging: ResultTagging
+        });
+    };
+    /**
+     * @componentOptions
+     */
+    ResultTagging.options = {
+        /**
+         * Specifies the tag field that the component will use.
+         *
+         * Specifying a value for this options is necessary for this component to work.
+         */
+        field: ComponentOptions_1.ComponentOptions.buildFieldOption({
+            match: function (field) { return field.type == 'Tag'; },
+            required: true
+        }),
+        /**
+         * Specifies the number of items to show in the list of suggested items.
+         *
+         * Default value is `5`. Minimum value is `0 `.
+         */
+        suggestBoxSize: ComponentOptions_1.ComponentOptions.buildNumberOption({ defaultValue: 5, min: 0 }),
+        /**
+         * Specifies how much time (in milliseconds) it takes for the list of suggested items to disappear when it loses
+         * focus.
+         *
+         * Default value is `2000`. Minimum value is `0`.
+         */
+        autoCompleteTimer: ComponentOptions_1.ComponentOptions.buildNumberOption({ defaultValue: 2000, min: 0 })
+    };
+    ResultTagging.AUTO_COMPLETE_CLASS = 'coveo-result-tagging-auto-complete';
     return ResultTagging;
 }(Component_1.Component));
-ResultTagging.ID = 'ResultTagging';
-ResultTagging.autoCompleteClass = 'coveo-result-tagging-auto-complete';
-ResultTagging.doExport = function () {
-    GlobalExports_1.exportGlobally({
-        'ResultTagging': ResultTagging
-    });
-};
-/**
- * @componentOptions
- */
-ResultTagging.options = {
-    /**
-     * Specifies the tag field that the component will use.
-     *
-     * Specifying a value for this options is necessary for this component to work.
-     */
-    field: ComponentOptions_1.ComponentOptions.buildFieldOption({
-        match: function (field) { return field.type == 'Tag'; },
-        required: true
-    }),
-    /**
-     * Specifies the number of items to show in the list of suggested items.
-     *
-     * Default value is `5`. Minimum value is `0 `.
-     */
-    suggestBoxSize: ComponentOptions_1.ComponentOptions.buildNumberOption({ defaultValue: 5, min: 0 }),
-    /**
-     * Specifies how much time (in milliseconds) it takes for the list of suggested items to disappear when it loses
-     * focus.
-     *
-     * Default value is `2000`. Minimum value is `0`.
-     */
-    autoCompleteTimer: ComponentOptions_1.ComponentOptions.buildNumberOption({ defaultValue: 2000, min: 0 })
-};
-ResultTagging.AUTO_COMPLETE_CLASS = 'coveo-result-tagging-auto-complete';
 exports.ResultTagging = ResultTagging;
 Initialization_1.Initialization.registerAutoCreateComponent(ResultTagging);
 
 
 /***/ }),
 
-/***/ 936:
+/***/ 528:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

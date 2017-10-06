@@ -1,6 +1,6 @@
-webpackJsonpCoveo__temporary([59],{
+webpackJsonpCoveo__temporary([61],{
 
-/***/ 363:
+/***/ 282:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19,17 +19,17 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var Component_1 = __webpack_require__(8);
 var ComponentOptions_1 = __webpack_require__(9);
 var Assert_1 = __webpack_require__(7);
-var HighlightUtils_1 = __webpack_require__(54);
+var HighlightUtils_1 = __webpack_require__(49);
 var Initialization_1 = __webpack_require__(2);
 var GlobalExports_1 = __webpack_require__(4);
-__webpack_require__(914);
+__webpack_require__(480);
 /**
  * The Excerpt component renders an excerpt of its associated result and highlights the keywords from the query using
  * the appropriate template helpers.
  *
  * This component is a result template component (see [Result Templates](https://developers.coveo.com/x/aIGfAQ)).
  */
-var Excerpt = (function (_super) {
+var Excerpt = /** @class */ (function (_super) {
     __extends(Excerpt, _super);
     /**
      * Creates a new Excerpt component.
@@ -51,21 +51,21 @@ var Excerpt = (function (_super) {
         _this.element.innerHTML = HighlightUtils_1.HighlightUtils.highlightString(_this.result.excerpt, _this.result.excerptHighlights, null, 'coveo-highlight');
         return _this;
     }
+    Excerpt.ID = 'Excerpt';
+    Excerpt.doExport = function () {
+        GlobalExports_1.exportGlobally({
+            Excerpt: Excerpt
+        });
+    };
     return Excerpt;
 }(Component_1.Component));
-Excerpt.ID = 'Excerpt';
-Excerpt.doExport = function () {
-    GlobalExports_1.exportGlobally({
-        'Excerpt': Excerpt
-    });
-};
 exports.Excerpt = Excerpt;
 Initialization_1.Initialization.registerAutoCreateComponent(Excerpt);
 
 
 /***/ }),
 
-/***/ 914:
+/***/ 480:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

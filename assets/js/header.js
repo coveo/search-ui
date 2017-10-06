@@ -47,24 +47,21 @@ function isMobile(){
 // Set the Coveo Cloud Organization search and analytics tokens
 var siteOrigin= 'JSSearchRef'; //Take the value from https://search.coveo.com/JS/TechDoc.js
 var uaToken = ''; // API Key for allowing to push Usage analytics events
-var SuggestionScope = '@syssource="Web - JsSearchRef"'; //Search Box suggestion filter ex: @syssource=("ohclouden")
-var searchToken = 'search-ui'; //API Key allowing to query
+var SuggestionScope = '@source=(JsSearchRef)'; //Search Box suggestion filter ex: @syssource=("ohclouden")
+var searchToken = 'xx2cf6ec8e-84e1-4691-bdcb-7e114de939bd'; //API Key allowing to query
 var hostname = window.location.hostname; //To manage dev/staging/prod environment
-var TechDocSearchPage = 'https://search.coveo.com/techdoc2.html';
-if (hostname == "coveo.github.io") {
+var TechDocSearchPage = 'https://search.coveo.com/';
+if (hostname === "coveo.github.io") {
 	// Use the production org (coveosearch)
-	searchToken = '7b9b9300-3901-437b-bafd-51ae596f1b16';
 	uaToken = searchToken;
 } else {
 	// Use the staging org (coveosupport) for UA
 	uaToken = '25b8fab8-089b-4325-8d0f-d3145dd282ec';
-	// Use the production org (coveosearch) for search
-	searchToken = '7b9b9300-3901-437b-bafd-51ae596f1b16';
 }
 
 $(function(){
 	Coveo.SearchEndpoint.endpoints["default"] = new Coveo.SearchEndpoint({
-		restUri: 'https://cloudplatform.coveo.com/rest/search',
+		restUri: 'https://platform.cloud.coveo.com/rest/search',
 		accessToken: searchToken
 		});
 	Coveo.$("#searchBox").on("afterInitialization", function(){
@@ -77,13 +74,13 @@ $(function(){
 				populateOmniBoxEventArgs.closeOmnibox();
 				Coveo.SearchEndpoint.endpoints["default"]
 					.search({
-						q: '@systitle=="' + valueSelected + '"',
+						q: '@jsuipagetopic=="' + valueSelected + '"',
 						aq: SuggestionScope
 					})
 					.done(function (results) {
 						/*window.location = results.results[0].clickUri;*/
 						var foundResult = Coveo._.find(results.results, function(result){
-							return valueSelected == result.raw.systitle && !result.ClickUri.includes('/ac8/');
+							return valueSelected == result.raw.jsuipagetopic && !result.ClickUri.includes('/ac8/');
 						});
 						if(foundResult){
 							logCustomEvent('pageNav', 'omniboxTitleSuggestion', uaToken, foundResult.Title, foundResult.clickUri);

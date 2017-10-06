@@ -1,6 +1,6 @@
-webpackJsonpCoveo__temporary([61],{
+webpackJsonpCoveo__temporary([63],{
 
-/***/ 361:
+/***/ 279:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -24,18 +24,18 @@ var Dom_1 = __webpack_require__(3);
 var QueryStateModel_1 = __webpack_require__(13);
 var Initialization_1 = __webpack_require__(2);
 var StringUtils_1 = __webpack_require__(21);
-var Utils_1 = __webpack_require__(5);
+var Utils_1 = __webpack_require__(6);
 var AnalyticsActionListMeta_1 = __webpack_require__(12);
 var Strings_1 = __webpack_require__(10);
 var _ = __webpack_require__(1);
 var GlobalExports_1 = __webpack_require__(4);
-__webpack_require__(912);
+__webpack_require__(474);
 /**
  * The DidYouMean component is responsible for displaying query corrections. If this component is in the page and the
  * query returns no result but finds a possible query correction, the component either suggests the correction or
  * automatically triggers a new query with the suggested term.
  */
-var DidYouMean = (function (_super) {
+var DidYouMean = /** @class */ (function (_super) {
     __extends(DidYouMean, _super);
     /**
      * Creates a new DidYouMean component.
@@ -128,7 +128,7 @@ var DidYouMean = (function (_super) {
     };
     DidYouMean.prototype.buildCorrectedSentence = function (correction) {
         var toReturn = [];
-        var tagStart = '<span class=\'coveo-did-you-mean-word-correction\'>';
+        var tagStart = "<span class='coveo-did-you-mean-word-correction'>";
         var tagEnd = '</span>';
         var currentOffset = 0;
         _.each(correction.wordCorrections, function (wordCorrection) {
@@ -142,34 +142,34 @@ var DidYouMean = (function (_super) {
         toReturn.push(StringUtils_1.StringUtils.htmlEncode(correction.correctedQuery.slice(currentOffset)));
         return toReturn.join('');
     };
+    DidYouMean.ID = 'DidYouMean';
+    DidYouMean.doExport = function () {
+        GlobalExports_1.exportGlobally({
+            DidYouMean: DidYouMean
+        });
+    };
+    /**
+     * The options for the component
+     * @componentOptions
+     */
+    DidYouMean.options = {
+        /**
+         * Specifies whether the DidYouMean component automatically triggers a new query when a query returns no result and
+         * a possible correction is available.
+         *
+         * Default value is `true`.
+         */
+        enableAutoCorrection: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: true })
+    };
     return DidYouMean;
 }(Component_1.Component));
-DidYouMean.ID = 'DidYouMean';
-DidYouMean.doExport = function () {
-    GlobalExports_1.exportGlobally({
-        'DidYouMean': DidYouMean
-    });
-};
-/**
- * The options for the component
- * @componentOptions
- */
-DidYouMean.options = {
-    /**
-     * Specifies whether the DidYouMean component automatically triggers a new query when a query returns no result and
-     * a possible correction is available.
-     *
-     * Default value is `true`.
-     */
-    enableAutoCorrection: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: true }),
-};
 exports.DidYouMean = DidYouMean;
 Initialization_1.Initialization.registerAutoCreateComponent(DidYouMean);
 
 
 /***/ }),
 
-/***/ 912:
+/***/ 474:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

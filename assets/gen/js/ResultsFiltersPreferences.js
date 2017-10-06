@@ -1,57 +1,12 @@
-webpackJsonpCoveo__temporary([11,49,50],{
+webpackJsonpCoveo__temporary([11,51,52],{
 
-/***/ 121:
+/***/ 16:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var Dom_1 = __webpack_require__(3);
-var _ = __webpack_require__(1);
-__webpack_require__(601);
-var GlobalExports_1 = __webpack_require__(4);
-/**
- * A simple `fieldset` HTMLElement containing multiple form widgets.
- */
-var FormGroup = (function () {
-    /**
-     * Creates a new `FormGroup`.
-     * @param contents The form widgets to include in the form group.
-     * @param label The label to display for the form group.
-     */
-    function FormGroup(contents, label) {
-        var _this = this;
-        this.element = Dom_1.$$('fieldset', { className: 'coveo-form-group' }, Dom_1.$$('span', { className: 'coveo-form-group-label' }, label));
-        _.each(contents, function (content) {
-            _this.element.append(content.build());
-        });
-    }
-    FormGroup.doExport = function () {
-        GlobalExports_1.exportGlobally({
-            'FormGroup': FormGroup
-        });
-    };
-    /**
-     * Gets the element on which the form group is bound.
-     * @returns {HTMLElement} The form group element.
-     */
-    FormGroup.prototype.build = function () {
-        return this.element.el;
-    };
-    return FormGroup;
-}());
-exports.FormGroup = FormGroup;
-
-
-/***/ }),
-
-/***/ 17:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var SVGDom = (function () {
+var SVGDom = /** @class */ (function () {
     function SVGDom() {
     }
     SVGDom.addClassToSVGInContainer = function (svgContainer, classToAdd) {
@@ -73,7 +28,7 @@ exports.SVGDom = SVGDom;
 
 /***/ }),
 
-/***/ 281:
+/***/ 243:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -82,13 +37,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var Dom_1 = __webpack_require__(3);
 var _ = __webpack_require__(1);
 var Strings_1 = __webpack_require__(10);
-__webpack_require__(608);
-var Utils_1 = __webpack_require__(5);
+__webpack_require__(455);
+var Utils_1 = __webpack_require__(6);
 var GlobalExports_1 = __webpack_require__(4);
 /**
  * A multi select widget with standard styling.
  */
-var MultiSelect = (function () {
+var MultiSelect = /** @class */ (function () {
     /**
      * Creates a new `MultiSelect`.
      * @param onChange The function to call when the widget selected values change. This function takes the current
@@ -97,8 +52,7 @@ var MultiSelect = (function () {
      * @param label The label to display for the multi select.
      */
     function MultiSelect(onChange, options, label) {
-        if (onChange === void 0) { onChange = function (multiSelect) {
-        }; }
+        if (onChange === void 0) { onChange = function (multiSelect) { }; }
         this.onChange = onChange;
         this.options = options;
         this.label = label;
@@ -106,7 +60,7 @@ var MultiSelect = (function () {
     }
     MultiSelect.doExport = function () {
         GlobalExports_1.exportGlobally({
-            'MultiSelect': MultiSelect
+            MultiSelect: MultiSelect
         });
     };
     /**
@@ -151,10 +105,12 @@ var MultiSelect = (function () {
      */
     MultiSelect.prototype.setValue = function (values) {
         var currentlySelected = this.getValue();
-        var currentStateSplit = _.partition(_.toArray(this.element.options), function (opt) { return _.contains(currentlySelected, opt.value); });
+        var currentStateSplit = _.partition(_.toArray(this.element.options), function (opt) {
+            return _.contains(currentlySelected, opt.value);
+        });
         var newStateToApplySplit = _.partition(_.toArray(this.element.options), function (opt) { return _.contains(values, opt.value); });
-        _.each(newStateToApplySplit[0], function (toSelect) { return toSelect.selected = true; });
-        _.each(newStateToApplySplit[1], function (toUnSelect) { return toUnSelect.selected = false; });
+        _.each(newStateToApplySplit[0], function (toSelect) { return (toSelect.selected = true); });
+        _.each(newStateToApplySplit[1], function (toUnSelect) { return (toUnSelect.selected = false); });
         var hasChanged = false;
         if (!Utils_1.Utils.arrayEqual(currentStateSplit[0], newStateToApplySplit[0], false)) {
             hasChanged = true;
@@ -201,7 +157,7 @@ exports.MultiSelect = MultiSelect;
 
 /***/ }),
 
-/***/ 386:
+/***/ 303:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -219,27 +175,27 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var Component_1 = __webpack_require__(8);
 var ComponentOptions_1 = __webpack_require__(9);
-var LocalStorageUtils_1 = __webpack_require__(39);
-var InitializationEvents_1 = __webpack_require__(18);
-var PreferencesPanelEvents_1 = __webpack_require__(79);
-var Model_1 = __webpack_require__(19);
+var LocalStorageUtils_1 = __webpack_require__(37);
+var InitializationEvents_1 = __webpack_require__(17);
+var PreferencesPanelEvents_1 = __webpack_require__(67);
+var Model_1 = __webpack_require__(18);
 var QueryEvents_1 = __webpack_require__(11);
 var QueryStateModel_1 = __webpack_require__(13);
-var BreadcrumbEvents_1 = __webpack_require__(50);
+var BreadcrumbEvents_1 = __webpack_require__(42);
 var AnalyticsActionListMeta_1 = __webpack_require__(12);
 var Initialization_1 = __webpack_require__(2);
 var Strings_1 = __webpack_require__(10);
-var Utils_1 = __webpack_require__(5);
+var Utils_1 = __webpack_require__(6);
 var Dom_1 = __webpack_require__(3);
 var _ = __webpack_require__(1);
 var GlobalExports_1 = __webpack_require__(4);
-__webpack_require__(937);
-var Checkbox_1 = __webpack_require__(69);
-var TextInput_1 = __webpack_require__(55);
-var MultiSelect_1 = __webpack_require__(281);
-var FormGroup_1 = __webpack_require__(121);
+__webpack_require__(526);
+var Checkbox_1 = __webpack_require__(54);
+var TextInput_1 = __webpack_require__(50);
+var MultiSelect_1 = __webpack_require__(243);
+var FormGroup_1 = __webpack_require__(95);
 var SVGIcons_1 = __webpack_require__(15);
-var SVGDom_1 = __webpack_require__(17);
+var SVGDom_1 = __webpack_require__(16);
 /**
  * The `ResultFiltersPreferences` component allows end users to create custom filters to apply to queries. These filters
  * are saved to local storage.
@@ -252,7 +208,7 @@ var SVGDom_1 = __webpack_require__(17);
  *
  * See also the {@link ResultsPreferences} component.
  */
-var ResultsFiltersPreferences = (function (_super) {
+var ResultsFiltersPreferences = /** @class */ (function (_super) {
     __extends(ResultsFiltersPreferences, _super);
     /**
      * Creates a new `ResultsFiltersPreferences` component.
@@ -310,7 +266,9 @@ var ResultsFiltersPreferences = (function (_super) {
     ResultsFiltersPreferences.prototype.bindBreadcrumbEvent = function () {
         var _this = this;
         if (this.options.includeInBreadcrumb) {
-            this.bind.onRootElement(BreadcrumbEvents_1.BreadcrumbEvents.populateBreadcrumb, function (args) { return _this.handlePopulateBreadcrumb(args); });
+            this.bind.onRootElement(BreadcrumbEvents_1.BreadcrumbEvents.populateBreadcrumb, function (args) {
+                return _this.handlePopulateBreadcrumb(args);
+            });
             this.bind.onRootElement(BreadcrumbEvents_1.BreadcrumbEvents.clearBreadcrumb, function () { return _this.handleClearBreadcrumb(); });
         }
     };
@@ -371,14 +329,11 @@ var ResultsFiltersPreferences = (function (_super) {
         this.container.appendChild(this.advancedFiltersBuilder);
     };
     ResultsFiltersPreferences.prototype.buildAdvancedFilterInput = function () {
-        this.advancedFiltersTextInputCaption = new TextInput_1.TextInput(function () {
-        }, Strings_1.l('Caption'));
+        this.advancedFiltersTextInputCaption = new TextInput_1.TextInput(function () { }, Strings_1.l('Caption'));
         this.advancedFiltersTextInputCaption.getInput().setAttribute('required', '');
-        this.advancedFiltersTextInputExpression = new TextInput_1.TextInput(function () {
-        }, Strings_1.l('Expression'));
+        this.advancedFiltersTextInputExpression = new TextInput_1.TextInput(function () { }, Strings_1.l('Expression'));
         this.advancedFiltersTextInputExpression.getInput().setAttribute('required', '');
-        this.advancedFiltersTabSelect = new MultiSelect_1.MultiSelect(function () {
-        }, this.getAllTabs(), Strings_1.l('Tab'));
+        this.advancedFiltersTabSelect = new MultiSelect_1.MultiSelect(function () { }, this.getAllTabs(), Strings_1.l('Tab'));
     };
     ResultsFiltersPreferences.prototype.buildAdvancedFilterFormValidate = function () {
         var _this = this;
@@ -639,7 +594,7 @@ var ResultsFiltersPreferences = (function (_super) {
         return _.contains(filter.tab, tab) || Utils_1.Utils.isEmptyArray(filter.tab);
     };
     ResultsFiltersPreferences.prototype.getFilterElementByCaption = function (caption) {
-        return Dom_1.$$(this.preferenceContainer).find('input[value=\'' + caption + '\']').parentElement;
+        return Dom_1.$$(this.preferenceContainer).find("input[value='" + caption + "']").parentElement;
     };
     ResultsFiltersPreferences.prototype.fromResultsFilterOptionToResultsPreferenceInterface = function () {
         var ret = {};
@@ -707,110 +662,155 @@ var ResultsFiltersPreferences = (function (_super) {
             this.shrinkModalBox();
         }
     };
+    ResultsFiltersPreferences.ID = 'ResultsFiltersPreferences';
+    ResultsFiltersPreferences.doExport = function () {
+        GlobalExports_1.exportGlobally({
+            ResultsFiltersPreferences: ResultsFiltersPreferences
+        });
+    };
+    /**
+     * The options for the component
+     * @componentOptions
+     */
+    ResultsFiltersPreferences.options = {
+        /**
+         * Specifies whether to display the active filter(s) in the [`Breadcrumb`]{@link Breadcrumb}.
+         *
+         * Default value is `true`.
+         */
+        includeInBreadcrumb: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: true }),
+        /**
+         * Specifies whether to show the **Create** button that allows the end user to create filters.
+         *
+         * If you set this option to `false`, only the pre-populated
+         * [`filters`]{@link ResultsFiltersPreferences.options.filters} are available to the end user.
+         *
+         * Default value is `true`.
+         */
+        showAdvancedFilters: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: true }),
+        /**
+         * Specifies the default filters which all end users can apply.
+         *
+         * End users cannot modify or delete these filters. These filters do not count as "user-made" filters, but rather as
+         * "built-in" filters created by the developer of the search page.
+         *
+         * **Note:**
+         * > You cannot set this option directly in the component markup as an HTML attribute. You must either set it in the
+         * > [`init`]{@link init} call of your search interface (see
+         * > [Components - Passing Component Options in the init Call](https://developers.coveo.com/x/PoGfAQ#Components-PassingComponentOptionsintheinitCall)),
+         * > or before the `init` call, using the `options` top-level function (see
+         * > [Components - Passing Component Options Before the init Call](https://developers.coveo.com/x/PoGfAQ#Components-PassingComponentOptionsBeforetheinitCall)).
+         *
+         * Filters should follow this definition:
+         *
+         * `filters : { [caption : string] : { expression : string, tab? : string[] } }`;
+         *
+         * **Example:**
+         *
+         * var myFilters = {
+         *   "Only Google Drive Items" : {
+         *     expression : "@connectortype == 'GoogleDriveCrawler'",
+         *     tab : ["Tab1", "Tab2"]
+         *   },
+         *
+         *   "Another Filter" : {
+         *     expression : [ ... another expression ... ]
+         *   },
+         *
+         *   [ ... ]
+         * };
+         *
+         * ```javascript
+         * // You can set the option in the 'init' call:
+         * Coveo.init(document.querySelector("#search"), {
+         *   ResultsFiltersPreferences : {
+         *     filters : myFilters
+         *   }
+         * });
+         *
+         * // Or before the 'init' call, using the 'options' top-level function:
+         * // Coveo.options(document.querySelector("#search"), {
+         * //   ResultsFiltersPreferences : {
+         *        filters : myFilters
+         *      }
+         * // });
+         * ```
+         *
+         * Default value is `undefined`.
+         */
+        filters: ComponentOptions_1.ComponentOptions.buildJsonOption()
+    };
     return ResultsFiltersPreferences;
 }(Component_1.Component));
-ResultsFiltersPreferences.ID = 'ResultsFiltersPreferences';
-ResultsFiltersPreferences.doExport = function () {
-    GlobalExports_1.exportGlobally({
-        'ResultsFiltersPreferences': ResultsFiltersPreferences
-    });
-};
-/**
- * The options for the component
- * @componentOptions
- */
-ResultsFiltersPreferences.options = {
-    /**
-     * Specifies whether to display the active filter(s) in the [`Breadcrumb`]{@link Breadcrumb}.
-     *
-     * Default value is `true`.
-     */
-    includeInBreadcrumb: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: true }),
-    /**
-     * Specifies whether to show the **Create** button that allows the end user to create filters.
-     *
-     * If you set this option to `false`, only the pre-populated
-     * [`filters`]{@link ResultsFiltersPreferences.options.filters} are available to the end user.
-     *
-     * Default value is `true`.
-     */
-    showAdvancedFilters: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: true }),
-    /**
-     * Specifies the default filters which all end users can apply.
-     *
-     * End users cannot modify or delete these filters. These filters do not count as "user-made" filters, but rather as
-     * "built-in" filters created by the developer of the search page.
-     *
-     * **Note:**
-     * > You cannot set this option directly in the component markup as an HTML attribute. You must either set it in the
-     * > [`init`]{@link init} call of your search interface (see
-     * > [Components - Passing Component Options in the init Call](https://developers.coveo.com/x/PoGfAQ#Components-PassingComponentOptionsintheinitCall)),
-     * > or before the `init` call, using the `options` top-level function (see
-     * > [Components - Passing Component Options Before the init Call](https://developers.coveo.com/x/PoGfAQ#Components-PassingComponentOptionsBeforetheinitCall)).
-     *
-     * Filters should follow this definition:
-     *
-     * `filters : { [caption : string] : { expression : string, tab? : string[] } }`;
-     *
-     * **Example:**
-     *
-     * var myFilters = {
-     *   "Only Google Drive Items" : {
-     *     expression : "@connectortype == 'GoogleDriveCrawler'",
-     *     tab : ["Tab1", "Tab2"]
-     *   },
-     *
-     *   "Another Filter" : {
-     *     expression : [ ... another expression ... ]
-     *   },
-     *
-     *   [ ... ]
-     * };
-     *
-     * ```javascript
-     * // You can set the option in the 'init' call:
-     * Coveo.init(document.querySelector("#search"), {
-     *   ResultsFiltersPreferences : {
-     *     filters : myFilters
-     *   }
-     * });
-     *
-     * // Or before the 'init' call, using the 'options' top-level function:
-     * // Coveo.options(document.querySelector("#search"), {
-     * //   ResultsFiltersPreferences : {
-     *        filters : myFilters
-     *      }
-     * // });
-     * ```
-     *
-     * Default value is `undefined`.
-     */
-    filters: ComponentOptions_1.ComponentOptions.buildJsonOption()
-};
 exports.ResultsFiltersPreferences = ResultsFiltersPreferences;
 Initialization_1.Initialization.registerAutoCreateComponent(ResultsFiltersPreferences);
 
 
 /***/ }),
 
-/***/ 601:
+/***/ 442:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
 
-/***/ 608:
+/***/ 455:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
 
-/***/ 937:
+/***/ 526:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
+
+/***/ }),
+
+/***/ 95:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var Dom_1 = __webpack_require__(3);
+var _ = __webpack_require__(1);
+__webpack_require__(442);
+var GlobalExports_1 = __webpack_require__(4);
+/**
+ * A simple `fieldset` HTMLElement containing multiple form widgets.
+ */
+var FormGroup = /** @class */ (function () {
+    /**
+     * Creates a new `FormGroup`.
+     * @param contents The form widgets to include in the form group.
+     * @param label The label to display for the form group.
+     */
+    function FormGroup(contents, label) {
+        var _this = this;
+        this.element = Dom_1.$$('fieldset', { className: 'coveo-form-group' }, Dom_1.$$('span', { className: 'coveo-form-group-label' }, label));
+        _.each(contents, function (content) {
+            _this.element.append(content.build());
+        });
+    }
+    FormGroup.doExport = function () {
+        GlobalExports_1.exportGlobally({
+            FormGroup: FormGroup
+        });
+    };
+    /**
+     * Gets the element on which the form group is bound.
+     * @returns {HTMLElement} The form group element.
+     */
+    FormGroup.prototype.build = function () {
+        return this.element.el;
+    };
+    return FormGroup;
+}());
+exports.FormGroup = FormGroup;
+
 
 /***/ })
 
