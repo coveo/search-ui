@@ -1,6 +1,7 @@
 import { Assert } from '../misc/Assert';
 import { Utils } from '../utils/Utils';
 import * as _ from 'underscore';
+import { Logger } from '../MiscModules';
 
 interface IHashUtils {
   getHash(w: any);
@@ -26,7 +27,7 @@ export class HashUtils {
     // window.location.hash returns the DECODED hash on Firefox (it's a well known bug),
     // so any & in values will be already unescaped. This breaks our value splitting.
     // The following trick works on all browsers.
-    let ret = '#' + (w.location.href.split('#')[1] || '');
+    const ret = '#' + (w.location.href.split('#')[1] || '');
     return HashUtils.getAjaxcrawlableHash(ret);
   }
 
@@ -42,7 +43,7 @@ export class HashUtils {
   }
 
   public static encodeValues(values: {}): string {
-    let hash: String[] = [];
+    const hash: String[] = [];
     _.each(<_.Dictionary<any>>values, (valueToEncode, key, obj?) => {
       let encodedValue = '';
       if (Utils.isNonEmptyArray(valueToEncode)) {
@@ -73,12 +74,12 @@ export class HashUtils {
     Assert.exists(toParse);
     Assert.check(toParse.indexOf('#') == 0 || toParse == '');
 
-    let toParseArray = toParse.substr(1).split('&');
+    const toParseArray = toParse.substr(1).split('&');
     let paramPos = 0;
     let loop = true;
     let paramValue: string = undefined;
     while (loop) {
-      let paramValuePair = toParseArray[paramPos].split('=');
+      const paramValuePair = toParseArray[paramPos].split('=');
       if (paramValuePair[0] == key) {
         loop = false;
         paramValue = paramValuePair[1];
@@ -94,7 +95,7 @@ export class HashUtils {
   }
 
   private static getValueDependingOnType(key: string, paramValue: string): any {
-    let type = HashUtils.getValueType(key, paramValue);
+    const type = HashUtils.getValueType(key, paramValue);
     let returnValue;
 
     if (type == 'object') {
@@ -102,7 +103,11 @@ export class HashUtils {
     } else if (type == 'array') {
       returnValue = HashUtils.decodeArray(paramValue);
     } else {
-      returnValue = decodeURIComponent(paramValue);
+      try {
+        returnValue = decodeURIComponent(paramValue);
+      } catch (e) {
+        new Logger(HashUtils).warn('Error while decoding a value from the URL as a standard value', e, key, paramValue);
+      }
     }
     return returnValue;
   }
@@ -158,26 +163,26 @@ export class HashUtils {
   }
 
   private static isObject(value: string) {
-    let isObjectStart = HashUtils.isObjectStartNotEncoded(value) || HashUtils.isObjectStartEncoded(value);
-    let isObjectEnd = HashUtils.isObjectEndNotEncoded(value) || HashUtils.isObjectEndEncoded(value);
+    const isObjectStart = HashUtils.isObjectStartNotEncoded(value) || HashUtils.isObjectStartEncoded(value);
+    const isObjectEnd = HashUtils.isObjectEndNotEncoded(value) || HashUtils.isObjectEndEncoded(value);
     return isObjectStart && isObjectEnd;
   }
 
   private static isArray(value: string) {
-    let isArrayStart = HashUtils.isArrayStartNotEncoded(value) || HashUtils.isArrayStartEncoded(value);
-    let isArrayEnd = HashUtils.isArrayEndNotEncoded(value) || HashUtils.isArrayEndEncoded(value);
+    const isArrayStart = HashUtils.isArrayStartNotEncoded(value) || HashUtils.isArrayStartEncoded(value);
+    const isArrayEnd = HashUtils.isArrayEndNotEncoded(value) || HashUtils.isArrayEndEncoded(value);
     return isArrayStart && isArrayEnd;
   }
 
   public static encodeArray(array: string[]): string {
-    let arrayReturn = _.map(array, value => {
+    const arrayReturn = _.map(array, value => {
       return encodeURIComponent(value);
     });
     return HashUtils.DELIMITER.arrayStart + arrayReturn.join(',') + HashUtils.DELIMITER.arrayEnd;
   }
 
   public static encodeObject(obj: Object): string {
-    let retArray = _.map(<_.Dictionary<any>>obj, (val, key?, obj?) => {
+    const retArray = _.map(<_.Dictionary<any>>obj, (val, key?, obj?) => {
       return `"${encodeURIComponent(key)}":${this.encodeValue(val)}`;
     });
     return HashUtils.DELIMITER.objectStart + retArray.join(' , ') + HashUtils.DELIMITER.objectEnd;
@@ -202,7 +207,13 @@ export class HashUtils {
       obj = obj.replace(/encodeURIComponent(HashUtils.Delimiter.objectStart)/, HashUtils.DELIMITER.objectStart);
       obj = obj.replace(encodeURIComponent(HashUtils.DELIMITER.objectEnd), HashUtils.DELIMITER.objectEnd);
     }
-    return JSON.parse(decodeURIComponent(obj));
+    try {
+      const decoded = decodeURIComponent(obj);
+      return JSON.parse(decoded);
+    } catch (e) {
+      new Logger(HashUtils).warn('Error while decoding a value from the URL as an object', e, obj);
+      return {};
+    }
   }
 
   private static decodeArray(value: string): any[] {
@@ -212,9 +223,17 @@ export class HashUtils {
     }
     value = value.substr(1);
     value = value.substr(0, value.length - 1);
-    let array = value.split(',');
-    return _.map(array, val => {
-      return decodeURIComponent(val);
-    });
+    const array = value.split(',');
+    return _.chain(array)
+      .map(val => {
+        try {
+          return decodeURIComponent(val);
+        } catch (e) {
+          new Logger(HashUtils).warn('Error while decoding a value from the URL as an array', e, val, value);
+          return null;
+        }
+      })
+      .compact()
+      .value();
   }
 }
