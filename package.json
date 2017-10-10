@@ -125,7 +125,7 @@
     "circular-json": "^0.3.1",
     "coveo-styleguide": "1.13.4",
     "coveo.analytics": "^0.7.0",
-    "coveomagicbox": "^1.0.32",
+    "coveomagicbox": "^1.0.33",
     "d3": "^4.2.1",
     "d3-scale": "^1.0.3",
     "es6-promise": "^4.0.5",
