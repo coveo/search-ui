@@ -22,7 +22,7 @@ export class GoogleApiPositionProvider implements IPositionProvider {
     return new EndpointCaller()
       .call<IGeolocationResponse>({
         errorsAsSuccess: false,
-        method: 'GET',
+        method: 'POST',
         queryString: [`key=${this.googleApiKey}`],
         requestData: {},
         responseType: 'json',
