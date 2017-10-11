@@ -55,28 +55,32 @@ export function FieldValueTest() {
       });
 
       it("htmlValue set to true should set the element's innerHTML value properly", () => {
-        test = Mock.advancedResultComponentSetup<
-          FieldValue
-        >(FieldValue, FakeResults.createFakeResult(), <Mock.AdvancedComponentSetupOptions>{
-          element: element,
-          cmpOptions: <IFieldValueOptions>{
-            field: '@foobarde',
-            htmlValue: true
+        test = Mock.advancedResultComponentSetup<FieldValue>(
+          FieldValue,
+          FakeResults.createFakeResult(),
+          <Mock.AdvancedComponentSetupOptions>{
+            element: element,
+            cmpOptions: <IFieldValueOptions>{
+              field: '@foobarde',
+              htmlValue: true
+            }
           }
-        });
+        );
         expect(test.cmp.renderOneValue('<em>patatefrietz</em>').innerHTML).toBe('<em>patatefrietz</em>');
       });
 
       it('htmlValue set to false should set the value in text node', () => {
-        test = Mock.advancedResultComponentSetup<
-          FieldValue
-        >(FieldValue, FakeResults.createFakeResult(), <Mock.AdvancedComponentSetupOptions>{
-          element: element,
-          cmpOptions: <IFieldValueOptions>{
-            field: '@foobarde',
-            htmlValue: false
+        test = Mock.advancedResultComponentSetup<FieldValue>(
+          FieldValue,
+          FakeResults.createFakeResult(),
+          <Mock.AdvancedComponentSetupOptions>{
+            element: element,
+            cmpOptions: <IFieldValueOptions>{
+              field: '@foobarde',
+              htmlValue: false
+            }
           }
-        });
+        );
 
         expect(test.cmp.renderOneValue('<em>patatefrietz</em>').textContent).toBe('<em>patatefrietz</em>');
       });
@@ -156,30 +160,34 @@ export function FieldValueTest() {
       });
 
       it('helper should render using the specified helper', () => {
-        test = Mock.advancedResultComponentSetup<
-          FieldValue
-        >(FieldValue, FakeResults.createFakeResult(), <Mock.AdvancedComponentSetupOptions>{
-          element: element,
-          cmpOptions: <IFieldValueOptions>{
-            field: '@foobarde',
-            helper: 'hamburgerHelper'
+        test = Mock.advancedResultComponentSetup<FieldValue>(
+          FieldValue,
+          FakeResults.createFakeResult(),
+          <Mock.AdvancedComponentSetupOptions>{
+            element: element,
+            cmpOptions: <IFieldValueOptions>{
+              field: '@foobarde',
+              helper: 'hamburgerHelper'
+            }
           }
-        });
+        );
         TemplateHelpers.registerFieldHelper('hamburgerHelper', value => 'ham' + value + 'burger');
         expect(test.cmp.renderOneValue('1337').textContent).toEqual('ham1337burger');
       });
 
       it('helper should eliminate helperOptions that do not match the current helper', () => {
-        test = Mock.advancedResultComponentSetup<
-          FieldValue
-        >(FieldValue, FakeResults.createFakeResult(), <Mock.AdvancedComponentSetupOptions>{
-          element: element,
-          cmpOptions: <IFieldValueOptions>{
-            field: '@author',
-            helper: 'anchor',
-            htmlValue: true
+        test = Mock.advancedResultComponentSetup<FieldValue>(
+          FieldValue,
+          FakeResults.createFakeResult(),
+          <Mock.AdvancedComponentSetupOptions>{
+            element: element,
+            cmpOptions: <IFieldValueOptions>{
+              field: '@author',
+              helper: 'anchor',
+              htmlValue: true
+            }
           }
-        });
+        );
 
         const anchor = $$(test.cmp.element).find('a');
 
@@ -187,86 +195,97 @@ export function FieldValueTest() {
       });
 
       it('helper should try and execute a version 2 of the helper if found', () => {
-        test = Mock.advancedResultComponentSetup<
-          FieldValue
-        >(FieldValue, FakeResults.createFakeResult(), <Mock.AdvancedComponentSetupOptions>{
-          element: element,
-          cmpOptions: <IFieldValueOptions>{
-            field: '@foo',
-            helper: 'somehelper'
+        test = Mock.advancedResultComponentSetup<FieldValue>(
+          FieldValue,
+          FakeResults.createFakeResult(),
+          <Mock.AdvancedComponentSetupOptions>{
+            element: element,
+            cmpOptions: <IFieldValueOptions>{
+              field: '@foo',
+              helper: 'somehelper'
+            }
           }
-        });
+        );
         TemplateHelpers.registerFieldHelper('somehelper', value => 'version1');
         TemplateHelpers.registerFieldHelper('somehelperv2', value => 'version2');
         expect(test.cmp.renderOneValue('somevalue').textContent).toEqual('version2');
       });
 
       it('should not crash and render the default value if the helper does not exist', () => {
-        test = Mock.advancedResultComponentSetup<
-          FieldValue
-        >(FieldValue, FakeResults.createFakeResult(), <Mock.AdvancedComponentSetupOptions>{
-          element: element,
-          cmpOptions: <IFieldValueOptions>{
-            field: '@foo',
-            helper: 'somehelperwhichdoesnotexist'
+        test = Mock.advancedResultComponentSetup<FieldValue>(
+          FieldValue,
+          FakeResults.createFakeResult(),
+          <Mock.AdvancedComponentSetupOptions>{
+            element: element,
+            cmpOptions: <IFieldValueOptions>{
+              field: '@foo',
+              helper: 'somehelperwhichdoesnotexist'
+            }
           }
-        });
+        );
 
         expect(test.cmp.renderOneValue('somevalue').textContent).toEqual('somevalue');
       });
 
       it('should support shorten helper', () => {
-        const fakeResult = FakeResults.createFakeResult();
-        test = Mock.advancedResultComponentSetup<
-          FieldValue
-        >(FieldValue, FakeResults.createFakeResult(), <Mock.AdvancedComponentSetupOptions>{
-          element: element,
-          cmpOptions: <IFieldValueOptions>{
-            field: '@longfieldvalue',
-            helper: 'shorten'
+        test = Mock.advancedResultComponentSetup<FieldValue>(
+          FieldValue,
+          FakeResults.createFakeResult(),
+          <Mock.AdvancedComponentSetupOptions>{
+            element: element,
+            cmpOptions: <IFieldValueOptions>{
+              field: '@longfieldvalue',
+              helper: 'shorten'
+            }
           }
-        });
+        );
 
         expect(test.cmp.renderOneValue(_.range(0, 1000).join('-')).textContent.length).toBe(200);
       });
 
       it('textCaption should render a text value', () => {
-        test = Mock.advancedResultComponentSetup<
-          FieldValue
-        >(FieldValue, FakeResults.createFakeResult(), <Mock.AdvancedComponentSetupOptions>{
-          element: element,
-          cmpOptions: <IFieldValueOptions>{
-            field: '@title',
-            textCaption: '<script>alert("Potatoes")</script>'
+        test = Mock.advancedResultComponentSetup<FieldValue>(
+          FieldValue,
+          FakeResults.createFakeResult(),
+          <Mock.AdvancedComponentSetupOptions>{
+            element: element,
+            cmpOptions: <IFieldValueOptions>{
+              field: '@title',
+              textCaption: '<script>alert("Potatoes")</script>'
+            }
           }
-        });
+        );
 
         expect($$(test.cmp.element).text()).toContain('<script>alert("Potatoes")</script>');
       });
 
       it('textCaption should render in front of the fieldValue', () => {
-        test = Mock.advancedResultComponentSetup<
-          FieldValue
-        >(FieldValue, FakeResults.createFakeResult(), <Mock.AdvancedComponentSetupOptions>{
-          element: element,
-          cmpOptions: <IFieldValueOptions>{
-            field: '@title',
-            textCaption: 'this is a test'
+        test = Mock.advancedResultComponentSetup<FieldValue>(
+          FieldValue,
+          FakeResults.createFakeResult(),
+          <Mock.AdvancedComponentSetupOptions>{
+            element: element,
+            cmpOptions: <IFieldValueOptions>{
+              field: '@title',
+              textCaption: 'this is a test'
+            }
           }
-        });
+        );
         expect($$($$(test.cmp.element).children()[0]).hasClass('coveo-field-caption')).toBe(true);
       });
 
       it('textCaption option should add the class coveo-with-label to the CoveoFieldValue', () => {
-        test = Mock.advancedResultComponentSetup<
-          FieldValue
-        >(FieldValue, FakeResults.createFakeResult(), <Mock.AdvancedComponentSetupOptions>{
-          element: element,
-          cmpOptions: <IFieldValueOptions>{
-            field: '@title',
-            textCaption: 'this is a test'
+        test = Mock.advancedResultComponentSetup<FieldValue>(
+          FieldValue,
+          FakeResults.createFakeResult(),
+          <Mock.AdvancedComponentSetupOptions>{
+            element: element,
+            cmpOptions: <IFieldValueOptions>{
+              field: '@title',
+              textCaption: 'this is a test'
+            }
           }
-        });
+        );
         expect($$(test.cmp.element).hasClass('coveo-with-label')).toBe(true);
       });
     });
@@ -295,37 +314,41 @@ export function FieldValueTest() {
 
       it('should display the field value as clickable when its facet is enabled', () => {
         facet.disabled = false;
-        test = Mock.advancedResultComponentSetup<
-          FieldValue
-        >(FieldValue, FakeResults.createFakeResult(), <Mock.AdvancedComponentSetupOptions>{
-          element: element,
-          modifyBuilder: (builder: Mock.MockEnvironmentBuilder) => {
-            builder.componentStateModel.get = () => [facet];
-            builder.queryStateModel.get = () => [];
-            return builder;
-          },
-          cmpOptions: {
-            field: '@string'
+        test = Mock.advancedResultComponentSetup<FieldValue>(
+          FieldValue,
+          FakeResults.createFakeResult(),
+          <Mock.AdvancedComponentSetupOptions>{
+            element: element,
+            modifyBuilder: (builder: Mock.MockEnvironmentBuilder) => {
+              builder.componentStateModel.get = () => [facet];
+              builder.queryStateModel.get = () => [];
+              return builder;
+            },
+            cmpOptions: {
+              field: '@string'
+            }
           }
-        });
+        );
         expect($$($$(test.cmp.element).find('span')).hasClass('coveo-clickable')).toBe(true);
       });
 
       it('should not display the field value as clickable when its facet is disabled', () => {
         facet.disabled = true;
-        test = Mock.advancedResultComponentSetup<
-          FieldValue
-        >(FieldValue, FakeResults.createFakeResult(), <Mock.AdvancedComponentSetupOptions>{
-          element: element,
-          modifyBuilder: (builder: Mock.MockEnvironmentBuilder) => {
-            builder.componentStateModel.get = () => [facet];
-            builder.queryStateModel.get = () => [];
-            return builder;
-          },
-          cmpOptions: {
-            field: '@string'
+        test = Mock.advancedResultComponentSetup<FieldValue>(
+          FieldValue,
+          FakeResults.createFakeResult(),
+          <Mock.AdvancedComponentSetupOptions>{
+            element: element,
+            modifyBuilder: (builder: Mock.MockEnvironmentBuilder) => {
+              builder.componentStateModel.get = () => [facet];
+              builder.queryStateModel.get = () => [];
+              return builder;
+            },
+            cmpOptions: {
+              field: '@string'
+            }
           }
-        });
+        );
         expect($$($$(test.cmp.element).find('span')).hasClass('coveo-clickable')).toBe(false);
       });
     });
