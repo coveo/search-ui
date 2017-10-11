@@ -9,6 +9,7 @@ import { SearchEndpoint } from '../../src/rest/SearchEndpoint';
 import { QueryController } from '../../src/controllers/QueryController';
 import { SearchInterface } from '../../src/ui/SearchInterface/SearchInterface';
 import { FacetSearchParameters } from '../../src/ui/Facet/FacetSearchParameters';
+import { FakeResults } from '../Fake';
 
 export function FacetQueryControllerTest() {
   describe('FacetQueryController', function() {
@@ -196,6 +197,16 @@ export function FacetQueryControllerTest() {
             pipeline: 'pipeline'
           })
         );
+      });
+
+      it('should resolve with allowed values only', () => {
+        const searchPromise = new Promise((resolve, reject) => {
+          const results = FakeResults.createFakeResults();
+          const singleGroupBy = FakeResults.createFakeGroupByResult('@foo', 'a', 10);
+          results.groupByResults[0] = singleGroupBy;
+          resolve(results);
+        });
+        (<jasmine.Spy>mockEndpoint.search).and.returnValue(searchPromise);
       });
     });
   });
