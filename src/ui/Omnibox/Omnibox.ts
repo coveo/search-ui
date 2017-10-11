@@ -127,7 +127,7 @@ export class Omnibox extends Component {
 
     /**
      * The `field` addon makes the `Omnibox` highlight and complete field syntax. When this option is set to true, it will automatically set
-     * the {@link Querybox.options.enableQuerySyntax} to true
+     * the {@link Querybox.options.enableQuerySyntax} to true.
      *
      * **Example:**
      * > Suppose you want to search for PDF files. You start typing `@f` in the search box. The `Omnibox` provides
