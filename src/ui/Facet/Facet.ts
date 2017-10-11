@@ -784,7 +784,7 @@ export class Facet extends Component {
     // Try to load a state from the setting, if it's available
     // Execute only _.once (only the first query, or the first time the user switch to a tab that contains a newly set of active facet)
     if (this.facetSettings && this.options.enableSettingsFacetState) {
-      let loadOnce = <(args: INewQueryEventArgs) => any>_.once(() => {
+      const loadOnce = <(args: INewQueryEventArgs) => any>_.once(() => {
         this.facetSettings.loadSavedState.apply(this.facetSettings);
       });
       this.bind.onRootElement(QueryEvents.newQuery, loadOnce);
@@ -979,7 +979,7 @@ export class Facet extends Component {
    */
   public getDisplayedFacetValues(): FacetValue[] {
     this.ensureDom();
-    let displayed = this.facetValuesList.getAllCurrentlyDisplayed();
+    const displayed = this.facetValuesList.getAllCurrentlyDisplayed();
     return _.map(displayed, (value: ValueElement) => {
       return value.facetValue;
     });
@@ -1094,7 +1094,7 @@ export class Facet extends Component {
   }
 
   public processFacetSearchAllResultsSelected(facetValues: FacetValue[]): void {
-    let valuesForAnalytics = [];
+    const valuesForAnalytics = [];
     _.each(facetValues, facetValue => {
       this.ensureFacetValueIsInList(facetValue);
       valuesForAnalytics.push(facetValue.value);
@@ -1102,7 +1102,7 @@ export class Facet extends Component {
     // Calculate the correct number of values from the current selected/excluded values (those will stay no matter what next rendering)
     // add the new one that will be selected (and are not already selected in the facet)
     // The minimum number of values is the number of values set in the option
-    let valuesThatStays = this.values.getSelected().concat(this.values.getExcluded());
+    const valuesThatStays = this.values.getSelected().concat(this.values.getExcluded());
     this.numberOfValues = valuesThatStays.length + _.difference(valuesThatStays, facetValues).length;
     this.numberOfValues = Math.max(this.numberOfValues, this.options.numberOfValues);
     // Then, we set current page as the last "full" page (math.floor)
@@ -1134,7 +1134,7 @@ export class Facet extends Component {
   public getValueCaption(facetValue: FacetValue): string;
   public getValueCaption(facetValue: any): string {
     Assert.exists(facetValue);
-    let lookupValue = facetValue.lookupValue || facetValue.value;
+    const lookupValue = facetValue.lookupValue || facetValue.value;
     let ret = lookupValue;
     ret = FacetUtils.tryToGetTranslatedCaption(<string>this.options.field, lookupValue);
 
@@ -1217,7 +1217,7 @@ export class Facet extends Component {
     this.unfadeInactiveValuesInMainList();
     this.hideWaitingAnimation();
     this.updateVisibilityBasedOnDependsOn();
-    let groupByResult = data.results.groupByResults[this.facetQueryController.lastGroupByRequestIndex];
+    const groupByResult = data.results.groupByResults[this.facetQueryController.lastGroupByRequestIndex];
     this.facetQueryController.lastGroupByResult = groupByResult;
     if (!groupByResult) {
       this.keepDisplayedValuesNextTime = false;
@@ -1229,7 +1229,7 @@ export class Facet extends Component {
     Assert.exists(args);
 
     if (this.values.hasSelectedOrExcludedValues()) {
-      let element = new BreadcrumbValueList(
+      const element = new BreadcrumbValueList(
         this,
         this.values.getSelected().concat(this.values.getExcluded()),
         BreadcrumbValueElement
@@ -1242,8 +1242,8 @@ export class Facet extends Component {
 
   protected handlePopulateSearchAlerts(args: ISearchAlertsPopulateMessageEventArgs) {
     if (this.values.hasSelectedOrExcludedValues()) {
-      let excludedValues = this.values.getExcluded();
-      let selectedValues = this.values.getSelected();
+      const excludedValues = this.values.getExcluded();
+      const selectedValues = this.values.getSelected();
 
       if (!_.isEmpty(excludedValues)) {
         args.text.push({
@@ -1337,18 +1337,18 @@ export class Facet extends Component {
   }
 
   protected handleOmniboxWithStaticValue(eventArg: IPopulateOmniboxEventArgs) {
-    let regex = new RegExp('^' + eventArg.completeQueryExpression.regex.source, 'i');
-    let match = _.first(
+    const regex = new RegExp('^' + eventArg.completeQueryExpression.regex.source, 'i');
+    const match = _.first(
       _.filter(this.getDisplayedValues(), (displayedValue: string) => {
-        let value = this.getValueCaption(this.facetValuesList.get(displayedValue).facetValue);
+        const value = this.getValueCaption(this.facetValuesList.get(displayedValue).facetValue);
         return regex.test(value);
       }),
       this.options.numberOfValuesInOmnibox
     );
-    let facetValues = _.map(match, (gotAMatch: string) => {
+    const facetValues = _.map(match, (gotAMatch: string) => {
       return this.facetValuesList.get(gotAMatch).facetValue;
     });
-    let element = new OmniboxValuesList(this, facetValues, eventArg, OmniboxValueElement).build();
+    const element = new OmniboxValuesList(this, facetValues, eventArg, OmniboxValueElement).build();
     eventArg.rows.push({
       element: element,
       zIndex: this.omniboxZIndex
@@ -1360,7 +1360,7 @@ export class Facet extends Component {
     if (groupByResult != undefined && groupByResult.values != undefined) {
       this.nbAvailableValues = groupByResult.values.length;
     }
-    let newFacetValues = new FacetValues(groupByResult);
+    const newFacetValues = new FacetValues(groupByResult);
     this.updateValues(newFacetValues);
     this.canFetchMore = this.numberOfValues < this.nbAvailableValues;
 
@@ -1405,8 +1405,8 @@ export class Facet extends Component {
 
   protected updateSearchElement(moreValuesAvailable = true) {
     if (moreValuesAvailable) {
-      let renderer = new ValueElementRenderer(this, FacetValue.create('Search'));
-      let searchButton = renderer.build().withNo([renderer.excludeIcon, renderer.icon]);
+      const renderer = new ValueElementRenderer(this, FacetValue.create('Search'));
+      const searchButton = renderer.build().withNo([renderer.excludeIcon, renderer.icon]);
       $$(searchButton.listItem).addClass('coveo-facet-search-button');
       searchButton.stylishCheckbox.removeAttribute('tabindex');
 
@@ -1493,8 +1493,8 @@ export class Facet extends Component {
   }
 
   private initBottomAndTopSpacer() {
-    let bottomSpace = $$(this.options.paddingContainer).find('.coveo-bottomSpace');
-    let topSpace = $$(this.options.paddingContainer).find('.coveo-topSpace');
+    const bottomSpace = $$(this.options.paddingContainer).find('.coveo-bottomSpace');
+    const topSpace = $$(this.options.paddingContainer).find('.coveo-topSpace');
     if (this.options.preservePosition) {
       $$(this.options.paddingContainer).on('mouseleave', () => this.unpinFacetPosition());
 
@@ -1515,7 +1515,7 @@ export class Facet extends Component {
   }
 
   private updateIncludedQueryStateModel() {
-    let selectedValues: IQueryStateIncludedAttribute = {
+    const selectedValues: IQueryStateIncludedAttribute = {
       included: this.getSelectedValues(),
       title: this.includedAttributeId
     };
@@ -1523,7 +1523,7 @@ export class Facet extends Component {
   }
 
   private updateExcludedQueryStateModel() {
-    let excludedValues: IQueryStateExcludedAttribute = {
+    const excludedValues: IQueryStateExcludedAttribute = {
       title: this.excludedAttributeId,
       excluded: this.getExcludedValues()
     };
@@ -1533,7 +1533,7 @@ export class Facet extends Component {
 
   private updateLookupValueQueryStateModel() {
     if (this.options.lookupField) {
-      let valueToSet = {};
+      const valueToSet = {};
       _.each(this.values.getSelected().concat(this.values.getExcluded()), value => {
         valueToSet[value.value] = value.lookupValue;
       });
@@ -1550,7 +1550,7 @@ export class Facet extends Component {
   }
 
   private handleQueryStateChangedIncluded(includedChanged) {
-    let toUnSelect = _.difference(this.getSelectedValues(), includedChanged);
+    const toUnSelect = _.difference(this.getSelectedValues(), includedChanged);
     if (Utils.isNonEmptyArray(toUnSelect)) {
       this.deselectMultipleValues(toUnSelect);
     }
@@ -1560,7 +1560,7 @@ export class Facet extends Component {
   }
 
   private handleQueryStateChangedExcluded(excludedChanged) {
-    let toUnExclude = _.difference(this.getExcludedValues(), excludedChanged);
+    const toUnExclude = _.difference(this.getExcludedValues(), excludedChanged);
     if (Utils.isNonEmptyArray(toUnExclude)) {
       this.unexcludeMultipleValues(toUnExclude);
     }
@@ -1579,11 +1579,18 @@ export class Facet extends Component {
     Assert.exists(data);
     this.ensureDom();
 
-    let queryStateAttributes = data.attributes;
-    let includedChanged = queryStateAttributes[this.includedAttributeId];
-    let excludedChanged = queryStateAttributes[this.excludedAttributeId];
-    let operator = queryStateAttributes[this.operatorAttributeId];
-    let lookupValueChanged = queryStateAttributes[this.lookupValueAttributeId];
+    const trimValuesFromModel = (values?: string[]) => {
+      if (values) {
+        values = _.map(values, value => value.trim());
+      }
+      return values;
+    };
+
+    const queryStateAttributes: IStringMap<any> = data.attributes;
+    let includedChanged: string[] = trimValuesFromModel(queryStateAttributes[this.includedAttributeId]);
+    let excludedChanged: string[] = trimValuesFromModel(queryStateAttributes[this.excludedAttributeId]);
+    const operator: string = queryStateAttributes[this.operatorAttributeId];
+    const lookupValueChanged: IStringMap<string> = queryStateAttributes[this.lookupValueAttributeId];
 
     if (this.listenToQueryStateChange) {
       if (!Utils.isNullOrEmptyString(operator)) {
@@ -1619,16 +1626,16 @@ export class Facet extends Component {
   }
 
   private handleOmniboxWithSearchInFacet(eventArg: IPopulateOmniboxEventArgs) {
-    let regex = new RegExp('^' + eventArg.completeQueryExpression.regex.source, 'i');
+    const regex = new RegExp('^' + eventArg.completeQueryExpression.regex.source, 'i');
 
-    let promise = new Promise<IOmniboxDataRow>((resolve, reject) => {
-      let searchParameters = new FacetSearchParameters(this);
+    const promise = new Promise<IOmniboxDataRow>((resolve, reject) => {
+      const searchParameters = new FacetSearchParameters(this);
       searchParameters.setValueToSearch(eventArg.completeQueryExpression.word);
       searchParameters.nbResults = this.options.numberOfValuesInOmnibox;
       this.facetQueryController
         .search(searchParameters)
         .then(fieldValues => {
-          let facetValues = _.map(
+          const facetValues = _.map(
             _.filter(fieldValues, (fieldValue: IIndexFieldValue) => {
               return regex.test(fieldValue.lookupValue);
             }),
@@ -1636,7 +1643,7 @@ export class Facet extends Component {
               return this.values.get(fieldValue.lookupValue) || FacetValue.create(fieldValue);
             }
           );
-          let element = new OmniboxValuesList(this, facetValues, eventArg, OmniboxValueElement).build();
+          const element = new OmniboxValuesList(this, facetValues, eventArg, OmniboxValueElement).build();
           resolve({
             element: element,
             zIndex: this.omniboxZIndex
@@ -1662,7 +1669,7 @@ export class Facet extends Component {
 
     this.facetQueryController.prepareForNewQuery();
     if (this.values.hasSelectedOrExcludedValues()) {
-      let expression = this.facetQueryController.computeOurFilterExpression();
+      const expression = this.facetQueryController.computeOurFilterExpression();
       this.logger.trace('Putting filter in query', expression);
       data.queryBuilder.advancedExpression.add(expression);
     }
@@ -1671,7 +1678,7 @@ export class Facet extends Component {
   private handleDoneBuildingQuery(data: IDoneBuildingQueryEventArgs) {
     Assert.exists(data);
     Assert.exists(data.queryBuilder);
-    let queryBuilder = data.queryBuilder;
+    const queryBuilder = data.queryBuilder;
     this.facetQueryController.putGroupByIntoQueryBuilder(queryBuilder);
   }
 
@@ -1739,7 +1746,7 @@ export class Facet extends Component {
       sortKlass: FacetSort,
       availableSorts: this.options.availableSorts
     });
-    let built = this.facetHeader.build();
+    const built = this.facetHeader.build();
     this.facetSettings = this.facetHeader.settings;
     this.facetSort = this.facetHeader.sort;
     return built;
@@ -1774,10 +1781,10 @@ export class Facet extends Component {
 
       // Under firefox scrolling the body doesn't work, but window does
       // on all browser, so we substitute those here when needed.
-      let elementToScroll: any = this.options.scrollContainer == document.body ? window : this.options.scrollContainer;
+      const elementToScroll: any = this.options.scrollContainer == document.body ? window : this.options.scrollContainer;
       let currentViewportPosition = this.element.getBoundingClientRect().top;
       let offset = currentViewportPosition - this.pinnedViewportPosition;
-      let scrollToOffset = () => {
+      const scrollToOffset = () => {
         if (elementToScroll instanceof Window) {
           window.scrollTo(0, window.scrollY + offset);
         } else {
@@ -1836,7 +1843,7 @@ export class Facet extends Component {
     this.facetQueryController
       .fetchMore(this.numberOfValues + 1)
       .then((queryResults: IQueryResults) => {
-        let facetValues = new FacetValues(queryResults.groupByResults[0]);
+        const facetValues = new FacetValues(queryResults.groupByResults[0]);
 
         facetValues.importActiveValuesFromOtherList(this.values);
         facetValues.sortValuesDependingOnStatus(this.numberOfValues);
@@ -1868,7 +1875,7 @@ export class Facet extends Component {
   protected triggerUpdateDeltaQuery(facetValues: FacetValue[]): void {
     this.showWaitingAnimation();
     this.facetQueryController.searchInFacetToUpdateDelta(facetValues).then((queryResults?) => {
-      let values: FacetValues = new FacetValues();
+      const values: FacetValues = new FacetValues();
       _.each(queryResults.groupByResults, (groupByResult: IGroupByResult) => {
         _.each(groupByResult.values, (groupByValue: IGroupByValue) => {
           if (!values.contains(groupByValue.value)) {
@@ -1924,8 +1931,8 @@ export class Facet extends Component {
   }
 
   private doesParentFacetHasSelectedValue(): boolean {
-    let id = QueryStateModel.getFacetId(this.options.dependsOn);
-    let values = this.queryStateModel.get(id);
+    const id = QueryStateModel.getFacetId(this.options.dependsOn);
+    const values = this.queryStateModel.get(id);
     return values != null && values.length != 0;
   }
 
@@ -1938,7 +1945,7 @@ export class Facet extends Component {
   }
 
   public debugInfo() {
-    let info: any = {};
+    const info: any = {};
     info[this['constructor']['ID']] = {
       component: this,
       groupByRequest: this.facetQueryController.lastGroupByRequest,
