@@ -10,13 +10,14 @@ import { QueryController } from '../../src/controllers/QueryController';
 import { SearchInterface } from '../../src/ui/SearchInterface/SearchInterface';
 import { FacetSearchParameters } from '../../src/ui/Facet/FacetSearchParameters';
 import { FakeResults } from '../Fake';
+import { IQueryResults } from '../../src/rest/QueryResults';
 
 export function FacetQueryControllerTest() {
-  describe('FacetQueryController', function() {
+  describe('FacetQueryController', () => {
     let mockFacet: Facet;
     let facetQueryController: FacetQueryController;
 
-    beforeEach(function() {
+    beforeEach(() => {
       mockFacet = Mock.mock<Facet>(Facet);
       mockFacet.options = {};
       mockFacet.options.field = '@field';
@@ -27,12 +28,12 @@ export function FacetQueryControllerTest() {
       facetQueryController = new FacetQueryController(mockFacet);
     });
 
-    afterEach(function() {
+    afterEach(() => {
       mockFacet = null;
       facetQueryController = null;
     });
 
-    it('should compute a filter expression', function() {
+    it('should compute a filter expression', () => {
       (<jasmine.Spy>mockFacet.values.getSelected).and.returnValue([FacetValue.create('foo'), FacetValue.create('bar')]);
       (<jasmine.Spy>mockFacet.values.getExcluded).and.returnValue([]);
 
@@ -45,16 +46,16 @@ export function FacetQueryControllerTest() {
       expect(facetQueryController.computeOurFilterExpression()).toBe(expectedBuilder.build());
     });
 
-    describe('should push a group by into a query builder', function() {
+    describe('should push a group by into a query builder', () => {
       let queryBuilder;
-      beforeEach(function() {
+      beforeEach(() => {
         (<jasmine.Spy>mockFacet.values.getSelected).and.returnValue([FacetValue.create('foo'), FacetValue.create('bar')]);
         (<jasmine.Spy>mockFacet.values.getExcluded).and.returnValue([]);
         mockFacet.numberOfValues = 5;
         queryBuilder = new QueryBuilder();
       });
 
-      it('should put a group by into a query builder', function() {
+      it('should put a group by into a query builder', () => {
         mockFacet.numberOfValues = 23;
         facetQueryController.putGroupByIntoQueryBuilder(queryBuilder);
         let groupByRequest = queryBuilder.build().groupBy[0];
@@ -63,14 +64,14 @@ export function FacetQueryControllerTest() {
         expect(groupByRequest.maximumNumberOfValues).toBe(23);
       });
 
-      it('should request 1 more value if more / less is enabled', function() {
+      it('should request 1 more value if more / less is enabled', () => {
         mockFacet.options.enableMoreLess = true;
         facetQueryController.putGroupByIntoQueryBuilder(queryBuilder);
         let groupByRequest = queryBuilder.build().groupBy[0];
         expect(groupByRequest.maximumNumberOfValues).toBe(6);
       });
 
-      it('should request only allowed values if set on the facet', function() {
+      it('should request only allowed values if set on the facet', () => {
         mockFacet.options.allowedValues = ['a', 'b', 'c'];
         facetQueryController.putGroupByIntoQueryBuilder(queryBuilder);
         let groupByRequest = queryBuilder.build().groupBy[0];
@@ -78,14 +79,14 @@ export function FacetQueryControllerTest() {
         expect(groupByRequest.allowedValues).not.toEqual(jasmine.arrayContaining(['foo', 'bar']));
       });
 
-      it('should use lookupfield if set on facet', function() {
+      it('should use lookupfield if set on facet', () => {
         mockFacet.options.lookupField = '@lookupfield';
         facetQueryController.putGroupByIntoQueryBuilder(queryBuilder);
         let groupByRequest = queryBuilder.build().groupBy[0];
         expect(groupByRequest.lookupField).toBe('@lookupfield');
       });
 
-      it('should use computed field if set on facet', function() {
+      it('should use computed field if set on facet', () => {
         mockFacet.options.computedField = '@computedfield';
         mockFacet.options.computedFieldOperation = 'sum';
 
@@ -99,7 +100,7 @@ export function FacetQueryControllerTest() {
         );
       });
 
-      it('should use the additional filter if set on facet', function() {
+      it('should use the additional filter if set on facet', () => {
         mockFacet.options.additionalFilter = '@additionalfilter';
 
         facetQueryController.putGroupByIntoQueryBuilder(queryBuilder);
@@ -107,7 +108,7 @@ export function FacetQueryControllerTest() {
         expect(groupByRequest.constantQueryOverride).toBe('@additionalfilter');
       });
 
-      it('should keep the expression to use for facet search after building a group by', function() {
+      it('should keep the expression to use for facet search after building a group by', () => {
         queryBuilder.expression.add('something');
         queryBuilder.advancedExpression.add('advanced expression');
         queryBuilder.constantExpression.add('something constant');
@@ -132,10 +133,10 @@ export function FacetQueryControllerTest() {
       });
     });
 
-    describe('should perform search', function() {
+    describe('should perform search', () => {
       let mockEndpoint: SearchEndpoint;
       let mockQueryController: QueryController;
-      beforeEach(function() {
+      beforeEach(() => {
         mockEndpoint = Mock.mockSearchEndpoint();
         mockQueryController = Mock.mockQueryController();
 
@@ -149,12 +150,12 @@ export function FacetQueryControllerTest() {
         (<jasmine.Spy>mockFacet.queryController.getLastQuery).and.returnValue(new QueryBuilder().build());
       });
 
-      afterEach(function() {
+      afterEach(() => {
         mockEndpoint = null;
         mockQueryController = null;
       });
 
-      it('with params', function() {
+      it('with params', () => {
         let params = new FacetSearchParameters(mockFacet);
         facetQueryController.search(params);
         expect(facetQueryController.facet.getEndpoint().search).toHaveBeenCalled();
@@ -184,7 +185,7 @@ export function FacetQueryControllerTest() {
         );
       });
 
-      it('by copying last query', function() {
+      it('by copying last query', () => {
         let lastQueryBuilder = new QueryBuilder();
         lastQueryBuilder.pipeline = 'pipeline';
         lastQueryBuilder.enableWildcards = true;
@@ -199,14 +200,118 @@ export function FacetQueryControllerTest() {
         );
       });
 
-      it('should resolve with allowed values only', () => {
-        const searchPromise = new Promise((resolve, reject) => {
-          const results = FakeResults.createFakeResults();
-          const singleGroupBy = FakeResults.createFakeGroupByResult('@foo', 'a', 10);
-          results.groupByResults[0] = singleGroupBy;
-          resolve(results);
+      describe('with allowed values', () => {
+        let facetSearchParams: FacetSearchParameters;
+        let searchPromise: Promise<IQueryResults>;
+
+        beforeEach(() => {
+          searchPromise = new Promise((resolve, reject) => {
+            const results = FakeResults.createFakeResults();
+            const singleGroupBy = FakeResults.createFakeGroupByResult('@foo', 'a', 10);
+            results.groupByResults[0] = singleGroupBy;
+            resolve(results);
+          });
+          (<jasmine.Spy>mockEndpoint.search).and.returnValue(searchPromise);
+
+          facetSearchParams = new FacetSearchParameters(mockFacet);
+          facetSearchParams.nbResults = 10;
         });
-        (<jasmine.Spy>mockEndpoint.search).and.returnValue(searchPromise);
+
+        afterEach(() => {
+          facetSearchParams = null;
+          searchPromise = null;
+        });
+
+        it('should resolve with allowed values only', done => {
+          mockFacet.options.allowedValues = ['a0', 'a5', 'a8'];
+          facetQueryController.search(facetSearchParams).then(values => {
+            expect(values).toEqual(
+              jasmine.arrayContaining([
+                jasmine.objectContaining({
+                  value: 'a0'
+                }),
+                jasmine.objectContaining({
+                  value: 'a5'
+                }),
+                jasmine.objectContaining({
+                  value: 'a8'
+                })
+              ])
+            );
+
+            expect(values).not.toEqual(
+              jasmine.arrayContaining([
+                jasmine.objectContaining({
+                  value: 'a2'
+                }),
+                jasmine.objectContaining({
+                  value: 'a1'
+                })
+              ])
+            );
+
+            done();
+          });
+        });
+
+        it('should resolve with allowed values with a wildcard', done => {
+          searchPromise = new Promise((resolve, reject) => {
+            const results = FakeResults.createFakeResults();
+            const groupByWithAToken = FakeResults.createFakeGroupByResult('@foo', 'a', 5);
+            const groupByWithBToken = FakeResults.createFakeGroupByResult('@foo', 'b', 5);
+            groupByWithAToken.values = groupByWithAToken.values.concat(groupByWithBToken.values);
+            results.groupByResults[0] = groupByWithAToken;
+            resolve(results);
+          });
+
+          mockFacet.options.allowedValues = ['a*'];
+          facetQueryController.search(facetSearchParams).then(values => {
+            expect(values).toEqual(
+              jasmine.arrayContaining([
+                jasmine.objectContaining({
+                  value: 'a0'
+                }),
+                jasmine.objectContaining({
+                  value: 'a1'
+                }),
+                jasmine.objectContaining({
+                  value: 'a3'
+                }),
+                jasmine.objectContaining({
+                  value: 'a4'
+                }),
+                jasmine.objectContaining({
+                  value: 'a5'
+                })
+              ])
+            );
+
+            expect(values).not.toEqual(
+              jasmine.arrayContaining([
+                jasmine.objectContaining({
+                  value: 'b0'
+                }),
+                jasmine.objectContaining({
+                  value: 'b1'
+                }),
+                jasmine.objectContaining({
+                  value: 'b2'
+                }),
+                jasmine.objectContaining({
+                  value: 'b3'
+                }),
+                jasmine.objectContaining({
+                  value: 'b4'
+                }),
+                jasmine.objectContaining({
+                  value: 'b5'
+                })
+              ])
+            );
+
+            done();
+          });
+        });
       });
     });
   });
