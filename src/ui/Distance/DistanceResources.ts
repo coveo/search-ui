@@ -72,6 +72,12 @@ export class DistanceResources extends Component {
     /**
      * Specifies the name of the field that contains the latitude value.
      *
+     * **Note:**
+     * > The field you specify for this option must be an existing numerical field in your index (see
+     * > [Fields - Page](http://www.coveo.com/go?dest=cloudhelp&lcid=9&context=287). Otherwise, your query responses
+     * > will contain a `QueryExceptionInvalidQueryFunctionField` or QueryExceptionInvalidQueryFunctionFieldType`
+     * > exception, and the DistanceResources component will be unable to evaluate distances.
+     *
      * Specifying a value for this option is required for the `DistanceResources` component to work.
      */
     latitudeField: ComponentOptions.buildFieldOption({
@@ -80,6 +86,12 @@ export class DistanceResources extends Component {
 
     /**
      * Specifies the name of the field that contains the longitude value.
+     *
+     * **Note:**
+     * > The field you specify for this option must be an existing numerical field in your index (see
+     * > [Fields - Page](http://www.coveo.com/go?dest=cloudhelp&lcid=9&context=287). Otherwise, your query responses
+     * > will contain a `QueryExceptionInvalidQueryFunctionField` or QueryExceptionInvalidQueryFunctionFieldType`
+     * > exception, and the DistanceResources component will be unable to evaluate distances.
      *
      * Specifying a value for this option is required for the `DistanceResources` component to work.
      */
