@@ -8,56 +8,65 @@ export interface IPositionProvider {
 }
 
 /**
- * Argument sent to all handlers bound on {@link DistanceEvents.onResolvingPosition}
+ * The `IResolvingPositionEventArgs` interface describes the object that all
+ * [`onResolvingPosition`]{@link DistanceEvents.onResolvingPosition} event handlers receive as an argument.
  */
 export interface IResolvingPositionEventArgs {
-  /*
-   * List of all the providers that can provide a position. The first one that can resolve the position will be used.
+  /**
+   * The array of providers that can provide a position. The first provider that can resolve the position will be used.
    */
   providers: IPositionProvider[];
 }
 
 /**
- * Argument sent to all handlers bound on {@link DistanceEvents.onPositionResolved}
+ * The `IPositionResolvedEventArgs` interface describes the object that all
+ * [`onPositionResolved`]{@link DistanceEvents.onPositionResolved} event handlers receive as an argument.
  */
 export interface IPositionResolvedEventArgs {
-  /*
+  /**
    * The position that was resolved.
    */
   position: IPosition;
 }
 
 /**
- * This static class contains the different string definitions for all the events related to distance.
+ * The `DistanceEvents` static class contains the string definitions of all events related to distance
+ * list.
+ *
+ * See [Events](https://developers.coveo.com/x/bYGfAQ).
  */
 export class DistanceEvents {
   /**
-   * Triggered when the [`DistanceResources`]{@link DistanceResources} component sucessfully resolves the position.
+   * Triggered when the [`DistanceResources`]{@link DistanceResources} component successfully resolves the position.
    *
-   * All bound handlers will receive {@link IPositionResolvedEventArgs} as an argument.
+   * All `onPositionResolved` event handlers receive a [`PositionResolvedEventArgs`]{@link IPositionResolvedEventArgs}
+   * object as an argument.
    *
-   * The string value is `onPositionResolved`.
-   * @type {string}
+   * @type {string} The string value is `onPositionResolved`.
    */
   public static onPositionResolved = 'onPositionResolved';
+
   /**
    * Triggered when the [`DistanceResources`]{@link DistanceResources} component tries to resolve the position.
    *
-   * Use this event to register new position providers.
+   * All `onResolvingPosition` event handlers receive a
+   * [`ResolvingPositionEventArgs`]{@link IResolvingPositionEventArgs} object as an argument.
    *
-   * All bound handlers will receive {@link IResolvingPositionEventArgs} as an argument.
+   * **Note:**
+   * > You should bind a handler to this event if you want to register one or several new position providers.
    *
-   * The string value is `onResolvingPosition`.
-   * @type {string}
+   * @type {string} The string value is `onResolvingPosition`.
    */
   public static onResolvingPosition = 'onResolvingPosition';
+
   /**
    * Triggered when the [`DistanceResources`]{@link DistanceResources} component fails to resolve the position.
    *
-   * Use this event to show an error to the end user, or hide components that cannot be used.
+   * **Note:**
+   * > You should bind a handler to this event if you want to display an error message to the end user, or hide
+   * > components that cannot be used.
    *
-   * The string value is `onPositionNotResolved`.
-   * @type {string}
+   * @type {string} The string value is `onPositionNotResolved`.
    */
   public static onPositionNotResolved = 'onPositionNotResolved';
 }

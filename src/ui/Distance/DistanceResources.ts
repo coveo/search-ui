@@ -14,7 +14,6 @@ import { IComponentBindings } from '../Base/ComponentBindings';
 import { InitializationEvents, QueryEvents } from '../../EventsModules';
 import { IQueryFunction } from '../../rest/QueryFunction';
 import { IBuildingQueryEventArgs } from '../../events/QueryEvents';
-import { Dom } from '../../UtilsModules';
 import { Initialization } from '../Base/Initialization';
 import { get } from '../Base/RegisteredNamedMethods';
 import { exportGlobally } from '../../GlobalExports';
@@ -37,11 +36,12 @@ export interface IDistanceOptions {
 }
 
 /**
- * The `DistanceResources` component defines a field that computes the distance according to the user's position.
+ * The `DistanceResources` component defines a field that computes the distance according to the current position of the
+ * end user.
  *
- * Components that uses the current distance should be disabled until a distance is provided by this component.
+ * Components relying on the current distance should be disabled until this component successfully provides a distance.
  *
- * See also [`DistanceEvents`]{@link DistanceEvents} for events triggered by this component.
+ * See also [`DistanceEvents`]{@link DistanceEvents}.
  */
 export class DistanceResources extends Component {
   public static ID = 'DistanceResources';
@@ -61,36 +61,53 @@ export class DistanceResources extends Component {
    */
   public static options: IDistanceOptions = {
     /**
-     * Specifies the field that will contain the distance value.
+     * Specifies the name of the field in which to store the distance value.
      *
      * Specifying a value for this option is required for the `DistanceResources` component to work.
      */
     distanceField: ComponentOptions.buildFieldOption({
       required: true
     }),
+
     /**
-     * Specifies the field that contains the latitude value.
+     * Specifies the name of the field that contains the latitude value.
+     *
+     * **Note:**
+     * > The field you specify for this option must be an existing numerical field in your index (see
+     * > [Fields - Page](http://www.coveo.com/go?dest=cloudhelp&lcid=9&context=287). Otherwise, your query responses
+     * > will contain a `QueryExceptionInvalidQueryFunctionField` or QueryExceptionInvalidQueryFunctionFieldType`
+     * > exception, and the DistanceResources component will be unable to evaluate distances.
      *
      * Specifying a value for this option is required for the `DistanceResources` component to work.
      */
     latitudeField: ComponentOptions.buildFieldOption({
       required: true
     }),
+
     /**
-     * Specifies the field that contains the longitude value.
+     * Specifies the name of the field that contains the longitude value.
+     *
+     * **Note:**
+     * > The field you specify for this option must be an existing numerical field in your index (see
+     * > [Fields - Page](http://www.coveo.com/go?dest=cloudhelp&lcid=9&context=287). Otherwise, your query responses
+     * > will contain a `QueryExceptionInvalidQueryFunctionField` or QueryExceptionInvalidQueryFunctionFieldType`
+     * > exception, and the DistanceResources component will be unable to evaluate distances.
      *
      * Specifying a value for this option is required for the `DistanceResources` component to work.
      */
     longitudeField: ComponentOptions.buildFieldOption({
       required: true
     }),
+
     /**
-     * The conversion factor to use for the distance according to the base unit, in meters.
+     * The conversion factor to apply to the base distance unit (meter).
      *
-     * If you want to have Kilometers, you should set 1000 as the value.
-     * If you want to have your distance in miles, you should set 1610 as the value, since a mile is approximately 1610 meters.
+     * **Note:**
+     * > - If you want to convert distances to kilometers, you should set the `unitConversionFactor` to `1000`.
+     * > - If you want to convert distance to miles, you should set the `unitConversionFactor` to `1610` (one mile is
+     * > approximately equal to 1610 meters).
      *
-     * The default value is `1000`.
+     * Default value is `1000`.
      */
     unitConversionFactor: ComponentOptions.buildNumberOption({
       defaultValue: 1000,
@@ -98,54 +115,71 @@ export class DistanceResources extends Component {
         return !!value && value > 0;
       }
     }),
+
     /**
-     * The CSS class for components that needs to be reenabled when the distance is provided.
+     * The CSS class for components that need to be re-enabled when the `DistanceResources` component successfully
+     * provides a distance.
      *
-     * The default value is `coveo-distance-disabled`.
+     * Default value is `coveo-distance-disabled`.
      */
     disabledDistanceCssClass: ComponentOptions.buildStringOption({
       defaultValue: 'coveo-distance-disabled'
     }),
+
     /**
      * The latitude to use if no other position was provided.
      *
-     * You must also set `longitudeValue` if you specify this value.
+     * **Note:**
+     * > You must also specify a [`longitudeValue`]{@link DistanceResources.options.longitudeValue} if you specify a
+     * > `latitudeValue`.
      */
     latitudeValue: ComponentOptions.buildNumberOption({
       float: true
     }),
+
     /**
      * The longitude to use if no other position was provided.
      *
-     * You must also set `latitude` if you specify this value.
+     * **Note:**
+     * > You must also specify a [`latitudeValue`]{@link DistanceResources.options.latitudeValue} if you specify a
+     * > `longitudeValue`.
      */
     longitudeValue: ComponentOptions.buildNumberOption({
       float: true
     }),
+
     /**
      * The API key to use to request the Google API geolocation service.
      *
-     * If not defined, will not try to request the service.
+     * If you do not specify a value for this option, the `DistanceResources` component does not try to request the
+     * service.
      */
     googleApiKey: ComponentOptions.buildStringOption(),
+
     /**
-     * Whether to request the browser's geolocation service.
+     * Whether to request the geolocation service of the web browser.
      *
      * If not defined, will not try to request the service.
      *
-     * Note that most recent browsers requires your site to be in HTTPS to use its geolocation service.
+     * **Note:**
+     * > Recent web browsers typically require a site to be in HTTPS to enable their geolocation service.
+     *
+     * If you do not specify a value for this option, the `DistanceResources` component does not try to request the
+     * service.
      */
     useNavigator: ComponentOptions.buildBooleanOption(),
+
     /**
-     * Whether to execute a new query when a new position has been provided.
+     * Whether to execute a new query when the `DistanceResources` component successfully provides a new position.
      *
-     * Default value is `true`.
+     * Default value is `false`.
      */
     triggerNewQueryOnNewPosition: ComponentOptions.buildBooleanOption({
       defaultValue: false
     }),
+
     /**
-     * Whether to cancel all the queries until the position is resolved.
+     * Whether to cancel all the queries until the `DistanceResources` component successfully resolves a position.
      *
      * Default value is `true`
      */
@@ -170,9 +204,11 @@ export class DistanceResources extends Component {
   }
 
   /**
-   * Override the current position with the provided values.
+   * Overrides the current position with the provided values.
    *
-   * Does not triggers a query automatically.
+   * **Note:**
+   * > Calling this method does not automatically trigger a query.
+   *
    * @param latitude The latitude to set.
    * @param longitude The longitude to set.
    */
@@ -206,7 +242,7 @@ export class DistanceResources extends Component {
   /**
    * Returns a promise of the last position resolved using the registered position providers.
    *
-   * @returns {Promise<IPosition>} Promise for the last resolved position value.
+   * @returns {Promise<IPosition>} A promise of the last resolved position value.
    */
   public getLastPositionRequest(): Promise<IPosition> {
     return this.lastPositionRequest || Promise.reject('No position request was executed yet.');
@@ -229,7 +265,7 @@ export class DistanceResources extends Component {
         return position;
       })
       .catch(error => {
-        this.logger.error('An error occured when trying to resolve the current position.', error);
+        this.logger.error('An error occurred while trying to resolve the current position.', error);
         this.triggerDistanceNotSet();
       });
   }
@@ -267,7 +303,7 @@ export class DistanceResources extends Component {
               }
             })
             .catch(error => {
-              this.logger.warn('An error occured when tring to resolve the position within a position provider.', error);
+              this.logger.warn('An error occurred while trying to resolve the position within a position provider.', error);
               tryNextProvider();
             });
         } else {
@@ -300,7 +336,7 @@ export class DistanceResources extends Component {
           this.enableDistanceComponents();
         }
       } else if (this.options.cancelQueryUntilPositionResolved) {
-        this.logger.info('Query cancelled, waiting for position');
+        this.logger.info('Query cancelled, waiting for position.');
         args.cancel = true;
       }
     });
