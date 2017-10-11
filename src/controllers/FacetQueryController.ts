@@ -150,7 +150,7 @@ export class FacetQueryController {
     });
   }
 
-  public fetchMore(numberOfValuesToFetch: number) {
+  public fetchMore(numberOfValuesToFetch: number): Promise<IQueryResults> {
     const params = new FacetSearchParameters(this.facet);
     params.alwaysInclude = this.facet.options.allowedValues || _.pluck(this.facet.values.getAll(), 'value');
     params.nbResults = numberOfValuesToFetch;
@@ -165,7 +165,7 @@ export class FacetQueryController {
       });
   }
 
-  public searchInFacetToUpdateDelta(facetValues: FacetValue[]) {
+  public searchInFacetToUpdateDelta(facetValues: FacetValue[]): Promise<IQueryResults> {
     const params = new FacetSearchParameters(this.facet);
     const query = params.getQuery();
     query.aq = this.computeOurFilterExpression();

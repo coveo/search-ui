@@ -200,7 +200,7 @@ export function FacetQueryControllerTest() {
         );
       });
 
-      describe('with allowed values', () => {
+      describe('with allowed values options on the facet', () => {
         let facetSearchParams: FacetSearchParameters;
         let searchPromise: Promise<IQueryResults>;
 
@@ -254,62 +254,154 @@ export function FacetQueryControllerTest() {
           });
         });
 
-        it('should resolve with allowed values with a wildcard', done => {
-          searchPromise = new Promise((resolve, reject) => {
-            const results = FakeResults.createFakeResults();
-            const groupByWithAToken = FakeResults.createFakeGroupByResult('@foo', 'a', 5);
-            const groupByWithBToken = FakeResults.createFakeGroupByResult('@foo', 'b', 5);
-            groupByWithAToken.values = groupByWithAToken.values.concat(groupByWithBToken.values);
-            results.groupByResults[0] = groupByWithAToken;
-            resolve(results);
-          });
-
-          mockFacet.options.allowedValues = ['a*'];
-          facetQueryController.search(facetSearchParams).then(values => {
-            expect(values).toEqual(
+        it('when performing fetch more with allowed values option', done => {
+          mockFacet.options.allowedValues = ['a0', 'a5', 'a8'];
+          facetQueryController.fetchMore(10).then((data: IQueryResults) => {
+            expect(data.groupByResults[0].values).toEqual(
               jasmine.arrayContaining([
                 jasmine.objectContaining({
                   value: 'a0'
                 }),
                 jasmine.objectContaining({
-                  value: 'a1'
-                }),
-                jasmine.objectContaining({
-                  value: 'a3'
-                }),
-                jasmine.objectContaining({
-                  value: 'a4'
-                }),
-                jasmine.objectContaining({
                   value: 'a5'
+                }),
+                jasmine.objectContaining({
+                  value: 'a8'
                 })
               ])
             );
 
-            expect(values).not.toEqual(
+            expect(data.groupByResults[0].values).not.toEqual(
               jasmine.arrayContaining([
                 jasmine.objectContaining({
-                  value: 'b0'
+                  value: 'a2'
                 }),
                 jasmine.objectContaining({
-                  value: 'b1'
-                }),
-                jasmine.objectContaining({
-                  value: 'b2'
-                }),
-                jasmine.objectContaining({
-                  value: 'b3'
-                }),
-                jasmine.objectContaining({
-                  value: 'b4'
-                }),
-                jasmine.objectContaining({
-                  value: 'b5'
+                  value: 'a1'
                 })
               ])
             );
-
             done();
+          });
+        });
+
+        describe('with a wildcard', () => {
+          beforeEach(() => {
+            searchPromise = new Promise((resolve, reject) => {
+              const results = FakeResults.createFakeResults();
+              const groupByWithAToken = FakeResults.createFakeGroupByResult('@foo', 'a', 5);
+              const groupByWithBToken = FakeResults.createFakeGroupByResult('@foo', 'b', 5);
+              groupByWithAToken.values = groupByWithAToken.values.concat(groupByWithBToken.values);
+              results.groupByResults[0] = groupByWithAToken;
+              resolve(results);
+            });
+            mockFacet.options.allowedValues = ['a*'];
+          });
+
+          it('should resolve search correctly', done => {
+            facetQueryController.search(facetSearchParams).then(values => {
+              expect(values).toEqual(
+                jasmine.arrayContaining([
+                  jasmine.objectContaining({
+                    value: 'a0'
+                  }),
+                  jasmine.objectContaining({
+                    value: 'a1'
+                  }),
+                  jasmine.objectContaining({
+                    value: 'a3'
+                  }),
+                  jasmine.objectContaining({
+                    value: 'a4'
+                  }),
+                  jasmine.objectContaining({
+                    value: 'a5'
+                  })
+                ])
+              );
+
+              expect(values).not.toEqual(
+                jasmine.arrayContaining([
+                  jasmine.objectContaining({
+                    value: 'b0'
+                  }),
+                  jasmine.objectContaining({
+                    value: 'b1'
+                  }),
+                  jasmine.objectContaining({
+                    value: 'b2'
+                  }),
+                  jasmine.objectContaining({
+                    value: 'b3'
+                  }),
+                  jasmine.objectContaining({
+                    value: 'b4'
+                  }),
+                  jasmine.objectContaining({
+                    value: 'b5'
+                  })
+                ])
+              );
+              done();
+            });
+          });
+
+          it('should resolve fetch more correctly', done => {
+            searchPromise = new Promise((resolve, reject) => {
+              const results = FakeResults.createFakeResults();
+              const groupByWithAToken = FakeResults.createFakeGroupByResult('@foo', 'a', 5);
+              const groupByWithBToken = FakeResults.createFakeGroupByResult('@foo', 'b', 5);
+              groupByWithAToken.values = groupByWithAToken.values.concat(groupByWithBToken.values);
+              results.groupByResults[0] = groupByWithAToken;
+              resolve(results);
+            });
+
+            mockFacet.options.allowedValues = ['a*'];
+            facetQueryController.fetchMore(10).then((data: IQueryResults) => {
+              expect(data.groupByResults[0].values).toEqual(
+                jasmine.arrayContaining([
+                  jasmine.objectContaining({
+                    value: 'a0'
+                  }),
+                  jasmine.objectContaining({
+                    value: 'a1'
+                  }),
+                  jasmine.objectContaining({
+                    value: 'a3'
+                  }),
+                  jasmine.objectContaining({
+                    value: 'a4'
+                  }),
+                  jasmine.objectContaining({
+                    value: 'a5'
+                  })
+                ])
+              );
+
+              expect(data.groupByResults[0].values).not.toEqual(
+                jasmine.arrayContaining([
+                  jasmine.objectContaining({
+                    value: 'b0'
+                  }),
+                  jasmine.objectContaining({
+                    value: 'b1'
+                  }),
+                  jasmine.objectContaining({
+                    value: 'b2'
+                  }),
+                  jasmine.objectContaining({
+                    value: 'b3'
+                  }),
+                  jasmine.objectContaining({
+                    value: 'b4'
+                  }),
+                  jasmine.objectContaining({
+                    value: 'b5'
+                  })
+                ])
+              );
+              done();
+            });
           });
         });
       });
