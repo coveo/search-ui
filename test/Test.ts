@@ -139,6 +139,9 @@ ComponentTest();
 import { DidYouMeanTest } from './ui/DidYouMeanTest';
 DidYouMeanTest();
 
+import { DistanceResourcesTest } from './ui/DistanceResourcesTest';
+DistanceResourcesTest();
+
 import { ErrorReportTest } from './ui/ErrorReportTest';
 ErrorReportTest();
 
