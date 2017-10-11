@@ -319,6 +319,9 @@ export class FacetQueryController {
   }
 
   private isValueAllowedByAllowedValueOption(value: IGroupByValue | IIndexFieldValue): boolean {
+    // Allowed value option on the facet should support * (wildcard searches)
+    // We need to filter values client side the index will completeWithStandardValues
+    // Replace the wildcard (*) for a regex match (.*)
     return _.some(this.facet.options.allowedValues, allowedValue => {
       const regex = new RegExp(`^${allowedValue.replace(/\*/g, '.*').replace(/\?/g, '.')}$`, 'gi');
       return regex.test(value.value);
