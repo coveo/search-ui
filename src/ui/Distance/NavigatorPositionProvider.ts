@@ -1,9 +1,12 @@
 import { IPositionProvider, IPosition } from '../../events/DistanceEvents';
 
 /**
- * The `NavigatorPositionProvider` component provides the user's position to a [`DistanceResources`]{@link DistanceResources} component according to the current navigator.
+ * The `NavigatorPositionProvider` class uses the current web browser to provide the position of the end user to
+ * a [`DistanceResources`]{@link DistanceResources} component whose
+ * [`useNavigator`]{DistanceResources.options.useNavigator} option is set to `true`.
  *
- * Note that most browser requires your site to be in HTTPS to use this API.
+ * **Note:**
+ * > Recent web browsers typically require a site to be in HTTPS to enable their geolocation service.
  */
 export class NavigatorPositionProvider implements IPositionProvider {
   public getPosition(): Promise<IPosition> {
