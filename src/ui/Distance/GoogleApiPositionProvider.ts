@@ -13,7 +13,11 @@ interface IGeolocationResponseLocation {
 }
 
 /**
- * The `GoogleApiPositionProvider` component provides the user's position to a [`DistanceResources`]{@link DistanceResources} component using Google's geolocation API.
+ * The `GoogleApiPositionProvider` class uses the
+ * [Google Maps Geolocation API]{https://developers.google.com/maps/documentation/geolocation/intro} to provide the
+ * position of the end user to a [`DistanceResources`]{@link DistanceResources} component whose
+ * [`googleApiKey`]{@link DistanceResources.options.googleApiKey} option is set to a valid  Google Maps Geolocation API
+ * key.
  */
 export class GoogleApiPositionProvider implements IPositionProvider {
   constructor(private googleApiKey: string) {}
@@ -22,7 +26,7 @@ export class GoogleApiPositionProvider implements IPositionProvider {
     return new EndpointCaller()
       .call<IGeolocationResponse>({
         errorsAsSuccess: false,
-        method: 'GET',
+        method: 'POST',
         queryString: [`key=${this.googleApiKey}`],
         requestData: {},
         responseType: 'json',
