@@ -184,19 +184,16 @@ export function FacetTest() {
       });
 
       it('should select the needed values', () => {
-        expect(test.cmp.getSelectedValues()).toEqual([]);
         test.env.queryStateModel.set('f:@field', ['a', 'b', 'c']);
         expect(test.cmp.getSelectedValues()).toEqual(['a', 'b', 'c']);
       });
 
       it('should exclude the needed values', () => {
-        expect(test.cmp.getExcludedValues()).toEqual([]);
         test.env.queryStateModel.set('f:@field:not', ['a', 'b', 'c']);
         expect(test.cmp.getExcludedValues()).toEqual(['a', 'b', 'c']);
       });
 
       it('should update the operator', () => {
-        expect(test.cmp.options.useAnd).toBeFalsy();
         test.env.queryStateModel.set('f:@field:operator', 'and');
         expect(test.cmp.options.useAnd).toBeTruthy();
         test.env.queryStateModel.set('f:@field:operator', 'or');
@@ -204,13 +201,11 @@ export function FacetTest() {
       });
 
       it('should trim values from the query state model for selected values', () => {
-        expect(test.cmp.getSelectedValues()).toEqual([]);
         test.env.queryStateModel.set('f:@field', ['a     ', '     b', '    c    ']);
         expect(test.cmp.getSelectedValues()).toEqual(['a', 'b', 'c']);
       });
 
       it('should trim values from the query state model for excluded values', () => {
-        expect(test.cmp.getExcludedValues()).toEqual([]);
         test.env.queryStateModel.set('f:@field:not', ['a     ', '     b', '    c    ']);
         expect(test.cmp.getExcludedValues()).toEqual(['a', 'b', 'c']);
       });
