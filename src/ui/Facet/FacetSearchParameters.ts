@@ -60,7 +60,12 @@ export class FacetSearchParameters {
     }
 
     const request: IGroupByRequest = {
-      allowedValues: typedByUser.concat(this.alwaysInclude).concat(this.alwaysExclude),
+      allowedValues: _.compact(
+        typedByUser
+          .concat(this.alwaysInclude)
+          .concat(this.alwaysExclude)
+          .concat(this.facet.options.allowedValues)
+      ),
       maximumNumberOfValues: nbResults,
       completeFacetWithStandardValues: completeFacetWithStandardValues,
       field: <string>this.facet.options.field,
