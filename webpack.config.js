@@ -21,6 +21,8 @@ plugins.push(
   })
 );
 
+plugins.push(new webpack.optimize.ModuleConcatenationPlugin());
+
 plugins.push(
   new webpack.ProvidePlugin({
     Promise: __dirname + '/node_modules/es6-promise/dist/es6-promise.auto'

@@ -1,3 +1,4 @@
+/// <reference path="../../lib/jasmine/index.d.ts" />
 import * as Mock from '../MockEnvironment';
 import { Facet, IFacetOptions } from '../../src/ui/Facet/Facet';
 import { $$ } from '../../src/utils/Dom';
@@ -165,6 +166,49 @@ export function FacetTest() {
       test.cmp.options.field = '@filetype';
       expect(test.cmp.getValueCaption(FacetValue.createFromValue('foo'))).toBe('foo');
       expect(test.cmp.getValueCaption(FacetValue.createFromValue('txt'))).toBe('Text');
+    });
+
+    describe('with a live query state model', () => {
+      beforeEach(() => {
+        test = Mock.advancedComponentSetup<Facet>(Facet, <Mock.AdvancedComponentSetupOptions>{
+          modifyBuilder: builder => {
+            return builder.withLiveQueryStateModel();
+          },
+          cmpOptions: {
+            field: '@field'
+          }
+        });
+        test.env.queryStateModel.registerNewAttribute('f:@field', []);
+        test.env.queryStateModel.registerNewAttribute('f:@field:not', []);
+        test.env.queryStateModel.registerNewAttribute('f:@field:operator', 'or');
+      });
+
+      it('should select the needed values', () => {
+        test.env.queryStateModel.set('f:@field', ['a', 'b', 'c']);
+        expect(test.cmp.getSelectedValues()).toEqual(['a', 'b', 'c']);
+      });
+
+      it('should exclude the needed values', () => {
+        test.env.queryStateModel.set('f:@field:not', ['a', 'b', 'c']);
+        expect(test.cmp.getExcludedValues()).toEqual(['a', 'b', 'c']);
+      });
+
+      it('should update the operator', () => {
+        test.env.queryStateModel.set('f:@field:operator', 'and');
+        expect(test.cmp.options.useAnd).toBeTruthy();
+        test.env.queryStateModel.set('f:@field:operator', 'or');
+        expect(test.cmp.options.useAnd).toBeFalsy();
+      });
+
+      it('should trim values from the query state model for selected values', () => {
+        test.env.queryStateModel.set('f:@field', ['a     ', '     b', '    c    ']);
+        expect(test.cmp.getSelectedValues()).toEqual(['a', 'b', 'c']);
+      });
+
+      it('should trim values from the query state model for excluded values', () => {
+        test.env.queryStateModel.set('f:@field:not', ['a     ', '     b', '    c    ']);
+        expect(test.cmp.getExcludedValues()).toEqual(['a', 'b', 'c']);
+      });
     });
 
     describe('exposes options', () => {

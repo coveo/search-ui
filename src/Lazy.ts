@@ -65,6 +65,9 @@ chatterTopicRegisterFields();
 import { lazyDidYouMean } from './ui/DidYouMean/LazyDidYouMean';
 lazyDidYouMean();
 
+import { lazyDistanceResources } from './ui/Distance/LazyDistanceResources';
+lazyDistanceResources();
+
 import { lazyErrorReport } from './ui/ErrorReport/LazyErrorReport';
 lazyErrorReport();
 

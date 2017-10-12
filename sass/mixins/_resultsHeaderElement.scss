@@ -13,6 +13,11 @@
     border-bottom: 2px solid $color-greyish-dark-blue;
   }
 
+  &:focus {
+    outline-width: 1px;
+    outline-color: $color-light-grey;
+  }
+
   &:hover {
     color: $color-greyish-dark-blue;
   }
