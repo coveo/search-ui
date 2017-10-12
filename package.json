@@ -82,6 +82,7 @@
     "istanbul-combine": "^0.3.0",
     "jasmine": "^2.4.1",
     "jasmine-core": "^2.4.1",
+    "json-loader": "^0.5.7",
     "json5": "^0.5.0",
     "karma": "^1.0",
     "karma-chrome-launcher": "^2.2.0",
