@@ -11,6 +11,7 @@ import { SearchInterface } from '../../src/ui/SearchInterface/SearchInterface';
 import { FacetSearchParameters } from '../../src/ui/Facet/FacetSearchParameters';
 import { FakeResults } from '../Fake';
 import { IQueryResults } from '../../src/rest/QueryResults';
+import * as _ from 'underscore';
 
 export function FacetQueryControllerTest() {
   describe('FacetQueryController', () => {
@@ -222,34 +223,18 @@ export function FacetQueryControllerTest() {
           searchPromise = null;
         });
 
+        const generateMatcher = (values: string[]) => {
+          const generated = _.map(values, value => {
+            return jasmine.objectContaining({ value });
+          });
+          return jasmine.arrayContaining(generated);
+        };
+
         it('should resolve with allowed values only', done => {
           mockFacet.options.allowedValues = ['a0', 'a5', 'a8'];
           facetQueryController.search(facetSearchParams).then(values => {
-            expect(values).toEqual(
-              jasmine.arrayContaining([
-                jasmine.objectContaining({
-                  value: 'a0'
-                }),
-                jasmine.objectContaining({
-                  value: 'a5'
-                }),
-                jasmine.objectContaining({
-                  value: 'a8'
-                })
-              ])
-            );
-
-            expect(values).not.toEqual(
-              jasmine.arrayContaining([
-                jasmine.objectContaining({
-                  value: 'a2'
-                }),
-                jasmine.objectContaining({
-                  value: 'a1'
-                })
-              ])
-            );
-
+            expect(values).toEqual(generateMatcher(['a0', 'a5', 'a8']));
+            expect(values).not.toEqual(generateMatcher(['a2', 'a1']));
             done();
           });
         });
@@ -257,30 +242,8 @@ export function FacetQueryControllerTest() {
         it('when performing fetch more with allowed values option', done => {
           mockFacet.options.allowedValues = ['a0', 'a5', 'a8'];
           facetQueryController.fetchMore(10).then((data: IQueryResults) => {
-            expect(data.groupByResults[0].values).toEqual(
-              jasmine.arrayContaining([
-                jasmine.objectContaining({
-                  value: 'a0'
-                }),
-                jasmine.objectContaining({
-                  value: 'a5'
-                }),
-                jasmine.objectContaining({
-                  value: 'a8'
-                })
-              ])
-            );
-
-            expect(data.groupByResults[0].values).not.toEqual(
-              jasmine.arrayContaining([
-                jasmine.objectContaining({
-                  value: 'a2'
-                }),
-                jasmine.objectContaining({
-                  value: 'a1'
-                })
-              ])
-            );
+            expect(data.groupByResults[0].values).toEqual(generateMatcher(['a0', 'a5', 'a8']));
+            expect(data.groupByResults[0].values).not.toEqual(generateMatcher(['a2', 'a1']));
             done();
           });
         });
@@ -295,53 +258,23 @@ export function FacetQueryControllerTest() {
               results.groupByResults[0] = groupByWithAToken;
               resolve(results);
             });
+            (<jasmine.Spy>mockEndpoint.search).and.returnValue(searchPromise);
             mockFacet.options.allowedValues = ['a*'];
           });
 
           it('should resolve search correctly', done => {
             facetQueryController.search(facetSearchParams).then(values => {
-              expect(values).toEqual(
-                jasmine.arrayContaining([
-                  jasmine.objectContaining({
-                    value: 'a0'
-                  }),
-                  jasmine.objectContaining({
-                    value: 'a1'
-                  }),
-                  jasmine.objectContaining({
-                    value: 'a3'
-                  }),
-                  jasmine.objectContaining({
-                    value: 'a4'
-                  }),
-                  jasmine.objectContaining({
-                    value: 'a5'
-                  })
-                ])
-              );
+              expect(values).toEqual(generateMatcher(['a0', 'a1', 'a2', 'a3', 'a4']));
+              expect(values).not.toEqual(generateMatcher(['b0', 'b1', 'b2', 'b3', 'b4']));
+              done();
+            });
+          });
 
-              expect(values).not.toEqual(
-                jasmine.arrayContaining([
-                  jasmine.objectContaining({
-                    value: 'b0'
-                  }),
-                  jasmine.objectContaining({
-                    value: 'b1'
-                  }),
-                  jasmine.objectContaining({
-                    value: 'b2'
-                  }),
-                  jasmine.objectContaining({
-                    value: 'b3'
-                  }),
-                  jasmine.objectContaining({
-                    value: 'b4'
-                  }),
-                  jasmine.objectContaining({
-                    value: 'b5'
-                  })
-                ])
-              );
+          it('should resolve search correctly with ? character', done => {
+            mockFacet.options.allowedValues = ['b?'];
+            facetQueryController.search(facetSearchParams).then(values => {
+              expect(values).not.toEqual(generateMatcher(['a0', 'a1', 'a2', 'a3', 'a4']));
+              expect(values).toEqual(generateMatcher(['b0', 'b1', 'b2', 'b3', 'b4']));
               done();
             });
           });
@@ -358,48 +291,8 @@ export function FacetQueryControllerTest() {
 
             mockFacet.options.allowedValues = ['a*'];
             facetQueryController.fetchMore(10).then((data: IQueryResults) => {
-              expect(data.groupByResults[0].values).toEqual(
-                jasmine.arrayContaining([
-                  jasmine.objectContaining({
-                    value: 'a0'
-                  }),
-                  jasmine.objectContaining({
-                    value: 'a1'
-                  }),
-                  jasmine.objectContaining({
-                    value: 'a3'
-                  }),
-                  jasmine.objectContaining({
-                    value: 'a4'
-                  }),
-                  jasmine.objectContaining({
-                    value: 'a5'
-                  })
-                ])
-              );
-
-              expect(data.groupByResults[0].values).not.toEqual(
-                jasmine.arrayContaining([
-                  jasmine.objectContaining({
-                    value: 'b0'
-                  }),
-                  jasmine.objectContaining({
-                    value: 'b1'
-                  }),
-                  jasmine.objectContaining({
-                    value: 'b2'
-                  }),
-                  jasmine.objectContaining({
-                    value: 'b3'
-                  }),
-                  jasmine.objectContaining({
-                    value: 'b4'
-                  }),
-                  jasmine.objectContaining({
-                    value: 'b5'
-                  })
-                ])
-              );
+              expect(data.groupByResults[0].values).toEqual(generateMatcher(['a0', 'a1', 'a2', 'a3', 'a4']));
+              expect(data.groupByResults[0].values).not.toEqual(generateMatcher(['b0', 'b1', 'b2', 'b3', 'b4']));
               done();
             });
           });

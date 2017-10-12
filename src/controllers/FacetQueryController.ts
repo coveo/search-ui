@@ -308,23 +308,24 @@ export class FacetQueryController {
     const regex = FacetUtils.getRegexToUseForFacetSearch(valueToCheckAgainst, this.facet.options.facetSearchIgnoreAccents);
 
     return _.filter<IIndexFieldValue>(fieldValues, fieldValue => {
-      const isAllowed = _.isEmpty(this.facet.options.allowedValues) || this.isValueAllowedByAllowedValueOption(fieldValue);
+      const isAllowed = _.isEmpty(this.facet.options.allowedValues) || this.isValueAllowedByAllowedValueOption(fieldValue.value);
       const value = this.facet.getValueCaption(fieldValue);
       return isAllowed && regex.test(value);
     });
   }
 
   private filterByAllowedValueOption(values: IGroupByValue[]): IGroupByValue[] {
-    return _.filter(values, (value: IGroupByValue) => this.isValueAllowedByAllowedValueOption(value));
+    return _.filter(values, (value: IGroupByValue) => this.isValueAllowedByAllowedValueOption(value.value));
   }
 
-  private isValueAllowedByAllowedValueOption(value: IGroupByValue | IIndexFieldValue): boolean {
+  private isValueAllowedByAllowedValueOption(value: string): boolean {
     // Allowed value option on the facet should support * (wildcard searches)
     // We need to filter values client side the index will completeWithStandardValues
     // Replace the wildcard (*) for a regex match (.*)
+    // Also replace the (?) with "any character once" since it is also supported by the index
     return _.some(this.facet.options.allowedValues, allowedValue => {
       const regex = new RegExp(`^${allowedValue.replace(/\*/g, '.*').replace(/\?/g, '.')}$`, 'gi');
-      return regex.test(value.value);
+      return regex.test(value);
     });
   }
 }
