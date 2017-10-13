@@ -98,6 +98,9 @@
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-static">
 								<a href="analyticsevents.html#changeanalyticscustomdata" class="tsd-kind-icon">change<wbr>Analytics<wbr>Custom<wbr>Data</a>
 							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-static">
+								<a href="analyticsevents.html#documentviewevent" class="tsd-kind-icon">document<wbr>View<wbr>Event</a>
+							</li>
 						</ul>
 					</li>
 				</ul>
@@ -145,6 +148,7 @@
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static"><a href="analyticsevents.html#changeanalyticscustomdata" class="tsd-kind-icon">change<wbr>Analytics<wbr>Custom<wbr>Data</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static"><a href="analyticsevents.html#documentviewevent" class="tsd-kind-icon">document<wbr>View<wbr>Event</a></li>
 							</ul>
 						</section>
 					</div>
@@ -159,8 +163,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/events/AnalyticsEvents.ts#L161">src/events/AnalyticsEvents.ts
-							:161</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/events/AnalyticsEvents.ts#L182">src/events/AnalyticsEvents.ts
+							:182</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -176,6 +180,33 @@
 						<dl class="tsd-comment-tags">
 							<dt>type</dt>
 							<dd><p>{string} The string value is <code>changeAnalyticsCustomData</code>.</p>
+							</dd>
+						</dl>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-static">
+					<a name="documentviewevent" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> document<wbr>View<wbr>Event</h3>
+					<div class="tsd-signature tsd-kind-icon">document<wbr>View<wbr>Event<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in
+								<a href="https://github.com/coveo/search-ui/tree/master/src/events/AnalyticsEvents.ts#L168">src/events/AnalyticsEvents.ts
+							:168</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-deprecated">
+						</dl>
+						<div class="lead">
+							<p>Triggered when a <code>click</code> analytics event is logged (e.g., when the end user clicks a
+							<a href="../components/resultlink.html"><code>ResultLink</code></a> or <a href="../components/quickview.html"><code>Quickview</code></a> to open a query result item).</p>
+						</div>
+						<p>All <code>documentViewEvent</code> event handlers receive an
+						<a href="../interfaces/ianalyticsdocumentvieweventargs.html"><code>AnalyticsDocumentViewEventArgs</code></a> object as an argument.</p>
+						<dl class="tsd-comment-tags">
+							<dt>type</dt>
+							<dd><p>{string} The string value is <code>documentViewEvent</code>.</p>
 							</dd>
 						</dl>
 					</div>

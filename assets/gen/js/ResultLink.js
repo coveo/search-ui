@@ -7,7 +7,7 @@ webpackJsonpCoveo__temporary([57],{
 
 /***/ }),
 
-/***/ 78:
+/***/ 77:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -37,7 +37,7 @@ var Assert_1 = __webpack_require__(7);
 var Utils_1 = __webpack_require__(6);
 var Defer_1 = __webpack_require__(28);
 var Dom_1 = __webpack_require__(3);
-var StreamHighlightUtils_1 = __webpack_require__(65);
+var StreamHighlightUtils_1 = __webpack_require__(81);
 var _ = __webpack_require__(1);
 var GlobalExports_1 = __webpack_require__(4);
 __webpack_require__(432);

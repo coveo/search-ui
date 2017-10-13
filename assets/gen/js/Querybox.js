@@ -19,7 +19,7 @@ module.exports = Coveo.MagicBox;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var _ = __webpack_require__(1);
-var MiscModules_1 = __webpack_require__(81);
+var MiscModules_1 = __webpack_require__(80);
 var QueryboxQueryParameters = /** @class */ (function () {
     function QueryboxQueryParameters(options) {
         this.options = options;
@@ -101,7 +101,7 @@ var ComponentOptions_1 = __webpack_require__(9);
 var QueryEvents_1 = __webpack_require__(11);
 var Model_1 = __webpack_require__(18);
 var QueryStateModel_1 = __webpack_require__(13);
-var StandaloneSearchInterfaceEvents_1 = __webpack_require__(66);
+var StandaloneSearchInterfaceEvents_1 = __webpack_require__(65);
 var AnalyticsActionListMeta_1 = __webpack_require__(12);
 var Dom_1 = __webpack_require__(3);
 var Assert_1 = __webpack_require__(7);

@@ -402,7 +402,7 @@ exports.DefaultRecommendationTemplate = DefaultRecommendationTemplate;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var ResponsiveComponentsManager_1 = __webpack_require__(77);
+var ResponsiveComponentsManager_1 = __webpack_require__(76);
 var SearchInterface_1 = __webpack_require__(20);
 var ResultList_1 = __webpack_require__(94);
 var Dom_1 = __webpack_require__(3);
@@ -656,7 +656,7 @@ exports.ResultListCardRenderer = ResultListCardRenderer;
 
 /***/ }),
 
-/***/ 77:
+/***/ 76:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";

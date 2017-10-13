@@ -134,8 +134,10 @@
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>This static class contains the different string definitions for all the events related to distance.</p>
+						<p>The <code>DistanceEvents</code> static class contains the string definitions of all events related to distance
+						list.</p>
 					</div>
+					<p>See <a href="https://developers.coveo.com/x/bYGfAQ">Events</a>.</p>
 				</div>
 			</section>
 			<div class="preview-container tsd-panel">
@@ -165,8 +167,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/events/DistanceEvents.ts#L62">src/events/DistanceEvents.ts
-							:62</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/events/DistanceEvents.ts#L71">src/events/DistanceEvents.ts
+							:71</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -175,11 +177,14 @@
 						<div class="lead">
 							<p>Triggered when the <a href="../components/distanceresources.html"><code>DistanceResources</code></a> component fails to resolve the position.</p>
 						</div>
-						<p>Use this event to show an error to the end user, or hide components that cannot be used.</p>
-						<p>The string value is <code>onPositionNotResolved</code>.</p>
+						<p><strong>Note:</strong></p>
+						<blockquote>
+							<p>You should bind a handler to this event if you want to display an error message to the end user, or hide
+							components that cannot be used.</p>
+						</blockquote>
 						<dl class="tsd-comment-tags">
 							<dt>type</dt>
-							<dd><p>{string}</p>
+							<dd><p>{string} The string value is <code>onPositionNotResolved</code>.</p>
 							</dd>
 						</dl>
 					</div>
@@ -191,21 +196,21 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/events/DistanceEvents.ts#L42">src/events/DistanceEvents.ts
-							:42</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/events/DistanceEvents.ts#L47">src/events/DistanceEvents.ts
+							:47</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<dl class="tsd-deprecated">
 						</dl>
 						<div class="lead">
-							<p>Triggered when the <a href="../components/distanceresources.html"><code>DistanceResources</code></a> component sucessfully resolves the position.</p>
+							<p>Triggered when the <a href="../components/distanceresources.html"><code>DistanceResources</code></a> component successfully resolves the position.</p>
 						</div>
-						<p>All bound handlers will receive <a href="../interfaces/ipositionresolvedeventargs.html">IPositionResolvedEventArgs</a> as an argument.</p>
-						<p>The string value is <code>onPositionResolved</code>.</p>
+						<p>All <code>onPositionResolved</code> event handlers receive a <a href="../interfaces/ipositionresolvedeventargs.html"><code>PositionResolvedEventArgs</code></a>
+						object as an argument.</p>
 						<dl class="tsd-comment-tags">
 							<dt>type</dt>
-							<dd><p>{string}</p>
+							<dd><p>{string} The string value is <code>onPositionResolved</code>.</p>
 							</dd>
 						</dl>
 					</div>
@@ -217,8 +222,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/events/DistanceEvents.ts#L53">src/events/DistanceEvents.ts
-							:53</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/events/DistanceEvents.ts#L60">src/events/DistanceEvents.ts
+							:60</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -227,12 +232,15 @@
 						<div class="lead">
 							<p>Triggered when the <a href="../components/distanceresources.html"><code>DistanceResources</code></a> component tries to resolve the position.</p>
 						</div>
-						<p>Use this event to register new position providers.</p>
-						<p>All bound handlers will receive <a href="../interfaces/iresolvingpositioneventargs.html">IResolvingPositionEventArgs</a> as an argument.</p>
-						<p>The string value is <code>onResolvingPosition</code>.</p>
+						<p>All <code>onResolvingPosition</code> event handlers receive a
+						<a href="../interfaces/iresolvingpositioneventargs.html"><code>ResolvingPositionEventArgs</code></a> object as an argument.</p>
+						<p><strong>Note:</strong></p>
+						<blockquote>
+							<p>You should bind a handler to this event if you want to register one or several new position providers.</p>
+						</blockquote>
 						<dl class="tsd-comment-tags">
 							<dt>type</dt>
-							<dd><p>{string}</p>
+							<dd><p>{string} The string value is <code>onResolvingPosition</code>.</p>
 							</dd>
 						</dl>
 					</div>

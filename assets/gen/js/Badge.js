@@ -207,7 +207,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var Component_1 = __webpack_require__(8);
 var ComponentOptions_1 = __webpack_require__(9);
 var Initialization_1 = __webpack_require__(2);
-var TemplateHelpers_1 = __webpack_require__(69);
+var TemplateHelpers_1 = __webpack_require__(68);
 var Assert_1 = __webpack_require__(7);
 var DateUtils_1 = __webpack_require__(29);
 var QueryStateModel_1 = __webpack_require__(13);
@@ -251,19 +251,7 @@ var FieldValue = /** @class */ (function (_super) {
         _this.result = result;
         _this.options = ComponentOptions_1.ComponentOptions.initOptions(element, FieldValue.simpleOptions, options);
         if (_this.options.helper != null) {
-            _this.options = ComponentOptions_1.ComponentOptions.initOptions(element, FieldValue.helperOptions, _this.options);
-            var toFilter = _.keys(FieldValue.options.helperOptions['subOptions']);
-            var toKeep_1 = _.filter(toFilter, function (optionKey) {
-                var optionDefinition = FieldValue.options.helperOptions['subOptions'][optionKey];
-                if (optionDefinition) {
-                    var helpers = optionDefinition.helpers;
-                    return helpers != null && _.contains(helpers, _this.options.helper);
-                }
-                return false;
-            });
-            _this.options.helperOptions = _.omit(_this.options.helperOptions, function (value, key) {
-                return !_.contains(toKeep_1, key);
-            });
+            _this.normalizeHelperAndOptions();
         }
         _this.result = _this.result || _this.resolveResult();
         Assert_1.Assert.exists(_this.result);
@@ -318,14 +306,21 @@ var FieldValue = /** @class */ (function (_super) {
         var element = Dom_1.$$('span').el;
         var toRender = value;
         if (this.options.helper) {
-            toRender = TemplateHelpers_1.TemplateHelpers.getHelper(this.options.helper).call(this, value, this.getHelperOptions());
+            // Try to resolve and execute version 2 of each helper function if available
+            var helper = TemplateHelpers_1.TemplateHelpers.getHelper(this.options.helper + "v2") || TemplateHelpers_1.TemplateHelpers.getHelper("" + this.options.helper);
+            if (Utils_1.Utils.exists(helper)) {
+                toRender = helper.call(this, value, this.getHelperOptions());
+            }
+            else {
+                this.logger.warn("Helper " + this.options.helper + " is not found in available helpers. The list of supported helpers is :", _.keys(TemplateHelpers_1.TemplateHelpers.getHelpers()));
+            }
             var fullDateStr = this.getFullDate(value, this.options.helper);
             if (fullDateStr) {
                 element.setAttribute('title', fullDateStr);
             }
-        }
-        if (this.options.helper == 'date' || this.options.helper == 'dateTime' || this.options.helper == 'emailDateTime') {
-            toRender = StringUtils_1.StringUtils.capitalizeFirstLetter(toRender);
+            if (this.options.helper == 'date' || this.options.helper == 'dateTime' || this.options.helper == 'emailDateTime') {
+                toRender = StringUtils_1.StringUtils.capitalizeFirstLetter(toRender);
+            }
         }
         if (this.options.htmlValue) {
             element.innerHTML = toRender;
@@ -338,6 +333,22 @@ var FieldValue = /** @class */ (function (_super) {
     };
     FieldValue.prototype.getValueContainer = function () {
         return this.element;
+    };
+    FieldValue.prototype.normalizeHelperAndOptions = function () {
+        var _this = this;
+        this.options = ComponentOptions_1.ComponentOptions.initOptions(this.element, FieldValue.helperOptions, this.options);
+        var toFilter = _.keys(FieldValue.options.helperOptions['subOptions']);
+        var toKeep = _.filter(toFilter, function (optionKey) {
+            var optionDefinition = FieldValue.options.helperOptions['subOptions'][optionKey];
+            if (optionDefinition) {
+                var helpers = optionDefinition.helpers;
+                return helpers != null && _.contains(helpers, _this.options.helper);
+            }
+            return false;
+        });
+        this.options.helperOptions = _.omit(this.options.helperOptions, function (value, key) {
+            return !_.contains(toKeep, key);
+        });
     };
     FieldValue.prototype.getHelperOptions = function () {
         var inlineOptions = ComponentOptions_1.ComponentOptions.loadStringOption(this.element, 'helperOptions', {});
@@ -508,14 +519,16 @@ var FieldValue = /** @class */ (function (_super) {
                 alwaysIncludeTime: ComponentOptions_1.ComponentOptions.buildBooleanOption(showOnlyWithHelper(['date', 'dateTime', 'emailDateTime', 'time'], { defaultValue: false })),
                 predefinedFormat: ComponentOptions_1.ComponentOptions.buildStringOption(showOnlyWithHelper(['date', 'dateTime', 'emailDateTime', 'time'])),
                 companyDomain: ComponentOptions_1.ComponentOptions.buildStringOption(showOnlyWithHelper(['email'])),
+                me: ComponentOptions_1.ComponentOptions.buildStringOption(showOnlyWithHelper(['email'])),
                 lengthLimit: ComponentOptions_1.ComponentOptions.buildNumberOption(showOnlyWithHelper(['email'], { min: 1 })),
                 truncateName: ComponentOptions_1.ComponentOptions.buildBooleanOption(showOnlyWithHelper(['email'])),
                 alt: ComponentOptions_1.ComponentOptions.buildStringOption(showOnlyWithHelper(['image'])),
                 height: ComponentOptions_1.ComponentOptions.buildStringOption(showOnlyWithHelper(['image'])),
                 width: ComponentOptions_1.ComponentOptions.buildStringOption(showOnlyWithHelper(['image'])),
-                presision: ComponentOptions_1.ComponentOptions.buildNumberOption(showOnlyWithHelper(['size'], { min: 0, defaultValue: 2 })),
+                precision: ComponentOptions_1.ComponentOptions.buildNumberOption(showOnlyWithHelper(['size'], { min: 0, defaultValue: 2 })),
                 base: ComponentOptions_1.ComponentOptions.buildNumberOption(showOnlyWithHelper(['size'], { min: 0, defaultValue: 0 })),
-                isMilliseconds: ComponentOptions_1.ComponentOptions.buildBooleanOption(showOnlyWithHelper(['timeSpan']))
+                isMilliseconds: ComponentOptions_1.ComponentOptions.buildBooleanOption(showOnlyWithHelper(['timeSpan'])),
+                length: ComponentOptions_1.ComponentOptions.buildNumberOption(showOnlyWithHelper(['shorten', 'shortenPath', 'shortenUri'], { defaultValue: 200 }))
             }
         }),
         /**

@@ -1491,9 +1491,9 @@ input[type=checkbox].coveo-checkbox + button {
 .coveo-icon.objecttype.Report,
 .coveo-icon.objecttype.report {
   display: inline-block;
-  width: 100px;
-  height: 100px;
-  background-size: 100px 100px;
+  width: 60px;
+  height: 60px;
+  background-size: 60px 60px;
   background-image: url( ../image/salesforce-standard-report.svg);
 }
 
@@ -1937,9 +1937,9 @@ input[type=checkbox].coveo-checkbox + button {
 .coveo-icon.objecttype.coveo-small.Report,
 .coveo-icon.objecttype.coveo-small.report {
   display: inline-block;
-  width: 50px;
-  height: 50px;
-  background-size: 50px 50px;
+  width: 30px;
+  height: 30px;
+  background-size: 30px 30px;
   background-image: url( ../image/salesforce-standard-report.svg);
 }
 
@@ -2069,37 +2069,27 @@ input[type=checkbox].coveo-checkbox + button {
   background-image: url( ../image/salesforce-standard-groups.svg);
 }
 
-.coveo-filetype-link,
+.coveo-filetype-salesforce-doctype-html,
 .coveo-icon.filetype.html,
 .coveo-icon.sysfiletype.html,
 .coveo-icon.filetype.wiki,
 .coveo-icon.sysfiletype.wiki,
 .coveo-icon.filetype.webscraperwebpage,
 .coveo-icon.sysfiletype.webscraperwebpage,
-.coveo-icon.filetype.dynamicscrmitem,
-.coveo-icon.sysfiletype.dynamicscrmitem,
-.coveo-icon.filetype.spsite,
-.coveo-icon.sysfiletype.spsite,
-.coveo-icon.filetype.spissue,
-.coveo-icon.sysfiletype.spissue,
-.coveo-icon.filetype.spissuelist,
-.coveo-icon.sysfiletype.spissuelist,
-.coveo-icon.filetype.splink,
-.coveo-icon.sysfiletype.splink,
-.coveo-icon.filetype.splinklist,
-.coveo-icon.sysfiletype.splinklist,
-.coveo-icon.filetype.spdocumentlink,
-.coveo-icon.sysfiletype.spdocumentlink {
+.coveo-icon.filetype.xml,
+.coveo-icon.sysfiletype.xml {
   display: inline-block;
-  width: 60px;
-  height: 60px;
-  background-size: 60px 60px;
-  background-image: url( ../image/link.svg);
+  width: 56px;
+  height: 64px;
+  background-size: 56px 64px;
+  background-image: url( ../image/salesforce-doctype-html.svg);
 }
 
 .coveo-filetype-salesforce-doctype-image,
 .coveo-icon.filetype.image,
-.coveo-icon.sysfiletype.image {
+.coveo-icon.sysfiletype.image,
+.coveo-icon.filetype.svg,
+.coveo-icon.sysfiletype.svg {
   display: inline-block;
   width: 56px;
   height: 64px;
@@ -2179,9 +2169,7 @@ input[type=checkbox].coveo-checkbox + button {
 
 .coveo-filetype-salesforce-doctype-gdoc,
 .coveo-icon.filetype.txt,
-.coveo-icon.sysfiletype.txt,
-.coveo-icon.filetype.doc,
-.coveo-icon.sysfiletype.doc {
+.coveo-icon.sysfiletype.txt {
   display: inline-block;
   width: 56px;
   height: 64px;
@@ -2204,8 +2192,6 @@ input[type=checkbox].coveo-checkbox + button {
 .coveo-icon.sysfiletype.olefile,
 .coveo-icon.filetype.rssitem,
 .coveo-icon.sysfiletype.rssitem,
-.coveo-icon.filetype.docx,
-.coveo-icon.sysfiletype.docx,
 .coveo-icon.filetype.odt,
 .coveo-icon.sysfiletype.odt,
 .coveo-icon.filetype.exchangedocument,
@@ -2241,16 +2227,6 @@ input[type=checkbox].coveo-checkbox + button {
   background-image: url( ../image/salesforce-doctype-flash.svg);
 }
 
-.coveo-filetype-salesforce-doctype-html,
-.coveo-icon.filetype.xml,
-.coveo-icon.sysfiletype.xml {
-  display: inline-block;
-  width: 56px;
-  height: 64px;
-  background-size: 56px 64px;
-  background-image: url( ../image/salesforce-doctype-html.svg);
-}
-
 .coveo-filetype-salesforce-doctype-visio,
 .coveo-icon.filetype.vsd,
 .coveo-icon.sysfiletype.vsd {
@@ -2261,21 +2237,13 @@ input[type=checkbox].coveo-checkbox + button {
   background-image: url( ../image/salesforce-doctype-visio.svg);
 }
 
-.coveo-filetype-images,
-.coveo-icon.filetype.svg,
-.coveo-icon.sysfiletype.svg,
-.coveo-icon.filetype.sppicturelibrarylist,
-.coveo-icon.sysfiletype.sppicturelibrarylist {
-  display: inline-block;
-  width: 60px;
-  height: 60px;
-  background-size: 60px 60px;
-  background-image: url( ../image/images.svg);
-}
-
 .coveo-filetype-salesforce-doctype-word,
 .coveo-icon.filetype.svm,
-.coveo-icon.sysfiletype.svm {
+.coveo-icon.sysfiletype.svm,
+.coveo-icon.filetype.doc,
+.coveo-icon.sysfiletype.doc,
+.coveo-icon.filetype.docx,
+.coveo-icon.sysfiletype.docx {
   display: inline-block;
   width: 56px;
   height: 64px;
@@ -2317,6 +2285,28 @@ input[type=checkbox].coveo-checkbox + button {
   height: 60px;
   background-size: 60px 60px;
   background-image: url( ../image/video.svg);
+}
+
+.coveo-filetype-link,
+.coveo-icon.filetype.dynamicscrmitem,
+.coveo-icon.sysfiletype.dynamicscrmitem,
+.coveo-icon.filetype.spsite,
+.coveo-icon.sysfiletype.spsite,
+.coveo-icon.filetype.spissue,
+.coveo-icon.sysfiletype.spissue,
+.coveo-icon.filetype.spissuelist,
+.coveo-icon.sysfiletype.spissuelist,
+.coveo-icon.filetype.splink,
+.coveo-icon.sysfiletype.splink,
+.coveo-icon.filetype.splinklist,
+.coveo-icon.sysfiletype.splinklist,
+.coveo-icon.filetype.spdocumentlink,
+.coveo-icon.sysfiletype.spdocumentlink {
+  display: inline-block;
+  width: 60px;
+  height: 60px;
+  background-size: 60px 60px;
+  background-image: url( ../image/link.svg);
 }
 
 .coveo-filetype-salesforce-standard-default,
@@ -2458,9 +2448,9 @@ input[type=checkbox].coveo-checkbox + button {
 .coveo-icon.filetype.lithiumcommunity,
 .coveo-icon.sysfiletype.lithiumcommunity {
   display: inline-block;
-  width: 100px;
-  height: 100px;
-  background-size: 100px 100px;
+  width: 60px;
+  height: 60px;
+  background-size: 60px 60px;
   background-image: url( ../image/salesforce-standard-team-member.svg);
 }
 
@@ -2472,6 +2462,16 @@ input[type=checkbox].coveo-checkbox + button {
   height: 60px;
   background-size: 60px 60px;
   background-image: url( ../image/webpage.svg);
+}
+
+.coveo-filetype-images,
+.coveo-icon.filetype.sppicturelibrarylist,
+.coveo-icon.sysfiletype.sppicturelibrarylist {
+  display: inline-block;
+  width: 60px;
+  height: 60px;
+  background-size: 60px 60px;
+  background-image: url( ../image/images.svg);
 }
 
 .coveo-filetype-kb,
@@ -2490,37 +2490,27 @@ input[type=checkbox].coveo-checkbox + button {
   background-image: url( ../image/kb.svg);
 }
 
-.coveo-filetype-link-small,
+.coveo-filetype-salesforce-doctype-html-small,
 .coveo-icon.filetype.coveo-small.html,
 .coveo-icon.sysfiletype.coveo-small.html,
 .coveo-icon.filetype.coveo-small.wiki,
 .coveo-icon.sysfiletype.coveo-small.wiki,
 .coveo-icon.filetype.coveo-small.webscraperwebpage,
 .coveo-icon.sysfiletype.coveo-small.webscraperwebpage,
-.coveo-icon.filetype.coveo-small.dynamicscrmitem,
-.coveo-icon.sysfiletype.coveo-small.dynamicscrmitem,
-.coveo-icon.filetype.coveo-small.spsite,
-.coveo-icon.sysfiletype.coveo-small.spsite,
-.coveo-icon.filetype.coveo-small.spissue,
-.coveo-icon.sysfiletype.coveo-small.spissue,
-.coveo-icon.filetype.coveo-small.spissuelist,
-.coveo-icon.sysfiletype.coveo-small.spissuelist,
-.coveo-icon.filetype.coveo-small.splink,
-.coveo-icon.sysfiletype.coveo-small.splink,
-.coveo-icon.filetype.coveo-small.splinklist,
-.coveo-icon.sysfiletype.coveo-small.splinklist,
-.coveo-icon.filetype.coveo-small.spdocumentlink,
-.coveo-icon.sysfiletype.coveo-small.spdocumentlink {
+.coveo-icon.filetype.coveo-small.xml,
+.coveo-icon.sysfiletype.coveo-small.xml {
   display: inline-block;
-  width: 30px;
-  height: 30px;
-  background-size: 30px 30px;
-  background-image: url( ../image/link.svg);
+  width: 28px;
+  height: 32px;
+  background-size: 28px 32px;
+  background-image: url( ../image/salesforce-doctype-html.svg);
 }
 
 .coveo-filetype-salesforce-doctype-image-small,
 .coveo-icon.filetype.coveo-small.image,
-.coveo-icon.sysfiletype.coveo-small.image {
+.coveo-icon.sysfiletype.coveo-small.image,
+.coveo-icon.filetype.coveo-small.svg,
+.coveo-icon.sysfiletype.coveo-small.svg {
   display: inline-block;
   width: 28px;
   height: 32px;
@@ -2600,9 +2590,7 @@ input[type=checkbox].coveo-checkbox + button {
 
 .coveo-filetype-salesforce-doctype-gdoc-small,
 .coveo-icon.filetype.coveo-small.txt,
-.coveo-icon.sysfiletype.coveo-small.txt,
-.coveo-icon.filetype.coveo-small.doc,
-.coveo-icon.sysfiletype.coveo-small.doc {
+.coveo-icon.sysfiletype.coveo-small.txt {
   display: inline-block;
   width: 28px;
   height: 32px;
@@ -2625,8 +2613,6 @@ input[type=checkbox].coveo-checkbox + button {
 .coveo-icon.sysfiletype.coveo-small.olefile,
 .coveo-icon.filetype.coveo-small.rssitem,
 .coveo-icon.sysfiletype.coveo-small.rssitem,
-.coveo-icon.filetype.coveo-small.docx,
-.coveo-icon.sysfiletype.coveo-small.docx,
 .coveo-icon.filetype.coveo-small.odt,
 .coveo-icon.sysfiletype.coveo-small.odt,
 .coveo-icon.filetype.coveo-small.exchangedocument,
@@ -2662,16 +2648,6 @@ input[type=checkbox].coveo-checkbox + button {
   background-image: url( ../image/salesforce-doctype-flash.svg);
 }
 
-.coveo-filetype-salesforce-doctype-html-small,
-.coveo-icon.filetype.coveo-small.xml,
-.coveo-icon.sysfiletype.coveo-small.xml {
-  display: inline-block;
-  width: 28px;
-  height: 32px;
-  background-size: 28px 32px;
-  background-image: url( ../image/salesforce-doctype-html.svg);
-}
-
 .coveo-filetype-salesforce-doctype-visio-small,
 .coveo-icon.filetype.coveo-small.vsd,
 .coveo-icon.sysfiletype.coveo-small.vsd {
@@ -2682,21 +2658,13 @@ input[type=checkbox].coveo-checkbox + button {
   background-image: url( ../image/salesforce-doctype-visio.svg);
 }
 
-.coveo-filetype-images-small,
-.coveo-icon.filetype.coveo-small.svg,
-.coveo-icon.sysfiletype.coveo-small.svg,
-.coveo-icon.filetype.coveo-small.sppicturelibrarylist,
-.coveo-icon.sysfiletype.coveo-small.sppicturelibrarylist {
-  display: inline-block;
-  width: 30px;
-  height: 30px;
-  background-size: 30px 30px;
-  background-image: url( ../image/images.svg);
-}
-
 .coveo-filetype-salesforce-doctype-word-small,
 .coveo-icon.filetype.coveo-small.svm,
-.coveo-icon.sysfiletype.coveo-small.svm {
+.coveo-icon.sysfiletype.coveo-small.svm,
+.coveo-icon.filetype.coveo-small.doc,
+.coveo-icon.sysfiletype.coveo-small.doc,
+.coveo-icon.filetype.coveo-small.docx,
+.coveo-icon.sysfiletype.coveo-small.docx {
   display: inline-block;
   width: 28px;
   height: 32px;
@@ -2738,6 +2706,28 @@ input[type=checkbox].coveo-checkbox + button {
   height: 30px;
   background-size: 30px 30px;
   background-image: url( ../image/video.svg);
+}
+
+.coveo-filetype-link-small,
+.coveo-icon.filetype.coveo-small.dynamicscrmitem,
+.coveo-icon.sysfiletype.coveo-small.dynamicscrmitem,
+.coveo-icon.filetype.coveo-small.spsite,
+.coveo-icon.sysfiletype.coveo-small.spsite,
+.coveo-icon.filetype.coveo-small.spissue,
+.coveo-icon.sysfiletype.coveo-small.spissue,
+.coveo-icon.filetype.coveo-small.spissuelist,
+.coveo-icon.sysfiletype.coveo-small.spissuelist,
+.coveo-icon.filetype.coveo-small.splink,
+.coveo-icon.sysfiletype.coveo-small.splink,
+.coveo-icon.filetype.coveo-small.splinklist,
+.coveo-icon.sysfiletype.coveo-small.splinklist,
+.coveo-icon.filetype.coveo-small.spdocumentlink,
+.coveo-icon.sysfiletype.coveo-small.spdocumentlink {
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  background-size: 30px 30px;
+  background-image: url( ../image/link.svg);
 }
 
 .coveo-filetype-salesforce-standard-default-small,
@@ -2879,9 +2869,9 @@ input[type=checkbox].coveo-checkbox + button {
 .coveo-icon.filetype.coveo-small.lithiumcommunity,
 .coveo-icon.sysfiletype.coveo-small.lithiumcommunity {
   display: inline-block;
-  width: 50px;
-  height: 50px;
-  background-size: 50px 50px;
+  width: 30px;
+  height: 30px;
+  background-size: 30px 30px;
   background-image: url( ../image/salesforce-standard-team-member.svg);
 }
 
@@ -2893,6 +2883,16 @@ input[type=checkbox].coveo-checkbox + button {
   height: 30px;
   background-size: 30px 30px;
   background-image: url( ../image/webpage.svg);
+}
+
+.coveo-filetype-images-small,
+.coveo-icon.filetype.coveo-small.sppicturelibrarylist,
+.coveo-icon.sysfiletype.coveo-small.sppicturelibrarylist {
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  background-size: 30px 30px;
+  background-image: url( ../image/images.svg);
 }
 
 .coveo-filetype-kb-small,
@@ -10727,9 +10727,6 @@ a.CoveoResultLink.coveo-selected *,
   -ms-flex-pack: start;
   margin: 2px 0 5px 0;
   font-size: 12px;
-  color: #296896;
-  text-decoration: none;
-  cursor: pointer;
   padding: 0 2px 0 2px;
   display: -webkit-box;
   display: -moz-box;
@@ -10739,21 +10736,6 @@ a.CoveoResultLink.coveo-selected *,
   display: -ms-flexbox;
   display: flex;
   position: relative;
-}
-
-.CoveoPrintableUri:hover,
-.CoveoPrintableUri:visited {
-  text-decoration: none;
-  color: #263E55;
-}
-
-.CoveoPrintableUri:hover,
-.CoveoPrintableUri:hover a {
-  text-decoration: underline;
-}
-
-.CoveoPrintableUri.coveo-selected * {
-  color: #263E55;
 }
 
 .CoveoPrintableUri.CoveoResultLink:hover {

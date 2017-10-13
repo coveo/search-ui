@@ -19,7 +19,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var Component_1 = __webpack_require__(8);
 var ComponentOptions_1 = __webpack_require__(9);
 var SettingsEvents_1 = __webpack_require__(43);
-var PreferencesPanelEvents_1 = __webpack_require__(67);
+var PreferencesPanelEvents_1 = __webpack_require__(66);
 var Initialization_1 = __webpack_require__(2);
 var Strings_1 = __webpack_require__(10);
 var Dom_1 = __webpack_require__(3);

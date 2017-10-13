@@ -20,7 +20,7 @@ var Component_1 = __webpack_require__(8);
 var ComponentOptions_1 = __webpack_require__(9);
 var ComponentOptionsModel_1 = __webpack_require__(26);
 var LocalStorageUtils_1 = __webpack_require__(37);
-var PreferencesPanelEvents_1 = __webpack_require__(67);
+var PreferencesPanelEvents_1 = __webpack_require__(66);
 var AnalyticsActionListMeta_1 = __webpack_require__(12);
 var Initialization_1 = __webpack_require__(2);
 var Assert_1 = __webpack_require__(7);
@@ -30,7 +30,7 @@ var _ = __webpack_require__(1);
 var GlobalExports_1 = __webpack_require__(4);
 var Defer_1 = __webpack_require__(28);
 var Checkbox_1 = __webpack_require__(54);
-var RadioButton_1 = __webpack_require__(80);
+var RadioButton_1 = __webpack_require__(79);
 var FormGroup_1 = __webpack_require__(95);
 /**
  * The ResultsPreferences component allows the end user to select preferences related to the search results. These
@@ -286,7 +286,7 @@ Initialization_1.Initialization.registerAutoCreateComponent(ResultsPreferences);
 
 /***/ }),
 
-/***/ 80:
+/***/ 79:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";

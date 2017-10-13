@@ -185,10 +185,11 @@
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>The <code>DistanceResources</code> component defines a field that computes the distance according to the user&#39;s position.</p>
+						<p>The <code>DistanceResources</code> component defines a field that computes the distance according to the current position of the
+						end user.</p>
 					</div>
-					<p>Components that uses the current distance should be disabled until a distance is provided by this component.</p>
-					<p>See also <a href="../classes/distanceevents.html"><code>DistanceEvents</code></a> for events triggered by this component.</p>
+					<p>Components relying on the current distance should be disabled until this component successfully provides a distance.</p>
+					<p>See also <a href="../classes/distanceevents.html"><code>DistanceEvents</code></a>.</p>
 				</div>
 			</section>
 			<div class="preview-container tsd-panel">
@@ -260,13 +261,13 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Distance/DistanceResources.ts#L152">src/ui/Distance/DistanceResources.ts
-							:152</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Distance/DistanceResources.ts#L186">src/ui/Distance/DistanceResources.ts
+							:186</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Whether to cancel all the queries until the position is resolved.</p>
+							<p>Whether to cancel all the queries until the <code>DistanceResources</code> component successfully resolves a position.</p>
 						</div>
 						<p>Default value is <code>true</code></p>
 					</div>
@@ -283,15 +284,16 @@ data-cancel-query-until-position-resolved&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Distance/DistanceResources.ts#L106">src/ui/Distance/DistanceResources.ts
-							:106</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Distance/DistanceResources.ts#L125">src/ui/Distance/DistanceResources.ts
+							:125</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>The CSS class for components that needs to be reenabled when the distance is provided.</p>
+							<p>The CSS class for components that need to be re-enabled when the <code>DistanceResources</code> component successfully
+							provides a distance.</p>
 						</div>
-						<p>The default value is <code>coveo-distance-disabled</code>.</p>
+						<p>Default value is <code>coveo-distance-disabled</code>.</p>
 					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
@@ -311,7 +313,7 @@ data-cancel-query-until-position-resolved&#x3D;&#x27;false&#x27;</pre>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies the field that will contain the distance value.</p>
+							<p>Specifies the name of the field in which to store the distance value.</p>
 						</div>
 						<p>Specifying a value for this option is required for the <code>DistanceResources</code> component to work.</p>
 					</div>
@@ -327,15 +329,16 @@ data-cancel-query-until-position-resolved&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Distance/DistanceResources.ts#L130">src/ui/Distance/DistanceResources.ts
-							:130</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Distance/DistanceResources.ts#L157">src/ui/Distance/DistanceResources.ts
+							:157</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
 							<p>The API key to use to request the Google API geolocation service.</p>
 						</div>
-						<p>If not defined, will not try to request the service.</p>
+						<p>If you do not specify a value for this option, the <code>DistanceResources</code> component does not try to request the
+						service.</p>
 					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
@@ -349,14 +352,21 @@ data-cancel-query-until-position-resolved&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Distance/DistanceResources.ts#L76">src/ui/Distance/DistanceResources.ts
-							:76</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Distance/DistanceResources.ts#L83">src/ui/Distance/DistanceResources.ts
+							:83</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies the field that contains the latitude value.</p>
+							<p>Specifies the name of the field that contains the latitude value.</p>
 						</div>
+						<p><strong>Note:</strong></p>
+						<blockquote>
+							<p>The field you specify for this option must be an existing numerical field in your index (see
+								<a href="http://www.coveo.com/go?dest=cloudhelp&amp;lcid=9&amp;context=287">Fields - Page</a>. Otherwise, your query responses
+								will contain a <code>QueryExceptionInvalidQueryFunctionField</code> or QueryExceptionInvalidQueryFunctionFieldType`
+							exception, and the DistanceResources component will be unable to evaluate distances.</p>
+						</blockquote>
 						<p>Specifying a value for this option is required for the <code>DistanceResources</code> component to work.</p>
 					</div>
 					<div class="tsd-panel">
@@ -371,15 +381,19 @@ data-cancel-query-until-position-resolved&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Distance/DistanceResources.ts#L114">src/ui/Distance/DistanceResources.ts
-							:114</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Distance/DistanceResources.ts#L136">src/ui/Distance/DistanceResources.ts
+							:136</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
 							<p>The latitude to use if no other position was provided.</p>
 						</div>
-						<p>You must also set <code>longitudeValue</code> if you specify this value.</p>
+						<p><strong>Note:</strong></p>
+						<blockquote>
+							<p>You must also specify a <a href="distanceresources.html#options.longitudevalue"><code>longitudeValue</code></a> if you specify a
+							<code>latitudeValue</code>.</p>
+						</blockquote>
 					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
@@ -393,14 +407,21 @@ data-cancel-query-until-position-resolved&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Distance/DistanceResources.ts#L84">src/ui/Distance/DistanceResources.ts
-							:84</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Distance/DistanceResources.ts#L98">src/ui/Distance/DistanceResources.ts
+							:98</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies the field that contains the longitude value.</p>
+							<p>Specifies the name of the field that contains the longitude value.</p>
 						</div>
+						<p><strong>Note:</strong></p>
+						<blockquote>
+							<p>The field you specify for this option must be an existing numerical field in your index (see
+								<a href="http://www.coveo.com/go?dest=cloudhelp&amp;lcid=9&amp;context=287">Fields - Page</a>. Otherwise, your query responses
+								will contain a <code>QueryExceptionInvalidQueryFunctionField</code> or QueryExceptionInvalidQueryFunctionFieldType`
+							exception, and the DistanceResources component will be unable to evaluate distances.</p>
+						</blockquote>
 						<p>Specifying a value for this option is required for the <code>DistanceResources</code> component to work.</p>
 					</div>
 					<div class="tsd-panel">
@@ -415,15 +436,19 @@ data-cancel-query-until-position-resolved&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Distance/DistanceResources.ts#L122">src/ui/Distance/DistanceResources.ts
-							:122</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Distance/DistanceResources.ts#L147">src/ui/Distance/DistanceResources.ts
+							:147</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
 							<p>The longitude to use if no other position was provided.</p>
 						</div>
-						<p>You must also set <code>latitude</code> if you specify this value.</p>
+						<p><strong>Note:</strong></p>
+						<blockquote>
+							<p>You must also specify a <a href="distanceresources.html#options.latitudevalue"><code>latitudeValue</code></a> if you specify a
+							<code>longitudeValue</code>.</p>
+						</blockquote>
 					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
@@ -437,15 +462,15 @@ data-cancel-query-until-position-resolved&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Distance/DistanceResources.ts#L144">src/ui/Distance/DistanceResources.ts
-							:144</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Distance/DistanceResources.ts#L177">src/ui/Distance/DistanceResources.ts
+							:177</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Whether to execute a new query when a new position has been provided.</p>
+							<p>Whether to execute a new query when the <code>DistanceResources</code> component successfully provides a new position.</p>
 						</div>
-						<p>Default value is <code>true</code>.</p>
+						<p>Default value is <code>false</code>.</p>
 					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
@@ -460,17 +485,23 @@ data-trigger-new-query-on-new-position&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Distance/DistanceResources.ts#L95">src/ui/Distance/DistanceResources.ts
-							:95</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Distance/DistanceResources.ts#L112">src/ui/Distance/DistanceResources.ts
+							:112</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>The conversion factor to use for the distance according to the base unit, in meters.</p>
+							<p>The conversion factor to apply to the base distance unit (meter).</p>
 						</div>
-						<p>If you want to have Kilometers, you should set 1000 as the value.
-						If you want to have your distance in miles, you should set 1610 as the value, since a mile is approximately 1610 meters.</p>
-						<p>The default value is <code>1000</code>.</p>
+						<p><strong>Note:</strong></p>
+						<blockquote>
+							<ul>
+								<li>If you want to convert distances to kilometers, you should set the <code>unitConversionFactor</code> to <code>1000</code>.</li>
+								<li>If you want to convert distance to miles, you should set the <code>unitConversionFactor</code> to <code>1610</code> (one mile is
+								approximately equal to 1610 meters).</li>
+							</ul>
+						</blockquote>
+						<p>Default value is <code>1000</code>.</p>
 					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
@@ -484,16 +515,21 @@ data-trigger-new-query-on-new-position&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Distance/DistanceResources.ts#L138">src/ui/Distance/DistanceResources.ts
-							:138</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Distance/DistanceResources.ts#L170">src/ui/Distance/DistanceResources.ts
+							:170</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Whether to request the browser&#39;s geolocation service.</p>
+							<p>Whether to request the geolocation service of the web browser.</p>
 						</div>
 						<p>If not defined, will not try to request the service.</p>
-						<p>Note that most recent browsers requires your site to be in HTTPS to use its geolocation service.</p>
+						<p><strong>Note:</strong></p>
+						<blockquote>
+							<p>Recent web browsers typically require a site to be in HTTPS to enable their geolocation service.</p>
+						</blockquote>
+						<p>If you do not specify a value for this option, the <code>DistanceResources</code> component does not try to request the
+						service.</p>
 					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
@@ -619,8 +655,8 @@ data-use-navigator&#x3D;&#x27;false&#x27;</pre>
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Distance/DistanceResources.ts#L211">src/ui/Distance/DistanceResources.ts
-									:211</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Distance/DistanceResources.ts#L247">src/ui/Distance/DistanceResources.ts
+									:247</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -629,7 +665,7 @@ data-use-navigator&#x3D;&#x27;false&#x27;</pre>
 								</div>
 							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span></h4>
-							<p>Promise for the last resolved position value.</p>
+							<p>A promise of the last resolved position value.</p>
 						</li>
 					</ul>
 				</section>
@@ -644,15 +680,18 @@ data-use-navigator&#x3D;&#x27;false&#x27;</pre>
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Distance/DistanceResources.ts#L179">src/ui/Distance/DistanceResources.ts
-									:179</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Distance/DistanceResources.ts#L215">src/ui/Distance/DistanceResources.ts
+									:215</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Override the current position with the provided values.</p>
+									<p>Overrides the current position with the provided values.</p>
 								</div>
-								<p>Does not triggers a query automatically.</p>
+								<p><strong>Note:</strong></p>
+								<blockquote>
+									<p>Calling this method does not automatically trigger a query.</p>
+								</blockquote>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
@@ -951,8 +990,8 @@ data-use-navigator&#x3D;&#x27;false&#x27;</pre>
 								<p>Overwrites <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#constructor">constructor</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Distance/DistanceResources.ts#L155">src/ui/Distance/DistanceResources.ts
-									:155</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Distance/DistanceResources.ts#L189">src/ui/Distance/DistanceResources.ts
+									:189</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">

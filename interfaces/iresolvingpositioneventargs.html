@@ -94,6 +94,11 @@
 				<ul class="current">
 					<li class="current tsd-kind-interface">
 						<a href="iresolvingpositioneventargs.html" class="tsd-kind-icon">IResolving<wbr>Position<wbr>Event<wbr>Args</a>
+						<ul>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="iresolvingpositioneventargs.html#providers" class="tsd-kind-icon">providers</a>
+							</li>
+						</ul>
 					</li>
 				</ul>
 				<ul class="after-current">
@@ -123,13 +128,47 @@
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>Argument sent to all handlers bound on <a href="../classes/distanceevents.html#onresolvingposition">DistanceEvents.onResolvingPosition</a></p>
+						<p>The <code>IResolvingPositionEventArgs</code> interface describes the object that all
+						<a href="../classes/distanceevents.html#onresolvingposition"><code>onResolvingPosition</code></a> event handlers receive as an argument.</p>
 					</div>
 				</div>
 			</section>
 			<div class="preview-container tsd-panel">
 				<div class="overlay"></div>
 			</div>
+			<section class="tsd-panel-group tsd-index-group">
+				<h2>Index</h2>
+				<section class="tsd-panel tsd-index-panel">
+					<div class="tsd-index-content">
+						<section class="tsd-index-section ">
+							<h3>Properties</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="iresolvingpositioneventargs.html#providers" class="tsd-kind-icon">providers</a></li>
+							</ul>
+						</section>
+					</div>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group ">
+				<h2>Properties</h2>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="providers" class="tsd-anchor"></a>
+					<h3>providers</h3>
+					<div class="tsd-signature tsd-kind-icon">providers<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">IPositionProvider</span><span class="tsd-signature-symbol">[]</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in
+								<a href="https://github.com/coveo/search-ui/tree/master/src/events/DistanceEvents.ts#L18">src/events/DistanceEvents.ts
+							:18</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The array of providers that can provide a position. The first provider that can resolve the position will be used.</p>
+						</div>
+					</div>
+				</section>
+			</section>
 			<section class="tsd-panel tsd-hierarchy">
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">

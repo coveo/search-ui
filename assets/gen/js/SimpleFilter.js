@@ -491,7 +491,7 @@ var SimpleFilter = /** @class */ (function (_super) {
          * <div class='CoveoSimpleFilter' data-field='@myotherfield' data-value-caption='{"txt":"Text files","html":"Web page"}'></div>
          * ```
          */
-        valueCaption: ComponentOptions_1.ComponentOptions.buildJsonOption()
+        valueCaption: ComponentOptions_1.ComponentOptions.buildJsonObjectOption()
     };
     return SimpleFilter;
 }(Component_1.Component));

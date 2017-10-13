@@ -481,7 +481,7 @@ var Logger_1 = __webpack_require__(14);
 var Component_1 = __webpack_require__(8);
 var SearchInterface_1 = __webpack_require__(20);
 var Tab_1 = __webpack_require__(249);
-var ResponsiveComponentsManager_1 = __webpack_require__(77);
+var ResponsiveComponentsManager_1 = __webpack_require__(76);
 var ResponsiveComponentsUtils_1 = __webpack_require__(88);
 var Strings_1 = __webpack_require__(10);
 var ResponsiveComponents_1 = __webpack_require__(44);
@@ -833,7 +833,7 @@ exports.ResponsiveTabs = ResponsiveTabs;
 
 /***/ }),
 
-/***/ 77:
+/***/ 76:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";

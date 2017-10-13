@@ -23,10 +23,10 @@ var Utils_1 = __webpack_require__(6);
 var Dom_1 = __webpack_require__(3);
 var GlobalExports_1 = __webpack_require__(4);
 __webpack_require__(508);
-var ResultLink_1 = __webpack_require__(78);
-var StreamHighlightUtils_1 = __webpack_require__(65);
+var ResultLink_1 = __webpack_require__(77);
 var _ = __webpack_require__(1);
 var ComponentOptionsModel_1 = __webpack_require__(26);
+var Component_1 = __webpack_require__(8);
 /**
  * The `PrintableUri` component inherits from the [ `ResultLink` ]{@link ResultLink} component and supports all of its options.
  *
@@ -45,13 +45,69 @@ var PrintableUri = /** @class */ (function (_super) {
      * @param result The result to associate the component with.
      */
     function PrintableUri(element, options, bindings, result) {
-        var _this = _super.call(this, element, ComponentOptions_1.ComponentOptions.initComponentOptions(element, PrintableUri, options), bindings, result) || this;
+        var _this = _super.call(this, element, PrintableUri.ID, bindings) || this;
         _this.element = element;
         _this.options = options;
+        _this.bindings = bindings;
         _this.result = result;
+        _this.links = [];
+        _this.options = ComponentOptions_1.ComponentOptions.initComponentOptions(element, PrintableUri, options);
         _this.options = _.extend({}, _this.options, _this.componentOptionsModel.get(ComponentOptionsModel_1.ComponentOptionsModel.attributesEnum.resultLink));
+        _this.renderUri(_this.element, _this.result);
         return _this;
     }
+    /**
+     * Opens the result in the same window, no matter how the actual component is configured for the end user.
+     * @param logAnalytics Specifies whether the method should log an analytics event.
+     */
+    PrintableUri.prototype.openLink = function (logAnalytics) {
+        if (logAnalytics === void 0) { logAnalytics = true; }
+        _.last(this.links).openLink(logAnalytics);
+    };
+    /**
+     * Opens the result in a new window, no matter how the actual component is configured for the end user.
+     * @param logAnalytics Specifies whether the method should log an analytics event.
+     */
+    PrintableUri.prototype.openLinkInNewWindow = function (logAnalytics) {
+        if (logAnalytics === void 0) { logAnalytics = true; }
+        _.last(this.links).openLinkInNewWindow(logAnalytics);
+    };
+    /**
+     * Opens the link in the same manner the end user would.
+     *
+     * This essentially simulates a click on the result link.
+     *
+     * @param logAnalytics Specifies whether the method should log an analytics event.
+     */
+    PrintableUri.prototype.openLinkAsConfigured = function (logAnalytics) {
+        if (logAnalytics === void 0) { logAnalytics = true; }
+        _.last(this.links).openLinkAsConfigured(logAnalytics);
+    };
+    PrintableUri.prototype.renderUri = function (element, result) {
+        var parentsXml = Utils_1.Utils.getFieldValue(result, 'parents');
+        if (parentsXml) {
+            this.renderParentsXml(element, parentsXml);
+        }
+        else if (this.options.titleTemplate) {
+            var link = new ResultLink_1.ResultLink(this.buildElementForResultLink(), this.options, this.bindings, this.result);
+            this.links.push(link);
+            this.element.appendChild(link.element);
+        }
+        else {
+            this.renderShortenedUri();
+        }
+    };
+    PrintableUri.prototype.buildSeparator = function () {
+        var separator = Dom_1.$$('span', { className: 'coveo-printable-uri-separator' }, ' > ');
+        return separator.el;
+    };
+    PrintableUri.prototype.buildHtmlToken = function (name, uri) {
+        var modifiedName = name.charAt(0).toUpperCase() + name.slice(1);
+        var resultPart = _.extend({}, this.result, { clickUri: uri, title: modifiedName });
+        var link = new ResultLink_1.ResultLink(this.buildElementForResultLink(), this.options, this.bindings, resultPart);
+        this.links.push(link);
+        return link.element;
+    };
     PrintableUri.prototype.renderParentsXml = function (element, parentsXml) {
         var xmlDoc = Utils_1.Utils.parseXml(parentsXml);
         var parents = xmlDoc.getElementsByTagName('parent');
@@ -69,44 +125,25 @@ var PrintableUri = /** @class */ (function (_super) {
             element.appendChild(token);
         }
     };
-    PrintableUri.prototype.renderUri = function (element, result) {
-        var parentsXml = Utils_1.Utils.getFieldValue(result, 'parents');
-        if (parentsXml) {
-            this.renderParentsXml(element, parentsXml);
+    PrintableUri.prototype.renderShortenedUri = function () {
+        var stringAndHoles;
+        if (this.result.printableUri.indexOf('\\') == -1) {
+            stringAndHoles = HighlightUtils_1.StringAndHoles.shortenUri(this.result.printableUri, Dom_1.$$(this.element).width());
         }
         else {
-            if (!this.options.titleTemplate) {
-                this.uri = result.clickUri;
-                var stringAndHoles = void 0;
-                if (result.printableUri.indexOf('\\') == -1) {
-                    stringAndHoles = HighlightUtils_1.StringAndHoles.shortenUri(result.printableUri, Dom_1.$$(element).width());
-                }
-                else {
-                    stringAndHoles = HighlightUtils_1.StringAndHoles.shortenPath(result.printableUri, Dom_1.$$(element).width());
-                }
-                this.shortenedUri = HighlightUtils_1.HighlightUtils.highlightString(stringAndHoles.value, result.printableUriHighlights, stringAndHoles.holes, 'coveo-highlight');
-                var link = Dom_1.$$('a', { className: 'coveo-printable-uri-part', title: result.printableUri });
-                link.setHtml(this.shortenedUri);
-                element.appendChild(link.el);
-            }
-            else if (this.options.titleTemplate) {
-                var newTitle = this.parseStringTemplate(this.options.titleTemplate);
-                this.element.innerHTML = newTitle
-                    ? StreamHighlightUtils_1.StreamHighlightUtils.highlightStreamText(newTitle, this.result.termsToHighlight, this.result.phrasesToHighlight)
-                    : this.result.clickUri;
-            }
+            stringAndHoles = HighlightUtils_1.StringAndHoles.shortenPath(this.result.printableUri, Dom_1.$$(this.element).width());
         }
-        element.title = this.result.printableUri;
+        var shortenedUri = HighlightUtils_1.HighlightUtils.highlightString(stringAndHoles.value, this.result.printableUriHighlights, stringAndHoles.holes, 'coveo-highlight');
+        var resultPart = _.extend({}, this.result, { title: shortenedUri });
+        var link = new ResultLink_1.ResultLink(this.buildElementForResultLink(), this.options, this.bindings, resultPart);
+        this.links.push(link);
+        this.element.appendChild(link.element);
+        this.element.title = this.result.printableUri;
     };
-    PrintableUri.prototype.buildSeparator = function () {
-        var separator = Dom_1.$$('span', { className: 'coveo-printable-uri-separator' }, ' > ');
-        return separator.el;
-    };
-    PrintableUri.prototype.buildHtmlToken = function (name, uri) {
-        var modifiedName = name.charAt(0).toUpperCase() + name.slice(1);
-        var resultPart = _.extend({}, this.result, { clickUri: uri, title: modifiedName });
-        var link = new ResultLink_1.ResultLink(Dom_1.$$('a', { className: 'CoveoResultLink coveo-printable-uri-part' }).el, this.options, this.bindings, resultPart);
-        return link.element;
+    PrintableUri.prototype.buildElementForResultLink = function () {
+        return Dom_1.$$('a', {
+            className: 'CoveoResultLink coveo-printable-uri-part'
+        }).el;
     };
     PrintableUri.ID = 'PrintableUri';
     PrintableUri.options = {};
@@ -116,7 +153,7 @@ var PrintableUri = /** @class */ (function (_super) {
         });
     };
     return PrintableUri;
-}(ResultLink_1.ResultLink));
+}(Component_1.Component));
 exports.PrintableUri = PrintableUri;
 PrintableUri.options = _.extend({}, PrintableUri.options, ResultLink_1.ResultLink.options);
 Initialization_1.Initialization.registerAutoCreateComponent(PrintableUri);
@@ -138,7 +175,7 @@ Initialization_1.Initialization.registerAutoCreateComponent(PrintableUri);
 
 /***/ }),
 
-/***/ 78:
+/***/ 77:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -168,7 +205,7 @@ var Assert_1 = __webpack_require__(7);
 var Utils_1 = __webpack_require__(6);
 var Defer_1 = __webpack_require__(28);
 var Dom_1 = __webpack_require__(3);
-var StreamHighlightUtils_1 = __webpack_require__(65);
+var StreamHighlightUtils_1 = __webpack_require__(81);
 var _ = __webpack_require__(1);
 var GlobalExports_1 = __webpack_require__(4);
 __webpack_require__(432);

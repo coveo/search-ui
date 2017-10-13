@@ -22,7 +22,7 @@ var QueryEvents_1 = __webpack_require__(11);
 var OmniboxEvents_1 = __webpack_require__(33);
 var ResultListEvents_1 = __webpack_require__(32);
 var SettingsEvents_1 = __webpack_require__(43);
-var PreferencesPanelEvents_1 = __webpack_require__(67);
+var PreferencesPanelEvents_1 = __webpack_require__(66);
 var AnalyticsEvents_1 = __webpack_require__(63);
 var AnalyticsActionListMeta_1 = __webpack_require__(12);
 var BreadcrumbEvents_1 = __webpack_require__(42);
@@ -601,7 +601,7 @@ exports.ResponsiveDropdown = ResponsiveDropdown;
 Object.defineProperty(exports, "__esModule", { value: true });
 var Dom_1 = __webpack_require__(3);
 var PopupUtils_1 = __webpack_require__(52);
-var ResponsiveComponentsManager_1 = __webpack_require__(77);
+var ResponsiveComponentsManager_1 = __webpack_require__(76);
 var ResponsiveDropdownContent = /** @class */ (function () {
     function ResponsiveDropdownContent(componentName, element, coveoRoot, minWidth, widthRatio) {
         this.element = element;
@@ -722,7 +722,7 @@ exports.DefaultRecommendationTemplate = DefaultRecommendationTemplate;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var ResponsiveComponentsManager_1 = __webpack_require__(77);
+var ResponsiveComponentsManager_1 = __webpack_require__(76);
 var ResponsiveComponentsUtils_1 = __webpack_require__(88);
 var SearchInterface_1 = __webpack_require__(20);
 var Utils_1 = __webpack_require__(6);
@@ -738,7 +738,7 @@ var RegisteredNamedMethods_1 = __webpack_require__(34);
 var QueryEvents_1 = __webpack_require__(11);
 var _ = __webpack_require__(1);
 __webpack_require__(516);
-var MiscModules_1 = __webpack_require__(81);
+var MiscModules_1 = __webpack_require__(80);
 var ResponsiveRecommendation = /** @class */ (function () {
     function ResponsiveRecommendation(coveoRoot, ID, options, responsiveDropdown) {
         this.coveoRoot = coveoRoot;
@@ -1046,7 +1046,7 @@ Initialization_1.Initialization.registerAutoCreateComponent(RecommendationQuery)
 
 /***/ }),
 
-/***/ 77:
+/***/ 76:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";

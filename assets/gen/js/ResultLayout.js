@@ -354,7 +354,7 @@ Initialization_1.Initialization.registerAutoCreateComponent(ResultLayout);
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var ResponsiveComponentsManager_1 = __webpack_require__(77);
+var ResponsiveComponentsManager_1 = __webpack_require__(76);
 var Dom_1 = __webpack_require__(3);
 var Component_1 = __webpack_require__(8);
 var ResultLayout_1 = __webpack_require__(248);
@@ -419,7 +419,7 @@ exports.ResponsiveResultLayout = ResponsiveResultLayout;
 
 /***/ }),
 
-/***/ 77:
+/***/ 76:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";

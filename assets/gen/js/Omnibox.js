@@ -19,7 +19,7 @@ module.exports = Coveo.MagicBox;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var _ = __webpack_require__(1);
-var MiscModules_1 = __webpack_require__(81);
+var MiscModules_1 = __webpack_require__(80);
 var QueryboxQueryParameters = /** @class */ (function () {
     function QueryboxQueryParameters(options) {
         this.options = options;
@@ -84,7 +84,7 @@ exports.QueryboxQueryParameters = QueryboxQueryParameters;
 /* WEBPACK VAR INJECTION */(function(Promise) {
 Object.defineProperty(exports, "__esModule", { value: true });
 ///<reference path='Omnibox.ts'/>
-var Omnibox_1 = __webpack_require__(79);
+var Omnibox_1 = __webpack_require__(78);
 var OmniboxEvents_1 = __webpack_require__(33);
 var _ = __webpack_require__(1);
 var FieldAddon = /** @class */ (function () {
@@ -291,7 +291,7 @@ exports.FieldAddon = FieldAddon;
 Object.defineProperty(exports, "__esModule", { value: true });
 ///<reference path='Omnibox.ts'/>
 var OmniboxEvents_1 = __webpack_require__(33);
-var Omnibox_1 = __webpack_require__(79);
+var Omnibox_1 = __webpack_require__(78);
 var _ = __webpack_require__(1);
 var QueryExtensionAddon = /** @class */ (function () {
     function QueryExtensionAddon(omnibox) {
@@ -699,7 +699,7 @@ exports.OldOmniboxAddon = OldOmniboxAddon;
 
 /***/ }),
 
-/***/ 79:
+/***/ 78:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -724,7 +724,7 @@ exports.MagicBox = __webpack_require__(416);
 var Component_1 = __webpack_require__(8);
 var ComponentOptions_1 = __webpack_require__(9);
 var QueryEvents_1 = __webpack_require__(11);
-var StandaloneSearchInterfaceEvents_1 = __webpack_require__(66);
+var StandaloneSearchInterfaceEvents_1 = __webpack_require__(65);
 var Model_1 = __webpack_require__(18);
 var QueryStateModel_1 = __webpack_require__(13);
 var AnalyticsActionListMeta_1 = __webpack_require__(12);
@@ -1461,7 +1461,7 @@ var ComponentOptions_1 = __webpack_require__(9);
 var QueryEvents_1 = __webpack_require__(11);
 var Model_1 = __webpack_require__(18);
 var QueryStateModel_1 = __webpack_require__(13);
-var StandaloneSearchInterfaceEvents_1 = __webpack_require__(66);
+var StandaloneSearchInterfaceEvents_1 = __webpack_require__(65);
 var AnalyticsActionListMeta_1 = __webpack_require__(12);
 var Dom_1 = __webpack_require__(3);
 var Assert_1 = __webpack_require__(7);

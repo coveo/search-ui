@@ -29,11 +29,12 @@ var NavigatorPositionProvider_1 = __webpack_require__(476);
 var GoogleApiPositionProvider_1 = __webpack_require__(477);
 var StaticPositionProvider_1 = __webpack_require__(478);
 /**
- * The `DistanceResources` component defines a field that computes the distance according to the user's position.
+ * The `DistanceResources` component defines a field that computes the distance according to the current position of the
+ * end user.
  *
- * Components that uses the current distance should be disabled until a distance is provided by this component.
+ * Components relying on the current distance should be disabled until this component successfully provides a distance.
  *
- * See also [`DistanceEvents`]{@link DistanceEvents} for events triggered by this component.
+ * See also [`DistanceEvents`]{@link DistanceEvents}.
  */
 var DistanceResources = /** @class */ (function (_super) {
     __extends(DistanceResources, _super);
@@ -56,9 +57,11 @@ var DistanceResources = /** @class */ (function (_super) {
         return _this;
     }
     /**
-     * Override the current position with the provided values.
+     * Overrides the current position with the provided values.
      *
-     * Does not triggers a query automatically.
+     * **Note:**
+     * > Calling this method does not automatically trigger a query.
+     *
      * @param latitude The latitude to set.
      * @param longitude The longitude to set.
      */
@@ -87,7 +90,7 @@ var DistanceResources = /** @class */ (function (_super) {
     /**
      * Returns a promise of the last position resolved using the registered position providers.
      *
-     * @returns {Promise<IPosition>} Promise for the last resolved position value.
+     * @returns {Promise<IPosition>} A promise of the last resolved position value.
      */
     DistanceResources.prototype.getLastPositionRequest = function () {
         return this.lastPositionRequest || Promise.reject('No position request was executed yet.');
@@ -109,7 +112,7 @@ var DistanceResources = /** @class */ (function (_super) {
             return position;
         })
             .catch(function (error) {
-            _this.logger.error('An error occured when trying to resolve the current position.', error);
+            _this.logger.error('An error occurred while trying to resolve the current position.', error);
             _this.triggerDistanceNotSet();
         });
     };
@@ -143,7 +146,7 @@ var DistanceResources = /** @class */ (function (_super) {
                         }
                     })
                         .catch(function (error) {
-                        _this.logger.warn('An error occured when tring to resolve the position within a position provider.', error);
+                        _this.logger.warn('An error occurred while trying to resolve the position within a position provider.', error);
                         tryNextProvider();
                     });
                 }
@@ -173,7 +176,7 @@ var DistanceResources = /** @class */ (function (_super) {
                 }
             }
             else if (_this.options.cancelQueryUntilPositionResolved) {
-                _this.logger.info('Query cancelled, waiting for position');
+                _this.logger.info('Query cancelled, waiting for position.');
                 args.cancel = true;
             }
         });
@@ -210,7 +213,7 @@ var DistanceResources = /** @class */ (function (_super) {
      */
     DistanceResources.options = {
         /**
-         * Specifies the field that will contain the distance value.
+         * Specifies the name of the field in which to store the distance value.
          *
          * Specifying a value for this option is required for the `DistanceResources` component to work.
          */
@@ -218,7 +221,13 @@ var DistanceResources = /** @class */ (function (_super) {
             required: true
         }),
         /**
-         * Specifies the field that contains the latitude value.
+         * Specifies the name of the field that contains the latitude value.
+         *
+         * **Note:**
+         * > The field you specify for this option must be an existing numerical field in your index (see
+         * > [Fields - Page](http://www.coveo.com/go?dest=cloudhelp&lcid=9&context=287). Otherwise, your query responses
+         * > will contain a `QueryExceptionInvalidQueryFunctionField` or QueryExceptionInvalidQueryFunctionFieldType`
+         * > exception, and the DistanceResources component will be unable to evaluate distances.
          *
          * Specifying a value for this option is required for the `DistanceResources` component to work.
          */
@@ -226,7 +235,13 @@ var DistanceResources = /** @class */ (function (_super) {
             required: true
         }),
         /**
-         * Specifies the field that contains the longitude value.
+         * Specifies the name of the field that contains the longitude value.
+         *
+         * **Note:**
+         * > The field you specify for this option must be an existing numerical field in your index (see
+         * > [Fields - Page](http://www.coveo.com/go?dest=cloudhelp&lcid=9&context=287). Otherwise, your query responses
+         * > will contain a `QueryExceptionInvalidQueryFunctionField` or QueryExceptionInvalidQueryFunctionFieldType`
+         * > exception, and the DistanceResources component will be unable to evaluate distances.
          *
          * Specifying a value for this option is required for the `DistanceResources` component to work.
          */
@@ -234,12 +249,14 @@ var DistanceResources = /** @class */ (function (_super) {
             required: true
         }),
         /**
-         * The conversion factor to use for the distance according to the base unit, in meters.
+         * The conversion factor to apply to the base distance unit (meter).
          *
-         * If you want to have Kilometers, you should set 1000 as the value.
-         * If you want to have your distance in miles, you should set 1610 as the value, since a mile is approximately 1610 meters.
+         * **Note:**
+         * > - If you want to convert distances to kilometers, you should set the `unitConversionFactor` to `1000`.
+         * > - If you want to convert distance to miles, you should set the `unitConversionFactor` to `1610` (one mile is
+         * > approximately equal to 1610 meters).
          *
-         * The default value is `1000`.
+         * Default value is `1000`.
          */
         unitConversionFactor: ComponentOptions_1.ComponentOptions.buildNumberOption({
             defaultValue: 1000,
@@ -248,9 +265,10 @@ var DistanceResources = /** @class */ (function (_super) {
             }
         }),
         /**
-         * The CSS class for components that needs to be reenabled when the distance is provided.
+         * The CSS class for components that need to be re-enabled when the `DistanceResources` component successfully
+         * provides a distance.
          *
-         * The default value is `coveo-distance-disabled`.
+         * Default value is `coveo-distance-disabled`.
          */
         disabledDistanceCssClass: ComponentOptions_1.ComponentOptions.buildStringOption({
             defaultValue: 'coveo-distance-disabled'
@@ -258,7 +276,9 @@ var DistanceResources = /** @class */ (function (_super) {
         /**
          * The latitude to use if no other position was provided.
          *
-         * You must also set `longitudeValue` if you specify this value.
+         * **Note:**
+         * > You must also specify a [`longitudeValue`]{@link DistanceResources.options.longitudeValue} if you specify a
+         * > `latitudeValue`.
          */
         latitudeValue: ComponentOptions_1.ComponentOptions.buildNumberOption({
             float: true
@@ -266,7 +286,9 @@ var DistanceResources = /** @class */ (function (_super) {
         /**
          * The longitude to use if no other position was provided.
          *
-         * You must also set `latitude` if you specify this value.
+         * **Note:**
+         * > You must also specify a [`latitudeValue`]{@link DistanceResources.options.latitudeValue} if you specify a
+         * > `longitudeValue`.
          */
         longitudeValue: ComponentOptions_1.ComponentOptions.buildNumberOption({
             float: true
@@ -274,27 +296,32 @@ var DistanceResources = /** @class */ (function (_super) {
         /**
          * The API key to use to request the Google API geolocation service.
          *
-         * If not defined, will not try to request the service.
+         * If you do not specify a value for this option, the `DistanceResources` component does not try to request the
+         * service.
          */
         googleApiKey: ComponentOptions_1.ComponentOptions.buildStringOption(),
         /**
-         * Whether to request the browser's geolocation service.
+         * Whether to request the geolocation service of the web browser.
          *
          * If not defined, will not try to request the service.
          *
-         * Note that most recent browsers requires your site to be in HTTPS to use its geolocation service.
+         * **Note:**
+         * > Recent web browsers typically require a site to be in HTTPS to enable their geolocation service.
+         *
+         * If you do not specify a value for this option, the `DistanceResources` component does not try to request the
+         * service.
          */
         useNavigator: ComponentOptions_1.ComponentOptions.buildBooleanOption(),
         /**
-         * Whether to execute a new query when a new position has been provided.
+         * Whether to execute a new query when the `DistanceResources` component successfully provides a new position.
          *
-         * Default value is `true`.
+         * Default value is `false`.
          */
         triggerNewQueryOnNewPosition: ComponentOptions_1.ComponentOptions.buildBooleanOption({
             defaultValue: false
         }),
         /**
-         * Whether to cancel all the queries until the position is resolved.
+         * Whether to cancel all the queries until the `DistanceResources` component successfully resolves a position.
          *
          * Default value is `true`
          */
@@ -318,38 +345,43 @@ Initialization_1.Initialization.registerAutoCreateComponent(DistanceResources);
 
 Object.defineProperty(exports, "__esModule", { value: true });
 /**
- * This static class contains the different string definitions for all the events related to distance.
+ * The `DistanceEvents` static class contains the string definitions of all events related to distance
+ * list.
+ *
+ * See [Events](https://developers.coveo.com/x/bYGfAQ).
  */
 var DistanceEvents = /** @class */ (function () {
     function DistanceEvents() {
     }
     /**
-     * Triggered when the [`DistanceResources`]{@link DistanceResources} component sucessfully resolves the position.
+     * Triggered when the [`DistanceResources`]{@link DistanceResources} component successfully resolves the position.
      *
-     * All bound handlers will receive {@link IPositionResolvedEventArgs} as an argument.
+     * All `onPositionResolved` event handlers receive a [`PositionResolvedEventArgs`]{@link IPositionResolvedEventArgs}
+     * object as an argument.
      *
-     * The string value is `onPositionResolved`.
-     * @type {string}
+     * @type {string} The string value is `onPositionResolved`.
      */
     DistanceEvents.onPositionResolved = 'onPositionResolved';
     /**
      * Triggered when the [`DistanceResources`]{@link DistanceResources} component tries to resolve the position.
      *
-     * Use this event to register new position providers.
+     * All `onResolvingPosition` event handlers receive a
+     * [`ResolvingPositionEventArgs`]{@link IResolvingPositionEventArgs} object as an argument.
      *
-     * All bound handlers will receive {@link IResolvingPositionEventArgs} as an argument.
+     * **Note:**
+     * > You should bind a handler to this event if you want to register one or several new position providers.
      *
-     * The string value is `onResolvingPosition`.
-     * @type {string}
+     * @type {string} The string value is `onResolvingPosition`.
      */
     DistanceEvents.onResolvingPosition = 'onResolvingPosition';
     /**
      * Triggered when the [`DistanceResources`]{@link DistanceResources} component fails to resolve the position.
      *
-     * Use this event to show an error to the end user, or hide components that cannot be used.
+     * **Note:**
+     * > You should bind a handler to this event if you want to display an error message to the end user, or hide
+     * > components that cannot be used.
      *
-     * The string value is `onPositionNotResolved`.
-     * @type {string}
+     * @type {string} The string value is `onPositionNotResolved`.
      */
     DistanceEvents.onPositionNotResolved = 'onPositionNotResolved';
     return DistanceEvents;
@@ -366,9 +398,12 @@ exports.DistanceEvents = DistanceEvents;
 /* WEBPACK VAR INJECTION */(function(Promise) {
 Object.defineProperty(exports, "__esModule", { value: true });
 /**
- * The `NavigatorPositionProvider` component provides the user's position to a [`DistanceResources`]{@link DistanceResources} component according to the current navigator.
+ * The `NavigatorPositionProvider` class uses the current web browser to provide the position of the end user to
+ * a [`DistanceResources`]{@link DistanceResources} component whose
+ * [`useNavigator`]{DistanceResources.options.useNavigator} option is set to `true`.
  *
- * Note that most browser requires your site to be in HTTPS to use this API.
+ * **Note:**
+ * > Recent web browsers typically require a site to be in HTTPS to enable their geolocation service.
  */
 var NavigatorPositionProvider = /** @class */ (function () {
     function NavigatorPositionProvider() {
@@ -402,7 +437,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var EndpointCaller_1 = __webpack_require__(61);
 var GOOGLE_MAP_BASE_URL = 'https://www.googleapis.com/geolocation/v1/geolocate';
 /**
- * The `GoogleApiPositionProvider` component provides the user's position to a [`DistanceResources`]{@link DistanceResources} component using Google's geolocation API.
+ * The `GoogleApiPositionProvider` class uses the
+ * [Google Maps Geolocation API]{https://developers.google.com/maps/documentation/geolocation/intro} to provide the
+ * position of the end user to a [`DistanceResources`]{@link DistanceResources} component whose
+ * [`googleApiKey`]{@link DistanceResources.options.googleApiKey} option is set to a valid  Google Maps Geolocation API
+ * key.
  */
 var GoogleApiPositionProvider = /** @class */ (function () {
     function GoogleApiPositionProvider(googleApiKey) {
@@ -412,7 +451,7 @@ var GoogleApiPositionProvider = /** @class */ (function () {
         return new EndpointCaller_1.EndpointCaller()
             .call({
             errorsAsSuccess: false,
-            method: 'GET',
+            method: 'POST',
             queryString: ["key=" + this.googleApiKey],
             requestData: {},
             responseType: 'json',
@@ -440,7 +479,8 @@ exports.GoogleApiPositionProvider = GoogleApiPositionProvider;
 /* WEBPACK VAR INJECTION */(function(Promise) {
 Object.defineProperty(exports, "__esModule", { value: true });
 /**
- * The `StaticPositionProvider` component provides a static user position to a [`DistanceResources`]{@link DistanceResources} component.
+ * The `StaticPositionProvider` class provides a static end user position to a
+ * [`DistanceResources`]{@link DistanceResources} component.
  */
 var StaticPositionProvider = /** @class */ (function () {
     function StaticPositionProvider(latitude, longitude) {

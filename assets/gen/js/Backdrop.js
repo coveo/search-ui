@@ -18,7 +18,7 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var Component_1 = __webpack_require__(8);
 var ComponentOptions_1 = __webpack_require__(9);
-var ResultLink_1 = __webpack_require__(78);
+var ResultLink_1 = __webpack_require__(77);
 var Initialization_1 = __webpack_require__(2);
 var DomUtils_1 = __webpack_require__(47);
 var Dom_1 = __webpack_require__(3);
@@ -315,7 +315,7 @@ Initialization_1.Initialization.registerAutoCreateComponent(Backdrop);
 
 /***/ }),
 
-/***/ 78:
+/***/ 77:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -345,7 +345,7 @@ var Assert_1 = __webpack_require__(7);
 var Utils_1 = __webpack_require__(6);
 var Defer_1 = __webpack_require__(28);
 var Dom_1 = __webpack_require__(3);
-var StreamHighlightUtils_1 = __webpack_require__(65);
+var StreamHighlightUtils_1 = __webpack_require__(81);
 var _ = __webpack_require__(1);
 var GlobalExports_1 = __webpack_require__(4);
 __webpack_require__(432);

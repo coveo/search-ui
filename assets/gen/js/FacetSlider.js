@@ -546,7 +546,7 @@ var _ = __webpack_require__(1);
 var GlobalExports_1 = __webpack_require__(4);
 var ResponsiveFacetSlider_1 = __webpack_require__(486);
 __webpack_require__(487);
-var MiscModules_1 = __webpack_require__(81);
+var MiscModules_1 = __webpack_require__(80);
 /**
  * The `FacetSlider` component creates a facet which contains a slider widget that allows the end user to filter results
  * based on a range of numerical values (e.g., a date range, a price range, etc.).
@@ -3264,7 +3264,7 @@ exports.ResponsiveDropdown = ResponsiveDropdown;
 Object.defineProperty(exports, "__esModule", { value: true });
 var Dom_1 = __webpack_require__(3);
 var PopupUtils_1 = __webpack_require__(52);
-var ResponsiveComponentsManager_1 = __webpack_require__(77);
+var ResponsiveComponentsManager_1 = __webpack_require__(76);
 var ResponsiveDropdownContent = /** @class */ (function () {
     function ResponsiveDropdownContent(componentName, element, coveoRoot, minWidth, widthRatio) {
         this.element = element;
@@ -4165,7 +4165,7 @@ exports.FacetHeader = FacetHeader;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var Dom_1 = __webpack_require__(3);
-var ResponsiveComponentsManager_1 = __webpack_require__(77);
+var ResponsiveComponentsManager_1 = __webpack_require__(76);
 var ResponsiveComponentsUtils_1 = __webpack_require__(88);
 var Component_1 = __webpack_require__(8);
 var Logger_1 = __webpack_require__(14);
@@ -21181,7 +21181,7 @@ function zoom_defaultTouchable() {
 /// <reference path="../ui/FacetSlider/FacetSlider.ts" />
 Object.defineProperty(exports, "__esModule", { value: true });
 var QueryEvents_1 = __webpack_require__(11);
-var ExpressionBuilder_1 = __webpack_require__(68);
+var ExpressionBuilder_1 = __webpack_require__(67);
 var DateUtils_1 = __webpack_require__(29);
 var Logger_1 = __webpack_require__(14);
 var QueryUtils_1 = __webpack_require__(19);
@@ -21526,7 +21526,7 @@ exports.ResponsiveFacetSlider = ResponsiveFacetSlider;
 
 /***/ }),
 
-/***/ 77:
+/***/ 76:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";

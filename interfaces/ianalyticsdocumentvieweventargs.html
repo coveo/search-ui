@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>IPositionResolvedEventArgs | Coveo JavaScript Search Framework - Reference Documentation</title>
+	<title>IAnalyticsDocumentViewEventArgs | Coveo JavaScript Search Framework - Reference Documentation</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link href='https://fonts.googleapis.com/css?family=Lato:300,400,700' rel='stylesheet' type='text/css'/>
@@ -93,10 +93,10 @@
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-interface">
-						<a href="ipositionresolvedeventargs.html" class="tsd-kind-icon">IPosition<wbr>Resolved<wbr>Event<wbr>Args</a>
+						<a href="ianalyticsdocumentvieweventargs.html" class="tsd-kind-icon">IAnalytics<wbr>Document<wbr>View<wbr>Event<wbr>Args</a>
 						<ul>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="ipositionresolvedeventargs.html#position" class="tsd-kind-icon">position</a>
+								<a href="ianalyticsdocumentvieweventargs.html#documentviewevent" class="tsd-kind-icon">document<wbr>View<wbr>Event</a>
 							</li>
 						</ul>
 					</li>
@@ -117,19 +117,19 @@
 							<a href="../globals.html">Globals</a>
 						</li>
 						<li>
-							<a href="ipositionresolvedeventargs.html">IPositionResolvedEventArgs</a>
+							<a href="ianalyticsdocumentvieweventargs.html">IAnalyticsDocumentViewEventArgs</a>
 						</li>
 					</ul>
 					<!-- Has to remain here for the playground to work -->
-					<h1 style="visibility: collapse; font-size:0">Interface IPositionResolvedEventArgs</h1>
-					<h1>Interface IPositionResolvedEventArgs</h1>
+					<h1 style="visibility: collapse; font-size:0">Interface IAnalyticsDocumentViewEventArgs</h1>
+					<h1>Interface IAnalyticsDocumentViewEventArgs</h1>
 				</div>
 			</div>
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>The <code>IPositionResolvedEventArgs</code> interface describes the object that all
-						<a href="../classes/distanceevents.html#onpositionresolved"><code>onPositionResolved</code></a> event handlers receive as an argument.</p>
+						<p>The <code>IAnalyticsDocumentViewEventArgs</code> interface describes the object that all
+						<a href="../classes/analyticsevents.html#documentviewevent"><code>documentViewEvent</code></a> handlers receive as an argument.</p>
 					</div>
 				</div>
 			</section>
@@ -143,7 +143,7 @@
 						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="ipositionresolvedeventargs.html#position" class="tsd-kind-icon">position</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="ianalyticsdocumentvieweventargs.html#documentviewevent" class="tsd-kind-icon">document<wbr>View<wbr>Event</a></li>
 							</ul>
 						</section>
 					</div>
@@ -152,19 +152,19 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="position" class="tsd-anchor"></a>
-					<h3>position</h3>
-					<div class="tsd-signature tsd-kind-icon">position<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">IPosition</span></div>
+					<a name="documentviewevent" class="tsd-anchor"></a>
+					<h3>document<wbr>View<wbr>Event</h3>
+					<div class="tsd-signature tsd-kind-icon">document<wbr>View<wbr>Event<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">IAPIDocumentViewEvent</span></div>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/events/DistanceEvents.ts#L29">src/events/DistanceEvents.ts
-							:29</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/events/AnalyticsEvents.ts#L17">src/events/AnalyticsEvents.ts
+							:17</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>The position that was resolved.</p>
+							<p>The data to send in the request body of the Usage Analytics Write REST API call that logs the <code>click</code> event.</p>
 						</div>
 					</div>
 				</section>
@@ -173,7 +173,7 @@
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">IPositionResolvedEventArgs</span>
+						<span class="target">IAnalyticsDocumentViewEventArgs</span>
 					</li>
 				</ul>
 			</section>

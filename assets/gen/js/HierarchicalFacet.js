@@ -84,7 +84,10 @@ var FacetSearchParameters = /** @class */ (function () {
             completeFacetWithStandardValues = false;
         }
         var request = {
-            allowedValues: typedByUser.concat(this.alwaysInclude).concat(this.alwaysExclude),
+            allowedValues: _.compact(typedByUser
+                .concat(this.alwaysInclude)
+                .concat(this.alwaysExclude)
+                .concat(this.facet.options.allowedValues)),
             maximumNumberOfValues: nbResults,
             completeFacetWithStandardValues: completeFacetWithStandardValues,
             field: this.facet.options.field,
@@ -264,7 +267,7 @@ exports.FacetValuesOrder = FacetValuesOrder;
 /* WEBPACK VAR INJECTION */(function(Promise) {
 /// <reference path='../ui/Facet/Facet.ts' />
 Object.defineProperty(exports, "__esModule", { value: true });
-var ExpressionBuilder_1 = __webpack_require__(68);
+var ExpressionBuilder_1 = __webpack_require__(67);
 var Utils_1 = __webpack_require__(6);
 var FacetSearchParameters_1 = __webpack_require__(236);
 var Assert_1 = __webpack_require__(7);
@@ -404,11 +407,7 @@ var FacetQueryController = /** @class */ (function () {
             .search(params.getQuery())
             .then(function (results) {
             if (_this.facet.options.allowedValues && results && results.groupByResults && results.groupByResults[0]) {
-                var values = results.groupByResults[0].values;
-                values = _.filter(values, function (value) {
-                    return _.contains(_.map(_this.facet.options.allowedValues, function (allowedValue) { return allowedValue.toLowerCase(); }), value.value.toLowerCase());
-                });
-                results.groupByResults[0].values = values;
+                results.groupByResults[0].values = _this.filterByAllowedValueOption(results.groupByResults[0].values);
             }
             return results;
         });
@@ -549,9 +548,23 @@ var FacetQueryController = /** @class */ (function () {
         var _this = this;
         var regex = FacetUtils_1.FacetUtils.getRegexToUseForFacetSearch(valueToCheckAgainst, this.facet.options.facetSearchIgnoreAccents);
         return _.filter(fieldValues, function (fieldValue) {
-            var isAllowed = _.isEmpty(_this.facet.options.allowedValues) || _.contains(_this.facet.options.allowedValues, fieldValue.value);
+            var isAllowed = _.isEmpty(_this.facet.options.allowedValues) || _this.isValueAllowedByAllowedValueOption(fieldValue.value);
             var value = _this.facet.getValueCaption(fieldValue);
             return isAllowed && regex.test(value);
+        });
+    };
+    FacetQueryController.prototype.filterByAllowedValueOption = function (values) {
+        var _this = this;
+        return _.filter(values, function (value) { return _this.isValueAllowedByAllowedValueOption(value.value); });
+    };
+    FacetQueryController.prototype.isValueAllowedByAllowedValueOption = function (value) {
+        // Allowed value option on the facet should support * (wildcard searches)
+        // We need to filter values client side the index will completeWithStandardValues
+        // Replace the wildcard (*) for a regex match (.*)
+        // Also replace the (?) with "any character once" since it is also supported by the index
+        return _.some(this.facet.options.allowedValues, function (allowedValue) {
+            var regex = new RegExp("^" + allowedValue.replace(/\*/g, '.*').replace(/\?/g, '.') + "$", 'gi');
+            return regex.test(value);
         });
     };
     return FacetQueryController;
@@ -1557,7 +1570,7 @@ exports.ResponsiveDropdown = ResponsiveDropdown;
 Object.defineProperty(exports, "__esModule", { value: true });
 var Dom_1 = __webpack_require__(3);
 var PopupUtils_1 = __webpack_require__(52);
-var ResponsiveComponentsManager_1 = __webpack_require__(77);
+var ResponsiveComponentsManager_1 = __webpack_require__(76);
 var ResponsiveDropdownContent = /** @class */ (function () {
     function ResponsiveDropdownContent(componentName, element, coveoRoot, minWidth, widthRatio) {
         this.element = element;
@@ -2811,7 +2824,7 @@ exports.FacetHeader = FacetHeader;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var Dom_1 = __webpack_require__(3);
-var ResponsiveComponentsManager_1 = __webpack_require__(77);
+var ResponsiveComponentsManager_1 = __webpack_require__(76);
 var ResponsiveComponentsUtils_1 = __webpack_require__(88);
 var Component_1 = __webpack_require__(8);
 var Logger_1 = __webpack_require__(14);
@@ -6302,7 +6315,7 @@ Facet.doExport();
 
 /***/ }),
 
-/***/ 77:
+/***/ 76:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
