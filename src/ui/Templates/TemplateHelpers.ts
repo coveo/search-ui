@@ -44,7 +44,7 @@ export class TemplateHelpers {
   /**
    * Return a template helper function
    * @param name
-   * @returns {any}
+   * @returns {ITemplateHelperFunction}
    */
   static getHelper(name: string): ITemplateHelperFunction {
     return Utils.getCaseInsensitiveProperty(TemplateHelpers.helpers, name);
@@ -52,9 +52,8 @@ export class TemplateHelpers {
 
   /**
    * Get all available helpers
-   * @returns {{}}
    */
-  static getHelpers() {
+  static getHelpers(): { [templateName: string]: ITemplateHelperFunction } {
     return TemplateHelpers.helpers;
   }
 
