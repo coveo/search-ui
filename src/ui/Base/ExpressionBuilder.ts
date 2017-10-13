@@ -96,6 +96,13 @@ export class ExpressionBuilder {
   }
 
   /**
+   * @returns array containing the differents parts of the expression
+  */
+  public getParts(): string[] {
+    return this.parts;
+  }
+
+  /**
    * Merges several `ExpressionBuilder` together.
    * @param builders Builders that should be merged.
    * @returns {Coveo.ExpressionBuilder}
