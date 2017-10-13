@@ -157,7 +157,8 @@ export class SimpleFilter extends Component {
     this.bind.onRootElement(BreadcrumbEvents.clearBreadcrumb, () => this.handleClearBreadcrumb());
     this.bind.onRootElement(QueryEvents.buildingQuery, (args: IBuildingQueryEventArgs) => this.handleBuildingQuery(args));
     this.bind.onRootElement(QueryEvents.doneBuildingQuery, (args: IDoneBuildingQueryEventArgs) => this.handleDoneBuildingQuery(args));
-    this.bind.onRootElement(QueryEvents.querySuccess, (args: IQuerySuccessEventArgs) => this.handleGroupBy(args));
+    this.bind.onRootElement(QueryEvents.querySuccess, (args: IQuerySuccessEventArgs) => this.handleQuerySuccess(args));
+    this.bind.onRootElement(QueryEvents.noResults, () => this.handleNoResults());
   }
 
   /**
@@ -427,7 +428,14 @@ export class SimpleFilter extends Component {
     this.resetSimpleFilter();
   }
 
-  private handleGroupBy(data: IQuerySuccessEventArgs) {
+  private handleNoResults() {
+    this.findOrCreateWrapper().addClass('coveo-no-results');
+  }
+
+  private handleQuerySuccess(data: IQuerySuccessEventArgs) {
+    if (data.results.results.length > 0) {
+      this.findOrCreateWrapper().removeClass('coveo-no-results');
+    }
     if (this.options.values == undefined) {
       this.groupByBuilder.groupBy(data);
       this.groupByRequestValues = this.groupByBuilder.getValuesFromGroupBy();
