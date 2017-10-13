@@ -589,6 +589,13 @@
       },
       "shouldDisplayLabel": true
     },
+    "report": {
+      "icon": "salesforce-standard-report",
+      "captions": {
+        "en": "Report",
+        "fr": "Rapport"
+      }
+    },
     "task": {
       "icon": "salesforce-standard-task",
       "captions": {

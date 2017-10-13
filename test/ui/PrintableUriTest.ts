@@ -30,7 +30,7 @@ export function PrintableUriTest() {
       fakeResult.raw.parents =
         '<?xml version="1.0" encoding="utf-16"?><parents><parent name="My Drive" uri="https://drive.google.com/#my-drive" /></parents>';
       test = Mock.advancedResultComponentSetup<PrintableUri>(PrintableUri, fakeResult, undefined);
-      expect($$(test.cmp.element).find('span').innerText).toEqual('My Drive');
+      expect($$(test.cmp.element).find('.CoveoResultLink').innerText).toEqual('My Drive');
     });
 
     it('should display the XML correctly if the result has a very long parents field', () => {
@@ -40,8 +40,8 @@ export function PrintableUriTest() {
         '<parent name="Generator became sentient and refuses to cut power"`' +
         ' uri="https://na17.salesforce.com/kA0o00000003Wpk" /><parent name="un autre test" uri="http//:google.ca" /></parents>';
       test = Mock.advancedResultComponentSetup<PrintableUri>(PrintableUri, fakeResult, undefined);
-      expect($$(test.cmp.element).findAll('span.coveo-printable-uri-part')[0].innerText).toEqual('Organization');
-      expect($$(test.cmp.element).findAll('span.coveo-printable-uri-part')[1].innerText).toEqual('Technical_Article__ka');
+      expect($$(test.cmp.element).findAll('.CoveoResultLink.coveo-printable-uri-part')[0].innerText).toEqual('Organization');
+      expect($$(test.cmp.element).findAll('.CoveoResultLink.coveo-printable-uri-part')[1].innerText).toEqual('Technical_Article__ka');
     });
 
     it('should shorten the printable uri correctly if the title is not a uri', () => {
