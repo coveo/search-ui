@@ -5,6 +5,7 @@ import { BreadcrumbEvents } from '../../src/events/BreadcrumbEvents';
 import { analyticsActionCauseList } from '../../src/ui/Analytics/AnalyticsActionListMeta';
 import { InitializationEvents } from '../../src/events/InitializationEvents';
 import { Simulate } from '../Simulate';
+import { QueryError } from '../../src/rest/QueryError';
 
 export function BreadcrumbTest() {
   describe('Breadcrumb', function() {
@@ -67,6 +68,21 @@ export function BreadcrumbTest() {
         var onPopulate = jasmine.createSpy('onPopulate');
         $$(test.env.root).on(BreadcrumbEvents.populateBreadcrumb, onPopulate);
         Simulate.query(test.env);
+        expect(onPopulate).toHaveBeenCalledWith(jasmine.any(Object), jasmine.objectContaining({ breadcrumbs: [] }));
+      });
+
+      it('should trigger populate breadcrumb on an error', function() {
+        var onPopulate = jasmine.createSpy('onPopulate');
+        $$(test.env.root).on(BreadcrumbEvents.populateBreadcrumb, onPopulate);
+        Simulate.query(test.env, {
+          error: new QueryError({
+            statusCode: 500,
+            data: {
+              message: 'oh',
+              type: 'no!'
+            }
+          })
+        });
         expect(onPopulate).toHaveBeenCalledWith(jasmine.any(Object), jasmine.objectContaining({ breadcrumbs: [] }));
       });
     });

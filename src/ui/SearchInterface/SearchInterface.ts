@@ -780,6 +780,7 @@ export class SearchInterface extends RootComponent implements IComponentBindings
     const resultsSection = $$(this.element).find('.coveo-results-column');
     const resultsHeader = $$(this.element).find('.coveo-results-header');
     const facetSearchs = $$(this.element).findAll('.coveo-facet-search-results');
+    const recommendationSection = $$(this.element).find('.coveo-recommendation-main-section');
 
     if (facetSection) {
       $$(facetSection).toggleClass(cssClass, toggle && !this.queryStateModel.atLeastOneFacetIsActive());
@@ -789,6 +790,9 @@ export class SearchInterface extends RootComponent implements IComponentBindings
     }
     if (resultsHeader) {
       $$(resultsHeader).toggleClass(cssClass, toggle && !this.queryStateModel.atLeastOneFacetIsActive());
+    }
+    if (recommendationSection) {
+      $$(recommendationSection).toggleClass(cssClass, toggle);
     }
     if (facetSearchs && facetSearchs.length > 0) {
       _.each(facetSearchs, facetSearch => {

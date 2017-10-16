@@ -85,6 +85,18 @@ export function InitializationPlaceholderTest() {
         expect(oneFacet.hasClass(InitializationPlaceholder.INITIALIZATION_CLASS)).toBe(false);
         expect(oneFacet.hasClass('coveo-with-placeholder')).toBe(false);
       });
+
+      it('should remove placeholder for facet after components are initialized and after the first query error', () => {
+        const oneFacet = $$('div', { className: 'CoveoFacet' });
+        root.append(oneFacet.el);
+        new InitializationPlaceholder(root.el);
+        expect(oneFacet.hasClass(InitializationPlaceholder.INITIALIZATION_CLASS)).toBe(true);
+        expect(oneFacet.hasClass('coveo-with-placeholder')).toBe(true);
+        $$(root).trigger(InitializationEvents.afterComponentsInitialization);
+        $$(root).trigger(QueryEvents.queryError);
+        expect(oneFacet.hasClass(InitializationPlaceholder.INITIALIZATION_CLASS)).toBe(false);
+        expect(oneFacet.hasClass('coveo-with-placeholder')).toBe(false);
+      });
     });
 
     describe('for searchbox', () => {

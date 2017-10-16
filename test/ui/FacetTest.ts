@@ -9,6 +9,7 @@ import { OmniboxEvents } from '../../src/events/OmniboxEvents';
 import { BreadcrumbEvents } from '../../src/events/BreadcrumbEvents';
 import { IPopulateBreadcrumbEventArgs } from '../../src/events/BreadcrumbEvents';
 import { IPopulateOmniboxEventArgs } from '../../src/events/OmniboxEvents';
+import { QueryError } from '../../src/rest/QueryError';
 
 export function FacetTest() {
   describe('Facet', () => {
@@ -210,6 +211,33 @@ export function FacetTest() {
         expect(test.cmp.getExcludedValues()).toEqual(['a', 'b', 'c']);
       });
     });
+
+    describe('on a query error', () => {
+      const simulateError = () => {
+        Simulate.query(test.env, {
+          error: new QueryError({
+            statusCode: 500,
+            data: {
+              message: 'oh',
+              type: 'no!'
+            }
+          })
+        });
+      };
+      it('should hide the waiting animation', () => {
+        spyOn(test.cmp, 'hideWaitingAnimation');
+        simulateError();
+        expect(test.cmp.hideWaitingAnimation).toHaveBeenCalledTimes(1);
+      });
+
+      it('should update the appearance based on the new empty values', () => {
+        simulateError();
+        expect($$(test.cmp.element).hasClass('coveo-facet-empty')).toBeTruthy();
+        expect(test.cmp.getDisplayedFacetValues().length).toBe(0);
+      });
+    });
+
+    it('should h');
 
     describe('exposes options', () => {
       it('title should set the title', () => {

@@ -1,3 +1,4 @@
+/// <reference path="../../lib/jasmine/index.d.ts" />
 import * as Mock from '../MockEnvironment';
 import { SearchInterface } from '../../src/ui/SearchInterface/SearchInterface';
 import { Recommendation } from '../../src/ui/Recommendation/Recommendation';
@@ -6,6 +7,7 @@ import { Simulate } from '../Simulate';
 import { QueryBuilder } from '../../src/ui/Base/QueryBuilder';
 import { FakeResults } from '../Fake';
 import _ = require('underscore');
+import { QueryError } from '../../src/rest/QueryError';
 
 export function RecommendationTest() {
   describe('Recommendation', () => {
@@ -123,6 +125,19 @@ export function RecommendationTest() {
         test = Mock.optionsSearchInterfaceSetup<Recommendation, IRecommendationOptions>(Recommendation, options);
         let simulation = Simulate.query(test.env);
         expect(simulation.queryBuilder.context).toBeUndefined();
+      });
+
+      it('should hide if the main interface has a query error', () => {
+        Simulate.query(mainSearchInterface.env, {
+          error: new QueryError({
+            statusCode: 500,
+            data: {
+              message: 'oh',
+              type: 'no!'
+            }
+          })
+        });
+        expect(test.cmp.element.style.display).toEqual('none');
       });
 
       describe('exposes option hideIfNoResults', () => {
