@@ -237,8 +237,6 @@ export function FacetTest() {
       });
     });
 
-    it('should h');
-
     describe('exposes options', () => {
       it('title should set the title', () => {
         test = Mock.optionsComponentSetup<Facet, IFacetOptions>(Facet, {
