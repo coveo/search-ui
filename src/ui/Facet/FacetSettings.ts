@@ -288,8 +288,8 @@ export class FacetSettings extends FacetSort {
 
     const saveStateItem = document.createElement('div');
     $$(saveStateItem).addClass('coveo-facet-settings-item');
-    saveStateItem.setAttribute('title', _.escape(l('SaveFacetState')));
-    $$(saveStateItem).text(_.escape(l('SaveFacetState')));
+    saveStateItem.setAttribute('title', l('SaveFacetState'));
+    $$(saveStateItem).text(l('SaveFacetState'));
     saveStateItems.appendChild(saveStateItem);
 
     saveStateSection.appendChild(icon);
@@ -367,7 +367,7 @@ export class FacetSettings extends FacetSort {
       'div',
       {
         className: 'coveo-facet-settings-item',
-        title: _.escape(title)
+        title: title
       },
       _.escape(label)
     ).el;
