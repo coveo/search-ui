@@ -129,6 +129,7 @@ export function ResponsiveFacetsTest() {
       });
 
       it('should hide on query error', () => {
+        facet.createDom();
         root.trigger(QueryEvents.queryError);
         expect(responsiveDropdownHeader.hide).toHaveBeenCalled();
       });
