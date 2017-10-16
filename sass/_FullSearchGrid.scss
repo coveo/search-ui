@@ -128,6 +128,27 @@ $page-width: 1000px;
 }
 
 @include mediaSelector(480) {
+  .coveo-results-header {
+    padding-left: 10px;
+  }
+
+  .coveo-sort-section {
+    span:first-child {
+      padding-left: 0;
+    }
+  }
+
+  .coveo-list-layout {
+    .CoveoResult {
+      margin: 0;
+      padding: 15px 10px 15px 15px;
+    }
+  }
+
+  .CoveoResultList {
+    margin-bottom: 15px;
+  }
+
   .coveo-summary-section {
     width: 100%;
     margin-bottom: 10px;
