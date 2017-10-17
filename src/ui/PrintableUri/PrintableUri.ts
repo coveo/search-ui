@@ -9,7 +9,7 @@ import 'styling/_PrintableUri';
 import { ResultLink } from '../ResultLink/ResultLink';
 import { IResultLinkOptions } from '../ResultLink/ResultLinkOptions';
 import { IResultsComponentBindings } from '../Base/ResultsComponentBindings';
-import { StreamHighlightUtils, getRestHighlightsForAllTerms, DefaultStreamHighlightOptions } from '../../utils/StreamHighlightUtils';
+import { getRestHighlightsForAllTerms, DefaultStreamHighlightOptions } from '../../utils/StreamHighlightUtils';
 import * as _ from 'underscore';
 import { ComponentOptionsModel } from '../../models/ComponentOptionsModel';
 import { Component } from '../Base/Component';
@@ -102,8 +102,11 @@ export class PrintableUri extends Component {
 
   private buildHtmlToken(name: string, uri: string): HTMLElement {
     let modifiedName = name.charAt(0).toUpperCase() + name.slice(1);
-    const resultPart: IQueryResult = _.extend({}, this.result, { clickUri: uri, title: modifiedName });
-    resultPart.titleHighlights = this.getModifiedHighlightsForModifiedResultTitle(modifiedName);
+    const resultPart: IQueryResult = _.extend({}, this.result, {
+      clickUri: uri,
+      title: modifiedName,
+      titleHighlights: this.getModifiedHighlightsForModifiedResultTitle(modifiedName)
+    });
     const link = new ResultLink(this.buildElementForResultLink(modifiedName), this.options, this.bindings, resultPart);
     this.links.push(link);
     return link.element;
@@ -141,8 +144,10 @@ export class PrintableUri extends Component {
       stringAndHoles.holes,
       'coveo-highlight'
     );
-    const resultPart: IQueryResult = _.extend({}, this.result, { title: shortenedUri });
-    resultPart.titleHighlights = this.getModifiedHighlightsForModifiedResultTitle(shortenedUri);
+    const resultPart: IQueryResult = _.extend({}, this.result, {
+      title: shortenedUri,
+      titleHighlights: this.getModifiedHighlightsForModifiedResultTitle(shortenedUri)
+    });
     const link = new ResultLink(this.buildElementForResultLink(this.result.printableUri), this.options, this.bindings, resultPart);
     this.links.push(link);
     this.element.appendChild(link.element);
