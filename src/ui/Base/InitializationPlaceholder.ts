@@ -162,13 +162,15 @@ export class InitializationPlaceholder {
       });
 
       $$(this.root).one(InitializationEvents.afterComponentsInitialization, () => {
-        $$(this.root).one(QueryEvents.deferredQuerySuccess, () => {
+        const toExecuteAfterInitialization = () => {
           _.each(placeholders, (placeholder: Dom) => placeholder.remove());
           _.each(facetElements, (facetElement: HTMLElement) =>
             $$(facetElement).removeClass(InitializationPlaceholder.INITIALIZATION_CLASS)
           );
           _.each(facetElements, (facetElement: HTMLElement) => $$(facetElement).removeClass('coveo-with-placeholder'));
-        });
+        };
+        $$(this.root).one(QueryEvents.queryError, () => toExecuteAfterInitialization());
+        $$(this.root).one(QueryEvents.deferredQuerySuccess, () => toExecuteAfterInitialization());
       });
     }
   }

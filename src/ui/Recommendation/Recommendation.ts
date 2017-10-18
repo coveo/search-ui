@@ -325,6 +325,8 @@ export class Recommendation extends SearchInterface implements IComponentBinding
         closeModalBox: false
       });
     });
+
+    $$(this.options.mainSearchInterface).on(QueryEvents.queryError, () => this.hide());
   }
 
   private handleRecommendationBuildingQuery(data: IBuildingQueryEventArgs) {
