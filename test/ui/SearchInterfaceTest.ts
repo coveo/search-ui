@@ -1,3 +1,4 @@
+/// <reference path="../../lib/jasmine/index.d.ts" />
 import * as Mock from '../MockEnvironment';
 import { SearchInterface } from '../../src/ui/SearchInterface/SearchInterface';
 import { NoopAnalyticsClient } from '../../src/ui/Analytics/NoopAnalyticsClient';
@@ -58,7 +59,7 @@ export function SearchInterfaceTest() {
     });
 
     it('should allow to attach and detach component', function() {
-      let cmpToAttach = Mock.mockComponent(Querybox);
+      const cmpToAttach = Mock.mockComponent(Querybox);
       cmp.attachComponent('Querybox', cmpToAttach);
       expect(cmp.getComponents('Querybox')).toContain(cmpToAttach);
       cmp.detachComponent('Querybox', cmpToAttach);
@@ -82,34 +83,83 @@ export function SearchInterfaceTest() {
 
       it('should initialize if found inside the root', function() {
         searchInterfaceDiv.appendChild(analyticsDiv);
-        let searchInterface = new SearchInterface(searchInterfaceDiv);
+        const searchInterface = new SearchInterface(searchInterfaceDiv);
         expect(searchInterface.usageAnalytics instanceof Coveo['LiveAnalyticsClient']).toBe(true);
       });
     });
 
-    it('should set the correct css class on multiple section, if available', () => {
-      let facetSection = $$('div', { className: 'coveo-facet-column' });
-      let resultsSection = $$('div', { className: 'coveo-results-column' });
+    it('should set the correct css class on facet section, if available', () => {
+      const facetSection = $$('div', { className: 'coveo-facet-column' });
       cmp.element.appendChild(facetSection.el);
-      cmp.element.appendChild(resultsSection.el);
+
       $$(cmp.element).trigger(QueryEvents.querySuccess, {
         results: FakeResults.createFakeResults(0)
       });
       expect(facetSection.hasClass('coveo-no-results')).toBe(true);
-      expect(resultsSection.hasClass('coveo-no-results')).toBe(true);
+
       $$(cmp.element).trigger(QueryEvents.querySuccess, {
         results: FakeResults.createFakeResults(10)
       });
       expect(facetSection.hasClass('coveo-no-results')).toBe(false);
-      expect(resultsSection.hasClass('coveo-no-results')).toBe(false);
+
       $$(cmp.element).trigger(QueryEvents.queryError);
       expect(facetSection.hasClass('coveo-no-results')).toBe(true);
-      expect(resultsSection.hasClass('coveo-no-results')).toBe(true);
+
       $$(cmp.element).trigger(QueryEvents.querySuccess, {
         results: FakeResults.createFakeResults(10)
       });
       expect(facetSection.hasClass('coveo-no-results')).toBe(false);
+    });
+
+    it('should set the correct css class on result section, if available', () => {
+      const resultsSection = $$('div', { className: 'coveo-results-column' });
+
+      cmp.element.appendChild(resultsSection.el);
+      $$(cmp.element).trigger(QueryEvents.querySuccess, {
+        results: FakeResults.createFakeResults(0)
+      });
+      expect(resultsSection.hasClass('coveo-no-results')).toBe(true);
+
+      $$(cmp.element).trigger(QueryEvents.querySuccess, {
+        results: FakeResults.createFakeResults(10)
+      });
+
       expect(resultsSection.hasClass('coveo-no-results')).toBe(false);
+
+      $$(cmp.element).trigger(QueryEvents.queryError);
+
+      expect(resultsSection.hasClass('coveo-no-results')).toBe(true);
+
+      $$(cmp.element).trigger(QueryEvents.querySuccess, {
+        results: FakeResults.createFakeResults(10)
+      });
+
+      expect(resultsSection.hasClass('coveo-no-results')).toBe(false);
+    });
+
+    it('should set the correct css class on recommendation section, if available', () => {
+      const recommendationSection = $$('div', { className: 'coveo-recommendation-main-section' });
+
+      cmp.element.appendChild(recommendationSection.el);
+
+      $$(cmp.element).trigger(QueryEvents.querySuccess, {
+        results: FakeResults.createFakeResults(0)
+      });
+
+      expect(recommendationSection.hasClass('coveo-no-results')).toBe(true);
+      $$(cmp.element).trigger(QueryEvents.querySuccess, {
+        results: FakeResults.createFakeResults(10)
+      });
+
+      expect(recommendationSection.hasClass('coveo-no-results')).toBe(false);
+      $$(cmp.element).trigger(QueryEvents.queryError);
+
+      expect(recommendationSection.hasClass('coveo-no-results')).toBe(true);
+      $$(cmp.element).trigger(QueryEvents.querySuccess, {
+        results: FakeResults.createFakeResults(10)
+      });
+
+      expect(recommendationSection.hasClass('coveo-no-results')).toBe(false);
     });
 
     describe('exposes options', function() {
@@ -130,7 +180,7 @@ export function SearchInterfaceTest() {
       });
 
       it('enableHistory allow to enable history in the url', function() {
-        let cmp = new SearchInterface(
+        const cmp = new SearchInterface(
           div,
           {
             enableHistory: true
@@ -142,7 +192,7 @@ export function SearchInterfaceTest() {
       });
 
       it("enableHistory can be disabled and won't save history in the url", function() {
-        let cmp = new SearchInterface(
+        const cmp = new SearchInterface(
           div,
           {
             enableHistory: false
@@ -154,7 +204,7 @@ export function SearchInterfaceTest() {
       });
 
       it('useLocalStorageForHistory allow to use local storage for history', function() {
-        let cmp = new SearchInterface(
+        const cmp = new SearchInterface(
           div,
           {
             enableHistory: true,
@@ -168,7 +218,7 @@ export function SearchInterfaceTest() {
       });
 
       it('useLocalStorageForHistory allow to use local storage for history, but not if history is disabled', function() {
-        let cmp = new SearchInterface(
+        const cmp = new SearchInterface(
           div,
           {
             enableHistory: false,
@@ -183,13 +233,13 @@ export function SearchInterfaceTest() {
 
       it('resultsPerPage allow to specify the number of results in query', function() {
         new SearchInterface(div, { resultsPerPage: 123 }, undefined, mockWindow);
-        let simulation = Simulate.query(env);
+        const simulation = Simulate.query(env);
         expect(simulation.queryBuilder.numberOfResults).toBe(123);
       });
 
       it('resultsPerPage should be 10 by default', function() {
         new SearchInterface(div, undefined, undefined, mockWindow);
-        let simulation = Simulate.query(env);
+        const simulation = Simulate.query(env);
         expect(simulation.queryBuilder.numberOfResults).toBe(10);
       });
 
@@ -202,54 +252,54 @@ export function SearchInterfaceTest() {
           undefined,
           mockWindow
         );
-        let simulation = Simulate.query(env);
+        const simulation = Simulate.query(env);
         expect(simulation.queryBuilder.excerptLength).toBe(123);
       });
 
       it('excerptLength should be 200 by default', function() {
         new SearchInterface(div, undefined, undefined, mockWindow);
-        let simulation = Simulate.query(env);
+        const simulation = Simulate.query(env);
         expect(simulation.queryBuilder.excerptLength).toBe(200);
       });
 
       it('expression allow to specify and advanced expression to add to the query', function() {
         new SearchInterface(div, { expression: 'foobar' }, undefined, mockWindow);
-        let simulation = Simulate.query(env);
+        const simulation = Simulate.query(env);
         expect(simulation.queryBuilder.constantExpression.build()).toBe('foobar');
       });
 
       it('expression should not be added if empty', function() {
         new SearchInterface(div, { expression: '' }, undefined, mockWindow);
-        let simulation = Simulate.query(env);
+        const simulation = Simulate.query(env);
         expect(simulation.queryBuilder.constantExpression.build()).toBeUndefined();
       });
 
       it('expression should be empty by default', function() {
         new SearchInterface(div, undefined, undefined, mockWindow);
-        let simulation = Simulate.query(env);
+        const simulation = Simulate.query(env);
         expect(simulation.queryBuilder.constantExpression.build()).toBeUndefined();
       });
 
       it('filterField allow to specify a filtering field', function() {
         new SearchInterface(div, { filterField: '@foobar' }, undefined, mockWindow);
-        let simulation = Simulate.query(env);
+        const simulation = Simulate.query(env);
         expect(simulation.queryBuilder.filterField).toBe('@foobar');
       });
 
       it('filterField should be empty by default', function() {
         new SearchInterface(div, undefined, mockWindow);
-        let simulation = Simulate.query(env);
+        const simulation = Simulate.query(env);
         expect(simulation.queryBuilder.filterField).toBeUndefined();
       });
 
       it('timezone allow to specify a timezone in the query', function() {
         new SearchInterface(div, { timezone: 'aa-bb' }, undefined, mockWindow);
-        let simulation = Simulate.query(env);
+        const simulation = Simulate.query(env);
         expect(simulation.queryBuilder.timezone).toBe('aa-bb');
       });
 
       it('enableDebugInfo should create a debug component', function(done) {
-        let cmp = new SearchInterface(
+        const cmp = new SearchInterface(
           div,
           {
             enableDebugInfo: true
@@ -264,7 +314,7 @@ export function SearchInterfaceTest() {
       });
 
       it('enableDebugInfo disabled should not create a debug component', function(done) {
-        let cmp = new SearchInterface(
+        const cmp = new SearchInterface(
           div,
           {
             enableDebugInfo: false
@@ -280,37 +330,37 @@ export function SearchInterfaceTest() {
 
       it('enableCollaborativeRating allow to specify the collaborative rating in the query', function() {
         new SearchInterface(div, { enableCollaborativeRating: true }, undefined, mockWindow);
-        let simulation = Simulate.query(env);
+        const simulation = Simulate.query(env);
         expect(simulation.queryBuilder.enableCollaborativeRating).toBe(true);
       });
 
       it('enableCollaborativeRating to false allow to disable the collaborative rating in the query', function() {
         new SearchInterface(div, { enableCollaborativeRating: false }, undefined, mockWindow);
-        let simulation = Simulate.query(env);
+        const simulation = Simulate.query(env);
         expect(simulation.queryBuilder.enableCollaborativeRating).toBe(false);
       });
 
       it('enableDuplicateFiltering allow to filter duplicate in the query', function() {
         new SearchInterface(div, { enableDuplicateFiltering: true }, undefined, mockWindow);
-        let simulation = Simulate.query(env);
+        const simulation = Simulate.query(env);
         expect(simulation.queryBuilder.enableDuplicateFiltering).toBe(true);
       });
 
       it('enableDuplicateFiltering to false allow to disable the filter duplicate in the query', function() {
         new SearchInterface(div, { enableDuplicateFiltering: false }, undefined, mockWindow);
-        let simulation = Simulate.query(env);
+        const simulation = Simulate.query(env);
         expect(simulation.queryBuilder.enableDuplicateFiltering).toBe(false);
       });
 
       it('pipeline allow to specify the pipeline to use in a query', function() {
         new SearchInterface(div, { pipeline: 'foobar' }, undefined, mockWindow);
-        let simulation = Simulate.query(env);
+        const simulation = Simulate.query(env);
         expect(simulation.queryBuilder.pipeline).toBe('foobar');
       });
 
       it('maximumAge allow to specify the duration of the cache in a query', function() {
         new SearchInterface(div, { maximumAge: 123 }, undefined, mockWindow);
-        let simulation = Simulate.query(env);
+        const simulation = Simulate.query(env);
         expect(simulation.queryBuilder.maximumAge).toBe(123);
       });
     });
