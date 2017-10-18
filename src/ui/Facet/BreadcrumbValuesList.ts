@@ -22,7 +22,7 @@ export class BreadcrumbValueList {
       className: 'coveo-facet-breadcrumb'
     }).el;
 
-    let title = $$('span');
+    const title = $$('span');
     title.addClass('coveo-facet-breadcrumb-title');
     title.text(this.facet.options.title + ':');
     this.elem.appendChild(title.el);
@@ -56,45 +56,36 @@ export class BreadcrumbValueList {
 
   private buildExpanded() {
     _.each(this.expanded, (value: FacetValue, index?: number) => {
-      var elementBreadcrumb = new this.breadcrumbValueElementKlass(this.facet, value).build();
+      const elementBreadcrumb = new this.breadcrumbValueElementKlass(this.facet, value).build();
       this.valueContainer.appendChild(elementBreadcrumb.el);
     });
   }
 
   private buildCollapsed() {
-    let numberOfSelected = _.filter(this.collapsed, (value: FacetValue) => value.selected).length;
-    let numberOfExcluded = _.filter(this.collapsed, (value: FacetValue) => value.excluded).length;
+    const numberOfSelected = _.filter(this.collapsed, (value: FacetValue) => value.selected).length;
+    const numberOfExcluded = _.filter(this.collapsed, (value: FacetValue) => value.excluded).length;
     Assert.check(numberOfSelected + numberOfExcluded == this.collapsed.length);
 
-    var elem = $$('div', {
+    const elem = $$('div', {
       className: 'coveo-facet-breadcrumb-value'
     });
-    if (numberOfSelected > 0) {
-      let multi = $$('span', {
-        className: 'coveo-facet-breadcrumb-multi-count'
-      });
-      multi.text(l('NMore', Globalize.format(numberOfSelected, 'n0')));
-      elem.el.appendChild(multi.el);
-    }
-    if (numberOfExcluded > 0) {
-      let multiExcluded = $$('span', {
-        className: 'coveo-facet-breadcrumb-multi-count'
-      });
-      multiExcluded.text(l('NMore', Globalize.format(numberOfExcluded, 'n0')));
-      elem.el.appendChild(multiExcluded.el);
-    }
+    const multiCount = $$('span', {
+      className: 'coveo-facet-breadcrumb-multi-count'
+    });
+    multiCount.text(l('NMore', Globalize.format(numberOfSelected + numberOfExcluded, 'n0')));
+    elem.append(multiCount.el);
 
-    let valueElements = _.map(this.collapsed, facetValue => {
+    const valueElements = _.map(this.collapsed, facetValue => {
       return new this.breadcrumbValueElementKlass(this.facet, facetValue);
     });
 
-    let toolTips = _.map(valueElements, valueElement => {
+    const toolTips = _.map(valueElements, valueElement => {
       return valueElement.getBreadcrumbTooltip();
     });
 
     elem.el.setAttribute('title', toolTips.join('\n'));
     elem.on('click', () => {
-      var elements: HTMLElement[] = [];
+      const elements: HTMLElement[] = [];
       _.forEach(valueElements, valueElement => {
         elements.push(valueElement.build(false).el);
       });
@@ -109,8 +100,8 @@ export class BreadcrumbValueList {
 
   private setExpandedAndCollapsed() {
     if (this.facetValues.length > this.facet.options.numberOfValuesInBreadcrumb) {
-      this.collapsed = _.rest(this.facetValues, this.facet.options.numberOfValuesInBreadcrumb - 1);
-      this.expanded = _.first(this.facetValues, this.facet.options.numberOfValuesInBreadcrumb - 1);
+      this.collapsed = _.rest(this.facetValues, this.facet.options.numberOfValuesInBreadcrumb);
+      this.expanded = _.first(this.facetValues, this.facet.options.numberOfValuesInBreadcrumb);
     } else {
       this.collapsed = [];
       this.expanded = this.facetValues;
