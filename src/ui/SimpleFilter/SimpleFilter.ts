@@ -116,7 +116,7 @@ export class SimpleFilter extends Component {
      * <div class='CoveoSimpleFilter' data-field='@myotherfield' data-value-caption='{"txt":"Text files","html":"Web page"}'></div>
      * ```
      */
-    valueCaption: ComponentOptions.buildJsonOption()
+    valueCaption: ComponentOptions.buildJsonObjectOption()
   };
 
   private valueContainer: Dom;
@@ -157,7 +157,7 @@ export class SimpleFilter extends Component {
     this.bind.onRootElement(BreadcrumbEvents.clearBreadcrumb, () => this.handleClearBreadcrumb());
     this.bind.onRootElement(QueryEvents.buildingQuery, (args: IBuildingQueryEventArgs) => this.handleBuildingQuery(args));
     this.bind.onRootElement(QueryEvents.doneBuildingQuery, (args: IDoneBuildingQueryEventArgs) => this.handleDoneBuildingQuery(args));
-    this.bind.onRootElement(QueryEvents.querySuccess, (args: IQuerySuccessEventArgs) => this.handleGroupBy(args));
+    this.bind.onRootElement(QueryEvents.querySuccess, (args: IQuerySuccessEventArgs) => this.handleQuerySuccess(args));
   }
 
   /**
@@ -427,7 +427,13 @@ export class SimpleFilter extends Component {
     this.resetSimpleFilter();
   }
 
-  private handleGroupBy(data: IQuerySuccessEventArgs) {
+  private handleQuerySuccess(data: IQuerySuccessEventArgs) {
+    if (data.results.results.length > 0) {
+      this.findOrCreateWrapper().removeClass('coveo-no-results');
+    } else {
+      this.findOrCreateWrapper().addClass('coveo-no-results');
+    }
+
     if (this.options.values == undefined) {
       this.groupByBuilder.groupBy(data);
       this.groupByRequestValues = this.groupByBuilder.getValuesFromGroupBy();

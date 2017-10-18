@@ -1,5 +1,6 @@
 @import "bourbon/bourbon";
 @import "Variables";
+@import "mixins/mediaQuery";
 
 .coveo-simplefilter-header-wrapper {
   width: 100%;
@@ -9,6 +10,21 @@
   display: block;
   @include flex-wrap(nowrap);
   @include justify-content(flex-start);
+  padding: 0 0 0 15px;
+  @include mediaSelector(800) {
+    padding: 0 0 0 10px;
+  }
+  
+  &.coveo-no-results {
+    max-width: 75%;
+    margin: auto;
+  }
+
+  @include mediaSelector(800) {
+    &.coveo-no-results {
+      max-width: 100%;
+    }
+  }
 }
 
 .coveo-dropdown-background {
@@ -21,10 +37,10 @@
 }
 
 .CoveoSimpleFilter {
-  padding: 3px 0;
   cursor: pointer;
+  padding: 5px 0;
   box-sizing: content-box;
-  margin-right: 15px;
+  margin: 0 10px 5px 0;
   display: inline-block;
   position: relative;
   border: $default-border;
@@ -86,7 +102,7 @@
   right: -1px;
   box-sizing: content-box;
   background-color: white;
-  top: 24px;
+  top: 28px;
   width: 100%;
   text-align: left;
   .coveo-checkbox-button {
@@ -162,5 +178,5 @@
 }
 
 .coveo-simplefilter-empty {
-  visibility: hidden;
+  display: none;
 }
