@@ -27,7 +27,7 @@ export interface IStreamHighlightOptions {
   regexFlags?: string;
 }
 
-class DefaultStreamHighlightOptions extends Options implements IStreamHighlightOptions {
+export class DefaultStreamHighlightOptions extends Options implements IStreamHighlightOptions {
   constructor(public cssClass = 'coveo-highlight', public shorten = 0, public regexFlags = 'gi') {
     super();
   }
@@ -55,8 +55,12 @@ export class StreamHighlightUtils {
   }
 }
 
-
-function getRestHighlightsForAllTerms(toHighlight: string, termsToHighlight: { [originalTerm: string]: string[] }, phrasesToHighlight: { [phrase: string]: { [originalTerm: string]: string[] } }, opts: IStreamHighlightOptions): IHighlight[] {
+export function getRestHighlightsForAllTerms(
+  toHighlight: string,
+  termsToHighlight: { [originalTerm: string]: string[] },
+  phrasesToHighlight: { [phrase: string]: { [originalTerm: string]: string[] } },
+  opts: IStreamHighlightOptions
+): IHighlight[] {
   const indexes = [];
   const sortedTerms = _.keys(termsToHighlight).sort(termsSorting);
   _.each(sortedTerms, (term: string) => {
