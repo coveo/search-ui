@@ -9,10 +9,11 @@ import 'styling/_PrintableUri';
 import { ResultLink } from '../ResultLink/ResultLink';
 import { IResultLinkOptions } from '../ResultLink/ResultLinkOptions';
 import { IResultsComponentBindings } from '../Base/ResultsComponentBindings';
-import { StreamHighlightUtils } from '../../utils/StreamHighlightUtils';
+import { getRestHighlightsForAllTerms, DefaultStreamHighlightOptions } from '../../utils/StreamHighlightUtils';
 import * as _ from 'underscore';
 import { ComponentOptionsModel } from '../../models/ComponentOptionsModel';
 import { Component } from '../Base/Component';
+import { IHighlight } from '../../rest/Highlight';
 
 export interface IPrintableUriOptions extends IResultLinkOptions {}
 
@@ -86,7 +87,7 @@ export class PrintableUri extends Component {
     if (parentsXml) {
       this.renderParentsXml(element, parentsXml);
     } else if (this.options.titleTemplate) {
-      const link = new ResultLink(this.buildElementForResultLink(), this.options, this.bindings, this.result);
+      const link = new ResultLink(this.buildElementForResultLink(result.printableUri), this.options, this.bindings, this.result);
       this.links.push(link);
       this.element.appendChild(link.element);
     } else {
@@ -101,8 +102,12 @@ export class PrintableUri extends Component {
 
   private buildHtmlToken(name: string, uri: string): HTMLElement {
     let modifiedName = name.charAt(0).toUpperCase() + name.slice(1);
-    const resultPart = _.extend({}, this.result, { clickUri: uri, title: modifiedName });
-    const link = new ResultLink(this.buildElementForResultLink(), this.options, this.bindings, resultPart);
+    const resultPart: IQueryResult = _.extend({}, this.result, {
+      clickUri: uri,
+      title: modifiedName,
+      titleHighlights: this.getModifiedHighlightsForModifiedResultTitle(modifiedName)
+    });
+    const link = new ResultLink(this.buildElementForResultLink(modifiedName), this.options, this.bindings, resultPart);
     this.links.push(link);
     return link.element;
   }
@@ -139,17 +144,29 @@ export class PrintableUri extends Component {
       stringAndHoles.holes,
       'coveo-highlight'
     );
-    const resultPart = _.extend({}, this.result, { title: shortenedUri });
-    const link = new ResultLink(this.buildElementForResultLink(), this.options, this.bindings, resultPart);
+    const resultPart: IQueryResult = _.extend({}, this.result, {
+      title: shortenedUri,
+      titleHighlights: this.getModifiedHighlightsForModifiedResultTitle(shortenedUri)
+    });
+    const link = new ResultLink(this.buildElementForResultLink(this.result.printableUri), this.options, this.bindings, resultPart);
     this.links.push(link);
     this.element.appendChild(link.element);
-    this.element.title = this.result.printableUri;
   }
 
-  private buildElementForResultLink(): HTMLElement {
+  private buildElementForResultLink(title: string): HTMLElement {
     return $$('a', {
-      className: 'CoveoResultLink coveo-printable-uri-part'
+      className: 'CoveoResultLink coveo-printable-uri-part',
+      title
     }).el;
+  }
+
+  private getModifiedHighlightsForModifiedResultTitle(newTitle: string): IHighlight[] {
+    return getRestHighlightsForAllTerms(
+      newTitle,
+      this.result.termsToHighlight,
+      this.result.phrasesToHighlight,
+      new DefaultStreamHighlightOptions()
+    );
   }
 }
 
