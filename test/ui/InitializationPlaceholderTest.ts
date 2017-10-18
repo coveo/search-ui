@@ -85,6 +85,26 @@ export function InitializationPlaceholderTest() {
         expect(oneFacet.hasClass(InitializationPlaceholder.INITIALIZATION_CLASS)).toBe(false);
         expect(oneFacet.hasClass('coveo-with-placeholder')).toBe(false);
       });
+
+      describe('when waitForFirstQuery is set to true', () => {
+        it('should wait on newQuery to add class', () => {
+          const oneFacet = $$('div', { className: 'CoveoFacet' });
+          root.append(oneFacet.el);
+          new InitializationPlaceholder(root.el, { waitForFirstQuery: true });
+          expect(oneFacet.hasClass(InitializationPlaceholder.INITIALIZATION_CLASS)).toBe(false);
+          $$(root).trigger(QueryEvents.newQuery);
+          expect(oneFacet.hasClass(InitializationPlaceholder.INITIALIZATION_CLASS)).toBe(true);
+        });
+
+        it('should hide the facets until newQuery', () => {
+          const oneFacet = $$('div', { className: 'CoveoFacet' });
+          root.append(oneFacet.el);
+          new InitializationPlaceholder(root.el, { waitForFirstQuery: true });
+          expect(oneFacet.hasClass('coveo-facet-empty')).toBe(true);
+          $$(root).trigger(QueryEvents.newQuery);
+          expect(oneFacet.hasClass('coveo-facet-empty')).toBe(false);
+        });
+      });
     });
 
     describe('for searchbox', () => {
@@ -125,6 +145,15 @@ export function InitializationPlaceholderTest() {
 
       it('should add the needed css class on the result list', () => {
         new InitializationPlaceholder(root.el);
+        expect(resultList.hasClass(InitializationPlaceholder.INITIALIZATION_CLASS)).toBe(true);
+        expect(resultList.hasClass('coveo-with-placeholder')).toBe(true);
+      });
+
+      it('should add the needed css class on the result list on newQuery when waitForFirstQuery option is set', () => {
+        new InitializationPlaceholder(root.el, { waitForFirstQuery: true });
+        expect(resultList.hasClass(InitializationPlaceholder.INITIALIZATION_CLASS)).toBe(false);
+        expect(resultList.hasClass('coveo-with-placeholder')).toBe(false);
+        $$(root.el).trigger(QueryEvents.newQuery);
         expect(resultList.hasClass(InitializationPlaceholder.INITIALIZATION_CLASS)).toBe(true);
         expect(resultList.hasClass('coveo-with-placeholder')).toBe(true);
       });

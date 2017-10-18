@@ -6,7 +6,7 @@ import { Utils } from '../../utils/Utils';
 import { Assert } from '../../misc/Assert';
 import { $$ } from '../../utils/Dom';
 import { InitializationEvents } from '../../events/InitializationEvents';
-import { SearchInterface, StandaloneSearchInterface } from '../SearchInterface/SearchInterface';
+import { SearchInterface, StandaloneSearchInterface, ISearchInterfaceOptions } from '../SearchInterface/SearchInterface';
 import { QueryController } from '../../controllers/QueryController';
 import { HashUtils } from '../../utils/HashUtils';
 import { QueryStateModel } from '../../models/QueryStateModel';
@@ -19,6 +19,7 @@ import * as _ from 'underscore';
 import { IStringMap } from '../../rest/GenericParam';
 import { InitializationPlaceholder } from './InitializationPlaceholder';
 import { get } from './RegisteredNamedMethods';
+import { QueryEvents } from '../../EventsModules';
 declare const require: any;
 
 /**
@@ -243,7 +244,7 @@ export class Initialization {
       });
     }
 
-    new InitializationPlaceholder(element);
+    new InitializationPlaceholder(element, { searchInterface: true, searchbox: true });
 
     options = Initialization.resolveDefaultOptions(element, options);
 
