@@ -8,6 +8,7 @@ import { OmniboxEvents } from '../../src/events/OmniboxEvents';
 import { BreadcrumbEvents } from '../../src/events/BreadcrumbEvents';
 import { IPopulateBreadcrumbEventArgs } from '../../src/events/BreadcrumbEvents';
 import { IPopulateOmniboxEventArgs } from '../../src/events/OmniboxEvents';
+import { QueryError } from '../../src/rest/QueryError';
 
 export function FacetTest() {
   describe('Facet', () => {
@@ -165,6 +166,63 @@ export function FacetTest() {
       test.cmp.options.field = '@filetype';
       expect(test.cmp.getValueCaption(FacetValue.createFromValue('foo'))).toBe('foo');
       expect(test.cmp.getValueCaption(FacetValue.createFromValue('txt'))).toBe('Text');
+    });
+
+    describe('with a live query state model', () => {
+      beforeEach(() => {
+        test = Mock.advancedComponentSetup<Facet>(Facet, <Mock.AdvancedComponentSetupOptions>{
+          modifyBuilder: builder => {
+            return builder.withLiveQueryStateModel();
+          },
+          cmpOptions: {
+            field: '@field'
+          }
+        });
+        test.env.queryStateModel.registerNewAttribute('f:@field', []);
+        test.env.queryStateModel.registerNewAttribute('f:@field:not', []);
+        test.env.queryStateModel.registerNewAttribute('f:@field:operator', 'or');
+      });
+
+      it('should select the needed values', () => {
+        test.env.queryStateModel.set('f:@field', ['a', 'b', 'c']);
+        expect(test.cmp.getSelectedValues()).toEqual(['a', 'b', 'c']);
+      });
+
+      it('should exclude the needed values', () => {
+        test.env.queryStateModel.set('f:@field:not', ['a', 'b', 'c']);
+        expect(test.cmp.getExcludedValues()).toEqual(['a', 'b', 'c']);
+      });
+
+      it('should update the operator', () => {
+        test.env.queryStateModel.set('f:@field:operator', 'and');
+        expect(test.cmp.options.useAnd).toBeTruthy();
+        test.env.queryStateModel.set('f:@field:operator', 'or');
+        expect(test.cmp.options.useAnd).toBeFalsy();
+      });
+
+      it('should trim values from the query state model for selected values', () => {
+        test.env.queryStateModel.set('f:@field', ['a     ', '     b', '    c    ']);
+        expect(test.cmp.getSelectedValues()).toEqual(['a', 'b', 'c']);
+      });
+
+      it('should trim values from the query state model for excluded values', () => {
+        test.env.queryStateModel.set('f:@field:not', ['a     ', '     b', '    c    ']);
+        expect(test.cmp.getExcludedValues()).toEqual(['a', 'b', 'c']);
+      });
+    });
+
+    describe('on a query error', () => {
+      it('should hide the waiting animation', () => {
+        spyOn(test.cmp, 'hideWaitingAnimation');
+        Simulate.queryError(test.env);
+        expect(test.cmp.hideWaitingAnimation).toHaveBeenCalledTimes(1);
+      });
+
+      it('should update the appearance based on the new empty values', () => {
+        Simulate.queryError(test.env);
+        expect($$(test.cmp.element).hasClass('coveo-facet-empty')).toBeTruthy();
+        expect(test.cmp.getDisplayedFacetValues().length).toBe(0);
+      });
     });
 
     describe('exposes options', () => {

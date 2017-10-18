@@ -27,6 +27,7 @@ import _ = require('underscore');
 import ModalBox = Coveo.ModalBox.ModalBox;
 import { NoopComponent } from '../src/ui/NoopComponent/NoopComponent';
 import { Component } from '../src/ui/Base/Component';
+import { QueryError } from '../src/rest/QueryError';
 
 export interface ISimulateQueryData {
   query?: IQuery;
@@ -53,6 +54,23 @@ export class Simulate {
 
   static isChromeHeadless() {
     return navigator.userAgent.indexOf('HeadlessChrome') != -1;
+  }
+
+  static queryError(env: IMockEnvironment, options?: ISimulateQueryData): ISimulateQueryData {
+    options = _.extend(
+      {},
+      {
+        error: new QueryError({
+          statusCode: 500,
+          data: {
+            message: 'oh',
+            type: 'no!'
+          }
+        })
+      },
+      options
+    );
+    return Simulate.query(env, options);
   }
 
   static query(env: IMockEnvironment, options?: ISimulateQueryData): ISimulateQueryData {

@@ -1225,6 +1225,12 @@ export class Facet extends Component {
     this.processNewGroupByResults(groupByResult);
   }
 
+  protected handleQueryError() {
+    this.updateValues(new FacetValues());
+    this.updateAppearanceDependingOnState();
+    this.hideWaitingAnimation();
+  }
+
   protected handlePopulateBreadcrumb(args: IPopulateBreadcrumbEventArgs) {
     Assert.exists(args);
 
@@ -1294,6 +1300,7 @@ export class Facet extends Component {
     this.bind.onRootElement(QueryEvents.buildingQuery, (args: IDoneBuildingQueryEventArgs) => this.handleBuildingQuery(args));
     this.bind.onRootElement(QueryEvents.doneBuildingQuery, (args: IDoneBuildingQueryEventArgs) => this.handleDoneBuildingQuery(args));
     this.bind.onRootElement(QueryEvents.deferredQuerySuccess, (args: IQuerySuccessEventArgs) => this.handleDeferredQuerySuccess(args));
+    this.bind.onRootElement(QueryEvents.queryError, () => this.handleQueryError());
   }
 
   protected initQueryStateEvents() {
