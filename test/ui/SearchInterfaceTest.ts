@@ -88,36 +88,77 @@ export function SearchInterfaceTest() {
       });
     });
 
-    it('should set the correct css class on multiple section, if available', () => {
+    it('should set the correct css class on facet section, if available', () => {
       const facetSection = $$('div', { className: 'coveo-facet-column' });
-      const resultsSection = $$('div', { className: 'coveo-results-column' });
-      const recommendationSection = $$('div', { className: 'coveo-recommendation-main-section' });
-
       cmp.element.appendChild(facetSection.el);
-      cmp.element.appendChild(resultsSection.el);
-      cmp.element.appendChild(recommendationSection.el);
 
       $$(cmp.element).trigger(QueryEvents.querySuccess, {
         results: FakeResults.createFakeResults(0)
       });
       expect(facetSection.hasClass('coveo-no-results')).toBe(true);
-      expect(resultsSection.hasClass('coveo-no-results')).toBe(true);
-      expect(recommendationSection.hasClass('coveo-no-results')).toBe(true);
+
       $$(cmp.element).trigger(QueryEvents.querySuccess, {
         results: FakeResults.createFakeResults(10)
       });
       expect(facetSection.hasClass('coveo-no-results')).toBe(false);
-      expect(resultsSection.hasClass('coveo-no-results')).toBe(false);
-      expect(recommendationSection.hasClass('coveo-no-results')).toBe(false);
+
       $$(cmp.element).trigger(QueryEvents.queryError);
       expect(facetSection.hasClass('coveo-no-results')).toBe(true);
-      expect(resultsSection.hasClass('coveo-no-results')).toBe(true);
-      expect(recommendationSection.hasClass('coveo-no-results')).toBe(true);
+
       $$(cmp.element).trigger(QueryEvents.querySuccess, {
         results: FakeResults.createFakeResults(10)
       });
       expect(facetSection.hasClass('coveo-no-results')).toBe(false);
+    });
+
+    it('should set the correct css class on result section, if available', () => {
+      const resultsSection = $$('div', { className: 'coveo-results-column' });
+
+      cmp.element.appendChild(resultsSection.el);
+      $$(cmp.element).trigger(QueryEvents.querySuccess, {
+        results: FakeResults.createFakeResults(0)
+      });
+      expect(resultsSection.hasClass('coveo-no-results')).toBe(true);
+
+      $$(cmp.element).trigger(QueryEvents.querySuccess, {
+        results: FakeResults.createFakeResults(10)
+      });
+
       expect(resultsSection.hasClass('coveo-no-results')).toBe(false);
+
+      $$(cmp.element).trigger(QueryEvents.queryError);
+
+      expect(resultsSection.hasClass('coveo-no-results')).toBe(true);
+
+      $$(cmp.element).trigger(QueryEvents.querySuccess, {
+        results: FakeResults.createFakeResults(10)
+      });
+
+      expect(resultsSection.hasClass('coveo-no-results')).toBe(false);
+    });
+
+    it('should set the correct css class on recommendation section, if available', () => {
+      const recommendationSection = $$('div', { className: 'coveo-recommendation-main-section' });
+
+      cmp.element.appendChild(recommendationSection.el);
+
+      $$(cmp.element).trigger(QueryEvents.querySuccess, {
+        results: FakeResults.createFakeResults(0)
+      });
+
+      expect(recommendationSection.hasClass('coveo-no-results')).toBe(true);
+      $$(cmp.element).trigger(QueryEvents.querySuccess, {
+        results: FakeResults.createFakeResults(10)
+      });
+
+      expect(recommendationSection.hasClass('coveo-no-results')).toBe(false);
+      $$(cmp.element).trigger(QueryEvents.queryError);
+
+      expect(recommendationSection.hasClass('coveo-no-results')).toBe(true);
+      $$(cmp.element).trigger(QueryEvents.querySuccess, {
+        results: FakeResults.createFakeResults(10)
+      });
+
       expect(recommendationSection.hasClass('coveo-no-results')).toBe(false);
     });
 

@@ -74,15 +74,7 @@ export function BreadcrumbTest() {
       it('should trigger populate breadcrumb on an error', function() {
         var onPopulate = jasmine.createSpy('onPopulate');
         $$(test.env.root).on(BreadcrumbEvents.populateBreadcrumb, onPopulate);
-        Simulate.query(test.env, {
-          error: new QueryError({
-            statusCode: 500,
-            data: {
-              message: 'oh',
-              type: 'no!'
-            }
-          })
-        });
+        Simulate.queryError(test.env);
         expect(onPopulate).toHaveBeenCalledWith(jasmine.any(Object), jasmine.objectContaining({ breadcrumbs: [] }));
       });
     });

@@ -213,25 +213,14 @@ export function FacetTest() {
     });
 
     describe('on a query error', () => {
-      const simulateError = () => {
-        Simulate.query(test.env, {
-          error: new QueryError({
-            statusCode: 500,
-            data: {
-              message: 'oh',
-              type: 'no!'
-            }
-          })
-        });
-      };
       it('should hide the waiting animation', () => {
         spyOn(test.cmp, 'hideWaitingAnimation');
-        simulateError();
+        Simulate.queryError(test.env);
         expect(test.cmp.hideWaitingAnimation).toHaveBeenCalledTimes(1);
       });
 
       it('should update the appearance based on the new empty values', () => {
-        simulateError();
+        Simulate.queryError(test.env);
         expect($$(test.cmp.element).hasClass('coveo-facet-empty')).toBeTruthy();
         expect(test.cmp.getDisplayedFacetValues().length).toBe(0);
       });

@@ -146,7 +146,7 @@ export class Breadcrumb extends Component {
     // We must bind to these events after the initialization to make sure the breadcrumb generation
     // is made with updated components. (E.G facet, facetrange, ...)
     this.bind.onRootElement(QueryEvents.deferredQuerySuccess, () => this.handleDeferredQuerySuccess());
-    this.bind.onRootElement(QueryEvents.queryError, () => this.handleDeferredQuerySuccess());
+    this.bind.onRootElement(QueryEvents.queryError, () => this.handleQueryError());
   }
 }
 

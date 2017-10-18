@@ -128,15 +128,7 @@ export function RecommendationTest() {
       });
 
       it('should hide if the main interface has a query error', () => {
-        Simulate.query(mainSearchInterface.env, {
-          error: new QueryError({
-            statusCode: 500,
-            data: {
-              message: 'oh',
-              type: 'no!'
-            }
-          })
-        });
+        Simulate.queryError(mainSearchInterface.env);
         expect(test.cmp.element.style.display).toEqual('none');
       });
 

@@ -90,8 +90,6 @@ export function InitializationPlaceholderTest() {
         const oneFacet = $$('div', { className: 'CoveoFacet' });
         root.append(oneFacet.el);
         new InitializationPlaceholder(root.el);
-        expect(oneFacet.hasClass(InitializationPlaceholder.INITIALIZATION_CLASS)).toBe(true);
-        expect(oneFacet.hasClass('coveo-with-placeholder')).toBe(true);
         $$(root).trigger(InitializationEvents.afterComponentsInitialization);
         $$(root).trigger(QueryEvents.queryError);
         expect(oneFacet.hasClass(InitializationPlaceholder.INITIALIZATION_CLASS)).toBe(false);
