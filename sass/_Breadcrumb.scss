@@ -13,6 +13,10 @@
   @include align-items(flex-start);
 }
 
+.coveo-no-results .CoveoBreadcrumb {
+  text-align: left;
+}
+
 .coveo-breadcrumb-clear-all {
   @include clickable();
   display: inline-block;
