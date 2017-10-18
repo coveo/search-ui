@@ -1,12 +1,12 @@
-webpackJsonpCoveo__temporary([35],{
+webpackJsonpCoveo__temporary([33],{
 
-/***/ 16:
+/***/ 17:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var SVGDom = /** @class */ (function () {
+var SVGDom = (function () {
     function SVGDom() {
     }
     SVGDom.addClassToSVGInContainer = function (svgContainer, classToAdd) {
@@ -28,7 +28,7 @@ exports.SVGDom = SVGDom;
 
 /***/ }),
 
-/***/ 288:
+/***/ 373:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -48,18 +48,18 @@ var Component_1 = __webpack_require__(8);
 var ComponentOptions_1 = __webpack_require__(9);
 var Strings_1 = __webpack_require__(10);
 var QueryEvents_1 = __webpack_require__(11);
-var BreadcrumbEvents_1 = __webpack_require__(42);
+var BreadcrumbEvents_1 = __webpack_require__(51);
 var AnalyticsActionListMeta_1 = __webpack_require__(12);
 var QueryStateModel_1 = __webpack_require__(13);
 var Dom_1 = __webpack_require__(3);
-var Utils_1 = __webpack_require__(6);
+var Utils_1 = __webpack_require__(5);
 var Initialization_1 = __webpack_require__(2);
 var Assert_1 = __webpack_require__(7);
 var _ = __webpack_require__(1);
 var GlobalExports_1 = __webpack_require__(4);
-__webpack_require__(490);
+__webpack_require__(925);
 var SVGIcons_1 = __webpack_require__(15);
-var SVGDom_1 = __webpack_require__(16);
+var SVGDom_1 = __webpack_require__(17);
 /**
  * The HiddenQuery component handles a "hidden" query parameter (`hq`) and its description (`hd`).
  *
@@ -67,7 +67,7 @@ var SVGDom_1 = __webpack_require__(16);
  * with `hq=foo&hd=bar` in the URL hash, the component adds `foo` as an expression to the query (`hq` is the hidden
  * query) and renders `bar` in the {@link Breadcrumb} (`hd` is the hidden query description).
  */
-var HiddenQuery = /** @class */ (function (_super) {
+var HiddenQuery = (function (_super) {
     __extends(HiddenQuery, _super);
     /**
      * Creates a new HiddenQuery component, which binds multiple events ({@link QueryEvents.buildingQuery},
@@ -83,9 +83,7 @@ var HiddenQuery = /** @class */ (function (_super) {
         _this.options = options;
         _this.options = ComponentOptions_1.ComponentOptions.initComponentOptions(element, HiddenQuery, options);
         _this.bind.onRootElement(QueryEvents_1.QueryEvents.buildingQuery, function (args) { return _this.handleBuildingQuery(args); });
-        _this.bind.onRootElement(BreadcrumbEvents_1.BreadcrumbEvents.populateBreadcrumb, function (args) {
-            return _this.handlePopulateBreadcrumb(args);
-        });
+        _this.bind.onRootElement(BreadcrumbEvents_1.BreadcrumbEvents.populateBreadcrumb, function (args) { return _this.handlePopulateBreadcrumb(args); });
         _this.bind.onRootElement(BreadcrumbEvents_1.BreadcrumbEvents.clearBreadcrumb, function () { return _this.setStateEmpty(); });
         return _this;
     }
@@ -96,9 +94,7 @@ var HiddenQuery = /** @class */ (function (_super) {
     HiddenQuery.prototype.clear = function () {
         this.setStateEmpty();
         var hiddenDescriptionRemoved = this.getDescription();
-        this.usageAnalytics.logSearchEvent(AnalyticsActionListMeta_1.analyticsActionCauseList.contextRemove, {
-            contextName: hiddenDescriptionRemoved
-        });
+        this.usageAnalytics.logSearchEvent(AnalyticsActionListMeta_1.analyticsActionCauseList.contextRemove, { contextName: hiddenDescriptionRemoved });
         this.queryController.executeQuery();
     };
     HiddenQuery.prototype.setStateEmpty = function () {
@@ -150,43 +146,43 @@ var HiddenQuery = /** @class */ (function (_super) {
         }
         return description;
     };
-    HiddenQuery.ID = 'HiddenQuery';
-    HiddenQuery.doExport = function () {
-        GlobalExports_1.exportGlobally({
-            HiddenQuery: HiddenQuery
-        });
-    };
-    /**
-     * Possible options for the `HiddenQuery` component
-     * @componentOptions
-     */
-    HiddenQuery.options = {
-        /**
-         * Specifies the maximum number of characters from the hidden query description (`hd`) to display in the
-         * {@link Breadcrumb}.
-         *
-         * Beyond this length, the HiddenQuery component slices the rest of the description and replaces it by `...`.
-         *
-         * Default value is `100`. Minimum value is `0`.
-         */
-        maximumDescriptionLength: ComponentOptions_1.ComponentOptions.buildNumberOption({ min: 0, defaultValue: 100 }),
-        /**
-         * Specifies the title that should appear in the {@link Breadcrumb} when the HiddenQuery populates it.
-         *
-         * Default value is the localized string f
-         * or `"Additional filters:"`
-         */
-        title: ComponentOptions_1.ComponentOptions.buildLocalizedStringOption({ defaultValue: Strings_1.l('AdditionalFilters') + ': ' })
-    };
     return HiddenQuery;
 }(Component_1.Component));
+HiddenQuery.ID = 'HiddenQuery';
+HiddenQuery.doExport = function () {
+    GlobalExports_1.exportGlobally({
+        'HiddenQuery': HiddenQuery
+    });
+};
+/**
+ * Possible options for the `HiddenQuery` component
+ * @componentOptions
+ */
+HiddenQuery.options = {
+    /**
+     * Specifies the maximum number of characters from the hidden query description (`hd`) to display in the
+     * {@link Breadcrumb}.
+     *
+     * Beyond this length, the HiddenQuery component slices the rest of the description and replaces it by `...`.
+     *
+     * Default value is `100`. Minimum value is `0`.
+     */
+    maximumDescriptionLength: ComponentOptions_1.ComponentOptions.buildNumberOption({ min: 0, defaultValue: 100 }),
+    /**
+     * Specifies the title that should appear in the {@link Breadcrumb} when the HiddenQuery populates it.
+     *
+     * Default value is the localized string f
+     * or `"Additional filters:"`
+     */
+    title: ComponentOptions_1.ComponentOptions.buildLocalizedStringOption({ defaultValue: Strings_1.l('AdditionalFilters') + ': ' })
+};
 exports.HiddenQuery = HiddenQuery;
 Initialization_1.Initialization.registerAutoCreateComponent(HiddenQuery);
 
 
 /***/ }),
 
-/***/ 490:
+/***/ 925:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

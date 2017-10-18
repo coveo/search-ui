@@ -1,6 +1,6 @@
-webpackJsonpCoveo__temporary([55],{
+webpackJsonpCoveo__temporary([53],{
 
-/***/ 311:
+/***/ 395:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17,21 +17,21 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var Component_1 = __webpack_require__(8);
-var SettingsEvents_1 = __webpack_require__(43);
+var SettingsEvents_1 = __webpack_require__(45);
 var Dom_1 = __webpack_require__(3);
 var Strings_1 = __webpack_require__(10);
-var Utils_1 = __webpack_require__(6);
+var Utils_1 = __webpack_require__(5);
 var Initialization_1 = __webpack_require__(2);
 var GlobalExports_1 = __webpack_require__(4);
-var ExternalModulesShim_1 = __webpack_require__(27);
-__webpack_require__(532);
+var ExternalModulesShim_1 = __webpack_require__(28);
+__webpack_require__(947);
 var SVGIcons_1 = __webpack_require__(15);
 /**
  * The ShareQuery component populates the {@link Settings} popup menu with the **Share Query** menu item. When the end
  * user clicks this item, it displays a panel containing two input boxes: one containing a shareable link and the other
  * containing the complete current query expression.
  */
-var ShareQuery = /** @class */ (function (_super) {
+var ShareQuery = (function (_super) {
     __extends(ShareQuery, _super);
     /**
      * Creates a new ShareQuery component.
@@ -163,22 +163,22 @@ var ShareQuery = /** @class */ (function (_super) {
         returnDiv.appendChild(input);
         return returnDiv;
     };
-    ShareQuery.ID = 'ShareQuery';
-    ShareQuery.options = {};
-    ShareQuery.doExport = function () {
-        GlobalExports_1.exportGlobally({
-            ShareQuery: ShareQuery
-        });
-    };
     return ShareQuery;
 }(Component_1.Component));
+ShareQuery.ID = 'ShareQuery';
+ShareQuery.options = {};
+ShareQuery.doExport = function () {
+    GlobalExports_1.exportGlobally({
+        'ShareQuery': ShareQuery
+    });
+};
 exports.ShareQuery = ShareQuery;
 Initialization_1.Initialization.registerAutoCreateComponent(ShareQuery);
 
 
 /***/ }),
 
-/***/ 532:
+/***/ 947:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

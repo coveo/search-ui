@@ -1,12 +1,12 @@
-webpackJsonpCoveo__temporary([27],{
+webpackJsonpCoveo__temporary([25],{
 
-/***/ 16:
+/***/ 17:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var SVGDom = /** @class */ (function () {
+var SVGDom = (function () {
     function SVGDom() {
     }
     SVGDom.addClassToSVGInContainer = function (svgContainer, classToAdd) {
@@ -28,7 +28,7 @@ exports.SVGDom = SVGDom;
 
 /***/ }),
 
-/***/ 261:
+/***/ 306:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -36,13 +36,13 @@ exports.SVGDom = SVGDom;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.SUBSCRIPTION_TYPE = {
     followQuery: 'followQuery',
-    followDocument: 'followDocument'
+    followDocument: 'followDocument',
 };
 
 
 /***/ }),
 
-/***/ 307:
+/***/ 372:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -61,19 +61,19 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var Component_1 = __webpack_require__(8);
 var ComponentOptions_1 = __webpack_require__(9);
 var Assert_1 = __webpack_require__(7);
-var SearchAlertEvents_1 = __webpack_require__(59);
-var Subscription_1 = __webpack_require__(261);
+var SearchAlertEvents_1 = __webpack_require__(67);
+var Subscription_1 = __webpack_require__(306);
 var Initialization_1 = __webpack_require__(2);
 var Strings_1 = __webpack_require__(10);
 var Dom_1 = __webpack_require__(3);
 var AnalyticsActionListMeta_1 = __webpack_require__(12);
-var QueryUtils_1 = __webpack_require__(19);
+var QueryUtils_1 = __webpack_require__(20);
 var _ = __webpack_require__(1);
-var Utils_1 = __webpack_require__(6);
-var KeyboardUtils_1 = __webpack_require__(23);
+var Utils_1 = __webpack_require__(5);
+var KeyboardUtils_1 = __webpack_require__(24);
 var GlobalExports_1 = __webpack_require__(4);
 var SVGIcons_1 = __webpack_require__(15);
-var SVGDom_1 = __webpack_require__(16);
+var SVGDom_1 = __webpack_require__(17);
 /**
  * The FollowItem component renders a widget that the end user can click to follow a particular item. A user following
  * an item receives email notifications when the item changes.
@@ -85,7 +85,7 @@ var SVGDom_1 = __webpack_require__(16);
  *
  * This component is a result template component (see [Result Templates](https://developers.coveo.com/x/aIGfAQ)).
  */
-var FollowItem = /** @class */ (function (_super) {
+var FollowItem = (function (_super) {
     __extends(FollowItem, _super);
     /**
      * Creates a new FollowItem component.
@@ -144,8 +144,7 @@ var FollowItem = /** @class */ (function (_super) {
             this.container.addClass('coveo-follow-item-loading');
             if (this.subscription.id) {
                 this.logAnalyticsEvent(AnalyticsActionListMeta_1.analyticsActionCauseList.searchAlertsUnfollowDocument);
-                this.queryController
-                    .getEndpoint()
+                this.queryController.getEndpoint()
                     .deleteSubscription(this.subscription)
                     .then(function () {
                     var eventArgs = {
@@ -164,9 +163,7 @@ var FollowItem = /** @class */ (function (_super) {
             }
             else {
                 this.logAnalyticsEvent(AnalyticsActionListMeta_1.analyticsActionCauseList.searchAlertsFollowDocument);
-                this.queryController
-                    .getEndpoint()
-                    .follow(this.subscription)
+                this.queryController.getEndpoint().follow(this.subscription)
                     .then(function (subscription) {
                     var eventArgs = {
                         subscription: subscription,
@@ -189,8 +186,7 @@ var FollowItem = /** @class */ (function (_super) {
     };
     FollowItem.prototype.updateIsFollowed = function () {
         var _this = this;
-        this.queryController
-            .getEndpoint()
+        this.queryController.getEndpoint()
             .listSubscriptions()
             .then(function (subscriptions) {
             if (_.isArray(subscriptions)) {
@@ -272,34 +268,34 @@ var FollowItem = /** @class */ (function (_super) {
             contentIDKey: QueryUtils_1.QueryUtils.getPermanentId(this.result).fieldUsed
         }, this.element);
     };
-    FollowItem.ID = 'FollowItem';
-    FollowItem.doExport = function () {
-        GlobalExports_1.exportGlobally({
-            FollowItem: FollowItem
-        });
-    };
-    /**
-     * The options for the follow item component
-     * @componentOptions
-     */
-    FollowItem.options = {
-        /**
-         * Specifies the {@link ISubscriptionItemRequest.watchedFields} to use when sending the
-         * {@link ISubscriptionItemRequest}.
-         *
-         * Default value is `undefined`.
-         */
-        watchedFields: ComponentOptions_1.ComponentOptions.buildFieldsOption(),
-        /**
-         * Specifies the {@link ISubscriptionItemRequest.modifiedDateField} to use when sending the
-         * {@link ISubscriptionItemRequest}.
-         *
-         * Default value is `undefined`.
-         */
-        modifiedDateField: ComponentOptions_1.ComponentOptions.buildStringOption()
-    };
     return FollowItem;
 }(Component_1.Component));
+FollowItem.ID = 'FollowItem';
+FollowItem.doExport = function () {
+    GlobalExports_1.exportGlobally({
+        'FollowItem': FollowItem
+    });
+};
+/**
+ * The options for the follow item component
+ * @componentOptions
+ */
+FollowItem.options = {
+    /**
+     * Specifies the {@link ISubscriptionItemRequest.watchedFields} to use when sending the
+     * {@link ISubscriptionItemRequest}.
+     *
+     * Default value is `undefined`.
+     */
+    watchedFields: ComponentOptions_1.ComponentOptions.buildFieldsOption(),
+    /**
+     * Specifies the {@link ISubscriptionItemRequest.modifiedDateField} to use when sending the
+     * {@link ISubscriptionItemRequest}.
+     *
+     * Default value is `undefined`.
+     */
+    modifiedDateField: ComponentOptions_1.ComponentOptions.buildStringOption(),
+};
 exports.FollowItem = FollowItem;
 Initialization_1.Initialization.registerAutoCreateComponent(FollowItem);
 

@@ -1,6 +1,6 @@
-webpackJsonpCoveo__temporary([33],{
+webpackJsonpCoveo__temporary([31],{
 
-/***/ 298:
+/***/ 383:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25,11 +25,11 @@ var Strings_1 = __webpack_require__(10);
 var AnalyticsActionListMeta_1 = __webpack_require__(12);
 var Initialization_1 = __webpack_require__(2);
 var QueryStateModel_1 = __webpack_require__(13);
-var Globalize = __webpack_require__(25);
-var QuerySummaryEvents_1 = __webpack_require__(428);
+var Globalize = __webpack_require__(26);
+var QuerySummaryEvents_1 = __webpack_require__(512);
 var _ = __webpack_require__(1);
 var GlobalExports_1 = __webpack_require__(4);
-__webpack_require__(510);
+__webpack_require__(933);
 /**
  * The QuerySummary component can display information about the currently displayed range of results (e.g., "Results
  * 1-10 of 123").
@@ -37,7 +37,7 @@ __webpack_require__(510);
  * If the query matches no item, the QuerySummary component can instead display tips to help the end user formulate
  * a better query.
  */
-var QuerySummary = /** @class */ (function (_super) {
+var QuerySummary = (function (_super) {
     __extends(QuerySummary, _super);
     /**
      * Creates a new QuerySummary component.
@@ -76,14 +76,7 @@ var QuerySummary = /** @class */ (function (_super) {
                 var highlightFirst = Dom_1.$$('span', { className: 'coveo-highlight' }, first).el;
                 var highlightLast = Dom_1.$$('span', { className: 'coveo-highlight' }, last).el;
                 var highlightTotal = Dom_1.$$('span', { className: 'coveo-highlight' }, totalCount).el;
-                var query = data.query.q ? _.escape(data.query.q.trim()) : '';
-                if (query) {
-                    var highlightQuery = Dom_1.$$('span', { className: 'coveo-highlight' }, query).el;
-                    this.textContainer.innerHTML = Strings_1.l('ShowingResultsOfWithQuery', highlightFirst.outerHTML, highlightLast.outerHTML, highlightTotal.outerHTML, highlightQuery.outerHTML, data.results.results.length);
-                }
-                else {
-                    this.textContainer.innerHTML = Strings_1.l('ShowingResultsOf', highlightFirst.outerHTML, highlightLast.outerHTML, highlightTotal.outerHTML, data.results.results.length);
-                }
+                this.textContainer.innerHTML = Strings_1.l('ShowingResultsOf', highlightFirst.outerHTML, highlightLast.outerHTML, highlightTotal.outerHTML, data.results.results.length);
             }
         }
         if (data.results.exception != null && data.results.exception.code != null) {
@@ -153,40 +146,40 @@ var QuerySummary = /** @class */ (function (_super) {
             this.textContainer.appendChild(cancelLastAction.el);
         }
     };
-    QuerySummary.ID = 'QuerySummary';
-    QuerySummary.doExport = function () {
-        GlobalExports_1.exportGlobally({
-            QuerySummary: QuerySummary
-        });
-    };
-    /**
-     * Options for the component
-     * @componentOptions
-     */
-    QuerySummary.options = {
-        /**
-         * Specifies whether to display the search tips to the end user when there are no search results.
-         *
-         * Default value is `true`.
-         */
-        enableSearchTips: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: true }),
-        /**
-         * Specifies whether to hide the information about the currently displayed range of results and only display the
-         * search tips instead.
-         *
-         * Default value is `false`.
-         */
-        onlyDisplaySearchTips: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: false })
-    };
     return QuerySummary;
 }(Component_1.Component));
+QuerySummary.ID = 'QuerySummary';
+QuerySummary.doExport = function () {
+    GlobalExports_1.exportGlobally({
+        'QuerySummary': QuerySummary
+    });
+};
+/**
+ * Options for the component
+ * @componentOptions
+ */
+QuerySummary.options = {
+    /**
+     * Specifies whether to display the search tips to the end user when there are no search results.
+     *
+     * Default value is `true`.
+     */
+    enableSearchTips: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: true }),
+    /**
+     * Specifies whether to hide the information about the currently displayed range of results and only display the
+     * search tips instead.
+     *
+     * Default value is `false`.
+     */
+    onlyDisplaySearchTips: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: false })
+};
 exports.QuerySummary = QuerySummary;
 Initialization_1.Initialization.registerAutoCreateComponent(QuerySummary);
 
 
 /***/ }),
 
-/***/ 428:
+/***/ 512:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -195,24 +188,24 @@ Object.defineProperty(exports, "__esModule", { value: true });
 /**
  * This static class is there to contains the different string definition for all the events related to the {@link AdvancedSearch} component.
  */
-var QuerySummaryEvents = /** @class */ (function () {
+var QuerySummaryEvents = (function () {
     function QuerySummaryEvents() {
     }
-    /**
-     * Triggered when the last action is being cancelled by the query summary component
-     *
-     * Allows external code to revert their last action.
-     * @type {string}
-     */
-    QuerySummaryEvents.cancelLastAction = 'cancelLastAction';
     return QuerySummaryEvents;
 }());
+/**
+ * Triggered when the last action is being cancelled by the query summary component
+ *
+ * Allows external code to revert their last action.
+ * @type {string}
+ */
+QuerySummaryEvents.cancelLastAction = 'cancelLastAction';
 exports.QuerySummaryEvents = QuerySummaryEvents;
 
 
 /***/ }),
 
-/***/ 510:
+/***/ 933:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

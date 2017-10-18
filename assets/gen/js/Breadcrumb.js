@@ -1,12 +1,12 @@
-webpackJsonpCoveo__temporary([38],{
+webpackJsonpCoveo__temporary([36],{
 
-/***/ 16:
+/***/ 17:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var SVGDom = /** @class */ (function () {
+var SVGDom = (function () {
     function SVGDom() {
     }
     SVGDom.addClassToSVGInContainer = function (svgContainer, classToAdd) {
@@ -28,7 +28,7 @@ exports.SVGDom = SVGDom;
 
 /***/ }),
 
-/***/ 272:
+/***/ 357:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -46,19 +46,19 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var Component_1 = __webpack_require__(8);
 var ComponentOptions_1 = __webpack_require__(9);
-var InitializationEvents_1 = __webpack_require__(17);
-var BreadcrumbEvents_1 = __webpack_require__(42);
+var InitializationEvents_1 = __webpack_require__(18);
+var BreadcrumbEvents_1 = __webpack_require__(51);
 var AnalyticsActionListMeta_1 = __webpack_require__(12);
 var Dom_1 = __webpack_require__(3);
 var Strings_1 = __webpack_require__(10);
 var Initialization_1 = __webpack_require__(2);
 var QueryEvents_1 = __webpack_require__(11);
-var KeyboardUtils_1 = __webpack_require__(23);
+var KeyboardUtils_1 = __webpack_require__(24);
 var _ = __webpack_require__(1);
 var GlobalExports_1 = __webpack_require__(4);
-__webpack_require__(470);
+__webpack_require__(915);
 var SVGIcons_1 = __webpack_require__(15);
-var SVGDom_1 = __webpack_require__(16);
+var SVGDom_1 = __webpack_require__(17);
 /**
  * The Breadcrumb component displays a summary of the currently active query filters.
  *
@@ -74,7 +74,7 @@ var SVGDom_1 = __webpack_require__(16);
  *
  * See {@link BreadcrumbEvents} for the list of events and parameters sent when a Breadcrumb component is populated.
  */
-var Breadcrumb = /** @class */ (function (_super) {
+var Breadcrumb = (function (_super) {
     __extends(Breadcrumb, _super);
     /**
      * Creates a new Breadcrumb component. Binds event on {@link QueryEvents.deferredQuerySuccess} to draw the
@@ -169,22 +169,22 @@ var Breadcrumb = /** @class */ (function (_super) {
         // is made with updated components. (E.G facet, facetrange, ...)
         this.bind.onRootElement(QueryEvents_1.QueryEvents.deferredQuerySuccess, function () { return _this.handleDeferredQuerySuccess(); });
     };
-    Breadcrumb.ID = 'Breadcrumb';
-    Breadcrumb.options = {};
-    Breadcrumb.doExport = function () {
-        GlobalExports_1.exportGlobally({
-            Breadcrumb: Breadcrumb
-        });
-    };
     return Breadcrumb;
 }(Component_1.Component));
+Breadcrumb.ID = 'Breadcrumb';
+Breadcrumb.options = {};
+Breadcrumb.doExport = function () {
+    GlobalExports_1.exportGlobally({
+        'Breadcrumb': Breadcrumb
+    });
+};
 exports.Breadcrumb = Breadcrumb;
 Initialization_1.Initialization.registerAutoCreateComponent(Breadcrumb);
 
 
 /***/ }),
 
-/***/ 470:
+/***/ 915:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

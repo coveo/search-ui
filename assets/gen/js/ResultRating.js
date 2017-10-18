@@ -1,12 +1,12 @@
-webpackJsonpCoveo__temporary([30],{
+webpackJsonpCoveo__temporary([28],{
 
-/***/ 16:
+/***/ 17:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var SVGDom = /** @class */ (function () {
+var SVGDom = (function () {
     function SVGDom() {
     }
     SVGDom.addClassToSVGInContainer = function (svgContainer, classToAdd) {
@@ -28,7 +28,7 @@ exports.SVGDom = SVGDom;
 
 /***/ }),
 
-/***/ 302:
+/***/ 387:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -48,11 +48,11 @@ var Component_1 = __webpack_require__(8);
 var ComponentOptions_1 = __webpack_require__(9);
 var Dom_1 = __webpack_require__(3);
 var Initialization_1 = __webpack_require__(2);
-var Utils_1 = __webpack_require__(6);
+var Utils_1 = __webpack_require__(5);
 var GlobalExports_1 = __webpack_require__(4);
 var SVGIcons_1 = __webpack_require__(15);
-var SVGDom_1 = __webpack_require__(16);
-__webpack_require__(525);
+var SVGDom_1 = __webpack_require__(17);
+__webpack_require__(941);
 var RatingValues;
 (function (RatingValues) {
     RatingValues[RatingValues["Undefined"] = 0] = "Undefined";
@@ -62,6 +62,7 @@ var RatingValues;
     RatingValues[RatingValues["Good"] = 4] = "Good";
     RatingValues[RatingValues["Best"] = 5] = "Best";
 })(RatingValues = exports.RatingValues || (exports.RatingValues = {}));
+;
 /**
  * The `ResultRating` component renders a 5-star rating widget. Interactive rating is possible if
  * the [`enableCollaborativeRating`]{@link SearchInterface.options.enableCollaborativeRating} option of your
@@ -69,7 +70,7 @@ var RatingValues;
  *
  * This component is a result template component (see [Result Templates](https://developers.coveo.com/x/aIGfAQ)).
  */
-var ResultRating = /** @class */ (function (_super) {
+var ResultRating = (function (_super) {
     __extends(ResultRating, _super);
     /**
      * Creates a new `ResultRating` component.
@@ -143,9 +144,7 @@ var ResultRating = /** @class */ (function (_super) {
             rating: RatingValues[rating],
             uniqueId: this.result.uniqueId
         };
-        this.queryController
-            .getEndpoint()
-            .rateDocument(request)
+        this.queryController.getEndpoint().rateDocument(request)
             .then(function () {
             _this.result.rating = rating;
             _this.renderComponent(_this.element, rating);
@@ -154,21 +153,21 @@ var ResultRating = /** @class */ (function (_super) {
             _this.logger.error('An error occurred while rating the item');
         });
     };
-    ResultRating.ID = 'ResultRating';
-    ResultRating.doExport = function () {
-        GlobalExports_1.exportGlobally({
-            ResultRating: ResultRating
-        });
-    };
     return ResultRating;
 }(Component_1.Component));
+ResultRating.ID = 'ResultRating';
+ResultRating.doExport = function () {
+    GlobalExports_1.exportGlobally({
+        'ResultRating': ResultRating
+    });
+};
 exports.ResultRating = ResultRating;
 Initialization_1.Initialization.registerAutoCreateComponent(ResultRating);
 
 
 /***/ }),
 
-/***/ 525:
+/***/ 941:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

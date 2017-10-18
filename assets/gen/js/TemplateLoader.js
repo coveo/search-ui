@@ -1,6 +1,6 @@
-webpackJsonpCoveo__temporary([65],{
+webpackJsonpCoveo__temporary([63],{
 
-/***/ 313:
+/***/ 397:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -71,7 +71,7 @@ var GlobalExports_1 = __webpack_require__(4);
  *
  * See [Result Templates](https://developers.coveo.com/x/aIGfAQ).
  */
-var TemplateLoader = /** @class */ (function (_super) {
+var TemplateLoader = (function (_super) {
     __extends(TemplateLoader, _super);
     /**
      * Creates a new TemplateLoader.
@@ -124,37 +124,37 @@ var TemplateLoader = /** @class */ (function (_super) {
             Initialization_1.Initialization.automaticallyCreateComponentsInside(this.element, initParameters);
         }
     };
-    TemplateLoader.ID = 'TemplateLoader';
-    TemplateLoader.doExport = function () {
-        GlobalExports_1.exportGlobally({
-            TemplateLoader: TemplateLoader
-        });
-    };
-    /**
-     * The possible options for a TemplateLoader.
-     * @componentOptions
-     */
-    TemplateLoader.options = {
-        /**
-         * Specifies how to find the template. This can be either a CSS selector or an HTML `id` attribute.
-         *
-         * **Examples:**
-         *
-         * - With a CSS selector: `data-template-selector='.MySelector'`
-         * - With an HTML `id`: `data-template-id='MyId'`
-         */
-        template: ComponentOptions_1.ComponentOptions.buildTemplateOption(),
-        /**
-         * Specifies the boolean condition that the result must satisfy in order for the template to load.
-         *
-         * **Example:**
-         *
-         * `data-condition='percentScore > 80'`
-         */
-        condition: ComponentOptions_1.ComponentOptions.buildStringOption()
-    };
     return TemplateLoader;
 }(Component_1.Component));
+TemplateLoader.ID = 'TemplateLoader';
+TemplateLoader.doExport = function () {
+    GlobalExports_1.exportGlobally({
+        'TemplateLoader': TemplateLoader
+    });
+};
+/**
+ * The possible options for a TemplateLoader.
+ * @componentOptions
+ */
+TemplateLoader.options = {
+    /**
+     * Specifies how to find the template. This can be either a CSS selector or an HTML `id` attribute.
+     *
+     * **Examples:**
+     *
+     * - With a CSS selector: `data-template-selector='.MySelector'`
+     * - With an HTML `id`: `data-template-id='MyId'`
+     */
+    template: ComponentOptions_1.ComponentOptions.buildTemplateOption(),
+    /**
+     * Specifies the boolean condition that the result must satisfy in order for the template to load.
+     *
+     * **Example:**
+     *
+     * `data-condition='percentScore > 80'`
+     */
+    condition: ComponentOptions_1.ComponentOptions.buildStringOption()
+};
 exports.TemplateLoader = TemplateLoader;
 Initialization_1.Initialization.registerAutoCreateComponent(TemplateLoader);
 

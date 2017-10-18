@@ -1,12 +1,12 @@
-webpackJsonpCoveo__temporary([41],{
+webpackJsonpCoveo__temporary([39],{
 
-/***/ 16:
+/***/ 17:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var SVGDom = /** @class */ (function () {
+var SVGDom = (function () {
     function SVGDom() {
     }
     SVGDom.addClassToSVGInContainer = function (svgContainer, classToAdd) {
@@ -28,7 +28,7 @@ exports.SVGDom = SVGDom;
 
 /***/ }),
 
-/***/ 290:
+/***/ 375:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -51,11 +51,11 @@ var Dom_1 = __webpack_require__(3);
 var QueryEvents_1 = __webpack_require__(11);
 var GlobalExports_1 = __webpack_require__(4);
 var SVGIcons_1 = __webpack_require__(15);
-var SVGDom_1 = __webpack_require__(16);
+var SVGDom_1 = __webpack_require__(17);
 /**
  * The Logo component adds a clickable Coveo logo in the search interface.
  */
-var Logo = /** @class */ (function (_super) {
+var Logo = (function (_super) {
     __extends(Logo, _super);
     /**
      * Creates a new Logo component.
@@ -93,15 +93,15 @@ var Logo = /** @class */ (function (_super) {
     Logo.prototype.show = function () {
         Dom_1.$$(this.element).removeClass('coveo-hidden');
     };
-    Logo.ID = 'Logo';
-    Logo.doExport = function () {
-        GlobalExports_1.exportGlobally({
-            Logo: Logo
-        });
-    };
-    Logo.options = {};
     return Logo;
 }(Component_1.Component));
+Logo.ID = 'Logo';
+Logo.doExport = function () {
+    GlobalExports_1.exportGlobally({
+        'Logo': Logo
+    });
+};
+Logo.options = {};
 exports.Logo = Logo;
 Initialization_1.Initialization.registerAutoCreateComponent(Logo);
 

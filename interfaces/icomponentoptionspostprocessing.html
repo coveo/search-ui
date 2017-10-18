@@ -56,7 +56,7 @@
 	<div class="bottomHeader">
 		<div id="searchBox">
 			<div class="CoveoSearchbox" data-enable-omnibox="true" data-inline="false" data-enable-wildcards="true" data-enable-search-as-you-type="false" data-enable-query-suggest-addon="false" data-enable-query-syntax="true" data-enable-field-addon="true"></div>
-			<div class="CoveoFieldSuggestions" data-field="@jsuipagetopic" data-header-title="Suggested topics"></div>
+			<div class="CoveoFieldSuggestions" data-field="@systitle" data-header-title="Suggested topics"></div>
 		</div>
 	</div>
 	<!-- Do not focus on Querybox when URL contains hash to ensure page scrolls down to corresponding anchor. -->
@@ -123,8 +123,7 @@
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>The <code>IComponentOptionsPostProcessing&lt;T&gt;</code> interface describes a post process function that should allow a component
-						option to further modify its own value once all other options of that component have been built.</p>
+						<p>Specify a postProcess function that allows an option to further modify itself once all other options have loaded.</p>
 					</div>
 				</div>
 			</section>
@@ -157,28 +156,23 @@
 						<aside class="tsd-sources">
 							<ul>
 								<li>Defined in
-									<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/ComponentOptions.ts#L30">src/ui/Base/ComponentOptions.ts
-								:30</a></li>
+									<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/ComponentOptions.ts#L29">src/ui/Base/ComponentOptions.ts
+								:29</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
 							<div class="lead">
-								<p>Specifies a function that should allow a component option to further modify its own value once all other options
-								of that component have been built.</p>
+								<p>Specify a postProcess function that allows an option to further modify itself once all other options have loaded.</p>
 							</div>
 						</div>
 						<h4 class="tsd-parameters-title">Parameters</h4>
 						<ul class="tsd-parameters">
 							<li>
 								<h5>value: <span class="tsd-signature-type">T</span></h5>
-								<div class="tsd-comment tsd-typography">
-									<p>The value originally specified for the option.</p>
-								</div>
 							</li>
 							<li>
 								<h5>options: <span class="tsd-signature-type">any</span></h5>
 								<div class="tsd-comment tsd-typography">
-									<p>The options of the component.</p>
 								</div>
 							</li>
 						</ul>

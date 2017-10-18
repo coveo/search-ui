@@ -1,12 +1,12 @@
-webpackJsonpCoveo__temporary([21],{
+webpackJsonpCoveo__temporary([19],{
 
-/***/ 16:
+/***/ 17:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var SVGDom = /** @class */ (function () {
+var SVGDom = (function () {
     function SVGDom() {
     }
     SVGDom.addClassToSVGInContainer = function (svgContainer, classToAdd) {
@@ -28,7 +28,7 @@ exports.SVGDom = SVGDom;
 
 /***/ }),
 
-/***/ 301:
+/***/ 386:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -46,19 +46,18 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var Component_1 = __webpack_require__(8);
 var ComponentOptions_1 = __webpack_require__(9);
-var DefaultFoldingTemplate_1 = __webpack_require__(521);
-var Utils_1 = __webpack_require__(6);
-var QueryUtils_1 = __webpack_require__(19);
+var DefaultFoldingTemplate_1 = __webpack_require__(988);
+var Utils_1 = __webpack_require__(5);
+var QueryUtils_1 = __webpack_require__(20);
 var Initialization_1 = __webpack_require__(2);
 var Assert_1 = __webpack_require__(7);
 var Dom_1 = __webpack_require__(3);
 var Strings_1 = __webpack_require__(10);
 var _ = __webpack_require__(1);
 var GlobalExports_1 = __webpack_require__(4);
-var AnalyticsActionListMeta_1 = __webpack_require__(12);
-__webpack_require__(522);
+__webpack_require__(939);
 var SVGIcons_1 = __webpack_require__(15);
-var SVGDom_1 = __webpack_require__(16);
+var SVGDom_1 = __webpack_require__(17);
 /**
  * The `ResultFolding` component renders folded result sets. It is usable inside a result template when there is an
  * active [`Folding`]{@link Folding} component in the page. This component takes care of rendering the parent result and
@@ -68,7 +67,7 @@ var SVGDom_1 = __webpack_require__(16);
  *
  * See [Folding Results](https://developers.coveo.com/x/7hUvAg).
  */
-var ResultFolding = /** @class */ (function (_super) {
+var ResultFolding = (function (_super) {
     __extends(ResultFolding, _super);
     /**
      * Creates a new ResultFolding component.
@@ -98,8 +97,7 @@ var ResultFolding = /** @class */ (function (_super) {
         return _this;
     }
     /**
-     * Show more results by fetching additional results from the index, which match the current folded conversation.
-     * This is the equivalent of clicking "Show all conversation".
+     *
      * @returns {Promise<IQueryResult[]>}
      */
     ResultFolding.prototype.showMoreResults = function () {
@@ -110,10 +108,10 @@ var ResultFolding = /** @class */ (function (_super) {
         this.waitAnimation = Dom_1.$$('div', { className: 'coveo-loading-spinner' }).el;
         this.results.appendChild(this.waitAnimation);
         this.updateElementVisibility();
-        var ret = this.moreResultsPromise.then(function (results) {
+        var ret = this.moreResultsPromise
+            .then(function (results) {
             _this.childResults = results;
             _this.showingMoreResults = true;
-            _this.usageAnalytics.logClickEvent(AnalyticsActionListMeta_1.analyticsActionCauseList.foldingShowMore, _this.getAnalyticsMetadata(), _this.result, _this.element);
             return _this.displayThoseResults(results).then(function () {
                 _this.updateElementVisibility(results.length);
                 return results;
@@ -126,13 +124,9 @@ var ResultFolding = /** @class */ (function (_super) {
         });
         return ret;
     };
-    /**
-     * Show less results for a given conversation. This is the equivalent of clicking "Show less"
-     */
     ResultFolding.prototype.showLessResults = function () {
         this.cancelAnyPendingShowMore();
         this.showingMoreResults = false;
-        this.usageAnalytics.logCustomEvent(AnalyticsActionListMeta_1.analyticsActionCauseList.foldingShowLess, this.getAnalyticsMetadata(), this.element);
         this.displayThoseResults(this.result.childResults);
         this.updateElementVisibility();
         this.scrollToResultElement();
@@ -223,13 +217,11 @@ var ResultFolding = /** @class */ (function (_super) {
         var _this = this;
         QueryUtils_1.QueryUtils.setStateObjectOnQueryResult(this.queryStateModel.get(), childResult);
         QueryUtils_1.QueryUtils.setSearchInterfaceObjectOnQueryResult(this.searchInterface, childResult);
-        return this.options.resultTemplate
-            .instantiateToElement(childResult, {
+        return this.options.resultTemplate.instantiateToElement(childResult, {
             wrapInDiv: false,
             checkCondition: false,
             responsiveComponents: this.searchInterface.responsiveComponents
-        })
-            .then(function (oneChild) {
+        }).then(function (oneChild) {
             Dom_1.$$(oneChild).addClass('coveo-result-folding-child-result');
             Dom_1.$$(oneChild).toggleClass('coveo-normal-child-result', !_this.showingMoreResults);
             Dom_1.$$(oneChild).toggleClass('coveo-expanded-child-result', _this.showingMoreResults);
@@ -241,11 +233,7 @@ var ResultFolding = /** @class */ (function (_super) {
     ResultFolding.prototype.autoCreateComponentsInsideResult = function (element, result) {
         Assert_1.Assert.exists(element);
         var initOptions = this.searchInterface.options;
-        var initParameters = {
-            options: initOptions,
-            bindings: this.getBindings(),
-            result: result
-        };
+        var initParameters = { options: initOptions, bindings: this.getBindings(), result: result };
         return Initialization_1.Initialization.automaticallyCreateComponentsInside(element, initParameters);
     };
     ResultFolding.prototype.cancelAnyPendingShowMore = function () {
@@ -263,91 +251,89 @@ var ResultFolding = /** @class */ (function (_super) {
             }
         });
     };
-    ResultFolding.prototype.getAnalyticsMetadata = function () {
-        return {
-            documentURL: this.result.clickUri,
-            documentTitle: this.result.title,
-            author: Utils_1.Utils.getFieldValue(this.result, 'author')
-        };
-    };
-    ResultFolding.ID = 'ResultFolding';
-    ResultFolding.doExport = function () {
-        GlobalExports_1.exportGlobally({
-            ResultFolding: ResultFolding,
-            DefaultFoldingTemplate: DefaultFoldingTemplate_1.DefaultFoldingTemplate
-        });
-    };
-    /**
-     * The options for the component
-     * @componentOptions
-     */
-    ResultFolding.options = {
-        /**
-         * Specifies the template to use to render each of the child results for a top result.
-         *
-         * You can specify a previously registered template to use either by referring to its HTML `id` attribute or to a
-         * CSS selector (see {@link TemplateCache}).
-         *
-         * **Example:**
-         *
-         * Specifying a previously registered template by referring to its HTML `id` attribute:
-         *
-         * ```html
-         * <span class="CoveoResultFolding" data-result-template-id="Foo"></span>
-         * ```
-         *
-         * Specifying a previously registered template by referring to a CSS selector:
-         *
-         * ```html
-         * <span class='CoveoResultFolding' data-result-template-selector="#Foo"></span>
-         * ```
-         *
-         * If you do not specify a custom folding template, the component uses the default result folding template.
-         */
-        resultTemplate: ComponentOptions_1.ComponentOptions.buildTemplateOption({ defaultFunction: function () { return new DefaultFoldingTemplate_1.DefaultFoldingTemplate(); } }),
-        /**
-         * Specifies the caption to display at the top of the child results when the folding result set is not expanded.
-         *
-         * Default value is `undefined`, which displays no caption.
-         */
-        normalCaption: ComponentOptions_1.ComponentOptions.buildLocalizedStringOption(),
-        /**
-         * Specifies the caption to display at the top of the child results when the folding result set is expanded.
-         *
-         * Default value is `undefined`, which displays no caption.
-         */
-        expandedCaption: ComponentOptions_1.ComponentOptions.buildLocalizedStringOption(),
-        /**
-         * Specifies the caption to display on the link to expand / show child results.
-         *
-         * Default value is the localized string for `ShowMore`.
-         */
-        moreCaption: ComponentOptions_1.ComponentOptions.buildLocalizedStringOption({ postProcessing: function (value) { return value || Strings_1.l('ShowMore'); } }),
-        /**
-         * Specifies the caption to display on the link to shrink the loaded folding result set back to only the top result.
-         *
-         * Default value is the localized string for `ShowLess`.
-         */
-        lessCaption: ComponentOptions_1.ComponentOptions.buildLocalizedStringOption({ postProcessing: function (value) { return value || Strings_1.l('ShowLess'); } }),
-        /**
-         * Specifies the caption to display when there is only one result in a folding result set.
-         *
-         * Default value is the localized string for `DisplayingTheOnlyMessage`
-         */
-        oneResultCaption: ComponentOptions_1.ComponentOptions.buildLocalizedStringOption({
-            postProcessing: function (value) { return value || Strings_1.l('DisplayingTheOnlyMessage'); }
-        })
-    };
     return ResultFolding;
 }(Component_1.Component));
+ResultFolding.ID = 'ResultFolding';
+ResultFolding.doExport = function () {
+    GlobalExports_1.exportGlobally({
+        'ResultFolding': ResultFolding,
+        'DefaultFoldingTemplate': DefaultFoldingTemplate_1.DefaultFoldingTemplate
+    });
+};
+/**
+ * The options for the component
+ * @componentOptions
+ */
+ResultFolding.options = {
+    /**
+     * Specifies the template to use to render each of the child results for a top result.
+     *
+     * You can specify a previously registered template to use either by referring to its HTML `id` attribute or to a
+     * CSS selector (see {@link TemplateCache}).
+     *
+     * **Example:**
+     *
+     * Specifying a previously registered template by referring to its HTML `id` attribute:
+     *
+     * ```html
+     * <span class="CoveoResultFolding" data-result-template-id="Foo"></span>
+     * ```
+     *
+     * Specifying a previously registered template by referring to a CSS selector:
+     *
+     * ```html
+     * <span class='CoveoResultFolding' data-result-template-selector="#Foo"></span>
+     * ```
+     *
+     * If you do not specify a custom folding template, the component uses the default result folding template.
+     */
+    resultTemplate: ComponentOptions_1.ComponentOptions.buildTemplateOption({ defaultFunction: function () { return new DefaultFoldingTemplate_1.DefaultFoldingTemplate(); } }),
+    /**
+     * Specifies the caption to display at the top of the child results when the folding result set is not expanded.
+     *
+     * Default value is `undefined`, which displays no caption.
+     */
+    normalCaption: ComponentOptions_1.ComponentOptions.buildLocalizedStringOption(),
+    /**
+     * Specifies the caption to display at the top of the child results when the folding result set is expanded.
+     *
+     * Default value is `undefined`, which displays no caption.
+     */
+    expandedCaption: ComponentOptions_1.ComponentOptions.buildLocalizedStringOption(),
+    /**
+     * Specifies the caption to display on the link to expand / show child results.
+     *
+     * Default value is the localized string for `ShowMore`.
+     */
+    moreCaption: ComponentOptions_1.ComponentOptions.buildLocalizedStringOption({ postProcessing: function (value) { return value || Strings_1.l('ShowMore'); } }),
+    /**
+     * Specifies the caption to display on the link to shrink the loaded folding result set back to only the top result.
+     *
+     * Default value is the localized string for `ShowLess`.
+     */
+    lessCaption: ComponentOptions_1.ComponentOptions.buildLocalizedStringOption({ postProcessing: function (value) { return value || Strings_1.l('ShowLess'); } }),
+    /**
+     * Specifies the caption to display when there is only one result in a folding result set.
+     *
+     * Default value is the localized string for `DisplayingTheOnlyMessage`
+     */
+    oneResultCaption: ComponentOptions_1.ComponentOptions.buildLocalizedStringOption({ postProcessing: function (value) { return value || Strings_1.l('DisplayingTheOnlyMessage'); } })
+};
 exports.ResultFolding = ResultFolding;
 Initialization_1.Initialization.registerAutoCreateComponent(ResultFolding);
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(6)))
 
 /***/ }),
 
-/***/ 521:
+/***/ 939:
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+
+/***/ 988:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -363,8 +349,8 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var Template_1 = __webpack_require__(24);
-var DefaultFoldingTemplate = /** @class */ (function (_super) {
+var Template_1 = __webpack_require__(25);
+var DefaultFoldingTemplate = (function (_super) {
     __extends(DefaultFoldingTemplate, _super);
     function DefaultFoldingTemplate() {
         return _super.call(this) || this;
@@ -379,13 +365,6 @@ var DefaultFoldingTemplate = /** @class */ (function (_super) {
 }(Template_1.Template));
 exports.DefaultFoldingTemplate = DefaultFoldingTemplate;
 
-
-/***/ }),
-
-/***/ 522:
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
 
 /***/ })
 

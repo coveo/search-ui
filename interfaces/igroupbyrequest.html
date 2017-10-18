@@ -56,7 +56,7 @@
 	<div class="bottomHeader">
 		<div id="searchBox">
 			<div class="CoveoSearchbox" data-enable-omnibox="true" data-inline="false" data-enable-wildcards="true" data-enable-search-as-you-type="false" data-enable-query-suggest-addon="false" data-enable-query-syntax="true" data-enable-field-addon="true"></div>
-			<div class="CoveoFieldSuggestions" data-field="@jsuipagetopic" data-header-title="Suggested topics"></div>
+			<div class="CoveoFieldSuggestions" data-field="@systitle" data-header-title="Suggested topics"></div>
 		</div>
 	</div>
 	<!-- Do not focus on Querybox when URL contains hash to ensure page scrolls down to corresponding anchor. -->
@@ -155,9 +155,9 @@
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>The <code>IGroupByRequest</code> interface describes a Group By operation to perform against the index.</p>
+						<p>Describe a group by request to perform against the index.<br/>
+						See : <a href="https://developers.coveo.com/display/SearchREST/Group+By+Parameters">https://developers.coveo.com/display/SearchREST/Group+By+Parameters</a></p>
 					</div>
-					<p>See <a href="https://developers.coveo.com/x/jQEv">Group By Parameters</a>.</p>
 				</div>
 			</section>
 			<div class="preview-container tsd-panel">
@@ -194,19 +194,16 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/GroupByRequest.ts#L91">src/rest/GroupByRequest.ts
-							:91</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/GroupByRequest.ts#L54">src/rest/GroupByRequest.ts
+							:54</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Explicitly specifies a list of values for which to generate Group By values.</p>
+							<p>This explicitly specifies a list of values for which Group By values should be generated.<br/>
+								Trailing wildcards can be used to include ranges of values.<br/>
+							eg : The array [&quot;foo&quot;, &quot;bar*&quot;] would return Group By values for foo and any value starting with bar.</p>
 						</div>
-						<p>You can use trailing wildcards to include ranges of values.</p>
-						<p><strong>Example:</strong></p>
-						<blockquote>
-							<p>The array <code>[&quot;foo&quot;, &quot;bar*&quot;]</code> would return Group By values for <code>foo</code> and any value starting with <code>bar</code>.</p>
-						</blockquote>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
@@ -216,17 +213,15 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/GroupByRequest.ts#L100">src/rest/GroupByRequest.ts
-							:100</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/GroupByRequest.ts#L59">src/rest/GroupByRequest.ts
+							:59</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies an array of computed fields that should be evaluated for each Group By value that is returned.</p>
+							<p>This specifies an array of computed fields that should be computed for each Group By value that is returned.<br/>
+							Computed fields are used to perform aggregate operations on other fields for all the matching items having a specific value in the Group By field in the results</p>
 						</div>
-						<p>Computed fields are used to perform aggregate operations on other fields for all the matching items having a
-							specific value in the Group By field in the results. See
-						<a href="https://developers.coveo.com/x/jwEv">Computed Field Parameters</a>.</p>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
@@ -236,18 +231,16 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/GroupByRequest.ts#L81">src/rest/GroupByRequest.ts
-							:81</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/GroupByRequest.ts#L48">src/rest/GroupByRequest.ts
+							:48</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies a constant query expression on which to compute the Group By operation.</p>
+							<p>This specifies a constant query expression on which to compute the Group By operation.<br/>
+								By default, the constant part of the query expression being executed is used.<br/>
+							This feature is much like the normal queryOverride except that the index will keep the query expression in cache for faster queries. Do no put dynamic query expression in this parameter, as it will negatively impact the performance.</p>
 						</div>
-						<p>This feature is similar to the <a href="igroupbyrequest.html#queryoverride"><code>queryOverride</code></a> feature, except that in this
-							case, the index keeps the constant query expression in cache for faster queries. You should avoid specifying a
-						dynamic query expression for this parameter, for doing so will negatively impact performance.</p>
-						<p>By default, the constant part of the query expression being executed is used.</p>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
@@ -257,14 +250,13 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/GroupByRequest.ts#L14">src/rest/GroupByRequest.ts
-							:14</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/GroupByRequest.ts#L12">src/rest/GroupByRequest.ts
+							:12</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies the field on which to perform the Group By request. The Group By request returns a Group By value for
-							each distinct value of this field within the result set.</p>
+							<p>This specifies the field on which the Group By operation is performed. The Group By will return a Group By value for each distinct value of this field within the result set.</p>
 						</div>
 					</div>
 				</section>
@@ -275,15 +267,14 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/GroupByRequest.ts#L112">src/rest/GroupByRequest.ts
-							:112</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/GroupByRequest.ts#L67">src/rest/GroupByRequest.ts
+							:67</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies whether to let the index calculate the ranges.</p>
+							<p>By setting the parameter generateAutomaticRanges to true, the ranges will be calculated by the Coveo index.</p>
 						</div>
-						<p>Default value is <code>false</code>.</p>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
@@ -293,20 +284,16 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/GroupByRequest.ts#L59">src/rest/GroupByRequest.ts
-							:59</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/GroupByRequest.ts#L35">src/rest/GroupByRequest.ts
+							:35</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies how deep the index should scan the results to identify missing Group By values.</p>
+							<p>This specifies how deep the index will scan the results to identify missing Group By values.<br/>
+								If not specified, the default value is 1000.<br/>
+							When executing a Group By operation, the index uses various heuristics to list all the values that are appearing in the result set. In some corner cases, some values might be omitted (it&#39;s a classical trade-off of precision vs performance). Using injection means that the index will explicitly scan the field values of the top n results of the query, and ensure that the values present in those results are included. Using higher values for this parameter may impact query performance.</p>
 						</div>
-						<p>When executing a Group By operation, the index uses various heuristics to try to list all of the field values that
-							appear in the result set. In some corner cases, certain values might be omitted (it is a classical example of a
-							trade-off between precision and performance). Using <code>injectionDepth</code> forces the index to explicitly scan the field
-						values of the top n results of the query, and ensure that the field values present in those results are included.</p>
-						<p>Consequently, specifying a high value for this parameter may negatively impact query performance.</p>
-						<p>Default value is <code>1000</code>. Minimum value is <code>0</code>.</p>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
@@ -316,15 +303,15 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/GroupByRequest.ts#L45">src/rest/GroupByRequest.ts
-							:45</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/GroupByRequest.ts#L29">src/rest/GroupByRequest.ts
+							:29</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies the maximum number of values that the Group By operation can return.</p>
+							<p>This specifies the maximum number of values that the Group By operation will return.<br/>
+							If not specified, the default value is 10.</p>
 						</div>
-						<p>Default value is <code>10</code>. Minimum value is <code>0</code>.</p>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
@@ -334,17 +321,16 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/GroupByRequest.ts#L69">src/rest/GroupByRequest.ts
-							:69</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/GroupByRequest.ts#L41">src/rest/GroupByRequest.ts
+							:41</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies a different query expression on which to compute the Group By operation.</p>
+							<p>This specifies a different query expression on which to compute the Group By operation.<br/>
+								By default, the query expression being executed is used.<br/>
+							This feature is typically used for performance reasons to retrieve Group By values on separate expressions while executing a normal query in a single operation.</p>
 						</div>
-						<p>This feature is typically used for performance reasons to retrieve Group By values on separate expressions while
-						executing a normal query in a single operation.</p>
-						<p>By default, the query expression being executed is used.</p>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
@@ -354,13 +340,13 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/GroupByRequest.ts#L105">src/rest/GroupByRequest.ts
-							:105</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/GroupByRequest.ts#L63">src/rest/GroupByRequest.ts
+							:63</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Explicitly specifies a list of range values for which Group By values should be generated.</p>
+							<p>This explicitly specifies a list of range values for which Group By values should be generated.</p>
 						</div>
 					</div>
 				</section>
@@ -371,32 +357,21 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/GroupByRequest.ts#L38">src/rest/GroupByRequest.ts
-							:38</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/GroupByRequest.ts#L24">src/rest/GroupByRequest.ts
+							:24</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies how the indexer should sort the Group By values.</p>
+							<p>This specifies how the Group By values should be sorted by the indexer. If not specified, the default value is Score.<br/>
+								Possible values are :<br/>
+								-- score : the score is computed from the number of occurrences as well as from the position in the result set where the items having this value are appearing. Using this criterion, an item with 100 occurrences might appear after one with only 10 occurrences if those occurrences tend to appear sooner in the ranked result set.<br/>
+								-- occurrences : Sort by number of occurrences, with values having the highest number appearing first. <br/>
+								-- alphaascending / alphadescending : Sort alphabetically on the field values. <br/>
+								-- computedfieldascending / computedfielddescending : Sort on the values of the first computed field for each Group By value. <br/>
+								-- chisquare : Sort based on the relative frequency of values in the result set compared to the frequency in the whole index. This means that a value that doesn&#39;t appear often in the index but does appear often in the result set will tend to appear higher in the list.<br/>
+							-- nosort : Do not sort the Group By values. The values will be returned in a random order.</p>
 						</div>
-						<p>The possible values are:</p>
-						<ul>
-							<li><code>score</code>: Sort by score. Score is computed from the number of occurrences of a field value, as well as from the
-								position where results having this field value appear in the ranked result set. When using this sort criterion, a
-								field value with 100 occurrences might appear after one with only 10 occurrences, if the occurrences of the latter
-							tend to appear sooner in the ranked result set.</li>
-							<li><code>occurrences</code>: Sort by number of occurrences, with values having the highest number of occurrences appearing
-							first.</li>
-							<li><code>alphaascending</code> / <code>alphadescending</code>: Sort alphabetically on the field values.</li>
-							<li><code>computedfieldascending</code> / <code>computedfielddescending</code>: Sort on the values of the first computed field for each
-							Group By value (see <a href="https://developers.coveo.com/x/jwEv">Computed Field Parameters</a>).</li>
-							<li><code>chisquare</code>: Sort based on the relative frequency of values in the result set compared to the frequency in the
-								entire index. This means that a value that does not appear often in the index but does appear often in the result
-							set will tend to appear first.</li>
-							<li><code>nosort</code>: Do not sort the Group By values. When using this sort criterion, the index returns the Group By values
-							in a random order.</li>
-						</ul>
-						<p>Default value is <code>score</code>.</p>
 					</div>
 				</section>
 			</section>

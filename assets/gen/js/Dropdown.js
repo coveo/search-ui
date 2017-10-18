@@ -1,6 +1,6 @@
-webpackJsonpCoveo__temporary([68],{
+webpackJsonpCoveo__temporary([66],{
 
-/***/ 53:
+/***/ 60:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13,7 +13,7 @@ var GlobalExports_1 = __webpack_require__(4);
 /**
  * A dropdown widget with standard styling.
  */
-var Dropdown = /** @class */ (function () {
+var Dropdown = (function () {
     /**
      * Creates a new `Dropdown`.
      * @param onChange The function to call when the dropdown selected value changes. This function takes the current
@@ -24,7 +24,8 @@ var Dropdown = /** @class */ (function () {
      * @param label The label to display for the dropdown.
      */
     function Dropdown(onChange, listOfValues, getDisplayValue, label) {
-        if (onChange === void 0) { onChange = function (dropdown) { }; }
+        if (onChange === void 0) { onChange = function (dropdown) {
+        }; }
         if (getDisplayValue === void 0) { getDisplayValue = Strings_1.l; }
         this.onChange = onChange;
         this.listOfValues = listOfValues;
@@ -37,7 +38,7 @@ var Dropdown = /** @class */ (function () {
     }
     Dropdown.doExport = function () {
         GlobalExports_1.exportGlobally({
-            Dropdown: Dropdown
+            'Dropdown': Dropdown
         });
     };
     /**

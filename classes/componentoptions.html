@@ -56,7 +56,7 @@
 	<div class="bottomHeader">
 		<div id="searchBox">
 			<div class="CoveoSearchbox" data-enable-omnibox="true" data-inline="false" data-enable-wildcards="true" data-enable-search-as-you-type="false" data-enable-query-suggest-addon="false" data-enable-query-syntax="true" data-enable-field-addon="true"></div>
-			<div class="CoveoFieldSuggestions" data-field="@jsuipagetopic" data-header-title="Suggested topics"></div>
+			<div class="CoveoFieldSuggestions" data-field="@systitle" data-header-title="Suggested topics"></div>
 		</div>
 	</div>
 	<!-- Do not focus on Querybox when URL contains hash to ensure page scrolls down to corresponding anchor. -->
@@ -132,9 +132,6 @@
 								<a href="componentoptions.html#buildstringoption" class="tsd-kind-icon">build<wbr>String<wbr>Option</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-static">
-								<a href="componentoptions.html#buildtemplateoption" class="tsd-kind-icon">build<wbr>Template<wbr>Option</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-static">
 								<a href="componentoptions.html#initcomponentoptions" class="tsd-kind-icon">init<wbr>Component<wbr>Options</a>
 							</li>
 						</ul>
@@ -167,14 +164,10 @@
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>The <code>ComponentOptions</code> static class contains methods allowing the Coveo JavaScript Search Framework to initialize
-						component options.</p>
+						<p>This static class is used to initialize component options.</p>
 					</div>
-					<p>Typically, each <a href="component.html"><code>Component</code></a> that exposes a set of options contains a static <code>options</code> property.</p>
-					<p>This property &quot;builds&quot; each option using the <code>ComponentOptions</code> method corresponding to its type (e.g.,
-						<a href="componentoptions.html#buildbooleanoption"><code>buildBooleanOption</code></a>,
-						<a href="componentoptions.html#buildfieldoption"><code>buildFieldOption</code></a>,
-					<a href="componentoptions.html#buildstringoption"><code>buildStringOption</code></a>, etc.)</p>
+					<p>Typically, each <a href="component.html">Component</a> that exposes a set of options will contains a static <code>options</code> property,</p>
+					<p>This property will &quot;build&quot; the options based on their type.</p>
 				</div>
 			</section>
 			<div class="preview-container tsd-panel">
@@ -199,7 +192,6 @@
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><a href="componentoptions.html#buildnumberoption" class="tsd-kind-icon">build<wbr>Number<wbr>Option</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><a href="componentoptions.html#buildselectoroption" class="tsd-kind-icon">build<wbr>Selector<wbr>Option</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><a href="componentoptions.html#buildstringoption" class="tsd-kind-icon">build<wbr>String<wbr>Option</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><a href="componentoptions.html#buildtemplateoption" class="tsd-kind-icon">build<wbr>Template<wbr>Option</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><a href="componentoptions.html#initcomponentoptions" class="tsd-kind-icon">init<wbr>Component<wbr>Options</a></li>
 							</ul>
 						</section>
@@ -219,31 +211,24 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/ComponentOptions.ts#L322">src/ui/Base/ComponentOptions.ts
-									:322</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/ComponentOptions.ts#L250">src/ui/Base/ComponentOptions.ts
+									:250</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Builds a boolean option.</p>
+									<p>Build a boolean option.</p>
 								</div>
-								<p><strong>Markup Examples:</strong></p>
-								<blockquote>
-									<p><code>data-foo=&quot;true&quot;</code></p>
-									<p><code>data-foo=&quot;false&quot;</code></p>
-								</blockquote>
+								<p>A boolean option can be &quot;true&quot; or &quot;false&quot; in the markup.</p>
+								<p><code>data-foo=&quot;true&quot;</code> or <code>data-foo=&quot;false&quot;</code>.</p>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> optionArgs: <a href="../interfaces/icomponentoptions.html" class="tsd-signature-type">IComponentOptions</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">&gt;</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>The arguments to apply when building the option.</p>
-									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
-							<p>The resulting option value.</p>
 						</li>
 					</ul>
 				</section>
@@ -258,37 +243,25 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/ComponentOptions.ts#L400">src/ui/Base/ComponentOptions.ts
-									:400</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/ComponentOptions.ts#L299">src/ui/Base/ComponentOptions.ts
+									:299</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Builds a color option.</p>
+									<p>Build a color option.</p>
 								</div>
-								<p>Normally, this simply builds a string that matches a CSS color.</p>
-								<p><strong>Note:</strong></p>
-								<blockquote>
-									<p>In the markup, this offers no advantage over using a plain string. This is mostly useful for the Coveo JavaScript
-									Interface Editor.</p>
-								</blockquote>
-								<p><strong>Markup Examples:</strong></p>
-								<blockquote>
-									<p><code>data-foo=&quot;coveo-sprites-user&quot;</code></p>
-									<p><code>data-foo=&quot;coveo-sprites-database&quot;</code></p>
-								</blockquote>
+								<p>Normally, this only means that it will build a string that matches a CSS color.</p>
+								<p>In the markup, this has no advantage over a plain string. This is mostly useful for the interface editor.</p>
+								<p><code>data-foo=&quot;coveo-sprites-user&quot;</code> or <code>data-foo=&quot;coveo-sprites-database&quot;</code>.</p>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> optionArgs: <a href="../interfaces/icomponentoptions.html" class="tsd-signature-type">IComponentOptions</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>The arguments to apply when building the option.</p>
-									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
-							<p>The resulting option value.</p>
 						</li>
 					</ul>
 				</section>
@@ -303,32 +276,24 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/ComponentOptions.ts#L488">src/ui/Base/ComponentOptions.ts
-									:488</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/ComponentOptions.ts#L353">src/ui/Base/ComponentOptions.ts
+									:353</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Builds a field option.</p>
+									<p>Build a field option.</p>
 								</div>
-								<p>A field option validates whether the field has a valid name. This means that the string must start with the <code>@</code>
-								character.</p>
-								<p><strong>Markup Example:</strong></p>
-								<blockquote>
-									<p><code>data-foo=&quot;@bar&quot;</code></p>
-								</blockquote>
+								<p>A field option will validate that the field has a valid name. This means that the string has to start with @.</p>
+								<p><code>data-foo=&quot;@bar&quot;</code>.</p>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> optionArgs: <a href="../interfaces/icomponentoptionsfieldoptionargs.html" class="tsd-signature-type">IComponentOptionsFieldOptionArgs</a></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>The arguments to apply when building the option.</p>
-									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="../interfaces/ifieldoption.html" class="tsd-signature-type">IFieldOption</a></h4>
-							<p>The resulting option value.</p>
 						</li>
 					</ul>
 				</section>
@@ -343,31 +308,24 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/ComponentOptions.ts#L504">src/ui/Base/ComponentOptions.ts
-									:504</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/ComponentOptions.ts#L364">src/ui/Base/ComponentOptions.ts
+									:364</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Builds an array of fields option.</p>
+									<p>Build an array of field option.</p>
 								</div>
 								<p>As with all options that expect an array, you should use commas to delimit the different values.</p>
-								<p><strong>Markup Example:</strong></p>
-								<blockquote>
-									<p><code>data-foo=&quot;@bar,@baz&quot;</code></p>
-								</blockquote>
+								<p><code>data-foo=&quot;@bar,@baz&quot;</code>.</p>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> optionArgs: <a href="../interfaces/icomponentoptionsfieldsoptionargs.html" class="tsd-signature-type">IComponentOptionsFieldsOptionArgs</a></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>The arguments to apply when building the option.</p>
-									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="../interfaces/ifieldoption.html" class="tsd-signature-type">IFieldOption</a><span class="tsd-signature-symbol">[]</span></h4>
-							<p>The resulting option value.</p>
 						</li>
 					</ul>
 				</section>
@@ -382,37 +340,25 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/ComponentOptions.ts#L423">src/ui/Base/ComponentOptions.ts
-									:423</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/ComponentOptions.ts#L312">src/ui/Base/ComponentOptions.ts
+									:312</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Builds a helper option.</p>
+									<p>Build a helper option.</p>
 								</div>
-								<p>Normally, this simply builds a string that matches the name of a template helper.</p>
-								<p><strong>Note:</strong></p>
-								<blockquote>
-									<p>In the markup, this offers no advantage over using a plain string. This is mostly useful for the Coveo JavaScript
-									Interface Editor.</p>
-								</blockquote>
-								<p><strong>Markup Examples:</strong></p>
-								<blockquote>
-									<p><code>data-foo=&quot;date&quot;</code></p>
-									<p><code>data-foo=&quot;dateTime&quot;</code></p>
-								</blockquote>
+								<p>Normally, this only means that it will build a string that matches the name of a template helper.</p>
+								<p>In the markup, this has no advantage over a plain string. This is mostly useful for the interface editor.</p>
+								<p><code>data-foo=&quot;date&quot;</code> or <code>data-foo=&quot;dateTime&quot;</code>.</p>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> optionArgs: <a href="../interfaces/icomponentoptions.html" class="tsd-signature-type">IComponentOptions</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>The arguments to apply when building the option.</p>
-									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
-							<p>The resulting option value.</p>
 						</li>
 					</ul>
 				</section>
@@ -427,32 +373,28 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/ComponentOptions.ts#L377">src/ui/Base/ComponentOptions.ts
-									:377</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/ComponentOptions.ts#L286">src/ui/Base/ComponentOptions.ts
+									:286</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Builds an icon option.</p>
+									<p>Build an icon option.</p>
 								</div>
-								<p>This takes an SVG icon name, validates it and returns the name of the icon.
-								<strong>Markup Examples:</strong></p>
+								<p>This takes an SVG icon name, validates it and returns the name of the icon.</p>
 								<blockquote>
 									<p><code>data-foo=&quot;search&quot;</code></p>
 									<p><code>data-foo=&quot;facet-expand&quot;</code></p>
 								</blockquote>
+								<p><code>data-foo=&quot;coveo-sprites-user&quot;</code> or <code>data-foo=&quot;coveo-sprites-database&quot;</code>.</p>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> optionArgs: <a href="../interfaces/icomponentoptions.html" class="tsd-signature-type">IComponentOptions</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>The arguments to apply when building the option.</p>
-									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
-							<p>The resulting option value.</p>
 						</li>
 					</ul>
 				</section>
@@ -467,36 +409,25 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/ComponentOptions.ts#L444">src/ui/Base/ComponentOptions.ts
-									:444</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/ComponentOptions.ts#L325">src/ui/Base/ComponentOptions.ts
+									:325</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Builds a JSON option.</p>
+									<p>Build a JSON option.</p>
 								</div>
-								<p>Normally, this simply builds a stringified JSON.</p>
-								<p><strong>Note:</strong></p>
-								<blockquote>
-									<p>In the markup, this offers no advantage over using a plain string. This is mostly useful for the Coveo JavaScript
-									Interface Editor.</p>
-								</blockquote>
-								<p><strong>Markup Example:</strong></p>
-								<blockquote>
-									<p><code>data-foo=&#39;{&quot;bar&quot; : &quot;baz&quot;}&#39;</code></p>
-								</blockquote>
+								<p>Normally, this only means that it will build a stringified JSON.</p>
+								<p>In the markup, this has no advantage over a plain string. This is mostly useful for the interface editor.</p>
+								<p><code>data-foo=&#39;{&quot;bar&quot; : &quot;baz&quot;}&#39;</code>.</p>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> optionArgs: <a href="../interfaces/icomponentoptions.html" class="tsd-signature-type">IComponentOptions</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>The arguments to apply when building the option.</p>
-									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
-							<p>The resulting option value.</p>
 						</li>
 					</ul>
 				</section>
@@ -511,19 +442,16 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/ComponentOptions.ts#L520">src/ui/Base/ComponentOptions.ts
-									:520</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/ComponentOptions.ts#L375">src/ui/Base/ComponentOptions.ts
+									:375</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Builds an array of strings option.</p>
+									<p>Build an array of string option.</p>
 								</div>
 								<p>As with all options that expect an array, you should use commas to delimit the different values.</p>
-								<p><strong>Markup Example:</strong></p>
-								<blockquote>
-									<p><code>data-foo=&quot;bar,baz&quot;</code></p>
-								</blockquote>
+								<p><code>data-foo=&quot;bar,baz&quot;</code>.</p>
 							</div>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
 							<ul class="tsd-type-parameters">
@@ -535,16 +463,12 @@
 							<ul class="tsd-parameters">
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> optionArgs: <a href="../interfaces/icomponentoptionslistoptionargs.html" class="tsd-signature-type">IComponentOptionsListOptionArgs</a></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>The arguments to apply when building the option.</p>
-									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">[]</span>
 								<span class="tsd-signature-symbol"> | </span>
 								<span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span>
 							</h4>
-							<p>The resulting option value.</p>
 						</li>
 					</ul>
 				</section>
@@ -559,35 +483,27 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/ComponentOptions.ts#L467">src/ui/Base/ComponentOptions.ts
-									:467</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/ComponentOptions.ts#L342">src/ui/Base/ComponentOptions.ts
+									:342</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Builds a localized string option.</p>
+									<p>Build a localized string option.</p>
 								</div>
 								<p>A localized string option can be any arbitrary string.</p>
-								<p>When parsing the value, the Coveo JavaScript Search Framework tries to load the localization for that string, if it
-								is available.</p>
-								<p>If it is not available, it returns the non-localized value.</p>
+								<p>The framework, when parsing the value, will try to load the localization for that word if it is available.</p>
+								<p>If it is not available, it will return the non-localized option.</p>
 								<p>This should be used for options that will be rendered directly to the end users.</p>
-								<p><strong>Markup Example:</strong></p>
-								<blockquote>
-									<p><code>data-foo=&quot;bar&quot;</code></p>
-								</blockquote>
+								<p><code>data-foo=&quot;bar&quot;</code>.</p>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> optionArgs: <a href="../interfaces/icomponentoptions.html" class="tsd-signature-type">IComponentOptions</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>The arguments to apply when building the option.</p>
-									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
-							<p>The resulting option value.</p>
 						</li>
 					</ul>
 				</section>
@@ -602,36 +518,24 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/ComponentOptions.ts#L344">src/ui/Base/ComponentOptions.ts
-									:344</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/ComponentOptions.ts#L261">src/ui/Base/ComponentOptions.ts
+									:261</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Builds a number option.</p>
+									<p>Build a number option.</p>
 								</div>
 								<p>A number option can be an integer or a float in the markup.</p>
-								<p><strong>Note:</strong></p>
-								<blockquote>
-									<p>To build a float option, you need to set the <code>float</code> property in the <a href="../interfaces/icomponentoptionsnumberoptionargs.html"><code>IComponentOptionsNumberOptionArgs</code></a> to <code>true</code>.</p>
-								</blockquote>
-								<p><strong>Markup Examples:</strong></p>
-								<blockquote>
-									<p><code>data-foo=&quot;3&quot;</code></p>
-									<p><code>data-foo=&quot;1.5&quot;</code></p>
-								</blockquote>
+								<p><code>data-foo=&quot;1&quot;</code> or <code>data-foo=&quot;1.5&quot;</code>.</p>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> optionArgs: <a href="../interfaces/icomponentoptionsnumberoptionargs.html" class="tsd-signature-type">IComponentOptionsNumberOptionArgs</a></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>The arguments to apply when building the option.</p>
-									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
-							<p>The resulting option value.</p>
 						</li>
 					</ul>
 				</section>
@@ -646,33 +550,25 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/ComponentOptions.ts#L539">src/ui/Base/ComponentOptions.ts
-									:539</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/ComponentOptions.ts#L388">src/ui/Base/ComponentOptions.ts
+									:388</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Builds an option that allow to select an HTMLElement.</p>
+									<p>Build an option that allow to select an HTMLElement.</p>
 								</div>
-								<p>The option accepts a CSS selector matching the required HTMLElement. This selector can either be a class, or an ID
-								selector.</p>
-								<p><strong>Markup Examples:</strong></p>
-								<blockquote>
-									<p><code>data-foo-selector=&quot;.bar&quot;</code></p>
-									<p><code>data-foo-selector=&quot;#bar&quot;</code></p>
-								</blockquote>
+								<p>The option accept a CSS selector that will allow to find the required HTMLElement.</p>
+								<p>It can be a class selector or an ID selector.</p>
+								<p><code>data-foo-selector=&quot;.bar&quot; or data-foo-selector=&quot;#bar&quot;</code>.</p>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> optionArgs: <a href="../interfaces/icomponentoptions.html" class="tsd-signature-type">IComponentOptions</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">HTMLElement</span><span class="tsd-signature-symbol">&gt;</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>The arguments to apply when building the option.</p>
-									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">HTMLElement</span></h4>
-							<p>The resulting option value.</p>
 						</li>
 					</ul>
 				</section>
@@ -687,74 +583,24 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/ComponentOptions.ts#L360">src/ui/Base/ComponentOptions.ts
-									:360</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/ComponentOptions.ts#L272">src/ui/Base/ComponentOptions.ts
+									:272</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Builds a string option.</p>
+									<p>Build a string option.</p>
 								</div>
 								<p>A string option can be any arbitrary string in the markup.</p>
-								<p><strong>Markup Example:</strong></p>
-								<blockquote>
-									<p><code>data-foo=&quot;bar&quot;</code></p>
-								</blockquote>
+								<p><code>data-foo=&quot;bar&quot;</code>.</p>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> optionArgs: <a href="../interfaces/icomponentoptions.html" class="tsd-signature-type">IComponentOptions</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>The arguments to apply when building the option.</p>
-									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
-							<p>The resulting option value.</p>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-static">
-					<a name="buildtemplateoption" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagStatic">Static</span> build<wbr>Template<wbr>Option</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-static">
-						<li class="tsd-signature tsd-kind-icon">build<wbr>Template<wbr>Option<span class="tsd-signature-symbol">(</span>optionArgs<span class="tsd-signature-symbol">?: </span><a href="../interfaces/icomponentoptionstemplateoptionargs.html" class="tsd-signature-type">IComponentOptionsTemplateOptionArgs</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Template</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/ComponentOptions.ts#L569">src/ui/Base/ComponentOptions.ts
-									:569</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Builds a template option.</p>
-								</div>
-								<p>The option accepts a CSS selector matching a valid template. This selector can either be a class, or an ID
-								selector.</p>
-								<p>When building a template option using an ID selector, the matching template must be registered in the
-								<a href="templatecache.html"><code>TemplateCache</code></a>, however.</p>
-								<p><strong>Markup Examples:</strong></p>
-								<blockquote>
-									<p><code>data-foo-id=&quot;#bar&quot;</code></p>
-									<p><code>data-foo-selector=&quot;.bar&quot;</code></p>
-								</blockquote>
-							</div>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5><span class="tsd-flag ts-flagOptional">Optional</span> optionArgs: <a href="../interfaces/icomponentoptionstemplateoptionargs.html" class="tsd-signature-type">IComponentOptionsTemplateOptionArgs</a></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>The arguments to apply when building the option.</p>
-									</div>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Template</span></h4>
-							<p>The resulting option value.</p>
 						</li>
 					</ul>
 				</section>
@@ -769,35 +615,34 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/ComponentOptions.ts#L666">src/ui/Base/ComponentOptions.ts
-									:666</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/ComponentOptions.ts#L491">src/ui/Base/ComponentOptions.ts
+									:491</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Loads and parses the options of the current element.</p>
+									<p>The main function that will load and parse the options for the current given element.</p>
 								</div>
-								<p>Each component calls this method in its constructor.</p>
+								<p>Every component will call this function in their constructor.</p>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>element: <span class="tsd-signature-type">HTMLElement</span></h5>
 									<div class="tsd-comment tsd-typography">
-										<p>The element whose markup options the method should load and parse.</p>
+										<p>The element on which the options should be parsed</p>
 									</div>
 								</li>
 								<li>
 									<h5>component: <span class="tsd-signature-type">any</span></h5>
 									<div class="tsd-comment tsd-typography">
-										<p>The class of the component whose options the method should load and parse (e.g., <code>Searchbox</code>,
-										<code>Facet</code>, etc.)</p>
+										<p>The component class for which the options should be parsed. For example : Searchbox, Facet, etc.</p>
 									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> values: <span class="tsd-signature-type">any</span></h5>
 									<div class="tsd-comment tsd-typography">
-										<p>The additional options which the method should merge with the specified markup option values.</p>
+										<p>The optional options which should be merged with the options set in the markup.</p>
 									</div>
 								</li>
 							</ul>

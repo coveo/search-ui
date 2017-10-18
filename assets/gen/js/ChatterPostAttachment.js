@@ -1,12 +1,12 @@
-webpackJsonpCoveo__temporary([45],{
+webpackJsonpCoveo__temporary([43],{
 
-/***/ 259:
+/***/ 304:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var ChatterUtils = /** @class */ (function () {
+var ChatterUtils = (function () {
     function ChatterUtils() {
     }
     ChatterUtils.buildURI = function (objectURI, objectId, newObjectId) {
@@ -22,7 +22,7 @@ exports.ChatterUtils = ChatterUtils;
 
 /***/ }),
 
-/***/ 276:
+/***/ 361:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -39,13 +39,13 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var Component_1 = __webpack_require__(8);
-var Utils_1 = __webpack_require__(6);
-var ChatterUtils_1 = __webpack_require__(259);
+var Utils_1 = __webpack_require__(5);
+var ChatterUtils_1 = __webpack_require__(304);
 var Strings_1 = __webpack_require__(10);
 var Initialization_1 = __webpack_require__(2);
 var Dom_1 = __webpack_require__(3);
 var GlobalExports_1 = __webpack_require__(4);
-var ChatterPostAttachment = /** @class */ (function (_super) {
+var ChatterPostAttachment = (function (_super) {
     __extends(ChatterPostAttachment, _super);
     function ChatterPostAttachment(element, options, bindings, result) {
         var _this = _super.call(this, element, ChatterPostAttachment.ID, bindings) || this;
@@ -75,14 +75,14 @@ var ChatterPostAttachment = /** @class */ (function (_super) {
         }
         return _this;
     }
-    ChatterPostAttachment.ID = 'ChatterPostAttachment';
-    ChatterPostAttachment.doExport = function () {
-        GlobalExports_1.exportGlobally({
-            ChatterPostAttachment: ChatterPostAttachment
-        });
-    };
     return ChatterPostAttachment;
 }(Component_1.Component));
+ChatterPostAttachment.ID = 'ChatterPostAttachment';
+ChatterPostAttachment.doExport = function () {
+    GlobalExports_1.exportGlobally({
+        'ChatterPostAttachment': ChatterPostAttachment
+    });
+};
 exports.ChatterPostAttachment = ChatterPostAttachment;
 Initialization_1.Initialization.registerAutoCreateComponent(ChatterPostAttachment);
 

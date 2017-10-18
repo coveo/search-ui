@@ -1,12 +1,12 @@
-webpackJsonpCoveo__temporary([25],{
+webpackJsonpCoveo__temporary([23],{
 
-/***/ 16:
+/***/ 17:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var SVGDom = /** @class */ (function () {
+var SVGDom = (function () {
     function SVGDom() {
     }
     SVGDom.addClassToSVGInContainer = function (svgContainer, classToAdd) {
@@ -28,7 +28,7 @@ exports.SVGDom = SVGDom;
 
 /***/ }),
 
-/***/ 274:
+/***/ 359:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -47,15 +47,15 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var Component_1 = __webpack_require__(8);
 var ComponentOptions_1 = __webpack_require__(9);
 var Initialization_1 = __webpack_require__(2);
-var CardOverlayEvents_1 = __webpack_require__(472);
+var CardOverlayEvents_1 = __webpack_require__(955);
 var Dom_1 = __webpack_require__(3);
 var Assert_1 = __webpack_require__(7);
-var KeyboardUtils_1 = __webpack_require__(23);
+var KeyboardUtils_1 = __webpack_require__(24);
 var GlobalExports_1 = __webpack_require__(4);
-__webpack_require__(473);
+__webpack_require__(917);
 var SVGIcons_1 = __webpack_require__(15);
-var SVGDom_1 = __webpack_require__(16);
-var Utils_1 = __webpack_require__(6);
+var SVGDom_1 = __webpack_require__(17);
+var Utils_1 = __webpack_require__(5);
 /**
  * The CardOverlay component displays a button that the user can click to toggle the visibility of an overlay on top of
  * an {@link IQueryResult}. While this component typically populates a {@link CardActionBar} component, it is actually
@@ -67,7 +67,7 @@ var Utils_1 = __webpack_require__(6);
  * When initialized, this component creates a `<div class="coveo-card-overlay">` element as the last child of its parent
  * IQueryResult, and displays a button which toggles the visibility of the overlay.
  */
-var CardOverlay = /** @class */ (function (_super) {
+var CardOverlay = (function (_super) {
     __extends(CardOverlay, _super);
     /**
      * Creates a new CardOverlay component.
@@ -165,38 +165,45 @@ var CardOverlay = /** @class */ (function (_super) {
         Dom_1.$$(element).on('click', function () { return _this.toggleOverlay(); });
         this.bind.on(element, 'keyup', KeyboardUtils_1.KeyboardUtils.keypressAction(KeyboardUtils_1.KEYBOARD.ENTER, function () { return _this.toggleOverlay(); }));
     };
-    CardOverlay.ID = 'CardOverlay';
-    CardOverlay.doExport = function () {
-        GlobalExports_1.exportGlobally({
-            CardOverlay: CardOverlay
-        });
-    };
-    /**
-     * @componentOptions
-     */
-    CardOverlay.options = {
-        /**
-         * Specifies the string to use for the overlay title and for the button text.
-         *
-         * Setting a value for this option is required for this component to work.
-         */
-        title: ComponentOptions_1.ComponentOptions.buildLocalizedStringOption({ required: true, defaultValue: 'NoTitle' }),
-        /**
-         * Specifies the icon to use for the overlay icon and for the button icon.
-         *
-         * The name of the icon to use should be specified in dashed case. ie: facet-expand
-         */
-        icon: ComponentOptions_1.ComponentOptions.buildIconOption()
-    };
     return CardOverlay;
 }(Component_1.Component));
+CardOverlay.ID = 'CardOverlay';
+CardOverlay.doExport = function () {
+    GlobalExports_1.exportGlobally({
+        'CardOverlay': CardOverlay
+    });
+};
+/**
+ * @componentOptions
+ */
+CardOverlay.options = {
+    /**
+     * Specifies the string to use for the overlay title and for the button text.
+     *
+     * Setting a value for this option is required for this component to work.
+     */
+    title: ComponentOptions_1.ComponentOptions.buildLocalizedStringOption({ required: true, defaultValue: 'NoTitle' }),
+    /**
+     * Specifies the icon to use for the overlay icon and for the button icon.
+     *
+     * The name of the icon to use should be specified in dashed case. ie: facet-expand
+     */
+    icon: ComponentOptions_1.ComponentOptions.buildIconOption()
+};
 exports.CardOverlay = CardOverlay;
 Initialization_1.Initialization.registerAutoCreateComponent(CardOverlay);
 
 
 /***/ }),
 
-/***/ 472:
+/***/ 917:
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+
+/***/ 955:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -205,32 +212,25 @@ Object.defineProperty(exports, "__esModule", { value: true });
 /**
  * The CardOverlayEvents class contains string definitions for all events related to the {@link CardOverlay} component.
  */
-var CardOverlayEvents = /** @class */ (function () {
+var CardOverlayEvents = (function () {
     function CardOverlayEvents() {
     }
-    /**
-     * Opening a {@link CardOverlay} component triggers this event (see {@link CardOverlay.openOverlay}).
-     *
-     * @type {string}
-     */
-    CardOverlayEvents.openCardOverlay = 'openCardOverlay';
-    /**
-     * Closing a {@link CardOverlay} component triggers this event (see {@link CardOverlay.closeOverlay}).
-     *
-     * @type {string}
-     */
-    CardOverlayEvents.closeCardOverlay = 'closeCardOverlay';
     return CardOverlayEvents;
 }());
+/**
+ * Opening a {@link CardOverlay} component triggers this event (see {@link CardOverlay.openOverlay}).
+ *
+ * @type {string}
+ */
+CardOverlayEvents.openCardOverlay = 'openCardOverlay';
+/**
+ * Closing a {@link CardOverlay} component triggers this event (see {@link CardOverlay.closeOverlay}).
+ *
+ * @type {string}
+ */
+CardOverlayEvents.closeCardOverlay = 'closeCardOverlay';
 exports.CardOverlayEvents = CardOverlayEvents;
 
-
-/***/ }),
-
-/***/ 473:
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
 
 /***/ })
 

@@ -1,12 +1,12 @@
 webpackJsonpCoveo__temporary([12],{
 
-/***/ 16:
+/***/ 17:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var SVGDom = /** @class */ (function () {
+var SVGDom = (function () {
     function SVGDom() {
     }
     SVGDom.addClassToSVGInContainer = function (svgContainer, classToAdd) {
@@ -28,52 +28,25 @@ exports.SVGDom = SVGDom;
 
 /***/ }),
 
-/***/ 260:
+/***/ 305:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-/**
- * The `QuickviewEvents` static class contains the string definitions of all events that strongly relate to the
- * [`Quickview`]{@link Quickview} component.
- */
-var QuickviewEvents = /** @class */ (function () {
+var QuickviewEvents = (function () {
     function QuickviewEvents() {
     }
-    /**
-     * Triggered by the [`QuickviewDocument`]{@link QuickviewDocument} component when the content to display in the
-     * quickview modal window has just finished downloading.
-     *
-     * The [`Quickview`]{@link Quickview} component listens to this event to know when to remove its loading animation.
-     *
-     * All `quickviewLoaded` event handlers receive a [`QuickviewLoadedEventArgs`]{@link IQuickviewLoadedEventArgs} object
-     * as an argument.
-     *
-     * @type {string} The string value is `quickviewLoaded`.
-     */
-    QuickviewEvents.quickviewLoaded = 'quickviewLoaded';
-    /**
-     * Triggered by the [`QuickviewDocument`]{@link QuickviewDocument} component when the end user has just clicked the
-     * **Quickview** button/link to open the quickview modal window.
-     *
-     * This event allows external code to modify the terms to highlight before the content of the quickview modal window
-     * is rendered.
-     *
-     * All `openQuickview` event handlers receive an
-     * [`OpenQuickviewEventArgs`]{@link ResultListEvents.IOpenQuickviewEventArgs} object as an argument.
-     *
-     * @type {string} The string value is `openQuickview`.
-     */
-    QuickviewEvents.openQuickview = 'openQuickview';
     return QuickviewEvents;
 }());
+QuickviewEvents.quickviewLoaded = 'quickviewLoaded';
+QuickviewEvents.openQuickview = 'openQuickview';
 exports.QuickviewEvents = QuickviewEvents;
 
 
 /***/ }),
 
-/***/ 299:
+/***/ 384:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -91,30 +64,30 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var Component_1 = __webpack_require__(8);
 var ComponentOptions_1 = __webpack_require__(9);
-var DomUtils_1 = __webpack_require__(47);
+var DomUtils_1 = __webpack_require__(53);
 var Dom_1 = __webpack_require__(3);
-var DefaultQuickviewTemplate_1 = __webpack_require__(511);
-var ResultListEvents_1 = __webpack_require__(32);
+var DefaultQuickviewTemplate_1 = __webpack_require__(979);
+var ResultListEvents_1 = __webpack_require__(35);
 var StringUtils_1 = __webpack_require__(21);
-var QuickviewDocument_1 = __webpack_require__(512);
+var QuickviewDocument_1 = __webpack_require__(980);
 var QueryStateModel_1 = __webpack_require__(13);
-var QuickviewEvents_1 = __webpack_require__(260);
+var QuickviewEvents_1 = __webpack_require__(305);
 var Initialization_1 = __webpack_require__(2);
-var KeyboardUtils_1 = __webpack_require__(23);
-var ExternalModulesShim_1 = __webpack_require__(27);
+var KeyboardUtils_1 = __webpack_require__(24);
+var ExternalModulesShim_1 = __webpack_require__(28);
 var GlobalExports_1 = __webpack_require__(4);
-__webpack_require__(513);
+__webpack_require__(934);
 var SVGIcons_1 = __webpack_require__(15);
-var SVGDom_1 = __webpack_require__(16);
+var SVGDom_1 = __webpack_require__(17);
 /**
- * The `Quickview` component renders a button/link which the end user can click to open a modal box containing certain
- * information about a result. Most of the time, this component references a
- * [`QuickviewDocument`]{@link QuickviewDocument} in its [`contentTemplate`]{@link Quickview.options.contentTemplate}.
+ * The `Quickview` component renders a button / link which the end user can click to open a modal box containing certain
+ * content about a result. Most of the time, this component references a [`QuickviewDocument`]{@link QuickviewDocument}
+ * in its [`contentTemplate`]{@link Quickview.options.contentTemplate}.
  *
  * **Note:**
- * > - You can change the appearance of the `Quickview` link/button by adding elements in the inner HTML of its `div`.
- * > - You can change the content of the `Quickview` modal box link by specifying a template `id` or CSS selector (see
- * > the [`contentTemplate`]{@link Quickview.options.contentTemplate} option).
+ * > - You can change the appearance of the `Quickview` link / button by adding HTML inside the body of its `div`.
+ * > - You can change the content of the `Quickview` modal box link by specifying a template ID or selector (see the
+ * > [`contentTemplate`]{@link Quickview.options.contentTemplate} option).
  *
  * **Example:**
  * ```html
@@ -122,7 +95,7 @@ var SVGDom_1 = __webpack_require__(16);
  *
  * <script class='result-template' type='text/underscore' id='myContentTemplateId'>
  *   <div>
- *     <span>This content will be displayed when then end user opens the quickview modal box. It could also include other Coveo component, and use core helpers.</span>
+ *     <span>This content will be displayed when then end user opens the Quickview modal box. It could also include other Coveo component, and use core helpers.</span>
  *     <table class="CoveoFieldTable">
  *       <tr data-field="@liboardshorttitle" data-caption="Board" />
  *       <tr data-field="@licategoryshorttitle" data-caption="Category" />
@@ -138,21 +111,21 @@ var SVGDom_1 = __webpack_require__(16);
  *
  *   [ ... ]
  *
- *     <!-- The `myContentTemplateId` template applies when displaying content in the quickview modal box. -->
+ *     <!-- The `myContentTemplateId` template applies when displaying content in the Quickview modal box. -->
  *       <div class='CoveoQuickview' data-template-id='myContentTemplateId'>
  *         <!-- This changes the appearance of the Quickview button itself in the results -->
- *         <span>Click here for a quickview</span>
+ *         <span>Click here for a Quickview</span>
  *       </div>
  *   </script>
  *
  *   [ ... ]
  *
- * <!-- Note that simply including `<div class='CoveoQuickview'></div>` in the markup will be enough most of the time, since the component includes a default template and a default button appearance. -->
+ * <!-- Note that this is all optional. Simply including `<div class='CoveoQuickview'></div>` in the markup suffices most of the time and includes a default template, and default button appearance. -->
  * ```
  *
  * This component is a result template component (see [Result Templates](https://developers.coveo.com/x/aIGfAQ)).
  */
-var Quickview = /** @class */ (function (_super) {
+var Quickview = (function (_super) {
     __extends(Quickview, _super);
     /**
      * Creates a new `Quickview` component.
@@ -316,133 +289,108 @@ var Quickview = /** @class */ (function (_super) {
         wrapper.el.style.maxWidth = this.options.size;
         wrapper.el.style.maxHeight = this.options.size;
     };
-    Quickview.ID = 'Quickview';
-    Quickview.doExport = function () {
-        GlobalExports_1.exportGlobally({
-            Quickview: Quickview,
-            QuickviewDocument: QuickviewDocument_1.QuickviewDocument
-        });
-    };
-    /**
-     * @componentOptions
-     */
-    Quickview.options = {
-        /**
-         * Specifies whether to always show the `Quickview` button/link, even when the index body of an item is empty.
-         *
-         * In such cases, the [`contentTemplate`]{@link Quickview.options.contentTemplate} defines what appears in the
-         * `Quickview` modal box. Consequently, if there is no quickview for the item, you *MUST* specify a custom
-         * `contentTemplate`, otherwise the component will throw an error when opened.
-         *
-         * Default value is `false`.
-         */
-        alwaysShow: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: false }),
-        /**
-         * Specifies the title that should appear in the `Quickview` modal box header.
-         *
-         * Default value is undefined, which is equivalent to the empty string.
-         */
-        title: ComponentOptions_1.ComponentOptions.buildStringOption(),
-        /**
-         * Specifies whether to display the item date in the `Quickview` modal box header.
-         *
-         * Default value is `true`.
-         */
-        showDate: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: true }),
-        /**
-         * Specifies whether to enable the loading animation.
-         *
-         * See also [`loadingAnimation`]{Quickview.options.loadingAnimation}.
-         *
-         * Default value is `true`.
-         */
-        enableLoadingAnimation: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: true }),
-        /**
-         * Specifies a custom template to use when displaying content in the `Quickview` modal box.
-         *
-         * **Note:**
-         * > You can use [`CoreHelpers`]{@link ICoreHelpers} methods in your content template.
-         *
-         * You can specify a previously registered template to use either by referring to its HTML `id` attribute or to a
-         * CSS selector (see [`TemplateCache`]{@link TemplateCache}).
-         *
-         * **Example:**
-         *
-         * * Specifying a previously registered template by referring to its HTML `id` attribute:
-         *
-         * ```html
-         * <div class="CoveoQuickview" data-template-id="myContentTemplateId"></div>
-         * ```
-         *
-         * * Specifying a previously registered template by referring to a CSS selector:
-         *
-         * ```html
-         * <div class='CoveoQuickview' data-template-selector=".myContentTemplateSelector"></div>
-         * ```
-         *
-         * If you do not specify a custom content template, the component uses its default template.
-         */
-        contentTemplate: ComponentOptions_1.ComponentOptions.buildTemplateOption({
-            selectorAttr: 'data-template-selector',
-            idAttr: 'data-template-id'
-        }),
-        /**
-         * If [`enableLoadingAnimation`]{@link Quickview.options.enableLoadingAnimation} is `true`, specifies a custom
-         * animation to display while the content of the quickview modal window is loading. You can either specify the CSS
-         * selector of the HTML element you wish to display, or the `id` of a previously registered template (see
-         * [`TemplateCache`]{@link TemplateCache}).
-         *
-         * See [Branding Customization - Customizing the Quickview Loading Animation](https://developers.coveo.com/x/EoGfAQ#BrandingCustomization-CustomizingtheQuickviewLoadingAnimation).
-         *
-         * **Examples:**
-         *
-         * * Specifying the CSS selector of the HTML element to display:
-         *
-         * ```html
-         * <div class="CoveoQuickview" data-loading-animation-selector=".my-loading-animation"></div>
-         * ```
-         *
-         * * Specifying the `id` of a previously registered template:
-         *
-         * ```html
-         * <div class="CoveoQuickview" data-loading-animation-template-id="my-loading-animation-template"></div>
-         * ```
-         *
-         * By default, the loading animation is a Coveo animation, which you can customize with CSS (see
-         * [Branding Customization - Customizing the Default Loading Animation](https://developers.coveo.com/x/EoGfAQ#BrandingCustomization-CustomizingtheDefaultLoadingAnimation).
-         */
-        loadingAnimation: ComponentOptions_1.ComponentOptions.buildOption(ComponentOptions_1.ComponentOptionsType.NONE, function (element) {
-            var loadingAnimationSelector = element.getAttribute('data-loading-animation-selector');
-            if (loadingAnimationSelector != null) {
-                var loadingAnimation = Dom_1.$$(document.documentElement).find(loadingAnimationSelector);
-                if (loadingAnimation != null) {
-                    Dom_1.$$(loadingAnimation).detach();
-                    return loadingAnimation;
-                }
-            }
-            var id = element.getAttribute('data-loading-animation-template-id');
-            if (id != null) {
-                var loadingAnimationTemplate = ComponentOptions_1.ComponentOptions.loadResultTemplateFromId(id);
-                if (loadingAnimationTemplate) {
-                    return loadingAnimationTemplate.instantiateToElement(undefined, {
-                        checkCondition: false
-                    });
-                }
-            }
-            return DomUtils_1.DomUtils.getBasicLoadingAnimation();
-        })
-    };
-    Quickview.resultCurrentlyBeingRendered = null;
     return Quickview;
 }(Component_1.Component));
+Quickview.ID = 'Quickview';
+Quickview.doExport = function () {
+    GlobalExports_1.exportGlobally({
+        'Quickview': Quickview,
+        'QuickviewDocument': QuickviewDocument_1.QuickviewDocument
+    });
+};
+/**
+ * @componentOptions
+ */
+Quickview.options = {
+    /**
+     * Specifies whether to always show the `Quickview` button / link, even when the index body of an item is empty.
+     *
+     * In such cases, the [`contentTemplate`]{@link Quickview.options.contentTemplate} defines what appears in the
+     * `Quickview` modal box. Consequently, if there is no quickview for the item, you *MUST* specify a custom
+     * `contentTemplate`, otherwise the component will throw an error when opened.
+     *
+     * Default value is `false`.
+     */
+    alwaysShow: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: false }),
+    /**
+     * Specifies the title that should appear in the `Quickview` modal box header.
+     *
+     * Default value is `undefined`.
+     */
+    title: ComponentOptions_1.ComponentOptions.buildStringOption(),
+    /**
+     * Specifies whether to display the item date in the `Quickview` modal box header.
+     *
+     * Default value is `true`.
+     */
+    showDate: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: true }),
+    enableLoadingAnimation: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: true }),
+    /**
+     * Specifies a custom template to use when displaying content in the `Quickview` modal box.
+     *
+     * **Note:**
+     * > You can use [`CoreHelpers`]{@link ICoreHelpers} methods in your content template.
+     *
+     * You can specify a previously registered template to use either by referring to its HTML `id` attribute or to a
+     * CSS selector (see [`TemplateCache`]{@link TemplateCache}).
+     *
+     * **Example:**
+     *
+     * Specifying a previously registered template by referring to its HTML `id` attribute:
+     *
+     * ```html
+     * <div class="CoveoQuickview" data-template-id="myContentTemplateId"></div>
+     * ```
+     *
+     * Specifying a previously registered template by referring to a CSS selector:
+     *
+     * ```html
+     * <div class='CoveoQuickview' data-template-selector=".myContentTemplateSelector"></div>
+     * ```
+     *
+     * If you do not specify a custom content template, the component uses its default template.
+     */
+    contentTemplate: ComponentOptions_1.ComponentOptions.buildTemplateOption({
+        selectorAttr: 'data-template-selector',
+        idAttr: 'data-template-id'
+    }),
+    loadingAnimation: ComponentOptions_1.ComponentOptions.buildOption(ComponentOptions_1.ComponentOptionsType.NONE, function (element) {
+        var loadingAnimationSelector = element.getAttribute('data-loading-animation-selector');
+        if (loadingAnimationSelector != null) {
+            var loadingAnimation = Dom_1.$$(document.documentElement).find(loadingAnimationSelector);
+            if (loadingAnimation != null) {
+                Dom_1.$$(loadingAnimation).detach();
+                return loadingAnimation;
+            }
+        }
+        var id = element.getAttribute('data-loading-animation-template-id');
+        if (id != null) {
+            var loadingAnimationTemplate = ComponentOptions_1.ComponentOptions.loadResultTemplateFromId(id);
+            if (loadingAnimationTemplate) {
+                return loadingAnimationTemplate.instantiateToElement(undefined, {
+                    checkCondition: false
+                });
+            }
+        }
+        return DomUtils_1.DomUtils.getBasicLoadingAnimation();
+    })
+};
+Quickview.resultCurrentlyBeingRendered = null;
 exports.Quickview = Quickview;
 Initialization_1.Initialization.registerAutoCreateComponent(Quickview);
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(6)))
 
 /***/ }),
 
-/***/ 511:
+/***/ 934:
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+
+/***/ 979:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -458,8 +406,8 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var Template_1 = __webpack_require__(24);
-var DefaultQuickviewTemplate = /** @class */ (function (_super) {
+var Template_1 = __webpack_require__(25);
+var DefaultQuickviewTemplate = (function (_super) {
     __extends(DefaultQuickviewTemplate, _super);
     function DefaultQuickviewTemplate() {
         return _super.call(this) || this;
@@ -474,7 +422,7 @@ exports.DefaultQuickviewTemplate = DefaultQuickviewTemplate;
 
 /***/ }),
 
-/***/ 512:
+/***/ 980:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -495,10 +443,10 @@ var ComponentOptions_1 = __webpack_require__(9);
 var AnalyticsActionListMeta_1 = __webpack_require__(12);
 var Assert_1 = __webpack_require__(7);
 var Dom_1 = __webpack_require__(3);
-var QuickviewEvents_1 = __webpack_require__(260);
-var DeviceUtils_1 = __webpack_require__(22);
-var Utils_1 = __webpack_require__(6);
-var ColorUtils_1 = __webpack_require__(101);
+var QuickviewEvents_1 = __webpack_require__(305);
+var DeviceUtils_1 = __webpack_require__(23);
+var Utils_1 = __webpack_require__(5);
+var ColorUtils_1 = __webpack_require__(128);
 var Initialization_1 = __webpack_require__(2);
 var Strings_1 = __webpack_require__(10);
 var _ = __webpack_require__(1);
@@ -512,7 +460,7 @@ var HIGHLIGHT_PREFIX = 'CoveoHighlight';
  *
  * This component is a result template component (see [Result Templates](https://developers.coveo.com/x/aIGfAQ)).
  */
-var QuickviewDocument = /** @class */ (function (_super) {
+var QuickviewDocument = (function (_super) {
     __extends(QuickviewDocument, _super);
     /**
      * Creates a new `QuickviewDocument` component.
@@ -554,7 +502,7 @@ var QuickviewDocument = /** @class */ (function (_super) {
             documentURL: documentURL,
             documentTitle: this.result.title
         }, this.result, this.queryController.element);
-        var beforeLoad = new Date().getTime();
+        var beforeLoad = (new Date()).getTime();
         var iframe = this.iframe.find('iframe');
         iframe.src = 'about:blank';
         var endpoint = this.queryController.getEndpoint();
@@ -572,8 +520,7 @@ var QuickviewDocument = /** @class */ (function (_super) {
             queryObject: queryObject,
             requestedOutputSize: this.options.maximumDocumentSize
         };
-        endpoint
-            .getDocumentHtml(this.result.uniqueId, callOptions)
+        endpoint.getDocumentHtml(this.result.uniqueId, callOptions)
             .then(function (html) {
             // If the contentDocument is null at this point it means that the Quick View
             // was closed before we've finished loading it. In this case do nothing.
@@ -633,10 +580,9 @@ var QuickviewDocument = /** @class */ (function (_super) {
     };
     QuickviewDocument.prototype.writeToIFrame = function (iframe, content) {
         var toWrite = content;
-        if (content instanceof HTMLDocument) {
-            _.each(Dom_1.$$(content.body).findAll('a'), function (link) {
-                link.setAttribute('target', '_top');
-            });
+        // This sucks because we can't do instanceof HTMLDocument
+        // lib.d.ts declare HTMLDocument as an interface, not an actual object
+        if (typeof content == 'object') {
             toWrite = content.getElementsByTagName('html')[0].outerHTML;
         }
         iframe.contentWindow.document.open();
@@ -656,7 +602,7 @@ var QuickviewDocument = /** @class */ (function (_super) {
             // This CSS forces <pre> tags used in some emails to wrap by default
             var cssText = 'html pre { white-space: pre-wrap; white-space: -moz-pre-wrap; white-space: -pre-wrap; white-space: -o-pre-wrap; word-wrap: break-word; }';
             // Some people react strongly when presented with their browser's default font, so let's fix that
-            cssText += "body, html { font-family: Arimo, 'Helvetica Neue', Helvetica, Arial, sans-serif; -webkit-text-size-adjust: none; }";
+            cssText += 'body, html { font-family: Arimo, \'Helvetica Neue\', Helvetica, Arial, sans-serif; -webkit-text-size-adjust: none; }';
             if (DeviceUtils_1.DeviceUtils.isIos()) {
                 // Safari on iOS forces resize iframes to fit their content, even if an explicit size
                 // is set on the iframe. Isn't that great? By chance there is a trick around it: by
@@ -686,7 +632,7 @@ var QuickviewDocument = /** @class */ (function (_super) {
         }
     };
     QuickviewDocument.prototype.triggerQuickviewLoaded = function (beforeLoad) {
-        var afterLoad = new Date().getTime();
+        var afterLoad = (new Date()).getTime();
         var eventArgs = { duration: afterLoad - beforeLoad };
         Dom_1.$$(this.element).trigger(QuickviewEvents_1.QuickviewEvents.quickviewLoaded, eventArgs);
     };
@@ -813,13 +759,16 @@ var QuickviewDocument = /** @class */ (function (_super) {
         return resolvedWords;
     };
     QuickviewDocument.prototype.getHighlightIdParts = function (element) {
-        var parts = element.id.substr(HIGHLIGHT_PREFIX.length + 1).match(/^([0-9]+)\.([0-9]+)\.([0-9]+)$/);
-        return parts && parts.length > 3 ? parts : null;
+        var parts = element
+            .id
+            .substr(HIGHLIGHT_PREFIX.length + 1)
+            .match(/^([0-9]+)\.([0-9]+)\.([0-9]+)$/);
+        return (parts && parts.length > 3) ? parts : null;
     };
     QuickviewDocument.prototype.getHighlightInnerText = function (element) {
         if (element.nodeName.toLowerCase() == 'coveotaggedword') {
             // only immediate text without children.
-            return element.childNodes.length >= 1 ? element.childNodes.item(0).textContent || '' : '';
+            return element.childNodes.length >= 1 ? (element.childNodes.item(0).textContent || '') : '';
         }
         else {
             return element.textContent || '';
@@ -836,14 +785,12 @@ var QuickviewDocument = /** @class */ (function (_super) {
         if (this.result.termsToHighlight) {
             // We look for the term expansion and we'll return the corresponding
             // original term is one is found.
-            found =
-                _.find(_.keys(this.result.termsToHighlight), function (originalTerm) {
-                    // The expansions do NOT include the original term (makes sense), so be sure to check
-                    // the original term for a match too.
-                    return (originalTerm.toLowerCase() == highlight.toLowerCase() ||
-                        _.find(_this.result.termsToHighlight[originalTerm], function (expansion) { return expansion.toLowerCase() == highlight.toLowerCase(); }) !=
-                            undefined);
-                }) || found;
+            found = _.find(_.keys(this.result.termsToHighlight), function (originalTerm) {
+                // The expansions do NOT include the original term (makes sense), so be sure to check
+                // the original term for a match too.
+                return (originalTerm.toLowerCase() == highlight.toLowerCase()) ||
+                    (_.find(_this.result.termsToHighlight[originalTerm], function (expansion) { return expansion.toLowerCase() == highlight.toLowerCase(); }) != undefined);
+            }) || found;
         }
         return found;
     };
@@ -918,7 +865,7 @@ var QuickviewDocument = /** @class */ (function (_super) {
     };
     QuickviewDocument.prototype.buildIFrame = function () {
         var iFrame = Dom_1.$$('iframe');
-        iFrame.setAttribute('sandbox', 'allow-same-origin allow-top-navigation');
+        iFrame.setAttribute('sandbox', 'allow-same-origin');
         var iFrameWrapper = Dom_1.$$('div');
         iFrameWrapper.addClass('coveo-iframeWrapper');
         iFrameWrapper.el.appendChild(iFrame.el);
@@ -938,7 +885,7 @@ var QuickviewDocument = /** @class */ (function (_super) {
         return found;
     };
     QuickviewDocument.prototype.isNewQuickviewDocument = function (iframeWindow) {
-        var meta = Dom_1.$$(iframeWindow.document.head).find("meta[name='generator']");
+        var meta = Dom_1.$$(iframeWindow.document.head).find('meta[name=\'generator\']');
         return meta && meta.getAttribute('content') == 'pdf2htmlEX';
     };
     QuickviewDocument.prototype.handleTermsToHighlight = function (termsToHighlight, queryObject) {
@@ -971,31 +918,24 @@ var QuickviewDocument = /** @class */ (function (_super) {
         var rgb = ColorUtils_1.ColorUtils.hsvToRgb(hsv[0], hsv[1], hsv[2]);
         return 'rgb(' + rgb[0].toString() + ', ' + rgb[1].toString() + ', ' + rgb[2].toString() + ')';
     };
-    QuickviewDocument.ID = 'QuickviewDocument';
-    /**
-     * The options for the component
-     * @componentOptions
-     */
-    QuickviewDocument.options = {
-        /**
-         * Specifies the maximum preview size that the index should return.
-         *
-         * Default value is `0`, and the index returns the entire preview. Minimum value is `0`.
-         */
-        maximumDocumentSize: ComponentOptions_1.ComponentOptions.buildNumberOption({ defaultValue: 0, min: 0 })
-    };
     return QuickviewDocument;
 }(Component_1.Component));
+QuickviewDocument.ID = 'QuickviewDocument';
+/**
+ * The options for the component
+ * @componentOptions
+ */
+QuickviewDocument.options = {
+    /**
+     * Specifies the maximum preview size that the index should return.
+     *
+     * Default value is `0`, and the index returns the entire preview. Minimum value is `0`.
+     */
+    maximumDocumentSize: ComponentOptions_1.ComponentOptions.buildNumberOption({ defaultValue: 0, min: 0 }),
+};
 exports.QuickviewDocument = QuickviewDocument;
 Initialization_1.Initialization.registerAutoCreateComponent(QuickviewDocument);
 
-
-/***/ }),
-
-/***/ 513:
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
 
 /***/ })
 

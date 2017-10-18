@@ -1,12 +1,12 @@
-webpackJsonpCoveo__temporary([28],{
+webpackJsonpCoveo__temporary([26],{
 
-/***/ 16:
+/***/ 17:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var SVGDom = /** @class */ (function () {
+var SVGDom = (function () {
     function SVGDom() {
     }
     SVGDom.addClassToSVGInContainer = function (svgContainer, classToAdd) {
@@ -28,7 +28,7 @@ exports.SVGDom = SVGDom;
 
 /***/ }),
 
-/***/ 310:
+/***/ 394:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -46,15 +46,15 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var Component_1 = __webpack_require__(8);
 var ComponentOptions_1 = __webpack_require__(9);
-var InitializationEvents_1 = __webpack_require__(17);
+var InitializationEvents_1 = __webpack_require__(18);
 var Dom_1 = __webpack_require__(3);
-var PopupUtils_1 = __webpack_require__(52);
-var SettingsEvents_1 = __webpack_require__(43);
+var PopupUtils_1 = __webpack_require__(58);
+var SettingsEvents_1 = __webpack_require__(45);
 var Initialization_1 = __webpack_require__(2);
 var _ = __webpack_require__(1);
 var GlobalExports_1 = __webpack_require__(4);
-__webpack_require__(531);
-var SVGDom_1 = __webpack_require__(16);
+__webpack_require__(946);
+var SVGDom_1 = __webpack_require__(17);
 /**
  * The Settings component renders a **Settings** button that the end user can click to access a popup menu from which
  * it is possible to perform several contextual actions. The usual location of the **Settings** button in the page is to
@@ -67,7 +67,7 @@ var SVGDom_1 = __webpack_require__(16);
  * - {@link SearchAlerts} (see also {@link SearchAlertsMessage})
  * - {@link ShareQuery}
  */
-var Settings = /** @class */ (function (_super) {
+var Settings = (function (_super) {
     __extends(Settings, _super);
     /**
      * Creates a new Settings component.
@@ -176,33 +176,33 @@ var Settings = /** @class */ (function (_super) {
             verticalOffset: 8
         };
     };
-    Settings.ID = 'Settings';
-    Settings.doExport = function () {
-        GlobalExports_1.exportGlobally({
-            Settings: Settings
-        });
-    };
-    /**
-     * The options for Settings
-     * @componentOptions
-     */
-    Settings.options = {
-        /**
-         * Specifies the delay (in milliseconds) before hiding the popup menu when the cursor is not hovering over it.
-         *
-         * Default value is `300`. Minimum value is `0 `.
-         */
-        menuDelay: ComponentOptions_1.ComponentOptions.buildNumberOption({ defaultValue: 300, min: 0 })
-    };
     return Settings;
 }(Component_1.Component));
+Settings.ID = 'Settings';
+Settings.doExport = function () {
+    GlobalExports_1.exportGlobally({
+        'Settings': Settings
+    });
+};
+/**
+ * The options for Settings
+ * @componentOptions
+ */
+Settings.options = {
+    /**
+     * Specifies the delay (in milliseconds) before hiding the popup menu when the cursor is not hovering over it.
+     *
+     * Default value is `300`. Minimum value is `0 `.
+     */
+    menuDelay: ComponentOptions_1.ComponentOptions.buildNumberOption({ defaultValue: 300, min: 0 })
+};
 exports.Settings = Settings;
 Initialization_1.Initialization.registerAutoCreateComponent(Settings);
 
 
 /***/ }),
 
-/***/ 531:
+/***/ 946:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

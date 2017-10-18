@@ -1,12 +1,12 @@
-webpackJsonpCoveo__temporary([16],{
+webpackJsonpCoveo__temporary([15],{
 
-/***/ 16:
+/***/ 17:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var SVGDom = /** @class */ (function () {
+var SVGDom = (function () {
     function SVGDom() {
     }
     SVGDom.addClassToSVGInContainer = function (svgContainer, classToAdd) {
@@ -28,7 +28,7 @@ exports.SVGDom = SVGDom;
 
 /***/ }),
 
-/***/ 248:
+/***/ 292:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -48,23 +48,23 @@ var Component_1 = __webpack_require__(8);
 var ComponentOptions_1 = __webpack_require__(9);
 var QueryEvents_1 = __webpack_require__(11);
 var Initialization_1 = __webpack_require__(2);
-var InitializationEvents_1 = __webpack_require__(17);
+var InitializationEvents_1 = __webpack_require__(18);
 var Assert_1 = __webpack_require__(7);
-var ResultListEvents_1 = __webpack_require__(32);
-var ResultLayoutEvents_1 = __webpack_require__(98);
+var ResultListEvents_1 = __webpack_require__(35);
+var ResultLayoutEvents_1 = __webpack_require__(125);
 var Dom_1 = __webpack_require__(3);
 var QueryStateModel_1 = __webpack_require__(13);
-var Model_1 = __webpack_require__(18);
+var Model_1 = __webpack_require__(19);
 var AnalyticsActionListMeta_1 = __webpack_require__(12);
-var KeyboardUtils_1 = __webpack_require__(23);
-var ResponsiveResultLayout_1 = __webpack_require__(523);
-var Utils_1 = __webpack_require__(6);
+var KeyboardUtils_1 = __webpack_require__(24);
+var ResponsiveResultLayout_1 = __webpack_require__(985);
+var Utils_1 = __webpack_require__(5);
 var _ = __webpack_require__(1);
 var GlobalExports_1 = __webpack_require__(4);
 var Strings_1 = __webpack_require__(10);
-__webpack_require__(524);
+__webpack_require__(940);
 var SVGIcons_1 = __webpack_require__(15);
-var SVGDom_1 = __webpack_require__(16);
+var SVGDom_1 = __webpack_require__(17);
 exports.defaultLayout = 'list';
 /**
  * The ResultLayout component allows the end user to switch between multiple {@link ResultList} components that have
@@ -75,7 +75,7 @@ exports.defaultLayout = 'list';
  *
  * See also the [Result Layouts](https://developers.coveo.com/x/yQUvAg) documentation.
  */
-var ResultLayout = /** @class */ (function (_super) {
+var ResultLayout = (function (_super) {
     __extends(ResultLayout, _super);
     /**
      * Creates a new ResultLayout component.
@@ -96,16 +96,9 @@ var ResultLayout = /** @class */ (function (_super) {
         _this.resultLayoutSection = Dom_1.$$(_this.element).closest('.coveo-result-layout-section');
         _this.bind.oneRootElement(InitializationEvents_1.InitializationEvents.afterComponentsInitialization, function () { return _this.populate(); });
         _this.bind.oneRootElement(InitializationEvents_1.InitializationEvents.afterInitialization, function () { return _this.handleQueryStateChanged(); });
-        ResponsiveResultLayout_1.ResponsiveResultLayout.init(_this.root, _this, {});
+        ResponsiveResultLayout_1.ResponsiveResultLayout.init(_this.root, _this, _this.options);
         return _this;
     }
-    Object.defineProperty(ResultLayout.prototype, "activeLayouts", {
-        get: function () {
-            return this.currentActiveLayouts;
-        },
-        enumerable: true,
-        configurable: true
-    });
     /**
      * Changes the current layout.
      *
@@ -225,7 +218,6 @@ var ResultLayout = /** @class */ (function (_super) {
         }
     };
     ResultLayout.prototype.handleQueryError = function (args) {
-        this.hasNoResults = true;
         this.hide();
     };
     ResultLayout.prototype.updateSelectorAppearance = function () {
@@ -240,10 +232,9 @@ var ResultLayout = /** @class */ (function (_super) {
         var _this = this;
         var populateArgs = { layouts: [] };
         Dom_1.$$(this.root).trigger(ResultLayoutEvents_1.ResultLayoutEvents.populateResultLayout, populateArgs);
-        var layouts = _.uniq(populateArgs.layouts.map(function (layout) { return layout.toLowerCase(); }));
-        _.each(layouts, function (layout) { return Assert_1.Assert.check(_.contains(ResultLayout.validLayouts, layout), 'Invalid layout'); });
-        if (!_.isEmpty(layouts)) {
-            _.each(layouts, function (layout) { return _this.addButton(layout); });
+        _.each(populateArgs.layouts, function (layout) { return Assert_1.Assert.check(_.contains(ResultLayout.validLayouts, layout), 'Invalid layout'); });
+        if (!_.isEmpty(populateArgs.layouts)) {
+            _.each(populateArgs.layouts, function (layout) { return _this.addButton(layout); });
             if (!this.shouldShowSelector()) {
                 this.hide();
             }
@@ -288,161 +279,88 @@ var ResultLayout = /** @class */ (function (_super) {
         this.queryStateModel.set(QueryStateModel_1.QueryStateModel.attributesEnum.layout, val);
     };
     ResultLayout.prototype.shouldShowSelector = function () {
-        return (_.keys(this.currentActiveLayouts).length > 1 &&
+        return _.keys(this.currentActiveLayouts).length > 1 &&
             _.filter(this.currentActiveLayouts, function (activeLayout) { return activeLayout.button.visible; }).length > 1 &&
-            !this.hasNoResults);
+            !this.hasNoResults;
     };
     ResultLayout.prototype.isLayoutDisplayedByButton = function (layout) {
         return _.contains(_.keys(this.currentActiveLayouts), layout);
     };
-    ResultLayout.ID = 'ResultLayout';
-    ResultLayout.doExport = function () {
-        GlobalExports_1.exportGlobally({
-            ResultLayout: ResultLayout
-        });
-    };
-    ResultLayout.validLayouts = ['list', 'card', 'table'];
-    ResultLayout.options = {
-        /**
-         * Specifies the layouts that should be available when the search page is displayed in mobile mode.
-         *
-         * By default, the mobile mode breakpoint is at 480 px screen width.
-         *
-         * When the breakpoint is reached, layouts that are not specified becomes inactive and the linked result list will be disabled.
-         *
-         * The possible values for layouts are `list`, `card`, `table`.
-         *
-         * The default value is `card`, `table`.
-         */
-        mobileLayouts: ComponentOptions_1.ComponentOptions.buildListOption({ defaultValue: ['card', 'table'] }),
-        /**
-         * Specifies the layouts that should be available when the search page is displayed in tablet mode.
-         *
-         * By default, the tablet mode breakpoint is at 800 px screen width.
-         *
-         *  When the breakpoint is reached, layouts that are not specified becomes inactive and the linked result list will be disabled.
-         *
-         * The possible values for layouts are `list`, `card`, `table`.
-         *
-         * The default value is `list`, `card`, `table`.
-         */
-        tabletLayouts: ComponentOptions_1.ComponentOptions.buildListOption({ defaultValue: ['list', 'card', 'table'] }),
-        /**
-         * Specifies the layouts that should be available when the search page is displayed in desktop mode.
-         *
-         * By default, the desktop mode breakpoint is any screen size over 800 px.
-         *
-         *  When the breakpoint is reached, layouts that are not specified becomes inactive and the linked result list will be disabled.
-         *
-         * The possible values for layouts are `list`, `card`, `table`.
-         *
-         * The default value is `list`, `card`, `table`.
-         */
-        desktopLayouts: ComponentOptions_1.ComponentOptions.buildListOption({ defaultValue: ['list', 'card', 'table'] })
-    };
     return ResultLayout;
 }(Component_1.Component));
+ResultLayout.ID = 'ResultLayout';
+ResultLayout.doExport = function () {
+    GlobalExports_1.exportGlobally({
+        'ResultLayout': ResultLayout
+    });
+};
+ResultLayout.validLayouts = ['list', 'card', 'table'];
+ResultLayout.options = {
+    /**
+     * Specifies the layouts that should be available when the search page is displayed in mobile mode.
+     *
+     * By default, the mobile mode breakpoint is at 480 px screen width.
+     *
+     * When the breakpoint is reached, layouts that are not specified becomes inactive and the linked result list will be disabled.
+     *
+     * The possible values for layouts are `list`, `card`, `table`.
+     *
+     * The default value is `card`, `table`.
+     */
+    mobileLayouts: ComponentOptions_1.ComponentOptions.buildListOption({ defaultValue: ['card', 'table'] }),
+    /**
+     * Specifies the layouts that should be available when the search page is displayed in tablet mode.
+     *
+     * By default, the tablet mode breakpoint is at 800 px screen width.
+     *
+     *  When the breakpoint is reached, layouts that are not specified becomes inactive and the linked result list will be disabled.
+     *
+     * The possible values for layouts are `list`, `card`, `table`.
+     *
+     * The default value is `list`, `card`, `table`.
+     */
+    tabletLayouts: ComponentOptions_1.ComponentOptions.buildListOption({ defaultValue: ['list', 'card', 'table'] }),
+    /**
+     * Specifies the layouts that should be available when the search page is displayed in desktop mode.
+     *
+     * By default, the desktop mode breakpoint is any screen size over 800 px.
+     *
+     *  When the breakpoint is reached, layouts that are not specified becomes inactive and the linked result list will be disabled.
+     *
+     * The possible values for layouts are `list`, `card`, `table`.
+     *
+     * The default value is `list`, `card`, `table`.
+     */
+    desktopLayouts: ComponentOptions_1.ComponentOptions.buildListOption({ defaultValue: ['list', 'card', 'table'] })
+};
 exports.ResultLayout = ResultLayout;
 Initialization_1.Initialization.registerAutoCreateComponent(ResultLayout);
 
 
 /***/ }),
 
-/***/ 523:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var ResponsiveComponentsManager_1 = __webpack_require__(76);
-var Dom_1 = __webpack_require__(3);
-var Component_1 = __webpack_require__(8);
-var ResultLayout_1 = __webpack_require__(248);
-var Logger_1 = __webpack_require__(14);
-var SearchInterface_1 = __webpack_require__(20);
-var _ = __webpack_require__(1);
-var ResponsiveResultLayout = /** @class */ (function () {
-    function ResponsiveResultLayout(coveoRoot, ID, options, responsiveDropdown) {
-        this.coveoRoot = coveoRoot;
-        this.ID = ID;
-        this.searchInterface = Component_1.Component.get(this.coveoRoot.el, SearchInterface_1.SearchInterface, false);
-    }
-    ResponsiveResultLayout.init = function (root, component, options) {
-        if (!Dom_1.$$(root).find("." + Component_1.Component.computeCssClassName(ResultLayout_1.ResultLayout))) {
-            var logger = new Logger_1.Logger('ResponsiveResultLayout');
-            logger.trace('No ResultLayout component found : Cannot instantiate ResponsiveResultLayout');
-            return;
-        }
-        ResponsiveComponentsManager_1.ResponsiveComponentsManager.register(ResponsiveResultLayout, Dom_1.$$(root), ResultLayout_1.ResultLayout.ID, component, options);
-    };
-    ResponsiveResultLayout.prototype.registerComponent = function (accept) {
-        if (accept instanceof ResultLayout_1.ResultLayout) {
-            this.resultLayout = accept;
-            return true;
-        }
-        return false;
-    };
-    ResponsiveResultLayout.prototype.handleResizeEvent = function () {
-        if (this.needSmallMode()) {
-            this.enableAndDisableLayouts(this.resultLayout.options.mobileLayouts);
-        }
-        else if (this.needMediumMode()) {
-            this.enableAndDisableLayouts(this.resultLayout.options.tabletLayouts);
-        }
-        else {
-            this.enableAndDisableLayouts(this.resultLayout.options.desktopLayouts);
-        }
-    };
-    ResponsiveResultLayout.prototype.enableAndDisableLayouts = function (validLayouts) {
-        var layoutsToDisable = _.difference(ResultLayout_1.ResultLayout.validLayouts, validLayouts);
-        var layoutsToEnable = _.intersection(ResultLayout_1.ResultLayout.validLayouts, validLayouts);
-        this.resultLayout.disableLayouts(layoutsToDisable);
-        this.resultLayout.enableLayouts(layoutsToEnable);
-    };
-    ResponsiveResultLayout.prototype.needSmallMode = function () {
-        return this.coveoRoot.width() <= this.searchInterface.responsiveComponents.getSmallScreenWidth();
-    };
-    ResponsiveResultLayout.prototype.needMediumMode = function () {
-        return this.coveoRoot.width() <= this.searchInterface.responsiveComponents.getMediumScreenWidth();
-    };
-    return ResponsiveResultLayout;
-}());
-exports.ResponsiveResultLayout = ResponsiveResultLayout;
-
-
-/***/ }),
-
-/***/ 524:
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-
-/***/ 76:
+/***/ 90:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var Dom_1 = __webpack_require__(3);
-var InitializationEvents_1 = __webpack_require__(17);
+var InitializationEvents_1 = __webpack_require__(18);
 var Component_1 = __webpack_require__(8);
-var SearchInterface_1 = __webpack_require__(20);
-var Utils_1 = __webpack_require__(6);
+var SearchInterface_1 = __webpack_require__(22);
+var Utils_1 = __webpack_require__(5);
 var _ = __webpack_require__(1);
 var QueryEvents_1 = __webpack_require__(11);
 var Logger_1 = __webpack_require__(14);
-var ResponsiveComponentsManager = /** @class */ (function () {
+var ResponsiveComponentsManager = (function () {
     function ResponsiveComponentsManager(root) {
         var _this = this;
         this.disabledComponents = [];
         this.responsiveComponents = [];
         this.coveoRoot = root;
         this.searchInterface = Component_1.Component.get(this.coveoRoot.el, SearchInterface_1.SearchInterface, false);
-        this.dropdownHeadersWrapper = Dom_1.$$('div', {
-            className: ResponsiveComponentsManager.DROPDOWN_HEADER_WRAPPER_CSS_CLASS
-        });
+        this.dropdownHeadersWrapper = Dom_1.$$('div', { className: ResponsiveComponentsManager.DROPDOWN_HEADER_WRAPPER_CSS_CLASS });
         this.searchBoxElement = this.getSearchBoxElement();
         this.logger = new Logger_1.Logger(this);
         this.resizeListener = _.debounce(function () {
@@ -459,8 +377,7 @@ var ResponsiveComponentsManager = /** @class */ (function () {
                 });
             }
             else {
-                _this.logger
-                    .warn("The width of the search interface is 0, cannot dispatch resize events to responsive components. This means that the tabs will not\n        automatically fit in the tab section. Also, the facet and recommendation component will not hide in a menu. Could the search\n        interface display property be none? Could its visibility property be set to hidden? Also, if either of these scenarios happen during\n        loading, it could be the cause of this issue.");
+                _this.logger.warn("The width of the search interface is 0, cannot dispatch resize events to responsive components. This means that the tabs will not\n        automatically fit in the tab section. Also, the facet and recommendation component will not hide in a menu. Could the search\n        interface display property be none? Could its visibility property be set to hidden? Also, if either of these scenarios happen during\n        loading, it could be the cause of this issue.");
             }
         }, ResponsiveComponentsManager.RESIZE_DEBOUNCE_DELAY, true);
         window.addEventListener('resize', this.resizeListener);
@@ -595,14 +512,85 @@ var ResponsiveComponentsManager = /** @class */ (function () {
             window.removeEventListener('resize', _this.resizeListener);
         });
     };
-    ResponsiveComponentsManager.DROPDOWN_HEADER_WRAPPER_CSS_CLASS = 'coveo-dropdown-header-wrapper';
-    ResponsiveComponentsManager.RESIZE_DEBOUNCE_DELAY = 200;
-    ResponsiveComponentsManager.componentManagers = [];
-    ResponsiveComponentsManager.remainingComponentInitializations = 0;
-    ResponsiveComponentsManager.componentInitializations = [];
     return ResponsiveComponentsManager;
 }());
+ResponsiveComponentsManager.DROPDOWN_HEADER_WRAPPER_CSS_CLASS = 'coveo-dropdown-header-wrapper';
+ResponsiveComponentsManager.RESIZE_DEBOUNCE_DELAY = 200;
+ResponsiveComponentsManager.componentManagers = [];
+ResponsiveComponentsManager.remainingComponentInitializations = 0;
+ResponsiveComponentsManager.componentInitializations = [];
 exports.ResponsiveComponentsManager = ResponsiveComponentsManager;
+
+
+/***/ }),
+
+/***/ 940:
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+
+/***/ 985:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var ResponsiveComponentsManager_1 = __webpack_require__(90);
+var Dom_1 = __webpack_require__(3);
+var Component_1 = __webpack_require__(8);
+var ResultLayout_1 = __webpack_require__(292);
+var Logger_1 = __webpack_require__(14);
+var SearchInterface_1 = __webpack_require__(22);
+var _ = __webpack_require__(1);
+var ResponsiveResultLayout = (function () {
+    function ResponsiveResultLayout(coveoRoot, ID, options, responsiveDropdown) {
+        this.coveoRoot = coveoRoot;
+        this.ID = ID;
+        this.searchInterface = Component_1.Component.get(this.coveoRoot.el, SearchInterface_1.SearchInterface, false);
+    }
+    ResponsiveResultLayout.init = function (root, component, options) {
+        if (!Dom_1.$$(root).find("." + Component_1.Component.computeCssClassName(ResultLayout_1.ResultLayout))) {
+            var logger = new Logger_1.Logger('ResponsiveResultLayout');
+            logger.trace('No ResultLayout component found : Cannot instantiate ResponsiveResultLayout');
+            return;
+        }
+        ResponsiveComponentsManager_1.ResponsiveComponentsManager.register(ResponsiveResultLayout, Dom_1.$$(root), ResultLayout_1.ResultLayout.ID, component, options);
+    };
+    ResponsiveResultLayout.prototype.registerComponent = function (accept) {
+        if (accept instanceof ResultLayout_1.ResultLayout) {
+            this.resultLayout = accept;
+            return true;
+        }
+        return false;
+    };
+    ResponsiveResultLayout.prototype.handleResizeEvent = function () {
+        if (this.needSmallMode()) {
+            this.enableAndDisableLayouts(this.resultLayout.options.mobileLayouts);
+        }
+        else if (this.needMediumMode()) {
+            this.enableAndDisableLayouts(this.resultLayout.options.tabletLayouts);
+        }
+        else {
+            this.enableAndDisableLayouts(this.resultLayout.options.desktopLayouts);
+        }
+    };
+    ResponsiveResultLayout.prototype.enableAndDisableLayouts = function (validLayouts) {
+        var layoutsToDisable = _.difference(ResultLayout_1.ResultLayout.validLayouts, validLayouts);
+        var layoutsToEnable = _.intersection(ResultLayout_1.ResultLayout.validLayouts, validLayouts);
+        this.resultLayout.disableLayouts(layoutsToDisable);
+        this.resultLayout.enableLayouts(layoutsToEnable);
+    };
+    ResponsiveResultLayout.prototype.needSmallMode = function () {
+        return this.coveoRoot.width() <= this.searchInterface.responsiveComponents.getSmallScreenWidth();
+    };
+    ResponsiveResultLayout.prototype.needMediumMode = function () {
+        return this.coveoRoot.width() <= this.searchInterface.responsiveComponents.getMediumScreenWidth();
+    };
+    return ResponsiveResultLayout;
+}());
+exports.ResponsiveResultLayout = ResponsiveResultLayout;
 
 
 /***/ })

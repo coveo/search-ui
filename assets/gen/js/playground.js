@@ -34,6 +34,9 @@ var playground =
 /******/ 	// expose the module cache
 /******/ 	__webpack_require__.c = installedModules;
 /******/
+/******/ 	// identity function for calling harmony imports with the correct context
+/******/ 	__webpack_require__.i = function(value) { return value; };
+/******/
 /******/ 	// define getter function for harmony exports
 /******/ 	__webpack_require__.d = function(exports, name, getter) {
 /******/ 		if(!__webpack_require__.o(exports, name)) {
@@ -61,7 +64,7 @@ var playground =
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 11);
+/******/ 	return __webpack_require__(__webpack_require__.s = 26);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -84,7 +87,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var Logger_1 = __webpack_require__(3);
 var Utils_1 = __webpack_require__(2);
 var _ = __webpack_require__(1);
-var Assert = /** @class */ (function () {
+var Assert = (function () {
     function Assert() {
     }
     Assert.fail = function (message) {
@@ -139,23 +142,23 @@ var Assert = /** @class */ (function () {
     Assert.isSmallerOrEqualsThan = function (expected, actual) {
         Assert.check(actual <= expected, 'Value ' + actual + ' should be smaller or equal than ' + expected);
     };
-    Assert.logger = new Logger_1.Logger('Assert');
-    Assert.failureHandler = function (message) {
-        Assert.logger.error('Assertion Failed!', message);
-        if (window['console'] && console.trace) {
-            console.trace();
-        }
-        if (Utils_1.Utils.isNonEmptyString(message)) {
-            throw new PreconditionFailedException(message);
-        }
-        else {
-            throw new PreconditionFailedException('Assertion Failed!');
-        }
-    };
     return Assert;
 }());
+Assert.logger = new Logger_1.Logger('Assert');
+Assert.failureHandler = function (message) {
+    Assert.logger.error('Assertion Failed!', message);
+    if (window['console'] && console.trace) {
+        console.trace();
+    }
+    if (Utils_1.Utils.isNonEmptyString(message)) {
+        throw new PreconditionFailedException(message);
+    }
+    else {
+        throw new PreconditionFailedException('Assertion Failed!');
+    }
+};
 exports.Assert = Assert;
-var PreconditionFailedException = /** @class */ (function (_super) {
+var PreconditionFailedException = (function (_super) {
     __extends(PreconditionFailedException, _super);
     function PreconditionFailedException(message) {
         var _this = _super.call(this, message) || this;
@@ -1734,7 +1737,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;//     Underscor
 Object.defineProperty(exports, "__esModule", { value: true });
 var _ = __webpack_require__(1);
 var isCoveoFieldRegex = /^@[a-zA-Z0-9_\.]+$/;
-var Utils = /** @class */ (function () {
+var Utils = (function () {
     function Utils() {
     }
     Utils.isUndefined = function (obj) {
@@ -1778,7 +1781,6 @@ var Utils = /** @class */ (function () {
             return obj instanceof HTMLElement;
         }
         else {
-            // IE 8 FIX
             return obj && obj.nodeType && obj.nodeType == 1;
         }
     };
@@ -1952,7 +1954,7 @@ var Utils = /** @class */ (function () {
             target = {};
         }
         var isArray = _.isArray(src);
-        var toReturn = (isArray && []) || {};
+        var toReturn = isArray && [] || {};
         if (isArray) {
             target = target || [];
             toReturn = toReturn['concat'](target);
@@ -2050,7 +2052,7 @@ var Utils = /** @class */ (function () {
     // Based on http://stackoverflow.com/a/8412989
     Utils.parseXml = function (xml) {
         if (typeof DOMParser != 'undefined') {
-            return new DOMParser().parseFromString(xml, 'text/xml');
+            return (new DOMParser()).parseFromString(xml, 'text/xml');
         }
         else if (typeof ActiveXObject != 'undefined' && new ActiveXObject('Microsoft.XMLDOM')) {
             var xmlDoc = new ActiveXObject('Microsoft.XMLDOM');
@@ -2115,30 +2117,50 @@ Object.defineProperty(exports, "__esModule", { value: true });
 /* istanbul ignore next */
 if (!window['console']) {
     console = {
-        log: function () { },
-        debug: function () { },
-        info: function () { },
-        warn: function () { },
-        error: function () { },
-        assert: function () { },
-        clear: function () { },
-        count: function () { },
-        dir: function () { },
-        dirxml: function () { },
-        group: function () { },
-        groupCollapsed: function () { },
-        groupEnd: function () { },
-        msIsIndependentlyComposed: function (element) { },
-        profile: function () { },
-        profileEnd: function () { },
-        select: function () { },
-        time: function () { },
-        timeEnd: function () { },
-        trace: function () { }
+        log: function () {
+        },
+        debug: function () {
+        },
+        info: function () {
+        },
+        warn: function () {
+        },
+        error: function () {
+        },
+        assert: function () {
+        },
+        clear: function () {
+        },
+        count: function () {
+        },
+        dir: function () {
+        },
+        dirxml: function () {
+        },
+        group: function () {
+        },
+        groupCollapsed: function () {
+        },
+        groupEnd: function () {
+        },
+        msIsIndependentlyComposed: function (element) {
+        },
+        profile: function () {
+        },
+        profileEnd: function () {
+        },
+        select: function () {
+        },
+        time: function () {
+        },
+        timeEnd: function () {
+        },
+        trace: function () {
+        }
     };
 }
 /* istanbul ignore next */
-var Logger = /** @class */ (function () {
+var Logger = (function () {
     function Logger(owner) {
         this.owner = owner;
     }
@@ -2213,16 +2235,16 @@ var Logger = /** @class */ (function () {
     Logger.disable = function () {
         Logger.level = Logger.NOTHING;
     };
-    Logger.TRACE = 1;
-    Logger.DEBUG = 2;
-    Logger.INFO = 3;
-    Logger.WARN = 4;
-    Logger.ERROR = 5;
-    Logger.NOTHING = 6;
-    Logger.level = Logger.INFO;
-    Logger.executionTime = false;
     return Logger;
 }());
+Logger.TRACE = 1;
+Logger.DEBUG = 2;
+Logger.INFO = 3;
+Logger.WARN = 4;
+Logger.ERROR = 5;
+Logger.NOTHING = 6;
+Logger.level = Logger.INFO;
+Logger.executionTime = false;
 exports.Logger = Logger;
 
 
@@ -2232,52 +2254,9 @@ exports.Logger = Logger;
 
 "use strict";
 
-function hasLocalStorage() {
-    try {
-        return 'localStorage' in window && window['localStorage'] !== null;
-    }
-    catch (e) {
-        return false;
-    }
-}
-exports.hasLocalStorage = hasLocalStorage;
-;
-function hasSessionStorage() {
-    try {
-        return 'sessionStorage' in window && window['sessionStorage'] !== null;
-    }
-    catch (e) {
-        return false;
-    }
-}
-exports.hasSessionStorage = hasSessionStorage;
-;
-function hasCookieStorage() {
-    return navigator.cookieEnabled;
-}
-exports.hasCookieStorage = hasCookieStorage;
-;
-function hasDocument() {
-    return document !== null;
-}
-exports.hasDocument = hasDocument;
-;
-function hasDocumentLocation() {
-    return hasDocument() && document.location !== null;
-}
-exports.hasDocumentLocation = hasDocumentLocation;
-;
-
-
-/***/ }),
-/* 5 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
 Object.defineProperty(exports, "__esModule", { value: true });
 var Utils_1 = __webpack_require__(2);
-var JQueryutils_1 = __webpack_require__(6);
+var JQueryutils_1 = __webpack_require__(5);
 var Assert_1 = __webpack_require__(0);
 var Logger_1 = __webpack_require__(3);
 var _ = __webpack_require__(1);
@@ -2287,7 +2266,7 @@ var _ = __webpack_require__(1);
  * To minimize the multiple jQuery conflict we have while integrating in various system, we implemented the very small subset that the framework needs.<br/>
  * See {@link $$}, which is a function that wraps this class constructor, for less verbose code.
  */
-var Dom = /** @class */ (function () {
+var Dom = (function () {
     /**
      * Create a new Dom object with the given HTMLElement
      * @param el The HTMLElement to wrap in a Dom object
@@ -2909,13 +2888,13 @@ var Dom = /** @class */ (function () {
         }
         return undefined;
     };
-    Dom.CLASS_NAME_REGEX = /-?[_a-zA-Z]+[_a-zA-Z0-9-]*/g;
-    Dom.ONLY_WHITE_SPACE_REGEX = /^\s*$/;
-    Dom.handlers = [];
     return Dom;
 }());
+Dom.CLASS_NAME_REGEX = /-?[_a-zA-Z]+[_a-zA-Z0-9-]*/g;
+Dom.ONLY_WHITE_SPACE_REGEX = /^\s*$/;
+Dom.handlers = [];
 exports.Dom = Dom;
-var Win = /** @class */ (function () {
+var Win = (function () {
     function Win(win) {
         this.win = win;
     }
@@ -2926,14 +2905,10 @@ var Win = /** @class */ (function () {
         return this.win.innerWidth;
     };
     Win.prototype.scrollY = function () {
-        return this.supportPageOffset()
-            ? this.win.pageYOffset
-            : this.isCSS1Compat() ? this.win.document.documentElement.scrollTop : this.win.document.body.scrollTop;
+        return this.supportPageOffset() ? this.win.pageYOffset : this.isCSS1Compat() ? this.win.document.documentElement.scrollTop : this.win.document.body.scrollTop;
     };
     Win.prototype.scrollX = function () {
-        return this.supportPageOffset()
-            ? window.pageXOffset
-            : this.isCSS1Compat() ? document.documentElement.scrollLeft : document.body.scrollLeft;
+        return this.supportPageOffset() ? window.pageXOffset : this.isCSS1Compat() ? document.documentElement.scrollLeft : document.body.scrollLeft;
     };
     Win.prototype.isCSS1Compat = function () {
         return (this.win.document.compatMode || '') === 'CSS1Compat';
@@ -2944,7 +2919,7 @@ var Win = /** @class */ (function () {
     return Win;
 }());
 exports.Win = Win;
-var Doc = /** @class */ (function () {
+var Doc = (function () {
     function Doc(doc) {
         this.doc = doc;
     }
@@ -2967,7 +2942,7 @@ function $$() {
     if (args.length === 1 && args[0] instanceof Dom) {
         return args[0];
     }
-    else if (args.length === 1 && !_.isString(args[0])) {
+    else if (args.length === 1 && (!_.isString(args[0]))) {
         return new Dom(args[0]);
     }
     else {
@@ -2978,13 +2953,13 @@ exports.$$ = $$;
 
 
 /***/ }),
-/* 6 */
+/* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var JQueryUtils = /** @class */ (function () {
+var JQueryUtils = (function () {
     function JQueryUtils() {
     }
     JQueryUtils.getJQuery = function () {
@@ -3013,1324 +2988,39 @@ exports.JQueryUtils = JQueryUtils;
 
 
 /***/ }),
-/* 7 */
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-var EndpointCaller_1 = __webpack_require__(14);
-var Logger_1 = __webpack_require__(3);
-var Assert_1 = __webpack_require__(0);
-var Version_1 = __webpack_require__(19);
-var AjaxError_1 = __webpack_require__(20);
-var MissingAuthenticationError_1 = __webpack_require__(21);
-var QueryUtils_1 = __webpack_require__(22);
-var QueryError_1 = __webpack_require__(23);
-var Utils_1 = __webpack_require__(2);
-var _ = __webpack_require__(1);
-var PromisesShim_1 = __webpack_require__(24);
-var coveo_analytics_1 = __webpack_require__(25);
-var CookieUtils_1 = __webpack_require__(32);
-PromisesShim_1.shim();
-var DefaultSearchEndpointOptions = /** @class */ (function () {
-    function DefaultSearchEndpointOptions() {
-        this.version = 'v2';
-        this.queryStringArguments = {};
-        this.anonymous = false;
-        this.isGuestUser = false;
-    }
-    return DefaultSearchEndpointOptions;
-}());
-exports.DefaultSearchEndpointOptions = DefaultSearchEndpointOptions;
-/**
- * The `SearchEndpoint` class allows you to execute various actions against the Coveo Search API and a Coveo index
- * (e.g., searching, listing field values, getting the quickview content of an item, etc.).
- *
- * This class does trigger any query events directly. Consequently, executing an action with this class does not trigger
- * a full query cycle for the Coveo components.
- *
- * If you wish to have all Coveo components "react" to a query, (and trigger the corresponding query events), use the
- * [`QueryController`]{@link QueryController} class instead.
- */
-var SearchEndpoint = /** @class */ (function () {
-    /**
-     * Creates a new `SearchEndpoint` instance.
-     * Uses a set of adequate default options, and merges these with the `options` parameter.
-     * Also creates an [`EndpointCaller`]{@link EndpointCaller} instance and uses it to communicate with the endpoint
-     * internally.
-     * @param options The custom options to apply to the new `SearchEndpoint`.
-     */
-    function SearchEndpoint(options) {
-        var _this = this;
-        this.options = options;
-        Assert_1.Assert.exists(options);
-        Assert_1.Assert.exists(options.restUri);
-        // For backward compatibility, we set anonymous to true when an access token
-        // is specified on a page loaded through the filesystem. This causes withCredentials
-        // to NOT be set, allowing those pages to work with non Windows/Basic/Cookie
-        // authentication. If anonymous is explicitly set to false, we'll use withCredentials.
-        var defaultOptions = new DefaultSearchEndpointOptions();
-        defaultOptions.anonymous = window.location.href.indexOf('file://') == 0 && Utils_1.Utils.isNonEmptyString(options.accessToken);
-        this.options = _.extend({}, defaultOptions, options);
-        // Forward any debug=1 query argument to the REST API to ease debugging
-        if (SearchEndpoint.isDebugArgumentPresent()) {
-            this.options.queryStringArguments['debug'] = 1;
-        }
-        this.onUnload = function () {
-            _this.handleUnload();
-        };
-        window.addEventListener('beforeunload', this.onUnload);
-        this.logger = new Logger_1.Logger(this);
-        this.createEndpointCaller();
-    }
-    /**
-     * Configures a sample search endpoint on a Coveo Cloud index containing a set of public sources with no secured
-     * content.
-     *
-     * **Note:**
-     * > This method mainly exists for demo purposes and ease of setup.
-     *
-     * @param otherOptions A set of additional options to use when configuring this endpoint.
-     */
-    SearchEndpoint.configureSampleEndpoint = function (otherOptions) {
-        if (SearchEndpoint.isUseLocalArgumentPresent()) {
-            // This is a handy flag to quickly test a local search API and alerts
-            SearchEndpoint.endpoints['default'] = new SearchEndpoint(_.extend({
-                restUri: 'http://localhost:8100/rest/search',
-                searchAlertsUri: 'http://localhost:8088/rest/search/alerts/'
-            }, otherOptions));
-        }
-        else {
-            // This OAuth token points to the organization used for samples.
-            // It contains a set of harmless content sources.
-            SearchEndpoint.endpoints['default'] = new SearchEndpoint(_.extend({
-                restUri: 'https://cloudplatform.coveo.com/rest/search',
-                accessToken: '52d806a2-0f64-4390-a3f2-e0f41a4a73ec'
-            }, otherOptions));
-        }
-    };
-    /**
-     * Configures a sample search endpoint on a Coveo Cloud V2 index containing a set of public sources with no secured
-     * content.
-     *
-     * **Note:**
-     * > This method mainly exists for demo purposes and ease of setup.
-     *
-     * @param otherOptions A set of additional options to use when configuring this endpoint.
-     */
-    SearchEndpoint.configureSampleEndpointV2 = function (optionsOPtions) {
-        SearchEndpoint.endpoints['default'] = new SearchEndpoint(_.extend({
-            restUri: 'https://platform.cloud.coveo.com/rest/search',
-            accessToken: 'xx564559b1-0045-48e1-953c-3addd1ee4457',
-            queryStringArguments: {
-                organizationId: 'searchuisamples',
-                viewAllContent: 1
-            }
-        }));
-    };
-    /**
-     * Configures a search endpoint on a Coveo Cloud index.
-     * @param organization The organization ID of your Coveo Cloud index.
-     * @param token The token to use to execute query. If not specified, you will likely need to login when querying.
-     * @param uri The URI of the Coveo Cloud REST Search API. By default, this points to the production environment.
-     * @param otherOptions A set of additional options to use when configuring this endpoint.
-     */
-    SearchEndpoint.configureCloudEndpoint = function (organization, token, uri, otherOptions) {
-        if (uri === void 0) { uri = 'https://cloudplatform.coveo.com/rest/search'; }
-        var options = {
-            restUri: uri,
-            accessToken: token,
-            queryStringArguments: { organizationId: organization }
-        };
-        var merged = SearchEndpoint.mergeConfigOptions(options, otherOptions);
-        SearchEndpoint.endpoints['default'] = new SearchEndpoint(SearchEndpoint.removeUndefinedConfigOption(merged));
-    };
-    /**
-     * Configures a search endpoint on a Coveo Cloud V2 index.
-     * @param organization The organization ID of your Coveo Cloud V2 index.
-     * @param token The token to use to execute query. If not specified, you will likely need to login when querying.
-     * @param uri The URI of the Coveo Cloud REST Search API. By default, this points to the production environment.
-     * @param otherOptions A set of additional options to use when configuring this endpoint.
-     */
-    SearchEndpoint.configureCloudV2Endpoint = function (organization, token, uri, otherOptions) {
-        if (uri === void 0) { uri = 'https://platform.cloud.coveo.com/rest/search'; }
-        return SearchEndpoint.configureCloudEndpoint(organization, token, uri, otherOptions);
-    };
-    /**
-     * Configures a search endpoint on a Coveo on-premise index.
-     * @param uri The URI of your Coveo Search API endpoint (e.g., `http://myserver:8080/rest/search`)
-     * @param token The token to use to execute query. If not specified, you will likely need to login when querying
-     * (unless your Coveo Search API endpoint is configured using advanced auth options, such as Windows auth or claims).
-     * @param otherOptions A set of additional options to use when configuring this endpoint.
-     */
-    SearchEndpoint.configureOnPremiseEndpoint = function (uri, token, otherOptions) {
-        var merged = SearchEndpoint.mergeConfigOptions({
-            restUri: uri,
-            accessToken: token
-        }, otherOptions);
-        SearchEndpoint.endpoints['default'] = new SearchEndpoint(SearchEndpoint.removeUndefinedConfigOption(merged));
-    };
-    SearchEndpoint.removeUndefinedConfigOption = function (config) {
-        _.each(_.keys(config), function (key) {
-            if (config[key] == undefined) {
-                delete config[key];
-            }
-        });
-        return config;
-    };
-    SearchEndpoint.mergeConfigOptions = function (first, second) {
-        first = SearchEndpoint.removeUndefinedConfigOption(first);
-        second = SearchEndpoint.removeUndefinedConfigOption(second);
-        return _.extend({}, first, second);
-    };
-    SearchEndpoint.prototype.reset = function () {
-        this.createEndpointCaller();
-    };
-    /**
-     * Sets a function which allows external code to modify all endpoint call parameters before the browser sends them.
-     *
-     * **Note:**
-     * > This is useful in very specific scenarios where the network infrastructure requires special request headers to be
-     * > added or removed, for example.
-     * @param requestModifier The function.
-     */
-    SearchEndpoint.prototype.setRequestModifier = function (requestModifier) {
-        this.caller.options.requestModifier = requestModifier;
-    };
-    /**
-     * Gets the base URI of the Search API endpoint.
-     * @returns {string} The base URI of the Search API endpoint.
-     */
-    SearchEndpoint.prototype.getBaseUri = function () {
-        return this.buildBaseUri('');
-    };
-    /**
-     * Gets the base URI of the search alerts endpoint.
-     * @returns {string} The base URI of the search alerts endpoint.
-     */
-    SearchEndpoint.prototype.getBaseAlertsUri = function () {
-        return this.buildSearchAlertsUri('');
-    };
-    /**
-     * Gets the URI that can be used to authenticate against the given provider.
-     * @param provider The provider name.
-     * @param returnUri The URI to return to after the authentication is completed.
-     * @param message The authentication message.
-     * @param callOptions Additional set of options to use for this call.
-     * @param callParams Options injected by the applied decorators.
-     * @returns {string} The authentication provider URI.
-     */
-    SearchEndpoint.prototype.getAuthenticationProviderUri = function (provider, returnUri, message, callOptions, callParams) {
-        var queryString = this.buildBaseQueryString(callOptions);
-        callParams.queryString = callParams.queryString.concat(queryString);
-        callParams.url += provider + '?';
-        if (Utils_1.Utils.isNonEmptyString(returnUri)) {
-            callParams.url += 'redirectUri=' + encodeURIComponent(returnUri) + '&';
-        }
-        else if (Utils_1.Utils.isNonEmptyString(message)) {
-            callParams.url += 'message=' + encodeURIComponent(message) + '&';
-        }
-        callParams.url += callParams.queryString.join('&');
-        return callParams.url;
-    };
-    /**
-     * Indicates whether the search endpoint is using JSONP internally to communicate with the Search API.
-     * @returns {boolean} `true` in the search enpoint is using JSONP; `false` otherwise.
-     */
-    SearchEndpoint.prototype.isJsonp = function () {
-        return this.caller.useJsonp;
-    };
-    /**
-     * Performs a search on the index and returns a Promise of [`IQueryResults`]{@link IQueryResults}.
-     *
-     * This method slightly modifies the query results by adding additional information to each result (id, state object,
-     * etc.).
-     * @param query The query to execute. Typically, the query object is built using a
-     * [`QueryBuilder`]{@link QueryBuilder}.
-     * @param callOptions An additional set of options to use for this call.
-     * @param callParams The options injected by the applied decorators.
-     * @returns {Promise<IQueryResults>} A Promise of query results.
-     */
-    SearchEndpoint.prototype.search = function (query, callOptions, callParams) {
-        var _this = this;
-        Assert_1.Assert.exists(query);
-        callParams.requestData = _.extend({}, callParams.requestData, _.omit(query, function (queryParam) { return Utils_1.Utils.isNullOrUndefined(queryParam); }));
-        this.logger.info('Performing REST query', query);
-        return this.performOneCall(callParams, callOptions).then(function (results) {
-            _this.logger.info('REST query successful', results, query);
-            // Version check
-            // If the SearchAPI doesn't give us any apiVersion info, we assume version 1 (before apiVersion was implemented)
-            if (results.apiVersion == null) {
-                results.apiVersion = 1;
-            }
-            if (results.apiVersion < Version_1.version.supportedApiVersion) {
-                _this.logger.error('Please update your REST Search API');
-            }
-            // If the server specified no search ID generated one using the client-side
-            // GUID generator. We prefer server generated guids to allow tracking a query
-            // all the way from the analytics to the logs.
-            if (Utils_1.Utils.isNullOrEmptyString(results.searchUid)) {
-                results.searchUid = QueryUtils_1.QueryUtils.createGuid();
-            }
-            QueryUtils_1.QueryUtils.setIndexAndUidOnQueryResults(query, results, results.searchUid, results.pipeline, results.splitTestRun);
-            QueryUtils_1.QueryUtils.setTermsToHighlightOnQueryResults(query, results);
-            return results;
-        });
-    };
-    /**
-     * Gets a link / URI to download a query result set to the XLSX format.
-     *
-     * **Note:**
-     * > This method does not automatically download the query result set, but rather provides an URI from which to
-     * > download it.
-     * @param query The query for which to get the XLSX result set.
-     * @param numberOfResults The number of results to download.
-     * @param callOptions An additional set of options to use for this call.
-     * @param callParams The options injected by the applied decorators.
-     * @returns {string} The download URI.
-     */
-    SearchEndpoint.prototype.getExportToExcelLink = function (query, numberOfResults, callOptions, callParams) {
-        var queryString = this.buildBaseQueryString(callOptions);
-        callParams.queryString = callParams.queryString.concat(queryString);
-        queryString = this.buildCompleteQueryString(null, query);
-        callParams.queryString = callParams.queryString.concat(queryString);
-        if (numberOfResults != null) {
-            callParams.queryString.push('numberOfResults=' + numberOfResults);
-        }
-        callParams.queryString.push('format=xlsx');
-        return callParams.url + '?' + callParams.queryString.join('&');
-    };
-    /**
-     * Gets the raw datastream for an item. This is typically used to get a thumbnail for an item.
-     *
-     * Returns an array buffer.
-     *
-     * **Example:**
-     * ```
-     * let rawBinary = String.fromCharCode.apply(null, new Uint8Array(response));
-     * img.setAttribute('src', 'data:image/png;base64,' + btoa(rawBinary));
-     * ```
-     * @param documentUniqueId Typically, the {@link IQueryResult.uniqueId} on each result.
-     * @param dataStreamType Normally, `$Thumbnail`.
-     * @param callOptions An additional set of options to use for this call.
-     * @param callParams The options injected by the applied decorators.
-     * @returns {Promise<TResult>|Promise<U>}
-     */
-    SearchEndpoint.prototype.getRawDataStream = function (documentUniqueId, dataStreamType, callOptions, callParams) {
-        var _this = this;
-        Assert_1.Assert.exists(documentUniqueId);
-        var queryString = this.buildViewAsHtmlQueryString(documentUniqueId, callOptions);
-        callParams.queryString = callParams.queryString.concat(queryString);
-        this.logger.info('Performing REST query for datastream ' + dataStreamType + ' on item uniqueID ' + documentUniqueId);
-        callParams.queryString.push('dataStream=' + dataStreamType);
-        return this.performOneCall(callParams).then(function (results) {
-            _this.logger.info('REST query successful', results, documentUniqueId);
-            return results;
-        });
-    };
-    /**
-     * Gets an URL from which it is possible to see the datastream for an item. This is typically used to get a
-     * thumbnail for an item.
-     * @param documentUniqueID Typically, the {@link IQueryResult.uniqueId} on each result.
-     * @param dataStreamType Normally, `$Thumbnail`.
-     * @param callOptions An additional set of options to use for this call.
-     * @param callParams The options injected by the applied decorators.
-     * @returns {string} The datastream URL.
-     */
-    SearchEndpoint.prototype.getViewAsDatastreamUri = function (documentUniqueID, dataStreamType, callOptions, callParams) {
-        callOptions = _.extend({}, callOptions);
-        var queryString = this.buildBaseQueryString(callOptions);
-        callParams.queryString = callParams.queryString.concat(queryString);
-        queryString = this.buildViewAsHtmlQueryString(documentUniqueID, callOptions);
-        callParams.queryString = callParams.queryString.concat(queryString);
-        queryString = this.buildCompleteQueryString(callOptions.query, callOptions.queryObject);
-        callParams.queryString = callParams.queryString.concat(queryString);
-        return callParams.url + '?' + callParams.queryString.join('&') + '&dataStream=' + encodeURIComponent(dataStreamType);
-    };
-    /**
-     * Gets a single item, using its `uniqueId`.
-     * @param documentUniqueID Typically, the {@link IQueryResult.uniqueId} on each result.
-     * @param callOptions An additional set of options to use for this call.
-     * @param callParams The options injected by the applied decorators.
-     * @returns {Promise<IQueryResult>} A Promise of the item.
-     */
-    SearchEndpoint.prototype.getDocument = function (documentUniqueID, callOptions, callParams) {
-        var queryString = this.buildViewAsHtmlQueryString(documentUniqueID, callOptions);
-        callParams.queryString = callParams.queryString.concat(queryString);
-        return this.performOneCall(callParams);
-    };
-    /**
-     * Gets the content of a single item, as text (think: quickview).
-     * @param documentUniqueID Typically, the {@link IQueryResult.uniqueId} on each result.
-     * @param callOptions An additional set of options to use for this call.
-     * @param callParams The options injected by the applied decorators.
-     * @returns {Promise<string>} A Promise of the item content.
-     */
-    SearchEndpoint.prototype.getDocumentText = function (documentUniqueID, callOptions, callParams) {
-        var queryString = this.buildViewAsHtmlQueryString(documentUniqueID, callOptions);
-        callParams.queryString = callParams.queryString.concat(queryString);
-        return this.performOneCall(callParams).then(function (data) {
-            return data.content;
-        });
-    };
-    /**
-     * Gets the content for a single item, as an HTMLDocument (think: quickview).
-     * @param documentUniqueID Typically, the {@link IQueryResult.uniqueId} on each result.
-     * @param callOptions An additional set of options to use for this call.
-     * @param callParams The options injected by the applied decorators.
-     * @returns {Promise<HTMLDocument>} A Promise of the item content.
-     */
-    SearchEndpoint.prototype.getDocumentHtml = function (documentUniqueID, callOptions, callParams) {
-        callOptions = _.extend({}, callOptions);
-        var queryString = this.buildViewAsHtmlQueryString(documentUniqueID, callOptions);
-        callParams.queryString = callParams.queryString.concat(queryString);
-        callParams.requestData = callOptions.queryObject || { q: callOptions.query };
-        return this.performOneCall(callParams);
-    };
-    /**
-     * Gets an URL from which it is possible to see a single item content, as HTML (think: quickview).
-     * @param documentUniqueID Typically, the {@link IQueryResult.uniqueId} on each result.
-     * @param callOptions An additional set of options to use for this call.
-     * @param callParams The options injected by the applied decorators.
-     * @returns {string} The URL.
-     */
-    SearchEndpoint.prototype.getViewAsHtmlUri = function (documentUniqueID, callOptions, callParams) {
-        var queryString = this.buildBaseQueryString(callOptions);
-        callParams.queryString = callParams.queryString.concat(queryString);
-        queryString = this.buildViewAsHtmlQueryString(documentUniqueID, callOptions);
-        callParams.queryString = callParams.queryString.concat(queryString);
-        callParams.queryString = _.uniq(callParams.queryString);
-        return callParams.url + '?' + callParams.queryString.join('&');
-    };
-    SearchEndpoint.prototype.batchFieldValues = function (request, callOptions, callParams) {
-        var _this = this;
-        Assert_1.Assert.exists(request);
-        return this.performOneCall(callParams).then(function (data) {
-            _this.logger.info('REST list field values successful', data.values, request);
-            return data.values;
-        });
-    };
-    /**
-     * Lists the possible field values for a request.
-     * @param request The request for which to list the possible field values.
-     * @param callOptions An additional set of options to use for this call.
-     * @param callParams The options injected by the applied decorators.
-     * @returns {Promise<TResult>|Promise<U>} A Promise of the field values.
-     */
-    SearchEndpoint.prototype.listFieldValues = function (request, callOptions, callParams) {
-        var _this = this;
-        Assert_1.Assert.exists(request);
-        callParams.requestData = request;
-        this.logger.info('Listing field values', request);
-        return this.performOneCall(callParams).then(function (data) {
-            _this.logger.info('REST list field values successful', data.values, request);
-            return data.values;
-        });
-    };
-    /**
-     * Lists all fields for the index, and returns an array of their descriptions.
-     * @param callOptions An additional set of options to use for this call.
-     * @param callParams The options injected by the applied decorators.
-     * @returns {Promise<TResult>|Promise<U>} A Promise of the index fields and descriptions.
-     */
-    SearchEndpoint.prototype.listFields = function (callOptions, callParams) {
-        this.logger.info('Listing fields');
-        return this.performOneCall(callParams).then(function (data) {
-            return data.fields;
-        });
-    };
-    /**
-     * Lists all available query extensions for the search endpoint.
-     * @param callOptions An additional set of options to use for this call.
-     * @param callParams The options injected by the applied decorators.
-     * @returns {Promise<IExtension[]>} A Promise of the extensions.
-     */
-    SearchEndpoint.prototype.extensions = function (callOptions, callParams) {
-        this.logger.info('Listing extensions');
-        return this.performOneCall(callParams);
-    };
-    /**
-     * Rates a single item in the index (granted that collaborative rating is enabled on your index)
-     * @param ratingRequest The item id, and the rating to add.
-     * @param callOptions An additional set of options to use for this call.
-     * @param callParams The options injected by the applied decorators.
-     * @returns {Promise<boolean>|Promise<T>}
-     */
-    SearchEndpoint.prototype.rateDocument = function (ratingRequest, callOptions, callParams) {
-        this.logger.info('Rating a document', ratingRequest);
-        callParams.requestData = ratingRequest;
-        return this.performOneCall(callParams).then(function () {
-            return true;
-        });
-    };
-    /**
-     * Tags a single item.
-     * @param taggingRequest The item id, and the tag action to perform.
-     * @param callOptions An additional set of options to use for this call.
-     * @param callParams The options injected by the applied decorators.
-     * @returns {Promise<boolean>|Promise<T>}
-     */
-    SearchEndpoint.prototype.tagDocument = function (taggingRequest, callOptions, callParams) {
-        this.logger.info('Tagging an item', taggingRequest);
-        callParams.requestData = taggingRequest;
-        return this.performOneCall(callParams).then(function () {
-            return true;
-        });
-    };
-    /**
-     * Gets a list of query suggestions for a request.
-     * @param request The query, and the number of suggestions to return.
-     * @param callOptions An additional set of options to use for this call.
-     * @param callParams The options injected by the applied decorators.
-     * @returns {Promise<IQuerySuggestResponse>} A Promise of query suggestions.
-     */
-    SearchEndpoint.prototype.getQuerySuggest = function (request, callOptions, callParams) {
-        this.logger.info('Get Query Suggest', request);
-        callParams.requestData = _.extend({}, callParams.requestData, _.omit(request, function (parameter) { return Utils_1.Utils.isNullOrUndefined(parameter); }));
-        return this.performOneCall(callParams, callOptions);
-    };
-    // This is a non documented method to ensure backward compatibility for the old query suggest call.
-    // It simply calls the "real" official and documented method.
-    SearchEndpoint.prototype.getRevealQuerySuggest = function (request, callOptions, callParams) {
-        return this.getQuerySuggest(request, callOptions, callParams);
-    };
-    /**
-     * Follows an item, or a query result, using the search alerts service.
-     * @param request The subscription details.
-     * @param callOptions An additional set of options to use for this call.
-     * @param callParams The options injected by the applied decorators.
-     * @returns {Promise<ISubscription>}
-     */
-    SearchEndpoint.prototype.follow = function (request, callOptions, callParams) {
-        callParams.requestData = request;
-        this.logger.info('Following an item or a query', request);
-        return this.performOneCall(callParams);
-    };
-    /**
-     * Gets a Promise of an array of the current subscriptions.
-     * @param page The page of the subscriptions.
-     * @param callOptions An additional set of options to use for this call.
-     * @param callParams The options injected by the applied decorators.
-     * @returns {any}
-     */
-    SearchEndpoint.prototype.listSubscriptions = function (page, callOptions, callParams) {
-        var _this = this;
-        if (this.options.isGuestUser) {
-            return new Promise(function (resolve, reject) {
-                reject();
-            });
-        }
-        if (this.currentListSubscriptions == null) {
-            callParams.queryString.push('page=' + (page || 0));
-            this.currentListSubscriptions = this.performOneCall(callParams);
-            this.currentListSubscriptions
-                .then(function (data) {
-                _this.currentListSubscriptions = null;
-                return data;
-            })
-                .catch(function (e) {
-                // Trap 403 error, as the listSubscription call is called on every page initialization
-                // to check for current subscriptions. By default, the search alert service is not enabled for most organization
-                // Don't want to pollute the console with un-needed noise and confusion
-                if (e.status != 403) {
-                    throw e;
-                }
-            });
-        }
-        return this.currentListSubscriptions;
-    };
-    /**
-     * Updates a subscription with new parameters.
-     * @param subscription The subscription to update with new parameters.
-     * @param callOptions An additional set of options to use for this call.
-     * @param callParams The options injected by the applied decorators.
-     * @returns {Promise<ISubscription>}
-     */
-    SearchEndpoint.prototype.updateSubscription = function (subscription, callOptions, callParams) {
-        callParams.requestData = subscription;
-        this.logger.info('Updating a subscription', subscription);
-        callParams.url += subscription.id;
-        return this.performOneCall(callParams);
-    };
-    /**
-     * Deletes a subscription.
-     * @param subscription The subscription to delete.
-     * @param callOptions An additional set of options to use for this call.
-     * @param callParams The options injected by the applied decorators.
-     * @returns {Promise<ISubscription>}
-     */
-    SearchEndpoint.prototype.deleteSubscription = function (subscription, callOptions, callParams) {
-        callParams.url += subscription.id;
-        return this.performOneCall(callParams);
-    };
-    SearchEndpoint.prototype.logError = function (sentryLog, callOptions, callParams) {
-        callParams.requestData = sentryLog;
-        return this.performOneCall(callParams, callOptions)
-            .then(function () {
-            return true;
-        })
-            .catch(function () {
-            return false;
-        });
-    };
-    SearchEndpoint.prototype.nuke = function () {
-        window.removeEventListener('beforeunload', this.onUnload);
-    };
-    SearchEndpoint.prototype.createEndpointCaller = function () {
-        this.caller = new EndpointCaller_1.EndpointCaller(this.options);
-    };
-    SearchEndpoint.isDebugArgumentPresent = function () {
-        return /[?&]debug=1([&]|$)/.test(window.location.search);
-    };
-    SearchEndpoint.isUseLocalArgumentPresent = function () {
-        return /[?&]useLocal=1([&]|$)/.test(window.location.search);
-    };
-    SearchEndpoint.prototype.handleUnload = function () {
-        this.isRedirecting = true;
-    };
-    SearchEndpoint.prototype.buildBaseUri = function (path) {
-        Assert_1.Assert.isString(path);
-        var uri = this.options.restUri;
-        uri = this.removeTrailingSlash(uri);
-        if (Utils_1.Utils.isNonEmptyString(this.options.version)) {
-            uri += '/' + this.options.version;
-        }
-        uri += path;
-        return uri;
-    };
-    SearchEndpoint.prototype.buildSearchAlertsUri = function (path) {
-        Assert_1.Assert.isString(path);
-        var uri = this.options.searchAlertsUri || this.options.restUri + '/alerts';
-        if (uri == null) {
-            return null;
-        }
-        uri = this.removeTrailingSlash(uri);
-        uri += path;
-        return uri;
-    };
-    // see https://github.com/palantir/tslint/issues/1421
-    // tslint:disable-next-line:no-unused-variable
-    SearchEndpoint.prototype.buildAccessToken = function (tokenKey) {
-        var queryString = [];
-        if (Utils_1.Utils.isNonEmptyString(this.options.accessToken)) {
-            queryString.push(tokenKey + '=' + encodeURIComponent(this.options.accessToken));
-        }
-        return queryString;
-    };
-    SearchEndpoint.prototype.buildBaseQueryString = function (callOptions) {
-        callOptions = _.extend({}, callOptions);
-        var queryString = [];
-        for (var name_1 in this.options.queryStringArguments) {
-            queryString.push(name_1 + '=' + encodeURIComponent(this.options.queryStringArguments[name_1]));
-        }
-        if (callOptions && _.isArray(callOptions.authentication) && callOptions.authentication.length != 0) {
-            queryString.push('authentication=' + callOptions.authentication.join(','));
-        }
-        return queryString;
-    };
-    SearchEndpoint.prototype.buildCompleteQueryString = function (query, queryObject) {
-        // In an ideal parallel reality, the entire query used in the 'search' call is used here.
-        // In this reality however, we must support GET calls (ex: GET /html) for CORS/JSONP/IE reasons.
-        // Therefore, we cherry-pick parts of the query to include in a 'query string' instead of a body payload.
-        var queryString = [];
-        if (queryObject) {
-            _.each(['q', 'aq', 'cq', 'dq', 'searchHub', 'tab', 'locale', 'pipeline', 'lowercaseOperators'], function (key) {
-                if (queryObject[key]) {
-                    queryString.push(key + '=' + encodeURIComponent(queryObject[key]));
-                }
-            });
-            _.each(queryObject.context, function (value, key) {
-                queryString.push('context[' + key + ']=' + encodeURIComponent(value));
-            });
-            if (queryObject.fieldsToInclude) {
-                queryString.push("fieldsToInclude=[" + _.map(queryObject.fieldsToInclude, function (field) { return '"' + encodeURIComponent(field.replace('@', '')) + '"'; }).join(',') + "]");
-            }
-        }
-        else if (query) {
-            queryString.push('q=' + encodeURIComponent(query));
-        }
-        return queryString;
-    };
-    SearchEndpoint.prototype.buildViewAsHtmlQueryString = function (uniqueId, callOptions) {
-        callOptions = _.extend({}, callOptions);
-        var queryString = this.buildBaseQueryString(callOptions);
-        queryString.push('uniqueId=' + encodeURIComponent(uniqueId));
-        if (callOptions.query || callOptions.queryObject) {
-            queryString.push('enableNavigation=true');
-        }
-        if (callOptions.requestedOutputSize) {
-            queryString.push('requestedOutputSize=' + encodeURIComponent(callOptions.requestedOutputSize.toString()));
-        }
-        if (callOptions.contentType) {
-            queryString.push('contentType=' + encodeURIComponent(callOptions.contentType));
-        }
-        return queryString;
-    };
-    SearchEndpoint.prototype.performOneCall = function (params, callOptions, autoRenewToken) {
-        var _this = this;
-        if (autoRenewToken === void 0) { autoRenewToken = true; }
-        var queryString = this.buildBaseQueryString(callOptions);
-        params.queryString = params.queryString.concat(queryString);
-        params.queryString = _.uniq(params.queryString);
-        var startTime = new Date();
-        return this.caller
-            .call(params)
-            .then(function (response) {
-            if (response.data == null) {
-                response.data = {};
-            }
-            var timeToExecute = new Date().getTime() - startTime.getTime();
-            if (response.data && _.isObject(response.data)) {
-                response.data.clientDuration = timeToExecute;
-                response.data.duration = response.duration || timeToExecute;
-            }
-            return response.data;
-        })
-            .catch(function (error) {
-            if (autoRenewToken && _this.canRenewAccessToken() && _this.isAccessTokenExpiredStatus(error.statusCode)) {
-                return _this.renewAccessToken()
-                    .then(function () {
-                    return _this.performOneCall(params, callOptions, autoRenewToken);
-                })
-                    .catch(function () {
-                    return Promise.reject(_this.handleErrorResponse(error));
-                });
-            }
-            else if (error.statusCode == 0 && _this.isRedirecting) {
-                // The page is getting redirected
-                // Set timeout on return with empty string, since it does not really matter
-                _.defer(function () {
-                    return '';
-                });
-            }
-            else {
-                return Promise.reject(_this.handleErrorResponse(error));
-            }
-        });
-    };
-    SearchEndpoint.prototype.handleErrorResponse = function (errorResponse) {
-        if (this.isMissingAuthenticationProviderStatus(errorResponse.statusCode)) {
-            return new MissingAuthenticationError_1.MissingAuthenticationError(errorResponse.data['provider']);
-        }
-        else if (errorResponse.data && errorResponse.data.message && errorResponse.data.type) {
-            return new QueryError_1.QueryError(errorResponse);
-        }
-        else if (errorResponse.data && errorResponse.data.message) {
-            return new AjaxError_1.AjaxError("Request Error : " + errorResponse.data.message, errorResponse.statusCode);
-        }
-        else {
-            return new AjaxError_1.AjaxError('Request Error', errorResponse.statusCode);
-        }
-    };
-    SearchEndpoint.prototype.canRenewAccessToken = function () {
-        return Utils_1.Utils.isNonEmptyString(this.options.accessToken) && _.isFunction(this.options.renewAccessToken);
-    };
-    SearchEndpoint.prototype.renewAccessToken = function () {
-        var _this = this;
-        this.logger.info('Renewing expired access token');
-        return this.options
-            .renewAccessToken()
-            .then(function (token) {
-            Assert_1.Assert.isNonEmptyString(token);
-            _this.options.accessToken = token;
-            _this.createEndpointCaller();
-            return token;
-        })
-            .catch(function (e) {
-            _this.logger.error('Failed to renew access token', e);
-            return e;
-        });
-    };
-    SearchEndpoint.prototype.removeTrailingSlash = function (uri) {
-        if (this.hasTrailingSlash(uri)) {
-            uri = uri.substr(0, uri.length - 1);
-        }
-        return uri;
-    };
-    SearchEndpoint.prototype.hasTrailingSlash = function (uri) {
-        return uri.charAt(uri.length - 1) == '/';
-    };
-    SearchEndpoint.prototype.isMissingAuthenticationProviderStatus = function (status) {
-        return status == 402;
-    };
-    SearchEndpoint.prototype.isAccessTokenExpiredStatus = function (status) {
-        return status == 419;
-    };
-    /**
-     * Contains a map of all initialized `SearchEndpoint` instances.
-     *
-     * **Example:**
-     * > `Coveo.SearchEndpoint.endpoints['default']` returns the default endpoint that was created at initialization.
-     * @type {{}}
-     */
-    SearchEndpoint.endpoints = {};
-    __decorate([
-        path('/login/'),
-        accessTokenInUrl()
-    ], SearchEndpoint.prototype, "getAuthenticationProviderUri", null);
-    __decorate([
-        path('/'),
-        method('POST'),
-        responseType('text'),
-        includeActionsHistory(),
-        includeReferrer(),
-        includeVisitorId(),
-        includeIsGuestUser()
-    ], SearchEndpoint.prototype, "search", null);
-    __decorate([
-        path('/'),
-        accessTokenInUrl()
-    ], SearchEndpoint.prototype, "getExportToExcelLink", null);
-    __decorate([
-        path('/datastream'),
-        accessTokenInUrl(),
-        method('GET'),
-        responseType('arraybuffer')
-    ], SearchEndpoint.prototype, "getRawDataStream", null);
-    __decorate([
-        path('/datastream'),
-        accessTokenInUrl()
-    ], SearchEndpoint.prototype, "getViewAsDatastreamUri", null);
-    __decorate([
-        path('/document'),
-        method('GET'),
-        responseType('text')
-    ], SearchEndpoint.prototype, "getDocument", null);
-    __decorate([
-        path('/text'),
-        method('GET'),
-        responseType('text')
-    ], SearchEndpoint.prototype, "getDocumentText", null);
-    __decorate([
-        path('/html'),
-        method('POST'),
-        responseType('document')
-    ], SearchEndpoint.prototype, "getDocumentHtml", null);
-    __decorate([
-        path('/html'),
-        accessTokenInUrl()
-    ], SearchEndpoint.prototype, "getViewAsHtmlUri", null);
-    __decorate([
-        path('/values'),
-        method('POST'),
-        responseType('text')
-    ], SearchEndpoint.prototype, "batchFieldValues", null);
-    __decorate([
-        path('/values'),
-        method('POST'),
-        responseType('text')
-    ], SearchEndpoint.prototype, "listFieldValues", null);
-    __decorate([
-        path('/fields'),
-        method('GET'),
-        responseType('text')
-    ], SearchEndpoint.prototype, "listFields", null);
-    __decorate([
-        path('/extensions'),
-        method('GET'),
-        responseType('text')
-    ], SearchEndpoint.prototype, "extensions", null);
-    __decorate([
-        path('/rating'),
-        method('POST'),
-        responseType('text')
-    ], SearchEndpoint.prototype, "rateDocument", null);
-    __decorate([
-        path('/tag'),
-        method('POST'),
-        responseType('text')
-    ], SearchEndpoint.prototype, "tagDocument", null);
-    __decorate([
-        path('/querySuggest'),
-        method('POST'),
-        responseType('text'),
-        includeActionsHistory(),
-        includeReferrer(),
-        includeVisitorId(),
-        includeIsGuestUser()
-    ], SearchEndpoint.prototype, "getQuerySuggest", null);
-    __decorate([
-        alertsPath('/subscriptions'),
-        accessTokenInUrl('accessToken'),
-        method('POST'),
-        requestDataType('application/json'),
-        responseType('text')
-    ], SearchEndpoint.prototype, "follow", null);
-    __decorate([
-        alertsPath('/subscriptions'),
-        accessTokenInUrl('accessToken'),
-        method('GET'),
-        requestDataType('application/json'),
-        responseType('text')
-    ], SearchEndpoint.prototype, "listSubscriptions", null);
-    __decorate([
-        alertsPath('/subscriptions/'),
-        accessTokenInUrl('accessToken'),
-        method('PUT'),
-        requestDataType('application/json'),
-        responseType('text')
-    ], SearchEndpoint.prototype, "updateSubscription", null);
-    __decorate([
-        alertsPath('/subscriptions/'),
-        accessTokenInUrl('accessToken'),
-        method('DELETE'),
-        requestDataType('application/json'),
-        responseType('text')
-    ], SearchEndpoint.prototype, "deleteSubscription", null);
-    __decorate([
-        path('/log'),
-        method('POST')
-    ], SearchEndpoint.prototype, "logError", null);
-    return SearchEndpoint;
-}());
-exports.SearchEndpoint = SearchEndpoint;
-// It's taken for granted that methods using decorators have :
-// IEndpointCallOptions as their second to last parameter
-// IEndpointCallParameters as their last parameter
-// The default parameters for each member of the injected {@link IEndpointCallParameters} are the following:
-// url: '',
-// queryString: [],
-// requestData: {},
-// requestDataType: undefined,
-// method: '',
-// responseType: '',
-// errorsAsSuccess: false
-function decoratorSetup(target, key, descriptor) {
-    return {
-        originalMethod: descriptor.value,
-        nbParams: target[key].prototype.constructor.length
-    };
-}
-function defaultDecoratorEndpointCallParameters() {
-    var params = {
-        url: '',
-        queryString: [],
-        requestData: {},
-        method: '',
-        responseType: '',
-        errorsAsSuccess: false
-    };
-    return params;
-}
-function path(path) {
-    return function (target, key, descriptor) {
-        var _a = decoratorSetup(target, key, descriptor), originalMethod = _a.originalMethod, nbParams = _a.nbParams;
-        descriptor.value = function () {
-            var args = [];
-            for (var _i = 0; _i < arguments.length; _i++) {
-                args[_i] = arguments[_i];
-            }
-            var url = this.buildBaseUri(path);
-            if (args[nbParams - 1]) {
-                args[nbParams - 1].url = url;
-            }
-            else {
-                var endpointCallParams = _.extend(defaultDecoratorEndpointCallParameters(), { url: url });
-                args[nbParams - 1] = endpointCallParams;
-            }
-            return originalMethod.apply(this, args);
-        };
-        return descriptor;
-    };
-}
-function alertsPath(path) {
-    return function (target, key, descriptor) {
-        var _a = decoratorSetup(target, key, descriptor), originalMethod = _a.originalMethod, nbParams = _a.nbParams;
-        descriptor.value = function () {
-            var args = [];
-            for (var _i = 0; _i < arguments.length; _i++) {
-                args[_i] = arguments[_i];
-            }
-            var url = this.buildSearchAlertsUri(path);
-            if (args[nbParams - 1]) {
-                args[nbParams - 1].url = url;
-            }
-            else {
-                var endpointCallParams = _.extend(defaultDecoratorEndpointCallParameters(), { url: url });
-                args[nbParams - 1] = endpointCallParams;
-            }
-            return originalMethod.apply(this, args);
-        };
-        return descriptor;
-    };
-}
-function requestDataType(type) {
-    return function (target, key, descriptor) {
-        var _a = decoratorSetup(target, key, descriptor), originalMethod = _a.originalMethod, nbParams = _a.nbParams;
-        descriptor.value = function () {
-            var args = [];
-            for (var _i = 0; _i < arguments.length; _i++) {
-                args[_i] = arguments[_i];
-            }
-            if (args[nbParams - 1]) {
-                args[nbParams - 1].requestDataType = type;
-            }
-            else {
-                var endpointCallParams = _.extend(defaultDecoratorEndpointCallParameters(), { requestDataType: type });
-                args[nbParams - 1] = endpointCallParams;
-            }
-            return originalMethod.apply(this, args);
-        };
-        return descriptor;
-    };
-}
-function method(met) {
-    return function (target, key, descriptor) {
-        var _a = decoratorSetup(target, key, descriptor), originalMethod = _a.originalMethod, nbParams = _a.nbParams;
-        descriptor.value = function () {
-            var args = [];
-            for (var _i = 0; _i < arguments.length; _i++) {
-                args[_i] = arguments[_i];
-            }
-            if (args[nbParams - 1]) {
-                args[nbParams - 1].method = met;
-            }
-            else {
-                var endpointCallParams = _.extend(defaultDecoratorEndpointCallParameters(), { method: met });
-                args[nbParams - 1] = endpointCallParams;
-            }
-            return originalMethod.apply(this, args);
-        };
-        return descriptor;
-    };
-}
-function responseType(resp) {
-    return function (target, key, descriptor) {
-        var _a = decoratorSetup(target, key, descriptor), originalMethod = _a.originalMethod, nbParams = _a.nbParams;
-        descriptor.value = function () {
-            var args = [];
-            for (var _i = 0; _i < arguments.length; _i++) {
-                args[_i] = arguments[_i];
-            }
-            if (args[nbParams - 1]) {
-                args[nbParams - 1].responseType = resp;
-            }
-            else {
-                var endpointCallParams = _.extend(defaultDecoratorEndpointCallParameters(), { responseType: resp });
-                args[nbParams - 1] = endpointCallParams;
-            }
-            return originalMethod.apply(this, args);
-        };
-        return descriptor;
-    };
-}
-function accessTokenInUrl(tokenKey) {
-    if (tokenKey === void 0) { tokenKey = 'access_token'; }
-    return function (target, key, descriptor) {
-        var _a = decoratorSetup(target, key, descriptor), originalMethod = _a.originalMethod, nbParams = _a.nbParams;
-        descriptor.value = function () {
-            var args = [];
-            for (var _i = 0; _i < arguments.length; _i++) {
-                args[_i] = arguments[_i];
-            }
-            var queryString = this.buildAccessToken(tokenKey);
-            if (args[nbParams - 1]) {
-                args[nbParams - 1].queryString = args[nbParams - 1].queryString.concat(queryString);
-            }
-            else {
-                var endpointCallParams = _.extend(defaultDecoratorEndpointCallParameters(), { queryString: queryString });
-                args[nbParams - 1] = endpointCallParams;
-            }
-            return originalMethod.apply(this, args);
-        };
-        return descriptor;
-    };
-}
-function includeActionsHistory(historyStore) {
-    if (historyStore === void 0) { historyStore = new coveo_analytics_1.history.HistoryStore(); }
-    return function (target, key, descriptor) {
-        var _a = decoratorSetup(target, key, descriptor), originalMethod = _a.originalMethod, nbParams = _a.nbParams;
-        descriptor.value = function () {
-            var args = [];
-            for (var _i = 0; _i < arguments.length; _i++) {
-                args[_i] = arguments[_i];
-            }
-            var historyFromStore = historyStore.getHistory();
-            if (historyFromStore == null) {
-                historyFromStore = [];
-            }
-            if (args[nbParams - 1]) {
-                args[nbParams - 1].requestData.actionsHistory = historyFromStore;
-            }
-            else {
-                var endpointCallParams = _.extend(defaultDecoratorEndpointCallParameters(), {
-                    requestData: { actionsHistory: historyFromStore }
-                });
-                args[nbParams - 1] = endpointCallParams;
-            }
-            return originalMethod.apply(this, args);
-        };
-        return descriptor;
-    };
-}
-function includeReferrer() {
-    return function (target, key, descriptor) {
-        var _a = decoratorSetup(target, key, descriptor), originalMethod = _a.originalMethod, nbParams = _a.nbParams;
-        descriptor.value = function () {
-            var args = [];
-            for (var _i = 0; _i < arguments.length; _i++) {
-                args[_i] = arguments[_i];
-            }
-            var referrer = document.referrer;
-            if (referrer == null) {
-                referrer = '';
-            }
-            if (args[nbParams - 1]) {
-                args[nbParams - 1].requestData.referrer = referrer;
-            }
-            else {
-                var endpointCallParams = _.extend(defaultDecoratorEndpointCallParameters(), {
-                    requestData: { referrer: referrer }
-                });
-                args[nbParams - 1] = endpointCallParams;
-            }
-            return originalMethod.apply(this, args);
-        };
-        return descriptor;
-    };
-}
-function includeVisitorId() {
-    return function (target, key, descriptor) {
-        var _a = decoratorSetup(target, key, descriptor), originalMethod = _a.originalMethod, nbParams = _a.nbParams;
-        descriptor.value = function () {
-            var args = [];
-            for (var _i = 0; _i < arguments.length; _i++) {
-                args[_i] = arguments[_i];
-            }
-            var visitorId = CookieUtils_1.Cookie.get('visitorId');
-            if (visitorId == null) {
-                visitorId = '';
-            }
-            if (args[nbParams - 1]) {
-                args[nbParams - 1].requestData.visitorId = visitorId;
-            }
-            else {
-                var endpointCallParams = _.extend(defaultDecoratorEndpointCallParameters(), {
-                    requestData: { visitorId: visitorId }
-                });
-                args[nbParams - 1] = endpointCallParams;
-            }
-            return originalMethod.apply(this, args);
-        };
-        return descriptor;
-    };
-}
-function includeIsGuestUser() {
-    return function (target, key, descriptor) {
-        var _a = decoratorSetup(target, key, descriptor), originalMethod = _a.originalMethod, nbParams = _a.nbParams;
-        descriptor.value = function () {
-            var args = [];
-            for (var _i = 0; _i < arguments.length; _i++) {
-                args[_i] = arguments[_i];
-            }
-            var isGuestUser = this.options.isGuestUser;
-            if (args[nbParams - 1]) {
-                args[nbParams - 1].requestData.isGuestUser = isGuestUser;
-            }
-            else {
-                var endpointCallParams = _.extend(defaultDecoratorEndpointCallParameters(), {
-                    requestData: { isGuestUser: isGuestUser }
-                });
-                args[nbParams - 1] = endpointCallParams;
-            }
-            return originalMethod.apply(this, args);
-        };
-        return descriptor;
-    };
-}
+var Playground_1 = __webpack_require__(10);
+document.addEventListener('DOMContentLoaded', function () {
+    new Playground_1.Playground(document.body);
+});
 
+
+/***/ }),
+/* 7 */
+/***/ (function(module, exports, __webpack_require__) {
+
+/*! globalize - v0.1.1 - 2013-04-30
+* https://github.com/jquery/globalize
+* Copyright 2013 ; Licensed MIT */
+var Globalize = (function(e,r){var t,n,a,s,u,l,i,c,o,f,d,p,h,g,b,m,y,M,v,k,z,F,A,x;t=function(e){return new t.prototype.init(e)}, true?module.exports=t:e.Globalize=t,t.cultures={},t.prototype={constructor:t,init:function(e){return this.cultures=t.cultures,this.cultureSelector=e,this}},t.prototype.init.prototype=t.prototype,t.cultures["default"]={name:"en",englishName:"English",nativeName:"English",isRTL:!1,language:"en",numberFormat:{pattern:["-n"],decimals:2,",":",",".":".",groupSizes:[3],"+":"+","-":"-",NaN:"NaN",negativeInfinity:"-Infinity",positiveInfinity:"Infinity",percent:{pattern:["-n %","n %"],decimals:2,groupSizes:[3],",":",",".":".",symbol:"%"},currency:{pattern:["($n)","$n"],decimals:2,groupSizes:[3],",":",",".":".",symbol:"$"}},calendars:{standard:{name:"Gregorian_USEnglish","/":"/",":":":",firstDay:0,days:{names:["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],namesAbbr:["Sun","Mon","Tue","Wed","Thu","Fri","Sat"],namesShort:["Su","Mo","Tu","We","Th","Fr","Sa"]},months:{names:["January","February","March","April","May","June","July","August","September","October","November","December",""],namesAbbr:["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec",""]},AM:["AM","am","AM"],PM:["PM","pm","PM"],eras:[{name:"A.D.",start:null,offset:0}],twoDigitYearMax:2029,patterns:{d:"M/d/yyyy",D:"dddd, MMMM dd, yyyy",t:"h:mm tt",T:"h:mm:ss tt",f:"dddd, MMMM dd, yyyy h:mm tt",F:"dddd, MMMM dd, yyyy h:mm:ss tt",M:"MMMM dd",Y:"yyyy MMMM",S:"yyyy'-'MM'-'dd'T'HH':'mm':'ss"}}},messages:{}},t.cultures["default"].calendar=t.cultures["default"].calendars.standard,t.cultures.en=t.cultures["default"],t.cultureSelector="en",n=/^0x[a-f0-9]+$/i,a=/^[+\-]?infinity$/i,s=/^[+\-]?\d*\.?\d*(e[+\-]?\d+)?$/,u=/^\s+|\s+$/g,l=function(e,r){if(e.indexOf)return e.indexOf(r);for(var t=0,n=e.length;n>t;t++)if(e[t]===r)return t;return-1},i=function(e,r){return e.substr(e.length-r.length)===r},c=function(){var e,t,n,a,s,u,l=arguments[0]||{},i=1,p=arguments.length,h=!1;for("boolean"==typeof l&&(h=l,l=arguments[1]||{},i=2),"object"==typeof l||f(l)||(l={});p>i;i++)if(null!=(e=arguments[i]))for(t in e)n=l[t],a=e[t],l!==a&&(h&&a&&(d(a)||(s=o(a)))?(s?(s=!1,u=n&&o(n)?n:[]):u=n&&d(n)?n:{},l[t]=c(h,u,a)):a!==r&&(l[t]=a));return l},o=Array.isArray||function(e){return"[object Array]"===Object.prototype.toString.call(e)},f=function(e){return"[object Function]"===Object.prototype.toString.call(e)},d=function(e){return"[object Object]"===Object.prototype.toString.call(e)},p=function(e,r){return 0===e.indexOf(r)},h=function(e){return(e+"").replace(u,"")},g=function(e){return isNaN(e)?0/0:Math[0>e?"ceil":"floor"](e)},b=function(e,r,t){var n;for(n=e.length;r>n;n+=1)e=t?"0"+e:e+"0";return e},m=function(e,r){for(var t=0,n=!1,a=0,s=e.length;s>a;a++){var u=e.charAt(a);switch(u){case"'":n?r.push("'"):t++,n=!1;break;case"\\":n&&r.push("\\"),n=!n;break;default:r.push(u),n=!1}}return t},y=function(e,r){r=r||"F";var t,n=e.patterns,a=r.length;if(1===a){if(t=n[r],!t)throw"Invalid date format string '"+r+"'.";r=t}else 2===a&&"%"===r.charAt(0)&&(r=r.charAt(1));return r},M=function(e,r,t){function n(e,r){var t,n=e+"";return r>1&&r>n.length?(t=v[r-2]+n,t.substr(t.length-r,r)):t=n}function a(){return h||g?h:(h=A.test(r),g=!0,h)}function s(e,r){if(b)return b[r];switch(r){case 0:return e.getFullYear();case 1:return e.getMonth();case 2:return e.getDate();default:throw"Invalid part value "+r}}var u,l=t.calendar,i=l.convert;if(!r||!r.length||"i"===r){if(t&&t.name.length)if(i)u=M(e,l.patterns.F,t);else{var c=new Date(e.getTime()),o=z(e,l.eras);c.setFullYear(F(e,l,o)),u=c.toLocaleString()}else u=""+e;return u}var f=l.eras,d="s"===r;r=y(l,r),u=[];var p,h,g,b,v=["0","00","000"],A=/([^d]|^)(d|dd)([^d]|$)/g,x=0,I=k();for(!d&&i&&(b=i.fromGregorian(e));;){var S=I.lastIndex,w=I.exec(r),C=r.slice(S,w?w.index:r.length);if(x+=m(C,u),!w)break;if(x%2)u.push(w[0]);else{var D=w[0],H=D.length;switch(D){case"ddd":case"dddd":var O=3===H?l.days.namesAbbr:l.days.names;u.push(O[e.getDay()]);break;case"d":case"dd":h=!0,u.push(n(s(e,2),H));break;case"MMM":case"MMMM":var N=s(e,1);u.push(l.monthsGenitive&&a()?l.monthsGenitive[3===H?"namesAbbr":"names"][N]:l.months[3===H?"namesAbbr":"names"][N]);break;case"M":case"MM":u.push(n(s(e,1)+1,H));break;case"y":case"yy":case"yyyy":N=b?b[0]:F(e,l,z(e,f),d),4>H&&(N%=100),u.push(n(N,H));break;case"h":case"hh":p=e.getHours()%12,0===p&&(p=12),u.push(n(p,H));break;case"H":case"HH":u.push(n(e.getHours(),H));break;case"m":case"mm":u.push(n(e.getMinutes(),H));break;case"s":case"ss":u.push(n(e.getSeconds(),H));break;case"t":case"tt":N=12>e.getHours()?l.AM?l.AM[0]:" ":l.PM?l.PM[0]:" ",u.push(1===H?N.charAt(0):N);break;case"f":case"ff":case"fff":u.push(n(e.getMilliseconds(),3).substr(0,H));break;case"z":case"zz":p=e.getTimezoneOffset()/60,u.push((0>=p?"+":"-")+n(Math.floor(Math.abs(p)),H));break;case"zzz":p=e.getTimezoneOffset()/60,u.push((0>=p?"+":"-")+n(Math.floor(Math.abs(p)),2)+":"+n(Math.abs(e.getTimezoneOffset()%60),2));break;case"g":case"gg":l.eras&&u.push(l.eras[z(e,f)].name);break;case"/":u.push(l["/"]);break;default:throw"Invalid date format pattern '"+D+"'."}}}return u.join("")},function(){var e;e=function(e,r,t){var n=t.groupSizes,a=n[0],s=1,u=Math.pow(10,r),l=Math.round(e*u)/u;isFinite(l)||(l=e),e=l;var i=e+"",c="",o=i.split(/e/i),f=o.length>1?parseInt(o[1],10):0;i=o[0],o=i.split("."),i=o[0],c=o.length>1?o[1]:"",f>0?(c=b(c,f,!1),i+=c.slice(0,f),c=c.substr(f)):0>f&&(f=-f,i=b(i,f+1,!0),c=i.slice(-f,i.length)+c,i=i.slice(0,-f)),c=r>0?t["."]+(c.length>r?c.slice(0,r):b(c,r)):"";for(var d=i.length-1,p=t[","],h="";d>=0;){if(0===a||a>d)return i.slice(0,d+1)+(h.length?p+h+c:c);h=i.slice(d-a+1,d+1)+(h.length?p+h:""),d-=a,n.length>s&&(a=n[s],s++)}return i.slice(0,d+1)+p+h+c},v=function(r,t,n){if(!isFinite(r))return 1/0===r?n.numberFormat.positiveInfinity:r===-1/0?n.numberFormat.negativeInfinity:n.numberFormat.NaN;if(!t||"i"===t)return n.name.length?r.toLocaleString():""+r;t=t||"D";var a,s=n.numberFormat,u=Math.abs(r),l=-1;t.length>1&&(l=parseInt(t.slice(1),10));var i,c=t.charAt(0).toUpperCase();switch(c){case"D":a="n",u=g(u),-1!==l&&(u=b(""+u,l,!0)),0>r&&(u="-"+u);break;case"N":i=s;case"C":i=i||s.currency;case"P":i=i||s.percent,a=0>r?i.pattern[0]:i.pattern[1]||"n",-1===l&&(l=i.decimals),u=e(u*("P"===c?100:1),l,i);break;default:throw"Bad number format specifier: "+c}for(var o=/n|\$|-|%/g,f="";;){var d=o.lastIndex,p=o.exec(a);if(f+=a.slice(d,p?p.index:a.length),!p)break;switch(p[0]){case"n":f+=u;break;case"$":f+=s.currency.symbol;break;case"-":/[1-9]/.test(u)&&(f+=s["-"]);break;case"%":f+=s.percent.symbol}}return f}}(),k=function(){return/\/|dddd|ddd|dd|d|MMMM|MMM|MM|M|yyyy|yy|y|hh|h|HH|H|mm|m|ss|s|tt|t|fff|ff|f|zzz|zz|z|gg|g/g},z=function(e,r){if(!r)return 0;for(var t,n=e.getTime(),a=0,s=r.length;s>a;a++)if(t=r[a].start,null===t||n>=t)return a;return 0},F=function(e,r,t,n){var a=e.getFullYear();return!n&&r.eras&&(a-=r.eras[t].offset),a},function(){var e,r,t,n,a,s,u;e=function(e,r){if(100>r){var t=new Date,n=z(t),a=F(t,e,n),s=e.twoDigitYearMax;s="string"==typeof s?(new Date).getFullYear()%100+parseInt(s,10):s,r+=a-a%100,r>s&&(r-=100)}return r},r=function(e,r,t){var n,a=e.days,i=e._upperDays;return i||(e._upperDays=i=[u(a.names),u(a.namesAbbr),u(a.namesShort)]),r=s(r),t?(n=l(i[1],r),-1===n&&(n=l(i[2],r))):n=l(i[0],r),n},t=function(e,r,t){var n=e.months,a=e.monthsGenitive||e.months,i=e._upperMonths,c=e._upperMonthsGen;i||(e._upperMonths=i=[u(n.names),u(n.namesAbbr)],e._upperMonthsGen=c=[u(a.names),u(a.namesAbbr)]),r=s(r);var o=l(t?i[1]:i[0],r);return 0>o&&(o=l(t?c[1]:c[0],r)),o},n=function(e,r){var t=e._parseRegExp;if(t){var n=t[r];if(n)return n}else e._parseRegExp=t={};for(var a,s=y(e,r).replace(/([\^\$\.\*\+\?\|\[\]\(\)\{\}])/g,"\\\\$1"),u=["^"],l=[],i=0,c=0,o=k();null!==(a=o.exec(s));){var f=s.slice(i,a.index);if(i=o.lastIndex,c+=m(f,u),c%2)u.push(a[0]);else{var d,p=a[0],h=p.length;switch(p){case"dddd":case"ddd":case"MMMM":case"MMM":case"gg":case"g":d="(\\D+)";break;case"tt":case"t":d="(\\D*)";break;case"yyyy":case"fff":case"ff":case"f":d="(\\d{"+h+"})";break;case"dd":case"d":case"MM":case"M":case"yy":case"y":case"HH":case"H":case"hh":case"h":case"mm":case"m":case"ss":case"s":d="(\\d\\d?)";break;case"zzz":d="([+-]?\\d\\d?:\\d{2})";break;case"zz":case"z":d="([+-]?\\d\\d?)";break;case"/":d="(\\/)";break;default:throw"Invalid date format pattern '"+p+"'."}d&&u.push(d),l.push(a[0])}}m(s.slice(i),u),u.push("$");var g=u.join("").replace(/\s+/g,"\\s+"),b={regExp:g,groups:l};return t[r]=b},a=function(e,r,t){return r>e||e>t},s=function(e){return e.split("\u00a0").join(" ").toUpperCase()},u=function(e){for(var r=[],t=0,n=e.length;n>t;t++)r[t]=s(e[t]);return r},A=function(s,u,l){s=h(s);var i=l.calendar,c=n(i,u),o=RegExp(c.regExp).exec(s);if(null===o)return null;for(var f,d=c.groups,g=null,b=null,m=null,y=null,M=null,v=0,k=0,z=0,F=0,A=null,x=!1,I=0,S=d.length;S>I;I++){var w=o[I+1];if(w){var C=d[I],D=C.length,H=parseInt(w,10);switch(C){case"dd":case"d":if(y=H,a(y,1,31))return null;break;case"MMM":case"MMMM":if(m=t(i,w,3===D),a(m,0,11))return null;break;case"M":case"MM":if(m=H-1,a(m,0,11))return null;break;case"y":case"yy":case"yyyy":if(b=4>D?e(i,H):H,a(b,0,9999))return null;break;case"h":case"hh":if(v=H,12===v&&(v=0),a(v,0,11))return null;break;case"H":case"HH":if(v=H,a(v,0,23))return null;break;case"m":case"mm":if(k=H,a(k,0,59))return null;break;case"s":case"ss":if(z=H,a(z,0,59))return null;break;case"tt":case"t":if(x=i.PM&&(w===i.PM[0]||w===i.PM[1]||w===i.PM[2]),!x&&(!i.AM||w!==i.AM[0]&&w!==i.AM[1]&&w!==i.AM[2]))return null;break;case"f":case"ff":case"fff":if(F=H*Math.pow(10,3-D),a(F,0,999))return null;break;case"ddd":case"dddd":if(M=r(i,w,3===D),a(M,0,6))return null;break;case"zzz":var O=w.split(/:/);if(2!==O.length)return null;if(f=parseInt(O[0],10),a(f,-12,13))return null;var N=parseInt(O[1],10);if(a(N,0,59))return null;A=60*f+(p(w,"-")?-N:N);break;case"z":case"zz":if(f=H,a(f,-12,13))return null;A=60*f;break;case"g":case"gg":var T=w;if(!T||!i.eras)return null;T=h(T.toLowerCase());for(var j=0,$=i.eras.length;$>j;j++)if(T===i.eras[j].name.toLowerCase()){g=j;break}if(null===g)return null}}}var P,G=new Date,E=i.convert;if(P=E?E.fromGregorian(G)[0]:G.getFullYear(),null===b?b=P:i.eras&&(b+=i.eras[g||0].offset),null===m&&(m=0),null===y&&(y=1),E){if(G=E.toGregorian(b,m,y),null===G)return null}else{if(G.setFullYear(b,m,y),G.getDate()!==y)return null;if(null!==M&&G.getDay()!==M)return null}if(x&&12>v&&(v+=12),G.setHours(v,k,z,F),null!==A){var Y=G.getMinutes()-(A+G.getTimezoneOffset());G.setHours(G.getHours()+parseInt(Y/60,10),Y%60)}return G}}(),x=function(e,r,t){var n,a=r["-"],s=r["+"];switch(t){case"n -":a=" "+a,s=" "+s;case"n-":i(e,a)?n=["-",e.substr(0,e.length-a.length)]:i(e,s)&&(n=["+",e.substr(0,e.length-s.length)]);break;case"- n":a+=" ",s+=" ";case"-n":p(e,a)?n=["-",e.substr(a.length)]:p(e,s)&&(n=["+",e.substr(s.length)]);break;case"(n)":p(e,"(")&&i(e,")")&&(n=["-",e.substr(1,e.length-2)])}return n||["",e]},t.prototype.findClosestCulture=function(e){return t.findClosestCulture.call(this,e)},t.prototype.format=function(e,r,n){return t.format.call(this,e,r,n)},t.prototype.localize=function(e,r){return t.localize.call(this,e,r)},t.prototype.parseInt=function(e,r,n){return t.parseInt.call(this,e,r,n)},t.prototype.parseFloat=function(e,r,n){return t.parseFloat.call(this,e,r,n)},t.prototype.culture=function(e){return t.culture.call(this,e)},t.addCultureInfo=function(e,r,t){var n={},a=!1;"string"!=typeof e?(t=e,e=this.culture().name,n=this.cultures[e]):"string"!=typeof r?(t=r,a=null==this.cultures[e],n=this.cultures[e]||this.cultures["default"]):(a=!0,n=this.cultures[r]),this.cultures[e]=c(!0,{},n,t),a&&(this.cultures[e].calendar=this.cultures[e].calendars.standard)},t.findClosestCulture=function(e){var r;if(!e)return this.findClosestCulture(this.cultureSelector)||this.cultures["default"];if("string"==typeof e&&(e=e.split(",")),o(e)){var t,n,a=this.cultures,s=e,u=s.length,l=[];for(n=0;u>n;n++){e=h(s[n]);var i,c=e.split(";");t=h(c[0]),1===c.length?i=1:(e=h(c[1]),0===e.indexOf("q=")?(e=e.substr(2),i=parseFloat(e),i=isNaN(i)?0:i):i=1),l.push({lang:t,pri:i})}for(l.sort(function(e,r){return e.pri<r.pri?1:e.pri>r.pri?-1:0}),n=0;u>n;n++)if(t=l[n].lang,r=a[t])return r;for(n=0;u>n;n++)for(t=l[n].lang;;){var f=t.lastIndexOf("-");if(-1===f)break;if(t=t.substr(0,f),r=a[t])return r}for(n=0;u>n;n++){t=l[n].lang;for(var d in a){var p=a[d];if(p.language===t)return p}}}else if("object"==typeof e)return e;return r||null},t.format=function(e,r,t){var n=this.findClosestCulture(t);return e instanceof Date?e=M(e,r,n):"number"==typeof e&&(e=v(e,r,n)),e},t.localize=function(e,r){return this.findClosestCulture(r).messages[e]||this.cultures["default"].messages[e]},t.parseDate=function(e,r,t){t=this.findClosestCulture(t);var n,a,s;if(r){if("string"==typeof r&&(r=[r]),r.length)for(var u=0,l=r.length;l>u;u++){var i=r[u];if(i&&(n=A(e,i,t)))break}}else{s=t.calendar.patterns;for(a in s)if(n=A(e,s[a],t))break}return n||null},t.parseInt=function(e,r,n){return g(t.parseFloat(e,r,n))},t.parseFloat=function(e,r,t){"number"!=typeof r&&(t=r,r=10);var u=this.findClosestCulture(t),l=0/0,i=u.numberFormat;if(e.indexOf(u.numberFormat.currency.symbol)>-1&&(e=e.replace(u.numberFormat.currency.symbol,""),e=e.replace(u.numberFormat.currency["."],u.numberFormat["."])),e.indexOf(u.numberFormat.percent.symbol)>-1&&(e=e.replace(u.numberFormat.percent.symbol,"")),e=e.replace(/ /g,""),a.test(e))l=parseFloat(e);else if(!r&&n.test(e))l=parseInt(e,16);else{var c=x(e,i,i.pattern[0]),o=c[0],f=c[1];""===o&&"(n)"!==i.pattern[0]&&(c=x(e,i,"(n)"),o=c[0],f=c[1]),""===o&&"-n"!==i.pattern[0]&&(c=x(e,i,"-n"),o=c[0],f=c[1]),o=o||"+";var d,p,h=f.indexOf("e");0>h&&(h=f.indexOf("E")),0>h?(p=f,d=null):(p=f.substr(0,h),d=f.substr(h+1));var g,b,m=i["."],y=p.indexOf(m);0>y?(g=p,b=null):(g=p.substr(0,y),b=p.substr(y+m.length));var M=i[","];g=g.split(M).join("");var v=M.replace(/\u00A0/g," ");M!==v&&(g=g.split(v).join(""));var k=o+g;if(null!==b&&(k+="."+b),null!==d){var z=x(d,i,"-n");k+="e"+(z[0]||"+")+z[1]}s.test(k)&&(l=parseFloat(k))}return l},t.culture=function(e){return e!==r&&(this.cultureSelector=e),this.findClosestCulture(e)||this.cultures["default"]}; return Globalize;}(this));
 
 /***/ }),
 /* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-
-var history_1 = __webpack_require__(9);
-var detector_1 = __webpack_require__(4);
-__webpack_require__(27);
-exports.Version = 'v15';
-exports.Endpoints = {
-    default: 'https://usageanalytics.coveo.com',
-    production: 'https://usageanalytics.coveo.com',
-    dev: 'https://usageanalyticsdev.coveo.com',
-    staging: 'https://usageanalyticsstaging.coveo.com'
-};
-;
-function defaultResponseTransformer(response) {
-    return response.json().then(function (data) {
-        data.raw = response;
-        return data;
-    });
-}
-var Client = (function () {
-    function Client(opts) {
-        if (typeof opts === 'undefined') {
-            throw new Error('You have to pass options to this constructor');
-        }
-        this.endpoint = opts.endpoint || exports.Endpoints.default;
-        this.token = opts.token;
-        this.version = opts.version || exports.Version;
-    }
-    Client.prototype.sendEvent = function (eventType, request) {
-        return fetch(this.getRestEndpoint() + "/analytics/" + eventType, {
-            method: 'POST',
-            headers: this.getHeaders(),
-            mode: 'cors',
-            body: JSON.stringify(request),
-            credentials: 'include'
-        });
-    };
-    Client.prototype.sendSearchEvent = function (request) {
-        return this.sendEvent('search', request).then(defaultResponseTransformer);
-    };
-    Client.prototype.sendClickEvent = function (request) {
-        return this.sendEvent('click', request).then(defaultResponseTransformer);
-    };
-    Client.prototype.sendCustomEvent = function (request) {
-        return this.sendEvent('custom', request).then(defaultResponseTransformer);
-    };
-    Client.prototype.sendViewEvent = function (request) {
-        if (request.referrer === '') {
-            delete request.referrer;
-        }
-        if (detector_1.hasDocumentLocation()) {
-            var store = new history_1.HistoryStore();
-            var historyElement = {
-                name: 'PageView',
-                value: document.location.toString(),
-                time: JSON.stringify(new Date()),
-                title: document.title
-            };
-            store.addElement(historyElement);
-        }
-        return this.sendEvent('view', request).then(defaultResponseTransformer);
-    };
-    Client.prototype.getVisit = function () {
-        return fetch(this.getRestEndpoint() + "/analytics/visit")
-            .then(defaultResponseTransformer);
-    };
-    Client.prototype.getHealth = function () {
-        return fetch(this.getRestEndpoint() + "/analytics/monitoring/health")
-            .then(defaultResponseTransformer);
-    };
-    Client.prototype.getRestEndpoint = function () {
-        return this.endpoint + "/rest/" + this.version;
-    };
-    Client.prototype.getHeaders = function () {
-        var headers = {
-            'Content-Type': "application/json"
-        };
-        if (this.token) {
-            headers['Authorization'] = "Bearer " + this.token;
-        }
-        return headers;
-    };
-    return Client;
-}());
-exports.Client = Client;
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.default = Client;
-
+/* WEBPACK VAR INJECTION */(function(global) {module.exports = global["Globalize"] = __webpack_require__(7);
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(25)))
 
 /***/ }),
 /* 9 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, exports) {
 
-"use strict";
-
-var storage_1 = __webpack_require__(10);
-var detector = __webpack_require__(4);
-exports.STORE_KEY = '__coveo.analytics.history';
-exports.MAX_NUMBER_OF_HISTORY_ELEMENTS = 20;
-exports.MIN_THRESHOLD_FOR_DUPLICATE_VALUE = 1000 * 60;
-exports.MAX_VALUE_SIZE = 75;
-var HistoryStore = (function () {
-    function HistoryStore(store) {
-        this.store = store || storage_1.getAvailableStorage();
-        if (!(this.store instanceof storage_1.CookieStorage) && detector.hasCookieStorage()) {
-            new storage_1.CookieStorage().removeItem(exports.STORE_KEY);
-        }
-    }
-    ;
-    HistoryStore.prototype.addElement = function (elem) {
-        elem.internalTime = new Date().getTime();
-        this.cropQueryElement(elem);
-        var currentHistory = this.getHistory();
-        if (currentHistory != null) {
-            if (this.isValidEntry(elem)) {
-                this.setHistory([elem].concat(currentHistory));
-            }
-        }
-        else {
-            this.setHistory([elem]);
-        }
-    };
-    HistoryStore.prototype.getHistory = function () {
-        try {
-            return JSON.parse(this.store.getItem(exports.STORE_KEY));
-        }
-        catch (e) {
-            return [];
-        }
-    };
-    HistoryStore.prototype.setHistory = function (history) {
-        try {
-            this.store.setItem(exports.STORE_KEY, JSON.stringify(history.slice(0, exports.MAX_NUMBER_OF_HISTORY_ELEMENTS)));
-        }
-        catch (e) { }
-    };
-    HistoryStore.prototype.clear = function () {
-        try {
-            this.store.removeItem(exports.STORE_KEY);
-        }
-        catch (e) { }
-    };
-    HistoryStore.prototype.getMostRecentElement = function () {
-        var currentHistory = this.getHistory();
-        if (currentHistory != null) {
-            var sorted = currentHistory.sort(function (first, second) {
-                if (first.internalTime == null && second.internalTime == null) {
-                    return 0;
-                }
-                if (first.internalTime == null && second.internalTime != null) {
-                    return 1;
-                }
-                if (first.internalTime != null && second.internalTime == null) {
-                    return -1;
-                }
-                return second.internalTime - first.internalTime;
-            });
-            return sorted[0];
-        }
-        return null;
-    };
-    HistoryStore.prototype.cropQueryElement = function (elem) {
-        if (elem.name && elem.name.toLowerCase() == 'query' && elem.value != null) {
-            elem.value = elem.value.slice(0, exports.MAX_VALUE_SIZE);
-        }
-    };
-    HistoryStore.prototype.isValidEntry = function (elem) {
-        var lastEntry = this.getMostRecentElement();
-        if (lastEntry && lastEntry.value == elem.value) {
-            return elem.internalTime - lastEntry.internalTime > exports.MIN_THRESHOLD_FOR_DUPLICATE_VALUE;
-        }
-        return true;
-    };
-    return HistoryStore;
-}());
-exports.HistoryStore = HistoryStore;
-;
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.default = HistoryStore;
-
+// empty (null-loader)
 
 /***/ }),
 /* 10 */
@@ -4338,85 +3028,14 @@ exports.default = HistoryStore;
 
 "use strict";
 
-var detector = __webpack_require__(4);
-var cookieutils_1 = __webpack_require__(26);
-exports.preferredStorage = null;
-function getAvailableStorage() {
-    if (exports.preferredStorage) {
-        return exports.preferredStorage;
-    }
-    if (detector.hasLocalStorage()) {
-        return localStorage;
-    }
-    if (detector.hasCookieStorage()) {
-        return new CookieStorage();
-    }
-    if (detector.hasSessionStorage()) {
-        return sessionStorage;
-    }
-    return new NullStorage();
-}
-exports.getAvailableStorage = getAvailableStorage;
-var CookieStorage = (function () {
-    function CookieStorage() {
-    }
-    CookieStorage.prototype.getItem = function (key) {
-        return cookieutils_1.Cookie.get(key);
-    };
-    CookieStorage.prototype.removeItem = function (key) {
-        cookieutils_1.Cookie.erase(key);
-    };
-    CookieStorage.prototype.setItem = function (key, data) {
-        cookieutils_1.Cookie.set(key, data);
-    };
-    return CookieStorage;
-}());
-exports.CookieStorage = CookieStorage;
-var NullStorage = (function () {
-    function NullStorage() {
-    }
-    NullStorage.prototype.getItem = function (key) { return null; };
-    NullStorage.prototype.removeItem = function (key) { };
-    NullStorage.prototype.setItem = function (key, data) { };
-    return NullStorage;
-}());
-exports.NullStorage = NullStorage;
-
-
-/***/ }),
-/* 11 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__(12);
-
-
-/***/ }),
-/* 12 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
 Object.defineProperty(exports, "__esModule", { value: true });
-var Playground_1 = __webpack_require__(13);
-document.addEventListener('DOMContentLoaded', function () {
-    new Playground_1.Playground(document.body);
-});
-
-
-/***/ }),
-/* 13 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var Dom_1 = __webpack_require__(5);
-var SearchEndpoint_1 = __webpack_require__(7);
-var PlaygroundConfiguration_1 = __webpack_require__(33);
-var QueryEvents_1 = __webpack_require__(34);
-var DefaultLanguage_1 = __webpack_require__(35);
+var Dom_1 = __webpack_require__(4);
+var SearchEndpoint_1 = __webpack_require__(19);
+var PlaygroundConfiguration_1 = __webpack_require__(11);
+var QueryEvents_1 = __webpack_require__(12);
+var DefaultLanguage_1 = __webpack_require__(20);
 DefaultLanguage_1.setLanguageAfterPageLoaded();
-var Playground = /** @class */ (function () {
+var Playground = (function () {
     function Playground(body) {
         this.body = body;
         this.initialized = false;
@@ -4567,7 +3186,569 @@ exports.Playground = Playground;
 
 
 /***/ }),
+/* 11 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var Dom_1 = __webpack_require__(4);
+exports.PlaygroundConfiguration = {
+    SearchInterface: {
+        show: false,
+        options: {
+            autoTriggerQuery: false
+        }
+    },
+    Facet: {
+        show: true,
+        options: {
+            field: '@objecttype',
+            title: 'Type'
+        }
+    },
+    Searchbox: {
+        show: true,
+        options: {
+            enableOmnibox: true,
+            enableRevealQuerySuggestAddon: true,
+            inline: true
+        }
+    },
+    SearchButton: {
+        show: true
+    },
+    Omnibox: {
+        show: true,
+        options: {
+            enableQuerySuggestAddon: true,
+            inline: true
+        }
+    },
+    Excerpt: {
+        show: true,
+        isResultComponent: true,
+        basicExpression: 'technology'
+    },
+    Icon: {
+        show: true,
+        isResultComponent: true,
+        basicExpression: 'getting started pdf'
+    },
+    Tab: {
+        show: true,
+        element: Dom_1.$$('div', { className: 'coveo-tab-section' }, "<div class=\"CoveoTab\" data-caption=\"All content\" data-id=\"All\"></div><div class=\"CoveoTab\" data-caption=\"YouTube videos\" data-id=\"YouTube\"></div><div class=\"CoveoTab\" data-caption=\"Google Drive\" data-id=\"GoogleDrive\"></div><div class=\"CoveoTab\" data-caption=\"Emails\" data-id=\"Emails\"></div><div class=\"CoveoTab\" data-caption=\"Salesforce content\" data-id=\"Salesforce\"></div>")
+    },
+    FacetSlider: {
+        show: true,
+        options: {
+            field: '@date',
+            dateField: true,
+            queryOverride: '@date>2010/01/01',
+            graph: {
+                steps: 20
+            },
+            rangeSlider: true,
+            title: 'Date distribution'
+        }
+    },
+    Badge: {
+        show: true,
+        options: {
+            field: '@author'
+        },
+        isResultComponent: true,
+        advancedExpression: '@author=="BBC News"'
+    },
+    Breadcrumb: {
+        show: true,
+        element: Dom_1.$$('div', undefined, "<div class=\"CoveoBreadcrumb\"></div><p>Interact with the facet to modify the breadcrumb</p><div class=\"CoveoFacet\" data-field=\"@objecttype\" data-title=\"Type\"></div>")
+    },
+    DidYouMean: {
+        show: true,
+        basicExpression: 'testt',
+        element: Dom_1.$$('div', undefined, "<div class=\"CoveoDidYouMean\"></div><div class='CoveoSearchbox'></div>")
+    },
+    ErrorReport: {
+        show: true,
+        toExecute: function () {
+            Coveo['SearchEndpoint'].endpoints['default'].options.accessToken = 'invalid';
+        }
+    },
+    ExportToExcel: {
+        show: true,
+        element: Dom_1.$$('div', undefined, "<div class=\"CoveoSettings\"></div><div class=\"CoveoSearchbox\"></div><div class=\"CoveoExportToExcel\"></div>"),
+        toExecute: function () {
+            Dom_1.$$(document.body).find('.CoveoSearchInterface').style.minHeight = '300px';
+        }
+    },
+    FacetRange: {
+        show: true,
+        options: {
+            field: '@size',
+            title: 'Documents size',
+            ranges: [{
+                    start: 0,
+                    end: 100,
+                    label: "0 - 100 KB",
+                    endInclusive: false
+                }, {
+                    start: 100,
+                    end: 200,
+                    label: "100 - 200 KB",
+                    endInclusive: false
+                }, {
+                    start: 200,
+                    end: 300,
+                    label: "200 - 300 KB",
+                    endInclusive: false
+                },
+                {
+                    start: 300,
+                    end: 400,
+                    label: "300 - 400 KB",
+                    endInclusive: false
+                }
+            ],
+            sortCriteria: 'alphaascending'
+        }
+    },
+    FieldSuggestions: {
+        options: {
+            field: '@author'
+        },
+        show: true,
+        element: Dom_1.$$('div', undefined, "<div class='preview-info'>Showing suggestions on the field <span class='preview-info-emphasis'>@author</span></div><div class=\"CoveoSearchbox\" data-enable-omnibox=\"true\"></div><div class=\"CoveoFieldSuggestions\"></div>"),
+        toExecute: function () {
+            Dom_1.$$(document.body).find('.CoveoSearchInterface').style.minHeight = '500px';
+        }
+    },
+    FieldTable: {
+        show: true,
+        options: {
+            minimizedByDefault: false
+        },
+        isResultComponent: true,
+        advancedExpression: '@source=="Dropbox - coveodocumentationsamples@gmail.com"',
+        element: Dom_1.$$('div', undefined, "<table class=\"CoveoFieldTable\">\n            <tbody>\n             <tr data-field=\"@size\" data-caption=\"Document size\" data-helper=\"size\">\n              </tr>\n              <tr data-field=\"@source\" data-caption=\"Source\">\n              </tr>\n              <tr data-field=\"@date\" data-caption=\"Date\" date-helper=\"dateTime\"></tr>\n            </tbody>\n          </table>")
+    },
+    FieldValue: {
+        show: true,
+        options: {
+            field: '@date',
+            helper: 'dateTime'
+        },
+        isResultComponent: true,
+        advancedExpression: '@date'
+    },
+    FollowItem: {
+        show: true,
+        isResultComponent: true,
+        element: Dom_1.$$('div', undefined, "<div class=\"CoveoSearchAlerts\"></div><a class=\"CoveoResultLink\"></a><span class=\"CoveoFollowItem\"></span>"),
+        basicExpression: 'technology',
+        toExecute: function () {
+            Dom_1.$$(document.body).find('.CoveoSearchInterface').style.minHeight = '300px';
+        }
+    },
+    HiddenQuery: {
+        show: true,
+        toExecute: function () {
+            var searchInterface = Dom_1.$$(document.body).find('.CoveoSearchInterface');
+            Coveo.state(searchInterface, 'hd', 'This is the filter description');
+            Coveo.state(searchInterface, 'hq', '@uri');
+        },
+        element: Dom_1.$$('div', undefined, "<div class=\"CoveoBreadcrumb\"></div><div class=\"CoveoHiddenQuery\"></div>")
+    },
+    HierarchicalFacet: {
+        show: true,
+        options: {
+            field: '@hierarchicfield',
+            title: 'Hierarchical Facet with random values'
+        },
+        advancedExpression: "@hierarchicfield"
+    },
+    Logo: {
+        show: true,
+        toExecute: function () {
+            Dom_1.$$(document.body).find('.CoveoSearchInterface').style.padding = '20px';
+        }
+    },
+    Matrix: {
+        show: true,
+        options: {
+            title: 'Size of documents by Author',
+            rowField: '@author',
+            columnField: '@filetype',
+            columnFieldValues: ['pdf', 'YouTubeVideo', 'xls'],
+            computedField: '@size',
+            computedFieldFormat: 'n0 bytes',
+            columnLabels: ['PDF', 'YouTube Videos', 'Excel documents']
+        },
+        element: Dom_1.$$('div', undefined, "<div class=\"CoveoBreadcrumb\"></div><div class=\"CoveoMatrix\"></div>")
+    },
+    OmniboxResultList: {
+        show: true,
+        element: Dom_1.$$('div', undefined, "<div class=\"CoveoSearchbox\" data-enable-omnibox=\"true\" data-inline=\"true\"></div><div class=\"CoveoOmniboxResultList\"><script class=\"result-template\" type=\"text/x-underscore\"><div><a class='CoveoResultLink'></a></div></script></div>"),
+        options: {
+            headerTitle: ''
+        },
+        toExecute: function () {
+            Coveo.get(Dom_1.$$(document.body).find('.CoveoSearchInterface'), Coveo.SearchInterface).options.resultsPerPage = 5;
+        }
+    },
+    Pager: {
+        show: true,
+        toExecute: function () {
+            Dom_1.$$(document.body).find('.CoveoSearchInterface').style.padding = '20px';
+        }
+    },
+    PreferencesPanel: {
+        show: true,
+        element: Dom_1.$$('div', undefined, "<div class=\"CoveoSettings\"></div><div class=\"CoveoSearchbox\"></div><div class=\"CoveoPreferencesPanel\"><div class=\"CoveoResultsPreferences\"></div><div class=\"CoveoResultsFiltersPreferences\"></div></div>"),
+        toExecute: function () {
+            Dom_1.$$(document.body).find('.CoveoSearchInterface').style.minHeight = '300px';
+        }
+    },
+    PrintableUri: {
+        show: true,
+        isResultComponent: true,
+        advancedExpression: '@litopicid @filetype==lithiummessage'
+    },
+    QueryDuration: {
+        show: true
+    },
+    QuerySummary: {
+        show: true
+    },
+    Querybox: {
+        show: true
+    },
+    Quickview: {
+        show: true,
+        isResultComponent: true,
+        advancedExpression: '@filetype=="youtubevideo"'
+    },
+    ResultLink: {
+        show: true,
+        isResultComponent: true,
+        advancedExpression: '@filetype=="youtubevideo"'
+    },
+    ResultList: {
+        show: true
+    },
+    ResultRating: {
+        show: true,
+        isResultComponent: true,
+        toExecute: function () {
+            Coveo.get(Dom_1.$$(document.body).find('.CoveoSearchInterface'), Coveo.SearchInterface).options.enableCollaborativeRating = true;
+        }
+    },
+    ResultsFiltersPreferences: {
+        show: true,
+        element: Dom_1.$$('div', undefined, "<div class=\"CoveoSettings\"></div><div class=\"CoveoSearchbox\"></div><div class=\"CoveoPreferencesPanel\"><div class=\"CoveoResultsFiltersPreferences\"></div></div>"),
+        toExecute: function () {
+            Dom_1.$$(document.body).find('.CoveoSearchInterface').style.minHeight = '300px';
+        }
+    },
+    ResultsPerPage: {
+        show: true,
+        toExecute: function () {
+            Dom_1.$$(document.body).find('.CoveoSearchInterface').style.padding = '20px';
+        }
+    },
+    ResultsPreferences: {
+        element: Dom_1.$$('div', undefined, "<div class=\"CoveoSettings\"></div><div class=\"CoveoSearchbox\"></div><div class=\"CoveoPreferencesPanel\"><div class=\"CoveoResultsPreferences\"></div></div>"),
+        show: true,
+        toExecute: function () {
+            Dom_1.$$(document.body).find('.CoveoSearchInterface').style.minHeight = '300px';
+        }
+    },
+    SearchAlerts: {
+        show: true,
+        element: Dom_1.$$('div', undefined, "<div class=\"CoveoSettings\"></div><div class=\"CoveoSearchbox\"></div><div class=\"CoveoSearchAlerts\"></div>"),
+        toExecute: function () {
+            Dom_1.$$(document.body).find('.CoveoSearchInterface').style.minHeight = '300px';
+        }
+    },
+    Settings: {
+        show: true,
+        element: Dom_1.$$('div', undefined, "<div class=\"CoveoSettings\"></div><div class=\"CoveoSearchbox\"></div><div class=\"CoveoPreferencesPanel\"></div><div class=\"CoveoShareQuery\"></div><div class=\"CoveoExportToExcel\"></div>"),
+        toExecute: function () {
+            Dom_1.$$(document.body).find('.CoveoSearchInterface').style.minHeight = '300px';
+        }
+    },
+    ShareQuery: {
+        show: true,
+        element: Dom_1.$$('div', undefined, "<div class=\"CoveoSettings\"></div><div class=\"CoveoSearchbox\"></div><div class=\"CoveoShareQuery\"></div>"),
+        toExecute: function () {
+            Dom_1.$$(document.body).find('.CoveoSearchInterface').style.minHeight = '300px';
+        }
+    },
+    Sort: {
+        show: true,
+        element: Dom_1.$$('div', undefined, "<span class=\"CoveoSort\" data-sort-criteria=\"relevancy\" data-caption=\"Relevance\"></span><span class=\"CoveoSort\" data-sort-criteria=\"date descending,date ascending\" data-caption=\"Date\"></span>"),
+        toExecute: function () {
+            Dom_1.$$(document.body).find('.CoveoSearchInterface').style.padding = '20px';
+        }
+    },
+    Thumbnail: {
+        show: true,
+        isResultComponent: true,
+        advancedExpression: '@filetype=="youtubevideo"'
+    },
+    YouTubeThumbnail: {
+        show: true,
+        isResultComponent: true,
+        advancedExpression: '@filetype=="youtubevideo"'
+    },
+    AdvancedSearch: {
+        show: true,
+        element: Dom_1.$$('div', undefined, "<div class=\"coveo-search-section\"><div class=\"CoveoSettings\"></div><div class=\"CoveoSearchbox\"></div></div><div class=\"CoveoAdvancedSearch\"></div>"),
+        toExecute: function () {
+            Dom_1.$$(document.body).find('.CoveoSearchInterface').style.minHeight = '300px';
+        }
+    }
+};
+
+
+/***/ }),
+/* 12 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+/**
+ * This static class is there to contains the different string definition for all the events related to query.
+ *
+ * Note that these events will only be triggered when the {@link QueryController.executeQuery} method is used, either directly or by using {@link executeQuery}
+ */
+var QueryEvents = (function () {
+    function QueryEvents() {
+    }
+    return QueryEvents;
+}());
+/**
+ * Triggered when a new query is launched.
+ *
+ * All bound handlers will receive {@link INewQueryEventArgs} as an argument.
+ *
+ * The string value is `newQuery`.
+ * @type {string}
+ */
+QueryEvents.newQuery = 'newQuery';
+/**
+ * Triggered when the query is being built.
+ *
+ * This is typically where all components will contribute their part to the {@link IQuery} using the {@link QueryBuilder}.
+ *
+ * All bound handlers will receive {@link IBuildingQueryEventArgs} as an argument.
+ *
+ * The string value is `buildingQuery`.
+ * @type {string}
+ */
+QueryEvents.buildingQuery = 'buildingQuery';
+/**
+ * Triggered when the query is done being built.
+ *
+ * This is typically where the facet will add it's {@link IGroupByRequest} to the {@link IQuery}.
+ *
+ * All bound handlers will receive {@link IDoneBuildingQueryEventArgs} as an argument.
+ *
+ * The string value is `doneBuildingQuery`.
+ * @type {string}
+ */
+QueryEvents.doneBuildingQuery = 'doneBuildingQuery';
+/**
+ * Triggered when the query is being executed on the Search API.
+ *
+ * All bound handlers will receive {@link IDuringQueryEventArgs} as an argument.
+ *
+ * The string value is `duringQuery`.
+ * @type {string}
+ */
+QueryEvents.duringQuery = 'duringQuery';
+/**
+ * Triggered when more results are being fetched on the Search API (think : infinite scrolling, or pager).
+ *
+ * All bound handlers will receive {@link IDuringQueryEventArgs} as an argument.
+ *
+ * The string value is `duringFetchMoreQuery`.
+ * @type {string}
+ */
+QueryEvents.duringFetchMoreQuery = 'duringFetchMoreQuery';
+/**
+ * Triggered when a query successfully returns from the Search API.
+ *
+ * All bound handlers will receive {@link IQuerySuccessEventArgs} as an argument.
+ *
+ * The string value is `querySuccess`.
+ * @type {string}
+ */
+QueryEvents.querySuccess = 'querySuccess';
+/**
+ * Triggered when a more results were successfully returned from the Search API. (think : infinite scrolling, or pager).
+ *
+ * All bound handlers will receive {@link IFetchMoreSuccessEventArgs} as an argument.
+ *
+ * The string value is `fetchMoreSuccess`.
+ * @type {string}
+ */
+QueryEvents.fetchMoreSuccess = 'fetchMoreSuccess';
+/**
+ * Triggered after the main query success event has finished executing.
+ *
+ * This is typically where facets will process the {@link IGroupByResult} and render themselves.
+ *
+ * All bound handlers will receive {@link IQuerySuccessEventArgs} as an argument.
+ *
+ * The string value is `deferredQuerySuccess`.
+ * @type {string}
+ */
+QueryEvents.deferredQuerySuccess = 'deferredQuerySuccess';
+/**
+ * Triggered when there was an error executing a query on the Search API.
+ *
+ * All bound handlers will receive {@link IQueryErrorEventArgs} as an argument.
+ *
+ * The string value is `queryError`.
+ * @type {string}
+ */
+QueryEvents.queryError = 'queryError';
+/**
+ * Triggered before the {@link QueryEvents.querySuccess} event.
+ *
+ * This allows external code to modify the results before rendering them.
+ *
+ * For example, the {@link Folding} component might use this event to construct a coherent parent child relationship between query results.
+ *
+ * All bound handlers will receive {@link IPreprocessResultsEventArgs} as an argument.
+ *
+ * The string value is `preprocessResults`.
+ * @type {string}
+ */
+QueryEvents.preprocessResults = 'preprocessResults';
+/**
+ * Triggered before the {@link QueryEvents.fetchMoreSuccess} event.
+ *
+ * This allows external code to modify the results before rendering them.
+ *
+ * For example, the {@link Folding} component might use this event to construct a coherent parent child relationship between query results.
+ *
+ * All bound handlers will receive {@link IPreprocessResultsEventArgs} as an argument.
+ *
+ * The string value is `preprocessMoreResults`.
+ * @type {string}
+ */
+QueryEvents.preprocessMoreResults = 'preprocessMoreResults';
+/**
+ * Triggered when there is no result for a particular query.
+ *
+ * All bound handlers will receive {@link INoResultsEventArgs} as an argument.
+ *
+ * The string value is `noResults`.
+ * @type {string}
+ */
+QueryEvents.noResults = 'noResults';
+QueryEvents.buildingCallOptions = 'buildingCallOptions';
+exports.QueryEvents = QueryEvents;
+
+
+/***/ }),
+/* 13 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+/* istanbul ignore next */
+function shim() {
+    var doShim = function (promiseInstance) {
+        if (typeof promiseInstance.prototype['finally'] != 'function') {
+            promiseInstance.prototype['finally'] = function finallyPolyfill(callback) {
+                var constructor = this.constructor;
+                return this.then(function (value) {
+                    return constructor.resolve(callback()).then(function () {
+                        return value;
+                    });
+                }, function (reason) {
+                    return constructor.resolve(callback()).then(function () {
+                        throw reason;
+                    });
+                });
+            };
+        }
+        var rethrowError = function (self) {
+            self.then(null, function (err) {
+                setTimeout(function () {
+                    throw err;
+                }, 0);
+            });
+        };
+        if (typeof promiseInstance.prototype['done'] !== 'function') {
+            promiseInstance.prototype['done'] = function (onFulfilled, onRejected) {
+                var self = arguments.length ? this.then.apply(this, arguments) : this;
+                rethrowError(self);
+                return this;
+            };
+        }
+        if (typeof promiseInstance.prototype['fail'] !== 'function') {
+            promiseInstance.prototype['fail'] = function (onFulfilled, onRejected) {
+                var self = arguments.length ? this.catch.apply(this, arguments) : this;
+                rethrowError(self);
+                return this;
+            };
+        }
+    };
+    var globalPromise = window['Promise'];
+    var localPromise = Promise;
+    if (globalPromise) {
+        doShim(globalPromise);
+    }
+    if (localPromise) {
+        doShim(localPromise);
+    }
+}
+exports.shim = shim;
+
+
+/***/ }),
 /* 14 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.version = {
+    'lib': '2.2900.29-beta',
+    'product': '2.2900.29-beta',
+    'supportedApiVersion': 2
+};
+
+
+/***/ }),
+/* 15 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var Assert_1 = __webpack_require__(0);
+var AjaxError = (function () {
+    function AjaxError(message, status) {
+        this.message = message;
+        this.status = status;
+        Assert_1.Assert.exists(message);
+        Assert_1.Assert.exists(status);
+        this.name = this.type = 'Ajax Error (status: ' + status + ')';
+    }
+    return AjaxError;
+}());
+exports.AjaxError = AjaxError;
+
+
+/***/ }),
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4575,10 +3756,10 @@ exports.Playground = Playground;
 Object.defineProperty(exports, "__esModule", { value: true });
 var Logger_1 = __webpack_require__(3);
 var Assert_1 = __webpack_require__(0);
-var TimeSpanUtils_1 = __webpack_require__(15);
-var DeviceUtils_1 = __webpack_require__(16);
+var TimeSpanUtils_1 = __webpack_require__(24);
+var DeviceUtils_1 = __webpack_require__(22);
 var Utils_1 = __webpack_require__(2);
-var JQueryutils_1 = __webpack_require__(6);
+var JQueryutils_1 = __webpack_require__(5);
 var _ = __webpack_require__(1);
 // In ie8, XMLHttpRequest has no status property, so let's use this enum instead
 var XMLHttpRequestStatus;
@@ -4600,7 +3781,7 @@ var XMLHttpRequestStatus;
  * * XDomainRequest for older IE browser that do not support CORS.
  * * Jsonp if all else fails, or is explicitly enabled.
  */
-var EndpointCaller = /** @class */ (function () {
+var EndpointCaller = (function () {
     /**
      * Create a new EndpointCaller.
      * @param options Specify the authentication that will be used for this endpoint. Not needed if the endpoint is public and has no authentication
@@ -4642,8 +3823,8 @@ var EndpointCaller = /** @class */ (function () {
         this.logger.trace('Performing REST request', requestInfo);
         var urlObject = this.parseURL(requestInfo.url);
         // In IE8, hostname and port return "" when we are on the same domain.
-        var isLocalHost = window.location.hostname === urlObject.hostname || urlObject.hostname === '';
-        var currentPort = window.location.port != '' ? window.location.port : window.location.protocol == 'https:' ? '443' : '80';
+        var isLocalHost = (window.location.hostname === urlObject.hostname) || (urlObject.hostname === '');
+        var currentPort = (window.location.port != '' ? window.location.port : (window.location.protocol == 'https:' ? '443' : '80'));
         var isSamePort = currentPort == urlObject.port;
         var isCrossOrigin = !(isLocalHost && isSamePort);
         if (!this.useJsonp) {
@@ -4889,7 +4070,7 @@ var EndpointCaller = /** @class */ (function () {
         return 'withCredentials' in this.getXmlHttpRequest();
     };
     EndpointCaller.prototype.isSuccessHttpStatus = function (status) {
-        return (status >= 200 && status < 300) || status === 304;
+        return status >= 200 && status < 300 || status === 304;
     };
     EndpointCaller.prototype.tryParseResponseText = function (json, contentType) {
         if (contentType != null && contentType.indexOf('application/json') != -1) {
@@ -4936,148 +4117,10 @@ var EndpointCaller = /** @class */ (function () {
         }
         return headers;
     };
-    EndpointCaller.JSONP_ERROR_TIMEOUT = 10000;
     return EndpointCaller;
 }());
+EndpointCaller.JSONP_ERROR_TIMEOUT = 10000;
 exports.EndpointCaller = EndpointCaller;
-
-
-/***/ }),
-/* 15 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var Assert_1 = __webpack_require__(0);
-var TimeSpan = /** @class */ (function () {
-    function TimeSpan(time, isMilliseconds) {
-        if (isMilliseconds === void 0) { isMilliseconds = true; }
-        if (isMilliseconds) {
-            this.milliseconds = time;
-        }
-        else {
-            this.milliseconds = time * 1000;
-        }
-    }
-    TimeSpan.prototype.getMilliseconds = function () {
-        return this.milliseconds;
-    };
-    TimeSpan.prototype.getSeconds = function () {
-        return this.getMilliseconds() / 1000;
-    };
-    TimeSpan.prototype.getMinutes = function () {
-        return this.getSeconds() / 60;
-    };
-    TimeSpan.prototype.getHours = function () {
-        return this.getMinutes() / 60;
-    };
-    TimeSpan.prototype.getDays = function () {
-        return this.getHours() / 24;
-    };
-    TimeSpan.prototype.getWeeks = function () {
-        return this.getDays() / 7;
-    };
-    TimeSpan.prototype.getHHMMSS = function () {
-        var hours = Math.floor(this.getHours());
-        var minutes = Math.floor(this.getMinutes()) % 60;
-        var seconds = Math.floor(this.getSeconds()) % 60;
-        var hoursString, minutesString, secondsString;
-        if (hours == 0) {
-            hoursString = '';
-        }
-        else {
-            hoursString = hours < 10 ? '0' + hours.toString() : hours.toString();
-        }
-        minutesString = minutes < 10 ? '0' + minutes.toString() : minutes.toString();
-        secondsString = seconds < 10 ? '0' + seconds.toString() : seconds.toString();
-        var hhmmss = (hoursString != '' ? hoursString + ':' : '') + minutesString + ':' + secondsString;
-        return hhmmss;
-    };
-    TimeSpan.fromDates = function (from, to) {
-        Assert_1.Assert.exists(from);
-        Assert_1.Assert.exists(to);
-        return new TimeSpan(to.valueOf() - from.valueOf());
-    };
-    return TimeSpan;
-}());
-exports.TimeSpan = TimeSpan;
-
-
-/***/ }),
-/* 16 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-// Not sure about this : In year 2033 who's to say that this list won't be 50 pages long !
-var ResponsiveComponents_1 = __webpack_require__(17);
-var mobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-var DeviceUtils = /** @class */ (function () {
-    function DeviceUtils() {
-    }
-    DeviceUtils.getDeviceName = function (userAgent) {
-        if (userAgent === void 0) { userAgent = navigator.userAgent; }
-        if (userAgent.match(/Edge/i)) {
-            return 'Edge';
-        }
-        if (userAgent.match(/Opera Mini/i)) {
-            return 'Opera Mini';
-        }
-        if (userAgent.match(/Android/i)) {
-            return 'Android';
-        }
-        if (userAgent.match(/BlackBerry/i)) {
-            return 'BlackBerry';
-        }
-        if (userAgent.match(/iPhone/i)) {
-            return 'iPhone';
-        }
-        if (userAgent.match(/iPad/i)) {
-            return 'iPad';
-        }
-        if (userAgent.match(/iPod/i)) {
-            return 'iPod';
-        }
-        if (userAgent.match(/Chrome/i)) {
-            return 'Chrome';
-        }
-        if (userAgent.match(/MSIE/i) || userAgent.match(/Trident/i)) {
-            return 'IE';
-        }
-        if (userAgent.match(/Opera/i)) {
-            return 'Opera';
-        }
-        if (userAgent.match(/Firefox/i)) {
-            return 'Firefox';
-        }
-        if (userAgent.match(/Safari/i)) {
-            return 'Safari';
-        }
-        return 'Others';
-    };
-    DeviceUtils.isAndroid = function () {
-        return DeviceUtils.getDeviceName() == 'Android';
-    };
-    DeviceUtils.isIos = function () {
-        var deviceName = DeviceUtils.getDeviceName();
-        return deviceName == 'iPhone' || deviceName == 'iPad' || deviceName == 'iPod';
-    };
-    DeviceUtils.isMobileDevice = function () {
-        return mobile;
-    };
-    /**
-     * @deprecated
-     *
-     * Use ResponsiveComponents.isSmallScreenWidth() instead
-     */
-    DeviceUtils.isSmallScreenWidth = function () {
-        return new ResponsiveComponents_1.ResponsiveComponents().isSmallScreenWidth();
-    };
-    return DeviceUtils;
-}());
-exports.DeviceUtils = DeviceUtils;
 
 
 /***/ }),
@@ -5087,152 +4130,7 @@ exports.DeviceUtils = DeviceUtils;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var Assert_1 = __webpack_require__(0);
-__webpack_require__(18);
-exports.MEDIUM_SCREEN_WIDTH = 800;
-exports.SMALL_SCREEN_WIDTH = 480;
-/**
- * This class serves as a way to get and set the different screen size breakpoints for the interface.
- *
- * By setting those, you can impact, amongst others, the {@link Facet}'s, {@link Tab}'s or the {@link ResultList}'s behaviour.
- *
- * For example, the {@link Facet} components of your interface will switch to a dropdown menu when the screen size reaches 800px or less.
- *
- * You could modify this value using `this` calls
- *
- * Normally, you would interact with this class using the instance bound to {@link SearchInterface.responsiveComponents}
- */
-var ResponsiveComponents = /** @class */ (function () {
-    function ResponsiveComponents(windoh) {
-        if (windoh === void 0) { windoh = window; }
-        this.windoh = windoh;
-    }
-    /**
-     * Set the breakpoint for small screen size.
-     * @param width
-     */
-    ResponsiveComponents.prototype.setSmallScreenWidth = function (width) {
-        Assert_1.Assert.check(width < this.getMediumScreenWidth(), "Cannot set small screen width (" + width + ") larger or equal to the current medium screen width (" + this.getMediumScreenWidth() + ")");
-        this.smallScreenWidth = width;
-    };
-    /**
-     * Set the breakpoint for medium screen size
-     * @param width
-     */
-    ResponsiveComponents.prototype.setMediumScreenWidth = function (width) {
-        Assert_1.Assert.check(width > this.getSmallScreenWidth(), "Cannot set medium screen width (" + width + ") smaller or equal to the current small screen width (" + this.getSmallScreenWidth() + ")");
-        this.mediumScreenWidth = width;
-    };
-    /**
-     * Get the current breakpoint for small screen size.
-     *
-     * If it was not explicitly set by {@link ResponsiveComponents.setSmallScreenWidth}, the default value is `480`.
-     * @returns {number}
-     */
-    ResponsiveComponents.prototype.getSmallScreenWidth = function () {
-        if (this.smallScreenWidth == null) {
-            return exports.SMALL_SCREEN_WIDTH;
-        }
-        return this.smallScreenWidth;
-    };
-    /**
-     * Get the current breakpoint for medium screen size.
-     *
-     * If it was not explicitly set by {@link ResponsiveComponents.setMediumScreenWidth}, the default value is `800`.
-     * @returns {number}
-     */
-    ResponsiveComponents.prototype.getMediumScreenWidth = function () {
-        if (this.mediumScreenWidth == null) {
-            return exports.MEDIUM_SCREEN_WIDTH;
-        }
-        return this.mediumScreenWidth;
-    };
-    /**
-     * Return true if the current screen size is smaller than the current breakpoint set for small screen width.
-     * @returns {boolean}
-     */
-    ResponsiveComponents.prototype.isSmallScreenWidth = function () {
-        if (this.windoh['clientWidth'] != null) {
-            return this.windoh['clientWidth'] <= this.getSmallScreenWidth();
-        }
-        else {
-            return document.body.clientWidth <= this.getSmallScreenWidth();
-        }
-    };
-    /**
-     * Return true if the current screen size is smaller than the current breakpoint set for medium screen width.
-     * @returns {boolean}
-     */
-    ResponsiveComponents.prototype.isMediumScreenWidth = function () {
-        if (this.isSmallScreenWidth()) {
-            return false;
-        }
-        if (this.windoh['clientWidth'] != null) {
-            return this.windoh['clientWidth'] <= this.getMediumScreenWidth();
-        }
-        return document.body.clientWidth <= this.getMediumScreenWidth();
-    };
-    /**
-     * Return true if the current screen size is larger than the current breakpoint set for medium and small.
-     * @returns {boolean}
-     */
-    ResponsiveComponents.prototype.isLargeScreenWidth = function () {
-        return !this.isSmallScreenWidth() && !this.isMediumScreenWidth();
-    };
-    return ResponsiveComponents;
-}());
-exports.ResponsiveComponents = ResponsiveComponents;
-
-
-/***/ }),
-/* 18 */
-/***/ (function(module, exports) {
-
-// empty (null-loader)
-
-/***/ }),
-/* 19 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.version = {
-    lib: '2.3477.1-beta',
-    product: '2.3477.1-beta',
-    supportedApiVersion: 2
-};
-
-
-/***/ }),
-/* 20 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var Assert_1 = __webpack_require__(0);
-var AjaxError = /** @class */ (function () {
-    function AjaxError(message, status) {
-        this.message = message;
-        this.status = status;
-        Assert_1.Assert.exists(message);
-        Assert_1.Assert.exists(status);
-        this.name = this.type = 'Ajax Error (status: ' + status + ')';
-    }
-    return AjaxError;
-}());
-exports.AjaxError = AjaxError;
-
-
-/***/ }),
-/* 21 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var MissingAuthenticationError = /** @class */ (function () {
+var MissingAuthenticationError = (function () {
     function MissingAuthenticationError(provider) {
         this.provider = provider;
         this.isMissingAuthentication = true;
@@ -5244,239 +4142,14 @@ exports.MissingAuthenticationError = MissingAuthenticationError;
 
 
 /***/ }),
-/* 22 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var Assert_1 = __webpack_require__(0);
-var Utils_1 = __webpack_require__(2);
-var _ = __webpack_require__(1);
-var QueryUtils = /** @class */ (function () {
-    function QueryUtils() {
-    }
-    QueryUtils.createGuid = function () {
-        var guid;
-        var success = false;
-        if (typeof crypto != 'undefined' && typeof crypto.getRandomValues != 'undefined') {
-            try {
-                guid = QueryUtils.generateWithCrypto();
-                success = true;
-            }
-            catch (e) {
-                success = false;
-            }
-        }
-        if (!success) {
-            guid = QueryUtils.generateWithRandom();
-        }
-        return guid;
-    };
-    // This method is a fallback as it's generate a lot of collisions in Chrome.
-    QueryUtils.generateWithRandom = function () {
-        // http://stackoverflow.com/a/2117523
-        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
-            var r = (Math.random() * 16) | 0, v = c == 'x' ? r : (r & 0x3) | 0x8;
-            return v.toString(16);
-        });
-    };
-    QueryUtils.generateWithCrypto = function () {
-        var buf = new Uint16Array(8);
-        crypto.getRandomValues(buf);
-        var S4 = function (num) {
-            var ret = num.toString(16);
-            while (ret.length < 4) {
-                ret = '0' + ret;
-            }
-            return ret;
-        };
-        return S4(buf[0]) + S4(buf[1]) + '-' + S4(buf[2]) + '-' + S4(buf[3]) + '-' + S4(buf[4]) + '-' + S4(buf[5]) + S4(buf[6]) + S4(buf[7]);
-    };
-    QueryUtils.setStateObjectOnQueryResults = function (state, results) {
-        QueryUtils.setPropertyOnResults(results, 'state', state);
-    };
-    QueryUtils.setStateObjectOnQueryResult = function (state, result) {
-        QueryUtils.setPropertyOnResult(result, 'state', state);
-    };
-    QueryUtils.setSearchInterfaceObjectOnQueryResult = function (searchInterface, result) {
-        QueryUtils.setPropertyOnResult(result, 'searchInterface', searchInterface);
-    };
-    QueryUtils.setIndexAndUidOnQueryResults = function (query, results, queryUid, pipeline, splitTestRun) {
-        Assert_1.Assert.exists(query);
-        Assert_1.Assert.exists(results);
-        var index = query.firstResult;
-        QueryUtils.setPropertyOnResults(results, 'queryUid', queryUid);
-        QueryUtils.setPropertyOnResults(results, 'pipeline', pipeline);
-        QueryUtils.setPropertyOnResults(results, 'splitTestRun', splitTestRun);
-        QueryUtils.setPropertyOnResults(results, 'index', index, function () { return ++index; });
-    };
-    QueryUtils.setTermsToHighlightOnQueryResults = function (query, results) {
-        QueryUtils.setPropertyOnResults(results, 'termsToHighlight', results.termsToHighlight);
-        QueryUtils.setPropertyOnResults(results, 'phrasesToHighlight', results.phrasesToHighlight);
-    };
-    QueryUtils.splitFlags = function (flags, delimiter) {
-        if (delimiter === void 0) { delimiter = ';'; }
-        Assert_1.Assert.exists(flags);
-        return flags.split(delimiter);
-    };
-    QueryUtils.isAttachment = function (result) {
-        return _.contains(QueryUtils.splitFlags(result.flags), 'IsAttachment');
-    };
-    QueryUtils.containsAttachment = function (result) {
-        return _.contains(QueryUtils.splitFlags(result.flags), 'ContainsAttachment');
-    };
-    QueryUtils.hasHTMLVersion = function (result) {
-        return _.contains(QueryUtils.splitFlags(result.flags), 'HasHtmlVersion');
-    };
-    QueryUtils.hasThumbnail = function (result) {
-        return _.contains(QueryUtils.splitFlags(result.flags), 'HasThumbnail');
-    };
-    QueryUtils.hasExcerpt = function (result) {
-        return result.excerpt != undefined && result.excerpt != '';
-    };
-    QueryUtils.getAuthor = function (result) {
-        return result.raw['author'];
-    };
-    QueryUtils.getUriHash = function (result) {
-        return result.raw['urihash'];
-    };
-    QueryUtils.getObjectType = function (result) {
-        return result.raw['objecttype'];
-    };
-    QueryUtils.getCollection = function (result) {
-        return result.raw['collection'];
-    };
-    QueryUtils.getSource = function (result) {
-        return result.raw['source'];
-    };
-    QueryUtils.getLanguage = function (result) {
-        return result.raw['language'];
-    };
-    QueryUtils.getPermanentId = function (result) {
-        var fieldValue;
-        var fieldUsed;
-        var permanentId = Utils_1.Utils.getFieldValue(result, 'permanentid');
-        if (permanentId) {
-            fieldUsed = 'permanentid';
-            fieldValue = permanentId;
-        }
-        else {
-            fieldUsed = 'urihash';
-            fieldValue = Utils_1.Utils.getFieldValue(result, 'urihash');
-        }
-        return {
-            fieldValue: fieldValue,
-            fieldUsed: fieldUsed
-        };
-    };
-    QueryUtils.quoteAndEscapeIfNeeded = function (str) {
-        Assert_1.Assert.isString(str);
-        return QueryUtils.isAtomicString(str) || (QueryUtils.isRangeString(str) || QueryUtils.isRangeWithoutOuterBoundsString(str))
-            ? str
-            : QueryUtils.quoteAndEscape(str);
-    };
-    QueryUtils.quoteAndEscape = function (str) {
-        Assert_1.Assert.isString(str);
-        return "\"" + QueryUtils.escapeString(str) + "\"";
-    };
-    QueryUtils.escapeString = function (str) {
-        Assert_1.Assert.isString(str);
-        return str.replace(/"/g, ' ');
-    };
-    QueryUtils.isAtomicString = function (str) {
-        Assert_1.Assert.isString(str);
-        return /^\d+(\.\d+)?$|^[\d\w]+$/.test(str);
-    };
-    QueryUtils.isRangeString = function (str) {
-        Assert_1.Assert.isString(str);
-        return /^\d+(\.\d+)?\.\.\d+(\.\d+)?$|^\d{4}\/\d{2}\/\d{2}@\d{2}:\d{2}:\d{2}\.\.\d{4}\/\d{2}\/\d{2}@\d{2}:\d{2}:\d{2}$/.test(str);
-    };
-    QueryUtils.isRangeWithoutOuterBoundsString = function (str) {
-        Assert_1.Assert.isString(str);
-        return /^\d+(\.\d+)?$|^\d{4}\/\d{2}\/\d{2}@\d{2}:\d{2}:\d{2}$/.test(str);
-    };
-    QueryUtils.buildFieldExpression = function (field, operator, values) {
-        Assert_1.Assert.isNonEmptyString(field);
-        Assert_1.Assert.stringStartsWith(field, '@');
-        Assert_1.Assert.isNonEmptyString(operator);
-        Assert_1.Assert.isLargerOrEqualsThan(1, values.length);
-        if (values.length == 1) {
-            return field + operator + QueryUtils.quoteAndEscapeIfNeeded(values[0]);
-        }
-        else {
-            return field + operator + '(' + _.map(values, function (str) { return QueryUtils.quoteAndEscapeIfNeeded(str); }).join(',') + ')';
-        }
-    };
-    QueryUtils.buildFieldNotEqualExpression = function (field, values) {
-        Assert_1.Assert.isNonEmptyString(field);
-        Assert_1.Assert.stringStartsWith(field, '@');
-        Assert_1.Assert.isLargerOrEqualsThan(1, values.length);
-        var filter;
-        if (values.length == 1) {
-            filter = field + '==' + QueryUtils.quoteAndEscapeIfNeeded(values[0]);
-        }
-        else {
-            filter = field + '==' + '(' + _.map(values, function (str) { return QueryUtils.quoteAndEscapeIfNeeded(str); }).join(',') + ')';
-        }
-        return '(NOT ' + filter + ')';
-    };
-    QueryUtils.mergeQueryString = function (url, queryString) {
-        var queryStringPosition = url.indexOf('?');
-        if (queryStringPosition != -1) {
-            url += '&' + queryString;
-        }
-        else {
-            url += '?' + queryString;
-        }
-        return url;
-    };
-    QueryUtils.mergePath = function (url, path) {
-        var urlSplit = url.split('?');
-        return urlSplit[0] + path + '?' + (urlSplit[1] || '');
-    };
-    QueryUtils.setPropertyOnResults = function (results, property, value, afterOneLoop) {
-        _.each(results.results, function (result) {
-            QueryUtils.setPropertyOnResult(result, property, value);
-            value = afterOneLoop ? afterOneLoop() : value;
-        });
-    };
-    QueryUtils.setPropertyOnResult = function (result, property, value) {
-        result[property] = value;
-        _.each(result.childResults, function (child) {
-            child[property] = value;
-        });
-        if (!Utils_1.Utils.isNullOrUndefined(result.parentResult)) {
-            result.parentResult[property] = value;
-        }
-    };
-    // http://stackoverflow.com/a/11582513
-    QueryUtils.getUrlParameter = function (name) {
-        return (decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.search) || [, ''])[1].replace(/\+/g, '%20')) || null);
-    };
-    QueryUtils.isStratusAgnosticField = function (fieldToVerify, fieldToMatch) {
-        var checkForSystem = /^(@?)(sys)?(.*)/i;
-        var matchFieldToVerify = checkForSystem.exec(fieldToVerify);
-        var matchFieldToMatch = checkForSystem.exec(fieldToMatch);
-        if (matchFieldToVerify && matchFieldToMatch) {
-            return (matchFieldToVerify[1] + matchFieldToVerify[3]).toLowerCase() == (matchFieldToMatch[1] + matchFieldToMatch[3]).toLowerCase();
-        }
-        return false;
-    };
-    return QueryUtils;
-}());
-exports.QueryUtils = QueryUtils;
-
-
-/***/ }),
-/* 23 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var Assert_1 = __webpack_require__(0);
-var QueryError = /** @class */ (function () {
+var QueryError = (function () {
     function QueryError(errorResponse) {
         this.status = errorResponse.statusCode;
         this.message = errorResponse.data.message;
@@ -5492,1315 +4165,1069 @@ exports.QueryError = QueryError;
 
 
 /***/ }),
-/* 24 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-Object.defineProperty(exports, "__esModule", { value: true });
-/* istanbul ignore next */
-function shim() {
-    var doShim = function (promiseInstance) {
-        if (typeof promiseInstance.prototype['finally'] != 'function') {
-            promiseInstance.prototype['finally'] = function finallyPolyfill(callback) {
-                var constructor = this.constructor;
-                return this.then(function (value) {
-                    return constructor.resolve(callback()).then(function () {
-                        return value;
-                    });
-                }, function (reason) {
-                    return constructor.resolve(callback()).then(function () {
-                        throw reason;
-                    });
-                });
-            };
-        }
-        var rethrowError = function (self) {
-            self.then(null, function (err) {
-                setTimeout(function () {
-                    throw err;
-                }, 0);
-            });
-        };
-        if (typeof promiseInstance.prototype['done'] !== 'function') {
-            promiseInstance.prototype['done'] = function (onFulfilled, onRejected) {
-                var self = arguments.length ? this.then.apply(this, arguments) : this;
-                rethrowError(self);
-                return this;
-            };
-        }
-        if (typeof promiseInstance.prototype['fail'] !== 'function') {
-            promiseInstance.prototype['fail'] = function (onFulfilled, onRejected) {
-                var self = arguments.length ? this.catch.apply(this, arguments) : this;
-                rethrowError(self);
-                return this;
-            };
-        }
-    };
-    var globalPromise = window['Promise'];
-    var localPromise = Promise;
-    if (globalPromise) {
-        doShim(globalPromise);
-    }
-    if (localPromise) {
-        doShim(localPromise);
-    }
-}
-exports.shim = shim;
-
-
-/***/ }),
-/* 25 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var analytics = __webpack_require__(8);
-exports.analytics = analytics;
-var SimpleAnalytics = __webpack_require__(28);
-exports.SimpleAnalytics = SimpleAnalytics;
-var history = __webpack_require__(9);
-exports.history = history;
-var donottrack = __webpack_require__(31);
-exports.donottrack = donottrack;
-var storage = __webpack_require__(10);
-exports.storage = storage;
-
-
-/***/ }),
-/* 26 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var Cookie = (function () {
-    function Cookie() {
-    }
-    Cookie.set = function (name, value, expiration) {
-        var domain, domainParts, date, expires, host;
-        if (expiration) {
-            date = new Date();
-            date.setTime(date.getTime() + expiration);
-            expires = '; expires=' + date.toGMTString();
-        }
-        else {
-            expires = '';
-        }
-        host = location.hostname;
-        if (host.indexOf('.') === -1) {
-            document.cookie = name + '=' + value + expires + '; path=/';
-        }
-        else {
-            domainParts = host.split('.');
-            domainParts.shift();
-            domain = '.' + domainParts.join('.');
-            document.cookie = name + '=' + value + expires + '; path=/; domain=' + domain;
-            if (Cookie.get(name) == null || Cookie.get(name) != value) {
-                domain = '.' + host;
-                document.cookie = name + '=' + value + expires + '; path=/; domain=' + domain;
-            }
-        }
-    };
-    Cookie.get = function (name) {
-        var cookiePrefix = name + '=';
-        var cookieArray = document.cookie.split(';');
-        for (var i = 0; i < cookieArray.length; i++) {
-            var cookie = cookieArray[i];
-            cookie = cookie.replace(/^\s+/, '');
-            if (cookie.indexOf(cookiePrefix) == 0) {
-                return cookie.substring(cookiePrefix.length, cookie.length);
-            }
-        }
-        return null;
-    };
-    Cookie.erase = function (name) {
-        Cookie.set(name, '', -1);
-    };
-    return Cookie;
-}());
-exports.Cookie = Cookie;
-
-
-/***/ }),
-/* 27 */
-/***/ (function(module, exports) {
-
-(function(self) {
-  'use strict';
-
-  if (self.fetch) {
-    return
-  }
-
-  var support = {
-    searchParams: 'URLSearchParams' in self,
-    iterable: 'Symbol' in self && 'iterator' in Symbol,
-    blob: 'FileReader' in self && 'Blob' in self && (function() {
-      try {
-        new Blob()
-        return true
-      } catch(e) {
-        return false
-      }
-    })(),
-    formData: 'FormData' in self,
-    arrayBuffer: 'ArrayBuffer' in self
-  }
-
-  if (support.arrayBuffer) {
-    var viewClasses = [
-      '[object Int8Array]',
-      '[object Uint8Array]',
-      '[object Uint8ClampedArray]',
-      '[object Int16Array]',
-      '[object Uint16Array]',
-      '[object Int32Array]',
-      '[object Uint32Array]',
-      '[object Float32Array]',
-      '[object Float64Array]'
-    ]
-
-    var isDataView = function(obj) {
-      return obj && DataView.prototype.isPrototypeOf(obj)
-    }
-
-    var isArrayBufferView = ArrayBuffer.isView || function(obj) {
-      return obj && viewClasses.indexOf(Object.prototype.toString.call(obj)) > -1
-    }
-  }
-
-  function normalizeName(name) {
-    if (typeof name !== 'string') {
-      name = String(name)
-    }
-    if (/[^a-z0-9\-#$%&'*+.\^_`|~]/i.test(name)) {
-      throw new TypeError('Invalid character in header field name')
-    }
-    return name.toLowerCase()
-  }
-
-  function normalizeValue(value) {
-    if (typeof value !== 'string') {
-      value = String(value)
-    }
-    return value
-  }
-
-  // Build a destructive iterator for the value list
-  function iteratorFor(items) {
-    var iterator = {
-      next: function() {
-        var value = items.shift()
-        return {done: value === undefined, value: value}
-      }
-    }
-
-    if (support.iterable) {
-      iterator[Symbol.iterator] = function() {
-        return iterator
-      }
-    }
-
-    return iterator
-  }
-
-  function Headers(headers) {
-    this.map = {}
-
-    if (headers instanceof Headers) {
-      headers.forEach(function(value, name) {
-        this.append(name, value)
-      }, this)
-    } else if (Array.isArray(headers)) {
-      headers.forEach(function(header) {
-        this.append(header[0], header[1])
-      }, this)
-    } else if (headers) {
-      Object.getOwnPropertyNames(headers).forEach(function(name) {
-        this.append(name, headers[name])
-      }, this)
-    }
-  }
-
-  Headers.prototype.append = function(name, value) {
-    name = normalizeName(name)
-    value = normalizeValue(value)
-    var oldValue = this.map[name]
-    this.map[name] = oldValue ? oldValue+','+value : value
-  }
-
-  Headers.prototype['delete'] = function(name) {
-    delete this.map[normalizeName(name)]
-  }
-
-  Headers.prototype.get = function(name) {
-    name = normalizeName(name)
-    return this.has(name) ? this.map[name] : null
-  }
-
-  Headers.prototype.has = function(name) {
-    return this.map.hasOwnProperty(normalizeName(name))
-  }
-
-  Headers.prototype.set = function(name, value) {
-    this.map[normalizeName(name)] = normalizeValue(value)
-  }
-
-  Headers.prototype.forEach = function(callback, thisArg) {
-    for (var name in this.map) {
-      if (this.map.hasOwnProperty(name)) {
-        callback.call(thisArg, this.map[name], name, this)
-      }
-    }
-  }
-
-  Headers.prototype.keys = function() {
-    var items = []
-    this.forEach(function(value, name) { items.push(name) })
-    return iteratorFor(items)
-  }
-
-  Headers.prototype.values = function() {
-    var items = []
-    this.forEach(function(value) { items.push(value) })
-    return iteratorFor(items)
-  }
-
-  Headers.prototype.entries = function() {
-    var items = []
-    this.forEach(function(value, name) { items.push([name, value]) })
-    return iteratorFor(items)
-  }
-
-  if (support.iterable) {
-    Headers.prototype[Symbol.iterator] = Headers.prototype.entries
-  }
-
-  function consumed(body) {
-    if (body.bodyUsed) {
-      return Promise.reject(new TypeError('Already read'))
-    }
-    body.bodyUsed = true
-  }
-
-  function fileReaderReady(reader) {
-    return new Promise(function(resolve, reject) {
-      reader.onload = function() {
-        resolve(reader.result)
-      }
-      reader.onerror = function() {
-        reject(reader.error)
-      }
-    })
-  }
-
-  function readBlobAsArrayBuffer(blob) {
-    var reader = new FileReader()
-    var promise = fileReaderReady(reader)
-    reader.readAsArrayBuffer(blob)
-    return promise
-  }
-
-  function readBlobAsText(blob) {
-    var reader = new FileReader()
-    var promise = fileReaderReady(reader)
-    reader.readAsText(blob)
-    return promise
-  }
-
-  function readArrayBufferAsText(buf) {
-    var view = new Uint8Array(buf)
-    var chars = new Array(view.length)
-
-    for (var i = 0; i < view.length; i++) {
-      chars[i] = String.fromCharCode(view[i])
-    }
-    return chars.join('')
-  }
-
-  function bufferClone(buf) {
-    if (buf.slice) {
-      return buf.slice(0)
-    } else {
-      var view = new Uint8Array(buf.byteLength)
-      view.set(new Uint8Array(buf))
-      return view.buffer
-    }
-  }
-
-  function Body() {
-    this.bodyUsed = false
-
-    this._initBody = function(body) {
-      this._bodyInit = body
-      if (!body) {
-        this._bodyText = ''
-      } else if (typeof body === 'string') {
-        this._bodyText = body
-      } else if (support.blob && Blob.prototype.isPrototypeOf(body)) {
-        this._bodyBlob = body
-      } else if (support.formData && FormData.prototype.isPrototypeOf(body)) {
-        this._bodyFormData = body
-      } else if (support.searchParams && URLSearchParams.prototype.isPrototypeOf(body)) {
-        this._bodyText = body.toString()
-      } else if (support.arrayBuffer && support.blob && isDataView(body)) {
-        this._bodyArrayBuffer = bufferClone(body.buffer)
-        // IE 10-11 can't handle a DataView body.
-        this._bodyInit = new Blob([this._bodyArrayBuffer])
-      } else if (support.arrayBuffer && (ArrayBuffer.prototype.isPrototypeOf(body) || isArrayBufferView(body))) {
-        this._bodyArrayBuffer = bufferClone(body)
-      } else {
-        throw new Error('unsupported BodyInit type')
-      }
-
-      if (!this.headers.get('content-type')) {
-        if (typeof body === 'string') {
-          this.headers.set('content-type', 'text/plain;charset=UTF-8')
-        } else if (this._bodyBlob && this._bodyBlob.type) {
-          this.headers.set('content-type', this._bodyBlob.type)
-        } else if (support.searchParams && URLSearchParams.prototype.isPrototypeOf(body)) {
-          this.headers.set('content-type', 'application/x-www-form-urlencoded;charset=UTF-8')
-        }
-      }
-    }
-
-    if (support.blob) {
-      this.blob = function() {
-        var rejected = consumed(this)
-        if (rejected) {
-          return rejected
-        }
-
-        if (this._bodyBlob) {
-          return Promise.resolve(this._bodyBlob)
-        } else if (this._bodyArrayBuffer) {
-          return Promise.resolve(new Blob([this._bodyArrayBuffer]))
-        } else if (this._bodyFormData) {
-          throw new Error('could not read FormData body as blob')
-        } else {
-          return Promise.resolve(new Blob([this._bodyText]))
-        }
-      }
-
-      this.arrayBuffer = function() {
-        if (this._bodyArrayBuffer) {
-          return consumed(this) || Promise.resolve(this._bodyArrayBuffer)
-        } else {
-          return this.blob().then(readBlobAsArrayBuffer)
-        }
-      }
-    }
-
-    this.text = function() {
-      var rejected = consumed(this)
-      if (rejected) {
-        return rejected
-      }
-
-      if (this._bodyBlob) {
-        return readBlobAsText(this._bodyBlob)
-      } else if (this._bodyArrayBuffer) {
-        return Promise.resolve(readArrayBufferAsText(this._bodyArrayBuffer))
-      } else if (this._bodyFormData) {
-        throw new Error('could not read FormData body as text')
-      } else {
-        return Promise.resolve(this._bodyText)
-      }
-    }
-
-    if (support.formData) {
-      this.formData = function() {
-        return this.text().then(decode)
-      }
-    }
-
-    this.json = function() {
-      return this.text().then(JSON.parse)
-    }
-
-    return this
-  }
-
-  // HTTP methods whose capitalization should be normalized
-  var methods = ['DELETE', 'GET', 'HEAD', 'OPTIONS', 'POST', 'PUT']
-
-  function normalizeMethod(method) {
-    var upcased = method.toUpperCase()
-    return (methods.indexOf(upcased) > -1) ? upcased : method
-  }
-
-  function Request(input, options) {
-    options = options || {}
-    var body = options.body
-
-    if (input instanceof Request) {
-      if (input.bodyUsed) {
-        throw new TypeError('Already read')
-      }
-      this.url = input.url
-      this.credentials = input.credentials
-      if (!options.headers) {
-        this.headers = new Headers(input.headers)
-      }
-      this.method = input.method
-      this.mode = input.mode
-      if (!body && input._bodyInit != null) {
-        body = input._bodyInit
-        input.bodyUsed = true
-      }
-    } else {
-      this.url = String(input)
-    }
-
-    this.credentials = options.credentials || this.credentials || 'omit'
-    if (options.headers || !this.headers) {
-      this.headers = new Headers(options.headers)
-    }
-    this.method = normalizeMethod(options.method || this.method || 'GET')
-    this.mode = options.mode || this.mode || null
-    this.referrer = null
-
-    if ((this.method === 'GET' || this.method === 'HEAD') && body) {
-      throw new TypeError('Body not allowed for GET or HEAD requests')
-    }
-    this._initBody(body)
-  }
-
-  Request.prototype.clone = function() {
-    return new Request(this, { body: this._bodyInit })
-  }
-
-  function decode(body) {
-    var form = new FormData()
-    body.trim().split('&').forEach(function(bytes) {
-      if (bytes) {
-        var split = bytes.split('=')
-        var name = split.shift().replace(/\+/g, ' ')
-        var value = split.join('=').replace(/\+/g, ' ')
-        form.append(decodeURIComponent(name), decodeURIComponent(value))
-      }
-    })
-    return form
-  }
-
-  function parseHeaders(rawHeaders) {
-    var headers = new Headers()
-    rawHeaders.split(/\r?\n/).forEach(function(line) {
-      var parts = line.split(':')
-      var key = parts.shift().trim()
-      if (key) {
-        var value = parts.join(':').trim()
-        headers.append(key, value)
-      }
-    })
-    return headers
-  }
-
-  Body.call(Request.prototype)
-
-  function Response(bodyInit, options) {
-    if (!options) {
-      options = {}
-    }
-
-    this.type = 'default'
-    this.status = 'status' in options ? options.status : 200
-    this.ok = this.status >= 200 && this.status < 300
-    this.statusText = 'statusText' in options ? options.statusText : 'OK'
-    this.headers = new Headers(options.headers)
-    this.url = options.url || ''
-    this._initBody(bodyInit)
-  }
-
-  Body.call(Response.prototype)
-
-  Response.prototype.clone = function() {
-    return new Response(this._bodyInit, {
-      status: this.status,
-      statusText: this.statusText,
-      headers: new Headers(this.headers),
-      url: this.url
-    })
-  }
-
-  Response.error = function() {
-    var response = new Response(null, {status: 0, statusText: ''})
-    response.type = 'error'
-    return response
-  }
-
-  var redirectStatuses = [301, 302, 303, 307, 308]
-
-  Response.redirect = function(url, status) {
-    if (redirectStatuses.indexOf(status) === -1) {
-      throw new RangeError('Invalid status code')
-    }
-
-    return new Response(null, {status: status, headers: {location: url}})
-  }
-
-  self.Headers = Headers
-  self.Request = Request
-  self.Response = Response
-
-  self.fetch = function(input, init) {
-    return new Promise(function(resolve, reject) {
-      var request = new Request(input, init)
-      var xhr = new XMLHttpRequest()
-
-      xhr.onload = function() {
-        var options = {
-          status: xhr.status,
-          statusText: xhr.statusText,
-          headers: parseHeaders(xhr.getAllResponseHeaders() || '')
-        }
-        options.url = 'responseURL' in xhr ? xhr.responseURL : options.headers.get('X-Request-URL')
-        var body = 'response' in xhr ? xhr.response : xhr.responseText
-        resolve(new Response(body, options))
-      }
-
-      xhr.onerror = function() {
-        reject(new TypeError('Network request failed'))
-      }
-
-      xhr.ontimeout = function() {
-        reject(new TypeError('Network request failed'))
-      }
-
-      xhr.open(request.method, request.url, true)
-
-      if (request.credentials === 'include') {
-        xhr.withCredentials = true
-      }
-
-      if ('responseType' in xhr && support.blob) {
-        xhr.responseType = 'blob'
-      }
-
-      request.headers.forEach(function(value, name) {
-        xhr.setRequestHeader(name, value)
-      })
-
-      xhr.send(typeof request._bodyInit === 'undefined' ? null : request._bodyInit)
-    })
-  }
-  self.fetch.polyfill = true
-})(typeof self !== 'undefined' ? self : this);
-
-
-/***/ }),
-/* 28 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var analytics = __webpack_require__(8);
-var objectassign_1 = __webpack_require__(29);
-var utils_1 = __webpack_require__(30);
-var SimpleAPI = (function () {
-    function SimpleAPI() {
-    }
-    SimpleAPI.prototype.init = function (token, endpoint) {
-        if (typeof token === 'undefined') {
-            throw new Error("You must pass your token when you call 'init'");
-        }
-        if (typeof token === 'string') {
-            endpoint = endpoint || analytics.Endpoints.default;
-            this.client = new analytics.Client({
-                token: token,
-                endpoint: endpoint
-            });
-        }
-        else if (typeof token === 'object' && typeof token.sendEvent !== 'undefined') {
-            this.client = token;
-        }
-        else {
-            throw new Error("You must pass either your token or a valid object when you call 'init'");
-        }
-    };
-    SimpleAPI.prototype.send = function (event, customData) {
-        if (typeof this.client == 'undefined') {
-            throw new Error("You must call init before sending an event");
-        }
-        customData = objectassign_1.default({}, {
-            hash: window.location.hash
-        }, customData);
-        switch (event) {
-            case 'pageview':
-                this.client.sendViewEvent({
-                    location: window.location.toString(),
-                    referrer: document.referrer,
-                    language: document.documentElement.lang,
-                    title: document.title,
-                    contentIdKey: utils_1.popFromObject(customData, 'contentIdKey'),
-                    contentIdValue: utils_1.popFromObject(customData, 'contentIdValue'),
-                    contentType: utils_1.popFromObject(customData, 'contentType'),
-                    customData: customData
-                });
-                return;
-            default:
-                throw new Error("Event type: '" + event + "' not implemented");
-        }
-    };
-    SimpleAPI.prototype.onLoad = function (callback) {
-        if (typeof callback == 'undefined') {
-            throw new Error("You must pass a function when you call 'onLoad'");
-        }
-        callback();
-    };
-    return SimpleAPI;
-}());
-exports.SimpleAPI = SimpleAPI;
-var simpleAPI = new SimpleAPI();
-exports.SimpleAnalytics = function (action) {
-    var params = [];
-    for (var _i = 1; _i < arguments.length; _i++) {
-        params[_i - 1] = arguments[_i];
-    }
-    var actionFunction = simpleAPI[action];
-    if (actionFunction) {
-        return actionFunction.apply(simpleAPI, params);
-    }
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.default = exports.SimpleAnalytics;
-
-
-/***/ }),
-/* 29 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var hasOwnProperty = Object.prototype.hasOwnProperty;
-var getOwnPropertySymbols = Object.getOwnPropertySymbols;
-var propIsEnumerable = Object.prototype.propertyIsEnumerable;
-var objectAssignPonyfill = function (target) {
-    var sources = [];
-    for (var _i = 1; _i < arguments.length; _i++) {
-        sources[_i - 1] = arguments[_i];
+var EndpointCaller_1 = __webpack_require__(16);
+var Logger_1 = __webpack_require__(3);
+var Assert_1 = __webpack_require__(0);
+var Version_1 = __webpack_require__(14);
+var AjaxError_1 = __webpack_require__(15);
+var MissingAuthenticationError_1 = __webpack_require__(17);
+var QueryUtils_1 = __webpack_require__(23);
+var QueryError_1 = __webpack_require__(18);
+var Utils_1 = __webpack_require__(2);
+var _ = __webpack_require__(1);
+var PromisesShim_1 = __webpack_require__(13);
+PromisesShim_1.shim();
+var DefaultSearchEndpointOptions = (function () {
+    function DefaultSearchEndpointOptions() {
+        this.version = 'v2';
+        this.queryStringArguments = {};
+        this.anonymous = false;
+        this.isGuestUser = false;
     }
-    if (target === undefined || target === null) {
-        throw new TypeError('Cannot convert undefined or null to object');
-    }
-    var output = Object(target);
-    sources.forEach(function (source) {
-        var from = Object(source);
-        for (var key in from) {
-            if (hasOwnProperty.call(from, key)) {
-                output[key] = from[key];
-            }
-        }
-        if (getOwnPropertySymbols) {
-            var symbols = getOwnPropertySymbols(from);
-            symbols.forEach(function (symbol) {
-                if (propIsEnumerable.call(from, symbol)) {
-                    output[symbol] = from[symbol];
-                }
-            });
-        }
-    });
-    return output;
-};
-exports.ponyfill = objectAssignPonyfill;
-exports.assign = typeof Object.assign === 'function' ? Object.assign : objectAssignPonyfill;
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.default = exports.assign;
-
-
-/***/ }),
-/* 30 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-function popFromObject(object, key) {
-    if (object) {
-        var value = object[key];
-        delete object[key];
-        return value;
-    }
-}
-exports.popFromObject = popFromObject;
-
-
-/***/ }),
-/* 31 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-exports.doNotTrack = [true, 'yes', '1'].indexOf(navigator.doNotTrack || navigator.msDoNotTrack || window.doNotTrack);
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.default = exports.doNotTrack;
-
-
-/***/ }),
-/* 32 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-// Code originally taken from : https://developers.livechatinc.com/blog/setting-cookies-to-subdomains-in-javascript/
-var Cookie = /** @class */ (function () {
-    function Cookie() {
-    }
-    Cookie.set = function (name, value, expiration) {
-        var domain, domainParts, date, expires, host;
-        if (expiration) {
-            date = new Date();
-            date.setTime(date.getTime() + expiration);
-            expires = '; expires=' + date.toGMTString();
-        }
-        else {
-            expires = '';
-        }
-        host = location.hostname;
-        if (host.split('.').length === 1) {
-            // no '.' in a domain - it's localhost or something similar
-            document.cookie = this.prefix + name + '=' + value + expires + '; path=/';
-        }
-        else {
-            // Remember the cookie on all subdomains.
-            //
-            // Start with trying to set cookie to the top domain.
-            // (example: if user is on foo.com, try to set
-            //  cookie to domain '.com')
-            //
-            // If the cookie will not be set, it means '.com'
-            // is a top level domain and we need to
-            // set the cookie to '.foo.com'
-            domainParts = host.split('.');
-            domainParts.shift();
-            domain = '.' + domainParts.join('.');
-            document.cookie = this.prefix + name + '=' + value + expires + '; path=/; domain=' + domain;
-            // check if cookie was successfuly set to the given domain
-            // (otherwise it was a Top-Level Domain)
-            if (Cookie.get(name) == null || Cookie.get(name) != value) {
-                // append '.' to current domain
-                domain = '.' + host;
-                document.cookie = this.prefix + name + '=' + value + expires + '; path=/; domain=' + domain;
-            }
-        }
-    };
-    Cookie.get = function (name) {
-        var nameEQ = this.prefix + name + '=';
-        var ca = document.cookie.split(';');
-        for (var i = 0; i < ca.length; i++) {
-            var c = ca[i];
-            while (c.charAt(0) == ' ') {
-                c = c.substring(1, c.length);
-            }
-            if (c.indexOf(nameEQ) == 0) {
-                return c.substring(nameEQ.length, c.length);
-            }
-        }
-        return null;
-    };
-    Cookie.erase = function (name) {
-        Cookie.set(name, '', -1);
-    };
-    Cookie.prefix = 'coveo_';
-    return Cookie;
+    return DefaultSearchEndpointOptions;
 }());
-exports.Cookie = Cookie;
-
-
-/***/ }),
-/* 33 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var Dom_1 = __webpack_require__(5);
-var SearchEndpoint_1 = __webpack_require__(7);
-exports.PlaygroundConfiguration = {
-    SearchInterface: {
-        show: false,
-        options: {
-            autoTriggerQuery: false
-        }
-    },
-    Facet: {
-        show: true,
-        options: {
-            field: '@objecttype',
-            title: 'Type'
-        }
-    },
-    Searchbox: {
-        show: true,
-        options: {
-            enableOmnibox: true,
-            enableRevealQuerySuggestAddon: true,
-            inline: true
-        }
-    },
-    SearchButton: {
-        show: true
-    },
-    Omnibox: {
-        show: true,
-        options: {
-            enableQuerySuggestAddon: true,
-            inline: true
-        }
-    },
-    Excerpt: {
-        show: true,
-        isResultComponent: true,
-        basicExpression: 'technology'
-    },
-    Icon: {
-        show: true,
-        isResultComponent: true,
-        basicExpression: 'getting started pdf'
-    },
-    Tab: {
-        show: true,
-        element: Dom_1.$$('div', { className: 'coveo-tab-section' }, "<div class=\"CoveoTab\" data-caption=\"All content\" data-id=\"All\"></div><div class=\"CoveoTab\" data-caption=\"YouTube videos\" data-id=\"YouTube\"></div><div class=\"CoveoTab\" data-caption=\"Google Drive\" data-id=\"GoogleDrive\"></div><div class=\"CoveoTab\" data-caption=\"Emails\" data-id=\"Emails\"></div><div class=\"CoveoTab\" data-caption=\"Salesforce content\" data-id=\"Salesforce\"></div>")
-    },
-    FacetSlider: {
-        show: true,
-        options: {
-            field: '@date',
-            dateField: true,
-            queryOverride: '@date>2010/01/01',
-            graph: {
-                steps: 20
-            },
-            rangeSlider: true,
-            title: 'Date distribution'
-        }
-    },
-    Badge: {
-        show: true,
-        options: {
-            field: '@author'
-        },
-        isResultComponent: true,
-        advancedExpression: '@author=="BBC News"'
-    },
-    Breadcrumb: {
-        show: true,
-        element: Dom_1.$$('div', undefined, "<div class=\"CoveoBreadcrumb\"></div><p>Interact with the facet to modify the breadcrumb</p><div class=\"CoveoFacet\" data-field=\"@objecttype\" data-title=\"Type\"></div>")
-    },
-    DidYouMean: {
-        show: true,
-        basicExpression: 'testt',
-        element: Dom_1.$$('div', undefined, "<div class=\"CoveoDidYouMean\"></div><div class='CoveoSearchbox'></div>")
-    },
-    ErrorReport: {
-        show: true,
-        toExecute: function () {
-            Coveo['SearchEndpoint'].endpoints['default'].options.accessToken = 'invalid';
-        }
-    },
-    ExportToExcel: {
-        show: true,
-        element: Dom_1.$$('div', undefined, "<div class=\"CoveoSettings\"></div><div class=\"CoveoSearchbox\"></div><div class=\"CoveoExportToExcel\"></div>"),
-        toExecute: function () {
-            Dom_1.$$(document.body).find('.CoveoSearchInterface').style.minHeight = '300px';
-        }
-    },
-    FacetRange: {
-        show: true,
-        options: {
-            field: '@size',
-            title: 'Documents size',
-            ranges: [{
-                    start: 0,
-                    end: 100,
-                    label: "0 - 100 KB",
-                    endInclusive: false
-                }, {
-                    start: 100,
-                    end: 200,
-                    label: "100 - 200 KB",
-                    endInclusive: false
-                }, {
-                    start: 200,
-                    end: 300,
-                    label: "200 - 300 KB",
-                    endInclusive: false
-                },
-                {
-                    start: 300,
-                    end: 400,
-                    label: "300 - 400 KB",
-                    endInclusive: false
-                }
-            ],
-            sortCriteria: 'alphaascending'
-        }
-    },
-    FieldSuggestions: {
-        options: {
-            field: '@author'
-        },
-        show: true,
-        element: Dom_1.$$('div', undefined, "<div class='preview-info'>Showing suggestions on the field <span class='preview-info-emphasis'>@author</span></div><div class=\"CoveoSearchbox\" data-enable-omnibox=\"true\"></div><div class=\"CoveoFieldSuggestions\"></div>"),
-        toExecute: function () {
-            Dom_1.$$(document.body).find('.CoveoSearchInterface').style.minHeight = '500px';
-        }
-    },
-    FieldTable: {
-        show: true,
-        options: {
-            minimizedByDefault: false
-        },
-        isResultComponent: true,
-        advancedExpression: '@source=="Dropbox - coveodocumentationsamples@gmail.com"',
-        element: Dom_1.$$('div', undefined, "<table class=\"CoveoFieldTable\">\n            <tbody>\n             <tr data-field=\"@size\" data-caption=\"Document size\" data-helper=\"size\">\n              </tr>\n              <tr data-field=\"@source\" data-caption=\"Source\">\n              </tr>\n              <tr data-field=\"@date\" data-caption=\"Date\" date-helper=\"dateTime\"></tr>\n            </tbody>\n          </table>")
-    },
-    FieldValue: {
-        show: true,
-        options: {
-            field: '@date',
-            helper: 'dateTime'
-        },
-        isResultComponent: true,
-        advancedExpression: '@date'
-    },
-    FollowItem: {
-        show: true,
-        isResultComponent: true,
-        element: Dom_1.$$('div', undefined, "<div class=\"CoveoSearchAlerts\"></div><a class=\"CoveoResultLink\"></a><span class=\"CoveoFollowItem\"></span>"),
-        basicExpression: 'technology',
-        toExecute: function () {
-            Dom_1.$$(document.body).find('.CoveoSearchInterface').style.minHeight = '300px';
-        }
-    },
-    HiddenQuery: {
-        show: true,
-        options: {
-            title: 'This is the filter title'
-        },
-        toExecute: function () {
-            var searchInterface = Dom_1.$$(document.body).find('.component-container .CoveoSearchInterface');
-            Coveo.state(searchInterface, 'hd', 'This is the filter description');
-            Coveo.state(searchInterface, 'hq', '@uri');
-        },
-        element: Dom_1.$$('div', undefined, "<div class=\"CoveoBreadcrumb\"></div><div class=\"CoveoHiddenQuery\"></div>")
-    },
-    HierarchicalFacet: {
-        show: true,
-        options: {
-            field: '@hierarchicfield',
-            title: 'Hierarchical Facet with random values'
-        },
-        toExecute: function () {
-            Dom_1.$$(document.body).on('newQuery', function (e, args) {
-                SearchEndpoint_1.SearchEndpoint.configureSampleEndpoint();
-                Coveo.get(Dom_1.$$(document.body).find(".CoveoHierarchicalFacet")).queryController.setEndpoint(SearchEndpoint_1.SearchEndpoint.endpoints['default']);
-            });
-        },
-        advancedExpression: "@hierarchicfield"
-    },
-    Logo: {
-        show: true,
-        toExecute: function () {
-            Dom_1.$$(document.body).find('.CoveoSearchInterface').style.padding = '20px';
-        }
-    },
-    Matrix: {
-        show: true,
-        options: {
-            title: 'Size of documents by Author',
-            rowField: '@author',
-            columnField: '@filetype',
-            columnFieldValues: ['pdf', 'YouTubeVideo', 'xls'],
-            computedField: '@size',
-            computedFieldFormat: 'n0 bytes',
-            columnLabels: ['PDF', 'YouTube Videos', 'Excel documents']
-        },
-        element: Dom_1.$$('div', undefined, "<div class=\"CoveoBreadcrumb\"></div><div class=\"CoveoMatrix\"></div>")
-    },
-    OmniboxResultList: {
-        show: true,
-        element: Dom_1.$$('div', undefined, "<div class=\"CoveoSearchbox\" data-enable-omnibox=\"true\" data-inline=\"true\"></div><div class=\"CoveoOmniboxResultList\"><script class=\"result-template\" type=\"text/x-underscore\"><div><a class='CoveoResultLink'></a></div></script></div>"),
-        options: {
-            headerTitle: ''
-        },
-        toExecute: function () {
-            Coveo.get(Dom_1.$$(document.body).find('.CoveoSearchInterface'), Coveo.SearchInterface).options.resultsPerPage = 5;
-        }
-    },
-    Pager: {
-        show: true,
-        toExecute: function () {
-            Dom_1.$$(document.body).find('.CoveoSearchInterface').style.padding = '20px';
-        }
-    },
-    PreferencesPanel: {
-        show: true,
-        element: Dom_1.$$('div', undefined, "<div class=\"CoveoSettings\"></div><div class=\"CoveoSearchbox\"></div><div class=\"CoveoPreferencesPanel\"><div class=\"CoveoResultsPreferences\"></div><div class=\"CoveoResultsFiltersPreferences\"></div></div>"),
-        toExecute: function () {
-            Dom_1.$$(document.body).find('.CoveoSearchInterface').style.minHeight = '300px';
-        }
-    },
-    PrintableUri: {
-        show: true,
-        isResultComponent: true,
-        advancedExpression: '@litopicid @filetype==lithiummessage'
-    },
-    QueryDuration: {
-        show: true
-    },
-    QuerySummary: {
-        show: true
-    },
-    Querybox: {
-        show: true
-    },
-    Quickview: {
-        show: true,
-        isResultComponent: true,
-        advancedExpression: '@filetype=="youtubevideo"'
-    },
-    ResultLink: {
-        show: true,
-        isResultComponent: true,
-        advancedExpression: '@filetype=="youtubevideo"'
-    },
-    ResultList: {
-        show: true
-    },
-    ResultRating: {
-        show: true,
-        isResultComponent: true,
-        toExecute: function () {
-            Coveo.get(Dom_1.$$(document.body).find('.CoveoSearchInterface'), Coveo.SearchInterface).options.enableCollaborativeRating = true;
-        }
-    },
-    ResultsFiltersPreferences: {
-        show: true,
-        element: Dom_1.$$('div', undefined, "<div class=\"CoveoSettings\"></div><div class=\"CoveoSearchbox\"></div><div class=\"CoveoPreferencesPanel\"><div class=\"CoveoResultsFiltersPreferences\"></div></div>"),
-        toExecute: function () {
-            Dom_1.$$(document.body).find('.CoveoSearchInterface').style.minHeight = '300px';
-        }
-    },
-    ResultsPerPage: {
-        show: true,
-        toExecute: function () {
-            Dom_1.$$(document.body).find('.CoveoSearchInterface').style.padding = '20px';
-        }
-    },
-    ResultsPreferences: {
-        element: Dom_1.$$('div', undefined, "<div class=\"CoveoSettings\"></div><div class=\"CoveoSearchbox\"></div><div class=\"CoveoPreferencesPanel\"><div class=\"CoveoResultsPreferences\"></div></div>"),
-        show: true,
-        toExecute: function () {
-            Dom_1.$$(document.body).find('.CoveoSearchInterface').style.minHeight = '300px';
-        }
-    },
-    SearchAlerts: {
-        show: true,
-        element: Dom_1.$$('div', undefined, "<div class=\"CoveoSettings\"></div><div class=\"CoveoSearchbox\"></div><div class=\"CoveoSearchAlerts\"></div>"),
-        toExecute: function () {
-            Dom_1.$$(document.body).find('.CoveoSearchInterface').style.minHeight = '300px';
-        }
-    },
-    Settings: {
-        show: true,
-        element: Dom_1.$$('div', undefined, "<div class=\"CoveoSettings\"></div><div class=\"CoveoSearchbox\"></div><div class=\"CoveoPreferencesPanel\"></div><div class=\"CoveoShareQuery\"></div><div class=\"CoveoExportToExcel\"></div>"),
-        toExecute: function () {
-            Dom_1.$$(document.body).find('.CoveoSearchInterface').style.minHeight = '300px';
-        }
-    },
-    ShareQuery: {
-        show: true,
-        element: Dom_1.$$('div', undefined, "<div class=\"CoveoSettings\"></div><div class=\"CoveoSearchbox\"></div><div class=\"CoveoShareQuery\"></div>"),
-        toExecute: function () {
-            Dom_1.$$(document.body).find('.CoveoSearchInterface').style.minHeight = '300px';
-        }
-    },
-    SimpleFilter: {
-        show: true,
-        element: Dom_1.$$('div', undefined, "<div class=\"CoveoSimpleFilter\" data-field=\"@filetype\" data-title=\"File Type\"></div><div class=\"CoveoResultList\"></div>"),
-    },
-    Sort: {
-        show: true,
-        element: Dom_1.$$('div', undefined, "<div class=\"coveo-sort-section\"><span class=\"CoveoSort\" data-sort-criteria=\"relevancy\" data-caption=\"Relevance\"></span><span class=\"CoveoSort\" data-sort-criteria=\"date descending,date ascending\" data-caption=\"Date\"></span></div><div class=\"CoveoResultList\"></div>"),
-        toExecute: function () {
-            Dom_1.$$(document.body).find('.preview-container .CoveoSearchInterface').style.padding = '20px';
-            Dom_1.$$(document.body).on('buildingQuery', function (e, args) {
-                args.queryBuilder.numberOfResults = 3;
-            });
-        }
-    },
-    Thumbnail: {
-        show: true,
-        isResultComponent: true,
-        advancedExpression: '@filetype=="youtubevideo"'
-    },
-    YouTubeThumbnail: {
-        show: true,
-        isResultComponent: true,
-        advancedExpression: '@filetype=="youtubevideo"'
-    },
-    AdvancedSearch: {
-        show: true,
-        element: Dom_1.$$('div', undefined, "<div class=\"coveo-search-section\"><div class=\"CoveoSettings\"></div><div class=\"CoveoSearchbox\"></div></div><div class=\"CoveoAdvancedSearch\"></div>"),
-        toExecute: function () {
-            Dom_1.$$(document.body).find('.CoveoSearchInterface').style.minHeight = '300px';
-        }
-    }
-};
-
-
-/***/ }),
-/* 34 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
+exports.DefaultSearchEndpointOptions = DefaultSearchEndpointOptions;
 /**
- * This static class is there to contains the different string definition for all the events related to query.
+ * The `SearchEndpoint` class allows you to execute various actions against the Coveo Search API and a Coveo index
+ * (e.g., searching, listing field values, getting the quickview content of an item, etc.).
  *
- * Note that these events will only be triggered when the {@link QueryController.executeQuery} method is used, either directly or by using {@link executeQuery}
+ * This class does trigger any query events directly. Consequently, executing an action with this class does not trigger
+ * a full query cycle for the Coveo components.
+ *
+ * If you wish to have all Coveo components "react" to a query, (and trigger the corresponding query events), use the
+ * [`QueryController`]{@link QueryController} class instead.
  */
-var QueryEvents = /** @class */ (function () {
-    function QueryEvents() {
+var SearchEndpoint = (function () {
+    /**
+     * Creates a new `SearchEndpoint` instance.
+     * Uses a set of adequate default options, and merges these with the `options` parameter.
+     * Also creates an [`EndpointCaller`]{@link EndpointCaller} instance and uses it to communicate with the endpoint
+     * internally.
+     * @param options The custom options to apply to the new `SearchEndpoint`.
+     */
+    function SearchEndpoint(options) {
+        var _this = this;
+        this.options = options;
+        Assert_1.Assert.exists(options);
+        Assert_1.Assert.exists(options.restUri);
+        // For backward compatibility, we set anonymous to true when an access token
+        // is specified on a page loaded through the filesystem. This causes withCredentials
+        // to NOT be set, allowing those pages to work with non Windows/Basic/Cookie
+        // authentication. If anonymous is explicitly set to false, we'll use withCredentials.
+        var defaultOptions = new DefaultSearchEndpointOptions();
+        defaultOptions.anonymous = window.location.href.indexOf('file://') == 0 && Utils_1.Utils.isNonEmptyString(options.accessToken);
+        this.options = _.extend({}, defaultOptions, options);
+        // Forward any debug=1 query argument to the REST API to ease debugging
+        if (SearchEndpoint.isDebugArgumentPresent()) {
+            this.options.queryStringArguments['debug'] = 1;
+        }
+        this.onUnload = function () {
+            _this.handleUnload();
+        };
+        window.addEventListener('beforeunload', this.onUnload);
+        this.logger = new Logger_1.Logger(this);
+        this.createEndpointCaller();
     }
     /**
-     * Triggered when a new query is launched.
+     * Configures a sample search endpoint on a Coveo Cloud index containing a set of public sources with no secured
+     * content.
      *
-     * All bound handlers will receive {@link INewQueryEventArgs} as an argument.
+     * **Note:**
+     * > This method mainly exists for demo purposes and ease of setup.
      *
-     * The string value is `newQuery`.
-     * @type {string}
+     * @param otherOptions A set of additional options to use when configuring this endpoint.
      */
-    QueryEvents.newQuery = 'newQuery';
+    SearchEndpoint.configureSampleEndpoint = function (otherOptions) {
+        if (SearchEndpoint.isUseLocalArgumentPresent()) {
+            // This is a handy flag to quickly test a local search API and alerts
+            SearchEndpoint.endpoints['default'] = new SearchEndpoint(_.extend({
+                restUri: 'http://localhost:8100/rest/search',
+                searchAlertsUri: 'http://localhost:8088/rest/search/alerts/'
+            }, otherOptions));
+        }
+        else {
+            // This OAuth token points to the organization used for samples.
+            // It contains a set of harmless content sources.
+            SearchEndpoint.endpoints['default'] = new SearchEndpoint(_.extend({
+                restUri: 'https://cloudplatform.coveo.com/rest/search',
+                accessToken: '52d806a2-0f64-4390-a3f2-e0f41a4a73ec'
+            }, otherOptions));
+        }
+    };
     /**
-     * Triggered when the query is being built.
+     * Configures a sample search endpoint on a Coveo Cloud V2 index containing a set of public sources with no secured
+     * content.
      *
-     * This is typically where all components will contribute their part to the {@link IQuery} using the {@link QueryBuilder}.
+     * **Note:**
+     * > This method mainly exists for demo purposes and ease of setup.
      *
-     * All bound handlers will receive {@link IBuildingQueryEventArgs} as an argument.
-     *
-     * The string value is `buildingQuery`.
-     * @type {string}
+     * @param otherOptions A set of additional options to use when configuring this endpoint.
      */
-    QueryEvents.buildingQuery = 'buildingQuery';
+    SearchEndpoint.configureSampleEndpointV2 = function (optionsOPtions) {
+        SearchEndpoint.endpoints['default'] = new SearchEndpoint(_.extend({
+            restUri: 'https://platform.cloud.coveo.com/rest/search',
+            accessToken: 'xx564559b1-0045-48e1-953c-3addd1ee4457',
+            queryStringArguments: {
+                organizationId: 'searchuisamples',
+                viewAllContent: 1
+            }
+        }));
+    };
     /**
-     * Triggered when the query is done being built.
-     *
-     * This is typically where the facet will add it's {@link IGroupByRequest} to the {@link IQuery}.
-     *
-     * All bound handlers will receive {@link IDoneBuildingQueryEventArgs} as an argument.
-     *
-     * The string value is `doneBuildingQuery`.
-     * @type {string}
+     * Configures a search endpoint on a Coveo Cloud index.
+     * @param organization The organization ID of your Coveo Cloud index.
+     * @param token The token to use to execute query. If not specified, you will likely need to login when querying.
+     * @param uri The URI of the Coveo Cloud REST Search API. By default, this points to the production environment.
+     * @param otherOptions A set of additional options to use when configuring this endpoint.
      */
-    QueryEvents.doneBuildingQuery = 'doneBuildingQuery';
+    SearchEndpoint.configureCloudEndpoint = function (organization, token, uri, otherOptions) {
+        if (uri === void 0) { uri = 'https://cloudplatform.coveo.com/rest/search'; }
+        var options = {
+            restUri: uri,
+            accessToken: token,
+            queryStringArguments: { organizationId: organization }
+        };
+        var merged = SearchEndpoint.mergeConfigOptions(options, otherOptions);
+        SearchEndpoint.endpoints['default'] = new SearchEndpoint(SearchEndpoint.removeUndefinedConfigOption(merged));
+    };
     /**
-     * Triggered when the query is being executed on the Search API.
-     *
-     * All bound handlers will receive {@link IDuringQueryEventArgs} as an argument.
-     *
-     * The string value is `duringQuery`.
-     * @type {string}
+     * Configures a search endpoint on a Coveo Cloud V2 index.
+     * @param organization The organization ID of your Coveo Cloud V2 index.
+     * @param token The token to use to execute query. If not specified, you will likely need to login when querying.
+     * @param uri The URI of the Coveo Cloud REST Search API. By default, this points to the production environment.
+     * @param otherOptions A set of additional options to use when configuring this endpoint.
      */
-    QueryEvents.duringQuery = 'duringQuery';
+    SearchEndpoint.configureCloudV2Endpoint = function (organization, token, uri, otherOptions) {
+        if (uri === void 0) { uri = 'https://platform.cloud.coveo.com/rest/search'; }
+        return SearchEndpoint.configureCloudEndpoint(organization, token, uri, otherOptions);
+    };
     /**
-     * Triggered when more results are being fetched on the Search API (think : infinite scrolling, or pager).
-     *
-     * All bound handlers will receive {@link IDuringQueryEventArgs} as an argument.
-     *
-     * The string value is `duringFetchMoreQuery`.
-     * @type {string}
+     * Configures a search endpoint on a Coveo on-premise index.
+     * @param uri The URI of your Coveo Search API endpoint (e.g., `http://myserver:8080/rest/search`)
+     * @param token The token to use to execute query. If not specified, you will likely need to login when querying
+     * (unless your Coveo Search API endpoint is configured using advanced auth options, such as Windows auth or claims).
+     * @param otherOptions A set of additional options to use when configuring this endpoint.
      */
-    QueryEvents.duringFetchMoreQuery = 'duringFetchMoreQuery';
+    SearchEndpoint.configureOnPremiseEndpoint = function (uri, token, otherOptions) {
+        var merged = SearchEndpoint.mergeConfigOptions({
+            restUri: uri,
+            accessToken: token
+        }, otherOptions);
+        SearchEndpoint.endpoints['default'] = new SearchEndpoint(SearchEndpoint.removeUndefinedConfigOption(merged));
+    };
+    SearchEndpoint.removeUndefinedConfigOption = function (config) {
+        _.each(_.keys(config), function (key) {
+            if (config[key] == undefined) {
+                delete config[key];
+            }
+        });
+        return config;
+    };
+    SearchEndpoint.mergeConfigOptions = function (first, second) {
+        first = SearchEndpoint.removeUndefinedConfigOption(first);
+        second = SearchEndpoint.removeUndefinedConfigOption(second);
+        return _.extend({}, first, second);
+    };
+    SearchEndpoint.prototype.reset = function () {
+        this.createEndpointCaller();
+    };
     /**
-     * Triggered when a query successfully returns from the Search API.
+     * Sets a function which allows external code to modify all endpoint call parameters before the browser sends them.
      *
-     * All bound handlers will receive {@link IQuerySuccessEventArgs} as an argument.
-     *
-     * The string value is `querySuccess`.
-     * @type {string}
+     * **Note:**
+     * > This is useful in very specific scenarios where the network infrastructure requires special request headers to be
+     * > added or removed, for example.
+     * @param requestModifier The function.
      */
-    QueryEvents.querySuccess = 'querySuccess';
+    SearchEndpoint.prototype.setRequestModifier = function (requestModifier) {
+        this.caller.options.requestModifier = requestModifier;
+    };
     /**
-     * Triggered when a more results were successfully returned from the Search API. (think : infinite scrolling, or pager).
-     *
-     * All bound handlers will receive {@link IFetchMoreSuccessEventArgs} as an argument.
-     *
-     * The string value is `fetchMoreSuccess`.
-     * @type {string}
+     * Gets the base URI of the Search API endpoint.
+     * @returns {string} The base URI of the Search API endpoint.
      */
-    QueryEvents.fetchMoreSuccess = 'fetchMoreSuccess';
+    SearchEndpoint.prototype.getBaseUri = function () {
+        return this.buildBaseUri('');
+    };
     /**
-     * Triggered after the main query success event has finished executing.
-     *
-     * This is typically where facets will process the {@link IGroupByResult} and render themselves.
-     *
-     * All bound handlers will receive {@link IQuerySuccessEventArgs} as an argument.
-     *
-     * The string value is `deferredQuerySuccess`.
-     * @type {string}
+     * Gets the base URI of the search alerts endpoint.
+     * @returns {string} The base URI of the search alerts endpoint.
      */
-    QueryEvents.deferredQuerySuccess = 'deferredQuerySuccess';
+    SearchEndpoint.prototype.getBaseAlertsUri = function () {
+        return this.buildSearchAlertsUri('');
+    };
     /**
-     * Triggered when there was an error executing a query on the Search API.
-     *
-     * All bound handlers will receive {@link IQueryErrorEventArgs} as an argument.
-     *
-     * The string value is `queryError`.
-     * @type {string}
+     * Gets the URI that can be used to authenticate against the given provider.
+     * @param provider The provider name.
+     * @param returnUri The URI to return to after the authentication is completed.
+     * @param message The authentication message.
+     * @param callOptions Additional set of options to use for this call.
+     * @param callParams Options injected by the applied decorators.
+     * @returns {string} The authentication provider URI.
      */
-    QueryEvents.queryError = 'queryError';
+    SearchEndpoint.prototype.getAuthenticationProviderUri = function (provider, returnUri, message, callOptions, callParams) {
+        var queryString = this.buildBaseQueryString(callOptions);
+        callParams.queryString = callParams.queryString.concat(queryString);
+        callParams.url += provider + '?';
+        if (Utils_1.Utils.isNonEmptyString(returnUri)) {
+            callParams.url += 'redirectUri=' + encodeURIComponent(returnUri) + '&';
+        }
+        else if (Utils_1.Utils.isNonEmptyString(message)) {
+            callParams.url += 'message=' + encodeURIComponent(message) + '&';
+        }
+        callParams.url += callParams.queryString.join('&');
+        return callParams.url;
+    };
     /**
-     * Triggered before the {@link QueryEvents.querySuccess} event.
-     *
-     * This allows external code to modify the results before rendering them.
-     *
-     * For example, the {@link Folding} component might use this event to construct a coherent parent child relationship between query results.
-     *
-     * All bound handlers will receive {@link IPreprocessResultsEventArgs} as an argument.
-     *
-     * The string value is `preprocessResults`.
-     * @type {string}
+     * Indicates whether the search endpoint is using JSONP internally to communicate with the Search API.
+     * @returns {boolean} `true` in the search enpoint is using JSONP; `false` otherwise.
      */
-    QueryEvents.preprocessResults = 'preprocessResults';
+    SearchEndpoint.prototype.isJsonp = function () {
+        return this.caller.useJsonp;
+    };
     /**
-     * Triggered before the {@link QueryEvents.fetchMoreSuccess} event.
+     * Performs a search on the index and returns a Promise of [`IQueryResults`]{@link IQueryResults}.
      *
-     * This allows external code to modify the results before rendering them.
-     *
-     * For example, the {@link Folding} component might use this event to construct a coherent parent child relationship between query results.
-     *
-     * All bound handlers will receive {@link IPreprocessResultsEventArgs} as an argument.
-     *
-     * The string value is `preprocessMoreResults`.
-     * @type {string}
+     * This method slightly modifies the query results by adding additional information to each result (id, state object,
+     * etc.).
+     * @param query The query to execute. Typically, the query object is built using a
+     * [`QueryBuilder`]{@link QueryBuilder}.
+     * @param callOptions An additional set of options to use for this call.
+     * @param callParams The options injected by the applied decorators.
+     * @returns {Promise<IQueryResults>} A Promise of query results.
      */
-    QueryEvents.preprocessMoreResults = 'preprocessMoreResults';
+    SearchEndpoint.prototype.search = function (query, callOptions, callParams) {
+        var _this = this;
+        Assert_1.Assert.exists(query);
+        callParams.requestData = query;
+        this.logger.info('Performing REST query', query);
+        return this.performOneCall(callParams, callOptions).then(function (results) {
+            _this.logger.info('REST query successful', results, query);
+            // Version check
+            // If the SearchAPI doesn't give us any apiVersion info, we assume version 1 (before apiVersion was implemented)
+            if (results.apiVersion == null) {
+                results.apiVersion = 1;
+            }
+            if (results.apiVersion < Version_1.version.supportedApiVersion) {
+                _this.logger.error('Please update your REST Search API');
+            }
+            // If the server specified no search ID generated one using the client-side
+            // GUID generator. We prefer server generated guids to allow tracking a query
+            // all the way from the analytics to the logs.
+            if (Utils_1.Utils.isNullOrEmptyString(results.searchUid)) {
+                results.searchUid = QueryUtils_1.QueryUtils.createGuid();
+            }
+            QueryUtils_1.QueryUtils.setIndexAndUidOnQueryResults(query, results, results.searchUid, results.pipeline, results.splitTestRun);
+            QueryUtils_1.QueryUtils.setTermsToHighlightOnQueryResults(query, results);
+            return results;
+        });
+    };
     /**
-     * Triggered when there is no result for a particular query.
+     * Gets a link / URI to download a query result set to the XLSX format.
      *
-     * All bound handlers will receive {@link INoResultsEventArgs} as an argument.
-     *
-     * The string value is `noResults`.
-     * @type {string}
+     * **Note:**
+     * > This method does not automatically download the query result set, but rather provides an URI from which to
+     * > download it.
+     * @param query The query for which to get the XLSX result set.
+     * @param numberOfResults The number of results to download.
+     * @param callOptions An additional set of options to use for this call.
+     * @param callParams The options injected by the applied decorators.
+     * @returns {string} The download URI.
      */
-    QueryEvents.noResults = 'noResults';
-    QueryEvents.buildingCallOptions = 'buildingCallOptions';
-    return QueryEvents;
+    SearchEndpoint.prototype.getExportToExcelLink = function (query, numberOfResults, callOptions, callParams) {
+        var queryString = this.buildBaseQueryString(callOptions);
+        callParams.queryString = callParams.queryString.concat(queryString);
+        queryString = this.buildCompleteQueryString(null, query);
+        callParams.queryString = callParams.queryString.concat(queryString);
+        if (numberOfResults != null) {
+            callParams.queryString.push('numberOfResults=' + numberOfResults);
+        }
+        callParams.queryString.push('format=xlsx');
+        return callParams.url + '?' + callParams.queryString.join('&');
+    };
+    /**
+     * Gets the raw datastream for an item. This is typically used to get a thumbnail for an item.
+     *
+     * Returns an array buffer.
+     *
+     * **Example:**
+     * ```
+     * let rawBinary = String.fromCharCode.apply(null, new Uint8Array(response));
+     * img.setAttribute('src', 'data:image/png;base64,' + btoa(rawBinary));
+     * ```
+     * @param documentUniqueId Typically, the {@link IQueryResult.uniqueId} on each result.
+     * @param dataStreamType Normally, `$Thumbnail`.
+     * @param callOptions An additional set of options to use for this call.
+     * @param callParams The options injected by the applied decorators.
+     * @returns {Promise<TResult>|Promise<U>}
+     */
+    SearchEndpoint.prototype.getRawDataStream = function (documentUniqueId, dataStreamType, callOptions, callParams) {
+        var _this = this;
+        Assert_1.Assert.exists(documentUniqueId);
+        var queryString = this.buildViewAsHtmlQueryString(documentUniqueId, callOptions);
+        callParams.queryString = callParams.queryString.concat(queryString);
+        this.logger.info('Performing REST query for datastream ' + dataStreamType + ' on item uniqueID ' + documentUniqueId);
+        callParams.queryString.push('dataStream=' + dataStreamType);
+        return this.performOneCall(callParams).then(function (results) {
+            _this.logger.info('REST query successful', results, documentUniqueId);
+            return results;
+        });
+    };
+    /**
+     * Gets an URL from which it is possible to see the datastream for an item. This is typically used to get a
+     * thumbnail for an item.
+     * @param documentUniqueID Typically, the {@link IQueryResult.uniqueId} on each result.
+     * @param dataStreamType Normally, `$Thumbnail`.
+     * @param callOptions An additional set of options to use for this call.
+     * @param callParams The options injected by the applied decorators.
+     * @returns {string} The datastream URL.
+     */
+    SearchEndpoint.prototype.getViewAsDatastreamUri = function (documentUniqueID, dataStreamType, callOptions, callParams) {
+        callOptions = _.extend({}, callOptions);
+        var queryString = this.buildBaseQueryString(callOptions);
+        callParams.queryString = callParams.queryString.concat(queryString);
+        queryString = this.buildViewAsHtmlQueryString(documentUniqueID, callOptions);
+        callParams.queryString = callParams.queryString.concat(queryString);
+        queryString = this.buildCompleteQueryString(callOptions.query, callOptions.queryObject);
+        callParams.queryString = callParams.queryString.concat(queryString);
+        return callParams.url + '?' + callParams.queryString.join('&') + '&dataStream=' + encodeURIComponent(dataStreamType);
+    };
+    /**
+     * Gets a single item, using its `uniqueId`.
+     * @param documentUniqueID Typically, the {@link IQueryResult.uniqueId} on each result.
+     * @param callOptions An additional set of options to use for this call.
+     * @param callParams The options injected by the applied decorators.
+     * @returns {Promise<IQueryResult>} A Promise of the item.
+     */
+    SearchEndpoint.prototype.getDocument = function (documentUniqueID, callOptions, callParams) {
+        var queryString = this.buildViewAsHtmlQueryString(documentUniqueID, callOptions);
+        callParams.queryString = callParams.queryString.concat(queryString);
+        return this.performOneCall(callParams);
+    };
+    /**
+     * Gets the content of a single item, as text (think: quickview).
+     * @param documentUniqueID Typically, the {@link IQueryResult.uniqueId} on each result.
+     * @param callOptions An additional set of options to use for this call.
+     * @param callParams The options injected by the applied decorators.
+     * @returns {Promise<string>} A Promise of the item content.
+     */
+    SearchEndpoint.prototype.getDocumentText = function (documentUniqueID, callOptions, callParams) {
+        var queryString = this.buildViewAsHtmlQueryString(documentUniqueID, callOptions);
+        callParams.queryString = callParams.queryString.concat(queryString);
+        return this.performOneCall(callParams)
+            .then(function (data) {
+            return data.content;
+        });
+    };
+    /**
+     * Gets the content for a single item, as an HTMLDocument (think: quickview).
+     * @param documentUniqueID Typically, the {@link IQueryResult.uniqueId} on each result.
+     * @param callOptions An additional set of options to use for this call.
+     * @param callParams The options injected by the applied decorators.
+     * @returns {Promise<HTMLDocument>} A Promise of the item content.
+     */
+    SearchEndpoint.prototype.getDocumentHtml = function (documentUniqueID, callOptions, callParams) {
+        callOptions = _.extend({}, callOptions);
+        var queryString = this.buildViewAsHtmlQueryString(documentUniqueID, callOptions);
+        callParams.queryString = callParams.queryString.concat(queryString);
+        callParams.requestData = callOptions.queryObject || { q: callOptions.query };
+        return this.performOneCall(callParams);
+    };
+    /**
+     * Gets an URL from which it is possible to see a single item content, as HTML (think: quickview).
+     * @param documentUniqueID Typically, the {@link IQueryResult.uniqueId} on each result.
+     * @param callOptions An additional set of options to use for this call.
+     * @param callParams The options injected by the applied decorators.
+     * @returns {string} The URL.
+     */
+    SearchEndpoint.prototype.getViewAsHtmlUri = function (documentUniqueID, callOptions, callParams) {
+        var queryString = this.buildBaseQueryString(callOptions);
+        callParams.queryString = callParams.queryString.concat(queryString);
+        queryString = this.buildViewAsHtmlQueryString(documentUniqueID, callOptions);
+        callParams.queryString = callParams.queryString.concat(queryString);
+        callParams.queryString = _.uniq(callParams.queryString);
+        return callParams.url + '?' + callParams.queryString.join('&');
+    };
+    SearchEndpoint.prototype.batchFieldValues = function (request, callOptions, callParams) {
+        var _this = this;
+        Assert_1.Assert.exists(request);
+        return this.performOneCall(callParams)
+            .then(function (data) {
+            _this.logger.info('REST list field values successful', data.values, request);
+            return data.values;
+        });
+    };
+    /**
+     * Lists the possible field values for a request.
+     * @param request The request for which to list the possible field values.
+     * @param callOptions An additional set of options to use for this call.
+     * @param callParams The options injected by the applied decorators.
+     * @returns {Promise<TResult>|Promise<U>} A Promise of the field values.
+     */
+    SearchEndpoint.prototype.listFieldValues = function (request, callOptions, callParams) {
+        var _this = this;
+        Assert_1.Assert.exists(request);
+        callParams.requestData = request;
+        this.logger.info('Listing field values', request);
+        return this.performOneCall(callParams)
+            .then(function (data) {
+            _this.logger.info('REST list field values successful', data.values, request);
+            return data.values;
+        });
+    };
+    /**
+     * Lists all fields for the index, and returns an array of their descriptions.
+     * @param callOptions An additional set of options to use for this call.
+     * @param callParams The options injected by the applied decorators.
+     * @returns {Promise<TResult>|Promise<U>} A Promise of the index fields and descriptions.
+     */
+    SearchEndpoint.prototype.listFields = function (callOptions, callParams) {
+        this.logger.info('Listing fields');
+        return this.performOneCall(callParams).then(function (data) {
+            return data.fields;
+        });
+    };
+    /**
+     * Lists all available query extensions for the search endpoint.
+     * @param callOptions An additional set of options to use for this call.
+     * @param callParams The options injected by the applied decorators.
+     * @returns {Promise<IExtension[]>} A Promise of the extensions.
+     */
+    SearchEndpoint.prototype.extensions = function (callOptions, callParams) {
+        this.logger.info('Listing extensions');
+        return this.performOneCall(callParams);
+    };
+    /**
+     * Rates a single item in the index (granted that collaborative rating is enabled on your index)
+     * @param ratingRequest The item id, and the rating to add.
+     * @param callOptions An additional set of options to use for this call.
+     * @param callParams The options injected by the applied decorators.
+     * @returns {Promise<boolean>|Promise<T>}
+     */
+    SearchEndpoint.prototype.rateDocument = function (ratingRequest, callOptions, callParams) {
+        this.logger.info('Rating a document', ratingRequest);
+        callParams.requestData = ratingRequest;
+        return this.performOneCall(callParams).then(function () {
+            return true;
+        });
+    };
+    /**
+     * Tags a single item.
+     * @param taggingRequest The item id, and the tag action to perform.
+     * @param callOptions An additional set of options to use for this call.
+     * @param callParams The options injected by the applied decorators.
+     * @returns {Promise<boolean>|Promise<T>}
+     */
+    SearchEndpoint.prototype.tagDocument = function (taggingRequest, callOptions, callParams) {
+        this.logger.info('Tagging an item', taggingRequest);
+        callParams.requestData = taggingRequest;
+        return this.performOneCall(callParams).then(function () {
+            return true;
+        });
+    };
+    /**
+     * Gets a list of query suggestions for a request.
+     * @param request The query, and the number of suggestions to return.
+     * @param callOptions An additional set of options to use for this call.
+     * @param callParams The options injected by the applied decorators.
+     * @returns {Promise<IQuerySuggestResponse>} A Promise of query suggestions.
+     */
+    SearchEndpoint.prototype.getQuerySuggest = function (request, callOptions, callParams) {
+        this.logger.info('Get Query Suggest', request);
+        callParams.requestData = request;
+        return this.performOneCall(callParams);
+    };
+    // This is a non documented method to ensure backward compatibility for the old query suggest call.
+    // It simply calls the "real" official and documented method.
+    SearchEndpoint.prototype.getRevealQuerySuggest = function (request, callOptions, callParams) {
+        return this.getQuerySuggest(request, callOptions, callParams);
+    };
+    /**
+     * Follows an item, or a query result, using the search alerts service.
+     * @param request The subscription details.
+     * @param callOptions An additional set of options to use for this call.
+     * @param callParams The options injected by the applied decorators.
+     * @returns {Promise<ISubscription>}
+     */
+    SearchEndpoint.prototype.follow = function (request, callOptions, callParams) {
+        callParams.requestData = request;
+        this.logger.info('Following an item or a query', request);
+        return this.performOneCall(callParams);
+    };
+    /**
+     * Gets a Promise of an array of the current subscriptions.
+     * @param page The page of the subscriptions.
+     * @param callOptions An additional set of options to use for this call.
+     * @param callParams The options injected by the applied decorators.
+     * @returns {any}
+     */
+    SearchEndpoint.prototype.listSubscriptions = function (page, callOptions, callParams) {
+        var _this = this;
+        if (this.options.isGuestUser) {
+            return new Promise(function (resolve, reject) {
+                reject();
+            });
+        }
+        if (this.currentListSubscriptions == null) {
+            callParams.queryString.push('page=' + (page || 0));
+            this.currentListSubscriptions = this.performOneCall(callParams);
+            this.currentListSubscriptions.then(function (data) {
+                _this.currentListSubscriptions = null;
+                return data;
+            }).catch(function (e) {
+                // Trap 403 error, as the listSubscription call is called on every page initialization
+                // to check for current subscriptions. By default, the search alert service is not enabled for most organization
+                // Don't want to pollute the console with un-needed noise and confusion
+                if (e.status != 403) {
+                    throw e;
+                }
+            });
+        }
+        return this.currentListSubscriptions;
+    };
+    /**
+     * Updates a subscription with new parameters.
+     * @param subscription The subscription to update with new parameters.
+     * @param callOptions An additional set of options to use for this call.
+     * @param callParams The options injected by the applied decorators.
+     * @returns {Promise<ISubscription>}
+     */
+    SearchEndpoint.prototype.updateSubscription = function (subscription, callOptions, callParams) {
+        callParams.requestData = subscription;
+        this.logger.info('Updating a subscription', subscription);
+        callParams.url += subscription.id;
+        return this.performOneCall(callParams);
+    };
+    /**
+     * Deletes a subscription.
+     * @param subscription The subscription to delete.
+     * @param callOptions An additional set of options to use for this call.
+     * @param callParams The options injected by the applied decorators.
+     * @returns {Promise<ISubscription>}
+     */
+    SearchEndpoint.prototype.deleteSubscription = function (subscription, callOptions, callParams) {
+        callParams.url += subscription.id;
+        return this.performOneCall(callParams);
+    };
+    SearchEndpoint.prototype.logError = function (sentryLog, callOptions, callParams) {
+        callParams.requestData = sentryLog;
+        return this.performOneCall(callParams, callOptions)
+            .then(function () {
+            return true;
+        })
+            .catch(function () {
+            return false;
+        });
+    };
+    SearchEndpoint.prototype.nuke = function () {
+        window.removeEventListener('beforeunload', this.onUnload);
+    };
+    SearchEndpoint.prototype.createEndpointCaller = function () {
+        this.caller = new EndpointCaller_1.EndpointCaller(this.options);
+    };
+    SearchEndpoint.isDebugArgumentPresent = function () {
+        return /[?&]debug=1([&]|$)/.test(window.location.search);
+    };
+    SearchEndpoint.isUseLocalArgumentPresent = function () {
+        return /[?&]useLocal=1([&]|$)/.test(window.location.search);
+    };
+    SearchEndpoint.prototype.handleUnload = function () {
+        this.isRedirecting = true;
+    };
+    SearchEndpoint.prototype.buildBaseUri = function (path) {
+        Assert_1.Assert.isString(path);
+        var uri = this.options.restUri;
+        uri = this.removeTrailingSlash(uri);
+        if (Utils_1.Utils.isNonEmptyString(this.options.version)) {
+            uri += '/' + this.options.version;
+        }
+        uri += path;
+        return uri;
+    };
+    SearchEndpoint.prototype.buildSearchAlertsUri = function (path) {
+        Assert_1.Assert.isString(path);
+        var uri = this.options.searchAlertsUri || this.options.restUri + '/alerts';
+        if (uri == null) {
+            return null;
+        }
+        uri = this.removeTrailingSlash(uri);
+        uri += path;
+        return uri;
+    };
+    // see https://github.com/palantir/tslint/issues/1421
+    // tslint:disable-next-line:no-unused-variable
+    SearchEndpoint.prototype.buildAccessToken = function (tokenKey) {
+        var queryString = [];
+        if (Utils_1.Utils.isNonEmptyString(this.options.accessToken)) {
+            queryString.push(tokenKey + '=' + encodeURIComponent(this.options.accessToken));
+        }
+        return queryString;
+    };
+    SearchEndpoint.prototype.buildBaseQueryString = function (callOptions) {
+        callOptions = _.extend({}, callOptions);
+        var queryString = [];
+        for (var name_1 in this.options.queryStringArguments) {
+            queryString.push(name_1 + '=' + encodeURIComponent(this.options.queryStringArguments[name_1]));
+        }
+        if (callOptions && _.isArray(callOptions.authentication) && callOptions.authentication.length != 0) {
+            queryString.push('authentication=' + callOptions.authentication.join(','));
+        }
+        return queryString;
+    };
+    SearchEndpoint.prototype.buildCompleteQueryString = function (query, queryObject) {
+        // In an ideal parallel reality, the entire query used in the 'search' call is used here.
+        // In this reality however, we must support GET calls (ex: GET /html) for CORS/JSONP/IE reasons.
+        // Therefore, we cherry-pick parts of the query to include in a 'query string' instead of a body payload.
+        var queryString = [];
+        if (queryObject) {
+            _.each(['q', 'aq', 'cq', 'dq', 'searchHub', 'tab', 'language', 'pipeline', 'lowercaseOperators'], function (key) {
+                if (queryObject[key]) {
+                    queryString.push(key + '=' + encodeURIComponent(queryObject[key]));
+                }
+            });
+            _.each(queryObject.context, function (value, key) {
+                queryString.push('context[' + key + ']=' + encodeURIComponent(value));
+            });
+            if (queryObject.fieldsToInclude) {
+                queryString.push("fieldsToInclude=[" + _.map(queryObject.fieldsToInclude, function (field) { return '"' + encodeURIComponent(field.replace('@', '')) + '"'; }).join(',') + "]");
+            }
+        }
+        else if (query) {
+            queryString.push('q=' + encodeURIComponent(query));
+        }
+        return queryString;
+    };
+    SearchEndpoint.prototype.buildViewAsHtmlQueryString = function (uniqueId, callOptions) {
+        callOptions = _.extend({}, callOptions);
+        var queryString = this.buildBaseQueryString(callOptions);
+        queryString.push('uniqueId=' + encodeURIComponent(uniqueId));
+        if (callOptions.query || callOptions.queryObject) {
+            queryString.push('enableNavigation=true');
+        }
+        if (callOptions.requestedOutputSize) {
+            queryString.push('requestedOutputSize=' + encodeURIComponent(callOptions.requestedOutputSize.toString()));
+        }
+        if (callOptions.contentType) {
+            queryString.push('contentType=' + encodeURIComponent(callOptions.contentType));
+        }
+        return queryString;
+    };
+    SearchEndpoint.prototype.performOneCall = function (params, callOptions, autoRenewToken) {
+        var _this = this;
+        if (autoRenewToken === void 0) { autoRenewToken = true; }
+        var queryString = this.buildBaseQueryString(callOptions);
+        params.queryString = params.queryString.concat(queryString);
+        params.queryString = _.uniq(params.queryString);
+        var startTime = new Date();
+        return this.caller.call(params)
+            .then(function (response) {
+            if (response.data == null) {
+                response.data = {};
+            }
+            var timeToExecute = new Date().getTime() - startTime.getTime();
+            if (response.data && _.isObject(response.data)) {
+                response.data.clientDuration = timeToExecute;
+                response.data.duration = response.duration || timeToExecute;
+            }
+            return response.data;
+        }).catch(function (error) {
+            if (autoRenewToken && _this.canRenewAccessToken() && _this.isAccessTokenExpiredStatus(error.statusCode)) {
+                return _this.renewAccessToken().then(function () {
+                    return _this.performOneCall(params, callOptions, autoRenewToken);
+                })
+                    .catch(function () {
+                    return Promise.reject(_this.handleErrorResponse(error));
+                });
+            }
+            else if (error.statusCode == 0 && _this.isRedirecting) {
+                // The page is getting redirected
+                // Set timeout on return with empty string, since it does not really matter
+                _.defer(function () {
+                    return '';
+                });
+            }
+            else {
+                return Promise.reject(_this.handleErrorResponse(error));
+            }
+        });
+    };
+    SearchEndpoint.prototype.handleErrorResponse = function (errorResponse) {
+        if (this.isMissingAuthenticationProviderStatus(errorResponse.statusCode)) {
+            return new MissingAuthenticationError_1.MissingAuthenticationError(errorResponse.data['provider']);
+        }
+        else if (errorResponse.data && errorResponse.data.message && errorResponse.data.type) {
+            return new QueryError_1.QueryError(errorResponse);
+        }
+        else if (errorResponse.data && errorResponse.data.message) {
+            return new AjaxError_1.AjaxError("Request Error : " + errorResponse.data.message, errorResponse.statusCode);
+        }
+        else {
+            return new AjaxError_1.AjaxError('Request Error', errorResponse.statusCode);
+        }
+    };
+    SearchEndpoint.prototype.canRenewAccessToken = function () {
+        return Utils_1.Utils.isNonEmptyString(this.options.accessToken) && _.isFunction(this.options.renewAccessToken);
+    };
+    SearchEndpoint.prototype.renewAccessToken = function () {
+        var _this = this;
+        this.logger.info('Renewing expired access token');
+        return this.options.renewAccessToken().then(function (token) {
+            Assert_1.Assert.isNonEmptyString(token);
+            _this.options.accessToken = token;
+            _this.createEndpointCaller();
+            return token;
+        }).catch(function (e) {
+            _this.logger.error('Failed to renew access token', e);
+            return e;
+        });
+    };
+    SearchEndpoint.prototype.removeTrailingSlash = function (uri) {
+        if (this.hasTrailingSlash(uri)) {
+            uri = uri.substr(0, uri.length - 1);
+        }
+        return uri;
+    };
+    SearchEndpoint.prototype.hasTrailingSlash = function (uri) {
+        return uri.charAt(uri.length - 1) == '/';
+    };
+    SearchEndpoint.prototype.isMissingAuthenticationProviderStatus = function (status) {
+        return status == 402;
+    };
+    SearchEndpoint.prototype.isAccessTokenExpiredStatus = function (status) {
+        return status == 419;
+    };
+    return SearchEndpoint;
 }());
-exports.QueryEvents = QueryEvents;
+/**
+ * Contains a map of all initialized `SearchEndpoint` instances.
+ *
+ * **Example:**
+ * > `Coveo.SearchEndpoint.endpoints['default']` returns the default endpoint that was created at initialization.
+ * @type {{}}
+ */
+SearchEndpoint.endpoints = {};
+__decorate([
+    path('/login/'),
+    accessTokenInUrl()
+], SearchEndpoint.prototype, "getAuthenticationProviderUri", null);
+__decorate([
+    path('/'),
+    method('POST'),
+    responseType('text')
+], SearchEndpoint.prototype, "search", null);
+__decorate([
+    path('/'),
+    accessTokenInUrl()
+], SearchEndpoint.prototype, "getExportToExcelLink", null);
+__decorate([
+    path('/datastream'),
+    accessTokenInUrl(),
+    method('GET'),
+    responseType('arraybuffer')
+], SearchEndpoint.prototype, "getRawDataStream", null);
+__decorate([
+    path('/datastream'),
+    accessTokenInUrl()
+], SearchEndpoint.prototype, "getViewAsDatastreamUri", null);
+__decorate([
+    path('/document'),
+    method('GET'),
+    responseType('text')
+], SearchEndpoint.prototype, "getDocument", null);
+__decorate([
+    path('/text'),
+    method('GET'),
+    responseType('text')
+], SearchEndpoint.prototype, "getDocumentText", null);
+__decorate([
+    path('/html'),
+    method('POST'),
+    responseType('document')
+], SearchEndpoint.prototype, "getDocumentHtml", null);
+__decorate([
+    path('/html'),
+    accessTokenInUrl()
+], SearchEndpoint.prototype, "getViewAsHtmlUri", null);
+__decorate([
+    path('/values'),
+    method('POST'),
+    responseType('text')
+], SearchEndpoint.prototype, "batchFieldValues", null);
+__decorate([
+    path('/values'),
+    method('POST'),
+    responseType('text')
+], SearchEndpoint.prototype, "listFieldValues", null);
+__decorate([
+    path('/fields'),
+    method('GET'),
+    responseType('text')
+], SearchEndpoint.prototype, "listFields", null);
+__decorate([
+    path('/extensions'),
+    method('GET'),
+    responseType('text')
+], SearchEndpoint.prototype, "extensions", null);
+__decorate([
+    path('/rating'),
+    method('POST'),
+    responseType('text')
+], SearchEndpoint.prototype, "rateDocument", null);
+__decorate([
+    path('/tag'),
+    method('POST'),
+    responseType('text')
+], SearchEndpoint.prototype, "tagDocument", null);
+__decorate([
+    path('/querySuggest'),
+    method('GET'),
+    responseType('text')
+], SearchEndpoint.prototype, "getQuerySuggest", null);
+__decorate([
+    alertsPath('/subscriptions'),
+    accessTokenInUrl('accessToken'),
+    method('POST'),
+    requestDataType('application/json'),
+    responseType('text')
+], SearchEndpoint.prototype, "follow", null);
+__decorate([
+    alertsPath('/subscriptions'),
+    accessTokenInUrl('accessToken'),
+    method('GET'),
+    requestDataType('application/json'),
+    responseType('text')
+], SearchEndpoint.prototype, "listSubscriptions", null);
+__decorate([
+    alertsPath('/subscriptions/'),
+    accessTokenInUrl('accessToken'),
+    method('PUT'),
+    requestDataType('application/json'),
+    responseType('text')
+], SearchEndpoint.prototype, "updateSubscription", null);
+__decorate([
+    alertsPath('/subscriptions/'),
+    accessTokenInUrl('accessToken'),
+    method('DELETE'),
+    requestDataType('application/json'),
+    responseType('text')
+], SearchEndpoint.prototype, "deleteSubscription", null);
+__decorate([
+    path('/log'),
+    method('POST')
+], SearchEndpoint.prototype, "logError", null);
+exports.SearchEndpoint = SearchEndpoint;
+// It's taken for granted that methods using decorators have :
+// IEndpointCallOptions as their second to last parameter
+// IEndpointCallParameters as their last parameter
+// The default parameters for each member of the injected {@link IEndpointCallParameters} are the following:
+// url: '',
+// queryString: [],
+// requestData: {},
+// requestDataType: undefined,
+// method: '',
+// responseType: '',
+// errorsAsSuccess: false
+function path(path) {
+    return function (target, key, descriptor) {
+        var originalMethod = descriptor.value;
+        var nbParams = target[key].prototype.constructor.length;
+        descriptor.value = function () {
+            var args = [];
+            for (var _i = 0; _i < arguments.length; _i++) {
+                args[_i] = arguments[_i];
+            }
+            var uri = this.buildBaseUri(path);
+            if (args[nbParams - 1]) {
+                args[nbParams - 1].url = uri;
+            }
+            else {
+                var params = {
+                    url: uri,
+                    queryString: [],
+                    requestData: {},
+                    method: '',
+                    responseType: '',
+                    errorsAsSuccess: false
+                };
+                args[nbParams - 1] = params;
+            }
+            var result = originalMethod.apply(this, args);
+            return result;
+        };
+        return descriptor;
+    };
+}
+function alertsPath(path) {
+    return function (target, key, descriptor) {
+        var originalMethod = descriptor.value;
+        var nbParams = target[key].prototype.constructor.length;
+        descriptor.value = function () {
+            var args = [];
+            for (var _i = 0; _i < arguments.length; _i++) {
+                args[_i] = arguments[_i];
+            }
+            var uri = this.buildSearchAlertsUri(path);
+            if (args[nbParams - 1]) {
+                args[nbParams - 1].url = uri;
+            }
+            else {
+                var params = {
+                    url: uri,
+                    queryString: [],
+                    requestData: {},
+                    method: '',
+                    responseType: '',
+                    errorsAsSuccess: false
+                };
+                args[nbParams - 1] = params;
+            }
+            var result = originalMethod.apply(this, args);
+            return result;
+        };
+        return descriptor;
+    };
+}
+function requestDataType(type) {
+    return function (target, key, descriptor) {
+        var originalMethod = descriptor.value;
+        var nbParams = target[key].prototype.constructor.length;
+        descriptor.value = function () {
+            var args = [];
+            for (var _i = 0; _i < arguments.length; _i++) {
+                args[_i] = arguments[_i];
+            }
+            if (args[nbParams - 1]) {
+                args[nbParams - 1].requestDataType = type;
+            }
+            else {
+                var params = {
+                    url: '',
+                    queryString: [],
+                    requestData: {},
+                    requestDataType: type,
+                    method: '',
+                    responseType: '',
+                    errorsAsSuccess: false
+                };
+                args[nbParams - 1] = params;
+            }
+            var result = originalMethod.apply(this, args);
+            return result;
+        };
+        return descriptor;
+    };
+}
+function method(met) {
+    return function (target, key, descriptor) {
+        var originalMethod = descriptor.value;
+        var nbParams = target[key].prototype.constructor.length;
+        descriptor.value = function () {
+            var args = [];
+            for (var _i = 0; _i < arguments.length; _i++) {
+                args[_i] = arguments[_i];
+            }
+            if (args[nbParams - 1]) {
+                args[nbParams - 1].method = met;
+            }
+            else {
+                var params = {
+                    url: '',
+                    queryString: [],
+                    requestData: {},
+                    method: met,
+                    responseType: '',
+                    errorsAsSuccess: false
+                };
+                args[nbParams - 1] = params;
+            }
+            var result = originalMethod.apply(this, args);
+            return result;
+        };
+        return descriptor;
+    };
+}
+function responseType(resp) {
+    return function (target, key, descriptor) {
+        var originalMethod = descriptor.value;
+        var nbParams = target[key].prototype.constructor.length;
+        descriptor.value = function () {
+            var args = [];
+            for (var _i = 0; _i < arguments.length; _i++) {
+                args[_i] = arguments[_i];
+            }
+            if (args[nbParams - 1]) {
+                args[nbParams - 1].responseType = resp;
+            }
+            else {
+                var params = {
+                    url: '',
+                    queryString: [],
+                    requestData: {},
+                    method: '',
+                    responseType: resp,
+                    errorsAsSuccess: false
+                };
+                args[nbParams - 1] = params;
+            }
+            var result = originalMethod.apply(this, args);
+            return result;
+        };
+        return descriptor;
+    };
+}
+function accessTokenInUrl(tokenKey) {
+    if (tokenKey === void 0) { tokenKey = 'access_token'; }
+    return function (target, key, descriptor) {
+        var originalMethod = descriptor.value;
+        var nbParams = target[key].prototype.constructor.length;
+        descriptor.value = function () {
+            var args = [];
+            for (var _i = 0; _i < arguments.length; _i++) {
+                args[_i] = arguments[_i];
+            }
+            var queryString = this.buildAccessToken(tokenKey);
+            if (args[nbParams - 1]) {
+                args[nbParams - 1].queryString = args[nbParams - 1].queryString.concat(queryString);
+            }
+            else {
+                var params = {
+                    url: '',
+                    queryString: queryString,
+                    requestData: {},
+                    method: '',
+                    responseType: '',
+                    errorsAsSuccess: false
+                };
+                args[nbParams - 1] = params;
+            }
+            var result = originalMethod.apply(this, args);
+            return result;
+        };
+        return descriptor;
+    };
+}
 
 
 /***/ }),
-/* 35 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var Globalize = __webpack_require__(36);
+var Globalize = __webpack_require__(8);
 var merge = function (obj1, obj2) {
     var obj3 = {};
     for (var attrname in obj1) {
@@ -6812,446 +5239,6 @@ var merge = function (obj1, obj2) {
     return obj3;
 };
 var dict = {
-    "people": "User",
-    "objecttype_people": "User",
-    "message": "Message",
-    "objecttype_message": "Message",
-    "feed": "RSS Feed",
-    "objecttype_feed": "RSS Feed",
-    "thread": "Thread",
-    "objecttype_thread": "Thread",
-    "file": "File",
-    "objecttype_file": "File",
-    "board": "Board",
-    "objecttype_board": "Board",
-    "category": "Category",
-    "objecttype_category": "Category",
-    "account": "Account",
-    "objecttype_account": "Account",
-    "annotation": "Note",
-    "objecttype_annotation": "Note",
-    "campaign": "Campaign",
-    "objecttype_campaign": "Campaign",
-    "case": "Case",
-    "objecttype_case": "Case",
-    "contact": "Contact",
-    "objecttype_contact": "Contact",
-    "contract": "Contract",
-    "objecttype_contract": "Contract",
-    "event": "Event",
-    "objecttype_event": "Event",
-    "email": "Email",
-    "objecttype_email": "Email",
-    "goal": "Goal",
-    "objecttype_goal": "Goal",
-    "incident": "Case",
-    "objecttype_incident": "Case",
-    "invoice": "Invoice",
-    "objecttype_invoice": "Invoice",
-    "lead": "Lead",
-    "objecttype_lead": "Lead",
-    "list": "List",
-    "objecttype_list": "Marketing List",
-    "solution": "Solution",
-    "objecttype_solution": "Solution",
-    "report": "Report",
-    "objecttype_report": "Report",
-    "task": "Task",
-    "objecttype_task": "Task",
-    "user": "User",
-    "objecttype_user": "User",
-    "attachment": "Attachment",
-    "objecttype_attachment": "Attachment",
-    "casecomment": "Case Comment",
-    "objecttype_casecomment": "Case Comment",
-    "opportunity": "Opportunity",
-    "objecttype_opportunity": "Opportunity",
-    "opportunityproduct": "Opportunity Product",
-    "objecttype_opportunityproduct": "Opportunity Product",
-    "feeditem": "Chatter",
-    "objecttype_feeditem": "Chatter",
-    "feedcomment": "Comment",
-    "objecttype_feedcomment": "Comment",
-    "note": "Note",
-    "objecttype_note": "Note",
-    "product": "Product",
-    "objecttype_product": "Product",
-    "partner": "Partner",
-    "objecttype_partner": "Partner",
-    "queueitem": "Queue Item",
-    "objecttype_queueitem": "Queue Item",
-    "quote": "Quote",
-    "objecttype_quote": "Quote",
-    "salesliterature": "Sales Literature",
-    "objecttype_salesliterature": "Sales Literature",
-    "salesorder": "Sales Order",
-    "objecttype_salesorder": "Sales Order",
-    "service": "Service",
-    "objecttype_service": "Service",
-    "socialprofile": "Social Profile",
-    "objecttype_socialprofile": "Social Profile",
-    "kbdocumentation": "Knowledge Document",
-    "objecttype_kbdocumentation": "Knowledge Document",
-    "kbtechnicalarticle": "Technical Documentation",
-    "objecttype_kbtechnicalarticle": "Technical Documentation",
-    "kbsolution": "Solution",
-    "objecttype_kbsolution": "Solution",
-    "kbknowledgearticle": "Knowledge Article",
-    "objecttype_kbknowledgearticle": "Knowledge Article",
-    "kbattachment": "Attachment",
-    "objecttype_kbattachment": "Attachment",
-    "kbarticle": "Article",
-    "objecttype_kbarticle": "Article",
-    "kbarticlecomment": "Article Comment",
-    "objecttype_kbarticlecomment": "Article Comment",
-    "knowledgearticle": "Knowledge Article",
-    "objecttype_knowledgearticle": "Knowledge Article",
-    "topic": "Topic",
-    "objecttype_topic": "Topic",
-    "dashboard": "Dashboard",
-    "objecttype_dashboard": "Dashboard",
-    "contentversion": "Document",
-    "objecttype_contentversion": "Document",
-    "collaborationgroup": "Collaboration group",
-    "objecttype_collaborationgroup": "Collaboration group",
-    "box user": "User",
-    "filetype_box user": "User",
-    "html": "HTML File",
-    "filetype_html": "HTML File",
-    "wiki": "Wiki",
-    "filetype_wiki": "Wiki",
-    "webscraperwebpage": "Web Page",
-    "filetype_webscraperwebpage": "Web Page",
-    "image": "Image",
-    "filetype_image": "Image",
-    "folder": "Folder",
-    "filetype_folder": "Folder",
-    "txt": "Text",
-    "filetype_txt": "Text",
-    "zip": "Zip File",
-    "filetype_zip": "Zip File",
-    "olefile": "OLE file",
-    "filetype_olefile": "OLE file",
-    "gmailmessage": "Gmail Message",
-    "filetype_gmailmessage": "Gmail Message",
-    "pdf": "PDF File",
-    "filetype_pdf": "PDF File",
-    "swf": "Flash File",
-    "filetype_swf": "Flash File",
-    "xml": "XML File",
-    "filetype_xml": "XML File",
-    "vsd": "Visio",
-    "filetype_vsd": "Visio",
-    "svg": "SVG",
-    "filetype_svg": "SVG",
-    "svm": "Open Office",
-    "filetype_svm": "Open Office",
-    "rssitem": "RSS feed",
-    "filetype_rssitem": "RSS feed",
-    "doc": "Document",
-    "filetype_doc": "Document",
-    "docx": "Microsoft Word Document",
-    "filetype_docx": "Microsoft Word Document",
-    "xls": "Spreadsheet Document",
-    "filetype_xls": "Spreadsheet Document",
-    "ppt": "Presentation Document",
-    "filetype_ppt": "Presentation Document",
-    "video": "Video",
-    "filetype_video": "Video",
-    "youtube": "YouTube video",
-    "filetype_youtube": "YouTube video",
-    "saleforceitem": "Salesforce",
-    "filetype_saleforceitem": "Salesforce",
-    "dynamicscrmitem": "Dynamics CRM",
-    "filetype_dynamicscrmitem": "Dynamics CRM",
-    "salesforceitem": "Salesforce",
-    "filetype_salesforceitem": "Salesforce",
-    "odt": "Open Text Document",
-    "filetype_odt": "Open Text Document",
-    "box": "User",
-    "filetype_box": "User",
-    "jiraissue": "Jira Issue",
-    "filetype_jiraissue": "Jira Issue",
-    "cfpage": "Confluence Page",
-    "filetype_cfpage": "Confluence Page",
-    "cfcomment": "Confluence Comment",
-    "filetype_cfcomment": "Confluence Comment",
-    "cfspace": "Confluence Space",
-    "filetype_cfspace": "Confluence Space",
-    "cfblogentry": "Confluence Blog Entry",
-    "filetype_cfblogentry": "Confluence Blog Entry",
-    "confluencespace": "Confluence Space",
-    "filetype_confluencespace": "Confluence Space",
-    "exchangemessage": "Message",
-    "filetype_exchangemessage": "Message",
-    "exchangeappointment": "Appointment",
-    "filetype_exchangeappointment": "Appointment",
-    "exchangenote": "Note",
-    "filetype_exchangenote": "Note",
-    "exchangetask": "Task",
-    "filetype_exchangetask": "Task",
-    "exchangeperson": "Exchange User",
-    "filetype_exchangeperson": "Exchange User",
-    "activedirperson": "Active Directory User",
-    "filetype_activedirperson": "Active Directory User",
-    "exchangeactivity": "Activity",
-    "filetype_exchangeactivity": "Activity",
-    "exchangecalendarmessage": "Calendar Message",
-    "filetype_exchangecalendarmessage": "Calendar Message",
-    "exchangedocument": "Exchange Document",
-    "filetype_exchangedocument": "Exchange Document",
-    "exchangedsn": "DSN",
-    "filetype_exchangedsn": "DSN",
-    "exchangefreebusy": "Free/Busy",
-    "filetype_exchangefreebusy": "Free/Busy",
-    "exchangegroup": "Group",
-    "filetype_exchangegroup": "Group",
-    "exchangerssfeed": "RSS Feed",
-    "filetype_exchangerssfeed": "RSS Feed",
-    "exchangejunkmessage": "Junk Email",
-    "filetype_exchangejunkmessage": "Junk Email",
-    "exchangeofficecom": "Communications",
-    "filetype_exchangeofficecom": "Communications",
-    "lithiummessage": "Lithium Message",
-    "filetype_lithiummessage": "Lithium Message",
-    "lithiumthread": "Lithium Thread",
-    "filetype_lithiumthread": "Lithium Thread",
-    "lithiumboard": "Lithium Board",
-    "filetype_lithiumboard": "Lithium Board",
-    "lithiumcategory": "Lithium Category",
-    "filetype_lithiumcategory": "Lithium Category",
-    "lithiumcommunity": "Lithium Community",
-    "filetype_lithiumcommunity": "Lithium Community",
-    "spportal": "Portal",
-    "filetype_spportal": "Portal",
-    "spsite": "SharePoint Site",
-    "filetype_spsite": "SharePoint Site",
-    "spuserprofile": "SharePoint User",
-    "filetype_spuserprofile": "SharePoint User",
-    "sparea": "Area",
-    "filetype_sparea": "Area",
-    "spannouncement": "Announcement",
-    "filetype_spannouncement": "Announcement",
-    "spannouncementlist": "Announcements",
-    "filetype_spannouncementlist": "Announcements",
-    "spcontact": "Contact",
-    "filetype_spcontact": "Contact",
-    "spcontactlist": "Contacts",
-    "filetype_spcontactlist": "Contacts",
-    "spcustomlist": "Custom Lists",
-    "filetype_spcustomlist": "Custom Lists",
-    "spdiscussionboard": "Discussion Board",
-    "filetype_spdiscussionboard": "Discussion Board",
-    "spdiscussionboardlist": "Discussion Boards",
-    "filetype_spdiscussionboardlist": "Discussion Boards",
-    "spdocumentlibrarylist": "Document Library",
-    "filetype_spdocumentlibrarylist": "Document Library",
-    "spevent": "Event",
-    "filetype_spevent": "Event",
-    "speventlist": "Events",
-    "filetype_speventlist": "Events",
-    "spformlibrarylist": "Form Library",
-    "filetype_spformlibrarylist": "Form Library",
-    "spissue": "Issue",
-    "filetype_spissue": "Issue",
-    "spissuelist": "Issues",
-    "filetype_spissuelist": "Issues",
-    "splink": "Link",
-    "filetype_splink": "Link",
-    "splinklist": "Links",
-    "filetype_splinklist": "Links",
-    "sppicturelibrarylist": "Picture Library",
-    "filetype_sppicturelibrarylist": "Picture Library",
-    "spsurvey": "Survey",
-    "filetype_spsurvey": "Survey",
-    "spsurveylist": "Surveys",
-    "filetype_spsurveylist": "Surveys",
-    "sptask": "Task",
-    "filetype_sptask": "Task",
-    "sptasklist": "Tasks",
-    "filetype_sptasklist": "Tasks",
-    "spagenda": "Agenda",
-    "filetype_spagenda": "Agenda",
-    "spagendalist": "Agendas",
-    "filetype_spagendalist": "Agendas",
-    "spattendee": "Attendee",
-    "filetype_spattendee": "Attendee",
-    "spattendeelist": "Attendees",
-    "filetype_spattendeelist": "Attendees",
-    "spcustomgridlist": "Custom Grids",
-    "filetype_spcustomgridlist": "Custom Grids",
-    "spdecision": "Decision",
-    "filetype_spdecision": "Decision",
-    "spdecisionlist": "Decisions",
-    "filetype_spdecisionlist": "Decisions",
-    "spobjective": "Objective",
-    "filetype_spobjective": "Objective",
-    "spobjectivelist": "Objectives",
-    "filetype_spobjectivelist": "Objectives",
-    "sptextbox": "Textbox",
-    "filetype_sptextbox": "Textbox",
-    "sptextboxlist": "Textbox list",
-    "filetype_sptextboxlist": "Textbox list",
-    "spthingstobring": "Thing To Bring",
-    "filetype_spthingstobring": "Thing To Bring",
-    "spthingstobringlist": "Things To Bring",
-    "filetype_spthingstobringlist": "Things To Bring",
-    "sparealisting": "Area Listing",
-    "filetype_sparealisting": "Area Listing",
-    "spmeetingserie": "Meeting series",
-    "filetype_spmeetingserie": "Meeting series",
-    "spmeetingserielist": "Meeting Series List",
-    "filetype_spmeetingserielist": "Meeting Series List",
-    "spsitedirectory": "Site Directory Item",
-    "filetype_spsitedirectory": "Site Directory Item",
-    "spsitedirectorylist": "Site Directory",
-    "filetype_spsitedirectorylist": "Site Directory",
-    "spdatasource": "Data Source",
-    "filetype_spdatasource": "Data Source",
-    "spdatasourcelist": "Data Source List",
-    "filetype_spdatasourcelist": "Data Source List",
-    "splisttemplatecataloglist": "List Template Gallery",
-    "filetype_splisttemplatecataloglist": "List Template Gallery",
-    "spwebpartcataloglist": "WebPart Gallery",
-    "filetype_spwebpartcataloglist": "WebPart Gallery",
-    "spwebtemplatecataloglist": "Site Template Gallery",
-    "filetype_spwebtemplatecataloglist": "Site Template Gallery",
-    "spworkspacepagelist": "Workspace Pages",
-    "filetype_spworkspacepagelist": "Workspace Pages",
-    "spunknownlist": "Custom List",
-    "filetype_spunknownlist": "Custom List",
-    "spadministratortask": "Administrator Task",
-    "filetype_spadministratortask": "Administrator Task",
-    "spadministratortasklist": "Administrator Tasks",
-    "filetype_spadministratortasklist": "Administrator Tasks",
-    "spareadocumentlibrarylist": "Area Document Library",
-    "filetype_spareadocumentlibrarylist": "Area Document Library",
-    "spblogcategory": "Blog Category",
-    "filetype_spblogcategory": "Blog Category",
-    "spblogcategorylist": "Blog Categories",
-    "filetype_spblogcategorylist": "Blog Categories",
-    "spblogcomment": "Blog Comment",
-    "filetype_spblogcomment": "Blog Comment",
-    "spblogcommentlist": "Blog Comments",
-    "filetype_spblogcommentlist": "Blog Comments",
-    "spblogpost": "Blog Post",
-    "filetype_spblogpost": "Blog Post",
-    "spblogpostlist": "Blog Posts",
-    "filetype_spblogpostlist": "Blog Posts",
-    "spdataconnectionlibrarylist": "Data Connection Library",
-    "filetype_spdataconnectionlibrarylist": "Data Connection Library",
-    "spdistributiongroup": "Distribution Group",
-    "filetype_spdistributiongroup": "Distribution Group",
-    "spdistributiongrouplist": "Distribution Groups",
-    "filetype_spdistributiongrouplist": "Distribution Groups",
-    "spipfslist": "InfoPath Forms Servers",
-    "filetype_spipfslist": "InfoPath Forms Servers",
-    "spkeyperformanceindicator": "Key Performance Indicator",
-    "filetype_spkeyperformanceindicator": "Key Performance Indicator",
-    "spkeyperformanceindicatorlist": "Key Performance Indicators",
-    "filetype_spkeyperformanceindicatorlist": "Key Performance Indicators",
-    "splanguagesandtranslator": "Languages and Translator",
-    "filetype_splanguagesandtranslator": "Languages and Translator",
-    "splanguagesandtranslatorlist": "Languages and Translators",
-    "filetype_splanguagesandtranslatorlist": "Languages and Translators",
-    "spmasterpagescataloglist": "Master Page Gallery",
-    "filetype_spmasterpagescataloglist": "Master Page Gallery",
-    "spnocodeworkflowlibrarylist": "No-code Workflow Libraries",
-    "filetype_spnocodeworkflowlibrarylist": "No-code Workflow Libraries",
-    "spprojecttask": "Project Task",
-    "filetype_spprojecttask": "Project Task",
-    "spprojecttasklist": "Project Tasks",
-    "filetype_spprojecttasklist": "Project Tasks",
-    "sppublishingpageslibrarylist": "Page Library",
-    "filetype_sppublishingpageslibrarylist": "Page Library",
-    "spreportdocumentlibrarylist": "Report Document Library",
-    "filetype_spreportdocumentlibrarylist": "Report Document Library",
-    "spreportlibrarylist": "Report Library",
-    "filetype_spreportlibrarylist": "Report Library",
-    "spslidelibrarylist": "Slide Library",
-    "filetype_spslidelibrarylist": "Slide Library",
-    "sptab": "Tabs",
-    "filetype_sptab": "Tabs",
-    "sptablist": "Tabs List",
-    "filetype_sptablist": "Tabs List",
-    "sptranslationmanagementlibrarylist": "Translation Management Library",
-    "filetype_sptranslationmanagementlibrarylist": "Translation Management Library",
-    "spuserinformation": "User Information",
-    "filetype_spuserinformation": "User Information",
-    "spuserinformationlist": "User Information List",
-    "filetype_spuserinformationlist": "User Information List",
-    "spwikipagelibrarylist": "Wiki Page Library",
-    "filetype_spwikipagelibrarylist": "Wiki Page Library",
-    "spworkflowhistory": "Workflow History",
-    "filetype_spworkflowhistory": "Workflow History",
-    "spworkflowhistorylist": "Workflow History List",
-    "filetype_spworkflowhistorylist": "Workflow History List",
-    "spworkflowprocess": "Custom Workflow Process",
-    "filetype_spworkflowprocess": "Custom Workflow Process",
-    "spworkflowprocesslist": "Custom Workflow Processes",
-    "filetype_spworkflowprocesslist": "Custom Workflow Processes",
-    "sppublishingimageslibrarylist": "Publishing Image Library",
-    "filetype_sppublishingimageslibrarylist": "Publishing Image Library",
-    "spcirculation": "Circulation",
-    "filetype_spcirculation": "Circulation",
-    "spcirculationlist": "Circulations",
-    "filetype_spcirculationlist": "Circulations",
-    "spdashboardslibrarylist": "Dashboards Library",
-    "filetype_spdashboardslibrarylist": "Dashboards Library",
-    "spdataconnectionforperformancepointlibrarylist": "PerformancePoint Data Connection Library",
-    "filetype_spdataconnectionforperformancepointlibrarylist": "PerformancePoint Data Connection Library",
-    "sphealthreport": "Health Report",
-    "filetype_sphealthreport": "Health Report",
-    "sphealthreportlist": "Health Reports",
-    "filetype_sphealthreportlist": "Health Reports",
-    "sphealthrule": "Health Rule",
-    "filetype_sphealthrule": "Health Rule",
-    "sphealthrulelist": "Health Rules",
-    "filetype_sphealthrulelist": "Health Rules",
-    "spimedictionary": "IME Dictionary",
-    "filetype_spimedictionary": "IME Dictionary",
-    "spimedictionarylist": "IME Dictionaries",
-    "filetype_spimedictionarylist": "IME Dictionaries",
-    "spperformancepointcontent": "PerformancePoint Content",
-    "filetype_spperformancepointcontent": "PerformancePoint Content",
-    "spperformancepointcontentlist": "PerformancePoint Contents",
-    "filetype_spperformancepointcontentlist": "PerformancePoint Contents",
-    "spphonecallmemo": "Phone Call Memo",
-    "filetype_spphonecallmemo": "Phone Call Memo",
-    "spphonecallmemolist": "Phone Call Memos",
-    "filetype_spphonecallmemolist": "Phone Call Memos",
-    "sprecordlibrarylist": "Record Library",
-    "filetype_sprecordlibrarylist": "Record Library",
-    "spresource": "Resource",
-    "filetype_spresource": "Resource",
-    "spresourcelist": "Resources",
-    "filetype_spresourcelist": "Resources",
-    "spprocessdiagramslibrarylist": "Process Diagram Library",
-    "filetype_spprocessdiagramslibrarylist": "Process Diagram Library",
-    "spsitethemeslibrarylist": "Site Theme Library",
-    "filetype_spsitethemeslibrarylist": "Site Theme Library",
-    "spsolutionslibrarylist": "Solution Library",
-    "filetype_spsolutionslibrarylist": "Solution Library",
-    "spwfpublibrarylist": "WFPUB Library",
-    "filetype_spwfpublibrarylist": "WFPUB Library",
-    "spwhereabout": "Whereabout",
-    "filetype_spwhereabout": "Whereabout",
-    "spwhereaboutlist": "Whereabouts",
-    "filetype_spwhereaboutlist": "Whereabouts",
-    "spdocumentlink": "Link to a Document",
-    "filetype_spdocumentlink": "Link to a Document",
-    "spdocumentset": "Document Set",
-    "filetype_spdocumentset": "Document Set",
-    "spmicrofeedpost": "Microfeed Post",
-    "filetype_spmicrofeedpost": "Microfeed Post",
-    "spmicrofeedlist": "Microfeed",
-    "filetype_spmicrofeedlist": "Microfeed",
-    "splistfolder": "List Folder",
-    "filetype_splistfolder": "List Folder",
-    "youtubevideo": "YouTube video",
-    "filetype_youtubevideo": "YouTube video",
-    "youtubeplaylistitem": "YouTube playlist item",
-    "filetype_youtubeplaylistitem": "YouTube playlist item",
     "Unknown": "Unknown",
     "And": "AND",
     "Authenticating": "Authenticating {0}...",
@@ -7280,7 +5267,6 @@ var dict = {
     "SearchIn": "Search in {0}",
     "Seconds": "in {0} second<pl>s</pl>",
     "ShowingResultsOf": "Result<pl>s</pl> {0}<pl>-{1}</pl> of {2}",
-    "ShowingResultsOfWithQuery": "Result<pl>s</pl> {0}<pl>-{1}</pl> of {2} for {3}",
     "SwitchTo": "Switch to {0}",
     "Unexclude": "Unexclude {0}",
     "ClearAllFilters": "Clear All Filters",
@@ -7469,7 +5455,7 @@ var dict = {
     "Details": "Details",
     "AdditionalFilters": "Additional filters",
     "SelectNonContextualSearch": "Remove the context from the current record to broaden your search",
-    "CopyPasteToSupport": "Copy paste this message to the Coveo Support team for more information.",
+    "CopyPasteToSupport": "Copy paste this message to Coveo Support team for more information.",
     "FollowQueryDescription": "Alert me for changes to the search results of this query.",
     "SearchAlerts_Panel": "Manage Alerts",
     "SearchAlerts_PanelDescription": "View and manage your search alerts.",
@@ -7478,7 +5464,7 @@ var dict = {
     "SearchAlerts_Type": "Type",
     "SearchAlerts_Content": "Content",
     "SearchAlerts_Actions": "Action",
-    "EmptyQuery": "<empty>",
+    "EmptyQuery": "&lt;empty&gt;",
     "SearchAlerts_Type_followQuery": "Query",
     "SearchAlerts_Type_followDocument": "Item",
     "SearchAlerts_unFollowing": "Stop Following",
@@ -7530,6 +5516,7 @@ var dict = {
     "DoesNotContain": "does not contain",
     "Matches": "matches",
     "Bytes": "bytes",
+    "list": "List",
     "card": "Card",
     "table": "Table",
     "ResultLinks": "Result links",
@@ -7538,17 +5525,227 @@ var dict = {
     "Off": "Off",
     "Automatic": "Automatic",
     "ResultsPerPage": "Results per page",
+    "FiltersInAdvancedSearch": "Filters in Advanced Search",
+    "InvalidTimeRange": "Invalid time range",
     "PreviousMonth": "Previous month",
     "NextMonth": "Next month",
     "Title": "Title",
-    "FiltersInAdvancedSearch": "Filters in Advanced Search",
-    "NoEndpoints": "{0} has no registered endpoints.",
-    "InvalidToken": "The token used is invalid.",
-    "AddSources": "You will need to add sources in your index, or wait for the created sources to finish indexing.",
-    "TryAgain": "Please try again.",
-    "CoveoOnlineHelp": "Coveo Online Help",
-    "CannotAccess": "{0} cannot be accessed.",
-    "CoveoOrganization": "Coveo Organization",
+    "objecttype_people": "People",
+    "objecttype_message": "Message",
+    "objecttype_feed": "RSS Feed",
+    "objecttype_thread": "Thread",
+    "objecttype_file": "File",
+    "objecttype_board": "Board",
+    "objecttype_category": "Category",
+    "objecttype_account": "Account",
+    "objecttype_annotation": "Note",
+    "objecttype_campaign": "Campaign",
+    "objecttype_case": "Case",
+    "objecttype_contentversion": "Salesforce File",
+    "objecttype_contact": "Contact",
+    "objecttype_contract": "Contract",
+    "objecttype_event": "Event",
+    "objecttype_email": "Email",
+    "objecttype_goal": "Goal",
+    "objecttype_incident": "Case",
+    "objecttype_invoice": "Invoice",
+    "objecttype_lead": "Lead",
+    "objecttype_list": "Marketing List",
+    "objecttype_solution": "Solution",
+    "objecttype_task": "Task",
+    "objecttype_user": "User",
+    "objecttype_attachment": "Attachment",
+    "objecttype_casecomment": "Case Comment",
+    "objecttype_opportunity": "Opportunity",
+    "objecttype_opportunityproduct": "Opportunity Product",
+    "objecttype_feeditem": "Chatter",
+    "objecttype_feedcomment": "Chatter",
+    "objecttype_note": "Note",
+    "objecttype_product": "Product",
+    "objecttype_partner": "Partner",
+    "objecttype_queueitem": "Queue Item",
+    "objecttype_quote": "Quote",
+    "objecttype_salesliterature": "Sales Literature",
+    "objecttype_salesorder": "Sales Order",
+    "objecttype_service": "Service",
+    "objecttype_socialprofile": "Social Profile",
+    "objecttype_kbdocumentation": "Documentation",
+    "objecttype_kbtechnicalarticle": "Documentation",
+    "objecttype_kbsolution": "Solution",
+    "objecttype_kbknowledgearticle": "Knowledge Article",
+    "objecttype_kbattachment": "Attachment",
+    "objecttype_kbarticle": "Article",
+    "objecttype_kbarticlecomment": "Article Comment",
+    "objecttype_knowledgearticle": "Knowledge Article",
+    "filetype_box user": "Box User",
+    "filetype_html": "HTML File",
+    "filetype_wiki": "Wiki",
+    "filetype_webscraperwebpage": "Web Page",
+    "filetype_image": "Image",
+    "filetype_folder": "Folder",
+    "filetype_txt": "Text",
+    "filetype_zip": "Zip File",
+    "filetype_olefile": "OLE file",
+    "filetype_gmailmessage": "Gmail Message",
+    "filetype_pdf": "PDF File",
+    "filetype_swf": "Flash File",
+    "filetype_xml": "XML File",
+    "filetype_vsd": "Visio",
+    "filetype_svg": "SVG",
+    "filetype_svm": "Open Office",
+    "filetype_rssitem": "RSS feed",
+    "filetype_doc": "Document",
+    "filetype_docx": "Microsoft Word Document",
+    "filetype_xls": "Spreadsheet Document",
+    "filetype_ppt": "Presentation Document",
+    "filetype_video": "Video",
+    "filetype_youtube": "YouTube video",
+    "filetype_saleforceitem": "Salesforce",
+    "filetype_dynamicscrmitem": "Dynamics CRM",
+    "filetype_salesforceitem": "Salesforce",
+    "filetype_odt": "Open Text Document",
+    "filetype_box": "User",
+    "filetype_jiraissue": "Jira Issue",
+    "filetype_cfpage": "Confluence Page",
+    "filetype_cfcomment": "Confluence Comment",
+    "filetype_cfspace": "Confluence Space",
+    "filetype_cfblogentry": "Confluence Blog Entry",
+    "filetype_confluencespace": "Confluence Space",
+    "filetype_exchangemessage": "Message",
+    "filetype_exchangeappointment": "Appointment",
+    "filetype_exchangenote": "Note",
+    "filetype_exchangetask": "Task",
+    "filetype_exchangeperson": "Exchange User",
+    "filetype_activedirperson": "Active Directory User",
+    "filetype_exchangeactivity": "Activity",
+    "filetype_exchangecalendarmessage": "Calendar Message",
+    "filetype_exchangedocument": "Exchange Document",
+    "filetype_exchangedsn": "DSN",
+    "filetype_exchangefreebusy": "Free/Busy",
+    "filetype_exchangegroup": "Group",
+    "filetype_exchangerssfeed": "RSS Feed",
+    "filetype_exchangejunkmessage": "Junk Email",
+    "filetype_exchangeofficecom": "Communications",
+    "filetype_lithiummessage": "Lithium Message",
+    "filetype_lithiumthread": "Lithium Thread",
+    "filetype_lithiumboard": "Lithium Board",
+    "filetype_lithiumcategory": "Lithium Category",
+    "filetype_lithiumcommunity": "Lithium Community",
+    "filetype_spportal": "Portal",
+    "filetype_spsite": "Site",
+    "filetype_spuserprofile": "SharePoint User",
+    "filetype_sparea": "Area",
+    "filetype_spannouncement": "Announcement",
+    "filetype_spannouncementlist": "Announcements",
+    "filetype_spcontact": "Contact",
+    "filetype_spcontactlist": "Contacts",
+    "filetype_spcustomlist": "Custom Lists",
+    "filetype_spdiscussionboard": "Discussion Board",
+    "filetype_spdiscussionboardlist": "Discussion Boards",
+    "filetype_spdocumentlibrarylist": "Document Library",
+    "filetype_spevent": "Event",
+    "filetype_speventlist": "Events",
+    "filetype_spformlibrarylist": "Form Library",
+    "filetype_spissue": "Issue",
+    "filetype_spissuelist": "Issues",
+    "filetype_splink": "Link",
+    "filetype_splinklist": "Links",
+    "filetype_sppicturelibrarylist": "Picture Library",
+    "filetype_spsurvey": "Survey",
+    "filetype_spsurveylist": "Surveys",
+    "filetype_sptask": "Task",
+    "filetype_sptasklist": "Tasks",
+    "filetype_spagenda": "Agenda",
+    "filetype_spagendalist": "Ordres du jour",
+    "filetype_spattendee": "Attendee",
+    "filetype_spattendeelist": "Attendees",
+    "filetype_spcustomgridlist": "Custom Grids",
+    "filetype_spdecision": "Decision",
+    "filetype_spdecisionlist": "Decisions",
+    "filetype_spobjective": "Objective",
+    "filetype_spobjectivelist": "Objectives",
+    "filetype_sptextbox": "Textbox",
+    "filetype_sptextboxlist": "Textbox list",
+    "filetype_spthingstobring": "Thing To Bring",
+    "filetype_spthingstobringlist": "Things To Bring",
+    "filetype_sparealisting": "Area Listing",
+    "filetype_spmeetingserie": "Meeting series",
+    "filetype_spmeetingserielist": "Meeting Series List",
+    "filetype_spsitedirectory": "Site Directory Item",
+    "filetype_spsitedirectorylist": "Site Directory",
+    "filetype_spdatasource": "Data Source",
+    "filetype_spdatasourcelist": "Data Source List",
+    "filetype_splisttemplatecataloglist": "List Template Gallery",
+    "filetype_spwebpartcataloglist": "WebPart Gallery",
+    "filetype_spwebtemplatecataloglist": "Site Template Gallery",
+    "filetype_spworkspacepagelist": "Workspace Pages",
+    "filetype_spunknownlist": "Custom List",
+    "filetype_spadministratortask": "Administrator Task",
+    "filetype_spadministratortasklist": "Administrator Tasks",
+    "filetype_spareadocumentlibrarylist": "Area Document Library",
+    "filetype_spblogcategory": "Blog Category",
+    "filetype_spblogcategorylist": "Blog Categories",
+    "filetype_spblogcomment": "Blog Comment",
+    "filetype_spblogcommentlist": "Blog Comments",
+    "filetype_spblogpost": "Blog Post",
+    "filetype_spblogpostlist": "Blog Posts",
+    "filetype_spdataconnectionlibrarylist": "Data Connection Library",
+    "filetype_spdistributiongroup": "Distribution Group",
+    "filetype_spdistributiongrouplist": "Distribution Groups",
+    "filetype_spipfslist": "InfoPath Forms Servers",
+    "filetype_spkeyperformanceindicator": "Key Performance Indicator",
+    "filetype_spkeyperformanceindicatorlist": "Key Performance Indicators",
+    "filetype_splanguagesandtranslator": "Languages and Translator",
+    "filetype_splanguagesandtranslatorlist": "Languages and Translators",
+    "filetype_spmasterpagescataloglist": "Master Page Gallery",
+    "filetype_spnocodeworkflowlibrarylist": "No-code Workflow Libraries",
+    "filetype_spprojecttask": "Project Task",
+    "filetype_spprojecttasklist": "Project Tasks",
+    "filetype_sppublishingpageslibrarylist": "Page Library",
+    "filetype_spreportdocumentlibrarylist": "Report Document Library",
+    "filetype_spreportlibrarylist": "Report Library",
+    "filetype_spslidelibrarylist": "Slide Library",
+    "filetype_sptab": "Tabs",
+    "filetype_sptablist": "Tabs List",
+    "filetype_sptranslationmanagementlibrarylist": "Translation Management Library",
+    "filetype_spuserinformation": "User Information",
+    "filetype_spuserinformationlist": "User Information List",
+    "filetype_spwikipagelibrarylist": "Wiki Page Library",
+    "filetype_spworkflowhistory": "Workflow History",
+    "filetype_spworkflowhistorylist": "Workflow History List",
+    "filetype_spworkflowprocess": "Custom Workflow Process",
+    "filetype_spworkflowprocesslist": "Custom Workflow Processes",
+    "filetype_sppublishingimageslibrarylist": "Publishing Image Library",
+    "filetype_spcirculation": "Circulation",
+    "filetype_spcirculationlist": "Circulations",
+    "filetype_spdashboardslibrarylist": "Dashboards Library",
+    "filetype_spdataconnectionforperformancepointlibrarylist": "PerformancePoint Data Connection Library",
+    "filetype_sphealthreport": "Health Report",
+    "filetype_sphealthreportlist": "Health Reports",
+    "filetype_sphealthrule": "Health Rule",
+    "filetype_sphealthrulelist": "Health Rules",
+    "filetype_spimedictionary": "IME Dictionary",
+    "filetype_spimedictionarylist": "IME Dictionaries",
+    "filetype_spperformancepointcontent": "PerformancePoint Content",
+    "filetype_spperformancepointcontentlist": "PerformancePoint Contents",
+    "filetype_spphonecallmemo": "Phone Call Memo",
+    "filetype_spphonecallmemolist": "Phone Call Memos",
+    "filetype_sprecordlibrarylist": "Record Library",
+    "filetype_spresource": "Resource",
+    "filetype_spresourcelist": "Resources",
+    "filetype_spprocessdiagramslibrarylist": "Process Diagram Library",
+    "filetype_spsitethemeslibrarylist": "Site Theme Library",
+    "filetype_spsolutionslibrarylist": "Solution Library",
+    "filetype_spwfpublibrarylist": "WFPUB Library",
+    "filetype_spwhereabout": "Whereabout",
+    "filetype_spwhereaboutlist": "Whereabouts",
+    "filetype_spdocumentlink": "Link to a Document",
+    "filetype_spdocumentset": "Document Set",
+    "filetype_spmicrofeedpost": "Microfeed Post",
+    "filetype_spmicrofeedlist": "Microfeed",
+    "filetype_splistfolder": "List Folder",
+    "filetype_youtubevideo": "YouTube video",
+    "filetype_youtubeplaylistitem": "YouTube playlist item",
 };
 function defaultLanguage() {
     var locales = String["locales"] || (String["locales"] = {});
@@ -7571,14 +5768,472 @@ exports.setLanguageAfterPageLoaded = setLanguageAfterPageLoaded;
 
 
 /***/ }),
-/* 36 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
-/* WEBPACK VAR INJECTION */(function(global) {module.exports = global["Globalize"] = __webpack_require__(38);
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(37)))
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var Assert_1 = __webpack_require__(0);
+__webpack_require__(9);
+exports.MEDIUM_SCREEN_WIDTH = 800;
+exports.SMALL_SCREEN_WIDTH = 480;
+/**
+ * This class serves as a way to get and set the different screen size breakpoints for the interface.
+ *
+ * By settings those, you can impact, amongst other, the {@link Facet}, {@link Tab} or {@link ResultList} behaviour.
+ *
+ * For example, the {@link Facet} components of your interface will switch to a dropdown menu when the screen size reaches 800px or less.
+ *
+ * You could modify this value using this calls
+ *
+ * Normally, you would interact with this class using the instance bound to {@link SearchInterface.responsiveComponents}
+ */
+var ResponsiveComponents = (function () {
+    function ResponsiveComponents(windoh) {
+        if (windoh === void 0) { windoh = window; }
+        this.windoh = windoh;
+    }
+    /**
+     * Set the breakpoint for small screen size.
+     * @param width
+     */
+    ResponsiveComponents.prototype.setSmallScreenWidth = function (width) {
+        Assert_1.Assert.check(width < this.getMediumScreenWidth(), "Cannot set small screen width (" + width + ") larger or equal to the current medium screen width (" + this.getMediumScreenWidth() + ")");
+        this.smallScreenWidth = width;
+    };
+    /**
+     * Set the breakpoint for medium screen size
+     * @param width
+     */
+    ResponsiveComponents.prototype.setMediumScreenWidth = function (width) {
+        Assert_1.Assert.check(width > this.getSmallScreenWidth(), "Cannot set medium screen width (" + width + ") smaller or equal to the current small screen width (" + this.getSmallScreenWidth() + ")");
+        this.mediumScreenWidth = width;
+    };
+    /**
+     * Get the current breakpoint for small screen size.
+     *
+     * If it was not explicitly set by {@link ResponsiveComponents.setSmallScreenWidth}, the default value is `480`.
+     * @returns {number}
+     */
+    ResponsiveComponents.prototype.getSmallScreenWidth = function () {
+        if (this.smallScreenWidth == null) {
+            return exports.SMALL_SCREEN_WIDTH;
+        }
+        return this.smallScreenWidth;
+    };
+    /**
+     * Get the current breakpoint for medium screen size.
+     *
+     * If it was not explicitly set by {@link ResponsiveComponents.setMediumScreenWidth}, the default value is `800`.
+     * @returns {number}
+     */
+    ResponsiveComponents.prototype.getMediumScreenWidth = function () {
+        if (this.mediumScreenWidth == null) {
+            return exports.MEDIUM_SCREEN_WIDTH;
+        }
+        return this.mediumScreenWidth;
+    };
+    /**
+     * Return true if the current screen size is smaller than the current breakpoint set for small screen width.
+     * @returns {boolean}
+     */
+    ResponsiveComponents.prototype.isSmallScreenWidth = function () {
+        if (this.windoh['clientWidth'] != null) {
+            return this.windoh['clientWidth'] <= this.getSmallScreenWidth();
+        }
+        else {
+            return document.body.clientWidth <= this.getSmallScreenWidth();
+        }
+    };
+    /**
+     * Return true if the current screen size is smaller than the current breakpoint set for medium screen width.
+     * @returns {boolean}
+     */
+    ResponsiveComponents.prototype.isMediumScreenWidth = function () {
+        if (this.isSmallScreenWidth()) {
+            return false;
+        }
+        if (this.windoh['clientWidth'] != null) {
+            return this.windoh['clientWidth'] <= this.getMediumScreenWidth();
+        }
+        return document.body.clientWidth <= this.getMediumScreenWidth();
+    };
+    /**
+     * Return true if the current screen size is larger than the current breakpoint set for medium and small.
+     * @returns {boolean}
+     */
+    ResponsiveComponents.prototype.isLargeScreenWidth = function () {
+        return !this.isSmallScreenWidth() && !this.isMediumScreenWidth();
+    };
+    return ResponsiveComponents;
+}());
+exports.ResponsiveComponents = ResponsiveComponents;
+
 
 /***/ }),
-/* 37 */
+/* 22 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+// Not sure about this : In year 2033 who's to say that this list won't be 50 pages long !
+var ResponsiveComponents_1 = __webpack_require__(21);
+var mobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+var DeviceUtils = (function () {
+    function DeviceUtils() {
+    }
+    DeviceUtils.getDeviceName = function (userAgent) {
+        if (userAgent === void 0) { userAgent = navigator.userAgent; }
+        if (userAgent.match(/Edge/i)) {
+            return 'Edge';
+        }
+        if (userAgent.match(/Opera Mini/i)) {
+            return 'Opera Mini';
+        }
+        if (userAgent.match(/Android/i)) {
+            return 'Android';
+        }
+        if (userAgent.match(/BlackBerry/i)) {
+            return 'BlackBerry';
+        }
+        if (userAgent.match(/iPhone/i)) {
+            return 'iPhone';
+        }
+        if (userAgent.match(/iPad/i)) {
+            return 'iPad';
+        }
+        if (userAgent.match(/iPod/i)) {
+            return 'iPod';
+        }
+        if (userAgent.match(/Chrome/i)) {
+            return 'Chrome';
+        }
+        if (userAgent.match(/MSIE/i) || userAgent.match(/Trident/i)) {
+            return 'IE';
+        }
+        if (userAgent.match(/Opera/i)) {
+            return 'Opera';
+        }
+        if (userAgent.match(/Firefox/i)) {
+            return 'Firefox';
+        }
+        if (userAgent.match(/Safari/i)) {
+            return 'Safari';
+        }
+        return 'Others';
+    };
+    DeviceUtils.isAndroid = function () {
+        return DeviceUtils.getDeviceName() == 'Android';
+    };
+    DeviceUtils.isIos = function () {
+        var deviceName = DeviceUtils.getDeviceName();
+        return deviceName == 'iPhone' || deviceName == 'iPad' || deviceName == 'iPod';
+    };
+    DeviceUtils.isMobileDevice = function () {
+        return mobile;
+    };
+    /**
+     * @deprecated
+     *
+     * Use ResponsiveComponents.isSmallScreenWidth() instead
+     */
+    DeviceUtils.isSmallScreenWidth = function () {
+        return new ResponsiveComponents_1.ResponsiveComponents().isSmallScreenWidth();
+    };
+    return DeviceUtils;
+}());
+exports.DeviceUtils = DeviceUtils;
+
+
+/***/ }),
+/* 23 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var Assert_1 = __webpack_require__(0);
+var Utils_1 = __webpack_require__(2);
+var _ = __webpack_require__(1);
+var QueryUtils = (function () {
+    function QueryUtils() {
+    }
+    QueryUtils.createGuid = function () {
+        var guid;
+        var success = false;
+        if ((typeof (crypto) != 'undefined' && typeof (crypto.getRandomValues) != 'undefined')) {
+            try {
+                guid = QueryUtils.generateWithCrypto();
+                success = true;
+            }
+            catch (e) {
+                success = false;
+            }
+        }
+        if (!success) {
+            guid = QueryUtils.generateWithRandom();
+        }
+        return guid;
+    };
+    // This method is a fallback as it's generate a lot of collisions in Chrome.
+    QueryUtils.generateWithRandom = function () {
+        // http://stackoverflow.com/a/2117523
+        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+            var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+            return v.toString(16);
+        });
+    };
+    QueryUtils.generateWithCrypto = function () {
+        var buf = new Uint16Array(8);
+        crypto.getRandomValues(buf);
+        var S4 = function (num) {
+            var ret = num.toString(16);
+            while (ret.length < 4) {
+                ret = '0' + ret;
+            }
+            return ret;
+        };
+        return (S4(buf[0]) + S4(buf[1]) + '-' + S4(buf[2]) + '-' + S4(buf[3]) + '-' + S4(buf[4]) + '-' + S4(buf[5]) + S4(buf[6]) + S4(buf[7]));
+    };
+    QueryUtils.setStateObjectOnQueryResults = function (state, results) {
+        QueryUtils.setPropertyOnResults(results, 'state', state);
+    };
+    QueryUtils.setStateObjectOnQueryResult = function (state, result) {
+        QueryUtils.setPropertyOnResult(result, 'state', state);
+    };
+    QueryUtils.setSearchInterfaceObjectOnQueryResult = function (searchInterface, result) {
+        QueryUtils.setPropertyOnResult(result, 'searchInterface', searchInterface);
+    };
+    QueryUtils.setIndexAndUidOnQueryResults = function (query, results, queryUid, pipeline, splitTestRun) {
+        Assert_1.Assert.exists(query);
+        Assert_1.Assert.exists(results);
+        var index = query.firstResult;
+        QueryUtils.setPropertyOnResults(results, 'queryUid', queryUid);
+        QueryUtils.setPropertyOnResults(results, 'pipeline', pipeline);
+        QueryUtils.setPropertyOnResults(results, 'splitTestRun', splitTestRun);
+        QueryUtils.setPropertyOnResults(results, 'index', index, function () { return ++index; });
+    };
+    QueryUtils.setTermsToHighlightOnQueryResults = function (query, results) {
+        QueryUtils.setPropertyOnResults(results, 'termsToHighlight', results.termsToHighlight);
+        QueryUtils.setPropertyOnResults(results, 'phrasesToHighlight', results.phrasesToHighlight);
+    };
+    QueryUtils.splitFlags = function (flags, delimiter) {
+        if (delimiter === void 0) { delimiter = ';'; }
+        Assert_1.Assert.exists(flags);
+        return flags.split(delimiter);
+    };
+    QueryUtils.isAttachment = function (result) {
+        return _.contains(QueryUtils.splitFlags(result.flags), 'IsAttachment');
+    };
+    QueryUtils.containsAttachment = function (result) {
+        return _.contains(QueryUtils.splitFlags(result.flags), 'ContainsAttachment');
+    };
+    QueryUtils.hasHTMLVersion = function (result) {
+        return _.contains(QueryUtils.splitFlags(result.flags), 'HasHtmlVersion');
+    };
+    QueryUtils.hasThumbnail = function (result) {
+        return _.contains(QueryUtils.splitFlags(result.flags), 'HasThumbnail');
+    };
+    QueryUtils.hasExcerpt = function (result) {
+        return result.excerpt != undefined && result.excerpt != '';
+    };
+    QueryUtils.getAuthor = function (result) {
+        return result.raw['author'];
+    };
+    QueryUtils.getUriHash = function (result) {
+        return result.raw['urihash'];
+    };
+    QueryUtils.getObjectType = function (result) {
+        return result.raw['objecttype'];
+    };
+    QueryUtils.getCollection = function (result) {
+        return result.raw['collection'];
+    };
+    QueryUtils.getSource = function (result) {
+        return result.raw['source'];
+    };
+    QueryUtils.getLanguage = function (result) {
+        return result.raw['language'];
+    };
+    QueryUtils.getPermanentId = function (result) {
+        var fieldValue;
+        var fieldUsed;
+        var permanentId = Utils_1.Utils.getFieldValue(result, 'permanentid');
+        if (permanentId) {
+            fieldUsed = 'permanentid';
+            fieldValue = permanentId;
+        }
+        else {
+            fieldUsed = 'urihash';
+            fieldValue = Utils_1.Utils.getFieldValue(result, 'urihash');
+        }
+        return {
+            fieldValue: fieldValue,
+            fieldUsed: fieldUsed
+        };
+    };
+    QueryUtils.quoteAndEscapeIfNeeded = function (str) {
+        Assert_1.Assert.isString(str);
+        return QueryUtils.isAtomicString(str) || (QueryUtils.isRangeString(str) || QueryUtils.isRangeWithoutOuterBoundsString(str)) ? str : QueryUtils.quoteAndEscape(str);
+    };
+    QueryUtils.quoteAndEscape = function (str) {
+        Assert_1.Assert.isString(str);
+        return "\"" + QueryUtils.escapeString(str) + "\"";
+    };
+    QueryUtils.escapeString = function (str) {
+        Assert_1.Assert.isString(str);
+        return str.replace(/"/g, ' ');
+    };
+    QueryUtils.isAtomicString = function (str) {
+        Assert_1.Assert.isString(str);
+        return /^\d+(\.\d+)?$|^[\d\w]+$/.test(str);
+    };
+    QueryUtils.isRangeString = function (str) {
+        Assert_1.Assert.isString(str);
+        return /^\d+(\.\d+)?\.\.\d+(\.\d+)?$|^\d{4}\/\d{2}\/\d{2}@\d{2}:\d{2}:\d{2}\.\.\d{4}\/\d{2}\/\d{2}@\d{2}:\d{2}:\d{2}$/.test(str);
+    };
+    QueryUtils.isRangeWithoutOuterBoundsString = function (str) {
+        Assert_1.Assert.isString(str);
+        return /^\d+(\.\d+)?$|^\d{4}\/\d{2}\/\d{2}@\d{2}:\d{2}:\d{2}$/.test(str);
+    };
+    QueryUtils.buildFieldExpression = function (field, operator, values) {
+        Assert_1.Assert.isNonEmptyString(field);
+        Assert_1.Assert.stringStartsWith(field, '@');
+        Assert_1.Assert.isNonEmptyString(operator);
+        Assert_1.Assert.isLargerOrEqualsThan(1, values.length);
+        if (values.length == 1) {
+            return field + operator + QueryUtils.quoteAndEscapeIfNeeded(values[0]);
+        }
+        else {
+            return field + operator + '(' + _.map(values, function (str) { return QueryUtils.quoteAndEscapeIfNeeded(str); }).join(',') + ')';
+        }
+    };
+    QueryUtils.buildFieldNotEqualExpression = function (field, values) {
+        Assert_1.Assert.isNonEmptyString(field);
+        Assert_1.Assert.stringStartsWith(field, '@');
+        Assert_1.Assert.isLargerOrEqualsThan(1, values.length);
+        var filter;
+        if (values.length == 1) {
+            filter = field + '==' + QueryUtils.quoteAndEscapeIfNeeded(values[0]);
+        }
+        else {
+            filter = field + '==' + '(' + _.map(values, function (str) { return QueryUtils.quoteAndEscapeIfNeeded(str); }).join(',') + ')';
+        }
+        return '(NOT ' + filter + ')';
+    };
+    QueryUtils.mergeQueryString = function (url, queryString) {
+        var queryStringPosition = url.indexOf('?');
+        if (queryStringPosition != -1) {
+            url += '&' + queryString;
+        }
+        else {
+            url += '?' + queryString;
+        }
+        return url;
+    };
+    QueryUtils.mergePath = function (url, path) {
+        var urlSplit = url.split('?');
+        return urlSplit[0] + path + '?' + (urlSplit[1] || '');
+    };
+    QueryUtils.setPropertyOnResults = function (results, property, value, afterOneLoop) {
+        _.each(results.results, function (result) {
+            QueryUtils.setPropertyOnResult(result, property, value);
+            value = afterOneLoop ? afterOneLoop() : value;
+        });
+    };
+    QueryUtils.setPropertyOnResult = function (result, property, value) {
+        result[property] = value;
+        _.each(result.childResults, function (child) {
+            child[property] = value;
+        });
+        if (!Utils_1.Utils.isNullOrUndefined(result.parentResult)) {
+            result.parentResult[property] = value;
+        }
+    };
+    // http://stackoverflow.com/a/11582513
+    QueryUtils.getUrlParameter = function (name) {
+        return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.search) || [, ''])[1].replace(/\+/g, '%20')) || null;
+    };
+    QueryUtils.isStratusAgnosticField = function (fieldToVerify, fieldToMatch) {
+        var checkForSystem = /^(@?)(sys)?(.*)/i;
+        var matchFieldToVerify = checkForSystem.exec(fieldToVerify);
+        var matchFieldToMatch = checkForSystem.exec(fieldToMatch);
+        if (matchFieldToVerify && matchFieldToMatch) {
+            return (matchFieldToVerify[1] + matchFieldToVerify[3]).toLowerCase() == (matchFieldToMatch[1] + matchFieldToMatch[3]).toLowerCase();
+        }
+        return false;
+    };
+    return QueryUtils;
+}());
+exports.QueryUtils = QueryUtils;
+
+
+/***/ }),
+/* 24 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var Assert_1 = __webpack_require__(0);
+var TimeSpan = (function () {
+    function TimeSpan(time, isMilliseconds) {
+        if (isMilliseconds === void 0) { isMilliseconds = true; }
+        if (isMilliseconds) {
+            this.milliseconds = time;
+        }
+        else {
+            this.milliseconds = time * 1000;
+        }
+    }
+    TimeSpan.prototype.getMilliseconds = function () {
+        return this.milliseconds;
+    };
+    TimeSpan.prototype.getSeconds = function () {
+        return this.getMilliseconds() / 1000;
+    };
+    TimeSpan.prototype.getMinutes = function () {
+        return this.getSeconds() / 60;
+    };
+    TimeSpan.prototype.getHours = function () {
+        return this.getMinutes() / 60;
+    };
+    TimeSpan.prototype.getDays = function () {
+        return this.getHours() / 24;
+    };
+    TimeSpan.prototype.getWeeks = function () {
+        return this.getDays() / 7;
+    };
+    TimeSpan.prototype.getHHMMSS = function () {
+        var hours = Math.floor(this.getHours());
+        var minutes = Math.floor(this.getMinutes()) % 60;
+        var seconds = Math.floor(this.getSeconds()) % 60;
+        var hoursString, minutesString, secondsString;
+        if (hours == 0) {
+            hoursString = '';
+        }
+        else {
+            hoursString = hours < 10 ? '0' + hours.toString() : hours.toString();
+        }
+        minutesString = minutes < 10 ? '0' + minutes.toString() : minutes.toString();
+        secondsString = seconds < 10 ? '0' + seconds.toString() : seconds.toString();
+        var hhmmss = (hoursString != '' ? hoursString + ':' : '') + minutesString + ':' + secondsString;
+        return hhmmss;
+    };
+    TimeSpan.fromDates = function (from, to) {
+        Assert_1.Assert.exists(from);
+        Assert_1.Assert.exists(to);
+        return new TimeSpan(to.valueOf() - from.valueOf());
+    };
+    return TimeSpan;
+}());
+exports.TimeSpan = TimeSpan;
+
+
+/***/ }),
+/* 25 */
 /***/ (function(module, exports) {
 
 var g;
@@ -7605,13 +6260,11 @@ module.exports = g;
 
 
 /***/ }),
-/* 38 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
-/*! globalize - v0.1.1 - 2013-04-30
-* https://github.com/jquery/globalize
-* Copyright 2013 ; Licensed MIT */
-var Globalize = (function(e,r){var t,n,a,s,u,l,i,c,o,f,d,p,h,g,b,m,y,M,v,k,z,F,A,x;t=function(e){return new t.prototype.init(e)}, true?module.exports=t:e.Globalize=t,t.cultures={},t.prototype={constructor:t,init:function(e){return this.cultures=t.cultures,this.cultureSelector=e,this}},t.prototype.init.prototype=t.prototype,t.cultures["default"]={name:"en",englishName:"English",nativeName:"English",isRTL:!1,language:"en",numberFormat:{pattern:["-n"],decimals:2,",":",",".":".",groupSizes:[3],"+":"+","-":"-",NaN:"NaN",negativeInfinity:"-Infinity",positiveInfinity:"Infinity",percent:{pattern:["-n %","n %"],decimals:2,groupSizes:[3],",":",",".":".",symbol:"%"},currency:{pattern:["($n)","$n"],decimals:2,groupSizes:[3],",":",",".":".",symbol:"$"}},calendars:{standard:{name:"Gregorian_USEnglish","/":"/",":":":",firstDay:0,days:{names:["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],namesAbbr:["Sun","Mon","Tue","Wed","Thu","Fri","Sat"],namesShort:["Su","Mo","Tu","We","Th","Fr","Sa"]},months:{names:["January","February","March","April","May","June","July","August","September","October","November","December",""],namesAbbr:["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec",""]},AM:["AM","am","AM"],PM:["PM","pm","PM"],eras:[{name:"A.D.",start:null,offset:0}],twoDigitYearMax:2029,patterns:{d:"M/d/yyyy",D:"dddd, MMMM dd, yyyy",t:"h:mm tt",T:"h:mm:ss tt",f:"dddd, MMMM dd, yyyy h:mm tt",F:"dddd, MMMM dd, yyyy h:mm:ss tt",M:"MMMM dd",Y:"yyyy MMMM",S:"yyyy'-'MM'-'dd'T'HH':'mm':'ss"}}},messages:{}},t.cultures["default"].calendar=t.cultures["default"].calendars.standard,t.cultures.en=t.cultures["default"],t.cultureSelector="en",n=/^0x[a-f0-9]+$/i,a=/^[+\-]?infinity$/i,s=/^[+\-]?\d*\.?\d*(e[+\-]?\d+)?$/,u=/^\s+|\s+$/g,l=function(e,r){if(e.indexOf)return e.indexOf(r);for(var t=0,n=e.length;n>t;t++)if(e[t]===r)return t;return-1},i=function(e,r){return e.substr(e.length-r.length)===r},c=function(){var e,t,n,a,s,u,l=arguments[0]||{},i=1,p=arguments.length,h=!1;for("boolean"==typeof l&&(h=l,l=arguments[1]||{},i=2),"object"==typeof l||f(l)||(l={});p>i;i++)if(null!=(e=arguments[i]))for(t in e)n=l[t],a=e[t],l!==a&&(h&&a&&(d(a)||(s=o(a)))?(s?(s=!1,u=n&&o(n)?n:[]):u=n&&d(n)?n:{},l[t]=c(h,u,a)):a!==r&&(l[t]=a));return l},o=Array.isArray||function(e){return"[object Array]"===Object.prototype.toString.call(e)},f=function(e){return"[object Function]"===Object.prototype.toString.call(e)},d=function(e){return"[object Object]"===Object.prototype.toString.call(e)},p=function(e,r){return 0===e.indexOf(r)},h=function(e){return(e+"").replace(u,"")},g=function(e){return isNaN(e)?0/0:Math[0>e?"ceil":"floor"](e)},b=function(e,r,t){var n;for(n=e.length;r>n;n+=1)e=t?"0"+e:e+"0";return e},m=function(e,r){for(var t=0,n=!1,a=0,s=e.length;s>a;a++){var u=e.charAt(a);switch(u){case"'":n?r.push("'"):t++,n=!1;break;case"\\":n&&r.push("\\"),n=!n;break;default:r.push(u),n=!1}}return t},y=function(e,r){r=r||"F";var t,n=e.patterns,a=r.length;if(1===a){if(t=n[r],!t)throw"Invalid date format string '"+r+"'.";r=t}else 2===a&&"%"===r.charAt(0)&&(r=r.charAt(1));return r},M=function(e,r,t){function n(e,r){var t,n=e+"";return r>1&&r>n.length?(t=v[r-2]+n,t.substr(t.length-r,r)):t=n}function a(){return h||g?h:(h=A.test(r),g=!0,h)}function s(e,r){if(b)return b[r];switch(r){case 0:return e.getFullYear();case 1:return e.getMonth();case 2:return e.getDate();default:throw"Invalid part value "+r}}var u,l=t.calendar,i=l.convert;if(!r||!r.length||"i"===r){if(t&&t.name.length)if(i)u=M(e,l.patterns.F,t);else{var c=new Date(e.getTime()),o=z(e,l.eras);c.setFullYear(F(e,l,o)),u=c.toLocaleString()}else u=""+e;return u}var f=l.eras,d="s"===r;r=y(l,r),u=[];var p,h,g,b,v=["0","00","000"],A=/([^d]|^)(d|dd)([^d]|$)/g,x=0,I=k();for(!d&&i&&(b=i.fromGregorian(e));;){var S=I.lastIndex,w=I.exec(r),C=r.slice(S,w?w.index:r.length);if(x+=m(C,u),!w)break;if(x%2)u.push(w[0]);else{var D=w[0],H=D.length;switch(D){case"ddd":case"dddd":var O=3===H?l.days.namesAbbr:l.days.names;u.push(O[e.getDay()]);break;case"d":case"dd":h=!0,u.push(n(s(e,2),H));break;case"MMM":case"MMMM":var N=s(e,1);u.push(l.monthsGenitive&&a()?l.monthsGenitive[3===H?"namesAbbr":"names"][N]:l.months[3===H?"namesAbbr":"names"][N]);break;case"M":case"MM":u.push(n(s(e,1)+1,H));break;case"y":case"yy":case"yyyy":N=b?b[0]:F(e,l,z(e,f),d),4>H&&(N%=100),u.push(n(N,H));break;case"h":case"hh":p=e.getHours()%12,0===p&&(p=12),u.push(n(p,H));break;case"H":case"HH":u.push(n(e.getHours(),H));break;case"m":case"mm":u.push(n(e.getMinutes(),H));break;case"s":case"ss":u.push(n(e.getSeconds(),H));break;case"t":case"tt":N=12>e.getHours()?l.AM?l.AM[0]:" ":l.PM?l.PM[0]:" ",u.push(1===H?N.charAt(0):N);break;case"f":case"ff":case"fff":u.push(n(e.getMilliseconds(),3).substr(0,H));break;case"z":case"zz":p=e.getTimezoneOffset()/60,u.push((0>=p?"+":"-")+n(Math.floor(Math.abs(p)),H));break;case"zzz":p=e.getTimezoneOffset()/60,u.push((0>=p?"+":"-")+n(Math.floor(Math.abs(p)),2)+":"+n(Math.abs(e.getTimezoneOffset()%60),2));break;case"g":case"gg":l.eras&&u.push(l.eras[z(e,f)].name);break;case"/":u.push(l["/"]);break;default:throw"Invalid date format pattern '"+D+"'."}}}return u.join("")},function(){var e;e=function(e,r,t){var n=t.groupSizes,a=n[0],s=1,u=Math.pow(10,r),l=Math.round(e*u)/u;isFinite(l)||(l=e),e=l;var i=e+"",c="",o=i.split(/e/i),f=o.length>1?parseInt(o[1],10):0;i=o[0],o=i.split("."),i=o[0],c=o.length>1?o[1]:"",f>0?(c=b(c,f,!1),i+=c.slice(0,f),c=c.substr(f)):0>f&&(f=-f,i=b(i,f+1,!0),c=i.slice(-f,i.length)+c,i=i.slice(0,-f)),c=r>0?t["."]+(c.length>r?c.slice(0,r):b(c,r)):"";for(var d=i.length-1,p=t[","],h="";d>=0;){if(0===a||a>d)return i.slice(0,d+1)+(h.length?p+h+c:c);h=i.slice(d-a+1,d+1)+(h.length?p+h:""),d-=a,n.length>s&&(a=n[s],s++)}return i.slice(0,d+1)+p+h+c},v=function(r,t,n){if(!isFinite(r))return 1/0===r?n.numberFormat.positiveInfinity:r===-1/0?n.numberFormat.negativeInfinity:n.numberFormat.NaN;if(!t||"i"===t)return n.name.length?r.toLocaleString():""+r;t=t||"D";var a,s=n.numberFormat,u=Math.abs(r),l=-1;t.length>1&&(l=parseInt(t.slice(1),10));var i,c=t.charAt(0).toUpperCase();switch(c){case"D":a="n",u=g(u),-1!==l&&(u=b(""+u,l,!0)),0>r&&(u="-"+u);break;case"N":i=s;case"C":i=i||s.currency;case"P":i=i||s.percent,a=0>r?i.pattern[0]:i.pattern[1]||"n",-1===l&&(l=i.decimals),u=e(u*("P"===c?100:1),l,i);break;default:throw"Bad number format specifier: "+c}for(var o=/n|\$|-|%/g,f="";;){var d=o.lastIndex,p=o.exec(a);if(f+=a.slice(d,p?p.index:a.length),!p)break;switch(p[0]){case"n":f+=u;break;case"$":f+=s.currency.symbol;break;case"-":/[1-9]/.test(u)&&(f+=s["-"]);break;case"%":f+=s.percent.symbol}}return f}}(),k=function(){return/\/|dddd|ddd|dd|d|MMMM|MMM|MM|M|yyyy|yy|y|hh|h|HH|H|mm|m|ss|s|tt|t|fff|ff|f|zzz|zz|z|gg|g/g},z=function(e,r){if(!r)return 0;for(var t,n=e.getTime(),a=0,s=r.length;s>a;a++)if(t=r[a].start,null===t||n>=t)return a;return 0},F=function(e,r,t,n){var a=e.getFullYear();return!n&&r.eras&&(a-=r.eras[t].offset),a},function(){var e,r,t,n,a,s,u;e=function(e,r){if(100>r){var t=new Date,n=z(t),a=F(t,e,n),s=e.twoDigitYearMax;s="string"==typeof s?(new Date).getFullYear()%100+parseInt(s,10):s,r+=a-a%100,r>s&&(r-=100)}return r},r=function(e,r,t){var n,a=e.days,i=e._upperDays;return i||(e._upperDays=i=[u(a.names),u(a.namesAbbr),u(a.namesShort)]),r=s(r),t?(n=l(i[1],r),-1===n&&(n=l(i[2],r))):n=l(i[0],r),n},t=function(e,r,t){var n=e.months,a=e.monthsGenitive||e.months,i=e._upperMonths,c=e._upperMonthsGen;i||(e._upperMonths=i=[u(n.names),u(n.namesAbbr)],e._upperMonthsGen=c=[u(a.names),u(a.namesAbbr)]),r=s(r);var o=l(t?i[1]:i[0],r);return 0>o&&(o=l(t?c[1]:c[0],r)),o},n=function(e,r){var t=e._parseRegExp;if(t){var n=t[r];if(n)return n}else e._parseRegExp=t={};for(var a,s=y(e,r).replace(/([\^\$\.\*\+\?\|\[\]\(\)\{\}])/g,"\\\\$1"),u=["^"],l=[],i=0,c=0,o=k();null!==(a=o.exec(s));){var f=s.slice(i,a.index);if(i=o.lastIndex,c+=m(f,u),c%2)u.push(a[0]);else{var d,p=a[0],h=p.length;switch(p){case"dddd":case"ddd":case"MMMM":case"MMM":case"gg":case"g":d="(\\D+)";break;case"tt":case"t":d="(\\D*)";break;case"yyyy":case"fff":case"ff":case"f":d="(\\d{"+h+"})";break;case"dd":case"d":case"MM":case"M":case"yy":case"y":case"HH":case"H":case"hh":case"h":case"mm":case"m":case"ss":case"s":d="(\\d\\d?)";break;case"zzz":d="([+-]?\\d\\d?:\\d{2})";break;case"zz":case"z":d="([+-]?\\d\\d?)";break;case"/":d="(\\/)";break;default:throw"Invalid date format pattern '"+p+"'."}d&&u.push(d),l.push(a[0])}}m(s.slice(i),u),u.push("$");var g=u.join("").replace(/\s+/g,"\\s+"),b={regExp:g,groups:l};return t[r]=b},a=function(e,r,t){return r>e||e>t},s=function(e){return e.split("\u00a0").join(" ").toUpperCase()},u=function(e){for(var r=[],t=0,n=e.length;n>t;t++)r[t]=s(e[t]);return r},A=function(s,u,l){s=h(s);var i=l.calendar,c=n(i,u),o=RegExp(c.regExp).exec(s);if(null===o)return null;for(var f,d=c.groups,g=null,b=null,m=null,y=null,M=null,v=0,k=0,z=0,F=0,A=null,x=!1,I=0,S=d.length;S>I;I++){var w=o[I+1];if(w){var C=d[I],D=C.length,H=parseInt(w,10);switch(C){case"dd":case"d":if(y=H,a(y,1,31))return null;break;case"MMM":case"MMMM":if(m=t(i,w,3===D),a(m,0,11))return null;break;case"M":case"MM":if(m=H-1,a(m,0,11))return null;break;case"y":case"yy":case"yyyy":if(b=4>D?e(i,H):H,a(b,0,9999))return null;break;case"h":case"hh":if(v=H,12===v&&(v=0),a(v,0,11))return null;break;case"H":case"HH":if(v=H,a(v,0,23))return null;break;case"m":case"mm":if(k=H,a(k,0,59))return null;break;case"s":case"ss":if(z=H,a(z,0,59))return null;break;case"tt":case"t":if(x=i.PM&&(w===i.PM[0]||w===i.PM[1]||w===i.PM[2]),!x&&(!i.AM||w!==i.AM[0]&&w!==i.AM[1]&&w!==i.AM[2]))return null;break;case"f":case"ff":case"fff":if(F=H*Math.pow(10,3-D),a(F,0,999))return null;break;case"ddd":case"dddd":if(M=r(i,w,3===D),a(M,0,6))return null;break;case"zzz":var O=w.split(/:/);if(2!==O.length)return null;if(f=parseInt(O[0],10),a(f,-12,13))return null;var N=parseInt(O[1],10);if(a(N,0,59))return null;A=60*f+(p(w,"-")?-N:N);break;case"z":case"zz":if(f=H,a(f,-12,13))return null;A=60*f;break;case"g":case"gg":var T=w;if(!T||!i.eras)return null;T=h(T.toLowerCase());for(var j=0,$=i.eras.length;$>j;j++)if(T===i.eras[j].name.toLowerCase()){g=j;break}if(null===g)return null}}}var P,G=new Date,E=i.convert;if(P=E?E.fromGregorian(G)[0]:G.getFullYear(),null===b?b=P:i.eras&&(b+=i.eras[g||0].offset),null===m&&(m=0),null===y&&(y=1),E){if(G=E.toGregorian(b,m,y),null===G)return null}else{if(G.setFullYear(b,m,y),G.getDate()!==y)return null;if(null!==M&&G.getDay()!==M)return null}if(x&&12>v&&(v+=12),G.setHours(v,k,z,F),null!==A){var Y=G.getMinutes()-(A+G.getTimezoneOffset());G.setHours(G.getHours()+parseInt(Y/60,10),Y%60)}return G}}(),x=function(e,r,t){var n,a=r["-"],s=r["+"];switch(t){case"n -":a=" "+a,s=" "+s;case"n-":i(e,a)?n=["-",e.substr(0,e.length-a.length)]:i(e,s)&&(n=["+",e.substr(0,e.length-s.length)]);break;case"- n":a+=" ",s+=" ";case"-n":p(e,a)?n=["-",e.substr(a.length)]:p(e,s)&&(n=["+",e.substr(s.length)]);break;case"(n)":p(e,"(")&&i(e,")")&&(n=["-",e.substr(1,e.length-2)])}return n||["",e]},t.prototype.findClosestCulture=function(e){return t.findClosestCulture.call(this,e)},t.prototype.format=function(e,r,n){return t.format.call(this,e,r,n)},t.prototype.localize=function(e,r){return t.localize.call(this,e,r)},t.prototype.parseInt=function(e,r,n){return t.parseInt.call(this,e,r,n)},t.prototype.parseFloat=function(e,r,n){return t.parseFloat.call(this,e,r,n)},t.prototype.culture=function(e){return t.culture.call(this,e)},t.addCultureInfo=function(e,r,t){var n={},a=!1;"string"!=typeof e?(t=e,e=this.culture().name,n=this.cultures[e]):"string"!=typeof r?(t=r,a=null==this.cultures[e],n=this.cultures[e]||this.cultures["default"]):(a=!0,n=this.cultures[r]),this.cultures[e]=c(!0,{},n,t),a&&(this.cultures[e].calendar=this.cultures[e].calendars.standard)},t.findClosestCulture=function(e){var r;if(!e)return this.findClosestCulture(this.cultureSelector)||this.cultures["default"];if("string"==typeof e&&(e=e.split(",")),o(e)){var t,n,a=this.cultures,s=e,u=s.length,l=[];for(n=0;u>n;n++){e=h(s[n]);var i,c=e.split(";");t=h(c[0]),1===c.length?i=1:(e=h(c[1]),0===e.indexOf("q=")?(e=e.substr(2),i=parseFloat(e),i=isNaN(i)?0:i):i=1),l.push({lang:t,pri:i})}for(l.sort(function(e,r){return e.pri<r.pri?1:e.pri>r.pri?-1:0}),n=0;u>n;n++)if(t=l[n].lang,r=a[t])return r;for(n=0;u>n;n++)for(t=l[n].lang;;){var f=t.lastIndexOf("-");if(-1===f)break;if(t=t.substr(0,f),r=a[t])return r}for(n=0;u>n;n++){t=l[n].lang;for(var d in a){var p=a[d];if(p.language===t)return p}}}else if("object"==typeof e)return e;return r||null},t.format=function(e,r,t){var n=this.findClosestCulture(t);return e instanceof Date?e=M(e,r,n):"number"==typeof e&&(e=v(e,r,n)),e},t.localize=function(e,r){return this.findClosestCulture(r).messages[e]||this.cultures["default"].messages[e]},t.parseDate=function(e,r,t){t=this.findClosestCulture(t);var n,a,s;if(r){if("string"==typeof r&&(r=[r]),r.length)for(var u=0,l=r.length;l>u;u++){var i=r[u];if(i&&(n=A(e,i,t)))break}}else{s=t.calendar.patterns;for(a in s)if(n=A(e,s[a],t))break}return n||null},t.parseInt=function(e,r,n){return g(t.parseFloat(e,r,n))},t.parseFloat=function(e,r,t){"number"!=typeof r&&(t=r,r=10);var u=this.findClosestCulture(t),l=0/0,i=u.numberFormat;if(e.indexOf(u.numberFormat.currency.symbol)>-1&&(e=e.replace(u.numberFormat.currency.symbol,""),e=e.replace(u.numberFormat.currency["."],u.numberFormat["."])),e.indexOf(u.numberFormat.percent.symbol)>-1&&(e=e.replace(u.numberFormat.percent.symbol,"")),e=e.replace(/ /g,""),a.test(e))l=parseFloat(e);else if(!r&&n.test(e))l=parseInt(e,16);else{var c=x(e,i,i.pattern[0]),o=c[0],f=c[1];""===o&&"(n)"!==i.pattern[0]&&(c=x(e,i,"(n)"),o=c[0],f=c[1]),""===o&&"-n"!==i.pattern[0]&&(c=x(e,i,"-n"),o=c[0],f=c[1]),o=o||"+";var d,p,h=f.indexOf("e");0>h&&(h=f.indexOf("E")),0>h?(p=f,d=null):(p=f.substr(0,h),d=f.substr(h+1));var g,b,m=i["."],y=p.indexOf(m);0>y?(g=p,b=null):(g=p.substr(0,y),b=p.substr(y+m.length));var M=i[","];g=g.split(M).join("");var v=M.replace(/\u00A0/g," ");M!==v&&(g=g.split(v).join(""));var k=o+g;if(null!==b&&(k+="."+b),null!==d){var z=x(d,i,"-n");k+="e"+(z[0]||"+")+z[1]}s.test(k)&&(l=parseFloat(k))}return l},t.culture=function(e){return e!==r&&(this.cultureSelector=e),this.findClosestCulture(e)||this.cultures["default"]}; return Globalize;}(this));
+module.exports = __webpack_require__(6);
+
 
 /***/ })
 /******/ ]);

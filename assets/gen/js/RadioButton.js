@@ -1,25 +1,25 @@
-webpackJsonpCoveo__temporary([50],{
+webpackJsonpCoveo__temporary([48],{
 
-/***/ 435:
+/***/ 607:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
 
-/***/ 79:
+/***/ 97:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var Dom_1 = __webpack_require__(3);
-__webpack_require__(435);
+__webpack_require__(607);
 var GlobalExports_1 = __webpack_require__(4);
 /**
  * A radio button widget with standard styling.
  */
-var RadioButton = /** @class */ (function () {
+var RadioButton = (function () {
     /**
      * Creates a new `RadioButton`.
      * @param onChange The function to call when the radio button value changes. This function takes the current
@@ -28,7 +28,8 @@ var RadioButton = /** @class */ (function () {
      * @param name The value to set the `input` HTMLElement `name` attribute to.
      */
     function RadioButton(onChange, label, name) {
-        if (onChange === void 0) { onChange = function (radioButton) { }; }
+        if (onChange === void 0) { onChange = function (radioButton) {
+        }; }
         this.onChange = onChange;
         this.label = label;
         this.name = name;
@@ -36,7 +37,7 @@ var RadioButton = /** @class */ (function () {
     }
     RadioButton.doExport = function () {
         GlobalExports_1.exportGlobally({
-            RadioButton: RadioButton
+            'RadioButton': RadioButton
         });
     };
     /**
@@ -103,7 +104,7 @@ var RadioButton = /** @class */ (function () {
         var _this = this;
         var radioOption = Dom_1.$$('div', { className: 'coveo-radio' });
         var radioInput = Dom_1.$$('input', { type: 'radio', name: this.name, id: this.label });
-        var labelInput = Dom_1.$$('label', { className: 'coveo-radio-input-label', for: this.label });
+        var labelInput = Dom_1.$$('label', { className: 'coveo-radio-input-label', 'for': this.label });
         labelInput.text(this.label);
         radioInput.on('change', function () {
             _this.onChange(_this);

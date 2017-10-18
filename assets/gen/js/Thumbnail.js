@@ -1,6 +1,6 @@
-webpackJsonpCoveo__temporary([20,57,67],{
+webpackJsonpCoveo__temporary([18,55,65],{
 
-/***/ 242:
+/***/ 286:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19,10 +19,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var Component_1 = __webpack_require__(8);
 var ComponentOptions_1 = __webpack_require__(9);
 var Assert_1 = __webpack_require__(7);
-var QueryUtils_1 = __webpack_require__(19);
+var QueryUtils_1 = __webpack_require__(20);
 var Initialization_1 = __webpack_require__(2);
-var Utils_1 = __webpack_require__(6);
-var FileTypes_1 = __webpack_require__(83);
+var Utils_1 = __webpack_require__(5);
+var FileTypes_1 = __webpack_require__(100);
 var Dom_1 = __webpack_require__(3);
 var GlobalExports_1 = __webpack_require__(4);
 /**
@@ -32,7 +32,7 @@ var GlobalExports_1 = __webpack_require__(4);
  *
  * This component is a result template component (see [Result Templates](https://developers.coveo.com/x/aIGfAQ)).
  */
-var Icon = /** @class */ (function (_super) {
+var Icon = (function (_super) {
     __extends(Icon, _super);
     /**
      * Creates a new Icon component.
@@ -117,59 +117,59 @@ var Icon = /** @class */ (function (_super) {
         }
         return info;
     };
-    Icon.ID = 'Icon';
-    Icon.doExport = function () {
-        GlobalExports_1.exportGlobally({
-            Icon: Icon
-        });
-    };
-    /**
-     * The options for the Icon
-     * @componentOptions
-     */
-    Icon.options = {
-        /**
-         * Specifies the value that the Icon component should output as its CSS class instead of the auto-selected value.
-         *
-         * Default value is `undefined`, which means that the Coveo JavaScript Search Framework outputs a suitable icon
-         * depending on the result file type.
-         */
-        value: ComponentOptions_1.ComponentOptions.buildStringOption(),
-        /**
-         * Specifies whether the Icon component should output the smaller version of the icon instead of the regular one.
-         *
-         * Default value is `undefined`.
-         */
-        small: ComponentOptions_1.ComponentOptions.buildBooleanOption(),
-        /**
-         * Specifies whether the Icon component should force the output icon to display its caption/label.
-         *
-         * **Note:**
-         *
-         * > Due to limited screen real estate, setting this option to `true` has no effect on icons used inside Coveo for
-         * > Salesforce Insight Panels.
-         *
-         * Default value is `undefined`, which means that the Coveo JavaScript Search Framework determines whether the icon
-         * needs to display a caption/label depending on the result file type.
-         */
-        withLabel: ComponentOptions_1.ComponentOptions.buildBooleanOption(),
-        /**
-         * Specifies what text to display as the icon caption/label.
-         *
-         * Default value is `undefined`, which means that the Coveo JavaScript Search Framework determines what text the icon
-         * needs to display depending on the result file type.
-         */
-        labelValue: ComponentOptions_1.ComponentOptions.buildLocalizedStringOption()
-    };
     return Icon;
 }(Component_1.Component));
+Icon.ID = 'Icon';
+Icon.doExport = function () {
+    GlobalExports_1.exportGlobally({
+        'Icon': Icon
+    });
+};
+/**
+ * The options for the Icon
+ * @componentOptions
+ */
+Icon.options = {
+    /**
+     * Specifies the value that the Icon component should output as its CSS class instead of the auto-selected value.
+     *
+     * Default value is `undefined`, which means that the Coveo JavaScript Search Framework outputs a suitable icon
+     * depending on the result file type.
+     */
+    value: ComponentOptions_1.ComponentOptions.buildStringOption(),
+    /**
+     * Specifies whether the Icon component should output the smaller version of the icon instead of the regular one.
+     *
+     * Default value is `undefined`.
+     */
+    small: ComponentOptions_1.ComponentOptions.buildBooleanOption(),
+    /**
+     * Specifies whether the Icon component should force the output icon to display its caption/label.
+     *
+     * **Note:**
+     *
+     * > Due to limited screen real estate, setting this option to `true` has no effect on icons used inside Coveo for
+     * > Salesforce Insight Panels.
+     *
+     * Default value is `undefined`, which means that the Coveo JavaScript Search Framework determines whether the icon
+     * needs to display a caption/label depending on the result file type.
+     */
+    withLabel: ComponentOptions_1.ComponentOptions.buildBooleanOption(),
+    /**
+     * Specifies what text to display as the icon caption/label.
+     *
+     * Default value is `undefined`, which means that the Coveo JavaScript Search Framework determines what text the icon
+     * needs to display depending on the result file type.
+     */
+    labelValue: ComponentOptions_1.ComponentOptions.buildLocalizedStringOption()
+};
 exports.Icon = Icon;
 Initialization_1.Initialization.registerAutoCreateComponent(Icon);
 
 
 /***/ }),
 
-/***/ 315:
+/***/ 399:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -187,19 +187,19 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var Component_1 = __webpack_require__(8);
 var ComponentOptions_1 = __webpack_require__(9);
-var ResultLink_1 = __webpack_require__(77);
-var QueryUtils_1 = __webpack_require__(19);
+var ResultLink_1 = __webpack_require__(91);
+var QueryUtils_1 = __webpack_require__(20);
 var Initialization_1 = __webpack_require__(2);
 var Dom_1 = __webpack_require__(3);
-var RegisteredNamedMethods_1 = __webpack_require__(34);
-var Icon_1 = __webpack_require__(242);
+var RegisteredNamedMethods_1 = __webpack_require__(54);
+var Icon_1 = __webpack_require__(286);
 var _ = __webpack_require__(1);
 var GlobalExports_1 = __webpack_require__(4);
 /**
  * The Thumbnail component automatically fetches the thumbnail of the result object and outputs an HTML `img` tag with
  * it.
  */
-var Thumbnail = /** @class */ (function (_super) {
+var Thumbnail = (function (_super) {
     __extends(Thumbnail, _super);
     /**
      * Creates a new Thumbnail component.
@@ -262,16 +262,13 @@ var Thumbnail = /** @class */ (function (_super) {
         }
     };
     Thumbnail.prototype.buildImageWithDirectSrcAttribute = function (endpoint) {
-        var dataStreamUri = endpoint.getViewAsDatastreamUri(this.result.uniqueId, '$Thumbnail$', {
-            contentType: 'image/png'
-        });
+        var dataStreamUri = endpoint.getViewAsDatastreamUri(this.result.uniqueId, '$Thumbnail$', { contentType: 'image/png' });
         this.img.setAttribute('src', dataStreamUri);
         this.resizeContainingFieldTable();
     };
     Thumbnail.prototype.buildImageWithBase64SrcAttribute = function (endpoint) {
         var _this = this;
-        endpoint
-            .getRawDataStream(this.result.uniqueId, '$Thumbnail$')
+        endpoint.getRawDataStream(this.result.uniqueId, '$Thumbnail$')
             .then(function (response) {
             var rawBinary = String.fromCharCode.apply(null, new Uint8Array(response));
             _this.img.setAttribute('src', 'data:image/png;base64, ' + btoa(rawBinary));
@@ -291,36 +288,36 @@ var Thumbnail = /** @class */ (function (_super) {
     Thumbnail.prototype.setEmptyThumbnailClass = function () {
         Dom_1.$$(this.img).addClass(this.options.noThumbnailClass);
     };
-    Thumbnail.ID = 'Thumbnail';
-    Thumbnail.doExport = function () {
-        GlobalExports_1.exportGlobally({
-            Thumbnail: Thumbnail
-        });
-    };
-    /**
-     * Options for the Thumbnail
-     * @componentOptions
-     */
-    Thumbnail.options = {
-        /**
-         * Specifies the CSS class to use on the `img` tag that the Thumbnail component outputs when a result has no
-         * thumbnail in the index.
-         *
-         * Default value is `coveo-no-thumbnail`.
-         */
-        noThumbnailClass: ComponentOptions_1.ComponentOptions.buildStringOption({ defaultValue: 'coveo-no-thumbnail' }),
-        /**
-         * Specifies whether to create a clickable {@link ResultLink} around the Thumbnail.
-         *
-         * Default value is `false`.
-         *
-         * If set to true, you can use the options specified on {@link ResultLink.options}
-         */
-        clickable: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: false })
-    };
-    Thumbnail.parent = ResultLink_1.ResultLink;
     return Thumbnail;
 }(Component_1.Component));
+Thumbnail.ID = 'Thumbnail';
+Thumbnail.doExport = function () {
+    GlobalExports_1.exportGlobally({
+        'Thumbnail': Thumbnail
+    });
+};
+/**
+ * Options for the Thumbnail
+ * @componentOptions
+ */
+Thumbnail.options = {
+    /**
+     * Specifies the CSS class to use on the `img` tag that the Thumbnail component outputs when a result has no
+     * thumbnail in the index.
+     *
+     * Default value is `coveo-no-thumbnail`.
+     */
+    noThumbnailClass: ComponentOptions_1.ComponentOptions.buildStringOption({ defaultValue: 'coveo-no-thumbnail' }),
+    /**
+     * Specifies whether to create a clickable {@link ResultLink} around the Thumbnail.
+     *
+     * Default value is `false`.
+     *
+     * If set to true, you can use the options specified on {@link ResultLink.options}
+     */
+    clickable: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: false })
+};
+Thumbnail.parent = ResultLink_1.ResultLink;
 exports.Thumbnail = Thumbnail;
 Thumbnail.options = _.extend({}, ResultLink_1.ResultLink.options, Thumbnail.options);
 Initialization_1.Initialization.registerAutoCreateComponent(Thumbnail);
@@ -328,14 +325,14 @@ Initialization_1.Initialization.registerAutoCreateComponent(Thumbnail);
 
 /***/ }),
 
-/***/ 432:
+/***/ 598:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
 
-/***/ 77:
+/***/ 91:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -353,29 +350,29 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var Component_1 = __webpack_require__(8);
 var ComponentOptions_1 = __webpack_require__(9);
-var ComponentOptionsModel_1 = __webpack_require__(26);
+var ComponentOptionsModel_1 = __webpack_require__(27);
 var AnalyticsActionListMeta_1 = __webpack_require__(12);
-var ResultListEvents_1 = __webpack_require__(32);
-var HighlightUtils_1 = __webpack_require__(49);
-var DeviceUtils_1 = __webpack_require__(22);
-var OSUtils_1 = __webpack_require__(237);
+var ResultListEvents_1 = __webpack_require__(35);
+var HighlightUtils_1 = __webpack_require__(55);
+var DeviceUtils_1 = __webpack_require__(23);
+var OSUtils_1 = __webpack_require__(283);
 var Initialization_1 = __webpack_require__(2);
-var QueryUtils_1 = __webpack_require__(19);
+var QueryUtils_1 = __webpack_require__(20);
 var Assert_1 = __webpack_require__(7);
-var Utils_1 = __webpack_require__(6);
-var Defer_1 = __webpack_require__(28);
+var Utils_1 = __webpack_require__(5);
+var Defer_1 = __webpack_require__(30);
 var Dom_1 = __webpack_require__(3);
-var StreamHighlightUtils_1 = __webpack_require__(81);
+var StreamHighlightUtils_1 = __webpack_require__(77);
 var _ = __webpack_require__(1);
 var GlobalExports_1 = __webpack_require__(4);
-__webpack_require__(432);
+__webpack_require__(598);
 /**
  * The `ResultLink` component automatically transform a search result title into a clickable link pointing to the
  * original item.
  *
  * This component is a result template component (see [Result Templates](https://developers.coveo.com/x/aIGfAQ)).
  */
-var ResultLink = /** @class */ (function (_super) {
+var ResultLink = (function (_super) {
     __extends(ResultLink, _super);
     /**
      * Creates a new `ResultLink` component.
@@ -402,7 +399,7 @@ var ResultLink = /** @class */ (function (_super) {
             _this.usageAnalytics.logClickEvent(AnalyticsActionListMeta_1.analyticsActionCauseList.documentOpen, {
                 documentURL: documentURL,
                 documentTitle: _this.result.title,
-                author: Utils_1.Utils.getFieldValue(_this.result, 'author')
+                author: Utils_1.Utils.getFieldValue(_this.result, 'author'),
             }, _this.result, _this.root);
             Defer_1.Defer.flush();
         }, 1500, true);
@@ -433,15 +430,11 @@ var ResultLink = /** @class */ (function (_super) {
     ResultLink.prototype.renderUri = function (element, result) {
         if (/^\s*$/.test(this.element.innerHTML)) {
             if (!this.options.titleTemplate) {
-                this.element.innerHTML = this.result.title
-                    ? HighlightUtils_1.HighlightUtils.highlightString(this.result.title, this.result.titleHighlights, null, 'coveo-highlight')
-                    : this.result.clickUri;
+                this.element.innerHTML = this.result.title ? HighlightUtils_1.HighlightUtils.highlightString(this.result.title, this.result.titleHighlights, null, 'coveo-highlight') : this.result.clickUri;
             }
             else {
                 var newTitle = this.parseStringTemplate(this.options.titleTemplate);
-                this.element.innerHTML = newTitle
-                    ? StreamHighlightUtils_1.StreamHighlightUtils.highlightStreamText(newTitle, this.result.termsToHighlight, this.result.phrasesToHighlight)
-                    : this.result.clickUri;
+                this.element.innerHTML = newTitle ? StreamHighlightUtils_1.StreamHighlightUtils.highlightStreamText(newTitle, this.result.termsToHighlight, this.result.phrasesToHighlight) : this.result.clickUri;
             }
         }
     };
@@ -501,10 +494,7 @@ var ResultLink = /** @class */ (function (_super) {
         }
     };
     ResultLink.prototype.bindEventToOpen = function () {
-        return (this.bindOnClickIfNotUndefined() ||
-            this.bindOpenQuickviewIfNotUndefined() ||
-            this.setHrefIfNotAlready() ||
-            this.openLinkThatIsNotAnAnchor());
+        return this.bindOnClickIfNotUndefined() || this.bindOpenQuickviewIfNotUndefined() || this.setHrefIfNotAlready() || this.openLinkThatIsNotAnAnchor();
     };
     ResultLink.prototype.bindOnClickIfNotUndefined = function () {
         var _this = this;
@@ -642,197 +632,197 @@ var ResultLink = /** @class */ (function (_super) {
         }
         return object ? object[key] : undefined;
     };
-    ResultLink.ID = 'ResultLink';
-    ResultLink.doExport = function () {
-        GlobalExports_1.exportGlobally({
-            ResultLink: ResultLink
-        });
-    };
-    /**
-     * The options for the ResultLink
-     * @componentOptions
-     */
-    ResultLink.options = {
-        /**
-         * Specifies the field to use to output the component `href` attribute value.
-         *
-         * **Tip:**
-         * > Instead of specifying a value for the `field` option, you can directly add an `href` attribute to the
-         * > `ResultLink` HTML element. Then, you can use a custom script to generate the `href` value.
-         *
-         * **Examples:**
-         * - With the following markup, the `ResultLink` outputs its `href` value using the `@uri` field (rather than the
-         * default field):
-         *
-         * ```html
-         * <a class="CoveoResultLink" field="@uri"></a>
-         * ```
-         *
-         * - In the following result template, the custom `getMyKBUri()` function provides the `href` value:
-         *
-         * ```html
-         * <script id="KnowledgeArticle" type="text/underscore" class="result-template">
-         *   <div class='CoveoIcon>'></div>
-         *   <a class="CoveoResultLink" href="<%= getMyKBUri(raw) %>"></a>
-         *   <div class="CoveoExcerpt"></div>
-         * </script>
-         * ```
-         *
-         * See also [`hrefTemplate`]{@link ResultLink.options.hrefTemplate}, which can override this option.
-         *
-         * By default, the component uses the `@clickUri` field of the item to output the value of its `href` attribute.
-         */
-        field: ComponentOptions_1.ComponentOptions.buildFieldOption(),
-        /**
-         * Specifies whether the component should try to open its link in Microsoft Outlook.
-         *
-         * Setting this option to `true` is normally useful for `ResultLink` instances related to Microsoft Exchange emails.
-         *
-         * If this option is `true`, clicking the `ResultLink` calls the
-         * [`openLinkInOutlook`]{@link ResultLink.openLinkInOutlook} method instead of the
-         * [`openLink`]{@link ResultLink.openLink} method.
-         *
-         * Default value is `false`.
-         */
-        openInOutlook: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: false }),
-        /**
-         * Specifies whether the component should open its link in the [`Quickview`]{@link Quickview} component rather than
-         * loading through the original URL.
-         *
-         * Default value is `false`.
-         */
-        openQuickview: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: false }),
-        /**
-         * Specifies whether the component should open its link in a new window instead of opening it in the current
-         * context.
-         *
-         * If this option is `true`, clicking the `ResultLink` calls the
-         * [`openLinkInNewWindow`]{@link ResultLink.openLinkInNewWindow} method instead of the
-         * [ `openLink`]{@link ResultLink.openLink} method.
-         *
-         * **Note:**
-         * > If a search page contains a [`ResultPreferences`]{@link ResultsPreferences} component whose
-         * > [`enableOpenInNewWindow`]{@link ResultsPreferences.options.enableOpenInNewWindow} option is `true`, and the end
-         * > user checks the <b>Always open results in new window</b> box, `ResultLink` components in this page will always
-         * > open their links in a new window when the end user clicks them, no matter what the value of their
-         * > `alwaysOpenInNewWindow` option is.
-         *
-         * Default value is `false`.
-         */
-        alwaysOpenInNewWindow: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: false }),
-        /**
-         * Specifies a template literal from which to generate the `ResultLink` `href` attribute value (see
-         * [Template literals](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Template_literals)).
-         *
-         * This option overrides the [`field`]{@link ResultLink.options.field} option value.
-         *
-         * The template literal can reference any number of fields from the parent result. It can also reference global
-         * scope properties.
-         *
-         * **Examples:**
-         *
-         * - The following markup generates an `href` value such as `http://uri.com?id=itemTitle`:
-         *
-         * ```html
-         * <a class='CoveoResultLink' data-href-template='${clickUri}?id=${raw.title}'></a>
-         * ```
-         *
-         * - The following markup generates an `href` value such as `localhost/fooBar`:
-         *
-         * ```html
-         * <a class='CoveoResultLink' data-href-template='${window.location.hostname}/{Foo.Bar}'></a>
-         * ```
-         *
-         * Default value is `undefined`.
-         */
-        hrefTemplate: ComponentOptions_1.ComponentOptions.buildStringOption(),
-        /**
-         * Specifies a template literal from which to generate the `ResultLink` display title (see
-         * [Template literals](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Template_literals)).
-         *
-         * This option overrides the default `ResultLink` display title behavior.
-         *
-         * The template literal can reference any number of fields from the parent result. However, if the template literal
-         * references a key whose value is undefined in the parent result fields, the `ResultLink` title displays the
-         * name of this key instead.
-         *
-         * This option is ignored if the `ResultLink` innerHTML contains any value.
-         *
-         * **Examples:**
-         *
-         * - The following markup generates a `ResultLink` display title such as `Case number: 123456` if both the
-         * `raw.objecttype` and `raw.objectnumber` keys are defined in the parent result fields:
-         *
-         * ```html
-         * <a class="CoveoResultLink" data-title-template="${raw.objecttype} number: ${raw.objectnumber}"></a>
-         * ```
-         *
-         * - The following markup generates `${myField}` as a `ResultLink` display title if the `myField` key is undefined
-         * in the parent result fields:
-         *
-         * ```html
-         * <a class="CoveoResultLink" data-title-template="${myField}"></a>
-         * ```
-         *
-         * - The following markup generates `Foobar` as a `ResultLink` display title, because the `ResultLink` innterHTML is
-         * not empty:
-         *
-         * ```html
-         * <a class="CoveoResultLink" data-title-template="${will} ${be} ${ignored}">Foobar</a>
-         * ```
-         *
-         * Default value is `undefined`.
-         */
-        titleTemplate: ComponentOptions_1.ComponentOptions.buildStringOption(),
-        /**
-         * Specifies an event handler function to execute when the user clicks the `ResultLink` component.
-         *
-         * The handler function takes a JavaScript [`Event`](https://developer.mozilla.org/en/docs/Web/API/Event) object and
-         * an [`IQueryResult`]{@link IQueryResult} as its parameters.
-         *
-         * Overriding the default behavior of the `onClick` event can allow you to execute specific code instead.
-         *
-         * **Note:**
-         * > You cannot set this option directly in the component markup as an HTML attribute. You must either set it in the
-         * > [`init`]{@link init} call of your search interface (see
-         * > [Components - Passing Component Options in the init Call](https://developers.coveo.com/x/PoGfAQ#Components-PassingComponentOptionsintheinitCall)),
-         * > or before the `init` call, using the `options` top-level function (see
-         * > [Components - Passing Component Options Before the init Call](https://developers.coveo.com/x/PoGfAQ#Components-PassingComponentOptionsBeforetheinitCall)).
-         *
-         * **Example:**
-         * ```javascript
-         *
-         *
-         *
-         * // You can set the option in the 'init' call:
-         * Coveo.init(document.querySelector("#search"), {
-         *   ResultLink : {
-         *     onClick : function(e, result) {
-         *       e.preventDefault();
-         *       // Custom code to execute with the item URI and title.
-         *       openUriInASpecialTab(result.clickUri, result.title);
-         *     }
-         *   }
-         * });
-         *
-         * // Or before the 'init' call, using the 'options' top-level function:
-         * // Coveo.options(document.querySelector('#search'), {
-         * //   ResultLink : {
-         * //     onClick : function(e, result) {
-         * //       e.preventDefault();
-         * //       // Custom code to execute with the item URI and title.
-         * //       openUriInASpecialTab(result.clickUri, result.title);
-         * //     }
-         * //   }
-         * // });
-         * ```
-         */
-        onClick: ComponentOptions_1.ComponentOptions.buildCustomOption(function () {
-            return null;
-        })
-    };
     return ResultLink;
 }(Component_1.Component));
+ResultLink.ID = 'ResultLink';
+ResultLink.doExport = function () {
+    GlobalExports_1.exportGlobally({
+        'ResultLink': ResultLink
+    });
+};
+/**
+ * The options for the ResultLink
+ * @componentOptions
+ */
+ResultLink.options = {
+    /**
+     * Specifies the field to use to output the component `href` attribute value.
+     *
+     * **Tip:**
+     * > Instead of specifying a value for the `field` option, you can directly add an `href` attribute to the
+     * > `ResultLink` HTML element. Then, you can use a custom script to generate the `href` value.
+     *
+     * **Examples:**
+     * - With the following markup, the `ResultLink` outputs its `href` value using the `@uri` field (rather than the
+     * default field):
+     *
+     * ```html
+     * <a class="CoveoResultLink" field="@uri"></a>
+     * ```
+     *
+     * - In the following result template, the custom `getMyKBUri()` function provides the `href` value:
+     *
+     * ```html
+     * <script id="KnowledgeArticle" type="text/underscore" class="result-template">
+     *   <div class='CoveoIcon>'></div>
+     *   <a class="CoveoResultLink" href="<%= getMyKBUri(raw) %>"></a>
+     *   <div class="CoveoExcerpt"></div>
+     * </script>
+     * ```
+     *
+     * See also [`hrefTemplate`]{@link ResultLink.options.hrefTemplate}, which can override this option.
+     *
+     * By default, the component uses the `@clickUri` field of the item to output the value of its `href` attribute.
+     */
+    field: ComponentOptions_1.ComponentOptions.buildFieldOption(),
+    /**
+     * Specifies whether the component should try to open its link in Microsoft Outlook.
+     *
+     * Setting this option to `true` is normally useful for `ResultLink` instances related to Microsoft Exchange emails.
+     *
+     * If this option is `true`, clicking the `ResultLink` calls the
+     * [`openLinkInOutlook`]{@link ResultLink.openLinkInOutlook} method instead of the
+     * [`openLink`]{@link ResultLink.openLink} method.
+     *
+     * Default value is `false`.
+     */
+    openInOutlook: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: false }),
+    /**
+     * Specifies whether the component should open its link in the [`Quickview`]{@link Quickview} component rather than
+     * loading through the original URL.
+     *
+     * Default value is `false`.
+     */
+    openQuickview: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: false }),
+    /**
+     * Specifies whether the component should open its link in a new window instead of opening it in the current
+     * context.
+     *
+     * If this option is `true`, clicking the `ResultLink` calls the
+     * [`openLinkInNewWindow`]{@link ResultLink.openLinkInNewWindow} method instead of the
+     * [ `openLink`]{@link ResultLink.openLink} method.
+     *
+     * **Note:**
+     * > If a search page contains a [`ResultPreferences`]{@link ResultsPreferences} component whose
+     * > [`enableOpenInNewWindow`]{@link ResultsPreferences.options.enableOpenInNewWindow} option is `true`, and the end
+     * > user checks the <b>Always open results in new window</b> box, `ResultLink` components in this page will always
+     * > open their links in a new window when the end user clicks them, no matter what the value of their
+     * > `alwaysOpenInNewWindow` option is.
+     *
+     * Default value is `false`.
+     */
+    alwaysOpenInNewWindow: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: false }),
+    /**
+     * Specifies a template literal from which to generate the `ResultLink` `href` attribute value (see
+     * [Template literals](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Template_literals)).
+     *
+     * This option overrides the [`field`]{@link ResultLink.options.field} option value.
+     *
+     * The template literal can reference any number of fields from the parent result. It can also reference global
+     * scope properties.
+     *
+     * **Examples:**
+     *
+     * - The following markup generates an `href` value such as `http://uri.com?id=itemTitle`:
+     *
+     * ```html
+     * <a class='CoveoResultLink' data-href-template='${clickUri}?id=${title}'></a>
+     * ```
+     *
+     * - The following markup generates an `href` value such as `localhost/fooBar`:
+     *
+     * ```html
+     * <a class='CoveoResultLink' data-href-template='${window.location.hostname}/{Foo.Bar}'></a>
+     * ```
+     *
+     * Default value is `undefined`.
+     */
+    hrefTemplate: ComponentOptions_1.ComponentOptions.buildStringOption(),
+    /**
+     * Specifies a template literal from which to generate the `ResultLink` display title (see
+     * [Template literals](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Template_literals)).
+     *
+     * This option overrides the default `ResultLink` display title behavior.
+     *
+     * The template literal can reference any number of fields from the parent result. However, if the template literal
+     * references a key whose value is undefined in the parent result fields, the `ResultLink` title displays the
+     * name of this key instead.
+     *
+     * This option is ignored if the `ResultLink` innerHTML contains any value.
+     *
+     * **Examples:**
+     *
+     * - The following markup generates a `ResultLink` display title such as `Case number: 123456` if both the
+     * `raw.objecttype` and `raw.objectnumber` keys are defined in the parent result fields:
+     *
+     * ```html
+     * <a class="CoveoResultLink" data-title-template="${raw.objecttype} number: ${raw.objectnumber}"></a>
+     * ```
+     *
+     * - The following markup generates `${myField}` as a `ResultLink` display title if the `myField` key is undefined
+     * in the parent result fields:
+     *
+     * ```html
+     * <a class="CoveoResultLink" data-title-template="${myField}"></a>
+     * ```
+     *
+     * - The following markup generates `Foobar` as a `ResultLink` display title, because the `ResultLink` innterHTML is
+     * not empty:
+     *
+     * ```html
+     * <a class="CoveoResultLink" data-title-template="${will} ${be} ${ignored}">Foobar</a>
+     * ```
+     *
+     * Default value is `undefined`.
+     */
+    titleTemplate: ComponentOptions_1.ComponentOptions.buildStringOption(),
+    /**
+     * Specifies an event handler function to execute when the user clicks the `ResultLink` component.
+     *
+     * The handler function takes a JavaScript [`Event`](https://developer.mozilla.org/en/docs/Web/API/Event) object and
+     * an [`IQueryResult`]{@link IQueryResult} as its parameters.
+     *
+     * Overriding the default behavior of the `onClick` event can allow you to execute specific code instead.
+     *
+     * **Note:**
+     * > You cannot set this option directly in the component markup as an HTML attribute. You must either set it in the
+     * > [`init`]{@link init} call of your search interface (see
+     * > [Components - Passing Component Options in the init Call](https://developers.coveo.com/x/PoGfAQ#Components-PassingComponentOptionsintheinitCall)),
+     * > or before the `init` call, using the `options` top-level function (see
+     * > [Components - Passing Component Options Before the init Call](https://developers.coveo.com/x/PoGfAQ#Components-PassingComponentOptionsBeforetheinitCall)).
+     *
+     * **Example:**
+     * ```javascript
+     *
+     *
+     *
+     * // You can set the option in the 'init' call:
+     * Coveo.init(document.querySelector("#search"), {
+     *   ResultLink : {
+     *     onClick : function(e, result) {
+     *       e.preventDefault();
+     *       // Custom code to execute with the item URI and title.
+     *       openUriInASpecialTab(result.clickUri, result.title);
+     *     }
+     *   }
+     * });
+     *
+     * // Or before the 'init' call, using the 'options' top-level function:
+     * // Coveo.options(document.querySelector('#search'), {
+     * //   ResultLink : {
+     * //     onClick : function(e, result) {
+     * //       e.preventDefault();
+     * //       // Custom code to execute with the item URI and title.
+     * //       openUriInASpecialTab(result.clickUri, result.title);
+     * //     }
+     * //   }
+     * // });
+     * ```
+     */
+    onClick: ComponentOptions_1.ComponentOptions.buildCustomOption(function () {
+        return null;
+    })
+};
 exports.ResultLink = ResultLink;
 Initialization_1.Initialization.registerAutoCreateComponent(ResultLink);
 

@@ -56,7 +56,7 @@
 	<div class="bottomHeader">
 		<div id="searchBox">
 			<div class="CoveoSearchbox" data-enable-omnibox="true" data-inline="false" data-enable-wildcards="true" data-enable-search-as-you-type="false" data-enable-query-suggest-addon="false" data-enable-query-syntax="true" data-enable-field-addon="true"></div>
-			<div class="CoveoFieldSuggestions" data-field="@jsuipagetopic" data-header-title="Suggested topics"></div>
+			<div class="CoveoFieldSuggestions" data-field="@systitle" data-header-title="Suggested topics"></div>
 		</div>
 	</div>
 	<!-- Do not focus on Querybox when URL contains hash to ensure page scrolls down to corresponding anchor. -->
@@ -123,8 +123,7 @@
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>The <code>IChangeableAnalyticsMetaObject</code> interface describes the metadata which can be sent along with any usage
-						analytics event.</p>
+						<p>The interface that describe the metadata for every analytics event.</p>
 					</div>
 				</div>
 			</section>
@@ -144,17 +143,9 @@
 				<div class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">[</span>name: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">]: </span><span class="tsd-signature-type">string</span></div>
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>A metadata key-value pair to send along with the usage analytics event.</p>
+						<p>The metadata for every analytics event is a simple key value pair, where the value has to be a simple string.</p>
 					</div>
-					<p><strong>Notes:</strong></p>
-					<blockquote>
-						<ul>
-							<li>A metadata key must contain only alphanumeric characters and underscores (the Coveo Usage Analytics REST
-								service automatically converts white spaces to underscores and uppercase characters to lowercase characters in key
-							names).</li>
-							<li>A metadata value must be a simple string (no other type is allowed).</li>
-						</ul>
-					</blockquote>
+					<p>The value cannot be a complex object.</p>
 				</div>
 			</section>
 			<footer class="with-border-bottom">

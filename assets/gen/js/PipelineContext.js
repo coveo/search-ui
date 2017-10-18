@@ -1,6 +1,6 @@
-webpackJsonpCoveo__temporary([66],{
+webpackJsonpCoveo__temporary([64],{
 
-/***/ 294:
+/***/ 379:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18,7 +18,7 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var Component_1 = __webpack_require__(8);
 var ComponentOptions_1 = __webpack_require__(9);
-var Utils_1 = __webpack_require__(6);
+var Utils_1 = __webpack_require__(5);
 var QueryEvents_1 = __webpack_require__(11);
 var Dom_1 = __webpack_require__(3);
 var Initialization_1 = __webpack_require__(2);
@@ -38,14 +38,13 @@ var GlobalExports_1 = __webpack_require__(4);
  * <script class='CoveoPipelineContext' type='text/context'>
  *   {
  *      "foo" : "bar"
- *      "foobar" : "{foo, bar}"
  *   }
  * </script>
  * ```
  *
  * You can also simply use JavaScript code to pass context values, using the {@link QueryBuilder.addContextValue} method.
  *
- * This means you do not necessarily need to use this component to pass context.
+ * This mean you do not necessarily need to use this component to pass context.
  * ```
  * Coveo.$$(root).on('buildingQuery', function(args) {
  *     args.queryBuilder.addContextValue('foo', 'bar');
@@ -56,7 +55,7 @@ var GlobalExports_1 = __webpack_require__(4);
  *
  * Regardless of if you use this component or JavaScript to add context, both will add the needed data in the [Query.Context]{@link IQuery.context} parameter.
  */
-var PipelineContext = /** @class */ (function (_super) {
+var PipelineContext = (function (_super) {
     __extends(PipelineContext, _super);
     function PipelineContext(element, options, bindings) {
         var _this = _super.call(this, element, PipelineContext.ID, bindings) || this;
@@ -94,29 +93,7 @@ var PipelineContext = /** @class */ (function (_super) {
      * @returns {string}
      */
     PipelineContext.prototype.getContextValue = function (key) {
-        var _this = this;
-        var contextValue = this.content[key];
-        if (_.isArray(contextValue)) {
-            var contextValues_1 = [];
-            _.each(this.content[key], function (value) {
-                contextValues_1.push(_this.getModifiedData(value));
-            });
-            return contextValues_1;
-        }
-        else if (_.isString(contextValue)) {
-            return this.getModifiedData(contextValue);
-        }
-    };
-    PipelineContext.prototype.handleBuildingQuery = function (args) {
-        var _this = this;
-        var keys = this.getContextKeys();
-        _.each(keys, function (key) {
-            args.queryBuilder.addContextValue(key, _this.getContextValue(key));
-        });
-    };
-    // We need to modify the data to escape special salesforce characters. eg: {! }
-    PipelineContext.prototype.getModifiedData = function (value) {
-        return value.replace(/\{\!([^\}]+)\}/g, function (all, contextKey) {
+        return this.content[key].replace(/\{\!([^\}]+)\}/g, function (all, contextKey) {
             if (Coveo.context != null && contextKey in Coveo.context) {
                 return Coveo.context[contextKey];
             }
@@ -126,16 +103,23 @@ var PipelineContext = /** @class */ (function (_super) {
             return '';
         });
     };
-    PipelineContext.ID = 'PipelineContext';
-    PipelineContext.CURRENT_URL = 'CurrentUrl';
-    PipelineContext.doExport = function () {
-        GlobalExports_1.exportGlobally({
-            PipelineContext: PipelineContext,
-            context: exports.context
+    PipelineContext.prototype.handleBuildingQuery = function (args) {
+        var _this = this;
+        var keys = this.getContextKeys();
+        _.each(keys, function (key) {
+            args.queryBuilder.addContextValue(key, _this.getContextValue(key));
         });
     };
     return PipelineContext;
 }(Component_1.Component));
+PipelineContext.ID = 'PipelineContext';
+PipelineContext.CURRENT_URL = 'CurrentUrl';
+PipelineContext.doExport = function () {
+    GlobalExports_1.exportGlobally({
+        'PipelineContext': PipelineContext,
+        'context': exports.context
+    });
+};
 exports.PipelineContext = PipelineContext;
 Initialization_1.Initialization.registerAutoCreateComponent(PipelineContext);
 

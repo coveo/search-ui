@@ -1,12 +1,12 @@
-webpackJsonpCoveo__temporary([18],{
+webpackJsonpCoveo__temporary([17],{
 
-/***/ 16:
+/***/ 17:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var SVGDom = /** @class */ (function () {
+var SVGDom = (function () {
     function SVGDom() {
     }
     SVGDom.addClassToSVGInContainer = function (svgContainer, classToAdd) {
@@ -28,7 +28,7 @@ exports.SVGDom = SVGDom;
 
 /***/ }),
 
-/***/ 312:
+/***/ 396:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -45,27 +45,27 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var Component_1 = __webpack_require__(8);
-var SortCriteria_1 = __webpack_require__(425);
+var SortCriteria_1 = __webpack_require__(509);
 var ComponentOptions_1 = __webpack_require__(9);
 var Assert_1 = __webpack_require__(7);
-var Utils_1 = __webpack_require__(6);
+var Utils_1 = __webpack_require__(5);
 var Dom_1 = __webpack_require__(3);
-var Model_1 = __webpack_require__(18);
+var Model_1 = __webpack_require__(19);
 var QueryStateModel_1 = __webpack_require__(13);
 var QueryEvents_1 = __webpack_require__(11);
 var Initialization_1 = __webpack_require__(2);
 var AnalyticsActionListMeta_1 = __webpack_require__(12);
-var KeyboardUtils_1 = __webpack_require__(23);
+var KeyboardUtils_1 = __webpack_require__(24);
 var _ = __webpack_require__(1);
 var GlobalExports_1 = __webpack_require__(4);
-__webpack_require__(533);
+__webpack_require__(948);
 var SVGIcons_1 = __webpack_require__(15);
-var SVGDom_1 = __webpack_require__(16);
+var SVGDom_1 = __webpack_require__(17);
 /**
  * The Sort component renders a widget that the end user can interact with to sort query results according to a single
  * criterion or list of criteria.
  */
-var Sort = /** @class */ (function (_super) {
+var Sort = (function (_super) {
     __extends(Sort, _super);
     /**
      * Creates a new Sort component.
@@ -80,9 +80,7 @@ var Sort = /** @class */ (function (_super) {
         _this.options = options;
         _this.options = ComponentOptions_1.ComponentOptions.initComponentOptions(element, Sort, options);
         Assert_1.Assert.isLargerOrEqualsThan(1, _this.options.sortCriteria.length);
-        _this.bind.onQueryState(Model_1.MODEL_EVENTS.CHANGE_ONE, QueryStateModel_1.QUERY_STATE_ATTRIBUTES.SORT, function (args) {
-            return _this.handleQueryStateChanged(args);
-        });
+        _this.bind.onQueryState(Model_1.MODEL_EVENTS.CHANGE_ONE, QueryStateModel_1.QUERY_STATE_ATTRIBUTES.SORT, function (args) { return _this.handleQueryStateChanged(args); });
         _this.bind.onRootElement(QueryEvents_1.QueryEvents.querySuccess, function (args) { return _this.handleQuerySuccess(args); });
         _this.bind.onRootElement(QueryEvents_1.QueryEvents.buildingQuery, function (args) { return _this.handleBuildingQuery(args); });
         _this.bind.onRootElement(QueryEvents_1.QueryEvents.queryError, function (args) { return _this.handleQueryError(args); });
@@ -192,11 +190,7 @@ var Sort = /** @class */ (function (_super) {
         this.select();
         if (oldCriteria != this.currentCriteria) {
             this.queryController.deferExecuteQuery({
-                beforeExecuteQuery: function () {
-                    return _this.usageAnalytics.logSearchEvent(AnalyticsActionListMeta_1.analyticsActionCauseList.resultsSort, {
-                        resultsSortBy: _this.currentCriteria.sort + _this.currentCriteria.direction
-                    });
-                }
+                beforeExecuteQuery: function () { return _this.usageAnalytics.logSearchEvent(AnalyticsActionListMeta_1.analyticsActionCauseList.resultsSort, { resultsSortBy: _this.currentCriteria.sort + _this.currentCriteria.direction }); }
             });
         }
     };
@@ -217,73 +211,72 @@ var Sort = /** @class */ (function (_super) {
             }
         }
     };
-    Sort.ID = 'Sort';
-    Sort.doExport = function () {
-        GlobalExports_1.exportGlobally({
-            Sort: Sort,
-            SortCriteria: SortCriteria_1.SortCriteria
-        });
-    };
-    /**
-     * Options for the component
-     * @componentOptions
-     */
-    Sort.options = {
-        /**
-         * Specifies the criterion (or criteria) for sorting.
-         *
-         * The possible criteria are:
-         * - `relevancy`
-         * - `date`
-         * - `qre`
-         * - `@fieldname` (replace `fieldname` with an actual field name (e.g., `@size`)
-         *
-         * You can also specify a direction (`ascending` or `descending`), for example `date ascending`.
-         *
-         * You can pass an array containing multiple criteria to the Sort component.
-         * If you specify multiple criteria, all criteria must have the same direction (either `ascending` or
-         * `descending`).
-         * You can only use the `date` and `@fieldname` criteria when specifying multiple criteria.
-         * Multiple criteria are evaluated in the order you specify them.
-         *
-         * It is necessary to specify a value for this option in order for this component to work.
-         */
-        sortCriteria: ComponentOptions_1.ComponentOptions.buildCustomListOption(function (values) {
-            return _.map(values, function (criteria) {
-                // 'any' because Underscore won't accept the union type as an argument.
-                if (typeof criteria === 'string') {
-                    return SortCriteria_1.SortCriteria.parse(criteria);
-                }
-                else {
-                    return criteria;
-                }
-            });
-        }, { required: true }),
-        /**
-         * Specifies the caption to display on the element.
-         *
-         * If you do not specify a value for this option, the component uses the tag body of the element.
-         */
-        caption: ComponentOptions_1.ComponentOptions.buildLocalizedStringOption({ required: true })
-    };
     return Sort;
 }(Component_1.Component));
+Sort.ID = 'Sort';
+Sort.doExport = function () {
+    GlobalExports_1.exportGlobally({
+        'Sort': Sort,
+        'SortCriteria': SortCriteria_1.SortCriteria
+    });
+};
+/**
+ * Options for the component
+ * @componentOptions
+ */
+Sort.options = {
+    /**
+     * Specifies the criterion (or criteria) for sorting.
+     *
+     * The possible criteria are:
+     * - `relevancy`
+     * - `date`
+     * - `qre`
+     * - `@fieldname` (replace `fieldname` with an actual field name (e.g., `@size`)
+     *
+     * You can also specify a direction (`ascending` or `descending`), for example `date ascending`.
+     *
+     * You can pass an array containing multiple criteria to the Sort component.
+     * If you specify multiple criteria, all criteria must have the same direction (either `ascending` or
+     * `descending`).
+     * You can only use the `date` and `@fieldname` criteria when specifying multiple criteria.
+     * Multiple criteria are evaluated in the order you specify them.
+     *
+     * It is necessary to specify a value for this option in order for this component to work.
+     */
+    sortCriteria: ComponentOptions_1.ComponentOptions.buildCustomListOption(function (values) {
+        return _.map(values, function (criteria) {
+            if (typeof criteria === 'string') {
+                return SortCriteria_1.SortCriteria.parse(criteria);
+            }
+            else {
+                return criteria;
+            }
+        });
+    }, { required: true }),
+    /**
+     * Specifies the caption to display on the element.
+     *
+     * If you do not specify a value for this option, the component uses the tag body of the element.
+     */
+    caption: ComponentOptions_1.ComponentOptions.buildLocalizedStringOption({ required: true })
+};
 exports.Sort = Sort;
 Initialization_1.Initialization.registerAutoCreateComponent(Sort);
 
 
 /***/ }),
 
-/***/ 425:
+/***/ 509:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var Assert_1 = __webpack_require__(7);
-var Utils_1 = __webpack_require__(6);
+var Utils_1 = __webpack_require__(5);
 var _ = __webpack_require__(1);
-var SortCriteria = /** @class */ (function () {
+var SortCriteria = (function () {
     /**
      * Create a new SortCriteria
      * @param sort The sort criteria (e.g.: relevancy, date)
@@ -370,17 +363,17 @@ var SortCriteria = /** @class */ (function () {
     SortCriteria.sortNeedsDirection = function (sort) {
         return _.contains(SortCriteria.sortsNeedingDirection, sort) || SortCriteria.sortIsField(sort);
     };
-    SortCriteria.validSorts = ['relevancy', 'date', 'qre'];
-    SortCriteria.sortsNeedingDirection = ['date'];
-    SortCriteria.validDirections = ['ascending', 'descending'];
     return SortCriteria;
 }());
+SortCriteria.validSorts = ['relevancy', 'date', 'qre'];
+SortCriteria.sortsNeedingDirection = ['date'];
+SortCriteria.validDirections = ['ascending', 'descending'];
 exports.SortCriteria = SortCriteria;
 
 
 /***/ }),
 
-/***/ 533:
+/***/ 948:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
