@@ -33,11 +33,15 @@ export class FacetValue {
     this.computedField = newValue.computedField;
   }
 
-  cloneWithZeroOccurrences(): FacetValue {
-    this.occurrences = 0;
+  clone(): FacetValue {
     this.computedField = undefined;
     this.delta = undefined;
     return this;
+  }
+
+  cloneWithZeroOccurrences(): FacetValue {
+    this.occurrences = 0;
+    return this.clone();
   }
 
   cloneWithDelta(count: number, delta: number): FacetValue {
@@ -192,7 +196,11 @@ export class FacetValues {
       if (Utils.exists(myValue)) {
         myValue.selected = true;
       } else {
-        this.values.push(otherValue.cloneWithZeroOccurrences());
+        if (otherValue.occurrences) {
+          this.values.push(otherValue.clone())
+        } else {
+          this.values.push(otherValue.cloneWithZeroOccurrences());
+        }
       }
     });
 
