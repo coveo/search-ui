@@ -180,11 +180,13 @@ export class QuickviewDocument extends Component {
 
       // Remove white border for new Quickview
       if (this.isNewQuickviewDocument(iframe.contentWindow)) {
-        let body = $$(this.element).closest('.coveo-body');
-        body.style.padding = '0';
-        let header = $$(this.element).find('.coveo-quickview-header');
-        header.style.paddingTop = '10';
-        header.style.paddingLeft = '10';
+        let body = $$(this.element).find('iframe');
+        if (body) {
+          body.style.padding = '0';
+          let header = $$(this.element).find('.coveo-quickview-header');
+          header.style.paddingTop = '10';
+          header.style.paddingLeft = '10';
+        }
       }
 
       if ($$(this.element).find('.coveo-quickview-header').innerHTML == '') {
