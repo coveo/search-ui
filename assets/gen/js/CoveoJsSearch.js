@@ -20590,8 +20590,8 @@ exports.DebugEvents = DebugEvents;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.version = {
-    'lib': '2.2900.29-beta',
-    'product': '2.2900.29-beta',
+    'lib': '2.2900.30-beta',
+    'product': '2.2900.30-beta',
     'supportedApiVersion': 2
 };
 
@@ -23547,11 +23547,14 @@ var FacetValue = (function () {
         this.delta = newValue.delta;
         this.computedField = newValue.computedField;
     };
-    FacetValue.prototype.cloneWithZeroOccurrences = function () {
-        this.occurrences = 0;
+    FacetValue.prototype.clone = function () {
         this.computedField = undefined;
         this.delta = undefined;
         return this;
+    };
+    FacetValue.prototype.cloneWithZeroOccurrences = function () {
+        this.occurrences = 0;
+        return this.clone();
     };
     FacetValue.prototype.cloneWithDelta = function (count, delta) {
         Assert_1.Assert.isLargerOrEqualsThan(0, count);
@@ -23685,7 +23688,12 @@ var FacetValues = (function () {
                 myValue.selected = true;
             }
             else {
-                _this.values.push(otherValue.cloneWithZeroOccurrences());
+                if (otherValue.occurrences) {
+                    _this.values.push(otherValue.clone());
+                }
+                else {
+                    _this.values.push(otherValue.cloneWithZeroOccurrences());
+                }
             }
         });
         _.each(other.getExcluded(), function (otherValue) {
@@ -39833,6 +39841,7 @@ var FacetSearchParameters = (function () {
         this.alwaysExclude = [];
         this.sortCriteria = 'occurrences';
         this.fetchMore = false;
+        this.completeFacetWithStandardValues = true;
         this.nbResults = facet.options.numberOfValuesInFacetSearch;
         this.ignoreAccents = facet.options.facetSearchIgnoreAccents;
     }
@@ -39864,15 +39873,23 @@ var FacetSearchParameters = (function () {
         if (this.valueToSearch) {
             typedByUser = ['*' + this.valueToSearch + '*'];
         }
-        var completeFacetWithStandardValues = true;
+        var allowedValues;
+        if (this.valueToSearch) {
+            allowedValues = typedByUser
+                .concat(this.alwaysInclude)
+                .concat(this.alwaysExclude);
+        }
+        else {
+            allowedValues = _.compact(typedByUser
+                .concat(this.alwaysInclude)
+                .concat(this.facet.options.allowedValues));
+        }
+        var completeFacetWithStandardValues = this.completeFacetWithStandardValues;
         if (this.facet.options.lookupField != null) {
             completeFacetWithStandardValues = false;
         }
         var request = {
-            allowedValues: _.compact(typedByUser
-                .concat(this.alwaysInclude)
-                .concat(this.alwaysExclude)
-                .concat(this.facet.options.allowedValues)),
+            allowedValues: allowedValues,
             maximumNumberOfValues: nbResults,
             completeFacetWithStandardValues: completeFacetWithStandardValues,
             field: this.facet.options.field,
@@ -44756,6 +44773,8 @@ var FacetQueryController = (function () {
     FacetQueryController.prototype.search = function (params, oldLength) {
         var _this = this;
         if (oldLength === void 0) { oldLength = params.nbResults; }
+        // For search, we want to retrieve the exact values we requested, and not additional ones
+        params.completeFacetWithStandardValues = false;
         return new Promise(function (resolve, reject) {
             var onResult = function (fieldValues) {
                 var newLength = fieldValues.length;
