@@ -103,6 +103,8 @@ export class FacetQueryController {
    * @returns {Promise|Promise<T>}
    */
   public search(params: FacetSearchParameters, oldLength = params.nbResults): Promise<IIndexFieldValue[]> {
+    // For search, we want to retrieve the exact values we requested, and not additional ones
+    params.completeFacetWithStandardValues = false;
     return new Promise((resolve, reject) => {
       const onResult = (fieldValues?: IIndexFieldValue[]) => {
         const newLength = fieldValues.length;
