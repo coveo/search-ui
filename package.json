@@ -20,7 +20,7 @@
     "uploadCoverage": "gulp uploadCoverage"
   },
   "lint-staged": {
-    "*.{js,ts,json,.scss}": ["prettier --write", "git add"]
+    "*.{js,ts,json,scss}": ["prettier --write", "git add"]
   },
   "prettier": {
     "printWidth": 140,

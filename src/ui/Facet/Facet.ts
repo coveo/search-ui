@@ -436,6 +436,7 @@ export class Facet extends Component {
      * - `maximum` - Finds the maximum value of the computed field values.
      *
      * Default value is `sum`.
+     * @notSupportedIn salesforcefree, salesforceexpress
      */
     computedFieldOperation: ComponentOptions.buildStringOption({ defaultValue: 'sum', section: 'ComputedField' }),
 
@@ -452,6 +453,7 @@ export class Facet extends Component {
      * - `n2` - Formats the value as a floating point with 2 decimal digits.
      *
      * Default value is `"c0"`.
+     * @notSupportedIn salesforcefree, salesforceexpress
      */
     computedFieldFormat: ComponentOptions.buildStringOption({ defaultValue: 'c0', section: 'ComputedField' }),
 
@@ -465,6 +467,7 @@ export class Facet extends Component {
      * > The [`FacetRange`]{@link FacetRange} component does not support this option.
      *
      * Default value is the localized string for `ComputedField`.
+     * @notSupportedIn salesforcefree, salesforceexpress
      */
     computedFieldCaption: ComponentOptions.buildLocalizedStringOption({
       defaultValue: l('ComputedField'),
@@ -582,7 +585,7 @@ export class Facet extends Component {
      * [`GroupByRequest`]{@link IGroupByRequest} that this facet performs.
      *
      * Example: `@date>=2014/01/01`
-     * @notSupportedIn salesforcesexpress, salesforcefree
+     * @notSupportedIn salesforceexpress, salesforcefree
      */
     additionalFilter: ComponentOptions.buildStringOption({ section: 'Filtering' }),
 
