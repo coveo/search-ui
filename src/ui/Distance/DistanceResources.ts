@@ -54,7 +54,7 @@ export class DistanceResources extends Component {
   private latitude: number;
   private longitude: number;
   private lastPositionRequest: Promise<IPosition | void>;
-  private isPositionSet = false;
+  private isFirstPositionResolved = false;
   private pendingSearchEventOnCancellation: PendingSearchEvent;
 
   /**
@@ -229,7 +229,7 @@ export class DistanceResources extends Component {
     this.bind.trigger(this.element, DistanceEvents.onPositionResolved, args);
 
     const shouldTriggerQuery = this.shouldTriggerQueryWhenPositionSet();
-    this.isPositionSet = true;
+    this.isFirstPositionResolved = true;
     if (shouldTriggerQuery) {
       this.executeQuery();
     }
@@ -261,7 +261,7 @@ export class DistanceResources extends Component {
 
   private shouldTriggerQueryWhenPositionSet() {
     // If query has been cancelled, we need to trigger the first one.
-    const triggerFirstQueryWithPosition = this.options.cancelQueryUntilPositionResolved && !this.isPositionSet;
+    const triggerFirstQueryWithPosition = this.options.cancelQueryUntilPositionResolved && !this.isFirstPositionResolved;
     return this.options.triggerNewQueryOnNewPosition || triggerFirstQueryWithPosition;
   }
 
@@ -332,7 +332,7 @@ export class DistanceResources extends Component {
   }
 
   private triggerDistanceNotSet(): void {
-    this.isPositionSet = true;
+    this.isFirstPositionResolved = true;
     this.logger.warn(
       `None of the given position providers could resolve the current position. The distance field will not be calculated and the distance components will be disabled until the next call to 'setPosition'.`
     );
@@ -343,7 +343,7 @@ export class DistanceResources extends Component {
 
   private registerDistanceQuery(): void {
     this.bind.onRootElement(QueryEvents.buildingQuery, (args: IBuildingQueryEventArgs) => {
-      if (this.isPositionSet) {
+      if (this.isFirstPositionResolved) {
         if (args && args.queryBuilder) {
           const geoQueryFunction: IQueryFunction = {
             function: this.getConvertedUnitsFunction(
