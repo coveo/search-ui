@@ -1,3 +1,4 @@
+/// <reference path="../../lib/jasmine/index.d.ts" />
 import { registerCustomMatcher } from '../CustomMatchers';
 import { Dom } from '../../src/utils/Dom';
 import { $$ } from '../../src/utils/Dom';
@@ -360,9 +361,7 @@ export function DomTests() {
         el.click();
         el.click();
         el.click();
-        expect(spy).toHaveBeenCalled();
         expect(spy).toHaveBeenCalledTimes(1);
-        expect(spy).not.toHaveBeenCalledTimes(3);
       });
 
       it('using off should work properly', () => {
@@ -397,55 +396,38 @@ export function DomTests() {
         expect(spy2).eventHandlerToHaveBeenCalledWith({ bar: 'baz' });
       });
 
-      it('using on with a non alpha numeric character should work properly', () => {
+      it('using "on" with a non alpha numeric character should work properly', () => {
         const spy = jasmine.createSpy('spy');
         new Dom(el).on('this contains space', spy);
-        const event = new CustomEvent('thiscontainsspace', {
-          detail: {
-            lorem: 'ipsum'
-          }
-        });
+        const event = new CustomEvent('thiscontainsspace');
 
         el.dispatchEvent(event);
         expect(spy).toHaveBeenCalledTimes(1);
       });
 
-      it('using one with multiple non alpha numeric character events should work properly', () => {
+      it('using "on" with multiple non alpha numeric character events should work properly', () => {
         const spy = jasmine.createSpy('spy');
         new Dom(el).on(['this contains space', 'this:contains space too'], spy);
-        const event = new CustomEvent('thiscontainsspace', {
-          detail: {
-            lorem: 'ipsum'
-          }
-        });
-        const event2 = new CustomEvent('this:containsspacetoo', {
-          detail: {
-            lorem: 'ipsum'
-          }
-        });
+        const event = new CustomEvent('thiscontainsspace');
+        const event2 = new CustomEvent('this:containsspacetoo');
 
         el.dispatchEvent(event);
         el.dispatchEvent(event2);
         expect(spy).toHaveBeenCalledTimes(2);
       });
 
-      it('using one with a non alpha numeric character should work properly', () => {
+      it('using "one" with a non alpha numeric character should work properly', () => {
         const spy = jasmine.createSpy('spy');
         new Dom(el).one('this contains space', spy);
-        const event = new CustomEvent('thiscontainsspace', {
-          detail: {
-            lorem: 'ipsum'
-          }
-        });
+        const event = new CustomEvent('thiscontainsspace');
 
         el.dispatchEvent(event);
         el.dispatchEvent(event);
         el.dispatchEvent(event);
         expect(spy).toHaveBeenCalledTimes(1);
-        expect(spy).not.toHaveBeenCalledTimes(3);
       });
 
-      it('using trigger with a non alpha numeric character should work properly', () => {
+      it('using "trigger" with a non alpha numeric character should work properly', () => {
         const spy = jasmine.createSpy('spy');
         el.addEventListener('thiscontainsspace', spy);
 
@@ -587,7 +569,7 @@ export function DomTests() {
         Simulate.removeJQuery();
       });
 
-      it('using on should work properly', () => {
+      it('using "on" should work properly', () => {
         const spy = jasmine.createSpy('spy');
         new Dom(el).on('click', spy);
         el.click();
@@ -621,14 +603,14 @@ export function DomTests() {
         expect(spy3).toHaveBeenCalledTimes(3);
       });
 
-      it('using on with non alpha numeric character should work properly', () => {
+      it('using "on" with non alpha numeric character should work properly', () => {
         const spy = jasmine.createSpy('spy');
         new Dom(el).on('this contains space', spy);
         window['Coveo']['$'](el).trigger('thiscontainsspace');
         expect(spy).toHaveBeenCalledTimes(1);
       });
 
-      it('using one should work properly', () => {
+      it('using "one" should work properly', () => {
         const spy = jasmine.createSpy('spy');
         new Dom(el).one('click', spy);
         el.click();
@@ -636,20 +618,18 @@ export function DomTests() {
         el.click();
         expect(spy).toHaveBeenCalled();
         expect(spy).toHaveBeenCalledTimes(1);
-        expect(spy).not.toHaveBeenCalledTimes(3);
       });
 
-      it('using one with non alpha numeric character should work properly', () => {
+      it('using "one" with non alpha numeric character should work properly', () => {
         const spy = jasmine.createSpy('spy');
         new Dom(el).one('this contains space', spy);
         window['Coveo']['$'](el).trigger('thiscontainsspace');
         window['Coveo']['$'](el).trigger('thiscontainsspace');
         window['Coveo']['$'](el).trigger('thiscontainsspace');
         expect(spy).toHaveBeenCalledTimes(1);
-        expect(spy).not.toHaveBeenCalledTimes(3);
       });
 
-      it('using off should work properly', () => {
+      it('using "off" should work properly', () => {
         const spy = jasmine.createSpy('spy');
         new Dom(el).on('click', spy);
         new Dom(el).off('click', spy);
@@ -665,7 +645,7 @@ export function DomTests() {
         expect(spy).not.toHaveBeenCalled();
       });
 
-      it('using trigger should work properly', () => {
+      it('using "trigger" should work properly', () => {
         const spy = jasmine.createSpy('spy');
         new Dom(el).on('click', spy);
         new Dom(el).trigger('click');
@@ -677,7 +657,7 @@ export function DomTests() {
         expect(spy2).toHaveBeenCalledWith(jasmine.any(jQuery.Event), { bar: 'baz' });
       });
 
-      it('using trigger with non alpha numeric character should work properly', () => {
+      it('using "trigger" with non alpha numeric character should work properly', () => {
         const spy = jasmine.createSpy('spy');
         window['Coveo']['$'](el).on('thiscontainsspace', spy);
         new Dom(el).trigger('this contains space');
