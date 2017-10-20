@@ -18546,7 +18546,13 @@ var Facet = (function (_super) {
         this.updateVisibilityBasedOnDependsOn();
         var groupByResult = data.results.groupByResults[this.facetQueryController.lastGroupByRequestIndex];
         this.facetQueryController.lastGroupByResult = groupByResult;
+        // Two corner case to handle regarding the "sticky" aspect of facets : 
+        // 1) The group by is empty (so there is nothing to "sticky")
+        // 2) There is only one value displayed currently, so there is nothing to "sticky" either
         if (!groupByResult) {
+            this.keepDisplayedValuesNextTime = false;
+        }
+        if (this.values.getAll().length == 1) {
             this.keepDisplayedValuesNextTime = false;
         }
         this.processNewGroupByResults(groupByResult);
@@ -18672,7 +18678,7 @@ var Facet = (function (_super) {
             }));
         }
         else if (this.values.getSelected().length > 0 && !this.options.useAnd) {
-            this.values.updateDeltaWithFilteredFacetValues(new FacetValues_1.FacetValues());
+            this.values.updateDeltaWithFilteredFacetValues(new FacetValues_1.FacetValues(), this.options.isMultiValueField);
         }
         if (!this.values.hasSelectedOrExcludedValues() || this.options.useAnd || !this.options.isMultiValueField) {
             this.rebuildValueElements();
@@ -19096,7 +19102,7 @@ var Facet = (function (_super) {
             }
             else {
                 if (_this.values.hasSelectedOrExcludedValues() && !_this.options.useAnd) {
-                    _this.values.updateDeltaWithFilteredFacetValues(new FacetValues_1.FacetValues());
+                    _this.values.updateDeltaWithFilteredFacetValues(new FacetValues_1.FacetValues(), _this.options.isMultiValueField);
                     _this.hideWaitingAnimation();
                 }
                 else {
@@ -19118,7 +19124,8 @@ var Facet = (function (_super) {
                     }
                 });
             });
-            _this.values.updateDeltaWithFilteredFacetValues(values);
+            _this.values.updateDeltaWithFilteredFacetValues(values, _this.options.isMultiValueField);
+            _this.cleanupDeltaValuesForMultiValueField();
             _this.rebuildValueElements();
             _this.hideWaitingAnimation();
         });
@@ -19151,6 +19158,19 @@ var Facet = (function (_super) {
             minValue = lastSelectedValueIndex_1 + 1;
         }
         return Math.max(minValue, this.options.numberOfValues);
+    };
+    Facet.prototype.cleanupDeltaValuesForMultiValueField = function () {
+        var _this = this;
+        // On a multi value field, it's possible to end up in a scenario where many of the current values are empty
+        // Crop those out, and adjust the nbAvailable values for the "search" and "show more";
+        if (this.options.isMultiValueField) {
+            _.each(this.values.getAll(), function (v) {
+                if (v.occurrences == 0) {
+                    _this.values.remove(v.value);
+                }
+            });
+            this.nbAvailableValues = this.values.getAll().length;
+        }
     };
     Facet.prototype.updateVisibilityBasedOnDependsOn = function () {
         if (Utils_1.Utils.isNonEmptyString(this.options.dependsOn)) {
@@ -20590,8 +20610,8 @@ exports.DebugEvents = DebugEvents;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.version = {
-    'lib': '2.2900.30-beta',
-    'product': '2.2900.30-beta',
+    'lib': '2.2900.31-beta',
+    'product': '2.2900.31-beta',
     'supportedApiVersion': 2
 };
 
@@ -23676,6 +23696,15 @@ var FacetValues = (function () {
     FacetValues.prototype.hasSelectedOrExcludedValues = function () {
         return this.getSelected().length != 0 || this.getExcluded().length != 0;
     };
+    FacetValues.prototype.hasSelectedAndExcludedValues = function () {
+        return this.getSelected().length != 0 && this.getExcluded().length != 0;
+    };
+    FacetValues.prototype.hasOnlyExcludedValues = function () {
+        return this.getSelected().length == 0 && this.getExcluded().length != 0;
+    };
+    FacetValues.prototype.hasOnlySelectedValues = function () {
+        return this.getSelected().length != 0 && this.getExcluded().length == 0;
+    };
     FacetValues.prototype.reset = function () {
         _.each(this.values, function (elem) { return elem.reset(); });
     };
@@ -23688,7 +23717,7 @@ var FacetValues = (function () {
                 myValue.selected = true;
             }
             else {
-                if (otherValue.occurrences) {
+                if (otherValue.occurrences && !otherValue.excluded) {
                     _this.values.push(otherValue.clone());
                 }
                 else {
@@ -23726,21 +23755,36 @@ var FacetValues = (function () {
             return myValue;
         });
     };
-    FacetValues.prototype.updateDeltaWithFilteredFacetValues = function (filtered) {
+    FacetValues.prototype.updateDeltaWithFilteredFacetValues = function (filtered, isMultiValueField) {
+        var _this = this;
         Assert_1.Assert.exists(filtered);
         _.each(this.values, function (unfilteredValue) {
             var filteredValue = filtered.get(unfilteredValue.value);
             unfilteredValue.waitingForDelta = false;
             if (Utils_1.Utils.exists(filteredValue)) {
                 if (unfilteredValue.occurrences - filteredValue.occurrences > 0) {
-                    unfilteredValue.delta = unfilteredValue.occurrences - filteredValue.occurrences;
+                    // When there are only exclusion in the facet, there should be no "delta"
+                    // The number of value for each facet will be what is selected, no addition.
+                    if (_this.hasOnlyExcludedValues()) {
+                        unfilteredValue.delta = null;
+                        unfilteredValue.occurrences = filteredValue.occurrences;
+                    }
+                    else {
+                        unfilteredValue.delta = unfilteredValue.occurrences - filteredValue.occurrences;
+                    }
                 }
                 else {
                     unfilteredValue.delta = null;
                 }
             }
             else if (!unfilteredValue.selected && !unfilteredValue.excluded) {
-                unfilteredValue.delta = unfilteredValue.occurrences;
+                if (isMultiValueField && filtered.values.length == 0) {
+                    unfilteredValue.delta = null;
+                    unfilteredValue.occurrences = 0;
+                }
+                else {
+                    unfilteredValue.delta = unfilteredValue.occurrences;
+                }
             }
         });
     };
@@ -44896,7 +44940,7 @@ var FacetQueryController = (function () {
     FacetQueryController.prototype.createGroupByQueryOverride = function (queryBuilder) {
         var additionalFilter = this.facet.options.additionalFilter ? this.facet.options.additionalFilter : '';
         var queryOverrideObject = undefined;
-        if (this.facet.options.useAnd) {
+        if (this.facet.options.useAnd || (this.facet.options.isMultiValueField && this.facet.values.hasSelectedAndExcludedValues())) {
             if (Utils_1.Utils.isNonEmptyString(additionalFilter)) {
                 queryOverrideObject = queryBuilder.computeCompleteExpressionParts();
                 if (Utils_1.Utils.isEmptyString(queryOverrideObject.basic)) {
