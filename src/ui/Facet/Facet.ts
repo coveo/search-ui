@@ -1178,7 +1178,13 @@ export class Facet extends Component {
     this.updateVisibilityBasedOnDependsOn();
     let groupByResult = data.results.groupByResults[this.facetQueryController.lastGroupByRequestIndex];
     this.facetQueryController.lastGroupByResult = groupByResult;
+    // Two corner case to handle regarding the "sticky" aspect of facets : 
+    // 1) The group by is empty (so there is nothing to "sticky")
+    // 2) There is only one value displayed currently, so there is nothing to "sticky" either
     if (!groupByResult) {
+      this.keepDisplayedValuesNextTime = false;
+    }
+    if (this.values.getAll().length == 1) {
       this.keepDisplayedValuesNextTime = false;
     }
     this.processNewGroupByResults(groupByResult);
@@ -1317,7 +1323,7 @@ export class Facet extends Component {
         return !facetValue.selected && !facetValue.excluded;
       }));
     } else if (this.values.getSelected().length > 0 && !this.options.useAnd) {
-      this.values.updateDeltaWithFilteredFacetValues(new FacetValues());
+      this.values.updateDeltaWithFilteredFacetValues(new FacetValues(), this.options.isMultiValueField);
     }
     if (!this.values.hasSelectedOrExcludedValues() || this.options.useAnd || !this.options.isMultiValueField) {
       this.rebuildValueElements();
@@ -1780,7 +1786,7 @@ export class Facet extends Component {
         this.triggerUpdateDeltaQuery(_.filter(this.values.getAll(), (facetValue: FacetValue) => !facetValue.selected && !facetValue.excluded));
       } else {
         if (this.values.hasSelectedOrExcludedValues() && !this.options.useAnd) {
-          this.values.updateDeltaWithFilteredFacetValues(new FacetValues());
+          this.values.updateDeltaWithFilteredFacetValues(new FacetValues(), this.options.isMultiValueField);
           this.hideWaitingAnimation();
         } else {
           this.hideWaitingAnimation();
@@ -1802,7 +1808,8 @@ export class Facet extends Component {
           }
         });
       });
-      this.values.updateDeltaWithFilteredFacetValues(values);
+      this.values.updateDeltaWithFilteredFacetValues(values, this.options.isMultiValueField);
+      this.cleanupDeltaValuesForMultiValueField();
       this.rebuildValueElements();
       this.hideWaitingAnimation();
     });
@@ -1838,6 +1845,19 @@ export class Facet extends Component {
       minValue = lastSelectedValueIndex + 1;
     }
     return Math.max(minValue, this.options.numberOfValues);
+  }
+
+  private cleanupDeltaValuesForMultiValueField() {
+    // On a multi value field, it's possible to end up in a scenario where many of the current values are empty
+    // Crop those out, and adjust the nbAvailable values for the "search" and "show more";
+    if (this.options.isMultiValueField) {
+      _.each(this.values.getAll(), (v) => {
+        if (v.occurrences == 0) {
+          this.values.remove(v.value);
+        }
+      })
+      this.nbAvailableValues = this.values.getAll().length;
+    }
   }
 
   private updateVisibilityBasedOnDependsOn() {

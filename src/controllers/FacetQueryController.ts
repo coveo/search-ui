@@ -230,7 +230,7 @@ export class FacetQueryController {
     const additionalFilter = this.facet.options.additionalFilter ? this.facet.options.additionalFilter : '';
     let queryOverrideObject: IQueryBuilderExpression = undefined;
 
-    if (this.facet.options.useAnd) {
+    if (this.facet.options.useAnd || (this.facet.options.isMultiValueField && this.facet.values.hasSelectedAndExcludedValues())) {
       if (Utils.isNonEmptyString(additionalFilter)) {
         queryOverrideObject = queryBuilder.computeCompleteExpressionParts();
         if (Utils.isEmptyString(queryOverrideObject.basic)) {
