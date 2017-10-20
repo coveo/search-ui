@@ -172,6 +172,9 @@ FacetSliderTest();
 import { FacetTest } from './ui/FacetTest';
 FacetTest();
 
+import { BreadcrumbValueListTest } from './ui/BreadcrumbValuesListTest';
+BreadcrumbValueListTest();
+
 import { FieldSuggestionsTest } from './ui/FieldSuggestionsTest';
 FieldSuggestionsTest();
 
