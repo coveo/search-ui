@@ -14,6 +14,7 @@ import { $$ } from '../../utils/Dom';
 import * as _ from 'underscore';
 import { exportGlobally } from '../../GlobalExports';
 import { StringUtils } from '../../utils/StringUtils';
+import { FacetUtils } from '../Facet/FacetUtils';
 
 export interface IFieldValueOptions {
   field?: IFieldOption;
@@ -270,7 +271,8 @@ export class FieldValue extends Component {
    */
   public renderOneValue(value: string): HTMLElement {
     const element = $$('span').el;
-    let toRender = value;
+    let toRender = FacetUtils.tryToGetTranslatedCaption(this.options.field as string, value);
+
     if (this.options.helper) {
       // Try to resolve and execute version 2 of each helper function if available
       const helper = TemplateHelpers.getHelper(`${this.options.helper}v2`) || TemplateHelpers.getHelper(`${this.options.helper}`);
@@ -370,13 +372,25 @@ export class FieldValue extends Component {
   }
 
   private bindEventOnValue(element: HTMLElement, value: string) {
-    if (Utils.isUndefined(Coveo['FacetRange'])) {
-      return;
-    }
-
     const facetAttributeName = QueryStateModel.getFacetId(this.options.facet);
     const facets: Component[] = _.filter(this.componentStateModel.get(facetAttributeName), (facet: Component) => {
-      return !facet.disabled && Coveo['FacetRange'] && !(facet instanceof Coveo['FacetRange']);
+      let facetIsLinkedToFieldValue = true;
+      const facetRange = Component.getComponentRef('FacetRange');
+      const facetSlider = Component.getComponentRef('FacetSlider');
+
+      if (facet.disabled) {
+        facetIsLinkedToFieldValue = false;
+      }
+
+      if (facetIsLinkedToFieldValue && facetRange) {
+        facetIsLinkedToFieldValue = !(facet instanceof facetRange);
+      }
+
+      if (facetIsLinkedToFieldValue && facetSlider) {
+        facetIsLinkedToFieldValue = !(facet instanceof facetSlider);
+      }
+
+      return facetIsLinkedToFieldValue;
     });
     const atLeastOneFacetIsEnabled = facets.length > 0;
 
