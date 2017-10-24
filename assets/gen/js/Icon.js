@@ -1,6 +1,6 @@
-webpackJsonpCoveo__temporary([65],{
+webpackJsonpCoveo__temporary([67],{
 
-/***/ 286:
+/***/ 242:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19,10 +19,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var Component_1 = __webpack_require__(8);
 var ComponentOptions_1 = __webpack_require__(9);
 var Assert_1 = __webpack_require__(7);
-var QueryUtils_1 = __webpack_require__(20);
+var QueryUtils_1 = __webpack_require__(19);
 var Initialization_1 = __webpack_require__(2);
-var Utils_1 = __webpack_require__(5);
-var FileTypes_1 = __webpack_require__(100);
+var Utils_1 = __webpack_require__(6);
+var FileTypes_1 = __webpack_require__(83);
 var Dom_1 = __webpack_require__(3);
 var GlobalExports_1 = __webpack_require__(4);
 /**
@@ -32,7 +32,7 @@ var GlobalExports_1 = __webpack_require__(4);
  *
  * This component is a result template component (see [Result Templates](https://developers.coveo.com/x/aIGfAQ)).
  */
-var Icon = (function (_super) {
+var Icon = /** @class */ (function (_super) {
     __extends(Icon, _super);
     /**
      * Creates a new Icon component.
@@ -117,52 +117,52 @@ var Icon = (function (_super) {
         }
         return info;
     };
+    Icon.ID = 'Icon';
+    Icon.doExport = function () {
+        GlobalExports_1.exportGlobally({
+            Icon: Icon
+        });
+    };
+    /**
+     * The options for the Icon
+     * @componentOptions
+     */
+    Icon.options = {
+        /**
+         * Specifies the value that the Icon component should output as its CSS class instead of the auto-selected value.
+         *
+         * Default value is `undefined`, which means that the Coveo JavaScript Search Framework outputs a suitable icon
+         * depending on the result file type.
+         */
+        value: ComponentOptions_1.ComponentOptions.buildStringOption(),
+        /**
+         * Specifies whether the Icon component should output the smaller version of the icon instead of the regular one.
+         *
+         * Default value is `undefined`.
+         */
+        small: ComponentOptions_1.ComponentOptions.buildBooleanOption(),
+        /**
+         * Specifies whether the Icon component should force the output icon to display its caption/label.
+         *
+         * **Note:**
+         *
+         * > Due to limited screen real estate, setting this option to `true` has no effect on icons used inside Coveo for
+         * > Salesforce Insight Panels.
+         *
+         * Default value is `undefined`, which means that the Coveo JavaScript Search Framework determines whether the icon
+         * needs to display a caption/label depending on the result file type.
+         */
+        withLabel: ComponentOptions_1.ComponentOptions.buildBooleanOption(),
+        /**
+         * Specifies what text to display as the icon caption/label.
+         *
+         * Default value is `undefined`, which means that the Coveo JavaScript Search Framework determines what text the icon
+         * needs to display depending on the result file type.
+         */
+        labelValue: ComponentOptions_1.ComponentOptions.buildLocalizedStringOption()
+    };
     return Icon;
 }(Component_1.Component));
-Icon.ID = 'Icon';
-Icon.doExport = function () {
-    GlobalExports_1.exportGlobally({
-        'Icon': Icon
-    });
-};
-/**
- * The options for the Icon
- * @componentOptions
- */
-Icon.options = {
-    /**
-     * Specifies the value that the Icon component should output as its CSS class instead of the auto-selected value.
-     *
-     * Default value is `undefined`, which means that the Coveo JavaScript Search Framework outputs a suitable icon
-     * depending on the result file type.
-     */
-    value: ComponentOptions_1.ComponentOptions.buildStringOption(),
-    /**
-     * Specifies whether the Icon component should output the smaller version of the icon instead of the regular one.
-     *
-     * Default value is `undefined`.
-     */
-    small: ComponentOptions_1.ComponentOptions.buildBooleanOption(),
-    /**
-     * Specifies whether the Icon component should force the output icon to display its caption/label.
-     *
-     * **Note:**
-     *
-     * > Due to limited screen real estate, setting this option to `true` has no effect on icons used inside Coveo for
-     * > Salesforce Insight Panels.
-     *
-     * Default value is `undefined`, which means that the Coveo JavaScript Search Framework determines whether the icon
-     * needs to display a caption/label depending on the result file type.
-     */
-    withLabel: ComponentOptions_1.ComponentOptions.buildBooleanOption(),
-    /**
-     * Specifies what text to display as the icon caption/label.
-     *
-     * Default value is `undefined`, which means that the Coveo JavaScript Search Framework determines what text the icon
-     * needs to display depending on the result file type.
-     */
-    labelValue: ComponentOptions_1.ComponentOptions.buildLocalizedStringOption()
-};
 exports.Icon = Icon;
 Initialization_1.Initialization.registerAutoCreateComponent(Icon);
 

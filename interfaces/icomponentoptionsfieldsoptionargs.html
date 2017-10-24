@@ -56,7 +56,7 @@
 	<div class="bottomHeader">
 		<div id="searchBox">
 			<div class="CoveoSearchbox" data-enable-omnibox="true" data-inline="false" data-enable-wildcards="true" data-enable-search-as-you-type="false" data-enable-query-suggest-addon="false" data-enable-query-syntax="true" data-enable-field-addon="true"></div>
-			<div class="CoveoFieldSuggestions" data-field="@systitle" data-header-title="Suggested topics"></div>
+			<div class="CoveoFieldSuggestions" data-field="@jsuipagetopic" data-header-title="Suggested topics"></div>
 		</div>
 	</div>
 	<!-- Do not focus on Querybox when URL contains hash to ensure page scrolls down to corresponding anchor. -->
@@ -155,7 +155,8 @@
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>This represent the possible parameters that can be used to configure a list of fields option.</p>
+						<p>The <code>IComponentOptionsFieldsOptionArgs</code> interface describes the available parameters when building a
+						<a href="../classes/componentoptions.html#buildfieldsoption">fields option</a>.</p>
 					</div>
 				</div>
 			</section>
@@ -194,15 +195,18 @@
 						<p>Inherited from <a href="icomponentoptions.html">IComponentOptions</a>.<a href="icomponentoptions.html#alias">alias</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/ComponentOptions.ts#L80">src/ui/Base/ComponentOptions.ts
-							:80</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/ComponentOptions.ts#L102">src/ui/Base/ComponentOptions.ts
+							:102</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Allow to specify an alias for an option name.</p>
+							<p>Specifies an alias, or array of aliases, which can be used instead of the actual option name.</p>
 						</div>
-						<p>This can be useful to modify the name of an option without introducing a breaking change.</p>
+						<p><strong>Note:</strong></p>
+						<blockquote>
+							<p>This can be useful to modify an option name without introducing a breaking change.</p>
+						</blockquote>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
@@ -213,15 +217,19 @@
 						<p>Inherited from <a href="icomponentoptions.html">IComponentOptions</a>.<a href="icomponentoptions.html#attrname">attrName</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/ComponentOptions.ts#L74">src/ui/Base/ComponentOptions.ts
-							:74</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/ComponentOptions.ts#L93">src/ui/Base/ComponentOptions.ts
+							:93</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Allow to specify a different markup name for an option than the default value.</p>
+							<p>Specifies a different markup name to use for an option, rather than the standard name (i.e., <code>data-</code> followed by
+							the hyphened name of the option).</p>
 						</div>
-						<p>Using this is extremely rare, and should be used only for legacy reasons.</p>
+						<p><strong>Note:</strong></p>
+						<blockquote>
+							<p>This should only be used for backward compatibility reasons.</p>
+						</blockquote>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
@@ -232,19 +240,22 @@
 						<p>Inherited from <a href="icomponentoptions.html">IComponentOptions</a>.<a href="icomponentoptions.html#defaultfunction">defaultFunction</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/ComponentOptions.ts#L56">src/ui/Base/ComponentOptions.ts
-							:56</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/ComponentOptions.ts#L61">src/ui/Base/ComponentOptions.ts
+							:61</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<dl class="tsd-deprecated">
 						</dl>
 						<div class="lead">
-							<p>Specify a function which should return the default value that should be given to the option if it is not specified.</p>
+							<p>Specifies a function that should return the value the option must take when no other value is explicitly specified.</p>
 						</div>
 						<dl class="tsd-comment-tags">
 							<dt>param</dt>
 							<dd><p>The HTMLElement on which the current option is being parsed.</p>
+							</dd>
+							<dt>returns</dt>
+							<dd><p>The default value of the option.</p>
 							</dd>
 						</dl>
 					</div>
@@ -278,13 +289,13 @@
 						<p>Inherited from <a href="icomponentoptions.html">IComponentOptions</a>.<a href="icomponentoptions.html#defaultvalue">defaultValue</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/ComponentOptions.ts#L50">src/ui/Base/ComponentOptions.ts
-							:50</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/ComponentOptions.ts#L53">src/ui/Base/ComponentOptions.ts
+							:53</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specify the default value that should be given to the option if it is not specified.</p>
+							<p>Specifies the value the option must take when no other value is explicitly specified.</p>
 						</div>
 					</div>
 				</section>
@@ -296,15 +307,19 @@
 						<p>Inherited from <a href="icomponentoptions.html">IComponentOptions</a>.<a href="icomponentoptions.html#depend">depend</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/ComponentOptions.ts#L90">src/ui/Base/ComponentOptions.ts
-							:90</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/ComponentOptions.ts#L117">src/ui/Base/ComponentOptions.ts
+							:117</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specify that an option depend on another option being enabled.</p>
+							<p>Specifies the name of a boolean component option which must be <code>true</code> in order for this option to function
+							properly.</p>
 						</div>
-						<p>Mostly useful for the interface editor.</p>
+						<p><strong>Note:</strong></p>
+						<blockquote>
+							<p>This is mostly useful for the Coveo JavaScript Interface Editor.</p>
+						</blockquote>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
@@ -315,17 +330,20 @@
 						<p>Inherited from <a href="icomponentoptions.html">IComponentOptions</a>.<a href="icomponentoptions.html#deprecated">deprecated</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/ComponentOptions.ts#L101">src/ui/Base/ComponentOptions.ts
-							:101</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/ComponentOptions.ts#L129">src/ui/Base/ComponentOptions.ts
+							:129</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specify that an option is deprecated.</p>
+							<p>Specifies a message that labels the option as deprecated. This message appears in the console upon initialization
+								if the deprecated option is used in the page. Consequently, this message should explain as clearly as possible why
+							the option is deprecated, and what now replaces it.</p>
 						</div>
-						<p>This string will be displayed in the console on initialization.</p>
-						<p>The message should be as clear as possible as to why this option is deprecated, and how it can be replaced.</p>
-						<p>This also mean that the option will not appear in the interface editor.</p>
+						<p><strong>Note:</strong></p>
+						<blockquote>
+							<p>Deprecated options do not appear in the Coveo JavaScript Interface Editor.</p>
+						</blockquote>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
@@ -336,15 +354,20 @@
 						<p>Inherited from <a href="icomponentoptions.html">IComponentOptions</a>.<a href="icomponentoptions.html#postprocessing">postProcessing</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/ComponentOptions.ts#L68">src/ui/Base/ComponentOptions.ts
-							:68</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/ComponentOptions.ts#L83">src/ui/Base/ComponentOptions.ts
+							:83</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specify a function which can be used to further modify the value for a given option after all other options have been loaded.</p>
+							<p>Specifies a function that should allow a component option to further modify its own value once all other options
+							of that component have been built.</p>
 						</div>
-						<p>For example, the <a href="../components/facet.html#options.id">Facet.options.id</a> will use this to set the default ID with the same value as the <a href="../components/facet.html#options.field">Facet.options.field</a>.</p>
+						<p><strong>Example:</strong></p>
+						<blockquote>
+							<p>By default, the <a href="../components/facet.html#options.id"><code>id</code></a> option of the <code>Facet</code> component uses a post processing function to
+							set its value to that of the <a href="../components/facet.html#options.field"><code>field</code></a> option.</p>
+						</blockquote>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
@@ -355,15 +378,20 @@
 						<p>Inherited from <a href="icomponentoptions.html">IComponentOptions</a>.<a href="icomponentoptions.html#required">required</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/ComponentOptions.ts#L62">src/ui/Base/ComponentOptions.ts
-							:62</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/ComponentOptions.ts#L72">src/ui/Base/ComponentOptions.ts
+							:72</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specify if the option is &quot;required&quot; so that the component can do it&#39;s job properly.</p>
+							<p>Specifies whether it is necessary to explicitly specify a value for the option in order for the component to
+							function properly.</p>
 						</div>
-						<p>For example, the <a href="../components/facet.html#options.field">Facet.options.field</a> is required, as a facet with no field cannot function.</p>
+						<p><strong>Example:</strong></p>
+						<blockquote>
+							<p>The <a href="../components/facet.html#options.field"><code>field</code></a> option of the <code>Facet</code> component is required, since a facet cannot
+							function properly without a field.</p>
+						</blockquote>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
@@ -374,13 +402,13 @@
 						<p>Inherited from <a href="icomponentoptions.html">IComponentOptions</a>.<a href="icomponentoptions.html#section">section</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/ComponentOptions.ts#L84">src/ui/Base/ComponentOptions.ts
-							:84</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/ComponentOptions.ts#L107">src/ui/Base/ComponentOptions.ts
+							:107</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specify a section name inside which the option should appear in the interface editor.</p>
+							<p>Specifies a section name inside which the option should appear in the Coveo JavaScript Interface Editor.</p>
 						</div>
 					</div>
 				</section>
@@ -392,20 +420,23 @@
 						<p>Inherited from <a href="icomponentoptions.html">IComponentOptions</a>.<a href="icomponentoptions.html#validator">validator</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/ComponentOptions.ts#L108">src/ui/Base/ComponentOptions.ts
-							:108</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/ComponentOptions.ts#L137">src/ui/Base/ComponentOptions.ts
+							:137</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<dl class="tsd-deprecated">
 						</dl>
 						<div class="lead">
-							<p>Specify a function which can be used to verify the validity of the option.</p>
+							<p>Specifies a function that should indicate whether the option value is valid.</p>
 						</div>
-						<p>The function should return true if the option is valid, false otherwise.</p>
 						<dl class="tsd-comment-tags">
 							<dt>param</dt>
-							<dd></dd>
+							<dd><p>The option value to validate.</p>
+							</dd>
+							<dt>returns</dt>
+							<dd><p><code>true</code> if the option value is valid; <code>false</code> otherwise.</p>
+							</dd>
 						</dl>
 					</div>
 					<div class="tsd-type-declaration">

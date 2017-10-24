@@ -1,6 +1,6 @@
-webpackJsonpCoveo__temporary([68],{
+webpackJsonpCoveo__temporary([70],{
 
-/***/ 363:
+/***/ 278:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17,11 +17,11 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var Component_1 = __webpack_require__(8);
-var Utils_1 = __webpack_require__(5);
+var Utils_1 = __webpack_require__(6);
 var Initialization_1 = __webpack_require__(2);
 var Dom_1 = __webpack_require__(3);
 var GlobalExports_1 = __webpack_require__(4);
-var ChatterTopic = (function (_super) {
+var ChatterTopic = /** @class */ (function (_super) {
     __extends(ChatterTopic, _super);
     function ChatterTopic(element, options, bindings, result) {
         var _this = _super.call(this, element, ChatterTopic.ID, bindings) || this;
@@ -52,14 +52,14 @@ var ChatterTopic = (function (_super) {
         }
         return _this;
     }
+    ChatterTopic.ID = 'ChatterTopic';
+    ChatterTopic.doExport = function () {
+        GlobalExports_1.exportGlobally({
+            ChatterTopic: ChatterTopic
+        });
+    };
     return ChatterTopic;
 }(Component_1.Component));
-ChatterTopic.ID = 'ChatterTopic';
-ChatterTopic.doExport = function () {
-    GlobalExports_1.exportGlobally({
-        'ChatterTopic': ChatterTopic
-    });
-};
 exports.ChatterTopic = ChatterTopic;
 Initialization_1.Initialization.registerAutoCreateComponent(ChatterTopic);
 

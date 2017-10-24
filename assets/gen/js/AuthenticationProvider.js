@@ -1,6 +1,6 @@
-webpackJsonpCoveo__temporary([62],{
+webpackJsonpCoveo__temporary([64],{
 
-/***/ 354:
+/***/ 269:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20,16 +20,16 @@ var Component_1 = __webpack_require__(8);
 var ComponentOptions_1 = __webpack_require__(9);
 var Assert_1 = __webpack_require__(7);
 var QueryEvents_1 = __webpack_require__(11);
-var InitializationEvents_1 = __webpack_require__(18);
-var SettingsEvents_1 = __webpack_require__(45);
-var DomUtils_1 = __webpack_require__(53);
+var InitializationEvents_1 = __webpack_require__(17);
+var SettingsEvents_1 = __webpack_require__(43);
+var DomUtils_1 = __webpack_require__(47);
 var Dom_1 = __webpack_require__(3);
 var Initialization_1 = __webpack_require__(2);
 var Strings_1 = __webpack_require__(10);
-var ExternalModulesShim_1 = __webpack_require__(28);
+var ExternalModulesShim_1 = __webpack_require__(27);
 var _ = __webpack_require__(1);
 var GlobalExports_1 = __webpack_require__(4);
-__webpack_require__(913);
+__webpack_require__(468);
 var SVGIcons_1 = __webpack_require__(15);
 /**
  * The `AuthenticationProvider` component makes it possible to execute queries with an identity that the end user
@@ -41,7 +41,7 @@ var SVGIcons_1 = __webpack_require__(15);
  * You can use the `data-tab` attribute to enable the `AuthenticationProvider` component only for the tabs of your
  * search interface that require authentication (see the [`Tab`]{@link Tab} component).
  */
-var AuthenticationProvider = (function (_super) {
+var AuthenticationProvider = /** @class */ (function (_super) {
     __extends(AuthenticationProvider, _super);
     /**
      * Creates a new `AuthenticationProvider` component.
@@ -80,7 +80,10 @@ var AuthenticationProvider = (function (_super) {
     };
     AuthenticationProvider.prototype.handleQueryError = function (args) {
         var missingAuthError = args.error;
-        if (missingAuthError.isMissingAuthentication && missingAuthError.provider === this.options.name && this.redirectCount < 2 && this.redirectCount !== -1) {
+        if (missingAuthError.isMissingAuthentication &&
+            missingAuthError.provider === this.options.name &&
+            this.redirectCount < 2 &&
+            this.redirectCount !== -1) {
             ++this.redirectCount;
             this.authenticateWithProvider();
         }
@@ -99,7 +102,7 @@ var AuthenticationProvider = (function (_super) {
     AuthenticationProvider.prototype.authenticateWithIFrame = function () {
         this.logger.info("Using iframe to retrieve authentication for provider " + this.options.name);
         var iframe = Dom_1.$$('iframe', {
-            'src': this.getAuthenticationProviderUriForIFrame()
+            src: this.getAuthenticationProviderUriForIFrame()
         }).el;
         var modalbox;
         modalbox = this.options.showIFrame ? this.createPopupForVisibleIFrame(iframe) : this.createPopupForWaitMessage(iframe);
@@ -148,68 +151,68 @@ var AuthenticationProvider = (function (_super) {
     AuthenticationProvider.prototype.getAuthenticationProviderUriForIFrame = function () {
         return this.queryController.getEndpoint().getAuthenticationProviderUri(this.options.name, undefined, 'success');
     };
+    AuthenticationProvider.ID = 'AuthenticationProvider';
+    AuthenticationProvider.doExport = function () {
+        GlobalExports_1.exportGlobally({
+            AuthenticationProvider: AuthenticationProvider
+        });
+    };
+    /**
+     * The options for the component.
+     * @componentOptions
+     */
+    AuthenticationProvider.options = {
+        /**
+         * Specifies the name of the authentication provider.
+         *
+         * See [SAML Authentication](https://developers.coveo.com/x/pw8vAg).
+         */
+        name: ComponentOptions_1.ComponentOptions.buildStringOption(),
+        /**
+         * Specifies the display name of the authentication provider. This is the name that you want to appear in the user
+         * interface when the end user is logging in.
+         *
+         * Default value is the [`name`]{@link AuthenticationProvider.options.name} option value.
+         */
+        caption: ComponentOptions_1.ComponentOptions.buildStringOption({ postProcessing: function (value, options) { return value || options.name; } }),
+        /**
+         * Specifies whether to use an `<iframe>` to host the chain of redirection that make up the authentication
+         * process.
+         *
+         * Using an `<iframe>` prevents leaving the search page as part of the authentication process. However, some login
+         * providers refuse to load in an `<iframe>`.
+         *
+         * Default value is `false`.
+         */
+        useIFrame: ComponentOptions_1.ComponentOptions.buildBooleanOption({
+            defaultValue: false,
+            alias: ['useIframe']
+        }),
+        /**
+         * If the [`useIFrame`]{@link AuthenticationProvider.options.useIFrame} option is `true`, specifies whether to make
+         * the authentication `<iframe>` visible to the user (inside a popup).
+         *
+         * When the underlying authentication provider requires no user interaction (for example, when a user authenticates
+         * using Windows authentication along with SharePoint claims), setting this option to `false` reduces the visual
+         * impact of the authentication process.
+         *
+         * Default value is `true`.
+         */
+        showIFrame: ComponentOptions_1.ComponentOptions.buildBooleanOption({
+            defaultValue: true,
+            alias: ['showIframe'],
+            depend: 'useIFrame'
+        })
+    };
     return AuthenticationProvider;
 }(Component_1.Component));
-AuthenticationProvider.ID = 'AuthenticationProvider';
-AuthenticationProvider.doExport = function () {
-    GlobalExports_1.exportGlobally({
-        'AuthenticationProvider': AuthenticationProvider
-    });
-};
-/**
- * The options for the component.
- * @componentOptions
- */
-AuthenticationProvider.options = {
-    /**
-     * Specifies the name of the authentication provider.
-     *
-     * See [SAML Authentication](https://developers.coveo.com/x/pw8vAg).
-     */
-    name: ComponentOptions_1.ComponentOptions.buildStringOption(),
-    /**
-     * Specifies the display name of the authentication provider. This is the name that you want to appear in the user
-     * interface when the end user is logging in.
-     *
-     * Default value is the [`name`]{@link AuthenticationProvider.options.name} option value.
-     */
-    caption: ComponentOptions_1.ComponentOptions.buildStringOption({ postProcessing: function (value, options) { return value || options.name; } }),
-    /**
-     * Specifies whether to use an `<iframe>` to host the chain of redirection that make up the authentication
-     * process.
-     *
-     * Using an `<iframe>` prevents leaving the search page as part of the authentication process. However, some login
-     * providers refuse to load in an `<iframe>`.
-     *
-     * Default value is `false`.
-     */
-    useIFrame: ComponentOptions_1.ComponentOptions.buildBooleanOption({
-        defaultValue: false,
-        alias: ['useIframe']
-    }),
-    /**
-     * If the [`useIFrame`]{@link AuthenticationProvider.options.useIFrame} option is `true`, specifies whether to make
-     * the authentication `<iframe>` visible to the user (inside a popup).
-     *
-     * When the underlying authentication provider requires no user interaction (for example, when a user authenticates
-     * using Windows authentication along with SharePoint claims), setting this option to `false` reduces the visual
-     * impact of the authentication process.
-     *
-     * Default value is `true`.
-     */
-    showIFrame: ComponentOptions_1.ComponentOptions.buildBooleanOption({
-        defaultValue: true,
-        alias: ['showIframe'],
-        depend: 'useIFrame'
-    })
-};
 exports.AuthenticationProvider = AuthenticationProvider;
 Initialization_1.Initialization.registerAutoCreateComponent(AuthenticationProvider);
 
 
 /***/ }),
 
-/***/ 913:
+/***/ 468:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

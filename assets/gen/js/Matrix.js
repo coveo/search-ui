@@ -1,6 +1,6 @@
-webpackJsonpCoveo__temporary([21],{
+webpackJsonpCoveo__temporary([23],{
 
-/***/ 376:
+/***/ 291:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18,18 +18,18 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var Component_1 = __webpack_require__(8);
 var ComponentOptions_1 = __webpack_require__(9);
-var Cell_1 = __webpack_require__(976);
-var DefaultMatrixResultPreviewTemplate_1 = __webpack_require__(977);
+var Cell_1 = __webpack_require__(502);
+var DefaultMatrixResultPreviewTemplate_1 = __webpack_require__(503);
 var Dom_1 = __webpack_require__(3);
 var QueryEvents_1 = __webpack_require__(11);
 var QueryStateModel_1 = __webpack_require__(13);
-var Utils_1 = __webpack_require__(5);
+var Utils_1 = __webpack_require__(6);
 var Initialization_1 = __webpack_require__(2);
-var QueryUtils_1 = __webpack_require__(20);
-var Globalize = __webpack_require__(26);
+var QueryUtils_1 = __webpack_require__(19);
+var Globalize = __webpack_require__(25);
 var _ = __webpack_require__(1);
 var GlobalExports_1 = __webpack_require__(4);
-__webpack_require__(927);
+__webpack_require__(504);
 /**
  * The Matrix component uses the values of two fields (row and column) to display the results of the specified computed
  * field in a table.
@@ -40,7 +40,7 @@ __webpack_require__(927);
  * In a way that is similar to the {@link Facet} component, selecting a Matrix cell allows the end user to drill down
  * inside the results by restricting the row field and the column field to match the values of the selected cell.
  */
-var Matrix = (function (_super) {
+var Matrix = /** @class */ (function (_super) {
     __extends(Matrix, _super);
     /**
      * Creates a new Matrix. Also verifies whether options are valid and coherent. Binds query events.
@@ -78,13 +78,13 @@ var Matrix = (function (_super) {
         }
         _this.buildMatrix();
         if (_this.options.rowField == null) {
-            _this.logger.error('\'rowField\' option is required in the Matrix component');
+            _this.logger.error("'rowField' option is required in the Matrix component");
         }
         else if (_this.options.columnField == null) {
-            _this.logger.error('\'columnField\' option is required in the Matrix component');
+            _this.logger.error("'columnField' option is required in the Matrix component");
         }
         else if (_this.options.computedField == null) {
-            _this.logger.error('\'computedField\' option is required in the Matrix component');
+            _this.logger.error("'computedField' option is required in the Matrix component");
         }
         else {
             _this.bindEvents();
@@ -248,7 +248,7 @@ var Matrix = (function (_super) {
                 field: this.options.rowField,
                 sortCriteria: this.options.sortCriteria,
                 computedFields: this.getComputedFields(),
-                queryOverride: '(' + this.buildExpression(queryBuilder) + ')' + '(' + this.options.columnField + '=\'' + this.options.columnFieldValues[i] + '\')',
+                queryOverride: '(' + this.buildExpression(queryBuilder) + ')' + '(' + this.options.columnField + "='" + this.options.columnFieldValues[i] + "')",
                 maximumNumberOfValues: this.options.maximumNumberOfValuesInGroupBy
             };
             this.groupByIndex.push(queryBuilder.groupByRequests.length);
@@ -272,10 +272,12 @@ var Matrix = (function (_super) {
         return totalQuery;
     };
     Matrix.prototype.getComputedFields = function () {
-        var computedFields = [{
+        var computedFields = [
+            {
                 field: this.options.computedField,
                 operation: this.options.computedFieldOperation
-            }];
+            }
+        ];
         return computedFields;
     };
     Matrix.prototype.getCellResult = function (results, rowNumber, columnNumber) {
@@ -552,10 +554,12 @@ var Matrix = (function (_super) {
     };
     Matrix.prototype.instantiateTemplate = function (result) {
         var _this = this;
-        return this.options.previewTemplate.instantiateToElement(result, {
+        return this.options.previewTemplate
+            .instantiateToElement(result, {
             checkCondition: false,
             responsiveComponents: this.searchInterface.responsiveComponents
-        }).then(function (content) {
+        })
+            .then(function (content) {
             var initParameters = {
                 options: _this.options,
                 bindings: _this.getBindings(),
@@ -598,229 +602,222 @@ var Matrix = (function (_super) {
     Matrix.prototype.isDataAvailable = function (row, column) {
         return this.data[row] !== undefined && this.data[row][column] !== undefined;
     };
+    Matrix.ID = 'Matrix';
+    Matrix.doExport = function () {
+        GlobalExports_1.exportGlobally({
+            Matrix: Matrix
+        });
+    };
+    /**
+     * The possible options for the component
+     * @componentOptions
+     */
+    Matrix.options = {
+        /**
+         * Specifies the text to display at the top of the Matrix.
+         */
+        title: ComponentOptions_1.ComponentOptions.buildStringOption(),
+        /**
+         * Specifies the field to use for the rows.
+         *
+         * Specifying a value for this options is required for this component to work.
+         */
+        rowField: ComponentOptions_1.ComponentOptions.buildFieldOption({ required: true }),
+        /**
+         * Specifies the field to use for the columns.
+         *
+         * Specifying a value for this options is required for this component to work.
+         */
+        columnField: ComponentOptions_1.ComponentOptions.buildFieldOption({ required: true }),
+        /**
+         * Specifies the criteria to use for sorting the rows.
+         *
+         * See {@link IGroupByRequest.sortCriteria} for the list of possible values.
+         *
+         * Default value is `ComputedFieldDescending`.
+         */
+        sortCriteria: ComponentOptions_1.ComponentOptions.buildStringOption({ defaultValue: 'ComputedFieldDescending' }),
+        /**
+         * Specifies the maximum number of rows to display in the Matrix.
+         *
+         * Default value is `10`. Minimum value is `0`.
+         */
+        maximumNumberOfRows: ComponentOptions_1.ComponentOptions.buildNumberOption({ defaultValue: 10, min: 0 }),
+        /**
+         * Specifies whether to display a **Total** column containing the sum of each row.
+         *
+         * Default value is `true`.
+         */
+        enableRowTotals: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: true }),
+        /**
+         * Specifies the field values to use for each column.
+         *
+         * See also {@link Matrix.options.columnLabels}.
+         *
+         * Default value is `[]`, which means that the Matrix will not generate any column (except the **Total** column, if
+         * {@link Matrix.options.enableRowTotals} is `true`).
+         */
+        columnFieldValues: ComponentOptions_1.ComponentOptions.buildListOption({ defaultValue: [] }),
+        /**
+         * Specifies the label values to use for each column.
+         *
+         * Default value is `[]`. The array set for this options should match the {@link Matrix.options.columnFieldValues}.
+         */
+        columnLabels: ComponentOptions_1.ComponentOptions.buildListOption({ defaultValue: [] }),
+        /**
+         * Specifies the label for the first column on the left as a description of the {@link Matrix.options.columnField}.
+         *
+         * Default value is `undefined`.
+         */
+        columnHeader: ComponentOptions_1.ComponentOptions.buildStringOption(),
+        /**
+         * Specifies the maximum number of results to include in the {@link IGroupByRequest} for the columns.
+         *
+         * This value should always be greater than the {@link Matrix.options.maximumNumberOfRows}. If it is too small, some
+         * of the results will not be displayed in the Matrix.
+         *
+         * Default value is `100`. Minimum value is `0`.
+         */
+        maximumNumberOfValuesInGroupBy: ComponentOptions_1.ComponentOptions.buildNumberOption({ defaultValue: 100, min: 0 }),
+        /**
+         * Specifies whether to add a **Total** row containing the total of each column.
+         *
+         * Default value is `true`
+         */
+        enableColumnTotals: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: true }),
+        /**
+         * Specifies the field whose computed values you want to display in the cells.
+         *
+         * Specifying a value for this options is required for this component to work.
+         */
+        computedField: ComponentOptions_1.ComponentOptions.buildFieldOption({ required: true }),
+        /**
+         * Specifies the type of aggregate operation to perform on the {@link Matrix.options.computedField}.
+         *
+         * The possible values are:
+         * - `sum` - Computes the sum of the computed field values.
+         * - `average` - Computes the average of the computed field values.
+         * - `minimum` - Finds the minimum value of the computed field values.
+         * - `maximum` - Finds the maximum value of the computed field values.
+         *
+         * Default value is `sum`.
+         */
+        computedFieldOperation: ComponentOptions_1.ComponentOptions.buildStringOption({ defaultValue: 'sum' }),
+        /**
+         * Specifies how to format the values resulting from a {@link Matrix.options.computedFieldOperation}.
+         *
+         * The Globalize library defines all available formats (see
+         * [Globalize](https://github.com/klaaspieter/jquery-global#globalizeformat-value-format-culture-)).
+         *
+         * The most commonly used formats are:
+         * - `c0` - Formats the value as a currency.
+         * - `n0` - Formats the value as an integer.
+         * - `n2` - Formats the value as a floating point with 2 decimal digits.
+         *
+         * Default value is `c0`.
+         */
+        computedFieldFormat: ComponentOptions_1.ComponentOptions.buildStringOption({ defaultValue: 'c0' }),
+        /**
+         * Specifies the font-size to use for displaying text inside the cells.
+         *
+         * This option is mainly useful to prevent a Matrix containing many columns from cropping some of its values.
+         *
+         * However, instead of using this option to solve this kind of issue, you could also remove some of the less
+         * important columns from your Matrix or modify the CSS of your page to allow the Matrix to occupy a larger space.
+         *
+         * Default value is `''`.
+         */
+        cellFontSize: ComponentOptions_1.ComponentOptions.buildStringOption({ defaultValue: '' }),
+        /**
+         * Specifies whether to show a preview popup of cell results when hovering over a cell.
+         *
+         * See also {@link Matrix.options.previewSortCriteria}, {@link Matrix.options.previewMaxWidth},
+         * {@link Matrix.options.previewMinWidth}, {@link Matrix.options.previewDelay} and
+         * {@link Matrix.options.previewTemplate}.
+         *
+         * Default value is `true`.
+         */
+        enableHoverPreview: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: true }),
+        /**
+         * If {@link Matrix.options.enableHoverPreview} is `true`, specifies the criteria to use for sorting the results of
+         * the hover preview.
+         *
+         * The available sort criteria values are the same as those of the {@link IQuery}.
+         *
+         * The possible values are:
+         * - `relevancy`: Uses all configured ranking weights and any specified ranking expressions to sort the results.
+         * - `dateascending` / `datedescending`: Sorts the results using the `@date` field value, which is typically the
+         * last modification date of an item in the index.
+         * - `qre`: Sorts the results using only the weights applied by ranking expressions. Using `qre` is much like using
+         * `relevancy`, except that `qre` does not compute automatic weights, such as weights based on keyword proximity.
+         * - `nosort`: Does not sort the results. Using `nosort` returns the items in an essentially random order.
+         * - `fieldascending` / `fielddescending`: Sorts the results using the value of a custom field.
+         * - `fieldascending` / `fielddescending`: Sorts the results using the value of a custom field.
+         *
+         * See also {@link Matrix.options.previewSortField}.
+         *
+         * Default value is `FieldDescending`.
+         */
+        previewSortCriteria: ComponentOptions_1.ComponentOptions.buildStringOption({ defaultValue: 'FieldDescending' }),
+        /**
+         * If {@link Matrix.options.previewSortCriteria} is `fieldascending` or `fielddescending`, specifies the field to
+         * use for sorting the results of the hover preview.
+         *
+         * Default value is the value of {@link Matrix.options.computedField}.
+         */
+        previewSortField: ComponentOptions_1.ComponentOptions.buildFieldOption(),
+        /**
+         * If {@link Matrix.options.enableHoverPreview} is `true`, specifies the maximum width (in pixels) of the preview
+         * popup.
+         *
+         * Default value is `500px`.
+         */
+        previewMaxWidth: ComponentOptions_1.ComponentOptions.buildStringOption({ defaultValue: '500px' }),
+        /**
+         * If {@link Matrix.options.enableHoverPreview} is `true`, specifies the minimum width (in pixels) of the preview
+         * popup.
+         *
+         * Default value is `0`.
+         */
+        previewMinWidth: ComponentOptions_1.ComponentOptions.buildStringOption({ defaultValue: '0' }),
+        /**
+         * If {@link Matrix.options.enableHoverPreview} is `true`, specifies the delay (in milliseconds) before sending the
+         * query to get the preview results.
+         *
+         * Default value is `500`.
+         */
+        previewDelay: ComponentOptions_1.ComponentOptions.buildNumberOption({ defaultValue: 500 }),
+        /**
+         * If {@link Matrix.options.enableHoverPreview} is `true`, specifies the template ID or CSS selector of the template
+         * to use to render the results of the hover preview.
+         *
+         * You must use either `data-template-id` or `data-template-selector` in the markup to specify a value for this
+         * option.
+         *
+         * **Examples:**
+         *
+         * Specifying what template to use by referring to its template ID:
+         * ```html
+         * <div class='CoveoMatrix' data-template-id='TemplateId'></div>
+         * ```
+         *
+         * Specifying what template to use by referring to its CSS selector:
+         * ```html
+         * <div class='CoveoMatrix' data-template-selector='.templateSelector'></div>
+         * ```
+         */
+        previewTemplate: ComponentOptions_1.ComponentOptions.buildTemplateOption()
+    };
     return Matrix;
 }(Component_1.Component));
-Matrix.ID = 'Matrix';
-Matrix.doExport = function () {
-    GlobalExports_1.exportGlobally({
-        'Matrix': Matrix
-    });
-};
-/**
- * The possible options for the component
- * @componentOptions
- */
-Matrix.options = {
-    /**
-     * Specifies the text to display at the top of the Matrix.
-     */
-    title: ComponentOptions_1.ComponentOptions.buildStringOption(),
-    /**
-     * Specifies the field to use for the rows.
-     *
-     * Specifying a value for this options is required for this component to work.
-     */
-    rowField: ComponentOptions_1.ComponentOptions.buildFieldOption({ required: true }),
-    /**
-     * Specifies the field to use for the columns.
-     *
-     * Specifying a value for this options is required for this component to work.
-     */
-    columnField: ComponentOptions_1.ComponentOptions.buildFieldOption({ required: true }),
-    /**
-     * Specifies the criteria to use for sorting the rows.
-     *
-     * See {@link IGroupByRequest.sortCriteria} for the list of possible values.
-     *
-     * Default value is `ComputedFieldDescending`.
-     */
-    sortCriteria: ComponentOptions_1.ComponentOptions.buildStringOption({ defaultValue: 'ComputedFieldDescending' }),
-    /**
-     * Specifies the maximum number of rows to display in the Matrix.
-     *
-     * Default value is `10`. Minimum value is `0`.
-     */
-    maximumNumberOfRows: ComponentOptions_1.ComponentOptions.buildNumberOption({ defaultValue: 10, min: 0 }),
-    /**
-     * Specifies whether to display a **Total** column containing the sum of each row.
-     *
-     * Default value is `true`.
-     */
-    enableRowTotals: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: true }),
-    /**
-     * Specifies the field values to use for each column.
-     *
-     * See also {@link Matrix.options.columnLabels}.
-     *
-     * Default value is `[]`, which means that the Matrix will not generate any column (except the **Total** column, if
-     * {@link Matrix.options.enableRowTotals} is `true`).
-     */
-    columnFieldValues: ComponentOptions_1.ComponentOptions.buildListOption({ defaultValue: [] }),
-    /**
-     * Specifies the label values to use for each column.
-     *
-     * Default value is `[]`. The array set for this options should match the {@link Matrix.options.columnFieldValues}.
-     */
-    columnLabels: ComponentOptions_1.ComponentOptions.buildListOption({ defaultValue: [] }),
-    /**
-     * Specifies the label for the first column on the left as a description of the {@link Matrix.options.columnField}.
-     *
-     * Default value is `undefined`.
-     */
-    columnHeader: ComponentOptions_1.ComponentOptions.buildStringOption(),
-    /**
-     * Specifies the maximum number of results to include in the {@link IGroupByRequest} for the columns.
-     *
-     * This value should always be greater than the {@link Matrix.options.maximumNumberOfRows}. If it is too small, some
-     * of the results will not be displayed in the Matrix.
-     *
-     * Default value is `100`. Minimum value is `0`.
-     */
-    maximumNumberOfValuesInGroupBy: ComponentOptions_1.ComponentOptions.buildNumberOption({ defaultValue: 100, min: 0 }),
-    /**
-     * Specifies whether to add a **Total** row containing the total of each column.
-     *
-     * Default value is `true`
-     */
-    enableColumnTotals: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: true }),
-    /**
-     * Specifies the field whose computed values you want to display in the cells.
-     *
-     * Specifying a value for this options is required for this component to work.
-     */
-    computedField: ComponentOptions_1.ComponentOptions.buildFieldOption({ required: true }),
-    /**
-     * Specifies the type of aggregate operation to perform on the {@link Matrix.options.computedField}.
-     *
-     * The possible values are:
-     * - `sum` - Computes the sum of the computed field values.
-     * - `average` - Computes the average of the computed field values.
-     * - `minimum` - Finds the minimum value of the computed field values.
-     * - `maximum` - Finds the maximum value of the computed field values.
-     *
-     * Default value is `sum`.
-     */
-    computedFieldOperation: ComponentOptions_1.ComponentOptions.buildStringOption({ defaultValue: 'sum' }),
-    /**
-     * Specifies how to format the values resulting from a {@link Matrix.options.computedFieldOperation}.
-     *
-     * The Globalize library defines all available formats (see
-     * [Globalize](https://github.com/klaaspieter/jquery-global#globalizeformat-value-format-culture-)).
-     *
-     * The most commonly used formats are:
-     * - `c0` - Formats the value as a currency.
-     * - `n0` - Formats the value as an integer.
-     * - `n2` - Formats the value as a floating point with 2 decimal digits.
-     *
-     * Default value is `c0`.
-     */
-    computedFieldFormat: ComponentOptions_1.ComponentOptions.buildStringOption({ defaultValue: 'c0' }),
-    /**
-     * Specifies the font-size to use for displaying text inside the cells.
-     *
-     * This option is mainly useful to prevent a Matrix containing many columns from cropping some of its values.
-     *
-     * However, instead of using this option to solve this kind of issue, you could also remove some of the less
-     * important columns from your Matrix or modify the CSS of your page to allow the Matrix to occupy a larger space.
-     *
-     * Default value is `''`.
-     */
-    cellFontSize: ComponentOptions_1.ComponentOptions.buildStringOption({ defaultValue: '' }),
-    /**
-     * Specifies whether to show a preview popup of cell results when hovering over a cell.
-     *
-     * See also {@link Matrix.options.previewSortCriteria}, {@link Matrix.options.previewMaxWidth},
-     * {@link Matrix.options.previewMinWidth}, {@link Matrix.options.previewDelay} and
-     * {@link Matrix.options.previewTemplate}.
-     *
-     * Default value is `true`.
-     */
-    enableHoverPreview: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: true }),
-    /**
-     * If {@link Matrix.options.enableHoverPreview} is `true`, specifies the criteria to use for sorting the results of
-     * the hover preview.
-     *
-     * The available sort criteria values are the same as those of the {@link IQuery}.
-     *
-     * The possible values are:
-     * - `relevancy`: Uses all configured ranking weights and any specified ranking expressions to sort the results.
-     * - `dateascending` / `datedescending`: Sorts the results using the `@date` field value, which is typically the
-     * last modification date of an item in the index.
-     * - `qre`: Sorts the results using only the weights applied by ranking expressions. Using `qre` is much like using
-     * `relevancy`, except that `qre` does not compute automatic weights, such as weights based on keyword proximity.
-     * - `nosort`: Does not sort the results. Using `nosort` returns the items in an essentially random order.
-     * - `fieldascending` / `fielddescending`: Sorts the results using the value of a custom field.
-     * - `fieldascending` / `fielddescending`: Sorts the results using the value of a custom field.
-     *
-     * See also {@link Matrix.options.previewSortField}.
-     *
-     * Default value is `FieldDescending`.
-     */
-    previewSortCriteria: ComponentOptions_1.ComponentOptions.buildStringOption({ defaultValue: 'FieldDescending' }),
-    /**
-     * If {@link Matrix.options.previewSortCriteria} is `fieldascending` or `fielddescending`, specifies the field to
-     * use for sorting the results of the hover preview.
-     *
-     * Default value is the value of {@link Matrix.options.computedField}.
-     */
-    previewSortField: ComponentOptions_1.ComponentOptions.buildFieldOption(),
-    /**
-     * If {@link Matrix.options.enableHoverPreview} is `true`, specifies the maximum width (in pixels) of the preview
-     * popup.
-     *
-     * Default value is `500px`.
-     */
-    previewMaxWidth: ComponentOptions_1.ComponentOptions.buildStringOption({ defaultValue: '500px' }),
-    /**
-     * If {@link Matrix.options.enableHoverPreview} is `true`, specifies the minimum width (in pixels) of the preview
-     * popup.
-     *
-     * Default value is `0`.
-     */
-    previewMinWidth: ComponentOptions_1.ComponentOptions.buildStringOption({ defaultValue: '0' }),
-    /**
-     * If {@link Matrix.options.enableHoverPreview} is `true`, specifies the delay (in milliseconds) before sending the
-     * query to get the preview results.
-     *
-     * Default value is `500`.
-     */
-    previewDelay: ComponentOptions_1.ComponentOptions.buildNumberOption({ defaultValue: 500 }),
-    /**
-     * If {@link Matrix.options.enableHoverPreview} is `true`, specifies the template ID or CSS selector of the template
-     * to use to render the results of the hover preview.
-     *
-     * You must use either `data-template-id` or `data-template-selector` in the markup to specify a value for this
-     * option.
-     *
-     * **Examples:**
-     *
-     * Specifying what template to use by referring to its template ID:
-     * ```html
-     * <div class='CoveoMatrix' data-template-id='TemplateId'></div>
-     * ```
-     *
-     * Specifying what template to use by referring to its CSS selector:
-     * ```html
-     * <div class='CoveoMatrix' data-template-selector='.templateSelector'></div>
-     * ```
-     */
-    previewTemplate: ComponentOptions_1.ComponentOptions.buildTemplateOption()
-};
 exports.Matrix = Matrix;
 Initialization_1.Initialization.registerAutoCreateComponent(Matrix);
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(6)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5)))
 
 /***/ }),
 
-/***/ 927:
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-
-/***/ 976:
+/***/ 502:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -831,7 +828,7 @@ var _ = __webpack_require__(1);
 /**
  * Represent a single cell of data in the {@link Matrix} component.
  */
-var Cell = (function () {
+var Cell = /** @class */ (function () {
     function Cell(value, el) {
         if (value === void 0) { value = 0; }
         this.previewActive = false;
@@ -915,7 +912,7 @@ exports.Cell = Cell;
 
 /***/ }),
 
-/***/ 977:
+/***/ 503:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -931,10 +928,10 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var Template_1 = __webpack_require__(25);
+var Template_1 = __webpack_require__(24);
 var Dom_1 = __webpack_require__(3);
-var Globalize = __webpack_require__(26);
-var DefaultMatrixResultPreviewTemplate = (function (_super) {
+var Globalize = __webpack_require__(25);
+var DefaultMatrixResultPreviewTemplate = /** @class */ (function (_super) {
     __extends(DefaultMatrixResultPreviewTemplate, _super);
     function DefaultMatrixResultPreviewTemplate(computedField, format) {
         var _this = _super.call(this) || this;
@@ -943,15 +940,15 @@ var DefaultMatrixResultPreviewTemplate = (function (_super) {
         return _this;
     }
     DefaultMatrixResultPreviewTemplate.prototype.instantiateToString = function (object, instantiateOptions) {
-        var preview = '<div class=\'coveo-result-frame\'>' +
-            '<div class=\'coveo-result-row\'>' +
-            '<div class=\'coveo-result-cell\' style=\'width: 40px; padding-right:5px;vertical-align: middle\'>' +
-            '<a class=\'CoveoIcon\' data-small=\'true\'></a>' +
+        var preview = "<div class='coveo-result-frame'>" +
+            "<div class='coveo-result-row'>" +
+            "<div class='coveo-result-cell' style='width: 40px; padding-right:5px;vertical-align: middle'>" +
+            "<a class='CoveoIcon' data-small='true'></a>" +
             '</div>' +
-            '<div class=\'coveo-result-cell\' style=\'font-size:13px;vertical-align: middle\'>' +
-            '<a class=\'CoveoResultLink\'></a>' +
+            "<div class='coveo-result-cell' style='font-size:13px;vertical-align: middle'>" +
+            "<a class='CoveoResultLink'></a>" +
             '</div>' +
-            '<div class=\'coveo-result-cell\' style=\'width:80px; text-align:right; font-size:13px; padding-right: 5px;vertical-align: middle\'>' +
+            "<div class='coveo-result-cell' style='width:80px; text-align:right; font-size:13px; padding-right: 5px;vertical-align: middle'>" +
             Globalize.format(parseInt(object.raw[this.computedField.slice(1)]), this.format) +
             '</div>' +
             '</div>' +
@@ -968,7 +965,14 @@ var DefaultMatrixResultPreviewTemplate = (function (_super) {
 }(Template_1.Template));
 exports.DefaultMatrixResultPreviewTemplate = DefaultMatrixResultPreviewTemplate;
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(6)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5)))
+
+/***/ }),
+
+/***/ 504:
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
 
 /***/ })
 

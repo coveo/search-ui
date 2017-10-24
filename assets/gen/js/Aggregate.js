@@ -1,6 +1,6 @@
-webpackJsonpCoveo__temporary([69],{
+webpackJsonpCoveo__temporary([71],{
 
-/***/ 352:
+/***/ 267:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21,7 +21,7 @@ var ComponentOptions_1 = __webpack_require__(9);
 var QueryEvents_1 = __webpack_require__(11);
 var Initialization_1 = __webpack_require__(2);
 var Dom_1 = __webpack_require__(3);
-var Globalize = __webpack_require__(26);
+var Globalize = __webpack_require__(25);
 var _ = __webpack_require__(1);
 var GlobalExports_1 = __webpack_require__(4);
 /**
@@ -29,7 +29,7 @@ var GlobalExports_1 = __webpack_require__(4);
  *
  * It hooks itself to the query to add a new {@link IGroupByRequest}, then displays the result.
  */
-var Aggregate = (function (_super) {
+var Aggregate = /** @class */ (function (_super) {
     __extends(Aggregate, _super);
     /**
      * Creates a new Aggregate component.
@@ -50,17 +50,19 @@ var Aggregate = (function (_super) {
     }
     Aggregate.doExport = function () {
         GlobalExports_1.exportGlobally({
-            'Aggregate': Aggregate
+            Aggregate: Aggregate
         });
     };
     Aggregate.prototype.handleBuildingQuery = function (args) {
         var request = {
             field: this.options.field,
             maximumNumberOfValues: 0,
-            computedFields: [{
+            computedFields: [
+                {
                     field: this.options.field,
                     operation: this.options.operation
-                }]
+                }
+            ]
         };
         this.index = args.queryBuilder.groupByRequests.length;
         args.queryBuilder.groupByRequests.push(request);
@@ -76,45 +78,45 @@ var Aggregate = (function (_super) {
             Dom_1.$$(this.element).hide();
         }
     };
+    Aggregate.ID = 'Aggregate';
+    /**
+     * The options for the component
+     * @componentOptions
+     */
+    Aggregate.options = {
+        /**
+         * Specifies the field on which to do the aggregate operation. This parameter is mandatory.
+         */
+        field: ComponentOptions_1.ComponentOptions.buildFieldOption({ required: true }),
+        /**
+         * Specifies the aggregate operation to perform.
+         *
+         * The possible values are:
+         * - `sum` - Computes the sum of the computed field values.
+         * - `average` - Computes the average of the computed field values.
+         * - `minimum` - Finds the minimum value of the computed field values.
+         * - `maximum` - Finds the maximum value of the computed field values.
+         *
+         * Default value is `sum`.
+         */
+        operation: ComponentOptions_1.ComponentOptions.buildStringOption({ defaultValue: 'sum' }),
+        /**
+         * Specifies how to format the value.
+         *
+         * The available formats are defined in the Globalize library (see
+         * [Globalize](https://github.com/klaaspieter/jquery-global#globalizeformat-value-format-culture-).
+         *
+         * The most commonly used formats are:
+         * - `c0` - Formats the value as a currency.
+         * - `n0` - Formats the value as an integer.
+         * - `n2` - Formats the value as a floating point with 2 decimal digits.
+         *
+         * Default value is `c0`.
+         */
+        format: ComponentOptions_1.ComponentOptions.buildStringOption({ defaultValue: 'c0' })
+    };
     return Aggregate;
 }(Component_1.Component));
-Aggregate.ID = 'Aggregate';
-/**
- * The options for the component
- * @componentOptions
- */
-Aggregate.options = {
-    /**
-     * Specifies the field on which to do the aggregate operation. This parameter is mandatory.
-     */
-    field: ComponentOptions_1.ComponentOptions.buildFieldOption({ required: true }),
-    /**
-     * Specifies the aggregate operation to perform.
-     *
-     * The possible values are:
-     * - `sum` - Computes the sum of the computed field values.
-     * - `average` - Computes the average of the computed field values.
-     * - `minimum` - Finds the minimum value of the computed field values.
-     * - `maximum` - Finds the maximum value of the computed field values.
-     *
-     * Default value is `sum`.
-     */
-    operation: ComponentOptions_1.ComponentOptions.buildStringOption({ defaultValue: 'sum' }),
-    /**
-     * Specifies how to format the value.
-     *
-     * The available formats are defined in the Globalize library (see
-     * [Globalize](https://github.com/klaaspieter/jquery-global#globalizeformat-value-format-culture-).
-     *
-     * The most commonly used formats are:
-     * - `c0` - Formats the value as a currency.
-     * - `n0` - Formats the value as an integer.
-     * - `n2` - Formats the value as a floating point with 2 decimal digits.
-     *
-     * Default value is `c0`.
-     */
-    format: ComponentOptions_1.ComponentOptions.buildStringOption({ defaultValue: 'c0' })
-};
 exports.Aggregate = Aggregate;
 Initialization_1.Initialization.registerAutoCreateComponent(Aggregate);
 

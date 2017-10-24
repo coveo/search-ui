@@ -1,6 +1,6 @@
-webpackJsonpCoveo__temporary([46],{
+webpackJsonpCoveo__temporary([48],{
 
-/***/ 353:
+/***/ 268:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16,18 +16,18 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var SuggestionForOmnibox_1 = __webpack_require__(513);
+var SuggestionForOmnibox_1 = __webpack_require__(429);
 var ComponentOptions_1 = __webpack_require__(9);
 var Component_1 = __webpack_require__(8);
 var Assert_1 = __webpack_require__(7);
-var OmniboxEvents_1 = __webpack_require__(36);
+var OmniboxEvents_1 = __webpack_require__(33);
 var QueryEvents_1 = __webpack_require__(11);
 var Strings_1 = __webpack_require__(10);
 var QueryStateModel_1 = __webpack_require__(13);
 var AnalyticsActionListMeta_1 = __webpack_require__(12);
 var Initialization_1 = __webpack_require__(2);
 var Dom_1 = __webpack_require__(3);
-var SearchInterface_1 = __webpack_require__(22);
+var SearchInterface_1 = __webpack_require__(20);
 var _ = __webpack_require__(1);
 var GlobalExports_1 = __webpack_require__(4);
 /**
@@ -46,7 +46,7 @@ var GlobalExports_1 = __webpack_require__(4);
  * Instead, you should use the [`Omnibox`]{@link Omnibox}
  * [`enableQuerySuggesAddon`]{@link Omnibox.options.enableQuerySuggestAddon} option.
  */
-var AnalyticsSuggestions = (function (_super) {
+var AnalyticsSuggestions = /** @class */ (function (_super) {
     __extends(AnalyticsSuggestions, _super);
     /**
      * Creates a new AnalyticsSuggestions component.
@@ -89,12 +89,12 @@ var AnalyticsSuggestions = (function (_super) {
             _this.onRowTab.call(_this, value, args);
         });
         _this.bind.onRootElement(OmniboxEvents_1.OmniboxEvents.populateOmnibox, function (args) { return _this.handlePopulateOmnibox(args); });
-        _this.bind.onRootElement(QueryEvents_1.QueryEvents.querySuccess, function () { return _this.partialQueries = []; });
+        _this.bind.onRootElement(QueryEvents_1.QueryEvents.querySuccess, function () { return (_this.partialQueries = []); });
         return _this;
     }
     AnalyticsSuggestions.doExport = function () {
         GlobalExports_1.exportGlobally({
-            'AnalyticsSuggestions': AnalyticsSuggestions
+            AnalyticsSuggestions: AnalyticsSuggestions
         });
     };
     AnalyticsSuggestions.prototype.selectSuggestion = function (suggestion) {
@@ -105,7 +105,9 @@ var AnalyticsSuggestions = (function (_super) {
                 }
             }
             else {
-                var currentlySuggested = _.findWhere(this.currentlyDisplayedSuggestions, { pos: suggestion });
+                var currentlySuggested = _.findWhere(this.currentlyDisplayedSuggestions, {
+                    pos: suggestion
+                });
                 if (currentlySuggested) {
                     Dom_1.$$(currentlySuggested.element).trigger('click');
                 }
@@ -211,53 +213,53 @@ var AnalyticsSuggestions = (function (_super) {
         }
         return AnalyticsActionListMeta_1.analyticsActionCauseList.omniboxAnalytics;
     };
+    AnalyticsSuggestions.ID = 'AnalyticsSuggestions';
+    /**
+     * The options for the component
+     * @componentOptions
+     */
+    AnalyticsSuggestions.options = {
+        /**
+         * Specifies the z-index position at which the query suggestions render themselves in the {@link Omnibox}
+         * component. Higher values are placed first.
+         *
+         * Default value is `52` and minimum value is `0`.
+         */
+        omniboxZIndex: ComponentOptions_1.ComponentOptions.buildNumberOption({ defaultValue: 52, min: 0 }),
+        /**
+         * Specifies the title of the query suggestions group in the {@link Omnibox} component. This option is not available
+         * when using the default Lightning Friendly Theme (see
+         * [Lightning Friendly Theme](https://developers.coveo.com/x/Y4EAAg)).
+         *
+         * Default value is the localized string for `"Suggested Queries"`.
+         */
+        headerTitle: ComponentOptions_1.ComponentOptions.buildLocalizedStringOption({ defaultValue: Strings_1.l('SuggestedQueries') }),
+        /**
+         * Specifies the number of query suggestions to request and display in the {@link Omnibox} component.
+         *
+         * Default value is `5` and minimum value is `1`.
+         */
+        numberOfSuggestions: ComponentOptions_1.ComponentOptions.buildNumberOption({ defaultValue: 5, min: 1 })
+    };
     return AnalyticsSuggestions;
 }(Component_1.Component));
-AnalyticsSuggestions.ID = 'AnalyticsSuggestions';
-/**
- * The options for the component
- * @componentOptions
- */
-AnalyticsSuggestions.options = {
-    /**
-     * Specifies the z-index position at which the query suggestions render themselves in the {@link Omnibox}
-     * component. Higher values are placed first.
-     *
-     * Default value is `52` and minimum value is `0`.
-     */
-    omniboxZIndex: ComponentOptions_1.ComponentOptions.buildNumberOption({ defaultValue: 52, min: 0 }),
-    /**
-     * Specifies the title of the query suggestions group in the {@link Omnibox} component. This option is not available
-     * when using the default Lightning Friendly Theme (see
-     * [Lightning Friendly Theme](https://developers.coveo.com/x/Y4EAAg)).
-     *
-     * Default value is the localized string for `"Suggested Queries"`.
-     */
-    headerTitle: ComponentOptions_1.ComponentOptions.buildLocalizedStringOption({ defaultValue: Strings_1.l('SuggestedQueries') }),
-    /**
-     * Specifies the number of query suggestions to request and display in the {@link Omnibox} component.
-     *
-     * Default value is `5` and minimum value is `1`.
-     */
-    numberOfSuggestions: ComponentOptions_1.ComponentOptions.buildNumberOption({ defaultValue: 5, min: 1 })
-};
 exports.AnalyticsSuggestions = AnalyticsSuggestions;
 Initialization_1.Initialization.registerAutoCreateComponent(AnalyticsSuggestions);
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(6)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5)))
 
 /***/ }),
 
-/***/ 513:
+/***/ 429:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var DomUtils_1 = __webpack_require__(53);
+var DomUtils_1 = __webpack_require__(47);
 var Dom_1 = __webpack_require__(3);
 var _ = __webpack_require__(1);
-var SuggestionForOmnibox = (function () {
+var SuggestionForOmnibox = /** @class */ (function () {
     function SuggestionForOmnibox(structure, onSelect, onTabPress) {
         this.structure = structure;
         this.onSelect = onSelect;

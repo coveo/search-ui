@@ -1,117 +1,6 @@
-webpackJsonpCoveo__temporary([47],{
+webpackJsonpCoveo__temporary([49],{
 
-/***/ 123:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var Dom_1 = __webpack_require__(3);
-var DateUtils_1 = __webpack_require__(31);
-var GlobalExports_1 = __webpack_require__(4);
-var Strings_1 = __webpack_require__(10);
-var Globalize = __webpack_require__(26);
-var Pikaday = __webpack_require__(614);
-/**
- * A date picker widget with standard styling.
- */
-var DatePicker = (function () {
-    /**
-     * Creates a new `DatePicker`.
-     * @param onChange The function to call when a new value is selected in the date picker. This function takes the
-     * current `DatePicker` instance as an argument.
-     */
-    function DatePicker(onChange) {
-        if (onChange === void 0) { onChange = function () {
-        }; }
-        this.onChange = onChange;
-        this.wasReset = true;
-        this.buildContent();
-    }
-    /**
-     * Resets the date picker.
-     */
-    DatePicker.prototype.reset = function () {
-        this.picker.setDate(undefined);
-        this.wasReset = true;
-        this.onChange(this);
-    };
-    /**
-     * Gets the element on which the date picker is bound.
-     * @returns {HTMLInputElement} The date picker element.
-     */
-    DatePicker.prototype.getElement = function () {
-        return this.element;
-    };
-    /**
-     * Gets the currently selected value in the date picker.
-     * @returns {string} A textual representation of the currently selected value (`YYYY-MM-DD` format).
-     */
-    DatePicker.prototype.getValue = function () {
-        if (this.wasReset) {
-            return '';
-        }
-        var date = this.picker.getDate();
-        return date ? DateUtils_1.DateUtils.dateForQuery(this.picker.getDate()) : '';
-    };
-    /**
-     * Get the currently selected value in the date picker, as a Date object
-     * @returns {Date} A Date object for the current value, or null if the date picker was reset or a date has not been selected initially.
-     */
-    DatePicker.prototype.getDateValue = function () {
-        if (this.wasReset) {
-            return null;
-        }
-        return this.picker.getDate();
-    };
-    /**
-     * Sets the date picker value.
-     * @param date The value to set the date picker to. Must be a
-     * [Date](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Date) object.
-     */
-    DatePicker.prototype.setValue = function (date) {
-        this.picker.setDate(date);
-        this.wasReset = false;
-    };
-    /**
-     * Gets the element on which the date picker is bound.
-     * @returns {HTMLInputElement} The date picker element.
-     */
-    DatePicker.prototype.build = function () {
-        return this.element;
-    };
-    DatePicker.prototype.buildContent = function () {
-        var _this = this;
-        this.element = Dom_1.$$('input', { className: 'coveo-button' }).el;
-        this.element.readOnly = true;
-        this.picker = new Pikaday({
-            field: this.element,
-            onSelect: function () {
-                _this.wasReset = false;
-                _this.onChange.call(_this, _this);
-            },
-            i18n: {
-                previousMonth: Strings_1.l('PreviousMonth'),
-                nextMonth: Strings_1.l('NextMonth'),
-                months: Globalize.culture().calendar.months.names,
-                weekdays: Globalize.culture().calendar.days.names,
-                weekdaysShort: Globalize.culture().calendar.days.namesAbbr
-            }
-        });
-    };
-    return DatePicker;
-}());
-DatePicker.doExport = function () {
-    GlobalExports_1.exportGlobally({
-        'DatePicker': DatePicker
-    });
-};
-exports.DatePicker = DatePicker;
-
-
-/***/ }),
-
-/***/ 614:
+/***/ 443:
 /***/ (function(module, exports, __webpack_require__) {
 
 /*!
@@ -1350,6 +1239,116 @@ exports.DatePicker = DatePicker;
     return Pikaday;
 
 }));
+
+
+/***/ }),
+
+/***/ 97:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var Dom_1 = __webpack_require__(3);
+var DateUtils_1 = __webpack_require__(29);
+var GlobalExports_1 = __webpack_require__(4);
+var Strings_1 = __webpack_require__(10);
+var Globalize = __webpack_require__(25);
+var Pikaday = __webpack_require__(443);
+/**
+ * A date picker widget with standard styling.
+ */
+var DatePicker = /** @class */ (function () {
+    /**
+     * Creates a new `DatePicker`.
+     * @param onChange The function to call when a new value is selected in the date picker. This function takes the
+     * current `DatePicker` instance as an argument.
+     */
+    function DatePicker(onChange) {
+        if (onChange === void 0) { onChange = function () { }; }
+        this.onChange = onChange;
+        this.wasReset = true;
+        this.buildContent();
+    }
+    /**
+     * Resets the date picker.
+     */
+    DatePicker.prototype.reset = function () {
+        this.picker.setDate(undefined);
+        this.wasReset = true;
+        this.onChange(this);
+    };
+    /**
+     * Gets the element on which the date picker is bound.
+     * @returns {HTMLInputElement} The date picker element.
+     */
+    DatePicker.prototype.getElement = function () {
+        return this.element;
+    };
+    /**
+     * Gets the currently selected value in the date picker.
+     * @returns {string} A textual representation of the currently selected value (`YYYY-MM-DD` format).
+     */
+    DatePicker.prototype.getValue = function () {
+        if (this.wasReset) {
+            return '';
+        }
+        var date = this.picker.getDate();
+        return date ? DateUtils_1.DateUtils.dateForQuery(this.picker.getDate()) : '';
+    };
+    /**
+     * Get the currently selected value in the date picker, as a Date object
+     * @returns {Date} A Date object for the current value, or null if the date picker was reset or a date has not been selected initially.
+     */
+    DatePicker.prototype.getDateValue = function () {
+        if (this.wasReset) {
+            return null;
+        }
+        return this.picker.getDate();
+    };
+    /**
+     * Sets the date picker value.
+     * @param date The value to set the date picker to. Must be a
+     * [Date](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Date) object.
+     */
+    DatePicker.prototype.setValue = function (date) {
+        this.picker.setDate(date);
+        this.wasReset = false;
+    };
+    /**
+     * Gets the element on which the date picker is bound.
+     * @returns {HTMLInputElement} The date picker element.
+     */
+    DatePicker.prototype.build = function () {
+        return this.element;
+    };
+    DatePicker.prototype.buildContent = function () {
+        var _this = this;
+        this.element = Dom_1.$$('input', { className: 'coveo-button' }).el;
+        this.element.readOnly = true;
+        this.picker = new Pikaday({
+            field: this.element,
+            onSelect: function () {
+                _this.wasReset = false;
+                _this.onChange.call(_this, _this);
+            },
+            i18n: {
+                previousMonth: Strings_1.l('PreviousMonth'),
+                nextMonth: Strings_1.l('NextMonth'),
+                months: Globalize.culture().calendar.months.names,
+                weekdays: Globalize.culture().calendar.days.names,
+                weekdaysShort: Globalize.culture().calendar.days.namesAbbr
+            }
+        });
+    };
+    DatePicker.doExport = function () {
+        GlobalExports_1.exportGlobally({
+            DatePicker: DatePicker
+        });
+    };
+    return DatePicker;
+}());
+exports.DatePicker = DatePicker;
 
 
 /***/ })

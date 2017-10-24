@@ -1,12 +1,12 @@
-webpackJsonpCoveo__temporary([35],{
+webpackJsonpCoveo__temporary([37],{
 
-/***/ 17:
+/***/ 16:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var SVGDom = (function () {
+var SVGDom = /** @class */ (function () {
     function SVGDom() {
     }
     SVGDom.addClassToSVGInContainer = function (svgContainer, classToAdd) {
@@ -28,7 +28,7 @@ exports.SVGDom = SVGDom;
 
 /***/ }),
 
-/***/ 358:
+/***/ 273:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -49,12 +49,12 @@ var ComponentOptions_1 = __webpack_require__(9);
 var Initialization_1 = __webpack_require__(2);
 var Assert_1 = __webpack_require__(7);
 var Dom_1 = __webpack_require__(3);
-var KeyboardUtils_1 = __webpack_require__(24);
+var KeyboardUtils_1 = __webpack_require__(23);
 var _ = __webpack_require__(1);
 var GlobalExports_1 = __webpack_require__(4);
-__webpack_require__(916);
+__webpack_require__(471);
 var SVGIcons_1 = __webpack_require__(15);
-var SVGDom_1 = __webpack_require__(17);
+var SVGDom_1 = __webpack_require__(16);
 /**
  * The CardActionBar component displays an action bar at the bottom of a card result (see
  * [Result Layouts](https://developers.coveo.com/x/yQUvAg)). It is a simple container for buttons or complementary
@@ -76,7 +76,7 @@ var SVGDom_1 = __webpack_require__(17);
  *
  * A CardActionBar component is a two-state widget: it can either be shown or hidden. It is hidden by default.
  */
-var CardActionBar = (function (_super) {
+var CardActionBar = /** @class */ (function (_super) {
     __extends(CardActionBar, _super);
     /**
      * Creates a new CardActionBar component.
@@ -147,40 +147,40 @@ var CardActionBar = (function (_super) {
         this.arrowContainer.appendChild(arrowUp.el);
         this.parentResult.appendChild(this.arrowContainer);
     };
+    CardActionBar.ID = 'CardActionBar';
+    CardActionBar.doExport = function () {
+        GlobalExports_1.exportGlobally({
+            CardActionBar: CardActionBar
+        });
+    };
+    /**
+     * @componentOptions
+     */
+    CardActionBar.options = {
+        /**
+         * Specifies whether to hide the CardActionBar by default, unless the user clicks its parent {@link IQueryResult}.
+         *
+         * Default value is `true`. This means that the component is hidden and a visual indicator is appended to its parent
+         * IQueryResult.
+         */
+        hidden: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: true }),
+        /**
+         * If {@link CardActionBar.options.hidden} is `true`, specifies whether to open the CardActionBar when the cursor
+         * hovers over it.
+         *
+         * Default value is `true`.
+         */
+        openOnMouseOver: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: true, depend: 'hidden' })
+    };
     return CardActionBar;
 }(Component_1.Component));
-CardActionBar.ID = 'CardActionBar';
-CardActionBar.doExport = function () {
-    GlobalExports_1.exportGlobally({
-        'CardActionBar': CardActionBar
-    });
-};
-/**
- * @componentOptions
- */
-CardActionBar.options = {
-    /**
-     * Specifies whether to hide the CardActionBar by default, unless the user clicks its parent {@link IQueryResult}.
-     *
-     * Default value is `true`. This means that the component is hidden and a visual indicator is appended to its parent
-     * IQueryResult.
-     */
-    hidden: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: true }),
-    /**
-     * If {@link CardActionBar.options.hidden} is `true`, specifies whether to open the CardActionBar when the cursor
-     * hovers over it.
-     *
-     * Default value is `true`.
-     */
-    openOnMouseOver: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: true, depend: 'hidden' })
-};
 exports.CardActionBar = CardActionBar;
 Initialization_1.Initialization.registerAutoCreateComponent(CardActionBar);
 
 
 /***/ }),
 
-/***/ 916:
+/***/ 471:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

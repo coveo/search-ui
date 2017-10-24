@@ -1,12 +1,12 @@
-webpackJsonpCoveo__temporary([40],{
+webpackJsonpCoveo__temporary([42],{
 
-/***/ 17:
+/***/ 16:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var SVGDom = (function () {
+var SVGDom = /** @class */ (function () {
     function SVGDom() {
     }
     SVGDom.addClassToSVGInContainer = function (svgContainer, classToAdd) {
@@ -28,7 +28,7 @@ exports.SVGDom = SVGDom;
 
 /***/ }),
 
-/***/ 98:
+/***/ 82:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -37,11 +37,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var Dom_1 = __webpack_require__(3);
 var GlobalExports_1 = __webpack_require__(4);
 var SVGIcons_1 = __webpack_require__(15);
-var SVGDom_1 = __webpack_require__(17);
+var SVGDom_1 = __webpack_require__(16);
 /**
  * A numeric spinner widget with standard styling.
  */
-var NumericSpinner = (function () {
+var NumericSpinner = /** @class */ (function () {
     /**
      * Creates a new `NumericSpinner`.
      * @param onChange The function to call when the numeric spinner value changes. This function takes the current
@@ -50,8 +50,7 @@ var NumericSpinner = (function () {
      * @param max The maximum possible value of the numeric spinner.
      */
     function NumericSpinner(onChange, min, max) {
-        if (onChange === void 0) { onChange = function (numericSpinner) {
-        }; }
+        if (onChange === void 0) { onChange = function (numericSpinner) { }; }
         if (min === void 0) { min = 0; }
         this.onChange = onChange;
         this.min = min;
@@ -61,7 +60,7 @@ var NumericSpinner = (function () {
     }
     NumericSpinner.doExport = function () {
         GlobalExports_1.exportGlobally({
-            'NumericSpinner': NumericSpinner
+            NumericSpinner: NumericSpinner
         });
     };
     /**

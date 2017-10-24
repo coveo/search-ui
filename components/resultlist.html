@@ -56,7 +56,7 @@
 	<div class="bottomHeader">
 		<div id="searchBox">
 			<div class="CoveoSearchbox" data-enable-omnibox="true" data-inline="false" data-enable-wildcards="true" data-enable-search-as-you-type="false" data-enable-query-suggest-addon="false" data-enable-query-syntax="true" data-enable-field-addon="true"></div>
-			<div class="CoveoFieldSuggestions" data-field="@systitle" data-header-title="Suggested topics"></div>
+			<div class="CoveoFieldSuggestions" data-field="@jsuipagetopic" data-header-title="Suggested topics"></div>
 		</div>
 	</div>
 	<!-- Do not focus on Querybox when URL contains hash to ensure page scrolls down to corresponding anchor. -->
@@ -200,10 +200,14 @@
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>The ResultList component is responsible for displaying the results of the current query using one or more result
-						templates (see <a href="https://developers.coveo.com/x/aIGfAQ">Result Templates</a>).</p>
+						<p>The <code>ResultList</code> component is responsible for displaying query results by applying one or several result templates
+						(see <a href="https://developers.coveo.com/x/aIGfAQ">Result Templates</a>).</p>
 					</div>
-					<p>This component supports many additional features, such as infinite scrolling.</p>
+					<p>It is possible to include multiple <code>ResultList</code> components along with a single <a href="resultlayout.html"><code>ResultLayout</code></a>
+						component in a search page to provide different result layouts (see
+					<a href="https://developers.coveo.com/x/yQUvAg">Result Layouts</a>).</p>
+					<p>This component supports infinite scrolling (see the
+					<a href="resultlist.html#options.enableinfinitescroll"><code>enableInfiniteScroll</code></a> option).</p>
 				</div>
 			</section>
 			<div class="preview-container tsd-panel">
@@ -279,22 +283,26 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L225">src/ui/ResultList/ResultList.ts
-							:225</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L234">src/ui/ResultList/ResultList.ts
+							:234</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies whether the ResultList should scan its template and discover which fields it needs to render all
-							results.</p>
+							<p>Specifies whether the <code>ResultList</code> should scan its result templates to discover which fields it must request to
+							be able to render all results.</p>
 						</div>
-						<p>Setting this option to <code>true</code> ensures that the Search API does not send fields that are unnecessary for the UI to
-						function.</p>
-						<p>See also <a href="resultlist.html#options.fieldstoinclude">ResultList.options.fieldsToInclude</a>.</p>
-						<p>Default value is <code>false</code>.</p>
-						<p><strong>Note:</strong></p>
+						<p>Setting this option to <code>true</code> ensures that the Coveo Search API does not return fields that are unnecessary for
+						the UI to function.</p>
+						<p>Default value is <code>false</code>, which means that for each result, the Coveo Search API returns all available fields
+							(unless you specify a list of values in the <a href="resultlist.html#options.fieldstoinclude"><code>fieldsToInclude</code></a> option,
+						in which case the Coveo Search API only returns those fields, if they are available).</p>
+						<p><strong>Notes:</strong></p>
 						<blockquote>
-							<p>Many interfaces created with the Interface Editor explicitly set this option to <code>true</code>.</p>
+							<ul>
+								<li>Many interfaces created with the JavaScript Search Interface Editor explicitly set this option to <code>true</code>.</li>
+								<li>You cannot set this option to <code>true</code> in the Coveo for Sitecore integration.</li>
+							</ul>
 						</blockquote>
 					</div>
 					<div class="tsd-panel">
@@ -310,21 +318,21 @@ data-auto-select-fields-to-include&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L159">src/ui/ResultList/ResultList.ts
-							:159</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L164">src/ui/ResultList/ResultList.ts
+							:164</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
 							<p>Specifies whether to automatically retrieve an additional page of results and append it to the
-								results that the ResultList is currently displaying when the user scrolls down to the bottom of the infinite
-							scroll container.</p>
+								results that the <code>ResultList</code> is currently displaying when the user scrolls down to the bottom of the
+							<a href="resultlist.html#options.infinitescrollcontainer"><code>infiniteScrollContainer</code></a>.</p>
 						</div>
-						<p>See also <a href="resultlist.html#options.infinitescrollpagesize">ResultList.options.infiniteScrollPageSize</a>, <a href="resultlist.html#options.infinitescrollcontainer">ResultList.options.infiniteScrollContainer</a>
-						and <a href="resultlist.html#options.enableinfinitescrollwaitinganimation">ResultList.options.enableInfiniteScrollWaitingAnimation</a>.</p>
-						<p>It is important to specify the <a href="resultlist.html#options.infinitescrollcontainer">ResultList.options.infiniteScrollContainer</a> manually if you want the scrolling
-							element to be something else than the default <code>window</code> element.
-						Otherwise, you might get in a weird state where the framework will rapidly trigger multiple successive query.</p>
+						<p>See also the <a href="resultlist.html#options.infinitescrollpagesize"><code>infiniteScrollPageSize</code></a> and
+						<a href="resultlist.html#options.enableinfinitescrollwaitinganimation"><code>enableInfiniteScrollWaitingAnimation</code></a> options.</p>
+						<p>It is important to specify the <code>infiniteScrollContainer</code> option manually if you want the scrolling element to be
+							something else than the default <code>window</code> element. Otherwise, you might find yourself in a strange state where the
+						framework rapidly triggers multiple successive query.</p>
 						<p>Default value is <code>false</code>.</p>
 					</div>
 					<div class="tsd-panel">
@@ -340,14 +348,15 @@ data-enable-infinite-scroll&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L196">src/ui/ResultList/ResultList.ts
-							:196</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L211">src/ui/ResultList/ResultList.ts
+							:211</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>If <a href="resultlist.html#options.enableinfinitescroll">ResultList.options.enableInfiniteScroll</a> is <code>true</code>, specifies whether to display the
-							<a href="resultlist.html#options.waitanimation">ResultList.options.waitAnimation</a> while fetching additional results.</p>
+							<p>If the <a href="resultlist.html#options.enableinfinitescroll"><code>enableInfiniteScroll</code></a> option is <code>true</code>, specifies
+								whether to display the <a href="resultlist.html#options.waitanimation"><code>waitingAnimation</code></a> while fetching additional
+							results.</p>
 						</div>
 						<p>Default value is <code>true</code>.</p>
 					</div>
@@ -364,18 +373,20 @@ data-enable-infinite-scroll-waiting-animation&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L209">src/ui/ResultList/ResultList.ts
-							:209</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L247">src/ui/ResultList/ResultList.ts
+							:247</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies a list of fields to include in the query.</p>
+							<p>Specifies a list of fields to include in the query results.</p>
 						</div>
-						<p>Specifying a list of values for this option ensures that the Search API does not send fields that are unnecessary
-						for the UI to function.</p>
-						<p>See also <a href="resultlist.html#options.autoselectfieldstoinclude">ResultList.options.autoSelectFieldsToInclude</a>.</p>
-						<p>Default value is <code>undefined</code>.</p>
+						<p>If you set the <a href="resultlist.html#options.autoselectfieldstoinclude"><code>autoSelectFieldsToInclude</code></a> option to
+							<code>true</code>, the Coveo Search API returns the fields you specify for this option (if those fields are available) in
+						addition to the fields which the <code>ResultList</code> automatically requests.</p>
+						<p>Otherwise, the Coveo Search API only returns the fields you specify for this option (if those fields are
+							available), unless you leave this option undefined, in which case the Coveo Search API returns all available
+						fields.</p>
 					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
@@ -389,25 +400,26 @@ data-enable-infinite-scroll-waiting-animation&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L188">src/ui/ResultList/ResultList.ts
-							:188</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L199">src/ui/ResultList/ResultList.ts
+							:199</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>If <a href="resultlist.html#options.enableinfinitescroll">ResultList.options.enableInfiniteScroll</a> is <code>true</code>, specifies the element that triggers the fetching of
-							additional results when the end user scrolls down to its bottom.</p>
+							<p>If the <a href="resultlist.html#options.enableinfinitescroll"><code>enableInfiniteScroll</code></a> option is <code>true</code>, specifies the
+							element that triggers fetching additional results when the end user scrolls down to its bottom.</p>
 						</div>
 						<p>You can change the container by specifying its selector (e.g.,
 						<code>data-infinite-scroll-container-selector=&#39;#someCssSelector&#39;</code>).</p>
 						<p>By default, the framework uses the first vertically scrollable parent element it finds, starting from the
-							ResultList element itself. A vertically scrollable element is an element whose CSS <code>overflow-y</code> attribute is
+							<code>ResultList</code> element itself. A vertically scrollable element is an element whose CSS <code>overflow-y</code> attribute is
 						<code>scroll</code>.</p>
-						<p>This implies that if the framework can find no scrollable parent, it uses the window itself as a scrollable
+						<p>This implies that if the framework can find no scrollable parent, it uses the <code>window</code> itself as a scrollable
 						container.</p>
-						<p>This heuristic is not perfect, for technical reasons. There are always some corner case CSS combination which the framework will
-						not be able to detect correctly as &#39;scrollable&#39;.</p>
-						<p>It is highly recommended that you manually set this option if you wish to have something else than <code>window</code> be the scrollable element.</p>
+						<p>This heuristic is not perfect, for technical reasons. There are always some corner case CSS combination which the
+						framework will not be able to correctly detect as &#39;scrollable&#39;.</p>
+						<p>It is highly recommended that you manually set this option if you wish something else than the <code>window</code> to be the
+						scrollable element.</p>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
@@ -417,14 +429,15 @@ data-enable-infinite-scroll-waiting-animation&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L167">src/ui/ResultList/ResultList.ts
-							:167</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L173">src/ui/ResultList/ResultList.ts
+							:173</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>If <a href="resultlist.html#options.enableinfinitescroll">ResultList.options.enableInfiniteScroll</a> is <code>true</code>, specifies the number of additional results to fetch
-							when the user scrolls down to the bottom of the <a href="resultlist.html#options.infinitescrollcontainer">ResultList.options.infiniteScrollContainer</a>.</p>
+							<p>If the <a href="resultlist.html#options.enableinfinitescroll"><code>enableInfiniteScroll</code></a> option is <code>true</code>, specifies the
+								number of additional results to fetch when the user scrolls down to the bottom of the
+							<a href="resultlist.html#options.infinitescrollcontainer"><code>infiniteScrollContainer</code></a>.</p>
 						</div>
 						<p>Default value is <code>10</code>. Minimum value is <code>1</code>.</p>
 					</div>
@@ -440,19 +453,20 @@ data-enable-infinite-scroll-waiting-animation&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L239">src/ui/ResultList/ResultList.ts
-							:239</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L262">src/ui/ResultList/ResultList.ts
+							:262</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies the layout to use for displaying the results within this ResultList. Specifying a value for this option
-							automatically populates a <a href="resultlayout.html">ResultLayout</a> component with a switcher for the layout.</p>
+							<p>Specifies the layout to use when displaying results in this <code>ResultList</code> (see
+								<a href="https://developers.coveo.com/x/yQUvAg">Result Layouts</a>). Specifying a value for this option automatically
+							populates a <a href="resultlayout.html"><code>ResultLayout</code></a> component with a switcher for the layout.</p>
 						</div>
-						<p>For example, if there are two <a href="resultlist.html">ResultList</a> components in the page, one with its
-							<a href="resultlist.html#options.layout">ResultList.options.layout</a> set to <code>list</code> and the other with the same option set to <code>card</code>, then the
-						ResultLayout component will render two buttons respectively titled <strong>List</strong> and <strong>Card</strong>.</p>
-						<p>See the <a href="../globals.html#validlayout">ValidLayout</a> type for the list of possible values.</p>
+						<p>For example, if there are two <code>ResultList</code> components in the page, one with its <code>layout</code> set to <code>list</code> and the
+							other with the same option set to <code>card</code>, then the <code>ResultLayout</code> component will render two buttons respectively
+						entitled <strong>List</strong> and <strong>Card</strong>.</p>
+						<p>See the <a href="../globals.html#validlayout"><code>ValidLayout</code></a> type for the list of possible values.</p>
 						<p>Default value is <code>list</code>.</p>
 					</div>
 					<div class="tsd-panel">
@@ -467,13 +481,13 @@ data-enable-infinite-scroll-waiting-animation&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L118">src/ui/ResultList/ResultList.ts
-							:118</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L121">src/ui/ResultList/ResultList.ts
+							:121</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies the element within which to insert the rendered templates for results.</p>
+							<p>Specifies the element inside which to insert the rendered result templates.</p>
 						</div>
 						<p>Performing a new query clears the content of this element.</p>
 						<p>You can change the container by specifying its selector (e.g.,
@@ -489,8 +503,8 @@ data-enable-infinite-scroll-waiting-animation&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L133">src/ui/ResultList/ResultList.ts
-							:133</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L136">src/ui/ResultList/ResultList.ts
+							:136</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -503,7 +517,7 @@ data-enable-infinite-scroll-waiting-animation&#x3D;&#x27;false&#x27;</pre>
 							<li><code>spinner</code>: Shows a spinning animation while the query is executing.</li>
 							<li><code>none</code>: Use no animation during queries.</li>
 						</ul>
-						<p>See also <a href="resultlist.html#options.waitanimationcontainer">ResultList.options.waitAnimationContainer</a>.</p>
+						<p>See also the <a href="resultlist.html#options.waitanimationcontainer"><code>waitAnimationContainer</code></a> option.</p>
 						<p>Default value is <code>none</code>.</p>
 					</div>
 					<div class="tsd-panel">
@@ -518,17 +532,17 @@ data-enable-infinite-scroll-waiting-animation&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L143">src/ui/ResultList/ResultList.ts
-							:143</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L146">src/ui/ResultList/ResultList.ts
+							:146</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies the element inside which to display the <a href="resultlist.html#options.waitanimation">ResultList.options.waitAnimation</a>.</p>
+							<p>Specifies the element inside which to display the <a href="resultlist.html#options.waitanimation"><code>waitAnimation</code></a>.</p>
 						</div>
 						<p>You can change this by specifying a CSS selector (e.g.,
 						<code>data-wait-animation-container-selector=&#39;#someCssSelector&#39;</code>).</p>
-						<p>Default value is the value of <a href="resultlist.html#options.resultcontainer">ResultList.options.resultContainer</a>.</p>
+						<p>Default value is the value of the <a href="resultlist.html#options.resultcontainer"><code>resultContainer</code></a> option.</p>
 					</div>
 				</section>
 			</section>
@@ -545,8 +559,8 @@ data-enable-infinite-scroll-waiting-animation&#x3D;&#x27;false&#x27;</pre>
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L396">src/ui/ResultList/ResultList.ts
-									:396</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L430">src/ui/ResultList/ResultList.ts
+									:430</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -578,8 +592,8 @@ data-enable-infinite-scroll-waiting-animation&#x3D;&#x27;false&#x27;</pre>
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L372">src/ui/ResultList/ResultList.ts
-									:372</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L406">src/ui/ResultList/ResultList.ts
+									:406</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -663,8 +677,8 @@ data-enable-infinite-scroll-waiting-animation&#x3D;&#x27;false&#x27;</pre>
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L426">src/ui/ResultList/ResultList.ts
-									:426</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L462">src/ui/ResultList/ResultList.ts
+									:462</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -673,7 +687,7 @@ data-enable-infinite-scroll-waiting-animation&#x3D;&#x27;false&#x27;</pre>
 								</div>
 								<p>Asserts that there are more results to display by verifying whether the last query has returned as many results as
 								requested.</p>
-								<p>Asserts that the ResultList is not currently fetching results.</p>
+								<p>Asserts that the <code>ResultList</code> is not currently fetching results.</p>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
@@ -726,8 +740,8 @@ data-enable-infinite-scroll-waiting-animation&#x3D;&#x27;false&#x27;</pre>
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L317">src/ui/ResultList/ResultList.ts
-									:317</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L351">src/ui/ResultList/ResultList.ts
+									:351</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -775,8 +789,8 @@ data-enable-infinite-scroll-waiting-animation&#x3D;&#x27;false&#x27;</pre>
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L478">src/ui/ResultList/ResultList.ts
-									:478</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L518">src/ui/ResultList/ResultList.ts
+									:518</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -799,8 +813,8 @@ data-enable-infinite-scroll-waiting-animation&#x3D;&#x27;false&#x27;</pre>
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L486">src/ui/ResultList/ResultList.ts
-									:486</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L526">src/ui/ResultList/ResultList.ts
+									:526</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -823,8 +837,8 @@ data-enable-infinite-scroll-waiting-animation&#x3D;&#x27;false&#x27;</pre>
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L359">src/ui/ResultList/ResultList.ts
-									:359</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L392">src/ui/ResultList/ResultList.ts
+									:392</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1127,14 +1141,15 @@ data-enable-infinite-scroll-waiting-animation&#x3D;&#x27;false&#x27;</pre>
 								<p>Overwrites <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#constructor">constructor</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L262">src/ui/ResultList/ResultList.ts
-									:262</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L285">src/ui/ResultList/ResultList.ts
+									:285</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Creates a new ResultList component. Binds various event related to queries (e.g., on querySuccess -&gt;
-									renderResults). Binds scroll event if <a href="resultlist.html#options.enableinfinitescroll">ResultList.options.enableInfiniteScroll</a> is <code>true</code>.</p>
+									<p>Creates a new <code>ResultList</code> component. Binds various event related to queries (e.g., on querySuccess -&gt;
+										renderResults). Binds scroll event if the <a href="resultlist.html#options.enableinfinitescroll"><code>enableInfiniteScroll</code></a>
+									option is <code>true</code>.</p>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1151,7 +1166,7 @@ data-enable-infinite-scroll-waiting-animation&#x3D;&#x27;false&#x27;</pre>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> options: <span class="tsd-signature-type">IResultListOptions</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<div class="lead">
-											<p>The options for the ResultList component.</p>
+											<p>The options for the <code>ResultList</code> component.</p>
 										</div>
 									</div>
 								</li>

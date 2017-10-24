@@ -1,419 +1,12 @@
-webpackJsonpCoveo__temporary([1,3],{
+webpackJsonpCoveo__temporary([0,2],{
 
-/***/ 104:
+/***/ 16:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var ResponsiveComponentsUtils = (function () {
-    function ResponsiveComponentsUtils() {
-    }
-    ResponsiveComponentsUtils.shouldDrawFacetSlider = function (root) {
-        return !this.isSmallFacetActivated(root) && !this.isSmallRecommendationActivated(root);
-    };
-    ResponsiveComponentsUtils.isSmallTabsActivated = function (root) {
-        return root.hasClass(this.smallTabsClassName);
-    };
-    ResponsiveComponentsUtils.isSmallFacetActivated = function (root) {
-        return root.hasClass(this.smallFacetClassName);
-    };
-    ResponsiveComponentsUtils.isSmallRecommendationActivated = function (root) {
-        return root.hasClass(this.smallRecommendationClassName);
-    };
-    ResponsiveComponentsUtils.activateSmallTabs = function (root) {
-        root.addClass(this.smallTabsClassName);
-    };
-    ResponsiveComponentsUtils.deactivateSmallTabs = function (root) {
-        root.removeClass(this.smallTabsClassName);
-    };
-    ResponsiveComponentsUtils.activateSmallFacet = function (root) {
-        root.addClass(this.smallFacetClassName);
-    };
-    ResponsiveComponentsUtils.deactivateSmallFacet = function (root) {
-        root.removeClass(this.smallFacetClassName);
-    };
-    ResponsiveComponentsUtils.activateSmallRecommendation = function (root) {
-        root.addClass(this.smallRecommendationClassName);
-    };
-    ResponsiveComponentsUtils.deactivateSmallRecommendation = function (root) {
-        root.removeClass(this.smallRecommendationClassName);
-    };
-    return ResponsiveComponentsUtils;
-}());
-ResponsiveComponentsUtils.smallTabsClassName = 'coveo-small-tabs';
-ResponsiveComponentsUtils.smallFacetClassName = 'coveo-small-facets';
-ResponsiveComponentsUtils.smallRecommendationClassName = 'coveo-small-recommendation';
-exports.ResponsiveComponentsUtils = ResponsiveComponentsUtils;
-
-
-/***/ }),
-
-/***/ 105:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-/// <reference path="Facet.ts" />
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-Object.defineProperty(exports, "__esModule", { value: true });
-var QueryEvents_1 = __webpack_require__(11);
-var Dom_1 = __webpack_require__(3);
-var ValueElement_1 = __webpack_require__(496);
-var FacetValueElement = (function (_super) {
-    __extends(FacetValueElement, _super);
-    function FacetValueElement(facet, facetValue, keepDisplayedValueNextTime) {
-        var _this = _super.call(this, facet, facetValue) || this;
-        _this.facet = facet;
-        _this.facetValue = facetValue;
-        _this.keepDisplayedValueNextTime = keepDisplayedValueNextTime;
-        _this.firstQuery = true;
-        // The analytics code expect a first query to be made to link the user action with a query UID
-        Dom_1.$$(facet.root).one(QueryEvents_1.QueryEvents.querySuccess, function () {
-            _this.firstQuery = false;
-        });
-        return _this;
-    }
-    FacetValueElement.prototype.bindEvent = function () {
-        _super.prototype.bindEvent.call(this, { displayNextTime: this.keepDisplayedValueNextTime, pinFacet: this.facet.options.preservePosition });
-    };
-    return FacetValueElement;
-}(ValueElement_1.ValueElement));
-exports.FacetValueElement = FacetValueElement;
-
-
-/***/ }),
-
-/***/ 106:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var Assert_1 = __webpack_require__(7);
-var Utils_1 = __webpack_require__(5);
-var Globalize = __webpack_require__(26);
-var _ = __webpack_require__(1);
-/**
- * A class which holds information and operation available on a single facet value returned by a {@link IGroupByRequest}.<br/>
- * This class is used extensibely in the {@link Facet} component.
- */
-var FacetValue = (function () {
-    function FacetValue() {
-        this.selected = false;
-        this.excluded = false;
-        this.waitingForDelta = false;
-    }
-    FacetValue.prototype.reset = function () {
-        this.selected = false;
-        this.excluded = false;
-    };
-    FacetValue.prototype.updateCountsFromNewValue = function (newValue) {
-        Assert_1.Assert.exists(newValue);
-        this.occurrences = newValue.occurrences;
-        this.delta = newValue.delta;
-        this.computedField = newValue.computedField;
-    };
-    FacetValue.prototype.clone = function () {
-        this.computedField = undefined;
-        this.delta = undefined;
-        return this;
-    };
-    FacetValue.prototype.cloneWithZeroOccurrences = function () {
-        this.occurrences = 0;
-        return this.clone();
-    };
-    FacetValue.prototype.cloneWithDelta = function (count, delta) {
-        Assert_1.Assert.isLargerOrEqualsThan(0, count);
-        var clone = this.cloneWithZeroOccurrences();
-        clone.delta = delta;
-        clone.occurrences = count;
-        return clone;
-    };
-    FacetValue.prototype.getFormattedCount = function () {
-        var count = undefined;
-        if (Utils_1.Utils.exists(this.delta) && this.delta > 0) {
-            count = '+' + Globalize.format(this.delta, 'n0');
-        }
-        else {
-            if (this.occurrences > 0) {
-                count = Globalize.format(this.occurrences, 'n0');
-            }
-        }
-        return count;
-    };
-    FacetValue.prototype.getFormattedComputedField = function (format) {
-        if (this.computedField != 0) {
-            return Globalize.format(this.computedField, format);
-        }
-        else {
-            return undefined;
-        }
-    };
-    FacetValue.create = function (value) {
-        if (_.isString(value)) {
-            return FacetValue.createFromValue(value);
-        }
-        else if (_.isObject(value)) {
-            if ('computedFieldResults' in value) {
-                return FacetValue.createFromGroupByValue(value);
-            }
-            else {
-                return FacetValue.createFromFieldValue(value);
-            }
-        }
-        else {
-            throw new Error('Can\'t create value from ' + value);
-        }
-    };
-    FacetValue.createFromValue = function (value) {
-        Assert_1.Assert.isNonEmptyString(value);
-        var facetValue = new FacetValue();
-        facetValue.value = value;
-        facetValue.lookupValue = value;
-        return facetValue;
-    };
-    FacetValue.createFromGroupByValue = function (groupByValue) {
-        Assert_1.Assert.exists(groupByValue);
-        Assert_1.Assert.exists(groupByValue);
-        var facetValue = new FacetValue();
-        facetValue.value = groupByValue.value;
-        facetValue.lookupValue = Utils_1.Utils.exists(groupByValue.lookupValue) ? groupByValue.lookupValue : groupByValue.value;
-        facetValue.occurrences = groupByValue.numberOfResults;
-        facetValue.computedField = Utils_1.Utils.isNonEmptyArray(groupByValue.computedFieldResults) ? groupByValue.computedFieldResults[0] : undefined;
-        facetValue.score = groupByValue.score;
-        return facetValue;
-    };
-    FacetValue.createFromFieldValue = function (fieldValue) {
-        Assert_1.Assert.exists(fieldValue);
-        var facetValue = new FacetValue();
-        facetValue.value = fieldValue.value;
-        facetValue.lookupValue = fieldValue.lookupValue;
-        facetValue.occurrences = fieldValue.numberOfResults;
-        return facetValue;
-    };
-    return FacetValue;
-}());
-exports.FacetValue = FacetValue;
-var FacetValues = (function () {
-    function FacetValues(groupByResult) {
-        if (Utils_1.Utils.exists(groupByResult)) {
-            this.values = _.map(groupByResult.values, function (groupByValue) { return FacetValue.createFromGroupByValue(groupByValue); });
-        }
-        else {
-            this.values = [];
-        }
-    }
-    FacetValues.prototype.add = function (facetValue) {
-        Assert_1.Assert.exists(facetValue);
-        Assert_1.Assert.check(!this.contains(facetValue.value));
-        this.values.push(facetValue);
-    };
-    FacetValues.prototype.remove = function (value) {
-        Assert_1.Assert.isNonEmptyString(value);
-        value = value;
-        this.values = _.filter(this.values, function (elem) { return elem.value != value; });
-    };
-    FacetValues.prototype.size = function () {
-        return this.values.length;
-    };
-    FacetValues.prototype.isEmpty = function () {
-        return this.values.length == 0;
-    };
-    FacetValues.prototype.at = function (index) {
-        Assert_1.Assert.isLargerOrEqualsThan(0, index);
-        Assert_1.Assert.isSmallerThan(this.values.length, index);
-        return this.values[index];
-    };
-    FacetValues.prototype.get = function (value) {
-        return _.find(this.values, function (elem) { return elem.value.toLowerCase() == value.toLowerCase(); });
-    };
-    FacetValues.prototype.contains = function (value) {
-        return Utils_1.Utils.exists(this.get(value));
-    };
-    FacetValues.prototype.getAll = function () {
-        return this.values;
-    };
-    FacetValues.prototype.getSelected = function () {
-        return _.filter(this.values, function (value) { return value.selected; });
-    };
-    FacetValues.prototype.getExcluded = function () {
-        return _.filter(this.values, function (value) { return value.excluded; });
-    };
-    FacetValues.prototype.hasSelectedOrExcludedValues = function () {
-        return this.getSelected().length != 0 || this.getExcluded().length != 0;
-    };
-    FacetValues.prototype.hasSelectedAndExcludedValues = function () {
-        return this.getSelected().length != 0 && this.getExcluded().length != 0;
-    };
-    FacetValues.prototype.hasOnlyExcludedValues = function () {
-        return this.getSelected().length == 0 && this.getExcluded().length != 0;
-    };
-    FacetValues.prototype.hasOnlySelectedValues = function () {
-        return this.getSelected().length != 0 && this.getExcluded().length == 0;
-    };
-    FacetValues.prototype.reset = function () {
-        _.each(this.values, function (elem) { return elem.reset(); });
-    };
-    FacetValues.prototype.importActiveValuesFromOtherList = function (other) {
-        var _this = this;
-        Assert_1.Assert.exists(other);
-        _.each(other.getSelected(), function (otherValue) {
-            var myValue = _this.get(otherValue.value);
-            if (Utils_1.Utils.exists(myValue)) {
-                myValue.selected = true;
-            }
-            else {
-                if (otherValue.occurrences && !otherValue.excluded) {
-                    _this.values.push(otherValue.clone());
-                }
-                else {
-                    _this.values.push(otherValue.cloneWithZeroOccurrences());
-                }
-            }
-        });
-        _.each(other.getExcluded(), function (otherValue) {
-            var myValue = _this.get(otherValue.value);
-            if (Utils_1.Utils.exists(myValue)) {
-                myValue.excluded = true;
-            }
-            else if (otherValue.occurrences != 0) {
-                var occurrences = otherValue.occurrences;
-                var clone = otherValue.cloneWithZeroOccurrences();
-                clone.occurrences = occurrences;
-                _this.values.push(clone);
-            }
-            else {
-                _this.values.push(otherValue.cloneWithZeroOccurrences());
-            }
-        });
-    };
-    FacetValues.prototype.updateCountsFromNewValues = function (newValues) {
-        Assert_1.Assert.exists(newValues);
-        this.values = _.map(this.values, function (myValue) {
-            var newValue = newValues.get(myValue.value);
-            if (Utils_1.Utils.exists(newValue)) {
-                myValue.updateCountsFromNewValue(newValue);
-                return myValue;
-            }
-            else if (myValue.occurrences == null) {
-                return myValue.cloneWithZeroOccurrences();
-            }
-            return myValue;
-        });
-    };
-    FacetValues.prototype.updateDeltaWithFilteredFacetValues = function (filtered, isMultiValueField) {
-        var _this = this;
-        Assert_1.Assert.exists(filtered);
-        _.each(this.values, function (unfilteredValue) {
-            var filteredValue = filtered.get(unfilteredValue.value);
-            unfilteredValue.waitingForDelta = false;
-            if (Utils_1.Utils.exists(filteredValue)) {
-                if (unfilteredValue.occurrences - filteredValue.occurrences > 0) {
-                    // When there are only exclusion in the facet, there should be no "delta"
-                    // The number of value for each facet will be what is selected, no addition.
-                    if (_this.hasOnlyExcludedValues()) {
-                        unfilteredValue.delta = null;
-                        unfilteredValue.occurrences = filteredValue.occurrences;
-                    }
-                    else {
-                        unfilteredValue.delta = unfilteredValue.occurrences - filteredValue.occurrences;
-                    }
-                }
-                else {
-                    unfilteredValue.delta = null;
-                }
-            }
-            else if (!unfilteredValue.selected && !unfilteredValue.excluded) {
-                if (isMultiValueField && filtered.values.length == 0) {
-                    unfilteredValue.delta = null;
-                    unfilteredValue.occurrences = 0;
-                }
-                else {
-                    unfilteredValue.delta = unfilteredValue.occurrences;
-                }
-            }
-        });
-    };
-    FacetValues.prototype.mergeWithUnfilteredFacetValues = function (unfiltered) {
-        var _this = this;
-        Assert_1.Assert.exists(unfiltered);
-        var values = [];
-        _.each(unfiltered.values, function (unfilteredValue) {
-            var filteredValue = _this.get(unfilteredValue.value);
-            if (Utils_1.Utils.exists(filteredValue)) {
-                if (filteredValue.occurrences == unfilteredValue.occurrences) {
-                    values.push(filteredValue);
-                }
-                else {
-                    values.push(unfilteredValue.cloneWithDelta(unfilteredValue.occurrences, unfilteredValue.occurrences - filteredValue.occurrences));
-                }
-            }
-            else {
-                values.push(unfilteredValue.cloneWithDelta(unfilteredValue.occurrences, unfilteredValue.occurrences));
-            }
-        });
-        var index = 0;
-        _.each(this.values, function (value) {
-            var unfilteredValue = unfiltered.get(value.value);
-            if (!Utils_1.Utils.exists(unfilteredValue)) {
-                if (value.selected || value.excluded) {
-                    values.splice(index, 0, value);
-                    index++;
-                }
-            }
-            else {
-                for (var i = 0; i < values.length; i++) {
-                    if (values[i].value == value.value) {
-                        index = i + 1;
-                        break;
-                    }
-                }
-            }
-        });
-        this.values = values;
-    };
-    FacetValues.prototype.sortValuesDependingOnStatus = function (excludeLastIndex) {
-        this.values = _.sortBy(this.values, function (value) {
-            if (value.selected) {
-                return 1;
-            }
-            else if (value.excluded) {
-                return 3;
-            }
-            else {
-                return 2;
-            }
-        });
-        if (excludeLastIndex != null && excludeLastIndex < this.values.length) {
-            var nbExclude = this.getExcluded().length;
-            var excludes = this.values.splice(this.values.length - nbExclude, nbExclude);
-            Array.prototype.splice.apply(this.values, [excludeLastIndex - nbExclude, 0].concat(excludes));
-        }
-    };
-    return FacetValues;
-}());
-exports.FacetValues = FacetValues;
-
-
-/***/ }),
-
-/***/ 17:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var SVGDom = (function () {
+var SVGDom = /** @class */ (function () {
     function SVGDom() {
     }
     SVGDom.addClassToSVGInContainer = function (svgContainer, classToAdd) {
@@ -435,19 +28,19 @@ exports.SVGDom = SVGDom;
 
 /***/ }),
 
-/***/ 266:
+/***/ 236:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 /// <reference path="Facet.ts" />
 Object.defineProperty(exports, "__esModule", { value: true });
-var Utils_1 = __webpack_require__(5);
-var FacetUtils_1 = __webpack_require__(48);
-var QueryBuilder_1 = __webpack_require__(52);
+var Utils_1 = __webpack_require__(6);
+var FacetUtils_1 = __webpack_require__(40);
+var QueryBuilder_1 = __webpack_require__(48);
 var Dom_1 = __webpack_require__(3);
 var _ = __webpack_require__(1);
-var FacetSearchParameters = (function () {
+var FacetSearchParameters = /** @class */ (function () {
     function FacetSearchParameters(facet) {
         this.facet = facet;
         this.valueToSearch = '';
@@ -508,16 +101,18 @@ var FacetSearchParameters = (function () {
             completeFacetWithStandardValues: completeFacetWithStandardValues,
             field: this.facet.options.field,
             sortCriteria: this.facet.options.sortCriteria || this.sortCriteria,
-            injectionDepth: this.facet.options.injectionDepth,
+            injectionDepth: this.facet.options.injectionDepth
         };
         if (this.facet.options.lookupField) {
             request.lookupField = this.facet.options.lookupField;
         }
         if (this.facet.options.computedField) {
-            request.computedFields = [{
+            request.computedFields = [
+                {
                     field: this.facet.options.computedField,
                     operation: this.facet.options.computedFieldOperation
-                }];
+                }
+            ];
         }
         return request;
     };
@@ -577,14 +172,14 @@ exports.FacetSearchParameters = FacetSearchParameters;
 
 /***/ }),
 
-/***/ 300:
+/***/ 255:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var _ = __webpack_require__(1);
-var EventsUtils = (function () {
+var EventsUtils = /** @class */ (function () {
     function EventsUtils() {
     }
     // eventName must be in PascalCase
@@ -605,15 +200,15 @@ var EventsUtils = (function () {
             element.removeEventListener(prefix + pascalCaseEventName, callback, false);
         });
     };
+    EventsUtils.prefixes = ['webkit', 'moz', 'MS', 'o', ''];
     return EventsUtils;
 }());
-EventsUtils.prefixes = ['webkit', 'moz', 'MS', 'o', ''];
 exports.EventsUtils = EventsUtils;
 
 
 /***/ }),
 
-/***/ 301:
+/***/ 256:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -621,7 +216,7 @@ exports.EventsUtils = EventsUtils;
 Object.defineProperty(exports, "__esModule", { value: true });
 var StringUtils_1 = __webpack_require__(21);
 var _ = __webpack_require__(1);
-var FacetValuesOrder = (function () {
+var FacetValuesOrder = /** @class */ (function () {
     function FacetValuesOrder(facet, facetSort) {
         this.facet = facet;
         this.facetSort = facetSort;
@@ -643,7 +238,8 @@ var FacetValuesOrder = (function () {
             // Get the index of the current value in the custom sort array.
             // If it's not found, put it's index to it's original value + the length of customSort so that's always after the specified custom sort order.
             var index = _.findIndex(customSortsLowercase, function (customSort) {
-                return StringUtils_1.StringUtils.equalsCaseInsensitive(customSort, facetValue.value) || (facetValue.lookupValue != null && StringUtils_1.StringUtils.equalsCaseInsensitive(customSort, facetValue.lookupValue));
+                return (StringUtils_1.StringUtils.equalsCaseInsensitive(customSort, facetValue.value) ||
+                    (facetValue.lookupValue != null && StringUtils_1.StringUtils.equalsCaseInsensitive(customSort, facetValue.lookupValue)));
             });
             if (index == -1) {
                 index = i + customSortsLowercase.length;
@@ -656,8 +252,10 @@ var FacetValuesOrder = (function () {
     };
     FacetValuesOrder.prototype.reorderValuesWithCustomCaption = function (facetValues) {
         var _this = this;
-        var sorted = _.sortBy(facetValues, function (facetValue) {
-            return _this.facet.getValueCaption(facetValue).toLowerCase();
+        var sorted = facetValues.sort(function (firstValue, secondValue) {
+            return _this.facet.getValueCaption(firstValue).localeCompare(_this.facet.getValueCaption(secondValue), String['locale'], {
+                sensitivity: 'base'
+            });
         });
         if (this.facetSort.activeSort.name.indexOf('descending') != -1) {
             sorted = sorted.reverse();
@@ -671,20 +269,20 @@ exports.FacetValuesOrder = FacetValuesOrder;
 
 /***/ }),
 
-/***/ 302:
+/***/ 257:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 /* WEBPACK VAR INJECTION */(function(Promise) {
 /// <reference path='../ui/Facet/Facet.ts' />
 Object.defineProperty(exports, "__esModule", { value: true });
-var ExpressionBuilder_1 = __webpack_require__(80);
-var Utils_1 = __webpack_require__(5);
-var FacetSearchParameters_1 = __webpack_require__(266);
+var ExpressionBuilder_1 = __webpack_require__(68);
+var Utils_1 = __webpack_require__(6);
+var FacetSearchParameters_1 = __webpack_require__(236);
 var Assert_1 = __webpack_require__(7);
-var FacetUtils_1 = __webpack_require__(48);
+var FacetUtils_1 = __webpack_require__(40);
 var _ = __webpack_require__(1);
-var FacetQueryController = (function () {
+var FacetQueryController = /** @class */ (function () {
     function FacetQueryController(facet) {
         this.facet = facet;
     }
@@ -697,7 +295,7 @@ var FacetQueryController = (function () {
         this.constantExpressionToUseForFacetSearch = undefined;
     };
     /**
-     * Compute the filter expression that the facet need to output for the query
+     * Compute the filter expression that the facet needs to output for the query
      * @returns {string}
      */
     FacetQueryController.prototype.computeOurFilterExpression = function () {
@@ -778,7 +376,8 @@ var FacetQueryController = (function () {
             };
             var searchPromise = _this.facet.getEndpoint().search(params.getQuery());
             _this.currentSearchPromise = searchPromise;
-            searchPromise.then(function (queryResults) {
+            searchPromise
+                .then(function (queryResults) {
                 if (_this.currentSearchPromise == searchPromise) {
                     // params.getQuery() will generate a query for all excluded values + some new values
                     // there is no clean way to do a group by and remove some values
@@ -910,7 +509,9 @@ var FacetQueryController = (function () {
         }
         if (queryOverrideObject) {
             if (Utils_1.Utils.isNonEmptyString(additionalFilter)) {
-                queryOverrideObject.constant = queryOverrideObject.constant ? queryOverrideObject.constant + ' ' + additionalFilter : additionalFilter;
+                queryOverrideObject.constant = queryOverrideObject.constant
+                    ? queryOverrideObject.constant + ' ' + additionalFilter
+                    : additionalFilter;
             }
         }
         _.each(_.keys(queryOverrideObject), function (k) {
@@ -945,10 +546,12 @@ var FacetQueryController = (function () {
             groupByRequest.allowedValues = allowedValues;
         }
         if (addComputedField && Utils_1.Utils.isNonEmptyString(this.facet.options.computedField)) {
-            groupByRequest.computedFields = [{
+            groupByRequest.computedFields = [
+                {
                     field: this.facet.options.computedField,
                     operation: this.facet.options.computedFieldOperation
-                }];
+                }
+            ];
         }
         return groupByRequest;
     };
@@ -979,11 +582,11 @@ var FacetQueryController = (function () {
 }());
 exports.FacetQueryController = FacetQueryController;
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(6)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5)))
 
 /***/ }),
 
-/***/ 374:
+/***/ 289:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1004,26 +607,26 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var FacetValues_1 = __webpack_require__(106);
-var Facet_1 = __webpack_require__(64);
+var FacetValues_1 = __webpack_require__(89);
+var Facet_1 = __webpack_require__(58);
 var ComponentOptions_1 = __webpack_require__(9);
-var HierarchicalFacetValuesList_1 = __webpack_require__(973);
-var HierarchicalFacetQueryController_1 = __webpack_require__(954);
-var Utils_1 = __webpack_require__(5);
+var HierarchicalFacetValuesList_1 = __webpack_require__(491);
+var HierarchicalFacetQueryController_1 = __webpack_require__(492);
+var Utils_1 = __webpack_require__(6);
 var Dom_1 = __webpack_require__(3);
-var Defer_1 = __webpack_require__(30);
-var HierarchicalFacetSearchValuesList_1 = __webpack_require__(971);
-var HierarchicalFacetSearch_1 = __webpack_require__(969);
-var HierarchicalBreadcrumbValuesList_1 = __webpack_require__(968);
+var Defer_1 = __webpack_require__(28);
+var HierarchicalFacetSearchValuesList_1 = __webpack_require__(493);
+var HierarchicalFacetSearch_1 = __webpack_require__(495);
+var HierarchicalBreadcrumbValuesList_1 = __webpack_require__(496);
 var Assert_1 = __webpack_require__(7);
-var OmniboxHierarchicalValuesList_1 = __webpack_require__(975);
-var HierarchicalFacetValueElement_1 = __webpack_require__(972);
+var OmniboxHierarchicalValuesList_1 = __webpack_require__(498);
+var HierarchicalFacetValueElement_1 = __webpack_require__(500);
 var Initialization_1 = __webpack_require__(2);
 var _ = __webpack_require__(1);
 var GlobalExports_1 = __webpack_require__(4);
-__webpack_require__(926);
+__webpack_require__(501);
 var SVGIcons_1 = __webpack_require__(15);
-var SVGDom_1 = __webpack_require__(17);
+var SVGDom_1 = __webpack_require__(16);
 /**
  * The `HierarchicalFacet` component inherits all of its options and behaviors from the [`Facet`]{@link Facet}
  * component, but is meant to be used to render hierarchical values.
@@ -1056,7 +659,7 @@ var SVGDom_1 = __webpack_require__(17);
  *
  * Selecting the `folder3` value in the facet would only return the `text2.txt` item.
  */
-var HierarchicalFacet = (function (_super) {
+var HierarchicalFacet = /** @class */ (function (_super) {
     __extends(HierarchicalFacet, _super);
     /**
      * Creates a new `HierarchicalFacet` component.
@@ -1073,7 +676,7 @@ var HierarchicalFacet = (function (_super) {
         _this.firstPlacement = true;
         _this.correctLevels = [];
         _this.options = ComponentOptions_1.ComponentOptions.initComponentOptions(element, HierarchicalFacet, _this.options);
-        _this.numberOfValuesToShow = _this.originalNumberOfValuesToShow = (_this.options.numberOfValues || 5);
+        _this.numberOfValuesToShow = _this.originalNumberOfValuesToShow = _this.options.numberOfValues || 5;
         _this.numberOfValues = Math.max(_this.options.numberOfValues, 10000);
         _this.options.injectionDepth = Math.max(_this.options.injectionDepth, 10000);
         _this.logger.info('Hierarchy facet: Set number of values very high in order to build hierarchy', _this.numberOfValues, _this);
@@ -1481,7 +1084,7 @@ var HierarchicalFacet = (function (_super) {
             else {
                 Dom_1.$$(hierarchyElement).addClass('coveo-no-childs');
             }
-            hierarchyElement.style.marginLeft = (_this.options.marginByLevel * (hierarchy.level - _this.options.levelStart)) + 'px';
+            hierarchyElement.style.marginLeft = _this.options.marginByLevel * (hierarchy.level - _this.options.levelStart) + 'px';
         });
         Dom_1.$$(fragment).insertAfter(this.headerElement);
     };
@@ -1544,9 +1147,11 @@ var HierarchicalFacet = (function (_super) {
                     allChildShouldBeSelected: false
                 };
             });
-            var parent = hierarchy.parent != null ? _.find(_this.correctLevels, function (possibleParent) {
-                return possibleParent.self.toLowerCase() == hierarchy.parent.toLowerCase();
-            }) : null;
+            var parent = hierarchy.parent != null
+                ? _.find(_this.correctLevels, function (possibleParent) {
+                    return possibleParent.self.toLowerCase() == hierarchy.parent.toLowerCase();
+                })
+                : null;
             var hierarchyThatAlreadyExists = _this.getValueHierarchy(hierarchy.facetValue.value);
             if (hierarchyThatAlreadyExists && hierarchyThatAlreadyExists.childs.length != childs.length) {
                 hierarchyThatAlreadyExists.childs = childs;
@@ -1557,14 +1162,18 @@ var HierarchicalFacet = (function (_super) {
             }
             _this.setValueHierarchy(hierarchy.facetValue.value, {
                 childs: childs,
-                parent: parent == undefined ? undefined : {
-                    facetValue: parent.facetValue,
-                    level: parent.level,
-                    keepOpened: hierarchyThatAlreadyExistsAtParent ? hierarchyThatAlreadyExistsAtParent.keepOpened : false,
-                    hasChildSelected: hierarchyThatAlreadyExistsAtParent ? hierarchyThatAlreadyExistsAtParent.hasChildSelected : false,
-                    originalPosition: hierarchyThatAlreadyExistsAtParent ? hierarchyThatAlreadyExistsAtParent.originalPosition : undefined,
-                    allChildShouldBeSelected: hierarchyThatAlreadyExistsAtParent ? hierarchyThatAlreadyExistsAtParent.allChildShouldBeSelected : false
-                },
+                parent: parent == undefined
+                    ? undefined
+                    : {
+                        facetValue: parent.facetValue,
+                        level: parent.level,
+                        keepOpened: hierarchyThatAlreadyExistsAtParent ? hierarchyThatAlreadyExistsAtParent.keepOpened : false,
+                        hasChildSelected: hierarchyThatAlreadyExistsAtParent ? hierarchyThatAlreadyExistsAtParent.hasChildSelected : false,
+                        originalPosition: hierarchyThatAlreadyExistsAtParent ? hierarchyThatAlreadyExistsAtParent.originalPosition : undefined,
+                        allChildShouldBeSelected: hierarchyThatAlreadyExistsAtParent
+                            ? hierarchyThatAlreadyExistsAtParent.allChildShouldBeSelected
+                            : false
+                    },
                 facetValue: hierarchy.facetValue,
                 level: hierarchy.level,
                 keepOpened: hierarchyThatAlreadyExists ? hierarchyThatAlreadyExists.keepOpened : false,
@@ -1686,8 +1295,8 @@ var HierarchicalFacet = (function (_super) {
             var otherSelectedChilds = _.filter(parentInHierarchy.childs, function (child) {
                 var childInHierarchy = _this.getValueHierarchy(child.facetValue.value);
                 if (childInHierarchy != undefined) {
-                    return childInHierarchy.facetValue.value != valueHierarchy.facetValue.value
-                        && (childInHierarchy.facetValue.selected || childInHierarchy.facetValue.excluded || childInHierarchy.hasChildSelected);
+                    return (childInHierarchy.facetValue.value != valueHierarchy.facetValue.value &&
+                        (childInHierarchy.facetValue.selected || childInHierarchy.facetValue.excluded || childInHierarchy.hasChildSelected));
                 }
             });
             if (otherSelectedChilds.length == 0) {
@@ -1768,7 +1377,7 @@ var HierarchicalFacet = (function (_super) {
         // It's possible that after checking a facet value, the index returns new facet values (because of injection depth);
         _.each(this.valueHierarchy, function (v) {
             if (v.allChildShouldBeSelected) {
-                var notAlreadySelected = _.find((v.childs), function (child) {
+                var notAlreadySelected = _.find(v.childs, function (child) {
                     return child.facetValue.selected != true;
                 });
                 if (notAlreadySelected) {
@@ -1779,85 +1388,85 @@ var HierarchicalFacet = (function (_super) {
             }
         });
     };
+    HierarchicalFacet.ID = 'HierarchicalFacet';
+    HierarchicalFacet.doExport = function () {
+        GlobalExports_1.exportGlobally({
+            HierarchicalFacet: HierarchicalFacet
+        });
+    };
+    /**
+     * The options for the component
+     * @componentOptions
+     */
+    HierarchicalFacet.options = {
+        /**
+         * The character that allows to specify the hierarchical dependency.
+         *
+         * **Example:**
+         *
+         * If your field has the following values:
+         *
+         * `@field: c; c>folder2; c>folder2>folder3;`
+         *
+         * The delimiting character is `>`.
+         *
+         * Default value is `|`.
+         */
+        delimitingCharacter: ComponentOptions_1.ComponentOptions.buildStringOption({ defaultValue: '|' }),
+        /**
+         * Specifies at which level (0-based index) of the hierarchy the `HierarchicalFacet` should start displaying its
+         * values.
+         *
+         * **Example:**
+         *
+         * If you have the following files indexed on a file system:
+         * ```
+         * c:\
+         *    folder1\
+         *        text1.txt
+         *    folder2\
+         *      folder3\
+         *        text2.txt
+         * ```
+         * Setting `levelStart` to `1` displays `folder1` and `folder2` in the `HierarchicalFacet`, but omits `c:`.
+         *
+         * Default (and minimum) value is `0`.
+         */
+        levelStart: ComponentOptions_1.ComponentOptions.buildNumberOption({ defaultValue: 0, min: 0 }),
+        /**
+         * Specifies at which level (0-based index) of the hierarchy the `HierarchicalFacet` should stop displaying its
+         * values.
+         *
+         * Default value is `undefined`, which means the `HierarchicalFacet` component renders all hierarchical levels.
+         * Minimum value is `0`.
+         */
+        levelEnd: ComponentOptions_1.ComponentOptions.buildNumberOption({ min: 0 }),
+        /**
+         * Specifies the margin (in pixels) to display between each hierarchical level when expanding.
+         *
+         * Default value is `10`.
+         */
+        marginByLevel: ComponentOptions_1.ComponentOptions.buildNumberOption({ defaultValue: 10, min: 0 })
+    };
+    HierarchicalFacet.parent = Facet_1.Facet;
     return HierarchicalFacet;
 }(Facet_1.Facet));
-HierarchicalFacet.ID = 'HierarchicalFacet';
-HierarchicalFacet.doExport = function () {
-    GlobalExports_1.exportGlobally({
-        'HierarchicalFacet': HierarchicalFacet
-    });
-};
-/**
- * The options for the component
- * @componentOptions
- */
-HierarchicalFacet.options = {
-    /**
-     * The character that allows to specify the hierarchical dependency.
-     *
-     * **Example:**
-     *
-     * If your field has the following values:
-     *
-     * `@field: c; c>folder2; c>folder2>folder3;`
-     *
-     * The delimiting character is `>`.
-     *
-     * Default value is `|`.
-     */
-    delimitingCharacter: ComponentOptions_1.ComponentOptions.buildStringOption({ defaultValue: '|' }),
-    /**
-     * Specifies at which level (0-based index) of the hierarchy the `HierarchicalFacet` should start displaying its
-     * values.
-     *
-     * **Example:**
-     *
-     * If you have the following files indexed on a file system:
-     * ```
-     * c:\
-     *    folder1\
-     *        text1.txt
-     *    folder2\
-     *      folder3\
-     *        text2.txt
-     * ```
-     * Setting `levelStart` to `1` displays `folder1` and `folder2` in the `HierarchicalFacet`, but omits `c:`.
-     *
-     * Default (and minimum) value is `0`.
-     */
-    levelStart: ComponentOptions_1.ComponentOptions.buildNumberOption({ defaultValue: 0, min: 0 }),
-    /**
-     * Specifies at which level (0-based index) of the hierarchy the `HierarchicalFacet` should stop displaying its
-     * values.
-     *
-     * Default value is `undefined`, which means the `HierarchicalFacet` component renders all hierarchical levels.
-     * Minimum value is `0`.
-     */
-    levelEnd: ComponentOptions_1.ComponentOptions.buildNumberOption({ min: 0 }),
-    /**
-     * Specifies the margin (in pixels) to display between each hierarchical level when expanding.
-     *
-     * Default value is `10`.
-     */
-    marginByLevel: ComponentOptions_1.ComponentOptions.buildNumberOption({ defaultValue: 10, min: 0 })
-};
-HierarchicalFacet.parent = Facet_1.Facet;
 exports.HierarchicalFacet = HierarchicalFacet;
 Initialization_1.Initialization.registerAutoCreateComponent(HierarchicalFacet);
 
 
 /***/ }),
 
-/***/ 491:
+/***/ 407:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var Dom_1 = __webpack_require__(3);
-var EventsUtils_1 = __webpack_require__(300);
+var EventsUtils_1 = __webpack_require__(255);
 var _ = __webpack_require__(1);
-var ResponsiveDropdown = (function () {
+var ResponsiveDropdown = /** @class */ (function () {
     function ResponsiveDropdown(dropdownContent, dropdownHeader, coveoRoot) {
         this.dropdownContent = dropdownContent;
         this.dropdownHeader = dropdownHeader;
@@ -1919,6 +1528,7 @@ var ResponsiveDropdown = (function () {
             this.coveoRoot.el.appendChild(this.popupBackground.el);
             window.getComputedStyle(this.popupBackground.el).opacity;
             this.popupBackground.el.style.opacity = ResponsiveDropdown.TRANSPARENT_BACKGROUND_OPACITY;
+            this.popupBackground.addClass('coveo-dropdown-background-active');
         }
     };
     ResponsiveDropdown.prototype.hidePopupBackground = function () {
@@ -1926,6 +1536,7 @@ var ResponsiveDropdown = (function () {
             // forces the browser to reflow the element, so that the transition is applied.
             window.getComputedStyle(this.popupBackground.el).opacity;
             this.popupBackground.el.style.opacity = '0';
+            this.popupBackground.removeClass('coveo-dropdown-background-active');
         }
     };
     ResponsiveDropdown.prototype.buildPopupBackground = function () {
@@ -1953,25 +1564,25 @@ var ResponsiveDropdown = (function () {
             this.parent.prepend(this.dropdownContent.element.el);
         }
     };
+    ResponsiveDropdown.TRANSPARENT_BACKGROUND_OPACITY = '0.9';
+    ResponsiveDropdown.DROPDOWN_BACKGROUND_CSS_CLASS_NAME = 'coveo-dropdown-background';
     return ResponsiveDropdown;
 }());
-ResponsiveDropdown.TRANSPARENT_BACKGROUND_OPACITY = '0.9';
-ResponsiveDropdown.DROPDOWN_BACKGROUND_CSS_CLASS_NAME = 'coveo-dropdown-background';
 exports.ResponsiveDropdown = ResponsiveDropdown;
 
 
 /***/ }),
 
-/***/ 492:
+/***/ 408:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var Dom_1 = __webpack_require__(3);
-var PopupUtils_1 = __webpack_require__(58);
-var ResponsiveComponentsManager_1 = __webpack_require__(90);
-var ResponsiveDropdownContent = (function () {
+var PopupUtils_1 = __webpack_require__(52);
+var ResponsiveComponentsManager_1 = __webpack_require__(77);
+var ResponsiveDropdownContent = /** @class */ (function () {
     function ResponsiveDropdownContent(componentName, element, coveoRoot, minWidth, widthRatio) {
         this.element = element;
         this.cssClassName = "coveo-" + componentName + "-dropdown-content";
@@ -1998,22 +1609,22 @@ var ResponsiveDropdownContent = (function () {
     ResponsiveDropdownContent.prototype.cleanUp = function () {
         this.element.el.removeAttribute('style');
     };
+    ResponsiveDropdownContent.DEFAULT_CSS_CLASS_NAME = 'coveo-dropdown-content';
     return ResponsiveDropdownContent;
 }());
-ResponsiveDropdownContent.DEFAULT_CSS_CLASS_NAME = 'coveo-dropdown-content';
 exports.ResponsiveDropdownContent = ResponsiveDropdownContent;
 
 
 /***/ }),
 
-/***/ 493:
+/***/ 409:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var Dom_1 = __webpack_require__(3);
-var ResponsiveDropdownHeader = (function () {
+var ResponsiveDropdownHeader = /** @class */ (function () {
     function ResponsiveDropdownHeader(componentName, element) {
         this.element = element;
         this.element.addClass("coveo-" + componentName + "-dropdown-header");
@@ -2034,617 +1645,27 @@ var ResponsiveDropdownHeader = (function () {
     ResponsiveDropdownHeader.prototype.show = function () {
         Dom_1.$$(this.element).removeClass('coveo-hidden');
     };
+    ResponsiveDropdownHeader.DEFAULT_CSS_CLASS_NAME = 'coveo-dropdown-header';
+    ResponsiveDropdownHeader.ACTIVE_HEADER_CSS_CLASS_NAME = 'coveo-dropdown-header-active';
     return ResponsiveDropdownHeader;
 }());
-ResponsiveDropdownHeader.DEFAULT_CSS_CLASS_NAME = 'coveo-dropdown-header';
-ResponsiveDropdownHeader.ACTIVE_HEADER_CSS_CLASS_NAME = 'coveo-dropdown-header-active';
 exports.ResponsiveDropdownHeader = ResponsiveDropdownHeader;
 
 
 /***/ }),
 
-/***/ 494:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-Object.defineProperty(exports, "__esModule", { value: true });
-var FacetSort_1 = __webpack_require__(495);
-var Dom_1 = __webpack_require__(3);
-var LocalStorageUtils_1 = __webpack_require__(39);
-var Utils_1 = __webpack_require__(5);
-var Strings_1 = __webpack_require__(10);
-var QueryStateModel_1 = __webpack_require__(13);
-var AnalyticsActionListMeta_1 = __webpack_require__(12);
-var DeviceUtils_1 = __webpack_require__(23);
-var PopupUtils_1 = __webpack_require__(58);
-var _ = __webpack_require__(1);
-__webpack_require__(605);
-var SVGIcons_1 = __webpack_require__(15);
-var SVGDom_1 = __webpack_require__(17);
-/**
- * Handle the rendering of the {@link Facet} settings menu (typically the ... in the facet header).
- */
-var FacetSettings = (function (_super) {
-    __extends(FacetSettings, _super);
-    function FacetSettings(sorts, facet) {
-        var _this = _super.call(this, sorts, facet) || this;
-        _this.sorts = sorts;
-        _this.facet = facet;
-        _this.customSortDirectionChange = false;
-        _this.enabledSortsIgnoreRenderBecauseOfPairs = [];
-        _this.filterDuplicateForRendering();
-        return _this;
-    }
-    /**
-     * Build the menu, hook click events.
-     * @returns {HTMLElement}
-     */
-    FacetSettings.prototype.build = function () {
-        var _this = this;
-        this.settingsButton = Dom_1.$$('div', {
-            className: 'coveo-facet-header-settings',
-            title: Strings_1.l('Settings'),
-        }).el;
-        this.settingsIcon = Dom_1.$$('span', { className: 'coveo-facet-settings-more' }).el;
-        this.settingsIcon.innerHTML = SVGIcons_1.SVGIcons.icons.more;
-        SVGDom_1.SVGDom.addClassToSVGInContainer(this.settingsIcon, 'coveo-facet-settings-more-svg');
-        this.settingsButton.appendChild(this.settingsIcon);
-        this.settingsPopup = Dom_1.$$('div', { className: 'coveo-facet-settings-popup' }).el;
-        if (Utils_1.Utils.isNonEmptyArray(this.enabledSorts)) {
-            this.sortSection = this.buildSortSection();
-            if (this.enabledSortsAllowDirection()) {
-                this.directionSection = this.buildDirectionSection();
-            }
-        }
-        if (this.facet.options.enableSettingsFacetState) {
-            this.saveStateSection = this.buildSaveStateSection();
-            this.clearStateSection = this.buildClearStateSection();
-        }
-        if (this.facet.options.enableCollapse) {
-            this.hideSection = this.buildHideSection();
-            this.showSection = this.buildShowSection();
-        }
-        var appendCommon = function () {
-            _this.appendIfNotUndefined(_this.saveStateSection);
-            _this.appendIfNotUndefined(_this.clearStateSection);
-            _this.appendIfNotUndefined(_this.hideSection);
-            _this.appendIfNotUndefined(_this.showSection);
-        };
-        this.handleMouseEventOnButton(this.sortSection);
-        if (Utils_1.Utils.isNonEmptyArray(this.enabledSorts)) {
-            this.settingsPopup.appendChild(this.sortSection.element);
-            _.each(this.directionSection, function (d) {
-                _this.appendIfNotUndefined(d);
-            });
-            appendCommon();
-        }
-        else {
-            appendCommon();
-        }
-        return this.settingsButton;
-    };
-    /**
-     * Restore the facet state from local storage, and apply it in the query state model.
-     */
-    FacetSettings.prototype.loadSavedState = function () {
-        if (this.facetStateLocalStorage) {
-            // set the state from the settings only if there is nothing
-            // in the query state model for the current facet
-            var state = this.facetStateLocalStorage.load();
-            var currentStateIncluded = this.facet.queryStateModel.get(this.includedStateAttribute);
-            var currentStateExcluded = this.facet.queryStateModel.get(this.excludedStateAttribute);
-            var currentStateOperator = this.facet.queryStateModel.get(this.operatorStateAttribute);
-            if (!Utils_1.Utils.isNullOrUndefined(state)
-                && Utils_1.Utils.isEmptyArray(currentStateIncluded)
-                && Utils_1.Utils.isEmptyArray(currentStateExcluded)
-                && !Utils_1.Utils.isNonEmptyString(currentStateOperator)) {
-                var toSet = {};
-                toSet[this.includedStateAttribute] = state.included;
-                toSet[this.excludedStateAttribute] = state.excluded;
-                toSet[this.operatorStateAttribute] = state.operator;
-                this.facet.queryStateModel.setMultiple(toSet);
-                this.loadedFromSettings = toSet;
-            }
-        }
-        else {
-            this.facet.logger.info('Facet state local storage not enabled : See Facet.options.enableSettingsFacetState');
-        }
-    };
-    /**
-     * Take the current state of the facet and save it in the local storage.
-     */
-    FacetSettings.prototype.saveState = function () {
-        if (this.facetStateLocalStorage) {
-            this.facetStateLocalStorage.save({
-                included: this.facet.queryStateModel.get(this.includedStateAttribute),
-                excluded: this.facet.queryStateModel.get(this.excludedStateAttribute),
-                operator: this.facet.queryStateModel.get(this.operatorStateAttribute),
-            });
-        }
-        else {
-            this.facet.logger.info('Facet state local storage not enabled : See Facet.options.enableSettingsFacetState');
-        }
-    };
-    /**
-     * Close the settings menu
-     */
-    FacetSettings.prototype.close = function () {
-        Dom_1.$$(this.settingsPopup).detach();
-    };
-    /**
-     * Open the settings menu
-     */
-    FacetSettings.prototype.open = function () {
-        var _this = this;
-        PopupUtils_1.PopupUtils.positionPopup(this.settingsPopup, this.settingsButton, this.facet.root, this.getPopupAlignment(), this.facet.root);
-        if (this.hideSection && this.showSection) {
-            Dom_1.$$(this.hideSection).toggle(!Dom_1.$$(this.facet.element).hasClass('coveo-facet-collapsed'));
-            Dom_1.$$(this.showSection).toggle(Dom_1.$$(this.facet.element).hasClass('coveo-facet-collapsed'));
-        }
-        if (this.facet.options.enableSettingsFacetState) {
-            Dom_1.$$(this.clearStateSection).toggle(!Utils_1.Utils.isNullOrUndefined(this.facetStateLocalStorage.load()));
-        }
-        _.each(this.enabledSorts, function (criteria, i) {
-            if (!Utils_1.Utils.isNullOrUndefined(_this.sortSection.sortItems[i])) {
-                if (_this.activeSort.name == criteria.name.toLowerCase() || _this.activeSort.relatedSort == criteria.name.toLowerCase()) {
-                    _this.selectItem(_this.sortSection.sortItems[i]);
-                }
-                else {
-                    _this.unselectItem(_this.sortSection.sortItems[i]);
-                }
-            }
-        });
-    };
-    FacetSettings.prototype.buildSortSection = function () {
-        var sortSection = this.buildSection('coveo-facet-settings-section-sort');
-        var sortSectionIcon = this.buildIcon('coveo-facet-settings-section-sort-svg', SVGIcons_1.SVGIcons.icons.sort);
-        var sortSectionItems = this.buildItems();
-        var sortTitle = document.createElement('div');
-        Dom_1.$$(sortTitle).addClass('coveo-facet-settings-section-sort-title');
-        Dom_1.$$(sortTitle).text(Strings_1.l('SortBy') + ' :');
-        sortSectionItems.appendChild(sortTitle);
-        var sortItems = this.buildSortSectionItems();
-        _.each(sortItems, function (s) {
-            sortSectionItems.appendChild(s);
-        });
-        sortSection.appendChild(sortSectionIcon);
-        sortSection.appendChild(sortSectionItems);
-        return { element: sortSection, sortItems: sortItems };
-    };
-    FacetSettings.prototype.buildSortSectionItems = function () {
-        var _this = this;
-        var elems = _.map(this.enabledSorts, function (enabledSort) {
-            if (_.contains(_this.enabledSortsIgnoreRenderBecauseOfPairs, enabledSort)) {
-                return undefined;
-            }
-            else {
-                var elem = _this.buildItem(Strings_1.l(enabledSort.label), enabledSort.description);
-                Dom_1.$$(elem).on('click', function (e) { return _this.handleClickSortButton(e, enabledSort); });
-                return elem;
-            }
-        });
-        elems = _.compact(elems);
-        return elems;
-    };
-    FacetSettings.prototype.closePopupAndUpdateSort = function () {
-        this.close();
-        if (this.activeSort.name != 'custom') {
-            this.facet.updateSort(this.activeSort.name);
-        }
-        else {
-            this.facet.updateSort('nosort');
-            if (this.customSortDirectionChange) {
-                this.customSortDirectionChange = false;
-                this.facet.queryController.executeQuery();
-            }
-        }
-    };
-    FacetSettings.prototype.enabledSortsAllowDirection = function () {
-        return _.some(this.enabledSorts, function (facetSortDescription) {
-            return facetSortDescription.directionToggle;
-        });
-    };
-    FacetSettings.prototype.buildDirectionSection = function () {
-        var _this = this;
-        var directionAscendingSection = this.buildAscendingOrDescendingSection('Ascending');
-        var iconAscending = this.buildIcon('coveo-facet-settings-section-direction-ascending-svg', SVGIcons_1.SVGIcons.icons.ascending);
-        var iconDescending = this.buildIcon('coveo-facet-settings-section-direction-descending-svg', SVGIcons_1.SVGIcons.icons.descending);
-        var directionItemsAscending = this.buildItems();
-        var ascending = this.buildAscendingOrDescending('Ascending');
-        directionItemsAscending.appendChild(ascending);
-        directionAscendingSection.appendChild(iconAscending);
-        directionAscendingSection.appendChild(directionItemsAscending);
-        Dom_1.$$(directionAscendingSection).on('click', function (e) { return _this.handleDirectionClick(e, 'ascending'); });
-        var directionDescendingSection = this.buildAscendingOrDescendingSection('Descending');
-        var directionItemsDescending = this.buildItems();
-        var descending = this.buildAscendingOrDescending('Descending');
-        directionItemsDescending.appendChild(descending);
-        directionDescendingSection.appendChild(iconDescending);
-        directionDescendingSection.appendChild(directionItemsDescending);
-        Dom_1.$$(directionDescendingSection).on('click', function (e) { return _this.handleDirectionClick(e, 'descending'); });
-        if (!this.activeSort.directionToggle) {
-            Dom_1.$$(directionAscendingSection).addClass('coveo-facet-settings-disabled');
-            Dom_1.$$(directionDescendingSection).addClass('coveo-facet-settings-disabled');
-        }
-        else {
-            this.selectItem(this.getItems(directionAscendingSection)[0]);
-        }
-        return [directionAscendingSection, directionDescendingSection];
-    };
-    FacetSettings.prototype.buildSaveStateSection = function () {
-        var _this = this;
-        var saveStateSection = this.buildSection('coveo-facet-settings-section-save-state');
-        var icon = this.buildIcon('coveo-facet-settings-section-save-state-svg', SVGIcons_1.SVGIcons.icons.dropdownMore);
-        var saveStateItems = this.buildItems();
-        this.facetStateLocalStorage = new LocalStorageUtils_1.LocalStorageUtils('facet-state-' + this.facet.options.id);
-        this.includedStateAttribute = QueryStateModel_1.QueryStateModel.getFacetId(this.facet.options.id);
-        this.excludedStateAttribute = QueryStateModel_1.QueryStateModel.getFacetId(this.facet.options.id, false);
-        this.operatorStateAttribute = QueryStateModel_1.QueryStateModel.getFacetOperator(this.facet.options.id);
-        var saveStateItem = document.createElement('div');
-        Dom_1.$$(saveStateItem).addClass('coveo-facet-settings-item');
-        saveStateItem.setAttribute('title', _.escape(Strings_1.l('SaveFacetState')));
-        Dom_1.$$(saveStateItem).text(_.escape(Strings_1.l('SaveFacetState')));
-        saveStateItems.appendChild(saveStateItem);
-        saveStateSection.appendChild(icon);
-        saveStateSection.appendChild(saveStateItems);
-        Dom_1.$$(saveStateSection).on('click', function (e) { return _this.handleSaveStateClick(); });
-        return saveStateSection;
-    };
-    FacetSettings.prototype.buildClearStateSection = function () {
-        var _this = this;
-        var clearStateSection = this.buildSection('coveo-facet-settings-section-clear-state');
-        var icon = this.buildIcon('coveo-facet-settings-section-clear-state-svg', SVGIcons_1.SVGIcons.icons.dropdownLess);
-        var clearStateItems = this.buildItems();
-        var clearStateItem = this.buildItem(Strings_1.l('ClearFacetState'));
-        clearStateItems.appendChild(clearStateItem);
-        clearStateSection.appendChild(icon);
-        clearStateSection.appendChild(clearStateItems);
-        Dom_1.$$(clearStateSection).on('click', function (e) { return _this.handleClearStateClick(); });
-        return clearStateSection;
-    };
-    FacetSettings.prototype.buildHideSection = function () {
-        var _this = this;
-        var hideSection = this.buildSection('coveo-facet-settings-section-hide');
-        var icon = this.buildIcon('coveo-facet-settings-section-hide-svg', SVGIcons_1.SVGIcons.icons.facetCollapse);
-        var hideItems = this.buildItems();
-        var hideItem = this.buildItem(Strings_1.l('Collapse'));
-        hideItems.appendChild(hideItem);
-        hideSection.appendChild(icon);
-        hideSection.appendChild(hideItems);
-        Dom_1.$$(hideSection).on('click', function (e) {
-            _this.facet.facetHeader.collapseFacet();
-            _this.close();
-        });
-        return hideSection;
-    };
-    FacetSettings.prototype.buildShowSection = function () {
-        var _this = this;
-        var showSection = this.buildSection('coveo-facet-settings-section-show');
-        var icon = this.buildIcon('coveo-facet-settings-section-show-svg', SVGIcons_1.SVGIcons.icons.facetExpand);
-        var showItems = this.buildItems();
-        var showItem = this.buildItem(Strings_1.l('Expand'));
-        showItems.appendChild(showItem);
-        showSection.appendChild(icon);
-        showSection.appendChild(showItems);
-        Dom_1.$$(showSection).on('click', function (e) {
-            _this.facet.facetHeader.expandFacet();
-            _this.close();
-        });
-        return showSection;
-    };
-    FacetSettings.prototype.buildIcon = function (iconClass, svgIcon) {
-        if (iconClass && svgIcon) {
-            var icon = Dom_1.$$('div', { className: 'coveo-icon-container' }, svgIcon);
-            SVGDom_1.SVGDom.addClassToSVGInContainer(icon.el, iconClass);
-            return icon.el;
-        }
-        else {
-            return Dom_1.$$('div', { className: 'coveo-icon' }).el;
-        }
-    };
-    FacetSettings.prototype.buildAscendingOrDescending = function (direction) {
-        var elem = this.buildItem(Strings_1.l(direction));
-        elem.setAttribute('data-direction', direction.toLowerCase());
-        return elem;
-    };
-    FacetSettings.prototype.buildAscendingOrDescendingSection = function (direction) {
-        return this.buildSection('coveo-facet-settings-section-direction-' + direction.toLowerCase());
-    };
-    FacetSettings.prototype.buildItem = function (label, title) {
-        if (title === void 0) { title = label; }
-        return Dom_1.$$('div', {
-            className: 'coveo-facet-settings-item',
-            title: _.escape(title),
-        }, _.escape(label)).el;
-    };
-    FacetSettings.prototype.buildItems = function () {
-        var elem = document.createElement('div');
-        Dom_1.$$(elem).addClass('coveo-facet-settings-items');
-        return elem;
-    };
-    FacetSettings.prototype.buildSection = function (className) {
-        var section = document.createElement('div');
-        Dom_1.$$(section).addClass(['coveo-facet-settings-section', className]);
-        return section;
-    };
-    FacetSettings.prototype.handleClickSettingsButtons = function (event, sortSection) {
-        if (!Utils_1.Utils.isNullOrUndefined(this.settingsPopup.parentElement)) {
-            this.close();
-        }
-        else {
-            this.open();
-        }
-    };
-    FacetSettings.prototype.handleClickSortButton = function (e, enabledSort) {
-        if (this.activeSort != enabledSort && this.activeSort.relatedSort != enabledSort.name) {
-            this.activeSort = enabledSort;
-            if (enabledSort.directionToggle && _.contains(this.enabledSorts, FacetSettings.availableSorts[this.activeSort.relatedSort])) {
-                this.activateDirectionSection();
-            }
-            else {
-                this.disableDirectionSection();
-            }
-            this.selectItem(e.target);
-            this.closePopupAndUpdateSort();
-        }
-    };
-    FacetSettings.prototype.handleDirectionClick = function (e, direction) {
-        var _this = this;
-        if (!Dom_1.$$(e.target.parentElement.parentElement).hasClass('coveo-facet-settings-disabled') && this.activeSort.name.indexOf(direction) == -1) {
-            this.activeSort = FacetSettings.availableSorts[this.activeSort.relatedSort];
-            _.each(this.directionSection, function (d) {
-                _this.unselectSection(d);
-            });
-            this.selectItem(e.target);
-            if (this.activeSort.name == 'custom' && this.customSortDirection != direction) {
-                this.customSortDirection = direction;
-                this.customSortDirectionChange = true;
-            }
-            this.closePopupAndUpdateSort();
-        }
-    };
-    FacetSettings.prototype.handleSaveStateClick = function () {
-        this.saveState();
-        this.close();
-    };
-    FacetSettings.prototype.handleClearStateClick = function () {
-        var _this = this;
-        this.facetStateLocalStorage.remove();
-        this.facet.reset();
-        this.close();
-        this.facet.triggerNewQuery(function () { return _this.facet.usageAnalytics.logSearchEvent(AnalyticsActionListMeta_1.analyticsActionCauseList.facetClearAll, {
-            facetId: _this.facet.options.id,
-            facetTitle: _this.facet.options.title
-        }); });
-    };
-    FacetSettings.prototype.handleMouseEventOnButton = function (sortSection) {
-        var _this = this;
-        var closeTimeout;
-        Dom_1.$$(this.settingsButton).on('click', function (e) { return _this.handleClickSettingsButtons(e, sortSection); });
-        var mouseLeave = function () {
-            closeTimeout = setTimeout(function () {
-                _this.close();
-            }, 300);
-        };
-        var mouseEnter = function () {
-            clearTimeout(closeTimeout);
-        };
-        Dom_1.$$(this.settingsIcon).on('mouseleave', mouseLeave);
-        Dom_1.$$(this.settingsPopup).on('mouseleave', mouseLeave);
-        Dom_1.$$(this.settingsIcon).on('mouseenter', mouseEnter);
-        Dom_1.$$(this.settingsPopup).on('mouseenter', mouseEnter);
-    };
-    FacetSettings.prototype.getCurrentDirectionItem = function (directionSection) {
-        var _this = this;
-        if (directionSection === void 0) { directionSection = this.directionSection; }
-        var found;
-        _.each(directionSection, function (direction) {
-            if (!found) {
-                found = _.find(_this.getItems(direction), function (direction) {
-                    return _this.activeSort.name.indexOf(direction.getAttribute('data-direction')) != -1;
-                });
-            }
-        });
-        if (!found) {
-            found = directionSection[0];
-        }
-        return found;
-    };
-    FacetSettings.prototype.activateDirectionSection = function () {
-        var _this = this;
-        _.each(this.directionSection, function (direction) {
-            Dom_1.$$(direction).removeClass('coveo-facet-settings-disabled');
-            _this.unselectSection(direction);
-        });
-        this.selectItem(this.getCurrentDirectionItem());
-    };
-    FacetSettings.prototype.disableDirectionSection = function () {
-        var _this = this;
-        _.each(this.directionSection, function (direction) {
-            Dom_1.$$(direction).addClass('coveo-facet-settings-disabled');
-            _this.unselectSection(direction);
-        });
-    };
-    FacetSettings.prototype.getItems = function (section) {
-        return Dom_1.$$(section).findAll('.coveo-facet-settings-item');
-    };
-    FacetSettings.prototype.unselectSection = function (section) {
-        _.each(this.getItems(section), function (i) {
-            Dom_1.$$(i).removeClass('coveo-selected');
-        });
-    };
-    FacetSettings.prototype.selectItem = function (item) {
-        Dom_1.$$(item).addClass('coveo-selected');
-    };
-    FacetSettings.prototype.unselectItem = function (item) {
-        Dom_1.$$(item).removeClass('coveo-selected');
-    };
-    FacetSettings.prototype.getPopupAlignment = function () {
-        var alignmentHorizontal = DeviceUtils_1.DeviceUtils.isMobileDevice() ? PopupUtils_1.HorizontalAlignment.CENTER : PopupUtils_1.HorizontalAlignment.INNERLEFT;
-        var alignmentVertical = PopupUtils_1.VerticalAlignment.BOTTOM;
-        return {
-            horizontal: alignmentHorizontal,
-            vertical: alignmentVertical
-        };
-    };
-    FacetSettings.prototype.filterDuplicateForRendering = function () {
-        var _this = this;
-        _.each(this.enabledSorts, function (enabledSort, i) {
-            if (enabledSort.relatedSort != null) {
-                for (var j = i + 1; j < _this.enabledSorts.length; j++) {
-                    if (_this.enabledSorts[j].name == enabledSort.relatedSort) {
-                        _this.enabledSortsIgnoreRenderBecauseOfPairs.push(_this.enabledSorts[j]);
-                        break;
-                    }
-                }
-            }
-        });
-    };
-    FacetSettings.prototype.appendIfNotUndefined = function (toAppend) {
-        if (!Utils_1.Utils.isNullOrUndefined(toAppend)) {
-            this.settingsPopup.appendChild(toAppend);
-        }
-    };
-    return FacetSettings;
-}(FacetSort_1.FacetSort));
-exports.FacetSettings = FacetSettings;
-
-
-/***/ }),
-
-/***/ 495:
+/***/ 410:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var Strings_1 = __webpack_require__(10);
-var FacetSettings_1 = __webpack_require__(494);
-var Utils_1 = __webpack_require__(5);
-var _ = __webpack_require__(1);
-var FacetSort = (function () {
-    function FacetSort(sorts, facet) {
-        var _this = this;
-        this.facet = facet;
-        this.enabledSorts = [];
-        this.customSortDirection = 'ascending';
-        _.each(sorts, function (sortToActivate) {
-            var newSortToEnable = FacetSettings_1.FacetSettings.availableSorts[sortToActivate.toLowerCase()];
-            if (newSortToEnable != undefined) {
-                _this.enabledSorts.push(newSortToEnable);
-            }
-        });
-        this.removeEnabledSortsBasedOnFacetType();
-        if (Utils_1.Utils.isNonEmptyArray(this.enabledSorts)) {
-            if (this.facet.options.sortCriteria != undefined) {
-                this.activeSort = _.find(this.enabledSorts, function (enabledSort) {
-                    return enabledSort.name == _this.facet.options.sortCriteria;
-                });
-            }
-            if (!this.activeSort) {
-                this.activeSort = this.enabledSorts[0];
-            }
-        }
-    }
-    FacetSort.prototype.removeEnabledSortsBasedOnFacetType = function () {
-        if (Coveo.FacetRange && this.facet instanceof Coveo.FacetRange) {
-            var facetRange = this.facet;
-            if (facetRange.options['slider']) {
-                this.enabledSorts = [];
-            }
-        }
-    };
-    return FacetSort;
-}());
-FacetSort.availableSorts = {
-    score: {
-        label: Strings_1.l('Score'),
-        directionToggle: false,
-        description: Strings_1.l('ScoreDescription'),
-        name: 'score'
-    },
-    occurrences: {
-        label: Strings_1.l('Occurrences'),
-        directionToggle: false,
-        description: Strings_1.l('OccurrencesDescription'),
-        name: 'occurrences'
-    },
-    alphaascending: {
-        label: Strings_1.l('Label'),
-        directionToggle: true,
-        description: Strings_1.l('LabelDescription'),
-        name: 'alphaascending',
-        relatedSort: 'alphadescending'
-    },
-    alphadescending: {
-        label: Strings_1.l('Label'),
-        directionToggle: true,
-        description: Strings_1.l('LabelDescription'),
-        name: 'alphadescending',
-        relatedSort: 'alphaascending'
-    },
-    computedfieldascending: {
-        label: Strings_1.l('Value'),
-        directionToggle: true,
-        description: Strings_1.l('ValueDescription'),
-        name: 'computedfieldascending',
-        relatedSort: 'computedfielddescending'
-    },
-    computedfielddescending: {
-        label: Strings_1.l('Value'),
-        directionToggle: true,
-        description: Strings_1.l('ValueDescription'),
-        name: 'computedfielddescending',
-        relatedSort: 'computedfieldascending'
-    },
-    chisquare: {
-        label: Strings_1.l('RelativeFrequency'),
-        directionToggle: false,
-        description: Strings_1.l('RelativeFrequencyDescription'),
-        name: 'chisquare'
-    },
-    nosort: {
-        label: Strings_1.l('Nosort'),
-        directionToggle: false,
-        description: Strings_1.l('NosortDescription'),
-        name: 'nosort'
-    },
-    custom: {
-        label: Strings_1.l('Custom'),
-        directionToggle: true,
-        description: Strings_1.l('CustomDescription'),
-        name: 'custom',
-        relatedSort: 'custom'
-    }
-};
-exports.FacetSort = FacetSort;
-
-
-/***/ }),
-
-/***/ 496:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var ValueElementRenderer_1 = __webpack_require__(497);
-var Utils_1 = __webpack_require__(5);
+var ValueElementRenderer_1 = __webpack_require__(411);
+var Utils_1 = __webpack_require__(6);
 var AnalyticsActionListMeta_1 = __webpack_require__(12);
 var Dom_1 = __webpack_require__(3);
-var KeyboardUtils_1 = __webpack_require__(24);
-var ValueElement = (function () {
+var KeyboardUtils_1 = __webpack_require__(23);
+var ValueElement = /** @class */ (function () {
     function ValueElement(facet, facetValue, onSelect, onExclude) {
         this.facet = facet;
         this.facetValue = facetValue;
@@ -2705,7 +1726,9 @@ var ValueElement = (function () {
             this.facet.triggerNewQuery(function () { return _this.onExclude(_this, actionCause); });
         }
         else {
-            this.facet.triggerNewQuery(function () { return _this.facet.usageAnalytics.logSearchEvent(actionCause, _this.getAnalyticsFacetMeta()); });
+            this.facet.triggerNewQuery(function () {
+                return _this.facet.usageAnalytics.logSearchEvent(actionCause, _this.getAnalyticsFacetMeta());
+            });
         }
     };
     ValueElement.prototype.handleSelectValue = function (eventBindings) {
@@ -2729,7 +1752,9 @@ var ValueElement = (function () {
             this.facet.triggerNewQuery(function () { return _this.onSelect(_this, actionCause); });
         }
         else {
-            this.facet.triggerNewQuery(function () { return _this.facet.usageAnalytics.logSearchEvent(actionCause, _this.getAnalyticsFacetMeta()); });
+            this.facet.triggerNewQuery(function () {
+                return _this.facet.usageAnalytics.logSearchEvent(actionCause, _this.getAnalyticsFacetMeta());
+            });
         }
     };
     ValueElement.prototype.handleExcludeClick = function (eventBindings) {
@@ -2752,10 +1777,7 @@ var ValueElement = (function () {
             e.stopPropagation();
             clickEvent(e);
         });
-        Dom_1.$$(this.renderer.stylishCheckbox).on('keydown', KeyboardUtils_1.KeyboardUtils.keypressAction([
-            KeyboardUtils_1.KEYBOARD.SPACEBAR,
-            KeyboardUtils_1.KEYBOARD.ENTER
-        ], clickEvent));
+        Dom_1.$$(this.renderer.stylishCheckbox).on('keydown', KeyboardUtils_1.KeyboardUtils.keypressAction([KeyboardUtils_1.KEYBOARD.SPACEBAR, KeyboardUtils_1.KEYBOARD.ENTER], clickEvent));
     };
     ValueElement.prototype.handleEventForValueElement = function (eventBindings) {
         var _this = this;
@@ -2771,10 +1793,7 @@ var ValueElement = (function () {
             event.preventDefault();
         };
         Dom_1.$$(this.renderer.excludeIcon).on('click', excludeAction);
-        Dom_1.$$(this.renderer.excludeIcon).on('keydown', KeyboardUtils_1.KeyboardUtils.keypressAction([
-            KeyboardUtils_1.KEYBOARD.SPACEBAR,
-            KeyboardUtils_1.KEYBOARD.ENTER
-        ], excludeAction));
+        Dom_1.$$(this.renderer.excludeIcon).on('keydown', KeyboardUtils_1.KeyboardUtils.keypressAction([KeyboardUtils_1.KEYBOARD.SPACEBAR, KeyboardUtils_1.KEYBOARD.ENTER], excludeAction));
         var selectAction = function (event) {
             if (eventBindings.pinFacet) {
                 _this.facet.pinFacetPosition();
@@ -2783,10 +1802,7 @@ var ValueElement = (function () {
             event.preventDefault();
         };
         Dom_1.$$(this.renderer.label).on('click', selectAction);
-        Dom_1.$$(this.renderer.stylishCheckbox).on('keydown', KeyboardUtils_1.KeyboardUtils.keypressAction([
-            KeyboardUtils_1.KEYBOARD.SPACEBAR,
-            KeyboardUtils_1.KEYBOARD.ENTER
-        ], selectAction));
+        Dom_1.$$(this.renderer.stylishCheckbox).on('keydown', KeyboardUtils_1.KeyboardUtils.keypressAction([KeyboardUtils_1.KEYBOARD.SPACEBAR, KeyboardUtils_1.KEYBOARD.ENTER], selectAction));
     };
     ValueElement.prototype.handleEventForCheckboxChange = function (eventBindings) {
         var _this = this;
@@ -2815,20 +1831,20 @@ exports.ValueElement = ValueElement;
 
 /***/ }),
 
-/***/ 497:
+/***/ 411:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var Dom_1 = __webpack_require__(3);
-var Utils_1 = __webpack_require__(5);
+var Utils_1 = __webpack_require__(6);
 var Strings_1 = __webpack_require__(10);
 var Component_1 = __webpack_require__(8);
 var _ = __webpack_require__(1);
 var SVGIcons_1 = __webpack_require__(15);
-var SVGDom_1 = __webpack_require__(17);
-var ValueElementRenderer = (function () {
+var SVGDom_1 = __webpack_require__(16);
+var ValueElementRenderer = /** @class */ (function () {
     function ValueElementRenderer(facet, facetValue) {
         this.facet = facet;
         this.facetValue = facetValue;
@@ -3009,7 +2025,615 @@ exports.ValueElementRenderer = ValueElementRenderer;
 
 /***/ }),
 
-/***/ 499:
+/***/ 412:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var FacetSort_1 = __webpack_require__(413);
+var Dom_1 = __webpack_require__(3);
+var LocalStorageUtils_1 = __webpack_require__(37);
+var Utils_1 = __webpack_require__(6);
+var Strings_1 = __webpack_require__(10);
+var QueryStateModel_1 = __webpack_require__(13);
+var AnalyticsActionListMeta_1 = __webpack_require__(12);
+var DeviceUtils_1 = __webpack_require__(22);
+var PopupUtils_1 = __webpack_require__(52);
+var _ = __webpack_require__(1);
+__webpack_require__(437);
+var SVGIcons_1 = __webpack_require__(15);
+var SVGDom_1 = __webpack_require__(16);
+/**
+ * Handle the rendering of the {@link Facet} settings menu (typically the ... in the facet header).
+ */
+var FacetSettings = /** @class */ (function (_super) {
+    __extends(FacetSettings, _super);
+    function FacetSettings(sorts, facet) {
+        var _this = _super.call(this, sorts, facet) || this;
+        _this.sorts = sorts;
+        _this.facet = facet;
+        _this.customSortDirectionChange = false;
+        _this.enabledSortsIgnoreRenderBecauseOfPairs = [];
+        _this.filterDuplicateForRendering();
+        return _this;
+    }
+    /**
+     * Build the menu, hook click events.
+     * @returns {HTMLElement}
+     */
+    FacetSettings.prototype.build = function () {
+        var _this = this;
+        this.settingsButton = Dom_1.$$('div', {
+            className: 'coveo-facet-header-settings',
+            title: Strings_1.l('Settings')
+        }).el;
+        this.settingsIcon = Dom_1.$$('span', { className: 'coveo-facet-settings-more' }).el;
+        this.settingsIcon.innerHTML = SVGIcons_1.SVGIcons.icons.more;
+        SVGDom_1.SVGDom.addClassToSVGInContainer(this.settingsIcon, 'coveo-facet-settings-more-svg');
+        this.settingsButton.appendChild(this.settingsIcon);
+        this.settingsPopup = Dom_1.$$('div', { className: 'coveo-facet-settings-popup' }).el;
+        if (Utils_1.Utils.isNonEmptyArray(this.enabledSorts)) {
+            this.sortSection = this.buildSortSection();
+            if (this.enabledSortsAllowDirection()) {
+                this.directionSection = this.buildDirectionSection();
+            }
+        }
+        if (this.facet.options.enableSettingsFacetState) {
+            this.saveStateSection = this.buildSaveStateSection();
+            this.clearStateSection = this.buildClearStateSection();
+        }
+        if (this.facet.options.enableCollapse) {
+            this.hideSection = this.buildHideSection();
+            this.showSection = this.buildShowSection();
+        }
+        var appendCommon = function () {
+            _this.appendIfNotUndefined(_this.saveStateSection);
+            _this.appendIfNotUndefined(_this.clearStateSection);
+            _this.appendIfNotUndefined(_this.hideSection);
+            _this.appendIfNotUndefined(_this.showSection);
+        };
+        this.handleMouseEventOnButton(this.sortSection);
+        if (Utils_1.Utils.isNonEmptyArray(this.enabledSorts)) {
+            this.settingsPopup.appendChild(this.sortSection.element);
+            _.each(this.directionSection, function (d) {
+                _this.appendIfNotUndefined(d);
+            });
+            appendCommon();
+        }
+        else {
+            appendCommon();
+        }
+        return this.settingsButton;
+    };
+    /**
+     * Restore the facet state from local storage, and apply it in the query state model.
+     */
+    FacetSettings.prototype.loadSavedState = function () {
+        if (this.facetStateLocalStorage) {
+            // set the state from the settings only if there is nothing
+            // in the query state model for the current facet
+            var state = this.facetStateLocalStorage.load();
+            var currentStateIncluded = this.facet.queryStateModel.get(this.includedStateAttribute);
+            var currentStateExcluded = this.facet.queryStateModel.get(this.excludedStateAttribute);
+            var currentStateOperator = this.facet.queryStateModel.get(this.operatorStateAttribute);
+            if (!Utils_1.Utils.isNullOrUndefined(state) &&
+                Utils_1.Utils.isEmptyArray(currentStateIncluded) &&
+                Utils_1.Utils.isEmptyArray(currentStateExcluded) &&
+                !Utils_1.Utils.isNonEmptyString(currentStateOperator)) {
+                var toSet = {};
+                toSet[this.includedStateAttribute] = state.included;
+                toSet[this.excludedStateAttribute] = state.excluded;
+                toSet[this.operatorStateAttribute] = state.operator;
+                this.facet.queryStateModel.setMultiple(toSet);
+                this.loadedFromSettings = toSet;
+            }
+        }
+        else {
+            this.facet.logger.info('Facet state local storage not enabled : See Facet.options.enableSettingsFacetState');
+        }
+    };
+    /**
+     * Take the current state of the facet and save it in the local storage.
+     */
+    FacetSettings.prototype.saveState = function () {
+        if (this.facetStateLocalStorage) {
+            this.facetStateLocalStorage.save({
+                included: this.facet.queryStateModel.get(this.includedStateAttribute),
+                excluded: this.facet.queryStateModel.get(this.excludedStateAttribute),
+                operator: this.facet.queryStateModel.get(this.operatorStateAttribute)
+            });
+        }
+        else {
+            this.facet.logger.info('Facet state local storage not enabled : See Facet.options.enableSettingsFacetState');
+        }
+    };
+    /**
+     * Close the settings menu
+     */
+    FacetSettings.prototype.close = function () {
+        Dom_1.$$(this.settingsPopup).detach();
+    };
+    /**
+     * Open the settings menu
+     */
+    FacetSettings.prototype.open = function () {
+        var _this = this;
+        PopupUtils_1.PopupUtils.positionPopup(this.settingsPopup, this.settingsButton, this.facet.root, this.getPopupAlignment(), this.facet.root);
+        if (this.hideSection && this.showSection) {
+            Dom_1.$$(this.hideSection).toggle(!Dom_1.$$(this.facet.element).hasClass('coveo-facet-collapsed'));
+            Dom_1.$$(this.showSection).toggle(Dom_1.$$(this.facet.element).hasClass('coveo-facet-collapsed'));
+        }
+        if (this.facet.options.enableSettingsFacetState) {
+            Dom_1.$$(this.clearStateSection).toggle(!Utils_1.Utils.isNullOrUndefined(this.facetStateLocalStorage.load()));
+        }
+        _.each(this.enabledSorts, function (criteria, i) {
+            if (_this.activeSort.name == criteria.name.toLowerCase()) {
+                _this.selectItem(_this.getSortItem(criteria.name));
+            }
+            else {
+                _this.unselectItem(_this.getSortItem(criteria.name));
+            }
+        });
+    };
+    FacetSettings.prototype.getSortItem = function (sortName) {
+        return _.find(this.sortSection.sortItems, function (sortItem) {
+            return (Dom_1.$$(sortItem)
+                .getAttribute('data-sort-name')
+                .toLowerCase() == sortName.replace('ascending|descending', '').toLowerCase());
+        });
+    };
+    FacetSettings.prototype.buildSortSection = function () {
+        var sortSection = this.buildSection('coveo-facet-settings-section-sort');
+        var sortSectionIcon = this.buildIcon('coveo-facet-settings-section-sort-svg', SVGIcons_1.SVGIcons.icons.sort);
+        var sortSectionItems = this.buildItems();
+        var sortTitle = document.createElement('div');
+        Dom_1.$$(sortTitle).addClass('coveo-facet-settings-section-sort-title');
+        Dom_1.$$(sortTitle).text(Strings_1.l('SortBy') + ' :');
+        sortSectionItems.appendChild(sortTitle);
+        var sortItems = this.buildSortSectionItems();
+        _.each(sortItems, function (s) {
+            sortSectionItems.appendChild(s);
+        });
+        sortSection.appendChild(sortSectionIcon);
+        sortSection.appendChild(sortSectionItems);
+        return { element: sortSection, sortItems: sortItems };
+    };
+    FacetSettings.prototype.buildSortSectionItems = function () {
+        var _this = this;
+        var elems = _.map(this.enabledSorts, function (enabledSort) {
+            if (_.contains(_this.enabledSortsIgnoreRenderBecauseOfPairs, enabledSort)) {
+                return undefined;
+            }
+            else {
+                var elem = _this.buildItem(Strings_1.l(enabledSort.label), enabledSort.description);
+                Dom_1.$$(elem).on('click', function (e) { return _this.handleClickSortButton(e, enabledSort); });
+                Dom_1.$$(elem).setAttribute('data-sort-name', enabledSort.name.toLowerCase().replace('ascending|descending', ''));
+                return elem;
+            }
+        });
+        elems = _.compact(elems);
+        return elems;
+    };
+    FacetSettings.prototype.closePopupAndUpdateSort = function () {
+        this.close();
+        if (this.activeSort.name != 'custom') {
+            this.facet.updateSort(this.activeSort.name);
+        }
+        else {
+            this.facet.updateSort('nosort');
+            if (this.customSortDirectionChange) {
+                this.customSortDirectionChange = false;
+                this.facet.queryController.executeQuery();
+            }
+        }
+    };
+    FacetSettings.prototype.enabledSortsAllowDirection = function () {
+        var _this = this;
+        var allEnabledSortsWithPossibleDirectionToggle = _.filter(this.enabledSorts, function (facetSortDescription) {
+            return facetSortDescription.directionToggle;
+        });
+        var allowToggle = _.filter(allEnabledSortsWithPossibleDirectionToggle, function (possibleDirectionToggle) {
+            return _.findWhere(_this.enabledSorts, { name: possibleDirectionToggle.relatedSort }) != undefined;
+        });
+        return allowToggle.length > 0;
+    };
+    FacetSettings.prototype.buildDirectionSection = function () {
+        var _this = this;
+        var directionAscendingSection = this.buildAscendingOrDescendingSection('Ascending');
+        var iconAscending = this.buildIcon('coveo-facet-settings-section-direction-ascending-svg', SVGIcons_1.SVGIcons.icons.ascending);
+        var iconDescending = this.buildIcon('coveo-facet-settings-section-direction-descending-svg', SVGIcons_1.SVGIcons.icons.descending);
+        var directionItemsAscending = this.buildItems();
+        var ascending = this.buildAscendingOrDescending('Ascending');
+        directionItemsAscending.appendChild(ascending);
+        directionAscendingSection.appendChild(iconAscending);
+        directionAscendingSection.appendChild(directionItemsAscending);
+        Dom_1.$$(directionAscendingSection).on('click', function (e) { return _this.handleDirectionClick(e, 'ascending'); });
+        var directionDescendingSection = this.buildAscendingOrDescendingSection('Descending');
+        var directionItemsDescending = this.buildItems();
+        var descending = this.buildAscendingOrDescending('Descending');
+        directionItemsDescending.appendChild(descending);
+        directionDescendingSection.appendChild(iconDescending);
+        directionDescendingSection.appendChild(directionItemsDescending);
+        Dom_1.$$(directionDescendingSection).on('click', function (e) { return _this.handleDirectionClick(e, 'descending'); });
+        if (!this.activeSort.directionToggle) {
+            Dom_1.$$(directionAscendingSection).addClass('coveo-facet-settings-disabled');
+            Dom_1.$$(directionDescendingSection).addClass('coveo-facet-settings-disabled');
+        }
+        else {
+            this.selectItem(this.getItems(directionAscendingSection)[0]);
+        }
+        return [directionAscendingSection, directionDescendingSection];
+    };
+    FacetSettings.prototype.buildSaveStateSection = function () {
+        var _this = this;
+        var saveStateSection = this.buildSection('coveo-facet-settings-section-save-state');
+        var icon = this.buildIcon('coveo-facet-settings-section-save-state-svg', SVGIcons_1.SVGIcons.icons.dropdownMore);
+        var saveStateItems = this.buildItems();
+        this.facetStateLocalStorage = new LocalStorageUtils_1.LocalStorageUtils('facet-state-' + this.facet.options.id);
+        this.includedStateAttribute = QueryStateModel_1.QueryStateModel.getFacetId(this.facet.options.id);
+        this.excludedStateAttribute = QueryStateModel_1.QueryStateModel.getFacetId(this.facet.options.id, false);
+        this.operatorStateAttribute = QueryStateModel_1.QueryStateModel.getFacetOperator(this.facet.options.id);
+        var saveStateItem = document.createElement('div');
+        Dom_1.$$(saveStateItem).addClass('coveo-facet-settings-item');
+        saveStateItem.setAttribute('title', Strings_1.l('SaveFacetState'));
+        Dom_1.$$(saveStateItem).text(Strings_1.l('SaveFacetState'));
+        saveStateItems.appendChild(saveStateItem);
+        saveStateSection.appendChild(icon);
+        saveStateSection.appendChild(saveStateItems);
+        Dom_1.$$(saveStateSection).on('click', function (e) { return _this.handleSaveStateClick(); });
+        return saveStateSection;
+    };
+    FacetSettings.prototype.buildClearStateSection = function () {
+        var _this = this;
+        var clearStateSection = this.buildSection('coveo-facet-settings-section-clear-state');
+        var icon = this.buildIcon('coveo-facet-settings-section-clear-state-svg', SVGIcons_1.SVGIcons.icons.dropdownLess);
+        var clearStateItems = this.buildItems();
+        var clearStateItem = this.buildItem(Strings_1.l('ClearFacetState'));
+        clearStateItems.appendChild(clearStateItem);
+        clearStateSection.appendChild(icon);
+        clearStateSection.appendChild(clearStateItems);
+        Dom_1.$$(clearStateSection).on('click', function (e) { return _this.handleClearStateClick(); });
+        return clearStateSection;
+    };
+    FacetSettings.prototype.buildHideSection = function () {
+        var _this = this;
+        var hideSection = this.buildSection('coveo-facet-settings-section-hide');
+        var icon = this.buildIcon('coveo-facet-settings-section-hide-svg', SVGIcons_1.SVGIcons.icons.facetCollapse);
+        var hideItems = this.buildItems();
+        var hideItem = this.buildItem(Strings_1.l('Collapse'));
+        hideItems.appendChild(hideItem);
+        hideSection.appendChild(icon);
+        hideSection.appendChild(hideItems);
+        Dom_1.$$(hideSection).on('click', function (e) {
+            _this.facet.facetHeader.collapseFacet();
+            _this.close();
+        });
+        return hideSection;
+    };
+    FacetSettings.prototype.buildShowSection = function () {
+        var _this = this;
+        var showSection = this.buildSection('coveo-facet-settings-section-show');
+        var icon = this.buildIcon('coveo-facet-settings-section-show-svg', SVGIcons_1.SVGIcons.icons.facetExpand);
+        var showItems = this.buildItems();
+        var showItem = this.buildItem(Strings_1.l('Expand'));
+        showItems.appendChild(showItem);
+        showSection.appendChild(icon);
+        showSection.appendChild(showItems);
+        Dom_1.$$(showSection).on('click', function (e) {
+            _this.facet.facetHeader.expandFacet();
+            _this.close();
+        });
+        return showSection;
+    };
+    FacetSettings.prototype.buildIcon = function (iconClass, svgIcon) {
+        if (iconClass && svgIcon) {
+            var icon = Dom_1.$$('div', { className: 'coveo-icon-container' }, svgIcon);
+            SVGDom_1.SVGDom.addClassToSVGInContainer(icon.el, iconClass);
+            return icon.el;
+        }
+        else {
+            return Dom_1.$$('div', { className: 'coveo-icon' }).el;
+        }
+    };
+    FacetSettings.prototype.buildAscendingOrDescending = function (direction) {
+        var elem = this.buildItem(Strings_1.l(direction));
+        elem.setAttribute('data-direction', direction.toLowerCase());
+        return elem;
+    };
+    FacetSettings.prototype.buildAscendingOrDescendingSection = function (direction) {
+        return this.buildSection('coveo-facet-settings-section-direction-' + direction.toLowerCase());
+    };
+    FacetSettings.prototype.buildItem = function (label, title) {
+        if (title === void 0) { title = label; }
+        return Dom_1.$$('div', {
+            className: 'coveo-facet-settings-item',
+            title: title
+        }, _.escape(label)).el;
+    };
+    FacetSettings.prototype.buildItems = function () {
+        var elem = document.createElement('div');
+        Dom_1.$$(elem).addClass('coveo-facet-settings-items');
+        return elem;
+    };
+    FacetSettings.prototype.buildSection = function (className) {
+        var section = document.createElement('div');
+        Dom_1.$$(section).addClass(['coveo-facet-settings-section', className]);
+        return section;
+    };
+    FacetSettings.prototype.handleClickSettingsButtons = function (event, sortSection) {
+        if (!Utils_1.Utils.isNullOrUndefined(this.settingsPopup.parentElement)) {
+            this.close();
+        }
+        else {
+            this.open();
+        }
+    };
+    FacetSettings.prototype.handleClickSortButton = function (e, enabledSort) {
+        if (this.activeSort != enabledSort && this.activeSort.relatedSort != enabledSort.name) {
+            this.activeSort = enabledSort;
+            if (enabledSort.directionToggle && _.contains(this.enabledSorts, FacetSettings.availableSorts[this.activeSort.relatedSort])) {
+                this.activateDirectionSection();
+            }
+            else {
+                this.disableDirectionSection();
+            }
+            this.selectItem(e.target);
+            this.closePopupAndUpdateSort();
+        }
+    };
+    FacetSettings.prototype.handleDirectionClick = function (e, direction) {
+        var _this = this;
+        if (!Dom_1.$$(e.target.parentElement.parentElement).hasClass('coveo-facet-settings-disabled') &&
+            this.activeSort.name.indexOf(direction) == -1) {
+            this.activeSort = FacetSettings.availableSorts[this.activeSort.relatedSort];
+            _.each(this.directionSection, function (d) {
+                _this.unselectSection(d);
+            });
+            this.selectItem(e.target);
+            if (this.activeSort.name == 'custom' && this.customSortDirection != direction) {
+                this.customSortDirection = direction;
+                this.customSortDirectionChange = true;
+            }
+            this.closePopupAndUpdateSort();
+        }
+    };
+    FacetSettings.prototype.handleSaveStateClick = function () {
+        this.saveState();
+        this.close();
+    };
+    FacetSettings.prototype.handleClearStateClick = function () {
+        var _this = this;
+        this.facetStateLocalStorage.remove();
+        this.facet.reset();
+        this.close();
+        this.facet.triggerNewQuery(function () {
+            return _this.facet.usageAnalytics.logSearchEvent(AnalyticsActionListMeta_1.analyticsActionCauseList.facetClearAll, {
+                facetId: _this.facet.options.id,
+                facetTitle: _this.facet.options.title
+            });
+        });
+    };
+    FacetSettings.prototype.handleMouseEventOnButton = function (sortSection) {
+        var _this = this;
+        var closeTimeout;
+        Dom_1.$$(this.settingsButton).on('click', function (e) { return _this.handleClickSettingsButtons(e, sortSection); });
+        var mouseLeave = function () {
+            closeTimeout = setTimeout(function () {
+                _this.close();
+            }, 300);
+        };
+        var mouseEnter = function () {
+            clearTimeout(closeTimeout);
+        };
+        Dom_1.$$(this.settingsIcon).on('mouseleave', mouseLeave);
+        Dom_1.$$(this.settingsPopup).on('mouseleave', mouseLeave);
+        Dom_1.$$(this.settingsIcon).on('mouseenter', mouseEnter);
+        Dom_1.$$(this.settingsPopup).on('mouseenter', mouseEnter);
+    };
+    FacetSettings.prototype.getCurrentDirectionItem = function (directionSection) {
+        var _this = this;
+        if (directionSection === void 0) { directionSection = this.directionSection; }
+        var found;
+        _.each(directionSection, function (direction) {
+            if (!found) {
+                found = _.find(_this.getItems(direction), function (direction) {
+                    return _this.activeSort.name.indexOf(direction.getAttribute('data-direction')) != -1;
+                });
+            }
+        });
+        if (!found) {
+            found = directionSection[0];
+        }
+        return found;
+    };
+    FacetSettings.prototype.activateDirectionSection = function () {
+        var _this = this;
+        _.each(this.directionSection, function (direction) {
+            Dom_1.$$(direction).removeClass('coveo-facet-settings-disabled');
+            _this.unselectSection(direction);
+        });
+        this.selectItem(this.getCurrentDirectionItem());
+    };
+    FacetSettings.prototype.disableDirectionSection = function () {
+        var _this = this;
+        _.each(this.directionSection, function (direction) {
+            Dom_1.$$(direction).addClass('coveo-facet-settings-disabled');
+            _this.unselectSection(direction);
+        });
+    };
+    FacetSettings.prototype.getItems = function (section) {
+        return Dom_1.$$(section).findAll('.coveo-facet-settings-item');
+    };
+    FacetSettings.prototype.unselectSection = function (section) {
+        _.each(this.getItems(section), function (i) {
+            Dom_1.$$(i).removeClass('coveo-selected');
+        });
+    };
+    FacetSettings.prototype.selectItem = function (item) {
+        if (item) {
+            Dom_1.$$(item).addClass('coveo-selected');
+        }
+    };
+    FacetSettings.prototype.unselectItem = function (item) {
+        if (item) {
+            Dom_1.$$(item).removeClass('coveo-selected');
+        }
+    };
+    FacetSettings.prototype.getPopupAlignment = function () {
+        var alignmentHorizontal = DeviceUtils_1.DeviceUtils.isMobileDevice() ? PopupUtils_1.HorizontalAlignment.CENTER : PopupUtils_1.HorizontalAlignment.INNERLEFT;
+        var alignmentVertical = PopupUtils_1.VerticalAlignment.BOTTOM;
+        return {
+            horizontal: alignmentHorizontal,
+            vertical: alignmentVertical
+        };
+    };
+    FacetSettings.prototype.filterDuplicateForRendering = function () {
+        var _this = this;
+        _.each(this.enabledSorts, function (enabledSort, i) {
+            if (enabledSort.relatedSort != null) {
+                for (var j = i + 1; j < _this.enabledSorts.length; j++) {
+                    if (_this.enabledSorts[j].name == enabledSort.relatedSort) {
+                        _this.enabledSortsIgnoreRenderBecauseOfPairs.push(_this.enabledSorts[j]);
+                        break;
+                    }
+                }
+            }
+        });
+    };
+    FacetSettings.prototype.appendIfNotUndefined = function (toAppend) {
+        if (!Utils_1.Utils.isNullOrUndefined(toAppend)) {
+            this.settingsPopup.appendChild(toAppend);
+        }
+    };
+    return FacetSettings;
+}(FacetSort_1.FacetSort));
+exports.FacetSettings = FacetSettings;
+
+
+/***/ }),
+
+/***/ 413:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var Strings_1 = __webpack_require__(10);
+var FacetSettings_1 = __webpack_require__(412);
+var Utils_1 = __webpack_require__(6);
+var _ = __webpack_require__(1);
+var FacetSort = /** @class */ (function () {
+    function FacetSort(sorts, facet) {
+        var _this = this;
+        this.facet = facet;
+        this.enabledSorts = [];
+        this.customSortDirection = 'ascending';
+        _.each(sorts, function (sortToActivate) {
+            var newSortToEnable = FacetSettings_1.FacetSettings.availableSorts[sortToActivate.toLowerCase()];
+            if (newSortToEnable != undefined) {
+                _this.enabledSorts.push(newSortToEnable);
+            }
+        });
+        this.removeEnabledSortsBasedOnFacetType();
+        if (Utils_1.Utils.isNonEmptyArray(this.enabledSorts)) {
+            if (this.facet.options.sortCriteria != undefined) {
+                this.activeSort = _.find(this.enabledSorts, function (enabledSort) {
+                    return enabledSort.name == _this.facet.options.sortCriteria;
+                });
+            }
+            if (!this.activeSort) {
+                this.activeSort = this.enabledSorts[0];
+            }
+        }
+    }
+    FacetSort.prototype.removeEnabledSortsBasedOnFacetType = function () {
+        if (Coveo.FacetRange && this.facet instanceof Coveo.FacetRange) {
+            var facetRange = this.facet;
+            if (facetRange.options['slider']) {
+                this.enabledSorts = [];
+            }
+        }
+    };
+    FacetSort.availableSorts = {
+        score: {
+            label: Strings_1.l('Score'),
+            directionToggle: false,
+            description: Strings_1.l('ScoreDescription'),
+            name: 'score'
+        },
+        occurrences: {
+            label: Strings_1.l('Occurrences'),
+            directionToggle: false,
+            description: Strings_1.l('OccurrencesDescription'),
+            name: 'occurrences'
+        },
+        alphaascending: {
+            label: Strings_1.l('Label'),
+            directionToggle: true,
+            description: Strings_1.l('LabelDescription'),
+            name: 'alphaascending',
+            relatedSort: 'alphadescending'
+        },
+        alphadescending: {
+            label: Strings_1.l('Label'),
+            directionToggle: true,
+            description: Strings_1.l('LabelDescription'),
+            name: 'alphadescending',
+            relatedSort: 'alphaascending'
+        },
+        computedfieldascending: {
+            label: Strings_1.l('Value'),
+            directionToggle: true,
+            description: Strings_1.l('ValueDescription'),
+            name: 'computedfieldascending',
+            relatedSort: 'computedfielddescending'
+        },
+        computedfielddescending: {
+            label: Strings_1.l('Value'),
+            directionToggle: true,
+            description: Strings_1.l('ValueDescription'),
+            name: 'computedfielddescending',
+            relatedSort: 'computedfieldascending'
+        },
+        chisquare: {
+            label: Strings_1.l('RelativeFrequency'),
+            directionToggle: false,
+            description: Strings_1.l('RelativeFrequencyDescription'),
+            name: 'chisquare'
+        },
+        nosort: {
+            label: Strings_1.l('Nosort'),
+            directionToggle: false,
+            description: Strings_1.l('NosortDescription'),
+            name: 'nosort'
+        },
+        custom: {
+            label: Strings_1.l('Custom'),
+            directionToggle: true,
+            description: Strings_1.l('CustomDescription'),
+            name: 'custom',
+            relatedSort: 'custom'
+        }
+    };
+    return FacetSort;
+}());
+exports.FacetSort = FacetSort;
+
+
+/***/ }),
+
+/***/ 414:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3018,10 +2642,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var Dom_1 = __webpack_require__(3);
 var Strings_1 = __webpack_require__(10);
 var AnalyticsActionListMeta_1 = __webpack_require__(12);
-__webpack_require__(599);
+__webpack_require__(433);
 var SVGIcons_1 = __webpack_require__(15);
-var SVGDom_1 = __webpack_require__(17);
-var FacetHeader = (function () {
+var SVGDom_1 = __webpack_require__(16);
+var FacetHeader = /** @class */ (function () {
     function FacetHeader(options) {
         this.options = options;
         this.element = document.createElement('div');
@@ -3145,7 +2769,10 @@ var FacetHeader = (function () {
         var _this = this;
         var icon = Dom_1.$$('span', { className: 'coveo-' + (this.options.facet.options.useAnd ? 'and' : 'or') }, SVGIcons_1.SVGIcons.icons.orAnd);
         SVGDom_1.SVGDom.addClassToSVGInContainer(icon.el, 'coveo-or-and-svg');
-        var toggle = Dom_1.$$('div', { className: 'coveo-facet-header-operator', title: Strings_1.l('SwitchTo', this.options.facet.options.useAnd ? Strings_1.l('Or') : Strings_1.l('And')) });
+        var toggle = Dom_1.$$('div', {
+            className: 'coveo-facet-header-operator',
+            title: Strings_1.l('SwitchTo', this.options.facet.options.useAnd ? Strings_1.l('Or') : Strings_1.l('And'))
+        });
         toggle.append(icon.el);
         Dom_1.$$(toggle).on('click', function () { return _this.handleOperatorClick(); });
         return toggle.el;
@@ -3161,12 +2788,14 @@ var FacetHeader = (function () {
         if (this.options.facet.getSelectedValues().length != 0) {
             var operatorNow_1 = this.options.facet.options.useAnd ? 'AND' : 'OR';
             var operatorBefore_1 = this.options.facet.options.useAnd ? 'OR' : 'AND';
-            this.options.facet.triggerNewQuery(function () { return _this.options.facet.usageAnalytics.logSearchEvent(AnalyticsActionListMeta_1.analyticsActionCauseList.facetToggle, {
-                facetId: _this.options.facet.options.id,
-                facetOperatorBefore: operatorBefore_1,
-                facetOperatorAfter: operatorNow_1,
-                facetTitle: _this.options.title
-            }); });
+            this.options.facet.triggerNewQuery(function () {
+                return _this.options.facet.usageAnalytics.logSearchEvent(AnalyticsActionListMeta_1.analyticsActionCauseList.facetToggle, {
+                    facetId: _this.options.facet.options.id,
+                    facetOperatorBefore: operatorBefore_1,
+                    facetOperatorAfter: operatorNow_1,
+                    facetTitle: _this.options.title
+                });
+            });
         }
     };
     FacetHeader.prototype.buildTitle = function () {
@@ -3199,28 +2828,28 @@ exports.FacetHeader = FacetHeader;
 
 /***/ }),
 
-/***/ 501:
+/***/ 415:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var Dom_1 = __webpack_require__(3);
-var ResponsiveComponentsManager_1 = __webpack_require__(90);
-var ResponsiveComponentsUtils_1 = __webpack_require__(104);
+var ResponsiveComponentsManager_1 = __webpack_require__(77);
+var ResponsiveComponentsUtils_1 = __webpack_require__(88);
 var Component_1 = __webpack_require__(8);
 var Logger_1 = __webpack_require__(14);
 var Strings_1 = __webpack_require__(10);
-var Utils_1 = __webpack_require__(5);
-var ResponsiveDropdown_1 = __webpack_require__(491);
-var ResponsiveDropdownContent_1 = __webpack_require__(492);
-var ResponsiveDropdownHeader_1 = __webpack_require__(493);
+var Utils_1 = __webpack_require__(6);
+var ResponsiveDropdown_1 = __webpack_require__(407);
+var ResponsiveDropdownContent_1 = __webpack_require__(408);
+var ResponsiveDropdownHeader_1 = __webpack_require__(409);
 var QueryEvents_1 = __webpack_require__(11);
-var SearchInterface_1 = __webpack_require__(22);
-var ResponsiveComponents_1 = __webpack_require__(46);
+var SearchInterface_1 = __webpack_require__(20);
+var ResponsiveComponents_1 = __webpack_require__(44);
 var _ = __webpack_require__(1);
-__webpack_require__(600);
-var ResponsiveFacetColumn = (function () {
+__webpack_require__(434);
+var ResponsiveFacetColumn = /** @class */ (function () {
     function ResponsiveFacetColumn(coveoRoot, ID, options, responsiveDropdown) {
         this.coveoRoot = coveoRoot;
         this.ID = ID;
@@ -3234,7 +2863,9 @@ var ResponsiveFacetColumn = (function () {
         this.registerQueryEvents();
         this.logger = new Logger_1.Logger(this);
         if (Utils_1.Utils.isNullOrUndefined(options.responsiveBreakpoint)) {
-            this.breakpoint = this.searchInterface ? this.searchInterface.responsiveComponents.getMediumScreenWidth() : new ResponsiveComponents_1.ResponsiveComponents().getMediumScreenWidth();
+            this.breakpoint = this.searchInterface
+                ? this.searchInterface.responsiveComponents.getMediumScreenWidth()
+                : new ResponsiveComponents_1.ResponsiveComponents().getMediumScreenWidth();
         }
         else {
             this.breakpoint = options.responsiveBreakpoint;
@@ -3357,7 +2988,7 @@ var ResponsiveFacetColumn = (function () {
         var dropdownTop = this.dropdown.dropdownContent.element.el.getBoundingClientRect().top;
         var dropdownBottom = this.dropdown.dropdownContent.element.el.getBoundingClientRect().bottom;
         dropdownTop = dropdownTop >= 0 ? dropdownTop : 0;
-        return (facetTop >= dropdownTop) && (facetBottom <= dropdownBottom);
+        return facetTop >= dropdownTop && facetBottom <= dropdownBottom;
     };
     ResponsiveFacetColumn.prototype.getDropdownHeaderLabel = function () {
         var dropdownHeaderLabel;
@@ -3393,242 +3024,51 @@ var ResponsiveFacetColumn = (function () {
             this.dropdown.dropdownHeader.show();
         }
     };
+    ResponsiveFacetColumn.DEBOUNCE_SCROLL_WAIT = 250;
+    ResponsiveFacetColumn.DROPDOWN_MIN_WIDTH = 280;
+    ResponsiveFacetColumn.DROPDOWN_WIDTH_RATIO = 0.35; // Used to set the width relative to the coveo root.
+    ResponsiveFacetColumn.DROPDOWN_HEADER_LABEL_DEFAULT_VALUE = 'Filters';
     return ResponsiveFacetColumn;
 }());
-ResponsiveFacetColumn.DEBOUNCE_SCROLL_WAIT = 250;
-ResponsiveFacetColumn.DROPDOWN_MIN_WIDTH = 280;
-ResponsiveFacetColumn.DROPDOWN_WIDTH_RATIO = 0.35; // Used to set the width relative to the coveo root.
-ResponsiveFacetColumn.DROPDOWN_HEADER_LABEL_DEFAULT_VALUE = 'Filters';
 exports.ResponsiveFacetColumn = ResponsiveFacetColumn;
 
 
 /***/ }),
 
-/***/ 502:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-/// <reference path="Facet.ts" />
-Object.defineProperty(exports, "__esModule", { value: true });
-var Assert_1 = __webpack_require__(7);
-var DeviceUtils_1 = __webpack_require__(23);
-var AnalyticsActionListMeta_1 = __webpack_require__(12);
-var Dom_1 = __webpack_require__(3);
-var _ = __webpack_require__(1);
-__webpack_require__(602);
-var SVGIcons_1 = __webpack_require__(15);
-var SVGDom_1 = __webpack_require__(17);
-var BreadcrumbValueElement = (function () {
-    function BreadcrumbValueElement(facet, facetValue) {
-        this.facet = facet;
-        this.facetValue = facetValue;
-    }
-    BreadcrumbValueElement.prototype.build = function (tooltip) {
-        var _this = this;
-        if (tooltip === void 0) { tooltip = true; }
-        Assert_1.Assert.exists(this.facetValue);
-        var elem = DeviceUtils_1.DeviceUtils.isMobileDevice() ? Dom_1.$$('div') : Dom_1.$$('span');
-        elem.addClass('coveo-facet-breadcrumb-value');
-        elem.toggleClass('coveo-selected', this.facetValue.selected);
-        elem.toggleClass('coveo-excluded', this.facetValue.excluded);
-        elem.el.setAttribute('title', this.getBreadcrumbTooltip());
-        var caption = Dom_1.$$('span', {
-            className: 'coveo-facet-breadcrumb-caption'
-        });
-        caption.text(this.facet.getValueCaption(this.facetValue));
-        elem.el.appendChild(caption.el);
-        var clear = Dom_1.$$('span', {
-            className: 'coveo-facet-breadcrumb-clear'
-        }, SVGIcons_1.SVGIcons.icons.checkboxHookExclusionMore);
-        SVGDom_1.SVGDom.addClassToSVGInContainer(clear.el, 'coveo-facet-breadcrumb-clear-svg');
-        elem.el.appendChild(clear.el);
-        var clicked = false;
-        elem.on('click', function () {
-            if (!clicked) {
-                clicked = true;
-                if (_this.facetValue.excluded) {
-                    _this.facet.unexcludeValue(_this.facetValue.value);
-                }
-                else {
-                    _this.facet.deselectValue(_this.facetValue.value);
-                }
-                _this.facet.triggerNewQuery(function () { return _this.facet.usageAnalytics.logSearchEvent(AnalyticsActionListMeta_1.analyticsActionCauseList.breadcrumbFacet, {
-                    facetId: _this.facet.options.id,
-                    facetValue: _this.facetValue.value,
-                    facetTitle: _this.facet.options.title
-                }); });
-            }
-        });
-        return elem;
-    };
-    BreadcrumbValueElement.prototype.getBreadcrumbTooltip = function () {
-        var tooltipParts = [this.facet.getValueCaption(this.facetValue), this.facetValue.getFormattedCount(), this.facetValue.getFormattedComputedField(this.facet.options.computedFieldFormat)];
-        return _.compact(tooltipParts).join(' ');
-    };
-    return BreadcrumbValueElement;
-}());
-exports.BreadcrumbValueElement = BreadcrumbValueElement;
-
-
-/***/ }),
-
-/***/ 503:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var Assert_1 = __webpack_require__(7);
-var Strings_1 = __webpack_require__(10);
-var Dom_1 = __webpack_require__(3);
-var Globalize = __webpack_require__(26);
-var _ = __webpack_require__(1);
-var SVGIcons_1 = __webpack_require__(15);
-var SVGDom_1 = __webpack_require__(17);
-var BreadcrumbValueList = (function () {
-    function BreadcrumbValueList(facet, facetValues, breadcrumbValueElementKlass) {
-        this.facet = facet;
-        this.facetValues = facetValues;
-        this.breadcrumbValueElementKlass = breadcrumbValueElementKlass;
-        this.setExpandedAndCollapsed();
-        this.elem = Dom_1.$$('div', {
-            className: 'coveo-facet-breadcrumb'
-        }).el;
-        var title = Dom_1.$$('span');
-        title.addClass('coveo-facet-breadcrumb-title');
-        title.text(this.facet.options.title + ':');
-        this.elem.appendChild(title.el);
-        this.valueContainer = Dom_1.$$('span', {
-            className: 'coveo-facet-breadcrumb-values'
-        }).el;
-        this.elem.appendChild(this.valueContainer);
-    }
-    BreadcrumbValueList.prototype.build = function () {
-        this.buildExpanded();
-        if (this.collapsed.length != 0) {
-            this.buildCollapsed();
-        }
-        return this.elem;
-    };
-    BreadcrumbValueList.prototype.buildAsString = function () {
-        this.build();
-        if (this.elem) {
-            return this.facet.options.title + ": " + _.map(Dom_1.$$(this.elem).findAll('.coveo-facet-breadcrumb-value'), function (value) {
-                return Dom_1.$$(value).text();
-            }).join(', ');
-        }
-        return '';
-    };
-    BreadcrumbValueList.prototype.buildExpanded = function () {
-        var _this = this;
-        _.each(this.expanded, function (value, index) {
-            var elementBreadcrumb = new _this.breadcrumbValueElementKlass(_this.facet, value).build();
-            _this.valueContainer.appendChild(elementBreadcrumb.el);
-        });
-    };
-    BreadcrumbValueList.prototype.buildCollapsed = function () {
-        var _this = this;
-        var numberOfSelected = _.filter(this.collapsed, function (value) { return value.selected; }).length;
-        var numberOfExcluded = _.filter(this.collapsed, function (value) { return value.excluded; }).length;
-        Assert_1.Assert.check(numberOfSelected + numberOfExcluded == this.collapsed.length);
-        var elem = Dom_1.$$('div', {
-            className: 'coveo-facet-breadcrumb-value'
-        });
-        if (numberOfSelected > 0) {
-            var multi = Dom_1.$$('span', {
-                className: 'coveo-facet-breadcrumb-multi-count'
-            });
-            multi.text(Strings_1.l('NMore', Globalize.format(numberOfSelected, 'n0')));
-            elem.el.appendChild(multi.el);
-            var multiIcon = Dom_1.$$('div', {
-                className: 'coveo-selected coveo-facet-breadcrumb-multi-icon'
-            }, SVGIcons_1.SVGIcons.icons.checkboxHookExclusionMore);
-            SVGDom_1.SVGDom.addClassToSVGInContainer(multiIcon.el, 'coveo-facet-breadcrumb-multi-icon-svg');
-            elem.el.appendChild(multiIcon.el);
-        }
-        if (numberOfExcluded > 0) {
-            var multiExcluded = Dom_1.$$('span', {
-                className: 'coveo-facet-breadcrumb-multi-count'
-            });
-            multiExcluded.text(Strings_1.l('NMore', Globalize.format(numberOfExcluded, 'n0')));
-            elem.el.appendChild(multiExcluded.el);
-            var multiExcludedIcon = Dom_1.$$('div', {
-                className: 'coveo-excluded coveo-facet-breadcrumb-multi-icon'
-            }, SVGIcons_1.SVGIcons.icons.checkboxHookExclusionMore);
-            SVGDom_1.SVGDom.addClassToSVGInContainer(multiExcludedIcon.el, 'coveo-facet-breadcrumb-multi-icon-svg');
-            elem.el.appendChild(multiExcludedIcon.el);
-        }
-        var valueElements = _.map(this.collapsed, function (facetValue) {
-            return new _this.breadcrumbValueElementKlass(_this.facet, facetValue);
-        });
-        var toolTips = _.map(valueElements, function (valueElement) {
-            return valueElement.getBreadcrumbTooltip();
-        });
-        elem.el.setAttribute('title', toolTips.join('\n'));
-        elem.on('click', function () {
-            var elements = [];
-            _.forEach(valueElements, function (valueElement) {
-                elements.push(valueElement.build(false).el);
-            });
-            _.each(elements, function (el) {
-                Dom_1.$$(el).insertBefore(elem.el);
-            });
-            elem.detach();
-        });
-        this.valueContainer.appendChild(elem.el);
-    };
-    BreadcrumbValueList.prototype.setExpandedAndCollapsed = function () {
-        if (this.facetValues.length > this.facet.options.numberOfValuesInBreadcrumb) {
-            this.collapsed = _.rest(this.facetValues, this.facet.options.numberOfValuesInBreadcrumb - 1);
-            this.expanded = _.first(this.facetValues, this.facet.options.numberOfValuesInBreadcrumb - 1);
-        }
-        else {
-            this.collapsed = [];
-            this.expanded = this.facetValues;
-        }
-    };
-    return BreadcrumbValueList;
-}());
-exports.BreadcrumbValueList = BreadcrumbValueList;
-
-
-/***/ }),
-
-/***/ 504:
+/***/ 418:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 /* WEBPACK VAR INJECTION */(function(Promise) {
 /// <reference path="Facet.ts" />
 Object.defineProperty(exports, "__esModule", { value: true });
-var Facet_1 = __webpack_require__(64);
+var Facet_1 = __webpack_require__(58);
 var Dom_1 = __webpack_require__(3);
-var Utils_1 = __webpack_require__(5);
-var InitializationEvents_1 = __webpack_require__(18);
-var EventsUtils_1 = __webpack_require__(300);
-var FacetSearchParameters_1 = __webpack_require__(266);
+var Utils_1 = __webpack_require__(6);
+var InitializationEvents_1 = __webpack_require__(17);
+var EventsUtils_1 = __webpack_require__(255);
+var FacetSearchParameters_1 = __webpack_require__(236);
 var AnalyticsActionListMeta_1 = __webpack_require__(12);
 var Component_1 = __webpack_require__(8);
-var PopupUtils_1 = __webpack_require__(58);
+var PopupUtils_1 = __webpack_require__(52);
 var Strings_1 = __webpack_require__(10);
 var Assert_1 = __webpack_require__(7);
-var KeyboardUtils_1 = __webpack_require__(24);
-var FacetValues_1 = __webpack_require__(106);
+var KeyboardUtils_1 = __webpack_require__(23);
+var FacetValues_1 = __webpack_require__(89);
 var StringUtils_1 = __webpack_require__(21);
-var FacetValueElement_1 = __webpack_require__(105);
-var ExternalModulesShim_1 = __webpack_require__(28);
-var SearchInterface_1 = __webpack_require__(22);
-var ResponsiveComponentsUtils_1 = __webpack_require__(104);
-var FacetValuesOrder_1 = __webpack_require__(301);
+var FacetValueElement_1 = __webpack_require__(90);
+var ExternalModulesShim_1 = __webpack_require__(27);
+var SearchInterface_1 = __webpack_require__(20);
+var ResponsiveComponentsUtils_1 = __webpack_require__(88);
+var FacetValuesOrder_1 = __webpack_require__(256);
 var _ = __webpack_require__(1);
-__webpack_require__(604);
+__webpack_require__(436);
 var SVGIcons_1 = __webpack_require__(15);
-var SVGDom_1 = __webpack_require__(17);
+var SVGDom_1 = __webpack_require__(16);
 /**
  * Used by the {@link Facet} component to render and handle the facet search part of each facet.
  */
-var FacetSearch = (function () {
+var FacetSearch = /** @class */ (function () {
     function FacetSearch(facet, facetSearchValuesListKlass, root) {
         var _this = this;
         this.facet = facet;
@@ -3667,6 +3107,7 @@ var FacetSearch = (function () {
      * Position the search results at the footer of the facet.
      */
     FacetSearch.prototype.positionSearchResults = function (nextTo) {
+        var _this = this;
         if (nextTo === void 0) { nextTo = this.search; }
         if (this.searchResults != null) {
             this.searchResults.style.display = 'block';
@@ -3679,14 +3120,19 @@ var FacetSearch = (function () {
                 if (Dom_1.$$(this.searchResults).css('display') == 'none') {
                     this.searchResults.style.display = '';
                 }
-                var self_1 = this;
                 EventsUtils_1.EventsUtils.addPrefixedEvent(this.search, 'AnimationEnd', function (evt) {
-                    PopupUtils_1.PopupUtils.positionPopup(self_1.searchResults, nextTo, self_1.root, { horizontal: PopupUtils_1.HorizontalAlignment.CENTER, vertical: PopupUtils_1.VerticalAlignment.BOTTOM });
-                    EventsUtils_1.EventsUtils.removePrefixedEvent(self_1.search, 'AnimationEnd', this);
+                    PopupUtils_1.PopupUtils.positionPopup(_this.searchResults, nextTo, _this.root, {
+                        horizontal: PopupUtils_1.HorizontalAlignment.CENTER,
+                        vertical: PopupUtils_1.VerticalAlignment.BOTTOM
+                    });
+                    EventsUtils_1.EventsUtils.removePrefixedEvent(_this.search, 'AnimationEnd', _this);
                 });
             }
             else {
-                PopupUtils_1.PopupUtils.positionPopup(this.searchResults, nextTo, this.root, { horizontal: PopupUtils_1.HorizontalAlignment.CENTER, vertical: PopupUtils_1.VerticalAlignment.BOTTOM });
+                PopupUtils_1.PopupUtils.positionPopup(this.searchResults, nextTo, this.root, {
+                    horizontal: PopupUtils_1.HorizontalAlignment.CENTER,
+                    vertical: PopupUtils_1.VerticalAlignment.BOTTOM
+                });
             }
         }
     };
@@ -3716,7 +3162,8 @@ var FacetSearch = (function () {
         this.facet.logger.info('Triggering new facet search');
         this.facetSearchPromise = this.facet.facetQueryController.search(params);
         if (this.facetSearchPromise) {
-            this.facetSearchPromise.then(function (fieldValues) {
+            this.facetSearchPromise
+                .then(function (fieldValues) {
                 _this.facet.usageAnalytics.logCustomEvent(AnalyticsActionListMeta_1.analyticsActionCauseList.facetSearch, {
                     facetId: _this.facet.options.id,
                     facetTitle: _this.facet.options.title
@@ -3725,7 +3172,8 @@ var FacetSearch = (function () {
                 _this.processNewFacetSearchResults(fieldValues, params);
                 _this.hideFacetSearchWaitingAnimation();
                 _this.facetSearchPromise = undefined;
-            }).catch(function (error) {
+            })
+                .catch(function (error) {
                 // The request might be normally cancelled if another search is triggered.
                 // In this case we do not hide the animation to prevent flicking.
                 if (Utils_1.Utils.exists(error)) {
@@ -3745,8 +3193,7 @@ var FacetSearch = (function () {
         this.handleFacetSearchFocus();
     };
     FacetSearch.prototype.shouldPositionSearchResults = function () {
-        return !ResponsiveComponentsUtils_1.ResponsiveComponentsUtils.isSmallFacetActivated(Dom_1.$$(this.root))
-            && Dom_1.$$(this.facet.element).hasClass('coveo-facet-searching');
+        return !ResponsiveComponentsUtils_1.ResponsiveComponentsUtils.isSmallFacetActivated(Dom_1.$$(this.root)) && Dom_1.$$(this.facet.element).hasClass('coveo-facet-searching');
     };
     FacetSearch.prototype.buildBaseSearch = function () {
         var _this = this;
@@ -3891,8 +3338,7 @@ var FacetSearch = (function () {
             this.facetSearchTimeout = undefined;
         }
         if (Utils_1.Utils.exists(this.facetSearchPromise)) {
-            Promise.reject(this.facetSearchPromise).catch(function () {
-            });
+            Promise.reject(this.facetSearchPromise).catch(function () { });
             this.facetSearchPromise = undefined;
         }
         this.hideFacetSearchWaitingAnimation();
@@ -3959,9 +3405,9 @@ var FacetSearch = (function () {
         // Prevent closing the search results on the end of a touch drag
         var touchDragging = false;
         var mouseDragging = false;
-        Dom_1.$$(elem).on('mousedown', function () { return mouseDragging = false; });
-        Dom_1.$$(elem).on('mousemove', function () { return mouseDragging = true; });
-        Dom_1.$$(elem).on('touchmove', function () { return touchDragging = true; });
+        Dom_1.$$(elem).on('mousedown', function () { return (mouseDragging = false); });
+        Dom_1.$$(elem).on('mousemove', function () { return (mouseDragging = true); });
+        Dom_1.$$(elem).on('touchmove', function () { return (touchDragging = true); });
         Dom_1.$$(elem).on('mouseup touchend', function () {
             if (!touchDragging && !mouseDragging) {
                 setTimeout(function () {
@@ -3979,7 +3425,7 @@ var FacetSearch = (function () {
         var elementHeight = this.searchResults.clientHeight;
         var scrollHeight = this.searchResults.scrollHeight;
         var bottomPosition = this.searchResults.scrollTop + elementHeight;
-        if ((scrollHeight - bottomPosition) < elementHeight / 2) {
+        if (scrollHeight - bottomPosition < elementHeight / 2) {
             this.triggerNewFacetSearch(this.buildParamsForFetchingMore());
         }
     };
@@ -4137,55 +3583,25 @@ var FacetSearch = (function () {
 }());
 exports.FacetSearch = FacetSearch;
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(6)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5)))
 
 /***/ }),
 
-/***/ 505:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var _ = __webpack_require__(1);
-var FacetSearchValuesList = (function () {
-    function FacetSearchValuesList(facet, facetValueElementKlass) {
-        this.facet = facet;
-        this.facetValueElementKlass = facetValueElementKlass;
-    }
-    FacetSearchValuesList.prototype.build = function (facetValues) {
-        var _this = this;
-        var valuesToBuildWith = _.map(facetValues, function (facetValue) {
-            return _.find(_this.facet.values.getAll(), function (valueAlreadyInFacet) {
-                return valueAlreadyInFacet.value == facetValue.value;
-            }) || facetValue;
-        });
-        return _.map(valuesToBuildWith, function (facetValue) {
-            return new _this.facetValueElementKlass(_this.facet, facetValue, _this.facet.keepDisplayedValuesNextTime).build().renderer.listItem;
-        });
-    };
-    return FacetSearchValuesList;
-}());
-exports.FacetSearchValuesList = FacetSearchValuesList;
-
-
-/***/ }),
-
-/***/ 506:
+/***/ 419:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 /// <reference path="Facet.ts" />
 Object.defineProperty(exports, "__esModule", { value: true });
-var FacetValueElement_1 = __webpack_require__(105);
+var FacetValueElement_1 = __webpack_require__(90);
 var Dom_1 = __webpack_require__(3);
-var FacetValues_1 = __webpack_require__(106);
-var Utils_1 = __webpack_require__(5);
-var FacetUtils_1 = __webpack_require__(48);
-var FacetValuesOrder_1 = __webpack_require__(301);
+var FacetValues_1 = __webpack_require__(89);
+var Utils_1 = __webpack_require__(6);
+var FacetUtils_1 = __webpack_require__(40);
+var FacetValuesOrder_1 = __webpack_require__(256);
 var _ = __webpack_require__(1);
-var FacetValuesList = (function () {
+var FacetValuesList = /** @class */ (function () {
     function FacetValuesList(facet, facetValueElementKlass) {
         this.facet = facet;
         this.facetValueElementKlass = facetValueElementKlass;
@@ -4293,11 +3709,11 @@ var FacetValuesList = (function () {
         }
     };
     FacetValuesList.prototype.facetValueShouldBeRemoved = function (facetValue) {
-        return facetValue.occurrences == 0 &&
+        return (facetValue.occurrences == 0 &&
             (facetValue.delta == 0 || facetValue.delta == undefined) &&
             !facetValue.selected &&
             !facetValue.excluded &&
-            !this.facet.keepDisplayedValuesNextTime;
+            !this.facet.keepDisplayedValuesNextTime);
     };
     FacetValuesList.prototype.ensureFacetValueIsInList = function (value) {
         var facetValue;
@@ -4332,7 +3748,214 @@ exports.FacetValuesList = FacetValuesList;
 
 /***/ }),
 
-/***/ 507:
+/***/ 420:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+/// <reference path="Facet.ts" />
+Object.defineProperty(exports, "__esModule", { value: true });
+var Assert_1 = __webpack_require__(7);
+var DeviceUtils_1 = __webpack_require__(22);
+var AnalyticsActionListMeta_1 = __webpack_require__(12);
+var Dom_1 = __webpack_require__(3);
+var _ = __webpack_require__(1);
+__webpack_require__(438);
+var SVGIcons_1 = __webpack_require__(15);
+var SVGDom_1 = __webpack_require__(16);
+var BreadcrumbValueElement = /** @class */ (function () {
+    function BreadcrumbValueElement(facet, facetValue) {
+        this.facet = facet;
+        this.facetValue = facetValue;
+    }
+    BreadcrumbValueElement.prototype.build = function (tooltip) {
+        var _this = this;
+        if (tooltip === void 0) { tooltip = true; }
+        Assert_1.Assert.exists(this.facetValue);
+        var elem = DeviceUtils_1.DeviceUtils.isMobileDevice() ? Dom_1.$$('div') : Dom_1.$$('span');
+        elem.addClass('coveo-facet-breadcrumb-value');
+        elem.toggleClass('coveo-selected', this.facetValue.selected);
+        elem.toggleClass('coveo-excluded', this.facetValue.excluded);
+        elem.el.setAttribute('title', this.getBreadcrumbTooltip());
+        var caption = Dom_1.$$('span', {
+            className: 'coveo-facet-breadcrumb-caption'
+        });
+        caption.text(this.facet.getValueCaption(this.facetValue));
+        elem.el.appendChild(caption.el);
+        var clear = Dom_1.$$('span', {
+            className: 'coveo-facet-breadcrumb-clear'
+        }, SVGIcons_1.SVGIcons.icons.checkboxHookExclusionMore);
+        SVGDom_1.SVGDom.addClassToSVGInContainer(clear.el, 'coveo-facet-breadcrumb-clear-svg');
+        elem.el.appendChild(clear.el);
+        var clicked = false;
+        elem.on('click', function () {
+            if (!clicked) {
+                clicked = true;
+                if (_this.facetValue.excluded) {
+                    _this.facet.unexcludeValue(_this.facetValue.value);
+                }
+                else {
+                    _this.facet.deselectValue(_this.facetValue.value);
+                }
+                _this.facet.triggerNewQuery(function () {
+                    return _this.facet.usageAnalytics.logSearchEvent(AnalyticsActionListMeta_1.analyticsActionCauseList.breadcrumbFacet, {
+                        facetId: _this.facet.options.id,
+                        facetValue: _this.facetValue.value,
+                        facetTitle: _this.facet.options.title
+                    });
+                });
+            }
+        });
+        return elem;
+    };
+    BreadcrumbValueElement.prototype.getBreadcrumbTooltip = function () {
+        var tooltipParts = [
+            this.facet.getValueCaption(this.facetValue),
+            this.facetValue.getFormattedCount(),
+            this.facetValue.getFormattedComputedField(this.facet.options.computedFieldFormat)
+        ];
+        return _.compact(tooltipParts).join(' ');
+    };
+    return BreadcrumbValueElement;
+}());
+exports.BreadcrumbValueElement = BreadcrumbValueElement;
+
+
+/***/ }),
+
+/***/ 421:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var Assert_1 = __webpack_require__(7);
+var Strings_1 = __webpack_require__(10);
+var Dom_1 = __webpack_require__(3);
+var Globalize = __webpack_require__(25);
+var _ = __webpack_require__(1);
+var BreadcrumbValueList = /** @class */ (function () {
+    function BreadcrumbValueList(facet, facetValues, breadcrumbValueElementKlass) {
+        this.facet = facet;
+        this.facetValues = facetValues;
+        this.breadcrumbValueElementKlass = breadcrumbValueElementKlass;
+        this.setExpandedAndCollapsed();
+        this.elem = Dom_1.$$('div', {
+            className: 'coveo-facet-breadcrumb'
+        }).el;
+        var title = Dom_1.$$('span');
+        title.addClass('coveo-facet-breadcrumb-title');
+        title.text(this.facet.options.title + ':');
+        this.elem.appendChild(title.el);
+        this.valueContainer = Dom_1.$$('span', {
+            className: 'coveo-facet-breadcrumb-values'
+        }).el;
+        this.elem.appendChild(this.valueContainer);
+    }
+    BreadcrumbValueList.prototype.build = function () {
+        this.buildExpanded();
+        if (this.collapsed.length != 0) {
+            this.buildCollapsed();
+        }
+        return this.elem;
+    };
+    BreadcrumbValueList.prototype.buildAsString = function () {
+        this.build();
+        if (this.elem) {
+            return (this.facet.options.title + ": " +
+                _.map(Dom_1.$$(this.elem).findAll('.coveo-facet-breadcrumb-value'), function (value) {
+                    return Dom_1.$$(value).text();
+                }).join(', '));
+        }
+        return '';
+    };
+    BreadcrumbValueList.prototype.buildExpanded = function () {
+        var _this = this;
+        _.each(this.expanded, function (value, index) {
+            var elementBreadcrumb = new _this.breadcrumbValueElementKlass(_this.facet, value).build();
+            _this.valueContainer.appendChild(elementBreadcrumb.el);
+        });
+    };
+    BreadcrumbValueList.prototype.buildCollapsed = function () {
+        var _this = this;
+        var numberOfSelected = _.filter(this.collapsed, function (value) { return value.selected; }).length;
+        var numberOfExcluded = _.filter(this.collapsed, function (value) { return value.excluded; }).length;
+        Assert_1.Assert.check(numberOfSelected + numberOfExcluded == this.collapsed.length);
+        var elem = Dom_1.$$('div', {
+            className: 'coveo-facet-breadcrumb-value'
+        });
+        var multiCount = Dom_1.$$('span', {
+            className: 'coveo-facet-breadcrumb-multi-count'
+        });
+        multiCount.text(Strings_1.l('NMore', Globalize.format(numberOfSelected + numberOfExcluded, 'n0')));
+        elem.append(multiCount.el);
+        var valueElements = _.map(this.collapsed, function (facetValue) {
+            return new _this.breadcrumbValueElementKlass(_this.facet, facetValue);
+        });
+        var toolTips = _.map(valueElements, function (valueElement) {
+            return valueElement.getBreadcrumbTooltip();
+        });
+        elem.el.setAttribute('title', toolTips.join('\n'));
+        elem.on('click', function () {
+            var elements = [];
+            _.forEach(valueElements, function (valueElement) {
+                elements.push(valueElement.build(false).el);
+            });
+            _.each(elements, function (el) {
+                Dom_1.$$(el).insertBefore(elem.el);
+            });
+            elem.detach();
+        });
+        this.valueContainer.appendChild(elem.el);
+    };
+    BreadcrumbValueList.prototype.setExpandedAndCollapsed = function () {
+        if (this.facetValues.length > this.facet.options.numberOfValuesInBreadcrumb) {
+            this.collapsed = _.rest(this.facetValues, this.facet.options.numberOfValuesInBreadcrumb);
+            this.expanded = _.first(this.facetValues, this.facet.options.numberOfValuesInBreadcrumb);
+        }
+        else {
+            this.collapsed = [];
+            this.expanded = this.facetValues;
+        }
+    };
+    return BreadcrumbValueList;
+}());
+exports.BreadcrumbValueList = BreadcrumbValueList;
+
+
+/***/ }),
+
+/***/ 422:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var _ = __webpack_require__(1);
+var FacetSearchValuesList = /** @class */ (function () {
+    function FacetSearchValuesList(facet, facetValueElementKlass) {
+        this.facet = facet;
+        this.facetValueElementKlass = facetValueElementKlass;
+    }
+    FacetSearchValuesList.prototype.build = function (facetValues) {
+        var _this = this;
+        var valuesToBuildWith = _.map(facetValues, function (facetValue) {
+            return (_.find(_this.facet.values.getAll(), function (valueAlreadyInFacet) {
+                return valueAlreadyInFacet.value == facetValue.value;
+            }) || facetValue);
+        });
+        return _.map(valuesToBuildWith, function (facetValue) {
+            return new _this.facetValueElementKlass(_this.facet, facetValue, _this.facet.keepDisplayedValuesNextTime).build().renderer.listItem;
+        });
+    };
+    return FacetSearchValuesList;
+}());
+exports.FacetSearchValuesList = FacetSearchValuesList;
+
+
+/***/ }),
+
+/***/ 423:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4349,8 +3972,8 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var ValueElement_1 = __webpack_require__(496);
-var OmniboxValueElement = (function (_super) {
+var ValueElement_1 = __webpack_require__(410);
+var OmniboxValueElement = /** @class */ (function (_super) {
     __extends(OmniboxValueElement, _super);
     function OmniboxValueElement(facet, facetValue, eventArg, onSelect, onExclude) {
         var _this = _super.call(this, facet, facetValue, onSelect, onExclude) || this;
@@ -4369,17 +3992,17 @@ exports.OmniboxValueElement = OmniboxValueElement;
 
 /***/ }),
 
-/***/ 508:
+/***/ 424:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var Dom_1 = __webpack_require__(3);
-var Utils_1 = __webpack_require__(5);
-var FacetUtils_1 = __webpack_require__(48);
+var Utils_1 = __webpack_require__(6);
+var FacetUtils_1 = __webpack_require__(40);
 var _ = __webpack_require__(1);
-var OmniboxValuesList = (function () {
+var OmniboxValuesList = /** @class */ (function () {
     function OmniboxValuesList(facet, facetValues, omniboxObject, omniboxValueElementKlass) {
         this.facet = facet;
         this.facetValues = facetValues;
@@ -4443,7 +4066,11 @@ var OmniboxValuesList = (function () {
     OmniboxValuesList.prototype.highlightOmniboxMatch = function (orignalStr, regex, valueToSearch) {
         var firstChar = orignalStr.search(regex);
         var lastChar = firstChar + valueToSearch.length;
-        return orignalStr.slice(0, firstChar) + '<span class="coveo-highlight">' + orignalStr.slice(firstChar, lastChar) + '</span>' + orignalStr.slice(lastChar);
+        return (orignalStr.slice(0, firstChar) +
+            '<span class="coveo-highlight">' +
+            orignalStr.slice(firstChar, lastChar) +
+            '</span>' +
+            orignalStr.slice(lastChar));
     };
     OmniboxValuesList.prototype.logAnalyticsEvent = function (elem, cause) {
         var strippedFacetValues = _.pluck(this.facetValues, 'value');
@@ -4463,56 +4090,42 @@ exports.OmniboxValuesList = OmniboxValuesList;
 
 /***/ }),
 
-/***/ 599:
+/***/ 433:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
 
-/***/ 600:
+/***/ 434:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
 
-/***/ 601:
+/***/ 436:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
 
-/***/ 602:
+/***/ 437:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
 
-/***/ 603:
+/***/ 438:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
 
-/***/ 604:
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-
-/***/ 605:
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-
-/***/ 608:
+/***/ 439:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4528,9 +4141,9 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var ResponsiveFacetColumn_1 = __webpack_require__(501);
-var Facet_1 = __webpack_require__(64);
-var ResponsiveFacets = (function (_super) {
+var ResponsiveFacetColumn_1 = __webpack_require__(415);
+var Facet_1 = __webpack_require__(58);
+var ResponsiveFacets = /** @class */ (function (_super) {
     __extends(ResponsiveFacets, _super);
     function ResponsiveFacets() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -4545,7 +4158,551 @@ exports.ResponsiveFacets = ResponsiveFacets;
 
 /***/ }),
 
-/***/ 64:
+/***/ 440:
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+
+/***/ 441:
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+
+/***/ 491:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+/// <reference path="HierarchicalFacet.ts" />
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var FacetValuesList_1 = __webpack_require__(419);
+var _ = __webpack_require__(1);
+var HierarchicalFacetValuesList = /** @class */ (function (_super) {
+    __extends(HierarchicalFacetValuesList, _super);
+    function HierarchicalFacetValuesList(facet, facetValueElementKlass) {
+        var _this = _super.call(this, facet, facetValueElementKlass) || this;
+        _this.facet = facet;
+        _this.facetValueElementKlass = facetValueElementKlass;
+        return _this;
+    }
+    HierarchicalFacetValuesList.prototype.sortFacetValues = function (hierarchyFacetValues) {
+        var _this = this;
+        if (hierarchyFacetValues === void 0) { hierarchyFacetValues = this.hierarchyFacetValues; }
+        if (!this.facet.shouldReshuffleFacetValuesClientSide) {
+            var sortArray = _.map(hierarchyFacetValues, function (hierarchy, idx) {
+                return {
+                    hierarchy: hierarchy,
+                    idx: idx
+                };
+            });
+            // If we exclude the top level, the alpha order is not respected (since it is done by the index, and the first level is omitted by client side code).
+            // Do the ordering client side, in the precise case where its alpha ordering and the starting level is not 0;
+            if (this.facet.options.levelStart != 0 &&
+                this.facet.options.sortCriteria &&
+                this.facet.options.sortCriteria.toLowerCase().indexOf('alpha') != -1) {
+                var reversed_1 = this.facet.options.sortCriteria.toLowerCase().indexOf('descending') != -1;
+                sortArray = sortArray.sort(function (first, second) {
+                    var firstInTopLevel = _.find(_this.facet.topLevelHierarchy, function (hierarchy) {
+                        return hierarchy.facetValue.value.toLowerCase() == first.hierarchy.value.toLowerCase();
+                    }) != null;
+                    var secondInTopLevel = _.find(_this.facet.topLevelHierarchy, function (hierarchy) {
+                        return hierarchy.facetValue.value.toLowerCase() == first.hierarchy.value.toLowerCase();
+                    }) != null;
+                    if (firstInTopLevel && secondInTopLevel) {
+                        var firstValue = _this.facet.getValueCaption(first.hierarchy);
+                        var secondValue = _this.facet.getValueCaption(second.hierarchy);
+                        var compared = firstValue.localeCompare(secondValue);
+                        return reversed_1 ? -1 * compared : compared;
+                    }
+                    return first.idx - second.idx;
+                });
+            }
+            // Normally facet values are sorted by selected first, then inactive, then excluded values.
+            // For hierarchical, we want selected first, then those that have childs selected, then normal sorting.
+            sortArray = sortArray.sort(function (first, second) {
+                if (first.hierarchy.selected === second.hierarchy.selected) {
+                    var firstFromHierarchy = _this.facet.getValueFromHierarchy(first.hierarchy);
+                    var secondFromHierarchy = _this.facet.getValueFromHierarchy(second.hierarchy);
+                    if (firstFromHierarchy.hasChildSelected === secondFromHierarchy.hasChildSelected) {
+                        return first.idx - second.idx;
+                    }
+                    else {
+                        return firstFromHierarchy.hasChildSelected ? -1 : 1;
+                    }
+                }
+                else {
+                    return first.hierarchy.selected ? -1 : 1;
+                }
+            });
+            return _.pluck(sortArray, 'hierarchy');
+        }
+        return hierarchyFacetValues;
+    };
+    HierarchicalFacetValuesList.prototype.getValuesToBuildWith = function () {
+        if (this.facet.shouldReshuffleFacetValuesClientSide) {
+            return this.hierarchyFacetValues;
+        }
+        else {
+            return this.sortFacetValues();
+        }
+    };
+    return HierarchicalFacetValuesList;
+}(FacetValuesList_1.FacetValuesList));
+exports.HierarchicalFacetValuesList = HierarchicalFacetValuesList;
+
+
+/***/ }),
+
+/***/ 492:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(Promise) {
+/// <reference path="../ui/HierarchicalFacet/HierarchicalFacet.ts" />
+/// <reference path="./FacetQueryController.ts" />
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var FacetQueryController_1 = __webpack_require__(257);
+var FacetUtils_1 = __webpack_require__(40);
+var _ = __webpack_require__(1);
+var HierarchicalFacetQueryController = /** @class */ (function (_super) {
+    __extends(HierarchicalFacetQueryController, _super);
+    function HierarchicalFacetQueryController(facet) {
+        var _this = _super.call(this, facet) || this;
+        _this.facet = facet;
+        return _this;
+    }
+    HierarchicalFacetQueryController.prototype.search = function (params, oldLength) {
+        var _this = this;
+        if (oldLength === void 0) { oldLength = params.nbResults; }
+        // Do a client side search, since HierarchicalFacet should normally have all value client side
+        var regex = FacetUtils_1.FacetUtils.getRegexToUseForFacetSearch(this.facet.facetSearch.getValueInInputForFacetSearch(), this.facet.options.facetSearchIgnoreAccents);
+        return new Promise(function (resolve) {
+            var match = _.chain(_this.facet.getAllValueHierarchy())
+                .toArray()
+                .filter(function (v) {
+                return (_this.facet.getValueCaption(v.facetValue).match(regex) != null &&
+                    !_.contains(_.map(params.alwaysExclude, function (toExclude) { return toExclude.toLowerCase(); }), v.facetValue.value.toLowerCase()));
+            })
+                .first(_this.facet.options.numberOfValuesInFacetSearch)
+                .value();
+            var facetValues = _.map(match, function (v) {
+                return v.facetValue;
+            });
+            resolve(facetValues);
+        });
+    };
+    HierarchicalFacetQueryController.prototype.getAllowedValuesFromSelected = function () {
+        return [];
+    };
+    return HierarchicalFacetQueryController;
+}(FacetQueryController_1.FacetQueryController));
+exports.HierarchicalFacetQueryController = HierarchicalFacetQueryController;
+
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5)))
+
+/***/ }),
+
+/***/ 493:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+/// <reference path="../Facet/Facet.ts" />
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var FacetSearchValuesList_1 = __webpack_require__(422);
+var HierarchicalFacetSearchValueElement_1 = __webpack_require__(494);
+var HierarchicalFacetSearchValuesList = /** @class */ (function (_super) {
+    __extends(HierarchicalFacetSearchValuesList, _super);
+    function HierarchicalFacetSearchValuesList(facet) {
+        var _this = _super.call(this, facet, HierarchicalFacetSearchValueElement_1.HierarchicalFacetSearchValueElement) || this;
+        _this.facet = facet;
+        return _this;
+    }
+    return HierarchicalFacetSearchValuesList;
+}(FacetSearchValuesList_1.FacetSearchValuesList));
+exports.HierarchicalFacetSearchValuesList = HierarchicalFacetSearchValuesList;
+
+
+/***/ }),
+
+/***/ 494:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var FacetValueElement_1 = __webpack_require__(90);
+var HierarchicalFacetSearchValueElement = /** @class */ (function (_super) {
+    __extends(HierarchicalFacetSearchValueElement, _super);
+    function HierarchicalFacetSearchValueElement(facet, facetValue, keepDisplayedValueNextTime) {
+        var _this = _super.call(this, facet, facetValue, keepDisplayedValueNextTime) || this;
+        _this.facet = facet;
+        _this.facetValue = facetValue;
+        _this.keepDisplayedValueNextTime = keepDisplayedValueNextTime;
+        return _this;
+    }
+    HierarchicalFacetSearchValueElement.prototype._handleSelectValue = function (eventBindings) {
+        this.facet.open(this.facetValue);
+        _super.prototype.handleSelectValue.call(this, eventBindings);
+    };
+    HierarchicalFacetSearchValueElement.prototype._handleExcludeClick = function (eventBindings) {
+        this.facet.open(this.facetValue);
+        _super.prototype.handleExcludeClick.call(this, eventBindings);
+    };
+    return HierarchicalFacetSearchValueElement;
+}(FacetValueElement_1.FacetValueElement));
+exports.HierarchicalFacetSearchValueElement = HierarchicalFacetSearchValueElement;
+
+
+/***/ }),
+
+/***/ 495:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+/// <reference path="HierarchicalFacet.ts" />
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var FacetSearch_1 = __webpack_require__(418);
+var FacetSearchParameters_1 = __webpack_require__(236);
+var FacetValues_1 = __webpack_require__(89);
+var Utils_1 = __webpack_require__(6);
+var ExternalModulesShim_1 = __webpack_require__(27);
+var _ = __webpack_require__(1);
+var HierarchicalFacetSearch = /** @class */ (function (_super) {
+    __extends(HierarchicalFacetSearch, _super);
+    function HierarchicalFacetSearch(facet, facetSearchValuesListKlass, root) {
+        var _this = _super.call(this, facet, facetSearchValuesListKlass, root) || this;
+        _this.facet = facet;
+        _this.facetSearchValuesListKlass = facetSearchValuesListKlass;
+        return _this;
+    }
+    HierarchicalFacetSearch.prototype.buildParamsForExcludingCurrentlyDisplayedValues = function () {
+        var params = _super.prototype.buildParamsForExcludingCurrentlyDisplayedValues.call(this);
+        params.alwaysExclude = this.facet.getDisplayedValues();
+        if (this.facet.facetSearch.currentlyDisplayedResults) {
+            params.alwaysExclude = params.alwaysExclude.concat(this.facet.facetSearch.currentlyDisplayedResults);
+        }
+        return params;
+    };
+    HierarchicalFacetSearch.prototype.selectAllValuesMatchingSearch = function () {
+        var _this = this;
+        this.facet.showWaitingAnimation();
+        var searchParameters = new FacetSearchParameters_1.FacetSearchParameters(this.facet);
+        searchParameters.nbResults = this.facet.numberOfValues;
+        searchParameters.alwaysInclude = this.facet.getDisplayedValues();
+        searchParameters.setValueToSearch(this.getValueInInputForFacetSearch());
+        this.facet.facetQueryController.search(searchParameters).then(function (fieldValues) {
+            _this.completelyDismissSearch();
+            ExternalModulesShim_1.ModalBox.close(true);
+            var facetValues = _this.getFacetValues(fieldValues);
+            _this.facet.processFacetSearchAllResultsSelected(facetValues);
+        });
+        this.completelyDismissSearch();
+    };
+    HierarchicalFacetSearch.prototype.getFacetValues = function (fieldValues) {
+        var _this = this;
+        var values = [];
+        _.each(fieldValues, function (fieldValue) {
+            var hierarchy = _this.facet.getValueFromHierarchy(fieldValue.value);
+            values.push(_this.createFacetValuesFromHierarchy(hierarchy));
+        });
+        return _.flatten(values);
+    };
+    HierarchicalFacetSearch.prototype.createFacetValuesFromHierarchy = function (hierarchy) {
+        var _this = this;
+        var values = [];
+        var fieldValue = hierarchy.facetValue.value;
+        var facetValue = this.facet.values.get(fieldValue);
+        if (!Utils_1.Utils.exists(facetValue)) {
+            facetValue = FacetValues_1.FacetValue.create(fieldValue);
+        }
+        facetValue.selected = true;
+        facetValue.excluded = false;
+        values.push(facetValue);
+        var childs = hierarchy.childs;
+        _.each(childs, function (child) {
+            var childHierarchy = _this.facet.getValueFromHierarchy(child.facetValue.value);
+            values.push(_this.createFacetValuesFromHierarchy(childHierarchy));
+        });
+        return values;
+    };
+    return HierarchicalFacetSearch;
+}(FacetSearch_1.FacetSearch));
+exports.HierarchicalFacetSearch = HierarchicalFacetSearch;
+
+
+/***/ }),
+
+/***/ 496:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+/// <reference path="HierarchicalFacet.ts" />
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var BreadcrumbValuesList_1 = __webpack_require__(421);
+var HierarchicalBreadcrumbValueElement_1 = __webpack_require__(497);
+var Dom_1 = __webpack_require__(3);
+var _ = __webpack_require__(1);
+var HierarchicalBreadcrumbValuesList = /** @class */ (function (_super) {
+    __extends(HierarchicalBreadcrumbValuesList, _super);
+    function HierarchicalBreadcrumbValuesList(facet, facetValues, valueHierarchy) {
+        var _this = _super.call(this, facet, facetValues, HierarchicalBreadcrumbValueElement_1.HierarchicalBreadcrumbValueElement) || this;
+        _this.facet = facet;
+        _this.facetValues = facetValues;
+        _this.valueHierarchy = valueHierarchy;
+        return _this;
+    }
+    HierarchicalBreadcrumbValuesList.prototype.buildAsString = function () {
+        this.build();
+        if (this.elem) {
+            var joined = this.facet.options.title + ": " +
+                _.map(Dom_1.$$(this.elem).findAll('.coveo-facet-breadcrumb-value'), function (value) {
+                    _.each(Dom_1.$$(value).findAll('.coveo-hierarchical-breadcrumb-separator'), function (separator) {
+                        // small right black triangle
+                        Dom_1.$$(separator).text('\u25B8');
+                    });
+                    return Dom_1.$$(value).text();
+                }).join(', ');
+            return joined;
+        }
+        return '';
+    };
+    return HierarchicalBreadcrumbValuesList;
+}(BreadcrumbValuesList_1.BreadcrumbValueList));
+exports.HierarchicalBreadcrumbValuesList = HierarchicalBreadcrumbValuesList;
+
+
+/***/ }),
+
+/***/ 497:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var BreadcrumbValueElement_1 = __webpack_require__(420);
+var _ = __webpack_require__(1);
+var HierarchicalBreadcrumbValueElement = /** @class */ (function (_super) {
+    __extends(HierarchicalBreadcrumbValueElement, _super);
+    function HierarchicalBreadcrumbValueElement(facet, facetValue) {
+        var _this = _super.call(this, facet, facetValue) || this;
+        _this.facet = facet;
+        _this.facetValue = facetValue;
+        return _this;
+    }
+    HierarchicalBreadcrumbValueElement.prototype.build = function () {
+        var build = _super.prototype.build.call(this);
+        build.addClass('coveo-hierarchical-facet-value');
+        var caption = build.find('.coveo-facet-breadcrumb-caption');
+        var values = this.facetValue.value.split(this.facet.options.delimitingCharacter);
+        values = _.map(values, function (v) {
+            return _.escape(v);
+        });
+        caption.innerHTML = values.join("<span class='coveo-hierarchical-breadcrumb-separator'></span>");
+        return build;
+    };
+    return HierarchicalBreadcrumbValueElement;
+}(BreadcrumbValueElement_1.BreadcrumbValueElement));
+exports.HierarchicalBreadcrumbValueElement = HierarchicalBreadcrumbValueElement;
+
+
+/***/ }),
+
+/***/ 498:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+/// <reference path="../HierarchicalFacet/HierarchicalFacet.ts" />
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var OmniboxValuesList_1 = __webpack_require__(424);
+var OmniboxHierarchicalValueElement_1 = __webpack_require__(499);
+var OmniboxHierarchicalValuesList = /** @class */ (function (_super) {
+    __extends(OmniboxHierarchicalValuesList, _super);
+    function OmniboxHierarchicalValuesList(facet, facetValues, omniboxObject) {
+        var _this = _super.call(this, facet, facetValues, omniboxObject, OmniboxHierarchicalValueElement_1.OmniboxHierarchicalValueElement) || this;
+        _this.facet = facet;
+        _this.facetValues = facetValues;
+        _this.omniboxObject = omniboxObject;
+        return _this;
+    }
+    return OmniboxHierarchicalValuesList;
+}(OmniboxValuesList_1.OmniboxValuesList));
+exports.OmniboxHierarchicalValuesList = OmniboxHierarchicalValuesList;
+
+
+/***/ }),
+
+/***/ 499:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+/// <reference path="HierarchicalFacet.ts" />
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var OmniboxValueElement_1 = __webpack_require__(423);
+var OmniboxHierarchicalValueElement = /** @class */ (function (_super) {
+    __extends(OmniboxHierarchicalValueElement, _super);
+    function OmniboxHierarchicalValueElement(facet, facetValue, eventArg) {
+        var _this = _super.call(this, facet, facetValue, eventArg) || this;
+        _this.facet = facet;
+        _this.facetValue = facetValue;
+        _this.eventArg = eventArg;
+        return _this;
+    }
+    OmniboxHierarchicalValueElement.prototype._handleSelectValue = function (eventBindings) {
+        this.facet.open(this.facetValue);
+        _super.prototype.handleSelectValue.call(this, eventBindings);
+    };
+    OmniboxHierarchicalValueElement.prototype._handleExcludeClick = function (eventBindings) {
+        this.facet.open(this.facetValue);
+        _super.prototype.handleExcludeClick.call(this, eventBindings);
+    };
+    return OmniboxHierarchicalValueElement;
+}(OmniboxValueElement_1.OmniboxValueElement));
+exports.OmniboxHierarchicalValueElement = OmniboxHierarchicalValueElement;
+
+
+/***/ }),
+
+/***/ 500:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+/// <reference path="HierarchicalFacet.ts" />
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var FacetValueElement_1 = __webpack_require__(90);
+var HierarchicalFacetValueElement = /** @class */ (function (_super) {
+    __extends(HierarchicalFacetValueElement, _super);
+    function HierarchicalFacetValueElement(facet, facetValue, keepDisplayedValueNextTime) {
+        var _this = _super.call(this, facet, facetValue, keepDisplayedValueNextTime) || this;
+        _this.facet = facet;
+        _this.facetValue = facetValue;
+        _this.keepDisplayedValueNextTime = keepDisplayedValueNextTime;
+        return _this;
+    }
+    return HierarchicalFacetValueElement;
+}(FacetValueElement_1.FacetValueElement));
+exports.HierarchicalFacetValueElement = HierarchicalFacetValueElement;
+
+
+/***/ }),
+
+/***/ 501:
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+
+/***/ 58:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4562,46 +4719,46 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var Component_1 = __webpack_require__(8);
-var FacetValues_1 = __webpack_require__(106);
+var FacetValues_1 = __webpack_require__(89);
 var ComponentOptions_1 = __webpack_require__(9);
-var DeviceUtils_1 = __webpack_require__(23);
+var DeviceUtils_1 = __webpack_require__(22);
 var Strings_1 = __webpack_require__(10);
-var FacetQueryController_1 = __webpack_require__(302);
-var FacetSearch_1 = __webpack_require__(504);
-var FacetSettings_1 = __webpack_require__(494);
-var FacetSort_1 = __webpack_require__(495);
-var FacetValuesList_1 = __webpack_require__(506);
-var FacetHeader_1 = __webpack_require__(499);
-var FacetUtils_1 = __webpack_require__(48);
+var FacetQueryController_1 = __webpack_require__(257);
+var FacetSearch_1 = __webpack_require__(418);
+var FacetSettings_1 = __webpack_require__(412);
+var FacetSort_1 = __webpack_require__(413);
+var FacetValuesList_1 = __webpack_require__(419);
+var FacetHeader_1 = __webpack_require__(414);
+var FacetUtils_1 = __webpack_require__(40);
 var QueryEvents_1 = __webpack_require__(11);
 var Assert_1 = __webpack_require__(7);
 var Dom_1 = __webpack_require__(3);
 var AnalyticsActionListMeta_1 = __webpack_require__(12);
-var Utils_1 = __webpack_require__(5);
-var BreadcrumbValueElement_1 = __webpack_require__(502);
-var BreadcrumbValuesList_1 = __webpack_require__(503);
-var FacetValueElement_1 = __webpack_require__(105);
-var FacetSearchValuesList_1 = __webpack_require__(505);
-var Defer_1 = __webpack_require__(30);
+var Utils_1 = __webpack_require__(6);
+var BreadcrumbValueElement_1 = __webpack_require__(420);
+var BreadcrumbValuesList_1 = __webpack_require__(421);
+var FacetValueElement_1 = __webpack_require__(90);
+var FacetSearchValuesList_1 = __webpack_require__(422);
+var Defer_1 = __webpack_require__(28);
 var QueryStateModel_1 = __webpack_require__(13);
-var Model_1 = __webpack_require__(19);
-var OmniboxEvents_1 = __webpack_require__(36);
-var OmniboxValueElement_1 = __webpack_require__(507);
-var OmniboxValuesList_1 = __webpack_require__(508);
-var ValueElementRenderer_1 = __webpack_require__(497);
-var FacetSearchParameters_1 = __webpack_require__(266);
+var Model_1 = __webpack_require__(18);
+var OmniboxEvents_1 = __webpack_require__(33);
+var OmniboxValueElement_1 = __webpack_require__(423);
+var OmniboxValuesList_1 = __webpack_require__(424);
+var ValueElementRenderer_1 = __webpack_require__(411);
+var FacetSearchParameters_1 = __webpack_require__(236);
 var Initialization_1 = __webpack_require__(2);
-var BreadcrumbEvents_1 = __webpack_require__(51);
-var ResponsiveFacets_1 = __webpack_require__(608);
-var KeyboardUtils_1 = __webpack_require__(24);
-var FacetValuesOrder_1 = __webpack_require__(301);
-var SearchAlertEvents_1 = __webpack_require__(67);
+var BreadcrumbEvents_1 = __webpack_require__(42);
+var ResponsiveFacets_1 = __webpack_require__(439);
+var KeyboardUtils_1 = __webpack_require__(23);
+var FacetValuesOrder_1 = __webpack_require__(256);
+var SearchAlertEvents_1 = __webpack_require__(59);
 var _ = __webpack_require__(1);
 var GlobalExports_1 = __webpack_require__(4);
-__webpack_require__(601);
-__webpack_require__(603);
+__webpack_require__(440);
+__webpack_require__(441);
 var SVGIcons_1 = __webpack_require__(15);
-var SVGDom_1 = __webpack_require__(17);
+var SVGDom_1 = __webpack_require__(16);
 /**
  * The `Facet` component displays a *facet* of the results for the current query. A facet is a list of values for a
  * certain field occurring in the results, ordered using a configurable criteria (e.g., number of occurrences).
@@ -4620,7 +4777,7 @@ var SVGDom_1 = __webpack_require__(17);
  * extend this component), and the [`FacetSlider`]{@link FacetSlider} component (which does not properly extend this
  * component, but is very similar).
  */
-var Facet = (function (_super) {
+var Facet = /** @class */ (function (_super) {
     __extends(Facet, _super);
     /**
      * Creates a new `Facet` component. Binds multiple query events as well.
@@ -4890,10 +5047,12 @@ var Facet = (function (_super) {
         // Also, when the user hit more, it will request the current page and fill it with more values
         this.currentPage = Math.floor((this.numberOfValues - this.options.numberOfValues) / this.options.pageSize);
         this.updateQueryStateModel();
-        this.triggerNewQuery(function () { return _this.usageAnalytics.logSearchEvent(AnalyticsActionListMeta_1.analyticsActionCauseList.facetSelectAll, {
-            facetId: _this.options.id,
-            facetTitle: _this.options.title
-        }); });
+        this.triggerNewQuery(function () {
+            return _this.usageAnalytics.logSearchEvent(AnalyticsActionListMeta_1.analyticsActionCauseList.facetSelectAll, {
+                facetId: _this.options.id,
+                facetTitle: _this.options.title
+            });
+        });
     };
     Facet.prototype.pinFacetPosition = function () {
         if (this.options.preservePosition) {
@@ -4982,7 +5141,7 @@ var Facet = (function (_super) {
         this.updateVisibilityBasedOnDependsOn();
         var groupByResult = data.results.groupByResults[this.facetQueryController.lastGroupByRequestIndex];
         this.facetQueryController.lastGroupByResult = groupByResult;
-        // Two corner case to handle regarding the "sticky" aspect of facets : 
+        // Two corner case to handle regarding the "sticky" aspect of facets :
         // 1) The group by is empty (so there is nothing to "sticky")
         // 2) There is only one value displayed currently, so there is nothing to "sticky" either
         if (!groupByResult) {
@@ -4992,6 +5151,11 @@ var Facet = (function (_super) {
             this.keepDisplayedValuesNextTime = false;
         }
         this.processNewGroupByResults(groupByResult);
+    };
+    Facet.prototype.handleQueryError = function () {
+        this.updateValues(new FacetValues_1.FacetValues());
+        this.updateAppearanceDependingOnState();
+        this.hideWaitingAnimation();
     };
     Facet.prototype.handlePopulateBreadcrumb = function (args) {
         Assert_1.Assert.exists(args);
@@ -5050,6 +5214,7 @@ var Facet = (function (_super) {
         this.bind.onRootElement(QueryEvents_1.QueryEvents.buildingQuery, function (args) { return _this.handleBuildingQuery(args); });
         this.bind.onRootElement(QueryEvents_1.QueryEvents.doneBuildingQuery, function (args) { return _this.handleDoneBuildingQuery(args); });
         this.bind.onRootElement(QueryEvents_1.QueryEvents.deferredQuerySuccess, function (args) { return _this.handleDeferredQuerySuccess(args); });
+        this.bind.onRootElement(QueryEvents_1.QueryEvents.queryError, function () { return _this.handleQueryError(); });
     };
     Facet.prototype.initQueryStateEvents = function () {
         var _this = this;
@@ -5076,13 +5241,17 @@ var Facet = (function (_super) {
     Facet.prototype.initBreadCrumbEvents = function () {
         var _this = this;
         if (this.options.includeInBreadcrumb) {
-            this.bind.onRootElement(BreadcrumbEvents_1.BreadcrumbEvents.populateBreadcrumb, function (args) { return _this.handlePopulateBreadcrumb(args); });
+            this.bind.onRootElement(BreadcrumbEvents_1.BreadcrumbEvents.populateBreadcrumb, function (args) {
+                return _this.handlePopulateBreadcrumb(args);
+            });
             this.bind.onRootElement(BreadcrumbEvents_1.BreadcrumbEvents.clearBreadcrumb, function (args) { return _this.handleClearBreadcrumb(); });
         }
     };
     Facet.prototype.initSearchAlertEvents = function () {
         var _this = this;
-        this.bind.onRootElement(SearchAlertEvents_1.SearchAlertsEvents.searchAlertsPopulateMessage, function (args) { return _this.handlePopulateSearchAlerts(args); });
+        this.bind.onRootElement(SearchAlertEvents_1.SearchAlertsEvents.searchAlertsPopulateMessage, function (args) {
+            return _this.handlePopulateSearchAlerts(args);
+        });
     };
     Facet.prototype.handleOmniboxWithStaticValue = function (eventArg) {
         var _this = this;
@@ -5148,7 +5317,7 @@ var Facet = (function (_super) {
         var _this = this;
         if (moreValuesAvailable === void 0) { moreValuesAvailable = true; }
         if (moreValuesAvailable) {
-            var renderer = new ValueElementRenderer_1.ValueElementRenderer(this, FacetValues_1.FacetValue.create(('Search')));
+            var renderer = new ValueElementRenderer_1.ValueElementRenderer(this, FacetValues_1.FacetValue.create('Search'));
             var searchButton_1 = renderer.build().withNo([renderer.excludeIcon, renderer.icon]);
             Dom_1.$$(searchButton_1.listItem).addClass('coveo-facet-search-button');
             searchButton_1.stylishCheckbox.removeAttribute('tabindex');
@@ -5341,7 +5510,9 @@ var Facet = (function (_super) {
             var searchParameters = new FacetSearchParameters_1.FacetSearchParameters(_this);
             searchParameters.setValueToSearch(eventArg.completeQueryExpression.word);
             searchParameters.nbResults = _this.options.numberOfValuesInOmnibox;
-            _this.facetQueryController.search(searchParameters).then(function (fieldValues) {
+            _this.facetQueryController
+                .search(searchParameters)
+                .then(function (fieldValues) {
                 var facetValues = _.map(_.filter(fieldValues, function (fieldValue) {
                     return regex.test(fieldValue.lookupValue);
                 }), function (fieldValue) {
@@ -5352,7 +5523,8 @@ var Facet = (function (_super) {
                     element: element,
                     zIndex: _this.omniboxZIndex
                 });
-            }).catch(function () {
+            })
+                .catch(function () {
                 resolve({ element: undefined });
             });
         });
@@ -5488,7 +5660,7 @@ var Facet = (function (_super) {
             if (offset_1 < 0) {
                 // This means the facet element is scrolled up in the viewport,
                 // scroll it down by adding space in the top container
-                this.pinnedTopSpace.style.height = (offset_1 * -1) + 'px';
+                this.pinnedTopSpace.style.height = offset_1 * -1 + 'px';
             }
             this.unpinnedViewportPosition = this.pinnedViewportPosition;
             this.pinnedViewportPosition = null;
@@ -5525,7 +5697,9 @@ var Facet = (function (_super) {
         this.showWaitingAnimation();
         // fetch 1 more value than we need, so we can see if there is more value to fetch still or if we have reached
         // the end of the availables values
-        this.facetQueryController.fetchMore(this.numberOfValues + 1).then(function (queryResults) {
+        this.facetQueryController
+            .fetchMore(this.numberOfValues + 1)
+            .then(function (queryResults) {
             var facetValues = new FacetValues_1.FacetValues(queryResults.groupByResults[0]);
             facetValues.importActiveValuesFromOtherList(_this.values);
             facetValues.sortValuesDependingOnStatus(_this.numberOfValues);
@@ -5536,17 +5710,16 @@ var Facet = (function (_super) {
             if (_this.values.hasSelectedOrExcludedValues() && !_this.options.useAnd && _this.options.isMultiValueField) {
                 _this.triggerUpdateDeltaQuery(_.filter(_this.values.getAll(), function (facetValue) { return !facetValue.selected && !facetValue.excluded; }));
             }
-            else {
-                if (_this.values.hasSelectedOrExcludedValues() && !_this.options.useAnd) {
-                    _this.values.updateDeltaWithFilteredFacetValues(new FacetValues_1.FacetValues(), _this.options.isMultiValueField);
-                    _this.hideWaitingAnimation();
-                }
-                else {
-                    _this.hideWaitingAnimation();
-                }
-                _this.rebuildValueElements();
+            else if (_this.values.hasSelectedOrExcludedValues() && !_this.options.useAnd) {
+                _this.values.updateDeltaWithFilteredFacetValues(new FacetValues_1.FacetValues(), _this.options.isMultiValueField);
+                _this.hideWaitingAnimation();
             }
-        }).catch(function () { return _this.hideWaitingAnimation(); });
+            else {
+                _this.hideWaitingAnimation();
+            }
+            _this.rebuildValueElements();
+        })
+            .catch(function () { return _this.hideWaitingAnimation(); });
     };
     Facet.prototype.triggerUpdateDeltaQuery = function (facetValues) {
         var _this = this;
@@ -5574,7 +5747,7 @@ var Facet = (function (_super) {
         }
         else {
             // Calculate the number of value with the current page.
-            this.numberOfValues = this.options.numberOfValues + (this.currentPage * this.options.pageSize);
+            this.numberOfValues = this.options.numberOfValues + this.currentPage * this.options.pageSize;
         }
         // Make sure we have at least the absolute minimum of value to display.
         this.numberOfValues = Math.max(this.numberOfValues, this.getMinimumNumberOfValuesToDisplay());
@@ -5633,530 +5806,565 @@ var Facet = (function (_super) {
         };
         return info;
     };
+    Facet.ID = 'Facet';
+    Facet.omniboxIndex = 50;
+    Facet.doExport = function () {
+        GlobalExports_1.exportGlobally({
+            Facet: Facet,
+            FacetHeader: FacetHeader_1.FacetHeader,
+            FacetSearchValuesList: FacetSearchValuesList_1.FacetSearchValuesList,
+            FacetSettings: FacetSettings_1.FacetSettings,
+            FacetSort: FacetSort_1.FacetSort,
+            FacetUtils: FacetUtils_1.FacetUtils,
+            FacetValueElement: FacetValueElement_1.FacetValueElement,
+            FacetValue: FacetValues_1.FacetValue
+        });
+    };
+    /**
+     * The possible options for a facet
+     * @componentOptions
+     */
+    Facet.options = {
+        /**
+         * Specifies the title to display at the top of the facet.
+         *
+         * Default value is the localized string for `NoTitle`.
+         */
+        title: ComponentOptions_1.ComponentOptions.buildLocalizedStringOption({
+            defaultValue: Strings_1.l('NoTitle'),
+            section: 'CommonOptions',
+            priority: 10
+        }),
+        /**
+         * Specifies the index field whose values the facet should use.
+         *
+         * This requires the given field to be configured correctly in the index as a *Facet field* (see
+         * [Adding Fields to a Source](http://www.coveo.com/go?dest=cloudhelp&lcid=9&context=137)).
+         *
+         * Specifying a value for this option is required for the `Facet` component to work.
+         */
+        field: ComponentOptions_1.ComponentOptions.buildFieldOption({ required: true, groupByField: true, section: 'CommonOptions' }),
+        headerIcon: ComponentOptions_1.ComponentOptions.buildStringOption({
+            deprecated: 'This option is exposed for legacy reasons, and the recommendation is to not use this option.'
+        }),
+        /**
+         * Specifies a unique identifier for the facet. Among other things, this identifier serves the purpose of saving
+         * the facet state in the URL hash.
+         *
+         * If you have two facets with the same field on the same page, you should specify an `id` value for at least one of
+         * those two facets. This `id` must be unique in the page.
+         *
+         * Default value is the [`field`]{@link Facet.options.field} option value.
+         */
+        id: ComponentOptions_1.ComponentOptions.buildStringOption({
+            postProcessing: function (value, options) { return value || options.field; }
+        }),
+        /**
+         * Specifies whether the facet [`field`]{@link Facet.options.field} is configured in the index as a multi-value
+         * field (semicolon separated values such as `abc;def;ghi`).
+         *
+         * Default value is `false`.
+         */
+        isMultiValueField: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: false }),
+        lookupField: ComponentOptions_1.ComponentOptions.buildFieldOption({
+            deprecated: 'This option is exposed for legacy reasons. It is not recommended to use this option.'
+        }),
+        /**
+         * Specifies whether to display the facet **Settings** menu.
+         *
+         * See also the [`enableSettingsFacetState`]{@link Facet.options.enableSettingsFacetState},
+         * [`availableSorts`]{@link Facet.options.availableSorts}, and
+         * [`enableCollapse`]{@link Facet.options.enableCollapse} options.
+         *
+         * **Note:**
+         * > The [`FacetRange`]{@link FacetRange} component does not support this option.
+         *
+         * Default value is `true`.
+         */
+        enableSettings: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: true, section: 'SettingsMenu', priority: 9 }),
+        /**
+         * If the [`enableSettings`]{@link Facet.options.enableSettings} option is `true`, specifies whether the
+         * **Save state** menu option is available in the facet **Settings** menu.
+         *
+         * **Note:**
+         * > The [`FacetRange`]{@link FacetRange} component does not support this option.
+         *
+         * Default value is `false`.
+         */
+        enableSettingsFacetState: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: false, depend: 'enableSettings' }),
+        /**
+         * If the [`enableSettings`]{@link Facet.options.enableSettings} option is `true`, specifies the sort criteria
+         * options to display in the facet **Settings** menu.
+         *
+         * Possible values are:
+         * - `"occurrences"`
+         * - `"score"`
+         * - `"alphaAscending"`
+         * - `alphaDescending`
+         * - `"computedfieldascending"`
+         * - `"computedfielddescending"`
+         * - `"custom"`
+         *
+         * See {@link IGroupByRequest.sortCriteria} for a description of each possible value.
+         *
+         * **Notes:**
+         * > * The [`FacetRange`]{@link FacetRange} component does not support this option.
+         *
+         * > * Using value captions will disable alphabetical sorts (see the [valueCaption]{@link Facet.options.valueCaption} option).
+         *
+         * Default value is `occurrences,score,alphaAscending,alphaDescending`.
+         */
+        availableSorts: ComponentOptions_1.ComponentOptions.buildListOption({
+            defaultValue: ['occurrences', 'score', 'alphaAscending', 'alphaDescending'],
+            depend: 'enableSettings',
+            section: 'Sorting',
+            values: ['AlphaAscending', 'AlphaDescending', 'ComputedFieldAscending', 'ComputedFieldDescending', 'ChiSquare', 'NoSort']
+        }),
+        /**
+         * Specifies the criteria to use to sort the facet values.
+         *
+         * See {@link IGroupByRequest.sortCriteria} for the list and description of possible values.
+         *
+         * Default value is the first sort criteria specified in the [`availableSorts`]{@link Facet.options.availableSorts}
+         * option, or `occurrences` if no sort criteria is specified.
+         */
+        sortCriteria: ComponentOptions_1.ComponentOptions.buildStringOption({
+            postProcessing: function (value, options) {
+                return value || (options.availableSorts.length > 0 ? options.availableSorts[0] : 'occurrences');
+            },
+            section: 'Sorting'
+        }),
+        /**
+         * Specifies a custom order by which to sort the facet values.
+         *
+         * **Example:**
+         *
+         * You could use this option to specify a logical order for support tickets, such as:
+         * ```html
+         * <div class="CoveoFacet" data-field="@ticketstatus" data-title="Ticket Status" data-tab="All" data-custom-sort="New,Opened,Feedback,Resolved"></div>
+         * ```
+         *
+         * **Note:**
+         * > The [`FacetRange`]{@link FacetRange} component does not support this option.
+         */
+        customSort: ComponentOptions_1.ComponentOptions.buildListOption({ section: 'Sorting' }),
+        /**
+         * Specifies the maximum number of field values to display by default in the facet before the user
+         * clicks the arrow to show more.
+         *
+         * See also the [`enableMoreLess`]{@link Facet.options.enableMoreLess} option.
+         */
+        numberOfValues: ComponentOptions_1.ComponentOptions.buildNumberOption({ defaultValue: 5, min: 0, section: 'CommonOptions' }),
+        /**
+         * Specifies the *injection depth* to use for the [`GroupByRequest`]{@link IGroupByRequest} operation.
+         *
+         * The injection depth determines how many results to scan in the index to ensure that the facet lists all potential
+         * facet values. Increasing this value enhances the accuracy of the listed values at the cost of performance.
+         *
+         * Default value is `1000`. Minimum value is `0`.
+         */
+        injectionDepth: ComponentOptions_1.ComponentOptions.buildNumberOption({ defaultValue: 1000, min: 0 }),
+        showIcon: ComponentOptions_1.ComponentOptions.buildBooleanOption({
+            defaultValue: false,
+            deprecated: 'This option is exposed for legacy reasons. It is not recommended to use this option.'
+        }),
+        /**
+         * Specifies whether to use the `AND` operator in the resulting filter when multiple values are selected in the
+         * facet.
+         *
+         * Setting this option to `true` means that items must have all of the selected values to match the resulting
+         * query.
+         *
+         * Default value is `false`, which means that the filter uses the `OR` operator. Thus, by default, items must
+         * have at least one of the selected values to match the query.
+         */
+        useAnd: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: false, section: 'Filtering' }),
+        /**
+         * Specifies whether to allow the user to toggle between the `OR` and `AND` modes in the facet.
+         *
+         * Setting this option to `true` displays an icon in the top right corner of the facet. The user can click this icon
+         * to toggle between between the two modes.
+         *
+         * Default value is `false`.
+         */
+        enableTogglingOperator: ComponentOptions_1.ComponentOptions.buildBooleanOption({
+            defaultValue: false,
+            alias: 'allowTogglingOperator',
+            section: 'Filtering'
+        }),
+        /**
+         * Specifies whether to display a search box at the bottom of the facet for searching among the available facet
+         * [`field`]{@link Facet.options.field} values.
+         *
+         * See also the [`facetSearchDelay`]{@link Facet.options.facetSearchDelay},
+         * [`facetSearchIgnoreAccents`]{@link Facet.options.facetSearchIgnoreAccents}, and
+         * [`numberOfValuesInFacetSearch`]{@link Facet.options.numberOfValuesInFacetSearch} options.
+         *
+         * **Note:**
+         * > The [`FacetRange`]{@link FacetRange} component does not support this option.
+         *
+         * Default value is `true`.
+         */
+        enableFacetSearch: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: true, section: 'FacetSearch', priority: 8 }),
+        /**
+         * If the [`enableFacetSearch`]{@link Facet.options.enableFacetSearch} option is `true`, specifies the delay (in
+         * milliseconds) before sending a search request to the server when the user starts typing in the facet search box.
+         *
+         * Specifying a smaller value makes results appear faster. However, chances of having to cancel many requests
+         * sent to the server increase as the user keeps on typing new characters.
+         *
+         * **Note:**
+         * > The [`FacetRange`]{@link FacetRange} component does not support this option.
+         *
+         * Default value is `100`. Minimum value is `0`.
+         */
+        facetSearchDelay: ComponentOptions_1.ComponentOptions.buildNumberOption({ defaultValue: 100, min: 0, depend: 'enableFacetSearch' }),
+        /**
+         * If the [`enableFacetSearch`]{@link Facet.options.enableFacetSearch} option is `true`, specifies whether to ignore
+         * accents in the facet search box.
+         *
+         * **Note:**
+         * > The [`FacetRange`]{@link FacetRange} component does not support this option.
+         *
+         * Default value is `false`.
+         */
+        facetSearchIgnoreAccents: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: false, depend: 'enableFacetSearch' }),
+        /**
+         * If the [`enableFacetSearch`]{@link Facet.options.enableFacetSearch} option is `true`, specifies the number of v
+         * alues to display in the facet search results popup.
+         *
+         * **Note:**
+         * > The [`FacetRange`]{@link FacetRange} component does not support this option.
+         *
+         * Default value is `15`. Minimum value is `1`.
+         */
+        numberOfValuesInFacetSearch: ComponentOptions_1.ComponentOptions.buildNumberOption({ defaultValue: 15, min: 1, section: 'FacetSearch' }),
+        /**
+         * Specifies whether the facet should push data to the [`Breadcrumb`]{@link Breadcrumb} component.
+         *
+         * See also the [`numberOfValuesInBreadcrumb`]{@link Facet.options.numberOfValuesInBreadcrumb} option.
+         *
+         * Default value is `true`.
+         */
+        includeInBreadcrumb: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: true }),
+        /**
+         * If the [`includeInBreadcrumb`]{@link Facet.options.includeInBreadcrumb} option is `true`, specifies the maximum
+         * number of values that the facet should display in the [`Breadcrumb`]{@link Breadcrumb} before outputting a
+         * **more...** button.
+         *
+         * Default value is `5` on a desktop computer and `3` on a mobile device. Minimum value is `0`.
+         */
+        numberOfValuesInBreadcrumb: ComponentOptions_1.ComponentOptions.buildNumberOption({
+            defaultFunction: function () { return (DeviceUtils_1.DeviceUtils.isMobileDevice() ? 3 : 5); },
+            min: 0,
+            depend: 'includeInBreadcrumb'
+        }),
+        includeInOmnibox: ComponentOptions_1.ComponentOptions.buildBooleanOption({
+            defaultValue: false,
+            deprecated: 'This option is exposed for legacy reasons. It is not recommended to use this option.'
+        }),
+        numberOfValuesInOmnibox: ComponentOptions_1.ComponentOptions.buildNumberOption({
+            defaultFunction: function () { return (DeviceUtils_1.DeviceUtils.isMobileDevice() ? 3 : 5); },
+            min: 0,
+            depend: 'includeInOmnibox',
+            deprecated: 'This option is exposed for legacy reasons. It is not recommended to use this option.'
+        }),
+        /**
+         * Specifies the name of a field on which to execute an aggregate operation for all distinct values of the facet
+         * [`field`]{@link Facet.options.field}.
+         *
+         * The facet displays the result of the operation along with the number of occurrences for each value.
+         *
+         * You can use this option to compute the sum of a field (like a money amount) for each listed facet value.
+         *
+         * Works in conjunction with the [`computedFieldOperation`]{@link Facet.options.computedFieldOperation},
+         * [`computedFieldFormat`]{@link Facet.options.computedFieldFormat}, and
+         * [`computedFieldCaption`]{@link Facet.options.computedFieldCaption} options.
+         */
+        computedField: ComponentOptions_1.ComponentOptions.buildFieldOption({ section: 'ComputedField', priority: 7 }),
+        /**
+         * Specifies the type of aggregate operation to perform on the [`computedField`]{@link Facet.options.computedField}.
+         *
+         * The possible values are:
+         * - `sum` - Computes the sum of the computed field values.
+         * - `average` - Computes the average of the computed field values.
+         * - `minimum` - Finds the minimum value of the computed field values.
+         * - `maximum` - Finds the maximum value of the computed field values.
+         *
+         * Default value is `sum`.
+         */
+        computedFieldOperation: ComponentOptions_1.ComponentOptions.buildStringOption({ defaultValue: 'sum', section: 'ComputedField' }),
+        /**
+         * Specifies how to format the values resulting from a
+         * [`computedFieldOperation`]{@link Facet.options.computedFieldOperation}.
+         *
+         * The Globalize library defines all available formats (see
+         * [Globalize](https://github.com/klaaspieter/jquery-global#globalizeformat-value-format-culture-)).
+         *
+         * The most commonly used formats are:
+         * - `c0` - Formats the value as a currency.
+         * - `n0` - Formats the value as an integer.
+         * - `n2` - Formats the value as a floating point with 2 decimal digits.
+         *
+         * Default value is `"c0"`.
+         */
+        computedFieldFormat: ComponentOptions_1.ComponentOptions.buildStringOption({ defaultValue: 'c0', section: 'ComputedField' }),
+        /**
+         * Specifies what the caption of the [`computedField`]{@link Facet.options.computedField} should be in the facet
+         * **Settings** menu for sorting.
+         *
+         * For example, setting this option to `"Money"` will display `"Money Ascending"` for computed field ascending.
+         *
+         * **Note:**
+         * > The [`FacetRange`]{@link FacetRange} component does not support this option.
+         *
+         * Default value is the localized string for `ComputedField`.
+         */
+        computedFieldCaption: ComponentOptions_1.ComponentOptions.buildLocalizedStringOption({
+            defaultValue: Strings_1.l('ComputedField'),
+            section: 'ComputedField'
+        }),
+        /**
+         * Specifies whether the facet should remain stable in its current position in the viewport while the mouse cursor
+         * is over it.
+         *
+         * Whenever the value selection changes in a facet, the search interface automatically performs a query. This new
+         * query might cause other elements in the page to resize themselves (typically, other facets above or below the
+         * one the user is interacting with).
+         *
+         * This option is responsible for adding the `<div class='coveo-topSpace'>` and
+         * `<div class='coveo-bottomSpace'>` around the Facet container. The Facet adjusts the scroll amount of the page to
+         * ensure that it does not move relatively to the mouse when the results are updated.
+         *
+         * In some cases, the facet also adds margins to the `scrollContainer`, if scrolling alone is not enough to
+         * preserve position.
+         *
+         * See also the [`paddingContainer`]{@link Facet.options.paddingContainer}, and
+         * [`scrollContainer`]{@link Facet.options.scrollContainer} options.
+         *
+         * Default value is `true`.
+         */
+        preservePosition: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: true }),
+        /**
+         * Specifies the parent container of the facets.
+         *
+         * Used by the [`preservePosition`]{@link Facet.options.preservePosition} option.
+         *
+         * Default value is `element.parentElement`.
+         */
+        paddingContainer: ComponentOptions_1.ComponentOptions.buildSelectorOption({
+            defaultFunction: function (element) {
+                var standardColumn = Dom_1.$$(element).parent('coveo-facet-column');
+                if (standardColumn != null) {
+                    return standardColumn;
+                }
+                return element.parentElement;
+            }
+        }),
+        /**
+         * Specifies the HTML element (through a CSS selector) whose scroll amount the facet should adjust to preserve its
+         * position when results are updated.
+         *
+         * Used by the [`preservePosition`]{@link Facet.options.preservePosition} option.
+         *
+         * Default value is `document.body`.
+         */
+        scrollContainer: ComponentOptions_1.ComponentOptions.buildSelectorOption({ defaultFunction: function (element) { return document.body; } }),
+        /**
+         * Specifies whether to enable the **More** and **Less** buttons in the Facet.
+         *
+         * See also the [`pageSize`]{@link Facet.options.pageSize} option.
+         *
+         * **Note:**
+         * > The [`FacetRange`]{@link FacetRange} component does not support this option.
+         *
+         * Default value is `true`.
+         */
+        enableMoreLess: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: true }),
+        /**
+         * If the [`enableMoreLess`]{@link Facet.options.enableMoreLess} option is `true`, specifies the number of
+         * additional results to fetch when clicking the **More** button.
+         *
+         * **Note:**
+         * > The [`FacetRange`]{@link FacetRange} component does not support this option.
+         *
+         * Default value is `10`. Minimum value is `1`.
+         */
+        pageSize: ComponentOptions_1.ComponentOptions.buildNumberOption({ defaultValue: 10, min: 1, depend: 'enableMoreLess' }),
+        /**
+         * If the [`enableSettings`]{@link Facet.options.enableSettings} option is `true`, specifies whether the
+         * **Collapse \ Expand** menu option is available in the facet **Settings** menu.
+         *
+         * **Note:**
+         * > The [`FacetRange`]{@link FacetRange} component does not support this option.
+         *
+         * Default value is `true`.
+         */
+        enableCollapse: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: true, depend: 'enableSettings' }),
+        /**
+         * Specifies an explicit list of [`allowedValues`]{@link IGroupByRequest.allowedValues} in the
+         * [`GroupByRequest`]{@link IGroupByRequest}.
+         *
+         * If you specify a list of values for this option, the facet uses only these values (if they are available in
+         * the current result set).
+         *
+         * **Example:**
+         *
+         * The following facet only uses the `Contact`, `Account`, and `File` values of the `@objecttype` field. Even if the
+         * current result set contains other `@objecttype` values, such as `Message`, or `Product`, the facet does not use
+         * those other values.
+         *
+         * ```html
+         *
+         * <div class="CoveoFacet" data-field="@objecttype" data-title="Object Type" data-tab="All" data-allowed-values="Contact,Account,File"></div>
+         * ```
+         *
+         * Default value is `undefined`, and the facet uses all available values for its
+         * [`field`]{@link Facet.options.field} in the current result set.
+         */
+        allowedValues: ComponentOptions_1.ComponentOptions.buildListOption(),
+        /**
+         * Specifies an additional query expression (query override) to add to each
+         * [`GroupByRequest`]{@link IGroupByRequest} that this facet performs.
+         *
+         * Example: `@date>=2014/01/01`
+         */
+        additionalFilter: ComponentOptions_1.ComponentOptions.buildStringOption({ section: 'Filtering' }),
+        /**
+         * Specifies whether this facet only appears when a value is selected in its "parent" facet.
+         *
+         * To specify the parent facet, use its [`id`]{@link Facet.options.id}.
+         *
+         * Remember that by default, a facet `id` value is the same as its [`field`]{@link Facet.options.field} option
+         * value.
+         *
+         * **Examples:**
+         *
+         * First case: the "parent" facet has no custom `id`:
+         * ```html
+         * <!-- "Parent" Facet: -->
+         * <div class='CoveoFacet' data-field='@myfield' data-title='My Parent Facet'></div>
+         *
+         * <!-- The "dependent" Facet must refer to the default `id` of its "parent" Facet, which is the name of its field. -->
+         * <div class='CoveoFacet' data-field='@myotherfield' data-title='My Dependent Facet' data-depends-on='@myfield'></div>
+         * ```
+         *
+         * Second case: the "parent" facet has a custom `id`:
+         * ```html
+         * <!-- "Parent" Facet: -->
+         * <div class='CoveoFacet' data-field='@myfield' data-title='My Parent Facet' data-id='myParentCustomId'></div>
+         *
+         * <!-- The "dependent" Facet must refer to the custom `id` of its "parent" Facet, which is 'myParentCustomId'. -->
+         * <div class='CoveoFacet' data-field='@myotherfield data-title='My Dependent Facet' data-depends-on='myParentCustomId'></div>
+         * ```
+         *
+         * Default value is `undefined`
+         */
+        dependsOn: ComponentOptions_1.ComponentOptions.buildStringOption(),
+        /**
+         * Specifies a JSON object describing a mapping of facet values to their desired captions. See
+         * [Normalizing Facet Value Captions](https://developers.coveo.com/x/jBsvAg).
+         *
+         * **Examples:**
+         *
+         * You can set the option in the ['init']{@link init} call:
+         * ```javascript
+         * var myValueCaptions = {
+         *   "txt" : "Text files",
+         *   "html" : "Web page",
+         *   [ ... ]
+         * };
+         *
+         * Coveo.init(document.querySelector("#search"), {
+         *   Facet : {
+         *     valueCaption : myValueCaptions
+         *   }
+         * });
+         * ```
+         *
+         * Or before the `init` call, using the ['options']{@link options} top-level function:
+         * ```javascript
+         * Coveo.options(document.querySelector("#search"), {
+         *   Facet : {
+         *     valueCaption : myValueCaptions
+         *   }
+         * });
+         * ```
+         *
+         * Or directly in the markup:
+         * ```html
+         * <!-- Ensure that the double quotes are properly handled in data-value-caption. -->
+         * <div class='CoveoFacet' data-field='@myotherfield' data-value-caption='{"txt":"Text files","html":"Web page"}'></div>
+         * ```
+         *
+         * **Note:**
+         * > Using value captions will disable alphabetical sorts (see the [availableSorts]{@link Facet.options.availableSorts} option).
+         */
+        valueCaption: ComponentOptions_1.ComponentOptions.buildJsonObjectOption(),
+        /**
+         * Specifies whether to enable *responsive mode* for facets. Setting this options to `false` on any `Facet`, or
+         * [`FacetSlider`]{@link FacetSlider} component in a search interface disables responsive mode for all other facets
+         * in the search interface.
+         *
+         * Responsive mode displays all facets under a single dropdown button whenever the width of the HTML element which
+         * the search interface is bound to reaches or falls behind a certain threshold (see
+         * {@link SearchInterface.responsiveComponents}).
+         *
+         * See also the [`dropdownHeaderLabel`]{@link Facet.options.dropdownHeaderLabel} option.
+         *
+         * Default value is `true`.
+         */
+        enableResponsiveMode: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: true, section: 'ResponsiveOptions' }),
+        responsiveBreakpoint: ComponentOptions_1.ComponentOptions.buildNumberOption({
+            defaultValue: 800,
+            deprecated: 'This option is exposed for legacy reasons. It is not recommended to use this option.'
+        }),
+        /**
+         * If the [`enableResponsiveMode`]{@link Facet.options.enableResponsiveMode} option is `true` for all facets and
+         * {@link FacetSlider.options.enableResponsiveMode} is also `true` for all sliders, specifies the label of the
+         * dropdown button that allows to display the facets when in responsive mode.
+         *
+         * If more than one `Facet` or {@link FacetSlider} component in the search interface specifies a value for this
+         * option, the framework uses the first occurrence of the option.
+         *
+         * Default value is `Filters`.
+         */
+        dropdownHeaderLabel: ComponentOptions_1.ComponentOptions.buildLocalizedStringOption({ section: 'ResponsiveOptions' })
+    };
     return Facet;
 }(Component_1.Component));
-Facet.ID = 'Facet';
-Facet.omniboxIndex = 50;
-Facet.doExport = function () {
-    GlobalExports_1.exportGlobally({
-        'Facet': Facet,
-        'FacetHeader': FacetHeader_1.FacetHeader,
-        'FacetSearchValuesList': FacetSearchValuesList_1.FacetSearchValuesList,
-        'FacetSettings': FacetSettings_1.FacetSettings,
-        'FacetSort': FacetSort_1.FacetSort,
-        'FacetUtils': FacetUtils_1.FacetUtils,
-        'FacetValueElement': FacetValueElement_1.FacetValueElement,
-        'FacetValue': FacetValues_1.FacetValue
-    });
-};
-/**
- * The possible options for a facet
- * @componentOptions
- */
-Facet.options = {
-    /**
-     * Specifies the title to display at the top of the facet.
-     *
-     * Default value is the localized string for `NoTitle`.
-     */
-    title: ComponentOptions_1.ComponentOptions.buildLocalizedStringOption({
-        defaultValue: Strings_1.l('NoTitle'),
-        section: 'Identification',
-        priority: 10
-    }),
-    /**
-     * Specifies the index field whose values the facet should use.
-     *
-     * This requires the given field to be configured correctly in the index as a *Facet field* (see
-     * [Adding Fields to a Source](http://www.coveo.com/go?dest=cloudhelp&lcid=9&context=137)).
-     *
-     * Specifying a value for this option is required for the `Facet` component to work.
-     */
-    field: ComponentOptions_1.ComponentOptions.buildFieldOption({ required: true, groupByField: true, section: 'Identification' }),
-    headerIcon: ComponentOptions_1.ComponentOptions.buildStringOption({ deprecated: 'This option is exposed for legacy reasons, and the recommendation is to not use this option.' }),
-    /**
-     * Specifies a unique identifier for the facet. Among other things, this identifier serves the purpose of saving
-     * the facet state in the URL hash.
-     *
-     * If you have two facets with the same field on the same page, you should specify an `id` value for at least one of
-     * those two facets. This `id` must be unique in the page.
-     *
-     * Default value is the [`field`]{@link Facet.options.field} option value.
-     */
-    id: ComponentOptions_1.ComponentOptions.buildStringOption({
-        postProcessing: function (value, options) { return value || options.field; }
-    }),
-    /**
-     * Specifies whether the facet [`field`]{@link Facet.options.field} is configured in the index as a multi-value
-     * field (semicolon separated values such as `abc;def;ghi`).
-     *
-     * Default value is `false`.
-     */
-    isMultiValueField: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: false }),
-    lookupField: ComponentOptions_1.ComponentOptions.buildFieldOption({ deprecated: 'This option is exposed for legacy reasons, and the recommendation is to not use this option.' }),
-    /**
-     * Specifies whether to display the facet **Settings** menu.
-     *
-     * See also the [`enableSettingsFacetState`]{@link Facet.options.enableSettingsFacetState},
-     * [`availableSorts`]{@link Facet.options.availableSorts}, and
-     * [`enableCollapse`]{@link Facet.options.enableCollapse} options.
-     *
-     * **Note:**
-     * > The [`FacetRange`]{@link FacetRange} component does not support this option.
-     *
-     * Default value is `true`.
-     */
-    enableSettings: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: true, section: 'SettingsMenu', priority: 9 }),
-    /**
-     * If the [`enableSettings`]{@link Facet.options.enableSettings} option is `true`, specifies whether the
-     * **Save state** menu option is available in the facet **Settings** menu.
-     *
-     * **Note:**
-     * > The [`FacetRange`]{@link FacetRange} component does not support this option.
-     *
-     * Default value is `false`.
-     */
-    enableSettingsFacetState: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: false, depend: 'enableSettings' }),
-    /**
-     * If the [`enableSettings`]{@link Facet.options.enableSettings} option is `true`, specifies the sort criteria
-     * options to display in the facet **Settings** menu.
-     *
-     * Possible values are:
-     * - `"occurrences"`
-     * - `"score"`
-     * - `"alphaAscending"`
-     * - `alphaDescending`
-     * - `"computedfieldascending"`
-     * - `"computedfielddescending"`
-     * - `"custom"`
-     *
-     * See {@link IGroupByRequest.sortCriteria} for a description of each possible value.
-     *
-     * **Notes:**
-     * > * The [`FacetRange`]{@link FacetRange} component does not support this option.
-     *
-     * > * Using value captions will disable alphabetical sorts (see the [valueCaption]{@link Facet.options.valueCaption} option).
-     *
-     * Default value is `occurrences,score,alphaAscending,alphaDescending`.
-     */
-    availableSorts: ComponentOptions_1.ComponentOptions.buildListOption({
-        defaultValue: ['occurrences', 'score', 'alphaAscending', 'alphaDescending'],
-        values: ['Occurrences', 'Score', 'AlphaAscending', 'AlphaDescending', 'ComputedFieldAscending', 'ComputedFieldDescending', 'ChiSquare', 'NoSort'],
-        depend: 'enableSettings'
-    }),
-    /**
-     * Specifies the criteria to use to sort the facet values.
-     *
-     * See {@link IGroupByRequest.sortCriteria} for the list and description of possible values.
-     *
-     * Default value is the first sort criteria specified in the [`availableSorts`]{@link Facet.options.availableSorts}
-     * option, or `occurrences` if no sort criteria is specified.
-     */
-    sortCriteria: ComponentOptions_1.ComponentOptions.buildStringOption({ postProcessing: function (value, options) { return value || (options.availableSorts.length > 0 ? options.availableSorts[0] : 'occurrences'); } }),
-    /**
-     * Specifies a custom order by which to sort the facet values.
-     *
-     * **Example:**
-     *
-     * You could use this option to specify a logical order for support tickets, such as:
-     * ```html
-     * <div class="CoveoFacet" data-field="@ticketstatus" data-title="Ticket Status" data-tab="All" data-custom-sort="New,Opened,Feedback,Resolved"></div>
-     * ```
-     *
-     * **Note:**
-     * > The [`FacetRange`]{@link FacetRange} component does not support this option.
-     */
-    customSort: ComponentOptions_1.ComponentOptions.buildListOption({ section: 'Identification' }),
-    /**
-     * Specifies the maximum number of field values to display by default in the facet before the user
-     * clicks the arrow to show more.
-     *
-     * See also the [`enableMoreLess`]{@link Facet.options.enableMoreLess} option.
-     *
-     * Default value is `5`. Minimum value is `0`.
-     */
-    numberOfValues: ComponentOptions_1.ComponentOptions.buildNumberOption({ defaultValue: 5, min: 0, section: 'Identification' }),
-    /**
-     * Specifies the *injection depth* to use for the [`GroupByRequest`]{@link IGroupByRequest} operation.
-     *
-     * The injection depth determines how many results to scan in the index to ensure that the facet lists all potential
-     * facet values. Increasing this value enhances the accuracy of the listed values at the cost of performance.
-     *
-     * Default value is `1000`. Minimum value is `0`.
-     */
-    injectionDepth: ComponentOptions_1.ComponentOptions.buildNumberOption({ defaultValue: 1000, min: 0 }),
-    showIcon: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: false, deprecated: 'This option is exposed for legacy reasons, and the recommendation is to not use this option.' }),
-    /**
-     * Specifies whether to use the `AND` operator in the resulting filter when multiple values are selected in the
-     * facet.
-     *
-     * Setting this option to `true` means that items must have all of the selected values to match the resulting
-     * query.
-     *
-     * Default value is `false`, which means that the filter uses the `OR` operator. Thus, by default, items must
-     * have at least one of the selected values to match the query.
-     */
-    useAnd: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: false }),
-    /**
-     * Specifies whether to allow the user to toggle between the `OR` and `AND` modes in the facet.
-     *
-     * Setting this option to `true` displays an icon in the top right corner of the facet. The user can click this icon
-     * to toggle between between the two modes.
-     *
-     * Default value is `false`.
-     */
-    enableTogglingOperator: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: false, alias: 'allowTogglingOperator' }),
-    /**
-     * Specifies whether to display a search box at the bottom of the facet for searching among the available facet
-     * [`field`]{@link Facet.options.field} values.
-     *
-     * See also the [`facetSearchDelay`]{@link Facet.options.facetSearchDelay},
-     * [`facetSearchIgnoreAccents`]{@link Facet.options.facetSearchIgnoreAccents}, and
-     * [`numberOfValuesInFacetSearch`]{@link Facet.options.numberOfValuesInFacetSearch} options.
-     *
-     * **Note:**
-     * > The [`FacetRange`]{@link FacetRange} component does not support this option.
-     *
-     * Default value is `true`.
-     */
-    enableFacetSearch: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: true, section: 'FacetSearch', priority: 8 }),
-    /**
-     * If the [`enableFacetSearch`]{@link Facet.options.enableFacetSearch} option is `true`, specifies the delay (in
-     * milliseconds) before sending a search request to the server when the user starts typing in the facet search box.
-     *
-     * Specifying a smaller value makes results appear faster. However, chances of having to cancel many requests
-     * sent to the server increase as the user keeps on typing new characters.
-     *
-     * **Note:**
-     * > The [`FacetRange`]{@link FacetRange} component does not support this option.
-     *
-     * Default value is `100`. Minimum value is `0`.
-     */
-    facetSearchDelay: ComponentOptions_1.ComponentOptions.buildNumberOption({ defaultValue: 100, min: 0, depend: 'enableFacetSearch' }),
-    /**
-     * If the [`enableFacetSearch`]{@link Facet.options.enableFacetSearch} option is `true`, specifies whether to ignore
-     * accents in the facet search box.
-     *
-     * **Note:**
-     * > The [`FacetRange`]{@link FacetRange} component does not support this option.
-     *
-     * Default value is `false`.
-     */
-    facetSearchIgnoreAccents: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: false, depend: 'enableFacetSearch' }),
-    /**
-     * If the [`enableFacetSearch`]{@link Facet.options.enableFacetSearch} option is `true`, specifies the number of v
-     * alues to display in the facet search results popup.
-     *
-     * **Note:**
-     * > The [`FacetRange`]{@link FacetRange} component does not support this option.
-     *
-     * Default value is `15`. Minimum value is `1`.
-     */
-    numberOfValuesInFacetSearch: ComponentOptions_1.ComponentOptions.buildNumberOption({ defaultValue: 15, min: 1 }),
-    /**
-     * Specifies whether the facet should push data to the [`Breadcrumb`]{@link Breadcrumb} component.
-     *
-     * See also the [`numberOfValuesInBreadcrumb`]{@link Facet.options.numberOfValuesInBreadcrumb} option.
-     *
-     * Default value is `true`.
-     */
-    includeInBreadcrumb: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: true }),
-    /**
-     * If the [`includeInBreadcrumb`]{@link Facet.options.includeInBreadcrumb} option is `true`, specifies the maximum
-     * number of values that the facet should display in the [`Breadcrumb`]{@link Breadcrumb} before outputting a
-     * **more...** button.
-     *
-     * Default value is `5` on a desktop computer and `3` on a mobile device. Minimum value is `0`.
-     */
-    numberOfValuesInBreadcrumb: ComponentOptions_1.ComponentOptions.buildNumberOption({ defaultFunction: function () { return DeviceUtils_1.DeviceUtils.isMobileDevice() ? 3 : 5; }, min: 0, depend: 'includeInBreadcrumb' }),
-    includeInOmnibox: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: false, deprecated: 'This option is exposed for legacy reasons, and the recommendation is to not use this option.' }),
-    numberOfValuesInOmnibox: ComponentOptions_1.ComponentOptions.buildNumberOption({ defaultFunction: function () { return DeviceUtils_1.DeviceUtils.isMobileDevice() ? 3 : 5; }, min: 0, depend: 'includeInOmnibox', deprecated: 'This option is exposed for legacy reasons, and the recommendation is to not use this option.' }),
-    /**
-     * Specifies the name of a field on which to execute an aggregate operation for all distinct values of the facet
-     * [`field`]{@link Facet.options.field}.
-     *
-     * The facet displays the result of the operation along with the number of occurrences for each value.
-     *
-     * You can use this option to compute the sum of a field (like a money amount) for each listed facet value.
-     *
-     * Works in conjunction with the [`computedFieldOperation`]{@link Facet.options.computedFieldOperation},
-     * [`computedFieldFormat`]{@link Facet.options.computedFieldFormat}, and
-     * [`computedFieldCaption`]{@link Facet.options.computedFieldCaption} options.
-     */
-    computedField: ComponentOptions_1.ComponentOptions.buildFieldOption({ section: 'ComputedField', priority: 7 }),
-    /**
-     * Specifies the type of aggregate operation to perform on the [`computedField`]{@link Facet.options.computedField}.
-     *
-     * The possible values are:
-     * - `sum` - Computes the sum of the computed field values.
-     * - `average` - Computes the average of the computed field values.
-     * - `minimum` - Finds the minimum value of the computed field values.
-     * - `maximum` - Finds the maximum value of the computed field values.
-     *
-     * Default value is `sum`.
-     */
-    computedFieldOperation: ComponentOptions_1.ComponentOptions.buildStringOption({ defaultValue: 'sum', section: 'ComputedField' }),
-    /**
-     * Specifies how to format the values resulting from a
-     * [`computedFieldOperation`]{@link Facet.options.computedFieldOperation}.
-     *
-     * The Globalize library defines all available formats (see
-     * [Globalize](https://github.com/klaaspieter/jquery-global#globalizeformat-value-format-culture-)).
-     *
-     * The most commonly used formats are:
-     * - `c0` - Formats the value as a currency.
-     * - `n0` - Formats the value as an integer.
-     * - `n2` - Formats the value as a floating point with 2 decimal digits.
-     *
-     * Default value is `"c0"`.
-     */
-    computedFieldFormat: ComponentOptions_1.ComponentOptions.buildStringOption({ defaultValue: 'c0', section: 'ComputedField' }),
-    /**
-     * Specifies what the caption of the [`computedField`]{@link Facet.options.computedField} should be in the facet
-     * **Settings** menu for sorting.
-     *
-     * For example, setting this option to `"Money"` will display `"Money Ascending"` for computed field ascending.
-     *
-     * **Note:**
-     * > The [`FacetRange`]{@link FacetRange} component does not support this option.
-     *
-     * Default value is the localized string for `ComputedField`.
-     */
-    computedFieldCaption: ComponentOptions_1.ComponentOptions.buildLocalizedStringOption({ defaultValue: Strings_1.l('ComputedField'), section: 'ComputedField' }),
-    /**
-     * Specifies whether the facet should remain stable in its current position in the viewport while the mouse cursor
-     * is over it.
-     *
-     * Whenever the value selection changes in a facet, the search interface automatically performs a query. This new
-     * query might cause other elements in the page to resize themselves (typically, other facets above or below the
-     * one the user is interacting with).
-     *
-     * This option is responsible for adding the `<div class='coveo-topSpace'>` and
-     * `<div class='coveo-bottomSpace'>` around the Facet container. The Facet adjusts the scroll amount of the page to
-     * ensure that it does not move relatively to the mouse when the results are updated.
-     *
-     * In some cases, the facet also adds margins to the `scrollContainer`, if scrolling alone is not enough to
-     * preserve position.
-     *
-     * See also the [`paddingContainer`]{@link Facet.options.paddingContainer}, and
-     * [`scrollContainer`]{@link Facet.options.scrollContainer} options.
-     *
-     * Default value is `true`.
-     */
-    preservePosition: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: true }),
-    /**
-     * Specifies the parent container of the facets.
-     *
-     * Used by the [`preservePosition`]{@link Facet.options.preservePosition} option.
-     *
-     * Default value is `element.parentElement`.
-     */
-    paddingContainer: ComponentOptions_1.ComponentOptions.buildSelectorOption({
-        defaultFunction: function (element) {
-            var standardColumn = Dom_1.$$(element).parent('coveo-facet-column');
-            if (standardColumn != null) {
-                return standardColumn;
-            }
-            return element.parentElement;
-        }
-    }),
-    /**
-     * Specifies the HTML element (through a CSS selector) whose scroll amount the facet should adjust to preserve its
-     * position when results are updated.
-     *
-     * Used by the [`preservePosition`]{@link Facet.options.preservePosition} option.
-     *
-     * Default value is `document.body`.
-     */
-    scrollContainer: ComponentOptions_1.ComponentOptions.buildSelectorOption({ defaultFunction: function (element) { return document.body; } }),
-    /**
-     * Specifies whether to enable the **More** and **Less** buttons in the Facet.
-     *
-     * See also the [`pageSize`]{@link Facet.options.pageSize} option.
-     *
-     * **Note:**
-     * > The [`FacetRange`]{@link FacetRange} component does not support this option.
-     *
-     * Default value is `true`.
-     */
-    enableMoreLess: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: true }),
-    /**
-     * If the [`enableMoreLess`]{@link Facet.options.enableMoreLess} option is `true`, specifies the number of
-     * additional results to fetch when clicking the **More** button.
-     *
-     * **Note:**
-     * > The [`FacetRange`]{@link FacetRange} component does not support this option.
-     *
-     * Default value is `10`. Minimum value is `1`.
-     */
-    pageSize: ComponentOptions_1.ComponentOptions.buildNumberOption({ defaultValue: 10, min: 1, depend: 'enableMoreLess' }),
-    /**
-     * If the [`enableSettings`]{@link Facet.options.enableSettings} option is `true`, specifies whether the
-     * **Collapse \ Expand** menu option is available in the facet **Settings** menu.
-     *
-     * **Note:**
-     * > The [`FacetRange`]{@link FacetRange} component does not support this option.
-     *
-     * Default value is `true`.
-     */
-    enableCollapse: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: true, depend: 'enableSettings' }),
-    /**
-     * Specifies an explicit list of [`allowedValues`]{@link IGroupByRequest.allowedValues} in the
-     * [`GroupByRequest`]{@link IGroupByRequest}.
-     *
-     * If you specify a list of values for this option, the facet uses only these values (if they are available in
-     * the current result set).
-     *
-     * **Example:**
-     *
-     * The following facet only uses the `Contact`, `Account`, and `File` values of the `@objecttype` field. Even if the
-     * current result set contains other `@objecttype` values, such as `Message`, or `Product`, the facet does not use
-     * those other values.
-     *
-     * ```html
-     *
-     * <div class="CoveoFacet" data-field="@objecttype" data-title="Object Type" data-tab="All" data-allowed-values="Contact,Account,File"></div>
-     * ```
-     *
-     * Default value is `undefined`, and the facet uses all available values for its
-     * [`field`]{@link Facet.options.field} in the current result set.
-     */
-    allowedValues: ComponentOptions_1.ComponentOptions.buildListOption(),
-    /**
-     * Specifies an additional query expression (query override) to add to each
-     * [`GroupByRequest`]{@link IGroupByRequest} that this facet performs.
-     *
-     * Example: `@date>=2014/01/01`
-     */
-    additionalFilter: ComponentOptions_1.ComponentOptions.buildStringOption(),
-    /**
-     * Specifies whether this facet only appears when a value is selected in its "parent" facet.
-     *
-     * To specify the parent facet, use its [`id`]{@link Facet.options.id}.
-     *
-     * Remember that by default, a facet `id` value is the same as its [`field`]{@link Facet.options.field} option
-     * value.
-     *
-     * **Examples:**
-     *
-     * First case: the "parent" facet has no custom `id`:
-     * ```html
-     * <!-- "Parent" Facet: -->
-     * <div class='CoveoFacet' data-field='@myfield' data-title='My Parent Facet'></div>
-     *
-     * <!-- The "dependent" Facet must refer to the default `id` of its "parent" Facet, which is the name of its field. -->
-     * <div class='CoveoFacet' data-field='@myotherfield' data-title='My Dependent Facet' data-depends-on='@myfield'></div>
-     * ```
-     *
-     * Second case: the "parent" facet has a custom `id`:
-     * ```html
-     * <!-- "Parent" Facet: -->
-     * <div class='CoveoFacet' data-field='@myfield' data-title='My Parent Facet' data-id='myParentCustomId'></div>
-     *
-     * <!-- The "dependent" Facet must refer to the custom `id` of its "parent" Facet, which is 'myParentCustomId'. -->
-     * <div class='CoveoFacet' data-field='@myotherfield data-title='My Dependent Facet' data-depends-on='myParentCustomId'></div>
-     * ```
-     *
-     * Default value is `undefined`
-     */
-    dependsOn: ComponentOptions_1.ComponentOptions.buildStringOption(),
-    /**
-     * Specifies a JSON object describing a mapping of facet values to their desired captions. See
-     * [Normalizing Facet Value Captions](https://developers.coveo.com/x/jBsvAg).
-     *
-     * **Examples:**
-     *
-     * You can set the option in the ['init']{@link init} call:
-     * ```javascript
-     * var myValueCaptions = {
-     *   "txt" : "Text files",
-     *   "html" : "Web page",
-     *   [ ... ]
-     * };
-     *
-     * Coveo.init(document.querySelector("#search"), {
-     *   Facet : {
-     *     valueCaption : myValueCaptions
-     *   }
-     * });
-     * ```
-     *
-     * Or before the `init` call, using the ['options']{@link options} top-level function:
-     * ```javascript
-     * Coveo.options(document.querySelector("#search"), {
-     *   Facet : {
-     *     valueCaption : myValueCaptions
-     *   }
-     * });
-     * ```
-     *
-     * Or directly in the markup:
-     * ```html
-     * <!-- Ensure that the double quotes are properly handled in data-value-caption. -->
-     * <div class='CoveoFacet' data-field='@myotherfield' data-value-caption='{"txt":"Text files","html":"Web page"}></div>
-     * ```
-     *
-     * **Note:**
-     * > Using value captions will disable alphabetical sorts (see the [availableSorts]{@link Facet.options.availableSorts} option).
-     */
-    valueCaption: ComponentOptions_1.ComponentOptions.buildJsonObjectOption(),
-    /**
-     * Specifies whether to enable *responsive mode* for facets. Setting this options to `false` on any `Facet`, or
-     * [`FacetSlider`]{@link FacetSlider} component in a search interface disables responsive mode for all other facets
-     * in the search interface.
-     *
-     * Responsive mode displays all facets under a single dropdown button whenever the width of the HTML element which
-     * the search interface is bound to reaches or falls behind a certain threshold (see
-     * {@link SearchInterface.responsiveComponents}).
-     *
-     * See also the [`dropdownHeaderLabel`]{@link Facet.options.dropdownHeaderLabel} option.
-     *
-     * Default value is `true`.
-     */
-    enableResponsiveMode: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: true }),
-    responsiveBreakpoint: ComponentOptions_1.ComponentOptions.buildNumberOption({ defaultValue: 800, deprecated: 'This option is exposed for legacy reasons, and the recommendation is to not use this option.' }),
-    /**
-     * If the [`enableResponsiveMode`]{@link Facet.options.enableResponsiveMode} option is `true` for all facets and
-     * {@link FacetSlider.options.enableResponsiveMode} is also `true` for all sliders, specifies the label of the
-     * dropdown button that allows to display the facets when in responsive mode.
-     *
-     * If more than one `Facet` or {@link FacetSlider} component in the search interface specifies a value for this
-     * option, the framework uses the first occurrence of the option.
-     *
-     * Default value is `Filters`.
-     */
-    dropdownHeaderLabel: ComponentOptions_1.ComponentOptions.buildLocalizedStringOption()
-};
 exports.Facet = Facet;
 Initialization_1.Initialization.registerAutoCreateComponent(Facet);
 Facet.doExport();
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(6)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5)))
 
 /***/ }),
 
-/***/ 90:
+/***/ 77:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var Dom_1 = __webpack_require__(3);
-var InitializationEvents_1 = __webpack_require__(18);
+var InitializationEvents_1 = __webpack_require__(17);
 var Component_1 = __webpack_require__(8);
-var SearchInterface_1 = __webpack_require__(22);
-var Utils_1 = __webpack_require__(5);
+var SearchInterface_1 = __webpack_require__(20);
+var Utils_1 = __webpack_require__(6);
 var _ = __webpack_require__(1);
 var QueryEvents_1 = __webpack_require__(11);
 var Logger_1 = __webpack_require__(14);
-var ResponsiveComponentsManager = (function () {
+var ResponsiveComponentsManager = /** @class */ (function () {
     function ResponsiveComponentsManager(root) {
         var _this = this;
         this.disabledComponents = [];
         this.responsiveComponents = [];
         this.coveoRoot = root;
         this.searchInterface = Component_1.Component.get(this.coveoRoot.el, SearchInterface_1.SearchInterface, false);
-        this.dropdownHeadersWrapper = Dom_1.$$('div', { className: ResponsiveComponentsManager.DROPDOWN_HEADER_WRAPPER_CSS_CLASS });
+        this.dropdownHeadersWrapper = Dom_1.$$('div', {
+            className: ResponsiveComponentsManager.DROPDOWN_HEADER_WRAPPER_CSS_CLASS
+        });
         this.searchBoxElement = this.getSearchBoxElement();
         this.logger = new Logger_1.Logger(this);
         this.resizeListener = _.debounce(function () {
@@ -6173,7 +6381,8 @@ var ResponsiveComponentsManager = (function () {
                 });
             }
             else {
-                _this.logger.warn("The width of the search interface is 0, cannot dispatch resize events to responsive components. This means that the tabs will not\n        automatically fit in the tab section. Also, the facet and recommendation component will not hide in a menu. Could the search\n        interface display property be none? Could its visibility property be set to hidden? Also, if either of these scenarios happen during\n        loading, it could be the cause of this issue.");
+                _this.logger
+                    .warn("The width of the search interface is 0, cannot dispatch resize events to responsive components. This means that the tabs will not\n        automatically fit in the tab section. Also, the facet and recommendation component will not hide in a menu. Could the search\n        interface display property be none? Could its visibility property be set to hidden? Also, if either of these scenarios happen during\n        loading, it could be the cause of this issue.");
             }
         }, ResponsiveComponentsManager.RESIZE_DEBOUNCE_DELAY, true);
         window.addEventListener('resize', this.resizeListener);
@@ -6308,472 +6517,387 @@ var ResponsiveComponentsManager = (function () {
             window.removeEventListener('resize', _this.resizeListener);
         });
     };
+    ResponsiveComponentsManager.DROPDOWN_HEADER_WRAPPER_CSS_CLASS = 'coveo-dropdown-header-wrapper';
+    ResponsiveComponentsManager.RESIZE_DEBOUNCE_DELAY = 200;
+    ResponsiveComponentsManager.componentManagers = [];
+    ResponsiveComponentsManager.remainingComponentInitializations = 0;
+    ResponsiveComponentsManager.componentInitializations = [];
     return ResponsiveComponentsManager;
 }());
-ResponsiveComponentsManager.DROPDOWN_HEADER_WRAPPER_CSS_CLASS = 'coveo-dropdown-header-wrapper';
-ResponsiveComponentsManager.RESIZE_DEBOUNCE_DELAY = 200;
-ResponsiveComponentsManager.componentManagers = [];
-ResponsiveComponentsManager.remainingComponentInitializations = 0;
-ResponsiveComponentsManager.componentInitializations = [];
 exports.ResponsiveComponentsManager = ResponsiveComponentsManager;
 
 
 /***/ }),
 
-/***/ 926:
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-
-/***/ 954:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function(Promise) {
-/// <reference path="../ui/HierarchicalFacet/HierarchicalFacet.ts" />
-/// <reference path="./FacetQueryController.ts" />
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-Object.defineProperty(exports, "__esModule", { value: true });
-var FacetQueryController_1 = __webpack_require__(302);
-var FacetUtils_1 = __webpack_require__(48);
-var _ = __webpack_require__(1);
-var HierarchicalFacetQueryController = (function (_super) {
-    __extends(HierarchicalFacetQueryController, _super);
-    function HierarchicalFacetQueryController(facet) {
-        var _this = _super.call(this, facet) || this;
-        _this.facet = facet;
-        return _this;
-    }
-    HierarchicalFacetQueryController.prototype.search = function (params, oldLength) {
-        var _this = this;
-        if (oldLength === void 0) { oldLength = params.nbResults; }
-        // Do a client side search, since HierarchicalFacet should normally have all value client side
-        var regex = FacetUtils_1.FacetUtils.getRegexToUseForFacetSearch(this.facet.facetSearch.getValueInInputForFacetSearch(), this.facet.options.facetSearchIgnoreAccents);
-        return new Promise(function (resolve) {
-            var match = _.chain(_this.facet.getAllValueHierarchy())
-                .toArray()
-                .filter(function (v) {
-                return _this.facet.getValueCaption(v.facetValue).match(regex) != null;
-            })
-                .first(_this.facet.options.numberOfValuesInFacetSearch)
-                .value();
-            resolve(_.map(match, function (v) {
-                return v.facetValue;
-            }));
-        });
-    };
-    HierarchicalFacetQueryController.prototype.getAllowedValuesFromSelected = function () {
-        return [];
-    };
-    return HierarchicalFacetQueryController;
-}(FacetQueryController_1.FacetQueryController));
-exports.HierarchicalFacetQueryController = HierarchicalFacetQueryController;
-
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(6)))
-
-/***/ }),
-
-/***/ 967:
+/***/ 88:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
 Object.defineProperty(exports, "__esModule", { value: true });
-var BreadcrumbValueElement_1 = __webpack_require__(502);
-var _ = __webpack_require__(1);
-var HierarchicalBreadcrumbValueElement = (function (_super) {
-    __extends(HierarchicalBreadcrumbValueElement, _super);
-    function HierarchicalBreadcrumbValueElement(facet, facetValue) {
-        var _this = _super.call(this, facet, facetValue) || this;
-        _this.facet = facet;
-        _this.facetValue = facetValue;
-        return _this;
+var ResponsiveComponentsUtils = /** @class */ (function () {
+    function ResponsiveComponentsUtils() {
     }
-    HierarchicalBreadcrumbValueElement.prototype.build = function () {
-        var build = _super.prototype.build.call(this);
-        build.addClass('coveo-hierarchical-facet-value');
-        var caption = build.find('.coveo-facet-breadcrumb-caption');
-        var values = this.facetValue.value.split(this.facet.options.delimitingCharacter);
-        values = _.map(values, function (v) {
-            return _.escape(v);
-        });
-        caption.innerHTML = values.join('<span class=\'coveo-hierarchical-breadcrumb-separator\'></span>');
-        return build;
+    ResponsiveComponentsUtils.shouldDrawFacetSlider = function (root) {
+        return !this.isSmallFacetActivated(root) && !this.isSmallRecommendationActivated(root);
     };
-    return HierarchicalBreadcrumbValueElement;
-}(BreadcrumbValueElement_1.BreadcrumbValueElement));
-exports.HierarchicalBreadcrumbValueElement = HierarchicalBreadcrumbValueElement;
+    ResponsiveComponentsUtils.isSmallTabsActivated = function (root) {
+        return root.hasClass(this.smallTabsClassName);
+    };
+    ResponsiveComponentsUtils.isSmallFacetActivated = function (root) {
+        return root.hasClass(this.smallFacetClassName);
+    };
+    ResponsiveComponentsUtils.isSmallRecommendationActivated = function (root) {
+        return root.hasClass(this.smallRecommendationClassName);
+    };
+    ResponsiveComponentsUtils.activateSmallTabs = function (root) {
+        root.addClass(this.smallTabsClassName);
+    };
+    ResponsiveComponentsUtils.deactivateSmallTabs = function (root) {
+        root.removeClass(this.smallTabsClassName);
+    };
+    ResponsiveComponentsUtils.activateSmallFacet = function (root) {
+        root.addClass(this.smallFacetClassName);
+    };
+    ResponsiveComponentsUtils.deactivateSmallFacet = function (root) {
+        root.removeClass(this.smallFacetClassName);
+    };
+    ResponsiveComponentsUtils.activateSmallRecommendation = function (root) {
+        root.addClass(this.smallRecommendationClassName);
+    };
+    ResponsiveComponentsUtils.deactivateSmallRecommendation = function (root) {
+        root.removeClass(this.smallRecommendationClassName);
+    };
+    ResponsiveComponentsUtils.smallTabsClassName = 'coveo-small-tabs';
+    ResponsiveComponentsUtils.smallFacetClassName = 'coveo-small-facets';
+    ResponsiveComponentsUtils.smallRecommendationClassName = 'coveo-small-recommendation';
+    return ResponsiveComponentsUtils;
+}());
+exports.ResponsiveComponentsUtils = ResponsiveComponentsUtils;
 
 
 /***/ }),
 
-/***/ 968:
+/***/ 89:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-/// <reference path="HierarchicalFacet.ts" />
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
 Object.defineProperty(exports, "__esModule", { value: true });
-var BreadcrumbValuesList_1 = __webpack_require__(503);
-var HierarchicalBreadcrumbValueElement_1 = __webpack_require__(967);
-var Dom_1 = __webpack_require__(3);
+var Assert_1 = __webpack_require__(7);
+var Utils_1 = __webpack_require__(6);
+var Globalize = __webpack_require__(25);
 var _ = __webpack_require__(1);
-var HierarchicalBreadcrumbValuesList = (function (_super) {
-    __extends(HierarchicalBreadcrumbValuesList, _super);
-    function HierarchicalBreadcrumbValuesList(facet, facetValues, valueHierarchy) {
-        var _this = _super.call(this, facet, facetValues, HierarchicalBreadcrumbValueElement_1.HierarchicalBreadcrumbValueElement) || this;
-        _this.facet = facet;
-        _this.facetValues = facetValues;
-        _this.valueHierarchy = valueHierarchy;
-        return _this;
+/**
+ * A class which holds information and operation available on a single facet value returned by a {@link IGroupByRequest}.<br/>
+ * This class is used extensively in the {@link Facet} component.
+ */
+var FacetValue = /** @class */ (function () {
+    function FacetValue() {
+        this.selected = false;
+        this.excluded = false;
+        this.waitingForDelta = false;
     }
-    HierarchicalBreadcrumbValuesList.prototype.buildAsString = function () {
-        this.build();
-        if (this.elem) {
-            var joined = this.facet.options.title + ": " + _.map(Dom_1.$$(this.elem).findAll('.coveo-facet-breadcrumb-value'), function (value) {
-                _.each(Dom_1.$$(value).findAll('.coveo-hierarchical-breadcrumb-separator'), function (separator) {
-                    // small right black triangle
-                    Dom_1.$$(separator).text('\u25B8');
-                });
-                return Dom_1.$$(value).text();
-            }).join(', ');
-            return joined;
+    FacetValue.prototype.reset = function () {
+        this.selected = false;
+        this.excluded = false;
+    };
+    FacetValue.prototype.updateCountsFromNewValue = function (newValue) {
+        Assert_1.Assert.exists(newValue);
+        this.occurrences = newValue.occurrences;
+        this.delta = newValue.delta;
+        this.computedField = newValue.computedField;
+    };
+    FacetValue.prototype.clone = function () {
+        this.computedField = undefined;
+        this.delta = undefined;
+        return this;
+    };
+    FacetValue.prototype.cloneWithZeroOccurrences = function () {
+        this.occurrences = 0;
+        return this.clone();
+    };
+    FacetValue.prototype.cloneWithDelta = function (count, delta) {
+        Assert_1.Assert.isLargerOrEqualsThan(0, count);
+        var clone = this.cloneWithZeroOccurrences();
+        clone.delta = delta;
+        clone.occurrences = count;
+        return clone;
+    };
+    FacetValue.prototype.getFormattedCount = function () {
+        var count = undefined;
+        if (Utils_1.Utils.exists(this.delta) && this.delta > 0) {
+            count = '+' + Globalize.format(this.delta, 'n0');
         }
-        return '';
-    };
-    return HierarchicalBreadcrumbValuesList;
-}(BreadcrumbValuesList_1.BreadcrumbValueList));
-exports.HierarchicalBreadcrumbValuesList = HierarchicalBreadcrumbValuesList;
-
-
-/***/ }),
-
-/***/ 969:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-/// <reference path="HierarchicalFacet.ts" />
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-Object.defineProperty(exports, "__esModule", { value: true });
-var FacetSearch_1 = __webpack_require__(504);
-var FacetSearchParameters_1 = __webpack_require__(266);
-var FacetValues_1 = __webpack_require__(106);
-var Utils_1 = __webpack_require__(5);
-var ExternalModulesShim_1 = __webpack_require__(28);
-var _ = __webpack_require__(1);
-var HierarchicalFacetSearch = (function (_super) {
-    __extends(HierarchicalFacetSearch, _super);
-    function HierarchicalFacetSearch(facet, facetSearchValuesListKlass, root) {
-        var _this = _super.call(this, facet, facetSearchValuesListKlass, root) || this;
-        _this.facet = facet;
-        _this.facetSearchValuesListKlass = facetSearchValuesListKlass;
-        return _this;
-    }
-    HierarchicalFacetSearch.prototype.buildParamsForExcludingCurrentlyDisplayedValues = function () {
-        var params = _super.prototype.buildParamsForExcludingCurrentlyDisplayedValues.call(this);
-        params.alwaysExclude = this.facet.getDisplayedValues();
-        if (this.facet.facetSearch.currentlyDisplayedResults) {
-            params.alwaysExclude = params.alwaysExclude.concat(this.facet.facetSearch.currentlyDisplayedResults);
-        }
-        return params;
-    };
-    HierarchicalFacetSearch.prototype.selectAllValuesMatchingSearch = function () {
-        var _this = this;
-        this.facet.showWaitingAnimation();
-        var searchParameters = new FacetSearchParameters_1.FacetSearchParameters(this.facet);
-        searchParameters.nbResults = this.facet.numberOfValues;
-        searchParameters.alwaysInclude = this.facet.getDisplayedValues();
-        searchParameters.setValueToSearch(this.getValueInInputForFacetSearch());
-        this.facet.facetQueryController.search(searchParameters).then(function (fieldValues) {
-            _this.completelyDismissSearch();
-            ExternalModulesShim_1.ModalBox.close(true);
-            var facetValues = _this.getFacetValues(fieldValues);
-            _this.facet.processFacetSearchAllResultsSelected(facetValues);
-        });
-        this.completelyDismissSearch();
-    };
-    HierarchicalFacetSearch.prototype.getFacetValues = function (fieldValues) {
-        var _this = this;
-        var values = [];
-        _.each(fieldValues, function (fieldValue) {
-            var hierarchy = _this.facet.getValueFromHierarchy(fieldValue.value);
-            values.push(_this.createFacetValuesFromHierarchy(hierarchy));
-        });
-        return _.flatten(values);
-    };
-    HierarchicalFacetSearch.prototype.createFacetValuesFromHierarchy = function (hierarchy) {
-        var _this = this;
-        var values = [];
-        var fieldValue = hierarchy.facetValue.value;
-        var facetValue = this.facet.values.get(fieldValue);
-        if (!Utils_1.Utils.exists(facetValue)) {
-            facetValue = FacetValues_1.FacetValue.create(fieldValue);
-        }
-        facetValue.selected = true;
-        facetValue.excluded = false;
-        values.push(facetValue);
-        var childs = hierarchy.childs;
-        _.each(childs, function (child) {
-            var childHierarchy = _this.facet.getValueFromHierarchy(child.facetValue.value);
-            values.push(_this.createFacetValuesFromHierarchy(childHierarchy));
-        });
-        return values;
-    };
-    return HierarchicalFacetSearch;
-}(FacetSearch_1.FacetSearch));
-exports.HierarchicalFacetSearch = HierarchicalFacetSearch;
-
-
-/***/ }),
-
-/***/ 970:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-Object.defineProperty(exports, "__esModule", { value: true });
-var FacetValueElement_1 = __webpack_require__(105);
-var HierarchicalFacetSearchValueElement = (function (_super) {
-    __extends(HierarchicalFacetSearchValueElement, _super);
-    function HierarchicalFacetSearchValueElement(facet, facetValue, keepDisplayedValueNextTime) {
-        var _this = _super.call(this, facet, facetValue, keepDisplayedValueNextTime) || this;
-        _this.facet = facet;
-        _this.facetValue = facetValue;
-        _this.keepDisplayedValueNextTime = keepDisplayedValueNextTime;
-        return _this;
-    }
-    HierarchicalFacetSearchValueElement.prototype._handleSelectValue = function (eventBindings) {
-        this.facet.open(this.facetValue);
-        _super.prototype.handleSelectValue.call(this, eventBindings);
-    };
-    HierarchicalFacetSearchValueElement.prototype._handleExcludeClick = function (eventBindings) {
-        this.facet.open(this.facetValue);
-        _super.prototype.handleExcludeClick.call(this, eventBindings);
-    };
-    return HierarchicalFacetSearchValueElement;
-}(FacetValueElement_1.FacetValueElement));
-exports.HierarchicalFacetSearchValueElement = HierarchicalFacetSearchValueElement;
-
-
-/***/ }),
-
-/***/ 971:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-/// <reference path="../Facet/Facet.ts" />
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-Object.defineProperty(exports, "__esModule", { value: true });
-var FacetSearchValuesList_1 = __webpack_require__(505);
-var HierarchicalFacetSearchValueElement_1 = __webpack_require__(970);
-var HierarchicalFacetSearchValuesList = (function (_super) {
-    __extends(HierarchicalFacetSearchValuesList, _super);
-    function HierarchicalFacetSearchValuesList(facet) {
-        var _this = _super.call(this, facet, HierarchicalFacetSearchValueElement_1.HierarchicalFacetSearchValueElement) || this;
-        _this.facet = facet;
-        return _this;
-    }
-    return HierarchicalFacetSearchValuesList;
-}(FacetSearchValuesList_1.FacetSearchValuesList));
-exports.HierarchicalFacetSearchValuesList = HierarchicalFacetSearchValuesList;
-
-
-/***/ }),
-
-/***/ 972:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-/// <reference path="HierarchicalFacet.ts" />
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-Object.defineProperty(exports, "__esModule", { value: true });
-var FacetValueElement_1 = __webpack_require__(105);
-var HierarchicalFacetValueElement = (function (_super) {
-    __extends(HierarchicalFacetValueElement, _super);
-    function HierarchicalFacetValueElement(facet, facetValue, keepDisplayedValueNextTime) {
-        var _this = _super.call(this, facet, facetValue, keepDisplayedValueNextTime) || this;
-        _this.facet = facet;
-        _this.facetValue = facetValue;
-        _this.keepDisplayedValueNextTime = keepDisplayedValueNextTime;
-        return _this;
-    }
-    return HierarchicalFacetValueElement;
-}(FacetValueElement_1.FacetValueElement));
-exports.HierarchicalFacetValueElement = HierarchicalFacetValueElement;
-
-
-/***/ }),
-
-/***/ 973:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-/// <reference path="HierarchicalFacet.ts" />
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-Object.defineProperty(exports, "__esModule", { value: true });
-var FacetValuesList_1 = __webpack_require__(506);
-var _ = __webpack_require__(1);
-var HierarchicalFacetValuesList = (function (_super) {
-    __extends(HierarchicalFacetValuesList, _super);
-    function HierarchicalFacetValuesList(facet, facetValueElementKlass) {
-        var _this = _super.call(this, facet, facetValueElementKlass) || this;
-        _this.facet = facet;
-        _this.facetValueElementKlass = facetValueElementKlass;
-        return _this;
-    }
-    HierarchicalFacetValuesList.prototype.sortFacetValues = function (hierarchyFacetValues) {
-        var _this = this;
-        if (hierarchyFacetValues === void 0) { hierarchyFacetValues = this.hierarchyFacetValues; }
-        if (!this.facet.shouldReshuffleFacetValuesClientSide) {
-            var sortArray = _.map(hierarchyFacetValues, function (hierarchy, idx) {
-                return {
-                    hierarchy: hierarchy,
-                    idx: idx
-                };
-            });
-            // If we exclude the top level, the alpha order is not respected (since it is done by the index, and the first level is omitted by client side code).
-            // Do the ordering client side, in the precise case where its alpha ordering and the starting level is not 0;
-            if (this.facet.options.levelStart != 0 && this.facet.options.sortCriteria && this.facet.options.sortCriteria.toLowerCase().indexOf('alpha') != -1) {
-                var reversed_1 = this.facet.options.sortCriteria.toLowerCase().indexOf('descending') != -1;
-                sortArray = sortArray.sort(function (first, second) {
-                    var firstInTopLevel = _.find(_this.facet.topLevelHierarchy, function (hierarchy) {
-                        return hierarchy.facetValue.value.toLowerCase() == first.hierarchy.value.toLowerCase();
-                    }) != null;
-                    var secondInTopLevel = _.find(_this.facet.topLevelHierarchy, function (hierarchy) {
-                        return hierarchy.facetValue.value.toLowerCase() == first.hierarchy.value.toLowerCase();
-                    }) != null;
-                    if (firstInTopLevel && secondInTopLevel) {
-                        var firstValue = _this.facet.getValueCaption(first.hierarchy);
-                        var secondValue = _this.facet.getValueCaption(second.hierarchy);
-                        var compared = firstValue.localeCompare(secondValue);
-                        return reversed_1 ? -1 * compared : compared;
-                    }
-                    return first.idx - second.idx;
-                });
+        else {
+            if (this.occurrences > 0) {
+                count = Globalize.format(this.occurrences, 'n0');
             }
-            // Normally facet values are sorted by selected first, then inactive, then excluded values.
-            // For hierarchical, we want selected first, then those that have childs selected, then normal sorting.
-            sortArray = sortArray.sort(function (first, second) {
-                if (first.hierarchy.selected === second.hierarchy.selected) {
-                    var firstFromHierarchy = _this.facet.getValueFromHierarchy(first.hierarchy);
-                    var secondFromHierarchy = _this.facet.getValueFromHierarchy(second.hierarchy);
-                    if (firstFromHierarchy.hasChildSelected === secondFromHierarchy.hasChildSelected) {
-                        return first.idx - second.idx;
+        }
+        return count;
+    };
+    FacetValue.prototype.getFormattedComputedField = function (format) {
+        if (this.computedField != 0) {
+            return Globalize.format(this.computedField, format);
+        }
+        else {
+            return undefined;
+        }
+    };
+    FacetValue.create = function (value) {
+        if (_.isString(value)) {
+            return FacetValue.createFromValue(value);
+        }
+        else if (_.isObject(value)) {
+            if ('computedFieldResults' in value) {
+                return FacetValue.createFromGroupByValue(value);
+            }
+            else {
+                return FacetValue.createFromFieldValue(value);
+            }
+        }
+        else {
+            throw new Error("Can't create value from " + value);
+        }
+    };
+    FacetValue.createFromValue = function (value) {
+        Assert_1.Assert.isNonEmptyString(value);
+        var facetValue = new FacetValue();
+        facetValue.value = value;
+        facetValue.lookupValue = value;
+        return facetValue;
+    };
+    FacetValue.createFromGroupByValue = function (groupByValue) {
+        Assert_1.Assert.exists(groupByValue);
+        Assert_1.Assert.exists(groupByValue);
+        var facetValue = new FacetValue();
+        facetValue.value = groupByValue.value;
+        facetValue.lookupValue = Utils_1.Utils.exists(groupByValue.lookupValue) ? groupByValue.lookupValue : groupByValue.value;
+        facetValue.occurrences = groupByValue.numberOfResults;
+        facetValue.computedField = Utils_1.Utils.isNonEmptyArray(groupByValue.computedFieldResults) ? groupByValue.computedFieldResults[0] : undefined;
+        facetValue.score = groupByValue.score;
+        return facetValue;
+    };
+    FacetValue.createFromFieldValue = function (fieldValue) {
+        Assert_1.Assert.exists(fieldValue);
+        var facetValue = new FacetValue();
+        facetValue.value = fieldValue.value;
+        facetValue.lookupValue = fieldValue.lookupValue;
+        facetValue.occurrences = fieldValue.numberOfResults;
+        return facetValue;
+    };
+    return FacetValue;
+}());
+exports.FacetValue = FacetValue;
+var FacetValues = /** @class */ (function () {
+    function FacetValues(groupByResult) {
+        if (Utils_1.Utils.exists(groupByResult)) {
+            this.values = _.map(groupByResult.values, function (groupByValue) { return FacetValue.createFromGroupByValue(groupByValue); });
+        }
+        else {
+            this.values = [];
+        }
+    }
+    FacetValues.prototype.add = function (facetValue) {
+        Assert_1.Assert.exists(facetValue);
+        Assert_1.Assert.check(!this.contains(facetValue.value));
+        this.values.push(facetValue);
+    };
+    FacetValues.prototype.remove = function (value) {
+        Assert_1.Assert.isNonEmptyString(value);
+        value = value;
+        this.values = _.filter(this.values, function (elem) { return elem.value != value; });
+    };
+    FacetValues.prototype.size = function () {
+        return this.values.length;
+    };
+    FacetValues.prototype.isEmpty = function () {
+        return this.values.length == 0;
+    };
+    FacetValues.prototype.at = function (index) {
+        Assert_1.Assert.isLargerOrEqualsThan(0, index);
+        Assert_1.Assert.isSmallerThan(this.values.length, index);
+        return this.values[index];
+    };
+    FacetValues.prototype.get = function (value) {
+        return _.find(this.values, function (elem) { return elem.value.toLowerCase() == value.toLowerCase(); });
+    };
+    FacetValues.prototype.contains = function (value) {
+        return Utils_1.Utils.exists(this.get(value));
+    };
+    FacetValues.prototype.getAll = function () {
+        return this.values;
+    };
+    FacetValues.prototype.getSelected = function () {
+        return _.filter(this.values, function (value) { return value.selected; });
+    };
+    FacetValues.prototype.getExcluded = function () {
+        return _.filter(this.values, function (value) { return value.excluded; });
+    };
+    FacetValues.prototype.hasSelectedOrExcludedValues = function () {
+        return this.getSelected().length != 0 || this.getExcluded().length != 0;
+    };
+    FacetValues.prototype.hasSelectedAndExcludedValues = function () {
+        return this.getSelected().length != 0 && this.getExcluded().length != 0;
+    };
+    FacetValues.prototype.hasOnlyExcludedValues = function () {
+        return this.getSelected().length == 0 && this.getExcluded().length != 0;
+    };
+    FacetValues.prototype.hasOnlySelectedValues = function () {
+        return this.getSelected().length != 0 && this.getExcluded().length == 0;
+    };
+    FacetValues.prototype.reset = function () {
+        _.each(this.values, function (elem) { return elem.reset(); });
+    };
+    FacetValues.prototype.importActiveValuesFromOtherList = function (other) {
+        var _this = this;
+        Assert_1.Assert.exists(other);
+        _.each(other.getSelected(), function (otherValue) {
+            var myValue = _this.get(otherValue.value);
+            if (Utils_1.Utils.exists(myValue)) {
+                myValue.selected = true;
+            }
+            else {
+                if (otherValue.occurrences && !otherValue.excluded) {
+                    _this.values.push(otherValue.clone());
+                }
+                else {
+                    _this.values.push(otherValue.cloneWithZeroOccurrences());
+                }
+            }
+        });
+        _.each(other.getExcluded(), function (otherValue) {
+            var myValue = _this.get(otherValue.value);
+            if (Utils_1.Utils.exists(myValue)) {
+                myValue.excluded = true;
+            }
+            else if (otherValue.occurrences != 0) {
+                var occurrences = otherValue.occurrences;
+                var clone = otherValue.cloneWithZeroOccurrences();
+                clone.occurrences = occurrences;
+                _this.values.push(clone);
+            }
+            else {
+                _this.values.push(otherValue.cloneWithZeroOccurrences());
+            }
+        });
+    };
+    FacetValues.prototype.updateCountsFromNewValues = function (newValues) {
+        Assert_1.Assert.exists(newValues);
+        this.values = _.map(this.values, function (myValue) {
+            var newValue = newValues.get(myValue.value);
+            if (Utils_1.Utils.exists(newValue)) {
+                myValue.updateCountsFromNewValue(newValue);
+                return myValue;
+            }
+            else if (myValue.occurrences == null) {
+                return myValue.cloneWithZeroOccurrences();
+            }
+            return myValue;
+        });
+    };
+    FacetValues.prototype.updateDeltaWithFilteredFacetValues = function (filtered, isMultiValueField) {
+        var _this = this;
+        Assert_1.Assert.exists(filtered);
+        _.each(this.values, function (unfilteredValue) {
+            var filteredValue = filtered.get(unfilteredValue.value);
+            unfilteredValue.waitingForDelta = false;
+            if (Utils_1.Utils.exists(filteredValue)) {
+                if (unfilteredValue.occurrences - filteredValue.occurrences > 0) {
+                    // When there are only exclusion in the facet, there should be no "delta"
+                    // The number of value for each facet will be what is selected, no addition.
+                    if (_this.hasOnlyExcludedValues()) {
+                        unfilteredValue.delta = null;
+                        unfilteredValue.occurrences = filteredValue.occurrences;
                     }
                     else {
-                        return firstFromHierarchy.hasChildSelected ? -1 : 1;
+                        unfilteredValue.delta = unfilteredValue.occurrences - filteredValue.occurrences;
                     }
                 }
                 else {
-                    return first.hierarchy.selected ? -1 : 1;
+                    unfilteredValue.delta = null;
                 }
-            });
-            return _.pluck(sortArray, 'hierarchy');
-        }
-        return hierarchyFacetValues;
+            }
+            else if (!unfilteredValue.selected && !unfilteredValue.excluded) {
+                if (isMultiValueField && filtered.values.length == 0) {
+                    unfilteredValue.delta = null;
+                    unfilteredValue.occurrences = 0;
+                }
+                else {
+                    unfilteredValue.delta = unfilteredValue.occurrences;
+                }
+            }
+        });
     };
-    HierarchicalFacetValuesList.prototype.getValuesToBuildWith = function () {
-        if (this.facet.shouldReshuffleFacetValuesClientSide) {
-            return this.hierarchyFacetValues;
-        }
-        else {
-            return this.sortFacetValues();
+    FacetValues.prototype.mergeWithUnfilteredFacetValues = function (unfiltered) {
+        var _this = this;
+        Assert_1.Assert.exists(unfiltered);
+        var values = [];
+        _.each(unfiltered.values, function (unfilteredValue) {
+            var filteredValue = _this.get(unfilteredValue.value);
+            if (Utils_1.Utils.exists(filteredValue)) {
+                if (filteredValue.occurrences == unfilteredValue.occurrences) {
+                    values.push(filteredValue);
+                }
+                else {
+                    values.push(unfilteredValue.cloneWithDelta(unfilteredValue.occurrences, unfilteredValue.occurrences - filteredValue.occurrences));
+                }
+            }
+            else {
+                values.push(unfilteredValue.cloneWithDelta(unfilteredValue.occurrences, unfilteredValue.occurrences));
+            }
+        });
+        var index = 0;
+        _.each(this.values, function (value) {
+            var unfilteredValue = unfiltered.get(value.value);
+            if (!Utils_1.Utils.exists(unfilteredValue)) {
+                if (value.selected || value.excluded) {
+                    values.splice(index, 0, value);
+                    index++;
+                }
+            }
+            else {
+                for (var i = 0; i < values.length; i++) {
+                    if (values[i].value == value.value) {
+                        index = i + 1;
+                        break;
+                    }
+                }
+            }
+        });
+        this.values = values;
+    };
+    FacetValues.prototype.sortValuesDependingOnStatus = function (excludeLastIndex) {
+        this.values = _.sortBy(this.values, function (value) {
+            if (value.selected) {
+                return 1;
+            }
+            else if (value.excluded) {
+                return 3;
+            }
+            else {
+                return 2;
+            }
+        });
+        if (excludeLastIndex != null && excludeLastIndex < this.values.length) {
+            var nbExclude = this.getExcluded().length;
+            var excludes = this.values.splice(this.values.length - nbExclude, nbExclude);
+            Array.prototype.splice.apply(this.values, [excludeLastIndex - nbExclude, 0].concat(excludes));
         }
     };
-    return HierarchicalFacetValuesList;
-}(FacetValuesList_1.FacetValuesList));
-exports.HierarchicalFacetValuesList = HierarchicalFacetValuesList;
+    return FacetValues;
+}());
+exports.FacetValues = FacetValues;
 
 
 /***/ }),
 
-/***/ 974:
+/***/ 90:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-/// <reference path="HierarchicalFacet.ts" />
+/// <reference path="Facet.ts" />
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
         ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -6785,62 +6909,32 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var OmniboxValueElement_1 = __webpack_require__(507);
-var OmniboxHierarchicalValueElement = (function (_super) {
-    __extends(OmniboxHierarchicalValueElement, _super);
-    function OmniboxHierarchicalValueElement(facet, facetValue, eventArg) {
-        var _this = _super.call(this, facet, facetValue, eventArg) || this;
+var QueryEvents_1 = __webpack_require__(11);
+var Dom_1 = __webpack_require__(3);
+var ValueElement_1 = __webpack_require__(410);
+var FacetValueElement = /** @class */ (function (_super) {
+    __extends(FacetValueElement, _super);
+    function FacetValueElement(facet, facetValue, keepDisplayedValueNextTime) {
+        var _this = _super.call(this, facet, facetValue) || this;
         _this.facet = facet;
         _this.facetValue = facetValue;
-        _this.eventArg = eventArg;
+        _this.keepDisplayedValueNextTime = keepDisplayedValueNextTime;
+        _this.firstQuery = true;
+        // The analytics code expect a first query to be made to link the user action with a query UID
+        Dom_1.$$(facet.root).one(QueryEvents_1.QueryEvents.querySuccess, function () {
+            _this.firstQuery = false;
+        });
         return _this;
     }
-    OmniboxHierarchicalValueElement.prototype._handleSelectValue = function (eventBindings) {
-        this.facet.open(this.facetValue);
-        _super.prototype.handleSelectValue.call(this, eventBindings);
+    FacetValueElement.prototype.bindEvent = function () {
+        _super.prototype.bindEvent.call(this, {
+            displayNextTime: this.keepDisplayedValueNextTime,
+            pinFacet: this.facet.options.preservePosition
+        });
     };
-    OmniboxHierarchicalValueElement.prototype._handleExcludeClick = function (eventBindings) {
-        this.facet.open(this.facetValue);
-        _super.prototype.handleExcludeClick.call(this, eventBindings);
-    };
-    return OmniboxHierarchicalValueElement;
-}(OmniboxValueElement_1.OmniboxValueElement));
-exports.OmniboxHierarchicalValueElement = OmniboxHierarchicalValueElement;
-
-
-/***/ }),
-
-/***/ 975:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-/// <reference path="../HierarchicalFacet/HierarchicalFacet.ts" />
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-Object.defineProperty(exports, "__esModule", { value: true });
-var OmniboxValuesList_1 = __webpack_require__(508);
-var OmniboxHierarchicalValueElement_1 = __webpack_require__(974);
-var OmniboxHierarchicalValuesList = (function (_super) {
-    __extends(OmniboxHierarchicalValuesList, _super);
-    function OmniboxHierarchicalValuesList(facet, facetValues, omniboxObject) {
-        var _this = _super.call(this, facet, facetValues, omniboxObject, OmniboxHierarchicalValueElement_1.OmniboxHierarchicalValueElement) || this;
-        _this.facet = facet;
-        _this.facetValues = facetValues;
-        _this.omniboxObject = omniboxObject;
-        return _this;
-    }
-    return OmniboxHierarchicalValuesList;
-}(OmniboxValuesList_1.OmniboxValuesList));
-exports.OmniboxHierarchicalValuesList = OmniboxHierarchicalValuesList;
+    return FacetValueElement;
+}(ValueElement_1.ValueElement));
+exports.FacetValueElement = FacetValueElement;
 
 
 /***/ })

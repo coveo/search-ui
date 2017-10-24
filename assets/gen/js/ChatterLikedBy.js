@@ -1,12 +1,12 @@
-webpackJsonpCoveo__temporary([44],{
+webpackJsonpCoveo__temporary([46],{
 
-/***/ 304:
+/***/ 259:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var ChatterUtils = (function () {
+var ChatterUtils = /** @class */ (function () {
     function ChatterUtils() {
     }
     ChatterUtils.buildURI = function (objectURI, objectId, newObjectId) {
@@ -22,7 +22,7 @@ exports.ChatterUtils = ChatterUtils;
 
 /***/ }),
 
-/***/ 360:
+/***/ 275:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -41,12 +41,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var Initialization_1 = __webpack_require__(2);
 var ComponentOptions_1 = __webpack_require__(9);
 var Component_1 = __webpack_require__(8);
-var Utils_1 = __webpack_require__(5);
+var Utils_1 = __webpack_require__(6);
 var Dom_1 = __webpack_require__(3);
 var Strings_1 = __webpack_require__(10);
-var ChatterUtils_1 = __webpack_require__(304);
+var ChatterUtils_1 = __webpack_require__(259);
 var GlobalExports_1 = __webpack_require__(4);
-var ChatterLikedBy = (function (_super) {
+var ChatterLikedBy = /** @class */ (function (_super) {
     __extends(ChatterLikedBy, _super);
     function ChatterLikedBy(element, options, bindings, result) {
         var _this = _super.call(this, element, ChatterLikedBy.ID, bindings) || this;
@@ -55,7 +55,8 @@ var ChatterLikedBy = (function (_super) {
         _this.bindings = bindings;
         _this.result = result;
         _this.options = ComponentOptions_1.ComponentOptions.initComponentOptions(element, ChatterLikedBy, options);
-        if (!Utils_1.Utils.isNullOrUndefined(Utils_1.Utils.getFieldValue(result, 'sflikedby')) && !Utils_1.Utils.isNullOrUndefined(Utils_1.Utils.getFieldValue(result, 'sflikedbyid'))) {
+        if (!Utils_1.Utils.isNullOrUndefined(Utils_1.Utils.getFieldValue(result, 'sflikedby')) &&
+            !Utils_1.Utils.isNullOrUndefined(Utils_1.Utils.getFieldValue(result, 'sflikedbyid'))) {
             var likeNames = Utils_1.Utils.getFieldValue(result, 'sflikedby').split(';');
             var likeIds = Utils_1.Utils.getFieldValue(result, 'sflikedbyid').split(';');
             var rootElement = Dom_1.$$('div', {
@@ -113,19 +114,19 @@ var ChatterLikedBy = (function (_super) {
         link.text(likeName);
         return link.el;
     };
+    ChatterLikedBy.ID = 'ChatterLikedBy';
+    ChatterLikedBy.doExport = function () {
+        GlobalExports_1.exportGlobally({
+            ChatterLikedBy: ChatterLikedBy
+        });
+    };
+    ChatterLikedBy.options = {
+        nbLikesToRender: ComponentOptions_1.ComponentOptions.buildNumberOption({ defaultValue: 2, min: 0 }),
+        openInPrimaryTab: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: false }),
+        openInSubTab: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: true })
+    };
     return ChatterLikedBy;
 }(Component_1.Component));
-ChatterLikedBy.ID = 'ChatterLikedBy';
-ChatterLikedBy.doExport = function () {
-    GlobalExports_1.exportGlobally({
-        'ChatterLikedBy': ChatterLikedBy
-    });
-};
-ChatterLikedBy.options = {
-    nbLikesToRender: ComponentOptions_1.ComponentOptions.buildNumberOption({ defaultValue: 2, min: 0 }),
-    openInPrimaryTab: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: false }),
-    openInSubTab: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: true })
-};
 exports.ChatterLikedBy = ChatterLikedBy;
 Initialization_1.Initialization.registerAutoCreateComponent(ChatterLikedBy);
 

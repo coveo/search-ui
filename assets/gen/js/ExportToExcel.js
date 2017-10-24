@@ -1,6 +1,6 @@
-webpackJsonpCoveo__temporary([58],{
+webpackJsonpCoveo__temporary([60],{
 
-/***/ 367:
+/***/ 283:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18,19 +18,21 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var Component_1 = __webpack_require__(8);
 var ComponentOptions_1 = __webpack_require__(9);
-var SettingsEvents_1 = __webpack_require__(45);
+var SettingsEvents_1 = __webpack_require__(43);
 var AnalyticsActionListMeta_1 = __webpack_require__(12);
 var Initialization_1 = __webpack_require__(2);
 var Strings_1 = __webpack_require__(10);
 var _ = __webpack_require__(1);
 var GlobalExports_1 = __webpack_require__(4);
-__webpack_require__(921);
+__webpack_require__(481);
 var SVGIcons_1 = __webpack_require__(15);
+var SearchInterface_1 = __webpack_require__(20);
+var RegisteredNamedMethods_1 = __webpack_require__(34);
 /**
  * The ExportToExcel component renders an item in the {@link Settings} menu to allow the end user to export the current
  * search results to the Microsoft Excel format (.xlsx).
  */
-var ExportToExcel = (function (_super) {
+var ExportToExcel = /** @class */ (function (_super) {
     __extends(ExportToExcel, _super);
     /**
      * Creates a new ExportToExcel component.
@@ -72,48 +74,55 @@ var ExportToExcel = (function (_super) {
             if (this.options.fieldsToInclude) {
                 query.fieldsToInclude = this.options.fieldsToInclude;
             }
-            this.logger.debug('Performing query following \'Export to Excel\' click');
+            this.logger.debug("Performing query following 'Export to Excel' click");
             var endpoint = this.queryController.getEndpoint();
             this.usageAnalytics.logCustomEvent(AnalyticsActionListMeta_1.analyticsActionCauseList.exportToExcel, {}, this.element);
             this._window.location.replace(endpoint.getExportToExcelLink(query, this.options.numberOfResults));
         }
     };
     ExportToExcel.create = function (element, options, root) {
-        return new ExportToExcel(element, options, root);
+        return new ExportToExcel(element, options, RegisteredNamedMethods_1.get(root, SearchInterface_1.SearchInterface).getBindings());
+    };
+    ExportToExcel.ID = 'ExportToExcel';
+    ExportToExcel.doExport = function () {
+        GlobalExports_1.exportGlobally({
+            ExportToExcel: ExportToExcel
+        });
+    };
+    /**
+     * The options for the ExportToExcel
+     * @componentOptions
+     */
+    ExportToExcel.options = {
+        /**
+         * Specifies the number of results to include in the resulting Excel file.
+         *
+         * Generating and downloading the Excel file should take a reasonably short amount of time when using the default
+         * value. However, this amount of time will increase exponentially as you set the value higher.
+         *
+         * Consequently, you should avoid setting this value above the default index limit of 1000 search results.
+         *
+         * Default value is `100`. Minimum value is `1`.
+         */
+        numberOfResults: ComponentOptions_1.ComponentOptions.buildNumberOption({ defaultValue: 100, min: 1 }),
+        /**
+         * Specifies the fields to include in the CSV output.
+         *
+         * Note that this does not affect top level properties such as the title, clickUri, printableUri and sysUri, for example.
+         *
+         * Default value is `undefined`, meaning all fields will be exported.
+         */
+        fieldsToInclude: ComponentOptions_1.ComponentOptions.buildFieldsOption()
     };
     return ExportToExcel;
 }(Component_1.Component));
-ExportToExcel.ID = 'ExportToExcel';
-ExportToExcel.doExport = function () {
-    GlobalExports_1.exportGlobally({
-        'ExportToExcel': ExportToExcel
-    });
-};
-/**
- * The options for the ExportToExcel
- * @componentOptions
- */
-ExportToExcel.options = {
-    /**
-     * Specifies the number of results to include in the resulting Excel file.
-     *
-     * Generating and downloading the Excel file should take a reasonably short amount of time when using the default
-     * value. However, this amount of time will increase exponentially as you set the value higher.
-     *
-     * Consequently, you should avoid setting this value above the default index limit of 1000 search results.
-     *
-     * Default value is `100`. Minimum value is `1`.
-     */
-    numberOfResults: ComponentOptions_1.ComponentOptions.buildNumberOption({ defaultValue: 100, min: 1 }),
-    fieldsToInclude: ComponentOptions_1.ComponentOptions.buildFieldsOption()
-};
 exports.ExportToExcel = ExportToExcel;
 Initialization_1.Initialization.registerAutoCreateComponent(ExportToExcel);
 
 
 /***/ }),
 
-/***/ 921:
+/***/ 481:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

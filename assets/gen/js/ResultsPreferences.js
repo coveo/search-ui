@@ -1,51 +1,6 @@
-webpackJsonpCoveo__temporary([14,48,50],{
+webpackJsonpCoveo__temporary([15,50,52],{
 
-/***/ 121:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var Dom_1 = __webpack_require__(3);
-var _ = __webpack_require__(1);
-__webpack_require__(606);
-var GlobalExports_1 = __webpack_require__(4);
-/**
- * A simple `fieldset` HTMLElement containing multiple form widgets.
- */
-var FormGroup = (function () {
-    /**
-     * Creates a new `FormGroup`.
-     * @param contents The form widgets to include in the form group.
-     * @param label The label to display for the form group.
-     */
-    function FormGroup(contents, label) {
-        var _this = this;
-        this.element = Dom_1.$$('fieldset', { className: 'coveo-form-group' }, Dom_1.$$('span', { className: 'coveo-form-group-label' }, label));
-        _.each(contents, function (content) {
-            _this.element.append(content.build());
-        });
-    }
-    FormGroup.doExport = function () {
-        GlobalExports_1.exportGlobally({
-            'FormGroup': FormGroup
-        });
-    };
-    /**
-     * Gets the element on which the form group is bound.
-     * @returns {HTMLElement} The form group element.
-     */
-    FormGroup.prototype.build = function () {
-        return this.element.el;
-    };
-    return FormGroup;
-}());
-exports.FormGroup = FormGroup;
-
-
-/***/ }),
-
-/***/ 391:
+/***/ 305:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -63,9 +18,9 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var Component_1 = __webpack_require__(8);
 var ComponentOptions_1 = __webpack_require__(9);
-var ComponentOptionsModel_1 = __webpack_require__(27);
-var LocalStorageUtils_1 = __webpack_require__(39);
-var PreferencesPanelEvents_1 = __webpack_require__(79);
+var ComponentOptionsModel_1 = __webpack_require__(26);
+var LocalStorageUtils_1 = __webpack_require__(37);
+var PreferencesPanelEvents_1 = __webpack_require__(67);
 var AnalyticsActionListMeta_1 = __webpack_require__(12);
 var Initialization_1 = __webpack_require__(2);
 var Assert_1 = __webpack_require__(7);
@@ -73,10 +28,10 @@ var Strings_1 = __webpack_require__(10);
 var Dom_1 = __webpack_require__(3);
 var _ = __webpack_require__(1);
 var GlobalExports_1 = __webpack_require__(4);
-var Defer_1 = __webpack_require__(30);
-var Checkbox_1 = __webpack_require__(69);
-var RadioButton_1 = __webpack_require__(97);
-var FormGroup_1 = __webpack_require__(121);
+var Defer_1 = __webpack_require__(28);
+var Checkbox_1 = __webpack_require__(54);
+var RadioButton_1 = __webpack_require__(80);
+var FormGroup_1 = __webpack_require__(95);
 /**
  * The ResultsPreferences component allows the end user to select preferences related to the search results. These
  * preferences are then saved in the local storage of the end user.
@@ -86,7 +41,7 @@ var FormGroup_1 = __webpack_require__(121);
  *
  * See also the {@link ResultsFiltersPreferences} component.
  */
-var ResultsPreferences = (function (_super) {
+var ResultsPreferences = /** @class */ (function (_super) {
     __extends(ResultsPreferences, _super);
     /**
      * Creates a new ResultsPreference component.
@@ -237,7 +192,10 @@ var ResultsPreferences = (function (_super) {
     };
     ResultsPreferences.prototype.fromPreferenceChangeEventToUsageAnalyticsLog = function (type, preference) {
         this.usageAnalytics.logCustomEvent(AnalyticsActionListMeta_1.analyticsActionCauseList.preferencesChange, { preferenceName: preference, preferenceType: type }, this.element);
-        this.usageAnalytics.logSearchEvent(AnalyticsActionListMeta_1.analyticsActionCauseList.preferencesChange, { preferenceName: preference, preferenceType: type });
+        this.usageAnalytics.logSearchEvent(AnalyticsActionListMeta_1.analyticsActionCauseList.preferencesChange, {
+            preferenceName: preference,
+            preferenceType: type
+        });
     };
     ResultsPreferences.prototype.adjustPreferencesToComponentConfig = function () {
         var _this = this;
@@ -267,80 +225,80 @@ var ResultsPreferences = (function (_super) {
     ResultsPreferences.prototype.isSelected = function (checkingFor, label, input) {
         return checkingFor == label && input.isSelected();
     };
+    ResultsPreferences.ID = 'ResultsPreferences';
+    ResultsPreferences.doExport = function () {
+        GlobalExports_1.exportGlobally({
+            ResultsPreferences: ResultsPreferences
+        });
+    };
+    /**
+     * The options for the component
+     * @componentOptions
+     */
+    ResultsPreferences.options = {
+        /**
+         * Specifies whether to make the option to open results in Microsoft Outlook available.
+         *
+         * Default value is `false`
+         */
+        enableOpenInOutlook: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: false }),
+        /**
+         * Specifies whether to make the option to open results in a new window available.
+         *
+         * Default value is `true`
+         */
+        enableOpenInNewWindow: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: true }),
+        /**
+         * Specifies whether to make the option to allow end users to turn query syntax on or off available.
+         *
+         * If query syntax is enabled, the Coveo Platform tries to interpret special query syntax (e.g.,
+         * `@objecttype=message`) when the end user types a query in the [`Querybox`]{@link Querybox} (see
+         * [Coveo Query Syntax Reference](http://www.coveo.com/go?dest=adminhelp70&lcid=9&context=10005)). Enabling query
+         * syntax also causes the `Querybox` to highlight any query syntax.
+         *
+         * Selecting **On** for the **Enable query syntax** setting enables query syntax, whereas selecting **Off** disables
+         * it. Selecting **Automatic** uses the `Querybox` [`enableQuerySyntax`]{@link Querybox.options.enableQuerySyntax}
+         * option value (which is `false` by default).
+         *
+         * Default value is `false`
+         */
+        enableQuerySyntax: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: false })
+    };
     return ResultsPreferences;
 }(Component_1.Component));
-ResultsPreferences.ID = 'ResultsPreferences';
-ResultsPreferences.doExport = function () {
-    GlobalExports_1.exportGlobally({
-        'ResultsPreferences': ResultsPreferences
-    });
-};
-/**
- * The options for the component
- * @componentOptions
- */
-ResultsPreferences.options = {
-    /**
-     * Specifies whether to make the option to open results in Microsoft Outlook available.
-     *
-     * Default value is `false`
-     */
-    enableOpenInOutlook: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: false }),
-    /**
-     * Specifies whether to make the option to open results in a new window available.
-     *
-     * Default value is `true`
-     */
-    enableOpenInNewWindow: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: true }),
-    /**
-     * Specifies whether to make the option to allow end users to turn query syntax on or off available.
-     *
-     * If query syntax is enabled, the Coveo Platform tries to interpret special query syntax (e.g.,
-     * `@objecttype=message`) when the end user types a query in the [`Querybox`]{@link Querybox} (see
-     * [Coveo Query Syntax Reference](http://www.coveo.com/go?dest=adminhelp70&lcid=9&context=10005)). Enabling query
-     * syntax also causes the `Querybox` to highlight any query syntax.
-     *
-     * Selecting **On** for the **Enable query syntax** setting enables query syntax, whereas selecting **Off** disables
-     * it. Selecting **Automatic** uses the `Querybox` [`enableQuerySyntax`]{@link Querybox.options.enableQuerySyntax}
-     * option value (which is `false` by default).
-     *
-     * Default value is `false`
-     */
-    enableQuerySyntax: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: false })
-};
 exports.ResultsPreferences = ResultsPreferences;
 Initialization_1.Initialization.registerAutoCreateComponent(ResultsPreferences);
 
 
 /***/ }),
 
-/***/ 606:
+/***/ 435:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
 
-/***/ 607:
+/***/ 442:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
 
-/***/ 97:
+/***/ 80:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var Dom_1 = __webpack_require__(3);
-__webpack_require__(607);
+__webpack_require__(435);
 var GlobalExports_1 = __webpack_require__(4);
 /**
  * A radio button widget with standard styling.
  */
-var RadioButton = (function () {
+var RadioButton = /** @class */ (function () {
     /**
      * Creates a new `RadioButton`.
      * @param onChange The function to call when the radio button value changes. This function takes the current
@@ -349,8 +307,7 @@ var RadioButton = (function () {
      * @param name The value to set the `input` HTMLElement `name` attribute to.
      */
     function RadioButton(onChange, label, name) {
-        if (onChange === void 0) { onChange = function (radioButton) {
-        }; }
+        if (onChange === void 0) { onChange = function (radioButton) { }; }
         this.onChange = onChange;
         this.label = label;
         this.name = name;
@@ -358,7 +315,7 @@ var RadioButton = (function () {
     }
     RadioButton.doExport = function () {
         GlobalExports_1.exportGlobally({
-            'RadioButton': RadioButton
+            RadioButton: RadioButton
         });
     };
     /**
@@ -425,7 +382,7 @@ var RadioButton = (function () {
         var _this = this;
         var radioOption = Dom_1.$$('div', { className: 'coveo-radio' });
         var radioInput = Dom_1.$$('input', { type: 'radio', name: this.name, id: this.label });
-        var labelInput = Dom_1.$$('label', { className: 'coveo-radio-input-label', 'for': this.label });
+        var labelInput = Dom_1.$$('label', { className: 'coveo-radio-input-label', for: this.label });
         labelInput.text(this.label);
         radioInput.on('change', function () {
             _this.onChange(_this);
@@ -437,6 +394,51 @@ var RadioButton = (function () {
     return RadioButton;
 }());
 exports.RadioButton = RadioButton;
+
+
+/***/ }),
+
+/***/ 95:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var Dom_1 = __webpack_require__(3);
+var _ = __webpack_require__(1);
+__webpack_require__(442);
+var GlobalExports_1 = __webpack_require__(4);
+/**
+ * A simple `fieldset` HTMLElement containing multiple form widgets.
+ */
+var FormGroup = /** @class */ (function () {
+    /**
+     * Creates a new `FormGroup`.
+     * @param contents The form widgets to include in the form group.
+     * @param label The label to display for the form group.
+     */
+    function FormGroup(contents, label) {
+        var _this = this;
+        this.element = Dom_1.$$('fieldset', { className: 'coveo-form-group' }, Dom_1.$$('span', { className: 'coveo-form-group-label' }, label));
+        _.each(contents, function (content) {
+            _this.element.append(content.build());
+        });
+    }
+    FormGroup.doExport = function () {
+        GlobalExports_1.exportGlobally({
+            FormGroup: FormGroup
+        });
+    };
+    /**
+     * Gets the element on which the form group is bound.
+     * @returns {HTMLElement} The form group element.
+     */
+    FormGroup.prototype.build = function () {
+        return this.element.el;
+    };
+    return FormGroup;
+}());
+exports.FormGroup = FormGroup;
 
 
 /***/ })

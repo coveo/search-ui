@@ -1,6 +1,6 @@
-webpackJsonpCoveo__temporary([67],{
+webpackJsonpCoveo__temporary([69],{
 
-/***/ 120:
+/***/ 93:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19,12 +19,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var Component_1 = __webpack_require__(8);
 var ComponentOptions_1 = __webpack_require__(9);
 var Initialization_1 = __webpack_require__(2);
-var TemplateHelpers_1 = __webpack_require__(81);
+var TemplateHelpers_1 = __webpack_require__(69);
 var Assert_1 = __webpack_require__(7);
-var DateUtils_1 = __webpack_require__(31);
+var DateUtils_1 = __webpack_require__(29);
 var QueryStateModel_1 = __webpack_require__(13);
 var AnalyticsActionListMeta_1 = __webpack_require__(12);
-var Utils_1 = __webpack_require__(5);
+var Utils_1 = __webpack_require__(6);
 var Dom_1 = __webpack_require__(3);
 var _ = __webpack_require__(1);
 var GlobalExports_1 = __webpack_require__(4);
@@ -45,7 +45,7 @@ function showOnlyWithHelper(helpers, options) {
  * A common use of this component is to display a specific field value which also happens to be an existing
  * {@link Facet.options.field}. When the user clicks on the FieldValue component, it activates the corresponding Facet.
  */
-var FieldValue = (function (_super) {
+var FieldValue = /** @class */ (function (_super) {
     __extends(FieldValue, _super);
     /**
      * Creates a new FieldValue.
@@ -63,19 +63,7 @@ var FieldValue = (function (_super) {
         _this.result = result;
         _this.options = ComponentOptions_1.ComponentOptions.initOptions(element, FieldValue.simpleOptions, options);
         if (_this.options.helper != null) {
-            _this.options = ComponentOptions_1.ComponentOptions.initOptions(element, FieldValue.helperOptions, _this.options);
-            var toFilter = _.keys(FieldValue.options.helperOptions['subOptions']);
-            var toKeep_1 = _.filter(toFilter, function (optionKey) {
-                var optionDefinition = FieldValue.options.helperOptions['subOptions'][optionKey];
-                if (optionDefinition) {
-                    var helpers = optionDefinition.helpers;
-                    return helpers != null && _.contains(helpers, _this.options.helper);
-                }
-                return false;
-            });
-            _this.options.helperOptions = _.omit(_this.options.helperOptions, function (value, key) {
-                return !_.contains(toKeep_1, key);
-            });
+            _this.normalizeHelperAndOptions();
         }
         _this.result = _this.result || _this.resolveResult();
         Assert_1.Assert.exists(_this.result);
@@ -130,14 +118,21 @@ var FieldValue = (function (_super) {
         var element = Dom_1.$$('span').el;
         var toRender = value;
         if (this.options.helper) {
-            toRender = TemplateHelpers_1.TemplateHelpers.getHelper(this.options.helper).call(this, value, this.getHelperOptions());
+            // Try to resolve and execute version 2 of each helper function if available
+            var helper = TemplateHelpers_1.TemplateHelpers.getHelper(this.options.helper + "v2") || TemplateHelpers_1.TemplateHelpers.getHelper("" + this.options.helper);
+            if (Utils_1.Utils.exists(helper)) {
+                toRender = helper.call(this, value, this.getHelperOptions());
+            }
+            else {
+                this.logger.warn("Helper " + this.options.helper + " is not found in available helpers. The list of supported helpers is :", _.keys(TemplateHelpers_1.TemplateHelpers.getHelpers()));
+            }
             var fullDateStr = this.getFullDate(value, this.options.helper);
             if (fullDateStr) {
                 element.setAttribute('title', fullDateStr);
             }
-        }
-        if (this.options.helper == 'date' || this.options.helper == 'dateTime' || this.options.helper == 'emailDateTime') {
-            toRender = StringUtils_1.StringUtils.capitalizeFirstLetter(toRender);
+            if (this.options.helper == 'date' || this.options.helper == 'dateTime' || this.options.helper == 'emailDateTime') {
+                toRender = StringUtils_1.StringUtils.capitalizeFirstLetter(toRender);
+            }
         }
         if (this.options.htmlValue) {
             element.innerHTML = toRender;
@@ -150,6 +145,22 @@ var FieldValue = (function (_super) {
     };
     FieldValue.prototype.getValueContainer = function () {
         return this.element;
+    };
+    FieldValue.prototype.normalizeHelperAndOptions = function () {
+        var _this = this;
+        this.options = ComponentOptions_1.ComponentOptions.initOptions(this.element, FieldValue.helperOptions, this.options);
+        var toFilter = _.keys(FieldValue.options.helperOptions['subOptions']);
+        var toKeep = _.filter(toFilter, function (optionKey) {
+            var optionDefinition = FieldValue.options.helperOptions['subOptions'][optionKey];
+            if (optionDefinition) {
+                var helpers = optionDefinition.helpers;
+                return helpers != null && _.contains(helpers, _this.options.helper);
+            }
+            return false;
+        });
+        this.options.helperOptions = _.omit(this.options.helperOptions, function (value, key) {
+            return !_.contains(toKeep, key);
+        });
     };
     FieldValue.prototype.getHelperOptions = function () {
         var inlineOptions = ComponentOptions_1.ComponentOptions.loadStringOption(this.element, 'helperOptions', {});
@@ -217,10 +228,12 @@ var FieldValue = (function (_super) {
                     _.each(facets, function (facet) { return facet.selectValue(value); });
                 }
                 _this.queryController.deferExecuteQuery({
-                    beforeExecuteQuery: function () { return _this.usageAnalytics.logSearchEvent(AnalyticsActionListMeta_1.analyticsActionCauseList.documentField, {
-                        facetId: _this.options.facet,
-                        facetValue: value.toLowerCase()
-                    }); }
+                    beforeExecuteQuery: function () {
+                        return _this.usageAnalytics.logSearchEvent(AnalyticsActionListMeta_1.analyticsActionCauseList.documentField, {
+                            facetId: _this.options.facet,
+                            facetValue: value.toLowerCase()
+                        });
+                    }
                 });
             });
             if (selected_1) {
@@ -229,118 +242,120 @@ var FieldValue = (function (_super) {
             Dom_1.$$(element).addClass('coveo-clickable');
         }
     };
+    FieldValue.ID = 'FieldValue';
+    FieldValue.doExport = function () {
+        GlobalExports_1.exportGlobally({
+            FieldValue: FieldValue
+        });
+    };
+    /**
+     * The options for the component
+     * @componentOptions
+     */
+    FieldValue.options = {
+        /**
+         * Specifies the field that the FieldValue should display.
+         *
+         * Specifying a value for this parameter is required in order for the FieldValue component to work.
+         */
+        field: ComponentOptions_1.ComponentOptions.buildFieldOption({ defaultValue: '@field', required: true }),
+        /**
+         * Specifies the {@link Facet} component to toggle when the end user clicks the FieldValue.
+         *
+         * Default value is the value of {@link FieldValue.options.field}.
+         *
+         * **Note:**
+         * > If the target {@link Facet.options.id} is is not the same as its {@link Facet.options.field}), you must specify
+         * > this option manually in order to link to the correct Facet.
+         */
+        facet: ComponentOptions_1.ComponentOptions.buildStringOption({ postProcessing: function (value, options) { return value || options.field; } }),
+        /**
+         * Specifies whether the content to display is an HTML element.
+         *
+         * Default value is `false`.
+         */
+        htmlValue: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: false }),
+        /**
+         * Specifies whether to split the FieldValue at each {@link FieldValue.options.separator}.
+         *
+         * This is useful for splitting groups using a {@link Facet.options.field}.
+         *
+         * When this option is `true`, the displayed values are split by the {@link FieldValue.options.displaySeparator}.
+         *
+         * Default value is `false`.
+         */
+        splitValues: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: false }),
+        /**
+         * If {@link FieldValue.options.splitValues} is `true`, specifies the separator string which separates multi-value
+         * fields in the index.
+         *
+         * See {@link FieldValue.options.displaySeparator}.
+         *
+         * Default value is `";"`.
+         */
+        separator: ComponentOptions_1.ComponentOptions.buildStringOption({ depend: 'splitValues', defaultValue: ';' }),
+        /**
+         * If {@link FieldValue.options.splitValues} is `true`, specifies the string to use when displaying multi-value
+         * fields in the UI.
+         *
+         * The component will insert this string between each value it displays from a multi-value field.
+         *
+         * See also {@link FieldValue.options.separator}.
+         *
+         * Default value is `", "`.
+         */
+        displaySeparator: ComponentOptions_1.ComponentOptions.buildStringOption({ depend: 'splitValues', defaultValue: ', ' }),
+        /**
+         * Specifies the helper that the FieldValue should use to display its content.
+         *
+         * While several helpers exist by default (see {@link ICoreHelpers}), it is also possible for you to create your own
+         * custom helpers (see {@link TemplateHelpers}).
+         */
+        helper: ComponentOptions_1.ComponentOptions.buildHelperOption(),
+        /**
+         * Specifies the options to call on the specified helper.
+         */
+        helperOptions: ComponentOptions_1.ComponentOptions.buildObjectOption({
+            subOptions: {
+                text: ComponentOptions_1.ComponentOptions.buildStringOption(showOnlyWithHelper(['anchor'])),
+                target: ComponentOptions_1.ComponentOptions.buildStringOption(showOnlyWithHelper(['anchor'])),
+                class: ComponentOptions_1.ComponentOptions.buildStringOption(showOnlyWithHelper(['anchor'])),
+                decimals: ComponentOptions_1.ComponentOptions.buildNumberOption(showOnlyWithHelper(['currency'], { min: 0 })),
+                symbol: ComponentOptions_1.ComponentOptions.buildStringOption(showOnlyWithHelper(['currency'])),
+                useTodayYesterdayAndTomorrow: ComponentOptions_1.ComponentOptions.buildBooleanOption(showOnlyWithHelper(['date', 'dateTime', 'emailDateTime', 'time'], { defaultValue: true })),
+                useWeekdayIfThisWeek: ComponentOptions_1.ComponentOptions.buildBooleanOption(showOnlyWithHelper(['date', 'dateTime', 'emailDateTime', 'time'], { defaultValue: true })),
+                omitYearIfCurrentOne: ComponentOptions_1.ComponentOptions.buildBooleanOption(showOnlyWithHelper(['date', 'dateTime', 'emailDateTime', 'time'], { defaultValue: true })),
+                useLongDateFormat: ComponentOptions_1.ComponentOptions.buildBooleanOption(showOnlyWithHelper(['date', 'dateTime', 'emailDateTime', 'time'], { defaultValue: false })),
+                includeTimeIfToday: ComponentOptions_1.ComponentOptions.buildBooleanOption(showOnlyWithHelper(['date', 'dateTime', 'emailDateTime', 'time'], { defaultValue: true })),
+                includeTimeIfThisWeek: ComponentOptions_1.ComponentOptions.buildBooleanOption(showOnlyWithHelper(['date', 'dateTime', 'emailDateTime', 'time'], { defaultValue: true })),
+                alwaysIncludeTime: ComponentOptions_1.ComponentOptions.buildBooleanOption(showOnlyWithHelper(['date', 'dateTime', 'emailDateTime', 'time'], { defaultValue: false })),
+                predefinedFormat: ComponentOptions_1.ComponentOptions.buildStringOption(showOnlyWithHelper(['date', 'dateTime', 'emailDateTime', 'time'])),
+                companyDomain: ComponentOptions_1.ComponentOptions.buildStringOption(showOnlyWithHelper(['email'])),
+                me: ComponentOptions_1.ComponentOptions.buildStringOption(showOnlyWithHelper(['email'])),
+                lengthLimit: ComponentOptions_1.ComponentOptions.buildNumberOption(showOnlyWithHelper(['email'], { min: 1 })),
+                truncateName: ComponentOptions_1.ComponentOptions.buildBooleanOption(showOnlyWithHelper(['email'])),
+                alt: ComponentOptions_1.ComponentOptions.buildStringOption(showOnlyWithHelper(['image'])),
+                height: ComponentOptions_1.ComponentOptions.buildStringOption(showOnlyWithHelper(['image'])),
+                width: ComponentOptions_1.ComponentOptions.buildStringOption(showOnlyWithHelper(['image'])),
+                precision: ComponentOptions_1.ComponentOptions.buildNumberOption(showOnlyWithHelper(['size'], { min: 0, defaultValue: 2 })),
+                base: ComponentOptions_1.ComponentOptions.buildNumberOption(showOnlyWithHelper(['size'], { min: 0, defaultValue: 0 })),
+                isMilliseconds: ComponentOptions_1.ComponentOptions.buildBooleanOption(showOnlyWithHelper(['timeSpan'])),
+                length: ComponentOptions_1.ComponentOptions.buildNumberOption(showOnlyWithHelper(['shorten', 'shortenPath', 'shortenUri'], { defaultValue: 200 }))
+            }
+        }),
+        /**
+         * Specifies a caption to display before the value.
+         *
+         * Default value is `undefined`.
+         */
+        textCaption: ComponentOptions_1.ComponentOptions.buildLocalizedStringOption()
+    };
+    FieldValue.simpleOptions = _.omit(FieldValue.options, 'helperOptions');
+    FieldValue.helperOptions = {
+        helperOptions: FieldValue.options.helperOptions
+    };
     return FieldValue;
 }(Component_1.Component));
-FieldValue.ID = 'FieldValue';
-FieldValue.doExport = function () {
-    GlobalExports_1.exportGlobally({
-        'FieldValue': FieldValue
-    });
-};
-/**
- * The options for the component
- * @componentOptions
- */
-FieldValue.options = {
-    /**
-     * Specifies the field that the FieldValue should display.
-     *
-     * Specifying a value for this parameter is required in order for the FieldValue component to work.
-     */
-    field: ComponentOptions_1.ComponentOptions.buildFieldOption({ defaultValue: '@field', required: true }),
-    /**
-     * Specifies the {@link Facet} component to toggle when the end user clicks the FieldValue.
-     *
-     * Default value is the value of {@link FieldValue.options.field}.
-     *
-     * **Note:**
-     * > If the target {@link Facet.options.id} is is not the same as its {@link Facet.options.field}), you must specify
-     * > this option manually in order to link to the correct Facet.
-     */
-    facet: ComponentOptions_1.ComponentOptions.buildStringOption({ postProcessing: function (value, options) { return value || options.field; } }),
-    /**
-     * Specifies whether the content to display is an HTML element.
-     *
-     * Default value is `false`.
-     */
-    htmlValue: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: false }),
-    /**
-     * Specifies whether to split the FieldValue at each {@link FieldValue.options.separator}.
-     *
-     * This is useful for splitting groups using a {@link Facet.options.field}.
-     *
-     * When this option is `true`, the displayed values are split by the {@link FieldValue.options.displaySeparator}.
-     *
-     * Default value is `false`.
-     */
-    splitValues: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: false }),
-    /**
-     * If {@link FieldValue.options.splitValues} is `true`, specifies the separator string which separates multi-value
-     * fields in the index.
-     *
-     * See {@link FieldValue.options.displaySeparator}.
-     *
-     * Default value is `";"`.
-     */
-    separator: ComponentOptions_1.ComponentOptions.buildStringOption({ depend: 'splitValues', defaultValue: ';' }),
-    /**
-     * If {@link FieldValue.options.splitValues} is `true`, specifies the string to use when displaying multi-value
-     * fields in the UI.
-     *
-     * The component will insert this string between each value it displays from a multi-value field.
-     *
-     * See also {@link FieldValue.options.separator}.
-     *
-     * Default value is `", "`.
-     */
-    displaySeparator: ComponentOptions_1.ComponentOptions.buildStringOption({ depend: 'splitValues', defaultValue: ', ' }),
-    /**
-     * Specifies the helper that the FieldValue should use to display its content.
-     *
-     * While several helpers exist by default (see {@link ICoreHelpers}), it is also possible for you to create your own
-     * custom helpers (see {@link TemplateHelpers}).
-     */
-    helper: ComponentOptions_1.ComponentOptions.buildHelperOption(),
-    /**
-     * Specifies the options to call on the specified helper.
-     */
-    helperOptions: ComponentOptions_1.ComponentOptions.buildObjectOption({
-        subOptions: {
-            text: ComponentOptions_1.ComponentOptions.buildStringOption(showOnlyWithHelper(['anchor'])),
-            target: ComponentOptions_1.ComponentOptions.buildStringOption(showOnlyWithHelper(['anchor'])),
-            'class': ComponentOptions_1.ComponentOptions.buildStringOption(showOnlyWithHelper(['anchor'])),
-            decimals: ComponentOptions_1.ComponentOptions.buildNumberOption(showOnlyWithHelper(['currency'], { min: 0 })),
-            symbol: ComponentOptions_1.ComponentOptions.buildStringOption(showOnlyWithHelper(['currency'])),
-            useTodayYesterdayAndTomorrow: ComponentOptions_1.ComponentOptions.buildBooleanOption(showOnlyWithHelper(['date', 'dateTime', 'emailDateTime', 'time'], { defaultValue: true })),
-            useWeekdayIfThisWeek: ComponentOptions_1.ComponentOptions.buildBooleanOption(showOnlyWithHelper(['date', 'dateTime', 'emailDateTime', 'time'], { defaultValue: true })),
-            omitYearIfCurrentOne: ComponentOptions_1.ComponentOptions.buildBooleanOption(showOnlyWithHelper(['date', 'dateTime', 'emailDateTime', 'time'], { defaultValue: true })),
-            useLongDateFormat: ComponentOptions_1.ComponentOptions.buildBooleanOption(showOnlyWithHelper(['date', 'dateTime', 'emailDateTime', 'time'], { defaultValue: false })),
-            includeTimeIfToday: ComponentOptions_1.ComponentOptions.buildBooleanOption(showOnlyWithHelper(['date', 'dateTime', 'emailDateTime', 'time'], { defaultValue: true })),
-            includeTimeIfThisWeek: ComponentOptions_1.ComponentOptions.buildBooleanOption(showOnlyWithHelper(['date', 'dateTime', 'emailDateTime', 'time'], { defaultValue: true })),
-            alwaysIncludeTime: ComponentOptions_1.ComponentOptions.buildBooleanOption(showOnlyWithHelper(['date', 'dateTime', 'emailDateTime', 'time'], { defaultValue: false })),
-            predefinedFormat: ComponentOptions_1.ComponentOptions.buildStringOption(showOnlyWithHelper(['date', 'dateTime', 'emailDateTime', 'time'])),
-            companyDomain: ComponentOptions_1.ComponentOptions.buildStringOption(showOnlyWithHelper(['email'])),
-            lengthLimit: ComponentOptions_1.ComponentOptions.buildNumberOption(showOnlyWithHelper(['email'], { min: 1 })),
-            truncateName: ComponentOptions_1.ComponentOptions.buildBooleanOption(showOnlyWithHelper(['email'])),
-            alt: ComponentOptions_1.ComponentOptions.buildStringOption(showOnlyWithHelper(['image'])),
-            height: ComponentOptions_1.ComponentOptions.buildStringOption(showOnlyWithHelper(['image'])),
-            width: ComponentOptions_1.ComponentOptions.buildStringOption(showOnlyWithHelper(['image'])),
-            presision: ComponentOptions_1.ComponentOptions.buildNumberOption(showOnlyWithHelper(['size'], { min: 0, defaultValue: 2 })),
-            base: ComponentOptions_1.ComponentOptions.buildNumberOption(showOnlyWithHelper(['size'], { min: 0, defaultValue: 0 })),
-            isMilliseconds: ComponentOptions_1.ComponentOptions.buildBooleanOption(showOnlyWithHelper(['timeSpan'])),
-        }
-    }),
-    /**
-     * Specifies a caption to display before the value.
-     *
-     * Default value is `undefined`.
-     */
-    textCaption: ComponentOptions_1.ComponentOptions.buildLocalizedStringOption()
-};
-FieldValue.simpleOptions = _.omit(FieldValue.options, 'helperOptions');
-FieldValue.helperOptions = {
-    helperOptions: FieldValue.options.helperOptions
-};
 exports.FieldValue = FieldValue;
 Initialization_1.Initialization.registerAutoCreateComponent(FieldValue);
 

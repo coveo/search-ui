@@ -56,7 +56,7 @@
 	<div class="bottomHeader">
 		<div id="searchBox">
 			<div class="CoveoSearchbox" data-enable-omnibox="true" data-inline="false" data-enable-wildcards="true" data-enable-search-as-you-type="false" data-enable-query-suggest-addon="false" data-enable-query-syntax="true" data-enable-field-addon="true"></div>
-			<div class="CoveoFieldSuggestions" data-field="@systitle" data-header-title="Suggested topics"></div>
+			<div class="CoveoFieldSuggestions" data-field="@jsuipagetopic" data-header-title="Suggested topics"></div>
 		</div>
 	</div>
 	<!-- Do not focus on Querybox when URL contains hash to ensure page scrolls down to corresponding anchor. -->
@@ -194,16 +194,18 @@
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>The Omnibox component is very similar to the simpler <a href="querybox.html">Querybox</a> component. It supports all of the same options
-						and behaviors.</p>
+						<p>The <code>Omnibox</code> component extends the <a href="querybox.html"><code>Querybox</code></a>, and thus provides the same basic options and
+						behaviors. Furthermore, the <code>Omnibox</code> adds a type-ahead capability to the search input.</p>
 					</div>
-					<p>The Omnibox component takes care of adding type-ahead capability to the search input. Custom components can extend
-					and customize the type-ahead and the suggestions it provides.</p>
-					<p>The type-ahead is configurable by activating addons, which the Coveo JavaScript Search Framework provides OOTB
-					(facets, analytics suggestions, Coveo Machine Learning suggestions and advanced Coveo syntax suggestions).</p>
-					<p>It is also possible for external code to provide type-ahead suggestions.</p>
-					<p>See also the <a href="searchbox.html">Searchbox</a> component, which can automatically instantiate an Omnibox component along with an
-					optional <a href="searchbutton.html">SearchButton</a> component.</p>
+					<p>You can configure the type-ahead feature by enabling or disabling certain addons, which the Coveo JavaScript Search
+						Framework provides out-of-the-box (see the <a href="omnibox.html#options.enablefieldaddon"><code>enableFieldAddon</code></a>,
+						<a href="omnibox.html#options.enablequeryextensionaddon"><code>enableQueryExtension</code></a>, and
+					<a href="omnibox.html#options.enablequerysuggestaddon"><code>enableQuerySuggestAddon</code></a> options).</p>
+					<p>Custom components and external code can also extend or customize the type-ahead feature and the query completion
+						suggestions it provides by attaching their own handlers to the
+					[<code>populateOmniboxSuggestions</code>]{@link OmniboxEvents.populateOmniboxSuggestions`] event.</p>
+					<p>See also the [<code>Searchbox</code>]{@link Searchbox} component, which can automatically instantiate an <code>Omnibox</code> along with an
+					optional <a href="searchbutton.html">SearchButton</a>.</p>
 				</div>
 			</section>
 			<div class="preview-container tsd-panel">
@@ -276,20 +278,23 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Omnibox/Omnibox.ts#L139">src/ui/Omnibox/Omnibox.ts
-							:139</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Omnibox/Omnibox.ts#L143">src/ui/Omnibox/Omnibox.ts
+							:143</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
 							<p>If <a href="querybox.html#options.enablequerysyntax">Querybox.options.enableQuerySyntax</a> is <code>true</code>, specifies whether to enable the <code>field</code> addon.</p>
 						</div>
-						<p>The <code>field</code> addon allows the search box to highlight and complete field syntax.</p>
+						<p>The <code>field</code> addon makes the <code>Omnibox</code> highlight and complete field syntax.</p>
 						<p><strong>Example:</strong></p>
 						<blockquote>
-							<p>Suppose you want to filter on a certain file type. You start typing <code>@sysf</code> in the input. The Omnibox provides
-								you with several matching fields. You select the <code>@sysfiletype</code> suggestion and type <code>=</code>. If this option is set
-							to <code>true</code>, then the Omnibox provides you with suggestions for available matching file types.</p>
+							<p>Suppose you want to search for PDF files. You start typing <code>@f</code> in the search box. The <code>Omnibox</code> provides
+								you with several matching fields. You select the <code>@filetype</code> field. Then, you start typing <code>=p</code> in the input.
+								This time, the <code>Omnibox</code> provides you with several matching values for the <code>@filetype</code> field. You select the
+								<code>pdf</code> suggestion, and submit your search request. Since the <code>enableQuerySyntax</code> option is set to <code>true</code>, the
+								Coveo Search API interprets the basic expression as query syntax and returns the items whose <code>@filetype</code> field
+							matches the <code>pdf</code> value.</p>
 						</blockquote>
 						<p>Default value is <code>false</code>.</p>
 					</div>
@@ -306,8 +311,8 @@ data-enable-field-addon&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Omnibox/Omnibox.ts#L172">src/ui/Omnibox/Omnibox.ts
-							:172</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Omnibox/Omnibox.ts#L183">src/ui/Omnibox/Omnibox.ts
+							:183</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -330,16 +335,23 @@ data-enable-query-extension-addon&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Omnibox/Omnibox.ts#L160">src/ui/Omnibox/Omnibox.ts
-							:160</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Omnibox/Omnibox.ts#L171">src/ui/Omnibox/Omnibox.ts
+							:171</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies whether to enable the Coveo Machine Learning (Coveo ML) query suggestions.</p>
+							<p>Whether to display Coveo Machine Learning (Coveo ML) query suggestions in the <code>Omnibox</code>.</p>
 						</div>
-						<p>This implies that you have a proper Coveo ML integration configured (see
+						<p>The corresponding Coveo ML model must be properly configured in your Coveo Cloud organization, otherwise this
+							option has no effect (see
 						<a href="http://www.coveo.com/go?dest=cloudhelp&amp;lcid=9&amp;context=168">Managing Machine Learning Query Suggestions in a Query Pipeline</a>).</p>
+						<p><strong>Note:</strong></p>
+						<blockquote>
+							<p>When you set this option and the <a href="omnibox.html#options.enablesearchasyoutype"><code>enableSearchAsYouType</code></a> option
+								to <code>true</code>, the query suggestion feature returns the auto-completion of the currently typed keyword as its first
+							query suggestion.</p>
+						</blockquote>
 						<p>Default value is <code>true</code>.</p>
 					</div>
 					<div class="tsd-panel">
@@ -355,8 +367,8 @@ data-enable-query-suggest-addon&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Omnibox/Omnibox.ts#L203">src/ui/Omnibox/Omnibox.ts
-							:203</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Omnibox/Omnibox.ts#L215">src/ui/Omnibox/Omnibox.ts
+							:215</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -381,16 +393,21 @@ data-enable-query-syntax&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Omnibox/Omnibox.ts#L112">src/ui/Omnibox/Omnibox.ts
-							:112</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Omnibox/Omnibox.ts#L113">src/ui/Omnibox/Omnibox.ts
+							:113</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies whether to automatically trigger a new query whenever the end user types new text inside the Omnibox.</p>
+							<p>Whether to automatically trigger a new query whenever the end user types additional text in the search box input.</p>
 						</div>
-						<p>Set this option as well a <a href="omnibox.html#options.inline">Omnibox.options.inline</a> and
-						<a href="omnibox.html#options.enablequerysuggestaddon">Omnibox.options.enableQuerySuggestAddon</a> to <code>true</code> for a cool effect!</p>
+						<p>See also the <a href="omnibox.html#options.searchasyoutypedelay"><code>searchAsYouTypeDelay</code></a> option.</p>
+						<p><strong>Note:</strong></p>
+						<blockquote>
+							<p>If you set this option and the <a href="omnibox.html#options.enablequerysuggestaddon"><code>enableQuerySuggestAddon</code></a>
+								option to <code>true</code>, the query suggestion feature returns the auto-completion of the currently typed keyword as
+							its first suggestion.</p>
+						</blockquote>
 						<p>Default value is <code>false</code>.</p>
 					</div>
 					<div class="tsd-panel">
@@ -406,14 +423,14 @@ data-enable-search-as-you-type&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Omnibox/Omnibox.ts#L102">src/ui/Omnibox/Omnibox.ts
-							:102</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Omnibox/Omnibox.ts#L99">src/ui/Omnibox/Omnibox.ts
+							:99</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies whether suggestions appearing in the Omnibox should push the result down instead of appearing over the
-							results.</p>
+							<p>Specifies whether query completion suggestions appearing in the <code>Omnibox</code> should push the result list and facets
+							down, rather than rendering themselves over them (and partially hiding them).</p>
 						</div>
 						<p>Set this option as well as <a href="omnibox.html#options.enablesearchasyoutype">Omnibox.options.enableSearchAsYouType</a> and
 						<a href="omnibox.html#options.enablequerysuggestaddon">Omnibox.options.enableQuerySuggestAddon</a> to <code>true</code> for a cool effect!</p>
@@ -432,8 +449,8 @@ data-inline&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Omnibox/Omnibox.ts#L193">src/ui/Omnibox/Omnibox.ts
-							:193</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Omnibox/Omnibox.ts#L205">src/ui/Omnibox/Omnibox.ts
+							:205</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -454,8 +471,8 @@ data-inline&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Omnibox/Omnibox.ts#L186">src/ui/Omnibox/Omnibox.ts
-							:186</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Omnibox/Omnibox.ts#L198">src/ui/Omnibox/Omnibox.ts
+							:198</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -475,14 +492,14 @@ data-inline&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Omnibox/Omnibox.ts#L120">src/ui/Omnibox/Omnibox.ts
-							:120</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Omnibox/Omnibox.ts#L121">src/ui/Omnibox/Omnibox.ts
+							:121</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
 							<p>If <a href="omnibox.html#options.enablesearchasyoutype">Omnibox.options.enableSearchAsYouType</a> is <code>true</code>, specifies the delay (in milliseconds) before
-							triggering a new query when the user types new text inside the Omnibox.</p>
+							triggering a new query when the end user types in the <code>Omnibox</code>.</p>
 						</div>
 						<p>Default value is <code>2000</code>. Minimum value is <code>0</code>.</p>
 					</div>
@@ -505,8 +522,8 @@ data-inline&#x3D;&#x27;false&#x27;</pre>
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Omnibox/Omnibox.ts#L289">src/ui/Omnibox/Omnibox.ts
-									:289</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Omnibox/Omnibox.ts#L304">src/ui/Omnibox/Omnibox.ts
+									:304</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -633,8 +650,8 @@ data-inline&#x3D;&#x27;false&#x27;</pre>
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Omnibox/Omnibox.ts#L296">src/ui/Omnibox/Omnibox.ts
-									:296</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Omnibox/Omnibox.ts#L311">src/ui/Omnibox/Omnibox.ts
+									:311</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -657,8 +674,8 @@ data-inline&#x3D;&#x27;false&#x27;</pre>
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Omnibox/Omnibox.ts#L273">src/ui/Omnibox/Omnibox.ts
-									:273</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Omnibox/Omnibox.ts#L288">src/ui/Omnibox/Omnibox.ts
+									:288</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -682,8 +699,8 @@ data-inline&#x3D;&#x27;false&#x27;</pre>
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Omnibox/Omnibox.ts#L281">src/ui/Omnibox/Omnibox.ts
-									:281</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Omnibox/Omnibox.ts#L296">src/ui/Omnibox/Omnibox.ts
+									:296</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -715,8 +732,8 @@ data-inline&#x3D;&#x27;false&#x27;</pre>
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Omnibox/Omnibox.ts#L261">src/ui/Omnibox/Omnibox.ts
-									:261</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Omnibox/Omnibox.ts#L276">src/ui/Omnibox/Omnibox.ts
+									:276</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1008,8 +1025,8 @@ data-inline&#x3D;&#x27;false&#x27;</pre>
 								<p>Overwrites <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#constructor">constructor</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Omnibox/Omnibox.ts#L215">src/ui/Omnibox/Omnibox.ts
-									:215</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Omnibox/Omnibox.ts#L228">src/ui/Omnibox/Omnibox.ts
+									:228</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">

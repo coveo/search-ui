@@ -1,6 +1,6 @@
-webpackJsonpCoveo__temporary([52],{
+webpackJsonpCoveo__temporary([54],{
 
-/***/ 398:
+/***/ 314:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21,7 +21,7 @@ var Component_1 = __webpack_require__(8);
 var Initialization_1 = __webpack_require__(2);
 var Dom_1 = __webpack_require__(3);
 var GlobalExports_1 = __webpack_require__(4);
-__webpack_require__(950);
+__webpack_require__(537);
 /**
  * The Text component embeds itself in a result template to output a simple text value.
  *
@@ -34,7 +34,7 @@ __webpack_require__(950);
  *
  * This component is a result template component (see [Result Templates](https://developers.coveo.com/x/aIGfAQ)).
  */
-var Text = (function (_super) {
+var Text = /** @class */ (function (_super) {
     __extends(Text, _super);
     /**
      * Creates a new Text component.
@@ -64,82 +64,82 @@ var Text = (function (_super) {
         _this.element.style.paddingRight = _this.options.paddingRight;
         return _this;
     }
+    Text.ID = 'Text';
+    Text.doExport = function () {
+        GlobalExports_1.exportGlobally({
+            Text: Text
+        });
+    };
+    /**
+     * @componentOptions
+     */
+    Text.options = {
+        /**
+         * Specifies the localized string value that the component should render.
+         */
+        value: ComponentOptions_1.ComponentOptions.buildLocalizedStringOption(),
+        /**
+         * Specifies the size of the text (set as the `font-size` CSS property).
+         */
+        size: ComponentOptions_1.ComponentOptions.buildStringOption(),
+        /**
+         * Specifies the style of the text (set as the `font-style` CSS property).
+         */
+        style: ComponentOptions_1.ComponentOptions.buildStringOption(),
+        /**
+         * Specifies the color of the text (set as the `color` CSS property).
+         */
+        color: ComponentOptions_1.ComponentOptions.buildStringOption(),
+        /**
+         * Specifies the weight of the text (set as the `font-weight` CSS property).
+         */
+        weight: ComponentOptions_1.ComponentOptions.buildStringOption(),
+        /**
+         * Specifies the alignment of the text (set as the `text-align` CSS property).
+         */
+        textAlign: ComponentOptions_1.ComponentOptions.buildStringOption(),
+        /**
+         * Specifies the top margin of the text (set as the `margin-top` CSS property).
+         */
+        marginTop: ComponentOptions_1.ComponentOptions.buildStringOption(),
+        /**
+         * Specifies the bottom margin of the text (set as the `margin-bottom` CSS property).
+         */
+        marginBottom: ComponentOptions_1.ComponentOptions.buildStringOption(),
+        /**
+         * Specifies the left margin of the text (set as the `margin-left` CSS property).
+         */
+        marginLeft: ComponentOptions_1.ComponentOptions.buildStringOption(),
+        /**
+         * Specifies the right margin of the text (set as the `margin-right` CSS property).
+         */
+        marginRight: ComponentOptions_1.ComponentOptions.buildStringOption(),
+        /**
+         * Specifies the top padding of the text (set as the `padding-top` CSS property).
+         */
+        paddingTop: ComponentOptions_1.ComponentOptions.buildStringOption(),
+        /**
+         * Specifies the bottom padding of the text (set as the `padding-bottom` CSS property).
+         */
+        paddingBottom: ComponentOptions_1.ComponentOptions.buildStringOption(),
+        /**
+         * Specifies the left padding of the text (set as the `padding-left` CSS property).
+         */
+        paddingLeft: ComponentOptions_1.ComponentOptions.buildStringOption(),
+        /**
+         * Specifies the right padding of the text (set as the `padding-right` CSS property).
+         */
+        paddingRight: ComponentOptions_1.ComponentOptions.buildStringOption()
+    };
     return Text;
 }(Component_1.Component));
-Text.ID = 'Text';
-Text.doExport = function () {
-    GlobalExports_1.exportGlobally({
-        'Text': Text
-    });
-};
-/**
- * @componentOptions
- */
-Text.options = {
-    /**
-     * Specifies the localized string value that the component should render.
-     */
-    value: ComponentOptions_1.ComponentOptions.buildLocalizedStringOption(),
-    /**
-     * Specifies the size of the text (set as the `font-size` CSS property).
-     */
-    size: ComponentOptions_1.ComponentOptions.buildStringOption(),
-    /**
-     * Specifies the style of the text (set as the `font-style` CSS property).
-     */
-    style: ComponentOptions_1.ComponentOptions.buildStringOption(),
-    /**
-     * Specifies the color of the text (set as the `color` CSS property).
-     */
-    color: ComponentOptions_1.ComponentOptions.buildStringOption(),
-    /**
-     * Specifies the weight of the text (set as the `font-weight` CSS property).
-     */
-    weight: ComponentOptions_1.ComponentOptions.buildStringOption(),
-    /**
-     * Specifies the alignment of the text (set as the `text-align` CSS property).
-     */
-    textAlign: ComponentOptions_1.ComponentOptions.buildStringOption(),
-    /**
-     * Specifies the top margin of the text (set as the `margin-top` CSS property).
-     */
-    marginTop: ComponentOptions_1.ComponentOptions.buildStringOption(),
-    /**
-     * Specifies the bottom margin of the text (set as the `margin-bottom` CSS property).
-     */
-    marginBottom: ComponentOptions_1.ComponentOptions.buildStringOption(),
-    /**
-     * Specifies the left margin of the text (set as the `margin-left` CSS property).
-     */
-    marginLeft: ComponentOptions_1.ComponentOptions.buildStringOption(),
-    /**
-     * Specifies the right margin of the text (set as the `margin-right` CSS property).
-     */
-    marginRight: ComponentOptions_1.ComponentOptions.buildStringOption(),
-    /**
-     * Specifies the top padding of the text (set as the `padding-top` CSS property).
-     */
-    paddingTop: ComponentOptions_1.ComponentOptions.buildStringOption(),
-    /**
-     * Specifies the bottom padding of the text (set as the `padding-bottom` CSS property).
-     */
-    paddingBottom: ComponentOptions_1.ComponentOptions.buildStringOption(),
-    /**
-     * Specifies the left padding of the text (set as the `padding-left` CSS property).
-     */
-    paddingLeft: ComponentOptions_1.ComponentOptions.buildStringOption(),
-    /**
-     * Specifies the right padding of the text (set as the `padding-right` CSS property).
-     */
-    paddingRight: ComponentOptions_1.ComponentOptions.buildStringOption()
-};
 exports.Text = Text;
 Initialization_1.Initialization.registerAutoCreateComponent(Text);
 
 
 /***/ }),
 
-/***/ 950:
+/***/ 537:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

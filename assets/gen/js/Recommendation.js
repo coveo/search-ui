@@ -1,55 +1,6 @@
 webpackJsonpCoveo__temporary([5],{
 
-/***/ 104:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var ResponsiveComponentsUtils = (function () {
-    function ResponsiveComponentsUtils() {
-    }
-    ResponsiveComponentsUtils.shouldDrawFacetSlider = function (root) {
-        return !this.isSmallFacetActivated(root) && !this.isSmallRecommendationActivated(root);
-    };
-    ResponsiveComponentsUtils.isSmallTabsActivated = function (root) {
-        return root.hasClass(this.smallTabsClassName);
-    };
-    ResponsiveComponentsUtils.isSmallFacetActivated = function (root) {
-        return root.hasClass(this.smallFacetClassName);
-    };
-    ResponsiveComponentsUtils.isSmallRecommendationActivated = function (root) {
-        return root.hasClass(this.smallRecommendationClassName);
-    };
-    ResponsiveComponentsUtils.activateSmallTabs = function (root) {
-        root.addClass(this.smallTabsClassName);
-    };
-    ResponsiveComponentsUtils.deactivateSmallTabs = function (root) {
-        root.removeClass(this.smallTabsClassName);
-    };
-    ResponsiveComponentsUtils.activateSmallFacet = function (root) {
-        root.addClass(this.smallFacetClassName);
-    };
-    ResponsiveComponentsUtils.deactivateSmallFacet = function (root) {
-        root.removeClass(this.smallFacetClassName);
-    };
-    ResponsiveComponentsUtils.activateSmallRecommendation = function (root) {
-        root.addClass(this.smallRecommendationClassName);
-    };
-    ResponsiveComponentsUtils.deactivateSmallRecommendation = function (root) {
-        root.removeClass(this.smallRecommendationClassName);
-    };
-    return ResponsiveComponentsUtils;
-}());
-ResponsiveComponentsUtils.smallTabsClassName = 'coveo-small-tabs';
-ResponsiveComponentsUtils.smallFacetClassName = 'coveo-small-facets';
-ResponsiveComponentsUtils.smallRecommendationClassName = 'coveo-small-recommendation';
-exports.ResponsiveComponentsUtils = ResponsiveComponentsUtils;
-
-
-/***/ }),
-
-/***/ 291:
+/***/ 247:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -65,31 +16,31 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var SearchInterface_1 = __webpack_require__(22);
+var SearchInterface_1 = __webpack_require__(20);
 var ComponentOptions_1 = __webpack_require__(9);
 var QueryEvents_1 = __webpack_require__(11);
-var OmniboxEvents_1 = __webpack_require__(36);
-var ResultListEvents_1 = __webpack_require__(35);
-var SettingsEvents_1 = __webpack_require__(45);
-var PreferencesPanelEvents_1 = __webpack_require__(79);
-var AnalyticsEvents_1 = __webpack_require__(70);
+var OmniboxEvents_1 = __webpack_require__(33);
+var ResultListEvents_1 = __webpack_require__(32);
+var SettingsEvents_1 = __webpack_require__(43);
+var PreferencesPanelEvents_1 = __webpack_require__(67);
+var AnalyticsEvents_1 = __webpack_require__(63);
 var AnalyticsActionListMeta_1 = __webpack_require__(12);
-var BreadcrumbEvents_1 = __webpack_require__(51);
-var QuickviewEvents_1 = __webpack_require__(305);
+var BreadcrumbEvents_1 = __webpack_require__(42);
+var QuickviewEvents_1 = __webpack_require__(260);
 var QueryStateModel_1 = __webpack_require__(13);
-var Model_1 = __webpack_require__(19);
-var Utils_1 = __webpack_require__(5);
+var Model_1 = __webpack_require__(18);
+var Utils_1 = __webpack_require__(6);
 var Dom_1 = __webpack_require__(3);
-var ResponsiveRecommendation_1 = __webpack_require__(984);
-var coveo_analytics_1 = __webpack_require__(294);
-var RegisteredNamedMethods_1 = __webpack_require__(54);
-var InitializationEvents_1 = __webpack_require__(18);
+var ResponsiveRecommendation_1 = __webpack_require__(514);
+var coveo_analytics_1 = __webpack_require__(86);
+var RegisteredNamedMethods_1 = __webpack_require__(34);
+var InitializationEvents_1 = __webpack_require__(17);
 var _ = __webpack_require__(1);
 var GlobalExports_1 = __webpack_require__(4);
-var DefaultRecommendationTemplate_1 = __webpack_require__(510);
-var RecommendationQuery_1 = __webpack_require__(981);
-var RecommendationAnalyticsClient_1 = __webpack_require__(295);
-__webpack_require__(935);
+var DefaultRecommendationTemplate_1 = __webpack_require__(427);
+var RecommendationQuery_1 = __webpack_require__(517);
+var RecommendationAnalyticsClient_1 = __webpack_require__(250);
+__webpack_require__(518);
 /**
  * The Recommendation component is a {@link SearchInterface} that displays recommendations typically based on user
  * history.
@@ -108,7 +59,7 @@ __webpack_require__(935);
  * inside the Recommendation component (Searchbox, Facet, Sort, etc.), just as you would inside the main SearchInterface
  * component.
  */
-var Recommendation = (function (_super) {
+var Recommendation = /** @class */ (function (_super) {
     __extends(Recommendation, _super);
     /**
      * Creates a new Recommendation component.
@@ -134,7 +85,9 @@ var Recommendation = (function (_super) {
         if (_this.options.mainSearchInterface) {
             _this.bindToMainSearchInterface();
         }
-        Dom_1.$$(_this.element).on(QueryEvents_1.QueryEvents.buildingQuery, function (e, args) { return _this.handleRecommendationBuildingQuery(args); });
+        Dom_1.$$(_this.element).on(QueryEvents_1.QueryEvents.buildingQuery, function (e, args) {
+            return _this.handleRecommendationBuildingQuery(args);
+        });
         Dom_1.$$(_this.element).on(QueryEvents_1.QueryEvents.querySuccess, function (e, args) { return _this.handleRecommendationQuerySuccess(args); });
         Dom_1.$$(_this.element).on(QueryEvents_1.QueryEvents.noResults, function (e, args) { return _this.handleRecommendationNoResults(); });
         Dom_1.$$(_this.element).on(QueryEvents_1.QueryEvents.queryError, function (e, args) { return _this.handleRecommendationQueryError(); });
@@ -224,6 +177,7 @@ var Recommendation = (function (_super) {
                 closeModalBox: false
             });
         });
+        Dom_1.$$(this.options.mainSearchInterface).on(QueryEvents_1.QueryEvents.queryError, function () { return _this.hide(); });
     };
     Recommendation.prototype.handleRecommendationBuildingQuery = function (data) {
         if (!this.disabled) {
@@ -264,9 +218,6 @@ var Recommendation = (function (_super) {
         if (!_.isEmpty(this.options.userContext)) {
             data.queryBuilder.addContext(JSON.parse(this.options.userContext));
         }
-        if (this.options.sendActionsHistory) {
-            data.queryBuilder.actionsHistory = this.getHistory();
-        }
         data.queryBuilder.recommendation = this.options.id;
     };
     Recommendation.prototype.getHistory = function () {
@@ -289,7 +240,9 @@ var Recommendation = (function (_super) {
         this.preventEventPropagationOn(this.getAllModelEvents());
     };
     Recommendation.prototype.preventEventPropagationOn = function (eventType, eventName) {
-        if (eventName === void 0) { eventName = function (event) { return event; }; }
+        if (eventName === void 0) { eventName = function (event) {
+            return event;
+        }; }
         for (var event_1 in eventType) {
             Dom_1.$$(this.root).on(eventName(event_1), function (e) { return e.stopPropagation(); });
         }
@@ -314,137 +267,144 @@ var Recommendation = (function (_super) {
         Recommendation.NEXT_ID++;
         this.options.id = id;
     };
+    Recommendation.ID = 'Recommendation';
+    Recommendation.NEXT_ID = 1;
+    Recommendation.doExport = function () {
+        GlobalExports_1.exportGlobally({
+            Recommendation: Recommendation,
+            DefaultRecommendationTemplate: DefaultRecommendationTemplate_1.DefaultRecommendationTemplate,
+            RecommendationQuery: RecommendationQuery_1.RecommendationQuery,
+            RecommendationAnalyticsClient: RecommendationAnalyticsClient_1.RecommendationAnalyticsClient
+        });
+    };
+    /**
+     * The options for the recommendation component
+     * @componentOptions
+     */
+    Recommendation.options = {
+        /**
+         * Specifies the main {@link SearchInterface} to listen to.
+         */
+        mainSearchInterface: ComponentOptions_1.ComponentOptions.buildSelectorOption(),
+        /**
+         * Specifies the user context to send to Coveo usage analytics.
+         * The component sends this information with the query alongside the user history to get the recommendations.
+         */
+        userContext: ComponentOptions_1.ComponentOptions.buildJsonOption(),
+        /**
+         * Specifies the ID of the interface.
+         * The usage analytics use the interface ID to know which recommendation interface was selected.
+         *
+         * Default value is `Recommendation` for the first one and `Recommendation_{number}`, where {number} depends on the
+         * number of Recommendation interfaces with default IDs in the page for the others.
+         */
+        id: ComponentOptions_1.ComponentOptions.buildStringOption(),
+        /**
+         * Specifies which options from the main {@link QueryBuilder} to use in the triggered query.
+         *
+         * Possible values are:
+         * - `expression`
+         * - `advancedExpression`
+         * - `constantExpression`
+         * - `disjunctionExpression`
+         *
+         * **Example:**
+         *
+         * Adding the expression (`q`) and the advanced expression (`aq`) parts of the main query in the triggered query:
+         *
+         * `data-options-to-use="expression,advancedExpression"`
+         *
+         * Default value is `expression`.
+         */
+        optionsToUse: ComponentOptions_1.ComponentOptions.buildListOption({
+            defaultValue: ['expression']
+        }),
+        /**
+         * Specifies whether to send the actions history along with the triggered query.
+         *
+         * Setting this option to `false` makes it impossible for this component to get Coveo Machine Learning
+         * recommendations.
+         *
+         * However, setting this option to `false` can be useful to display side results in a search page.
+         *
+         * Default value is `true`.
+         *
+         * @deprecated This option is now deprecated. The correct way to control this behavior is to configure an appropriate machine learning model in the administration interface (Recommendation, Relevance tuning, Query suggestions).
+         */
+        sendActionsHistory: ComponentOptions_1.ComponentOptions.buildBooleanOption({
+            defaultValue: true,
+            deprecated: 'This option is now deprecated. The correct way to control this behaviour is to configure an appropriate machine learning model in the administration interface (Recommendation, Relevance tuning, Query suggestions)'
+        }),
+        /**
+         * Specifies whether to hide the Recommendations component if no result or recommendation is available.
+         *
+         * Default value is `false`.
+         */
+        hideIfNoResults: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: true }),
+        autoTriggerQuery: ComponentOptions_1.ComponentOptions.buildBooleanOption({
+            postProcessing: function (value, options) {
+                if (options.mainSearchInterface) {
+                    return false;
+                }
+                return value;
+            }
+        }),
+        /**
+         * Specifies whether to enable *responsive mode* for Recommendation components. Setting this options to `false` on
+         * any Recommendation component in a search interface disables responsive mode for all other Recommendation
+         * components in the search interface.
+         *
+         * Responsive mode displays all Recommendation components under a single dropdown button whenever the width of the
+         * HTML element which the search interface is bound to reaches or falls behind a certain threshold (see
+         * {@link Recommendation.options.responsiveBreakpoint}).
+         *
+         * See also {@link Recommendation.options.dropdownHeaderLabel}.
+         *
+         * Default value is `true`.
+         */
+        enableResponsiveMode: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: true }),
+        /**
+         * If {@link Recommendation.options.enableResponsiveMode} is `true` for all Recommendation components, specifies the
+         * width threshold (in pixels) of the search interface at which Recommendation components go in responsive mode.
+         *
+         * Recommendation components go in responsive mode when the width of the search interface is equal to or lower than
+         * this value.
+         *
+         * The `search interface` corresponds to the HTML element with the class `CoveoSearchInterface`.
+         *
+         * If more than one Recommendation component in the search interface specifies a value for this option, then the
+         * framework uses the last occurrence of the option.
+         *
+         * Default value is `1000`.
+         */
+        responsiveBreakpoint: ComponentOptions_1.ComponentOptions.buildNumberOption({ defaultValue: 1000 }),
+        /**
+         * If {@link Recommendation.options.enableResponsiveMode} is `true` for all Recommendation components, specifies the
+         * label of the dropdown button that allows to display the Recommendation components when in responsive mode.
+         *
+         * If more than one Recommendation component in the search interface specifies a value for this option, then the
+         * framework uses the first occurrence of the option.
+         *
+         * Default value is `Recommendations`.
+         */
+        dropdownHeaderLabel: ComponentOptions_1.ComponentOptions.buildLocalizedStringOption({ defaultValue: 'Recommendations' })
+    };
     return Recommendation;
 }(SearchInterface_1.SearchInterface));
-Recommendation.ID = 'Recommendation';
-Recommendation.NEXT_ID = 1;
-Recommendation.doExport = function () {
-    GlobalExports_1.exportGlobally({
-        'Recommendation': Recommendation,
-        'DefaultRecommendationTemplate': DefaultRecommendationTemplate_1.DefaultRecommendationTemplate,
-        'RecommendationQuery': RecommendationQuery_1.RecommendationQuery,
-        'RecommendationAnalyticsClient': RecommendationAnalyticsClient_1.RecommendationAnalyticsClient
-    });
-};
-/**
- * The options for the recommendation component
- * @componentOptions
- */
-Recommendation.options = {
-    /**
-     * Specifies the main {@link SearchInterface} to listen to.
-     */
-    mainSearchInterface: ComponentOptions_1.ComponentOptions.buildSelectorOption(),
-    /**
-     * Specifies the user context to send to Coveo usage analytics.
-     * The component sends this information with the query alongside the user history to get the recommendations.
-     */
-    userContext: ComponentOptions_1.ComponentOptions.buildJsonOption(),
-    /**
-     * Specifies the ID of the interface.
-     * The usage analytics use the interface ID to know which recommendation interface was selected.
-     *
-     * Default value is `Recommendation` for the first one and `Recommendation_{number}`, where {number} depends on the
-     * number of Recommendation interfaces with default IDs in the page for the others.
-     */
-    id: ComponentOptions_1.ComponentOptions.buildStringOption(),
-    /**
-     * Specifies which options from the main {@link QueryBuilder} to use in the triggered query.
-     *
-     * Possible values are:
-     * - `expression`
-     * - `advancedExpression`
-     * - `constantExpression`
-     * - `disjunctionExpression`
-     *
-     * **Example:**
-     *
-     * Adding the expression (`q`) and the advanced expression (`aq`) parts of the main query in the triggered query:
-     *
-     * `data-options-to-use="expression,advancedExpression"`
-     *
-     * Default value is `expression`.
-     */
-    optionsToUse: ComponentOptions_1.ComponentOptions.buildListOption({ defaultValue: ['expression'] }),
-    /**
-     * Specifies whether to send the actions history along with the triggered query.
-     *
-     * Setting this option to `false` makes it impossible for this component to get Coveo Machine Learning
-     * recommendations.
-     *
-     * However, setting this option to `false` can be useful to display side results in a search page.
-     *
-     * Default value is `true`.
-     */
-    sendActionsHistory: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: true }),
-    /**
-     * Specifies whether to hide the Recommendations component if no result or recommendation is available.
-     *
-     * Default value is `false`.
-     */
-    hideIfNoResults: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: true }),
-    autoTriggerQuery: ComponentOptions_1.ComponentOptions.buildBooleanOption({
-        postProcessing: function (value, options) {
-            if (options.mainSearchInterface) {
-                return false;
-            }
-            return value;
-        }
-    }),
-    /**
-     * Specifies whether to enable *responsive mode* for Recommendation components. Setting this options to `false` on
-     * any Recommendation component in a search interface disables responsive mode for all other Recommendation
-     * components in the search interface.
-     *
-     * Responsive mode displays all Recommendation components under a single dropdown button whenever the width of the
-     * HTML element which the search interface is bound to reaches or falls behind a certain threshold (see
-     * {@link Recommendation.options.responsiveBreakpoint}).
-     *
-     * See also {@link Recommendation.options.dropdownHeaderLabel}.
-     *
-     * Default value is `true`.
-     */
-    enableResponsiveMode: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: true }),
-    /**
-     * If {@link Recommendation.options.enableResponsiveMode} is `true` for all Recommendation components, specifies the
-     * width threshold (in pixels) of the search interface at which Recommendation components go in responsive mode.
-     *
-     * Recommendation components go in responsive mode when the width of the search interface is equal to or lower than
-     * this value.
-     *
-     * The `search interface` corresponds to the HTML element with the class `CoveoSearchInterface`.
-     *
-     * If more than one Recommendation component in the search interface specifies a value for this option, then the
-     * framework uses the last occurrence of the option.
-     *
-     * Default value is `1000`.
-     */
-    responsiveBreakpoint: ComponentOptions_1.ComponentOptions.buildNumberOption({ defaultValue: 1000 }),
-    /**
-     * If {@link Recommendation.options.enableResponsiveMode} is `true` for all Recommendation components, specifies the
-     * label of the dropdown button that allows to display the Recommendation components when in responsive mode.
-     *
-     * If more than one Recommendation component in the search interface specifies a value for this option, then the
-     * framework uses the first occurrence of the option.
-     *
-     * Default value is `Recommendations`.
-     */
-    dropdownHeaderLabel: ComponentOptions_1.ComponentOptions.buildLocalizedStringOption({ defaultValue: 'Recommendations' })
-};
 exports.Recommendation = Recommendation;
 // We do not register the Recommendation component since it is done with .coveo('initRecommendation')
 
 
 /***/ }),
 
-/***/ 300:
+/***/ 255:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var _ = __webpack_require__(1);
-var EventsUtils = (function () {
+var EventsUtils = /** @class */ (function () {
     function EventsUtils() {
     }
     // eventName must be in PascalCase
@@ -465,42 +425,69 @@ var EventsUtils = (function () {
             element.removeEventListener(prefix + pascalCaseEventName, callback, false);
         });
     };
+    EventsUtils.prefixes = ['webkit', 'moz', 'MS', 'o', ''];
     return EventsUtils;
 }());
-EventsUtils.prefixes = ['webkit', 'moz', 'MS', 'o', ''];
 exports.EventsUtils = EventsUtils;
 
 
 /***/ }),
 
-/***/ 305:
+/***/ 260:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var QuickviewEvents = (function () {
+/**
+ * The `QuickviewEvents` static class contains the string definitions of all events that strongly relate to the
+ * [`Quickview`]{@link Quickview} component.
+ */
+var QuickviewEvents = /** @class */ (function () {
     function QuickviewEvents() {
     }
+    /**
+     * Triggered by the [`QuickviewDocument`]{@link QuickviewDocument} component when the content to display in the
+     * quickview modal window has just finished downloading.
+     *
+     * The [`Quickview`]{@link Quickview} component listens to this event to know when to remove its loading animation.
+     *
+     * All `quickviewLoaded` event handlers receive a [`QuickviewLoadedEventArgs`]{@link IQuickviewLoadedEventArgs} object
+     * as an argument.
+     *
+     * @type {string} The string value is `quickviewLoaded`.
+     */
+    QuickviewEvents.quickviewLoaded = 'quickviewLoaded';
+    /**
+     * Triggered by the [`QuickviewDocument`]{@link QuickviewDocument} component when the end user has just clicked the
+     * **Quickview** button/link to open the quickview modal window.
+     *
+     * This event allows external code to modify the terms to highlight before the content of the quickview modal window
+     * is rendered.
+     *
+     * All `openQuickview` event handlers receive an
+     * [`OpenQuickviewEventArgs`]{@link ResultListEvents.IOpenQuickviewEventArgs} object as an argument.
+     *
+     * @type {string} The string value is `openQuickview`.
+     */
+    QuickviewEvents.openQuickview = 'openQuickview';
     return QuickviewEvents;
 }());
-QuickviewEvents.quickviewLoaded = 'quickviewLoaded';
-QuickviewEvents.openQuickview = 'openQuickview';
 exports.QuickviewEvents = QuickviewEvents;
 
 
 /***/ }),
 
-/***/ 491:
+/***/ 407:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var Dom_1 = __webpack_require__(3);
-var EventsUtils_1 = __webpack_require__(300);
+var EventsUtils_1 = __webpack_require__(255);
 var _ = __webpack_require__(1);
-var ResponsiveDropdown = (function () {
+var ResponsiveDropdown = /** @class */ (function () {
     function ResponsiveDropdown(dropdownContent, dropdownHeader, coveoRoot) {
         this.dropdownContent = dropdownContent;
         this.dropdownHeader = dropdownHeader;
@@ -562,6 +549,7 @@ var ResponsiveDropdown = (function () {
             this.coveoRoot.el.appendChild(this.popupBackground.el);
             window.getComputedStyle(this.popupBackground.el).opacity;
             this.popupBackground.el.style.opacity = ResponsiveDropdown.TRANSPARENT_BACKGROUND_OPACITY;
+            this.popupBackground.addClass('coveo-dropdown-background-active');
         }
     };
     ResponsiveDropdown.prototype.hidePopupBackground = function () {
@@ -569,6 +557,7 @@ var ResponsiveDropdown = (function () {
             // forces the browser to reflow the element, so that the transition is applied.
             window.getComputedStyle(this.popupBackground.el).opacity;
             this.popupBackground.el.style.opacity = '0';
+            this.popupBackground.removeClass('coveo-dropdown-background-active');
         }
     };
     ResponsiveDropdown.prototype.buildPopupBackground = function () {
@@ -596,25 +585,25 @@ var ResponsiveDropdown = (function () {
             this.parent.prepend(this.dropdownContent.element.el);
         }
     };
+    ResponsiveDropdown.TRANSPARENT_BACKGROUND_OPACITY = '0.9';
+    ResponsiveDropdown.DROPDOWN_BACKGROUND_CSS_CLASS_NAME = 'coveo-dropdown-background';
     return ResponsiveDropdown;
 }());
-ResponsiveDropdown.TRANSPARENT_BACKGROUND_OPACITY = '0.9';
-ResponsiveDropdown.DROPDOWN_BACKGROUND_CSS_CLASS_NAME = 'coveo-dropdown-background';
 exports.ResponsiveDropdown = ResponsiveDropdown;
 
 
 /***/ }),
 
-/***/ 492:
+/***/ 408:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var Dom_1 = __webpack_require__(3);
-var PopupUtils_1 = __webpack_require__(58);
-var ResponsiveComponentsManager_1 = __webpack_require__(90);
-var ResponsiveDropdownContent = (function () {
+var PopupUtils_1 = __webpack_require__(52);
+var ResponsiveComponentsManager_1 = __webpack_require__(77);
+var ResponsiveDropdownContent = /** @class */ (function () {
     function ResponsiveDropdownContent(componentName, element, coveoRoot, minWidth, widthRatio) {
         this.element = element;
         this.cssClassName = "coveo-" + componentName + "-dropdown-content";
@@ -641,22 +630,22 @@ var ResponsiveDropdownContent = (function () {
     ResponsiveDropdownContent.prototype.cleanUp = function () {
         this.element.el.removeAttribute('style');
     };
+    ResponsiveDropdownContent.DEFAULT_CSS_CLASS_NAME = 'coveo-dropdown-content';
     return ResponsiveDropdownContent;
 }());
-ResponsiveDropdownContent.DEFAULT_CSS_CLASS_NAME = 'coveo-dropdown-content';
 exports.ResponsiveDropdownContent = ResponsiveDropdownContent;
 
 
 /***/ }),
 
-/***/ 493:
+/***/ 409:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var Dom_1 = __webpack_require__(3);
-var ResponsiveDropdownHeader = (function () {
+var ResponsiveDropdownHeader = /** @class */ (function () {
     function ResponsiveDropdownHeader(componentName, element) {
         this.element = element;
         this.element.addClass("coveo-" + componentName + "-dropdown-header");
@@ -677,16 +666,16 @@ var ResponsiveDropdownHeader = (function () {
     ResponsiveDropdownHeader.prototype.show = function () {
         Dom_1.$$(this.element).removeClass('coveo-hidden');
     };
+    ResponsiveDropdownHeader.DEFAULT_CSS_CLASS_NAME = 'coveo-dropdown-header';
+    ResponsiveDropdownHeader.ACTIVE_HEADER_CSS_CLASS_NAME = 'coveo-dropdown-header-active';
     return ResponsiveDropdownHeader;
 }());
-ResponsiveDropdownHeader.DEFAULT_CSS_CLASS_NAME = 'coveo-dropdown-header';
-ResponsiveDropdownHeader.ACTIVE_HEADER_CSS_CLASS_NAME = 'coveo-dropdown-header-active';
 exports.ResponsiveDropdownHeader = ResponsiveDropdownHeader;
 
 
 /***/ }),
 
-/***/ 510:
+/***/ 427:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -702,14 +691,14 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var Template_1 = __webpack_require__(25);
-var DefaultRecommendationTemplate = (function (_super) {
+var Template_1 = __webpack_require__(24);
+var DefaultRecommendationTemplate = /** @class */ (function (_super) {
     __extends(DefaultRecommendationTemplate, _super);
     function DefaultRecommendationTemplate() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     DefaultRecommendationTemplate.prototype.instantiateToString = function (object) {
-        var template = "<div class=\"coveo-result-frame\">\n        <div class=\"coveo-result-row\">\n          <div class=\"coveo-result-cell\" style=\"width:40px;text-align:center;vertical-align:middle;\">\n            <span class=\"CoveoIcon\" data-small=\"true\">\n            </span>\n          </div>\n          <div class=\"coveo-result-cell\" style=\"padding:0 0 3px 5px;vertical-align:middle\">\n            <div class=\"coveo-result-row\">\n              <div class=\"coveo-result-cell\" style=\"font-size:10pt;\">\n                <a class=\"CoveoResultLink\" style=\"display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis\">\n                </a>\n              </div>\n            </div>\n          </div>\n        </div>\n      </div>";
+        var template = "<div class=\"coveo-result-frame\">\n        <div class=\"coveo-result-row\">\n          <div class=\"coveo-result-cell\" style=\"width:40px;text-align:center;vertical-align:middle;\">\n            <span class=\"CoveoIcon\" data-small=\"true\" data-with-label=\"false\">\n            </span>\n          </div>\n          <div class=\"coveo-result-cell\" style=\"padding:0 0 3px 5px;vertical-align:middle\">\n            <div class=\"coveo-result-row\">\n              <div class=\"coveo-result-cell\" style=\"font-size:10pt;\">\n                <a class=\"CoveoResultLink\" style=\"display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis\">\n                </a>\n              </div>\n            </div>\n          </div>\n        </div>\n      </div>";
         return template;
     };
     DefaultRecommendationTemplate.prototype.instantiateToElement = function (object) {
@@ -724,336 +713,34 @@ var DefaultRecommendationTemplate = (function (_super) {
 }(Template_1.Template));
 exports.DefaultRecommendationTemplate = DefaultRecommendationTemplate;
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(6)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5)))
 
 /***/ }),
 
-/***/ 90:
+/***/ 514:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var Dom_1 = __webpack_require__(3);
-var InitializationEvents_1 = __webpack_require__(18);
-var Component_1 = __webpack_require__(8);
-var SearchInterface_1 = __webpack_require__(22);
-var Utils_1 = __webpack_require__(5);
-var _ = __webpack_require__(1);
-var QueryEvents_1 = __webpack_require__(11);
-var Logger_1 = __webpack_require__(14);
-var ResponsiveComponentsManager = (function () {
-    function ResponsiveComponentsManager(root) {
-        var _this = this;
-        this.disabledComponents = [];
-        this.responsiveComponents = [];
-        this.coveoRoot = root;
-        this.searchInterface = Component_1.Component.get(this.coveoRoot.el, SearchInterface_1.SearchInterface, false);
-        this.dropdownHeadersWrapper = Dom_1.$$('div', { className: ResponsiveComponentsManager.DROPDOWN_HEADER_WRAPPER_CSS_CLASS });
-        this.searchBoxElement = this.getSearchBoxElement();
-        this.logger = new Logger_1.Logger(this);
-        this.resizeListener = _.debounce(function () {
-            if (_this.coveoRoot.width() != 0) {
-                _this.addDropdownHeaderWrapperIfNeeded();
-                if (_this.shouldSwitchToSmallMode()) {
-                    _this.coveoRoot.addClass('coveo-small-interface');
-                }
-                else if (!_this.shouldSwitchToSmallMode()) {
-                    _this.coveoRoot.removeClass('coveo-small-interface');
-                }
-                _.each(_this.responsiveComponents, function (responsiveComponent) {
-                    responsiveComponent.handleResizeEvent();
-                });
-            }
-            else {
-                _this.logger.warn("The width of the search interface is 0, cannot dispatch resize events to responsive components. This means that the tabs will not\n        automatically fit in the tab section. Also, the facet and recommendation component will not hide in a menu. Could the search\n        interface display property be none? Could its visibility property be set to hidden? Also, if either of these scenarios happen during\n        loading, it could be the cause of this issue.");
-            }
-        }, ResponsiveComponentsManager.RESIZE_DEBOUNCE_DELAY, true);
-        window.addEventListener('resize', this.resizeListener);
-        this.bindNukeEvents();
-    }
-    // Register takes a class and will instantiate it after framework initialization has completed.
-    ResponsiveComponentsManager.register = function (responsiveComponentConstructor, root, ID, component, options) {
-        var _this = this;
-        // options.initializationEventRoot can be set in some instance (like recommendation) where the root of the interface triggering the init event
-        // is different from the one that will be used for calculation size.
-        var initEventRoot = options.initializationEventRoot || root;
-        initEventRoot.on(InitializationEvents_1.InitializationEvents.afterInitialization, function () {
-            if (_this.shouldEnableResponsiveMode(root)) {
-                var responsiveComponentsManager = _.find(_this.componentManagers, function (componentManager) { return root.el == componentManager.coveoRoot.el; });
-                if (!responsiveComponentsManager) {
-                    responsiveComponentsManager = new ResponsiveComponentsManager(root);
-                    _this.componentManagers.push(responsiveComponentsManager);
-                }
-                if (!Utils_1.Utils.isNullOrUndefined(options.enableResponsiveMode) && !options.enableResponsiveMode) {
-                    responsiveComponentsManager.disableComponent(ID);
-                    return;
-                }
-                _this.componentInitializations.push({
-                    responsiveComponentsManager: responsiveComponentsManager,
-                    arguments: [responsiveComponentConstructor, root, ID, component, options]
-                });
-            }
-            _this.remainingComponentInitializations--;
-            if (_this.remainingComponentInitializations == 0) {
-                _this.instantiateResponsiveComponents(); // necessary to verify if all components are disabled before they are initialized.
-                if (root.width() == 0) {
-                    var logger = new Logger_1.Logger('ResponsiveComponentsManager');
-                    logger.info("Search interface width is 0, cannot dispatch resize events to responsive components. Will try again after first\n          query success.");
-                    root.one(QueryEvents_1.QueryEvents.querySuccess, function () {
-                        _this.resizeAllComponentsManager();
-                    });
-                }
-                else {
-                    _this.resizeAllComponentsManager();
-                }
-            }
-        });
-        this.remainingComponentInitializations++;
-    };
-    ResponsiveComponentsManager.shouldEnableResponsiveMode = function (root) {
-        var searchInterface = Component_1.Component.get(root.el, SearchInterface_1.SearchInterface, true);
-        return searchInterface instanceof SearchInterface_1.SearchInterface && searchInterface.options.enableAutomaticResponsiveMode;
-    };
-    ResponsiveComponentsManager.instantiateResponsiveComponents = function () {
-        _.each(this.componentInitializations, function (componentInitialization) {
-            var responsiveComponentsManager = componentInitialization.responsiveComponentsManager;
-            responsiveComponentsManager.register.apply(responsiveComponentsManager, componentInitialization.arguments);
-        });
-    };
-    ResponsiveComponentsManager.resizeAllComponentsManager = function () {
-        _.each(this.componentManagers, function (componentManager) {
-            componentManager.resizeListener();
-        });
-    };
-    ResponsiveComponentsManager.prototype.register = function (responsiveComponentConstructor, root, ID, component, options) {
-        if (this.isDisabled(ID)) {
-            return;
-        }
-        if (!this.isActivated(ID)) {
-            var responsiveComponent = new responsiveComponentConstructor(root, ID, options);
-            if (this.isTabs(ID)) {
-                this.responsiveComponents.push(responsiveComponent);
-            }
-            else {
-                // Tabs need to be rendered last, so any dropdown header(eg: facet) is already there when the responsive tabs check for overflow.
-                this.responsiveComponents.unshift(responsiveComponent);
-            }
-        }
-        _.each(this.responsiveComponents, function (responsiveComponent) {
-            if (responsiveComponent.registerComponent != null) {
-                responsiveComponent.registerComponent(component);
-            }
-        });
-    };
-    ResponsiveComponentsManager.prototype.disableComponent = function (ID) {
-        this.disabledComponents.push(ID);
-    };
-    ResponsiveComponentsManager.prototype.isDisabled = function (ID) {
-        return _.indexOf(this.disabledComponents, ID) != -1;
-    };
-    ResponsiveComponentsManager.prototype.shouldSwitchToSmallMode = function () {
-        var aComponentNeedsTabSection = this.needDropdownWrapper();
-        var reachedBreakpoint = this.coveoRoot.width() <= this.searchInterface.responsiveComponents.getMediumScreenWidth();
-        return aComponentNeedsTabSection || reachedBreakpoint;
-    };
-    ResponsiveComponentsManager.prototype.needDropdownWrapper = function () {
-        for (var i = 0; i < this.responsiveComponents.length; i++) {
-            var responsiveComponent = this.responsiveComponents[i];
-            if (responsiveComponent.needDropdownWrapper && responsiveComponent.needDropdownWrapper()) {
-                return true;
-            }
-        }
-        return false;
-    };
-    ResponsiveComponentsManager.prototype.addDropdownHeaderWrapperIfNeeded = function () {
-        if (this.needDropdownWrapper()) {
-            var tabSection = Dom_1.$$(this.coveoRoot).find('.coveo-tab-section');
-            if (this.searchBoxElement) {
-                this.dropdownHeadersWrapper.insertAfter(this.searchBoxElement);
-            }
-            else if (tabSection) {
-                this.dropdownHeadersWrapper.insertAfter(tabSection);
-            }
-            else {
-                this.coveoRoot.prepend(this.dropdownHeadersWrapper.el);
-            }
-        }
-    };
-    ResponsiveComponentsManager.prototype.isTabs = function (ID) {
-        return ID == 'Tab';
-    };
-    ResponsiveComponentsManager.prototype.isActivated = function (ID) {
-        return _.find(this.responsiveComponents, function (current) { return current.ID == ID; }) != undefined;
-    };
-    ResponsiveComponentsManager.prototype.getSearchBoxElement = function () {
-        var searchBoxElement = this.coveoRoot.find('.coveo-search-section');
-        if (searchBoxElement) {
-            return searchBoxElement;
-        }
-        else {
-            return this.coveoRoot.find('.CoveoSearchbox');
-        }
-    };
-    ResponsiveComponentsManager.prototype.bindNukeEvents = function () {
-        var _this = this;
-        Dom_1.$$(this.coveoRoot).on(InitializationEvents_1.InitializationEvents.nuke, function () {
-            window.removeEventListener('resize', _this.resizeListener);
-        });
-    };
-    return ResponsiveComponentsManager;
-}());
-ResponsiveComponentsManager.DROPDOWN_HEADER_WRAPPER_CSS_CLASS = 'coveo-dropdown-header-wrapper';
-ResponsiveComponentsManager.RESIZE_DEBOUNCE_DELAY = 200;
-ResponsiveComponentsManager.componentManagers = [];
-ResponsiveComponentsManager.remainingComponentInitializations = 0;
-ResponsiveComponentsManager.componentInitializations = [];
-exports.ResponsiveComponentsManager = ResponsiveComponentsManager;
-
-
-/***/ }),
-
-/***/ 935:
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-
-/***/ 936:
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-
-/***/ 981:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-Object.defineProperty(exports, "__esModule", { value: true });
-var Component_1 = __webpack_require__(8);
-var ComponentOptions_1 = __webpack_require__(9);
-var Utils_1 = __webpack_require__(5);
-var QueryEvents_1 = __webpack_require__(11);
-var Initialization_1 = __webpack_require__(2);
-var Dom_1 = __webpack_require__(3);
-var _ = __webpack_require__(1);
-var RecommendationQuery = (function (_super) {
-    __extends(RecommendationQuery, _super);
-    function RecommendationQuery(element, options, bindings) {
-        var _this = _super.call(this, element, RecommendationQuery.ID, bindings) || this;
-        _this.element = element;
-        _this.options = options;
-        _this.options = ComponentOptions_1.ComponentOptions.initComponentOptions(element, RecommendationQuery, options);
-        if (_this.element.tagName.toLowerCase() === 'script') {
-            try {
-                _this.content = Utils_1.Utils.decodeHTMLEntities(Dom_1.$$(_this.element).text());
-            }
-            catch (e) {
-                return _this;
-            }
-            if (!_.isUndefined(_this.content) && _this.content != '') {
-                _this.bind.onRootElement(QueryEvents_1.QueryEvents.buildingQuery, _this.handleBuildingQuery);
-            }
-        }
-        return _this;
-    }
-    RecommendationQuery.prototype.handleBuildingQuery = function (data) {
-        data.queryBuilder.advancedExpression.add(this.content);
-    };
-    return RecommendationQuery;
-}(Component_1.Component));
-RecommendationQuery.ID = 'RecommendationQuery';
-/**
- * The options for the RecommendationQuery component
- * @componentOptions
- */
-RecommendationQuery.options = {};
-exports.RecommendationQuery = RecommendationQuery;
-Initialization_1.Initialization.registerAutoCreateComponent(RecommendationQuery);
-
-
-/***/ }),
-
-/***/ 982:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var ResponsiveDropdownContent_1 = __webpack_require__(492);
-var Dom_1 = __webpack_require__(3);
-var RecommendationDropdownContent = (function () {
-    function RecommendationDropdownContent(componentName, element, coveoRoot) {
-        this.element = element;
-        this.coveoRoot = coveoRoot;
-        this.cssClassName = "coveo-" + componentName + "-dropdown-content";
-        this.element.addClass(this.cssClassName);
-        this.element.addClass(ResponsiveDropdownContent_1.ResponsiveDropdownContent.DEFAULT_CSS_CLASS_NAME);
-    }
-    RecommendationDropdownContent.prototype.positionDropdown = function () {
-        this.element.el.style.display = '';
-        var dropdownContentWrapper = this.coveoRoot.find('.coveo-results-column');
-        Dom_1.$$(dropdownContentWrapper).prepend(this.element.el);
-        this.element.addClass(ResponsiveDropdownContent_1.ResponsiveDropdownContent.DEFAULT_CSS_CLASS_NAME);
-        this.element.addClass(this.cssClassName);
-        // forces the browser to reflow the element, so that the transition is applied.
-        window.getComputedStyle(this.element.el).maxHeight;
-        this.element.addClass(RecommendationDropdownContent.OPENED_DROPDOWN_CSS_CLASS_NAME);
-    };
-    RecommendationDropdownContent.prototype.hideDropdown = function () {
-        this.element.addClass(ResponsiveDropdownContent_1.ResponsiveDropdownContent.DEFAULT_CSS_CLASS_NAME);
-        this.element.addClass(this.cssClassName);
-        this.element.removeClass(RecommendationDropdownContent.OPENED_DROPDOWN_CSS_CLASS_NAME);
-    };
-    RecommendationDropdownContent.prototype.cleanUp = function () {
-        this.element.removeClass(this.cssClassName);
-        this.element.removeClass(ResponsiveDropdownContent_1.ResponsiveDropdownContent.DEFAULT_CSS_CLASS_NAME);
-    };
-    return RecommendationDropdownContent;
-}());
-RecommendationDropdownContent.OPENED_DROPDOWN_CSS_CLASS_NAME = 'coveo-open-dropdown-content';
-exports.RecommendationDropdownContent = RecommendationDropdownContent;
-
-
-/***/ }),
-
-/***/ 984:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var ResponsiveComponentsManager_1 = __webpack_require__(90);
-var ResponsiveComponentsUtils_1 = __webpack_require__(104);
-var SearchInterface_1 = __webpack_require__(22);
-var Utils_1 = __webpack_require__(5);
+var ResponsiveComponentsManager_1 = __webpack_require__(77);
+var ResponsiveComponentsUtils_1 = __webpack_require__(88);
+var SearchInterface_1 = __webpack_require__(20);
+var Utils_1 = __webpack_require__(6);
 var Dom_1 = __webpack_require__(3);
 var Logger_1 = __webpack_require__(14);
-var Recommendation_1 = __webpack_require__(291);
-var RecommendationDropdownContent_1 = __webpack_require__(982);
-var ResponsiveDropdownHeader_1 = __webpack_require__(493);
-var ResponsiveDropdown_1 = __webpack_require__(491);
+var Recommendation_1 = __webpack_require__(247);
+var RecommendationDropdownContent_1 = __webpack_require__(515);
+var ResponsiveDropdownHeader_1 = __webpack_require__(409);
+var ResponsiveDropdown_1 = __webpack_require__(407);
 var Strings_1 = __webpack_require__(10);
 var Component_1 = __webpack_require__(8);
-var RegisteredNamedMethods_1 = __webpack_require__(54);
+var RegisteredNamedMethods_1 = __webpack_require__(34);
 var QueryEvents_1 = __webpack_require__(11);
 var _ = __webpack_require__(1);
-__webpack_require__(936);
-var MiscModules_1 = __webpack_require__(126);
-var ResponsiveRecommendation = (function () {
+__webpack_require__(516);
+var MiscModules_1 = __webpack_require__(81);
+var ResponsiveRecommendation = /** @class */ (function () {
     function ResponsiveRecommendation(coveoRoot, ID, options, responsiveDropdown) {
         this.coveoRoot = coveoRoot;
         this.ID = ID;
@@ -1191,10 +878,10 @@ var ResponsiveRecommendation = (function () {
         });
     };
     ResponsiveRecommendation.prototype.enableFacetPreservePosition = function () {
-        _.each(this.facets, function (facet) { return facet.options.preservePosition = true; });
+        _.each(this.facets, function (facet) { return (facet.options.preservePosition = true); });
     };
     ResponsiveRecommendation.prototype.disableFacetPreservePosition = function () {
-        _.each(this.facets, function (facet) { return facet.options.preservePosition = false; });
+        _.each(this.facets, function (facet) { return (facet.options.preservePosition = false); });
     };
     ResponsiveRecommendation.prototype.drawFacetSliderGraphs = function () {
         _.each(this.facetSliders, function (facetSlider) { return facetSlider.drawDelayedGraphData(); });
@@ -1234,11 +921,365 @@ var ResponsiveRecommendation = (function () {
         this.dropdown.close();
         this.dropdown.dropdownHeader.hide();
     };
+    ResponsiveRecommendation.DROPDOWN_CONTAINER_CSS_CLASS_NAME = 'coveo-recommendation-dropdown-container';
+    ResponsiveRecommendation.RESPONSIVE_BREAKPOINT = 1000;
     return ResponsiveRecommendation;
 }());
-ResponsiveRecommendation.DROPDOWN_CONTAINER_CSS_CLASS_NAME = 'coveo-recommendation-dropdown-container';
-ResponsiveRecommendation.RESPONSIVE_BREAKPOINT = 1000;
 exports.ResponsiveRecommendation = ResponsiveRecommendation;
+
+
+/***/ }),
+
+/***/ 515:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var ResponsiveDropdownContent_1 = __webpack_require__(408);
+var Dom_1 = __webpack_require__(3);
+var RecommendationDropdownContent = /** @class */ (function () {
+    function RecommendationDropdownContent(componentName, element, coveoRoot) {
+        this.element = element;
+        this.coveoRoot = coveoRoot;
+        this.cssClassName = "coveo-" + componentName + "-dropdown-content";
+        this.element.addClass(this.cssClassName);
+        this.element.addClass(ResponsiveDropdownContent_1.ResponsiveDropdownContent.DEFAULT_CSS_CLASS_NAME);
+    }
+    RecommendationDropdownContent.prototype.positionDropdown = function () {
+        this.element.el.style.display = '';
+        var dropdownContentWrapper = this.coveoRoot.find('.coveo-results-column');
+        Dom_1.$$(dropdownContentWrapper).prepend(this.element.el);
+        this.element.addClass(ResponsiveDropdownContent_1.ResponsiveDropdownContent.DEFAULT_CSS_CLASS_NAME);
+        this.element.addClass(this.cssClassName);
+        // forces the browser to reflow the element, so that the transition is applied.
+        window.getComputedStyle(this.element.el).maxHeight;
+        this.element.addClass(RecommendationDropdownContent.OPENED_DROPDOWN_CSS_CLASS_NAME);
+    };
+    RecommendationDropdownContent.prototype.hideDropdown = function () {
+        this.element.addClass(ResponsiveDropdownContent_1.ResponsiveDropdownContent.DEFAULT_CSS_CLASS_NAME);
+        this.element.addClass(this.cssClassName);
+        this.element.removeClass(RecommendationDropdownContent.OPENED_DROPDOWN_CSS_CLASS_NAME);
+    };
+    RecommendationDropdownContent.prototype.cleanUp = function () {
+        this.element.removeClass(this.cssClassName);
+        this.element.removeClass(ResponsiveDropdownContent_1.ResponsiveDropdownContent.DEFAULT_CSS_CLASS_NAME);
+    };
+    RecommendationDropdownContent.OPENED_DROPDOWN_CSS_CLASS_NAME = 'coveo-open-dropdown-content';
+    return RecommendationDropdownContent;
+}());
+exports.RecommendationDropdownContent = RecommendationDropdownContent;
+
+
+/***/ }),
+
+/***/ 516:
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+
+/***/ 517:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var Component_1 = __webpack_require__(8);
+var ComponentOptions_1 = __webpack_require__(9);
+var Utils_1 = __webpack_require__(6);
+var QueryEvents_1 = __webpack_require__(11);
+var Initialization_1 = __webpack_require__(2);
+var Dom_1 = __webpack_require__(3);
+var _ = __webpack_require__(1);
+var RecommendationQuery = /** @class */ (function (_super) {
+    __extends(RecommendationQuery, _super);
+    function RecommendationQuery(element, options, bindings) {
+        var _this = _super.call(this, element, RecommendationQuery.ID, bindings) || this;
+        _this.element = element;
+        _this.options = options;
+        _this.options = ComponentOptions_1.ComponentOptions.initComponentOptions(element, RecommendationQuery, options);
+        if (_this.element.tagName.toLowerCase() === 'script') {
+            try {
+                _this.content = Utils_1.Utils.decodeHTMLEntities(Dom_1.$$(_this.element).text());
+            }
+            catch (e) {
+                return _this;
+            }
+            if (!_.isUndefined(_this.content) && _this.content != '') {
+                _this.bind.onRootElement(QueryEvents_1.QueryEvents.buildingQuery, _this.handleBuildingQuery);
+            }
+        }
+        return _this;
+    }
+    RecommendationQuery.prototype.handleBuildingQuery = function (data) {
+        data.queryBuilder.advancedExpression.add(this.content);
+    };
+    RecommendationQuery.ID = 'RecommendationQuery';
+    /**
+     * The options for the RecommendationQuery component
+     * @componentOptions
+     */
+    RecommendationQuery.options = {};
+    return RecommendationQuery;
+}(Component_1.Component));
+exports.RecommendationQuery = RecommendationQuery;
+Initialization_1.Initialization.registerAutoCreateComponent(RecommendationQuery);
+
+
+/***/ }),
+
+/***/ 518:
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+
+/***/ 77:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var Dom_1 = __webpack_require__(3);
+var InitializationEvents_1 = __webpack_require__(17);
+var Component_1 = __webpack_require__(8);
+var SearchInterface_1 = __webpack_require__(20);
+var Utils_1 = __webpack_require__(6);
+var _ = __webpack_require__(1);
+var QueryEvents_1 = __webpack_require__(11);
+var Logger_1 = __webpack_require__(14);
+var ResponsiveComponentsManager = /** @class */ (function () {
+    function ResponsiveComponentsManager(root) {
+        var _this = this;
+        this.disabledComponents = [];
+        this.responsiveComponents = [];
+        this.coveoRoot = root;
+        this.searchInterface = Component_1.Component.get(this.coveoRoot.el, SearchInterface_1.SearchInterface, false);
+        this.dropdownHeadersWrapper = Dom_1.$$('div', {
+            className: ResponsiveComponentsManager.DROPDOWN_HEADER_WRAPPER_CSS_CLASS
+        });
+        this.searchBoxElement = this.getSearchBoxElement();
+        this.logger = new Logger_1.Logger(this);
+        this.resizeListener = _.debounce(function () {
+            if (_this.coveoRoot.width() != 0) {
+                _this.addDropdownHeaderWrapperIfNeeded();
+                if (_this.shouldSwitchToSmallMode()) {
+                    _this.coveoRoot.addClass('coveo-small-interface');
+                }
+                else if (!_this.shouldSwitchToSmallMode()) {
+                    _this.coveoRoot.removeClass('coveo-small-interface');
+                }
+                _.each(_this.responsiveComponents, function (responsiveComponent) {
+                    responsiveComponent.handleResizeEvent();
+                });
+            }
+            else {
+                _this.logger
+                    .warn("The width of the search interface is 0, cannot dispatch resize events to responsive components. This means that the tabs will not\n        automatically fit in the tab section. Also, the facet and recommendation component will not hide in a menu. Could the search\n        interface display property be none? Could its visibility property be set to hidden? Also, if either of these scenarios happen during\n        loading, it could be the cause of this issue.");
+            }
+        }, ResponsiveComponentsManager.RESIZE_DEBOUNCE_DELAY, true);
+        window.addEventListener('resize', this.resizeListener);
+        this.bindNukeEvents();
+    }
+    // Register takes a class and will instantiate it after framework initialization has completed.
+    ResponsiveComponentsManager.register = function (responsiveComponentConstructor, root, ID, component, options) {
+        var _this = this;
+        // options.initializationEventRoot can be set in some instance (like recommendation) where the root of the interface triggering the init event
+        // is different from the one that will be used for calculation size.
+        var initEventRoot = options.initializationEventRoot || root;
+        initEventRoot.on(InitializationEvents_1.InitializationEvents.afterInitialization, function () {
+            if (_this.shouldEnableResponsiveMode(root)) {
+                var responsiveComponentsManager = _.find(_this.componentManagers, function (componentManager) { return root.el == componentManager.coveoRoot.el; });
+                if (!responsiveComponentsManager) {
+                    responsiveComponentsManager = new ResponsiveComponentsManager(root);
+                    _this.componentManagers.push(responsiveComponentsManager);
+                }
+                if (!Utils_1.Utils.isNullOrUndefined(options.enableResponsiveMode) && !options.enableResponsiveMode) {
+                    responsiveComponentsManager.disableComponent(ID);
+                    return;
+                }
+                _this.componentInitializations.push({
+                    responsiveComponentsManager: responsiveComponentsManager,
+                    arguments: [responsiveComponentConstructor, root, ID, component, options]
+                });
+            }
+            _this.remainingComponentInitializations--;
+            if (_this.remainingComponentInitializations == 0) {
+                _this.instantiateResponsiveComponents(); // necessary to verify if all components are disabled before they are initialized.
+                if (root.width() == 0) {
+                    var logger = new Logger_1.Logger('ResponsiveComponentsManager');
+                    logger.info("Search interface width is 0, cannot dispatch resize events to responsive components. Will try again after first\n          query success.");
+                    root.one(QueryEvents_1.QueryEvents.querySuccess, function () {
+                        _this.resizeAllComponentsManager();
+                    });
+                }
+                else {
+                    _this.resizeAllComponentsManager();
+                }
+            }
+        });
+        this.remainingComponentInitializations++;
+    };
+    ResponsiveComponentsManager.shouldEnableResponsiveMode = function (root) {
+        var searchInterface = Component_1.Component.get(root.el, SearchInterface_1.SearchInterface, true);
+        return searchInterface instanceof SearchInterface_1.SearchInterface && searchInterface.options.enableAutomaticResponsiveMode;
+    };
+    ResponsiveComponentsManager.instantiateResponsiveComponents = function () {
+        _.each(this.componentInitializations, function (componentInitialization) {
+            var responsiveComponentsManager = componentInitialization.responsiveComponentsManager;
+            responsiveComponentsManager.register.apply(responsiveComponentsManager, componentInitialization.arguments);
+        });
+    };
+    ResponsiveComponentsManager.resizeAllComponentsManager = function () {
+        _.each(this.componentManagers, function (componentManager) {
+            componentManager.resizeListener();
+        });
+    };
+    ResponsiveComponentsManager.prototype.register = function (responsiveComponentConstructor, root, ID, component, options) {
+        if (this.isDisabled(ID)) {
+            return;
+        }
+        if (!this.isActivated(ID)) {
+            var responsiveComponent = new responsiveComponentConstructor(root, ID, options);
+            if (this.isTabs(ID)) {
+                this.responsiveComponents.push(responsiveComponent);
+            }
+            else {
+                // Tabs need to be rendered last, so any dropdown header(eg: facet) is already there when the responsive tabs check for overflow.
+                this.responsiveComponents.unshift(responsiveComponent);
+            }
+        }
+        _.each(this.responsiveComponents, function (responsiveComponent) {
+            if (responsiveComponent.registerComponent != null) {
+                responsiveComponent.registerComponent(component);
+            }
+        });
+    };
+    ResponsiveComponentsManager.prototype.disableComponent = function (ID) {
+        this.disabledComponents.push(ID);
+    };
+    ResponsiveComponentsManager.prototype.isDisabled = function (ID) {
+        return _.indexOf(this.disabledComponents, ID) != -1;
+    };
+    ResponsiveComponentsManager.prototype.shouldSwitchToSmallMode = function () {
+        var aComponentNeedsTabSection = this.needDropdownWrapper();
+        var reachedBreakpoint = this.coveoRoot.width() <= this.searchInterface.responsiveComponents.getMediumScreenWidth();
+        return aComponentNeedsTabSection || reachedBreakpoint;
+    };
+    ResponsiveComponentsManager.prototype.needDropdownWrapper = function () {
+        for (var i = 0; i < this.responsiveComponents.length; i++) {
+            var responsiveComponent = this.responsiveComponents[i];
+            if (responsiveComponent.needDropdownWrapper && responsiveComponent.needDropdownWrapper()) {
+                return true;
+            }
+        }
+        return false;
+    };
+    ResponsiveComponentsManager.prototype.addDropdownHeaderWrapperIfNeeded = function () {
+        if (this.needDropdownWrapper()) {
+            var tabSection = Dom_1.$$(this.coveoRoot).find('.coveo-tab-section');
+            if (this.searchBoxElement) {
+                this.dropdownHeadersWrapper.insertAfter(this.searchBoxElement);
+            }
+            else if (tabSection) {
+                this.dropdownHeadersWrapper.insertAfter(tabSection);
+            }
+            else {
+                this.coveoRoot.prepend(this.dropdownHeadersWrapper.el);
+            }
+        }
+    };
+    ResponsiveComponentsManager.prototype.isTabs = function (ID) {
+        return ID == 'Tab';
+    };
+    ResponsiveComponentsManager.prototype.isActivated = function (ID) {
+        return _.find(this.responsiveComponents, function (current) { return current.ID == ID; }) != undefined;
+    };
+    ResponsiveComponentsManager.prototype.getSearchBoxElement = function () {
+        var searchBoxElement = this.coveoRoot.find('.coveo-search-section');
+        if (searchBoxElement) {
+            return searchBoxElement;
+        }
+        else {
+            return this.coveoRoot.find('.CoveoSearchbox');
+        }
+    };
+    ResponsiveComponentsManager.prototype.bindNukeEvents = function () {
+        var _this = this;
+        Dom_1.$$(this.coveoRoot).on(InitializationEvents_1.InitializationEvents.nuke, function () {
+            window.removeEventListener('resize', _this.resizeListener);
+        });
+    };
+    ResponsiveComponentsManager.DROPDOWN_HEADER_WRAPPER_CSS_CLASS = 'coveo-dropdown-header-wrapper';
+    ResponsiveComponentsManager.RESIZE_DEBOUNCE_DELAY = 200;
+    ResponsiveComponentsManager.componentManagers = [];
+    ResponsiveComponentsManager.remainingComponentInitializations = 0;
+    ResponsiveComponentsManager.componentInitializations = [];
+    return ResponsiveComponentsManager;
+}());
+exports.ResponsiveComponentsManager = ResponsiveComponentsManager;
+
+
+/***/ }),
+
+/***/ 88:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var ResponsiveComponentsUtils = /** @class */ (function () {
+    function ResponsiveComponentsUtils() {
+    }
+    ResponsiveComponentsUtils.shouldDrawFacetSlider = function (root) {
+        return !this.isSmallFacetActivated(root) && !this.isSmallRecommendationActivated(root);
+    };
+    ResponsiveComponentsUtils.isSmallTabsActivated = function (root) {
+        return root.hasClass(this.smallTabsClassName);
+    };
+    ResponsiveComponentsUtils.isSmallFacetActivated = function (root) {
+        return root.hasClass(this.smallFacetClassName);
+    };
+    ResponsiveComponentsUtils.isSmallRecommendationActivated = function (root) {
+        return root.hasClass(this.smallRecommendationClassName);
+    };
+    ResponsiveComponentsUtils.activateSmallTabs = function (root) {
+        root.addClass(this.smallTabsClassName);
+    };
+    ResponsiveComponentsUtils.deactivateSmallTabs = function (root) {
+        root.removeClass(this.smallTabsClassName);
+    };
+    ResponsiveComponentsUtils.activateSmallFacet = function (root) {
+        root.addClass(this.smallFacetClassName);
+    };
+    ResponsiveComponentsUtils.deactivateSmallFacet = function (root) {
+        root.removeClass(this.smallFacetClassName);
+    };
+    ResponsiveComponentsUtils.activateSmallRecommendation = function (root) {
+        root.addClass(this.smallRecommendationClassName);
+    };
+    ResponsiveComponentsUtils.deactivateSmallRecommendation = function (root) {
+        root.removeClass(this.smallRecommendationClassName);
+    };
+    ResponsiveComponentsUtils.smallTabsClassName = 'coveo-small-tabs';
+    ResponsiveComponentsUtils.smallFacetClassName = 'coveo-small-facets';
+    ResponsiveComponentsUtils.smallRecommendationClassName = 'coveo-small-recommendation';
+    return ResponsiveComponentsUtils;
+}());
+exports.ResponsiveComponentsUtils = ResponsiveComponentsUtils;
 
 
 /***/ })

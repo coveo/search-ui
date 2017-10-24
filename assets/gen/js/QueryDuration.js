@@ -1,6 +1,6 @@
-webpackJsonpCoveo__temporary([56],{
+webpackJsonpCoveo__temporary([58],{
 
-/***/ 382:
+/***/ 297:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23,9 +23,9 @@ var Assert_1 = __webpack_require__(7);
 var Dom_1 = __webpack_require__(3);
 var Strings_1 = __webpack_require__(10);
 var Initialization_1 = __webpack_require__(2);
-var Globalize = __webpack_require__(26);
+var Globalize = __webpack_require__(25);
 var GlobalExports_1 = __webpack_require__(4);
-__webpack_require__(932);
+__webpack_require__(509);
 /**
  * The QueryDuration component displays the duration of the last query execution.
  *
@@ -34,7 +34,7 @@ __webpack_require__(932);
  *
  * If a {@link QueryEvents.queryError} event is triggered, the QueryDuration component becomes hidden.
  */
-var QueryDuration = (function (_super) {
+var QueryDuration = /** @class */ (function (_super) {
     __extends(QueryDuration, _super);
     /**
      * Creates a new QueryDuration component.
@@ -87,22 +87,22 @@ var QueryDuration = (function (_super) {
             }
         }
     };
+    QueryDuration.ID = 'QueryDuration';
+    QueryDuration.doExport = function () {
+        GlobalExports_1.exportGlobally({
+            QueryDuration: QueryDuration
+        });
+    };
+    QueryDuration.options = {};
     return QueryDuration;
 }(Component_1.Component));
-QueryDuration.ID = 'QueryDuration';
-QueryDuration.doExport = function () {
-    GlobalExports_1.exportGlobally({
-        'QueryDuration': QueryDuration
-    });
-};
-QueryDuration.options = {};
 exports.QueryDuration = QueryDuration;
 Initialization_1.Initialization.registerAutoCreateComponent(QueryDuration);
 
 
 /***/ }),
 
-/***/ 932:
+/***/ 509:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
