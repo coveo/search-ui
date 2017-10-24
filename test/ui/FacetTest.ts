@@ -199,16 +199,6 @@ export function FacetTest() {
         test.env.queryStateModel.set('f:@field:operator', 'or');
         expect(test.cmp.options.useAnd).toBeFalsy();
       });
-
-      it('should trim values from the query state model for selected values', () => {
-        test.env.queryStateModel.set('f:@field', ['a     ', '     b', '    c    ']);
-        expect(test.cmp.getSelectedValues()).toEqual(['a', 'b', 'c']);
-      });
-
-      it('should trim values from the query state model for excluded values', () => {
-        test.env.queryStateModel.set('f:@field:not', ['a     ', '     b', '    c    ']);
-        expect(test.cmp.getExcludedValues()).toEqual(['a', 'b', 'c']);
-      });
     });
 
     describe('on a query error', () => {
