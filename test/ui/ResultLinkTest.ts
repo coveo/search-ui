@@ -171,7 +171,7 @@ export function ResultLinkTest() {
       expect(test.cmp.usageAnalytics.logClickEvent).toHaveBeenCalledTimes(1);
     });
 
-    it('does not send multiple analytics event with multiple mouse event', () => {
+    it('does not send multiple analytics events with multiple mouse events', () => {
       $$(test.cmp.element).trigger('mousedown');
       $$(test.cmp.element).trigger('click');
       $$(test.cmp.element).trigger('mouseup');
