@@ -258,15 +258,24 @@ export class ResultLink extends Component {
     Assert.exists(this.result);
 
     if (!this.quickviewShouldBeOpened()) {
-      // We assume that anytime the contextual menu is opened on a result link
-      // this is do "open in a new tab" or something similar.
-      // This is not 100% accurate, but we estimate it to be the lesser of 2 evils (not logging anything)
-      $$(element).on('contextmenu', () => {
-        this.logOpenDocument();
-      });
+      // Bind on multiple "click" or "mouse" events.
+      // Create a function that will be executed only once, so as not to log multiple events
+      // Once a result link has been opened, and that we log at least one analytics event,
+      // it should not matter if the end user open the same link multiple times with different methods.
+      // It's still only one "click" event as far as UA is concerned.
+      // Also need to handle "longpress" on mobile (the contextual menu), which we assume to be 1 s long.
 
-      $$(element).on('click', () => {
-        this.logOpenDocument();
+      const executeOnlyOnce = _.once(() => this.logOpenDocument());
+
+      $$(element).on(['contextmenu', 'click', 'mousedown', 'mouseup'], executeOnlyOnce);
+      let longPressTimer: number;
+      $$(element).on('touchstart', () => {
+        longPressTimer = setTimeout(executeOnlyOnce, 1000);
+      });
+      $$(element).on('touchend', () => {
+        if (longPressTimer) {
+          clearTimeout(longPressTimer);
+        }
       });
     }
     this.renderUri(element, result);
