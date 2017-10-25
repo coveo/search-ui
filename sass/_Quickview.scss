@@ -186,6 +186,7 @@
     iframe {
       height: 100%;
       width: 100%;
+      position: relative;
       @include defaultRoundedBorder();
       padding: 10px 0 0 10px;
     }
