@@ -99,15 +99,20 @@ $page-width: 1000px;
   display: inline-block;
   font-size: $font-size-smaller;
   margin-right: auto;
+  @include flex(auto);
 }
 .coveo-result-layout-section {
   @include display(flex);
+  @include flex(auto);
+  @include flex-shrink(0);
   &.coveo-result-layout-hidden {
     display: none;
   }
 }
 .coveo-sort-section {
   @include display(flex);
+  @include flex(auto);
+  @include flex-shrink(0);
 }
 
 .coveo-results-header > *:not(:first-child) {
