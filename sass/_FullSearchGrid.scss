@@ -103,7 +103,6 @@ $page-width: 1000px;
 }
 .coveo-result-layout-section {
   @include display(flex);
-  @include flex(auto);
   @include flex-shrink(0);
   &.coveo-result-layout-hidden {
     display: none;
@@ -111,7 +110,6 @@ $page-width: 1000px;
 }
 .coveo-sort-section {
   @include display(flex);
-  @include flex(auto);
   @include flex-shrink(0);
 }
 
