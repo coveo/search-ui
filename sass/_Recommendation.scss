@@ -59,6 +59,9 @@
 #coveo-recommendation-facet-column, .coveo-recommendation-facet-column, .CoveoSearchInterface .coveo-recommendation-facet-column {
   display: inline-block;
   vertical-align: top;
+  &.coveo-no-results {
+    display: none;
+  }
 }
 
 #coveo-recommendation-main-section, .coveo-recommendation-main-section, .CoveoSearchInterface .coveo-recommendation-main-section {
