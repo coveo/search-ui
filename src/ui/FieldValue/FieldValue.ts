@@ -14,6 +14,7 @@ import { $$ } from '../../utils/Dom';
 import * as _ from 'underscore';
 import { exportGlobally } from '../../GlobalExports';
 import { StringUtils } from '../../utils/StringUtils';
+import { FacetUtils } from '../Facet/FacetUtils';
 
 export interface IFieldValueOptions {
   field?: IFieldOption;
@@ -270,7 +271,8 @@ export class FieldValue extends Component {
    */
   public renderOneValue(value: string): HTMLElement {
     const element = $$('span').el;
-    let toRender = value;
+    let toRender = FacetUtils.tryToGetTranslatedCaption(this.options.field as string, value);
+
     if (this.options.helper) {
       // Try to resolve and execute version 2 of each helper function if available
       const helper = TemplateHelpers.getHelper(`${this.options.helper}v2`) || TemplateHelpers.getHelper(`${this.options.helper}`);
@@ -370,14 +372,30 @@ export class FieldValue extends Component {
   }
 
   private bindEventOnValue(element: HTMLElement, value: string) {
-    if (Utils.isUndefined(Coveo['FacetRange'])) {
-      return;
-    }
-
     const facetAttributeName = QueryStateModel.getFacetId(this.options.facet);
-    const facets: Component[] = _.filter(this.componentStateModel.get(facetAttributeName), (facet: Component) => {
-      return !facet.disabled && Coveo['FacetRange'] && !(facet instanceof Coveo['FacetRange']);
+    const facets: Component[] = _.filter(this.componentStateModel.get(facetAttributeName), (possibleFacetComponent: Component) => {
+      // Here, we need to check if a potential facet component (as returned by the component state model) is a "standard" facet.
+      // It's also possible that the FacetRange and FacetSlider constructor are not available (lazy loading mode)
+      // For that reason we also need to check that the constructor event exist before calling the instanceof operator or an exception would explode (cannot use instanceof "undefined")
+      let componentIsAStandardFacet = true;
+      const facetRangeConstructorExists = Component.getComponentRef('FacetRange');
+      const facetSliderConstructorExists = Component.getComponentRef('FacetSlider');
+
+      if (possibleFacetComponent.disabled) {
+        return false;
+      }
+
+      if (componentIsAStandardFacet && facetRangeConstructorExists) {
+        componentIsAStandardFacet = !(possibleFacetComponent instanceof facetRangeConstructorExists);
+      }
+
+      if (componentIsAStandardFacet && facetSliderConstructorExists) {
+        componentIsAStandardFacet = !(possibleFacetComponent instanceof facetSliderConstructorExists);
+      }
+
+      return componentIsAStandardFacet;
     });
+
     const atLeastOneFacetIsEnabled = facets.length > 0;
 
     if (atLeastOneFacetIsEnabled) {
