@@ -112,9 +112,11 @@ export class DebugHeader {
   private buildEnableQuerySyntaxCheckbox() {
     const checkbox = new Checkbox(checkboxInstance => {
       this.enableQuerySyntax = checkboxInstance.isSelected();
+
       this.bindings.componentOptionsModel.set(COMPONENT_OPTIONS_ATTRIBUTES.SEARCH_BOX, {
         enableQuerySyntax: this.enableQuerySyntax
       });
+
       this.bindings.queryController.executeQuery({
         closeModalBox: false
       });
