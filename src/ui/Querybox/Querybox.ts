@@ -166,6 +166,7 @@ export class Querybox extends Component {
      *
      * Default value is `false`, which implies that an item must contain all of the basic expression keywords to match
      * the query.
+     * @notSupportedIn salesforcefree, salesforceexpress
      */
     enablePartialMatch: ComponentOptions.buildBooleanOption({ defaultValue: false }),
 
@@ -184,6 +185,7 @@ export class Querybox extends Component {
      * > to be converted to a partial match expression.
      *
      * Default value is `5`.
+     * @notSupportedIn salesforcefree, salesforceexpress
      */
     partialMatchKeywords: ComponentOptions.buildNumberOption({ defaultValue: 5, min: 1, depend: 'enablePartialMatch' }),
 
@@ -209,6 +211,7 @@ export class Querybox extends Component {
      * > contains.
      *
      * Default value is `50%`.
+     * @notSupportedIn salesforcefree, salesforceexpress
      */
     partialMatchThreshold: ComponentOptions.buildStringOption({ defaultValue: '50%', depend: 'enablePartialMatch' }),
 

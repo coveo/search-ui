@@ -293,6 +293,7 @@ export class Facet extends Component {
      * facet values. Increasing this value enhances the accuracy of the listed values at the cost of performance.
      *
      * Default value is `1000`. Minimum value is `0`.
+     * @notSupportedIn salesforcefree, salesforceexpress
      */
     injectionDepth: ComponentOptions.buildNumberOption({ defaultValue: 1000, min: 0 }),
 
@@ -423,6 +424,7 @@ export class Facet extends Component {
      * Works in conjunction with the [`computedFieldOperation`]{@link Facet.options.computedFieldOperation},
      * [`computedFieldFormat`]{@link Facet.options.computedFieldFormat}, and
      * [`computedFieldCaption`]{@link Facet.options.computedFieldCaption} options.
+     * @notSupportedIn salesforcefree, salesforceexpress
      */
     computedField: ComponentOptions.buildFieldOption({ section: 'ComputedField', priority: 7 }),
 

@@ -26,6 +26,7 @@ export interface IResultAttachmentsOptions {
  * page.
  *
  * This component is a result template component (see [Result Templates](https://developers.coveo.com/x/aIGfAQ)).
+ * @notSupportedIn salesforcefree, salesforceexpress
  */
 export class ResultAttachments extends Component {
   static ID = 'ResultAttachments';
