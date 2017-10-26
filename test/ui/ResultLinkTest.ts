@@ -161,6 +161,45 @@ export function ResultLinkTest() {
       expect(test.cmp.usageAnalytics.logClickEvent).toHaveBeenCalledTimes(1);
     });
 
+    it('sends an analytics event on mouseup', () => {
+      $$(test.cmp.element).trigger('mouseup');
+      expect(test.cmp.usageAnalytics.logClickEvent).toHaveBeenCalledTimes(1);
+    });
+
+    it('sends an analytics event on mousedown', () => {
+      $$(test.cmp.element).trigger('mousedown');
+      expect(test.cmp.usageAnalytics.logClickEvent).toHaveBeenCalledTimes(1);
+    });
+
+    it('does not send multiple analytics events with multiple mouse events', () => {
+      $$(test.cmp.element).trigger('mousedown');
+      $$(test.cmp.element).trigger('click');
+      $$(test.cmp.element).trigger('mouseup');
+      expect(test.cmp.usageAnalytics.logClickEvent).toHaveBeenCalledTimes(1);
+    });
+
+    it('sends an event 1s after a long press on mobile', done => {
+      $$(test.cmp.element).trigger('touchstart');
+      expect(test.cmp.usageAnalytics.logClickEvent).not.toHaveBeenCalled();
+      setTimeout(() => {
+        expect(test.cmp.usageAnalytics.logClickEvent).toHaveBeenCalledTimes(1);
+        done();
+      }, 1100);
+    });
+
+    it('does not send an event if a touchend event occurs before a 1s delay', done => {
+      $$(test.cmp.element).trigger('touchstart');
+
+      setTimeout(() => {
+        $$(test.cmp.element).trigger('touchend');
+      }, 300);
+
+      setTimeout(() => {
+        expect(test.cmp.usageAnalytics.logClickEvent).not.toHaveBeenCalled();
+        done();
+      }, 1100);
+    });
+
     describe('when logging the analytic event', () => {
       it('should use the href if set', () => {
         let element = $$('a');

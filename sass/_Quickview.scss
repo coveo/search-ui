@@ -10,7 +10,8 @@
   .coveo-list-layout &:hover .coveo-caption-for-icon {
     display: inline;
     top: 26px;
-    left: -30px;
+    transform: translateX(-50%);
+    left: 50%;
   }
   
   .coveo-caption-for-icon {
@@ -185,6 +186,7 @@
     iframe {
       height: 100%;
       width: 100%;
+      position: relative;
       @include defaultRoundedBorder();
       padding: 10px 0 0 10px;
     }

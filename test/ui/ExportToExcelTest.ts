@@ -7,7 +7,7 @@ import _ = require('underscore');
 
 export function ExportToExcelTest() {
   describe('ExportToExcel', function() {
-    var test: Mock.IBasicComponentSetup<ExportToExcel>;
+    let test: Mock.IBasicComponentSetup<ExportToExcel>;
 
     beforeEach(function() {
       test = Mock.basicComponentSetup<ExportToExcel>(ExportToExcel);
@@ -20,12 +20,12 @@ export function ExportToExcelTest() {
           numberOfResults: 200
         });
         test.cmp._window = Mock.mockWindow();
-        var searchEndpointSpy = jasmine.createSpy('searchEndpoint');
+        const searchEndpointSpy = jasmine.createSpy('searchEndpoint');
         test.env.searchEndpoint.getExportToExcelLink = searchEndpointSpy;
-        var fakeQuery = new QueryBuilder().build();
+        const fakeQuery = new QueryBuilder().build();
         test.env.queryController.getLastQuery = () => fakeQuery;
         test.cmp.download();
-        expect(searchEndpointSpy).toHaveBeenCalledWith(_.omit(fakeQuery, 'numberOfResults'), 200);
+        expect(searchEndpointSpy).toHaveBeenCalledWith(_.omit(fakeQuery, ['numberOfResults', 'fieldsToInclude']), 200);
       });
 
       it('fieldsToInclude allows to specify the needed fields to download', () => {
@@ -33,14 +33,32 @@ export function ExportToExcelTest() {
           fieldsToInclude: ['@foo', '@bar']
         });
         test.cmp._window = Mock.mockWindow();
-        var searchEndpointSpy = jasmine.createSpy('searchEndpoint');
+        const searchEndpointSpy = jasmine.createSpy('searchEndpoint');
         test.env.searchEndpoint.getExportToExcelLink = searchEndpointSpy;
-        var fakeQuery = new QueryBuilder().build();
+        const fakeQuery = new QueryBuilder().build();
         test.env.queryController.getLastQuery = () => fakeQuery;
         test.cmp.download();
         expect(searchEndpointSpy).toHaveBeenCalledWith(
           jasmine.objectContaining({
             fieldsToInclude: jasmine.arrayContaining(['@foo', '@bar'])
+          }),
+          100
+        );
+      });
+
+      it('fieldsToInclude not being specified means the fields to include will be "null" in the query', () => {
+        test = Mock.optionsComponentSetup<ExportToExcel, IExportToExcelOptions>(ExportToExcel, <IExportToExcelOptions>{
+          fieldsToInclude: null
+        });
+        test.cmp._window = Mock.mockWindow();
+        const searchEndpointSpy = jasmine.createSpy('searchEndpoint');
+        test.env.searchEndpoint.getExportToExcelLink = searchEndpointSpy;
+        const fakeQuery = new QueryBuilder().build();
+        test.env.queryController.getLastQuery = () => fakeQuery;
+        test.cmp.download();
+        expect(searchEndpointSpy).not.toHaveBeenCalledWith(
+          jasmine.objectContaining({
+            fieldsToInclude: jasmine.anything()
           }),
           100
         );
@@ -54,14 +72,14 @@ export function ExportToExcelTest() {
       });
 
       it('download should call exportToExcel event if query was made', function() {
-        var excelSpy = jasmine.createSpy('excelSpy');
+        const excelSpy = jasmine.createSpy('excelSpy');
         test.env.usageAnalytics.logCustomEvent = excelSpy;
         test.cmp.download();
         expect(excelSpy).toHaveBeenCalledWith(analyticsActionCauseList.exportToExcel, {}, test.env.element);
       });
 
       it('download should redirect to the link provided by the search endpoint', function() {
-        var windowLocationReplaceSpy = jasmine.createSpy('windowLocationReplaceSpy');
+        const windowLocationReplaceSpy = jasmine.createSpy('windowLocationReplaceSpy');
         test.cmp._window.location.replace = windowLocationReplaceSpy;
         test.cmp.download();
         expect(test.cmp._window.location.replace).toHaveBeenCalledWith('http://www.excellink.com');

@@ -9,6 +9,7 @@ import { OmniboxEvents } from '../../src/events/OmniboxEvents';
 import { BreadcrumbEvents } from '../../src/events/BreadcrumbEvents';
 import { IPopulateBreadcrumbEventArgs } from '../../src/events/BreadcrumbEvents';
 import { IPopulateOmniboxEventArgs } from '../../src/events/OmniboxEvents';
+import { QueryError } from '../../src/rest/QueryError';
 
 export function FacetTest() {
   describe('Facet', () => {
@@ -208,6 +209,20 @@ export function FacetTest() {
       it('should trim values from the query state model for excluded values', () => {
         test.env.queryStateModel.set('f:@field:not', ['a     ', '     b', '    c    ']);
         expect(test.cmp.getExcludedValues()).toEqual(['a', 'b', 'c']);
+      });
+    });
+
+    describe('on a query error', () => {
+      it('should hide the waiting animation', () => {
+        spyOn(test.cmp, 'hideWaitingAnimation');
+        Simulate.queryError(test.env);
+        expect(test.cmp.hideWaitingAnimation).toHaveBeenCalledTimes(1);
+      });
+
+      it('should update the appearance based on the new empty values', () => {
+        Simulate.queryError(test.env);
+        expect($$(test.cmp.element).hasClass('coveo-facet-empty')).toBeTruthy();
+        expect(test.cmp.getDisplayedFacetValues().length).toBe(0);
       });
     });
 

@@ -22,6 +22,8 @@ export interface IPreferencesPanelOptions {}
  * user can click to access a panel from which it is possible to specify certain customization options for the search
  * interface. These customization options are then saved in the browser local storage.
  *
+ * This component should be used inside the {@link Settings} component.
+ * 
  * See also the {@link ResultsFiltersPreferences} and {@link ResultsPreferences} components.
  */
 export class PreferencesPanel extends Component {
