@@ -40,6 +40,8 @@ export class SVGIcons {
 
     listLayout: require(`svg/list-layout`),
     cardLayout: require(`svg/card-layout`),
-    tableLayout: require(`svg/table-layout`)
+    tableLayout: require(`svg/table-layout`),
+
+    video: require(`svg/video`)
   };
 }
