@@ -338,6 +338,7 @@ var Dom_1 = __webpack_require__(3);
 var _ = __webpack_require__(1);
 var GlobalExports_1 = __webpack_require__(4);
 var StringUtils_1 = __webpack_require__(21);
+var FacetUtils_1 = __webpack_require__(37);
 function showOnlyWithHelper(helpers, options) {
     if (options == null) {
         options = {};
@@ -425,7 +426,7 @@ var FieldValue = /** @class */ (function (_super) {
      */
     FieldValue.prototype.renderOneValue = function (value) {
         var element = Dom_1.$$('span').el;
-        var toRender = value;
+        var toRender = FacetUtils_1.FacetUtils.tryToGetTranslatedCaption(this.options.field, value);
         if (this.options.helper) {
             // Try to resolve and execute version 2 of each helper function if available
             var helper = TemplateHelpers_1.TemplateHelpers.getHelper(this.options.helper + "v2") || TemplateHelpers_1.TemplateHelpers.getHelper("" + this.options.helper);
@@ -516,12 +517,24 @@ var FieldValue = /** @class */ (function (_super) {
     };
     FieldValue.prototype.bindEventOnValue = function (element, value) {
         var _this = this;
-        if (Utils_1.Utils.isUndefined(Coveo['FacetRange'])) {
-            return;
-        }
         var facetAttributeName = QueryStateModel_1.QueryStateModel.getFacetId(this.options.facet);
-        var facets = _.filter(this.componentStateModel.get(facetAttributeName), function (facet) {
-            return !facet.disabled && Coveo['FacetRange'] && !(facet instanceof Coveo['FacetRange']);
+        var facets = _.filter(this.componentStateModel.get(facetAttributeName), function (possibleFacetComponent) {
+            // Here, we need to check if a potential facet component (as returned by the component state model) is a "standard" facet.
+            // It's also possible that the FacetRange and FacetSlider constructor are not available (lazy loading mode)
+            // For that reason we also need to check that the constructor event exist before calling the instanceof operator or an exception would explode (cannot use instanceof "undefined")
+            var componentIsAStandardFacet = true;
+            var facetRangeConstructorExists = Component_1.Component.getComponentRef('FacetRange');
+            var facetSliderConstructorExists = Component_1.Component.getComponentRef('FacetSlider');
+            if (possibleFacetComponent.disabled) {
+                return false;
+            }
+            if (componentIsAStandardFacet && facetRangeConstructorExists) {
+                componentIsAStandardFacet = !(possibleFacetComponent instanceof facetRangeConstructorExists);
+            }
+            if (componentIsAStandardFacet && facetSliderConstructorExists) {
+                componentIsAStandardFacet = !(possibleFacetComponent instanceof facetSliderConstructorExists);
+            }
+            return componentIsAStandardFacet;
         });
         var atLeastOneFacetIsEnabled = facets.length > 0;
         if (atLeastOneFacetIsEnabled) {

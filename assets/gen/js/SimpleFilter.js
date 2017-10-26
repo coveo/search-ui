@@ -59,7 +59,7 @@ var BreadcrumbEvents_1 = __webpack_require__(42);
 var SVGIcons_1 = __webpack_require__(15);
 var SVGDom_1 = __webpack_require__(16);
 var SimpleFilterValues_1 = __webpack_require__(539);
-var FacetUtils_1 = __webpack_require__(40);
+var FacetUtils_1 = __webpack_require__(37);
 var KeyboardUtils_1 = __webpack_require__(23);
 var AnalyticsActionListMeta_1 = __webpack_require__(12);
 /**

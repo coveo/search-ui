@@ -19,7 +19,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var Component_1 = __webpack_require__(8);
 var ComponentOptions_1 = __webpack_require__(9);
 var ComponentOptionsModel_1 = __webpack_require__(26);
-var LocalStorageUtils_1 = __webpack_require__(37);
+var LocalStorageUtils_1 = __webpack_require__(38);
 var PreferencesPanelEvents_1 = __webpack_require__(67);
 var AnalyticsActionListMeta_1 = __webpack_require__(12);
 var Initialization_1 = __webpack_require__(2);

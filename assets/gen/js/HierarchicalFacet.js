@@ -36,7 +36,7 @@ exports.SVGDom = SVGDom;
 /// <reference path="Facet.ts" />
 Object.defineProperty(exports, "__esModule", { value: true });
 var Utils_1 = __webpack_require__(6);
-var FacetUtils_1 = __webpack_require__(40);
+var FacetUtils_1 = __webpack_require__(37);
 var QueryBuilder_1 = __webpack_require__(48);
 var Dom_1 = __webpack_require__(3);
 var _ = __webpack_require__(1);
@@ -280,7 +280,7 @@ var ExpressionBuilder_1 = __webpack_require__(68);
 var Utils_1 = __webpack_require__(6);
 var FacetSearchParameters_1 = __webpack_require__(236);
 var Assert_1 = __webpack_require__(7);
-var FacetUtils_1 = __webpack_require__(40);
+var FacetUtils_1 = __webpack_require__(37);
 var _ = __webpack_require__(1);
 var FacetQueryController = /** @class */ (function () {
     function FacetQueryController(facet) {
@@ -2043,7 +2043,7 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var FacetSort_1 = __webpack_require__(413);
 var Dom_1 = __webpack_require__(3);
-var LocalStorageUtils_1 = __webpack_require__(37);
+var LocalStorageUtils_1 = __webpack_require__(38);
 var Utils_1 = __webpack_require__(6);
 var Strings_1 = __webpack_require__(10);
 var QueryStateModel_1 = __webpack_require__(13);
@@ -3598,7 +3598,7 @@ var FacetValueElement_1 = __webpack_require__(90);
 var Dom_1 = __webpack_require__(3);
 var FacetValues_1 = __webpack_require__(89);
 var Utils_1 = __webpack_require__(6);
-var FacetUtils_1 = __webpack_require__(40);
+var FacetUtils_1 = __webpack_require__(37);
 var FacetValuesOrder_1 = __webpack_require__(256);
 var _ = __webpack_require__(1);
 var FacetValuesList = /** @class */ (function () {
@@ -4000,7 +4000,7 @@ exports.OmniboxValueElement = OmniboxValueElement;
 Object.defineProperty(exports, "__esModule", { value: true });
 var Dom_1 = __webpack_require__(3);
 var Utils_1 = __webpack_require__(6);
-var FacetUtils_1 = __webpack_require__(40);
+var FacetUtils_1 = __webpack_require__(37);
 var _ = __webpack_require__(1);
 var OmniboxValuesList = /** @class */ (function () {
     function OmniboxValuesList(facet, facetValues, omniboxObject, omniboxValueElementKlass) {
@@ -4286,7 +4286,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var FacetQueryController_1 = __webpack_require__(257);
-var FacetUtils_1 = __webpack_require__(40);
+var FacetUtils_1 = __webpack_require__(37);
 var _ = __webpack_require__(1);
 var HierarchicalFacetQueryController = /** @class */ (function (_super) {
     __extends(HierarchicalFacetQueryController, _super);
@@ -4729,7 +4729,7 @@ var FacetSettings_1 = __webpack_require__(412);
 var FacetSort_1 = __webpack_require__(413);
 var FacetValuesList_1 = __webpack_require__(419);
 var FacetHeader_1 = __webpack_require__(414);
-var FacetUtils_1 = __webpack_require__(40);
+var FacetUtils_1 = __webpack_require__(37);
 var QueryEvents_1 = __webpack_require__(11);
 var Assert_1 = __webpack_require__(7);
 var Dom_1 = __webpack_require__(3);

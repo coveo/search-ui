@@ -175,7 +175,7 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var Component_1 = __webpack_require__(8);
 var ComponentOptions_1 = __webpack_require__(9);
-var LocalStorageUtils_1 = __webpack_require__(37);
+var LocalStorageUtils_1 = __webpack_require__(38);
 var InitializationEvents_1 = __webpack_require__(17);
 var PreferencesPanelEvents_1 = __webpack_require__(67);
 var Model_1 = __webpack_require__(18);

@@ -867,6 +867,13 @@ input[type=checkbox].coveo-checkbox + button {
   display: inline-block;
   font-size: 14px;
   margin-right: auto;
+  -webkit-box-flex: auto;
+  -moz-box-flex: auto;
+  box-flex: auto;
+  -webkit-flex: auto;
+  -moz-flex: auto;
+  -ms-flex: auto;
+  flex: auto;
 }
 
 .coveo-result-layout-section {
@@ -877,6 +884,10 @@ input[type=checkbox].coveo-checkbox + button {
   display: -moz-flex;
   display: -ms-flexbox;
   display: flex;
+  -webkit-flex-shrink: 0;
+  -moz-flex-shrink: 0;
+  flex-shrink: 0;
+  -ms-flex-negative: 0;
 }
 
 .coveo-result-layout-section.coveo-result-layout-hidden {
@@ -891,6 +902,10 @@ input[type=checkbox].coveo-checkbox + button {
   display: -moz-flex;
   display: -ms-flexbox;
   display: flex;
+  -webkit-flex-shrink: 0;
+  -moz-flex-shrink: 0;
+  flex-shrink: 0;
+  -ms-flex-negative: 0;
 }
 
 .coveo-results-header > *:not(:first-child) {
@@ -10917,7 +10932,8 @@ a.CoveoResultLink.coveo-selected *,
 .coveo-list-layout .CoveoQuickview:hover .coveo-caption-for-icon {
   display: inline;
   top: 26px;
-  left: -30px;
+  transform: translateX(-50%);
+  left: 50%;
 }
 
 .CoveoQuickview .coveo-caption-for-icon {
@@ -11108,6 +11124,7 @@ a.CoveoResultLink.coveo-selected *,
 .coveo-modal-container.coveo-quick-view .coveo-modal-body iframe {
   height: 100%;
   width: 100%;
+  position: relative;
   border: 1px solid #BCC3CA;
   border-radius: 2px;
   padding: 10px 0 0 10px;
@@ -11303,6 +11320,12 @@ a.CoveoResultLink.coveo-selected *,
 .CoveoSearchInterface .coveo-recommendation-facet-column {
   display: inline-block;
   vertical-align: top;
+}
+
+#coveo-recommendation-facet-column.coveo-no-results,
+.coveo-recommendation-facet-column.coveo-no-results,
+.CoveoSearchInterface .coveo-recommendation-facet-column.coveo-no-results {
+  display: none;
 }
 
 #coveo-recommendation-main-section,
@@ -11603,6 +11626,7 @@ a.coveo-folding-show-less.coveo-selected * {
 
 .coveo-result-layout-selector .coveo-icon {
   margin-right: 5px;
+  min-width: 14px;
 }
 
 .coveo-result-layout-selector.coveo-hidden {

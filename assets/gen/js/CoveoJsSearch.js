@@ -6113,7 +6113,7 @@ var Dom_1 = __webpack_require__(3);
 var InitializationEvents_1 = __webpack_require__(17);
 var SearchInterface_1 = __webpack_require__(20);
 var QueryController_1 = __webpack_require__(35);
-var HashUtils_1 = __webpack_require__(39);
+var HashUtils_1 = __webpack_require__(40);
 var QueryStateModel_1 = __webpack_require__(13);
 var ComponentStateModel_1 = __webpack_require__(57);
 var ComponentOptionsModel_1 = __webpack_require__(26);
@@ -11841,7 +11841,7 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var SearchEndpoint_1 = __webpack_require__(38);
+var SearchEndpoint_1 = __webpack_require__(39);
 var ComponentOptions_1 = __webpack_require__(9);
 var DeviceUtils_1 = __webpack_require__(22);
 var Dom_1 = __webpack_require__(3);
@@ -11861,7 +11861,7 @@ var Utils_1 = __webpack_require__(6);
 var RootComponent_1 = __webpack_require__(36);
 var BaseComponent_1 = __webpack_require__(30);
 var Debug_1 = __webpack_require__(377);
-var HashUtils_1 = __webpack_require__(39);
+var HashUtils_1 = __webpack_require__(40);
 var fastclick = __webpack_require__(383);
 var jstz = __webpack_require__(384);
 var SentryLogger_1 = __webpack_require__(387);
@@ -14855,7 +14855,7 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var RootComponent_1 = __webpack_require__(36);
 var QueryBuilder_1 = __webpack_require__(48);
-var LocalStorageUtils_1 = __webpack_require__(37);
+var LocalStorageUtils_1 = __webpack_require__(38);
 var Assert_1 = __webpack_require__(7);
 var SearchEndpointWithDefaultCallOptions_1 = __webpack_require__(373);
 var QueryEvents_1 = __webpack_require__(11);
@@ -15390,6 +15390,115 @@ exports.RootComponent = RootComponent;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+/// <reference path='Facet.ts' />
+var StringUtils_1 = __webpack_require__(21);
+var QueryUtils_1 = __webpack_require__(19);
+var FileTypes_1 = __webpack_require__(83);
+var DateUtils_1 = __webpack_require__(29);
+var Utils_1 = __webpack_require__(6);
+var Dom_1 = __webpack_require__(3);
+var _ = __webpack_require__(1);
+var Strings_1 = __webpack_require__(10);
+var FacetUtils = /** @class */ (function () {
+    function FacetUtils() {
+    }
+    FacetUtils.getRegexToUseForFacetSearch = function (value, ignoreAccent) {
+        return new RegExp(StringUtils_1.StringUtils.stringToRegex(value, ignoreAccent), 'i');
+    };
+    FacetUtils.getValuesToUseForSearchInFacet = function (original, facet) {
+        var ret = [original];
+        var regex = this.getRegexToUseForFacetSearch(original, facet.options.facetSearchIgnoreAccents);
+        if (facet.options.valueCaption) {
+            _.chain(facet.options.valueCaption)
+                .pairs()
+                .filter(function (pair) {
+                return regex.test(pair[1]);
+            })
+                .each(function (match) {
+                ret.push(match[0]);
+            });
+            if (QueryUtils_1.QueryUtils.isStratusAgnosticField(facet.options.field, '@objecttype') ||
+                QueryUtils_1.QueryUtils.isStratusAgnosticField(facet.options.field, '@filetype')) {
+                _.each(FileTypes_1.FileTypes.getFileTypeCaptions(), function (value, key) {
+                    if (!(key in facet.options.valueCaption) && regex.test(value)) {
+                        ret.push(key);
+                    }
+                });
+            }
+        }
+        else if (QueryUtils_1.QueryUtils.isStratusAgnosticField(facet.options.field, '@objecttype') ||
+            QueryUtils_1.QueryUtils.isStratusAgnosticField(facet.options.field, '@filetype')) {
+            _.each(_.filter(_.pairs(FileTypes_1.FileTypes.getFileTypeCaptions()), function (pair) {
+                return regex.test(pair[1]);
+            }), function (match) {
+                ret.push(match[0]);
+            });
+        }
+        else if (QueryUtils_1.QueryUtils.isStratusAgnosticField(facet.options.field, '@month')) {
+            _.each(_.range(1, 13), function (month) {
+                if (regex.test(DateUtils_1.DateUtils.monthToString(month - 1))) {
+                    ret.push(('0' + month.toString()).substr(-2));
+                }
+            });
+        }
+        return ret;
+    };
+    FacetUtils.buildFacetSearchPattern = function (values) {
+        values = _.map(values, function (value) {
+            return Utils_1.Utils.escapeRegexCharacter(value);
+        });
+        values[0] = '.*' + values[0] + '.*';
+        return values.join('|');
+    };
+    FacetUtils.needAnotherFacetSearch = function (currentSearchLength, newSearchLength, oldSearchLength, desiredSearchLength) {
+        // Something was removed (currentSearch < newSearch)
+        // && we might want to display more facet search result(currentSearch < desiredSearch)
+        // && the new query returned more stuff than the old one so there's still more results(currentSearchLength > oldLength)
+        return currentSearchLength < newSearchLength && currentSearchLength < desiredSearchLength && currentSearchLength > oldSearchLength;
+    };
+    FacetUtils.addNoStateCssClassToFacetValues = function (facet, container) {
+        // This takes care of adding the correct css class on each facet value checkbox (empty white box) if at least one value is selected in that facet
+        if (facet.values.getSelected().length != 0) {
+            var noStates = Dom_1.$$(container).findAll('li:not(.coveo-selected)');
+            _.each(noStates, function (noState) {
+                Dom_1.$$(noState).addClass('coveo-no-state');
+            });
+        }
+    };
+    FacetUtils.tryToGetTranslatedCaption = function (field, value) {
+        var found;
+        if (QueryUtils_1.QueryUtils.isStratusAgnosticField(field.toLowerCase(), '@filetype')) {
+            found = FileTypes_1.FileTypes.getFileType(value).caption;
+        }
+        else if (QueryUtils_1.QueryUtils.isStratusAgnosticField(field.toLowerCase(), '@objecttype')) {
+            found = FileTypes_1.FileTypes.getObjectType(value).caption;
+        }
+        else if (QueryUtils_1.QueryUtils.isStratusAgnosticField(field.toLowerCase(), '@month') && value != 'Search') {
+            try {
+                var month = parseInt(value);
+                found = DateUtils_1.DateUtils.monthToString(month - 1);
+            }
+            catch (ex) {
+                // Do nothing
+            }
+        }
+        else {
+            found = Strings_1.l(value);
+        }
+        return found != undefined && Utils_1.Utils.isNonEmptyString(found) ? found : value;
+    };
+    return FacetUtils;
+}());
+exports.FacetUtils = FacetUtils;
+
+
+/***/ }),
+/* 38 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
 var localStorage = window.localStorage;
 var LocalStorageUtils = /** @class */ (function () {
     function LocalStorageUtils(id) {
@@ -15439,7 +15548,7 @@ exports.LocalStorageUtils = LocalStorageUtils;
 
 
 /***/ }),
-/* 38 */
+/* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16575,7 +16684,7 @@ function includeIsGuestUser() {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5)))
 
 /***/ }),
-/* 39 */
+/* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16782,115 +16891,6 @@ var HashUtils = /** @class */ (function () {
     return HashUtils;
 }());
 exports.HashUtils = HashUtils;
-
-
-/***/ }),
-/* 40 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-/// <reference path='Facet.ts' />
-var StringUtils_1 = __webpack_require__(21);
-var QueryUtils_1 = __webpack_require__(19);
-var FileTypes_1 = __webpack_require__(83);
-var DateUtils_1 = __webpack_require__(29);
-var Utils_1 = __webpack_require__(6);
-var Dom_1 = __webpack_require__(3);
-var _ = __webpack_require__(1);
-var Strings_1 = __webpack_require__(10);
-var FacetUtils = /** @class */ (function () {
-    function FacetUtils() {
-    }
-    FacetUtils.getRegexToUseForFacetSearch = function (value, ignoreAccent) {
-        return new RegExp(StringUtils_1.StringUtils.stringToRegex(value, ignoreAccent), 'i');
-    };
-    FacetUtils.getValuesToUseForSearchInFacet = function (original, facet) {
-        var ret = [original];
-        var regex = this.getRegexToUseForFacetSearch(original, facet.options.facetSearchIgnoreAccents);
-        if (facet.options.valueCaption) {
-            _.chain(facet.options.valueCaption)
-                .pairs()
-                .filter(function (pair) {
-                return regex.test(pair[1]);
-            })
-                .each(function (match) {
-                ret.push(match[0]);
-            });
-            if (QueryUtils_1.QueryUtils.isStratusAgnosticField(facet.options.field, '@objecttype') ||
-                QueryUtils_1.QueryUtils.isStratusAgnosticField(facet.options.field, '@filetype')) {
-                _.each(FileTypes_1.FileTypes.getFileTypeCaptions(), function (value, key) {
-                    if (!(key in facet.options.valueCaption) && regex.test(value)) {
-                        ret.push(key);
-                    }
-                });
-            }
-        }
-        else if (QueryUtils_1.QueryUtils.isStratusAgnosticField(facet.options.field, '@objecttype') ||
-            QueryUtils_1.QueryUtils.isStratusAgnosticField(facet.options.field, '@filetype')) {
-            _.each(_.filter(_.pairs(FileTypes_1.FileTypes.getFileTypeCaptions()), function (pair) {
-                return regex.test(pair[1]);
-            }), function (match) {
-                ret.push(match[0]);
-            });
-        }
-        else if (QueryUtils_1.QueryUtils.isStratusAgnosticField(facet.options.field, '@month')) {
-            _.each(_.range(1, 13), function (month) {
-                if (regex.test(DateUtils_1.DateUtils.monthToString(month - 1))) {
-                    ret.push(('0' + month.toString()).substr(-2));
-                }
-            });
-        }
-        return ret;
-    };
-    FacetUtils.buildFacetSearchPattern = function (values) {
-        values = _.map(values, function (value) {
-            return Utils_1.Utils.escapeRegexCharacter(value);
-        });
-        values[0] = '.*' + values[0] + '.*';
-        return values.join('|');
-    };
-    FacetUtils.needAnotherFacetSearch = function (currentSearchLength, newSearchLength, oldSearchLength, desiredSearchLength) {
-        // Something was removed (currentSearch < newSearch)
-        // && we might want to display more facet search result(currentSearch < desiredSearch)
-        // && the new query returned more stuff than the old one so there's still more results(currentSearchLength > oldLength)
-        return currentSearchLength < newSearchLength && currentSearchLength < desiredSearchLength && currentSearchLength > oldSearchLength;
-    };
-    FacetUtils.addNoStateCssClassToFacetValues = function (facet, container) {
-        // This takes care of adding the correct css class on each facet value checkbox (empty white box) if at least one value is selected in that facet
-        if (facet.values.getSelected().length != 0) {
-            var noStates = Dom_1.$$(container).findAll('li:not(.coveo-selected)');
-            _.each(noStates, function (noState) {
-                Dom_1.$$(noState).addClass('coveo-no-state');
-            });
-        }
-    };
-    FacetUtils.tryToGetTranslatedCaption = function (field, value) {
-        var found;
-        if (QueryUtils_1.QueryUtils.isStratusAgnosticField(field.toLowerCase(), '@filetype')) {
-            found = FileTypes_1.FileTypes.getFileType(value).caption;
-        }
-        else if (QueryUtils_1.QueryUtils.isStratusAgnosticField(field.toLowerCase(), '@objecttype')) {
-            found = FileTypes_1.FileTypes.getObjectType(value).caption;
-        }
-        else if (QueryUtils_1.QueryUtils.isStratusAgnosticField(field.toLowerCase(), '@month') && value != 'Search') {
-            try {
-                var month = parseInt(value);
-                found = DateUtils_1.DateUtils.monthToString(month - 1);
-            }
-            catch (ex) {
-                // Do nothing
-            }
-        }
-        else {
-            found = Strings_1.l(value);
-        }
-        return found != undefined && Utils_1.Utils.isNonEmptyString(found) ? found : value;
-    };
-    return FacetUtils;
-}());
-exports.FacetUtils = FacetUtils;
 
 
 /***/ }),
@@ -19724,7 +19724,7 @@ var FacetSettings_1 = __webpack_require__(412);
 var FacetSort_1 = __webpack_require__(413);
 var FacetValuesList_1 = __webpack_require__(419);
 var FacetHeader_1 = __webpack_require__(414);
-var FacetUtils_1 = __webpack_require__(40);
+var FacetUtils_1 = __webpack_require__(37);
 var QueryEvents_1 = __webpack_require__(11);
 var Assert_1 = __webpack_require__(7);
 var Dom_1 = __webpack_require__(3);
@@ -22341,8 +22341,8 @@ module.exports = g;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.version = {
-    lib: '2.3477.3-beta',
-    product: '2.3477.3-beta',
+    lib: '2.3477.4-beta',
+    product: '2.3477.4-beta',
     supportedApiVersion: 2
 };
 
@@ -25805,6 +25805,7 @@ var Dom_1 = __webpack_require__(3);
 var _ = __webpack_require__(1);
 var GlobalExports_1 = __webpack_require__(4);
 var StringUtils_1 = __webpack_require__(21);
+var FacetUtils_1 = __webpack_require__(37);
 function showOnlyWithHelper(helpers, options) {
     if (options == null) {
         options = {};
@@ -25892,7 +25893,7 @@ var FieldValue = /** @class */ (function (_super) {
      */
     FieldValue.prototype.renderOneValue = function (value) {
         var element = Dom_1.$$('span').el;
-        var toRender = value;
+        var toRender = FacetUtils_1.FacetUtils.tryToGetTranslatedCaption(this.options.field, value);
         if (this.options.helper) {
             // Try to resolve and execute version 2 of each helper function if available
             var helper = TemplateHelpers_1.TemplateHelpers.getHelper(this.options.helper + "v2") || TemplateHelpers_1.TemplateHelpers.getHelper("" + this.options.helper);
@@ -25983,12 +25984,24 @@ var FieldValue = /** @class */ (function (_super) {
     };
     FieldValue.prototype.bindEventOnValue = function (element, value) {
         var _this = this;
-        if (Utils_1.Utils.isUndefined(Coveo['FacetRange'])) {
-            return;
-        }
         var facetAttributeName = QueryStateModel_1.QueryStateModel.getFacetId(this.options.facet);
-        var facets = _.filter(this.componentStateModel.get(facetAttributeName), function (facet) {
-            return !facet.disabled && Coveo['FacetRange'] && !(facet instanceof Coveo['FacetRange']);
+        var facets = _.filter(this.componentStateModel.get(facetAttributeName), function (possibleFacetComponent) {
+            // Here, we need to check if a potential facet component (as returned by the component state model) is a "standard" facet.
+            // It's also possible that the FacetRange and FacetSlider constructor are not available (lazy loading mode)
+            // For that reason we also need to check that the constructor event exist before calling the instanceof operator or an exception would explode (cannot use instanceof "undefined")
+            var componentIsAStandardFacet = true;
+            var facetRangeConstructorExists = Component_1.Component.getComponentRef('FacetRange');
+            var facetSliderConstructorExists = Component_1.Component.getComponentRef('FacetSlider');
+            if (possibleFacetComponent.disabled) {
+                return false;
+            }
+            if (componentIsAStandardFacet && facetRangeConstructorExists) {
+                componentIsAStandardFacet = !(possibleFacetComponent instanceof facetRangeConstructorExists);
+            }
+            if (componentIsAStandardFacet && facetSliderConstructorExists) {
+                componentIsAStandardFacet = !(possibleFacetComponent instanceof facetSliderConstructorExists);
+            }
+            return componentIsAStandardFacet;
         });
         var atLeastOneFacetIsEnabled = facets.length > 0;
         if (atLeastOneFacetIsEnabled) {
@@ -40028,7 +40041,7 @@ var Assert_1 = __webpack_require__(7);
 var Model_1 = __webpack_require__(18);
 var InitializationEvents_1 = __webpack_require__(17);
 var Dom_1 = __webpack_require__(3);
-var HashUtils_1 = __webpack_require__(39);
+var HashUtils_1 = __webpack_require__(40);
 var Defer_1 = __webpack_require__(28);
 var RootComponent_1 = __webpack_require__(36);
 var Utils_1 = __webpack_require__(6);
@@ -40185,7 +40198,7 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var LocalStorageUtils_1 = __webpack_require__(37);
+var LocalStorageUtils_1 = __webpack_require__(38);
 var Model_1 = __webpack_require__(18);
 var Logger_1 = __webpack_require__(14);
 var Assert_1 = __webpack_require__(7);
@@ -40926,7 +40939,7 @@ exports.APIAnalyticsBuilder = APIAnalyticsBuilder;
 /// <reference path="Facet.ts" />
 Object.defineProperty(exports, "__esModule", { value: true });
 var Utils_1 = __webpack_require__(6);
-var FacetUtils_1 = __webpack_require__(40);
+var FacetUtils_1 = __webpack_require__(37);
 var QueryBuilder_1 = __webpack_require__(48);
 var Dom_1 = __webpack_require__(3);
 var _ = __webpack_require__(1);
@@ -42577,7 +42590,7 @@ __webpack_require__(392);
 var QueryEvents_1 = __webpack_require__(11);
 var InitializationEvents_1 = __webpack_require__(17);
 var ResultListEvents_1 = __webpack_require__(32);
-var HashUtils_1 = __webpack_require__(39);
+var HashUtils_1 = __webpack_require__(40);
 var InitializationPlaceholder = /** @class */ (function () {
     function InitializationPlaceholder(root, options) {
         if (options === void 0) { options = {
@@ -44410,7 +44423,7 @@ var QueryEvents_1 = __webpack_require__(11);
 var InitializationEvents_1 = __webpack_require__(17);
 var QueryStateModel_1 = __webpack_require__(13);
 var AnalyticsActionListMeta_1 = __webpack_require__(12);
-var SearchEndpoint_1 = __webpack_require__(38);
+var SearchEndpoint_1 = __webpack_require__(39);
 var Initialization_1 = __webpack_require__(2);
 var Utils_1 = __webpack_require__(6);
 var Assert_1 = __webpack_require__(7);
@@ -45001,9 +45014,9 @@ var QueryUtils_1 = __webpack_require__(19);
 var DeviceUtils_1 = __webpack_require__(22);
 var TemplateCache_1 = __webpack_require__(51);
 var Dom_1 = __webpack_require__(3);
-var SearchEndpoint_1 = __webpack_require__(38);
+var SearchEndpoint_1 = __webpack_require__(39);
 var StreamHighlightUtils_1 = __webpack_require__(65);
-var FacetUtils_1 = __webpack_require__(40);
+var FacetUtils_1 = __webpack_require__(37);
 var Globalize = __webpack_require__(25);
 var _ = __webpack_require__(1);
 var Component_1 = __webpack_require__(8);
@@ -45479,7 +45492,7 @@ var ExpressionBuilder_1 = __webpack_require__(68);
 var Utils_1 = __webpack_require__(6);
 var FacetSearchParameters_1 = __webpack_require__(236);
 var Assert_1 = __webpack_require__(7);
-var FacetUtils_1 = __webpack_require__(40);
+var FacetUtils_1 = __webpack_require__(37);
 var _ = __webpack_require__(1);
 var FacetQueryController = /** @class */ (function () {
     function FacetQueryController(facet) {
@@ -49986,7 +49999,9 @@ var ExportToExcel = /** @class */ (function (_super) {
     ExportToExcel.prototype.download = function () {
         var query = this.queryController.getLastQuery();
         if (query) {
-            query = _.omit(query, 'numberOfResults');
+            // Remove number of results and fields to include from the last query, because those 2 parameters
+            // should be controlled/modified by the export to excel component.
+            query = _.omit(query, ['numberOfResults', 'fieldsToInclude']);
             if (this.options.fieldsToInclude) {
                 query.fieldsToInclude = this.options.fieldsToInclude;
             }
@@ -55155,7 +55170,7 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var Component_1 = __webpack_require__(8);
 var ComponentOptions_1 = __webpack_require__(9);
-var LocalStorageUtils_1 = __webpack_require__(37);
+var LocalStorageUtils_1 = __webpack_require__(38);
 var InitializationEvents_1 = __webpack_require__(17);
 var PreferencesPanelEvents_1 = __webpack_require__(67);
 var Model_1 = __webpack_require__(18);
@@ -55941,7 +55956,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var Component_1 = __webpack_require__(8);
 var ComponentOptions_1 = __webpack_require__(9);
 var ComponentOptionsModel_1 = __webpack_require__(26);
-var LocalStorageUtils_1 = __webpack_require__(37);
+var LocalStorageUtils_1 = __webpack_require__(38);
 var PreferencesPanelEvents_1 = __webpack_require__(67);
 var AnalyticsActionListMeta_1 = __webpack_require__(12);
 var Initialization_1 = __webpack_require__(2);
@@ -58716,7 +58731,7 @@ var BreadcrumbEvents_1 = __webpack_require__(42);
 var SVGIcons_1 = __webpack_require__(15);
 var SVGDom_1 = __webpack_require__(16);
 var SimpleFilterValues_1 = __webpack_require__(539);
-var FacetUtils_1 = __webpack_require__(40);
+var FacetUtils_1 = __webpack_require__(37);
 var KeyboardUtils_1 = __webpack_require__(23);
 var AnalyticsActionListMeta_1 = __webpack_require__(12);
 /**
@@ -60380,7 +60395,7 @@ CustomEventPolyfill_1.customEventPolyfill();
 // MISC
 var Version_1 = __webpack_require__(71);
 exports.version = Version_1.version;
-var SearchEndpoint_1 = __webpack_require__(38);
+var SearchEndpoint_1 = __webpack_require__(39);
 exports.SearchEndpoint = SearchEndpoint_1.SearchEndpoint;
 __export(__webpack_require__(27));
 // Default language needs to be set after external module, since this is where l10n will be imported
@@ -61198,7 +61213,7 @@ var DomUtils_1 = __webpack_require__(47);
 exports.DomUtils = DomUtils_1.DomUtils;
 var EmailUtils_1 = __webpack_require__(227);
 exports.EmailUtils = EmailUtils_1.EmailUtils;
-var HashUtils_1 = __webpack_require__(39);
+var HashUtils_1 = __webpack_require__(40);
 exports.HashUtils = HashUtils_1.HashUtils;
 var HighlightUtils_1 = __webpack_require__(49);
 exports.HighlightUtils = HighlightUtils_1.HighlightUtils;
@@ -61208,7 +61223,7 @@ exports.HTMLUtils = HtmlUtils_1.HTMLUtils;
 var KeyboardUtils_1 = __webpack_require__(23);
 exports.KEYBOARD = KeyboardUtils_1.KEYBOARD;
 exports.KeyboardUtils = KeyboardUtils_1.KeyboardUtils;
-var LocalStorageUtils_1 = __webpack_require__(37);
+var LocalStorageUtils_1 = __webpack_require__(38);
 exports.LocalStorageUtils = LocalStorageUtils_1.LocalStorageUtils;
 var OSUtils_1 = __webpack_require__(237);
 exports.OSUtils = OSUtils_1.OSUtils;
@@ -62837,12 +62852,12 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var ComponentOptions_1 = __webpack_require__(9);
-var LocalStorageUtils_1 = __webpack_require__(37);
+var LocalStorageUtils_1 = __webpack_require__(38);
 var ResultListEvents_1 = __webpack_require__(32);
 var DebugEvents_1 = __webpack_require__(73);
 var Dom_1 = __webpack_require__(3);
 var StringUtils_1 = __webpack_require__(21);
-var SearchEndpoint_1 = __webpack_require__(38);
+var SearchEndpoint_1 = __webpack_require__(39);
 var Template_1 = __webpack_require__(24);
 var RootComponent_1 = __webpack_require__(36);
 var BaseComponent_1 = __webpack_require__(30);
@@ -62982,6 +62997,7 @@ var Debug = /** @class */ (function (_super) {
             Dom_1.$$(body).empty();
             Dom_1.$$(body).append(build.body);
         }
+        this.updateSearchFunctionnality(build);
     };
     Debug.prototype.openModalBox = function () {
         var _this = this;
@@ -63005,12 +63021,18 @@ var Debug = /** @class */ (function (_super) {
             }
             else {
                 this.debugHeader.moveTo(title);
-                this.debugHeader.setNewInfoToDebug(this.stackDebug);
-                this.debugHeader.setSearch(function (value) { return _this.search(value, build.body); });
+                this.updateSearchFunctionnality(build);
             }
         }
         else {
             this.logger.warn('No title found in modal box.');
+        }
+    };
+    Debug.prototype.updateSearchFunctionnality = function (build) {
+        var _this = this;
+        if (this.debugHeader) {
+            this.debugHeader.setNewInfoToDebug(this.stackDebug);
+            this.debugHeader.setSearch(function (value) { return _this.search(value, build.body); });
         }
     };
     Debug.prototype.onCloseModalBox = function () {
@@ -66322,7 +66344,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var Component_1 = __webpack_require__(8);
 var ComponentOptions_1 = __webpack_require__(9);
 var AnalyticsEndpoint_1 = __webpack_require__(111);
-var SearchEndpoint_1 = __webpack_require__(38);
+var SearchEndpoint_1 = __webpack_require__(39);
 var Assert_1 = __webpack_require__(7);
 var QueryEvents_1 = __webpack_require__(11);
 var ComponentOptionsModel_1 = __webpack_require__(26);
@@ -67581,7 +67603,7 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var FacetSort_1 = __webpack_require__(413);
 var Dom_1 = __webpack_require__(3);
-var LocalStorageUtils_1 = __webpack_require__(37);
+var LocalStorageUtils_1 = __webpack_require__(38);
 var Utils_1 = __webpack_require__(6);
 var Strings_1 = __webpack_require__(10);
 var QueryStateModel_1 = __webpack_require__(13);
@@ -69206,7 +69228,7 @@ var FacetValueElement_1 = __webpack_require__(90);
 var Dom_1 = __webpack_require__(3);
 var FacetValues_1 = __webpack_require__(89);
 var Utils_1 = __webpack_require__(6);
-var FacetUtils_1 = __webpack_require__(40);
+var FacetUtils_1 = __webpack_require__(37);
 var FacetValuesOrder_1 = __webpack_require__(256);
 var _ = __webpack_require__(1);
 var FacetValuesList = /** @class */ (function () {
@@ -69603,7 +69625,7 @@ exports.OmniboxValueElement = OmniboxValueElement;
 Object.defineProperty(exports, "__esModule", { value: true });
 var Dom_1 = __webpack_require__(3);
 var Utils_1 = __webpack_require__(6);
-var FacetUtils_1 = __webpack_require__(40);
+var FacetUtils_1 = __webpack_require__(37);
 var _ = __webpack_require__(1);
 var OmniboxValuesList = /** @class */ (function () {
     function OmniboxValuesList(facet, facetValues, omniboxObject, omniboxValueElementKlass) {
@@ -73727,7 +73749,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var Dropdown_1 = __webpack_require__(53);
-var FacetUtils_1 = __webpack_require__(40);
+var FacetUtils_1 = __webpack_require__(37);
 var DocumentInput_1 = __webpack_require__(263);
 var Dom_1 = __webpack_require__(3);
 var _ = __webpack_require__(1);
@@ -89891,7 +89913,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var FacetQueryController_1 = __webpack_require__(257);
-var FacetUtils_1 = __webpack_require__(40);
+var FacetUtils_1 = __webpack_require__(37);
 var _ = __webpack_require__(1);
 var HierarchicalFacetQueryController = /** @class */ (function (_super) {
     __extends(HierarchicalFacetQueryController, _super);
@@ -92332,7 +92354,7 @@ var CoveoJQuery_1 = __webpack_require__(252);
 exports.$ = CoveoJQuery_1.jQueryInstance;
 var CoveoUnderscore_1 = __webpack_require__(251);
 exports._ = CoveoUnderscore_1.underscoreInstance;
-var HashUtils_1 = __webpack_require__(39);
+var HashUtils_1 = __webpack_require__(40);
 exports.HashUtils = HashUtils_1.HashUtils;
 var DeviceUtils_1 = __webpack_require__(22);
 exports.DeviceUtils = DeviceUtils_1.DeviceUtils;

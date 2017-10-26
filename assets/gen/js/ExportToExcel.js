@@ -70,7 +70,9 @@ var ExportToExcel = /** @class */ (function (_super) {
     ExportToExcel.prototype.download = function () {
         var query = this.queryController.getLastQuery();
         if (query) {
-            query = _.omit(query, 'numberOfResults');
+            // Remove number of results and fields to include from the last query, because those 2 parameters
+            // should be controlled/modified by the export to excel component.
+            query = _.omit(query, ['numberOfResults', 'fieldsToInclude']);
             if (this.options.fieldsToInclude) {
                 query.fieldsToInclude = this.options.fieldsToInclude;
             }
