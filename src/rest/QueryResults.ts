@@ -68,19 +68,27 @@ export interface IQueryResults {
    */
   totalCountFiltered: number;
   /**
-   * The duration of the query on the Coveo platform.
+   * The total duration of the query roundtrip as seen by the browser/client.
    */
   duration: number;
   /**
-   * The duration of the query on the Coveo Index.
+   * The duration of the query spent on the Coveo Index.
    */
   indexDuration: number;
   /**
+   * The duration of the query spent on the Coveo Search API.
+   */
+  searchAPIDuration: number;
+  /**
    * The duration of the query on the proxy (not always applicable, can be optional)
+   * 
+   * @deprecated Use duration, indexDuration and searchAPIDuration instead.
    */
   proxyDuration?: number;
   /**
    * The duration of the query for the client.
+   * 
+   * @deprecated Use searchAPIDuration instead.
    */
   clientDuration: number;
   /**

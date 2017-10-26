@@ -27,6 +27,7 @@ import * as _ from 'underscore';
 import { shim } from '../misc/PromisesShim';
 import { history } from 'coveo.analytics';
 import { Cookie } from '../utils/CookieUtils';
+import { TimeSpan } from '../UtilsModules';
 shim();
 
 export class DefaultSearchEndpointOptions implements ISearchEndpointOptions {
@@ -327,7 +328,9 @@ export class SearchEndpoint implements ISearchEndpoint {
 
     this.logger.info('Performing REST query', query);
 
-    return this.performOneCall(callParams, callOptions).then((results?: IQueryResults) => {
+    const begun = new Date();
+
+    return this.performOneCall<IQueryResults>(callParams, callOptions).then(results => {
       this.logger.info('REST query successful', results, query);
 
       // Version check
@@ -338,6 +341,11 @@ export class SearchEndpoint implements ISearchEndpoint {
       if (results.apiVersion < version.supportedApiVersion) {
         this.logger.error('Please update your REST Search API');
       }
+
+      // Transform the duration compared to what the search API returns
+      // We want to have the "duration" to be the time as seen by the browser
+      results.searchAPIDuration = results.duration;
+      results.duration = TimeSpan.fromDates(begun, new Date()).getMilliseconds();
 
       // If the server specified no search ID generated one using the client-side
       // GUID generator. We prefer server generated guids to allow tracking a query
@@ -962,11 +970,6 @@ export class SearchEndpoint implements ISearchEndpoint {
       .then((response?: ISuccessResponse<T>) => {
         if (response.data == null) {
           response.data = <any>{};
-        }
-        const timeToExecute = new Date().getTime() - startTime.getTime();
-        if (response.data && _.isObject(response.data)) {
-          (<any>response.data).clientDuration = timeToExecute;
-          (<any>response.data).duration = response.duration || timeToExecute;
         }
         return response.data;
       })
