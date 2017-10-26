@@ -21,7 +21,7 @@
   <body id="search" class='CoveoSearchInterface' data-enable-history="true">
     <div class="CoveoFoldingForThread" data-field="@sfcaseid" data-tab="SalesforceCase" data-parent-field="@sfid" data-child-field="@sfcaseid" data-range="0"></div>
     <div class="coveo-tab-section">
-      <a class="CoveoTab" data-id="SalesforceCase" data-caption="Cases" data-expression="@sfcaseid"></a>
+      <a class="CoveoTab" data-id="SalesforceCase" data-caption="Cases" data-expression="@objecttype==(case,casecomment)"></a>
     </div>
     <div class='coveo-search-section'>
       <div class="CoveoSettings"></div>
