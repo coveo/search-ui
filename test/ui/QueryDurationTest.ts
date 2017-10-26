@@ -2,6 +2,7 @@ import * as Mock from '../MockEnvironment';
 import { QueryDuration } from '../../src/ui/QueryDuration/QueryDuration';
 import { FakeResults } from '../Fake';
 import { Simulate } from '../Simulate';
+import { l } from '../../src/MiscModules';
 
 export function QueryDurationTest() {
   describe('QueryDuration', function() {
@@ -37,6 +38,24 @@ export function QueryDurationTest() {
       results.searchAPIDuration = 123;
       Simulate.query(test.env, { results: results });
       expect(test.cmp.element.textContent).toBe('in 1.23 seconds');
+    });
+
+    it('should show a tooltip with the indexDuration', () => {
+      results.indexDuration = 500;
+      Simulate.query(test.env, { results: results });
+      expect(test.cmp.element.getAttribute('title')).toContain(l('IndexDuration', 'in 0.50 seconds'));
+    });
+
+    it('should show a tooltip with the searchAPIDuration', () => {
+      results.searchAPIDuration = 500;
+      Simulate.query(test.env, { results: results });
+      expect(test.cmp.element.getAttribute('title')).toContain(l('SearchAPIDuration', 'in 0.50 seconds'));
+    });
+
+    it('should show a tooltip with the duration', () => {
+      results.duration = 500;
+      Simulate.query(test.env, { results: results });
+      expect(test.cmp.element.getAttribute('title')).toContain(l('Duration', 'in 0.50 seconds'));
     });
   });
 }

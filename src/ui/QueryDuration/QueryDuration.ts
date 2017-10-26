@@ -60,8 +60,7 @@ export class QueryDuration extends Component {
 
       let tooltip = [
         l('Duration', this.formatQueryDuration(data.results.duration)),
-        l('SearchAPIDuration'),
-        this.formatQueryDuration(data.results.searchAPIDuration),
+        l('SearchAPIDuration', this.formatQueryDuration(data.results.searchAPIDuration)),
         l('IndexDuration', this.formatQueryDuration(data.results.indexDuration))
       ].join('\n');
 
