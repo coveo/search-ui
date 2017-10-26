@@ -16,7 +16,7 @@ export function SimpleFilterTest() {
         title: 'FooTitleBar',
         values: ['foo', 'bar'],
         valueCaption: {
-          bar: 'foo',
+          bar: 'baz',
           gmailmessage: 'Gmail Message',
           lithiummessage: 'Lithium Message',
           youtubevideo: 'Youtube Video',
@@ -41,7 +41,7 @@ export function SimpleFilterTest() {
 
     it('should allow to getValueCaption', () => {
       aSimpleFilter.cmp.options.field = '@filetype';
-      expect(aSimpleFilter.cmp.getValueCaption('bar')).toBe('foo');
+      expect(aSimpleFilter.cmp.getValueCaption('bar')).toBe('baz');
     });
 
     it('should set the values correctly', () => {
