@@ -11,6 +11,7 @@ import { Utils } from '../../utils/Utils';
 import { l } from '../../strings/Strings';
 import * as _ from 'underscore';
 import { SVGIcons } from '../../utils/SVGIcons';
+import { IStringMap } from '../../rest/GenericParam';
 
 /**
  * The `IFieldOption` interface declares a type for options that should contain a field to be used in a query.
@@ -426,23 +427,41 @@ export class ComponentOptions {
 
   /**
    * Builds a JSON option.
-   *
-   * Normally, this simply builds a stringified JSON.
-   *
-   * **Note:**
-   *
-   * > In the markup, this offers no advantage over using a plain string. This is mostly useful for the Coveo JavaScript
-   * > Interface Editor.
-   *
+   * 
+   * This option will try to parse a stringified JSON if set directly on the HTMLElement.
+   * 
+   * If it fails to do so (because of an invalid syntax) the option will be ignored 
+   * and a `warning` will display in the console.
+   * 
    * **Markup Example:**
    *
    * > `data-foo='{"bar" : "baz"}'`
    *
+   * This can also be set as a property directly during the initialization call of the framework.
+   * 
+   * **Initialization Example:**
+   * 
+   * ```
+   * Coveo.init(root, {
+   *   Facet : {
+   *     foo : {
+   *       "bar" : "baz"
+   *     }
+   *   } 
+   * })
+   * ```
    * @param optionArgs The arguments to apply when building the option.
-   * @returns {string} The resulting option value.
+   * @returns {T} The resulting option value.
    */
-  static buildJsonOption(optionArgs?: IComponentOptions<string>): string {
-    return ComponentOptions.buildOption<string>(ComponentOptionsType.JSON, ComponentOptions.loadStringOption, optionArgs);
+  static buildJsonOption<T extends IStringMap<any>>(optionArgs?: IComponentJsonObjectOption<T>): T {
+    return ComponentOptions.buildOption(ComponentOptionsType.JSON, ComponentOptions.loadJsonObjectOption, optionArgs) as T;
+  }
+
+  /**
+   * @deprecated Use buildJsonOption instead
+   */
+  static buildJsonObjectOption<T>(optionArgs?: IComponentJsonObjectOption<T>): T {
+    return ComponentOptions.buildJsonOption(optionArgs);
   }
 
   /**
@@ -578,10 +597,6 @@ export class ComponentOptions {
       }
     };
     return ComponentOptions.buildOption<T>(ComponentOptionsType.STRING, loadOption, optionArgs);
-  }
-
-  static buildJsonObjectOption<T>(optionArgs?: IComponentJsonObjectOption<T>): T {
-    return ComponentOptions.buildOption<T>(ComponentOptionsType.JSON, ComponentOptions.loadJsonObjectOption, optionArgs);
   }
 
   static buildCustomListOption<T>(converter: (value: string[]) => T, optionArgs?: IComponentOptionsCustomListOptionArgs<T>): T {

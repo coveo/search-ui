@@ -77,7 +77,7 @@ export function initRecommendation(
 ) {
   var recommendationOptions = <IRecommendationOptions>{};
   recommendationOptions.mainSearchInterface = mainSearchInterface;
-  recommendationOptions.userContext = JSON.stringify(userContext);
+  recommendationOptions.userContext = userContext;
   recommendationOptions.enableHistory = false;
   options = _.extend({}, options, { Recommendation: recommendationOptions });
 
