@@ -68,15 +68,15 @@ export interface IQueryResults {
    */
   totalCountFiltered: number;
   /**
-   * The total duration of the query roundtrip as seen by the browser/client.
+   * The total query duration, which is the sum of the `indexDuration` and `searchAPIDuration`, including any latency incurred through the necessary network hops.
    */
   duration: number;
   /**
-   * The duration of the query spent on the Coveo Index.
+   * The part of the total query `duration` that was spent in the index.
    */
   indexDuration: number;
   /**
-   * The duration of the query spent on the Coveo Search API.
+   * The part of the total query `duration` that was spent in the Coveo Search API.
    */
   searchAPIDuration: number;
   /**
