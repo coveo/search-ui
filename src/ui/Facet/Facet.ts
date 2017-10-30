@@ -656,7 +656,7 @@ export class Facet extends Component {
      * **Note:**
      * > Using value captions will disable alphabetical sorts (see the [availableSorts]{@link Facet.options.availableSorts} option).
      */
-    valueCaption: ComponentOptions.buildJsonObjectOption<IStringMap<string>>(),
+    valueCaption: ComponentOptions.buildJsonOption<IStringMap<string>>(),
 
     /**
      * Specifies whether to enable *responsive mode* for facets. Setting this options to `false` on any `Facet`, or

@@ -22,9 +22,9 @@ export function RecommendationTest() {
       mainSearchInterface = Mock.basicSearchInterfaceSetup(SearchInterface);
       options = {
         mainSearchInterface: mainSearchInterface.env.root,
-        userContext: JSON.stringify({
+        userContext: {
           user_id: userId
-        })
+        }
       };
       store = Simulate.analyticsStoreModule(actionsHistory);
       test = Mock.optionsSearchInterfaceSetup<Recommendation, IRecommendationOptions>(Recommendation, options);

@@ -116,7 +116,7 @@ export class SimpleFilter extends Component {
      * <div class='CoveoSimpleFilter' data-field='@myotherfield' data-value-caption='{"txt":"Text files","html":"Web page"}'></div>
      * ```
      */
-    valueCaption: ComponentOptions.buildJsonObjectOption()
+    valueCaption: ComponentOptions.buildJsonOption()
   };
 
   private valueContainer: Dom;
