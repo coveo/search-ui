@@ -27,6 +27,14 @@
   }
 }
 
+.coveo-results-column .coveo-simplefilter-header-wrapper  {
+  &.coveo-no-results {
+    margin: 0;
+    padding-left: 0;
+    text-align: left;
+  }
+}
+
 .coveo-dropdown-background {
   display: none;
 }
