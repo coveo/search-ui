@@ -328,7 +328,7 @@ export class SearchEndpoint implements ISearchEndpoint {
 
     this.logger.info('Performing REST query', query);
 
-    const begun = new Date();
+    const start = new Date();
 
     return this.performOneCall<IQueryResults>(callParams, callOptions).then(results => {
       this.logger.info('REST query successful', results, query);
@@ -345,7 +345,7 @@ export class SearchEndpoint implements ISearchEndpoint {
       // Transform the duration compared to what the search API returns
       // We want to have the "duration" to be the time as seen by the browser
       results.searchAPIDuration = results.duration;
-      results.duration = TimeSpan.fromDates(begun, new Date()).getMilliseconds();
+      results.duration = TimeSpan.fromDates(start, new Date()).getMilliseconds();
 
       // If the server specified no search ID generated one using the client-side
       // GUID generator. We prefer server generated guids to allow tracking a query
