@@ -426,18 +426,17 @@ export class ComponentOptions {
   }
 
   /**
-   * Builds a JSON option.
+   * Tries to parse a stringified JSON option.
    * 
-   * This option will try to parse a stringified JSON if set directly on the HTMLElement.
-   * 
-   * If it fails to do so (because of an invalid syntax) the option will be ignored 
-   * and a `warning` will display in the console.
+   * If unsuccessful (because of invalid syntax), the JSON option is ignored altogether, and the console displays a warning message.
    * 
    * **Markup Example:**
    *
    * > `data-foo='{"bar" : "baz"}'`
    *
-   * This can also be set as a property directly during the initialization call of the framework.
+   * **Note:**
+   * 
+   * A JSON option can always be set as a property in the `init` call of the framework rather than as a `data-` property in the corresponding HTMLElement markup.
    * 
    * **Initialization Example:**
    * 
