@@ -2,6 +2,7 @@ import { IStringMap } from '../../../src/rest/GenericParam';
 import { $$, Dom } from '../../../src/utils/Dom';
 import { SearchEndpoint } from '../../../src/rest/SearchEndpoint';
 import { SearchSectionBuilder } from './SearchSectionBuilder';
+import { SectionBuilder } from './SectionBuilder';
 export interface IComponentPlaygroundConfiguration {
   show: boolean; // should we show a preview for this component. False is assumed if not specified.
   isResultComponent?: boolean; // is this component supposed to be inserted inside a result template ? False is assumed if not specified
@@ -12,7 +13,7 @@ export interface IComponentPlaygroundConfiguration {
   toExecute?: Function;
 }
 
-declare var Coveo;
+declare const Coveo;
 
 const getComponentContainerElement = () => {
   return $$(document.body).find('.component-container');
@@ -74,11 +75,28 @@ export const PlaygroundConfiguration: IStringMap<IComponentPlaygroundConfigurati
   },
   Tab: {
     show: true,
-    element: $$(
-      'div',
-      { className: 'coveo-tab-section' },
-      `<div class="CoveoTab" data-caption="All content" data-id="All"></div><div class="CoveoTab" data-caption="YouTube videos" data-id="YouTube"></div><div class="CoveoTab" data-caption="Google Drive" data-id="GoogleDrive"></div><div class="CoveoTab" data-caption="Emails" data-id="Emails"></div><div class="CoveoTab" data-caption="Salesforce content" data-id="Salesforce"></div>`
-    )
+    element: new SectionBuilder($$('div', { className: 'coveo-tab-section' }))
+      .withComponent('CoveoTab', {
+        'data-caption': 'All content',
+        'data-id': 'All'
+      })
+      .withComponent('CoveoTab', {
+        'data-caption': 'YouTube videos',
+        'data-id': 'YouTube'
+      })
+      .withComponent('CoveoTab', {
+        'data-caption': 'Google Drive',
+        'data-id': 'GoogleDrive'
+      })
+      .withComponent('CoveoTab', {
+        'data-caption': 'Emails',
+        'data-id': 'Emails'
+      })
+      .withComponent('CoveoTab', {
+        'data-caption': 'Salesforce content',
+        'data-id': 'Salesforce'
+      })
+      .build()
   },
   FacetSlider: {
     show: true,
@@ -103,11 +121,14 @@ export const PlaygroundConfiguration: IStringMap<IComponentPlaygroundConfigurati
   },
   Breadcrumb: {
     show: true,
-    element: $$(
-      'div',
-      undefined,
-      `<div class="CoveoBreadcrumb"></div><p>Interact with the facet to modify the breadcrumb</p><div class="CoveoFacet" data-field="@objecttype" data-title="Type"></div>`
-    )
+    element: new SectionBuilder()
+      .withComponent('CoveoBreadcrumb')
+      .withDomElement($$('p', {}, 'Interact with the facet to modify the breadcrumb'))
+      .withComponent('CoveoFacet', {
+        'data-field': '@objecttype',
+        'data-title': 'Type'
+      })
+      .build()
   },
   DidYouMean: {
     show: true,
@@ -184,20 +205,20 @@ export const PlaygroundConfiguration: IStringMap<IComponentPlaygroundConfigurati
       minimizedByDefault: false
     },
     isResultComponent: true,
-    advancedExpression: '@source=="Dropbox - coveodocumentationsamples@gmail.com"',
-    element: $$(
-      'div',
-      undefined,
-      `<table class="CoveoFieldTable">
-            <tbody>
-             <tr data-field="@size" data-caption="Document size" data-helper="size">
-              </tr>
-              <tr data-field="@source" data-caption="Source">
-              </tr>
-              <tr data-field="@date" data-caption="Date" date-helper="dateTime"></tr>
-            </tbody>
-          </table>`
-    )
+    advancedExpression: '@connectortype==DropboxCrawler AND @objecttype==File',
+    element: new SectionBuilder()
+      .withDomElement(
+        $$(
+          'table',
+          { className: 'CoveoFieldTable' },
+          `<tbody>
+    <tr data-field="@size" data-caption="Document size" data-helper="size"></tr>
+     <tr data-field="@source" data-caption="Source"></tr>
+     <tr data-field="@date" data-caption="Date" date-helper="dateTime"></tr>
+   </tbody>`
+        )
+      )
+      .build()
   },
   FieldValue: {
     show: true,
@@ -208,19 +229,6 @@ export const PlaygroundConfiguration: IStringMap<IComponentPlaygroundConfigurati
     isResultComponent: true,
     advancedExpression: '@date'
   },
-  FollowItem: {
-    show: true,
-    isResultComponent: true,
-    element: $$(
-      'div',
-      undefined,
-      `<div class="CoveoSearchAlerts"></div><a class="CoveoResultLink"></a><span class="CoveoFollowItem"></span>`
-    ),
-    basicExpression: 'technology',
-    toExecute: () => {
-      setMinHeightOnSearchInterface('300px');
-    }
-  },
   HiddenQuery: {
     show: true,
     options: {
@@ -228,10 +236,15 @@ export const PlaygroundConfiguration: IStringMap<IComponentPlaygroundConfigurati
     },
     toExecute: () => {
       const searchInterface = getSearchInterfaceElement();
-      Coveo.state(searchInterface, 'hd', 'This is the filter description');
-      Coveo.state(searchInterface, 'hq', '@uri');
+      Coveo.$$(searchInterface).on('afterInitialization', () => {
+        Coveo.state(searchInterface, 'hd', 'This is the filter description');
+        Coveo.state(searchInterface, 'hq', '@uri');
+      });
     },
-    element: $$('div', undefined, `<div class="CoveoBreadcrumb"></div><div class="CoveoHiddenQuery"></div>`)
+    element: new SectionBuilder()
+      .withComponent('CoveoBreadcrumb')
+      .withComponent('CoveoHiddenQuery')
+      .build()
   },
   HierarchicalFacet: {
     show: true,
@@ -267,7 +280,7 @@ export const PlaygroundConfiguration: IStringMap<IComponentPlaygroundConfigurati
       computedFieldFormat: 'n0 bytes',
       columnLabels: ['PDF', 'YouTube Videos', 'Excel documents']
     },
-    element: $$('div', undefined, `<div class="CoveoBreadcrumb"></div><div class="CoveoMatrix"></div>`)
+    element: new SectionBuilder().withComponent('CoveoMatrix').build()
   },
   OmniboxResultList: {
     show: true,
@@ -284,7 +297,18 @@ export const PlaygroundConfiguration: IStringMap<IComponentPlaygroundConfigurati
               className: 'result-template',
               type: 'text/underscore'
             },
-            "<div><span class='CoveoIcon' data-small='true' data-with-label='false' style='display:inline-block; vertical-align:middle; margin-right:5px;'></span><a class='CoveoResultLink'></a></div>"
+            new SectionBuilder()
+              .withComponent(
+                'CoveoIcon',
+                {
+                  'data-small': 'true',
+                  'data-with-label': 'false',
+                  style: 'display:inline-block; vertical-align:middle; margin-right:5px;'
+                },
+                'span'
+              )
+              .withComponent('CoveoResultLink', {}, 'a')
+              .build()
           )
         )
       )
@@ -416,19 +440,40 @@ export const PlaygroundConfiguration: IStringMap<IComponentPlaygroundConfigurati
   },
   SimpleFilter: {
     show: true,
-    element: $$(
-      'div',
-      undefined,
-      `<div class="CoveoSimpleFilter" data-field="@filetype" data-title="File Type"></div><div class="CoveoResultList"></div>`
-    )
+    options: {
+      field: '@filetype',
+      title: 'File Type'
+    },
+    element: new SectionBuilder()
+      .withComponent('CoveoSimpleFilter')
+      .withComponent('CoveoResultList')
+      .build()
   },
   Sort: {
     show: true,
-    element: $$(
-      'div',
-      undefined,
-      `<div class="coveo-sort-section"><span class="CoveoSort" data-sort-criteria="relevancy" data-caption="Relevance"></span><span class="CoveoSort" data-sort-criteria="date descending,date ascending" data-caption="Date"></span></div><div class="CoveoResultList"></div>`
-    ),
+    element: new SectionBuilder()
+      .withDomElement(
+        new SectionBuilder($$('div', { className: 'coveo-sort-section' }))
+          .withComponent(
+            'CoveoSort',
+            {
+              'data-sort-criteria': 'relevancy',
+              'data-caption': 'relevancy'
+            },
+            'span'
+          )
+          .withComponent(
+            'CoveoSort',
+            {
+              'data-sort-criteria': 'date descending,date ascending',
+              'data-caption': 'Date'
+            },
+            'span'
+          )
+          .build()
+      )
+      .withComponent('CoveoResultList')
+      .build(),
     toExecute: () => {
       getSearchInterfaceElement().style.padding = '20px';
       $$(getSearchInterfaceElement()).on('buildingQuery', function(e, args) {

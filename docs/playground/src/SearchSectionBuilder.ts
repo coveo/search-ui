@@ -1,17 +1,20 @@
 import { $$, Dom } from '../../../src/utils/Dom';
+import { SectionBuilder } from './SectionBuilder';
 
-export class SearchSectionBuilder {
-  public section: Dom;
+export class SearchSectionBuilder extends SectionBuilder {
   public searchbox: Dom;
   public settings: Dom;
 
   private enableOmnibox = true;
   private enableQuerySuggest = true;
 
-  constructor() {
-    this.section = $$('div', {
+  constructor(
+    sectionParameter = $$('div', {
       className: 'coveo-search-section'
-    });
+    })
+  ) {
+    super();
+    this.section = sectionParameter;
 
     this.searchbox = $$('div', {
       className: 'CoveoSearchbox'
@@ -45,19 +48,10 @@ export class SearchSectionBuilder {
     return this;
   }
 
-  public withComponent(component: string) {
-    this.section.append($$('div', { className: component }).el);
-    return this;
-  }
-
-  public withDomElement(dom: Dom) {
-    this.section.append(dom.el);
-    return this;
-  }
-
   public build() {
+    const built = super.build();
     this.searchbox.setAttribute('data-enable-omnibox', this.enableOmnibox.toString());
     this.searchbox.setAttribute('data-enable-query-suggest-addon', this.enableQuerySuggest.toString());
-    return this.section;
+    return built;
   }
 }
