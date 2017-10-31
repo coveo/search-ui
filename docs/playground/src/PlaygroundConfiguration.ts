@@ -241,9 +241,11 @@ export const PlaygroundConfiguration: IStringMap<IComponentPlaygroundConfigurati
     },
     toExecute: () => {
       // `@hierarchicfield` does not exist in the sample Coveo Cloud V2 organization.
-      $$(document.body).on('newQuery', function(e, args) {
+      $$(getSearchInterfaceElement()).on('newQuery', function(e, args) {
         SearchEndpoint.configureSampleEndpoint();
-        Coveo.get($$(document.body).find('.CoveoHierarchicalFacet')).queryController.setEndpoint(SearchEndpoint.endpoints['default']);
+        Coveo.get($$(getSearchInterfaceElement()).find('.CoveoHierarchicalFacet')).queryController.setEndpoint(
+          SearchEndpoint.endpoints['default']
+        );
       });
     },
     advancedExpression: '@hierarchicfield'
@@ -282,16 +284,17 @@ export const PlaygroundConfiguration: IStringMap<IComponentPlaygroundConfigurati
               className: 'result-template',
               type: 'text/underscore'
             },
-            "<div><a class='CoveoResultLink'></a></div>"
+            "<div><span class='CoveoIcon' data-small='true' data-with-label='false' style='display:inline-block; vertical-align:middle; margin-right:5px;'></span><a class='CoveoResultLink'></a></div>"
           )
         )
       )
+      .withoutQuerySuggest()
       .build(),
     options: {
       headerTitle: ''
     },
     toExecute: () => {
-      setMinHeightOnSearchInterface('300px');
+      setMinHeightOnSearchInterface('500px');
       getSearchInterfaceInstance().options.resultsPerPage = 5;
     }
   },
@@ -303,11 +306,18 @@ export const PlaygroundConfiguration: IStringMap<IComponentPlaygroundConfigurati
   },
   PreferencesPanel: {
     show: true,
-    element: $$(
-      'div',
-      undefined,
-      `<div class="CoveoSettings"></div><div class="CoveoSearchbox"></div><div class="CoveoPreferencesPanel"><div class="CoveoResultsPreferences"></div><div class="CoveoResultsFiltersPreferences"></div></div>`
-    ),
+    element: new SearchSectionBuilder()
+      .withDomElement(
+        $$(
+          'div',
+          {
+            className: 'CoveoPreferencesPanel'
+          },
+          $$('div', { className: 'CoveoResultsPreferences' }),
+          $$('div', { className: 'CoveoResultsFiltersPreferences' })
+        )
+      )
+      .build(),
     toExecute: () => {
       setMinHeightOnSearchInterface('300px');
     }
@@ -348,11 +358,17 @@ export const PlaygroundConfiguration: IStringMap<IComponentPlaygroundConfigurati
   },
   ResultsFiltersPreferences: {
     show: true,
-    element: $$(
-      'div',
-      undefined,
-      `<div class="CoveoSettings"></div><div class="CoveoSearchbox"></div><div class="CoveoPreferencesPanel"><div class="CoveoResultsFiltersPreferences"></div></div>`
-    ),
+    element: new SearchSectionBuilder()
+      .withDomElement(
+        $$(
+          'div',
+          {
+            className: 'CoveoPreferencesPanel'
+          },
+          $$('div', { className: 'CoveoResultsFiltersPreferences' })
+        )
+      )
+      .build(),
     toExecute: () => {
       setMinHeightOnSearchInterface('300px');
     }
@@ -364,41 +380,36 @@ export const PlaygroundConfiguration: IStringMap<IComponentPlaygroundConfigurati
     }
   },
   ResultsPreferences: {
-    element: $$(
-      'div',
-      undefined,
-      `<div class="CoveoSettings"></div><div class="CoveoSearchbox"></div><div class="CoveoPreferencesPanel"><div class="CoveoResultsPreferences"></div></div>`
-    ),
+    element: new SearchSectionBuilder()
+      .withDomElement(
+        $$(
+          'div',
+          {
+            className: 'CoveoPreferencesPanel'
+          },
+          $$('div', { className: 'CoveoResultsPreferences' })
+        )
+      )
+      .build(),
     show: true,
-    toExecute: () => {
-      setMinHeightOnSearchInterface('300px');
-    }
-  },
-  SearchAlerts: {
-    show: true,
-    element: $$(
-      'div',
-      undefined,
-      `<div class="CoveoSettings"></div><div class="CoveoSearchbox"></div><div class="CoveoSearchAlerts"></div>`
-    ),
     toExecute: () => {
       setMinHeightOnSearchInterface('300px');
     }
   },
   Settings: {
     show: true,
-    element: $$(
-      'div',
-      undefined,
-      `<div class="coveo-search-section"><div class="CoveoSettings"></div><div class="CoveoSearchbox"></div><div class="CoveoPreferencesPanel"></div><div class="CoveoShareQuery"></div><div class="CoveoExportToExcel"></div></div>`
-    ),
+    element: new SearchSectionBuilder()
+      .withComponent('CoveoShareQuery')
+      .withComponent('CoveoExportToExcel')
+      .withComponent('CoveoAdvancedSearch')
+      .build(),
     toExecute: () => {
       setMinHeightOnSearchInterface('300px');
     }
   },
   ShareQuery: {
     show: true,
-    element: $$('div', undefined, `<div class="CoveoSettings"></div><div class="CoveoSearchbox"></div><div class="CoveoShareQuery"></div>`),
+    element: new SearchSectionBuilder().withComponent('CoveoShareQuery').build(),
     toExecute: () => {
       setMinHeightOnSearchInterface('300px');
     }
@@ -420,7 +431,7 @@ export const PlaygroundConfiguration: IStringMap<IComponentPlaygroundConfigurati
     ),
     toExecute: () => {
       getSearchInterfaceElement().style.padding = '20px';
-      $$(document.body).on('buildingQuery', function(e, args) {
+      $$(getSearchInterfaceElement()).on('buildingQuery', function(e, args) {
         args.queryBuilder.numberOfResults = 3;
       });
     }
@@ -437,11 +448,7 @@ export const PlaygroundConfiguration: IStringMap<IComponentPlaygroundConfigurati
   },
   AdvancedSearch: {
     show: true,
-    element: $$(
-      'div',
-      undefined,
-      `<div class="coveo-search-section"><div class="CoveoSettings"></div><div class="CoveoSearchbox"></div></div><div class="CoveoAdvancedSearch"></div>`
-    ),
+    element: new SearchSectionBuilder().withComponent('CoveoAdvancedSearch').build(),
     toExecute: () => {
       setMinHeightOnSearchInterface('300px');
     }
