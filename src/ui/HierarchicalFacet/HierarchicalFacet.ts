@@ -61,6 +61,10 @@ interface IFlatHierarchy {
  * The `HierarchicalFacet` component inherits all of its options and behaviors from the [`Facet`]{@link Facet}
  * component, but is meant to be used to render hierarchical values.
  *
+ * **Note:**
+ * > The `HierarchicalFacet` component does not currently support the [`customSort`]{@link Facet.options.customSort}
+ * > `Facet` option.
+ *
  * You can use the `HierarchicalFacet` component to display files in a file system, or categories for items in a
  * hierarchy.
  *

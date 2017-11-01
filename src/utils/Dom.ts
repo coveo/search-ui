@@ -3,6 +3,7 @@ import { JQueryUtils } from '../utils/JQueryutils';
 import { Assert } from '../misc/Assert';
 import { Logger } from '../misc/Logger';
 import * as _ from 'underscore';
+import { IStringMap } from '../rest/GenericParam';
 
 export interface IOffset {
   left: number;
@@ -773,7 +774,7 @@ export class Doc {
  */
 export function $$(dom: Dom): Dom;
 export function $$(html: HTMLElement): Dom;
-export function $$(type: string, props?: Object, ...children: Array<string | HTMLElement | Dom>): Dom;
+export function $$(type: string, props?: IStringMap<any>, ...children: Array<string | HTMLElement | Dom>): Dom;
 export function $$(...args: any[]): Dom {
   if (args.length === 1 && args[0] instanceof Dom) {
     return args[0];

@@ -7,8 +7,8 @@ import { Utils } from '../utils/Utils';
 import { JQueryUtils } from '../utils/JQueryutils';
 import * as _ from 'underscore';
 
-declare var XDomainRequest;
-declare var $;
+declare const XDomainRequest;
+declare const $;
 
 /**
  * Parameters that can be used when calling an {@link EndpointCaller}
@@ -216,7 +216,7 @@ export class EndpointCaller {
    * @returns {any} A promise of the given type
    */
   public call<T>(params: IEndpointCallParameters): Promise<ISuccessResponse<T>> {
-    var requestInfo: IRequestInfo<T> = {
+    let requestInfo: IRequestInfo<T> = {
       url: params.url,
       queryString: params.errorsAsSuccess ? params.queryString.concat(['errorsAsSuccess=1']) : params.queryString,
       requestData: params.requestData,
@@ -230,13 +230,13 @@ export class EndpointCaller {
     }
 
     this.logger.trace('Performing REST request', requestInfo);
-    var urlObject = this.parseURL(requestInfo.url);
+    const urlObject = this.parseURL(requestInfo.url);
     // In IE8, hostname and port return "" when we are on the same domain.
-    var isLocalHost = window.location.hostname === urlObject.hostname || urlObject.hostname === '';
+    const isLocalHost = window.location.hostname === urlObject.hostname || urlObject.hostname === '';
 
-    var currentPort = window.location.port != '' ? window.location.port : window.location.protocol == 'https:' ? '443' : '80';
-    var isSamePort = currentPort == urlObject.port;
-    var isCrossOrigin = !(isLocalHost && isSamePort);
+    const currentPort = window.location.port != '' ? window.location.port : window.location.protocol == 'https:' ? '443' : '80';
+    const isSamePort = currentPort == urlObject.port;
+    const isCrossOrigin = !(isLocalHost && isSamePort);
     if (!this.useJsonp) {
       if (this.isCORSSupported() || !isCrossOrigin) {
         return this.callUsingXMLHttpRequest(requestInfo, params.responseType);
@@ -260,13 +260,13 @@ export class EndpointCaller {
    */
   public callUsingXMLHttpRequest<T>(requestInfo: IRequestInfo<T>, responseType = 'text'): Promise<ISuccessResponse<T>> {
     return new Promise((resolve, reject) => {
-      var xmlHttpRequest = this.getXmlHttpRequest();
+      const xmlHttpRequest = this.getXmlHttpRequest();
 
       // Beware, most stuff must be set on the event that says the request is OPENED.
       // Otherwise it'll bork on some browsers. Gotta love standards.
 
       // This sent variable allowed to remove the second call of onreadystatechange with the state OPENED in IE11
-      var sent = false;
+      let sent = false;
 
       xmlHttpRequest.onreadystatechange = ev => {
         if (xmlHttpRequest.readyState == XMLHttpRequestStatus.OPENED && !sent) {
@@ -295,7 +295,7 @@ export class EndpointCaller {
           //   the object's 'responseType' is '' or 'text' (was 'document').
           //
         } else if (xmlHttpRequest.readyState == XMLHttpRequestStatus.HEADERS_RECEIVED) {
-          var status = xmlHttpRequest.status;
+          const status = xmlHttpRequest.status;
 
           if (this.isSuccessHttpStatus(status)) {
             xmlHttpRequest.responseType = <XMLHttpRequestResponseType>responseType;
@@ -303,8 +303,8 @@ export class EndpointCaller {
             xmlHttpRequest.responseType = 'text';
           }
         } else if (xmlHttpRequest.readyState == XMLHttpRequestStatus.DONE) {
-          var status = xmlHttpRequest.status;
-          var data;
+          const status = xmlHttpRequest.status;
+          let data;
           switch (responseType) {
             case 'json':
               data = xmlHttpRequest.response;
@@ -338,7 +338,7 @@ export class EndpointCaller {
         }
       };
 
-      var queryString = requestInfo.queryString;
+      let queryString = requestInfo.queryString;
       if (requestInfo.method == 'GET') {
         queryString = queryString.concat(this.convertJsonToQueryString(requestInfo.requestData));
       }
@@ -354,7 +354,7 @@ export class EndpointCaller {
    */
   public callUsingXDomainRequest<T>(requestInfo: IRequestInfo<T>): Promise<ISuccessResponse<T>> {
     return new Promise((resolve, reject) => {
-      var queryString = requestInfo.queryString.concat([]);
+      let queryString = requestInfo.queryString.concat([]);
 
       // XDomainRequest don't support including stuff in the header, so we must
       // put the access token in the query string if we have one.
@@ -362,19 +362,19 @@ export class EndpointCaller {
         queryString.push('access_token=' + encodeURIComponent(this.options.accessToken));
       }
 
-      var xDomainRequest = new XDomainRequest();
+      const xDomainRequest = new XDomainRequest();
       if (requestInfo.method == 'GET') {
         queryString = queryString.concat(this.convertJsonToQueryString(requestInfo.requestData));
       }
       xDomainRequest.open(requestInfo.method, this.combineUrlAndQueryString(requestInfo.url, queryString));
 
       xDomainRequest.onload = () => {
-        var data = this.tryParseResponseText(xDomainRequest.responseText, xDomainRequest.contentType);
+        const data = this.tryParseResponseText(xDomainRequest.responseText, xDomainRequest.contentType);
         this.handleSuccessfulResponseThatMightBeAnError(requestInfo, data, resolve, reject);
       };
 
       xDomainRequest.onerror = () => {
-        var data = this.tryParseResponseText(xDomainRequest.responseText, xDomainRequest.contentType);
+        const data = this.tryParseResponseText(xDomainRequest.responseText, xDomainRequest.contentType);
         this.handleError(requestInfo, 0, data, reject);
       };
 
@@ -403,7 +403,7 @@ export class EndpointCaller {
     let jQuery = JQueryUtils.getJQuery();
     Assert.check(jQuery, 'Using jsonp without having included jQuery is not supported.');
     return new Promise((resolve, reject) => {
-      var queryString = requestInfo.queryString.concat(this.convertJsonToQueryString(requestInfo.requestData));
+      const queryString = requestInfo.queryString.concat(this.convertJsonToQueryString(requestInfo.requestData));
 
       // JSONP don't support including stuff in the header, so we must
       // put the access token in the query string if we have one.
@@ -424,20 +424,20 @@ export class EndpointCaller {
   }
 
   private parseURL(url: string) {
-    var urlObject = document.createElement('a');
+    const urlObject = document.createElement('a');
     urlObject.href = url;
     return urlObject;
   }
 
   private getXmlHttpRequest(): XMLHttpRequest {
-    var newXmlHttpRequest = this.options.xmlHttpRequest || XMLHttpRequest;
+    const newXmlHttpRequest = this.options.xmlHttpRequest || XMLHttpRequest;
     return new newXmlHttpRequest();
   }
 
   private convertJsonToQueryString(json: { [key: string]: any }): string[] {
     Assert.exists(json);
 
-    var result: string[] = [];
+    const result: string[] = [];
     _.each(json, (value, key) => {
       if (value != null) {
         if (_.isObject(value)) {
@@ -464,9 +464,9 @@ export class EndpointCaller {
   }
 
   private handleSuccess<T>(requestInfo: IRequestInfo<T>, data: T, success) {
-    var querySuccess: ISuccessResponse<T> = {
+    const querySuccess: ISuccessResponse<T> = {
       duration: TimeSpan.fromDates(requestInfo.begun, new Date()).getMilliseconds(),
-      data: data
+      data
     };
 
     this.logger.trace('REST request successful', data, requestInfo);
@@ -474,7 +474,7 @@ export class EndpointCaller {
   }
 
   private handleError<T>(requestInfo: IRequestInfo<T>, status: number, data: any, error) {
-    var queryError: IErrorResponse = {
+    const queryError: IErrorResponse = {
       statusCode: status,
       data: data
     };
@@ -483,7 +483,7 @@ export class EndpointCaller {
   }
 
   private combineUrlAndQueryString(url: String, queryString: string[]): string {
-    var questionMark = '?';
+    let questionMark = '?';
     if (url.match(/\?$/)) {
       questionMark = '';
     }
