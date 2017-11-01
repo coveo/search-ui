@@ -146,17 +146,21 @@ var ResultsPreferences = /** @class */ (function (_super) {
             enableQuerySyntax: undefined
         };
         _.each(this.preferencePanelCheckboxInputs, function (checkbox, label) {
-            if (_this.isSelected(Strings_1.l('OpenInOutlookWhenPossible'), label, checkbox)) {
-                _this.preferences.openInOutlook = true;
+            if (label == Strings_1.l('OpenInOutlookWhenPossible')) {
+                if (_this.isSelected(Strings_1.l('OpenInOutlookWhenPossible'), label, checkbox)) {
+                    _this.preferences.openInOutlook = true;
+                }
+                else if (_this.preferences.openInOutlook != null) {
+                    _this.preferences.openInOutlook = false;
+                }
             }
-            else if (_this.preferences.openInOutlook != null) {
-                _this.preferences.openInOutlook = false;
-            }
-            if (_this.isSelected(Strings_1.l('AlwaysOpenInNewWindow'), label, checkbox)) {
-                _this.preferences.alwaysOpenInNewWindow = true;
-            }
-            else if (_this.preferences.alwaysOpenInNewWindow != null) {
-                _this.preferences.alwaysOpenInNewWindow = false;
+            if (label == Strings_1.l('AlwaysOpenInNewWindow')) {
+                if (_this.isSelected(Strings_1.l('AlwaysOpenInNewWindow'), label, checkbox)) {
+                    _this.preferences.alwaysOpenInNewWindow = true;
+                }
+                else if (_this.preferences.alwaysOpenInNewWindow != null) {
+                    _this.preferences.alwaysOpenInNewWindow = false;
+                }
             }
         });
         _.each(this.preferencePanelRadioInputs, function (radio, label) {

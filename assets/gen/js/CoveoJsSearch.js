@@ -19584,10 +19584,11 @@ var Checkbox = /** @class */ (function () {
         label.append(this.checkbox);
         label.append(button.el);
         label.append(labelSpan.el);
-        button.on('click', function () { return _this.toggle(); });
-        Dom_1.$$(this.checkbox).on('change', function () {
-            _this.onChange(_this);
+        button.on('click', function (e) {
+            e.preventDefault();
+            _this.toggle();
         });
+        Dom_1.$$(this.checkbox).on('change', function () { return _this.onChange(_this); });
         this.element = label.el;
     };
     Checkbox.doExport = function () {
@@ -22341,8 +22342,8 @@ module.exports = g;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.version = {
-    lib: '2.3477.4-beta',
-    product: '2.3477.4-beta',
+    lib: '2.3477.5-beta',
+    product: '2.3477.5-beta',
     supportedApiVersion: 2
 };
 
@@ -56083,17 +56084,21 @@ var ResultsPreferences = /** @class */ (function (_super) {
             enableQuerySyntax: undefined
         };
         _.each(this.preferencePanelCheckboxInputs, function (checkbox, label) {
-            if (_this.isSelected(Strings_1.l('OpenInOutlookWhenPossible'), label, checkbox)) {
-                _this.preferences.openInOutlook = true;
+            if (label == Strings_1.l('OpenInOutlookWhenPossible')) {
+                if (_this.isSelected(Strings_1.l('OpenInOutlookWhenPossible'), label, checkbox)) {
+                    _this.preferences.openInOutlook = true;
+                }
+                else if (_this.preferences.openInOutlook != null) {
+                    _this.preferences.openInOutlook = false;
+                }
             }
-            else if (_this.preferences.openInOutlook != null) {
-                _this.preferences.openInOutlook = false;
-            }
-            if (_this.isSelected(Strings_1.l('AlwaysOpenInNewWindow'), label, checkbox)) {
-                _this.preferences.alwaysOpenInNewWindow = true;
-            }
-            else if (_this.preferences.alwaysOpenInNewWindow != null) {
-                _this.preferences.alwaysOpenInNewWindow = false;
+            if (label == Strings_1.l('AlwaysOpenInNewWindow')) {
+                if (_this.isSelected(Strings_1.l('AlwaysOpenInNewWindow'), label, checkbox)) {
+                    _this.preferences.alwaysOpenInNewWindow = true;
+                }
+                else if (_this.preferences.alwaysOpenInNewWindow != null) {
+                    _this.preferences.alwaysOpenInNewWindow = false;
+                }
             }
         });
         _.each(this.preferencePanelRadioInputs, function (radio, label) {
@@ -58763,11 +58768,7 @@ var SimpleFilter = /** @class */ (function (_super) {
         _this.buildContent();
         Dom_1.$$(_this.element).on('click', function (e) { return _this.handleClick(e); });
         Dom_1.$$(_this.element).setAttribute('tabindex', '0');
-        Dom_1.$$(_this.element).on('keyup', KeyboardUtils_1.KeyboardUtils.keypressAction(KeyboardUtils_1.KEYBOARD.ENTER, function (e) {
-            if (e.target == _this.element) {
-                _this.toggleContainer();
-            }
-        }));
+        _this.bindKeyboardEvents();
         _this.bind.onRootElement(BreadcrumbEvents_1.BreadcrumbEvents.populateBreadcrumb, function (args) {
             return _this.handlePopulateBreadcrumb(args);
         });
@@ -58819,9 +58820,11 @@ var SimpleFilter = /** @class */ (function (_super) {
      * @param triggerQuery `true` by default. If set to `false`, the method triggers no query.
      */
     SimpleFilter.prototype.selectValue = function (value, triggerQuery) {
+        var _this = this;
         if (triggerQuery === void 0) { triggerQuery = true; }
         _.each(this.checkboxes, function (labeledCheckbox) {
-            if (labeledCheckbox.label == value) {
+            var translated = _this.getValueCaption(labeledCheckbox.label);
+            if (labeledCheckbox.label == value || translated == value) {
                 labeledCheckbox.checkbox.select(triggerQuery);
             }
         });
@@ -58831,8 +58834,10 @@ var SimpleFilter = /** @class */ (function (_super) {
      * @param value The value whose state the method should reset.
      */
     SimpleFilter.prototype.deselectValue = function (value) {
+        var _this = this;
         _.each(this.checkboxes, function (labeledCheckbox) {
-            if (labeledCheckbox.label == value) {
+            var translated = _this.getValueCaption(labeledCheckbox.label);
+            if (labeledCheckbox.label == value || translated == value) {
                 labeledCheckbox.checkbox.reset();
             }
         });
@@ -58842,8 +58847,10 @@ var SimpleFilter = /** @class */ (function (_super) {
      * @param value The value whose state the method should toggle.
      */
     SimpleFilter.prototype.toggleValue = function (value) {
+        var _this = this;
         _.each(this.checkboxes, function (labeledCheckbox) {
-            if (labeledCheckbox.label == value) {
+            var translated = _this.getValueCaption(labeledCheckbox.label);
+            if (labeledCheckbox.label == value || translated == value) {
                 labeledCheckbox.checkbox.toggle();
             }
         });
@@ -58887,7 +58894,29 @@ var SimpleFilter = /** @class */ (function (_super) {
     SimpleFilter.prototype.getSelectedValues = function () {
         return _.map(this.getSelectedLabeledCheckboxes(), function (labeledCheckbox) { return labeledCheckbox.label; });
     };
+    SimpleFilter.prototype.bindKeyboardEvents = function () {
+        var _this = this;
+        // On "ENTER" keypress, we can either toggle the container if that is the top level element (this.element)
+        // Or toggle a filter selection, using the text of the label.
+        Dom_1.$$(this.element).on('keyup', KeyboardUtils_1.KeyboardUtils.keypressAction(KeyboardUtils_1.KEYBOARD.ENTER, function (e) {
+            if (e.target == _this.element) {
+                _this.toggleContainer();
+            }
+            else {
+                _this.toggleValue(Dom_1.$$(e.target).text());
+            }
+        }));
+        // When navigating with "TAB" keypress, close the container if we are navigating out of the top level element.
+        // Navigating "inside" the SimpleFilter (relatedTarget.parent) should not close the container, but will simply navigate to the next filter selection
+        Dom_1.$$(this.element).on('blur', function (e) {
+            var relatedTarget = e.relatedTarget;
+            if (!Dom_1.$$(relatedTarget).parent(Component_1.Component.computeCssClassName(SimpleFilter))) {
+                _this.closeContainer();
+            }
+        });
+    };
     SimpleFilter.prototype.handleClick = function (e) {
+        e.stopPropagation();
         if (e.target == this.element) {
             this.toggleContainer();
         }

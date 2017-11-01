@@ -17658,10 +17658,11 @@ var Checkbox = /** @class */ (function () {
         label.append(this.checkbox);
         label.append(button.el);
         label.append(labelSpan.el);
-        button.on('click', function () { return _this.toggle(); });
-        Dom_1.$$(this.checkbox).on('change', function () {
-            _this.onChange(_this);
+        button.on('click', function (e) {
+            e.preventDefault();
+            _this.toggle();
         });
+        Dom_1.$$(this.checkbox).on('change', function () { return _this.onChange(_this); });
         this.element = label.el;
     };
     Checkbox.doExport = function () {
@@ -18778,8 +18779,8 @@ module.exports = g;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.version = {
-    lib: '2.3477.4-beta',
-    product: '2.3477.4-beta',
+    lib: '2.3477.5-beta',
+    product: '2.3477.5-beta',
     supportedApiVersion: 2
 };
 
