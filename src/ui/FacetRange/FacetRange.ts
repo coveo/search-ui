@@ -50,7 +50,7 @@ export interface IFacetRangeOptions extends IFacetOptions {
  *  maximum number of values to display in a FacetRange component, it is not possible for the end to display additional
  *  values, since the component does not support the **More** button.
  *
- *  @notSupportedIn salesforceexpress, salesforcefree
+ *  @notSupportedIn salesforcefree
  */
 export class FacetRange extends Facet implements IComponentBindings {
   static ID = 'FacetRange';

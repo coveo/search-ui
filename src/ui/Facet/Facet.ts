@@ -587,7 +587,7 @@ export class Facet extends Component {
      * [`GroupByRequest`]{@link IGroupByRequest} that this facet performs.
      *
      * Example: `@date>=2014/01/01`
-     * @notSupportedIn salesforceexpress, salesforcefree
+     * @notSupportedIn salesforcefree
      */
     additionalFilter: ComponentOptions.buildStringOption({ section: 'Filtering' }),
 

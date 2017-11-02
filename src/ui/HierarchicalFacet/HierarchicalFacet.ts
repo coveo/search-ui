@@ -92,6 +92,8 @@ interface IFlatHierarchy {
  * Since both items contain the `c` value, selecting this value in the facet would return both items.
  *
  * Selecting the `folder3` value in the facet would only return the `text2.txt` item.
+ *
+ * @notSupportedIn salesforcefree
  */
 export class HierarchicalFacet extends Facet implements IComponentBindings {
   static ID = 'HierarchicalFacet';

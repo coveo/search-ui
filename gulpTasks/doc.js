@@ -3,6 +3,7 @@ const gulp = require('gulp');
 const TypeDoc = require('typedoc');
 const fs = require('fs');
 const shell = require('gulp-shell');
+const notSupportedFeaturesConfig = require('./notSupportedFeaturesConfig');
 
 gulp.task('doc', ['copyBinToDoc', 'buildPlayground'], function() {
   var app = new TypeDoc.Application({
@@ -16,7 +17,7 @@ gulp.task('doc', ['copyBinToDoc', 'buildPlayground'], function() {
     readme: 'README.md',
     externalPattern: '**/{sure,lib,node_modules}/**',
     ignoreCompilerErrors: true,
-    productUpsellConfig: './productUpsellConfig'
+    notSupportedFeaturesConfig: notSupportedFeaturesConfig
   });
   var src = app.expandInputFiles(['src/Doc.ts']);
   var project = app.convert(src);
