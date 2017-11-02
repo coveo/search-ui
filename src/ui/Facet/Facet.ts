@@ -293,6 +293,7 @@ export class Facet extends Component {
      * facet values. Increasing this value enhances the accuracy of the listed values at the cost of performance.
      *
      * Default value is `1000`. Minimum value is `0`.
+     * @notSupportedIn salesforcefree
      */
     injectionDepth: ComponentOptions.buildNumberOption({ defaultValue: 1000, min: 0 }),
 
@@ -423,6 +424,7 @@ export class Facet extends Component {
      * Works in conjunction with the [`computedFieldOperation`]{@link Facet.options.computedFieldOperation},
      * [`computedFieldFormat`]{@link Facet.options.computedFieldFormat}, and
      * [`computedFieldCaption`]{@link Facet.options.computedFieldCaption} options.
+     * @notSupportedIn salesforcefree
      */
     computedField: ComponentOptions.buildFieldOption({ section: 'ComputedField', priority: 7 }),
 
@@ -436,6 +438,7 @@ export class Facet extends Component {
      * - `maximum` - Finds the maximum value of the computed field values.
      *
      * Default value is `sum`.
+     * @notSupportedIn salesforcefree
      */
     computedFieldOperation: ComponentOptions.buildStringOption({ defaultValue: 'sum', section: 'ComputedField' }),
 
@@ -452,6 +455,7 @@ export class Facet extends Component {
      * - `n2` - Formats the value as a floating point with 2 decimal digits.
      *
      * Default value is `"c0"`.
+     * @notSupportedIn salesforcefree
      */
     computedFieldFormat: ComponentOptions.buildStringOption({ defaultValue: 'c0', section: 'ComputedField' }),
 
@@ -465,6 +469,7 @@ export class Facet extends Component {
      * > The [`FacetRange`]{@link FacetRange} component does not support this option.
      *
      * Default value is the localized string for `ComputedField`.
+     * @notSupportedIn salesforcefree
      */
     computedFieldCaption: ComponentOptions.buildLocalizedStringOption({
       defaultValue: l('ComputedField'),
@@ -582,6 +587,7 @@ export class Facet extends Component {
      * [`GroupByRequest`]{@link IGroupByRequest} that this facet performs.
      *
      * Example: `@date>=2014/01/01`
+     * @notSupportedIn salesforcefree
      */
     additionalFilter: ComponentOptions.buildStringOption({ section: 'Filtering' }),
 
