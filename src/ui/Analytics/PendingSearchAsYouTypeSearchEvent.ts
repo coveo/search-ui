@@ -16,7 +16,7 @@ export class PendingSearchAsYouTypeSearchEvent extends PendingSearchEvent {
   private beforeUnloadHandler: (...args: any[]) => void;
   private armBatchDelay = 50;
   private toSendRightNow: () => void;
-  private queryContent: string = '';
+  private queryContent = '';
 
   constructor(public root: HTMLElement, public endpoint: AnalyticsEndpoint, public templateSearchEvent: ISearchEvent, public sendToCloud) {
     super(root, endpoint, templateSearchEvent, sendToCloud);
@@ -34,7 +34,7 @@ export class PendingSearchAsYouTypeSearchEvent extends PendingSearchEvent {
     // For example, DidYouMean would be wrong in that case.
     const eventTarget: HTMLElement = <HTMLElement>e.target;
     const searchInterface = <SearchInterface>Component.get(eventTarget, SearchInterface);
-    this.modifyQueryContent(searchInterface.queryStateModel.get(QueryStateModel.attributesEnum.q));
+    this.modifiedQueryContent = searchInterface.queryStateModel.get(QueryStateModel.attributesEnum.q);
     this.beforeResolve = new Promise(resolve => {
       this.toSendRightNow = () => {
         if (!this.isCancelledOrFinished()) {
@@ -73,7 +73,7 @@ export class PendingSearchAsYouTypeSearchEvent extends PendingSearchEvent {
     this.templateSearchEvent.actionType = newCause.type;
   }
 
-  public modifyQueryContent(query: string) {
+  public set modifiedQueryContent(query: string) {
     this.queryContent = query;
   }
 
