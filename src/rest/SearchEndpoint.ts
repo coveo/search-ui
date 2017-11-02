@@ -929,7 +929,7 @@ export class SearchEndpoint implements ISearchEndpoint {
         } else {
           valueEncoded = encodeURIComponent(value);
         }
-        queryString.push('context[' + key + ']=' + valueEncoded);
+        queryString.push(`context[${encodeURIComponent(key)}]=${valueEncoded}`);
       });
 
       if (queryObject.fieldsToInclude) {
