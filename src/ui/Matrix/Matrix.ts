@@ -58,6 +58,8 @@ export interface IMatrixOptions {
  *
  * In a way that is similar to the {@link Facet} component, selecting a Matrix cell allows the end user to drill down
  * inside the results by restricting the row field and the column field to match the values of the selected cell.
+ *
+ * @notSupportedIn salesforcefree
  */
 export class Matrix extends Component {
   static ID = 'Matrix';

@@ -22,6 +22,7 @@ export interface IThumbnailOptions extends IResultLinkOptions {
 /**
  * The Thumbnail component automatically fetches the thumbnail of the result object and outputs an HTML `img` tag with
  * it.
+ * @notSupportedIn salesforcefree
  */
 export class Thumbnail extends Component {
   static ID = 'Thumbnail';
