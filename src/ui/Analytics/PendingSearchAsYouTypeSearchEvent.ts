@@ -34,7 +34,7 @@ export class PendingSearchAsYouTypeSearchEvent extends PendingSearchEvent {
     // For example, DidYouMean would be wrong in that case.
     const eventTarget: HTMLElement = <HTMLElement>e.target;
     const searchInterface = <SearchInterface>Component.get(eventTarget, SearchInterface);
-    this.modifyQueryContent = searchInterface.queryStateModel.get(QueryStateModel.attributesEnum.q);
+    this.modifyQueryContent(searchInterface.queryStateModel.get(QueryStateModel.attributesEnum.q));
     this.beforeResolve = new Promise(resolve => {
       this.toSendRightNow = () => {
         if (!this.isCancelledOrFinished()) {
