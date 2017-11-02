@@ -33,6 +33,9 @@ import { SentryLogger } from '../../misc/SentryLogger';
 import { IComponentBindings } from '../Base/ComponentBindings';
 import { analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
 import { ResponsiveComponents } from '../ResponsiveComponents/ResponsiveComponents';
+import { Context, IPipelineContextProvider } from '../PipelineContext/PipelineGlobalExports';
+import { IStringMap } from '../../rest/GenericParam';
+
 import * as _ from 'underscore';
 
 import 'styling/Globals';
@@ -510,6 +513,43 @@ export class SearchInterface extends RootComponent implements IComponentBindings
       componentOptionsModel: this.componentOptionsModel,
       usageAnalytics: this.usageAnalytics
     };
+  }
+
+  /**
+   * Get the Query context for the current Search Interface.
+   * 
+   * If the search interface has performed at least one query, it will try to resolve the context from the last query sent to the Coveo Search API.
+   * 
+   * If the search interface has not performed a query yet, it will try to resolve the context from any avaiable {@link PipelineContext} component.
+   * 
+   * If there are multiple {@link PipelineContext} component available, it will merge all context values together.
+   * 
+   * **Note:**
+   * It is not recommended to have multiple PipelineContext component, especially if you have duplicate context key in each one.
+   * 
+   * If no context is found, returns `undefined`
+   */
+  public getQueryContext(): Context {
+    let ret: Context = undefined;
+
+    const lastQuery = this.queryController.getLastQuery();
+    if (lastQuery.context) {
+      ret = lastQuery.context;
+    } else {
+      const pipelines = this.getComponents<IPipelineContextProvider>('PipelineContext');
+
+      if (pipelines && !_.isEmpty(pipelines)) {
+        const contextMerged = _.chain(pipelines)
+          .map(pipeline => pipeline.getContext())
+          .reduce((memo, context) => ({ ...memo, ...context }), {})
+          .value();
+        if (!_.isEmpty(contextMerged)) {
+          ret = contextMerged;
+        }
+      }
+    }
+
+    return ret;
   }
 
   /**
