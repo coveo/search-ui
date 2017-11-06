@@ -21,9 +21,6 @@
   },
   "lint-staged": {
     "*.{js,ts,json,scss}": ["prettier --write", "git add"]
-      "prettier --write",
-      "git add"
-    ]
   },
   "prettier": {
     "printWidth": 140,
