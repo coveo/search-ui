@@ -62,8 +62,12 @@ export function PipelineContextText() {
 
         it('should support setting a single context value', () => {
           test.cmp.setContextValue('popo', 'qwerty');
-          test.cmp.setContextValue('123', ['456', '789']);
           expect(test.cmp.getContextValue('popo')).toEqual('qwerty');
+        });
+
+        it('should support setting a single context value as an array', () => {
+          test.cmp.setContextValue('123', ['456', '789']);
+
           expect(test.cmp.getContextValue('123')).toEqual(['456', '789']);
         });
 

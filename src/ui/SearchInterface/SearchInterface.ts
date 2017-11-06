@@ -516,21 +516,21 @@ export class SearchInterface extends RootComponent implements IComponentBindings
   }
 
   /**
-   * Get the Query context for the current Search Interface.
+   * Gets the query context for the current search interface.
    * 
    * If the search interface has performed at least one query, it will try to resolve the context from the last query sent to the Coveo Search API.
    * 
    * If the search interface has not performed a query yet, it will try to resolve the context from any avaiable {@link PipelineContext} component.
    * 
-   * If there are multiple {@link PipelineContext} component available, it will merge all context values together.
+   * If multiple {@link PipelineContext} components are available, it will merge all context values together.
    * 
    * **Note:**
-   * It is not recommended to have multiple PipelineContext component, especially if you have duplicate context key in each one.
+   * Having multiple PipelineContext components in the same search interface is not recommended, especially if some context keys are repeated across those components.
    * 
    * If no context is found, returns `undefined`
    */
   public getQueryContext(): Context {
-    let ret: Context = undefined;
+    let ret: Context;
 
     const lastQuery = this.queryController.getLastQuery();
     if (lastQuery.context) {

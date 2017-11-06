@@ -923,13 +923,13 @@ export class SearchEndpoint implements ISearchEndpoint {
       });
 
       _.each(queryObject.context, (value, key) => {
-        let valueEncoded;
+        let encodedValue: string;
         if (_.isArray(value)) {
-          valueEncoded = encodeURIComponent(_.map(value, v => encodeURIComponent(v)).join(','));
+          encodedValue = encodeURIComponent(_.map(value, v => encodeURIComponent(v)).join(','));
         } else {
-          valueEncoded = encodeURIComponent(value);
+          encodedValue = encodeURIComponent(value);
         }
-        queryString.push(`context[${encodeURIComponent(key)}]=${valueEncoded}`);
+        queryString.push(`context[${encodeURIComponent(key)}]=${encodedValue}`);
       });
 
       if (queryObject.fieldsToInclude) {

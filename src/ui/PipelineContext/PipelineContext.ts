@@ -49,9 +49,9 @@ export interface IPipelineContextOptions {}
  * 
  * **Note:**
  * 
- * Using this component also ensures that the framework will be able to properly determine the context in all corner cases, including when using a Standalone Search box ({@link initSearchbox}) displaying query suggestions.
+ * This component also ensures that the framework properly determines the context in all corner cases, including when a standalone search box ([initSearchbox]{@link initSearchbox}) is displaying query suggestions.
  * 
- * If this component is not used in those cases, the context won't be able to be resolved and leveraged properly in the [Query Pipeline](http://www.coveo.com/go?dest=cloudhelp&lcid=9&context=108).
+ * In most cases, if you do not use this component, the context will not be resolved and leveraged properly in the query pipeline (see [What Is a Query Pipeline?](http://www.coveo.com/go?dest=cloudhelp&lcid=9&context=252)).
  * 
  */
 export class PipelineContext extends Component implements IPipelineContextProvider {
@@ -92,7 +92,7 @@ export class PipelineContext extends Component implements IPipelineContextProvid
   }
 
   /**
-   * Return the current context
+   * Returns the current context
    */
   public getContext(): Context {
     const keys = this.getContextKeys();
@@ -100,7 +100,7 @@ export class PipelineContext extends Component implements IPipelineContextProvid
   }
 
   /**
-   * Set a value for a context, replacing the old value if it was already available.
+   * Sets a value for a context key, replacing the previous value if applicable.
    * @param contextKey
    * @param contextValue 
    */
@@ -136,7 +136,7 @@ export class PipelineContext extends Component implements IPipelineContextProvid
     } else if (_.isString(contextValue)) {
       return this.getModifiedData(contextValue);
     }
-    return undefined;
+    return '';
   }
 
   private handleBuildingQuery(args: IBuildingQueryEventArgs) {
@@ -175,7 +175,7 @@ export class PipelineContext extends Component implements IPipelineContextProvid
     */
     return value.replace(/\{\!([^\}]+)\}/g, (all: string, contextKey: string) => {
       const trimmedKey = contextKey.trim();
-      if (Coveo.context != null && trimmedKey in Coveo.context) {
+      if (Coveo.context && trimmedKey in Coveo.context) {
         return Coveo.context[trimmedKey];
       } else if (trimmedKey == PipelineContext.CURRENT_URL) {
         return window.location.href;
