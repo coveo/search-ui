@@ -1,6 +1,6 @@
 {
   "name": "coveo-search-ui",
-  "version": "2.3477.5",
+  "version": "2.3477.6",
   "description": "Coveo JavaScript Search Framework",
   "main": "./bin/js/CoveoJsSearch.js",
   "types": "./bin/ts/CoveoJsSearch.d.ts",
@@ -20,7 +20,10 @@
     "uploadCoverage": "gulp uploadCoverage"
   },
   "lint-staged": {
-    "*.{js,ts,json,scss}": ["prettier --write", "git add"]
+    "*.{js,ts,json,scss}": [
+      "prettier --write",
+      "git add"
+    ]
   },
   "prettier": {
     "printWidth": 140,
