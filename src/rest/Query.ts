@@ -1,6 +1,7 @@
 import { IQueryFunction } from './QueryFunction';
 import { IRankingFunction } from './RankingFunction';
 import { IGroupByRequest } from './GroupByRequest';
+import { Context } from '../ui/PipelineContext/PipelineGlobalExports';
 
 /**
  * The IQuery interface describes a query that can be performed on the Coveo REST Search API.
@@ -202,7 +203,7 @@ export interface IQuery {
   /**
    * The context is a map of key_value that can be used in the Query pipeline in the Coveo platform.<br/>
    */
-  context?: { [name: string]: any };
+  context?: Context;
 
   /**
    * The actions history represents the past actions a user made and is used by the Coveo Machine Learning service to
