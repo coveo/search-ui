@@ -361,7 +361,7 @@ export class Dom {
   /**
    * Toggle the class on the element.
    * @param className Classname to toggle
-   * @swtch If true, add the class regardless and if false, remove the class
+   * @param swtch If true, add the class regardless and if false, remove the class
    */
   public toggleClass(className: string, swtch?: boolean): void {
     if (Utils.isNullOrUndefined(swtch)) {

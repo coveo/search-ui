@@ -59,6 +59,8 @@ interface IResultNode {
  *
  * **Note:**
  * > There can only be one `Folding` component per [`Tab`]{@link Tab} component.
+ *
+ * @notSupportedIn salesforcefree
  */
 export class Folding extends Component {
   static ID = 'Folding';
