@@ -28,7 +28,7 @@ exports.SVGDom = SVGDom;
 
 /***/ }),
 
-/***/ 312:
+/***/ 315:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -45,7 +45,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var Component_1 = __webpack_require__(8);
-var SortCriteria_1 = __webpack_require__(425);
+var SortCriteria_1 = __webpack_require__(428);
 var ComponentOptions_1 = __webpack_require__(9);
 var Assert_1 = __webpack_require__(7);
 var Utils_1 = __webpack_require__(6);
@@ -58,7 +58,7 @@ var AnalyticsActionListMeta_1 = __webpack_require__(12);
 var KeyboardUtils_1 = __webpack_require__(23);
 var _ = __webpack_require__(1);
 var GlobalExports_1 = __webpack_require__(4);
-__webpack_require__(533);
+__webpack_require__(536);
 var SVGIcons_1 = __webpack_require__(15);
 var SVGDom_1 = __webpack_require__(16);
 /**
@@ -274,7 +274,7 @@ Initialization_1.Initialization.registerAutoCreateComponent(Sort);
 
 /***/ }),
 
-/***/ 425:
+/***/ 428:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -380,7 +380,7 @@ exports.SortCriteria = SortCriteria;
 
 /***/ }),
 
-/***/ 533:
+/***/ 536:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

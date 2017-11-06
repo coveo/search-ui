@@ -28,7 +28,7 @@ exports.SVGDom = SVGDom;
 
 /***/ }),
 
-/***/ 248:
+/***/ 251:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -57,12 +57,12 @@ var QueryStateModel_1 = __webpack_require__(13);
 var Model_1 = __webpack_require__(18);
 var AnalyticsActionListMeta_1 = __webpack_require__(12);
 var KeyboardUtils_1 = __webpack_require__(23);
-var ResponsiveResultLayout_1 = __webpack_require__(523);
+var ResponsiveResultLayout_1 = __webpack_require__(526);
 var Utils_1 = __webpack_require__(6);
 var _ = __webpack_require__(1);
 var GlobalExports_1 = __webpack_require__(4);
 var Strings_1 = __webpack_require__(10);
-__webpack_require__(524);
+__webpack_require__(527);
 var SVGIcons_1 = __webpack_require__(15);
 var SVGDom_1 = __webpack_require__(16);
 exports.defaultLayout = 'list';
@@ -348,7 +348,7 @@ Initialization_1.Initialization.registerAutoCreateComponent(ResultLayout);
 
 /***/ }),
 
-/***/ 523:
+/***/ 526:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -357,7 +357,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var ResponsiveComponentsManager_1 = __webpack_require__(77);
 var Dom_1 = __webpack_require__(3);
 var Component_1 = __webpack_require__(8);
-var ResultLayout_1 = __webpack_require__(248);
+var ResultLayout_1 = __webpack_require__(251);
 var Logger_1 = __webpack_require__(14);
 var SearchInterface_1 = __webpack_require__(20);
 var _ = __webpack_require__(1);
@@ -412,7 +412,7 @@ exports.ResponsiveResultLayout = ResponsiveResultLayout;
 
 /***/ }),
 
-/***/ 524:
+/***/ 527:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

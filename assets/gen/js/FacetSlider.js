@@ -28,7 +28,7 @@ exports.SVGDom = SVGDom;
 
 /***/ }),
 
-/***/ 239:
+/***/ 242:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -505,7 +505,7 @@ var utcYears = utcYear.range;
 
 /***/ }),
 
-/***/ 246:
+/***/ 249:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -523,13 +523,13 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var Slider_1 = __webpack_require__(483);
+var Slider_1 = __webpack_require__(486);
 var Component_1 = __webpack_require__(8);
 var ComponentOptions_1 = __webpack_require__(9);
-var FacetHeader_1 = __webpack_require__(414);
+var FacetHeader_1 = __webpack_require__(417);
 var Strings_1 = __webpack_require__(10);
 var InitializationEvents_1 = __webpack_require__(17);
-var FacetSliderQueryController_1 = __webpack_require__(485);
+var FacetSliderQueryController_1 = __webpack_require__(488);
 var QueryEvents_1 = __webpack_require__(11);
 var BreadcrumbEvents_1 = __webpack_require__(42);
 var Model_1 = __webpack_require__(18);
@@ -544,8 +544,8 @@ var Initialization_1 = __webpack_require__(2);
 var SearchAlertEvents_1 = __webpack_require__(59);
 var _ = __webpack_require__(1);
 var GlobalExports_1 = __webpack_require__(4);
-var ResponsiveFacetSlider_1 = __webpack_require__(486);
-__webpack_require__(487);
+var ResponsiveFacetSlider_1 = __webpack_require__(489);
+__webpack_require__(490);
 var MiscModules_1 = __webpack_require__(81);
 /**
  * The `FacetSlider` component creates a facet which contains a slider widget that allows the end user to filter results
@@ -560,6 +560,7 @@ var MiscModules_1 = __webpack_require__(81);
  * > [Components - Passing Component Options in the init Call](https://developers.coveo.com/x/PoGfAQ#Components-PassingComponentOptionsintheinitCall)),
  * > or before the `init` call, using the `options` top-level function (see
  * > [Components - Passing Component Options Before the init Call](https://developers.coveo.com/x/PoGfAQ#Components-PassingComponentOptionsBeforetheinitCall)).
+ * @notSupportedIn salesforcefree
  */
 var FacetSlider = /** @class */ (function (_super) {
     __extends(FacetSlider, _super);
@@ -1419,7 +1420,7 @@ Initialization_1.Initialization.registerAutoCreateComponent(FacetSlider);
 
 /***/ }),
 
-/***/ 255:
+/***/ 258:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1455,7 +1456,7 @@ exports.EventsUtils = EventsUtils;
 
 /***/ }),
 
-/***/ 264:
+/***/ 267:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1836,13 +1837,13 @@ function defaultLocale(definition) {
 
 /***/ }),
 
-/***/ 265:
+/***/ 268:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 
 // EXTERNAL MODULE: ./node_modules/d3-time/index.js + 16 modules
-var d3_time = __webpack_require__(239);
+var d3_time = __webpack_require__(242);
 
 // CONCATENATED MODULE: ./node_modules/d3-time-format/src/locale.js
 
@@ -3140,203 +3141,6 @@ function transpose_length(d) {
 
 /***/ }),
 
-/***/ 407:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var Dom_1 = __webpack_require__(3);
-var EventsUtils_1 = __webpack_require__(255);
-var _ = __webpack_require__(1);
-var ResponsiveDropdown = /** @class */ (function () {
-    function ResponsiveDropdown(dropdownContent, dropdownHeader, coveoRoot) {
-        this.dropdownContent = dropdownContent;
-        this.dropdownHeader = dropdownHeader;
-        this.coveoRoot = coveoRoot;
-        this.isOpened = false;
-        this.onOpenHandlers = [];
-        this.onCloseHandlers = [];
-        this.popupBackgroundIsEnabled = true;
-        this.popupBackground = this.buildPopupBackground();
-        this.bindOnClickDropdownHeaderEvent();
-        this.saveContentPosition();
-    }
-    ResponsiveDropdown.prototype.registerOnOpenHandler = function (handler, context) {
-        this.onOpenHandlers.push({ handler: handler, context: context });
-    };
-    ResponsiveDropdown.prototype.registerOnCloseHandler = function (handler, context) {
-        this.onCloseHandlers.push({ handler: handler, context: context });
-    };
-    ResponsiveDropdown.prototype.cleanUp = function () {
-        this.close();
-        this.dropdownHeader.cleanUp();
-        this.dropdownContent.cleanUp();
-        this.restoreContentPosition();
-    };
-    ResponsiveDropdown.prototype.open = function () {
-        this.isOpened = true;
-        this.dropdownHeader.open();
-        this.dropdownContent.positionDropdown();
-        _.each(this.onOpenHandlers, function (handlerCall) {
-            handlerCall.handler.apply(handlerCall.context);
-        });
-        this.showPopupBackground();
-    };
-    ResponsiveDropdown.prototype.close = function () {
-        this.isOpened = false;
-        _.each(this.onCloseHandlers, function (handlerCall) {
-            handlerCall.handler.apply(handlerCall.context);
-        });
-        this.dropdownHeader.close();
-        this.dropdownContent.hideDropdown();
-        this.hidePopupBackground();
-    };
-    ResponsiveDropdown.prototype.disablePopupBackground = function () {
-        this.popupBackgroundIsEnabled = false;
-    };
-    ResponsiveDropdown.prototype.bindOnClickDropdownHeaderEvent = function () {
-        var _this = this;
-        this.dropdownHeader.element.on('click', function () {
-            if (_this.isOpened) {
-                _this.close();
-            }
-            else {
-                _this.open();
-            }
-        });
-    };
-    ResponsiveDropdown.prototype.showPopupBackground = function () {
-        if (this.popupBackgroundIsEnabled) {
-            this.coveoRoot.el.appendChild(this.popupBackground.el);
-            window.getComputedStyle(this.popupBackground.el).opacity;
-            this.popupBackground.el.style.opacity = ResponsiveDropdown.TRANSPARENT_BACKGROUND_OPACITY;
-            this.popupBackground.addClass('coveo-dropdown-background-active');
-        }
-    };
-    ResponsiveDropdown.prototype.hidePopupBackground = function () {
-        if (this.popupBackgroundIsEnabled) {
-            // forces the browser to reflow the element, so that the transition is applied.
-            window.getComputedStyle(this.popupBackground.el).opacity;
-            this.popupBackground.el.style.opacity = '0';
-            this.popupBackground.removeClass('coveo-dropdown-background-active');
-        }
-    };
-    ResponsiveDropdown.prototype.buildPopupBackground = function () {
-        var _this = this;
-        var popupBackground = Dom_1.$$('div', { className: ResponsiveDropdown.DROPDOWN_BACKGROUND_CSS_CLASS_NAME });
-        EventsUtils_1.EventsUtils.addPrefixedEvent(popupBackground.el, 'TransitionEnd', function () {
-            if (popupBackground.el.style.opacity == '0') {
-                popupBackground.detach();
-            }
-        });
-        popupBackground.on('click', function () { return _this.close(); });
-        return popupBackground;
-    };
-    ResponsiveDropdown.prototype.saveContentPosition = function () {
-        var dropdownContentPreviousSibling = this.dropdownContent.element.el.previousSibling;
-        var dropdownContentParent = this.dropdownContent.element.el.parentElement;
-        this.previousSibling = dropdownContentPreviousSibling ? Dom_1.$$(dropdownContentPreviousSibling) : null;
-        this.parent = Dom_1.$$(dropdownContentParent);
-    };
-    ResponsiveDropdown.prototype.restoreContentPosition = function () {
-        if (this.previousSibling) {
-            this.dropdownContent.element.insertAfter(this.previousSibling.el);
-        }
-        else {
-            this.parent.prepend(this.dropdownContent.element.el);
-        }
-    };
-    ResponsiveDropdown.TRANSPARENT_BACKGROUND_OPACITY = '0.9';
-    ResponsiveDropdown.DROPDOWN_BACKGROUND_CSS_CLASS_NAME = 'coveo-dropdown-background';
-    return ResponsiveDropdown;
-}());
-exports.ResponsiveDropdown = ResponsiveDropdown;
-
-
-/***/ }),
-
-/***/ 408:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var Dom_1 = __webpack_require__(3);
-var PopupUtils_1 = __webpack_require__(52);
-var ResponsiveComponentsManager_1 = __webpack_require__(77);
-var ResponsiveDropdownContent = /** @class */ (function () {
-    function ResponsiveDropdownContent(componentName, element, coveoRoot, minWidth, widthRatio) {
-        this.element = element;
-        this.cssClassName = "coveo-" + componentName + "-dropdown-content";
-        this.coveoRoot = coveoRoot;
-        this.widthRatio = widthRatio;
-        this.minWidth = minWidth;
-    }
-    ResponsiveDropdownContent.prototype.positionDropdown = function () {
-        this.element.addClass(this.cssClassName);
-        this.element.addClass(ResponsiveDropdownContent.DEFAULT_CSS_CLASS_NAME);
-        this.element.el.style.display = '';
-        var width = this.widthRatio * this.coveoRoot.width();
-        if (width <= this.minWidth) {
-            width = this.minWidth;
-        }
-        this.element.el.style.width = width.toString() + 'px';
-        PopupUtils_1.PopupUtils.positionPopup(this.element.el, Dom_1.$$(this.coveoRoot.find("." + ResponsiveComponentsManager_1.ResponsiveComponentsManager.DROPDOWN_HEADER_WRAPPER_CSS_CLASS)).el, this.coveoRoot.el, { horizontal: PopupUtils_1.HorizontalAlignment.INNERRIGHT, vertical: PopupUtils_1.VerticalAlignment.BOTTOM, verticalOffset: 15 }, this.coveoRoot.el);
-    };
-    ResponsiveDropdownContent.prototype.hideDropdown = function () {
-        this.element.el.style.display = 'none';
-        this.element.removeClass(this.cssClassName);
-        this.element.removeClass(ResponsiveDropdownContent.DEFAULT_CSS_CLASS_NAME);
-    };
-    ResponsiveDropdownContent.prototype.cleanUp = function () {
-        this.element.el.removeAttribute('style');
-    };
-    ResponsiveDropdownContent.DEFAULT_CSS_CLASS_NAME = 'coveo-dropdown-content';
-    return ResponsiveDropdownContent;
-}());
-exports.ResponsiveDropdownContent = ResponsiveDropdownContent;
-
-
-/***/ }),
-
-/***/ 409:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var Dom_1 = __webpack_require__(3);
-var ResponsiveDropdownHeader = /** @class */ (function () {
-    function ResponsiveDropdownHeader(componentName, element) {
-        this.element = element;
-        this.element.addClass("coveo-" + componentName + "-dropdown-header");
-        this.element.addClass(ResponsiveDropdownHeader.DEFAULT_CSS_CLASS_NAME);
-    }
-    ResponsiveDropdownHeader.prototype.open = function () {
-        this.element.addClass(ResponsiveDropdownHeader.ACTIVE_HEADER_CSS_CLASS_NAME);
-    };
-    ResponsiveDropdownHeader.prototype.close = function () {
-        this.element.removeClass(ResponsiveDropdownHeader.ACTIVE_HEADER_CSS_CLASS_NAME);
-    };
-    ResponsiveDropdownHeader.prototype.cleanUp = function () {
-        this.element.detach();
-    };
-    ResponsiveDropdownHeader.prototype.hide = function () {
-        Dom_1.$$(this.element).addClass('coveo-hidden');
-    };
-    ResponsiveDropdownHeader.prototype.show = function () {
-        Dom_1.$$(this.element).removeClass('coveo-hidden');
-    };
-    ResponsiveDropdownHeader.DEFAULT_CSS_CLASS_NAME = 'coveo-dropdown-header';
-    ResponsiveDropdownHeader.ACTIVE_HEADER_CSS_CLASS_NAME = 'coveo-dropdown-header-active';
-    return ResponsiveDropdownHeader;
-}());
-exports.ResponsiveDropdownHeader = ResponsiveDropdownHeader;
-
-
-/***/ }),
-
 /***/ 41:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -3963,7 +3767,204 @@ var cubehelixLong = cubehelix_cubehelix(nogamma);
 
 /***/ }),
 
-/***/ 414:
+/***/ 410:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var Dom_1 = __webpack_require__(3);
+var EventsUtils_1 = __webpack_require__(258);
+var _ = __webpack_require__(1);
+var ResponsiveDropdown = /** @class */ (function () {
+    function ResponsiveDropdown(dropdownContent, dropdownHeader, coveoRoot) {
+        this.dropdownContent = dropdownContent;
+        this.dropdownHeader = dropdownHeader;
+        this.coveoRoot = coveoRoot;
+        this.isOpened = false;
+        this.onOpenHandlers = [];
+        this.onCloseHandlers = [];
+        this.popupBackgroundIsEnabled = true;
+        this.popupBackground = this.buildPopupBackground();
+        this.bindOnClickDropdownHeaderEvent();
+        this.saveContentPosition();
+    }
+    ResponsiveDropdown.prototype.registerOnOpenHandler = function (handler, context) {
+        this.onOpenHandlers.push({ handler: handler, context: context });
+    };
+    ResponsiveDropdown.prototype.registerOnCloseHandler = function (handler, context) {
+        this.onCloseHandlers.push({ handler: handler, context: context });
+    };
+    ResponsiveDropdown.prototype.cleanUp = function () {
+        this.close();
+        this.dropdownHeader.cleanUp();
+        this.dropdownContent.cleanUp();
+        this.restoreContentPosition();
+    };
+    ResponsiveDropdown.prototype.open = function () {
+        this.isOpened = true;
+        this.dropdownHeader.open();
+        this.dropdownContent.positionDropdown();
+        _.each(this.onOpenHandlers, function (handlerCall) {
+            handlerCall.handler.apply(handlerCall.context);
+        });
+        this.showPopupBackground();
+    };
+    ResponsiveDropdown.prototype.close = function () {
+        this.isOpened = false;
+        _.each(this.onCloseHandlers, function (handlerCall) {
+            handlerCall.handler.apply(handlerCall.context);
+        });
+        this.dropdownHeader.close();
+        this.dropdownContent.hideDropdown();
+        this.hidePopupBackground();
+    };
+    ResponsiveDropdown.prototype.disablePopupBackground = function () {
+        this.popupBackgroundIsEnabled = false;
+    };
+    ResponsiveDropdown.prototype.bindOnClickDropdownHeaderEvent = function () {
+        var _this = this;
+        this.dropdownHeader.element.on('click', function () {
+            if (_this.isOpened) {
+                _this.close();
+            }
+            else {
+                _this.open();
+            }
+        });
+    };
+    ResponsiveDropdown.prototype.showPopupBackground = function () {
+        if (this.popupBackgroundIsEnabled) {
+            this.coveoRoot.el.appendChild(this.popupBackground.el);
+            window.getComputedStyle(this.popupBackground.el).opacity;
+            this.popupBackground.el.style.opacity = ResponsiveDropdown.TRANSPARENT_BACKGROUND_OPACITY;
+            this.popupBackground.addClass('coveo-dropdown-background-active');
+        }
+    };
+    ResponsiveDropdown.prototype.hidePopupBackground = function () {
+        if (this.popupBackgroundIsEnabled) {
+            // forces the browser to reflow the element, so that the transition is applied.
+            window.getComputedStyle(this.popupBackground.el).opacity;
+            this.popupBackground.el.style.opacity = '0';
+            this.popupBackground.removeClass('coveo-dropdown-background-active');
+        }
+    };
+    ResponsiveDropdown.prototype.buildPopupBackground = function () {
+        var _this = this;
+        var popupBackground = Dom_1.$$('div', { className: ResponsiveDropdown.DROPDOWN_BACKGROUND_CSS_CLASS_NAME });
+        EventsUtils_1.EventsUtils.addPrefixedEvent(popupBackground.el, 'TransitionEnd', function () {
+            if (popupBackground.el.style.opacity == '0') {
+                popupBackground.detach();
+            }
+        });
+        popupBackground.on('click', function () { return _this.close(); });
+        return popupBackground;
+    };
+    ResponsiveDropdown.prototype.saveContentPosition = function () {
+        var dropdownContentPreviousSibling = this.dropdownContent.element.el.previousSibling;
+        var dropdownContentParent = this.dropdownContent.element.el.parentElement;
+        this.previousSibling = dropdownContentPreviousSibling ? Dom_1.$$(dropdownContentPreviousSibling) : null;
+        this.parent = Dom_1.$$(dropdownContentParent);
+    };
+    ResponsiveDropdown.prototype.restoreContentPosition = function () {
+        if (this.previousSibling) {
+            this.dropdownContent.element.insertAfter(this.previousSibling.el);
+        }
+        else {
+            this.parent.prepend(this.dropdownContent.element.el);
+        }
+    };
+    ResponsiveDropdown.TRANSPARENT_BACKGROUND_OPACITY = '0.9';
+    ResponsiveDropdown.DROPDOWN_BACKGROUND_CSS_CLASS_NAME = 'coveo-dropdown-background';
+    return ResponsiveDropdown;
+}());
+exports.ResponsiveDropdown = ResponsiveDropdown;
+
+
+/***/ }),
+
+/***/ 411:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var Dom_1 = __webpack_require__(3);
+var PopupUtils_1 = __webpack_require__(52);
+var ResponsiveComponentsManager_1 = __webpack_require__(77);
+var ResponsiveDropdownContent = /** @class */ (function () {
+    function ResponsiveDropdownContent(componentName, element, coveoRoot, minWidth, widthRatio) {
+        this.element = element;
+        this.cssClassName = "coveo-" + componentName + "-dropdown-content";
+        this.coveoRoot = coveoRoot;
+        this.widthRatio = widthRatio;
+        this.minWidth = minWidth;
+    }
+    ResponsiveDropdownContent.prototype.positionDropdown = function () {
+        this.element.addClass(this.cssClassName);
+        this.element.addClass(ResponsiveDropdownContent.DEFAULT_CSS_CLASS_NAME);
+        this.element.el.style.display = '';
+        var width = this.widthRatio * this.coveoRoot.width();
+        if (width <= this.minWidth) {
+            width = this.minWidth;
+        }
+        this.element.el.style.width = width.toString() + 'px';
+        PopupUtils_1.PopupUtils.positionPopup(this.element.el, Dom_1.$$(this.coveoRoot.find("." + ResponsiveComponentsManager_1.ResponsiveComponentsManager.DROPDOWN_HEADER_WRAPPER_CSS_CLASS)).el, this.coveoRoot.el, { horizontal: PopupUtils_1.HorizontalAlignment.INNERRIGHT, vertical: PopupUtils_1.VerticalAlignment.BOTTOM, verticalOffset: 15 }, this.coveoRoot.el);
+    };
+    ResponsiveDropdownContent.prototype.hideDropdown = function () {
+        this.element.el.style.display = 'none';
+        this.element.removeClass(this.cssClassName);
+        this.element.removeClass(ResponsiveDropdownContent.DEFAULT_CSS_CLASS_NAME);
+    };
+    ResponsiveDropdownContent.prototype.cleanUp = function () {
+        this.element.el.removeAttribute('style');
+    };
+    ResponsiveDropdownContent.DEFAULT_CSS_CLASS_NAME = 'coveo-dropdown-content';
+    return ResponsiveDropdownContent;
+}());
+exports.ResponsiveDropdownContent = ResponsiveDropdownContent;
+
+
+/***/ }),
+
+/***/ 412:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var Dom_1 = __webpack_require__(3);
+var ResponsiveDropdownHeader = /** @class */ (function () {
+    function ResponsiveDropdownHeader(componentName, element) {
+        this.element = element;
+        this.element.addClass("coveo-" + componentName + "-dropdown-header");
+        this.element.addClass(ResponsiveDropdownHeader.DEFAULT_CSS_CLASS_NAME);
+    }
+    ResponsiveDropdownHeader.prototype.open = function () {
+        this.element.addClass(ResponsiveDropdownHeader.ACTIVE_HEADER_CSS_CLASS_NAME);
+    };
+    ResponsiveDropdownHeader.prototype.close = function () {
+        this.element.removeClass(ResponsiveDropdownHeader.ACTIVE_HEADER_CSS_CLASS_NAME);
+    };
+    ResponsiveDropdownHeader.prototype.cleanUp = function () {
+        this.element.detach();
+    };
+    ResponsiveDropdownHeader.prototype.hide = function () {
+        Dom_1.$$(this.element).addClass('coveo-hidden');
+    };
+    ResponsiveDropdownHeader.prototype.show = function () {
+        Dom_1.$$(this.element).removeClass('coveo-hidden');
+    };
+    ResponsiveDropdownHeader.DEFAULT_CSS_CLASS_NAME = 'coveo-dropdown-header';
+    ResponsiveDropdownHeader.ACTIVE_HEADER_CSS_CLASS_NAME = 'coveo-dropdown-header-active';
+    return ResponsiveDropdownHeader;
+}());
+exports.ResponsiveDropdownHeader = ResponsiveDropdownHeader;
+
+
+/***/ }),
+
+/***/ 417:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3972,7 +3973,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var Dom_1 = __webpack_require__(3);
 var Strings_1 = __webpack_require__(10);
 var AnalyticsActionListMeta_1 = __webpack_require__(12);
-__webpack_require__(433);
+__webpack_require__(436);
 var SVGIcons_1 = __webpack_require__(15);
 var SVGDom_1 = __webpack_require__(16);
 var FacetHeader = /** @class */ (function () {
@@ -4158,7 +4159,7 @@ exports.FacetHeader = FacetHeader;
 
 /***/ }),
 
-/***/ 415:
+/***/ 418:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4171,14 +4172,14 @@ var Component_1 = __webpack_require__(8);
 var Logger_1 = __webpack_require__(14);
 var Strings_1 = __webpack_require__(10);
 var Utils_1 = __webpack_require__(6);
-var ResponsiveDropdown_1 = __webpack_require__(407);
-var ResponsiveDropdownContent_1 = __webpack_require__(408);
-var ResponsiveDropdownHeader_1 = __webpack_require__(409);
+var ResponsiveDropdown_1 = __webpack_require__(410);
+var ResponsiveDropdownContent_1 = __webpack_require__(411);
+var ResponsiveDropdownHeader_1 = __webpack_require__(412);
 var QueryEvents_1 = __webpack_require__(11);
 var SearchInterface_1 = __webpack_require__(20);
 var ResponsiveComponents_1 = __webpack_require__(44);
 var _ = __webpack_require__(1);
-__webpack_require__(434);
+__webpack_require__(437);
 var ResponsiveFacetColumn = /** @class */ (function () {
     function ResponsiveFacetColumn(coveoRoot, ID, options, responsiveDropdown) {
         this.coveoRoot = coveoRoot;
@@ -4365,7 +4366,7 @@ exports.ResponsiveFacetColumn = ResponsiveFacetColumn;
 
 /***/ }),
 
-/***/ 430:
+/***/ 433:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -4665,7 +4666,7 @@ function continuous(deinterpolate, reinterpolate) {
 }
 
 // EXTERNAL MODULE: ./node_modules/d3-format/index.js + 15 modules
-var d3_format = __webpack_require__(264);
+var d3_format = __webpack_require__(267);
 
 // CONCATENATED MODULE: ./node_modules/d3-scale/src/tickFormat.js
 
@@ -5123,10 +5124,10 @@ function threshold() {
 }
 
 // EXTERNAL MODULE: ./node_modules/d3-time/index.js + 16 modules
-var d3_time = __webpack_require__(239);
+var d3_time = __webpack_require__(242);
 
 // EXTERNAL MODULE: ./node_modules/d3-time-format/index.js + 4 modules
-var d3_time_format = __webpack_require__(265);
+var d3_time_format = __webpack_require__(268);
 
 // CONCATENATED MODULE: ./node_modules/d3-scale/src/time.js
 
@@ -5448,14 +5449,14 @@ function sequential(interpolator) {
 
 /***/ }),
 
-/***/ 433:
+/***/ 436:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
 
-/***/ 434:
+/***/ 437:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
@@ -6002,7 +6003,7 @@ define(Cubehelix, cubehelix, extend(Color, {
 
 /***/ }),
 
-/***/ 483:
+/***/ 486:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6012,8 +6013,8 @@ var Dom_1 = __webpack_require__(3);
 var DeviceUtils_1 = __webpack_require__(22);
 var SliderEvents_1 = __webpack_require__(100);
 var Utils_1 = __webpack_require__(6);
-var d3_scale_1 = __webpack_require__(430);
-var d3_1 = __webpack_require__(484);
+var d3_scale_1 = __webpack_require__(433);
+var d3_1 = __webpack_require__(487);
 var Globalize = __webpack_require__(25);
 var _ = __webpack_require__(1);
 var Logger_1 = __webpack_require__(14);
@@ -6756,7 +6757,7 @@ var SliderGraph = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 484:
+/***/ 487:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -11921,7 +11922,7 @@ var initialRadius = 10,
 
 
 // EXTERNAL MODULE: ./node_modules/d3-format/index.js + 15 modules
-var d3_format = __webpack_require__(264);
+var d3_format = __webpack_require__(267);
 
 // CONCATENATED MODULE: ./node_modules/d3-geo/src/adder.js
 // Adds floating point numbers with twice the normal precision.
@@ -17131,7 +17132,7 @@ function responseOf(parse, row) {
 
 
 // EXTERNAL MODULE: ./node_modules/d3-scale/index.js + 26 modules
-var d3_scale = __webpack_require__(430);
+var d3_scale = __webpack_require__(433);
 
 // CONCATENATED MODULE: ./node_modules/d3-shape/src/constant.js
 /* harmony default export */ var d3_shape_src_constant = (function(x) {
@@ -19198,10 +19199,10 @@ function ascending_sum(series) {
 
 
 // EXTERNAL MODULE: ./node_modules/d3-time/index.js + 16 modules
-var d3_time = __webpack_require__(239);
+var d3_time = __webpack_require__(242);
 
 // EXTERNAL MODULE: ./node_modules/d3-time-format/index.js + 4 modules
-var d3_time_format = __webpack_require__(265);
+var d3_time_format = __webpack_require__(268);
 
 // CONCATENATED MODULE: ./node_modules/d3-voronoi/src/constant.js
 /* harmony default export */ var d3_voronoi_src_constant = (function(x) {
@@ -21173,7 +21174,7 @@ function zoom_defaultTouchable() {
 
 /***/ }),
 
-/***/ 485:
+/***/ 488:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21466,7 +21467,7 @@ exports.FacetSliderQueryController = FacetSliderQueryController;
 
 /***/ }),
 
-/***/ 486:
+/***/ 489:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21482,8 +21483,8 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var ResponsiveFacetColumn_1 = __webpack_require__(415);
-var FacetSlider_1 = __webpack_require__(246);
+var ResponsiveFacetColumn_1 = __webpack_require__(418);
+var FacetSlider_1 = __webpack_require__(249);
 var _ = __webpack_require__(1);
 var ResponsiveFacetSlider = /** @class */ (function (_super) {
     __extends(ResponsiveFacetSlider, _super);
@@ -21519,7 +21520,7 @@ exports.ResponsiveFacetSlider = ResponsiveFacetSlider;
 
 /***/ }),
 
-/***/ 487:
+/***/ 490:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

@@ -28,7 +28,7 @@ exports.SVGDom = SVGDom;
 
 /***/ }),
 
-/***/ 317:
+/***/ 320:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -47,7 +47,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var Component_1 = __webpack_require__(8);
 var Initialization_1 = __webpack_require__(2);
 var GlobalExports_1 = __webpack_require__(4);
-__webpack_require__(431);
+__webpack_require__(434);
 var Dom_1 = __webpack_require__(3);
 var QueryEvents_1 = __webpack_require__(11);
 var ComponentOptions_1 = __webpack_require__(9);
@@ -58,7 +58,7 @@ var Checkbox_1 = __webpack_require__(54);
 var BreadcrumbEvents_1 = __webpack_require__(42);
 var SVGIcons_1 = __webpack_require__(15);
 var SVGDom_1 = __webpack_require__(16);
-var SimpleFilterValues_1 = __webpack_require__(539);
+var SimpleFilterValues_1 = __webpack_require__(542);
 var FacetUtils_1 = __webpack_require__(37);
 var KeyboardUtils_1 = __webpack_require__(23);
 var AnalyticsActionListMeta_1 = __webpack_require__(12);
@@ -531,20 +531,20 @@ Initialization_1.Initialization.registerAutoCreateComponent(SimpleFilter);
 
 /***/ }),
 
-/***/ 431:
+/***/ 434:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
 
-/***/ 539:
+/***/ 542:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-__webpack_require__(431);
+__webpack_require__(434);
 var _ = __webpack_require__(1);
 var SimpleFilterValues = /** @class */ (function () {
     function SimpleFilterValues(simpleFilter, options) {

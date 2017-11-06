@@ -1,6 +1,6 @@
 webpackJsonpCoveo__temporary([49],{
 
-/***/ 443:
+/***/ 446:
 /***/ (function(module, exports, __webpack_require__) {
 
 /*!
@@ -1254,7 +1254,7 @@ var DateUtils_1 = __webpack_require__(29);
 var GlobalExports_1 = __webpack_require__(4);
 var Strings_1 = __webpack_require__(10);
 var Globalize = __webpack_require__(25);
-var Pikaday = __webpack_require__(443);
+var Pikaday = __webpack_require__(446);
 /**
  * A date picker widget with standard styling.
  */

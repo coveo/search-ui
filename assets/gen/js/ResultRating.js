@@ -28,7 +28,7 @@ exports.SVGDom = SVGDom;
 
 /***/ }),
 
-/***/ 302:
+/***/ 305:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -52,7 +52,7 @@ var Utils_1 = __webpack_require__(6);
 var GlobalExports_1 = __webpack_require__(4);
 var SVGIcons_1 = __webpack_require__(15);
 var SVGDom_1 = __webpack_require__(16);
-__webpack_require__(525);
+__webpack_require__(528);
 var RatingValues;
 (function (RatingValues) {
     RatingValues[RatingValues["Undefined"] = 0] = "Undefined";
@@ -68,6 +68,8 @@ var RatingValues;
  * search interface is `true`, and if collaborative rating is enabled on your Coveo index.
  *
  * This component is a result template component (see [Result Templates](https://developers.coveo.com/x/aIGfAQ)).
+ *
+ * @notSupportedIn salesforcefree
  */
 var ResultRating = /** @class */ (function (_super) {
     __extends(ResultRating, _super);
@@ -168,7 +170,7 @@ Initialization_1.Initialization.registerAutoCreateComponent(ResultRating);
 
 /***/ }),
 
-/***/ 525:
+/***/ 528:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

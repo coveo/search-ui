@@ -28,7 +28,7 @@ exports.SVGDom = SVGDom;
 
 /***/ }),
 
-/***/ 310:
+/***/ 313:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -53,7 +53,7 @@ var SettingsEvents_1 = __webpack_require__(43);
 var Initialization_1 = __webpack_require__(2);
 var _ = __webpack_require__(1);
 var GlobalExports_1 = __webpack_require__(4);
-__webpack_require__(531);
+__webpack_require__(534);
 var SVGDom_1 = __webpack_require__(16);
 /**
  * The Settings component renders a **Settings** button that the end user can click to access a popup menu from which
@@ -202,7 +202,7 @@ Initialization_1.Initialization.registerAutoCreateComponent(Settings);
 
 /***/ }),
 
-/***/ 531:
+/***/ 534:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

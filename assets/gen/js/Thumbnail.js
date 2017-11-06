@@ -1,6 +1,6 @@
 webpackJsonpCoveo__temporary([20,57,67],{
 
-/***/ 242:
+/***/ 245:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -169,7 +169,7 @@ Initialization_1.Initialization.registerAutoCreateComponent(Icon);
 
 /***/ }),
 
-/***/ 315:
+/***/ 318:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -192,12 +192,13 @@ var QueryUtils_1 = __webpack_require__(19);
 var Initialization_1 = __webpack_require__(2);
 var Dom_1 = __webpack_require__(3);
 var RegisteredNamedMethods_1 = __webpack_require__(34);
-var Icon_1 = __webpack_require__(242);
+var Icon_1 = __webpack_require__(245);
 var _ = __webpack_require__(1);
 var GlobalExports_1 = __webpack_require__(4);
 /**
  * The Thumbnail component automatically fetches the thumbnail of the result object and outputs an HTML `img` tag with
  * it.
+ * @notSupportedIn salesforcefree
  */
 var Thumbnail = /** @class */ (function (_super) {
     __extends(Thumbnail, _super);
@@ -328,7 +329,7 @@ Initialization_1.Initialization.registerAutoCreateComponent(Thumbnail);
 
 /***/ }),
 
-/***/ 432:
+/***/ 435:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
@@ -358,7 +359,7 @@ var AnalyticsActionListMeta_1 = __webpack_require__(12);
 var ResultListEvents_1 = __webpack_require__(32);
 var HighlightUtils_1 = __webpack_require__(49);
 var DeviceUtils_1 = __webpack_require__(22);
-var OSUtils_1 = __webpack_require__(237);
+var OSUtils_1 = __webpack_require__(240);
 var Initialization_1 = __webpack_require__(2);
 var QueryUtils_1 = __webpack_require__(19);
 var Assert_1 = __webpack_require__(7);
@@ -368,7 +369,7 @@ var Dom_1 = __webpack_require__(3);
 var StreamHighlightUtils_1 = __webpack_require__(65);
 var _ = __webpack_require__(1);
 var GlobalExports_1 = __webpack_require__(4);
-__webpack_require__(432);
+__webpack_require__(435);
 /**
  * The `ResultLink` component automatically transform a search result title into a clickable link pointing to the
  * original item.

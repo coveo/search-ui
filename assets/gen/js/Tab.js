@@ -28,7 +28,7 @@ exports.SVGDom = SVGDom;
 
 /***/ }),
 
-/***/ 249:
+/***/ 252:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -44,7 +44,7 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var ResponsiveTabs_1 = __webpack_require__(534);
+var ResponsiveTabs_1 = __webpack_require__(537);
 var Component_1 = __webpack_require__(8);
 var ComponentOptions_1 = __webpack_require__(9);
 var Model_1 = __webpack_require__(18);
@@ -60,7 +60,7 @@ var Dom_1 = __webpack_require__(3);
 var KeyboardUtils_1 = __webpack_require__(23);
 var _ = __webpack_require__(1);
 var GlobalExports_1 = __webpack_require__(4);
-__webpack_require__(536);
+__webpack_require__(539);
 /**
  * The Tab component renders a bar that allows the end user to select a specific search interface.
  *
@@ -430,7 +430,7 @@ Initialization_1.Initialization.registerAutoCreateComponent(Tab);
 
 /***/ }),
 
-/***/ 255:
+/***/ 258:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -466,7 +466,7 @@ exports.EventsUtils = EventsUtils;
 
 /***/ }),
 
-/***/ 534:
+/***/ 537:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -475,18 +475,18 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var Dom_1 = __webpack_require__(3);
 var InitializationEvents_1 = __webpack_require__(17);
 var PopupUtils_1 = __webpack_require__(52);
-var EventsUtils_1 = __webpack_require__(255);
+var EventsUtils_1 = __webpack_require__(258);
 var Utils_1 = __webpack_require__(6);
 var Logger_1 = __webpack_require__(14);
 var Component_1 = __webpack_require__(8);
 var SearchInterface_1 = __webpack_require__(20);
-var Tab_1 = __webpack_require__(249);
+var Tab_1 = __webpack_require__(252);
 var ResponsiveComponentsManager_1 = __webpack_require__(77);
 var ResponsiveComponentsUtils_1 = __webpack_require__(88);
 var Strings_1 = __webpack_require__(10);
 var ResponsiveComponents_1 = __webpack_require__(44);
 var _ = __webpack_require__(1);
-__webpack_require__(535);
+__webpack_require__(538);
 var SVGIcons_1 = __webpack_require__(15);
 var SVGDom_1 = __webpack_require__(16);
 var ResponsiveTabs = /** @class */ (function () {
@@ -819,14 +819,14 @@ exports.ResponsiveTabs = ResponsiveTabs;
 
 /***/ }),
 
-/***/ 535:
+/***/ 538:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
 
-/***/ 536:
+/***/ 539:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

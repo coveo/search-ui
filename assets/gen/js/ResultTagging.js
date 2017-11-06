@@ -28,7 +28,7 @@ exports.SVGDom = SVGDom;
 
 /***/ }),
 
-/***/ 306:
+/***/ 309:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -57,7 +57,7 @@ var Dom_1 = __webpack_require__(3);
 var AnalyticsActionListMeta_1 = __webpack_require__(12);
 var _ = __webpack_require__(1);
 var GlobalExports_1 = __webpack_require__(4);
-__webpack_require__(528);
+__webpack_require__(531);
 var SVGIcons_1 = __webpack_require__(15);
 var SVGDom_1 = __webpack_require__(16);
 /**
@@ -68,6 +68,8 @@ var SVGDom_1 = __webpack_require__(16);
  *
  * **Note:**
  * > The ResultTagging component is not supported with Coveo Cloud V2. To implement the ResultTagging component in Coveo Cloud V1, contact [Coveo Support](https://support.coveo.com/s/).
+ *
+ * @notSupportedIn salesforcefree
  */
 var ResultTagging = /** @class */ (function (_super) {
     __extends(ResultTagging, _super);
@@ -469,7 +471,7 @@ Initialization_1.Initialization.registerAutoCreateComponent(ResultTagging);
 
 /***/ }),
 
-/***/ 528:
+/***/ 531:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

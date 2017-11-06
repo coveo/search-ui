@@ -1,6 +1,6 @@
 webpackJsonpCoveo__temporary([22,57],{
 
-/***/ 296:
+/***/ 299:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22,7 +22,7 @@ var Initialization_1 = __webpack_require__(2);
 var Utils_1 = __webpack_require__(6);
 var Dom_1 = __webpack_require__(3);
 var GlobalExports_1 = __webpack_require__(4);
-__webpack_require__(508);
+__webpack_require__(511);
 var ResultLink_1 = __webpack_require__(78);
 var StreamHighlightUtils_1 = __webpack_require__(65);
 var _ = __webpack_require__(1);
@@ -172,14 +172,14 @@ Initialization_1.Initialization.registerAutoCreateComponent(PrintableUri);
 
 /***/ }),
 
-/***/ 432:
+/***/ 435:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
 
-/***/ 508:
+/***/ 511:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
@@ -209,7 +209,7 @@ var AnalyticsActionListMeta_1 = __webpack_require__(12);
 var ResultListEvents_1 = __webpack_require__(32);
 var HighlightUtils_1 = __webpack_require__(49);
 var DeviceUtils_1 = __webpack_require__(22);
-var OSUtils_1 = __webpack_require__(237);
+var OSUtils_1 = __webpack_require__(240);
 var Initialization_1 = __webpack_require__(2);
 var QueryUtils_1 = __webpack_require__(19);
 var Assert_1 = __webpack_require__(7);
@@ -219,7 +219,7 @@ var Dom_1 = __webpack_require__(3);
 var StreamHighlightUtils_1 = __webpack_require__(65);
 var _ = __webpack_require__(1);
 var GlobalExports_1 = __webpack_require__(4);
-__webpack_require__(432);
+__webpack_require__(435);
 /**
  * The `ResultLink` component automatically transform a search result title into a clickable link pointing to the
  * original item.

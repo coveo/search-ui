@@ -1,6 +1,6 @@
 webpackJsonpCoveo__temporary([14],{
 
-/***/ 280:
+/***/ 283:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17,7 +17,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var Dom_1 = __webpack_require__(3);
-var DistanceEvents_1 = __webpack_require__(475);
+var DistanceEvents_1 = __webpack_require__(478);
 var AnalyticsActionListMeta_1 = __webpack_require__(12);
 var Component_1 = __webpack_require__(8);
 var ComponentOptions_1 = __webpack_require__(9);
@@ -25,9 +25,9 @@ var EventsModules_1 = __webpack_require__(99);
 var Initialization_1 = __webpack_require__(2);
 var RegisteredNamedMethods_1 = __webpack_require__(34);
 var GlobalExports_1 = __webpack_require__(4);
-var NavigatorPositionProvider_1 = __webpack_require__(476);
-var GoogleApiPositionProvider_1 = __webpack_require__(477);
-var StaticPositionProvider_1 = __webpack_require__(478);
+var NavigatorPositionProvider_1 = __webpack_require__(479);
+var GoogleApiPositionProvider_1 = __webpack_require__(480);
+var StaticPositionProvider_1 = __webpack_require__(481);
 /**
  * The `DistanceResources` component defines a field that computes the distance according to the current position of the
  * end user.
@@ -362,7 +362,7 @@ Initialization_1.Initialization.registerAutoCreateComponent(DistanceResources);
 
 /***/ }),
 
-/***/ 475:
+/***/ 478:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -415,7 +415,7 @@ exports.DistanceEvents = DistanceEvents;
 
 /***/ }),
 
-/***/ 476:
+/***/ 479:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -452,7 +452,7 @@ exports.NavigatorPositionProvider = NavigatorPositionProvider;
 
 /***/ }),
 
-/***/ 477:
+/***/ 480:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -496,7 +496,7 @@ exports.GoogleApiPositionProvider = GoogleApiPositionProvider;
 
 /***/ }),
 
-/***/ 478:
+/***/ 481:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";

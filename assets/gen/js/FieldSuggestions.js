@@ -1,6 +1,6 @@
 webpackJsonpCoveo__temporary([36],{
 
-/***/ 285:
+/***/ 288:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16,7 +16,7 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var SuggestionForOmnibox_1 = __webpack_require__(429);
+var SuggestionForOmnibox_1 = __webpack_require__(432);
 var Component_1 = __webpack_require__(8);
 var ComponentOptions_1 = __webpack_require__(9);
 var Assert_1 = __webpack_require__(7);
@@ -28,7 +28,7 @@ var AnalyticsActionListMeta_1 = __webpack_require__(12);
 var Dom_1 = __webpack_require__(3);
 var _ = __webpack_require__(1);
 var GlobalExports_1 = __webpack_require__(4);
-__webpack_require__(488);
+__webpack_require__(491);
 /**
  * The `FieldSuggestions` component provides query suggestions based on a particular facet field. For example, you could
  * use this component to provide auto-complete suggestions while the end user is typing the title of an item.
@@ -300,7 +300,7 @@ Initialization_1.Initialization.registerAutoCreateComponent(FieldSuggestions);
 
 /***/ }),
 
-/***/ 429:
+/***/ 432:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -363,7 +363,7 @@ exports.SuggestionForOmnibox = SuggestionForOmnibox;
 
 /***/ }),
 
-/***/ 488:
+/***/ 491:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

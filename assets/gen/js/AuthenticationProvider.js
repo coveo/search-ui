@@ -1,6 +1,6 @@
 webpackJsonpCoveo__temporary([64],{
 
-/***/ 269:
+/***/ 272:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -29,7 +29,7 @@ var Strings_1 = __webpack_require__(10);
 var ExternalModulesShim_1 = __webpack_require__(27);
 var _ = __webpack_require__(1);
 var GlobalExports_1 = __webpack_require__(4);
-__webpack_require__(468);
+__webpack_require__(471);
 var SVGIcons_1 = __webpack_require__(15);
 /**
  * The `AuthenticationProvider` component makes it possible to execute queries with an identity that the end user
@@ -212,7 +212,7 @@ Initialization_1.Initialization.registerAutoCreateComponent(AuthenticationProvid
 
 /***/ }),
 
-/***/ 468:
+/***/ 471:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

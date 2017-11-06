@@ -1,6 +1,6 @@
 webpackJsonpCoveo__temporary([55],{
 
-/***/ 311:
+/***/ 314:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -24,7 +24,7 @@ var Utils_1 = __webpack_require__(6);
 var Initialization_1 = __webpack_require__(2);
 var GlobalExports_1 = __webpack_require__(4);
 var ExternalModulesShim_1 = __webpack_require__(27);
-__webpack_require__(532);
+__webpack_require__(535);
 var SVGIcons_1 = __webpack_require__(15);
 /**
  * The ShareQuery component populates the {@link Settings} popup menu with the **Share Query** menu item. When the end
@@ -178,7 +178,7 @@ Initialization_1.Initialization.registerAutoCreateComponent(ShareQuery);
 
 /***/ }),
 
-/***/ 532:
+/***/ 535:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

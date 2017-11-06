@@ -1,6 +1,6 @@
 webpackJsonpCoveo__temporary([26,43],{
 
-/***/ 241:
+/***/ 244:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17,7 +17,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var Component_1 = __webpack_require__(8);
-var SortCriteria_1 = __webpack_require__(425);
+var SortCriteria_1 = __webpack_require__(428);
 var ComponentOptions_1 = __webpack_require__(9);
 var Utils_1 = __webpack_require__(6);
 var Assert_1 = __webpack_require__(7);
@@ -42,6 +42,8 @@ var GlobalExports_1 = __webpack_require__(4);
  *
  * **Note:**
  * > There can only be one `Folding` component per [`Tab`]{@link Tab} component.
+ *
+ * @notSupportedIn salesforcefree
  */
 var Folding = /** @class */ (function (_super) {
     __extends(Folding, _super);
@@ -402,7 +404,7 @@ Initialization_1.Initialization.registerAutoCreateComponent(Folding);
 
 /***/ }),
 
-/***/ 287:
+/***/ 290:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -418,7 +420,7 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var Folding_1 = __webpack_require__(241);
+var Folding_1 = __webpack_require__(244);
 var Initialization_1 = __webpack_require__(2);
 var GlobalExports_1 = __webpack_require__(4);
 /**
@@ -474,7 +476,7 @@ Initialization_1.Initialization.registerAutoCreateComponent(FoldingForThread);
 
 /***/ }),
 
-/***/ 425:
+/***/ 428:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";

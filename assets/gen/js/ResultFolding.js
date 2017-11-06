@@ -28,7 +28,7 @@ exports.SVGDom = SVGDom;
 
 /***/ }),
 
-/***/ 301:
+/***/ 304:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -46,7 +46,7 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var Component_1 = __webpack_require__(8);
 var ComponentOptions_1 = __webpack_require__(9);
-var DefaultFoldingTemplate_1 = __webpack_require__(521);
+var DefaultFoldingTemplate_1 = __webpack_require__(524);
 var Utils_1 = __webpack_require__(6);
 var QueryUtils_1 = __webpack_require__(19);
 var Initialization_1 = __webpack_require__(2);
@@ -56,7 +56,7 @@ var Strings_1 = __webpack_require__(10);
 var _ = __webpack_require__(1);
 var GlobalExports_1 = __webpack_require__(4);
 var AnalyticsActionListMeta_1 = __webpack_require__(12);
-__webpack_require__(522);
+__webpack_require__(525);
 var SVGIcons_1 = __webpack_require__(15);
 var SVGDom_1 = __webpack_require__(16);
 /**
@@ -347,7 +347,7 @@ Initialization_1.Initialization.registerAutoCreateComponent(ResultFolding);
 
 /***/ }),
 
-/***/ 521:
+/***/ 524:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -382,7 +382,7 @@ exports.DefaultFoldingTemplate = DefaultFoldingTemplate;
 
 /***/ }),
 
-/***/ 522:
+/***/ 525:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

@@ -1,6 +1,6 @@
 webpackJsonpCoveo__temporary([59],{
 
-/***/ 295:
+/***/ 298:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26,7 +26,7 @@ var Dom_1 = __webpack_require__(3);
 var GlobalExports_1 = __webpack_require__(4);
 var ExternalModulesShim_1 = __webpack_require__(27);
 var _ = __webpack_require__(1);
-__webpack_require__(507);
+__webpack_require__(510);
 var InitializationEvents_1 = __webpack_require__(17);
 var SVGIcons_1 = __webpack_require__(15);
 /**
@@ -126,7 +126,7 @@ Initialization_1.Initialization.registerAutoCreateComponent(PreferencesPanel);
 
 /***/ }),
 
-/***/ 507:
+/***/ 510:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

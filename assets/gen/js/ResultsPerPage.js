@@ -1,6 +1,6 @@
 webpackJsonpCoveo__temporary([56],{
 
-/***/ 304:
+/***/ 307:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28,7 +28,7 @@ var DeviceUtils_1 = __webpack_require__(22);
 var _ = __webpack_require__(1);
 var GlobalExports_1 = __webpack_require__(4);
 var Strings_1 = __webpack_require__(10);
-__webpack_require__(527);
+__webpack_require__(530);
 /**
  * The ResultsPerPage component attaches itself to a `div` and allows the end user to choose how many results to
  * display per page.
@@ -196,7 +196,7 @@ Initialization_1.Initialization.registerAutoCreateComponent(ResultsPerPage);
 
 /***/ }),
 
-/***/ 527:
+/***/ 530:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

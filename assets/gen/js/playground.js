@@ -2603,7 +2603,7 @@ var Dom = /** @class */ (function () {
     /**
      * Toggle the class on the element.
      * @param className Classname to toggle
-     * @swtch If true, add the class regardless and if false, remove the class
+     * @param swtch If true, add the class regardless and if false, remove the class
      */
     Dom.prototype.toggleClass = function (className, swtch) {
         if (Utils_1.Utils.isNullOrUndefined(swtch)) {
@@ -5211,8 +5211,8 @@ exports.ResponsiveComponents = ResponsiveComponents;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.version = {
-    lib: '2.3477.5-beta',
-    product: '2.3477.5-beta',
+    lib: '2.3477.7-beta',
+    product: '2.3477.7-beta',
     supportedApiVersion: 2
 };
 

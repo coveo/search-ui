@@ -178,19 +178,28 @@
 			</div>
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
+					<dl class="tsd-deprecated">
+					</dl>
 					<div class="lead">
-						<p>The <code>FoldingForThread</code> component inherits from the <a href="../components/folding.html"><code>Folding</code></a> component. It offers the
-						same configuration options.</p>
+						<p>The <code>Folding</code> component makes it possible to render hierarchic representations of search results sharing a common
+						<a href="../components/folding.html#options.field"><code>field</code></a>.</p>
 					</div>
-					<p>Folding conversations and threads requires different processing. When you need to fold all child items (including
-						their attachments) on the same level under a common ancestor item, use this component rather than the <code>Folding</code>
-					component.</p>
-					<p>This component works well with Chatter and Lithium.</p>
+					<p>This component has no visual impact on its own. It simply folds certain search results so that the
+						<a href="../components/resultfolding.html"><code>ResultFolding</code></a> and <a href="../components/resultattachments.html"><code>ResultAttachments</code></a> components can then nicely
+					render them within result templates (see <a href="https://developers.coveo.com/x/aIGfAQ">Result Templates</a>).</p>
+					<p>A typical use case of the <code>Folding</code> component is to fold email conversations and message board threads results in a
+						result set in order to display them in a convenient format. Messages belonging to a single conversation typically
+						have a unique conversation ID. By indexing this ID on a field, you can use it to fold search results (see
+					<a href="https://developers.coveo.com/x/7hUvAg">Folding Results</a>).</p>
 					<p><strong>Note:</strong></p>
 					<blockquote>
-						<p>There can only be one <code>FoldingForThread</code> component per <a href="../components/tab.html"><code>Tab</code></a> component.</p>
+						<p>There can only be one <code>Folding</code> component per <a href="../components/tab.html"><code>Tab</code></a> component.</p>
 					</blockquote>
-					<p>See <a href="https://developers.coveo.com/x/7hUvAg">Folding Results</a>.</p>
+					<dl class="tsd-comment-tags">
+						<dt>not supported in</dt>
+						<dd><p><a href=http://www.coveo.com/en/solutions/coveo-for-salesforce/editions-pricing>Coveo for Salesforce Free</a></p>
+						</dd>
+					</dl>
 				</div>
 			</section>
 			<div class="preview-container tsd-panel">
@@ -259,8 +268,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Folding/Folding.ts#L89">src/ui/Folding/Folding.ts
-							:89</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Folding/Folding.ts#L91">src/ui/Folding/Folding.ts
+							:91</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -281,8 +290,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Folding/Folding.ts#L137">src/ui/Folding/Folding.ts
-							:137</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Folding/Folding.ts#L139">src/ui/Folding/Folding.ts
+							:139</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -308,8 +317,8 @@ data-enable-expand&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Folding/Folding.ts#L144">src/ui/Folding/Folding.ts
-							:144</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Folding/Folding.ts#L146">src/ui/Folding/Folding.ts
+							:146</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -331,8 +340,8 @@ data-enable-expand&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Folding/Folding.ts#L82">src/ui/Folding/Folding.ts
-							:82</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Folding/Folding.ts#L84">src/ui/Folding/Folding.ts
+							:84</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -353,8 +362,8 @@ data-enable-expand&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Folding/Folding.ts#L203">src/ui/Folding/Folding.ts
-							:203</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Folding/Folding.ts#L205">src/ui/Folding/Folding.ts
+							:205</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -397,8 +406,8 @@ data-enable-expand&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Folding/Folding.ts#L187">src/ui/Folding/Folding.ts
-							:187</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Folding/Folding.ts#L189">src/ui/Folding/Folding.ts
+							:189</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -459,8 +468,8 @@ topResult.childResults = results;
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Folding/Folding.ts#L152">src/ui/Folding/Folding.ts
-							:152</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Folding/Folding.ts#L154">src/ui/Folding/Folding.ts
+							:154</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -482,8 +491,8 @@ topResult.childResults = results;
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Folding/Folding.ts#L96">src/ui/Folding/Folding.ts
-							:96</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Folding/Folding.ts#L98">src/ui/Folding/Folding.ts
+							:98</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -504,8 +513,8 @@ topResult.childResults = results;
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Folding/Folding.ts#L109">src/ui/Folding/Folding.ts
-							:109</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Folding/Folding.ts#L111">src/ui/Folding/Folding.ts
+							:111</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -533,8 +542,8 @@ topResult.childResults = results;
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Folding/Folding.ts#L124">src/ui/Folding/Folding.ts
-							:124</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Folding/Folding.ts#L126">src/ui/Folding/Folding.ts
+							:126</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">

@@ -1,6 +1,6 @@
 webpackJsonpCoveo__temporary([60],{
 
-/***/ 283:
+/***/ 286:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -24,7 +24,7 @@ var Initialization_1 = __webpack_require__(2);
 var Strings_1 = __webpack_require__(10);
 var _ = __webpack_require__(1);
 var GlobalExports_1 = __webpack_require__(4);
-__webpack_require__(481);
+__webpack_require__(484);
 var SVGIcons_1 = __webpack_require__(15);
 var SearchInterface_1 = __webpack_require__(20);
 var RegisteredNamedMethods_1 = __webpack_require__(34);
@@ -124,7 +124,7 @@ Initialization_1.Initialization.registerAutoCreateComponent(ExportToExcel);
 
 /***/ }),
 
-/***/ 481:
+/***/ 484:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

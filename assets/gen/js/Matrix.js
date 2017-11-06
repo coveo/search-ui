@@ -1,6 +1,6 @@
 webpackJsonpCoveo__temporary([23],{
 
-/***/ 291:
+/***/ 294:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18,8 +18,8 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var Component_1 = __webpack_require__(8);
 var ComponentOptions_1 = __webpack_require__(9);
-var Cell_1 = __webpack_require__(502);
-var DefaultMatrixResultPreviewTemplate_1 = __webpack_require__(503);
+var Cell_1 = __webpack_require__(505);
+var DefaultMatrixResultPreviewTemplate_1 = __webpack_require__(506);
 var Dom_1 = __webpack_require__(3);
 var QueryEvents_1 = __webpack_require__(11);
 var QueryStateModel_1 = __webpack_require__(13);
@@ -29,7 +29,7 @@ var QueryUtils_1 = __webpack_require__(19);
 var Globalize = __webpack_require__(25);
 var _ = __webpack_require__(1);
 var GlobalExports_1 = __webpack_require__(4);
-__webpack_require__(504);
+__webpack_require__(507);
 /**
  * The Matrix component uses the values of two fields (row and column) to display the results of the specified computed
  * field in a table.
@@ -39,6 +39,8 @@ __webpack_require__(504);
  *
  * In a way that is similar to the {@link Facet} component, selecting a Matrix cell allows the end user to drill down
  * inside the results by restricting the row field and the column field to match the values of the selected cell.
+ *
+ * @notSupportedIn salesforcefree
  */
 var Matrix = /** @class */ (function (_super) {
     __extends(Matrix, _super);
@@ -817,7 +819,7 @@ Initialization_1.Initialization.registerAutoCreateComponent(Matrix);
 
 /***/ }),
 
-/***/ 502:
+/***/ 505:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -912,7 +914,7 @@ exports.Cell = Cell;
 
 /***/ }),
 
-/***/ 503:
+/***/ 506:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -969,7 +971,7 @@ exports.DefaultMatrixResultPreviewTemplate = DefaultMatrixResultPreviewTemplate;
 
 /***/ }),
 
-/***/ 504:
+/***/ 507:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

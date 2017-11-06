@@ -28,7 +28,7 @@ exports.SVGDom = SVGDom;
 
 /***/ }),
 
-/***/ 260:
+/***/ 263:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -73,7 +73,7 @@ exports.QuickviewEvents = QuickviewEvents;
 
 /***/ }),
 
-/***/ 299:
+/***/ 302:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -93,17 +93,17 @@ var Component_1 = __webpack_require__(8);
 var ComponentOptions_1 = __webpack_require__(9);
 var DomUtils_1 = __webpack_require__(47);
 var Dom_1 = __webpack_require__(3);
-var DefaultQuickviewTemplate_1 = __webpack_require__(511);
+var DefaultQuickviewTemplate_1 = __webpack_require__(514);
 var ResultListEvents_1 = __webpack_require__(32);
 var StringUtils_1 = __webpack_require__(21);
-var QuickviewDocument_1 = __webpack_require__(512);
+var QuickviewDocument_1 = __webpack_require__(515);
 var QueryStateModel_1 = __webpack_require__(13);
-var QuickviewEvents_1 = __webpack_require__(260);
+var QuickviewEvents_1 = __webpack_require__(263);
 var Initialization_1 = __webpack_require__(2);
 var KeyboardUtils_1 = __webpack_require__(23);
 var ExternalModulesShim_1 = __webpack_require__(27);
 var GlobalExports_1 = __webpack_require__(4);
-__webpack_require__(513);
+__webpack_require__(516);
 var SVGIcons_1 = __webpack_require__(15);
 var SVGDom_1 = __webpack_require__(16);
 /**
@@ -442,7 +442,7 @@ Initialization_1.Initialization.registerAutoCreateComponent(Quickview);
 
 /***/ }),
 
-/***/ 511:
+/***/ 514:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -474,7 +474,7 @@ exports.DefaultQuickviewTemplate = DefaultQuickviewTemplate;
 
 /***/ }),
 
-/***/ 512:
+/***/ 515:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -495,7 +495,7 @@ var ComponentOptions_1 = __webpack_require__(9);
 var AnalyticsActionListMeta_1 = __webpack_require__(12);
 var Assert_1 = __webpack_require__(7);
 var Dom_1 = __webpack_require__(3);
-var QuickviewEvents_1 = __webpack_require__(260);
+var QuickviewEvents_1 = __webpack_require__(263);
 var DeviceUtils_1 = __webpack_require__(22);
 var Utils_1 = __webpack_require__(6);
 var ColorUtils_1 = __webpack_require__(101);
@@ -994,7 +994,7 @@ Initialization_1.Initialization.registerAutoCreateComponent(QuickviewDocument);
 
 /***/ }),
 
-/***/ 513:
+/***/ 516:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
