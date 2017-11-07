@@ -355,11 +355,11 @@ export class SimpleFilter extends Component {
     _.each(this.checkboxes, result => {
       this.valueContainer.append(result.checkbox.getElement());
     });
-    if (this.checkboxes.length > 0) {
-      $$($$(this.checkboxes[this.checkboxes.length - 1].checkbox.getElement()).find('.coveo-checkbox-button')).on('blur', () => {
-        this.closeContainer();
-      });
-    }
+
+    const lastLabel = _.last($$(this.valueContainer).findAll('.coveo-checkbox-label'));
+    $$(lastLabel).on('blur', () => {
+      this.closeContainer();
+    });
   }
 
   private createValueContainer() {
