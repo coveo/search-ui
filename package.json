@@ -39,7 +39,7 @@
   "files": ["bin", "pages", "gulpTasks", "docgen", "images", "templates", "strings", "filetypes", "lib", "src", "typings"],
   "homepage": "https://github.com/coveo/search-ui#readme",
   "devDependencies": {
-    "@salesforce-ux/design-system": "2.0.3",
+    "@salesforce-ux/design-system": "2.4.4",
     "@types/d3": "3.5.36",
     "@types/d3-scale": "1.0.4",
     "@types/fastclick": "^1.0.28",
