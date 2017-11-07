@@ -19,6 +19,9 @@
     "zipForGitReleases": "gulp zip",
     "uploadCoverage": "gulp uploadCoverage"
   },
+  "engines": {
+    "node": "8.x"
+  },
   "lint-staged": {
     "*.{js,ts,json,scss}": ["prettier --write", "git add"]
   },
