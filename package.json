@@ -38,9 +38,6 @@
   },
   "files": ["bin", "pages", "gulpTasks", "docgen", "images", "templates", "strings", "filetypes", "lib", "src", "typings"],
   "homepage": "https://github.com/coveo/search-ui#readme",
-  "engines": {
-    "node": "6.10.0"
-  },
   "devDependencies": {
     "@salesforce-ux/design-system": "2.0.3",
     "@types/d3": "3.5.36",
