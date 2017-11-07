@@ -7,26 +7,25 @@ notifications:
 node_js:
 - 8.5.0
 cache:
+  yarn: true
   directories:
   - node_modules
-before_script:
-- npm install -g gulp
 before_install:
-- npm install -g npm@5.5.1
+  - npm install -g npm@5.5.1
 script:
 - source read.version.sh
 - echo $PACKAGE_JSON_VERSION
-- npm run injectTag
-- npm run build
-- npm run minimize
-- npm run test
-- npm run uploadCoverage
-- npm run testChunks
+- yarn run injectTag
+- yarn run build
+- yarn run minimize
+- yarn run test
+- yarn run uploadCoverage
+- yarn run testChunks
 after_success:
-- npm run doc
+- yarn run doc
 - if [ "x$TRAVIS_TAG" != "x" ]; then bash ./deploy.doc.sh ; fi
-- npm run docsitemap
-- npm run zipForGitReleases
+- yarn run docsitemap
+- yarn run zipForGitReleases
 env:
   global:
   - COMMIT_AUTHOR_EMAIL: sandbox_JSUI@coveo.com
