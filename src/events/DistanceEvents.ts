@@ -1,8 +1,15 @@
+/**
+ * The `IGeolocationPosition` interface describes a geolocation position.
+ */
 export interface IGeolocationPosition {
   longitude: number;
   latitude: number;
 }
 
+/**
+ * The `IGeolocationPositionProvider` interface describes a class that can provide a
+ * geolocation position to the [`DistanceResources`]{@link DistanceResources} component.
+ */
 export interface IGeolocationPositionProvider {
   getPosition(): Promise<IGeolocationPosition>;
 }
