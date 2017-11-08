@@ -1,10 +1,10 @@
-export interface IPosition {
+export interface IGeolocationPosition {
   longitude: number;
   latitude: number;
 }
 
-export interface IPositionProvider {
-  getPosition(): Promise<IPosition>;
+export interface IGeolocationPositionProvider {
+  getPosition(): Promise<IGeolocationPosition>;
 }
 
 /**
@@ -15,7 +15,7 @@ export interface IResolvingPositionEventArgs {
   /**
    * The array of providers that can provide a position. The first provider that can resolve the position will be used.
    */
-  providers: IPositionProvider[];
+  providers: IGeolocationPositionProvider[];
 }
 
 /**
@@ -26,7 +26,7 @@ export interface IPositionResolvedEventArgs {
   /**
    * The position that was resolved.
    */
-  position: IPosition;
+  position: IGeolocationPosition;
 }
 
 /**
