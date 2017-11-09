@@ -297,11 +297,10 @@ var SimpleFilter = /** @class */ (function (_super) {
         _.each(this.checkboxes, function (result) {
             _this.valueContainer.append(result.checkbox.getElement());
         });
-        if (this.checkboxes.length > 0) {
-            Dom_1.$$(Dom_1.$$(this.checkboxes[this.checkboxes.length - 1].checkbox.getElement()).find('.coveo-checkbox-button')).on('blur', function () {
-                _this.closeContainer();
-            });
-        }
+        var lastLabel = _.last(Dom_1.$$(this.valueContainer).findAll('.coveo-checkbox-label'));
+        Dom_1.$$(lastLabel).on('blur', function () {
+            _this.closeContainer();
+        });
     };
     SimpleFilter.prototype.createValueContainer = function () {
         this.valueContainer = Dom_1.$$('div', { className: 'coveo-simplefilter-value-container' });

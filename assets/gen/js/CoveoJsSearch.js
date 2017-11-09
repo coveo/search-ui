@@ -22399,8 +22399,8 @@ module.exports = g;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.version = {
-    lib: '2.3477.7-beta',
-    product: '2.3477.7-beta',
+    lib: '2.3477.8-beta',
+    product: '2.3477.8-beta',
     supportedApiVersion: 2
 };
 
@@ -42232,7 +42232,6 @@ var GlobalExports_1 = __webpack_require__(4);
  * **Note:**
  * > There can only be one `Folding` component per [`Tab`]{@link Tab} component.
  *
- * @notSupportedIn salesforcefree
  */
 var Folding = /** @class */ (function (_super) {
     __extends(Folding, _super);
@@ -59380,11 +59379,10 @@ var SimpleFilter = /** @class */ (function (_super) {
         _.each(this.checkboxes, function (result) {
             _this.valueContainer.append(result.checkbox.getElement());
         });
-        if (this.checkboxes.length > 0) {
-            Dom_1.$$(Dom_1.$$(this.checkboxes[this.checkboxes.length - 1].checkbox.getElement()).find('.coveo-checkbox-button')).on('blur', function () {
-                _this.closeContainer();
-            });
-        }
+        var lastLabel = _.last(Dom_1.$$(this.valueContainer).findAll('.coveo-checkbox-label'));
+        Dom_1.$$(lastLabel).on('blur', function () {
+            _this.closeContainer();
+        });
     };
     SimpleFilter.prototype.createValueContainer = function () {
         this.valueContainer = Dom_1.$$('div', { className: 'coveo-simplefilter-value-container' });

@@ -43,7 +43,6 @@ var GlobalExports_1 = __webpack_require__(4);
  * **Note:**
  * > There can only be one `Folding` component per [`Tab`]{@link Tab} component.
  *
- * @notSupportedIn salesforcefree
  */
 var Folding = /** @class */ (function (_super) {
     __extends(Folding, _super);
