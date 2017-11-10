@@ -117,6 +117,9 @@ export class OldOmniboxAddon {
       clearCurrentExpression: () => {
         this.clearCurrentExpression();
       },
+      set: (newValue: string) => {
+        this.omnibox.magicBox.setText(newValue);
+      },
       replace: (searchValue: string, newValue: string) => {
         this.replace(searchValue, newValue);
       },
@@ -128,6 +131,9 @@ export class OldOmniboxAddon {
       },
       closeOmnibox: () => {
         this.omnibox.magicBox.blur();
+      },
+      clearSuggestions: () => {
+        this.lastQuery = '';
       }
     };
     return ret;

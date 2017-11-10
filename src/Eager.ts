@@ -91,6 +91,9 @@ FacetSlider.doExport();
 import { FieldSuggestions } from './ui/FieldSuggestions/FieldSuggestions';
 FieldSuggestions.doExport();
 
+import { FieldOccurenceSuggestions } from './ui/FieldSuggestions/FieldOccurenceSuggestions';
+FieldOccurenceSuggestions.doExport();
+
 import { FieldTable } from './ui/FieldTable/FieldTable';
 FieldTable.doExport();
 

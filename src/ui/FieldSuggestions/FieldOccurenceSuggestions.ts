@@ -17,10 +17,11 @@ import { IStringMap } from '../../rest/GenericParam';
 import * as _ from 'underscore';
 import { exportGlobally } from '../../GlobalExports';
 import 'styling/_FieldSuggestions';
+import { DomUtils } from '../../UtilsModules';
+import { Facet } from '../Facet/Facet';
 
-export interface IFieldSuggestionsOptions extends ISuggestionForOmniboxOptions {
+export interface IFieldOccurenceSuggestionsOptions extends ISuggestionForOmniboxOptions {
   field?: IFieldOption;
-  queryOverride?: string;
 }
 
 /**
@@ -29,33 +30,25 @@ export interface IFieldSuggestionsOptions extends ISuggestionForOmniboxOptions {
  *
  * The query suggestions provided by this component appear in the [`Omnibox`]{@link Omnibox} component.
  */
-export class FieldSuggestions extends Component {
-  static ID = 'FieldSuggestions';
+export class FieldOccurenceSuggestions extends Component {
+  static ID = 'FieldOccurenceSuggestions';
 
   static doExport = () => {
     exportGlobally({
-      FieldSuggestions: FieldSuggestions
+      FieldOccurenceSuggestions: FieldOccurenceSuggestions
     });
   };
 
   /**
    * @componentOptions
    */
-  static options: IFieldSuggestionsOptions = {
+  static options: IFieldOccurenceSuggestionsOptions = {
     /**
      * Specifies the facet field from which to provide suggestions.
      *
      * Specifying a value for this option is required for the `FieldSuggestions` component to work.
      */
     field: ComponentOptions.buildFieldOption({ required: true }),
-
-    /**
-     * Specifies a query override to apply when retrieving suggestions. You can use any valid query expression (see
-     * [Coveo Query Syntax Reference](http://www.coveo.com/go?dest=adminhelp70&lcid=9&context=10005)).
-     *
-     * Default value is the empty string, and the component applies no query override.
-     */
-    queryOverride: ComponentOptions.buildStringOption({ defaultValue: '' }),
 
     /**
      * Specifies the z-index position at which the suggestions render themselves in the [`Omnibox`]{@link Omnibox}.
@@ -144,6 +137,8 @@ export class FieldSuggestions extends Component {
     })
   };
 
+  private queryStateFieldId;
+
   private suggestionForOmnibox: SuggestionForOmnibox;
   private currentlyDisplayedSuggestions: { [suggestion: string]: { element: HTMLElement; pos: number } };
 
@@ -154,62 +149,40 @@ export class FieldSuggestions extends Component {
    * @param bindings The bindings that the component requires to function normally. If not set, these will be
    * automatically resolved (with a slower execution time).
    */
-  constructor(element: HTMLElement, public options: IFieldSuggestionsOptions, bindings?: IComponentBindings) {
-    super(element, FieldSuggestions.ID, bindings);
+  constructor(element: HTMLElement, public options: IFieldOccurenceSuggestionsOptions, bindings?: IComponentBindings) {
+    super(element, FieldOccurenceSuggestions.ID, bindings);
 
     if (this.options && 'omniboxSuggestionOptions' in this.options) {
       this.options = _.extend(this.options, this.options['omniboxSuggestionOptions']);
     }
 
-    this.options = ComponentOptions.initComponentOptions(element, FieldSuggestions, options);
+    this.options = ComponentOptions.initComponentOptions(element, FieldOccurenceSuggestions, options);
 
     Assert.check(Utils.isCoveoField(<string>this.options.field), this.options.field + ' is not a valid field');
 
+    this.queryStateFieldId = `f:${this.options.field}`;
+    if (this.queryStateModel.getAttributes()[this.queryStateFieldId] === undefined) {
+      this.queryStateModel.registerNewAttribute(this.queryStateFieldId, []);
+    }
+
     this.options.onSelect = this.options.onSelect || this.onRowSelection;
 
-    const rowTemplate = (toRender: ISuggestionForOmniboxRowTemplateOptions) => {
+    const rowTemplate = (rowTemplateOptions: ISuggestionForOmniboxRowTemplateOptions) => {
       const rowElement = $$('div', {
         className: 'magic-box-suggestion coveo-omnibox-selectable coveo-top-field-suggestion-row'
       });
-      if (toRender['data']) {
-        rowElement.el.innerHTML = toRender['data'];
-      }
+      rowElement.el.innerHTML = `${rowTemplateOptions.word} in ${DomUtils.highlightElement(
+        rowTemplateOptions.rawValue,
+        rowTemplateOptions.rawValue
+      )} (${rowTemplateOptions.result.numberOfResults} results)`;
       return rowElement.el.outerHTML;
     };
 
-    let suggestionStructure: ISuggestionForOmniboxTemplate;
-    if (this.options.headerTitle == null) {
-      suggestionStructure = {
-        row: rowTemplate
-      };
-    } else {
-      const headerTemplate = () => {
-        const headerElement = $$('div', {
-          className: 'coveo-top-field-suggestion-header'
-        });
-
-        const iconElement = $$('span', {
-          className: 'coveo-icon-top-field'
-        });
-
-        const captionElement = $$('span', {
-          className: 'coveo-caption'
-        });
-
-        if (this.options.headerTitle) {
-          captionElement.text(this.options.headerTitle);
-        }
-
-        headerElement.append(iconElement.el);
-        headerElement.append(captionElement.el);
-
-        return headerElement.el.outerHTML;
-      };
-
-      suggestionStructure = {
-        header: { template: headerTemplate, title: this.options.headerTitle },
-        row: rowTemplate
-      };
+    const suggestionStructure: ISuggestionForOmniboxTemplate = {
+      row: rowTemplate
+    };
+    if (this.options.headerTitle != null) {
+      suggestionStructure.header = { template: this.createHeaderTemplate(), title: this.options.headerTitle };
     }
 
     this.suggestionForOmnibox = new SuggestionForOmnibox(
@@ -224,30 +197,29 @@ export class FieldSuggestions extends Component {
     this.bind.onRootElement(OmniboxEvents.populateOmnibox, (args: IPopulateOmniboxEventArgs) => this.handlePopulateOmnibox(args));
   }
 
-  public selectSuggestion(suggestion: number);
-  public selectSuggestion(suggestion: string);
+  private createHeaderTemplate(): () => string {
+    return () => {
+      const headerElement = $$('div', {
+        className: 'coveo-top-field-suggestion-header'
+      });
 
-  /**
-   * Selects a currently displayed query suggestion. This implies that at least one suggestion must have been returned
-   * at least once.
-   * @param suggestion Either a number (0-based index position of the query suggestion to select) or a string that
-   * matches the suggestion to select.
-   */
-  public selectSuggestion(suggestion: any) {
-    if (this.currentlyDisplayedSuggestions) {
-      if (isNaN(suggestion)) {
-        if (this.currentlyDisplayedSuggestions[suggestion]) {
-          $$(this.currentlyDisplayedSuggestions[suggestion].element).trigger('click');
-        }
-      } else {
-        const currentlySuggested = <{ element: HTMLElement; pos: number }>_.findWhere(<any>this.currentlyDisplayedSuggestions, {
-          pos: suggestion
-        });
-        if (currentlySuggested) {
-          $$(currentlySuggested.element).trigger('click');
-        }
+      const iconElement = $$('span', {
+        className: 'coveo-icon-top-field'
+      });
+
+      const captionElement = $$('span', {
+        className: 'coveo-caption'
+      });
+
+      if (this.options.headerTitle) {
+        captionElement.text(this.options.headerTitle);
       }
-    }
+
+      headerElement.append(iconElement.el);
+      headerElement.append(captionElement.el);
+
+      return headerElement.el.outerHTML;
+    };
   }
 
   private handlePopulateOmnibox(args: IPopulateOmniboxEventArgs) {
@@ -259,7 +231,9 @@ export class FieldSuggestions extends Component {
         .getEndpoint()
         .listFieldValues(this.buildListFieldValueRequest(valueToSearch))
         .then((results: IIndexFieldValue[]) => {
-          const element = this.suggestionForOmnibox.buildOmniboxElement(results, args);
+          const currentSelectedValues: string[] = this.queryStateModel.get(this.queryStateFieldId) || [];
+          const resultsWithoutSelectedValues = results.filter(result => !currentSelectedValues.some(value => value == result.value));
+          const element = this.suggestionForOmnibox.buildOmniboxElement(resultsWithoutSelectedValues, args);
           this.currentlyDisplayedSuggestions = {};
           if (element) {
             _.map($$(element).findAll('.coveo-omnibox-selectable'), (selectable, i?) => {
@@ -290,31 +264,43 @@ export class FieldSuggestions extends Component {
   }
 
   private onRowSelection(value: string, args: IPopulateOmniboxEventArgs) {
-    args.clear();
+    // We need to use `set` here, or `clear()` will trigger a query with an empty `q` parameters.
+    // Then the `QueryboxQueryParameters.queryIsBlocked` kicks in and forbids every other `q` update from the same stack.
+    args.set(args.completeQueryExpression.word);
     args.closeOmnibox();
-    this.queryStateModel.set(QueryStateModel.attributesEnum.q, value);
+    args.clearSuggestions();
+    this.queryStateModel.set(this.queryStateFieldId, [value]);
     this.usageAnalytics.logSearchEvent<IAnalyticsNoMeta>(analyticsActionCauseList.omniboxField, {});
     this.queryController.executeQuery();
   }
 
   private onRowTab(value: string, args: IPopulateOmniboxEventArgs) {
-    args.clear();
+    args.set(args.completeQueryExpression.word);
     args.closeOmnibox();
-    this.queryStateModel.set(QueryStateModel.attributesEnum.q, `${value}`);
+    args.clearSuggestions();
+    this.queryStateModel.set(this.queryStateFieldId, [value]);
     this.usageAnalytics.logCustomEvent(analyticsActionCauseList.omniboxField, {}, this.element);
+    this.queryController.executeQuery();
   }
 
   private buildListFieldValueRequest(valueToSearch: string): IListFieldValuesRequest {
+    const lastQuery = this.queryController.getLastQuery();
+    const aqWithoutCurrentField =
+      lastQuery && lastQuery.aq ? this.removeFieldExpressionFromExpression(this.options.field.toString(), lastQuery.aq) : '';
+
+    const queryToExecute = [valueToSearch, aqWithoutCurrentField, lastQuery.cq].filter(part => !!part).join(' ');
     return {
       field: <string>this.options.field,
       ignoreAccents: true,
       sortCriteria: 'occurrences',
       maximumNumberOfValues: this.options.numberOfSuggestions,
-      patternType: 'Wildcards',
-      pattern: '*' + valueToSearch + '*',
-      queryOverride: this.options.queryOverride
+      queryOverride: queryToExecute
     };
+  }
+
+  private removeFieldExpressionFromExpression(field: string, expression: string): string {
+    return expression.replace(new RegExp(`${field}==([^)]*)`, 'gi'), '').replace(new RegExp(`${field}==[^ ]*`, 'gi'), '');
   }
 }
 
-Initialization.registerAutoCreateComponent(FieldSuggestions);
+Initialization.registerAutoCreateComponent(FieldOccurenceSuggestions);

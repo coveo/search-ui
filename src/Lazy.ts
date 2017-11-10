@@ -89,6 +89,9 @@ lazyFacetSlider();
 import { lazyFieldSuggestions } from './ui/FieldSuggestions/LazyFieldSuggestions';
 lazyFieldSuggestions();
 
+import { lazyFieldOccurenceSuggestions } from './ui/FieldSuggestions/LazyFieldOccurenceSuggestions';
+lazyFieldOccurenceSuggestions();
+
 import { lazyFieldTable } from './ui/FieldTable/LazyFieldTable';
 lazyFieldTable();
 

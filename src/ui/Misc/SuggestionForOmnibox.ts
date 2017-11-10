@@ -7,6 +7,13 @@ export interface ISuggestionForOmniboxOptionsOnSelect {
   (value: string, args: IPopulateOmniboxEventArgs): void;
 }
 
+export interface ISuggestionForOmniboxRowTemplateOptions {
+  rawValue: string;
+  data?: string;
+  word: string;
+  result: ISuggestionForOmniboxResult;
+}
+
 export interface ISuggestionForOmniboxOptions {
   omniboxZIndex?: number;
   headerTitle?: string;
@@ -19,11 +26,12 @@ export interface ISuggestionForOmniboxTemplate {
     template: (...args: any[]) => string;
     title: string;
   };
-  row: (...args: any[]) => string;
+  row: (args: ISuggestionForOmniboxRowTemplateOptions) => string;
 }
 
 export interface ISuggestionForOmniboxResult {
   value: string;
+  numberOfResults: number;
 }
 
 export class SuggestionForOmnibox {
@@ -67,7 +75,9 @@ export class SuggestionForOmnibox {
         undefined,
         this.structure.row({
           rawValue: result.value,
-          data: DomUtils.highlightElement(result.value, args.completeQueryExpression.word)
+          data: DomUtils.highlightElement(result.value, args.completeQueryExpression.word),
+          word: args.completeQueryExpression.word,
+          result: result
         })
       ).el;
       $$(row).on('click', () => {
