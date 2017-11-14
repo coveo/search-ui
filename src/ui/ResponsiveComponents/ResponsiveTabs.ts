@@ -1,6 +1,6 @@
 import { $$, Dom } from '../../utils/Dom';
 import { InitializationEvents } from '../../events/InitializationEvents';
-import { PopupUtils, HorizontalAlignment, VerticalAlignment } from '../../utils/PopupUtils';
+import { PopupUtils, PopupHorizontalAlignment, PopupVerticalAlignment } from '../../utils/PopupUtils';
 import { EventsUtils } from '../../utils/EventsUtils';
 import { Utils } from '../../utils/Utils';
 import { Logger } from '../../misc/Logger';
@@ -353,7 +353,7 @@ export class ResponsiveTabs implements IResponsiveComponent {
       this.dropdownContent.el,
       this.dropdownHeader.el,
       this.coveoRoot.el,
-      { horizontal: HorizontalAlignment.INNERRIGHT, vertical: VerticalAlignment.BOTTOM },
+      { horizontal: PopupHorizontalAlignment.INNERRIGHT, vertical: PopupVerticalAlignment.BOTTOM },
       this.coveoRoot.el
     );
   }

@@ -1,14 +1,14 @@
 import { $$, IOffset } from './Dom';
 
-export interface IPosition {
-  vertical: VerticalAlignment;
-  horizontal: HorizontalAlignment;
+export interface IPopupPosition {
+  vertical: PopupVerticalAlignment;
+  horizontal: PopupHorizontalAlignment;
   verticalOffset?: number;
   horizontalOffset?: number;
   horizontalClip?: boolean;
 }
 
-export enum VerticalAlignment {
+export enum PopupVerticalAlignment {
   TOP,
   MIDDLE,
   BOTTOM,
@@ -16,7 +16,7 @@ export enum VerticalAlignment {
   INNERBOTTOM
 }
 
-export enum HorizontalAlignment {
+export enum PopupHorizontalAlignment {
   LEFT,
   CENTER,
   RIGHT,
@@ -24,7 +24,7 @@ export enum HorizontalAlignment {
   INNERRIGHT
 }
 
-interface IElementBoundary {
+interface IPopupElementBoundary {
   top: number;
   left: number;
   right: number;
@@ -36,7 +36,7 @@ export class PopupUtils {
     popUp: HTMLElement,
     nextTo: HTMLElement,
     boundary: HTMLElement,
-    desiredPosition: IPosition,
+    desiredPosition: IPopupPosition,
     appendTo?: HTMLElement,
     checkForBoundary = 0
   ) {
@@ -74,25 +74,25 @@ export class PopupUtils {
     }
   }
 
-  private static finalAdjustement(popUpOffSet: IOffset, popUpPosition: IOffset, popUp: HTMLElement, desiredPosition: IPosition) {
+  private static finalAdjustement(popUpOffSet: IOffset, popUpPosition: IOffset, popUp: HTMLElement, desiredPosition: IPopupPosition) {
     let position = $$(popUp).position();
     popUp.style.top = position.top + desiredPosition.verticalOffset - (popUpOffSet.top - popUpPosition.top) + 'px';
     popUp.style.left = position.left + desiredPosition.horizontalOffset - (popUpOffSet.left - popUpPosition.left) + 'px';
   }
 
-  private static basicVerticalAlignment(popUpPosition: IOffset, popUp: HTMLElement, nextTo: HTMLElement, desiredPosition: IPosition) {
+  private static basicVerticalAlignment(popUpPosition: IOffset, popUp: HTMLElement, nextTo: HTMLElement, desiredPosition: IPopupPosition) {
     switch (desiredPosition.vertical) {
-      case VerticalAlignment.TOP:
+      case PopupVerticalAlignment.TOP:
         popUpPosition.top -= popUp.offsetHeight;
         break;
-      case VerticalAlignment.BOTTOM:
+      case PopupVerticalAlignment.BOTTOM:
         popUpPosition.top += nextTo.offsetHeight;
         break;
-      case VerticalAlignment.MIDDLE:
+      case PopupVerticalAlignment.MIDDLE:
         popUpPosition.top -= popUp.offsetHeight / 3;
-      case VerticalAlignment.INNERTOP:
+      case PopupVerticalAlignment.INNERTOP:
         break; // Nothing to do, it's the default alignment normally
-      case VerticalAlignment.INNERBOTTOM:
+      case PopupVerticalAlignment.INNERBOTTOM:
         popUpPosition.top -= popUp.offsetHeight - nextTo.offsetHeight;
         break;
       default:
@@ -100,20 +100,25 @@ export class PopupUtils {
     }
   }
 
-  private static basicHorizontalAlignment(popUpPosition: IOffset, popUp: HTMLElement, nextTo: HTMLElement, desiredPosition: IPosition) {
+  private static basicHorizontalAlignment(
+    popUpPosition: IOffset,
+    popUp: HTMLElement,
+    nextTo: HTMLElement,
+    desiredPosition: IPopupPosition
+  ) {
     switch (desiredPosition.horizontal) {
-      case HorizontalAlignment.LEFT:
+      case PopupHorizontalAlignment.LEFT:
         popUpPosition.left -= popUp.offsetWidth;
         break;
-      case HorizontalAlignment.RIGHT:
+      case PopupHorizontalAlignment.RIGHT:
         popUpPosition.left += nextTo.offsetWidth;
         break;
-      case HorizontalAlignment.CENTER:
+      case PopupHorizontalAlignment.CENTER:
         popUpPosition.left += PopupUtils.offSetToAlignCenter(popUp, nextTo);
         break;
-      case HorizontalAlignment.INNERLEFT:
+      case PopupHorizontalAlignment.INNERLEFT:
         break; // Nothing to do, it's the default alignment normally
-      case HorizontalAlignment.INNERRIGHT:
+      case PopupHorizontalAlignment.INNERRIGHT:
         popUpPosition.left -= popUp.offsetWidth - nextTo.offsetWidth;
         break;
       default:
@@ -121,19 +126,19 @@ export class PopupUtils {
     }
   }
 
-  private static alignInsideBoundary(oldPosition: IPosition, checkBoundary) {
+  private static alignInsideBoundary(oldPosition: IPopupPosition, checkBoundary) {
     let newDesiredPosition = oldPosition;
     if (checkBoundary.horizontal == 'left') {
-      newDesiredPosition.horizontal = HorizontalAlignment.RIGHT;
+      newDesiredPosition.horizontal = PopupHorizontalAlignment.RIGHT;
     }
     if (checkBoundary.horizontal == 'right') {
-      newDesiredPosition.horizontal = HorizontalAlignment.LEFT;
+      newDesiredPosition.horizontal = PopupHorizontalAlignment.LEFT;
     }
     if (checkBoundary.vertical == 'top') {
-      newDesiredPosition.vertical = VerticalAlignment.BOTTOM;
+      newDesiredPosition.vertical = PopupVerticalAlignment.BOTTOM;
     }
     if (checkBoundary.vertical == 'bottom') {
-      newDesiredPosition.vertical = VerticalAlignment.TOP;
+      newDesiredPosition.vertical = PopupVerticalAlignment.TOP;
     }
     return newDesiredPosition;
   }
@@ -160,7 +165,7 @@ export class PopupUtils {
     };
   }
 
-  private static checkForOutOfBoundary(popUpBoundary: IElementBoundary, boundary: IElementBoundary) {
+  private static checkForOutOfBoundary(popUpBoundary: IPopupElementBoundary, boundary: IPopupElementBoundary) {
     let ret = {
       vertical: 'ok',
       horizontal: 'ok'
