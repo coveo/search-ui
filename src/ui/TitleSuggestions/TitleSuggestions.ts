@@ -1,4 +1,3 @@
-import { Omnibox } from '../Omnibox/Omnibox';
 import {
   ISuggestionForOmniboxOptions,
   SuggestionForOmnibox,
@@ -25,18 +24,29 @@ import { exportGlobally } from '../../GlobalExports';
 import 'styling/_FieldSuggestions';
 import { DomUtils } from '../../UtilsModules';
 import { Facet } from '../Facet/Facet';
+import { result } from '../../Lazy';
+import { SearchEndpoint } from '../../rest/SearchEndpoint';
+import { EndpointCaller } from '../../rest/EndpointCaller';
+import { IQueryResult } from '../../rest/QueryResult';
 
-export interface IFieldOccurenceSuggestionsOptions extends ISuggestionForOmniboxOptions {
-  field?: IFieldOption;
+export interface ITitleServiceResponse {
+  results: ITitleServiceResult[];
 }
 
-export interface IFieldOccurenceSuggestionForOmniboxResult extends ISuggestionForOmniboxResult {
-  numberOfResults: number;
+export interface ITitleServiceResult {
+  title: string;
+  clickUri: string;
+  documentUniqueId: string;
 }
 
-export interface IFieldOccurenceResponse {
-  values: IIndexFieldValue[];
-  keyword: string;
+export interface ITitleSuggestionForOmniboxResult extends ISuggestionForOmniboxResult {
+  clickUri: string;
+  documentUniqueId: string;
+  title: string;
+}
+
+export interface ITitleSuggestionsOptions extends ISuggestionForOmniboxOptions {
+  endpoint: string;
 }
 
 /**
@@ -45,25 +55,27 @@ export interface IFieldOccurenceResponse {
  *
  * The query suggestions provided by this component appear in the [`Omnibox`]{@link Omnibox} component.
  */
-export class FieldOccurenceSuggestions extends Component {
-  static ID = 'FieldOccurenceSuggestions';
+export class TitleSuggestions extends Component {
+  static ID = 'TitleSuggestions';
 
   static doExport = () => {
     exportGlobally({
-      FieldOccurenceSuggestions: FieldOccurenceSuggestions
+      TitleSuggestions: TitleSuggestions
     });
   };
 
   /**
    * @componentOptions
    */
-  static options: IFieldOccurenceSuggestionsOptions = {
+  static options: ITitleSuggestionsOptions = {
     /**
      * Specifies the facet field from which to provide suggestions.
      *
      * Specifying a value for this option is required for the `FieldSuggestions` component to work.
      */
-    field: ComponentOptions.buildFieldOption({ required: true }),
+    endpoint: ComponentOptions.buildStringOption({
+      defaultValue: 'http://localhost:3000/title'
+    }),
 
     /**
      * Specifies the z-index position at which the suggestions render themselves in the [`Omnibox`]{@link Omnibox}.
@@ -154,7 +166,7 @@ export class FieldOccurenceSuggestions extends Component {
 
   private queryStateFieldId;
 
-  private suggestionForOmnibox: SuggestionForOmnibox<IFieldOccurenceSuggestionForOmniboxResult>;
+  private suggestionForOmnibox: SuggestionForOmnibox<ITitleSuggestionForOmniboxResult>;
   private currentlyDisplayedSuggestions: { [suggestion: string]: { element: HTMLElement; pos: number } };
 
   /**
@@ -164,32 +176,22 @@ export class FieldOccurenceSuggestions extends Component {
    * @param bindings The bindings that the component requires to function normally. If not set, these will be
    * automatically resolved (with a slower execution time).
    */
-  constructor(element: HTMLElement, public options: IFieldOccurenceSuggestionsOptions, bindings?: IComponentBindings) {
-    super(element, FieldOccurenceSuggestions.ID, bindings);
+  constructor(element: HTMLElement, public options: ITitleSuggestionsOptions, bindings?: IComponentBindings) {
+    super(element, TitleSuggestions.ID, bindings);
 
     if (this.options && 'omniboxSuggestionOptions' in this.options) {
       this.options = _.extend(this.options, this.options['omniboxSuggestionOptions']);
     }
 
-    this.options = ComponentOptions.initComponentOptions(element, FieldOccurenceSuggestions, options);
-
-    Assert.check(Utils.isCoveoField(<string>this.options.field), this.options.field + ' is not a valid field');
-
-    this.queryStateFieldId = `f:${this.options.field}`;
-    if (this.queryStateModel.getAttributes()[this.queryStateFieldId] === undefined) {
-      this.queryStateModel.registerNewAttribute(this.queryStateFieldId, []);
-    }
+    this.options = ComponentOptions.initComponentOptions(element, TitleSuggestions, options);
 
     this.options.onSelect = this.options.onSelect || this.onRowSelection;
 
-    const rowTemplate = (rowTemplateOptions: ISuggestionForOmniboxRowTemplateOptions<IFieldOccurenceSuggestionForOmniboxResult>) => {
+    const rowTemplate = (rowTemplateOptions: ISuggestionForOmniboxRowTemplateOptions<ITitleSuggestionForOmniboxResult>) => {
       const rowElement = $$('div', {
         className: 'magic-box-suggestion coveo-omnibox-selectable coveo-top-field-suggestion-row'
       });
-      rowElement.el.innerHTML = `${rowTemplateOptions.result.keyword} in ${DomUtils.highlightElement(
-        rowTemplateOptions.rawValue,
-        rowTemplateOptions.rawValue
-      )} (${rowTemplateOptions.result.numberOfResults} results)`;
+      rowElement.el.innerHTML = `${rowTemplateOptions.result.title}`;
       return rowElement.el.outerHTML;
     };
 
@@ -200,13 +202,13 @@ export class FieldOccurenceSuggestions extends Component {
       suggestionStructure.header = { template: this.createHeaderTemplate(), title: this.options.headerTitle };
     }
 
-    this.suggestionForOmnibox = new SuggestionForOmnibox<IFieldOccurenceSuggestionForOmniboxResult>(
+    this.suggestionForOmnibox = new SuggestionForOmnibox(
       suggestionStructure,
       (result: string, args: IPopulateOmniboxEventArgs) => {
         this.options.onSelect.call(this, result, args);
       },
       (result: string, args: IPopulateOmniboxEventArgs) => {
-        this.options.onSelect.call(this, result, args);
+        // this.onRowTab(result, args);
       }
     );
     this.bind.onRootElement(OmniboxEvents.populateOmnibox, (args: IPopulateOmniboxEventArgs) => this.handlePopulateOmnibox(args));
@@ -240,108 +242,74 @@ export class FieldOccurenceSuggestions extends Component {
   private handlePopulateOmnibox(args: IPopulateOmniboxEventArgs) {
     Assert.exists(args);
 
-    const wordsToQuery = [args.completeQueryExpression.word];
-
-    const promise = this.getQuerySuggestionsKeywords()
-      .then(suggestions => {
-        return this.listFieldsValues(wordsToQuery.concat(suggestions));
-      })
-      .then((response: IFieldOccurenceResponse[]) => {
-        const currentSelectedValues: string[] = this.queryStateModel.get(this.queryStateFieldId) || [];
-        const resultsWithoutSelectedValues: IFieldOccurenceSuggestionForOmniboxResult[] = response.reduce((allValues, resp) => {
-          const result = resp.values.filter(result => !currentSelectedValues.some(value => value == result.value)).map(value => {
-            return <IFieldOccurenceSuggestionForOmniboxResult>{
-              numberOfResults: value.numberOfResults,
-              keyword: resp.keyword,
-              value: value.value
+    const valueToSearch = args.completeQueryExpression.word;
+    const promise = new Promise(resolve => {
+      const defaultEndpoint: SearchEndpoint = SearchEndpoint.endpoints['default'];
+      const titleServiceCaller = new EndpointCaller(defaultEndpoint.options);
+      titleServiceCaller
+        .call({
+          method: 'GET',
+          requestData: {
+            keyword: args.completeQueryExpression.word
+          },
+          errorsAsSuccess: false,
+          queryString: [''],
+          requestDataType: 'json',
+          responseType: 'json',
+          url: this.options.endpoint
+        })
+        .then(value => value.data)
+        .then((response: ITitleServiceResponse) => {
+          const results: ITitleSuggestionForOmniboxResult[] = response.results.map(result => {
+            return <ITitleSuggestionForOmniboxResult>{
+              clickUri: result.clickUri,
+              documentUniqueId: result.documentUniqueId,
+              title: result.title,
+              value: result.documentUniqueId
             };
           });
-          return allValues.concat(result);
-        }, []);
-        const element = this.suggestionForOmnibox.buildOmniboxElement(resultsWithoutSelectedValues, args);
-        this.currentlyDisplayedSuggestions = {};
-        if (element) {
-          _.map($$(element).findAll('.coveo-omnibox-selectable'), (selectable, i?) => {
-            this.currentlyDisplayedSuggestions[$$(selectable).text()] = {
-              element: selectable,
-              pos: i
-            };
-          });
-          return {
-            element: element,
-            zIndex: this.options.omniboxZIndex
-          };
-        } else {
-          return {
+          const element = this.suggestionForOmnibox.buildOmniboxElement(results, args);
+          this.currentlyDisplayedSuggestions = {};
+          if (element) {
+            _.map($$(element).findAll('.coveo-omnibox-selectable'), (selectable, i?) => {
+              this.currentlyDisplayedSuggestions[$$(selectable).text()] = {
+                element: selectable,
+                pos: i
+              };
+            });
+            resolve({
+              element: element,
+              zIndex: this.options.omniboxZIndex
+            });
+          } else {
+            resolve({
+              element: undefined
+            });
+          }
+        })
+        .catch(() => {
+          resolve({
             element: undefined
-          };
-        }
-      })
-      .catch(() => {
-        return {
-          element: undefined
-        };
-      });
+          });
+        });
+    });
     args.rows.push({
       deferred: promise
     });
   }
 
-  private getQuerySuggestionsKeywords(): Promise<string[]> {
-    const omnibox = this.searchInterface.getComponents<Omnibox>(Omnibox.ID)[0];
-    if (omnibox.suggestionAddon) {
-      return omnibox.suggestionAddon.getSuggestion().then(suggestions => suggestions.map(s => s.text));
-    } else {
-      return Promise.resolve();
-    }
-  }
-
-  private listFieldsValues(valueToSearch: string[]): Promise<IFieldOccurenceResponse[]> {
-    return Promise.all(valueToSearch.map(value => this.listFieldValues(value)));
-  }
-
-  private listFieldValues(valueToSearch: string): Promise<IFieldOccurenceResponse> {
-    const request = this.buildListFieldValueRequest(valueToSearch);
-    return this.queryController
-      .getEndpoint()
-      .listFieldValues(request)
-      .then(values => {
-        return {
-          keyword: valueToSearch,
-          values: values
-        };
-      });
-  }
-
   private onRowSelection(result: string, args: IPopulateOmniboxEventArgs) {
-    // We need to use `set` here, or `clear()` will trigger a query with an empty `q` parameters.
-    // Then the `QueryboxQueryParameters.queryIsBlocked` kicks in and forbids every other `q` update from the same stack.
-    args.set(args.completeQueryExpression.word);
-    args.closeOmnibox();
-    args.clearSuggestions();
-    this.queryStateModel.set(this.queryStateFieldId, [result]);
-    this.usageAnalytics.logSearchEvent<IAnalyticsNoMeta>(analyticsActionCauseList.omniboxField, {});
-    this.queryController.executeQuery();
-  }
-
-  private buildListFieldValueRequest(valueToSearch: string): IListFieldValuesRequest {
-    const lastQuery = this.queryController.getLastQuery();
-    const aqWithoutCurrentField =
-      lastQuery && lastQuery.aq ? this.removeFieldExpressionFromExpression(this.options.field.toString(), lastQuery.aq) : '';
-
-    const queryToExecute = [valueToSearch, aqWithoutCurrentField, lastQuery.cq].filter(part => !!part).join(' ');
-    return {
-      field: <string>this.options.field,
-      ignoreAccents: true,
-      sortCriteria: 'occurrences',
-      maximumNumberOfValues: this.options.numberOfSuggestions,
-      queryOverride: queryToExecute
-    };
-  }
-
-  private removeFieldExpressionFromExpression(field: string, expression: string): string {
-    return expression.replace(new RegExp(`${field}==([^)]*)`, 'gi'), '').replace(new RegExp(`${field}==[^ ]*`, 'gi'), '');
+    const endpoint = this.queryController.getEndpoint();
+    endpoint.getDocument(result).then(result => {
+      this.usageAnalytics.logClickEvent(
+        analyticsActionCauseList.documentOpen,
+        { author: Utils.getFieldValue(result, 'author') },
+        result,
+        this.root
+      );
+      window.location.href = result.clickUri;
+    });
   }
 }
 
-Initialization.registerAutoCreateComponent(FieldOccurenceSuggestions);
+Initialization.registerAutoCreateComponent(TitleSuggestions);

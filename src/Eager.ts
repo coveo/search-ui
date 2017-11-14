@@ -224,6 +224,9 @@ TemplateLoader.doExport();
 import { Text } from './ui/Text/Text';
 Text.doExport();
 
+import { TitleSuggestions } from './ui/TitleSuggestions/TitleSuggestions';
+TitleSuggestions.doExport();
+
 import { Thumbnail } from './ui/Thumbnail/Thumbnail';
 Thumbnail.doExport();
 import { registerFields as thumbnailRegisterFields } from './ui/Thumbnail/ThumbnailFields';

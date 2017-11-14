@@ -226,6 +226,8 @@ export class Omnibox extends Component {
   private searchAsYouTypeTimeout: number;
   private skipAutoSuggest = false;
 
+  public suggestionAddon?: QuerySuggestAddon;
+
   /**
    * Creates a new Omnibox component. Also enables necessary addons and binds events on various query events.
    * @param element The HTMLElement on which to instantiate the component.
@@ -242,7 +244,7 @@ export class Omnibox extends Component {
     this.options = _.extend({}, this.options, this.componentOptionsModel.get(ComponentOptionsModel.attributesEnum.searchBox));
 
     if (this.options.enableQuerySuggestAddon) {
-      new QuerySuggestAddon(this);
+      this.suggestionAddon = new QuerySuggestAddon(this);
     }
     new OldOmniboxAddon(this);
     this.createMagicBox();

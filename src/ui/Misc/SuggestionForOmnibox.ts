@@ -4,14 +4,14 @@ import { $$ } from '../../utils/Dom';
 import * as _ from 'underscore';
 
 export interface ISuggestionForOmniboxOptionsOnSelect {
-  (value: string, args: IPopulateOmniboxEventArgs): void;
+  (result: string, args: IPopulateOmniboxEventArgs): void;
 }
 
-export interface ISuggestionForOmniboxRowTemplateOptions {
+export interface ISuggestionForOmniboxRowTemplateOptions<T extends ISuggestionForOmniboxResult = ISuggestionForOmniboxResult> {
   rawValue: string;
   data?: string;
   word: string;
-  result: ISuggestionForOmniboxResult;
+  result: T;
 }
 
 export interface ISuggestionForOmniboxOptions {
@@ -21,27 +21,27 @@ export interface ISuggestionForOmniboxOptions {
   numberOfSuggestions?: number;
 }
 
-export interface ISuggestionForOmniboxTemplate {
+export interface ISuggestionForOmniboxTemplate<T extends ISuggestionForOmniboxResult = ISuggestionForOmniboxResult> {
   header?: {
     template: (...args: any[]) => string;
     title: string;
   };
-  row: (args: ISuggestionForOmniboxRowTemplateOptions) => string;
+  row: (args: ISuggestionForOmniboxRowTemplateOptions<T>) => string;
 }
 
 export interface ISuggestionForOmniboxResult {
   value: string;
-  numberOfResults: number;
+  keyword: string;
 }
 
-export class SuggestionForOmnibox {
+export class SuggestionForOmnibox<T extends ISuggestionForOmniboxResult = ISuggestionForOmniboxResult> {
   constructor(
-    public structure: ISuggestionForOmniboxTemplate,
+    public structure: ISuggestionForOmniboxTemplate<T>,
     public onSelect: (value: string, args: IPopulateOmniboxEventArgs) => void,
     public onTabPress: (value: string, args: IPopulateOmniboxEventArgs) => void
   ) {}
 
-  public buildOmniboxElement(results: ISuggestionForOmniboxResult[], args: IPopulateOmniboxEventArgs): HTMLElement {
+  public buildOmniboxElement(results: T[], args: IPopulateOmniboxEventArgs): HTMLElement {
     let element: HTMLElement;
     if (results.length != 0) {
       element = $$('div').el;
@@ -67,7 +67,7 @@ export class SuggestionForOmnibox {
     ).el;
   }
 
-  private buildRowElements(results: ISuggestionForOmniboxResult[], args: IPopulateOmniboxEventArgs): HTMLElement[] {
+  private buildRowElements(results: T[], args: IPopulateOmniboxEventArgs): HTMLElement[] {
     let ret = [];
     _.each(results, result => {
       let row = $$(

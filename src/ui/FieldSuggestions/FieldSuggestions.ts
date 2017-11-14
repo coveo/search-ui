@@ -1,4 +1,9 @@
-import { ISuggestionForOmniboxOptions, SuggestionForOmnibox, ISuggestionForOmniboxTemplate } from '../Misc/SuggestionForOmnibox';
+import {
+  ISuggestionForOmniboxOptions,
+  SuggestionForOmnibox,
+  ISuggestionForOmniboxTemplate,
+  ISuggestionForOmniboxResult
+} from '../Misc/SuggestionForOmnibox';
 import { Component } from '../Base/Component';
 import { ComponentOptions, IFieldOption } from '../Base/ComponentOptions';
 import { IComponentBindings } from '../Base/ComponentBindings';
@@ -259,7 +264,15 @@ export class FieldSuggestions extends Component {
         .getEndpoint()
         .listFieldValues(this.buildListFieldValueRequest(valueToSearch))
         .then((results: IIndexFieldValue[]) => {
-          const element = this.suggestionForOmnibox.buildOmniboxElement(results, args);
+          const element = this.suggestionForOmnibox.buildOmniboxElement(
+            results.map(result => {
+              return <ISuggestionForOmniboxResult>{
+                keyword: valueToSearch,
+                value: result.value
+              };
+            }),
+            args
+          );
           this.currentlyDisplayedSuggestions = {};
           if (element) {
             _.map($$(element).findAll('.coveo-omnibox-selectable'), (selectable, i?) => {

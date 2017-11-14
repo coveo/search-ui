@@ -8,7 +8,7 @@ import { IQuery } from '../rest/Query';
 import { IQueryResults } from '../rest/QueryResults';
 import { IQueryResult } from '../rest/QueryResult';
 import { version } from '../misc/Version';
-import { IListFieldValuesRequest } from '../rest/ListFieldValuesRequest';
+import { IListFieldValuesRequest, IListFieldValuesRequestBatch } from '../rest/ListFieldValuesRequest';
 import { IIndexFieldValue } from '../rest/FieldValue';
 import { IFieldDescription } from '../rest/FieldDescription';
 import { IListFieldsResult } from '../rest/ListFieldsResult';
@@ -552,18 +552,29 @@ export class SearchEndpoint implements ISearchEndpoint {
     return callParams.url + '?' + callParams.queryString.join('&');
   }
 
-  @path('/values')
+  /**
+   * Lists the possible field values for a request.
+   * @param request The request for which to list the possible field values.
+   * @param callOptions An additional set of options to use for this call.
+   * @param callParams The options injected by the applied decorators.
+   * @returns {Promise<TResult>|Promise<U>} A Promise of the field values.
+   */
+  @path('/values/batch')
   @method('POST')
   @responseType('text')
-  public batchFieldValues(
-    request: IListFieldValuesRequest,
+  public listFieldValuesBatch(
+    request: IListFieldValuesRequestBatch,
     callOptions?: IEndpointCallOptions,
     callParams?: IEndpointCallParameters
-  ): Promise<IIndexFieldValue[]> {
+  ): Promise<IIndexFieldValue[][]> {
     Assert.exists(request);
 
+    callParams.requestData = request;
+
+    this.logger.info('Listing field values batch', request);
+
     return this.performOneCall<any>(callParams).then(data => {
-      this.logger.info('REST list field values successful', data.values, request);
+      this.logger.info('REST list field values batch successful', data.values, request);
       return data.values;
     });
   }
