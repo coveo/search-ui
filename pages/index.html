@@ -10,7 +10,11 @@
     <script>
       document.addEventListener('DOMContentLoaded', function () {
         Coveo.SearchEndpoint.configureSampleEndpointV2();
-        Coveo.init(document.body);
+        Coveo.init(document.body, {
+          SearchInterface : {
+            allowEmptyQuery : false
+          }
+        });
       })
     </script>
   </head>
