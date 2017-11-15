@@ -17,8 +17,7 @@ import { JQueryUtils } from '../../utils/JQueryutils';
 import { IJQuery } from './CoveoJQuery';
 import * as _ from 'underscore';
 import { IStringMap } from '../../rest/GenericParam';
-import { InitializationPlaceholder } from './InitializationPlaceholder';
-import { get } from './RegisteredNamedMethods';
+import { get, state } from './RegisteredNamedMethods';
 declare const require: any;
 
 /**
@@ -243,8 +242,6 @@ export class Initialization {
       });
     }
 
-    new InitializationPlaceholder(element);
-
     options = Initialization.resolveDefaultOptions(element, options);
 
     Initialization.performInitFunctionsOption(options, InitializationEvents.beforeInitialization);
@@ -261,7 +258,7 @@ export class Initialization {
         $$(element).trigger(InitializationEvents.afterInitialization);
 
         const searchInterface = <SearchInterface>Component.get(element, SearchInterface);
-        if (searchInterface.options.autoTriggerQuery) {
+        if (Initialization.shouldExecuteFirstQueryAutomatically(searchInterface)) {
           Initialization.logFirstQueryCause(searchInterface);
           let shouldLogInActionHistory = true;
           // We should not log an action history if the interface is a standalone recommendation component.
@@ -682,6 +679,18 @@ export class Initialization {
     } else {
       return Promise.resolve(false);
     }
+  }
+
+  private static shouldExecuteFirstQueryAutomatically(searchInterface: SearchInterface) {
+    if (searchInterface.options.autoTriggerQuery) {
+      if (searchInterface.options.allowEmptyQuery) {
+        return true;
+      } else {
+        const currentStateOfQuery = state(searchInterface.element).get('q');
+        return currentStateOfQuery != '';
+      }
+    }
+    return false;
   }
 }
 

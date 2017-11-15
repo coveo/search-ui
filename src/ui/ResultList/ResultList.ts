@@ -667,7 +667,7 @@ export class ResultList extends Component {
         // Prevent flickering when switching to a new layout that is empty
         // add a temporary placeholder, the same that is used on initialization
         if (this.options.resultContainer.innerHTML == '') {
-          new InitializationPlaceholder(this.root, { resultList: true, layout: args.layout });
+          new InitializationPlaceholder(this.root).withVisibleRootElement().withPlaceholderForResultList();
         }
         Defer.defer(() => {
           this.buildResults(args.results).then((elements: HTMLElement[]) => {

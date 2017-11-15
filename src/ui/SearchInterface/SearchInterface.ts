@@ -4,11 +4,11 @@ import { DeviceUtils } from '../../utils/DeviceUtils';
 import { $$ } from '../../utils/Dom';
 import { DomUtils } from '../../utils/DomUtils';
 import { Assert } from '../../misc/Assert';
-import { QueryStateModel } from '../../models/QueryStateModel';
+import { QueryStateModel, QUERY_STATE_ATTRIBUTES } from '../../models/QueryStateModel';
 import { ComponentStateModel } from '../../models/ComponentStateModel';
 import { ComponentOptionsModel } from '../../models/ComponentOptionsModel';
 import { QueryController } from '../../controllers/QueryController';
-import { Model, IAttributeChangedEventArg } from '../../models/Model';
+import { Model, IAttributeChangedEventArg, MODEL_EVENTS } from '../../models/Model';
 import {
   QueryEvents,
   IBuildingQueryEventArgs,
@@ -39,6 +39,7 @@ import 'styling/Globals';
 import 'styling/_SearchInterface';
 import 'styling/_SearchModalBox';
 import 'styling/_SearchButton';
+import { InitializationPlaceholder } from '../Base/InitializationPlaceholder';
 
 export interface ISearchInterfaceOptions {
   enableHistory?: boolean;
@@ -61,6 +62,7 @@ export interface ISearchInterfaceOptions {
   initOptions?: any;
   endpoint?: SearchEndpoint;
   originalOptionsObject?: any;
+  allowEmptyQuery?: boolean;
 }
 
 /**
@@ -291,6 +293,7 @@ export class SearchInterface extends RootComponent implements IComponentBindings
      * Default value is `true`.
      */
     autoTriggerQuery: ComponentOptions.buildBooleanOption({ defaultValue: true }),
+    allowEmptyQuery: ComponentOptions.buildBooleanOption({ defaultValue: true }),
     endpoint: ComponentOptions.buildCustomOption(
       endpoint => (endpoint != null && endpoint in SearchEndpoint.endpoints ? SearchEndpoint.endpoints[endpoint] : null),
       { defaultFunction: () => SearchEndpoint.endpoints['default'] }
@@ -445,6 +448,12 @@ export class SearchInterface extends RootComponent implements IComponentBindings
     this.queryController = new QueryController(element, this.options, this.usageAnalytics, this);
     new SentryLogger(this.queryController);
 
+    if (this.options.allowEmptyQuery) {
+      this.initializeEmptyQueryAllowed();
+    } else {
+      this.initializeEmptyQueryNotAllowed();
+    }
+
     const eventName = this.queryStateModel.getEventName(Model.eventTypes.preprocess);
     $$(this.element).on(eventName, (e, args) => this.handlePreprocessQueryStateModel(args));
     $$(this.element).on(QueryEvents.buildingQuery, (e, args) => this.handleBuildingQuery(args));
@@ -465,8 +474,6 @@ export class SearchInterface extends RootComponent implements IComponentBindings
 
     const eventNameQuickview = this.queryStateModel.getEventName(Model.eventTypes.changeOne + QueryStateModel.attributesEnum.quickview);
     $$(this.element).on(eventNameQuickview, (e, args) => this.handleQuickviewChanged(args));
-    // shows the UI, since it's been hidden while loading
-    this.element.style.display = element.style.display || 'block';
     this.setupDebugInfo();
     this.responsiveComponents = new ResponsiveComponents();
   }
@@ -799,6 +806,33 @@ export class SearchInterface extends RootComponent implements IComponentBindings
         $$(facetSearch).toggleClass(cssClass, toggle && !this.queryStateModel.atLeastOneFacetIsActive());
       });
     }
+  }
+
+  private initializeEmptyQueryAllowed() {
+    new InitializationPlaceholder(this.element).withAllPlaceholders();
+  }
+
+  private initializeEmptyQueryNotAllowed() {
+    const placeholder = new InitializationPlaceholder(this.element)
+      .withEventToRemovePlaceholder(QueryEvents.newQuery)
+      .withFullInitializationStyling()
+      .withHiddenRootElement()
+      .whithPlaceholderForFacets()
+      .withPlaceholderForResultList();
+
+    $$(this.root).on(InitializationEvents.restoreHistoryState, () => {
+      placeholder.withVisibleRootElement();
+      if (this.queryStateModel.get('q') == '') {
+        placeholder.withWaitingForFirstQueryMode();
+      }
+    });
+
+    $$(this.element).on(QueryEvents.newQuery, (e, args: INewQueryEventArgs) => {
+      if (this.queryStateModel.get('q') == '') {
+        this.logger.info('Query cancelled by the Search Interface', 'Configuration does not allow empty query', this, this.options);
+        args.cancel = true;
+      }
+    });
   }
 }
 
