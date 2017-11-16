@@ -12,7 +12,7 @@ import { IAnalyticsFacetMeta, analyticsActionCauseList } from '../Analytics/Anal
 import { IEndpointError } from '../../rest/EndpointError';
 import { Component } from '../Base/Component';
 import { DomUtils } from '../../utils/DomUtils';
-import { PopupUtils, HorizontalAlignment, VerticalAlignment } from '../../utils/PopupUtils';
+import { PopupUtils, PopupHorizontalAlignment, PopupVerticalAlignment } from '../../utils/PopupUtils';
 import { l } from '../../strings/Strings';
 import { Assert } from '../../misc/Assert';
 import { KEYBOARD } from '../../utils/KeyboardUtils';
@@ -98,15 +98,15 @@ export class FacetSearch {
         }
         EventsUtils.addPrefixedEvent(this.search, 'AnimationEnd', evt => {
           PopupUtils.positionPopup(this.searchResults, nextTo, this.root, {
-            horizontal: HorizontalAlignment.CENTER,
-            vertical: VerticalAlignment.BOTTOM
+            horizontal: PopupHorizontalAlignment.CENTER,
+            vertical: PopupVerticalAlignment.BOTTOM
           });
           EventsUtils.removePrefixedEvent(this.search, 'AnimationEnd', this);
         });
       } else {
         PopupUtils.positionPopup(this.searchResults, nextTo, this.root, {
-          horizontal: HorizontalAlignment.CENTER,
-          vertical: VerticalAlignment.BOTTOM
+          horizontal: PopupHorizontalAlignment.CENTER,
+          vertical: PopupVerticalAlignment.BOTTOM
         });
       }
     }
