@@ -4,9 +4,15 @@
   display: inline-block;
 }
 
-.coveo-logo-svg {
-  width: 178;
-  height: 64;
+.coveo-logo-waiting-first-query {
+  margin: auto;
+  text-align: center;
+  padding: 50px;
+}
+
+.coveo-logo-svg-waiting-first-query {
+  max-height: 80px;
+  max-width: 220px;
 }
 
 .coveo-powered-by-svg {
