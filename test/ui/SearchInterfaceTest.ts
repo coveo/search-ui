@@ -17,16 +17,19 @@ import { Simulate } from '../Simulate';
 import { Debug } from '../../src/ui/Debug/Debug';
 import { FakeResults } from '../Fake';
 import _ = require('underscore');
+import { IQuery } from '../../src/rest/Query';
+import { QueryBuilder } from '../../src/ui/Base/QueryBuilder';
+import { PipelineContext, IPipelineContextOptions } from '../../src/ui/PipelineContext/PipelineContext';
 
 export function SearchInterfaceTest() {
   describe('SearchInterface', () => {
     let cmp: SearchInterface;
 
-    beforeEach(function() {
+    beforeEach(() => {
       cmp = new SearchInterface(document.createElement('div'));
     });
 
-    afterEach(function() {
+    afterEach(() => {
       cmp = null;
     });
 
@@ -58,7 +61,7 @@ export function SearchInterfaceTest() {
       expect(cmp.root).toBe(cmp.element, 'Not an element');
     });
 
-    it('should allow to attach and detach component', function() {
+    it('should allow to attach and detach component', () => {
       const cmpToAttach = Mock.mockComponent(Querybox);
       cmp.attachComponent('Querybox', cmpToAttach);
       expect(cmp.getComponents('Querybox')).toContain(cmpToAttach);
@@ -66,22 +69,22 @@ export function SearchInterfaceTest() {
       expect(cmp.getComponents('Querybox')).not.toContain(cmpToAttach);
     });
 
-    describe('usage analytics', function() {
+    describe('usage analytics', () => {
       let searchInterfaceDiv: HTMLDivElement;
       let analyticsDiv: HTMLDivElement;
 
-      beforeEach(function() {
+      beforeEach(() => {
         searchInterfaceDiv = document.createElement('div');
         analyticsDiv = document.createElement('div');
         analyticsDiv.className = 'CoveoAnalytics';
       });
 
-      afterEach(function() {
+      afterEach(() => {
         searchInterfaceDiv = null;
         analyticsDiv = null;
       });
 
-      it('should initialize if found inside the root', function() {
+      it('should initialize if found inside the root', () => {
         searchInterfaceDiv.appendChild(analyticsDiv);
         const searchInterface = new SearchInterface(searchInterfaceDiv);
         expect(searchInterface.usageAnalytics instanceof Coveo['LiveAnalyticsClient']).toBe(true);
@@ -162,7 +165,7 @@ export function SearchInterfaceTest() {
       expect(recommendationSection.hasClass('coveo-no-results')).toBe(false);
     });
 
-    describe('exposes options', function() {
+    describe('with an environment', () => {
       let div: HTMLDivElement;
       let mockWindow: Window;
       let env: Mock.IMockEnvironment;
@@ -179,189 +182,242 @@ export function SearchInterfaceTest() {
         mockWindow = null;
       });
 
-      it('enableHistory allow to enable history in the url', function() {
-        const cmp = new SearchInterface(
-          div,
-          {
-            enableHistory: true
-          },
-          undefined,
-          mockWindow
-        );
-        expect(Component.resolveBinding(cmp.element, HistoryController)).toBeDefined();
-      });
-
-      it("enableHistory can be disabled and won't save history in the url", function() {
-        const cmp = new SearchInterface(
-          div,
-          {
-            enableHistory: false
-          },
-          undefined,
-          mockWindow
-        );
-        expect(Component.resolveBinding(cmp.element, HistoryController)).toBeUndefined();
-      });
-
-      it('useLocalStorageForHistory allow to use local storage for history', function() {
-        const cmp = new SearchInterface(
-          div,
-          {
-            enableHistory: true,
-            useLocalStorageForHistory: true
-          },
-          undefined,
-          mockWindow
-        );
-        expect(Component.resolveBinding(cmp.element, HistoryController)).toBeUndefined();
-        expect(Component.resolveBinding(cmp.element, LocalStorageHistoryController)).toBeDefined();
-      });
-
-      it('useLocalStorageForHistory allow to use local storage for history, but not if history is disabled', function() {
-        const cmp = new SearchInterface(
-          div,
-          {
-            enableHistory: false,
-            useLocalStorageForHistory: true
-          },
-          undefined,
-          mockWindow
-        );
-        expect(Component.resolveBinding(cmp.element, HistoryController)).toBeUndefined();
-        expect(Component.resolveBinding(cmp.element, LocalStorageHistoryController)).toBeUndefined();
-      });
-
-      it('resultsPerPage allow to specify the number of results in query', function() {
-        new SearchInterface(div, { resultsPerPage: 123 }, undefined, mockWindow);
-        const simulation = Simulate.query(env);
-        expect(simulation.queryBuilder.numberOfResults).toBe(123);
-      });
-
-      it('resultsPerPage should be 10 by default', function() {
+      it('should return undefined if no query context exists', () => {
         new SearchInterface(div, undefined, undefined, mockWindow);
-        const simulation = Simulate.query(env);
-        expect(simulation.queryBuilder.numberOfResults).toBe(10);
+        expect(cmp.getQueryContext()).toBeUndefined();
       });
 
-      it('excerptLength allow to specify the excerpt length of results in a query', function() {
-        new SearchInterface(
-          div,
-          {
-            excerptLength: 123
-          },
-          undefined,
-          mockWindow
-        );
-        const simulation = Simulate.query(env);
-        expect(simulation.queryBuilder.excerptLength).toBe(123);
-      });
-
-      it('excerptLength should be 200 by default', function() {
-        new SearchInterface(div, undefined, undefined, mockWindow);
-        const simulation = Simulate.query(env);
-        expect(simulation.queryBuilder.excerptLength).toBe(200);
-      });
-
-      it('expression allow to specify and advanced expression to add to the query', function() {
-        new SearchInterface(div, { expression: 'foobar' }, undefined, mockWindow);
-        const simulation = Simulate.query(env);
-        expect(simulation.queryBuilder.constantExpression.build()).toBe('foobar');
-      });
-
-      it('expression should not be added if empty', function() {
-        new SearchInterface(div, { expression: '' }, undefined, mockWindow);
-        const simulation = Simulate.query(env);
-        expect(simulation.queryBuilder.constantExpression.build()).toBeUndefined();
-      });
-
-      it('expression should be empty by default', function() {
-        new SearchInterface(div, undefined, undefined, mockWindow);
-        const simulation = Simulate.query(env);
-        expect(simulation.queryBuilder.constantExpression.build()).toBeUndefined();
-      });
-
-      it('filterField allow to specify a filtering field', function() {
-        new SearchInterface(div, { filterField: '@foobar' }, undefined, mockWindow);
-        const simulation = Simulate.query(env);
-        expect(simulation.queryBuilder.filterField).toBe('@foobar');
-      });
-
-      it('filterField should be empty by default', function() {
-        new SearchInterface(div, undefined, mockWindow);
-        const simulation = Simulate.query(env);
-        expect(simulation.queryBuilder.filterField).toBeUndefined();
-      });
-
-      it('timezone allow to specify a timezone in the query', function() {
-        new SearchInterface(div, { timezone: 'aa-bb' }, undefined, mockWindow);
-        const simulation = Simulate.query(env);
-        expect(simulation.queryBuilder.timezone).toBe('aa-bb');
-      });
-
-      it('enableDebugInfo should create a debug component', function(done) {
-        const cmp = new SearchInterface(
-          div,
-          {
-            enableDebugInfo: true
-          },
-          undefined,
-          mockWindow
-        );
-        _.defer(() => {
-          expect(Component.resolveBinding(cmp.element, Debug)).toBeDefined();
-          done();
+      it('should allow to retrieve the context after a query', () => {
+        const queryBuilder = new QueryBuilder();
+        queryBuilder.addContextValue('123', 456);
+        cmp.queryController.getLastQuery = () => queryBuilder.build();
+        Simulate.query(env, {
+          query: queryBuilder.build()
         });
+        expect(cmp.getQueryContext()).toEqual({ '123': 456 });
       });
 
-      it('enableDebugInfo disabled should not create a debug component', function(done) {
-        const cmp = new SearchInterface(
-          div,
-          {
-            enableDebugInfo: false
-          },
-          undefined,
-          mockWindow
-        );
-        _.defer(() => {
-          expect(Component.resolveBinding(cmp.element, Debug)).toBeUndefined();
-          done();
+      it('should allow to retrieve the context from a PipelineContext if present', () => {
+        const pipeline = new PipelineContext($$('script').el, {}, cmp.getBindings());
+        pipeline.setContext({
+          foo: 'bar'
         });
+        expect(cmp.getQueryContext()).toEqual({ foo: 'bar' });
       });
 
-      it('enableCollaborativeRating allow to specify the collaborative rating in the query', function() {
-        new SearchInterface(div, { enableCollaborativeRating: true }, undefined, mockWindow);
-        const simulation = Simulate.query(env);
-        expect(simulation.queryBuilder.enableCollaborativeRating).toBe(true);
+      it('should allow to retrieve the context from multiple PipelineContext if present', () => {
+        const pipeline1 = new PipelineContext($$('script').el, {}, cmp.getBindings());
+        pipeline1.setContext({
+          foo: 'bar'
+        });
+
+        const pipeline2 = new PipelineContext($$('script').el, {}, cmp.getBindings());
+        pipeline2.setContext({
+          buzz: 'bazz'
+        });
+
+        expect(cmp.getQueryContext()).toEqual({ foo: 'bar', buzz: 'bazz' });
       });
 
-      it('enableCollaborativeRating to false allow to disable the collaborative rating in the query', function() {
-        new SearchInterface(div, { enableCollaborativeRating: false }, undefined, mockWindow);
-        const simulation = Simulate.query(env);
-        expect(simulation.queryBuilder.enableCollaborativeRating).toBe(false);
+      it('should allow to retrieve the context from the multiple PipelineContext if they have conflicting context', () => {
+        const pipeline1 = new PipelineContext($$('script').el, {}, cmp.getBindings());
+        pipeline1.setContext({
+          foo: 'bar'
+        });
+
+        const pipeline2 = new PipelineContext($$('script').el, {}, cmp.getBindings());
+        pipeline2.setContext({
+          foo: 'not bar'
+        });
+
+        expect(cmp.getQueryContext()).toEqual({ foo: 'not bar' });
       });
 
-      it('enableDuplicateFiltering allow to filter duplicate in the query', function() {
-        new SearchInterface(div, { enableDuplicateFiltering: true }, undefined, mockWindow);
-        const simulation = Simulate.query(env);
-        expect(simulation.queryBuilder.enableDuplicateFiltering).toBe(true);
-      });
+      describe('exposes options', () => {
+        it('enableHistory allow to enable history in the url', () => {
+          const cmp = new SearchInterface(
+            div,
+            {
+              enableHistory: true
+            },
+            undefined,
+            mockWindow
+          );
+          expect(Component.resolveBinding(cmp.element, HistoryController)).toBeDefined();
+        });
 
-      it('enableDuplicateFiltering to false allow to disable the filter duplicate in the query', function() {
-        new SearchInterface(div, { enableDuplicateFiltering: false }, undefined, mockWindow);
-        const simulation = Simulate.query(env);
-        expect(simulation.queryBuilder.enableDuplicateFiltering).toBe(false);
-      });
+        it("enableHistory can be disabled and won't save history in the url", () => {
+          const cmp = new SearchInterface(
+            div,
+            {
+              enableHistory: false
+            },
+            undefined,
+            mockWindow
+          );
+          expect(Component.resolveBinding(cmp.element, HistoryController)).toBeUndefined();
+        });
 
-      it('pipeline allow to specify the pipeline to use in a query', function() {
-        new SearchInterface(div, { pipeline: 'foobar' }, undefined, mockWindow);
-        const simulation = Simulate.query(env);
-        expect(simulation.queryBuilder.pipeline).toBe('foobar');
-      });
+        it('useLocalStorageForHistory allow to use local storage for history', () => {
+          const cmp = new SearchInterface(
+            div,
+            {
+              enableHistory: true,
+              useLocalStorageForHistory: true
+            },
+            undefined,
+            mockWindow
+          );
+          expect(Component.resolveBinding(cmp.element, HistoryController)).toBeUndefined();
+          expect(Component.resolveBinding(cmp.element, LocalStorageHistoryController)).toBeDefined();
+        });
 
-      it('maximumAge allow to specify the duration of the cache in a query', function() {
-        new SearchInterface(div, { maximumAge: 123 }, undefined, mockWindow);
-        const simulation = Simulate.query(env);
-        expect(simulation.queryBuilder.maximumAge).toBe(123);
+        it('useLocalStorageForHistory allow to use local storage for history, but not if history is disabled', () => {
+          const cmp = new SearchInterface(
+            div,
+            {
+              enableHistory: false,
+              useLocalStorageForHistory: true
+            },
+            undefined,
+            mockWindow
+          );
+          expect(Component.resolveBinding(cmp.element, HistoryController)).toBeUndefined();
+          expect(Component.resolveBinding(cmp.element, LocalStorageHistoryController)).toBeUndefined();
+        });
+
+        it('resultsPerPage allow to specify the number of results in query', () => {
+          new SearchInterface(div, { resultsPerPage: 123 }, undefined, mockWindow);
+          const simulation = Simulate.query(env);
+          expect(simulation.queryBuilder.numberOfResults).toBe(123);
+        });
+
+        it('resultsPerPage should be 10 by default', () => {
+          new SearchInterface(div, undefined, undefined, mockWindow);
+          const simulation = Simulate.query(env);
+          expect(simulation.queryBuilder.numberOfResults).toBe(10);
+        });
+
+        it('excerptLength allow to specify the excerpt length of results in a query', () => {
+          new SearchInterface(
+            div,
+            {
+              excerptLength: 123
+            },
+            undefined,
+            mockWindow
+          );
+          const simulation = Simulate.query(env);
+          expect(simulation.queryBuilder.excerptLength).toBe(123);
+        });
+
+        it('excerptLength should be 200 by default', () => {
+          new SearchInterface(div, undefined, undefined, mockWindow);
+          const simulation = Simulate.query(env);
+          expect(simulation.queryBuilder.excerptLength).toBe(200);
+        });
+
+        it('expression allow to specify and advanced expression to add to the query', () => {
+          new SearchInterface(div, { expression: 'foobar' }, undefined, mockWindow);
+          const simulation = Simulate.query(env);
+          expect(simulation.queryBuilder.constantExpression.build()).toBe('foobar');
+        });
+
+        it('expression should not be added if empty', () => {
+          new SearchInterface(div, { expression: '' }, undefined, mockWindow);
+          const simulation = Simulate.query(env);
+          expect(simulation.queryBuilder.constantExpression.build()).toBeUndefined();
+        });
+
+        it('expression should be empty by default', () => {
+          new SearchInterface(div, undefined, undefined, mockWindow);
+          const simulation = Simulate.query(env);
+          expect(simulation.queryBuilder.constantExpression.build()).toBeUndefined();
+        });
+
+        it('filterField allow to specify a filtering field', () => {
+          new SearchInterface(div, { filterField: '@foobar' }, undefined, mockWindow);
+          const simulation = Simulate.query(env);
+          expect(simulation.queryBuilder.filterField).toBe('@foobar');
+        });
+
+        it('filterField should be empty by default', () => {
+          new SearchInterface(div, undefined, mockWindow);
+          const simulation = Simulate.query(env);
+          expect(simulation.queryBuilder.filterField).toBeUndefined();
+        });
+
+        it('timezone allow to specify a timezone in the query', () => {
+          new SearchInterface(div, { timezone: 'aa-bb' }, undefined, mockWindow);
+          const simulation = Simulate.query(env);
+          expect(simulation.queryBuilder.timezone).toBe('aa-bb');
+        });
+
+        it('enableDebugInfo should create a debug component', function(done) {
+          const cmp = new SearchInterface(
+            div,
+            {
+              enableDebugInfo: true
+            },
+            undefined,
+            mockWindow
+          );
+          _.defer(() => {
+            expect(Component.resolveBinding(cmp.element, Debug)).toBeDefined();
+            done();
+          });
+        });
+
+        it('enableDebugInfo disabled should not create a debug component', function(done) {
+          const cmp = new SearchInterface(
+            div,
+            {
+              enableDebugInfo: false
+            },
+            undefined,
+            mockWindow
+          );
+          _.defer(() => {
+            expect(Component.resolveBinding(cmp.element, Debug)).toBeUndefined();
+            done();
+          });
+        });
+
+        it('enableCollaborativeRating allow to specify the collaborative rating in the query', () => {
+          new SearchInterface(div, { enableCollaborativeRating: true }, undefined, mockWindow);
+          const simulation = Simulate.query(env);
+          expect(simulation.queryBuilder.enableCollaborativeRating).toBe(true);
+        });
+
+        it('enableCollaborativeRating to false allow to disable the collaborative rating in the query', () => {
+          new SearchInterface(div, { enableCollaborativeRating: false }, undefined, mockWindow);
+          const simulation = Simulate.query(env);
+          expect(simulation.queryBuilder.enableCollaborativeRating).toBe(false);
+        });
+
+        it('enableDuplicateFiltering allow to filter duplicate in the query', () => {
+          new SearchInterface(div, { enableDuplicateFiltering: true }, undefined, mockWindow);
+          const simulation = Simulate.query(env);
+          expect(simulation.queryBuilder.enableDuplicateFiltering).toBe(true);
+        });
+
+        it('enableDuplicateFiltering to false allow to disable the filter duplicate in the query', () => {
+          new SearchInterface(div, { enableDuplicateFiltering: false }, undefined, mockWindow);
+          const simulation = Simulate.query(env);
+          expect(simulation.queryBuilder.enableDuplicateFiltering).toBe(false);
+        });
+
+        it('pipeline allow to specify the pipeline to use in a query', () => {
+          new SearchInterface(div, { pipeline: 'foobar' }, undefined, mockWindow);
+          const simulation = Simulate.query(env);
+          expect(simulation.queryBuilder.pipeline).toBe('foobar');
+        });
+
+        it('maximumAge allow to specify the duration of the cache in a query', () => {
+          new SearchInterface(div, { maximumAge: 123 }, undefined, mockWindow);
+          const simulation = Simulate.query(env);
+          expect(simulation.queryBuilder.maximumAge).toBe(123);
+        });
       });
     });
   });

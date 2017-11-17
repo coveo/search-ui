@@ -8,7 +8,7 @@ import { l } from '../../strings/Strings';
 import { QueryStateModel } from '../../models/QueryStateModel';
 import { IAnalyticsFacetMeta, analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
 import { DeviceUtils } from '../../utils/DeviceUtils';
-import { PopupUtils, HorizontalAlignment, VerticalAlignment } from '../../utils/PopupUtils';
+import { PopupUtils, PopupHorizontalAlignment, PopupVerticalAlignment } from '../../utils/PopupUtils';
 import * as _ from 'underscore';
 import 'styling/_FacetSettings';
 import { SVGIcons } from '../../utils/SVGIcons';
@@ -513,8 +513,8 @@ export class FacetSettings extends FacetSort {
   }
 
   private getPopupAlignment() {
-    const alignmentHorizontal = DeviceUtils.isMobileDevice() ? HorizontalAlignment.CENTER : HorizontalAlignment.INNERLEFT;
-    const alignmentVertical = VerticalAlignment.BOTTOM;
+    const alignmentHorizontal = DeviceUtils.isMobileDevice() ? PopupHorizontalAlignment.CENTER : PopupHorizontalAlignment.INNERLEFT;
+    const alignmentVertical = PopupVerticalAlignment.BOTTOM;
     return {
       horizontal: alignmentHorizontal,
       vertical: alignmentVertical

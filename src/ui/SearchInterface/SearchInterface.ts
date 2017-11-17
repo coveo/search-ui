@@ -33,6 +33,9 @@ import { SentryLogger } from '../../misc/SentryLogger';
 import { IComponentBindings } from '../Base/ComponentBindings';
 import { analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
 import { ResponsiveComponents } from '../ResponsiveComponents/ResponsiveComponents';
+import { Context, IPipelineContextProvider } from '../PipelineContext/PipelineGlobalExports';
+import { IStringMap } from '../../rest/GenericParam';
+
 import * as _ from 'underscore';
 
 import 'styling/Globals';
@@ -517,6 +520,43 @@ export class SearchInterface extends RootComponent implements IComponentBindings
       componentOptionsModel: this.componentOptionsModel,
       usageAnalytics: this.usageAnalytics
     };
+  }
+
+  /**
+   * Gets the query context for the current search interface.
+   * 
+   * If the search interface has performed at least one query, it will try to resolve the context from the last query sent to the Coveo Search API.
+   * 
+   * If the search interface has not performed a query yet, it will try to resolve the context from any avaiable {@link PipelineContext} component.
+   * 
+   * If multiple {@link PipelineContext} components are available, it will merge all context values together.
+   * 
+   * **Note:**
+   * Having multiple PipelineContext components in the same search interface is not recommended, especially if some context keys are repeated across those components.
+   * 
+   * If no context is found, returns `undefined`
+   */
+  public getQueryContext(): Context {
+    let ret: Context;
+
+    const lastQuery = this.queryController.getLastQuery();
+    if (lastQuery.context) {
+      ret = lastQuery.context;
+    } else {
+      const pipelines = this.getComponents<IPipelineContextProvider>('PipelineContext');
+
+      if (pipelines && !_.isEmpty(pipelines)) {
+        const contextMerged = _.chain(pipelines)
+          .map(pipeline => pipeline.getContext())
+          .reduce((memo, context) => ({ ...memo, ...context }), {})
+          .value();
+        if (!_.isEmpty(contextMerged)) {
+          ret = contextMerged;
+        }
+      }
+    }
+
+    return ret;
   }
 
   /**
