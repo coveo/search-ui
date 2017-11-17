@@ -263,5 +263,8 @@ TextInput.doExport();
 import { SimpleFilter } from './ui/SimpleFilter/SimpleFilter';
 SimpleFilter.doExport();
 
+import { CategoryFacet } from './ui/CategoryFacet/CategoryFacet';
+CategoryFacet.doExport();
+
 import { swapVar } from './SwapVar';
 swapVar(this);

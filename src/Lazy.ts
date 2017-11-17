@@ -259,5 +259,8 @@ lazyTextInput();
 import { lazySimpleFilter } from './ui/SimpleFilter/LazySimpleFilter';
 lazySimpleFilter();
 
+import { CategoryFacet } from './ui/CategoryFacet/CategoryFacet';
+CategoryFacet.doExport();
+
 import { swapVar } from './SwapVar';
 swapVar(this);
