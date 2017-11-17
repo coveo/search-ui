@@ -6,8 +6,6 @@ import { QueryEvents } from '../../events/QueryEvents';
 import { InitializationEvents } from '../../events/InitializationEvents';
 import { ResultListEvents } from '../../events/ResultListEvents';
 import { HashUtils } from '../../utils/HashUtils';
-import { SVGIcons } from '../../utils/SVGIcons';
-import { SVGDom } from '../../utils/SVGDom';
 
 export interface InitializationPlaceholderOption {
   searchInterface?: boolean;
@@ -146,33 +144,22 @@ export class InitializationPlaceholder {
   }
 
   public withWaitingForFirstQueryMode() {
-    const searchSection = $$(this.root).find('.coveo-search-section');
-    let logoContainer: Dom;
-    if (searchSection) {
-      logoContainer = $$('div', { className: 'coveo-logo-waiting-first-query' }, SVGIcons.icons.coveoLogo);
-      SVGDom.addClassToSVGInContainer(logoContainer.el, 'coveo-logo-svg-waiting-first-query');
-      $$(searchSection).prepend(logoContainer.el);
-    }
-
     $$(this.root).addClass('coveo-waiting-for-query');
     $$(this.root).one(QueryEvents.duringQuery, () => {
       $$(this.root).removeClass('coveo-waiting-for-query');
-      if (logoContainer) {
-        logoContainer.remove();
-      }
     });
 
     return this;
   }
 
   public withAllPlaceholders() {
-    this.whithPlaceholderForFacets();
+    this.withPlaceholderForFacets();
     this.withPlaceholderForResultList();
     this.withPlaceholderSearchbox();
     return this;
   }
 
-  public whithPlaceholderForFacets() {
+  public withPlaceholderForFacets() {
     // Render an arbitrary number of placeholder facet.
     // Facets should become usable on the first deferredQuerySuccess
 

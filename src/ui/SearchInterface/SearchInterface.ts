@@ -817,7 +817,7 @@ export class SearchInterface extends RootComponent implements IComponentBindings
       .withEventToRemovePlaceholder(QueryEvents.newQuery)
       .withFullInitializationStyling()
       .withHiddenRootElement()
-      .whithPlaceholderForFacets()
+      .withPlaceholderForFacets()
       .withPlaceholderForResultList();
 
     $$(this.root).on(InitializationEvents.restoreHistoryState, () => {

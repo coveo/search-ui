@@ -255,17 +255,11 @@ export class Recommendation extends SearchInterface implements IComponentBinding
   }
 
   public hide(): void {
-    if (!this.displayStyle) {
-      this.displayStyle = this.element.style.display;
-    }
-    $$(this.element).hide();
+    $$(this.element).addClass('coveo-hidden');
   }
 
   public show(): void {
-    if (!this.displayStyle) {
-      this.displayStyle = this.element.style.display;
-    }
-    this.element.style.display = this.displayStyle;
+    $$(this.element).removeClass('coveo-hidden');
   }
 
   private ensureCurrentPageViewExistsInStore() {
