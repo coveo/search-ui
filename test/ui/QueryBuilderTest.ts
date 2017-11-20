@@ -1,17 +1,17 @@
 import { QueryBuilder } from '../../src/ui/Base/QueryBuilder';
 export function QueryBuilderTest() {
-  describe('QueryBuilder', () => {
+  describe('QueryBuilder', function() {
     var queryBuilder: QueryBuilder;
 
-    beforeEach(() => {
+    beforeEach(function() {
       queryBuilder = new QueryBuilder();
     });
 
-    afterEach(() => {
+    afterEach(function() {
       queryBuilder = null;
     });
 
-    it('can addContextValue and addContext', () => {
+    it('can addContextValue and addContext', function() {
       queryBuilder.addContextValue('foo', 'bar');
       expect(queryBuilder.build().context['foo']).toBe('bar');
       queryBuilder.addContext({ a: 'b', c: 'd' });
@@ -19,18 +19,18 @@ export function QueryBuilderTest() {
       expect(queryBuilder.build().context['a']).toBe('b');
     });
 
-    it('can addFieldsToInclude', () => {
+    it('can addFieldsToInclude', function() {
       queryBuilder.addFieldsToInclude(['foo', 'bar', 'yo']);
       expect(queryBuilder.build().fieldsToInclude).toEqual(['foo', 'bar', 'yo']);
     });
 
-    it('can addFieldsToExclude', () => {
+    it('can addFieldsToExclude', function() {
       expect(queryBuilder.build().fieldsToExclude).toBeUndefined();
       queryBuilder.addFieldsToExclude(['a', 'b', 'c']);
       expect(queryBuilder.build().fieldsToExclude).toEqual(['a', 'b', 'c']);
     });
 
-    it('can addRequiredFields', () => {
+    it('can addRequiredFields', function() {
       queryBuilder.addRequiredFields(['foo', 'bar', 'yo']);
       // Should not be added, as there is not fieldsToInclude
       expect(queryBuilder.build().fieldsToInclude).toBeNull();
@@ -39,8 +39,8 @@ export function QueryBuilderTest() {
       expect(queryBuilder.build().fieldsToInclude).toEqual(['foo', 'bar', 'yo', 'a', 'b', 'c']);
     });
 
-    describe('can compute expression', () => {
-      beforeEach(() => {
+    describe('can compute expression', function() {
+      beforeEach(function() {
         queryBuilder.expression.add('basic');
         queryBuilder.advancedExpression.add('advanced');
         queryBuilder.constantExpression.add('constant');
@@ -48,29 +48,29 @@ export function QueryBuilderTest() {
         queryBuilder.longQueryExpression.add('long');
       });
 
-      it('and computeCompleteExpression', () => {
+      it('and computeCompleteExpression', function() {
         expect(queryBuilder.computeCompleteExpression()).toBe('((basic) (advanced) (constant)) OR (disjunction)');
       });
 
-      it('and computeCompleteExpressionParts', () => {
+      it('and computeCompleteExpressionParts', function() {
         expect(queryBuilder.computeCompleteExpressionParts().constant).toBe('(constant) OR (disjunction)');
         expect(queryBuilder.computeCompleteExpressionParts().withoutConstant).toBe('((basic) (advanced)) OR (disjunction)');
         expect(queryBuilder.computeCompleteExpressionParts().full).toBe('((basic) (advanced) (constant)) OR (disjunction)');
       });
 
-      it('and computeCompleteExpressionExcept', () => {
+      it('and computeCompleteExpressionExcept', function() {
         expect(queryBuilder.computeCompleteExpressionExcept('advanced')).toBe('((basic) (constant)) OR (disjunction)');
         expect(queryBuilder.computeCompleteExpressionExcept('basic')).toBe('((advanced) (constant)) OR (disjunction)');
       });
 
-      it('and computeCompleteExpressionPartsExcept', () => {
+      it('and computeCompleteExpressionPartsExcept', function() {
         expect(queryBuilder.computeCompleteExpressionPartsExcept('advanced').constant).toBe('(constant) OR (disjunction)');
         expect(queryBuilder.computeCompleteExpressionPartsExcept('advanced').withoutConstant).toBe('(basic) OR (disjunction)');
         expect(queryBuilder.computeCompleteExpressionPartsExcept('advanced').full).toBe('((basic) (constant)) OR (disjunction)');
       });
     });
 
-    it('can add properties to query', () => {
+    it('can add properties to query', function() {
       queryBuilder.pipeline = 'pipeline';
       queryBuilder.timezone = 'timezone';
       queryBuilder.searchHub = 'searchHub';
@@ -158,20 +158,6 @@ export function QueryBuilderTest() {
       expect(queryBuilder.build().context).toEqual({
         foo: 'bar'
       });
-    });
-
-    it('should be able to detect end user keywords in the basic expression', () => {
-      queryBuilder.expression.add('foo');
-      expect(queryBuilder.containsEndUserKeywords()).toBeTruthy();
-    });
-
-    it('should be able to detect end user keywords in the long query expression', () => {
-      queryBuilder.longQueryExpression.add('foo');
-      expect(queryBuilder.containsEndUserKeywords()).toBeTruthy();
-    });
-
-    it('should be able to detect if no end user keywords exist in either the basic or long expression', () => {
-      expect(queryBuilder.containsEndUserKeywords()).toBeFalsy();
     });
   });
 }

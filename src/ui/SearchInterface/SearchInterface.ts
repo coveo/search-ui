@@ -14,8 +14,7 @@ import {
   IBuildingQueryEventArgs,
   INewQueryEventArgs,
   IQuerySuccessEventArgs,
-  IQueryErrorEventArgs,
-  IDoneBuildingQueryEventArgs
+  IQueryErrorEventArgs
 } from '../../events/QueryEvents';
 import { IBeforeRedirectEventArgs, StandaloneSearchInterfaceEvents } from '../../events/StandaloneSearchInterfaceEvents';
 import { HistoryController } from '../../controllers/HistoryController';
@@ -34,6 +33,9 @@ import { SentryLogger } from '../../misc/SentryLogger';
 import { IComponentBindings } from '../Base/ComponentBindings';
 import { analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
 import { ResponsiveComponents } from '../ResponsiveComponents/ResponsiveComponents';
+import { Context, IPipelineContextProvider } from '../PipelineContext/PipelineGlobalExports';
+import { IStringMap } from '../../rest/GenericParam';
+
 import * as _ from 'underscore';
 
 import 'styling/Globals';
@@ -63,7 +65,7 @@ export interface ISearchInterfaceOptions {
   initOptions?: any;
   endpoint?: SearchEndpoint;
   originalOptionsObject?: any;
-  allowNoKeywords?: boolean;
+  allowEmptyQuery?: boolean;
 }
 
 /**
@@ -294,23 +296,7 @@ export class SearchInterface extends RootComponent implements IComponentBindings
      * Default value is `true`.
      */
     autoTriggerQuery: ComponentOptions.buildBooleanOption({ defaultValue: true }),
-    /**
-     * Specifies if the search interface should perform queries when there are no keywords entered by the end user.
-     * 
-     * If this option is set to true, the interface will initially load with only the search box available (If there is a search box component in the interface). 
-     * 
-     * When the user submit his query, the full search interface will then load to displays results.
-     * 
-     * For technical reasons, this option is automatically set to `false` in Coveo for Salesforce Free edition, and should not be changed.
-     * 
-     * This options interact closely with the {@link SearchInterface.options.autoTriggerQuery} option, since the automatic query will not be triggered if there are no keywords.
-     * 
-     * It also modifies the {@link IQuery.allowNoKeywords} query parameter.
-     * 
-     * Default value is `true`
-     * @notSupportedIn salesforcefree
-     */
-    allowNoKeywords: ComponentOptions.buildBooleanOption({ defaultValue: true }),
+    allowEmptyQuery: ComponentOptions.buildBooleanOption({ defaultValue: true }),
     endpoint: ComponentOptions.buildCustomOption(
       endpoint => (endpoint != null && endpoint in SearchEndpoint.endpoints ? SearchEndpoint.endpoints[endpoint] : null),
       { defaultFunction: () => SearchEndpoint.endpoints['default'] }
@@ -465,7 +451,7 @@ export class SearchInterface extends RootComponent implements IComponentBindings
     this.queryController = new QueryController(element, this.options, this.usageAnalytics, this);
     new SentryLogger(this.queryController);
 
-    if (this.options.allowNoKeywords) {
+    if (this.options.allowEmptyQuery) {
       this.initializeEmptyQueryAllowed();
     } else {
       this.initializeEmptyQueryNotAllowed();
@@ -534,6 +520,43 @@ export class SearchInterface extends RootComponent implements IComponentBindings
       componentOptionsModel: this.componentOptionsModel,
       usageAnalytics: this.usageAnalytics
     };
+  }
+
+  /**
+   * Gets the query context for the current search interface.
+   * 
+   * If the search interface has performed at least one query, it will try to resolve the context from the last query sent to the Coveo Search API.
+   * 
+   * If the search interface has not performed a query yet, it will try to resolve the context from any avaiable {@link PipelineContext} component.
+   * 
+   * If multiple {@link PipelineContext} components are available, it will merge all context values together.
+   * 
+   * **Note:**
+   * Having multiple PipelineContext components in the same search interface is not recommended, especially if some context keys are repeated across those components.
+   * 
+   * If no context is found, returns `undefined`
+   */
+  public getQueryContext(): Context {
+    let ret: Context;
+
+    const lastQuery = this.queryController.getLastQuery();
+    if (lastQuery.context) {
+      ret = lastQuery.context;
+    } else {
+      const pipelines = this.getComponents<IPipelineContextProvider>('PipelineContext');
+
+      if (pipelines && !_.isEmpty(pipelines)) {
+        const contextMerged = _.chain(pipelines)
+          .map(pipeline => pipeline.getContext())
+          .reduce((memo, context) => ({ ...memo, ...context }), {})
+          .value();
+        if (!_.isEmpty(contextMerged)) {
+          ret = contextMerged;
+        }
+      }
+    }
+
+    return ret;
   }
 
   /**
@@ -780,8 +803,6 @@ export class SearchInterface extends RootComponent implements IComponentBindings
     data.queryBuilder.enableCollaborativeRating = this.options.enableCollaborativeRating;
 
     data.queryBuilder.enableDuplicateFiltering = this.options.enableDuplicateFiltering;
-
-    data.queryBuilder.allowNoKeywords = this.options.allowNoKeywords;
   }
 
   private handleQuerySuccess(data: IQuerySuccessEventArgs) {
@@ -846,8 +867,8 @@ export class SearchInterface extends RootComponent implements IComponentBindings
       }
     });
 
-    $$(this.element).on(QueryEvents.doneBuildingQuery, (e, args: IDoneBuildingQueryEventArgs) => {
-      if (!args.queryBuilder.containsEndUserKeywords()) {
+    $$(this.element).on(QueryEvents.newQuery, (e, args: INewQueryEventArgs) => {
+      if (this.queryStateModel.get('q') == '') {
         this.logger.info('Query cancelled by the Search Interface', 'Configuration does not allow empty query', this, this.options);
         args.cancel = true;
       }

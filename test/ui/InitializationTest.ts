@@ -11,9 +11,6 @@ import { Simulate } from '../Simulate';
 import { InitializationEvents } from '../../src/events/InitializationEvents';
 import { init } from '../../src/ui/Base/RegisteredNamedMethods';
 import { NoopComponent } from '../../src/ui/NoopComponent/NoopComponent';
-import { state } from '../../src/ui/Base/RegisteredNamedMethods';
-import { get } from '../../src/UIBaseModules';
-import { QueryController } from '../../src/controllers/QueryController';
 declare const $;
 
 export function InitializationTest() {
@@ -356,66 +353,22 @@ export function InitializationTest() {
       Simulate.removeJQuery();
     });
 
-    describe('with automatic first query', () => {
-      let spyOnQuery: jasmine.Spy;
-
-      const doInit = () => {
-        return Initialization.initializeFramework(root, searchInterfaceOptions, () => {
-          const initResult = Initialization.initSearchInterface(root, searchInterfaceOptions);
-          spyOnQuery = spyOn(get(root, QueryController) as QueryController, 'executeQuery');
-          return initResult;
-        });
-      };
-
-      beforeEach(() => {
-        searchInterfaceOptions['SearchInterface'].autoTriggerQuery = true;
+    it('will trigger a query automatically by default', done => {
+      Initialization.initializeFramework(root, searchInterfaceOptions, () => {
+        return Initialization.initSearchInterface(root, searchInterfaceOptions);
+      }).then(() => {
+        expect(endpoint.search).toHaveBeenCalled();
+        done();
       });
+    });
 
-      afterEach(() => {
-        spyOnQuery = null;
-      });
-
-      it('will trigger a query automatically by default', done => {
-        doInit().then(() => {
-          expect(spyOnQuery).toHaveBeenCalled();
-          done();
-        });
-      });
-
-      it('will not trigger a query automatically if specified', done => {
-        searchInterfaceOptions['SearchInterface'].autoTriggerQuery = false;
-        doInit().then(() => {
-          expect(spyOnQuery).not.toHaveBeenCalled();
-          done();
-        });
-      });
-
-      describe('when query with no keywords are not allowed', () => {
-        beforeEach(() => {
-          searchInterfaceOptions['SearchInterface'].allowNoKeywords = false;
-        });
-
-        it('will trigger a query automatically if the interface contains keywords', done => {
-          $$(root).on(InitializationEvents.afterInitialization, () => {
-            state(root, 'q', 'foo');
-          });
-
-          doInit().then(() => {
-            expect(spyOnQuery).toHaveBeenCalled();
-            done();
-          });
-        });
-
-        it('will not trigger a query automatically if the interface contains no keywords', done => {
-          $$(root).on(InitializationEvents.afterInitialization, () => {
-            state(root, 'q', '');
-          });
-
-          doInit().then(() => {
-            expect(spyOnQuery).not.toHaveBeenCalled();
-            done();
-          });
-        });
+    it('will not trigger a query automatically if specified', done => {
+      searchInterfaceOptions['SearchInterface'].autoTriggerQuery = false;
+      Initialization.initializeFramework(root, searchInterfaceOptions, () => {
+        return Initialization.initSearchInterface(root, searchInterfaceOptions);
+      }).then(() => {
+        expect(endpoint.search).not.toHaveBeenCalled();
+        done();
       });
     });
 

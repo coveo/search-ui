@@ -1,5 +1,5 @@
 import { EndpointCaller } from '../../rest/EndpointCaller';
-import { IPosition, IPositionProvider } from '../../events/DistanceEvents';
+import { IGeolocationPosition, IGeolocationPositionProvider } from '../../events/DistanceEvents';
 
 const GOOGLE_MAP_BASE_URL = 'https://www.googleapis.com/geolocation/v1/geolocate';
 
@@ -19,10 +19,10 @@ interface IGeolocationResponseLocation {
  * [`googleApiKey`]{@link DistanceResources.options.googleApiKey} option is set to a valid  Google Maps Geolocation API
  * key.
  */
-export class GoogleApiPositionProvider implements IPositionProvider {
+export class GoogleApiPositionProvider implements IGeolocationPositionProvider {
   constructor(private googleApiKey: string) {}
 
-  public getPosition(): Promise<IPosition> {
+  public getPosition(): Promise<IGeolocationPosition> {
     return new EndpointCaller()
       .call<IGeolocationResponse>({
         errorsAsSuccess: false,
