@@ -11,7 +11,7 @@ cache:
   directories:
   - node_modules
 before_install:
-  - npm install -g npm@5.5.1
+- npm install -g npm@5.5.1
 script:
 - source read.version.sh
 - echo $PACKAGE_JSON_VERSION
@@ -21,18 +21,18 @@ env:
   global:
   - COMMIT_AUTHOR_EMAIL: sandbox_JSUI@coveo.com
 deploy:
-  - provider: s3
-    access_key_id: AKIAI46KIW3CIP73TTEQ
-    secret_access_key:
-      secure: M8GpSFcPoyQj8kTA9ptXjTb6wsKUQuI9lpVC0Mph1gbedfle5tNwInJzpUgQhKhrSYZTgtQcDKM9/sYhji6wEp7DGu2NunBzGrotQUe/CNvhhBKNCqVRdGcIFJN971r/jbUvGfYfRCWFD6hCVJnmA438d1kbkRF6yn8r+pti9G4nmgsovM4Xwl6DeeothaeO37yA0hN+Eo+RAnT3K+Ph7CiEt/4PnXQ8F0UI9mvRP5VHnTIDcaIbHpumqR46UK3qqZpvHFiqx2uKdXPz07X7kpP2n/NaXMDslzPktmGK/Zz5jESovVBOXvLSfhJnE/QsUMgONVBAMAL6q+ZkYscrDK4sA5vWtr5BvAPd27RC5UAoTLX30TFknGBcw/ns9nSAvsXQkz/oLdsT21EbfTEVvZMlLjB06FIyXvWyWlP6828fIdluN+CMYr1Uak+Kec0tbhb8lMpUGyY2/X820QSq9a9Q/mTpxgtGSERFOwj/K6N6vLPfwuQEAjv5ISvkjYhivtTH9m3379/qJ+Ki8TNET5Iio6TahYmB9t10CgGDcfaskAI/LoFpkX8c7zKmHrYlNn1Cm7DNc8+/6T0YHdChejvUHSDqJav9qljK9iGplDyICgjmfrQAgN6WXKCqWmyAjjcN+73JAyU3crKJzMr31cg4nvY+ctK4PhTPlN5HNhs=
-    bucket: olamothe
-    local-dir: bin
-    upload-dir: searchui/v$PACKAGE_JSON_VERSION
-    acl: public_read
-    skip_cleanup: true
-    on:
-      repo: coveo/search-ui
-      all_branches: true
+- provider: s3
+  access_key_id: AKIAIMXKOBWDLZJPYWOQ
+  secret_access_key:
+    secure: Nh1K6QIXPaUFtKzA2D5f6LmW9Inf+fzZXQEKhFLAdNMITqxc9IPgryQEIrr/BqRlOdTgzod4kbHAu0tybhqvDQ7UtX6n+nLGjA4IbJ6Xtdn+yKBkzpy2zJUx2qqsuGFB2fOTJLC3QCX+eRvLdCt6uSjhhJAMNyDNo19UDRQEsVLqpHvj+0RI0yR9EmvMdAovaUViiVdkkjUmlZo9RWmJR83NyxFCEmmXKs5iqNiOEJpwjemdoEfR8oeRCvzosp1Wz2MzWIs/h+GuLcv/RGwKCkdkM4lBO2Rn/E2w4n0uz9Bn3n7QNvKgPzAqz1Us4a0ISu52TgnQvQ1tLvxhnkJeHMKI2mQ6UbICKWq0CG5Q+fotHU4I3mzws5AoXzFimiYXcbYzzduZHHTsTqNinmMfukPHwmfMQ7mUjcAWLhjaarz15Jr0amiwYAf7lFHjM+nMzgKW0hR9oq65A9MnR3nkJi8LCECTHJsps7AZWWSTrjkbTURGy6KlnACQZT79+yUBaEg+egIO3x5LWev+fRTy6WJfWhdrg7BzT+lkvFdl2egOPkFBQgxd88mKeCly6F4nPDg64G1AyY01dfyR9Ekbe5a41nuNinxpTyTdlTl4/CHrsD4EkYtwyg6M3dsBZhlj794an9dHqEtyfAv/DYsNXqdzv8Pqgqi46LfVp+EDwIo=
+  bucket: olamothe
+  local-dir: bin
+  upload-dir: searchui/v$PACKAGE_JSON_VERSION
+  acl: public_read
+  skip_cleanup: true
+  on:
+    repo: coveo/search-ui
+    all_branches: true
 branches:
   only:
   - JSUI-1923
