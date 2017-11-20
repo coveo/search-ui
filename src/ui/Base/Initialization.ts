@@ -683,7 +683,7 @@ export class Initialization {
 
   private static shouldExecuteFirstQueryAutomatically(searchInterface: SearchInterface) {
     if (searchInterface.options.autoTriggerQuery) {
-      if (searchInterface.options.allowEmptyQuery) {
+      if (searchInterface.options.allowNoKeywords) {
         return true;
       } else {
         const currentStateOfQuery = state(searchInterface.element).get('q');
