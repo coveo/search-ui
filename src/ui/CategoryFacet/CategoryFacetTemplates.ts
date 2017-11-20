@@ -24,13 +24,8 @@ export class CategoryFacetTemplates {
 
   private createListElementTemplate() {
     const valueElement = $$('span', { className: 'coveo-category-facet-value-caption' });
-    const valueLabel = $$(
-      'label',
-      { className: 'coveo-category-facet-value-label' },
-      $$('div', { className: 'coveo-category-facet-value-label-wrapper' })
-    );
+    const valueLabel = $$('label', { className: 'coveo-category-facet-value-label' }, valueElement);
     const listElement = $$('li', { className: 'coveo-category-facet-value' }, valueLabel);
-    listElement.append(valueElement.el);
     return listElement;
   }
 }
