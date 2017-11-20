@@ -9,7 +9,7 @@ import { ComponentStateModel } from '../../src/models/ComponentStateModel';
 import { Querybox } from '../../src/ui/Querybox/Querybox';
 import { LiveAnalyticsClient } from '../../src/ui/Analytics/LiveAnalyticsClient';
 import { $$ } from '../../src/utils/Dom';
-import { QueryEvents } from '../../src/events/QueryEvents';
+import { QueryEvents, IDoneBuildingQueryEventArgs } from '../../src/events/QueryEvents';
 import { Component } from '../../src/ui/Base/Component';
 import { HistoryController } from '../../src/controllers/HistoryController';
 import { LocalStorageHistoryController } from '../../src/controllers/LocalStorageHistoryController';
@@ -418,6 +418,51 @@ export function SearchInterfaceTest() {
           const simulation = Simulate.query(env);
           expect(simulation.queryBuilder.maximumAge).toBe(123);
         });
+      });
+
+      it('allowNoKeywords to true does not cancel the query if there are no keywords', done => {
+        new SearchInterface(div, { allowNoKeywords: true }, undefined, mockWindow);
+        $$(div).on(QueryEvents.doneBuildingQuery, (e, args: IDoneBuildingQueryEventArgs) => {
+          expect(args.cancel).toBe(false);
+          done();
+        });
+        Simulate.query(env);
+      });
+
+      it('allowNoKeywords to false cancels the query if there are no keywords', done => {
+        new SearchInterface(div, { allowNoKeywords: false }, undefined, mockWindow);
+        $$(div).on(QueryEvents.doneBuildingQuery, (e, args: IDoneBuildingQueryEventArgs) => {
+          expect(args.cancel).toBe(true);
+          done();
+        });
+        Simulate.query(env);
+      });
+
+      it('allowNoKeywords to false does not cancel the query if there are keywords', done => {
+        new SearchInterface(div, { allowNoKeywords: false }, undefined, mockWindow);
+        const queryBuilder = new QueryBuilder();
+        queryBuilder.expression.add('foo');
+
+        $$(div).on(QueryEvents.doneBuildingQuery, (e, args: IDoneBuildingQueryEventArgs) => {
+          expect(args.cancel).toBe(false);
+          done();
+        });
+
+        Simulate.query(env, {
+          queryBuilder: queryBuilder
+        });
+      });
+
+      it('allowNoKeywords to false should be sent as a flag in the query', () => {
+        new SearchInterface(div, { allowNoKeywords: false }, undefined, mockWindow);
+        const simulation = Simulate.query(env);
+        expect(simulation.queryBuilder.build().allowNoKeywords).toBe(false);
+      });
+
+      it('allowNoKeywords to true should be sent as a flag in the query', () => {
+        new SearchInterface(div, { allowNoKeywords: true }, undefined, mockWindow);
+        const simulation = Simulate.query(env);
+        expect(simulation.queryBuilder.build().allowNoKeywords).toBe(true);
       });
     });
   });

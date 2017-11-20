@@ -14,7 +14,8 @@ import {
   IBuildingQueryEventArgs,
   INewQueryEventArgs,
   IQuerySuccessEventArgs,
-  IQueryErrorEventArgs
+  IQueryErrorEventArgs,
+  IDoneBuildingQueryEventArgs
 } from '../../events/QueryEvents';
 import { IBeforeRedirectEventArgs, StandaloneSearchInterfaceEvents } from '../../events/StandaloneSearchInterfaceEvents';
 import { HistoryController } from '../../controllers/HistoryController';
@@ -65,7 +66,7 @@ export interface ISearchInterfaceOptions {
   initOptions?: any;
   endpoint?: SearchEndpoint;
   originalOptionsObject?: any;
-  allowEmptyQuery?: boolean;
+  allowNoKeywords?: boolean;
 }
 
 /**
@@ -296,7 +297,23 @@ export class SearchInterface extends RootComponent implements IComponentBindings
      * Default value is `true`.
      */
     autoTriggerQuery: ComponentOptions.buildBooleanOption({ defaultValue: true }),
-    allowEmptyQuery: ComponentOptions.buildBooleanOption({ defaultValue: true }),
+    /**
+     * Specifies if the search interface should perform queries when there are no keywords entered by the end user.
+     * 
+     * If this option is set to true, the interface will initially load with only the search box available (If there is a search box component in the interface). 
+     * 
+     * When the user submit his query, the full search interface will then load to displays results.
+     * 
+     * For technical reasons, this option is automatically set to `false` in Coveo for Salesforce Free edition, and should not be changed.
+     * 
+     * This options interact closely with the {@link SearchInterface.options.autoTriggerQuery} option, since the automatic query will not be triggered if there are no keywords.
+     * 
+     * It also modifies the {@link IQuery.allowNoKeywords} query parameter.
+     * 
+     * Default value is `true`
+     * @notSupportedIn salesforcefree
+     */
+    allowNoKeywords: ComponentOptions.buildBooleanOption({ defaultValue: true }),
     endpoint: ComponentOptions.buildCustomOption(
       endpoint => (endpoint != null && endpoint in SearchEndpoint.endpoints ? SearchEndpoint.endpoints[endpoint] : null),
       { defaultFunction: () => SearchEndpoint.endpoints['default'] }
@@ -451,7 +468,7 @@ export class SearchInterface extends RootComponent implements IComponentBindings
     this.queryController = new QueryController(element, this.options, this.usageAnalytics, this);
     new SentryLogger(this.queryController);
 
-    if (this.options.allowEmptyQuery) {
+    if (this.options.allowNoKeywords) {
       this.initializeEmptyQueryAllowed();
     } else {
       this.initializeEmptyQueryNotAllowed();
@@ -803,6 +820,8 @@ export class SearchInterface extends RootComponent implements IComponentBindings
     data.queryBuilder.enableCollaborativeRating = this.options.enableCollaborativeRating;
 
     data.queryBuilder.enableDuplicateFiltering = this.options.enableDuplicateFiltering;
+
+    data.queryBuilder.allowNoKeywords = this.options.allowNoKeywords;
   }
 
   private handleQuerySuccess(data: IQuerySuccessEventArgs) {
@@ -867,8 +886,8 @@ export class SearchInterface extends RootComponent implements IComponentBindings
       }
     });
 
-    $$(this.element).on(QueryEvents.newQuery, (e, args: INewQueryEventArgs) => {
-      if (this.queryStateModel.get('q') == '') {
+    $$(this.element).on(QueryEvents.doneBuildingQuery, (e, args: IDoneBuildingQueryEventArgs) => {
+      if (!args.queryBuilder.containsEndUserKeywords()) {
         this.logger.info('Query cancelled by the Search Interface', 'Configuration does not allow empty query', this, this.options);
         args.cancel = true;
       }
