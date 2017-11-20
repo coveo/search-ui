@@ -47,6 +47,12 @@ export class CategoryFacet extends Component {
       categoryValue.render();
     });
   }
+
+  private onClickHandler(event: Event) {
+    const value = $$($$(<EventTarget & HTMLElement>event.target).find('.coveo-category-facet-value-caption')).text();
+    const categoryValuesToHide = _.filter(this.rootCategoryValues, categoryValue => categoryValue.getValue() != value);
+    _;
+  }
 }
 
 Initialization.registerAutoCreateComponent(CategoryFacet);

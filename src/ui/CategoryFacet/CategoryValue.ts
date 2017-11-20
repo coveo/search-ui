@@ -4,18 +4,23 @@ import { CategoryJsonValues } from './CategoryFacet';
 import { SVGIcons } from '../../utils/SVGIcons';
 import { SVGDom } from '../../utils/SVGDom';
 
+export interface CategoryValueParent {
+  hideChildren: (except?: string) => void;
+  renderChildren: (values: string[]) => void;
+}
+
 export class CategoryValue {
   private children: CategoryValue[] = [];
   private listOfChildValues: Dom;
   private listElement: Dom;
 
-  private = false;
   private showingChildren = false;
 
   constructor(
     private element: Dom,
     private value: string,
     private categoryFacetTemplates: CategoryFacetTemplates,
+    private onClickHandler?: (event: Event) => void,
     private parent: CategoryValue = null
   ) {
     this.listElement = this.categoryFacetTemplates.buildListElement(this.value);
@@ -67,6 +72,8 @@ export class CategoryValue {
   public getValue() {
     return this.value;
   }
+
+  public hide() {}
 
   public getPath() {
     const path: string[] = [this.value];
