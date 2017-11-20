@@ -1,4 +1,4 @@
-webpackJsonpCoveo__temporary([28],{
+webpackJsonpCoveo__temporary([29],{
 
 /***/ 16:
 /***/ (function(module, exports, __webpack_require__) {
@@ -6,6 +6,7 @@ webpackJsonpCoveo__temporary([28],{
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+var _ = __webpack_require__(1);
 var SVGDom = /** @class */ (function () {
     function SVGDom() {
     }
@@ -16,6 +17,12 @@ var SVGDom = /** @class */ (function () {
     SVGDom.removeClassFromSVGInContainer = function (svgContainer, classToRemove) {
         var svgElement = svgContainer.querySelector('svg');
         svgElement.setAttribute('class', SVGDom.getClass(svgElement).replace(classToRemove, ''));
+    };
+    SVGDom.addStyleToSVGInContainer = function (svgContainer, styleToAdd) {
+        var svgElement = svgContainer.querySelector('svg');
+        _.each(styleToAdd, function (styleValue, styleKey) {
+            svgElement.style[styleKey] = styleValue;
+        });
     };
     SVGDom.getClass = function (svgElement) {
         var className = svgElement.getAttribute('class');
@@ -28,7 +35,7 @@ exports.SVGDom = SVGDom;
 
 /***/ }),
 
-/***/ 313:
+/***/ 315:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -53,7 +60,7 @@ var SettingsEvents_1 = __webpack_require__(43);
 var Initialization_1 = __webpack_require__(2);
 var _ = __webpack_require__(1);
 var GlobalExports_1 = __webpack_require__(4);
-__webpack_require__(534);
+__webpack_require__(535);
 var SVGDom_1 = __webpack_require__(16);
 /**
  * The Settings component renders a **Settings** button that the end user can click to access a popup menu from which
@@ -171,8 +178,8 @@ var Settings = /** @class */ (function (_super) {
     };
     Settings.prototype.getPopupPositioning = function () {
         return {
-            horizontal: PopupUtils_1.HorizontalAlignment.INNERRIGHT,
-            vertical: PopupUtils_1.VerticalAlignment.BOTTOM,
+            horizontal: PopupUtils_1.PopupHorizontalAlignment.INNERRIGHT,
+            vertical: PopupUtils_1.PopupVerticalAlignment.BOTTOM,
             verticalOffset: 8
         };
     };
@@ -202,7 +209,7 @@ Initialization_1.Initialization.registerAutoCreateComponent(Settings);
 
 /***/ }),
 
-/***/ 534:
+/***/ 535:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

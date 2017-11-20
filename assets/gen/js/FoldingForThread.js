@@ -1,6 +1,6 @@
-webpackJsonpCoveo__temporary([26,43],{
+webpackJsonpCoveo__temporary([27,43],{
 
-/***/ 244:
+/***/ 245:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17,7 +17,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var Component_1 = __webpack_require__(8);
-var SortCriteria_1 = __webpack_require__(428);
+var SortCriteria_1 = __webpack_require__(430);
 var ComponentOptions_1 = __webpack_require__(9);
 var Utils_1 = __webpack_require__(6);
 var Assert_1 = __webpack_require__(7);
@@ -403,7 +403,7 @@ Initialization_1.Initialization.registerAutoCreateComponent(Folding);
 
 /***/ }),
 
-/***/ 290:
+/***/ 292:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -419,7 +419,7 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var Folding_1 = __webpack_require__(244);
+var Folding_1 = __webpack_require__(245);
 var Initialization_1 = __webpack_require__(2);
 var GlobalExports_1 = __webpack_require__(4);
 /**
@@ -475,7 +475,7 @@ Initialization_1.Initialization.registerAutoCreateComponent(FoldingForThread);
 
 /***/ }),
 
-/***/ 428:
+/***/ 430:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";

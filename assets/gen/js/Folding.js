@@ -1,6 +1,6 @@
 webpackJsonpCoveo__temporary([43],{
 
-/***/ 244:
+/***/ 245:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17,7 +17,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var Component_1 = __webpack_require__(8);
-var SortCriteria_1 = __webpack_require__(428);
+var SortCriteria_1 = __webpack_require__(430);
 var ComponentOptions_1 = __webpack_require__(9);
 var Utils_1 = __webpack_require__(6);
 var Assert_1 = __webpack_require__(7);
@@ -403,7 +403,7 @@ Initialization_1.Initialization.registerAutoCreateComponent(Folding);
 
 /***/ }),
 
-/***/ 428:
+/***/ 430:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";

@@ -1,4 +1,4 @@
-webpackJsonpCoveo__temporary([25],{
+webpackJsonpCoveo__temporary([26],{
 
 /***/ 16:
 /***/ (function(module, exports, __webpack_require__) {
@@ -6,6 +6,7 @@ webpackJsonpCoveo__temporary([25],{
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+var _ = __webpack_require__(1);
 var SVGDom = /** @class */ (function () {
     function SVGDom() {
     }
@@ -16,6 +17,12 @@ var SVGDom = /** @class */ (function () {
     SVGDom.removeClassFromSVGInContainer = function (svgContainer, classToRemove) {
         var svgElement = svgContainer.querySelector('svg');
         svgElement.setAttribute('class', SVGDom.getClass(svgElement).replace(classToRemove, ''));
+    };
+    SVGDom.addStyleToSVGInContainer = function (svgContainer, styleToAdd) {
+        var svgElement = svgContainer.querySelector('svg');
+        _.each(styleToAdd, function (styleValue, styleKey) {
+            svgElement.style[styleKey] = styleValue;
+        });
     };
     SVGDom.getClass = function (svgElement) {
         var className = svgElement.getAttribute('class');
@@ -28,7 +35,7 @@ exports.SVGDom = SVGDom;
 
 /***/ }),
 
-/***/ 277:
+/***/ 279:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -47,13 +54,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var Component_1 = __webpack_require__(8);
 var ComponentOptions_1 = __webpack_require__(9);
 var Initialization_1 = __webpack_require__(2);
-var CardOverlayEvents_1 = __webpack_require__(475);
+var CardOverlayEvents_1 = __webpack_require__(477);
 var Dom_1 = __webpack_require__(3);
 var Assert_1 = __webpack_require__(7);
 var KeyboardUtils_1 = __webpack_require__(23);
 var GlobalExports_1 = __webpack_require__(4);
-__webpack_require__(476);
-var SVGIcons_1 = __webpack_require__(15);
+__webpack_require__(478);
+var SVGIcons_1 = __webpack_require__(13);
 var SVGDom_1 = __webpack_require__(16);
 var Utils_1 = __webpack_require__(6);
 /**
@@ -196,7 +203,7 @@ Initialization_1.Initialization.registerAutoCreateComponent(CardOverlay);
 
 /***/ }),
 
-/***/ 475:
+/***/ 477:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -227,7 +234,7 @@ exports.CardOverlayEvents = CardOverlayEvents;
 
 /***/ }),
 
-/***/ 476:
+/***/ 478:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

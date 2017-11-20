@@ -1,6 +1,6 @@
 webpackJsonpCoveo__temporary([63],{
 
-/***/ 282:
+/***/ 284:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21,7 +21,7 @@ var ComponentOptions_1 = __webpack_require__(9);
 var Assert_1 = __webpack_require__(7);
 var QueryEvents_1 = __webpack_require__(11);
 var Dom_1 = __webpack_require__(3);
-var QueryStateModel_1 = __webpack_require__(13);
+var QueryStateModel_1 = __webpack_require__(14);
 var Initialization_1 = __webpack_require__(2);
 var StringUtils_1 = __webpack_require__(21);
 var Utils_1 = __webpack_require__(6);
@@ -29,7 +29,7 @@ var AnalyticsActionListMeta_1 = __webpack_require__(12);
 var Strings_1 = __webpack_require__(10);
 var _ = __webpack_require__(1);
 var GlobalExports_1 = __webpack_require__(4);
-__webpack_require__(477);
+__webpack_require__(479);
 /**
  * The DidYouMean component is responsible for displaying query corrections. If this component is in the page and the
  * query returns no result but finds a possible query correction, the component either suggests the correction or
@@ -169,7 +169,7 @@ Initialization_1.Initialization.registerAutoCreateComponent(DidYouMean);
 
 /***/ }),
 
-/***/ 477:
+/***/ 479:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

@@ -1,6 +1,6 @@
-webpackJsonpCoveo__temporary([22,57],{
+webpackJsonpCoveo__temporary([23,57],{
 
-/***/ 299:
+/***/ 301:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22,9 +22,9 @@ var Initialization_1 = __webpack_require__(2);
 var Utils_1 = __webpack_require__(6);
 var Dom_1 = __webpack_require__(3);
 var GlobalExports_1 = __webpack_require__(4);
-__webpack_require__(511);
-var ResultLink_1 = __webpack_require__(78);
-var StreamHighlightUtils_1 = __webpack_require__(65);
+__webpack_require__(512);
+var ResultLink_1 = __webpack_require__(79);
+var StreamHighlightUtils_1 = __webpack_require__(66);
 var _ = __webpack_require__(1);
 var ComponentOptionsModel_1 = __webpack_require__(26);
 var Component_1 = __webpack_require__(8);
@@ -172,21 +172,21 @@ Initialization_1.Initialization.registerAutoCreateComponent(PrintableUri);
 
 /***/ }),
 
-/***/ 435:
+/***/ 437:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
 
-/***/ 511:
+/***/ 512:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
 
-/***/ 78:
+/***/ 79:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -209,17 +209,17 @@ var AnalyticsActionListMeta_1 = __webpack_require__(12);
 var ResultListEvents_1 = __webpack_require__(32);
 var HighlightUtils_1 = __webpack_require__(49);
 var DeviceUtils_1 = __webpack_require__(22);
-var OSUtils_1 = __webpack_require__(240);
+var OSUtils_1 = __webpack_require__(241);
 var Initialization_1 = __webpack_require__(2);
 var QueryUtils_1 = __webpack_require__(19);
 var Assert_1 = __webpack_require__(7);
 var Utils_1 = __webpack_require__(6);
 var Defer_1 = __webpack_require__(28);
 var Dom_1 = __webpack_require__(3);
-var StreamHighlightUtils_1 = __webpack_require__(65);
+var StreamHighlightUtils_1 = __webpack_require__(66);
 var _ = __webpack_require__(1);
 var GlobalExports_1 = __webpack_require__(4);
-__webpack_require__(435);
+__webpack_require__(437);
 /**
  * The `ResultLink` component automatically transform a search result title into a clickable link pointing to the
  * original item.
@@ -267,14 +267,22 @@ var ResultLink = /** @class */ (function (_super) {
         Assert_1.Assert.exists(_this.componentOptionsModel);
         Assert_1.Assert.exists(_this.result);
         if (!_this.quickviewShouldBeOpened()) {
-            // We assume that anytime the contextual menu is opened on a result link
-            // this is do "open in a new tab" or something similar.
-            // This is not 100% accurate, but we estimate it to be the lesser of 2 evils (not logging anything)
-            Dom_1.$$(element).on('contextmenu', function () {
-                _this.logOpenDocument();
+            // Bind on multiple "click" or "mouse" events.
+            // Create a function that will be executed only once, so as not to log multiple events
+            // Once a result link has been opened, and that we log at least one analytics event,
+            // it should not matter if the end user open the same link multiple times with different methods.
+            // It's still only one "click" event as far as UA is concerned.
+            // Also need to handle "longpress" on mobile (the contextual menu), which we assume to be 1 s long.
+            var executeOnlyOnce_1 = _.once(function () { return _this.logOpenDocument(); });
+            Dom_1.$$(element).on(['contextmenu', 'click', 'mousedown', 'mouseup'], executeOnlyOnce_1);
+            var longPressTimer_1;
+            Dom_1.$$(element).on('touchstart', function () {
+                longPressTimer_1 = setTimeout(executeOnlyOnce_1, 1000);
             });
-            Dom_1.$$(element).on('click', function () {
-                _this.logOpenDocument();
+            Dom_1.$$(element).on('touchend', function () {
+                if (longPressTimer_1) {
+                    clearTimeout(longPressTimer_1);
+                }
             });
         }
         _this.renderUri(element, result);

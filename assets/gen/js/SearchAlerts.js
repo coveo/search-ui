@@ -1,4 +1,4 @@
-webpackJsonpCoveo__temporary([13,68],{
+webpackJsonpCoveo__temporary([14,68],{
 
 /***/ 16:
 /***/ (function(module, exports, __webpack_require__) {
@@ -6,6 +6,7 @@ webpackJsonpCoveo__temporary([13,68],{
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+var _ = __webpack_require__(1);
 var SVGDom = /** @class */ (function () {
     function SVGDom() {
     }
@@ -16,6 +17,12 @@ var SVGDom = /** @class */ (function () {
     SVGDom.removeClassFromSVGInContainer = function (svgContainer, classToRemove) {
         var svgElement = svgContainer.querySelector('svg');
         svgElement.setAttribute('class', SVGDom.getClass(svgElement).replace(classToRemove, ''));
+    };
+    SVGDom.addStyleToSVGInContainer = function (svgContainer, styleToAdd) {
+        var svgElement = svgContainer.querySelector('svg');
+        _.each(styleToAdd, function (styleValue, styleKey) {
+            svgElement.style[styleKey] = styleValue;
+        });
     };
     SVGDom.getClass = function (svgElement) {
         var className = svgElement.getAttribute('class');
@@ -28,7 +35,7 @@ exports.SVGDom = SVGDom;
 
 /***/ }),
 
-/***/ 264:
+/***/ 266:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -42,7 +49,7 @@ exports.SUBSCRIPTION_TYPE = {
 
 /***/ }),
 
-/***/ 311:
+/***/ 313:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -60,12 +67,12 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var Component_1 = __webpack_require__(8);
 var ComponentOptions_1 = __webpack_require__(9);
-var SearchAlertsMessage_1 = __webpack_require__(532);
+var SearchAlertsMessage_1 = __webpack_require__(533);
 var SettingsEvents_1 = __webpack_require__(43);
 var QueryEvents_1 = __webpack_require__(11);
 var Assert_1 = __webpack_require__(7);
 var SearchAlertEvents_1 = __webpack_require__(59);
-var Subscription_1 = __webpack_require__(264);
+var Subscription_1 = __webpack_require__(266);
 var Initialization_1 = __webpack_require__(2);
 var Strings_1 = __webpack_require__(10);
 var Dom_1 = __webpack_require__(3);
@@ -74,7 +81,7 @@ var AnalyticsActionListMeta_1 = __webpack_require__(12);
 var _ = __webpack_require__(1);
 var GlobalExports_1 = __webpack_require__(4);
 var Dropdown_1 = __webpack_require__(53);
-var SVGIcons_1 = __webpack_require__(15);
+var SVGIcons_1 = __webpack_require__(13);
 var RegisteredNamedMethods_1 = __webpack_require__(34);
 var SearchInterface_1 = __webpack_require__(20);
 /**
@@ -639,7 +646,7 @@ exports.Dropdown = Dropdown;
 
 /***/ }),
 
-/***/ 532:
+/***/ 533:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -659,12 +666,12 @@ var Component_1 = __webpack_require__(8);
 var ComponentOptions_1 = __webpack_require__(9);
 var SearchAlertEvents_1 = __webpack_require__(59);
 var QueryEvents_1 = __webpack_require__(11);
-var Subscription_1 = __webpack_require__(264);
+var Subscription_1 = __webpack_require__(266);
 var PopupUtils_1 = __webpack_require__(52);
 var Strings_1 = __webpack_require__(10);
 var Dom_1 = __webpack_require__(3);
 var _ = __webpack_require__(1);
-var SVGIcons_1 = __webpack_require__(15);
+var SVGIcons_1 = __webpack_require__(13);
 var SVGDom_1 = __webpack_require__(16);
 /**
  * The SearchAlertsMessage component allows the {@link SearchAlerts} component to display messages.
@@ -741,8 +748,8 @@ var SearchAlertsMessage = /** @class */ (function (_super) {
         SVGDom_1.SVGDom.addClassToSVGInContainer(closeButton, 'coveo-subscript-messages-info-close-svg');
         Dom_1.$$(closeButton).on('click', function () { return _this.close(); });
         PopupUtils_1.PopupUtils.positionPopup(this.message.el, dom.el, this.root, {
-            horizontal: PopupUtils_1.HorizontalAlignment.INNERLEFT,
-            vertical: PopupUtils_1.VerticalAlignment.BOTTOM,
+            horizontal: PopupUtils_1.PopupHorizontalAlignment.INNERLEFT,
+            vertical: PopupUtils_1.PopupVerticalAlignment.BOTTOM,
             verticalOffset: 12,
             horizontalClip: true
         }, this.root);

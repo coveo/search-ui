@@ -1,4 +1,4 @@
-webpackJsonpCoveo__temporary([21],{
+webpackJsonpCoveo__temporary([22],{
 
 /***/ 16:
 /***/ (function(module, exports, __webpack_require__) {
@@ -6,6 +6,7 @@ webpackJsonpCoveo__temporary([21],{
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+var _ = __webpack_require__(1);
 var SVGDom = /** @class */ (function () {
     function SVGDom() {
     }
@@ -16,6 +17,12 @@ var SVGDom = /** @class */ (function () {
     SVGDom.removeClassFromSVGInContainer = function (svgContainer, classToRemove) {
         var svgElement = svgContainer.querySelector('svg');
         svgElement.setAttribute('class', SVGDom.getClass(svgElement).replace(classToRemove, ''));
+    };
+    SVGDom.addStyleToSVGInContainer = function (svgContainer, styleToAdd) {
+        var svgElement = svgContainer.querySelector('svg');
+        _.each(styleToAdd, function (styleValue, styleKey) {
+            svgElement.style[styleKey] = styleValue;
+        });
     };
     SVGDom.getClass = function (svgElement) {
         var className = svgElement.getAttribute('class');
@@ -28,7 +35,7 @@ exports.SVGDom = SVGDom;
 
 /***/ }),
 
-/***/ 304:
+/***/ 306:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -46,7 +53,7 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var Component_1 = __webpack_require__(8);
 var ComponentOptions_1 = __webpack_require__(9);
-var DefaultFoldingTemplate_1 = __webpack_require__(524);
+var DefaultFoldingTemplate_1 = __webpack_require__(525);
 var Utils_1 = __webpack_require__(6);
 var QueryUtils_1 = __webpack_require__(19);
 var Initialization_1 = __webpack_require__(2);
@@ -56,8 +63,8 @@ var Strings_1 = __webpack_require__(10);
 var _ = __webpack_require__(1);
 var GlobalExports_1 = __webpack_require__(4);
 var AnalyticsActionListMeta_1 = __webpack_require__(12);
-__webpack_require__(525);
-var SVGIcons_1 = __webpack_require__(15);
+__webpack_require__(526);
+var SVGIcons_1 = __webpack_require__(13);
 var SVGDom_1 = __webpack_require__(16);
 /**
  * The `ResultFolding` component renders folded result sets. It is usable inside a result template when there is an
@@ -347,7 +354,7 @@ Initialization_1.Initialization.registerAutoCreateComponent(ResultFolding);
 
 /***/ }),
 
-/***/ 524:
+/***/ 525:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -382,7 +389,7 @@ exports.DefaultFoldingTemplate = DefaultFoldingTemplate;
 
 /***/ }),
 
-/***/ 525:
+/***/ 526:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

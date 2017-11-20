@@ -6,6 +6,7 @@ webpackJsonpCoveo__temporary([34],{
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+var _ = __webpack_require__(1);
 var SVGDom = /** @class */ (function () {
     function SVGDom() {
     }
@@ -16,6 +17,12 @@ var SVGDom = /** @class */ (function () {
     SVGDom.removeClassFromSVGInContainer = function (svgContainer, classToRemove) {
         var svgElement = svgContainer.querySelector('svg');
         svgElement.setAttribute('class', SVGDom.getClass(svgElement).replace(classToRemove, ''));
+    };
+    SVGDom.addStyleToSVGInContainer = function (svgContainer, styleToAdd) {
+        var svgElement = svgContainer.querySelector('svg');
+        _.each(styleToAdd, function (styleValue, styleKey) {
+            svgElement.style[styleKey] = styleValue;
+        });
     };
     SVGDom.getClass = function (svgElement) {
         var className = svgElement.getAttribute('class');
@@ -28,7 +35,7 @@ exports.SVGDom = SVGDom;
 
 /***/ }),
 
-/***/ 296:
+/***/ 298:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -49,8 +56,8 @@ var ComponentOptions_1 = __webpack_require__(9);
 var DeviceUtils_1 = __webpack_require__(22);
 var QueryEvents_1 = __webpack_require__(11);
 var Model_1 = __webpack_require__(18);
-var QueryStateModel_1 = __webpack_require__(13);
-var QueryStateModel_2 = __webpack_require__(13);
+var QueryStateModel_1 = __webpack_require__(14);
+var QueryStateModel_2 = __webpack_require__(14);
 var AnalyticsActionListMeta_1 = __webpack_require__(12);
 var Initialization_1 = __webpack_require__(2);
 var Assert_1 = __webpack_require__(7);
@@ -58,8 +65,8 @@ var Strings_1 = __webpack_require__(10);
 var Dom_1 = __webpack_require__(3);
 var KeyboardUtils_1 = __webpack_require__(23);
 var GlobalExports_1 = __webpack_require__(4);
-__webpack_require__(509);
-var SVGIcons_1 = __webpack_require__(15);
+__webpack_require__(510);
+var SVGIcons_1 = __webpack_require__(13);
 var SVGDom_1 = __webpack_require__(16);
 /**
  * The Pager component attaches itself to a `div` element and renders widgets that allow the end user to navigate
@@ -395,7 +402,7 @@ Initialization_1.Initialization.registerAutoCreateComponent(Pager);
 
 /***/ }),
 
-/***/ 509:
+/***/ 510:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

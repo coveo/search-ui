@@ -1,6 +1,6 @@
 webpackJsonpCoveo__temporary([6,8],{
 
-/***/ 261:
+/***/ 263:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -49,7 +49,7 @@ exports.ResultListRenderer = ResultListRenderer;
 
 /***/ }),
 
-/***/ 295:
+/***/ 297:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -68,7 +68,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var Component_1 = __webpack_require__(8);
 var Dom_1 = __webpack_require__(3);
 var Strings_1 = __webpack_require__(10);
-var ResultList_1 = __webpack_require__(94);
+var ResultList_1 = __webpack_require__(95);
 var OmniboxEvents_1 = __webpack_require__(33);
 var ComponentOptions_1 = __webpack_require__(9);
 var QueryEvents_1 = __webpack_require__(11);
@@ -78,8 +78,8 @@ var Utils_1 = __webpack_require__(6);
 var Initialization_1 = __webpack_require__(2);
 var _ = __webpack_require__(1);
 var GlobalExports_1 = __webpack_require__(4);
-__webpack_require__(508);
-var EventsModules_1 = __webpack_require__(99);
+__webpack_require__(509);
+var EventsModules_1 = __webpack_require__(100);
 /**
  * The OmniboxResultList component behaves exactly like the {@link ResultList} component (which it extends), except that
  * it renders itself inside the {@link Omnibox} component.
@@ -289,7 +289,7 @@ Initialization_1.Initialization.registerAutoCreateComponent(OmniboxResultList);
 
 /***/ }),
 
-/***/ 429:
+/***/ 431:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -306,7 +306,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var Template_1 = __webpack_require__(24);
-var TemplateList_1 = __webpack_require__(96);
+var TemplateList_1 = __webpack_require__(97);
 var _ = __webpack_require__(1);
 var TableTemplate = /** @class */ (function (_super) {
     __extends(TableTemplate, _super);
@@ -354,7 +354,7 @@ exports.TableTemplate = TableTemplate;
 
 /***/ }),
 
-/***/ 430:
+/***/ 432:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -396,18 +396,18 @@ exports.DefaultRecommendationTemplate = DefaultRecommendationTemplate;
 
 /***/ }),
 
-/***/ 452:
+/***/ 454:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var ResponsiveComponentsManager_1 = __webpack_require__(77);
+var ResponsiveComponentsManager_1 = __webpack_require__(78);
 var SearchInterface_1 = __webpack_require__(20);
-var ResultList_1 = __webpack_require__(94);
+var ResultList_1 = __webpack_require__(95);
 var Dom_1 = __webpack_require__(3);
 var Component_1 = __webpack_require__(8);
-var Logger_1 = __webpack_require__(14);
+var Logger_1 = __webpack_require__(15);
 var ResponsiveDefaultResultTemplate = /** @class */ (function () {
     function ResponsiveDefaultResultTemplate(coveoRoot, ID, options, responsiveDropdown) {
         this.coveoRoot = coveoRoot;
@@ -468,7 +468,7 @@ exports.ResponsiveDefaultResultTemplate = ResponsiveDefaultResultTemplate;
 
 /***/ }),
 
-/***/ 453:
+/***/ 455:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -519,8 +519,8 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var ResultListRenderer_1 = __webpack_require__(261);
-var TableTemplate_1 = __webpack_require__(429);
+var ResultListRenderer_1 = __webpack_require__(263);
+var TableTemplate_1 = __webpack_require__(431);
 var Dom_1 = __webpack_require__(3);
 var _ = __webpack_require__(1);
 var ResultListTableRenderer = /** @class */ (function (_super) {
@@ -578,7 +578,7 @@ exports.ResultListTableRenderer = ResultListTableRenderer;
 
 /***/ }),
 
-/***/ 454:
+/***/ 456:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -594,7 +594,7 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var ResultListRenderer_1 = __webpack_require__(261);
+var ResultListRenderer_1 = __webpack_require__(263);
 var Dom_1 = __webpack_require__(3);
 var _ = __webpack_require__(1);
 var ResultListCardRenderer = /** @class */ (function (_super) {
@@ -628,20 +628,6 @@ exports.ResultListCardRenderer = ResultListCardRenderer;
 
 /***/ }),
 
-/***/ 455:
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-
-/***/ 456:
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-
 /***/ 457:
 /***/ (function(module, exports) {
 
@@ -649,14 +635,28 @@ exports.ResultListCardRenderer = ResultListCardRenderer;
 
 /***/ }),
 
-/***/ 508:
+/***/ 458:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
 
-/***/ 77:
+/***/ 459:
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+
+/***/ 509:
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+
+/***/ 78:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -669,7 +669,7 @@ var SearchInterface_1 = __webpack_require__(20);
 var Utils_1 = __webpack_require__(6);
 var _ = __webpack_require__(1);
 var QueryEvents_1 = __webpack_require__(11);
-var Logger_1 = __webpack_require__(14);
+var Logger_1 = __webpack_require__(15);
 var ResponsiveComponentsManager = /** @class */ (function () {
     function ResponsiveComponentsManager(root) {
         var _this = this;
@@ -844,7 +844,7 @@ exports.ResponsiveComponentsManager = ResponsiveComponentsManager;
 
 /***/ }),
 
-/***/ 94:
+/***/ 95:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -860,14 +860,14 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var TableTemplate_1 = __webpack_require__(429);
-var DefaultResultTemplate_1 = __webpack_require__(84);
+var TableTemplate_1 = __webpack_require__(431);
+var DefaultResultTemplate_1 = __webpack_require__(85);
 var Component_1 = __webpack_require__(8);
 var ComponentOptions_1 = __webpack_require__(9);
 var Assert_1 = __webpack_require__(7);
 var QueryEvents_1 = __webpack_require__(11);
 var Model_1 = __webpack_require__(18);
-var QueryStateModel_1 = __webpack_require__(13);
+var QueryStateModel_1 = __webpack_require__(14);
 var QueryUtils_1 = __webpack_require__(19);
 var Dom_1 = __webpack_require__(3);
 var AnalyticsActionListMeta_1 = __webpack_require__(12);
@@ -875,22 +875,22 @@ var Initialization_1 = __webpack_require__(2);
 var Defer_1 = __webpack_require__(28);
 var DeviceUtils_1 = __webpack_require__(22);
 var ResultListEvents_1 = __webpack_require__(32);
-var ResultLayoutEvents_1 = __webpack_require__(98);
+var ResultLayoutEvents_1 = __webpack_require__(99);
 var Utils_1 = __webpack_require__(6);
 var DomUtils_1 = __webpack_require__(47);
-var DefaultRecommendationTemplate_1 = __webpack_require__(430);
-var TemplateList_1 = __webpack_require__(96);
+var DefaultRecommendationTemplate_1 = __webpack_require__(432);
+var TemplateList_1 = __webpack_require__(97);
 var TemplateCache_1 = __webpack_require__(51);
-var ResponsiveDefaultResultTemplate_1 = __webpack_require__(452);
-var ResultListRenderer_1 = __webpack_require__(261);
-var ResultListTableRenderer_1 = __webpack_require__(453);
-var ResultListCardRenderer_1 = __webpack_require__(454);
+var ResponsiveDefaultResultTemplate_1 = __webpack_require__(454);
+var ResultListRenderer_1 = __webpack_require__(263);
+var ResultListTableRenderer_1 = __webpack_require__(455);
+var ResultListCardRenderer_1 = __webpack_require__(456);
 var _ = __webpack_require__(1);
 var GlobalExports_1 = __webpack_require__(4);
-__webpack_require__(455);
-__webpack_require__(456);
 __webpack_require__(457);
-var InitializationPlaceholder_1 = __webpack_require__(248);
+__webpack_require__(458);
+__webpack_require__(459);
+var InitializationPlaceholder_1 = __webpack_require__(249);
 var RegisteredNamedMethods_1 = __webpack_require__(34);
 /**
  * The `ResultList` component is responsible for displaying query results by applying one or several result templates

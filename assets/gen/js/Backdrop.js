@@ -1,6 +1,41 @@
-webpackJsonpCoveo__temporary([17,31,57],{
+webpackJsonpCoveo__temporary([13,20,57],{
 
-/***/ 243:
+/***/ 16:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var _ = __webpack_require__(1);
+var SVGDom = /** @class */ (function () {
+    function SVGDom() {
+    }
+    SVGDom.addClassToSVGInContainer = function (svgContainer, classToAdd) {
+        var svgElement = svgContainer.querySelector('svg');
+        svgElement.setAttribute('class', "" + SVGDom.getClass(svgElement) + classToAdd);
+    };
+    SVGDom.removeClassFromSVGInContainer = function (svgContainer, classToRemove) {
+        var svgElement = svgContainer.querySelector('svg');
+        svgElement.setAttribute('class', SVGDom.getClass(svgElement).replace(classToRemove, ''));
+    };
+    SVGDom.addStyleToSVGInContainer = function (svgContainer, styleToAdd) {
+        var svgElement = svgContainer.querySelector('svg');
+        _.each(styleToAdd, function (styleValue, styleKey) {
+            svgElement.style[styleKey] = styleValue;
+        });
+    };
+    SVGDom.getClass = function (svgElement) {
+        var className = svgElement.getAttribute('class');
+        return className ? className + ' ' : '';
+    };
+    return SVGDom;
+}());
+exports.SVGDom = SVGDom;
+
+
+/***/ }),
+
+/***/ 244:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18,7 +53,7 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var Component_1 = __webpack_require__(8);
 var ComponentOptions_1 = __webpack_require__(9);
-var ResultLink_1 = __webpack_require__(78);
+var ResultLink_1 = __webpack_require__(79);
 var Initialization_1 = __webpack_require__(2);
 var DomUtils_1 = __webpack_require__(47);
 var Dom_1 = __webpack_require__(3);
@@ -26,6 +61,9 @@ var ExternalModulesShim_1 = __webpack_require__(27);
 var _ = __webpack_require__(1);
 var GlobalExports_1 = __webpack_require__(4);
 var RegisteredNamedMethods_1 = __webpack_require__(34);
+var SVGIcons_1 = __webpack_require__(13);
+var SVGDom_1 = __webpack_require__(16);
+var UtilsModules_1 = __webpack_require__(83);
 /**
  * The YouTubeThumbnail component automatically fetches the thumbnail of a YouTube video.
  *
@@ -57,8 +95,16 @@ var YouTubeThumbnail = /** @class */ (function (_super) {
         var img = Dom_1.$$('img');
         img.el.style.width = _this.options.width;
         img.el.style.height = _this.options.height;
-        img.setAttribute('src', result.raw['ytthumbnailurl']);
+        img.setAttribute('src', UtilsModules_1.Utils.getFieldValue(_this.result, 'ytthumbnailurl'));
         img.addClass('coveo-youtube-thumbnail-img');
+        img.el.onerror = function () {
+            var svgVideo = Dom_1.$$('div', {}, SVGIcons_1.SVGIcons.icons.video).el;
+            SVGDom_1.SVGDom.addStyleToSVGInContainer(svgVideo, {
+                width: _this.options.width
+            });
+            Dom_1.$$(img).remove();
+            thumbnailDiv.append(svgVideo);
+        };
         thumbnailDiv.append(img.el);
         var span = Dom_1.$$('span');
         span.addClass('coveo-youtube-thumbnail-play-button');
@@ -155,7 +201,7 @@ Initialization_1.Initialization.registerAutoCreateComponent(YouTubeThumbnail);
 
 /***/ }),
 
-/***/ 273:
+/***/ 275:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -177,10 +223,10 @@ var Initialization_1 = __webpack_require__(2);
 var _ = __webpack_require__(1);
 var Utils_1 = __webpack_require__(6);
 var GlobalExports_1 = __webpack_require__(4);
-var YouTubeThumbnail_1 = __webpack_require__(243);
+var YouTubeThumbnail_1 = __webpack_require__(244);
 var Dom_1 = __webpack_require__(3);
 var ExternalModulesShim_1 = __webpack_require__(27);
-__webpack_require__(472);
+__webpack_require__(474);
 /**
  * The Backdrop component renders an image URL (either passed as a direct URL or contained in a result field) as a
  * background image. It is useful for displaying information in front of a dynamic background image.
@@ -301,21 +347,21 @@ Initialization_1.Initialization.registerAutoCreateComponent(Backdrop);
 
 /***/ }),
 
-/***/ 435:
+/***/ 437:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
 
-/***/ 472:
+/***/ 474:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
 
-/***/ 78:
+/***/ 79:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -338,17 +384,17 @@ var AnalyticsActionListMeta_1 = __webpack_require__(12);
 var ResultListEvents_1 = __webpack_require__(32);
 var HighlightUtils_1 = __webpack_require__(49);
 var DeviceUtils_1 = __webpack_require__(22);
-var OSUtils_1 = __webpack_require__(240);
+var OSUtils_1 = __webpack_require__(241);
 var Initialization_1 = __webpack_require__(2);
 var QueryUtils_1 = __webpack_require__(19);
 var Assert_1 = __webpack_require__(7);
 var Utils_1 = __webpack_require__(6);
 var Defer_1 = __webpack_require__(28);
 var Dom_1 = __webpack_require__(3);
-var StreamHighlightUtils_1 = __webpack_require__(65);
+var StreamHighlightUtils_1 = __webpack_require__(66);
 var _ = __webpack_require__(1);
 var GlobalExports_1 = __webpack_require__(4);
-__webpack_require__(435);
+__webpack_require__(437);
 /**
  * The `ResultLink` component automatically transform a search result title into a clickable link pointing to the
  * original item.
@@ -396,14 +442,22 @@ var ResultLink = /** @class */ (function (_super) {
         Assert_1.Assert.exists(_this.componentOptionsModel);
         Assert_1.Assert.exists(_this.result);
         if (!_this.quickviewShouldBeOpened()) {
-            // We assume that anytime the contextual menu is opened on a result link
-            // this is do "open in a new tab" or something similar.
-            // This is not 100% accurate, but we estimate it to be the lesser of 2 evils (not logging anything)
-            Dom_1.$$(element).on('contextmenu', function () {
-                _this.logOpenDocument();
+            // Bind on multiple "click" or "mouse" events.
+            // Create a function that will be executed only once, so as not to log multiple events
+            // Once a result link has been opened, and that we log at least one analytics event,
+            // it should not matter if the end user open the same link multiple times with different methods.
+            // It's still only one "click" event as far as UA is concerned.
+            // Also need to handle "longpress" on mobile (the contextual menu), which we assume to be 1 s long.
+            var executeOnlyOnce_1 = _.once(function () { return _this.logOpenDocument(); });
+            Dom_1.$$(element).on(['contextmenu', 'click', 'mousedown', 'mouseup'], executeOnlyOnce_1);
+            var longPressTimer_1;
+            Dom_1.$$(element).on('touchstart', function () {
+                longPressTimer_1 = setTimeout(executeOnlyOnce_1, 1000);
             });
-            Dom_1.$$(element).on('click', function () {
-                _this.logOpenDocument();
+            Dom_1.$$(element).on('touchend', function () {
+                if (longPressTimer_1) {
+                    clearTimeout(longPressTimer_1);
+                }
             });
         }
         _this.renderUri(element, result);

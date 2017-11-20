@@ -6,6 +6,7 @@ webpackJsonpCoveo__temporary([35],{
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+var _ = __webpack_require__(1);
 var SVGDom = /** @class */ (function () {
     function SVGDom() {
     }
@@ -16,6 +17,12 @@ var SVGDom = /** @class */ (function () {
     SVGDom.removeClassFromSVGInContainer = function (svgContainer, classToRemove) {
         var svgElement = svgContainer.querySelector('svg');
         svgElement.setAttribute('class', SVGDom.getClass(svgElement).replace(classToRemove, ''));
+    };
+    SVGDom.addStyleToSVGInContainer = function (svgContainer, styleToAdd) {
+        var svgElement = svgContainer.querySelector('svg');
+        _.each(styleToAdd, function (styleValue, styleKey) {
+            svgElement.style[styleKey] = styleValue;
+        });
     };
     SVGDom.getClass = function (svgElement) {
         var className = svgElement.getAttribute('class');
@@ -28,7 +35,7 @@ exports.SVGDom = SVGDom;
 
 /***/ }),
 
-/***/ 291:
+/***/ 293:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -50,15 +57,15 @@ var Strings_1 = __webpack_require__(10);
 var QueryEvents_1 = __webpack_require__(11);
 var BreadcrumbEvents_1 = __webpack_require__(42);
 var AnalyticsActionListMeta_1 = __webpack_require__(12);
-var QueryStateModel_1 = __webpack_require__(13);
+var QueryStateModel_1 = __webpack_require__(14);
 var Dom_1 = __webpack_require__(3);
 var Utils_1 = __webpack_require__(6);
 var Initialization_1 = __webpack_require__(2);
 var Assert_1 = __webpack_require__(7);
 var _ = __webpack_require__(1);
 var GlobalExports_1 = __webpack_require__(4);
-__webpack_require__(493);
-var SVGIcons_1 = __webpack_require__(15);
+__webpack_require__(494);
+var SVGIcons_1 = __webpack_require__(13);
 var SVGDom_1 = __webpack_require__(16);
 /**
  * The HiddenQuery component handles a "hidden" query parameter (`hq`) and its description (`hd`).
@@ -186,7 +193,7 @@ Initialization_1.Initialization.registerAutoCreateComponent(HiddenQuery);
 
 /***/ }),
 
-/***/ 493:
+/***/ 494:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

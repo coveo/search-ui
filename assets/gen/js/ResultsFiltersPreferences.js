@@ -6,6 +6,7 @@ webpackJsonpCoveo__temporary([11,51,52],{
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+var _ = __webpack_require__(1);
 var SVGDom = /** @class */ (function () {
     function SVGDom() {
     }
@@ -16,6 +17,12 @@ var SVGDom = /** @class */ (function () {
     SVGDom.removeClassFromSVGInContainer = function (svgContainer, classToRemove) {
         var svgElement = svgContainer.querySelector('svg');
         svgElement.setAttribute('class', SVGDom.getClass(svgElement).replace(classToRemove, ''));
+    };
+    SVGDom.addStyleToSVGInContainer = function (svgContainer, styleToAdd) {
+        var svgElement = svgContainer.querySelector('svg');
+        _.each(styleToAdd, function (styleValue, styleKey) {
+            svgElement.style[styleKey] = styleValue;
+        });
     };
     SVGDom.getClass = function (svgElement) {
         var className = svgElement.getAttribute('class');
@@ -28,7 +35,7 @@ exports.SVGDom = SVGDom;
 
 /***/ }),
 
-/***/ 246:
+/***/ 247:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -37,7 +44,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var Dom_1 = __webpack_require__(3);
 var _ = __webpack_require__(1);
 var Strings_1 = __webpack_require__(10);
-__webpack_require__(458);
+__webpack_require__(460);
 var Utils_1 = __webpack_require__(6);
 var GlobalExports_1 = __webpack_require__(4);
 /**
@@ -157,7 +164,7 @@ exports.MultiSelect = MultiSelect;
 
 /***/ }),
 
-/***/ 306:
+/***/ 308:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -177,10 +184,10 @@ var Component_1 = __webpack_require__(8);
 var ComponentOptions_1 = __webpack_require__(9);
 var LocalStorageUtils_1 = __webpack_require__(38);
 var InitializationEvents_1 = __webpack_require__(17);
-var PreferencesPanelEvents_1 = __webpack_require__(67);
+var PreferencesPanelEvents_1 = __webpack_require__(68);
 var Model_1 = __webpack_require__(18);
 var QueryEvents_1 = __webpack_require__(11);
-var QueryStateModel_1 = __webpack_require__(13);
+var QueryStateModel_1 = __webpack_require__(14);
 var BreadcrumbEvents_1 = __webpack_require__(42);
 var AnalyticsActionListMeta_1 = __webpack_require__(12);
 var Initialization_1 = __webpack_require__(2);
@@ -189,12 +196,12 @@ var Utils_1 = __webpack_require__(6);
 var Dom_1 = __webpack_require__(3);
 var _ = __webpack_require__(1);
 var GlobalExports_1 = __webpack_require__(4);
-__webpack_require__(529);
+__webpack_require__(530);
 var Checkbox_1 = __webpack_require__(54);
 var TextInput_1 = __webpack_require__(50);
-var MultiSelect_1 = __webpack_require__(246);
-var FormGroup_1 = __webpack_require__(95);
-var SVGIcons_1 = __webpack_require__(15);
+var MultiSelect_1 = __webpack_require__(247);
+var FormGroup_1 = __webpack_require__(96);
+var SVGIcons_1 = __webpack_require__(13);
 var SVGDom_1 = __webpack_require__(16);
 /**
  * The `ResultFiltersPreferences` component allows end users to create custom filters to apply to queries. These filters
@@ -748,28 +755,28 @@ Initialization_1.Initialization.registerAutoCreateComponent(ResultsFiltersPrefer
 
 /***/ }),
 
-/***/ 445:
+/***/ 447:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
 
-/***/ 458:
+/***/ 460:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
 
-/***/ 529:
+/***/ 530:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
 
-/***/ 95:
+/***/ 96:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -777,7 +784,7 @@ Initialization_1.Initialization.registerAutoCreateComponent(ResultsFiltersPrefer
 Object.defineProperty(exports, "__esModule", { value: true });
 var Dom_1 = __webpack_require__(3);
 var _ = __webpack_require__(1);
-__webpack_require__(445);
+__webpack_require__(447);
 var GlobalExports_1 = __webpack_require__(4);
 /**
  * A simple `fieldset` HTMLElement containing multiple form widgets.

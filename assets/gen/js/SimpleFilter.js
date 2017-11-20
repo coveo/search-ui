@@ -6,6 +6,7 @@ webpackJsonpCoveo__temporary([19],{
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+var _ = __webpack_require__(1);
 var SVGDom = /** @class */ (function () {
     function SVGDom() {
     }
@@ -16,6 +17,12 @@ var SVGDom = /** @class */ (function () {
     SVGDom.removeClassFromSVGInContainer = function (svgContainer, classToRemove) {
         var svgElement = svgContainer.querySelector('svg');
         svgElement.setAttribute('class', SVGDom.getClass(svgElement).replace(classToRemove, ''));
+    };
+    SVGDom.addStyleToSVGInContainer = function (svgContainer, styleToAdd) {
+        var svgElement = svgContainer.querySelector('svg');
+        _.each(styleToAdd, function (styleValue, styleKey) {
+            svgElement.style[styleKey] = styleValue;
+        });
     };
     SVGDom.getClass = function (svgElement) {
         var className = svgElement.getAttribute('class');
@@ -28,7 +35,7 @@ exports.SVGDom = SVGDom;
 
 /***/ }),
 
-/***/ 320:
+/***/ 322:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -47,7 +54,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var Component_1 = __webpack_require__(8);
 var Initialization_1 = __webpack_require__(2);
 var GlobalExports_1 = __webpack_require__(4);
-__webpack_require__(434);
+__webpack_require__(436);
 var Dom_1 = __webpack_require__(3);
 var QueryEvents_1 = __webpack_require__(11);
 var ComponentOptions_1 = __webpack_require__(9);
@@ -56,9 +63,9 @@ var Assert_1 = __webpack_require__(7);
 var _ = __webpack_require__(1);
 var Checkbox_1 = __webpack_require__(54);
 var BreadcrumbEvents_1 = __webpack_require__(42);
-var SVGIcons_1 = __webpack_require__(15);
+var SVGIcons_1 = __webpack_require__(13);
 var SVGDom_1 = __webpack_require__(16);
-var SimpleFilterValues_1 = __webpack_require__(542);
+var SimpleFilterValues_1 = __webpack_require__(543);
 var FacetUtils_1 = __webpack_require__(37);
 var KeyboardUtils_1 = __webpack_require__(23);
 var AnalyticsActionListMeta_1 = __webpack_require__(12);
@@ -297,10 +304,11 @@ var SimpleFilter = /** @class */ (function (_super) {
         _.each(this.checkboxes, function (result) {
             _this.valueContainer.append(result.checkbox.getElement());
         });
-        var lastLabel = _.last(Dom_1.$$(this.valueContainer).findAll('.coveo-checkbox-label'));
-        Dom_1.$$(lastLabel).on('blur', function () {
-            _this.closeContainer();
-        });
+        if (this.checkboxes.length > 0) {
+            Dom_1.$$(Dom_1.$$(this.checkboxes[this.checkboxes.length - 1].checkbox.getElement()).find('.coveo-checkbox-button')).on('blur', function () {
+                _this.closeContainer();
+            });
+        }
     };
     SimpleFilter.prototype.createValueContainer = function () {
         this.valueContainer = Dom_1.$$('div', { className: 'coveo-simplefilter-value-container' });
@@ -520,7 +528,7 @@ var SimpleFilter = /** @class */ (function (_super) {
          * <div class='CoveoSimpleFilter' data-field='@myotherfield' data-value-caption='{"txt":"Text files","html":"Web page"}'></div>
          * ```
          */
-        valueCaption: ComponentOptions_1.ComponentOptions.buildJsonObjectOption()
+        valueCaption: ComponentOptions_1.ComponentOptions.buildJsonOption()
     };
     return SimpleFilter;
 }(Component_1.Component));
@@ -530,20 +538,20 @@ Initialization_1.Initialization.registerAutoCreateComponent(SimpleFilter);
 
 /***/ }),
 
-/***/ 434:
+/***/ 436:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
 
-/***/ 542:
+/***/ 543:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-__webpack_require__(434);
+__webpack_require__(436);
 var _ = __webpack_require__(1);
 var SimpleFilterValues = /** @class */ (function () {
     function SimpleFilterValues(simpleFilter, options) {

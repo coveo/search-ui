@@ -1,6 +1,6 @@
 webpackJsonpCoveo__temporary([5],{
 
-/***/ 250:
+/***/ 251:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22,25 +22,25 @@ var QueryEvents_1 = __webpack_require__(11);
 var OmniboxEvents_1 = __webpack_require__(33);
 var ResultListEvents_1 = __webpack_require__(32);
 var SettingsEvents_1 = __webpack_require__(43);
-var PreferencesPanelEvents_1 = __webpack_require__(67);
-var AnalyticsEvents_1 = __webpack_require__(63);
+var PreferencesPanelEvents_1 = __webpack_require__(68);
+var AnalyticsEvents_1 = __webpack_require__(64);
 var AnalyticsActionListMeta_1 = __webpack_require__(12);
 var BreadcrumbEvents_1 = __webpack_require__(42);
-var QuickviewEvents_1 = __webpack_require__(263);
-var QueryStateModel_1 = __webpack_require__(13);
+var QuickviewEvents_1 = __webpack_require__(265);
+var QueryStateModel_1 = __webpack_require__(14);
 var Model_1 = __webpack_require__(18);
 var Utils_1 = __webpack_require__(6);
 var Dom_1 = __webpack_require__(3);
-var ResponsiveRecommendation_1 = __webpack_require__(517);
-var coveo_analytics_1 = __webpack_require__(86);
+var ResponsiveRecommendation_1 = __webpack_require__(518);
+var coveo_analytics_1 = __webpack_require__(87);
 var RegisteredNamedMethods_1 = __webpack_require__(34);
 var InitializationEvents_1 = __webpack_require__(17);
 var _ = __webpack_require__(1);
 var GlobalExports_1 = __webpack_require__(4);
-var DefaultRecommendationTemplate_1 = __webpack_require__(430);
-var RecommendationQuery_1 = __webpack_require__(520);
-var RecommendationAnalyticsClient_1 = __webpack_require__(253);
-__webpack_require__(521);
+var DefaultRecommendationTemplate_1 = __webpack_require__(432);
+var RecommendationQuery_1 = __webpack_require__(521);
+var RecommendationAnalyticsClient_1 = __webpack_require__(255);
+__webpack_require__(522);
 /**
  * The Recommendation component is a {@link SearchInterface} that displays recommendations typically based on user
  * history.
@@ -216,7 +216,7 @@ var Recommendation = /** @class */ (function (_super) {
     };
     Recommendation.prototype.addRecommendationInfoInQuery = function (data) {
         if (!_.isEmpty(this.options.userContext)) {
-            data.queryBuilder.addContext(JSON.parse(this.options.userContext));
+            data.queryBuilder.addContext(this.options.userContext);
         }
         data.queryBuilder.recommendation = this.options.id;
     };
@@ -397,7 +397,7 @@ exports.Recommendation = Recommendation;
 
 /***/ }),
 
-/***/ 258:
+/***/ 260:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -433,7 +433,7 @@ exports.EventsUtils = EventsUtils;
 
 /***/ }),
 
-/***/ 263:
+/***/ 265:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -478,14 +478,14 @@ exports.QuickviewEvents = QuickviewEvents;
 
 /***/ }),
 
-/***/ 410:
+/***/ 412:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var Dom_1 = __webpack_require__(3);
-var EventsUtils_1 = __webpack_require__(258);
+var EventsUtils_1 = __webpack_require__(260);
 var _ = __webpack_require__(1);
 var ResponsiveDropdown = /** @class */ (function () {
     function ResponsiveDropdown(dropdownContent, dropdownHeader, coveoRoot) {
@@ -594,7 +594,7 @@ exports.ResponsiveDropdown = ResponsiveDropdown;
 
 /***/ }),
 
-/***/ 411:
+/***/ 413:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -602,7 +602,7 @@ exports.ResponsiveDropdown = ResponsiveDropdown;
 Object.defineProperty(exports, "__esModule", { value: true });
 var Dom_1 = __webpack_require__(3);
 var PopupUtils_1 = __webpack_require__(52);
-var ResponsiveComponentsManager_1 = __webpack_require__(77);
+var ResponsiveComponentsManager_1 = __webpack_require__(78);
 var ResponsiveDropdownContent = /** @class */ (function () {
     function ResponsiveDropdownContent(componentName, element, coveoRoot, minWidth, widthRatio) {
         this.element = element;
@@ -620,7 +620,7 @@ var ResponsiveDropdownContent = /** @class */ (function () {
             width = this.minWidth;
         }
         this.element.el.style.width = width.toString() + 'px';
-        PopupUtils_1.PopupUtils.positionPopup(this.element.el, Dom_1.$$(this.coveoRoot.find("." + ResponsiveComponentsManager_1.ResponsiveComponentsManager.DROPDOWN_HEADER_WRAPPER_CSS_CLASS)).el, this.coveoRoot.el, { horizontal: PopupUtils_1.HorizontalAlignment.INNERRIGHT, vertical: PopupUtils_1.VerticalAlignment.BOTTOM, verticalOffset: 15 }, this.coveoRoot.el);
+        PopupUtils_1.PopupUtils.positionPopup(this.element.el, Dom_1.$$(this.coveoRoot.find("." + ResponsiveComponentsManager_1.ResponsiveComponentsManager.DROPDOWN_HEADER_WRAPPER_CSS_CLASS)).el, this.coveoRoot.el, { horizontal: PopupUtils_1.PopupHorizontalAlignment.INNERRIGHT, vertical: PopupUtils_1.PopupVerticalAlignment.BOTTOM, verticalOffset: 15 }, this.coveoRoot.el);
     };
     ResponsiveDropdownContent.prototype.hideDropdown = function () {
         this.element.el.style.display = 'none';
@@ -638,7 +638,7 @@ exports.ResponsiveDropdownContent = ResponsiveDropdownContent;
 
 /***/ }),
 
-/***/ 412:
+/***/ 414:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -675,7 +675,7 @@ exports.ResponsiveDropdownHeader = ResponsiveDropdownHeader;
 
 /***/ }),
 
-/***/ 430:
+/***/ 432:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -717,29 +717,29 @@ exports.DefaultRecommendationTemplate = DefaultRecommendationTemplate;
 
 /***/ }),
 
-/***/ 517:
+/***/ 518:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var ResponsiveComponentsManager_1 = __webpack_require__(77);
-var ResponsiveComponentsUtils_1 = __webpack_require__(88);
+var ResponsiveComponentsManager_1 = __webpack_require__(78);
+var ResponsiveComponentsUtils_1 = __webpack_require__(89);
 var SearchInterface_1 = __webpack_require__(20);
 var Utils_1 = __webpack_require__(6);
 var Dom_1 = __webpack_require__(3);
-var Logger_1 = __webpack_require__(14);
-var Recommendation_1 = __webpack_require__(250);
-var RecommendationDropdownContent_1 = __webpack_require__(518);
-var ResponsiveDropdownHeader_1 = __webpack_require__(412);
-var ResponsiveDropdown_1 = __webpack_require__(410);
+var Logger_1 = __webpack_require__(15);
+var Recommendation_1 = __webpack_require__(251);
+var RecommendationDropdownContent_1 = __webpack_require__(519);
+var ResponsiveDropdownHeader_1 = __webpack_require__(414);
+var ResponsiveDropdown_1 = __webpack_require__(412);
 var Strings_1 = __webpack_require__(10);
 var Component_1 = __webpack_require__(8);
 var RegisteredNamedMethods_1 = __webpack_require__(34);
 var QueryEvents_1 = __webpack_require__(11);
 var _ = __webpack_require__(1);
-__webpack_require__(519);
-var MiscModules_1 = __webpack_require__(81);
+__webpack_require__(520);
+var MiscModules_1 = __webpack_require__(60);
 var ResponsiveRecommendation = /** @class */ (function () {
     function ResponsiveRecommendation(coveoRoot, ID, options, responsiveDropdown) {
         this.coveoRoot = coveoRoot;
@@ -930,13 +930,13 @@ exports.ResponsiveRecommendation = ResponsiveRecommendation;
 
 /***/ }),
 
-/***/ 518:
+/***/ 519:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var ResponsiveDropdownContent_1 = __webpack_require__(411);
+var ResponsiveDropdownContent_1 = __webpack_require__(413);
 var Dom_1 = __webpack_require__(3);
 var RecommendationDropdownContent = /** @class */ (function () {
     function RecommendationDropdownContent(componentName, element, coveoRoot) {
@@ -973,14 +973,14 @@ exports.RecommendationDropdownContent = RecommendationDropdownContent;
 
 /***/ }),
 
-/***/ 519:
+/***/ 520:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
 
-/***/ 520:
+/***/ 521:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1040,14 +1040,14 @@ Initialization_1.Initialization.registerAutoCreateComponent(RecommendationQuery)
 
 /***/ }),
 
-/***/ 521:
+/***/ 522:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
 
-/***/ 77:
+/***/ 78:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1060,7 +1060,7 @@ var SearchInterface_1 = __webpack_require__(20);
 var Utils_1 = __webpack_require__(6);
 var _ = __webpack_require__(1);
 var QueryEvents_1 = __webpack_require__(11);
-var Logger_1 = __webpack_require__(14);
+var Logger_1 = __webpack_require__(15);
 var ResponsiveComponentsManager = /** @class */ (function () {
     function ResponsiveComponentsManager(root) {
         var _this = this;
@@ -1235,7 +1235,7 @@ exports.ResponsiveComponentsManager = ResponsiveComponentsManager;
 
 /***/ }),
 
-/***/ 88:
+/***/ 89:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";

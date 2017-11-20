@@ -1,6 +1,6 @@
-webpackJsonpCoveo__temporary([14],{
+webpackJsonpCoveo__temporary([17],{
 
-/***/ 283:
+/***/ 285:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17,17 +17,17 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var Dom_1 = __webpack_require__(3);
-var DistanceEvents_1 = __webpack_require__(478);
+var DistanceEvents_1 = __webpack_require__(254);
 var AnalyticsActionListMeta_1 = __webpack_require__(12);
 var Component_1 = __webpack_require__(8);
 var ComponentOptions_1 = __webpack_require__(9);
-var EventsModules_1 = __webpack_require__(99);
+var EventsModules_1 = __webpack_require__(100);
 var Initialization_1 = __webpack_require__(2);
 var RegisteredNamedMethods_1 = __webpack_require__(34);
 var GlobalExports_1 = __webpack_require__(4);
-var NavigatorPositionProvider_1 = __webpack_require__(479);
-var GoogleApiPositionProvider_1 = __webpack_require__(480);
-var StaticPositionProvider_1 = __webpack_require__(481);
+var NavigatorPositionProvider_1 = __webpack_require__(480);
+var GoogleApiPositionProvider_1 = __webpack_require__(481);
+var StaticPositionProvider_1 = __webpack_require__(482);
 /**
  * The `DistanceResources` component defines a field that computes the distance according to the current position of the
  * end user.
@@ -85,7 +85,7 @@ var DistanceResources = /** @class */ (function (_super) {
     /**
      * Returns a promise of the last position resolved using the registered position providers.
      *
-     * @returns {Promise<IPosition>} A promise of the last resolved position value.
+     * @returns {Promise<IGeolocationPosition>} A promise of the last resolved position value.
      */
     DistanceResources.prototype.getLastPositionRequest = function () {
         return this.lastPositionRequest || Promise.reject('No position request was executed yet.');
@@ -362,60 +362,7 @@ Initialization_1.Initialization.registerAutoCreateComponent(DistanceResources);
 
 /***/ }),
 
-/***/ 478:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-/**
- * The `DistanceEvents` static class contains the string definitions of all events related to distance
- * list.
- *
- * See [Events](https://developers.coveo.com/x/bYGfAQ).
- */
-var DistanceEvents = /** @class */ (function () {
-    function DistanceEvents() {
-    }
-    /**
-     * Triggered when the [`DistanceResources`]{@link DistanceResources} component successfully resolves the position.
-     *
-     * All `onPositionResolved` event handlers receive a [`PositionResolvedEventArgs`]{@link IPositionResolvedEventArgs}
-     * object as an argument.
-     *
-     * @type {string} The string value is `onPositionResolved`.
-     */
-    DistanceEvents.onPositionResolved = 'onPositionResolved';
-    /**
-     * Triggered when the [`DistanceResources`]{@link DistanceResources} component tries to resolve the position.
-     *
-     * All `onResolvingPosition` event handlers receive a
-     * [`ResolvingPositionEventArgs`]{@link IResolvingPositionEventArgs} object as an argument.
-     *
-     * **Note:**
-     * > You should bind a handler to this event if you want to register one or several new position providers.
-     *
-     * @type {string} The string value is `onResolvingPosition`.
-     */
-    DistanceEvents.onResolvingPosition = 'onResolvingPosition';
-    /**
-     * Triggered when the [`DistanceResources`]{@link DistanceResources} component fails to resolve the position.
-     *
-     * **Note:**
-     * > You should bind a handler to this event if you want to display an error message to the end user, or hide
-     * > components that cannot be used.
-     *
-     * @type {string} The string value is `onPositionNotResolved`.
-     */
-    DistanceEvents.onPositionNotResolved = 'onPositionNotResolved';
-    return DistanceEvents;
-}());
-exports.DistanceEvents = DistanceEvents;
-
-
-/***/ }),
-
-/***/ 479:
+/***/ 480:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -452,13 +399,13 @@ exports.NavigatorPositionProvider = NavigatorPositionProvider;
 
 /***/ }),
 
-/***/ 480:
+/***/ 481:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var EndpointCaller_1 = __webpack_require__(61);
+var EndpointCaller_1 = __webpack_require__(62);
 var GOOGLE_MAP_BASE_URL = 'https://www.googleapis.com/geolocation/v1/geolocate';
 /**
  * The `GoogleApiPositionProvider` class uses the
@@ -496,7 +443,7 @@ exports.GoogleApiPositionProvider = GoogleApiPositionProvider;
 
 /***/ }),
 
-/***/ 481:
+/***/ 482:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";

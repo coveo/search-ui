@@ -822,6 +822,7 @@ var dict = {
   "CoveoOnlineHelp": "Aide en ligne Coveo",
   "CannotAccess": "{0} est inaccessible.",
   "CoveoOrganization": "Organisation Coveo",
+  "SearchAPIDuration": "Durée de l'API de recherche : {0}",
 }
   var locales = String["locales"] || (String["locales"] = {});
   locales["fr"] = merge(locales["fr"], dict);
@@ -1576,6 +1577,7 @@ var dict = {
   "CoveoOnlineHelp": "Aide en ligne Coveo",
   "CannotAccess": "{0} est inaccessible.",
   "CoveoOrganization": "Organisation Coveo",
+  "SearchAPIDuration": "Durée de l'API de recherche : {0}",
 }
 
   var locales = String["locales"] || (String["locales"] = {});

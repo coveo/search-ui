@@ -8687,11 +8687,6 @@ a.CoveoResultLink.coveo-selected *,
 * @param $size size of the icon to use
 */
 
-.coveo-facet-breadcrumb *,
-.coveo-facet-slider-breadcrumb * {
-  vertical-align: top;
-}
-
 .coveo-facet-breadcrumb-title,
 .coveo-facet-slider-breadcrumb-title {
   color: #67768B;
@@ -8778,12 +8773,14 @@ a.CoveoResultLink.coveo-selected *,
   display: inline-block;
   margin-left: 5px;
   position: relative;
-  top: 5px;
+  width: 12px;
+  height: 12px;
+  vertical-align: middle;
 }
 
-.coveo-facet-breadcrumb-clear-svg {
+.coveo-facet-breadcrumb-clear-svg,
+.coveo-facet-slider-clear-svg {
   position: absolute;
-  top: -1px;
 }
 
 .coveo-facet-breadcrumb-multi-icon {

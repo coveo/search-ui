@@ -6,6 +6,7 @@ webpackJsonpCoveo__temporary([10],{
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+var _ = __webpack_require__(1);
 var SVGDom = /** @class */ (function () {
     function SVGDom() {
     }
@@ -16,6 +17,12 @@ var SVGDom = /** @class */ (function () {
     SVGDom.removeClassFromSVGInContainer = function (svgContainer, classToRemove) {
         var svgElement = svgContainer.querySelector('svg');
         svgElement.setAttribute('class', SVGDom.getClass(svgElement).replace(classToRemove, ''));
+    };
+    SVGDom.addStyleToSVGInContainer = function (svgContainer, styleToAdd) {
+        var svgElement = svgContainer.querySelector('svg');
+        _.each(styleToAdd, function (styleValue, styleKey) {
+            svgElement.style[styleKey] = styleValue;
+        });
     };
     SVGDom.getClass = function (svgElement) {
         var className = svgElement.getAttribute('class');
@@ -28,7 +35,7 @@ exports.SVGDom = SVGDom;
 
 /***/ }),
 
-/***/ 252:
+/***/ 253:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -44,13 +51,13 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var ResponsiveTabs_1 = __webpack_require__(537);
+var ResponsiveTabs_1 = __webpack_require__(538);
 var Component_1 = __webpack_require__(8);
 var ComponentOptions_1 = __webpack_require__(9);
 var Model_1 = __webpack_require__(18);
 var QueryEvents_1 = __webpack_require__(11);
 var InitializationEvents_1 = __webpack_require__(17);
-var QueryStateModel_1 = __webpack_require__(13);
+var QueryStateModel_1 = __webpack_require__(14);
 var AnalyticsActionListMeta_1 = __webpack_require__(12);
 var SearchEndpoint_1 = __webpack_require__(39);
 var Initialization_1 = __webpack_require__(2);
@@ -60,7 +67,7 @@ var Dom_1 = __webpack_require__(3);
 var KeyboardUtils_1 = __webpack_require__(23);
 var _ = __webpack_require__(1);
 var GlobalExports_1 = __webpack_require__(4);
-__webpack_require__(539);
+__webpack_require__(540);
 /**
  * The Tab component renders a bar that allows the end user to select a specific search interface.
  *
@@ -430,7 +437,7 @@ Initialization_1.Initialization.registerAutoCreateComponent(Tab);
 
 /***/ }),
 
-/***/ 258:
+/***/ 260:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -466,7 +473,7 @@ exports.EventsUtils = EventsUtils;
 
 /***/ }),
 
-/***/ 537:
+/***/ 538:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -475,19 +482,19 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var Dom_1 = __webpack_require__(3);
 var InitializationEvents_1 = __webpack_require__(17);
 var PopupUtils_1 = __webpack_require__(52);
-var EventsUtils_1 = __webpack_require__(258);
+var EventsUtils_1 = __webpack_require__(260);
 var Utils_1 = __webpack_require__(6);
-var Logger_1 = __webpack_require__(14);
+var Logger_1 = __webpack_require__(15);
 var Component_1 = __webpack_require__(8);
 var SearchInterface_1 = __webpack_require__(20);
-var Tab_1 = __webpack_require__(252);
-var ResponsiveComponentsManager_1 = __webpack_require__(77);
-var ResponsiveComponentsUtils_1 = __webpack_require__(88);
+var Tab_1 = __webpack_require__(253);
+var ResponsiveComponentsManager_1 = __webpack_require__(78);
+var ResponsiveComponentsUtils_1 = __webpack_require__(89);
 var Strings_1 = __webpack_require__(10);
 var ResponsiveComponents_1 = __webpack_require__(44);
 var _ = __webpack_require__(1);
-__webpack_require__(538);
-var SVGIcons_1 = __webpack_require__(15);
+__webpack_require__(539);
+var SVGIcons_1 = __webpack_require__(13);
 var SVGDom_1 = __webpack_require__(16);
 var ResponsiveTabs = /** @class */ (function () {
     function ResponsiveTabs(coveoRoot, ID) {
@@ -775,7 +782,7 @@ var ResponsiveTabs = /** @class */ (function () {
         });
     };
     ResponsiveTabs.prototype.positionPopup = function () {
-        PopupUtils_1.PopupUtils.positionPopup(this.dropdownContent.el, this.dropdownHeader.el, this.coveoRoot.el, { horizontal: PopupUtils_1.HorizontalAlignment.INNERRIGHT, vertical: PopupUtils_1.VerticalAlignment.BOTTOM }, this.coveoRoot.el);
+        PopupUtils_1.PopupUtils.positionPopup(this.dropdownContent.el, this.dropdownHeader.el, this.coveoRoot.el, { horizontal: PopupUtils_1.PopupHorizontalAlignment.INNERRIGHT, vertical: PopupUtils_1.PopupVerticalAlignment.BOTTOM }, this.coveoRoot.el);
     };
     ResponsiveTabs.prototype.getTabsInTabSection = function () {
         var _this = this;
@@ -819,13 +826,6 @@ exports.ResponsiveTabs = ResponsiveTabs;
 
 /***/ }),
 
-/***/ 538:
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-
 /***/ 539:
 /***/ (function(module, exports) {
 
@@ -833,7 +833,14 @@ exports.ResponsiveTabs = ResponsiveTabs;
 
 /***/ }),
 
-/***/ 77:
+/***/ 540:
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+
+/***/ 78:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -846,7 +853,7 @@ var SearchInterface_1 = __webpack_require__(20);
 var Utils_1 = __webpack_require__(6);
 var _ = __webpack_require__(1);
 var QueryEvents_1 = __webpack_require__(11);
-var Logger_1 = __webpack_require__(14);
+var Logger_1 = __webpack_require__(15);
 var ResponsiveComponentsManager = /** @class */ (function () {
     function ResponsiveComponentsManager(root) {
         var _this = this;
@@ -1021,7 +1028,7 @@ exports.ResponsiveComponentsManager = ResponsiveComponentsManager;
 
 /***/ }),
 
-/***/ 88:
+/***/ 89:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";

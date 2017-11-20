@@ -1,6 +1,6 @@
 webpackJsonpCoveo__temporary([59],{
 
-/***/ 298:
+/***/ 300:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19,20 +19,22 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var Component_1 = __webpack_require__(8);
 var ComponentOptions_1 = __webpack_require__(9);
 var SettingsEvents_1 = __webpack_require__(43);
-var PreferencesPanelEvents_1 = __webpack_require__(67);
+var PreferencesPanelEvents_1 = __webpack_require__(68);
 var Initialization_1 = __webpack_require__(2);
 var Strings_1 = __webpack_require__(10);
 var Dom_1 = __webpack_require__(3);
 var GlobalExports_1 = __webpack_require__(4);
 var ExternalModulesShim_1 = __webpack_require__(27);
 var _ = __webpack_require__(1);
-__webpack_require__(510);
+__webpack_require__(511);
 var InitializationEvents_1 = __webpack_require__(17);
-var SVGIcons_1 = __webpack_require__(15);
+var SVGIcons_1 = __webpack_require__(13);
 /**
  * The PreferencesPanel component renders a **Preferences** item inside the {@link Settings} component which the end
  * user can click to access a panel from which it is possible to specify certain customization options for the search
  * interface. These customization options are then saved in the browser local storage.
+ *
+ * This component should be used inside the {@link Settings} component.
  *
  * See also the {@link ResultsFiltersPreferences} and {@link ResultsPreferences} components.
  */
@@ -126,7 +128,7 @@ Initialization_1.Initialization.registerAutoCreateComponent(PreferencesPanel);
 
 /***/ }),
 
-/***/ 510:
+/***/ 511:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

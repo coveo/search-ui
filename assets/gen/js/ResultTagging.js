@@ -1,4 +1,4 @@
-webpackJsonpCoveo__temporary([29],{
+webpackJsonpCoveo__temporary([30],{
 
 /***/ 16:
 /***/ (function(module, exports, __webpack_require__) {
@@ -6,6 +6,7 @@ webpackJsonpCoveo__temporary([29],{
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+var _ = __webpack_require__(1);
 var SVGDom = /** @class */ (function () {
     function SVGDom() {
     }
@@ -16,6 +17,12 @@ var SVGDom = /** @class */ (function () {
     SVGDom.removeClassFromSVGInContainer = function (svgContainer, classToRemove) {
         var svgElement = svgContainer.querySelector('svg');
         svgElement.setAttribute('class', SVGDom.getClass(svgElement).replace(classToRemove, ''));
+    };
+    SVGDom.addStyleToSVGInContainer = function (svgContainer, styleToAdd) {
+        var svgElement = svgContainer.querySelector('svg');
+        _.each(styleToAdd, function (styleValue, styleKey) {
+            svgElement.style[styleKey] = styleValue;
+        });
     };
     SVGDom.getClass = function (svgElement) {
         var className = svgElement.getAttribute('class');
@@ -28,7 +35,7 @@ exports.SVGDom = SVGDom;
 
 /***/ }),
 
-/***/ 309:
+/***/ 311:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -52,13 +59,13 @@ var Initialization_1 = __webpack_require__(2);
 var StringUtils_1 = __webpack_require__(21);
 var Strings_1 = __webpack_require__(10);
 var KeyboardUtils_1 = __webpack_require__(23);
-var QueryStateModel_1 = __webpack_require__(13);
+var QueryStateModel_1 = __webpack_require__(14);
 var Dom_1 = __webpack_require__(3);
 var AnalyticsActionListMeta_1 = __webpack_require__(12);
 var _ = __webpack_require__(1);
 var GlobalExports_1 = __webpack_require__(4);
-__webpack_require__(531);
-var SVGIcons_1 = __webpack_require__(15);
+__webpack_require__(532);
+var SVGIcons_1 = __webpack_require__(13);
 var SVGDom_1 = __webpack_require__(16);
 /**
  * The ResultTagging component lists the current tag field values of its associated result and renders a control that
@@ -471,7 +478,7 @@ Initialization_1.Initialization.registerAutoCreateComponent(ResultTagging);
 
 /***/ }),
 
-/***/ 531:
+/***/ 532:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

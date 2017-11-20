@@ -1,6 +1,6 @@
 webpackJsonpCoveo__temporary([69],{
 
-/***/ 93:
+/***/ 94:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19,10 +19,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var Component_1 = __webpack_require__(8);
 var ComponentOptions_1 = __webpack_require__(9);
 var Initialization_1 = __webpack_require__(2);
-var TemplateHelpers_1 = __webpack_require__(69);
+var TemplateHelpers_1 = __webpack_require__(70);
 var Assert_1 = __webpack_require__(7);
 var DateUtils_1 = __webpack_require__(29);
-var QueryStateModel_1 = __webpack_require__(13);
+var QueryStateModel_1 = __webpack_require__(14);
 var AnalyticsActionListMeta_1 = __webpack_require__(12);
 var Utils_1 = __webpack_require__(6);
 var Dom_1 = __webpack_require__(3);

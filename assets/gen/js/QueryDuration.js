@@ -1,6 +1,6 @@
 webpackJsonpCoveo__temporary([58],{
 
-/***/ 300:
+/***/ 302:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25,12 +25,12 @@ var Strings_1 = __webpack_require__(10);
 var Initialization_1 = __webpack_require__(2);
 var Globalize = __webpack_require__(25);
 var GlobalExports_1 = __webpack_require__(4);
-__webpack_require__(512);
+__webpack_require__(513);
 /**
  * The QueryDuration component displays the duration of the last query execution.
  *
  * When a {@link QueryEvents.querySuccess} event is triggered, the QueryDuration component becomes visible. It also
- * displays the global duration, the index duration, the proxy duration, and the client duration in a single tooltip.
+ * displays the global duration, the index duration, and the client duration in a single tooltip.
  *
  * If a {@link QueryEvents.queryError} event is triggered, the QueryDuration component becomes hidden.
  */
@@ -60,12 +60,11 @@ var QueryDuration = /** @class */ (function (_super) {
         if (!this.disabled && data.results.results.length > 0) {
             Assert_1.Assert.exists(data);
             var tooltip = [
-                Strings_1.l('Duration', this.formatQueryDuration(data.results.clientDuration)),
-                Strings_1.l('IndexDuration', this.formatQueryDuration(data.results.duration)),
-                Strings_1.l('ProxyDuration', this.formatQueryDuration(data.results.proxyDuration)),
-                Strings_1.l('ClientDuration', this.formatQueryDuration(data.results.clientDuration))
+                Strings_1.l('Duration', this.formatQueryDuration(data.results.duration)),
+                Strings_1.l('SearchAPIDuration', this.formatQueryDuration(data.results.searchAPIDuration)),
+                Strings_1.l('IndexDuration', this.formatQueryDuration(data.results.indexDuration))
             ].join('\n');
-            this.textContainer.textContent = this.formatQueryDuration(data.results.clientDuration);
+            this.textContainer.textContent = this.formatQueryDuration(data.results.duration);
             this.element.setAttribute('title', tooltip);
             this.element.style.display = 'inline';
         }
@@ -102,7 +101,7 @@ Initialization_1.Initialization.registerAutoCreateComponent(QueryDuration);
 
 /***/ }),
 
-/***/ 512:
+/***/ 513:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

@@ -6,6 +6,7 @@ webpackJsonpCoveo__temporary([16],{
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+var _ = __webpack_require__(1);
 var SVGDom = /** @class */ (function () {
     function SVGDom() {
     }
@@ -16,6 +17,12 @@ var SVGDom = /** @class */ (function () {
     SVGDom.removeClassFromSVGInContainer = function (svgContainer, classToRemove) {
         var svgElement = svgContainer.querySelector('svg');
         svgElement.setAttribute('class', SVGDom.getClass(svgElement).replace(classToRemove, ''));
+    };
+    SVGDom.addStyleToSVGInContainer = function (svgContainer, styleToAdd) {
+        var svgElement = svgContainer.querySelector('svg');
+        _.each(styleToAdd, function (styleValue, styleKey) {
+            svgElement.style[styleKey] = styleValue;
+        });
     };
     SVGDom.getClass = function (svgElement) {
         var className = svgElement.getAttribute('class');
@@ -28,7 +35,7 @@ exports.SVGDom = SVGDom;
 
 /***/ }),
 
-/***/ 251:
+/***/ 252:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -51,19 +58,19 @@ var Initialization_1 = __webpack_require__(2);
 var InitializationEvents_1 = __webpack_require__(17);
 var Assert_1 = __webpack_require__(7);
 var ResultListEvents_1 = __webpack_require__(32);
-var ResultLayoutEvents_1 = __webpack_require__(98);
+var ResultLayoutEvents_1 = __webpack_require__(99);
 var Dom_1 = __webpack_require__(3);
-var QueryStateModel_1 = __webpack_require__(13);
+var QueryStateModel_1 = __webpack_require__(14);
 var Model_1 = __webpack_require__(18);
 var AnalyticsActionListMeta_1 = __webpack_require__(12);
 var KeyboardUtils_1 = __webpack_require__(23);
-var ResponsiveResultLayout_1 = __webpack_require__(526);
+var ResponsiveResultLayout_1 = __webpack_require__(527);
 var Utils_1 = __webpack_require__(6);
 var _ = __webpack_require__(1);
 var GlobalExports_1 = __webpack_require__(4);
 var Strings_1 = __webpack_require__(10);
-__webpack_require__(527);
-var SVGIcons_1 = __webpack_require__(15);
+__webpack_require__(528);
+var SVGIcons_1 = __webpack_require__(13);
 var SVGDom_1 = __webpack_require__(16);
 exports.defaultLayout = 'list';
 /**
@@ -348,17 +355,17 @@ Initialization_1.Initialization.registerAutoCreateComponent(ResultLayout);
 
 /***/ }),
 
-/***/ 526:
+/***/ 527:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var ResponsiveComponentsManager_1 = __webpack_require__(77);
+var ResponsiveComponentsManager_1 = __webpack_require__(78);
 var Dom_1 = __webpack_require__(3);
 var Component_1 = __webpack_require__(8);
-var ResultLayout_1 = __webpack_require__(251);
-var Logger_1 = __webpack_require__(14);
+var ResultLayout_1 = __webpack_require__(252);
+var Logger_1 = __webpack_require__(15);
 var SearchInterface_1 = __webpack_require__(20);
 var _ = __webpack_require__(1);
 var ResponsiveResultLayout = /** @class */ (function () {
@@ -412,14 +419,14 @@ exports.ResponsiveResultLayout = ResponsiveResultLayout;
 
 /***/ }),
 
-/***/ 527:
+/***/ 528:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
 
-/***/ 77:
+/***/ 78:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -432,7 +439,7 @@ var SearchInterface_1 = __webpack_require__(20);
 var Utils_1 = __webpack_require__(6);
 var _ = __webpack_require__(1);
 var QueryEvents_1 = __webpack_require__(11);
-var Logger_1 = __webpack_require__(14);
+var Logger_1 = __webpack_require__(15);
 var ResponsiveComponentsManager = /** @class */ (function () {
     function ResponsiveComponentsManager(root) {
         var _this = this;

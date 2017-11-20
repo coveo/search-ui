@@ -6,6 +6,7 @@ webpackJsonpCoveo__temporary([4,42,49,50,68],{
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+var _ = __webpack_require__(1);
 var SVGDom = /** @class */ (function () {
     function SVGDom() {
     }
@@ -16,6 +17,12 @@ var SVGDom = /** @class */ (function () {
     SVGDom.removeClassFromSVGInContainer = function (svgContainer, classToRemove) {
         var svgElement = svgContainer.querySelector('svg');
         svgElement.setAttribute('class', SVGDom.getClass(svgElement).replace(classToRemove, ''));
+    };
+    SVGDom.addStyleToSVGInContainer = function (svgContainer, styleToAdd) {
+        var svgElement = svgContainer.querySelector('svg');
+        _.each(styleToAdd, function (styleValue, styleKey) {
+            svgElement.style[styleKey] = styleValue;
+        });
     };
     SVGDom.getClass = function (svgElement) {
         var className = svgElement.getAttribute('class');
@@ -28,14 +35,14 @@ exports.SVGDom = SVGDom;
 
 /***/ }),
 
-/***/ 241:
+/***/ 242:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var TextInput_1 = __webpack_require__(50);
-var AdvancedSearchEvents_1 = __webpack_require__(60);
+var AdvancedSearchEvents_1 = __webpack_require__(61);
 var Dom_1 = __webpack_require__(3);
 var KeywordsInput = /** @class */ (function () {
     function KeywordsInput(inputName, root) {
@@ -79,15 +86,15 @@ exports.KeywordsInput = KeywordsInput;
 
 /***/ }),
 
-/***/ 265:
+/***/ 267:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var AdvancedSearchEvents_1 = __webpack_require__(60);
+var AdvancedSearchEvents_1 = __webpack_require__(61);
 var Dom_1 = __webpack_require__(3);
-var RadioButton_1 = __webpack_require__(80);
+var RadioButton_1 = __webpack_require__(81);
 var _ = __webpack_require__(1);
 var DateInput = /** @class */ (function () {
     function DateInput(inputName, root) {
@@ -172,14 +179,14 @@ exports.DateInput = DateInput;
 
 /***/ }),
 
-/***/ 266:
+/***/ 268:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var Dom_1 = __webpack_require__(3);
-var AdvancedSearchEvents_1 = __webpack_require__(60);
+var AdvancedSearchEvents_1 = __webpack_require__(61);
 var Strings_1 = __webpack_require__(10);
 var DocumentInput = /** @class */ (function () {
     function DocumentInput(inputName, root) {
@@ -219,7 +226,7 @@ exports.DocumentInput = DocumentInput;
 
 /***/ }),
 
-/***/ 269:
+/***/ 271:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -238,25 +245,25 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var Component_1 = __webpack_require__(8);
 var ComponentOptions_1 = __webpack_require__(9);
 var QueryEvents_1 = __webpack_require__(11);
-var AdvancedSearchEvents_1 = __webpack_require__(60);
+var AdvancedSearchEvents_1 = __webpack_require__(61);
 var SettingsEvents_1 = __webpack_require__(43);
 var Initialization_1 = __webpack_require__(2);
 var Strings_1 = __webpack_require__(10);
 var Dom_1 = __webpack_require__(3);
-var AdvancedSearchInputFactory_1 = __webpack_require__(459);
+var AdvancedSearchInputFactory_1 = __webpack_require__(461);
 var AnalyticsActionListMeta_1 = __webpack_require__(12);
-var QuerySummaryEvents_1 = __webpack_require__(431);
+var QuerySummaryEvents_1 = __webpack_require__(433);
 var _ = __webpack_require__(1);
 var GlobalExports_1 = __webpack_require__(4);
-__webpack_require__(470);
+__webpack_require__(472);
 var NumericSpinner_1 = __webpack_require__(82);
-var DatePicker_1 = __webpack_require__(97);
+var DatePicker_1 = __webpack_require__(98);
 var Dropdown_1 = __webpack_require__(53);
 var TextInput_1 = __webpack_require__(50);
-var RadioButton_1 = __webpack_require__(80);
+var RadioButton_1 = __webpack_require__(81);
 var ExternalModulesShim_1 = __webpack_require__(27);
 var BreadcrumbEvents_1 = __webpack_require__(42);
-var SVGIcons_1 = __webpack_require__(15);
+var SVGIcons_1 = __webpack_require__(13);
 var SVGDom_1 = __webpack_require__(16);
 /**
  * The `AdvancedSearch` component is meant to render a section in the [`Settings`]{@link Settings} menu to allow the end
@@ -549,7 +556,7 @@ Initialization_1.Initialization.registerAutoCreateComponent(AdvancedSearch);
 
 /***/ }),
 
-/***/ 431:
+/***/ 433:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -575,14 +582,14 @@ exports.QuerySummaryEvents = QuerySummaryEvents;
 
 /***/ }),
 
-/***/ 438:
+/***/ 440:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
 
-/***/ 446:
+/***/ 448:
 /***/ (function(module, exports, __webpack_require__) {
 
 /*!
@@ -1825,22 +1832,22 @@ exports.QuerySummaryEvents = QuerySummaryEvents;
 
 /***/ }),
 
-/***/ 459:
+/***/ 461:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var AllKeywordsInput_1 = __webpack_require__(460);
-var ExactKeywordsInput_1 = __webpack_require__(461);
-var AnyKeywordsInput_1 = __webpack_require__(462);
-var NoneKeywordsInput_1 = __webpack_require__(463);
-var AnytimeDateInput_1 = __webpack_require__(464);
-var InTheLastDateInput_1 = __webpack_require__(465);
-var BetweenDateInput_1 = __webpack_require__(466);
-var SimpleFieldInput_1 = __webpack_require__(467);
-var AdvancedFieldInput_1 = __webpack_require__(468);
-var SizeInput_1 = __webpack_require__(469);
+var AllKeywordsInput_1 = __webpack_require__(462);
+var ExactKeywordsInput_1 = __webpack_require__(463);
+var AnyKeywordsInput_1 = __webpack_require__(464);
+var NoneKeywordsInput_1 = __webpack_require__(465);
+var AnytimeDateInput_1 = __webpack_require__(466);
+var InTheLastDateInput_1 = __webpack_require__(467);
+var BetweenDateInput_1 = __webpack_require__(468);
+var SimpleFieldInput_1 = __webpack_require__(469);
+var AdvancedFieldInput_1 = __webpack_require__(470);
+var SizeInput_1 = __webpack_require__(471);
 var AdvancedSearchInputFactory = /** @class */ (function () {
     function AdvancedSearchInputFactory(endpoint, root) {
         this.endpoint = endpoint;
@@ -1909,7 +1916,7 @@ exports.AdvancedSearchInputFactory = AdvancedSearchInputFactory;
 
 /***/ }),
 
-/***/ 460:
+/***/ 462:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1925,7 +1932,7 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var KeywordsInput_1 = __webpack_require__(241);
+var KeywordsInput_1 = __webpack_require__(242);
 var Strings_1 = __webpack_require__(10);
 var AllKeywordsInput = /** @class */ (function (_super) {
     __extends(AllKeywordsInput, _super);
@@ -1941,7 +1948,7 @@ exports.AllKeywordsInput = AllKeywordsInput;
 
 /***/ }),
 
-/***/ 461:
+/***/ 463:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1957,7 +1964,7 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var KeywordsInput_1 = __webpack_require__(241);
+var KeywordsInput_1 = __webpack_require__(242);
 var Strings_1 = __webpack_require__(10);
 var ExactKeywordsInput = /** @class */ (function (_super) {
     __extends(ExactKeywordsInput, _super);
@@ -1977,7 +1984,7 @@ exports.ExactKeywordsInput = ExactKeywordsInput;
 
 /***/ }),
 
-/***/ 462:
+/***/ 464:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1993,7 +2000,7 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var KeywordsInput_1 = __webpack_require__(241);
+var KeywordsInput_1 = __webpack_require__(242);
 var Strings_1 = __webpack_require__(10);
 var _ = __webpack_require__(1);
 var AnyKeywordsInput = /** @class */ (function (_super) {
@@ -2020,7 +2027,7 @@ exports.AnyKeywordsInput = AnyKeywordsInput;
 
 /***/ }),
 
-/***/ 463:
+/***/ 465:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2036,7 +2043,7 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var KeywordsInput_1 = __webpack_require__(241);
+var KeywordsInput_1 = __webpack_require__(242);
 var Strings_1 = __webpack_require__(10);
 var _ = __webpack_require__(1);
 var NoneKeywordsInput = /** @class */ (function (_super) {
@@ -2065,7 +2072,7 @@ exports.NoneKeywordsInput = NoneKeywordsInput;
 
 /***/ }),
 
-/***/ 464:
+/***/ 466:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2081,10 +2088,10 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var DateInput_1 = __webpack_require__(265);
+var DateInput_1 = __webpack_require__(267);
 var Strings_1 = __webpack_require__(10);
 var Dom_1 = __webpack_require__(3);
-var AdvancedSearchEvents_1 = __webpack_require__(60);
+var AdvancedSearchEvents_1 = __webpack_require__(61);
 var AnytimeDateInput = /** @class */ (function (_super) {
     __extends(AnytimeDateInput, _super);
     function AnytimeDateInput(root) {
@@ -2117,7 +2124,7 @@ exports.AnytimeDateInput = AnytimeDateInput;
 
 /***/ }),
 
-/***/ 465:
+/***/ 467:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2133,7 +2140,7 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var DateInput_1 = __webpack_require__(265);
+var DateInput_1 = __webpack_require__(267);
 var Dom_1 = __webpack_require__(3);
 var Strings_1 = __webpack_require__(10);
 var Dropdown_1 = __webpack_require__(53);
@@ -2183,7 +2190,7 @@ exports.InTheLastDateInput = InTheLastDateInput;
 
 /***/ }),
 
-/***/ 466:
+/***/ 468:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2199,12 +2206,12 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var DateInput_1 = __webpack_require__(265);
-var DatePicker_1 = __webpack_require__(97);
+var DateInput_1 = __webpack_require__(267);
+var DatePicker_1 = __webpack_require__(98);
 var Strings_1 = __webpack_require__(10);
 var Dom_1 = __webpack_require__(3);
 var DateUtils_1 = __webpack_require__(29);
-var TimeSpanUtils_1 = __webpack_require__(62);
+var TimeSpanUtils_1 = __webpack_require__(63);
 var BetweenDateInput = /** @class */ (function (_super) {
     __extends(BetweenDateInput, _super);
     function BetweenDateInput(root) {
@@ -2262,7 +2269,7 @@ exports.BetweenDateInput = BetweenDateInput;
 
 /***/ }),
 
-/***/ 467:
+/***/ 469:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2280,7 +2287,7 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var Dropdown_1 = __webpack_require__(53);
 var FacetUtils_1 = __webpack_require__(37);
-var DocumentInput_1 = __webpack_require__(266);
+var DocumentInput_1 = __webpack_require__(268);
 var Dom_1 = __webpack_require__(3);
 var _ = __webpack_require__(1);
 var QueryBuilder_1 = __webpack_require__(48);
@@ -2341,7 +2348,7 @@ exports.SimpleFieldInput = SimpleFieldInput;
 
 /***/ }),
 
-/***/ 468:
+/***/ 470:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2360,7 +2367,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var Dropdown_1 = __webpack_require__(53);
 var TextInput_1 = __webpack_require__(50);
 var Dom_1 = __webpack_require__(3);
-var DocumentInput_1 = __webpack_require__(266);
+var DocumentInput_1 = __webpack_require__(268);
 var QueryBuilder_1 = __webpack_require__(48);
 var AdvancedFieldInput = /** @class */ (function (_super) {
     __extends(AdvancedFieldInput, _super);
@@ -2409,7 +2416,7 @@ exports.AdvancedFieldInput = AdvancedFieldInput;
 
 /***/ }),
 
-/***/ 469:
+/***/ 471:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2428,7 +2435,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var Dropdown_1 = __webpack_require__(53);
 var NumericSpinner_1 = __webpack_require__(82);
 var Dom_1 = __webpack_require__(3);
-var DocumentInput_1 = __webpack_require__(266);
+var DocumentInput_1 = __webpack_require__(268);
 var QueryBuilder_1 = __webpack_require__(48);
 var SizeInput = /** @class */ (function (_super) {
     __extends(SizeInput, _super);
@@ -2491,7 +2498,7 @@ exports.SizeInput = SizeInput;
 
 /***/ }),
 
-/***/ 470:
+/***/ 472:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
@@ -2633,14 +2640,14 @@ exports.Dropdown = Dropdown;
 
 /***/ }),
 
-/***/ 80:
+/***/ 81:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var Dom_1 = __webpack_require__(3);
-__webpack_require__(438);
+__webpack_require__(440);
 var GlobalExports_1 = __webpack_require__(4);
 /**
  * A radio button widget with standard styling.
@@ -2753,7 +2760,7 @@ exports.RadioButton = RadioButton;
 Object.defineProperty(exports, "__esModule", { value: true });
 var Dom_1 = __webpack_require__(3);
 var GlobalExports_1 = __webpack_require__(4);
-var SVGIcons_1 = __webpack_require__(15);
+var SVGIcons_1 = __webpack_require__(13);
 var SVGDom_1 = __webpack_require__(16);
 /**
  * A numeric spinner widget with standard styling.
@@ -2880,7 +2887,7 @@ exports.NumericSpinner = NumericSpinner;
 
 /***/ }),
 
-/***/ 97:
+/***/ 98:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2891,7 +2898,7 @@ var DateUtils_1 = __webpack_require__(29);
 var GlobalExports_1 = __webpack_require__(4);
 var Strings_1 = __webpack_require__(10);
 var Globalize = __webpack_require__(25);
-var Pikaday = __webpack_require__(446);
+var Pikaday = __webpack_require__(448);
 /**
  * A date picker widget with standard styling.
  */

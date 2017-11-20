@@ -6,6 +6,7 @@ webpackJsonpCoveo__temporary([3],{
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+var _ = __webpack_require__(1);
 var SVGDom = /** @class */ (function () {
     function SVGDom() {
     }
@@ -16,6 +17,12 @@ var SVGDom = /** @class */ (function () {
     SVGDom.removeClassFromSVGInContainer = function (svgContainer, classToRemove) {
         var svgElement = svgContainer.querySelector('svg');
         svgElement.setAttribute('class', SVGDom.getClass(svgElement).replace(classToRemove, ''));
+    };
+    SVGDom.addStyleToSVGInContainer = function (svgContainer, styleToAdd) {
+        var svgElement = svgContainer.querySelector('svg');
+        _.each(styleToAdd, function (styleValue, styleKey) {
+            svgElement.style[styleKey] = styleValue;
+        });
     };
     SVGDom.getClass = function (svgElement) {
         var className = svgElement.getAttribute('class');
@@ -28,7 +35,7 @@ exports.SVGDom = SVGDom;
 
 /***/ }),
 
-/***/ 242:
+/***/ 243:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -505,7 +512,7 @@ var utcYears = utcYear.range;
 
 /***/ }),
 
-/***/ 249:
+/***/ 250:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -523,30 +530,32 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var Slider_1 = __webpack_require__(486);
+var Slider_1 = __webpack_require__(487);
 var Component_1 = __webpack_require__(8);
 var ComponentOptions_1 = __webpack_require__(9);
-var FacetHeader_1 = __webpack_require__(417);
+var FacetHeader_1 = __webpack_require__(419);
 var Strings_1 = __webpack_require__(10);
 var InitializationEvents_1 = __webpack_require__(17);
-var FacetSliderQueryController_1 = __webpack_require__(488);
+var FacetSliderQueryController_1 = __webpack_require__(489);
 var QueryEvents_1 = __webpack_require__(11);
 var BreadcrumbEvents_1 = __webpack_require__(42);
 var Model_1 = __webpack_require__(18);
 var Dom_1 = __webpack_require__(3);
 var AnalyticsActionListMeta_1 = __webpack_require__(12);
-var QueryStateModel_1 = __webpack_require__(13);
-var SliderEvents_1 = __webpack_require__(100);
+var QueryStateModel_1 = __webpack_require__(14);
+var SliderEvents_1 = __webpack_require__(101);
 var Assert_1 = __webpack_require__(7);
 var Utils_1 = __webpack_require__(6);
-var ResponsiveComponentsUtils_1 = __webpack_require__(88);
+var ResponsiveComponentsUtils_1 = __webpack_require__(89);
 var Initialization_1 = __webpack_require__(2);
 var SearchAlertEvents_1 = __webpack_require__(59);
 var _ = __webpack_require__(1);
 var GlobalExports_1 = __webpack_require__(4);
-var ResponsiveFacetSlider_1 = __webpack_require__(489);
-__webpack_require__(490);
-var MiscModules_1 = __webpack_require__(81);
+var ResponsiveFacetSlider_1 = __webpack_require__(490);
+__webpack_require__(491);
+var MiscModules_1 = __webpack_require__(60);
+var SVGIcons_1 = __webpack_require__(13);
+var SVGDom_1 = __webpack_require__(16);
 /**
  * The `FacetSlider` component creates a facet which contains a slider widget that allows the end user to filter results
  * based on a range of numerical values (e.g., a date range, a price range, etc.).
@@ -773,11 +782,16 @@ var FacetSlider = /** @class */ (function (_super) {
         var value = Dom_1.$$('span', {
             className: 'coveo-facet-slider-breadcrumb-value'
         });
-        value.text(this.slider.getCaption());
+        var caption = Dom_1.$$('span', {
+            clasName: 'coveo-facet-slider-breadcrumb-caption'
+        });
+        caption.text(this.slider.getCaption());
+        value.append(caption.el);
         values.el.appendChild(value.el);
         var clear = Dom_1.$$('span', {
             className: 'coveo-facet-slider-breadcrumb-clear'
-        });
+        }, SVGIcons_1.SVGIcons.icons.checkboxHookExclusionMore);
+        SVGDom_1.SVGDom.addClassToSVGInContainer(clear.el, 'coveo-facet-slider-clear-svg');
         value.el.appendChild(clear.el);
         value.on('click', function () {
             _this.reset();
@@ -1420,7 +1434,7 @@ Initialization_1.Initialization.registerAutoCreateComponent(FacetSlider);
 
 /***/ }),
 
-/***/ 258:
+/***/ 260:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1456,7 +1470,7 @@ exports.EventsUtils = EventsUtils;
 
 /***/ }),
 
-/***/ 267:
+/***/ 269:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1837,13 +1851,13 @@ function defaultLocale(definition) {
 
 /***/ }),
 
-/***/ 268:
+/***/ 270:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 
 // EXTERNAL MODULE: ./node_modules/d3-time/index.js + 16 modules
-var d3_time = __webpack_require__(242);
+var d3_time = __webpack_require__(243);
 
 // CONCATENATED MODULE: ./node_modules/d3-time-format/src/locale.js
 
@@ -3767,14 +3781,14 @@ var cubehelixLong = cubehelix_cubehelix(nogamma);
 
 /***/ }),
 
-/***/ 410:
+/***/ 412:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var Dom_1 = __webpack_require__(3);
-var EventsUtils_1 = __webpack_require__(258);
+var EventsUtils_1 = __webpack_require__(260);
 var _ = __webpack_require__(1);
 var ResponsiveDropdown = /** @class */ (function () {
     function ResponsiveDropdown(dropdownContent, dropdownHeader, coveoRoot) {
@@ -3883,7 +3897,7 @@ exports.ResponsiveDropdown = ResponsiveDropdown;
 
 /***/ }),
 
-/***/ 411:
+/***/ 413:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3891,7 +3905,7 @@ exports.ResponsiveDropdown = ResponsiveDropdown;
 Object.defineProperty(exports, "__esModule", { value: true });
 var Dom_1 = __webpack_require__(3);
 var PopupUtils_1 = __webpack_require__(52);
-var ResponsiveComponentsManager_1 = __webpack_require__(77);
+var ResponsiveComponentsManager_1 = __webpack_require__(78);
 var ResponsiveDropdownContent = /** @class */ (function () {
     function ResponsiveDropdownContent(componentName, element, coveoRoot, minWidth, widthRatio) {
         this.element = element;
@@ -3909,7 +3923,7 @@ var ResponsiveDropdownContent = /** @class */ (function () {
             width = this.minWidth;
         }
         this.element.el.style.width = width.toString() + 'px';
-        PopupUtils_1.PopupUtils.positionPopup(this.element.el, Dom_1.$$(this.coveoRoot.find("." + ResponsiveComponentsManager_1.ResponsiveComponentsManager.DROPDOWN_HEADER_WRAPPER_CSS_CLASS)).el, this.coveoRoot.el, { horizontal: PopupUtils_1.HorizontalAlignment.INNERRIGHT, vertical: PopupUtils_1.VerticalAlignment.BOTTOM, verticalOffset: 15 }, this.coveoRoot.el);
+        PopupUtils_1.PopupUtils.positionPopup(this.element.el, Dom_1.$$(this.coveoRoot.find("." + ResponsiveComponentsManager_1.ResponsiveComponentsManager.DROPDOWN_HEADER_WRAPPER_CSS_CLASS)).el, this.coveoRoot.el, { horizontal: PopupUtils_1.PopupHorizontalAlignment.INNERRIGHT, vertical: PopupUtils_1.PopupVerticalAlignment.BOTTOM, verticalOffset: 15 }, this.coveoRoot.el);
     };
     ResponsiveDropdownContent.prototype.hideDropdown = function () {
         this.element.el.style.display = 'none';
@@ -3927,7 +3941,7 @@ exports.ResponsiveDropdownContent = ResponsiveDropdownContent;
 
 /***/ }),
 
-/***/ 412:
+/***/ 414:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3964,7 +3978,7 @@ exports.ResponsiveDropdownHeader = ResponsiveDropdownHeader;
 
 /***/ }),
 
-/***/ 417:
+/***/ 419:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3973,8 +3987,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var Dom_1 = __webpack_require__(3);
 var Strings_1 = __webpack_require__(10);
 var AnalyticsActionListMeta_1 = __webpack_require__(12);
-__webpack_require__(436);
-var SVGIcons_1 = __webpack_require__(15);
+__webpack_require__(438);
+var SVGIcons_1 = __webpack_require__(13);
 var SVGDom_1 = __webpack_require__(16);
 var FacetHeader = /** @class */ (function () {
     function FacetHeader(options) {
@@ -4159,27 +4173,27 @@ exports.FacetHeader = FacetHeader;
 
 /***/ }),
 
-/***/ 418:
+/***/ 420:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var Dom_1 = __webpack_require__(3);
-var ResponsiveComponentsManager_1 = __webpack_require__(77);
-var ResponsiveComponentsUtils_1 = __webpack_require__(88);
+var ResponsiveComponentsManager_1 = __webpack_require__(78);
+var ResponsiveComponentsUtils_1 = __webpack_require__(89);
 var Component_1 = __webpack_require__(8);
-var Logger_1 = __webpack_require__(14);
+var Logger_1 = __webpack_require__(15);
 var Strings_1 = __webpack_require__(10);
 var Utils_1 = __webpack_require__(6);
-var ResponsiveDropdown_1 = __webpack_require__(410);
-var ResponsiveDropdownContent_1 = __webpack_require__(411);
-var ResponsiveDropdownHeader_1 = __webpack_require__(412);
+var ResponsiveDropdown_1 = __webpack_require__(412);
+var ResponsiveDropdownContent_1 = __webpack_require__(413);
+var ResponsiveDropdownHeader_1 = __webpack_require__(414);
 var QueryEvents_1 = __webpack_require__(11);
 var SearchInterface_1 = __webpack_require__(20);
 var ResponsiveComponents_1 = __webpack_require__(44);
 var _ = __webpack_require__(1);
-__webpack_require__(437);
+__webpack_require__(439);
 var ResponsiveFacetColumn = /** @class */ (function () {
     function ResponsiveFacetColumn(coveoRoot, ID, options, responsiveDropdown) {
         this.coveoRoot = coveoRoot;
@@ -4366,7 +4380,7 @@ exports.ResponsiveFacetColumn = ResponsiveFacetColumn;
 
 /***/ }),
 
-/***/ 433:
+/***/ 435:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -4376,7 +4390,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 var d3_array = __webpack_require__(31);
 
 // EXTERNAL MODULE: ./node_modules/d3-collection/index.js + 6 modules
-var d3_collection = __webpack_require__(91);
+var d3_collection = __webpack_require__(92);
 
 // CONCATENATED MODULE: ./node_modules/d3-scale/src/array.js
 var array = Array.prototype;
@@ -4666,7 +4680,7 @@ function continuous(deinterpolate, reinterpolate) {
 }
 
 // EXTERNAL MODULE: ./node_modules/d3-format/index.js + 15 modules
-var d3_format = __webpack_require__(267);
+var d3_format = __webpack_require__(269);
 
 // CONCATENATED MODULE: ./node_modules/d3-scale/src/tickFormat.js
 
@@ -5124,10 +5138,10 @@ function threshold() {
 }
 
 // EXTERNAL MODULE: ./node_modules/d3-time/index.js + 16 modules
-var d3_time = __webpack_require__(242);
+var d3_time = __webpack_require__(243);
 
 // EXTERNAL MODULE: ./node_modules/d3-time-format/index.js + 4 modules
-var d3_time_format = __webpack_require__(268);
+var d3_time_format = __webpack_require__(270);
 
 // CONCATENATED MODULE: ./node_modules/d3-scale/src/time.js
 
@@ -5449,14 +5463,14 @@ function sequential(interpolator) {
 
 /***/ }),
 
-/***/ 436:
+/***/ 438:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
 
-/***/ 437:
+/***/ 439:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
@@ -6003,7 +6017,7 @@ define(Cubehelix, cubehelix, extend(Color, {
 
 /***/ }),
 
-/***/ 486:
+/***/ 487:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6011,13 +6025,13 @@ define(Cubehelix, cubehelix, extend(Color, {
 Object.defineProperty(exports, "__esModule", { value: true });
 var Dom_1 = __webpack_require__(3);
 var DeviceUtils_1 = __webpack_require__(22);
-var SliderEvents_1 = __webpack_require__(100);
+var SliderEvents_1 = __webpack_require__(101);
 var Utils_1 = __webpack_require__(6);
-var d3_scale_1 = __webpack_require__(433);
-var d3_1 = __webpack_require__(487);
+var d3_scale_1 = __webpack_require__(435);
+var d3_1 = __webpack_require__(488);
 var Globalize = __webpack_require__(25);
 var _ = __webpack_require__(1);
-var Logger_1 = __webpack_require__(14);
+var Logger_1 = __webpack_require__(15);
 exports.MAX_NUMBER_OF_STEPS = 100;
 var Slider = /** @class */ (function () {
     function Slider(element, options, root) {
@@ -6757,7 +6771,7 @@ var SliderGraph = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 487:
+/***/ 488:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -10622,7 +10636,7 @@ function defaultEndAngle(d) {
 
 
 // EXTERNAL MODULE: ./node_modules/d3-collection/index.js + 6 modules
-var d3_collection = __webpack_require__(91);
+var d3_collection = __webpack_require__(92);
 
 // CONCATENATED MODULE: ./node_modules/d3-dsv/src/dsv.js
 var EOL = {},
@@ -11922,7 +11936,7 @@ var initialRadius = 10,
 
 
 // EXTERNAL MODULE: ./node_modules/d3-format/index.js + 15 modules
-var d3_format = __webpack_require__(267);
+var d3_format = __webpack_require__(269);
 
 // CONCATENATED MODULE: ./node_modules/d3-geo/src/adder.js
 // Adds floating point numbers with twice the normal precision.
@@ -17132,7 +17146,7 @@ function responseOf(parse, row) {
 
 
 // EXTERNAL MODULE: ./node_modules/d3-scale/index.js + 26 modules
-var d3_scale = __webpack_require__(433);
+var d3_scale = __webpack_require__(435);
 
 // CONCATENATED MODULE: ./node_modules/d3-shape/src/constant.js
 /* harmony default export */ var d3_shape_src_constant = (function(x) {
@@ -19199,10 +19213,10 @@ function ascending_sum(series) {
 
 
 // EXTERNAL MODULE: ./node_modules/d3-time/index.js + 16 modules
-var d3_time = __webpack_require__(242);
+var d3_time = __webpack_require__(243);
 
 // EXTERNAL MODULE: ./node_modules/d3-time-format/index.js + 4 modules
-var d3_time_format = __webpack_require__(268);
+var d3_time_format = __webpack_require__(270);
 
 // CONCATENATED MODULE: ./node_modules/d3-voronoi/src/constant.js
 /* harmony default export */ var d3_voronoi_src_constant = (function(x) {
@@ -21174,7 +21188,7 @@ function zoom_defaultTouchable() {
 
 /***/ }),
 
-/***/ 488:
+/***/ 489:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21182,9 +21196,9 @@ function zoom_defaultTouchable() {
 /// <reference path="../ui/FacetSlider/FacetSlider.ts" />
 Object.defineProperty(exports, "__esModule", { value: true });
 var QueryEvents_1 = __webpack_require__(11);
-var ExpressionBuilder_1 = __webpack_require__(68);
+var ExpressionBuilder_1 = __webpack_require__(69);
 var DateUtils_1 = __webpack_require__(29);
-var Logger_1 = __webpack_require__(14);
+var Logger_1 = __webpack_require__(15);
 var QueryUtils_1 = __webpack_require__(19);
 var _ = __webpack_require__(1);
 var FacetSliderQueryController = /** @class */ (function () {
@@ -21467,7 +21481,7 @@ exports.FacetSliderQueryController = FacetSliderQueryController;
 
 /***/ }),
 
-/***/ 489:
+/***/ 490:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21483,8 +21497,8 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var ResponsiveFacetColumn_1 = __webpack_require__(418);
-var FacetSlider_1 = __webpack_require__(249);
+var ResponsiveFacetColumn_1 = __webpack_require__(420);
+var FacetSlider_1 = __webpack_require__(250);
 var _ = __webpack_require__(1);
 var ResponsiveFacetSlider = /** @class */ (function (_super) {
     __extends(ResponsiveFacetSlider, _super);
@@ -21520,14 +21534,14 @@ exports.ResponsiveFacetSlider = ResponsiveFacetSlider;
 
 /***/ }),
 
-/***/ 490:
+/***/ 491:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
 
-/***/ 77:
+/***/ 78:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21540,7 +21554,7 @@ var SearchInterface_1 = __webpack_require__(20);
 var Utils_1 = __webpack_require__(6);
 var _ = __webpack_require__(1);
 var QueryEvents_1 = __webpack_require__(11);
-var Logger_1 = __webpack_require__(14);
+var Logger_1 = __webpack_require__(15);
 var ResponsiveComponentsManager = /** @class */ (function () {
     function ResponsiveComponentsManager(root) {
         var _this = this;
@@ -21715,7 +21729,7 @@ exports.ResponsiveComponentsManager = ResponsiveComponentsManager;
 
 /***/ }),
 
-/***/ 88:
+/***/ 89:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21764,7 +21778,7 @@ exports.ResponsiveComponentsUtils = ResponsiveComponentsUtils;
 
 /***/ }),
 
-/***/ 91:
+/***/ 92:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";

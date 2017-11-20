@@ -1,6 +1,6 @@
 webpackJsonpCoveo__temporary([64],{
 
-/***/ 272:
+/***/ 274:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -29,8 +29,8 @@ var Strings_1 = __webpack_require__(10);
 var ExternalModulesShim_1 = __webpack_require__(27);
 var _ = __webpack_require__(1);
 var GlobalExports_1 = __webpack_require__(4);
-__webpack_require__(471);
-var SVGIcons_1 = __webpack_require__(15);
+__webpack_require__(473);
+var SVGIcons_1 = __webpack_require__(13);
 /**
  * The `AuthenticationProvider` component makes it possible to execute queries with an identity that the end user
  * can obtain using an authentication provider configured on the Coveo REST Search API
@@ -212,7 +212,7 @@ Initialization_1.Initialization.registerAutoCreateComponent(AuthenticationProvid
 
 /***/ }),
 
-/***/ 471:
+/***/ 473:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

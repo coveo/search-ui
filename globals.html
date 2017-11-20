@@ -541,6 +541,12 @@
 						<a href="interfaces/iformwidget.html" class="tsd-kind-icon">IForm<wbr>Widget</a>
 					</li>
 					<li class=" tsd-kind-interface">
+						<a href="interfaces/igeolocationposition.html" class="tsd-kind-icon">IGeolocation<wbr>Position</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/igeolocationpositionprovider.html" class="tsd-kind-icon">IGeolocation<wbr>Position<wbr>Provider</a>
+					</li>
+					<li class=" tsd-kind-interface">
 						<a href="interfaces/igetdocumentoptions.html" class="tsd-kind-icon">IGet<wbr>Document<wbr>Options</a>
 					</li>
 					<li class=" tsd-kind-interface">
@@ -743,6 +749,9 @@
 					</li>
 					<li class=" tsd-kind-type-alias">
 						<a href="globals.html#baseformtypes" class="tsd-kind-icon">Base<wbr>Form<wbr>Types</a>
+					</li>
+					<li class=" tsd-kind-type-alias">
+						<a href="globals.html#context" class="tsd-kind-icon">Context</a>
 					</li>
 					<li class=" tsd-kind-type-alias">
 						<a href="globals.html#validlayout" class="tsd-kind-icon">Valid<wbr>Layout</a>
@@ -989,6 +998,8 @@
 								<li class="tsd-kind-interface"><a href="interfaces/ifielddescription.html" class="tsd-kind-icon">IField<wbr>Description</a></li>
 								<li class="tsd-kind-interface"><a href="interfaces/ifieldoption.html" class="tsd-kind-icon">IField<wbr>Option</a></li>
 								<li class="tsd-kind-interface"><a href="interfaces/iformwidget.html" class="tsd-kind-icon">IForm<wbr>Widget</a></li>
+								<li class="tsd-kind-interface"><a href="interfaces/igeolocationposition.html" class="tsd-kind-icon">IGeolocation<wbr>Position</a></li>
+								<li class="tsd-kind-interface"><a href="interfaces/igeolocationpositionprovider.html" class="tsd-kind-icon">IGeolocation<wbr>Position<wbr>Provider</a></li>
 								<li class="tsd-kind-interface"><a href="interfaces/igetdocumentoptions.html" class="tsd-kind-icon">IGet<wbr>Document<wbr>Options</a></li>
 								<li class="tsd-kind-interface"><a href="interfaces/igroupbyrequest.html" class="tsd-kind-icon">IGroup<wbr>ByRequest</a></li>
 								<li class="tsd-kind-interface"><a href="interfaces/igroupbyresult.html" class="tsd-kind-icon">IGroup<wbr>ByResult</a></li>
@@ -1062,6 +1073,7 @@
 							<h3>Type aliases</h3>
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-type-alias"><a href="globals.html#baseformtypes" class="tsd-kind-icon">Base<wbr>Form<wbr>Types</a></li>
+								<li class="tsd-kind-type-alias"><a href="globals.html#context" class="tsd-kind-icon">Context</a></li>
 								<li class="tsd-kind-type-alias"><a href="globals.html#validlayout" class="tsd-kind-icon">Valid<wbr>Layout</a></li>
 							</ul>
 						</section>
@@ -1108,6 +1120,23 @@
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-type-alias">
+					<a name="context" class="tsd-anchor"></a>
+					<h3>Context</h3>
+					<div class="tsd-signature tsd-kind-icon">Context<span class="tsd-signature-symbol">:</span> <a href="interfaces/istringmap.html" class="tsd-signature-type">IStringMap</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">&gt;</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/PipelineContext/PipelineGlobalExports.ts#L6">src/ui/PipelineContext/PipelineGlobalExports.ts
+							:6</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>A context, as returned by <a href="components/searchinterface.html#getquerycontext">SearchInterface.getQueryContext</a> or <a href="components/pipelinecontext.html#getcontext">PipelineContext.getContext</a></p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-type-alias">
 					<a name="validlayout" class="tsd-anchor"></a>
 					<h3>Valid<wbr>Layout</h3>
 					<div class="tsd-signature tsd-kind-icon">Valid<wbr>Layout<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">"list"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"card"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"table"</span></div>
@@ -1139,8 +1168,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/utils/Dom.ts#L774">src/utils/Dom.ts
-									:774</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/utils/Dom.ts#L775">src/utils/Dom.ts
+									:775</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
