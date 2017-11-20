@@ -29,7 +29,6 @@ import { BaseComponent } from '../ui/Base/BaseComponent';
 import { ModalBox } from '../ExternalModulesShim';
 import { history } from 'coveo.analytics';
 import * as _ from 'underscore';
-import { Component } from '../UIBaseModules';
 
 /**
  * Possible options when performing a query with the query controller

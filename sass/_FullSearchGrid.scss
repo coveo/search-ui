@@ -1,3 +1,6 @@
+@import 'neat/neat';
+@import './mixins/mediaQuery';
+
 $max-width: 1200px;
 
 $grid-columns: 10;
