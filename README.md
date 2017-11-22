@@ -10,10 +10,9 @@ You should install the Coveo JavaScript Search UI Framework as an npm package:
 
     npm install --save coveo-search-ui
 
-All resources will be available under `node_modules/coveo-search-ui/bin`. You can include those in your pages with 
-`<script>` tags.
+All resources will be available under `node_modules/coveo-search-ui/bin`. You can include those in your pages with `<script>` tags. This will make the variable `Coveo` globally available in your page.
 
-If you are using a module bundler (Browserify, webpack, Babel, etc.), you can use `require('coveo-search-ui')`.
+If you are using a module bundler (Browserify, Webpack, rollup, etc.), you can use `require('coveo-search-ui')` or `import * as Coveo from 'coveo-search-ui'`.
 
 Alternatively, you can download the latest version of the Coveo JavaScript Search UI Framework 
 [here](http://productupdate.coveo.com/?product=coveo-search-ui&version=1).
