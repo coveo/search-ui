@@ -22,9 +22,9 @@ env:
   - COMMIT_AUTHOR_EMAIL: sandbox_JSUI@coveo.com
 deploy:
 - provider: s3
-  access_key_id: AKIAIMXKOBWDLZJPYWOQ
+  access_key_id: AKIAJYWLLTRYS2WDLCIQ
   secret_access_key:
-    secure: Nh1K6QIXPaUFtKzA2D5f6LmW9Inf+fzZXQEKhFLAdNMITqxc9IPgryQEIrr/BqRlOdTgzod4kbHAu0tybhqvDQ7UtX6n+nLGjA4IbJ6Xtdn+yKBkzpy2zJUx2qqsuGFB2fOTJLC3QCX+eRvLdCt6uSjhhJAMNyDNo19UDRQEsVLqpHvj+0RI0yR9EmvMdAovaUViiVdkkjUmlZo9RWmJR83NyxFCEmmXKs5iqNiOEJpwjemdoEfR8oeRCvzosp1Wz2MzWIs/h+GuLcv/RGwKCkdkM4lBO2Rn/E2w4n0uz9Bn3n7QNvKgPzAqz1Us4a0ISu52TgnQvQ1tLvxhnkJeHMKI2mQ6UbICKWq0CG5Q+fotHU4I3mzws5AoXzFimiYXcbYzzduZHHTsTqNinmMfukPHwmfMQ7mUjcAWLhjaarz15Jr0amiwYAf7lFHjM+nMzgKW0hR9oq65A9MnR3nkJi8LCECTHJsps7AZWWSTrjkbTURGy6KlnACQZT79+yUBaEg+egIO3x5LWev+fRTy6WJfWhdrg7BzT+lkvFdl2egOPkFBQgxd88mKeCly6F4nPDg64G1AyY01dfyR9Ekbe5a41nuNinxpTyTdlTl4/CHrsD4EkYtwyg6M3dsBZhlj794an9dHqEtyfAv/DYsNXqdzv8Pqgqi46LfVp+EDwIo=
+    secure: JcreczT0+UhFSgrPJK9GQaBEA7ZCNzD0oKl7SycsT9ZTfwD7NMRsyo6p01K2fzeWWzB9XSrQ6JhEUdt1jo/btXsNZJ5Y9Zsfvq7+Y1uokhxeTysOG9xLg7MgSTqMqIB7SW0v/VEe2B6s3G2K5oMhtPJlDaeR/fNRY1obbcSRbLcBhTBO5y5lxEbVJB5R6+lJynMpuPQW8QF4TGklgQjb2d8xqJySh54j7VxaMPA0DTC0Zc6DuhZEdcZHUbYprcbnzfxSZzvYoseBLvh2dvIwsC/wLWYjJEuqv3+hNu44LABLwF29+QZVfeYvm4dHScU8Gtf5TFJmUcZsgs2xqW3uaDkYeGABNHEdckKBVJgHv4w97cvoH7x0pVrP8To0iT4A0DzF4Naxu6iKXSFeAFwyV5J6WbtyLCjP4xt4gF5zzPuKqwArVrVPo9lssxvJSAkGH0qziMgpH/+3WwhEGmsf2oyxZwbdyG9ys5JOsVmnyzx/n+NXQkeEyRs7oeLdC+p0Pj8hgWtEnZ7AC0XvCZENLSRLNgac+nQaXXpCniB/opJJoXZAz+od1bmPpixRxUinr72OfZJ9h1XbMWgY4CKvPLAflpt9f1AmW2g1Xj+le/Vopg+x9xnzxzUe0i4aB3K9wba5C/KTcHHS08VzpVVl8fU/VnF5HH+Lq24uiCa7e8I=
   bucket: olamothe
   local-dir: bin
   upload-dir: searchui/v$PACKAGE_JSON_VERSION
@@ -33,6 +33,8 @@ deploy:
   on:
     repo: coveo/search-ui
     all_branches: true
+after_deploy:
+- node invalidate.cloudfront.js
 branches:
   only:
   - JSUI-1923
