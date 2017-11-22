@@ -11,30 +11,83 @@ cache:
   directories:
   - node_modules
 before_install:
-- npm install -g npm@5.5.1
+  - npm install -g npm@5.5.1
 script:
 - source read.version.sh
 - echo $PACKAGE_JSON_VERSION
 - yarn run injectTag
 - yarn run build
+- yarn run minimize
+- yarn run test
+- yarn run uploadCoverage
+- yarn run testChunks
+after_success:
+- yarn run doc
+- if [ "x$TRAVIS_TAG" != "x" ]; then bash ./deploy.doc.sh ; fi
+- yarn run docsitemap
+- yarn run zipForGitReleases
 env:
   global:
   - COMMIT_AUTHOR_EMAIL: sandbox_JSUI@coveo.com
 deploy:
-- provider: s3
-  access_key_id: AKIAJYWLLTRYS2WDLCIQ
-  secret_access_key:
-    secure: JcreczT0+UhFSgrPJK9GQaBEA7ZCNzD0oKl7SycsT9ZTfwD7NMRsyo6p01K2fzeWWzB9XSrQ6JhEUdt1jo/btXsNZJ5Y9Zsfvq7+Y1uokhxeTysOG9xLg7MgSTqMqIB7SW0v/VEe2B6s3G2K5oMhtPJlDaeR/fNRY1obbcSRbLcBhTBO5y5lxEbVJB5R6+lJynMpuPQW8QF4TGklgQjb2d8xqJySh54j7VxaMPA0DTC0Zc6DuhZEdcZHUbYprcbnzfxSZzvYoseBLvh2dvIwsC/wLWYjJEuqv3+hNu44LABLwF29+QZVfeYvm4dHScU8Gtf5TFJmUcZsgs2xqW3uaDkYeGABNHEdckKBVJgHv4w97cvoH7x0pVrP8To0iT4A0DzF4Naxu6iKXSFeAFwyV5J6WbtyLCjP4xt4gF5zzPuKqwArVrVPo9lssxvJSAkGH0qziMgpH/+3WwhEGmsf2oyxZwbdyG9ys5JOsVmnyzx/n+NXQkeEyRs7oeLdC+p0Pj8hgWtEnZ7AC0XvCZENLSRLNgac+nQaXXpCniB/opJJoXZAz+od1bmPpixRxUinr72OfZJ9h1XbMWgY4CKvPLAflpt9f1AmW2g1Xj+le/Vopg+x9xnzxzUe0i4aB3K9wba5C/KTcHHS08VzpVVl8fU/VnF5HH+Lq24uiCa7e8I=
-  bucket: olamothe
-  local-dir: bin
-  upload-dir: searchui/v$PACKAGE_JSON_VERSION
-  acl: public_read
-  skip_cleanup: true
-  on:
-    repo: coveo/search-ui
-    all_branches: true
+  - provider: npm
+    email: sandbox_JSUI@coveo.com
+    skip_cleanup: true
+    api_key:
+      secure: CsRAOjw3GCfawyyGy1ICScdA6T3N1S8XPCGqzVVM7tGrRPHBQeuAnw872P5Xgafi89JJ527lZXNqqKTfIcM1S4KZj6xLLYS641gMGbzx+SZ+RhSTZm97ECge3LYFyisM+3NIuiCAi9lgTa+JoOtplUVS0pSpqsVppXvPqsFavUVik7gv5THxFpx80iXDcWHufMoynZFodGC921DWKlC4SxQD5rZhG9XoGTYr36Ox0PuUjZRNgxU8gEhdgGLWKIRZrCfzWhtb2SAjvG28AzXT1VLb2BbnYCe44EMLqsOTcfzbFZEPR7gFyjZ8qCbLwUNkTHKtSA7NPfCHBl/bmFaBGjTNAzqv5Ne7jEXpB3olmz06q58QXybk1IYewuikKM/wbHUo8KIMv2Hf7VJP3RO8o1GvOPEm/Caif6LTVgQ7E+T7247Sr42EhjmLOFnngKS1UOqHppzuhzRkKkCu9rIT1T83QzD0eWL5lD3+dfLvAB/AGHdxb+m+1it/IUrTSKj+9cM78C/Sj1Ed0TYyDTYC6VgCGNnPMqPfBIpP8r4+SYlkjbcPX8DgygzTd9eDMI0RBXE2IbSBrWQEoQqFBt8tDQdLu51JjYdororVG2Y1SgL5mcK+w8WOHCPJFfUlVPIfGERcvo/J/y8c79GtdmlNVFUz+pymseCvJp3xWmF3pas=
+    on:
+      tags: true
+      repo: coveo/search-ui
+      all_branches: true
+      condition: "! $TRAVIS_TAG =~ .*beta.*"
+  - provider: script
+    script: node deploy.beta.js
+    skip_cleanup: true
+    on:
+      tags: true
+      repo: coveo/search-ui
+      all_branches: true
+      condition: "$TRAVIS_TAG =~ .*beta.*"
+  - provider: releases
+    api_key:
+      secure: jKNS2mWnLUP5kQkjApoIFxQVXAr8ed3nsTIltY6gOvf1/2kbkS0WbzR7Km9lewFA2ZEBSFAu/ek+ewXjEx8FVQAe3CeCS1sS5RVqU/2YvFGBPYzzVw1l3FOJkQsvruRc7UzkznXbLvk+7LerHDpsy3p6ut8stMokztiq8QyWN+GHhrB/QgBQV/swPx40QknAIXndtLEPQfttukLowAdH9ml2BgrgE0/3iitmja/8eIQxVT6dlFyXYV+iU44kPyS595wM7eakUGXNFB2W9sUZ9IY/8lUqPz85G3FkKyiPv3SZJRs158/32+vvdXAtT/wtHjP5PqESPv/pL31M9IpQYYIdTSPwUZtOdRZ6JrxV/xusQ2Nm5p3qNrKgtkEZ921BGHJEMK9xs0yAhMuT39JLhoZE30g8SXokWQWi6WzrRELODYubVMaXTmfgv2ZZN4T3B8xNSabmE3Jm7Gj5Lb9wdR+pbWxPlB475i4H7grOHAN9xRIWokAIIN9RuTPRx1XuxhLUI9BH/GrJXNZbv1800rqF15W9Yuw1RqMfrSWq2snyDalXW3gLHYeAFAP1hfD2mU1zySjP/HQ6VkCwmgCjlAg4W5xK4NlXX0C/EIkoLKhSefxLdhquMZQTION+v0fOvl7Kdz17vt231dEIjNZxsBlLL+JZoxOZA5tVRDMNbko=
+    file_glob: true
+    file:
+    - search-ui.zip
+    skip_cleanup: true
+    on:
+      tags: true
+      repo: coveo/search-ui
+      all_branches: true
+  - provider: s3
+    access_key_id: AKIAIWWGBULVXLZH3XUQ
+    secret_access_key:
+      secure: rE1I0tkPU4n9e6bjm+eAujC1ttRTGtDjOvyYIyz/0K62n7pZ8IRAH/5AIHKrNbbGu0ImQrrz8owP/jamhk5AN9+9ISrqe/jTtid9garlnfrgQtvZJNw6jVcqj9WXycz7nFLLyArPR9oXHa7GSbwk8yjn0Ho216Xf1FNGq71Jv4sCEkwfvUwi9Hs427K6p09s/dsf/q04+hZVASc1L4CMLgTj5BBOPPP9cw7QusHYCaviyy0tCtiNq5tt+R64DfNTY4mbg3wIMp4ouyfxkKYCpVngoWBm+dFtH2p3SJnTPullvEm6HA/domQHlCzsUXles4rsBZ3/8Rb1xUteqdlthyt0+WC8vpip5gsPDwk/+GcD+bVoBPCIUbQxVjmSSuZ7heJz5aPQOg0t23u/nZ2mYdXR6xjpocaf7awtAMm1lHfvQkV0SUKMNVMH2rYEfRYuans0edleVaBTri2VSCzXwqrNd7q+LcWJdxHfibXunQ3x7eQuWaLY2rw+VKHQTdwvPKjw9eqioiTN7HEhKoZn+bYU0M3XimuE9DKo7MRWXRkFvNSAQkbFRA45/nSgh317nHuXmyelyFm/Teqqy7zZYPctJ+yJD1QRvRv2kBnev/G6p6466JMLpQVQw4JzUhU9X5hyGYaCeDROHOnRoWLngDUuN9vs1v4O7M/PSeJMsdg=
+    bucket: coveo-nprod-binaries
+    local-dir: bin
+    upload-dir: proda/StaticCDN/searchui/v$PACKAGE_JSON_VERSION
+    acl: public_read
+    skip_cleanup: true
+    on:
+      tags: true
+      repo: coveo/search-ui
+      all_branches: true
+      condition: "! $TRAVIS_TAG =~ .*beta.*"
+  - provider: heroku
+    api_key: 
+      secure: lQifTnS+r1p5JN38G7xVehnBgL+I6JFAP/imBp3YZPDJDt7fEYmQ0aJ8ODPaH5lfP5ngfuFWNsbi+FMagUaAd3RALWIW0lqT8yKQmG1XQhXec4s4xyAOzZwExXOsHx097EEfEq3aTcnYHftPG+As90Y0zrEcKAne+k6wtGCBan9pYLlzI+QCoRuwBZC3jzc1OUvtrojqxl5M+1NDDF1iNUIpQmc8R9tsgmQaUflPEcMsWvAAwqtsssJZg8jotOeZn61kcQSf3OGyPlHWmhdDJvj3MhSrQtI5RrOyx5JEpo+0W+u/ciiIkThgHGPckEqx1+jCr/fM+Wjgu5k7WDI83u0yTE648n48YiEgcd6hnWG1D2VPvX2d2CasG4uuj+dF6mnx3q+HVwNi72kP2DTR4NOrebXuu00fr9t3qRh7wJ2x2XU7rjRwzCXr/bwfKTdx6a/M/IUlooAEqSebvPkKtGmPohPPuUjvQoJZacqjWWPiAcDLgIhJOdAdlyXPT++lAj/+rAoKH0qXosuNgH1V9wYc6UPE1W3/1sIBckAI4KHfP9f4XZa9lzlf9gTK1fTyro6G7euzbVfS2BwhJTPOLIpW2nVpcT0ogxx/PBUOIR9+iXFdyIe7hy2RZ5VrH3JbHbsgw15qmX+N6xBhZmbjcZVCZ3dlSzq65yVz0HDrAgM=
+    app: search-ui-qa-tests
+    skip_cleanup: true
+    strategy: git
+    on:
+      tags: true
+      repo: coveo/search-ui
+      all_branches: true
+      condition: "$TRAVIS_TAG =~ .*beta.*"
 after_deploy:
 - node invalidate.cloudfront.js
 branches:
   only:
-  - JSUI-1923
+  - master
+  - "/^.*release.*$/1"
+  - "/2\\.[0-9]+\\.[0-9]+/"
