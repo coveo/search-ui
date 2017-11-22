@@ -49,6 +49,7 @@
     "@types/jasmine": "^2.6.0",
     "@types/pikaday": "0.0.31",
     "@types/underscore": "^1.8.3",
+    "aws-sdk": "^2.155.0",
     "bluebird": "^3.4.7",
     "body-parser": "^1.18.2",
     "cheerio": "^0.20.0",
