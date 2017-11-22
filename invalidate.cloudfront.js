@@ -6,8 +6,7 @@ const cloudfront = new AWS.CloudFront();
 const pathToInvalidate = `/searchui/v${process.env.PACKAGE_JSON_VERSION}/*`;
 
 const shouldDoInvalidation = () => {
-  return true;
-  /*if (!process.env.TRAVIS) {
+  if (!process.env.TRAVIS) {
     return false;
   }
   if (!process.env.TRAVIS_TAG) {
@@ -16,7 +15,7 @@ const shouldDoInvalidation = () => {
   if (process.env.TRAVIS_TAG.indexOf('beta') != -1) {
     return false;
   }
-  return true;*/
+  return true;
 };
 
 if (shouldDoInvalidation()) {
