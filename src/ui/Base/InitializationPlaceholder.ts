@@ -243,7 +243,7 @@ export class InitializationPlaceholder {
     let currentLayout;
     if (resultListElements.length > 1) {
       currentLayout = HashUtils.getValue('layout', HashUtils.getHash());
-    } else {
+    } else if (resultListElements.length == 1) {
       currentLayout = resultListElements[0].getAttribute('data-layout');
     }
 
@@ -270,12 +270,14 @@ export class InitializationPlaceholder {
         resultListToUse: resultListElement,
         rootToUse: this.determineRootFromLayout(currentLayout)
       };
-    } else {
+    } else if (resultListElements.length == 1) {
       return {
         placeholderToUse: this.determineResultListFromLayout(currentLayout),
         resultListToUse: resultListElements[0],
         rootToUse: this.determineRootFromLayout(currentLayout)
       };
+    } else {
+      return null;
     }
   }
 

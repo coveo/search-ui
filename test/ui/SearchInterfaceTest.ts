@@ -420,49 +420,57 @@ export function SearchInterfaceTest() {
         });
       });
 
-      it('allowNoKeywords to true does not cancel the query if there are no keywords', done => {
-        new SearchInterface(div, { allowNoKeywords: true }, undefined, mockWindow);
-        $$(div).on(QueryEvents.doneBuildingQuery, (e, args: IDoneBuildingQueryEventArgs) => {
-          expect(args.cancel).toBe(false);
-          done();
-        });
-        Simulate.query(env);
-      });
-
-      it('allowNoKeywords to false cancels the query if there are no keywords', done => {
-        new SearchInterface(div, { allowNoKeywords: false }, undefined, mockWindow);
-        $$(div).on(QueryEvents.doneBuildingQuery, (e, args: IDoneBuildingQueryEventArgs) => {
-          expect(args.cancel).toBe(true);
-          done();
-        });
-        Simulate.query(env);
-      });
-
-      it('allowNoKeywords to false does not cancel the query if there are keywords', done => {
-        new SearchInterface(div, { allowNoKeywords: false }, undefined, mockWindow);
-        const queryBuilder = new QueryBuilder();
-        queryBuilder.expression.add('foo');
-
-        $$(div).on(QueryEvents.doneBuildingQuery, (e, args: IDoneBuildingQueryEventArgs) => {
-          expect(args.cancel).toBe(false);
-          done();
+      describe('when allowQueriesWithoutKeywords if true', () => {
+        beforeEach(() => {
+          new SearchInterface(div, { allowQueriesWithoutKeywords: true }, undefined, mockWindow);
         });
 
-        Simulate.query(env, {
-          queryBuilder: queryBuilder
+        it('it does not cancel the query if there are no keywords', done => {
+          $$(div).on(QueryEvents.doneBuildingQuery, (e, args: IDoneBuildingQueryEventArgs) => {
+            expect(args.cancel).toBe(false);
+            done();
+          });
+          Simulate.query(env);
+        });
+
+        it('allowQueriesWithoutKeywords to true should be sent as a flag in the query', () => {
+          new SearchInterface(div, { allowQueriesWithoutKeywords: true }, undefined, mockWindow);
+          const simulation = Simulate.query(env);
+          expect(simulation.queryBuilder.build().allowQueriesWithoutKeywords).toBe(true);
         });
       });
 
-      it('allowNoKeywords to false should be sent as a flag in the query', () => {
-        new SearchInterface(div, { allowNoKeywords: false }, undefined, mockWindow);
-        const simulation = Simulate.query(env);
-        expect(simulation.queryBuilder.build().allowNoKeywords).toBe(false);
-      });
+      describe('when allowQueriesWithoutKeywords if false', () => {
+        beforeEach(() => {
+          new SearchInterface(div, { allowQueriesWithoutKeywords: false }, undefined, mockWindow);
+        });
 
-      it('allowNoKeywords to true should be sent as a flag in the query', () => {
-        new SearchInterface(div, { allowNoKeywords: true }, undefined, mockWindow);
-        const simulation = Simulate.query(env);
-        expect(simulation.queryBuilder.build().allowNoKeywords).toBe(true);
+        it('it does cancel the query if there are no keywords', done => {
+          $$(div).on(QueryEvents.doneBuildingQuery, (e, args: IDoneBuildingQueryEventArgs) => {
+            expect(args.cancel).toBe(true);
+            done();
+          });
+          Simulate.query(env);
+        });
+
+        it('it does not cancel the query if there are keywords', done => {
+          const queryBuilder = new QueryBuilder();
+          queryBuilder.expression.add('foo');
+
+          $$(div).on(QueryEvents.doneBuildingQuery, (e, args: IDoneBuildingQueryEventArgs) => {
+            expect(args.cancel).toBe(false);
+            done();
+          });
+
+          Simulate.query(env, {
+            queryBuilder: queryBuilder
+          });
+        });
+
+        it('it should set a flag in the query', () => {
+          const simulation = Simulate.query(env);
+          expect(simulation.queryBuilder.build().allowQueriesWithoutKeywords).toBe(false);
+        });
       });
     });
   });

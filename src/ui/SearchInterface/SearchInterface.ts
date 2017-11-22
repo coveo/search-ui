@@ -66,7 +66,7 @@ export interface ISearchInterfaceOptions {
   initOptions?: any;
   endpoint?: SearchEndpoint;
   originalOptionsObject?: any;
-  allowNoKeywords?: boolean;
+  allowQueriesWithoutKeywords?: boolean;
 }
 
 /**
@@ -298,22 +298,22 @@ export class SearchInterface extends RootComponent implements IComponentBindings
      */
     autoTriggerQuery: ComponentOptions.buildBooleanOption({ defaultValue: true }),
     /**
-     * Specifies if the search interface should perform queries when there are no keywords entered by the end user.
-     * 
-     * If this option is set to true, the interface will initially load with only the search box available (If there is a search box component in the interface). 
-     * 
-     * When the user submit his query, the full search interface will then load to displays results.
-     * 
-     * For technical reasons, this option is automatically set to `false` in Coveo for Salesforce Free edition, and should not be changed.
-     * 
-     * This options interact closely with the {@link SearchInterface.options.autoTriggerQuery} option, since the automatic query will not be triggered if there are no keywords.
-     * 
-     * It also modifies the {@link IQuery.allowNoKeywords} query parameter.
-     * 
+     * Specifies if the search interface should perform queries when no keywords are entered by the end user.
+     *
+     * When this option is set to true, the interface will initially only load with the search box, as long as you have a search box component in your interface.
+     *
+     * Once the user submits a query, the full search interface loads to display the results.
+     *
+     * When using the Coveo for Salesforce Free edition, this option is automatically set to false, and should not be changed.
+     *
+     * This option interacts closely with the {@link SearchInterface.options.autoTriggerQuery} option, as the automatic query is not triggered when there are no keywords.
+     *
+     * It also modifies the {@link IQuery.allowQueriesWithoutKeywords} query parameter.
+     *
      * Default value is `true`
      * @notSupportedIn salesforcefree
      */
-    allowNoKeywords: ComponentOptions.buildBooleanOption({ defaultValue: true }),
+    allowQueriesWithoutKeywords: ComponentOptions.buildBooleanOption({ defaultValue: true }),
     endpoint: ComponentOptions.buildCustomOption(
       endpoint => (endpoint != null && endpoint in SearchEndpoint.endpoints ? SearchEndpoint.endpoints[endpoint] : null),
       { defaultFunction: () => SearchEndpoint.endpoints['default'] }
@@ -468,7 +468,7 @@ export class SearchInterface extends RootComponent implements IComponentBindings
     this.queryController = new QueryController(element, this.options, this.usageAnalytics, this);
     new SentryLogger(this.queryController);
 
-    if (this.options.allowNoKeywords) {
+    if (this.options.allowQueriesWithoutKeywords) {
       this.initializeEmptyQueryAllowed();
     } else {
       this.initializeEmptyQueryNotAllowed();
@@ -541,16 +541,16 @@ export class SearchInterface extends RootComponent implements IComponentBindings
 
   /**
    * Gets the query context for the current search interface.
-   * 
+   *
    * If the search interface has performed at least one query, it will try to resolve the context from the last query sent to the Coveo Search API.
-   * 
+   *
    * If the search interface has not performed a query yet, it will try to resolve the context from any avaiable {@link PipelineContext} component.
-   * 
+   *
    * If multiple {@link PipelineContext} components are available, it will merge all context values together.
-   * 
+   *
    * **Note:**
    * Having multiple PipelineContext components in the same search interface is not recommended, especially if some context keys are repeated across those components.
-   * 
+   *
    * If no context is found, returns `undefined`
    */
   public getQueryContext(): Context {
@@ -821,7 +821,7 @@ export class SearchInterface extends RootComponent implements IComponentBindings
 
     data.queryBuilder.enableDuplicateFiltering = this.options.enableDuplicateFiltering;
 
-    data.queryBuilder.allowNoKeywords = this.options.allowNoKeywords;
+    data.queryBuilder.allowQueriesWithoutKeywords = this.options.allowQueriesWithoutKeywords;
   }
 
   private handleQuerySuccess(data: IQuerySuccessEventArgs) {
@@ -868,7 +868,7 @@ export class SearchInterface extends RootComponent implements IComponentBindings
   }
 
   private initializeEmptyQueryAllowed() {
-    new InitializationPlaceholder(this.element).withAllPlaceholders();
+    new InitializationPlaceholder(this.element).withFullInitializationStyling().withAllPlaceholders();
   }
 
   private initializeEmptyQueryNotAllowed() {

@@ -682,15 +682,22 @@ export class Initialization {
   }
 
   private static shouldExecuteFirstQueryAutomatically(searchInterface: SearchInterface) {
-    if (searchInterface.options.autoTriggerQuery) {
-      if (searchInterface.options.allowNoKeywords) {
-        return true;
-      } else {
-        const currentStateOfQuery = state(searchInterface.element).get('q');
-        return currentStateOfQuery != '';
-      }
+    const options = searchInterface.options;
+
+    if (!options) {
+      return true;
     }
-    return false;
+
+    if (options.autoTriggerQuery === false) {
+      return false;
+    }
+
+    if (options.allowQueriesWithoutKeywords === true) {
+      return true;
+    }
+
+    const currentStateOfQuery = state(searchInterface.element).get('q');
+    return currentStateOfQuery != '';
   }
 }
 
@@ -724,7 +731,11 @@ export class LazyInitialization {
   public static buildErrorCallback(chunkName: string, resolve: Function) {
     return error => {
       LazyInitialization.logger.warn(
-        `Cannot load chunk for ${chunkName}. You may need to configure the paths of the resources using Coveo.configureResourceRoot. Current path is ${__webpack_public_path__}.`
+        `Cannot load chunk for ${
+          chunkName
+        }. You may need to configure the paths of the resources using Coveo.configureResourceRoot. Current path is ${
+          __webpack_public_path__
+        }.`
       );
       resolve(() => {});
     };

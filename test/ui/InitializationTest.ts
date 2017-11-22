@@ -392,7 +392,7 @@ export function InitializationTest() {
 
       describe('when query with no keywords are not allowed', () => {
         beforeEach(() => {
-          searchInterfaceOptions['SearchInterface'].allowNoKeywords = false;
+          searchInterfaceOptions['SearchInterface'].allowQueriesWithoutKeywords = false;
         });
 
         it('will trigger a query automatically if the interface contains keywords', done => {

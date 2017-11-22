@@ -217,11 +217,11 @@ export interface IQuery {
   recommendation?: string;
 
   /**
-   * Specifies if the Search API should perform queries containing no "end user" keywords.
-   * 
-   * End users keywords are present in either the {@link IQuery.q} or {@link IQuery.lq} part of the query.
-   * 
+   * Specifies if the Search API should perform queries even when no keywords were entered by the end user.
+   *
+   * End user keywords are present in either the {@link IQuery.q} or {@link IQuery.lq} part of the query.
+   *
    * This parameter is normally controlled by {@link SearchInterface.options.allowEmptyQuery} option.
    */
-  allowNoKeywords?: boolean;
+  allowQueriesWithoutKeywords?: boolean;
 }
