@@ -17,8 +17,7 @@ import { JQueryUtils } from '../../utils/JQueryutils';
 import { IJQuery } from './CoveoJQuery';
 import * as _ from 'underscore';
 import { IStringMap } from '../../rest/GenericParam';
-import { InitializationPlaceholder } from './InitializationPlaceholder';
-import { get } from './RegisteredNamedMethods';
+import { get, state } from './RegisteredNamedMethods';
 declare const require: any;
 
 /**
@@ -243,8 +242,6 @@ export class Initialization {
       });
     }
 
-    new InitializationPlaceholder(element);
-
     options = Initialization.resolveDefaultOptions(element, options);
 
     Initialization.performInitFunctionsOption(options, InitializationEvents.beforeInitialization);
@@ -261,7 +258,7 @@ export class Initialization {
         $$(element).trigger(InitializationEvents.afterInitialization);
 
         const searchInterface = <SearchInterface>Component.get(element, SearchInterface);
-        if (searchInterface.options.autoTriggerQuery) {
+        if (Initialization.shouldExecuteFirstQueryAutomatically(searchInterface)) {
           Initialization.logFirstQueryCause(searchInterface);
           let shouldLogInActionHistory = true;
           // We should not log an action history if the interface is a standalone recommendation component.
@@ -683,6 +680,25 @@ export class Initialization {
       return Promise.resolve(false);
     }
   }
+
+  private static shouldExecuteFirstQueryAutomatically(searchInterface: SearchInterface) {
+    const options = searchInterface.options;
+
+    if (!options) {
+      return true;
+    }
+
+    if (options.autoTriggerQuery === false) {
+      return false;
+    }
+
+    if (options.allowQueriesWithoutKeywords === true) {
+      return true;
+    }
+
+    const currentStateOfQuery = state(searchInterface.element).get('q');
+    return currentStateOfQuery != '';
+  }
 }
 
 export class LazyInitialization {
@@ -715,7 +731,11 @@ export class LazyInitialization {
   public static buildErrorCallback(chunkName: string, resolve: Function) {
     return error => {
       LazyInitialization.logger.warn(
-        `Cannot load chunk for ${chunkName}. You may need to configure the paths of the resources using Coveo.configureResourceRoot. Current path is ${__webpack_public_path__}.`
+        `Cannot load chunk for ${
+          chunkName
+        }. You may need to configure the paths of the resources using Coveo.configureResourceRoot. Current path is ${
+          __webpack_public_path__
+        }.`
       );
       resolve(() => {});
     };
