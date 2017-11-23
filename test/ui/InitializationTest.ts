@@ -2,7 +2,7 @@ import * as Mock from '../MockEnvironment';
 import { SearchEndpoint } from '../../src/rest/SearchEndpoint';
 import { $$ } from '../../src/utils/Dom';
 import { Querybox } from '../../src/ui/Querybox/Querybox';
-import { Component, IComponentDefinition } from '../../src/ui/Base/Component';
+import { Component } from '../../src/ui/Base/Component';
 import { Initialization, LazyInitialization } from '../../src/ui/Base/Initialization';
 import { Facet } from '../../src/ui/Facet/Facet';
 import { Pager } from '../../src/ui/Pager/Pager';

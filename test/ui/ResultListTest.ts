@@ -13,7 +13,6 @@ import { TemplateList } from '../../src/ui/Templates/TemplateList';
 import { QueryBuilder } from '../../src/ui/Base/QueryBuilder';
 import { analyticsActionCauseList } from '../../src/ui/Analytics/AnalyticsActionListMeta';
 import { IQueryResults } from '../../src/rest/QueryResults';
-import { TableTemplate } from '../../src/ui/Templates/TableTemplate';
 import { Defer } from '../../src/misc/Defer';
 
 export function ResultListTest() {
@@ -413,7 +412,7 @@ export function ResultListTest() {
         $$(otherResultList.element).addClass('CoveoResultList');
         otherResultList.element['CoveoBoundComponents'] = [otherResultList];
         $$(test.env.root).append(otherResultList.element);
-        const simulation = Simulate.query(test.env);
+        Simulate.query(test.env);
         expect(otherResultList.getAutoSelectedFieldsToInclude).toHaveBeenCalled();
       });
 

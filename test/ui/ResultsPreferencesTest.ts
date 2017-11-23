@@ -7,7 +7,6 @@ import { PreferencesPanel } from '../../src/ui/PreferencesPanel/PreferencesPanel
 import { l } from '../../src/strings/Strings';
 import { PreferencesPanelEvents } from '../../src/events/PreferencesPanelEvents';
 import { Defer } from '../../src/misc/Defer';
-import { Simulate } from '../Simulate';
 import { analyticsActionCauseList } from '../../src/ui/Analytics/AnalyticsActionListMeta';
 
 export function ResultsPreferencesTest() {
