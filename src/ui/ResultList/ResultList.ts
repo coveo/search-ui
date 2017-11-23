@@ -1,4 +1,4 @@
-import { Template, TemplateRole } from '../Templates/Template';
+import { Template } from '../Templates/Template';
 import { TableTemplate } from '../Templates/TableTemplate';
 import { DefaultResultTemplate } from '../Templates/DefaultResultTemplate';
 import { Component } from '../Base/Component';
@@ -269,9 +269,6 @@ export class ResultList extends Component {
   public currentlyDisplayedResults: IQueryResult[] = [];
   private fetchingMoreResults: Promise<IQueryResults>;
   private reachedTheEndOfResults = false;
-
-  private shouldDisplayTableHeader: boolean = true;
-  private shouldDisplayTableFooter: boolean = false;
 
   private renderer: ResultListRenderer;
 

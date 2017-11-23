@@ -1,4 +1,4 @@
-import { Template, IInstantiateTemplateOptions, DefaultInstantiateTemplateOptions, TemplateRole } from './Template';
+import { Template, IInstantiateTemplateOptions, DefaultInstantiateTemplateOptions } from './Template';
 import { DefaultResultTemplate } from './DefaultResultTemplate';
 import { IQueryResult } from '../../rest/QueryResult';
 import { Assert } from '../../misc/Assert';

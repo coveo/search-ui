@@ -10,7 +10,6 @@ import { l } from '../../strings/Strings';
 import { Assert } from '../../misc/Assert';
 import * as _ from 'underscore';
 import { Checkbox } from '../FormWidgets/Checkbox';
-import { IGroupByRequest } from '../../rest/GroupByRequest';
 import { BreadcrumbEvents, IPopulateBreadcrumbEventArgs } from '../../events/BreadcrumbEvents';
 import { SVGIcons } from '../../utils/SVGIcons';
 import { SVGDom } from '../../utils/SVGDom';
@@ -492,20 +491,12 @@ export class SimpleFilter extends Component {
     this.selectTitle.text(this.getValueCaption(title));
   }
 
-  private getDisplayedTitle(): string {
-    return this.selectTitle.text();
-  }
-
   private showBackdrop() {
     this.backdrop.addClass('coveo-dropdown-background-active');
   }
 
   private hideBackdrop() {
     this.backdrop.removeClass('coveo-dropdown-background-active');
-  }
-
-  private getBackdrop(): Dom {
-    return this.backdrop;
   }
 
   private findOrCreateWrapper() {
