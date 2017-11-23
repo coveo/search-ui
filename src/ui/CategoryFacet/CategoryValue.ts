@@ -49,7 +49,7 @@ export class CategoryValue {
       this.listOfChildValues = this.categoryFacetTemplates.buildListRoot();
       this.listElement.append(this.listOfChildValues.el);
       values.forEach(value => {
-        const categoryValue = new CategoryValue(this.listOfChildValues, value, this.categoryFacetTemplates, this);
+        const categoryValue = new CategoryValue(this.listOfChildValues, value, this.categoryFacetTemplates);
         categoryValue.render();
         this.children.push(categoryValue);
       });
