@@ -55,8 +55,8 @@
 	</div>
 	<div class="bottomHeader">
 		<div id="searchBox">
-			<div class="CoveoSearchbox" data-enable-omnibox="true" data-inline="false" data-enable-wildcards="true" data-enable-search-as-you-type="false" data-enable-query-suggest-addon="false" data-enable-query-syntax="true" data-enable-field-addon="true"></div>
-			<div class="CoveoFieldSuggestions" data-field="@jsuipagetopic" data-header-title="Suggested topics"></div>
+			<div class="CoveoSearchbox" data-enable-omnibox="true" data-inline="false" data-enable-wildcards="true" data-enable-search-as-you-type="false" data-enable-reveal-query-suggest-addon="false" data-enable-query-syntax="true" data-enable-field-addon="true"></div>
+			<div class="CoveoFieldSuggestions" data-field="@systitle" data-header-title="Suggested topics"></div>
 		</div>
 	</div>
 	<!-- Do not focus on Querybox when URL contains hash to ensure page scrolls down to corresponding anchor. -->
@@ -114,6 +114,9 @@
 								<a href="iquery.html#debug" class="tsd-kind-icon">debug</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="iquery.html#disablequerysyntax" class="tsd-kind-icon">disable<wbr>Query<wbr>Syntax</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
 								<a href="iquery.html#dq" class="tsd-kind-icon">dq</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
@@ -121,9 +124,6 @@
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
 								<a href="iquery.html#enabledidyoumean" class="tsd-kind-icon">enable<wbr>Did<wbr>You<wbr>Mean</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="iquery.html#enablequerysyntax" class="tsd-kind-icon">enable<wbr>Query<wbr>Syntax</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
 								<a href="iquery.html#excerptlength" class="tsd-kind-icon">excerpt<wbr>Length</a>
@@ -225,8 +225,6 @@
 							<a href="iquery.html">IQuery</a>
 						</li>
 					</ul>
-					<!-- Has to remain here for the playground to work -->
-					<h1 style="visibility: collapse; font-size:0">Interface IQuery</h1>
 					<h1>Interface IQuery</h1>
 				</div>
 			</div>
@@ -255,10 +253,10 @@
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="iquery.html#context" class="tsd-kind-icon">context</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="iquery.html#cq" class="tsd-kind-icon">cq</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="iquery.html#debug" class="tsd-kind-icon">debug</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="iquery.html#disablequerysyntax" class="tsd-kind-icon">disable<wbr>Query<wbr>Syntax</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="iquery.html#dq" class="tsd-kind-icon">dq</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="iquery.html#enablecollaborativerating" class="tsd-kind-icon">enable<wbr>Collaborative<wbr>Rating</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="iquery.html#enabledidyoumean" class="tsd-kind-icon">enable<wbr>Did<wbr>You<wbr>Mean</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="iquery.html#enablequerysyntax" class="tsd-kind-icon">enable<wbr>Query<wbr>Syntax</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="iquery.html#excerptlength" class="tsd-kind-icon">excerpt<wbr>Length</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="iquery.html#fieldstoexclude" class="tsd-kind-icon">fields<wbr>ToExclude</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="iquery.html#fieldstoinclude" class="tsd-kind-icon">fields<wbr>ToInclude</a></li>
@@ -299,8 +297,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/Query.ts#L212">src/rest/Query.ts
-							:212</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/Query.ts#L211">src/rest/Query.ts
+							:211</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -317,8 +315,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/Query.ts#L25">src/rest/Query.ts
-							:25</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/Query.ts#L24">src/rest/Query.ts
+							:24</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -336,8 +334,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/Query.ts#L198">src/rest/Query.ts
-							:198</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/Query.ts#L197">src/rest/Query.ts
+							:197</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -349,18 +347,26 @@
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="context" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagOptional">Optional</span> context</h3>
-					<div class="tsd-signature tsd-kind-icon">context<span class="tsd-signature-symbol">:</span> <a href="../globals.html#context" class="tsd-signature-type">Context</a></div>
+					<div class="tsd-signature tsd-kind-icon">context<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/Query.ts#L206">src/rest/Query.ts
-							:206</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/Query.ts#L205">src/rest/Query.ts
+							:205</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
 							<p>The context is a map of key_value that can be used in the Query pipeline in the Coveo platform.<br/></p>
 						</div>
+					</div>
+					<div class="tsd-type-declaration">
+						<h4>Type declaration</h4>
+						<ul class="tsd-parameters">
+							<li class="tsd-parameter-index-signature">
+								<h5><span class="tsd-signature-symbol">[</span>name: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">]: </span><span class="tsd-signature-type">any</span></h5>
+							</li>
+						</ul>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
@@ -370,8 +376,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/Query.ts#L33">src/rest/Query.ts
-							:33</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/Query.ts#L32">src/rest/Query.ts
+							:32</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -391,8 +397,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/Query.ts#L182">src/rest/Query.ts
-							:182</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/Query.ts#L181">src/rest/Query.ts
+							:181</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -404,14 +410,33 @@
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="disablequerysyntax" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> disable<wbr>Query<wbr>Syntax</h3>
+					<div class="tsd-signature tsd-kind-icon">disable<wbr>Query<wbr>Syntax<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in
+								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/Query.ts#L188">src/rest/Query.ts
+							:188</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Whether to disable the special query syntax such as field references for the basic query expression (parameter q).
+								It is equivalent to a No syntax block applied to the basic query expression.
+							If not specified, the parameter defaults to false</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="dq" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagOptional">Optional</span> dq</h3>
 					<div class="tsd-signature tsd-kind-icon">dq<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/Query.ts#L47">src/rest/Query.ts
-							:47</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/Query.ts#L46">src/rest/Query.ts
+							:46</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -429,8 +454,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/Query.ts#L194">src/rest/Query.ts
-							:194</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/Query.ts#L193">src/rest/Query.ts
+							:193</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -446,8 +471,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/Query.ts#L163">src/rest/Query.ts
-							:163</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/Query.ts#L162">src/rest/Query.ts
+							:162</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -458,39 +483,20 @@
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="enablequerysyntax" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> enable<wbr>Query<wbr>Syntax</h3>
-					<div class="tsd-signature tsd-kind-icon">enable<wbr>Query<wbr>Syntax<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/Query.ts#L189">src/rest/Query.ts
-							:189</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Whether to enable the special query syntax such as field references for the basic query expression (parameter q).
-								It is equivalent to a No syntax block applied to the basic query expression.
-							If not specified, the parameter defaults to false</p>
-						</div>
-					</div>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="excerptlength" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagOptional">Optional</span> excerpt<wbr>Length</h3>
 					<div class="tsd-signature tsd-kind-icon">excerpt<wbr>Length<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/Query.ts#L153">src/rest/Query.ts
-							:153</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/Query.ts#L152">src/rest/Query.ts
+							:152</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
 							<p>This specifies the length (in number of characters) of the excerpts generated by the indexer based on the keywords present in the query.<br/>
-								The index includes the top most interesting sentences (in the order they appear in the item) that fit in the specified number of characters.<br/>
+								The index includes the top most interesting sentences (in the order they appear in the document) that fit in the specified number of characters.<br/>
 							When not specified, the default value is 200.</p>
 						</div>
 					</div>
@@ -502,8 +508,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/Query.ts#L147">src/rest/Query.ts
-							:147</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/Query.ts#L146">src/rest/Query.ts
+							:146</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -520,8 +526,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/Query.ts#L141">src/rest/Query.ts
-							:141</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/Query.ts#L140">src/rest/Query.ts
+							:140</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -538,8 +544,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/Query.ts#L131">src/rest/Query.ts
-							:131</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/Query.ts#L130">src/rest/Query.ts
+							:130</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -557,8 +563,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/Query.ts#L135">src/rest/Query.ts
-							:135</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/Query.ts#L134">src/rest/Query.ts
+							:134</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -574,8 +580,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/Query.ts#L109">src/rest/Query.ts
-							:109</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/Query.ts#L108">src/rest/Query.ts
+							:108</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -592,8 +598,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/Query.ts#L175">src/rest/Query.ts
-							:175</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/Query.ts#L174">src/rest/Query.ts
+							:174</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -609,8 +615,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/Query.ts#L84">src/rest/Query.ts
-							:84</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/Query.ts#L83">src/rest/Query.ts
+							:83</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -626,8 +632,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/Query.ts#L41">src/rest/Query.ts
-							:41</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/Query.ts#L40">src/rest/Query.ts
+							:40</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -647,8 +653,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/Query.ts#L68">src/rest/Query.ts
-							:68</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/Query.ts#L67">src/rest/Query.ts
+							:67</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -666,8 +672,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/Query.ts#L114">src/rest/Query.ts
-							:114</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/Query.ts#L113">src/rest/Query.ts
+							:113</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -684,8 +690,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/Query.ts#L202">src/rest/Query.ts
-							:202</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/Query.ts#L201">src/rest/Query.ts
+							:201</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -701,15 +707,15 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/Query.ts#L91">src/rest/Query.ts
-							:91</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/Query.ts#L90">src/rest/Query.ts
+							:90</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
 							<p>Whether to enable partial matching of the basic expression keywords.<br/>
-								By activating this, when the basic expression contains at least <a href="iquery.html#partialmatchkeywords">IQuery.partialMatchKeywords</a>, items containing only the number of keywords specified by <a href="iquery.html#partialmatchthreshold">IQuery.partialMatchThreshold</a> will also match the query.<br/>
-								Without this option, items are required to contain all the keywords in order to match the query.<br/>
+								By activating this, when the basic expression contains at least <a href="iquery.html#partialmatchkeywords">IQuery.partialMatchKeywords</a>, documents containing only the number of keywords specified by <a href="iquery.html#partialmatchthreshold">IQuery.partialMatchThreshold</a> will also match the query.<br/>
+								Without this option, documents are required to contain all the keywords in order to match the query.<br/>
 							If not specified, this parameter defaults to false.</p>
 						</div>
 					</div>
@@ -721,8 +727,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/Query.ts#L98">src/rest/Query.ts
-							:98</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/Query.ts#L97">src/rest/Query.ts
+							:97</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -741,14 +747,14 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/Query.ts#L104">src/rest/Query.ts
-							:104</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/Query.ts#L103">src/rest/Query.ts
+							:103</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>The threshold to use for matching items when partial match is enabled.<br/>
-								This specifies the minimum number of query keywords that an item must contain when partial match is enabled. This value can either be an absolute number or a percentage value based on the total number of keywords.<br/>
+							<p>The threshold to use for matching documents when partial match is enabled.<br/>
+								This specifies the minimum number of query keywords that a document must contain when partial match is enabled. This value can either be an absolute number or a percentage value based on the total number of keywords.<br/>
 							If not specified, this parameter defaults to 50%.</p>
 						</div>
 					</div>
@@ -760,8 +766,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/Query.ts#L62">src/rest/Query.ts
-							:62</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/Query.ts#L61">src/rest/Query.ts
+							:61</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -778,8 +784,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/Query.ts#L19">src/rest/Query.ts
-							:19</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/Query.ts#L18">src/rest/Query.ts
+							:18</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -797,8 +803,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/Query.ts#L167">src/rest/Query.ts
-							:167</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/Query.ts#L166">src/rest/Query.ts
+							:166</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -814,8 +820,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/Query.ts#L80">src/rest/Query.ts
-							:80</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/Query.ts#L79">src/rest/Query.ts
+							:79</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -832,8 +838,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/Query.ts#L171">src/rest/Query.ts
-							:171</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/Query.ts#L170">src/rest/Query.ts
+							:170</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -849,8 +855,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/Query.ts#L217">src/rest/Query.ts
-							:217</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/Query.ts#L216">src/rest/Query.ts
+							:216</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -866,13 +872,13 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/Query.ts#L158">src/rest/Query.ts
-							:158</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/Query.ts#L157">src/rest/Query.ts
+							:157</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>This specifies whether the first sentences of the item should be included in the results.<br/>
+							<p>This specifies whether the first sentences of the document should be included in the results.<br/>
 							The retrieveFirstSentences option is typically used instead of excerpts when displaying email items, where the first sentence of the email might be of more interest than a contextually generated excerpt.</p>
 						</div>
 					</div>
@@ -884,8 +890,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/Query.ts#L52">src/rest/Query.ts
-							:52</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/Query.ts#L51">src/rest/Query.ts
+							:51</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -902,8 +908,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/Query.ts#L124">src/rest/Query.ts
-							:124</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/Query.ts#L123">src/rest/Query.ts
+							:123</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -925,8 +931,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/Query.ts#L56">src/rest/Query.ts
-							:56</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/Query.ts#L55">src/rest/Query.ts
+							:55</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -942,8 +948,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/Query.ts#L75">src/rest/Query.ts
-							:75</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/Query.ts#L74">src/rest/Query.ts
+							:74</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
