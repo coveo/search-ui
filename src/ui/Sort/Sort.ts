@@ -9,7 +9,6 @@ import { IAttributesChangedEventArg, MODEL_EVENTS } from '../../models/Model';
 import { QueryStateModel, QUERY_STATE_ATTRIBUTES } from '../../models/QueryStateModel';
 import { QueryEvents, IQuerySuccessEventArgs, IBuildingQueryEventArgs } from '../../events/QueryEvents';
 import { Initialization } from '../Base/Initialization';
-import { analyticsActionCauseList, IAnalyticsResultsSortMeta } from '../Analytics/AnalyticsActionListMeta';
 import { KeyboardUtils, KEYBOARD } from '../../utils/KeyboardUtils';
 import { IQueryErrorEventArgs } from '../../events/QueryEvents';
 import * as _ from 'underscore';

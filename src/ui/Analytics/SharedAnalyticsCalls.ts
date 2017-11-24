@@ -1,11 +1,5 @@
 import { IAnalyticsClient } from './AnalyticsClient';
-import {
-  analyticsActionCauseList,
-  IAnalyticsNoMeta,
-  IAnalyticsResultsSortMeta,
-  IAnalyticsPagerMeta,
-  IAnalyticsActionCause
-} from './AnalyticsActionListMeta';
+import { analyticsActionCauseList, IAnalyticsNoMeta, IAnalyticsResultsSortMeta } from './AnalyticsActionListMeta';
 
 export function logSearchBoxSubmitEvent(client: IAnalyticsClient) {
   client.logSearchEvent<IAnalyticsNoMeta>(analyticsActionCauseList.searchboxSubmit, {});
