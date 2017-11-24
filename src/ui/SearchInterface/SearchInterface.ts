@@ -18,7 +18,7 @@ import {
   IDoneBuildingQueryEventArgs
 } from '../../events/QueryEvents';
 import { IBeforeRedirectEventArgs, StandaloneSearchInterfaceEvents } from '../../events/StandaloneSearchInterfaceEvents';
-import { HistoryController } from '../../controllers/HistoryController';
+import { HistoryController, IHistoryControllerEnvironment } from '../../controllers/HistoryController';
 import { LocalStorageHistoryController } from '../../controllers/LocalStorageHistoryController';
 import { InitializationEvents } from '../../events/InitializationEvents';
 import { IAnalyticsClient } from '../Analytics/AnalyticsClient';
@@ -444,7 +444,7 @@ export class SearchInterface extends RootComponent implements IComponentBindings
    * @param _window The window object for the search interface. Used for unit tests, which can pass a mock. Default is
    * the global window object.
    */
-  constructor(public element: HTMLElement, public options?: ISearchInterfaceOptions, public analyticsOptions?, _window = window) {
+  constructor(public element: HTMLElement, public options?: ISearchInterfaceOptions, public analyticsOptions?, public _window = window) {
     super(element, SearchInterface.ID);
 
     if (DeviceUtils.isMobileDevice()) {
@@ -482,7 +482,7 @@ export class SearchInterface extends RootComponent implements IComponentBindings
 
     if (this.options.enableHistory) {
       if (!this.options.useLocalStorageForHistory) {
-        new HistoryController(element, _window, this.queryStateModel, this.queryController);
+        this.initializeHistoryController();
       } else {
         new LocalStorageHistoryController(element, _window, this.queryStateModel, this.queryController);
       }
@@ -598,22 +598,22 @@ export class SearchInterface extends RootComponent implements IComponentBindings
     return this.attachedComponents[type];
   }
 
-  /**
-   * Indicates whether the search interface is using the new design.
-   * This changes the rendering of multiple components.
-   *
-   * @deprecated Old styling of the interface is no longer supported
-   */
-  // public isNewDesign() {
-  //  return false;
-  // }
-
   protected initializeAnalytics(): IAnalyticsClient {
     const analyticsRef = BaseComponent.getComponentRef('Analytics');
     if (analyticsRef) {
       return analyticsRef.create(this.element, this.analyticsOptions, this.getBindings());
     }
     return new NoopAnalyticsClient();
+  }
+
+  private initializeHistoryController() {
+    const historyControllerEnvironment: IHistoryControllerEnvironment = {
+      model: this.queryStateModel,
+      queryController: this.queryController,
+      usageAnalytics: this.usageAnalytics,
+      window: this._window
+    };
+    new HistoryController(this.element, historyControllerEnvironment);
   }
 
   private setupDebugInfo() {

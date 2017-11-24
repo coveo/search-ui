@@ -1,5 +1,6 @@
 import { IQueryResult } from '../rest/QueryResult';
 import * as _ from 'underscore';
+import { IStringMap } from '../rest/GenericParam';
 
 const isCoveoFieldRegex = /^@[a-zA-Z0-9_\.]+$/;
 
@@ -375,5 +376,21 @@ export class Utils {
       firstArray = firstArray.concat(diff);
     }
     return firstArray;
+  }
+
+  static differenceBetweenObjects(firstObject: IStringMap<any>, secondObject: IStringMap<any>) {
+    const difference: IStringMap<any> = {};
+
+    const addDiff = (first: IStringMap<any>, second: IStringMap<any>) => {
+      for (const key in first) {
+        if (first[key] != second[key] && difference[key] == null) {
+          difference[key] = first[key];
+        }
+      }
+    };
+
+    addDiff(firstObject, secondObject);
+    addDiff(secondObject, firstObject);
+    return difference;
   }
 }

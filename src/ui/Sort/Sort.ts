@@ -18,6 +18,7 @@ import { exportGlobally } from '../../GlobalExports';
 import 'styling/_Sort';
 import { SVGIcons } from '../../utils/SVGIcons';
 import { SVGDom } from '../../utils/SVGDom';
+import { logSortEvent } from '../Analytics/SharedAnalyticsCalls';
 
 export interface ISortOptions {
   sortCriteria?: SortCriteria[];
@@ -223,10 +224,7 @@ export class Sort extends Component {
     this.select();
     if (oldCriteria != this.currentCriteria) {
       this.queryController.deferExecuteQuery({
-        beforeExecuteQuery: () =>
-          this.usageAnalytics.logSearchEvent<IAnalyticsResultsSortMeta>(analyticsActionCauseList.resultsSort, {
-            resultsSortBy: this.currentCriteria.sort + this.currentCriteria.direction
-          })
+        beforeExecuteQuery: () => logSortEvent(this.usageAnalytics, this.currentCriteria.sort + this.currentCriteria.direction)
       });
     }
   }
