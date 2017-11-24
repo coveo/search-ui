@@ -10,16 +10,10 @@ import { Utils } from '../utils/Utils';
 import * as _ from 'underscore';
 import { IStringMap } from '../rest/GenericParam';
 import { QUERY_STATE_ATTRIBUTES } from '../models/QueryStateModel';
-import { state } from '../Lazy';
 import { IAnalyticsClient } from '../ui/Analytics/AnalyticsClient';
-import {
-  IAnalyticsNoMeta,
-  analyticsActionCauseList,
-  IAnalyticsResultsSortMeta,
-  IAnalyticsFacetMeta,
-  IAnalyticsActionCause
-} from '../ui/Analytics/AnalyticsActionListMeta';
+import { analyticsActionCauseList, IAnalyticsFacetMeta, IAnalyticsActionCause } from '../ui/Analytics/AnalyticsActionListMeta';
 import { logSearchBoxSubmitEvent, logSortEvent } from '../ui/Analytics/SharedAnalyticsCalls';
+import { Model } from '../models/Model';
 
 export interface IHistoryControllerEnvironment {
   model: QueryStateModel;
@@ -43,7 +37,7 @@ export class HistoryController extends RootComponent {
   private initialHashChange = false;
   private willUpdateHash: boolean = false;
   private hashchange: (...args: any[]) => void;
-  private lastState;
+  private lastState: IStringMap<any>;
   private hashUtilsModule: typeof HashUtils;
 
   /**
@@ -63,7 +57,7 @@ export class HistoryController extends RootComponent {
       this.lastState = this.model.getAttributes();
     });
 
-    $$(this.element).on(this.model.getEventName(QueryStateModel.eventTypes.all), () => {
+    $$(this.element).on(this.model.getEventName(Model.eventTypes.all), () => {
       this.logger.trace('Query model changed. Update hash');
       this.updateHashFromModel();
     });

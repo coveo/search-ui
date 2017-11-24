@@ -239,23 +239,6 @@ export class Model extends BaseComponent {
     return this.eventNameSpace + ':' + event;
   }
 
-  public differenceWith(attributes: IStringMap<any>) {
-    const difference: IStringMap<any> = {};
-
-    const addDiff = (anObject: IStringMap<any>) => {
-      for (const key in anObject) {
-        if (anObject[key] != this.getAttributes()[key] && difference[key] == null) {
-          difference[key] = this.getAttributes()[key];
-        }
-      }
-    };
-
-    addDiff(this.getAttributes());
-    addDiff(attributes);
-
-    return difference;
-  }
-
   private attributesHasChangedEvent() {
     $$(this.element).trigger(this.getEventName(Model.eventTypes.change), this.createAttributesChangedArgument());
   }
