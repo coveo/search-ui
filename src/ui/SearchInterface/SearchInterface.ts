@@ -2,13 +2,12 @@ import { SearchEndpoint } from '../../rest/SearchEndpoint';
 import { ComponentOptions, IFieldOption } from '../Base/ComponentOptions';
 import { DeviceUtils } from '../../utils/DeviceUtils';
 import { $$ } from '../../utils/Dom';
-import { DomUtils } from '../../utils/DomUtils';
 import { Assert } from '../../misc/Assert';
-import { QueryStateModel, QUERY_STATE_ATTRIBUTES } from '../../models/QueryStateModel';
+import { QueryStateModel } from '../../models/QueryStateModel';
 import { ComponentStateModel } from '../../models/ComponentStateModel';
 import { ComponentOptionsModel } from '../../models/ComponentOptionsModel';
 import { QueryController } from '../../controllers/QueryController';
-import { Model, IAttributeChangedEventArg, MODEL_EVENTS } from '../../models/Model';
+import { Model, IAttributeChangedEventArg } from '../../models/Model';
 import {
   QueryEvents,
   IBuildingQueryEventArgs,
@@ -35,8 +34,6 @@ import { IComponentBindings } from '../Base/ComponentBindings';
 import { analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
 import { ResponsiveComponents } from '../ResponsiveComponents/ResponsiveComponents';
 import { Context, IPipelineContextProvider } from '../PipelineContext/PipelineGlobalExports';
-import { IStringMap } from '../../rest/GenericParam';
-
 import * as _ from 'underscore';
 
 import 'styling/Globals';

@@ -3,8 +3,6 @@ import { Utils } from './Utils';
 import { l } from '../strings/Strings';
 import * as _ from 'underscore';
 import * as moment from 'moment';
-import * as d3 from 'd3';
-import days = d3.time.days;
 /**
  * The `IDateToStringOptions` interface describes a set of options to use when converting a standard Date object to a
  * string using the [ `dateToString` ]{@link DateUtils.dateToString}, or the

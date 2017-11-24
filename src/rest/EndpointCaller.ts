@@ -8,7 +8,6 @@ import { JQueryUtils } from '../utils/JQueryutils';
 import * as _ from 'underscore';
 
 declare const XDomainRequest;
-declare const $;
 
 /**
  * Parameters that can be used when calling an {@link EndpointCaller}
@@ -63,7 +62,7 @@ export interface IRequestInfo<T> {
   /**
    * The data that was sent for this request
    */
-  requestData: IStringMap<any>;
+  requestData: IStringMap<T>;
   /**
    * The requestDataType that was used for this request
    */

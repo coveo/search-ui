@@ -7,7 +7,6 @@ import { ResponsiveFacets } from '../../../src/ui/ResponsiveComponents/Responsiv
 import { $$, Dom } from '../../../src/utils/Dom';
 import { Facet } from '../../../src/ui/Facet/Facet';
 import { FacetSearch } from '../../../src/ui/Facet/FacetSearch';
-import { FacetSlider } from '../../../src/ui/FacetSlider/FacetSlider';
 import { FacetSearchValuesList } from '../../../src/ui/Facet/FacetSearchValuesList';
 import * as Mock from '../../MockEnvironment';
 import { QueryEvents } from '../../../src/events/QueryEvents';

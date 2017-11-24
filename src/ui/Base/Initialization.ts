@@ -18,7 +18,6 @@ import { IJQuery } from './CoveoJQuery';
 import * as _ from 'underscore';
 import { IStringMap } from '../../rest/GenericParam';
 import { get, state } from './RegisteredNamedMethods';
-declare const require: any;
 
 /**
  * Represent the initialization parameters required to init a new component.

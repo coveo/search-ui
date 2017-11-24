@@ -6,17 +6,15 @@ export function QueryStateModelTest() {
   describe('QueryStateModel', () => {
     var queryState: QueryStateModel;
     var div: HTMLDivElement;
-    var env: Mock.IMockEnvironment;
 
     beforeEach(() => {
       div = document.createElement('div');
-      env = new Mock.MockEnvironmentBuilder().withRoot(div).build();
+      new Mock.MockEnvironmentBuilder().withRoot(div).build();
       queryState = new QueryStateModel(div, undefined);
     });
 
     afterEach(() => {
       div = null;
-      env = null;
       queryState = null;
     });
 

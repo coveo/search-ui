@@ -20,11 +20,9 @@ import { l } from '../../strings/Strings';
 import { $$ } from '../../utils/Dom';
 import { KeyboardUtils, KEYBOARD } from '../../utils/KeyboardUtils';
 import { exportGlobally } from '../../GlobalExports';
-
-import 'styling/_Pager';
-import { Defer } from '../../misc/Defer';
 import { SVGIcons } from '../../utils/SVGIcons';
 import { SVGDom } from '../../utils/SVGDom';
+import 'styling/_Pager';
 
 export interface IPagerOptions {
   numberOfPages: number;

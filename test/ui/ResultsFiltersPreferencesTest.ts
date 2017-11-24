@@ -1,7 +1,6 @@
 import * as Mock from '../MockEnvironment';
 import { ResultsFiltersPreferences } from '../../src/ui/ResultsFiltersPreferences/ResultsFiltersPreferences';
 import { $$ } from '../../src/utils/Dom';
-import { l } from '../../src/strings/Strings';
 import { PreferencesPanel } from '../../src/ui/PreferencesPanel/PreferencesPanel';
 import { Simulate } from '../Simulate';
 import { BreadcrumbEvents, IBreadcrumbItem } from '../../src/events/BreadcrumbEvents';
@@ -9,11 +8,9 @@ import { BreadcrumbEvents, IBreadcrumbItem } from '../../src/events/BreadcrumbEv
 export function ResultsFiltersPreferencesTest() {
   describe('ResultsFiltersPreferences', () => {
     let test: Mock.IBasicComponentSetup<ResultsFiltersPreferences>;
-    let preferencesPanelElement: HTMLElement;
     let testPreferencesPanel: Mock.IBasicComponentSetup<PreferencesPanel>;
 
     beforeEach(() => {
-      preferencesPanelElement = $$('div', { className: 'CoveoPreferencesPanel' }).el;
       testPreferencesPanel = Mock.basicComponentSetup<PreferencesPanel>(PreferencesPanel);
       test = Mock.advancedComponentSetup<ResultsFiltersPreferences>(
         ResultsFiltersPreferences,
@@ -25,7 +22,6 @@ export function ResultsFiltersPreferencesTest() {
 
     afterEach(() => {
       test = null;
-      preferencesPanelElement = null;
     });
 
     it('should allow to createDom', () => {

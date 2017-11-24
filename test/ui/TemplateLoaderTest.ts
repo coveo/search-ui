@@ -6,7 +6,6 @@ import { $$ } from '../../src/utils/Dom';
 
 export function TemplateLoaderTest() {
   describe('TemplateLoder', () => {
-    let test;
     it('should not load a template into itself for template-ception', function() {
       let badTemplateId = 'badTemplate';
       let badTemplate = new Template(() => {
@@ -15,7 +14,7 @@ export function TemplateLoaderTest() {
       TemplateCache.registerTemplate(badTemplateId, badTemplate);
 
       expect(() => {
-        test = Mock.advancedComponentSetup<TemplateLoader>(
+        Mock.advancedComponentSetup<TemplateLoader>(
           TemplateLoader,
           new Mock.AdvancedComponentSetupOptions(
             $$('div', {

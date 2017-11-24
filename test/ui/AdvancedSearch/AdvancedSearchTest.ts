@@ -151,7 +151,7 @@ export function AdvancedSearchTest() {
             expect(args.breadcrumbs.length).toEqual(1);
             done();
           });
-          const simulation = Simulate.query(test.env);
+          Simulate.query(test.env);
           expect(updateQuerySpy).toHaveBeenCalled();
           Simulate.breadcrumb(test.env);
         });
@@ -164,7 +164,7 @@ export function AdvancedSearchTest() {
           updateQuerySpy.and.callFake((queryBuilder: QueryBuilder) => {
             // do nothing
           });
-          const simulation = Simulate.query(test.env);
+          Simulate.query(test.env);
           expect(updateQuerySpy).toHaveBeenCalled();
           Simulate.breadcrumb(test.env);
         });
