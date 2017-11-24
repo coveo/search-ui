@@ -23,7 +23,6 @@ import { InitializationEvents } from '../../events/InitializationEvents';
 import { ComponentOptionsModel } from '../../models/ComponentOptionsModel';
 import * as _ from 'underscore';
 import { exportGlobally } from '../../GlobalExports';
-import HistoryQueryElement = CoveoAnalytics.HistoryQueryElement;
 import { DefaultRecommendationTemplate } from '../Templates/DefaultRecommendationTemplate';
 import { RecommendationQuery } from './RecommendationQuery';
 import { RecommendationAnalyticsClient } from '../Analytics/RecommendationAnalyticsClient';
@@ -202,7 +201,6 @@ export class Recommendation extends SearchInterface implements IComponentBinding
   public historyStore: CoveoAnalytics.HistoryStore;
 
   private mainInterfaceQuery: IQuerySuccessEventArgs;
-  private displayStyle: string;
 
   /**
    * Creates a new Recommendation component.
@@ -368,14 +366,6 @@ export class Recommendation extends SearchInterface implements IComponentBinding
     }
 
     data.queryBuilder.recommendation = this.options.id;
-  }
-
-  private getHistory(): string {
-    let historyFromStore = this.historyStore.getHistory();
-    if (historyFromStore == null) {
-      historyFromStore = [];
-    }
-    return JSON.stringify(historyFromStore);
   }
 
   private preventEventPropagation() {

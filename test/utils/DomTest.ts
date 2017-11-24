@@ -123,12 +123,12 @@ export function DomTests() {
       });
 
       it('should allow to set the text content', () => {
-        let dom = new Dom(el).text('this is the content');
+        new Dom(el).text('this is the content');
         expect(el.innerHTML).toEqual('this is the content');
 
         /// Setting HTML content as text should still work
         el = document.createElement('div');
-        dom = new Dom(el).text('<div>this is the content</div>');
+        new Dom(el).text('<div>this is the content</div>');
         expect(el.childNodes[0].nodeValue).toEqual('<div>this is the content</div>');
       });
 

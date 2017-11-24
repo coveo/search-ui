@@ -1,5 +1,4 @@
 import { FacetValue } from './FacetValues';
-import { DeviceUtils } from '../../utils/DeviceUtils';
 import { Facet } from './Facet';
 import { IBreadcrumbValueElementKlass } from './BreadcrumbValueElement';
 import { Assert } from '../../misc/Assert';
@@ -7,8 +6,6 @@ import { l } from '../../strings/Strings';
 import { $$ } from '../../utils/Dom';
 import * as Globalize from 'globalize';
 import * as _ from 'underscore';
-import { SVGIcons } from '../../utils/SVGIcons';
-import { SVGDom } from '../../utils/SVGDom';
 
 export class BreadcrumbValueList {
   private expanded: FacetValue[];

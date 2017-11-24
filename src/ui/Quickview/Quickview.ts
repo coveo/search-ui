@@ -3,7 +3,6 @@ import { ComponentOptions, ComponentOptionsType } from '../Base/ComponentOptions
 import { IResultsComponentBindings } from '../Base/ResultsComponentBindings';
 import { Template } from '../Templates/Template';
 import { DomUtils } from '../../utils/DomUtils';
-import { DeviceUtils } from '../../utils/DeviceUtils';
 import { IQueryResult } from '../../rest/QueryResult';
 import { $$, Dom } from '../../utils/Dom';
 import { DefaultQuickviewTemplate } from './DefaultQuickviewTemplate';
@@ -185,28 +184,29 @@ export class Quickview extends Component {
      * By default, the loading animation is a Coveo animation, which you can customize with CSS (see
      * [Branding Customization - Customizing the Default Loading Animation](https://developers.coveo.com/x/EoGfAQ#BrandingCustomization-CustomizingtheDefaultLoadingAnimation).
      */
-    loadingAnimation: ComponentOptions.buildOption<
-      HTMLElement | Promise<HTMLElement>
-    >(ComponentOptionsType.NONE, (element: HTMLElement) => {
-      const loadingAnimationSelector = element.getAttribute('data-loading-animation-selector');
-      if (loadingAnimationSelector != null) {
-        const loadingAnimation = $$(document.documentElement).find(loadingAnimationSelector);
-        if (loadingAnimation != null) {
-          $$(loadingAnimation).detach();
-          return loadingAnimation;
+    loadingAnimation: ComponentOptions.buildOption<HTMLElement | Promise<HTMLElement>>(
+      ComponentOptionsType.NONE,
+      (element: HTMLElement) => {
+        const loadingAnimationSelector = element.getAttribute('data-loading-animation-selector');
+        if (loadingAnimationSelector != null) {
+          const loadingAnimation = $$(document.documentElement).find(loadingAnimationSelector);
+          if (loadingAnimation != null) {
+            $$(loadingAnimation).detach();
+            return loadingAnimation;
+          }
         }
-      }
-      const id = element.getAttribute('data-loading-animation-template-id');
-      if (id != null) {
-        const loadingAnimationTemplate = ComponentOptions.loadResultTemplateFromId(id);
-        if (loadingAnimationTemplate) {
-          return loadingAnimationTemplate.instantiateToElement(undefined, {
-            checkCondition: false
-          });
+        const id = element.getAttribute('data-loading-animation-template-id');
+        if (id != null) {
+          const loadingAnimationTemplate = ComponentOptions.loadResultTemplateFromId(id);
+          if (loadingAnimationTemplate) {
+            return loadingAnimationTemplate.instantiateToElement(undefined, {
+              checkCondition: false
+            });
+          }
         }
+        return DomUtils.getBasicLoadingAnimation();
       }
-      return DomUtils.getBasicLoadingAnimation();
-    })
+    )
   };
 
   public static resultCurrentlyBeingRendered: IQueryResult = null;

@@ -2,9 +2,6 @@ import { Facet } from '../../src/ui/Facet/Facet';
 import { QueryBuilder } from '../../src/ui/Base/QueryBuilder';
 import * as Mock from '../MockEnvironment';
 import { IDistanceOptions, DistanceResources } from '../../src/ui/Distance/DistanceResources';
-import { Simulate } from '../Simulate';
-import { ISimulateQueryData } from '../Simulate';
-import { QueryStateModel } from '../../src/models/QueryStateModel';
 import { $$ } from '../../src/utils/Dom';
 import {
   IGeolocationPosition,
@@ -16,7 +13,6 @@ import {
 import { InitializationEvents } from '../../src/EventsModules';
 import { QueryEvents, IBuildingQueryEventArgs } from '../../src/events/QueryEvents';
 import { IQueryFunction } from '../../src/rest/QueryFunction';
-import { PendingSearchEvent } from '../../src/ui/Analytics/PendingSearchEvent';
 import { analyticsActionCauseList } from '../../src/ui/Analytics/AnalyticsActionListMeta';
 
 export function DistanceResourcesTest() {
@@ -30,7 +26,9 @@ export function DistanceResourcesTest() {
     const disabledComponentsClass = 'bloupbloup';
     const aNicePlace = <IGeolocationPosition>{ latitude: latitudeForANicePlace, longitude: longitudeForANicePlace };
     const expectedQueryFunctionForANicePlace = <IQueryFunction>{
-      function: `dist(${latitudeField}, ${longitudeField}, ${latitudeForANicePlace}, ${longitudeForANicePlace})/${defaultUnitConversionFactor}`,
+      function: `dist(${latitudeField}, ${longitudeField}, ${latitudeForANicePlace}, ${longitudeForANicePlace})/${
+        defaultUnitConversionFactor
+      }`,
       fieldName: distanceField
     };
 

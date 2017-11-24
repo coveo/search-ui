@@ -1,6 +1,6 @@
 import { IAnalyticsClient } from './AnalyticsClient';
 import { PendingSearchEvent } from './PendingSearchEvent';
-import { IAnalyticsActionCause, IAnalyticsDocumentViewMeta } from './AnalyticsActionListMeta';
+import { IAnalyticsActionCause } from './AnalyticsActionListMeta';
 import { IQueryResult } from '../../rest/QueryResult';
 import { ITopQueries } from '../../rest/TopQueries';
 import { IAPIAnalyticsEventResponse } from '../../rest/APIAnalyticsEventResponse';

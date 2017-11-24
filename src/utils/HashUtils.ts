@@ -3,12 +3,6 @@ import { Utils } from '../utils/Utils';
 import * as _ from 'underscore';
 import { Logger } from '../MiscModules';
 
-interface IHashUtils {
-  getHash(w: any);
-  getValue();
-  encodeValues();
-}
-
 export class HashUtils {
   private static DELIMITER = {
     objectStart: '{',

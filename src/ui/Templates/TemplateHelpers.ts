@@ -18,7 +18,7 @@ export class TemplateHelpers {
   private static helpers: { [templateName: string]: ITemplateHelperFunction } = {};
   public static fieldHelpers: string[] = [];
 
-  static registerFieldHelper<T1>(name: string, helper: (value: string, options?: any) => string) {
+  static registerFieldHelper(name: string, helper: (value: string, options?: any) => string) {
     TemplateHelpers.fieldHelpers.push(name);
     TemplateHelpers.registerTemplateHelper(name, helper);
   }
