@@ -1,8 +1,5 @@
 import { Template, TemplateRole } from './Template';
-import { HtmlTemplate } from './HtmlTemplate';
 import { TemplateList } from './TemplateList';
-import { DefaultResultTemplate } from './DefaultResultTemplate';
-import { $$ } from '../../utils/Dom';
 import _ = require('underscore');
 
 export class TableTemplate extends TemplateList {

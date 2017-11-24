@@ -8,7 +8,7 @@ import {
   ISearchAlertsPopulateMessageEventArgs
 } from '../../events/SearchAlertEvents';
 import { QueryEvents } from '../../events/QueryEvents';
-import { ISubscriptionItemRequest, SUBSCRIPTION_TYPE, ISubscriptionQueryRequest } from '../../rest/Subscription';
+import { SUBSCRIPTION_TYPE, ISubscriptionQueryRequest } from '../../rest/Subscription';
 import { PopupUtils, PopupHorizontalAlignment, PopupVerticalAlignment } from '../../utils/PopupUtils';
 import { l } from '../../strings/Strings';
 import { $$, Dom } from '../../utils/Dom';

@@ -20,7 +20,6 @@ import { FacetUtils } from '../Facet/FacetUtils';
 import * as Globalize from 'globalize';
 import { IStringMap } from '../../rest/GenericParam';
 import * as _ from 'underscore';
-import { ResultList } from '../ResultList/ResultList';
 import { Component } from '../Base/Component';
 
 /**

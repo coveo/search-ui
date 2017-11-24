@@ -16,7 +16,6 @@ import { Checkbox } from '../FormWidgets/Checkbox';
 import { RadioButton } from '../FormWidgets/RadioButton';
 import { FormGroup } from '../FormWidgets/FormGroup';
 import { IFormWidgetSelectable } from '../FormWidgets/FormWidgets';
-import { InitializationEvents } from '../../events/InitializationEvents';
 
 export interface IResultsPreferencesOptions {
   enableOpenInOutlook?: boolean;

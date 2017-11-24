@@ -5,7 +5,6 @@ import { TextInput } from '../FormWidgets/TextInput';
 import { $$, Dom } from '../../utils/Dom';
 import { ResultListEvents, IDisplayedNewResultEventArgs } from '../../events/ResultListEvents';
 import { QueryEvents, IDoneBuildingQueryEventArgs } from '../../events/QueryEvents';
-import { InitializationEvents } from '../../events/InitializationEvents';
 import { stringify } from 'circular-json';
 import * as _ from 'underscore';
 

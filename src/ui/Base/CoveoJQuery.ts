@@ -1,10 +1,6 @@
 import { Initialization } from './Initialization';
 import * as _ from 'underscore';
 
-interface IWindow {
-  $: any;
-}
-
 export interface IJQuery {
   fn: any;
 }

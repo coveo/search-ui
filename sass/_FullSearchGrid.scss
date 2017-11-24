@@ -1,5 +1,5 @@
-@import "neat/neat";
-@import "./mixins/mediaQuery";
+@import 'neat/neat';
+@import './mixins/mediaQuery';
 
 $max-width: 1200px;
 
@@ -8,13 +8,28 @@ $gutter: 0em;
 $page-width: 1000px;
 
 .CoveoSearchInterface {
-
   min-width: 300px;
+
+  &.coveo-waiting-for-query {
+    > * {
+      display: none;
+      visibility: hidden;
+    }
+    .coveo-search-section {
+      display: block;
+      visibility: visible;
+      margin-top: 20%;
+      .CoveoSettings {
+        display: none;
+      }
+    }
+  }
 
   .coveo-search-section {
     max-width: 800px;
     margin: 54px auto 47px auto;
     padding: 0 10px;
+
     @include mediaSelector(480) {
       padding: 20px 10px 20px 10px;
       margin: 0 auto;
@@ -63,7 +78,8 @@ $page-width: 1000px;
       }
       height: 35px;
     }
-    .CoveoLogo, .CoveoResultsPerPage {
+    .CoveoLogo,
+    .CoveoResultsPerPage {
       display: none;
     }
   }
@@ -75,7 +91,8 @@ $page-width: 1000px;
       }
       height: 35px;
     }
-    .CoveoLogo, .CoveoResultsPerPage {
+    .CoveoLogo,
+    .CoveoResultsPerPage {
       display: none;
     }
   }
