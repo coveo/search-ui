@@ -85,10 +85,6 @@ export class HistoryController extends RootComponent {
     return this.hashUtilsModule ? this.hashUtilsModule : HashUtils;
   }
 
-  public set window(win: Window) {
-    this.environment.window = win;
-  }
-
   public get window() {
     return this.environment.window;
   }
@@ -241,9 +237,9 @@ export class HistoryController extends RootComponent {
     const valueRemoved = currentValue.length < lastValue.length;
     let valueModified;
     if (valueRemoved) {
-      valueModified = _.difference(lastValue, currentValue);
+      valueModified = _.first(_.difference(lastValue, currentValue));
     } else {
-      valueModified = _.difference(currentValue, lastValue);
+      valueModified = _.first(_.difference(currentValue, lastValue));
     }
 
     if (matchForInclusion) {
