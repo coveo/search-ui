@@ -84,6 +84,8 @@ deploy:
       repo: coveo/search-ui
       all_branches: true
       condition: "$TRAVIS_TAG =~ .*beta.*"
+after_deploy:
+- node invalidate.cloudfront.js
 branches:
   only:
   - master
