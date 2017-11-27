@@ -22523,8 +22523,8 @@ module.exports = g;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.version = {
-    lib: '2.3679.1-beta',
-    product: '2.3679.1-beta',
+    lib: '2.3679.2-beta',
+    product: '2.3679.2-beta',
     supportedApiVersion: 2
 };
 
