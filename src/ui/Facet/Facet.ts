@@ -11,7 +11,6 @@ import { FacetSort } from './FacetSort';
 import { FacetValuesList } from './FacetValuesList';
 import { FacetHeader } from './FacetHeader';
 import { FacetUtils } from './FacetUtils';
-import { InitializationEvents } from '../../events/InitializationEvents';
 import { QueryEvents, INewQueryEventArgs, IQuerySuccessEventArgs, IDoneBuildingQueryEventArgs } from '../../events/QueryEvents';
 import { Assert } from '../../misc/Assert';
 import { ISearchEndpoint } from '../../rest/SearchEndpointInterface';
@@ -738,8 +737,6 @@ export class Facet extends Component {
   private excludedAttributeId: string;
   private lookupValueAttributeId: string;
   private listenToQueryStateChange = true;
-
-  private resize: (...args: any[]) => void;
 
   /**
    * Creates a new `Facet` component. Binds multiple query events as well.

@@ -2,21 +2,17 @@ import { Facet } from '../../src/ui/Facet/Facet';
 import { QueryBuilder } from '../../src/ui/Base/QueryBuilder';
 import * as Mock from '../MockEnvironment';
 import { IDistanceOptions, DistanceResources } from '../../src/ui/Distance/DistanceResources';
-import { Simulate } from '../Simulate';
-import { ISimulateQueryData } from '../Simulate';
-import { QueryStateModel } from '../../src/models/QueryStateModel';
 import { $$ } from '../../src/utils/Dom';
 import {
-  IPosition,
+  IGeolocationPosition,
   DistanceEvents,
   IResolvingPositionEventArgs,
-  IPositionProvider,
+  IGeolocationPositionProvider,
   IPositionResolvedEventArgs
 } from '../../src/events/DistanceEvents';
 import { InitializationEvents } from '../../src/EventsModules';
 import { QueryEvents, IBuildingQueryEventArgs } from '../../src/events/QueryEvents';
 import { IQueryFunction } from '../../src/rest/QueryFunction';
-import { PendingSearchEvent } from '../../src/ui/Analytics/PendingSearchEvent';
 import { analyticsActionCauseList } from '../../src/ui/Analytics/AnalyticsActionListMeta';
 
 export function DistanceResourcesTest() {
@@ -28,16 +24,18 @@ export function DistanceResourcesTest() {
     const longitudeField = 'longitude';
     const defaultUnitConversionFactor = 1000;
     const disabledComponentsClass = 'bloupbloup';
-    const aNicePlace = <IPosition>{ latitude: latitudeForANicePlace, longitude: longitudeForANicePlace };
+    const aNicePlace = <IGeolocationPosition>{ latitude: latitudeForANicePlace, longitude: longitudeForANicePlace };
     const expectedQueryFunctionForANicePlace = <IQueryFunction>{
-      function: `dist(${latitudeField}, ${longitudeField}, ${latitudeForANicePlace}, ${longitudeForANicePlace})/${defaultUnitConversionFactor}`,
+      function: `dist(${latitudeField}, ${longitudeField}, ${latitudeForANicePlace}, ${longitudeForANicePlace})/${
+        defaultUnitConversionFactor
+      }`,
       fieldName: distanceField
     };
 
-    const aValidPositionProvider: IPositionProvider = {
+    const aValidPositionProvider: IGeolocationPositionProvider = {
       getPosition: () => Promise.resolve(aNicePlace)
     };
-    const badPositionProvider: IPositionProvider = {
+    const badPositionProvider: IGeolocationPositionProvider = {
       getPosition: () => Promise.reject(`Wow I'm so bad`)
     };
 
@@ -230,8 +228,8 @@ export function DistanceResourcesTest() {
     });
 
     describe('when two position providers are registered', () => {
-      const anotherProviderThatShouldNotBeUsed: IPositionProvider = {
-        getPosition: () => Promise.resolve(<IPosition>{ latitude: 0, longitude: 0 })
+      const anotherProviderThatShouldNotBeUsed: IGeolocationPositionProvider = {
+        getPosition: () => Promise.resolve(<IGeolocationPosition>{ latitude: 0, longitude: 0 })
       };
 
       beforeEach(() => {

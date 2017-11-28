@@ -1,14 +1,10 @@
 import { QueryController } from '../controllers/QueryController';
-import { Logger } from './Logger';
 import { ISentryLog } from '../rest/SentryLog';
 import { DeviceUtils } from '../utils/DeviceUtils';
 import * as _ from 'underscore';
 
 export class SentryLogger {
-  private logger: Logger;
-
   constructor(private queryController: QueryController, private windoh: Window = window) {
-    this.logger = new Logger(this);
     this.bindErrorHandler();
   }
 

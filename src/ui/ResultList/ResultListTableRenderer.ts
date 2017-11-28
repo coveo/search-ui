@@ -1,10 +1,7 @@
 import { IResultListOptions } from './ResultList';
 import { ResultListRenderer } from './ResultListRenderer';
-import { IQueryResult } from '../../rest/QueryResult';
-import { Template, TemplateRole } from '../Templates/Template';
-import { TemplateList } from '../Templates/TemplateList';
+import { TemplateRole } from '../Templates/Template';
 import { TableTemplate } from '../Templates/TableTemplate';
-import { Component } from '../Base/Component';
 import { $$ } from '../../utils/Dom';
 import _ = require('underscore');
 

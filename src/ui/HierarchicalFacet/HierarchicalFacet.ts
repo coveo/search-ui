@@ -172,7 +172,6 @@ export class HierarchicalFacet extends Facet implements IComponentBindings {
   public shouldReshuffleFacetValuesClientSide = false;
 
   private valueHierarchy: { [facetValue: string]: IValueHierarchy };
-  private firstPlacement = true;
   private originalNumberOfValuesToShow: number;
 
   private correctLevels: IFlatHierarchy[] = [];
@@ -410,7 +409,6 @@ export class HierarchicalFacet extends Facet implements IComponentBindings {
    * @param criteria The new sort criteria.
    */
   public updateSort(criteria: string) {
-    this.firstPlacement = true;
     super.updateSort(criteria);
   }
 
@@ -897,15 +895,6 @@ export class HierarchicalFacet extends Facet implements IComponentBindings {
         return child.facetValue;
       })
     );
-  }
-
-  private selectParent(parent: IValueHierarchy) {
-    if (parent != undefined) {
-      this.selectValue(parent.facetValue);
-      if (parent.parent) {
-        this.selectParent(this.getValueHierarchy(parent.parent.facetValue.value));
-      }
-    }
   }
 
   private deselectParent(parent: IValueHierarchy) {

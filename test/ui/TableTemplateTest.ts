@@ -1,7 +1,5 @@
-import * as Mock from '../MockEnvironment';
 import { Template } from '../../src/ui/Templates/Template';
 import { TableTemplate } from '../../src/ui/Templates/TableTemplate';
-import { $$ } from '../../src/utils/Dom';
 
 export function TableTemplateTest() {
   describe('TableTemplate', () => {

@@ -233,8 +233,6 @@ export class Tab extends Component {
     dropdownHeaderLabel: ComponentOptions.buildLocalizedStringOption({ section: 'ResponsiveOptions' })
   };
 
-  private isFirstQuery = true;
-
   /**
    * Creates a new Tab. Binds on buildingQuery event as well as an event on click of the element.
    * @param element The HTMLElement on which to instantiate the component. Normally a `div`.
@@ -326,7 +324,6 @@ export class Tab extends Component {
 
   protected handleBuildingQuery(data: IBuildingQueryEventArgs) {
     Assert.exists(data);
-    this.isFirstQuery = false;
     if (!this.disabled && this.isSelected()) {
       data.queryBuilder.tab = this.options.id;
 

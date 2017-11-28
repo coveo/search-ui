@@ -1,4 +1,4 @@
-import { $$, Dom } from '../../utils/Dom';
+import { $$ } from '../../utils/Dom';
 import { l } from '../../strings/Strings';
 import * as _ from 'underscore';
 import { IFormWidget, IFormWidgetSettable } from './FormWidgets';
@@ -30,8 +30,7 @@ export class Dropdown implements IFormWidget, IFormWidgetSettable {
   constructor(
     public onChange: (dropdown: Dropdown) => void = (dropdown: Dropdown) => {},
     protected listOfValues: string[],
-    private getDisplayValue: (string) => string = l,
-    private label?: string
+    private getDisplayValue: (string) => string = l
   ) {
     this.buildContent();
     this.select(0, false);

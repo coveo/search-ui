@@ -16,7 +16,6 @@ import { NoopAnalyticsClient } from '../Analytics/NoopAnalyticsClient';
 import { LiveAnalyticsClient } from './LiveAnalyticsClient';
 import { MultiAnalyticsClient } from './MultiAnalyticsClient';
 import { IAnalyticsQueryErrorMeta, analyticsActionCauseList } from './AnalyticsActionListMeta';
-import { SearchInterface } from '../SearchInterface/SearchInterface';
 import { RecommendationAnalyticsClient } from './RecommendationAnalyticsClient';
 import * as _ from 'underscore';
 import { exportGlobally } from '../../GlobalExports';

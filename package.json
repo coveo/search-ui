@@ -38,17 +38,15 @@
   },
   "files": ["bin", "pages", "gulpTasks", "docgen", "images", "templates", "strings", "filetypes", "lib", "src", "typings"],
   "homepage": "https://github.com/coveo/search-ui#readme",
-  "engines": {
-    "node": "6.10.0"
-  },
   "devDependencies": {
-    "@salesforce-ux/design-system": "2.0.3",
+    "@salesforce-ux/design-system": "2.4.4",
     "@types/d3": "3.5.36",
     "@types/d3-scale": "1.0.4",
     "@types/fastclick": "^1.0.28",
     "@types/jasmine": "^2.6.0",
     "@types/pikaday": "0.0.31",
     "@types/underscore": "^1.8.3",
+    "aws-sdk": "^2.155.0",
     "bluebird": "^3.4.7",
     "body-parser": "^1.18.2",
     "cheerio": "^0.20.0",

@@ -1,4 +1,3 @@
-import * as Mock from '../MockEnvironment';
 import { ResultListTableRenderer } from '../../src/ui/ResultList/ResultListTableRenderer';
 import { Template } from '../../src/ui/Templates/Template';
 import { TableTemplate } from '../../src/ui/Templates/TableTemplate';

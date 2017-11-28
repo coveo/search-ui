@@ -884,18 +884,6 @@ export class SearchEndpoint implements ISearchEndpoint {
     return uri;
   }
 
-  // see https://github.com/palantir/tslint/issues/1421
-  // tslint:disable-next-line:no-unused-variable
-  private buildAccessToken(tokenKey: string): string[] {
-    let queryString: string[] = [];
-
-    if (Utils.isNonEmptyString(this.options.accessToken)) {
-      queryString.push(tokenKey + '=' + encodeURIComponent(this.options.accessToken));
-    }
-
-    return queryString;
-  }
-
   private buildBaseQueryString(callOptions?: IEndpointCallOptions): string[] {
     callOptions = _.extend({}, callOptions);
     let queryString: string[] = [];
@@ -971,7 +959,6 @@ export class SearchEndpoint implements ISearchEndpoint {
     params.queryString = params.queryString.concat(queryString);
     params.queryString = _.uniq(params.queryString);
 
-    const startTime = new Date();
     return this.caller
       .call(params)
       .then((response?: ISuccessResponse<T>) => {
@@ -1178,9 +1165,18 @@ function responseType(resp: string) {
 function accessTokenInUrl(tokenKey: string = 'access_token') {
   return function(target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
     const { originalMethod, nbParams } = decoratorSetup(target, key, descriptor);
+    const buildAccessToken = (tokenKey: string, endpointInstance: SearchEndpoint): string[] => {
+      let queryString: string[] = [];
+
+      if (Utils.isNonEmptyString(endpointInstance.options.accessToken)) {
+        queryString.push(tokenKey + '=' + encodeURIComponent(endpointInstance.options.accessToken));
+      }
+
+      return queryString;
+    };
 
     descriptor.value = function(...args: any[]) {
-      const queryString = this.buildAccessToken(tokenKey);
+      const queryString = buildAccessToken(tokenKey, this);
       if (args[nbParams - 1]) {
         args[nbParams - 1].queryString = args[nbParams - 1].queryString.concat(queryString);
       } else {

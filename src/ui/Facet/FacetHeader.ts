@@ -3,7 +3,6 @@ import FacetModuleDefinition = require('./Facet');
 import { IFacetSettingsKlass, FacetSettings } from './FacetSettings';
 import { IFacetSortKlass, FacetSort } from './FacetSort';
 import { $$ } from '../../utils/Dom';
-import { FacetUtils } from './FacetUtils';
 import { l } from '../../strings/Strings';
 import { IAnalyticsFacetOperatorMeta, IAnalyticsFacetMeta, analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
 import 'styling/_FacetHeader';
@@ -144,30 +143,6 @@ export class FacetHeader {
     SVGDom.addClassToSVGInContainer(this.waitElement, 'coveo-facet-header-wait-animation-svg');
     this.waitElement.style.visibility = 'hidden';
     return this.waitElement;
-  }
-
-  private buildCollapse(): HTMLElement {
-    const icon = $$('span', { clasName: 'coveo-icon' });
-
-    const collapse = $$('div', { title: l('Collapse'), className: 'coveo-facet-header-collapse' });
-    collapse.append(icon.el);
-
-    collapse.on('click', () => this.collapseFacet());
-
-    return collapse.el;
-  }
-
-  private buildExpand(): HTMLElement {
-    const icon = document.createElement('span');
-    $$(icon).addClass('coveo-icon');
-
-    const expand = document.createElement('div');
-    expand.setAttribute('title', l('Expand'));
-    $$(expand).hide();
-    $$(expand).addClass('coveo-facet-header-expand');
-    expand.appendChild(icon);
-    $$(expand).on('click', () => this.expandFacet());
-    return expand;
   }
 
   private buildOperatorToggle(): HTMLElement {

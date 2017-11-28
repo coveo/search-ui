@@ -1,4 +1,3 @@
-import { IStringMap } from '../src/rest/GenericParam';
 import _ = require('underscore');
 
 export function registerCustomMatcher() {
@@ -6,9 +5,7 @@ export function registerCustomMatcher() {
     eventHandlerToHaveBeenCalledWith: function(util, customEqualityTesters) {
       return {
         compare: function(actual, expected) {
-          var args = Array.prototype.slice.call(arguments, 0),
-            expectedArgs = args.slice(1),
-            result = { pass: false, message: '' };
+          var result = { pass: false, message: '' };
           if (!actual.calls.any()) {
             result.message = 'Expected spy ' + actual.and.identity() + ' to be called, but was never called';
             return result;

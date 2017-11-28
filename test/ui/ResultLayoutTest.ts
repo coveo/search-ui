@@ -6,7 +6,7 @@ import { InitializationEvents } from '../../src/events/InitializationEvents';
 import { IResultLayoutPopulateArgs } from '../../src/events/ResultLayoutEvents';
 import { FakeResults } from '../Fake';
 import { QueryStateModel } from '../../src/models/QueryStateModel';
-import { $$, Dom } from '../../src/utils/Dom';
+import { $$ } from '../../src/utils/Dom';
 
 export function ResultLayoutTest() {
   describe('ResultLayout', () => {
