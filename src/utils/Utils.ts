@@ -383,7 +383,7 @@ export class Utils {
 
     const addDiff = (first: IStringMap<T>, second: IStringMap<T>) => {
       for (const key in first) {
-        if (first[key] != second[key] && difference[key] == null) {
+        if (first[key] !== second[key] && difference[key] == null) {
           difference[key] = first[key];
         }
       }
