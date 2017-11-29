@@ -196,6 +196,10 @@ export class HistoryController extends RootComponent {
   }
 
   private mapStateDifferenceToUsageAnalyticsCall(stateDifference: IStringMap<any>) {
+    // In this method, we want to only match a single analytics event for the current state change.
+    // Even though it's technically possible that many property changed at the same time since the last state,
+    // the backend UA service does not support multiple search cause for a single search event.
+    // So we find the first event that match (if any), by order of importance (query expression > sort > facet)
     if (QUERY_STATE_ATTRIBUTES.Q in stateDifference) {
       logSearchBoxSubmitEvent(this.usageAnalytics);
       return;

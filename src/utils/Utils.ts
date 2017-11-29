@@ -378,10 +378,10 @@ export class Utils {
     return firstArray;
   }
 
-  static differenceBetweenObjects(firstObject: IStringMap<any>, secondObject: IStringMap<any>) {
-    const difference: IStringMap<any> = {};
+  static differenceBetweenObjects<T>(firstObject: IStringMap<T>, secondObject: IStringMap<T>) {
+    const difference: IStringMap<T> = {};
 
-    const addDiff = (first: IStringMap<any>, second: IStringMap<any>) => {
+    const addDiff = (first: IStringMap<T>, second: IStringMap<T>) => {
       for (const key in first) {
         if (first[key] != second[key] && difference[key] == null) {
           difference[key] = first[key];

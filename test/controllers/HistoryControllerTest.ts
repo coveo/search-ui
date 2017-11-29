@@ -4,7 +4,12 @@ import * as Mock from '../MockEnvironment';
 import { $$ } from '../../src/utils/Dom';
 import { Defer } from '../../src/misc/Defer';
 import _ = require('underscore');
-import { analyticsActionCauseList, IAnalyticsResultsSortMeta, IAnalyticsFacetMeta } from '../../src/ui/Analytics/AnalyticsActionListMeta';
+import {
+  analyticsActionCauseList,
+  IAnalyticsResultsSortMeta,
+  IAnalyticsFacetMeta,
+  IAnalyticsActionCause
+} from '../../src/ui/Analytics/AnalyticsActionListMeta';
 
 export function HistoryControllerTest() {
   describe('HistoryController', () => {
@@ -107,6 +112,14 @@ export function HistoryControllerTest() {
           });
         };
 
+        const assertFacetAnalyticsCall = (cause: IAnalyticsActionCause) => {
+          expect(historyController.usageAnalytics.logSearchEvent).toHaveBeenCalledWith(cause, {
+            facetId: '@foo',
+            facetTitle: '@foo',
+            facetValue: 'bar'
+          } as IAnalyticsFacetMeta);
+        };
+
         it('should log an analytics event when q changes', () => {
           simulateHashModule('q', 'foo');
           window.dispatchEvent(new Event('hashchange'));
@@ -125,11 +138,7 @@ export function HistoryControllerTest() {
           historyController.model.registerNewAttribute('f:@foo', []);
           simulateHashModule('f:@foo', ['bar']);
           window.dispatchEvent(new Event('hashchange'));
-          expect(historyController.usageAnalytics.logSearchEvent).toHaveBeenCalledWith(analyticsActionCauseList.facetSelect, {
-            facetId: '@foo',
-            facetTitle: '@foo',
-            facetValue: 'bar'
-          } as IAnalyticsFacetMeta);
+          assertFacetAnalyticsCall(analyticsActionCauseList.facetSelect);
         });
 
         it('should log an analytics event when a facet changes to deselect a value', () => {
@@ -138,22 +147,14 @@ export function HistoryControllerTest() {
           window.dispatchEvent(new Event('hashchange'));
           simulateHashModule('f:@foo', []);
           window.dispatchEvent(new Event('hashchange'));
-          expect(historyController.usageAnalytics.logSearchEvent).toHaveBeenCalledWith(analyticsActionCauseList.facetDeselect, {
-            facetId: '@foo',
-            facetTitle: '@foo',
-            facetValue: 'bar'
-          } as IAnalyticsFacetMeta);
+          assertFacetAnalyticsCall(analyticsActionCauseList.facetDeselect);
         });
 
         it('should log an analytics event when a facet changes to exclude a value', () => {
           historyController.model.registerNewAttribute('f:@foo:not', []);
           simulateHashModule('f:@foo:not', ['bar']);
           window.dispatchEvent(new Event('hashchange'));
-          expect(historyController.usageAnalytics.logSearchEvent).toHaveBeenCalledWith(analyticsActionCauseList.facetExclude, {
-            facetId: '@foo',
-            facetTitle: '@foo',
-            facetValue: 'bar'
-          } as IAnalyticsFacetMeta);
+          assertFacetAnalyticsCall(analyticsActionCauseList.facetExclude);
         });
 
         it('should log an analytics event when a facet changes to unexclude a value', () => {
@@ -162,11 +163,7 @@ export function HistoryControllerTest() {
           window.dispatchEvent(new Event('hashchange'));
           simulateHashModule('f:@foo:not', []);
           window.dispatchEvent(new Event('hashchange'));
-          expect(historyController.usageAnalytics.logSearchEvent).toHaveBeenCalledWith(analyticsActionCauseList.facetUnexclude, {
-            facetId: '@foo',
-            facetTitle: '@foo',
-            facetValue: 'bar'
-          } as IAnalyticsFacetMeta);
+          assertFacetAnalyticsCall(analyticsActionCauseList.facetUnexclude);
         });
       });
     });

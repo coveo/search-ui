@@ -279,6 +279,7 @@ export class Omnibox extends Component {
     this.triggerNewQuery(false, () => {
       logSearchBoxSubmitEvent(this.usageAnalytics);
     });
+    this.magicBox.blur();
   }
 
   /**
@@ -425,14 +426,7 @@ export class Omnibox extends Component {
     if (this.options.placeholder) {
       (<HTMLInputElement>this.magicBox.element.querySelector('input')).placeholder = this.options.placeholder;
     }
-    this.magicBox.onsubmit = () => {
-      this.magicBox.clearSuggestion();
-      this.updateQueryState();
-      this.triggerNewQuery(false, () => {
-        logSearchBoxSubmitEvent(this.usageAnalytics);
-      });
-      this.magicBox.blur();
-    };
+    this.magicBox.onsubmit = () => this.submit();
 
     this.magicBox.onselect = (suggestion: IOmniboxSuggestion) => {
       const index = _.indexOf(this.lastSuggestions, suggestion);
