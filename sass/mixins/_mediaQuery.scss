@@ -1,4 +1,7 @@
-@mixin mediaSelector($max){
+$medium_screen_width: 800;
+$small_screen_width: 480;
+$large_screen_with: 1020;
+@mixin mediaSelector($max) {
   .coveo-media-max-width-#{$max} {
     @content;
   }
@@ -7,21 +10,20 @@
   }
 }
 
-
-@mixin smallMobile {
-	@include mediaSelector(640) {
-		@content;
-	}
+@mixin smallScreenWidth() {
+  @include mediaSelector($small_screen_width) {
+    @content;
+  }
 }
 
-@mixin smallMobileLandscape {
-	@include mediaSelector(480) {
-		@content;
-	}
+@mixin mediumScreenWidth() {
+  @include mediaSelector($medium_screen_width) {
+    @content;
+  }
 }
 
-@mixin smallMobileLandscapeToPortraitTablet {
-	@include mediaSelector(767) {
-		@content;
-	}
+@mixin largeScreenWidth() {
+  @include mediaSelector($large_screen_with) {
+    @content;
+  }
 }
