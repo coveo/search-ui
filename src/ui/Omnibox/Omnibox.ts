@@ -33,6 +33,7 @@ import { StandaloneSearchInterface } from '../SearchInterface/SearchInterface';
 import * as _ from 'underscore';
 import { exportGlobally } from '../../GlobalExports';
 import 'styling/_Omnibox';
+import { logSearchBoxSubmitEvent } from '../Analytics/SharedAnalyticsCalls';
 
 export interface IOmniboxSuggestion extends Coveo.MagicBox.Suggestion {
   executableConfidence?: number;
@@ -276,8 +277,9 @@ export class Omnibox extends Component {
     this.magicBox.clearSuggestion();
     this.updateQueryState();
     this.triggerNewQuery(false, () => {
-      this.usageAnalytics.logSearchEvent<IAnalyticsNoMeta>(analyticsActionCauseList.searchboxSubmit, {});
+      logSearchBoxSubmitEvent(this.usageAnalytics);
     });
+    this.magicBox.blur();
   }
 
   /**
@@ -424,14 +426,7 @@ export class Omnibox extends Component {
     if (this.options.placeholder) {
       (<HTMLInputElement>this.magicBox.element.querySelector('input')).placeholder = this.options.placeholder;
     }
-    this.magicBox.onsubmit = () => {
-      this.magicBox.clearSuggestion();
-      this.updateQueryState();
-      this.triggerNewQuery(false, () => {
-        this.usageAnalytics.logSearchEvent<IAnalyticsNoMeta>(analyticsActionCauseList.searchboxSubmit, {});
-      });
-      this.magicBox.blur();
-    };
+    this.magicBox.onsubmit = () => this.submit();
 
     this.magicBox.onselect = (suggestion: IOmniboxSuggestion) => {
       const index = _.indexOf(this.lastSuggestions, suggestion);
