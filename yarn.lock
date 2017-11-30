@@ -4902,9 +4902,9 @@ mkdirp@~0.3.5:
   version "0.3.5"
   resolved "https://registry.yarnpkg.com/mkdirp/-/mkdirp-0.3.5.tgz#de3e5f8961c88c787ee1368df849ac4413eca8d7"
 
-modal-box@2.0.x:
-  version "2.0.7"
-  resolved "https://registry.yarnpkg.com/modal-box/-/modal-box-2.0.7.tgz#2819a4b63b86d6263146a647f2d60d7e6556e49d"
+modal-box@^2.0.9:
+  version "2.0.9"
+  resolved "https://registry.yarnpkg.com/modal-box/-/modal-box-2.0.9.tgz#a773216728a55e0a075432c646e667e636c2880a"
 
 moment@2.14.*:
   version "2.14.1"
@@ -6060,11 +6060,11 @@ public-encrypt@^4.0.0:
     parse-asn1 "^5.0.0"
     randombytes "^2.0.1"
 
-punycode@1.3.2:
+punycode@1.3.2, punycode@^1.2.4:
   version "1.3.2"
   resolved "https://registry.yarnpkg.com/punycode/-/punycode-1.3.2.tgz#9653a036fb7c1ee42342f2325cceefea3926c48d"
 
-punycode@^1.2.4, punycode@^1.4.1:
+punycode@^1.4.1:
   version "1.4.1"
   resolved "https://registry.yarnpkg.com/punycode/-/punycode-1.4.1.tgz#c0d5a63b2718800ad8e1eb0fa5269c84dd41845e"
 
@@ -6608,13 +6608,9 @@ sass-loader@^6.0:
     lodash.tail "^4.1.1"
     pify "^3.0.0"
 
-sax@1.2.1:
+sax@1.2.1, sax@>=0.6.0, sax@^1.1.4, sax@~1.2.1:
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/sax/-/sax-1.2.1.tgz#7b8e656190b228e81a66aea748480d828cd2d37a"
-
-sax@>=0.6.0, sax@^1.1.4, sax@~1.2.1:
-  version "1.2.4"
-  resolved "https://registry.yarnpkg.com/sax/-/sax-1.2.4.tgz#2816234e2378bddc4e5354fab5caa895df7100d9"
 
 schema-utils@^0.3.0:
   version "0.3.0"
