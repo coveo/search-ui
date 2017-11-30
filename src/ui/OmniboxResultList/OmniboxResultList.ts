@@ -18,6 +18,7 @@ import OmniboxModuleDefintion = require('../Omnibox/Omnibox');
 
 import 'styling/_OmniboxResultList';
 import { InitializationEvents } from '../../EventsModules';
+import { logSearchBoxSubmitEvent } from '../Analytics/SharedAnalyticsCalls';
 
 export interface IOmniboxResultListOptions extends IResultListOptions {
   omniboxZIndex?: number;
@@ -145,7 +146,7 @@ export class OmniboxResultList extends ResultList implements IComponentBindings 
         const omnibox = <OmniboxModuleDefintion.Omnibox>Component.get(omniboxElement);
         const magicBox = omnibox.magicBox;
         magicBox.onsubmit = () => {
-          this.usageAnalytics.logSearchEvent<IAnalyticsNoMeta>(analyticsActionCauseList.searchboxSubmit, {});
+          logSearchBoxSubmitEvent(this.usageAnalytics);
           this.queryController.executeQuery();
         };
       });
