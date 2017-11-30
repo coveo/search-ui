@@ -457,6 +457,9 @@ ValueElementTest();
 import { PublicPathUtilsTest } from './utils/PublicPathUtilsTest';
 PublicPathUtilsTest();
 
+import { DomUtilsTest } from './utils/DomUtilsTest';
+DomUtilsTest();
+
 import { CheckboxTest } from './ui/CheckboxTest';
 CheckboxTest();
 

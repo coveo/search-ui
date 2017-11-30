@@ -19,6 +19,8 @@ import { exportGlobally } from '../../GlobalExports';
 import 'styling/_Quickview';
 import { SVGIcons } from '../../utils/SVGIcons';
 import { SVGDom } from '../../utils/SVGDom';
+import { analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
+import { Utils } from '../../UtilsModules';
 
 export interface IQuickviewOptions {
   title?: string;
@@ -27,7 +29,6 @@ export interface IQuickviewOptions {
   enableLoadingAnimation?: boolean;
   loadingAnimation?: HTMLElement | Promise<HTMLElement>;
   alwaysShow?: boolean;
-  size?: string;
 }
 
 interface IQuickviewOpenerObject {
@@ -267,6 +268,7 @@ export class Quickview extends Component {
       this.createModalBox(openerObject).then(() => {
         this.bindQuickviewEvents(openerObject);
         this.animateAndOpen();
+        this.logUsageAnalyticsEvent();
         this.queryStateModel.set(QueryStateModel.attributesEnum.quickview, this.getHashId());
         Quickview.resultCurrentlyBeingRendered = null;
       });
@@ -285,6 +287,19 @@ export class Quickview extends Component {
 
   public getHashId() {
     return this.result.queryUid + '.' + this.result.index + '.' + StringUtils.hashCode(this.result.uniqueId);
+  }
+
+  private logUsageAnalyticsEvent() {
+    this.usageAnalytics.logClickEvent(
+      analyticsActionCauseList.documentQuickview,
+      {
+        author: Utils.getFieldValue(this.result, 'author'),
+        documentURL: this.result.clickUri,
+        documentTitle: this.result.title
+      },
+      this.result,
+      this.element
+    );
   }
 
   private bindClick(result: IQueryResult) {
@@ -321,15 +336,17 @@ export class Quickview extends Component {
     computedModalBoxContent.addClass('coveo-computed-modal-box-content');
     return openerObject.content.then(builtContent => {
       computedModalBoxContent.append(builtContent.el);
+      const title = DomUtils.getQuickviewHeader(
+        this.result,
+        {
+          showDate: this.options.showDate,
+          title: this.options.title
+        },
+        this.bindings
+      ).el;
+
       this.modalbox = this.ModalBox.open(computedModalBoxContent.el, {
-        title: DomUtils.getQuickviewHeader(
-          this.result,
-          {
-            showDate: this.options.showDate,
-            title: this.options.title
-          },
-          this.bindings
-        ).el.outerHTML,
+        title,
         className: 'coveo-quick-view',
         validation: () => {
           this.closeQuickview();
@@ -338,7 +355,6 @@ export class Quickview extends Component {
         body: this.element.ownerDocument.body,
         sizeMod: 'big'
       });
-      this.setQuickviewSize();
       return computedModalBoxContent;
     });
   }
@@ -378,14 +394,6 @@ export class Quickview extends Component {
 
   private closeQuickview() {
     this.queryStateModel.set(QueryStateModel.attributesEnum.quickview, '');
-  }
-
-  private setQuickviewSize() {
-    const wrapper = $$($$(this.modalbox.modalBox).find('.coveo-modal-content'));
-    wrapper.el.style.width = this.options.size;
-    wrapper.el.style.height = this.options.size;
-    wrapper.el.style.maxWidth = this.options.size;
-    wrapper.el.style.maxHeight = this.options.size;
   }
 }
 Initialization.registerAutoCreateComponent(Quickview);
