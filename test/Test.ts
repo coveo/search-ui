@@ -214,6 +214,9 @@ MatrixTest();
 import { OmniboxTest } from './ui/OmniboxTest';
 OmniboxTest();
 
+import { OmniboxResultListTest } from './ui/OmniboxResultListTest';
+OmniboxResultListTest();
+
 import { PagerTest } from './ui/PagerTest';
 PagerTest();
 
