@@ -4916,7 +4916,8 @@ mkdirp@~0.3.5:
   version "0.3.5"
   resolved "https://registry.yarnpkg.com/mkdirp/-/mkdirp-0.3.5.tgz#de3e5f8961c88c787ee1368df849ac4413eca8d7"
 
-modal-box@^2.0.9:
+
+modal-box@^2.0.10:
   version "2.0.10"
   resolved "https://registry.yarnpkg.com/modal-box/-/modal-box-2.0.10.tgz#470ed6b579336f9a041c7e72d32342c10c78b881"
 
