@@ -33,7 +33,7 @@ export function OmniboxResultListTest() {
       done();
     });
 
-    it('should set the no-result-suggestion propery on each result for the magicbox', async done => {
+    it('should set the no-text-suggestion property on each result for the magicbox', async done => {
       const built = await test.cmp.buildResults(results);
       built.forEach(element => {
         expect(element['no-text-suggestion']).toBeTruthy();
@@ -56,7 +56,7 @@ export function OmniboxResultListTest() {
         built.forEach(element => {
           $$(element).trigger('click');
         });
-        expect(spyOnSelect).toHaveBeenCalledTimes(10);
+        expect(spyOnSelect).toHaveBeenCalledTimes(results.results.length);
         done();
       });
 
@@ -65,7 +65,7 @@ export function OmniboxResultListTest() {
         built.forEach(element => {
           $$(element).trigger('keyboardSelect');
         });
-        expect(spyOnSelect).toHaveBeenCalledTimes(10);
+        expect(spyOnSelect).toHaveBeenCalledTimes(results.results.length);
         done();
       });
 
@@ -95,7 +95,7 @@ export function OmniboxResultListTest() {
           });
 
           expect(spyOnSelect).not.toHaveBeenCalled();
-          expect(spyOnQuickviewOpen).toHaveBeenCalledTimes(10);
+          expect(spyOnQuickviewOpen).toHaveBeenCalledTimes(results.results.length);
           done();
         });
 
@@ -117,7 +117,7 @@ export function OmniboxResultListTest() {
           });
 
           expect(spyOnSelect).not.toHaveBeenCalled();
-          expect(spyOnResultLinkOpen).toHaveBeenCalledTimes(10);
+          expect(spyOnResultLinkOpen).toHaveBeenCalledTimes(results.results.length);
           done();
         });
 
@@ -136,7 +136,7 @@ export function OmniboxResultListTest() {
             $$(randomStuff).trigger('click');
           });
 
-          expect(spyOnSelect).toHaveBeenCalledTimes(10);
+          expect(spyOnSelect).toHaveBeenCalledTimes(results.results.length);
           done();
         });
       });

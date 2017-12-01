@@ -393,8 +393,9 @@ export class Dom {
    */
   public getClass(): string[] {
     // SVG elements got a className property, but it's not a string, it's an object
-    if (this.el.className && this.el.className.match) {
-      return this.el.className.match(Dom.CLASS_NAME_REGEX) || [];
+    const className = this.getAttribute('class');
+    if (className && className.match) {
+      return className.match(Dom.CLASS_NAME_REGEX) || [];
     } else {
       return [];
     }
