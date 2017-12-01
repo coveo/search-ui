@@ -26,7 +26,7 @@ $page-width: 1000px;
   }
 
   .coveo-search-section {
-    max-width: $medium_screen_width px;
+    max-width: $medium_screen_width + unquote('px');
     margin: 54px auto 47px auto;
     padding: 0 10px;
 
