@@ -1,7 +1,6 @@
-@import "bourbon/bourbon";
-@import "Variables";
-@import "mixins/mediaQuery";
-
+@import 'bourbon/bourbon';
+@import 'Variables';
+@import 'mixins/mediaQuery';
 .coveo-simplefilter-header-wrapper {
   width: 100%;
   margin: auto;
@@ -11,23 +10,19 @@
   @include flex-wrap(nowrap);
   @include justify-content(flex-start);
   padding: 0 0 0 15px;
-  @include mediaSelector(800) {
+  @include mediumScreenWidth() {
     padding: 0 0 0 10px;
-  }
-  
-  &.coveo-no-results {
-    max-width: 75%;
-    margin: auto;
-  }
-
-  @include mediaSelector(800) {
     &.coveo-no-results {
       max-width: 100%;
     }
   }
+  &.coveo-no-results {
+    max-width: 75%;
+    margin: auto;
+  }
 }
 
-.coveo-results-column .coveo-simplefilter-header-wrapper  {
+.coveo-results-column .coveo-simplefilter-header-wrapper {
   &.coveo-no-results {
     margin: 0;
     padding-left: 0;
@@ -65,7 +60,7 @@
   max-width: 250px;
   overflow: hidden;
   text-overflow: ellipsis;
-  pointer-events:none;
+  pointer-events: none;
   @include justify-content(flex-start);
 }
 
@@ -75,7 +70,7 @@
   @include justify-content(center);
   overflow: hidden;
   width: inherit;
-  pointer-events:none;
+  pointer-events: none;
   text-overflow: ellipsis;
   @include user-select(none);
   white-space: nowrap;
@@ -96,7 +91,7 @@
   padding: 0 3px 0 3px;
   text-align: center;
   margin: 0 3px;
-  pointer-events:none;
+  pointer-events: none;
 }
 
 .coveo-simplefilter-circle-hidden {
@@ -116,7 +111,6 @@
   .coveo-checkbox-button {
     @include defaultRoundedBorder();
   }
-
   .coveo-checkbox-span-label {
     white-space: nowrap;
     vertical-align: middle;
@@ -126,14 +120,12 @@
     width: 75%;
     margin-left: 6px;
   }
-
   .coveo-checkbox-button {
     vertical-align: middle;
   }
-
   .coveo-checkbox-label {
     white-space: nowrap;
-    width:100%;
+    width: 100%;
     padding: 5px;
     @include user-select(none);
   }
