@@ -460,6 +460,9 @@ PublicPathUtilsTest();
 import { DomUtilsTest } from './utils/DomUtilsTest';
 DomUtilsTest();
 
+import { UtilsTest } from './utils/UtilsTest';
+UtilsTest();
+
 import { CheckboxTest } from './ui/CheckboxTest';
 CheckboxTest();
 
