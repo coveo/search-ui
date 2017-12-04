@@ -80,7 +80,7 @@
     }
 
     .CoveoSearchbox {
-      max-width: $medium_screen_width px;
+      max-width: $medium_screen_width + unquote('px');
       margin-right: 50px;
     }
 

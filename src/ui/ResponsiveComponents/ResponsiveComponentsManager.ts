@@ -234,6 +234,12 @@ export class ResponsiveComponentsManager {
   private bindNukeEvents(): void {
     $$(this.coveoRoot).on(InitializationEvents.nuke, () => {
       window.removeEventListener('resize', this.resizeListener);
+
+      // If the interface gets nuked, we need to remove all reference to componentManagers stored which match the current search interface
+      ResponsiveComponentsManager.componentManagers = _.filter(
+        ResponsiveComponentsManager.componentManagers,
+        manager => manager.coveoRoot.el != this.coveoRoot.el
+      );
     });
   }
 }
