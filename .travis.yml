@@ -17,7 +17,7 @@ script:
 - echo $PACKAGE_JSON_VERSION
 - yarn run injectTag
 - yarn run build
-- yarn run minimize
+- if [ "x$TRAVIS_TAG" != "x" ]; then yarn run minimize ; fi
 - yarn run test
 - yarn run uploadCoverage
 - yarn run testChunks

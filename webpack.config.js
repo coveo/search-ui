@@ -30,8 +30,9 @@ plugins.push(
 );
 
 if (production) {
+  const cssFilename = minimize ? '../css/CoveoFullSearch.min.css' : '../css/CoveoFullSearch.css';
   const extractSass = new ExtractTextPlugin({
-    filename: '../css/CoveoFullSearch.css'
+    filename: cssFilename
   });
   additionalRules.push({
     test: /\.scss/,
@@ -40,7 +41,8 @@ if (production) {
         {
           loader: 'css-loader',
           options: {
-            sourceMap: false
+            sourceMap: false,
+            minimize: minimize
           }
         },
         {
