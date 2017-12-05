@@ -287,9 +287,9 @@ export class SearchEndpoint implements ISearchEndpoint {
     callParams.url += provider + '?';
 
     if (Utils.isNonEmptyString(returnUri)) {
-      callParams.url += 'redirectUri=' + encodeURIComponent(returnUri) + '&';
+      callParams.url += 'redirectUri=' + Utils.safeEncodeURIComponent(returnUri) + '&';
     } else if (Utils.isNonEmptyString(message)) {
-      callParams.url += 'message=' + encodeURIComponent(message) + '&';
+      callParams.url += 'message=' + Utils.safeEncodeURIComponent(message) + '&';
     }
     callParams.url += callParams.queryString.join('&');
     return callParams.url;
@@ -461,7 +461,7 @@ export class SearchEndpoint implements ISearchEndpoint {
     queryString = this.buildCompleteQueryString(callOptions.query, callOptions.queryObject);
     callParams.queryString = callParams.queryString.concat(queryString);
 
-    return callParams.url + '?' + callParams.queryString.join('&') + '&dataStream=' + encodeURIComponent(dataStreamType);
+    return callParams.url + '?' + callParams.queryString.join('&') + '&dataStream=' + Utils.safeEncodeURIComponent(dataStreamType);
   }
 
   /**
@@ -888,7 +888,7 @@ export class SearchEndpoint implements ISearchEndpoint {
     let queryString: string[] = [];
 
     for (let name in this.options.queryStringArguments) {
-      queryString.push(name + '=' + encodeURIComponent(this.options.queryStringArguments[name]));
+      queryString.push(name + '=' + Utils.safeEncodeURIComponent(this.options.queryStringArguments[name]));
     }
 
     if (callOptions && _.isArray(callOptions.authentication) && callOptions.authentication.length != 0) {
@@ -906,29 +906,30 @@ export class SearchEndpoint implements ISearchEndpoint {
     if (queryObject) {
       _.each(['q', 'aq', 'cq', 'dq', 'searchHub', 'tab', 'locale', 'pipeline', 'lowercaseOperators'], key => {
         if (queryObject[key]) {
-          queryString.push(key + '=' + encodeURIComponent(queryObject[key]));
+          queryString.push(key + '=' + Utils.safeEncodeURIComponent(queryObject[key]));
         }
       });
 
       _.each(queryObject.context, (value, key) => {
         let encodedValue: string;
         if (_.isArray(value)) {
-          encodedValue = encodeURIComponent(_.map(value, v => encodeURIComponent(v)).join(','));
+          encodedValue = Utils.safeEncodeURIComponent(_.map(value, v => Utils.safeEncodeURIComponent(v)).join(','));
         } else {
-          encodedValue = encodeURIComponent(value);
+          encodedValue = Utils.safeEncodeURIComponent(value);
         }
-        queryString.push(`context[${encodeURIComponent(key)}]=${encodedValue}`);
+        queryString.push(`context[${Utils.safeEncodeURIComponent(key)}]=${encodedValue}`);
       });
 
       if (queryObject.fieldsToInclude) {
         queryString.push(
-          `fieldsToInclude=[${_.map(queryObject.fieldsToInclude, field => '"' + encodeURIComponent(field.replace('@', '')) + '"').join(
-            ','
-          )}]`
+          `fieldsToInclude=[${_.map(
+            queryObject.fieldsToInclude,
+            field => '"' + Utils.safeEncodeURIComponent(field.replace('@', '')) + '"'
+          ).join(',')}]`
         );
       }
     } else if (query) {
-      queryString.push('q=' + encodeURIComponent(query));
+      queryString.push('q=' + Utils.safeEncodeURIComponent(query));
     }
 
     return queryString;
@@ -937,18 +938,18 @@ export class SearchEndpoint implements ISearchEndpoint {
   private buildViewAsHtmlQueryString(uniqueId: string, callOptions?: IViewAsHtmlOptions): string[] {
     callOptions = _.extend({}, callOptions);
     let queryString: string[] = this.buildBaseQueryString(callOptions);
-    queryString.push('uniqueId=' + encodeURIComponent(uniqueId));
+    queryString.push('uniqueId=' + Utils.safeEncodeURIComponent(uniqueId));
 
     if (callOptions.query || callOptions.queryObject) {
       queryString.push('enableNavigation=true');
     }
 
     if (callOptions.requestedOutputSize) {
-      queryString.push('requestedOutputSize=' + encodeURIComponent(callOptions.requestedOutputSize.toString()));
+      queryString.push('requestedOutputSize=' + Utils.safeEncodeURIComponent(callOptions.requestedOutputSize.toString()));
     }
 
     if (callOptions.contentType) {
-      queryString.push('contentType=' + encodeURIComponent(callOptions.contentType));
+      queryString.push('contentType=' + Utils.safeEncodeURIComponent(callOptions.contentType));
     }
     return queryString;
   }
@@ -1168,7 +1169,7 @@ function accessTokenInUrl(tokenKey: string = 'access_token') {
       let queryString: string[] = [];
 
       if (Utils.isNonEmptyString(endpointInstance.options.accessToken)) {
-        queryString.push(tokenKey + '=' + encodeURIComponent(endpointInstance.options.accessToken));
+        queryString.push(tokenKey + '=' + Utils.safeEncodeURIComponent(endpointInstance.options.accessToken));
       }
 
       return queryString;
