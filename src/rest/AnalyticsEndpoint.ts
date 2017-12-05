@@ -14,6 +14,7 @@ import { Cookie } from '../utils/CookieUtils';
 import { ISuccessResponse } from '../rest/EndpointCaller';
 import { IStringMap } from '../rest/GenericParam';
 import * as _ from 'underscore';
+import { Utils } from '../utils/Utils';
 
 export interface IAnalyticsEndpointOptions {
   token: string;
@@ -102,7 +103,7 @@ export class AnalyticsEndpoint {
       queryString.push('org=' + this.organization);
     }
     if (Cookie.get('visitorId')) {
-      queryString.push('visitor=' + encodeURIComponent(Cookie.get('visitorId')));
+      queryString.push('visitor=' + Utils.safeEncodeURIComponent(Cookie.get('visitorId')));
     }
 
     // We use pendingRequest because we don't want to have 2 request to analytics at the same time.
@@ -138,7 +139,7 @@ export class AnalyticsEndpoint {
       .call<T>({
         errorsAsSuccess: false,
         method: 'GET',
-        queryString: this.options.organization ? ['org=' + encodeURIComponent(this.options.organization)] : [],
+        queryString: this.options.organization ? ['org=' + Utils.safeEncodeURIComponent(this.options.organization)] : [],
         requestData: paramsToSend,
         responseType: 'json',
         url: url
