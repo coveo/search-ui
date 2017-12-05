@@ -144,7 +144,14 @@ export function ResultListTest() {
     });
 
     it('should tell if there are more results to display after a successful query', done => {
-      Simulate.query(test.env);
+      const queryBuilder = new QueryBuilder();
+      queryBuilder.numberOfResults = 10;
+
+      Simulate.query(test.env, {
+        results: FakeResults.createFakeResults(10),
+        query: queryBuilder.build()
+      });
+
       Defer.defer(() => {
         expect(test.cmp.hasPotentiallyMoreResultsToDisplay()).toBeTruthy();
         done();
@@ -153,9 +160,14 @@ export function ResultListTest() {
 
     it('should tell if there are no more results to display after a successful query with a limited amount of results returned', done => {
       const results = FakeResults.createFakeResults(5);
+      const queryBuilder = new QueryBuilder();
+      queryBuilder.numberOfResults = 10;
+
       Simulate.query(test.env, {
-        results: results
+        results: results,
+        query: queryBuilder.build()
       });
+
       Defer.defer(() => {
         expect(test.cmp.hasPotentiallyMoreResultsToDisplay()).toBeFalsy();
         done();
