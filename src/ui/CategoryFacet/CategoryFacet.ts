@@ -1,7 +1,7 @@
 import { Component } from '../Base/Component';
 import { IFieldOption, ComponentOptions } from '../Base/ComponentOptions';
 import { IComponentBindings } from '../Base/ComponentBindings';
-import { $$, Dom } from '../../utils/Dom';
+import { Dom } from '../../utils/Dom';
 import { Initialization } from '../Base/Initialization';
 import { exportGlobally } from '../../GlobalExports';
 import _ = require('underscore');
@@ -48,11 +48,11 @@ export class CategoryFacet extends Component {
     });
   }
 
-  private onClickHandler(event: Event) {
-    const value = $$($$(<EventTarget & HTMLElement>event.target).find('.coveo-category-facet-value-caption')).text();
-    const categoryValuesToHide = _.filter(this.rootCategoryValues, categoryValue => categoryValue.getValue() != value);
-    _;
-  }
+  //   private onClickHandler(event: Event) {
+  //     const value = $$($$(<EventTarget & HTMLElement>event.target).find('.coveo-category-facet-value-caption')).text();
+  //     const categoryValuesToHide = _.filter(this.rootCategoryValues, categoryValue => categoryValue.getValue() != value);
+  //     _;
+  //   }
 }
 
 Initialization.registerAutoCreateComponent(CategoryFacet);

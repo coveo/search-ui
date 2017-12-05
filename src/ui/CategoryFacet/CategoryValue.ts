@@ -20,7 +20,7 @@ export class CategoryValue {
     private element: Dom,
     private value: string,
     private categoryFacetTemplates: CategoryFacetTemplates,
-    private onClickHandler?: (event: Event) => void,
+    // private onClickHandler?: (event: Event) => void,
     private parent: CategoryValue = null
   ) {
     this.listElement = this.categoryFacetTemplates.buildListElement(this.value);
