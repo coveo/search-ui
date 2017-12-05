@@ -571,6 +571,7 @@ export class ResultList extends Component {
     this.hideWaitingAnimation();
     $$(this.options.resultContainer).empty();
     this.currentlyDisplayedResults = [];
+    this.reachedTheEndOfResults = true;
   }
 
   private handleQuerySuccess(data: IQuerySuccessEventArgs) {
@@ -579,11 +580,14 @@ export class ResultList extends Component {
     const results = data.results;
     this.logger.trace('Received query results from new query', results);
     this.hideWaitingAnimation();
+
     ResultList.resultCurrentlyBeingRendered = undefined;
+    this.reachedTheEndOfResults = data.query.numberOfResults > data.results.results.length;
+
     this.currentlyDisplayedResults = [];
     this.buildResults(data.results).then((elements: HTMLElement[]) => {
       this.renderResults(elements);
-      this.reachedTheEndOfResults = false;
+
       this.showOrHideElementsDependingOnState(true, this.currentlyDisplayedResults.length != 0);
 
       if (DeviceUtils.isMobileDevice() && this.options.mobileScrollContainer != undefined) {
