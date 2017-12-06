@@ -143,7 +143,7 @@ export class ResponsiveComponentsManager {
         }
       },
       ResponsiveComponentsManager.RESIZE_DEBOUNCE_DELAY,
-      true
+      false
     );
     window.addEventListener('resize', this.resizeListener);
     this.bindNukeEvents();
