@@ -170,7 +170,7 @@ export class FacetQueryController {
   public searchInFacetToUpdateDelta(facetValues: FacetValue[]): Promise<IQueryResults> {
     const params = new FacetSearchParameters(this.facet);
     const query = params.getQuery();
-    query.aq = this.computeOurFilterExpression();
+    query.aq = `${query.aq ? query.aq : ''} ${this.computeOurFilterExpression()}`;
     _.each(facetValues, (facetValue: FacetValue) => {
       facetValue.waitingForDelta = true;
     });
@@ -191,6 +191,55 @@ export class FacetQueryController {
     } else {
       return _.map(this.getAllowedValuesFromSelected(), (facetValue: FacetValue) => facetValue.value);
     }
+  }
+
+  protected createBasicGroupByRequest(allowedValues?: string[], addComputedField: boolean = true): IGroupByRequest {
+    let nbOfRequestedValues = this.facet.numberOfValues;
+    if (this.facet.options.customSort != null) {
+      // If we have a custom sort, we need to make sure that we always request at least enough values to always receive them
+      const usedValues = this.getUnionWithCustomSortLowercase(
+        this.facet.options.customSort,
+        this.facet.values.getSelected().concat(this.facet.values.getExcluded())
+      );
+      nbOfRequestedValues = Math.max(nbOfRequestedValues, usedValues.length);
+    }
+    const groupByRequest: IGroupByRequest = {
+      field: <string>this.facet.options.field,
+      maximumNumberOfValues: nbOfRequestedValues + (this.facet.options.enableMoreLess ? 1 : 0),
+      sortCriteria: this.facet.options.sortCriteria,
+      injectionDepth: this.facet.options.injectionDepth,
+      completeFacetWithStandardValues: this.facet.options.allowedValues == undefined ? true : false
+    };
+    if (this.facet.options.lookupField) {
+      groupByRequest.lookupField = <string>this.facet.options.lookupField;
+    }
+    if (allowedValues != null) {
+      groupByRequest.allowedValues = allowedValues;
+    }
+
+    if (addComputedField && Utils.isNonEmptyString(<string>this.facet.options.computedField)) {
+      groupByRequest.computedFields = [
+        {
+          field: <string>this.facet.options.computedField,
+          operation: this.facet.options.computedFieldOperation
+        }
+      ];
+    }
+    return groupByRequest;
+  }
+
+  protected getAllowedValuesFromSelected() {
+    let facetValues: FacetValue[] = [];
+    if (this.facet.options.useAnd || !this.facet.keepDisplayedValuesNextTime) {
+      const selected = this.facet.values.getSelected();
+      if (selected.length == 0) {
+        return undefined;
+      }
+      facetValues = this.facet.values.getSelected();
+    } else {
+      facetValues = this.facet.values.getAll();
+    }
+    return facetValues;
   }
 
   private get additionalFilter() {
@@ -216,25 +265,11 @@ export class FacetQueryController {
     return _.compact(customSort.concat(filtered));
   }
 
-  protected getAllowedValuesFromSelected() {
-    let facetValues: FacetValue[] = [];
-    if (this.facet.options.useAnd || !this.facet.keepDisplayedValuesNextTime) {
-      const selected = this.facet.values.getSelected();
-      if (selected.length == 0) {
-        return undefined;
-      }
-      facetValues = this.facet.values.getSelected();
-    } else {
-      facetValues = this.facet.values.getAll();
-    }
-    return facetValues;
-  }
-
   private createGroupByQueryOverride(queryBuilder: QueryBuilder): IQueryBuilderExpression {
     let queryBuilderExpression = queryBuilder.computeCompleteExpressionParts();
 
     if (this.queryOverrideIsNeededForMultiSelection()) {
-      queryBuilderExpression = this.processQueryOverrideForSelectedValues(queryBuilder, queryBuilderExpression);
+      queryBuilderExpression = this.processQueryOverrideForMultiSelection(queryBuilder, queryBuilderExpression);
     }
     if (this.queryOverrideIsNeededForAdditionalFilter()) {
       queryBuilderExpression = this.processQueryOverrideForAdditionalFilter(queryBuilder, queryBuilderExpression);
@@ -253,7 +288,7 @@ export class FacetQueryController {
     return Utils.isNonEmptyString(this.additionalFilter);
   }
 
-  private processQueryOverrideForSelectedValues(queryBuilder: QueryBuilder, mergeWith: IQueryBuilderExpression) {
+  private processQueryOverrideForMultiSelection(queryBuilder: QueryBuilder, mergeWith: IQueryBuilderExpression) {
     let queryBuilderExpression = QueryBuilderExpression.fromQueryBuilderExpression(mergeWith);
     if (this.facet.values.hasSelectedOrExcludedValues()) {
       queryBuilderExpression = QueryBuilderExpression.fromQueryBuilderExpression(
@@ -294,41 +329,6 @@ export class FacetQueryController {
     }
 
     return queryBuilderExpression;
-  }
-
-  protected createBasicGroupByRequest(allowedValues?: string[], addComputedField: boolean = true): IGroupByRequest {
-    let nbOfRequestedValues = this.facet.numberOfValues;
-    if (this.facet.options.customSort != null) {
-      // If we have a custom sort, we need to make sure that we always request at least enough values to always receive them
-      const usedValues = this.getUnionWithCustomSortLowercase(
-        this.facet.options.customSort,
-        this.facet.values.getSelected().concat(this.facet.values.getExcluded())
-      );
-      nbOfRequestedValues = Math.max(nbOfRequestedValues, usedValues.length);
-    }
-    const groupByRequest: IGroupByRequest = {
-      field: <string>this.facet.options.field,
-      maximumNumberOfValues: nbOfRequestedValues + (this.facet.options.enableMoreLess ? 1 : 0),
-      sortCriteria: this.facet.options.sortCriteria,
-      injectionDepth: this.facet.options.injectionDepth,
-      completeFacetWithStandardValues: this.facet.options.allowedValues == undefined ? true : false
-    };
-    if (this.facet.options.lookupField) {
-      groupByRequest.lookupField = <string>this.facet.options.lookupField;
-    }
-    if (allowedValues != null) {
-      groupByRequest.allowedValues = allowedValues;
-    }
-
-    if (addComputedField && Utils.isNonEmptyString(<string>this.facet.options.computedField)) {
-      groupByRequest.computedFields = [
-        {
-          field: <string>this.facet.options.computedField,
-          operation: this.facet.options.computedFieldOperation
-        }
-      ];
-    }
-    return groupByRequest;
   }
 
   private checkForFacetSearchValuesToRemove(fieldValues: IIndexFieldValue[], valueToCheckAgainst: string) {
