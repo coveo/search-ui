@@ -3,34 +3,9 @@ import { IRankingFunction } from '../../rest/RankingFunction';
 import { IQueryFunction } from '../../rest/QueryFunction';
 import { IGroupByRequest } from '../../rest/GroupByRequest';
 import { IQuery } from '../../rest/Query';
+import { IQueryBuilderExpression } from './QueryBuilderExpression';
 import * as _ from 'underscore';
 import { Utils } from '../../utils/Utils';
-
-/**
- * Describe the expressions part of a QueryBuilder.
- */
-export interface IQueryBuilderExpression {
-  /**
-   * The whole expression
-   */
-  full?: string;
-  /**
-   * The full part, but without the constant.
-   */
-  withoutConstant?: string;
-  /**
-   * The constant part of the expression
-   */
-  constant?: string;
-  /**
-   * The basic part of the expression
-   */
-  basic?: string;
-  /**
-   * The advanced part of the expression
-   */
-  advanced?: string;
-}
 
 /**
  * The QueryBuilder is used to build a {@link IQuery} that will be able to be executed using the Search API.
@@ -440,7 +415,8 @@ export class QueryBuilder {
       withoutConstant: ExpressionBuilder.mergeUsingOr(withoutConstantAndExcept, this.disjunctionExpression).build(),
       basic: ExpressionBuilder.mergeUsingOr(basicAndExcept, this.disjunctionExpression).build(),
       advanced: ExpressionBuilder.mergeUsingOr(advancedAndExcept, this.disjunctionExpression).build(),
-      constant: ExpressionBuilder.mergeUsingOr(this.constantExpression, this.disjunctionExpression).build()
+      constant: ExpressionBuilder.mergeUsingOr(this.constantExpression, this.disjunctionExpression).build(),
+      disjunction: this.disjunctionExpression.build()
     };
   }
 

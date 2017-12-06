@@ -14,8 +14,8 @@ import { FacetUtils } from '../ui/Facet/FacetUtils';
 import { IQueryResults } from '../rest/QueryResults';
 import { IGroupByValue } from '../rest/GroupByValue';
 import { IEndpointError } from '../rest/EndpointError';
-import { IQueryBuilderExpression } from '../ui/Base/QueryBuilder';
 import * as _ from 'underscore';
+import { QueryBuilderExpression, IQueryBuilderExpression } from '../ui/Base/QueryBuilderExpression';
 
 export class FacetQueryController {
   public expressionToUseForFacetSearch: string;
@@ -193,6 +193,10 @@ export class FacetQueryController {
     }
   }
 
+  private get additionalFilter() {
+    return this.facet.options.additionalFilter ? this.facet.options.additionalFilter : '';
+  }
+
   private getUnionWithCustomSortLowercase(customSort: string[], facetValues: FacetValue[]) {
     // This will take the custom sort, compare it against the passed in facetValues
     // The comparison is lowercase.
@@ -227,48 +231,69 @@ export class FacetQueryController {
   }
 
   private createGroupByQueryOverride(queryBuilder: QueryBuilder): IQueryBuilderExpression {
-    const additionalFilter = this.facet.options.additionalFilter ? this.facet.options.additionalFilter : '';
-    let queryOverrideObject: IQueryBuilderExpression = undefined;
+    let queryBuilderExpression = queryBuilder.computeCompleteExpressionParts();
 
-    if (this.facet.options.useAnd || (this.facet.options.isMultiValueField && this.facet.values.hasSelectedAndExcludedValues())) {
-      if (Utils.isNonEmptyString(additionalFilter)) {
-        queryOverrideObject = queryBuilder.computeCompleteExpressionParts();
-        if (Utils.isEmptyString(queryOverrideObject.basic)) {
-          queryOverrideObject.basic = '@uri';
-        }
+    if (this.queryOverrideIsNeededForMultiSelection()) {
+      queryBuilderExpression = this.processQueryOverrideForSelectedValues(queryBuilder, queryBuilderExpression);
+    }
+    if (this.queryOverrideIsNeededForAdditionalFilter()) {
+      queryBuilderExpression = this.processQueryOverrideForAdditionalFilter(queryBuilder, queryBuilderExpression);
+    }
+
+    queryBuilderExpression = this.processQueryOverrideForEmptyValues(queryBuilder, queryBuilderExpression);
+
+    return queryBuilderExpression;
+  }
+
+  private queryOverrideIsNeededForMultiSelection() {
+    return !(this.facet.options.useAnd || (this.facet.options.isMultiValueField && this.facet.values.hasSelectedAndExcludedValues()));
+  }
+
+  private queryOverrideIsNeededForAdditionalFilter() {
+    return Utils.isNonEmptyString(this.additionalFilter);
+  }
+
+  private processQueryOverrideForSelectedValues(queryBuilder: QueryBuilder, mergeWith: IQueryBuilderExpression) {
+    let queryBuilderExpression = QueryBuilderExpression.fromQueryBuilderExpression(mergeWith);
+    if (this.facet.values.hasSelectedOrExcludedValues()) {
+      queryBuilderExpression = QueryBuilderExpression.fromQueryBuilderExpression(
+        queryBuilder.computeCompleteExpressionPartsExcept(this.computeOurFilterExpression())
+      );
+      if (QueryBuilderExpression.isEmpty(queryBuilderExpression)) {
+        queryBuilderExpression.advanced = '@uri';
       }
+    }
+
+    return queryBuilderExpression;
+  }
+
+  private processQueryOverrideForAdditionalFilter(queryBuilder: QueryBuilder, mergeWith: IQueryBuilderExpression) {
+    let queryBuilderExpression = QueryBuilderExpression.fromQueryBuilderExpression(mergeWith);
+    if (Utils.isEmptyString(queryBuilderExpression.constant)) {
+      queryBuilderExpression.constant = `${this.additionalFilter}`;
     } else {
-      if (this.facet.values.hasSelectedOrExcludedValues()) {
-        queryOverrideObject = queryBuilder.computeCompleteExpressionPartsExcept(this.computeOurFilterExpression());
-        if (Utils.isEmptyString(queryOverrideObject.basic)) {
-          queryOverrideObject.basic = '@uri';
+      queryBuilderExpression.constant = `${queryBuilderExpression.constant} ${this.additionalFilter}`;
+    }
+    return queryBuilderExpression;
+  }
+
+  private processQueryOverrideForEmptyValues(queryBuilder: QueryBuilder, mergeWith: IQueryBuilderExpression) {
+    let queryBuilderExpression = QueryBuilderExpression.fromQueryBuilderExpression(mergeWith);
+
+    const withoutEmptyValues = _.chain(queryBuilderExpression)
+      .keys()
+      .each((key: string) => {
+        if (Utils.isEmptyString(queryBuilderExpression[key]) || Utils.isNullOrUndefined(queryBuilderExpression[key])) {
+          delete queryBuilderExpression[key];
         }
-      } else {
-        if (Utils.isNonEmptyString(additionalFilter)) {
-          queryOverrideObject = queryBuilder.computeCompleteExpressionParts();
-          if (Utils.isEmptyString(queryOverrideObject.basic)) {
-            queryOverrideObject.basic = '@uri';
-          }
-        }
-      }
+      })
+      .value();
+
+    if (_.keys(withoutEmptyValues).length == 0) {
+      queryBuilderExpression = undefined;
     }
 
-    if (queryOverrideObject) {
-      if (Utils.isNonEmptyString(additionalFilter)) {
-        queryOverrideObject.constant = queryOverrideObject.constant
-          ? queryOverrideObject.constant + ' ' + additionalFilter
-          : additionalFilter;
-      }
-    }
-    _.each(_.keys(queryOverrideObject), k => {
-      if (Utils.isEmptyString(queryOverrideObject[k]) || Utils.isNullOrUndefined(queryOverrideObject[k])) {
-        delete queryOverrideObject[k];
-      }
-    });
-    if (_.keys(queryOverrideObject).length == 0) {
-      queryOverrideObject = undefined;
-    }
-    return queryOverrideObject;
+    return queryBuilderExpression;
   }
 
   protected createBasicGroupByRequest(allowedValues?: string[], addComputedField: boolean = true): IGroupByRequest {
