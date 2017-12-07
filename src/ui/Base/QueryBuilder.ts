@@ -369,14 +369,6 @@ export class QueryBuilder {
       this.constantExpression.build(),
       this.disjunctionExpression.build()
     );
-    /*const queryBuilderExpression = ;
-    return {
-      constant: ExpressionBuilder.mergeUsingOr(queryBuilderExpression.expressionBuilders.constantExpression, queryBuilderExpression.expressionBuilders.disjunctionExpression).build(),
-      basic: queryBuilderExpression.basic,
-      advanced: queryBuilderExpression.advanced,
-      full: queryBuilderExpression.full,
-      withoutConstant: ExpressionBuilder.mergeUsingOr(queryBuilderExpression.withoutConstant, queryBuilderExpression.)
-    }*/
   }
 
   /**
