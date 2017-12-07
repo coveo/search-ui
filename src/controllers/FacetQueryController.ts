@@ -15,7 +15,7 @@ import { IQueryResults } from '../rest/QueryResults';
 import { IGroupByValue } from '../rest/GroupByValue';
 import { IEndpointError } from '../rest/EndpointError';
 import * as _ from 'underscore';
-import { QueryBuilderExpression, IQueryBuilderExpression } from '../ui/Base/QueryBuilderExpression';
+import { QueryBuilderExpression } from '../ui/Base/QueryBuilderExpression';
 
 export class FacetQueryController {
   public expressionToUseForFacetSearch: string;
@@ -265,7 +265,7 @@ export class FacetQueryController {
     return _.compact(customSort.concat(filtered));
   }
 
-  private createGroupByQueryOverride(queryBuilder: QueryBuilder): IQueryBuilderExpression {
+  private createGroupByQueryOverride(queryBuilder: QueryBuilder): QueryBuilderExpression {
     let queryBuilderExpression = queryBuilder.computeCompleteExpressionParts();
 
     if (this.queryOverrideIsNeededForMultiSelection()) {
@@ -288,47 +288,41 @@ export class FacetQueryController {
     return Utils.isNonEmptyString(this.additionalFilter);
   }
 
-  private processQueryOverrideForMultiSelection(queryBuilder: QueryBuilder, mergeWith: IQueryBuilderExpression) {
-    let queryBuilderExpression = QueryBuilderExpression.fromQueryBuilderExpression(mergeWith);
+  private processQueryOverrideForMultiSelection(queryBuilder: QueryBuilder, mergeWith: QueryBuilderExpression) {
     if (this.facet.values.hasSelectedOrExcludedValues()) {
-      queryBuilderExpression = QueryBuilderExpression.fromQueryBuilderExpression(
-        queryBuilder.computeCompleteExpressionPartsExcept(this.computeOurFilterExpression())
-      );
-      if (QueryBuilderExpression.isEmpty(queryBuilderExpression)) {
-        queryBuilderExpression.advanced = '@uri';
+      mergeWith = queryBuilder.computeCompleteExpressionPartsExcept(this.computeOurFilterExpression());
+      if (QueryBuilderExpression.isEmpty(mergeWith)) {
+        mergeWith.advanced = '@uri';
       }
     }
 
-    return queryBuilderExpression;
+    return mergeWith;
   }
 
-  private processQueryOverrideForAdditionalFilter(queryBuilder: QueryBuilder, mergeWith: IQueryBuilderExpression) {
-    let queryBuilderExpression = QueryBuilderExpression.fromQueryBuilderExpression(mergeWith);
-    if (Utils.isEmptyString(queryBuilderExpression.constant)) {
-      queryBuilderExpression.constant = `${this.additionalFilter}`;
+  private processQueryOverrideForAdditionalFilter(queryBuilder: QueryBuilder, mergeWith: QueryBuilderExpression) {
+    if (Utils.isEmptyString(mergeWith.constant)) {
+      mergeWith.constant = `${this.additionalFilter}`;
     } else {
-      queryBuilderExpression.constant = `${queryBuilderExpression.constant} ${this.additionalFilter}`;
+      mergeWith.constant = `${mergeWith.constant} ${this.additionalFilter}`;
     }
-    return queryBuilderExpression;
+    return mergeWith;
   }
 
-  private processQueryOverrideForEmptyValues(queryBuilder: QueryBuilder, mergeWith: IQueryBuilderExpression) {
-    let queryBuilderExpression = QueryBuilderExpression.fromQueryBuilderExpression(mergeWith);
-
-    const withoutEmptyValues = _.chain(queryBuilderExpression)
+  private processQueryOverrideForEmptyValues(queryBuilder: QueryBuilder, mergeWith: QueryBuilderExpression) {
+    const withoutEmptyValues = _.chain(mergeWith)
       .keys()
       .each((key: string) => {
-        if (Utils.isEmptyString(queryBuilderExpression[key]) || Utils.isNullOrUndefined(queryBuilderExpression[key])) {
-          delete queryBuilderExpression[key];
+        if (Utils.isEmptyString(mergeWith[key]) || Utils.isNullOrUndefined(mergeWith[key])) {
+          delete mergeWith[key];
         }
       })
       .value();
 
     if (_.keys(withoutEmptyValues).length == 0) {
-      queryBuilderExpression = undefined;
+      mergeWith = undefined;
     }
 
-    return queryBuilderExpression;
+    return mergeWith;
   }
 
   private checkForFacetSearchValuesToRemove(fieldValues: IIndexFieldValue[], valueToCheckAgainst: string) {

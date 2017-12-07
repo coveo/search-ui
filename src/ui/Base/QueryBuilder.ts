@@ -3,7 +3,7 @@ import { IRankingFunction } from '../../rest/RankingFunction';
 import { IQueryFunction } from '../../rest/QueryFunction';
 import { IGroupByRequest } from '../../rest/GroupByRequest';
 import { IQuery } from '../../rest/Query';
-import { IQueryBuilderExpression } from './QueryBuilderExpression';
+import { QueryBuilderExpression } from './QueryBuilderExpression';
 import * as _ from 'underscore';
 import { Utils } from '../../utils/Utils';
 
@@ -362,19 +362,21 @@ export class QueryBuilder {
    * Return only the expression(s) part(s) of the query, as an object.
    * @returns {{full: string, withoutConstant: string, constant: string}}
    */
-  public computeCompleteExpressionParts(): IQueryBuilderExpression {
-    const withoutConstant = ExpressionBuilder.merge(this.expression, this.advancedExpression);
-
+  public computeCompleteExpressionParts(): any {
+    return new QueryBuilderExpression(
+      this.expression.build(),
+      this.advancedExpression.build(),
+      this.constantExpression.build(),
+      this.disjunctionExpression.build()
+    );
+    /*const queryBuilderExpression = ;
     return {
-      full: ExpressionBuilder.mergeUsingOr(
-        ExpressionBuilder.merge(withoutConstant, this.constantExpression),
-        this.disjunctionExpression
-      ).build(),
-      withoutConstant: ExpressionBuilder.mergeUsingOr(withoutConstant, this.disjunctionExpression).build(),
-      basic: ExpressionBuilder.mergeUsingOr(this.expression, this.disjunctionExpression).build(),
-      advanced: ExpressionBuilder.mergeUsingOr(this.advancedExpression, this.disjunctionExpression).build(),
-      constant: ExpressionBuilder.mergeUsingOr(this.constantExpression, this.disjunctionExpression).build()
-    };
+      constant: ExpressionBuilder.mergeUsingOr(queryBuilderExpression.expressionBuilders.constantExpression, queryBuilderExpression.expressionBuilders.disjunctionExpression).build(),
+      basic: queryBuilderExpression.basic,
+      advanced: queryBuilderExpression.advanced,
+      full: queryBuilderExpression.full,
+      withoutConstant: ExpressionBuilder.mergeUsingOr(queryBuilderExpression.withoutConstant, queryBuilderExpression.)
+    }*/
   }
 
   /**
@@ -395,29 +397,32 @@ export class QueryBuilder {
    * @param except
    * @returns {{full: string, withoutConstant: string, constant: string}}
    */
-  public computeCompleteExpressionPartsExcept(except: string): IQueryBuilderExpression {
+  public computeCompleteExpressionPartsExcept(except: string): QueryBuilderExpression {
     const withoutConstantAndExcept = ExpressionBuilder.merge(this.expression, this.advancedExpression);
     withoutConstantAndExcept.remove(except);
 
-    const basicAndExcept = new ExpressionBuilder();
-    basicAndExcept.fromExpressionBuilder(this.expression);
-    basicAndExcept.remove(except);
+    const basicWithoutException = new ExpressionBuilder();
+    basicWithoutException.fromExpressionBuilder(this.expression);
+    basicWithoutException.remove(except);
 
-    const advancedAndExcept = new ExpressionBuilder();
-    advancedAndExcept.fromExpressionBuilder(this.advancedExpression);
-    advancedAndExcept.remove(except);
+    const advancedWithoutException = new ExpressionBuilder();
+    advancedWithoutException.fromExpressionBuilder(this.advancedExpression);
+    advancedWithoutException.remove(except);
 
-    return {
-      full: ExpressionBuilder.mergeUsingOr(
-        ExpressionBuilder.merge(withoutConstantAndExcept, this.constantExpression),
-        this.disjunctionExpression
-      ).build(),
-      withoutConstant: ExpressionBuilder.mergeUsingOr(withoutConstantAndExcept, this.disjunctionExpression).build(),
-      basic: ExpressionBuilder.mergeUsingOr(basicAndExcept, this.disjunctionExpression).build(),
-      advanced: ExpressionBuilder.mergeUsingOr(advancedAndExcept, this.disjunctionExpression).build(),
-      constant: ExpressionBuilder.mergeUsingOr(this.constantExpression, this.disjunctionExpression).build(),
-      disjunction: this.disjunctionExpression.build()
-    };
+    const constantWithoutException = new ExpressionBuilder();
+    constantWithoutException.fromExpressionBuilder(this.constantExpression);
+    constantWithoutException.remove(except);
+
+    const disjunctionWithoutException = new ExpressionBuilder();
+    disjunctionWithoutException.fromExpressionBuilder(this.disjunctionExpression);
+    disjunctionWithoutException.remove(except);
+
+    return new QueryBuilderExpression(
+      basicWithoutException.build(),
+      advancedWithoutException.build(),
+      constantWithoutException.build(),
+      disjunctionWithoutException.build()
+    );
   }
 
   /**

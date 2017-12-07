@@ -32,15 +32,9 @@ export interface IQueryBuilderExpression {
   disjunction?: string;
 }
 
-export class QueryBuilderExpression implements IQueryBuilderExpression {
-  public static isEmpty(queryBuilderExpression: QueryBuilderExpression | IQueryBuilderExpression) {
-    let expression: QueryBuilderExpression;
-    if (queryBuilderExpression instanceof QueryBuilderExpression) {
-      expression = queryBuilderExpression as QueryBuilderExpression;
-    } else {
-      expression = QueryBuilderExpression.fromQueryBuilderExpression(queryBuilderExpression as IQueryBuilderExpression);
-    }
-    const allNonEmptyValues = _.chain(expression)
+export class QueryBuilderExpression implements QueryBuilderExpression {
+  public static isEmpty(queryBuilderExpression: QueryBuilderExpression) {
+    const allNonEmptyValues = _.chain(queryBuilderExpression)
       .values()
       .compact()
       .value();
@@ -48,16 +42,44 @@ export class QueryBuilderExpression implements IQueryBuilderExpression {
     return _.isEmpty(allNonEmptyValues);
   }
 
-  public static fromQueryBuilderExpression(queryBuilderExpression: IQueryBuilderExpression) {
-    return new QueryBuilderExpression(
-      queryBuilderExpression.basic,
-      queryBuilderExpression.advanced,
-      queryBuilderExpression.constant,
-      queryBuilderExpression.disjunction
-    );
+  public constructor(
+    private basicExpression: string,
+    private advancedExpression: string,
+    private constantExpression: string,
+    private disjunctionExpression: string
+  ) {}
+
+  public get withoutConstant(): string {
+    return this.expressionBuilders.withoutConstantExpression.build();
   }
 
-  public constructor(public basic: string, public advanced: string, public constant: string, public disjunction: string) {}
+  public get full(): string {
+    return ExpressionBuilder.mergeUsingOr(this.expressionBuilders.fullExpression, this.expressionBuilders.disjunctionExpression).build();
+  }
+
+  public get basic(): string {
+    return this.expressionBuilders.basicExpression.build();
+  }
+
+  public set basic(value: string) {
+    this.basic = value;
+  }
+
+  public get advanced(): string {
+    return this.expressionBuilders.advancedExpression.build();
+  }
+
+  public set advanced(value: string) {
+    this.advancedExpression = value;
+  }
+
+  public get constant(): string {
+    return this.expressionBuilders.constantExpression.build();
+  }
+
+  public set constant(value: string) {
+    this.constantExpression = value;
+  }
 
   public get expressionBuilders() {
     const addIfNotEmpty = (expression: ExpressionBuilder, value: string) => {
@@ -67,35 +89,28 @@ export class QueryBuilderExpression implements IQueryBuilderExpression {
     };
 
     const basicExpression = new ExpressionBuilder();
-    addIfNotEmpty(basicExpression, this.basic);
+    addIfNotEmpty(basicExpression, this.basicExpression);
 
     const advancedExpression = new ExpressionBuilder();
-    addIfNotEmpty(advancedExpression, this.advanced);
+    addIfNotEmpty(advancedExpression, this.advancedExpression);
 
     const constantExpression = new ExpressionBuilder();
-    addIfNotEmpty(constantExpression, this.constant);
+    addIfNotEmpty(constantExpression, this.constantExpression);
 
     const disjunctionExpression = new ExpressionBuilder();
-    addIfNotEmpty(disjunctionExpression, this.disjunction);
+    addIfNotEmpty(disjunctionExpression, this.disjunctionExpression);
+
+    const withoutConstantExpression = ExpressionBuilder.merge(basicExpression, advancedExpression);
+
+    const fullExpression = ExpressionBuilder.merge(basicExpression, advancedExpression, constantExpression);
 
     return {
       basicExpression,
       advancedExpression,
       constantExpression,
-      disjunctionExpression
+      disjunctionExpression,
+      withoutConstantExpression,
+      fullExpression
     };
-  }
-
-  public mergeWith(queryBuilderExpression: IQueryBuilderExpression) {
-    const otherExpression = QueryBuilderExpression.fromQueryBuilderExpression(queryBuilderExpression);
-    const otherBuilders = otherExpression.expressionBuilders;
-    const builders = this.expressionBuilders;
-
-    this.basic = ExpressionBuilder.merge(builders.basicExpression, otherBuilders.basicExpression).build();
-    this.advanced = ExpressionBuilder.merge(builders.advancedExpression, otherBuilders.advancedExpression).build();
-    this.constant = ExpressionBuilder.merge(builders.constantExpression, otherBuilders.constantExpression).build();
-    this.disjunction = ExpressionBuilder.merge(builders.disjunctionExpression, otherBuilders.disjunctionExpression).build();
-
-    return this;
   }
 }
