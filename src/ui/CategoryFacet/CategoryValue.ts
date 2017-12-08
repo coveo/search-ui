@@ -1,11 +1,9 @@
 import { Dom, $$ } from '../../utils/Dom';
 import { CategoryFacetTemplates } from './CategoryFacetTemplates';
 import { CategoryJsonValues } from './CategoryFacet';
-import { SVGIcons } from '../../utils/SVGIcons';
-import { SVGDom } from '../../utils/SVGDom';
 
 export interface CategoryValueParent {
-  hideChildren: (filterOut?: CategoryValue) => void;
+  clearChildrenExceptOne: (except: CategoryValue) => void;
   renderChildren: () => void;
   getPath: (partialPath: string[]) => string[];
 }
@@ -13,20 +11,21 @@ export interface CategoryValueParent {
 export class CategoryValue implements CategoryValueParent {
   private children: CategoryValue[] = [];
   private listOfChildValues: Dom;
-  private listElement: Dom;
-  private childrenMenuOpen = false;
+  private element: Dom;
+  private collapseArrow: Dom;
 
   constructor(
-    private element: Dom,
+    private parentElement: Dom,
     private value: string,
     private parent: CategoryValueParent,
     private categoryFacetTemplates: CategoryFacetTemplates
   ) {
-    this.listElement = this.categoryFacetTemplates.buildListElement(this.value);
+    this.element = this.categoryFacetTemplates.buildListElement(this.value);
+    this.collapseArrow = this.categoryFacetTemplates.buildCollapseArrow();
   }
 
   public render() {
-    this.element.append(this.listElement.el);
+    this.parentElement.append(this.element.el);
 
     this.getCaption().on('click', async e => {
       this.openChildMenu();
@@ -34,26 +33,32 @@ export class CategoryValue implements CategoryValueParent {
   }
 
   public async renderChildren() {
-    if (!this.childrenMenuOpen) {
-      this.children = [];
-      const headers = new Headers();
-      headers.append('Accept', 'application/json');
-      headers.append('Content-Type', 'application/json');
-      const { values } = await fetch('http://localhost:8085/api', {
-        headers,
-        method: 'POST',
-        body: JSON.stringify({ path: this.getPath() })
-      }).then<CategoryJsonValues>(response => response.json());
-
-      this.listOfChildValues = this.categoryFacetTemplates.buildListRoot();
-      this.listElement.append(this.listOfChildValues.el);
-
-      this.addChildren(values);
-      this.children.forEach(categoryValue => {
-        categoryValue.render();
-      });
+    if (this.listOfChildValues && this.children.length == this.listOfChildValues.findAll('.coveo-category-facet-value').length) {
+      return;
     }
-    this.show();
+
+    this.clearChildren();
+    const headers = new Headers();
+    headers.append('Accept', 'application/json');
+    headers.append('Content-Type', 'application/json');
+    const { values } = await fetch('http://localhost:8085/api', {
+      headers,
+      method: 'POST',
+      body: JSON.stringify({ path: this.getPath() })
+    })
+      .then<CategoryJsonValues>(response => response.json())
+      .catch(e => {
+        console.log(e);
+        return { values: ['undefined'] } as CategoryJsonValues;
+      });
+
+    this.listOfChildValues = this.categoryFacetTemplates.buildListRoot();
+    this.element.append(this.listOfChildValues.el);
+
+    this.addChildren(values);
+    this.children.forEach(categoryValue => {
+      categoryValue.render();
+    });
   }
 
   public addChildren(values: string | string[]) {
@@ -61,25 +66,33 @@ export class CategoryValue implements CategoryValueParent {
       values = [values];
     }
     values.forEach(value => {
-      this.children.push(new CategoryValue(this.listOfChildValues, value, this.parent, this.categoryFacetTemplates));
+      this.children.push(new CategoryValue(this.listOfChildValues, value, this, this.categoryFacetTemplates));
     });
   }
 
   public hideSiblings() {
-    this.parent.hideChildren(this);
+    this.parent.clearChildrenExceptOne(this);
   }
 
   public showSiblings() {
     this.parent.renderChildren();
   }
 
-  public hideChildren(filterOut?: CategoryValue) {
-    for (const categoryValue of this.children) {
-      if (filterOut && filterOut.getValue() == categoryValue.getValue()) {
-        continue;
+  public clearChildren() {
+    this.children = [];
+    this.listOfChildValues && this.listOfChildValues.remove();
+  }
+
+  public clearChildrenExceptOne(except: CategoryValue) {
+    this.children.forEach(categoryValue => {
+      if (except !== categoryValue) {
+        categoryValue.clear();
       }
-      categoryValue.hide();
-    }
+    });
+  }
+
+  public clear() {
+    this.element.remove();
   }
 
   public getPath(partialPath: string[] = []) {
@@ -88,7 +101,7 @@ export class CategoryValue implements CategoryValueParent {
   }
 
   public getCaption() {
-    return $$(this.listElement.find('.coveo-category-facet-value-caption'));
+    return $$(this.element.find('.coveo-category-facet-value-caption'));
   }
 
   public getParent() {
@@ -99,48 +112,30 @@ export class CategoryValue implements CategoryValueParent {
     return this.value;
   }
 
-  public show() {
-    this.listElement.show();
-  }
-
-  public hide() {
-    this.listElement.hide();
-    this.hideChildren();
-  }
-
   private openChildMenu() {
-    if (!this.childrenMenuOpen) {
-      this.childrenMenuOpen = true;
-      this.children;
-      this.renderChildren();
-      this.showCollapseArrow();
-    }
+    this.renderChildren();
+    this.showCollapseArrow();
+    this.hideSiblings();
   }
 
-  public closeChildMenu() {
-    if (this.childrenMenuOpen) {
-      this.childrenMenuOpen = false;
-      this.hideChildren();
-      this.hideCollapseArrow();
-      this.showSiblings();
-    }
+  private closeChildMenu() {
+    this.clearChildren();
+    this.hideCollapseArrow();
+    this.showSiblings();
   }
 
   private showCollapseArrow() {
-    const label = this.listElement.find('label');
-    const collapseArrow = $$('span', { className: 'coveo-category-facet-collapse-children' }, SVGIcons.icons.arrowDown);
-    SVGDom.addClassToSVGInContainer(collapseArrow.el, 'coveo-category-facet-collapse-children-svg');
-    collapseArrow.insertBefore(label);
+    if (!this.collapseArrow.el.parentElement) {
+      const label = this.element.find('label');
+      this.collapseArrow.insertBefore(label);
 
-    collapseArrow.on('click', e => {
-      this.closeChildMenu();
-    });
+      this.collapseArrow.on('click', e => {
+        this.closeChildMenu();
+      });
+    }
   }
 
   private hideCollapseArrow() {
-    const arrow = this.listElement.find('.coveo-category-facet-collapse-children');
-    if (arrow) {
-      $$(arrow).hide();
-    }
+    this.collapseArrow.remove();
   }
 }

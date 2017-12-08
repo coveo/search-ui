@@ -1,4 +1,6 @@
 import { $$, Dom } from '../../utils/Dom';
+import { SVGIcons } from '../../utils/SVGIcons';
+import { SVGDom } from '../../utils/SVGDom';
 
 export class CategoryFacetTemplates {
   private listElementTemplate: Dom;
@@ -20,6 +22,12 @@ export class CategoryFacetTemplates {
     valueCaption.setAttribute('title', value);
     valueCaption.setAttribute('data-title-original-value', value);
     return listElement;
+  }
+
+  public buildCollapseArrow() {
+    const collapseArrow = $$('span', { className: 'coveo-category-facet-collapse-children' }, SVGIcons.icons.arrowDown);
+    SVGDom.addClassToSVGInContainer(collapseArrow.el, 'coveo-category-facet-collapse-children-svg');
+    return collapseArrow;
   }
 
   private createListElementTemplate() {
