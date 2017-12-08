@@ -5,23 +5,22 @@ import { SVGIcons } from '../../utils/SVGIcons';
 import { SVGDom } from '../../utils/SVGDom';
 
 export interface CategoryValueParent {
-  hideChildren: (except?: string) => void;
-  renderChildren: (values: string[]) => void;
+  hideChildren: (filterOut?: CategoryValue) => void;
+  renderChildren: () => void;
+  getPath: (partialPath: string[]) => string[];
 }
 
-export class CategoryValue {
+export class CategoryValue implements CategoryValueParent {
   private children: CategoryValue[] = [];
   private listOfChildValues: Dom;
   private listElement: Dom;
-
-  private showingChildren = false;
+  private childrenMenuOpen = false;
 
   constructor(
     private element: Dom,
     private value: string,
-    private categoryFacetTemplates: CategoryFacetTemplates,
-    // private onClickHandler?: (event: Event) => void,
-    private parent: CategoryValue = null
+    private parent: CategoryValueParent,
+    private categoryFacetTemplates: CategoryFacetTemplates
   ) {
     this.listElement = this.categoryFacetTemplates.buildListElement(this.value);
   }
@@ -29,42 +28,69 @@ export class CategoryValue {
   public render() {
     this.element.append(this.listElement.el);
 
-    const headers = new Headers();
-    headers.append('Accept', 'application/json');
-    headers.append('Content-Type', 'application/json');
     this.getCaption().on('click', async e => {
+      this.openChildMenu();
+    });
+  }
+
+  public async renderChildren() {
+    if (!this.childrenMenuOpen) {
+      this.children = [];
+      const headers = new Headers();
+      headers.append('Accept', 'application/json');
+      headers.append('Content-Type', 'application/json');
       const { values } = await fetch('http://localhost:8085/api', {
         headers,
         method: 'POST',
         body: JSON.stringify({ path: this.getPath() })
       }).then<CategoryJsonValues>(response => response.json());
-      this.renderChildren(values);
+
+      this.listOfChildValues = this.categoryFacetTemplates.buildListRoot();
+      this.listElement.append(this.listOfChildValues.el);
+
+      this.addChildren(values);
+      this.children.forEach(categoryValue => {
+        categoryValue.render();
+      });
+    }
+    this.show();
+  }
+
+  public addChildren(values: string | string[]) {
+    if (typeof values === 'string') {
+      values = [values];
+    }
+    values.forEach(value => {
+      this.children.push(new CategoryValue(this.listOfChildValues, value, this.parent, this.categoryFacetTemplates));
     });
   }
 
-  public renderChildren(values: string[]) {
-    if (values.length != 0 && !this.showingChildren) {
-      this.showingChildren = true;
-      this.showCollapseArrow();
-      this.listOfChildValues = this.categoryFacetTemplates.buildListRoot();
-      this.listElement.append(this.listOfChildValues.el);
-      values.forEach(value => {
-        const categoryValue = new CategoryValue(this.listOfChildValues, value, this.categoryFacetTemplates);
-        categoryValue.render();
-        this.children.push(categoryValue);
-      });
+  public hideSiblings() {
+    this.parent.hideChildren(this);
+  }
+
+  public showSiblings() {
+    this.parent.renderChildren();
+  }
+
+  public hideChildren(filterOut?: CategoryValue) {
+    for (const categoryValue of this.children) {
+      if (filterOut && filterOut.getValue() == categoryValue.getValue()) {
+        continue;
+      }
+      categoryValue.hide();
     }
   }
 
-  public hideChildren() {
-    this.showingChildren = false;
-    this.listOfChildValues.hide();
-    this.removeCollapseArrow();
+  public getPath(partialPath: string[] = []) {
+    partialPath.unshift(this.value);
+    return this.parent.getPath(partialPath);
   }
 
   public getCaption() {
     return $$(this.listElement.find('.coveo-category-facet-value-caption'));
   }
+
   public getParent() {
     return this.parent;
   }
@@ -73,16 +99,31 @@ export class CategoryValue {
     return this.value;
   }
 
-  public hide() {}
+  public show() {
+    this.listElement.show();
+  }
 
-  public getPath() {
-    const path: string[] = [this.value];
-    let currentCategoryValue: CategoryValue = this.parent;
-    while (currentCategoryValue) {
-      path.push(currentCategoryValue.getValue());
-      currentCategoryValue = currentCategoryValue.getParent();
+  public hide() {
+    this.listElement.hide();
+    this.hideChildren();
+  }
+
+  private openChildMenu() {
+    if (!this.childrenMenuOpen) {
+      this.childrenMenuOpen = true;
+      this.children;
+      this.renderChildren();
+      this.showCollapseArrow();
     }
-    return path.reverse();
+  }
+
+  public closeChildMenu() {
+    if (this.childrenMenuOpen) {
+      this.childrenMenuOpen = false;
+      this.hideChildren();
+      this.hideCollapseArrow();
+      this.showSiblings();
+    }
   }
 
   private showCollapseArrow() {
@@ -92,11 +133,14 @@ export class CategoryValue {
     collapseArrow.insertBefore(label);
 
     collapseArrow.on('click', e => {
-      this.hideChildren();
+      this.closeChildMenu();
     });
   }
 
-  private removeCollapseArrow() {
-    $$(this.listElement.find('.coveo-category-facet-collapse-children')).hide();
+  private hideCollapseArrow() {
+    const arrow = this.listElement.find('.coveo-category-facet-collapse-children');
+    if (arrow) {
+      $$(arrow).hide();
+    }
   }
 }
