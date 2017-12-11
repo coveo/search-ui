@@ -37,7 +37,10 @@ export class CategoryValue implements CategoryValueParent {
       return;
     }
 
-    this.clearChildren();
+    if (!this.listOfChildValues) {
+      this.listOfChildValues = this.categoryFacetTemplates.buildListRoot();
+    }
+
     const headers = new Headers();
     headers.append('Accept', 'application/json');
     headers.append('Content-Type', 'application/json');
@@ -49,10 +52,10 @@ export class CategoryValue implements CategoryValueParent {
       .then<CategoryJsonValues>(response => response.json())
       .catch(e => {
         console.log(e);
-        return { values: ['undefined'] } as CategoryJsonValues;
+        return { values: [] } as CategoryJsonValues;
       });
 
-    this.listOfChildValues = this.categoryFacetTemplates.buildListRoot();
+    this.clearChildren();
     this.element.append(this.listOfChildValues.el);
 
     this.addChildren(values);
@@ -61,10 +64,7 @@ export class CategoryValue implements CategoryValueParent {
     });
   }
 
-  public addChildren(values: string | string[]) {
-    if (typeof values === 'string') {
-      values = [values];
-    }
+  private addChildren(values: string[]) {
     values.forEach(value => {
       this.children.push(new CategoryValue(this.listOfChildValues, value, this, this.categoryFacetTemplates));
     });
