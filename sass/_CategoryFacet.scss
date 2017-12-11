@@ -1,0 +1,19 @@
+@import 'Variables';
+
+.coveo-category-facet-value-label {
+  cursor: pointer;
+  vertical-align: middle;
+}
+
+.coveo-category-facet-collapse-children {
+  cursor: pointer;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+.coveo-category-facet-collapse-children-svg {
+  transform: rotate(90deg);
+  color: $color-greyish-teal-blue;
+  width: 10px;
+  height: 6px;
+}
