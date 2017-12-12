@@ -95,13 +95,15 @@ export class ExportToExcel extends Component {
     let query = this.queryController.getLastQuery();
 
     if (query) {
-      query = _.omit(query, 'numberOfResults');
+      // Remove number of results and fields to include from the last query, because those 2 parameters
+      // should be controlled/modified by the export to excel component.
+      query = _.omit(query, ['numberOfResults', 'fieldsToInclude']);
       if (this.options.fieldsToInclude) {
         query.fieldsToInclude = <string[]>this.options.fieldsToInclude;
       }
       this.logger.debug("Performing query following 'Export to Excel' click");
 
-      let endpoint = this.queryController.getEndpoint();
+      const endpoint = this.queryController.getEndpoint();
       this.usageAnalytics.logCustomEvent<IAnalyticsNoMeta>(analyticsActionCauseList.exportToExcel, {}, this.element);
       this._window.location.replace(endpoint.getExportToExcelLink(query, this.options.numberOfResults));
     }

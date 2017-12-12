@@ -1,5 +1,5 @@
-@import "../_Variables";
-@import "../mixins/mediaQuery";
+@import '../_Variables';
+@import '../mixins/mediaQuery';
 .coveo-subscriptions-messages {
   z-index: 1;
 }
@@ -7,13 +7,13 @@
 .coveo-subscriptions-messages-message {
   background-color: #ecad00;
   @include display(flex);
-  border-radius: 2px;;
+  border-radius: 2px;
   color: #fff;
   white-space: nowrap;
   &.coveo-subscriptions-messages-error {
-  background-color: #F44336;
-    &:after{
-      border-color: transparent transparent #F44336 transparent;
+    background-color: #f44336;
+    &:after {
+      border-color: transparent transparent #f44336 transparent;
     }
   }
   &:before {
@@ -34,7 +34,7 @@
     border-color: transparent transparent $color-active-yellow transparent;
     float: left;
   }
-  
+
   .coveo-subscriptions-messages-content {
     padding: 7px 0;
     font-size: 12px;
@@ -44,7 +44,7 @@
     span {
       vertical-align: middle;
     }
-    @include mediaSelector(800) {
+    @include mediumScreenWidth() {
       font-size: 10px;
     }
   }

@@ -7,17 +7,15 @@ export function ModelTest() {
   describe('Model', function() {
     let model: Model;
     let div: HTMLDivElement;
-    let env: Mock.IMockEnvironment;
 
     beforeEach(function() {
       div = document.createElement('div');
-      env = new Mock.MockEnvironmentBuilder().withRoot(div).build();
+      new Mock.MockEnvironmentBuilder().withRoot(div).build();
       registerCustomMatcher();
     });
 
     afterEach(function() {
       div = null;
-      env = null;
       model = null;
     });
 

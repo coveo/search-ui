@@ -3,6 +3,7 @@ import { Assert } from '../misc/Assert';
 import { Utils } from '../utils/Utils';
 import { BaseComponent } from '../ui/Base/BaseComponent';
 import * as _ from 'underscore';
+import { IStringMap } from '../rest/GenericParam';
 
 export const MODEL_EVENTS = {
   PREPROCESS: 'preprocess',
@@ -41,8 +42,8 @@ export class Model extends BaseComponent {
    * The attributes contained in this model.</br>
    * Normally, you should not set attributes directly on this property, as this would prevent required events from being triggered.
    */
-  public attributes: { [key: string]: any };
-  public defaultAttributes: { [key: string]: any };
+  public attributes: IStringMap<any>;
+  public defaultAttributes: IStringMap<any>;
   private eventNameSpace;
 
   /**

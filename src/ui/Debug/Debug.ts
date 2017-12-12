@@ -186,6 +186,7 @@ export class Debug extends RootComponent {
       $$(body).empty();
       $$(body).append(build.body);
     }
+    this.updateSearchFunctionnality(build);
   }
 
   private openModalBox() {
@@ -216,11 +217,17 @@ export class Debug extends RootComponent {
         );
       } else {
         this.debugHeader.moveTo(title);
-        this.debugHeader.setNewInfoToDebug(this.stackDebug);
-        this.debugHeader.setSearch((value: string) => this.search(value, build.body));
+        this.updateSearchFunctionnality(build);
       }
     } else {
       this.logger.warn('No title found in modal box.');
+    }
+  }
+
+  private updateSearchFunctionnality(build: { body: HTMLElement; json: any }) {
+    if (this.debugHeader) {
+      this.debugHeader.setNewInfoToDebug(this.stackDebug);
+      this.debugHeader.setSearch((value: string) => this.search(value, build.body));
     }
   }
 

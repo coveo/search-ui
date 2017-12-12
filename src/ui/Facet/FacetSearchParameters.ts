@@ -17,6 +17,7 @@ export class FacetSearchParameters {
   public alwaysExclude: string[] = [];
   public sortCriteria = 'occurrences';
   public fetchMore = false;
+  public completeFacetWithStandardValues = true;
 
   constructor(public facet: Facet) {
     this.nbResults = facet.options.numberOfValuesInFacetSearch;
@@ -54,18 +55,26 @@ export class FacetSearchParameters {
       typedByUser = ['*' + this.valueToSearch + '*'];
     }
 
-    let completeFacetWithStandardValues = true;
+    let allowedValues;
+    if (this.valueToSearch) {
+      allowedValues = typedByUser
+        .concat(this.alwaysInclude)
+        .concat(this.alwaysExclude)
+    } else {
+      allowedValues = _.compact(
+        typedByUser
+          .concat(this.alwaysInclude)
+          .concat(this.facet.options.allowedValues)
+      )
+    }
+
+    let completeFacetWithStandardValues = this.completeFacetWithStandardValues;
     if (this.facet.options.lookupField != null) {
       completeFacetWithStandardValues = false;
     }
 
     const request: IGroupByRequest = {
-      allowedValues: _.compact(
-        typedByUser
-          .concat(this.alwaysInclude)
-          .concat(this.alwaysExclude)
-          .concat(this.facet.options.allowedValues)
-      ),
+      allowedValues: allowedValues,
       maximumNumberOfValues: nbResults,
       completeFacetWithStandardValues: completeFacetWithStandardValues,
       field: <string>this.facet.options.field,

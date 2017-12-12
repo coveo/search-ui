@@ -12,7 +12,6 @@ import { IGroupByResult } from '../../rest/GroupByResult';
 import { Initialization } from '../Base/Initialization';
 import * as Globalize from 'globalize';
 import { exportGlobally } from '../../GlobalExports';
-import { IStringMap } from '../../rest/GenericParam';
 
 export interface IFacetRangeOptions extends IFacetOptions {
   ranges?: IRangeValue[];
@@ -49,6 +48,8 @@ export interface IFacetRangeOptions extends IFacetOptions {
  *  Moreover, while the [numberOfValues]{@link Facet.options.numberOfValues} option still allows you to specify the
  *  maximum number of values to display in a FacetRange component, it is not possible for the end to display additional
  *  values, since the component does not support the **More** button.
+ *
+ *  @notSupportedIn salesforcefree
  */
 export class FacetRange extends Facet implements IComponentBindings {
   static ID = 'FacetRange';
@@ -124,7 +125,7 @@ export class FacetRange extends Facet implements IComponentBindings {
      * function (see [Query Function](https://developers.coveo.com/x/XQCq)). When this is the case, you must specify the
      * ranges at query time.
      */
-    ranges: ComponentOptions.buildJsonObjectOption<IRangeValue[]>()
+    ranges: ComponentOptions.buildJsonOption<IRangeValue[]>()
   };
 
   public options: IFacetRangeOptions;

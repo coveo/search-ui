@@ -2,20 +2,18 @@ import { Facet } from '../../src/ui/Facet/Facet';
 import { QueryBuilder } from '../../src/ui/Base/QueryBuilder';
 import * as Mock from '../MockEnvironment';
 import { IDistanceOptions, DistanceResources } from '../../src/ui/Distance/DistanceResources';
-import { Simulate } from '../Simulate';
-import { ISimulateQueryData } from '../Simulate';
-import { QueryStateModel } from '../../src/models/QueryStateModel';
 import { $$ } from '../../src/utils/Dom';
 import {
-  IPosition,
+  IGeolocationPosition,
   DistanceEvents,
   IResolvingPositionEventArgs,
-  IPositionProvider,
+  IGeolocationPositionProvider,
   IPositionResolvedEventArgs
 } from '../../src/events/DistanceEvents';
 import { InitializationEvents } from '../../src/EventsModules';
 import { QueryEvents, IBuildingQueryEventArgs } from '../../src/events/QueryEvents';
 import { IQueryFunction } from '../../src/rest/QueryFunction';
+import { analyticsActionCauseList } from '../../src/ui/Analytics/AnalyticsActionListMeta';
 
 export function DistanceResourcesTest() {
   describe('DistanceResources', () => {
@@ -26,16 +24,18 @@ export function DistanceResourcesTest() {
     const longitudeField = 'longitude';
     const defaultUnitConversionFactor = 1000;
     const disabledComponentsClass = 'bloupbloup';
-    const aNicePlace = <IPosition>{ latitude: latitudeForANicePlace, longitude: longitudeForANicePlace };
+    const aNicePlace = <IGeolocationPosition>{ latitude: latitudeForANicePlace, longitude: longitudeForANicePlace };
     const expectedQueryFunctionForANicePlace = <IQueryFunction>{
-      function: `dist(${latitudeField}, ${longitudeField}, ${latitudeForANicePlace}, ${longitudeForANicePlace})/${defaultUnitConversionFactor}`,
+      function: `dist(${latitudeField}, ${longitudeField}, ${latitudeForANicePlace}, ${longitudeForANicePlace})/${
+        defaultUnitConversionFactor
+      }`,
       fieldName: distanceField
     };
 
-    const aValidPositionProvider: IPositionProvider = {
+    const aValidPositionProvider: IGeolocationPositionProvider = {
       getPosition: () => Promise.resolve(aNicePlace)
     };
-    const badPositionProvider: IPositionProvider = {
+    const badPositionProvider: IGeolocationPositionProvider = {
       getPosition: () => Promise.reject(`Wow I'm so bad`)
     };
 
@@ -98,6 +98,47 @@ export function DistanceResourcesTest() {
         triggerOnBuildingQuery();
 
         expect(buildingQueryArgs.queryBuilder.queryFunctions).toContain(expectedQueryFunctionForANicePlace);
+      });
+
+      describe('with usage analytics', () => {
+        let fakePendingSearchEvent;
+
+        beforeEach(() => {
+          fakePendingSearchEvent = {};
+          fakePendingSearchEvent.templateSearchEvent = {
+            actionCause: 'foo',
+            actionType: 'bar'
+          };
+          fakePendingSearchEvent.getEventMeta = () => ({ baz: 'buzz' });
+        });
+
+        afterEach(() => {
+          fakePendingSearchEvent = null;
+        });
+
+        it('should send the event associated with the blocked query', () => {
+          const spy = jasmine.createSpy('getPendingSearchEvent').and.returnValue(fakePendingSearchEvent);
+          test.env.usageAnalytics.getPendingSearchEvent = <any>spy;
+          triggerOnBuildingQuery();
+          test.cmp.setPosition(latitudeForANicePlace, longitudeForANicePlace);
+
+          expect(test.env.usageAnalytics.logSearchEvent).toHaveBeenCalledWith(
+            jasmine.objectContaining({
+              type: fakePendingSearchEvent.templateSearchEvent.actionType,
+              name: fakePendingSearchEvent.templateSearchEvent.actionCause
+            }),
+            jasmine.objectContaining({
+              baz: 'buzz'
+            })
+          );
+        });
+
+        it('should send basic event if there are none sent before the blocked query', () => {
+          triggerOnBuildingQuery();
+          test.cmp.setPosition(latitudeForANicePlace, longitudeForANicePlace);
+
+          expect(test.env.usageAnalytics.logSearchEvent).toHaveBeenCalledWith(analyticsActionCauseList.positionSet, jasmine.any(Object));
+        });
       });
     });
 
@@ -187,8 +228,8 @@ export function DistanceResourcesTest() {
     });
 
     describe('when two position providers are registered', () => {
-      const anotherProviderThatShouldNotBeUsed: IPositionProvider = {
-        getPosition: () => Promise.resolve(<IPosition>{ latitude: 0, longitude: 0 })
+      const anotherProviderThatShouldNotBeUsed: IGeolocationPositionProvider = {
+        getPosition: () => Promise.resolve(<IGeolocationPosition>{ latitude: 0, longitude: 0 })
       };
 
       beforeEach(() => {
@@ -228,6 +269,26 @@ export function DistanceResourcesTest() {
 
         test.cmp.getLastPositionRequest().then(() => {
           expect(spy).toHaveBeenCalled();
+          done();
+        });
+      });
+
+      it('should re-trigger a query when no position resolves and the cancelQueryUntilPositionResolved option is set', done => {
+        test.cmp.options.cancelQueryUntilPositionResolved = true;
+        $$(test.env.root).trigger(InitializationEvents.afterComponentsInitialization);
+        triggerOnBuildingQuery();
+        test.cmp.getLastPositionRequest().then(() => {
+          expect(test.cmp.queryController.executeQuery).toHaveBeenCalledTimes(1);
+          done();
+        });
+      });
+
+      it('should disable the component when no position resolves', done => {
+        test.cmp.options.cancelQueryUntilPositionResolved = true;
+        $$(test.env.root).trigger(InitializationEvents.afterComponentsInitialization);
+        triggerOnBuildingQuery();
+        test.cmp.getLastPositionRequest().then(() => {
+          expect(test.cmp.disabled).toBe(true);
           done();
         });
       });

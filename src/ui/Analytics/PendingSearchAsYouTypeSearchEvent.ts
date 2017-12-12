@@ -14,8 +14,8 @@ export class PendingSearchAsYouTypeSearchEvent extends PendingSearchEvent {
   public delayBeforeSending = 5000;
   public beforeResolve: Promise<PendingSearchAsYouTypeSearchEvent>;
   private beforeUnloadHandler: (...args: any[]) => void;
-  private armBatchDelay = 50;
   private toSendRightNow: () => void;
+  private queryContent = '';
 
   constructor(public root: HTMLElement, public endpoint: AnalyticsEndpoint, public templateSearchEvent: ISearchEvent, public sendToCloud) {
     super(root, endpoint, templateSearchEvent, sendToCloud);
@@ -27,18 +27,18 @@ export class PendingSearchAsYouTypeSearchEvent extends PendingSearchEvent {
   }
 
   protected handleDuringQuery(e: Event, args: IDuringQueryEventArgs) {
-    var event = _.clone(e);
+    const event = _.clone(e);
     // We need to "snapshot" the current query before the delay is applied
     // Otherwise, this means that after 5 second, the original query is possibly modified
     // For example, DidYouMean would be wrong in that case.
     const eventTarget: HTMLElement = <HTMLElement>e.target;
     const searchInterface = <SearchInterface>Component.get(eventTarget, SearchInterface);
-    const currentQueryBeforeDelay = searchInterface.queryStateModel.get(QueryStateModel.attributesEnum.q);
+    this.modifyQueryContent(searchInterface.queryStateModel.get(QueryStateModel.attributesEnum.q));
     this.beforeResolve = new Promise(resolve => {
       this.toSendRightNow = () => {
         if (!this.isCancelledOrFinished()) {
           resolve(this);
-          super.handleDuringQuery(event, args, currentQueryBeforeDelay);
+          super.handleDuringQuery(event, args, this.queryContent);
         }
       };
       _.delay(() => {
@@ -72,6 +72,10 @@ export class PendingSearchAsYouTypeSearchEvent extends PendingSearchEvent {
     this.templateSearchEvent.actionType = newCause.type;
   }
 
+  public modifyQueryContent(query: string) {
+    this.queryContent = query;
+  }
+
   public stopRecording() {
     super.stopRecording();
     if (this.beforeUnloadHandler) {
@@ -86,7 +90,6 @@ export class PendingSearchAsYouTypeSearchEvent extends PendingSearchEvent {
 
   private onWindowUnload() {
     if (!this.isCancelledOrFinished()) {
-      this.armBatchDelay = 0;
       this.sendRightNow();
     }
   }

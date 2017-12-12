@@ -1,15 +1,9 @@
 import 'styling/_SimpleFilter';
 import { IDoneBuildingQueryEventArgs, IQuerySuccessEventArgs } from '../../events/QueryEvents';
-import { ComponentOptions, IFieldOption } from '../Base/ComponentOptions';
 import * as _ from 'underscore';
-import { IGroupByRequest } from '../../rest/GroupByRequest';
 import { QueryBuilder } from '../Base/QueryBuilder';
-import { SimpleFilter } from './SimpleFilter';
-
-export interface ISimpleFilterOptions {
-  field: IFieldOption;
-  maximumNumberOfValues: number;
-}
+import { SimpleFilter, ISimpleFilterOptions } from './SimpleFilter';
+import { IGroupByRequest } from '../../rest/GroupByRequest';
 
 export class SimpleFilterValues {
   private groupByRequestValues: string[] = [];

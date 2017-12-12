@@ -1,4 +1,4 @@
-import { Template, IInstantiateTemplateOptions, DefaultInstantiateTemplateOptions, TemplateRole } from './Template';
+import { Template, IInstantiateTemplateOptions, DefaultInstantiateTemplateOptions } from './Template';
 import { UnderscoreTemplate } from './UnderscoreTemplate';
 import { TemplateCache } from './TemplateCache';
 import { IQueryResult } from '../../rest/QueryResult';

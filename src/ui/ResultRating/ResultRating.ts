@@ -27,6 +27,8 @@ export interface IResultRatingOptions {}
  * search interface is `true`, and if collaborative rating is enabled on your Coveo index.
  *
  * This component is a result template component (see [Result Templates](https://developers.coveo.com/x/aIGfAQ)).
+ *
+ * @notSupportedIn salesforcefree
  */
 export class ResultRating extends Component {
   static ID = 'ResultRating';

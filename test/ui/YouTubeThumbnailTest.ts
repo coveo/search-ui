@@ -40,6 +40,18 @@ export function YouTubeThumbnailTest() {
       expect(img.getAttribute('src')).toBe('someurl');
     });
 
+    it('should replace the image on a fail load', done => {
+      const img = $$(test.cmp.element).find('img');
+      const defaultErroHandler = img.onerror;
+      img.onerror = () => {
+        defaultErroHandler.apply(test.cmp);
+        const svg = $$(test.cmp.element).find('svg');
+        expect(svg).toBeDefined();
+        expect(svg.style.width).toEqual(test.cmp.options.width);
+        done();
+      };
+    });
+
     describe('exposes options', () => {
       it('width should allow to specify the width on the image', () => {
         test = Mock.optionsResultComponentSetup<YouTubeThumbnail, IYouTubeThumbnailOptions>(

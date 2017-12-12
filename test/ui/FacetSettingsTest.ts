@@ -93,7 +93,7 @@ export function FacetSettingsTest() {
 
     it("should show direction section if there's two linked parameters that require changing direction", () => {
       facetSettings = new FacetSettings(['alphaascending', 'alphadescending'], facet);
-      const built = facetSettings.build();
+      facetSettings.build();
       facetSettings.open();
       expect($$(facetSettings.settingsPopup).find('.coveo-facet-settings-section-direction-ascending')).not.toBeNull();
       expect($$(facetSettings.settingsPopup).find('.coveo-facet-settings-section-direction-descending')).not.toBeNull();
@@ -101,7 +101,7 @@ export function FacetSettingsTest() {
 
     it("should not show direction section if there's a single ascending or descending parameter", () => {
       facetSettings = new FacetSettings(['alphaascending'], facet);
-      const built = facetSettings.build();
+      facetSettings.build();
       facetSettings.open();
       expect($$(facetSettings.settingsPopup).find('.coveo-facet-settings-section-direction-ascending')).toBeNull();
       expect($$(facetSettings.settingsPopup).find('.coveo-facet-settings-section-direction-descending')).toBeNull();
@@ -109,7 +109,7 @@ export function FacetSettingsTest() {
 
     it("should not show direction section if there's two parameters allowing changing direction, but both parameters are not linked", () => {
       facetSettings = new FacetSettings(['alphaascending', 'computedfieldascending'], facet);
-      const built = facetSettings.build();
+      facetSettings.build();
       facetSettings.open();
       expect($$(facetSettings.settingsPopup).find('.coveo-facet-settings-section-direction-ascending')).toBeNull();
       expect($$(facetSettings.settingsPopup).find('.coveo-facet-settings-section-direction-descending')).toBeNull();
@@ -117,7 +117,7 @@ export function FacetSettingsTest() {
 
     it('should activate direction section when selecting a sort item with a possible direction', () => {
       facetSettings = new FacetSettings(['score', 'alphaascending', 'alphadescending'], facet);
-      const built = facetSettings.build();
+      facetSettings.build();
       facetSettings.open();
       let ascendingSection = $$(facetSettings.settingsPopup).find('.coveo-facet-settings-item[data-direction="ascending"]');
       expect($$(ascendingSection).hasClass('coveo-selected')).toBe(false);
@@ -127,7 +127,7 @@ export function FacetSettingsTest() {
 
     it('should de-activate direction section when selecting a sort item with no possible direction', () => {
       facetSettings = new FacetSettings(['alphaascending', 'alphadescending', 'score'], facet);
-      const built = facetSettings.build();
+      facetSettings.build();
       facetSettings.open();
       let ascendingSection = $$(facetSettings.settingsPopup).find('.coveo-facet-settings-item[data-direction="ascending"]');
       expect($$(ascendingSection).hasClass('coveo-selected')).toBe(true);

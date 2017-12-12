@@ -33,6 +33,7 @@ import { StandaloneSearchInterface } from '../SearchInterface/SearchInterface';
 import * as _ from 'underscore';
 import { exportGlobally } from '../../GlobalExports';
 import 'styling/_Omnibox';
+import { logSearchBoxSubmitEvent } from '../Analytics/SharedAnalyticsCalls';
 
 export interface IOmniboxSuggestion extends Coveo.MagicBox.Suggestion {
   executableConfidence?: number;
@@ -276,8 +277,9 @@ export class Omnibox extends Component {
     this.magicBox.clearSuggestion();
     this.updateQueryState();
     this.triggerNewQuery(false, () => {
-      this.usageAnalytics.logSearchEvent<IAnalyticsNoMeta>(analyticsActionCauseList.searchboxSubmit, {});
+      logSearchBoxSubmitEvent(this.usageAnalytics);
     });
+    this.magicBox.blur();
   }
 
   /**
@@ -407,7 +409,7 @@ export class Omnibox extends Component {
 
     this.magicBox.onchange = () => {
       this.skipAutoSuggest = false;
-      let text = this.getText();
+      const text = this.getText();
       if (text != undefined && text != '') {
         if (this.isAutoSuggestion()) {
           if (this.movedOnce) {
@@ -424,18 +426,11 @@ export class Omnibox extends Component {
     if (this.options.placeholder) {
       (<HTMLInputElement>this.magicBox.element.querySelector('input')).placeholder = this.options.placeholder;
     }
-    this.magicBox.onsubmit = () => {
-      this.magicBox.clearSuggestion();
-      this.updateQueryState();
-      this.triggerNewQuery(false, () => {
-        this.usageAnalytics.logSearchEvent<IAnalyticsNoMeta>(analyticsActionCauseList.searchboxSubmit, {});
-      });
-      this.magicBox.blur();
-    };
+    this.magicBox.onsubmit = () => this.submit();
 
     this.magicBox.onselect = (suggestion: IOmniboxSuggestion) => {
-      let index = _.indexOf(this.lastSuggestions, suggestion);
-      let suggestions = _.compact(_.map(this.lastSuggestions, suggestion => suggestion.text));
+      const index = _.indexOf(this.lastSuggestions, suggestion);
+      const suggestions = _.compact(_.map(this.lastSuggestions, suggestion => suggestion.text));
       this.magicBox.clearSuggestion();
       this.updateQueryState();
       // A bit tricky here : When it's machine learning auto suggestions
@@ -511,6 +506,7 @@ export class Omnibox extends Component {
       // modify the pending event, then send the newly modified analytics event immediately.
       this.modifyEventTo = this.getOmniboxAnalyticsEventCause();
       this.modifyCustomDataOnPending(index, suggestions);
+      this.modifyQueryContentOnPending();
       this.usageAnalytics.sendAllPendingEvents();
     }
   }
@@ -537,6 +533,7 @@ export class Omnibox extends Component {
       // modify the analytics event, and send it.
       this.modifyEventTo = this.getOmniboxAnalyticsEventCause();
       this.modifyCustomDataOnPending(index, suggestions);
+      this.modifyQueryContentOnPending();
       this.usageAnalytics.sendAllPendingEvents();
 
       // This should happen if :
@@ -556,12 +553,20 @@ export class Omnibox extends Component {
   }
 
   private modifyCustomDataOnPending(index: number, suggestions: string[]) {
-    let pendingEvt = this.usageAnalytics.getPendingSearchEvent();
+    const pendingEvt = this.usageAnalytics.getPendingSearchEvent();
     if (pendingEvt instanceof PendingSearchAsYouTypeSearchEvent) {
-      let newCustomData = this.buildCustomDataForPartialQueries(index, suggestions);
+      const newCustomData = this.buildCustomDataForPartialQueries(index, suggestions);
       _.each(_.keys(newCustomData), (k: string) => {
         (<PendingSearchAsYouTypeSearchEvent>pendingEvt).modifyCustomData(k, newCustomData[k]);
       });
+    }
+  }
+
+  private modifyQueryContentOnPending() {
+    const pendingEvt = this.usageAnalytics.getPendingSearchEvent();
+    if (pendingEvt instanceof PendingSearchAsYouTypeSearchEvent) {
+      const queryContent = this.getQuery(this.options.enableSearchAsYouType);
+      pendingEvt.modifyQueryContent(queryContent);
     }
   }
 
@@ -589,11 +594,11 @@ export class Omnibox extends Component {
     });
 
     // Reduce right to get the last X words that adds to less then rejectLength
-    let reducedToRejectLengthOrLess = [];
+    const reducedToRejectLengthOrLess = [];
     _.reduceRight(
       toClean,
       (memo: number, partial: string) => {
-        let totalSoFar = memo + partial.length;
+        const totalSoFar = memo + partial.length;
         if (totalSoFar <= rejectLength) {
           reducedToRejectLengthOrLess.push(partial);
         }
@@ -602,7 +607,7 @@ export class Omnibox extends Component {
       0
     );
     toClean = reducedToRejectLengthOrLess.reverse();
-    let ret = toClean.join(';');
+    const ret = toClean.join(';');
 
     // analytics service can store max 256 char in a custom event
     // if we're over that, call cleanup again with an arbitrary 10 less char accepted
@@ -614,12 +619,12 @@ export class Omnibox extends Component {
   }
 
   private handleSuggestions() {
-    let suggestionsEventArgs: IPopulateOmniboxSuggestionsEventArgs = {
+    const suggestionsEventArgs: IPopulateOmniboxSuggestionsEventArgs = {
       suggestions: [],
       omnibox: this
     };
     this.bind.trigger(this.element, OmniboxEvents.populateOmniboxSuggestions, suggestionsEventArgs);
-    let text = this.getText();
+    const text = this.getText();
     if (!Utils.isNullOrEmptyString(text)) {
       this.partialQueries.push(text);
     }
@@ -636,23 +641,23 @@ export class Omnibox extends Component {
     this.updateQueryState();
     this.lastQuery = this.getQuery(data.searchAsYouType);
 
-    let result: Coveo.MagicBox.Result =
+    const result: Coveo.MagicBox.Result =
       this.lastQuery == this.magicBox.getDisplayedResult().input
         ? this.magicBox.getDisplayedResult().clone()
         : this.magicBox.grammar.parse(this.lastQuery).clean();
-    let preprocessResultForQueryArgs: IOmniboxPreprocessResultForQueryEventArgs = {
+    const preprocessResultForQueryArgs: IOmniboxPreprocessResultForQueryEventArgs = {
       result: result
     };
 
     if (this.options.enableQuerySyntax) {
-      let notQuotedValues = preprocessResultForQueryArgs.result.findAll('FieldValueNotQuoted');
+      const notQuotedValues = preprocessResultForQueryArgs.result.findAll('FieldValueNotQuoted');
       _.each(notQuotedValues, (value: Coveo.MagicBox.Result) => (value.value = '"' + value.value.replace(/"|\u00A0/g, ' ') + '"'));
       if (this.options.fieldAlias) {
-        let fieldNames = preprocessResultForQueryArgs.result.findAll(
+        const fieldNames = preprocessResultForQueryArgs.result.findAll(
           (result: Coveo.MagicBox.Result) => result.expression.id == 'FieldName' && result.isSuccess()
         );
         _.each(fieldNames, (result: Coveo.MagicBox.Result) => {
-          let alias = _.find(_.keys(this.options.fieldAlias), (alias: string) => alias.toLowerCase() == result.value.toLowerCase());
+          const alias = _.find(_.keys(this.options.fieldAlias), (alias: string) => alias.toLowerCase() == result.value.toLowerCase());
           if (alias != null) {
             result.value = <string>this.options.fieldAlias[alias];
           }
@@ -661,7 +666,7 @@ export class Omnibox extends Component {
     }
 
     this.bind.trigger(this.element, OmniboxEvents.omniboxPreprocessResultForQuery, preprocessResultForQueryArgs);
-    let query = preprocessResultForQueryArgs.result.toString();
+    const query = preprocessResultForQueryArgs.result.toString();
     new QueryboxQueryParameters(this.options).addParameters(data.queryBuilder, query);
   }
 
@@ -675,7 +680,7 @@ export class Omnibox extends Component {
 
   private handleTabPressForSuggestions() {
     if (!this.options.enableSearchAsYouType) {
-      let suggestions = _.compact(_.map(this.lastSuggestions, suggestion => suggestion.text));
+      const suggestions = _.compact(_.map(this.lastSuggestions, suggestion => suggestion.text));
       this.usageAnalytics.logCustomEvent(
         this.getOmniboxAnalyticsEventCause(),
         this.buildCustomDataForPartialQueries(0, suggestions),
@@ -686,8 +691,8 @@ export class Omnibox extends Component {
 
   private handleTabPressForOldOmniboxAddon() {
     if (this.lastSuggestions && this.lastSuggestions[0] && this.lastSuggestions[0].dom) {
-      let firstSelected = $$(this.lastSuggestions[0].dom).find('.coveo-omnibox-selected');
-      let firstSelectable = $$(this.lastSuggestions[0].dom).find('.coveo-omnibox-selectable');
+      const firstSelected = $$(this.lastSuggestions[0].dom).find('.coveo-omnibox-selected');
+      const firstSelectable = $$(this.lastSuggestions[0].dom).find('.coveo-omnibox-selectable');
       if (firstSelected) {
         $$(firstSelected).trigger('tabSelect');
       } else if (firstSelectable) {
@@ -698,7 +703,7 @@ export class Omnibox extends Component {
 
   private triggerNewQuery(searchAsYouType: boolean, analyticsEvent: () => void) {
     clearTimeout(this.searchAsYouTypeTimeout);
-    let text = this.getQuery(searchAsYouType);
+    const text = this.getQuery(searchAsYouType);
     if (this.shouldExecuteQuery(searchAsYouType)) {
       this.lastQuery = text;
       analyticsEvent();
@@ -714,7 +719,7 @@ export class Omnibox extends Component {
     if (searchAsYouType) {
       query = this.magicBox.getWordCompletion();
       if (query == null && this.lastSuggestions != null && this.lastSuggestions.length > 0) {
-        let textSuggestion = _.find(this.lastSuggestions, (suggestion: IOmniboxSuggestion) => suggestion.text != null);
+        const textSuggestion = _.find(this.lastSuggestions, (suggestion: IOmniboxSuggestion) => suggestion.text != null);
         if (textSuggestion != null) {
           query = textSuggestion.text;
         }
@@ -729,7 +734,7 @@ export class Omnibox extends Component {
 
   private handleQueryStateChanged(args: IAttributeChangedEventArg) {
     Assert.exists(args);
-    let q = <string>args.value;
+    const q = <string>args.value;
     if (q != this.magicBox.getText()) {
       this.magicBox.setText(q);
     }
@@ -745,7 +750,7 @@ export class Omnibox extends Component {
     // When the query results returns ... (args.promise)
     args.promise.then(() => {
       // Get a handle on a pending search as you type (those events are delayed, not sent instantly)
-      let pendingEvent = this.usageAnalytics.getPendingSearchEvent();
+      const pendingEvent = this.usageAnalytics.getPendingSearchEvent();
       if (pendingEvent instanceof PendingSearchAsYouTypeSearchEvent) {
         (<PendingSearchAsYouTypeSearchEvent>pendingEvent).beforeResolve.then(evt => {
           // Check if we need to modify the event type beforeResolving it
@@ -765,8 +770,8 @@ export class Omnibox extends Component {
     if (this.shouldExecuteQuery(true)) {
       this.searchAsYouTypeTimeout = setTimeout(() => {
         if (this.suggestionShouldTriggerQuery() || forceExecuteQuery) {
-          let suggestions = _.map(this.lastSuggestions, suggestion => suggestion.text);
-          let index = _.indexOf(suggestions, this.magicBox.getWordCompletion());
+          const suggestions = _.map(this.lastSuggestions, suggestion => suggestion.text);
+          const index = _.indexOf(suggestions, this.magicBox.getWordCompletion());
           this.triggerNewQuery(true, () => {
             this.usageAnalytics.logSearchAsYouType<IAnalyticsOmniboxSuggestionMeta>(
               analyticsActionCauseList.searchboxAsYouType,
@@ -784,14 +789,14 @@ export class Omnibox extends Component {
   }
 
   private shouldExecuteQuery(searchAsYouType: boolean) {
-    let text = this.getQuery(searchAsYouType);
+    const text = this.getQuery(searchAsYouType);
     return this.lastQuery != text && text != null;
   }
 
   private suggestionShouldTriggerQuery(suggestions = this.lastSuggestions) {
     if (this.shouldExecuteQuery(true)) {
       if (suggestions && suggestions[0]) {
-        let suggestion = suggestions[0];
+        const suggestion = suggestions[0];
         // If we have access to a confidence level, return true if we are equal or above the minimum confidence level.
         if (suggestion && suggestion.executableConfidence != undefined) {
           return suggestion.executableConfidence >= MINIMUM_EXECUTABLE_CONFIDENCE;

@@ -2,12 +2,12 @@ import { $$ } from '../../utils/Dom';
 import {
   DistanceEvents,
   IResolvingPositionEventArgs,
-  IPosition,
-  IPositionProvider,
+  IGeolocationPosition,
+  IGeolocationPositionProvider,
   IPositionResolvedEventArgs
 } from '../../events/DistanceEvents';
 
-import { analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
+import { analyticsActionCauseList, IAnalyticsActionCause } from '../Analytics/AnalyticsActionListMeta';
 import { Component } from '../Base/Component';
 import { IFieldOption, ComponentOptions } from '../Base/ComponentOptions';
 import { IComponentBindings } from '../Base/ComponentBindings';
@@ -20,6 +20,7 @@ import { exportGlobally } from '../../GlobalExports';
 import { NavigatorPositionProvider } from './NavigatorPositionProvider';
 import { GoogleApiPositionProvider } from './GoogleApiPositionProvider';
 import { StaticPositionProvider } from './StaticPositionProvider';
+import { PendingSearchEvent } from '../Analytics/PendingSearchEvent';
 
 export interface IDistanceOptions {
   distanceField: IFieldOption;
@@ -52,8 +53,9 @@ export class DistanceResources extends Component {
   };
   private latitude: number;
   private longitude: number;
-  private lastPositionRequest: Promise<IPosition | void>;
-  private isPositionSet = false;
+  private lastPositionRequest: Promise<IGeolocationPosition | void>;
+  private isFirstPositionResolved = false;
+  private pendingSearchEventOnCancellation: PendingSearchEvent;
 
   /**
    * The possible options for a DistanceResources.
@@ -213,6 +215,7 @@ export class DistanceResources extends Component {
    * @param longitude The longitude to set.
    */
   public setPosition(latitude: number, longitude: number): void {
+    this.enable();
     this.latitude = latitude;
     this.longitude = longitude;
 
@@ -226,26 +229,40 @@ export class DistanceResources extends Component {
     this.bind.trigger(this.element, DistanceEvents.onPositionResolved, args);
 
     const shouldTriggerQuery = this.shouldTriggerQueryWhenPositionSet();
-    this.isPositionSet = true;
+    this.isFirstPositionResolved = true;
     if (shouldTriggerQuery) {
-      this.usageAnalytics.logSearchEvent(analyticsActionCauseList.positionSet, {});
-      this.queryController.executeQuery();
+      this.executeQuery();
     }
-  }
-
-  private shouldTriggerQueryWhenPositionSet() {
-    // If query has been cancelled, we need to trigger the first one.
-    const triggerFirstQueryWithPosition = this.options.cancelQueryUntilPositionResolved && !this.isPositionSet;
-    return this.options.triggerNewQueryOnNewPosition || triggerFirstQueryWithPosition;
   }
 
   /**
    * Returns a promise of the last position resolved using the registered position providers.
    *
-   * @returns {Promise<IPosition>} A promise of the last resolved position value.
+   * @returns {Promise<IGeolocationPosition>} A promise of the last resolved position value.
    */
-  public getLastPositionRequest(): Promise<IPosition> {
+  public getLastPositionRequest(): Promise<IGeolocationPosition> {
     return this.lastPositionRequest || Promise.reject('No position request was executed yet.');
+  }
+
+  private executeQuery() {
+    // Since this DistanceResource component often blocks initial queries,
+    // and relaunch the query automatically when it is able to do so (when a position provider resolves)
+    // we need to have a mechanism to still log something useful for usage analytics, instead of always a "position set".
+    // We want it to be "interface load" on a direct page access, or a "search from link" if coming from an external standalone search box
+    // Everytime this component blocks a query, we keep a copy of the pending search event, and resend this instead of a generic "position set" event.
+    if (this.pendingSearchEventOnCancellation) {
+      this.usageAnalytics.logSearchEvent(this.getPendingEventOnCancellation(), this.pendingSearchEventOnCancellation.getEventMeta());
+      delete this.pendingSearchEventOnCancellation;
+    } else {
+      this.usageAnalytics.logSearchEvent(analyticsActionCauseList.positionSet, {});
+    }
+    this.queryController.executeQuery();
+  }
+
+  private shouldTriggerQueryWhenPositionSet() {
+    // If query has been cancelled, we need to trigger the first one.
+    const triggerFirstQueryWithPosition = this.options.cancelQueryUntilPositionResolved && !this.isFirstPositionResolved;
+    return this.options.triggerNewQueryOnNewPosition || triggerFirstQueryWithPosition;
   }
 
   private onAfterComponentsInitialization(): void {
@@ -270,8 +287,8 @@ export class DistanceResources extends Component {
       });
   }
 
-  private getProvidersFromOptions(): IPositionProvider[] {
-    const providers: IPositionProvider[] = [];
+  private getProvidersFromOptions(): IGeolocationPositionProvider[] {
+    const providers: IGeolocationPositionProvider[] = [];
 
     if (this.options.useNavigator) {
       providers.push(new NavigatorPositionProvider());
@@ -288,8 +305,8 @@ export class DistanceResources extends Component {
     return providers;
   }
 
-  private tryGetPositionFromProviders(providers: IPositionProvider[]): Promise<IPosition> {
-    return new Promise<IPosition>((resolve, reject) => {
+  private tryGetPositionFromProviders(providers: IGeolocationPositionProvider[]): Promise<IGeolocationPosition> {
+    return new Promise<IGeolocationPosition>((resolve, reject) => {
       const tryNextProvider = () => {
         if (providers.length > 0) {
           const provider = providers.shift();
@@ -315,16 +332,18 @@ export class DistanceResources extends Component {
   }
 
   private triggerDistanceNotSet(): void {
-    this.isPositionSet = false;
+    this.isFirstPositionResolved = true;
     this.logger.warn(
       `None of the given position providers could resolve the current position. The distance field will not be calculated and the distance components will be disabled until the next call to 'setPosition'.`
     );
     this.bind.trigger(this.element, DistanceEvents.onPositionNotResolved, {});
+    this.disable();
+    this.executeQuery();
   }
 
   private registerDistanceQuery(): void {
     this.bind.onRootElement(QueryEvents.buildingQuery, (args: IBuildingQueryEventArgs) => {
-      if (this.isPositionSet) {
+      if (this.isFirstPositionResolved) {
         if (args && args.queryBuilder) {
           const geoQueryFunction: IQueryFunction = {
             function: this.getConvertedUnitsFunction(
@@ -336,6 +355,7 @@ export class DistanceResources extends Component {
           this.enableDistanceComponents();
         }
       } else if (this.options.cancelQueryUntilPositionResolved) {
+        this.pendingSearchEventOnCancellation = this.usageAnalytics.getPendingSearchEvent();
         this.logger.info('Query cancelled, waiting for position.');
         args.cancel = true;
       }
@@ -360,6 +380,13 @@ export class DistanceResources extends Component {
 
   private getConvertedUnitsFunction(queryFunction: string): string {
     return `${queryFunction}/${this.options.unitConversionFactor}`;
+  }
+
+  private getPendingEventOnCancellation(): IAnalyticsActionCause {
+    return <IAnalyticsActionCause>{
+      name: this.pendingSearchEventOnCancellation.templateSearchEvent.actionCause,
+      type: this.pendingSearchEventOnCancellation.templateSearchEvent.actionType
+    };
   }
 }
 

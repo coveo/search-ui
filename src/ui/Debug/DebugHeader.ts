@@ -5,9 +5,9 @@ import { TextInput } from '../FormWidgets/TextInput';
 import { $$, Dom } from '../../utils/Dom';
 import { ResultListEvents, IDisplayedNewResultEventArgs } from '../../events/ResultListEvents';
 import { QueryEvents, IDoneBuildingQueryEventArgs } from '../../events/QueryEvents';
-import { InitializationEvents } from '../../events/InitializationEvents';
 import { stringify } from 'circular-json';
 import * as _ from 'underscore';
+import { Utils } from '../../utils/Utils';
 
 export class DebugHeader {
   private debug = false;
@@ -112,9 +112,11 @@ export class DebugHeader {
   private buildEnableQuerySyntaxCheckbox() {
     const checkbox = new Checkbox(checkboxInstance => {
       this.enableQuerySyntax = checkboxInstance.isSelected();
+
       this.bindings.componentOptionsModel.set(COMPONENT_OPTIONS_ATTRIBUTES.SEARCH_BOX, {
         enableQuerySyntax: this.enableQuerySyntax
       });
+
       this.bindings.queryController.executeQuery({
         closeModalBox: false
       });
@@ -160,6 +162,6 @@ export class DebugHeader {
         toDownload[key] = _.omit(info, 'state', 'searchInterface');
       }
     });
-    return 'data:text/json;charset=utf-8,' + encodeURIComponent(stringify(toDownload));
+    return 'data:text/json;charset=utf-8,' + Utils.safeEncodeURIComponent(stringify(toDownload));
   }
 }

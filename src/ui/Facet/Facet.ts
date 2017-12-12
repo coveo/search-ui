@@ -11,7 +11,6 @@ import { FacetSort } from './FacetSort';
 import { FacetValuesList } from './FacetValuesList';
 import { FacetHeader } from './FacetHeader';
 import { FacetUtils } from './FacetUtils';
-import { InitializationEvents } from '../../events/InitializationEvents';
 import { QueryEvents, INewQueryEventArgs, IQuerySuccessEventArgs, IDoneBuildingQueryEventArgs } from '../../events/QueryEvents';
 import { Assert } from '../../misc/Assert';
 import { ISearchEndpoint } from '../../rest/SearchEndpointInterface';
@@ -298,6 +297,7 @@ export class Facet extends Component {
      * facet values. Increasing this value enhances the accuracy of the listed values at the cost of performance.
      *
      * Default value is `1000`. Minimum value is `0`.
+     * @notSupportedIn salesforcefree
      */
     injectionDepth: ComponentOptions.buildNumberOption({ defaultValue: 1000, min: 0 }),
 
@@ -445,6 +445,7 @@ export class Facet extends Component {
      * Works in conjunction with the [`computedFieldOperation`]{@link Facet.options.computedFieldOperation},
      * [`computedFieldFormat`]{@link Facet.options.computedFieldFormat}, and
      * [`computedFieldCaption`]{@link Facet.options.computedFieldCaption} options.
+     * @notSupportedIn salesforcefree
      */
     computedField: ComponentOptions.buildFieldOption({ section: 'ComputedField', priority: 7 }),
 
@@ -458,6 +459,7 @@ export class Facet extends Component {
      * - `maximum` - Finds the maximum value of the computed field values.
      *
      * Default value is `sum`.
+     * @notSupportedIn salesforcefree
      */
     computedFieldOperation: ComponentOptions.buildStringOption({ defaultValue: 'sum', section: 'ComputedField' }),
 
@@ -474,6 +476,7 @@ export class Facet extends Component {
      * - `n2` - Formats the value as a floating point with 2 decimal digits.
      *
      * Default value is `"c0"`.
+     * @notSupportedIn salesforcefree
      */
     computedFieldFormat: ComponentOptions.buildStringOption({ defaultValue: 'c0', section: 'ComputedField' }),
 
@@ -487,6 +490,7 @@ export class Facet extends Component {
      * > The [`FacetRange`]{@link FacetRange} component does not support this option.
      *
      * Default value is the localized string for `ComputedField`.
+     * @notSupportedIn salesforcefree
      */
     computedFieldCaption: ComponentOptions.buildLocalizedStringOption({
       defaultValue: l('ComputedField'),
@@ -604,6 +608,7 @@ export class Facet extends Component {
      * [`GroupByRequest`]{@link IGroupByRequest} that this facet performs.
      *
      * Example: `@date>=2014/01/01`
+     * @notSupportedIn salesforcefree
      */
     additionalFilter: ComponentOptions.buildStringOption({ section: 'Filtering' }),
 
@@ -678,7 +683,7 @@ export class Facet extends Component {
      * **Note:**
      * > Using value captions will disable alphabetical sorts (see the [availableSorts]{@link Facet.options.availableSorts} option).
      */
-    valueCaption: ComponentOptions.buildJsonObjectOption<IStringMap<string>>(),
+    valueCaption: ComponentOptions.buildJsonOption<IStringMap<string>>(),
 
     /**
      * Specifies whether to enable *responsive mode* for facets. Setting this options to `false` on any `Facet`, or
@@ -754,8 +759,6 @@ export class Facet extends Component {
   private excludedAttributeId: string;
   private lookupValueAttributeId: string;
   private listenToQueryStateChange = true;
-
-  private resize: (...args: any[]) => void;
 
   /**
    * Creates a new `Facet` component. Binds multiple query events as well.
@@ -1241,10 +1244,22 @@ export class Facet extends Component {
     this.updateVisibilityBasedOnDependsOn();
     const groupByResult = data.results.groupByResults[this.facetQueryController.lastGroupByRequestIndex];
     this.facetQueryController.lastGroupByResult = groupByResult;
+    // Two corner case to handle regarding the "sticky" aspect of facets :
+    // 1) The group by is empty (so there is nothing to "sticky")
+    // 2) There is only one value displayed currently, so there is nothing to "sticky" either
     if (!groupByResult) {
       this.keepDisplayedValuesNextTime = false;
     }
+    if (this.values.getAll().length == 1) {
+      this.keepDisplayedValuesNextTime = false;
+    }
     this.processNewGroupByResults(groupByResult);
+  }
+
+  protected handleQueryError() {
+    this.updateValues(new FacetValues());
+    this.updateAppearanceDependingOnState();
+    this.hideWaitingAnimation();
   }
 
   protected handlePopulateBreadcrumb(args: IPopulateBreadcrumbEventArgs) {
@@ -1316,6 +1331,7 @@ export class Facet extends Component {
     this.bind.onRootElement(QueryEvents.buildingQuery, (args: IDoneBuildingQueryEventArgs) => this.handleBuildingQuery(args));
     this.bind.onRootElement(QueryEvents.doneBuildingQuery, (args: IDoneBuildingQueryEventArgs) => this.handleDoneBuildingQuery(args));
     this.bind.onRootElement(QueryEvents.deferredQuerySuccess, (args: IQuerySuccessEventArgs) => this.handleDeferredQuerySuccess(args));
+    this.bind.onRootElement(QueryEvents.queryError, () => this.handleQueryError());
   }
 
   protected initQueryStateEvents() {
@@ -1393,7 +1409,7 @@ export class Facet extends Component {
         })
       );
     } else if (this.values.getSelected().length > 0 && !this.options.useAnd) {
-      this.values.updateDeltaWithFilteredFacetValues(new FacetValues());
+      this.values.updateDeltaWithFilteredFacetValues(new FacetValues(), this.options.isMultiValueField);
     }
     if (!this.values.hasSelectedOrExcludedValues() || this.options.useAnd || !this.options.isMultiValueField) {
       this.rebuildValueElements();
@@ -1880,16 +1896,13 @@ export class Facet extends Component {
           this.triggerUpdateDeltaQuery(
             _.filter(this.values.getAll(), (facetValue: FacetValue) => !facetValue.selected && !facetValue.excluded)
           );
+        } else if (this.values.hasSelectedOrExcludedValues() && !this.options.useAnd) {
+          this.values.updateDeltaWithFilteredFacetValues(new FacetValues(), this.options.isMultiValueField);
+          this.hideWaitingAnimation();
         } else {
-          if (this.values.hasSelectedOrExcludedValues() && !this.options.useAnd) {
-            this.values.updateDeltaWithFilteredFacetValues(new FacetValues());
-            this.hideWaitingAnimation();
-          } else {
-            this.hideWaitingAnimation();
-          }
-
-          this.rebuildValueElements();
+          this.hideWaitingAnimation();
         }
+        this.rebuildValueElements();
       })
       .catch(() => this.hideWaitingAnimation());
   }
@@ -1905,7 +1918,8 @@ export class Facet extends Component {
           }
         });
       });
-      this.values.updateDeltaWithFilteredFacetValues(values);
+      this.values.updateDeltaWithFilteredFacetValues(values, this.options.isMultiValueField);
+      this.cleanupDeltaValuesForMultiValueField();
       this.rebuildValueElements();
       this.hideWaitingAnimation();
     });
@@ -1941,6 +1955,19 @@ export class Facet extends Component {
       minValue = lastSelectedValueIndex + 1;
     }
     return Math.max(minValue, this.options.numberOfValues);
+  }
+
+  private cleanupDeltaValuesForMultiValueField() {
+    // On a multi value field, it's possible to end up in a scenario where many of the current values are empty
+    // Crop those out, and adjust the nbAvailable values for the "search" and "show more";
+    if (this.options.isMultiValueField) {
+      _.each(this.values.getAll(), v => {
+        if (v.occurrences == 0) {
+          this.values.remove(v.value);
+        }
+      });
+      this.nbAvailableValues = this.values.getAll().length;
+    }
   }
 
   private updateVisibilityBasedOnDependsOn() {

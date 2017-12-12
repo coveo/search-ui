@@ -211,6 +211,20 @@ export function FacetTest() {
       });
     });
 
+    describe('on a query error', () => {
+      it('should hide the waiting animation', () => {
+        spyOn(test.cmp, 'hideWaitingAnimation');
+        Simulate.queryError(test.env);
+        expect(test.cmp.hideWaitingAnimation).toHaveBeenCalledTimes(1);
+      });
+
+      it('should update the appearance based on the new empty values', () => {
+        Simulate.queryError(test.env);
+        expect($$(test.cmp.element).hasClass('coveo-facet-empty')).toBeTruthy();
+        expect(test.cmp.getDisplayedFacetValues().length).toBe(0);
+      });
+    });
+
     describe('exposes options', () => {
       it('title should set the title', () => {
         test = Mock.optionsComponentSetup<Facet, IFacetOptions>(Facet, {

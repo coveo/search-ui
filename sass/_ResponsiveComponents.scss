@@ -1,8 +1,9 @@
-@import "Variables";
-@import "mixins/mediaQuery";
+@import 'Variables';
+@import 'mixins/mediaQuery';
 
-.CoveoSearchInterface.coveo-small-tabs, .CoveoSearchInterface.coveo-small-facets, .CoveoSearchInterface.coveo-small-recommendation {
-
+.CoveoSearchInterface.coveo-small-tabs,
+.CoveoSearchInterface.coveo-small-facets,
+.CoveoSearchInterface.coveo-small-recommendation {
   .coveo-dropdown-content {
     padding: 0;
   }
@@ -61,7 +62,7 @@
 
 .coveo-dropdown-background {
   @include transition-property(opacity);
-  @include transition-duration(0.300s);
+  @include transition-duration(0.3s);
   background: $color-transparent-background;
   opacity: 0;
   position: fixed;
@@ -72,14 +73,14 @@
   z-index: 15;
 }
 
-@include mediaSelector(480) {
+@include smallScreenWidth {
   .CoveoSearchInterface {
     .coveo-tab-section {
       background-color: $color-blueish-white;
     }
 
     .CoveoSearchbox {
-      max-width: 800px;
+      max-width: $medium_screen_width + unquote('px');
       margin-right: 50px;
     }
 

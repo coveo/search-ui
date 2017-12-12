@@ -1,10 +1,18 @@
-export interface IPosition {
+/**
+ * The `IGeolocationPosition` interface describes a geolocation position
+ * usable by the [DistanceResources]{@link DistanceResources} component.
+ */
+export interface IGeolocationPosition {
   longitude: number;
   latitude: number;
 }
 
-export interface IPositionProvider {
-  getPosition(): Promise<IPosition>;
+/**
+ * The `IGeolocationPositionProvider` interface describes an object with a method that can provide
+ * a geolocation position to the [DistanceResources]{@link DistanceResources} component.
+ */
+export interface IGeolocationPositionProvider {
+  getPosition(): Promise<IGeolocationPosition>;
 }
 
 /**
@@ -15,7 +23,7 @@ export interface IResolvingPositionEventArgs {
   /**
    * The array of providers that can provide a position. The first provider that can resolve the position will be used.
    */
-  providers: IPositionProvider[];
+  providers: IGeolocationPositionProvider[];
 }
 
 /**
@@ -26,7 +34,7 @@ export interface IPositionResolvedEventArgs {
   /**
    * The position that was resolved.
    */
-  position: IPosition;
+  position: IGeolocationPosition;
 }
 
 /**

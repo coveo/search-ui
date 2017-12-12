@@ -50,13 +50,25 @@
 #coveo-recommendation-results-column, .coveo-recommendation-results-column, .CoveoSearchInterface .coveo-recommendation-results-column {
   width: 49%;
   display: inline-block;
+  &.coveo-no-results {
+    width: inherit;
+    display: block;
+  }
 }
 
 #coveo-recommendation-facet-column, .coveo-recommendation-facet-column, .CoveoSearchInterface .coveo-recommendation-facet-column {
   display: inline-block;
   vertical-align: top;
+  &.coveo-no-results {
+    display: none;
+  }
 }
 
 #coveo-recommendation-main-section, .coveo-recommendation-main-section, .CoveoSearchInterface .coveo-recommendation-main-section {
   max-width: 1450px;
+  &.coveo-no-results {
+    .coveo-recommendation-column {
+      display: none;
+    }
+  }
 }

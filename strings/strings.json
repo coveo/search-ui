@@ -7299,5 +7299,9 @@
   "CoveoOrganization": {
     "en": "Coveo Organization",
     "fr": "Organisation Coveo"
+  },
+  "SearchAPIDuration": {
+    "en": "Search API Duration: {0}",
+    "fr": "Durée de l'API de recherche : {0}"
   }
 }

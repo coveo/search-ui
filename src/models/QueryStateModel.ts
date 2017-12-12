@@ -114,7 +114,7 @@ export class QueryStateModel extends Model {
   public atLeastOneFacetIsActive() {
     return !_.isUndefined(
       _.find(this.attributes, (value, key: any) => {
-        return key.indexOf('f:') == 0 && Utils.isNonEmptyArray(value);
+        return key.indexOf('f:') == 0 && !Utils.arrayEqual(this.getDefault(key), value);
       })
     );
   }

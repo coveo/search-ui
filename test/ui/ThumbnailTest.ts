@@ -1,11 +1,10 @@
 import * as Mock from '../MockEnvironment';
 import { Thumbnail } from '../../src/ui/Thumbnail/Thumbnail';
 import { SearchEndpoint } from '../../src/rest/SearchEndpoint';
-import { IQueryResult } from '../../src/rest/QueryResult';
 import { IThumbnailOptions } from '../../src/ui/Thumbnail/Thumbnail';
 import { $$ } from '../../src/utils/Dom';
 import { FieldTable } from '../../src/ui/FieldTable/FieldTable';
-import { get, result } from '../../src/ui/Base/RegisteredNamedMethods';
+import { get } from '../../src/ui/Base/RegisteredNamedMethods';
 import { ResultLink } from '../../src/ui/ResultLink/ResultLink';
 import { Component } from '../../src/ui/Base/Component';
 import { MockEnvironmentBuilder } from '../MockEnvironment';

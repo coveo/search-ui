@@ -27,6 +27,7 @@ import * as _ from 'underscore';
 import { shim } from '../misc/PromisesShim';
 import { history } from 'coveo.analytics';
 import { Cookie } from '../utils/CookieUtils';
+import { TimeSpan } from '../UtilsModules';
 shim();
 
 export class DefaultSearchEndpointOptions implements ISearchEndpointOptions {
@@ -286,9 +287,9 @@ export class SearchEndpoint implements ISearchEndpoint {
     callParams.url += provider + '?';
 
     if (Utils.isNonEmptyString(returnUri)) {
-      callParams.url += 'redirectUri=' + encodeURIComponent(returnUri) + '&';
+      callParams.url += 'redirectUri=' + Utils.safeEncodeURIComponent(returnUri) + '&';
     } else if (Utils.isNonEmptyString(message)) {
-      callParams.url += 'message=' + encodeURIComponent(message) + '&';
+      callParams.url += 'message=' + Utils.safeEncodeURIComponent(message) + '&';
     }
     callParams.url += callParams.queryString.join('&');
     return callParams.url;
@@ -327,7 +328,9 @@ export class SearchEndpoint implements ISearchEndpoint {
 
     this.logger.info('Performing REST query', query);
 
-    return this.performOneCall(callParams, callOptions).then((results?: IQueryResults) => {
+    const start = new Date();
+
+    return this.performOneCall<IQueryResults>(callParams, callOptions).then(results => {
       this.logger.info('REST query successful', results, query);
 
       // Version check
@@ -338,6 +341,11 @@ export class SearchEndpoint implements ISearchEndpoint {
       if (results.apiVersion < version.supportedApiVersion) {
         this.logger.error('Please update your REST Search API');
       }
+
+      // Transform the duration compared to what the search API returns
+      // We want to have the "duration" to be the time as seen by the browser
+      results.searchAPIDuration = results.duration;
+      results.duration = TimeSpan.fromDates(start, new Date()).getMilliseconds();
 
       // If the server specified no search ID generated one using the client-side
       // GUID generator. We prefer server generated guids to allow tracking a query
@@ -453,7 +461,7 @@ export class SearchEndpoint implements ISearchEndpoint {
     queryString = this.buildCompleteQueryString(callOptions.query, callOptions.queryObject);
     callParams.queryString = callParams.queryString.concat(queryString);
 
-    return callParams.url + '?' + callParams.queryString.join('&') + '&dataStream=' + encodeURIComponent(dataStreamType);
+    return callParams.url + '?' + callParams.queryString.join('&') + '&dataStream=' + Utils.safeEncodeURIComponent(dataStreamType);
   }
 
   /**
@@ -875,24 +883,12 @@ export class SearchEndpoint implements ISearchEndpoint {
     return uri;
   }
 
-  // see https://github.com/palantir/tslint/issues/1421
-  // tslint:disable-next-line:no-unused-variable
-  private buildAccessToken(tokenKey: string): string[] {
-    let queryString: string[] = [];
-
-    if (Utils.isNonEmptyString(this.options.accessToken)) {
-      queryString.push(tokenKey + '=' + encodeURIComponent(this.options.accessToken));
-    }
-
-    return queryString;
-  }
-
   private buildBaseQueryString(callOptions?: IEndpointCallOptions): string[] {
     callOptions = _.extend({}, callOptions);
     let queryString: string[] = [];
 
     for (let name in this.options.queryStringArguments) {
-      queryString.push(name + '=' + encodeURIComponent(this.options.queryStringArguments[name]));
+      queryString.push(name + '=' + Utils.safeEncodeURIComponent(this.options.queryStringArguments[name]));
     }
 
     if (callOptions && _.isArray(callOptions.authentication) && callOptions.authentication.length != 0) {
@@ -910,23 +906,30 @@ export class SearchEndpoint implements ISearchEndpoint {
     if (queryObject) {
       _.each(['q', 'aq', 'cq', 'dq', 'searchHub', 'tab', 'locale', 'pipeline', 'lowercaseOperators'], key => {
         if (queryObject[key]) {
-          queryString.push(key + '=' + encodeURIComponent(queryObject[key]));
+          queryString.push(key + '=' + Utils.safeEncodeURIComponent(queryObject[key]));
         }
       });
 
       _.each(queryObject.context, (value, key) => {
-        queryString.push('context[' + key + ']=' + encodeURIComponent(value));
+        let encodedValue: string;
+        if (_.isArray(value)) {
+          encodedValue = Utils.safeEncodeURIComponent(_.map(value, v => Utils.safeEncodeURIComponent(v)).join(','));
+        } else {
+          encodedValue = Utils.safeEncodeURIComponent(value);
+        }
+        queryString.push(`context[${Utils.safeEncodeURIComponent(key)}]=${encodedValue}`);
       });
 
       if (queryObject.fieldsToInclude) {
         queryString.push(
-          `fieldsToInclude=[${_.map(queryObject.fieldsToInclude, field => '"' + encodeURIComponent(field.replace('@', '')) + '"').join(
-            ','
-          )}]`
+          `fieldsToInclude=[${_.map(
+            queryObject.fieldsToInclude,
+            field => '"' + Utils.safeEncodeURIComponent(field.replace('@', '')) + '"'
+          ).join(',')}]`
         );
       }
     } else if (query) {
-      queryString.push('q=' + encodeURIComponent(query));
+      queryString.push('q=' + Utils.safeEncodeURIComponent(query));
     }
 
     return queryString;
@@ -935,18 +938,18 @@ export class SearchEndpoint implements ISearchEndpoint {
   private buildViewAsHtmlQueryString(uniqueId: string, callOptions?: IViewAsHtmlOptions): string[] {
     callOptions = _.extend({}, callOptions);
     let queryString: string[] = this.buildBaseQueryString(callOptions);
-    queryString.push('uniqueId=' + encodeURIComponent(uniqueId));
+    queryString.push('uniqueId=' + Utils.safeEncodeURIComponent(uniqueId));
 
     if (callOptions.query || callOptions.queryObject) {
       queryString.push('enableNavigation=true');
     }
 
     if (callOptions.requestedOutputSize) {
-      queryString.push('requestedOutputSize=' + encodeURIComponent(callOptions.requestedOutputSize.toString()));
+      queryString.push('requestedOutputSize=' + Utils.safeEncodeURIComponent(callOptions.requestedOutputSize.toString()));
     }
 
     if (callOptions.contentType) {
-      queryString.push('contentType=' + encodeURIComponent(callOptions.contentType));
+      queryString.push('contentType=' + Utils.safeEncodeURIComponent(callOptions.contentType));
     }
     return queryString;
   }
@@ -956,17 +959,11 @@ export class SearchEndpoint implements ISearchEndpoint {
     params.queryString = params.queryString.concat(queryString);
     params.queryString = _.uniq(params.queryString);
 
-    const startTime = new Date();
     return this.caller
       .call(params)
       .then((response?: ISuccessResponse<T>) => {
         if (response.data == null) {
           response.data = <any>{};
-        }
-        const timeToExecute = new Date().getTime() - startTime.getTime();
-        if (response.data && _.isObject(response.data)) {
-          (<any>response.data).clientDuration = timeToExecute;
-          (<any>response.data).duration = response.duration || timeToExecute;
         }
         return response.data;
       })
@@ -1168,9 +1165,18 @@ function responseType(resp: string) {
 function accessTokenInUrl(tokenKey: string = 'access_token') {
   return function(target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
     const { originalMethod, nbParams } = decoratorSetup(target, key, descriptor);
+    const buildAccessToken = (tokenKey: string, endpointInstance: SearchEndpoint): string[] => {
+      let queryString: string[] = [];
+
+      if (Utils.isNonEmptyString(endpointInstance.options.accessToken)) {
+        queryString.push(tokenKey + '=' + Utils.safeEncodeURIComponent(endpointInstance.options.accessToken));
+      }
+
+      return queryString;
+    };
 
     descriptor.value = function(...args: any[]) {
-      const queryString = this.buildAccessToken(tokenKey);
+      const queryString = buildAccessToken(tokenKey, this);
       if (args[nbParams - 1]) {
         args[nbParams - 1].queryString = args[nbParams - 1].queryString.concat(queryString);
       } else {

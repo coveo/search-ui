@@ -13,7 +13,6 @@ import { TemplateList } from '../../src/ui/Templates/TemplateList';
 import { QueryBuilder } from '../../src/ui/Base/QueryBuilder';
 import { analyticsActionCauseList } from '../../src/ui/Analytics/AnalyticsActionListMeta';
 import { IQueryResults } from '../../src/rest/QueryResults';
-import { TableTemplate } from '../../src/ui/Templates/TableTemplate';
 import { Defer } from '../../src/misc/Defer';
 
 export function ResultListTest() {
@@ -141,6 +140,37 @@ export function ResultListTest() {
             }, 1000);
           });
         });
+      });
+    });
+
+    it('should tell if there are more results to display after a successful query', done => {
+      const queryBuilder = new QueryBuilder();
+      queryBuilder.numberOfResults = 10;
+
+      Simulate.query(test.env, {
+        results: FakeResults.createFakeResults(10),
+        query: queryBuilder.build()
+      });
+
+      Defer.defer(() => {
+        expect(test.cmp.hasPotentiallyMoreResultsToDisplay()).toBeTruthy();
+        done();
+      });
+    });
+
+    it('should tell if there are no more results to display after a successful query with a limited amount of results returned', done => {
+      const results = FakeResults.createFakeResults(5);
+      const queryBuilder = new QueryBuilder();
+      queryBuilder.numberOfResults = 10;
+
+      Simulate.query(test.env, {
+        results: results,
+        query: queryBuilder.build()
+      });
+
+      Defer.defer(() => {
+        expect(test.cmp.hasPotentiallyMoreResultsToDisplay()).toBeFalsy();
+        done();
       });
     });
 
@@ -413,7 +443,7 @@ export function ResultListTest() {
         $$(otherResultList.element).addClass('CoveoResultList');
         otherResultList.element['CoveoBoundComponents'] = [otherResultList];
         $$(test.env.root).append(otherResultList.element);
-        const simulation = Simulate.query(test.env);
+        Simulate.query(test.env);
         expect(otherResultList.getAutoSelectedFieldsToInclude).toHaveBeenCalled();
       });
 

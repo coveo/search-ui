@@ -16,7 +16,6 @@ import { Checkbox } from '../FormWidgets/Checkbox';
 import { RadioButton } from '../FormWidgets/RadioButton';
 import { FormGroup } from '../FormWidgets/FormGroup';
 import { IFormWidgetSelectable } from '../FormWidgets/FormWidgets';
-import { InitializationEvents } from '../../events/InitializationEvents';
 
 export interface IResultsPreferencesOptions {
   enableOpenInOutlook?: boolean;
@@ -205,15 +204,19 @@ export class ResultsPreferences extends Component {
     };
 
     _.each(this.preferencePanelCheckboxInputs, (checkbox: Checkbox, label: string) => {
-      if (this.isSelected(l('OpenInOutlookWhenPossible'), label, checkbox)) {
-        this.preferences.openInOutlook = true;
-      } else if (this.preferences.openInOutlook != null) {
-        this.preferences.openInOutlook = false;
+      if (label == l('OpenInOutlookWhenPossible')) {
+        if (this.isSelected(l('OpenInOutlookWhenPossible'), label, checkbox)) {
+          this.preferences.openInOutlook = true;
+        } else if (this.preferences.openInOutlook != null) {
+          this.preferences.openInOutlook = false;
+        }
       }
-      if (this.isSelected(l('AlwaysOpenInNewWindow'), label, checkbox)) {
-        this.preferences.alwaysOpenInNewWindow = true;
-      } else if (this.preferences.alwaysOpenInNewWindow != null) {
-        this.preferences.alwaysOpenInNewWindow = false;
+      if (label == l('AlwaysOpenInNewWindow')) {
+        if (this.isSelected(l('AlwaysOpenInNewWindow'), label, checkbox)) {
+          this.preferences.alwaysOpenInNewWindow = true;
+        } else if (this.preferences.alwaysOpenInNewWindow != null) {
+          this.preferences.alwaysOpenInNewWindow = false;
+        }
       }
     });
 

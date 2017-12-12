@@ -33,6 +33,8 @@ import { ResponsiveFacetSlider } from '../ResponsiveComponents/ResponsiveFacetSl
 import 'styling/_FacetSlider';
 import { IGroupByResult } from '../../rest/GroupByResult';
 import { Defer } from '../../MiscModules';
+import { SVGIcons } from '../../utils/SVGIcons';
+import { SVGDom } from '../../utils/SVGDom';
 
 export interface IFacetSliderOptions extends ISliderOptions {
   dateField?: boolean;
@@ -58,6 +60,7 @@ export interface IFacetSliderOptions extends ISliderOptions {
  * > [Components - Passing Component Options in the init Call](https://developers.coveo.com/x/PoGfAQ#Components-PassingComponentOptionsintheinitCall)),
  * > or before the `init` call, using the `options` top-level function (see
  * > [Components - Passing Component Options Before the init Call](https://developers.coveo.com/x/PoGfAQ#Components-PassingComponentOptionsBeforetheinitCall)).
+ * @notSupportedIn salesforcefree
  */
 export class FacetSlider extends Component {
   /**
@@ -593,12 +596,22 @@ export class FacetSlider extends Component {
     const value = $$('span', {
       className: 'coveo-facet-slider-breadcrumb-value'
     });
-    value.text(this.slider.getCaption());
+    const caption = $$('span', {
+      clasName: 'coveo-facet-slider-breadcrumb-caption'
+    });
+    caption.text(this.slider.getCaption());
+    value.append(caption.el);
     values.el.appendChild(value.el);
 
-    const clear = $$('span', {
-      className: 'coveo-facet-slider-breadcrumb-clear'
-    });
+    const clear = $$(
+      'span',
+      {
+        className: 'coveo-facet-slider-breadcrumb-clear'
+      },
+      SVGIcons.icons.checkboxHookExclusionMore
+    );
+    SVGDom.addClassToSVGInContainer(clear.el, 'coveo-facet-slider-clear-svg');
+
     value.el.appendChild(clear.el);
 
     value.on('click', () => {

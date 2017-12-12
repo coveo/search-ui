@@ -69,6 +69,13 @@ export function BreadcrumbTest() {
         Simulate.query(test.env);
         expect(onPopulate).toHaveBeenCalledWith(jasmine.any(Object), jasmine.objectContaining({ breadcrumbs: [] }));
       });
+
+      it('should trigger populate breadcrumb on an error', function() {
+        var onPopulate = jasmine.createSpy('onPopulate');
+        $$(test.env.root).on(BreadcrumbEvents.populateBreadcrumb, onPopulate);
+        Simulate.queryError(test.env);
+        expect(onPopulate).toHaveBeenCalledWith(jasmine.any(Object), jasmine.objectContaining({ breadcrumbs: [] }));
+      });
     });
   });
 }
