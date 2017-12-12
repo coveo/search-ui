@@ -122,29 +122,25 @@ export class ResponsiveComponentsManager {
     });
     this.searchBoxElement = this.getSearchBoxElement();
     this.logger = new Logger(this);
-    this.resizeListener = _.debounce(
-      () => {
-        if (this.coveoRoot.width() != 0) {
-          this.addDropdownHeaderWrapperIfNeeded();
-          if (this.shouldSwitchToSmallMode()) {
-            this.coveoRoot.addClass('coveo-small-interface');
-          } else if (!this.shouldSwitchToSmallMode()) {
-            this.coveoRoot.removeClass('coveo-small-interface');
-          }
-          _.each(this.responsiveComponents, responsiveComponent => {
-            responsiveComponent.handleResizeEvent();
-          });
-        } else {
-          this.logger
-            .warn(`The width of the search interface is 0, cannot dispatch resize events to responsive components. This means that the tabs will not
+    this.resizeListener = _.debounce(() => {
+      if (this.coveoRoot.width() != 0) {
+        this.addDropdownHeaderWrapperIfNeeded();
+        if (this.shouldSwitchToSmallMode()) {
+          this.coveoRoot.addClass('coveo-small-interface');
+        } else if (!this.shouldSwitchToSmallMode()) {
+          this.coveoRoot.removeClass('coveo-small-interface');
+        }
+        _.each(this.responsiveComponents, responsiveComponent => {
+          responsiveComponent.handleResizeEvent();
+        });
+      } else {
+        this.logger
+          .warn(`The width of the search interface is 0, cannot dispatch resize events to responsive components. This means that the tabs will not
         automatically fit in the tab section. Also, the facet and recommendation component will not hide in a menu. Could the search
         interface display property be none? Could its visibility property be set to hidden? Also, if either of these scenarios happen during
         loading, it could be the cause of this issue.`);
-        }
-      },
-      ResponsiveComponentsManager.RESIZE_DEBOUNCE_DELAY,
-      true
-    );
+      }
+    }, ResponsiveComponentsManager.RESIZE_DEBOUNCE_DELAY);
     window.addEventListener('resize', this.resizeListener);
     this.bindNukeEvents();
   }
