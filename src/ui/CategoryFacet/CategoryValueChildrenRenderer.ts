@@ -11,6 +11,7 @@ export class CategoryChildrenValueRenderer {
     private categoryFacetTemplates: CategoryFacetTemplates,
     private categoryValueParent: CategoryValueParent
   ) {}
+
   public clearChildrenExceptOne(except: CategoryValue) {
     const newChildren = [];
     this.children.forEach(categoryValue => {
@@ -22,6 +23,7 @@ export class CategoryChildrenValueRenderer {
     });
     this.children = newChildren;
   }
+
   public clearChildren() {
     this.children.forEach(child => {
       child.clear();
