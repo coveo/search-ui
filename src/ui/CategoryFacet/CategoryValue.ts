@@ -11,7 +11,6 @@ export interface CategoryValueParent {
 export type CategoryJsonValues = { [key: string]: string[] };
 
 export class CategoryValue implements CategoryValueParent {
-  private children: CategoryValue[] = [];
   private element: Dom;
   private collapseArrow: Dom;
   private arrowOnClick: (e: Event) => void;
@@ -50,25 +49,6 @@ export class CategoryValue implements CategoryValueParent {
     this.parent.categoryChildrenValueRenderer.renderChildren();
   }
 
-  public clearChildren() {
-    this.children.forEach(child => {
-      child.clear();
-    });
-    this.children = [];
-  }
-
-  public clearChildrenExceptOne(except: CategoryValue) {
-    const newChildren = [];
-    this.children.forEach(categoryValue => {
-      if (except !== categoryValue) {
-        categoryValue.clear();
-      } else {
-        newChildren.push(categoryValue);
-      }
-    });
-    this.children = newChildren;
-  }
-
   public clear() {
     this.getCaption().off('click', this.captionOnClick);
     this.element.detach();
@@ -98,7 +78,7 @@ export class CategoryValue implements CategoryValueParent {
   }
 
   private closeChildMenu() {
-    this.clearChildren();
+    this.categoryChildrenValueRenderer.clearChildren();
     this.hideCollapseArrow();
     this.showSiblings();
   }
