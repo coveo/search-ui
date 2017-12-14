@@ -1,21 +1,16 @@
 import { Component } from '../Base/Component';
 import { IFieldOption, ComponentOptions } from '../Base/ComponentOptions';
 import { IComponentBindings } from '../Base/ComponentBindings';
-import { Dom } from '../../utils/Dom';
+import { Dom, $$ } from '../../utils/Dom';
 import { Initialization } from '../Base/Initialization';
 import { exportGlobally } from '../../GlobalExports';
 import 'styling/_CategoryFacet';
-import { CategoryValue } from './CategoryValue';
 import { CategoryFacetTemplates } from './CategoryFacetTemplates';
 import { CategoryValueRoot } from './CategoryValueRoot';
 
 export interface CategoryFacetOptions {
   field: IFieldOption;
 }
-
-export type CategoryJsonValues = { [key: string]: string[] };
-
-export interface CategoryValue {}
 
 export class CategoryFacet extends Component {
   static doExport = () => {
@@ -35,10 +30,8 @@ export class CategoryFacet extends Component {
     this.options = ComponentOptions.initComponentOptions(element, CategoryFacet, options);
 
     this.categoryFacetTemplates = new CategoryFacetTemplates();
-    this.listRoot = this.categoryFacetTemplates.buildListRoot();
-    this.categoryValueRoot = new CategoryValueRoot(this.listRoot, this.categoryFacetTemplates);
+    this.categoryValueRoot = new CategoryValueRoot($$(this.element), this.categoryFacetTemplates);
 
-    this.element.appendChild(this.listRoot.el);
     this.renderValues(this.listRoot);
   }
 
@@ -47,7 +40,7 @@ export class CategoryFacet extends Component {
   }
 
   private renderValues(valuesList: Dom, path: string[] = []) {
-    this.categoryValueRoot.renderChildren();
+    this.categoryValueRoot.categoryChildrenValueRenderer.renderChildren();
   }
 }
 

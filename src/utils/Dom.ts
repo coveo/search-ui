@@ -19,6 +19,7 @@ export interface IOffset {
 export class Dom {
   private static CLASS_NAME_REGEX = /-?[_a-zA-Z]+[_a-zA-Z0-9-]*/g;
   private static ONLY_WHITE_SPACE_REGEX = /^\s*$/;
+  public static balance = 0;
 
   public el: HTMLElement;
 

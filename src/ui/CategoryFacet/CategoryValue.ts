@@ -1,18 +1,23 @@
 import { Dom, $$ } from '../../utils/Dom';
 import { CategoryFacetTemplates } from './CategoryFacetTemplates';
-import { CategoryJsonValues } from './CategoryFacet';
+import { CategoryJsonValues } from './CategoryValue';
+import { CategoryChildrenValueRenderer } from './CategoryValueChildrenRenderer';
 
 export interface CategoryValueParent {
-  clearChildrenExceptOne: (except: CategoryValue) => void;
-  renderChildren: () => void;
-  getPath: (partialPath: string[]) => string[];
+  categoryChildrenValueRenderer: CategoryChildrenValueRenderer;
+  getPath: (partialPath?: string[]) => string[];
 }
+
+export type CategoryJsonValues = { [key: string]: string[] };
 
 export class CategoryValue implements CategoryValueParent {
   private children: CategoryValue[] = [];
-  private listOfChildValues: Dom;
   private element: Dom;
   private collapseArrow: Dom;
+  private arrowOnClick: (e: Event) => void;
+  private captionOnClick: (e: Event) => void;
+
+  public categoryChildrenValueRenderer: CategoryChildrenValueRenderer;
 
   constructor(
     private parentElement: Dom,
@@ -22,77 +27,51 @@ export class CategoryValue implements CategoryValueParent {
   ) {
     this.element = this.categoryFacetTemplates.buildListElement(this.value);
     this.collapseArrow = this.categoryFacetTemplates.buildCollapseArrow();
+    this.categoryChildrenValueRenderer = new CategoryChildrenValueRenderer(this.element, categoryFacetTemplates, this);
+
+    this.arrowOnClick = () => {
+      this.closeChildMenu();
+    };
+    this.captionOnClick = () => {
+      this.openChildMenu();
+    };
+    this.getCaption().on('click', this.captionOnClick);
   }
 
   public render() {
     this.parentElement.append(this.element.el);
-
-    this.getCaption().on('click', async e => {
-      this.openChildMenu();
-    });
-  }
-
-  public async renderChildren() {
-    if (this.listOfChildValues && this.children.length == this.listOfChildValues.findAll('.coveo-category-facet-value').length) {
-      return;
-    }
-
-    if (!this.listOfChildValues) {
-      this.listOfChildValues = this.categoryFacetTemplates.buildListRoot();
-    }
-
-    const headers = new Headers();
-    headers.append('Accept', 'application/json');
-    headers.append('Content-Type', 'application/json');
-    const { values } = await fetch('http://localhost:8085/api', {
-      headers,
-      method: 'POST',
-      body: JSON.stringify({ path: this.getPath() })
-    })
-      .then<CategoryJsonValues>(response => response.json())
-      .catch(e => {
-        console.log(e);
-        return { values: [] } as CategoryJsonValues;
-      });
-
-    this.clearChildren();
-    this.element.append(this.listOfChildValues.el);
-
-    this.addChildren(values);
-    this.children.forEach(categoryValue => {
-      categoryValue.render();
-    });
-  }
-
-  private addChildren(values: string[]) {
-    values.forEach(value => {
-      this.children.push(new CategoryValue(this.listOfChildValues, value, this, this.categoryFacetTemplates));
-    });
   }
 
   public hideSiblings() {
-    this.parent.clearChildrenExceptOne(this);
+    this.parent.categoryChildrenValueRenderer.clearChildrenExceptOne(this);
   }
 
   public showSiblings() {
-    this.parent.renderChildren();
+    this.parent.categoryChildrenValueRenderer.renderChildren();
   }
 
   public clearChildren() {
+    this.children.forEach(child => {
+      child.clear();
+    });
     this.children = [];
-    this.listOfChildValues && this.listOfChildValues.remove();
   }
 
   public clearChildrenExceptOne(except: CategoryValue) {
+    const newChildren = [];
     this.children.forEach(categoryValue => {
       if (except !== categoryValue) {
         categoryValue.clear();
+      } else {
+        newChildren.push(categoryValue);
       }
     });
+    this.children = newChildren;
   }
 
   public clear() {
-    this.element.remove();
+    this.getCaption().off('click', this.captionOnClick);
+    this.element.detach();
   }
 
   public getPath(partialPath: string[] = []) {
@@ -113,7 +92,7 @@ export class CategoryValue implements CategoryValueParent {
   }
 
   private openChildMenu() {
-    this.renderChildren();
+    this.categoryChildrenValueRenderer.renderChildren();
     this.showCollapseArrow();
     this.hideSiblings();
   }
@@ -126,16 +105,15 @@ export class CategoryValue implements CategoryValueParent {
 
   private showCollapseArrow() {
     if (!this.collapseArrow.el.parentElement) {
+      this.collapseArrow.on('click', this.arrowOnClick);
       const label = this.element.find('label');
       this.collapseArrow.insertBefore(label);
-
-      this.collapseArrow.on('click', e => {
-        this.closeChildMenu();
-      });
     }
   }
-
   private hideCollapseArrow() {
-    this.collapseArrow.remove();
+    if (this.collapseArrow.el.parentElement) {
+      this.collapseArrow.off('click', this.arrowOnClick);
+      this.collapseArrow.detach();
+    }
   }
 }
