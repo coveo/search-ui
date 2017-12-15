@@ -7,6 +7,7 @@ import { exportGlobally } from '../../GlobalExports';
 import 'styling/_CategoryFacet';
 import { CategoryFacetTemplates } from './CategoryFacetTemplates';
 import { CategoryValueRoot } from './CategoryValueRoot';
+import { CategoryValue } from './CategoryValue';
 
 export interface CategoryFacetOptions {
   field: IFieldOption;
@@ -35,7 +36,7 @@ export class CategoryFacet extends Component {
     this.renderValues(this.listRoot);
   }
 
-  public getChildren() {
+  public getChildren(): CategoryValue[] {
     return this.categoryValueRoot.getChildren();
   }
 

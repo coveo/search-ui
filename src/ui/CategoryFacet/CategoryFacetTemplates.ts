@@ -5,14 +5,17 @@ import { SVGDom } from '../../utils/SVGDom';
 export class CategoryFacetTemplates {
   private listElementTemplate: Dom;
   private listRoot: Dom;
+  private collapseArrow: Dom;
 
   constructor() {
     this.listElementTemplate = this.createListElementTemplate();
     this.listRoot = $$('ol', { className: 'coveo-facet-values' });
+    this.collapseArrow = $$('span', { className: 'coveo-category-facet-collapse-children' }, SVGIcons.icons.arrowDown);
+    SVGDom.addClassToSVGInContainer(this.collapseArrow.el, 'coveo-category-facet-collapse-children-svg');
   }
 
   public buildListRoot() {
-    return this.listRoot.clone();
+    return this.listRoot.clone(true);
   }
 
   public buildListElement(value: string) {
@@ -25,9 +28,15 @@ export class CategoryFacetTemplates {
   }
 
   public buildCollapseArrow() {
-    const collapseArrow = $$('span', { className: 'coveo-category-facet-collapse-children' }, SVGIcons.icons.arrowDown);
-    SVGDom.addClassToSVGInContainer(collapseArrow.el, 'coveo-category-facet-collapse-children-svg');
-    return collapseArrow;
+    return this.collapseArrow.clone(true);
+  }
+
+  public build() {
+    return {
+      collapseArrow: this.buildCollapseArrow(),
+      listElement: this.buildListElement(),
+      listRoot: this.buildListRoot()
+    };
   }
 
   private createListElementTemplate() {

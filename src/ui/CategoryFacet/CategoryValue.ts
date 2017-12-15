@@ -28,12 +28,8 @@ export class CategoryValue implements CategoryValueParent {
     this.collapseArrow = this.categoryFacetTemplates.buildCollapseArrow();
     this.categoryChildrenValueRenderer = new CategoryChildrenValueRenderer(this.element, categoryFacetTemplates, this);
 
-    this.arrowOnClick = () => {
-      this.closeChildMenu();
-    };
-    this.captionOnClick = () => {
-      this.openChildMenu();
-    };
+    this.arrowOnClick = () => this.closeChildMenu();
+    this.captionOnClick = () => this.openChildMenu();
     this.getCaption().on('click', this.captionOnClick);
   }
 
