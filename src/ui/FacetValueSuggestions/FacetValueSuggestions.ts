@@ -1,10 +1,5 @@
-import { Omnibox } from '../Omnibox/Omnibox';
-import {
-  ISuggestionForOmniboxOptions,
-  SuggestionForOmnibox,
-  ISuggestionForOmniboxTemplate,
-  ISuggestionForOmniboxResult
-} from '../Misc/SuggestionForOmnibox';
+import { QueryBuilder } from '../Base/QueryBuilder';
+import { Omnibox, IOmniboxSuggestion } from '../Omnibox/Omnibox';
 import { Component } from '../Base/Component';
 import { ComponentOptions, IFieldOption } from '../Base/ComponentOptions';
 import { IComponentBindings } from '../Base/ComponentBindings';
@@ -17,24 +12,45 @@ import { QueryStateModel } from '../../models/QueryStateModel';
 import { Initialization } from '../Base/Initialization';
 import { analyticsActionCauseList, IAnalyticsNoMeta } from '../Analytics/AnalyticsActionListMeta';
 import { l } from '../../strings/Strings';
-import { $$ } from '../../utils/Dom';
-import { ISuggestionForOmniboxOptionsOnSelect, ISuggestionForOmniboxRowTemplateOptions } from '../Misc/SuggestionForOmnibox';
+import { $$, Dom } from '../../utils/Dom';
 import { IStringMap } from '../../rest/GenericParam';
 import * as _ from 'underscore';
 import { exportGlobally } from '../../GlobalExports';
 import 'styling/_FieldSuggestions';
 import { DomUtils } from '../../UtilsModules';
 import { Facet } from '../Facet/Facet';
+import {
+  IOmniboxSuggestionsOptions,
+  IOnSelectSuggestion,
+  onSelectionUpdateOmnibox,
+  IOmniboxSuggestionBuilder,
+  OmniboxSuggestionBuilder
+} from '../Misc/OmniboxSuggestion';
+import { IOmniboxDataRow } from '../Omnibox/OmniboxInterface';
+import { IGroupByRequest } from '../../rest/GroupByRequest';
 
-export interface IFieldOccurenceSuggestionsOptions extends ISuggestionForOmniboxOptions {
-  field?: IFieldOption;
-}
+export interface IOnSelectingFacetValueSuggestion extends IOnSelectSuggestion<IFacetValueSuggestionRow> {}
 
-export interface IFieldOccurenceSuggestionForOmniboxResult extends ISuggestionForOmniboxResult {
+export interface IFacetValueSuggestionRow {
+  score: IFacetValueSuggestionScore;
+  value: string;
   numberOfResults: number;
+  keyword: string;
 }
 
-export interface IFieldOccurenceResponse {
+export interface IFacetValueSuggestionScore {
+  total: number;
+  distanceFromHighestNumber: number;
+  distanceFromTotalForField: number;
+}
+
+export interface IFacetValueSuggestionsOptions extends IOmniboxSuggestionsOptions {
+  field?: IFieldOption;
+  onSelect?: IOnSelectingFacetValueSuggestion;
+  useQuerySuggestions?: boolean;
+}
+
+export interface IFacetValueResponse {
   values: IIndexFieldValue[];
   keyword: string;
 }
@@ -45,19 +61,19 @@ export interface IFieldOccurenceResponse {
  *
  * The query suggestions provided by this component appear in the [`Omnibox`]{@link Omnibox} component.
  */
-export class FieldOccurenceSuggestions extends Component {
-  static ID = 'FieldOccurenceSuggestions';
+export class FacetValueSuggestions extends Component {
+  static ID = 'FacetValueSuggestions';
 
   static doExport = () => {
     exportGlobally({
-      FieldOccurenceSuggestions: FieldOccurenceSuggestions
+      FacetValueSuggestions: FacetValueSuggestions
     });
   };
 
   /**
    * @componentOptions
    */
-  static options: IFieldOccurenceSuggestionsOptions = {
+  static options: IFacetValueSuggestionsOptions = {
     /**
      * Specifies the facet field from which to provide suggestions.
      *
@@ -89,6 +105,11 @@ export class FieldOccurenceSuggestions extends Component {
      * Default value is `5`. Minimum value is `1`.
      */
     numberOfSuggestions: ComponentOptions.buildNumberOption({ defaultValue: 5, min: 1 }),
+
+    /**
+     * Specifies whether to also use query suggestions as keywords to get facet values suggestions.
+     */
+    useQuerySuggestions: ComponentOptions.buildBooleanOption({ defaultValue: false }),
 
     /**
      * Specifies the event handler function to execute when the end user selects a suggested value in the
@@ -147,15 +168,13 @@ export class FieldOccurenceSuggestions extends Component {
      * // });
      * ```
      */
-    onSelect: ComponentOptions.buildCustomOption<ISuggestionForOmniboxOptionsOnSelect>(() => {
+    onSelect: ComponentOptions.buildCustomOption<IOnSelectingFacetValueSuggestion>(() => {
       return null;
     })
   };
 
+  private suggestionBuilder: IOmniboxSuggestionBuilder<IFacetValueSuggestionRow>;
   private queryStateFieldId;
-
-  private suggestionForOmnibox: SuggestionForOmnibox<IFieldOccurenceSuggestionForOmniboxResult>;
-  private currentlyDisplayedSuggestions: { [suggestion: string]: { element: HTMLElement; pos: number } };
 
   /**
    * Creates a new `FieldSuggestions` component.
@@ -164,111 +183,56 @@ export class FieldOccurenceSuggestions extends Component {
    * @param bindings The bindings that the component requires to function normally. If not set, these will be
    * automatically resolved (with a slower execution time).
    */
-  constructor(element: HTMLElement, public options: IFieldOccurenceSuggestionsOptions, bindings?: IComponentBindings) {
-    super(element, FieldOccurenceSuggestions.ID, bindings);
+  constructor(element: HTMLElement, public options: IFacetValueSuggestionsOptions, bindings?: IComponentBindings) {
+    super(element, FacetValueSuggestions.ID, bindings);
 
-    if (this.options && 'omniboxSuggestionOptions' in this.options) {
-      this.options = _.extend(this.options, this.options['omniboxSuggestionOptions']);
-    }
-
-    this.options = ComponentOptions.initComponentOptions(element, FieldOccurenceSuggestions, options);
+    this.options = ComponentOptions.initComponentOptions(element, FacetValueSuggestions, options);
 
     Assert.check(Utils.isCoveoField(<string>this.options.field), this.options.field + ' is not a valid field');
 
-    this.queryStateFieldId = `f:${this.options.field}`;
+    this.queryStateFieldId = `fv:${this.options.field}`;
     if (this.queryStateModel.getAttributes()[this.queryStateFieldId] === undefined) {
       this.queryStateModel.registerNewAttribute(this.queryStateFieldId, []);
     }
 
     this.options.onSelect = this.options.onSelect || this.onRowSelection;
+    this.suggestionBuilder = new OmniboxSuggestionBuilder();
 
-    const rowTemplate = (rowTemplateOptions: ISuggestionForOmniboxRowTemplateOptions<IFieldOccurenceSuggestionForOmniboxResult>) => {
-      const rowElement = $$('div', {
-        className: 'magic-box-suggestion coveo-omnibox-selectable coveo-top-field-suggestion-row'
-      });
-      rowElement.el.innerHTML = `${rowTemplateOptions.result.keyword} in ${DomUtils.highlightElement(
-        rowTemplateOptions.rawValue,
-        rowTemplateOptions.rawValue
-      )} (${rowTemplateOptions.result.numberOfResults} results)`;
-      return rowElement.el.outerHTML;
-    };
-
-    const suggestionStructure: ISuggestionForOmniboxTemplate = {
-      row: rowTemplate
-    };
-    if (this.options.headerTitle != null) {
-      suggestionStructure.header = { template: this.createHeaderTemplate(), title: this.options.headerTitle };
-    }
-
-    this.suggestionForOmnibox = new SuggestionForOmnibox<IFieldOccurenceSuggestionForOmniboxResult>(
-      suggestionStructure,
-      (result: string, args: IPopulateOmniboxEventArgs) => {
-        this.options.onSelect.call(this, result, args);
-      },
-      (result: string, args: IPopulateOmniboxEventArgs) => {
-        this.options.onSelect.call(this, result, args);
-      }
-    );
     this.bind.onRootElement(OmniboxEvents.populateOmnibox, (args: IPopulateOmniboxEventArgs) => this.handlePopulateOmnibox(args));
   }
 
-  private createHeaderTemplate(): () => string {
-    return () => {
-      const headerElement = $$('div', {
-        className: 'coveo-top-field-suggestion-header'
-      });
+  private handlePopulateOmnibox(populateOmniboxEventArgs: IPopulateOmniboxEventArgs) {
+    Assert.exists(populateOmniboxEventArgs);
 
-      const iconElement = $$('span', {
-        className: 'coveo-icon-top-field'
-      });
+    const wordsToQuery = [populateOmniboxEventArgs.completeQueryExpression.word];
 
-      const captionElement = $$('span', {
-        className: 'coveo-caption'
-      });
-
-      if (this.options.headerTitle) {
-        captionElement.text(this.options.headerTitle);
-      }
-
-      headerElement.append(iconElement.el);
-      headerElement.append(captionElement.el);
-
-      return headerElement.el.outerHTML;
-    };
-  }
-
-  private handlePopulateOmnibox(args: IPopulateOmniboxEventArgs) {
-    Assert.exists(args);
-
-    const wordsToQuery = [args.completeQueryExpression.word];
-
-    const promise = this.getQuerySuggestionsKeywords()
+    const promise: Promise<IOmniboxDataRow> = this.getQuerySuggestionsKeywords()
       .then(suggestions => {
-        return this.listFieldsValues(wordsToQuery.concat(suggestions));
+        return this.listFieldValuesBatch(wordsToQuery.concat(suggestions));
       })
-      .then((response: IFieldOccurenceResponse[]) => {
-        const currentSelectedValues: string[] = this.queryStateModel.get(this.queryStateFieldId) || [];
-        const resultsWithoutSelectedValues: IFieldOccurenceSuggestionForOmniboxResult[] = response.reduce((allValues, resp) => {
-          const result = resp.values.filter(result => !currentSelectedValues.some(value => value == result.value)).map(value => {
-            return <IFieldOccurenceSuggestionForOmniboxResult>{
-              numberOfResults: value.numberOfResults,
-              keyword: resp.keyword,
-              value: value.value
-            };
-          });
-          return allValues.concat(result);
-        }, []);
-        const element = this.suggestionForOmnibox.buildOmniboxElement(resultsWithoutSelectedValues, args);
-        this.currentlyDisplayedSuggestions = {};
-        if (element) {
-          _.map($$(element).findAll('.coveo-omnibox-selectable'), (selectable, i?) => {
-            this.currentlyDisplayedSuggestions[$$(selectable).text()] = {
-              element: selectable,
-              pos: i
-            };
-          });
-          return {
-            element: element,
+      .then((response: IFacetValueResponse[]) => {
+        const resultsToShow = this.filterCurrentlySelectedValuesFromResults(response);
+
+        if (resultsToShow.length > 0) {
+          const container: Dom = $$('div');
+
+          if (this.options.headerTitle) {
+            container.append(this.suggestionBuilder.createHeader(this.options.headerTitle));
+          }
+
+          const resultsElements = resultsToShow
+            .map(resultToShow => {
+              return this.suggestionBuilder.createResultRow(
+                resultToShow,
+                this.buildDisplayNameForRow(resultToShow, populateOmniboxEventArgs),
+                populateOmniboxEventArgs,
+                this.options.onSelect.bind(this)
+              );
+            })
+            .forEach(element => container.append(element));
+
+          return <IOmniboxDataRow>{
+            element: container.el,
             zIndex: this.options.omniboxZIndex
           };
         } else {
@@ -282,9 +246,40 @@ export class FieldOccurenceSuggestions extends Component {
           element: undefined
         };
       });
-    args.rows.push({
+    populateOmniboxEventArgs.rows.push({
       deferred: promise
     });
+  }
+
+  private buildDisplayNameForRow(row: IFacetValueSuggestionRow, populateOmniboxEventArgs: IPopulateOmniboxEventArgs): string {
+    return `${DomUtils.highlightElement(row.keyword, populateOmniboxEventArgs.currentQueryExpression.word)} in ${DomUtils.highlightElement(
+      row.value,
+      row.value
+    )} (${row.numberOfResults} results)`;
+  }
+
+  private filterCurrentlySelectedValuesFromResults(fieldResponses: IFacetValueResponse[]): IFacetValueSuggestionRow[] {
+    const currentSelectedValues: string[] = this.queryStateModel.get(this.queryStateFieldId) || [];
+
+    const resultsWithoutSelectedValues: IFacetValueSuggestionRow[] = fieldResponses.reduce((allValues, fieldResponse) => {
+      const filteredResults = fieldResponse.values.filter(result => !currentSelectedValues.some(value => value == result.value));
+      const totalNumber = filteredResults.reduce((total, result) => total + result.numberOfResults, 0);
+      const highestNumber = Math.max(...filteredResults.map(result => result.numberOfResults));
+
+      const suggestionRows = filteredResults.map(indexFieldValue => {
+        return <IFacetValueSuggestionRow>{
+          numberOfResults: indexFieldValue.numberOfResults,
+          keyword: fieldResponse.keyword,
+          value: indexFieldValue.value,
+          score: this.computeScoreForSuggestionRow(indexFieldValue, totalNumber, highestNumber)
+        };
+      });
+      return allValues.concat(suggestionRows);
+    }, []);
+
+    this.logger.debug('FacetValue Suggestions Results', resultsWithoutSelectedValues);
+
+    return resultsWithoutSelectedValues.sort((a, b) => b.score.total - a.score.total).slice(0, this.options.numberOfSuggestions);
   }
 
   private getQuerySuggestionsKeywords(): Promise<string[]> {
@@ -296,12 +291,59 @@ export class FieldOccurenceSuggestions extends Component {
     }
   }
 
-  private listFieldsValues(valueToSearch: string[]): Promise<IFieldOccurenceResponse[]> {
-    return Promise.all(valueToSearch.map(value => this.listFieldValues(value)));
+  private computeScoreForSuggestionRow(
+    fieldValue: IIndexFieldValue,
+    totalNumberForField: number,
+    highestNumber: number
+  ): IFacetValueSuggestionScore {
+    const distanceFromHighestNumber: number = (highestNumber - fieldValue.numberOfResults) / highestNumber * 100;
+    const distanceFromTotalForField: number = fieldValue.numberOfResults / totalNumberForField * 100;
+    return {
+      distanceFromHighestNumber: distanceFromHighestNumber,
+      distanceFromTotalForField: distanceFromTotalForField,
+      total: distanceFromHighestNumber + distanceFromTotalForField
+    };
   }
 
-  private listFieldValues(valueToSearch: string): Promise<IFieldOccurenceResponse> {
-    const request = this.buildListFieldValueRequest(valueToSearch);
+  private listFieldsValues(valuesToSearch: string[]): Promise<IFacetValueResponse[]> {
+    const queryParts = this.getQueryToExecuteParts();
+    return Promise.all(valuesToSearch.map(value => this.listFieldValues(value, queryParts)));
+  }
+
+  private listFieldValuesBatch(valuesToSearch: string[]): Promise<IFacetValueResponse[]> {
+    const queryParts = this.getQueryToExecuteParts();
+    const requests = valuesToSearch.map(value => this.buildListFieldValueRequest(queryParts.concat(value).join(' ')));
+    /*return this.queryController
+      .getEndpoint()
+      .listFieldValuesBatch({
+        batch: requests
+      })
+      .then(values => {
+        return values.map((value, i) => {
+          return {
+            keyword: valuesToSearch[i],
+            values: value
+          };
+        });
+      });*/
+    const queryBuilder = new QueryBuilder();
+    queryBuilder.groupByRequests = requests;
+    queryBuilder.numberOfResults = 0;
+    return this.queryController
+      .getEndpoint()
+      .search(queryBuilder.build())
+      .then(values => {
+        return values.groupByResults.map((value, i) => {
+          return {
+            keyword: valuesToSearch[i],
+            values: value.values
+          };
+        });
+      });
+  }
+
+  private listFieldValues(valueToSearch: string, queryParts: string[]): Promise<IFacetValueResponse> {
+    const request = this.buildListFieldValueRequest(queryParts.concat(valueToSearch).join(' '));
     return this.queryController
       .getEndpoint()
       .listFieldValues(request)
@@ -313,23 +355,18 @@ export class FieldOccurenceSuggestions extends Component {
       });
   }
 
-  private onRowSelection(result: string, args: IPopulateOmniboxEventArgs) {
+  private onRowSelection(row: IFacetValueSuggestionRow, args: IPopulateOmniboxEventArgs) {
     // We need to use `set` here, or `clear()` will trigger a query with an empty `q` parameters.
     // Then the `QueryboxQueryParameters.queryIsBlocked` kicks in and forbids every other `q` update from the same stack.
-    args.set(args.completeQueryExpression.word);
+    args.set(row.keyword);
     args.closeOmnibox();
     args.clearSuggestions();
-    this.queryStateModel.set(this.queryStateFieldId, [result]);
+    this.queryStateModel.set(this.queryStateFieldId, [row.value]);
     this.usageAnalytics.logSearchEvent<IAnalyticsNoMeta>(analyticsActionCauseList.omniboxField, {});
     this.queryController.executeQuery();
   }
 
-  private buildListFieldValueRequest(valueToSearch: string): IListFieldValuesRequest {
-    const lastQuery = this.queryController.getLastQuery();
-    const aqWithoutCurrentField =
-      lastQuery && lastQuery.aq ? this.removeFieldExpressionFromExpression(this.options.field.toString(), lastQuery.aq) : '';
-
-    const queryToExecute = [valueToSearch, aqWithoutCurrentField, lastQuery.cq].filter(part => !!part).join(' ');
+  private buildListFieldValueRequest(queryToExecute: string): IListFieldValuesRequest {
     return {
       field: <string>this.options.field,
       ignoreAccents: true,
@@ -339,9 +376,17 @@ export class FieldOccurenceSuggestions extends Component {
     };
   }
 
+  private getQueryToExecuteParts(): string[] {
+    const lastQuery = this.queryController.getLastQuery();
+    const aqWithoutCurrentField =
+      lastQuery && lastQuery.aq ? this.removeFieldExpressionFromExpression(this.options.field.toString(), lastQuery.aq) : '';
+
+    return [aqWithoutCurrentField, lastQuery.cq].filter(part => !!part);
+  }
+
   private removeFieldExpressionFromExpression(field: string, expression: string): string {
     return expression.replace(new RegExp(`${field}==([^)]*)`, 'gi'), '').replace(new RegExp(`${field}==[^ ]*`, 'gi'), '');
   }
 }
 
-Initialization.registerAutoCreateComponent(FieldOccurenceSuggestions);
+Initialization.registerAutoCreateComponent(FacetValueSuggestions);

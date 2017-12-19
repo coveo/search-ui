@@ -33,6 +33,7 @@ import { StandaloneSearchInterface } from '../SearchInterface/SearchInterface';
 import * as _ from 'underscore';
 import { exportGlobally } from '../../GlobalExports';
 import 'styling/_Omnibox';
+import { select } from 'd3';
 
 export interface IOmniboxSuggestion extends Coveo.MagicBox.Suggestion {
   executableConfidence?: number;
@@ -680,9 +681,8 @@ export class Omnibox extends Component {
   private handleTabPress() {
     if (this.options.enableQuerySuggestAddon) {
       this.handleTabPressForSuggestions();
-    } else {
-      this.handleTabPressForOldOmniboxAddon();
     }
+    this.handleTabPressForOldOmniboxAddon();
   }
 
   private handleTabPressForSuggestions() {
@@ -697,13 +697,20 @@ export class Omnibox extends Component {
   }
 
   private handleTabPressForOldOmniboxAddon() {
-    if (this.lastSuggestions && this.lastSuggestions[0] && this.lastSuggestions[0].dom) {
-      const firstSelected = $$(this.lastSuggestions[0].dom).find('.coveo-omnibox-selected');
-      const firstSelectable = $$(this.lastSuggestions[0].dom).find('.coveo-omnibox-selectable');
-      if (firstSelected) {
-        $$(firstSelected).trigger('tabSelect');
-      } else if (firstSelectable) {
-        $$(firstSelectable).trigger('tabSelect');
+    const domSuggestions = this.lastSuggestions.filter(suggestions => suggestions.dom).map(suggestions => $$(suggestions.dom));
+    const selected = domSuggestions
+      .map(suggestion => suggestion.find('.coveo-omnibox-selected'))
+      .filter(s => s)
+      .reduce((total, s) => total.concat(s), []);
+    if (selected.length > 0) {
+      $$(selected[0]).trigger('tabSelect');
+    } else if (!this.options.enableQuerySuggestAddon) {
+      const selectable = domSuggestions
+        .map(suggestion => suggestion.find('.coveo-omnibox-selectable'))
+        .filter(s => s)
+        .reduce((total, s) => total.concat(s), []);
+      if (selectable.length > 0) {
+        $$(selectable[0]).trigger('tabSelect');
       }
     }
   }

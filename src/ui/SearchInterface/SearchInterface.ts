@@ -42,6 +42,7 @@ import 'styling/Globals';
 import 'styling/_SearchInterface';
 import 'styling/_SearchModalBox';
 import 'styling/_SearchButton';
+import { Component } from '../Base/Component';
 
 export interface ISearchInterfaceOptions {
   enableHistory?: boolean;
@@ -517,16 +518,16 @@ export class SearchInterface extends RootComponent implements IComponentBindings
 
   /**
    * Gets the query context for the current search interface.
-   * 
+   *
    * If the search interface has performed at least one query, it will try to resolve the context from the last query sent to the Coveo Search API.
-   * 
+   *
    * If the search interface has not performed a query yet, it will try to resolve the context from any avaiable {@link PipelineContext} component.
-   * 
+   *
    * If multiple {@link PipelineContext} components are available, it will merge all context values together.
-   * 
+   *
    * **Note:**
    * Having multiple PipelineContext components in the same search interface is not recommended, especially if some context keys are repeated across those components.
-   * 
+   *
    * If no context is found, returns `undefined`
    */
   public getQueryContext(): Context {
@@ -598,7 +599,7 @@ export class SearchInterface extends RootComponent implements IComponentBindings
     }
   }
 
-  private handlePreprocessQueryStateModel(args: any) {
+  private handlePreprocessQueryStateModel(args: { [key: string]: any }) {
     const tgFromModel = this.queryStateModel.get(QueryStateModel.attributesEnum.tg);
     const tFromModel = this.queryStateModel.get(QueryStateModel.attributesEnum.t);
 
@@ -629,6 +630,16 @@ export class SearchInterface extends RootComponent implements IComponentBindings
 
     if (args && args.quickview !== undefined) {
       args.quickview = this.getQuickview(args.quickview);
+    }
+
+    if (args) {
+      const fvFields: string[] = Object.keys(args)
+        .filter(key => key.lastIndexOf(QueryStateModel.attributesEnum.fv) == 0)
+        .map(key => key.substring(QueryStateModel.attributesEnum.fv.length + 1));
+
+      if (fvFields.length > 0) {
+        this.handleFacetValueState(args, fvFields);
+      }
     }
   }
 
@@ -739,6 +750,43 @@ export class SearchInterface extends RootComponent implements IComponentBindings
       }
     }
     return QueryStateModel.defaultAttributes.quickview;
+  }
+
+  private handleFacetValueState(args: { [key: string]: any }, fvFields: string[]): void {
+    const facetRef = BaseComponent.getComponentRef('Facet');
+    let fieldsWithoutFacets = [];
+    if (facetRef) {
+      const allFacets: Component[] = this.getComponents(facetRef.ID);
+      fieldsWithoutFacets = fvFields.filter(facetField => {
+        const stateKey = QueryStateModel.getFacetValueId(facetField);
+        const value = args[stateKey];
+        if (value && value.length > 0) {
+          const facetsWithField = allFacets.filter(facet => facet.options.field == facetField);
+          if (facetsWithField.length > 0) {
+            delete args[stateKey];
+            facetsWithField.forEach(facet => (args[QueryStateModel.getFacetId(facet.options.id)] = value));
+            return false;
+          }
+        }
+        return true;
+      });
+    } else {
+      fieldsWithoutFacets = fvFields;
+    }
+    if (fieldsWithoutFacets.length > 0) {
+      const hd = fieldsWithoutFacets
+        .map(facetField => {
+          const stateKey = QueryStateModel.getFacetValueId(facetField);
+          const value = args[stateKey];
+          if (value && value.length > 0) {
+            return `@${facetField}=="${value}"`;
+          }
+        })
+        .filter(expression => !!expression);
+      if (hd.length > 0) {
+        this.queryStateModel.set(QueryStateModel.attributesEnum.hq, hd.join(' AND '));
+      }
+    }
   }
 
   private handleQuickviewChanged(args: IAttributeChangedEventArg) {

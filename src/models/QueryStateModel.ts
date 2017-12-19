@@ -75,6 +75,7 @@ export class QueryStateModel extends Model {
   static attributesEnum = {
     q: 'q',
     first: 'first',
+    fv: 'fv',
     t: 't',
     sort: 'sort',
     layout: 'layout',
@@ -94,6 +95,10 @@ export class QueryStateModel extends Model {
 
   static getFacetLookupValue(id: string) {
     return QueryStateModel.getFacetId(id) + ':lookupvalues';
+  }
+
+  static getFacetValueId(id: string) {
+    return 'fv:' + id;
   }
 
   /**
