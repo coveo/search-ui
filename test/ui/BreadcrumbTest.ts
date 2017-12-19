@@ -5,7 +5,6 @@ import { BreadcrumbEvents } from '../../src/events/BreadcrumbEvents';
 import { analyticsActionCauseList } from '../../src/ui/Analytics/AnalyticsActionListMeta';
 import { InitializationEvents } from '../../src/events/InitializationEvents';
 import { Simulate } from '../Simulate';
-import { QueryError } from '../../src/rest/QueryError';
 
 export function BreadcrumbTest() {
   describe('Breadcrumb', function() {

@@ -12,7 +12,6 @@ import { IGroupByResult } from '../../rest/GroupByResult';
 import { Initialization } from '../Base/Initialization';
 import * as Globalize from 'globalize';
 import { exportGlobally } from '../../GlobalExports';
-import { IStringMap } from '../../rest/GenericParam';
 
 export interface IFacetRangeOptions extends IFacetOptions {
   ranges?: IRangeValue[];

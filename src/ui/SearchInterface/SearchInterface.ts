@@ -2,7 +2,6 @@ import { SearchEndpoint } from '../../rest/SearchEndpoint';
 import { ComponentOptions, IFieldOption } from '../Base/ComponentOptions';
 import { DeviceUtils } from '../../utils/DeviceUtils';
 import { $$ } from '../../utils/Dom';
-import { DomUtils } from '../../utils/DomUtils';
 import { Assert } from '../../misc/Assert';
 import { QueryStateModel } from '../../models/QueryStateModel';
 import { ComponentStateModel } from '../../models/ComponentStateModel';
@@ -14,10 +13,11 @@ import {
   IBuildingQueryEventArgs,
   INewQueryEventArgs,
   IQuerySuccessEventArgs,
-  IQueryErrorEventArgs
+  IQueryErrorEventArgs,
+  IDoneBuildingQueryEventArgs
 } from '../../events/QueryEvents';
 import { IBeforeRedirectEventArgs, StandaloneSearchInterfaceEvents } from '../../events/StandaloneSearchInterfaceEvents';
-import { HistoryController } from '../../controllers/HistoryController';
+import { HistoryController, IHistoryControllerEnvironment } from '../../controllers/HistoryController';
 import { LocalStorageHistoryController } from '../../controllers/LocalStorageHistoryController';
 import { InitializationEvents } from '../../events/InitializationEvents';
 import { IAnalyticsClient } from '../Analytics/AnalyticsClient';
@@ -34,14 +34,13 @@ import { IComponentBindings } from '../Base/ComponentBindings';
 import { analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
 import { ResponsiveComponents } from '../ResponsiveComponents/ResponsiveComponents';
 import { Context, IPipelineContextProvider } from '../PipelineContext/PipelineGlobalExports';
-import { IStringMap } from '../../rest/GenericParam';
-
 import * as _ from 'underscore';
 
 import 'styling/Globals';
 import 'styling/_SearchInterface';
 import 'styling/_SearchModalBox';
 import 'styling/_SearchButton';
+import { InitializationPlaceholder } from '../Base/InitializationPlaceholder';
 
 export interface ISearchInterfaceOptions {
   enableHistory?: boolean;
@@ -64,6 +63,7 @@ export interface ISearchInterfaceOptions {
   initOptions?: any;
   endpoint?: SearchEndpoint;
   originalOptionsObject?: any;
+  allowQueriesWithoutKeywords?: boolean;
 }
 
 /**
@@ -294,6 +294,23 @@ export class SearchInterface extends RootComponent implements IComponentBindings
      * Default value is `true`.
      */
     autoTriggerQuery: ComponentOptions.buildBooleanOption({ defaultValue: true }),
+    /**
+     * Specifies if the search interface should perform queries when no keywords are entered by the end user.
+     *
+     * When this option is set to true, the interface will initially only load with the search box, as long as you have a search box component in your interface.
+     *
+     * Once the user submits a query, the full search interface loads to display the results.
+     *
+     * When using the Coveo for Salesforce Free edition, this option is automatically set to false, and should not be changed.
+     *
+     * This option interacts closely with the {@link SearchInterface.options.autoTriggerQuery} option, as the automatic query is not triggered when there are no keywords.
+     *
+     * It also modifies the {@link IQuery.allowQueriesWithoutKeywords} query parameter.
+     *
+     * Default value is `true`
+     * @notSupportedIn salesforcefree
+     */
+    allowQueriesWithoutKeywords: ComponentOptions.buildBooleanOption({ defaultValue: true }),
     endpoint: ComponentOptions.buildCustomOption(
       endpoint => (endpoint != null && endpoint in SearchEndpoint.endpoints ? SearchEndpoint.endpoints[endpoint] : null),
       { defaultFunction: () => SearchEndpoint.endpoints['default'] }
@@ -424,7 +441,7 @@ export class SearchInterface extends RootComponent implements IComponentBindings
    * @param _window The window object for the search interface. Used for unit tests, which can pass a mock. Default is
    * the global window object.
    */
-  constructor(public element: HTMLElement, public options?: ISearchInterfaceOptions, public analyticsOptions?, _window = window) {
+  constructor(public element: HTMLElement, public options?: ISearchInterfaceOptions, public analyticsOptions?, public _window = window) {
     super(element, SearchInterface.ID);
 
     if (DeviceUtils.isMobileDevice()) {
@@ -448,6 +465,12 @@ export class SearchInterface extends RootComponent implements IComponentBindings
     this.queryController = new QueryController(element, this.options, this.usageAnalytics, this);
     new SentryLogger(this.queryController);
 
+    if (this.options.allowQueriesWithoutKeywords) {
+      this.initializeEmptyQueryAllowed();
+    } else {
+      this.initializeEmptyQueryNotAllowed();
+    }
+
     const eventName = this.queryStateModel.getEventName(Model.eventTypes.preprocess);
     $$(this.element).on(eventName, (e, args) => this.handlePreprocessQueryStateModel(args));
     $$(this.element).on(QueryEvents.buildingQuery, (e, args) => this.handleBuildingQuery(args));
@@ -456,7 +479,7 @@ export class SearchInterface extends RootComponent implements IComponentBindings
 
     if (this.options.enableHistory) {
       if (!this.options.useLocalStorageForHistory) {
-        new HistoryController(element, _window, this.queryStateModel, this.queryController);
+        this.initializeHistoryController();
       } else {
         new LocalStorageHistoryController(element, _window, this.queryStateModel, this.queryController);
       }
@@ -468,8 +491,6 @@ export class SearchInterface extends RootComponent implements IComponentBindings
 
     const eventNameQuickview = this.queryStateModel.getEventName(Model.eventTypes.changeOne + QueryStateModel.attributesEnum.quickview);
     $$(this.element).on(eventNameQuickview, (e, args) => this.handleQuickviewChanged(args));
-    // shows the UI, since it's been hidden while loading
-    this.element.style.display = element.style.display || 'block';
     this.setupDebugInfo();
     this.responsiveComponents = new ResponsiveComponents();
   }
@@ -517,16 +538,16 @@ export class SearchInterface extends RootComponent implements IComponentBindings
 
   /**
    * Gets the query context for the current search interface.
-   * 
+   *
    * If the search interface has performed at least one query, it will try to resolve the context from the last query sent to the Coveo Search API.
-   * 
+   *
    * If the search interface has not performed a query yet, it will try to resolve the context from any avaiable {@link PipelineContext} component.
-   * 
+   *
    * If multiple {@link PipelineContext} components are available, it will merge all context values together.
-   * 
+   *
    * **Note:**
    * Having multiple PipelineContext components in the same search interface is not recommended, especially if some context keys are repeated across those components.
-   * 
+   *
    * If no context is found, returns `undefined`
    */
   public getQueryContext(): Context {
@@ -574,22 +595,22 @@ export class SearchInterface extends RootComponent implements IComponentBindings
     return this.attachedComponents[type];
   }
 
-  /**
-   * Indicates whether the search interface is using the new design.
-   * This changes the rendering of multiple components.
-   *
-   * @deprecated Old styling of the interface is no longer supported
-   */
-  // public isNewDesign() {
-  //  return false;
-  // }
-
   protected initializeAnalytics(): IAnalyticsClient {
     const analyticsRef = BaseComponent.getComponentRef('Analytics');
     if (analyticsRef) {
       return analyticsRef.create(this.element, this.analyticsOptions, this.getBindings());
     }
     return new NoopAnalyticsClient();
+  }
+
+  private initializeHistoryController() {
+    const historyControllerEnvironment: IHistoryControllerEnvironment = {
+      model: this.queryStateModel,
+      queryController: this.queryController,
+      usageAnalytics: this.usageAnalytics,
+      window: this._window
+    };
+    new HistoryController(this.element, historyControllerEnvironment);
   }
 
   private setupDebugInfo() {
@@ -796,6 +817,8 @@ export class SearchInterface extends RootComponent implements IComponentBindings
     data.queryBuilder.enableCollaborativeRating = this.options.enableCollaborativeRating;
 
     data.queryBuilder.enableDuplicateFiltering = this.options.enableDuplicateFiltering;
+
+    data.queryBuilder.allowQueriesWithoutKeywords = this.options.allowQueriesWithoutKeywords;
   }
 
   private handleQuerySuccess(data: IQuerySuccessEventArgs) {
@@ -839,6 +862,33 @@ export class SearchInterface extends RootComponent implements IComponentBindings
         $$(facetSearch).toggleClass(cssClass, toggle && !this.queryStateModel.atLeastOneFacetIsActive());
       });
     }
+  }
+
+  private initializeEmptyQueryAllowed() {
+    new InitializationPlaceholder(this.element).withFullInitializationStyling().withAllPlaceholders();
+  }
+
+  private initializeEmptyQueryNotAllowed() {
+    const placeholder = new InitializationPlaceholder(this.element)
+      .withEventToRemovePlaceholder(QueryEvents.newQuery)
+      .withFullInitializationStyling()
+      .withHiddenRootElement()
+      .withPlaceholderForFacets()
+      .withPlaceholderForResultList();
+
+    $$(this.root).on(InitializationEvents.restoreHistoryState, () => {
+      placeholder.withVisibleRootElement();
+      if (this.queryStateModel.get('q') == '') {
+        placeholder.withWaitingForFirstQueryMode();
+      }
+    });
+
+    $$(this.element).on(QueryEvents.doneBuildingQuery, (e, args: IDoneBuildingQueryEventArgs) => {
+      if (!args.queryBuilder.containsEndUserKeywords()) {
+        this.logger.info('Query cancelled by the Search Interface', 'Configuration does not allow empty query', this, this.options);
+        args.cancel = true;
+      }
+    });
   }
 }
 

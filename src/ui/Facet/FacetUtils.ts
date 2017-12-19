@@ -9,8 +9,6 @@ import * as _ from 'underscore';
 import FacetModuleDefinition = require('./Facet');
 import { l } from '../../strings/Strings';
 
-declare const Coveo;
-
 export class FacetUtils {
   static getRegexToUseForFacetSearch(value: string, ignoreAccent: boolean) {
     return new RegExp(StringUtils.stringToRegex(value, ignoreAccent), 'i');

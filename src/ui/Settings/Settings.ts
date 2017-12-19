@@ -3,7 +3,7 @@ import { IComponentBindings } from '../Base/ComponentBindings';
 import { ComponentOptions } from '../Base/ComponentOptions';
 import { InitializationEvents } from '../../events/InitializationEvents';
 import { $$ } from '../../utils/Dom';
-import { PopupUtils, IPosition, HorizontalAlignment, VerticalAlignment } from '../../utils/PopupUtils';
+import { PopupUtils, IPopupPosition, PopupHorizontalAlignment, PopupVerticalAlignment } from '../../utils/PopupUtils';
 import { IMenuItem } from '../Menu/MenuItem';
 import { SettingsEvents } from '../../events/SettingsEvents';
 import { Initialization } from '../Base/Initialization';
@@ -159,10 +159,10 @@ export class Settings extends Component {
     clearTimeout(this.closeTimeout);
   }
 
-  private getPopupPositioning(): IPosition {
+  private getPopupPositioning(): IPopupPosition {
     return {
-      horizontal: HorizontalAlignment.INNERRIGHT,
-      vertical: VerticalAlignment.BOTTOM,
+      horizontal: PopupHorizontalAlignment.INNERRIGHT,
+      vertical: PopupVerticalAlignment.BOTTOM,
       verticalOffset: 8
     };
   }

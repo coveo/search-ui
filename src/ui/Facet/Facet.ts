@@ -11,7 +11,6 @@ import { FacetSort } from './FacetSort';
 import { FacetValuesList } from './FacetValuesList';
 import { FacetHeader } from './FacetHeader';
 import { FacetUtils } from './FacetUtils';
-import { InitializationEvents } from '../../events/InitializationEvents';
 import { QueryEvents, INewQueryEventArgs, IQuerySuccessEventArgs, IDoneBuildingQueryEventArgs } from '../../events/QueryEvents';
 import { Assert } from '../../misc/Assert';
 import { ISearchEndpoint } from '../../rest/SearchEndpointInterface';
@@ -182,6 +181,11 @@ export class Facet extends Component {
      */
     isMultiValueField: ComponentOptions.buildBooleanOption({ defaultValue: false }),
 
+    /**
+     * Specifies the field whose values the Facet should display.
+     *
+     * @deprecated This option is exposed for legacy reasons. It is not recommended to use this option.
+     */
     lookupField: ComponentOptions.buildFieldOption({
       deprecated: 'This option is exposed for legacy reasons. It is not recommended to use this option.'
     }),
@@ -401,11 +405,28 @@ export class Facet extends Component {
       depend: 'includeInBreadcrumb'
     }),
 
+    /**
+     * Specifies whether the Facet should push data to the {@link Omnibox} component.
+     *
+     * See also {@link Facet.options.numberOfValuesInOmnibox}.
+     *
+     * Default value is `false`.
+     *
+     * @deprecated This option is exposed for legacy reasons. It is not recommended to use this option.
+     */
     includeInOmnibox: ComponentOptions.buildBooleanOption({
       defaultValue: false,
       deprecated: 'This option is exposed for legacy reasons. It is not recommended to use this option.'
     }),
 
+    /**
+     * When {@link Facet.options.includeInOmnibox} is `true`, specifies the number of values to populate the
+     * {@link Breadcrumb} with.
+     *
+     * Default value is `5` on desktop computer and `3` on a mobile device. Minimum value is `0`.
+     *
+     * @deprecated This option is exposed for legacy reasons. It is not recommended to use this option.
+     */
     numberOfValuesInOmnibox: ComponentOptions.buildNumberOption({
       defaultFunction: () => (DeviceUtils.isMobileDevice() ? 3 : 5),
       min: 0,
@@ -738,8 +759,6 @@ export class Facet extends Component {
   private excludedAttributeId: string;
   private lookupValueAttributeId: string;
   private listenToQueryStateChange = true;
-
-  private resize: (...args: any[]) => void;
 
   /**
    * Creates a new `Facet` component. Binds multiple query events as well.

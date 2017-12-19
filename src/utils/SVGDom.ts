@@ -1,4 +1,3 @@
-import { $$ } from './Dom';
 import { IStringMap } from '../rest/GenericParam';
 import * as _ from 'underscore';
 

@@ -269,7 +269,7 @@ export function SearchEndpointTest() {
           const qbuilder = new QueryBuilder();
           const historyAsString = JSON.stringify([{ name: 'foo', value: 'bar' }]);
           qbuilder.actionsHistory = historyAsString;
-          const promiseSuccess = ep.search(qbuilder.build());
+          ep.search(qbuilder.build());
           expect(jasmine.Ajax.requests.mostRecent().params).toContain(`actionsHistory=${encodeURIComponent(historyAsString)}`);
         });
 

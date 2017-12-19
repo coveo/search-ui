@@ -25,7 +25,6 @@ export class ResponsiveFacetColumn implements IResponsiveComponent {
   private componentsInFacetColumn: any[] = [];
   private preservePositionOriginalValues: boolean[] = [];
   private breakpoint: number;
-  private logger: Logger;
   protected dropdown: ResponsiveDropdown;
   private dropdownHeaderLabel: string;
 
@@ -46,7 +45,6 @@ export class ResponsiveFacetColumn implements IResponsiveComponent {
     this.bindDropdownContentEvents();
     this.registerOnCloseHandler();
     this.registerQueryEvents();
-    this.logger = new Logger(this);
     if (Utils.isNullOrUndefined(options.responsiveBreakpoint)) {
       this.breakpoint = this.searchInterface
         ? this.searchInterface.responsiveComponents.getMediumScreenWidth()

@@ -9,7 +9,6 @@ import { ComponentOptionsModel } from '../src/models/ComponentOptionsModel';
 import { OS_NAME } from '../src/utils/OSUtils';
 import { FakeResults } from './Fake';
 import { Component } from '../src/ui/Base/Component';
-import { Utils } from '../src/utils/Utils';
 import { BaseComponent } from '../src/ui/Base/BaseComponent';
 import { NoopAnalyticsClient } from '../src/ui/Analytics/NoopAnalyticsClient';
 import { AnalyticsEndpoint } from '../src/rest/AnalyticsEndpoint';

@@ -1,8 +1,6 @@
-@import "Variables";
+@import 'Variables';
+@import './mixins/mediaQuery';
 
-.coveo-waiting-for-first-query .CoveoSearchbox .CoveoSearchButton {
-  z-index: 0;
-}
 .CoveoSearchbox {
   &.coveo-inline {
     overflow: hidden;
@@ -44,7 +42,17 @@
   margin-right: 76px;
 }
 
-.magic-box, .magic-box.magic-box-hasFocus {
+.CoveoSearchInterface.coveo-waiting-for-query {
+  .CoveoSearchbox {
+    margin: 0;
+    @include smallScreenWidth {
+      margin: 0 20px;
+    }
+  }
+}
+
+.magic-box,
+.magic-box.magic-box-hasFocus {
   .magic-box-input {
     .magic-box-underlay {
       .magic-box-ghost-text {

@@ -1,7 +1,6 @@
 import { Component } from '../Base/Component';
 import { IComponentBindings } from '../Base/ComponentBindings';
 import { ComponentOptions } from '../Base/ComponentOptions';
-import { analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
 import { IQueryResult } from '../../rest/QueryResult';
 import { Assert } from '../../misc/Assert';
 import { $$, Dom } from '../../utils/Dom';
@@ -105,20 +104,7 @@ export class QuickviewDocument extends Component {
 
   public open() {
     this.ensureDom();
-    let documentURL = $$(this.element).getAttribute('href');
-    if (documentURL == undefined || documentURL == '') {
-      documentURL = this.result.clickUri;
-    }
-    this.usageAnalytics.logClickEvent(
-      analyticsActionCauseList.documentQuickview,
-      {
-        author: Utils.getFieldValue(this.result, 'author'),
-        documentURL: documentURL,
-        documentTitle: this.result.title
-      },
-      this.result,
-      this.queryController.element
-    );
+
     const beforeLoad = new Date().getTime();
     const iframe = <HTMLIFrameElement>this.iframe.find('iframe');
     iframe.src = 'about:blank';

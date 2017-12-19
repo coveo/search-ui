@@ -30,8 +30,9 @@ plugins.push(
 );
 
 if (production) {
+  const cssFilename = minimize ? '../css/CoveoFullSearch.min.css' : '../css/CoveoFullSearch.css';
   const extractSass = new ExtractTextPlugin({
-    filename: '../css/CoveoFullSearch.css'
+    filename: cssFilename
   });
   additionalRules.push({
     test: /\.scss/,
@@ -40,7 +41,8 @@ if (production) {
         {
           loader: 'css-loader',
           options: {
-            sourceMap: false
+            sourceMap: false,
+            minimize: minimize
           }
         },
         {
@@ -97,6 +99,18 @@ if (production) {
   bail = false;
 }
 
+const getChunkFileName = () => {
+  let chunkFilename = getBaseFileName();
+  if (production) {
+    chunkFilename = chunkFilename + '__[hash]';
+  }
+  return chunkFilename;
+};
+
+const getBaseFileName = () => {
+  return minimize ? '[name].min' : '[name]';
+};
+
 module.exports = {
   entry: {
     'CoveoJsSearch.Lazy': ['./src/Lazy.ts'],
@@ -104,8 +118,8 @@ module.exports = {
   },
   output: {
     path: path.resolve('./bin/js'),
-    filename: minimize ? '[name].min.js' : '[name].js',
-    chunkFilename: minimize ? '[name].min.js' : '[name].js',
+    filename: getBaseFileName() + '.js',
+    chunkFilename: getChunkFileName() + '.js',
     libraryTarget: 'umd',
     umdNamedDefine: true,
     // See SwapVar.ts as for why this need to be a temporary variable

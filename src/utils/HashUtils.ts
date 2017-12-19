@@ -3,12 +3,6 @@ import { Utils } from '../utils/Utils';
 import * as _ from 'underscore';
 import { Logger } from '../MiscModules';
 
-interface IHashUtils {
-  getHash(w: any);
-  getValue();
-  encodeValues();
-}
-
 export class HashUtils {
   private static DELIMITER = {
     objectStart: '{',
@@ -51,7 +45,7 @@ export class HashUtils {
       } else if (_.isObject(valueToEncode) && Utils.isNonEmptyArray(_.keys(valueToEncode))) {
         encodedValue = HashUtils.encodeObject(valueToEncode);
       } else if (!Utils.isNullOrUndefined(valueToEncode)) {
-        encodedValue = encodeURIComponent(valueToEncode.toString());
+        encodedValue = Utils.safeEncodeURIComponent(valueToEncode.toString());
       }
       if (encodedValue != '') {
         hash.push(key + '=' + encodedValue);
@@ -129,7 +123,7 @@ export class HashUtils {
   }
 
   private static isArrayStartEncoded(value: string) {
-    return value.indexOf(encodeURIComponent(HashUtils.DELIMITER.arrayStart)) == 0;
+    return value.indexOf(Utils.safeEncodeURIComponent(HashUtils.DELIMITER.arrayStart)) == 0;
   }
 
   private static isArrayEndNotEncoded(value: string) {
@@ -138,8 +132,8 @@ export class HashUtils {
 
   private static isArrayEndEncoded(value: string) {
     return (
-      value.indexOf(encodeURIComponent(HashUtils.DELIMITER.arrayEnd)) ==
-      value.length - encodeURIComponent(HashUtils.DELIMITER.arrayEnd).length
+      value.indexOf(Utils.safeEncodeURIComponent(HashUtils.DELIMITER.arrayEnd)) ==
+      value.length - Utils.safeEncodeURIComponent(HashUtils.DELIMITER.arrayEnd).length
     );
   }
 
@@ -148,7 +142,7 @@ export class HashUtils {
   }
 
   private static isObjectStartEncoded(value: string) {
-    return value.indexOf(encodeURIComponent(HashUtils.DELIMITER.objectStart)) == 0;
+    return value.indexOf(Utils.safeEncodeURIComponent(HashUtils.DELIMITER.objectStart)) == 0;
   }
 
   private static isObjectEndNotEncoded(value: string) {
@@ -157,8 +151,8 @@ export class HashUtils {
 
   private static isObjectEndEncoded(value: string) {
     return (
-      value.indexOf(encodeURIComponent(HashUtils.DELIMITER.objectEnd)) ==
-      value.length - encodeURIComponent(HashUtils.DELIMITER.objectEnd).length
+      value.indexOf(Utils.safeEncodeURIComponent(HashUtils.DELIMITER.objectEnd)) ==
+      value.length - Utils.safeEncodeURIComponent(HashUtils.DELIMITER.objectEnd).length
     );
   }
 
@@ -176,14 +170,14 @@ export class HashUtils {
 
   public static encodeArray(array: string[]): string {
     const arrayReturn = _.map(array, value => {
-      return encodeURIComponent(value);
+      return Utils.safeEncodeURIComponent(value);
     });
     return HashUtils.DELIMITER.arrayStart + arrayReturn.join(',') + HashUtils.DELIMITER.arrayEnd;
   }
 
   public static encodeObject(obj: Object): string {
     const retArray = _.map(<_.Dictionary<any>>obj, (val, key?, obj?) => {
-      return `"${encodeURIComponent(key)}":${this.encodeValue(val)}`;
+      return `"${Utils.safeEncodeURIComponent(key)}":${this.encodeValue(val)}`;
     });
     return HashUtils.DELIMITER.objectStart + retArray.join(' , ') + HashUtils.DELIMITER.objectEnd;
   }
@@ -195,9 +189,9 @@ export class HashUtils {
     } else if (_.isObject(val)) {
       encodedValue = HashUtils.encodeObject(val);
     } else if (_.isNumber(val) || _.isBoolean(val)) {
-      encodedValue = encodeURIComponent(val.toString());
+      encodedValue = Utils.safeEncodeURIComponent(val.toString());
     } else {
-      encodedValue = '"' + encodeURIComponent(val) + '"';
+      encodedValue = '"' + Utils.safeEncodeURIComponent(val) + '"';
     }
     return encodedValue;
   }
@@ -205,7 +199,7 @@ export class HashUtils {
   private static decodeObject(obj: string): Object {
     if (HashUtils.isObjectStartEncoded(obj) && HashUtils.isObjectEndEncoded(obj)) {
       obj = obj.replace(/encodeURIComponent(HashUtils.Delimiter.objectStart)/, HashUtils.DELIMITER.objectStart);
-      obj = obj.replace(encodeURIComponent(HashUtils.DELIMITER.objectEnd), HashUtils.DELIMITER.objectEnd);
+      obj = obj.replace(Utils.safeEncodeURIComponent(HashUtils.DELIMITER.objectEnd), HashUtils.DELIMITER.objectEnd);
     }
     try {
       const decoded = decodeURIComponent(obj);
@@ -218,8 +212,8 @@ export class HashUtils {
 
   private static decodeArray(value: string): any[] {
     if (HashUtils.isArrayStartEncoded(value) && HashUtils.isArrayEndEncoded(value)) {
-      value = value.replace(encodeURIComponent(HashUtils.DELIMITER.arrayStart), HashUtils.DELIMITER.arrayStart);
-      value = value.replace(encodeURIComponent(HashUtils.DELIMITER.arrayEnd), HashUtils.DELIMITER.arrayEnd);
+      value = value.replace(Utils.safeEncodeURIComponent(HashUtils.DELIMITER.arrayStart), HashUtils.DELIMITER.arrayStart);
+      value = value.replace(Utils.safeEncodeURIComponent(HashUtils.DELIMITER.arrayEnd), HashUtils.DELIMITER.arrayEnd);
     }
     value = value.substr(1);
     value = value.substr(0, value.length - 1);

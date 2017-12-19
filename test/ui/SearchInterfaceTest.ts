@@ -1,15 +1,13 @@
 /// <reference path="../../lib/jasmine/index.d.ts" />
 import * as Mock from '../MockEnvironment';
 import { SearchInterface } from '../../src/ui/SearchInterface/SearchInterface';
-import { NoopAnalyticsClient } from '../../src/ui/Analytics/NoopAnalyticsClient';
 import { QueryController } from '../../src/controllers/QueryController';
 import { QueryStateModel } from '../../src/models/QueryStateModel';
 import { ComponentOptionsModel } from '../../src/models/ComponentOptionsModel';
 import { ComponentStateModel } from '../../src/models/ComponentStateModel';
 import { Querybox } from '../../src/ui/Querybox/Querybox';
-import { LiveAnalyticsClient } from '../../src/ui/Analytics/LiveAnalyticsClient';
 import { $$ } from '../../src/utils/Dom';
-import { QueryEvents } from '../../src/events/QueryEvents';
+import { QueryEvents, IDoneBuildingQueryEventArgs } from '../../src/events/QueryEvents';
 import { Component } from '../../src/ui/Base/Component';
 import { HistoryController } from '../../src/controllers/HistoryController';
 import { LocalStorageHistoryController } from '../../src/controllers/LocalStorageHistoryController';
@@ -17,9 +15,8 @@ import { Simulate } from '../Simulate';
 import { Debug } from '../../src/ui/Debug/Debug';
 import { FakeResults } from '../Fake';
 import _ = require('underscore');
-import { IQuery } from '../../src/rest/Query';
 import { QueryBuilder } from '../../src/ui/Base/QueryBuilder';
-import { PipelineContext, IPipelineContextOptions } from '../../src/ui/PipelineContext/PipelineContext';
+import { PipelineContext } from '../../src/ui/PipelineContext/PipelineContext';
 
 export function SearchInterfaceTest() {
   describe('SearchInterface', () => {
@@ -417,6 +414,59 @@ export function SearchInterfaceTest() {
           new SearchInterface(div, { maximumAge: 123 }, undefined, mockWindow);
           const simulation = Simulate.query(env);
           expect(simulation.queryBuilder.maximumAge).toBe(123);
+        });
+      });
+
+      describe('when allowQueriesWithoutKeywords if true', () => {
+        beforeEach(() => {
+          new SearchInterface(div, { allowQueriesWithoutKeywords: true }, undefined, mockWindow);
+        });
+
+        it('it does not cancel the query if there are no keywords', done => {
+          $$(div).on(QueryEvents.doneBuildingQuery, (e, args: IDoneBuildingQueryEventArgs) => {
+            expect(args.cancel).toBe(false);
+            done();
+          });
+          Simulate.query(env);
+        });
+
+        it('allowQueriesWithoutKeywords to true should be sent as a flag in the query', () => {
+          new SearchInterface(div, { allowQueriesWithoutKeywords: true }, undefined, mockWindow);
+          const simulation = Simulate.query(env);
+          expect(simulation.queryBuilder.build().allowQueriesWithoutKeywords).toBe(true);
+        });
+      });
+
+      describe('when allowQueriesWithoutKeywords if false', () => {
+        beforeEach(() => {
+          new SearchInterface(div, { allowQueriesWithoutKeywords: false }, undefined, mockWindow);
+        });
+
+        it('it does cancel the query if there are no keywords', done => {
+          $$(div).on(QueryEvents.doneBuildingQuery, (e, args: IDoneBuildingQueryEventArgs) => {
+            expect(args.cancel).toBe(true);
+            done();
+          });
+          Simulate.query(env);
+        });
+
+        it('it does not cancel the query if there are keywords', done => {
+          const queryBuilder = new QueryBuilder();
+          queryBuilder.expression.add('foo');
+
+          $$(div).on(QueryEvents.doneBuildingQuery, (e, args: IDoneBuildingQueryEventArgs) => {
+            expect(args.cancel).toBe(false);
+            done();
+          });
+
+          Simulate.query(env, {
+            queryBuilder: queryBuilder
+          });
+        });
+
+        it('it should set a flag in the query', () => {
+          const simulation = Simulate.query(env);
+          expect(simulation.queryBuilder.build().allowQueriesWithoutKeywords).toBe(false);
         });
       });
     });

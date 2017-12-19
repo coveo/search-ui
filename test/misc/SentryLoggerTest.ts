@@ -5,7 +5,6 @@ import { SearchEndpoint } from '../../src/rest/SearchEndpoint';
 
 export function SentryLoggerTest() {
   describe('SentryLoggerTest', () => {
-    let sentryLogger: SentryLogger;
     let queryController: QueryController;
     let endpoint: SearchEndpoint;
     let windoh: Window;
@@ -16,12 +15,11 @@ export function SentryLoggerTest() {
       queryController = mockQueryController();
       endpoint = mockSearchEndpoint();
       queryController.getEndpoint = () => endpoint;
-      sentryLogger = new SentryLogger(queryController, windoh);
+      new SentryLogger(queryController, windoh);
     });
 
     afterEach(() => {
       windoh.onerror = null;
-      sentryLogger = null;
       queryController = null;
       endpoint = null;
     });
@@ -44,7 +42,7 @@ export function SentryLoggerTest() {
       let spyError = jasmine.createSpy('error');
       windoh.onerror = spyError;
 
-      sentryLogger = new SentryLogger(queryController, windoh);
+      new SentryLogger(queryController, windoh);
       windoh.location.href = 'somewhere.com';
       windoh.location.host = 'somewhere.com';
       windoh.onerror('an error happened', 'CoveoJsSearch.min.js', 123, 1, new Error('an error happened'));

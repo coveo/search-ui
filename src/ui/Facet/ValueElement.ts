@@ -6,9 +6,6 @@ import { ValueElementRenderer } from './ValueElementRenderer';
 import { Utils } from '../../utils/Utils';
 import { IAnalyticsActionCause, analyticsActionCauseList, IAnalyticsFacetMeta } from '../Analytics/AnalyticsActionListMeta';
 import { $$ } from '../../utils/Dom';
-import { DeviceUtils } from '../../utils/DeviceUtils';
-import { Defer } from '../../misc/Defer';
-import { ModalBox } from '../../ExternalModulesShim';
 import { KeyboardUtils, KEYBOARD } from '../../utils/KeyboardUtils';
 
 export interface IValueElementKlass {
