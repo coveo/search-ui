@@ -621,7 +621,8 @@ export class ResultList extends Component {
   private scrollBackToTop() {
     if (this.options.infiniteScrollContainer instanceof Window) {
       const win = <Window>this.options.infiniteScrollContainer;
-      win.scrollTo(0, 0);
+      const searchInterfacePosition = win.pageYOffset + this.searchInterface.element.getBoundingClientRect().top;
+      win.scrollTo(0, searchInterfacePosition);
     } else {
       const el = <HTMLElement>this.options.infiniteScrollContainer;
       el.scrollTop = 0;
