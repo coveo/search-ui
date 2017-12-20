@@ -53,19 +53,20 @@ export function QueryBuilderTest() {
       });
 
       it('and computeCompleteExpressionParts', () => {
-        expect(queryBuilder.computeCompleteExpressionParts().constant).toBe('(constant) OR (disjunction)');
-        expect(queryBuilder.computeCompleteExpressionParts().withoutConstant).toBe('((basic) (advanced)) OR (disjunction)');
+        expect(queryBuilder.computeCompleteExpressionParts().constant).toBe('constant');
+        expect(queryBuilder.computeCompleteExpressionParts().withoutConstant).toBe('(basic) (advanced)');
         expect(queryBuilder.computeCompleteExpressionParts().full).toBe('((basic) (advanced) (constant)) OR (disjunction)');
       });
 
       it('and computeCompleteExpressionExcept', () => {
         expect(queryBuilder.computeCompleteExpressionExcept('advanced')).toBe('((basic) (constant)) OR (disjunction)');
         expect(queryBuilder.computeCompleteExpressionExcept('basic')).toBe('((advanced) (constant)) OR (disjunction)');
+        expect(queryBuilder.computeCompleteExpressionExcept('disjunction')).toBe('(basic) (advanced) (constant)');
       });
 
       it('and computeCompleteExpressionPartsExcept', () => {
-        expect(queryBuilder.computeCompleteExpressionPartsExcept('advanced').constant).toBe('(constant) OR (disjunction)');
-        expect(queryBuilder.computeCompleteExpressionPartsExcept('advanced').withoutConstant).toBe('(basic) OR (disjunction)');
+        expect(queryBuilder.computeCompleteExpressionPartsExcept('advanced').constant).toBe('constant');
+        expect(queryBuilder.computeCompleteExpressionPartsExcept('advanced').withoutConstant).toBe('basic');
         expect(queryBuilder.computeCompleteExpressionPartsExcept('advanced').full).toBe('((basic) (constant)) OR (disjunction)');
       });
     });
