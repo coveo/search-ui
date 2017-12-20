@@ -106,6 +106,7 @@ export class MockEnvironmentBuilder {
     this.searchInterface.queryStateModel = this.queryStateModel;
     this.searchInterface.componentStateModel = this.componentStateModel;
     this.searchInterface.componentOptionsModel = this.componentOptionsModel;
+    this.searchInterface.element = this.root;
 
     if (!this.searchEndpoint) {
       this.searchEndpoint = mockSearchEndpoint();

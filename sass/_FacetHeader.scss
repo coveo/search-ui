@@ -1,5 +1,4 @@
-@import "Variables";
-
+@import 'Variables';
 .coveo-facet-header {
   padding: 10px 20px;
   background: $color-blueish-white;
@@ -8,6 +7,12 @@
   @include border-top-radius($default-border-radius);
   @include display(flex);
   @include flex-wrap(nowrap);
+  svg {
+    display: inline-block;
+    vertical-align: middle;
+    width: 18px;
+    height: 18px;
+  }
 }
 
 .coveo-facet-header-title-section {
@@ -28,7 +33,8 @@
 }
 
 .coveo-facet-settings-more {
-  &:hover, &:focus {
+  &:hover,
+  &:focus {
     outline: none;
     .coveo-more-background-svg {
       fill-opacity: 1;
@@ -38,31 +44,28 @@
 }
 
 .coveo-facet-settings-more-svg {
-  width: 18px;
-  height: 18px;
   color: $color-greyish-teal-blue;
 }
 
 .coveo-facet-header-operator {
   color: $color-greyish-teal-blue;
-  .coveo-or-and-svg {
-    width: 18px;
-    height: 18px;
-  }
   .coveo-and .coveo-and-svg {
     fill: $color-active-yellow;
   }
-
   .coveo-or .coveo-or-svg {
     fill: $color-active-yellow;
   }
 }
 
-.coveo-facet-header-operator, .coveo-facet-header-eraser, .coveo-facet-header-settings, .coveo-facet-header-collapse, .coveo-facet-header-expand {
+.coveo-facet-header-operator,
+.coveo-facet-header-eraser,
+.coveo-facet-header-settings,
+.coveo-facet-header-collapse,
+.coveo-facet-header-expand {
   cursor: pointer;
   margin-left: 10px;
   position: relative;
-  top: 4px;
+  vertical-align: middle;
 }
 
 .coveo-facet-header-eraser {
@@ -72,26 +75,16 @@
   &.coveo-facet-header-eraser-visible {
     visibility: visible;
   }
-  @include clearButton('&', 'big');  
-}
-
-.coveo-facet-header-eraser-svg {
-  display: block;
-  margin-top: 5px;
+  @include clearButton('&', 'big');
 }
 
 .coveo-facet-header-wait-animation {
   margin-left: 10px;
   position: relative;
-  width: 16px;
-  height: 16px;
-  min-width: 16px;
-  min-height: 16px;
-
   .coveo-facet-header-wait-animation-svg {
     color: $color-greyish-teal-blue;
-    width: 18px;
-    height: 18px;
+    display: inline-block;
+    vertical-align: middle;
     @include animation-name(coveo-spin);
     @include animation-timing-function(linear);
     @include animation-duration(1s);
