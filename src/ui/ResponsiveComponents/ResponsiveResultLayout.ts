@@ -2,10 +2,11 @@ import { IResponsiveComponent, IResponsiveComponentOptions, ResponsiveComponents
 import { Dom, $$ } from '../../utils/Dom';
 import { ResponsiveDropdown } from './ResponsiveDropdown/ResponsiveDropdown';
 import { Component } from '../Base/Component';
-import { ResultLayoutSelector, ValidLayout } from '../ResultLayoutSelector/ResultLayoutSelector';
+import { ResultLayoutSelector } from '../ResultLayoutSelector/ResultLayoutSelector';
 import { Logger } from '../../misc/Logger';
 import { SearchInterface } from '../SearchInterface/SearchInterface';
 import * as _ from 'underscore';
+import { ValidLayout } from '../ResultLayoutSelector/ValidLayout';
 
 export class ResponsiveResultLayout implements IResponsiveComponent {
   private searchInterface: SearchInterface;

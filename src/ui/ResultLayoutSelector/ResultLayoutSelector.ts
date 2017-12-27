@@ -22,6 +22,7 @@ import { l } from '../../strings/Strings';
 import 'styling/_ResultLayoutSelector';
 import { SVGIcons } from '../../utils/SVGIcons';
 import { SVGDom } from '../../utils/SVGDom';
+import { ValidLayout } from './ValidLayout';
 
 export interface IActiveLayouts {
   button: {
@@ -37,12 +38,6 @@ export interface IResultLayoutOptions {
   desktopLayouts: string[];
 }
 
-/**
- * The possible valid and supported layouts.
- *
- * See the [Result Layouts](https://developers.coveo.com/x/yQUvAg) documentation.
- */
-export type ValidLayout = 'list' | 'card' | 'table';
 export const defaultLayout: ValidLayout = 'list';
 
 /**

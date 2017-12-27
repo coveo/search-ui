@@ -29,7 +29,6 @@ import { ResultLayoutEvents, IResultLayoutPopulateArgs } from '../../events/Resu
 import { Utils } from '../../utils/Utils';
 import { DomUtils } from '../../utils/DomUtils';
 import { DefaultRecommendationTemplate } from '../Templates/DefaultRecommendationTemplate';
-import ResultLayoutSelectorModule = require('../ResultLayoutSelector/ResultLayoutSelector');
 import { TemplateList } from '../Templates/TemplateList';
 import { TemplateCache } from '../Templates/TemplateCache';
 import { ResponsiveDefaultResultTemplate } from '../ResponsiveComponents/ResponsiveDefaultResultTemplate';
@@ -43,6 +42,7 @@ import 'styling/_ResultFrame';
 import 'styling/_Result';
 import { InitializationPlaceholder } from '../Base/InitializationPlaceholder';
 import { get } from '../Base/RegisteredNamedMethods';
+import { ValidLayout } from '../ResultLayoutSelector/ValidLayout';
 
 export interface IResultListOptions {
   resultContainer?: HTMLElement;
@@ -369,7 +369,7 @@ export class ResultList extends Component {
     if (this.options.resultTemplate instanceof TemplateList) {
       _.each((<TemplateList>this.options.resultTemplate).templates, (tmpl: Template) => {
         if (!tmpl.layout) {
-          tmpl.layout = <ResultLayoutSelectorModule.ValidLayout>this.options.layout;
+          tmpl.layout = <ValidLayout>this.options.layout;
         }
       });
     } else if (this.options.resultTemplate instanceof DefaultResultTemplate && this.options.layout == 'list') {
@@ -433,7 +433,7 @@ export class ResultList extends Component {
       .instantiateToElement(result, {
         wrapInDiv: true,
         checkCondition: true,
-        currentLayout: <ResultLayoutSelectorModule.ValidLayout>this.options.layout,
+        currentLayout: <ValidLayout>this.options.layout,
         responsiveComponents: this.searchInterface.responsiveComponents
       })
       .then((resultElement: HTMLElement) => {
@@ -664,7 +664,7 @@ export class ResultList extends Component {
   private handleChangeLayout(args: IChangeLayoutEventArgs) {
     if (args.layout === this.options.layout) {
       this.enable();
-      this.options.resultTemplate.layout = <ResultLayoutSelectorModule.ValidLayout>this.options.layout;
+      this.options.resultTemplate.layout = <ValidLayout>this.options.layout;
       if (args.results) {
         // Prevent flickering when switching to a new layout that is empty
         // add a temporary placeholder, the same that is used on initialization

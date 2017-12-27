@@ -1,5 +1,4 @@
 import { Logger } from '../../misc/Logger';
-import ResultLayoutSelectorModule = require('../ResultLayoutSelector/ResultLayoutSelector');
 import { $$ } from '../../utils/Dom';
 import { TemplateConditionEvaluator } from './TemplateConditionEvaluator';
 import { TemplateFieldsEvaluator } from './TemplateFieldsEvaluator';
@@ -8,13 +7,14 @@ import { ResponsiveComponents } from '../ResponsiveComponents/ResponsiveComponen
 import * as _ from 'underscore';
 import { Initialization, LazyInitialization } from '../Base/Initialization';
 import { Utils } from '../../utils/Utils';
+import { ValidLayout } from '../ResultLayoutSelector/ValidLayout';
 
 export type TemplateRole = 'table-header' | 'table-footer';
 
 export interface ITemplateProperties {
   condition?: Function;
   conditionToParse?: string;
-  layout?: ResultLayoutSelectorModule.ValidLayout;
+  layout?: ValidLayout;
   mobile?: boolean;
   tablet?: boolean;
   desktop?: boolean;
@@ -28,14 +28,14 @@ export interface IFieldsToMatch {
 }
 
 export interface IInstantiateTemplateOptions {
-  currentLayout?: ResultLayoutSelectorModule.ValidLayout;
+  currentLayout?: ValidLayout;
   checkCondition?: boolean;
   wrapInDiv?: boolean;
   responsiveComponents?: ResponsiveComponents;
 }
 
 export class DefaultInstantiateTemplateOptions implements IInstantiateTemplateOptions {
-  public currentLayout: ResultLayoutSelectorModule.ValidLayout;
+  public currentLayout: ValidLayout;
   public checkCondition: boolean;
   public wrapInDiv: boolean;
   public responsiveComponents: ResponsiveComponents;
@@ -73,7 +73,7 @@ export class Template implements ITemplateProperties {
   public tablet: boolean;
   public desktop: boolean;
   public fields: string[] = [];
-  public layout: ResultLayoutSelectorModule.ValidLayout;
+  public layout: ValidLayout;
   public role: TemplateRole;
 
   constructor(public dataToString?: (object?: any) => string) {}
