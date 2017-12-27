@@ -2,14 +2,14 @@ import { Template, IFieldsToMatch, TemplateRole } from './Template';
 import { Utils } from '../../utils/Utils';
 import { TemplateConditionEvaluator } from './TemplateConditionEvaluator';
 import { ComponentOptions, IComponentOptionsFieldsOption } from '../Base/ComponentOptions';
-import { ValidLayout } from '../ResultLayout/ResultLayout';
+import ResultLayoutSelectorModule = require('../ResultLayoutSelector/ResultLayoutSelector');
 import { $$, Dom } from '../../utils/Dom';
 import * as _ from 'underscore';
 import { Initialization } from '../Base/Initialization';
 
 export interface ITemplateFromStringProperties {
   condition?: string;
-  layout?: ValidLayout;
+  layout?: ResultLayoutSelectorModule.ValidLayout;
   mobile?: boolean;
   tablet?: boolean;
   desktop?: boolean;
@@ -107,9 +107,9 @@ export class TemplateFromAScriptTag {
     return Utils.parseBooleanIfNotUndefined(this.scriptTag.getAttribute(attribute));
   }
 
-  parseLayout(): ValidLayout {
+  parseLayout(): ResultLayoutSelectorModule.ValidLayout {
     const layout = this.scriptTag.getAttribute('data-layout');
-    return <ValidLayout>layout;
+    return <ResultLayoutSelectorModule.ValidLayout>layout;
   }
 
   static fromString(

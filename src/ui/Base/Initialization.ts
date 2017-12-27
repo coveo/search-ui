@@ -55,6 +55,7 @@ export class Initialization {
 
   private static logger = new Logger('Initialization');
   public static registeredComponents: String[] = [];
+  public static aliasedComponents: IStringMap<String[]> = {};
   private static namedMethods: { [s: string]: any } = {};
 
   // List of every fields that are needed by components when doing a query (the fieldsToInclude property in the query)
@@ -108,6 +109,9 @@ export class Initialization {
 
     if (!_.contains(Initialization.registeredComponents, componentClass.ID)) {
       Initialization.registeredComponents.push(componentClass.ID);
+      if (componentClass.alias) {
+        Initialization.aliasedComponents[componentClass.ID] = componentClass.alias;
+      }
     }
 
     if (EagerInitialization.eagerlyLoadedComponents[componentClass.ID] == null) {
@@ -399,7 +403,19 @@ export class Initialization {
     _.each(Initialization.getListOfRegisteredComponents(), (componentClassId: string) => {
       if (!_.contains(ignore, componentClassId)) {
         const classname = Component.computeCssClassNameForType(`${componentClassId}`);
-        let elements = $$(element).findAll('.' + classname);
+        let elements = $$(element).findAll(`.${classname}`);
+        const aliases = Initialization.aliasedComponents[componentClassId];
+
+        if (aliases) {
+          _.each(aliases, alias => {
+            const aliasedClassName = Component.computeCssClassNameForType(`${alias}`);
+            const aliasedElements = $$(element).findAll(`.${aliasedClassName}`);
+            if (aliasedElements && elements) {
+              elements = elements.concat(aliasedElements);
+            }
+          });
+        }
+
         // From all the component we found which match the current className, remove those that should be ignored
         elements = _.difference(elements, htmlElementsToIgnore);
         if ($$(element).hasClass(classname) && !_.contains(htmlElementsToIgnore, element)) {
@@ -715,13 +731,16 @@ export class LazyInitialization {
     return LazyInitialization.lazyLoadedModule[name]();
   }
 
-  public static registerLazyComponent(id: string, load: () => Promise<IComponentDefinition>): void {
+  public static registerLazyComponent(id: string, load: () => Promise<IComponentDefinition>, aliases?: string[]): void {
     if (LazyInitialization.lazyLoadedComponents[id] == null) {
       Assert.exists(load);
       if (!_.contains(Initialization.registeredComponents, id)) {
         Initialization.registeredComponents.push(id);
       }
       LazyInitialization.lazyLoadedComponents[id] = load;
+      if (aliases) {
+        Initialization.aliasedComponents[id] = aliases;
+      }
     } else {
       this.logger.warn('Component being registered twice', id);
     }

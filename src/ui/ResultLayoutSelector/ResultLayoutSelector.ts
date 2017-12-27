@@ -19,8 +19,7 @@ import { Utils } from '../../utils/Utils';
 import * as _ from 'underscore';
 import { exportGlobally } from '../../GlobalExports';
 import { l } from '../../strings/Strings';
-
-import 'styling/_ResultLayout';
+import 'styling/_ResultLayoutSelector';
 import { SVGIcons } from '../../utils/SVGIcons';
 import { SVGDom } from '../../utils/SVGDom';
 
@@ -55,12 +54,14 @@ export const defaultLayout: ValidLayout = 'list';
  *
  * See also the [Result Layouts](https://developers.coveo.com/x/yQUvAg) documentation.
  */
-export class ResultLayout extends Component {
-  static ID = 'ResultLayout';
+export class ResultLayoutSelector extends Component {
+  static ID = 'ResultLayoutSelector';
+  static alias = ['ResultLayout'];
 
   static doExport = () => {
     exportGlobally({
-      ResultLayout: ResultLayout
+      ResultLayoutSelector: ResultLayoutSelector,
+      ResultLayout: ResultLayoutSelector
     });
   };
 
@@ -120,8 +121,8 @@ export class ResultLayout extends Component {
    * automatically resolved (with a slower execution time).
    */
   constructor(public element: HTMLElement, public options?: IResultLayoutOptions, bindings?: IComponentBindings) {
-    super(element, ResultLayout.ID, bindings);
-    this.options = ComponentOptions.initComponentOptions(element, ResultLayout, options);
+    super(element, ResultLayoutSelector.ID, bindings);
+    this.options = ComponentOptions.initComponentOptions(element, ResultLayoutSelector, options);
 
     this.currentActiveLayouts = {};
 
@@ -288,7 +289,7 @@ export class ResultLayout extends Component {
     $$(this.root).trigger(ResultLayoutEvents.populateResultLayout, populateArgs);
     const layouts = _.uniq(populateArgs.layouts.map(layout => layout.toLowerCase()));
 
-    _.each(layouts, layout => Assert.check(_.contains(ResultLayout.validLayouts, layout), 'Invalid layout'));
+    _.each(layouts, layout => Assert.check(_.contains(ResultLayoutSelector.validLayouts, layout), 'Invalid layout'));
     if (!_.isEmpty(layouts)) {
       _.each(layouts, layout => this.addButton(layout));
       if (!this.shouldShowSelector()) {
@@ -356,4 +357,4 @@ export class ResultLayout extends Component {
   }
 }
 
-Initialization.registerAutoCreateComponent(ResultLayout);
+Initialization.registerAutoCreateComponent(ResultLayoutSelector);
