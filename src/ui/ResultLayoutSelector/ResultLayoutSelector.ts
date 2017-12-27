@@ -46,7 +46,7 @@ export type ValidLayout = 'list' | 'card' | 'table';
 export const defaultLayout: ValidLayout = 'list';
 
 /**
- * The ResultLayout component allows the end user to switch between multiple {@link ResultList} components that have
+ * The ResultLayoutSelector component allows the end user to switch between multiple {@link ResultList} components that have
  * different {@link ResultList.options.layout} values.
  *
  * This component automatically populates itself with buttons to switch between the ResultList components that have a
@@ -56,7 +56,7 @@ export const defaultLayout: ValidLayout = 'list';
  */
 export class ResultLayoutSelector extends Component {
   static ID = 'ResultLayoutSelector';
-  static alias = ['ResultLayout'];
+  static aliases = ['ResultLayout'];
 
   static doExport = () => {
     exportGlobally({
@@ -114,7 +114,7 @@ export class ResultLayoutSelector extends Component {
   };
 
   /**
-   * Creates a new ResultLayout component.
+   * Creates a new ResultLayoutSelector component.
    * @param element The HTMLElement on which to instantiate the component.
    * @param options The options for the ResultLayout component.
    * @param bindings The bindings that the component requires to function normally. If not set, these will be

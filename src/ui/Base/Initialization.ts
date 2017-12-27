@@ -18,6 +18,7 @@ import { IJQuery } from './CoveoJQuery';
 import * as _ from 'underscore';
 import { IStringMap } from '../../rest/GenericParam';
 import { get, state } from './RegisteredNamedMethods';
+import { InitializationHelper } from './InitializationHelper';
 
 /**
  * Represent the initialization parameters required to init a new component.
@@ -109,8 +110,8 @@ export class Initialization {
 
     if (!_.contains(Initialization.registeredComponents, componentClass.ID)) {
       Initialization.registeredComponents.push(componentClass.ID);
-      if (componentClass.alias) {
-        Initialization.aliasedComponents[componentClass.ID] = componentClass.alias;
+      if (componentClass.aliases) {
+        Initialization.aliasedComponents[componentClass.ID] = componentClass.aliases;
       }
     }
 
@@ -377,98 +378,49 @@ export class Initialization {
   public static automaticallyCreateComponentsInside(
     element: HTMLElement,
     initParameters: IInitializationParameters,
-    ignore?: string[]
+    ignore: string[] = []
   ): IInitResult {
     Assert.exists(element);
 
-    const codeToExecute: { (): Promise<Component>[] | void }[] = [];
-
-    let htmlElementsToIgnore: HTMLElement[] = [];
-
-    // Scan for elements to ignore which can be a container component (with other component inside)
-    // When a component is ignored, all it's children component should be ignored too.
-    // Add them to the array of html elements that should be skipped.
-    _.each(ignore, toIgnore => {
-      const rootsToIgnore = $$(element).findAll(`.${Component.computeCssClassNameForType(toIgnore)}`);
-      if (rootsToIgnore && rootsToIgnore.length > 0) {
-        _.each(rootsToIgnore, rootToIgnore => {
-          const childsElementsToIgnore = $$(rootToIgnore).findAll('*');
-          htmlElementsToIgnore = htmlElementsToIgnore.concat(childsElementsToIgnore);
-        });
-      }
-    });
+    const htmlElementsToIgnore = InitializationHelper.findDOMElementsToIgnore(element, ignore);
+    const htmlElementsToInitialize = InitializationHelper.findDOMElementsToInitialize(element, htmlElementsToIgnore);
 
     let isLazyInit;
 
-    _.each(Initialization.getListOfRegisteredComponents(), (componentClassId: string) => {
-      if (!_.contains(ignore, componentClassId)) {
-        const classname = Component.computeCssClassNameForType(`${componentClassId}`);
-        let elements = $$(element).findAll(`.${classname}`);
-        const aliases = Initialization.aliasedComponents[componentClassId];
-
-        if (aliases) {
-          _.each(aliases, alias => {
-            const aliasedClassName = Component.computeCssClassNameForType(`${alias}`);
-            const aliasedElements = $$(element).findAll(`.${aliasedClassName}`);
-            if (aliasedElements && elements) {
-              elements = elements.concat(aliasedElements);
-            }
-          });
+    const constructorForEachComponentsInstance = _.chain(htmlElementsToInitialize)
+      .map(htmlElementToInitialize => {
+        const resultsOfFactory = this.componentsFactory(
+          htmlElementToInitialize.htmlElements,
+          htmlElementToInitialize.componentClassId,
+          initParameters
+        );
+        isLazyInit = resultsOfFactory.isLazyInit;
+        return resultsOfFactory.factory;
+      })
+      .map(codeToExecute => {
+        const codeResult = codeToExecute();
+        if (codeResult) {
+          return Promise.all(codeResult).then(() => true);
         }
+        return Promise.resolve(true);
+      })
+      .value();
 
-        // From all the component we found which match the current className, remove those that should be ignored
-        elements = _.difference(elements, htmlElementsToIgnore);
-        if ($$(element).hasClass(classname) && !_.contains(htmlElementsToIgnore, element)) {
-          elements.push(element);
-        }
-        if (elements.length != 0) {
-          const resultsOfFactory = this.componentsFactory(elements, componentClassId, initParameters);
-          isLazyInit = resultsOfFactory.isLazyInit;
-          codeToExecute.push(resultsOfFactory.factory);
-        }
-      }
-    });
-
-    // We log the fatal error on init, but then we try to continue the initialization for the rest of the components.
-    // In most case, this would be caused by a fatal error in a component constructor.
-    // In some cases, it might be for a minor component not essential to basic function of the interface, meaning we could still salvage things here.
-    const logFatalErrorOnComponentInitialization = (e: Error) => {
-      this.logger.error(e);
-      this.logger.warn(`Skipping initialization of previous component in error ... `);
-    };
-
-    if (isLazyInit) {
-      return {
-        initResult: Promise.all(
-          _.map(codeToExecute, code => {
-            const resultsOfFactory = code();
-            if (_.isArray(resultsOfFactory)) {
-              return Promise.all(resultsOfFactory).then(() => true);
-            } else {
-              return Promise.resolve(true);
-            }
-          })
-        )
-          .then(() => true)
-          .catch((e: Error) => {
-            logFatalErrorOnComponentInitialization(e);
-            return true;
-          }),
-        isLazyInit: true
-      };
-    } else {
-      _.each(codeToExecute, code => {
-        try {
-          code();
-        } catch (e) {
-          logFatalErrorOnComponentInitialization(e);
-        }
+    const initResult = Promise.all(constructorForEachComponentsInstance)
+      .then(() => true)
+      .catch(e => {
+        // We log the fatal error on init, but then we try to continue the initialization for the rest of the components.
+        // In most case, this would be caused by a fatal error in a component constructor.
+        // In some cases, it might be for a minor component not essential to basic function of the interface, meaning we could still salvage things here.
+        this.logger.error(e);
+        this.logger.warn(`Skipping initialization of previous component in error ... `);
+        return true;
       });
-      return {
-        initResult: Promise.resolve(true),
-        isLazyInit: false
-      };
-    }
+
+    return {
+      initResult,
+      isLazyInit
+    };
   }
 
   /**
