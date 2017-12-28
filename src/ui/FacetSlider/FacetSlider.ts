@@ -535,7 +535,7 @@ export class FacetSlider extends Component {
   }
 
   private bindResizeEvents() {
-    this.onResize = _.debounce(() => {
+    this.onResize = () => {
       if (ResponsiveComponentsUtils.shouldDrawFacetSlider($$(this.root), $$(this.element)) && this.slider && !this.isEmpty) {
         if (this.delayedGraphData) {
           this.drawDelayedGraphData();
@@ -543,7 +543,7 @@ export class FacetSlider extends Component {
           this.slider.drawGraph();
         }
       }
-    }, FacetSlider.DEBOUNCED_RESIZE_DELAY);
+    };
     window.addEventListener('resize', this.onResize);
     this.bind.onRootElement(ResponsiveDropdownHeaderEvent.OPEN, this.onResize);
 

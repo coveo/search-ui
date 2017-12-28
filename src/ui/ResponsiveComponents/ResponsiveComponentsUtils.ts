@@ -7,10 +7,7 @@ export class ResponsiveComponentsUtils {
   private static smallRecommendationClassName: string = 'coveo-small-recommendation';
 
   static shouldDrawFacetSlider(root: Dom, facetSliderElement: Dom): boolean {
-    return (
-      ResponsiveDropdownContent.isTargetInsideOpenedDropdown(facetSliderElement) ||
-      (!this.isSmallFacetActivated(root) && !this.isSmallRecommendationActivated(root))
-    );
+    return ResponsiveDropdownContent.isTargetInsideOpenedDropdown(facetSliderElement) || !this.isSmallFacetActivated(root);
   }
 
   static isSmallTabsActivated(root: Dom): boolean {
