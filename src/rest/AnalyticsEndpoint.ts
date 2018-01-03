@@ -9,12 +9,12 @@ import { IAPIAnalyticsEventResponse } from './APIAnalyticsEventResponse';
 import { Assert } from '../misc/Assert';
 import { ICustomEvent } from './CustomEvent';
 import { ITopQueries } from './TopQueries';
-import { QueryUtils } from '../utils/QueryUtils';
 import { Cookie } from '../utils/CookieUtils';
 import { ISuccessResponse } from '../rest/EndpointCaller';
 import { IStringMap } from '../rest/GenericParam';
 import * as _ from 'underscore';
 import { Utils } from '../utils/Utils';
+import { UrlUtils } from '../utils/UrlUtils';
 
 export interface IAnalyticsEndpointOptions {
   token: string;
@@ -39,7 +39,7 @@ export class AnalyticsEndpoint {
   constructor(public options: IAnalyticsEndpointOptions) {
     this.logger = new Logger(this);
 
-    var endpointCallerOptions: IEndpointCallerOptions = {
+    const endpointCallerOptions: IEndpointCallerOptions = {
       accessToken: this.options.token && this.options.token != '' ? this.options.token : null
     };
     this.endpointCaller = new EndpointCaller(endpointCallerOptions);
@@ -55,7 +55,7 @@ export class AnalyticsEndpoint {
       if (this.getCurrentVisitId()) {
         resolve(this.getCurrentVisitId());
       } else {
-        var url = this.buildAnalyticsUrl('/analytics/visit');
+        const url = this.buildAnalyticsUrl('/analytics/visit');
         this.getFromService<IAPIAnalyticsVisitResponseRest>(url, {})
           .then((response: IAPIAnalyticsVisitResponseRest) => {
             this.visitId = response.id;
@@ -88,23 +88,19 @@ export class AnalyticsEndpoint {
   }
 
   public getTopQueries(params: ITopQueries): Promise<string[]> {
-    var url = this.buildAnalyticsUrl('/stats/topQueries');
+    const url = this.buildAnalyticsUrl('/stats/topQueries');
     return this.getFromService<string[]>(url, params);
   }
 
   private sendToService<D, R>(data: D, path: string, paramName: string): Promise<R> {
-    var url = QueryUtils.mergePath(
-      this.options.serviceUrl,
-      '/rest/' + (AnalyticsEndpoint.CUSTOM_ANALYTICS_VERSION || AnalyticsEndpoint.DEFAULT_ANALYTICS_VERSION) + '/analytics/' + path
-    );
-    var queryString = [];
-
-    if (this.organization) {
-      queryString.push('org=' + this.organization);
-    }
-    if (Cookie.get('visitorId')) {
-      queryString.push('visitor=' + Utils.safeEncodeURIComponent(Cookie.get('visitorId')));
-    }
+    const versionToCall = AnalyticsEndpoint.CUSTOM_ANALYTICS_VERSION || AnalyticsEndpoint.DEFAULT_ANALYTICS_VERSION;
+    const url = UrlUtils.normalizeAsString({
+      paths: [this.options.serviceUrl, '/rest/', versionToCall, '/analytics/', path],
+      query: {
+        org: this.organization,
+        visitorId: Cookie.get('visitorId')
+      }
+    });
 
     // We use pendingRequest because we don't want to have 2 request to analytics at the same time.
     // Otherwise the cookie visitId won't be set correctly.
@@ -113,7 +109,7 @@ export class AnalyticsEndpoint {
         .call<R>({
           errorsAsSuccess: false,
           method: 'POST',
-          queryString: queryString,
+          queryString: [],
           requestData: data,
           url: url,
           responseType: 'text',
@@ -134,7 +130,7 @@ export class AnalyticsEndpoint {
   }
 
   private getFromService<T>(url: string, params: IStringMap<string>): Promise<T> {
-    var paramsToSend = this.options.token && this.options.token != '' ? _.extend({ access_token: this.options.token }, params) : params;
+    const paramsToSend = this.options.token && this.options.token != '' ? _.extend({ access_token: this.options.token }, params) : params;
     return this.endpointCaller
       .call<T>({
         errorsAsSuccess: false,
@@ -150,8 +146,8 @@ export class AnalyticsEndpoint {
   }
 
   private handleAnalyticsEventResponse(response: IAPIAnalyticsEventResponse | IAPIAnalyticsSearchEventsResponse) {
-    var visitId: string;
-    var visitorId: string;
+    let visitId: string;
+    let visitorId: string;
 
     if (response['visitId']) {
       visitId = response['visitId'];

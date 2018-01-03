@@ -28,6 +28,7 @@ import { shim } from '../misc/PromisesShim';
 import { history } from 'coveo.analytics';
 import { Cookie } from '../utils/CookieUtils';
 import { TimeSpan } from '../UtilsModules';
+import { UrlUtils } from '../utils/UrlUtils';
 shim();
 
 export class DefaultSearchEndpointOptions implements ISearchEndpointOptions {
@@ -281,18 +282,15 @@ export class SearchEndpoint implements ISearchEndpoint {
     callOptions?: IEndpointCallOptions,
     callParams?: IEndpointCallParameters
   ): string {
-    let queryString = this.buildBaseQueryString(callOptions);
-    callParams.queryString = callParams.queryString.concat(queryString);
-
-    callParams.url += provider + '?';
-
-    if (Utils.isNonEmptyString(returnUri)) {
-      callParams.url += 'redirectUri=' + Utils.safeEncodeURIComponent(returnUri) + '&';
-    } else if (Utils.isNonEmptyString(message)) {
-      callParams.url += 'message=' + Utils.safeEncodeURIComponent(message) + '&';
-    }
-    callParams.url += callParams.queryString.join('&');
-    return callParams.url;
+    return UrlUtils.normalizeAsString({
+      paths: [callParams.url, provider],
+      queryAsString: callParams.queryString,
+      query: {
+        redirectUri: returnUri,
+        message: message,
+        ...this.buildBaseQueryString(callOptions)
+      }
+    });
   }
 
   /**
@@ -324,7 +322,7 @@ export class SearchEndpoint implements ISearchEndpoint {
   public search(query: IQuery, callOptions?: IEndpointCallOptions, callParams?: IEndpointCallParameters): Promise<IQueryResults> {
     Assert.exists(query);
 
-    callParams.requestData = _.extend({}, callParams.requestData, _.omit(query, queryParam => Utils.isNullOrUndefined(queryParam)));
+    callParams.requestData = { ...callParams.requestData, ..._.omit(query, queryParam => Utils.isNullOrUndefined(queryParam)) };
 
     this.logger.info('Performing REST query', query);
 
@@ -378,19 +376,16 @@ export class SearchEndpoint implements ISearchEndpoint {
     callOptions?: IEndpointCallOptions,
     callParams?: IEndpointCallParameters
   ): string {
-    let queryString = this.buildBaseQueryString(callOptions);
-    callParams.queryString = callParams.queryString.concat(queryString);
-
-    queryString = this.buildCompleteQueryString(null, query);
-    callParams.queryString = callParams.queryString.concat(queryString);
-
-    if (numberOfResults != null) {
-      callParams.queryString.push('numberOfResults=' + numberOfResults);
-    }
-
-    callParams.queryString.push('format=xlsx');
-
-    return callParams.url + '?' + callParams.queryString.join('&');
+    return UrlUtils.normalizeAsString({
+      paths: callParams.url,
+      queryAsString: callParams.queryString,
+      query: {
+        numberOfResults: numberOfResults ? numberOfResults.toString() : null,
+        format: 'xlsx',
+        ...this.buildQueryAsQueryString(null, query),
+        ...this.buildBaseQueryString(callOptions)
+      }
+    });
   }
 
   /**
@@ -421,13 +416,17 @@ export class SearchEndpoint implements ISearchEndpoint {
   ): Promise<ArrayBuffer> {
     Assert.exists(documentUniqueId);
 
-    let queryString = this.buildViewAsHtmlQueryString(documentUniqueId, callOptions);
-    callParams.queryString = callParams.queryString.concat(queryString);
+    const { queryNormalized } = UrlUtils.normalizeAsParts({
+      paths: callParams.url,
+      query: {
+        dataStream: dataStreamType,
+        ...this.buildViewAsHtmlQueryString(documentUniqueId, callOptions)
+      }
+    });
 
     this.logger.info('Performing REST query for datastream ' + dataStreamType + ' on item uniqueID ' + documentUniqueId);
 
-    callParams.queryString.push('dataStream=' + dataStreamType);
-    return this.performOneCall(callParams).then((results: ArrayBuffer) => {
+    return this.performOneCall({ ...callParams, queryString: queryNormalized }).then((results: ArrayBuffer) => {
       this.logger.info('REST query successful', results, documentUniqueId);
       return results;
     });
@@ -447,21 +446,22 @@ export class SearchEndpoint implements ISearchEndpoint {
   public getViewAsDatastreamUri(
     documentUniqueID: string,
     dataStreamType: string,
-    callOptions?: IViewAsHtmlOptions,
+    callOptions: IViewAsHtmlOptions = {},
     callParams?: IEndpointCallParameters
   ): string {
-    callOptions = _.extend({}, callOptions);
+    callOptions = { ...callOptions };
+    callParams = { ...callParams };
 
-    let queryString = this.buildBaseQueryString(callOptions);
-    callParams.queryString = callParams.queryString.concat(queryString);
-
-    queryString = this.buildViewAsHtmlQueryString(documentUniqueID, callOptions);
-    callParams.queryString = callParams.queryString.concat(queryString);
-
-    queryString = this.buildCompleteQueryString(callOptions.query, callOptions.queryObject);
-    callParams.queryString = callParams.queryString.concat(queryString);
-
-    return callParams.url + '?' + callParams.queryString.join('&') + '&dataStream=' + Utils.safeEncodeURIComponent(dataStreamType);
+    return UrlUtils.normalizeAsString({
+      paths: callParams.url,
+      queryAsString: callParams.queryString,
+      query: {
+        dataStream: dataStreamType,
+        ...this.buildViewAsHtmlQueryString(documentUniqueID, callOptions),
+        ...this.buildQueryAsQueryString(callOptions.query, callOptions.queryObject),
+        ...this.buildBaseQueryString(callOptions)
+      }
+    });
   }
 
   /**
@@ -479,10 +479,15 @@ export class SearchEndpoint implements ISearchEndpoint {
     callOptions?: IEndpointCallOptions,
     callParams?: IEndpointCallParameters
   ): Promise<IQueryResult> {
-    let queryString = this.buildViewAsHtmlQueryString(documentUniqueID, callOptions);
-    callParams.queryString = callParams.queryString.concat(queryString);
+    const { queryNormalized } = UrlUtils.normalizeAsParts({
+      paths: callParams.url,
+      queryAsString: callParams.queryString,
+      query: {
+        ...this.buildViewAsHtmlQueryString(documentUniqueID, callOptions)
+      }
+    });
 
-    return this.performOneCall<IQueryResult>(callParams);
+    return this.performOneCall<IQueryResult>({ ...callParams, queryString: queryNormalized });
   }
 
   /**
@@ -500,10 +505,15 @@ export class SearchEndpoint implements ISearchEndpoint {
     callOptions?: IEndpointCallOptions,
     callParams?: IEndpointCallParameters
   ): Promise<string> {
-    let queryString = this.buildViewAsHtmlQueryString(documentUniqueID, callOptions);
-    callParams.queryString = callParams.queryString.concat(queryString);
+    const { queryNormalized } = UrlUtils.normalizeAsParts({
+      paths: callParams.url,
+      queryAsString: callParams.queryString,
+      query: {
+        ...this.buildViewAsHtmlQueryString(documentUniqueID, callOptions)
+      }
+    });
 
-    return this.performOneCall<{ content: string; duration: number }>(callParams).then(data => {
+    return this.performOneCall<{ content: string; duration: number }>({ ...callParams, queryString: queryNormalized }).then(data => {
       return data.content;
     });
   }
@@ -523,11 +533,17 @@ export class SearchEndpoint implements ISearchEndpoint {
     callOptions?: IViewAsHtmlOptions,
     callParams?: IEndpointCallParameters
   ): Promise<HTMLDocument> {
-    callOptions = _.extend({}, callOptions);
+    callOptions = { ...callOptions };
 
-    let queryString = this.buildViewAsHtmlQueryString(documentUniqueID, callOptions);
-    callParams.queryString = callParams.queryString.concat(queryString);
+    const { queryNormalized } = UrlUtils.normalizeAsParts({
+      paths: callParams.url,
+      queryAsString: callParams.queryString,
+      query: {
+        ...this.buildViewAsHtmlQueryString(documentUniqueID, callOptions)
+      }
+    });
 
+    callParams.queryString = queryNormalized;
     callParams.requestData = callOptions.queryObject || { q: callOptions.query };
 
     return this.performOneCall<HTMLDocument>(callParams);
@@ -543,13 +559,14 @@ export class SearchEndpoint implements ISearchEndpoint {
   @path('/html')
   @accessTokenInUrl()
   public getViewAsHtmlUri(documentUniqueID: string, callOptions?: IViewAsHtmlOptions, callParams?: IEndpointCallParameters): string {
-    let queryString = this.buildBaseQueryString(callOptions);
-    callParams.queryString = callParams.queryString.concat(queryString);
-
-    queryString = this.buildViewAsHtmlQueryString(documentUniqueID, callOptions);
-    callParams.queryString = callParams.queryString.concat(queryString);
-    callParams.queryString = _.uniq(callParams.queryString);
-    return callParams.url + '?' + callParams.queryString.join('&');
+    return UrlUtils.normalizeAsString({
+      paths: callParams.url,
+      queryAsString: callParams.queryString,
+      query: {
+        ...this.buildViewAsHtmlQueryString(documentUniqueID, callOptions),
+        ...this.buildBaseQueryString(callOptions)
+      }
+    });
   }
 
   @path('/values')
@@ -796,13 +813,13 @@ export class SearchEndpoint implements ISearchEndpoint {
     callOptions?: IEndpointCallOptions,
     callParams?: IEndpointCallParameters
   ): Promise<ISubscription> {
-    callParams.requestData = subscription;
-
     this.logger.info('Updating a subscription', subscription);
 
-    callParams.url += subscription.id;
+    const url = UrlUtils.normalizeAsString({
+      paths: [callParams.url, subscription.id]
+    });
 
-    return this.performOneCall<ISubscription>(callParams);
+    return this.performOneCall<ISubscription>({ ...callParams, requestData: subscription, url });
   }
 
   /**
@@ -822,9 +839,13 @@ export class SearchEndpoint implements ISearchEndpoint {
     callOptions?: IEndpointCallOptions,
     callParams?: IEndpointCallParameters
   ): Promise<ISubscription> {
-    callParams.url += subscription.id;
+    this.logger.info('Deleting a subscription', subscription);
 
-    return this.performOneCall<ISubscription>(callParams);
+    const url = UrlUtils.normalizeAsString({
+      paths: [callParams.url, subscription.id]
+    });
+
+    return this.performOneCall<ISubscription>({ ...callParams, requestData: subscription, url });
   }
 
   @path('/log')
@@ -862,49 +883,62 @@ export class SearchEndpoint implements ISearchEndpoint {
 
   private buildBaseUri(path: string): string {
     Assert.isString(path);
-    let uri = this.options.restUri;
-    uri = this.removeTrailingSlash(uri);
 
-    if (Utils.isNonEmptyString(this.options.version)) {
-      uri += '/' + this.options.version;
-    }
-    uri += path;
-    return uri;
+    return UrlUtils.normalizeAsString({
+      paths: [this.options.restUri, this.options.version, path]
+    });
   }
 
   public buildSearchAlertsUri(path: string): string {
     Assert.isString(path);
-    let uri = this.options.searchAlertsUri || this.options.restUri + '/alerts';
-    if (uri == null) {
-      return null;
-    }
-    uri = this.removeTrailingSlash(uri);
-    uri += path;
-    return uri;
+
+    const baseUrl =
+      this.options.searchAlertsUri ||
+      UrlUtils.normalizeAsString({
+        paths: [this.options.restUri, '/alerts']
+      });
+
+    const url = UrlUtils.normalizeAsString({
+      paths: [baseUrl, path]
+    });
+
+    return url;
   }
 
-  private buildBaseQueryString(callOptions?: IEndpointCallOptions): string[] {
-    callOptions = _.extend({}, callOptions);
-    let queryString: string[] = [];
-
-    for (let name in this.options.queryStringArguments) {
-      queryString.push(name + '=' + Utils.safeEncodeURIComponent(this.options.queryStringArguments[name]));
-    }
-
-    if (callOptions && _.isArray(callOptions.authentication) && callOptions.authentication.length != 0) {
-      queryString.push('authentication=' + callOptions.authentication.join(','));
-    }
-
-    return queryString;
+  private buildBaseQueryString(callOptions?: IEndpointCallOptions) {
+    callOptions = { ...callOptions };
+    return {
+      ...this.options.queryStringArguments,
+      authentication: _.isArray(callOptions.authentication) ? callOptions.authentication.join(',') : null
+    };
   }
 
-  private buildCompleteQueryString(query?: string, queryObject?: IQuery): string[] {
+  private buildQueryAsQueryString(query: string, queryObject: IQuery): Record<string, any> {
+    queryObject = { ...queryObject };
+
     // In an ideal parallel reality, the entire query used in the 'search' call is used here.
     // In this reality however, we must support GET calls (ex: GET /html) for CORS/JSONP/IE reasons.
     // Therefore, we cherry-pick parts of the query to include in a 'query string' instead of a body payload.
-    let queryString: string[] = [];
+    const queryParameters: Record<string, any> = {};
+    ['q', 'aq', 'cq', 'dq', 'searchHub', 'tab', 'locale', 'pipeline', 'lowercaseOperators', 'fieldsToInclude'].forEach(key => {
+      queryParameters[key] = queryObject[key];
+    });
+
+    const context: Record<string, any> = {};
+    _.pairs(queryObject.context).forEach(pair => {
+      const [key, value] = pair;
+      context[`context[${Utils.safeEncodeURIComponent(key)}]`] = value;
+    });
+
+    return {
+      q: query,
+      ...context,
+      ...queryParameters
+    };
+
+    /*let queryString: string[] = [];
     if (queryObject) {
-      _.each(['q', 'aq', 'cq', 'dq', 'searchHub', 'tab', 'locale', 'pipeline', 'lowercaseOperators'], key => {
+      _.each(, key => {
         if (queryObject[key]) {
           queryString.push(key + '=' + Utils.safeEncodeURIComponent(queryObject[key]));
         }
@@ -932,32 +966,29 @@ export class SearchEndpoint implements ISearchEndpoint {
       queryString.push('q=' + Utils.safeEncodeURIComponent(query));
     }
 
-    return queryString;
+    return queryString;*/
   }
 
-  private buildViewAsHtmlQueryString(uniqueId: string, callOptions?: IViewAsHtmlOptions): string[] {
+  private buildViewAsHtmlQueryString(uniqueId: string, callOptions?: IViewAsHtmlOptions) {
     callOptions = _.extend({}, callOptions);
-    let queryString: string[] = this.buildBaseQueryString(callOptions);
-    queryString.push('uniqueId=' + Utils.safeEncodeURIComponent(uniqueId));
 
-    if (callOptions.query || callOptions.queryObject) {
-      queryString.push('enableNavigation=true');
-    }
-
-    if (callOptions.requestedOutputSize) {
-      queryString.push('requestedOutputSize=' + Utils.safeEncodeURIComponent(callOptions.requestedOutputSize.toString()));
-    }
-
-    if (callOptions.contentType) {
-      queryString.push('contentType=' + Utils.safeEncodeURIComponent(callOptions.contentType));
-    }
-    return queryString;
+    return {
+      uniqueId,
+      enableNavigation: 'true',
+      requestedOutputSize: callOptions.requestedOutputSize ? callOptions.requestedOutputSize.toString() : null,
+      contentType: callOptions.contentType
+    };
   }
 
   private performOneCall<T>(params: IEndpointCallParameters, callOptions?: IEndpointCallOptions, autoRenewToken = true): Promise<T> {
-    let queryString = this.buildBaseQueryString(callOptions);
-    params.queryString = params.queryString.concat(queryString);
-    params.queryString = _.uniq(params.queryString);
+    const { queryNormalized } = UrlUtils.normalizeAsParts({
+      paths: params.url,
+      queryAsString: params.queryString,
+      query: {
+        ...this.buildBaseQueryString(callOptions)
+      }
+    });
+    params.queryString = { ...params.queryString, ...queryNormalized };
 
     return this.caller
       .call(params)
@@ -1018,17 +1049,6 @@ export class SearchEndpoint implements ISearchEndpoint {
         this.logger.error('Failed to renew access token', e);
         return e;
       });
-  }
-
-  private removeTrailingSlash(uri: string) {
-    if (this.hasTrailingSlash(uri)) {
-      uri = uri.substr(0, uri.length - 1);
-    }
-    return uri;
-  }
-
-  private hasTrailingSlash(uri: string) {
-    return uri.charAt(uri.length - 1) == '/';
   }
 
   private isMissingAuthenticationProviderStatus(status: number): boolean {

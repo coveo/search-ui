@@ -12,6 +12,7 @@ import { IQuerySuggestResponse } from '../../src/rest/QuerySuggest';
 import { ISubscription } from '../../src/rest/Subscription';
 import { AjaxError } from '../../src/rest/AjaxError';
 import _ = require('underscore');
+import { Utils } from '../../src/utils/Utils';
 
 export function SearchEndpointTest() {
   describe('SearchEndpoint', () => {
@@ -64,7 +65,9 @@ export function SearchEndpointTest() {
 
       it('should not map it to organizationId', () => {
         const fakeResult = FakeResults.createFakeResult();
-        expect(ep.getViewAsHtmlUri(fakeResult.uniqueId)).toBe(ep.getBaseUri() + '/html?workgroup=myOrgId&uniqueId=' + fakeResult.uniqueId);
+        expect(ep.getViewAsHtmlUri(fakeResult.uniqueId)).toContain(
+          ep.getBaseUri() + '/html?workgroup=myOrgId&uniqueId=' + fakeResult.uniqueId
+        );
       });
     });
 
@@ -86,7 +89,7 @@ export function SearchEndpointTest() {
 
       it('should not map it to workgroup', () => {
         const fakeResult = FakeResults.createFakeResult();
-        expect(ep.getViewAsHtmlUri(fakeResult.uniqueId)).toBe(
+        expect(ep.getViewAsHtmlUri(fakeResult.uniqueId)).toContain(
           ep.getBaseUri() + '/html?organizationId=myOrgId&uniqueId=' + fakeResult.uniqueId
         );
       });
@@ -108,7 +111,9 @@ export function SearchEndpointTest() {
 
       it('will add it in the query string', () => {
         const fakeResult = FakeResults.createFakeResult();
-        expect(ep.getViewAsHtmlUri(fakeResult.uniqueId)).toBe(ep.getBaseUri() + '/html?access_token=token&uniqueId=' + fakeResult.uniqueId);
+        expect(ep.getViewAsHtmlUri(fakeResult.uniqueId)).toContain(
+          ep.getBaseUri() + '/html?access_token=token&uniqueId=' + fakeResult.uniqueId
+        );
       });
     });
 
@@ -155,7 +160,7 @@ export function SearchEndpointTest() {
       it('allow to get an export to excel link', () => {
         const qbuilder = new QueryBuilder();
         qbuilder.expression.add('batman');
-        expect(ep.getExportToExcelLink(qbuilder.build(), 56)).toContain(ep.getBaseUri() + '/?');
+        expect(ep.getExportToExcelLink(qbuilder.build(), 56)).toContain(ep.getBaseUri() + '?');
         expect(ep.getExportToExcelLink(qbuilder.build(), 56)).toContain('organizationId=myOrgId');
         expect(ep.getExportToExcelLink(qbuilder.build(), 56)).toContain('potatoe=mashed');
         expect(ep.getExportToExcelLink(qbuilder.build(), 56)).toContain('q=batman');
@@ -232,7 +237,7 @@ export function SearchEndpointTest() {
           qbuilder.numberOfResults = 153;
           qbuilder.enableCollaborativeRating = true;
           const promiseSuccess = ep.search(qbuilder.build());
-          expect(jasmine.Ajax.requests.mostRecent().url).toContain(ep.getBaseUri() + '/?');
+          expect(jasmine.Ajax.requests.mostRecent().url).toContain(ep.getBaseUri() + '?');
           expect(jasmine.Ajax.requests.mostRecent().url).toContain('organizationId=myOrgId');
           expect(jasmine.Ajax.requests.mostRecent().url).toContain('potatoe=mashed');
           expect(jasmine.Ajax.requests.mostRecent().params).toContain('q=batman');
@@ -278,7 +283,7 @@ export function SearchEndpointTest() {
           const promiseSuccess = ep.getRawDataStream(fakeResult.uniqueId, '$Thumbnail');
           expect(jasmine.Ajax.requests.mostRecent().url).toContain(ep.getBaseUri() + '/datastream?');
           expect(jasmine.Ajax.requests.mostRecent().url).toContain('uniqueId=' + fakeResult.uniqueId);
-          expect(jasmine.Ajax.requests.mostRecent().url).toContain('dataStream=$Thumbnail');
+          expect(jasmine.Ajax.requests.mostRecent().url).toContain(`dataStream=${Utils.safeEncodeURIComponent('$Thumbnail')}`);
           expect(jasmine.Ajax.requests.mostRecent().url).toContain('organizationId=myOrgId');
           expect(jasmine.Ajax.requests.mostRecent().url).toContain('potatoe=mashed');
           expect(jasmine.Ajax.requests.mostRecent().method).toBe('GET');
