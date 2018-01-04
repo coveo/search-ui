@@ -1,12 +1,20 @@
-import { isArray, pairs, Dictionary, compact } from 'underscore';
+import { isArray, pairs, compact, uniq } from 'underscore';
 import { Utils } from './Utils';
+import { IEndpointCallParameters } from '../rest/EndpointCaller';
 
 export interface IUrlNormalize {
   paths: string[] | string;
   queryAsString?: string[] | string;
   hashAsString?: string[] | string;
-  query?: Dictionary<string>;
-  hash?: Dictionary<string>;
+  query?: Record<string, any>;
+  hash?: Record<string, any>;
+}
+
+export interface IUrlNormalizedParts {
+  pathsNormalized: string[];
+  queryNormalized: string[];
+  hashNormalized: string[];
+  path: string;
 }
 
 export class UrlUtils {
@@ -18,13 +26,33 @@ export class UrlUtils {
     );
   }
 
+  public static merge(endpointParameters: IEndpointCallParameters, ...parts: IUrlNormalize[]) {
+    parts.forEach(part => {
+      const { path, queryNormalized } = UrlUtils.normalizeAsParts(part);
+      if (Utils.isNonEmptyString(path)) {
+        endpointParameters = { ...endpointParameters, url: path };
+      }
+      if (Utils.isNonEmptyArray(queryNormalized)) {
+        if (Utils.isNonEmptyArray(endpointParameters.queryString)) {
+          endpointParameters = {
+            ...endpointParameters,
+            queryString: Utils.concatWithoutDuplicate(endpointParameters.queryString, queryNormalized)
+          };
+        } else {
+          endpointParameters = { ...endpointParameters, queryString: queryNormalized };
+        }
+      }
+    });
+    return endpointParameters;
+  }
+
   public static normalizeAsString(toNormalize: IUrlNormalize): string {
     const { queryNormalized, hashNormalized, path } = this.normalizeAsParts(toNormalize);
 
     return `${path}${this.addToUrlIfNotEmpty(queryNormalized, '&', '?')}${this.addToUrlIfNotEmpty(hashNormalized, '&', '#')}`;
   }
 
-  public static normalizeAsParts(toNormalize: IUrlNormalize) {
+  public static normalizeAsParts(toNormalize: IUrlNormalize): IUrlNormalizedParts {
     const pathsNormalized = this.normalizePaths(toNormalize);
     const queryNormalized = this.normalizeQueryString(toNormalize);
     const hashNormalized = this.normalizeHash(toNormalize);
@@ -52,28 +80,27 @@ export class UrlUtils {
     let queryNormalized: string[] = [];
 
     if (toNormalize.queryAsString) {
-      queryNormalized = queryNormalized.concat(
-        this.toArray(toNormalize.queryAsString).map(query => {
-          ['?', '&'].forEach(problematicChar => {
-            query = this.removeAtStart(problematicChar, query);
-            query = this.removeAtEnd(problematicChar, query);
-          });
-          return query;
-        })
-      );
+      const withoutProblematicChars = this.toArray(toNormalize.queryAsString).map(query => {
+        ['?', '&'].forEach(problematicChar => {
+          query = this.removeAtStart(problematicChar, query);
+          query = this.removeAtEnd(problematicChar, query);
+        });
+        return query;
+      });
+
+      queryNormalized = queryNormalized.concat(uniq(withoutProblematicChars));
     }
 
     if (toNormalize.query) {
       const paired: string[][] = pairs(toNormalize.query);
-      queryNormalized = queryNormalized.concat(
-        paired.map(pair => {
-          const [key, value] = pair;
-          if (!Utils.isNullOrUndefined(value)) {
-            return [key, Utils.safeEncodeURIComponent(value)].join('=');
-          }
-          return '';
-        })
-      );
+      const mapped = paired.map(pair => {
+        const [key, value] = pair;
+        if (!Utils.isNullOrUndefined(value)) {
+          return [key, Utils.safeEncodeURIComponent(value)].join('=');
+        }
+        return '';
+      });
+      queryNormalized = queryNormalized.concat(uniq(mapped));
     }
 
     return queryNormalized;

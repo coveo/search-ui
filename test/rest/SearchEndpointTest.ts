@@ -65,9 +65,11 @@ export function SearchEndpointTest() {
 
       it('should not map it to organizationId', () => {
         const fakeResult = FakeResults.createFakeResult();
-        expect(ep.getViewAsHtmlUri(fakeResult.uniqueId)).toContain(
-          ep.getBaseUri() + '/html?workgroup=myOrgId&uniqueId=' + fakeResult.uniqueId
-        );
+        const viewAsHtmlUri = ep.getViewAsHtmlUri(fakeResult.uniqueId);
+        expect(viewAsHtmlUri).toContain(ep.getBaseUri());
+        expect(viewAsHtmlUri).toContain('/html');
+        expect(viewAsHtmlUri).toContain('workgroup=myOrgId');
+        expect(viewAsHtmlUri).toContain(`uniqueId=${fakeResult.uniqueId}`);
       });
     });
 
@@ -89,9 +91,11 @@ export function SearchEndpointTest() {
 
       it('should not map it to workgroup', () => {
         const fakeResult = FakeResults.createFakeResult();
-        expect(ep.getViewAsHtmlUri(fakeResult.uniqueId)).toContain(
-          ep.getBaseUri() + '/html?organizationId=myOrgId&uniqueId=' + fakeResult.uniqueId
-        );
+        const viewAsHtmlUri = ep.getViewAsHtmlUri(fakeResult.uniqueId);
+        expect(viewAsHtmlUri).toContain(ep.getBaseUri());
+        expect(viewAsHtmlUri).toContain('/html');
+        expect(viewAsHtmlUri).toContain('organizationId=myOrgId');
+        expect(viewAsHtmlUri).toContain(`uniqueId=${fakeResult.uniqueId}`);
       });
     });
 
@@ -111,9 +115,9 @@ export function SearchEndpointTest() {
 
       it('will add it in the query string', () => {
         const fakeResult = FakeResults.createFakeResult();
-        expect(ep.getViewAsHtmlUri(fakeResult.uniqueId)).toContain(
-          ep.getBaseUri() + '/html?access_token=token&uniqueId=' + fakeResult.uniqueId
-        );
+        const viewAsHtmlUri = ep.getViewAsHtmlUri(fakeResult.uniqueId);
+        expect(viewAsHtmlUri).toContain(ep.getBaseUri());
+        expect(viewAsHtmlUri).toContain('access_token=token');
       });
     });
 

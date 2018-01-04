@@ -168,11 +168,13 @@ export class AnalyticsEndpoint {
   }
 
   private buildAnalyticsUrl(path: string) {
-    return (
-      this.options.serviceUrl +
-      '/rest/' +
-      (AnalyticsEndpoint.CUSTOM_ANALYTICS_VERSION || AnalyticsEndpoint.DEFAULT_ANALYTICS_VERSION) +
-      path
-    );
+    return UrlUtils.normalizeAsString({
+      paths: [
+        this.options.serviceUrl,
+        '/rest/',
+        AnalyticsEndpoint.CUSTOM_ANALYTICS_VERSION || AnalyticsEndpoint.DEFAULT_ANALYTICS_VERSION,
+        path
+      ]
+    });
   }
 }

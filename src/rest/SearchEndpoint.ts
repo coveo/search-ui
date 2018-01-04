@@ -29,6 +29,7 @@ import { history } from 'coveo.analytics';
 import { Cookie } from '../utils/CookieUtils';
 import { TimeSpan } from '../UtilsModules';
 import { UrlUtils } from '../utils/UrlUtils';
+import { IGroupByResult } from './GroupByResult';
 shim();
 
 export class DefaultSearchEndpointOptions implements ISearchEndpointOptions {
@@ -321,8 +322,13 @@ export class SearchEndpoint implements ISearchEndpoint {
   @includeIsGuestUser()
   public search(query: IQuery, callOptions?: IEndpointCallOptions, callParams?: IEndpointCallParameters): Promise<IQueryResults> {
     Assert.exists(query);
-
-    callParams.requestData = { ...callParams.requestData, ..._.omit(query, queryParam => Utils.isNullOrUndefined(queryParam)) };
+    callParams = {
+      ...callParams,
+      requestData: {
+        ...callParams.requestData,
+        ..._.omit(query, queryParam => Utils.isNullOrUndefined(queryParam))
+      }
+    };
 
     this.logger.info('Performing REST query', query);
 
@@ -416,7 +422,7 @@ export class SearchEndpoint implements ISearchEndpoint {
   ): Promise<ArrayBuffer> {
     Assert.exists(documentUniqueId);
 
-    const { queryNormalized } = UrlUtils.normalizeAsParts({
+    callParams = UrlUtils.merge(callParams, {
       paths: callParams.url,
       query: {
         dataStream: dataStreamType,
@@ -426,7 +432,7 @@ export class SearchEndpoint implements ISearchEndpoint {
 
     this.logger.info('Performing REST query for datastream ' + dataStreamType + ' on item uniqueID ' + documentUniqueId);
 
-    return this.performOneCall({ ...callParams, queryString: queryNormalized }).then((results: ArrayBuffer) => {
+    return this.performOneCall(callParams, callOptions).then((results: ArrayBuffer) => {
       this.logger.info('REST query successful', results, documentUniqueId);
       return results;
     });
@@ -449,9 +455,6 @@ export class SearchEndpoint implements ISearchEndpoint {
     callOptions: IViewAsHtmlOptions = {},
     callParams?: IEndpointCallParameters
   ): string {
-    callOptions = { ...callOptions };
-    callParams = { ...callParams };
-
     return UrlUtils.normalizeAsString({
       paths: callParams.url,
       queryAsString: callParams.queryString,
@@ -479,7 +482,7 @@ export class SearchEndpoint implements ISearchEndpoint {
     callOptions?: IEndpointCallOptions,
     callParams?: IEndpointCallParameters
   ): Promise<IQueryResult> {
-    const { queryNormalized } = UrlUtils.normalizeAsParts({
+    callParams = UrlUtils.merge(callParams, {
       paths: callParams.url,
       queryAsString: callParams.queryString,
       query: {
@@ -487,7 +490,12 @@ export class SearchEndpoint implements ISearchEndpoint {
       }
     });
 
-    return this.performOneCall<IQueryResult>({ ...callParams, queryString: queryNormalized });
+    this.logger.info('Performing REST query to retrieve document', documentUniqueID);
+
+    return this.performOneCall<IQueryResult>(callParams, callOptions).then(result => {
+      this.logger.info('REST query successful', result, documentUniqueID);
+      return result;
+    });
   }
 
   /**
@@ -505,15 +513,17 @@ export class SearchEndpoint implements ISearchEndpoint {
     callOptions?: IEndpointCallOptions,
     callParams?: IEndpointCallParameters
   ): Promise<string> {
-    const { queryNormalized } = UrlUtils.normalizeAsParts({
+    callParams = UrlUtils.merge(callParams, {
       paths: callParams.url,
       queryAsString: callParams.queryString,
       query: {
         ...this.buildViewAsHtmlQueryString(documentUniqueID, callOptions)
       }
     });
+    this.logger.info('Performing REST query to retrieve "TEXT" version of document', documentUniqueID);
 
-    return this.performOneCall<{ content: string; duration: number }>({ ...callParams, queryString: queryNormalized }).then(data => {
+    return this.performOneCall<{ content: string; duration: number }>(callParams, callOptions).then(data => {
+      this.logger.info('REST query successful', data, documentUniqueID);
       return data.content;
     });
   }
@@ -534,19 +544,26 @@ export class SearchEndpoint implements ISearchEndpoint {
     callParams?: IEndpointCallParameters
   ): Promise<HTMLDocument> {
     callOptions = { ...callOptions };
-
-    const { queryNormalized } = UrlUtils.normalizeAsParts({
-      paths: callParams.url,
-      queryAsString: callParams.queryString,
-      query: {
-        ...this.buildViewAsHtmlQueryString(documentUniqueID, callOptions)
+    callParams = UrlUtils.merge(
+      {
+        ...callParams,
+        requestData: callOptions.queryObject || { q: callOptions.query }
+      },
+      {
+        paths: callParams.url,
+        queryAsString: callParams.queryString,
+        query: {
+          ...this.buildViewAsHtmlQueryString(documentUniqueID, callOptions)
+        }
       }
+    );
+
+    this.logger.info('Performing REST query to retrieve "HTML" version of document', documentUniqueID);
+
+    return this.performOneCall<HTMLDocument>(callParams, callOptions).then(result => {
+      this.logger.info('REST query successful', result, documentUniqueID);
+      return result;
     });
-
-    callParams.queryString = queryNormalized;
-    callParams.requestData = callOptions.queryObject || { q: callOptions.query };
-
-    return this.performOneCall<HTMLDocument>(callParams);
   }
 
   /**
@@ -578,8 +595,9 @@ export class SearchEndpoint implements ISearchEndpoint {
     callParams?: IEndpointCallParameters
   ): Promise<IIndexFieldValue[]> {
     Assert.exists(request);
+    this.logger.info('Performing REST query to list field values', request);
 
-    return this.performOneCall<any>(callParams).then(data => {
+    return this.performOneCall<IGroupByResult>(callParams, callOptions).then(data => {
       this.logger.info('REST list field values successful', data.values, request);
       return data.values;
     });
@@ -602,11 +620,17 @@ export class SearchEndpoint implements ISearchEndpoint {
   ): Promise<IIndexFieldValue[]> {
     Assert.exists(request);
 
-    callParams.requestData = request;
+    callParams = {
+      ...callParams,
+      requestData: {
+        ...callParams.requestData,
+        ...request
+      }
+    };
 
     this.logger.info('Listing field values', request);
 
-    return this.performOneCall<any>(callParams).then(data => {
+    return this.performOneCall<IGroupByResult>(callParams, callOptions).then(data => {
       this.logger.info('REST list field values successful', data.values, request);
       return data.values;
     });
@@ -624,7 +648,8 @@ export class SearchEndpoint implements ISearchEndpoint {
   public listFields(callOptions?: IEndpointCallOptions, callParams?: IEndpointCallParameters): Promise<IFieldDescription[]> {
     this.logger.info('Listing fields');
 
-    return this.performOneCall<IListFieldsResult>(callParams).then(data => {
+    return this.performOneCall<IListFieldsResult>(callParams, callOptions).then(data => {
+      this.logger.info('REST list fields successful', data.fields);
       return data.fields;
     });
   }
@@ -639,9 +664,12 @@ export class SearchEndpoint implements ISearchEndpoint {
   @method('GET')
   @responseType('text')
   public extensions(callOptions?: IEndpointCallOptions, callParams?: IEndpointCallParameters): Promise<IExtension[]> {
-    this.logger.info('Listing extensions');
+    this.logger.info('Performing REST query to list extensions');
 
-    return this.performOneCall<IExtension[]>(callParams);
+    return this.performOneCall<IExtension[]>(callParams, callOptions).then(extensions => {
+      this.logger.info('REST query successful', extensions);
+      return extensions;
+    });
   }
 
   /**
@@ -659,11 +687,17 @@ export class SearchEndpoint implements ISearchEndpoint {
     callOptions?: IEndpointCallOptions,
     callParams?: IEndpointCallParameters
   ): Promise<boolean> {
-    this.logger.info('Rating a document', ratingRequest);
+    this.logger.info('Performing REST query to rate a document', ratingRequest);
 
-    callParams.requestData = ratingRequest;
-
-    return this.performOneCall<any>(callParams).then(() => {
+    callParams = {
+      ...callParams,
+      requestData: {
+        ...callParams.requestData,
+        ratingRequest
+      }
+    };
+    return this.performOneCall<any>(callParams, callOptions).then(() => {
+      this.logger.info('REST query successful', ratingRequest);
       return true;
     });
   }
@@ -683,11 +717,18 @@ export class SearchEndpoint implements ISearchEndpoint {
     callOptions?: IEndpointCallOptions,
     callParams?: IEndpointCallParameters
   ): Promise<boolean> {
-    this.logger.info('Tagging an item', taggingRequest);
+    this.logger.info('Performing REST query to tag an item', taggingRequest);
 
-    callParams.requestData = taggingRequest;
+    callParams = {
+      ...callParams,
+      requestData: {
+        ...callParams.requestData,
+        ...taggingRequest
+      }
+    };
 
-    return this.performOneCall<any>(callParams).then(() => {
+    return this.performOneCall<any>(callParams, callOptions).then(() => {
+      this.logger.info('REST query successful', taggingRequest);
       return true;
     });
   }
@@ -711,10 +752,20 @@ export class SearchEndpoint implements ISearchEndpoint {
     callOptions?: IEndpointCallOptions,
     callParams?: IEndpointCallParameters
   ): Promise<IQuerySuggestResponse> {
-    this.logger.info('Get Query Suggest', request);
+    callParams = {
+      ...callParams,
+      requestData: {
+        ...callParams.requestData,
+        ..._.omit(request, parameter => Utils.isNullOrUndefined(parameter))
+      }
+    };
 
-    callParams.requestData = _.extend({}, callParams.requestData, _.omit(request, parameter => Utils.isNullOrUndefined(parameter)));
-    return this.performOneCall<IQuerySuggestResponse>(callParams, callOptions);
+    this.logger.info('Performing REST query to get query suggest', request);
+
+    return this.performOneCall<IQuerySuggestResponse>(callParams, callOptions).then(response => {
+      this.logger.info('REST query successful', response);
+      return response;
+    });
   }
 
   // This is a non documented method to ensure backward compatibility for the old query suggest call.
@@ -746,9 +797,12 @@ export class SearchEndpoint implements ISearchEndpoint {
   ): Promise<ISubscription> {
     callParams.requestData = request;
 
-    this.logger.info('Following an item or a query', request);
+    this.logger.info('Performing REST query to follow an item or a query', request);
 
-    return this.performOneCall<ISubscription>(callParams);
+    return this.performOneCall<ISubscription>(callParams, callOptions).then(subscription => {
+      this.logger.info('REST query successful', subscription);
+      return subscription;
+    });
   }
 
   private currentListSubscriptions: Promise<ISubscription[]>;
@@ -775,13 +829,21 @@ export class SearchEndpoint implements ISearchEndpoint {
         reject();
       });
     }
-    if (this.currentListSubscriptions == null) {
-      callParams.queryString.push('page=' + (page || 0));
 
-      this.currentListSubscriptions = this.performOneCall<ISubscription[]>(callParams);
+    if (this.currentListSubscriptions == null) {
+      callParams = UrlUtils.merge(callParams, {
+        paths: callParams.url,
+        query: {
+          page: page || 0
+        }
+      });
+
+      this.logger.info('Performing REST query to list subscriptions');
+      this.currentListSubscriptions = this.performOneCall<ISubscription[]>(callParams, callOptions);
       this.currentListSubscriptions
         .then((data: any) => {
           this.currentListSubscriptions = null;
+          this.logger.info('REST query successful', data);
           return data;
         })
         .catch((e: AjaxError) => {
@@ -813,13 +875,24 @@ export class SearchEndpoint implements ISearchEndpoint {
     callOptions?: IEndpointCallOptions,
     callParams?: IEndpointCallParameters
   ): Promise<ISubscription> {
-    this.logger.info('Updating a subscription', subscription);
+    callParams = UrlUtils.merge(
+      {
+        ...callParams,
+        requestData: {
+          ...callParams.requestData,
+          ...subscription
+        }
+      },
+      {
+        paths: [callParams.url, subscription.id]
+      }
+    );
 
-    const url = UrlUtils.normalizeAsString({
-      paths: [callParams.url, subscription.id]
+    this.logger.info('Performing REST query to update a subscription', subscription);
+    return this.performOneCall<ISubscription>(callParams, callOptions).then(subscription => {
+      this.logger.info('REST query successful', subscription);
+      return subscription;
     });
-
-    return this.performOneCall<ISubscription>({ ...callParams, requestData: subscription, url });
   }
 
   /**
@@ -839,19 +912,28 @@ export class SearchEndpoint implements ISearchEndpoint {
     callOptions?: IEndpointCallOptions,
     callParams?: IEndpointCallParameters
   ): Promise<ISubscription> {
-    this.logger.info('Deleting a subscription', subscription);
-
-    const url = UrlUtils.normalizeAsString({
+    callParams = UrlUtils.merge(callParams, {
       paths: [callParams.url, subscription.id]
     });
 
-    return this.performOneCall<ISubscription>({ ...callParams, requestData: subscription, url });
+    this.logger.info('Performing REST query to delete a subscription', subscription);
+    return this.performOneCall<ISubscription>(callParams, callOptions).then(subscription => {
+      this.logger.info('REST query successful', subscription);
+      return subscription;
+    });
   }
 
   @path('/log')
   @method('POST')
   public logError(sentryLog: ISentryLog, callOptions?: IEndpointCallOptions, callParams?: IEndpointCallParameters) {
-    callParams.requestData = sentryLog;
+    callParams = {
+      ...callParams,
+      requestData: {
+        ...callParams.requestData,
+        ...sentryLog
+      }
+    };
+
     return this.performOneCall(callParams, callOptions)
       .then(() => {
         return true;
@@ -935,38 +1017,6 @@ export class SearchEndpoint implements ISearchEndpoint {
       ...context,
       ...queryParameters
     };
-
-    /*let queryString: string[] = [];
-    if (queryObject) {
-      _.each(, key => {
-        if (queryObject[key]) {
-          queryString.push(key + '=' + Utils.safeEncodeURIComponent(queryObject[key]));
-        }
-      });
-
-      _.each(queryObject.context, (value, key) => {
-        let encodedValue: string;
-        if (_.isArray(value)) {
-          encodedValue = Utils.safeEncodeURIComponent(_.map(value, v => Utils.safeEncodeURIComponent(v)).join(','));
-        } else {
-          encodedValue = Utils.safeEncodeURIComponent(value);
-        }
-        queryString.push(`context[${Utils.safeEncodeURIComponent(key)}]=${encodedValue}`);
-      });
-
-      if (queryObject.fieldsToInclude) {
-        queryString.push(
-          `fieldsToInclude=[${_.map(
-            queryObject.fieldsToInclude,
-            field => '"' + Utils.safeEncodeURIComponent(field.replace('@', '')) + '"'
-          ).join(',')}]`
-        );
-      }
-    } else if (query) {
-      queryString.push('q=' + Utils.safeEncodeURIComponent(query));
-    }
-
-    return queryString;*/
   }
 
   private buildViewAsHtmlQueryString(uniqueId: string, callOptions?: IViewAsHtmlOptions) {
@@ -981,14 +1031,13 @@ export class SearchEndpoint implements ISearchEndpoint {
   }
 
   private performOneCall<T>(params: IEndpointCallParameters, callOptions?: IEndpointCallOptions, autoRenewToken = true): Promise<T> {
-    const { queryNormalized } = UrlUtils.normalizeAsParts({
+    params = UrlUtils.merge(params, {
       paths: params.url,
       queryAsString: params.queryString,
       query: {
         ...this.buildBaseQueryString(callOptions)
       }
     });
-    params.queryString = { ...params.queryString, ...queryNormalized };
 
     return this.caller
       .call(params)
