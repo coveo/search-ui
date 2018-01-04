@@ -1,19 +1,16 @@
-import { isArray, pairs, compact, uniq } from 'underscore';
+import { isArray, pairs, compact, uniq, rest } from 'underscore';
 import { Utils } from './Utils';
 import { IEndpointCallParameters } from '../rest/EndpointCaller';
 
 export interface IUrlNormalize {
   paths: string[] | string;
   queryAsString?: string[] | string;
-  hashAsString?: string[] | string;
   query?: Record<string, any>;
-  hash?: Record<string, any>;
 }
 
 export interface IUrlNormalizedParts {
   pathsNormalized: string[];
   queryNormalized: string[];
-  hashNormalized: string[];
   path: string;
 }
 
@@ -29,9 +26,11 @@ export class UrlUtils {
   public static merge(endpointParameters: IEndpointCallParameters, ...parts: IUrlNormalize[]) {
     parts.forEach(part => {
       const { path, queryNormalized } = UrlUtils.normalizeAsParts(part);
+
       if (Utils.isNonEmptyString(path)) {
         endpointParameters = { ...endpointParameters, url: path };
       }
+
       if (Utils.isNonEmptyArray(queryNormalized)) {
         if (Utils.isNonEmptyArray(endpointParameters.queryString)) {
           endpointParameters = {
@@ -47,20 +46,18 @@ export class UrlUtils {
   }
 
   public static normalizeAsString(toNormalize: IUrlNormalize): string {
-    const { queryNormalized, hashNormalized, path } = this.normalizeAsParts(toNormalize);
+    const { queryNormalized, path } = this.normalizeAsParts(toNormalize);
 
-    return `${path}${this.addToUrlIfNotEmpty(queryNormalized, '&', '?')}${this.addToUrlIfNotEmpty(hashNormalized, '&', '#')}`;
+    return `${path}${this.addToUrlIfNotEmpty(queryNormalized, '&', '?')}`;
   }
 
   public static normalizeAsParts(toNormalize: IUrlNormalize): IUrlNormalizedParts {
     const pathsNormalized = this.normalizePaths(toNormalize);
     const queryNormalized = this.normalizeQueryString(toNormalize);
-    const hashNormalized = this.normalizeHash(toNormalize);
 
     return {
       pathsNormalized,
       queryNormalized,
-      hashNormalized,
       path: this.addToUrlIfNotEmpty(pathsNormalized, '/', '')
     };
   }
@@ -68,9 +65,7 @@ export class UrlUtils {
   private static normalizePaths(toNormalize: IUrlNormalize) {
     return this.toArray(toNormalize.paths).map(path => {
       if (Utils.isNonEmptyString(path)) {
-        let treatedPath = this.removeAtEnd('/', path);
-        treatedPath = this.removeAtStart('/', treatedPath);
-        return treatedPath;
+        return this.removeProblematicChars(path);
       }
       return '';
     });
@@ -80,60 +75,33 @@ export class UrlUtils {
     let queryNormalized: string[] = [];
 
     if (toNormalize.queryAsString) {
-      const withoutProblematicChars = this.toArray(toNormalize.queryAsString).map(query => {
-        ['?', '&'].forEach(problematicChar => {
-          query = this.removeAtStart(problematicChar, query);
-          query = this.removeAtEnd(problematicChar, query);
-        });
+      const cleanedUp = this.toArray(toNormalize.queryAsString).map(query => {
+        query = this.removeProblematicChars(query);
+        query = this.encodeKeyValuePair(query);
         return query;
       });
-
-      queryNormalized = queryNormalized.concat(uniq(withoutProblematicChars));
+      queryNormalized = queryNormalized.concat(cleanedUp);
     }
 
     if (toNormalize.query) {
       const paired: string[][] = pairs(toNormalize.query);
       const mapped = paired.map(pair => {
         const [key, value] = pair;
-        if (!Utils.isNullOrUndefined(value)) {
-          return [key, Utils.safeEncodeURIComponent(value)].join('=');
-        }
-        return '';
-      });
-      queryNormalized = queryNormalized.concat(uniq(mapped));
-    }
 
-    return queryNormalized;
-  }
-
-  private static normalizeHash(toNormalize: IUrlNormalize) {
-    let hashNormalized: string[] = [];
-
-    if (toNormalize.hashAsString) {
-      hashNormalized = hashNormalized.concat(
-        this.toArray(toNormalize.hashAsString).map(hash => {
-          ['#', '&'].forEach(problematicChar => {
-            hash = this.removeAtStart(problematicChar, hash);
-            hash = this.removeAtEnd(problematicChar, hash);
-          });
-          return hash;
-        })
-      );
-    }
-
-    if (toNormalize.hash) {
-      const paired: string[][] = pairs(toNormalize.hash);
-      hashNormalized = hashNormalized.concat(
-        paired.map(pair => {
-          const [key, value] = pair;
-          if (Utils.isNonEmptyString(value)) {
-            return [key, Utils.safeEncodeURIComponent(value)].join('=');
-          }
+        if (Utils.isNullOrUndefined(value) || Utils.isNullOrUndefined(key)) {
           return '';
-        })
-      );
+        }
+
+        if (!this.isEncoded(value)) {
+          return [this.removeProblematicChars(key), Utils.safeEncodeURIComponent(value)].join('=');
+        } else {
+          return [this.removeProblematicChars(key), value].join('=');
+        }
+      });
+      queryNormalized = queryNormalized.concat(mapped);
     }
-    return hashNormalized;
+
+    return uniq(queryNormalized);
   }
 
   private static addToUrlIfNotEmpty(toAdd: string[], joinWith: string, leadWith: string) {
@@ -174,5 +142,41 @@ export class UrlUtils {
       ret = parameter;
     }
     return ret;
+  }
+
+  private static encodeKeyValuePair(pair: string) {
+    const split = pair.split('=');
+    if (split.length == 0) {
+      return pair;
+    }
+
+    let key = split[0];
+    let value = rest(split, 1).join('');
+
+    if (!key) {
+      return pair;
+    }
+    if (!value) {
+      return pair;
+    }
+
+    key = this.removeProblematicChars(key);
+    if (!this.isEncoded(value)) {
+      value = Utils.safeEncodeURIComponent(value);
+    }
+
+    return `${key}=${value}`;
+  }
+
+  private static removeProblematicChars(value: string) {
+    ['?', '/', '#', '='].forEach(problematicChar => {
+      value = this.removeAtStart(problematicChar, value);
+      value = this.removeAtEnd(problematicChar, value);
+    });
+    return value;
+  }
+
+  private static isEncoded(value: string) {
+    return value != decodeURIComponent(value);
   }
 }
