@@ -24,11 +24,9 @@ import { QueryUtils } from '../utils/QueryUtils';
 import { QueryError } from '../rest/QueryError';
 import { Utils } from '../utils/Utils';
 import * as _ from 'underscore';
-import { shim } from '../misc/PromisesShim';
 import { history } from 'coveo.analytics';
 import { Cookie } from '../utils/CookieUtils';
-import { TimeSpan } from '../UtilsModules';
-shim();
+import { TimeSpan } from '../utils/TimeSpanUtils';
 
 export class DefaultSearchEndpointOptions implements ISearchEndpointOptions {
   restUri: string;

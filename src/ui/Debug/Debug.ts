@@ -7,7 +7,6 @@ import { IQueryResult } from '../../rest/QueryResult';
 import { $$, Dom } from '../../utils/Dom';
 import { StringUtils } from '../../utils/StringUtils';
 import { SearchEndpoint } from '../../rest/SearchEndpoint';
-import { Template } from '../Templates/Template';
 import { RootComponent } from '../Base/RootComponent';
 import { BaseComponent } from '../Base/BaseComponent';
 import { ModalBox as ModalBoxModule } from '../../ExternalModulesShim';
@@ -19,6 +18,7 @@ import { IComponentBindings } from '../Base/ComponentBindings';
 import { DebugHeader } from './DebugHeader';
 import { QueryEvents, IQuerySuccessEventArgs } from '../../events/QueryEvents';
 import { DebugForResult } from './DebugForResult';
+import { exportGlobally } from '../../GlobalExports';
 
 export interface IDebugOptions {
   enableDebug?: boolean;
@@ -26,6 +26,13 @@ export interface IDebugOptions {
 
 export class Debug extends RootComponent {
   static ID = 'Debug';
+
+  static doExport = () => {
+    exportGlobally({
+      Debug: Debug
+    });
+  };
+
   static options: IDebugOptions = {
     enableDebug: ComponentOptions.buildBooleanOption({ defaultValue: false })
   };
@@ -471,9 +478,9 @@ export class Debug extends RootComponent {
     if (value instanceof HTMLElement) {
       return this.htmlToJson(value);
     }
-    if (value instanceof Template) {
+    /*if (value instanceof Template) {
       return this.templateToJson(value);
-    }
+    }*/
     if (value instanceof Promise) {
       return value.then(value => {
         return this.toJson(value, depth, done);
@@ -529,7 +536,7 @@ export class Debug extends RootComponent {
     };
   }
 
-  private templateToJson(template: Template) {
+  private templateToJson(template: any) {
     if (template == null) {
       return null;
     }

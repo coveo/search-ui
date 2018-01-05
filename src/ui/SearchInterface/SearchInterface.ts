@@ -25,7 +25,6 @@ import { NoopAnalyticsClient } from '../Analytics/NoopAnalyticsClient';
 import { Utils } from '../../utils/Utils';
 import { RootComponent } from '../Base/RootComponent';
 import { BaseComponent } from '../Base/BaseComponent';
-import { Debug } from '../Debug/Debug';
 import { HashUtils } from '../../utils/HashUtils';
 import * as fastclick from 'fastclick';
 import * as jstz from 'jstimezonedetect';
@@ -41,6 +40,8 @@ import 'styling/_SearchInterface';
 import 'styling/_SearchModalBox';
 import 'styling/_SearchButton';
 import { InitializationPlaceholder } from '../Base/InitializationPlaceholder';
+import { load } from '../../Lazy';
+import DebugModule = require('../Debug/Debug');
 
 export interface ISearchInterfaceOptions {
   enableHistory?: boolean;
@@ -613,9 +614,10 @@ export class SearchInterface extends RootComponent implements IComponentBindings
     new HistoryController(this.element, historyControllerEnvironment);
   }
 
-  private setupDebugInfo() {
+  private async setupDebugInfo() {
     if (this.options.enableDebugInfo) {
-      setTimeout(() => new Debug(this.element, this.getBindings()));
+      const debugpanel = await load<{ new (elem: HTMLElement, bindings: IComponentBindings): DebugModule.Debug }>('Debug');
+      new debugpanel(this.element, this.getBindings());
     }
   }
 

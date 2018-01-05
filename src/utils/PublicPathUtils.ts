@@ -1,5 +1,4 @@
 import { Utils } from './Utils';
-import { DomUtils } from './DomUtils';
 
 export class PublicPathUtils {
   private static pathHasBeenConfigured = false;
@@ -16,7 +15,7 @@ export class PublicPathUtils {
    * Helper function to resolve the public path used to load the chunks relative to the Coveo script.
    */
   public static getDynamicPublicPath() {
-    let currentScript = DomUtils.getCurrentScript();
+    let currentScript = <HTMLScriptElement>document.currentScript;
     if (Utils.isNullOrUndefined(currentScript)) {
       let scripts = document.getElementsByTagName('script');
       return this.parseScriptDirectoryPath(scripts[scripts.length - 1]);

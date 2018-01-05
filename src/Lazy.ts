@@ -62,6 +62,9 @@ lazyChatterTopic();
 import { registerFields as chatterTopicRegisterFields } from './ui/ChatterTopic/ChatterTopicFields';
 chatterTopicRegisterFields();
 
+import { lazyDebug } from './ui/Debug/LazyDebug';
+lazyDebug();
+
 import { lazyDidYouMean } from './ui/DidYouMean/LazyDidYouMean';
 lazyDidYouMean();
 

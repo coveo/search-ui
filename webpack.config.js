@@ -1,16 +1,21 @@
 'use strict';
 const _ = require('underscore');
 const minimize = process.argv.indexOf('minimize') !== -1;
+const analyze = process.argv.indexOf('analyze') !== -1;
 const webpack = require('webpack');
 const path = require('path');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const production = process.env.NODE_ENV === 'production';
 const globalizePath = __dirname + '/lib/globalize/globalize.min.js';
+const analyzer = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 let bail;
 let plugins = [];
 let additionalRules = [];
 
+if (analyze) {
+  plugins.push(new analyzer());
+}
 if (minimize) {
   plugins.push(new webpack.optimize.UglifyJsPlugin());
 }
