@@ -492,6 +492,8 @@ export function SearchEndpointTest() {
           expect(jasmine.Ajax.requests.mostRecent().url).toContain('potatoe=mashed');
 
           expect(jasmine.Ajax.requests.mostRecent().method).toBe('POST');
+          expect(jasmine.Ajax.requests.mostRecent().params).toContain('rating=Best');
+          expect(jasmine.Ajax.requests.mostRecent().params).toContain('uniqueId=' + fakeResult.uniqueId);
 
           promiseSuccess
             .then((response: boolean) => {

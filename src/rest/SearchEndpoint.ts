@@ -693,7 +693,7 @@ export class SearchEndpoint implements ISearchEndpoint {
       ...callParams,
       requestData: {
         ...callParams.requestData,
-        ratingRequest
+        ...ratingRequest
       }
     };
     return this.performOneCall<any>(callParams, callOptions).then(() => {
