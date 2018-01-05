@@ -40,7 +40,7 @@ import 'styling/_SearchInterface';
 import 'styling/_SearchModalBox';
 import 'styling/_SearchButton';
 import { InitializationPlaceholder } from '../Base/InitializationPlaceholder';
-import { load } from '../../Lazy';
+import { load } from '../Base/RegisteredNamedMethods';
 import DebugModule = require('../Debug/Debug');
 
 export interface ISearchInterfaceOptions {
