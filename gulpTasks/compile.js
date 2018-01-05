@@ -38,7 +38,7 @@ gulp.task(
 
 gulp.task(
   'analyze',
-  ['addEolDependencies', 'deprecatedDependencies', 'prepareSass'],
+  ['addEolDependencies', 'setNodeProdEnv'],
   shell.task(['node --max_old_space_size=8192 node_modules/webpack/bin/webpack.js --env minimize --env analyze'])
 );
 

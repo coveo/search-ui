@@ -1,5 +1,8 @@
 export * from './Core';
 
+export { $$, Dom } from './utils/Dom';
+export { DateUtils } from './utils/DateUtils';
+
 export { SearchInterface, StandaloneSearchInterface } from './ui/SearchInterface/SearchInterface';
 
 export { PublicPathUtils } from './utils/PublicPathUtils';

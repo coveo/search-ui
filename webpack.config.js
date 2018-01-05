@@ -27,6 +27,7 @@ plugins.push(
 );
 
 plugins.push(new webpack.optimize.ModuleConcatenationPlugin());
+plugins.push(new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/));
 
 plugins.push(
   new webpack.ProvidePlugin({
