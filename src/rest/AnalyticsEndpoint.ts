@@ -94,7 +94,7 @@ export class AnalyticsEndpoint {
 
   private sendToService<D, R>(data: D, path: string, paramName: string): Promise<R> {
     const versionToCall = AnalyticsEndpoint.CUSTOM_ANALYTICS_VERSION || AnalyticsEndpoint.DEFAULT_ANALYTICS_VERSION;
-    const url = UrlUtils.normalizeAsString({
+    const urlNormalized = UrlUtils.normalizeAsParts({
       paths: [this.options.serviceUrl, '/rest/', versionToCall, '/analytics/', path],
       query: {
         org: this.organization,
@@ -109,9 +109,9 @@ export class AnalyticsEndpoint {
         .call<R>({
           errorsAsSuccess: false,
           method: 'POST',
-          queryString: [],
+          queryString: urlNormalized.queryNormalized,
           requestData: data,
-          url: url,
+          url: urlNormalized.path,
           responseType: 'text',
           requestDataType: 'application/json'
         })
