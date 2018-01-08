@@ -122,7 +122,7 @@ export class TimespanFacet extends Component {
   /**
    * Allow to set new ranges programmatically.
    *
-   * Destroy the old {@link TimespaceFacet.facet} if needed, and recreate the component with the new ranges.
+   * Destroy the old {@link TimespanFacet.facet} if needed, and recreate the component with the new ranges.
    */
   public set ranges(ranges: IRangeValue[]) {
     this.rangeValues = ranges;
