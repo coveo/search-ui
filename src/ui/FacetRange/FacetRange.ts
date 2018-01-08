@@ -176,21 +176,18 @@ export class FacetRange extends Facet implements IComponentBindings {
     this.facetQueryController = new FacetRangeQueryController(this);
   }
 
-  protected processNewGroupByResults(groupByResult: IGroupByResult) {
-    if (groupByResult != null) {
-      if (this.options.ranges == null && (!this.keepDisplayedValuesNextTime || this.values.hasSelectedOrExcludedValues())) {
-        this.keepDisplayedValuesNextTime = false;
-        groupByResult.values.sort((valueA, valueB) => {
-          const startEndA = valueA.value.split('..');
-          const startEndB = valueB.value.split('..');
-          if (this.options.dateField) {
-            return Date.parse(startEndA[0]) - Date.parse(startEndB[0]);
-          }
-          return Number(startEndA[0]) - Number(startEndB[0]);
-        });
-      }
+  protected processNewGroupByResults(groupByResults: IGroupByResult) {
+    if (groupByResults != null && this.options.ranges == null) {
+      groupByResults.values.sort((valueA, valueB) => {
+        const startEndA = valueA.value.split('..');
+        const startEndB = valueB.value.split('..');
+        if (this.options.dateField) {
+          return Date.parse(startEndA[0]) - Date.parse(startEndB[0]);
+        }
+        return Number(startEndA[0]) - Number(startEndB[0]);
+      });
     }
-    super.processNewGroupByResults(groupByResult);
+    super.processNewGroupByResults(groupByResults);
   }
 }
 Initialization.registerAutoCreateComponent(FacetRange);
