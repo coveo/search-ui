@@ -7,6 +7,7 @@ import { $$ } from '../../src/utils/Dom';
 import { l } from '../../src/strings/Strings';
 import { InitializationEvents } from '../../src/events/InitializationEvents';
 import Suggestion = Coveo.MagicBox.Suggestion;
+import { IFieldDescription } from '../../src/rest/FieldDescription';
 
 export function OmniboxTest() {
   describe('Omnibox', () => {
@@ -164,6 +165,60 @@ export function OmniboxTest() {
         test.cmp.setText('@thisisafield=');
         test.cmp.magicBox.getSuggestions();
         expect(test.env.searchEndpoint.listFieldValues).toHaveBeenCalled();
+      });
+
+      it('enableFieldAddon should always provide suggestions with field leading with @', async done => {
+        test = Mock.optionsComponentSetup<Omnibox, IOmniboxOptions>(Omnibox, {
+          enableFieldAddon: true
+        });
+
+        test.cmp.setText('@');
+        const fieldsDescription: IFieldDescription[] = [
+          {
+            name: '@firstFieldName',
+            includeInQuery: true,
+            groupByField: true
+          } as IFieldDescription,
+          {
+            name: '@secondFieldName',
+            includeInQuery: true,
+            groupByField: true
+          } as IFieldDescription
+        ];
+        test.env.searchEndpoint.listFields = () => Promise.resolve(fieldsDescription);
+        const suggestions = await test.cmp.magicBox.getSuggestions();
+        const fieldAddonSuggestion = await suggestions[1];
+        expect(fieldAddonSuggestion.length).toEqual(2);
+        expect(fieldAddonSuggestion[0].text).toEqual('@firstFieldName');
+        expect(fieldAddonSuggestion[1].text).toEqual('@secondFieldName');
+        done();
+      });
+
+      it('enableFieldAddon should filter fields suggestions with the listOfFields option', async done => {
+        test = Mock.optionsComponentSetup<Omnibox, IOmniboxOptions>(Omnibox, {
+          enableFieldAddon: true,
+          listOfFields: ['@secondFieldName']
+        });
+
+        test.cmp.setText('@');
+        const fieldsDescription: IFieldDescription[] = [
+          {
+            name: '@firstFieldName',
+            includeInQuery: true,
+            groupByField: true
+          } as IFieldDescription,
+          {
+            name: '@secondFieldName',
+            includeInQuery: true,
+            groupByField: true
+          } as IFieldDescription
+        ];
+        test.env.searchEndpoint.listFields = () => Promise.resolve(fieldsDescription);
+        const suggestions = await test.cmp.magicBox.getSuggestions();
+        const fieldAddonSuggestion = await suggestions[1];
+        expect(fieldAddonSuggestion.length).toEqual(1);
+        expect(fieldAddonSuggestion[0].text).toEqual('@secondFieldName');
+        done();
       });
 
       it('listOfFields should show specified fields when field addon is enabled', done => {
