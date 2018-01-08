@@ -8,19 +8,20 @@ import { exportGlobally } from '../../GlobalExports';
 import { IRangeValue } from '../../rest/RangeValue';
 import { pluck } from 'underscore';
 import { Dom, $$ } from '../../utils/Dom';
+import { Initialization } from '../Base/Initialization';
 
-export interface ITimespanFacet {
-  title: string;
-  field: IFieldOption;
+export interface ITimespanFacetOptions {
+  title?: string;
+  field?: IFieldOption;
 }
 
 /**
  * The TimespanFacet component displays a {@link FacetRange} with prebuilt ranges that return documents
  * that were last updated in either the last day, week, month or year.
  *
- * This component in a thin wrapper around a standard {@link FacetRange} component. It's only goal is to offer good default ranges values out of the box and to make it easy to add it in a standard search page.
+ * This component in a thin wrapper around a standard {@link FacetRange} component. The goal of this component is to offer good default ranges values out of the box and to make it easy to add it in a standard search page.
  *
- * If you wish to configure different ranges than those automatically configured with this component, feel free to use the standard {@link FacetRange} component with custom code to generate the needed ranges.
+ * If you wish to configure different ranges than those automatically configured with this component, feel free to use the standard {@link FacetRange} component instead, with custom code to generate the needed ranges.
  */
 export class TimespanFacet extends Component {
   static ID = 'TimespanFacet';
@@ -28,7 +29,7 @@ export class TimespanFacet extends Component {
   /**
    * @componentOptions
    */
-  static options: ITimespanFacet = {
+  static options: ITimespanFacetOptions = {
     /**
      * Specifies the title to display at the top of the facet.
      *
@@ -111,27 +112,38 @@ export class TimespanFacet extends Component {
   private facetRangeElement: Dom;
   private facetRange: FacetRange;
 
-  constructor(public element: HTMLElement, public options?: ITimespanFacet, bindings?: IComponentBindings) {
+  constructor(public element: HTMLElement, public options?: ITimespanFacetOptions, bindings?: IComponentBindings) {
     super(element, TimespanFacet.ID, bindings);
 
     this.options = ComponentOptions.initComponentOptions(element, TimespanFacet, options);
     this.buildFacet();
   }
 
+  /**
+   * Allow to set new ranges programmatically.
+   *
+   * Destroy the old {@link TimespaceFacet.facet} if needed, and recreate the component with the new ranges.
+   */
   public set ranges(ranges: IRangeValue[]) {
     this.rangeValues = ranges;
     this.buildFacet();
   }
 
+  /**
+   * The current date ranges that the facet uses to query the index.
+   */
   public get ranges() {
     return this.rangeValues;
   }
 
+  /**
+   * The underlying {@link FacetRange} component
+   */
   public get facet() {
     return this.facetRange;
   }
 
-  public buildFacet() {
+  private buildFacet() {
     this.destroyFacet();
     this.facetRangeElement = $$('div');
     $$(this.element).append(this.facetRangeElement.el);
@@ -144,10 +156,12 @@ export class TimespanFacet extends Component {
     });
   }
 
-  public destroyFacet() {
+  private destroyFacet() {
     if (this.facetRangeElement) {
       this.facetRangeElement.remove();
     }
     delete this.facetRange;
   }
 }
+
+Initialization.registerAutoCreateComponent(TimespanFacet);
