@@ -26,22 +26,22 @@ import { Utils } from '../../utils/Utils';
 import { RootComponent } from '../Base/RootComponent';
 import { BaseComponent } from '../Base/BaseComponent';
 import { HashUtils } from '../../utils/HashUtils';
-import * as fastclick from 'fastclick';
-import * as jstz from 'jstimezonedetect';
 import { SentryLogger } from '../../misc/SentryLogger';
 import { IComponentBindings } from '../Base/ComponentBindings';
 import { analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
 import { ResponsiveComponents } from '../ResponsiveComponents/ResponsiveComponents';
 import { Context, IPipelineContextProvider } from '../PipelineContext/PipelineGlobalExports';
+import { InitializationPlaceholder } from '../Base/InitializationPlaceholder';
+import { Debug } from '../Debug/Debug';
+
+import * as fastclick from 'fastclick';
+import * as jstz from 'jstimezonedetect';
 import * as _ from 'underscore';
 
 import 'styling/Globals';
 import 'styling/_SearchInterface';
 import 'styling/_SearchModalBox';
 import 'styling/_SearchButton';
-import { InitializationPlaceholder } from '../Base/InitializationPlaceholder';
-import { load } from '../Base/RegisteredNamedMethods';
-import DebugModule = require('../Debug/Debug');
 
 export interface ISearchInterfaceOptions {
   enableHistory?: boolean;
@@ -616,8 +616,7 @@ export class SearchInterface extends RootComponent implements IComponentBindings
 
   private async setupDebugInfo() {
     if (this.options.enableDebugInfo) {
-      const debugpanel = await load<{ new (elem: HTMLElement, bindings: IComponentBindings): DebugModule.Debug }>('Debug');
-      new debugpanel(this.element, this.getBindings());
+      setTimeout(() => new Debug(this.element, this.getBindings()));
     }
   }
 

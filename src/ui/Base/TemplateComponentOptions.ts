@@ -125,7 +125,7 @@ export class TemplateComponentOptions {
   static loadChildrenResultTemplateFromSelector(element: HTMLElement, selector: string): Template {
     const foundElements = ComponentOptions.loadChildrenHtmlElementFromSelector(element, selector);
     if (foundElements.length > 0) {
-      new TemplateList(compact(foundElements.map(element => TemplateComponentOptions.createResultTemplateFromElement(element))));
+      return new TemplateList(compact(foundElements.map(element => TemplateComponentOptions.createResultTemplateFromElement(element))));
     }
     return null;
   }
