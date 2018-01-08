@@ -56,7 +56,7 @@ export class Initialization {
 
   private static logger = new Logger('Initialization');
   public static registeredComponents: String[] = [];
-  public static aliasedComponents: IStringMap<String[]> = {};
+  public static componentAliases: IStringMap<String[]> = {};
   private static namedMethods: { [s: string]: any } = {};
 
   // List of every fields that are needed by components when doing a query (the fieldsToInclude property in the query)
@@ -111,7 +111,7 @@ export class Initialization {
     if (!_.contains(Initialization.registeredComponents, componentClass.ID)) {
       Initialization.registeredComponents.push(componentClass.ID);
       if (componentClass.aliases) {
-        Initialization.aliasedComponents[componentClass.ID] = componentClass.aliases;
+        Initialization.componentAliases[componentClass.ID] = componentClass.aliases;
       }
     }
 
@@ -691,7 +691,7 @@ export class LazyInitialization {
       }
       LazyInitialization.lazyLoadedComponents[id] = load;
       if (aliases) {
-        Initialization.aliasedComponents[id] = aliases;
+        Initialization.componentAliases[id] = aliases;
       }
     } else {
       this.logger.warn('Component being registered twice', id);

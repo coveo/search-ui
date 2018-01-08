@@ -31,7 +31,7 @@ export class InitializationHelper {
 
       htmlElements = Utils.concatWithoutDuplicate(htmlElements, this.findDOMElementsMatchingComponentId(container, componentClassId));
 
-      const aliases = Initialization.aliasedComponents[componentClassId];
+      const aliases = Initialization.componentAliases[componentClassId];
       _.each(aliases, alias => {
         htmlElements = Utils.concatWithoutDuplicate(htmlElements, this.findDOMElementsMatchingComponentId(container, alias as string));
       });
