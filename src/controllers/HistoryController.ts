@@ -69,7 +69,7 @@ export class HistoryController extends RootComponent {
   public setHashValues(values: {}) {
     this.logger.trace('Update history hash');
 
-    let hash = '#' + this.hashUtils.encodeValues(values);
+    const hash = '#' + this.hashUtils.encodeValues(values);
     this.ignoreNextHashChange = this.windoh.location.hash != hash;
 
     this.logger.trace('ignoreNextHashChange', this.ignoreNextHashChange);
@@ -99,7 +99,7 @@ export class HistoryController extends RootComponent {
       return;
     }
 
-    let diff = this.updateModelFromHash();
+    const diff = this.updateModelFromHash();
 
     if (_.difference(diff, HistoryController.attributesThatDoNotTriggerQuery).length > 0) {
       this.queryController.executeQuery();
@@ -111,7 +111,7 @@ export class HistoryController extends RootComponent {
 
     if (!this.willUpdateHash) {
       Defer.defer(() => {
-        let attributes = this.model.getAttributes();
+        const attributes = this.model.getAttributes();
         this.setHashValues(attributes);
         this.logger.debug('Saving state to hash', attributes);
         this.willUpdateHash = false;
@@ -123,18 +123,42 @@ export class HistoryController extends RootComponent {
   private updateModelFromHash() {
     this.logger.trace('History hash -> model');
 
-    let toSet: { [key: string]: any } = {};
-    let diff: string[] = [];
+    const toSet: { [key: string]: any } = {};
+    const diff: string[] = [];
     _.each(<_.Dictionary<any>>this.model.attributes, (value, key?, obj?) => {
-      let valToSet = this.getHashValue(key);
+      const valToSet = this.getHashValue(key);
       toSet[key] = valToSet;
       if (this.model.get(key) != valToSet) {
         diff.push(key);
       }
     });
+    if (this.model.dynamicAttributes.length > 0) {
+      _.each(this.getDynamicAttributesForKeys(this.model.dynamicAttributes), (value, key?) => {
+        toSet[key] = value;
+        if (this.model.get(key) != value) {
+          diff.push(key);
+        }
+      });
+    }
     this.initialHashChange = true;
     this.model.setMultiple(toSet);
     return diff;
+  }
+
+  private getDynamicAttributesForKeys(dynamicKeys: string[]): { [key: string]: any } {
+    Assert.isNotNull(dynamicKeys);
+    const values = {};
+    try {
+      const hash = this.hashUtils.getHash(this.windoh);
+      const allValues = this.hashUtils.getValues(hash);
+      Object.keys(allValues)
+        .filter(key => dynamicKeys.some(dynamicKey => key.indexOf(`${dynamicKey}:`) === 0))
+        .forEach(key => (values[key] = allValues[key]));
+    } catch (error) {
+      this.logger.error(`Could not parse the dynamic keys ${dynamicKeys.join(',')} from URI`, error);
+    }
+
+    return values;
   }
 
   private getHashValue(key: string): any {

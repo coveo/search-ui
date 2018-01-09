@@ -455,6 +455,8 @@ export class SearchInterface extends RootComponent implements IComponentBindings
     $$(this.element).on(QueryEvents.querySuccess, (e, args) => this.handleQuerySuccess(args));
     $$(this.element).on(QueryEvents.queryError, (e, args) => this.handleQueryError(args));
 
+    this.queryStateModel.registerNewDynamicAttribute(QueryStateModel.attributesEnum.fv);
+
     if (this.options.enableHistory) {
       if (!this.options.useLocalStorageForHistory) {
         new HistoryController(element, _window, this.queryStateModel, this.queryController);

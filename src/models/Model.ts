@@ -43,6 +43,7 @@ export class Model extends BaseComponent {
    */
   public attributes: { [key: string]: any };
   public defaultAttributes: { [key: string]: any };
+  public dynamicAttributes: string[];
   private eventNameSpace;
 
   /**
@@ -68,6 +69,7 @@ export class Model extends BaseComponent {
 
     this.defaultAttributes = Utils.extendDeep(this.defaultAttributes, attributes);
     this.attributes = attributes;
+    this.dynamicAttributes = [];
     this.logger.debug('Creating model');
   }
 
@@ -82,7 +84,7 @@ export class Model extends BaseComponent {
    * the options (see {@link setMultiple}).
    */
   public set(attribute: string, value: any, options?: IModelSetOptions) {
-    let toSet: { [key: string]: any } = {};
+    const toSet: { [key: string]: any } = {};
     toSet[attribute] = value;
     this.setMultiple(toSet, options);
   }
@@ -93,7 +95,7 @@ export class Model extends BaseComponent {
    * @returns {{object}}
    */
   public getAttributes() {
-    let attributes: { [key: string]: any } = {};
+    const attributes: { [key: string]: any } = {};
     _.each(this.attributes, (attribute, key) => {
       if (_.isObject(attribute)) {
         if (!Utils.objectEqual(attribute, this.defaultAttributes[key])) {
@@ -224,6 +226,10 @@ export class Model extends BaseComponent {
   public registerNewAttribute(attribute: string, defaultValue: any) {
     this.defaultAttributes[attribute] = defaultValue;
     this.attributes[attribute] = defaultValue;
+  }
+
+  public registerNewDynamicAttribute(attribute: string) {
+    this.dynamicAttributes.push(attribute);
   }
 
   /**
