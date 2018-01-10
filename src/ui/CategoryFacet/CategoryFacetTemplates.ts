@@ -31,14 +31,6 @@ export class CategoryFacetTemplates {
     return this.collapseArrow.clone(true);
   }
 
-  public build() {
-    return {
-      collapseArrow: this.buildCollapseArrow(),
-      listElement: this.buildListElement(),
-      listRoot: this.buildListRoot()
-    };
-  }
-
   private createListElementTemplate() {
     const valueElement = $$('span', { className: 'coveo-category-facet-value-caption' });
     const valueLabel = $$('label', { className: 'coveo-category-facet-value-label' }, valueElement);
