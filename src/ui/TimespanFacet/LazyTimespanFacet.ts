@@ -2,17 +2,17 @@ import { IComponentDefinition } from '../Base/Component';
 import { LazyInitialization } from '../Base/Initialization';
 import { lazyExport } from '../../GlobalExports';
 
-export function lazyResultLayout() {
-  LazyInitialization.registerLazyComponent('ResultLayout', () => {
+export function lazyTimespanFacet() {
+  LazyInitialization.registerLazyComponent('TimespanFacet', () => {
     return new Promise((resolve, reject) => {
       require.ensure(
-        ['./ResultLayout'],
+        ['./TimespanFacet'],
         () => {
-          let loaded = require<IComponentDefinition>('./ResultLayout.ts')['ResultLayout'];
+          let loaded = require<IComponentDefinition>('./TimespanFacet.ts')['TimespanFacet'];
           lazyExport(loaded, resolve);
         },
-        LazyInitialization.buildErrorCallback('ResultLayout', resolve),
-        'ResultLayout'
+        LazyInitialization.buildErrorCallback('TimespanFacet', resolve),
+        'TimespanFacet'
       );
     });
   });

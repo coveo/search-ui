@@ -32,7 +32,6 @@ interface IComponentInitialization {
 
 export class ResponsiveComponentsManager {
   public static DROPDOWN_HEADER_WRAPPER_CSS_CLASS = 'coveo-dropdown-header-wrapper';
-  public static RESIZE_DEBOUNCE_DELAY = 200;
 
   private static componentManagers: ResponsiveComponentsManager[] = [];
   private static remainingComponentInitializations: number = 0;
@@ -122,7 +121,7 @@ export class ResponsiveComponentsManager {
     });
     this.searchBoxElement = this.getSearchBoxElement();
     this.logger = new Logger(this);
-    this.resizeListener = _.debounce(() => {
+    this.resizeListener = () => {
       if (this.coveoRoot.width() != 0) {
         this.addDropdownHeaderWrapperIfNeeded();
         if (this.shouldSwitchToSmallMode()) {
@@ -140,7 +139,7 @@ export class ResponsiveComponentsManager {
         interface display property be none? Could its visibility property be set to hidden? Also, if either of these scenarios happen during
         loading, it could be the cause of this issue.`);
       }
-    }, ResponsiveComponentsManager.RESIZE_DEBOUNCE_DELAY);
+    };
     window.addEventListener('resize', this.resizeListener);
     this.bindNukeEvents();
   }
