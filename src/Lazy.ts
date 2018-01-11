@@ -259,5 +259,8 @@ lazyTextInput();
 import { lazySimpleFilter } from './ui/SimpleFilter/LazySimpleFilter';
 lazySimpleFilter();
 
+import { lazyTimespanFacet } from './ui/TimespanFacet/LazyTimespanFacet';
+lazyTimespanFacet();
+
 import { swapVar } from './SwapVar';
 swapVar(this);
