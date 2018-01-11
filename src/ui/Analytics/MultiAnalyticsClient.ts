@@ -8,6 +8,7 @@ import * as _ from 'underscore';
 
 export class MultiAnalyticsClient implements IAnalyticsClient {
   public isContextual = false;
+  public endpoint = _.first(this.analyticsClients).endpoint;
 
   constructor(private analyticsClients: IAnalyticsClient[] = []) {}
 

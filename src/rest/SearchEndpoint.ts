@@ -1,5 +1,5 @@
 import { ISearchEndpointOptions, ISearchEndpoint, IViewAsHtmlOptions } from './SearchEndpointInterface';
-import { EndpointCaller, IEndpointCallParameters, ISuccessResponse, IErrorResponse, IRequestInfo } from '../rest/EndpointCaller';
+import { EndpointCaller, IEndpointCallParameters, IErrorResponse, IRequestInfo, IEndpointCallerOptions } from '../rest/EndpointCaller';
 import { IEndpointCallOptions } from '../rest/SearchEndpointInterface';
 import { IStringMap } from './GenericParam';
 import { Logger } from '../misc/Logger';
@@ -28,6 +28,7 @@ import { shim } from '../misc/PromisesShim';
 import { history } from 'coveo.analytics';
 import { Cookie } from '../utils/CookieUtils';
 import { TimeSpan } from '../UtilsModules';
+import { AccessToken } from './AccessToken';
 shim();
 
 export class DefaultSearchEndpointOptions implements ISearchEndpointOptions {
@@ -197,6 +198,8 @@ export class SearchEndpoint implements ISearchEndpoint {
 
   public logger: Logger;
   public isRedirecting: boolean;
+  public accessToken: AccessToken;
+
   protected caller: EndpointCaller;
   private onUnload: (...args: any[]) => void;
 
@@ -218,6 +221,9 @@ export class SearchEndpoint implements ISearchEndpoint {
     let defaultOptions = new DefaultSearchEndpointOptions();
     defaultOptions.anonymous = window.location.href.indexOf('file://') == 0 && Utils.isNonEmptyString(options.accessToken);
     this.options = <ISearchEndpointOptions>_.extend({}, defaultOptions, options);
+
+    this.accessToken = new AccessToken(this.options.accessToken, this.options.renewAccessToken);
+    this.accessToken.afterRenew(() => this.createEndpointCaller());
 
     // Forward any debug=1 query argument to the REST API to ease debugging
     if (SearchEndpoint.isDebugArgumentPresent()) {
@@ -845,7 +851,10 @@ export class SearchEndpoint implements ISearchEndpoint {
   }
 
   protected createEndpointCaller() {
-    this.caller = new EndpointCaller(this.options);
+    this.caller = new EndpointCaller({
+      ...this.options,
+      accessToken: this.accessToken.token
+    } as IEndpointCallerOptions);
   }
 
   private static isDebugArgumentPresent(): boolean {
@@ -954,38 +963,29 @@ export class SearchEndpoint implements ISearchEndpoint {
     return queryString;
   }
 
-  private performOneCall<T>(params: IEndpointCallParameters, callOptions?: IEndpointCallOptions, autoRenewToken = true): Promise<T> {
+  private async performOneCall<T>(params: IEndpointCallParameters, callOptions?: IEndpointCallOptions, autoRenewToken = true): Promise<T> {
     let queryString = this.buildBaseQueryString(callOptions);
     params.queryString = params.queryString.concat(queryString);
     params.queryString = _.uniq(params.queryString);
 
-    return this.caller
-      .call(params)
-      .then((response?: ISuccessResponse<T>) => {
-        if (response.data == null) {
-          response.data = <any>{};
-        }
-        return response.data;
-      })
-      .catch((error?: IErrorResponse) => {
-        if (autoRenewToken && this.canRenewAccessToken() && this.isAccessTokenExpiredStatus(error.statusCode)) {
-          return this.renewAccessToken()
-            .then(() => {
-              return this.performOneCall(params, callOptions, autoRenewToken);
-            })
-            .catch(() => {
-              return Promise.reject(this.handleErrorResponse(error));
-            });
-        } else if (error.statusCode == 0 && this.isRedirecting) {
-          // The page is getting redirected
-          // Set timeout on return with empty string, since it does not really matter
-          _.defer(function() {
-            return '';
-          });
-        } else {
-          return Promise.reject(this.handleErrorResponse(error));
-        }
-      });
+    try {
+      const response = await this.caller.call(params);
+      response.data = { ...response.data };
+      return { ...response.data } as T;
+    } catch (error) {
+      if (autoRenewToken && this.accessToken.isExpired(error)) {
+        await this.accessToken.doRenew(() => this.handleErrorResponse(error));
+        return this.performOneCall(params, callOptions, autoRenewToken) as Promise<T>;
+      } else if (error.statusCode == 0 && this.isRedirecting) {
+        // The page is getting redirected
+        // Set timeout on return with empty string, since it does not really matter
+        _.defer(function() {
+          return '';
+        });
+      } else {
+        this.handleErrorResponse(error);
+      }
+    }
   }
 
   private handleErrorResponse(errorResponse: IErrorResponse): Error {
@@ -998,26 +998,6 @@ export class SearchEndpoint implements ISearchEndpoint {
     } else {
       return new AjaxError('Request Error', errorResponse.statusCode);
     }
-  }
-
-  private canRenewAccessToken(): boolean {
-    return Utils.isNonEmptyString(this.options.accessToken) && _.isFunction(this.options.renewAccessToken);
-  }
-
-  private renewAccessToken(): Promise<string> {
-    this.logger.info('Renewing expired access token');
-    return this.options
-      .renewAccessToken()
-      .then((token: string) => {
-        Assert.isNonEmptyString(token);
-        this.options.accessToken = token;
-        this.createEndpointCaller();
-        return token;
-      })
-      .catch((e: string) => {
-        this.logger.error('Failed to renew access token', e);
-        return e;
-      });
   }
 
   private removeTrailingSlash(uri: string) {
@@ -1033,10 +1013,6 @@ export class SearchEndpoint implements ISearchEndpoint {
 
   private isMissingAuthenticationProviderStatus(status: number): boolean {
     return status == 402;
-  }
-
-  private isAccessTokenExpiredStatus(status: number): boolean {
-    return status == 419;
   }
 }
 
@@ -1168,8 +1144,8 @@ function accessTokenInUrl(tokenKey: string = 'access_token') {
     const buildAccessToken = (tokenKey: string, endpointInstance: SearchEndpoint): string[] => {
       let queryString: string[] = [];
 
-      if (Utils.isNonEmptyString(endpointInstance.options.accessToken)) {
-        queryString.push(tokenKey + '=' + Utils.safeEncodeURIComponent(endpointInstance.options.accessToken));
+      if (Utils.isNonEmptyString(endpointInstance.accessToken.token)) {
+        queryString.push(tokenKey + '=' + Utils.safeEncodeURIComponent(endpointInstance.accessToken.token));
       }
 
       return queryString;
