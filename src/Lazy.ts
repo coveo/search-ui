@@ -161,8 +161,8 @@ lazyResultAttachment();
 import { lazyResultFolding } from './ui/ResultFolding/LazyResultFolding';
 lazyResultFolding();
 
-import { lazyResultLayout } from './ui/ResultLayout/LazyResultLayout';
-lazyResultLayout();
+import { lazyResultLayoutSelector } from './ui/ResultLayoutSelector/LazyResultLayoutSelector';
+lazyResultLayoutSelector();
 
 import { lazyResultLink } from './ui/ResultLink/LazyResultLink';
 lazyResultLink();

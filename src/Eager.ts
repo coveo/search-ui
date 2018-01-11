@@ -168,8 +168,8 @@ ResultAttachments.doExport();
 import { ResultFolding } from './ui/ResultFolding/ResultFolding';
 ResultFolding.doExport();
 
-import { ResultLayout } from './ui/ResultLayout/ResultLayout';
-ResultLayout.doExport();
+import { ResultLayoutSelector } from './ui/ResultLayoutSelector/ResultLayoutSelector';
+ResultLayoutSelector.doExport();
 
 import { ResultLink } from './ui/ResultLink/ResultLink';
 ResultLink.doExport();

@@ -170,6 +170,21 @@ export function InitializationTest() {
       expect(dummyCmp).toHaveBeenCalled();
     });
 
+    it('allows to registerAutoCreateComponent with aliases', () => {
+      const aliasedComponent: any = jasmine.createSpy('aliasedComponent');
+      aliasedComponent.ID = 'OriginalId';
+      aliasedComponent.aliases = ['AliasedId'];
+
+      const dummyElem = $$('div', { className: 'CoveoAliasedId' });
+      $$(root).append(dummyElem.el);
+
+      Initialization.registerAutoCreateComponent(aliasedComponent);
+      Initialization.initializeFramework(root, searchInterfaceOptions, () => {
+        return Initialization.initSearchInterface(root, searchInterfaceOptions);
+      });
+      expect(aliasedComponent).toHaveBeenCalled();
+    });
+
     it('allows to check if isComponentClassIdRegistered', () => {
       const dummyCmp: any = () => {};
       dummyCmp.ID = 'CheckRegistration';
