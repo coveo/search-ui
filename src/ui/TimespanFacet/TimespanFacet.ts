@@ -16,12 +16,15 @@ export interface ITimespanFacetOptions {
 }
 
 /**
- * The TimespanFacet component displays a {@link FacetRange} with prebuilt ranges that return documents
- * that were last updated in either the last day, week, month or year.
+ * The TimespanFacet component displays a {@link FacetRange} with prebuilt ranges.
  *
- * This component in a thin wrapper around a standard {@link FacetRange} component. The goal of this component is to offer good default ranges values out of the box and to make it easy to add it in a standard search page.
+ * The prebuilt ranges allow you to see the items last updated in the last day, week, month, or year.
  *
- * If you wish to configure different ranges than those automatically configured with this component, feel free to use the standard {@link FacetRange} component instead, with custom code to generate the needed ranges.
+ * This component in a thin wrapper around the standard {@link FacetRange} component.
+ *
+ * This component is meant to offer out of the box default ranges, so it can easily be inserted in a standard search page.
+ *
+ * To configure different ranges than those offered by this component, use the standard {@link FacetRange} component instead.
  */
 export class TimespanFacet extends Component {
   static ID = 'TimespanFacet';
@@ -120,9 +123,7 @@ export class TimespanFacet extends Component {
   }
 
   /**
-   * Allow to set new ranges programmatically.
-   *
-   * Destroy the old {@link TimespanFacet.facet} if needed, and recreate the component with the new ranges.
+   * Sets a new range for the component.
    */
   public set ranges(ranges: IRangeValue[]) {
     this.rangeValues = ranges;
@@ -130,14 +131,14 @@ export class TimespanFacet extends Component {
   }
 
   /**
-   * The current date ranges that the facet uses to query the index.
+   * Returns the current range the facet uses to query the index
    */
   public get ranges() {
     return this.rangeValues;
   }
 
   /**
-   * The underlying {@link FacetRange} component
+   * Returns the underlying {@link FacetRange} component associated to the Timespan Facet.
    */
   public get facet() {
     return this.facetRange;
