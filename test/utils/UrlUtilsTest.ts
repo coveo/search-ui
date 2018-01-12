@@ -25,7 +25,7 @@ export function UrlUtilsTest() {
       expect(url).toBe('https://a.com?123=4&456=7');
     });
 
-    it('should support passing in query string as a dictionnary', () => {
+    it('should support passing in query string as a dictionary', () => {
       const url = UrlUtils.normalizeAsString({
         paths: ['https://a.com/'],
         query: {
@@ -36,7 +36,7 @@ export function UrlUtilsTest() {
       expect(url).toBe('https://a.com?123=4&456=7');
     });
 
-    it('should use both query string as an array of strings and a dictionnary', () => {
+    it('should use both query string as an array of strings and a dictionary', () => {
       const url = UrlUtils.normalizeAsString({
         paths: ['https://a.com/'],
         queryAsString: ['123=4', '456=7'],

@@ -32,14 +32,11 @@ export class UrlUtils {
       }
 
       if (Utils.isNonEmptyArray(queryNormalized)) {
-        if (Utils.isNonEmptyArray(endpointParameters.queryString)) {
-          endpointParameters = {
-            ...endpointParameters,
-            queryString: Utils.concatWithoutDuplicate(endpointParameters.queryString, queryNormalized)
-          };
-        } else {
-          endpointParameters = { ...endpointParameters, queryString: queryNormalized };
-        }
+        const queryStringExists = Utils.isNonEmptyArray(endpointParameters.queryString);
+        const queryString = queryStringExists
+          ? Utils.concatWithoutDuplicate(endpointParameters.queryString, queryNormalized)
+          : queryNormalized;
+        endpointParameters = { ...endpointParameters, queryString };
       }
     });
     return endpointParameters;
@@ -112,11 +109,11 @@ export class UrlUtils {
   }
 
   private static startsWith(searchString: string, targetString: string) {
-    return targetString.charAt(0) == searchString;
+    return targetString.substr(0, searchString.length) === searchString;
   }
 
   private static endsWith(searchString: string, targetString: string) {
-    return targetString.charAt(targetString.length - 1) == searchString;
+    return targetString.substring(targetString.length - searchString.length, targetString.length) === searchString;
   }
 
   private static removeAtEnd(searchString: string, targetString: string) {
@@ -135,13 +132,7 @@ export class UrlUtils {
   }
 
   private static toArray(parameter: string | string[]): string[] {
-    let ret: string[];
-    if (!isArray(parameter)) {
-      ret = [parameter];
-    } else {
-      ret = parameter;
-    }
-    return ret;
+    return isArray(parameter) ? parameter : [parameter];
   }
 
   private static encodeKeyValuePair(pair: string) {
