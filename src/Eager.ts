@@ -263,5 +263,8 @@ TextInput.doExport();
 import { SimpleFilter } from './ui/SimpleFilter/SimpleFilter';
 SimpleFilter.doExport();
 
+import { TimespanFacet } from './ui/TimespanFacet/TimespanFacet';
+TimespanFacet.doExport();
+
 import { swapVar } from './SwapVar';
 swapVar(this);

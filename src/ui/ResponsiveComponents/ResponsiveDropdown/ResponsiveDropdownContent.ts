@@ -19,6 +19,14 @@ export class ResponsiveDropdownContent implements IResponsiveDropdownContent {
   private widthRatio: number;
   private minWidth: number;
 
+  public static isTargetInsideOpenedDropdown(target: Dom) {
+    const targetParentDropdown = target.parent(ResponsiveDropdownContent.DEFAULT_CSS_CLASS_NAME);
+    if (targetParentDropdown) {
+      return targetParentDropdown.style.display != 'none';
+    }
+    return false;
+  }
+
   constructor(componentName: string, public element: Dom, coveoRoot: Dom, minWidth: number, widthRatio: number) {
     this.cssClassName = `coveo-${componentName}-dropdown-content`;
     this.coveoRoot = coveoRoot;
