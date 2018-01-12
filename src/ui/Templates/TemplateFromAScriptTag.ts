@@ -2,10 +2,10 @@ import { Template, IFieldsToMatch, TemplateRole } from './Template';
 import { Utils } from '../../utils/Utils';
 import { TemplateConditionEvaluator } from './TemplateConditionEvaluator';
 import { ComponentOptions, IComponentOptionsFieldsOption } from '../Base/ComponentOptions';
-import { ValidLayout } from '../ResultLayout/ResultLayout';
 import { $$, Dom } from '../../utils/Dom';
 import * as _ from 'underscore';
 import { Initialization } from '../Base/Initialization';
+import { ValidLayout } from '../ResultLayoutSelector/ValidLayout';
 
 export interface ITemplateFromStringProperties {
   condition?: string;

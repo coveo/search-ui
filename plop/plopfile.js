@@ -71,7 +71,7 @@ module.exports = function (plop) {
       console.log(`Creating new component named ${data.cmpName}`);
       actions.push({
         type: 'add',
-        path: path.resolve('../src/ui/{{cmpName}}/{{cmpName}}.ts'),
+        path: path.resolve(plop.renderString('../src/ui/{{cmpName}}/{{cmpName}}.ts', data)),
         templateFile: path.resolve('./plopTemplates/plop.component.template.hbs')
       });
       actions.push(()=> {
@@ -91,7 +91,7 @@ module.exports = function (plop) {
       });
       actions.push({
         type : 'add',
-        path: path.resolve('../test/ui/{{pascalCase cmpName}}Test.ts'),
+        path: path.resolve(plop.renderString('../test/ui/{{pascalCase cmpName}}Test.ts', data)),
         templateFile : path.resolve('./plopTemplates/plop.component.test.template.hbs')
       });
       return actions;
