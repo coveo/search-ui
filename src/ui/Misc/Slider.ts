@@ -836,8 +836,11 @@ class SliderGraph {
     $$(this.tooltipCount).text(d.y.toString());
     $$(this.tooltip).show();
 
-    const leftPositionForCurrentBand = this.x(d.start) - 0.2 * this.slider.options.graph.steps;
-    const halfOfBandwidth = this.x.bandwidth() / 2 - 5;
+    const gapBetweenEachBar = 0.2;
+    const offSetForOneBar = 5;
+
+    const leftPositionForCurrentBand = this.x(d.start) - gapBetweenEachBar * this.slider.options.graph.steps;
+    const halfOfBandwidth = this.x.bandwidth() / 2 - offSetForOneBar;
 
     this.tooltip.style.left = `${leftPositionForCurrentBand}px`;
     this.tooltip.style.top = `${this.y(d.y) - height}px`;
