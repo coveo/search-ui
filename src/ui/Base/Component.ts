@@ -25,6 +25,7 @@ export interface IComponentDefinition {
    * For example, SearchButton -> static ID : SearchButton -> className : CoveoSearchButton
    */
   ID: string;
+  aliases?: string[];
   /**
    * The generated `className` for this component.<br/>
    * For example, SearchButton -> static ID : SearchButton -> className : CoveoSearchButton

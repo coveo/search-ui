@@ -29,7 +29,6 @@ import { ResultLayoutEvents, IResultLayoutPopulateArgs } from '../../events/Resu
 import { Utils } from '../../utils/Utils';
 import { DomUtils } from '../../utils/DomUtils';
 import { DefaultRecommendationTemplate } from '../Templates/DefaultRecommendationTemplate';
-import { ValidLayout } from '../ResultLayout/ResultLayout';
 import { TemplateList } from '../Templates/TemplateList';
 import { TemplateCache } from '../Templates/TemplateCache';
 import { ResponsiveDefaultResultTemplate } from '../ResponsiveComponents/ResponsiveDefaultResultTemplate';
@@ -43,6 +42,7 @@ import 'styling/_ResultFrame';
 import 'styling/_Result';
 import { InitializationPlaceholder } from '../Base/InitializationPlaceholder';
 import { get } from '../Base/RegisteredNamedMethods';
+import { ValidLayout } from '../ResultLayoutSelector/ValidLayout';
 
 export interface IResultListOptions {
   resultContainer?: HTMLElement;

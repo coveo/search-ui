@@ -1,6 +1,6 @@
 import { TemplateFromAScriptTag } from '../../src/ui/Templates/TemplateFromAScriptTag';
 import { Template } from '../../src/ui/Templates/Template';
-import { ValidLayout } from '../../src/ui/ResultLayout/ResultLayout';
+import { ValidLayout } from '../../src/ui/ResultLayoutSelector/ValidLayout';
 export function TemplateFromAScriptTagTest() {
   describe('TemplateFromAScriptTag', () => {
     let tmpl: Template;

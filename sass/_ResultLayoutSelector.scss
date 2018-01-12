@@ -1,8 +1,9 @@
-@import "mixins/resultsHeaderElement";
-@import "bourbon/bourbon";
-@import "Variables";
+@import 'mixins/resultsHeaderElement';
+@import 'bourbon/bourbon';
+@import 'Variables';
 
-.CoveoResultLayout {
+.CoveoResultLayout,
+.CoveoResultLayoutSelector {
   @include display(flex);
   &.coveo-result-layout-hidden {
     display: none;
