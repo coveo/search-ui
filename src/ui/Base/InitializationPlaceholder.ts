@@ -312,10 +312,7 @@ export class InitializationPlaceholder {
   }
 
   private getAllFacetsElements(): HTMLElement[] {
-    let facetElements = $$(this.root).findAll('.CoveoFacet');
-    facetElements = facetElements.concat($$(this.root).findAll('.CoveoFacetRange'));
-    facetElements = facetElements.concat($$(this.root).findAll('.CoveoFacetSlider'));
-    facetElements = facetElements.concat($$(this.root).findAll('.CoveoHierarchicalFacet'));
-    return facetElements;
+    const toSelect = ['.CoveoFacet', '.CoveoFacetRange', '.CoveoTimespanFacet', '.CoveoFacetSlider', '.CoveoHierarchicalFacet'].join(', ');
+    return $$(this.root).findAll(toSelect);
   }
 }
