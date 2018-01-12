@@ -272,7 +272,7 @@ export class Utils {
       _.each(src, (e, i, obj) => {
         if (typeof target[i] === 'undefined') {
           toReturn[i] = <any>e;
-        } else if (typeof e === 'object') {
+        } else if (typeof e === 'object' && !_.isElement(e)) {
           toReturn[i] = Utils.extendDeep(target[i], e);
         } else {
           if (target.indexOf(e) === -1) {
@@ -281,7 +281,7 @@ export class Utils {
         }
       });
     } else {
-      if (target && typeof target === 'object') {
+      if (target && typeof target === 'object' && !_.isElement(target)) {
         _.each(_.keys(target), key => {
           toReturn[key] = target[key];
         });
