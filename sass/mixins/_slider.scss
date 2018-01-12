@@ -1,5 +1,4 @@
 @import 'Variables';
-
 @mixin coveoSlider {
   .coveo-slider-container {
     width: 100%;
@@ -14,7 +13,6 @@
       overflow: hidden;
     }
   }
-
   .coveo-slider-line {
     background-color: white;
     @include defaultRoundedBorder();
@@ -27,7 +25,6 @@
       background-color: $color-blueish-gray;
     }
   }
-
   .coveo-slider-button {
     background-color: $color-teal;
     border-radius: 2px;
@@ -45,7 +42,7 @@
       background-color: $color-teal;
     }
     &:after {
-      content: "";
+      content: '';
       height: 10px;
       width: 2px;
       border-right: 1px solid white;
@@ -55,16 +52,14 @@
       top: 3px;
     }
     &:before {
-      content: "";
+      content: '';
       height: 10px;
       border-right: 1px solid white;
       position: absolute;
       left: 4px;
       top: 3px;
-
     }
   }
-
   .coveo-slider-caption {
     position: absolute;
     top: 25px;
@@ -74,7 +69,6 @@
     overflow: hidden;
     text-overflow: ellipsis;
   }
-
   .coveo-slider-tooltip {
     white-space: nowrap;
     padding: 10px;
@@ -83,26 +77,23 @@
     z-index: 10;
     position: absolute;
     margin-top: 30px;
-    &:after {
+    .coveo-slider-tooltip-arrow {
       width: 0;
       height: 0;
       border-left: 5px solid transparent;
       border-right: 5px solid transparent;
       border-top: 5px solid $color-light-grey;
-      content: "";
-      top: 37px;
-      left: 5px;
+      top: 38px;
       position: absolute;
     }
     .coveo-caption {
-      font-size: $font-size-smallest
+      font-size: $font-size-smallest;
     }
     .coveo-count {
       font-size: $font-size-smallest;
       margin-left: 5px;
     }
   }
-
   .coveo-slider-container.coveo-with-graph {
     height: 135px;
     & > div {
