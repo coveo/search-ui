@@ -2,7 +2,7 @@ import { Component } from './Component';
 import { $$ } from '../../utils/Dom';
 import * as _ from 'underscore';
 import { Initialization } from './Initialization';
-import { Utils } from '../../UtilsModule';
+import { Utils } from '../../UtilsModules';
 
 export type DOMElementToInitialize = { componentClassId: string; htmlElements: HTMLElement[] };
 

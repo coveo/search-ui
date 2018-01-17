@@ -7,4 +7,4 @@ export * from './ControllersModules';
 export * from './ModelsModules';
 export * from './UIBaseModules';
 export * from './TemplatesModules';
-export * from './UtilsModule';
+export * from './UtilsModules';
