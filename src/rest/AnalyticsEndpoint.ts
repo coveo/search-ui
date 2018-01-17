@@ -94,7 +94,7 @@ export class AnalyticsEndpoint {
     return this.getFromService<string[]>(url, params);
   }
 
-  private async sendToService<D, R>(data: D, path: string, paramName: string): Promise<R> {
+  private async sendToService<D, R>(data: D, path: string, paramName: string) {
     // We use pendingRequest because we don't want to have 2 request to analytics at the same time.
     // Otherwise the cookie visitId won't be set correctly.
     if (AnalyticsEndpoint.pendingRequest != null) {
@@ -119,7 +119,7 @@ export class AnalyticsEndpoint {
       queryString.push('visitor=' + Utils.safeEncodeURIComponent(Cookie.get('visitorId')));
     }
 
-    AnalyticsEndpoint.pendingRequest = this.endpointCaller.call<R>({
+    const request: Promise<any> = (AnalyticsEndpoint.pendingRequest = this.endpointCaller.call<R>({
       errorsAsSuccess: false,
       method: 'POST',
       queryString: queryString,
@@ -127,11 +127,13 @@ export class AnalyticsEndpoint {
       url: url,
       responseType: 'text',
       requestDataType: 'application/json'
-    });
+    }));
 
     try {
-      const results = await AnalyticsEndpoint.pendingRequest;
+      const results = await request;
+      AnalyticsEndpoint.pendingRequest = null;
       this.handleAnalyticsEventResponse(results.data);
+      return results.data;
     } catch (error) {
       if (this.options.accessToken.isExpired(error)) {
         AnalyticsEndpoint.pendingRequest = null;
@@ -140,11 +142,9 @@ export class AnalyticsEndpoint {
           return this.sendToService<D, R>(data, path, paramName);
         }
       }
-    } finally {
-      AnalyticsEndpoint.pendingRequest = null;
-    }
 
-    return AnalyticsEndpoint.pendingRequest;
+      throw error;
+    }
   }
 
   private getFromService<T>(url: string, params: IStringMap<string>): Promise<T> {

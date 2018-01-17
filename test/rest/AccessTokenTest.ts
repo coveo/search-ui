@@ -1,0 +1,72 @@
+import { AccessToken } from '../../src/rest/AccessToken';
+import { times } from 'underscore';
+
+export function AccessTokenTest() {
+  describe('AccessToken', () => {
+    let token: AccessToken;
+
+    beforeEach(() => {
+      token = new AccessToken('el accesso tokeno');
+    });
+
+    it('should correctly detect an expired status code', () => {
+      expect(token.isExpired({ statusCode: 419 })).toBeTruthy();
+    });
+
+    it('should correctly detect a status code that is not expired', () => {
+      expect(token.isExpired({ statusCode: 500 })).toBeFalsy();
+    });
+
+    it('should behave correctly if there is no renew function', async done => {
+      const renewSuccessful = await token.doRenew();
+      expect(renewSuccessful).toBeFalsy();
+      done();
+    });
+
+    it('should behave correctly when there is a renew function', async done => {
+      const renew = jasmine.createSpy('spy').and.returnValue(Promise.resolve('nuevo tokeno'));
+      token = new AccessToken('el accesso tokeno', renew as any);
+      const renewSuccessful = await token.doRenew();
+      expect(renew).toHaveBeenCalled();
+      expect(renewSuccessful).toBeTruthy();
+      done();
+    });
+
+    describe('with an error callback on renew', () => {
+      let errCallback: jasmine.Spy;
+
+      beforeEach(() => {
+        errCallback = jasmine.createSpy('onError');
+      });
+
+      it('should be called if there is no renew function', async done => {
+        await token.doRenew(errCallback);
+        expect(errCallback).toHaveBeenCalled();
+        done();
+      });
+
+      describe('with a renew function that throws an error', () => {
+        let renew: jasmine.Spy;
+
+        beforeEach(() => {
+          renew = jasmine.createSpy('throw error').and.throwError('oh no') as any;
+          token = new AccessToken('el accesso tokeno', renew as any);
+        });
+
+        it('should call the error callback if the renew function throws an error', async done => {
+          await token.doRenew(errCallback);
+          expect(errCallback).toHaveBeenCalled();
+          done();
+        });
+
+        it('should stop trying to renew if it fails rapidly in succession', async done => {
+          await times(10, async () => {
+            return token.doRenew();
+          });
+          expect(renew).toHaveBeenCalledTimes(4);
+          done();
+        });
+      });
+    });
+  });
+}

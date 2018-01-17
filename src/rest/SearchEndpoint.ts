@@ -964,27 +964,25 @@ export class SearchEndpoint implements ISearchEndpoint {
   }
 
   private async performOneCall<T>(params: IEndpointCallParameters, callOptions?: IEndpointCallOptions, autoRenewToken = true): Promise<T> {
-    let queryString = this.buildBaseQueryString(callOptions);
-    params.queryString = params.queryString.concat(queryString);
-    params.queryString = _.uniq(params.queryString);
+    params.queryString = _.uniq(this.buildBaseQueryString(callOptions).concat(params.queryString));
 
     try {
       const response = await this.caller.call(params);
-      response.data = { ...response.data };
-      return { ...response.data } as T;
+      return response.data as T;
     } catch (error) {
       if (autoRenewToken && this.accessToken.isExpired(error)) {
-        await this.accessToken.doRenew(() => this.handleErrorResponse(error));
-        return this.performOneCall(params, callOptions, autoRenewToken) as Promise<T>;
+        const renewSuccess = await this.accessToken.doRenew();
+        if (renewSuccess) {
+          return this.performOneCall(params, callOptions, autoRenewToken) as Promise<T>;
+        }
       } else if (error.statusCode == 0 && this.isRedirecting) {
         // The page is getting redirected
         // Set timeout on return with empty string, since it does not really matter
         _.defer(function() {
           return '';
         });
-      } else {
-        this.handleErrorResponse(error);
       }
+      throw this.handleErrorResponse(error) as any;
     }
   }
 

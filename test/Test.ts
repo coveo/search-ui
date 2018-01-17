@@ -492,3 +492,6 @@ SimpleFilterTest();
 
 import { DeviceUtilsTest } from './utils/DeviceUtilsTest';
 DeviceUtilsTest();
+
+import { AccessTokenTest } from './rest/AccessTokenTest';
+AccessTokenTest();
