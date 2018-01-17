@@ -29,12 +29,6 @@ plugins.push(
 plugins.push(new webpack.optimize.ModuleConcatenationPlugin());
 plugins.push(new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/));
 
-plugins.push(
-  new webpack.ProvidePlugin({
-    Promise: __dirname + '/node_modules/es6-promise/dist/es6-promise.auto'
-  })
-);
-
 if (production) {
   const cssFilename = minimize ? '../css/CoveoFullSearch.min.css' : '../css/CoveoFullSearch.css';
   const extractSass = new ExtractTextPlugin({
