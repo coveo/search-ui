@@ -26,7 +26,7 @@ import { Utils } from '../utils/Utils';
 import * as _ from 'underscore';
 import { history } from 'coveo.analytics';
 import { Cookie } from '../utils/CookieUtils';
-import { TimeSpan } from '../UtilsModules';
+import { TimeSpan } from '../utils/TimeSpanUtils';
 import { UrlUtils } from '../utils/UrlUtils';
 import { IGroupByResult } from './GroupByResult';
 
