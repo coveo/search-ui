@@ -614,7 +614,7 @@ export class SearchInterface extends RootComponent implements IComponentBindings
     new HistoryController(this.element, historyControllerEnvironment);
   }
 
-  private async setupDebugInfo() {
+  private setupDebugInfo() {
     if (this.options.enableDebugInfo) {
       setTimeout(() => new Debug(this.element, this.getBindings()));
     }

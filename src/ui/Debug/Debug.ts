@@ -19,6 +19,7 @@ import { DebugHeader } from './DebugHeader';
 import { QueryEvents, IQuerySuccessEventArgs } from '../../events/QueryEvents';
 import { DebugForResult } from './DebugForResult';
 import { exportGlobally } from '../../GlobalExports';
+import { Template } from '../Templates/Template';
 
 export interface IDebugOptions {
   enableDebug?: boolean;
@@ -478,9 +479,9 @@ export class Debug extends RootComponent {
     if (value instanceof HTMLElement) {
       return this.htmlToJson(value);
     }
-    /*if (value instanceof Template) {
+    if (value instanceof Template) {
       return this.templateToJson(value);
-    }*/
+    }
     if (value instanceof Promise) {
       return value.then(value => {
         return this.toJson(value, depth, done);
@@ -536,7 +537,7 @@ export class Debug extends RootComponent {
     };
   }
 
-  private templateToJson(template: any) {
+  private templateToJson(template: Template) {
     if (template == null) {
       return null;
     }
