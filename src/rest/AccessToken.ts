@@ -5,7 +5,7 @@ import { debounce } from 'underscore';
 export type onRenew = (newToken: string) => void;
 
 export enum ACCESS_TOKEN_ERRORS {
-  NO_RENEW_FUNCTIONS = 'NO_RENEW_FUNCTIONS',
+  NO_RENEW_FUNCTION = 'NO_RENEW_FUNCTION',
   REPEATED_FAILURES = 'REPEATED_FAILURES'
 }
 
@@ -47,7 +47,7 @@ export class AccessToken {
           this.logger.error('There is most probably an authentication error, or a bad implementation of the custom renew function');
           this.logger.error('Inspect the developer console of your browser to find out the root cause');
           break;
-        case ACCESS_TOKEN_ERRORS.NO_RENEW_FUNCTIONS:
+        case ACCESS_TOKEN_ERRORS.NO_RENEW_FUNCTION:
           this.logger.error(`AccessToken tried to renew, but no function is configured on initialization to provide acess token renewal`);
           this.logger.error('The option name is renewAccessToken on the SearchEndpoint class');
           break;
@@ -67,7 +67,7 @@ export class AccessToken {
 
   private verifyRenewSetup() {
     if (this.renew == null) {
-      throw new Error(ACCESS_TOKEN_ERRORS.NO_RENEW_FUNCTIONS);
+      throw new Error(ACCESS_TOKEN_ERRORS.NO_RENEW_FUNCTION);
     }
     if (this.triedRenewals >= 5) {
       throw new Error(ACCESS_TOKEN_ERRORS.REPEATED_FAILURES);

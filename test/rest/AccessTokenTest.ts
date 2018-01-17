@@ -23,13 +23,28 @@ export function AccessTokenTest() {
       done();
     });
 
-    it('should behave correctly when there is a renew function', async done => {
-      const renew = jasmine.createSpy('spy').and.returnValue(Promise.resolve('nuevo tokeno'));
-      token = new AccessToken('el accesso tokeno', renew as any);
-      const renewSuccessful = await token.doRenew();
-      expect(renew).toHaveBeenCalled();
-      expect(renewSuccessful).toBeTruthy();
-      done();
+    describe('with a valid renew function', () => {
+      let renew: jasmine.Spy;
+
+      beforeEach(() => {
+        renew = jasmine.createSpy('spy').and.returnValue(Promise.resolve('nuevo tokeno')) as any;
+        token = new AccessToken('el accesso tokeno', renew as any);
+      });
+
+      it('should return a success on renew', async done => {
+        const renewSuccessful = await token.doRenew();
+        expect(renew).toHaveBeenCalled();
+        expect(renewSuccessful).toBeTruthy();
+        done();
+      });
+
+      it('should call subscribers', async done => {
+        const subscriber = jasmine.createSpy('subscriber');
+        token.afterRenew(subscriber);
+        await token.doRenew();
+        expect(subscriber).toHaveBeenCalledWith('nuevo tokeno');
+        done();
+      });
     });
 
     describe('with an error callback on renew', () => {
