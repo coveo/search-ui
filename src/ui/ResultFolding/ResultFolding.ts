@@ -3,7 +3,6 @@ import { Component } from '../Base/Component';
 import { IComponentBindings } from '../Base/ComponentBindings';
 import { ComponentOptions } from '../Base/ComponentOptions';
 import { DefaultFoldingTemplate } from './DefaultFoldingTemplate';
-import { Promise } from 'es6-promise';
 import { IQueryResult } from '../../rest/QueryResult';
 import { Utils } from '../../utils/Utils';
 import { QueryUtils } from '../../utils/QueryUtils';

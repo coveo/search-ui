@@ -13,7 +13,6 @@ import { QueryUtils } from '../utils/QueryUtils';
 import { Defer } from '../misc/Defer';
 import { $$, Dom } from '../utils/Dom';
 import { Utils } from '../utils/Utils';
-import { Promise } from 'es6-promise';
 import { BaseComponent } from '../ui/Base/BaseComponent';
 import { ModalBox } from '../ExternalModulesShim';
 import { history } from 'coveo.analytics';

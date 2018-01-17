@@ -1,3 +1,12 @@
+// We need a custom trigger function for our Promise polyfill
+// because the default one can cause issues in other frameworks that relies on
+// their own Promise polyfill like the Salesforce Aura framework.
+declare var require: any;
+const promise = window['Promise'];
+if (!(promise instanceof Function)) {
+  require('es6-promise').polyfill();
+}
+
 export * from './BaseModules';
 export * from './MiscModules';
 export * from './RestModules';

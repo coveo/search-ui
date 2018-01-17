@@ -12,7 +12,6 @@ import { ITaggingRequest } from '../rest/TaggingRequest';
 import { IRevealQuerySuggestRequest, IRevealQuerySuggestResponse } from '../rest/RevealQuerySuggest';
 import { IRatingRequest } from '../rest/RatingRequest';
 import { ISubscriptionRequest, ISubscription } from '../rest/Subscription';
-import { Promise } from 'es6-promise';
 import { ISentryLog } from './SentryLog';
 
 /**

@@ -4,7 +4,6 @@ import { IQueryResults } from '../rest/QueryResults';
 import { IQuery } from '../rest/Query';
 import { ISearchEndpoint, IEndpointCallOptions } from '../rest/SearchEndpointInterface';
 import { IEndpointError } from '../rest/EndpointError';
-import { Promise } from 'es6-promise';
 
 /**
  * Argument sent to all handlers bound on {@link QueryEvents.newQuery}

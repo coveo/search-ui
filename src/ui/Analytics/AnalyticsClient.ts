@@ -2,7 +2,6 @@ import { IAnalyticsActionCause } from '../Analytics/AnalyticsActionListMeta';
 import { IAPIAnalyticsEventResponse } from '../../rest/APIAnalyticsEventResponse';
 import { IQueryResult } from '../../rest/QueryResult';
 import { ITopQueries } from '../../rest/TopQueries';
-import { Promise } from 'es6-promise';
 import { PendingSearchEvent } from './PendingSearchEvent';
 
 /**

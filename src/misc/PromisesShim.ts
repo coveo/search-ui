@@ -1,5 +1,3 @@
-import { Promise } from 'es6-promise';
-
 export function shim() {
 
   Promise.prototype['finally'] = function finallyPolyfill(callback) {
