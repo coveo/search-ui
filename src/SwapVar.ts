@@ -1,4 +1,3 @@
-import { CoreHelpers } from './ui/Templates/CoreHelpers';
 import * as _ from 'underscore';
 
 // Webpack output a library target with a temporary name.
@@ -14,7 +13,6 @@ export function swapVar(scope: any) {
       window['Coveo'][k] = scope[k];
     });
   }
-  CoreHelpers.exportAllHelpersGlobally(window['Coveo']);
   if (window['__extends'] == undefined) {
     var __extends = function(d, b) {
       for (var p in b) {

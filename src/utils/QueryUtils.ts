@@ -203,21 +203,6 @@ export class QueryUtils {
     return '(NOT ' + filter + ')';
   }
 
-  static mergeQueryString(url: string, queryString: string) {
-    let queryStringPosition = url.indexOf('?');
-    if (queryStringPosition != -1) {
-      url += '&' + queryString;
-    } else {
-      url += '?' + queryString;
-    }
-    return url;
-  }
-
-  static mergePath(url: string, path: string) {
-    let urlSplit = url.split('?');
-    return urlSplit[0] + path + '?' + (urlSplit[1] || '');
-  }
-
   public static setPropertyOnResults(results: IQueryResults, property: string, value: any, afterOneLoop?: () => any) {
     _.each(results.results, (result: IQueryResult) => {
       QueryUtils.setPropertyOnResult(result, property, value);
@@ -233,15 +218,6 @@ export class QueryUtils {
     if (!Utils.isNullOrUndefined(result.parentResult)) {
       result.parentResult[property] = value;
     }
-  }
-
-  // http://stackoverflow.com/a/11582513
-  public static getUrlParameter(name: string): string {
-    return (
-      decodeURIComponent(
-        (new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.search) || [, ''])[1].replace(/\+/g, '%20')
-      ) || null
-    );
   }
 
   public static isStratusAgnosticField(fieldToVerify: string, fieldToMatch: string): boolean {

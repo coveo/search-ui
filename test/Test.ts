@@ -493,5 +493,11 @@ SimpleFilterTest();
 import { DeviceUtilsTest } from './utils/DeviceUtilsTest';
 DeviceUtilsTest();
 
+import { TimespanFacetTest } from './ui/TimespanFacetTest';
+TimespanFacetTest();
+
+import { UrlUtilsTest } from './utils/UrlUtilsTest';
+UrlUtilsTest();
+
 import { AccessTokenTest } from './rest/AccessTokenTest';
 AccessTokenTest();

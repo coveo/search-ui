@@ -1,6 +1,6 @@
 import * as _ from 'underscore';
 import { ExpressionBuilder } from './ExpressionBuilder';
-import { Utils } from '../../UtilsModules';
+import { Utils } from '../../utils/Utils';
 
 /**
  * Describe the expressions part of a QueryBuilder.

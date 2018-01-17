@@ -19,6 +19,7 @@ import * as Globalize from 'globalize';
 import * as _ from 'underscore';
 import { exportGlobally } from '../../GlobalExports';
 import 'styling/_Matrix';
+import { TemplateComponentOptions } from '../Base/TemplateComponentOptions';
 
 export interface IMatrixOptions {
   title?: string;
@@ -289,7 +290,7 @@ export class Matrix extends Component {
      * <div class='CoveoMatrix' data-template-selector='.templateSelector'></div>
      * ```
      */
-    previewTemplate: ComponentOptions.buildTemplateOption()
+    previewTemplate: TemplateComponentOptions.buildTemplateOption()
   };
 
   /**

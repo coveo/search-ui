@@ -497,5 +497,8 @@ export const PlaygroundConfiguration: IStringMap<IComponentPlaygroundConfigurati
     toExecute: () => {
       setMinHeightOnSearchInterface('300px');
     }
+  },
+  TimespanFacet: {
+    show: true
   }
 };

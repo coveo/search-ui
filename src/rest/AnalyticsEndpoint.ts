@@ -9,12 +9,12 @@ import { IAPIAnalyticsEventResponse } from './APIAnalyticsEventResponse';
 import { Assert } from '../misc/Assert';
 import { ICustomEvent } from './CustomEvent';
 import { ITopQueries } from './TopQueries';
-import { QueryUtils } from '../utils/QueryUtils';
 import { Cookie } from '../utils/CookieUtils';
 import { ISuccessResponse } from '../rest/EndpointCaller';
 import { IStringMap } from '../rest/GenericParam';
 import * as _ from 'underscore';
 import { Utils } from '../utils/Utils';
+import { UrlUtils } from '../utils/UrlUtils';
 import { AccessToken } from './AccessToken';
 
 export interface IAnalyticsEndpointOptions {
@@ -94,7 +94,15 @@ export class AnalyticsEndpoint {
     return this.getFromService<string[]>(url, params);
   }
 
-  private async sendToService<D, R>(data: D, path: string, paramName: string) {
+  private async sendToService<D, R>(data: D, path: string, paramName: string): Promise<R> {
+    const versionToCall = AnalyticsEndpoint.CUSTOM_ANALYTICS_VERSION || AnalyticsEndpoint.DEFAULT_ANALYTICS_VERSION;
+    const urlNormalized = UrlUtils.normalizeAsParts({
+      paths: [this.options.serviceUrl, '/rest/', versionToCall, '/analytics/', path],
+      query: {
+        org: this.organization,
+        visitorId: Cookie.get('visitorId')
+      }
+    });
     // We use pendingRequest because we don't want to have 2 request to analytics at the same time.
     // Otherwise the cookie visitId won't be set correctly.
     if (AnalyticsEndpoint.pendingRequest != null) {
@@ -105,26 +113,12 @@ export class AnalyticsEndpoint {
       }
     }
 
-    const url = QueryUtils.mergePath(
-      this.options.serviceUrl,
-      '/rest/' + (AnalyticsEndpoint.CUSTOM_ANALYTICS_VERSION || AnalyticsEndpoint.DEFAULT_ANALYTICS_VERSION) + '/analytics/' + path
-    );
-    const queryString = [];
-
-    if (this.organization) {
-      queryString.push('org=' + this.organization);
-    }
-
-    if (Cookie.get('visitorId')) {
-      queryString.push('visitor=' + Utils.safeEncodeURIComponent(Cookie.get('visitorId')));
-    }
-
     const request: Promise<any> = (AnalyticsEndpoint.pendingRequest = this.endpointCaller.call<R>({
       errorsAsSuccess: false,
       method: 'POST',
-      queryString: queryString,
+      queryString: urlNormalized.queryNormalized,
       requestData: data,
-      url: url,
+      url: urlNormalized.path,
       responseType: 'text',
       requestDataType: 'application/json'
     }));
@@ -186,11 +180,13 @@ export class AnalyticsEndpoint {
   }
 
   private buildAnalyticsUrl(path: string) {
-    return (
-      this.options.serviceUrl +
-      '/rest/' +
-      (AnalyticsEndpoint.CUSTOM_ANALYTICS_VERSION || AnalyticsEndpoint.DEFAULT_ANALYTICS_VERSION) +
-      path
-    );
+    return UrlUtils.normalizeAsString({
+      paths: [
+        this.options.serviceUrl,
+        '/rest/',
+        AnalyticsEndpoint.CUSTOM_ANALYTICS_VERSION || AnalyticsEndpoint.DEFAULT_ANALYTICS_VERSION,
+        path
+      ]
+    });
   }
 }

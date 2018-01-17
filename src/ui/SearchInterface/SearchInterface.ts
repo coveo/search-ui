@@ -25,22 +25,23 @@ import { NoopAnalyticsClient } from '../Analytics/NoopAnalyticsClient';
 import { Utils } from '../../utils/Utils';
 import { RootComponent } from '../Base/RootComponent';
 import { BaseComponent } from '../Base/BaseComponent';
-import { Debug } from '../Debug/Debug';
 import { HashUtils } from '../../utils/HashUtils';
-import * as fastclick from 'fastclick';
-import * as jstz from 'jstimezonedetect';
 import { SentryLogger } from '../../misc/SentryLogger';
 import { IComponentBindings } from '../Base/ComponentBindings';
 import { analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
 import { ResponsiveComponents } from '../ResponsiveComponents/ResponsiveComponents';
 import { Context, IPipelineContextProvider } from '../PipelineContext/PipelineGlobalExports';
+import { InitializationPlaceholder } from '../Base/InitializationPlaceholder';
+import { Debug } from '../Debug/Debug';
+
+import * as fastclick from 'fastclick';
+import * as jstz from 'jstimezonedetect';
 import * as _ from 'underscore';
 
 import 'styling/Globals';
 import 'styling/_SearchInterface';
 import 'styling/_SearchModalBox';
 import 'styling/_SearchButton';
-import { InitializationPlaceholder } from '../Base/InitializationPlaceholder';
 
 export interface ISearchInterfaceOptions {
   enableHistory?: boolean;

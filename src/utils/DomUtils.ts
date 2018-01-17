@@ -115,8 +115,4 @@ export class DomUtils {
 
     return header;
   }
-
-  static getCurrentScript(): HTMLScriptElement {
-    return <HTMLScriptElement>document.currentScript;
-  }
 }
