@@ -87,7 +87,7 @@ export class Folding extends Component {
      *
      * **Note:**
      * > In the index, the values of the corresponding field must contain alphanumerical characters only. Using a
-     * > `childField` whose values contain non-indexable characters (such as underscores) will fail.
+     * > `childField` whose values contain non-indexable characters (such as underscores) will make folding fail.
      *
      * Default value is `@topparentid`.
      */
@@ -98,7 +98,7 @@ export class Folding extends Component {
      *
      * **Note:**
      * > In the index, the values of the corresponding field must contain alphanumerical characters only. Using a
-     * > `parentField` whose values contain non-indexable characters (such as underscores) will fail.
+     * > `parentField` whose values contain non-indexable characters (such as underscores) will make folding fail.
      *
      * Default value is `@containsattachment`.
      */
