@@ -196,7 +196,8 @@ export class FacetValueSuggestions extends Component {
   };
 
   private suggestionBuilder: IOmniboxSuggestionBuilder<IFacetValueSuggestionRow>;
-  private queryStateFieldId;
+  private queryStateFieldFacetId;
+  private queryStateFieldValueId;
 
   /**
    * Creates a new `FieldSuggestions` component.
@@ -212,9 +213,10 @@ export class FacetValueSuggestions extends Component {
 
     Assert.check(Utils.isCoveoField(<string>this.options.field), this.options.field + ' is not a valid field');
 
-    this.queryStateFieldId = `fv:${this.options.field}`;
-    if (this.queryStateModel.getAttributes()[this.queryStateFieldId] === undefined) {
-      this.queryStateModel.registerNewAttribute(this.queryStateFieldId, []);
+    this.queryStateFieldFacetId = `f:${this.options.field}`;
+    this.queryStateFieldValueId = `fv:${this.options.field}`;
+    if (this.queryStateModel.getAttributes()[this.queryStateFieldValueId] === undefined) {
+      this.queryStateModel.registerNewAttribute(this.queryStateFieldValueId, []);
     }
 
     this.options.onSelect = this.options.onSelect || this.onRowSelection;
@@ -284,9 +286,9 @@ export class FacetValueSuggestions extends Component {
     fieldResponses: IFacetValueBatchResponse[],
     fieldTotalReference: IFacetValueReference
   ): IFacetValueSuggestionRow[] {
-    const currentSelectedValues: string[] = this.queryStateModel.get(this.queryStateFieldId) || [];
-
+    const currentSelectedValues: string[] = this.queryStateModel.get(this.queryStateFieldFacetId) || [];
     const resultsWithoutSelectedValues: IFacetValueSuggestionRow[] = fieldResponses.reduce((allValues, fieldResponse) => {
+      // Remove suggestions that are already checked.
       const filteredResults = fieldResponse.values.filter(result => !currentSelectedValues.some(value => value == result.value));
       const highestNumber = Math.max(...filteredResults.map(result => result.numberOfResults));
 
@@ -331,6 +333,7 @@ export class FacetValueSuggestions extends Component {
   }
 
   private listFieldValuesBatch(valuesToSearch: string[]): Promise<IFacetValueSuggestionsResponse> {
+    // The reference request will be used to get the maximum number of values for a given facet value.
     const referenceValuesRequests = this.buildReferenceFieldValueRequest();
     const queryParts = this.getQueryToExecuteParts();
     const suggestionValuesRequests = valuesToSearch.map(value => this.buildListFieldValueRequest(queryParts.concat(value).join(' ')));
@@ -370,7 +373,7 @@ export class FacetValueSuggestions extends Component {
     args.set(row.keyword);
     args.closeOmnibox();
     args.clearSuggestions();
-    this.queryStateModel.set(this.queryStateFieldId, [row.value]);
+    this.queryStateModel.set(this.queryStateFieldValueId, [row.value]);
     this.usageAnalytics.logSearchEvent<IAnalyticsNoMeta>(analyticsActionCauseList.omniboxField, {});
     this.queryController.executeQuery();
   }

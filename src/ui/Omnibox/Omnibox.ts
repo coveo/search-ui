@@ -33,7 +33,6 @@ import { StandaloneSearchInterface } from '../SearchInterface/SearchInterface';
 import * as _ from 'underscore';
 import { exportGlobally } from '../../GlobalExports';
 import 'styling/_Omnibox';
-import { select } from 'd3';
 
 export interface IOmniboxSuggestion extends Coveo.MagicBox.Suggestion {
   executableConfidence?: number;

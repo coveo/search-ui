@@ -17,13 +17,6 @@ export function onSelectionUpdateOmnibox(component: Component, value: string, ar
   component.queryController.executeQuery();
 }
 
-export function onSelectionUpdateOmniboxWithoutQuery(component: Component, value: string, args: IPopulateOmniboxEventArgs): void {
-  args.clear();
-  args.closeOmnibox();
-  component.queryStateModel.set(QueryStateModel.attributesEnum.q, `${value}`);
-  component.usageAnalytics.logCustomEvent(analyticsActionCauseList.omniboxField, {}, this.element);
-}
-
 export interface IOmniboxSuggestionsOptions {
   omniboxZIndex?: number;
   headerTitle?: string;

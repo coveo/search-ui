@@ -762,11 +762,13 @@ export class SearchInterface extends RootComponent implements IComponentBindings
     if (facetRef) {
       const allFacets: Component[] = this.getComponents(facetRef.ID);
       fieldsWithoutFacets = fvFields.filter(facetField => {
+        // Try to find a facet matching the `fv:` field state.
         const stateKey = QueryStateModel.getFacetValueId(facetField);
         const value = stateToSet[stateKey];
         if (value && value.length > 0) {
           const facetsWithField = allFacets.filter(facet => facet.options.field == facetField);
           if (facetsWithField.length > 0) {
+            // We found a facet, remove the `fv:` and replace it with `f:`.
             delete stateToSet[stateKey];
             facetsWithField.forEach(facet => (stateToSet[QueryStateModel.getFacetId(facet.options.id)] = value));
             return false;
@@ -777,8 +779,11 @@ export class SearchInterface extends RootComponent implements IComponentBindings
     } else {
       fieldsWithoutFacets = fvFields;
     }
+
+    // For the remaining field, we need to transform them in hidden queries.
+    // This ensure that an `fv:` state is always transformed into the filter it is supposed to apply.
     if (fieldsWithoutFacets.length > 0) {
-      const hd = fieldsWithoutFacets
+      const valuesTransformedToHiddenQuery = fieldsWithoutFacets
         .map(facetField => {
           const stateKey = QueryStateModel.getFacetValueId(facetField);
           const value = stateToSet[stateKey];
@@ -788,8 +793,8 @@ export class SearchInterface extends RootComponent implements IComponentBindings
           }
         })
         .filter(expression => !!expression);
-      if (hd.length > 0) {
-        stateToSet[QueryStateModel.attributesEnum.hq] = hd.join(' AND ');
+      if (valuesTransformedToHiddenQuery.length > 0) {
+        stateToSet[QueryStateModel.attributesEnum.hq] = valuesTransformedToHiddenQuery.join(' AND ');
       }
     }
   }

@@ -222,9 +222,6 @@ lazyTemplateLoader();
 import { lazyText } from './ui/Text/LazyText';
 lazyText();
 
-import { lazyTitleSuggestions } from './ui/TitleSuggestions/LazyTitleSuggestions';
-lazyTitleSuggestions();
-
 import { lazyThumbnail } from './ui/Thumbnail/LazyThumbnail';
 lazyThumbnail();
 import { registerFields as thumbnailRegisterFields } from './ui/Thumbnail/ThumbnailFields';
