@@ -575,7 +575,7 @@ export class SearchEndpoint implements ISearchEndpoint {
 
     return this.performOneCall<any>(callParams).then(data => {
       this.logger.info('REST list field values batch successful', data.values, request);
-      return data.values;
+      return data.batch;
     });
   }
 

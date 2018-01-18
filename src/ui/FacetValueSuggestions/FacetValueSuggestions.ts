@@ -28,6 +28,7 @@ import {
 } from '../Misc/OmniboxSuggestion';
 import { IOmniboxDataRow } from '../Omnibox/OmniboxInterface';
 import { IGroupByRequest } from '../../rest/GroupByRequest';
+import { IQueryOptions } from '../../controllers/QueryController';
 
 export interface IOnSelectingFacetValueSuggestion extends IOnSelectSuggestion<IFacetValueSuggestionRow> {}
 
@@ -48,12 +49,23 @@ export interface IFacetValueSuggestionsOptions extends IOmniboxSuggestionsOption
   field?: IFieldOption;
   onSelect?: IOnSelectingFacetValueSuggestion;
   useQuerySuggestions?: boolean;
+  displayEstimateNumberOfResults?: boolean;
 }
 
-export interface IFacetValueResponse {
+export interface IFacetValueSuggestionsResponse {
+  responses: IFacetValueBatchResponse[];
+  reference: IFacetValueReference;
+}
+
+export interface IFacetValueBatchResponse {
   values: IIndexFieldValue[];
   keyword: string;
 }
+
+export type IFacetValueReference = {
+  fieldsTotal: { [value: string]: number };
+  smallestTotal: number;
+};
 
 /**
  * The `FieldSuggestions` component provides query suggestions based on a particular facet field. For example, you could
@@ -110,6 +122,16 @@ export class FacetValueSuggestions extends Component {
      * Specifies whether to also use query suggestions as keywords to get facet values suggestions.
      */
     useQuerySuggestions: ComponentOptions.buildBooleanOption({ defaultValue: false }),
+
+    /**
+     * Specifies whether to display the number of results in the suggestion.
+     * **Note:**
+     * The number of results is an estimate.
+     *
+     * On a Standalone Search Interface, if you are redirecting on a Search Interface that has different filters,
+     *  the number of results on the Standalone Search Interface will be inaccurate.
+     */
+    displayEstimateNumberOfResults: ComponentOptions.buildBooleanOption({ defaultValue: false }),
 
     /**
      * Specifies the event handler function to execute when the end user selects a suggested value in the
@@ -210,8 +232,8 @@ export class FacetValueSuggestions extends Component {
       .then(suggestions => {
         return this.listFieldValuesBatch(wordsToQuery.concat(suggestions));
       })
-      .then((response: IFacetValueResponse[]) => {
-        const resultsToShow = this.filterCurrentlySelectedValuesFromResults(response);
+      .then((response: IFacetValueSuggestionsResponse) => {
+        const resultsToShow = this.filterCurrentlySelectedValuesFromResults(response.responses, response.reference);
 
         if (resultsToShow.length > 0) {
           const container: Dom = $$('div');
@@ -252,18 +274,20 @@ export class FacetValueSuggestions extends Component {
   }
 
   private buildDisplayNameForRow(row: IFacetValueSuggestionRow, populateOmniboxEventArgs: IPopulateOmniboxEventArgs): string {
-    return `${DomUtils.highlightElement(row.keyword, populateOmniboxEventArgs.currentQueryExpression.word)} in ${DomUtils.highlightElement(
-      row.value,
-      row.value
-    )} (${row.numberOfResults} results)`;
+    const keyword = DomUtils.highlightElement(row.keyword, populateOmniboxEventArgs.currentQueryExpression.word);
+    const facetValue = DomUtils.highlightElement(row.value, row.value);
+    const details = this.options.displayEstimateNumberOfResults ? ` (${row.numberOfResults} results)` : '';
+    return `${keyword} in ${facetValue}${details}`;
   }
 
-  private filterCurrentlySelectedValuesFromResults(fieldResponses: IFacetValueResponse[]): IFacetValueSuggestionRow[] {
+  private filterCurrentlySelectedValuesFromResults(
+    fieldResponses: IFacetValueBatchResponse[],
+    fieldTotalReference: IFacetValueReference
+  ): IFacetValueSuggestionRow[] {
     const currentSelectedValues: string[] = this.queryStateModel.get(this.queryStateFieldId) || [];
 
     const resultsWithoutSelectedValues: IFacetValueSuggestionRow[] = fieldResponses.reduce((allValues, fieldResponse) => {
       const filteredResults = fieldResponse.values.filter(result => !currentSelectedValues.some(value => value == result.value));
-      const totalNumber = filteredResults.reduce((total, result) => total + result.numberOfResults, 0);
       const highestNumber = Math.max(...filteredResults.map(result => result.numberOfResults));
 
       const suggestionRows = filteredResults.map(indexFieldValue => {
@@ -271,7 +295,7 @@ export class FacetValueSuggestions extends Component {
           numberOfResults: indexFieldValue.numberOfResults,
           keyword: fieldResponse.keyword,
           value: indexFieldValue.value,
-          score: this.computeScoreForSuggestionRow(indexFieldValue, totalNumber, highestNumber)
+          score: this.computeScoreForSuggestionRow(indexFieldValue, fieldTotalReference, highestNumber)
         };
       });
       return allValues.concat(suggestionRows);
@@ -293,11 +317,12 @@ export class FacetValueSuggestions extends Component {
 
   private computeScoreForSuggestionRow(
     fieldValue: IIndexFieldValue,
-    totalNumberForField: number,
+    reference: IFacetValueReference,
     highestNumber: number
   ): IFacetValueSuggestionScore {
+    const totalNumberForFieldValue = reference.fieldsTotal[fieldValue.value] || reference.smallestTotal;
     const distanceFromHighestNumber: number = (highestNumber - fieldValue.numberOfResults) / highestNumber * 100;
-    const distanceFromTotalForField: number = fieldValue.numberOfResults / totalNumberForField * 100;
+    const distanceFromTotalForField: number = fieldValue.numberOfResults / totalNumberForFieldValue * 100;
     return {
       distanceFromHighestNumber: distanceFromHighestNumber,
       distanceFromTotalForField: distanceFromTotalForField,
@@ -305,54 +330,38 @@ export class FacetValueSuggestions extends Component {
     };
   }
 
-  private listFieldsValues(valuesToSearch: string[]): Promise<IFacetValueResponse[]> {
+  private listFieldValuesBatch(valuesToSearch: string[]): Promise<IFacetValueSuggestionsResponse> {
+    const referenceValuesRequests = this.buildReferenceFieldValueRequest();
     const queryParts = this.getQueryToExecuteParts();
-    return Promise.all(valuesToSearch.map(value => this.listFieldValues(value, queryParts)));
-  }
-
-  private listFieldValuesBatch(valuesToSearch: string[]): Promise<IFacetValueResponse[]> {
-    const queryParts = this.getQueryToExecuteParts();
-    const requests = valuesToSearch.map(value => this.buildListFieldValueRequest(queryParts.concat(value).join(' ')));
-    /*return this.queryController
+    const suggestionValuesRequests = valuesToSearch.map(value => this.buildListFieldValueRequest(queryParts.concat(value).join(' ')));
+    const requests = suggestionValuesRequests.concat(referenceValuesRequests);
+    return this.queryController
       .getEndpoint()
       .listFieldValuesBatch({
         batch: requests
       })
       .then(values => {
-        return values.map((value, i) => {
-          return {
+        const reference = this.computeReferenceFromBatch(values.pop());
+        const remainingResponses: IFacetValueBatchResponse[] = values.map((value, i) => {
+          return <IFacetValueBatchResponse>{
             keyword: valuesToSearch[i],
             values: value
           };
         });
-      });*/
-    const queryBuilder = new QueryBuilder();
-    queryBuilder.groupByRequests = requests;
-    queryBuilder.numberOfResults = 0;
-    return this.queryController
-      .getEndpoint()
-      .search(queryBuilder.build())
-      .then(values => {
-        return values.groupByResults.map((value, i) => {
-          return {
-            keyword: valuesToSearch[i],
-            values: value.values
-          };
-        });
+        return <IFacetValueSuggestionsResponse>{
+          responses: remainingResponses,
+          reference: reference
+        };
       });
   }
 
-  private listFieldValues(valueToSearch: string, queryParts: string[]): Promise<IFacetValueResponse> {
-    const request = this.buildListFieldValueRequest(queryParts.concat(valueToSearch).join(' '));
-    return this.queryController
-      .getEndpoint()
-      .listFieldValues(request)
-      .then(values => {
-        return {
-          keyword: valueToSearch,
-          values: values
-        };
-      });
+  private computeReferenceFromBatch(batch: IIndexFieldValue[]): IFacetValueReference {
+    const reference: IFacetValueReference = {
+      fieldsTotal: {},
+      smallestTotal: batch[batch.length - 1].numberOfResults
+    };
+    batch.forEach(value => (reference.fieldsTotal[value.value] = value.numberOfResults));
+    return reference;
   }
 
   private onRowSelection(row: IFacetValueSuggestionRow, args: IPopulateOmniboxEventArgs) {
@@ -373,6 +382,13 @@ export class FacetValueSuggestions extends Component {
       sortCriteria: 'occurrences',
       maximumNumberOfValues: this.options.numberOfSuggestions,
       queryOverride: queryToExecute
+    };
+  }
+
+  private buildReferenceFieldValueRequest(): IListFieldValuesRequest {
+    return {
+      field: <string>this.options.field,
+      sortCriteria: 'occurrences'
     };
   }
 

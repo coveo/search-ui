@@ -634,9 +634,11 @@ export class SearchInterface extends RootComponent implements IComponentBindings
       args.quickview = this.getQuickview(args.quickview);
     }
 
-    if (args) {
+    // `fv:` states are intended to be redirected and used on a standard Search Interface,
+    // else the state gets transformed to `hd` before the redirection.
+    if (args && !(this instanceof StandaloneSearchInterface)) {
       const fvFields: string[] = Object.keys(args)
-        .filter(key => key.lastIndexOf(QueryStateModel.attributesEnum.fv) == 0)
+        .filter(key => QueryStateModel.isFacetValueKey(key))
         .map(key => key.substring(QueryStateModel.attributesEnum.fv.length + 1));
 
       if (fvFields.length > 0) {
@@ -754,19 +756,19 @@ export class SearchInterface extends RootComponent implements IComponentBindings
     return QueryStateModel.defaultAttributes.quickview;
   }
 
-  private handleFacetValueState(args: { [key: string]: any }, fvFields: string[]): void {
+  private handleFacetValueState(stateToSet: { [key: string]: any }, fvFields: string[]): void {
     const facetRef = BaseComponent.getComponentRef('Facet');
     let fieldsWithoutFacets = [];
     if (facetRef) {
       const allFacets: Component[] = this.getComponents(facetRef.ID);
       fieldsWithoutFacets = fvFields.filter(facetField => {
         const stateKey = QueryStateModel.getFacetValueId(facetField);
-        const value = args[stateKey];
+        const value = stateToSet[stateKey];
         if (value && value.length > 0) {
           const facetsWithField = allFacets.filter(facet => facet.options.field == facetField);
           if (facetsWithField.length > 0) {
-            delete args[stateKey];
-            facetsWithField.forEach(facet => (args[QueryStateModel.getFacetId(facet.options.id)] = value));
+            delete stateToSet[stateKey];
+            facetsWithField.forEach(facet => (stateToSet[QueryStateModel.getFacetId(facet.options.id)] = value));
             return false;
           }
         }
@@ -779,14 +781,15 @@ export class SearchInterface extends RootComponent implements IComponentBindings
       const hd = fieldsWithoutFacets
         .map(facetField => {
           const stateKey = QueryStateModel.getFacetValueId(facetField);
-          const value = args[stateKey];
+          const value = stateToSet[stateKey];
           if (value && value.length > 0) {
-            return `@${facetField}=="${value}"`;
+            delete stateToSet[stateKey];
+            return `${facetField}=="${value}"`;
           }
         })
         .filter(expression => !!expression);
       if (hd.length > 0) {
-        this.queryStateModel.set(QueryStateModel.attributesEnum.hq, hd.join(' AND '));
+        stateToSet[QueryStateModel.attributesEnum.hq] = hd.join(' AND ');
       }
     }
   }

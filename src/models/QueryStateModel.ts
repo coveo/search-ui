@@ -101,6 +101,10 @@ export class QueryStateModel extends Model {
     return 'fv:' + id;
   }
 
+  static isFacetValueKey(key: string): boolean {
+    return key.lastIndexOf(`fv:`) === 0;
+  }
+
   /**
    * Creates a new `QueryStateModel` instance.
    * @param element The HTMLElement on which to instantiate the `QueryStateModel`.

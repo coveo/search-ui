@@ -277,7 +277,7 @@ export class Model extends BaseComponent {
   }
 
   private checkIfAttributeExists(attribute: string) {
-    Assert.check(_.has(this.attributes, attribute));
+    Assert.check(_.has(this.attributes, attribute), `The attribute ${attribute} is not registered.`);
   }
 
   private typeIsValid(attribute: string, value: any): boolean {
