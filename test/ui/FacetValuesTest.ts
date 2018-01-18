@@ -1,6 +1,5 @@
 import { FacetValues } from '../../src/ui/Facet/FacetValues';
 import { FakeResults } from '../Fake';
-import * as _ from 'underscore';
 
 export function FacetValuesTest() {
   describe('FacetValues', () => {

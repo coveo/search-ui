@@ -14,7 +14,6 @@ export class PendingSearchAsYouTypeSearchEvent extends PendingSearchEvent {
   public delayBeforeSending = 5000;
   public beforeResolve: Promise<PendingSearchAsYouTypeSearchEvent>;
   private beforeUnloadHandler: (...args: any[]) => void;
-  private armBatchDelay = 50;
   private toSendRightNow: () => void;
   private queryContent = '';
 
@@ -91,7 +90,6 @@ export class PendingSearchAsYouTypeSearchEvent extends PendingSearchEvent {
 
   private onWindowUnload() {
     if (!this.isCancelledOrFinished()) {
-      this.armBatchDelay = 0;
       this.sendRightNow();
     }
   }

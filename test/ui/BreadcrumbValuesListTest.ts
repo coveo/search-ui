@@ -4,7 +4,7 @@ import { Facet } from '../../src/ui/Facet/Facet';
 import { FacetValue } from '../../src/ui/Facet/FacetValues';
 import { BreadcrumbValueElement } from '../../src/ui/Facet/BreadcrumbValueElement';
 import * as _ from 'underscore';
-import { $$ } from '../Test';
+import { $$ } from '../../src/utils/Dom';
 import { FakeResults } from '../Fake';
 import { IIndexFieldValue } from '../../src/rest/FieldValue';
 

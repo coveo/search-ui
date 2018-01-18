@@ -12,7 +12,6 @@ import { TimeSpan, ITimeSpanUtilsOptions } from '../../utils/TimeSpanUtils';
 import { EmailUtils } from '../../utils/EmailUtils';
 import { QueryUtils } from '../../utils/QueryUtils';
 import { DeviceUtils } from '../../utils/DeviceUtils';
-import { TemplateCache } from './TemplateCache';
 import { $$ } from '../../utils/Dom';
 import { SearchEndpoint } from '../../rest/SearchEndpoint';
 import { StreamHighlightUtils } from '../../utils/StreamHighlightUtils';
@@ -20,8 +19,8 @@ import { FacetUtils } from '../Facet/FacetUtils';
 import * as Globalize from 'globalize';
 import { IStringMap } from '../../rest/GenericParam';
 import * as _ from 'underscore';
-import { ResultList } from '../ResultList/ResultList';
 import { Component } from '../Base/Component';
+import { TemplateCache } from './TemplateCache';
 
 /**
  * The core template helpers provided by default.

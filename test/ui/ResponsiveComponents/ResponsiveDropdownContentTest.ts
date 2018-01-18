@@ -82,5 +82,27 @@ export function ResponsiveDropdownContentTest() {
 
       expect(responsiveDropdownContent.element.hasClass(expectedToBeRemovedClass)).toBe(false);
     });
+
+    it('should be able to tell when a target element is contained inside an opened dropdown content', () => {
+      const target = $$('div');
+      responsiveDropdownContent.element.append(target.el);
+      responsiveDropdownContent.positionDropdown();
+      expect(ResponsiveDropdownContent.isTargetInsideOpenedDropdown(target)).toBeTruthy();
+    });
+
+    it('should be able to tell when a target element is contained inside a closed dropdown content', () => {
+      const target = $$('div');
+      responsiveDropdownContent.element.append(target.el);
+      responsiveDropdownContent.positionDropdown();
+      responsiveDropdownContent.hideDropdown();
+      expect(ResponsiveDropdownContent.isTargetInsideOpenedDropdown(target)).toBeFalsy();
+    });
+
+    it('should be able to tell when a target element is not contained inside an opened dropdown content', () => {
+      const target = $$('div');
+      root.append(target.el);
+      responsiveDropdownContent.positionDropdown();
+      expect(ResponsiveDropdownContent.isTargetInsideOpenedDropdown(target)).toBeFalsy();
+    });
   });
 }

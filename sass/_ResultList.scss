@@ -1,9 +1,9 @@
-@import "bourbon/bourbon";
-@import "mixins/mediaQuery";
-@import "Variables";
+@import 'bourbon/bourbon';
+@import 'mixins/mediaQuery';
+@import 'Variables';
 
 .CoveoResultList.coveo-faded {
-	opacity : 0.5;
+  opacity: 0.5;
 }
 
 .CoveoResultList {
@@ -11,8 +11,8 @@
   margin-bottom: 15px;
 
   .coveo-fade-out {
-	opacity : 0.5;
-	@include transition(opacity .5s);
+    opacity: 0.5;
+    @include transition(opacity 0.5s);
   }
 
   .coveo-wait-animation {
@@ -24,7 +24,7 @@
     display: none;
   }
 
-  &[data-layout="table"] {
+  &[data-layout='table'] {
     overflow-x: auto;
     margin-bottom: 20px;
   }
@@ -34,7 +34,7 @@
   @include display(flex);
   @include flex-wrap(wrap);
   margin-right: -20px;
-  @include mediaSelector(480) {
+  @include smallScreenWidth {
     margin-right: 0;
   }
 }
@@ -51,7 +51,7 @@
   border-bottom: none;
 }
 
-@include mediaSelector(800) {
+@include mediumScreenWidth() {
   .CoveoResultList {
     margin-left: 10px;
     margin-right: 10px;

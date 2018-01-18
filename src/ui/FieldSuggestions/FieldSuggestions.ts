@@ -15,7 +15,6 @@ import { IListFieldValuesRequest } from '../../rest/ListFieldValuesRequest';
 import { QueryStateModel } from '../../models/QueryStateModel';
 import { Initialization } from '../Base/Initialization';
 import { analyticsActionCauseList, IAnalyticsNoMeta } from '../Analytics/AnalyticsActionListMeta';
-import { l } from '../../strings/Strings';
 import { $$ } from '../../utils/Dom';
 import { ISuggestionForOmniboxOptionsOnSelect, ISuggestionForOmniboxRowTemplateOptions } from '../Misc/SuggestionForOmnibox';
 import { IStringMap } from '../../rest/GenericParam';

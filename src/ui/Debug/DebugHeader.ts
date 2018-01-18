@@ -5,9 +5,9 @@ import { TextInput } from '../FormWidgets/TextInput';
 import { $$, Dom } from '../../utils/Dom';
 import { ResultListEvents, IDisplayedNewResultEventArgs } from '../../events/ResultListEvents';
 import { QueryEvents, IDoneBuildingQueryEventArgs } from '../../events/QueryEvents';
-import { InitializationEvents } from '../../events/InitializationEvents';
 import { stringify } from 'circular-json';
 import * as _ from 'underscore';
+import { Utils } from '../../utils/Utils';
 
 export class DebugHeader {
   private debug = false;
@@ -162,6 +162,6 @@ export class DebugHeader {
         toDownload[key] = _.omit(info, 'state', 'searchInterface');
       }
     });
-    return 'data:text/json;charset=utf-8,' + encodeURIComponent(stringify(toDownload));
+    return 'data:text/json;charset=utf-8,' + Utils.safeEncodeURIComponent(stringify(toDownload));
   }
 }

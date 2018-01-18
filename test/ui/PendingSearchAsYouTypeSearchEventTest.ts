@@ -3,7 +3,6 @@ import { AnalyticsEndpoint } from '../../src/rest/AnalyticsEndpoint';
 import { FakeResults } from '../Fake';
 import { analyticsActionCauseList } from '../../src/ui/Analytics/AnalyticsActionListMeta';
 import { SearchInterface } from '../../src/ui/SearchInterface/SearchInterface';
-import { Simulate } from '../Simulate';
 import { QueryEvents } from '../../src/events/QueryEvents';
 import { $$ } from '../../src/utils/Dom';
 import { QueryBuilder } from '../../src/ui/Base/QueryBuilder';

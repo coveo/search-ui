@@ -1,5 +1,3 @@
-import { $$, Dom } from './Dom';
-
 declare const require: (svgPath: string) => string;
 
 export class SVGIcons {

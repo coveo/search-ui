@@ -6,7 +6,6 @@ import { HierarchicalFacet, IValueHierarchy } from '../ui/HierarchicalFacet/Hier
 import { FacetSearchParameters } from '../ui/Facet/FacetSearchParameters';
 import { IIndexFieldValue } from '../rest/FieldValue';
 import { FacetUtils } from '../ui/Facet/FacetUtils';
-import { FacetValue } from '../ui/Facet/FacetValues';
 import * as _ from 'underscore';
 
 export class HierarchicalFacetQueryController extends FacetQueryController {

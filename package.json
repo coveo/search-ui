@@ -38,17 +38,15 @@
   },
   "files": ["bin", "pages", "gulpTasks", "docgen", "images", "templates", "strings", "filetypes", "lib", "src", "typings"],
   "homepage": "https://github.com/coveo/search-ui#readme",
-  "engines": {
-    "node": "6.10.0"
-  },
   "devDependencies": {
-    "@salesforce-ux/design-system": "2.0.3",
+    "@salesforce-ux/design-system": "2.4.4",
     "@types/d3": "3.5.36",
     "@types/d3-scale": "1.0.4",
     "@types/fastclick": "^1.0.28",
     "@types/jasmine": "^2.6.0",
     "@types/pikaday": "0.0.31",
     "@types/underscore": "^1.8.3",
+    "aws-sdk": "^2.155.0",
     "bluebird": "^3.4.7",
     "body-parser": "^1.18.2",
     "cheerio": "^0.20.0",
@@ -115,10 +113,11 @@
     "typedoc": "https://github.com/coveord/typedoc/tarball/master",
     "typescript": "^2.5.2",
     "walk": "^2.3.9",
-    "webpack": "^3.6.0",
+    "webpack": "^3.10.0",
     "webpack-dev-server": "^2.9.1",
     "xml2js": "^0.4.17",
-    "yargs": "^4.7.1"
+    "yargs": "^4.7.1",
+    "webpack-bundle-analyzer": "^2.9.1"
   },
   "dependencies": {
     "@material/select": "^0.3.3",
@@ -132,7 +131,7 @@
     "fastclick": "1.0.6",
     "jstimezonedetect": "^1.0.6",
     "latinize": "^0.4.0",
-    "modal-box": "2.0.x",
+    "modal-box": "^2.0.10",
     "pikaday": "^1.4.0",
     "underscore": "^1.8.3"
   }

@@ -1,5 +1,4 @@
 import { RadioButton } from '../../src/ui/FormWidgets/RadioButton';
-import Jasmine = jasmine.Jasmine;
 
 export function RadioButtonTest() {
   describe('RadioButton', () => {

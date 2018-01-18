@@ -12,7 +12,7 @@ import { exportGlobally } from '../../GlobalExports';
 import { get } from '../Base/RegisteredNamedMethods';
 import { SVGIcons } from '../../utils/SVGIcons';
 import { SVGDom } from '../../utils/SVGDom';
-import { Utils } from '../../UtilsModules';
+import { Utils } from '../../utils/Utils';
 
 export interface IYouTubeThumbnailOptions {
   width: string;

@@ -1,5 +1,6 @@
 import { IQueryResult } from '../rest/QueryResult';
 import * as _ from 'underscore';
+import { IStringMap } from '../rest/GenericParam';
 
 const isCoveoFieldRegex = /^@[a-zA-Z0-9_\.]+$/;
 
@@ -127,6 +128,31 @@ export class Utils {
     });
   }
 
+  static safeEncodeURIComponent(rawString: string) {
+    // yiiip...
+    // Explanation : https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/encodeURIComponent
+    // Solution : https://stackoverflow.com/a/17109094
+    // Basically some unicode character (low-high surrogate) will throw an "invalid malformed URI" error when being encoded as an URI component, and the pair of character is incomplete.
+    // This simply removes those pesky characters
+    if (_.isString(rawString)) {
+      return encodeURIComponent(
+        rawString
+          .replace(/[\uD800-\uDBFF](?![\uDC00-\uDFFF])/g, '')
+          .split('')
+          .reverse()
+          .join('')
+          .replace(/[\uDC00-\uDFFF](?![\uD800-\uDBFF])/g, '')
+          .split('')
+          .reverse()
+          .join('')
+      );
+    } else {
+      // If the passed value is not a string, we probably don't want to do anything here...
+      // The base browser function should be resilient enough
+      return encodeURIComponent(rawString);
+    }
+  }
+
   static arrayEqual(array1: any[], array2: any[], sameOrder: boolean = true): boolean {
     if (sameOrder) {
       return _.isEqual(array1, array2);
@@ -246,7 +272,7 @@ export class Utils {
       _.each(src, (e, i, obj) => {
         if (typeof target[i] === 'undefined') {
           toReturn[i] = <any>e;
-        } else if (typeof e === 'object') {
+        } else if (typeof e === 'object' && !_.isElement(e)) {
           toReturn[i] = Utils.extendDeep(target[i], e);
         } else {
           if (target.indexOf(e) === -1) {
@@ -255,7 +281,7 @@ export class Utils {
         }
       });
     } else {
-      if (target && typeof target === 'object') {
+      if (target && typeof target === 'object' && !_.isElement(target)) {
         _.each(_.keys(target), key => {
           toReturn[key] = target[key];
         });
@@ -375,5 +401,21 @@ export class Utils {
       firstArray = firstArray.concat(diff);
     }
     return firstArray;
+  }
+
+  static differenceBetweenObjects<T>(firstObject: IStringMap<T>, secondObject: IStringMap<T>) {
+    const difference: IStringMap<T> = {};
+
+    const addDiff = (first: IStringMap<T>, second: IStringMap<T>) => {
+      for (const key in first) {
+        if (first[key] !== second[key] && difference[key] == null) {
+          difference[key] = first[key];
+        }
+      }
+    };
+
+    addDiff(firstObject, secondObject);
+    addDiff(secondObject, firstObject);
+    return difference;
   }
 }

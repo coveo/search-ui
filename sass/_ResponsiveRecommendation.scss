@@ -1,8 +1,7 @@
-@import "Variables";
-@import "mixins/mediaQuery";
+@import 'Variables';
+@import 'mixins/mediaQuery';
 
 .CoveoSearchInterface.coveo-small-recommendation {
-
   .coveo-recommendation-dropdown-header {
     @include order(1);
     @include defaultRoundedBorder();
@@ -23,14 +22,15 @@
     margin: 25px 0 15px;
     border-bottom: 0px solid $color-blueish-white-grey;
 
-    @include smallMobile() {
+    @include smallScreenWidth() {
       @include transition(all $standard-transition-timing-function 400ms);
     }
-    
-    &.coveo-recommendation-column, &.CoveoRecommendation {
+
+    &.coveo-recommendation-column,
+    &.CoveoRecommendation {
       display: block;
     }
-    
+
     &.coveo-open-dropdown-content {
       max-height: 1000px;
       width: 100%;
@@ -38,7 +38,9 @@
     }
   }
 
-  .CoveoRecommendation, .coveo-recommendation-facet-column, .coveo-recommendation-dropdown-container {
+  .CoveoRecommendation,
+  .coveo-recommendation-facet-column,
+  .coveo-recommendation-dropdown-container {
     padding: 0;
   }
 
@@ -63,16 +65,15 @@
   }
 }
 
-.CoveoSearchInterface.coveo-small-recommendation, .CoveoSearchInterface.coveo-small-facets {
-  #coveo-recommendation-results-column, .coveo-recommendation-results-column {
+.CoveoSearchInterface.coveo-small-recommendation,
+.CoveoSearchInterface.coveo-small-facets {
+  #coveo-recommendation-results-column,
+  .coveo-recommendation-results-column {
     width: auto;
     display: block;
   }
-  
+
   .coveo-recommendation-facet-column {
     width: 30%;
   }
 }
-
-
-

@@ -2,8 +2,8 @@ import { $$ } from '../../utils/Dom';
 import {
   DistanceEvents,
   IResolvingPositionEventArgs,
-  IPosition,
-  IPositionProvider,
+  IGeolocationPosition,
+  IGeolocationPositionProvider,
   IPositionResolvedEventArgs
 } from '../../events/DistanceEvents';
 
@@ -53,7 +53,7 @@ export class DistanceResources extends Component {
   };
   private latitude: number;
   private longitude: number;
-  private lastPositionRequest: Promise<IPosition | void>;
+  private lastPositionRequest: Promise<IGeolocationPosition | void>;
   private isFirstPositionResolved = false;
   private pendingSearchEventOnCancellation: PendingSearchEvent;
 
@@ -238,9 +238,9 @@ export class DistanceResources extends Component {
   /**
    * Returns a promise of the last position resolved using the registered position providers.
    *
-   * @returns {Promise<IPosition>} A promise of the last resolved position value.
+   * @returns {Promise<IGeolocationPosition>} A promise of the last resolved position value.
    */
-  public getLastPositionRequest(): Promise<IPosition> {
+  public getLastPositionRequest(): Promise<IGeolocationPosition> {
     return this.lastPositionRequest || Promise.reject('No position request was executed yet.');
   }
 
@@ -287,8 +287,8 @@ export class DistanceResources extends Component {
       });
   }
 
-  private getProvidersFromOptions(): IPositionProvider[] {
-    const providers: IPositionProvider[] = [];
+  private getProvidersFromOptions(): IGeolocationPositionProvider[] {
+    const providers: IGeolocationPositionProvider[] = [];
 
     if (this.options.useNavigator) {
       providers.push(new NavigatorPositionProvider());
@@ -305,8 +305,8 @@ export class DistanceResources extends Component {
     return providers;
   }
 
-  private tryGetPositionFromProviders(providers: IPositionProvider[]): Promise<IPosition> {
-    return new Promise<IPosition>((resolve, reject) => {
+  private tryGetPositionFromProviders(providers: IGeolocationPositionProvider[]): Promise<IGeolocationPosition> {
+    return new Promise<IGeolocationPosition>((resolve, reject) => {
       const tryNextProvider = () => {
         if (providers.length > 0) {
           const provider = providers.shift();

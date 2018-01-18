@@ -8,8 +8,8 @@ import {
   ISearchAlertsPopulateMessageEventArgs
 } from '../../events/SearchAlertEvents';
 import { QueryEvents } from '../../events/QueryEvents';
-import { ISubscriptionItemRequest, SUBSCRIPTION_TYPE, ISubscriptionQueryRequest } from '../../rest/Subscription';
-import { PopupUtils, HorizontalAlignment, VerticalAlignment } from '../../utils/PopupUtils';
+import { SUBSCRIPTION_TYPE, ISubscriptionQueryRequest } from '../../rest/Subscription';
+import { PopupUtils, PopupHorizontalAlignment, PopupVerticalAlignment } from '../../utils/PopupUtils';
 import { l } from '../../strings/Strings';
 import { $$, Dom } from '../../utils/Dom';
 import * as _ from 'underscore';
@@ -128,8 +128,8 @@ export class SearchAlertsMessage extends Component {
       dom.el,
       this.root,
       {
-        horizontal: HorizontalAlignment.INNERLEFT,
-        vertical: VerticalAlignment.BOTTOM,
+        horizontal: PopupHorizontalAlignment.INNERLEFT,
+        vertical: PopupVerticalAlignment.BOTTOM,
         verticalOffset: 12,
         horizontalClip: true
       },

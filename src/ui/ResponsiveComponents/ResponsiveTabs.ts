@@ -1,6 +1,6 @@
 import { $$, Dom } from '../../utils/Dom';
 import { InitializationEvents } from '../../events/InitializationEvents';
-import { PopupUtils, HorizontalAlignment, VerticalAlignment } from '../../utils/PopupUtils';
+import { PopupUtils, PopupHorizontalAlignment, PopupVerticalAlignment } from '../../utils/PopupUtils';
 import { EventsUtils } from '../../utils/EventsUtils';
 import { Utils } from '../../utils/Utils';
 import { Logger } from '../../misc/Logger';
@@ -20,13 +20,9 @@ import { SVGDom } from '../../utils/SVGDom';
 export class ResponsiveTabs implements IResponsiveComponent {
   private static DROPDOWN_HEADER_LABEL_DEFAULT_VALUE = 'More';
   private static logger: Logger;
-
   private dropdownHeader: Dom;
   private dropdownContent: Dom;
   private tabSection: Dom;
-  private previousSibling: Dom;
-  private parent: Dom;
-  private searchBoxElement: HTMLElement;
   private documentClickListener: EventListener;
   private searchInterface: SearchInterface;
   private dropdownHeaderLabel: string;
@@ -34,14 +30,12 @@ export class ResponsiveTabs implements IResponsiveComponent {
   constructor(private coveoRoot: Dom, public ID: string) {
     this.dropdownHeaderLabel = this.getDropdownHeaderLabel();
     this.searchInterface = <SearchInterface>Component.get(this.coveoRoot.el, SearchInterface, false);
-    this.searchBoxElement = this.getSearchBoxElement();
     this.dropdownContent = this.buildDropdownContent();
     this.dropdownHeader = this.buildDropdownHeader();
     this.bindDropdownContentEvents();
     this.bindDropdownHeaderEvents();
     this.tabSection = $$(<HTMLElement>this.coveoRoot.find('.coveo-tab-section'));
     this.manageTabSwapping();
-    this.saveTabsPosition();
     this.bindNukeEvents();
   }
 
@@ -328,20 +322,6 @@ export class ResponsiveTabs implements IResponsiveComponent {
     });
   }
 
-  private getSearchBoxElement(): HTMLElement {
-    let searchBoxElement = this.coveoRoot.find('.coveo-search-section');
-    if (searchBoxElement) {
-      return <HTMLElement>searchBoxElement;
-    } else {
-      return <HTMLElement>this.coveoRoot.find('.CoveoSearchbox');
-    }
-  }
-
-  private saveTabsPosition() {
-    this.previousSibling = this.tabSection.el.previousSibling ? $$(<HTMLElement>this.tabSection.el.previousSibling) : null;
-    this.parent = $$(this.tabSection.el.parentElement);
-  }
-
   private bindNukeEvents() {
     $$(this.coveoRoot).on(InitializationEvents.nuke, () => {
       $$(document.documentElement).off('click', this.documentClickListener);
@@ -353,7 +333,7 @@ export class ResponsiveTabs implements IResponsiveComponent {
       this.dropdownContent.el,
       this.dropdownHeader.el,
       this.coveoRoot.el,
-      { horizontal: HorizontalAlignment.INNERRIGHT, vertical: VerticalAlignment.BOTTOM },
+      { horizontal: PopupHorizontalAlignment.INNERRIGHT, vertical: PopupVerticalAlignment.BOTTOM },
       this.coveoRoot.el
     );
   }

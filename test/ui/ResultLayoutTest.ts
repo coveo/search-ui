@@ -1,19 +1,19 @@
 import * as Mock from '../MockEnvironment';
-import { ResultLayout } from '../../src/ui/ResultLayout/ResultLayout';
+import { ResultLayoutSelector } from '../../src/ui/ResultLayoutSelector/ResultLayoutSelector';
 import { ResultLayoutEvents } from '../../src/events/ResultLayoutEvents';
 import { QueryEvents, IQuerySuccessEventArgs } from '../../src/events/QueryEvents';
 import { InitializationEvents } from '../../src/events/InitializationEvents';
 import { IResultLayoutPopulateArgs } from '../../src/events/ResultLayoutEvents';
 import { FakeResults } from '../Fake';
 import { QueryStateModel } from '../../src/models/QueryStateModel';
-import { $$, Dom } from '../../src/utils/Dom';
+import { $$ } from '../../src/utils/Dom';
 
 export function ResultLayoutTest() {
   describe('ResultLayout', () => {
-    let test: Mock.IBasicComponentSetup<ResultLayout>;
+    let test: Mock.IBasicComponentSetup<ResultLayoutSelector>;
 
     beforeEach(() => {
-      test = Mock.basicComponentSetup<ResultLayout>(ResultLayout);
+      test = Mock.basicComponentSetup<ResultLayoutSelector>(ResultLayoutSelector);
     });
 
     afterEach(() => {
@@ -25,7 +25,7 @@ export function ResultLayoutTest() {
         const root = $$('div');
         root.on(ResultLayoutEvents.populateResultLayout, (e, args: IResultLayoutPopulateArgs) => (args.layouts = layouts));
 
-        test = Mock.advancedComponentSetup<ResultLayout>(ResultLayout, <Mock.AdvancedComponentSetupOptions>{
+        test = Mock.advancedComponentSetup<ResultLayoutSelector>(ResultLayoutSelector, <Mock.AdvancedComponentSetupOptions>{
           modifyBuilder: (builder: Mock.MockEnvironmentBuilder) => {
             builder.withRoot(root.el);
             return builder;
@@ -54,7 +54,7 @@ export function ResultLayoutTest() {
 
     describe('with "card" and "list" layouts available', () => {
       beforeEach(() => {
-        test = Mock.advancedComponentSetup<ResultLayout>(ResultLayout, <Mock.AdvancedComponentSetupOptions>{
+        test = Mock.advancedComponentSetup<ResultLayoutSelector>(ResultLayoutSelector, <Mock.AdvancedComponentSetupOptions>{
           modifyBuilder: (builder: Mock.MockEnvironmentBuilder) => {
             $$(builder.root).on(ResultLayoutEvents.populateResultLayout, (e, args) => {
               args.layouts.push('card');
@@ -129,7 +129,7 @@ export function ResultLayoutTest() {
 
       describe('with live queryStateModel', () => {
         beforeEach(() => {
-          test = Mock.advancedComponentSetup<ResultLayout>(ResultLayout, <Mock.AdvancedComponentSetupOptions>{
+          test = Mock.advancedComponentSetup<ResultLayoutSelector>(ResultLayoutSelector, <Mock.AdvancedComponentSetupOptions>{
             modifyBuilder: builder => {
               builder.withLiveQueryStateModel();
               $$(builder.root).on(ResultLayoutEvents.populateResultLayout, (e, args) => {
@@ -162,7 +162,7 @@ export function ResultLayoutTest() {
     });
 
     it('changeLayout should not throw an error when having only one layout and switching to it', () => {
-      test = Mock.advancedComponentSetup<ResultLayout>(ResultLayout, <Mock.AdvancedComponentSetupOptions>{
+      test = Mock.advancedComponentSetup<ResultLayoutSelector>(ResultLayoutSelector, <Mock.AdvancedComponentSetupOptions>{
         modifyBuilder: (builder: Mock.MockEnvironmentBuilder) => {
           $$(builder.root).on(ResultLayoutEvents.populateResultLayout, (e, args) => {
             args.layouts.push('table');
@@ -175,7 +175,7 @@ export function ResultLayoutTest() {
     });
 
     it('should throw an error when being populated with invalid result layout names', () => {
-      test = Mock.advancedComponentSetup<ResultLayout>(ResultLayout, <Mock.AdvancedComponentSetupOptions>{
+      test = Mock.advancedComponentSetup<ResultLayoutSelector>(ResultLayoutSelector, <Mock.AdvancedComponentSetupOptions>{
         modifyBuilder: (builder: Mock.MockEnvironmentBuilder) => {
           $$(builder.root).on(ResultLayoutEvents.populateResultLayout, (e, args) => {
             args.layouts.push('star-shaped');
@@ -191,7 +191,7 @@ export function ResultLayoutTest() {
     });
 
     it('hides when there are less than 2 layouts available', () => {
-      test = Mock.advancedComponentSetup<ResultLayout>(ResultLayout, <Mock.AdvancedComponentSetupOptions>{
+      test = Mock.advancedComponentSetup<ResultLayoutSelector>(ResultLayoutSelector, <Mock.AdvancedComponentSetupOptions>{
         modifyBuilder: (builder: Mock.MockEnvironmentBuilder) => {
           $$(builder.root).on(ResultLayoutEvents.populateResultLayout, (e, args) => {
             args.layouts.push('list');
@@ -204,7 +204,7 @@ export function ResultLayoutTest() {
     });
 
     it('does not hide when there are 2 layouts or more available', () => {
-      test = Mock.advancedComponentSetup<ResultLayout>(ResultLayout, <Mock.AdvancedComponentSetupOptions>{
+      test = Mock.advancedComponentSetup<ResultLayoutSelector>(ResultLayoutSelector, <Mock.AdvancedComponentSetupOptions>{
         modifyBuilder: (builder: Mock.MockEnvironmentBuilder) => {
           $$(builder.root).on(ResultLayoutEvents.populateResultLayout, (e, args) => {
             args.layouts.push('list');
@@ -220,7 +220,7 @@ export function ResultLayoutTest() {
 
     it('hides its parent `result-layout-section` instead of itself if it is present', () => {
       let parentSection = $$('div', { className: 'coveo-result-layout-section' });
-      test = Mock.advancedComponentSetup<ResultLayout>(ResultLayout, <Mock.AdvancedComponentSetupOptions>{
+      test = Mock.advancedComponentSetup<ResultLayoutSelector>(ResultLayoutSelector, <Mock.AdvancedComponentSetupOptions>{
         modifyBuilder: (builder: Mock.MockEnvironmentBuilder) => {
           $$(builder.root).on(ResultLayoutEvents.populateResultLayout, (e, args) => {
             args.layouts.push('list');

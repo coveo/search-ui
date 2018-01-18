@@ -1,4 +1,4 @@
-import { Template, TemplateRole } from '../Templates/Template';
+import { Template } from '../Templates/Template';
 import { TableTemplate } from '../Templates/TableTemplate';
 import { DefaultResultTemplate } from '../Templates/DefaultResultTemplate';
 import { Component } from '../Base/Component';
@@ -29,7 +29,6 @@ import { ResultLayoutEvents, IResultLayoutPopulateArgs } from '../../events/Resu
 import { Utils } from '../../utils/Utils';
 import { DomUtils } from '../../utils/DomUtils';
 import { DefaultRecommendationTemplate } from '../Templates/DefaultRecommendationTemplate';
-import { ValidLayout } from '../ResultLayout/ResultLayout';
 import { TemplateList } from '../Templates/TemplateList';
 import { TemplateCache } from '../Templates/TemplateCache';
 import { ResponsiveDefaultResultTemplate } from '../ResponsiveComponents/ResponsiveDefaultResultTemplate';
@@ -43,7 +42,11 @@ import 'styling/_ResultFrame';
 import 'styling/_Result';
 import { InitializationPlaceholder } from '../Base/InitializationPlaceholder';
 import { get } from '../Base/RegisteredNamedMethods';
+import { ValidLayout } from '../ResultLayoutSelector/ValidLayout';
+import { TemplateComponentOptions } from '../Base/TemplateComponentOptions';
+import { CoreHelpers } from '../Templates/CoreHelpers';
 
+CoreHelpers.exportAllHelpersGlobally(window['Coveo']);
 export interface IResultListOptions {
   resultContainer?: HTMLElement;
   resultTemplate?: Template;
@@ -119,7 +122,7 @@ export class ResultList extends Component {
      * list. This element will then be used as a result container.
      */
     resultContainer: ComponentOptions.buildChildHtmlElementOption(),
-    resultTemplate: ComponentOptions.buildTemplateOption({ defaultFunction: ResultList.getDefaultTemplate }),
+    resultTemplate: TemplateComponentOptions.buildTemplateOption({ defaultFunction: ResultList.getDefaultTemplate }),
 
     /**
      * Specifies the type of animation to display while waiting for a query to return.
@@ -269,9 +272,6 @@ export class ResultList extends Component {
   public currentlyDisplayedResults: IQueryResult[] = [];
   private fetchingMoreResults: Promise<IQueryResults>;
   private reachedTheEndOfResults = false;
-
-  private shouldDisplayTableHeader: boolean = true;
-  private shouldDisplayTableFooter: boolean = false;
 
   private renderer: ResultListRenderer;
 
@@ -574,6 +574,7 @@ export class ResultList extends Component {
     this.hideWaitingAnimation();
     $$(this.options.resultContainer).empty();
     this.currentlyDisplayedResults = [];
+    this.reachedTheEndOfResults = true;
   }
 
   private handleQuerySuccess(data: IQuerySuccessEventArgs) {
@@ -582,11 +583,14 @@ export class ResultList extends Component {
     const results = data.results;
     this.logger.trace('Received query results from new query', results);
     this.hideWaitingAnimation();
+
     ResultList.resultCurrentlyBeingRendered = undefined;
+    this.reachedTheEndOfResults = data.query.numberOfResults > data.results.results.length;
+
     this.currentlyDisplayedResults = [];
     this.buildResults(data.results).then((elements: HTMLElement[]) => {
       this.renderResults(elements);
-      this.reachedTheEndOfResults = false;
+
       this.showOrHideElementsDependingOnState(true, this.currentlyDisplayedResults.length != 0);
 
       if (DeviceUtils.isMobileDevice() && this.options.mobileScrollContainer != undefined) {
@@ -621,7 +625,8 @@ export class ResultList extends Component {
   private scrollBackToTop() {
     if (this.options.infiniteScrollContainer instanceof Window) {
       const win = <Window>this.options.infiniteScrollContainer;
-      win.scrollTo(0, 0);
+      const searchInterfacePosition = win.pageYOffset + this.searchInterface.element.getBoundingClientRect().top;
+      win.scrollTo(0, searchInterfacePosition);
     } else {
       const el = <HTMLElement>this.options.infiniteScrollContainer;
       el.scrollTop = 0;
@@ -667,7 +672,7 @@ export class ResultList extends Component {
         // Prevent flickering when switching to a new layout that is empty
         // add a temporary placeholder, the same that is used on initialization
         if (this.options.resultContainer.innerHTML == '') {
-          new InitializationPlaceholder(this.root, { resultList: true, layout: args.layout });
+          new InitializationPlaceholder(this.root).withVisibleRootElement().withPlaceholderForResultList();
         }
         Defer.defer(() => {
           this.buildResults(args.results).then((elements: HTMLElement[]) => {

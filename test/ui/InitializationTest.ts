@@ -2,7 +2,7 @@ import * as Mock from '../MockEnvironment';
 import { SearchEndpoint } from '../../src/rest/SearchEndpoint';
 import { $$ } from '../../src/utils/Dom';
 import { Querybox } from '../../src/ui/Querybox/Querybox';
-import { Component, IComponentDefinition } from '../../src/ui/Base/Component';
+import { Component } from '../../src/ui/Base/Component';
 import { Initialization, LazyInitialization } from '../../src/ui/Base/Initialization';
 import { Facet } from '../../src/ui/Facet/Facet';
 import { Pager } from '../../src/ui/Pager/Pager';
@@ -11,6 +11,9 @@ import { Simulate } from '../Simulate';
 import { InitializationEvents } from '../../src/events/InitializationEvents';
 import { init } from '../../src/ui/Base/RegisteredNamedMethods';
 import { NoopComponent } from '../../src/ui/NoopComponent/NoopComponent';
+import { state } from '../../src/ui/Base/RegisteredNamedMethods';
+import { get } from '../../src/UIBaseModules';
+import { QueryController } from '../../src/controllers/QueryController';
 declare const $;
 
 export function InitializationTest() {
@@ -165,6 +168,21 @@ export function InitializationTest() {
         return Initialization.initSearchInterface(root, searchInterfaceOptions);
       });
       expect(dummyCmp).toHaveBeenCalled();
+    });
+
+    it('allows to registerAutoCreateComponent with aliases', () => {
+      const aliasedComponent: any = jasmine.createSpy('aliasedComponent');
+      aliasedComponent.ID = 'OriginalId';
+      aliasedComponent.aliases = ['AliasedId'];
+
+      const dummyElem = $$('div', { className: 'CoveoAliasedId' });
+      $$(root).append(dummyElem.el);
+
+      Initialization.registerAutoCreateComponent(aliasedComponent);
+      Initialization.initializeFramework(root, searchInterfaceOptions, () => {
+        return Initialization.initSearchInterface(root, searchInterfaceOptions);
+      });
+      expect(aliasedComponent).toHaveBeenCalled();
     });
 
     it('allows to check if isComponentClassIdRegistered', () => {
@@ -353,22 +371,66 @@ export function InitializationTest() {
       Simulate.removeJQuery();
     });
 
-    it('will trigger a query automatically by default', done => {
-      Initialization.initializeFramework(root, searchInterfaceOptions, () => {
-        return Initialization.initSearchInterface(root, searchInterfaceOptions);
-      }).then(() => {
-        expect(endpoint.search).toHaveBeenCalled();
-        done();
-      });
-    });
+    describe('with automatic first query', () => {
+      let spyOnQuery: jasmine.Spy;
 
-    it('will not trigger a query automatically if specified', done => {
-      searchInterfaceOptions['SearchInterface'].autoTriggerQuery = false;
-      Initialization.initializeFramework(root, searchInterfaceOptions, () => {
-        return Initialization.initSearchInterface(root, searchInterfaceOptions);
-      }).then(() => {
-        expect(endpoint.search).not.toHaveBeenCalled();
-        done();
+      const doInit = () => {
+        return Initialization.initializeFramework(root, searchInterfaceOptions, () => {
+          const initResult = Initialization.initSearchInterface(root, searchInterfaceOptions);
+          spyOnQuery = spyOn(get(root, QueryController) as QueryController, 'executeQuery');
+          return initResult;
+        });
+      };
+
+      beforeEach(() => {
+        searchInterfaceOptions['SearchInterface'].autoTriggerQuery = true;
+      });
+
+      afterEach(() => {
+        spyOnQuery = null;
+      });
+
+      it('will trigger a query automatically by default', done => {
+        doInit().then(() => {
+          expect(spyOnQuery).toHaveBeenCalled();
+          done();
+        });
+      });
+
+      it('will not trigger a query automatically if specified', done => {
+        searchInterfaceOptions['SearchInterface'].autoTriggerQuery = false;
+        doInit().then(() => {
+          expect(spyOnQuery).not.toHaveBeenCalled();
+          done();
+        });
+      });
+
+      describe('when query with no keywords are not allowed', () => {
+        beforeEach(() => {
+          searchInterfaceOptions['SearchInterface'].allowQueriesWithoutKeywords = false;
+        });
+
+        it('will trigger a query automatically if the interface contains keywords', done => {
+          $$(root).on(InitializationEvents.afterInitialization, () => {
+            state(root, 'q', 'foo');
+          });
+
+          doInit().then(() => {
+            expect(spyOnQuery).toHaveBeenCalled();
+            done();
+          });
+        });
+
+        it('will not trigger a query automatically if the interface contains no keywords', done => {
+          $$(root).on(InitializationEvents.afterInitialization, () => {
+            state(root, 'q', '');
+          });
+
+          doInit().then(() => {
+            expect(spyOnQuery).not.toHaveBeenCalled();
+            done();
+          });
+        });
       });
     });
 

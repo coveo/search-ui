@@ -1,7 +1,6 @@
 import { Template } from './Template';
 import { Assert } from '../../misc/Assert';
 import { TemplateFromAScriptTag, ITemplateFromStringProperties } from './TemplateFromAScriptTag';
-import * as _ from 'underscore';
 
 export class HtmlTemplate extends Template {
   public static mimeTypes = ['text/html', 'text/HTML'];

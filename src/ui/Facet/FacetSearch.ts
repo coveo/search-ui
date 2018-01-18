@@ -5,18 +5,15 @@ import { Facet } from './Facet';
 import { $$, Dom } from '../../utils/Dom';
 import { Utils } from '../../utils/Utils';
 import { InitializationEvents } from '../../events/InitializationEvents';
-import { DeviceUtils } from '../../utils/DeviceUtils';
 import { EventsUtils } from '../../utils/EventsUtils';
 import { FacetSearchParameters } from './FacetSearchParameters';
 import { IAnalyticsFacetMeta, analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
 import { IEndpointError } from '../../rest/EndpointError';
 import { Component } from '../Base/Component';
-import { DomUtils } from '../../utils/DomUtils';
-import { PopupUtils, HorizontalAlignment, VerticalAlignment } from '../../utils/PopupUtils';
+import { PopupUtils, PopupHorizontalAlignment, PopupVerticalAlignment } from '../../utils/PopupUtils';
 import { l } from '../../strings/Strings';
 import { Assert } from '../../misc/Assert';
 import { KEYBOARD } from '../../utils/KeyboardUtils';
-import { FacetUtils } from './FacetUtils';
 import { FacetValue } from './FacetValues';
 import { StringUtils } from '../../utils/StringUtils';
 import { IFacetSearchValuesListKlass } from './FacetSearchValuesList';
@@ -44,7 +41,6 @@ export class FacetSearch {
   private middle: HTMLElement;
   private input: HTMLInputElement;
   private facetSearchTimeout: number;
-  private showingFacetSearchWaitAnimation = false;
   private facetSearchPromise: Promise<IIndexFieldValue[]>;
   private moreValuesToFetch = true;
   private onResize: (...args: any[]) => void;
@@ -98,15 +94,15 @@ export class FacetSearch {
         }
         EventsUtils.addPrefixedEvent(this.search, 'AnimationEnd', evt => {
           PopupUtils.positionPopup(this.searchResults, nextTo, this.root, {
-            horizontal: HorizontalAlignment.CENTER,
-            vertical: VerticalAlignment.BOTTOM
+            horizontal: PopupHorizontalAlignment.CENTER,
+            vertical: PopupVerticalAlignment.BOTTOM
           });
           EventsUtils.removePrefixedEvent(this.search, 'AnimationEnd', this);
         });
       } else {
         PopupUtils.positionPopup(this.searchResults, nextTo, this.root, {
-          horizontal: HorizontalAlignment.CENTER,
-          vertical: VerticalAlignment.BOTTOM
+          horizontal: PopupHorizontalAlignment.CENTER,
+          vertical: PopupVerticalAlignment.BOTTOM
         });
       }
     }
@@ -331,7 +327,6 @@ export class FacetSearch {
   private startNewSearchTimeout(params: FacetSearchParameters) {
     this.cancelAnyPendingSearchOperation();
     this.facetSearchTimeout = setTimeout(() => {
-      let valueInInput = this.getValueInInputForFacetSearch();
       this.triggerNewFacetSearch(params);
     }, this.facet.options.facetSearchDelay);
   }
@@ -583,13 +578,11 @@ export class FacetSearch {
   private showFacetSearchWaitingAnimation() {
     $$(this.magnifier).hide();
     $$(this.wait).show();
-    this.showingFacetSearchWaitAnimation = true;
   }
 
   private hideFacetSearchWaitingAnimation() {
     $$(this.magnifier).show();
     $$(this.wait).hide();
-    this.showingFacetSearchWaitAnimation = false;
   }
 
   private detectSearchBarAnimation() {
