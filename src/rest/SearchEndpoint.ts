@@ -644,11 +644,11 @@ export class SearchEndpoint implements ISearchEndpoint {
   @path('/values/batch')
   @method('POST')
   @responseType('text')
-  public listFieldValues(
+  public listFieldValuesBatch(
     request: IListFieldValuesRequestBatch,
     callOptions?: IEndpointCallOptions,
     callParams?: IEndpointCallParameters
-  ): Promise<IIndexFieldValue[]> {
+  ): Promise<IIndexFieldValue[][]> {
     Assert.exists(request);
 
     callParams = {

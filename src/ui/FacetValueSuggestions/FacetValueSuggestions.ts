@@ -1,5 +1,4 @@
-import { QueryBuilder } from '../Base/QueryBuilder';
-import { Omnibox, IOmniboxSuggestion } from '../Omnibox/Omnibox';
+import { Omnibox } from '../Omnibox/Omnibox';
 import { Component } from '../Base/Component';
 import { ComponentOptions, IFieldOption } from '../Base/ComponentOptions';
 import { IComponentBindings } from '../Base/ComponentBindings';
@@ -8,27 +7,19 @@ import { Utils } from '../../utils/Utils';
 import { OmniboxEvents, IPopulateOmniboxEventArgs } from '../../events/OmniboxEvents';
 import { IIndexFieldValue } from '../../rest/FieldValue';
 import { IListFieldValuesRequest } from '../../rest/ListFieldValuesRequest';
-import { QueryStateModel } from '../../models/QueryStateModel';
 import { Initialization } from '../Base/Initialization';
 import { analyticsActionCauseList, IAnalyticsNoMeta } from '../Analytics/AnalyticsActionListMeta';
-import { l } from '../../strings/Strings';
 import { $$, Dom } from '../../utils/Dom';
-import { IStringMap } from '../../rest/GenericParam';
-import * as _ from 'underscore';
 import { exportGlobally } from '../../GlobalExports';
 import 'styling/_FieldSuggestions';
 import { DomUtils } from '../../UtilsModules';
-import { Facet } from '../Facet/Facet';
 import {
   IOmniboxSuggestionsOptions,
   IOnSelectSuggestion,
-  onSelectionUpdateOmnibox,
   IOmniboxSuggestionBuilder,
   OmniboxSuggestionBuilder
 } from '../Misc/OmniboxSuggestion';
 import { IOmniboxDataRow } from '../Omnibox/OmniboxInterface';
-import { IGroupByRequest } from '../../rest/GroupByRequest';
-import { IQueryOptions } from '../../controllers/QueryController';
 
 export interface IOnSelectingFacetValueSuggestion extends IOnSelectSuggestion<IFacetValueSuggestionRow> {}
 
@@ -244,7 +235,7 @@ export class FacetValueSuggestions extends Component {
             container.append(this.suggestionBuilder.createHeader(this.options.headerTitle));
           }
 
-          const resultsElements = resultsToShow
+          resultsToShow
             .map(resultToShow => {
               return this.suggestionBuilder.createResultRow(
                 resultToShow,

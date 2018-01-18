@@ -191,7 +191,7 @@ export class HistoryController extends RootComponent {
     Assert.isNotNull(dynamicKeys);
     const values = {};
     try {
-      const hash = this.hashUtils.getHash(this.windoh);
+      const hash = this.hashUtils.getHash(this.window);
       const allValues = this.hashUtils.getValues(hash);
       Object.keys(allValues)
         .filter(key => dynamicKeys.some(dynamicKey => key.indexOf(`${dynamicKey}:`) === 0))

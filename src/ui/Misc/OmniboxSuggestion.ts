@@ -1,8 +1,5 @@
 import { IPopulateOmniboxEventArgs } from '../../events/OmniboxEvents';
-import { DomUtils } from '../../utils/DomUtils';
-import { $$, Dom } from '../../utils/Dom';
-import * as _ from 'underscore';
-import { HtmlTemplate } from '../Templates/HtmlTemplate';
+import { $$ } from '../../utils/Dom';
 import { Component } from '../Base/Component';
 import { IAnalyticsNoMeta, analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
 import { QueryStateModel } from '../../ModelsModules';
