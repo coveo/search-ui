@@ -26,12 +26,17 @@ export class CategoryFacet extends Component {
   private categoryValueRoot: CategoryValueRoot;
   private categoryFacetTemplates: CategoryFacetTemplates;
 
-  constructor(public element: HTMLElement, public options: CategoryFacetOptions, bindings?: IComponentBindings) {
+  constructor(
+    public element: HTMLElement,
+    public options: CategoryFacetOptions,
+    bindings?: IComponentBindings,
+    private CategoryValueRootModule = CategoryValueRoot
+  ) {
     super(element, 'CategoryFacet', bindings);
     this.options = ComponentOptions.initComponentOptions(element, CategoryFacet, options);
 
     this.categoryFacetTemplates = new CategoryFacetTemplates();
-    this.categoryValueRoot = new CategoryValueRoot($$(this.element), this.categoryFacetTemplates);
+    this.categoryValueRoot = new this.CategoryValueRootModule($$(this.element), this.categoryFacetTemplates);
 
     this.renderValues(this.listRoot);
   }
