@@ -85,12 +85,20 @@ export class Folding extends Component {
     /**
      * Specifies the field that determines whether a certain result is a child of another top result.
      *
+     * **Note:**
+     * > In the index, the values of the corresponding field must contain alphanumerical characters only. Using a
+     * > `childField` whose values contain non-indexable characters (such as underscores) will fail.
+     *
      * Default value is `@topparentid`.
      */
     childField: ComponentOptions.buildFieldOption({ defaultValue: '@topparentid' }),
 
     /**
      * Specifies the field that determines whether a certain result is a top result containing other child results.
+     *
+     * **Note:**
+     * > In the index, the values of the corresponding field must contain alphanumerical characters only. Using a
+     * > `parentField` whose values contain non-indexable characters (such as underscores) will fail.
      *
      * Default value is `@containsattachment`.
      */
