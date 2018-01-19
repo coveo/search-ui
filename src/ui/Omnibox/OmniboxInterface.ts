@@ -33,11 +33,6 @@ export interface IPopulateOmniboxObject {
    */
   replace(searchValue: string, newValue: string): void;
   /**
-   * Replaces the content by the `newValue` in the Omnibox.
-   * @param newValue
-   */
-  set(newValue: string): void;
-  /**
    * Replaces the current expression in the `QueryBox` (the current cursor position in the omnibox) by the `newValue`.
    * @param newValue
    */
@@ -52,10 +47,6 @@ export interface IPopulateOmniboxObject {
    * Closes the Omnibox.
    */
   closeOmnibox(): void;
-  /**
-   * Clears the suggestions.
-   */
-  clearSuggestions(): void;
 }
 
 /**

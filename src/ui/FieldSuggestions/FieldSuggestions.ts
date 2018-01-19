@@ -1,9 +1,4 @@
-import {
-  ISuggestionForOmniboxOptions,
-  SuggestionForOmnibox,
-  ISuggestionForOmniboxTemplate,
-  ISuggestionForOmniboxResult
-} from '../Misc/SuggestionForOmnibox';
+import { ISuggestionForOmniboxOptions, SuggestionForOmnibox, ISuggestionForOmniboxTemplate } from '../Misc/SuggestionForOmnibox';
 import { Component } from '../Base/Component';
 import { ComponentOptions, IFieldOption } from '../Base/ComponentOptions';
 import { IComponentBindings } from '../Base/ComponentBindings';
@@ -16,7 +11,8 @@ import { QueryStateModel } from '../../models/QueryStateModel';
 import { Initialization } from '../Base/Initialization';
 import { analyticsActionCauseList, IAnalyticsNoMeta } from '../Analytics/AnalyticsActionListMeta';
 import { $$ } from '../../utils/Dom';
-import { ISuggestionForOmniboxOptionsOnSelect, ISuggestionForOmniboxRowTemplateOptions } from '../Misc/SuggestionForOmnibox';
+import { ISuggestionForOmniboxOptionsOnSelect } from '../Misc/SuggestionForOmnibox';
+import { IStringMap } from '../../rest/GenericParam';
 import * as _ from 'underscore';
 import { exportGlobally } from '../../GlobalExports';
 import 'styling/_FieldSuggestions';
@@ -170,8 +166,8 @@ export class FieldSuggestions extends Component {
 
     this.options.onSelect = this.options.onSelect || this.onRowSelection;
 
-    const rowTemplate = (toRender: ISuggestionForOmniboxRowTemplateOptions) => {
-      const rowElement = $$('div', {
+    let rowTemplate = (toRender: IStringMap<string>) => {
+      let rowElement = $$('div', {
         className: 'magic-box-suggestion coveo-omnibox-selectable coveo-top-field-suggestion-row'
       });
       if (toRender['data']) {
@@ -186,16 +182,16 @@ export class FieldSuggestions extends Component {
         row: rowTemplate
       };
     } else {
-      const headerTemplate = () => {
-        const headerElement = $$('div', {
+      let headerTemplate = () => {
+        let headerElement = $$('div', {
           className: 'coveo-top-field-suggestion-header'
         });
 
-        const iconElement = $$('span', {
+        let iconElement = $$('span', {
           className: 'coveo-icon-top-field'
         });
 
-        const captionElement = $$('span', {
+        let captionElement = $$('span', {
           className: 'coveo-caption'
         });
 
@@ -243,7 +239,7 @@ export class FieldSuggestions extends Component {
           $$(this.currentlyDisplayedSuggestions[suggestion].element).trigger('click');
         }
       } else {
-        const currentlySuggested = <{ element: HTMLElement; pos: number }>_.findWhere(<any>this.currentlyDisplayedSuggestions, {
+        let currentlySuggested = <{ element: HTMLElement; pos: number }>_.findWhere(<any>this.currentlyDisplayedSuggestions, {
           pos: suggestion
         });
         if (currentlySuggested) {
@@ -256,21 +252,13 @@ export class FieldSuggestions extends Component {
   private handlePopulateOmnibox(args: IPopulateOmniboxEventArgs) {
     Assert.exists(args);
 
-    const valueToSearch = args.completeQueryExpression.word;
-    const promise = new Promise(resolve => {
+    let valueToSearch = args.completeQueryExpression.word;
+    let promise = new Promise(resolve => {
       this.queryController
         .getEndpoint()
         .listFieldValues(this.buildListFieldValueRequest(valueToSearch))
         .then((results: IIndexFieldValue[]) => {
-          const element = this.suggestionForOmnibox.buildOmniboxElement(
-            results.map(result => {
-              return <ISuggestionForOmniboxResult>{
-                keyword: valueToSearch,
-                value: result.value
-              };
-            }),
-            args
-          );
+          let element = this.suggestionForOmnibox.buildOmniboxElement(results, args);
           this.currentlyDisplayedSuggestions = {};
           if (element) {
             _.map($$(element).findAll('.coveo-omnibox-selectable'), (selectable, i?) => {
