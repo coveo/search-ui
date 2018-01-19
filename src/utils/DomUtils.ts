@@ -45,13 +45,17 @@ export class DomUtils {
     return dom;
   }
 
-  static highlightElement(initialString: string, valueToSearch: string): string {
+  static highlightElement(initialString: string, valueToSearch: string, classToApply: string = 'coveo-highlight'): string {
     let regex = new RegExp(Utils.escapeRegexCharacter(StringUtils.latinize(valueToSearch)), 'i');
     let firstChar = StringUtils.latinize(initialString).search(regex);
-    let lastChar = firstChar + valueToSearch.length;
-    return `${StringUtils.htmlEncode(initialString.slice(0, firstChar))}<span class='coveo-highlight'>${StringUtils.htmlEncode(
-      initialString.slice(firstChar, lastChar)
-    )}</span>${StringUtils.htmlEncode(initialString.slice(lastChar))}`;
+    if (firstChar >= 0) {
+      let lastChar = firstChar + valueToSearch.length;
+      return `${StringUtils.htmlEncode(initialString.slice(0, firstChar))}<span class='${classToApply}'>${StringUtils.htmlEncode(
+        initialString.slice(firstChar, lastChar)
+      )}</span>${StringUtils.htmlEncode(initialString.slice(lastChar))}`;
+    } else {
+      return initialString;
+    }
   }
 
   static getLoadingSpinner(): HTMLElement {
