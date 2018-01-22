@@ -59,7 +59,7 @@
     "@types/fastclick": "^1.0.28",
     "@types/moment": "^2.13.0",
     "@types/pikaday": "0.0.31",
-    "@types/underscore": "^1.8.3",
+    "@types/underscore": "1.8.3",
     "bluebird": "^3.4.7",
     "cheerio": "^0.20.0",
     "colors": "^1.1.2",
