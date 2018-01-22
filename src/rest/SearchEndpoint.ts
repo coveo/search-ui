@@ -223,7 +223,7 @@ export class SearchEndpoint implements ISearchEndpoint {
     this.options = <ISearchEndpointOptions>_.extend({}, defaultOptions, options);
 
     this.accessToken = new AccessToken(this.options.accessToken, this.options.renewAccessToken);
-    this.accessToken.afterRenew(() => this.createEndpointCaller());
+    this.accessToken.subscribeToRenewal(() => this.createEndpointCaller());
 
     // Forward any debug=1 query argument to the REST API to ease debugging
     if (SearchEndpoint.isDebugArgumentPresent()) {

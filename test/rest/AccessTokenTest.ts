@@ -17,7 +17,7 @@ export function AccessTokenTest() {
       expect(token.isExpired({ statusCode: 500 })).toBeFalsy();
     });
 
-    it('should behave correctly if there is no renew function', async done => {
+    it('should properly return that the renew was not successful if there is no renew function', async done => {
       const renewSuccessful = await token.doRenew();
       expect(renewSuccessful).toBeFalsy();
       done();
@@ -40,7 +40,7 @@ export function AccessTokenTest() {
 
       it('should call subscribers', async done => {
         const subscriber = jasmine.createSpy('subscriber');
-        token.afterRenew(subscriber);
+        token.subscribeToRenewal(subscriber);
         await token.doRenew();
         expect(subscriber).toHaveBeenCalledWith('nuevo tokeno');
         done();

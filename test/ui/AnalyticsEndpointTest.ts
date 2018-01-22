@@ -132,15 +132,19 @@ export function AnalyticsEndpointTest() {
           return e;
         })
         .then(() => done());
-      expect(jasmine.Ajax.requests.mostRecent().url).toContain('/topQueries');
-      expect(jasmine.Ajax.requests.mostRecent().url).toContain('org=organization');
-      expect(jasmine.Ajax.requests.mostRecent().url).toContain('access_token=token');
-      expect(jasmine.Ajax.requests.mostRecent().url).toContain('pageSize=10');
-      expect(jasmine.Ajax.requests.mostRecent().url).toContain('queryText=foobar');
 
-      expect(jasmine.Ajax.requests.mostRecent().method).toBe('GET');
+      const mostRecentRequest = jasmine.Ajax.requests.mostRecent();
+      const mostRecentUrl = mostRecentRequest.url;
 
-      jasmine.Ajax.requests.mostRecent().respondWith({
+      expect(mostRecentUrl).toContain('/topQueries');
+      expect(mostRecentUrl).toContain('org=organization');
+      expect(mostRecentUrl).toContain('access_token=token');
+      expect(mostRecentUrl).toContain('pageSize=10');
+      expect(mostRecentUrl).toContain('queryText=foobar');
+
+      expect(mostRecentRequest.method).toBe('GET');
+
+      mostRecentRequest.respondWith({
         status: 200,
         response: ['foo', 'bar', 'foobar']
       });

@@ -2,7 +2,7 @@ import { IErrorResponse } from './EndpointCaller';
 import { Logger } from '../misc/Logger';
 import { debounce } from 'underscore';
 
-export type onRenew = (newToken: string) => void;
+export type onTokenRefreshed = (newToken: string) => void;
 
 export enum ACCESS_TOKEN_ERRORS {
   NO_RENEW_FUNCTION = 'NO_RENEW_FUNCTION',
@@ -10,7 +10,7 @@ export enum ACCESS_TOKEN_ERRORS {
 }
 
 export class AccessToken {
-  private subscribers: onRenew[] = [];
+  private subscribers: onTokenRefreshed[] = [];
   private logger: Logger = new Logger(this);
   private triedRenewals: number = 0;
   private resetRenewalTriesAfterDelay;
@@ -26,7 +26,7 @@ export class AccessToken {
   }
 
   public isExpired(error: IErrorResponse) {
-    return error != null && error.statusCode != null && error.statusCode == 419;
+    return error != null && error.statusCode === 419;
   }
 
   public async doRenew(onError?: (error: Error) => void): Promise<Boolean> {
@@ -61,8 +61,8 @@ export class AccessToken {
     }
   }
 
-  public afterRenew(afterRenew: onRenew) {
-    this.subscribers.push(afterRenew);
+  public subscribeToRenewal(onTokenRefreshed: onTokenRefreshed) {
+    this.subscribers.push(onTokenRefreshed);
   }
 
   private verifyRenewSetup() {

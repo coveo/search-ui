@@ -191,7 +191,7 @@ export class Analytics extends Component {
       return;
     } else {
       this.options.token = this.accessToken.token;
-      this.accessToken.afterRenew(newToken => (this.client.endpoint.endpointCaller.options.accessToken = newToken));
+      this.accessToken.subscribeToRenewal(newToken => (this.client.endpoint.endpointCaller.options.accessToken = newToken));
     }
 
     this.initializeAnalyticsClient();
@@ -417,7 +417,7 @@ export class Analytics extends Component {
       this.accessToken = defaultEndpoint.accessToken;
 
       this.options.token = defaultEndpoint.accessToken.token;
-      defaultEndpoint.accessToken.afterRenew(newToken => {
+      defaultEndpoint.accessToken.subscribeToRenewal(newToken => {
         this.options.token = newToken;
         this.initializeAnalyticsClient();
       });
