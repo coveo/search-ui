@@ -55,8 +55,8 @@
 	</div>
 	<div class="bottomHeader">
 		<div id="searchBox">
-			<div class="CoveoSearchbox" data-enable-omnibox="true" data-inline="false" data-enable-wildcards="true" data-enable-search-as-you-type="false" data-enable-query-suggest-addon="false" data-enable-query-syntax="true" data-enable-field-addon="true"></div>
-			<div class="CoveoFieldSuggestions" data-field="@jsuipagetopic" data-header-title="Suggested topics"></div>
+			<div class="CoveoSearchbox" data-enable-omnibox="true" data-inline="false" data-enable-wildcards="true" data-enable-search-as-you-type="false" data-enable-reveal-query-suggest-addon="false" data-enable-query-syntax="true" data-enable-field-addon="true"></div>
+			<div class="CoveoFieldSuggestions" data-field="@systitle" data-header-title="Suggested topics"></div>
 		</div>
 	</div>
 	<!-- Do not focus on Querybox when URL contains hash to ensure page scrolls down to corresponding anchor. -->
@@ -186,26 +186,22 @@
 							<a href="omnibox.html">Omnibox</a>
 						</li>
 					</ul>
-					<!-- Has to remain here for the playground to work -->
-					<h1 style="visibility: collapse; font-size:0">Coveo component Omnibox</h1>
-					<h1>Coveo Omnibox Component (CoveoOmnibox)</h1>
+					<h1>Coveo component Omnibox</h1>
 				</div>
 			</div>
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>The <code>Omnibox</code> component extends the <a href="querybox.html"><code>Querybox</code></a>, and thus provides the same basic options and
-						behaviors. Furthermore, the <code>Omnibox</code> adds a type-ahead capability to the search input.</p>
+						<p>The Omnibox component is very similar to the simpler <a href="querybox.html">Querybox</a> component. It supports all of the same options
+						and behaviors.</p>
 					</div>
-					<p>You can configure the type-ahead feature by enabling or disabling certain addons, which the Coveo JavaScript Search
-						Framework provides out-of-the-box (see the <a href="omnibox.html#options.enablefieldaddon"><code>enableFieldAddon</code></a>,
-						<a href="omnibox.html#options.enablequeryextensionaddon"><code>enableQueryExtension</code></a>, and
-					<a href="omnibox.html#options.enablequerysuggestaddon"><code>enableQuerySuggestAddon</code></a> options).</p>
-					<p>Custom components and external code can also extend or customize the type-ahead feature and the query completion
-						suggestions it provides by attaching their own handlers to the
-					[<code>populateOmniboxSuggestions</code>]{@link OmniboxEvents.populateOmniboxSuggestions`] event.</p>
-					<p>See also the [<code>Searchbox</code>]{@link Searchbox} component, which can automatically instantiate an <code>Omnibox</code> along with an
-					optional <a href="searchbutton.html">SearchButton</a>.</p>
+					<p>The Omnibox component takes care of adding type-ahead capability to the search input. Custom components can extend
+					and customize the type-ahead and the suggestions it provides.</p>
+					<p>The type-ahead is configurable by activating addons, which the Coveo JavaScript Search Framework provides OOTB
+					(facets, analytics suggestions, Coveo Machine Learning suggestions and advanced Coveo syntax suggestions).</p>
+					<p>It is also possible for external code to provide type-ahead suggestions.</p>
+					<p>See also the <a href="searchbox.html">Searchbox</a> component, which can automatically instantiate an Omnibox component along with an
+					optional <a href="searchbutton.html">SearchButton</a> component.</p>
 				</div>
 			</section>
 			<div class="preview-container tsd-panel">
@@ -220,8 +216,7 @@
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-variable tsd-parent-kind-object-literal"><a href="omnibox.html#options.enablefieldaddon" class="tsd-kind-icon">enable<wbr>Field<wbr>Addon</a></li>
 								<li class="tsd-kind-variable tsd-parent-kind-object-literal"><a href="omnibox.html#options.enablequeryextensionaddon" class="tsd-kind-icon">enable<wbr>Query<wbr>Extension<wbr>Addon</a></li>
-								<li class="tsd-kind-variable tsd-parent-kind-object-literal"><a href="omnibox.html#options.enablequerysuggestaddon" class="tsd-kind-icon">enable<wbr>Query<wbr>Suggest<wbr>Addon</a></li>
-								<li class="tsd-kind-variable tsd-parent-kind-object-literal"><a href="omnibox.html#options.enablequerysyntax" class="tsd-kind-icon">enable<wbr>Query<wbr>Syntax</a></li>
+								<li class="tsd-kind-variable tsd-parent-kind-object-literal"><a href="omnibox.html#options.enablerevealquerysuggestaddon" class="tsd-kind-icon">enable<wbr>Reveal<wbr>Query<wbr>Suggest<wbr>Addon</a></li>
 								<li class="tsd-kind-variable tsd-parent-kind-object-literal"><a href="omnibox.html#options.enablesearchasyoutype" class="tsd-kind-icon">enable<wbr>Search<wbr>AsYou<wbr>Type</a></li>
 								<li class="tsd-kind-variable tsd-parent-kind-object-literal"><a href="omnibox.html#options.inline" class="tsd-kind-icon">inline</a></li>
 								<li class="tsd-kind-variable tsd-parent-kind-object-literal"><a href="omnibox.html#options.omniboxtimeout" class="tsd-kind-icon">omnibox<wbr>Timeout</a></li>
@@ -278,23 +273,20 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Omnibox/Omnibox.ts#L143">src/ui/Omnibox/Omnibox.ts
-							:143</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Omnibox/Omnibox.ts#L127">src/ui/Omnibox/Omnibox.ts
+							:127</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>The <code>field</code> addon makes the <code>Omnibox</code> highlight and complete field syntax. Setting this option to <code>true</code> automatically sets
-							the <a href="querybox.html#options.enablequerysyntax">enableQuerySyntax</a> option to <code>true</code> as a side effect.</p>
+							<p>If <a href="querybox.html#options.enablequerysyntax">Querybox.options.enableQuerySyntax</a> is <code>true</code>, specifies whether to enable the <code>field</code> addon.</p>
 						</div>
+						<p>The <code>field</code> addon allows the search box to highlight and complete field syntax.</p>
 						<p><strong>Example:</strong></p>
 						<blockquote>
-							<p>Suppose you want to search for PDF files. You start typing <code>@f</code> in the search box. The <code>Omnibox</code> provides
-								you with several matching fields. You select the <code>@filetype</code> field. Then, you start typing <code>=p</code> in the input.
-								This time, the <code>Omnibox</code> provides you with several matching values for the <code>@filetype</code> field. You select the
-								<code>pdf</code> suggestion, and submit your search request. Since the <code>enableQuerySyntax</code> option is set to <code>true</code>, the
-								Coveo Search API interprets the basic expression as query syntax and returns the items whose <code>@filetype</code> field
-							matches the <code>pdf</code> value.</p>
+							<p>Suppose you want to filter on a certain file type. You start typing <code>@sysf</code> in the input. The Omnibox provides
+								you with several matching fields. You select the <code>@sysfiletype</code> suggestion and type <code>=</code>. If this option is set
+							to <code>true</code>, then the Omnibox provides you with suggestions for available matching file types.</p>
 						</blockquote>
 						<p>Default value is <code>false</code>.</p>
 					</div>
@@ -311,8 +303,8 @@ data-enable-field-addon&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Omnibox/Omnibox.ts#L183">src/ui/Omnibox/Omnibox.ts
-							:183</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Omnibox/Omnibox.ts#L148">src/ui/Omnibox/Omnibox.ts
+							:148</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -329,61 +321,28 @@ data-enable-query-extension-addon&#x3D;&#x27;false&#x27;</pre>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
-					<a name="options.enablequerysuggestaddon" class="tsd-anchor"></a>
-					<h3>enable<wbr>Query<wbr>Suggest<wbr>Addon</h3>
-					<div class="tsd-signature tsd-kind-icon">enable<wbr>Query<wbr>Suggest<wbr>Addon<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
+					<a name="options.enablerevealquerysuggestaddon" class="tsd-anchor"></a>
+					<h3>enable<wbr>Reveal<wbr>Query<wbr>Suggest<wbr>Addon</h3>
+					<div class="tsd-signature tsd-kind-icon">enable<wbr>Reveal<wbr>Query<wbr>Suggest<wbr>Addon<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Omnibox/Omnibox.ts#L171">src/ui/Omnibox/Omnibox.ts
-							:171</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Omnibox/Omnibox.ts#L139">src/ui/Omnibox/Omnibox.ts
+							:139</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Whether to display Coveo Machine Learning (Coveo ML) query suggestions in the <code>Omnibox</code>.</p>
+							<p>Specifies whether to enable the Coveo Machine Learning (Coveo ML) query suggestions.</p>
 						</div>
-						<p>The corresponding Coveo ML model must be properly configured in your Coveo Cloud organization, otherwise this
-							option has no effect (see
-						<a href="http://www.coveo.com/go?dest=cloudhelp&amp;lcid=9&amp;context=168">Managing Machine Learning Query Suggestions in a Query Pipeline</a>).</p>
-						<p><strong>Note:</strong></p>
-						<blockquote>
-							<p>When you set this option and the <a href="omnibox.html#options.enablesearchasyoutype"><code>enableSearchAsYouType</code></a> option
-								to <code>true</code>, the query suggestion feature returns the auto-completion of the currently typed keyword as its first
-							query suggestion.</p>
-						</blockquote>
+						<p>This implies that you have a proper Coveo ML integration configured (see
+						<a href="http://www.coveo.com/go?dest=cloudhelp&amp;lcid=9&amp;context=177">Coveo Machine Learning</a>).</p>
 						<p>Default value is <code>true</code>.</p>
 					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
-						<pre>data-enable-query-suggest-addon&#x3D;&#x27;true&#x27;
-data-enable-query-suggest-addon&#x3D;&#x27;false&#x27;</pre>
-					</div>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
-					<a name="options.enablequerysyntax" class="tsd-anchor"></a>
-					<h3>enable<wbr>Query<wbr>Syntax</h3>
-					<div class="tsd-signature tsd-kind-icon">enable<wbr>Query<wbr>Syntax<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Omnibox/Omnibox.ts#L215">src/ui/Omnibox/Omnibox.ts
-							:215</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Specifies whether the Coveo Platform should try to interpret special query syntax such as field references in the
-								query that the user enters in the Querybox (see
-							<a href="http://www.coveo.com/go?dest=adminhelp70&amp;lcid=9&amp;context=10005">Coveo Query Syntax Reference</a>).</p>
-						</div>
-						<p>Setting this option to <code>true</code> also causes the query syntax in the Querybox to highlight.</p>
-						<p>Default value is <code>false</code>.</p>
-					</div>
-					<div class="tsd-panel">
-						<div class="tsd-signature-type">Markup configuration example(s) :</div>
-						<pre>data-enable-query-syntax&#x3D;&#x27;true&#x27;
-data-enable-query-syntax&#x3D;&#x27;false&#x27;</pre>
+						<pre>data-enable-reveal-query-suggest-addon&#x3D;&#x27;true&#x27;
+data-enable-reveal-query-suggest-addon&#x3D;&#x27;false&#x27;</pre>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
@@ -393,21 +352,16 @@ data-enable-query-syntax&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Omnibox/Omnibox.ts#L114">src/ui/Omnibox/Omnibox.ts
-							:114</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Omnibox/Omnibox.ts#L100">src/ui/Omnibox/Omnibox.ts
+							:100</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Whether to automatically trigger a new query whenever the end user types additional text in the search box input.</p>
+							<p>Specifies whether to automatically trigger a new query whenever the end user types new text inside the Omnibox.</p>
 						</div>
-						<p>See also the <a href="omnibox.html#options.searchasyoutypedelay"><code>searchAsYouTypeDelay</code></a> option.</p>
-						<p><strong>Note:</strong></p>
-						<blockquote>
-							<p>If you set this option and the <a href="omnibox.html#options.enablequerysuggestaddon"><code>enableQuerySuggestAddon</code></a>
-								option to <code>true</code>, the query suggestion feature returns the auto-completion of the currently typed keyword as
-							its first suggestion.</p>
-						</blockquote>
+						<p>Set this option as well a <a href="omnibox.html#options.inline">Omnibox.options.inline</a> and
+						<a href="omnibox.html#options.enablerevealquerysuggestaddon">Omnibox.options.enableRevealQuerySuggestAddon</a> to <code>true</code> for a cool effect!</p>
 						<p>Default value is <code>false</code>.</p>
 					</div>
 					<div class="tsd-panel">
@@ -423,17 +377,17 @@ data-enable-search-as-you-type&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Omnibox/Omnibox.ts#L100">src/ui/Omnibox/Omnibox.ts
-							:100</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Omnibox/Omnibox.ts#L90">src/ui/Omnibox/Omnibox.ts
+							:90</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies whether query completion suggestions appearing in the <code>Omnibox</code> should push the result list and facets
-							down, rather than rendering themselves over them (and partially hiding them).</p>
+							<p>Specifies whether suggestions appearing in the Omnibox should push the result down instead of appearing over the
+							results.</p>
 						</div>
 						<p>Set this option as well as <a href="omnibox.html#options.enablesearchasyoutype">Omnibox.options.enableSearchAsYouType</a> and
-						<a href="omnibox.html#options.enablequerysuggestaddon">Omnibox.options.enableQuerySuggestAddon</a> to <code>true</code> for a cool effect!</p>
+						<a href="omnibox.html#options.enablerevealquerysuggestaddon">Omnibox.options.enableRevealQuerySuggestAddon</a> to <code>true</code> for a cool effect!</p>
 						<p>Default value is <code>false</code>.</p>
 					</div>
 					<div class="tsd-panel">
@@ -449,8 +403,8 @@ data-inline&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Omnibox/Omnibox.ts#L205">src/ui/Omnibox/Omnibox.ts
-							:205</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Omnibox/Omnibox.ts#L160">src/ui/Omnibox/Omnibox.ts
+							:160</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -471,8 +425,8 @@ data-inline&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Omnibox/Omnibox.ts#L198">src/ui/Omnibox/Omnibox.ts
-							:198</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Omnibox/Omnibox.ts#L153">src/ui/Omnibox/Omnibox.ts
+							:153</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -492,14 +446,14 @@ data-inline&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Omnibox/Omnibox.ts#L122">src/ui/Omnibox/Omnibox.ts
-							:122</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Omnibox/Omnibox.ts#L108">src/ui/Omnibox/Omnibox.ts
+							:108</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
 							<p>If <a href="omnibox.html#options.enablesearchasyoutype">Omnibox.options.enableSearchAsYouType</a> is <code>true</code>, specifies the delay (in milliseconds) before
-							triggering a new query when the end user types in the <code>Omnibox</code>.</p>
+							triggering a new query when the user types new text inside the Omnibox.</p>
 						</div>
 						<p>Default value is <code>2000</code>. Minimum value is <code>0</code>.</p>
 					</div>
@@ -522,8 +476,8 @@ data-inline&#x3D;&#x27;false&#x27;</pre>
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Omnibox/Omnibox.ts#L305">src/ui/Omnibox/Omnibox.ts
-									:305</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Omnibox/Omnibox.ts#L264">src/ui/Omnibox/Omnibox.ts
+									:264</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -626,8 +580,8 @@ data-inline&#x3D;&#x27;false&#x27;</pre>
 								<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#getbindings">getBindings</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L130">src/ui/Base/Component.ts
-									:130</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L124">src/ui/Base/Component.ts
+									:124</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -650,8 +604,8 @@ data-inline&#x3D;&#x27;false&#x27;</pre>
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Omnibox/Omnibox.ts#L312">src/ui/Omnibox/Omnibox.ts
-									:312</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Omnibox/Omnibox.ts#L271">src/ui/Omnibox/Omnibox.ts
+									:271</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -674,8 +628,8 @@ data-inline&#x3D;&#x27;false&#x27;</pre>
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Omnibox/Omnibox.ts#L289">src/ui/Omnibox/Omnibox.ts
-									:289</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Omnibox/Omnibox.ts#L248">src/ui/Omnibox/Omnibox.ts
+									:248</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -699,8 +653,8 @@ data-inline&#x3D;&#x27;false&#x27;</pre>
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Omnibox/Omnibox.ts#L297">src/ui/Omnibox/Omnibox.ts
-									:297</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Omnibox/Omnibox.ts#L256">src/ui/Omnibox/Omnibox.ts
+									:256</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -732,8 +686,8 @@ data-inline&#x3D;&#x27;false&#x27;</pre>
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Omnibox/Omnibox.ts#L276">src/ui/Omnibox/Omnibox.ts
-									:276</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Omnibox/Omnibox.ts#L236">src/ui/Omnibox/Omnibox.ts
+									:236</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -759,8 +713,8 @@ data-inline&#x3D;&#x27;false&#x27;</pre>
 								<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#get">get</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L199">src/ui/Base/Component.ts
-									:199</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L193">src/ui/Base/Component.ts
+									:193</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -805,8 +759,8 @@ data-inline&#x3D;&#x27;false&#x27;</pre>
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#bind">bind</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L68">src/ui/Base/Component.ts
-							:68</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L62">src/ui/Base/Component.ts
+							:62</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -830,8 +784,8 @@ data-inline&#x3D;&#x27;false&#x27;</pre>
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#componentoptionsmodel">componentOptionsModel</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L96">src/ui/Base/Component.ts
-							:96</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L90">src/ui/Base/Component.ts
+							:90</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -848,8 +802,8 @@ data-inline&#x3D;&#x27;false&#x27;</pre>
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#componentstatemodel">componentStateModel</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L80">src/ui/Base/Component.ts
-							:80</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L74">src/ui/Base/Component.ts
+							:74</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -909,8 +863,8 @@ data-inline&#x3D;&#x27;false&#x27;</pre>
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#querycontroller">queryController</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L84">src/ui/Base/Component.ts
-							:84</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L78">src/ui/Base/Component.ts
+							:78</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -927,8 +881,8 @@ data-inline&#x3D;&#x27;false&#x27;</pre>
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#querystatemodel">queryStateModel</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L76">src/ui/Base/Component.ts
-							:76</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L70">src/ui/Base/Component.ts
+							:70</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -945,8 +899,8 @@ data-inline&#x3D;&#x27;false&#x27;</pre>
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#root">root</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L72">src/ui/Base/Component.ts
-							:72</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L66">src/ui/Base/Component.ts
+							:66</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -963,8 +917,8 @@ data-inline&#x3D;&#x27;false&#x27;</pre>
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#searchinterface">searchInterface</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L88">src/ui/Base/Component.ts
-							:88</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L82">src/ui/Base/Component.ts
+							:82</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -981,8 +935,8 @@ data-inline&#x3D;&#x27;false&#x27;</pre>
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#usageanalytics">usageAnalytics</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L92">src/ui/Base/Component.ts
-							:92</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L86">src/ui/Base/Component.ts
+							:86</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -1025,8 +979,8 @@ data-inline&#x3D;&#x27;false&#x27;</pre>
 								<p>Overwrites <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#constructor">constructor</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Omnibox/Omnibox.ts#L228">src/ui/Omnibox/Omnibox.ts
-									:228</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Omnibox/Omnibox.ts#L170">src/ui/Omnibox/Omnibox.ts
+									:170</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
