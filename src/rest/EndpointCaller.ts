@@ -225,6 +225,7 @@ export class EndpointCaller {
       method: params.method
     };
     requestInfo.headers = this.buildRequestHeaders(requestInfo);
+
     if (_.isFunction(this.options.requestModifier)) {
       requestInfo = this.options.requestModifier(requestInfo);
     }
