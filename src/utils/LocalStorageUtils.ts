@@ -1,15 +1,13 @@
 var localStorage = window.localStorage;
 export class LocalStorageUtils<T> {
-  constructor(public id: string) {
-  }
+  constructor(public id: string) {}
 
   public save(data: T) {
     try {
       if (localStorage != null) {
         localStorage.setItem(this.getLocalStorageKey(), JSON.stringify(data));
       }
-    } catch (error) {
-    }
+    } catch (error) {}
   }
 
   public load(): T {
@@ -35,8 +33,7 @@ export class LocalStorageUtils<T> {
           this.save(oldObj);
         }
       }
-    } catch (error) {
-    }
+    } catch (error) {}
   }
 
   private getLocalStorageKey() {

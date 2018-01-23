@@ -1,25 +1,27 @@
-import {Component} from '../Base/Component';
-import {IComponentBindings} from '../Base/ComponentBindings';
-import {IAnalyticsClient} from './AnalyticsClient';
-import {ComponentOptions} from '../Base/ComponentOptions';
-import {AnalyticsEndpoint} from '../../rest/AnalyticsEndpoint';
-import {SearchEndpoint} from '../../rest/SearchEndpoint';
-import {Assert} from '../../misc/Assert';
-import {QueryEvents, IBuildingQueryEventArgs, IQueryErrorEventArgs} from '../../events/QueryEvents';
-import {ComponentOptionsModel} from '../../models/ComponentOptionsModel';
-import {$$} from '../../utils/Dom';
-import {Model, IAttributeChangedEventArg} from '../../models/Model';
-import {IAnalyticsActionCause, IAnalyticsDocumentViewMeta} from '../Analytics/AnalyticsActionListMeta';
-import {IQueryResult} from '../../rest/QueryResult';
-import {Utils} from '../../utils/Utils';
-import {NoopAnalyticsClient} from '../Analytics/NoopAnalyticsClient';
-import {LiveAnalyticsClient} from './LiveAnalyticsClient';
-import {MultiAnalyticsClient} from './MultiAnalyticsClient';
-import {IAnalyticsQueryErrorMeta, analyticsActionCauseList} from './AnalyticsActionListMeta';
-import {SearchInterface} from '../SearchInterface/SearchInterface';
-import {Recommendation} from '../Recommendation/Recommendation';
-import {RecommendationAnalyticsClient} from './RecommendationAnalyticsClient';
-
+import { Component } from '../Base/Component';
+import { IComponentBindings } from '../Base/ComponentBindings';
+import { IAnalyticsClient } from './AnalyticsClient';
+import { ComponentOptions } from '../Base/ComponentOptions';
+import { AnalyticsEndpoint } from '../../rest/AnalyticsEndpoint';
+import { SearchEndpoint } from '../../rest/SearchEndpoint';
+import { Assert } from '../../misc/Assert';
+import { QueryEvents, IBuildingQueryEventArgs, IQueryErrorEventArgs } from '../../events/QueryEvents';
+import { ComponentOptionsModel } from '../../models/ComponentOptionsModel';
+import { $$ } from '../../utils/Dom';
+import { Model, IAttributeChangedEventArg } from '../../models/Model';
+import { IAnalyticsActionCause, IAnalyticsDocumentViewMeta } from '../Analytics/AnalyticsActionListMeta';
+import { IQueryResult } from '../../rest/QueryResult';
+import { Utils } from '../../utils/Utils';
+import { NoopAnalyticsClient } from '../Analytics/NoopAnalyticsClient';
+import { LiveAnalyticsClient } from './LiveAnalyticsClient';
+import { MultiAnalyticsClient } from './MultiAnalyticsClient';
+import { IAnalyticsQueryErrorMeta, analyticsActionCauseList } from './AnalyticsActionListMeta';
+import { RecommendationAnalyticsClient } from './RecommendationAnalyticsClient';
+import * as _ from 'underscore';
+import { exportGlobally } from '../../GlobalExports';
+import { PendingSearchEvent } from './PendingSearchEvent';
+import { PendingSearchAsYouTypeSearchEvent } from './PendingSearchAsYouTypeSearchEvent';
+import { AccessToken } from '../../rest/AccessToken';
 
 export interface IAnalyticsOptions {
   user?: string;
@@ -32,15 +34,38 @@ export interface IAnalyticsOptions {
   splitTestRunVersion?: string;
   sendToCloud?: boolean;
   organization?: string;
+  renewAccessToken?: () => Promise<string>;
 }
 
 /**
- * This component logs all user actions performed in the search interface and sends them to a REST web service exposed through the Coveo Cloud platform.<br/>
- * You can use this data to evaluate how users are interacting with the search interface, improve relevance and produce analytics dashboards in the Coveo platform.
+ * The `Analytics` component can log user actions performed in the search interface and send them to a REST web service
+ * exposed through the Coveo Cloud Platform.
+ *
+ * You can use analytics data to evaluate how users are interacting with your search interface, improve relevance and
+ * produce analytics dashboards within the Coveo Cloud Platform.
+ *
+ * See [Step 7 - Usage Analytics](https://developers.coveo.com/x/EYskAg) of the Getting Started with the JavaScript
+ * Search Framework V1 tutorial for an introduction to usage analytics.
+ *
+ * See also [Sending Custom Analytics Events](https://developers.coveo.com/x/KoGfAQ) for more advanced use cases.
  */
+
 export class Analytics extends Component {
   static ID = 'Analytics';
-  // NOTE: The default values for some of those options (organization, endpoint, searchHub) can be
+
+  static doExport() {
+    exportGlobally({
+      PendingSearchEvent: PendingSearchEvent,
+      PendingSearchAsYouTypeSearchEvent: PendingSearchAsYouTypeSearchEvent,
+      analyticsActionCauseList: analyticsActionCauseList,
+      NoopAnalyticsClient: NoopAnalyticsClient,
+      LiveAnalyticsClient: LiveAnalyticsClient,
+      MultiAnalyticsClient: MultiAnalyticsClient,
+      Analytics: Analytics
+    });
+  }
+
+  // NOTE: The default values for some of those options (`organization`, `endpoint`, `searchHub`) can be
   // overridden by generated code when using hosted search pages.
 
   /**
@@ -49,77 +74,133 @@ export class Analytics extends Component {
    */
   static options: IAnalyticsOptions = {
     /**
-     * Specifies the name of the user for usage analytics logs.
+     * Specifies the name of the user for the usage analytics logs.
+     *
+     * Default value is `undefined`
      */
     user: ComponentOptions.buildStringOption(),
+
     /**
-     * Specifies the name of the user display name for usage analytics logs.
+     * Specifies the user display name for the usage analytics logs.
+     *
+     * Default value is `undefined`
      */
     userDisplayName: ComponentOptions.buildStringOption(),
+
     /**
-     * Specifies the token used to gain access the analytics endpoint.<br/>
-     * This attribute is optional, the component will use the search token by default.
+     * Specifies the token to use to access the usage analytics endpoint.
+     *
+     * Default value is `undefined`, and the component uses the search token.
      */
     token: ComponentOptions.buildStringOption(),
+
     /**
-     * Specifies the URL of the analytics logger for rare cases where it is different from the default usage analytics Coveo Cloud endpoint (https://usageanalytics.coveo.com).
+     * Specifies the URL of the Usage Analytics service. You do not have to specify a value for this option, unless
+     * the location of the service you use differs from the default Coveo Cloud Usage Analytics endpoint.
+     *
+     * Default value is `https://usageanalytics.coveo.com`.
      */
     endpoint: ComponentOptions.buildStringOption({ defaultValue: AnalyticsEndpoint.DEFAULT_ANALYTICS_URI }),
+
     /**
-     * Specifies whether the search user identities are converted in a unique hash in the logged analytics data to prevent analytics reviewers and managers to identify who performs which queries.<br/>
-     * When enabled, the Coveo Analytics Platform can still properly identify sessions made by anonymous users, versus ones from users that are authenticated in some way with the site containing the search page.<br/>
-     * The default value is false.
+     * Specifies whether to convert search user identities to unique hash when logging analytics data, so that
+     * analytics reviewers and managers will not be able to clearly identify which user is performing which query.
+     *
+     * When you set this option to `true`, the Coveo Usage Analytics service can still properly differentiate sessions
+     * made by anonymous users from sessions made by users authenticated in some way on the site containing the search
+     * page.
+     *
+     * Default value is `false`.
      */
     anonymous: ComponentOptions.buildBooleanOption({ defaultValue: false }),
+
     /**
-     * Sets the Search Hub dimension on the search events.<br/>
-     * The Search Hub dimension is typically a name that refers to a specific search page. For example, one could use the CommunitySite value to refer to a search page on a company's public community site.<br/>
-     * The default value is default.
+     * Sets the Search Hub dimension on the search events.
+     *
+     * The Search Hub dimension is typically a name that refers to a specific search page. For example, you could use
+     * the `CommunitySite` value to refer to a search page on a public community site.
+     *
+     * **Note:**
+     * > If you wish to use the search hub dimension for security reasons (e.g., to provide different query suggestions
+     * > for internal and external users), you should specify the search hub when generating the search token for the
+     * > end user (in safe, server-side code), rather than setting it with this option (see
+     * > [Search Token Authentication](https://developers.coveo.com/x/XICE)).
+     *
+     * Default value is `default`.
      */
     searchHub: ComponentOptions.buildStringOption({ defaultValue: 'default' }),
+
     /**
-     * Specifies the name of the split test run that the search page is a part of.<br/>
-     * This dimension can be used to perform A/B testing using different search page layouts and features, inside the Coveo Query pipeline.<br/>
-     * By default, this value is not specified and no split test run name is reported to the Coveo Analytics Platform.
+     * Specifies the name of the split test run that the search page is part of.
+     *
+     * You can use this dimension to perform A/B testing using different search page layouts and features inside the
+     * Coveo Query pipeline.
+     *
+     * Default value is `undefined` and no split test run name is reported to the Coveo Usage Analytics service.
      */
     splitTestRunName: ComponentOptions.buildStringOption(),
+
     /**
-     * Specifies the version name for the page when a split test run is active.<br/>
-     * When reporting on A/B testing analytics data, this value specifies the test run version name that has been presented to the user.<br/>
-     * By default, this value is not specified.
+     * Specifies the version name for the page when a split test run is active.
+     *
+     * When reporting on A/B testing analytics data, this value specifies the test run version name that was
+     * presented to the user.
+     *
+     * Default value is `undefined`
      */
     splitTestRunVersion: ComponentOptions.buildStringOption(),
     sendToCloud: ComponentOptions.buildBooleanOption({ defaultValue: true }),
+
     /**
-     * Specifies the organization bound to the access token. This is necessary when using an access token because it can be associated with more than organization.
-     * If this parameter is not specified, it will fallback on the organization used for the search endpoint.
+     * Specifies the organization bound to the access token. This is necessary when using an access token, because a
+     * single access token can be associated to more than one organization.
+     *
+     * Default value is `undefined`, and the value of this parameter will fallback to the organization used for the
+     * search endpoint.
      */
     organization: ComponentOptions.buildStringOption()
   };
 
   /**
-   * A reference to the analyticsClient, which will perform the heavy duty part of logging the actual events on the service.
+   * A reference to the `AnalyticsClient`, which performs the heavy duty part of sending the usage analytics events to
+   * the Coveo Usage Analytics service.
    */
   public client: IAnalyticsClient;
 
+  private accessToken: AccessToken;
+
   /**
-   * Create a new Analytics component. Create the {@link IAnalyticsClient}
+   * Creates a new `Analytics` component. Creates the [`AnalyticsClient`]{@link IAnalyticsClient}.
    * @param element The HTMLElement on which the component will be instantiated.
-   * @param options The options for the Analytics.
-   * @param bindings The bindings that the component requires to function normally. If not set, will automatically resolve them (With slower execution time)
+   * @param options The options for the `Analytics` component.
+   * @param bindings The bindings that the component requires to function normally. If not set, these will be
+   * automatically resolved (with a slower execution time).
    */
   constructor(public element: HTMLElement, public options: IAnalyticsOptions = {}, public bindings?: IComponentBindings) {
     super(element, Analytics.ID, bindings);
     this.options = ComponentOptions.initComponentOptions(element, Analytics, options);
 
-    this.retrieveInfoFromDefaultSearchEndpoint();
+    this.setupAccessToken();
+
+    if (this.accessToken == null) {
+      this.logger.error(`Analytics component could not resolve any access token`);
+      this.logger.error(
+        `Either provide a analytics token : data-option-token="an-authentication-token" on the Analytics element, or configure a default SearchEndpoint`,
+        this.element
+      );
+      return;
+    } else {
+      this.options.token = this.accessToken.token;
+      this.accessToken.subscribeToRenewal(newToken => (this.client.endpoint.endpointCaller.options.accessToken = newToken));
+    }
+
     this.initializeAnalyticsClient();
     Assert.exists(this.client);
 
     this.bind.onRootElement(QueryEvents.buildingQuery, (data: IBuildingQueryEventArgs) => this.handleBuildingQuery(data));
     this.bind.onRootElement(QueryEvents.queryError, (data: IQueryErrorEventArgs) => this.handleQueryError(data));
 
-    // Analytics component is a bit special : It can be higher in the dom tree than the search interface
+    // Analytics component is a bit special: It can be higher in the dom tree than the search interface
     // Need to resolve down to find the componentOptionsModel if we need to.
     if (!this.componentOptionsModel) {
       let cmpOptionElement = $$(element).find('.' + Component.computeCssClassName(ComponentOptionsModel));
@@ -136,57 +217,134 @@ export class Analytics extends Component {
   }
 
   /**
-   * Log a search event on the service, using a cause and a meta object.<br/>
-   * Note that the event will be sent on the service when a query successfully return, not immediately after calling this method.<br/>
-   * Normally, this should be called using the following "format" : <br/>
-   * usageAnalytics.logSearchEvent<SomeMeta>({name : 'foo', type : 'bar'}, <SomeMeta>{'key':'value'});<br/>
-   * this.queryController.executeQuery();<br/>
-   * This will queue up an analytics search event. Then the query is executed. The search event will be sent to the service when the query successfully complete.<br/>
-   * @param actionCause
-   * @param meta Can be an empty object ( {} )
+   * Logs a `Search` usage analytics event.
+   *
+   * A `Search` event is actually sent to the Coveo Usage Analytics service only after the query successfully returns
+   * (not immediately after calling this method). Therefore, it is important to call this method **before** executing
+   * the query. Otherwise, the `Search` event will not be logged, and you will get a warning message in the console.
+   *
+   * **Note:**
+   *
+   * > When logging custom `Search` events, you should use the `Coveo.logSearchEvent` top-level function rather than
+   * > calling this method directly from the `Analytics` component instance. See
+   * > [Sending Custom Analytics Events](https://developers.coveo.com/x/KoGfAQ).
+   *
+   * @param actionCause The cause of the event.
+   * @param meta The metadata you want to use to create custom dimensions. Metadata can contain as many key-value
+   * pairs as you need. Each key must contain only alphanumeric characters and underscores. The Coveo Usage Analytics
+   * service automatically converts white spaces to underscores, and uppercase characters to lowercase characters in key
+   * names. Each value must be a simple string. If you do not need to log metadata, you can simply pass an empty JSON
+   * ( `{}` ).
    */
   public logSearchEvent<T>(actionCause: IAnalyticsActionCause, meta: T) {
     this.client.logSearchEvent<T>(actionCause, meta);
   }
 
   /**
-   * Log a search as you type event on the service, using a cause and a meta object.<br/>
-   * This is extremely similar to a search event, except that search as you type, by definition, will be frequently called.<br/>
-   * The {@link PendingSearchAsYouTypeEvent} will take care of logging only the "relevant" last event : After 5 seconds of no event logged, or after another search event is triggered somewhere else in the interface.<br/>
-   * This is to ensure that we do not needlessly log every single partial query, which would make the reporting very confusing.
-   * @param actionCause
-   * @param meta Can be an empty object ( {} )
+   * Logs a `SearchAsYouType` usage analytics event.
+   *
+   * This method is very similar to the [`logSearchEvent`]{@link Analytics.logSearchEvent} method, except that
+   * `logSearchAsYouType` should, by definition, be called more frequently. Consequently, in order to avoid logging
+   * every single partial query, the `PendingSearchAsYouTypeEvent` takes care of logging only the "relevant" last event:
+   * an event that occurs after 5 seconds have elapsed without any event being logged, or an event that occurs after
+   * another part of the interface triggers a search event.
+   *
+   * It is important to call this method **before** executing the query. Otherwise, no `SearchAsYouType` event will be
+   * logged, and you will get a warning message in the console.
+   *
+   * **Note:**
+   *
+   * > When logging custom `SearchAsYouType` events, you should use the `Coveo.logSearchAsYouTypeEvent` top-level
+   * > function rather than calling this method directly from the `Analytics` component instance. See
+   * > [Sending Custom Analytics Events](https://developers.coveo.com/x/KoGfAQ).
+   *
+   * @param actionCause The cause of the event.
+   * @param meta The metadata which you want to use to create custom dimensions. Metadata can contain as many key-value
+   * pairs as you need. Each key must contain only alphanumeric characters and underscores. The Coveo Usage Analytics
+   * service automatically converts white spaces to underscores and uppercase characters to lowercase characters in key
+   * names. Each value must be a simple string. If you do not need to log metadata, you can simply pass an empty JSON
+   * ( `{}` ).
    */
   public logSearchAsYouType<T>(actionCause: IAnalyticsActionCause, meta: T) {
     this.client.logSearchAsYouType(actionCause, meta);
   }
 
   /**
-   * Log a custom event on the service. A custom event can be used to create customized report, or to track events which are not queries or document view.
-   * @param actionCause
-   * @param meta
-   * @param element The HTMLElement that was interacted with for this custom event.
+   * Logs a `Custom` usage analytics event on the service.
+   *
+   * You can use `Custom` events to create custom reports, or to track events which are neither queries (see
+   * [`logSearchEvent`]{@link Analytics.logSearchEvent} and
+   * [`logSearchAsYouType`]{@link Analytics.logSearchAsYouType}), nor item views (see
+   * [`logClickEvent`]{@link Analytics.logClickEvent}).
+   *
+   * **Note:**
+   * > When logging `Custom` events, you should use the `Coveo.logClickEvent` top-level function rather than calling
+   * > this method directly from the `Analytics` component instance. See
+   * > [Sending Custom Analytics Events](https://developers.coveo.com/x/KoGfAQ).
+   *
+   * @param actionCause The cause of the event.
+   * @param meta The metadata which you want to use to create custom dimensions. Metadata can contain as many key-value
+   * pairs as you need. Each key must contain only alphanumeric characters and underscores. The Coveo Usage Analytics
+   * service automatically converts white spaces to underscores and uppercase characters to lowercase characters in key
+   * names. Each value must be a simple string. If you do not need to log metadata, you can simply pass an empty JSON
+   * ( `{}` ).
+   * @param element The HTMLElement that the user has interacted with for this custom event. Default value is the
+   * element on which the `Analytics` component is bound.
    */
   public logCustomEvent<T>(actionCause: IAnalyticsActionCause, meta: T, element: HTMLElement = this.element) {
     this.client.logCustomEvent(actionCause, meta, element);
   }
 
   /**
-   * Log a click event. A click event can be understood as a document view.<br/>
-   * eg : Clicking on a result link of opening a quickview.<br/>
-   * This event will be logged immediately on the service.
-   * @param actionCause
-   * @param meta Can be an empty object ( {} )
-   * @param result The result that was clicked
-   * @param element The HTMLElement that was clicked in the interface
+   * Logs a `Click` usage analytics event.
+   *
+   * A `Click` event corresponds to an item view (e.g., clicking on a {@link ResultLink} or opening a
+   * {@link Quickview}).
+   *
+   * `Click` events are immediately sent to the Coveo Usage Analytics service.
+   *
+   * **Note:**
+   * > When logging custom `Click` events, you should use the `Coveo.logClickEvent` top-level function rather than
+   * > calling this method directly from the `Analytics` component instance. See
+   * > [Sending Custom Analytics Events](https://developers.coveo.com/x/KoGfAQ).
+   *
+   * @param actionCause The cause of the event.
+   * @param meta The metadata which you want to use to create custom dimensions. Metadata can contain as many key-value
+   * pairs as you need. Each key must contain only alphanumeric characters and underscores. The Coveo Usage Analytics
+   * service automatically converts uppercase characters to lowercase characters in key names. Each value must be a
+   * simple string. You do not have to pass an {@link IAnalyticsDocumentViewMeta} as meta when logging a `Click` event.
+   * You can actually send any arbitrary meta. If you do not need to log metadata, you can simply pass an empty JSON
+   * ( `{}` ).
+   * @param result The result that was clicked.
+   * @param element The HTMLElement that the user has clicked in the interface. Default value is the element on which
+   * the `Analytics` component is bound.
    */
-  public logClickEvent(actionCause: IAnalyticsActionCause, meta: IAnalyticsDocumentViewMeta, result: IQueryResult, element: HTMLElement = this.element) {
+  public logClickEvent(
+    actionCause: IAnalyticsActionCause,
+    meta: IAnalyticsDocumentViewMeta,
+    result: IQueryResult,
+    element: HTMLElement = this.element
+  ) {
     this.client.logClickEvent(actionCause, meta, result, element);
+  }
+
+  /**
+   * Sets the Origin Context dimension on the analytic events.
+   *
+   * You can use this dimension to specify the context of your application.
+   * Suggested values are "Search", "InternalSearch" and "CommunitySearch"
+   *
+   * Default value is `Search`.
+   *
+   * @param originContext The origin context value
+   */
+  public setOriginContext(originContext: string) {
+    this.client.setOriginContext(originContext);
   }
 
   protected initializeAnalyticsEndpoint(): AnalyticsEndpoint {
     return new AnalyticsEndpoint({
-      token: this.options.token,
+      accessToken: this.accessToken,
       serviceUrl: this.options.endpoint,
       organization: this.options.organization
     });
@@ -202,12 +360,10 @@ export class Analytics extends Component {
         } else {
           elementToInitializeClient = this.element;
         }
-
       }
 
-      let isRecommendation = $$(this.root).hasClass(Component.computeCssClassName(Recommendation));
+      let isRecommendation = $$(this.root).hasClass(Component.computeCssClassNameForType(`Recommendation`));
       this.instantiateAnalyticsClient(endpoint, elementToInitializeClient, isRecommendation);
-
     } else {
       this.client = new NoopAnalyticsClient();
     }
@@ -215,7 +371,9 @@ export class Analytics extends Component {
 
   private instantiateAnalyticsClient(endpoint: AnalyticsEndpoint, elementToInitializeClient: HTMLElement, isRecommendation: boolean) {
     if (isRecommendation) {
-      this.client = new RecommendationAnalyticsClient(endpoint, elementToInitializeClient,
+      this.client = new RecommendationAnalyticsClient(
+        endpoint,
+        elementToInitializeClient,
         this.options.user,
         this.options.userDisplayName,
         this.options.anonymous,
@@ -223,23 +381,46 @@ export class Analytics extends Component {
         this.options.splitTestRunVersion,
         this.options.searchHub,
         this.options.sendToCloud,
-        this.getBindings());
+        this.getBindings()
+      );
     } else {
-      this.client = new LiveAnalyticsClient(endpoint, elementToInitializeClient,
+      this.client = new LiveAnalyticsClient(
+        endpoint,
+        elementToInitializeClient,
         this.options.user,
         this.options.userDisplayName,
         this.options.anonymous,
         this.options.splitTestRunName,
         this.options.splitTestRunVersion,
         this.options.searchHub,
-        this.options.sendToCloud);
+        this.options.sendToCloud
+      );
     }
   }
 
-  private retrieveInfoFromDefaultSearchEndpoint() {
-    let defaultEndpoint = SearchEndpoint.endpoints['default'];
-    if (this.options.token == null && defaultEndpoint) {
-      this.options.token = defaultEndpoint.options.accessToken;
+  private setupAccessToken() {
+    this.trySetupAccessTokenFromOptions();
+    if (this.accessToken == null) {
+      this.trySetupAccessTokenFromDefaultSearchEndpoint();
+    }
+  }
+
+  private trySetupAccessTokenFromOptions() {
+    if (this.options.token != null) {
+      this.accessToken = new AccessToken(this.options.token, this.options.renewAccessToken);
+    }
+  }
+
+  private trySetupAccessTokenFromDefaultSearchEndpoint() {
+    const defaultEndpoint = SearchEndpoint.endpoints['default'];
+    if (defaultEndpoint) {
+      this.accessToken = defaultEndpoint.accessToken;
+
+      this.options.token = defaultEndpoint.accessToken.token;
+      defaultEndpoint.accessToken.subscribeToRenewal(newToken => {
+        this.options.token = newToken;
+        this.initializeAnalyticsClient();
+      });
     }
 
     if (!this.options.organization && defaultEndpoint) {
@@ -260,21 +441,25 @@ export class Analytics extends Component {
   private handleQueryError(data: IQueryErrorEventArgs) {
     Assert.exists(data);
 
-    this.client.logCustomEvent<IAnalyticsQueryErrorMeta>(analyticsActionCauseList.queryError, {
-      query: data.query.q,
-      aq: data.query.aq,
-      cq: data.query.cq,
-      dq: data.query.dq,
-      errorType: data.error.type,
-      errorMessage: data.error.message
-    }, this.element);
+    this.client.logCustomEvent<IAnalyticsQueryErrorMeta>(
+      analyticsActionCauseList.queryError,
+      {
+        query: data.query.q,
+        aq: data.query.aq,
+        cq: data.query.cq,
+        dq: data.query.dq,
+        errorType: data.error.type,
+        errorMessage: data.error.message
+      },
+      this.element
+    );
   }
 
-  public static create(element: HTMLElement, options: IAnalyticsOptions, bindings: IComponentBindings) {
+  public static create(element: HTMLElement, options: IAnalyticsOptions, bindings: IComponentBindings): IAnalyticsClient {
     let selector = Component.computeSelectorForType(Analytics.ID);
     let found: HTMLElement[] = [];
     found = found.concat($$(element).findAll(selector));
-    if (!(Component.get(element, SearchInterface) instanceof Recommendation)) {
+    if (!$$(element).hasClass(Component.computeCssClassNameForType('Recommendation'))) {
       found = this.ignoreElementsInsideRecommendationInterface(found);
     }
     found.push($$(element).closest(Component.computeCssClassName(Analytics)));
@@ -286,20 +471,20 @@ export class Analytics extends Component {
     if (found.length == 1) {
       return Analytics.getClient(found[0], options, bindings);
     } else if (found.length > 1) {
-      return new MultiAnalyticsClient(_.map(found, (el) => Analytics.getClient(el, options, bindings)));
+      return new MultiAnalyticsClient(_.map(found, el => Analytics.getClient(el, options, bindings)));
     } else {
       return new NoopAnalyticsClient();
     }
   }
 
   private static ignoreElementsInsideRecommendationInterface(found: HTMLElement[]): HTMLElement[] {
-    return _.filter(found, (element) => {
-      return $$(element).closest(Component.computeCssClassName(Recommendation)) === undefined;
+    return _.filter(found, element => {
+      return $$(element).closest(Component.computeCssClassNameForType('Recommendation')) === undefined;
     });
   }
 
   private static getClient(element: HTMLElement, options: IAnalyticsOptions, bindings: IComponentBindings): IAnalyticsClient {
-    // This check if an element is already initialized as an analytics component
+    // This check if an element is already initialized as an analytics component.
     // If that's the case, return the client on that element.
     // Otherwise, init and return.
     let foundOnElement = Component.get(element, Analytics, true);

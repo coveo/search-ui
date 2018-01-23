@@ -1,28 +1,47 @@
-import {SearchEndpoint} from '../../rest/SearchEndpoint';
-import {ComponentOptions} from '../Base/ComponentOptions';
-import {DeviceUtils} from '../../utils/DeviceUtils';
-import {$$} from '../../utils/Dom';
-import {DomUtils} from '../../utils/DomUtils';
-import {Assert} from '../../misc/Assert';
-import {QueryStateModel} from '../../models/QueryStateModel';
-import {ComponentStateModel} from '../../models/ComponentStateModel';
-import {ComponentOptionsModel} from '../../models/ComponentOptionsModel';
-import {QueryController} from '../../controllers/QueryController';
-import {Model, IAttributeChangedEventArg} from '../../models/Model';
-import {QueryEvents, IBuildingQueryEventArgs, INewQueryEventArgs, IQuerySuccessEventArgs, IQueryErrorEventArgs} from '../../events/QueryEvents';
-import {IBeforeRedirectEventArgs, StandaloneSearchInterfaceEvents} from '../../events/StandaloneSearchInterfaceEvents';
-import {HistoryController} from '../../controllers/HistoryController';
-import {LocalStorageHistoryController} from '../../controllers/LocalStorageHistoryController';
-import {InitializationEvents} from '../../events/InitializationEvents';
-import {IAnalyticsClient} from '../Analytics/AnalyticsClient';
-import {NoopAnalyticsClient} from '../Analytics/NoopAnalyticsClient';
-import {Utils} from '../../utils/Utils';
-import {RootComponent} from '../Base/RootComponent';
-import {BaseComponent} from '../Base/BaseComponent';
-import {Debug} from '../Debug/Debug';
-import {HashUtils} from '../../utils/HashUtils';
-import FastClick = require('fastclick');
-import timezone = require('jstz');
+import { SearchEndpoint } from '../../rest/SearchEndpoint';
+import { ComponentOptions, IFieldOption } from '../Base/ComponentOptions';
+import { DeviceUtils } from '../../utils/DeviceUtils';
+import { $$ } from '../../utils/Dom';
+import { Assert } from '../../misc/Assert';
+import { QueryStateModel } from '../../models/QueryStateModel';
+import { ComponentStateModel } from '../../models/ComponentStateModel';
+import { ComponentOptionsModel } from '../../models/ComponentOptionsModel';
+import { QueryController } from '../../controllers/QueryController';
+import { Model, IAttributeChangedEventArg } from '../../models/Model';
+import {
+  QueryEvents,
+  IBuildingQueryEventArgs,
+  INewQueryEventArgs,
+  IQuerySuccessEventArgs,
+  IQueryErrorEventArgs,
+  IDoneBuildingQueryEventArgs
+} from '../../events/QueryEvents';
+import { IBeforeRedirectEventArgs, StandaloneSearchInterfaceEvents } from '../../events/StandaloneSearchInterfaceEvents';
+import { HistoryController, IHistoryControllerEnvironment } from '../../controllers/HistoryController';
+import { LocalStorageHistoryController } from '../../controllers/LocalStorageHistoryController';
+import { InitializationEvents } from '../../events/InitializationEvents';
+import { IAnalyticsClient } from '../Analytics/AnalyticsClient';
+import { NoopAnalyticsClient } from '../Analytics/NoopAnalyticsClient';
+import { Utils } from '../../utils/Utils';
+import { RootComponent } from '../Base/RootComponent';
+import { BaseComponent } from '../Base/BaseComponent';
+import { HashUtils } from '../../utils/HashUtils';
+import { SentryLogger } from '../../misc/SentryLogger';
+import { IComponentBindings } from '../Base/ComponentBindings';
+import { analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
+import { ResponsiveComponents } from '../ResponsiveComponents/ResponsiveComponents';
+import { Context, IPipelineContextProvider } from '../PipelineContext/PipelineGlobalExports';
+import { InitializationPlaceholder } from '../Base/InitializationPlaceholder';
+import { Debug } from '../Debug/Debug';
+
+import * as fastclick from 'fastclick';
+import * as jstz from 'jstimezonedetect';
+import * as _ from 'underscore';
+
+import 'styling/Globals';
+import 'styling/_SearchInterface';
+import 'styling/_SearchModalBox';
+import 'styling/_SearchButton';
 
 export interface ISearchInterfaceOptions {
   enableHistory?: boolean;
@@ -31,145 +50,366 @@ export interface ISearchInterfaceOptions {
   resultsPerPage?: number;
   excerptLength?: number;
   expression?: string;
-  filterField?: string;
-  hideUntilFirstQuery?: boolean;
-  firstLoadingAnimation?: HTMLElement;
+  filterField?: IFieldOption;
   autoTriggerQuery?: boolean;
   timezone?: string;
   enableDebugInfo?: boolean;
   enableCollaborativeRating?: boolean;
   enableDuplicateFiltering?: boolean;
+  hideUntilFirstQuery?: boolean;
+  firstLoadingAnimation?: any;
   pipeline?: string;
   maximumAge?: number;
   searchPageUri?: string;
   initOptions?: any;
   endpoint?: SearchEndpoint;
   originalOptionsObject?: any;
+  allowQueriesWithoutKeywords?: boolean;
 }
 
 /**
- * This component is the root and main component of your search interface.<br/>
- * You should place every other component inside this component.<br/>
- * It is also on this component that you call the initialization function.<br/>
- * Since this component is the root of your search UI, it is recommended that you give it a unique HTML id attribute in order to reference it easily.
+ * The SearchInterface component is the root and main component of your Coveo search interface. You should place all
+ * other Coveo components inside the SearchInterface component.
+ *
+ * It is also on the HTMLElement of the SearchInterface component that you call the {@link init} function.
+ *
+ * It is advisable to specify a unique HTML `id` attribute for the SearchInterface component in order to be able to
+ * reference it easily.
+ *
+ * **Example:**
+ *
+ * ```html
+ * <head>
+ *
+ * [ ... ]
+ *
+ * <script>
+ *   document.addEventListener('DOMContentLoaded', function() {
+ *
+ *     [ ... ]
+ *     // The init function is called on the SearchInterface element, in this case, the body of the page.
+ *     Coveo.init(document.body);
+ *
+ *     [ ... ]
+ *
+ *     });
+ * </script>
+ *
+ * [ ... ]
+ * </head>
+ *
+ * <!-- Specifying a unique HTML id attribute for the SearchInterface component is good practice. -->
+ * <body id='search' class='CoveoSearchInterface' [ ... other options ... ]>
+ *
+ *   [ ... ]
+ *
+ *   <!-- You should place all other Coveo components here, inside the SearchInterface component. -->
+ *
+ *   [ ... ]
+ *
+ * </body>
+ * ```
  */
-export class SearchInterface extends RootComponent {
+export class SearchInterface extends RootComponent implements IComponentBindings {
   static ID = 'SearchInterface';
+
   /**
    * The options for the search interface
    * @componentOptions
    */
   static options: ISearchInterfaceOptions = {
     /**
-     * Specifies whether your search interface allows users to navigate in the search history using the browser back/forward buttons.<br/>
-     * When enabled, the search interface saves the state of the current query in the hash portion of the URL.<br/>
-     * For example #q=foobar.<br/>
-     * The default value is `false`.
+     * Specifies whether to allow the end user to navigate search history using the **Back** and **Forward** buttons
+     * of the browser.
+     *
+     * If this options is `true`, the SearchInterface component saves the state of the current query in the hash portion
+     * of the URL when the user submits the query.
+     *
+     * **Example:**
+     * > If the `enableHistory` option is `true` and the current query is `foobar`, the SearchInterface component
+     * > saves `q=foobar` in the URL hash when the user submits the query.
+     *
+     * Default value is `false`.
      */
     enableHistory: ComponentOptions.buildBooleanOption({ defaultValue: false }),
+
     /**
-     * Specifies wether the UI should use an automatic responsive mode (eg : The tab(s) and facet(s) being placed automatically under the search box)<br/>
-     * This can be disabled for design reasons, if it does not fit with the implementation needs.<br/>
-     * The default value is `true`
+     * Specifies whether to enable automatic responsive mode (i.e., automatically placing {@link Facet} and {@link Tab}
+     * components in dropdown menus under the search box when the width of the SearchInterface HTML element reaches or
+     * falls behind a certain pixel threshold).
+     *
+     * You might want to set this option to `false` if automatic responsive mode does not suit the specific design needs
+     * of your implementation.
+     *
+     * **Note:**
+     *
+     * > If this option is `true`, you can also specify whether to enable responsive mode for Facet components (see
+     * > {@link Facet.options.enableResponsiveMode}) and for Tab components (see
+     * > {@link Tab.options.enableResponsiveMode}).
+     * >
+     * > In addition, you can specify the label you wish to display on the dropdown buttons (see
+     * > {@link Facet.options.dropdownHeaderLabel} and {@link Tab.options.dropdownHeaderLabel}).
+     *
+     * Default value is `true`.
      */
     enableAutomaticResponsiveMode: ComponentOptions.buildBooleanOption({ defaultValue: true }),
+
     /**
-     * Specifies that you wish to use the local storage of the browser to store the state of the interface.<br/>
-     * This can be used for very specific purpose, and only if you know what you are doing.<br/>
-     * Default value is false.
+     * Specifies whether to save the interface state in the local storage of the browser.
+     *
+     * You might want to set this option to `true` for reasons specifically important for your implementation.
+     *
+     * Default value is `false`.
      */
     useLocalStorageForHistory: ComponentOptions.buildBooleanOption({ defaultValue: false }),
+
     /**
-     * Specifies the number of results that each page displays.<br/>
-     * Default is 10.
+     * Specifies the number of results to display on each page.
+     *
+     * For more advanced features, see the {@link ResultsPerPage} component.
+     *
+     * **Note:**
+     *
+     * > When the {@link ResultsPerPage} component is present in the page, this option gets overridden and is useless.
+     *
+     * Default value is `10`. Minimum value is `0`.
      */
     resultsPerPage: ComponentOptions.buildNumberOption({ defaultValue: 10, min: 0 }),
+
     /**
-     * Specifies the number of characters of the excerpt to get at query time and display for each query result.<br/>
-     * This setting is global and can not be modified on a per result basis.<br/>
-     * The default value is 200.
+     * Specifies the number of characters to get at query time to create an excerpt of the result.
+     *
+     * This setting is global and cannot be modified on a per-result basis.
+     *
+     * See also the {@link Excerpt} component.
+     *
+     * Default value is `200`. Minimum value is `0`.
      */
     excerptLength: ComponentOptions.buildNumberOption({ defaultValue: 200, min: 0 }),
+
     /**
-     * Specifies an expression to add to each query.<br/>
-     * This should be use if you wish to add a global filter for your whole search interface that applies for all tab.<br/>
-     * Do not use this for security concern ... (It's javascript after all).<br/>
-     * By default none is added.
+     * Specifies an expression to add to each query.
+     *
+     * You might want to use this options to add a global filter to your entire search interface that applies for all
+     * tabs.
+     *
+     * You should not use this option to address security concerns (it is JavaScript, after all).
+     *
+     * **Note:**
+     *
+     * > It also is possible to set this option separately for each {@link Tab} component
+     * > (see {@link Tab.options.expression}).
+     *
+     * Default value is `''`.
      */
     expression: ComponentOptions.buildStringOption({ defaultValue: '' }),
+
     /**
-     * Specifies the name of a field to use as a custom filter when executing the query (also referred to as 'folding').<br/>
-     * Setting this option causes the index to return only one result having any particular value inside the filter field. Any other matching result is 'folded' inside the childResults member of each JSON query result.<br/>
-     * This feature is typically used with threaded conversations to include only one top-level result per conversation. Thus, the field specified in this option typically is a value unique to each thread that is shared by all items (e.g., posts, emails, etc.) in the thread.<br/>
-     * This is obviously an advanced feature. Instead, look into using the {@link Folding} component, which covers a lot of different use cases.<br/>
-     * By default none is added
+     * Specifies the name of a field to use as a custom filter when executing the query (also referred to as
+     * "folding").
+     *
+     * Setting a value for this option causes the index to return only one result having any particular value inside the
+     * filter field. Any other matching result is "folded" inside the childResults member of each JSON query result.
+     *
+     * This feature is typically useful with threaded conversations to include only one top-level result per
+     * conversation. Thus, the field you specify for this option will typically be value unique to each thread that is
+     * shared by all items (e.g., posts, emails, etc) in the thread.
+     *
+     * For more advanced features, see the {@link Folding} component.
+     *
+     * Default value is the empty string (`''`).
      */
-    filterField: ComponentOptions.buildStringOption({ defaultValue: '' }),
+    filterField: ComponentOptions.buildFieldOption({ defaultValue: '' }),
+
     /**
-     * Specifies whether the interface should display a loading animation before the first query has completed successfully.<br/>
-     * Note that if you set autoTriggerQuery to false, this means that the loading animation won't go away automatically.<br/>
-     * Default is true.
+     * Specifies whether to display a loading animation before the first query successfully returns.
+     *
+     * **Note:**
+     *
+     * > If you do not set this options to `false`, the loading animation will still run until the first query
+     * > successfully returns even if the [autoTriggerQuery]{@link SearchInterface.options.autoTriggerQuery} option is
+     * `false`.
+     *
+     * See also the [firstLoadingAnimation]{@link SearchInterface.options.firstLoadingAnimation} option.
+     *
+     * Default value is `true`.
+     *
+     * @deprecated This option is exposed for legacy reasons. Since the
+     * [July 2017 Release (v2.2900.23)](https://developers.coveo.com/x/gSMvAg), the loading animation is composed of
+     * placeholders, making this option is obsolete.
      */
-    hideUntilFirstQuery: ComponentOptions.buildBooleanOption({ defaultValue: true }),
+    hideUntilFirstQuery: ComponentOptions.buildBooleanOption({
+      deprecated: 'Exposed for legacy reasons. The loading animation is now composed of placeholders, and this option is obsolete.'
+    }),
+
     /**
-     * Specifies the animation that you wish to use for your interface.<br/>
-     * This can be either a selector, or an element that matches the correct css class.<br/>
-     * Eg : firstLoadingAnimation : '.CustomFirstLoadingAnimation' / data-first-loading-animation='.CustomFirstLoadingAnimation'.</br>
-     * Eg : &lt;element class='CoveoSearchInterface'&gt;&lt;element class='coveo-first-loading-animation'/&gt;&lt;/element&gt;<br/>
-     * By default, this will be a Coveo CSS animation (which can also be customized with css)
+     * Specifies the animation that you wish to display while your interface is loading.
+     *
+     * You can either specify the CSS selector of an HTML element that matches the default CSS class
+     * (`coveo-first-loading-animation`), or add `-selector` to the markup attribute of this option to specify the CSS
+     * selector of an HTML element that matches any CSS class.
+     *
+     * See also the [hideUntilFirstQuery]{@link SearchInterface.options.hideUntilFirstQuery} option.
+     *
+     * **Examples:**
+     *
+     * In this first case, the SearchInterface uses the HTML element whose `id` attribute is `MyAnimation` as the
+     * loading animation only if the `class` attribute of this element also matches `coveo-first-loading-animation`.
+     * Default loading animation CSS, which you can customize as you see fit, applies to this HTML element.
+     * ```html
+     * <div class='CoveoSearchInterface' data-first-loading-animation='#MyAnimation'>
+     *   <div id='MyAnimation' class='coveo-first-loading-animation'>
+     *     <!-- ... -->
+     *   </div>
+     *   <!-- ... -->
+     * </div>
+     * ```
+     *
+     * In this second case, the SearchInterface uses the HTML element whose `id` attribute is `MyAnimation` as the
+     * loading animation no matter what CSS class it matches. However, if the `class` attribute of the HTML element does
+     * not match `coveo-first-loading-animation`, no default loading animation CSS applies to this HTML element.
+     * Normally, you should only use `data-first-loading-animation-selector` if you want to completely override the
+     * default loading animation CSS.
+     * ```html
+     * <div class='CoveoSearchInterface' data-first-loading-animation-selector='#MyAnimation'>
+     *   <div id='MyAnimation' class='my-custom-loading-animation-class'>
+     *     <!-- ... -->
+     *   </div>
+     *   <!-- ... -->
+     * </div>
+     * ```
+     *
+     * By default, the loading animation is a Coveo CSS animation (which you can customize with CSS).
+     *
+     * @deprecated This option is exposed for legacy reasons. Since the
+     * [July 2017 Release (v2.2900.23)](https://developers.coveo.com/x/gSMvAg), the loading animation is composed of
+     * placeholders, making this option is obsolete.
      */
     firstLoadingAnimation: ComponentOptions.buildChildHtmlElementOption({
-      childSelector: '.coveo-first-loading-animation',
-      defaultFunction: () => DomUtils.getBasicLoadingAnimation()
+      deprecated: 'Exposed for legacy reasons. The loading animation is now composed of placeholder, and this options is obsolete.'
     }),
+
     /**
-     * Specifies whether the init function should trigger the first query automatically when the page is loaded.<br/>
-     * Note that if you set this to false, then the hideUntilFirstQuery option still applies. This means that the animation will still show until a query is triggered.<br/>
-     * Default is true.
+     * Specifies whether to trigger the first query automatically when the page finishes loading.
+     *
+     * Default value is `true`.
      */
     autoTriggerQuery: ComponentOptions.buildBooleanOption({ defaultValue: true }),
-    endpoint: ComponentOptions.buildCustomOption((endpoint) => endpoint != null && endpoint in SearchEndpoint.endpoints ? SearchEndpoint.endpoints[endpoint] : null, { defaultFunction: () => SearchEndpoint.endpoints['default'] }),
     /**
-     * Specifies the timezone in which the search interface is loaded. This allows the index to recognize some special query syntax.<br/>
-     * This must be an IANA zone info key (aka the Olson time zone database). For example : 'America/New_York'.<br/>
-     * By default, we use a library that tries to detect the timezone automatically.<br/>
+     * Specifies if the search interface should perform queries when no keywords are entered by the end user.
+     *
+     * When this option is set to true, the interface will initially only load with the search box, as long as you have a search box component in your interface.
+     *
+     * Once the user submits a query, the full search interface loads to display the results.
+     *
+     * When using the Coveo for Salesforce Free edition, this option is automatically set to false, and should not be changed.
+     *
+     * This option interacts closely with the {@link SearchInterface.options.autoTriggerQuery} option, as the automatic query is not triggered when there are no keywords.
+     *
+     * It also modifies the {@link IQuery.allowQueriesWithoutKeywords} query parameter.
+     *
+     * Default value is `true`
+     * @notSupportedIn salesforcefree
      */
-    timezone: ComponentOptions.buildStringOption({ defaultFunction: () => timezone.jstz.determine().name() }),
+    allowQueriesWithoutKeywords: ComponentOptions.buildBooleanOption({ defaultValue: true }),
+    endpoint: ComponentOptions.buildCustomOption(
+      endpoint => (endpoint != null && endpoint in SearchEndpoint.endpoints ? SearchEndpoint.endpoints[endpoint] : null),
+      { defaultFunction: () => SearchEndpoint.endpoints['default'] }
+    ),
+
     /**
-     * Specifies whether to enable the feature that allows users to ALT + double click on any results to get the Debug page with a detailed view of all the properties and fields for a given result.<br/>
-     * This has no security concern (as all those informations are visible to users through the browser developer console or by calling the Coveo API directly).<br/>
-     * The default value is true.
+     * Specifies the timezone in which the search interface is loaded. This allows the index to recognize some special
+     * query syntax.
+     *
+     * This option must have a valid IANA zone info key (AKA the Olson time zone database) as its value.
+     *
+     * **Example:** `America/New_York`.
+     *
+     * By default, the search interface allows a library to try to detect the timezone automatically.
+     */
+    timezone: ComponentOptions.buildStringOption({ defaultFunction: () => jstz.determine().name() }),
+    /**
+     * Specifies whether to enable the feature that allows the end user to ALT + double click any result to open a debug
+     * page with detailed information about all properties and fields for that result.
+     *
+     * Enabling this feature causes no security concern; the entire debug information is always visible to the end user
+     * through the browser developer console or by calling the Coveo API directly.
+     *
+     * Default value is `true`.
      */
     enableDebugInfo: ComponentOptions.buildBooleanOption({ defaultValue: true }),
+
     /**
-     * Specifies whether to enable the collaborative rating for the index and and include the user rating on each results to the normal index ranking.<br/>
-     * If activated, this option can be leveraged with the {@link ResultRating} component.<br/>
-     * The default value is false.
+     * Specifies whether to enable collaborative rating, which you can leverage using the
+     * [`ResultRating`]{@link ResultRating} component.
+     *
+     * Setting this option to `true` has no effect unless collaborative rating is also enabled on your Coveo index.
+     *
+     * Default value is `false`.
      */
     enableCollaborativeRating: ComponentOptions.buildBooleanOption({ defaultValue: false }),
+
     /**
-     * Specifies whether to filter duplicates on the search results.<br/>
-     * When true, duplicates do not appear in search results, but they however are included in facet counts, which can be sometimes confusing for the users. This is a limitation of the index.<br/>
-     * Example: The user narrows a query to one document that has a duplicate. Only one document appears in search results, but the facet count is 2.<br/>
-     * The default value is false.
+     * Specifies whether to filter duplicates in the search results.
+     *
+     * Setting this option to `true` forces duplicates to not appear in search results. However, {@link Facet} counts
+     * still include the duplicates, which can be confusing for the end user. This is a limitation of the index.
+     *
+     * **Example:**
+     *
+     * > The end user narrows a query down to a single item that has a duplicate. If the enableDuplicateFiltering
+     * > option is `true`, then only one item appears in the search results while the Facet count is still 2.
+     *
+     * **Note:**
+     *
+     * > It also is possible to set this option separately for each {@link Tab} component
+     * > (see {@link Tab.options.enableDuplicateFiltering}).
+     *
+     * Default value is `false`.
      */
     enableDuplicateFiltering: ComponentOptions.buildBooleanOption({ defaultValue: false }),
+
     /**
-     * Specifies the name of the query pipeline to use for the queries. If not specified, the default value is default, which means the default query pipeline will be used.<br/>
-     * You can use this parameter for example when your index is in a Coveo Cloud Organization where you created pipelines (see https://onlinehelp.coveo.com/en/cloud/creating_and_managing_query_pipelines.htm).<br/>
-     * Default value is 'default'.
+     * Specifies the name of the query pipeline to use for the queries.
+     *
+     * You can specify a value for this option if your index is in a Coveo Cloud organization in which pipelines have
+     * been created (see [Managing Query Pipelines](http://www.coveo.com/go?dest=cloudhelp&lcid=9&context=128)).
+     *
+     * **Note:**
+     *
+     * > It also is possible to set this option separately for each {@link Tab} component
+     * > (see {@link Tab.options.pipeline}).
+     *
+     * Default value is `undefined`, which means that the search interface uses the default pipeline.
      */
     pipeline: ComponentOptions.buildStringOption(),
+
     /**
-     * Specifies the maximum age in milliseconds that cached query results can have in order to be used (instead of performing a new query on the index).<br/>
-     * If cached results are available but are older than the specified age, a new query will be performed on the index.<br/>
-     * On high-volume public web sites, having a larger maximum age can greatly improve query response time at the cost of result freshness.<br/>
-     * By default, the Coveo Search API will determine the cache length. This is typically 15 minutes.
+     * Specifies the maximum age (in milliseconds) that cached query results can have to still be usable as results
+     * instead of performing a new query on the index. The cache is located in the Coveo Search API (which resides
+     * between the index and the search interface).
+     *
+     * If cached results that are older than the age you specify in this option are available, the framework will not
+     * use these results; it will rather perform a new query on the index.
+     *
+     * On high-volume public web sites, specifying a higher value for this option can greatly improve query response
+     * time at the cost of result freshness.
+     *
+     * **Note:**
+     *
+     * > It also is possible to set this option separately for each {@link Tab} component
+     * > (see {@link Tab.options.maximumAge}).
+     *
+     * Default value is `undefined`, which means that the search interface lets the Coveo Search API determine the
+     * maximum cache age. This is typically equivalent to 30 minutes (see
+     * [Query Parameters - maximumAge](https://developers.coveo.com/x/iwEv#QueryParameters-maximumAge)).
      */
     maximumAge: ComponentOptions.buildNumberOption(),
+
     /**
-     * Specifies the search page you wish to navigate to when instantiating a standalone search box interface.<br/>
-     * By default this is undefined, meaning the search interface will not redirect.
+     * Specifies the search page you wish to navigate to when instantiating a standalone search box interface.
+     *
+     * Default value is `undefined`, which means that the search interface does not redirect.
      */
     searchPageUri: ComponentOptions.buildStringOption()
   };
@@ -177,7 +417,6 @@ export class SearchInterface extends RootComponent {
   public static SMALL_INTERFACE_CLASS_NAME = 'coveo-small-search-interface';
 
   private attachedComponents: { [type: string]: BaseComponent[] };
-  private isNewDesignAttribute = false;
 
   public root: HTMLElement;
   public queryStateModel: QueryStateModel;
@@ -185,32 +424,39 @@ export class SearchInterface extends RootComponent {
   public queryController: QueryController;
   public componentOptionsModel: ComponentOptionsModel;
   public usageAnalytics: IAnalyticsClient;
+  /**
+   * Allows to get and set the different breakpoints for mobile and tablet devices.
+   *
+   * This is useful, amongst other, for {@link Facet}, {@link Tab} and {@link ResultList}
+   */
+  public responsiveComponents: ResponsiveComponents;
 
   /**
-   * Create a new search interface. Initialize letious singleton for the interface (eg : Usage analytic, query controller, state model, etc.)<br/>
-   * Bind event related to the query.<br/>
-   * Will hide and show the loading animation, if activated.<br/>
-   * @param element The HTMLElement on which the element will be instantiated. This cannot be an HTMLInputElement for technical reason
-   * @param options The options for the querybox.
-   * @param analyticsOptions The options for the analytics component. Since the analytics component is normally global, it needs to be passed at initialization of the whole interface
-   * @param _window The window object for the search interface. Used for unit tests, which can pass a mock. Default is the global window object.
+   * Creates a new SearchInterface. Initialize various singletons for the interface (e.g., usage analytics, query
+   * controller, state model, etc.). Binds events related to the query.
+   * @param element The HTMLElement on which to instantiate the component. This cannot be an `HTMLInputElement` for
+   * technical reasons.
+   * @param options The options for the SearchInterface.
+   * @param analyticsOptions The options for the {@link Analytics} component. Since the Analytics component is normally
+   * global, it needs to be passed at initialization of the whole interface.
+   * @param _window The window object for the search interface. Used for unit tests, which can pass a mock. Default is
+   * the global window object.
    */
-  constructor(public element: HTMLElement, public options?: ISearchInterfaceOptions, public analyticsOptions?, _window = window) {
+  constructor(public element: HTMLElement, public options?: ISearchInterfaceOptions, public analyticsOptions?, public _window = window) {
     super(element, SearchInterface.ID);
 
     if (DeviceUtils.isMobileDevice()) {
       $$(document.body).addClass('coveo-mobile-device');
     }
 
-    FastClick.attach(element);
+    // The definition file for fastclick does not match the way that fast click gets loaded (AMD)
+    if ((<any>fastclick).attach) {
+      (<any>fastclick).attach(element);
+    }
 
     this.options = ComponentOptions.initComponentOptions(element, SearchInterface, options);
     Assert.exists(element);
     Assert.exists(this.options);
-
-    if (this.options.hideUntilFirstQuery) {
-      this.showAndHideFirstQueryAnimation();
-    }
 
     this.root = element;
     this.queryStateModel = new QueryStateModel(element);
@@ -218,9 +464,15 @@ export class SearchInterface extends RootComponent {
     this.componentOptionsModel = new ComponentOptionsModel(element);
     this.usageAnalytics = this.initializeAnalytics();
     this.queryController = new QueryController(element, this.options, this.usageAnalytics, this);
+    new SentryLogger(this.queryController);
 
+    if (this.options.allowQueriesWithoutKeywords) {
+      this.initializeEmptyQueryAllowed();
+    } else {
+      this.initializeEmptyQueryNotAllowed();
+    }
 
-    let eventName = this.queryStateModel.getEventName(Model.eventTypes.preprocess);
+    const eventName = this.queryStateModel.getEventName(Model.eventTypes.preprocess);
     $$(this.element).on(eventName, (e, args) => this.handlePreprocessQueryStateModel(args));
     $$(this.element).on(QueryEvents.buildingQuery, (e, args) => this.handleBuildingQuery(args));
     $$(this.element).on(QueryEvents.querySuccess, (e, args) => this.handleQuerySuccess(args));
@@ -228,65 +480,49 @@ export class SearchInterface extends RootComponent {
 
     if (this.options.enableHistory) {
       if (!this.options.useLocalStorageForHistory) {
-        new HistoryController(element, _window, this.queryStateModel, this.queryController);
+        this.initializeHistoryController();
       } else {
         new LocalStorageHistoryController(element, _window, this.queryStateModel, this.queryController);
       }
     } else {
-      $$(this.element).on(InitializationEvents.restoreHistoryState, () => this.queryStateModel.setMultiple(this.queryStateModel.defaultAttributes))
+      $$(this.element).on(InitializationEvents.restoreHistoryState, () =>
+        this.queryStateModel.setMultiple(this.queryStateModel.defaultAttributes)
+      );
     }
 
-    let eventNameQuickview = this.queryStateModel.getEventName(Model.eventTypes.changeOne + QueryStateModel.attributesEnum.quickview);
+    const eventNameQuickview = this.queryStateModel.getEventName(Model.eventTypes.changeOne + QueryStateModel.attributesEnum.quickview);
     $$(this.element).on(eventNameQuickview, (e, args) => this.handleQuickviewChanged(args));
-    // shows the UI, since it's been hidden while loading
-    this.element.style.display = element.style.display || 'block';
     this.setupDebugInfo();
-    this.isNewDesignAttribute = this.root.getAttribute('data-design') == 'new';
+    this.responsiveComponents = new ResponsiveComponents();
   }
 
   /**
-   * Display the first query animation.<br/>
-   * This is normally the Coveo logo with a css animation (which can be customized with options or css)
-   */
-  public showWaitAnimation() {
-    $$(this.options.firstLoadingAnimation).detach();
-    $$(this.element).addClass('coveo-waiting-for-first-query');
-    this.element.appendChild(this.options.firstLoadingAnimation);
-  }
-
-  /**
-   * Hide the first query animation.<br/>
-   * This is normally the Coveo logo with a css animation (which can be customized with options or css)
-   */
-  public hideWaitAnimation() {
-    $$(this.options.firstLoadingAnimation).detach();
-    $$(this.element).removeClass('coveo-waiting-for-first-query');
-  }
-
-  /**
-   * Attach a component to the interface. This allows the interface to easily list and traverse it's component.
-   * @param type Normally a unique identifier without the Coveo prefix. Eg : CoveoFacet -> Facet, CoveoPager -> Pager, CoveoQuerybox -> Querybox, etc.
-   * @param component The component instance to attach
+   * Attaches a component to the search interface. This allows the search interface to easily list and iterate over its
+   * components.
+   * @param type Normally, the component type is a unique identifier without the `Coveo` prefix (e.g., `CoveoFacet` ->
+   * `Facet`, `CoveoPager` -> `Pager`, `CoveoQuerybox` -> `Querybox`, etc.).
+   * @param component The component instance to attach.
    */
   public attachComponent(type: string, component: BaseComponent) {
     this.getComponents(type).push(component);
   }
 
   /**
-   * Detach a component from the interface.
-   * @param type Normally a unique identifier without the Coveo prefix. Eg : CoveoFacet -> Facet, CoveoPager -> Pager, CoveoQuerybox -> Querybox, etc.
-   * @param component The component instance to detach
+   * Detaches a component from the search interface.
+   * @param type Normally, the component type is a unique identifier without the `Coveo` prefix (e.g., `CoveoFacet` ->
+   * `Facet`, `CoveoPager` -> `Pager`, `CoveoQuerybox` -> `Querybox`, etc.).
+   * @param component The component instance to detach.
    */
   public detachComponent(type: string, component: BaseComponent) {
-    let components = this.getComponents(type);
-    let index = _.indexOf(components, component);
+    const components = this.getComponents(type);
+    const index = _.indexOf(components, component);
     if (index > -1) {
       components.splice(index, 1);
     }
   }
 
   /**
-   * Return the bindings, or environment, for the current component
+   * Returns the bindings, or environment, for the current component.
    * @returns {IComponentBindings}
    */
   public getBindings() {
@@ -302,13 +538,53 @@ export class SearchInterface extends RootComponent {
   }
 
   /**
-   * Get all the components for a given type
-   * @param type Normally a unique identifier without the Coveo prefix. Eg : CoveoFacet -> Facet, CoveoPager -> Pager, CoveoQuerybox -> Querybox, etc.
+   * Gets the query context for the current search interface.
+   *
+   * If the search interface has performed at least one query, it will try to resolve the context from the last query sent to the Coveo Search API.
+   *
+   * If the search interface has not performed a query yet, it will try to resolve the context from any avaiable {@link PipelineContext} component.
+   *
+   * If multiple {@link PipelineContext} components are available, it will merge all context values together.
+   *
+   * **Note:**
+   * Having multiple PipelineContext components in the same search interface is not recommended, especially if some context keys are repeated across those components.
+   *
+   * If no context is found, returns `undefined`
+   */
+  public getQueryContext(): Context {
+    let ret: Context;
+
+    const lastQuery = this.queryController.getLastQuery();
+    if (lastQuery.context) {
+      ret = lastQuery.context;
+    } else {
+      const pipelines = this.getComponents<IPipelineContextProvider>('PipelineContext');
+
+      if (pipelines && !_.isEmpty(pipelines)) {
+        const contextMerged = _.chain(pipelines)
+          .map(pipeline => pipeline.getContext())
+          .reduce((memo, context) => ({ ...memo, ...context }), {})
+          .value();
+        if (!_.isEmpty(contextMerged)) {
+          ret = contextMerged;
+        }
+      }
+    }
+
+    return ret;
+  }
+
+  /**
+   * Gets all the components of a given type.
+   * @param type Normally, the component type is a unique identifier without the `Coveo` prefix (e.g., `CoveoFacet` ->
+   * `Facet`, `CoveoPager` -> `Pager`, `CoveoQuerybox` -> `Querybox`, etc.).
    */
   public getComponents<T>(type: string): T[];
+
   /**
-   * Get all the components for a given type
-   * @param type Normally a unique identifier without the Coveo prefix. Eg : CoveoFacet -> Facet, CoveoPager -> Pager, CoveoQuerybox -> Querybox, etc.
+   * Gets all the components of a given type.
+   * @param type Normally, the component type is a unique identifier without the `Coveo` prefix (e.g., `CoveoFacet` ->
+   * `Facet`, `CoveoPager` -> `Pager`, `CoveoQuerybox` -> `Querybox`, etc.).
    */
   public getComponents(type: string): BaseComponent[] {
     if (this.attachedComponents == null) {
@@ -320,60 +596,39 @@ export class SearchInterface extends RootComponent {
     return this.attachedComponents[type];
   }
 
-  /**
-   * Determines whether the interface is using the new design.<br/>
-   * This changes the rendering of multiple components.
-   */
-  public isNewDesign() {
-    return this.isNewDesignAttribute;
-  }
-
-  public isSmallInterface(): boolean {
-    return $$(this.root).hasClass(SearchInterface.SMALL_INTERFACE_CLASS_NAME);
-  }
-
-  public setSmallInterface(): void {
-    $$(this.root).addClass(SearchInterface.SMALL_INTERFACE_CLASS_NAME);
-  }
-
-  public unsetSmallInterface(): void {
-    $$(this.root).removeClass(SearchInterface.SMALL_INTERFACE_CLASS_NAME);
-  }
-
   protected initializeAnalytics(): IAnalyticsClient {
-    let analyticsRef = BaseComponent.getComponentRef('Analytics');
+    const analyticsRef = BaseComponent.getComponentRef('Analytics');
     if (analyticsRef) {
-      return analyticsRef.create(this.element, this.analyticsOptions);
+      return analyticsRef.create(this.element, this.analyticsOptions, this.getBindings());
     }
     return new NoopAnalyticsClient();
   }
 
+  private initializeHistoryController() {
+    const historyControllerEnvironment: IHistoryControllerEnvironment = {
+      model: this.queryStateModel,
+      queryController: this.queryController,
+      usageAnalytics: this.usageAnalytics,
+      window: this._window
+    };
+    new HistoryController(this.element, historyControllerEnvironment);
+  }
+
   private setupDebugInfo() {
     if (this.options.enableDebugInfo) {
-      setTimeout(() => new Debug(this.element, this.queryController));
+      setTimeout(() => new Debug(this.element, this.getBindings()));
     }
   }
 
-  private showAndHideFirstQueryAnimation() {
-    this.showWaitAnimation();
-    // On first query success or error, wait for call stack to finish, then remove the animation
-    $$(this.element).one(QueryEvents.querySuccess, () => {
-      _.defer(() => this.hideWaitAnimation());
-    })
-    $$(this.element).one(QueryEvents.queryError, () => {
-      _.defer(() => this.hideWaitAnimation());
-    })
-  }
-
   private handlePreprocessQueryStateModel(args: any) {
-    let tgFromModel = this.queryStateModel.get(QueryStateModel.attributesEnum.tg);
-    let tFromModel = this.queryStateModel.get(QueryStateModel.attributesEnum.t);
+    const tgFromModel = this.queryStateModel.get(QueryStateModel.attributesEnum.tg);
+    const tFromModel = this.queryStateModel.get(QueryStateModel.attributesEnum.t);
 
     let tg = tgFromModel;
     let t = tFromModel;
 
     // if you want to set the tab group
-    if (args.tg !== undefined) {
+    if (args && args.tg !== undefined) {
       args.tg = this.getTabGroupId(args.tg);
       if (tg != args.tg) {
         args.t = args.t || QueryStateModel.defaultAttributes.t;
@@ -382,7 +637,7 @@ export class SearchInterface extends RootComponent {
       }
     }
 
-    if (args.t !== undefined) {
+    if (args && args.t !== undefined) {
       args.t = this.getTabId(tg, args.t);
       if (t != args.t) {
         args.sort = args.sort || QueryStateModel.defaultAttributes.sort;
@@ -390,47 +645,53 @@ export class SearchInterface extends RootComponent {
       }
     }
 
-    if (args.sort !== undefined) {
+    if (args && args.sort !== undefined) {
       args.sort = this.getSort(t, args.sort);
     }
 
-    if (args.quickview !== undefined) {
+    if (args && args.quickview !== undefined) {
       args.quickview = this.getQuickview(args.quickview);
     }
   }
 
   private getTabGroupId(tabGroupId: string) {
-    let tabGroupRef = BaseComponent.getComponentRef('TabGroup')
+    const tabGroupRef = BaseComponent.getComponentRef('TabGroup');
     if (tabGroupRef) {
-      let tabGroups = this.getComponents<any>(tabGroupRef.ID);
+      const tabGroups = this.getComponents<any>(tabGroupRef.ID);
       // check if the tabgroup is correct
-      if (tabGroupId != QueryStateModel.defaultAttributes.tg && _.any(tabGroups, (tabGroup: any) => !tabGroup.disabled && tabGroupId == tabGroup.options.id)) {
+      if (
+        tabGroupId != QueryStateModel.defaultAttributes.tg &&
+        _.any(tabGroups, (tabGroup: any) => !tabGroup.disabled && tabGroupId == tabGroup.options.id)
+      ) {
         return tabGroupId;
       }
       // select the first tabGroup
       if (tabGroups.length > 0) {
-        return tabGroups[0].options.id
+        return tabGroups[0].options.id;
       }
     }
     return QueryStateModel.defaultAttributes.tg;
   }
 
   private getTabId(tabGroupId: string, tabId: string) {
-    let tabRef = BaseComponent.getComponentRef('Tab');
-    let tabGroupRef = BaseComponent.getComponentRef('TabGroup');
+    const tabRef = BaseComponent.getComponentRef('Tab');
+    const tabGroupRef = BaseComponent.getComponentRef('TabGroup');
     if (tabRef) {
-      let tabs = this.getComponents<any>(tabRef.ID);
+      const tabs = this.getComponents<any>(tabRef.ID);
       if (tabGroupRef) {
         // if has a tabGroup
         if (tabGroupId != QueryStateModel.defaultAttributes.tg) {
-          let tabGroups = this.getComponents<any>(tabGroupRef.ID);
-          let tabGroup = _.find(tabGroups, (tabGroup: any) => tabGroupId == tabGroup.options.id);
+          const tabGroups = this.getComponents<any>(tabGroupRef.ID);
+          const tabGroup = _.find(tabGroups, (tabGroup: any) => tabGroupId == tabGroup.options.id);
           // check if the tabgroup contain this tab
-          if (tabId != QueryStateModel.defaultAttributes.t && _.any(tabs, (tab: any) => tabId == tab.options.id && tabGroup.isElementIncludedInTabGroup(tab.element))) {
+          if (
+            tabId != QueryStateModel.defaultAttributes.t &&
+            _.any(tabs, (tab: any) => tabId == tab.options.id && tabGroup.isElementIncludedInTabGroup(tab.element))
+          ) {
             return tabId;
           }
           // select the first tab in the tabGroup
-          let tab = _.find(tabs, (tab: any) => tabGroup.isElementIncludedInTabGroup(tab.element));
+          const tab = _.find(tabs, (tab: any) => tabGroup.isElementIncludedInTabGroup(tab.element));
           if (tab != null) {
             return tab.options.id;
           }
@@ -443,33 +704,36 @@ export class SearchInterface extends RootComponent {
       }
       // select the first tab
       if (tabs.length > 0) {
-        return tabs[0].options.id
+        return tabs[0].options.id;
       }
     }
     return QueryStateModel.defaultAttributes.t;
   }
 
   private getSort(tabId: string, sortId: string) {
-    let sortRef = BaseComponent.getComponentRef('Sort');
+    const sortRef = BaseComponent.getComponentRef('Sort');
     if (sortRef) {
-      let sorts = this.getComponents<any>(sortRef.ID);
+      const sorts = this.getComponents<any>(sortRef.ID);
       // if has a selected tab
-      let tabRef = BaseComponent.getComponentRef('Tab');
+      const tabRef = BaseComponent.getComponentRef('Tab');
       if (tabRef) {
         if (tabId != QueryStateModel.defaultAttributes.t) {
-          let tabs = this.getComponents<any>(tabRef.ID);
-          let tab = _.find(tabs, (tab: any) => tabId == tab.options.id);
-          let sortCriteria = tab.options.sort;
+          const tabs = this.getComponents<any>(tabRef.ID);
+          const tab = _.find(tabs, (tab: any) => tabId == tab.options.id);
+          const sortCriteria = tab.options.sort;
 
           // check if the tab contain this sort
-          if (sortId != QueryStateModel.defaultAttributes.sort && _.any(sorts, (sort: any) => tab.isElementIncludedInTab(sort.element) && sort.match(sortId))) {
+          if (
+            sortId != QueryStateModel.defaultAttributes.sort &&
+            _.any(sorts, (sort: any) => tab.isElementIncludedInTab(sort.element) && sort.match(sortId))
+          ) {
             return sortId;
           } else if (sortCriteria != null) {
             // if not and tab.options.sort is set apply it
             return sortCriteria.toString();
           }
           // select the first sort in the tab
-          let sort = _.find(sorts, (sort: any) => tab.isElementIncludedInTab(sort.element));
+          const sort = _.find(sorts, (sort: any) => tab.isElementIncludedInTab(sort.element));
           if (sort != null) {
             return sort.options.sortCriteria[0].toString();
           }
@@ -489,9 +753,9 @@ export class SearchInterface extends RootComponent {
   }
 
   private getQuickview(quickviewId: string) {
-    let quickviewRef = BaseComponent.getComponentRef('Quickview');
+    const quickviewRef = BaseComponent.getComponentRef('Quickview');
     if (quickviewRef) {
-      let quickviews = this.getComponents<any>(quickviewRef.ID);
+      const quickviews = this.getComponents<any>(quickviewRef.ID);
       if (_.any(quickviews, (quickview: any) => quickview.getHashId() == quickviewId)) {
         return quickviewId;
       }
@@ -500,19 +764,19 @@ export class SearchInterface extends RootComponent {
   }
 
   private handleQuickviewChanged(args: IAttributeChangedEventArg) {
-    let quickviewRef = BaseComponent.getComponentRef('Quickview');
+    const quickviewRef = BaseComponent.getComponentRef('Quickview');
     if (quickviewRef) {
-      let quickviews = this.getComponents<any>(quickviewRef.ID);
+      const quickviews = this.getComponents<any>(quickviewRef.ID);
       if (args.value != '') {
-        let quickviewsPartition = _.partition(quickviews, (quickview) => quickview.getHashId() == args.value)
+        const quickviewsPartition = _.partition(quickviews, quickview => quickview.getHashId() == args.value);
         if (quickviewsPartition[0].length != 0) {
           _.first(quickviewsPartition[0]).open();
-          _.forEach(_.tail(quickviewsPartition[0]), (quickview) => quickview.close());
+          _.forEach(_.tail(quickviewsPartition[0]), quickview => quickview.close());
         }
-        _.forEach(quickviewsPartition[1], (quickview) => quickview.close());
+        _.forEach(quickviewsPartition[1], quickview => quickview.close());
       } else {
-        _.forEach(quickviews, (quickview) => {
-          quickview.close()
+        _.forEach(quickviews, quickview => {
+          quickview.close();
         });
       }
     }
@@ -540,11 +804,11 @@ export class SearchInterface extends RootComponent {
     }
 
     if (Utils.isNonEmptyString(this.options.expression)) {
-      data.queryBuilder.advancedExpression.add(this.options.expression);
+      data.queryBuilder.constantExpression.add(this.options.expression);
     }
 
-    if (Utils.isNonEmptyString(this.options.filterField)) {
-      data.queryBuilder.filterField = this.options.filterField;
+    if (Utils.isNonEmptyString(<string>this.options.filterField)) {
+      data.queryBuilder.filterField = <string>this.options.filterField;
     }
 
     if (Utils.isNonEmptyString(this.options.timezone)) {
@@ -554,12 +818,14 @@ export class SearchInterface extends RootComponent {
     data.queryBuilder.enableCollaborativeRating = this.options.enableCollaborativeRating;
 
     data.queryBuilder.enableDuplicateFiltering = this.options.enableDuplicateFiltering;
+
+    data.queryBuilder.allowQueriesWithoutKeywords = this.options.allowQueriesWithoutKeywords;
   }
 
   private handleQuerySuccess(data: IQuerySuccessEventArgs) {
-    let noResults = data.results.results.length == 0;
+    const noResults = data.results.results.length == 0;
     this.toggleSectionState('coveo-no-results', noResults);
-    let resultsHeader = $$(this.element).find('.coveo-results-header');
+    const resultsHeader = $$(this.element).find('.coveo-results-header');
     if (resultsHeader) {
       $$(resultsHeader).removeClass('coveo-query-error');
     }
@@ -567,17 +833,18 @@ export class SearchInterface extends RootComponent {
 
   private handleQueryError(data: IQueryErrorEventArgs) {
     this.toggleSectionState('coveo-no-results');
-    let resultsHeader = $$(this.element).find('.coveo-results-header');
+    const resultsHeader = $$(this.element).find('.coveo-results-header');
     if (resultsHeader) {
       $$(resultsHeader).addClass('coveo-query-error');
     }
   }
 
   private toggleSectionState(cssClass: string, toggle = true) {
-    let facetSection = $$(this.element).find('.coveo-facet-column');
-    let resultsSection = $$(this.element).find('.coveo-results-column');
-    let resultsHeader = $$(this.element).find('.coveo-results-header');
-    let facetSearchs = $$(this.element).findAll('.coveo-facet-search-results');
+    const facetSection = $$(this.element).find('.coveo-facet-column');
+    const resultsSection = $$(this.element).find('.coveo-results-column');
+    const resultsHeader = $$(this.element).find('.coveo-results-header');
+    const facetSearchs = $$(this.element).findAll('.coveo-facet-search-results');
+    const recommendationSection = $$(this.element).find('.coveo-recommendation-main-section');
 
     if (facetSection) {
       $$(facetSection).toggleClass(cssClass, toggle && !this.queryStateModel.atLeastOneFacetIsActive());
@@ -588,37 +855,74 @@ export class SearchInterface extends RootComponent {
     if (resultsHeader) {
       $$(resultsHeader).toggleClass(cssClass, toggle && !this.queryStateModel.atLeastOneFacetIsActive());
     }
+    if (recommendationSection) {
+      $$(recommendationSection).toggleClass(cssClass, toggle);
+    }
     if (facetSearchs && facetSearchs.length > 0) {
-      _.each(facetSearchs, (facetSearch) => {
+      _.each(facetSearchs, facetSearch => {
         $$(facetSearch).toggleClass(cssClass, toggle && !this.queryStateModel.atLeastOneFacetIsActive());
-      })
+      });
     }
   }
-}
 
+  private initializeEmptyQueryAllowed() {
+    new InitializationPlaceholder(this.element).withFullInitializationStyling().withAllPlaceholders();
+  }
+
+  private initializeEmptyQueryNotAllowed() {
+    const placeholder = new InitializationPlaceholder(this.element)
+      .withEventToRemovePlaceholder(QueryEvents.newQuery)
+      .withFullInitializationStyling()
+      .withHiddenRootElement()
+      .withPlaceholderForFacets()
+      .withPlaceholderForResultList();
+
+    $$(this.root).on(InitializationEvents.restoreHistoryState, () => {
+      placeholder.withVisibleRootElement();
+      if (this.queryStateModel.get('q') == '') {
+        placeholder.withWaitingForFirstQueryMode();
+      }
+    });
+
+    $$(this.element).on(QueryEvents.doneBuildingQuery, (e, args: IDoneBuildingQueryEventArgs) => {
+      if (!args.queryBuilder.containsEndUserKeywords()) {
+        this.logger.info('Query cancelled by the Search Interface', 'Configuration does not allow empty query', this, this.options);
+        args.cancel = true;
+      }
+    });
+  }
+}
 
 export interface IStandaloneSearchInterfaceOptions extends ISearchInterfaceOptions {
   redirectIfEmpty?: boolean;
 }
 
 export class StandaloneSearchInterface extends SearchInterface {
-  static ID = 'StandaloneSearchInterface'
+  static ID = 'StandaloneSearchInterface';
 
   public static options: IStandaloneSearchInterfaceOptions = {
     redirectIfEmpty: ComponentOptions.buildBooleanOption({ defaultValue: true })
-  }
+  };
 
-  constructor(public element: HTMLElement, public options?: IStandaloneSearchInterfaceOptions, public analyticsOptions?, _window = window) {
+  constructor(
+    public element: HTMLElement,
+    public options?: IStandaloneSearchInterfaceOptions,
+    public analyticsOptions?,
+    public _window = window
+  ) {
     super(element, ComponentOptions.initComponentOptions(element, StandaloneSearchInterface, options), analyticsOptions, _window);
     $$(this.root).on(QueryEvents.newQuery, (e: Event, args: INewQueryEventArgs) => this.handleRedirect(e, args));
   }
 
   public handleRedirect(e: Event, data: INewQueryEventArgs) {
+    if (data.shouldRedirectStandaloneSearchbox === false) {
+      return;
+    }
 
-    let dataToSendOnBeforeRedirect: IBeforeRedirectEventArgs = {
+    const dataToSendOnBeforeRedirect: IBeforeRedirectEventArgs = {
       searchPageUri: this.options.searchPageUri,
       cancel: false
-    }
+    };
 
     $$(this.root).trigger(StandaloneSearchInterfaceEvents.beforeRedirect, dataToSendOnBeforeRedirect);
 
@@ -634,19 +938,37 @@ export class StandaloneSearchInterface extends SearchInterface {
   }
 
   public redirectToSearchPage(searchPage: string) {
-    let stateValues = this.queryStateModel.getAttributes();
+    const stateValues = this.queryStateModel.getAttributes();
     let uaCausedBy = this.usageAnalytics.getCurrentEventCause();
+
     if (uaCausedBy != null) {
+      // for legacy reason, searchbox submit were always logged a search from link in an external search box.
+      // transform them if that's what we hit.
+      if (uaCausedBy == analyticsActionCauseList.searchboxSubmit.name) {
+        uaCausedBy = analyticsActionCauseList.searchFromLink.name;
+      }
       stateValues['firstQueryCause'] = uaCausedBy;
     }
-    let uaMeta = this.usageAnalytics.getCurrentEventMeta();
+    const uaMeta = this.usageAnalytics.getCurrentEventMeta();
     if (uaMeta != null) {
       stateValues['firstQueryMeta'] = uaMeta;
     }
-    window.location.href = searchPage + '#' + HashUtils.encodeValues(stateValues);
+
+    const link = document.createElement('a');
+    link.href = searchPage;
+    link.href = link.href; // IE11 needs this to correctly fill the properties that are used below.
+
+    const pathname = link.pathname.indexOf('/') == 0 ? link.pathname : '/' + link.pathname; // IE11 does not add a leading slash to this property.
+    const hash = link.hash ? link.hash + '&' : '#';
+
+    // By using a setTimeout, we allow other possible code related to the search box / magic box time to complete.
+    // eg: onblur of the magic box.
+    setTimeout(() => {
+      this._window.location.href = `${link.protocol}//${link.host}${pathname}${link.search}${hash}${HashUtils.encodeValues(stateValues)}`;
+    }, 0);
   }
 
   private searchboxIsEmpty(): boolean {
-    return Utils.isEmptyString(this.queryStateModel.get(QueryStateModel.attributesEnum.q))
+    return Utils.isEmptyString(this.queryStateModel.get(QueryStateModel.attributesEnum.q));
   }
 }

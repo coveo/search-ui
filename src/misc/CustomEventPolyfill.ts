@@ -1,6 +1,6 @@
-
 // CustomEvent polyfill from MDN
 // https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent/CustomEvent#Polyfill
+/* istanbul ignore next */
 export function customEventPolyfill() {
   // window.CustomEvent is missing from the definitions
   if (typeof (<any>window).CustomEvent === 'function') {
@@ -12,7 +12,7 @@ export function customEventPolyfill() {
     let customEvent = document.createEvent('CustomEvent');
     customEvent.initCustomEvent(event, params.bubbles, params.cancelable, params.detail);
     return customEvent;
-  }
+  };
 
   // window.Event is specific to IE
   CustomEvent.prototype = (<any>window).Event.prototype;

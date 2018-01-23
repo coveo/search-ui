@@ -1,15 +1,22 @@
-var gulp = require('gulp');
-var concat = require('gulp-concat');
-var conditions = require('../templates/conditions.json');
-var conditionsLegacy = require('../breakingchanges/redesign/templates/conditions.json');
-var templatesParser = require('./templatesParser');
+'use strict';
+const gulp = require('gulp');
+const conditions = require('../templates/conditions.json');
+const templatesParser = require('./templatesParser');
+const runsequence = require('run-sequence');
+const rename = require('gulp-rename');
 
-gulp.task('templates', ['templatesNew', 'templatesLegacy'])
-
-gulp.task('templatesNew', function (done) {
-  templatesParser.compileTemplates('templates/', 'bin/js/templates/', 'templatesNew', conditions, done);
+gulp.task('templates', (done) => {
+  runsequence('buildTemplates', 'duplicateTemplatesFile', done);
 });
 
-gulp.task('templatesLegacy', function (done) {
-  templatesParser.compileTemplates('breakingchanges/redesign/templates/', 'bin/js/templates/', 'templates', conditionsLegacy, done);
+// We duplicate template files to help on upgrade (deployments using the "NewDesign" file)
+// This should help mitigate 404 on those files, and hopefully possible maintenance case(s).
+gulp.task('buildTemplates', (done) => {
+  templatesParser.compileTemplates('templates/', 'bin/js/templates/', 'templates', conditions, done);
+});
+
+gulp.task('duplicateTemplatesFile', () => {
+  gulp.src('./bin/js/templates/templates.js')
+    .pipe(rename('templatesNew.js'))
+    .pipe(gulp.dest('./bin/js/templates/'))
 });

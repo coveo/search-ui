@@ -1,3 +1,6 @@
+@import 'mixins/breadcrumb';
+@import 'mixins/mediaQuery';
+
 .CoveoBreadcrumb {
   padding: 10px 0px 10px 0px;
   &.coveo-small-display {
@@ -10,6 +13,9 @@
   @include align-items(flex-start);
 }
 
+.coveo-no-results .CoveoBreadcrumb {
+  text-align: left;
+}
 
 .coveo-breadcrumb-clear-all {
   @include clickable();
@@ -18,14 +24,15 @@
   & > div {
     display: inline-block;
   }
-  @include clearButton('.coveo-breadcrumb-icon-clear-all');
   @include defaultRoundedBorder();
   padding: 5px;
   margin-left: 5px;
   @include flex-shrink(0);
+  @include clearButton('.coveo-breadcrumb-clear-all-icon');
 }
 
-.coveo-breadcrumb-icon-clear-all {
+.coveo-breadcrumb-clear-all-icon {
+  top: 1px;
   margin-right: 5px;
 }
 
@@ -37,4 +44,16 @@
 
 .coveo-breadcrumb-item {
   margin: 5px 0px 5px 0px;
+}
+
+@include smallScreenWidth() {
+  .CoveoBreadcrumb {
+    padding: 10px;
+  }
+  .coveo-breadcrumb-items {
+    padding-bottom: 0;
+  }
+  .coveo-breadcrumb-item:not(:last-child) {
+    margin-bottom: 10px;
+  }
 }

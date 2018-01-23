@@ -1,16 +1,20 @@
-import {Assert} from '../../misc/Assert';
-import {IQueryResult} from '../../rest/QueryResult';
-import {Utils} from '../../utils/Utils';
-import {$$, Dom} from '../../utils/Dom';
-import {QueryStateModel} from '../../models/QueryStateModel';
-import {ComponentStateModel} from '../../models/ComponentStateModel';
-import {ComponentOptionsModel} from '../../models/ComponentOptionsModel';
-import {QueryController} from '../../controllers/QueryController';
-import {SearchInterface} from '../../ui/SearchInterface/SearchInterface';
-import {IAnalyticsClient} from '../../ui/Analytics/AnalyticsClient';
-import {NoopAnalyticsClient} from '../../ui/Analytics/NoopAnalyticsClient';
-import {BaseComponent} from './BaseComponent';
-import {IComponentBindings} from './ComponentBindings';
+import { Assert } from '../../misc/Assert';
+import { IQueryResult } from '../../rest/QueryResult';
+import { Utils } from '../../utils/Utils';
+import { JQueryUtils } from '../../utils/JQueryutils';
+import { $$, Dom } from '../../utils/Dom';
+import { QueryStateModel } from '../../models/QueryStateModel';
+import { ComponentStateModel } from '../../models/ComponentStateModel';
+import { ComponentOptionsModel } from '../../models/ComponentOptionsModel';
+import { QueryController } from '../../controllers/QueryController';
+import { SearchInterface } from '../../ui/SearchInterface/SearchInterface';
+import { IAnalyticsClient } from '../../ui/Analytics/AnalyticsClient';
+import { NoopAnalyticsClient } from '../../ui/Analytics/NoopAnalyticsClient';
+import { BaseComponent } from './BaseComponent';
+import { IComponentBindings } from './ComponentBindings';
+import { DebugEvents } from '../../events/DebugEvents';
+import * as _ from 'underscore';
+import { Model } from '../../models/Model';
 
 /**
  * Definition for a Component.
@@ -21,21 +25,26 @@ export interface IComponentDefinition {
    * For example, SearchButton -> static ID : SearchButton -> className : CoveoSearchButton
    */
   ID: string;
+  aliases?: string[];
   /**
-   * The generated className for this component.<br/>
+   * The generated `className` for this component.<br/>
    * For example, SearchButton -> static ID : SearchButton -> className : CoveoSearchButton
    */
   className?: string;
   /**
+   * Function that can be called to export one or multiple module in the global scope.
+   */
+  doExport?: () => void;
+  /**
    * Constructor for each component
-   * @param element The HTMLElement on which the component will instantiate
-   * @param options The available options for the component
+   * @param element The HTMLElement on which the component will instantiate.
+   * @param options The available options for the component.
    * @param bindings The bindings (or environment) for the component.For exemple, the {@link QueryController} or {@link SearchInterface}. Optional, if not provided, the component will resolve those automatically. This has a cost on performance, though, since it has to traverses it's parents to find the correct elements.
    * @param args Optional arguments, depending on the component type. For example, ResultComponent will receive the result there.
    */
   new (element: HTMLElement, options: any, bindings: IComponentBindings, ...args: any[]): Component;
   /**
-   * The available options for the component
+   * The available options for the component.
    */
   options?: any;
   /**
@@ -43,13 +52,13 @@ export interface IComponentDefinition {
    */
   parent?: IComponentDefinition;
   /**
-   * The optional index fields that the component possess or display
+   * The optional index fields that the component possess or display.
    */
   fields?: string[];
 }
 
 /**
- * The base class for every Component in the framework
+ * The base class for every component in the framework.
  */
 export class Component extends BaseComponent {
   /**
@@ -58,7 +67,7 @@ export class Component extends BaseComponent {
    */
   public bind = new ComponentEvents(this);
   /**
-   * A reference to the root HTMLElement (the {@link SearchInterface})
+   * A reference to the root HTMLElement (the {@link SearchInterface}).
    */
   public root: HTMLElement;
   /**
@@ -74,25 +83,26 @@ export class Component extends BaseComponent {
    */
   public queryController: QueryController;
   /**
-   * A reference to the root of every component, the {@link SearchInterface}
+   * A reference to the root of every component, the {@link SearchInterface}.
    */
   public searchInterface: SearchInterface;
   /**
-   * A reference to the {@link Analytics.client}. This can be a {@link NoopAnalyticsClient} or a {@link LiveAnalyticsClient}
+   * A reference to the {@link Analytics.client}.
    */
   public usageAnalytics: IAnalyticsClient;
   /**
-   * Contains the state of options for differents component. Mainly used by {@link ResultLink}
+   * Contains the state of options for differents component. Mainly used by {@link ResultLink}.
    */
   public componentOptionsModel: ComponentOptionsModel;
   public ensureDom: Function;
+  public options?: any;
 
   /**
    * Create a new Component. Resolve all {@link IComponentBindings} if not provided.<br/>
-   * Create a new {@link Logger} for this component.
-   * Attach the component to the {@link SearchInterface}<br/>
+   * Create a new Logger for this component.
+   * Attach the component to the {@link SearchInterface}.<br/>
    * @param element The HTMLElement on which to create the component. Used to bind data on the element.
-   * @param type The unique identifier for this component. See : {@link IComponentDefinition.ID}. Used to generate the unique Coveo CSS class associated with every component
+   * @param type The unique identifier for this component. See : {@link IComponentDefinition.ID}. Used to generate the unique Coveo CSS class associated with every component.
    * @param bindings The environment for every component. Optional, but omitting to provide one will impact performance.
    */
   constructor(public element: HTMLElement, public type: string, bindings: IComponentBindings = {}) {
@@ -109,10 +119,12 @@ export class Component extends BaseComponent {
     if (this.searchInterface != null) {
       this.searchInterface.attachComponent(type, this);
     }
+
+    this.initDebugInfo();
   }
 
   /**
-   * Return the bindings, or environment, for the current component
+   * Return the bindings, or environment, for the current component.
    * @returns {IComponentBindings}
    */
   public getBindings(): IComponentBindings {
@@ -158,19 +170,30 @@ export class Component extends BaseComponent {
 
   public resolveUA(): IAnalyticsClient {
     var searchInterface = this.resolveSearchInterface();
-    return (searchInterface && searchInterface.usageAnalytics) ? searchInterface.usageAnalytics : new NoopAnalyticsClient();
+    return searchInterface && searchInterface.usageAnalytics ? searchInterface.usageAnalytics : new NoopAnalyticsClient();
   }
 
   public resolveResult(): IQueryResult {
     return Component.getResult(this.element);
   }
 
+  private initDebugInfo() {
+    $$(this.element).on('dblclick', (e: MouseEvent) => {
+      if (e.altKey) {
+        var debugInfo = this.debugInfo();
+        if (debugInfo != null) {
+          $$(this.root).trigger(DebugEvents.showDebugPanel, this.debugInfo());
+        }
+      }
+    });
+  }
+
   /**
-   * Get the bound component to the given HTMLElement. Throws an assert if the HTMLElement has no component bound, unless using the noThrow argument<br/>
-   * If there is multiple component bound to the current HTMLElement, you must specify the component class
-   * @param element HTMLElement for which to get the bound component
-   * @param componentClass Optional component class. If the HTMLElement has multiple components bound, you must specify which one you are targeting
-   * @param noThrow Boolean option to tell the method to not throw on error
+   * Get the bound component to the given HTMLElement. Throws an assert if the HTMLElement has no component bound, unless using the noThrow argument.<br/>
+   * If there is multiple component bound to the current HTMLElement, you must specify the component class.
+   * @param element HTMLElement for which to get the bound component.
+   * @param componentClass Optional component class. If the HTMLElement has multiple components bound, you must specify which one you are targeting.
+   * @param noThrow Boolean option to tell the method to not throw on error.
    * @returns {Component}
    */
   static get(element: HTMLElement, componentClass?: any, noThrow?: boolean): BaseComponent {
@@ -186,7 +209,10 @@ export class Component extends BaseComponent {
       // if there is exactly one.
       var boundComponents = BaseComponent.getBoundComponentsForElement(element);
       if (!noThrow) {
-        Assert.check(boundComponents.length <= 1, 'More than one component is bound to this element. You need to specify the component type.');
+        Assert.check(
+          boundComponents.length <= 1,
+          'More than one component is bound to this element. You need to specify the component type.'
+        );
       }
       return boundComponents[0];
     }
@@ -203,6 +229,10 @@ export class Component extends BaseComponent {
     Assert.exists(result);
     $$(element).addClass('CoveoResult');
     element['CoveoResult'] = result;
+    let jQuery = JQueryUtils.getJQuery();
+    if (jQuery) {
+      jQuery(element).data(result);
+    }
   }
 
   static resolveBinding(element: HTMLElement, componentClass: any): BaseComponent {
@@ -218,7 +248,7 @@ export class Component extends BaseComponent {
       if (!findDown || findDown.length == 0) {
         var findUp = $$(element).closest(Component.computeCssClassNameForType(componentClass.ID));
         if (findUp) {
-          found = findUp
+          found = findUp;
         }
       } else {
         found = findDown;
@@ -231,47 +261,47 @@ export class Component extends BaseComponent {
     }
   }
 
-
   static pointElementsToDummyForm(element: HTMLElement) {
-    var inputs = [];
-    if ($$(element).is('input')) {
-      inputs.push(element);
-    }
+    let inputs = $$(element).is('input') ? [element] : [];
     inputs = inputs.concat($$(element).findAll('input'));
-    _.each(_.compact(inputs), (input) => {
+    _.each(_.compact(inputs), input => {
       input.setAttribute('form', 'coveo-dummy-form');
-    })
+    });
   }
 }
 
 /**
- * Used by the various Coveo Component to trigger and bind event.<br/>
- * It adds a small logic to execute handler or triggers only when the component is "enabled".<br/>
- * A component is disabled by calling {Component.disable}<br/>
- * Typically, a Component is disabled when it is not active in the current {Tab}.<br/>
- * It can also be disabled by external code.<br/>
- * The class serves as a way to not execute handler on component that are invisible and inactive in the query.
+ * The `ComponentEvents` class is used by the various Coveo Component to trigger events and bind event handlers. It adds
+ * logic to execute handlers or triggers only when a component is "enabled", which serves as a way to avoid executing
+ * handlers on components that are invisible and inactive in the query.
+ *
+ * Typically, a component is disabled when it is not active in the current [`Tab`]{@link Tab}. It can also be disabled
+ * by external code, however.
+ *
+ * To manually enable or disable a component, simply use its [`enable`]{@link Component.enable} or
+ * [`disable`]{@link Component.disable} method.
  */
 export class ComponentEvents {
   /**
-   * Create a new ComponentEvents for the given {@link Component}
-   * @param owner The {@link Component} which owns those events handler and trigger
+   * Creates a new `ComponentEvents` instance for a [`Component`]{@link Component}.
+   * @param owner The [`Component`]{@link Component} that owns the event handlers and triggers.
    */
   constructor(public owner: Component) {
     Assert.exists(owner);
   }
 
   /**
-   * Execute the handler for the given event on the given target element.<br/>
-   * Execute only if the component is "enabled" : See {@link Component.enable}
-   * @param el The target on which the event will originate
-   * @param event The event for which to register an handler
-   * @param handler The function to execute when the event is triggered
+   * Executes the handler for an event on a target element.
+   *
+   * Executes only if the component is enabled (see the [`enable`]{@link Component.enable} method).
+   * @param el The element from which the event originates.
+   * @param event The event for which to register a handler.
+   * @param handler The function to execute when the event is triggered.
    */
-  public on(el: HTMLElement, event: string, handler: Function);
+  public on(el: HTMLElement | Window | Document, event: string, handler: Function);
   public on(el: Dom, event: string, handler: Function);
   public on(arg: any, event: string, handler: Function) {
-    if ((window && !window['jQuery']) || !(arg instanceof window['jQuery'])) {
+    if (!JQueryUtils.getJQuery() || !JQueryUtils.isInstanceOfJQuery(arg)) {
       var htmlEl: HTMLElement = arg;
       $$(htmlEl).on(event, this.wrapToCallIfEnabled(handler));
     } else {
@@ -281,12 +311,12 @@ export class ComponentEvents {
   }
 
   /**
-   * Execute the handler for the given event on the given target element.<br/>
-   * Execute only if the component is "enabled" : See {@link Component.enable}<br/>
-   * Execute the handler only ONE time
-   * @param el The target on which the event will originate
-   * @param event The event for which to register an handler
-   * @param handler The function to execute when the event is triggered
+   * Executes the handler for the given event on the given target element.<br/>
+   * Execute only if the component is "enabled" (see {@link Component.enable}).<br/>
+   * Execute the handler only ONE time.
+   * @param el The target on which the event will originate.
+   * @param event The event for which to register an handler.
+   * @param handler The function to execute when the event is triggered.
    */
   public one(el: HTMLElement, event: string, handler: Function);
   public one(el: Dom, event: string, handler: Function);
@@ -301,21 +331,21 @@ export class ComponentEvents {
   }
 
   /**
-   * Bind on the "root" of the Component. The root is typically the {@link SearchInterface}<br/>
+   * Bind on the "root" of the Component. The root is typically the {@link SearchInterface}.<br/>
    * Bind an event using native javascript code.
-   * @param event The event for which to register an handler
-   * @param handler The function to execute when the event is triggered
+   * @param event The event for which to register an handler.
+   * @param handler The function to execute when the event is triggered.
    */
   public onRootElement<T>(event: string, handler: (args: T) => any) {
     this.on(this.owner.root, event, handler);
   }
 
   /**
-   * Bind on the "root" of the Component. The root is typically the {@link SearchInterface}<br/>
+   * Bind on the "root" of the Component. The root is typically the {@link SearchInterface}.<br/>
    * Bind an event using native javascript code.
    * The handler will execute only ONE time.
-   * @param event The event for which to register an handler
-   * @param handler The function to execute when the event is triggered
+   * @param event The event for which to register an handler.
+   * @param handler The function to execute when the event is triggered.
    */
   public oneRootElement<T>(event: string, handler: (args: T) => any) {
     this.one(this.owner.root, event, handler);
@@ -324,31 +354,42 @@ export class ComponentEvents {
   /**
    * Bind an event related specially to the query state model.<br/>
    * This will build the correct string event and execute the handler only if the component is activated.
-   * @param eventType The event type for which to register an event
-   * @param attribute The attribute for which to register an event
-   * @param handler The handler to execute when the query state event is triggered
+   * @param eventType The event type for which to register an event.
+   * @param attribute The attribute for which to register an event.
+   * @param handler The handler to execute when the query state event is triggered.
    */
   public onQueryState<T>(eventType: string, attribute?: string, handler?: (args: T) => any) {
     this.onRootElement(this.getQueryStateEventName(eventType, attribute), handler);
   }
 
   /**
+   * Bind an event related specially to the component option model.
+   * This will build the correct string event and execute the handler only if the component is activated.
+   * @param eventType The event type for which to register an event.
+   * @param attribute The attribute for which to register an event.
+   * @param handler The handler to execute when the query state event is triggered.
+   */
+  public onComponentOptions<T>(eventType: string, attribute?: string, handler?: (args: T) => any) {
+    this.onRootElement(this.getComponentOptionEventName(eventType, attribute), handler);
+  }
+
+  /**
    * Bind an event related specially to the query state model.<br/>
    * This will build the correct string event and execute the handler only if the component is activated.<br/>
    * Will execute only once.
-   * @param eventType The event type for which to register an event
-   * @param attribute The attribute for which to register an event
-   * @param handler The handler to execute when the query state event is triggered
+   * @param eventType The event type for which to register an event.
+   * @param attribute The attribute for which to register an event.
+   * @param handler The handler to execute when the query state event is triggered.
    */
   public oneQueryState<T>(eventType: string, attribute?: string, handler?: (args: T) => any) {
     this.oneRootElement(this.getQueryStateEventName(eventType, attribute), handler);
   }
 
   /**
-   * Trigger an event on the target element, with optional arguments
-   * @param el The target HTMLElement on which to trigger the event
-   * @param event The event to trigger
-   * @param args The optional argument to pass to the handlers
+   * Trigger an event on the target element, with optional arguments.
+   * @param el The target HTMLElement on which to trigger the event.
+   * @param event The event to trigger.
+   * @param args The optional argument to pass to the handlers.
    */
   public trigger(el: HTMLElement, event: string, args?: Object);
   public trigger(el: Dom, event: string, args?: Object);
@@ -365,8 +406,8 @@ export class ComponentEvents {
   }
 
   /**
-   * Execute the function only if the component is enabled
-   * @param func The function to execute if the component is enabled
+   * Execute the function only if the component is enabled.
+   * @param func The function to execute if the component is enabled.
    * @returns {function(...[any]): *}
    */
   private wrapToCallIfEnabled(func: Function) {
@@ -376,11 +417,11 @@ export class ComponentEvents {
           if (args[0].detail) {
             args = [args[0].detail];
           }
-        } else if (args && window['jQuery'] && args[0] instanceof window['jQuery'].Event) {
+        } else if (args && JQueryUtils.isInstanceOfJqueryEvent(args[0])) {
           if (args[1] != undefined) {
             args = [args[1]];
           } else {
-            args = []
+            args = [];
           }
         }
         return func.apply(this.owner, args);
@@ -389,11 +430,19 @@ export class ComponentEvents {
   }
 
   private getQueryStateEventName(eventType: string, attribute?: string): string {
+    return this.getModelEvent(this.owner.queryStateModel, eventType, attribute);
+  }
+
+  private getComponentOptionEventName(eventType: string, attribute?: string): string {
+    return this.getModelEvent(this.owner.componentOptionsModel, eventType, attribute);
+  }
+
+  private getModelEvent(model: Model, eventType: string, attribute?: string) {
     var evtName;
     if (eventType && attribute) {
-      evtName = this.owner.queryStateModel.getEventName(eventType + attribute);
+      evtName = model.getEventName(eventType + attribute);
     } else {
-      evtName = this.owner.queryStateModel.getEventName(eventType);
+      evtName = model.getEventName(eventType);
     }
     return evtName;
   }

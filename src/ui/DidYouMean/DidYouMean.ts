@@ -1,39 +1,50 @@
-import {Component} from '../Base/Component';
-import {ComponentOptions} from '../Base/ComponentOptions';
-import {IComponentBindings} from '../Base/ComponentBindings';
-import {Assert} from '../../misc/Assert';
-import {QueryEvents, IBuildingQueryEventArgs, INoResultsEventArgs, IQuerySuccessEventArgs} from '../../events/QueryEvents';
-import {$$} from '../../utils/Dom';
-import {QueryStateModel} from '../../models/QueryStateModel';
-import {Initialization} from '../Base/Initialization';
-import {IQueryCorrection} from '../../rest/QueryCorrection';
-import {StringUtils} from '../../utils/StringUtils';
-import {Utils} from '../../utils/Utils';
-import {analyticsActionCauseList, IAnalyticsNoMeta} from '../Analytics/AnalyticsActionListMeta';
-import {l} from '../../strings/Strings';
+import { Component } from '../Base/Component';
+import { ComponentOptions } from '../Base/ComponentOptions';
+import { IComponentBindings } from '../Base/ComponentBindings';
+import { Assert } from '../../misc/Assert';
+import { QueryEvents, IBuildingQueryEventArgs, INoResultsEventArgs, IQuerySuccessEventArgs } from '../../events/QueryEvents';
+import { $$ } from '../../utils/Dom';
+import { QueryStateModel } from '../../models/QueryStateModel';
+import { Initialization } from '../Base/Initialization';
+import { IQueryCorrection } from '../../rest/QueryCorrection';
+import { StringUtils } from '../../utils/StringUtils';
+import { Utils } from '../../utils/Utils';
+import { analyticsActionCauseList, IAnalyticsNoMeta } from '../Analytics/AnalyticsActionListMeta';
+import { l } from '../../strings/Strings';
+import * as _ from 'underscore';
+import { exportGlobally } from '../../GlobalExports';
+import 'styling/_DidYouMean';
 
 export interface IDidYouMeanOptions {
-  enableAutoCorrection?: boolean
+  enableAutoCorrection?: boolean;
 }
 
 /**
- * This component is responsible for displaying query corrections. If this component is in the page
- * and the query returns no results, but finds a possible query correction, the component either
- * suggests the correction or automatically triggers a new query with the suggested term.
+ * The DidYouMean component is responsible for displaying query corrections. If this component is in the page and the
+ * query returns no result but finds a possible query correction, the component either suggests the correction or
+ * automatically triggers a new query with the suggested term.
  */
 export class DidYouMean extends Component {
   static ID = 'DidYouMean';
+
+  static doExport = () => {
+    exportGlobally({
+      DidYouMean: DidYouMean
+    });
+  };
+
   /**
    * The options for the component
    * @componentOptions
    */
   static options: IDidYouMeanOptions = {
     /**
-     * This option allows the DidYouMean component to automatically trigger a new query
-     * when there are no results and a correction is available <br/>
-     * The default value is <code>true</code>
+     * Specifies whether the DidYouMean component automatically triggers a new query when a query returns no result and
+     * a possible correction is available.
+     *
+     * Default value is `true`.
      */
-    enableAutoCorrection: ComponentOptions.buildBooleanOption({ defaultValue: true }),
+    enableAutoCorrection: ComponentOptions.buildBooleanOption({ defaultValue: true })
   };
 
   public correctedTerm: string;
@@ -41,13 +52,13 @@ export class DidYouMean extends Component {
   private hideNext: boolean;
 
   /**
-   * Create a new DidYouMean component
-   * @param element
-   * @param options
-   * @param bindings
+   * Creates a new DidYouMean component.
+   * @param element The HTMLElement on which to instantiate the component.
+   * @param options The options for the DidYouMean component.
+   * @param bindings The bindings that the component requires to function normally. If not set, these will be
+   * automatically resolved (with a slower execution time).
    */
   constructor(public element: HTMLElement, public options?: IDidYouMeanOptions, public bindings?: IComponentBindings) {
-
     super(element, DidYouMean.ID, bindings);
 
     this.options = ComponentOptions.initComponentOptions(element, DidYouMean, options);
@@ -66,8 +77,9 @@ export class DidYouMean extends Component {
   }
 
   /**
-   * Execute a query with the corrected term <br/>
-   * Will throw an exception if the corrected term has not been initialized
+   * Executes a query with the corrected term.
+   * Throws an exception if the corrected term has not been initialized.
+   * If successful, logs a `didyoumeanClick` event in the usage analytics.
    */
   public doQueryWithCorrectedTerm() {
     Assert.exists(this.correctedTerm);
@@ -103,7 +115,10 @@ export class DidYouMean extends Component {
       this.hideNext = false;
 
       let noResultsFor = $$('div', { className: 'coveo-did-you-mean-no-results-for' }).el;
-      noResultsFor.innerHTML = l('noResultFor', '<span class="coveo-highlight coveo-did-you-mean-highlight">' + StringUtils.htmlEncode(originalQuery) + '</span>');
+      noResultsFor.innerHTML = l(
+        'noResultFor',
+        '<span class="coveo-highlight coveo-did-you-mean-highlight">' + StringUtils.htmlEncode(originalQuery) + '</span>'
+      );
       this.element.appendChild(noResultsFor);
 
       let automaticCorrect = $$('div', { className: 'coveo-did-you-mean-automatic-correct' }).el;
@@ -141,17 +156,17 @@ export class DidYouMean extends Component {
 
   private buildCorrectedSentence(correction: IQueryCorrection) {
     let toReturn = [];
-    let tagStart = '<span class=\'coveo-did-you-mean-word-correction\'>';
+    let tagStart = "<span class='coveo-did-you-mean-word-correction'>";
     let tagEnd = '</span>';
     let currentOffset = 0;
-    _.each(correction.wordCorrections, (wordCorrection) => {
+    _.each(correction.wordCorrections, wordCorrection => {
       toReturn.push(StringUtils.htmlEncode(correction.correctedQuery.slice(currentOffset, wordCorrection.offset)));
       currentOffset = wordCorrection.offset;
       toReturn.push(tagStart);
       toReturn.push(StringUtils.htmlEncode(correction.correctedQuery.slice(currentOffset, wordCorrection.length + currentOffset)));
       toReturn.push(tagEnd);
       currentOffset = wordCorrection.offset + wordCorrection.length;
-    })
+    });
     toReturn.push(StringUtils.htmlEncode(correction.correctedQuery.slice(currentOffset)));
     return toReturn.join('');
   }

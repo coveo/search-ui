@@ -1,8 +1,7 @@
-import {Template} from '../Templates/Template'
-import {IQueryResult} from '../../rest/QueryResult'
+import { Template } from '../Templates/Template';
+import { IQueryResult } from '../../rest/QueryResult';
 
 export class DefaultFoldingTemplate extends Template {
-
   constructor() {
     super();
   }

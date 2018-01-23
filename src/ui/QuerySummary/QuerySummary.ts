@@ -1,14 +1,19 @@
-import {Component} from '../Base/Component';
-import {ComponentOptions} from '../Base/ComponentOptions';
-import {QueryEvents, IQuerySuccessEventArgs} from '../../events/QueryEvents';
-import {IComponentBindings} from '../Base/ComponentBindings';
-import {$$, Dom} from '../../utils/Dom';
-import {Assert} from '../../misc/Assert';
-import {l} from '../../strings/Strings';
-import {analyticsActionCauseList, IAnalyticsNoMeta} from '../Analytics/AnalyticsActionListMeta';
-import {Initialization} from '../Base/Initialization';
-import {QueryStateModel} from '../../models/QueryStateModel';
-import Globalize = require('globalize');
+import { Component } from '../Base/Component';
+import { ComponentOptions } from '../Base/ComponentOptions';
+import { QueryEvents, IQuerySuccessEventArgs } from '../../events/QueryEvents';
+import { IComponentBindings } from '../Base/ComponentBindings';
+import { $$, Dom } from '../../utils/Dom';
+import { Assert } from '../../misc/Assert';
+import { l } from '../../strings/Strings';
+import { analyticsActionCauseList, IAnalyticsNoMeta } from '../Analytics/AnalyticsActionListMeta';
+import { Initialization } from '../Base/Initialization';
+import { QueryStateModel } from '../../models/QueryStateModel';
+import * as Globalize from 'globalize';
+import { QuerySummaryEvents } from '../../events/QuerySummaryEvents';
+import * as _ from 'underscore';
+import { exportGlobally } from '../../GlobalExports';
+
+import 'styling/_QuerySummary';
 
 export interface IQuerySummaryOptions {
   enableSearchTips?: boolean;
@@ -16,30 +21,52 @@ export interface IQuerySummaryOptions {
 }
 
 /**
- * This component displays information about the current range of results being displayed (ex: 1-10 of 123).<br/>
- * If the query matches no documents, it will display advices and tip for the end user on how to remedy the problem.
+ * The QuerySummary component can display information about the currently displayed range of results (e.g., "Results
+ * 1-10 of 123").
+ *
+ * If the query matches no item, the QuerySummary component can instead display tips to help the end user formulate
+ * a better query.
  */
 export class QuerySummary extends Component {
   static ID = 'QuerySummary';
+
+  static doExport = () => {
+    exportGlobally({
+      QuerySummary: QuerySummary
+    });
+  };
+
   /**
    * Options for the component
    * @componentOptions
    */
   static options: IQuerySummaryOptions = {
     /**
-     * Specifies whether the search tips are displayed to the end user when there are no search results.<br/>
-     * The default value is <code>true</code>.
+     * Specifies whether to display the search tips to the end user when there are no search results.
+     *
+     * Default value is `true`.
      */
     enableSearchTips: ComponentOptions.buildBooleanOption({ defaultValue: true }),
+
     /**
-     * Specifies whether to hide the information about the current range of results being displayed and only display the search tips.<br/>
-     * The default value is <code>false</code>.
+     * Specifies whether to hide the information about the currently displayed range of results and only display the
+     * search tips instead.
+     *
+     * Default value is `false`.
      */
     onlyDisplaySearchTips: ComponentOptions.buildBooleanOption({ defaultValue: false })
   };
 
   private textContainer: HTMLElement;
+  private lastKnownGoodState: any;
 
+  /**
+   * Creates a new QuerySummary component.
+   * @param element The HTMLElement on which to instantiate the component.
+   * @param options The options for the QuerySummary component.
+   * @param bindings The bindings that the component requires to function normally. If not set, these will be
+   * automatically resolved (with a slower execution time).
+   */
   constructor(public element: HTMLElement, public options?: IQuerySummaryOptions, bindings?: IComponentBindings) {
     super(element, QuerySummary.ID, bindings);
 
@@ -66,62 +93,100 @@ export class QuerySummary extends Component {
 
     if (!this.options.onlyDisplaySearchTips) {
       if (data.results.results.length > 0) {
-        let first = Globalize.format(data.query.firstResult + 1, 'n0');
-        let last = Globalize.format(data.query.firstResult + data.results.results.length, 'n0');
-        let totalCount = Globalize.format(data.results.totalCountFiltered, 'n0');
+        const first = Globalize.format(data.query.firstResult + 1, 'n0');
+        const last = Globalize.format(data.query.firstResult + data.results.results.length, 'n0');
+        const totalCount = Globalize.format(data.results.totalCountFiltered, 'n0');
 
-        let highlightFirst = $$('span', { className: 'coveo-highlight' }, first).el;
-        let highlightLast = $$('span', { className: 'coveo-highlight' }, last).el;
-        let highlightTotal = $$('span', { className: 'coveo-highlight' }, totalCount).el;
+        const highlightFirst = $$('span', { className: 'coveo-highlight' }, first).el;
+        const highlightLast = $$('span', { className: 'coveo-highlight' }, last).el;
+        const highlightTotal = $$('span', { className: 'coveo-highlight' }, totalCount).el;
 
-        this.textContainer.innerHTML = l('ShowingResultsOf', highlightFirst.outerHTML, highlightLast.outerHTML, highlightTotal.outerHTML, data.results.results.length);
+        const query = data.query.q ? _.escape(data.query.q.trim()) : '';
+
+        if (query) {
+          const highlightQuery = $$('span', { className: 'coveo-highlight' }, query).el;
+
+          this.textContainer.innerHTML = l(
+            'ShowingResultsOfWithQuery',
+            highlightFirst.outerHTML,
+            highlightLast.outerHTML,
+            highlightTotal.outerHTML,
+            highlightQuery.outerHTML,
+            data.results.results.length
+          );
+        } else {
+          this.textContainer.innerHTML = l(
+            'ShowingResultsOf',
+            highlightFirst.outerHTML,
+            highlightLast.outerHTML,
+            highlightTotal.outerHTML,
+            data.results.results.length
+          );
+        }
       }
     }
 
     if (data.results.exception != null && data.results.exception.code != null) {
-      let code: string = ('QueryException' + data.results.exception.code).toLocaleString();
+      const code: string = ('QueryException' + data.results.exception.code).toLocaleString();
       this.textContainer.innerHTML = l('QueryException', code);
     } else if (data.results.results.length == 0) {
       this.displayInfoOnNoResults();
+    } else {
+      this.lastKnownGoodState = this.queryStateModel.getAttributes();
     }
   }
 
   private displayInfoOnNoResults() {
-    let queryEscaped = _.escape(this.queryStateModel.get(QueryStateModel.attributesEnum.q));
+    const queryEscaped = _.escape(this.queryStateModel.get(QueryStateModel.attributesEnum.q));
     let noResultsForString: Dom;
 
     if (queryEscaped != '') {
-      noResultsForString = $$('div', {
-        className: 'coveo-query-summary-no-results-string'
-      }, l('noResultFor', $$('span', { className: 'coveo-highlight' }, queryEscaped).el.outerHTML));
+      noResultsForString = $$(
+        'div',
+        {
+          className: 'coveo-query-summary-no-results-string'
+        },
+        l('noResultFor', $$('span', { className: 'coveo-highlight' }, queryEscaped).el.outerHTML)
+      );
     }
-    let cancelLastAction = $$('div', {
-      className: 'coveo-query-summary-cancel-last'
-    }, l('CancelLastAction'));
+    const cancelLastAction = $$(
+      'div',
+      {
+        className: 'coveo-query-summary-cancel-last'
+      },
+      l('CancelLastAction')
+    );
 
     cancelLastAction.on('click', () => {
       this.usageAnalytics.logCustomEvent<IAnalyticsNoMeta>(analyticsActionCauseList.noResultsBack, {}, this.root);
-      this.usageAnalytics.logSearchEvent<IAnalyticsNoMeta>(analyticsActionCauseList.noResultsBack, {})
-      history.back();
+      this.usageAnalytics.logSearchEvent<IAnalyticsNoMeta>(analyticsActionCauseList.noResultsBack, {});
+      if (this.lastKnownGoodState) {
+        this.queryStateModel.reset();
+        this.queryStateModel.setMultiple(this.lastKnownGoodState);
+        $$(this.root).trigger(QuerySummaryEvents.cancelLastAction);
+        this.queryController.executeQuery();
+      } else {
+        history.back();
+      }
     });
 
-    let searchTipsInfo = $$('div', {
+    const searchTipsInfo = $$('div', {
       className: 'coveo-query-summary-search-tips-info'
-    })
+    });
     searchTipsInfo.text(l('SearchTips'));
-    let searchTips = $$('ul');
+    const searchTips = $$('ul');
 
-    let checkSpelling = $$('li');
+    const checkSpelling = $$('li');
     checkSpelling.text(l('CheckSpelling'));
 
-    let fewerKeywords = $$('li');
+    const fewerKeywords = $$('li');
     fewerKeywords.text(l('TryUsingFewerKeywords'));
 
     searchTips.el.appendChild(checkSpelling.el);
     searchTips.el.appendChild(fewerKeywords.el);
 
     if (this.queryStateModel.atLeastOneFacetIsActive()) {
-      let fewerFilter = $$('li');
+      const fewerFilter = $$('li');
       fewerFilter.text(l('SelectFewerFilters'));
       searchTips.el.appendChild(fewerFilter.el);
     }

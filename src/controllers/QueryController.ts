@@ -1,22 +1,35 @@
-import {RootComponent} from '../ui/Base/RootComponent';
-import {IQueryResults} from '../rest/QueryResults';
-import {QueryBuilder} from '../ui/Base/QueryBuilder';
-import {IQuery} from '../rest/Query';
-import {ISearchEndpoint, IEndpointCallOptions} from '../rest/SearchEndpointInterface';
-import {SearchEndpoint} from '../rest/SearchEndpoint';
-import {LocalStorageUtils} from '../utils/LocalStorageUtils';
-import {ISearchInterfaceOptions} from '../ui/SearchInterface/SearchInterface';
-import {Assert} from '../misc/Assert';
-import {SearchEndpointWithDefaultCallOptions} from '../rest/SearchEndpointWithDefaultCallOptions';
-import {INewQueryEventArgs, IPreprocessResultsEventArgs, INoResultsEventArgs, IQuerySuccessEventArgs, IQueryErrorEventArgs, IDuringQueryEventArgs, QueryEvents, IFetchMoreSuccessEventArgs, IDoneBuildingQueryEventArgs, IBuildingQueryEventArgs, IBuildingCallOptionsEventArgs} from '../events/QueryEvents';
-import {QueryUtils} from '../utils/QueryUtils';
-import {Defer} from '../misc/Defer';
-import {$$, Dom} from '../utils/Dom';
-import {Utils} from '../utils/Utils';
-import {Promise} from 'es6-promise';
-import {BaseComponent} from '../ui/Base/BaseComponent';
-import {ModalBox} from '../ExternalModulesShim';
-declare const coveoanalytics: CoveoAnalytics.CoveoUA;
+import { RootComponent } from '../ui/Base/RootComponent';
+import { IQueryResults } from '../rest/QueryResults';
+import { QueryBuilder } from '../ui/Base/QueryBuilder';
+import { IQuery } from '../rest/Query';
+import { ISearchEndpoint, IEndpointCallOptions } from '../rest/SearchEndpointInterface';
+import { SearchEndpoint } from '../rest/SearchEndpoint';
+import { LocalStorageUtils } from '../utils/LocalStorageUtils';
+import { ISearchInterfaceOptions } from '../ui/SearchInterface/SearchInterface';
+import { Assert } from '../misc/Assert';
+import { SearchEndpointWithDefaultCallOptions } from '../rest/SearchEndpointWithDefaultCallOptions';
+import {
+  INewQueryEventArgs,
+  IPreprocessResultsEventArgs,
+  INoResultsEventArgs,
+  IQuerySuccessEventArgs,
+  IQueryErrorEventArgs,
+  IDuringQueryEventArgs,
+  QueryEvents,
+  IFetchMoreSuccessEventArgs,
+  IDoneBuildingQueryEventArgs,
+  IBuildingQueryEventArgs,
+  IBuildingCallOptionsEventArgs
+} from '../events/QueryEvents';
+import { QueryUtils } from '../utils/QueryUtils';
+import { Defer } from '../misc/Defer';
+import { $$, Dom } from '../utils/Dom';
+import { Utils } from '../utils/Utils';
+import { BaseComponent } from '../ui/Base/BaseComponent';
+import { ModalBox } from '../ExternalModulesShim';
+import { history } from 'coveo.analytics';
+import * as _ from 'underscore';
+import { UrlUtils } from '../utils/UrlUtils';
 
 /**
  * Possible options when performing a query with the query controller
@@ -51,8 +64,10 @@ export interface IQueryOptions {
    * It also makes sure that only relevant queries are logged. For exemple, the 'empty' interface load query isn't logged.
    */
   logInActionsHistory?: boolean;
+  isFirstQuery?: boolean;
   keepLastSearchUid?: boolean;
   closeModalBox?: boolean;
+  shouldRedirectStandaloneSearchbox?: boolean;
 }
 
 interface ILastQueryLocalStorage {
@@ -67,6 +82,7 @@ class DefaultQueryOptions implements IQueryOptions {
   closeModalBox = true;
   cancel = false;
   logInActionsHistory = false;
+  shouldRedirectStandaloneSearchbox = true;
 }
 
 /**
@@ -77,6 +93,7 @@ class DefaultQueryOptions implements IQueryOptions {
  */
 export class QueryController extends RootComponent {
   static ID = 'QueryController';
+  public historyStore: CoveoAnalytics.HistoryStore;
 
   private currentPendingQuery: Promise<IQueryResults>;
   private lastQueryBuilder: QueryBuilder;
@@ -102,6 +119,7 @@ export class QueryController extends RootComponent {
     Assert.exists(element);
     Assert.exists(options);
     this.firstQuery = true;
+    this.historyStore = new history.HistoryStore();
   }
 
   /**
@@ -123,7 +141,7 @@ export class QueryController extends RootComponent {
     // We must wrap the endpoint in a decorator that'll add the call options
     // we obtain by firing the proper event. Those are used for authentication
     // providers, and I guess other stuff later on.
-    return new SearchEndpointWithDefaultCallOptions(endpoint, this.getCallOptions())
+    return new SearchEndpointWithDefaultCallOptions(endpoint, this.getCallOptions());
   }
 
   /**
@@ -132,6 +150,14 @@ export class QueryController extends RootComponent {
    */
   public getLastQuery() {
     return this.lastQuery || new QueryBuilder().build();
+  }
+
+  /**
+   * Return the last query results set.
+   * @returns {IQueryResults}
+   */
+  public getLastResults() {
+    return this.lastQueryResults;
   }
 
   /**
@@ -165,7 +191,8 @@ export class QueryController extends RootComponent {
     let dataToSendOnNewQuery: INewQueryEventArgs = {
       searchAsYouType: options.searchAsYouType,
       cancel: options.cancel,
-      origin: options.origin
+      origin: options.origin,
+      shouldRedirectStandaloneSearchbox: options.shouldRedirectStandaloneSearchbox
     };
 
     this.newQueryEvent(dataToSendOnNewQuery);
@@ -183,109 +210,110 @@ export class QueryController extends RootComponent {
     }
 
     let query = queryBuilder.build();
-
     if (options.logInActionsHistory) {
-      this.logQueryInActionsHistory(query);
+      this.logQueryInActionsHistory(query, options.isFirstQuery);
     }
 
     let endpointToUse = this.getEndpoint();
 
-    let promise = this.currentPendingQuery = endpointToUse.search(query);
-    promise.then((queryResults) => {
-      Assert.exists(queryResults);
-      let firstQuery = this.firstQuery;
-      if (this.firstQuery) {
-        this.firstQuery = false;
-      }
-      // If our promise is no longer the current one, then the query
-      // has been cancel. We should do nothing here.
-      if (promise !== this.currentPendingQuery) {
-        return;
-      }
+    let promise = (this.currentPendingQuery = endpointToUse.search(query));
+    promise
+      .then(queryResults => {
+        Assert.exists(queryResults);
+        let firstQuery = this.firstQuery;
+        if (this.firstQuery) {
+          this.firstQuery = false;
+        }
+        // If our promise is no longer the current one, then the query
+        // has been cancel. We should do nothing here.
+        if (promise !== this.currentPendingQuery) {
+          return;
+        }
 
-      this.logger.debug('Query results received', query, queryResults);
-      let enableHistory = this.searchInterface && this.searchInterface.options && this.searchInterface.options.enableHistory;
+        this.logger.debug('Query results received', query, queryResults);
+        let enableHistory = this.searchInterface && this.searchInterface.options && this.searchInterface.options.enableHistory;
 
-      if ((!firstQuery || enableHistory) && this.keepLastSearchUid(query, queryResults)) {
-        queryResults.searchUid = this.getLastSearchUid();
-        queryResults._reusedSearchUid = true;
-        QueryUtils.setPropertyOnResults(queryResults, 'queryUid', this.getLastSearchUid());
-      } else {
-        this.lastQueryHash = this.queryHash(query, queryResults);
-        this.lastSearchUid = queryResults.searchUid;
-      }
+        if ((!firstQuery || enableHistory) && this.keepLastSearchUid(query, queryResults)) {
+          queryResults.searchUid = this.getLastSearchUid();
+          queryResults._reusedSearchUid = true;
+          QueryUtils.setPropertyOnResults(queryResults, 'queryUid', this.getLastSearchUid());
+        } else {
+          this.lastQueryHash = this.queryHash(query, queryResults);
+          this.lastSearchUid = queryResults.searchUid;
+        }
 
-      this.lastQuery = query;
-      this.lastQueryResults = queryResults;
-      this.currentError = null;
+        this.lastQuery = query;
+        this.lastQueryResults = queryResults;
+        this.currentError = null;
 
-      let dataToSendOnPreprocessResult: IPreprocessResultsEventArgs = {
-        queryBuilder: queryBuilder,
-        query: query,
-        results: queryResults,
-        searchAsYouType: options.searchAsYouType
-      };
-      this.preprocessResultsEvent(dataToSendOnPreprocessResult);
-
-      let dataToSendOnNoResult: INoResultsEventArgs = {
-        queryBuilder: queryBuilder,
-        query: query,
-        results: queryResults,
-        searchAsYouType: options.searchAsYouType,
-        retryTheQuery: false
-      };
-      if (queryResults.results.length == 0) {
-        this.noResultEvent(dataToSendOnNoResult);
-      }
-
-      if (dataToSendOnNoResult.retryTheQuery) {
-        // When retrying the query, we must forward the results to the deferred we
-        // initially returned, in case someone is listening on it.
-        return this.executeQuery();
-      } else {
-        this.lastQueryBuilder = queryBuilder;
-        this.currentPendingQuery = undefined;
-
-        let dataToSendOnSuccess: IQuerySuccessEventArgs = {
+        let dataToSendOnPreprocessResult: IPreprocessResultsEventArgs = {
           queryBuilder: queryBuilder,
           query: query,
           results: queryResults,
           searchAsYouType: options.searchAsYouType
         };
-        this.querySuccessEvent(dataToSendOnSuccess);
+        this.preprocessResultsEvent(dataToSendOnPreprocessResult);
 
-        Defer.defer(() => {
-          this.deferredQuerySuccessEvent(dataToSendOnSuccess);
-          this.hideExecutingQueryAnimation();
-        });
-        return queryResults;
-      }
-    }).catch((error?: any) => {
-      // If our deferred is no longer the current one, then the query
-      // has been cancel. We should do nothing here.
-      if (promise !== this.currentPendingQuery) {
-        return;
-      }
+        let dataToSendOnNoResult: INoResultsEventArgs = {
+          queryBuilder: queryBuilder,
+          query: query,
+          results: queryResults,
+          searchAsYouType: options.searchAsYouType,
+          retryTheQuery: false
+        };
+        if (queryResults.results.length == 0) {
+          this.noResultEvent(dataToSendOnNoResult);
+        }
 
-      this.logger.error('Query triggered an error', query, error);
+        if (dataToSendOnNoResult.retryTheQuery) {
+          // When retrying the query, we must forward the results to the deferred we
+          // initially returned, in case someone is listening on it.
+          return this.executeQuery();
+        } else {
+          this.lastQueryBuilder = queryBuilder;
+          this.currentPendingQuery = undefined;
 
-      // this.currentPendingQuery.reject(error);
-      this.currentPendingQuery = undefined;
-      let dataToSendOnError: IQueryErrorEventArgs = {
-        queryBuilder: queryBuilder,
-        endpoint: endpointToUse,
-        query: query,
-        error: error,
-        searchAsYouType: options.searchAsYouType
-      };
+          let dataToSendOnSuccess: IQuerySuccessEventArgs = {
+            queryBuilder: queryBuilder,
+            query: query,
+            results: queryResults,
+            searchAsYouType: options.searchAsYouType
+          };
+          this.querySuccessEvent(dataToSendOnSuccess);
 
-      this.lastQuery = query;
-      this.lastQueryResults = null;
-      this.currentError = error;
-      this.queryError(dataToSendOnError);
+          Defer.defer(() => {
+            this.deferredQuerySuccessEvent(dataToSendOnSuccess);
+            this.hideExecutingQueryAnimation();
+          });
+          return queryResults;
+        }
+      })
+      .catch((error?: any) => {
+        // If our deferred is no longer the current one, then the query
+        // has been cancel. We should do nothing here.
+        if (promise !== this.currentPendingQuery) {
+          return;
+        }
 
-      this.hideExecutingQueryAnimation();
-    });
+        this.logger.error('Query triggered an error', query, error);
+
+        // this.currentPendingQuery.reject(error);
+        this.currentPendingQuery = undefined;
+        let dataToSendOnError: IQueryErrorEventArgs = {
+          queryBuilder: queryBuilder,
+          endpoint: endpointToUse,
+          query: query,
+          error: error,
+          searchAsYouType: options.searchAsYouType
+        };
+
+        this.lastQuery = query;
+        this.lastQueryResults = null;
+        this.currentError = error;
+        this.queryError(dataToSendOnError);
+
+        this.hideExecutingQueryAnimation();
+      });
 
     let dataToSendDuringQuery: IDuringQueryEventArgs = {
       queryBuilder: queryBuilder,
@@ -314,8 +342,8 @@ export class QueryController extends RootComponent {
     let queryBuilder = new QueryBuilder();
     this.continueLastQueryBuilder(queryBuilder, count);
     let query = queryBuilder.build();
-    let endpointToUse = this.getEndpoint()
-    let promise: any = this.currentPendingQuery = endpointToUse.search(query);
+    let endpointToUse = this.getEndpoint();
+    let promise: any = (this.currentPendingQuery = endpointToUse.search(query));
     let dataToSendDuringQuery: IDuringQueryEventArgs = {
       queryBuilder: queryBuilder,
       query: query,
@@ -335,7 +363,7 @@ export class QueryController extends RootComponent {
       if (this.lastQueryResults == null) {
         this.lastQueryResults = results;
       } else {
-        _.forEach(results.results, (result) => {
+        _.forEach(results.results, result => {
           this.lastQueryResults.results.push(result);
         });
       }
@@ -353,9 +381,9 @@ export class QueryController extends RootComponent {
         results: results,
         queryBuilder: queryBuilder,
         searchAsYouType: false
-      }
+      };
       this.fetchMoreSuccessEvent(dataToSendOnFetchMoreSuccess);
-    })
+    });
     return this.currentPendingQuery;
   }
 
@@ -386,7 +414,7 @@ export class QueryController extends RootComponent {
     let queryBuilder = new QueryBuilder();
 
     // Default values, components will probably override them if they exists
-    queryBuilder.language = <string>String['locale'];
+    queryBuilder.locale = <string>String['locale'];
     queryBuilder.firstResult = queryBuilder.firstResult || 0;
 
     // Allow outside code to customize the query builder. We provide two events,
@@ -432,7 +460,6 @@ export class QueryController extends RootComponent {
     });
   }
 
-
   // This field is exposed for components rendered in the results or on-demand which
   // need access to the entire query. For example, the QuickviewDocument need to pass
   // the entire query to the Search API. For other components, QueryStateModel or
@@ -469,13 +496,13 @@ export class QueryController extends RootComponent {
   }
 
   private getPipelineInUrl() {
-    return QueryUtils.getUrlParameter('pipeline');
+    return UrlUtils.getUrlParameter('pipeline');
   }
 
   private cancelAnyCurrentPendingQuery() {
     if (Utils.exists(this.currentPendingQuery)) {
       this.logger.debug('Cancelling current pending query');
-      Promise.reject(this.currentPendingQuery);
+      Promise.reject('Cancelling current pending query');
       this.currentPendingQuery = undefined;
       return true;
     }
@@ -561,7 +588,7 @@ export class QueryController extends RootComponent {
 
   public debugInfo() {
     let info: any = {
-      'query': this.lastQuery,
+      query: this.lastQuery
     };
 
     if (this.lastQueryResults != null) {
@@ -584,11 +611,13 @@ export class QueryController extends RootComponent {
     _.forEach(debugRef.durationKeys, (key: string) => {
       let duration = queryResults[key];
       if (duration != null) {
-        graph.appendChild(Dom.createElement('div', {
-          className: 'coveo-debug-duration',
-          style: `width:${duration}px`,
-          'data-id': key
-        }));
+        graph.appendChild(
+          Dom.createElement('div', {
+            className: 'coveo-debug-duration',
+            style: `width:${duration}px`,
+            'data-id': key
+          })
+        );
         let legend = Dom.createElement('div', { className: 'coveo-debug-duration-legend', 'data-id': key });
         dom.appendChild(legend);
         let keyDom = Dom.createElement('span', { className: 'coveo-debug-duration-label' });
@@ -602,15 +631,12 @@ export class QueryController extends RootComponent {
     return dom;
   }
 
-  private logQueryInActionsHistory(query: IQuery) {
-    if (typeof coveoanalytics != 'undefined') {
-      let store = new coveoanalytics.history.HistoryStore()
-      let queryElement: CoveoAnalytics.HistoryQueryElement = {
-        name: 'Query',
-        value: query.q,
-        time: JSON.stringify(new Date())
-      }
-      store.addElement(queryElement);
-    }
+  private logQueryInActionsHistory(query: IQuery, isFirstQuery: boolean) {
+    let queryElement: CoveoAnalytics.HistoryQueryElement = {
+      name: 'Query',
+      value: query.q,
+      time: JSON.stringify(new Date())
+    };
+    this.historyStore.addElement(queryElement);
   }
 }

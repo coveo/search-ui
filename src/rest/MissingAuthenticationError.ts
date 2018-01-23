@@ -1,4 +1,4 @@
-import {IEndpointError} from './EndpointError';
+import { IEndpointError } from './EndpointError';
 
 export class MissingAuthenticationError implements IEndpointError {
   public type: string;

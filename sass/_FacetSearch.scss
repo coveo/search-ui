@@ -1,3 +1,4 @@
+@import "Variables";
 @import "FacetValues";
 
 .coveo-facet-search-results {
@@ -36,10 +37,10 @@
   }
 
   .coveo-facet-value-exclude {
-    right: 2px;
+    right: 10px;
   }
   .coveo-facet-value-label {
-    padding-right: 5px;
+    padding-right: 15px;
   }
 }
 
@@ -60,13 +61,11 @@
 
 .coveo-facet-search-clear {
   float: right;
-  margin: 2px 4px 0px 0px;
+  margin-right: 3px;
   cursor: pointer;
   opacity: 0.5;
   clear: none;
-  .coveo-icon {
-    @include clearButton('&', 'smallest');
-  }
+  @include clearButton('&', 'small');
 
   &:hover {
     opacity: 1;
@@ -121,14 +120,24 @@
 
 .coveo-facet-search-magnifier {
   float: left;
-  margin: 5px 6px 5px 10px;
-  @extend .coveo-sprites-facet-search;
+}
+
+.coveo-facet-search-magnifier-svg {
+  margin: 5px 6px 5px 10px;  
+  width: 10px;
+  height: 10px;
+  color: $color-light-greyish-blue;
 }
 
 .coveo-facet-search-wait-animation {
   float: left;
+}
+
+.coveo-facet-search-wait-animation-svg {
+  width: 13px;
+  height: 13px;
+  color: $color-greyish-teal-blue;
   margin: 3px 3px 5px 10px;
-  @extend .coveo-sprites-facet-search-loading;
   @include animation-name(coveo-spin);
   @include animation-timing-function(linear);
   @include animation-duration(1s);
@@ -145,10 +154,10 @@
   .coveo-facet-value-checkbox {
     border-style: dashed;
   }
-  &:hover {
-    .coveo-facet-value-checkbox {
-      border-style: solid;
-    }
+
+  &:hover .coveo-facet-value-checkbox,
+  .coveo-facet-value-checkbox:focus {
+    border-style: solid;
   }
 }
 
@@ -159,8 +168,18 @@
 }
 
 .coveo-facet-value.coveo-facet-search-button {
-  .coveo-facet-value-checkbox > span, &:hover .coveo-facet-value-checkbox > span {
-    @extend .coveo-sprites-checkbox-more-values;
+  .coveo-facet-value-checkbox {
     bottom: 1px;
+    svg {
+      bottom: 4px;
+      .coveo-more-svg {
+        fill: $color-light-grey;
+      }
+    }
+  }
+  .coveo-facet-value-checkbox > .coveo-facet-value-checkbox-svg, &:hover .coveo-facet-value-checkbox > .coveo-facet-value-checkbox-svg {
+    color: $color-light-grey;
+    width: 16px;
+    height: 11px;
   }
 }

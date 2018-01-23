@@ -1,21 +1,23 @@
-import {IComponentBindings} from '../src/ui/Base/ComponentBindings';
-import {IQueryResult} from '../src/rest/QueryResult';
-import {SearchInterface} from '../src/ui/SearchInterface/SearchInterface';
-import {QueryStateModel} from '../src/models/QueryStateModel';
-import {IAnalyticsClient} from '../src/ui/Analytics/AnalyticsClient';
-import {$$} from '../src/utils/Dom';
-import {ComponentStateModel} from '../src/models/ComponentStateModel';
-import {ComponentOptionsModel} from '../src/models/ComponentOptionsModel';
-import {OS_NAME} from '../src/utils/OSUtils';
-import {FakeResults} from './Fake';
-import {Component} from '../src/ui/Base/Component';
-import {Utils} from '../src/utils/Utils';
-import {BaseComponent} from '../src/ui/Base/BaseComponent';
-import {IQuery} from '../src/rest/Query';
-import {NoopAnalyticsClient} from '../src/ui/Analytics/NoopAnalyticsClient';
-import {SearchEndpoint} from '../src/rest/SearchEndpoint';
-import {QueryController} from '../src/controllers/QueryController';
-declare var coveoanalytics: CoveoAnalytics.CoveoUA;
+import { IComponentBindings } from '../src/ui/Base/ComponentBindings';
+import { IQueryResult } from '../src/rest/QueryResult';
+import { SearchInterface } from '../src/ui/SearchInterface/SearchInterface';
+import { QueryStateModel } from '../src/models/QueryStateModel';
+import { IAnalyticsClient } from '../src/ui/Analytics/AnalyticsClient';
+import { $$ } from '../src/utils/Dom';
+import { ComponentStateModel } from '../src/models/ComponentStateModel';
+import { ComponentOptionsModel } from '../src/models/ComponentOptionsModel';
+import { OS_NAME } from '../src/utils/OSUtils';
+import { FakeResults } from './Fake';
+import { Component } from '../src/ui/Base/Component';
+import { BaseComponent } from '../src/ui/Base/BaseComponent';
+import { NoopAnalyticsClient } from '../src/ui/Analytics/NoopAnalyticsClient';
+import { AnalyticsEndpoint } from '../src/rest/AnalyticsEndpoint';
+import { SearchEndpoint } from '../src/rest/SearchEndpoint';
+import { QueryController } from '../src/controllers/QueryController';
+import { ResponsiveComponents } from '../src/ui/ResponsiveComponents/ResponsiveComponents';
+import { QueryBuilder } from '../src/ui/Base/QueryBuilder';
+import { Simulate } from './Simulate';
+import ModalBox = Coveo.ModalBox.ModalBox;
 
 export interface IMockEnvironment extends IComponentBindings {
   root: HTMLElement;
@@ -66,11 +68,6 @@ export class MockEnvironmentBuilder {
     return this;
   }
 
-  public withOldDesign() {
-    this.searchInterface.isNewDesign = () => false;
-    return this;
-  }
-
   public withCollaborativeRating() {
     this.searchInterface.options.enableCollaborativeRating = true;
     return this;
@@ -109,13 +106,15 @@ export class MockEnvironmentBuilder {
     this.searchInterface.queryStateModel = this.queryStateModel;
     this.searchInterface.componentStateModel = this.componentStateModel;
     this.searchInterface.componentOptionsModel = this.componentOptionsModel;
+    this.searchInterface.element = this.root;
 
-    this.queryController.getEndpoint = () => this.searchEndpoint;
-
-    if (Utils.isNullOrUndefined(this.searchInterface.isNewDesign())) {
-      this.searchInterface.isNewDesign = () => true;
+    if (!this.searchEndpoint) {
+      this.searchEndpoint = mockSearchEndpoint();
     }
 
+    this.queryController.getEndpoint = () => {
+      return this.searchEndpoint;
+    };
 
     if (this.result) {
       Component.bindResultToElement(this.element, this.result);
@@ -139,7 +138,7 @@ export class MockEnvironmentBuilder {
       usageAnalytics: this.usageAnalytics,
       componentStateModel: this.componentStateModel,
       componentOptionsModel: this.componentOptionsModel
-    }
+    };
   }
 }
 
@@ -148,12 +147,18 @@ export interface IBasicComponentSetup<T extends BaseComponent> {
   cmp: T;
 }
 
-export class AdvancedComponentSetupOptions {
+export interface IBasicComponentSetupWithModalBox<T extends BaseComponent> extends IBasicComponentSetup<T> {
+  modalBox: ModalBox;
+}
 
-  constructor(public element: HTMLElement = $$('div').el, public cmpOptions: any = {}, public modifyBuilder = (env: MockEnvironmentBuilder) => {
-    return env
-  }) {
-  }
+export class AdvancedComponentSetupOptions {
+  constructor(
+    public element: HTMLElement = $$('div').el,
+    public cmpOptions: any = {},
+    public modifyBuilder = (env: MockEnvironmentBuilder) => {
+      return env;
+    }
+  ) {}
 
   public merge(toMerge: AdvancedComponentSetupOptions) {
     if (toMerge) {
@@ -166,21 +171,21 @@ export class AdvancedComponentSetupOptions {
 }
 
 export function mock<T>(contructorFunc, name = 'mock'): T {
-  var keys = [];
-  for (var key in contructorFunc.prototype) {
+  const keys = [];
+  for (const key in contructorFunc.prototype) {
     keys.push(key);
   }
   return keys.length > 0 ? jasmine.createSpyObj(name, keys) : {};
 }
 
 export function mockWindow(): Window {
-  var mockWindow = <Window>mock(window);
+  const mockWindow = <any>mock(window);
   mockWindow.location = <Location>{
-    'href': '',
-    'hash': ''
-  }
+    href: '',
+    hash: ''
+  };
   mockWindow.location.replace = (newHref: string) => {
-    newHref = newHref || ''
+    newHref = newHref || '';
 
     mockWindow.location.href = newHref;
 
@@ -194,162 +199,205 @@ export function mockWindow(): Window {
     if (mockWindow.location.hash != '') {
       mockWindow.location.hash = '#' + mockWindow.location.hash;
     }
-  }
+  };
   mockWindow.addEventListener = jasmine.createSpy('addEventListener');
   mockWindow.removeEventListener = jasmine.createSpy('removeEventListener');
   mockWindow.dispatchEvent = jasmine.createSpy('dispatchEvent');
-  return mockWindow;
+  return <Window>mockWindow;
 }
 
 export function mockComponent<T extends BaseComponent>(constructorFunc, name = 'mock'): T {
-  var m = mock<T>(constructorFunc, name);
+  const m = mock<T>(constructorFunc, name);
   m.type = name;
   return m;
 }
 
 export function mockSearchInterface(): SearchInterface {
-  var m = mockComponent<SearchInterface>(SearchInterface, SearchInterface.ID);
+  const m = mockComponent<SearchInterface>(SearchInterface, SearchInterface.ID);
   m.options = {};
   m.options.originalOptionsObject = {};
-  m.isSmallInterface = () => { return false };
+  m.responsiveComponents = mockResponsiveComponents();
+  return m;
+}
+
+export function mockResponsiveComponents(): ResponsiveComponents {
+  const m = mock<ResponsiveComponents>(ResponsiveComponents);
+  m.isSmallScreenWidth = () => false;
+  m.isMediumScreenWidth = () => false;
+  m.isLargeScreenWidth = () => true;
   return m;
 }
 
 export function mockQueryController(): QueryController {
-  var m = mockComponent<QueryController>(QueryController, QueryController.ID);
-  var spy = <any>m;
+  const m = mockComponent<QueryController>(QueryController, QueryController.ID);
+  const spy = <any>m;
   spy.options = {};
   spy.options.resultsPerPage = 10;
-  spy.fetchMore.and.returnValue(new Promise((resolve, reject) => { }));
+  spy.fetchMore.and.returnValue(new Promise((resolve, reject) => {}));
+  spy.getLastQuery.and.returnValue(new QueryBuilder().build());
   return m;
 }
 
 export function mockSearchEndpoint(): SearchEndpoint {
-  var m = mock<any>(SearchEndpoint, 'SearchEndpoint');
-  m.listFields.and.returnValue(new Promise((resolve, reject) => {
-  }));
-  m.listFieldValues.and.returnValue(new Promise((resolve, reject) => {
-  }));
-  m.search.and.returnValue(new Promise((resolve, reject) => {
-  }));
-  m.getRevealQuerySuggest.and.returnValue(new Promise((resolve, reject) => {
-  }));
-  m.extensions.and.returnValue(new Promise((resolve, reject) => {
-  }));
+  const m = mock<any>(SearchEndpoint, 'SearchEndpoint');
+  m.listFields.and.returnValue(new Promise((resolve, reject) => {}));
+  m.listFieldValues.and.returnValue(new Promise((resolve, reject) => {}));
+  m.search.and.returnValue(new Promise((resolve, reject) => {}));
+  m.getQuerySuggest.and.returnValue(new Promise((resolve, reject) => {}));
+  m.extensions.and.returnValue(new Promise((resolve, reject) => {}));
   m.getViewAsDatastreamUri.and.returnValue('http://datastream.uri');
-  return m
+  m.options = {
+    queryStringArguments: {
+      organizationId: 'foobar'
+    }
+  };
+  return m;
 }
 
 export function mockUsageAnalytics(): IAnalyticsClient {
-  var m = mock<any>(NoopAnalyticsClient, 'AnalyticsClient');
-  m.getTopQueries.and.returnValue(new Promise((resolve, reject) => {
-  }));
+  const m = mock<any>(NoopAnalyticsClient, 'AnalyticsClient');
+  m.getTopQueries.and.returnValue(new Promise((resolve, reject) => {}));
+  return m;
+}
+
+export function mockAnalyticsEndpoint(): AnalyticsEndpoint {
+  const m = mock<any>(AnalyticsEndpoint, 'AnalyticsEndpoint');
+  // Spy return Promise instead of void in order to chain Promises
+  m.sendCustomEvent.and.returnValue(Promise.resolve(null));
+  m.sendDocumentViewEvent.and.returnValue(Promise.resolve(null));
   return m;
 }
 
 export function basicComponentSetup<T>(klass, options = {}) {
-  var envBuilder = new MockEnvironmentBuilder();
+  const envBuilder = new MockEnvironmentBuilder();
   return {
     env: envBuilder.build(),
     cmp: <T>new klass(envBuilder.getBindings().element, options, envBuilder.getBindings())
-  }
+  };
 }
 
-export function basicResultComponentSetup<T>(klass) {
-  var envBuilder = new MockEnvironmentBuilder().withResult();
+export function basicComponentSetupWithModalBox<T>(klass, options = {}) {
+  const envBuilder = new MockEnvironmentBuilder();
+  const modalBox = Simulate.modalBoxModule();
   return {
     env: envBuilder.build(),
-    cmp: <T>new klass(envBuilder.getBindings().element, {}, envBuilder.getBindings(), envBuilder.result)
-  }
+    modalBox: modalBox,
+    cmp: <T>new klass(envBuilder.getBindings().element, options, envBuilder.getBindings(), modalBox)
+  };
 }
 
-export function basicSearchInterfaceSetup<T extends SearchInterface>(klass) {
-  var div = $$('div').el;
-  var envBuilder = new MockEnvironmentBuilder().withRoot(div);
-  var component = <T>new klass(div)
-  envBuilder.searchInterface = component;
-  return {
-    env: envBuilder.build(),
-    cmp: component
-  }
-}
-
-export function optionsSearchInterfaceSetup<T extends SearchInterface, U>(klass, options: U) {
-  var div = $$('div').el;
-  var envBuilder = new MockEnvironmentBuilder().withRoot(div);
-  var component = <T>new klass(div, options)
-  envBuilder.searchInterface = component;
-  return {
-    env: envBuilder.build(),
-    cmp: component
-  }
-}
-
-export function optionsResultComponentSetup<T, U>(klass, options: U, result: IQueryResult) {
-  var envBuilder = new MockEnvironmentBuilder().withResult(result);
+export function basicResultComponentSetup<T>(klass, options = {}) {
+  const envBuilder = new MockEnvironmentBuilder().withResult();
   return {
     env: envBuilder.build(),
     cmp: <T>new klass(envBuilder.getBindings().element, options, envBuilder.getBindings(), envBuilder.result)
-  }
+  };
+}
+
+export function basicResultComponentSetupWithModalBox<T>(klass, options = {}) {
+  const envBuilder = new MockEnvironmentBuilder();
+  const modalBox = Simulate.modalBoxModule();
+  return {
+    env: envBuilder.build(),
+    modalBox: modalBox,
+    cmp: <T>new klass(envBuilder.getBindings().element, options, envBuilder.getBindings(), envBuilder.result, modalBox)
+  };
+}
+
+export function basicSearchInterfaceSetup<T extends SearchInterface>(klass) {
+  const div = $$('div').el;
+  const envBuilder = new MockEnvironmentBuilder().withRoot(div);
+  const component = <T>new klass(div);
+  envBuilder.searchInterface = component;
+  return {
+    env: envBuilder.build(),
+    cmp: component
+  };
+}
+
+export function optionsSearchInterfaceSetup<T extends SearchInterface, U>(klass, options: U) {
+  const div = $$('div').el;
+  const envBuilder = new MockEnvironmentBuilder().withRoot(div);
+  const component = <T>new klass(div, options);
+  envBuilder.searchInterface = component;
+  return {
+    env: envBuilder.build(),
+    cmp: component
+  };
+}
+
+export function optionsResultComponentSetup<T, U>(klass, options: U, result: IQueryResult) {
+  const envBuilder = new MockEnvironmentBuilder().withResult(result);
+  return {
+    env: envBuilder.build(),
+    cmp: <T>new klass(envBuilder.getBindings().element, options, envBuilder.getBindings(), envBuilder.result)
+  };
+}
+
+export function optionsResultComponentSetupWithModalBox<T, U>(klass, options: U, result: IQueryResult) {
+  const envBuilder = new MockEnvironmentBuilder().withResult(result);
+  const modalBox = Simulate.modalBoxModule();
+
+  return {
+    env: envBuilder.build(),
+    modalBox: modalBox,
+    cmp: <T>new klass(envBuilder.getBindings().element, options, envBuilder.getBindings(), envBuilder.result, modalBox)
+  };
 }
 
 export function optionsComponentSetup<T, U>(klass, options: U) {
-  var envBuilder = new MockEnvironmentBuilder();
+  const envBuilder = new MockEnvironmentBuilder();
   return {
     env: envBuilder.build(),
     cmp: <T>new klass(envBuilder.getBindings().element, options, envBuilder.getBindings())
-  }
+  };
+}
+
+export function optionsComponentSetupWithModalBox<T, U>(klass, options: U) {
+  const envBuilder = new MockEnvironmentBuilder();
+  const modalBox = Simulate.modalBoxModule();
+
+  return {
+    env: envBuilder.build(),
+    modalBox: modalBox,
+    cmp: <T>new klass(envBuilder.getBindings().element, options, envBuilder.getBindings(), modalBox)
+  };
 }
 
 export function advancedComponentSetup<T>(klass, options?: AdvancedComponentSetupOptions) {
-  var baseOptions = new AdvancedComponentSetupOptions();
-  var optsMerged = baseOptions.merge(options);
+  const baseOptions = new AdvancedComponentSetupOptions();
+  const optsMerged = baseOptions.merge(options);
 
-  var envBuilder = new MockEnvironmentBuilder().withElement(optsMerged.element);
+  let envBuilder = new MockEnvironmentBuilder().withElement(optsMerged.element);
   envBuilder = optsMerged.modifyBuilder(envBuilder);
   return {
     env: envBuilder.build(),
     cmp: <T>new klass(envBuilder.getBindings().element, optsMerged.cmpOptions, envBuilder.getBindings())
-  }
+  };
+}
+
+export function advancedComponentSetupWithModalBox<T>(klass, options?: AdvancedComponentSetupOptions) {
+  const baseOptions = new AdvancedComponentSetupOptions();
+  const optsMerged = baseOptions.merge(options);
+  const modalBox = Simulate.modalBoxModule();
+
+  let envBuilder = new MockEnvironmentBuilder().withElement(optsMerged.element);
+  envBuilder = optsMerged.modifyBuilder(envBuilder);
+  return {
+    env: envBuilder.build(),
+    modalBox: modalBox,
+    cmp: <T>new klass(envBuilder.getBindings().element, optsMerged.cmpOptions, envBuilder.getBindings(), modalBox)
+  };
 }
 
 export function advancedResultComponentSetup<T>(klass, result: IQueryResult, options?: AdvancedComponentSetupOptions) {
-  var baseOptions = new AdvancedComponentSetupOptions();
-  var optsMerged = baseOptions.merge(options);
+  const baseOptions = new AdvancedComponentSetupOptions();
+  const optsMerged = baseOptions.merge(options);
 
-  var envBuilder = new MockEnvironmentBuilder().withElement(optsMerged.element).withResult(result);
+  let envBuilder = new MockEnvironmentBuilder().withElement(optsMerged.element).withResult(result);
   envBuilder = optsMerged.modifyBuilder(envBuilder);
   return {
     env: envBuilder.build(),
     cmp: <T>new klass(envBuilder.getBindings().element, optsMerged.cmpOptions, envBuilder.getBindings(), envBuilder.result, envBuilder.os)
-  }
-}
-
-export function initPageViewScript(store: CoveoAnalytics.HistoryStore) {
-  class HistoryStoreMock {
-    constructor() {
-    }
-
-    public addElement(query: IQuery) {
-      store.addElement(query)
-    }
-
-    public getHistory() {
-      return store.getHistory()
-    }
-
-    public setHistory(history: any[]) {
-      store.setHistory(history)
-    }
-
-    public clear() {
-      store.clear()
-    }
-  }
-
-  window['coveoanalytics'] = {
-    history: {
-      HistoryStore: HistoryStoreMock
-    }
-  }
+  };
 }

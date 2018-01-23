@@ -3,6 +3,12 @@
   margin-top: 10px;
   display: none;
 }
+
+.coveo-modalBox.coveo-subscriptions-panel > .coveo-wrapper > .coveo-title {
+  cursor: inherit;
+}
+
+
 .coveo-subscriptions-panel {
   > .coveo-wrapper {
     overflow: visible;
@@ -11,21 +17,19 @@
     max-height: 600px;
     min-width: 500px;
   }
+
+  @media (max-width: 600px) {
+    .coveo-body {
+      min-width: inherit;
+    }
+  }
+
+  .coveo-dropdown {
+    margin: 0;
+  }
+
   .coveo-subscriptions-panel-fail {
-    padding: 10px;
-  }
-  .coveo-subscriptions-panel-close {
-    float: right;
-    cursor: pointer;
-    padding: 4px;
-    border-radius: 2px;
-    background-color: #f7f7f7;
-    height: 24px;
-    width: 24px;
-  }
-  .coveo-subscriptions-panel-title {
-    font-size: 18px;
-    text-align: left;
+    padding: 10px 0px ;
   }
   .coveo-subscriptions-panel-content {
     width: 100%; 
@@ -90,9 +94,6 @@
           top: 15px;
         }
       }
-      &:hover {
-        background-color: #e6ecf0;
-      }
       .coveo-subscriptions-panel-action-follow {
         height: 0;
         &:before {
@@ -119,4 +120,10 @@
   .coveo-subscriptions-panel-subscription + .coveo-subscriptions-panel-no-subscriptions {
     display: none;
   }
+}
+
+.coveo-subscriptions-panel-svg{
+  width: 15px;
+  height: 12px;
+  color: $color-greyish-teal-blue;
 }

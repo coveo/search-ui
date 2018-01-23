@@ -1,160 +1,174 @@
-import {Component} from '../Base/Component'
-import {IComponentBindings} from '../Base/ComponentBindings'
-import {ComponentOptions} from '../Base/ComponentOptions'
-import {IQueryResult} from '../../rest/QueryResult'
-import {HighlightUtils, StringAndHoles} from '../../utils/HighlightUtils'
-import {Initialization} from '../Base/Initialization'
-import {analyticsActionCauseList} from '../Analytics/AnalyticsActionListMeta'
-import {Utils} from '../../utils/Utils'
-import {$$} from '../../utils/Dom'
+import { ComponentOptions } from '../Base/ComponentOptions';
+import { IQueryResult } from '../../rest/QueryResult';
+import { HighlightUtils, StringAndHoles } from '../../utils/HighlightUtils';
+import { Initialization } from '../Base/Initialization';
+import { Utils } from '../../utils/Utils';
+import { $$ } from '../../utils/Dom';
+import { exportGlobally } from '../../GlobalExports';
+import 'styling/_PrintableUri';
+import { ResultLink } from '../ResultLink/ResultLink';
+import { IResultLinkOptions } from '../ResultLink/ResultLinkOptions';
+import { IResultsComponentBindings } from '../Base/ResultsComponentBindings';
+import { getRestHighlightsForAllTerms, DefaultStreamHighlightOptions } from '../../utils/StreamHighlightUtils';
+import * as _ from 'underscore';
+import { ComponentOptionsModel } from '../../models/ComponentOptionsModel';
+import { Component } from '../Base/Component';
+import { IHighlight } from '../../rest/Highlight';
 
-export interface IPrintableUriOptions {
-}
+export interface IPrintableUriOptions extends IResultLinkOptions {}
 
-/*
- * This component is meant to be used inside a result template to display the URI or path to access a result.
+/**
+ * The `PrintableUri` component inherits from the [ `ResultLink` ]{@link ResultLink} component and supports all of its options.
+ *
+ * This component displays the URI, or path, to access a result.
+ *
+ * This component is a result template component (see [Result Templates](https://developers.coveo.com/x/aIGfAQ)).
  */
 export class PrintableUri extends Component {
   static ID = 'PrintableUri';
   static options: IPrintableUriOptions = {};
+  static doExport = () => {
+    exportGlobally({
+      PrintableUri: PrintableUri
+    });
+  };
 
-  static fields = [
-    'parents'
-  ]
+  private links: ResultLink[] = [];
 
-  private uri: string;
-
-  constructor(public element: HTMLElement, public options: IPrintableUriOptions, bindings?: IComponentBindings, public result?: IQueryResult) {
+  /**
+   * Creates a new PrintableUri.
+   * @param element The HTMLElement on which to instantiate the component.
+   * @param options The options for the PrintableUri component.
+   * @param bindings The bindings that the component requires to function normally. If not set, these will be
+   * automatically resolved (with a slower execution time).
+   * @param result The result to associate the component with.
+   */
+  constructor(
+    public element: HTMLElement,
+    public options: IPrintableUriOptions,
+    public bindings?: IResultsComponentBindings,
+    public result?: IQueryResult
+  ) {
     super(element, PrintableUri.ID, bindings);
-
     this.options = ComponentOptions.initComponentOptions(element, PrintableUri, options);
+    this.options = _.extend({}, this.options, this.componentOptionsModel.get(ComponentOptionsModel.attributesEnum.resultLink));
+    this.renderUri(this.element, this.result);
+  }
 
-    let parentsXml = result.raw.parents;
+  /**
+   * Opens the result in the same window, no matter how the actual component is configured for the end user.
+   * @param logAnalytics Specifies whether the method should log an analytics event.
+   */
+  public openLink(logAnalytics = true) {
+    _.last(this.links).openLink(logAnalytics);
+  }
+
+  /**
+   * Opens the result in a new window, no matter how the actual component is configured for the end user.
+   * @param logAnalytics Specifies whether the method should log an analytics event.
+   */
+  public openLinkInNewWindow(logAnalytics = true) {
+    _.last(this.links).openLinkInNewWindow(logAnalytics);
+  }
+
+  /**
+   * Opens the link in the same manner the end user would.
+   *
+   * This essentially simulates a click on the result link.
+   *
+   * @param logAnalytics Specifies whether the method should log an analytics event.
+   */
+  public openLinkAsConfigured(logAnalytics = true) {
+    _.last(this.links).openLinkAsConfigured(logAnalytics);
+  }
+
+  private renderUri(element: HTMLElement, result: IQueryResult) {
+    const parentsXml = Utils.getFieldValue(result, 'parents');
     if (parentsXml) {
       this.renderParentsXml(element, parentsXml);
+    } else if (this.options.titleTemplate) {
+      const link = new ResultLink(this.buildElementForResultLink(result.printableUri), this.options, this.bindings, this.result);
+      this.links.push(link);
+      this.element.appendChild(link.element);
     } else {
-      this.renderUri(element, result);
+      this.renderShortenedUri();
     }
   }
 
-  public renderParentsXml(element: HTMLElement, parentsXml: string) {
-    let xmlDoc: XMLDocument = Utils.parseXml(parentsXml);
-    let parents = xmlDoc.getElementsByTagName('parent');
+  private buildSeparator(): HTMLElement {
+    const separator = $$('span', { className: 'coveo-printable-uri-separator' }, ' > ');
+    return separator.el;
+  }
 
-    let tokens: HTMLElement[] = [];
-    let seperators: HTMLElement[] = [];
+  private buildHtmlToken(name: string, uri: string): HTMLElement {
+    let modifiedName = name.charAt(0).toUpperCase() + name.slice(1);
+    const resultPart: IQueryResult = _.extend({}, this.result, {
+      clickUri: uri,
+      title: modifiedName,
+      titleHighlights: this.getModifiedHighlightsForModifiedResultTitle(modifiedName)
+    });
+    const link = new ResultLink(this.buildElementForResultLink(modifiedName), this.options, this.bindings, resultPart);
+    this.links.push(link);
+    return link.element;
+  }
 
+  private renderParentsXml(element: HTMLElement, parentsXml: string) {
+    const xmlDoc: XMLDocument = Utils.parseXml(parentsXml);
+    const parents = xmlDoc.getElementsByTagName('parent');
+    const tokens: HTMLElement[] = [];
+    const separators: HTMLElement[] = [];
     for (let i = 0; i < parents.length; i++) {
       if (i > 0) {
-        let seperator = this.buildSeperator();
-        seperators.push(seperator);
-        element.appendChild(seperator);
+        const separator = this.buildSeparator();
+        separators.push(separator);
+        element.appendChild(separator);
       }
-
-      let parent = <Element>parents.item(i);
-      let token = this.buildHtmlToken(parent.getAttribute('name'), parent.getAttribute('uri'));
+      const parent = <Element>parents.item(i);
+      const token = this.buildHtmlToken(parent.getAttribute('name'), parent.getAttribute('uri'));
       tokens.push(token);
+
       element.appendChild(token);
     }
-
-    if (tokens.length > 1) {
-      let ellipsis: HTMLElement = this.buildEllipsis();
-      element.insertBefore(ellipsis, seperators[0]);
-      let ellipsisSeperator: HTMLElement = this.buildSeperator();
-      element.insertBefore(ellipsisSeperator, ellipsis);
-
-      let contentWidth = 0;
-      let tokensWidth: number[] = [];
-      for (let i = 0; i < tokens.length; i++) {
-        tokensWidth[i] = tokens[i].offsetWidth;
-        contentWidth += tokensWidth[i];
-      }
-      let seperatorWidth = seperators[0].offsetWidth;
-      let ellipsisWidth = ellipsis.offsetWidth;
-      let availableWidth = element.offsetWidth;
-
-      if (availableWidth <= contentWidth) {
-        contentWidth += ellipsisWidth + seperatorWidth;
-        let hidden: HTMLElement[] = [];
-        let i = 1;
-        while (i < tokens.length && availableWidth <= contentWidth) {
-          element.removeChild(tokens[i]);
-          element.removeChild(seperators[i - 1]);
-          if (i > 1) {
-            hidden.push(seperators[i - 1]);
-          }
-          hidden.push(tokens[i]);
-          contentWidth -= tokensWidth[i] + seperatorWidth;
-          i++;
-        }
-        ellipsis.onclick = () => {
-          for (let i = 0; i < hidden.length; i++) {
-            element.insertBefore(hidden[i], ellipsis);
-          }
-          element.removeChild(ellipsis);
-        };
-      } else {
-        element.removeChild(ellipsis);
-        element.removeChild(ellipsisSeperator);
-      }
-    }
   }
 
-  public renderUri(element: HTMLElement, result?: IQueryResult) {
-    this.uri = result.clickUri;
+  private renderShortenedUri() {
     let stringAndHoles: StringAndHoles;
-    if (result.printableUri.indexOf('\\') == -1) {
-      stringAndHoles = StringAndHoles.shortenUri(result.printableUri, $$(element).width() / 7);
+    if (this.result.printableUri.indexOf('\\') == -1) {
+      stringAndHoles = StringAndHoles.shortenUri(this.result.printableUri, $$(this.element).width());
     } else {
-      stringAndHoles = StringAndHoles.shortenPath(result.printableUri, $$(element).width() / 7);
+      stringAndHoles = StringAndHoles.shortenPath(this.result.printableUri, $$(this.element).width());
     }
-    let uri = HighlightUtils.highlightString(stringAndHoles.value, result.printableUriHighlights, stringAndHoles.holes, 'coveo-highlight');
-    let link = $$('a');
-    link.setAttribute('title', result.printableUri);
-    link.addClass('coveo-printable-uri');
-    link.setHtml(uri);
-    link.setAttribute('href', result.clickUri);
-    this.bindLogOpenDocument(link.el);
-    element.appendChild(link.el);
+    const shortenedUri = HighlightUtils.highlightString(
+      stringAndHoles.value,
+      this.result.printableUriHighlights,
+      stringAndHoles.holes,
+      'coveo-highlight'
+    );
+    const resultPart: IQueryResult = _.extend({}, this.result, {
+      title: shortenedUri,
+      titleHighlights: this.getModifiedHighlightsForModifiedResultTitle(shortenedUri)
+    });
+    const link = new ResultLink(this.buildElementForResultLink(this.result.printableUri), this.options, this.bindings, resultPart);
+    this.links.push(link);
+    this.element.appendChild(link.element);
   }
 
-  public buildSeperator() {
-    let seperator = document.createElement('span');
-    seperator.innerText = '>';
-    seperator.className = 'coveo-printable-uri-separator';
-    return seperator;
+  private buildElementForResultLink(title: string): HTMLElement {
+    return $$('a', {
+      className: 'CoveoResultLink coveo-printable-uri-part',
+      title
+    }).el;
   }
 
-  public buildEllipsis() {
-    let ellipsis = document.createElement('span');
-    ellipsis.innerText = '...';
-    ellipsis.className = 'coveo-printable-uri';
-    return ellipsis;
+  private getModifiedHighlightsForModifiedResultTitle(newTitle: string): IHighlight[] {
+    return getRestHighlightsForAllTerms(
+      newTitle,
+      this.result.termsToHighlight,
+      this.result.phrasesToHighlight,
+      new DefaultStreamHighlightOptions()
+    );
   }
-
-  public buildHtmlToken(name: string, uri: string) {
-    let modifiedName = name.charAt(0).toUpperCase() + name.slice(1);
-    let link = document.createElement('a');
-    this.bindLogOpenDocument(link);
-    link.href = uri;
-    this.uri = uri;
-    link.className = 'coveo-printable-uri';
-    link.appendChild(document.createTextNode(modifiedName));
-    return link;
-  }
-
-  private bindLogOpenDocument(link: HTMLElement) {
-    $$(link).on(['mousedown', 'touchend'], (e: Event) => {
-      let url = $$(<HTMLElement>e.srcElement).getAttribute('href');
-      let title = $$(<HTMLElement>e.srcElement).text();
-      this.usageAnalytics.logClickEvent(analyticsActionCauseList.documentOpen, {
-        documentURL: url,
-        documentTitle: title,
-        author: this.result.raw.author
-      }, this.result, this.root);
-    })
-  }
-
 }
 
+PrintableUri.options = _.extend({}, PrintableUri.options, ResultLink.options);
 Initialization.registerAutoCreateComponent(PrintableUri);

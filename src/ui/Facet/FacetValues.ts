@@ -1,13 +1,14 @@
-import {Assert} from '../../misc/Assert';
-import {Utils} from '../../utils/Utils';
-import {IGroupByValue} from '../../rest/GroupByValue';
-import {IIndexFieldValue} from '../../rest/FieldValue';
-import {IGroupByResult} from '../../rest/GroupByResult';
-import Globalize = require('globalize');
+import { Assert } from '../../misc/Assert';
+import { Utils } from '../../utils/Utils';
+import { IGroupByValue } from '../../rest/GroupByValue';
+import { IIndexFieldValue } from '../../rest/FieldValue';
+import { IGroupByResult } from '../../rest/GroupByResult';
+import * as Globalize from 'globalize';
+import * as _ from 'underscore';
 
 /**
  * A class which holds information and operation available on a single facet value returned by a {@link IGroupByRequest}.<br/>
- * This class is used extensibely in the {@link Facet} component.
+ * This class is used extensively in the {@link Facet} component.
  */
 export class FacetValue {
   value: string;
@@ -32,11 +33,15 @@ export class FacetValue {
     this.computedField = newValue.computedField;
   }
 
-  cloneWithZeroOccurrences(): FacetValue {
-    this.occurrences = 0;
+  clone(): FacetValue {
     this.computedField = undefined;
     this.delta = undefined;
     return this;
+  }
+
+  cloneWithZeroOccurrences(): FacetValue {
+    this.occurrences = 0;
+    return this.clone();
   }
 
   cloneWithDelta(count: number, delta: number): FacetValue {
@@ -77,7 +82,7 @@ export class FacetValue {
         return FacetValue.createFromFieldValue(value);
       }
     } else {
-      throw new Error('Can\'t create value from ' + value)
+      throw new Error("Can't create value from " + value);
     }
   }
 
@@ -137,7 +142,7 @@ export class FacetValues {
 
   remove(value: string) {
     Assert.isNonEmptyString(value);
-    value = value
+    value = value;
     this.values = _.filter(this.values, (elem: FacetValue) => elem.value != value);
   }
 
@@ -179,6 +184,18 @@ export class FacetValues {
     return this.getSelected().length != 0 || this.getExcluded().length != 0;
   }
 
+  hasSelectedAndExcludedValues(): boolean {
+    return this.getSelected().length != 0 && this.getExcluded().length != 0;
+  }
+
+  hasOnlyExcludedValues(): boolean {
+    return this.getSelected().length == 0 && this.getExcluded().length != 0;
+  }
+
+  hasOnlySelectedValues(): boolean {
+    return this.getSelected().length != 0 && this.getExcluded().length == 0;
+  }
+
   reset() {
     _.each(this.values, (elem: FacetValue) => elem.reset());
   }
@@ -190,13 +207,12 @@ export class FacetValues {
       var myValue = this.get(otherValue.value);
       if (Utils.exists(myValue)) {
         myValue.selected = true;
-      } else if (otherValue.occurrences != 0) {
-        var occurrences = otherValue.occurrences;
-        var clone = otherValue.cloneWithZeroOccurrences();
-        clone.occurrences = occurrences;
-        this.values.push(clone);
       } else {
-        this.values.push(otherValue.cloneWithZeroOccurrences());
+        if (otherValue.occurrences && !otherValue.excluded) {
+          this.values.push(otherValue.clone());
+        } else {
+          this.values.push(otherValue.cloneWithZeroOccurrences());
+        }
       }
     });
 
@@ -223,25 +239,38 @@ export class FacetValues {
       if (Utils.exists(newValue)) {
         myValue.updateCountsFromNewValue(newValue);
         return myValue;
-      } else {
+      } else if (myValue.occurrences == null) {
         return myValue.cloneWithZeroOccurrences();
       }
+      return myValue;
     });
   }
 
-  updateDeltaWithFilteredFacetValues(filtered: FacetValues) {
+  updateDeltaWithFilteredFacetValues(filtered: FacetValues, isMultiValueField: boolean) {
     Assert.exists(filtered);
     _.each(this.values, (unfilteredValue: FacetValue) => {
       var filteredValue = filtered.get(unfilteredValue.value);
       unfilteredValue.waitingForDelta = false;
       if (Utils.exists(filteredValue)) {
         if (unfilteredValue.occurrences - filteredValue.occurrences > 0) {
-          unfilteredValue.delta = unfilteredValue.occurrences - filteredValue.occurrences;
+          // When there are only exclusion in the facet, there should be no "delta"
+          // The number of value for each facet will be what is selected, no addition.
+          if (this.hasOnlyExcludedValues()) {
+            unfilteredValue.delta = null;
+            unfilteredValue.occurrences = filteredValue.occurrences;
+          } else {
+            unfilteredValue.delta = unfilteredValue.occurrences - filteredValue.occurrences;
+          }
         } else {
           unfilteredValue.delta = null;
         }
       } else if (!unfilteredValue.selected && !unfilteredValue.excluded) {
-        unfilteredValue.delta = unfilteredValue.occurrences;
+        if (isMultiValueField && filtered.values.length == 0) {
+          unfilteredValue.delta = null;
+          unfilteredValue.occurrences = 0;
+        } else {
+          unfilteredValue.delta = unfilteredValue.occurrences;
+        }
       }
     });
   }

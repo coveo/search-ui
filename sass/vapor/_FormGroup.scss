@@ -1,0 +1,19 @@
+@import "../Variables";
+
+.coveo-form-group {
+  display: block;
+  border: 0;
+  padding: 0;
+  margin: 0;
+}
+
+.coveo-form-group + .coveo-form-group {
+  margin-top: 30px;
+}
+
+.coveo-form-group-label {
+  color: $color-greyish-teal-blue;
+  font-size: $font-size-bigger;
+  display: block;
+  margin-bottom: 10px;
+}

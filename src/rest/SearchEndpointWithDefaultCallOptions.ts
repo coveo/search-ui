@@ -1,17 +1,25 @@
-import {ISearchEndpoint, IEndpointCallOptions, IGetDocumentOptions, ISearchEndpointOptions, IViewAsHtmlOptions} from './SearchEndpointInterface';
-import {IQuery} from './Query';
-import {ITaggingRequest} from './TaggingRequest';
-import {IRatingRequest} from './RatingRequest';
-import {IRevealQuerySuggestRequest} from './RevealQuerySuggest';
-import {IRevealQuerySuggestResponse} from './RevealQuerySuggest';
-import {IIndexFieldValue} from '../rest/FieldValue';
-import {IQueryResult} from '../rest/QueryResult';
-import {IEndpointError} from '../rest/EndpointError';
-import {IExtension} from '../rest/Extension'
-import {IQueryResults} from './QueryResults';
-import {IFieldDescription} from '../rest/FieldDescription';
-import {IListFieldValuesRequest} from './ListFieldValuesRequest';
-import {ISubscriptionRequest, ISubscription} from './Subscription';
+import {
+  ISearchEndpoint,
+  IEndpointCallOptions,
+  IGetDocumentOptions,
+  ISearchEndpointOptions,
+  IViewAsHtmlOptions
+} from './SearchEndpointInterface';
+import { IQuery } from './Query';
+import { ITaggingRequest } from './TaggingRequest';
+import { IRatingRequest } from './RatingRequest';
+import { IQuerySuggestRequest } from './QuerySuggest';
+import { IQuerySuggestResponse } from './QuerySuggest';
+import { IIndexFieldValue } from '../rest/FieldValue';
+import { IQueryResult } from '../rest/QueryResult';
+import { IEndpointError } from '../rest/EndpointError';
+import { IExtension } from '../rest/Extension';
+import { IQueryResults } from './QueryResults';
+import { IFieldDescription } from '../rest/FieldDescription';
+import { IListFieldValuesRequest } from './ListFieldValuesRequest';
+import { ISubscriptionRequest, ISubscription } from './Subscription';
+import { ISentryLog } from './SentryLog';
+import * as _ from 'underscore';
 
 export class SearchEndpointWithDefaultCallOptions implements ISearchEndpoint {
   options: ISearchEndpointOptions;
@@ -45,11 +53,11 @@ export class SearchEndpointWithDefaultCallOptions implements ISearchEndpoint {
   }
 
   public tagDocument(taggingRequest: ITaggingRequest, callOptions?: IEndpointCallOptions): Promise<boolean> {
-    return this.endpoint.tagDocument(taggingRequest, this.enrichCallOptions(taggingRequest));
+    return this.endpoint.tagDocument(taggingRequest, this.enrichCallOptions(callOptions));
   }
 
-  public getRevealQuerySuggest(request: IRevealQuerySuggestRequest, callOptions?: IEndpointCallOptions): Promise<IRevealQuerySuggestResponse> {
-    return this.endpoint.getRevealQuerySuggest(request, this.enrichCallOptions(callOptions));
+  public getQuerySuggest(request: IQuerySuggestRequest, callOptions?: IEndpointCallOptions): Promise<IQuerySuggestResponse> {
+    return this.endpoint.getQuerySuggest(request, this.enrichCallOptions(callOptions));
   }
 
   public rateDocument(ratingRequest: IRatingRequest, callOptions?: IEndpointCallOptions): Promise<boolean> {
@@ -106,6 +114,10 @@ export class SearchEndpointWithDefaultCallOptions implements ISearchEndpoint {
 
   public deleteSubscription(subscription: ISubscription): Promise<ISubscription> {
     return this.endpoint.deleteSubscription(subscription);
+  }
+
+  public logError(sentryLog: ISentryLog): Promise<boolean> {
+    return this.endpoint.logError(sentryLog);
   }
 
   private enrichCallOptions<T extends IEndpointCallOptions>(callOptions?: T): T {

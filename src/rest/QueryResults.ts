@@ -1,10 +1,10 @@
-import {IUserIdentity} from './UserIdentity';
-import {IRankingExpression} from './RankingExpression';
-import {IQueryException} from './QueryException';
-import {IQueryResult} from './QueryResult';
-import {IGroupByResult} from './GroupByResult';
-import {IQueryCorrection} from './QueryCorrection';
-import {ITrigger} from './Trigger';
+import { IUserIdentity } from './UserIdentity';
+import { IRankingExpression } from './RankingExpression';
+import { IQueryException } from './QueryException';
+import { IQueryResult } from './QueryResult';
+import { IGroupByResult } from './GroupByResult';
+import { IQueryCorrection } from './QueryCorrection';
+import { ITrigger } from './Trigger';
 
 /**
  * Describe a set a results returned by the Search API
@@ -68,19 +68,27 @@ export interface IQueryResults {
    */
   totalCountFiltered: number;
   /**
-   * The duration of the query on the Coveo platform.
+   * The total query duration, which is the sum of the `indexDuration` and `searchAPIDuration`, including any latency incurred through the necessary network hops.
    */
   duration: number;
   /**
-   * The duration of the query on the Coveo Index.
+   * The part of the total query `duration` that was spent in the index.
    */
   indexDuration: number;
   /**
+   * The part of the total query `duration` that was spent in the Coveo Search API.
+   */
+  searchAPIDuration: number;
+  /**
    * The duration of the query on the proxy (not always applicable, can be optional)
+   * 
+   * @deprecated Use duration, indexDuration and searchAPIDuration instead.
    */
   proxyDuration?: number;
   /**
    * The duration of the query for the client.
+   * 
+   * @deprecated Use searchAPIDuration instead.
    */
   clientDuration: number;
   /**
@@ -127,6 +135,10 @@ export interface IQueryResults {
    * The Coveo Query Pipeline triggers, if any were configured.
    */
   triggers: ITrigger<any>[];
+  /**
+   * The keywords selected by Coveo Machine Learning Refined Query feature
+   */
+  refinedKeywords?: string[];
   _folded: boolean;
   _reusedSearchUid?: boolean;
 }

@@ -1,6 +1,8 @@
+@import "Variables";
+
 .CoveoSearchButton {
   color: white;
-  border: 1px solid #bcc3ca;
+  border: 1px solid $color-light-grey;
   text-decoration: none;
   text-align: center;
   vertical-align: middle;
@@ -8,6 +10,7 @@
   height: 50px;
   width: 60px;
   cursor: pointer;
+  line-height: 0;
   &:before {
     content: '';
     vertical-align: middle;
@@ -15,23 +18,43 @@
     display: inline-block;
   }
 
-  & > .coveo-icon {
+  .coveo-search-button, .coveo-search-button-loading {
     vertical-align: middle;
-    @extend .coveo-sprites-main-search;
+    animation: none;
+    display: inline-block;
   }
-  &:hover > .coveo-icon {
-    @extend .coveo-sprites-main-search-active;
+
+
+
+  .coveo-search-button-loading-svg {
+    display: none;
+  }
+
+  &:hover .coveo-magnifier-circle-svg  {
+    fill: $color-active-yellow;
   }
 }
 
-.coveo-executing-query .CoveoSearchButton > .coveo-icon {
-  @extend .coveo-sprites-facet-loading;
-  @include animation-name(coveo-spin);
-  @include animation-timing-function(linear);
-  @include animation-duration(1s);
-  @include animation-iteration-count(infinite);
+.coveo-search-button-svg {
+    width: 18px;
+    height: 18px;
+    color: $color-greyish-teal-blue;
 }
 
-.ie8or9 .coveo-executing-query .CoveoSearchButton > .coveo-icon {
-  @extend .coveo-sprites-main-search;
-}
+.coveo-executing-query .CoveoSearchButton {
+    .coveo-search-button-svg {
+      display: none;
+    }
+
+    .coveo-search-button-loading-svg {
+      display: inline;
+      color: $color-greyish-teal-blue;
+      width: 18px;
+      height: 18px;
+      @include animation-name(coveo-spin);
+      @include animation-timing-function(linear);
+      @include animation-duration(1s);
+      @include animation-iteration-count(infinite);
+    }
+  }
+

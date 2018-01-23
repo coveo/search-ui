@@ -1,9 +1,9 @@
-import {IQuery} from './Query';
+import { IQuery } from './Query';
 
 export const SUBSCRIPTION_TYPE = {
   followQuery: 'followQuery',
-  followDocument: 'followDocument',
-}
+  followDocument: 'followDocument'
+};
 
 export interface ISearchAlertsEndpointOptions {
   restUri: string;
@@ -39,7 +39,6 @@ export interface ISubscription extends ISubscriptionRequest {
  * Describe a user associated with a subscription to the Coveo Search alerts service
  */
 export interface ISubscriptionUser {
-
   /**
    * The email of the user
    */
@@ -68,6 +67,10 @@ export interface ISubscriptionRequest {
    * Frequency of the alerts
    */
   frequency?: string;
+  /**
+   * The name that should be used by the API to identify this subscription
+   */
+  name: string;
 }
 
 /**
@@ -85,23 +88,26 @@ export interface ISubscriptionQueryRequest {
 }
 
 /**
- * Describe a subscription to a single item (a result)
+ * The `ISubscriptionItemRequest` interface describes a subscription to a single item (a result).
  */
 export interface ISubscriptionItemRequest {
   /**
-   * Unique id of the document
+   * Contains the unique ID of the item to subscribe to.
    */
-  id: string,
+  id: string;
+
   /**
-   * Title of the document
+   * Contains the title of the item to subscribe to.
    */
-  title: string,
+  title: string;
+
   /**
-   * Which field on the result represent the modification date for which you wish to receive alerts
+   * Indicates which field contains the modification date of the item to subscribe to.
    */
   modifiedDateField?: string;
+
   /**
-   * A list of field to monitor on the given document
+   * Contains a list of fields to monitor for the item to subscribe to.
    */
   watchedFields?: string[];
 }

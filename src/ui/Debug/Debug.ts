@@ -1,22 +1,25 @@
-/// <reference path="../../../node_modules/modal-box/bin/ModalBox.d.ts" />
-import {ComponentOptions} from '../Base/ComponentOptions';
-import {LocalStorageUtils} from '../../utils/LocalStorageUtils';
-import {IFieldDescription} from '../../rest/FieldDescription';
-import {IBuildingQueryEventArgs, IQuerySuccessEventArgs, QueryEvents} from '../../events/QueryEvents';
-import {ResultListEvents, IDisplayedNewResultEventArgs} from '../../events/ResultListEvents';
-import {DebugEvents} from '../../events/DebugEvents';
-import {IQueryResults} from '../../rest/QueryResults';
-import {IQueryResult} from '../../rest/QueryResult';
-import {$$, Dom} from '../../utils/Dom';
-import {StringUtils} from '../../utils/StringUtils';
-import {SearchEndpoint} from '../../rest/SearchEndpoint';
-import {Template} from '../Templates/Template';
-import {Promise} from 'es6-promise';
-import {RootComponent} from '../Base/RootComponent';
-import {QueryController} from '../../controllers/QueryController';
-import {BaseComponent} from '../Base/BaseComponent';
-import {ModalBox} from '../../ExternalModulesShim';
+import { ComponentOptions } from '../Base/ComponentOptions';
+import { LocalStorageUtils } from '../../utils/LocalStorageUtils';
+import { ResultListEvents, IDisplayedNewResultEventArgs } from '../../events/ResultListEvents';
+import { DebugEvents } from '../../events/DebugEvents';
+import { IQueryResults } from '../../rest/QueryResults';
+import { IQueryResult } from '../../rest/QueryResult';
+import { $$, Dom } from '../../utils/Dom';
+import { StringUtils } from '../../utils/StringUtils';
+import { SearchEndpoint } from '../../rest/SearchEndpoint';
+import { RootComponent } from '../Base/RootComponent';
+import { BaseComponent } from '../Base/BaseComponent';
+import { ModalBox as ModalBoxModule } from '../../ExternalModulesShim';
 import Globalize = require('globalize');
+import * as _ from 'underscore';
+import 'styling/_Debug';
+import { l } from '../../strings/Strings';
+import { IComponentBindings } from '../Base/ComponentBindings';
+import { DebugHeader } from './DebugHeader';
+import { QueryEvents, IQuerySuccessEventArgs } from '../../events/QueryEvents';
+import { DebugForResult } from './DebugForResult';
+import { exportGlobally } from '../../GlobalExports';
+import { Template } from '../Templates/Template';
 
 export interface IDebugOptions {
   enableDebug?: boolean;
@@ -24,114 +27,129 @@ export interface IDebugOptions {
 
 export class Debug extends RootComponent {
   static ID = 'Debug';
+
+  static doExport = () => {
+    exportGlobally({
+      Debug: Debug
+    });
+  };
+
   static options: IDebugOptions = {
     enableDebug: ComponentOptions.buildBooleanOption({ defaultValue: false })
   };
 
   static customOrder = ['error', 'queryDuration', 'result', 'fields', 'rankingInfo', 'template', 'query', 'results', 'state'];
-
   static durationKeys = ['indexDuration', 'proxyDuration', 'clientDuration', 'duration'];
   static maxDepth = 10;
-
   public localStorageDebug: LocalStorageUtils<string[]>;
   public collapsedSections: string[];
-
-  private debug = false;
-  private highlightRecommendation = false;
-  private fields: { [field: string]: IFieldDescription };
-
+  private modalBox: Coveo.ModalBox.ModalBox;
+  private opened = false;
   private stackDebug: any;
+  private debugHeader: DebugHeader;
 
-  constructor(public element: HTMLElement, public queryController: QueryController, public options?: IDebugOptions) {
+  public showDebugPanel: () => void;
+
+  constructor(
+    public element: HTMLElement,
+    public bindings: IComponentBindings,
+    public options?: IDebugOptions,
+    public ModalBox = ModalBoxModule
+  ) {
     super(element, Debug.ID);
     this.options = ComponentOptions.initComponentOptions(element, Debug, options);
-    $$(this.element).on(QueryEvents.buildingQuery, (e, args: IBuildingQueryEventArgs) => {
-      args.queryBuilder.enableDebug = this.debug || args.queryBuilder.enableDebug;
-    })
-    $$(this.element).on(ResultListEvents.newResultDisplayed, (e, args: IDisplayedNewResultEventArgs) => this.handleNewResultDisplayed(args));
-    $$(this.element).on(DebugEvents.showDebugPanel, (e, args) => {
-      this.handleShowDebugPanel(args);
-    })
+
+    // This gets debounced so the following logic works correctly :
+    // When you alt dbl click on a component, it's possible to add/merge multiple debug info source together
+    // They will be merged together in this.addInfoToDebugPanel
+    // Then, openModalBox, even if it's called from multiple different caller will be opened only once all the info has been merged together correctly
+    this.showDebugPanel = _.debounce(() => this.openModalBox(), 100);
+
+    $$(this.element).on(ResultListEvents.newResultDisplayed, (e, args: IDisplayedNewResultEventArgs) =>
+      this.handleNewResultDisplayed(args)
+    );
+    $$(this.element).on(DebugEvents.showDebugPanel, (e, args) => this.handleShowDebugPanel(args));
+    $$(this.element).on(QueryEvents.querySuccess, (e, args: IQuerySuccessEventArgs) => this.handleQuerySuccess(args));
+    $$(this.element).on(QueryEvents.newQuery, () => this.handleNewQuery());
 
     this.localStorageDebug = new LocalStorageUtils<string[]>('DebugPanel');
     this.collapsedSections = this.localStorageDebug.load() || [];
   }
 
-  private showDebugPanel(builder: (results?: IQueryResults) => { body: HTMLElement; json: any; }) {
-    let build = builder();
-
-    let modalbox = ModalBox.open(build.body, {
-      title: '',
-      className: 'coveo-debug',
-      titleClose: true,
-      overlayClose: true
-    });
-    let title = $$(modalbox.wrapper).find('.coveo-title');
-    let search = this.buildSearchBox(build.body);
-    let downloadLink = $$('a', { download: 'debug.json', 'href': this.downloadHref(build.json) }, 'Download');
-    let bodyBuilder = (results?: IQueryResults) => {
-      let build = builder();
-      downloadLink.el.setAttribute('href', this.downloadHref(build.json));
-      return build.body;
-    };
-    title.appendChild(this.buildEnabledHighlightRecommendation());
-    title.appendChild(this.buildEnableDebugCheckbox(build.body, search, bodyBuilder));
-    title.appendChild(search);
-
-    title.appendChild(downloadLink.el)
+  public debugInfo() {
+    return null;
   }
 
-  private handleShowDebugPanel(info: any) {
+  public addInfoToDebugPanel(info: any) {
     if (this.stackDebug == null) {
-      setTimeout(() => {
-        let stackDebug = this.stackDebug;
-        this.showDebugPanel(() => this.buildStackPanel(stackDebug));
-        this.stackDebug = null;
-      });
       this.stackDebug = {};
     }
-    _.extend(this.stackDebug, info);
+    this.stackDebug = _.extend({}, this.stackDebug, info);
   }
 
   private handleNewResultDisplayed(args: IDisplayedNewResultEventArgs) {
-    if (args.item != null) {
-      if (this.highlightRecommendation && args.result.isRecommendation) {
-        $$(args.item).addClass('coveo-is-recommendation')
-      }
-      $$(args.item).on('dblclick', (e: MouseEvent) => {
-        this.handleResultDoubleClick(e, args);
-      })
-    }
+    $$(args.item).on('dblclick', (e: MouseEvent) => {
+      this.handleResultDoubleClick(e, args);
+    });
   }
 
   private handleResultDoubleClick(e: MouseEvent, args: IDisplayedNewResultEventArgs) {
     if (e.altKey) {
-      let index = args.result.index;
-      let findResult = (results?: IQueryResults) => results != null ? _.find(results.results, (result: IQueryResult) => result.index == index) : args.result;
-      let template = args.item['template'];
+      const index = args.result.index;
 
-      let debugPanel = {
-        result: findResult,
-        fields: (results?: IQueryResults) => this.buildFieldsSection(findResult(results)),
-        rankingInfo: (results?: IQueryResults) => this.buildRankingInfoSection(findResult(results)),
-        template: this.templateToJson(template),
-      };
-      this.handleShowDebugPanel(debugPanel);
+      const template = args.item['template'];
+
+      const findResult = (results?: IQueryResults) =>
+        results != null ? _.find(results.results, (result: IQueryResult) => result.index == index) : args.result;
+
+      const debugInfo = _.extend(new DebugForResult(this.bindings).generateDebugInfoForResult(args.result), {
+        findResult: findResult,
+        template: this.templateToJson(template)
+      });
+
+      this.addInfoToDebugPanel(debugInfo);
+      this.showDebugPanel();
     }
   }
 
-  private downloadHref(info: any) {
-    return 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(info));
+  private handleQuerySuccess(args: IQuerySuccessEventArgs) {
+    if (this.opened) {
+      if (this.stackDebug && this.stackDebug.findResult) {
+        this.addInfoToDebugPanel(new DebugForResult(this.bindings).generateDebugInfoForResult(this.stackDebug.findResult(args.results)));
+      }
+      this.redrawDebugPanel();
+      this.hideAnimationDuringQuery();
+    }
   }
 
-  public buildStackPanel(stackDebug: any, results?: IQueryResults): { body: HTMLElement; json: any; } {
-    let body = Dom.createElement('div', { className: 'coveo-debug' });
+  private handleNewQuery() {
+    if (this.opened) {
+      this.showAnimationDuringQuery();
+    }
+  }
 
-    let keys: any[][] = _.pairs(_.keys(stackDebug));
+  private handleShowDebugPanel(args: any) {
+    this.addInfoToDebugPanel(args);
+    this.showDebugPanel();
+  }
 
-    keys = keys.sort((a: any[], b: any[]) => {
-      let indexA = _.indexOf(Debug.customOrder, a[1]);
-      let indexB = _.indexOf(Debug.customOrder, b[1]);
+  private buildStackPanel(): { body: HTMLElement; json: any } {
+    const body = $$('div', {
+      className: 'coveo-debug'
+    });
+
+    const keys = _.chain(this.stackDebug)
+      .omit('findResult') // findResult is a duplicate of the simpler "result" key used to retrieve the results only
+      .keys()
+      .value();
+
+    // TODO Can't chain this properly due to a bug in underscore js definition file.
+    // Yep, A PR is opened to DefinitelyTyped.
+    let keysPaired = _.pairs(keys);
+
+    keysPaired = keysPaired.sort((a: any[], b: any[]) => {
+      const indexA = _.indexOf(Debug.customOrder, a[1]);
+      const indexB = _.indexOf(Debug.customOrder, b[1]);
       if (indexA != -1 && indexB != -1) {
         return indexA - indexB;
       }
@@ -144,163 +162,150 @@ export class Debug extends RootComponent {
       return a[0] - b[0];
     });
 
-    let json = {};
+    const json = {};
 
-    _.forEach(keys, (key: string[]) => {
-      let section = this.buildSection(key[1]);
-      let build = this.buildStackPanelSection(stackDebug[key[1]], results)
-      section.container.appendChild(build.section);
+    _.forEach(keysPaired, (key: string[]) => {
+      const section = this.buildSection(key[1]);
+      const build = this.buildStackPanelSection(this.stackDebug[key[1]], this.stackDebug['result']);
+      section.container.append(build.section);
       if (build.json != null) {
         json[key[1]] = build.json;
       }
-      body.appendChild(section.dom);
+      body.append(section.dom.el);
     });
 
-    return { body: body, json: json };
+    return {
+      body: body.el,
+      json: json
+    };
   }
 
-  private buildStackPanelSection(value: any, results: IQueryResults): { section: HTMLElement; json?: any; } {
+  private getModalBody() {
+    if (this.modalBox && this.modalBox.content) {
+      return $$(this.modalBox.content).find('.coveo-modal-body');
+    }
+    return null;
+  }
+
+  private redrawDebugPanel() {
+    const build = this.buildStackPanel();
+    const body = this.getModalBody();
+    if (body) {
+      $$(body).empty();
+      $$(body).append(build.body);
+    }
+    this.updateSearchFunctionnality(build);
+  }
+
+  private openModalBox() {
+    const build = this.buildStackPanel();
+    this.opened = true;
+
+    this.modalBox = this.ModalBox.open(build.body, {
+      title: l('Debug'),
+      className: 'coveo-debug',
+      titleClose: true,
+      overlayClose: true,
+      validation: () => {
+        this.onCloseModalBox();
+        return true;
+      },
+      sizeMod: 'big'
+    });
+
+    const title = $$(this.modalBox.wrapper).find('.coveo-modal-header');
+    if (title) {
+      if (!this.debugHeader) {
+        this.debugHeader = new DebugHeader(
+          this.element,
+          title,
+          this.bindings,
+          (value: string) => this.search(value, build.body),
+          this.stackDebug
+        );
+      } else {
+        this.debugHeader.moveTo(title);
+        this.updateSearchFunctionnality(build);
+      }
+    } else {
+      this.logger.warn('No title found in modal box.');
+    }
+  }
+
+  private updateSearchFunctionnality(build: { body: HTMLElement; json: any }) {
+    if (this.debugHeader) {
+      this.debugHeader.setNewInfoToDebug(this.stackDebug);
+      this.debugHeader.setSearch((value: string) => this.search(value, build.body));
+    }
+  }
+
+  private onCloseModalBox() {
+    this.stackDebug = null;
+    this.opened = false;
+  }
+
+  private buildStackPanelSection(value: any, results: IQueryResults): { section: HTMLElement; json?: any } {
     if (value instanceof HTMLElement) {
       return { section: value };
     } else if (_.isFunction(value)) {
       return this.buildStackPanelSection(value(results), results);
     }
-    let json = this.toJson(value);
+    const json = this.toJson(value);
     return { section: this.buildProperty(json), json: json };
   }
 
-  private buildSearchBox(body: HTMLElement) {
-    let dom = Dom.createElement('div', { className: 'coveo-debug-search' }, '<input type=\'text\'/>');
-    dom.onclick = (e) => {
-      e.stopPropagation();
-    };
-    let lastSearch = '';
-    let input = dom.querySelector('input') as HTMLInputElement;
-    input.setAttribute('placeholder', 'Search in debug')
-    input.onkeyup = (e) => {
-      if (e == null || e.keyCode == 13) {
-        let value = input.value.toLowerCase();
-        if (lastSearch != value) {
-          lastSearch = value;
-          this.search(value, body);
-        }
-      }
-    };
-    input.onchange = () => {
-      let value = input.value.toLowerCase();
-      if (lastSearch != value) {
-        lastSearch = value;
-        this.search(value, body);
-      }
-    };
-    return dom;
-  }
-
-  private search(value: string, body: HTMLElement) {
-    if (_.isEmpty(value)) {
-      $$(body).findAll('.coveo-search-match, .coveo-search-submatch').forEach((el) => {
-        $$(el).removeClass('coveo-search-match, coveo-search-submatch')
-      });
-      $$(body).removeClass('coveo-searching')
-    } else {
-      $$(body).addClass('coveo-searching-loading');
-      setTimeout(() => {
-        let rootProperties = $$(body).findAll('.coveo-section .coveo-section-container > .coveo-property');
-        _.each(rootProperties, (element: HTMLElement) => {
-          this.findInProperty(element, value);
-        });
-        $$(body).addClass('coveo-searching');
-        $$(body).removeClass('coveo-searching-loading');
-      });
-    }
-  }
-
   private findInProperty(element: HTMLElement, value: string): boolean {
-    let jElement = $$(element);
+    const wrappedElement = $$(element);
     let match = element['label'].indexOf(value) != -1;
     if (match) {
       this.highlightSearch(element['labelDom'], value);
     } else {
       this.removeHighlightSearch(element['labelDom']);
     }
-    if (jElement.hasClass('coveo-property-object')) {
-      jElement.toggleClass('coveo-search-match', match);
-      let children = element['buildKeys']();
+    if (wrappedElement.hasClass('coveo-property-object')) {
+      wrappedElement.toggleClass('coveo-search-match', match);
+      const children = element['buildKeys']();
       let submatch = false;
       _.each(children, (child: HTMLElement) => {
         submatch = this.findInProperty(child, value) || submatch;
       });
-      jElement.toggleClass('coveo-search-submatch', submatch);
+      wrappedElement.toggleClass('coveo-search-submatch', submatch);
       return match || submatch;
     } else {
-      if (element['value'].indexOf(value) != -1) {
+      if (element['values'].indexOf(value) != -1) {
         this.highlightSearch(element['valueDom'], value);
         match = true;
       } else {
         this.removeHighlightSearch(element['valueDom']);
       }
-      jElement.toggleClass('coveo-search-match', match);
+      wrappedElement.toggleClass('coveo-search-match', match);
     }
     return match;
   }
 
-  private buildEnableDebugCheckbox(body: HTMLElement, search: HTMLElement, bodyBuilder: (results: IQueryResults) => HTMLElement) {
-    let dom = Dom.createElement('div', { className: 'coveo-enabled-debug' }, '<label>Enable query debug <input type=\'checkbox\'/></label>');
-    $$(dom).on('click', (e) => {
-      e.stopPropagation();
-    });
-    let checkbox = $$(dom).find('input');
-    if (this.debug) {
-      checkbox.setAttribute('checked', 'checked');
-    }
-    checkbox.onchange = () => {
-      this.debug = !this.debug;
-      $$(this.element).one(QueryEvents.querySuccess + ' ' + QueryEvents.queryError, (e: Event, args: IQuerySuccessEventArgs) => {
-        $$(body).removeClass('coveo-debug-loading');
-        $$(body).empty();
-        $$(bodyBuilder(args.results)).children().forEach((child) => {
-          body.appendChild(child);
-        });
-      })
-      this.queryController.executeQuery({ closeModalBox: false });
-      $$(body).addClass('coveo-debug-loading');
-      let input = search.querySelector('input') as HTMLInputElement;
-      input.value = '';
-      input.onkeyup(null);
-    };
-    return dom;
-  }
-
-  private buildEnabledHighlightRecommendation() {
-    let dom = Dom.createElement('div', { className: 'coveo-enabled-highlight-recommendation' }, '<label>Highlight recommendation <input type=\'checkbox\'/></label>');
-    dom.onclick = (e) => {
-      e.stopPropagation();
-    };
-    let checkbox = $$(dom).find('input');
-    if (this.highlightRecommendation) {
-      checkbox.setAttribute('checked', 'checked')
-    }
-    checkbox.onchange = () => {
-      this.highlightRecommendation = !this.highlightRecommendation;
-      this.queryController.executeQuery({ closeModalBox: false });
-    };
-    return dom;
-  }
-
   private buildSection(id: string) {
-    let dom = Dom.createElement('div', { className: 'coveo-section coveo-' + id + '-section' });
-    let header = Dom.createElement('div', { className: 'coveo-section-header' });
-    $$(header).text(id);
-    dom.appendChild(header);
+    const dom = $$('div', {
+      className: `coveo-section coveo-${id}-section`
+    });
 
-    let container = Dom.createElement('div', { className: 'coveo-section-container' });
-    dom.appendChild(container);
+    const header = $$('div', {
+      className: 'coveo-section-header'
+    });
+
+    $$(header).text(id);
+    dom.append(header.el);
+
+    const container = $$('div', {
+      className: 'coveo-section-container'
+    });
+
+    dom.append(container.el);
 
     if (_.contains(this.collapsedSections, id)) {
       $$(dom).addClass('coveo-debug-collapsed');
     }
 
-    header.onclick = () => {
+    header.on('click', () => {
       $$(dom).toggleClass('coveo-debug-collapsed');
       if (_.contains(this.collapsedSections, id)) {
         this.collapsedSections = _.without(this.collapsedSections, id);
@@ -308,102 +313,19 @@ export class Debug extends RootComponent {
         this.collapsedSections.push(id);
       }
       this.localStorageDebug.save(this.collapsedSections);
-    };
+    });
 
     return {
       dom: dom,
       header: header,
       container: container
-    }
-  }
-
-  private fetchFields(): Promise<{ [field: string]: IFieldDescription }> {
-    if (this.fields == null) {
-      return this.queryController.getEndpoint().listFields().then((fields: IFieldDescription[]) => {
-        this.fields = {};
-        fields.forEach((field) => {
-          this.fields[field.name] = field;
-        });
-        return this.fields;
-      });
-    } else {
-      return Promise.resolve(this.fields)
-    }
-  }
-
-  private buildFieldsSection(result: IQueryResult) {
-    return this.fetchFields()
-      .then((fieldDescriptions: { [field: string]: IFieldDescription }) => {
-        let fields = {};
-        _.each(result.raw, (value: any, key: string) => {
-          let fieldDescription = fieldDescriptions['@' + key];
-          if (fieldDescription == null && key.match(/^sys/)) {
-            fieldDescription = fieldDescriptions['@' + key.substr(3)];
-          }
-          if (fieldDescription == null) {
-            fields['@' + key] = value;
-          } else if (fieldDescription.fieldType == 'Date') {
-            fields['@' + key] = new Date(value);
-          } else if (fieldDescription.splitGroupByField) {
-            fields['@' + key] = value.split(/\s*;\s*/);
-          } else {
-            fields['@' + key] = value;
-          }
-        });
-        return fields;
-      });
-  }
-
-  private buildRankingInfoSection(result: IQueryResult) {
-    return result.rankingInfo && this.parseRankingInfo(result.rankingInfo);
-  }
-
-  public parseRankingInfo(value: string) {
-    let rankingInfo = {};
-
-    let infos = value.match(/^(?:Document weights:\n((?:.)*?)\n)?\n(?:Terms weights:\n((?:.|\n)*))?Total weight: ([0-9]+)$/);
-
-    if (infos[1] != null) {
-      rankingInfo['Document weights'] = this.parseWeights(infos[1]);
-    }
-    if (infos[2] != null) {
-      let terms = StringUtils.match(infos[2], /((?:[^:]+: [0-9]+, [0-9]+; )+)\n((?:\w+: [0-9]+; )+)/g);
-      rankingInfo['Terms weights'] = _.object(_.map(terms, (term) => {
-        let words = _.object(_.map(StringUtils.match(term[1], /([^:]+): ([0-9]+), ([0-9]+); /g), (word) => {
-          return [
-            word[1],
-            {
-              Correlation: Number(word[2]),
-              'TF-IDF': Number(word[3]),
-            }
-          ];
-        }));
-        let weights = this.parseWeights(term[2]);
-        return [
-          _.keys(words).join(', '),
-          {
-            terms: words,
-            Weights: weights
-          }];
-      }));
-    }
-    rankingInfo['Total weight'] = Number(infos[3]);
-
-    return rankingInfo;
-  }
-
-  private parseWeights(value: string) {
-    let listOfWeight = value.match(/(\w+(?:\s\w+)*): ([-0-9]+)/g);
-    return _.object(_.map(listOfWeight, (weight) => {
-      let weightGroup = weight.match(/^(\w+(?:\s\w+)*): ([-0-9]+)$/);
-      return [weightGroup[1], Number(weightGroup[2])];
-    }));
+    };
   }
 
   private buildProperty(value: any, label?: string): HTMLElement {
     if (value instanceof Promise) {
       return this.buildPromise(value, label);
-    } else if ((_.isArray(value) || (_.isObject(value))) && !_.isString(value)) {
+    } else if ((_.isArray(value) || _.isObject(value)) && !_.isString(value)) {
       return this.buildObjectProperty(value, label);
     } else {
       return this.buildBasicProperty(value, label);
@@ -411,106 +333,117 @@ export class Debug extends RootComponent {
   }
 
   private buildPromise(promise: Promise<any>, label?: string): HTMLElement {
-    let dom: HTMLElement = document.createElement('div');
-    dom.className = 'coveo-property coveo-property-promise';
-    promise.then((value) => {
-      let resolvedDom = this.buildProperty(value, label);
-      $$(dom).replaceWith(resolvedDom);
+    const dom = $$('div', {
+      className: 'coveo-property coveo-property-promise'
     });
-    return dom;
+
+    promise.then(value => {
+      const resolvedDom = this.buildProperty(value, label);
+      dom.replaceWith(resolvedDom);
+    });
+
+    return dom.el;
   }
 
   private buildObjectProperty(object: any, label?: string): HTMLElement {
-    let dom: HTMLElement = document.createElement('div');
-    dom.className = 'coveo-property coveo-property-object';
+    const dom = $$('div', {
+      className: 'coveo-property coveo-property-object'
+    });
 
-    let valueContainer: HTMLElement = document.createElement('div');
-    valueContainer.className = 'coveo-property-value';
+    const valueContainer = $$('div', {
+      className: 'coveo-property-value'
+    });
 
-    let keys = _.keys(object);
+    const keys = _.keys(object);
     if (!_.isArray(object)) {
       keys.sort();
     }
 
     let children: HTMLElement[];
-    let buildKeys = () => {
+    const buildKeys = () => {
       if (children == null) {
         children = [];
         _.each(keys, (key: string) => {
-          let property = this.buildProperty(object[key], key);
+          const property = this.buildProperty(object[key], key);
           if (property != null) {
             children.push(property);
-            valueContainer.appendChild(property);
+            valueContainer.append(property);
           }
         });
       }
       return children;
     };
-    dom['buildKeys'] = buildKeys;
+    dom.el['buildKeys'] = buildKeys;
 
     if (label != null) {
-      let labelDom = document.createElement('div');
-      labelDom.className = 'coveo-property-label';
-      labelDom.appendChild(document.createTextNode(label));
-      dom['labelDom'] = labelDom;
+      const labelDom = $$('div', {
+        className: 'coveo-property-label'
+      });
 
-      dom.appendChild(labelDom);
+      labelDom.text(label);
+      dom.el['labelDom'] = labelDom.el;
+
+      dom.append(labelDom.el);
       if (keys.length != 0) {
-        dom.className += ' coveo-collapsible';
-        labelDom.onclick = () => {
+        dom.addClass('coveo-collapsible');
+
+        labelDom.on('click', () => {
           buildKeys();
-          let className = dom.className.split(/\s+/);
+          let className = dom.el.className.split(/\s+/);
           if (_.contains(className, 'coveo-expanded')) {
             className = _.without(className, 'coveo-expanded');
           } else {
-            className.push('coveo-expanded')
+            className.push('coveo-expanded');
           }
-          dom.className = className.join(' ');
-        }
+          dom.el.className = className.join(' ');
+        });
       }
     } else {
       buildKeys();
     }
     if (keys.length == 0) {
-      let className = _.without(dom.className.split(/\s+/), 'coveo-property-object');
+      const className = _.without(dom.el.className.split(/\s+/), 'coveo-property-object');
       className.push('coveo-property-basic');
-      dom.className = className.join(' ');
+      dom.el.className = className.join(' ');
       if (_.isArray(object)) {
-        valueContainer.innerHTML = '[]';
+        valueContainer.setHtml('[]');
       } else {
-        valueContainer.innerHTML = '{}';
+        valueContainer.setHtml('{}');
       }
-      dom['value'] = '';
+      dom.el['values'] = '';
     }
-    dom['label'] = label != null ? label.toLowerCase() : '';
-    dom.appendChild(valueContainer);
-    return dom;
+    dom.el['label'] = label != null ? label.toLowerCase() : '';
+    dom.append(valueContainer.el);
+    return dom.el;
   }
 
   private buildBasicProperty(value: string, label?: string): HTMLElement {
-    let dom: HTMLElement = document.createElement('div');
-    dom.className = 'coveo-property coveo-property-basic';
+    const dom = $$('div', {
+      className: 'coveo-property coveo-property-basic'
+    });
 
     if (label != null) {
-      let labelDom = document.createElement('div');
-      labelDom.className = 'coveo-property-label';
-      labelDom.appendChild(document.createTextNode(label));
-      dom.appendChild(labelDom);
-      dom['labelDom'] = labelDom;
+      const labelDom = $$('div', {
+        className: 'coveo-property-label'
+      });
+      labelDom.text(label);
+      dom.append(labelDom.el);
+      dom.el['labelDom'] = labelDom.el;
     }
-    let stringValue = value != null ? value.toString() : String(value);
+    const stringValue = value != null ? value.toString() : String(value);
     if (value != null && value['ref'] != null) {
       value = value['ref'];
     }
-    let valueDom = document.createElement('div');
-    valueDom.appendChild(document.createTextNode(stringValue));
-    valueDom.ondblclick = () => {
-      this.selectElementText(valueDom);
-    };
-    dom.appendChild(valueDom);
-    dom['valueDom'] = valueDom;
+    const valueDom = $$('div');
+    valueDom.text(stringValue);
+    valueDom.on('dblclick', () => {
+      this.selectElementText(valueDom.el);
+    });
 
-    let className: string[] = ['coveo-property-value'];
+    dom.append(valueDom.el);
+    dom.el['valueDom'] = valueDom;
+
+    const className: string[] = ['coveo-property-value'];
     if (_.isString(value)) {
       className.push('coveo-property-value-string');
     }
@@ -532,11 +465,11 @@ export class Debug extends RootComponent {
     if (_.isArray(value)) {
       className.push('coveo-property-value-array');
     }
-    valueDom.className = className.join(' ');
+    valueDom.el.className = className.join(' ');
 
-    dom['label'] = label != null ? label.toLowerCase() : '';
-    dom['value'] = stringValue.toLowerCase();
-    return dom;
+    dom.el['label'] = label != null ? label.toLowerCase() : '';
+    dom.el['values'] = stringValue.toLowerCase();
+    return dom.el;
   }
 
   private toJson(value: any, depth = 0, done: any[] = []) {
@@ -550,7 +483,7 @@ export class Debug extends RootComponent {
       return this.templateToJson(value);
     }
     if (value instanceof Promise) {
-      return value.then((value) => {
+      return value.then(value => {
         return this.toJson(value, depth, done);
       });
     }
@@ -567,11 +500,11 @@ export class Debug extends RootComponent {
       } else if (_.isDate(value)) {
         return this.toJsonRef(value, Globalize.format(value, 'F'));
       } else {
-        let result = {};
+        const result = {};
         _.each(value, (subValue, key) => {
-          result[key] = this.toJson(subValue, depth + 1, done.concat([value]))
+          result[key] = this.toJson(subValue, depth + 1, done.concat([value]));
         });
-        result['ref']
+        result['ref'];
         return result;
       }
     }
@@ -584,8 +517,8 @@ export class Debug extends RootComponent {
     return stringValue;
   }
 
-  private componentToJson(value: BaseComponent, depth = 0): any {
-    let options = _.keys(value['options']);
+  private componentToJson(value: BaseComponent | SearchEndpoint, depth = 0): any {
+    const options = _.keys(value['options']);
     if (options.length > 0) {
       return this.toJson(value['options'], depth);
     } else {
@@ -601,16 +534,16 @@ export class Debug extends RootComponent {
       tagName: value.tagName,
       id: value.id,
       classList: value.className.split(/\s+/)
-    }
+    };
   }
 
   private templateToJson(template: Template) {
     if (template == null) {
       return null;
     }
-    let element: HTMLElement = template['element'];
-    let templateObject: any = {
-      type: template.getType(),
+    const element: HTMLElement = template['element'];
+    const templateObject: any = {
+      type: template.getType()
     };
     if (element != null) {
       templateObject.id = element.id;
@@ -622,39 +555,69 @@ export class Debug extends RootComponent {
 
   private selectElementText(el: HTMLElement) {
     if (window.getSelection && document.createRange) {
-      let selection = window.getSelection();
-      let range = document.createRange();
+      const selection = window.getSelection();
+      const range = document.createRange();
       range.selectNodeContents(el);
       selection.removeAllRanges();
       selection.addRange(range);
     } else if ('createTextRange' in document.body) {
-      let textRange = document.body['createTextRange']();
+      const textRange = document.body['createTextRange']();
       textRange.moveToElementText(el);
       textRange.select();
     }
   }
 
-  private highlightSearch(element: HTMLElement, search: string) {
-    if (element != null) {
-      let match = element.innerText.split(new RegExp('(?=' + StringUtils.regexEncode(search) + ')', 'gi'));
-      element.innerHTML = '';
-      match.forEach((value) => {
-        let regex = new RegExp('(' + StringUtils.regexEncode(search) + ')', 'i');
-        let group = value.match(regex);
-        let span: HTMLSpanElement;
+  private search(value: string, body: HTMLElement) {
+    if (_.isEmpty(value)) {
+      $$(body)
+        .findAll('.coveo-search-match, .coveo-search-submatch')
+        .forEach(el => {
+          $$(el).removeClass('coveo-search-match, coveo-search-submatch');
+        });
+      $$(body).removeClass('coveo-searching');
+    } else {
+      $$(body).addClass('coveo-searching-loading');
+      setTimeout(() => {
+        const rootProperties = $$(body).findAll('.coveo-section .coveo-section-container > .coveo-property');
+        _.each(rootProperties, (element: HTMLElement) => {
+          this.findInProperty(element, value);
+        });
+        $$(body).addClass('coveo-searching');
+        $$(body).removeClass('coveo-searching-loading');
+      });
+    }
+  }
+
+  private highlightSearch(elementToSearch: HTMLElement | Dom, search: string) {
+    let asHTMLElement: HTMLElement;
+    if (elementToSearch instanceof HTMLElement) {
+      asHTMLElement = elementToSearch;
+    } else if (elementToSearch instanceof Dom) {
+      asHTMLElement = elementToSearch.el;
+    }
+    if (asHTMLElement != null && asHTMLElement.innerText != null) {
+      const match = asHTMLElement.innerText.split(new RegExp('(?=' + StringUtils.regexEncode(search) + ')', 'gi'));
+      asHTMLElement.innerHTML = '';
+      match.forEach(value => {
+        const regex = new RegExp('(' + StringUtils.regexEncode(search) + ')', 'i');
+        const group = value.match(regex);
+        let span;
+
         if (group != null) {
-          span = Dom.createElement('span', { className: 'coveo-debug-highlight' });
-          span.appendChild(document.createTextNode(group[1]));
-          element.appendChild(span);
-          span = Dom.createElement('span');
-          span.appendChild(document.createTextNode(value.substr(group[1].length)));
-          element.appendChild(span);
+          span = $$('span', {
+            className: 'coveo-debug-highlight'
+          });
+          span.text(group[1]);
+          asHTMLElement.appendChild(span.el);
+          span = $$('span');
+          span.text(value.substr(group[1].length));
+          asHTMLElement.appendChild(span.el);
         } else {
-          span = Dom.createElement('span');
-          span.appendChild(document.createTextNode(value));
-          element.appendChild(span);
+          span = $$('span');
+          span.text(value);
+          asHTMLElement.appendChild(span.el);
         }
-      })
+      });
     }
   }
 
@@ -664,7 +627,11 @@ export class Debug extends RootComponent {
     }
   }
 
-  public debugInfo() {
-    return null;
+  private showAnimationDuringQuery() {
+    $$(this.modalBox.content).addClass('coveo-debug-loading');
+  }
+
+  private hideAnimationDuringQuery() {
+    $$(this.modalBox.content).removeClass('coveo-debug-loading');
   }
 }

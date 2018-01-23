@@ -1,16 +1,10 @@
-.CoveoResult {
-  border-bottom: $default-border;
-  margin: 20px 0px 20px 20px;
-  position: relative; // Allows using absolute positioning for buttons such as Show All Thread, etc.
+@import 'Variables';
+@import 'mixins/mediaQuery';
 
+.CoveoResult {
   &.coveo-omnibox-selectable {
     padding: 10px 10px 10px 15px;
     margin: 0;
-  }
-
-  .coveo-icon {
-    float: left;
-    margin: 3px 4px 0px -20px;
   }
 
   .coveo-no-thumbnail {
@@ -97,13 +91,6 @@
         -ms-transform: rotate(-45deg);
         border: 2px solid;
         border-right: none;
-        // YEP A MATRIX FOR IE8. You have to trust me on that want
-        filter: progid:DXImageTransform.Microsoft.Matrix(
-                        M11=0.7071067811865483,
-                        M12=0.7071067811865467,
-                        M21=-0.7071067811865467,
-                        M22=0.7071067811865483,
-                        SizingMethod='auto expand');
         -webkit-backface-visibility: hidden;
         -webkit-border-top-left-radius: 2px;
         -webkit-border-bottom-left-radius: 2px;
@@ -130,7 +117,6 @@
         border-top-right-radius: 3px;
         box-sizing: border-box;
       }
-
     }
 
     .coveo-badge-label {
@@ -155,6 +141,92 @@
   }
 
   &.coveo-is-recommendation {
-    box-shadow: 0 0 0 5px #263E55;
+    box-shadow: 0 0 1px 1px $color-greyish-dark-blue;
   }
+}
+
+.coveo-list-layout.CoveoResult {
+  border-bottom: $default-border;
+  padding: 16px 0px 16px 16px;
+}
+
+.coveo-card-layout {
+  margin-right: -20px;
+  &.CoveoResult {
+    overflow: hidden;
+    display: flex;
+    position: relative;
+
+    font-size: 0.9em;
+
+    width: 300px;
+    @include flex-grow(1);
+    & + .CoveoResult {
+    }
+    margin: 0 20px 20px 0;
+    @include smallScreenWidth {
+      margin: 0 0 20px 0;
+    }
+    @include defaultRoundedBorder();
+
+    &.coveo-clickable {
+      cursor: pointer;
+      &:hover {
+        box-shadow: 0 0 0 2px $color-vibrant-blue;
+        border-color: $color-vibrant-blue;
+      }
+    }
+
+    .coveo-result-row:first-child {
+      margin-top: 0;
+    }
+
+    .coveo-result-frame,
+    &.coveo-result-frame {
+      display: flex;
+      padding: 20px;
+      flex-direction: column;
+      width: 100%;
+      height: auto;
+    }
+
+    .CoveoResultLink {
+      font-size: 16px;
+      line-height: 21px;
+    }
+  }
+  // These divs are used for filling the space when the number of cards is not even
+  &:empty {
+    width: 300px;
+    height: 0;
+    @include flex-grow(1);
+    margin-right: 20px;
+  }
+}
+
+.coveo-table-layout {
+  display: table-row;
+  td {
+    display: table-cell;
+    padding: 9px 15px;
+    white-space: nowrap;
+    border-bottom: $default-border;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  th {
+    text-align: left;
+    font-size: 12px;
+    color: $color-greyish-teal-blue;
+    font-weight: bold;
+    border-bottom: $default-border;
+    padding: 7px 15px;
+  }
+  &:hover td {
+    background-color: $color-blueish-white-grey;
+  }
+}
+
+.coveo-card-overlay a {
+  @include clickable($dark-background: true);
 }

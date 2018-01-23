@@ -1,22 +1,30 @@
 /**
- * Describe the cause of an event for the analytics service
+ * The IAnalyticsActionCause interface describes the cause of an event for the analytics service.
+ *
+ * See the {@link Analytics} component
  */
 export interface IAnalyticsActionCause {
   /**
-   * The name of the event. Should be unique for each event.<br/>
-   * Eg : searchBoxSubmit or resultSort
+   * Specifies the name of the event. While you can actually set this property to any arbitrary string value, its value
+   * should uniquely identify the precise action that triggers the event. Thus, each individual event should have its
+   * own unique `name` value.
+   *
+   * Example: `searchBoxSubmit`, `resultSort`, etc.
    */
   name: string;
+
   /**
-   * The type of the event. Allow to regroup similar event type together when doing reporting.<br/>
-   * For example, all search box event will be of type "search box"
+   * Specifies the type of the event. While you can actually set this property to any arbitrary string value, it should
+   * describe the general category of the event. Thus, more than one event can have the same `type` value, which makes
+   * it possible to group events with identical types when doing reporting.
+   *
+   * Example: All search box related events could have `searchbox` as their `type` value.
    */
   type: string;
   metaMap?: { [name: string]: number };
 }
 
-export interface IAnalyticsNoMeta {
-}
+export interface IAnalyticsNoMeta {}
 
 export interface IAnalyticsInterfaceChange {
   interfaceChangeTo: string;
@@ -35,19 +43,24 @@ export interface IAnalyticsResultsSortMeta {
 }
 
 /**
- * The expected metadata when loggin a click event / document view
+ * The `IAnalyticsDocumentViewMeta` interface describes the expected metadata when logging a click event / item view.
+ *
+ * See also the [`Analytics`]{@link Analytics} component, and more specifically its
+ * [`logClickEvent`]{@link Analytics.logClickEvent} method.
  */
 export interface IAnalyticsDocumentViewMeta {
   /**
-   * The url of the clicked document
+   * The URL of the clicked item.
    */
   documentURL?: string;
+
   /**
-   * The title of the clicked document
+   * The title of the clicked item.
    */
   documentTitle?: string;
+
   /**
-   * The author of the clicked document
+   * The author of the clicked item.
    */
   author: string;
 }
@@ -60,7 +73,11 @@ export interface IAnalyticsOmniboxFacetMeta {
   suggestionRanking: number;
   query: string;
 }
-
+export interface IAnalyticsSimpleFilterMeta {
+  simpleFilterTitle: string;
+  simpleFilterSelectedValue?: string;
+  simpleFilterField: string;
+}
 export interface IAnalyticsFacetMeta {
   facetId: string;
   facetValue?: string;
@@ -96,8 +113,7 @@ export interface IAnalyticsFacetSliderChangeMeta {
   facetRangeEnd: any;
 }
 
-export interface IAnalyticsFacetGraphSelectedMeta extends IAnalyticsFacetSliderChangeMeta {
-}
+export interface IAnalyticsFacetGraphSelectedMeta extends IAnalyticsFacetSliderChangeMeta {}
 
 export interface IAnalyticsFacetOperatorMeta extends IAnalyticsFacetMeta {
   facetOperatorBefore: string;
@@ -130,8 +146,7 @@ export interface IAnalyticsCaseContextRemoveMeta {
   caseID: string;
 }
 
-export interface IAnalyticsCaseDetachMeta extends IAnalyticsCaseAttachMeta {
-}
+export interface IAnalyticsCaseDetachMeta extends IAnalyticsCaseAttachMeta {}
 
 export interface IAnalyticsCaseCreationInputChangeMeta {
   inputTitle: string;
@@ -166,6 +181,25 @@ export interface IAnalyticsTriggerQuery {
 
 export interface IAnalyticsTriggerExecute {
   executed: string;
+}
+
+export interface IAnalyticsSearchAlertsMeta {
+  subscription: string;
+}
+
+export interface IAnalyticsSearchAlertsUpdateMeta extends IAnalyticsSearchAlertsMeta {
+  frequency: string;
+}
+
+export interface IAnalyticsSearchAlertsFollowDocumentMeta extends IAnalyticsDocumentViewMeta {
+  documentSource: string;
+  documentLanguage: string;
+  contentIDKey: string;
+  contentIDValue: string;
+}
+
+export interface IAnalyticsResultsLayoutChange {
+  resultsLayoutChangeTo: string;
 }
 
 export var analyticsActionCauseList = {
@@ -213,9 +247,13 @@ export var analyticsActionCauseList = {
     type: 'breadcrumb',
     metaMap: { facetId: 1, facetValue: 2, facetTitle: 3 }
   },
+  breadcrumbAdvancedSearch: <IAnalyticsActionCause>{
+    name: 'breadcrumbAdvancedSearch',
+    type: 'breadcrumb'
+  },
   breadcrumbResetAll: <IAnalyticsActionCause>{
     name: 'breadcrumbResetAll',
-    type: 'breadcrumb',
+    type: 'breadcrumb'
   },
   documentTag: <IAnalyticsActionCause>{
     name: 'documentTag',
@@ -259,6 +297,16 @@ export var analyticsActionCauseList = {
   },
   omniboxAnalytics: <IAnalyticsActionCause>{
     name: 'omniboxAnalytics',
+    type: 'omnibox',
+    metaMap: {
+      partialQuery: 1,
+      suggestionRanking: 2,
+      partialQueries: 3,
+      suggestions: 4
+    }
+  },
+  omniboxFromLink: <IAnalyticsActionCause>{
+    name: 'omniboxFromLink',
     type: 'omnibox',
     metaMap: {
       partialQuery: 1,
@@ -398,17 +446,17 @@ export var analyticsActionCauseList = {
   pagerNumber: <IAnalyticsActionCause>{
     name: 'pagerNumber',
     type: 'getMoreResults',
-    metaMap: { 'pagerNumber': 1 }
+    metaMap: { pagerNumber: 1 }
   },
   pagerNext: <IAnalyticsActionCause>{
     name: 'pagerNext',
     type: 'getMoreResults',
-    metaMap: { 'pagerNumber': 1 }
+    metaMap: { pagerNumber: 1 }
   },
   pagerPrevious: <IAnalyticsActionCause>{
     name: 'pagerPrevious',
     type: 'getMoreResults',
-    metaMap: { 'pagerNumber': 1 }
+    metaMap: { pagerNumber: 1 }
   },
   pagerScrolling: <IAnalyticsActionCause>{
     name: 'pagerScrolling',
@@ -417,6 +465,10 @@ export var analyticsActionCauseList = {
   pagerResize: <IAnalyticsActionCause>{
     name: 'pagerResize',
     type: 'getMoreResults'
+  },
+  positionSet: <IAnalyticsActionCause>{
+    name: 'positionSet',
+    type: 'distance'
   },
   searchFromLink: <IAnalyticsActionCause>{
     name: 'searchFromLink',
@@ -441,7 +493,7 @@ export var analyticsActionCauseList = {
   queryError: <IAnalyticsActionCause>{
     name: 'query',
     type: 'errors',
-    metaMap: { 'query': 1, 'aq': 2, 'cq': 3, 'dq': 4, 'errorType': 5, 'errorMessage': 6 }
+    metaMap: { query: 1, aq: 2, cq: 3, dq: 4, errorType: 5, errorMessage: 6 }
   },
   exportToExcel: <IAnalyticsActionCause>{
     name: 'exportToExcel',
@@ -458,5 +510,60 @@ export var analyticsActionCauseList = {
   recommendationOpen: <IAnalyticsActionCause>{
     name: 'recommendationOpen',
     type: 'recommendation'
+  },
+  advancedSearch: <IAnalyticsActionCause>{
+    name: 'advancedSearch',
+    type: 'advancedSearch'
+  },
+  searchAlertsFollowDocument: <IAnalyticsActionCause>{
+    name: 'followDocument',
+    type: 'searchAlerts'
+  },
+  searchAlertsFollowQuery: <IAnalyticsActionCause>{
+    name: 'followQuery',
+    type: 'searchAlerts'
+  },
+  searchAlertsUpdateSubscription: <IAnalyticsActionCause>{
+    name: 'updateSubscription',
+    type: 'searchAlerts'
+  },
+  searchAlertsDeleteSubscription: <IAnalyticsActionCause>{
+    name: 'deleteSubscription',
+    type: 'searchAlerts'
+  },
+  searchAlertsUnfollowDocument: <IAnalyticsActionCause>{
+    name: 'unfollowDocument',
+    type: 'searchAlerts'
+  },
+  searchAlertsUnfollowQuery: <IAnalyticsActionCause>{
+    name: 'unfollowQuery',
+    type: 'searchAlerts'
+  },
+  simpleFilterSelectValue: <IAnalyticsActionCause>{
+    name: 'selectValue',
+    type: 'simpleFilter',
+    metaMap: { simpleFilterTitle: 1, simpleFilterValue: 2, simpleFilterField: 3 }
+  },
+  simpleFilterDeselectValue: <IAnalyticsActionCause>{
+    name: 'selectValue',
+    type: 'simpleFilter',
+    metaMap: { simpleFilterTitle: 1, simpleFilterValues: 2, simpleFilterField: 3 }
+  },
+  simpleFilterClearAll: <IAnalyticsActionCause>{
+    name: 'selectValue',
+    type: 'simpleFilter',
+    metaMap: { simpleFilterTitle: 1, simpleFilterField: 3 }
+  },
+  resultsLayoutChange: <IAnalyticsActionCause>{
+    name: 'changeResultsLayout',
+    type: 'resultsLayout'
+  },
+  foldingShowMore: <IAnalyticsActionCause>{
+    name: 'showMoreFoldedResults',
+    type: 'folding'
+  },
+  foldingShowLess: <IAnalyticsActionCause>{
+    name: 'showLessFoldedResults',
+    type: 'folding'
   }
-}
+};

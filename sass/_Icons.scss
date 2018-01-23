@@ -1,4 +1,6 @@
-@import "../bin/sass/GeneratedIconsNew";
+@import "Variables";
+@import "../bin/sass/_GeneratedIconsNew.scss";
+@import "mixins/salesforceIconsBackgroundColor";
 
 .coveo-icon {
   @include GeneratedIcons();
@@ -33,6 +35,9 @@
   .coveo-icon-caption-overlay {
     display: block;
   }
+  &.coveo-small .coveo-icon-caption-overlay {
+    display: none;
+  }
 }
 
 .CoveoIcon, .CoveoIcon.coveo-icon, .CoveoIcon.coveo-icon.filetype, .CoveoIcon.coveo-icon.objecttype, .CoveoIcon.coveo-icon.sysfiletype {
@@ -57,3 +62,4 @@
     }
   }
 }
+

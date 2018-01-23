@@ -1,9 +1,4 @@
-.coveo-facet-breadcrumb, .coveo-facet-slider-breadcrumb {
-
-  * {
-    vertical-align: top;
-  }
-}
+@import './mixins/breadcrumb';
 
 .coveo-facet-breadcrumb-title, .coveo-facet-slider-breadcrumb-title {
   @include breadcrumbTitle();
@@ -19,7 +14,7 @@
   @include clearButton('.coveo-facet-breadcrumb-clear');
   @include clickableVibrant();
   & + & {
-    margin-left: 10px;
+    margin-left: 20px;
   }
 }
 
@@ -27,21 +22,41 @@
   display: inline-block;
   margin-left: 5px;
   position: relative;
-  top: 3px;
+  width: 12px;
+  height: 12px;
+  vertical-align: middle;
+}
+
+.coveo-facet-breadcrumb-clear-svg, .coveo-facet-slider-clear-svg {
+  position: absolute;
 }
 
 .coveo-facet-breadcrumb-multi-icon {
+  display: inline-block;
   margin: 0;
   &.coveo-selected {
-    @extend .coveo-sprites-checkbox-hook-active;
-    vertical-align: middle;
     margin-left: 0px;
     margin-right: 5px;
+    .coveo-facet-breadcrumb-multi-icon-svg {
+      vertical-align: middle;
+      width: 14px;
+      height: 12px;
+    }
+    .coveo-hook-svg {
+      fill: $color-greyish-teal-blue;
+    }
   }
   &.coveo-excluded {
-    @extend .coveo-sprites-facet-checkbox-exclusion;
-    vertical-align: middle;
     margin-left: 0px;
     margin-right: 5px;
+    .coveo-facet-breadcrumb-multi-icon-svg {
+      vertical-align: middle;
+      width: 10px;
+      height: 10px
+    }
+
+    .coveo-exclusion-svg {
+      fill: $color-red;
+    }
   }
 }

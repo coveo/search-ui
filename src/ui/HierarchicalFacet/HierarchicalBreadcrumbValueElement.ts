@@ -1,7 +1,8 @@
-import {BreadcrumbValueElement} from '../Facet/BreadcrumbValueElement';
-import {FacetValue} from '../Facet/FacetValues';
-import {HierarchicalFacet} from './HierarchicalFacet';
-import {Dom} from '../../utils/Dom';
+import { BreadcrumbValueElement } from '../Facet/BreadcrumbValueElement';
+import { FacetValue } from '../Facet/FacetValues';
+import { HierarchicalFacet } from './HierarchicalFacet';
+import { Dom } from '../../utils/Dom';
+import * as _ from 'underscore';
 
 export class HierarchicalBreadcrumbValueElement extends BreadcrumbValueElement {
   constructor(public facet: HierarchicalFacet, public facetValue: FacetValue) {
@@ -13,10 +14,10 @@ export class HierarchicalBreadcrumbValueElement extends BreadcrumbValueElement {
     build.addClass('coveo-hierarchical-facet-value');
     var caption = build.find('.coveo-facet-breadcrumb-caption');
     var values = this.facetValue.value.split(this.facet.options.delimitingCharacter);
-    values = _.map(values, (v) => {
+    values = _.map(values, v => {
       return _.escape(v);
-    })
-    caption.innerHTML = values.join('<span class=\'coveo-hierarchical-breadcrumb-separator\'></span>');
+    });
+    caption.innerHTML = values.join("<span class='coveo-hierarchical-breadcrumb-separator'></span>");
     return build;
   }
 }

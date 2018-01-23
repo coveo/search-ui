@@ -1,0 +1,14 @@
+@import "../../node_modules/coveo-styleguide/scss/common/palette";
+@import "../../node_modules/coveo-styleguide/scss/variables";
+@import "../../node_modules/coveo-styleguide/scss/controls/checkboxes";
+
+.coveo-checkbox-label {
+  cursor: pointer;
+  button + .coveo-checkbox-span-label, .coveo-checkbox-span-label + .coveo-checkbox + button {
+    margin-left: $checkbox-label-margin;
+  }
+}
+
+.coveo-checkbox-button, input[type=checkbox].coveo-checkbox + button {
+  min-width: 18px;
+}

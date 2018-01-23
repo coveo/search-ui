@@ -1,6 +1,9 @@
-import {Utils} from '../utils/Utils';
-import {Assert} from '../misc/Assert';
-import {Logger} from '../misc/Logger';
+import { Utils } from '../utils/Utils';
+import { JQueryUtils } from '../utils/JQueryutils';
+import { Assert } from '../misc/Assert';
+import { Logger } from '../misc/Logger';
+import * as _ from 'underscore';
+import { IStringMap } from '../rest/GenericParam';
 
 export interface IOffset {
   left: number;
@@ -28,7 +31,7 @@ export class Dom {
     this.el = el;
   }
 
-  private static handlers: { eventHandle: Function, fn: EventListener }[] = [];
+  private static handlers: { eventHandle: Function; fn: EventListener }[] = [];
 
   /**
    * Helper function to quickly create an HTMLElement
@@ -39,13 +42,13 @@ export class Dom {
    * @param innerHTML The contents of the new HTMLElement, either in string form or as another HTMLElement
    */
   static createElement(type: string, props?: Object, ...children: Array<string | HTMLElement | Dom>): HTMLElement {
-    var elem: HTMLElement = document.createElement(type);
+    const elem: HTMLElement = document.createElement(type);
 
-    for (var key in props) {
+    for (const key in props) {
       if (key === 'className') {
         elem.className = props['className'];
       } else {
-        let attr = key.indexOf('-') !== -1 ? key : Utils.toDashCase(key)
+        const attr = key.indexOf('-') !== -1 ? key : Utils.toDashCase(key);
         elem.setAttribute(attr, props[key]);
       }
     }
@@ -58,7 +61,7 @@ export class Dom {
       } else if (child instanceof Dom) {
         elem.appendChild(child.el);
       }
-    })
+    });
 
     return elem;
   }
@@ -90,14 +93,14 @@ export class Dom {
    * @returns {string}
    */
   public text(txt?: string): string {
-    if (txt) {
+    if (Utils.isUndefined(txt)) {
+      return this.el.innerText || this.el.textContent;
+    } else {
       if (this.el.innerText != undefined) {
         this.el.innerText = txt;
       } else if (this.el.textContent != undefined) {
         this.el.textContent = txt;
       }
-    } else {
-      return this.el.innerText || this.el.textContent;
     }
   }
 
@@ -108,8 +111,8 @@ export class Dom {
    * @returns {HTMLElement[]}
    */
   public nodeListToArray(nodeList: NodeList): HTMLElement[] {
-    var i = nodeList.length;
-    var arr: HTMLElement[] = new Array(i);
+    let i = nodeList.length;
+    const arr: HTMLElement[] = new Array(i);
     while (i--) {
       arr[i] = <HTMLElement>nodeList.item(i);
     }
@@ -129,7 +132,9 @@ export class Dom {
    * Empty the element and all childs from the dom;
    */
   public remove(): void {
-    this.el.parentNode.removeChild(this.el);
+    if (this.el.parentNode) {
+      this.el.parentNode.removeChild(this.el);
+    }
   }
 
   /**
@@ -218,33 +223,43 @@ export class Dom {
   }
 
   /**
-   * Get the first element that matches the classname by testing the element itself and traversing up through its ancestors in the DOM tree.<br/>
+   * Get the first element that matches the classname by testing the element itself and traversing up through its ancestors in the DOM tree.
+   *
    * Stops at the body of the document
    * @param className A CSS classname
    */
   public closest(className: string): HTMLElement {
-    if (className.indexOf('.') == 0) {
-      className = className.substr(1);
+    return this.traverseAncestorForClass(this.el, className);
+  }
+
+  /**
+   * Get the first element that matches the classname by testing the element itself and traversing up through its ancestors in the DOM tree.
+   *
+   * Stops at the body of the document
+   * @returns {any}
+   */
+  public parent(className: string): HTMLElement {
+    if (this.el.parentElement == undefined) {
+      return undefined;
     }
-    var current = this.el, found = false;
-    while (!found) {
-      if ($$(current).hasClass(className)) {
-        found = true;
-      }
-      if (current.tagName.toLowerCase() == 'body') {
-        break;
-      }
-      if (current.parentElement == null) {
-        break;
-      }
-      if (!found) {
-        current = current.parentElement;
-      }
+    return this.traverseAncestorForClass(this.el.parentElement, className);
+  }
+
+  /**
+   *  Get all the ancestors of the current element that match the given className
+   *
+   *  Return an empty array if none found.
+   * @param className
+   * @returns {HTMLElement[]}
+   */
+  public parents(className: string): HTMLElement[] {
+    const parentsFound = [];
+    let parentFound = this.parent(className);
+    while (parentFound) {
+      parentsFound.push(parentFound);
+      parentFound = new Dom(parentFound).parent(className);
     }
-    if (found) {
-      return current;
-    }
-    return undefined;
+    return parentsFound;
   }
 
   /**
@@ -260,7 +275,7 @@ export class Dom {
    * @returns {HTMLElement[]}
    */
   public siblings(selector: string): HTMLElement[] {
-    let sibs = [];
+    const sibs = [];
     let currentElement = <HTMLElement>this.el.parentNode.firstChild;
     for (; currentElement; currentElement = <HTMLElement>currentElement.nextSibling) {
       if (currentElement != this.el) {
@@ -273,8 +288,8 @@ export class Dom {
   }
 
   private matches(element: HTMLElement, selector: string) {
-    var all = document.querySelectorAll(selector);
-    for (var i = 0; i < all.length; i++) {
+    const all = document.querySelectorAll(selector);
+    for (let i = 0; i < all.length; i++) {
       if (all[i] === element) {
         return true;
       }
@@ -298,7 +313,7 @@ export class Dom {
    */
   public findClass(className: string): HTMLElement[] {
     if ('getElementsByClassName' in this.el) {
-      return this.nodeListToArray(this.el.getElementsByClassName(className))
+      return this.nodeListToArray(this.el.getElementsByClassName(className));
     }
     // For ie 8
     return this.nodeListToArray(this.el.querySelectorAll('.' + className));
@@ -323,7 +338,7 @@ export class Dom {
     if (_.isArray(className)) {
       _.each(className, (name: string) => {
         this.addClass(name);
-      })
+      });
     } else {
       if (!this.hasClass(className)) {
         if (this.el.className) {
@@ -346,7 +361,7 @@ export class Dom {
   /**
    * Toggle the class on the element.
    * @param className Classname to toggle
-   * @swtch If true, add the class regardless and if false, remove the class
+   * @param swtch If true, add the class regardless and if false, remove the class
    */
   public toggleClass(className: string, swtch?: boolean): void {
     if (Utils.isNullOrUndefined(swtch)) {
@@ -377,7 +392,13 @@ export class Dom {
    * @returns {any|Array}
    */
   public getClass(): string[] {
-    return this.el.className.match(Dom.CLASS_NAME_REGEX) || []
+    // SVG elements got a className property, but it's not a string, it's an object
+    const className = this.getAttribute('class');
+    if (className && className.match) {
+      return className.match(Dom.CLASS_NAME_REGEX) || [];
+    } else {
+      return [];
+    }
   }
 
   /**
@@ -435,22 +456,23 @@ export class Dom {
     if (_.isArray(type)) {
       _.each(type, (t: string) => {
         this.on(t, eventHandle);
-      })
+      });
     } else {
-      var jq = this.getJQuery();
+      const modifiedType = this.processEventTypeToBeJQueryCompatible(type);
+      const jq = JQueryUtils.getJQuery();
       if (jq) {
-        jq(this.el).on(type, eventHandle);
+        jq(this.el).on(modifiedType, eventHandle);
       } else if (this.el.addEventListener) {
-        var fn = (e: CustomEvent) => {
-          eventHandle(e, e.detail)
-        }
+        const fn = (e: CustomEvent) => {
+          eventHandle(e, e.detail);
+        };
         Dom.handlers.push({
           eventHandle: eventHandle,
           fn: fn
-        })
-        this.el.addEventListener(type, fn, false);
+        });
+        this.el.addEventListener(modifiedType, fn, false);
       } else if (this.el['on']) {
-        this.el['on']('on' + type, eventHandle);
+        this.el['on']('on' + modifiedType, eventHandle);
       }
     }
   }
@@ -467,13 +489,14 @@ export class Dom {
     if (_.isArray(type)) {
       _.each(type, (t: string) => {
         this.one(t, eventHandle);
-      })
+      });
     } else {
-      var once = (e: Event, args: any) => {
-        this.off(type, once);
+      const modifiedType = this.processEventTypeToBeJQueryCompatible(type);
+      const once = (e: Event, args: any) => {
+        this.off(modifiedType, once);
         return eventHandle(e, args);
-      }
-      this.on(type, once);
+      };
+      this.on(modifiedType, once);
     }
   }
 
@@ -488,25 +511,26 @@ export class Dom {
     if (_.isArray(type)) {
       _.each(type, (t: string) => {
         this.off(t, eventHandle);
-      })
+      });
     } else {
-      var jq = this.getJQuery();
+      const modifiedType = this.processEventTypeToBeJQueryCompatible(type);
+      const jq = JQueryUtils.getJQuery();
       if (jq) {
-        jq(this.el).off(type, eventHandle);
+        jq(this.el).off(modifiedType, eventHandle);
       } else if (this.el.removeEventListener) {
-        var idx = 0
-        var found = _.find(Dom.handlers, (handlerObj: { eventHandle: Function, fn: EventListener }, i) => {
+        let idx = 0;
+        const found = _.find(Dom.handlers, (handlerObj: { eventHandle: Function; fn: EventListener }, i) => {
           if (handlerObj.eventHandle == eventHandle) {
             idx = i;
             return true;
           }
-        })
+        });
         if (found) {
-          this.el.removeEventListener(type, found.fn, false);
+          this.el.removeEventListener(modifiedType, found.fn, false);
           Dom.handlers.splice(idx, 1);
         }
       } else if (this.el['off']) {
-        this.el['off']('on' + type, eventHandle);
+        this.el['off']('on' + modifiedType, eventHandle);
       }
     }
   }
@@ -517,14 +541,14 @@ export class Dom {
    * @param data
    */
   public trigger(type: string, data?: { [key: string]: any }): void {
-    var jq = this.getJQuery();
+    const modifiedType = this.processEventTypeToBeJQueryCompatible(type);
+    const jq = JQueryUtils.getJQuery();
     if (jq) {
-      jq(this.el).trigger(type, data)
+      jq(this.el).trigger(modifiedType, data);
     } else if (CustomEvent !== undefined) {
-      var event = new CustomEvent(type, { detail: data, bubbles: true });
+      const event = new CustomEvent(modifiedType, { detail: data, bubbles: true });
       this.el.dispatchEvent(event);
     } else {
-      // TODO Support for older browser ?
       new Logger(this).error('CANNOT TRIGGER EVENT FOR OLDER BROWSER');
     }
   }
@@ -542,7 +566,7 @@ export class Dom {
    * @param other
    */
   public isDescendant(parent: HTMLElement): boolean {
-    var node = this.el.parentNode;
+    let node = this.el.parentNode;
     while (node != null) {
       if (node == parent) {
         return true;
@@ -557,7 +581,7 @@ export class Dom {
    * @param otherElem
    */
   public replaceWith(otherElem: HTMLElement): void {
-    var parent = this.el.parentNode;
+    const parent = this.el.parentNode;
     if (parent) {
       new Dom(otherElem).insertAfter(this.el);
     }
@@ -569,10 +593,10 @@ export class Dom {
    * Return the position relative to the offset parent.
    */
   public position(): IOffset {
-    let offsetParent = this.offsetParent();
+    const offsetParent = this.offsetParent();
+    const offset = this.offset();
     let parentOffset: IOffset = { top: 0, left: 0 };
 
-    let offset = this.offset();
     if (!$$(offsetParent).is('html')) {
       parentOffset = $$(offsetParent).offset();
     }
@@ -627,8 +651,7 @@ export class Dom {
       return { top: 0, left: 0 };
     }
 
-
-    let rect = this.el.getBoundingClientRect();
+    const rect = this.el.getBoundingClientRect();
 
     if (rect.width || rect.height) {
       let doc = this.el.ownerDocument;
@@ -645,29 +668,64 @@ export class Dom {
   /**
    * Returns the offset width of the element
    */
-  public width() {
+  public width(): number {
     return this.el.offsetWidth;
   }
 
   /**
    * Returns the offset height of the element
    */
-  public height() {
+  public height(): number {
     return this.el.offsetHeight;
   }
 
-  private getJQuery() {
-    if (window['jQuery'] != undefined) {
-      return window['jQuery']
-    }
-    return false;
+  /**
+   * Clone the node
+   * @param deep true if the children of the node should also be cloned, or false to clone only the specified node.
+   * @returns {Dom}
+   */
+  public clone(deep = false): Dom {
+    return $$(<HTMLElement>this.el.cloneNode(deep));
   }
 
+  private processEventTypeToBeJQueryCompatible(event: string): string {
+    // From https://api.jquery.com/on/
+    // [...]
+    // > In addition, the .trigger() method can trigger both standard browser event names and custom event names to call attached handlers. Event names should only contain alphanumerics, underscore, and colon characters.
+    if (event) {
+      return event.replace(/[^a-zA-Z0-9\:\_]/g, '');
+    }
+    return event;
+  }
+
+  private traverseAncestorForClass(current = this.el, className: string): HTMLElement {
+    if (className.indexOf('.') == 0) {
+      className = className.substr(1);
+    }
+    let found = false;
+    while (!found) {
+      if ($$(current).hasClass(className)) {
+        found = true;
+      }
+      if (current.tagName.toLowerCase() == 'body') {
+        break;
+      }
+      if (current.parentElement == null) {
+        break;
+      }
+      if (!found) {
+        current = current.parentElement;
+      }
+    }
+    if (found) {
+      return current;
+    }
+    return undefined;
+  }
 }
 
 export class Win {
-  constructor(public win: Window) {
-  }
+  constructor(public win: Window) {}
 
   public height(): number {
     return this.win.innerHeight;
@@ -676,19 +734,38 @@ export class Win {
   public width(): number {
     return this.win.innerWidth;
   }
+
+  public scrollY(): number {
+    return this.supportPageOffset()
+      ? this.win.pageYOffset
+      : this.isCSS1Compat() ? this.win.document.documentElement.scrollTop : this.win.document.body.scrollTop;
+  }
+
+  public scrollX(): number {
+    return this.supportPageOffset()
+      ? window.pageXOffset
+      : this.isCSS1Compat() ? document.documentElement.scrollLeft : document.body.scrollLeft;
+  }
+
+  private isCSS1Compat() {
+    return (this.win.document.compatMode || '') === 'CSS1Compat';
+  }
+
+  private supportPageOffset() {
+    return this.win.pageXOffset !== undefined;
+  }
 }
 
 export class Doc {
-  constructor(public doc: Document) {
-  }
+  constructor(public doc: Document) {}
 
   public height(): number {
-    var body = this.doc.body;
+    const body = this.doc.body;
     return Math.max(body.scrollHeight, body.offsetHeight);
   }
 
   public width(): number {
-    var body = this.doc.body;
+    const body = this.doc.body;
     return Math.max(body.scrollWidth, body.offsetWidth);
   }
 }
@@ -703,24 +780,13 @@ export class Doc {
  */
 export function $$(dom: Dom): Dom;
 export function $$(html: HTMLElement): Dom;
-export function $$(type: string, props?: Object, ...children: Array<string | HTMLElement | Dom>): Dom;
+export function $$(type: string, props?: IStringMap<any>, ...children: Array<string | HTMLElement | Dom>): Dom;
 export function $$(...args: any[]): Dom {
   if (args.length === 1 && args[0] instanceof Dom) {
     return args[0];
-  } else if (args.length === 1 && (!_.isString(args[0]))) {
+  } else if (args.length === 1 && !_.isString(args[0])) {
     return new Dom(<HTMLElement>args[0]);
   } else {
     return new Dom(Dom.createElement.apply(Dom, args));
   }
-}
-
-export function htmlToDom(html: string): Element {
-  var parsedHtml = document.createElement('div');
-  parsedHtml.innerHTML = html;
-  // If the template has a single root element, we return it directly. Otherwise
-  // we'll have to wrap this thing in a div as ResultList expects a single element.
-  if (parsedHtml.children.length == 1) {
-    return parsedHtml.children.item(0);
-  }
-  return parsedHtml;
 }

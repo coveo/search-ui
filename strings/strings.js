@@ -5,67 +5,58 @@ var cheerio = require('cheerio');
 var JSON5 = require('json5');
 var utilities = require('../gulpTasks/buildUtilities');
 
-exports.load = function (from, options) {
+exports.load = function(from, options) {
   return new Dictionary(from, options);
 };
 
 // Converts from the old XML format to the new one; typically a single usage thing
-exports.convert = function (from, to) {
+exports.convert = function(from, to) {
   from = cheerio.load(fs.readFileSync(from));
 
-  var keys = _.uniq(from('string').map(function (i, s) {
-    return cheerio(s).attr('name');
-  }));
+  var keys = _.uniq(
+    from('string').map(function(i, s) {
+      return cheerio(s).attr('name');
+    })
+  );
 
-  var languages = _.uniq(from('string').map(function (i, s) {
-    return cheerio(s).attr('language');
-  }));
+  var languages = _.uniq(
+    from('string').map(function(i, s) {
+      return cheerio(s).attr('language');
+    })
+  );
 
   var json = {};
-  _.each(keys, function (key) {
+  _.each(keys, function(key) {
     json[key] = {};
-    _.each(languages, function (language) {
+    _.each(languages, function(language) {
       json[key][language] = from('string[name="' + key + '"][language="' + language + '"]').text();
-    })
+    });
   });
 
   utilities.ensureDirectory(path.dirname(to));
   fs.writeFileSync(to, JSON.stringify(json, undefined, ' '));
 };
 
-const mergeFunctionAsString = '\tvar merge = function(obj1, obj2) {\n' +
-    '\t\tvar obj3 = {};\n' +
-    '\t\tfor(var attrname in obj1){obj3[attrname] = obj1[attrname]; }\n' +
-    '\t\tfor(var attrname in obj2){obj3[attrname] = obj2[attrname]; }\n' +
-    '\t\treturn obj3;\n' +
-    '}\n'
-
-const jQueryExistsAsString = `window['$'] != undefined && window['$'].fn != undefined && window['$'].fn.jquery != undefined`;
+const mergeFunctionAsString =
+  'var merge = function(obj1, obj2) {\n' +
+  '  var obj3 = {};\n' +
+  '  for(var attrname in obj1){obj3[attrname] = obj1[attrname]; }\n' +
+  '  for(var attrname in obj2){obj3[attrname] = obj2[attrname]; }\n' +
+  '  return obj3;\n' +
+  '}\n';
 
 function dictObjectAsString(json, language) {
-  var dictAsString = '  var dict = {\n';
+  var dictAsString = 'var dict = {\n';
 
-  _.each(_.keys(json), function (key) {
+  _.each(_.keys(json), function(key) {
     var str = json[key][language.toLowerCase()];
     if (str != undefined) {
-      dictAsString += '      ' + JSON.stringify(key) + ': ' + JSON.stringify(json[key][language.toLowerCase()]) + ',\n';
+      dictAsString += '  ' + JSON.stringify(key) + ': ' + JSON.stringify(json[key][language.toLowerCase()]) + ',\n';
     }
   });
 
-  dictAsString += '  }\n';
+  dictAsString += '}\n';
   return dictAsString;
-}
-
-function bindPrototypeOnNativeStringOnPageReady(language) {
-  var pageReadyString = `if( ${jQueryExistsAsString} ) { \n
-    $(function(){\n
-      ${setPrototypeOnNativeString(language)} \n
-    })\n
-  } else {
-    document.addEventListener('DOMContentLoaded', function(event){\n
-      ${setPrototypeOnNativeString(language)}
-  })}`;
-  return pageReadyString;
 }
 
 function setPrototypeOnNativeString(language) {
@@ -82,63 +73,61 @@ function setPrototypeOnNativeString(language) {
 }
 
 function Dictionary(from, options) {
-  options = _.extend({
-    module: 'Strings',
-    variable: 'l'
-  }, options);
+  options = _.extend(
+    {
+      module: 'Strings',
+      variable: 'l'
+    },
+    options
+  );
 
   this.json = JSON5.parse(fs.readFileSync(from));
 
-
-  this.merge = function (dict) {
+  this.merge = function(dict) {
     this.json = _.extend(this.json, dict.json);
   };
 
-  this.writeDeclarationFile = function (to) {
+  this.writeDeclarationFile = function(to) {
     var code = '';
-    code += 'import { L10N } from \'../misc/L10N\';\n';
+    code += "import { L10N } from '../misc/L10N';\n";
     var that = this;
-    _.each(_.keys(this.json), function (key) {
+    _.each(_.keys(this.json), function(key) {
       var str = that.json[key];
       var params = getStringParameters(str.en, true);
-      code += 'export function l(str : "' + key + '"'// { return L10N.format("' + key + '"';
-      if (params.typed != "") {
-        code += ' , ' + params.typed
+      code += 'export function l(str : "' + key + '"'; // { return L10N.format("' + key + '"';
+      if (params.typed != '') {
+        code += ' , ' + params.typed;
       }
-      code += ');\n'
+      code += ');\n';
     });
-    code += 'export function l(...params : any[]);\n'
+    code += 'export function l(...params : any[]);\n';
     code += 'export function l(...params : any[]) { return L10N.format.apply(this, arguments) };\n';
 
     utilities.ensureDirectory(path.dirname(to));
     fs.writeFileSync(to, code);
   };
 
-  this.writeDefaultLanguage = function (to, language) {
-    var code = 'import * as Globalize from \'globalize\';\n';
+  this.writeDefaultLanguage = function(to, language) {
+    var code = "import * as Globalize from 'globalize';\n";
     code += mergeFunctionAsString;
     code += dictObjectAsString(this.json, language);
     code += 'export function defaultLanguage() {\n';
-    code += bindPrototypeOnNativeStringOnPageReady(language);
+    code += setPrototypeOnNativeString(language) + '\n';
     code += '}\n';
     code += 'export function setLanguageAfterPageLoaded() {\n';
-    code += setPrototypeOnNativeString(language);
+    code += setPrototypeOnNativeString(language) + '\n';
     code += '}\n';
 
     utilities.ensureDirectory(path.dirname(to));
     fs.writeFileSync(to, code);
-  }
+  };
 
-  this.writeLanguageFile = function (to, language, culture, typed) {
+  this.writeLanguageFile = function(to, language, culture, typed) {
     var cultureFileAsString = fs.readFileSync(culture).toString();
-    var globalizeAsString = fs.readFileSync(path.resolve('./lib/globalize.min.js')).toString();
-    var code = 'if(window.Globalize == undefined) {\n';
-    code += globalizeAsString + '\n';
-    code += '}\n';
-    code += cultureFileAsString + '\n(function() {\n';
+    var code = cultureFileAsString + '(function() {\n';
     code += mergeFunctionAsString;
     code += dictObjectAsString(this.json, language);
-    code += bindPrototypeOnNativeStringOnPageReady(language);
+    code += setPrototypeOnNativeString(language);
     code += '})();\n';
     code += 'if(!window.Coveo){window.Coveo = {};}\n';
     code += 'Coveo.setLanguageAfterPageLoaded = function() {\n';
@@ -151,22 +140,22 @@ function Dictionary(from, options) {
   };
 
   function getStringParameters(text) {
-    var params = _.map(_.range(getNumberOfParameters(text)), function (i) {
-      return 'param' + i.toString()
+    var params = _.map(_.range(getNumberOfParameters(text)), function(i) {
+      return 'param' + i.toString();
     });
-    var paramsWithType = _.map(params, function (p) {
-      return p + ': string'
+    var paramsWithType = _.map(params, function(p) {
+      return p + ': string';
     });
 
     if (hasSingularOrPlural(text)) {
       params.push('count');
-      paramsWithType.push('count: number')
+      paramsWithType.push('count: number');
     }
 
     return {
       untyped: params.join(', '),
       typed: paramsWithType.join(', ')
-    }
+    };
   }
 
   function getNumberOfParameters(text) {
@@ -181,4 +170,4 @@ function Dictionary(from, options) {
   function hasSingularOrPlural(text) {
     return text.search(/<pl>.*<\/pl>|<sn>.*<\/sn>/) != -1;
   }
-};
+}

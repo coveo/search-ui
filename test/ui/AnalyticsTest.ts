@@ -1,16 +1,26 @@
 import * as Mock from '../MockEnvironment';
-import {Analytics} from '../../src/ui/Analytics/Analytics';
-import {SearchEndpoint} from '../../src/rest/SearchEndpoint';
-import {IAnalyticsOptions} from '../../src/ui/Analytics/Analytics';
-import {Simulate} from '../Simulate';
-import {analyticsActionCauseList} from '../../src/ui/Analytics/AnalyticsActionListMeta';
-import {NoopAnalyticsClient} from '../../src/ui/Analytics/NoopAnalyticsClient';
-import {LiveAnalyticsClient} from '../../src/ui/Analytics/LiveAnalyticsClient';
-import {MultiAnalyticsClient} from '../../src/ui/Analytics/MultiAnalyticsClient';
-
+import { Analytics } from '../../src/ui/Analytics/Analytics';
+import { SearchEndpoint } from '../../src/rest/SearchEndpoint';
+import { IAnalyticsOptions } from '../../src/ui/Analytics/Analytics';
+import { Simulate } from '../Simulate';
+import { analyticsActionCauseList } from '../../src/ui/Analytics/AnalyticsActionListMeta';
+import { NoopAnalyticsClient } from '../../src/ui/Analytics/NoopAnalyticsClient';
+import { LiveAnalyticsClient } from '../../src/ui/Analytics/LiveAnalyticsClient';
+import { MultiAnalyticsClient } from '../../src/ui/Analytics/MultiAnalyticsClient';
 
 export function AnalyticsTest() {
   describe('Analytics', () => {
+    beforeEach(() => {
+      SearchEndpoint.endpoints['default'] = new SearchEndpoint({
+        accessToken: 'some token',
+        queryStringArguments: { workgroup: 'organization' },
+        restUri: 'some/uri'
+      });
+    });
+
+    afterEach(() => {
+      SearchEndpoint.endpoints['default'] = null;
+    });
 
     describe('with default setup', () => {
       let test: Mock.IBasicComponentSetup<Analytics>;
@@ -23,7 +33,6 @@ export function AnalyticsTest() {
         test = Mock.basicComponentSetup<Analytics>(Analytics);
       });
       afterEach(() => {
-        SearchEndpoint.endpoints['default'] = null;
         test = null;
       });
 
@@ -43,7 +52,7 @@ export function AnalyticsTest() {
       });
 
       it('log an event on query error', () => {
-        spyOn(test.cmp.client, 'logCustomEvent')
+        spyOn(test.cmp.client, 'logCustomEvent');
         Simulate.query(test.env, {
           error: {
             message: 'oops',
@@ -51,7 +60,11 @@ export function AnalyticsTest() {
             name: 'oops pretty bad'
           }
         });
-        expect(test.cmp.client.logCustomEvent).toHaveBeenCalledWith(analyticsActionCauseList.queryError, jasmine.any(Object), jasmine.any(HTMLElement));
+        expect(test.cmp.client.logCustomEvent).toHaveBeenCalledWith(
+          analyticsActionCauseList.queryError,
+          jasmine.any(Object),
+          jasmine.any(HTMLElement)
+        );
       });
     });
 
@@ -183,7 +196,7 @@ export function AnalyticsTest() {
         expect(simulation.queryBuilder.build().searchHub).toBe('yoo');
       });
 
-      it('searchhub should be put in the component options model for other component to see it\'s value', () => {
+      it("searchhub should be put in the component options model for other component to see it's value", () => {
         test = Mock.optionsComponentSetup<Analytics, IAnalyticsOptions>(Analytics, {
           searchHub: 'mama mia'
         });

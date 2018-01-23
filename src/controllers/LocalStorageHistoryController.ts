@@ -1,11 +1,12 @@
-import {LocalStorageUtils} from '../utils/LocalStorageUtils';
-import {Model} from '../models/Model';
-import {QueryController} from './QueryController';
-import {Logger} from '../misc/Logger';
-import {Assert} from '../misc/Assert';
-import {InitializationEvents} from '../events/InitializationEvents';
-import {RootComponent} from '../ui/Base/RootComponent';
-import {$$} from '../utils/Dom';
+import { LocalStorageUtils } from '../utils/LocalStorageUtils';
+import { Model } from '../models/Model';
+import { QueryController } from './QueryController';
+import { Logger } from '../misc/Logger';
+import { Assert } from '../misc/Assert';
+import { InitializationEvents } from '../events/InitializationEvents';
+import { RootComponent } from '../ui/Base/RootComponent';
+import { $$ } from '../utils/Dom';
+import * as _ from 'underscore';
 
 /**
  * This component acts like the {@link HistoryController} excepts that is saves the {@link QueryStateModel} in the local storage.<br/>
@@ -28,7 +29,10 @@ export class LocalStorageHistoryController extends RootComponent {
   constructor(element: HTMLElement, public windoh: Window, public model: Model, public queryController: QueryController) {
     super(element, LocalStorageHistoryController.ID);
     if (!windoh['localStorage']) {
-      new Logger(element).info('No local storage available in current browser. LocalStorageHistoryController cannot initialize itself', this);
+      new Logger(element).info(
+        'No local storage available in current browser. LocalStorageHistoryController cannot initialize itself',
+        this
+      );
     } else {
       this.storage = new LocalStorageUtils<{ [key: string]: any }>(LocalStorageHistoryController.ID);
       Assert.exists(this.model);
@@ -61,7 +65,7 @@ export class LocalStorageHistoryController extends RootComponent {
         valToSet = this.model.defaultAttributes[key];
       }
       toSet[key] = valToSet;
-    })
+    });
     this.model.setMultiple(toSet);
   }
 

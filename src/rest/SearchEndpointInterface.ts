@@ -1,18 +1,18 @@
-import {IEndpointCallerOptions} from '../rest/EndpointCaller';
-import {IStringMap} from '../rest/GenericParam';
-import {IQuery} from '../rest/Query';
-import {IQueryResults} from '../rest/QueryResults';
-import {IQueryResult} from '../rest/QueryResult';
-import {IIndexFieldValue} from '../rest/FieldValue';
-import {IListFieldValuesRequest} from '../rest/ListFieldValuesRequest';
-import {IFieldDescription} from '../rest/FieldDescription';
-import {IExtension} from '../rest/Extension';
-import {IEndpointError} from '../rest/EndpointError';
-import {ITaggingRequest} from '../rest/TaggingRequest';
-import {IRevealQuerySuggestRequest, IRevealQuerySuggestResponse} from '../rest/RevealQuerySuggest';
-import {IRatingRequest} from '../rest/RatingRequest';
-import {ISubscriptionRequest, ISubscription} from '../rest/Subscription';
-import {Promise} from 'es6-promise';
+import { IEndpointCallerOptions } from '../rest/EndpointCaller';
+import { IStringMap } from '../rest/GenericParam';
+import { IQuery } from '../rest/Query';
+import { IQueryResults } from '../rest/QueryResults';
+import { IQueryResult } from '../rest/QueryResult';
+import { IIndexFieldValue } from '../rest/FieldValue';
+import { IListFieldValuesRequest } from '../rest/ListFieldValuesRequest';
+import { IFieldDescription } from '../rest/FieldDescription';
+import { IExtension } from '../rest/Extension';
+import { IEndpointError } from '../rest/EndpointError';
+import { ITaggingRequest } from '../rest/TaggingRequest';
+import { IQuerySuggestRequest, IQuerySuggestResponse } from '../rest/QuerySuggest';
+import { IRatingRequest } from '../rest/RatingRequest';
+import { ISubscriptionRequest, ISubscription } from '../rest/Subscription';
+import { ISentryLog } from './SentryLog';
 
 /**
  * The possible options when creating a {@link SearchEndpoint}
@@ -68,13 +68,14 @@ export interface IEndpointCallOptions {
 }
 
 /**
- * Available options when calling against the {@link SearchEndpoint} to get a document
+ * The `IGetDocumentOptions` interface describes the available options when calling against a
+ * [`SearchEndpoint`]{@link SearchEndpoint} to get an item.
  */
-export interface IGetDocumentOptions extends IEndpointCallOptions {
-}
+export interface IGetDocumentOptions extends IEndpointCallOptions {}
 
 /**
- * Available options when calling against the {@link SearchEndpoint} to view a document as an HTMLElement (quickview basically...)
+ * The `IViewAsHtmlOptions` interface describes the available options when calling against a
+ * [`SearchEndpoint`]{@link SearchEndpoint} to view an item as an HTMLElement (think: quickview).
  */
 export interface IViewAsHtmlOptions extends IEndpointCallOptions {
   query?: string;
@@ -84,7 +85,7 @@ export interface IViewAsHtmlOptions extends IEndpointCallOptions {
 }
 
 export interface ISearchEndpoint {
-  options: ISearchEndpointOptions;
+  options?: ISearchEndpointOptions;
   getBaseUri(): string;
   getBaseAlertsUri(): string;
   getAuthenticationProviderUri(provider: string, returnUri: string, message: string): string;
@@ -101,10 +102,11 @@ export interface ISearchEndpoint {
   listFields(callOptions?: IEndpointCallOptions): Promise<IFieldDescription[]>;
   extensions(callOptions?: IEndpointCallOptions): Promise<IExtension[]> | Promise<IEndpointError>;
   tagDocument(taggingRequest: ITaggingRequest, callOptions?: IEndpointCallOptions): Promise<boolean>;
-  getRevealQuerySuggest(request: IRevealQuerySuggestRequest, callOptions?: IEndpointCallOptions): Promise<IRevealQuerySuggestResponse>;
+  getQuerySuggest(request: IQuerySuggestRequest, callOptions?: IEndpointCallOptions): Promise<IQuerySuggestResponse>;
   rateDocument(ratingRequest: IRatingRequest, callOptions?: IEndpointCallOptions): Promise<boolean>;
   follow(request: ISubscriptionRequest): Promise<ISubscription>;
-  listSubscriptions(page?: number): Promise<ISubscription[]>;
+  listSubscriptions(page?: number, callOptions?: IEndpointCallOptions): Promise<ISubscription[]>;
   updateSubscription(subscription: ISubscription): Promise<ISubscription>;
   deleteSubscription(subscription: ISubscription): Promise<ISubscription>;
+  logError(sentryLog: ISentryLog): Promise<boolean>;
 }

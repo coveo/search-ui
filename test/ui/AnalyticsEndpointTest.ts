@@ -1,8 +1,9 @@
-import {AnalyticsEndpoint} from '../../src/rest/AnalyticsEndpoint';
-import {IErrorResponse} from '../../src/rest/EndpointCaller';
-import {FakeResults} from '../Fake';
-import {IAPIAnalyticsSearchEventsResponse} from '../../src/rest/APIAnalyticsSearchEventsResponse';
-import {IAPIAnalyticsEventResponse} from '../../src/rest/APIAnalyticsEventResponse';
+import { AnalyticsEndpoint } from '../../src/rest/AnalyticsEndpoint';
+import { IErrorResponse } from '../../src/rest/EndpointCaller';
+import { FakeResults } from '../Fake';
+import { IAPIAnalyticsSearchEventsResponse } from '../../src/rest/APIAnalyticsSearchEventsResponse';
+import { IAPIAnalyticsEventResponse } from '../../src/rest/APIAnalyticsEventResponse';
+import { AccessToken } from '../../src/rest/AccessToken';
 export function AnalyticsEndpointTest() {
   function buildUrl(endpoint: AnalyticsEndpoint, path: string) {
     return endpoint.options.serviceUrl + '/rest/' + AnalyticsEndpoint.DEFAULT_ANALYTICS_VERSION + path;
@@ -14,7 +15,7 @@ export function AnalyticsEndpointTest() {
     beforeEach(() => {
       endpoint = new AnalyticsEndpoint({
         serviceUrl: 'foo.com',
-        token: 'token',
+        accessToken: new AccessToken('token'),
         organization: 'organization'
       });
       jasmine.Ajax.install();
@@ -26,17 +27,19 @@ export function AnalyticsEndpointTest() {
       jasmine.Ajax.uninstall();
     });
 
-    it('allow to get the current visit id', (done) => {
-      endpoint.getCurrentVisitIdPromise()
+    it('allow to get the current visit id', done => {
+      endpoint
+        .getCurrentVisitIdPromise()
         .then((res: string) => {
           expect(res).toBe('visitid');
           // Here, the current visit id is already set, so it should return immediately.
           expect(endpoint.getCurrentVisitId()).toBe('visitid');
         })
         .catch((e: IErrorResponse) => {
-          fail(e)
+          fail(e);
+          return e;
         })
-        .finally(() => done());
+        .then(() => done());
       expect(jasmine.Ajax.requests.mostRecent().url).toBe(buildUrl(endpoint, '/analytics/visit?org=organization&access_token=token'));
       expect(jasmine.Ajax.requests.mostRecent().method).toBe('GET');
 
@@ -46,18 +49,20 @@ export function AnalyticsEndpointTest() {
       });
     });
 
-    it('allow to sendSearchEvents', (done) => {
+    it('allow to sendSearchEvents', done => {
       let fakeSearchEvent = FakeResults.createFakeSearchEvent();
-      endpoint.sendSearchEvents([fakeSearchEvent])
+      endpoint
+        .sendSearchEvents([fakeSearchEvent])
         .then((res: IAPIAnalyticsSearchEventsResponse) => {
           expect(res.searchEventResponses[0].visitId).toBe('visitid');
           // Here, the current visit id is already set, so it should return immediately.
           expect(endpoint.getCurrentVisitId()).toBe('visitid');
         })
         .catch((e: IErrorResponse) => {
-          fail(e)
+          fail(e);
+          return e;
         })
-        .finally(() => done());
+        .then(() => done());
 
       // Here, the current visit id should be undefined
       expect(endpoint.getCurrentVisitId()).toBeUndefined();
@@ -72,18 +77,20 @@ export function AnalyticsEndpointTest() {
       });
     });
 
-    it('allow to sendDocumentViewEvent', (done) => {
+    it('allow to sendDocumentViewEvent', done => {
       let fakeClickEvent = FakeResults.createFakeClickEvent();
-      endpoint.sendDocumentViewEvent(fakeClickEvent)
+      endpoint
+        .sendDocumentViewEvent(fakeClickEvent)
         .then((res: IAPIAnalyticsEventResponse) => {
           expect(res.visitId).toBe('visitid');
           // Here, the current visit id is already set, so it should return immediately.
           expect(endpoint.getCurrentVisitId()).toBe('visitid');
         })
         .catch((e: IErrorResponse) => {
-          fail(e)
+          fail(e);
+          return e;
         })
-        .finally(() => done());
+        .then(() => done());
 
       // Here, the current visit id should be undefined
       expect(endpoint.getCurrentVisitId()).toBeUndefined();
@@ -106,7 +113,6 @@ export function AnalyticsEndpointTest() {
       expect(jasmine.Ajax.requests.mostRecent().url.indexOf('org=organization') != -1).toBe(true);
     });
 
-
     it('sends organization as parameter when sending a search event', () => {
       let fakeSearchEvent = FakeResults.createFakeSearchEvent();
       endpoint.sendSearchEvents([fakeSearchEvent]);
@@ -114,20 +120,31 @@ export function AnalyticsEndpointTest() {
       expect(jasmine.Ajax.requests.mostRecent().url.indexOf('org=organization') != -1).toBe(true);
     });
 
-    it('allow to getTopQueries', (done) => {
-      endpoint.getTopQueries({ pageSize: 10, queryText: 'foobar' })
+    it('allow to getTopQueries', done => {
+      endpoint
+        .getTopQueries({ pageSize: 10, queryText: 'foobar' })
         .then((res: string[]) => {
           expect(res.length).toBe(3);
           expect(res[0]).toBe('foo');
         })
         .catch((e: IErrorResponse) => {
-          fail(e)
+          fail(e);
+          return e;
         })
-        .finally(() => done())
+        .then(() => done());
 
-      expect(jasmine.Ajax.requests.mostRecent().url).toBe(buildUrl(endpoint, '/stats/topQueries?org=organization&access_token=token&pageSize=10&queryText=foobar'));
-      expect(jasmine.Ajax.requests.mostRecent().method).toBe('GET');
-      jasmine.Ajax.requests.mostRecent().respondWith({
+      const mostRecentRequest = jasmine.Ajax.requests.mostRecent();
+      const mostRecentUrl = mostRecentRequest.url;
+
+      expect(mostRecentUrl).toContain('/topQueries');
+      expect(mostRecentUrl).toContain('org=organization');
+      expect(mostRecentUrl).toContain('access_token=token');
+      expect(mostRecentUrl).toContain('pageSize=10');
+      expect(mostRecentUrl).toContain('queryText=foobar');
+
+      expect(mostRecentRequest.method).toBe('GET');
+
+      mostRecentRequest.respondWith({
         status: 200,
         response: ['foo', 'bar', 'foobar']
       });

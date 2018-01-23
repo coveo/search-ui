@@ -1,28 +1,37 @@
-import {IAnalyticsClient} from './AnalyticsClient';
-import {DeviceUtils} from '../../utils/DeviceUtils';
-import {PendingSearchEvent} from './PendingSearchEvent';
-import {PendingSearchAsYouTypeSearchEvent} from './PendingSearchAsYouTypeSearchEvent';
-import {AnalyticsEndpoint} from '../../rest/AnalyticsEndpoint';
-import {Assert} from '../../misc/Assert';
-import {Logger} from '../../misc/Logger';
-import {IAnalyticsActionCause, analyticsActionCauseList} from './AnalyticsActionListMeta';
-import {IQueryResult} from '../../rest/QueryResult';
-import {ITopQueries} from '../../rest/TopQueries';
-import {IChangeableAnalyticsMetaObject, IChangeableAnalyticsDataObject, IChangeAnalyticsCustomDataEventArgs} from '../../events/AnalyticsEvents';
-import {Defer} from '../../misc/Defer';
-import {$$} from '../../utils/Dom';
-import {AnalyticsEvents, IAnalyticsCustomEventArgs} from '../../events/AnalyticsEvents';
-import {APIAnalyticsBuilder} from '../../rest/APIAnalyticsBuilder';
-import {IAnalyticsEvent} from '../../rest/AnalyticsEvent';
-import {ISearchEvent} from '../../rest/SearchEvent';
-import {IClickEvent} from '../../rest/ClickEvent';
-import {ICustomEvent} from '../../rest/CustomEvent';
-import {QueryStateModel} from '../../models/QueryStateModel';
-import {Component} from '../Base/Component';
-import {version} from '../../misc/Version';
+import { IAnalyticsClient } from './AnalyticsClient';
+import { DeviceUtils } from '../../utils/DeviceUtils';
+import { PendingSearchEvent } from './PendingSearchEvent';
+import { PendingSearchAsYouTypeSearchEvent } from './PendingSearchAsYouTypeSearchEvent';
+import { AnalyticsEndpoint } from '../../rest/AnalyticsEndpoint';
+import { Assert } from '../../misc/Assert';
+import { Logger } from '../../misc/Logger';
+import { IAnalyticsActionCause, analyticsActionCauseList } from './AnalyticsActionListMeta';
+import { IQueryResult } from '../../rest/QueryResult';
+import { ITopQueries } from '../../rest/TopQueries';
+import {
+  IChangeableAnalyticsMetaObject,
+  IChangeableAnalyticsDataObject,
+  IChangeAnalyticsCustomDataEventArgs
+} from '../../events/AnalyticsEvents';
+import { Defer } from '../../misc/Defer';
+import { $$ } from '../../utils/Dom';
+import { AnalyticsEvents, IAnalyticsCustomEventArgs } from '../../events/AnalyticsEvents';
+import { APIAnalyticsBuilder } from '../../rest/APIAnalyticsBuilder';
+import { IAnalyticsEvent } from '../../rest/AnalyticsEvent';
+import { IAPIAnalyticsEventResponse } from '../../rest/APIAnalyticsEventResponse';
+import { ISearchEvent } from '../../rest/SearchEvent';
+import { IClickEvent } from '../../rest/ClickEvent';
+import { ICustomEvent } from '../../rest/CustomEvent';
+import { QueryStateModel } from '../../models/QueryStateModel';
+import { Component } from '../Base/Component';
+import { version } from '../../misc/Version';
+import { QueryUtils } from '../../utils/QueryUtils';
+import * as _ from 'underscore';
 
 export class LiveAnalyticsClient implements IAnalyticsClient {
   public isContextual: boolean = false;
+  public originContext: string = 'Search';
+
   private language = <string>String['locale'];
   private device = DeviceUtils.getDeviceName();
   private mobile = DeviceUtils.isMobileDevice();
@@ -30,8 +39,17 @@ export class LiveAnalyticsClient implements IAnalyticsClient {
   private pendingSearchAsYouTypeSearchEvent: PendingSearchAsYouTypeSearchEvent;
   private logger: Logger;
 
-  constructor(public endpoint: AnalyticsEndpoint, public rootElement: HTMLElement, public userId: string, public userDisplayName: string, public anonymous: boolean, public splitTestRunName: string, public splitTestRunVersion: string, public originLevel1: string, public sendToCloud: boolean) {
-
+  constructor(
+    public endpoint: AnalyticsEndpoint,
+    public rootElement: HTMLElement,
+    public userId: string,
+    public userDisplayName: string,
+    public anonymous: boolean,
+    public splitTestRunName: string,
+    public splitTestRunVersion: string,
+    public originLevel1: string,
+    public sendToCloud: boolean
+  ) {
     Assert.exists(endpoint);
     Assert.exists(rootElement);
     Assert.isNonEmptyString(this.language);
@@ -82,14 +100,19 @@ export class LiveAnalyticsClient implements IAnalyticsClient {
     this.pushSearchAsYouTypeEvent(actionCause, metaObject);
   }
 
-  public logClickEvent<TMeta>(actionCause: IAnalyticsActionCause, meta: TMeta, result: IQueryResult, element: HTMLElement) {
-    var metaObject = this.buildMetaObject(meta);
-    this.pushClickEvent(actionCause, metaObject, result, element);
+  public logClickEvent<TMeta>(
+    actionCause: IAnalyticsActionCause,
+    meta: TMeta,
+    result: IQueryResult,
+    element: HTMLElement
+  ): Promise<IAPIAnalyticsEventResponse> {
+    let metaObject = this.buildMetaObject(meta, result);
+    return this.pushClickEvent(actionCause, metaObject, result, element);
   }
 
-  public logCustomEvent<TMeta>(actionCause: IAnalyticsActionCause, meta: TMeta, element: HTMLElement) {
+  public logCustomEvent<TMeta>(actionCause: IAnalyticsActionCause, meta: TMeta, element: HTMLElement): Promise<IAPIAnalyticsEventResponse> {
     var metaObject = this.buildMetaObject(meta);
-    this.pushCustomEvent(actionCause, metaObject, element);
+    return this.pushCustomEvent(actionCause, metaObject, element);
   }
 
   public getTopQueries(params: ITopQueries): Promise<string[]> {
@@ -115,7 +138,7 @@ export class LiveAnalyticsClient implements IAnalyticsClient {
 
   public getPendingSearchEvent(): PendingSearchEvent {
     if (this.pendingSearchEvent) {
-      return this.pendingSearchEvent
+      return this.pendingSearchEvent;
     } else if (this.pendingSearchAsYouTypeSearchEvent) {
       return this.pendingSearchAsYouTypeSearchEvent;
     }
@@ -124,23 +147,32 @@ export class LiveAnalyticsClient implements IAnalyticsClient {
 
   public warnAboutSearchEvent() {
     if (_.isUndefined(this.pendingSearchEvent) && _.isUndefined(this.pendingSearchAsYouTypeSearchEvent)) {
-      this.logger.warn('A search was triggered, but no analytics event was logged. If you wish to have consistent analytics data, consider logging a search event using the methods provided by the framework', 'https://developers.coveo.com/x/TwA5');
+      this.logger.warn(
+        'A search was triggered, but no analytics event was logged. If you wish to have consistent analytics data, consider logging a search event using the methods provided by the framework',
+        'https://developers.coveo.com/x/TwA5'
+      );
       if (window['console'] && console.trace) {
         console.trace();
       }
     }
   }
 
-  private pushCustomEvent(actionCause: IAnalyticsActionCause, metaObject: IChangeableAnalyticsMetaObject, element?: HTMLElement) {
+  public setOriginContext(originContext: string) {
+    this.originContext = originContext;
+  }
+
+  private pushCustomEvent(
+    actionCause: IAnalyticsActionCause,
+    metaObject: IChangeableAnalyticsMetaObject,
+    element?: HTMLElement
+  ): Promise<IAPIAnalyticsEventResponse> {
     var customEvent = this.buildCustomEvent(actionCause, metaObject, element);
     this.triggerChangeAnalyticsCustomData('CustomEvent', metaObject, customEvent);
     this.checkToSendAnyPendingSearchAsYouType(actionCause);
-    Defer.defer(() => {
-      if (this.sendToCloud) {
-        this.endpoint.sendCustomEvent(customEvent);
-      }
-      $$(this.rootElement).trigger(AnalyticsEvents.customEvent, <IAnalyticsCustomEventArgs>{ customEvent: APIAnalyticsBuilder.convertCustomEventToAPI(customEvent) });
+    $$(this.rootElement).trigger(AnalyticsEvents.customEvent, <IAnalyticsCustomEventArgs>{
+      customEvent: APIAnalyticsBuilder.convertCustomEventToAPI(customEvent)
     });
+    return this.sendToCloud ? this.endpoint.sendCustomEvent(customEvent) : Promise.resolve(null);
   }
 
   private pushSearchEvent(actionCause: IAnalyticsActionCause, metaObject: IChangeableAnalyticsMetaObject) {
@@ -154,21 +186,26 @@ export class LiveAnalyticsClient implements IAnalyticsClient {
     if (!this.pendingSearchEvent) {
       var searchEvent = this.buildSearchEvent(actionCause, metaObject);
       this.triggerChangeAnalyticsCustomData('SearchEvent', metaObject, searchEvent);
-      var pendingSearchEvent = this.pendingSearchEvent = new PendingSearchEvent(this.rootElement, this.endpoint, searchEvent, this.sendToCloud);
+      var pendingSearchEvent = (this.pendingSearchEvent = new PendingSearchEvent(
+        this.rootElement,
+        this.endpoint,
+        searchEvent,
+        this.sendToCloud
+      ));
 
       Defer.defer(() => {
-        // At this point all duringQuery events should have been fired, so we can forget
-        // about the pending search event. It'll finish processing automatically when
+        // At this point all `duringQuery` events should have been fired, so we can forget
+        // about the pending search event. It will finish processing automatically when
         // all the deferred that were caught terminate.
         this.pendingSearchEvent = undefined;
         pendingSearchEvent.stopRecording();
-      })
+      });
     }
   }
 
   private checkToSendAnyPendingSearchAsYouType(actionCause: IAnalyticsActionCause) {
     if (this.eventIsNotRelatedToSearchbox(actionCause.name)) {
-      this.sendAllPendingEvents()
+      this.sendAllPendingEvents();
     } else {
       this.cancelAnyPendingSearchAsYouTypeEvent();
     }
@@ -178,10 +215,20 @@ export class LiveAnalyticsClient implements IAnalyticsClient {
     this.cancelAnyPendingSearchAsYouTypeEvent();
     var searchEvent = this.buildSearchEvent(actionCause, metaObject);
     this.triggerChangeAnalyticsCustomData('SearchEvent', metaObject, searchEvent);
-    this.pendingSearchAsYouTypeSearchEvent = new PendingSearchAsYouTypeSearchEvent(this.rootElement, this.endpoint, searchEvent, this.sendToCloud);
+    this.pendingSearchAsYouTypeSearchEvent = new PendingSearchAsYouTypeSearchEvent(
+      this.rootElement,
+      this.endpoint,
+      searchEvent,
+      this.sendToCloud
+    );
   }
 
-  private pushClickEvent(actionCause: IAnalyticsActionCause, metaObject: IChangeableAnalyticsMetaObject, result: IQueryResult, element: HTMLElement) {
+  private pushClickEvent(
+    actionCause: IAnalyticsActionCause,
+    metaObject: IChangeableAnalyticsMetaObject,
+    result: IQueryResult,
+    element: HTMLElement
+  ): Promise<IAPIAnalyticsEventResponse> {
     var event = this.buildClickEvent(actionCause, metaObject, result, element);
     this.checkToSendAnyPendingSearchAsYouType(actionCause);
     this.triggerChangeAnalyticsCustomData('ClickEvent', metaObject, event, { resultData: result });
@@ -189,14 +236,11 @@ export class LiveAnalyticsClient implements IAnalyticsClient {
     Assert.isNonEmptyString(event.collectionName);
     Assert.isNonEmptyString(event.sourceName);
     Assert.isNumber(event.documentPosition);
-    Defer.defer(() => {
-      if (this.sendToCloud) {
-        this.endpoint.sendDocumentViewEvent(event);
-      }
-      $$(this.rootElement).trigger(AnalyticsEvents.documentViewEvent, {
-        documentViewEvent: APIAnalyticsBuilder.convertDocumentViewToAPI(event)
-      })
+
+    $$(this.rootElement).trigger(AnalyticsEvents.documentViewEvent, {
+      documentViewEvent: APIAnalyticsBuilder.convertDocumentViewToAPI(event)
     });
+    return this.sendToCloud ? this.endpoint.sendDocumentViewEvent(event) : Promise.resolve(null);
   }
 
   private buildAnalyticsEvent(actionCause: IAnalyticsActionCause, metaObject: IChangeableAnalyticsMetaObject): IAnalyticsEvent {
@@ -213,9 +257,10 @@ export class LiveAnalyticsClient implements IAnalyticsClient {
       originLevel1: this.originLevel1,
       originLevel2: this.getOriginLevel2(this.rootElement),
       originLevel3: document.referrer,
+      originContext: this.originContext,
       customData: _.keys(metaObject).length > 0 ? metaObject : undefined,
       userAgent: navigator.userAgent
-    }
+    };
   }
 
   private buildSearchEvent(actionCause: IAnalyticsActionCause, metaObject: IChangeableAnalyticsMetaObject): ISearchEvent {
@@ -235,44 +280,60 @@ export class LiveAnalyticsClient implements IAnalyticsClient {
     });
   }
 
-  private buildClickEvent(actionCause: IAnalyticsActionCause, metaObject: IChangeableAnalyticsMetaObject, result: IQueryResult, element: HTMLElement): IClickEvent {
+  private buildClickEvent(
+    actionCause: IAnalyticsActionCause,
+    metaObject: IChangeableAnalyticsMetaObject,
+    result: IQueryResult,
+    element: HTMLElement
+  ): IClickEvent {
     return this.merge<IClickEvent>(this.buildAnalyticsEvent(actionCause, metaObject), {
       searchQueryUid: result.queryUid,
       queryPipeline: result.pipeline,
       splitTestRunName: this.splitTestRunName || result.splitTestRun,
       splitTestRunVersion: this.splitTestRunVersion || (result.splitTestRun != undefined ? result.pipeline : undefined),
       documentUri: result.uri,
-      documentUriHash: result.raw['urihash'],
+      documentUriHash: QueryUtils.getUriHash(result),
       documentUrl: result.clickUri,
       documentTitle: result.title,
-      documentCategory: result.raw['objecttype'],
+      documentCategory: QueryUtils.getObjectType(result),
       originLevel2: this.getOriginLevel2(element),
-      collectionName: <string>result.raw['collection'],
-      sourceName: <string>result.raw['source'],
+      collectionName: QueryUtils.getCollection(result),
+      sourceName: QueryUtils.getSource(result),
       documentPosition: result.index + 1,
       responseTime: 0,
       viewMethod: actionCause.name,
       rankingModifier: result.rankingModifier
-    })
+    });
   }
 
-  private buildCustomEvent(actionCause: IAnalyticsActionCause, metaObject: IChangeableAnalyticsMetaObject, element: HTMLElement): ICustomEvent {
+  private buildCustomEvent(
+    actionCause: IAnalyticsActionCause,
+    metaObject: IChangeableAnalyticsMetaObject,
+    element: HTMLElement
+  ): ICustomEvent {
     return this.merge<ICustomEvent>(this.buildAnalyticsEvent(actionCause, metaObject), {
       eventType: actionCause.type,
       eventValue: actionCause.name,
       originLevel2: this.getOriginLevel2(element),
       responseTime: 0
-    })
+    });
   }
 
   protected getOriginLevel2(element: HTMLElement): string {
     return this.resolveActiveTabFromElement(element) || 'default';
   }
 
-  private buildMetaObject<TMeta>(meta: TMeta): IChangeableAnalyticsMetaObject {
-    var build: IChangeableAnalyticsMetaObject = _.extend({}, meta);
-    build['JSUIVersion'] = version.lib + ';' + version.product;
-    return build;
+  private buildMetaObject<TMeta>(meta: TMeta, result?: IQueryResult): IChangeableAnalyticsMetaObject {
+    let modifiedMeta: IChangeableAnalyticsMetaObject = _.extend({}, meta);
+    modifiedMeta['JSUIVersion'] = version.lib + ';' + version.product;
+
+    if (result) {
+      let uniqueId = QueryUtils.getPermanentId(result);
+      modifiedMeta['contentIDKey'] = uniqueId.fieldUsed;
+      modifiedMeta['contentIDValue'] = uniqueId.fieldValue;
+    }
+
+    return modifiedMeta;
   }
 
   private cancelAnyPendingSearchAsYouTypeEvent() {
@@ -285,7 +346,7 @@ export class LiveAnalyticsClient implements IAnalyticsClient {
   private resolveActiveTabFromElement(element: HTMLElement): string {
     Assert.exists(element);
     var queryStateModel = this.resolveQueryStateModel(element);
-    return (queryStateModel && <string>queryStateModel.get(QueryStateModel.attributesEnum.t));
+    return queryStateModel && <string>queryStateModel.get(QueryStateModel.attributesEnum.t);
   }
 
   private resolveQueryStateModel(rootElement: HTMLElement): QueryStateModel {
@@ -293,30 +354,35 @@ export class LiveAnalyticsClient implements IAnalyticsClient {
   }
 
   private eventIsNotRelatedToSearchbox(event: string) {
-    return event !== analyticsActionCauseList.searchboxSubmit.name && event !== analyticsActionCauseList.searchboxClear.name
+    return event !== analyticsActionCauseList.searchboxSubmit.name && event !== analyticsActionCauseList.searchboxClear.name;
   }
 
   private triggerChangeAnalyticsCustomData(type: string, metaObject: IChangeableAnalyticsMetaObject, event: IAnalyticsEvent, data?: any) {
-    var changeableAnalyticsDataObject: IChangeableAnalyticsDataObject = {
-      language: event.language,
-      originLevel1: event.originLevel1,
-      originLevel2: event.originLevel2,
-      originLevel3: event.originLevel3
-    };
-
     // This is for backward compatibility. Before the analytics were using either numbered
-    // metas in metaDataAsNumber of later on named metas in metaDataAsString. Thus we still
-    // provide those properties in a deprecated way. Below we're moving any data that's put
+    // metas in `metaDataAsNumber` of later on named metas in `metaDataAsString`. Thus we still
+    // provide those properties in a deprecated way. Below we are moving any data that put
     // in them to the root.
     (<any>metaObject)['metaDataAsString'] = {};
     (<any>metaObject)['metaDataAsNumber'] = {};
 
-    var args: IChangeAnalyticsCustomDataEventArgs = _.extend({}, {
-      type: type,
-      metaObject: metaObject,
-      actionType: event.actionType,
-      actionCause: event.actionCause
-    }, changeableAnalyticsDataObject);
+    var changeableAnalyticsDataObject: IChangeableAnalyticsDataObject = {
+      language: event.language,
+      originLevel1: event.originLevel1,
+      originLevel2: event.originLevel2,
+      originLevel3: event.originLevel3,
+      metaObject: metaObject
+    };
+
+    var args: IChangeAnalyticsCustomDataEventArgs = _.extend(
+      {},
+      {
+        type: type,
+        actionType: event.actionType,
+        actionCause: event.actionCause
+      },
+      changeableAnalyticsDataObject,
+      data
+    );
     $$(this.rootElement).trigger(AnalyticsEvents.changeAnalyticsCustomData, args);
 
     event.language = args.language;
@@ -326,20 +392,24 @@ export class LiveAnalyticsClient implements IAnalyticsClient {
     event.customData = metaObject;
 
     // This is for backward compatibility. Before the analytics were using either numbered
-    // metas in metaDataAsNumber of later on named metas in metaDataAsString. I'm now putting
+    // metas in `metaDataAsNumber` of later on named metas in `metaDataAsString`. We are now putting
     // them all at the root, and if I encounter the older properties I move them to the top
     // level after issuing a warning.
 
     var metaDataAsString = event.customData['metaDataAsString'];
     if (_.keys(metaDataAsString).length > 0) {
-      this.logger.warn('Using deprecated \'metaDataAsString\' key to log custom analytics data. Custom meta should now be put at the root of the object.');
+      this.logger.warn(
+        "Using deprecated 'metaDataAsString' key to log custom analytics data. Custom meta should now be put at the root of the object."
+      );
       _.extend(event.customData, metaDataAsString);
     }
     delete event.customData['metaDataAsString'];
 
     var metaDataAsNumber = event.customData['metaDataAsNumber'];
     if (_.keys(metaDataAsNumber).length > 0) {
-      this.logger.warn('Using deprecated \'metaDataAsNumber\' key to log custom analytics data. Custom meta should now be put at the root of the object.');
+      this.logger.warn(
+        "Using deprecated 'metaDataAsNumber' key to log custom analytics data. Custom meta should now be put at the root of the object."
+      );
       _.extend(event.customData, metaDataAsNumber);
     }
     delete event.customData['metaDataAsNumber'];

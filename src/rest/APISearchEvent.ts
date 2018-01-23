@@ -4,7 +4,7 @@ export interface IAPISearchEvent {
   searchInterface: string;
   searchHub: string;
   responseTime: number;
-  customMetadatas: { [name: string]: string; };
+  customMetadatas: { [name: string]: string };
   queryText: string;
   advancedQuery: string;
   didYouMean: boolean;

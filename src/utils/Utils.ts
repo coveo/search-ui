@@ -1,6 +1,8 @@
-import {IQueryResult} from '../rest/QueryResult';
+import { IQueryResult } from '../rest/QueryResult';
+import * as _ from 'underscore';
+import { IStringMap } from '../rest/GenericParam';
 
-const isCoveoFieldRegex = /^@[a-zA-Z0-9_\.]+$/
+const isCoveoFieldRegex = /^@[a-zA-Z0-9_\.]+$/;
 
 export class Utils {
   static isUndefined(obj: any): boolean {
@@ -54,8 +56,9 @@ export class Utils {
   static isHtmlElement(obj: any): boolean {
     if (window['HTMLElement'] != undefined) {
       return obj instanceof HTMLElement;
-    } else { // IE 8 FIX
-      return obj && obj.nodeType && obj.nodeType == 1
+    } else {
+      // IE 8 FIX
+      return obj && obj.nodeType && obj.nodeType == 1;
     }
   }
 
@@ -68,6 +71,8 @@ export class Utils {
   }
 
   static parseFloatIfNotUndefined(str: string): number {
+    let a: any = 't';
+    a instanceof HTMLDocument;
     if (Utils.isNonEmptyString(str)) {
       return parseFloat(str);
     } else {
@@ -118,16 +123,41 @@ export class Utils {
   }
 
   static decodeHTMLEntities(rawString: string) {
-    return rawString.replace(/&#(\d+);/g, function (match, dec) {
+    return rawString.replace(/&#(\d+);/g, function(match, dec) {
       return String.fromCharCode(dec);
     });
+  }
+
+  static safeEncodeURIComponent(rawString: string) {
+    // yiiip...
+    // Explanation : https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/encodeURIComponent
+    // Solution : https://stackoverflow.com/a/17109094
+    // Basically some unicode character (low-high surrogate) will throw an "invalid malformed URI" error when being encoded as an URI component, and the pair of character is incomplete.
+    // This simply removes those pesky characters
+    if (_.isString(rawString)) {
+      return encodeURIComponent(
+        rawString
+          .replace(/[\uD800-\uDBFF](?![\uDC00-\uDFFF])/g, '')
+          .split('')
+          .reverse()
+          .join('')
+          .replace(/[\uDC00-\uDFFF](?![\uD800-\uDBFF])/g, '')
+          .split('')
+          .reverse()
+          .join('')
+      );
+    } else {
+      // If the passed value is not a string, we probably don't want to do anything here...
+      // The base browser function should be resilient enough
+      return encodeURIComponent(rawString);
+    }
   }
 
   static arrayEqual(array1: any[], array2: any[], sameOrder: boolean = true): boolean {
     if (sameOrder) {
       return _.isEqual(array1, array2);
     } else {
-      let arrays = [array1, array2]
+      let arrays = [array1, array2];
       return _.all(arrays, (array: any[]) => {
         return array.length == arrays[0].length && _.difference(array, arrays[0]).length == 0;
       });
@@ -137,7 +167,6 @@ export class Utils {
   static objectEqual(obj1: Object, obj2: Object): boolean {
     return _.isEqual(obj1, obj2);
   }
-
 
   static isCoveoField(field: string): boolean {
     return isCoveoFieldRegex.test(field);
@@ -183,7 +212,7 @@ export class Utils {
 
     // At this point the name should be well formed
     if (!Utils.isCoveoField('@' + name)) {
-      throw `Not a valid field : ${name}`
+      throw `Not a valid field : ${name}`;
     }
     // Handle namespace field values of the form sf.Foo.Bar
     let parts = name.split('.').reverse();
@@ -202,16 +231,16 @@ export class Utils {
     return value;
   }
 
-  static throttle(func, wait, options: { leading?: boolean; trailing?: boolean; } = {}, context?, args?) {
+  static throttle(func, wait, options: { leading?: boolean; trailing?: boolean } = {}, context?, args?) {
     let result;
     let timeout: number = null;
     let previous = 0;
-    let later = function () {
+    let later = function() {
       previous = options.leading === false ? 0 : new Date().getTime();
       timeout = null;
       result = func.apply(context, args);
     };
-    return function () {
+    return function() {
       let now = new Date().getTime();
       if (!previous && options.leading === false) {
         previous = now;
@@ -235,41 +264,41 @@ export class Utils {
     if (!target) {
       target = {};
     }
-    let isArray = _.isArray(src)
-    let toReturn = isArray && [] || {}
+    let isArray = _.isArray(src);
+    let toReturn = (isArray && []) || {};
     if (isArray) {
-      target = target || []
-      toReturn = toReturn['concat'](target)
+      target = target || [];
+      toReturn = toReturn['concat'](target);
       _.each(src, (e, i, obj) => {
         if (typeof target[i] === 'undefined') {
-          toReturn[i] = <any>e
-        } else if (typeof e === 'object') {
-          toReturn[i] = Utils.extendDeep(target[i], e)
+          toReturn[i] = <any>e;
+        } else if (typeof e === 'object' && !_.isElement(e)) {
+          toReturn[i] = Utils.extendDeep(target[i], e);
         } else {
           if (target.indexOf(e) === -1) {
-            toReturn['push'](e)
+            toReturn['push'](e);
           }
         }
-      })
+      });
     } else {
-      if (target && typeof target === 'object') {
-        _.each(_.keys(target), (key) => {
-          toReturn[key] = target[key]
-        })
+      if (target && typeof target === 'object' && !_.isElement(target)) {
+        _.each(_.keys(target), key => {
+          toReturn[key] = target[key];
+        });
       }
-      _.each(_.keys(src), (key) => {
+      _.each(_.keys(src), key => {
         if (typeof src[key] !== 'object' || !src[key]) {
-          toReturn[key] = src[key]
+          toReturn[key] = src[key];
         } else {
           if (!target[key]) {
-            toReturn[key] = src[key]
+            toReturn[key] = src[key];
           } else {
-            toReturn[key] = Utils.extendDeep(target[key], src[key])
+            toReturn[key] = Utils.extendDeep(target[key], src[key]);
           }
         }
-      })
+      });
     }
-    return toReturn
+    return toReturn;
   }
 
   static getQueryStringValue(key, queryString = window.location.search) {
@@ -277,14 +306,14 @@ export class Utils {
   }
 
   static isValidUrl(str: string): boolean {
-    let regexp = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/
+    let regexp = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/;
     return regexp.test(str);
   }
 
   static debounce(func: Function, wait: number) {
     let timeout: number;
     let stackTraceTimeout: number;
-    return function (...args: any[]) {
+    return function(...args: any[]) {
       if (timeout == null) {
         timeout = setTimeout(() => {
           timeout = null;
@@ -300,7 +329,7 @@ export class Utils {
           timeout = null;
         }, wait);
       }
-    }
+    };
   }
 
   static readCookie(name: string) {
@@ -319,13 +348,17 @@ export class Utils {
   }
 
   static toDashCase(camelCased: string) {
-    return camelCased.replace(/([a-z][A-Z])/g, (g) => g[0] + '-' + g[1].toLowerCase());
+    return camelCased.replace(/([a-z][A-Z])/g, g => g[0] + '-' + g[1].toLowerCase());
+  }
+
+  static toCamelCase(dashCased: string) {
+    return dashCased.replace(/-([a-z])/g, g => g[1].toUpperCase());
   }
 
   // Based on http://stackoverflow.com/a/8412989
   static parseXml(xml: string): XMLDocument {
     if (typeof DOMParser != 'undefined') {
-      return (new DOMParser()).parseFromString(xml, 'text/xml');
+      return new DOMParser().parseFromString(xml, 'text/xml');
     } else if (typeof ActiveXObject != 'undefined' && new ActiveXObject('Microsoft.XMLDOM')) {
       var xmlDoc = new ActiveXObject('Microsoft.XMLDOM');
       xmlDoc.async = 'false';
@@ -339,26 +372,50 @@ export class Utils {
   static copyObject<T>(target: T, src: T) {
     _.each(_.keys(src), key => {
       if (typeof src[key] !== 'object' || !src[key]) {
-        target[key] = src[key]
+        target[key] = src[key];
       } else if (!target[key]) {
-        target[key] = src[key]
+        target[key] = src[key];
       } else {
-        this.copyObject(target[key], src[key])
+        this.copyObject(target[key], src[key]);
       }
-    })
+    });
   }
 
   static copyObjectAttributes<T>(target: T, src: T, attributes: string[]) {
     _.each(_.keys(src), key => {
       if (_.contains(attributes, key)) {
         if (typeof src[key] !== 'object' || !src[key]) {
-          target[key] = src[key]
+          target[key] = src[key];
         } else if (!target[key]) {
-          target[key] = src[key]
+          target[key] = src[key];
         } else {
-          this.copyObject(target[key], src[key])
+          this.copyObject(target[key], src[key]);
         }
       }
-    })
+    });
+  }
+
+  static concatWithoutDuplicate(firstArray: any[], secondArray: any[]) {
+    let diff = _.difference(secondArray, firstArray);
+    if (diff && diff.length > 0) {
+      firstArray = firstArray.concat(diff);
+    }
+    return firstArray;
+  }
+
+  static differenceBetweenObjects<T>(firstObject: IStringMap<T>, secondObject: IStringMap<T>) {
+    const difference: IStringMap<T> = {};
+
+    const addDiff = (first: IStringMap<T>, second: IStringMap<T>) => {
+      for (const key in first) {
+        if (first[key] !== second[key] && difference[key] == null) {
+          difference[key] = first[key];
+        }
+      }
+    };
+
+    addDiff(firstObject, secondObject);
+    addDiff(secondObject, firstObject);
+    return difference;
   }
 }

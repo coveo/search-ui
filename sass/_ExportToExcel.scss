@@ -1,3 +1,5 @@
+@import "Variables";
+
 .CoveoExportToExcel {
   overflow: hidden;
   margin-top: 10px;
@@ -5,4 +7,10 @@
   &.coveo-export-to-excel-opened {
     display: block;
   }
+}
+
+.coveo-export-to-excel-svg {
+  width: 14px;
+  height: 14px;
+  color: $color-greyish-teal-blue;
 }

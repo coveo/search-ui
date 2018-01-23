@@ -1,22 +1,28 @@
-import {Component} from '../Base/Component';
-import {ComponentOptions} from '../Base/ComponentOptions';
-import {IFieldDescription} from '../../rest/FieldDescription';
-import {IComponentBindings} from '../Base/ComponentBindings';
-import {Assert} from '../../misc/Assert';
-import {Utils} from '../../utils/Utils';
-import {Initialization} from '../Base/Initialization';
-import {IIndexFieldValue} from '../../rest/FieldValue';
-import {StringUtils} from '../../utils/StringUtils';
-import {l} from '../../strings/Strings';
-import {KEYBOARD, KeyboardUtils} from '../../utils/KeyboardUtils';
-import {QueryStateModel} from '../../models/QueryStateModel';
-import {ITaggingRequest} from '../../rest/TaggingRequest';
-import {$$} from '../../utils/Dom';
-import {analyticsActionCauseList} from '../Analytics/AnalyticsActionListMeta';
-import {IQueryResult} from '../../rest/QueryResult';
+import { Component } from '../Base/Component';
+import { ComponentOptions, IFieldOption } from '../Base/ComponentOptions';
+import { IFieldDescription } from '../../rest/FieldDescription';
+import { IComponentBindings } from '../Base/ComponentBindings';
+import { Assert } from '../../misc/Assert';
+import { Utils } from '../../utils/Utils';
+import { Initialization } from '../Base/Initialization';
+import { IIndexFieldValue } from '../../rest/FieldValue';
+import { StringUtils } from '../../utils/StringUtils';
+import { l } from '../../strings/Strings';
+import { KEYBOARD, KeyboardUtils } from '../../utils/KeyboardUtils';
+import { QueryStateModel } from '../../models/QueryStateModel';
+import { ITaggingRequest } from '../../rest/TaggingRequest';
+import { $$ } from '../../utils/Dom';
+import { analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
+import { IQueryResult } from '../../rest/QueryResult';
+import * as _ from 'underscore';
+import { exportGlobally } from '../../GlobalExports';
+
+import 'styling/_ResultTagging';
+import { SVGIcons } from '../../utils/SVGIcons';
+import { SVGDom } from '../../utils/SVGDom';
 
 export interface IResultTaggingOptions {
-  field: string;
+  field: IFieldOption;
   suggestBoxSize?: number;
   autoCompleteTimer?: number;
 }
@@ -28,36 +34,55 @@ export interface IAnalyticsResultTaggingMeta {
 }
 
 /**
- * This component can be used as part of a result template to list the current tag field values for the search result
- * and display a control that allows end-users to add a value to a tag field.
+ * The ResultTagging component lists the current tag field values of its associated result and renders a control that
+ * allows the end user to add values to a tag field.
+ *
+ * This component is a result template component (see [Result Templates](https://developers.coveo.com/x/aIGfAQ)).
+ *
+ * **Note:**
+ * > The ResultTagging component is not supported with Coveo Cloud V2. To implement the ResultTagging component in Coveo Cloud V1, contact [Coveo Support](https://support.coveo.com/s/).
+ * 
+ * @notSupportedIn salesforcefree
  */
 export class ResultTagging extends Component {
   static ID = 'ResultTagging';
   static autoCompleteClass = 'coveo-result-tagging-auto-complete';
+
+  static doExport = () => {
+    exportGlobally({
+      ResultTagging: ResultTagging
+    });
+  };
 
   /**
    * @componentOptions
    */
   static options: IResultTaggingOptions = {
     /**
-     * Specifies the tag field used by the component.<br/>
-     * It is required, and if not specified, the component will not load.
+     * Specifies the tag field that the component will use.
+     *
+     * Specifying a value for this options is necessary for this component to work.
      */
     field: ComponentOptions.buildFieldOption({
       match: (field: IFieldDescription) => field.type == 'Tag',
       required: true
     }),
+
     /**
-     * Specifies the number of items to show in the suggested item list.<br/>
-     * Default value is 5.
+     * Specifies the number of items to show in the list of suggested items.
+     *
+     * Default value is `5`. Minimum value is `0 `.
      */
     suggestBoxSize: ComponentOptions.buildNumberOption({ defaultValue: 5, min: 0 }),
+
     /**
-     * Specifies how long to wait in milliseconds until the suggested item list disappears when you focus out.<br/>
-     * Default valus is 2000
+     * Specifies how much time (in milliseconds) it takes for the list of suggested items to disappear when it loses
+     * focus.
+     *
+     * Default value is `2000`. Minimum value is `0`.
      */
     autoCompleteTimer: ComponentOptions.buildNumberOption({ defaultValue: 2000, min: 0 })
-  }
+  };
 
   static AUTO_COMPLETE_CLASS = 'coveo-result-tagging-auto-complete';
 
@@ -67,7 +92,20 @@ export class ResultTagging extends Component {
   private tagZone: HTMLElement;
   private tags: string[];
 
-  constructor(public element: HTMLElement, public options?: IResultTaggingOptions, bindings?: IComponentBindings, public result?: IQueryResult) {
+  /**
+   * Creates a new ResultTagging component.
+   * @param element The HTMLElement on which to instantiate the component.
+   * @param options The options for the ResultTagging component.
+   * @param bindings The bindings that the component requires to function normally. If not set, these will be
+   * automatically resolved (with a slower execution time).
+   * @param result The result to associate the component with.
+   */
+  constructor(
+    public element: HTMLElement,
+    public options?: IResultTaggingOptions,
+    bindings?: IComponentBindings,
+    public result?: IQueryResult
+  ) {
     super(element, ResultTagging.ID, bindings);
 
     this.options = ComponentOptions.initComponentOptions(element, ResultTagging, options);
@@ -79,15 +117,17 @@ export class ResultTagging extends Component {
       this.logger.error('You must specify a field to the ResultTagging component');
       return;
     }
-    let fieldValue = Utils.getFieldValue(this.result, this.options.field);
-    if (fieldValue) {
+    let fieldValue = Utils.getFieldValue(this.result, <string>this.options.field);
+    if (fieldValue && Utils.isNonEmptyString(fieldValue)) {
       this.tags = fieldValue.split(';');
-      this.tags = _.map(this.tags, (t) => {
-        return t.trim();
-      })
+    } else if (fieldValue && Utils.isNonEmptyArray(fieldValue)) {
+      this.tags = fieldValue;
     } else {
       this.tags = [];
     }
+    this.tags = _.map(this.tags, t => {
+      return t.trim();
+    });
     this.tagZone = $$('div', {
       className: 'coveo-result-tagging-tag-zone'
     }).el;
@@ -125,8 +165,8 @@ export class ResultTagging extends Component {
     });
     tagIcon.on('click', () => {
       _.defer(() => {
-        this.focusOnTextBox()
-      }, 20)
+        this.focusOnTextBox();
+      }, 20);
     });
     tagZone.el.appendChild(tagIcon.el);
     tagZone.append(tagTextBox.el);
@@ -143,12 +183,17 @@ export class ResultTagging extends Component {
       className: 'coveo-result-tagging-coveo-tag'
     });
     tag.el.appendChild(this.buildShortenedTagWithTitle(tagValue));
-    let deleteIcon = $$('span', {
-      className: 'coveo-result-tagging-delete-icon'
-    });
+    let deleteIcon = $$(
+      'span',
+      {
+        className: 'coveo-result-tagging-delete-icon'
+      },
+      SVGIcons.icons.checkboxHookExclusionMore
+    );
+    SVGDom.addClassToSVGInContainer(deleteIcon.el, 'coveo-result-tagging-delete-icon-svg');
     tag.el.appendChild(deleteIcon.el);
     deleteIcon.on('click', () => {
-      this.doRemoveTag(tag.el, tagValue.toLowerCase())
+      this.doRemoveTag(tag.el, tagValue.toLowerCase());
     });
     return tag.el;
   }
@@ -177,14 +222,14 @@ export class ResultTagging extends Component {
     }).el;
     this.autoCompleteZone.appendChild(this.autoCompletePopup);
     this.manageAutocompleteAutoHide();
-    $$(this.textBox).on('keyup', ((e: KeyboardEvent) => {
+    $$(this.textBox).on('keyup', (e: KeyboardEvent) => {
       if (e.keyCode == KEYBOARD.UP_ARROW || e.keyCode == KEYBOARD.DOWN_ARROW || e.keyCode == KEYBOARD.ENTER) {
         this.manageUpDownEnter(e.keyCode);
       } else if (!KeyboardUtils.isArrowKeyPushed(e.keyCode)) {
         this.populateSuggestions();
       }
       $$(this.element).removeClass('coveo-error');
-    }));
+    });
     $$(this.textBox).on('click', () => {
       this.populateSuggestions();
     });
@@ -192,21 +237,31 @@ export class ResultTagging extends Component {
   }
 
   private buildAddIcon(): HTMLElement {
-    let icon = $$('div', {
-      className: 'coveo-result-tagging-add-tag-tick-icon'
-    });
+    let icon = $$(
+      'div',
+      {
+        className: 'coveo-result-tagging-add-tag-tick-icon'
+      },
+      SVGIcons.icons.taggingOk
+    );
+    SVGDom.addClassToSVGInContainer(icon.el, 'coveo-result-tagging-add-tag-tick-icon-svg');
     let clickable = $$('span');
     clickable.on('click', () => {
-      this.doAddTag()
+      this.doAddTag();
     });
     icon.el.appendChild(clickable.el);
     return icon.el;
   }
 
   private buildClearIcon(): HTMLElement {
-    let icon = $$('div', {
-      className: 'coveo-result-tagging-clear-icon'
-    });
+    let icon = $$(
+      'div',
+      {
+        className: 'coveo-result-tagging-clear-icon'
+      },
+      SVGIcons.icons.checkboxHookExclusionMore
+    );
+    SVGDom.addClassToSVGInContainer(icon.el, 'coveo-result-tagging-clear-icon-svg');
     let clickable = $$('span');
     clickable.on('click', () => {
       this.textBox.value = '';
@@ -216,7 +271,7 @@ export class ResultTagging extends Component {
   }
 
   private bindFacetEventOnValue(element: HTMLElement, value: string) {
-    let facetAttributeName = QueryStateModel.getFacetId(this.options.field)
+    let facetAttributeName = QueryStateModel.getFacetId(<string>this.options.field);
     let facetModel: string[] = this.queryStateModel.get(facetAttributeName);
     let facets: Component[] = this.componentStateModel.get(facetAttributeName);
     let atLeastOneFacetIsEnabled = _.filter(facets, (value: Component) => !value.disabled).length > 0;
@@ -224,22 +279,23 @@ export class ResultTagging extends Component {
     if (facetModel != null && atLeastOneFacetIsEnabled) {
       $$(element).on('click', () => {
         if (_.contains(facetModel, value)) {
-          this.queryStateModel.set(facetAttributeName, _.without(facetModel, value))
+          this.queryStateModel.set(facetAttributeName, _.without(facetModel, value));
         } else {
-          this.queryStateModel.set(facetAttributeName, _.union(facetModel, [value]))
+          this.queryStateModel.set(facetAttributeName, _.union(facetModel, [value]));
         }
         this.queryController.deferExecuteQuery({
-          beforeExecuteQuery: () => this.usageAnalytics.logSearchEvent<IAnalyticsResultTaggingMeta>(analyticsActionCauseList.documentTag, {
-            facetId: this.options.field,
-            facetValue: value
-          })
+          beforeExecuteQuery: () =>
+            this.usageAnalytics.logSearchEvent<IAnalyticsResultTaggingMeta>(analyticsActionCauseList.documentTag, {
+              facetId: <string>this.options.field,
+              facetValue: value
+            })
         });
-      })
+      });
 
       if (_.contains(facetModel, value)) {
-        $$(element).addClass('coveo-selected')
+        $$(element).addClass('coveo-selected');
       }
-      $$(element).addClass('coveo-clickable')
+      $$(element).addClass('coveo-clickable');
     }
   }
 
@@ -256,7 +312,7 @@ export class ResultTagging extends Component {
     let endpoint = this.queryController.getEndpoint();
     let searchText = this.textBox.value;
     let searchOptions = {
-      field: this.options.field,
+      field: <string>this.options.field,
       ignoreAccents: true,
       sortCriteria: 'occurences',
       maximumNumberOfValues: this.options.suggestBoxSize,
@@ -281,39 +337,39 @@ export class ResultTagging extends Component {
       clearTimeout(timeout);
     });
 
-    $$(this.autoCompletePopup).on('mouseout', ((e: JQueryEventObject) => {
+    $$(this.autoCompletePopup).on('mouseout', e => {
       if ($$(<HTMLElement>e.target).hasClass(ResultTagging.autoCompleteClass)) {
         timeout = setTimeout(() => {
           this.clearPopup();
         }, this.options.autoCompleteTimer);
       }
-    }));
+    });
 
-    $$(this.autoCompletePopup).on('mouseenter', (() => {
+    $$(this.autoCompletePopup).on('mouseenter', () => {
       clearTimeout(timeout);
-    }));
+    });
 
-    $$(this.element).on('mouseenter', (() => {
+    $$(this.element).on('mouseenter', () => {
       this.clearPopup();
       $$(this.element).addClass('coveo-opened');
-    }));
+    });
 
-    $$($$(this.element).closest('.CoveoResult')).on('mouseleave', (() => {
+    $$($$(this.element).closest('.CoveoResult')).on('mouseleave', () => {
       this.clearPopup();
       if (this.textBox.value == '') {
         $$(this.element).removeClass('coveo-opened');
       }
-    }));
+    });
 
-    $$($$(this.element).closest('.CoveoResult')).on('focusout', ((e: JQueryEventObject) => {
-      if (this.textBox.value != '' && ($$(<HTMLElement>e.target).closest('.CoveoResult') != $$(this.element).closest('.CoveoResult'))) {
+    $$($$(this.element).closest('.CoveoResult')).on('focusout', e => {
+      if (this.textBox.value != '' && $$(<HTMLElement>e.target).closest('.CoveoResult') != $$(this.element).closest('.CoveoResult')) {
         $$(this.element).addClass('coveo-error');
       }
-    }));
+    });
 
-    $$($$(this.element).closest('.CoveoResult')).on('focusin', (() => {
+    $$($$(this.element).closest('.CoveoResult')).on('focusin', () => {
       $$(this.element).removeClass('coveo-error');
-    }));
+    });
   }
 
   // Exclude tags that are already on the result (Since we can tag with the same value twice.
@@ -328,7 +384,7 @@ export class ResultTagging extends Component {
   private manageUpDownEnter(code: number) {
     let selectableArray = $$(this.element).findAll('.coveo-selectable');
     if (code == KEYBOARD.ENTER) {
-      this.doAddTag()
+      this.doAddTag();
       return;
     }
 
@@ -364,21 +420,24 @@ export class ResultTagging extends Component {
     line.el.appendChild(this.buildShortenedTagWithTitle(lookupValue));
     line.on('click', () => {
       this.doAddTagWithValue(lookupValue);
-    })
+    });
     return line.el;
   }
 
   private doRemoveTag(element: HTMLElement, tagValue: string) {
     let request: ITaggingRequest = {
-      fieldName: this.options.field,
+      fieldName: <string>this.options.field,
       fieldValue: tagValue,
       doAdd: false,
       uniqueId: this.result.uniqueId
     };
-    this.queryController.getEndpoint().tagDocument(request).then(() => {
-      this.tags.splice(_.indexOf(this.tags, tagValue), 1);
-      $$(element).detach();
-    });
+    this.queryController
+      .getEndpoint()
+      .tagDocument(request)
+      .then(() => {
+        this.tags.splice(_.indexOf(this.tags, tagValue), 1);
+        $$(element).detach();
+      });
   }
 
   private doAddTagWithValue(tagValue: string) {
@@ -395,19 +454,23 @@ export class ResultTagging extends Component {
     }
     this.tags.push(tagValue);
     let request: ITaggingRequest = {
-      fieldName: this.options.field,
+      fieldName: <string>this.options.field,
       fieldValue: tagValue,
       doAdd: true,
       uniqueId: this.result.uniqueId
     };
-    this.queryController.getEndpoint().tagDocument(request).then(() => {
-      this.tagZone.appendChild(this.buildTagValue(tagValue));
-      this.textBox.value = '';
-      $$(this.element).removeClass('coveo-error');
-    }).catch(() => {
-      // We do this otherwise it's possible to add the same tag while we wait for the server's response
-      this.tags = _.without(this.tags, _.findWhere(this.tags, tagValue));
-    });
+    this.queryController
+      .getEndpoint()
+      .tagDocument(request)
+      .then(() => {
+        this.tagZone.appendChild(this.buildTagValue(tagValue));
+        this.textBox.value = '';
+        $$(this.element).removeClass('coveo-error');
+      })
+      .catch(() => {
+        // We do this otherwise it's possible to add the same tag while we wait for the server's response
+        this.tags = _.without(this.tags, _.findWhere(this.tags, tagValue));
+      });
   }
 
   private doAddTag() {

@@ -1,4 +1,5 @@
-﻿@import "_Variables.scss"; 
+@import 'Variables';
+@import 'mixins/mediaQuery';
 
 .CoveoTab {
   color: $color-blueish-gray;
@@ -17,20 +18,26 @@
     line-height: 52px;
     margin: 0;
   }
-  & >.coveo-icon {
+  & > .coveo-icon {
     margin-right: 5px;
   }
   p {
     height: 100%;
   }
 
-  &.coveo-selected, &.coveo-selected:hover {
+  &.coveo-selected,
+  &.coveo-selected:hover {
     border-bottom: 2px solid $color-greyish-dark-blue;
     padding-bottom: 0px;
   }
 
   &:hover {
     color: $color-greyish-dark-blue;
+  }
+  &:active,
+  &:active:focus,
+  &.coveo-selected {
+    outline: none;
   }
 }
 
@@ -42,4 +49,16 @@
   border-bottom: 1px solid $color-light-grey;
   font-size: 0;
   white-space: nowrap;
+}
+
+@include smallScreenWidth {
+  .coveo-tab-section {
+    min-height: 40px;
+  }
+  .CoveoTab {
+    height: 40px;
+    * {
+      line-height: 40px;
+    }
+  }
 }

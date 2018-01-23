@@ -1,21 +1,24 @@
 /**
- * Describe a tag request on a document
+ * The `ITaggingRequest` interface describes a tag request on an item.
  */
 export interface ITaggingRequest {
   /**
-   * The field name to tag
+   * Contains the field name to tag.
    */
   fieldName: string;
+
   /**
-   * The value to tag
+   * Contains the value to tag.
    */
   fieldValue: string;
+
   /**
-   * Decide whether to add the tag value, or remove the tag value
+   * Indicates whether to add the tag value, or to remove the tag value.
    */
   doAdd: boolean;
+
   /**
-   * The unique id of the document to tag
+   * Contains the unique ID of the item to tag.
    */
   uniqueId: string;
 }

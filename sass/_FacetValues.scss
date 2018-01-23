@@ -1,18 +1,9 @@
-@mixin facetValuesCheckboxes($size: 'normal') {
-  $icon-inactive: '.coveo-sprites-checkbox-hook-inactive';
-  $icon-active: '.coveo-sprites-checkbox-hook-active';
-  $icon-exclusion: '.coveo-sprites-checkbox-exclusion';
-  $pixel-size: '18px';
-  $pixel-bottom: '1px';
-  $pixel-left: '-1px';
+@import "Variables";
 
+@mixin facetValuesCheckboxes($size: 'normal') {
+  $pixel-size: '18px';
   @if $size == 'smaller' {
-    $icon-inactive: '.coveo-sprites-facet-search-checkbox-hook-inactive';
-    $icon-active: '.coveo-sprites-facet-search-checkbox-hook-active';
-    $icon-exclusion: '.coveo-sprites-facet-checkbox-exclusion';
     $pixel-size: '13px';
-    $pixel-bottom: '3px';
-    $pixel-left: '-1px';
   }
 
   input[type="checkbox"] {
@@ -27,42 +18,109 @@
     text-align: center;
     vertical-align: middle;
     margin-right: 15px;
-    float: left;
     background: white;
     position: relative;
-    top:2px;
-    > span {
+    float: left;
+    top: 2px;
+    > svg {
       position: relative;
-      bottom: #{$pixel-bottom};
-      left: #{$pixel-left};
       background: none;
     }
   }
 
   &.coveo-selected .coveo-facet-value-checkbox {
-    > span {
-      @extend #{$icon-active};
+    svg {
+      @include coveo-hook($size);
     }
   }
 
-  &:hover .coveo-facet-value-checkbox {
-    > span {
-      @extend #{$icon-active}
+  &:hover:not(.coveo-facet-search-button):not(.coveo-excluded):not(.coveo-facet-value-will-exclude):not(.coveo-has-childs-selected) .coveo-facet-value-checkbox {
+    svg {
+      @include coveo-hook($size);
+    }
+  }
+
+  &:hover.coveo-excluded {
+    .coveo-facet-value-checkbox {
+      .coveo-hook-svg {
+        fill-opacity: 0;
+      }
+    }
+  }
+
+  .coveo-facet-value-checkbox:focus {
+    outline: none;
+  }
+
+  &:not(.coveo-facet-search-button) {
+    .coveo-facet-value-checkbox:focus {
+      svg {
+        @include coveo-hook($size);
+        .coveo-exclusion-svg {
+          fill-opacity: 0;
+        }
+      }
     }
   }
 
   &.coveo-facet-value-will-exclude .coveo-facet-value-checkbox,
-  &.coveo-selected.coveo-facet-value-will-exclude .coveo-facet-value-checkbox,
-  &:hover.coveo-facet-value-will-exclude .coveo-facet-value-checkbox {
-    > span {
-      @extend #{$icon-exclusion};
+  &:hover.coveo-facet-value-will-exclude .coveo-facet-value-checkbox{
+    svg {
+      @include coveo-exclusion($size);
     }
   }
 
-  &.coveo-excluded .coveo-facet-value-checkbox {
-    > span {
-      @extend #{$icon-exclusion};
+  &.coveo-facet-value-will-exclude.coveo-selected .coveo-facet-value-checkbox,
+  &:hover.coveo-facet-value-will-exclude.coveo-selected .coveo-facet-value-checkbox {
+    .coveo-hook-svg {
+      fill-opacity: 0;
     }
+  }
+
+  &.coveo-excluded .coveo-facet-value-checkbox{
+    svg {
+      @include coveo-exclusion($size);
+    }
+  }
+
+  &.coveo-facet-value-will-exclude:focus,
+  &.coveo-facet-value-will-exclude:hover, {
+    .coveo-facet-value-checkbox .coveo-hook-svg {
+      fill-opacity: 0;
+    }
+  }
+}
+
+@mixin coveo-hook($size: 'normal') {
+  @if $size == 'smaller' {
+    width: 11px;
+    height: 9px;
+    bottom: 5px;
+    .coveo-hook-svg {
+      fill: black;
+    }
+  } @else {
+    width: 14px;
+    height: 12px;
+    bottom: 3px;
+    .coveo-hook-svg {
+      fill: $color-grey;
+    }
+  }
+}
+
+@mixin coveo-exclusion($size: 'normal') {
+  @if $size == 'smaller' {
+    width: 7px;
+    height: 7px;
+    bottom: 6px;
+  } @else {
+    width: 10px;
+    height: 10px;
+    bottom: 4px;
+  }
+  .coveo-exclusion-svg {
+    fill: $color-red
   }
 }
 
@@ -87,7 +145,7 @@
     vertical-align: middle;
   }
 
-  &:hover {
+  &:hover, &.coveo-focused {
     background-color: $color-blueish-white-grey;
   }
 
@@ -109,18 +167,14 @@
   &:hover .coveo-facet-value-exclude {
     visibility: visible;
   }
+
 }
 
 .coveo-facet-value-label {
   display: block;
-  overflow: hidden;
   white-space: nowrap;
   cursor: pointer;
   padding: 5px 0px 5px 0px;
-}
-
-.coveo-facet-value-label-wrapper {
-  overflow: hidden;
 }
 
 .coveo-facet-value-caption {
@@ -135,7 +189,7 @@
   display: inline-block;
   margin: 3px 5px 3px 0;
   vertical-align: top;
-  float:left;
+  float: left;
 }
 
 .coveo-facet-value-count {
@@ -163,6 +217,8 @@
   .coveo-facet-value-label-wrapper {
     @include order(1);
     @include display("flex");
+    // This needs to be set, otherwise min-width auto on the elment will make the element overflow it's flex container;
+    min-width: 0;
     .coveo-facet-value-checkbox {
       @include order(1);
       @include flex-shrink(0);
@@ -193,16 +249,22 @@
   @include defaultRoundedBorder();
   height: 13px;
   width: 13px;
-  visibility: hidden;
+  opacity: 0;
+  z-index: 10;
 
-  .coveo-icon {
-    @extend .coveo-sprites-exclusion-hover;
-    position: absolute;
-    top: -1px;
-    left: -1px;
-  }
-
-  &:hover {
+  &:hover, &:focus {
     opacity: 1;
+    outline: none;
   }
 }
+
+.coveo-facet-value-exclude-svg {
+    width: 7px;
+    height: 7px;
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    .coveo-exclusion-svg {
+      fill: $color-light-grey;
+    }
+  }

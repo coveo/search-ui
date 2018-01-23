@@ -1,13 +1,19 @@
+@import '../_Variables';
+@import '../mixins/mediaQuery';
+.coveo-subscriptions-messages {
+  z-index: 1;
+}
+
 .coveo-subscriptions-messages-message {
   background-color: #ecad00;
+  @include display(flex);
   border-radius: 2px;
-  padding: 7px;
   color: #fff;
   white-space: nowrap;
   &.coveo-subscriptions-messages-error {
-  background-color: #F44336;
-    &:after{
-      border-color: transparent transparent #F44336 transparent;
+    background-color: #f44336;
+    &:after {
+      border-color: transparent transparent #f44336 transparent;
     }
   }
   &:before {
@@ -25,26 +31,29 @@
     height: 0;
     border-style: solid;
     border-width: 0 7px 7px 7px;
-    border-color: transparent transparent #ecad00 transparent;
+    border-color: transparent transparent $color-active-yellow transparent;
     float: left;
   }
-  
+
   .coveo-subscriptions-messages-content {
-    line-height: 26px;
-    vertical-align: middle;
-    display: block;
+    padding: 7px 0;
+    font-size: 12px;
+    display: inline-block;
     overflow: hidden;
     text-overflow: ellipsis;
+    span {
+      vertical-align: middle;
+    }
+    @include mediumScreenWidth() {
+      font-size: 10px;
+    }
   }
 
   .coveo-subscriptions-messages-info-close {
-    float: right;
     display: inline-block;
     cursor: pointer;
-    padding: 0 4px;
-    &:before {
-      content: '';
-      vertical-align: middle;
-    }
+    vertical-align: middle;
+    margin: 6px 6px;
+    @include clearButton('&');
   }
 }

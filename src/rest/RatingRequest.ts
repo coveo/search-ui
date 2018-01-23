@@ -1,14 +1,16 @@
 /**
- * Describe a request to rate a document in the index
+ * The `IRatingRequest` interface describes a request to rate an item in the index.
  */
 export interface IRatingRequest {
   /**
-   * The uniqueId of the document to rate
+   * Contains the unique ID of the item to rate.
    */
   uniqueId: string;
+
   /**
-   * String to describe the rating.<br/>
-   * Can be 'Undefined' | 'Lowest' | 'Low' | 'Average' | 'Good' | 'Best'
+   * Contains the rating description.
+   *
+   * Possible values are `Undefined` | `Lowest` | `Low` | `Average` | `Good` | `Best`.
    */
   rating: string;
 }
