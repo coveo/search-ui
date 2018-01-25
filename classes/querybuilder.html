@@ -55,8 +55,8 @@
 	</div>
 	<div class="bottomHeader">
 		<div id="searchBox">
-			<div class="CoveoSearchbox" data-enable-omnibox="true" data-inline="false" data-enable-wildcards="true" data-enable-search-as-you-type="false" data-enable-reveal-query-suggest-addon="false" data-enable-query-syntax="true" data-enable-field-addon="true"></div>
-			<div class="CoveoFieldSuggestions" data-field="@systitle" data-header-title="Suggested topics"></div>
+			<div class="CoveoSearchbox" data-enable-omnibox="true" data-inline="false" data-enable-wildcards="true" data-enable-search-as-you-type="false" data-enable-query-suggest-addon="false" data-enable-query-syntax="true" data-enable-field-addon="true"></div>
+			<div class="CoveoFieldSuggestions" data-field="@jsuipagetopic" data-header-title="Suggested topics"></div>
 		</div>
 	</div>
 	<!-- Do not focus on Querybox when URL contains hash to ensure page scrolls down to corresponding anchor. -->
@@ -122,11 +122,17 @@
 							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="querybuilder.html#computecompleteexpressionpartsexcept" class="tsd-kind-icon">compute<wbr>Complete<wbr>Expression<wbr>Parts<wbr>Except</a>
 							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="querybuilder.html#containsenduserkeywords" class="tsd-kind-icon">contains<wbr>End<wbr>User<wbr>Keywords</a>
+							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class">
 								<a href="querybuilder.html#actionshistory" class="tsd-kind-icon">actions<wbr>History</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class">
 								<a href="querybuilder.html#advancedexpression" class="tsd-kind-icon">advanced<wbr>Expression</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class">
+								<a href="querybuilder.html#allowquerieswithoutkeywords" class="tsd-kind-icon">allow<wbr>Queries<wbr>Without<wbr>Keywords</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class">
 								<a href="querybuilder.html#childfield" class="tsd-kind-icon">child<wbr>Field</a>
@@ -136,9 +142,6 @@
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class">
 								<a href="querybuilder.html#context" class="tsd-kind-icon">context</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class">
-								<a href="querybuilder.html#disablequerysyntax" class="tsd-kind-icon">disable<wbr>Query<wbr>Syntax</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class">
 								<a href="querybuilder.html#disjunctionexpression" class="tsd-kind-icon">disjunction<wbr>Expression</a>
@@ -157,6 +160,9 @@
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class">
 								<a href="querybuilder.html#enablepartialmatch" class="tsd-kind-icon">enable<wbr>Partial<wbr>Match</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class">
+								<a href="querybuilder.html#enablequerysyntax" class="tsd-kind-icon">enable<wbr>Query<wbr>Syntax</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class">
 								<a href="querybuilder.html#enablequestionmarks" class="tsd-kind-icon">enable<wbr>Question<wbr>Marks</a>
@@ -243,15 +249,17 @@
 							<a href="querybuilder.html">QueryBuilder</a>
 						</li>
 					</ul>
+					<!-- Has to remain here for the playground to work -->
+					<h1 style="visibility: collapse; font-size:0">Class QueryBuilder</h1>
 					<h1>Class QueryBuilder</h1>
 				</div>
 			</div>
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>The QueryBuilder is used to build a <a href="../interfaces/iquery.html">IQuery</a> that will be able to be executed using the Search API.<br/>
-						The class exposes several members and methods that help components and external code to build up the final query that is sent to the Search API.<br/></p>
+						<p>The QueryBuilder is used to build a <a href="../interfaces/iquery.html">IQuery</a> that will be able to be executed using the Search API.</p>
 					</div>
+					<p>The class exposes several members and methods that help components and external code to build up the final query that is sent to the Search API.</p>
 				</div>
 			</section>
 			<div class="preview-container tsd-panel">
@@ -273,6 +281,7 @@
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="querybuilder.html#computecompleteexpressionexcept" class="tsd-kind-icon">compute<wbr>Complete<wbr>Expression<wbr>Except</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="querybuilder.html#computecompleteexpressionparts" class="tsd-kind-icon">compute<wbr>Complete<wbr>Expression<wbr>Parts</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="querybuilder.html#computecompleteexpressionpartsexcept" class="tsd-kind-icon">compute<wbr>Complete<wbr>Expression<wbr>Parts<wbr>Except</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="querybuilder.html#containsenduserkeywords" class="tsd-kind-icon">contains<wbr>End<wbr>User<wbr>Keywords</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
@@ -280,16 +289,17 @@
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-property tsd-parent-kind-class"><a href="querybuilder.html#actionshistory" class="tsd-kind-icon">actions<wbr>History</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class"><a href="querybuilder.html#advancedexpression" class="tsd-kind-icon">advanced<wbr>Expression</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="querybuilder.html#allowquerieswithoutkeywords" class="tsd-kind-icon">allow<wbr>Queries<wbr>Without<wbr>Keywords</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class"><a href="querybuilder.html#childfield" class="tsd-kind-icon">child<wbr>Field</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class"><a href="querybuilder.html#constantexpression" class="tsd-kind-icon">constant<wbr>Expression</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class"><a href="querybuilder.html#context" class="tsd-kind-icon">context</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class"><a href="querybuilder.html#disablequerysyntax" class="tsd-kind-icon">disable<wbr>Query<wbr>Syntax</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class"><a href="querybuilder.html#disjunctionexpression" class="tsd-kind-icon">disjunction<wbr>Expression</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class"><a href="querybuilder.html#enablecollaborativerating" class="tsd-kind-icon">enable<wbr>Collaborative<wbr>Rating</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class"><a href="querybuilder.html#enabledebug" class="tsd-kind-icon">enable<wbr>Debug</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class"><a href="querybuilder.html#enabledidyoumean" class="tsd-kind-icon">enable<wbr>Did<wbr>You<wbr>Mean</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class"><a href="querybuilder.html#enablelowercaseoperators" class="tsd-kind-icon">enable<wbr>Lowercase<wbr>Operators</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class"><a href="querybuilder.html#enablepartialmatch" class="tsd-kind-icon">enable<wbr>Partial<wbr>Match</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="querybuilder.html#enablequerysyntax" class="tsd-kind-icon">enable<wbr>Query<wbr>Syntax</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class"><a href="querybuilder.html#enablequestionmarks" class="tsd-kind-icon">enable<wbr>Question<wbr>Marks</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class"><a href="querybuilder.html#enablewildcards" class="tsd-kind-icon">enable<wbr>Wildcards</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class"><a href="querybuilder.html#excerptlength" class="tsd-kind-icon">excerpt<wbr>Length</a></li>
@@ -329,16 +339,16 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/QueryBuilder.ts#L391">src/ui/Base/QueryBuilder.ts
-									:391</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/QueryBuilder.ts#L474">src/ui/Base/QueryBuilder.ts
+									:474</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Add a context object to the query.<br/>
-										This can contain multiple key-&gt;value.<br/>
-									This is used by the Query pipeline in the Coveo platform.</p>
+									<p>Add a context object to the query.</p>
 								</div>
+								<p>This can contain multiple key-&gt;value.</p>
+								<p>This is used by the Query pipeline in the Coveo platform.</p>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
@@ -368,15 +378,15 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/QueryBuilder.ts#L378">src/ui/Base/QueryBuilder.ts
-									:378</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/QueryBuilder.ts#L459">src/ui/Base/QueryBuilder.ts
+									:459</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Add a single context key-&gt;value pair to the query.<br/>
-									This is used by the Query pipeline in the Coveo platform.</p>
+									<p>Add a single context key-&gt;value pair to the query.</p>
 								</div>
+								<p>This is used by the Query pipeline in the Coveo platform.</p>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
@@ -404,15 +414,15 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/QueryBuilder.ts#L360">src/ui/Base/QueryBuilder.ts
-									:360</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/QueryBuilder.ts#L440">src/ui/Base/QueryBuilder.ts
+									:440</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Add fields to specifically exclude when the results return.<br/>
-									This can be used to accelerate the execution time of every query, as there is much less data to process if you blacklist specific fields.</p>
+									<p>Add fields to specifically exclude when the results return.</p>
 								</div>
+								<p>This can be used to accelerate the execution time of every query, as there is much less data to process if you blacklist specific fields.</p>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
@@ -437,15 +447,15 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/QueryBuilder.ts#L347">src/ui/Base/QueryBuilder.ts
-									:347</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/QueryBuilder.ts#L426">src/ui/Base/QueryBuilder.ts
+									:426</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Add fields to specifically include when the results return.<br/>
-									This can be used to accelerate the execution time of every query, as there is much less data to process if you whitelist specific fields.</p>
+									<p>Add fields to specifically include when the results return.</p>
 								</div>
+								<p>This can be used to accelerate the execution time of every query, as there is much less data to process if you whitelist specific fields.</p>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
@@ -470,15 +480,15 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/QueryBuilder.ts#L231">src/ui/Base/QueryBuilder.ts
-									:231</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/QueryBuilder.ts#L301">src/ui/Base/QueryBuilder.ts
+									:301</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Build the current content or state of the query builder and return a <a href="../interfaces/iquery.html">IQuery</a>.<br/>
-									build can be called multiple times on the same QueryBuilder.</p>
+									<p>Build the current content or state of the query builder and return a <a href="../interfaces/iquery.html">IQuery</a>.</p>
 								</div>
+								<p>build can be called multiple times on the same QueryBuilder.</p>
 							</div>
 							<h4 class="tsd-returns-title">Returns <a href="../interfaces/iquery.html" class="tsd-signature-type">IQuery</a></h4>
 						</li>
@@ -495,15 +505,15 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/QueryBuilder.ts#L285">src/ui/Base/QueryBuilder.ts
-									:285</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/QueryBuilder.ts#L357">src/ui/Base/QueryBuilder.ts
+									:357</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Return only the expression(s) part(s) of the query, as a string.<br/>
-									This means the basic, advanced and constant part in a complete expression <a href="../interfaces/iquery.html#q">IQuery.q</a>, <a href="../interfaces/iquery.html#aq">IQuery.aq</a>, <a href="../interfaces/iquery.html#cq">IQuery.cq</a>.</p>
+									<p>Return only the expression(s) part(s) of the query, as a string.</p>
 								</div>
+								<p>This means the basic, advanced and constant part in a complete expression <a href="../interfaces/iquery.html#q">IQuery.q</a>, <a href="../interfaces/iquery.html#aq">IQuery.aq</a>, <a href="../interfaces/iquery.html#cq">IQuery.cq</a>.</p>
 							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
 						</li>
@@ -520,15 +530,15 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/QueryBuilder.ts#L311">src/ui/Base/QueryBuilder.ts
-									:311</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/QueryBuilder.ts#L381">src/ui/Base/QueryBuilder.ts
+									:381</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Return only the expression(s) part(s) of the query, as a string, except the given expression.<br/>
-									This is used by <a href="../components/facet.html">Facet</a>, to build their group by request with query override.</p>
+									<p>Return only the expression(s) part(s) of the query, as a string, except the given expression.</p>
 								</div>
+								<p>This is used by <a href="../components/facet.html">Facet</a>, to build their group by request with query override.</p>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
@@ -544,15 +554,15 @@
 					<a name="computecompleteexpressionparts" class="tsd-anchor"></a>
 					<h3>compute<wbr>Complete<wbr>Expression<wbr>Parts</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">compute<wbr>Complete<wbr>Expression<wbr>Parts<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/iquerybuilderexpression.html" class="tsd-signature-type">IQueryBuilderExpression</a></li>
+						<li class="tsd-signature tsd-kind-icon">compute<wbr>Complete<wbr>Expression<wbr>Parts<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/QueryBuilder.ts#L293">src/ui/Base/QueryBuilder.ts
-									:293</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/QueryBuilder.ts#L365">src/ui/Base/QueryBuilder.ts
+									:365</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -560,7 +570,7 @@
 									<p>Return only the expression(s) part(s) of the query, as an object.</p>
 								</div>
 							</div>
-							<h4 class="tsd-returns-title">Returns <a href="../interfaces/iquerybuilderexpression.html" class="tsd-signature-type">IQueryBuilderExpression</a></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">any</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -568,22 +578,22 @@
 					<a name="computecompleteexpressionpartsexcept" class="tsd-anchor"></a>
 					<h3>compute<wbr>Complete<wbr>Expression<wbr>Parts<wbr>Except</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">compute<wbr>Complete<wbr>Expression<wbr>Parts<wbr>Except<span class="tsd-signature-symbol">(</span>except<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/iquerybuilderexpression.html" class="tsd-signature-type">IQueryBuilderExpression</a></li>
+						<li class="tsd-signature tsd-kind-icon">compute<wbr>Complete<wbr>Expression<wbr>Parts<wbr>Except<span class="tsd-signature-symbol">(</span>except<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">QueryBuilderExpression</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/QueryBuilder.ts#L321">src/ui/Base/QueryBuilder.ts
-									:321</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/QueryBuilder.ts#L392">src/ui/Base/QueryBuilder.ts
+									:392</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Return only the expression(s) part(s) of the query, as an object, except the given expression.<br/>
-									This is used by <a href="../components/facet.html">Facet</a>, to build their group by request with query override.</p>
+									<p>Return only the expression(s) part(s) of the query, as an object, except the given expression.</p>
 								</div>
+								<p>This is used by <a href="../components/facet.html">Facet</a>, to build their group by request with query override.</p>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
@@ -591,7 +601,32 @@
 									<h5>except: <span class="tsd-signature-type">string</span></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="../interfaces/iquerybuilderexpression.html" class="tsd-signature-type">IQueryBuilderExpression</a></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">QueryBuilderExpression</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="containsenduserkeywords" class="tsd-anchor"></a>
+					<h3>contains<wbr>End<wbr>User<wbr>Keywords</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">contains<wbr>End<wbr>User<wbr>Keywords<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/QueryBuilder.ts#L486">src/ui/Base/QueryBuilder.ts
+									:486</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Returns true if the current query contains any expression that are considered &quot;end user input&quot;.</p>
+								</div>
+								<p>This usually means anything entered in the basic (see [q]{@link IQuery.options.q}) or long (see [lq]{@link IQuery.options.lq}) part of the query.</p>
+							</div>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -605,8 +640,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/QueryBuilder.ts#L221">src/ui/Base/QueryBuilder.ts
-							:221</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/QueryBuilder.ts#L282">src/ui/Base/QueryBuilder.ts
+							:282</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -623,22 +658,41 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/QueryBuilder.ts#L50">src/ui/Base/QueryBuilder.ts
-							:50</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/QueryBuilder.ts#L30">src/ui/Base/QueryBuilder.ts
+							:30</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<dl class="tsd-deprecated">
 						</dl>
 						<div class="lead">
-							<p>Used to build the advanced part of the query expression.<br/>
-							This part is typically formed of filter expressions generated by components such as facets, external code, etc.</p>
+							<p>Used to build the advanced part of the query expression.</p>
 						</div>
+						<p>This part is typically formed of filter expressions generated by components such as facets, external code, etc.</p>
 						<dl class="tsd-comment-tags">
 							<dt>type</dt>
 							<dd><p>{Coveo.ExpressionBuilder}</p>
 							</dd>
 						</dl>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
+					<a name="allowquerieswithoutkeywords" class="tsd-anchor"></a>
+					<h3>allow<wbr>Queries<wbr>Without<wbr>Keywords</h3>
+					<div class="tsd-signature tsd-kind-icon">allow<wbr>Queries<wbr>Without<wbr>Keywords<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/QueryBuilder.ts#L294">src/ui/Base/QueryBuilder.ts
+							:294</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Specifies if the Search API should perform queries even when no keywords were entered by the end user.</p>
+						</div>
+						<p>End user keywords are present in either the <a href="../interfaces/iquery.html#q">IQuery.q</a> or <a href="../interfaces/iquery.html#lq">IQuery.lq</a> part of the query.</p>
+						<p>This parameter is normally controlled by {@link SearchInterface.options.allowEmptyQuery} option.</p>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
@@ -648,8 +702,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/QueryBuilder.ts#L167">src/ui/Base/QueryBuilder.ts
-							:167</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/QueryBuilder.ts#L225">src/ui/Base/QueryBuilder.ts
+							:225</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -665,17 +719,17 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/QueryBuilder.ts#L56">src/ui/Base/QueryBuilder.ts
-							:56</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/QueryBuilder.ts#L37">src/ui/Base/QueryBuilder.ts
+							:37</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<dl class="tsd-deprecated">
 						</dl>
 						<div class="lead">
-							<p>Used to build the advanced part of the query expression.<br/>
-							This part is similar to <code>advancedExpression</code>, but its content is interpreted as a constant expression by the index and it takes advantage of special caching features.</p>
+							<p>Used to build the advanced part of the query expression.</p>
 						</div>
+						<p>This part is similar to <code>advancedExpression</code>, but its content is interpreted as a constant expression by the index and it takes advantage of special caching features.</p>
 						<dl class="tsd-comment-tags">
 							<dt>type</dt>
 							<dd><p>{Coveo.ExpressionBuilder}</p>
@@ -690,13 +744,13 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/QueryBuilder.ts#L216">src/ui/Base/QueryBuilder.ts
-							:216</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/QueryBuilder.ts#L277">src/ui/Base/QueryBuilder.ts
+							:277</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>The context is a map of key_value that can be used in the Query pipeline in the Coveo platform.<br/></p>
+							<p>The context is a map of key_value that can be used in the Query pipeline in the Coveo platform.</p>
 						</div>
 					</div>
 					<div class="tsd-type-declaration">
@@ -709,43 +763,24 @@
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
-					<a name="disablequerysyntax" class="tsd-anchor"></a>
-					<h3>disable<wbr>Query<wbr>Syntax</h3>
-					<div class="tsd-signature tsd-kind-icon">disable<wbr>Query<wbr>Syntax<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/QueryBuilder.ts#L109">src/ui/Base/QueryBuilder.ts
-							:109</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Whether to disable the special query syntax such as field references for the basic query expression (parameter q).
-								It is equivalent to a No syntax block applied to the basic query expression.
-							If not specified, the parameter defaults to false.</p>
-						</div>
-					</div>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 					<a name="disjunctionexpression" class="tsd-anchor"></a>
 					<h3>disjunction<wbr>Expression</h3>
 					<div class="tsd-signature tsd-kind-icon">disjunction<wbr>Expression<span class="tsd-signature-symbol">:</span> <a href="expressionbuilder.html" class="tsd-signature-type">ExpressionBuilder</a></div>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/QueryBuilder.ts#L70">src/ui/Base/QueryBuilder.ts
-							:70</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/QueryBuilder.ts#L54">src/ui/Base/QueryBuilder.ts
+							:54</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<dl class="tsd-deprecated">
 						</dl>
 						<div class="lead">
-							<p>Used to build the disjunctive part of the query expression.<br/>
-								When present, this part is evaluated separately from the other expressions and the matching results are merged to those matching expressions, <code>advancedExpression</code> and <code>constantExpression</code>.<br/>
-							The final boolean expression for the query is thus (basic advanced constant) OR (disjunction).</p>
+							<p>Used to build the disjunctive part of the query expression.</p>
 						</div>
+						<p>When present, this part is evaluated separately from the other expressions and the matching results are merged to those matching expressions, <code>advancedExpression</code> and <code>constantExpression</code>.</p>
+						<p>The final boolean expression for the query is thus (basic advanced constant) OR (disjunction).</p>
 						<dl class="tsd-comment-tags">
 							<dt>type</dt>
 							<dd><p>{Coveo.ExpressionBuilder}</p>
@@ -760,8 +795,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/QueryBuilder.ts#L185">src/ui/Base/QueryBuilder.ts
-							:185</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/QueryBuilder.ts#L245">src/ui/Base/QueryBuilder.ts
+							:245</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -777,16 +812,16 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/QueryBuilder.ts#L181">src/ui/Base/QueryBuilder.ts
-							:181</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/QueryBuilder.ts#L241">src/ui/Base/QueryBuilder.ts
+							:241</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Whether to enable debug info on the query.<br/>
-								This will return additional information on the resulting JSON response from the Search API.<br/>
-							Mostly: execution report (a detailed breakdown of the parsed and executed query).</p>
+							<p>Whether to enable debug info on the query.</p>
 						</div>
+						<p>This will return additional information on the resulting JSON response from the Search API.</p>
+						<p>Mostly: execution report (a detailed breakdown of the parsed and executed query).</p>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
@@ -796,8 +831,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/QueryBuilder.ts#L175">src/ui/Base/QueryBuilder.ts
-							:175</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/QueryBuilder.ts#L233">src/ui/Base/QueryBuilder.ts
+							:233</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -813,14 +848,23 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/QueryBuilder.ts#L113">src/ui/Base/QueryBuilder.ts
-							:113</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/QueryBuilder.ts#L139">src/ui/Base/QueryBuilder.ts
+							:139</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Whether to enable the support for operator in lowercase (AND OR -&gt; and or).</p>
+							<p>Whether to interpret the <code>AND</code>, <code>NOT</code>, <code>OR</code>, and <code>NEAR</code> keywords in the basic
+							<a href="querybuilder.html#expression"><code>expression</code></a> as query operators, even if those keywords are in lowercase.</p>
 						</div>
+						<p>Setting this attribute to <code>true</code> has no effect unless <a href="querybuilder.html#enablequerysyntax"><code>enableQuerySyntax</code></a>
+						is also <code>true</code>.</p>
+						<p><strong>Note:</strong></p>
+						<blockquote>
+							<p>Normally, the <a href="../components/querybox.html#options.enablelowercaseoperators"><code>enableLowercaseOperators</code></a> option of the
+								<a href="../components/querybox.html"><code>Querybox</code></a> component determines the value of this attribute during the initialization of the
+							search page.</p>
+						</blockquote>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
@@ -830,17 +874,51 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/QueryBuilder.ts#L120">src/ui/Base/QueryBuilder.ts
-							:120</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/QueryBuilder.ts#L153">src/ui/Base/QueryBuilder.ts
+							:153</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Whether to enable partial matching of the basic expression keywords.<br/>
-								By activating this, when the basic expression contains at least <a href="../interfaces/iquery.html#partialmatchkeywords">IQuery.partialMatchKeywords</a>, documents containing only the number of keywords specified by <a href="../interfaces/iquery.html#partialmatchthreshold">IQuery.partialMatchThreshold</a> will also match the query.<br/>
-								Without this option, documents are required to contain all the keywords in order to match the query.<br/>
-							If not specified, this parameter defaults to false.</p>
+							<p>Whether to automatically convert the basic <a href="querybuilder.html#expression"><code>expression</code></a> to a partial match
+								expression if it contains at least a certain number of keywords (see
+								<a href="querybuilder.html#partialmatchkeywords"><code>partialMatchKeywords</code></a>), so that items containing at least a certain
+								subset of those keywords (see <a href="querybuilder.html#partialmatchthreshold"><code>partialMatchThreshold</code></a>) will match the
+							query.</p>
 						</div>
+						<p><strong>Note:</strong></p>
+						<blockquote>
+							<p>Normally, the <a href="../components/querybox.html#options.enablepartialmatch"><code>enablePartialMatch</code></a> option of the
+								<a href="../components/querybox.html"><code>Querybox</code></a> component determines the value of this attribute during the initialization of the
+							search page.</p>
+						</blockquote>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
+					<a name="enablequerysyntax" class="tsd-anchor"></a>
+					<h3>enable<wbr>Query<wbr>Syntax</h3>
+					<div class="tsd-signature tsd-kind-icon">enable<wbr>Query<wbr>Syntax<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/QueryBuilder.ts#L125">src/ui/Base/QueryBuilder.ts
+							:125</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Whether to interpret special query syntax (e.g., <code>@objecttype=message</code>) in the basic
+								<a href="querybuilder.html#expression"><code>expression</code></a> (see
+							<a href="http://www.coveo.com/go?dest=adminhelp70&amp;lcid=9&amp;context=10005">Coveo Query Syntax Reference</a>).</p>
+						</div>
+						<p>See also <a href="querybuilder.html#enablelowercaseoperators"><code>enableLowercaseOperators</code></a>.</p>
+						<p><strong>Note:</strong></p>
+						<blockquote>
+							<p>Normally, the <a href="../components/querybox.html#options.enablequerysyntax"><code>enableQuerySyntax</code></a> option of the
+								<a href="../components/querybox.html"><code>Querybox</code></a> component determines the value of this attribute during the initialization of the
+							search page. End user preferences can also modify the value of this attribute.</p>
+						</blockquote>
+						<p>Default value is <code>false</code></p>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
@@ -850,15 +928,23 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/QueryBuilder.ts#L103">src/ui/Base/QueryBuilder.ts
-							:103</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/QueryBuilder.ts#L109">src/ui/Base/QueryBuilder.ts
+							:109</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Whether to enable question marks with wildcards.<br/>
-							This enables using the question mark ? character within wildcard expressions.</p>
+							<p>Whether to interpret question mark characters (<code>?</code>) in the basic <a href="querybuilder.html#expression"><code>expression</code></a>
+							keywords (see <a href="http://www.coveo.com/go?dest=cloudhelp&amp;lcid=9&amp;context=359">Using Wildcards in Queries</a>.</p>
 						</div>
+						<p>Setting this attribute to <code>true</code> has no effect unless <a href="querybuilder.html#enablewildcards"><code>enableWildcards</code></a> is
+						also <code>true</code>.</p>
+						<p><strong>Note:</strong></p>
+						<blockquote>
+							<p>Normally, the <a href="../components/querybox.html#options.enablequestionmarks"><code>enableQuestionMarks</code></a> option of the
+								<a href="../components/querybox.html"><code>Querybox</code></a> component determines the value of this attribute during the initialization of the
+							search page.</p>
+						</blockquote>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
@@ -868,17 +954,24 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/QueryBuilder.ts#L98">src/ui/Base/QueryBuilder.ts
-							:98</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/QueryBuilder.ts#L95">src/ui/Base/QueryBuilder.ts
+							:95</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Whether to enable wildcards on the basic expression keywords.<br/>
-								This enables the wildcard features of the index. Coveo Platform will expand keywords containing wildcard characters to the possible matching keywords to broaden the query.<br/>
-								(see : <a href="https://onlinehelp.coveo.com/en/ces/7.0/user/using_wildcards_in_queries.htm">https://onlinehelp.coveo.com/en/ces/7.0/user/using_wildcards_in_queries.htm</a>).<br/>
-							If not specified, this parameter defaults to false.</p>
+							<p>Whether to interpret wildcard characters (<code>*</code>) in the basic <a href="querybuilder.html#expression"><code>expression</code></a> keywords.</p>
 						</div>
+						<p>Setting this attribute to <code>true</code> enables the wildcards features of the index, effectively expanding keywords
+							containing wildcard characters (<code>*</code>) to the possible matching keywords in order to broaden the query (see
+						<a href="http://www.coveo.com/go?dest=cloudhelp&amp;lcid=9&amp;context=359">Using Wildcards in Queries</a>).</p>
+						<p>See also <a href="querybuilder.html#enablequestionmarks"><code>enableQuestionMarks</code></a>.</p>
+						<p><strong>Note:</strong></p>
+						<blockquote>
+							<p>Normally, the <a href="../components/querybox.html#options.enablewildcards"><code>enableWildcards</code></a> option of the
+								<a href="../components/querybox.html"><code>Querybox</code></a> component determines the value of this attribute during the initialization of the
+							search page.</p>
+						</blockquote>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
@@ -888,16 +981,16 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/QueryBuilder.ts#L149">src/ui/Base/QueryBuilder.ts
-							:149</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/QueryBuilder.ts#L205">src/ui/Base/QueryBuilder.ts
+							:205</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>This specifies the length (in number of characters) of the excerpts generated by the indexer based on the keywords present in the query.<br/>
-								The index includes the top most interesting sentences (in the order they appear in the document) that fit in the specified number of characters.<br/>
-							When not specified, the default value is 200.</p>
+							<p>This specifies the length (in number of characters) of the excerpts generated by the indexer based on the keywords present in the query.</p>
 						</div>
+						<p>The index includes the top most interesting sentences (in the order they appear in the item) that fit in the specified number of characters.</p>
+						<p>When not specified, the default value is 200.</p>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
@@ -907,17 +1000,17 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/QueryBuilder.ts#L44">src/ui/Base/QueryBuilder.ts
-							:44</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/QueryBuilder.ts#L23">src/ui/Base/QueryBuilder.ts
+							:23</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<dl class="tsd-deprecated">
 						</dl>
 						<div class="lead">
-							<p>Used to build the basic part of the query expression.<br/>
-							This part typically consists of user-entered content such as query keywords, etc.</p>
+							<p>Used to build the basic part of the query expression.</p>
 						</div>
+						<p>This part typically consists of user-entered content such as query keywords, etc.</p>
 						<dl class="tsd-comment-tags">
 							<dt>type</dt>
 							<dd><p>{Coveo.ExpressionBuilder}</p>
@@ -932,16 +1025,16 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/QueryBuilder.ts#L155">src/ui/Base/QueryBuilder.ts
-							:155</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/QueryBuilder.ts#L213">src/ui/Base/QueryBuilder.ts
+							:213</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>This specifies a field on which <a href="../components/folding.html">Folding</a> should be performed.<br/>
-								Folding is a kind of duplicate filtering where only the first result with any given value of the field is included in the result set.<br/>
-							It&#39;s typically used to return only one result in a conversation, for example when forum posts in a thread are indexed as separate items.</p>
+							<p>This specifies a field on which <a href="../components/folding.html">Folding</a> should be performed.</p>
 						</div>
+						<p>Folding is a kind of duplicate filtering where only the first result with any given value of the field is included in the result set.</p>
+						<p>It&#39;s typically used to return only one result in a conversation, for example when forum posts in a thread are indexed as separate items.</p>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
@@ -951,8 +1044,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/QueryBuilder.ts#L159">src/ui/Base/QueryBuilder.ts
-							:159</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/QueryBuilder.ts#L217">src/ui/Base/QueryBuilder.ts
+							:217</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -968,15 +1061,15 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/QueryBuilder.ts#L138">src/ui/Base/QueryBuilder.ts
-							:138</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/QueryBuilder.ts#L191">src/ui/Base/QueryBuilder.ts
+							:191</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>This is the 0-based index of the first result to return.<br/>
-							If not specified, this parameter defaults to 0.</p>
+							<p>This is the 0-based index of the first result to return.</p>
 						</div>
+						<p>If not specified, this parameter defaults to 0.</p>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
@@ -986,8 +1079,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/QueryBuilder.ts#L211">src/ui/Base/QueryBuilder.ts
-							:211</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/QueryBuilder.ts#L272">src/ui/Base/QueryBuilder.ts
+							:272</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -1003,17 +1096,17 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/QueryBuilder.ts#L63">src/ui/Base/QueryBuilder.ts
-							:63</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/QueryBuilder.ts#L45">src/ui/Base/QueryBuilder.ts
+							:45</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>The contextual text.<br/>
-								This is the contextual text part of the query. It uses the Coveo Machine Learning service to pick key keywords from the text and add them to the basic expression.
-								This field is mainly used to pass context such a case description, long textual query or any other form of text that might help in
-							refining the query.</p>
+							<p>The contextual text.</p>
 						</div>
+						<p>This is the contextual text part of the query. It uses the Coveo Machine Learning service to pick key keywords from the text and add them to the basic expression.
+							This field is mainly used to pass context such a case description, long textual query or any other form of text that might help in
+						refining the query.</p>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
@@ -1023,16 +1116,16 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/QueryBuilder.ts#L91">src/ui/Base/QueryBuilder.ts
-							:91</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/QueryBuilder.ts#L79">src/ui/Base/QueryBuilder.ts
+							:79</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>The maximum age for cached query results, in milliseconds.<br/>
-								If results for the exact same request (including user identities) are available in the in-memory cache, they will be used if they are not older than the specified value.<br/>
-							Otherwise, the query will be sent to the index.</p>
+							<p>The maximum age for cached query results, in milliseconds.</p>
 						</div>
+						<p>If results for the exact same request (including user identities) are available in the in-memory cache, they will be used if they are not older than the specified value.</p>
+						<p>Otherwise, the query will be sent to the index.</p>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
@@ -1042,15 +1135,15 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/QueryBuilder.ts#L143">src/ui/Base/QueryBuilder.ts
-							:143</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/QueryBuilder.ts#L197">src/ui/Base/QueryBuilder.ts
+							:197</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>This is the number of results to return, starting from <a href="../interfaces/iquery.html#firstresult">IQuery.firstResult</a>.<br/>
-							If not specified, this parameter defaults to 10.</p>
+							<p>This is the number of results to return, starting from <a href="../interfaces/iquery.html#firstresult">IQuery.firstResult</a>.</p>
 						</div>
+						<p>If not specified, this parameter defaults to 10.</p>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
@@ -1060,8 +1153,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/QueryBuilder.ts#L163">src/ui/Base/QueryBuilder.ts
-							:163</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/QueryBuilder.ts#L221">src/ui/Base/QueryBuilder.ts
+							:221</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -1077,17 +1170,24 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/QueryBuilder.ts#L127">src/ui/Base/QueryBuilder.ts
-							:127</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/QueryBuilder.ts#L169">src/ui/Base/QueryBuilder.ts
+							:169</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>The minimum number of keywords needed to activate partial match.<br/>
-								This specifies the minimum number of keywords needed for the partial match feature to activate.<br/>
-								If the basic expression contains less than this number of keywords, no transformation is applied on the query.<br/>
-							If not specified, this parameter defaults to 5.</p>
+							<p>The minimum number of keywords that need to be present in the basic <a href="querybuilder.html#expression"><code>expression</code></a>
+							to convert it to a partial match expression.</p>
 						</div>
+						<p>The value of this attribute has no meaning unless <a href="querybuilder.html#enablepartialmatch"><code>enablePartialMatch</code></a> is
+						<code>true</code>.</p>
+						<p>See also <a href="querybuilder.html#partialmatchthreshold"><code>partialMatchThreshold</code></a>.</p>
+						<p><strong>Note:</strong></p>
+						<blockquote>
+							<p>Normally, the <a href="../components/querybox.html#options.partialmatchkeywords"><code>partialMatchKeywords</code></a> option of the
+								<a href="../components/querybox.html"><code>Querybox</code></a> component determines the value of this attribute during the initialization of the
+							search page.</p>
+						</blockquote>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
@@ -1097,16 +1197,24 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/QueryBuilder.ts#L133">src/ui/Base/QueryBuilder.ts
-							:133</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/QueryBuilder.ts#L185">src/ui/Base/QueryBuilder.ts
+							:185</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>The threshold to use for matching documents when partial match is enabled.<br/>
-								This specifies the minimum number of query keywords that a document must contain when partial match is enabled. This value can either be an absolute number or a percentage value based on the total number of keywords.<br/>
-							If not specified, this parameter defaults to 50%.</p>
+							<p>An absolute or relative (percentage) value indicating the minimum number of partial match expression keywords an
+							item must contain to match the query.</p>
 						</div>
+						<p>The value of this attribute has no meaning unless <a href="querybuilder.html#enablepartialmatch"><code>enablePartialMatch</code></a> is
+						<code>true</code>.</p>
+						<p>See also <a href="querybuilder.html#partialmatchkeywords"><code>partialMatchKeywords</code></a>.</p>
+						<p><strong>Note:</strong></p>
+						<blockquote>
+							<p>Normally, the <a href="../components/querybox.html#options.partialmatchthreshold"><code>partialMatchThreshold</code></a> option of the
+								<a href="../components/querybox.html"><code>Querybox</code></a> component determines the value of this attribute during the initialization of the
+							search page.</p>
+						</blockquote>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
@@ -1116,15 +1224,15 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/QueryBuilder.ts#L85">src/ui/Base/QueryBuilder.ts
-							:85</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/QueryBuilder.ts#L71">src/ui/Base/QueryBuilder.ts
+							:71</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Name of the query pipeline to use.<br/>
-							This specifies the name of the query pipeline to use for the query. If not specified, the default value is default, which means the default query pipeline will be used.</p>
+							<p>Name of the query pipeline to use.</p>
 						</div>
+						<p>This specifies the name of the query pipeline to use for the query. If not specified, the default value is default, which means the default query pipeline will be used.</p>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
@@ -1134,8 +1242,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/QueryBuilder.ts#L203">src/ui/Base/QueryBuilder.ts
-							:203</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/QueryBuilder.ts#L264">src/ui/Base/QueryBuilder.ts
+							:264</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -1151,8 +1259,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/QueryBuilder.ts#L207">src/ui/Base/QueryBuilder.ts
-							:207</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/QueryBuilder.ts#L268">src/ui/Base/QueryBuilder.ts
+							:268</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -1168,8 +1276,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/QueryBuilder.ts#L225">src/ui/Base/QueryBuilder.ts
-							:225</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/QueryBuilder.ts#L286">src/ui/Base/QueryBuilder.ts
+							:286</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -1185,15 +1293,15 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/QueryBuilder.ts#L75">src/ui/Base/QueryBuilder.ts
-							:75</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/QueryBuilder.ts#L60">src/ui/Base/QueryBuilder.ts
+							:60</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>The hub value set from the <a href="../components/analytics.html">Analytics</a> component.<br/>
-							Used for analytics reporting in the Coveo platform.</p>
+							<p>The hub value set from the <a href="../components/analytics.html">Analytics</a> component.</p>
 						</div>
+						<p>Used for analytics reporting in the Coveo platform.</p>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
@@ -1203,20 +1311,20 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/QueryBuilder.ts#L195">src/ui/Base/QueryBuilder.ts
-							:195</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/QueryBuilder.ts#L256">src/ui/Base/QueryBuilder.ts
+							:256</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>This specifies the sort criterion(s) to use to sort results. If not specified, this parameter defaults to relevancy.<br/>
-								Possible values are : <br/>
-								-- relevancy :  This uses all the configured ranking weights as well as any specified ranking expressions to rank results.<br/>
-								-- dateascending / datedescending Sort using the value of the <code>@date</code> field, which is typically the last modification date of an item in the index.<br/>
-								-- qre : Sort using only the weights applied through ranking expressions. This is much like using <code>relevancy</code> except that automatic weights based on keyword proximity etc, are not computed.<br/>
-								-- nosort : Do not sort the results. The order in which items are returned is essentially random.<br/>
-							-- @field ascending / @field descending Sort using the value of a custom field.</p>
+							<p>This specifies the sort criterion(s) to use to sort results. If not specified, this parameter defaults to relevancy.</p>
 						</div>
+						<p>Possible values are : <br/>
+							-- relevancy :  This uses all the configured ranking weights as well as any specified ranking expressions to rank results.<br/>
+							-- dateascending / datedescending Sort using the value of the <code>@date</code> field, which is typically the last modification date of an item in the index.<br/>
+							-- qre : Sort using only the weights applied through ranking expressions. This is much like using <code>relevancy</code> except that automatic weights based on keyword proximity etc, are not computed.<br/>
+							-- nosort : Do not sort the results. The order in which items are returned is essentially random.<br/>
+						-- @field ascending / @field descending Sort using the value of a custom field.</p>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
@@ -1226,8 +1334,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/QueryBuilder.ts#L79">src/ui/Base/QueryBuilder.ts
-							:79</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/QueryBuilder.ts#L64">src/ui/Base/QueryBuilder.ts
+							:64</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">

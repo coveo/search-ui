@@ -55,8 +55,8 @@
 	</div>
 	<div class="bottomHeader">
 		<div id="searchBox">
-			<div class="CoveoSearchbox" data-enable-omnibox="true" data-inline="false" data-enable-wildcards="true" data-enable-search-as-you-type="false" data-enable-reveal-query-suggest-addon="false" data-enable-query-syntax="true" data-enable-field-addon="true"></div>
-			<div class="CoveoFieldSuggestions" data-field="@systitle" data-header-title="Suggested topics"></div>
+			<div class="CoveoSearchbox" data-enable-omnibox="true" data-inline="false" data-enable-wildcards="true" data-enable-search-as-you-type="false" data-enable-query-suggest-addon="false" data-enable-query-syntax="true" data-enable-field-addon="true"></div>
+			<div class="CoveoFieldSuggestions" data-field="@jsuipagetopic" data-header-title="Suggested topics"></div>
 		</div>
 	</div>
 	<!-- Do not focus on Querybox when URL contains hash to ensure page scrolls down to corresponding anchor. -->
@@ -141,6 +141,8 @@
 							<a href="historycontroller.html">HistoryController</a>
 						</li>
 					</ul>
+					<!-- Has to remain here for the playground to work -->
+					<h1 style="visibility: collapse; font-size:0">Class HistoryController</h1>
 					<h1>Class HistoryController</h1>
 				</div>
 			</div>
@@ -279,8 +281,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/controllers/HistoryController.ts#L63">src/controllers/HistoryController.ts
-									:63</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/controllers/HistoryController.ts#L102">src/controllers/HistoryController.ts
+									:102</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -374,20 +376,20 @@
 					<a name="constructor" class="tsd-anchor"></a>
 					<h3>constructor</h3>
 					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">new <wbr>History<wbr>Controller<span class="tsd-signature-symbol">(</span>element<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">HTMLElement</span>, windoh<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Window</span>, model<span class="tsd-signature-symbol">: </span><a href="model.html" class="tsd-signature-type">Model</a>, queryController<span class="tsd-signature-symbol">: </span><a href="querycontroller.html" class="tsd-signature-type">QueryController</a>, hashUtils<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">HashUtils</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="historycontroller.html" class="tsd-signature-type">HistoryController</a></li>
+						<li class="tsd-signature tsd-kind-icon">new <wbr>History<wbr>Controller<span class="tsd-signature-symbol">(</span>element<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">HTMLElement</span>, environment<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">IHistoryControllerEnvironment</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="historycontroller.html" class="tsd-signature-type">HistoryController</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/controllers/HistoryController.ts#L26">src/controllers/HistoryController.ts
-									:26</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/controllers/HistoryController.ts#L41">src/controllers/HistoryController.ts
+									:41</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Create a new history controller</p>
+									<p>Create a new HistoryController</p>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -396,21 +398,11 @@
 									<h5>element: <span class="tsd-signature-type">HTMLElement</span></h5>
 								</li>
 								<li>
-									<h5>windoh: <span class="tsd-signature-type">Window</span></h5>
+									<h5>environment: <span class="tsd-signature-type">IHistoryControllerEnvironment</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<div class="lead">
-											<p>For mock / test purposes.</p>
 										</div>
 									</div>
-								</li>
-								<li>
-									<h5>model: <a href="model.html" class="tsd-signature-type">Model</a></h5>
-								</li>
-								<li>
-									<h5>queryController: <a href="querycontroller.html" class="tsd-signature-type">QueryController</a></h5>
-								</li>
-								<li>
-									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> hashUtils: <span class="tsd-signature-type">HashUtils</span><span class="tsd-signature-symbol"> =&nbsp;HashUtils</span></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="historycontroller.html" class="tsd-signature-type">HistoryController</a></h4>

@@ -55,8 +55,8 @@
 	</div>
 	<div class="bottomHeader">
 		<div id="searchBox">
-			<div class="CoveoSearchbox" data-enable-omnibox="true" data-inline="false" data-enable-wildcards="true" data-enable-search-as-you-type="false" data-enable-reveal-query-suggest-addon="false" data-enable-query-syntax="true" data-enable-field-addon="true"></div>
-			<div class="CoveoFieldSuggestions" data-field="@systitle" data-header-title="Suggested topics"></div>
+			<div class="CoveoSearchbox" data-enable-omnibox="true" data-inline="false" data-enable-wildcards="true" data-enable-search-as-you-type="false" data-enable-query-suggest-addon="false" data-enable-query-syntax="true" data-enable-field-addon="true"></div>
+			<div class="CoveoFieldSuggestions" data-field="@jsuipagetopic" data-header-title="Suggested topics"></div>
 		</div>
 	</div>
 	<!-- Do not focus on Querybox when URL contains hash to ensure page scrolls down to corresponding anchor. -->
@@ -167,6 +167,9 @@
 							<li class=" tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited tsd-is-static">
 								<a href="omniboxresultlist.html#id" class="tsd-kind-icon">ID</a>
 							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-static">
+								<a href="omniboxresultlist.html#elementstoignore" class="tsd-kind-icon">elements<wbr>ToIgnore</a>
+							</li>
 							<li class=" tsd-kind-constructor tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-overwrite">
 								<a href="omniboxresultlist.html#constructor" class="tsd-kind-icon">constructor</a>
 							</li>
@@ -192,7 +195,9 @@
 							<a href="omniboxresultlist.html">OmniboxResultList</a>
 						</li>
 					</ul>
-					<h1>Coveo component OmniboxResultList</h1>
+					<!-- Has to remain here for the playground to work -->
+					<h1 style="visibility: collapse; font-size:0">Coveo component OmniboxResultList</h1>
+					<h1>Coveo OmniboxResultList Component (CoveoOmniboxResultList)</h1>
 				</div>
 			</div>
 			<section class="tsd-panel tsd-comment">
@@ -247,7 +252,7 @@
 								<li class="tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited tsd-is-static"><a href="omniboxresultlist.html#get" class="tsd-kind-icon">get</a></li>
 							</ul>
 						</section>
-						<section class="tsd-index-section tsd-is-inherited">
+						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited"><a href="omniboxresultlist.html#bind" class="tsd-kind-icon">bind</a></li>
@@ -261,6 +266,7 @@
 								<li class="tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited"><a href="omniboxresultlist.html#searchinterface" class="tsd-kind-icon">search<wbr>Interface</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited"><a href="omniboxresultlist.html#usageanalytics" class="tsd-kind-icon">usage<wbr>Analytics</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited tsd-is-static"><a href="omniboxresultlist.html#id" class="tsd-kind-icon">ID</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-static"><a href="omniboxresultlist.html#elementstoignore" class="tsd-kind-icon">elements<wbr>ToIgnore</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
@@ -281,8 +287,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/OmniboxResultList/OmniboxResultList.ts#L64">src/ui/OmniboxResultList/OmniboxResultList.ts
-							:64</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/OmniboxResultList/OmniboxResultList.ts#L105">src/ui/OmniboxResultList/OmniboxResultList.ts
+							:105</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -303,8 +309,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/OmniboxResultList/OmniboxResultList.ts#L57">src/ui/OmniboxResultList/OmniboxResultList.ts
-							:57</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/OmniboxResultList/OmniboxResultList.ts#L98">src/ui/OmniboxResultList/OmniboxResultList.ts
+							:98</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -325,8 +331,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/OmniboxResultList/OmniboxResultList.ts#L109">src/ui/OmniboxResultList/OmniboxResultList.ts
-							:109</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/OmniboxResultList/OmniboxResultList.ts#L150">src/ui/OmniboxResultList/OmniboxResultList.ts
+							:150</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -397,8 +403,8 @@ $(<span class="hljs-string">"#search"</span>).coveo(<span class="hljs-string">"i
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/OmniboxResultList/OmniboxResultList.ts#L71">src/ui/OmniboxResultList/OmniboxResultList.ts
-							:71</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/OmniboxResultList/OmniboxResultList.ts#L112">src/ui/OmniboxResultList/OmniboxResultList.ts
+							:112</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -419,7 +425,7 @@ $(<span class="hljs-string">"#search"</span>).coveo(<span class="hljs-string">"i
 					<a name="buildresult" class="tsd-anchor"></a>
 					<h3>build<wbr>Result</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited">
-						<li class="tsd-signature tsd-kind-icon">build<wbr>Result<span class="tsd-signature-symbol">(</span>result<span class="tsd-signature-symbol">: </span><a href="../interfaces/iqueryresult.html" class="tsd-signature-type">IQueryResult</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">HTMLElement</span></li>
+						<li class="tsd-signature tsd-kind-icon">build<wbr>Result<span class="tsd-signature-symbol">(</span>result<span class="tsd-signature-symbol">: </span><a href="../interfaces/iqueryresult.html" class="tsd-signature-type">IQueryResult</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
@@ -427,8 +433,8 @@ $(<span class="hljs-string">"#search"</span>).coveo(<span class="hljs-string">"i
 								<p>Inherited from <a href="resultlist.html">ResultList</a>.<a href="resultlist.html#buildresult">buildResult</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L369">src/ui/ResultList/ResultList.ts
-									:369</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L430">src/ui/ResultList/ResultList.ts
+									:430</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -445,7 +451,7 @@ $(<span class="hljs-string">"#search"</span>).coveo(<span class="hljs-string">"i
 									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">HTMLElement</span></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -453,7 +459,7 @@ $(<span class="hljs-string">"#search"</span>).coveo(<span class="hljs-string">"i
 					<a name="buildresults" class="tsd-anchor"></a>
 					<h3>build<wbr>Results</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-overwrite">
-						<li class="tsd-signature tsd-kind-icon">build<wbr>Results<span class="tsd-signature-symbol">(</span>results<span class="tsd-signature-symbol">: </span><a href="../interfaces/iqueryresults.html" class="tsd-signature-type">IQueryResults</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">HTMLElement</span><span class="tsd-signature-symbol">[]</span></li>
+						<li class="tsd-signature tsd-kind-icon">build<wbr>Results<span class="tsd-signature-symbol">(</span>results<span class="tsd-signature-symbol">: </span><a href="../interfaces/iqueryresults.html" class="tsd-signature-type">IQueryResults</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
@@ -461,8 +467,8 @@ $(<span class="hljs-string">"#search"</span>).coveo(<span class="hljs-string">"i
 								<p>Overwrites <a href="resultlist.html">ResultList</a>.<a href="resultlist.html#buildresults">buildResults</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/OmniboxResultList/OmniboxResultList.ts#L135">src/ui/OmniboxResultList/OmniboxResultList.ts
-									:135</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/OmniboxResultList/OmniboxResultList.ts#L190">src/ui/OmniboxResultList/OmniboxResultList.ts
+									:190</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -479,7 +485,7 @@ $(<span class="hljs-string">"#search"</span>).coveo(<span class="hljs-string">"i
 									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">HTMLElement</span><span class="tsd-signature-symbol">[]</span></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -539,7 +545,7 @@ $(<span class="hljs-string">"#search"</span>).coveo(<span class="hljs-string">"i
 					<a name="displaymoreresults" class="tsd-anchor"></a>
 					<h3>display<wbr>More<wbr>Results</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited">
-						<li class="tsd-signature tsd-kind-icon">display<wbr>More<wbr>Results<span class="tsd-signature-symbol">(</span>count<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">display<wbr>More<wbr>Results<span class="tsd-signature-symbol">(</span>count<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">unknown</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
@@ -547,8 +553,8 @@ $(<span class="hljs-string">"#search"</span>).coveo(<span class="hljs-string">"i
 								<p>Inherited from <a href="resultlist.html">ResultList</a>.<a href="resultlist.html#displaymoreresults">displayMoreResults</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L397">src/ui/ResultList/ResultList.ts
-									:397</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L462">src/ui/ResultList/ResultList.ts
+									:462</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -557,7 +563,7 @@ $(<span class="hljs-string">"#search"</span>).coveo(<span class="hljs-string">"i
 								</div>
 								<p>Asserts that there are more results to display by verifying whether the last query has returned as many results as
 								requested.</p>
-								<p>Asserts that the ResultList is not currently fetching results.</p>
+								<p>Asserts that the <code>ResultList</code> is not currently fetching results.</p>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
@@ -568,7 +574,7 @@ $(<span class="hljs-string">"#search"</span>).coveo(<span class="hljs-string">"i
 									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">unknown</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -611,8 +617,8 @@ $(<span class="hljs-string">"#search"</span>).coveo(<span class="hljs-string">"i
 								<p>Inherited from <a href="resultlist.html">ResultList</a>.<a href="resultlist.html#getautoselectedfieldstoinclude">getAutoSelectedFieldsToInclude</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L295">src/ui/ResultList/ResultList.ts
-									:295</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L351">src/ui/ResultList/ResultList.ts
+									:351</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -636,8 +642,8 @@ $(<span class="hljs-string">"#search"</span>).coveo(<span class="hljs-string">"i
 								<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#getbindings">getBindings</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L124">src/ui/Base/Component.ts
-									:124</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L130">src/ui/Base/Component.ts
+									:130</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -661,8 +667,8 @@ $(<span class="hljs-string">"#search"</span>).coveo(<span class="hljs-string">"i
 								<p>Inherited from <a href="resultlist.html">ResultList</a>.<a href="resultlist.html#getdisplayedresults">getDisplayedResults</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L445">src/ui/ResultList/ResultList.ts
-									:445</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L518">src/ui/ResultList/ResultList.ts
+									:518</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -686,8 +692,8 @@ $(<span class="hljs-string">"#search"</span>).coveo(<span class="hljs-string">"i
 								<p>Inherited from <a href="resultlist.html">ResultList</a>.<a href="resultlist.html#getdisplayedresultselements">getDisplayedResultsElements</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L453">src/ui/ResultList/ResultList.ts
-									:453</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L526">src/ui/ResultList/ResultList.ts
+									:526</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -703,7 +709,7 @@ $(<span class="hljs-string">"#search"</span>).coveo(<span class="hljs-string">"i
 					<a name="renderresults" class="tsd-anchor"></a>
 					<h3>render<wbr>Results</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-overwrite">
-						<li class="tsd-signature tsd-kind-icon">render<wbr>Results<span class="tsd-signature-symbol">(</span>resultsElement<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">HTMLElement</span><span class="tsd-signature-symbol">[]</span>, append<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">render<wbr>Results<span class="tsd-signature-symbol">(</span>resultsElement<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">HTMLElement</span><span class="tsd-signature-symbol">[]</span>, append<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">unknown</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
@@ -711,8 +717,8 @@ $(<span class="hljs-string">"#search"</span>).coveo(<span class="hljs-string">"i
 								<p>Overwrites <a href="resultlist.html">ResultList</a>.<a href="resultlist.html#renderresults">renderResults</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/OmniboxResultList/OmniboxResultList.ts#L154">src/ui/OmniboxResultList/OmniboxResultList.ts
-									:154</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/OmniboxResultList/OmniboxResultList.ts#L218">src/ui/OmniboxResultList/OmniboxResultList.ts
+									:218</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -736,7 +742,7 @@ $(<span class="hljs-string">"#search"</span>).coveo(<span class="hljs-string">"i
 									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">unknown</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -752,8 +758,8 @@ $(<span class="hljs-string">"#search"</span>).coveo(<span class="hljs-string">"i
 								<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#get">get</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L193">src/ui/Base/Component.ts
-									:193</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L199">src/ui/Base/Component.ts
+									:199</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -788,7 +794,7 @@ $(<span class="hljs-string">"#search"</span>).coveo(<span class="hljs-string">"i
 					</ul>
 				</section>
 			</section>
-			<section class="tsd-panel-group tsd-member-group tsd-is-inherited">
+			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited">
 					<a name="bind" class="tsd-anchor"></a>
@@ -798,8 +804,8 @@ $(<span class="hljs-string">"#search"</span>).coveo(<span class="hljs-string">"i
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#bind">bind</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L62">src/ui/Base/Component.ts
-							:62</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L68">src/ui/Base/Component.ts
+							:68</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -823,8 +829,8 @@ $(<span class="hljs-string">"#search"</span>).coveo(<span class="hljs-string">"i
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#componentoptionsmodel">componentOptionsModel</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L90">src/ui/Base/Component.ts
-							:90</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L96">src/ui/Base/Component.ts
+							:96</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -841,8 +847,8 @@ $(<span class="hljs-string">"#search"</span>).coveo(<span class="hljs-string">"i
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#componentstatemodel">componentStateModel</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L74">src/ui/Base/Component.ts
-							:74</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L80">src/ui/Base/Component.ts
+							:80</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -902,8 +908,8 @@ $(<span class="hljs-string">"#search"</span>).coveo(<span class="hljs-string">"i
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#querycontroller">queryController</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L78">src/ui/Base/Component.ts
-							:78</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L84">src/ui/Base/Component.ts
+							:84</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -920,8 +926,8 @@ $(<span class="hljs-string">"#search"</span>).coveo(<span class="hljs-string">"i
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#querystatemodel">queryStateModel</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L70">src/ui/Base/Component.ts
-							:70</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L76">src/ui/Base/Component.ts
+							:76</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -938,8 +944,8 @@ $(<span class="hljs-string">"#search"</span>).coveo(<span class="hljs-string">"i
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#root">root</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L66">src/ui/Base/Component.ts
-							:66</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L72">src/ui/Base/Component.ts
+							:72</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -956,8 +962,8 @@ $(<span class="hljs-string">"#search"</span>).coveo(<span class="hljs-string">"i
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#searchinterface">searchInterface</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L82">src/ui/Base/Component.ts
-							:82</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L88">src/ui/Base/Component.ts
+							:88</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -974,8 +980,8 @@ $(<span class="hljs-string">"#search"</span>).coveo(<span class="hljs-string">"i
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#usageanalytics">usageAnalytics</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L86">src/ui/Base/Component.ts
-							:86</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L92">src/ui/Base/Component.ts
+							:92</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -1003,6 +1009,25 @@ $(<span class="hljs-string">"#search"</span>).coveo(<span class="hljs-string">"i
 						</div>
 					</div>
 				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-static">
+					<a name="elementstoignore" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> elements<wbr>ToIgnore</h3>
+					<div class="tsd-signature tsd-kind-icon">elements<wbr>ToIgnore<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/OmniboxResultList/OmniboxResultList.ts#L60">src/ui/OmniboxResultList/OmniboxResultList.ts
+							:60</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Specifies a list a css class that should be ignored when the end user click result in the omnibox</p>
+						</div>
+						<p>Any element that is specified here should normally be able to handle the standard click event.</p>
+						<p>Any element that does not match this css class and that is clicked will trigger a redirection by the OmniboxResultList.</p>
+					</div>
+				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Constructors</h2>
@@ -1018,8 +1043,8 @@ $(<span class="hljs-string">"#search"</span>).coveo(<span class="hljs-string">"i
 								<p>Overwrites <a href="resultlist.html">ResultList</a>.<a href="resultlist.html#constructor">constructor</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/OmniboxResultList/OmniboxResultList.ts#L114">src/ui/OmniboxResultList/OmniboxResultList.ts
-									:114</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/OmniboxResultList/OmniboxResultList.ts#L157">src/ui/OmniboxResultList/OmniboxResultList.ts
+									:157</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
