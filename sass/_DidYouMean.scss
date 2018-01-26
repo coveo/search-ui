@@ -1,6 +1,6 @@
 @import 'Variables';
 .CoveoDidYouMean {
-  padding: 10px 0 10px 0;
+  padding: 10px 0;
   text-align: left;
   a {
     @include clickable();
