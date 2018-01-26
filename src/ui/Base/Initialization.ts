@@ -705,7 +705,8 @@ export class LazyInitialization {
           chunkName
         }. You may need to configure the paths of the resources using Coveo.configureResourceRoot. Current path is ${
           __webpack_public_path__
-        }.`
+        }.`,
+        error
       );
       resolve(() => {});
     };
