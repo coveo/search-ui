@@ -132,7 +132,7 @@
   },
   "dependencies": {
     "coveo.analytics": "^0.7.0",
-    "coveomagicbox": "^1.0.32",
+    "coveomagicbox": "^1.0.36",
     "d3": "4.2.1",
     "d3-scale": "1.0.3",
     "es6-promise": "3.1.2",
