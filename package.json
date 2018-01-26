@@ -114,10 +114,10 @@
     "typescript": "^2.5.2",
     "walk": "^2.3.9",
     "webpack": "^3.10.0",
+    "webpack-bundle-analyzer": "^2.9.1",
     "webpack-dev-server": "^2.9.1",
     "xml2js": "^0.4.17",
-    "yargs": "^4.7.1",
-    "webpack-bundle-analyzer": "^2.9.1"
+    "yargs": "^4.7.1"
   },
   "dependencies": {
     "@material/select": "^0.3.3",
