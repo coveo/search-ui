@@ -3,11 +3,11 @@ import { AnalyticsEndpoint } from '../../src/rest/AnalyticsEndpoint';
 import { FakeResults } from '../Fake';
 import { analyticsActionCauseList } from '../../src/ui/Analytics/AnalyticsActionListMeta';
 import { SearchInterface } from '../../src/ui/SearchInterface/SearchInterface';
-import { Simulate } from '../Simulate';
 import { QueryEvents } from '../../src/events/QueryEvents';
 import { $$ } from '../../src/utils/Dom';
 import { QueryBuilder } from '../../src/ui/Base/QueryBuilder';
 import { Defer } from '../../src/MiscModules';
+import { AccessToken } from '../../src/rest/AccessToken';
 
 export function PendingSearchAsYouTypeSearchEventTest() {
   describe('PendingSearchAsYouTypeSearchEvent', () => {
@@ -20,7 +20,7 @@ export function PendingSearchAsYouTypeSearchEventTest() {
       root = document.createElement('div');
       searchInterface = new SearchInterface(root);
       endpoint = new AnalyticsEndpoint({
-        token: 'token',
+        accessToken: new AccessToken('token'),
         serviceUrl: 'serviceUrl',
         organization: 'organization'
       });

@@ -165,7 +165,8 @@
     "priority": 4,
     "fieldsToMatch": [
       {
-        "field": "sfcaseid"
+        "field": "objecttype",
+        "values": ["Case"]
       }
     ],
     "layout": "card"
@@ -174,7 +175,8 @@
     "priority": 2,
     "fieldsToMatch": [
       {
-        "field": "sfcaseid"
+        "field": "objecttype",
+        "values": ["Case"]
       }
     ],
     "layout": "list"
@@ -250,7 +252,7 @@
     "fieldsToMatch": [
       {
         "field": "filetype",
-        "values": ["YoutubeVideo", "YouTubePlaylistItem"]
+        "values": ["YoutubeVideo"]
       }
     ],
     "layout": "card"
@@ -260,27 +262,27 @@
     "fieldsToMatch": [
       {
         "field": "filetype",
-        "values": ["YouTubeVideo", "YouTubePlaylistItem"]
+        "values": ["YouTubeVideo"]
       }
     ],
     "layout": "list"
   },
-  "CardYouTubePlaylist": {
+  "CardYouTubePlaylistItem": {
     "priority": 2,
     "fieldsToMatch": [
       {
         "field": "filetype",
-        "values": ["YouTubePlaylist"]
+        "values": ["YouTubePlaylistItem"]
       }
     ],
     "layout": "card"
   },
-  "YouTubePlaylist": {
+  "YouTubePlaylistItem": {
     "priority": 1,
     "fieldsToMatch": [
       {
         "field": "filetype",
-        "values": ["YouTubePlaylist"]
+        "values": ["YouTubePlaylistItem"]
       }
     ],
     "layout": "list"

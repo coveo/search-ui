@@ -41,6 +41,8 @@ export interface IAnalyticsResultTaggingMeta {
  *
  * **Note:**
  * > The ResultTagging component is not supported with Coveo Cloud V2. To implement the ResultTagging component in Coveo Cloud V1, contact [Coveo Support](https://support.coveo.com/s/).
+ *
+ * @notSupportedIn salesforcefree
  */
 export class ResultTagging extends Component {
   static ID = 'ResultTagging';

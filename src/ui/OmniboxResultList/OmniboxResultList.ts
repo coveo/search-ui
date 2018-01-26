@@ -15,13 +15,15 @@ import { IQueryResults } from '../../rest/QueryResults';
 import * as _ from 'underscore';
 import { exportGlobally } from '../../GlobalExports';
 import OmniboxModuleDefintion = require('../Omnibox/Omnibox');
+import { InitializationEvents } from '../../EventsModules';
+import { logSearchBoxSubmitEvent } from '../Analytics/SharedAnalyticsCalls';
+import { Logger } from '../../misc/Logger';
 
 import 'styling/_OmniboxResultList';
-import { InitializationEvents } from '../../EventsModules';
 
 export interface IOmniboxResultListOptions extends IResultListOptions {
   omniboxZIndex?: number;
-  onSelect?: (result: IQueryResult, resultElement: HTMLElement, omniboxObject: IPopulateOmniboxEventArgs) => void;
+  onSelect?: (result: IQueryResult, resultElement: HTMLElement, omniboxObject: IPopulateOmniboxEventArgs, event?: Event) => void;
   headerTitle?: string;
   queryOverride?: string;
 }
@@ -48,6 +50,24 @@ export interface IOmniboxResultListOptions extends IResultListOptions {
 export class OmniboxResultList extends ResultList implements IComponentBindings {
   static ID = 'OmniboxResultList';
 
+  /**
+   * Specifies a list a css class that should be ignored when the end user click result in the omnibox
+   *
+   * Any element that is specified here should normally be able to handle the standard click event.
+   *
+   * Any element that does not match this css class and that is clicked will trigger a redirection by the OmniboxResultList.
+   */
+  static elementsToIgnore = [
+    'coveo-field-table-toggle-caption',
+    'CoveoFollowItem',
+    'CoveoPrintableUri',
+    'CoveoQuickview',
+    'CoveoResultLink',
+    'CoveoResultRating',
+    'CoveoResultTagging',
+    'CoveoYouTubeThumbnail'
+  ];
+
   static doExport = () => {
     exportGlobally({
       OmniboxResultList: OmniboxResultList
@@ -59,6 +79,17 @@ export class OmniboxResultList extends ResultList implements IComponentBindings 
    * @componentOptions
    */
   static options: IOmniboxResultListOptions = {
+    layout: ComponentOptions.buildStringOption({
+      defaultValue: 'list',
+      postProcessing: optionSetByUser => {
+        if (optionSetByUser != 'list') {
+          const logger = new Logger(OmniboxResultList);
+          logger.warn(`Cannot apply layout ${optionSetByUser} on the OmniboxResultListComponent`);
+          logger.warn(`OmniboxResultList does not support any layout other than "list"`);
+        }
+        return 'list';
+      }
+    }),
     /**
      * Specifies the z-index at which to render the ResultList inside the Omnibox.
      *
@@ -145,7 +176,7 @@ export class OmniboxResultList extends ResultList implements IComponentBindings 
         const omnibox = <OmniboxModuleDefintion.Omnibox>Component.get(omniboxElement);
         const magicBox = omnibox.magicBox;
         magicBox.onsubmit = () => {
-          this.usageAnalytics.logSearchEvent<IAnalyticsNoMeta>(analyticsActionCauseList.searchboxSubmit, {});
+          logSearchBoxSubmitEvent(this.usageAnalytics);
           this.queryController.executeQuery();
         };
       });
@@ -162,15 +193,16 @@ export class OmniboxResultList extends ResultList implements IComponentBindings 
       return this.buildResult(result).then((resultElement: HTMLElement) => {
         $$(resultElement).addClass('coveo-omnibox-selectable');
         resultElement['no-text-suggestion'] = true;
-        $$(resultElement).on(['keyboardSelect', 'click'], () => {
-          this.options.onSelect.call(this, result, resultElement, this.lastOmniboxRequest.omniboxObject);
-        });
+
+        $$(resultElement).on(['keyboardSelect', 'click'], (e: Event) => this.handleOmniboxElementSelection(e, resultElement, result));
+
         return this.autoCreateComponentsInsideResult(resultElement, result).initResult.then(() => {
           builtResults.push(resultElement);
           return resultElement;
         });
       });
     });
+
     return Promise.all(builtPromises).then(() => {
       return builtResults;
     });
@@ -184,10 +216,10 @@ export class OmniboxResultList extends ResultList implements IComponentBindings 
    * @param append
    */
   public renderResults(resultsElement: HTMLElement[], append = false) {
+    $$(this.options.resultContainer).empty();
     if (this.lastOmniboxRequest) {
-      const content = $$('div').el;
       if (this.options.headerTitle) {
-        content.appendChild(
+        this.options.resultContainer.appendChild(
           $$(
             'div',
             { className: 'coveo-omnibox-result-list-header' },
@@ -197,14 +229,14 @@ export class OmniboxResultList extends ResultList implements IComponentBindings 
         );
       }
       _.each(resultsElement, (resultElement: HTMLElement) => {
-        content.appendChild(resultElement);
+        this.options.resultContainer.appendChild(resultElement);
         this.triggerNewResultDisplayed(Component.getResult(resultElement), resultElement);
       });
       this.triggerNewResultsDisplayed();
-      if ($$(content).findAll('.coveo-omnibox-selectable').length == 0) {
+      if ($$(this.options.resultContainer).findAll('.coveo-omnibox-selectable').length == 0) {
         this.lastOmniboxRequest.resolve({ element: null, zIndex: this.options.omniboxZIndex });
       } else {
-        this.lastOmniboxRequest.resolve({ element: content, zIndex: this.options.omniboxZIndex });
+        this.lastOmniboxRequest.resolve({ element: this.options.resultContainer, zIndex: this.options.omniboxZIndex });
       }
       return Promise.resolve(null);
     }
@@ -236,7 +268,37 @@ export class OmniboxResultList extends ResultList implements IComponentBindings 
     }
   }
 
-  private onRowSelection(result: IQueryResult, resultElement: HTMLElement, omniboxObject: IPopulateOmniboxEventArgs) {
+  private handleOmniboxElementSelection(e: Event, resultElement: HTMLElement, result: IQueryResult) {
+    if (e && e.target && this.otherComponentShouldHandleSelection(e, resultElement)) {
+      return;
+    }
+
+    if (this.lastOmniboxRequest) {
+      this.options.onSelect.call(this, result, resultElement, this.lastOmniboxRequest.omniboxObject, e);
+    }
+  }
+
+  private otherComponentShouldHandleSelection(e: Event, resultElement: HTMLElement) {
+    // Other components can "trap" the click event, and instead trigger the "standard" component behaviour.
+    // So, for example, if someones clicks the ResultLink directly, we want the result link code to execute to redirect to the result, and not the OmniboxResultList selection code.
+    // Same for Quickview, YouTubeThumbnail, etc.
+    let current = e.target as HTMLElement;
+    let otherComponentWillHandleClick = false;
+
+    while (current && current != resultElement) {
+      otherComponentWillHandleClick =
+        _.find(OmniboxResultList.elementsToIgnore, elementToIgnore => $$(current).hasClass(elementToIgnore)) != null;
+
+      if (otherComponentWillHandleClick) {
+        break;
+      }
+
+      current = current.parentElement;
+    }
+    return otherComponentWillHandleClick;
+  }
+
+  private onRowSelection(result: IQueryResult, resultElement: HTMLElement, omniboxObject: IPopulateOmniboxEventArgs, e: Event) {
     this.usageAnalytics.logClickEvent(
       analyticsActionCauseList.documentOpen,
       { author: Utils.getFieldValue(result, 'author') },

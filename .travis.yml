@@ -1,4 +1,4 @@
-sudo: false
+sudo: required
 language: node_js
 notifications:
   email:
@@ -7,26 +7,25 @@ notifications:
 node_js:
 - 8.5.0
 cache:
+  yarn: true
   directories:
   - node_modules
-before_script:
-- npm install -g gulp
 before_install:
-- npm install -g npm@5.4.1
+  - npm install -g npm@5.5.1
 script:
 - source read.version.sh
 - echo $PACKAGE_JSON_VERSION
-- npm run injectTag
-- npm run build
-- npm run minimize
-- npm run test
-- npm run uploadCoverage
-- npm run testChunks
+- yarn run injectTag
+- yarn run build
+- if [ "x$TRAVIS_TAG" != "x" ]; then yarn run minimize ; fi
+- yarn run test
+- yarn run uploadCoverage
+- yarn run testChunks
 after_success:
-- npm run doc
+- yarn run doc
 - if [ "x$TRAVIS_TAG" != "x" ]; then bash ./deploy.doc.sh ; fi
-- npm run docsitemap
-- npm run zipForGitReleases
+- yarn run docsitemap
+- yarn run zipForGitReleases
 env:
   global:
   - COMMIT_AUTHOR_EMAIL: sandbox_JSUI@coveo.com
@@ -74,6 +73,19 @@ deploy:
       repo: coveo/search-ui
       all_branches: true
       condition: "! $TRAVIS_TAG =~ .*beta.*"
+  - provider: heroku
+    api_key: 
+      secure: lQifTnS+r1p5JN38G7xVehnBgL+I6JFAP/imBp3YZPDJDt7fEYmQ0aJ8ODPaH5lfP5ngfuFWNsbi+FMagUaAd3RALWIW0lqT8yKQmG1XQhXec4s4xyAOzZwExXOsHx097EEfEq3aTcnYHftPG+As90Y0zrEcKAne+k6wtGCBan9pYLlzI+QCoRuwBZC3jzc1OUvtrojqxl5M+1NDDF1iNUIpQmc8R9tsgmQaUflPEcMsWvAAwqtsssJZg8jotOeZn61kcQSf3OGyPlHWmhdDJvj3MhSrQtI5RrOyx5JEpo+0W+u/ciiIkThgHGPckEqx1+jCr/fM+Wjgu5k7WDI83u0yTE648n48YiEgcd6hnWG1D2VPvX2d2CasG4uuj+dF6mnx3q+HVwNi72kP2DTR4NOrebXuu00fr9t3qRh7wJ2x2XU7rjRwzCXr/bwfKTdx6a/M/IUlooAEqSebvPkKtGmPohPPuUjvQoJZacqjWWPiAcDLgIhJOdAdlyXPT++lAj/+rAoKH0qXosuNgH1V9wYc6UPE1W3/1sIBckAI4KHfP9f4XZa9lzlf9gTK1fTyro6G7euzbVfS2BwhJTPOLIpW2nVpcT0ogxx/PBUOIR9+iXFdyIe7hy2RZ5VrH3JbHbsgw15qmX+N6xBhZmbjcZVCZ3dlSzq65yVz0HDrAgM=
+    app: search-ui-qa-tests
+    skip_cleanup: true
+    strategy: git
+    on:
+      tags: true
+      repo: coveo/search-ui
+      all_branches: true
+      condition: "$TRAVIS_TAG =~ .*beta.*"
+after_deploy:
+- node invalidate.cloudfront.js
 branches:
   only:
   - master

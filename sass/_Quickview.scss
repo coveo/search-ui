@@ -1,5 +1,5 @@
-@import "Variables";
-@import "mixins/mediaQuery";
+@import 'Variables';
+@import 'mixins/mediaQuery';
 
 .CoveoQuickview {
   @include clickable();
@@ -10,9 +10,10 @@
   .coveo-list-layout &:hover .coveo-caption-for-icon {
     display: inline;
     top: 26px;
-    left: -30px;
+    transform: translateX(-50%);
+    left: 50%;
   }
-  
+
   .coveo-caption-for-icon {
     font-size: $font-size-smallest;
     display: none;
@@ -28,7 +29,7 @@
       border: solid;
       border-color: $color-greyish-dark-blue transparent;
       border-width: 0 6px 7px 6px;
-      content: "";
+      content: '';
       position: absolute;
       z-index: 99;
       top: -6px;
@@ -59,7 +60,6 @@
     margin-left: 3px;
     font-size: 11px;
   }
-
 }
 
 .CoveoQuickviewDocument {
@@ -167,7 +167,10 @@
 .coveo-modal-container.coveo-quick-view {
   .coveo-modal-body {
     height: 90%;
-    > div, .coveo-list-layout, .CoveoQuickviewDocument, .coveo-quick-view-full-height {
+    > div,
+    .coveo-list-layout,
+    .CoveoQuickviewDocument,
+    .coveo-quick-view-full-height {
       height: 100%;
       width: 100%;
     }
@@ -185,6 +188,7 @@
     iframe {
       height: 100%;
       width: 100%;
+      position: relative;
       @include defaultRoundedBorder();
       padding: 10px 0 0 10px;
     }
@@ -199,7 +203,7 @@
 }
 
 .coveo-computed-modal-box-content {
- > div {
-  height: 100%
- }
+  > div {
+    height: 100%;
+  }
 }

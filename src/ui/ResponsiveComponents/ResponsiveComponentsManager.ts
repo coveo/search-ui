@@ -3,8 +3,6 @@ import { InitializationEvents } from '../../events/InitializationEvents';
 import { Component } from '../Base/Component';
 import { SearchInterface } from '../SearchInterface/SearchInterface';
 import { Utils } from '../../utils/Utils';
-import { Tab } from '../Tab/Tab';
-import { ResponsiveFacets } from './ResponsiveFacets';
 import * as _ from 'underscore';
 import { QueryEvents } from '../../events/QueryEvents';
 import { Logger } from '../../misc/Logger';
@@ -34,7 +32,6 @@ interface IComponentInitialization {
 
 export class ResponsiveComponentsManager {
   public static DROPDOWN_HEADER_WRAPPER_CSS_CLASS = 'coveo-dropdown-header-wrapper';
-  public static RESIZE_DEBOUNCE_DELAY = 200;
 
   private static componentManagers: ResponsiveComponentsManager[] = [];
   private static remainingComponentInitializations: number = 0;
@@ -124,29 +121,25 @@ export class ResponsiveComponentsManager {
     });
     this.searchBoxElement = this.getSearchBoxElement();
     this.logger = new Logger(this);
-    this.resizeListener = _.debounce(
-      () => {
-        if (this.coveoRoot.width() != 0) {
-          this.addDropdownHeaderWrapperIfNeeded();
-          if (this.shouldSwitchToSmallMode()) {
-            this.coveoRoot.addClass('coveo-small-interface');
-          } else if (!this.shouldSwitchToSmallMode()) {
-            this.coveoRoot.removeClass('coveo-small-interface');
-          }
-          _.each(this.responsiveComponents, responsiveComponent => {
-            responsiveComponent.handleResizeEvent();
-          });
-        } else {
-          this.logger
-            .warn(`The width of the search interface is 0, cannot dispatch resize events to responsive components. This means that the tabs will not
+    this.resizeListener = () => {
+      if (this.coveoRoot.width() != 0) {
+        this.addDropdownHeaderWrapperIfNeeded();
+        if (this.shouldSwitchToSmallMode()) {
+          this.coveoRoot.addClass('coveo-small-interface');
+        } else if (!this.shouldSwitchToSmallMode()) {
+          this.coveoRoot.removeClass('coveo-small-interface');
+        }
+        _.each(this.responsiveComponents, responsiveComponent => {
+          responsiveComponent.handleResizeEvent();
+        });
+      } else {
+        this.logger
+          .warn(`The width of the search interface is 0, cannot dispatch resize events to responsive components. This means that the tabs will not
         automatically fit in the tab section. Also, the facet and recommendation component will not hide in a menu. Could the search
         interface display property be none? Could its visibility property be set to hidden? Also, if either of these scenarios happen during
         loading, it could be the cause of this issue.`);
-        }
-      },
-      ResponsiveComponentsManager.RESIZE_DEBOUNCE_DELAY,
-      true
-    );
+      }
+    };
     window.addEventListener('resize', this.resizeListener);
     this.bindNukeEvents();
   }
@@ -236,6 +229,12 @@ export class ResponsiveComponentsManager {
   private bindNukeEvents(): void {
     $$(this.coveoRoot).on(InitializationEvents.nuke, () => {
       window.removeEventListener('resize', this.resizeListener);
+
+      // If the interface gets nuked, we need to remove all reference to componentManagers stored which match the current search interface
+      ResponsiveComponentsManager.componentManagers = _.filter(
+        ResponsiveComponentsManager.componentManagers,
+        manager => manager.coveoRoot.el != this.coveoRoot.el
+      );
     });
   }
 }

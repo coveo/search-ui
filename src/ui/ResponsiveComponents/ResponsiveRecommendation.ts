@@ -24,10 +24,8 @@ export class ResponsiveRecommendation implements IResponsiveComponent {
   public recommendationRoot: Dom;
   private breakpoint: number;
   private dropdown: ResponsiveDropdown;
-  private logger: Logger;
   private facetSliders: any[];
   private facets: any[];
-  private dropdownContainer: Dom;
   private dropdownHeaderLabel: string;
 
   public static init(root: HTMLElement, component, options: IResponsiveComponentOptions) {
@@ -68,14 +66,12 @@ export class ResponsiveRecommendation implements IResponsiveComponent {
     this.recommendationRoot = this.getRecommendationRoot();
     this.dropdownHeaderLabel = options.dropdownHeaderLabel;
     this.breakpoint = this.defineResponsiveBreakpoint(options);
-    this.logger = new Logger(this);
     this.dropdown = this.buildDropdown(responsiveDropdown);
     this.facets = this.getFacets();
     this.facetSliders = this.getFacetSliders();
     this.registerOnOpenHandler();
     this.registerOnCloseHandler();
     this.registerQueryEvents();
-    this.dropdownContainer = $$('div', { className: ResponsiveRecommendation.DROPDOWN_CONTAINER_CSS_CLASS_NAME });
     this.handleResizeEvent();
   }
 

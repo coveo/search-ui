@@ -114,11 +114,12 @@ export class Checkbox implements IFormWidgetWithLabel, IFormWidgetSelectable {
     label.append(button.el);
     label.append(labelSpan.el);
 
-    button.on('click', () => this.toggle());
-
-    $$(this.checkbox).on('change', () => {
-      this.onChange(this);
+    button.on('click', (e: Event) => {
+      e.preventDefault();
+      this.toggle();
     });
+
+    $$(this.checkbox).on('change', () => this.onChange(this));
     this.element = label.el;
   }
 }

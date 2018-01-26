@@ -6,6 +6,17 @@ export interface IAnalyticsSearchEventsArgs {
   searchEvents: IAPISearchEvent[];
 }
 
+/**
+ * The `IAnalyticsDocumentViewEventArgs` interface describes the object that all
+ * [`documentViewEvent`]{@link AnalyticsEvents.documentViewEvent} handlers receive as an argument.
+ */
+export interface IAnalyticsDocumentViewEventArgs {
+  /**
+   * The data to send in the request body of the Usage Analytics Write REST API call that logs the `click` event.
+   */
+  documentViewEvent: IAPIDocumentViewEvent;
+}
+
 export interface IAnalyticsCustomEventArgs {
   customEvent: IAPICustomEvent;
 }
@@ -144,6 +155,16 @@ export interface IChangeableAnalyticsDataObject {
  */
 export class AnalyticsEvents {
   public static searchEvent = 'analyticsSearchEvent';
+
+  /**
+   * Triggered when a `click` analytics event is logged (e.g., when the end user clicks a
+   * [`ResultLink`]{@link ResultLink} or [`Quickview`]{@link Quickview} to open a query result item).
+   *
+   * All `documentViewEvent` event handlers receive an
+   * [`AnalyticsDocumentViewEventArgs`]{@link IAnalyticsDocumentViewEventArgs} object as an argument.
+   *
+   * @type {string} The string value is `documentViewEvent`.
+   */
   public static documentViewEvent = 'analyticsDocumentViewEvent';
   public static customEvent = 'analyticsCustomEvent';
 

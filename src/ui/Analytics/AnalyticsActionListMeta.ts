@@ -466,6 +466,10 @@ export var analyticsActionCauseList = {
     name: 'pagerResize',
     type: 'getMoreResults'
   },
+  positionSet: <IAnalyticsActionCause>{
+    name: 'positionSet',
+    type: 'distance'
+  },
   searchFromLink: <IAnalyticsActionCause>{
     name: 'searchFromLink',
     type: 'interface'

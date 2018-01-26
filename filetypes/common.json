@@ -1,7 +1,7 @@
 {
   "filetype": {
     "html": {
-      "icon": "link",
+      "icon": "salesforce-doctype-html",
       "captions": {
         "en": "HTML File",
         "fr": "Fichier HTML",
@@ -29,7 +29,7 @@
       }
     },
     "wiki": {
-      "icon": "link",
+      "icon": "salesforce-doctype-html",
       "captions": {
         "en": "Wiki",
         "fr": "Wiki",
@@ -57,7 +57,7 @@
       }
     },
     "webscraperwebpage": {
-      "icon": "link",
+      "icon": "salesforce-doctype-html",
       "captions": {
         "en": "Web Page",
         "fr": "Page Web",
@@ -369,7 +369,7 @@
       }
     },
     "svg": {
-      "icon": "images",
+      "icon": "salesforce-doctype-image",
       "captions": {
         "en": "SVG",
         "fr": "SVG",
@@ -454,7 +454,7 @@
       "shouldDisplayLabel": true
     },
     "doc": {
-      "icon": "salesforce-doctype-gdoc",
+      "icon": "salesforce-doctype-word",
       "captions": {
         "en": "Document",
         "fr": "Document",
@@ -483,7 +483,7 @@
       "shouldDisplayLabel": true
     },
     "docx": {
-      "icon": "file",
+      "icon": "salesforce-doctype-word",
       "captions": {
         "en": "Microsoft Word Document",
         "fr": "Document Microsoft Word",

@@ -3,6 +3,7 @@ import { JQueryUtils } from '../utils/JQueryutils';
 import { Assert } from '../misc/Assert';
 import { Logger } from '../misc/Logger';
 import * as _ from 'underscore';
+import { IStringMap } from '../rest/GenericParam';
 
 export interface IOffset {
   left: number;
@@ -360,7 +361,7 @@ export class Dom {
   /**
    * Toggle the class on the element.
    * @param className Classname to toggle
-   * @swtch If true, add the class regardless and if false, remove the class
+   * @param swtch If true, add the class regardless and if false, remove the class
    */
   public toggleClass(className: string, swtch?: boolean): void {
     if (Utils.isNullOrUndefined(swtch)) {
@@ -391,7 +392,13 @@ export class Dom {
    * @returns {any|Array}
    */
   public getClass(): string[] {
-    return this.el.className.match(Dom.CLASS_NAME_REGEX) || [];
+    // SVG elements got a className property, but it's not a string, it's an object
+    const className = this.getAttribute('class');
+    if (className && className.match) {
+      return className.match(Dom.CLASS_NAME_REGEX) || [];
+    } else {
+      return [];
+    }
   }
 
   /**
@@ -451,9 +458,10 @@ export class Dom {
         this.on(t, eventHandle);
       });
     } else {
+      const modifiedType = this.processEventTypeToBeJQueryCompatible(type);
       const jq = JQueryUtils.getJQuery();
       if (jq) {
-        jq(this.el).on(type, eventHandle);
+        jq(this.el).on(modifiedType, eventHandle);
       } else if (this.el.addEventListener) {
         const fn = (e: CustomEvent) => {
           eventHandle(e, e.detail);
@@ -462,9 +470,9 @@ export class Dom {
           eventHandle: eventHandle,
           fn: fn
         });
-        this.el.addEventListener(type, fn, false);
+        this.el.addEventListener(modifiedType, fn, false);
       } else if (this.el['on']) {
-        this.el['on']('on' + type, eventHandle);
+        this.el['on']('on' + modifiedType, eventHandle);
       }
     }
   }
@@ -483,11 +491,12 @@ export class Dom {
         this.one(t, eventHandle);
       });
     } else {
+      const modifiedType = this.processEventTypeToBeJQueryCompatible(type);
       const once = (e: Event, args: any) => {
-        this.off(type, once);
+        this.off(modifiedType, once);
         return eventHandle(e, args);
       };
-      this.on(type, once);
+      this.on(modifiedType, once);
     }
   }
 
@@ -504,9 +513,10 @@ export class Dom {
         this.off(t, eventHandle);
       });
     } else {
+      const modifiedType = this.processEventTypeToBeJQueryCompatible(type);
       const jq = JQueryUtils.getJQuery();
       if (jq) {
-        jq(this.el).off(type, eventHandle);
+        jq(this.el).off(modifiedType, eventHandle);
       } else if (this.el.removeEventListener) {
         let idx = 0;
         const found = _.find(Dom.handlers, (handlerObj: { eventHandle: Function; fn: EventListener }, i) => {
@@ -516,11 +526,11 @@ export class Dom {
           }
         });
         if (found) {
-          this.el.removeEventListener(type, found.fn, false);
+          this.el.removeEventListener(modifiedType, found.fn, false);
           Dom.handlers.splice(idx, 1);
         }
       } else if (this.el['off']) {
-        this.el['off']('on' + type, eventHandle);
+        this.el['off']('on' + modifiedType, eventHandle);
       }
     }
   }
@@ -531,11 +541,12 @@ export class Dom {
    * @param data
    */
   public trigger(type: string, data?: { [key: string]: any }): void {
+    const modifiedType = this.processEventTypeToBeJQueryCompatible(type);
     const jq = JQueryUtils.getJQuery();
     if (jq) {
-      jq(this.el).trigger(type, data);
+      jq(this.el).trigger(modifiedType, data);
     } else if (CustomEvent !== undefined) {
-      const event = new CustomEvent(type, { detail: data, bubbles: true });
+      const event = new CustomEvent(modifiedType, { detail: data, bubbles: true });
       this.el.dispatchEvent(event);
     } else {
       new Logger(this).error('CANNOT TRIGGER EVENT FOR OLDER BROWSER');
@@ -677,6 +688,16 @@ export class Dom {
     return $$(<HTMLElement>this.el.cloneNode(deep));
   }
 
+  private processEventTypeToBeJQueryCompatible(event: string): string {
+    // From https://api.jquery.com/on/
+    // [...]
+    // > In addition, the .trigger() method can trigger both standard browser event names and custom event names to call attached handlers. Event names should only contain alphanumerics, underscore, and colon characters.
+    if (event) {
+      return event.replace(/[^a-zA-Z0-9\:\_]/g, '');
+    }
+    return event;
+  }
+
   private traverseAncestorForClass(current = this.el, className: string): HTMLElement {
     if (className.indexOf('.') == 0) {
       className = className.substr(1);
@@ -759,7 +780,7 @@ export class Doc {
  */
 export function $$(dom: Dom): Dom;
 export function $$(html: HTMLElement): Dom;
-export function $$(type: string, props?: Object, ...children: Array<string | HTMLElement | Dom>): Dom;
+export function $$(type: string, props?: IStringMap<any>, ...children: Array<string | HTMLElement | Dom>): Dom;
 export function $$(...args: any[]): Dom {
   if (args.length === 1 && args[0] instanceof Dom) {
     return args[0];

@@ -1,5 +1,5 @@
-@import "Variables";
-@import "mixins/mediaQuery";
+@import 'Variables';
+@import 'mixins/mediaQuery';
 
 @include keyframes(placeholderColorChange) {
   0% {
@@ -42,12 +42,12 @@
   margin-bottom: 12px;
 }
 
-.coveo-placeholder-result, .coveo-result-frame.coveo-placeholder-result {
-    margin: 20px 0px 20px 20px;
+.coveo-placeholder-result,
+.coveo-result-frame.coveo-placeholder-result {
+  margin: 20px 0px 20px 20px;
 }
 
 .CoveoSearchInterface.coveo-during-initialization {
-  
   .coveo-result-frame.coveo-placeholder-result {
     margin: 20px 0px 20px 20px;
   }
@@ -73,10 +73,10 @@
   .coveo-recommendation-main-section {
     .coveo-recommendation-column {
       display: none;
-    }  
+    }
   }
-  
-  @include mediaSelector(800) {
+
+  @include mediumScreenWidth() {
     .coveo-results-header {
       height: 69px;
     }
@@ -93,18 +93,25 @@
   }
 }
 
-.coveo-placeholder-title, .coveo-placeholder-text, .coveo-placeholder-icon, .coveo-placeholder-icon-small {
+.coveo-placeholder-title,
+.coveo-placeholder-text,
+.coveo-placeholder-icon,
+.coveo-placeholder-icon-small {
   @include placeholderLoading();
 }
 
-.CoveoFacet.coveo-during-initialization, .CoveoFacetSlider.coveo-during-initialization, .CoveoFacetRange.coveo-during-initialization, .CoveoHierarchicalFacet.coveo-during-initialization {
+.CoveoFacet.coveo-during-initialization,
+.CoveoFacetSlider.coveo-during-initialization,
+.CoveoFacetRange.coveo-during-initialization,
+.CoveoHierarchicalFacet.coveo-during-initialization,
+.CoveoTimespanFacet.coveo-during-initialization {
   display: none;
 
   &.coveo-with-placeholder {
     @include defaultRoundedBorder();
     margin-bottom: 20px;
     display: block;
-    @include mediaSelector(480) {
+    @include smallScreenWidth {
       display: none;
     }
     > * {
@@ -159,7 +166,7 @@
       }
     }
     display: block;
-    
+
     .coveo-card-layout {
       .coveo-placeholder-title {
         margin-bottom: 0;
@@ -173,23 +180,20 @@
 }
 
 .CoveoRecommendation {
-  .CoveoResultList { 
+  .CoveoResultList {
     .coveo-placeholder-result {
       margin: 10px 0px 10px 20px;
     }
     .coveo-placeholder-title {
-        margin-bottom: 0;
+      margin-bottom: 0;
     }
   }
 }
 
-@include mediaSelector(480) {
+@include smallScreenWidth {
   .CoveoResultList.coveo-during-initialization.coveo-with-placeholder {
     .coveo-card-layout.coveo-placeholder-result {
       margin: 0 0 20px 0;
     }
   }
 }
-
-
-

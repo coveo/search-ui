@@ -1,17 +1,12 @@
 @import './mixins/breadcrumb';
 
-.coveo-facet-breadcrumb, .coveo-facet-slider-breadcrumb {
-
-  * {
-    vertical-align: top;
-  }
-}
-
-.coveo-facet-breadcrumb-title, .coveo-facet-slider-breadcrumb-title {
+.coveo-facet-breadcrumb-title,
+.coveo-facet-slider-breadcrumb-title {
   @include breadcrumbTitle();
 }
 
-.coveo-facet-breadcrumb-value, .coveo-facet-slider-breadcrumb-value {
+.coveo-facet-breadcrumb-value,
+.coveo-facet-slider-breadcrumb-value {
   font-size: $font-size-smaller;
   display: inline-block;
 
@@ -25,16 +20,19 @@
   }
 }
 
-.coveo-facet-breadcrumb-clear, .coveo-facet-slider-breadcrumb-clear {
+.coveo-facet-breadcrumb-clear,
+.coveo-facet-slider-breadcrumb-clear {
   display: inline-block;
   margin-left: 5px;
   position: relative;
-  top: 5px;
+  width: 12px;
+  height: 12px;
+  vertical-align: middle;
 }
 
-.coveo-facet-breadcrumb-clear-svg {
+.coveo-facet-breadcrumb-clear-svg,
+.coveo-facet-slider-clear-svg {
   position: absolute;
-  top: -1px;
 }
 
 .coveo-facet-breadcrumb-multi-icon {
@@ -58,7 +56,7 @@
     .coveo-facet-breadcrumb-multi-icon-svg {
       vertical-align: middle;
       width: 10px;
-      height: 10px
+      height: 10px;
     }
 
     .coveo-exclusion-svg {

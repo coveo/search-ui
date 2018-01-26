@@ -6,6 +6,8 @@ import { Template } from '../../src/ui/Templates/Template';
 import { StringUtils } from '../../src/utils/StringUtils';
 import { Simulate } from '../Simulate';
 import { Defer } from '../../src/misc/Defer';
+import { analyticsActionCauseList } from '../../src/ui/Analytics/AnalyticsActionListMeta';
+import { Utils } from '../../src/utils/Utils';
 
 export function QuickviewTest() {
   describe('Quickview', () => {
@@ -41,6 +43,23 @@ export function QuickviewTest() {
       Defer.defer(() => {
         quickview.close();
         expect(modalBox.close).toHaveBeenCalled();
+        done();
+      });
+    });
+
+    it('logs an analytics event on open', done => {
+      quickview.open();
+      Defer.defer(() => {
+        expect(quickview.usageAnalytics.logClickEvent).toHaveBeenCalledWith(
+          analyticsActionCauseList.documentQuickview,
+          {
+            author: Utils.getFieldValue(result, 'author'),
+            documentURL: result.clickUri,
+            documentTitle: result.title
+          },
+          result,
+          quickview.element
+        );
         done();
       });
     });

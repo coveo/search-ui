@@ -19,6 +19,8 @@
 </head>
 
 <body id="search" class='CoveoSearchInterface' data-enable-history="true" data-design="new">
+  <div class="CoveoFolding" data-field="@confparentitemid" data-parent-field="@confitemid" data-child-field="@confparentitemid"
+    data-expand-expression="@confitemtype==attachment" data-rearrange="date ascending" data-tab="Confluence" data-range="5"></div>
   <div class="coveo-tab-section">
     <a class="CoveoTab" data-id="Confluence" data-caption="Confluence" data-expression="@connectortype==Confluence2Crawler AND NOT @documenttype==Space"></a>
   </div>
@@ -32,6 +34,7 @@
       <div class="CoveoFacet" data-title="Space" data-field="@confspacename" data-tab="Confluence"></div>
       <div class="CoveoFacet" data-title="File Type" data-field="@filetype" data-tab="Confluence"></div>
       <div class="CoveoFacet" data-title="Author" data-field="@author" data-tab="Confluence"></div>
+      <div class="CoveoTimespanFacet" data-tab="Confluence"></div>
     </div>
     <div class="coveo-results-column">
       <div class="CoveoShareQuery"></div>
@@ -41,13 +44,14 @@
         <div class="CoveoResultsFiltersPreferences"></div>
       </div>
       <div class="CoveoBreadcrumb"></div>
+      <div class="CoveoDidYouMean"></div>
       <div class="coveo-results-header">
         <div class="coveo-summary-section">
           <span class="CoveoQuerySummary"></span>
           <span class="CoveoQueryDuration"></span>
         </div>
         <div class="coveo-result-layout-section">
-          <span class="CoveoResultLayout"></span>
+          <span class="CoveoResultLayoutSelector"></span>
         </div>
         <div class="coveo-sort-section">
           <span class="CoveoSort" data-sort-criteria="relevancy" data-caption="Relevance"></span>
@@ -55,7 +59,6 @@
         </div>
       </div>
       <div class="CoveoHiddenQuery"></div>
-      <div class="CoveoDidYouMean"></div>
       <div class="CoveoErrorReport"></div>
       <div class="CoveoResultList" data-layout="list" data-wait-animation="fade" data-auto-select-fields-to-include="true"></div>
       <div class="CoveoResultList" data-layout="card" data-wait-animation="fade" data-auto-select-fields-to-include="true"></div>

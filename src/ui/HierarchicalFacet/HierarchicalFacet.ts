@@ -61,6 +61,10 @@ interface IFlatHierarchy {
  * The `HierarchicalFacet` component inherits all of its options and behaviors from the [`Facet`]{@link Facet}
  * component, but is meant to be used to render hierarchical values.
  *
+ * **Note:**
+ * > The `HierarchicalFacet` component does not currently support the [`customSort`]{@link Facet.options.customSort}
+ * > `Facet` option.
+ *
  * You can use the `HierarchicalFacet` component to display files in a file system, or categories for items in a
  * hierarchy.
  *
@@ -88,6 +92,8 @@ interface IFlatHierarchy {
  * Since both items contain the `c` value, selecting this value in the facet would return both items.
  *
  * Selecting the `folder3` value in the facet would only return the `text2.txt` item.
+ *
+ * @notSupportedIn salesforcefree
  */
 export class HierarchicalFacet extends Facet implements IComponentBindings {
   static ID = 'HierarchicalFacet';
@@ -166,7 +172,6 @@ export class HierarchicalFacet extends Facet implements IComponentBindings {
   public shouldReshuffleFacetValuesClientSide = false;
 
   private valueHierarchy: { [facetValue: string]: IValueHierarchy };
-  private firstPlacement = true;
   private originalNumberOfValuesToShow: number;
 
   private correctLevels: IFlatHierarchy[] = [];
@@ -404,7 +409,6 @@ export class HierarchicalFacet extends Facet implements IComponentBindings {
    * @param criteria The new sort criteria.
    */
   public updateSort(criteria: string) {
-    this.firstPlacement = true;
     super.updateSort(criteria);
   }
 
@@ -891,15 +895,6 @@ export class HierarchicalFacet extends Facet implements IComponentBindings {
         return child.facetValue;
       })
     );
-  }
-
-  private selectParent(parent: IValueHierarchy) {
-    if (parent != undefined) {
-      this.selectValue(parent.facetValue);
-      if (parent.parent) {
-        this.selectParent(this.getValueHierarchy(parent.parent.facetValue.value));
-      }
-    }
   }
 
   private deselectParent(parent: IValueHierarchy) {

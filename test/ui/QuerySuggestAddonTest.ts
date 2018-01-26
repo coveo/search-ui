@@ -84,9 +84,9 @@ export function QuerySuggestAddonTest() {
       });
 
       it('with the context', () => {
-        queryController.getLastQuery = () => {
+        searchInterface.getQueryContext = () => {
           return <any>{
-            context: 'a context'
+            'context key': 'context value'
           };
         };
 
@@ -94,7 +94,7 @@ export function QuerySuggestAddonTest() {
         querySuggest.getSuggestion();
         expect(endpoint.getQuerySuggest).toHaveBeenCalledWith(
           jasmine.objectContaining({
-            context: 'a context'
+            context: { 'context key': 'context value' }
           })
         );
       });

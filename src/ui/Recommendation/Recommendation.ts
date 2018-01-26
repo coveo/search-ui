@@ -23,16 +23,15 @@ import { InitializationEvents } from '../../events/InitializationEvents';
 import { ComponentOptionsModel } from '../../models/ComponentOptionsModel';
 import * as _ from 'underscore';
 import { exportGlobally } from '../../GlobalExports';
-import HistoryQueryElement = CoveoAnalytics.HistoryQueryElement;
 import { DefaultRecommendationTemplate } from '../Templates/DefaultRecommendationTemplate';
 import { RecommendationQuery } from './RecommendationQuery';
 import { RecommendationAnalyticsClient } from '../Analytics/RecommendationAnalyticsClient';
-
 import 'styling/_Recommendation';
+import { IStringMap } from '../../rest/GenericParam';
 
 export interface IRecommendationOptions extends ISearchInterfaceOptions {
   mainSearchInterface?: HTMLElement;
-  userContext?: string;
+  userContext?: IStringMap<any>;
   id?: string;
   optionsToUse?: string[];
   sendActionsHistory?: boolean;
@@ -202,7 +201,6 @@ export class Recommendation extends SearchInterface implements IComponentBinding
   public historyStore: CoveoAnalytics.HistoryStore;
 
   private mainInterfaceQuery: IQuerySuccessEventArgs;
-  private displayStyle: string;
 
   /**
    * Creates a new Recommendation component.
@@ -255,17 +253,11 @@ export class Recommendation extends SearchInterface implements IComponentBinding
   }
 
   public hide(): void {
-    if (!this.displayStyle) {
-      this.displayStyle = this.element.style.display;
-    }
-    $$(this.element).hide();
+    $$(this.element).addClass('coveo-hidden');
   }
 
   public show(): void {
-    if (!this.displayStyle) {
-      this.displayStyle = this.element.style.display;
-    }
-    this.element.style.display = this.displayStyle;
+    $$(this.element).removeClass('coveo-hidden');
   }
 
   private ensureCurrentPageViewExistsInStore() {
@@ -325,6 +317,8 @@ export class Recommendation extends SearchInterface implements IComponentBinding
         closeModalBox: false
       });
     });
+
+    $$(this.options.mainSearchInterface).on(QueryEvents.queryError, () => this.hide());
   }
 
   private handleRecommendationBuildingQuery(data: IBuildingQueryEventArgs) {
@@ -368,18 +362,10 @@ export class Recommendation extends SearchInterface implements IComponentBinding
 
   private addRecommendationInfoInQuery(data: IBuildingQueryEventArgs) {
     if (!_.isEmpty(this.options.userContext)) {
-      data.queryBuilder.addContext(JSON.parse(this.options.userContext));
+      data.queryBuilder.addContext(this.options.userContext);
     }
 
     data.queryBuilder.recommendation = this.options.id;
-  }
-
-  private getHistory(): string {
-    let historyFromStore = this.historyStore.getHistory();
-    if (historyFromStore == null) {
-      historyFromStore = [];
-    }
-    return JSON.stringify(historyFromStore);
   }
 
   private preventEventPropagation() {

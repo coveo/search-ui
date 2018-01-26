@@ -1,37 +1,37 @@
-@import "bourbon/bourbon";
+@import 'bourbon/bourbon';
 
 // https://app.frontify.com/d/GthysWU8RY0Q/brand-guidelines#/basics/colors
 
 // Corporate Main Colors
 $coveo-orange: #f58020;
 $coveo-blue: #004990;
-$coveo-red: #DC291E;
+$coveo-red: #dc291e;
 
 // Complementary Colors Set 1
-$color-charcoal: #08080E;
+$color-charcoal: #08080e;
 $color-dark-grey: #373737;
-$color-grey: #4F5658;
-$color-greyish-dark-blue: #263E55;
-$color-greyish-teal-blue: #1D4F76;
-$color-blueish-gray: #67768B;
+$color-grey: #4f5658;
+$color-greyish-dark-blue: #263e55;
+$color-greyish-teal-blue: #1d4f76;
+$color-blueish-gray: #67768b;
 $color-vibrant-blue: #009ddc;
 
 // Complementary Colors Set 2
 $color-teal: #296896;
-$color-greyish-cyan: #CDDEE9;
-$color-greyish-light-cyan: #CDDEE9;
-$color-light-grey: #BCC3CA;
-$color-blueish-white-grey: #E6ECf0;
-$color-blueish-white: #F7F8F9;
-$color-light-greyish-blue: #9CB4CB;
+$color-greyish-cyan: #cddee9;
+$color-greyish-light-cyan: #cddee9;
+$color-light-grey: #bcc3ca;
+$color-blueish-white-grey: #e6ecf0;
+$color-blueish-white: #f7f8f9;
+$color-light-greyish-blue: #9cb4cb;
 
 // Coveo Partners Colors
-$color-coveo-for-sitecore: #DC291E;
-$color-coveo-for-salesforce: #009DDC;
+$color-coveo-for-sitecore: #dc291e;
+$color-coveo-for-salesforce: #009ddc;
 
 $color-green: #4caf50;
-$color-red: #CC0D00;
-$color-active-yellow: #ECAD00;
+$color-red: #cc0d00;
+$color-active-yellow: #ecad00;
 $color-transparent-background: rgba(28, 79, 118, 0.9);
 $color-white-transparent: rgba(255, 255, 255, 0.5);
 $color-light-grey-transparent: rgba($color-light-grey, 0.74);
@@ -48,12 +48,13 @@ $font-size-smallest: 12px;
 $default-border-radius: 2px;
 $small-border-radius: 1px;
 $default-border: 1px solid $color-light-grey;
+
 @mixin defaultRoundedBorder {
   border: $default-border;
   border-radius: $default-border-radius;
 }
 
-$standard-transition-timing-function: cubic-bezier(0.4, 0.0, 0.2, 1);
+$standard-transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 
 /*
 * @param direction vertical or horizontal
@@ -105,7 +106,8 @@ $standard-transition-timing-function: cubic-bezier(0.4, 0.0, 0.2, 1);
   }
   text-decoration: none;
   cursor: pointer;
-  &:hover, &:visited {
+  &:hover,
+  &:visited {
     text-decoration: none;
     @if $dark-background == false {
       color: $color-greyish-dark-blue;
@@ -113,7 +115,8 @@ $standard-transition-timing-function: cubic-bezier(0.4, 0.0, 0.2, 1);
       color: $color-coveo-for-salesforce;
     }
   }
-  &:hover, &:hover a {
+  &:hover,
+  &:hover a {
     text-decoration: underline;
   }
   &.coveo-selected * {
@@ -151,12 +154,10 @@ $standard-transition-timing-function: cubic-bezier(0.4, 0.0, 0.2, 1);
     @if $size == 'normal' {
       width: 12px;
       height: 12px;
-    }
-    @else if $size == 'small' {
+    } @else if $size == 'small' {
       width: 8px;
       height: 8px;
-    }
-    @else if $size == 'big' {
+    } @else if $size == 'big' {
       width: 15px;
       height: 15px;
     }

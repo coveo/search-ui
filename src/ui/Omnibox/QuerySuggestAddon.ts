@@ -78,7 +78,7 @@ export class QuerySuggestAddon {
     let searchHub = this.omnibox.getBindings().componentOptionsModel.get(ComponentOptionsModel.attributesEnum.searchHub);
     let pipeline = this.omnibox.getBindings().searchInterface.options.pipeline;
     let enableWordCompletion = this.omnibox.options.enableSearchAsYouType;
-    let context = this.omnibox.getBindings().queryController.getLastQuery().context;
+    let context = this.omnibox.getBindings().searchInterface.getQueryContext();
 
     if (locale) {
       payload.locale = locale;

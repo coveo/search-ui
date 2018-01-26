@@ -12,18 +12,19 @@ import { IQuerySuggestResponse } from '../../src/rest/QuerySuggest';
 import { ISubscription } from '../../src/rest/Subscription';
 import { AjaxError } from '../../src/rest/AjaxError';
 import _ = require('underscore');
+import { Utils } from '../../src/utils/Utils';
 
 export function SearchEndpointTest() {
-  describe('SearchEndpoint', function() {
-    beforeEach(function() {
+  describe('SearchEndpoint', () => {
+    beforeEach(() => {
       SearchEndpoint.endpoints = {};
     });
 
-    afterEach(function() {
+    afterEach(() => {
       SearchEndpoint.endpoints = {};
     });
 
-    it('allow to setup easily a search endpoint to point to a sample endpoint', function() {
+    it('allow to setup easily a search endpoint to point to a sample endpoint', () => {
       SearchEndpoint.configureSampleEndpoint();
       const ep: SearchEndpoint = SearchEndpoint.endpoints['default'];
       expect(ep).toBeDefined();
@@ -31,7 +32,7 @@ export function SearchEndpointTest() {
       expect(ep.options.restUri).toBeDefined();
     });
 
-    it('allow to setup easily a cloud endpoint', function() {
+    it('allow to setup easily a cloud endpoint', () => {
       SearchEndpoint.configureCloudEndpoint('foo', 'bar');
       const ep: SearchEndpoint = SearchEndpoint.endpoints['default'];
       expect(ep).toBeDefined();
@@ -39,17 +40,17 @@ export function SearchEndpointTest() {
       expect(ep.options.queryStringArguments['organizationId']).toBe('foo');
     });
 
-    it('allow to setup easily a on prem endpoint', function() {
+    it('allow to setup easily a on prem endpoint', () => {
       SearchEndpoint.configureOnPremiseEndpoint('foo.com');
       const ep: SearchEndpoint = SearchEndpoint.endpoints['default'];
       expect(ep).toBeDefined();
       expect(ep.options.restUri).toBe('foo.com');
     });
 
-    describe('with a workgroup argument', function() {
+    describe('with a workgroup argument', () => {
       let ep: SearchEndpoint;
 
-      beforeEach(function() {
+      beforeEach(() => {
         ep = new SearchEndpoint({
           restUri: 'foo/rest/search',
           queryStringArguments: {
@@ -58,20 +59,24 @@ export function SearchEndpointTest() {
         });
       });
 
-      afterEach(function() {
+      afterEach(() => {
         ep = null;
       });
 
-      it('should not map it to organizationId', function() {
+      it('should not map it to organizationId', () => {
         const fakeResult = FakeResults.createFakeResult();
-        expect(ep.getViewAsHtmlUri(fakeResult.uniqueId)).toBe(ep.getBaseUri() + '/html?workgroup=myOrgId&uniqueId=' + fakeResult.uniqueId);
+        const viewAsHtmlUri = ep.getViewAsHtmlUri(fakeResult.uniqueId);
+        expect(viewAsHtmlUri).toContain(ep.getBaseUri());
+        expect(viewAsHtmlUri).toContain('/html');
+        expect(viewAsHtmlUri).toContain('workgroup=myOrgId');
+        expect(viewAsHtmlUri).toContain(`uniqueId=${fakeResult.uniqueId}`);
       });
     });
 
-    describe('with an orgaganizationId argument', function() {
+    describe('with an orgaganizationId argument', () => {
       let ep: SearchEndpoint;
 
-      beforeEach(function() {
+      beforeEach(() => {
         ep = new SearchEndpoint({
           restUri: 'foo/rest/search',
           queryStringArguments: {
@@ -80,42 +85,46 @@ export function SearchEndpointTest() {
         });
       });
 
-      afterEach(function() {
+      afterEach(() => {
         ep = null;
       });
 
-      it('should not map it to workgroup', function() {
+      it('should not map it to workgroup', () => {
         const fakeResult = FakeResults.createFakeResult();
-        expect(ep.getViewAsHtmlUri(fakeResult.uniqueId)).toBe(
-          ep.getBaseUri() + '/html?organizationId=myOrgId&uniqueId=' + fakeResult.uniqueId
-        );
+        const viewAsHtmlUri = ep.getViewAsHtmlUri(fakeResult.uniqueId);
+        expect(viewAsHtmlUri).toContain(ep.getBaseUri());
+        expect(viewAsHtmlUri).toContain('/html');
+        expect(viewAsHtmlUri).toContain('organizationId=myOrgId');
+        expect(viewAsHtmlUri).toContain(`uniqueId=${fakeResult.uniqueId}`);
       });
     });
 
-    describe('with a search token argument', function() {
+    describe('with a search token argument', () => {
       let ep: SearchEndpoint;
 
-      beforeEach(function() {
+      beforeEach(() => {
         ep = new SearchEndpoint({
           restUri: 'foo/rest/search',
           accessToken: 'token'
         });
       });
 
-      afterEach(function() {
+      afterEach(() => {
         ep = null;
       });
 
       it('will add it in the query string', () => {
         const fakeResult = FakeResults.createFakeResult();
-        expect(ep.getViewAsHtmlUri(fakeResult.uniqueId)).toBe(ep.getBaseUri() + '/html?access_token=token&uniqueId=' + fakeResult.uniqueId);
+        const viewAsHtmlUri = ep.getViewAsHtmlUri(fakeResult.uniqueId);
+        expect(viewAsHtmlUri).toContain(ep.getBaseUri());
+        expect(viewAsHtmlUri).toContain('access_token=token');
       });
     });
 
-    describe('with a basic setup', function() {
+    describe('with a basic setup', () => {
       let ep: SearchEndpoint;
 
-      beforeEach(function() {
+      beforeEach(() => {
         ep = new SearchEndpoint({
           restUri: 'foo/rest/search',
           accessToken: 'token',
@@ -126,15 +135,15 @@ export function SearchEndpointTest() {
         });
       });
 
-      afterEach(function() {
+      afterEach(() => {
         ep = null;
       });
 
-      it('allow to get the base uri', function() {
+      it('allow to get the base uri', () => {
         expect(ep.getBaseUri()).toBe('foo/rest/search/v2');
       });
 
-      it('allow to get the auth provider uri', function() {
+      it('allow to get the auth provider uri', () => {
         expect(ep.getAuthenticationProviderUri('ad')).toContain(ep.getBaseUri() + '/login/ad?');
         expect(ep.getAuthenticationProviderUri('ad')).toContain('organizationId=myOrgId');
         expect(ep.getAuthenticationProviderUri('ad')).toContain('potatoe=mashed');
@@ -148,14 +157,14 @@ export function SearchEndpointTest() {
         expect(ep.getAuthenticationProviderUri('troll', undefined, 'msg')).toContain('message=msg');
       });
 
-      it('allow to check if endpoint is jsonp', function() {
+      it('allow to check if endpoint is jsonp', () => {
         expect(ep.isJsonp()).toBe(false);
       });
 
-      it('allow to get an export to excel link', function() {
+      it('allow to get an export to excel link', () => {
         const qbuilder = new QueryBuilder();
         qbuilder.expression.add('batman');
-        expect(ep.getExportToExcelLink(qbuilder.build(), 56)).toContain(ep.getBaseUri() + '/?');
+        expect(ep.getExportToExcelLink(qbuilder.build(), 56)).toContain(ep.getBaseUri() + '?');
         expect(ep.getExportToExcelLink(qbuilder.build(), 56)).toContain('organizationId=myOrgId');
         expect(ep.getExportToExcelLink(qbuilder.build(), 56)).toContain('potatoe=mashed');
         expect(ep.getExportToExcelLink(qbuilder.build(), 56)).toContain('q=batman');
@@ -163,7 +172,43 @@ export function SearchEndpointTest() {
         expect(ep.getExportToExcelLink(qbuilder.build(), 56)).toContain('format=xlsx');
       });
 
-      it('allow to get an uri to view as datastream', function() {
+      it('allow to get an export to excel link with a context', () => {
+        const qbuilder = new QueryBuilder();
+        qbuilder.addContext({
+          foo: 'bar'
+        });
+        expect(ep.getExportToExcelLink(qbuilder.build(), 56)).toContain('context[foo]=bar');
+      });
+
+      it('allow to get an export to excel link with context encoded', () => {
+        const qbuilder = new QueryBuilder();
+        qbuilder.addContext({
+          'foo bar': 'buzz bazz'
+        });
+        expect(ep.getExportToExcelLink(qbuilder.build(), 56)).toContain(
+          `context[foo${encodeURIComponent(' ')}bar]=buzz${encodeURIComponent(' ')}bazz`
+        );
+      });
+
+      it('allow to get an export to excel link with a context array', () => {
+        const qbuilder = new QueryBuilder();
+        qbuilder.addContext({
+          foo: ['buzz', 'bazz']
+        });
+        expect(ep.getExportToExcelLink(qbuilder.build(), 56)).toContain(`context[foo]=buzz${encodeURIComponent(',')}bazz`);
+      });
+
+      it('allow to get an export to excel link with a context with multiple values', () => {
+        const qbuilder = new QueryBuilder();
+        qbuilder.addContext({
+          foo: 'bar',
+          bazz: 'buzz'
+        });
+        expect(ep.getExportToExcelLink(qbuilder.build(), 56)).toContain('context[foo]=bar');
+        expect(ep.getExportToExcelLink(qbuilder.build(), 56)).toContain('context[bazz]=buzz');
+      });
+
+      it('allow to get an uri to view as datastream', () => {
         const fakeResult = FakeResults.createFakeResult();
         expect(ep.getViewAsDatastreamUri(fakeResult.uniqueId, '$Thumbnail')).toContain(ep.getBaseUri() + '/datastream?');
         expect(ep.getViewAsDatastreamUri(fakeResult.uniqueId, '$Thumbnail')).toContain('organizationId=myOrgId');
@@ -172,7 +217,7 @@ export function SearchEndpointTest() {
         expect(ep.getViewAsDatastreamUri(fakeResult.uniqueId, '$Thumbnail')).toContain('dataStream=' + encodeURIComponent('$Thumbnail'));
       });
 
-      it('allow to get an uri to view as html', function() {
+      it('allow to get an uri to view as html', () => {
         const fakeResult = FakeResults.createFakeResult();
         expect(ep.getViewAsHtmlUri(fakeResult.uniqueId)).toContain(ep.getBaseUri() + '/html?');
         expect(ep.getViewAsHtmlUri(fakeResult.uniqueId)).toContain('organizationId=myOrgId');
@@ -180,12 +225,12 @@ export function SearchEndpointTest() {
         expect(ep.getViewAsHtmlUri(fakeResult.uniqueId)).toContain('uniqueId=' + fakeResult.uniqueId);
       });
 
-      describe('will execute requests on the search api', function() {
-        beforeEach(function() {
+      describe('will execute requests on the search api', () => {
+        beforeEach(() => {
           jasmine.Ajax.install();
         });
 
-        afterEach(function() {
+        afterEach(() => {
           jasmine.Ajax.uninstall();
           ep.reset();
         });
@@ -196,7 +241,7 @@ export function SearchEndpointTest() {
           qbuilder.numberOfResults = 153;
           qbuilder.enableCollaborativeRating = true;
           const promiseSuccess = ep.search(qbuilder.build());
-          expect(jasmine.Ajax.requests.mostRecent().url).toContain(ep.getBaseUri() + '/?');
+          expect(jasmine.Ajax.requests.mostRecent().url).toContain(ep.getBaseUri() + '?');
           expect(jasmine.Ajax.requests.mostRecent().url).toContain('organizationId=myOrgId');
           expect(jasmine.Ajax.requests.mostRecent().url).toContain('potatoe=mashed');
           expect(jasmine.Ajax.requests.mostRecent().params).toContain('q=batman');
@@ -233,7 +278,7 @@ export function SearchEndpointTest() {
           const qbuilder = new QueryBuilder();
           const historyAsString = JSON.stringify([{ name: 'foo', value: 'bar' }]);
           qbuilder.actionsHistory = historyAsString;
-          const promiseSuccess = ep.search(qbuilder.build());
+          ep.search(qbuilder.build());
           expect(jasmine.Ajax.requests.mostRecent().params).toContain(`actionsHistory=${encodeURIComponent(historyAsString)}`);
         });
 
@@ -242,7 +287,7 @@ export function SearchEndpointTest() {
           const promiseSuccess = ep.getRawDataStream(fakeResult.uniqueId, '$Thumbnail');
           expect(jasmine.Ajax.requests.mostRecent().url).toContain(ep.getBaseUri() + '/datastream?');
           expect(jasmine.Ajax.requests.mostRecent().url).toContain('uniqueId=' + fakeResult.uniqueId);
-          expect(jasmine.Ajax.requests.mostRecent().url).toContain('dataStream=$Thumbnail');
+          expect(jasmine.Ajax.requests.mostRecent().url).toContain(`dataStream=${Utils.safeEncodeURIComponent('$Thumbnail')}`);
           expect(jasmine.Ajax.requests.mostRecent().url).toContain('organizationId=myOrgId');
           expect(jasmine.Ajax.requests.mostRecent().url).toContain('potatoe=mashed');
           expect(jasmine.Ajax.requests.mostRecent().method).toBe('GET');
@@ -447,6 +492,8 @@ export function SearchEndpointTest() {
           expect(jasmine.Ajax.requests.mostRecent().url).toContain('potatoe=mashed');
 
           expect(jasmine.Ajax.requests.mostRecent().method).toBe('POST');
+          expect(jasmine.Ajax.requests.mostRecent().params).toContain('rating=Best');
+          expect(jasmine.Ajax.requests.mostRecent().params).toContain('uniqueId=' + fakeResult.uniqueId);
 
           promiseSuccess
             .then((response: boolean) => {
@@ -680,7 +727,7 @@ export function SearchEndpointTest() {
           });
         });
 
-        it('request can be modified', function() {
+        it('request can be modified', () => {
           ep.setRequestModifier((requestInfo: IRequestInfo<any>) => {
             requestInfo.headers['Potato'] = 'OmgPotatoes';
             return requestInfo;

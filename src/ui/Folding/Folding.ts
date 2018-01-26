@@ -62,6 +62,7 @@ interface IResultNode {
  *
  * **Note:**
  * > There can only be one `Folding` component per [`Tab`]{@link Tab} component.
+ *
  */
 export class Folding extends Component {
   static ID = 'Folding';
@@ -87,12 +88,22 @@ export class Folding extends Component {
      * Specifies the field that determines whether a certain result is a child of another top result.
      *
      * Default value is `@foldingchild`.
+     * **Note:**
+     * > In the index, the values of the corresponding field must contain alphanumerical characters only. Using a
+     * > `childField` whose values contain non-indexable characters (such as underscores) will make folding fail.
+     *
+     * Default value is `@topparentid`.
      */
     child: ComponentOptions.buildFieldOption({ defaultValue: '@foldingchild' }),
     /**
      * Specifies the field that determines whether a certain result is a top result containing other child results.
      *
      * Default value is `@foldingparent`.
+     * **Note:**
+     * > In the index, the values of the corresponding field must contain alphanumerical characters only. Using a
+     * > `parentField` whose values contain non-indexable characters (such as underscores) will make folding fail.
+     *
+     * Default value is `@containsattachment`.
      */
     parent: ComponentOptions.buildFieldOption({ defaultValue: '@foldingparent' }),
 

@@ -18,7 +18,7 @@ export class TemplateHelpers {
   private static helpers: { [templateName: string]: ITemplateHelperFunction } = {};
   public static fieldHelpers: string[] = [];
 
-  static registerFieldHelper<T1>(name: string, helper: (value: string, options?: any) => string) {
+  static registerFieldHelper(name: string, helper: (value: string, options?: any) => string) {
     TemplateHelpers.fieldHelpers.push(name);
     TemplateHelpers.registerTemplateHelper(name, helper);
   }
@@ -44,7 +44,7 @@ export class TemplateHelpers {
   /**
    * Return a template helper function
    * @param name
-   * @returns {any}
+   * @returns {ITemplateHelperFunction}
    */
   static getHelper(name: string): ITemplateHelperFunction {
     return Utils.getCaseInsensitiveProperty(TemplateHelpers.helpers, name);
@@ -52,9 +52,8 @@ export class TemplateHelpers {
 
   /**
    * Get all available helpers
-   * @returns {{}}
    */
-  static getHelpers() {
+  static getHelpers(): { [templateName: string]: ITemplateHelperFunction } {
     return TemplateHelpers.helpers;
   }
 

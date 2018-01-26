@@ -1,5 +1,3 @@
-import { $$, Dom } from './Dom';
-
 declare const require: (svgPath: string) => string;
 
 export class SVGIcons {
@@ -30,14 +28,12 @@ export class SVGIcons {
     pagerRightArrow: require(`svg/pager-right-arrow`),
     pagerLeftArrow: require(`svg/pager-left-arrow`),
     replies: require(`svg/replies`),
-
+    video: require(`svg/video`),
     coveoLogo: require(`svg/coveo-logo`),
     coveoPoweredBy: require(`svg/coveo-powered-by-logo`),
-
     taggingOk: require(`svg/tagging-ok`),
     edit: require(`svg/edit`),
     star: require(`svg/star`),
-
     listLayout: require(`svg/list-layout`),
     cardLayout: require(`svg/card-layout`),
     tableLayout: require(`svg/table-layout`)

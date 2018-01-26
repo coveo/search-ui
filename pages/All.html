@@ -19,7 +19,6 @@
 </head>
 
 <body id="search" class='CoveoSearchInterface' data-enable-history="true">
-  <div class="CoveoFoldingForThread"></div>
   <div class="coveo-tab-section">
     <a class="CoveoTab" data-id="All" data-caption="All Content"></a>
   </div>
@@ -32,8 +31,7 @@
       <div class="CoveoFacet" data-title="Type" data-field="@objecttype" data-tab="All"></div>
       <div class="CoveoFacet" data-title="FileType" data-field="@filetype" data-tab="All"></div>
       <div class="CoveoFacet" data-title="Author" data-field="@author" data-tab="All"></div>
-      <div class="CoveoFacet" data-title="Year" data-field="@year" data-tab="All"></div>
-      <div class="CoveoFacet" data-title="Month" data-field="@month" data-tab="All"></div>
+      <div class="CoveoTimespanFacet" data-tab="All"></div>
     </div>
     <div class="coveo-results-column">
       <div class="CoveoShareQuery"></div>
@@ -42,15 +40,15 @@
         <div class="CoveoResultsPreferences"></div>
         <div class="CoveoResultsFiltersPreferences"></div>
       </div>
-      <div class="CoveoSearchAlerts"></div>
       <div class="CoveoBreadcrumb"></div>
+      <div class="CoveoDidYouMean"></div>
       <div class="coveo-results-header">
         <div class="coveo-summary-section">
           <span class="CoveoQuerySummary"></span>
           <span class="CoveoQueryDuration"></span>
         </div>
         <div class="coveo-result-layout-section">
-          <span class="CoveoResultLayout"></span>
+          <span class="CoveoResultLayoutSelector"></span>
         </div>
         <div class="coveo-sort-section">
           <span class="CoveoSort" data-sort-criteria="relevancy" data-caption="Relevance"></span>
@@ -58,7 +56,6 @@
         </div>
       </div>
       <div class="CoveoHiddenQuery"></div>
-      <div class="CoveoDidYouMean"></div>
       <div class="CoveoErrorReport"></div>
       <div class="CoveoResultList" data-layout="list" data-wait-animation="fade" data-auto-select-fields-to-include="true"></div>
       <div class="CoveoResultList" data-layout="card" data-wait-animation="fade" data-auto-select-fields-to-include="true"></div>

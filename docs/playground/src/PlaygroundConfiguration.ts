@@ -1,7 +1,8 @@
-import {IStringMap} from "../../../src/rest/GenericParam";
-import {$$, Dom} from "../../../src/utils/Dom";
-import {SearchEndpoint} from "../../../src/rest/SearchEndpoint";
-
+import { IStringMap } from '../../../src/rest/GenericParam';
+import { $$, Dom } from '../../../src/utils/Dom';
+import { SearchEndpoint } from '../../../src/rest/SearchEndpoint';
+import { SearchSectionBuilder } from './SearchSectionBuilder';
+import { SectionBuilder } from './SectionBuilder';
 export interface IComponentPlaygroundConfiguration {
   show: boolean; // should we show a preview for this component. False is assumed if not specified.
   isResultComponent?: boolean; // is this component supposed to be inserted inside a result template ? False is assumed if not specified
@@ -12,7 +13,23 @@ export interface IComponentPlaygroundConfiguration {
   toExecute?: Function;
 }
 
-declare var Coveo;
+declare const Coveo;
+
+const getComponentContainerElement = () => {
+  return $$(document.body).find('.component-container');
+};
+
+const getSearchInterfaceElement = () => {
+  return $$(getComponentContainerElement()).find('.CoveoSearchInterface');
+};
+
+const getSearchInterfaceInstance = () => {
+  return Coveo.get(getSearchInterfaceElement(), Coveo.SearchInterface);
+};
+
+const setMinHeightOnSearchInterface = (minHeight: string) => {
+  getSearchInterfaceElement().style.minHeight = minHeight;
+};
 
 export const PlaygroundConfiguration: IStringMap<IComponentPlaygroundConfiguration> = {
   SearchInterface: {
@@ -58,7 +75,28 @@ export const PlaygroundConfiguration: IStringMap<IComponentPlaygroundConfigurati
   },
   Tab: {
     show: true,
-    element: $$('div', {className: 'coveo-tab-section'}, `<div class="CoveoTab" data-caption="All content" data-id="All"></div><div class="CoveoTab" data-caption="YouTube videos" data-id="YouTube"></div><div class="CoveoTab" data-caption="Google Drive" data-id="GoogleDrive"></div><div class="CoveoTab" data-caption="Emails" data-id="Emails"></div><div class="CoveoTab" data-caption="Salesforce content" data-id="Salesforce"></div>`)
+    element: new SectionBuilder($$('div', { className: 'coveo-tab-section' }))
+      .withComponent('CoveoTab', {
+        'data-caption': 'All content',
+        'data-id': 'All'
+      })
+      .withComponent('CoveoTab', {
+        'data-caption': 'YouTube videos',
+        'data-id': 'YouTube'
+      })
+      .withComponent('CoveoTab', {
+        'data-caption': 'Google Drive',
+        'data-id': 'GoogleDrive'
+      })
+      .withComponent('CoveoTab', {
+        'data-caption': 'Emails',
+        'data-id': 'Emails'
+      })
+      .withComponent('CoveoTab', {
+        'data-caption': 'Salesforce content',
+        'data-id': 'Salesforce'
+      })
+      .build()
   },
   FacetSlider: {
     show: true,
@@ -83,24 +121,31 @@ export const PlaygroundConfiguration: IStringMap<IComponentPlaygroundConfigurati
   },
   Breadcrumb: {
     show: true,
-    element: $$('div', undefined, `<div class="CoveoBreadcrumb"></div><p>Interact with the facet to modify the breadcrumb</p><div class="CoveoFacet" data-field="@objecttype" data-title="Type"></div>`)
+    element: new SectionBuilder()
+      .withComponent('CoveoBreadcrumb')
+      .withDomElement($$('p', {}, 'Interact with the facet to modify the breadcrumb'))
+      .withComponent('CoveoFacet', {
+        'data-field': '@objecttype',
+        'data-title': 'Type'
+      })
+      .build()
   },
   DidYouMean: {
     show: true,
     basicExpression: 'testt',
-    element: $$('div', undefined, `<div class="CoveoDidYouMean"></div><div class='CoveoSearchbox'></div>`)
+    element: new SearchSectionBuilder().withComponent('CoveoDidYouMean').build()
   },
   ErrorReport: {
     show: true,
-    toExecute: ()=> {
+    toExecute: () => {
       Coveo['SearchEndpoint'].endpoints['default'].options.accessToken = 'invalid';
     }
   },
   ExportToExcel: {
     show: true,
-    element: $$('div', undefined, `<div class="CoveoSettings"></div><div class="CoveoSearchbox"></div><div class="CoveoExportToExcel"></div>`),
-    toExecute: ()=> {
-      $$(document.body).find('.CoveoSearchInterface').style.minHeight = '300px';
+    element: new SearchSectionBuilder().withComponent('CoveoExportToExcel').build(),
+    toExecute: () => {
+      setMinHeightOnSearchInterface('300px');
     }
   },
   FacetRange: {
@@ -108,26 +153,29 @@ export const PlaygroundConfiguration: IStringMap<IComponentPlaygroundConfigurati
     options: {
       field: '@size',
       title: 'Documents size',
-      ranges: [{
-        start: 0,
-        end: 100,
-        label: "0 - 100 KB",
-        endInclusive: false
-      }, {
-        start: 100,
-        end: 200,
-        label: "100 - 200 KB",
-        endInclusive: false
-      }, {
-        start: 200,
-        end: 300,
-        label: "200 - 300 KB",
-        endInclusive: false
-      },
+      ranges: [
+        {
+          start: 0,
+          end: 100,
+          label: '0 - 100 KB',
+          endInclusive: false
+        },
+        {
+          start: 100,
+          end: 200,
+          label: '100 - 200 KB',
+          endInclusive: false
+        },
+        {
+          start: 200,
+          end: 300,
+          label: '200 - 300 KB',
+          endInclusive: false
+        },
         {
           start: 300,
           end: 400,
-          label: "300 - 400 KB",
+          label: '300 - 400 KB',
           endInclusive: false
         }
       ],
@@ -136,12 +184,19 @@ export const PlaygroundConfiguration: IStringMap<IComponentPlaygroundConfigurati
   },
   FieldSuggestions: {
     options: {
-      field: '@author'
+      field: '@author',
+      headerTitle: 'Authors'
     },
     show: true,
-    element: $$('div', undefined, `<div class='preview-info'>Showing suggestions on the field <span class='preview-info-emphasis'>@author</span></div><div class="CoveoSearchbox" data-enable-omnibox="true"></div><div class="CoveoFieldSuggestions"></div>`),
-    toExecute: ()=> {
-      $$(document.body).find('.CoveoSearchInterface').style.minHeight = '500px';
+    element: new SearchSectionBuilder()
+      .withDomElement(
+        $$('div', { className: 'preview-info' }, "Showing suggestions on the field <span class='preview-info-emphasis'>@author</span>")
+      )
+      .withComponent('CoveoFieldSuggestions')
+      .withoutQuerySuggest()
+      .build(),
+    toExecute: () => {
+      setMinHeightOnSearchInterface('500px');
     }
   },
   FieldTable: {
@@ -150,17 +205,20 @@ export const PlaygroundConfiguration: IStringMap<IComponentPlaygroundConfigurati
       minimizedByDefault: false
     },
     isResultComponent: true,
-    advancedExpression: '@source=="Dropbox - coveodocumentationsamples@gmail.com"',
-    element: $$('div', undefined,
-        `<table class="CoveoFieldTable">
-            <tbody>
-             <tr data-field="@size" data-caption="Document size" data-helper="size">
-              </tr>
-              <tr data-field="@source" data-caption="Source">
-              </tr>
-              <tr data-field="@date" data-caption="Date" date-helper="dateTime"></tr>
-            </tbody>
-          </table>`)
+    advancedExpression: '@connectortype==DropboxCrawler AND @objecttype==File',
+    element: new SectionBuilder()
+      .withDomElement(
+        $$(
+          'table',
+          { className: 'CoveoFieldTable' },
+          `<tbody>
+    <tr data-field="@size" data-caption="Document size" data-helper="size"></tr>
+     <tr data-field="@source" data-caption="Source"></tr>
+     <tr data-field="@date" data-caption="Date" date-helper="dateTime"></tr>
+   </tbody>`
+        )
+      )
+      .build()
   },
   FieldValue: {
     show: true,
@@ -171,26 +229,22 @@ export const PlaygroundConfiguration: IStringMap<IComponentPlaygroundConfigurati
     isResultComponent: true,
     advancedExpression: '@date'
   },
-  FollowItem: {
-    show: true,
-    isResultComponent: true,
-    element: $$('div', undefined, `<div class="CoveoSearchAlerts"></div><a class="CoveoResultLink"></a><span class="CoveoFollowItem"></span>`),
-    basicExpression: 'technology',
-    toExecute: ()=> {
-      $$(document.body).find('.CoveoSearchInterface').style.minHeight = '300px';
-    }
-  },
   HiddenQuery: {
     show: true,
     options: {
       title: 'This is the filter title'
     },
-    toExecute: ()=> {
-      let searchInterface = $$(document.body).find('.component-container .CoveoSearchInterface');
-      Coveo.state(searchInterface, 'hd', 'This is the filter description');
-      Coveo.state(searchInterface, 'hq', '@uri');
+    toExecute: () => {
+      const searchInterface = getSearchInterfaceElement();
+      Coveo.$$(searchInterface).on('afterInitialization', () => {
+        Coveo.state(searchInterface, 'hd', 'This is the filter description');
+        Coveo.state(searchInterface, 'hq', '@uri');
+      });
     },
-    element: $$('div', undefined, `<div class="CoveoBreadcrumb"></div><div class="CoveoHiddenQuery"></div>`)
+    element: new SectionBuilder()
+      .withComponent('CoveoBreadcrumb')
+      .withComponent('CoveoHiddenQuery')
+      .build()
   },
   HierarchicalFacet: {
     show: true,
@@ -198,18 +252,21 @@ export const PlaygroundConfiguration: IStringMap<IComponentPlaygroundConfigurati
       field: '@hierarchicfield',
       title: 'Hierarchical Facet with random values'
     },
-    toExecute: ()=> {  // `@hierarchicfield` does not exist in the sample Coveo Cloud V2 organization.
-      $$(document.body).on('newQuery', function(e, args) {
+    toExecute: () => {
+      // `@hierarchicfield` does not exist in the sample Coveo Cloud V2 organization.
+      $$(getSearchInterfaceElement()).on('newQuery', function(e, args) {
         SearchEndpoint.configureSampleEndpoint();
-        Coveo.get($$(document.body).find(".CoveoHierarchicalFacet")).queryController.setEndpoint(SearchEndpoint.endpoints['default']);
+        Coveo.get($$(getSearchInterfaceElement()).find('.CoveoHierarchicalFacet')).queryController.setEndpoint(
+          SearchEndpoint.endpoints['default']
+        );
       });
     },
-    advancedExpression: "@hierarchicfield"
+    advancedExpression: '@hierarchicfield'
   },
   Logo: {
     show: true,
-    toExecute: ()=> {
-      $$(document.body).find('.CoveoSearchInterface').style.padding = '20px';
+    toExecute: () => {
+      getSearchInterfaceElement().style.padding = '20px';
     }
   },
   Matrix: {
@@ -223,29 +280,70 @@ export const PlaygroundConfiguration: IStringMap<IComponentPlaygroundConfigurati
       computedFieldFormat: 'n0 bytes',
       columnLabels: ['PDF', 'YouTube Videos', 'Excel documents']
     },
-    element: $$('div', undefined, `<div class="CoveoBreadcrumb"></div><div class="CoveoMatrix"></div>`)
+    element: new SectionBuilder().withComponent('CoveoMatrix').build()
   },
   OmniboxResultList: {
     show: true,
-    element: $$('div', undefined, `<div class="CoveoSearchbox" data-enable-omnibox="true" data-inline="true"></div><div class="CoveoOmniboxResultList"><script class="result-template" type="text/x-underscore"><div><a class='CoveoResultLink'></a></div></script></div>`),
+    element: new SearchSectionBuilder()
+      .withDomElement(
+        $$(
+          'div',
+          {
+            className: 'CoveoOmniboxResultList'
+          },
+          $$(
+            'script',
+            {
+              className: 'result-template',
+              type: 'text/underscore'
+            },
+            new SectionBuilder()
+              .withComponent(
+                'CoveoIcon',
+                {
+                  'data-small': 'true',
+                  'data-with-label': 'false',
+                  style: 'display:inline-block; vertical-align:middle; margin-right:5px;'
+                },
+                'span'
+              )
+              .withComponent('CoveoResultLink', {}, 'a')
+              .build()
+          )
+        )
+      )
+      .withoutQuerySuggest()
+      .build(),
     options: {
       headerTitle: ''
     },
-    toExecute: ()=> {
-      Coveo.get($$(document.body).find('.CoveoSearchInterface'), Coveo.SearchInterface).options.resultsPerPage = 5;
+    toExecute: () => {
+      setMinHeightOnSearchInterface('500px');
+      getSearchInterfaceInstance().options.resultsPerPage = 5;
     }
   },
   Pager: {
     show: true,
-    toExecute: ()=> {
-      $$(document.body).find('.CoveoSearchInterface').style.padding = '20px';
+    toExecute: () => {
+      getSearchInterfaceElement().style.padding = '20px';
     }
   },
   PreferencesPanel: {
     show: true,
-    element: $$('div', undefined, `<div class="CoveoSettings"></div><div class="CoveoSearchbox"></div><div class="CoveoPreferencesPanel"><div class="CoveoResultsPreferences"></div><div class="CoveoResultsFiltersPreferences"></div></div>`),
-    toExecute: ()=> {
-      $$(document.body).find('.CoveoSearchInterface').style.minHeight = '300px';
+    element: new SearchSectionBuilder()
+      .withDomElement(
+        $$(
+          'div',
+          {
+            className: 'CoveoPreferencesPanel'
+          },
+          $$('div', { className: 'CoveoResultsPreferences' }),
+          $$('div', { className: 'CoveoResultsFiltersPreferences' })
+        )
+      )
+      .build(),
+    toExecute: () => {
+      setMinHeightOnSearchInterface('300px');
     }
   },
   PrintableUri: {
@@ -278,61 +376,107 @@ export const PlaygroundConfiguration: IStringMap<IComponentPlaygroundConfigurati
   ResultRating: {
     show: true,
     isResultComponent: true,
-    toExecute: ()=> {
-      Coveo.get($$(document.body).find('.CoveoSearchInterface'), Coveo.SearchInterface).options.enableCollaborativeRating = true;
+    toExecute: () => {
+      getSearchInterfaceInstance().options.enableCollaborativeRating = true;
     }
   },
   ResultsFiltersPreferences: {
     show: true,
-    element: $$('div', undefined, `<div class="CoveoSettings"></div><div class="CoveoSearchbox"></div><div class="CoveoPreferencesPanel"><div class="CoveoResultsFiltersPreferences"></div></div>`),
-    toExecute: ()=> {
-      $$(document.body).find('.CoveoSearchInterface').style.minHeight = '300px';
+    element: new SearchSectionBuilder()
+      .withDomElement(
+        $$(
+          'div',
+          {
+            className: 'CoveoPreferencesPanel'
+          },
+          $$('div', { className: 'CoveoResultsFiltersPreferences' })
+        )
+      )
+      .build(),
+    toExecute: () => {
+      setMinHeightOnSearchInterface('300px');
     }
   },
   ResultsPerPage: {
     show: true,
-    toExecute: ()=> {
-      $$(document.body).find('.CoveoSearchInterface').style.padding = '20px';
+    toExecute: () => {
+      getSearchInterfaceElement().style.padding = '20px';
     }
   },
   ResultsPreferences: {
-    element: $$('div', undefined, `<div class="CoveoSettings"></div><div class="CoveoSearchbox"></div><div class="CoveoPreferencesPanel"><div class="CoveoResultsPreferences"></div></div>`),
+    element: new SearchSectionBuilder()
+      .withDomElement(
+        $$(
+          'div',
+          {
+            className: 'CoveoPreferencesPanel'
+          },
+          $$('div', { className: 'CoveoResultsPreferences' })
+        )
+      )
+      .build(),
     show: true,
-    toExecute: ()=> {
-      $$(document.body).find('.CoveoSearchInterface').style.minHeight = '300px';
-    }
-  },
-  SearchAlerts: {
-    show: true,
-    element: $$('div', undefined, `<div class="CoveoSettings"></div><div class="CoveoSearchbox"></div><div class="CoveoSearchAlerts"></div>`),
-    toExecute: ()=> {
-      $$(document.body).find('.CoveoSearchInterface').style.minHeight = '300px';
+    toExecute: () => {
+      setMinHeightOnSearchInterface('300px');
     }
   },
   Settings: {
     show: true,
-    element: $$('div', undefined, `<div class="CoveoSettings"></div><div class="CoveoSearchbox"></div><div class="CoveoPreferencesPanel"></div><div class="CoveoShareQuery"></div><div class="CoveoExportToExcel"></div>`),
-    toExecute: ()=> {
-      $$(document.body).find('.CoveoSearchInterface').style.minHeight = '300px';
+    element: new SearchSectionBuilder()
+      .withComponent('CoveoShareQuery')
+      .withComponent('CoveoExportToExcel')
+      .withComponent('CoveoAdvancedSearch')
+      .build(),
+    toExecute: () => {
+      setMinHeightOnSearchInterface('300px');
     }
   },
   ShareQuery: {
     show: true,
-    element: $$('div', undefined, `<div class="CoveoSettings"></div><div class="CoveoSearchbox"></div><div class="CoveoShareQuery"></div>`),
-    toExecute: ()=> {
-      $$(document.body).find('.CoveoSearchInterface').style.minHeight = '300px';
+    element: new SearchSectionBuilder().withComponent('CoveoShareQuery').build(),
+    toExecute: () => {
+      setMinHeightOnSearchInterface('300px');
     }
   },
   SimpleFilter: {
     show: true,
-    element: $$('div', undefined, `<div class="CoveoSimpleFilter" data-field="@filetype" data-title="File Type"></div><div class="CoveoResultList"></div>`),
+    options: {
+      field: '@filetype',
+      title: 'File Type'
+    },
+    element: new SectionBuilder()
+      .withComponent('CoveoSimpleFilter')
+      .withComponent('CoveoResultList')
+      .build()
   },
   Sort: {
     show: true,
-    element: $$('div', undefined, `<div class="coveo-sort-section"><span class="CoveoSort" data-sort-criteria="relevancy" data-caption="Relevance"></span><span class="CoveoSort" data-sort-criteria="date descending,date ascending" data-caption="Date"></span></div><div class="CoveoResultList"></div>`),
-    toExecute: ()=> {
-      $$(document.body).find('.preview-container .CoveoSearchInterface').style.padding = '20px';
-      $$(document.body).on('buildingQuery', function(e, args) {
+    element: new SectionBuilder()
+      .withDomElement(
+        new SectionBuilder($$('div', { className: 'coveo-sort-section' }))
+          .withComponent(
+            'CoveoSort',
+            {
+              'data-sort-criteria': 'relevancy',
+              'data-caption': 'relevancy'
+            },
+            'span'
+          )
+          .withComponent(
+            'CoveoSort',
+            {
+              'data-sort-criteria': 'date descending,date ascending',
+              'data-caption': 'Date'
+            },
+            'span'
+          )
+          .build()
+      )
+      .withComponent('CoveoResultList')
+      .build(),
+    toExecute: () => {
+      getSearchInterfaceElement().style.padding = '20px';
+      $$(getSearchInterfaceElement()).on('buildingQuery', function(e, args) {
         args.queryBuilder.numberOfResults = 3;
       });
     }
@@ -349,9 +493,12 @@ export const PlaygroundConfiguration: IStringMap<IComponentPlaygroundConfigurati
   },
   AdvancedSearch: {
     show: true,
-    element: $$('div', undefined, `<div class="coveo-search-section"><div class="CoveoSettings"></div><div class="CoveoSearchbox"></div></div><div class="CoveoAdvancedSearch"></div>`),
-    toExecute: ()=> {
-      $$(document.body).find('.CoveoSearchInterface').style.minHeight = '300px';
+    element: new SearchSectionBuilder().withComponent('CoveoAdvancedSearch').build(),
+    toExecute: () => {
+      setMinHeightOnSearchInterface('300px');
     }
+  },
+  TimespanFacet: {
+    show: true
   }
-}
+};

@@ -26,6 +26,14 @@ export function CoreHelperTest() {
       );
     });
 
+    it('shortenv2 should work correctly', () => {
+      expect(
+        TemplateHelpers.getHelper('shortenv2')('a string that is too long', {
+          length: 20
+        })
+      ).toEqual('a string that is...');
+    });
+
     it('javascriptencode should work correctly', () => {
       expect(TemplateHelpers.getHelper('javascriptencode')('"yo"')).toEqual('\\"yo\\"');
     });
@@ -34,8 +42,24 @@ export function CoreHelperTest() {
       expect(TemplateHelpers.getHelper('shortenPath')('/Users/Me/Desktop/MyFiles/MyDocument.txt', 20)).toEqual('/Users/Me/Desktop...');
     });
 
+    it('shortenPath v2 should work correctly', () => {
+      expect(
+        TemplateHelpers.getHelper('shortenPathv2')('/Users/Me/Desktop/MyFiles/MyDocument.txt', {
+          length: 20
+        })
+      ).toEqual('/Users/Me/Desktop...');
+    });
+
     it('shortenUri should work correctly', () => {
       expect(TemplateHelpers.getHelper('shortenUri')('http://mywebsite.com/mypage/myarticle', 20)).toEqual('http://mywebsite....');
+    });
+
+    it('shortenUriv2 should work correctly', () => {
+      expect(
+        TemplateHelpers.getHelper('shortenUriv2')('http://mywebsite.com/mypage/myarticle', {
+          length: 20
+        })
+      ).toEqual('http://mywebsite....');
     });
 
     it('highlight should work correctly', () => {
@@ -50,18 +74,57 @@ export function CoreHelperTest() {
       );
     });
 
+    it('highlightv2 should work correctly', () => {
+      let highlights: IHighlight[] = [
+        {
+          offset: 2,
+          length: 6
+        }
+      ];
+      expect(TemplateHelpers.getHelper('highlightv2')('a string that is too long', { highlights })).toEqual(
+        'a <span class="highlight">string</span> that is too long'
+      );
+    });
+
     it('highlightStreamText should work correctly', () => {
-      var toHighlight = 'a b';
-      var terms: { [originalTerm: string]: string[] } = { a: [], b: [] };
+      const toHighlight = 'a b';
+      const terms: { [originalTerm: string]: string[] } = { a: [], b: [] };
       expect(TemplateHelpers.getHelper('highlightStreamText')(toHighlight, terms, {})).toEqual(
         '<span class="coveo-highlight" data-highlight-group="1" data-highlight-group-term="a">a</span> <span class="coveo-highlight" data-highlight-group="2" data-highlight-group-term="b">b</span>'
       );
     });
 
+    it('highlightStreamTextv2 should work correctly', () => {
+      const toHighlight = 'a b';
+      const termsToHighlight: { [originalTerm: string]: string[] } = { a: [], b: [] };
+
+      expect(
+        TemplateHelpers.getHelper('highlightStreamTextv2')(toHighlight, {
+          termsToHighlight,
+          phrasesToHighlight: {}
+        })
+      ).toEqual(
+        '<span class="coveo-highlight" data-highlight-group="1" data-highlight-group-term="a">a</span> <span class="coveo-highlight" data-highlight-group="2" data-highlight-group-term="b">b</span>'
+      );
+    });
+
     it('highlightStreamHTML should work correctly', () => {
-      var toHighlight = '<div>a b</div>';
-      var terms: { [originalTerm: string]: string[] } = { a: [], b: [] };
+      const toHighlight = '<div>a b</div>';
+      const terms: { [originalTerm: string]: string[] } = { a: [], b: [] };
       expect(TemplateHelpers.getHelper('highlightStreamHTML')(toHighlight, terms, {})).toEqual(
+        '<div><span class="coveo-highlight" data-highlight-group="1" data-highlight-group-term="a">a</span> <span class="coveo-highlight" data-highlight-group="2" data-highlight-group-term="b">b</span></div>'
+      );
+    });
+
+    it('highlightStreamHTMLv2 should work correctly', () => {
+      const toHighlight = '<div>a b</div>';
+      const termsToHighlight: { [originalTerm: string]: string[] } = { a: [], b: [] };
+      expect(
+        TemplateHelpers.getHelper('highlightStreamHTMLv2')(toHighlight, {
+          termsToHighlight,
+          phrasesToHighlight: {}
+        })
+      ).toEqual(
         '<div><span class="coveo-highlight" data-highlight-group="1" data-highlight-group-term="a">a</span> <span class="coveo-highlight" data-highlight-group="2" data-highlight-group-term="b">b</span></div>'
       );
     });

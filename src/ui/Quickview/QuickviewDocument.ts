@@ -1,7 +1,6 @@
 import { Component } from '../Base/Component';
 import { IComponentBindings } from '../Base/ComponentBindings';
 import { ComponentOptions } from '../Base/ComponentOptions';
-import { analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
 import { IQueryResult } from '../../rest/QueryResult';
 import { Assert } from '../../misc/Assert';
 import { $$, Dom } from '../../utils/Dom';
@@ -92,7 +91,7 @@ export class QuickviewDocument extends Component {
   }
 
   public createDom() {
-    let container = $$('div');
+    const container = $$('div');
     container.addClass('coveo-quickview-document');
     this.element.appendChild(container.el);
 
@@ -105,40 +104,27 @@ export class QuickviewDocument extends Component {
 
   public open() {
     this.ensureDom();
-    let documentURL = $$(this.element).getAttribute('href');
-    if (documentURL == undefined || documentURL == '') {
-      documentURL = this.result.clickUri;
-    }
-    this.usageAnalytics.logClickEvent(
-      analyticsActionCauseList.documentQuickview,
-      {
-        author: Utils.getFieldValue(this.result, 'author'),
-        documentURL: documentURL,
-        documentTitle: this.result.title
-      },
-      this.result,
-      this.queryController.element
-    );
-    let beforeLoad = new Date().getTime();
-    let iframe = <HTMLIFrameElement>this.iframe.find('iframe');
-    iframe.src = 'about:blank';
-    let endpoint = this.queryController.getEndpoint();
 
-    let termsToHighlight = _.keys(this.result.termsToHighlight);
-    let dataToSendOnOpenQuickView: IOpenQuickviewEventArgs = {
+    const beforeLoad = new Date().getTime();
+    const iframe = <HTMLIFrameElement>this.iframe.find('iframe');
+    iframe.src = 'about:blank';
+    const endpoint = this.queryController.getEndpoint();
+
+    const termsToHighlight = _.keys(this.result.termsToHighlight);
+    const dataToSendOnOpenQuickView: IOpenQuickviewEventArgs = {
       termsToHighlight: termsToHighlight
     };
 
     $$(this.element).trigger(QuickviewEvents.openQuickview, dataToSendOnOpenQuickView);
     this.checkIfTermsToHighlightWereModified(dataToSendOnOpenQuickView.termsToHighlight);
 
-    let queryObject = _.extend({}, this.getBindings().queryController.getLastQuery());
+    const queryObject = _.extend({}, this.getBindings().queryController.getLastQuery());
 
     if (this.termsToHighlightWereModified) {
       this.handleTermsToHighlight(dataToSendOnOpenQuickView.termsToHighlight, queryObject);
     }
 
-    let callOptions: IViewAsHtmlOptions = {
+    const callOptions: IViewAsHtmlOptions = {
       queryObject: queryObject,
       requestedOutputSize: this.options.maximumDocumentSize
     };
@@ -180,11 +166,13 @@ export class QuickviewDocument extends Component {
 
       // Remove white border for new Quickview
       if (this.isNewQuickviewDocument(iframe.contentWindow)) {
-        let body = $$(this.element).closest('.coveo-body');
-        body.style.padding = '0';
-        let header = $$(this.element).find('.coveo-quickview-header');
-        header.style.paddingTop = '10';
-        header.style.paddingLeft = '10';
+        const body = $$(this.element).find('iframe');
+        if (body) {
+          body.style.padding = '0';
+          const header = $$(this.element).find('.coveo-quickview-header');
+          header.style.paddingTop = '10';
+          header.style.paddingLeft = '10';
+        }
       }
 
       if ($$(this.element).find('.coveo-quickview-header').innerHTML == '') {
@@ -203,7 +191,7 @@ export class QuickviewDocument extends Component {
     } else {
       errorString = 'OopsError';
     }
-    let errorMessage = `<html><body style='font-family: Arimo, \'Helvetica Neue\', Helvetica, Arial, sans-serif; -webkit-text-size-adjust: none;' >${l(
+    const errorMessage = `<html><body style='font-family: Arimo, \'Helvetica Neue\', Helvetica, Arial, sans-serif; -webkit-text-size-adjust: none;' >${l(
       errorString
     )} </body></html>`;
     this.writeToIFrame(iframe, errorMessage);
@@ -234,7 +222,7 @@ export class QuickviewDocument extends Component {
 
   private wrapPreElementsInIframe(iframe: HTMLIFrameElement) {
     try {
-      let style = document.createElement('style');
+      const style = document.createElement('style');
       style.type = 'text/css';
 
       // This CSS forces <pre> tags used in some emails to wrap by default
@@ -266,7 +254,7 @@ export class QuickviewDocument extends Component {
       } else {
         style.appendChild(document.createTextNode(cssText));
       }
-      let head = iframe.contentWindow.document.head;
+      const head = iframe.contentWindow.document.head;
       head.appendChild(style);
     } catch (e) {
       // if not allowed
@@ -274,8 +262,8 @@ export class QuickviewDocument extends Component {
   }
 
   private triggerQuickviewLoaded(beforeLoad: number) {
-    let afterLoad = new Date().getTime();
-    let eventArgs: IQuickviewLoadedEventArgs = { duration: afterLoad - beforeLoad };
+    const afterLoad = new Date().getTime();
+    const eventArgs: IQuickviewLoadedEventArgs = { duration: afterLoad - beforeLoad };
     $$(this.element).trigger(QuickviewEvents.quickviewLoaded, eventArgs);
   }
 
@@ -326,15 +314,15 @@ export class QuickviewDocument extends Component {
     $$(this.header).empty();
     this.keywordsState = [];
 
-    let words: { [index: string]: IWord } = {};
+    const words: { [index: string]: IWord } = {};
     let highlightsCount = 0;
     _.each($$(window.document.body).findAll('[id^="' + HIGHLIGHT_PREFIX + '"]'), (element: HTMLElement, index: number) => {
-      let idParts = this.getHighlightIdParts(element);
+      const idParts = this.getHighlightIdParts(element);
 
       if (idParts) {
-        let idIndexPart = idParts[1]; // X
-        let idOccurencePart = parseInt(idParts[2], 10); // Y
-        let idTermPart = parseInt(idParts[3], 10); // Z in <span id='CoveoHighlight:X.Y.Z'>a</span>
+        const idIndexPart = idParts[1]; // X
+        const idOccurencePart = parseInt(idParts[2], 10); // Y
+        const idTermPart = parseInt(idParts[3], 10); // Z in <span id='CoveoHighlight:X.Y.Z'>a</span>
 
         let word = words[idIndexPart];
 
@@ -373,11 +361,11 @@ export class QuickviewDocument extends Component {
           highlightsCount += 1;
         }
 
-        // See the method description to understand why this code let us
+        // See the method description to understand why this code const us
         // create the word 'bcdef' instead of 'bdef'.
         if (word && word.occurence == idOccurencePart && element.nodeName.toLowerCase() == 'span') {
-          let embeddedWordParts = this.getHightlightEmbeddedWordIdParts(element);
-          let embeddedWord = embeddedWordParts ? words[embeddedWordParts[1]] : null;
+          const embeddedWordParts = this.getHightlightEmbeddedWordIdParts(element);
+          const embeddedWord = embeddedWordParts ? words[embeddedWordParts[1]] : null;
 
           if (embeddedWord && embeddedWord.occurence == parseInt(embeddedWordParts[2], 10)) {
             embeddedWord.text += element.childNodes[0].nodeValue || ''; // only immediate text without children.
@@ -390,7 +378,7 @@ export class QuickviewDocument extends Component {
       this.header.el.style.minHeight = '0';
     }
 
-    let resolvedWords = [];
+    const resolvedWords = [];
 
     _.each(words, word => {
       // When possible, take care to find the original term from the query instead of the
@@ -398,7 +386,7 @@ export class QuickviewDocument extends Component {
       // Search API, but will fallback properly on older versions.
       word.text = this.resolveOriginalTermFromHighlight(word.text);
 
-      let state = {
+      const state = {
         word: word,
         color: word.element.style.backgroundColor,
         currentIndex: 0,
@@ -415,7 +403,7 @@ export class QuickviewDocument extends Component {
   }
 
   private getHighlightIdParts(element: HTMLElement): string[] {
-    let parts = element.id.substr(HIGHLIGHT_PREFIX.length + 1).match(/^([0-9]+)\.([0-9]+)\.([0-9]+)$/);
+    const parts = element.id.substr(HIGHLIGHT_PREFIX.length + 1).match(/^([0-9]+)\.([0-9]+)\.([0-9]+)$/);
 
     return parts && parts.length > 3 ? parts : null;
   }
@@ -430,7 +418,7 @@ export class QuickviewDocument extends Component {
   }
 
   private getHightlightEmbeddedWordIdParts(element: HTMLElement): string[] {
-    let embedded = element.getElementsByTagName('coveotaggedword')[0];
+    const embedded = element.getElementsByTagName('coveotaggedword')[0];
 
     return embedded ? this.getHighlightIdParts(<HTMLElement>embedded) : null;
   }
@@ -457,10 +445,10 @@ export class QuickviewDocument extends Component {
   }
 
   private buildWordButton(wordState: IWordState, window: Window): HTMLElement {
-    let wordHtml = $$('span');
+    const wordHtml = $$('span');
     wordHtml.addClass('coveo-term-for-quickview');
 
-    let quickviewName = $$('span');
+    const quickviewName = $$('span');
     quickviewName.addClass('coveo-term-for-quickview-name');
     quickviewName.setHtml(wordState.word.text);
     quickviewName.on('click', () => {
@@ -468,9 +456,9 @@ export class QuickviewDocument extends Component {
     });
     wordHtml.append(quickviewName.el);
 
-    let quickviewUpArrow = $$('span');
+    const quickviewUpArrow = $$('span');
     quickviewUpArrow.addClass('coveo-term-for-quickview-up-arrow');
-    let quickviewUpArrowIcon = $$('span');
+    const quickviewUpArrowIcon = $$('span');
     quickviewUpArrowIcon.addClass('coveo-term-for-quickview-up-arrow-icon');
     quickviewUpArrow.append(quickviewUpArrowIcon.el);
     quickviewUpArrow.on('click', () => {
@@ -478,9 +466,9 @@ export class QuickviewDocument extends Component {
     });
     wordHtml.append(quickviewUpArrow.el);
 
-    let quickviewDownArrow = $$('span');
+    const quickviewDownArrow = $$('span');
     quickviewDownArrow.addClass('coveo-term-for-quickview-down-arrow');
-    let quickviewDownArrowIcon = $$('span');
+    const quickviewDownArrowIcon = $$('span');
     quickviewDownArrowIcon.addClass('coveo-term-for-quickview-down-arrow-icon');
     quickviewDownArrow.append(quickviewDownArrowIcon.el);
     quickviewDownArrow.on('click', () => {
@@ -496,7 +484,7 @@ export class QuickviewDocument extends Component {
   }
 
   private navigate(state: IWordState, backward: boolean, window: Window) {
-    let fromIndex = state.currentIndex;
+    const fromIndex = state.currentIndex;
     let toIndex: number;
     if (!backward) {
       toIndex = fromIndex == state.word.count ? 1 : fromIndex + 1;
@@ -504,16 +492,16 @@ export class QuickviewDocument extends Component {
       toIndex = fromIndex <= 1 ? state.word.count : fromIndex - 1;
     }
 
-    let scroll = this.getScrollingElement(window);
+    const scroll = this.getScrollingElement(window);
 
     // Un-highlight any currently selected element
-    let current = $$(scroll).find('[id^="' + HIGHLIGHT_PREFIX + ':' + state.word.index + '.' + fromIndex + '"]');
+    const current = $$(scroll).find('[id^="' + HIGHLIGHT_PREFIX + ':' + state.word.index + '.' + fromIndex + '"]');
     if (current) {
       current.style.border = '';
     }
 
     // Find and highlight the new element.
-    let element = $$(window.document.body).find('[id^="' + HIGHLIGHT_PREFIX + ':' + state.word.index + '.' + toIndex + '"]');
+    const element = $$(window.document.body).find('[id^="' + HIGHLIGHT_PREFIX + ':' + state.word.index + '.' + toIndex + '"]');
     element.style.border = '1px dotted #333';
     state.currentIndex = toIndex;
 
@@ -521,7 +509,7 @@ export class QuickviewDocument extends Component {
     // But this prevents keyword navigation from working so we must force show it. This
     // is done by adding the 'opened' class to it (defined by pdf2html).
     if (this.isNewQuickviewDocument(window)) {
-      let pdf = $$(element).closest('.pc');
+      const pdf = $$(element).closest('.pc');
       $$(pdf).addClass('opened');
     }
 
@@ -532,15 +520,15 @@ export class QuickviewDocument extends Component {
   }
 
   private buildHeader(): Dom {
-    let header = $$('div');
+    const header = $$('div');
     header.addClass('coveo-quickview-header');
     return header;
   }
 
   private buildIFrame(): Dom {
-    let iFrame = $$('iframe');
+    const iFrame = $$('iframe');
     iFrame.setAttribute('sandbox', 'allow-same-origin allow-top-navigation');
-    let iFrameWrapper = $$('div');
+    const iFrameWrapper = $$('div');
     iFrameWrapper.addClass('coveo-iframeWrapper');
     iFrameWrapper.el.appendChild(iFrame.el);
     return iFrameWrapper;
@@ -564,12 +552,12 @@ export class QuickviewDocument extends Component {
   }
 
   private isNewQuickviewDocument(iframeWindow: Window): boolean {
-    let meta = $$(iframeWindow.document.head).find("meta[name='generator']");
+    const meta = $$(iframeWindow.document.head).find("meta[name='generator']");
     return meta && meta.getAttribute('content') == 'pdf2htmlEX';
   }
 
   private handleTermsToHighlight(termsToHighlight: Array<string>, queryObject: IQuery) {
-    for (let term in this.result.termsToHighlight) {
+    for (const term in this.result.termsToHighlight) {
       delete this.result.termsToHighlight[term];
     }
     let query = '';
@@ -588,15 +576,15 @@ export class QuickviewDocument extends Component {
   }
 
   private getSaturatedColor(color: string): string {
-    let r = parseInt(color.substring(4, 7));
-    let g = parseInt(color.substring(9, 12));
-    let b = parseInt(color.substring(14, 17));
-    let hsv = ColorUtils.rgbToHsv(r, g, b);
+    const r = parseInt(color.substring(4, 7));
+    const g = parseInt(color.substring(9, 12));
+    const b = parseInt(color.substring(14, 17));
+    const hsv = ColorUtils.rgbToHsv(r, g, b);
     hsv[1] *= 2;
     if (hsv[1] > 1) {
       hsv[1] = 1;
     }
-    let rgb = ColorUtils.hsvToRgb(hsv[0], hsv[1], hsv[2]);
+    const rgb = ColorUtils.hsvToRgb(hsv[0], hsv[1], hsv[2]);
     return 'rgb(' + rgb[0].toString() + ', ' + rgb[1].toString() + ', ' + rgb[2].toString() + ')';
   }
 }

@@ -3,7 +3,6 @@ import { ComponentOptions, ComponentOptionsType } from '../Base/ComponentOptions
 import { IResultsComponentBindings } from '../Base/ResultsComponentBindings';
 import { Template } from '../Templates/Template';
 import { DomUtils } from '../../utils/DomUtils';
-import { DeviceUtils } from '../../utils/DeviceUtils';
 import { IQueryResult } from '../../rest/QueryResult';
 import { $$, Dom } from '../../utils/Dom';
 import { DefaultQuickviewTemplate } from './DefaultQuickviewTemplate';
@@ -20,6 +19,9 @@ import { exportGlobally } from '../../GlobalExports';
 import 'styling/_Quickview';
 import { SVGIcons } from '../../utils/SVGIcons';
 import { SVGDom } from '../../utils/SVGDom';
+import { analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
+import { Utils } from '../../utils/Utils';
+import { TemplateComponentOptions } from '../Base/TemplateComponentOptions';
 
 export interface IQuickviewOptions {
   title?: string;
@@ -28,7 +30,6 @@ export interface IQuickviewOptions {
   enableLoadingAnimation?: boolean;
   loadingAnimation?: HTMLElement | Promise<HTMLElement>;
   alwaysShow?: boolean;
-  size?: string;
 }
 
 interface IQuickviewOpenerObject {
@@ -155,7 +156,7 @@ export class Quickview extends Component {
      *
      * If you do not specify a custom content template, the component uses its default template.
      */
-    contentTemplate: ComponentOptions.buildTemplateOption({
+    contentTemplate: TemplateComponentOptions.buildTemplateOption({
       selectorAttr: 'data-template-selector',
       idAttr: 'data-template-id'
     }),
@@ -185,28 +186,29 @@ export class Quickview extends Component {
      * By default, the loading animation is a Coveo animation, which you can customize with CSS (see
      * [Branding Customization - Customizing the Default Loading Animation](https://developers.coveo.com/x/EoGfAQ#BrandingCustomization-CustomizingtheDefaultLoadingAnimation).
      */
-    loadingAnimation: ComponentOptions.buildOption<
-      HTMLElement | Promise<HTMLElement>
-    >(ComponentOptionsType.NONE, (element: HTMLElement) => {
-      const loadingAnimationSelector = element.getAttribute('data-loading-animation-selector');
-      if (loadingAnimationSelector != null) {
-        const loadingAnimation = $$(document.documentElement).find(loadingAnimationSelector);
-        if (loadingAnimation != null) {
-          $$(loadingAnimation).detach();
-          return loadingAnimation;
+    loadingAnimation: ComponentOptions.buildOption<HTMLElement | Promise<HTMLElement>>(
+      ComponentOptionsType.NONE,
+      (element: HTMLElement) => {
+        const loadingAnimationSelector = element.getAttribute('data-loading-animation-selector');
+        if (loadingAnimationSelector != null) {
+          const loadingAnimation = $$(document.documentElement).find(loadingAnimationSelector);
+          if (loadingAnimation != null) {
+            $$(loadingAnimation).detach();
+            return loadingAnimation;
+          }
         }
-      }
-      const id = element.getAttribute('data-loading-animation-template-id');
-      if (id != null) {
-        const loadingAnimationTemplate = ComponentOptions.loadResultTemplateFromId(id);
-        if (loadingAnimationTemplate) {
-          return loadingAnimationTemplate.instantiateToElement(undefined, {
-            checkCondition: false
-          });
+        const id = element.getAttribute('data-loading-animation-template-id');
+        if (id != null) {
+          const loadingAnimationTemplate = TemplateComponentOptions.loadResultTemplateFromId(id);
+          if (loadingAnimationTemplate) {
+            return loadingAnimationTemplate.instantiateToElement(undefined, {
+              checkCondition: false
+            });
+          }
         }
+        return DomUtils.getBasicLoadingAnimation();
       }
-      return DomUtils.getBasicLoadingAnimation();
-    })
+    )
   };
 
   public static resultCurrentlyBeingRendered: IQueryResult = null;
@@ -267,6 +269,7 @@ export class Quickview extends Component {
       this.createModalBox(openerObject).then(() => {
         this.bindQuickviewEvents(openerObject);
         this.animateAndOpen();
+        this.logUsageAnalyticsEvent();
         this.queryStateModel.set(QueryStateModel.attributesEnum.quickview, this.getHashId());
         Quickview.resultCurrentlyBeingRendered = null;
       });
@@ -285,6 +288,19 @@ export class Quickview extends Component {
 
   public getHashId() {
     return this.result.queryUid + '.' + this.result.index + '.' + StringUtils.hashCode(this.result.uniqueId);
+  }
+
+  private logUsageAnalyticsEvent() {
+    this.usageAnalytics.logClickEvent(
+      analyticsActionCauseList.documentQuickview,
+      {
+        author: Utils.getFieldValue(this.result, 'author'),
+        documentURL: this.result.clickUri,
+        documentTitle: this.result.title
+      },
+      this.result,
+      this.element
+    );
   }
 
   private bindClick(result: IQueryResult) {
@@ -321,15 +337,17 @@ export class Quickview extends Component {
     computedModalBoxContent.addClass('coveo-computed-modal-box-content');
     return openerObject.content.then(builtContent => {
       computedModalBoxContent.append(builtContent.el);
+      const title = DomUtils.getQuickviewHeader(
+        this.result,
+        {
+          showDate: this.options.showDate,
+          title: this.options.title
+        },
+        this.bindings
+      ).el;
+
       this.modalbox = this.ModalBox.open(computedModalBoxContent.el, {
-        title: DomUtils.getQuickviewHeader(
-          this.result,
-          {
-            showDate: this.options.showDate,
-            title: this.options.title
-          },
-          this.bindings
-        ).el.outerHTML,
+        title,
         className: 'coveo-quick-view',
         validation: () => {
           this.closeQuickview();
@@ -338,7 +356,6 @@ export class Quickview extends Component {
         body: this.element.ownerDocument.body,
         sizeMod: 'big'
       });
-      this.setQuickviewSize();
       return computedModalBoxContent;
     });
   }
@@ -378,14 +395,6 @@ export class Quickview extends Component {
 
   private closeQuickview() {
     this.queryStateModel.set(QueryStateModel.attributesEnum.quickview, '');
-  }
-
-  private setQuickviewSize() {
-    const wrapper = $$($$(this.modalbox.modalBox).find('.coveo-modal-content'));
-    wrapper.el.style.width = this.options.size;
-    wrapper.el.style.height = this.options.size;
-    wrapper.el.style.maxWidth = this.options.size;
-    wrapper.el.style.maxHeight = this.options.size;
   }
 }
 Initialization.registerAutoCreateComponent(Quickview);

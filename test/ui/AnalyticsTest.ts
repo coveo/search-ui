@@ -10,6 +10,18 @@ import { MultiAnalyticsClient } from '../../src/ui/Analytics/MultiAnalyticsClien
 
 export function AnalyticsTest() {
   describe('Analytics', () => {
+    beforeEach(() => {
+      SearchEndpoint.endpoints['default'] = new SearchEndpoint({
+        accessToken: 'some token',
+        queryStringArguments: { workgroup: 'organization' },
+        restUri: 'some/uri'
+      });
+    });
+
+    afterEach(() => {
+      SearchEndpoint.endpoints['default'] = null;
+    });
+
     describe('with default setup', () => {
       let test: Mock.IBasicComponentSetup<Analytics>;
       beforeEach(() => {
@@ -21,7 +33,6 @@ export function AnalyticsTest() {
         test = Mock.basicComponentSetup<Analytics>(Analytics);
       });
       afterEach(() => {
-        SearchEndpoint.endpoints['default'] = null;
         test = null;
       });
 

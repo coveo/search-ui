@@ -7,7 +7,6 @@ import { IQueryResult } from '../../rest/QueryResult';
 import { $$, Dom } from '../../utils/Dom';
 import { StringUtils } from '../../utils/StringUtils';
 import { SearchEndpoint } from '../../rest/SearchEndpoint';
-import { Template } from '../Templates/Template';
 import { RootComponent } from '../Base/RootComponent';
 import { BaseComponent } from '../Base/BaseComponent';
 import { ModalBox as ModalBoxModule } from '../../ExternalModulesShim';
@@ -19,6 +18,8 @@ import { IComponentBindings } from '../Base/ComponentBindings';
 import { DebugHeader } from './DebugHeader';
 import { QueryEvents, IQuerySuccessEventArgs } from '../../events/QueryEvents';
 import { DebugForResult } from './DebugForResult';
+import { exportGlobally } from '../../GlobalExports';
+import { Template } from '../Templates/Template';
 
 export interface IDebugOptions {
   enableDebug?: boolean;
@@ -26,6 +27,13 @@ export interface IDebugOptions {
 
 export class Debug extends RootComponent {
   static ID = 'Debug';
+
+  static doExport = () => {
+    exportGlobally({
+      Debug: Debug
+    });
+  };
+
   static options: IDebugOptions = {
     enableDebug: ComponentOptions.buildBooleanOption({ defaultValue: false })
   };
@@ -186,6 +194,7 @@ export class Debug extends RootComponent {
       $$(body).empty();
       $$(body).append(build.body);
     }
+    this.updateSearchFunctionnality(build);
   }
 
   private openModalBox() {
@@ -216,11 +225,17 @@ export class Debug extends RootComponent {
         );
       } else {
         this.debugHeader.moveTo(title);
-        this.debugHeader.setNewInfoToDebug(this.stackDebug);
-        this.debugHeader.setSearch((value: string) => this.search(value, build.body));
+        this.updateSearchFunctionnality(build);
       }
     } else {
       this.logger.warn('No title found in modal box.');
+    }
+  }
+
+  private updateSearchFunctionnality(build: { body: HTMLElement; json: any }) {
+    if (this.debugHeader) {
+      this.debugHeader.setNewInfoToDebug(this.stackDebug);
+      this.debugHeader.setSearch((value: string) => this.search(value, build.body));
     }
   }
 

@@ -1,3 +1,4 @@
+/// <reference path="../../lib/jasmine/index.d.ts" />
 import * as Mock from '../MockEnvironment';
 import { SearchInterface } from '../../src/ui/SearchInterface/SearchInterface';
 import { Recommendation } from '../../src/ui/Recommendation/Recommendation';
@@ -16,13 +17,17 @@ export function RecommendationTest() {
     let userId = '123';
     let store: CoveoAnalytics.HistoryStore;
 
+    const isHidden = (test: Mock.IBasicComponentSetup<Recommendation>): boolean => {
+      return test.cmp.element.classList.contains('coveo-hidden');
+    };
+
     beforeEach(() => {
       mainSearchInterface = Mock.basicSearchInterfaceSetup(SearchInterface);
       options = {
         mainSearchInterface: mainSearchInterface.env.root,
-        userContext: JSON.stringify({
+        userContext: {
           user_id: userId
-        })
+        }
       };
       store = Simulate.analyticsStoreModule(actionsHistory);
       test = Mock.optionsSearchInterfaceSetup<Recommendation, IRecommendationOptions>(Recommendation, options);
@@ -125,19 +130,24 @@ export function RecommendationTest() {
         expect(simulation.queryBuilder.context).toBeUndefined();
       });
 
+      it('should hide if the main interface has a query error', () => {
+        Simulate.queryError(mainSearchInterface.env);
+        expect(isHidden(test)).toBeTruthy();
+      });
+
       describe('exposes option hideIfNoResults', () => {
         it('should hide the interface if there are no recommendations and the option is true', () => {
           options.hideIfNoResults = true;
           test = Mock.optionsSearchInterfaceSetup<Recommendation, IRecommendationOptions>(Recommendation, options);
           Simulate.query(test.env, { results: FakeResults.createFakeResults(0) });
-          expect(test.cmp.element.style.display).toEqual('none');
+          expect(isHidden(test)).toBeTruthy();
         });
 
         it('should not hide the interface if there are no recommendations and the option is false', () => {
           options.hideIfNoResults = false;
           test = Mock.optionsSearchInterfaceSetup<Recommendation, IRecommendationOptions>(Recommendation, options);
           Simulate.query(test.env, { results: FakeResults.createFakeResults(0) });
-          expect(test.cmp.element.style.display).toEqual('block');
+          expect(isHidden(test)).toBeFalsy();
         });
 
         it('should show the interface if there are recommendations', () => {
@@ -162,37 +172,37 @@ export function RecommendationTest() {
 
       it('should hide on query error', () => {
         Simulate.query(test.env, { error: { message: 'oh noes', type: 'bad', name: 'foobar' } });
-        expect(test.cmp.element.style.display).toEqual('none');
+        expect(isHidden(test)).toBeTruthy();
       });
 
       it('should not be stuck in hide mode if hide is called multiple time', () => {
         test.cmp.hide();
         test.cmp.hide();
-        expect(test.cmp.element.style.display).toEqual('none');
+        expect(isHidden(test)).toBeTruthy();
         test.cmp.show();
-        expect(test.cmp.element.style.display).toEqual('block');
+        expect(isHidden(test)).toBeFalsy();
       });
 
       it('should not be stuck in visible mode if show is called multiple time', () => {
         test.cmp.show();
         test.cmp.show();
-        expect(test.cmp.element.style.display).toEqual('block');
+        expect(isHidden(test)).toBeFalsy();
         test.cmp.hide();
-        expect(test.cmp.element.style.display).toEqual('none');
+        expect(isHidden(test)).toBeTruthy();
       });
 
       it('should hide on being disabled', () => {
         test.cmp.show();
-        expect(test.cmp.element.style.display).toEqual('block');
+        expect(isHidden(test)).toBeFalsy();
         test.cmp.disable();
-        expect(test.cmp.element.style.display).toEqual('none');
+        expect(isHidden(test)).toBeTruthy();
       });
 
       it('should show on being enabled', () => {
         test.cmp.hide();
-        expect(test.cmp.element.style.display).toEqual('none');
+        expect(isHidden(test)).toBeTruthy();
         test.cmp.enable();
-        expect(test.cmp.element.style.display).toEqual('block');
+        expect(isHidden(test)).toBeFalsy();
       });
     });
   });

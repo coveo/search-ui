@@ -1,12 +1,13 @@
 import { Dom } from '../../utils/Dom';
+import { ResponsiveDropdownContent } from './ResponsiveDropdown/ResponsiveDropdownContent';
 
 export class ResponsiveComponentsUtils {
   private static smallTabsClassName: string = 'coveo-small-tabs';
   private static smallFacetClassName: string = 'coveo-small-facets';
   private static smallRecommendationClassName: string = 'coveo-small-recommendation';
 
-  static shouldDrawFacetSlider(root: Dom): boolean {
-    return !this.isSmallFacetActivated(root) && !this.isSmallRecommendationActivated(root);
+  static shouldDrawFacetSlider(root: Dom, facetSliderElement: Dom): boolean {
+    return ResponsiveDropdownContent.isTargetInsideOpenedDropdown(facetSliderElement) || !this.isSmallFacetActivated(root);
   }
 
   static isSmallTabsActivated(root: Dom): boolean {

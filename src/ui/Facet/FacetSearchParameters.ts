@@ -17,6 +17,7 @@ export class FacetSearchParameters {
   public alwaysExclude: string[] = [];
   public sortCriteria = 'occurrences';
   public fetchMore = false;
+  public completeFacetWithStandardValues = true;
 
   constructor(public facet: Facet) {
     this.nbResults = facet.options.numberOfValuesInFacetSearch;
@@ -54,13 +55,20 @@ export class FacetSearchParameters {
       typedByUser = ['*' + this.valueToSearch + '*'];
     }
 
-    let completeFacetWithStandardValues = true;
+    let allowedValues;
+    if (this.valueToSearch) {
+      allowedValues = typedByUser.concat(this.alwaysInclude).concat(this.alwaysExclude);
+    } else {
+      allowedValues = _.compact(typedByUser.concat(this.alwaysInclude).concat(this.facet.options.allowedValues));
+    }
+
+    let completeFacetWithStandardValues = this.completeFacetWithStandardValues;
     if (this.facet.options.lookupField != null) {
       completeFacetWithStandardValues = false;
     }
 
     const request: IGroupByRequest = {
-      allowedValues: typedByUser.concat(this.alwaysInclude).concat(this.alwaysExclude),
+      allowedValues: allowedValues,
       maximumNumberOfValues: nbResults,
       completeFacetWithStandardValues: completeFacetWithStandardValues,
       field: <string>this.facet.options.field,
@@ -94,13 +102,12 @@ export class FacetSearchParameters {
     // but arrange for the basic expression to adapt itself with no syntax block
     if (lastQuery.enableQuerySyntax) {
       lastQuery.q = this.facet.facetQueryController.basicExpressionToUseForFacetSearch;
+    } else if (Utils.isNonEmptyString(this.facet.facetQueryController.basicExpressionToUseForFacetSearch)) {
+      lastQuery.q = `<@- ${this.facet.facetQueryController.basicExpressionToUseForFacetSearch} -@>`;
     } else {
-      if (this.facet.facetQueryController.basicExpressionToUseForFacetSearch == '@uri') {
-        lastQuery.q = '';
-      } else {
-        lastQuery.q = `<@- ${this.facet.facetQueryController.basicExpressionToUseForFacetSearch} -@>`;
-      }
+      lastQuery.q = '';
     }
+
     lastQuery.enableQuerySyntax = true;
     lastQuery.cq = this.facet.facetQueryController.constantExpressionToUseForFacetSearch;
     lastQuery.aq = this.facet.facetQueryController.advancedExpressionToUseForFacetSearch;

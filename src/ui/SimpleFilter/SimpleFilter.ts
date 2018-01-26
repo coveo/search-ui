@@ -10,7 +10,6 @@ import { l } from '../../strings/Strings';
 import { Assert } from '../../misc/Assert';
 import * as _ from 'underscore';
 import { Checkbox } from '../FormWidgets/Checkbox';
-import { IGroupByRequest } from '../../rest/GroupByRequest';
 import { BreadcrumbEvents, IPopulateBreadcrumbEventArgs } from '../../events/BreadcrumbEvents';
 import { SVGIcons } from '../../utils/SVGIcons';
 import { SVGDom } from '../../utils/SVGDom';
@@ -142,22 +141,14 @@ export class SimpleFilter extends Component {
     this.buildContent();
     $$(this.element).on('click', (e: Event) => this.handleClick(e));
     $$(this.element).setAttribute('tabindex', '0');
-
-    $$(this.element).on(
-      'keyup',
-      KeyboardUtils.keypressAction(KEYBOARD.ENTER, e => {
-        if (e.target == this.element) {
-          this.toggleContainer();
-        }
-      })
-    );
+    this.bindKeyboardEvents();
     this.bind.onRootElement(BreadcrumbEvents.populateBreadcrumb, (args: IPopulateBreadcrumbEventArgs) =>
       this.handlePopulateBreadcrumb(args)
     );
     this.bind.onRootElement(BreadcrumbEvents.clearBreadcrumb, () => this.handleClearBreadcrumb());
     this.bind.onRootElement(QueryEvents.buildingQuery, (args: IBuildingQueryEventArgs) => this.handleBuildingQuery(args));
     this.bind.onRootElement(QueryEvents.doneBuildingQuery, (args: IDoneBuildingQueryEventArgs) => this.handleDoneBuildingQuery(args));
-    this.bind.onRootElement(QueryEvents.querySuccess, (args: IQuerySuccessEventArgs) => this.handleGroupBy(args));
+    this.bind.onRootElement(QueryEvents.querySuccess, (args: IQuerySuccessEventArgs) => this.handleQuerySuccess(args));
   }
 
   /**
@@ -206,7 +197,8 @@ export class SimpleFilter extends Component {
    */
   public selectValue(value: string, triggerQuery = true) {
     _.each(this.checkboxes, (labeledCheckbox: ILabeledCheckbox) => {
-      if (labeledCheckbox.label == value) {
+      const translated = this.getValueCaption(labeledCheckbox.label);
+      if (labeledCheckbox.label == value || translated == value) {
         labeledCheckbox.checkbox.select(triggerQuery);
       }
     });
@@ -218,7 +210,8 @@ export class SimpleFilter extends Component {
    */
   public deselectValue(value: string) {
     _.each(this.checkboxes, (labeledCheckbox: ILabeledCheckbox) => {
-      if (labeledCheckbox.label == value) {
+      const translated = this.getValueCaption(labeledCheckbox.label);
+      if (labeledCheckbox.label == value || translated == value) {
         labeledCheckbox.checkbox.reset();
       }
     });
@@ -230,7 +223,8 @@ export class SimpleFilter extends Component {
    */
   public toggleValue(value: string) {
     _.each(this.checkboxes, (labeledCheckbox: ILabeledCheckbox) => {
-      if (labeledCheckbox.label == value) {
+      const translated = this.getValueCaption(labeledCheckbox.label);
+      if (labeledCheckbox.label == value || translated == value) {
         labeledCheckbox.checkbox.toggle();
       }
     });
@@ -278,7 +272,32 @@ export class SimpleFilter extends Component {
     return _.map(this.getSelectedLabeledCheckboxes(), (labeledCheckbox: ILabeledCheckbox) => labeledCheckbox.label);
   }
 
+  private bindKeyboardEvents() {
+    // On "ENTER" keypress, we can either toggle the container if that is the top level element (this.element)
+    // Or toggle a filter selection, using the text of the label.
+    $$(this.element).on(
+      'keyup',
+      KeyboardUtils.keypressAction(KEYBOARD.ENTER, e => {
+        if (e.target == this.element) {
+          this.toggleContainer();
+        } else {
+          this.toggleValue($$(e.target).text());
+        }
+      })
+    );
+
+    // When navigating with "TAB" keypress, close the container if we are navigating out of the top level element.
+    // Navigating "inside" the SimpleFilter (relatedTarget.parent) should not close the container, but will simply navigate to the next filter selection
+    $$(this.element).on('blur', (e: MouseEvent) => {
+      const relatedTarget = e.relatedTarget as HTMLElement;
+      if (!$$(relatedTarget).parent(Component.computeCssClassName(SimpleFilter))) {
+        this.closeContainer();
+      }
+    });
+  }
+
   private handleClick(e: Event) {
+    e.stopPropagation();
     if (e.target == this.element) {
       this.toggleContainer();
     }
@@ -427,7 +446,13 @@ export class SimpleFilter extends Component {
     this.resetSimpleFilter();
   }
 
-  private handleGroupBy(data: IQuerySuccessEventArgs) {
+  private handleQuerySuccess(data: IQuerySuccessEventArgs) {
+    if (data.results.results.length > 0) {
+      this.findOrCreateWrapper().removeClass('coveo-no-results');
+    } else {
+      this.findOrCreateWrapper().addClass('coveo-no-results');
+    }
+
     if (this.options.values == undefined) {
       this.groupByBuilder.groupBy(data);
       this.groupByRequestValues = this.groupByBuilder.getValuesFromGroupBy();
@@ -466,20 +491,12 @@ export class SimpleFilter extends Component {
     this.selectTitle.text(this.getValueCaption(title));
   }
 
-  private getDisplayedTitle(): string {
-    return this.selectTitle.text();
-  }
-
   private showBackdrop() {
     this.backdrop.addClass('coveo-dropdown-background-active');
   }
 
   private hideBackdrop() {
     this.backdrop.removeClass('coveo-dropdown-background-active');
-  }
-
-  private getBackdrop(): Dom {
-    return this.backdrop;
   }
 
   private findOrCreateWrapper() {

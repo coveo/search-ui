@@ -6,7 +6,7 @@ export class DefaultRecommendationTemplate extends Template {
     var template = `<div class="coveo-result-frame">
         <div class="coveo-result-row">
           <div class="coveo-result-cell" style="width:40px;text-align:center;vertical-align:middle;">
-            <span class="CoveoIcon" data-small="true">
+            <span class="CoveoIcon" data-small="true" data-with-label="false">
             </span>
           </div>
           <div class="coveo-result-cell" style="padding:0 0 3px 5px;vertical-align:middle">

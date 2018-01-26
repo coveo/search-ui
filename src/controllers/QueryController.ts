@@ -29,6 +29,7 @@ import { BaseComponent } from '../ui/Base/BaseComponent';
 import { ModalBox } from '../ExternalModulesShim';
 import { history } from 'coveo.analytics';
 import * as _ from 'underscore';
+import { UrlUtils } from '../utils/UrlUtils';
 
 /**
  * Possible options when performing a query with the query controller
@@ -495,7 +496,7 @@ export class QueryController extends RootComponent {
   }
 
   private getPipelineInUrl() {
-    return QueryUtils.getUrlParameter('pipeline');
+    return UrlUtils.getUrlParameter('pipeline');
   }
 
   private cancelAnyCurrentPendingQuery() {
