@@ -81,17 +81,17 @@ export class Folding extends Component {
      * Specifies the name of the field on which to do the folding.
      *
      * Specifying a value for this option is required for this component to work.
+     *
+     * Default value is `@foldingcollection`.
      */
     field: ComponentOptions.buildFieldOption({ defaultValue: '@foldingcollection' }),
     /**
      * Specifies the field that determines whether a certain result is a child of another top result.
-     *
-     * Default value is `@foldingchild`.
      * **Note:**
      * > In the index, the values of the corresponding field must contain alphanumerical characters only. Using a
-     * > `childField` whose values contain non-indexable characters (such as underscores) will make folding fail.
+     * > `child` whose values contain non-indexable characters (such as underscores) will make folding fail.
      *
-     * Default value is `@topparentid`.
+     * Default value is `@foldingchild`.
      */
     child: ComponentOptions.buildFieldOption({ defaultValue: '@foldingchild' }),
     /**
