@@ -16,9 +16,8 @@ import { exportGlobally } from '../../GlobalExports';
 
 export interface IFoldingOptions {
   field?: IFieldOption;
-
-  child: IFieldOption;
-  parent: IFieldOption;
+  child?: IFieldOption;
+  parent?: IFieldOption;
 
   childField?: IFieldOption;
   parentField?: IFieldOption;
@@ -83,7 +82,7 @@ export class Folding extends Component {
      *
      * Specifying a value for this option is required for this component to work.
      */
-    field: ComponentOptions.buildFieldOption({ required: true, defaultValue: '@foldingcollection' }),
+    field: ComponentOptions.buildFieldOption({ defaultValue: '@foldingcollection' }),
     /**
      * Specifies the field that determines whether a certain result is a child of another top result.
      *
@@ -98,17 +97,28 @@ export class Folding extends Component {
     /**
      * Specifies the field that determines whether a certain result is a top result containing other child results.
      *
-     * Default value is `@foldingparent`.
      * **Note:**
      * > In the index, the values of the corresponding field must contain alphanumerical characters only. Using a
-     * > `parentField` whose values contain non-indexable characters (such as underscores) will make folding fail.
+     * > `parent` whose values contain non-indexable characters (such as underscores) will make folding fail.
      *
-     * Default value is `@containsattachment`.
+     * Default value is `@foldingparent`.
      */
     parent: ComponentOptions.buildFieldOption({ defaultValue: '@foldingparent' }),
 
-    childField: ComponentOptions.buildFieldOption(),
-    parentField: ComponentOptions.buildFieldOption(),
+    /**
+     * This option has been deprecated and should be replaced with {@link Folding.options.parent}
+     * @deprecated
+     */
+    childField: ComponentOptions.buildFieldOption({
+      deprecated: 'This option has been deprecated and should be replaced with data-parent'
+    }),
+    /**
+     * This option has been deprecated and should be replaced with {@link Folding.options.child}
+     * @deprecated
+     */
+    parentField: ComponentOptions.buildFieldOption({
+      deprecated: 'This option has been deprecated and should be replaced with data-child'
+    }),
 
     /**
      * Specifies the maximum number of child results to fold.
@@ -353,7 +363,6 @@ export class Folding extends Component {
   private switcherooFoldingFields() {
     // Swap "old" childField and parentField and assign them to the "new" parent option
     // This needs to be done because connectors push the default data in *reverse* order compared to what the index expect.
-    // major facepalm ...
     if (this.options.childField != null) {
       this.logger.warn('Detecting usage of deprecated option "childField". Assigning it automatically to the "parent" option instead.');
       this.logger.warn('To remove this warning, rename the "childField" option (data-child-field) to "parent" (data-parent)');
