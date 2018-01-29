@@ -55,8 +55,8 @@
 	</div>
 	<div class="bottomHeader">
 		<div id="searchBox">
-			<div class="CoveoSearchbox" data-enable-omnibox="true" data-inline="false" data-enable-wildcards="true" data-enable-search-as-you-type="false" data-enable-query-suggest-addon="false" data-enable-query-syntax="true" data-enable-field-addon="true"></div>
-			<div class="CoveoFieldSuggestions" data-field="@jsuipagetopic" data-header-title="Suggested topics"></div>
+			<div class="CoveoSearchbox" data-enable-omnibox="true" data-inline="false" data-enable-wildcards="true" data-enable-search-as-you-type="false" data-enable-reveal-query-suggest-addon="false" data-enable-query-syntax="true" data-enable-field-addon="true"></div>
+			<div class="CoveoFieldSuggestions" data-field="@systitle" data-header-title="Suggested topics"></div>
 		</div>
 	</div>
 	<!-- Do not focus on Querybox when URL contains hash to ensure page scrolls down to corresponding anchor. -->
@@ -150,9 +150,6 @@
 								<a href="iqueryresults.html#results" class="tsd-kind-icon">results</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="iqueryresults.html#searchapiduration" class="tsd-kind-icon">searchAPIDuration</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
 								<a href="iqueryresults.html#searchuid" class="tsd-kind-icon">search<wbr>Uid</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
@@ -195,8 +192,6 @@
 							<a href="iqueryresults.html">IQueryResults</a>
 						</li>
 					</ul>
-					<!-- Has to remain here for the playground to work -->
-					<h1 style="visibility: collapse; font-size:0">Interface IQueryResults</h1>
 					<h1>Interface IQueryResults</h1>
 				</div>
 			</div>
@@ -235,7 +230,6 @@
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="iqueryresults.html#rankingexpressions" class="tsd-kind-icon">ranking<wbr>Expressions</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="iqueryresults.html#refinedkeywords" class="tsd-kind-icon">refined<wbr>Keywords</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="iqueryresults.html#results" class="tsd-kind-icon">results</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="iqueryresults.html#searchapiduration" class="tsd-kind-icon">searchAPIDuration</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="iqueryresults.html#searchuid" class="tsd-kind-icon">search<wbr>Uid</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="iqueryresults.html#splittestrun" class="tsd-kind-icon">split<wbr>Test<wbr>Run</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="iqueryresults.html#termstohighlight" class="tsd-kind-icon">terms<wbr>ToHighlight</a></li>
@@ -275,8 +269,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/QueryResults.ts#L105">src/rest/QueryResults.ts
-							:105</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/QueryResults.ts#L97">src/rest/QueryResults.ts
+							:97</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -310,21 +304,14 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/QueryResults.ts#L93">src/rest/QueryResults.ts
-							:93</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/QueryResults.ts#L85">src/rest/QueryResults.ts
+							:85</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
-						<dl class="tsd-deprecated">
-							<dt>deprecated</dt>
-							<dd><p>Use searchAPIDuration instead.</p>
-							</dd>
-						</dl>
 						<div class="lead">
 							<p>The duration of the query for the client.</p>
 						</div>
-						<dl class="tsd-comment-tags">
-						</dl>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
@@ -358,7 +345,7 @@
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>The total query duration, which is the sum of the <code>indexDuration</code> and <code>searchAPIDuration</code>, including any latency incurred through the necessary network hops.</p>
+							<p>The duration of the query on the Coveo platform.</p>
 						</div>
 					</div>
 				</section>
@@ -415,8 +402,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/QueryResults.ts#L113">src/rest/QueryResults.ts
-							:113</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/QueryResults.ts#L105">src/rest/QueryResults.ts
+							:105</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -450,8 +437,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/QueryResults.ts#L121">src/rest/QueryResults.ts
-							:121</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/QueryResults.ts#L113">src/rest/QueryResults.ts
+							:113</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -473,7 +460,7 @@
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>The part of the total query <code>duration</code> that was spent in the index.</p>
+							<p>The duration of the query on the Coveo Index.</p>
 						</div>
 					</div>
 				</section>
@@ -484,8 +471,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/QueryResults.ts#L133">src/rest/QueryResults.ts
-							:133</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/QueryResults.ts#L125">src/rest/QueryResults.ts
+							:125</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -509,8 +496,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/QueryResults.ts#L101">src/rest/QueryResults.ts
-							:101</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/QueryResults.ts#L93">src/rest/QueryResults.ts
+							:93</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -526,21 +513,14 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/QueryResults.ts#L87">src/rest/QueryResults.ts
-							:87</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/QueryResults.ts#L81">src/rest/QueryResults.ts
+							:81</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
-						<dl class="tsd-deprecated">
-							<dt>deprecated</dt>
-							<dd><p>Use duration, indexDuration and searchAPIDuration instead.</p>
-							</dd>
-						</dl>
 						<div class="lead">
 							<p>The duration of the query on the proxy (not always applicable, can be optional)</p>
 						</div>
-						<dl class="tsd-comment-tags">
-						</dl>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
@@ -550,8 +530,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/QueryResults.ts#L125">src/rest/QueryResults.ts
-							:125</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/QueryResults.ts#L117">src/rest/QueryResults.ts
+							:117</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -585,13 +565,13 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/QueryResults.ts#L141">src/rest/QueryResults.ts
-							:141</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/QueryResults.ts#L133">src/rest/QueryResults.ts
+							:133</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>The keywords selected by Coveo Machine Learning Refined Query feature</p>
+							<p>The keywords selected by Reveal&#39;s Refined Query feature</p>
 						</div>
 					</div>
 				</section>
@@ -602,30 +582,13 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/QueryResults.ts#L117">src/rest/QueryResults.ts
-							:117</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/QueryResults.ts#L109">src/rest/QueryResults.ts
+							:109</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
 							<p>The results of the query</p>
-						</div>
-					</div>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="searchapiduration" class="tsd-anchor"></a>
-					<h3>searchAPIDuration</h3>
-					<div class="tsd-signature tsd-kind-icon">searchAPIDuration<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/QueryResults.ts#L81">src/rest/QueryResults.ts
-							:81</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>The part of the total query <code>duration</code> that was spent in the Coveo Search API.</p>
 						</div>
 					</div>
 				</section>
@@ -636,8 +599,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/QueryResults.ts#L97">src/rest/QueryResults.ts
-							:97</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/QueryResults.ts#L89">src/rest/QueryResults.ts
+							:89</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -653,8 +616,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/QueryResults.ts#L109">src/rest/QueryResults.ts
-							:109</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/QueryResults.ts#L101">src/rest/QueryResults.ts
+							:101</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -670,8 +633,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/QueryResults.ts#L129">src/rest/QueryResults.ts
-							:129</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/QueryResults.ts#L121">src/rest/QueryResults.ts
+							:121</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -729,8 +692,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/QueryResults.ts#L137">src/rest/QueryResults.ts
-							:137</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/QueryResults.ts#L129">src/rest/QueryResults.ts
+							:129</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
