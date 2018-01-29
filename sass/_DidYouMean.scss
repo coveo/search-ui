@@ -1,8 +1,7 @@
 @import 'Variables';
-
 .CoveoDidYouMean {
-  padding: 10px;
-
+  padding: 10px 0;
+  text-align: left;
   a {
     @include clickable();
     text-decoration: none;
@@ -10,6 +9,7 @@
       text-decoration: underline;
     }
   }
+  font-size: $font-size-bigger;
 }
 
 .coveo-did-you-mean-highlight {
