@@ -6226,6 +6226,7 @@
     height: 100%;
     width: 100%; }
     .CoveoQuickviewDocument .coveo-quickview-document .coveo-iframeWrapper {
+      overflow: hidden;
       height: 100%;
       width: 100%; }
 
