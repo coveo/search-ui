@@ -55,8 +55,8 @@
 	</div>
 	<div class="bottomHeader">
 		<div id="searchBox">
-			<div class="CoveoSearchbox" data-enable-omnibox="true" data-inline="false" data-enable-wildcards="true" data-enable-search-as-you-type="false" data-enable-reveal-query-suggest-addon="false" data-enable-query-syntax="true" data-enable-field-addon="true"></div>
-			<div class="CoveoFieldSuggestions" data-field="@systitle" data-header-title="Suggested topics"></div>
+			<div class="CoveoSearchbox" data-enable-omnibox="true" data-inline="false" data-enable-wildcards="true" data-enable-search-as-you-type="false" data-enable-query-suggest-addon="false" data-enable-query-syntax="true" data-enable-field-addon="true"></div>
+			<div class="CoveoFieldSuggestions" data-field="@jsuipagetopic" data-header-title="Suggested topics"></div>
 		</div>
 	</div>
 	<!-- Do not focus on Querybox when URL contains hash to ensure page scrolls down to corresponding anchor. -->
@@ -105,6 +105,9 @@
 								<a href="iquerybuilderexpression.html#constant" class="tsd-kind-icon">constant</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="iquerybuilderexpression.html#disjunction" class="tsd-kind-icon">disjunction</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
 								<a href="iquerybuilderexpression.html#full" class="tsd-kind-icon">full</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
@@ -132,6 +135,8 @@
 							<a href="iquerybuilderexpression.html">IQueryBuilderExpression</a>
 						</li>
 					</ul>
+					<!-- Has to remain here for the playground to work -->
+					<h1 style="visibility: collapse; font-size:0">Interface IQueryBuilderExpression</h1>
 					<h1>Interface IQueryBuilderExpression</h1>
 				</div>
 			</div>
@@ -155,6 +160,7 @@
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="iquerybuilderexpression.html#advanced" class="tsd-kind-icon">advanced</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="iquerybuilderexpression.html#basic" class="tsd-kind-icon">basic</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="iquerybuilderexpression.html#constant" class="tsd-kind-icon">constant</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="iquerybuilderexpression.html#disjunction" class="tsd-kind-icon">disjunction</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="iquerybuilderexpression.html#full" class="tsd-kind-icon">full</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="iquerybuilderexpression.html#withoutconstant" class="tsd-kind-icon">without<wbr>Constant</a></li>
 							</ul>
@@ -171,8 +177,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/QueryBuilder.ts#L31">src/ui/Base/QueryBuilder.ts
-							:31</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/QueryBuilderExpression.ts#L28">src/ui/Base/QueryBuilderExpression.ts
+							:28</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -188,8 +194,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/QueryBuilder.ts#L27">src/ui/Base/QueryBuilder.ts
-							:27</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/QueryBuilderExpression.ts#L24">src/ui/Base/QueryBuilderExpression.ts
+							:24</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -205,13 +211,30 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/QueryBuilder.ts#L23">src/ui/Base/QueryBuilder.ts
-							:23</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/QueryBuilderExpression.ts#L20">src/ui/Base/QueryBuilderExpression.ts
+							:20</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
 							<p>The constant part of the expression</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="disjunction" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> disjunction</h3>
+					<div class="tsd-signature tsd-kind-icon">disjunction<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/QueryBuilderExpression.ts#L32">src/ui/Base/QueryBuilderExpression.ts
+							:32</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The disjunction part of the expression</p>
 						</div>
 					</div>
 				</section>
@@ -222,8 +245,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/QueryBuilder.ts#L15">src/ui/Base/QueryBuilder.ts
-							:15</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/QueryBuilderExpression.ts#L12">src/ui/Base/QueryBuilderExpression.ts
+							:12</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -239,8 +262,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/QueryBuilder.ts#L19">src/ui/Base/QueryBuilder.ts
-							:19</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/QueryBuilderExpression.ts#L16">src/ui/Base/QueryBuilderExpression.ts
+							:16</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
