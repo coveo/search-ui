@@ -103,7 +103,8 @@
 .CoveoFacet.coveo-during-initialization,
 .CoveoFacetSlider.coveo-during-initialization,
 .CoveoFacetRange.coveo-during-initialization,
-.CoveoHierarchicalFacet.coveo-during-initialization {
+.CoveoHierarchicalFacet.coveo-during-initialization,
+.CoveoTimespanFacet.coveo-during-initialization {
   display: none;
 
   &.coveo-with-placeholder {

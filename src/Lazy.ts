@@ -1,5 +1,7 @@
 export * from './Core';
 
+export { $$, Dom } from './utils/Dom';
+
 export { SearchInterface, StandaloneSearchInterface } from './ui/SearchInterface/SearchInterface';
 
 export { PublicPathUtils } from './utils/PublicPathUtils';
@@ -61,6 +63,9 @@ import { lazyChatterTopic } from './ui/ChatterTopic/LazyChatterTopic';
 lazyChatterTopic();
 import { registerFields as chatterTopicRegisterFields } from './ui/ChatterTopic/ChatterTopicFields';
 chatterTopicRegisterFields();
+
+import { lazyDebug } from './ui/Debug/LazyDebug';
+lazyDebug();
 
 import { lazyDidYouMean } from './ui/DidYouMean/LazyDidYouMean';
 lazyDidYouMean();
@@ -161,8 +166,8 @@ lazyResultAttachment();
 import { lazyResultFolding } from './ui/ResultFolding/LazyResultFolding';
 lazyResultFolding();
 
-import { lazyResultLayout } from './ui/ResultLayout/LazyResultLayout';
-lazyResultLayout();
+import { lazyResultLayoutSelector } from './ui/ResultLayoutSelector/LazyResultLayoutSelector';
+lazyResultLayoutSelector();
 
 import { lazyResultLink } from './ui/ResultLink/LazyResultLink';
 lazyResultLink();
@@ -258,6 +263,9 @@ lazyTextInput();
 
 import { lazySimpleFilter } from './ui/SimpleFilter/LazySimpleFilter';
 lazySimpleFilter();
+
+import { lazyTimespanFacet } from './ui/TimespanFacet/LazyTimespanFacet';
+lazyTimespanFacet();
 
 import { swapVar } from './SwapVar';
 swapVar(this);

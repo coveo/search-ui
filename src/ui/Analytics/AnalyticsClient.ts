@@ -3,6 +3,7 @@ import { IAPIAnalyticsEventResponse } from '../../rest/APIAnalyticsEventResponse
 import { IQueryResult } from '../../rest/QueryResult';
 import { ITopQueries } from '../../rest/TopQueries';
 import { PendingSearchEvent } from './PendingSearchEvent';
+import { AnalyticsEndpoint } from '../../rest/AnalyticsEndpoint';
 
 /**
  * The `IAnalyticsClient` interface describes an analytics client that can log events to, or return information from the
@@ -12,6 +13,7 @@ import { PendingSearchEvent } from './PendingSearchEvent';
  */
 export interface IAnalyticsClient {
   isContextual: boolean;
+  endpoint: AnalyticsEndpoint;
 
   /**
    * Indicates whether there is an [`Analytics`]{@link Analytics} component in the search page. Returns `true` if an
