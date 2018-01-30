@@ -34,6 +34,7 @@ import * as _ from 'underscore';
 import { exportGlobally } from '../../GlobalExports';
 import 'styling/_Omnibox';
 import { logSearchBoxSubmitEvent } from '../Analytics/SharedAnalyticsCalls';
+import { Dom } from '../../Core';
 
 export interface IOmniboxSuggestion extends Coveo.MagicBox.Suggestion {
   executableConfidence?: number;
@@ -692,21 +693,22 @@ export class Omnibox extends Component {
 
   private handleTabPressForOldOmniboxAddon() {
     const domSuggestions = this.lastSuggestions.filter(suggestions => suggestions.dom).map(suggestions => $$(suggestions.dom));
-    const selected = domSuggestions
-      .map(suggestion => suggestion.find('.coveo-omnibox-selected'))
-      .filter(s => s)
-      .reduce((total, s) => total.concat(s), []);
+    const selected = this.findAllElementsWithClass(domSuggestions, '.coveo-omnibox-selected');
     if (selected.length > 0) {
       $$(selected[0]).trigger('tabSelect');
     } else if (!this.options.enableQuerySuggestAddon) {
-      const selectable = domSuggestions
-        .map(suggestion => suggestion.find('.coveo-omnibox-selectable'))
-        .filter(s => s)
-        .reduce((total, s) => total.concat(s), []);
+      const selectable = this.findAllElementsWithClass(domSuggestions, '.coveo-omnibox-selectable');
       if (selectable.length > 0) {
         $$(selectable[0]).trigger('tabSelect');
       }
     }
+  }
+
+  private findAllElementsWithClass(elements: Dom[], className: string): Dom[] {
+    return elements
+      .map(element => element.find(className))
+      .filter(s => s)
+      .reduce((total, s) => total.concat(s), []);
   }
 
   private triggerNewQuery(searchAsYouType: boolean, analyticsEvent: () => void) {

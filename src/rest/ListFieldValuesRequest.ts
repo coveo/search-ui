@@ -43,7 +43,7 @@ export interface IListFieldValuesRequest {
 /**
  * Describe a request to list the possible values of multiple fields.
  */
-export interface IListFieldValuesRequestBatch {
+export interface IListFieldValuesBatchRequest {
   /**
    * The list of fields to request.
    */

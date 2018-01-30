@@ -8,7 +8,7 @@ import { IQuery } from '../rest/Query';
 import { IQueryResults } from '../rest/QueryResults';
 import { IQueryResult } from '../rest/QueryResult';
 import { version } from '../misc/Version';
-import { IListFieldValuesRequest, IListFieldValuesRequestBatch } from '../rest/ListFieldValuesRequest';
+import { IListFieldValuesRequest, IListFieldValuesBatchRequest } from '../rest/ListFieldValuesRequest';
 import { IIndexFieldValue } from '../rest/FieldValue';
 import { IFieldDescription } from '../rest/FieldDescription';
 import { IListFieldsResult } from '../rest/ListFieldsResult';
@@ -584,23 +584,6 @@ export class SearchEndpoint implements ISearchEndpoint {
     });
   }
 
-  @path('/values')
-  @method('POST')
-  @responseType('text')
-  public batchFieldValues(
-    request: IListFieldValuesRequest,
-    callOptions?: IEndpointCallOptions,
-    callParams?: IEndpointCallParameters
-  ): Promise<IIndexFieldValue[]> {
-    Assert.exists(request);
-    this.logger.info('Performing REST query to list field values', request);
-
-    return this.performOneCall<IGroupByResult>(callParams, callOptions).then(data => {
-      this.logger.info('REST list field values successful', data.values, request);
-      return data.values;
-    });
-  }
-
   /**
    * Lists the possible field values for a request.
    * @param request The request for which to list the possible field values.
@@ -645,7 +628,7 @@ export class SearchEndpoint implements ISearchEndpoint {
   @method('POST')
   @responseType('text')
   public listFieldValuesBatch(
-    request: IListFieldValuesRequestBatch,
+    request: IListFieldValuesBatchRequest,
     callOptions?: IEndpointCallOptions,
     callParams?: IEndpointCallParameters
   ): Promise<IIndexFieldValue[][]> {
@@ -661,7 +644,11 @@ export class SearchEndpoint implements ISearchEndpoint {
 
     this.logger.info('Listing field batch values', request);
 
-    return this.performOneCall<any>(callParams, callOptions).then(data => {
+    interface IFieldValueBatchResponse {
+      batch: IIndexFieldValue[][];
+    }
+
+    return this.performOneCall<IFieldValueBatchResponse>(callParams, callOptions).then(data => {
       this.logger.info('REST list field batch values successful', data.batch, request);
       return data.batch;
     });

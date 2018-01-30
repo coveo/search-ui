@@ -216,7 +216,10 @@ export class FacetValueSuggestions extends Component {
           };
         });
       })
-      .catch(() => []);
+      .catch(error => {
+        console.error(error, this);
+        return [];
+      });
     return promise;
   }
 
@@ -312,8 +315,6 @@ export class FacetValueSuggestions extends Component {
 
   private onRowSelection(row: IFacetValueSuggestionRow, omnibox: Omnibox): void {
     omnibox.setText(row.keyword);
-    /*args.closeOmnibox();
-    args.clearSuggestions();*/
     this.queryStateModel.set(this.queryStateFieldValueId, [row.value]);
     this.usageAnalytics.logSearchEvent<IAnalyticsNoMeta>(analyticsActionCauseList.omniboxField, {});
     this.queryController.executeQuery();

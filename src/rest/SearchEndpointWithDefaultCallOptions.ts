@@ -16,7 +16,7 @@ import { IEndpointError } from '../rest/EndpointError';
 import { IExtension } from '../rest/Extension';
 import { IQueryResults } from './QueryResults';
 import { IFieldDescription } from '../rest/FieldDescription';
-import { IListFieldValuesRequest, IListFieldValuesRequestBatch } from './ListFieldValuesRequest';
+import { IListFieldValuesRequest, IListFieldValuesBatchRequest } from './ListFieldValuesRequest';
 import { ISubscriptionRequest, ISubscription } from './Subscription';
 import { ISentryLog } from './SentryLog';
 import * as _ from 'underscore';
@@ -88,7 +88,7 @@ export class SearchEndpointWithDefaultCallOptions implements ISearchEndpoint {
     return this.endpoint.getViewAsDatastreamUri(documentUniqueID, dataStreamType, this.enrichCallOptions(callOptions));
   }
 
-  public listFieldValuesBatch(request: IListFieldValuesRequestBatch, callOptions?: IEndpointCallOptions): Promise<IIndexFieldValue[][]> {
+  public listFieldValuesBatch(request: IListFieldValuesBatchRequest, callOptions?: IEndpointCallOptions): Promise<IIndexFieldValue[][]> {
     return this.endpoint.listFieldValuesBatch(request, this.enrichCallOptions(callOptions));
   }
 
