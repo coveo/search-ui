@@ -3957,16 +3957,21 @@
   .coveo-sprites-common-poweredbycoveo,
   .coveo-powered-by,
   .coveo-sprites-caseCreation-edit-picklist,
-  .coveo-sprites-common-tagging_tag,
-  .coveo-result-tagging-add-tag-icon,
-  .coveo-sprites-box-icon_external,
-  .coveo-sprites-facet-checkmark_disabled,
+  .coveo-sprites-box-settings_gray,
+  .coveo-sprites-caseCreation-edit,
   .coveo-sprites-common-clear-mobile,
   .CoveoBreadcrumb.coveo-small-display .coveo-breadcrumb-clear-all .coveo-icon,
   .CoveoBreadcrumb .coveo-breadcrumb-clear-all .coveo-icon,
-  .coveo-sprites-facet-checkmark_disabled_hover,
+  .coveo-sprites-common-tagging_tag,
+  .coveo-result-tagging-add-tag-icon,
   .coveo-sprites-facet-resume_selected,
   .coveo-facet-breadcrumb-multi-icon.coveo-selected,
+  .coveo-sprites-facet-resume_disable,
+  .coveo-facet-breadcrumb-multi-icon.coveo-excluded,
+  .coveo-sprites-sort-sortby_bottom,
+  .CoveoSort.coveo-selected .coveo-icon,
+  .coveo-sprites-sort-sortby_top,
+  .CoveoSort.coveo-selected.coveo-ascending .coveo-icon,
   .coveo-sprites-common-star_inactive,
   .coveo-settings-item.coveo-follow-query .coveo-icon,
   .coveo-top-suggestion-header-icon,
@@ -3975,7 +3980,7 @@
   .coveo-omnibox-result-list-header .coveo-icon-omnibox-result-list,
   .coveo-sprites-searchButton-searchbutton_gray,
   .coveo-sprites-facet-email_sendto,
-  .coveo-sprites-facet-showmore,
+  .coveo-sprites-facet-showless,
   .coveo-sprites-common-logo_light,
   .coveo-logo-light,
   .coveo-logo-section .coveo-logo,
@@ -3984,10 +3989,6 @@
   .coveo-sprites-common-login_user,
   .coveo-username-icon,
   .coveo-sprites-common-star_placeholder,
-  .coveo-sprites-sort-sortby_bottom,
-  .CoveoSort.coveo-selected .coveo-icon,
-  .coveo-sprites-sort-sortby_top,
-  .CoveoSort.coveo-selected.coveo-ascending .coveo-icon,
   .coveo-sprites-preferencesPanel-toggle_off,
   .CoveoResultsPreferences .coveo-input-icon,
   .CoveoResultsFiltersPreferences .coveo-input-icon,
@@ -3996,8 +3997,8 @@
   .coveo-omnibox .coveo-icon.source,
   .coveo-facet-header .coveo-icon.source,
   .coveo-page-settings-icon,
-  .coveo-sprites-facet-clear_facetsearch,
-  .coveo-facet-search-clear .coveo-icon,
+  .coveo-sprites-common-tagging_ok,
+  .coveo-result-tagging-add-tag-tick-icon span,
   .coveo-sprites-facet-facetsearch,
   .coveo-facet-search-magnifier,
   .coveo-mobile-device .coveo-modalBox.coveo-mobile-facet-search > .coveo-wrapper > .coveo-body > .coveo-facet-search .coveo-facet-search-magnifier,
@@ -4011,17 +4012,17 @@
   .coveo-sprites-common-thumbdown_active,
   .coveo-sprites-common-thumbdown_inactive,
   .coveo-sprites-common-thumbup_active,
-  .coveo-sprites-facet-spin_facet_search,
-  .coveo-facet-search-wait-animation,
-  .coveo-mobile-device .coveo-modalBox.coveo-mobile-facet-search > .coveo-wrapper > .coveo-body > .coveo-facet-search .coveo-facet-search-wait-animation,
-  .coveo-modalBox.coveo-mobile-facet-search > .coveo-wrapper > .coveo-body > .coveo-facet-search .coveo-facet-search-wait-animation,
-  .coveo-sprites-facet-showless,
+  .coveo-sprites-facet-clear_facetsearch,
+  .coveo-facet-search-clear .coveo-icon,
+  .coveo-sprites-facet-showmore,
   .coveo-sprites-common-thumbup_inactive,
   .coveo-sprites-common-tagging-cancel_clear,
   .coveo-result-tagging-clear-icon span,
   .coveo-result-tagging-delete-icon,
-  .coveo-sprites-common-tagging_ok,
-  .coveo-result-tagging-add-tag-tick-icon span,
+  .coveo-sprites-facet-spin_facet_search,
+  .coveo-facet-search-wait-animation,
+  .coveo-mobile-device .coveo-modalBox.coveo-mobile-facet-search > .coveo-wrapper > .coveo-body > .coveo-facet-search .coveo-facet-search-wait-animation,
+  .coveo-modalBox.coveo-mobile-facet-search > .coveo-wrapper > .coveo-body > .coveo-facet-search .coveo-facet-search-wait-animation,
   .coveo-sprites-common-settings,
   .CoveoSettings .coveo-settings-icon,
   .coveo-sprites-common-star_active,
@@ -4030,117 +4031,121 @@
   .CoveoSearchButton > .coveo-icon,
   .coveo-sprites-menu-menu_sortby,
   .coveo-facet-settings-section-sort .coveo-icon,
-  .coveo-sprites-facet-moreoption,
-  .coveo-facet-header-settings .coveo-icon,
-  .coveo-sprites-fileType-objectType-case,
-  .coveo-icon.objecttype.Case,
-  .coveo-icon.objecttype.case,
-  .coveo-sprites-facet-resume_disable,
-  .coveo-facet-breadcrumb-multi-icon.coveo-excluded,
-  .coveo-sprites-facet-openfacets,
-  .coveo-search-section-facets-icon,
-  .coveo-sprites-facet-openinterfaces,
-  .coveo-search-section-tab-icon,
-  .coveo-sprites-fileType-objectType-campaign,
-  .coveo-icon.objecttype.Campaign,
-  .coveo-icon.objecttype.campaign,
-  .coveo-sprites-facet-show_facet,
-  .coveo-facet-settings-section-show .coveo-icon,
-  .coveo-sprites-fileType-objectType-board,
-  .coveo-icon.objecttype.Board,
-  .coveo-icon.objecttype.board,
-  .coveo-sprites-fileType-objectType-answer,
-  .coveo-icon.objecttype.Solution,
-  .coveo-icon.objecttype.solution,
-  .coveo-icon.objecttype.Kbsolution,
-  .coveo-icon.objecttype.kbsolution,
-  .coveo-sprites-facet-spin,
-  .coveo-facet-header-wait-animation,
-  .coveo-sprites-fileType-objectType-account,
-  .coveo-icon.objecttype.Account,
-  .coveo-icon.objecttype.account,
-  .coveo-sprites-common-amount,
-  .coveo-sprites-common-checkmark_selected-on_dark_bg,
-  .CoveoTab.coveo-selected:after,
-  .coveo-selected.coveo-tab-section-spacer:after,
-  .coveo-selected.coveo-demo-back-to-login:after,
-  .coveo-selected.CoveoLogin:after,
-  .coveo-sprites-fileType-lithium-thread,
-  .coveo-icon.filetype.lithiumthread,
-  .coveo-icon.sysfiletype.lithiumthread,
-  .coveo-sprites-common-copy,
-  .coveo-sprites-fileType-youtube-youtube,
-  .coveo-icon.filetype.youtube,
-  .coveo-icon.sysfiletype.youtube,
-  .coveo-sprites-common-datepicker,
   .coveo-sprites-common-delete,
   .coveo-sprites-common-doritos,
   .coveo-new-to-coveo-section .coveo-demo-section-arrow-forward,
   .coveo-demo-section-arrow-backward,
+  .coveo-sprites-box-icon_external,
   .coveo-sprites-fileType-salesforce-item,
   .coveo-icon.filetype.saleforceitem,
   .coveo-icon.sysfiletype.saleforceitem,
-  .coveo-sprites-fileType-objectType-user,
-  .coveo-icon.objecttype.People,
-  .coveo-icon.objecttype.people,
-  .coveo-icon.objecttype.User,
-  .coveo-icon.objecttype.user,
-  .coveo-sprites-fileType-objectType-thread,
-  .coveo-icon.objecttype.Thread,
-  .coveo-icon.objecttype.thread,
   .coveo-sprites-fileType-objectType-task,
   .coveo-icon.objecttype.Task,
   .coveo-icon.objecttype.task,
   .coveo-sprites-fileType-objectType-rss,
   .coveo-icon.objecttype.Feed,
   .coveo-icon.objecttype.feed,
-  .coveo-sprites-common-menu_reauthenticate,
-  .coveo-settings-item.coveo-authentication-provider .coveo-icon,
   .coveo-sprites-fileType-objectType-product,
   .coveo-icon.objecttype.Product,
   .coveo-icon.objecttype.product,
+  .coveo-sprites-fileType-objectType-user,
+  .coveo-icon.objecttype.People,
+  .coveo-icon.objecttype.people,
+  .coveo-icon.objecttype.User,
+  .coveo-icon.objecttype.user,
+  .coveo-sprites-common-amount,
+  .coveo-sprites-common-checkmark_selected-on_dark_bg,
+  .CoveoTab.coveo-selected:after,
+  .coveo-selected.coveo-tab-section-spacer:after,
+  .coveo-selected.coveo-demo-back-to-login:after,
+  .coveo-selected.CoveoLogin:after,
+  .coveo-sprites-fileType-objectType-thread,
+  .coveo-icon.objecttype.Thread,
+  .coveo-icon.objecttype.thread,
   .coveo-sprites-fileType-objectType-opportunity,
   .coveo-icon.objecttype.Opportunity,
   .coveo-icon.objecttype.opportunity,
   .coveo-sprites-fileType-objectType-note,
   .coveo-icon.objecttype.Note,
   .coveo-icon.objecttype.note,
-  .coveo-sprites-facet-clear_facet,
-  .coveo-facet-header-eraser .coveo-icon,
-  .coveo-facet-settings-section-hide .coveo-icon,
-  .coveo-share-query-summary-info-close span,
-  .coveo-subscriptions-panel .coveo-subscriptions-panel-close span,
   .coveo-sprites-fileType-objectType-message,
   .coveo-icon.objecttype.Message,
   .coveo-icon.objecttype.message,
   .coveo-sprites-fileType-objectType-lead,
   .coveo-icon.objecttype.Lead,
   .coveo-icon.objecttype.lead,
+  .coveo-sprites-fileType-objectType-kb,
+  .coveo-icon.objecttype.Kbdocumentation,
+  .coveo-icon.objecttype.kbdocumentation,
+  .coveo-icon.objecttype.Kbknowledgearticle,
+  .coveo-icon.objecttype.kbknowledgearticle,
+  .coveo-sprites-fileType-objectType-contract,
+  .coveo-icon.objecttype.Contract,
+  .coveo-icon.objecttype.contract,
+  .coveo-sprites-facet-clear_facet,
+  .coveo-facet-header-eraser .coveo-icon,
+  .coveo-facet-settings-section-hide .coveo-icon,
+  .coveo-share-query-summary-info-close span,
+  .coveo-subscriptions-panel .coveo-subscriptions-panel-close span,
+  .coveo-sprites-fileType-objectType-contact,
+  .coveo-icon.objecttype.Contact,
+  .coveo-icon.objecttype.contact,
+  .coveo-sprites-fileType-objectType-comment,
+  .coveo-icon.objecttype.Casecomment,
+  .coveo-icon.objecttype.casecomment,
+  .coveo-sprites-fileType-objectType-case,
+  .coveo-icon.objecttype.Case,
+  .coveo-icon.objecttype.case,
+  .coveo-sprites-facet-collapsed,
+  .coveo-facet-header-expand .coveo-icon,
+  .coveo-mobile-device .CoveoFacet .coveo-facet-footer .coveo-facet-more:after,
+  .CoveoHierarchicalFacet ul.coveo-facet-values .coveo-facet-value.coveo-has-childs .coveo-has-childs-toggle,
+  .CoveoFacet .coveo-facet-footer .coveo-facet-more:after,
+  .coveo-sprites-fileType-objectType-campaign,
+  .coveo-icon.objecttype.Campaign,
+  .coveo-icon.objecttype.campaign,
+  .coveo-sprites-fileType-objectType-board,
+  .coveo-icon.objecttype.Board,
+  .coveo-icon.objecttype.board,
+  .coveo-sprites-facet-expanded,
+  .coveo-facet-header-collapse .coveo-icon,
+  .coveo-mobile-device .CoveoFacet .coveo-facet-footer .coveo-facet-less:after,
+  .CoveoHierarchicalFacet ul.coveo-facet-values .coveo-facet-value.coveo-has-childs.coveo-open .coveo-has-childs-toggle,
+  .CoveoFacet .coveo-facet-footer .coveo-facet-less:after,
+  .coveo-sprites-fileType-objectType-answer,
+  .coveo-icon.objecttype.Solution,
+  .coveo-icon.objecttype.solution,
+  .coveo-icon.objecttype.Kbsolution,
+  .coveo-icon.objecttype.kbsolution,
+  .coveo-sprites-facet-modeand,
+  .coveo-facet-header-operator .coveo-icon.coveo-and,
+  .coveo-sprites-facet-modeor,
+  .coveo-facet-header-operator .coveo-icon.coveo-or,
+  .coveo-sprites-facet-moreoption,
+  .coveo-facet-header-settings .coveo-icon,
+  .coveo-sprites-fileType-objectType-account,
+  .coveo-icon.objecttype.Account,
+  .coveo-icon.objecttype.account,
+  .coveo-sprites-fileType-lithium-thread,
+  .coveo-icon.filetype.lithiumthread,
+  .coveo-icon.sysfiletype.lithiumthread,
+  .coveo-sprites-facet-openfacets,
+  .coveo-search-section-facets-icon,
+  .coveo-sprites-facet-openinterfaces,
+  .coveo-search-section-tab-icon,
+  .coveo-sprites-facet-show_facet,
+  .coveo-facet-settings-section-show .coveo-icon,
   .coveo-sprites-fileType-lithium-message,
   .coveo-icon.filetype.lithiummessage,
   .coveo-icon.sysfiletype.lithiummessage,
   .coveo-sprites-fileType-lithium-board,
   .coveo-icon.filetype.lithiumboard,
   .coveo-icon.sysfiletype.lithiumboard,
+  .coveo-sprites-facet-spin,
+  .coveo-facet-header-wait-animation,
   .coveo-sprites-fileType-formats-zip,
   .coveo-icon.filetype.zip,
   .coveo-icon.sysfiletype.zip,
-  .coveo-sprites-fileType-objectType-kb,
-  .coveo-icon.objecttype.Kbdocumentation,
-  .coveo-icon.objecttype.kbdocumentation,
-  .coveo-icon.objecttype.Kbknowledgearticle,
-  .coveo-icon.objecttype.kbknowledgearticle,
-  .coveo-sprites-facet-collapsed,
-  .coveo-facet-header-expand .coveo-icon,
-  .coveo-mobile-device .CoveoFacet .coveo-facet-footer .coveo-facet-more:after,
-  .CoveoHierarchicalFacet ul.coveo-facet-values .coveo-facet-value.coveo-has-childs .coveo-has-childs-toggle,
-  .CoveoFacet .coveo-facet-footer .coveo-facet-more:after,
-  .coveo-sprites-fileType-objectType-contract,
-  .coveo-icon.objecttype.Contract,
-  .coveo-icon.objecttype.contract,
-  .coveo-sprites-fileType-objectType-contact,
-  .coveo-icon.objecttype.Contact,
-  .coveo-icon.objecttype.contact,
   .coveo-sprites-menu-menu_avancedsearch,
   .coveo-sprites-menu-menu_opencontactinfoin,
   .coveo-sprites-menu-menu_saveoption,
@@ -4167,14 +4172,9 @@
   .CoveoResultsFiltersPreferences .coveo-delete .coveo-icon,
   .coveo-sprites-preferencesPanel-table-edit,
   .CoveoResultsFiltersPreferences .coveo-edit .coveo-icon,
-  .coveo-sprites-facet-expanded,
-  .coveo-facet-header-collapse .coveo-icon,
-  .coveo-mobile-device .CoveoFacet .coveo-facet-footer .coveo-facet-less:after,
-  .CoveoHierarchicalFacet ul.coveo-facet-values .coveo-facet-value.coveo-has-childs.coveo-open .coveo-has-childs-toggle,
-  .CoveoFacet .coveo-facet-footer .coveo-facet-less:after,
-  .coveo-sprites-fileType-objectType-comment,
-  .coveo-icon.objecttype.Casecomment,
-  .coveo-icon.objecttype.casecomment,
+  .coveo-sprites-common-menu_reauthenticate,
+  .coveo-settings-item.coveo-authentication-provider .coveo-icon,
+  .coveo-sprites-common-copy,
   .coveo-sprites-querybox-clear,
   .coveo-query-box-clear .coveo-icon,
   .coveo-sprites-fileType-formats-video,
@@ -4188,10 +4188,10 @@
   .coveo-mobile-device .coveo-modalBox.coveo-mobile-facet-search > .coveo-wrapper > .coveo-body > .coveo-facet-search-results .coveo-facet-search-select-all .coveo-mobile-facet-search-select-all,
   .coveo-modalBox.coveo-mobile-facet-search > .coveo-wrapper > .coveo-body > .coveo-facet-search-results .coveo-facet-search-select-all .coveo-mobile-facet-search-select-all,
   .coveo-sprites-quickview-quickview_previous,
-  .coveo-sprites-facet-modeand,
-  .coveo-facet-header-operator .coveo-icon.coveo-and,
-  .coveo-sprites-facet-modeor,
-  .coveo-facet-header-operator .coveo-icon.coveo-or,
+  .coveo-sprites-fileType-youtube-youtube,
+  .coveo-icon.filetype.youtube,
+  .coveo-icon.sysfiletype.youtube,
+  .coveo-sprites-common-datepicker,
   .coveo-sprites-searchButton-spin,
   .coveo-executing-query .CoveoSearchButton > .coveo-icon,
   .coveo-submit > .coveo-waiting,
@@ -4229,6 +4229,11 @@
   .coveo-sprites-fileType-formats-slideshow,
   .coveo-icon.filetype.ppt,
   .coveo-icon.sysfiletype.ppt,
+  .coveo-sprites-facet-checkmark_disabled,
+  .coveo-sprites-facet-disable,
+  .coveo-facet-value-exclude,
+  .coveo-sprites-facet-clear_facetsearch_mobile,
+  .coveo-sprites-facet-checkmark_disabled_hover,
   .coveo-sprites-facet-checkmark_selected,
   .coveo-facet-value:hover .coveo-facet-value-checkbox > span,
   .coveo-facet-value.coveo-selected .coveo-facet-value-checkbox > span,
@@ -4245,6 +4250,10 @@
   .coveo-modalBox.coveo-mobile-facet-search > .coveo-wrapper > .coveo-body > .coveo-facet-search-results .coveo-facet-value.coveo-selected:hover div.coveo-facet-value-checkbox span,
   .coveo-modalBox.coveo-mobile-facet-search > .coveo-wrapper > .coveo-body > .coveo-facet-search-results .coveo-selected div.coveo-facet-value-checkbox > span,
   .coveo-modalBox.coveo-mobile-facet-search > .coveo-wrapper > .coveo-body > .coveo-facet-search-results .coveo-selected:hover div.coveo-checkbox span,
+  .coveo-sprites-facet-clear_activefilter,
+  .coveo-facet-breadcrumb-clear,
+  .coveo-facet-slider-breadcrumb-clear,
+  .coveo-hidden-query-breadcrumb-clear,
   .coveo-sprites-facet-checkmark_unselected,
   .coveo-facet-value-checkbox > span,
   .coveo-mobile-device .coveo-facet-section .CoveoFacet .coveo-facet-values .coveo-facet-value .coveo-facet-value-checkbox > span,
@@ -4255,15 +4264,6 @@
   .coveo-facet-section .CoveoFacet .coveo-facet-values .coveo-facet-value:hover .coveo-facet-value-checkbox span,
   .coveo-modalBox.coveo-mobile-facet-search > .coveo-wrapper > .coveo-body > .coveo-facet-search-results .coveo-facet-value .coveo-facet-value-checkbox > span,
   .coveo-modalBox.coveo-mobile-facet-search > .coveo-wrapper > .coveo-body > .coveo-facet-search-results .coveo-facet-value:hover .coveo-facet-value-checkbox span,
-  .coveo-sprites-facet-disable,
-  .coveo-facet-value-exclude,
-  .coveo-sprites-facet-clear_facetsearch_mobile,
-  .coveo-sprites-facet-clear_activefilter,
-  .coveo-facet-breadcrumb-clear,
-  .coveo-facet-slider-breadcrumb-clear,
-  .coveo-hidden-query-breadcrumb-clear,
-  .coveo-sprites-box-settings_gray,
-  .coveo-sprites-caseCreation-edit,
   .coveo-sprites-quickview-close {
     background-image: url("../image/retina.png");
     display: inline-block;
@@ -4305,36 +4305,46 @@
     width: 12px;
     height: 12px;
     text-indent: 12px; }
-  .coveo-sprites-common-tagging_tag, .coveo-result-tagging-add-tag-icon {
+  .coveo-sprites-box-settings_gray {
     background-position: -172px -103px;
     width: 12px;
     height: 12px;
     text-indent: 12px; }
-  .coveo-sprites-box-icon_external {
+  .coveo-sprites-caseCreation-edit {
     background-position: -184px -103px;
-    width: 13px;
-    height: 12px;
-    text-indent: 13px; }
-  .coveo-sprites-facet-checkmark_disabled {
-    background-position: -197px -103px;
     width: 12px;
     height: 12px;
     text-indent: 12px; }
   .coveo-sprites-common-clear-mobile, .CoveoBreadcrumb.coveo-small-display .coveo-breadcrumb-clear-all .coveo-icon, .CoveoBreadcrumb .coveo-breadcrumb-clear-all .coveo-icon {
-    background-position: -209px -103px;
+    background-position: -196px -103px;
     width: 12px;
     height: 12px;
     text-indent: 12px; }
-  .coveo-sprites-facet-checkmark_disabled_hover {
-    background-position: -221px -103px;
+  .coveo-sprites-common-tagging_tag, .coveo-result-tagging-add-tag-icon {
+    background-position: -208px -103px;
     width: 12px;
     height: 12px;
     text-indent: 12px; }
   .coveo-sprites-facet-resume_selected, .coveo-facet-breadcrumb-multi-icon.coveo-selected {
-    background-position: -233px -103px;
+    background-position: -220px -103px;
     width: 12px;
     height: 12px;
     text-indent: 12px; }
+  .coveo-sprites-facet-resume_disable, .coveo-facet-breadcrumb-multi-icon.coveo-excluded {
+    background-position: -232px -103px;
+    width: 12px;
+    height: 12px;
+    text-indent: 12px; }
+  .coveo-sprites-sort-sortby_bottom, .CoveoSort.coveo-selected .coveo-icon {
+    background-position: -244px -103px;
+    width: 6px;
+    height: 6px;
+    text-indent: 6px; }
+  .coveo-sprites-sort-sortby_top, .CoveoSort.coveo-selected.coveo-ascending .coveo-icon {
+    background-position: -244px -109px;
+    width: 6px;
+    height: 6px;
+    text-indent: 6px; }
   .coveo-sprites-common-star_inactive, .coveo-settings-item.coveo-follow-query .coveo-icon, .coveo-top-suggestion-header-icon, .coveo-top-field-suggestion-header .coveo-icon-top-field, .coveo-top-analytics-suggestion-header .coveo-icon-top-analytics, .coveo-omnibox-result-list-header .coveo-icon-omnibox-result-list {
     background-position: -250px -71px;
     width: 18px;
@@ -4350,7 +4360,7 @@
     width: 8px;
     height: 8px;
     text-indent: 8px; }
-  .coveo-sprites-facet-showmore {
+  .coveo-sprites-facet-showless {
     background-position: -258px -107px;
     width: 8px;
     height: 8px;
@@ -4375,16 +4385,6 @@
     width: 18px;
     height: 18px;
     text-indent: 18px; }
-  .coveo-sprites-sort-sortby_bottom, .CoveoSort.coveo-selected .coveo-icon {
-    background-position: -318px -44px;
-    width: 6px;
-    height: 6px;
-    text-indent: 6px; }
-  .coveo-sprites-sort-sortby_top, .CoveoSort.coveo-selected.coveo-ascending .coveo-icon {
-    background-position: -324px -44px;
-    width: 6px;
-    height: 6px;
-    text-indent: 6px; }
   .coveo-sprites-preferencesPanel-toggle_off, .CoveoResultsPreferences .coveo-input-icon, .CoveoResultsFiltersPreferences .coveo-input-icon, .CoveoPreferencePanelItem .coveo-input-icon {
     background-position: -270px -50px;
     width: 42px;
@@ -4395,7 +4395,7 @@
     width: 18px;
     height: 18px;
     text-indent: 18px; }
-  .coveo-sprites-facet-clear_facetsearch, .coveo-facet-search-clear .coveo-icon {
+  .coveo-sprites-common-tagging_ok, .coveo-result-tagging-add-tag-tick-icon span {
     background-position: -330px -50px;
     width: 10px;
     height: 10px;
@@ -4425,12 +4425,12 @@
     width: 18px;
     height: 18px;
     text-indent: 18px; }
-  .coveo-sprites-facet-spin_facet_search, .coveo-facet-search-wait-animation, .coveo-mobile-device .coveo-modalBox.coveo-mobile-facet-search > .coveo-wrapper > .coveo-body > .coveo-facet-search .coveo-facet-search-wait-animation, .coveo-modalBox.coveo-mobile-facet-search > .coveo-wrapper > .coveo-body > .coveo-facet-search .coveo-facet-search-wait-animation {
+  .coveo-sprites-facet-clear_facetsearch, .coveo-facet-search-clear .coveo-icon {
     background-position: -330px -70px;
     width: 10px;
     height: 10px;
     text-indent: 10px; }
-  .coveo-sprites-facet-showless {
+  .coveo-sprites-facet-showmore {
     background-position: -330px -80px;
     width: 8px;
     height: 8px;
@@ -4445,7 +4445,7 @@
     width: 10px;
     height: 10px;
     text-indent: 10px; }
-  .coveo-sprites-common-tagging_ok, .coveo-result-tagging-add-tag-tick-icon span {
+  .coveo-sprites-facet-spin_facet_search, .coveo-facet-search-wait-animation, .coveo-mobile-device .coveo-modalBox.coveo-mobile-facet-search > .coveo-wrapper > .coveo-body > .coveo-facet-search .coveo-facet-search-wait-animation, .coveo-modalBox.coveo-mobile-facet-search > .coveo-wrapper > .coveo-body > .coveo-facet-search .coveo-facet-search-wait-animation {
     background-position: -330px -98px;
     width: 10px;
     height: 10px;
@@ -4470,193 +4470,193 @@
     width: 16px;
     height: 16px;
     text-indent: 16px; }
-  .coveo-sprites-facet-moreoption, .coveo-facet-header-settings .coveo-icon {
+  .coveo-sprites-common-delete {
     background-position: -341px -70px;
     width: 16px;
     height: 16px;
     text-indent: 16px; }
-  .coveo-sprites-fileType-objectType-case, .coveo-icon.objecttype.Case, .coveo-icon.objecttype.case {
+  .coveo-sprites-common-doritos, .coveo-new-to-coveo-section .coveo-demo-section-arrow-forward, .coveo-demo-section-arrow-backward {
     background-position: -341px -86px;
     width: 16px;
     height: 16px;
     text-indent: 16px; }
-  .coveo-sprites-facet-resume_disable, .coveo-facet-breadcrumb-multi-icon.coveo-excluded {
+  .coveo-sprites-box-icon_external {
     background-position: -341px -102px;
-    width: 12px;
+    width: 13px;
     height: 12px;
-    text-indent: 12px; }
-  .coveo-sprites-facet-openfacets, .coveo-search-section-facets-icon {
-    background-position: -359px 0px;
-    width: 23px;
-    height: 16px;
-    text-indent: 23px; }
-  .coveo-sprites-facet-openinterfaces, .coveo-search-section-tab-icon {
-    background-position: -359px -16px;
-    width: 23px;
-    height: 16px;
-    text-indent: 23px; }
-  .coveo-sprites-fileType-objectType-campaign, .coveo-icon.objecttype.Campaign, .coveo-icon.objecttype.campaign {
-    background-position: -359px -32px;
-    width: 16px;
-    height: 16px;
-    text-indent: 16px; }
-  .coveo-sprites-facet-show_facet, .coveo-facet-settings-section-show .coveo-icon {
-    background-position: -359px -48px;
-    width: 16px;
-    height: 16px;
-    text-indent: 16px; }
-  .coveo-sprites-fileType-objectType-board, .coveo-icon.objecttype.Board, .coveo-icon.objecttype.board {
-    background-position: -359px -64px;
-    width: 16px;
-    height: 16px;
-    text-indent: 16px; }
-  .coveo-sprites-fileType-objectType-answer, .coveo-icon.objecttype.Solution, .coveo-icon.objecttype.solution, .coveo-icon.objecttype.Kbsolution, .coveo-icon.objecttype.kbsolution {
-    background-position: -359px -80px;
-    width: 16px;
-    height: 16px;
-    text-indent: 16px; }
-  .coveo-sprites-facet-spin, .coveo-facet-header-wait-animation {
-    background-position: -359px -96px;
-    width: 16px;
-    height: 16px;
-    text-indent: 16px; }
-  .coveo-sprites-fileType-objectType-account, .coveo-icon.objecttype.Account, .coveo-icon.objecttype.account {
-    background-position: -382px 0px;
-    width: 16px;
-    height: 16px;
-    text-indent: 16px; }
-  .coveo-sprites-common-amount {
-    background-position: -382px -16px;
-    width: 16px;
-    height: 16px;
-    text-indent: 16px; }
-  .coveo-sprites-common-checkmark_selected-on_dark_bg, .CoveoTab.coveo-selected:after, .coveo-selected.coveo-tab-section-spacer:after, .coveo-selected.coveo-demo-back-to-login:after, .coveo-selected.CoveoLogin:after {
-    background-position: -382px -32px;
-    width: 16px;
-    height: 16px;
-    text-indent: 16px; }
-  .coveo-sprites-fileType-lithium-thread, .coveo-icon.filetype.lithiumthread, .coveo-icon.sysfiletype.lithiumthread {
-    background-position: -382px -48px;
-    width: 16px;
-    height: 16px;
-    text-indent: 16px; }
-  .coveo-sprites-common-copy {
-    background-position: -382px -64px;
-    width: 16px;
-    height: 16px;
-    text-indent: 16px; }
-  .coveo-sprites-fileType-youtube-youtube, .coveo-icon.filetype.youtube, .coveo-icon.sysfiletype.youtube {
-    background-position: -382px -80px;
-    width: 16px;
-    height: 16px;
-    text-indent: 16px; }
-  .coveo-sprites-common-datepicker {
-    background-position: -382px -96px;
-    width: 16px;
-    height: 16px;
-    text-indent: 16px; }
-  .coveo-sprites-common-delete {
-    background-position: -398px 0px;
-    width: 16px;
-    height: 16px;
-    text-indent: 16px; }
-  .coveo-sprites-common-doritos, .coveo-new-to-coveo-section .coveo-demo-section-arrow-forward, .coveo-demo-section-arrow-backward {
-    background-position: -398px -16px;
-    width: 16px;
-    height: 16px;
-    text-indent: 16px; }
+    text-indent: 13px; }
   .coveo-sprites-fileType-salesforce-item, .coveo-icon.filetype.saleforceitem, .coveo-icon.sysfiletype.saleforceitem {
-    background-position: -398px -32px;
-    width: 16px;
-    height: 16px;
-    text-indent: 16px; }
-  .coveo-sprites-fileType-objectType-user, .coveo-icon.objecttype.People, .coveo-icon.objecttype.people, .coveo-icon.objecttype.User, .coveo-icon.objecttype.user {
-    background-position: -398px -48px;
-    width: 16px;
-    height: 16px;
-    text-indent: 16px; }
-  .coveo-sprites-fileType-objectType-thread, .coveo-icon.objecttype.Thread, .coveo-icon.objecttype.thread {
-    background-position: -398px -64px;
+    background-position: -359px 0px;
     width: 16px;
     height: 16px;
     text-indent: 16px; }
   .coveo-sprites-fileType-objectType-task, .coveo-icon.objecttype.Task, .coveo-icon.objecttype.task {
-    background-position: -398px -80px;
+    background-position: -359px -16px;
     width: 16px;
     height: 16px;
     text-indent: 16px; }
   .coveo-sprites-fileType-objectType-rss, .coveo-icon.objecttype.Feed, .coveo-icon.objecttype.feed {
-    background-position: -398px -96px;
-    width: 16px;
-    height: 16px;
-    text-indent: 16px; }
-  .coveo-sprites-common-menu_reauthenticate, .coveo-settings-item.coveo-authentication-provider .coveo-icon {
-    background-position: -414px 0px;
+    background-position: -359px -32px;
     width: 16px;
     height: 16px;
     text-indent: 16px; }
   .coveo-sprites-fileType-objectType-product, .coveo-icon.objecttype.Product, .coveo-icon.objecttype.product {
-    background-position: -414px -16px;
+    background-position: -359px -48px;
+    width: 16px;
+    height: 16px;
+    text-indent: 16px; }
+  .coveo-sprites-fileType-objectType-user, .coveo-icon.objecttype.People, .coveo-icon.objecttype.people, .coveo-icon.objecttype.User, .coveo-icon.objecttype.user {
+    background-position: -359px -64px;
+    width: 16px;
+    height: 16px;
+    text-indent: 16px; }
+  .coveo-sprites-common-amount {
+    background-position: -359px -80px;
+    width: 16px;
+    height: 16px;
+    text-indent: 16px; }
+  .coveo-sprites-common-checkmark_selected-on_dark_bg, .CoveoTab.coveo-selected:after, .coveo-selected.coveo-tab-section-spacer:after, .coveo-selected.coveo-demo-back-to-login:after, .coveo-selected.CoveoLogin:after {
+    background-position: -359px -96px;
+    width: 16px;
+    height: 16px;
+    text-indent: 16px; }
+  .coveo-sprites-fileType-objectType-thread, .coveo-icon.objecttype.Thread, .coveo-icon.objecttype.thread {
+    background-position: -375px 0px;
     width: 16px;
     height: 16px;
     text-indent: 16px; }
   .coveo-sprites-fileType-objectType-opportunity, .coveo-icon.objecttype.Opportunity, .coveo-icon.objecttype.opportunity {
-    background-position: -414px -32px;
+    background-position: -375px -16px;
     width: 16px;
     height: 16px;
     text-indent: 16px; }
   .coveo-sprites-fileType-objectType-note, .coveo-icon.objecttype.Note, .coveo-icon.objecttype.note {
-    background-position: -414px -48px;
-    width: 16px;
-    height: 16px;
-    text-indent: 16px; }
-  .coveo-sprites-facet-clear_facet, .coveo-facet-header-eraser .coveo-icon, .coveo-facet-settings-section-hide .coveo-icon, .coveo-share-query-summary-info-close span, .coveo-subscriptions-panel .coveo-subscriptions-panel-close span {
-    background-position: -414px -64px;
+    background-position: -375px -32px;
     width: 16px;
     height: 16px;
     text-indent: 16px; }
   .coveo-sprites-fileType-objectType-message, .coveo-icon.objecttype.Message, .coveo-icon.objecttype.message {
-    background-position: -414px -80px;
+    background-position: -375px -48px;
     width: 16px;
     height: 16px;
     text-indent: 16px; }
   .coveo-sprites-fileType-objectType-lead, .coveo-icon.objecttype.Lead, .coveo-icon.objecttype.lead {
-    background-position: -414px -96px;
-    width: 16px;
-    height: 16px;
-    text-indent: 16px; }
-  .coveo-sprites-fileType-lithium-message, .coveo-icon.filetype.lithiummessage, .coveo-icon.sysfiletype.lithiummessage {
-    background-position: -430px 0px;
-    width: 16px;
-    height: 16px;
-    text-indent: 16px; }
-  .coveo-sprites-fileType-lithium-board, .coveo-icon.filetype.lithiumboard, .coveo-icon.sysfiletype.lithiumboard {
-    background-position: -430px -16px;
-    width: 16px;
-    height: 16px;
-    text-indent: 16px; }
-  .coveo-sprites-fileType-formats-zip, .coveo-icon.filetype.zip, .coveo-icon.sysfiletype.zip {
-    background-position: -430px -32px;
+    background-position: -375px -64px;
     width: 16px;
     height: 16px;
     text-indent: 16px; }
   .coveo-sprites-fileType-objectType-kb, .coveo-icon.objecttype.Kbdocumentation, .coveo-icon.objecttype.kbdocumentation, .coveo-icon.objecttype.Kbknowledgearticle, .coveo-icon.objecttype.kbknowledgearticle {
-    background-position: -430px -48px;
-    width: 16px;
-    height: 16px;
-    text-indent: 16px; }
-  .coveo-sprites-facet-collapsed, .coveo-facet-header-expand .coveo-icon, .coveo-mobile-device .CoveoFacet .coveo-facet-footer .coveo-facet-more:after, .CoveoHierarchicalFacet ul.coveo-facet-values .coveo-facet-value.coveo-has-childs .coveo-has-childs-toggle, .CoveoFacet .coveo-facet-footer .coveo-facet-more:after {
-    background-position: -430px -64px;
+    background-position: -375px -80px;
     width: 16px;
     height: 16px;
     text-indent: 16px; }
   .coveo-sprites-fileType-objectType-contract, .coveo-icon.objecttype.Contract, .coveo-icon.objecttype.contract {
-    background-position: -430px -80px;
+    background-position: -375px -96px;
+    width: 16px;
+    height: 16px;
+    text-indent: 16px; }
+  .coveo-sprites-facet-clear_facet, .coveo-facet-header-eraser .coveo-icon, .coveo-facet-settings-section-hide .coveo-icon, .coveo-share-query-summary-info-close span, .coveo-subscriptions-panel .coveo-subscriptions-panel-close span {
+    background-position: -391px 0px;
     width: 16px;
     height: 16px;
     text-indent: 16px; }
   .coveo-sprites-fileType-objectType-contact, .coveo-icon.objecttype.Contact, .coveo-icon.objecttype.contact {
-    background-position: -430px -96px;
+    background-position: -391px -16px;
+    width: 16px;
+    height: 16px;
+    text-indent: 16px; }
+  .coveo-sprites-fileType-objectType-comment, .coveo-icon.objecttype.Casecomment, .coveo-icon.objecttype.casecomment {
+    background-position: -391px -32px;
+    width: 16px;
+    height: 16px;
+    text-indent: 16px; }
+  .coveo-sprites-fileType-objectType-case, .coveo-icon.objecttype.Case, .coveo-icon.objecttype.case {
+    background-position: -391px -48px;
+    width: 16px;
+    height: 16px;
+    text-indent: 16px; }
+  .coveo-sprites-facet-collapsed, .coveo-facet-header-expand .coveo-icon, .coveo-mobile-device .CoveoFacet .coveo-facet-footer .coveo-facet-more:after, .CoveoHierarchicalFacet ul.coveo-facet-values .coveo-facet-value.coveo-has-childs .coveo-has-childs-toggle, .CoveoFacet .coveo-facet-footer .coveo-facet-more:after {
+    background-position: -391px -64px;
+    width: 16px;
+    height: 16px;
+    text-indent: 16px; }
+  .coveo-sprites-fileType-objectType-campaign, .coveo-icon.objecttype.Campaign, .coveo-icon.objecttype.campaign {
+    background-position: -391px -80px;
+    width: 16px;
+    height: 16px;
+    text-indent: 16px; }
+  .coveo-sprites-fileType-objectType-board, .coveo-icon.objecttype.Board, .coveo-icon.objecttype.board {
+    background-position: -391px -96px;
+    width: 16px;
+    height: 16px;
+    text-indent: 16px; }
+  .coveo-sprites-facet-expanded, .coveo-facet-header-collapse .coveo-icon, .coveo-mobile-device .CoveoFacet .coveo-facet-footer .coveo-facet-less:after, .CoveoHierarchicalFacet ul.coveo-facet-values .coveo-facet-value.coveo-has-childs.coveo-open .coveo-has-childs-toggle, .CoveoFacet .coveo-facet-footer .coveo-facet-less:after {
+    background-position: -407px 0px;
+    width: 16px;
+    height: 16px;
+    text-indent: 16px; }
+  .coveo-sprites-fileType-objectType-answer, .coveo-icon.objecttype.Solution, .coveo-icon.objecttype.solution, .coveo-icon.objecttype.Kbsolution, .coveo-icon.objecttype.kbsolution {
+    background-position: -407px -16px;
+    width: 16px;
+    height: 16px;
+    text-indent: 16px; }
+  .coveo-sprites-facet-modeand, .coveo-facet-header-operator .coveo-icon.coveo-and {
+    background-position: -407px -32px;
+    width: 16px;
+    height: 16px;
+    text-indent: 16px; }
+  .coveo-sprites-facet-modeor, .coveo-facet-header-operator .coveo-icon.coveo-or {
+    background-position: -407px -48px;
+    width: 16px;
+    height: 16px;
+    text-indent: 16px; }
+  .coveo-sprites-facet-moreoption, .coveo-facet-header-settings .coveo-icon {
+    background-position: -407px -64px;
+    width: 16px;
+    height: 16px;
+    text-indent: 16px; }
+  .coveo-sprites-fileType-objectType-account, .coveo-icon.objecttype.Account, .coveo-icon.objecttype.account {
+    background-position: -407px -80px;
+    width: 16px;
+    height: 16px;
+    text-indent: 16px; }
+  .coveo-sprites-fileType-lithium-thread, .coveo-icon.filetype.lithiumthread, .coveo-icon.sysfiletype.lithiumthread {
+    background-position: -407px -96px;
+    width: 16px;
+    height: 16px;
+    text-indent: 16px; }
+  .coveo-sprites-facet-openfacets, .coveo-search-section-facets-icon {
+    background-position: -423px 0px;
+    width: 23px;
+    height: 16px;
+    text-indent: 23px; }
+  .coveo-sprites-facet-openinterfaces, .coveo-search-section-tab-icon {
+    background-position: -423px -16px;
+    width: 23px;
+    height: 16px;
+    text-indent: 23px; }
+  .coveo-sprites-facet-show_facet, .coveo-facet-settings-section-show .coveo-icon {
+    background-position: -423px -32px;
+    width: 16px;
+    height: 16px;
+    text-indent: 16px; }
+  .coveo-sprites-fileType-lithium-message, .coveo-icon.filetype.lithiummessage, .coveo-icon.sysfiletype.lithiummessage {
+    background-position: -423px -48px;
+    width: 16px;
+    height: 16px;
+    text-indent: 16px; }
+  .coveo-sprites-fileType-lithium-board, .coveo-icon.filetype.lithiumboard, .coveo-icon.sysfiletype.lithiumboard {
+    background-position: -423px -64px;
+    width: 16px;
+    height: 16px;
+    text-indent: 16px; }
+  .coveo-sprites-facet-spin, .coveo-facet-header-wait-animation {
+    background-position: -423px -80px;
+    width: 16px;
+    height: 16px;
+    text-indent: 16px; }
+  .coveo-sprites-fileType-formats-zip, .coveo-icon.filetype.zip, .coveo-icon.sysfiletype.zip {
+    background-position: -423px -96px;
     width: 16px;
     height: 16px;
     text-indent: 16px; }
@@ -4730,12 +4730,12 @@
     width: 16px;
     height: 16px;
     text-indent: 16px; }
-  .coveo-sprites-facet-expanded, .coveo-facet-header-collapse .coveo-icon, .coveo-mobile-device .CoveoFacet .coveo-facet-footer .coveo-facet-less:after, .CoveoHierarchicalFacet ul.coveo-facet-values .coveo-facet-value.coveo-has-childs.coveo-open .coveo-has-childs-toggle, .CoveoFacet .coveo-facet-footer .coveo-facet-less:after {
+  .coveo-sprites-common-menu_reauthenticate, .coveo-settings-item.coveo-authentication-provider .coveo-icon {
     background-position: -478px 0px;
     width: 16px;
     height: 16px;
     text-indent: 16px; }
-  .coveo-sprites-fileType-objectType-comment, .coveo-icon.objecttype.Casecomment, .coveo-icon.objecttype.casecomment {
+  .coveo-sprites-common-copy {
     background-position: -478px -16px;
     width: 16px;
     height: 16px;
@@ -4765,12 +4765,12 @@
     width: 16px;
     height: 16px;
     text-indent: 16px; }
-  .coveo-sprites-facet-modeand, .coveo-facet-header-operator .coveo-icon.coveo-and {
+  .coveo-sprites-fileType-youtube-youtube, .coveo-icon.filetype.youtube, .coveo-icon.sysfiletype.youtube {
     background-position: -494px 0px;
     width: 16px;
     height: 16px;
     text-indent: 16px; }
-  .coveo-sprites-facet-modeor, .coveo-facet-header-operator .coveo-icon.coveo-or {
+  .coveo-sprites-common-datepicker {
     background-position: -494px -16px;
     width: 16px;
     height: 16px;
@@ -4865,37 +4865,37 @@
     width: 16px;
     height: 16px;
     text-indent: 16px; }
-  .coveo-sprites-facet-checkmark_selected, .coveo-facet-value:hover .coveo-facet-value-checkbox > span, .coveo-facet-value.coveo-selected .coveo-facet-value-checkbox > span, .coveo-mobile-device .coveo-facet-section .CoveoFacet .coveo-facet-values .coveo-facet-value.coveo-selected div.coveo-facet-value-checkbox > span, .coveo-mobile-device .coveo-facet-section .CoveoFacet .coveo-facet-values .coveo-facet-value.coveo-selected:hover div.coveo-facet-value-checkbox span, .coveo-mobile-device .coveo-modalBox.coveo-mobile-facet-search > .coveo-wrapper > .coveo-body > .coveo-facet-search-results .coveo-facet-value.coveo-selected div.coveo-facet-value-checkbox > span, .coveo-mobile-device .coveo-modalBox.coveo-mobile-facet-search > .coveo-wrapper > .coveo-body > .coveo-facet-search-results .coveo-facet-value.coveo-selected:hover div.coveo-facet-value-checkbox span, .coveo-mobile-device .coveo-modalBox.coveo-mobile-facet-search > .coveo-wrapper > .coveo-body > .coveo-facet-search-results .coveo-selected div.coveo-facet-value-checkbox > span, .coveo-mobile-device .coveo-modalBox.coveo-mobile-facet-search > .coveo-wrapper > .coveo-body > .coveo-facet-search-results .coveo-selected:hover div.coveo-checkbox span, .CoveoHierarchicalFacet ul.coveo-facet-values .coveo-facet-value.coveo-has-childs.coveo-has-childs-selected.coveo-selected .coveo-facet-value-checkbox > span, .coveo-facet-section .CoveoFacet .coveo-facet-values .coveo-facet-value.coveo-selected div.coveo-facet-value-checkbox > span, .coveo-facet-section .CoveoFacet .coveo-facet-values .coveo-facet-value.coveo-selected:hover div.coveo-facet-value-checkbox span, .coveo-modalBox.coveo-mobile-facet-search > .coveo-wrapper > .coveo-body > .coveo-facet-search-results .coveo-facet-value.coveo-selected div.coveo-facet-value-checkbox > span, .coveo-modalBox.coveo-mobile-facet-search > .coveo-wrapper > .coveo-body > .coveo-facet-search-results .coveo-facet-value.coveo-selected:hover div.coveo-facet-value-checkbox span, .coveo-modalBox.coveo-mobile-facet-search > .coveo-wrapper > .coveo-body > .coveo-facet-search-results .coveo-selected div.coveo-facet-value-checkbox > span, .coveo-modalBox.coveo-mobile-facet-search > .coveo-wrapper > .coveo-body > .coveo-facet-search-results .coveo-selected:hover div.coveo-checkbox span {
+  .coveo-sprites-facet-checkmark_disabled {
     background-position: -526px -96px;
     width: 12px;
     height: 12px;
     text-indent: 12px; }
-  .coveo-sprites-facet-checkmark_unselected, .coveo-facet-value-checkbox > span, .coveo-mobile-device .coveo-facet-section .CoveoFacet .coveo-facet-values .coveo-facet-value .coveo-facet-value-checkbox > span, .coveo-mobile-device .coveo-facet-section .CoveoFacet .coveo-facet-values .coveo-facet-value:hover .coveo-facet-value-checkbox span, .coveo-mobile-device .coveo-modalBox.coveo-mobile-facet-search > .coveo-wrapper > .coveo-body > .coveo-facet-search-results .coveo-facet-value .coveo-facet-value-checkbox > span, .coveo-mobile-device .coveo-modalBox.coveo-mobile-facet-search > .coveo-wrapper > .coveo-body > .coveo-facet-search-results .coveo-facet-value:hover .coveo-facet-value-checkbox span, .coveo-facet-section .CoveoFacet .coveo-facet-values .coveo-facet-value .coveo-facet-value-checkbox > span, .coveo-facet-section .CoveoFacet .coveo-facet-values .coveo-facet-value:hover .coveo-facet-value-checkbox span, .coveo-modalBox.coveo-mobile-facet-search > .coveo-wrapper > .coveo-body > .coveo-facet-search-results .coveo-facet-value .coveo-facet-value-checkbox > span, .coveo-modalBox.coveo-mobile-facet-search > .coveo-wrapper > .coveo-body > .coveo-facet-search-results .coveo-facet-value:hover .coveo-facet-value-checkbox span {
+  .coveo-sprites-facet-disable, .coveo-facet-value-exclude {
     background-position: -542px 0px;
     width: 12px;
     height: 12px;
     text-indent: 12px; }
-  .coveo-sprites-facet-disable, .coveo-facet-value-exclude {
+  .coveo-sprites-facet-clear_facetsearch_mobile {
     background-position: -542px -12px;
     width: 12px;
     height: 12px;
     text-indent: 12px; }
-  .coveo-sprites-facet-clear_facetsearch_mobile {
+  .coveo-sprites-facet-checkmark_disabled_hover {
     background-position: -542px -24px;
     width: 12px;
     height: 12px;
     text-indent: 12px; }
-  .coveo-sprites-facet-clear_activefilter, .coveo-facet-breadcrumb-clear, .coveo-facet-slider-breadcrumb-clear, .coveo-hidden-query-breadcrumb-clear {
+  .coveo-sprites-facet-checkmark_selected, .coveo-facet-value:hover .coveo-facet-value-checkbox > span, .coveo-facet-value.coveo-selected .coveo-facet-value-checkbox > span, .coveo-mobile-device .coveo-facet-section .CoveoFacet .coveo-facet-values .coveo-facet-value.coveo-selected div.coveo-facet-value-checkbox > span, .coveo-mobile-device .coveo-facet-section .CoveoFacet .coveo-facet-values .coveo-facet-value.coveo-selected:hover div.coveo-facet-value-checkbox span, .coveo-mobile-device .coveo-modalBox.coveo-mobile-facet-search > .coveo-wrapper > .coveo-body > .coveo-facet-search-results .coveo-facet-value.coveo-selected div.coveo-facet-value-checkbox > span, .coveo-mobile-device .coveo-modalBox.coveo-mobile-facet-search > .coveo-wrapper > .coveo-body > .coveo-facet-search-results .coveo-facet-value.coveo-selected:hover div.coveo-facet-value-checkbox span, .coveo-mobile-device .coveo-modalBox.coveo-mobile-facet-search > .coveo-wrapper > .coveo-body > .coveo-facet-search-results .coveo-selected div.coveo-facet-value-checkbox > span, .coveo-mobile-device .coveo-modalBox.coveo-mobile-facet-search > .coveo-wrapper > .coveo-body > .coveo-facet-search-results .coveo-selected:hover div.coveo-checkbox span, .CoveoHierarchicalFacet ul.coveo-facet-values .coveo-facet-value.coveo-has-childs.coveo-has-childs-selected.coveo-selected .coveo-facet-value-checkbox > span, .coveo-facet-section .CoveoFacet .coveo-facet-values .coveo-facet-value.coveo-selected div.coveo-facet-value-checkbox > span, .coveo-facet-section .CoveoFacet .coveo-facet-values .coveo-facet-value.coveo-selected:hover div.coveo-facet-value-checkbox span, .coveo-modalBox.coveo-mobile-facet-search > .coveo-wrapper > .coveo-body > .coveo-facet-search-results .coveo-facet-value.coveo-selected div.coveo-facet-value-checkbox > span, .coveo-modalBox.coveo-mobile-facet-search > .coveo-wrapper > .coveo-body > .coveo-facet-search-results .coveo-facet-value.coveo-selected:hover div.coveo-facet-value-checkbox span, .coveo-modalBox.coveo-mobile-facet-search > .coveo-wrapper > .coveo-body > .coveo-facet-search-results .coveo-selected div.coveo-facet-value-checkbox > span, .coveo-modalBox.coveo-mobile-facet-search > .coveo-wrapper > .coveo-body > .coveo-facet-search-results .coveo-selected:hover div.coveo-checkbox span {
     background-position: -542px -36px;
     width: 12px;
     height: 12px;
     text-indent: 12px; }
-  .coveo-sprites-box-settings_gray {
+  .coveo-sprites-facet-clear_activefilter, .coveo-facet-breadcrumb-clear, .coveo-facet-slider-breadcrumb-clear, .coveo-hidden-query-breadcrumb-clear {
     background-position: -542px -48px;
     width: 12px;
     height: 12px;
     text-indent: 12px; }
-  .coveo-sprites-caseCreation-edit {
+  .coveo-sprites-facet-checkmark_unselected, .coveo-facet-value-checkbox > span, .coveo-mobile-device .coveo-facet-section .CoveoFacet .coveo-facet-values .coveo-facet-value .coveo-facet-value-checkbox > span, .coveo-mobile-device .coveo-facet-section .CoveoFacet .coveo-facet-values .coveo-facet-value:hover .coveo-facet-value-checkbox span, .coveo-mobile-device .coveo-modalBox.coveo-mobile-facet-search > .coveo-wrapper > .coveo-body > .coveo-facet-search-results .coveo-facet-value .coveo-facet-value-checkbox > span, .coveo-mobile-device .coveo-modalBox.coveo-mobile-facet-search > .coveo-wrapper > .coveo-body > .coveo-facet-search-results .coveo-facet-value:hover .coveo-facet-value-checkbox span, .coveo-facet-section .CoveoFacet .coveo-facet-values .coveo-facet-value .coveo-facet-value-checkbox > span, .coveo-facet-section .CoveoFacet .coveo-facet-values .coveo-facet-value:hover .coveo-facet-value-checkbox span, .coveo-modalBox.coveo-mobile-facet-search > .coveo-wrapper > .coveo-body > .coveo-facet-search-results .coveo-facet-value .coveo-facet-value-checkbox > span, .coveo-modalBox.coveo-mobile-facet-search > .coveo-wrapper > .coveo-body > .coveo-facet-search-results .coveo-facet-value:hover .coveo-facet-value-checkbox span {
     background-position: -542px -60px;
     width: 12px;
     height: 12px;
