@@ -13,7 +13,10 @@
       Coveo.SearchEndpoint.endpoints['default'] = new Coveo.SearchEndpoint({
         restUri: 'http://localhost:8100/rest/search',
         searchAlertsUri: 'http://localhost:8088/rest/search/alerts/',
-        accessToken: '52d806a2-0f64-4390-a3f2-e0f41a4a73ec'
+        accessToken: 'xx564559b1-0045-48e1-953c-3addd1ee4457',
+        queryStringArguments: {
+          organizationid: 'searchuisamples'
+        }
       })
       Coveo.init(document.body);
     })
