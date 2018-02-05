@@ -1,6 +1,5 @@
 import { SearchEndpoint } from '../../rest/SearchEndpoint';
 import { ComponentOptions, IFieldOption } from '../Base/ComponentOptions';
-import { DeviceUtils } from '../../utils/DeviceUtils';
 import { $$ } from '../../utils/Dom';
 import { Assert } from '../../misc/Assert';
 import { QueryStateModel } from '../../models/QueryStateModel';
@@ -445,8 +444,15 @@ export class SearchInterface extends RootComponent implements IComponentBindings
   constructor(public element: HTMLElement, public options?: ISearchInterfaceOptions, public analyticsOptions?, public _window = window) {
     super(element, SearchInterface.ID);
 
-    if (DeviceUtils.isMobileDevice()) {
-      $$(document.body).addClass('coveo-mobile-device');
+    this.options = ComponentOptions.initComponentOptions(element, SearchInterface, options);
+    Assert.exists(element);
+    Assert.exists(this.options);
+    this.root = element;
+
+    if (this.options.allowQueriesWithoutKeywords) {
+      this.initializeEmptyQueryAllowed();
+    } else {
+      this.initializeEmptyQueryNotAllowed();
     }
 
     // The definition file for fastclick does not match the way that fast click gets loaded (AMD)
@@ -454,23 +460,12 @@ export class SearchInterface extends RootComponent implements IComponentBindings
       (<any>fastclick).attach(element);
     }
 
-    this.options = ComponentOptions.initComponentOptions(element, SearchInterface, options);
-    Assert.exists(element);
-    Assert.exists(this.options);
-
-    this.root = element;
     this.queryStateModel = new QueryStateModel(element);
     this.componentStateModel = new ComponentStateModel(element);
     this.componentOptionsModel = new ComponentOptionsModel(element);
     this.usageAnalytics = this.initializeAnalytics();
     this.queryController = new QueryController(element, this.options, this.usageAnalytics, this);
     new SentryLogger(this.queryController);
-
-    if (this.options.allowQueriesWithoutKeywords) {
-      this.initializeEmptyQueryAllowed();
-    } else {
-      this.initializeEmptyQueryNotAllowed();
-    }
 
     const eventName = this.queryStateModel.getEventName(Model.eventTypes.preprocess);
     $$(this.element).on(eventName, (e, args) => this.handlePreprocessQueryStateModel(args));
