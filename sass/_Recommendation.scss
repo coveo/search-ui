@@ -77,3 +77,8 @@
     }
   }
 }
+
+.CoveoRecommendationQuery,
+script.CoveoRecommendationQuery[type='text/x-query-generic'] {
+  display: none;
+}
