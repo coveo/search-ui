@@ -81,13 +81,13 @@ export interface IQueryResults {
   searchAPIDuration: number;
   /**
    * The duration of the query on the proxy (not always applicable, can be optional)
-   * 
+   *
    * @deprecated Use duration, indexDuration and searchAPIDuration instead.
    */
   proxyDuration?: number;
   /**
    * The duration of the query for the client.
-   * 
+   *
    * @deprecated Use searchAPIDuration instead.
    */
   clientDuration: number;
