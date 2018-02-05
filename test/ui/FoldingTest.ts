@@ -52,7 +52,7 @@ export function FoldingTest() {
         });
 
         // Connectors configures the folding fields with default value, which are the *opposite* of what the index expects.
-        // Those UT should ensure that we that switch is intentional and desired.
+        // These UT should ensure that the switch is intentional and desired.
         describe('swapping child and parent options', () => {
           it('should set a default value for parent, which is used in the opposite query parameter', () => {
             test = Mock.basicComponentSetup<Folding>(Folding);

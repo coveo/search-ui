@@ -87,6 +87,7 @@ export class Folding extends Component {
     field: ComponentOptions.buildFieldOption({ defaultValue: '@foldingcollection' }),
     /**
      * Specifies the field that determines whether a certain result is a child of another top result.
+     *
      * **Note:**
      * > In the index, the values of the corresponding field must contain alphanumerical characters only. Using a
      * > `child` whose values contain non-indexable characters (such as underscores) will make folding fail.
@@ -106,18 +107,18 @@ export class Folding extends Component {
     parent: ComponentOptions.buildFieldOption({ defaultValue: '@foldingparent' }),
 
     /**
-     * This option has been deprecated and should be replaced with {@link Folding.options.parent}
+     * This option is deprecated. Instead, use the {@link Folding.options.parent} option.
      * @deprecated
      */
     childField: ComponentOptions.buildFieldOption({
-      deprecated: 'This option has been deprecated and should be replaced with data-parent'
+      deprecated: 'This option is deprecated. Instead, use the data-parent option.'
     }),
     /**
-     * This option has been deprecated and should be replaced with {@link Folding.options.child}
+     * This option is deprecated. Instead, use the {@link Folding.options.child} option.
      * @deprecated
      */
     parentField: ComponentOptions.buildFieldOption({
-      deprecated: 'This option has been deprecated and should be replaced with data-child'
+      deprecated: 'This option is deprecated. Instead, use the data-child option.'
     }),
 
     /**
@@ -245,7 +246,7 @@ export class Folding extends Component {
     Assert.check(Utils.isCoveoField(<string>this.options.field), this.options.field + ' is not a valid field');
     Assert.exists(this.options.maximumExpandedResults);
 
-    this.switcherooFoldingFields();
+    this.swapParentChildFoldingFields();
 
     this.bind.onRootElement(QueryEvents.buildingQuery, this.handleBuildingQuery);
     this.bind.onRootElement(QueryEvents.preprocessResults, this.handlepreprocessResults);
@@ -360,18 +361,20 @@ export class Folding extends Component {
     return null;
   }
 
-  private switcherooFoldingFields() {
+  private swapParentChildFoldingFields() {
     // Swap "old" childField and parentField and assign them to the "new" parent option
     // This needs to be done because connectors push the default data in *reverse* order compared to what the index expect.
     if (this.options.childField != null) {
       this.logger.warn('Detecting usage of deprecated option "childField". Assigning it automatically to the "parent" option instead.');
-      this.logger.warn('To remove this warning, rename the "childField" option (data-child-field) to "parent" (data-parent)');
+      this.logger.warn('The option definition was changed to support universal folding across all sources.');
+      this.logger.warn('To remove this warning, rename the "childField" option (data-child-field) to "parent" (data-parent).');
       this.options.parent = this.options.childField;
     }
 
     if (this.options.parentField != null) {
       this.logger.warn('Detecting usage of deprecated option "parentField". Assigning it automatically to the "child" option instead.');
-      this.logger.warn('To remove this warning, rename the "parentField" option (data-parent-field) to "child" (data-child)');
+      this.logger.warn('The option definition was changed to support universal folding across all sources.');
+      this.logger.warn('To remove this warning, rename the "parentField" option (data-parent-field) to "child" (data-child).');
       this.options.child = this.options.parentField;
     }
   }
