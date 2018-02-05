@@ -45,7 +45,7 @@
     "@types/fastclick": "^1.0.28",
     "@types/jasmine": "^2.6.0",
     "@types/pikaday": "0.0.31",
-    "@types/underscore": "^1.8.3",
+    "@types/underscore": "1.8.3",
     "aws-sdk": "^2.155.0",
     "bluebird": "^3.4.7",
     "body-parser": "^1.18.2",
@@ -114,10 +114,10 @@
     "typescript": "^2.5.2",
     "walk": "^2.3.9",
     "webpack": "^3.10.0",
+    "webpack-bundle-analyzer": "^2.9.1",
     "webpack-dev-server": "^2.9.1",
     "xml2js": "^0.4.17",
-    "yargs": "^4.7.1",
-    "webpack-bundle-analyzer": "^2.9.1"
+    "yargs": "^4.7.1"
   },
   "dependencies": {
     "@material/select": "^0.3.3",

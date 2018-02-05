@@ -218,9 +218,9 @@ export class Querybox extends Component {
     /**
      * Specifies whether to trigger a query when clearing the `Querybox`.
      *
-     * Default value is `true`.
+     * Default value is `false`.
      */
-    triggerQueryOnClear: ComponentOptions.buildBooleanOption({ defaultValue: true })
+    triggerQueryOnClear: ComponentOptions.buildBooleanOption({ defaultValue: false })
   };
 
   public magicBox: Coveo.MagicBox.Instance;
