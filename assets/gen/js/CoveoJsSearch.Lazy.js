@@ -96,7 +96,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 		if (__webpack_require__.nc) {
 /******/ 			script.setAttribute("nonce", __webpack_require__.nc);
 /******/ 		}
-/******/ 		script.src = __webpack_require__.p + "" + ({"0":"HierarchicalFacet","1":"TimespanFacet","2":"FacetRange","3":"Facet","4":"AdvancedSearch","5":"FacetSlider","6":"OmniboxResultList","7":"ResultList","8":"Recommendation","9":"Searchbox","10":"Tab","11":"Omnibox","12":"Quickview","13":"ResultsFiltersPreferences","14":"ResultsPreferences","15":"ResultFolding","16":"Matrix","17":"FieldTable","18":"Backdrop","19":"SearchAlerts","20":"SimpleFilter","21":"ResultLayoutSelector","22":"ResultAttachments","23":"DistanceResources","24":"Badge","25":"Sort","26":"YouTubeThumbnail","27":"Thumbnail","28":"PrintableUri","29":"CardOverlay","30":"FoldingForThread","31":"FieldValue","32":"TemplateLoader","33":"FollowItem","34":"Settings","35":"ResultTagging","36":"ResultRating","37":"QuerySummary","38":"Pager","39":"HiddenQuery","40":"FieldSuggestions","41":"CardActionBar","42":"Breadcrumb","43":"Querybox","44":"SearchButton","45":"Logo","46":"NumericSpinner","47":"Folding","48":"ChatterPostedBy","49":"ChatterPostAttachment","50":"ChatterLikedBy","51":"AnalyticsSuggestions","52":"DatePicker","53":"RadioButton","54":"MultiSelect","55":"FormGroup","56":"Triggers","57":"Text","58":"ShareQuery","59":"ResultsPerPage","60":"ResultLink","61":"QueryDuration","62":"PreferencesPanel","63":"ExportToExcel","64":"Excerpt","65":"ErrorReport","66":"DidYouMean","67":"AuthenticationProvider","68":"PipelineContext","69":"Icon","70":"Dropdown","71":"ChatterTopic","72":"Aggregate"}[chunkId]||chunkId) + "__" + "1d6d59f2f473b27fa5dd" + ".js";
+/******/ 		script.src = __webpack_require__.p + "" + ({"0":"HierarchicalFacet","1":"TimespanFacet","2":"FacetRange","3":"Facet","4":"AdvancedSearch","5":"FacetSlider","6":"OmniboxResultList","7":"ResultList","8":"Recommendation","9":"Searchbox","10":"Tab","11":"Omnibox","12":"Quickview","13":"ResultsFiltersPreferences","14":"ResultsPreferences","15":"ResultFolding","16":"Matrix","17":"Backdrop","18":"SearchAlerts","19":"SimpleFilter","20":"ResultLayoutSelector","21":"ResultAttachments","22":"FieldTable","23":"DistanceResources","24":"Sort","25":"YouTubeThumbnail","26":"Thumbnail","27":"PrintableUri","28":"CardOverlay","29":"FoldingForThread","30":"TemplateLoader","31":"Badge","32":"FollowItem","33":"Settings","34":"ResultTagging","35":"ResultRating","36":"QuerySummary","37":"Pager","38":"HiddenQuery","39":"FieldSuggestions","40":"CardActionBar","41":"Breadcrumb","42":"Querybox","43":"SearchButton","44":"Logo","45":"NumericSpinner","46":"Folding","47":"FieldValue","48":"ChatterPostedBy","49":"ChatterPostAttachment","50":"ChatterLikedBy","51":"AnalyticsSuggestions","52":"DatePicker","53":"RadioButton","54":"MultiSelect","55":"FormGroup","56":"Triggers","57":"Text","58":"ShareQuery","59":"ResultsPerPage","60":"ResultLink","61":"QueryDuration","62":"PreferencesPanel","63":"ExportToExcel","64":"Excerpt","65":"ErrorReport","66":"DidYouMean","67":"AuthenticationProvider","68":"PipelineContext","69":"Icon","70":"Dropdown","71":"ChatterTopic","72":"Aggregate"}[chunkId]||chunkId) + "__" + "588b7f3b61feff5b09f4" + ".js";
 /******/ 		var timeout = setTimeout(onScriptComplete, 120000);
 /******/ 		script.onerror = script.onload = onScriptComplete;
 /******/ 		function onScriptComplete() {
@@ -4719,7 +4719,7 @@ exports.ComponentOptions = ComponentOptions;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var L10N_1 = __webpack_require__(108);
+var L10N_1 = __webpack_require__(109);
 function l() {
     var params = [];
     for (var _i = 0; _i < arguments.length; _i++) {
@@ -5998,7 +5998,6 @@ var __assign = (this && this.__assign) || Object.assign || function(t) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var SearchEndpoint_1 = __webpack_require__(41);
 var ComponentOptions_1 = __webpack_require__(7);
-var DeviceUtils_1 = __webpack_require__(20);
 var Dom_1 = __webpack_require__(2);
 var Assert_1 = __webpack_require__(5);
 var QueryStateModel_1 = __webpack_require__(12);
@@ -6008,8 +6007,8 @@ var QueryController_1 = __webpack_require__(33);
 var Model_1 = __webpack_require__(16);
 var QueryEvents_1 = __webpack_require__(10);
 var StandaloneSearchInterfaceEvents_1 = __webpack_require__(66);
-var HistoryController_1 = __webpack_require__(110);
-var LocalStorageHistoryController_1 = __webpack_require__(111);
+var HistoryController_1 = __webpack_require__(111);
+var LocalStorageHistoryController_1 = __webpack_require__(112);
 var InitializationEvents_1 = __webpack_require__(15);
 var NoopAnalyticsClient_1 = __webpack_require__(71);
 var Utils_1 = __webpack_require__(4);
@@ -6019,8 +6018,8 @@ var HashUtils_1 = __webpack_require__(36);
 var SentryLogger_1 = __webpack_require__(267);
 var AnalyticsActionListMeta_1 = __webpack_require__(9);
 var ResponsiveComponents_1 = __webpack_require__(40);
-var InitializationPlaceholder_1 = __webpack_require__(130);
-var Debug_1 = __webpack_require__(112);
+var InitializationPlaceholder_1 = __webpack_require__(131);
+var Debug_1 = __webpack_require__(113);
 var fastclick = __webpack_require__(276);
 var jstz = __webpack_require__(277);
 var _ = __webpack_require__(0);
@@ -6091,29 +6090,26 @@ var SearchInterface = /** @class */ (function (_super) {
         _this.options = options;
         _this.analyticsOptions = analyticsOptions;
         _this._window = _window;
-        if (DeviceUtils_1.DeviceUtils.isMobileDevice()) {
-            Dom_1.$$(document.body).addClass('coveo-mobile-device');
-        }
-        // The definition file for fastclick does not match the way that fast click gets loaded (AMD)
-        if (fastclick.attach) {
-            fastclick.attach(element);
-        }
         _this.options = ComponentOptions_1.ComponentOptions.initComponentOptions(element, SearchInterface, options);
         Assert_1.Assert.exists(element);
         Assert_1.Assert.exists(_this.options);
         _this.root = element;
-        _this.queryStateModel = new QueryStateModel_1.QueryStateModel(element);
-        _this.componentStateModel = new ComponentStateModel_1.ComponentStateModel(element);
-        _this.componentOptionsModel = new ComponentOptionsModel_1.ComponentOptionsModel(element);
-        _this.usageAnalytics = _this.initializeAnalytics();
-        _this.queryController = new QueryController_1.QueryController(element, _this.options, _this.usageAnalytics, _this);
-        new SentryLogger_1.SentryLogger(_this.queryController);
         if (_this.options.allowQueriesWithoutKeywords) {
             _this.initializeEmptyQueryAllowed();
         }
         else {
             _this.initializeEmptyQueryNotAllowed();
         }
+        // The definition file for fastclick does not match the way that fast click gets loaded (AMD)
+        if (fastclick.attach) {
+            fastclick.attach(element);
+        }
+        _this.queryStateModel = new QueryStateModel_1.QueryStateModel(element);
+        _this.componentStateModel = new ComponentStateModel_1.ComponentStateModel(element);
+        _this.componentOptionsModel = new ComponentOptionsModel_1.ComponentOptionsModel(element);
+        _this.usageAnalytics = _this.initializeAnalytics();
+        _this.queryController = new QueryController_1.QueryController(element, _this.options, _this.usageAnalytics, _this);
+        new SentryLogger_1.SentryLogger(_this.queryController);
         var eventName = _this.queryStateModel.getEventName(Model_1.Model.eventTypes.preprocess);
         Dom_1.$$(_this.element).on(eventName, function (e, args) { return _this.handlePreprocessQueryStateModel(args); });
         Dom_1.$$(_this.element).on(QueryEvents_1.QueryEvents.buildingQuery, function (e, args) { return _this.handleBuildingQuery(args); });
@@ -7198,82 +7194,6 @@ exports.QueryUtils = QueryUtils;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-// Not sure about this : In year 2033 who's to say that this list won't be 50 pages long !
-var ResponsiveComponents_1 = __webpack_require__(40);
-var mobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-var DeviceUtils = /** @class */ (function () {
-    function DeviceUtils() {
-    }
-    DeviceUtils.getDeviceName = function (userAgent) {
-        if (userAgent === void 0) { userAgent = navigator.userAgent; }
-        if (userAgent.match(/Edge/i)) {
-            return 'Edge';
-        }
-        if (userAgent.match(/Opera Mini/i)) {
-            return 'Opera Mini';
-        }
-        if (userAgent.match(/Android/i)) {
-            return 'Android';
-        }
-        if (userAgent.match(/BlackBerry/i)) {
-            return 'BlackBerry';
-        }
-        if (userAgent.match(/iPhone/i)) {
-            return 'iPhone';
-        }
-        if (userAgent.match(/iPad/i)) {
-            return 'iPad';
-        }
-        if (userAgent.match(/iPod/i)) {
-            return 'iPod';
-        }
-        if (userAgent.match(/Chrome/i)) {
-            return 'Chrome';
-        }
-        if (userAgent.match(/MSIE/i) || userAgent.match(/Trident/i)) {
-            return 'IE';
-        }
-        if (userAgent.match(/Opera/i)) {
-            return 'Opera';
-        }
-        if (userAgent.match(/Firefox/i)) {
-            return 'Firefox';
-        }
-        if (userAgent.match(/Safari/i)) {
-            return 'Safari';
-        }
-        return 'Others';
-    };
-    DeviceUtils.isAndroid = function () {
-        return DeviceUtils.getDeviceName() == 'Android';
-    };
-    DeviceUtils.isIos = function () {
-        var deviceName = DeviceUtils.getDeviceName();
-        return deviceName == 'iPhone' || deviceName == 'iPad' || deviceName == 'iPod';
-    };
-    DeviceUtils.isMobileDevice = function () {
-        return mobile;
-    };
-    /**
-     * @deprecated
-     *
-     * Use ResponsiveComponents.isSmallScreenWidth() instead
-     */
-    DeviceUtils.isSmallScreenWidth = function () {
-        return new ResponsiveComponents_1.ResponsiveComponents().isSmallScreenWidth();
-    };
-    return DeviceUtils;
-}());
-exports.DeviceUtils = DeviceUtils;
-
-
-/***/ }),
-/* 21 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
 var Utils_1 = __webpack_require__(4);
 var _ = __webpack_require__(0);
 var KEYBOARD;
@@ -7361,6 +7281,82 @@ exports.KeyboardUtils = KeyboardUtils;
 
 
 /***/ }),
+/* 21 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+// Not sure about this : In year 2033 who's to say that this list won't be 50 pages long !
+var ResponsiveComponents_1 = __webpack_require__(40);
+var mobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+var DeviceUtils = /** @class */ (function () {
+    function DeviceUtils() {
+    }
+    DeviceUtils.getDeviceName = function (userAgent) {
+        if (userAgent === void 0) { userAgent = navigator.userAgent; }
+        if (userAgent.match(/Edge/i)) {
+            return 'Edge';
+        }
+        if (userAgent.match(/Opera Mini/i)) {
+            return 'Opera Mini';
+        }
+        if (userAgent.match(/Android/i)) {
+            return 'Android';
+        }
+        if (userAgent.match(/BlackBerry/i)) {
+            return 'BlackBerry';
+        }
+        if (userAgent.match(/iPhone/i)) {
+            return 'iPhone';
+        }
+        if (userAgent.match(/iPad/i)) {
+            return 'iPad';
+        }
+        if (userAgent.match(/iPod/i)) {
+            return 'iPod';
+        }
+        if (userAgent.match(/Chrome/i)) {
+            return 'Chrome';
+        }
+        if (userAgent.match(/MSIE/i) || userAgent.match(/Trident/i)) {
+            return 'IE';
+        }
+        if (userAgent.match(/Opera/i)) {
+            return 'Opera';
+        }
+        if (userAgent.match(/Firefox/i)) {
+            return 'Firefox';
+        }
+        if (userAgent.match(/Safari/i)) {
+            return 'Safari';
+        }
+        return 'Others';
+    };
+    DeviceUtils.isAndroid = function () {
+        return DeviceUtils.getDeviceName() == 'Android';
+    };
+    DeviceUtils.isIos = function () {
+        var deviceName = DeviceUtils.getDeviceName();
+        return deviceName == 'iPhone' || deviceName == 'iPad' || deviceName == 'iPod';
+    };
+    DeviceUtils.isMobileDevice = function () {
+        return mobile;
+    };
+    /**
+     * @deprecated
+     *
+     * Use ResponsiveComponents.isSmallScreenWidth() instead
+     */
+    DeviceUtils.isSmallScreenWidth = function () {
+        return new ResponsiveComponents_1.ResponsiveComponents().isSmallScreenWidth();
+    };
+    return DeviceUtils;
+}());
+exports.DeviceUtils = DeviceUtils;
+
+
+/***/ }),
 /* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -7369,7 +7365,7 @@ exports.KeyboardUtils = KeyboardUtils;
 Object.defineProperty(exports, "__esModule", { value: true });
 var Logger_1 = __webpack_require__(11);
 var Dom_1 = __webpack_require__(2);
-var TemplateConditionEvaluator_1 = __webpack_require__(113);
+var TemplateConditionEvaluator_1 = __webpack_require__(114);
 var TemplateFieldsEvaluator_1 = __webpack_require__(275);
 var ResponsiveComponents_1 = __webpack_require__(40);
 var _ = __webpack_require__(0);
@@ -7622,7 +7618,7 @@ exports.ComponentOptionsModel = ComponentOptionsModel;
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global) {module.exports = global["Globalize"] = __webpack_require__(228);
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(101)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(102)))
 
 /***/ }),
 /* 26 */
@@ -7681,7 +7677,7 @@ var InitializationEvents_1 = __webpack_require__(15);
 var Dom_1 = __webpack_require__(2);
 var Component_1 = __webpack_require__(6);
 var _ = __webpack_require__(0);
-var PublicPathUtils_1 = __webpack_require__(115);
+var PublicPathUtils_1 = __webpack_require__(116);
 /**
  * Initialize the framework with a basic search interface. Calls {@link Initialization.initSearchInterface}.
  *
@@ -8254,7 +8250,7 @@ var Options_1 = __webpack_require__(55);
 var Utils_1 = __webpack_require__(4);
 var Strings_1 = __webpack_require__(8);
 var _ = __webpack_require__(0);
-var moment = __webpack_require__(96);
+var moment = __webpack_require__(97);
 var DefaultDateToStringOptions = /** @class */ (function (_super) {
     __extends(DefaultDateToStringOptions, _super);
     function DefaultDateToStringOptions() {
@@ -8620,7 +8616,7 @@ var Dom_1 = __webpack_require__(2);
 var Utils_1 = __webpack_require__(4);
 var BaseComponent_1 = __webpack_require__(28);
 var ExternalModulesShim_1 = __webpack_require__(23);
-var coveo_analytics_1 = __webpack_require__(83);
+var coveo_analytics_1 = __webpack_require__(84);
 var _ = __webpack_require__(0);
 var UrlUtils_1 = __webpack_require__(42);
 var DefaultQueryOptions = /** @class */ (function () {
@@ -9640,14 +9636,14 @@ var Version_1 = __webpack_require__(68);
 var AjaxError_1 = __webpack_require__(218);
 var MissingAuthenticationError_1 = __webpack_require__(219);
 var QueryUtils_1 = __webpack_require__(19);
-var QueryError_1 = __webpack_require__(102);
+var QueryError_1 = __webpack_require__(103);
 var Utils_1 = __webpack_require__(4);
 var _ = __webpack_require__(0);
-var coveo_analytics_1 = __webpack_require__(83);
+var coveo_analytics_1 = __webpack_require__(84);
 var CookieUtils_1 = __webpack_require__(65);
 var TimeSpanUtils_1 = __webpack_require__(52);
 var UrlUtils_1 = __webpack_require__(42);
-var AccessToken_1 = __webpack_require__(106);
+var AccessToken_1 = __webpack_require__(107);
 var DefaultSearchEndpointOptions = /** @class */ (function () {
     function DefaultSearchEndpointOptions() {
         this.version = 'v2';
@@ -10922,7 +10918,7 @@ exports.UrlUtils = UrlUtils;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var ExpressionBuilder_1 = __webpack_require__(51);
-var QueryBuilderExpression_1 = __webpack_require__(123);
+var QueryBuilderExpression_1 = __webpack_require__(124);
 var _ = __webpack_require__(0);
 var Utils_1 = __webpack_require__(4);
 /**
@@ -11216,9 +11212,99 @@ exports.QueryBuilder = QueryBuilder;
 
 "use strict";
 
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var Template_1 = __webpack_require__(22);
+var Assert_1 = __webpack_require__(5);
+var Utils_1 = __webpack_require__(4);
+var Logger_1 = __webpack_require__(11);
+var TemplateFromAScriptTag_1 = __webpack_require__(117);
+var DefaultResultTemplate_1 = __webpack_require__(89);
+var _ = __webpack_require__(0);
+var Dom_1 = __webpack_require__(2);
+var UnderscoreTemplate = /** @class */ (function (_super) {
+    __extends(UnderscoreTemplate, _super);
+    function UnderscoreTemplate(element) {
+        var _this = _super.call(this) || this;
+        _this.element = element;
+        Assert_1.Assert.exists(element);
+        var templateString = element.innerHTML;
+        try {
+            _this.template = _.template(templateString);
+        }
+        catch (e) {
+            new Logger_1.Logger(_this).error('Cannot instantiate underscore template. Might be caused by strict Content-Security-Policy. Will fallback on a default template...', e);
+        }
+        _this.templateFromAScriptTag = new TemplateFromAScriptTag_1.TemplateFromAScriptTag(_this, _this.element);
+        _this.dataToString = function (object) {
+            var extended = _.extend({}, object, UnderscoreTemplate.templateHelpers);
+            if (_this.template) {
+                try {
+                    return _this.template(extended);
+                }
+                catch (e) {
+                    new Logger_1.Logger(_this).error('Cannot instantiate template', e.message, _this.getTemplateInfo());
+                    new Logger_1.Logger(_this).warn('A default template was used');
+                    return new DefaultResultTemplate_1.DefaultResultTemplate().getFallbackTemplate();
+                }
+            }
+            else {
+                return new DefaultResultTemplate_1.DefaultResultTemplate().getFallbackTemplate();
+            }
+        };
+        return _this;
+    }
+    UnderscoreTemplate.prototype.toHtmlElement = function () {
+        var script = this.templateFromAScriptTag.toHtmlElement(Dom_1.$$('script'));
+        script.setAttribute('type', _.first(UnderscoreTemplate.mimeTypes));
+        return script;
+    };
+    UnderscoreTemplate.prototype.getType = function () {
+        return 'UnderscoreTemplate';
+    };
+    UnderscoreTemplate.prototype.getTemplateInfo = function () {
+        return this.element;
+    };
+    UnderscoreTemplate.registerTemplateHelper = function (helperName, helper) {
+        UnderscoreTemplate.templateHelpers[helperName] = helper;
+    };
+    UnderscoreTemplate.isLibraryAvailable = function () {
+        return Utils_1.Utils.exists(window['_']);
+    };
+    UnderscoreTemplate.fromString = function (template, properties) {
+        var script = TemplateFromAScriptTag_1.TemplateFromAScriptTag.fromString(template, properties, document.createElement('script'));
+        script.setAttribute('type', UnderscoreTemplate.mimeTypes[0]);
+        return new UnderscoreTemplate(script);
+    };
+    UnderscoreTemplate.create = function (element) {
+        Assert_1.Assert.exists(element);
+        return new UnderscoreTemplate(element);
+    };
+    UnderscoreTemplate.templateHelpers = {};
+    UnderscoreTemplate.mimeTypes = ['text/underscore', 'text/underscore-template', 'text/x-underscore', 'text/x-underscore-template'];
+    return UnderscoreTemplate;
+}(Template_1.Template));
+exports.UnderscoreTemplate = UnderscoreTemplate;
+
+
+/***/ }),
+/* 47 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
 Object.defineProperty(exports, "__esModule", { value: true });
 var Dom_1 = __webpack_require__(2);
-var KeyboardUtils_1 = __webpack_require__(21);
+var KeyboardUtils_1 = __webpack_require__(20);
 var GlobalExports_1 = __webpack_require__(3);
 /**
  * A text input widget with standard styling.
@@ -11321,7 +11407,7 @@ exports.TextInput = TextInput;
 
 
 /***/ }),
-/* 47 */
+/* 48 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11484,96 +11570,6 @@ var PopupUtils = /** @class */ (function () {
     return PopupUtils;
 }());
 exports.PopupUtils = PopupUtils;
-
-
-/***/ }),
-/* 48 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-Object.defineProperty(exports, "__esModule", { value: true });
-var Template_1 = __webpack_require__(22);
-var Assert_1 = __webpack_require__(5);
-var Utils_1 = __webpack_require__(4);
-var Logger_1 = __webpack_require__(11);
-var TemplateFromAScriptTag_1 = __webpack_require__(116);
-var DefaultResultTemplate_1 = __webpack_require__(88);
-var _ = __webpack_require__(0);
-var Dom_1 = __webpack_require__(2);
-var UnderscoreTemplate = /** @class */ (function (_super) {
-    __extends(UnderscoreTemplate, _super);
-    function UnderscoreTemplate(element) {
-        var _this = _super.call(this) || this;
-        _this.element = element;
-        Assert_1.Assert.exists(element);
-        var templateString = element.innerHTML;
-        try {
-            _this.template = _.template(templateString);
-        }
-        catch (e) {
-            new Logger_1.Logger(_this).error('Cannot instantiate underscore template. Might be caused by strict Content-Security-Policy. Will fallback on a default template...', e);
-        }
-        _this.templateFromAScriptTag = new TemplateFromAScriptTag_1.TemplateFromAScriptTag(_this, _this.element);
-        _this.dataToString = function (object) {
-            var extended = _.extend({}, object, UnderscoreTemplate.templateHelpers);
-            if (_this.template) {
-                try {
-                    return _this.template(extended);
-                }
-                catch (e) {
-                    new Logger_1.Logger(_this).error('Cannot instantiate template', e.message, _this.getTemplateInfo());
-                    new Logger_1.Logger(_this).warn('A default template was used');
-                    return new DefaultResultTemplate_1.DefaultResultTemplate().getFallbackTemplate();
-                }
-            }
-            else {
-                return new DefaultResultTemplate_1.DefaultResultTemplate().getFallbackTemplate();
-            }
-        };
-        return _this;
-    }
-    UnderscoreTemplate.prototype.toHtmlElement = function () {
-        var script = this.templateFromAScriptTag.toHtmlElement(Dom_1.$$('script'));
-        script.setAttribute('type', _.first(UnderscoreTemplate.mimeTypes));
-        return script;
-    };
-    UnderscoreTemplate.prototype.getType = function () {
-        return 'UnderscoreTemplate';
-    };
-    UnderscoreTemplate.prototype.getTemplateInfo = function () {
-        return this.element;
-    };
-    UnderscoreTemplate.registerTemplateHelper = function (helperName, helper) {
-        UnderscoreTemplate.templateHelpers[helperName] = helper;
-    };
-    UnderscoreTemplate.isLibraryAvailable = function () {
-        return Utils_1.Utils.exists(window['_']);
-    };
-    UnderscoreTemplate.fromString = function (template, properties) {
-        var script = TemplateFromAScriptTag_1.TemplateFromAScriptTag.fromString(template, properties, document.createElement('script'));
-        script.setAttribute('type', UnderscoreTemplate.mimeTypes[0]);
-        return new UnderscoreTemplate(script);
-    };
-    UnderscoreTemplate.create = function (element) {
-        Assert_1.Assert.exists(element);
-        return new UnderscoreTemplate(element);
-    };
-    UnderscoreTemplate.templateHelpers = {};
-    UnderscoreTemplate.mimeTypes = ['text/underscore', 'text/underscore-template', 'text/x-underscore', 'text/x-underscore-template'];
-    return UnderscoreTemplate;
-}(Template_1.Template));
-exports.UnderscoreTemplate = UnderscoreTemplate;
 
 
 /***/ }),
@@ -12277,8 +12273,8 @@ exports.ComponentStateModel = ComponentStateModel;
 Object.defineProperty(exports, "__esModule", { value: true });
 var Template_1 = __webpack_require__(22);
 var Assert_1 = __webpack_require__(5);
-var UnderscoreTemplate_1 = __webpack_require__(48);
-var HtmlTemplate_1 = __webpack_require__(77);
+var UnderscoreTemplate_1 = __webpack_require__(46);
+var HtmlTemplate_1 = __webpack_require__(78);
 var _ = __webpack_require__(0);
 /**
  * Holds a reference to all template available in the framework
@@ -12468,7 +12464,7 @@ var __assign = (this && this.__assign) || Object.assign || function(t) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var Dom_1 = __webpack_require__(2);
 var DateUtils_1 = __webpack_require__(29);
-var FileTypes_1 = __webpack_require__(87);
+var FileTypes_1 = __webpack_require__(88);
 var Utils_1 = __webpack_require__(4);
 var StringUtils_1 = __webpack_require__(18);
 var SVGIcons_1 = __webpack_require__(13);
@@ -12562,7 +12558,7 @@ var Assert_1 = __webpack_require__(5);
 exports.Assert = Assert_1.Assert;
 var Defer_1 = __webpack_require__(26);
 exports.Defer = Defer_1.Defer;
-var L10N_1 = __webpack_require__(108);
+var L10N_1 = __webpack_require__(109);
 exports.L10N = L10N_1.L10N;
 var Logger_1 = __webpack_require__(11);
 exports.Logger = Logger_1.Logger;
@@ -12615,7 +12611,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var Logger_1 = __webpack_require__(11);
 var Assert_1 = __webpack_require__(5);
 var TimeSpanUtils_1 = __webpack_require__(52);
-var DeviceUtils_1 = __webpack_require__(20);
+var DeviceUtils_1 = __webpack_require__(21);
 var Utils_1 = __webpack_require__(4);
 var JQueryutils_1 = __webpack_require__(54);
 var _ = __webpack_require__(0);
@@ -13139,8 +13135,8 @@ exports.PreferencesPanelEvents = PreferencesPanelEvents;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.version = {
-    lib: '2.3826.2-beta',
-    product: '2.3826.2-beta',
+    lib: '2.3826.3-beta',
+    product: '2.3826.3-beta',
     supportedApiVersion: 2
 };
 
@@ -13282,7 +13278,7 @@ var SearchInterface_1 = __webpack_require__(17);
 var Component_1 = __webpack_require__(6);
 var QueryController_1 = __webpack_require__(33);
 var Defer_1 = __webpack_require__(26);
-var APIAnalyticsBuilder_1 = __webpack_require__(118);
+var APIAnalyticsBuilder_1 = __webpack_require__(119);
 var AnalyticsEvents_1 = __webpack_require__(64);
 var AnalyticsActionListMeta_1 = __webpack_require__(9);
 var QueryStateModel_1 = __webpack_require__(12);
@@ -13562,6 +13558,63 @@ function createStreamHTMLContainer(stream) {
 
 "use strict";
 
+Object.defineProperty(exports, "__esModule", { value: true });
+var Assert_1 = __webpack_require__(5);
+var UnderscoreTemplate_1 = __webpack_require__(46);
+var Utils_1 = __webpack_require__(4);
+/**
+ * Allow to register and return template helpers (essentially: Utility functions that can be executed in the context of a template to render complex elements).
+ */
+var TemplateHelpers = /** @class */ (function () {
+    function TemplateHelpers() {
+    }
+    TemplateHelpers.registerFieldHelper = function (name, helper) {
+        TemplateHelpers.fieldHelpers.push(name);
+        TemplateHelpers.registerTemplateHelper(name, helper);
+    };
+    /**
+     * Register a new helper in the framework, that will be available inside all templates execution context.
+     * @param name
+     * @param helper
+     */
+    TemplateHelpers.registerTemplateHelper = function (name, helper) {
+        Assert_1.Assert.isNonEmptyString(name);
+        Assert_1.Assert.exists(helper);
+        TemplateHelpers.registerTemplateHelperInUnderscore(name, helper);
+        TemplateHelpers.helpers[name] = helper;
+    };
+    /**
+     * Return a template helper function
+     * @param name
+     * @returns {ITemplateHelperFunction}
+     */
+    TemplateHelpers.getHelper = function (name) {
+        return Utils_1.Utils.getCaseInsensitiveProperty(TemplateHelpers.helpers, name);
+    };
+    /**
+     * Get all available helpers
+     */
+    TemplateHelpers.getHelpers = function () {
+        return TemplateHelpers.helpers;
+    };
+    TemplateHelpers.registerTemplateHelperInUnderscore = function (name, helper) {
+        Assert_1.Assert.isNonEmptyString(name);
+        Assert_1.Assert.exists(helper);
+        UnderscoreTemplate_1.UnderscoreTemplate.registerTemplateHelper(name, helper);
+    };
+    TemplateHelpers.helpers = {};
+    TemplateHelpers.fieldHelpers = [];
+    return TemplateHelpers;
+}());
+exports.TemplateHelpers = TemplateHelpers;
+
+
+/***/ }),
+/* 78 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
         ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -13575,7 +13628,7 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var Template_1 = __webpack_require__(22);
 var Assert_1 = __webpack_require__(5);
-var TemplateFromAScriptTag_1 = __webpack_require__(116);
+var TemplateFromAScriptTag_1 = __webpack_require__(117);
 var HtmlTemplate = /** @class */ (function (_super) {
     __extends(HtmlTemplate, _super);
     function HtmlTemplate(element) {
@@ -13615,10 +13668,10 @@ exports.HtmlTemplate = HtmlTemplate;
 
 
 /***/ }),
-/* 78 */,
 /* 79 */,
 /* 80 */,
-/* 81 */
+/* 81 */,
+/* 82 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13638,7 +13691,7 @@ exports.logSortEvent = logSortEvent;
 
 
 /***/ }),
-/* 82 */
+/* 83 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13759,28 +13812,28 @@ exports.PendingSearchAsYouTypeSearchEvent = PendingSearchAsYouTypeSearchEvent;
 
 
 /***/ }),
-/* 83 */
+/* 84 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var analytics = __webpack_require__(103);
+var analytics = __webpack_require__(104);
 exports.analytics = analytics;
 var SimpleAnalytics = __webpack_require__(222);
 exports.SimpleAnalytics = SimpleAnalytics;
-var history = __webpack_require__(104);
+var history = __webpack_require__(105);
 exports.history = history;
 var donottrack = __webpack_require__(225);
 exports.donottrack = donottrack;
-var storage = __webpack_require__(105);
+var storage = __webpack_require__(106);
 exports.storage = storage;
 
 
 /***/ }),
-/* 84 */,
 /* 85 */,
 /* 86 */,
-/* 87 */
+/* 87 */,
+/* 88 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13875,7 +13928,7 @@ exports.FileTypes = FileTypes;
 
 
 /***/ }),
-/* 88 */
+/* 89 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13892,7 +13945,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var Template_1 = __webpack_require__(22);
-var UnderscoreTemplate_1 = __webpack_require__(48);
+var UnderscoreTemplate_1 = __webpack_require__(46);
 var TemplateCache_1 = __webpack_require__(58);
 var Assert_1 = __webpack_require__(5);
 var Dom_1 = __webpack_require__(2);
@@ -13964,13 +14017,13 @@ exports.DefaultResultTemplate = DefaultResultTemplate;
 
 
 /***/ }),
-/* 89 */,
 /* 90 */,
 /* 91 */,
 /* 92 */,
 /* 93 */,
 /* 94 */,
-/* 95 */
+/* 95 */,
+/* 96 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13986,7 +14039,7 @@ exports.ResultLayoutEvents = ResultLayoutEvents;
 
 
 /***/ }),
-/* 96 */
+/* 97 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(module) {var require;//! moment.js
@@ -18508,7 +18561,7 @@ return hooks;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(285)(module)))
 
 /***/ }),
-/* 97 */
+/* 98 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18522,7 +18575,7 @@ var BreadcrumbEvents_1 = __webpack_require__(38);
 exports.BreadcrumbEvents = BreadcrumbEvents_1.BreadcrumbEvents;
 var DebugEvents_1 = __webpack_require__(70);
 exports.DebugEvents = DebugEvents_1.DebugEvents;
-var DistanceEvents_1 = __webpack_require__(137);
+var DistanceEvents_1 = __webpack_require__(138);
 exports.DistanceEvents = DistanceEvents_1.DistanceEvents;
 var InitializationEvents_1 = __webpack_require__(15);
 exports.InitializationEvents = InitializationEvents_1.InitializationEvents;
@@ -18534,20 +18587,20 @@ var QueryEvents_1 = __webpack_require__(10);
 exports.QueryEvents = QueryEvents_1.QueryEvents;
 var ResultListEvents_1 = __webpack_require__(31);
 exports.ResultListEvents = ResultListEvents_1.ResultListEvents;
-var ResultLayoutEvents_1 = __webpack_require__(95);
+var ResultLayoutEvents_1 = __webpack_require__(96);
 exports.ResultLayoutEvents = ResultLayoutEvents_1.ResultLayoutEvents;
 var SearchAlertEvents_1 = __webpack_require__(59);
 exports.SearchAlertsEvents = SearchAlertEvents_1.SearchAlertsEvents;
 var SettingsEvents_1 = __webpack_require__(39);
 exports.SettingsEvents = SettingsEvents_1.SettingsEvents;
-var SliderEvents_1 = __webpack_require__(98);
+var SliderEvents_1 = __webpack_require__(99);
 exports.SliderEvents = SliderEvents_1.SliderEvents;
 var StandaloneSearchInterfaceEvents_1 = __webpack_require__(66);
 exports.StandaloneSearchInterfaceEvents = StandaloneSearchInterfaceEvents_1.StandaloneSearchInterfaceEvents;
 
 
 /***/ }),
-/* 98 */
+/* 99 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18566,7 +18619,7 @@ exports.SliderEvents = SliderEvents;
 
 
 /***/ }),
-/* 99 */
+/* 100 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18620,7 +18673,7 @@ exports.CurrencyUtils = CurrencyUtils;
 
 
 /***/ }),
-/* 100 */
+/* 101 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18689,7 +18742,7 @@ exports.ColorUtils = ColorUtils;
 
 
 /***/ }),
-/* 101 */
+/* 102 */
 /***/ (function(module, exports) {
 
 var g;
@@ -18716,7 +18769,7 @@ module.exports = g;
 
 
 /***/ }),
-/* 102 */
+/* 103 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18739,12 +18792,12 @@ exports.QueryError = QueryError;
 
 
 /***/ }),
-/* 103 */
+/* 104 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var history_1 = __webpack_require__(104);
+var history_1 = __webpack_require__(105);
 var detector_1 = __webpack_require__(69);
 __webpack_require__(221);
 exports.Version = 'v15';
@@ -18832,12 +18885,12 @@ exports.default = Client;
 
 
 /***/ }),
-/* 104 */
+/* 105 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var storage_1 = __webpack_require__(105);
+var storage_1 = __webpack_require__(106);
 var detector = __webpack_require__(69);
 exports.STORE_KEY = '__coveo.analytics.history';
 exports.MAX_NUMBER_OF_HISTORY_ELEMENTS = 20;
@@ -18924,7 +18977,7 @@ exports.default = HistoryStore;
 
 
 /***/ }),
-/* 105 */
+/* 106 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18975,7 +19028,7 @@ exports.NullStorage = NullStorage;
 
 
 /***/ }),
-/* 106 */
+/* 107 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19099,7 +19152,7 @@ exports.AccessToken = AccessToken;
 
 
 /***/ }),
-/* 107 */
+/* 108 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19883,7 +19936,7 @@ exports.setLanguageAfterPageLoaded = setLanguageAfterPageLoaded;
 
 
 /***/ }),
-/* 108 */
+/* 109 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19947,7 +20000,7 @@ exports.L10N = {
 
 
 /***/ }),
-/* 109 */
+/* 110 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20168,7 +20221,7 @@ exports.AnalyticsEndpoint = AnalyticsEndpoint;
 
 
 /***/ }),
-/* 110 */
+/* 111 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20194,7 +20247,7 @@ var Utils_1 = __webpack_require__(4);
 var _ = __webpack_require__(0);
 var QueryStateModel_1 = __webpack_require__(12);
 var AnalyticsActionListMeta_1 = __webpack_require__(9);
-var SharedAnalyticsCalls_1 = __webpack_require__(81);
+var SharedAnalyticsCalls_1 = __webpack_require__(82);
 var Model_1 = __webpack_require__(16);
 /**
  * This component is instantiated automatically by the framework on the root if the {@link SearchInterface}.<br/>
@@ -20445,7 +20498,7 @@ exports.HistoryController = HistoryController;
 
 
 /***/ }),
-/* 111 */
+/* 112 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20536,7 +20589,7 @@ exports.LocalStorageHistoryController = LocalStorageHistoryController;
 
 
 /***/ }),
-/* 112 */
+/* 113 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21140,7 +21193,7 @@ exports.Debug = Debug;
 
 
 /***/ }),
-/* 113 */
+/* 114 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21207,45 +21260,45 @@ exports.TemplateConditionEvaluator = TemplateConditionEvaluator;
 
 
 /***/ }),
-/* 114 */
+/* 115 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var ColorUtils_1 = __webpack_require__(100);
+var ColorUtils_1 = __webpack_require__(101);
 exports.ColorUtils = ColorUtils_1.ColorUtils;
 var CookieUtils_1 = __webpack_require__(65);
 exports.Cookie = CookieUtils_1.Cookie;
-var CurrencyUtils_1 = __webpack_require__(99);
+var CurrencyUtils_1 = __webpack_require__(100);
 exports.CurrencyUtils = CurrencyUtils_1.CurrencyUtils;
 var DateUtils_1 = __webpack_require__(29);
 exports.DateUtils = DateUtils_1.DateUtils;
-var DeviceUtils_1 = __webpack_require__(20);
+var DeviceUtils_1 = __webpack_require__(21);
 exports.DeviceUtils = DeviceUtils_1.DeviceUtils;
 var Dom_1 = __webpack_require__(2);
 exports.Dom = Dom_1.Dom;
 exports.$$ = Dom_1.$$;
 var DomUtils_1 = __webpack_require__(60);
 exports.DomUtils = DomUtils_1.DomUtils;
-var EmailUtils_1 = __webpack_require__(131);
+var EmailUtils_1 = __webpack_require__(132);
 exports.EmailUtils = EmailUtils_1.EmailUtils;
 var HashUtils_1 = __webpack_require__(36);
 exports.HashUtils = HashUtils_1.HashUtils;
 var HighlightUtils_1 = __webpack_require__(49);
 exports.HighlightUtils = HighlightUtils_1.HighlightUtils;
 exports.StringAndHoles = HighlightUtils_1.StringAndHoles;
-var HtmlUtils_1 = __webpack_require__(132);
+var HtmlUtils_1 = __webpack_require__(133);
 exports.HTMLUtils = HtmlUtils_1.HTMLUtils;
-var KeyboardUtils_1 = __webpack_require__(21);
+var KeyboardUtils_1 = __webpack_require__(20);
 exports.KEYBOARD = KeyboardUtils_1.KEYBOARD;
 exports.KeyboardUtils = KeyboardUtils_1.KeyboardUtils;
 var LocalStorageUtils_1 = __webpack_require__(35);
 exports.LocalStorageUtils = LocalStorageUtils_1.LocalStorageUtils;
-var OSUtils_1 = __webpack_require__(120);
+var OSUtils_1 = __webpack_require__(121);
 exports.OSUtils = OSUtils_1.OSUtils;
 exports.OS_NAME = OSUtils_1.OS_NAME;
-var PopupUtils_1 = __webpack_require__(47);
+var PopupUtils_1 = __webpack_require__(48);
 exports.PopupUtils = PopupUtils_1.PopupUtils;
 var QueryUtils_1 = __webpack_require__(19);
 exports.QueryUtils = QueryUtils_1.QueryUtils;
@@ -21262,7 +21315,7 @@ exports.UrlUtils = UrlUtils_1.UrlUtils;
 
 
 /***/ }),
-/* 115 */
+/* 116 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21313,14 +21366,14 @@ exports.PublicPathUtils = PublicPathUtils;
 
 
 /***/ }),
-/* 116 */
+/* 117 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var Utils_1 = __webpack_require__(4);
-var TemplateConditionEvaluator_1 = __webpack_require__(113);
+var TemplateConditionEvaluator_1 = __webpack_require__(114);
 var ComponentOptions_1 = __webpack_require__(7);
 var Dom_1 = __webpack_require__(2);
 var _ = __webpack_require__(0);
@@ -21453,22 +21506,22 @@ exports.TemplateFromAScriptTag = TemplateFromAScriptTag;
 
 
 /***/ }),
-/* 117 */
+/* 118 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var DeviceUtils_1 = __webpack_require__(20);
+var DeviceUtils_1 = __webpack_require__(21);
 var PendingSearchEvent_1 = __webpack_require__(72);
-var PendingSearchAsYouTypeSearchEvent_1 = __webpack_require__(82);
+var PendingSearchAsYouTypeSearchEvent_1 = __webpack_require__(83);
 var Assert_1 = __webpack_require__(5);
 var Logger_1 = __webpack_require__(11);
 var AnalyticsActionListMeta_1 = __webpack_require__(9);
 var Defer_1 = __webpack_require__(26);
 var Dom_1 = __webpack_require__(2);
 var AnalyticsEvents_1 = __webpack_require__(64);
-var APIAnalyticsBuilder_1 = __webpack_require__(118);
+var APIAnalyticsBuilder_1 = __webpack_require__(119);
 var QueryStateModel_1 = __webpack_require__(12);
 var Component_1 = __webpack_require__(6);
 var Version_1 = __webpack_require__(68);
@@ -21779,7 +21832,7 @@ exports.LiveAnalyticsClient = LiveAnalyticsClient;
 
 
 /***/ }),
-/* 118 */
+/* 119 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21854,8 +21907,8 @@ exports.APIAnalyticsBuilder = APIAnalyticsBuilder;
 
 
 /***/ }),
-/* 119 */,
-/* 120 */
+/* 120 */,
+/* 121 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21898,9 +21951,9 @@ exports.OSUtils = OSUtils;
 
 
 /***/ }),
-/* 121 */,
 /* 122 */,
-/* 123 */
+/* 123 */,
+/* 124 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22002,13 +22055,13 @@ exports.QueryBuilderExpression = QueryBuilderExpression;
 
 
 /***/ }),
-/* 124 */,
 /* 125 */,
 /* 126 */,
 /* 127 */,
 /* 128 */,
 /* 129 */,
-/* 130 */
+/* 130 */,
+/* 131 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22040,6 +22093,7 @@ var InitializationPlaceholder = /** @class */ (function () {
         Dom_1.$$(this.root).addClass(InitializationPlaceholder.INITIALIZATION_CLASS);
         Dom_1.$$(this.root).one(this.eventToRemovePlaceholder, function () {
             Dom_1.$$(_this.root).removeClass(InitializationPlaceholder.INITIALIZATION_CLASS);
+            Dom_1.$$(_this.root).addClass(InitializationPlaceholder.AFTER_INITIALIZATION_CLASS);
         });
         return this;
     };
@@ -22210,13 +22264,14 @@ var InitializationPlaceholder = /** @class */ (function () {
     InitializationPlaceholder.NUMBER_OF_RESULTS = 10;
     InitializationPlaceholder.NUMBER_OF_RESULTS_RECOMMENDATION = 5;
     InitializationPlaceholder.INITIALIZATION_CLASS = 'coveo-during-initialization';
+    InitializationPlaceholder.AFTER_INITIALIZATION_CLASS = 'coveo-after-initialization';
     return InitializationPlaceholder;
 }());
 exports.InitializationPlaceholder = InitializationPlaceholder;
 
 
 /***/ }),
-/* 131 */
+/* 132 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22294,7 +22349,7 @@ exports.EmailUtils = EmailUtils;
 
 
 /***/ }),
-/* 132 */
+/* 133 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22384,11 +22439,11 @@ exports.ImageUtils = ImageUtils;
 
 
 /***/ }),
-/* 133 */,
 /* 134 */,
 /* 135 */,
 /* 136 */,
-/* 137 */
+/* 137 */,
+/* 138 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22440,7 +22495,7 @@ exports.DistanceEvents = DistanceEvents;
 
 
 /***/ }),
-/* 138 */
+/* 139 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22456,7 +22511,7 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var LiveAnalyticsClient_1 = __webpack_require__(117);
+var LiveAnalyticsClient_1 = __webpack_require__(118);
 var AnalyticsActionListMeta_1 = __webpack_require__(9);
 var Component_1 = __webpack_require__(6);
 var SearchInterface_1 = __webpack_require__(17);
@@ -22507,7 +22562,7 @@ exports.RecommendationAnalyticsClient = RecommendationAnalyticsClient;
 
 
 /***/ }),
-/* 139 */
+/* 140 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22538,7 +22593,7 @@ setTemplateSettings(window['_']);
 
 
 /***/ }),
-/* 140 */
+/* 141 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22611,7 +22666,7 @@ function getJQuery() {
 
 
 /***/ }),
-/* 141 */
+/* 142 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22626,7 +22681,6 @@ exports.registerFields = registerFields;
 
 
 /***/ }),
-/* 142 */,
 /* 143 */,
 /* 144 */,
 /* 145 */,
@@ -22709,17 +22763,17 @@ var promise = window['Promise'];
 if (!(promise instanceof Function)) {
     __webpack_require__(210);
 }
-var CoveoUnderscore_1 = __webpack_require__(139);
+var CoveoUnderscore_1 = __webpack_require__(140);
 exports._ = CoveoUnderscore_1.underscoreInstance;
 __export(__webpack_require__(214));
 __export(__webpack_require__(61));
 __export(__webpack_require__(229));
-__export(__webpack_require__(97));
+__export(__webpack_require__(98));
 __export(__webpack_require__(230));
 __export(__webpack_require__(232));
 __export(__webpack_require__(233));
 __export(__webpack_require__(286));
-__export(__webpack_require__(114));
+__export(__webpack_require__(115));
 
 
 /***/ }),
@@ -23895,7 +23949,7 @@ return Promise$2;
 
 
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(212), __webpack_require__(101)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(212), __webpack_require__(102)))
 
 /***/ }),
 /* 212 */
@@ -24114,9 +24168,9 @@ var SearchEndpoint_1 = __webpack_require__(41);
 exports.SearchEndpoint = SearchEndpoint_1.SearchEndpoint;
 __export(__webpack_require__(23));
 // Default language needs to be set after external module, since this is where l10n will be imported
-var DefaultLanguage_1 = __webpack_require__(107);
+var DefaultLanguage_1 = __webpack_require__(108);
 DefaultLanguage_1.defaultLanguage();
-var DefaultLanguage_2 = __webpack_require__(107);
+var DefaultLanguage_2 = __webpack_require__(108);
 exports.setLanguageAfterPageLoaded = DefaultLanguage_2.setLanguageAfterPageLoaded;
 
 
@@ -24778,7 +24832,7 @@ exports.Cookie = Cookie;
 
 "use strict";
 
-var analytics = __webpack_require__(103);
+var analytics = __webpack_require__(104);
 var objectassign_1 = __webpack_require__(223);
 var utils_1 = __webpack_require__(224);
 var SimpleAPI = (function () {
@@ -24953,11 +25007,11 @@ var Globalize = (function(e,r){var t,n,a,s,u,l,i,c,o,f,d,p,h,g,b,m,y,M,v,k,z,F,A
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var AnalyticsEndpoint_1 = __webpack_require__(109);
+var AnalyticsEndpoint_1 = __webpack_require__(110);
 exports.AnalyticsEndpoint = AnalyticsEndpoint_1.AnalyticsEndpoint;
 var EndpointCaller_1 = __webpack_require__(63);
 exports.EndpointCaller = EndpointCaller_1.EndpointCaller;
-var QueryError_1 = __webpack_require__(102);
+var QueryError_1 = __webpack_require__(103);
 exports.QueryError = QueryError_1.QueryError;
 
 
@@ -24970,9 +25024,9 @@ exports.QueryError = QueryError_1.QueryError;
 Object.defineProperty(exports, "__esModule", { value: true });
 var QueryController_1 = __webpack_require__(33);
 exports.QueryController = QueryController_1.QueryController;
-var HistoryController_1 = __webpack_require__(110);
+var HistoryController_1 = __webpack_require__(111);
 exports.HistoryController = HistoryController_1.HistoryController;
-var LocalStorageHistoryController_1 = __webpack_require__(111);
+var LocalStorageHistoryController_1 = __webpack_require__(112);
 exports.LocalStorageHistoryController = LocalStorageHistoryController_1.LocalStorageHistoryController;
 
 
@@ -25114,7 +25168,7 @@ var Initialization_1 = __webpack_require__(1);
 exports.Initialization = Initialization_1.Initialization;
 var Initialization_2 = __webpack_require__(1);
 exports.CoveoJQuery = Initialization_2.Initialization;
-var CoveoJQuery_1 = __webpack_require__(140);
+var CoveoJQuery_1 = __webpack_require__(141);
 exports.initCoveoJQuery = CoveoJQuery_1.initCoveoJQuery;
 
 
@@ -25323,7 +25377,7 @@ module.exports = "<svg viewBox=\"0 0 18 13\" xmlns=\"http://www.w3.org/2000/svg\
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var DeviceUtils_1 = __webpack_require__(20);
+var DeviceUtils_1 = __webpack_require__(21);
 var _ = __webpack_require__(0);
 var SentryLogger = /** @class */ (function () {
     function SentryLogger(queryController, windoh) {
@@ -26326,7 +26380,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;(function(root
 Object.defineProperty(exports, "__esModule", { value: true });
 var Checkbox_1 = __webpack_require__(53);
 var ComponentOptionsModel_1 = __webpack_require__(24);
-var TextInput_1 = __webpack_require__(46);
+var TextInput_1 = __webpack_require__(47);
 var Dom_1 = __webpack_require__(2);
 var ResultListEvents_1 = __webpack_require__(31);
 var QueryEvents_1 = __webpack_require__(10);
@@ -29162,7 +29216,7 @@ var Component_1 = __webpack_require__(6);
 var Dom_1 = __webpack_require__(2);
 var _ = __webpack_require__(0);
 var Initialization_1 = __webpack_require__(1);
-var UtilsModules_1 = __webpack_require__(114);
+var UtilsModules_1 = __webpack_require__(115);
 var InitializationHelper = /** @class */ (function () {
     function InitializationHelper() {
     }
@@ -29244,11 +29298,13 @@ module.exports = function(module) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+var TemplateHelpers_1 = __webpack_require__(77);
+exports.TemplateHelpers = TemplateHelpers_1.TemplateHelpers;
 var TemplateCache_1 = __webpack_require__(58);
 exports.TemplateCache = TemplateCache_1.TemplateCache;
-var HtmlTemplate_1 = __webpack_require__(77);
+var HtmlTemplate_1 = __webpack_require__(78);
 exports.HtmlTemplate = HtmlTemplate_1.HtmlTemplate;
-var UnderscoreTemplate_1 = __webpack_require__(48);
+var UnderscoreTemplate_1 = __webpack_require__(46);
 exports.UnderscoreTemplate = UnderscoreTemplate_1.UnderscoreTemplate;
 
 
@@ -29271,7 +29327,7 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var Component_1 = __webpack_require__(6);
 var ComponentOptions_1 = __webpack_require__(7);
-var AnalyticsEndpoint_1 = __webpack_require__(109);
+var AnalyticsEndpoint_1 = __webpack_require__(110);
 var SearchEndpoint_1 = __webpack_require__(41);
 var Assert_1 = __webpack_require__(5);
 var QueryEvents_1 = __webpack_require__(10);
@@ -29280,15 +29336,15 @@ var Dom_1 = __webpack_require__(2);
 var Model_1 = __webpack_require__(16);
 var Utils_1 = __webpack_require__(4);
 var NoopAnalyticsClient_1 = __webpack_require__(71);
-var LiveAnalyticsClient_1 = __webpack_require__(117);
+var LiveAnalyticsClient_1 = __webpack_require__(118);
 var MultiAnalyticsClient_1 = __webpack_require__(288);
 var AnalyticsActionListMeta_1 = __webpack_require__(9);
-var RecommendationAnalyticsClient_1 = __webpack_require__(138);
+var RecommendationAnalyticsClient_1 = __webpack_require__(139);
 var _ = __webpack_require__(0);
 var GlobalExports_1 = __webpack_require__(3);
 var PendingSearchEvent_1 = __webpack_require__(72);
-var PendingSearchAsYouTypeSearchEvent_1 = __webpack_require__(82);
-var AccessToken_1 = __webpack_require__(106);
+var PendingSearchAsYouTypeSearchEvent_1 = __webpack_require__(83);
+var AccessToken_1 = __webpack_require__(107);
 /**
  * The `Analytics` component can log user actions performed in the search interface and send them to a REST web service
  * exposed through the Coveo Cloud Platform.
@@ -30131,9 +30187,9 @@ exports.Dom = Dom_1.Dom;
 var SearchInterface_1 = __webpack_require__(17);
 exports.SearchInterface = SearchInterface_1.SearchInterface;
 exports.StandaloneSearchInterface = SearchInterface_1.StandaloneSearchInterface;
-var PublicPathUtils_1 = __webpack_require__(115);
+var PublicPathUtils_1 = __webpack_require__(116);
 exports.PublicPathUtils = PublicPathUtils_1.PublicPathUtils;
-var PublicPathUtils_2 = __webpack_require__(115);
+var PublicPathUtils_2 = __webpack_require__(116);
 PublicPathUtils_2.PublicPathUtils.detectPublicPath();
 var Initialization_1 = __webpack_require__(1);
 Initialization_1.Initialization.componentsFactory = Initialization_1.LazyInitialization.componentsFactory;
@@ -30295,7 +30351,7 @@ var LazyTriggers_1 = __webpack_require__(500);
 LazyTriggers_1.lazyTriggers();
 var LazyYouTubeThumbnail_1 = __webpack_require__(501);
 LazyYouTubeThumbnail_1.lazyYouTubeThumbnail();
-var YouTubeThumbnailFields_1 = __webpack_require__(141);
+var YouTubeThumbnailFields_1 = __webpack_require__(142);
 YouTubeThumbnailFields_1.registerFields();
 var LazyCheckbox_1 = __webpack_require__(502);
 LazyCheckbox_1.lazyCheckbox();
@@ -30572,7 +30628,7 @@ var GlobalExports_1 = __webpack_require__(3);
 function lazyBackdrop() {
     Initialization_1.LazyInitialization.registerLazyComponent('Backdrop', function () {
         return new Promise(function (resolve, reject) {
-            __webpack_require__.e/* require.ensure */(18).then((function () {
+            __webpack_require__.e/* require.ensure */(17).then((function () {
                 var loaded = __webpack_require__(161)['Backdrop'];
                 GlobalExports_1.lazyExport(loaded, resolve);
             }).bind(null, __webpack_require__)).catch(Initialization_1.LazyInitialization.buildErrorCallback('Backdrop', resolve));
@@ -30594,7 +30650,7 @@ var GlobalExports_1 = __webpack_require__(3);
 function lazyBadge() {
     Initialization_1.LazyInitialization.registerLazyComponent('Badge', function () {
         return new Promise(function (resolve, reject) {
-            __webpack_require__.e/* require.ensure */(24).then((function () {
+            __webpack_require__.e/* require.ensure */(31).then((function () {
                 var loaded = __webpack_require__(162)['Badge'];
                 GlobalExports_1.lazyExport(loaded, resolve);
             }).bind(null, __webpack_require__)).catch(Initialization_1.LazyInitialization.buildErrorCallback('Badge', resolve));
@@ -30616,7 +30672,7 @@ var GlobalExports_1 = __webpack_require__(3);
 function lazyBreadcrumb() {
     Initialization_1.LazyInitialization.registerLazyComponent('Breadcrumb', function () {
         return new Promise(function (resolve, reject) {
-            __webpack_require__.e/* require.ensure */(42).then((function () {
+            __webpack_require__.e/* require.ensure */(41).then((function () {
                 var loaded = __webpack_require__(163)['Breadcrumb'];
                 GlobalExports_1.lazyExport(loaded, resolve);
             }).bind(null, __webpack_require__)).catch(Initialization_1.LazyInitialization.buildErrorCallback('Breadcrumb', resolve));
@@ -30638,7 +30694,7 @@ var GlobalExports_1 = __webpack_require__(3);
 function lazyCardActionBar() {
     Initialization_1.LazyInitialization.registerLazyComponent('CardActionBar', function () {
         return new Promise(function (resolve, reject) {
-            __webpack_require__.e/* require.ensure */(41).then((function () {
+            __webpack_require__.e/* require.ensure */(40).then((function () {
                 var loaded = __webpack_require__(164)['CardActionBar'];
                 GlobalExports_1.lazyExport(loaded, resolve);
             }).bind(null, __webpack_require__)).catch(Initialization_1.LazyInitialization.buildErrorCallback('CardActionBar', resolve));
@@ -30660,7 +30716,7 @@ var GlobalExports_1 = __webpack_require__(3);
 function lazyCardOverlay() {
     Initialization_1.LazyInitialization.registerLazyComponent('CardOverlay', function () {
         return new Promise(function (resolve, reject) {
-            __webpack_require__.e/* require.ensure */(29).then((function () {
+            __webpack_require__.e/* require.ensure */(28).then((function () {
                 var loaded = __webpack_require__(165)['CardOverlay'];
                 GlobalExports_1.lazyExport(loaded, resolve);
             }).bind(null, __webpack_require__)).catch(Initialization_1.LazyInitialization.buildErrorCallback('CardOverlay', resolve));
@@ -30771,7 +30827,7 @@ function lazyDebug() {
     Initialization_1.LazyInitialization.registerLazyComponent('Debug', function () {
         return new Promise(function (resolve, reject) {
             new Promise(function(resolve) { resolve(); }).then((function () {
-                var loaded = __webpack_require__(112)['Debug'];
+                var loaded = __webpack_require__(113)['Debug'];
                 GlobalExports_1.lazyExport(loaded, resolve);
             }).bind(null, __webpack_require__)).catch(Initialization_1.LazyInitialization.buildErrorCallback('Debug', resolve));
         });
@@ -30925,7 +30981,7 @@ function lazyFacetRange() {
     Initialization_1.LazyInitialization.registerLazyComponent('FacetRange', function () {
         return new Promise(function (resolve, reject) {
             __webpack_require__.e/* require.ensure */(2).then((function () {
-                var loaded = __webpack_require__(125)['FacetRange'];
+                var loaded = __webpack_require__(126)['FacetRange'];
                 GlobalExports_1.lazyExport(loaded, resolve);
             }).bind(null, __webpack_require__)).catch(Initialization_1.LazyInitialization.buildErrorCallback('FacetRange', resolve));
         });
@@ -30947,7 +31003,7 @@ function lazyFacetSlider() {
     Initialization_1.LazyInitialization.registerLazyComponent('FacetSlider', function () {
         return new Promise(function (resolve, reject) {
             __webpack_require__.e/* require.ensure */(5).then((function () {
-                var loaded = __webpack_require__(133)['FacetSlider'];
+                var loaded = __webpack_require__(134)['FacetSlider'];
                 GlobalExports_1.lazyExport(loaded, resolve);
             }).bind(null, __webpack_require__)).catch(Initialization_1.LazyInitialization.buildErrorCallback('FacetSlider', resolve));
         });
@@ -30968,7 +31024,7 @@ var GlobalExports_1 = __webpack_require__(3);
 function lazyFieldSuggestions() {
     Initialization_1.LazyInitialization.registerLazyComponent('FieldSuggestions', function () {
         return new Promise(function (resolve, reject) {
-            __webpack_require__.e/* require.ensure */(40).then((function () {
+            __webpack_require__.e/* require.ensure */(39).then((function () {
                 var loaded = __webpack_require__(175)['FieldSuggestions'];
                 GlobalExports_1.lazyExport(loaded, resolve);
             }).bind(null, __webpack_require__)).catch(Initialization_1.LazyInitialization.buildErrorCallback('FieldSuggestions', resolve));
@@ -30990,7 +31046,7 @@ var GlobalExports_1 = __webpack_require__(3);
 function lazyFieldTable() {
     Initialization_1.LazyInitialization.registerLazyComponent('FieldTable', function () {
         return new Promise(function (resolve, reject) {
-            __webpack_require__.e/* require.ensure */(17).then((function () {
+            __webpack_require__.e/* require.ensure */(22).then((function () {
                 var loaded = __webpack_require__(176)['FieldTable'];
                 GlobalExports_1.lazyExport(loaded, resolve);
             }).bind(null, __webpack_require__)).catch(Initialization_1.LazyInitialization.buildErrorCallback('FieldTable', resolve));
@@ -31012,8 +31068,8 @@ var GlobalExports_1 = __webpack_require__(3);
 function lazyFieldValue() {
     Initialization_1.LazyInitialization.registerLazyComponent('FieldValue', function () {
         return new Promise(function (resolve, reject) {
-            __webpack_require__.e/* require.ensure */(31).then((function () {
-                var loaded = __webpack_require__(91)['FieldValue'];
+            __webpack_require__.e/* require.ensure */(47).then((function () {
+                var loaded = __webpack_require__(92)['FieldValue'];
                 GlobalExports_1.lazyExport(loaded, resolve);
             }).bind(null, __webpack_require__)).catch(Initialization_1.LazyInitialization.buildErrorCallback('FieldValue', resolve));
         });
@@ -31034,8 +31090,8 @@ var GlobalExports_1 = __webpack_require__(3);
 function lazyFolding() {
     Initialization_1.LazyInitialization.registerLazyComponent('Folding', function () {
         return new Promise(function (resolve, reject) {
-            __webpack_require__.e/* require.ensure */(47).then((function () {
-                var loaded = __webpack_require__(126)['Folding'];
+            __webpack_require__.e/* require.ensure */(46).then((function () {
+                var loaded = __webpack_require__(127)['Folding'];
                 GlobalExports_1.lazyExport(loaded, resolve);
             }).bind(null, __webpack_require__)).catch(Initialization_1.LazyInitialization.buildErrorCallback('Folding', resolve));
         });
@@ -31056,7 +31112,7 @@ var GlobalExports_1 = __webpack_require__(3);
 function lazyFoldingForThread() {
     Initialization_1.LazyInitialization.registerLazyComponent('FoldingForThread', function () {
         return new Promise(function (resolve, reject) {
-            __webpack_require__.e/* require.ensure */(30).then((function () {
+            __webpack_require__.e/* require.ensure */(29).then((function () {
                 var loaded = __webpack_require__(177)['FoldingForThread'];
                 GlobalExports_1.lazyExport(loaded, resolve);
             }).bind(null, __webpack_require__)).catch(Initialization_1.LazyInitialization.buildErrorCallback('FoldingForThread', resolve));
@@ -31078,7 +31134,7 @@ var GlobalExports_1 = __webpack_require__(3);
 function lazyHiddenQuery() {
     Initialization_1.LazyInitialization.registerLazyComponent('HiddenQuery', function () {
         return new Promise(function (resolve, reject) {
-            __webpack_require__.e/* require.ensure */(39).then((function () {
+            __webpack_require__.e/* require.ensure */(38).then((function () {
                 var loaded = __webpack_require__(178)['HiddenQuery'];
                 GlobalExports_1.lazyExport(loaded, resolve);
             }).bind(null, __webpack_require__)).catch(Initialization_1.LazyInitialization.buildErrorCallback('HiddenQuery', resolve));
@@ -31123,7 +31179,7 @@ function lazyIcon() {
     Initialization_1.LazyInitialization.registerLazyComponent('Icon', function () {
         return new Promise(function (resolve, reject) {
             __webpack_require__.e/* require.ensure */(69).then((function () {
-                var loaded = __webpack_require__(127)['Icon'];
+                var loaded = __webpack_require__(128)['Icon'];
                 GlobalExports_1.lazyExport(loaded, resolve);
             }).bind(null, __webpack_require__)).catch(Initialization_1.LazyInitialization.buildErrorCallback('Icon', resolve));
         });
@@ -31144,7 +31200,7 @@ var GlobalExports_1 = __webpack_require__(3);
 function lazyLogo() {
     Initialization_1.LazyInitialization.registerLazyComponent('Logo', function () {
         return new Promise(function (resolve, reject) {
-            __webpack_require__.e/* require.ensure */(45).then((function () {
+            __webpack_require__.e/* require.ensure */(44).then((function () {
                 var loaded = __webpack_require__(180)['Logo'];
                 GlobalExports_1.lazyExport(loaded, resolve);
             }).bind(null, __webpack_require__)).catch(Initialization_1.LazyInitialization.buildErrorCallback('Logo', resolve));
@@ -31189,7 +31245,7 @@ function lazyOmnibox() {
     Initialization_1.LazyInitialization.registerLazyComponent('Omnibox', function () {
         return new Promise(function (resolve, reject) {
             __webpack_require__.e/* require.ensure */(11).then((function () {
-                var loaded = __webpack_require__(78)['Omnibox'];
+                var loaded = __webpack_require__(79)['Omnibox'];
                 GlobalExports_1.lazyExport(loaded, resolve);
             }).bind(null, __webpack_require__)).catch(Initialization_1.LazyInitialization.buildErrorCallback('Omnibox', resolve));
         });
@@ -31232,7 +31288,7 @@ var GlobalExports_1 = __webpack_require__(3);
 function lazyPager() {
     Initialization_1.LazyInitialization.registerLazyComponent('Pager', function () {
         return new Promise(function (resolve, reject) {
-            __webpack_require__.e/* require.ensure */(38).then((function () {
+            __webpack_require__.e/* require.ensure */(37).then((function () {
                 var loaded = __webpack_require__(183)['Pager'];
                 GlobalExports_1.lazyExport(loaded, resolve);
             }).bind(null, __webpack_require__)).catch(Initialization_1.LazyInitialization.buildErrorCallback('Pager', resolve));
@@ -31298,7 +31354,7 @@ var GlobalExports_1 = __webpack_require__(3);
 function lazyPrintableUri() {
     Initialization_1.LazyInitialization.registerLazyComponent('PrintableUri', function () {
         return new Promise(function (resolve, reject) {
-            __webpack_require__.e/* require.ensure */(28).then((function () {
+            __webpack_require__.e/* require.ensure */(27).then((function () {
                 var loaded = __webpack_require__(186)['PrintableUri'];
                 GlobalExports_1.lazyExport(loaded, resolve);
             }).bind(null, __webpack_require__)).catch(Initialization_1.LazyInitialization.buildErrorCallback('PrintableUri', resolve));
@@ -31320,8 +31376,8 @@ var GlobalExports_1 = __webpack_require__(3);
 function lazyQuerybox() {
     Initialization_1.LazyInitialization.registerLazyComponent('Querybox', function () {
         return new Promise(function (resolve, reject) {
-            __webpack_require__.e/* require.ensure */(43).then((function () {
-                var loaded = __webpack_require__(90)['Querybox'];
+            __webpack_require__.e/* require.ensure */(42).then((function () {
+                var loaded = __webpack_require__(91)['Querybox'];
                 GlobalExports_1.lazyExport(loaded, resolve);
             }).bind(null, __webpack_require__)).catch(Initialization_1.LazyInitialization.buildErrorCallback('Querybox', resolve));
         });
@@ -31364,7 +31420,7 @@ var GlobalExports_1 = __webpack_require__(3);
 function lazyQuerySummary() {
     Initialization_1.LazyInitialization.registerLazyComponent('QuerySummary', function () {
         return new Promise(function (resolve, reject) {
-            __webpack_require__.e/* require.ensure */(37).then((function () {
+            __webpack_require__.e/* require.ensure */(36).then((function () {
                 var loaded = __webpack_require__(188)['QuerySummary'];
                 GlobalExports_1.lazyExport(loaded, resolve);
             }).bind(null, __webpack_require__)).catch(Initialization_1.LazyInitialization.buildErrorCallback('QuerySummary', resolve));
@@ -31409,7 +31465,7 @@ function lazyRecommendation() {
     Initialization_1.LazyInitialization.registerLazyComponent('Recommendation', function () {
         return new Promise(function (resolve, reject) {
             __webpack_require__.e/* require.ensure */(8).then((function () {
-                var loaded = __webpack_require__(134)['Recommendation'];
+                var loaded = __webpack_require__(135)['Recommendation'];
                 GlobalExports_1.lazyExport(loaded, resolve);
             }).bind(null, __webpack_require__)).catch(Initialization_1.LazyInitialization.buildErrorCallback('Recommendation', resolve));
         });
@@ -31430,7 +31486,7 @@ var GlobalExports_1 = __webpack_require__(3);
 function lazyResultAttachment() {
     Initialization_1.LazyInitialization.registerLazyComponent('ResultAttachments', function () {
         return new Promise(function (resolve, reject) {
-            __webpack_require__.e/* require.ensure */(22).then((function () {
+            __webpack_require__.e/* require.ensure */(21).then((function () {
                 var loaded = __webpack_require__(190)['ResultAttachments'];
                 GlobalExports_1.lazyExport(loaded, resolve);
             }).bind(null, __webpack_require__)).catch(Initialization_1.LazyInitialization.buildErrorCallback('ResultAttachments', resolve));
@@ -31474,8 +31530,8 @@ var GlobalExports_1 = __webpack_require__(3);
 function lazyResultLayoutSelector() {
     Initialization_1.LazyInitialization.registerLazyComponent('ResultLayoutSelector', function () {
         return new Promise(function (resolve, reject) {
-            __webpack_require__.e/* require.ensure */(21).then((function () {
-                var loaded = __webpack_require__(135)['ResultLayoutSelector'];
+            __webpack_require__.e/* require.ensure */(20).then((function () {
+                var loaded = __webpack_require__(136)['ResultLayoutSelector'];
                 GlobalExports_1.lazyExport(loaded, resolve);
             }).bind(null, __webpack_require__)).catch(Initialization_1.LazyInitialization.buildErrorCallback('ResultLayoutSelector', resolve));
         });
@@ -31519,7 +31575,7 @@ function lazyResultList() {
     Initialization_1.LazyInitialization.registerLazyComponent('ResultList', function () {
         return new Promise(function (resolve, reject) {
             __webpack_require__.e/* require.ensure */(7).then((function () {
-                var loaded = __webpack_require__(92)['ResultList'];
+                var loaded = __webpack_require__(93)['ResultList'];
                 GlobalExports_1.lazyExport(loaded, resolve);
             }).bind(null, __webpack_require__)).catch(Initialization_1.LazyInitialization.buildErrorCallback('ResultList', resolve));
         });
@@ -31540,7 +31596,7 @@ var GlobalExports_1 = __webpack_require__(3);
 function lazyResultRating() {
     Initialization_1.LazyInitialization.registerLazyComponent('ResultRating', function () {
         return new Promise(function (resolve, reject) {
-            __webpack_require__.e/* require.ensure */(36).then((function () {
+            __webpack_require__.e/* require.ensure */(35).then((function () {
                 var loaded = __webpack_require__(192)['ResultRating'];
                 GlobalExports_1.lazyExport(loaded, resolve);
             }).bind(null, __webpack_require__)).catch(Initialization_1.LazyInitialization.buildErrorCallback('ResultRating', resolve));
@@ -31628,7 +31684,7 @@ var GlobalExports_1 = __webpack_require__(3);
 function lazyResultTagging() {
     Initialization_1.LazyInitialization.registerLazyComponent('ResultTagging', function () {
         return new Promise(function (resolve, reject) {
-            __webpack_require__.e/* require.ensure */(35).then((function () {
+            __webpack_require__.e/* require.ensure */(34).then((function () {
                 var loaded = __webpack_require__(196)['ResultTagging'];
                 GlobalExports_1.lazyExport(loaded, resolve);
             }).bind(null, __webpack_require__)).catch(Initialization_1.LazyInitialization.buildErrorCallback('ResultTagging', resolve));
@@ -31650,7 +31706,7 @@ var GlobalExports_1 = __webpack_require__(3);
 function lazyFollowItem() {
     Initialization_1.LazyInitialization.registerLazyComponent('FollowItem', function () {
         return new Promise(function (resolve, reject) {
-            __webpack_require__.e/* require.ensure */(33).then((function () {
+            __webpack_require__.e/* require.ensure */(32).then((function () {
                 var loaded = __webpack_require__(197)['FollowItem'];
                 GlobalExports_1.lazyExport(loaded, resolve);
             }).bind(null, __webpack_require__)).catch(Initialization_1.LazyInitialization.buildErrorCallback('FollowItem', resolve));
@@ -31672,7 +31728,7 @@ var GlobalExports_1 = __webpack_require__(3);
 function lazySearchAlerts() {
     Initialization_1.LazyInitialization.registerLazyComponent('SearchAlerts', function () {
         return new Promise(function (resolve, reject) {
-            __webpack_require__.e/* require.ensure */(19).then((function () {
+            __webpack_require__.e/* require.ensure */(18).then((function () {
                 var loaded = __webpack_require__(198)['SearchAlerts'];
                 GlobalExports_1.lazyExport(loaded, resolve);
             }).bind(null, __webpack_require__)).catch(Initialization_1.LazyInitialization.buildErrorCallback('SearchAlerts', resolve));
@@ -31716,8 +31772,8 @@ var GlobalExports_1 = __webpack_require__(3);
 function lazySearchButton() {
     Initialization_1.LazyInitialization.registerLazyComponent('SearchButton', function () {
         return new Promise(function (resolve, reject) {
-            __webpack_require__.e/* require.ensure */(44).then((function () {
-                var loaded = __webpack_require__(129)['SearchButton'];
+            __webpack_require__.e/* require.ensure */(43).then((function () {
+                var loaded = __webpack_require__(130)['SearchButton'];
                 GlobalExports_1.lazyExport(loaded, resolve);
             }).bind(null, __webpack_require__)).catch(Initialization_1.LazyInitialization.buildErrorCallback('SearchButton', resolve));
         });
@@ -31738,7 +31794,7 @@ var GlobalExports_1 = __webpack_require__(3);
 function lazySettings() {
     Initialization_1.LazyInitialization.registerLazyComponent('Settings', function () {
         return new Promise(function (resolve, reject) {
-            __webpack_require__.e/* require.ensure */(34).then((function () {
+            __webpack_require__.e/* require.ensure */(33).then((function () {
                 var loaded = __webpack_require__(200)['Settings'];
                 GlobalExports_1.lazyExport(loaded, resolve);
             }).bind(null, __webpack_require__)).catch(Initialization_1.LazyInitialization.buildErrorCallback('Settings', resolve));
@@ -31782,7 +31838,7 @@ var GlobalExports_1 = __webpack_require__(3);
 function lazySort() {
     Initialization_1.LazyInitialization.registerLazyComponent('Sort', function () {
         return new Promise(function (resolve, reject) {
-            __webpack_require__.e/* require.ensure */(25).then((function () {
+            __webpack_require__.e/* require.ensure */(24).then((function () {
                 var loaded = __webpack_require__(202)['Sort'];
                 GlobalExports_1.lazyExport(loaded, resolve);
             }).bind(null, __webpack_require__)).catch(Initialization_1.LazyInitialization.buildErrorCallback('Sort', resolve));
@@ -31805,7 +31861,7 @@ function lazyTab() {
     Initialization_1.LazyInitialization.registerLazyComponent('Tab', function () {
         return new Promise(function (resolve, reject) {
             __webpack_require__.e/* require.ensure */(10).then((function () {
-                var loaded = __webpack_require__(136)['Tab'];
+                var loaded = __webpack_require__(137)['Tab'];
                 GlobalExports_1.lazyExport(loaded, resolve);
             }).bind(null, __webpack_require__)).catch(Initialization_1.LazyInitialization.buildErrorCallback('Tab', resolve));
         });
@@ -31826,7 +31882,7 @@ var GlobalExports_1 = __webpack_require__(3);
 function lazyTemplateLoader() {
     Initialization_1.LazyInitialization.registerLazyComponent('TemplateLoader', function () {
         return new Promise(function (resolve, reject) {
-            __webpack_require__.e/* require.ensure */(32).then((function () {
+            __webpack_require__.e/* require.ensure */(30).then((function () {
                 var loaded = __webpack_require__(203)['TemplateLoader'];
                 GlobalExports_1.lazyExport(loaded, resolve);
             }).bind(null, __webpack_require__)).catch(Initialization_1.LazyInitialization.buildErrorCallback('TemplateLoader', resolve));
@@ -31870,7 +31926,7 @@ var GlobalExports_1 = __webpack_require__(3);
 function lazyThumbnail() {
     Initialization_1.LazyInitialization.registerLazyComponent('Thumbnail', function () {
         return new Promise(function (resolve, reject) {
-            __webpack_require__.e/* require.ensure */(27).then((function () {
+            __webpack_require__.e/* require.ensure */(26).then((function () {
                 var loaded = __webpack_require__(205)['Thumbnail'];
                 GlobalExports_1.lazyExport(loaded, resolve);
             }).bind(null, __webpack_require__)).catch(Initialization_1.LazyInitialization.buildErrorCallback('Thumbnail', resolve));
@@ -31910,14 +31966,14 @@ exports.lazyTriggers = lazyTriggers;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var Initialization_1 = __webpack_require__(1);
-var YouTubeThumbnailFields_1 = __webpack_require__(141);
+var YouTubeThumbnailFields_1 = __webpack_require__(142);
 var GlobalExports_1 = __webpack_require__(3);
 function lazyYouTubeThumbnail() {
     YouTubeThumbnailFields_1.registerFields();
     Initialization_1.LazyInitialization.registerLazyComponent('YouTubeThumbnail', function () {
         return new Promise(function (resolve, reject) {
-            __webpack_require__.e/* require.ensure */(26).then((function () {
-                var loaded = __webpack_require__(124)['YouTubeThumbnail'];
+            __webpack_require__.e/* require.ensure */(25).then((function () {
+                var loaded = __webpack_require__(125)['YouTubeThumbnail'];
                 GlobalExports_1.lazyExport(loaded, resolve);
             }).bind(null, __webpack_require__)).catch(Initialization_1.LazyInitialization.buildErrorCallback('YouTubeThumbnail', resolve));
         });
@@ -31961,7 +32017,7 @@ function lazyDatePicker() {
     Initialization_1.LazyInitialization.registerLazyModule('Datepicker', function () {
         return new Promise(function (resolve, reject) {
             __webpack_require__.e/* require.ensure */(52).then((function () {
-                var loaded = __webpack_require__(94)['DatePicker'];
+                var loaded = __webpack_require__(95)['DatePicker'];
                 GlobalExports_1.lazyExportModule(loaded, resolve);
             }).bind(null, __webpack_require__)).catch(Initialization_1.LazyInitialization.buildErrorCallback('DatePicker', resolve));
         });
@@ -32005,7 +32061,7 @@ function lazyFormGroup() {
     Initialization_1.LazyInitialization.registerLazyModule('FormGroup', function () {
         return new Promise(function (resolve, reject) {
             __webpack_require__.e/* require.ensure */(55).then((function () {
-                var loaded = __webpack_require__(93)['FormGroup'];
+                var loaded = __webpack_require__(94)['FormGroup'];
                 GlobalExports_1.lazyExportModule(loaded, resolve);
             }).bind(null, __webpack_require__)).catch(Initialization_1.LazyInitialization.buildErrorCallback('FormGroup', resolve));
         });
@@ -32027,7 +32083,7 @@ function lazyMultiSelect() {
     Initialization_1.LazyInitialization.registerLazyModule('MultiSelect', function () {
         return new Promise(function (resolve, reject) {
             __webpack_require__.e/* require.ensure */(54).then((function () {
-                var loaded = __webpack_require__(128)['MultiSelect'];
+                var loaded = __webpack_require__(129)['MultiSelect'];
                 GlobalExports_1.lazyExportModule(loaded, resolve);
             }).bind(null, __webpack_require__)).catch(Initialization_1.LazyInitialization.buildErrorCallback('MultiSelect', resolve));
         });
@@ -32048,8 +32104,8 @@ var GlobalExports_1 = __webpack_require__(3);
 function lazyNumericSpinner() {
     Initialization_1.LazyInitialization.registerLazyModule('NumericSpinner', function () {
         return new Promise(function (resolve, reject) {
-            __webpack_require__.e/* require.ensure */(46).then((function () {
-                var loaded = __webpack_require__(80)['NumericSpinner'];
+            __webpack_require__.e/* require.ensure */(45).then((function () {
+                var loaded = __webpack_require__(81)['NumericSpinner'];
                 GlobalExports_1.lazyExportModule(loaded, resolve);
             }).bind(null, __webpack_require__)).catch(Initialization_1.LazyInitialization.buildErrorCallback('NumericSpinner', resolve));
         });
@@ -32071,7 +32127,7 @@ function lazyRadioButton() {
     Initialization_1.LazyInitialization.registerLazyModule('RadioButton', function () {
         return new Promise(function (resolve, reject) {
             __webpack_require__.e/* require.ensure */(53).then((function () {
-                var loaded = __webpack_require__(79)['RadioButton'];
+                var loaded = __webpack_require__(80)['RadioButton'];
                 GlobalExports_1.lazyExportModule(loaded, resolve);
             }).bind(null, __webpack_require__)).catch(Initialization_1.LazyInitialization.buildErrorCallback('RadioButton', resolve));
         });
@@ -32093,7 +32149,7 @@ function lazyTextInput() {
     Initialization_1.LazyInitialization.registerLazyModule('TextInput', function () {
         return new Promise(function (resolve, reject) {
             new Promise(function(resolve) { resolve(); }).then((function () {
-                var loaded = __webpack_require__(46)['TextInput'];
+                var loaded = __webpack_require__(47)['TextInput'];
                 GlobalExports_1.lazyExportModule(loaded, resolve);
             }).bind(null, __webpack_require__)).catch(Initialization_1.LazyInitialization.buildErrorCallback('TextInput', resolve));
         });
@@ -32114,7 +32170,7 @@ var GlobalExports_1 = __webpack_require__(3);
 function lazySimpleFilter() {
     Initialization_1.LazyInitialization.registerLazyComponent('SimpleFilter', function () {
         return new Promise(function (resolve, reject) {
-            __webpack_require__.e/* require.ensure */(20).then((function () {
+            __webpack_require__.e/* require.ensure */(19).then((function () {
                 var loaded = __webpack_require__(207)['SimpleFilter'];
                 GlobalExports_1.lazyExport(loaded, resolve);
             }).bind(null, __webpack_require__)).catch(Initialization_1.LazyInitialization.buildErrorCallback('SimpleFilter', resolve));

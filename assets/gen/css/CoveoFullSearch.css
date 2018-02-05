@@ -1048,7 +1048,7 @@ input[type=checkbox].coveo-checkbox + button {
   min-width: 300px;
 }
 
-.CoveoSearchInterface.coveo-waiting-for-query > * {
+.CoveoSearchInterface > * {
   display: none;
   visibility: hidden;
 }
@@ -1061,6 +1061,11 @@ input[type=checkbox].coveo-checkbox + button {
 
 .CoveoSearchInterface.coveo-waiting-for-query .coveo-search-section .CoveoSettings {
   display: none;
+}
+
+.CoveoSearchInterface.coveo-after-initialization > * {
+  display: inherit;
+  visibility: inherit;
 }
 
 .CoveoSearchInterface .coveo-search-section {
@@ -11747,6 +11752,11 @@ a.CoveoResultLink.coveo-selected *,
 #coveo-recommendation-main-section.coveo-no-results .coveo-recommendation-column,
 .coveo-recommendation-main-section.coveo-no-results .coveo-recommendation-column,
 .CoveoSearchInterface .coveo-recommendation-main-section.coveo-no-results .coveo-recommendation-column {
+  display: none;
+}
+
+.CoveoRecommendationQuery,
+script.CoveoRecommendationQuery[type='text/x-query-generic'] {
   display: none;
 }
 
