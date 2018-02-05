@@ -1,11 +1,11 @@
-@import "Variables";
+@import 'Variables';
 
 .CoveoPrintableUri {
   @include justify-content(flex-start);
   margin: 2px 0 5px 0;
   font-size: $font-size-smallest;
   padding: 0 2px 0 2px;
-  
+
   @include display(flex);
   position: relative;
 
@@ -26,8 +26,14 @@
     display: none;
   }
 
-  .coveo-printable-uri-part:nth-of-type(1) { @include flex-shrink(1); min-width: 15px }
-  .coveo-printable-uri-part:last-of-type { @include flex-shrink(1); min-width: 15px }
+  .coveo-printable-uri-part:nth-of-type(1) {
+    @include flex-shrink(1);
+    min-width: 15px;
+  }
+  .coveo-printable-uri-part:last-of-type {
+    @include flex-shrink(1);
+    min-width: 15px;
+  }
 
   .coveo-printable-uri-part {
     color: $color-coveo-for-salesforce;
@@ -40,4 +46,3 @@
     padding: 0px;
   }
 }
-
