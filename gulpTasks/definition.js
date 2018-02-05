@@ -13,6 +13,7 @@ gulp.task('definitions', function(done) {
 gulp.task('cleanDefs', function() {
   return (gulp
       .src('bin/ts/CoveoJsSearch.d.ts')
+      .pipe(footer('declare module Coveo {\n\t class ResultLayout extends ResultLayoutSelector { }\n}\n'))
       .pipe(replace(/import.*$/gm, ''))
       .pipe(replace(/(declare module )(.*)( {$)/gm, '$1Coveo$3'))
       .pipe(replace(/export =.+;$/gm, ''))
