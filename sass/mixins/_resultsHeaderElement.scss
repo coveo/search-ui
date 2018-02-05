@@ -9,7 +9,8 @@
 
   border-bottom: 2px solid $color-light-grey;
 
-  &.coveo-selected, &.coveo-selected:hover {
+  &.coveo-selected,
+  &.coveo-selected:hover {
     border-bottom: 2px solid $color-greyish-dark-blue;
   }
 
