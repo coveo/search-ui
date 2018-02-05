@@ -67,6 +67,21 @@ export function TimespanFacetTest() {
 
         expect(test.cmp.facet.options.field).toBe('@anotherField');
       });
+
+      it('id should pass the correct id option to the underlying facet', () => {
+        test = Mock.optionsComponentSetup<TimespanFacet, ITimespanFacetOptions>(TimespanFacet, {
+          id: 'A new id'
+        });
+        expect(test.cmp.facet.options.id).toBe('A new id');
+      });
+
+      it('id should default to the field of the facet', () => {
+        test = Mock.optionsComponentSetup<TimespanFacet, ITimespanFacetOptions>(TimespanFacet, {
+          field: '@afield'
+        });
+
+        expect(test.cmp.facet.options.id).toBe('@afield');
+      });
     });
   });
 }
