@@ -308,10 +308,14 @@ export function SearchAlertsTest() {
           test.cmp.openPanel().then(() => {
             const elementOpened = getRootElementOpenedInModalBox(test);
             const dropdown = $$(elementOpened).find('.coveo-dropdown') as HTMLSelectElement;
+            const option = $$(dropdown).find('option[value="sunday"') as HTMLOptionElement;
+
+            option.selected = true;
+
             $$(dropdown).trigger('change');
             expect(updateSubscription).toHaveBeenCalledWith(
               jasmine.objectContaining({
-                frequency: 'monday',
+                frequency: 'sunday',
                 typeConfig: jasmine.objectContaining({
                   title: 'some nice title'
                 })
