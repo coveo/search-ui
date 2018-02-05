@@ -34,7 +34,7 @@ import { IGroupByResult } from '../../rest/GroupByResult';
 import { Defer } from '../../MiscModules';
 import { SVGIcons } from '../../utils/SVGIcons';
 import { SVGDom } from '../../utils/SVGDom';
-import { ResponsiveDropdownHeaderEvent } from '../ResponsiveComponents/ResponsiveDropdown/ResponsiveDropdownHeader';
+import { ResponsiveDropdownEvent } from '../ResponsiveComponents/ResponsiveDropdown/ResponsiveDropdown';
 
 export interface IFacetSliderOptions extends ISliderOptions {
   dateField?: boolean;
@@ -545,7 +545,7 @@ export class FacetSlider extends Component {
       }
     };
     window.addEventListener('resize', this.onResize);
-    this.bind.onRootElement(ResponsiveDropdownHeaderEvent.OPEN, this.onResize);
+    this.bind.onRootElement(ResponsiveDropdownEvent.OPEN, this.onResize);
 
     // This is used inside SF integration
     this.bind.onRootElement('onPopupOpen', this.onResize);
