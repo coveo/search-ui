@@ -6075,8 +6075,8 @@ module.exports = function (css) {
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.version = {
-    lib: '2.3826.3-beta',
-    product: '2.3826.3-beta',
+    lib: '2.3826.4-beta',
+    product: '2.3826.4-beta',
     supportedApiVersion: 2
 };
 
