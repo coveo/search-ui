@@ -1009,7 +1009,7 @@ export class SearchEndpoint implements ISearchEndpoint {
     // In this reality however, we must support GET calls (ex: GET /html) for CORS/JSONP/IE reasons.
     // Therefore, we cherry-pick parts of the query to include in a 'query string' instead of a body payload.
     const queryParameters: Record<string, any> = {};
-    ['q', 'aq', 'cq', 'dq', 'searchHub', 'tab', 'locale', 'pipeline', 'lowercaseOperators', 'fieldsToInclude'].forEach(key => {
+    ['q', 'aq', 'cq', 'dq', 'searchHub', 'tab', 'locale', 'pipeline', 'lowercaseOperators'].forEach(key => {
       queryParameters[key] = queryObject[key];
     });
 
@@ -1018,6 +1018,14 @@ export class SearchEndpoint implements ISearchEndpoint {
       const [key, value] = pair;
       context[`context[${Utils.safeEncodeURIComponent(key)}]`] = value;
     });
+
+    if (queryObject.fieldsToInclude) {
+      const fieldsToInclude = queryObject.fieldsToInclude.map(field => {
+        const uri = Utils.safeEncodeURIComponent(field.replace('@', ''));
+        return `"${uri}"`;
+      });
+      queryParameters.fieldsToInclude = `[${fieldsToInclude.join(',')}]`;
+    }
 
     return {
       q: query,
