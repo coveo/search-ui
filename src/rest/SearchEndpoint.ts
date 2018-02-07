@@ -1020,10 +1020,11 @@ export class SearchEndpoint implements ISearchEndpoint {
     });
 
     if (queryObject.fieldsToInclude) {
-      queryParameters.fieldsToInclude = `[${_.map(
-        queryObject.fieldsToInclude,
-        field => '"' + Utils.safeEncodeURIComponent(field.replace('@', '')) + '"'
-      ).join(',')}]`;
+      const fieldsToInclude = queryObject.fieldsToInclude.map(field => {
+        const uri = Utils.safeEncodeURIComponent(field.replace('@', ''));
+        return `"${uri}"`;
+      });
+      queryParameters.fieldsToInclude = `[${fieldsToInclude.join(',')}]`;
     }
 
     return {
