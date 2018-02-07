@@ -3776,7 +3776,7 @@ var SearchEndpoint = /** @class */ (function () {
         // In this reality however, we must support GET calls (ex: GET /html) for CORS/JSONP/IE reasons.
         // Therefore, we cherry-pick parts of the query to include in a 'query string' instead of a body payload.
         var queryParameters = {};
-        ['q', 'aq', 'cq', 'dq', 'searchHub', 'tab', 'locale', 'pipeline', 'lowercaseOperators', 'fieldsToInclude'].forEach(function (key) {
+        ['q', 'aq', 'cq', 'dq', 'searchHub', 'tab', 'locale', 'pipeline', 'lowercaseOperators'].forEach(function (key) {
             queryParameters[key] = queryObject[key];
         });
         var context = {};
@@ -3784,6 +3784,13 @@ var SearchEndpoint = /** @class */ (function () {
             var key = pair[0], value = pair[1];
             context["context[" + Utils_1.Utils.safeEncodeURIComponent(key) + "]"] = value;
         });
+        if (queryObject.fieldsToInclude) {
+            var fieldsToInclude = queryObject.fieldsToInclude.map(function (field) {
+                var uri = Utils_1.Utils.safeEncodeURIComponent(field.replace('@', ''));
+                return "\"" + uri + "\"";
+            });
+            queryParameters.fieldsToInclude = "[" + fieldsToInclude.join(',') + "]";
+        }
         return __assign({ q: query }, context, queryParameters);
     };
     SearchEndpoint.prototype.buildViewAsHtmlQueryString = function (uniqueId, callOptions) {
@@ -6075,8 +6082,8 @@ module.exports = function (css) {
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.version = {
-    lib: '2.3826.4-beta',
-    product: '2.3826.4-beta',
+    lib: '2.3826.5-beta',
+    product: '2.3826.5-beta',
     supportedApiVersion: 2
 };
 
