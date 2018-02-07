@@ -22,7 +22,7 @@ export interface IPipelineContextOptions {}
  * This can be any arbitrary information that you can use to contextualize the query and help Coveo improve relevance by returning results tailored to a specific context.
  *
  * This component is meant to be configured using a script tag, with a JSON content.
- * 
+ *
  * The values can be either a `string` or an array of `string`.
  *
  * ```
@@ -46,13 +46,13 @@ export interface IPipelineContextOptions {}
  * Using this component as opposed to JavaScript code means you will be able to leverage the interface editor.
  *
  * Regardless of if you use this component or JavaScript to add context, both will add the needed data in the [Query.Context]{@link IQuery.context} parameter.
- * 
+ *
  * **Note:**
- * 
+ *
  * This component also ensures that the framework properly determines the context in all corner cases, including when a standalone search box ([initSearchbox]{@link initSearchbox}) is displaying query suggestions.
- * 
+ *
  * In most cases, if you do not use this component, the context will not be resolved and leveraged properly in the query pipeline (see [What Is a Query Pipeline?](http://www.coveo.com/go?dest=cloudhelp&lcid=9&context=252)).
- * 
+ *
  */
 export class PipelineContext extends Component implements IPipelineContextProvider {
   static ID = 'PipelineContext';
@@ -79,7 +79,7 @@ export class PipelineContext extends Component implements IPipelineContextProvid
 
   /**
    * Set a new context, replacing any value previously set.
-   * 
+   *
    * @param newContext The new context to set, which can be directly passed as a JSON, or as a stringified JSON.
    */
   public setContext(newContext: string | Context) {
@@ -102,7 +102,7 @@ export class PipelineContext extends Component implements IPipelineContextProvid
   /**
    * Sets a value for a context key, replacing the previous value if applicable.
    * @param contextKey
-   * @param contextValue 
+   * @param contextValue
    */
   public setContextValue(contextKey: string, contextValue: string | string[]) {
     this.contextContent[contextKey] = contextValue;
@@ -118,9 +118,9 @@ export class PipelineContext extends Component implements IPipelineContextProvid
 
   /**
    * Get the context value associated to the given key.
-   * 
+   *
    * If the global variable Coveo.context contains the requested key, this method will return the value contained in Coveo.context instead of the one contained internally.
-   * 
+   *
    * This is especially useful in a Coveo for Salesforce context, where context values can be extracted from a backend service.
    * @param key
    * @returns {string}

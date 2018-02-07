@@ -97,7 +97,7 @@ export class ExpressionBuilder {
 
   /**
    * @returns array containing the differents parts of the expression
-  */
+   */
   public getParts(): string[] {
     return this.parts;
   }

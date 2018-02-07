@@ -1,8 +1,7 @@
-@import "bourbon/bourbon";
-@import "Variables";
+@import 'bourbon/bourbon';
+@import 'Variables';
 
 .CoveoSearchInterface.coveo-small-facets {
-
   .coveo-facet-dropdown-content {
     z-index: 20;
     margin: 0;
