@@ -1,6 +1,5 @@
 /* istanbul ignore next */
 export function shim() {
-  debugger;
   const doShim = promiseInstance => {
     if (typeof promiseInstance.prototype['finally'] != 'function') {
       promiseInstance.prototype['finally'] = function finallyPolyfill(callback) {
