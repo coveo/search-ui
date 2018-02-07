@@ -164,12 +164,15 @@ export function SearchEndpointTest() {
       it('allow to get an export to excel link', () => {
         const qbuilder = new QueryBuilder();
         qbuilder.expression.add('batman');
+        qbuilder.fieldsToInclude = ['@source'];
+
         expect(ep.getExportToExcelLink(qbuilder.build(), 56)).toContain(ep.getBaseUri() + '?');
         expect(ep.getExportToExcelLink(qbuilder.build(), 56)).toContain('organizationId=myOrgId');
         expect(ep.getExportToExcelLink(qbuilder.build(), 56)).toContain('potatoe=mashed');
         expect(ep.getExportToExcelLink(qbuilder.build(), 56)).toContain('q=batman');
         expect(ep.getExportToExcelLink(qbuilder.build(), 56)).toContain('numberOfResults=56');
         expect(ep.getExportToExcelLink(qbuilder.build(), 56)).toContain('format=xlsx');
+        expect(ep.getExportToExcelLink(qbuilder.build(), 56)).toContain(`fieldsToInclude=${Utils.safeEncodeURIComponent('["source"]')}`);
       });
 
       it('allow to get an export to excel link with a context', () => {
