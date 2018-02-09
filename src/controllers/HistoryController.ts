@@ -43,7 +43,7 @@ export class HistoryController extends RootComponent {
     public window: Window,
     public queryStateModel: QueryStateModel,
     public queryController: QueryController,
-    public usageAnalytics?: IAnalyticsClient
+    public usageAnalytics?: IAnalyticsClient | undefined
   ) {
     super(element, HistoryController.ID);
 
@@ -185,6 +185,8 @@ export class HistoryController extends RootComponent {
     // So we find the first event that match (if any), by order of importance (query expression > sort > facet)
 
     if (!this.usageAnalytics) {
+      this.logger.warn("The query state has been modified directly in the URL and we couldn't log the proper analytics call.");
+      this.logger.warn('This is caused by an history controller that has been initialized without the usage analytics parameter.');
       return;
     }
 
