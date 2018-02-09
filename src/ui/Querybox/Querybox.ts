@@ -149,10 +149,16 @@ export class Querybox extends Component {
     enableLowercaseOperators: ComponentOptions.buildBooleanOption({ defaultValue: false, depend: 'enableQuerySyntax' }),
 
     /**
-     * Specifies whether to automatically convert any basic expression containing at least a certain number of keywords
-     * (see the [`partialMatchKeywords`]{@link Querybox.options.partialMatchKeywords} option) to a *partial match
-     * expression*, so that items containing at least a certain subset of those keywords (see the
-     * [`partialMatchThreshold`]{@link Querybox.options.partialMatchThreshold} option) will match the query.
+     * Whether to convert a basic expression containing at least a certain number of keywords (see the
+     * [`partialMatchKeywords`]{@link Querybox.options.partialMatchKeywords} option) to a *partial match expression*, so
+     * that items containing at least a certain number of those keywords (see the
+     * [`partialMatchThreshold`]{@link Querybox.options.partialMatchThreshold} option) will match the expression.
+     *
+     * **Notes:**
+     *
+     * > - Only the basic expression of the query (see [`q`]{@link q}) can be converted to a partial match expression.
+     * > - When the [`enableQuerySyntax`]{@link Querybox.options.enableQuerySyntax} option is set to `true`, this
+     * > feature has no effect on a basic expression containing query syntax (field expressions, operators, etc.).
      *
      * **Example:**
      *
@@ -171,14 +177,17 @@ export class Querybox extends Component {
     enablePartialMatch: ComponentOptions.buildBooleanOption({ defaultValue: false }),
 
     /**
-     * When the [`enablePartialMatch`]{@link Querybox.options.enablePartialMatch} option is `true`, specifies the
-     * minimum number of keywords that need to be present in the basic expression to convert it to a partial match
+     * The minimum number of keywords that need to be present in a basic expression to convert it to a partial match
      * expression.
      *
      * See also the [`partialMatchThreshold`]{@link Querybox.options.partialMatchThreshold} option.
      *
-     * **Note:**
-     * > Only the basic expression of the query (see [`q`]{@link q}) can be converted to a partial match expression.
+     * **Notes:**
+     * > - This option has no meaning unless the [`enablePartialMatch`]{@link Querybox.options.enablePartialMatch}
+     * > option is set to `true`.
+     * > - Repeated keywords in a basic expression count as a single keyword.
+     * > - Thesaurus expansions in a basic expression count towards the `partialMatchKeywords` count.
+     * > - Stemming expansions **do not** count towards the `partialMatchKeywords` count.
      *
      * **Example:**
      * > If the `partialMatchKeywords` value is `7`, the basic expression will have to contain at least 7 keywords
@@ -190,14 +199,16 @@ export class Querybox extends Component {
     partialMatchKeywords: ComponentOptions.buildNumberOption({ defaultValue: 5, min: 1, depend: 'enablePartialMatch' }),
 
     /**
-     * When the [`enablePartialMatch`]{@link Querybox.options.enablePartialMatch} option is `true`, specifies an
-     * absolute or relative (percentage) value indicating the minimum number of partial match expression keywords an
-     * item must contain to match the query.
+     * An absolute or relative value indicating the minimum number (rounded up) of partial match expression keywords an
+     * item must contain to match the expression.
      *
      * See also the [`partialMatchKeywords`]{@link Querybox.options.partialMatchKeywords} option.
      *
-     * **Note:**
-     * > The relative threshold is always rounded up to the nearest integer.
+     * **Notes:**
+     * > - This option has no meaning unless the [`enablePartialMatch`]{@link Querybox.options.enablePartialMatch}
+     * > option is set to `true`.
+     * > - A keyword and its stemming expansions count as a single keyword when evaluating whether an item meets the
+     * > `partialMatchThreshold`.
      *
      * **Examples:**
      * > If the `partialMatchThreshold` value is `50%` and the partial match expression contains exactly 9 keywords,
