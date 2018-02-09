@@ -15,13 +15,6 @@ import { analyticsActionCauseList, IAnalyticsFacetMeta, IAnalyticsActionCause } 
 import { logSearchBoxSubmitEvent, logSortEvent } from '../ui/Analytics/SharedAnalyticsCalls';
 import { Model } from '../models/Model';
 
-export interface IHistoryControllerEnvironment {
-  model: QueryStateModel;
-  window: Window;
-  queryController: QueryController;
-  usageAnalytics: IAnalyticsClient;
-}
-
 /**
  * This component is instantiated automatically by the framework on the root if the {@link SearchInterface}.<br/>
  * When the {@link SearchInterface.options.enableHistory} option is set to true, this component is instantiated.<br/>
@@ -45,26 +38,32 @@ export class HistoryController extends RootComponent {
    * @param element
    * @param environment
    */
-  constructor(public element: HTMLElement, private environment: IHistoryControllerEnvironment) {
+  constructor(
+    element: HTMLElement,
+    public window: Window,
+    public queryStateModel: QueryStateModel,
+    public queryController: QueryController,
+    public usageAnalytics?: IAnalyticsClient
+  ) {
     super(element, HistoryController.ID);
 
-    Assert.exists(this.model);
+    Assert.exists(this.queryStateModel);
     Assert.exists(this.queryController);
 
     $$(this.element).on(InitializationEvents.restoreHistoryState, () => {
       this.logger.trace('Restore history state. Update model');
       this.updateModelFromHash();
-      this.lastState = this.model.getAttributes();
+      this.lastState = this.queryStateModel.getAttributes();
     });
 
-    $$(this.element).on(this.model.getEventName(Model.eventTypes.all), () => {
+    $$(this.element).on(this.queryStateModel.getEventName(Model.eventTypes.all), () => {
       this.logger.trace('Query model changed. Update hash');
       this.updateHashFromModel();
     });
 
     this.hashchange = () => {
       this.handleHashChange();
-      this.lastState = this.model.getAttributes();
+      this.lastState = this.queryStateModel.getAttributes();
     };
 
     this.window.addEventListener('hashchange', this.hashchange);
@@ -77,22 +76,6 @@ export class HistoryController extends RootComponent {
 
   public get hashUtils() {
     return this.hashUtilsModule ? this.hashUtilsModule : HashUtils;
-  }
-
-  public get window() {
-    return this.environment.window;
-  }
-
-  public get model() {
-    return this.environment.model;
-  }
-
-  public get queryController() {
-    return this.environment.queryController;
-  }
-
-  public get usageAnalytics() {
-    return this.environment.usageAnalytics;
   }
 
   /**
@@ -121,7 +104,7 @@ export class HistoryController extends RootComponent {
 
   public debugInfo() {
     return {
-      state: this.model.getAttributes()
+      state: this.queryStateModel.getAttributes()
     };
   }
 
@@ -141,7 +124,7 @@ export class HistoryController extends RootComponent {
     const attributesThatGotApplied = this.updateModelFromHash();
     if (_.difference(attributesThatGotApplied, HistoryController.attributesThatDoNotTriggerQuery).length > 0) {
       if (this.lastState) {
-        const differenceWithLastState = Utils.differenceBetweenObjects(this.model.getAttributes(), this.lastState);
+        const differenceWithLastState = Utils.differenceBetweenObjects(this.queryStateModel.getAttributes(), this.lastState);
         this.mapStateDifferenceToUsageAnalyticsCall(differenceWithLastState);
       }
       this.queryController.executeQuery();
@@ -153,7 +136,7 @@ export class HistoryController extends RootComponent {
 
     if (!this.willUpdateHash) {
       Defer.defer(() => {
-        const attributes = this.model.getAttributes();
+        const attributes = this.queryStateModel.getAttributes();
         this.setHashValues(attributes);
         this.logger.debug('Saving state to hash', attributes);
         this.willUpdateHash = false;
@@ -167,15 +150,15 @@ export class HistoryController extends RootComponent {
 
     const toSet: { [key: string]: any } = {};
     const diff: string[] = [];
-    _.each(<_.Dictionary<any>>this.model.attributes, (value, key?, obj?) => {
+    _.each(<_.Dictionary<any>>this.queryStateModel.attributes, (value, key?, obj?) => {
       const valToSet = this.getHashValue(key);
       toSet[key] = valToSet;
-      if (this.model.get(key) != valToSet) {
+      if (this.queryStateModel.get(key) != valToSet) {
         diff.push(key);
       }
     });
     this.initialHashChange = true;
-    this.model.setMultiple(toSet);
+    this.queryStateModel.setMultiple(toSet);
     return diff;
   }
 
@@ -189,7 +172,7 @@ export class HistoryController extends RootComponent {
     }
 
     if (Utils.isUndefined(value)) {
-      value = this.model.defaultAttributes[key];
+      value = this.queryStateModel.defaultAttributes[key];
     }
 
     return value;
@@ -200,6 +183,11 @@ export class HistoryController extends RootComponent {
     // Even though it's technically possible that many property changed at the same time since the last state,
     // the backend UA service does not support multiple search cause for a single search event.
     // So we find the first event that match (if any), by order of importance (query expression > sort > facet)
+
+    if (!this.usageAnalytics) {
+      return;
+    }
+
     if (QUERY_STATE_ATTRIBUTES.Q in stateDifference) {
       logSearchBoxSubmitEvent(this.usageAnalytics);
       return;
@@ -229,7 +217,7 @@ export class HistoryController extends RootComponent {
     const regexForFacetExclusion = /f:(.*):not/;
     const matchForExclusion = regexForFacetExclusion.exec(key);
 
-    const currentValue = this.model.get(key) || [];
+    const currentValue = this.queryStateModel.get(key) || [];
     const lastValue = this.lastState[key] || [];
 
     const valueRemoved = currentValue.length < lastValue.length;

@@ -600,13 +600,7 @@ export class SearchInterface extends RootComponent implements IComponentBindings
   }
 
   private initializeHistoryController() {
-    const historyControllerEnvironment: IHistoryControllerEnvironment = {
-      model: this.queryStateModel,
-      queryController: this.queryController,
-      usageAnalytics: this.usageAnalytics,
-      window: this._window
-    };
-    new HistoryController(this.element, historyControllerEnvironment);
+    new HistoryController(this.element, window, this.queryStateModel, this.queryController, this.usageAnalytics);
   }
 
   private setupDebugInfo() {
