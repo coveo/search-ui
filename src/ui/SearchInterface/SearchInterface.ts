@@ -16,7 +16,7 @@ import {
   IDoneBuildingQueryEventArgs
 } from '../../events/QueryEvents';
 import { IBeforeRedirectEventArgs, StandaloneSearchInterfaceEvents } from '../../events/StandaloneSearchInterfaceEvents';
-import { HistoryController, IHistoryControllerEnvironment } from '../../controllers/HistoryController';
+import { HistoryController } from '../../controllers/HistoryController';
 import { LocalStorageHistoryController } from '../../controllers/LocalStorageHistoryController';
 import { InitializationEvents } from '../../events/InitializationEvents';
 import { IAnalyticsClient } from '../Analytics/AnalyticsClient';

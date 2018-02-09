@@ -36,7 +36,10 @@ export class HistoryController extends RootComponent {
   /**
    * Create a new HistoryController
    * @param element
-   * @param environment
+   * @param window
+   * @param queryStateModel
+   * @param queryController
+   * @param usageAnalytics
    */
   constructor(
     element: HTMLElement,
