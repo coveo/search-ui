@@ -487,6 +487,7 @@ export class SearchInterface extends RootComponent implements IComponentBindings
 
     const eventNameQuickview = this.queryStateModel.getEventName(Model.eventTypes.changeOne + QueryStateModel.attributesEnum.quickview);
     $$(this.element).on(eventNameQuickview, (e, args) => this.handleQuickviewChanged(args));
+    this.element.style.display = element.style.display || 'block';
     this.setupDebugInfo();
     this.responsiveComponents = new ResponsiveComponents();
   }
