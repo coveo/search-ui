@@ -79,13 +79,20 @@ export function RecommendationTest() {
       beforeEach(() => {
         mainSearchInterface.cmp.element.appendChild(test.cmp.element);
       });
-      it('should prevent model events with atttributes from bubbling', () => {
-        const mainSearchInterfaceContainer = $$('div');
-        const eventName = test.cmp.getBindings().queryStateModel.getEventName(Model.eventTypes.change + QUERY_STATE_ATTRIBUTES.Q);
+
+      function addListenEventSpy(attributeName) {
         const spy = jasmine.createSpy('spy');
+        const eventName = test.cmp.getBindings().queryStateModel.getEventName(Model.eventTypes.change + attributeName);
+        const mainSearchInterfaceContainer = $$('div');
         mainSearchInterfaceContainer.on(eventName, () => {
           spy();
         });
+        return { spy, eventName };
+      }
+
+      it('should prevent model events with atttributes from bubbling', () => {
+        const attributeName = QUERY_STATE_ATTRIBUTES.Q;
+        const { spy, eventName } = addListenEventSpy(attributeName);
 
         $$(test.cmp.element).trigger(eventName);
 
@@ -93,12 +100,7 @@ export function RecommendationTest() {
       });
 
       it('should prevent model events without attributes from bubbling', () => {
-        const mainSearchInterfaceContainer = $$('div', mainSearchInterface.cmp.element);
-        const eventName = test.cmp.getBindings().queryStateModel.getEventName(Model.eventTypes.change);
-        const spy = jasmine.createSpy('spy');
-        mainSearchInterfaceContainer.on(eventName, () => {
-          spy();
-        });
+        const { spy, eventName } = addListenEventSpy('');
 
         $$(test.cmp.element).trigger(eventName);
 
