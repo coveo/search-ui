@@ -20,12 +20,6 @@ $page-width: 1000px;
       }
     }
   }
-  &.coveo-after-initialization {
-    > * {
-      display: inherit;
-      visibility: inherit;
-    }
-  }
   .coveo-search-section {
     max-width: $medium_screen_width + unquote('px');
     margin: 54px auto 47px auto;
@@ -88,6 +82,13 @@ $page-width: 1000px;
     .CoveoResultsPerPage {
       display: none;
     }
+  }
+}
+
+.coveo-after-initialization {
+  > * {
+    display: inherit;
+    visibility: inherit;
   }
 }
 
