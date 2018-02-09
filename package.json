@@ -20,10 +20,7 @@
     "uploadCoverage": "gulp uploadCoverage"
   },
   "lint-staged": {
-    "*.{js,ts,json,scss}": [
-      "prettier --write",
-      "git add"
-    ]
+    "*.{js,ts,json,scss}": ["prettier --write", "git add"]
   },
   "prettier": {
     "printWidth": 140,
@@ -33,34 +30,13 @@
     "type": "git",
     "url": "git+https://github.com/coveo/search-ui.git"
   },
-  "keywords": [
-    "coveo",
-    "search",
-    "ui",
-    "framework",
-    "js",
-    "typescript",
-    "jssearch",
-    "jsui"
-  ],
+  "keywords": ["coveo", "search", "ui", "framework", "js", "typescript", "jssearch", "jsui"],
   "author": "Coveo <sandbox_JSUI@coveo.com> (http://source.coveo.com/)",
   "license": "Apache-2.0",
   "bugs": {
     "url": "https://github.com/coveo/search-ui/issues"
   },
-  "files": [
-    "bin",
-    "pages",
-    "gulpTasks",
-    "docgen",
-    "images",
-    "templates",
-    "strings",
-    "filetypes",
-    "lib",
-    "src",
-    "typings"
-  ],
+  "files": ["bin", "pages", "gulpTasks", "docgen", "images", "templates", "strings", "filetypes", "lib", "src", "typings"],
   "homepage": "https://github.com/coveo/search-ui#readme",
   "devDependencies": {
     "@salesforce-ux/design-system": "2.0.3",
@@ -145,7 +121,7 @@
     "@material/select": "^0.3.3",
     "circular-json": "^0.3.1",
     "coveo-styleguide": "1.13.4",
-    "coveo.analytics": "^0.7.0",
+    "coveo.analytics": "^0.7.3",
     "coveomagicbox": "^1.0.33",
     "d3": "^4.2.1",
     "d3-scale": "^1.0.3",
