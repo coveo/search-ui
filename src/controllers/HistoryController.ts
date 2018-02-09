@@ -111,11 +111,7 @@ export class HistoryController extends RootComponent {
     };
   }
 
-  private handleNuke() {
-    this.window.removeEventListener('hashchange', this.hashchange);
-  }
-
-  private handleHashChange() {
+  public handleHashChange() {
     this.logger.trace('History hash changed');
 
     if (this.ignoreNextHashChange) {
@@ -132,6 +128,10 @@ export class HistoryController extends RootComponent {
       }
       this.queryController.executeQuery();
     }
+  }
+
+  private handleNuke() {
+    this.window.removeEventListener('hashchange', this.hashchange);
   }
 
   private updateHashFromModel() {

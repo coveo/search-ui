@@ -50,6 +50,12 @@ export function HistoryControllerTest() {
       expect(historyController.window.addEventListener).toHaveBeenCalledWith('hashchange', jasmine.any(Function));
     });
 
+    it('should not throw when history controller does not have an analytics client and there is a hash change', () => {
+      historyController = new HistoryController(env.root, Mock.mockWindow(), env.queryStateModel, env.queryController);
+      historyController.setHashValues({ q: 'test' });
+      expect(historyController.handleHashChange.bind(historyController)).not.toThrow();
+    });
+
     describe('with a fake HashUtilsModule', () => {
       let fakeHashUtils;
       beforeEach(() => {
