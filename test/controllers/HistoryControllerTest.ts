@@ -18,12 +18,7 @@ export function HistoryControllerTest() {
 
     beforeEach(() => {
       env = new Mock.MockEnvironmentBuilder().withLiveQueryStateModel().build();
-      historyController = new HistoryController(env.root, {
-        model: env.queryStateModel,
-        queryController: env.queryController,
-        usageAnalytics: env.usageAnalytics,
-        window: Mock.mockWindow()
-      });
+      historyController = new HistoryController(env.root, Mock.mockWindow(), env.queryStateModel, env.queryController, env.usageAnalytics);
     });
 
     afterEach(() => {
@@ -89,12 +84,7 @@ export function HistoryControllerTest() {
 
       describe('when logging analytics event', () => {
         beforeEach(() => {
-          historyController = new HistoryController(env.root, {
-            model: env.queryStateModel,
-            queryController: env.queryController,
-            usageAnalytics: env.usageAnalytics,
-            window: window
-          });
+          historyController = new HistoryController(env.root, window, env.queryStateModel, env.queryController, env.usageAnalytics);
           historyController.hashUtils = fakeHashUtils;
           $$(historyController.element).trigger(InitializationEvents.restoreHistoryState);
         });
@@ -135,14 +125,14 @@ export function HistoryControllerTest() {
         });
 
         it('should log an analytics event when a facet changes to select a value', () => {
-          historyController.model.registerNewAttribute('f:@foo', []);
+          historyController.queryStateModel.registerNewAttribute('f:@foo', []);
           simulateHashModule('f:@foo', ['bar']);
           window.dispatchEvent(new Event('hashchange'));
           assertFacetAnalyticsCall(analyticsActionCauseList.facetSelect);
         });
 
         it('should log an analytics event when a facet changes to deselect a value', () => {
-          historyController.model.registerNewAttribute('f:@foo', []);
+          historyController.queryStateModel.registerNewAttribute('f:@foo', []);
           simulateHashModule('f:@foo', ['bar']);
           window.dispatchEvent(new Event('hashchange'));
           simulateHashModule('f:@foo', []);
@@ -151,14 +141,14 @@ export function HistoryControllerTest() {
         });
 
         it('should log an analytics event when a facet changes to exclude a value', () => {
-          historyController.model.registerNewAttribute('f:@foo:not', []);
+          historyController.queryStateModel.registerNewAttribute('f:@foo:not', []);
           simulateHashModule('f:@foo:not', ['bar']);
           window.dispatchEvent(new Event('hashchange'));
           assertFacetAnalyticsCall(analyticsActionCauseList.facetExclude);
         });
 
         it('should log an analytics event when a facet changes to unexclude a value', () => {
-          historyController.model.registerNewAttribute('f:@foo:not', []);
+          historyController.queryStateModel.registerNewAttribute('f:@foo:not', []);
           simulateHashModule('f:@foo:not', ['bar']);
           window.dispatchEvent(new Event('hashchange'));
           simulateHashModule('f:@foo:not', []);
