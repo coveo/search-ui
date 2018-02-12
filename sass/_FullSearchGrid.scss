@@ -1,5 +1,7 @@
 @import 'neat/neat';
 @import './mixins/mediaQuery';
+@import './mixins/default_display_properties';
+
 $max-width: 1200px;
 $grid-columns: 10;
 $gutter: 0em;
@@ -18,12 +20,6 @@ $page-width: 1000px;
       .CoveoSettings {
         display: none;
       }
-    }
-  }
-  &.coveo-after-initialization {
-    > * {
-      display: inherit;
-      visibility: inherit;
     }
   }
   .coveo-search-section {
@@ -89,6 +85,21 @@ $page-width: 1000px;
       display: none;
     }
   }
+}
+
+.coveo-after-initialization {
+  > * {
+    display: inherit;
+    visibility: inherit;
+  }
+}
+
+.coveo-after-initialization {
+  > * {
+    display: inherit;
+    visibility: inherit;
+  }
+  @include default-display-properties;
 }
 
 .coveo-results-header {
