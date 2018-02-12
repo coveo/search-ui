@@ -55,8 +55,8 @@
 	</div>
 	<div class="bottomHeader">
 		<div id="searchBox">
-			<div class="CoveoSearchbox" data-enable-omnibox="true" data-inline="false" data-enable-wildcards="true" data-enable-search-as-you-type="false" data-enable-query-suggest-addon="false" data-enable-query-syntax="true" data-enable-field-addon="true"></div>
-			<div class="CoveoFieldSuggestions" data-field="@jsuipagetopic" data-header-title="Suggested topics"></div>
+			<div class="CoveoSearchbox" data-enable-omnibox="true" data-inline="false" data-enable-wildcards="true" data-enable-search-as-you-type="false" data-enable-reveal-query-suggest-addon="false" data-enable-query-syntax="true" data-enable-field-addon="true"></div>
+			<div class="CoveoFieldSuggestions" data-field="@systitle" data-header-title="Suggested topics"></div>
 		</div>
 	</div>
 	<!-- Do not focus on Querybox when URL contains hash to ensure page scrolls down to corresponding anchor. -->
@@ -177,43 +177,23 @@
 							<a href="querystatemodel.html">QueryStateModel</a>
 						</li>
 					</ul>
-					<!-- Has to remain here for the playground to work -->
-					<h1 style="visibility: collapse; font-size:0">Class QueryStateModel</h1>
 					<h1>Class QueryStateModel</h1>
 				</div>
 			</div>
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>The <code>QueryStateModel</code> class is a key-value store which contains the current state of the components that can affect
-							the query (see <a href="model.html">State](https://developers.coveo.com/x/RYGfAQ)). This class inherits from the [<code>Model</code></a>
-							class. Optionally, it is possible to persist the state in the query string in order to enable browser history
-						management (see the <a href="historycontroller.html"><code>HistoryController</code></a> class).</p>
+						<p>The QueryStateModel is a key-&gt;value store of the state of every component that can affect a query.<br/>
+							Component set values in this key -&gt; value store, and listen to event triggered to react accordingly.<br/>
+							For example, when a query is launched, the searchbox will set the &#39;q&#39; attribute, the pager will set the &#39;first&#39; attribute, etc.<br/>
+							At the same time, this class will trigger the associated event when a value is modified.<br/>
+							eg : The user change the content of the searchbox, and submit a query. This will trigger the following events :<br/>
+							-- state:change:q (because the value of &#39;q&#39; changed)</br>
+							-- state:change (because at least one value changed in the query state)<br/>
+							Component or external code could hook handler on those events : document.addEventListener(&#39;state:change:q&#39;, handler);<br/>
+							See : <a href="model.html">Model</a>, as all the relevant method are exposed in the base class.<br/>
+						Optionally, the state can be persisted to the query string to allow browser history management : See <a href="historycontroller.html">HistoryController</a></p>
 					</div>
-					<p>Components set values in the <code>QueryStateModel</code> instance to reflect their current state. The <code>QueryStateModel</code>
-						triggers state events (see <a href="model.html#eventtypes"><code>eventTypes</code></a>) whenever one of its values is modified. Components
-					listen to triggered state events to update themselves when appropriate.</p>
-					<p>For instance, when a query is triggered, the <a href="../components/searchbox.html"><code>Searchbox</code></a> component sets the <code>q</code> attribute (the
-						basic query expression), while the <a href="../components/pager.html"><code>Pager</code></a> component sets the <code>first</code> attribute (the index of the
-					first result to display in the result list), and so on.</p>
-					<p><strong>Example:</strong></p>
-					<blockquote>
-						<p>The user modifies the content of the <code>Searchbox</code> and submits a query. This triggers the following state events:</p>
-						<ul>
-							<li><code>state:change:q</code> (because the value of <code>q</code> has changed).</li>
-							<li><code>state:change</code> (because at least one value has changed in the <code>QueryStateModel</code>).</li>
-						</ul>
-						<p>Components or external code can attach handlers to those events:</p>
-						<pre><code class="lang-javascript">Coveo.$$(<span class="hljs-built_in">document</span>).on(<span class="hljs-string">'state:change:q'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
-  [ ... ]
-});
-</code></pre>
-					</blockquote>
-					<p><strong>Note:</strong></p>
-					<blockquote>
-						<p>Normally, you should interact with the <code>QueryStateModel</code> instance using the <a href="../globals.html#state"><code>Coveo.state</code></a> top-level
-						function.</p>
-					</blockquote>
 				</div>
 			</section>
 			<div class="preview-container tsd-panel">
@@ -279,17 +259,16 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/models/QueryStateModel.ts#L114">src/models/QueryStateModel.ts
-									:114</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/models/QueryStateModel.ts#L95">src/models/QueryStateModel.ts
+									:95</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Validates whether at least one facet is currently active (has selected or excluded values) in the interface.</p>
+									<p>Determine if at least one facet is currently active in the interface (this means that a facet has selected or excluded values)</p>
 								</div>
 							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
-							<p><code>true</code> if at least one facet is active; <code>false</code> otherwise.</p>
 						</li>
 					</ul>
 				</section>
@@ -384,8 +363,8 @@
 								<p>Inherited from <a href="model.html">Model</a>.<a href="model.html#get">get</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/models/Model.ts#L185">src/models/Model.ts
-									:185</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/models/Model.ts#L184">src/models/Model.ts
+									:184</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -419,8 +398,8 @@
 								<p>Inherited from <a href="model.html">Model</a>.<a href="model.html#getattributes">getAttributes</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/models/Model.ts#L96">src/models/Model.ts
-									:96</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/models/Model.ts#L95">src/models/Model.ts
+									:95</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -450,8 +429,8 @@
 								<p>Inherited from <a href="model.html">Model</a>.<a href="model.html#getdefault">getDefault</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/models/Model.ts#L200">src/models/Model.ts
-									:200</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/models/Model.ts#L199">src/models/Model.ts
+									:199</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -485,8 +464,8 @@
 								<p>Inherited from <a href="model.html">Model</a>.<a href="model.html#geteventname">getEventName</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/models/Model.ts#L238">src/models/Model.ts
-									:238</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/models/Model.ts#L237">src/models/Model.ts
+									:237</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -527,8 +506,8 @@
 								<p>Inherited from <a href="model.html">Model</a>.<a href="model.html#registernewattribute">registerNewAttribute</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/models/Model.ts#L225">src/models/Model.ts
-									:225</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/models/Model.ts#L224">src/models/Model.ts
+									:224</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -567,8 +546,8 @@
 								<p>Inherited from <a href="model.html">Model</a>.<a href="model.html#reset">reset</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/models/Model.ts#L213">src/models/Model.ts
-									:213</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/models/Model.ts#L212">src/models/Model.ts
+									:212</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -594,8 +573,8 @@
 								<p>Inherited from <a href="model.html">Model</a>.<a href="model.html#set">set</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/models/Model.ts#L85">src/models/Model.ts
-									:85</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/models/Model.ts#L84">src/models/Model.ts
+									:84</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -641,8 +620,8 @@
 								<p>Inherited from <a href="model.html">Model</a>.<a href="model.html#setdefault">setDefault</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/models/Model.ts#L174">src/models/Model.ts
-									:174</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/models/Model.ts#L173">src/models/Model.ts
+									:173</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -676,8 +655,8 @@
 								<p>Inherited from <a href="model.html">Model</a>.<a href="model.html#setmultiple">setMultiple</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/models/Model.ts#L124">src/models/Model.ts
-									:124</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/models/Model.ts#L123">src/models/Model.ts
+									:123</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -728,8 +707,8 @@
 								<p>Inherited from <a href="model.html">Model</a>.<a href="model.html#setnewdefault">setNewDefault</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/models/Model.ts#L161">src/models/Model.ts
-									:161</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/models/Model.ts#L160">src/models/Model.ts
+									:160</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -769,13 +748,13 @@
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
 					<a name="attributes" class="tsd-anchor"></a>
 					<h3>attributes</h3>
-					<div class="tsd-signature tsd-kind-icon">attributes<span class="tsd-signature-symbol">:</span> <a href="../interfaces/istringmap.html" class="tsd-signature-type">IStringMap</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></div>
+					<div class="tsd-signature tsd-kind-icon">attributes<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
 					<aside class="tsd-sources">
 						<p>Inherited from <a href="model.html">Model</a>.<a href="model.html#attributes">attributes</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/models/Model.ts#L45">src/models/Model.ts
-							:45</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/models/Model.ts#L44">src/models/Model.ts
+							:44</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -783,6 +762,14 @@
 							<p>The attributes contained in this model.</br>
 							Normally, you should not set attributes directly on this property, as this would prevent required events from being triggered.</p>
 						</div>
+					</div>
+					<div class="tsd-type-declaration">
+						<h4>Type declaration</h4>
+						<ul class="tsd-parameters">
+							<li class="tsd-parameter-index-signature">
+								<h5><span class="tsd-signature-symbol">[</span>key: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">]: </span><span class="tsd-signature-type">any</span></h5>
+							</li>
+						</ul>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
@@ -858,8 +845,8 @@
 						<p>Inherited from <a href="model.html">Model</a>.<a href="model.html#eventtypes">eventTypes</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/models/Model.ts#L58">src/models/Model.ts
-							:58</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/models/Model.ts#L57">src/models/Model.ts
+							:57</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -894,32 +881,22 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/models/QueryStateModel.ts#L97">src/models/QueryStateModel.ts
-									:97</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/models/QueryStateModel.ts#L78">src/models/QueryStateModel.ts
+									:78</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Creates a new <code>QueryStateModel</code> instance.</p>
+									<p>Create a new QueryState</p>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>element: <span class="tsd-signature-type">HTMLElement</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<div class="lead">
-											<p>The HTMLElement on which to instantiate the <code>QueryStateModel</code>.</p>
-										</div>
-									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> attributes: <a href="../interfaces/istringmap.html" class="tsd-signature-type">IStringMap</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<div class="lead">
-											<p>The state key-value store to instantiate the <code>QueryStateModel</code> with.</p>
-										</div>
-									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="querystatemodel.html" class="tsd-signature-type">QueryStateModel</a></h4>
