@@ -12,9 +12,6 @@ export interface IBreadcrumbItem {
  * Event triggered when populating the breadcrumb
  */
 export interface IPopulateBreadcrumbEventArgs {
-  /**
-   * aslkjdhflkasjhf
-   */
   breadcrumbs: IBreadcrumbItem[];
 }
 
