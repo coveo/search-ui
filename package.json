@@ -1,6 +1,6 @@
 {
   "name": "coveo-search-ui",
-  "version": "1.2537.47",
+  "version": "1.2537.48",
   "description": "Coveo JavaScript Search Framework",
   "main": "./bin/js/CoveoJsSearch.js",
   "types": "./bin/ts/CoveoJsSearch.d.ts",
@@ -49,9 +49,6 @@
     "typings"
   ],
   "homepage": "https://github.com/coveo/coveo.search.js#readme",
-  "engines": {
-    "node": "6.9.2"
-  },
   "devDependencies": {
     "@salesforce-ux/design-system": "2.0.3",
     "@types/d3": "3.5.36",
