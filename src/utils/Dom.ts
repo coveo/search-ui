@@ -315,8 +315,6 @@ export class Dom {
     if ('getElementsByClassName' in this.el) {
       return this.nodeListToArray(this.el.getElementsByClassName(className));
     }
-    // For ie 8
-    return this.nodeListToArray(this.el.querySelectorAll('.' + className));
   }
 
   /**

@@ -110,7 +110,6 @@
     "svg4everybody": "^2.1.8",
     "through2": "^2.0.3",
     "ts-loader": "^2.0.3",
-    "typedoc": "https://github.com/coveord/typedoc/tarball/master",
     "typescript": "^2.5.2",
     "walk": "^2.3.9",
     "webpack": "^3.10.0",
@@ -121,18 +120,22 @@
   },
   "dependencies": {
     "@material/select": "^0.3.3",
+    "@types/node": "^9.4.5",
     "circular-json": "^0.3.1",
     "coveo-styleguide": "1.13.4",
     "coveo.analytics": "^0.7.0",
     "coveomagicbox": "^1.0.33",
     "d3": "^4.2.1",
     "d3-scale": "^1.0.3",
+    "del": "^3.0.0",
     "es6-promise": "^4.0.5",
     "fastclick": "1.0.6",
+    "graceful-fs": "^4.1.11",
     "jstimezonedetect": "^1.0.6",
     "latinize": "^0.4.0",
     "modal-box": "^2.0.10",
     "pikaday": "^1.4.0",
+    "typedoc": "https://github.com/coveord/typedoc",
     "underscore": "^1.8.3"
   }
 }
