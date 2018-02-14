@@ -7,9 +7,23 @@
     "outDir": "./bin",
     "sourceMap": true,
     "forceConsistentCasingInFileNames": true,
-    "typeRoots": [
-      "lib",
-      "node_modules/@types"
+    "typeRoots": ["./lib/", "./node_modules/@types/"],
+    "types":[
+      "d3",
+      "d3-scale",
+      "d3-time",
+      "fastclick",
+      "moment",
+      "pikaday",
+      "globalize",
+      "underscore",
+      "coveoanalytics",
+      "es6-promise",
+      "jstimezonedetect",
+      "l10n",
+      "latinize",
+      "magic-box",
+      "modal-box"
     ]
   },
   "lib": [
