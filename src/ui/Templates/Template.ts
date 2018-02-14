@@ -1,5 +1,4 @@
 import { Logger } from '../../misc/Logger';
-import { ValidLayout } from '../ResultLayout/ResultLayout';
 import { $$ } from '../../utils/Dom';
 import { TemplateConditionEvaluator } from './TemplateConditionEvaluator';
 import { TemplateFieldsEvaluator } from './TemplateFieldsEvaluator';
@@ -8,6 +7,7 @@ import { ResponsiveComponents } from '../ResponsiveComponents/ResponsiveComponen
 import * as _ from 'underscore';
 import { Initialization, LazyInitialization } from '../Base/Initialization';
 import { Utils } from '../../utils/Utils';
+import { ValidLayout } from '../ResultLayoutSelector/ValidLayout';
 
 export type TemplateRole = 'table-header' | 'table-footer';
 

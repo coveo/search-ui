@@ -1,6 +1,6 @@
 import { IQueryResult } from '../rest/QueryResult';
 import { IQueryResults } from '../rest/QueryResults';
-import { ValidLayout } from '../ui/ResultLayout/ResultLayout';
+import { ValidLayout } from '../ui/ResultLayoutSelector/ValidLayout';
 
 /**
  * The `IDisplayedNewResultEventArgs` interface describes the object that all

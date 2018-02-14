@@ -95,7 +95,7 @@ export function FacetSliderQueryControllerTest() {
           field: '@foo',
           generateAutomaticRanges: true,
           maximumNumberOfValues: 10,
-          queryOverride: '@uri',
+          advancedQueryOverride: '@uri',
           sortCriteria: 'nosort'
         })
       );
@@ -115,7 +115,7 @@ export function FacetSliderQueryControllerTest() {
           field: '@foo',
           generateAutomaticRanges: true,
           maximumNumberOfValues: 10,
-          queryOverride: 'my query override',
+          advancedQueryOverride: 'my query override',
           sortCriteria: 'nosort'
         })
       );

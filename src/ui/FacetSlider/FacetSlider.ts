@@ -29,12 +29,12 @@ import { SearchAlertsEvents, ISearchAlertsPopulateMessageEventArgs } from '../..
 import * as _ from 'underscore';
 import { exportGlobally } from '../../GlobalExports';
 import { ResponsiveFacetSlider } from '../ResponsiveComponents/ResponsiveFacetSlider';
-
 import 'styling/_FacetSlider';
 import { IGroupByResult } from '../../rest/GroupByResult';
 import { Defer } from '../../MiscModules';
 import { SVGIcons } from '../../utils/SVGIcons';
 import { SVGDom } from '../../utils/SVGDom';
+import { ResponsiveDropdownEvent } from '../ResponsiveComponents/ResponsiveDropdown/ResponsiveDropdown';
 
 export interface IFacetSliderOptions extends ISliderOptions {
   dateField?: boolean;
@@ -389,42 +389,17 @@ export class FacetSlider extends Component {
       this.options.excludeOuterBounds = false;
     }
 
-    if (this.options.start) {
-      this.options.start = this.options.dateField
-        ? <any>new Date(this.options.start.replace(/-/g, '/')).getTime()
-        : <any>Number(this.options.start);
-    }
-
-    if (this.options.end) {
-      this.options.end = this.options.dateField
-        ? <any>new Date(this.options.end.replace(/-/g, '/')).getTime()
-        : <any>Number(this.options.end);
-    }
+    this.normalizeStartAndEndOptionsValues();
 
     this.facetQueryController = new FacetSliderQueryController(this);
-    this.initQueryStateEvents();
-    this.bind.onRootElement(QueryEvents.newQuery, () => this.handleNewQuery());
-    this.bind.onRootElement(QueryEvents.noResults, () => this.handleNoresults());
-    this.bind.onRootElement(QueryEvents.deferredQuerySuccess, (args: IQuerySuccessEventArgs) => this.handleDeferredQuerySuccess(args));
-    this.bind.onRootElement(QueryEvents.buildingQuery, (args: IBuildingQueryEventArgs) => this.handleBuildingQuery(args));
-    this.bind.onRootElement(QueryEvents.doneBuildingQuery, (args: IDoneBuildingQueryEventArgs) => this.handleDoneBuildingQuery(args));
-    this.bind.onRootElement(BreadcrumbEvents.populateBreadcrumb, (args: IPopulateBreadcrumbEventArgs) =>
-      this.handlePopulateBreadcrumb(args)
-    );
+
+    this.bindQueryStateEvents();
+    this.bindQueryEvents();
+    this.bindResizeEvents();
+    this.bindBreadcrumbEvents();
     this.bind.onRootElement(SearchAlertsEvents.searchAlertsPopulateMessage, (args: ISearchAlertsPopulateMessageEventArgs) =>
       this.handlePopulateSearchAlerts(args)
     );
-    this.bind.onRootElement(BreadcrumbEvents.clearBreadcrumb, () => this.reset());
-
-    this.onResize = _.debounce(() => {
-      if (ResponsiveComponentsUtils.shouldDrawFacetSlider($$(this.root)) && this.slider && !this.isEmpty) {
-        this.slider.drawGraph();
-      }
-    }, FacetSlider.DEBOUNCED_RESIZE_DELAY);
-    window.addEventListener('resize', this.onResize);
-    // This is used inside SF integration
-    this.bind.onRootElement('onPopupOpen', this.onResize);
-    $$(this.root).on(InitializationEvents.nuke, this.handleNuke);
   }
 
   public createDom() {
@@ -523,18 +498,66 @@ export class FacetSlider extends Component {
   // There is delayed graph data if at the time the facet slider tried to draw, the facet was hidden in the
   // facet dropdown. This method will draw delayed graph data if it exists.
   public drawDelayedGraphData() {
-    if (this.delayedGraphData != undefined && !this.isEmpty) {
+    if (this.delayedGraphData != null && !this.isEmpty) {
       this.slider.drawGraph(this.delayedGraphData);
     }
+    this.delayedGraphData = null;
   }
 
   public isSimpleSliderConfig() {
     return this.options.start != null && this.options.end != null;
-    // return false;
   }
 
   public hasAGraph() {
     return this.options.graph != undefined;
+  }
+
+  private normalizeStartAndEndOptionsValues() {
+    if (this.options.start) {
+      this.options.start = this.options.dateField
+        ? <any>new Date(this.options.start.replace(/-/g, '/')).getTime()
+        : <any>Number(this.options.start);
+    }
+
+    if (this.options.end) {
+      this.options.end = this.options.dateField
+        ? <any>new Date(this.options.end.replace(/-/g, '/')).getTime()
+        : <any>Number(this.options.end);
+    }
+  }
+
+  private bindQueryEvents() {
+    this.bind.onRootElement(QueryEvents.newQuery, () => this.handleNewQuery());
+    this.bind.onRootElement(QueryEvents.noResults, () => this.handleNoresults());
+    this.bind.onRootElement(QueryEvents.deferredQuerySuccess, (args: IQuerySuccessEventArgs) => this.handleDeferredQuerySuccess(args));
+    this.bind.onRootElement(QueryEvents.buildingQuery, (args: IBuildingQueryEventArgs) => this.handleBuildingQuery(args));
+    this.bind.onRootElement(QueryEvents.doneBuildingQuery, (args: IDoneBuildingQueryEventArgs) => this.handleDoneBuildingQuery(args));
+  }
+
+  private bindResizeEvents() {
+    this.onResize = () => {
+      if (ResponsiveComponentsUtils.shouldDrawFacetSlider($$(this.root), $$(this.element)) && this.slider && !this.isEmpty) {
+        if (this.delayedGraphData) {
+          this.drawDelayedGraphData();
+        } else {
+          this.slider.drawGraph();
+        }
+      }
+    };
+    window.addEventListener('resize', this.onResize);
+    this.bind.onRootElement(ResponsiveDropdownEvent.OPEN, this.onResize);
+
+    // This is used inside SF integration
+    this.bind.onRootElement('onPopupOpen', this.onResize);
+
+    $$(this.root).on(InitializationEvents.nuke, this.handleNuke);
+  }
+
+  private bindBreadcrumbEvents() {
+    this.bind.onRootElement(BreadcrumbEvents.clearBreadcrumb, () => this.reset());
+    this.bind.onRootElement(BreadcrumbEvents.populateBreadcrumb, (args: IPopulateBreadcrumbEventArgs) =>
+      this.handlePopulateBreadcrumb(args)
+    );
   }
 
   private handleNoresults(): void {
@@ -631,7 +654,7 @@ export class FacetSlider extends Component {
     this.updateAppearanceDependingOnState();
   }
 
-  private initQueryStateEvents() {
+  private bindQueryStateEvents() {
     this.rangeQueryStateAttribute = QueryStateModel.getFacetId(this.options.id) + ':range';
     this.queryStateModel.registerNewAttribute(this.rangeQueryStateAttribute, [undefined, undefined]);
     const eventName = this.queryStateModel.getEventName(Model.eventTypes.changeOne + this.rangeQueryStateAttribute);

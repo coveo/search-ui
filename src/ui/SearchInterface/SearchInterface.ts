@@ -1,6 +1,5 @@
 import { SearchEndpoint } from '../../rest/SearchEndpoint';
 import { ComponentOptions, IFieldOption } from '../Base/ComponentOptions';
-import { DeviceUtils } from '../../utils/DeviceUtils';
 import { $$ } from '../../utils/Dom';
 import { Assert } from '../../misc/Assert';
 import { QueryStateModel } from '../../models/QueryStateModel';
@@ -25,22 +24,23 @@ import { NoopAnalyticsClient } from '../Analytics/NoopAnalyticsClient';
 import { Utils } from '../../utils/Utils';
 import { RootComponent } from '../Base/RootComponent';
 import { BaseComponent } from '../Base/BaseComponent';
-import { Debug } from '../Debug/Debug';
 import { HashUtils } from '../../utils/HashUtils';
-import * as fastclick from 'fastclick';
-import * as jstz from 'jstimezonedetect';
 import { SentryLogger } from '../../misc/SentryLogger';
 import { IComponentBindings } from '../Base/ComponentBindings';
 import { analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
 import { ResponsiveComponents } from '../ResponsiveComponents/ResponsiveComponents';
 import { Context, IPipelineContextProvider } from '../PipelineContext/PipelineGlobalExports';
+import { InitializationPlaceholder } from '../Base/InitializationPlaceholder';
+import { Debug } from '../Debug/Debug';
+
+import * as fastclick from 'fastclick';
+import * as jstz from 'jstimezonedetect';
 import * as _ from 'underscore';
 
 import 'styling/Globals';
 import 'styling/_SearchInterface';
 import 'styling/_SearchModalBox';
 import 'styling/_SearchButton';
-import { InitializationPlaceholder } from '../Base/InitializationPlaceholder';
 
 export interface ISearchInterfaceOptions {
   enableHistory?: boolean;
@@ -441,11 +441,18 @@ export class SearchInterface extends RootComponent implements IComponentBindings
    * @param _window The window object for the search interface. Used for unit tests, which can pass a mock. Default is
    * the global window object.
    */
-  constructor(public element: HTMLElement, public options?: ISearchInterfaceOptions, public analyticsOptions?, _window = window) {
+  constructor(public element: HTMLElement, public options?: ISearchInterfaceOptions, public analyticsOptions?, public _window = window) {
     super(element, SearchInterface.ID);
 
-    if (DeviceUtils.isMobileDevice()) {
-      $$(document.body).addClass('coveo-mobile-device');
+    this.options = ComponentOptions.initComponentOptions(element, SearchInterface, options);
+    Assert.exists(element);
+    Assert.exists(this.options);
+    this.root = element;
+
+    if (this.options.allowQueriesWithoutKeywords) {
+      this.initializeEmptyQueryAllowed();
+    } else {
+      this.initializeEmptyQueryNotAllowed();
     }
 
     // The definition file for fastclick does not match the way that fast click gets loaded (AMD)
@@ -453,23 +460,12 @@ export class SearchInterface extends RootComponent implements IComponentBindings
       (<any>fastclick).attach(element);
     }
 
-    this.options = ComponentOptions.initComponentOptions(element, SearchInterface, options);
-    Assert.exists(element);
-    Assert.exists(this.options);
-
-    this.root = element;
     this.queryStateModel = new QueryStateModel(element);
     this.componentStateModel = new ComponentStateModel(element);
     this.componentOptionsModel = new ComponentOptionsModel(element);
     this.usageAnalytics = this.initializeAnalytics();
     this.queryController = new QueryController(element, this.options, this.usageAnalytics, this);
     new SentryLogger(this.queryController);
-
-    if (this.options.allowQueriesWithoutKeywords) {
-      this.initializeEmptyQueryAllowed();
-    } else {
-      this.initializeEmptyQueryNotAllowed();
-    }
 
     const eventName = this.queryStateModel.getEventName(Model.eventTypes.preprocess);
     $$(this.element).on(eventName, (e, args) => this.handlePreprocessQueryStateModel(args));
@@ -479,7 +475,7 @@ export class SearchInterface extends RootComponent implements IComponentBindings
 
     if (this.options.enableHistory) {
       if (!this.options.useLocalStorageForHistory) {
-        new HistoryController(element, _window, this.queryStateModel, this.queryController);
+        this.initializeHistoryController();
       } else {
         new LocalStorageHistoryController(element, _window, this.queryStateModel, this.queryController);
       }
@@ -491,6 +487,7 @@ export class SearchInterface extends RootComponent implements IComponentBindings
 
     const eventNameQuickview = this.queryStateModel.getEventName(Model.eventTypes.changeOne + QueryStateModel.attributesEnum.quickview);
     $$(this.element).on(eventNameQuickview, (e, args) => this.handleQuickviewChanged(args));
+    this.element.style.display = element.style.display || 'block';
     this.setupDebugInfo();
     this.responsiveComponents = new ResponsiveComponents();
   }
@@ -595,22 +592,16 @@ export class SearchInterface extends RootComponent implements IComponentBindings
     return this.attachedComponents[type];
   }
 
-  /**
-   * Indicates whether the search interface is using the new design.
-   * This changes the rendering of multiple components.
-   *
-   * @deprecated Old styling of the interface is no longer supported
-   */
-  // public isNewDesign() {
-  //  return false;
-  // }
-
   protected initializeAnalytics(): IAnalyticsClient {
     const analyticsRef = BaseComponent.getComponentRef('Analytics');
     if (analyticsRef) {
       return analyticsRef.create(this.element, this.analyticsOptions, this.getBindings());
     }
     return new NoopAnalyticsClient();
+  }
+
+  private initializeHistoryController() {
+    new HistoryController(this.element, window, this.queryStateModel, this.queryController, this.usageAnalytics);
   }
 
   private setupDebugInfo() {

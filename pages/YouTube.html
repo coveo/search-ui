@@ -1,67 +1,77 @@
 <!DOCTYPE html>
 <html>
 
-  <head>
-    <title>YouTube</title>
-    <meta about="Search YouTube content." />
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, height=device-height" >
-    <link rel="stylesheet" href="./css/CoveoFullSearch.css"/>
-    <script src="js/CoveoJsSearch.Lazy.js"></script>
-    <script src="js/templates/templates.js"></script>
-    <script>
-      document.addEventListener('DOMContentLoaded', function(){
-        Coveo.SearchEndpoint.configureSampleEndpointV2();
-        Coveo.init(document.body);
-      })
-    </script>
-  </head>
+<head>
+  <title>YouTube</title>
+  <meta about="Search YouTube content." />
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, height=device-height">
+  <link rel="stylesheet" href="./css/CoveoFullSearch.css" />
+  <script src="js/CoveoJsSearch.Lazy.js"></script>
+  <script src="js/templates/templates.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      Coveo.SearchEndpoint.configureSampleEndpointV2();
+      Coveo.init(document.body);
+    })
+  </script>
+</head>
 
-  <body id="search" class='CoveoSearchInterface' data-enable-history="true">
-    <div class="coveo-tab-section">
-      <a class="CoveoTab" data-id="YouTube" data-caption="YouTube" data-expression='@filetype=="youtubevideo"'></a>
+<body id="search" class='CoveoSearchInterface' data-enable-history="true">
+  <div class="coveo-tab-section">
+    <a class="CoveoTab" data-id="YouTube" data-caption="YouTube" data-expression='@filetype=="youtubevideo"'></a>
+  </div>
+  <div class='coveo-search-section'>
+    <div class="CoveoSettings"></div>
+    <div class="CoveoSearchbox" data-enable-omnibox="true"></div>
+  </div>
+  <div class="coveo-main-section">
+    <div class="coveo-facet-column">
+      <div class="CoveoFacet" data-title="Author" data-field="@author" data-tab="YouTube"></div>
+      <div class="CoveoTimespanFacet" data-tab="YouTube"></div>
     </div>
-    <div class='coveo-search-section'>
-      <div class="CoveoSettings"></div>
-      <div class="CoveoSearchbox" data-enable-omnibox="true"></div>
-    </div>
-    <div class="coveo-main-section">
-      <div class="coveo-facet-column">
-        <div class="CoveoFacet" data-title="Author" data-field="@author" data-tab="YouTube"></div>
-        <div class="CoveoFacet" data-title="Year" data-field="@year" data-tab="YouTube"></div>
-        <div class="CoveoFacet" data-title="Month" data-field="@month" data-tab="YouTube"></div>
+    <div class="coveo-results-column">
+      <div class="CoveoShareQuery"></div>
+      <div class="CoveoPreferencesPanel">
+        <div class="CoveoResultsPreferences"></div>
+        <div class="CoveoResultsFiltersPreferences"></div>
       </div>
-      <div class="coveo-results-column">
-        <div class="CoveoShareQuery"></div>
-        <div class="CoveoPreferencesPanel">
-          <div class="CoveoResultsPreferences"></div>
-          <div class="CoveoResultsFiltersPreferences"></div>
+      <div class="CoveoBreadcrumb"></div>
+      <div class="coveo-results-header">
+        <div class="coveo-summary-section">
+          <span class="CoveoQuerySummary"></span>
+          <span class="CoveoQueryDuration"></span>
         </div>
+        <div class="coveo-result-layout-section">
+          <span class="CoveoResultLayout"></span>
+        </div>
+
         <div class="CoveoBreadcrumb"></div>
         <div class="coveo-results-header">
           <div class="coveo-summary-section">
+            <div class="CoveoDidYouMean"></div>
             <span class="CoveoQuerySummary"></span>
             <span class="CoveoQueryDuration"></span>
           </div>
           <div class="coveo-result-layout-section">
-            <span class="CoveoResultLayout"></span>
+            <span class="CoveoResultLayoutSelector"></span>
           </div>
           <div class="coveo-sort-section">
             <span class="CoveoSort" data-sort-criteria="relevancy" data-caption="Relevance"></span>
             <span class="CoveoSort" data-sort-criteria="date descending,date ascending" data-caption="Date"></span>
           </div>
         </div>
-        <div class="CoveoHiddenQuery"></div>
-        <div class="CoveoDidYouMean"></div>
-        <div class="CoveoErrorReport"></div>
-        <div class="CoveoResultList" data-layout="list" data-wait-animation="fade" data-auto-select-fields-to-include="true"></div>
-        <div class="CoveoResultList" data-layout="card" data-wait-animation="fade" data-auto-select-fields-to-include="true"></div>
-        <div class="CoveoPager"></div>
-        <div class="CoveoLogo"></div>
-        <div class="CoveoResultsPerPage"></div>
       </div>
+      <div class="CoveoHiddenQuery"></div>
+      <div class="CoveoErrorReport"></div>
+      <div class="CoveoResultList" data-layout="list" data-wait-animation="fade" data-auto-select-fields-to-include="true"></div>
+      <div class="CoveoResultList" data-layout="card" data-wait-animation="fade" data-auto-select-fields-to-include="true"></div>
+      <div class="CoveoPager"></div>
+      <div class="CoveoLogo"></div>
+      <div class="CoveoResultsPerPage"></div>
     </div>
-  </body>
+  </div>
+</body>
 
 </html>

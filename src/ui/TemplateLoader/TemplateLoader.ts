@@ -8,6 +8,7 @@ import { Initialization, IInitializationParameters } from '../Base/Initializatio
 import { $$ } from '../../utils/Dom';
 import * as _ from 'underscore';
 import { exportGlobally } from '../../GlobalExports';
+import { TemplateComponentOptions } from '../Base/TemplateComponentOptions';
 
 export interface ITemplateLoaderOptions {
   template: Template;
@@ -84,7 +85,7 @@ export class TemplateLoader extends Component {
      * - With a CSS selector: `data-template-selector='.MySelector'`
      * - With an HTML `id`: `data-template-id='MyId'`
      */
-    template: ComponentOptions.buildTemplateOption(),
+    template: TemplateComponentOptions.buildTemplateOption(),
 
     /**
      * Specifies the boolean condition that the result must satisfy in order for the template to load.

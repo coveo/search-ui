@@ -1,21 +1,21 @@
-@import "Variables";
+@import 'Variables';
 
-$color_indexDuration: #B33;
-$color_proxyDuration: #B3B;
-$color_clientDuration: #3B3;
-$color_duration: #33B;
+$color_indexDuration: #b33;
+$color_proxyDuration: #b3b;
+$color_clientDuration: #3b3;
+$color_duration: #33b;
 
 .coveo-debug.coveo-modal-container {
-
   .coveo-modal-content {
-    @include transition(opacity .3s);
+    @include transition(opacity 0.3s);
     &.coveo-debug-loading {
       opacity: 0.5;
     }
   }
 
-  .coveo-checkbox-label, .coveo-input {
-    margin: 0 8px;
+  .coveo-checkbox-label,
+  .coveo-input {
+    margin: 8px;
   }
   .coveo-modal-header {
     a {
@@ -23,8 +23,8 @@ $color_duration: #33B;
     }
     height: auto;
     min-height: 80px;
+    padding: 20px;
     @include flex-wrap(wrap);
-
   }
   .coveo-modal-body {
     .coveo-searching {
@@ -34,9 +34,10 @@ $color_duration: #33B;
       .coveo-property.coveo-search-match {
         display: block;
         .coveo-property {
-          display:block;
+          display: block;
         }
-        > .coveo-property-label, > .coveo-property-value {
+        > .coveo-property-label,
+        > .coveo-property-value {
           > .coveo-debug-highlight {
             background: yellow;
           }
@@ -53,8 +54,9 @@ $color_duration: #33B;
         &:after {
           content: 'No match';
         }
-        &.coveo-search-submatch, &.coveo-search-match {
-          .coveo-property-value{
+        &.coveo-search-submatch,
+        &.coveo-search-match {
+          .coveo-property-value {
             display: block;
           }
           &:after {
@@ -67,7 +69,7 @@ $color_duration: #33B;
       display: none;
     }
   }
-  
+
   .coveo-debug-durations {
     display: table;
     width: 100%;
@@ -76,57 +78,55 @@ $color_duration: #33B;
     .coveo-debug-duration {
       display: table-cell;
       height: 32px;
-      &[data-id="indexDuration"]{
+      &[data-id='indexDuration'] {
         background: $color_indexDuration;
       }
-      &[data-id="proxyDuration"]{
+      &[data-id='proxyDuration'] {
         background: $color_proxyDuration;
       }
-      &[data-id="clientDuration"]{
+      &[data-id='clientDuration'] {
         background: $color_clientDuration;
       }
-      &[data-id="duration"]{
+      &[data-id='duration'] {
         background: $color_duration;
       }
     }
-  }
-  
-  .coveo-debug-duration-legend {
-     display: inline-block;
-     margin-right: 16px;
-     &[data-id="indexDuration"]:before{
-        background: $color_indexDuration;
-     }
-     &[data-id="proxyDuration"]:before{
-        background: $color_proxyDuration;
-     }
-     &[data-id="clientDuration"]:before{
-        background: $color_clientDuration;
-     }
-     &[data-id="duration"]:before{
-        background: $color_duration;
-     }
-     &:before {
-       content: '';
-       display: inline-block;
-       width: 8px;
-       height: 16px;
-       vertical-align: middle;
-       margin-right: 2px;
-     }
-    .coveo-debug-duration-label {
-       vertical-align: middle;
-        &:after {
-          content: ': ';
-        }
-    }
-    .coveo-debug-duration-value {
-       vertical-align: middle;
-    }
-    
   }
 
-  
+  .coveo-debug-duration-legend {
+    display: inline-block;
+    margin-right: 16px;
+    &[data-id='indexDuration']:before {
+      background: $color_indexDuration;
+    }
+    &[data-id='proxyDuration']:before {
+      background: $color_proxyDuration;
+    }
+    &[data-id='clientDuration']:before {
+      background: $color_clientDuration;
+    }
+    &[data-id='duration']:before {
+      background: $color_duration;
+    }
+    &:before {
+      content: '';
+      display: inline-block;
+      width: 8px;
+      height: 16px;
+      vertical-align: middle;
+      margin-right: 2px;
+    }
+    .coveo-debug-duration-label {
+      vertical-align: middle;
+      &:after {
+        content: ': ';
+      }
+    }
+    .coveo-debug-duration-value {
+      vertical-align: middle;
+    }
+  }
+
   .coveo-section {
     &.coveo-debug-collapsed {
       .coveo-section-header:before {
@@ -186,7 +186,8 @@ $color_duration: #33B;
             > .coveo-property-value {
               display: none;
             }
-            &.coveo-expanded, &.coveo-search-submatch {
+            &.coveo-expanded,
+            &.coveo-search-submatch {
               > .coveo-property-value {
                 display: block;
               }
@@ -201,7 +202,7 @@ $color_duration: #33B;
             overflow: hidden;
             color: #212121;
             &.coveo-property-value-string {
-              color: #D50000;
+              color: #d50000;
               white-space: pre;
               word-wrap: break-word;
               &:before {
@@ -211,13 +212,16 @@ $color_duration: #33B;
                 content: '"';
               }
             }
-            &.coveo-property-value-null, &.coveo-property-value-object, &.coveo-property-value-array {
-              color: #9E9E9E;
+            &.coveo-property-value-null,
+            &.coveo-property-value-object,
+            &.coveo-property-value-array {
+              color: #9e9e9e;
             }
-            &.coveo-property-value-number, &.coveo-property-value-boolean, &.coveo-property-value-date {
-              color: #2196F3;
+            &.coveo-property-value-number,
+            &.coveo-property-value-boolean,
+            &.coveo-property-value-date {
+              color: #2196f3;
             }
-
           }
         }
       }

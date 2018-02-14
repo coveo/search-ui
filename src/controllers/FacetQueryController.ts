@@ -14,8 +14,8 @@ import { FacetUtils } from '../ui/Facet/FacetUtils';
 import { IQueryResults } from '../rest/QueryResults';
 import { IGroupByValue } from '../rest/GroupByValue';
 import { IEndpointError } from '../rest/EndpointError';
-import { IQueryBuilderExpression } from '../ui/Base/QueryBuilder';
 import * as _ from 'underscore';
+import { QueryBuilderExpression } from '../ui/Base/QueryBuilderExpression';
 
 export class FacetQueryController {
   public expressionToUseForFacetSearch: string;
@@ -170,7 +170,7 @@ export class FacetQueryController {
   public searchInFacetToUpdateDelta(facetValues: FacetValue[]): Promise<IQueryResults> {
     const params = new FacetSearchParameters(this.facet);
     const query = params.getQuery();
-    query.aq = this.computeOurFilterExpression();
+    query.aq = `${query.aq ? query.aq : ''} ${this.computeOurFilterExpression()}`;
     _.each(facetValues, (facetValue: FacetValue) => {
       facetValue.waitingForDelta = true;
     });
@@ -191,84 +191,6 @@ export class FacetQueryController {
     } else {
       return _.map(this.getAllowedValuesFromSelected(), (facetValue: FacetValue) => facetValue.value);
     }
-  }
-
-  private getUnionWithCustomSortLowercase(customSort: string[], facetValues: FacetValue[]) {
-    // This will take the custom sort, compare it against the passed in facetValues
-    // The comparison is lowercase.
-    // The union of the 2 arrays with duplicated filtered out is returned.
-
-    const toCompare = _.map(customSort, (val: string) => {
-      return val.toLowerCase();
-    });
-    const filtered = _.chain(facetValues)
-      .filter((facetValue: FacetValue) => {
-        return !_.contains(toCompare, facetValue.value.toLowerCase());
-      })
-      .map((facetValue: FacetValue) => {
-        return facetValue.value;
-      })
-      .value();
-    return _.compact(customSort.concat(filtered));
-  }
-
-  protected getAllowedValuesFromSelected() {
-    let facetValues: FacetValue[] = [];
-    if (this.facet.options.useAnd || !this.facet.keepDisplayedValuesNextTime) {
-      const selected = this.facet.values.getSelected();
-      if (selected.length == 0) {
-        return undefined;
-      }
-      facetValues = this.facet.values.getSelected();
-    } else {
-      facetValues = this.facet.values.getAll();
-    }
-    return facetValues;
-  }
-
-  private createGroupByQueryOverride(queryBuilder: QueryBuilder): IQueryBuilderExpression {
-    const additionalFilter = this.facet.options.additionalFilter ? this.facet.options.additionalFilter : '';
-    let queryOverrideObject: IQueryBuilderExpression = undefined;
-
-    if (this.facet.options.useAnd || (this.facet.options.isMultiValueField && this.facet.values.hasSelectedAndExcludedValues())) {
-      if (Utils.isNonEmptyString(additionalFilter)) {
-        queryOverrideObject = queryBuilder.computeCompleteExpressionParts();
-        if (Utils.isEmptyString(queryOverrideObject.basic)) {
-          queryOverrideObject.basic = '@uri';
-        }
-      }
-    } else {
-      if (this.facet.values.hasSelectedOrExcludedValues()) {
-        queryOverrideObject = queryBuilder.computeCompleteExpressionPartsExcept(this.computeOurFilterExpression());
-        if (Utils.isEmptyString(queryOverrideObject.basic)) {
-          queryOverrideObject.basic = '@uri';
-        }
-      } else {
-        if (Utils.isNonEmptyString(additionalFilter)) {
-          queryOverrideObject = queryBuilder.computeCompleteExpressionParts();
-          if (Utils.isEmptyString(queryOverrideObject.basic)) {
-            queryOverrideObject.basic = '@uri';
-          }
-        }
-      }
-    }
-
-    if (queryOverrideObject) {
-      if (Utils.isNonEmptyString(additionalFilter)) {
-        queryOverrideObject.constant = queryOverrideObject.constant
-          ? queryOverrideObject.constant + ' ' + additionalFilter
-          : additionalFilter;
-      }
-    }
-    _.each(_.keys(queryOverrideObject), k => {
-      if (Utils.isEmptyString(queryOverrideObject[k]) || Utils.isNullOrUndefined(queryOverrideObject[k])) {
-        delete queryOverrideObject[k];
-      }
-    });
-    if (_.keys(queryOverrideObject).length == 0) {
-      queryOverrideObject = undefined;
-    }
-    return queryOverrideObject;
   }
 
   protected createBasicGroupByRequest(allowedValues?: string[], addComputedField: boolean = true): IGroupByRequest {
@@ -304,6 +226,103 @@ export class FacetQueryController {
       ];
     }
     return groupByRequest;
+  }
+
+  protected getAllowedValuesFromSelected() {
+    let facetValues: FacetValue[] = [];
+    if (this.facet.options.useAnd || !this.facet.keepDisplayedValuesNextTime) {
+      const selected = this.facet.values.getSelected();
+      if (selected.length == 0) {
+        return undefined;
+      }
+      facetValues = this.facet.values.getSelected();
+    } else {
+      facetValues = this.facet.values.getAll();
+    }
+    return facetValues;
+  }
+
+  private get additionalFilter() {
+    return this.facet.options.additionalFilter ? this.facet.options.additionalFilter : '';
+  }
+
+  private getUnionWithCustomSortLowercase(customSort: string[], facetValues: FacetValue[]) {
+    // This will take the custom sort, compare it against the passed in facetValues
+    // The comparison is lowercase.
+    // The union of the 2 arrays with duplicated filtered out is returned.
+
+    const toCompare = _.map(customSort, (val: string) => {
+      return val.toLowerCase();
+    });
+    const filtered = _.chain(facetValues)
+      .filter((facetValue: FacetValue) => {
+        return !_.contains(toCompare, facetValue.value.toLowerCase());
+      })
+      .map((facetValue: FacetValue) => {
+        return facetValue.value;
+      })
+      .value();
+    return _.compact(customSort.concat(filtered));
+  }
+
+  private createGroupByQueryOverride(queryBuilder: QueryBuilder): QueryBuilderExpression {
+    let queryBuilderExpression = queryBuilder.computeCompleteExpressionParts();
+
+    if (this.queryOverrideIsNeededForMultiSelection()) {
+      queryBuilderExpression = this.processQueryOverrideForMultiSelection(queryBuilder, queryBuilderExpression);
+    }
+    if (this.queryOverrideIsNeededForAdditionalFilter()) {
+      queryBuilderExpression = this.processQueryOverrideForAdditionalFilter(queryBuilder, queryBuilderExpression);
+    }
+
+    queryBuilderExpression = this.processQueryOverrideForEmptyValues(queryBuilder, queryBuilderExpression);
+
+    return queryBuilderExpression;
+  }
+
+  private queryOverrideIsNeededForMultiSelection() {
+    return !(this.facet.options.useAnd || (this.facet.options.isMultiValueField && this.facet.values.hasSelectedAndExcludedValues()));
+  }
+
+  private queryOverrideIsNeededForAdditionalFilter() {
+    return Utils.isNonEmptyString(this.additionalFilter);
+  }
+
+  private processQueryOverrideForMultiSelection(queryBuilder: QueryBuilder, mergeWith: QueryBuilderExpression) {
+    if (this.facet.values.hasSelectedOrExcludedValues()) {
+      mergeWith = queryBuilder.computeCompleteExpressionPartsExcept(this.computeOurFilterExpression());
+      if (QueryBuilderExpression.isEmpty(mergeWith)) {
+        mergeWith.advanced = '@uri';
+      }
+    }
+
+    return mergeWith;
+  }
+
+  private processQueryOverrideForAdditionalFilter(queryBuilder: QueryBuilder, mergeWith: QueryBuilderExpression) {
+    if (Utils.isEmptyString(mergeWith.constant)) {
+      mergeWith.constant = `${this.additionalFilter}`;
+    } else {
+      mergeWith.constant = `${mergeWith.constant} ${this.additionalFilter}`;
+    }
+    return mergeWith;
+  }
+
+  private processQueryOverrideForEmptyValues(queryBuilder: QueryBuilder, mergeWith: QueryBuilderExpression) {
+    const withoutEmptyValues = _.chain(mergeWith)
+      .keys()
+      .each((key: string) => {
+        if (Utils.isEmptyString(mergeWith[key]) || Utils.isNullOrUndefined(mergeWith[key])) {
+          delete mergeWith[key];
+        }
+      })
+      .value();
+
+    if (_.keys(withoutEmptyValues).length == 0) {
+      mergeWith = undefined;
+    }
+
+    return mergeWith;
   }
 
   private checkForFacetSearchValuesToRemove(fieldValues: IIndexFieldValue[], valueToCheckAgainst: string) {

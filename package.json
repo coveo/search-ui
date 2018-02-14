@@ -45,7 +45,7 @@
     "@types/fastclick": "^1.0.28",
     "@types/jasmine": "^2.6.0",
     "@types/pikaday": "0.0.31",
-    "@types/underscore": "^1.8.3",
+    "@types/underscore": "1.8.3",
     "aws-sdk": "^2.155.0",
     "bluebird": "^3.4.7",
     "body-parser": "^1.18.2",
@@ -113,7 +113,8 @@
     "typedoc": "https://github.com/coveord/typedoc/tarball/master",
     "typescript": "^2.5.2",
     "walk": "^2.3.9",
-    "webpack": "^3.6.0",
+    "webpack": "^3.10.0",
+    "webpack-bundle-analyzer": "^2.9.1",
     "webpack-dev-server": "^2.9.1",
     "xml2js": "^0.4.17",
     "yargs": "^4.7.1"
@@ -130,7 +131,7 @@
     "fastclick": "1.0.6",
     "jstimezonedetect": "^1.0.6",
     "latinize": "^0.4.0",
-    "modal-box": "2.0.x",
+    "modal-box": "^2.0.10",
     "pikaday": "^1.4.0",
     "underscore": "^1.8.3"
   }

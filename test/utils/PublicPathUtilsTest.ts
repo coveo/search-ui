@@ -1,4 +1,3 @@
-import { DomUtils } from '../../src/utils/DomUtils';
 import { PublicPathUtils } from '../../src/utils/PublicPathUtils';
 
 export function PublicPathUtilsTest() {
@@ -10,13 +9,13 @@ export function PublicPathUtilsTest() {
     const fakeScript = <HTMLScriptElement>{ src: `${detectedPath}script.js` };
 
     beforeEach(() => {
-      currentScript = DomUtils.getCurrentScript;
+      currentScript = PublicPathUtils.getCurrentScript;
       PublicPathUtils.reset();
-      DomUtils.getCurrentScript = () => fakeScript;
+      PublicPathUtils.getCurrentScript = () => fakeScript;
     });
 
     afterEach(() => {
-      DomUtils.getCurrentScript = currentScript;
+      PublicPathUtils.getCurrentScript = currentScript;
     });
 
     it('should set webpack public path when configuring resource root', () => {
@@ -31,7 +30,7 @@ export function PublicPathUtilsTest() {
 
     it('should get the resource root with a hash value', () => {
       let fakeScriptWithHashValue = <HTMLScriptElement>{ src: `${detectedPath}script.js#some=value&other=value` };
-      DomUtils.getCurrentScript = () => fakeScriptWithHashValue;
+      PublicPathUtils.getCurrentScript = () => fakeScriptWithHashValue;
 
       const result = PublicPathUtils.getDynamicPublicPath();
 
@@ -40,7 +39,7 @@ export function PublicPathUtilsTest() {
 
     it('should get the public path from the resource root with a url parameter', () => {
       const fakeScriptWithUrlParam = <HTMLScriptElement>{ src: `${detectedPath}script.js?someParam=1&otherParam=2` };
-      DomUtils.getCurrentScript = () => fakeScriptWithUrlParam;
+      PublicPathUtils.getCurrentScript = () => fakeScriptWithUrlParam;
 
       const result = PublicPathUtils.getDynamicPublicPath();
 

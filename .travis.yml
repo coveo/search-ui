@@ -1,4 +1,4 @@
-sudo: false
+sudo: required
 language: node_js
 notifications:
   email:
@@ -17,7 +17,7 @@ script:
 - echo $PACKAGE_JSON_VERSION
 - yarn run injectTag
 - yarn run build
-- yarn run minimize
+- if [ "x$TRAVIS_TAG" != "x" ]; then yarn run minimize ; fi
 - yarn run test
 - yarn run uploadCoverage
 - yarn run testChunks
@@ -89,5 +89,5 @@ after_deploy:
 branches:
   only:
   - master
-  - "/^.*release.*$/1"
+  - "/^.*release.*$/"
   - "/2\\.[0-9]+\\.[0-9]+/"
