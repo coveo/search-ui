@@ -90,7 +90,18 @@ export class FacetSearchParameters {
       // If not, just create an empty one.
       lastQuery = new QueryBuilder().build();
     }
-    lastQuery.q = this.facet.facetQueryController.basicExpressionToUseForFacetSearch;
+    // We want to always force query syntax to true for a facet search,
+    // but arrange for the basic expression to adapt itself with no syntax block
+    if (!lastQuery.disableQuerySyntax) {
+      lastQuery.q = this.facet.facetQueryController.basicExpressionToUseForFacetSearch;
+    } else {
+      if (this.facet.facetQueryController.basicExpressionToUseForFacetSearch == '@uri') {
+        lastQuery.q = '';
+      } else {
+        lastQuery.q = `<@- ${this.facet.facetQueryController.basicExpressionToUseForFacetSearch} -@>`;
+      }
+    }
+    lastQuery.disableQuerySyntax = false;
     lastQuery.cq = this.facet.facetQueryController.constantExpressionToUseForFacetSearch;
     lastQuery.aq = this.facet.facetQueryController.advancedExpressionToUseForFacetSearch;
     lastQuery.enableDidYouMean = false;

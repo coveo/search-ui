@@ -146,7 +146,7 @@ export function FoldingTest() {
             fieldsToInclude: jasmine.arrayContaining(['should', 'be', 'included']),
             filterField: null,
             filterFieldRange: null,
-            q: '(should be there) OR @uri'
+            q: '( should be there ) OR @uri'
           }));
         });
 
@@ -185,7 +185,7 @@ export function FoldingTest() {
       it('should include query keywords for highlighting', () => {
         queryData.results.results[0].moreResults();
         expect(test.env.queryController.getEndpoint().search).toHaveBeenCalledWith(jasmine.objectContaining({
-          q: '(foo bar) OR @uri'
+          q: '( foo bar ) OR @uri'
         }));
       });
 
