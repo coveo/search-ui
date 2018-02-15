@@ -13,6 +13,7 @@ import { Initialization } from '../Base/Initialization';
 export interface ITimespanFacetOptions {
   title?: string;
   field?: IFieldOption;
+  id?: string;
 }
 
 /**
@@ -48,6 +49,18 @@ export class TimespanFacet extends Component {
      */
     field: ComponentOptions.buildFieldOption({
       defaultValue: '@date'
+    }),
+    /**
+     * Specifies a unique identifier for the facet. Among other things, this identifier serves the purpose of saving
+     * the facet state in the URL hash.
+     *
+     * If you have two facets with the same field on the same page, you should specify an `id` value for at least one of
+     * those two facets. This `id` must be unique in the page.
+     *
+     * Default value is the [`field`]{@link TimespanFacet.options.field} option value.
+     */
+    id: ComponentOptions.buildStringOption({
+      postProcessing: (value, options: ITimespanFacetOptions) => value || <string>options.field
     })
   };
 
@@ -153,7 +166,8 @@ export class TimespanFacet extends Component {
       title: this.options.title,
       ranges: this.rangeValues,
       availableSorts: ['custom'],
-      customSort: pluck(this.rangeValues, 'label')
+      customSort: pluck(this.rangeValues, 'label'),
+      id: this.options.id
     });
   }
 

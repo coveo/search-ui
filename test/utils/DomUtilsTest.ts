@@ -26,6 +26,14 @@ export function DomUtilsTest() {
       done();
     });
 
+    it('should use the result title as the quickview title when no title is passed', async done => {
+      const header = DomUtils.getQuickviewHeader(fakeResult, { title: undefined, showDate: true }, env.build());
+      await load('ResultLink');
+      const link = $$(header).find('.CoveoResultLink');
+      expect($$(get(link).element).text()).toEqual(fakeResult.title);
+      done();
+    });
+
     it('should display a date if requested', () => {
       const header = DomUtils.getQuickviewHeader(fakeResult, { title: 'title', showDate: true }, env.build());
       const time = $$(header).find('.coveo-quickview-time');

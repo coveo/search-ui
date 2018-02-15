@@ -1,20 +1,18 @@
 @import 'neat/neat';
 @import './mixins/mediaQuery';
+@import './mixins/default_display_properties';
 
 $max-width: 1200px;
-
 $grid-columns: 10;
 $gutter: 0em;
 $page-width: 1000px;
-
 .CoveoSearchInterface {
   min-width: 300px;
-
+  > * {
+    display: none;
+    visibility: hidden;
+  }
   &.coveo-waiting-for-query {
-    > * {
-      display: none;
-      visibility: hidden;
-    }
     .coveo-search-section {
       display: block;
       visibility: visible;
@@ -24,12 +22,10 @@ $page-width: 1000px;
       }
     }
   }
-
   .coveo-search-section {
     max-width: $medium_screen_width + unquote('px');
     margin: 54px auto 47px auto;
     padding: 0 10px;
-
     @include smallScreenWidth {
       padding: 20px 10px 20px 10px;
       margin: 0 auto;
@@ -37,12 +33,10 @@ $page-width: 1000px;
       max-width: none;
     }
   }
-
   .coveo-main-section {
     @include outer-container;
     position: relative;
   }
-
   .coveo-facet-column {
     @include span-columns(3);
     padding: 5px 15px;
@@ -50,7 +44,6 @@ $page-width: 1000px;
       display: none;
     }
   }
-
   .coveo-results-column {
     overflow: hidden;
     padding: 10px 10px 10px 15px;
@@ -59,18 +52,15 @@ $page-width: 1000px;
       margin: auto;
       text-align: center;
     }
-
     @include mediumScreenWidth() {
       &.coveo-no-results {
         max-width: 100%;
       }
     }
-
     @include smallScreenWidth() {
       padding: 0;
     }
   }
-
   &.coveo-during-initialization {
     .coveo-results-header {
       * {
@@ -83,7 +73,6 @@ $page-width: 1000px;
       display: none;
     }
   }
-
   &.coveo-during-initialization {
     .coveo-results-header {
       * {
@@ -96,6 +85,21 @@ $page-width: 1000px;
       display: none;
     }
   }
+}
+
+.coveo-after-initialization {
+  > * {
+    display: inherit;
+    visibility: inherit;
+  }
+}
+
+.coveo-after-initialization {
+  > * {
+    display: inherit;
+    visibility: inherit;
+  }
+  @include default-display-properties;
 }
 
 .coveo-results-header {
@@ -112,12 +116,14 @@ $page-width: 1000px;
     box-shadow: none;
   }
 }
+
 .coveo-summary-section {
   display: inline-block;
   font-size: $font-size-smaller;
   margin-right: auto;
   @include flex(auto);
 }
+
 .coveo-result-layout-section {
   @include display(flex);
   @include flex-shrink(0);
@@ -125,6 +131,7 @@ $page-width: 1000px;
     display: none;
   }
 }
+
 .coveo-sort-section {
   @include display(flex);
   @include flex-shrink(0);
@@ -151,24 +158,20 @@ $page-width: 1000px;
   .coveo-results-header {
     padding-left: 10px;
   }
-
   .coveo-sort-section {
     span:first-child {
       padding-left: 0;
     }
   }
-
   .coveo-list-layout {
     .CoveoResult {
       margin: 0;
       padding: 15px 10px 15px 15px;
     }
   }
-
   .CoveoResultList {
     margin-bottom: 15px;
   }
-
   .coveo-summary-section {
     width: 100%;
     margin-bottom: 10px;
