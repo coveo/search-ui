@@ -10,7 +10,9 @@ export class CategoryChildrenValueRenderer {
     private element: Dom,
     private categoryFacetTemplates: CategoryFacetTemplates,
     private categoryValueParent: CategoryValueParent
-  ) {}
+  ) {
+    this.categoryValueParent.searchInterfa;
+  }
 
   public clearChildrenExceptOne(except: CategoryValue) {
     const newChildren = [];

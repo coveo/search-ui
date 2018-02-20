@@ -7,7 +7,7 @@ export class CategoryValueRoot implements CategoryValueParent {
   private children: CategoryValue[] = [];
   public categoryChildrenValueRenderer: CategoryChildrenValueRenderer;
 
-  constructor(element: Dom, categoryFacetTemplates: CategoryFacetTemplates) {
+  constructor(element: Dom, categoryFacetTemplates: CategoryFacetTemplates, public searchInterfaceRoot: HTMLElement) {
     this.categoryChildrenValueRenderer = new CategoryChildrenValueRenderer(element, categoryFacetTemplates, this);
   }
 

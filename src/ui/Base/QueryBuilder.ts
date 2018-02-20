@@ -6,6 +6,7 @@ import { IQuery } from '../../rest/Query';
 import { QueryBuilderExpression } from './QueryBuilderExpression';
 import * as _ from 'underscore';
 import { Utils } from '../../utils/Utils';
+import { ICategoryFacetsRequest } from '../../rest/CategoryFacetsRequest';
 
 /**
  * The QueryBuilder is used to build a {@link IQuery} that will be able to be executed using the Search API.
@@ -270,6 +271,11 @@ export class QueryBuilder {
    * This specifies an array of Group By operations that can be performed on the query results to extract facets.
    */
   public groupByRequests: IGroupByRequest[] = [];
+
+  /**
+   * This specifies an array of request for the CategoryFacet component.
+   */
+  public categoryFacets: ICategoryFacetsRequest[] = [];
   public enableDuplicateFiltering: boolean = false;
   /**
    * The context is a map of key_value that can be used in the Query pipeline in the Coveo platform.
@@ -334,6 +340,7 @@ export class QueryBuilder {
       queryFunctions: this.queryFunctions,
       rankingFunctions: this.rankingFunctions,
       groupBy: this.groupByRequests,
+      categoryFacets: this.categoryFacets,
       retrieveFirstSentences: this.retrieveFirstSentences,
       timezone: this.timezone,
       enableQuerySyntax: this.enableQuerySyntax,

@@ -8,6 +8,7 @@ import 'styling/_CategoryFacet';
 import { CategoryFacetTemplates } from './CategoryFacetTemplates';
 import { CategoryValueRoot } from './CategoryValueRoot';
 import { CategoryValue } from './CategoryValue';
+import { IBuildingQueryEventArgs, QueryEvents } from '../../events/QueryEvents';
 
 export interface CategoryFacetOptions {
   field: IFieldOption;
@@ -36,7 +37,7 @@ export class CategoryFacet extends Component {
     this.options = ComponentOptions.initComponentOptions(element, CategoryFacet, options);
 
     this.categoryFacetTemplates = new CategoryFacetTemplates();
-    this.categoryValueRoot = new this.CategoryValueRootModule($$(this.element), this.categoryFacetTemplates);
+    this.categoryValueRoot = new this.CategoryValueRootModule($$(this.element), this.categoryFacetTemplates, this.root);
 
     this.renderValues(this.listRoot);
   }
