@@ -96,9 +96,6 @@ gulp.task('installTSV1', done => {
   const version = '1.8.10';
   async.waterfall([
     callback => {
-      tvm.clean(callback);
-    },
-    callback => {
       tvm.install(version, callback);
     },
     callback => {
