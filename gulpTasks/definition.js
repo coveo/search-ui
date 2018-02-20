@@ -107,10 +107,6 @@ gulp.task('installTSV1', done => {
   ]);
 });
 
-gulp.task(
-  'validateTSV1',
-  ['installTSV1'],
-  shell.task('node node_modules/tvm/typescript/v1.8.10/bin/tsc --noEmit ./bin/ts/CoveoJsSearch.d.ts')
-);
+gulp.task('validateTSV1', ['installTSV1'], shell.task('node node_modules/tvm/current/bin/tsc --noEmit ./bin/ts/CoveoJsSearch.d.ts'));
 
 gulp.task('validateTSV2', shell.task(['node node_modules/typescript/bin/tsc --noEmit ./bin/ts/CoveoJsSearch.d.ts']));
