@@ -5,7 +5,6 @@ const fs = require('fs');
 const runsequence = require('run-sequence');
 const footer = require('gulp-footer');
 const shell = require('gulp-shell');
-const tsc = require('gulp-tvm-tsc');
 const tvm = require('tvm');
 
 gulp.task('definitions', function(done) {
