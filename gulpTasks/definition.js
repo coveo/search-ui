@@ -32,6 +32,7 @@ gulp.task('cleanDefs', function() {
       // and stripping ModuleDefinition will refer to the correct type.
       .pipe(replace(/\n\t(?:const|let|var)\s.*;/gm, ''))
       .pipe(replace(/readonly/gm, ''))
+      .pipe(replace(/undefined/g, 'any'))
       .pipe(replace(/ Record<.*>;/g, ' any;'))
       .pipe(replace(/(enum [a-zA-Z_$]+\s{$)((?:\n^\s*[a-zA-Z_$]+ = "[a-zA-Z_$]+",$)*)/gm, clearEnumVariableDeclaration))
       .pipe(gulp.dest('bin/ts/')) );
