@@ -270,7 +270,7 @@ export class ResultLink extends Component {
       $$(element).on(['contextmenu', 'click', 'mousedown', 'mouseup'], executeOnlyOnce);
       let longPressTimer: number;
       $$(element).on('touchstart', () => {
-        longPressTimer = setTimeout(executeOnlyOnce, 1000);
+        longPressTimer = window.setTimeout(executeOnlyOnce, 1000);
       });
       $$(element).on('touchend', () => {
         if (longPressTimer) {

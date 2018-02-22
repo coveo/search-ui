@@ -414,7 +414,7 @@ export class Querybox extends Component {
 
   private searchAsYouType(): void {
     clearTimeout(this.searchAsYouTypeTimeout);
-    this.searchAsYouTypeTimeout = setTimeout(() => {
+    this.searchAsYouTypeTimeout = window.setTimeout(() => {
       this.usageAnalytics.logSearchAsYouType<IAnalyticsNoMeta>(analyticsActionCauseList.searchboxAsYouType, {});
       this.triggerNewQuery(true);
     }, this.options.searchAsYouTypeDelay);
