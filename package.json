@@ -112,6 +112,7 @@
     "svg4everybody": "^2.1.8",
     "through2": "^2.0.3",
     "ts-loader": "^2.0.3",
+    "tvm": "^0.8.14",
     "typedoc": "https://github.com/coveord/typedoc",
     "typescript": "^2.5.2",
     "walk": "^2.3.9",

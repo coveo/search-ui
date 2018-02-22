@@ -5,6 +5,7 @@ const fs = require('fs');
 const runsequence = require('run-sequence');
 const footer = require('gulp-footer');
 const shell = require('gulp-shell');
+const tvm = require('tvm');
 
 gulp.task('definitions', function(done) {
   runsequence('externalDefs', 'internalDefs', 'cleanDefs', 'validateDefs', done);
@@ -88,4 +89,13 @@ gulp.task('internalDefs', function() {
   });
 });
 
-gulp.task('validateDefs', shell.task(['node node_modules/typescript/bin/tsc --noEmit ./bin/ts/CoveoJsSearch.d.ts']));
+gulp.task('validateDefs', ['validateTSV1', 'validateTSV2']);
+
+gulp.task('installTSV1', done => {
+  const version = '1.8.10';
+  new Promise(() => tvm.install(version, () => tvm.use(version, done)));
+});
+
+gulp.task('validateTSV1', ['installTSV1'], shell.task('node node_modules/tvm/current/bin/tsc --noEmit ./bin/ts/CoveoJsSearch.d.ts'));
+
+gulp.task('validateTSV2', shell.task(['node node_modules/typescript/bin/tsc --noEmit ./bin/ts/CoveoJsSearch.d.ts']));
