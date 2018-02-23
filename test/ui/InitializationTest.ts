@@ -305,12 +305,12 @@ export function InitializationTest() {
       Initialization.monkeyPatchComponentMethod('Querybox.submit', queryBox, patch);
       (<Querybox>Component.get(queryBox)).submit();
       expect(patch).toHaveBeenCalled();
+    });
 
-      it('allows to determine if a top level method is already registed', () => {
-        expect(Initialization.isNamedMethodRegistered('get')).toBe(true);
-        expect(Initialization.isNamedMethodRegistered('executeQuery')).toBe(true);
-        expect(Initialization.isNamedMethodRegistered('does not exist')).toBe(false);
-      });
+    it('allows to determine if a top level method is already registed', () => {
+      expect(Initialization.isNamedMethodRegistered('get')).toBe(true);
+      expect(Initialization.isNamedMethodRegistered('executeQuery')).toBe(true);
+      expect(Initialization.isNamedMethodRegistered('does not exist')).toBe(false);
     });
 
     it("should allow to init a box interface (and throw because it's only used in salesforce)", done => {

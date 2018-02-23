@@ -120,30 +120,6 @@ If you need to modify the content of the search page (i.e., the markup itself, n
 breaking anything. However, if you feel like you have a good reason to modify the original `index.html`, feel free to 
 do so.
 
-<h3 class="home-section-with-ordered-list">I Want to Add a New Component!</h3> 
-
-1. Fork the `coveo/search-ui` repository.
-2. Install Plop globally with `npm install -g plop`.
-3. Navigate to the `./plop` folder.
-4. Run `plop` to automatically start the small command line utility.
-5. Choose the **Create a new component** option.
-6. Enter a name for your component. This will automatically generate 4 things :
-    * Plop will create a new source file under `./src/ui/{{your component name}}/{{your component name}}.ts`.
-      This is where your component logic should be implemented.
-    * Plop will export your component in `./src/Index.ts`. This will make your component globally available under the 
-      Coveo namespace.
-    * Plop will add your component to `./tsconfig.json`. This will allow the project to recognize your component.
-    * Plop will create a new file under `./test/ui/{{your component name}}Test.ts`. This is a blank test file in which 
-      you should add your unit tests.
-    * Plop will reference your component in `./test/Test.ts`. This will build your test like the rest of the 
-      components.
-7. Now, make it work (your mileage may vary)!
-8. Add tests for your component.
-9. You should test the entire public API of your component. This includes all public methods and available options.
-10. Create a pull request to merge your changes in the master branch.
-
-We are very eager to receive external contributions and to collaborate with other developers!
-
 ### Tests
 
 Tests are written using [Jasmine](http://jasmine.github.io/2.4/introduction.html). You can use `npm run test` to run 

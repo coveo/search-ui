@@ -13,8 +13,8 @@ export class SentryLogger {
     let oldHandler = this.windoh.onerror;
     if (_.isFunction(oldHandler)) {
       this.windoh.onerror = (...args: any[]) => {
-        oldHandler.apply(oldHandler, args);
         this.handleError.apply(this, args);
+        return oldHandler.apply(oldHandler, args);
       };
     } else {
       this.windoh.onerror = this.handleError.bind(this);

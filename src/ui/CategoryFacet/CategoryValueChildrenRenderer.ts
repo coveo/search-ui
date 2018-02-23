@@ -9,10 +9,9 @@ export class CategoryChildrenValueRenderer {
   constructor(
     private element: Dom,
     private categoryFacetTemplates: CategoryFacetTemplates,
-    private categoryValueParent: CategoryValueParent
-  ) {
-    this.categoryValueParent.searchInterfa;
-  }
+    private categoryValueParent: CategoryValueParent,
+    private searchInterfaceRoot: Dom
+  ) {}
 
   public clearChildrenExceptOne(except: CategoryValue) {
     const newChildren = [];
@@ -32,6 +31,7 @@ export class CategoryChildrenValueRenderer {
     });
     this.children = [];
   }
+
   public async renderChildren() {
     if (!this.listOfChildValues) {
       this.listOfChildValues = this.categoryFacetTemplates.buildListRoot();

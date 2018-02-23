@@ -442,7 +442,7 @@ export class FacetSettings extends FacetSort {
     $$(this.settingsButton).on('click', (e: Event) => this.handleClickSettingsButtons(e, sortSection));
 
     const mouseLeave = () => {
-      closeTimeout = setTimeout(() => {
+      closeTimeout = window.setTimeout(() => {
         this.close();
       }, 300);
     };

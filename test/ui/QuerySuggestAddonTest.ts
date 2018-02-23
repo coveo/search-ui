@@ -100,7 +100,7 @@ export function QuerySuggestAddonTest() {
       });
 
       // PhantomJS faulty Promise implementation causes issues here
-      if (!Simulate.isPhantomJs()) {
+      if (!Simulate.isChromeHeadless()) {
         describe('with a cache', () => {
           it('should cache the result', done => {
             let querySuggest = new QuerySuggestAddon(omnibox);

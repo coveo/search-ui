@@ -150,7 +150,7 @@ export class Settings extends Component {
 
   private mouseleave() {
     clearTimeout(this.closeTimeout);
-    this.closeTimeout = setTimeout(() => {
+    this.closeTimeout = window.setTimeout(() => {
       this.close();
     }, this.options.menuDelay);
   }

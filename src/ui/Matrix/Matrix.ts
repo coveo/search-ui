@@ -837,7 +837,7 @@ export class Matrix extends Component {
 
   private handleHoverIn(rowNumber: number, columnNumber: number) {
     if (this.isHoverWorkingOnRow(rowNumber) && this.isHoverWorkingOnColumn(columnNumber)) {
-      this.previewTimeout = setTimeout(() => {
+      this.previewTimeout = window.setTimeout(() => {
         this.displayResultsPreview(rowNumber, columnNumber);
       }, this.options.previewDelay);
     }
