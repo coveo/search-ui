@@ -1,17 +1,24 @@
 import { Dom } from '../../utils/Dom';
 import { CategoryFacetTemplates } from './CategoryFacetTemplates';
 import { CategoryValue, CategoryJsonValues, CategoryValueParent } from './CategoryValue';
+import { CategoryFacet } from './CategoryFacet';
+import { QueryEvents, IBuildingQueryEventArgs, IQuerySuccessEventArgs } from '../../events/QueryEvents';
+import { ICategoryFacetsRequest } from '../../rest/CategoryFacetsRequest';
 
 export class CategoryChildrenValueRenderer {
   private children = [];
   private listOfChildValues: Dom;
+  private positionInQuery: number;
 
   constructor(
     private element: Dom,
     private categoryFacetTemplates: CategoryFacetTemplates,
     private categoryValueParent: CategoryValueParent,
-    private searchInterfaceRoot: Dom
-  ) {}
+    private categoryFacet: CategoryFacet
+  ) {
+    this.categoryFacet.bind.onRootElement<IBuildingQueryEventArgs>(QueryEvents.buildingQuery, () => this.putCategoryFacetInQueryBuilder);
+    this.categoryFacet.bind.onRootElement<IQuerySuccessEventArgs>(QueryEvents.querySuccess, () => this.renderChildren);
+  }
 
   public clearChildrenExceptOne(except: CategoryValue) {
     const newChildren = [];
@@ -32,11 +39,11 @@ export class CategoryChildrenValueRenderer {
     this.children = [];
   }
 
-  public async renderChildren() {
+  public async renderChildren(querySuccessEventArgs: IQuerySuccessEventArgs) {
     if (!this.listOfChildValues) {
       this.listOfChildValues = this.categoryFacetTemplates.buildListRoot();
     }
-
+    const values = querySuccessEventArgs.
     const headers = new Headers();
     headers.append('Accept', 'application/json');
     headers.append('Content-Type', 'application/json');
@@ -59,5 +66,13 @@ export class CategoryChildrenValueRenderer {
       categoryValue.render();
       this.children.push(categoryValue);
     });
+  }
+
+  private putCategoryFacetInQueryBuilder(buildingQueryEventArgs: IBuildingQueryEventArgs) {
+    this.positionInQuery = buildingQueryEventArgs.queryBuilder.categoryFacets.length;
+    buildingQueryEventArgs.queryBuilder.categoryFacets.push({
+      field: this.categoryFacet.options.field,
+      path: this.categoryValueParent.getPath()
+    } as ICategoryFacetsRequest);
   }
 }

@@ -1,7 +1,7 @@
 import { Dom, $$ } from '../../utils/Dom';
 import { CategoryFacetTemplates } from './CategoryFacetTemplates';
-import { CategoryJsonValues } from './CategoryValue';
 import { CategoryChildrenValueRenderer } from './CategoryValueChildrenRenderer';
+import { CategoryFacet } from './CategoryFacet';
 
 export interface CategoryValueParent {
   categoryChildrenValueRenderer: CategoryChildrenValueRenderer;
@@ -22,11 +22,12 @@ export class CategoryValue implements CategoryValueParent {
     private parentElement: Dom,
     private value: string,
     private parent: CategoryValueParent,
-    private categoryFacetTemplates: CategoryFacetTemplates
+    private categoryFacetTemplates: CategoryFacetTemplates,
+    private categoryFacet: CategoryFacet
   ) {
     this.element = this.categoryFacetTemplates.buildListElement(this.value);
     this.collapseArrow = this.categoryFacetTemplates.buildCollapseArrow();
-    this.categoryChildrenValueRenderer = new CategoryChildrenValueRenderer(this.element, categoryFacetTemplates, this);
+    this.categoryChildrenValueRenderer = new CategoryChildrenValueRenderer(this.element, categoryFacetTemplates, this.categoryFacet);
 
     this.arrowOnClick = () => this.closeChildMenu();
     this.captionOnClick = () => this.openChildMenu();

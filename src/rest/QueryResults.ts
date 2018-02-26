@@ -119,6 +119,10 @@ export interface IQueryResults {
    * The group by results of the query
    */
   groupByResults: IGroupByResult[];
+  /*
+  * Category facet results of the query
+  */
+  categoryFacetResults: ICategoryFacetResult[];
   /**
    * Possible query corrections (eg : {@link DidYouMean})
    */
