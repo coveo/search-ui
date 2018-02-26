@@ -5,6 +5,7 @@ import { IQueryResult } from './QueryResult';
 import { IGroupByResult } from './GroupByResult';
 import { IQueryCorrection } from './QueryCorrection';
 import { ITrigger } from './Trigger';
+import { ICategoryFacetResult } from './CategoryFacetsResult';
 
 /**
  * Describe a set a results returned by the Search API
@@ -122,7 +123,7 @@ export interface IQueryResults {
   /*
   * Category facet results of the query
   */
-  categoryFacetResults: ICategoryFacetResult[];
+  categoryFacets: ICategoryFacetResult[];
   /**
    * Possible query corrections (eg : {@link DidYouMean})
    */

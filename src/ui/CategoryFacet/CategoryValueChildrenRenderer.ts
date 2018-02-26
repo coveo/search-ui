@@ -1,6 +1,6 @@
 import { Dom } from '../../utils/Dom';
 import { CategoryFacetTemplates } from './CategoryFacetTemplates';
-import { CategoryValue, CategoryJsonValues, CategoryValueParent } from './CategoryValue';
+import { CategoryValue, CategoryValueParent } from './CategoryValue';
 import { CategoryFacet } from './CategoryFacet';
 import { QueryEvents, IBuildingQueryEventArgs, IQuerySuccessEventArgs } from '../../events/QueryEvents';
 import { ICategoryFacetsRequest } from '../../rest/CategoryFacetsRequest';
@@ -8,7 +8,7 @@ import { ICategoryFacetsRequest } from '../../rest/CategoryFacetsRequest';
 export class CategoryChildrenValueRenderer {
   private children = [];
   private listOfChildValues: Dom;
-  private positionInQuery: number;
+  // private positionInQuery: number;
 
   constructor(
     private element: Dom,
@@ -16,8 +16,10 @@ export class CategoryChildrenValueRenderer {
     private categoryValueParent: CategoryValueParent,
     private categoryFacet: CategoryFacet
   ) {
-    this.categoryFacet.bind.onRootElement<IBuildingQueryEventArgs>(QueryEvents.buildingQuery, () => this.putCategoryFacetInQueryBuilder);
-    this.categoryFacet.bind.onRootElement<IQuerySuccessEventArgs>(QueryEvents.querySuccess, () => this.renderChildren);
+    this.categoryFacet.bind.onRootElement<IBuildingQueryEventArgs>(QueryEvents.buildingQuery, args =>
+      this.putCategoryFacetInQueryBuilder(args)
+    );
+    this.categoryFacet.bind.onRootElement<IQuerySuccessEventArgs>(QueryEvents.querySuccess, args => this.renderChildren(args));
   }
 
   public clearChildrenExceptOne(except: CategoryValue) {
@@ -43,35 +45,30 @@ export class CategoryChildrenValueRenderer {
     if (!this.listOfChildValues) {
       this.listOfChildValues = this.categoryFacetTemplates.buildListRoot();
     }
-    const values = querySuccessEventArgs.
+    const values = querySuccessEventArgs.results.categoryFacets[0].values;
     const headers = new Headers();
     headers.append('Accept', 'application/json');
     headers.append('Content-Type', 'application/json');
-    const { values } = await fetch('http://localhost:8085/api', {
-      headers,
-      method: 'POST',
-      body: JSON.stringify({ path: this.categoryValueParent.getPath() })
-    })
-      .then<CategoryJsonValues>(response => response.json())
-      .catch(e => {
-        console.log(e);
-        return { values: [] } as CategoryJsonValues;
-      });
-
     this.clearChildren();
     this.element.append(this.listOfChildValues.el);
 
     values.forEach(value => {
-      const categoryValue = new CategoryValue(this.listOfChildValues, value, this.categoryValueParent, this.categoryFacetTemplates);
+      const categoryValue = new CategoryValue(
+        this.listOfChildValues,
+        value.value,
+        this.categoryValueParent,
+        this.categoryFacetTemplates,
+        this.categoryFacet
+      );
       categoryValue.render();
       this.children.push(categoryValue);
     });
   }
 
   private putCategoryFacetInQueryBuilder(buildingQueryEventArgs: IBuildingQueryEventArgs) {
-    this.positionInQuery = buildingQueryEventArgs.queryBuilder.categoryFacets.length;
+    // this.positionInQuery = buildingQueryEventArgs.queryBuilder.categoryFacets.length;
     buildingQueryEventArgs.queryBuilder.categoryFacets.push({
-      field: this.categoryFacet.options.field,
+      field: this.categoryFacet.options.field as string,
       path: this.categoryValueParent.getPath()
     } as ICategoryFacetsRequest);
   }

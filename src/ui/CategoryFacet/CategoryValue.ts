@@ -27,7 +27,7 @@ export class CategoryValue implements CategoryValueParent {
   ) {
     this.element = this.categoryFacetTemplates.buildListElement(this.value);
     this.collapseArrow = this.categoryFacetTemplates.buildCollapseArrow();
-    this.categoryChildrenValueRenderer = new CategoryChildrenValueRenderer(this.element, categoryFacetTemplates, this.categoryFacet);
+    this.categoryChildrenValueRenderer = new CategoryChildrenValueRenderer(this.element, categoryFacetTemplates, this, this.categoryFacet);
 
     this.arrowOnClick = () => this.closeChildMenu();
     this.captionOnClick = () => this.openChildMenu();
@@ -43,7 +43,7 @@ export class CategoryValue implements CategoryValueParent {
   }
 
   public showSiblings() {
-    this.parent.categoryChildrenValueRenderer.renderChildren();
+    // this.parent.categoryChildrenValueRenderer.renderChildren();
   }
 
   public clear() {
@@ -69,7 +69,7 @@ export class CategoryValue implements CategoryValueParent {
   }
 
   private openChildMenu() {
-    this.categoryChildrenValueRenderer.renderChildren();
+    // this.categoryChildrenValueRenderer.renderChildren();
     this.showCollapseArrow();
     this.hideSiblings();
   }
