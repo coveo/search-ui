@@ -16959,8 +16959,8 @@ exports.PreferencesPanelEvents = PreferencesPanelEvents;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.version = {
-    lib: '2.3826.7-beta',
-    product: '2.3826.7-beta',
+    lib: '2.3826.8-beta',
+    product: '2.3826.8-beta',
     supportedApiVersion: 2
 };
 
@@ -28013,8 +28013,8 @@ var AnalyticsEndpoint = /** @class */ (function () {
                         return [2 /*return*/, results.data];
                     case 7:
                         error_1 = _a.sent();
-                        if (!this.options.accessToken.isExpired(error_1)) return [3 /*break*/, 9];
                         AnalyticsEndpoint.pendingRequest = null;
+                        if (!this.options.accessToken.isExpired(error_1)) return [3 /*break*/, 9];
                         return [4 /*yield*/, this.options.accessToken.doRenew()];
                     case 8:
                         successfullyRenewed = _a.sent();
@@ -55410,19 +55410,27 @@ var Analytics = /** @class */ (function (_super) {
     };
     Analytics.prototype.trySetupAccessTokenFromDefaultSearchEndpoint = function () {
         var _this = this;
-        var defaultEndpoint = SearchEndpoint_1.SearchEndpoint.endpoints['default'];
-        if (defaultEndpoint) {
-            this.accessToken = defaultEndpoint.accessToken;
-            this.options.token = defaultEndpoint.accessToken.token;
-            defaultEndpoint.accessToken.subscribeToRenewal(function (newToken) {
+        if (this.defaultEndpoint) {
+            this.accessToken = this.defaultEndpoint.accessToken;
+            this.options.token = this.defaultEndpoint.accessToken.token;
+            this.defaultEndpoint.accessToken.subscribeToRenewal(function (newToken) {
                 _this.options.token = newToken;
                 _this.initializeAnalyticsClient();
             });
         }
-        if (!this.options.organization && defaultEndpoint) {
-            this.options.organization = defaultEndpoint.options.queryStringArguments['workgroup'];
+        if (!this.options.organization && this.defaultEndpoint) {
+            this.options.organization = this.defaultEndpoint.options.queryStringArguments['workgroup'];
         }
     };
+    Object.defineProperty(Analytics.prototype, "defaultEndpoint", {
+        get: function () {
+            return (this.searchInterface.options.endpoint ||
+                SearchEndpoint_1.SearchEndpoint.endpoints['default'] ||
+                _.find(SearchEndpoint_1.SearchEndpoint.endpoints, function (endpoint) { return endpoint != null; }));
+        },
+        enumerable: true,
+        configurable: true
+    });
     Analytics.prototype.handleBuildingQuery = function (data) {
         Assert_1.Assert.exists(data);
         data.queryBuilder.searchHub = this.options.searchHub;

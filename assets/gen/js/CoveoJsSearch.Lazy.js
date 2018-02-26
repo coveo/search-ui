@@ -96,7 +96,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 		if (__webpack_require__.nc) {
 /******/ 			script.setAttribute("nonce", __webpack_require__.nc);
 /******/ 		}
-/******/ 		script.src = __webpack_require__.p + "" + ({"0":"HierarchicalFacet","1":"TimespanFacet","2":"FacetRange","3":"Facet","4":"AdvancedSearch","5":"FacetSlider","6":"OmniboxResultList","7":"Recommendation","8":"ResultList","9":"Searchbox","10":"Tab","11":"Omnibox","12":"ResultsFiltersPreferences","13":"ResultsPreferences","14":"Quickview","15":"Backdrop","16":"SearchAlerts","17":"SimpleFilter","18":"ResultLayoutSelector","19":"FieldTable","20":"DistanceResources","21":"Sort","22":"YouTubeThumbnail","23":"Thumbnail","24":"ResultFolding","25":"PrintableUri","26":"Matrix","27":"CardOverlay","28":"FoldingForThread","29":"Badge","30":"FollowItem","31":"Settings","32":"ResultTagging","33":"ResultRating","34":"ResultAttachments","35":"QuerySummary","36":"Pager","37":"HiddenQuery","38":"FieldSuggestions","39":"CardActionBar","40":"Breadcrumb","41":"Querybox","42":"SearchButton","43":"Logo","44":"NumericSpinner","45":"Folding","46":"FieldValue","47":"ChatterPostedBy","48":"ChatterPostAttachment","49":"ChatterLikedBy","50":"AnalyticsSuggestions","51":"DatePicker","52":"RadioButton","53":"MultiSelect","54":"FormGroup","55":"Triggers","56":"Text","57":"ShareQuery","58":"ResultsPerPage","59":"ResultLink","60":"QueryDuration","61":"PreferencesPanel","62":"ExportToExcel","63":"Excerpt","64":"ErrorReport","65":"DidYouMean","66":"AuthenticationProvider","67":"TemplateLoader","68":"PipelineContext","69":"Icon","70":"Dropdown","71":"ChatterTopic","72":"Aggregate"}[chunkId]||chunkId) + "__" + "d0cdd2796ec05f8874dc" + ".js";
+/******/ 		script.src = __webpack_require__.p + "" + ({"0":"HierarchicalFacet","1":"TimespanFacet","2":"FacetRange","3":"Facet","4":"AdvancedSearch","5":"FacetSlider","6":"OmniboxResultList","7":"Recommendation","8":"ResultList","9":"Searchbox","10":"Tab","11":"Omnibox","12":"ResultsFiltersPreferences","13":"ResultsPreferences","14":"Quickview","15":"Backdrop","16":"SearchAlerts","17":"SimpleFilter","18":"ResultLayoutSelector","19":"FieldTable","20":"DistanceResources","21":"Sort","22":"YouTubeThumbnail","23":"Thumbnail","24":"ResultFolding","25":"PrintableUri","26":"Matrix","27":"CardOverlay","28":"FoldingForThread","29":"Badge","30":"FollowItem","31":"Settings","32":"ResultTagging","33":"ResultRating","34":"ResultAttachments","35":"QuerySummary","36":"Pager","37":"HiddenQuery","38":"FieldSuggestions","39":"CardActionBar","40":"Breadcrumb","41":"Querybox","42":"SearchButton","43":"Logo","44":"NumericSpinner","45":"Folding","46":"FieldValue","47":"ChatterPostedBy","48":"ChatterPostAttachment","49":"ChatterLikedBy","50":"AnalyticsSuggestions","51":"DatePicker","52":"RadioButton","53":"MultiSelect","54":"FormGroup","55":"Triggers","56":"Text","57":"ShareQuery","58":"ResultsPerPage","59":"ResultLink","60":"QueryDuration","61":"PreferencesPanel","62":"ExportToExcel","63":"Excerpt","64":"ErrorReport","65":"DidYouMean","66":"AuthenticationProvider","67":"TemplateLoader","68":"PipelineContext","69":"Icon","70":"Dropdown","71":"ChatterTopic","72":"Aggregate"}[chunkId]||chunkId) + "__" + "80d81715a7dbc0630322" + ".js";
 /******/ 		var timeout = setTimeout(onScriptComplete, 120000);
 /******/ 		script.onerror = script.onload = onScriptComplete;
 /******/ 		function onScriptComplete() {
@@ -13249,8 +13249,8 @@ exports.PreferencesPanelEvents = PreferencesPanelEvents;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.version = {
-    lib: '2.3826.7-beta',
-    product: '2.3826.7-beta',
+    lib: '2.3826.8-beta',
+    product: '2.3826.8-beta',
     supportedApiVersion: 2
 };
 
@@ -20332,8 +20332,8 @@ var AnalyticsEndpoint = /** @class */ (function () {
                         return [2 /*return*/, results.data];
                     case 7:
                         error_1 = _a.sent();
-                        if (!this.options.accessToken.isExpired(error_1)) return [3 /*break*/, 9];
                         AnalyticsEndpoint.pendingRequest = null;
+                        if (!this.options.accessToken.isExpired(error_1)) return [3 /*break*/, 9];
                         return [4 /*yield*/, this.options.accessToken.doRenew()];
                     case 8:
                         successfullyRenewed = _a.sent();
@@ -29739,19 +29739,27 @@ var Analytics = /** @class */ (function (_super) {
     };
     Analytics.prototype.trySetupAccessTokenFromDefaultSearchEndpoint = function () {
         var _this = this;
-        var defaultEndpoint = SearchEndpoint_1.SearchEndpoint.endpoints['default'];
-        if (defaultEndpoint) {
-            this.accessToken = defaultEndpoint.accessToken;
-            this.options.token = defaultEndpoint.accessToken.token;
-            defaultEndpoint.accessToken.subscribeToRenewal(function (newToken) {
+        if (this.defaultEndpoint) {
+            this.accessToken = this.defaultEndpoint.accessToken;
+            this.options.token = this.defaultEndpoint.accessToken.token;
+            this.defaultEndpoint.accessToken.subscribeToRenewal(function (newToken) {
                 _this.options.token = newToken;
                 _this.initializeAnalyticsClient();
             });
         }
-        if (!this.options.organization && defaultEndpoint) {
-            this.options.organization = defaultEndpoint.options.queryStringArguments['workgroup'];
+        if (!this.options.organization && this.defaultEndpoint) {
+            this.options.organization = this.defaultEndpoint.options.queryStringArguments['workgroup'];
         }
     };
+    Object.defineProperty(Analytics.prototype, "defaultEndpoint", {
+        get: function () {
+            return (this.searchInterface.options.endpoint ||
+                SearchEndpoint_1.SearchEndpoint.endpoints['default'] ||
+                _.find(SearchEndpoint_1.SearchEndpoint.endpoints, function (endpoint) { return endpoint != null; }));
+        },
+        enumerable: true,
+        configurable: true
+    });
     Analytics.prototype.handleBuildingQuery = function (data) {
         Assert_1.Assert.exists(data);
         data.queryBuilder.searchHub = this.options.searchHub;
