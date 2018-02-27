@@ -76,13 +76,17 @@ export function RecommendationTest() {
     });
 
     describe('when propaging events', () => {
+      let recommendation: Recommendation;
       beforeEach(() => {
         mainSearchInterface.cmp.element.appendChild(test.cmp.element);
+        const div = $$('div').el;
+        new Mock.MockEnvironmentBuilder().withRoot(div);
+        recommendation = new Recommendation(div, options);
       });
 
       function addListenEventSpy(attributeName) {
         const spy = jasmine.createSpy('spy');
-        const eventName = test.cmp.getBindings().queryStateModel.getEventName(Model.eventTypes.change + attributeName);
+        const eventName = recommendation.getBindings().queryStateModel.getEventName(Model.eventTypes.change + attributeName);
         const mainSearchInterfaceContainer = $$('div');
         mainSearchInterfaceContainer.on(eventName, () => {
           spy();
