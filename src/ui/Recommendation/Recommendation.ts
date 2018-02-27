@@ -139,7 +139,7 @@ export class Recommendation extends SearchInterface implements IComponentBinding
     /**
      * Specifies whether to hide the Recommendations component if no result or recommendation is available.
      *
-     * Default value is `false`.
+     * Default value is `true`.
      */
     hideIfNoResults: ComponentOptions.buildBooleanOption({ defaultValue: true }),
     autoTriggerQuery: ComponentOptions.buildBooleanOption({
@@ -201,6 +201,7 @@ export class Recommendation extends SearchInterface implements IComponentBinding
   public historyStore: CoveoAnalytics.HistoryStore;
 
   private mainInterfaceQuery: IQuerySuccessEventArgs;
+  private displayStyle: string;
 
   /**
    * Creates a new Recommendation component.
@@ -235,6 +236,8 @@ export class Recommendation extends SearchInterface implements IComponentBinding
       // When the recommendation component is "standalone", we add additional safeguard against bad config.
       this.ensureCurrentPageViewExistsInStore();
     }
+
+    this.displayStyle = this.element.style.display;
     ResponsiveRecommendation.init(this.root, this, options);
   }
 
@@ -253,11 +256,11 @@ export class Recommendation extends SearchInterface implements IComponentBinding
   }
 
   public hide(): void {
-    $$(this.element).addClass('coveo-hidden');
+    $$(this.element).hide();
   }
 
   public show(): void {
-    $$(this.element).removeClass('coveo-hidden');
+    this.element.style.display = this.displayStyle;
   }
 
   private ensureCurrentPageViewExistsInStore() {
