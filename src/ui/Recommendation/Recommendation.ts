@@ -201,7 +201,6 @@ export class Recommendation extends SearchInterface implements IComponentBinding
   public historyStore: CoveoAnalytics.HistoryStore;
 
   private mainInterfaceQuery: IQuerySuccessEventArgs;
-  private displayStyle: string;
 
   /**
    * Creates a new Recommendation component.
@@ -213,6 +212,7 @@ export class Recommendation extends SearchInterface implements IComponentBinding
    */
   constructor(public element: HTMLElement, public options: IRecommendationOptions = {}, public analyticsOptions = {}, _window = window) {
     super(element, ComponentOptions.initComponentOptions(element, Recommendation, options), analyticsOptions, _window);
+    this.element.style.display = '';
     if (!this.options.id) {
       this.generateDefaultId();
     }
@@ -236,8 +236,6 @@ export class Recommendation extends SearchInterface implements IComponentBinding
       // When the recommendation component is "standalone", we add additional safeguard against bad config.
       this.ensureCurrentPageViewExistsInStore();
     }
-
-    this.displayStyle = this.element.style.display;
     ResponsiveRecommendation.init(this.root, this, options);
   }
 
@@ -256,11 +254,11 @@ export class Recommendation extends SearchInterface implements IComponentBinding
   }
 
   public hide(): void {
-    $$(this.element).hide();
+    $$(this.element).addClass('coveo-hidden');
   }
 
   public show(): void {
-    this.element.style.display = this.displayStyle;
+    $$(this.element).removeClass('coveo-hidden');
   }
 
   private ensureCurrentPageViewExistsInStore() {
