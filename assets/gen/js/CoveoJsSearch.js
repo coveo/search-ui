@@ -16959,8 +16959,8 @@ exports.PreferencesPanelEvents = PreferencesPanelEvents;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.version = {
-    lib: '2.3826.8-beta',
-    product: '2.3826.8-beta',
+    lib: '2.3826.9-beta',
+    product: '2.3826.9-beta',
     supportedApiVersion: 2
 };
 
@@ -33110,6 +33110,7 @@ var Recommendation = /** @class */ (function (_super) {
         _this.element = element;
         _this.options = options;
         _this.analyticsOptions = analyticsOptions;
+        _this.element.style.display = '';
         if (!_this.options.id) {
             _this.generateDefaultId();
         }
@@ -33361,7 +33362,7 @@ var Recommendation = /** @class */ (function (_super) {
         /**
          * Specifies whether to hide the Recommendations component if no result or recommendation is available.
          *
-         * Default value is `false`.
+         * Default value is `true`.
          */
         hideIfNoResults: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: true }),
         autoTriggerQuery: ComponentOptions_1.ComponentOptions.buildBooleanOption({
