@@ -21,7 +21,7 @@ export function RecommendationTest() {
     let store: CoveoAnalytics.HistoryStore;
 
     const isHidden = (test: Mock.IBasicComponentSetup<Recommendation>): boolean => {
-      return $$(test.cmp.element).css('display') == 'none';
+      return $$(test.cmp.element).hasClass('coveo-hidden');
     };
 
     beforeEach(() => {
