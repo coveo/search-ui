@@ -16959,8 +16959,8 @@ exports.PreferencesPanelEvents = PreferencesPanelEvents;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.version = {
-    lib: '2.3826.9-beta',
-    product: '2.3826.9-beta',
+    lib: '2.3826.10',
+    product: '2.3826.10',
     supportedApiVersion: 2
 };
 
