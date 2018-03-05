@@ -19,25 +19,14 @@ export interface ICardActionBarOptions {
 }
 
 /**
- * The CardActionBar component displays an action bar at the bottom of a card result (see
+ * The `CardActionBar` component displays an action bar at the bottom of a card result (see
  * [Result Layouts](https://developers.coveo.com/x/yQUvAg)). It is a simple container for buttons or complementary
  * information.
  *
- * You should place this component at the bottom of a card result (i.e., as the last child of the surrounding
- * `coveo-result-frame`.
+ * You should place this component at the bottom of a card result template (i.e., as the last child of the surrounding
+ * `coveo-result-frame` div).
  *
- * ### Example
- * ```html
- * <div class="coveo-result-frame">
- *   [ ... content ... ]
- *   <div class="CoveoCardActionBar">
- *     <some-button></some-button>
- *     <some-additional-info></some-additional-info>
- *   </div>
- * </div>
- * ```
- *
- * A CardActionBar component is a two-state widget: it can either be shown or hidden. It is hidden by default.
+ * See [Result Layouts - Using the CardActionBar Component](https://developers.coveo.com/x/yQUvAg#ResultLayouts-UsingtheCardActionBarComponent)
  */
 export class CardActionBar extends Component {
   static ID = 'CardActionBar';
@@ -57,16 +46,18 @@ export class CardActionBar extends Component {
    */
   static options: ICardActionBarOptions = {
     /**
-     * Specifies whether to hide the CardActionBar by default, unless the user clicks its parent {@link IQueryResult}.
+     * Whether to hide the component by default and append a visual indicator to its parent query result.
      *
-     * Default value is `true`. This means that the component is hidden and a visual indicator is appended to its parent
-     * IQueryResult.
+     * If this option is set to `true`, the component will show itself when the user clicks its parent query result.
+     *
+     * Default value is `true`.
      */
     hidden: ComponentOptions.buildBooleanOption({ defaultValue: true }),
 
     /**
-     * If {@link CardActionBar.options.hidden} is `true`, specifies whether to open the CardActionBar when the cursor
-     * hovers over it.
+     * Whether to open the `CardActionBar` when the cursor hovers over it.
+     *
+     * This option is only meaningful when [`hidden`]{@link CardActionBar.options.hidden} is set to `true`.
      *
      * Default value is `true`.
      */
@@ -74,12 +65,12 @@ export class CardActionBar extends Component {
   };
 
   /**
-   * Creates a new CardActionBar component.
+   * Creates a new `CardActionBar` component.
    * @param element The HTMLElement on which to instantiate the component.
-   * @param options The options for the CardActionBar component.
+   * @param options The options for the component.
    * @param bindings The bindings that the component requires to function normally. If not set, these will be
    * automatically resolved (with a slower execution time).
-   * @param result The parent result.
+   * @param result The parent [query result]{@link IQueryResult}..
    */
   constructor(
     public element: HTMLElement,
@@ -111,7 +102,7 @@ export class CardActionBar extends Component {
   }
 
   /**
-   * Shows the CardActionBar.
+   * Shows the component.
    */
   public show() {
     $$(this.element).addClass('coveo-opened');
@@ -121,7 +112,7 @@ export class CardActionBar extends Component {
   }
 
   /**
-   * Hides the CardActionBar.
+   * Hides the component.
    */
   public hide() {
     $$(this.element).removeClass('coveo-opened');
