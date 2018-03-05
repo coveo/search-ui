@@ -68,8 +68,9 @@ export class CategoryValue implements CategoryValueParent {
     return this.value;
   }
 
-  private openChildMenu() {
-    // this.categoryChildrenValueRenderer.renderChildren();
+  private async openChildMenu() {
+    const values = await this.categoryFacet.categoryFacetQueryController.getValues(this.getPath());
+    this.categoryChildrenValueRenderer.renderChildren(values);
     this.showCollapseArrow();
     this.hideSiblings();
   }

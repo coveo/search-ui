@@ -9,12 +9,15 @@ import { CategoryFacetTemplates } from './CategoryFacetTemplates';
 import { CategoryValueRoot } from './CategoryValueRoot';
 import { CategoryValue } from './CategoryValue';
 // import { IBuildingQueryEventArgs, QueryEvents } from '../../events/QueryEvents';
+import { CategoryFacetQueryController } from '../../controllers/CategoryFacetQueryController';
 
 export interface CategoryFacetOptions {
   field: IFieldOption;
 }
 
 export class CategoryFacet extends Component {
+  public categoryFacetQueryController: CategoryFacetQueryController;
+
   static doExport = () => {
     exportGlobally({
       CategoryFacet
@@ -40,6 +43,7 @@ export class CategoryFacet extends Component {
     super(element, 'CategoryFacet', bindings);
     this.options = ComponentOptions.initComponentOptions(element, CategoryFacet, options);
 
+    this.categoryFacetQueryController = new CategoryFacetQueryController(this);
     this.categoryFacetTemplates = new CategoryFacetTemplates();
     this.categoryValueRoot = new this.CategoryValueRootModule($$(this.element), this.categoryFacetTemplates, this);
   }
