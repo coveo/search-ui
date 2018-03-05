@@ -82,6 +82,11 @@ export class Folding extends Component {
      *
      * Specifying a value for this option is required for this component to work.
      *
+     * **Note:**
+     * > In an Elasticsearch index, the corresponding field must be configured as a *Facet* field
+     * > (see [Add/Edit a Field: [FieldName] - Panel ](http://www.coveo.com/go?dest=cloudhelp&lcid=9&context=288)).
+     * > This limitation does not apply to Coveo indexes.
+     *
      * Default value is `@foldingcollection`.
      */
     field: ComponentOptions.buildFieldOption({ defaultValue: '@foldingcollection' }),
