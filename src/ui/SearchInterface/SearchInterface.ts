@@ -41,7 +41,7 @@ import 'styling/Globals';
 import 'styling/_SearchInterface';
 import 'styling/_SearchModalBox';
 import 'styling/_SearchButton';
-import { Component } from '../Base/Component';
+import { FacetValueStateHandler } from './FacetValueStateHandler';
 
 export interface ISearchInterfaceOptions {
   enableHistory?: boolean;
@@ -417,6 +417,7 @@ export class SearchInterface extends RootComponent implements IComponentBindings
   public static SMALL_INTERFACE_CLASS_NAME = 'coveo-small-search-interface';
 
   private attachedComponents: { [type: string]: BaseComponent[] };
+  private facetValueStateHandler: FacetValueStateHandler;
 
   public root: HTMLElement;
   public queryStateModel: QueryStateModel;
@@ -466,6 +467,7 @@ export class SearchInterface extends RootComponent implements IComponentBindings
     this.componentOptionsModel = new ComponentOptionsModel(element);
     this.usageAnalytics = this.initializeAnalytics();
     this.queryController = new QueryController(element, this.options, this.usageAnalytics, this);
+    this.facetValueStateHandler = new FacetValueStateHandler((componentId: string) => this.getComponents(componentId));
     new SentryLogger(this.queryController);
 
     const eventName = this.queryStateModel.getEventName(Model.eventTypes.preprocess);
@@ -649,7 +651,7 @@ export class SearchInterface extends RootComponent implements IComponentBindings
     // `fv:` states are intended to be redirected and used on a standard Search Interface,
     // else the state gets transformed to `hd` before the redirection.
     if (args && args.fv && !(this instanceof StandaloneSearchInterface)) {
-      this.handleFacetValueState(args);
+      this.facetValueStateHandler.handleFacetValueState(args);
     }
   }
 
@@ -760,49 +762,6 @@ export class SearchInterface extends RootComponent implements IComponentBindings
       }
     }
     return QueryStateModel.defaultAttributes.quickview;
-  }
-
-  private handleFacetValueState(stateToSet: { [key: string]: any }): void {
-    const facetRef = BaseComponent.getComponentRef('Facet');
-    const fvState = stateToSet.fv;
-    const fvFieldsIds = Object.keys(fvState);
-    let fieldsWithoutFacets = [];
-    if (facetRef) {
-      const allFacets: Component[] = this.getComponents(facetRef.ID);
-      fieldsWithoutFacets = fvFieldsIds.filter(facetField => {
-        // Try to find a facet matching the `fv:` field state.
-        const value = fvState[facetField];
-        if (value && value.length > 0) {
-          const facetsWithField = allFacets.filter(facet => facet.options.field == facetField);
-          if (facetsWithField.length > 0) {
-            // We found a facet, remove the `fv:` and replace it with `f:`.
-            delete fvState[facetField];
-            facetsWithField.forEach(facet => (stateToSet[QueryStateModel.getFacetId(facet.options.id)] = value));
-            return false;
-          }
-        }
-        return true;
-      });
-    } else {
-      fieldsWithoutFacets = fvFieldsIds;
-    }
-
-    // For the remaining field, we need to transform them in hidden queries.
-    // This ensure that an `fv:` state is always transformed into the filter it is supposed to apply.
-    if (fieldsWithoutFacets.length > 0) {
-      const valuesTransformedToHiddenQuery = fieldsWithoutFacets
-        .map(facetField => {
-          const value = fvState[facetField];
-          if (value && value.length > 0) {
-            delete fvState[facetField];
-            return `${facetField}=="${value}"`;
-          }
-        })
-        .filter(expression => !!expression);
-      if (valuesTransformedToHiddenQuery.length > 0) {
-        stateToSet[QueryStateModel.attributesEnum.hq] = valuesTransformedToHiddenQuery.join(' AND ');
-      }
-    }
   }
 
   private handleQuickviewChanged(args: IAttributeChangedEventArg) {
