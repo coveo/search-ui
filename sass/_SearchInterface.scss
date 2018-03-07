@@ -52,3 +52,7 @@ body.coveo-modalBox-opened {
     overflow: hidden;
   }
 }
+
+.CoveoSearchInterface .coveo-modal-container.coveo-opened {
+  display: flex;
+}

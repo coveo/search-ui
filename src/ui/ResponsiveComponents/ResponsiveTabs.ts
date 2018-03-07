@@ -186,7 +186,7 @@ export class ResponsiveTabs implements IResponsiveComponent {
     virtualTabSection.insertBefore(this.tabSection.el);
 
     ResponsiveComponentsUtils.deactivateSmallTabs(this.coveoRoot);
-    const isOverflowing = this.isOverflowing(virtualTabSection.el);
+    const isOverflowing = this.isOverflowing(this.tabSection.el) || this.isOverflowing(virtualTabSection.el);
     ResponsiveComponentsUtils.activateSmallTabs(this.coveoRoot);
 
     virtualTabSection.detach();

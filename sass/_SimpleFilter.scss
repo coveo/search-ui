@@ -74,6 +74,7 @@
   text-overflow: ellipsis;
   @include user-select(none);
   white-space: nowrap;
+  height: 20px;
 }
 
 .coveo-simplefilter-circle {

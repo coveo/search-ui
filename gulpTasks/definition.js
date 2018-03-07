@@ -13,6 +13,7 @@ gulp.task('definitions', function(done) {
 gulp.task('cleanDefs', function() {
   return (gulp
       .src('bin/ts/CoveoJsSearch.d.ts')
+      .pipe(footer('declare module Coveo {\n\t class ResultLayout extends ResultLayoutSelector { }\n}\n'))
       .pipe(replace(/import.*$/gm, ''))
       .pipe(replace(/(declare module )(.*)( {$)/gm, '$1Coveo$3'))
       .pipe(replace(/export =.+;$/gm, ''))
@@ -29,8 +30,17 @@ gulp.task('cleanDefs', function() {
       // and stripping ModuleDefinition will refer to the correct type.
       .pipe(replace(/\n\t(?:const|let|var)\s.*;/gm, ''))
       .pipe(replace(/readonly/gm, ''))
+      .pipe(replace(/undefined/g, 'any'))
+      .pipe(replace(/ Record<.*>;/g, ' any;'))
+      .pipe(replace(/(enum [a-zA-Z_$]+\s{$)((?:\n^\s*[a-zA-Z_$]+ = "[a-zA-Z_$]+",$)*)/gm, clearEnumVariableDeclaration))
       .pipe(gulp.dest('bin/ts/')) );
 });
+
+function clearEnumVariableDeclaration(match, p1, p2) {
+  let lines = p2.split('\n');
+  lines = lines.map(line => line.replace(/ = ["|'][a-zA-Z_$]*["|']/, ''));
+  return p1 + lines.join('\n');
+}
 
 gulp.task('externalDefs', function() {
   return gulp

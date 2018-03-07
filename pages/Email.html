@@ -1,71 +1,71 @@
 <!DOCTYPE html>
 <html>
 
-  <head>
-    <title>Email</title>
-    <meta about="Search Email content." />
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, height=device-height" >
-    <link rel="stylesheet" href="./css/CoveoFullSearch.css"/>
-    <script src="js/CoveoJsSearch.Lazy.js"></script>
-    <script src="js/templates/templates.js"></script>
-    <script>
-      document.addEventListener('DOMContentLoaded', function(){
-        Coveo.SearchEndpoint.configureSampleEndpoint();
-        Coveo.init(document.body);
-      })
-    </script>
+<head>
+  <title>Email</title>
+  <meta about="Search Email content." />
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, height=device-height">
+  <link rel="stylesheet" href="./css/CoveoFullSearch.css" />
+  <script src="js/CoveoJsSearch.Lazy.js"></script>
+  <script src="js/templates/templates.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      Coveo.SearchEndpoint.configureSampleEndpoint();
+      Coveo.init(document.body);
+    })
+  </script>
 
-  </head>
+</head>
 
-  <body id="search" class='CoveoSearchInterface' data-enable-history="true">
-    <div class="CoveoFolding" data-field="@conversationreferenceid" data-tab="Email" data-parent-field="@containsattachment" data-child-field="@isattachment" data-range="0"></div>
-    <div class="coveo-tab-section">
-      <a class="CoveoTab" data-id="Email" data-caption="Email" data-expression="@mailbox" data-sort="date descending"></a>
+<body id="search" class='CoveoSearchInterface' data-enable-history="true">
+  <div class="coveo-tab-section">
+    <a class="CoveoTab" data-id="Email" data-caption="Email" data-expression="@mailbox" data-sort="date descending"></a>
+  </div>
+  <div class='coveo-search-section'>
+    <div class="CoveoSettings"></div>
+    <div class="CoveoSearchbox" data-enable-omnibox="true"></div>
+  </div>
+  <div class="coveo-main-section">
+    <div class="coveo-facet-column">
+      <div class="CoveoFacet" data-title="Mailbox" data-field="@mailbox" data-tab="Email"></div>
+      <div class="CoveoFacet" data-title="From" data-field="@from" data-tab="Email"></div>
+      <div class="CoveoFacet" data-title="To" data-field="@to" data-tab="Email"></div>
+      <div class="CoveoFacet" data-title="File Type" data-field="@filetype" data-tab="Email"></div>
+      <div class="CoveoTimespanFacet" data-tab="Email"></div>
     </div>
-    <div class='coveo-search-section'>
-      <div class="CoveoSettings"></div>
-      <div class="CoveoSearchbox" data-enable-omnibox="true"></div>
-    </div>
-    <div class="coveo-main-section">
-      <div class="coveo-facet-column">
-        <div class="CoveoFacet" data-title="Mailbox" data-field="@mailbox" data-tab="Email"></div>
-        <div class="CoveoFacet" data-title="From" data-field="@from" data-tab="Email"></div>
-        <div class="CoveoFacet" data-title="To" data-field="@to" data-tab="Email"></div>
-        <div class="CoveoFacet" data-title="File Type" data-field="@filetype" data-tab="Email"></div>
-        <div class="CoveoTimespanFacet" data-tab="Email"></div>
+    <div class="coveo-results-column">
+      <div class="CoveoShareQuery"></div>
+      <div class="CoveoExportToExcel"></div>
+      <div class="CoveoPreferencesPanel">
+        <div class="CoveoResultsPreferences"></div>
+        <div class="CoveoResultsFiltersPreferences"></div>
       </div>
-      <div class="coveo-results-column">
-        <div class="CoveoShareQuery"></div>
-        <div class="CoveoExportToExcel"></div>
-        <div class="CoveoPreferencesPanel">
-          <div class="CoveoResultsPreferences"></div>
-          <div class="CoveoResultsFiltersPreferences"></div>
+      <div class="CoveoBreadcrumb"></div>
+      <div class="CoveoDidYouMean"></div>
+      <div class="coveo-results-header">
+        <div class="coveo-summary-section">
+          <span class="CoveoQuerySummary"></span>
+          <span class="CoveoQueryDuration"></span>
         </div>
-        <div class="CoveoBreadcrumb"></div>
-        <div class="coveo-results-header">
-          <div class="coveo-summary-section">
-            <span class="CoveoQuerySummary"></span>
-            <span class="CoveoQueryDuration"></span>
-          </div>
-          <div class="coveo-result-layout-section">
-            <span class="CoveoResultLayoutSelector"></span>
-          </div>
-          <div class="coveo-sort-section">
-            <span class="CoveoSort" data-sort-criteria="relevancy" data-caption="Relevance"></span>
-            <span class="CoveoSort" data-sort-criteria="date descending,date ascending" data-caption="Date"></span>
-          </div>
+        <div class="coveo-result-layout-section">
+          <span class="CoveoResultLayoutSelector"></span>
         </div>
-        <div class="CoveoHiddenQuery"></div>
-        <div class="CoveoDidYouMean"></div>
-        <div class="CoveoErrorReport"></div>
-        <div class="CoveoResultList" data-layout="list" data-wait-animation="fade" data-auto-select-fields-to-include="true"></div>
-        <div class="CoveoResultList" data-layout="card" data-wait-animation="fade" data-auto-select-fields-to-include="true"></div>
-        <div class="CoveoPager"></div>
-        <div class="CoveoLogo"></div>
-        <div class="CoveoResultsPerPage"></div>
+        <div class="coveo-sort-section">
+          <span class="CoveoSort" data-sort-criteria="relevancy" data-caption="Relevance"></span>
+          <span class="CoveoSort" data-sort-criteria="date descending,date ascending" data-caption="Date"></span>
+        </div>
       </div>
+      <div class="CoveoHiddenQuery"></div>
+      <div class="CoveoErrorReport"></div>
+      <div class="CoveoResultList" data-layout="list" data-wait-animation="fade" data-auto-select-fields-to-include="true"></div>
+      <div class="CoveoResultList" data-layout="card" data-wait-animation="fade" data-auto-select-fields-to-include="true"></div>
+      <div class="CoveoPager"></div>
+      <div class="CoveoLogo"></div>
+      <div class="CoveoResultsPerPage"></div>
     </div>
-  </body>
+  </div>
+</body>
+
 </html>

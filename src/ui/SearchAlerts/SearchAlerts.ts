@@ -417,6 +417,7 @@ export class SearchAlerts extends Component {
             },
             this.element
           );
+          subscription.frequency = dropdownInstance.getValue();
           this.updateAndSyncSearchAlert(subscription);
         },
         pluckFrequenciesValues,
