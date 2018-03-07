@@ -63,6 +63,7 @@ export class QueryStateModel extends Model {
   static defaultAttributes = {
     q: '',
     first: 0,
+    fv: '',
     t: '',
     hd: '',
     hq: '',
@@ -97,21 +98,13 @@ export class QueryStateModel extends Model {
     return QueryStateModel.getFacetId(id) + ':lookupvalues';
   }
 
-  static getFacetValueId(id: string) {
-    return 'fv:' + id;
-  }
-
-  static isFacetValueKey(key: string): boolean {
-    return key.lastIndexOf(`fv:`) === 0;
-  }
-
   /**
    * Creates a new `QueryStateModel` instance.
    * @param element The HTMLElement on which to instantiate the `QueryStateModel`.
    * @param attributes The state key-value store to instantiate the `QueryStateModel` with.
    */
   constructor(element: HTMLElement, attributes?: IStringMap<string>) {
-    let merged = _.extend({}, QueryStateModel.defaultAttributes, attributes);
+    let merged = Utils.extendDeep({}, Utils.extendDeep(QueryStateModel.defaultAttributes, attributes));
     super(element, QueryStateModel.ID, merged);
   }
 

@@ -174,33 +174,9 @@ export class HistoryController extends RootComponent {
         diff.push(key);
       }
     });
-    if (this.model.dynamicAttributes.length > 0) {
-      _.each(this.getDynamicAttributesForKeys(this.model.dynamicAttributes), (value, key?) => {
-        toSet[key] = value;
-        if (this.model.get(key) != value) {
-          diff.push(key);
-        }
-      });
-    }
     this.initialHashChange = true;
     this.model.setMultiple(toSet);
     return diff;
-  }
-
-  private getDynamicAttributesForKeys(dynamicKeys: string[]): { [key: string]: any } {
-    Assert.isNotNull(dynamicKeys);
-    const values = {};
-    try {
-      const hash = this.hashUtils.getHash(this.window);
-      const allValues = this.hashUtils.getValues(hash);
-      Object.keys(allValues)
-        .filter(key => dynamicKeys.some(dynamicKey => key.indexOf(`${dynamicKey}:`) === 0))
-        .forEach(key => (values[key] = allValues[key]));
-    } catch (error) {
-      this.logger.error(`Could not parse the dynamic keys ${dynamicKeys.join(',')} from URI`, error);
-    }
-
-    return values;
   }
 
   private getHashValue(key: string): any {

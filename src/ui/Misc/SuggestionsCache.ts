@@ -1,9 +1,7 @@
-import { IOmniboxSuggestion } from '../Omnibox/Omnibox';
+export class SuggestionsCache<T> {
+  private cache: { [hash: string]: Promise<T> } = {};
 
-export class SuggestionsCache {
-  private cache: { [hash: string]: Promise<IOmniboxSuggestion[]> } = {};
-
-  getSuggestions(hash: string, suggestionsFetcher: () => Promise<IOmniboxSuggestion[]>): Promise<IOmniboxSuggestion[] | null> {
+  getSuggestions(hash: string, suggestionsFetcher: () => Promise<T>): Promise<T | null> {
     if (!hash || hash.length === 0) {
       return null;
     }
@@ -14,9 +12,15 @@ export class SuggestionsCache {
 
     const promise = suggestionsFetcher();
     this.cache[hash] = promise;
-    promise.catch(() => {
-      delete this.cache[hash];
-    });
+    promise.catch(() => this.clearSuggestion(hash));
     return this.cache[hash];
+  }
+
+  clearSuggestion(hash: string): void {
+    if (!hash || hash.length === 0) {
+      return null;
+    }
+
+    delete this.cache[hash];
   }
 }

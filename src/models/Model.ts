@@ -44,7 +44,6 @@ export class Model extends BaseComponent {
    */
   public attributes: IStringMap<any>;
   public defaultAttributes: IStringMap<any>;
-  public dynamicAttributes: string[];
   private eventNameSpace;
 
   /**
@@ -70,7 +69,6 @@ export class Model extends BaseComponent {
 
     this.defaultAttributes = Utils.extendDeep(this.defaultAttributes, attributes);
     this.attributes = attributes;
-    this.dynamicAttributes = [];
     this.logger.debug('Creating model');
   }
 
@@ -174,7 +172,8 @@ export class Model extends BaseComponent {
    * the specific attribute whose value is to be set to its default value.
    */
   public setDefault(attribute: string) {
-    this.set(attribute, this.defaultAttributes[attribute]);
+    const defaultValue = this.defaultAttributes[attribute];
+    this.set(attribute, _.isObject(defaultValue) ? Utils.extendDeep({}, defaultValue) : defaultValue);
   }
 
   /**
@@ -213,7 +212,7 @@ export class Model extends BaseComponent {
    * After the `setMultiple` call has returned, this method triggers the `reset` event.
    */
   public reset() {
-    this.setMultiple(this.defaultAttributes);
+    this.setMultiple(Utils.extendDeep({}, this.defaultAttributes));
     this.modelWasResetEvent();
   }
 
@@ -227,10 +226,6 @@ export class Model extends BaseComponent {
   public registerNewAttribute(attribute: string, defaultValue: any) {
     this.defaultAttributes[attribute] = defaultValue;
     this.attributes[attribute] = defaultValue;
-  }
-
-  public registerNewDynamicAttribute(attribute: string) {
-    this.dynamicAttributes.push(attribute);
   }
 
   /**

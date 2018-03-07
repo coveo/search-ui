@@ -479,7 +479,7 @@ export class SearchInterface extends RootComponent implements IComponentBindings
     $$(this.element).on(QueryEvents.querySuccess, (e, args) => this.handleQuerySuccess(args));
     $$(this.element).on(QueryEvents.queryError, (e, args) => this.handleQueryError(args));
 
-    this.queryStateModel.registerNewDynamicAttribute(QueryStateModel.attributesEnum.fv);
+    this.queryStateModel.registerNewAttribute(QueryStateModel.attributesEnum.fv, {});
 
     if (this.options.enableHistory) {
       if (!this.options.useLocalStorageForHistory) {
@@ -489,7 +489,7 @@ export class SearchInterface extends RootComponent implements IComponentBindings
       }
     } else {
       $$(this.element).on(InitializationEvents.restoreHistoryState, () =>
-        this.queryStateModel.setMultiple(this.queryStateModel.defaultAttributes)
+        this.queryStateModel.setMultiple(Utils.extendDeep({}, this.queryStateModel.defaultAttributes))
       );
     }
 
@@ -658,14 +658,8 @@ export class SearchInterface extends RootComponent implements IComponentBindings
 
     // `fv:` states are intended to be redirected and used on a standard Search Interface,
     // else the state gets transformed to `hd` before the redirection.
-    if (args && !(this instanceof StandaloneSearchInterface)) {
-      const fvFields: string[] = Object.keys(args)
-        .filter(key => QueryStateModel.isFacetValueKey(key))
-        .map(key => key.substring(QueryStateModel.attributesEnum.fv.length + 1));
-
-      if (fvFields.length > 0) {
-        this.handleFacetValueState(args, fvFields);
-      }
+    if (args && args.fv && !(this instanceof StandaloneSearchInterface)) {
+      this.handleFacetValueState(args);
     }
   }
 
@@ -778,20 +772,21 @@ export class SearchInterface extends RootComponent implements IComponentBindings
     return QueryStateModel.defaultAttributes.quickview;
   }
 
-  private handleFacetValueState(stateToSet: { [key: string]: any }, fvFields: string[]): void {
+  private handleFacetValueState(stateToSet: { [key: string]: any }): void {
     const facetRef = BaseComponent.getComponentRef('Facet');
+    const fvState = stateToSet.fv;
+    const fvFieldsIds = Object.keys(fvState);
     let fieldsWithoutFacets = [];
     if (facetRef) {
       const allFacets: Component[] = this.getComponents(facetRef.ID);
-      fieldsWithoutFacets = fvFields.filter(facetField => {
+      fieldsWithoutFacets = fvFieldsIds.filter(facetField => {
         // Try to find a facet matching the `fv:` field state.
-        const stateKey = QueryStateModel.getFacetValueId(facetField);
-        const value = stateToSet[stateKey];
+        const value = fvState[facetField];
         if (value && value.length > 0) {
           const facetsWithField = allFacets.filter(facet => facet.options.field == facetField);
           if (facetsWithField.length > 0) {
             // We found a facet, remove the `fv:` and replace it with `f:`.
-            delete stateToSet[stateKey];
+            delete fvState[facetField];
             facetsWithField.forEach(facet => (stateToSet[QueryStateModel.getFacetId(facet.options.id)] = value));
             return false;
           }
@@ -799,7 +794,7 @@ export class SearchInterface extends RootComponent implements IComponentBindings
         return true;
       });
     } else {
-      fieldsWithoutFacets = fvFields;
+      fieldsWithoutFacets = fvFieldsIds;
     }
 
     // For the remaining field, we need to transform them in hidden queries.
@@ -807,10 +802,9 @@ export class SearchInterface extends RootComponent implements IComponentBindings
     if (fieldsWithoutFacets.length > 0) {
       const valuesTransformedToHiddenQuery = fieldsWithoutFacets
         .map(facetField => {
-          const stateKey = QueryStateModel.getFacetValueId(facetField);
-          const value = stateToSet[stateKey];
+          const value = fvState[facetField];
           if (value && value.length > 0) {
-            delete stateToSet[stateKey];
+            delete fvState[facetField];
             return `${facetField}=="${value}"`;
           }
         })

@@ -25,19 +25,6 @@ export class HashUtils {
     return HashUtils.getAjaxcrawlableHash(ret);
   }
 
-  public static getValues(toParse: string): { [key: string]: any } {
-    Assert.exists(toParse);
-    toParse = HashUtils.getAjaxcrawlableHash(toParse);
-    const rawValues = HashUtils.getAllRawValues(toParse);
-    const parsedValues = {};
-    if (rawValues != undefined) {
-      Object.keys(rawValues).forEach(key => {
-        parsedValues[key] = HashUtils.getValueDependingOnType(key, rawValues[key]);
-      });
-    }
-    return parsedValues;
-  }
-
   public static getValue(key: string, toParse: string): any {
     Assert.isNonEmptyString(key);
     Assert.exists(toParse);
@@ -99,19 +86,6 @@ export class HashUtils {
       }
     }
     return paramValue;
-  }
-
-  private static getAllRawValues(toParse: string): { [key: string]: string } {
-    Assert.exists(toParse);
-    Assert.check(toParse.indexOf('#') == 0 || toParse == '');
-
-    const toParseArray = toParse.substr(1).split('&');
-    const values = {};
-    for (let i = 0, length = toParseArray.length; i < length; i++) {
-      const paramValuePair = toParseArray[i].split('=');
-      values[paramValuePair[0]] = paramValuePair[1];
-    }
-    return values;
   }
 
   private static getValueDependingOnType(key: string, paramValue: string): any {

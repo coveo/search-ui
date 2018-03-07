@@ -66,11 +66,6 @@ export class LocalStorageHistoryController extends RootComponent {
       }
       toSet[key] = valToSet;
     });
-    if (this.model.dynamicAttributes.length > 0) {
-      Object.keys(loadedFromStorage)
-        .filter(key => this.model.dynamicAttributes.some(dynamicKey => key.indexOf(`${dynamicKey}:`) === 0))
-        .forEach(key => (toSet[key] = loadedFromStorage[key]));
-    }
     this.model.setMultiple(toSet);
   }
 

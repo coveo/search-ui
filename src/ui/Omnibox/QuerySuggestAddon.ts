@@ -46,7 +46,7 @@ export class QuerySuggestAddon {
     return _.every(_.last(parts, _.indexOf(parts, firstFail) - parts.length), (part: string[]) => part[1] != null);
   }
 
-  private cache: SuggestionsCache = new SuggestionsCache();
+  private cache: SuggestionsCache<IOmniboxSuggestion[]> = new SuggestionsCache();
 
   constructor(public omnibox: Omnibox) {
     $$(this.omnibox.element).on(OmniboxEvents.populateOmniboxSuggestions, (e: Event, args: IPopulateOmniboxSuggestionsEventArgs) => {
