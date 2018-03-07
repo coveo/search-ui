@@ -70,6 +70,12 @@
   version "2.4.4"
   resolved "https://registry.yarnpkg.com/@salesforce-ux/design-system/-/design-system-2.4.4.tgz#381688169cf34a298fca70b73d3788ff4036d1ca"
 
+"@types/ag-grid@^3.2.0":
+  version "3.2.0"
+  resolved "https://registry.yarnpkg.com/@types/ag-grid/-/ag-grid-3.2.0.tgz#a498dfc04313745e8057f86249a434774ee1818c"
+  dependencies:
+    ag-grid "*"
+
 "@types/d3-scale@1.0.4":
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/@types/d3-scale/-/d3-scale-1.0.4.tgz#2763f81a52383caac89c063eb9c3bf7f72e286c6"
@@ -176,6 +182,10 @@ adjust-sourcemap-loader@^1.1.0:
 after@0.8.2:
   version "0.8.2"
   resolved "https://registry.yarnpkg.com/after/-/after-0.8.2.tgz#fedb394f9f0e02aa9768e702bda23b505fae7e1f"
+
+ag-grid@*:
+  version "17.0.0"
+  resolved "https://registry.yarnpkg.com/ag-grid/-/ag-grid-17.0.0.tgz#b8c82268c1785e04425a3149ca53cc526376029b"
 
 agent-base@^4.1.0:
   version "4.1.2"
@@ -6936,13 +6946,9 @@ source-map-url@~0.3.0:
   version "0.3.0"
   resolved "https://registry.yarnpkg.com/source-map-url/-/source-map-url-0.3.0.tgz#7ecaf13b57bcd09da8a40c5d269db33799d4aaf9"
 
-source-map@0.5.x, source-map@^0.5.1, source-map@^0.5.3, source-map@^0.5.6, source-map@~0.5.1:
+source-map@0.5.x, source-map@>=0.5.6, source-map@^0.5.1, source-map@^0.5.3, source-map@^0.5.6, source-map@~0.5.1:
   version "0.5.7"
   resolved "https://registry.yarnpkg.com/source-map/-/source-map-0.5.7.tgz#8a039d2d1021d22d1ea14c80d8ea468ba2ef3fcc"
-
-source-map@>=0.5.6, source-map@^0.6.1, source-map@~0.6.1:
-  version "0.6.1"
-  resolved "https://registry.yarnpkg.com/source-map/-/source-map-0.6.1.tgz#74722af32e9614e9c287a8d0bbde48b5e2f1a263"
 
 source-map@^0.1.38:
   version "0.1.43"
@@ -6955,6 +6961,10 @@ source-map@^0.4.2, source-map@^0.4.4:
   resolved "https://registry.yarnpkg.com/source-map/-/source-map-0.4.4.tgz#eba4f5da9c0dc999de68032d8b4f76173652036b"
   dependencies:
     amdefine ">=0.0.4"
+
+source-map@^0.6.1, source-map@~0.6.1:
+  version "0.6.1"
+  resolved "https://registry.yarnpkg.com/source-map/-/source-map-0.6.1.tgz#74722af32e9614e9c287a8d0bbde48b5e2f1a263"
 
 source-map@~0.2.0:
   version "0.2.0"
@@ -7535,20 +7545,26 @@ typedoc-default-themes@sierrasoftworks/typedoc-default-themes#v0.3.5:
   resolved "https://codeload.github.com/sierrasoftworks/typedoc-default-themes/tar.gz/a92db04f0af39bf34b561d54640e3067b80e2c67"
 
 "typedoc@https://github.com/coveord/typedoc/tarball/master":
-  version "0.4.0"
+  version "0.10.0"
   resolved "https://github.com/coveord/typedoc/tarball/master"
   dependencies:
-    fs-extra "^0.26.2"
-    handlebars "4.0.5"
+    "@types/fs-extra" "5.0.0"
+    "@types/handlebars" "4.0.36"
+    "@types/highlight.js" "9.12.2"
+    "@types/lodash" "4.14.99"
+    "@types/marked" "0.3.0"
+    "@types/minimatch" "3.0.3"
+    "@types/shelljs" "0.7.7"
+    fs-extra "^5.0.0"
+    handlebars "^4.0.6"
     highlight.js "^9.0.0"
-    lodash "^3.10.1"
-    marked "^0.3.5"
+    lodash "^4.13.1"
+    marked "^0.3.12"
     minimatch "^3.0.0"
-    progress "^1.1.8"
-    shelljs "^0.5.3"
-    typedoc-default-themes sierrasoftworks/typedoc-default-themes#v0.3.5
-    typescript "1.8.10"
-    underscore "^1.8.3"
+    progress "^2.0.0"
+    shelljs "^0.8.1"
+    typedoc-default-themes "^0.5.0"
+    typescript "2.7.1"
 
 typescript@1.8.10:
   version "1.8.10"

@@ -1,0 +1,56 @@
+@import './Variables';
+@import 'mixins/resultsHeaderElement';
+.coveo-relevance-inspector {
+  text-align: center;
+  padding: 10px;
+  line-height: 20px;
+  height: 40px;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  &.coveo-hidden {
+    display: none;
+  }
+}
+
+@keyframes slideInLeft {
+  0% {
+    @include transform(translateX(-2000px));
+    opacity: 0;
+  }
+  100% {
+    @include transform(translateX(0));
+    opacity: 1;
+  }
+}
+
+.coveo-relevance-inspector-tab-navigation-section {
+  margin-bottom: 20px;
+}
+
+.coveo-relevance-inspector-tab-content {
+  display: none;
+  &.coveo-active {
+    display: block;
+    @include animation(slideInLeft 0.3s ease-in);
+  }
+}
+
+.coveo-relevance-inspector-tab {
+  @include resultsHeaderElement();
+  display: inline-block;
+  margin-right: 10px;
+}
+
+.coveo-relevance-inspector-highlight {
+  background-color: yellow;
+}
+
+.coveo-relevance-inspector-result-thumbnail {
+  width: 500px;
+  white-space: normal;
+}
+
+.coveo-relevance-inspector-thumbnail-cell {
+  overflow: scroll;
+}
