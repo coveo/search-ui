@@ -98,7 +98,7 @@ export class Model extends BaseComponent {
     _.each(this.attributes, (attribute, key) => {
       if (_.isObject(attribute)) {
         if (!Utils.objectEqual(attribute, this.defaultAttributes[key])) {
-          attributes[key] = attribute;
+          attributes[key] = Utils.extendDeep({}, attribute);
         }
       } else if (attribute != this.defaultAttributes[key]) {
         attributes[key] = attribute;
@@ -172,8 +172,7 @@ export class Model extends BaseComponent {
    * the specific attribute whose value is to be set to its default value.
    */
   public setDefault(attribute: string) {
-    const defaultValue = this.defaultAttributes[attribute];
-    this.set(attribute, _.isObject(defaultValue) ? Utils.extendDeep({}, defaultValue) : defaultValue);
+    this.set(attribute, this.defaultAttributes[attribute]);
   }
 
   /**
@@ -212,7 +211,7 @@ export class Model extends BaseComponent {
    * After the `setMultiple` call has returned, this method triggers the `reset` event.
    */
   public reset() {
-    this.setMultiple(Utils.extendDeep({}, this.defaultAttributes));
+    this.setMultiple(this.defaultAttributes);
     this.modelWasResetEvent();
   }
 

@@ -205,7 +205,7 @@ export class FacetValueSuggestions extends Component {
     const suggestions: string[] = await this.getQuerySuggestionsKeywords(omnibox);
     const allWordsToQuery = _.unique(wordsToQuery.concat(suggestions));
     try {
-      const response: IFacetValueSuggestionsResponse = await this.fieldValueCache.getSuggestions(text, () =>
+      const response: IFacetValueSuggestionsResponse = await this.fieldValueCache.getSuggestions(`fv${text}`, () =>
         this.listFieldValuesBatch(allWordsToQuery)
       );
 
@@ -311,7 +311,8 @@ export class FacetValueSuggestions extends Component {
 
   private onRowSelection(row: IFacetValueSuggestionRow, omnibox: Omnibox): void {
     omnibox.setText(row.keyword);
-    const fvState: { [key: string]: string[] } = this.queryStateModel.get(QueryStateModel.attributesEnum.fv);
+    // Use .extendDeep here, else it will modify queryStateModel.defaultAttributes.fv.
+    const fvState: { [key: string]: string[] } = Utils.extendDeep({}, this.queryStateModel.get(QueryStateModel.attributesEnum.fv));
     const existingValues: string[] = fvState[this.options.field.toString()] || [];
     fvState[this.options.field.toString()] = existingValues.concat([row.value]);
     this.queryStateModel.set(QueryStateModel.attributesEnum.fv, fvState);

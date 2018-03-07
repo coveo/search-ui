@@ -49,6 +49,15 @@ export function HashUtilsTest() {
       expect(encodedValue).toEqual(expectedEncodedValue);
     });
 
+    it('encodes complex objects correctly', () => {
+      let toEncode = { test: { subTest: ['1', '2'] } };
+      let expectedEncodedValue = 'a={"test":{"subTest":["1","2"]}}';
+
+      let encodedValue = HashUtils.encodeValues({ a: toEncode });
+
+      expect(encodedValue).toEqual(expectedEncodedValue);
+    });
+
     it('encodes arrays correcttly', () => {
       let toEncode = [1];
       let expectEncodedValue = 'a=[1]';

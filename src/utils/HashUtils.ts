@@ -177,23 +177,9 @@ export class HashUtils {
 
   public static encodeObject(obj: Object): string {
     const retArray = _.map(<_.Dictionary<any>>obj, (val, key?, obj?) => {
-      return `"${Utils.safeEncodeURIComponent(key)}":${this.encodeValue(val)}`;
+      return `"${Utils.safeEncodeURIComponent(key)}":${JSON.stringify(val)}`;
     });
     return HashUtils.DELIMITER.objectStart + retArray.join(' , ') + HashUtils.DELIMITER.objectEnd;
-  }
-
-  private static encodeValue(val: any) {
-    let encodedValue = '';
-    if (_.isArray(val)) {
-      encodedValue = HashUtils.encodeArray(val);
-    } else if (_.isObject(val)) {
-      encodedValue = HashUtils.encodeObject(val);
-    } else if (_.isNumber(val) || _.isBoolean(val)) {
-      encodedValue = Utils.safeEncodeURIComponent(val.toString());
-    } else {
-      encodedValue = '"' + Utils.safeEncodeURIComponent(val) + '"';
-    }
-    return encodedValue;
   }
 
   private static decodeObject(obj: string): Object {
