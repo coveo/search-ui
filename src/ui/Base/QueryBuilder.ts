@@ -272,7 +272,9 @@ export class QueryBuilder {
   public groupByRequests: IGroupByRequest[] = [];
   public enableDuplicateFiltering: boolean = false;
   /**
-   * The context is a map of key_value that can be used in the Query pipeline in the Coveo platform.
+   * The custom context information to send along with the query. Each value should be a string or an array of strings.
+   *
+   * Custom context information can influence the output of Coveo Machine Learning models and can also be used in query pipeline conditions.
    */
   public context: { [key: string]: any };
   /**
@@ -450,11 +452,10 @@ export class QueryBuilder {
   }
 
   /**
-   * Add a single context key->value pair to the query.
+   * Adds or updates a single context key-value pair in the `context` object.
    *
-   * This is used by the Query pipeline in the Coveo platform.
-   * @param key
-   * @param value
+   * @param key The context key. If this key is already present in the `context` object, its value is updated.
+   * @param value The context value. This should be a string or an array of strings.
    */
   public addContextValue(key: string, value: any) {
     if (this.context == null) {
@@ -464,12 +465,9 @@ export class QueryBuilder {
   }
 
   /**
-   * Add a context object to the query.
+   * Merges the specified `values` into the `context` object.
    *
-   * This can contain multiple key->value.
-   *
-   * This is used by the Query pipeline in the Coveo platform.
-   * @param values
+   * @param values The object to merge into the `context` object. Can contain multiple key-value pairs, where each value should be a string or an array of strings. If some keys are already present in the `context` object, their values are updated.
    */
   public addContext(values: { [key: string]: any }) {
     if (this.context == null) {
