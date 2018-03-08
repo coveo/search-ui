@@ -1,5 +1,11 @@
 @import 'Variables';
 
+.CoveoCategoryFacet {
+  &.coveo-disabled {
+    display: none;
+  }
+}
+
 .coveo-category-facet-value-label {
   cursor: pointer;
   vertical-align: middle;

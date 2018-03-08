@@ -501,3 +501,6 @@ UrlUtilsTest();
 
 import { AccessTokenTest } from './rest/AccessTokenTest';
 AccessTokenTest();
+
+import { CategoryFacetTest } from './ui/CatetgoryFacet/CategoryFacetTest';
+CategoryFacetTest();

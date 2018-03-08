@@ -4,12 +4,11 @@ import { IComponentBindings } from '../Base/ComponentBindings';
 import { $$ } from '../../utils/Dom';
 import { Initialization } from '../Base/Initialization';
 import { exportGlobally } from '../../GlobalExports';
-import 'styling/_CategoryFacet';
 import { CategoryFacetTemplates } from './CategoryFacetTemplates';
 import { CategoryValueRoot } from './CategoryValueRoot';
 import { CategoryValue } from './CategoryValue';
-// import { IBuildingQueryEventArgs, QueryEvents } from '../../events/QueryEvents';
 import { CategoryFacetQueryController } from '../../controllers/CategoryFacetQueryController';
+import 'styling/_CategoryFacet';
 
 export interface CategoryFacetOptions {
   field: IFieldOption;
@@ -30,31 +29,28 @@ export class CategoryFacet extends Component {
     field: ComponentOptions.buildFieldOption({ required: true })
   };
 
-  // private listRoot: Dom;
   private categoryValueRoot: CategoryValueRoot;
   private categoryFacetTemplates: CategoryFacetTemplates;
 
-  constructor(
-    public element: HTMLElement,
-    public options: CategoryFacetOptions,
-    bindings?: IComponentBindings,
-    private CategoryValueRootModule = CategoryValueRoot
-  ) {
+  public categoryValueRootModule = CategoryValueRoot;
+
+  constructor(public element: HTMLElement, public options: CategoryFacetOptions, bindings?: IComponentBindings) {
     super(element, 'CategoryFacet', bindings);
     this.options = ComponentOptions.initComponentOptions(element, CategoryFacet, options);
 
     this.categoryFacetQueryController = new CategoryFacetQueryController(this);
     this.categoryFacetTemplates = new CategoryFacetTemplates();
-    this.categoryValueRoot = new this.CategoryValueRootModule($$(this.element), this.categoryFacetTemplates, this);
+    this.categoryValueRoot = new this.categoryValueRootModule($$(this.element), this.categoryFacetTemplates, this);
   }
 
   public getChildren(): CategoryValue[] {
     return this.categoryValueRoot.getChildren();
   }
 
-  // private renderValues(valuesList: Dom, path: string[] = []) {
-  // this.categoryValueRoot.categoryChildrenValueRenderer.renderChildren();
-  // }
+  public disable() {
+    super.disable();
+    $$(this.element).addClass('coveo-disabled');
+  }
 }
 
 Initialization.registerAutoCreateComponent(CategoryFacet);

@@ -1,10 +1,13 @@
 import { CategoryFacet } from '../../../src/ui/CategoryFacet/CategoryFacet';
-import { $$ } from '../../../src/utils/Dom';
+import * as Mock from '../../MockEnvironment';
+
 export function CategoryFacetTest() {
   describe('CategoryFacet', () => {
-    const element = $$('div');
-    const categoryValueRootMock = it('calls getChildren on CategoryValueRoot when getChildren is called', () => {
-      const categoryFacet = new CategoryFacet();
+    it('get children calls get children on the CategoryValueRoot', () => {
+      const categoryFacet = Mock.basicComponentSetup<CategoryFacet>(CategoryFacet);
+      spyOn(categoryFacet.cmp, 'getChildren');
+      categoryFacet.cmp.getChildren();
+      expect(categoryFacet.cmp.getChildren).toHaveBeenCalled();
     });
   });
 }
