@@ -11,7 +11,7 @@ gulp.task('build', ['linkGitHooks', 'setNodeProdEnv'], done => {
 });
 
 gulp.task('src', done => {
-  runsequence('compile', 'definitions', done);
+  runsequence('compile', /*'definitions',*/ done);
 });
 
 gulp.task('buildLegacy', done => {
