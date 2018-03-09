@@ -15,7 +15,9 @@ export class ExecutionReportEffectiveIndexQuerySection implements IExecutionRepo
   public async build(executionReport: IExecutionReport) {
     const { container } = ExecutionReport.standardSectionHeader('Query sent to index');
 
-    const table = $$('table', { className: 'table' });
+    const table = $$('table', {
+      className: 'coveo-relevance-inspector-table'
+    });
 
     container.append(table.el);
 
@@ -28,15 +30,30 @@ export class ExecutionReportEffectiveIndexQuerySection implements IExecutionRepo
 
         const id = `executionReportIndexExecution${paramKey}`;
 
-        if (contains(collapsibleSectionsInReport, paramKey)) {
-          row.append(
-            $$(
-              'td',
-              undefined,
-              $$('button', { className: 'btn btn-primary', 'data-toggle': 'collapse', 'data-target': `#${id}` }, paramKey)
-            ).el
+        if (contains(collapsibleSectionsInReport, paramKey) && paramValue) {
+          const btn = $$(
+            'button',
+            {
+              className: 'coveo-button'
+            },
+            paramKey
           );
-          row.append($$('td', { id, className: 'collapse multi-collapse' }, new GenericValueOutput().output(paramValue).content).el);
+
+          const tdTarget = $$(
+            'td',
+            {
+              id,
+              className: 'coveo-relevance-inspector-effective-query-collapsible'
+            },
+            new GenericValueOutput().output(paramValue).content
+          );
+
+          btn.on('click', () => {
+            tdTarget.toggleClass('coveo-active');
+          });
+
+          row.append($$('td', undefined, btn).el);
+          row.append(tdTarget.el);
         } else {
           row.append($$('td', undefined, paramKey).el);
           row.append($$('td', undefined, new GenericValueOutput().output(paramValue).content).el);

@@ -11,6 +11,7 @@ import 'styling/_RelevanceInspector';
 import { ExecutionReport } from './ExecutionReport';
 import { AvailableFieldsTable } from './AvailableFieldsTable';
 import agGridModule = require('ag-grid/main');
+import { debounce } from 'underscore';
 
 export interface IRelevanceInspectorConstructor {
   new (element: HTMLElement, bindings: IComponentBindings): RelevanceInspector;
@@ -22,6 +23,8 @@ export interface IRelevanceInspectorTab {
 
 export class RelevanceInspector {
   private opened = false;
+  private activeTab: string;
+  private tabs: Record<string, IRelevanceInspectorTab>;
 
   constructor(public element: HTMLElement, public bindings: IComponentBindings) {
     $$(this.element).text('Relevance Inspector');
@@ -57,7 +60,6 @@ export class RelevanceInspector {
       titleClose: false,
       overlayClose: true,
       sizeMod: 'big',
-      className: 'coveo-debug',
       validation: () => {
         this.opened = false;
         return true;
@@ -78,34 +80,41 @@ export class RelevanceInspector {
     const executionReport = await new ExecutionReport(this.bindings.queryController.getLastResults(), this.bindings);
     const availableFields = await new AvailableFieldsTable(this.bindings);
 
-    const tabs = new RelevanceInspectorTabs(tabChangedTo => {
-      const resize = (tab: IRelevanceInspectorTab) => {
-        tab.gridOptions && tab.gridOptions.api ? tab.gridOptions.api.sizeColumnsToFit() : null;
-      };
-      switch (tabChangedTo) {
-        case 'relevanceInspectorRankingInfo':
-          resize(rankingInfoTable);
-          break;
-        case 'relevanceInspectorMetadata':
-          resize(metadataTable);
-          break;
-        case 'relevanceInspectorExecutionReport':
-          resize(executionReport);
-          break;
-        case 'relevanceInspectorAvailableFields':
-          resize(availableFields);
-          break;
-      }
-    });
-    tabs.addSection('Ranking Information', await rankingInfoTable.build(), 'relevanceInspectorRankingInfo');
-    tabs.addSection('Metadata', await metadataTable.build(), 'relevanceInspectorMetadata');
-    tabs.addSection('Execution Report', await executionReport.build(), 'relevanceInspectorExecutionReport');
-    tabs.addSection('Available Fields', await availableFields.build(), 'relevanceInspectorAvailableFields');
-    tabs.select('relevanceInspectorRankingInfo');
+    this.tabs = {
+      relevanceInspectorRankingInfo: rankingInfoTable,
+      relevanceInspectorMetadata: metadataTable,
+      relevanceInspectorExecutionReport: executionReport,
+      relevanceInspectorAvailableFields: availableFields
+    };
 
-    container.append(tabs.navigationSection.el);
-    container.append(tabs.tabContentSection.el);
+    const inspectorTabs = new RelevanceInspectorTabs(tabChangedTo => {
+      this.activeTab = tabChangedTo;
+      this.resize();
+    });
+
+    const debouncedResize = debounce(() => this.resize(), 100);
+
+    window.addEventListener('resize', debouncedResize);
+
+    inspectorTabs.addSection('Ranking Information', await rankingInfoTable.build(), 'relevanceInspectorRankingInfo');
+    inspectorTabs.addSection('Metadata', await metadataTable.build(), 'relevanceInspectorMetadata');
+    inspectorTabs.addSection('Execution Report', await executionReport.build(), 'relevanceInspectorExecutionReport');
+    inspectorTabs.addSection('Available Fields', await availableFields.build(), 'relevanceInspectorAvailableFields');
+    inspectorTabs.select('relevanceInspectorRankingInfo');
+
+    container.append(inspectorTabs.navigationSection.el);
+    container.append(inspectorTabs.tabContentSection.el);
 
     return container;
+  }
+
+  private resize() {
+    if (!this.activeTab) {
+      return;
+    }
+    if (!this.tabs[this.activeTab]) {
+      return;
+    }
+    this.tabs[this.activeTab].gridOptions.api.sizeColumnsToFit();
   }
 }

@@ -8,10 +8,18 @@ import { $$, Dom } from '../../UtilsModules';
 import { IComponentBindings } from '../Base/ComponentBindings';
 import { IRelevanceInspectorTab } from './RelevanceInspector';
 import agGridModule = require('ag-grid/main');
+import { ExecutionReportRankingModifiers } from './ExecutionReportRankingModifiers';
+import { IResultsComponentBindings } from '../../Core';
 
 export interface IExecutionReport {
   duration: number;
   children: IExecutionReportSection[];
+}
+
+export interface IRankingExpressionExecutionReport {
+  expression: string;
+  modifer: number;
+  isConstant: boolean;
 }
 
 export enum EXECUTION_REPORT_SECTION {
@@ -46,31 +54,15 @@ export class ExecutionReport implements IRelevanceInspectorTab {
   constructor(public results: IQueryResults, public bindings: IComponentBindings) {}
 
   public static standardSectionHeader(title: string) {
-    const container = $$('div', { className: 'card' });
-
-    const containerBody = $$(
-      'div',
-      {
-        className: 'card-body'
-      },
-      $$(
-        'h4',
-        {
-          className: 'card-title'
-        },
-        title
-      )
-    );
+    const container = $$('div');
+    container.append($$('h4', undefined, title).el);
 
     const agGridElement = $$('div', {
       className: 'ag-theme-fresh'
     });
-
-    container.append(containerBody.el);
-    containerBody.append(agGridElement.el);
+    container.append(agGridElement.el);
     return {
       container,
-      containerBody,
       agGridElement
     };
   }
@@ -92,6 +84,16 @@ export class ExecutionReport implements IRelevanceInspectorTab {
     container.append(resolvedPipelineSection.container.el);
     if (resolvedPipelineSection.gridOptions) {
       gridOptions.push(resolvedPipelineSection.gridOptions);
+    }
+
+    const resolvedRankingModifiers = await new ExecutionReportRankingModifiers().build(
+      this.results.results,
+      this.results.rankingExpressions,
+      this.bindings as IResultsComponentBindings
+    );
+    container.append(resolvedRankingModifiers.container.el);
+    if (resolvedRankingModifiers.gridOptions) {
+      gridOptions.push(resolvedRankingModifiers.gridOptions);
     }
 
     const queryParamOverrideSection = await new ExecutionReportQueryOverrideSection().build(this.results.executionReport);

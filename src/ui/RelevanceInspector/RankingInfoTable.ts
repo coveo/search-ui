@@ -63,7 +63,7 @@ export class RankingInfoTable implements IRelevanceInspectorTab {
     });
 
     const { gridOptions } = await new TableBuilder().build(data, agGridElement, {
-      rowHeight: 200,
+      rowHeight: 400,
       onGridReady: params => {
         setTimeout(() => {
           params ? params.api.sizeColumnsToFit() : null;
@@ -91,14 +91,14 @@ export class RankingInfoTable implements IRelevanceInspectorTab {
         dt: $$(
           'dt',
           {
-            className: 'col-sm-6 text-truncate'
+            className: 'coveo-relevance-inspector-dt'
           },
           `${key}`
         ),
         dd: $$(
           'dd',
           {
-            className: 'col-sm-3'
+            className: 'coveo-relevance-inspector-dd'
           },
           `${value}`
         )
@@ -110,8 +110,8 @@ export class RankingInfoTable implements IRelevanceInspectorTab {
       list.append(item.dt.el);
       list.append(item.dd.el);
     });
-    list.append($$('dt', { className: 'col-sm-6 text-truncate' }, `Total`).el);
-    list.append($$('dd', { className: 'col-sm-3' }, `${total}`).el);
+    list.append($$('dt', { className: 'coveo-relevance-inspector-dt' }, `Total`).el);
+    list.append($$('dd', { className: 'coveo-relevance-inspector-dd coveo-relevance-inspector-highlight' }, `${total}`).el);
     return list;
   }
 }

@@ -7,6 +7,7 @@ import { IQueryResult } from '../../rest/QueryResult';
 import { IResultsComponentBindings } from '../Base/ResultsComponentBindings';
 import ResultListModule = require('../ResultList/ResultList');
 import { ResultLink } from '../ResultLink/ResultLink';
+import { Logger } from '../../MiscModules';
 declare const agGrid: typeof agGridModule;
 
 export interface ITableDataSource extends agGridModule.ColDef {
@@ -143,7 +144,7 @@ export class TableBuilder {
         cellRenderer: ThumbnailHtmlRenderer,
         width: 300,
         getQuickFilterText: (params: agGridModule.GetQuickFilterTextParams) => {
-          return params.value.result.title;
+          return '';
         }
       }
     };
@@ -171,27 +172,34 @@ export class ThumbnailHtmlRenderer implements agGridModule.ICellRendererComp {
   }
 
   private thumbnail(result: IQueryResult, bindings: IResultsComponentBindings) {
-    const resultLists = bindings.searchInterface.getComponents('ResultList') as ResultListModule.ResultList[];
-    const firstActiveResultList = find(resultLists, resultList => !resultList.disabled);
     let dom: Dom;
 
-    if (firstActiveResultList) {
-      dom = $$('div', {
-        className: 'coveo-relevance-inspector-result-thumbnail'
-      });
-      firstActiveResultList.buildResult(result).then(builtResult => {
-        dom.append(builtResult);
-      });
+    if (bindings && result) {
+      const resultLists = bindings.searchInterface.getComponents('ResultList') as ResultListModule.ResultList[];
+      const firstActiveResultList = find(resultLists, resultList => !resultList.disabled);
+
+      if (firstActiveResultList) {
+        dom = $$('div', {
+          className: 'coveo-relevance-inspector-result-thumbnail'
+        });
+        firstActiveResultList.buildResult(result).then(builtResult => {
+          dom.append(builtResult);
+        });
+      } else {
+        dom = $$('a', {
+          className: 'CoveoResultLink'
+        });
+        new ResultLink(dom.el, { alwaysOpenInNewWindow: true }, bindings, result);
+      }
+
+      if (this.currentFilter) {
+        this.highlightSearch(dom.el, this.currentFilter);
+      }
     } else {
-      dom = $$('a', {
-        className: 'CoveoResultLink'
-      });
-      new ResultLink(dom.el, { alwaysOpenInNewWindow: true }, bindings, result);
+      new Logger(this).error('No result available to render thumbnail');
+      dom = $$('div');
     }
 
-    if (this.currentFilter) {
-      this.highlightSearch(dom.el, this.currentFilter);
-    }
     return dom;
   }
 

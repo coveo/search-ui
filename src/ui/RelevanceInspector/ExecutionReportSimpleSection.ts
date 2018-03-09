@@ -43,6 +43,19 @@ export class ExecutionReportSimpleSection implements IExecutionReportSectionBuil
         const tableBuilder = await new TableBuilder().build(dataSource, agGridElement);
         gridOptions = tableBuilder.gridOptions;
       }
+    } else {
+      const tableBuilder = await new TableBuilder().build(
+        [
+          {
+            [`${this.sectionTitle}`]: {
+              content: `NO DATA AVAILABLE FOR ${this.sectionTitle} IN CURRENT EXECUTION REPORT`
+            }
+          }
+        ],
+        agGridElement
+      );
+
+      gridOptions = tableBuilder.gridOptions;
     }
 
     return { container, gridOptions };

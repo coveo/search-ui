@@ -89,7 +89,7 @@ export class AvailableFieldsSampleValue implements agGridModule.ICellRendererCom
     const btn = $$(
       'button',
       {
-        className: 'btn btn-info btn-sm'
+        className: 'coveo-button coveo-available-fields-table-button'
       },
       'Hover For Sample Values'
     );
@@ -147,15 +147,16 @@ export class AvailableFieldsSampleValue implements agGridModule.ICellRendererCom
   }
 
   private renderFieldValues(fieldValues: IIndexFieldValue[]) {
-    const list = $$('ul', { className: 'list-group' });
+    const list = $$('ul', { className: 'coveo-relevance-inspector-available-fields-popup' });
+    list.el.style.background = 'white';
     if (fieldValues.length == 0) {
-      list.append($$('li', { className: 'list-group-item list-group-item-info' }, 'No Values Available ...').el);
+      list.append($$('li', undefined, 'No Values Available ...').el);
     } else {
       fieldValues.forEach(fieldValue => {
         const listItem = $$(
           'li',
           {
-            className: 'list-group-item list-group-item-info'
+            className: 'coveo-relevance-inspector-available-fields-popup-value'
           },
           new GenericValueOutput().output(fieldValue.value).content
         );

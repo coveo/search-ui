@@ -6,6 +6,7 @@ import { IComponentBindings } from '../Base/ComponentBindings';
 import { $$, StringUtils } from '../../UtilsModules';
 import { IResultsComponentBindings } from '../Base/ResultsComponentBindings';
 import { IRelevanceInspectorTab } from './RelevanceInspector';
+import { TextInput } from '../FormWidgets/TextInput';
 
 export class MetaDataTable implements IRelevanceInspectorTab {
   public gridOptions: agGridModule.GridOptions;
@@ -70,10 +71,6 @@ export class MetaDataTable implements IRelevanceInspectorTab {
       );
     });
 
-    const builtTables = await Promise.all(builders);
-    const { inputGroup, inputSearch } = this.buildSearchInput();
-    container.prepend(inputGroup.el);
-
     this.gridOptions = {
       api: {
         sizeColumnsToFit: () => {
@@ -82,42 +79,19 @@ export class MetaDataTable implements IRelevanceInspectorTab {
       }
     } as any;
 
-    inputSearch.on('change', () => {
+    const builtTables = await Promise.all(builders);
+    const textInput = new TextInput(input => {
       builtTables.forEach(built => {
         const api = built.gridOptions && built.gridOptions.api;
         if (api) {
-          api.setQuickFilter((inputSearch.el as HTMLInputElement).value);
+          api.setQuickFilter(input.getValue());
           api.onRowHeightChanged();
         }
       });
-    });
+    }, 'Filters on Fields Values');
+    container.prepend(textInput.getElement());
 
     return container;
-  }
-
-  private buildSearchInput() {
-    const inputSearch = $$('input', {
-      type: 'search',
-      className: 'form-control'
-    });
-
-    const inputGroup = $$(
-      'div',
-      {
-        className: 'input-group py-3 w-50'
-      },
-      $$(
-        'div',
-        {
-          className: 'input-group-prepend'
-        },
-        $$('span', { className: 'input-group-text' }, 'Filter')
-      )
-    );
-
-    inputGroup.append(inputSearch.el);
-
-    return { inputGroup, inputSearch };
   }
 }
 
@@ -174,9 +148,8 @@ export class FieldValuesRenderer implements agGridModule.ICellRendererComp {
       const fieldName = $$(
         'div',
         {
-          readonly: 'readonly',
           type: 'text',
-          className: 'form-control col-sm-3'
+          className: 'coveo-relevance-inspector-metadata-name'
         },
         fieldInResult
       );
@@ -184,9 +157,7 @@ export class FieldValuesRenderer implements agGridModule.ICellRendererComp {
       const fieldValue = $$(
         'div',
         {
-          readonly: 'readonly',
-          type: 'text',
-          className: 'form-control'
+          className: 'coveo-relevance-inspector-metadata-value'
         },
         result.raw[fieldInResult].toString()
       );
