@@ -24,7 +24,7 @@ export interface ISortOptions {
   caption?: string;
 }
 /**
- * The `Sort` component renders a widget that the end user can interact with to select how to sort query results.
+ * The `Sort` component renders a widget that the end user can interact with to select the criterion to use when sorting query results.
  */
 export class Sort extends Component {
   static ID = 'Sort';
@@ -50,7 +50,8 @@ export class Sort extends Component {
      * - `qre`
      * - `@field ascending`/`@field descending`, where you must replace `field` with the name of a sortable field in your index (e.g., `data-sort-criteria="@size ascending"`).
      *
-     * You can specify a comma separated list of sort criteria to toggle between when interacting with this component instance (e.g., `data-sort-criteria`="date descending,date ascending"). Interacting with this compnent instance will cycle through those criteria in the order they appear in the list.
+     * You can specify a comma separated list of sort criteria to toggle between when interacting with this component instance (e.g., `data-sort-criteria="date descending,date ascending"`).
+     * Interacting with this compnent instance will cycle through those criteria in the order they are listed in.
      * Typically, you should only specify a list of sort criteria when you want the end user to be able to to toggle the direction of a `date` or `@field` sort criteria.
      * Otherwise, you should configure a distinct `Sort` component instance for each sort criterion you want to make available in your search page.
      *
@@ -169,7 +170,7 @@ export class Sort extends Component {
   }
 
   /**
-   * Indicates whether the name of any of the available [`sortCriteria`]{@link Sort.options.sortCriteria} of this compoent matches the argument.
+   * Indicates whether the name of any of the available [`sortCriteria`]{@link Sort.options.sortCriteria} of this `Sort` component matches the argument.
    * @param sortId The sort criteria name to look for (e.g., `date descending`).
    */
   public match(sortId: string) {
