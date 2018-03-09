@@ -326,7 +326,7 @@ export class FacetSearch {
 
   private startNewSearchTimeout(params: FacetSearchParameters) {
     this.cancelAnyPendingSearchOperation();
-    this.facetSearchTimeout = setTimeout(() => {
+    this.facetSearchTimeout = window.setTimeout(() => {
       this.triggerNewFacetSearch(params);
     }, this.facet.options.facetSearchDelay);
   }

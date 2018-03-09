@@ -412,20 +412,27 @@ export class Analytics extends Component {
   }
 
   private trySetupAccessTokenFromDefaultSearchEndpoint() {
-    const defaultEndpoint = SearchEndpoint.endpoints['default'];
-    if (defaultEndpoint) {
-      this.accessToken = defaultEndpoint.accessToken;
+    if (this.defaultEndpoint) {
+      this.accessToken = this.defaultEndpoint.accessToken;
 
-      this.options.token = defaultEndpoint.accessToken.token;
-      defaultEndpoint.accessToken.subscribeToRenewal(newToken => {
+      this.options.token = this.defaultEndpoint.accessToken.token;
+      this.defaultEndpoint.accessToken.subscribeToRenewal(newToken => {
         this.options.token = newToken;
         this.initializeAnalyticsClient();
       });
     }
 
-    if (!this.options.organization && defaultEndpoint) {
-      this.options.organization = defaultEndpoint.options.queryStringArguments['workgroup'];
+    if (!this.options.organization && this.defaultEndpoint) {
+      this.options.organization = this.defaultEndpoint.options.queryStringArguments['workgroup'];
     }
+  }
+
+  private get defaultEndpoint(): SearchEndpoint {
+    return (
+      this.searchInterface.options.endpoint ||
+      SearchEndpoint.endpoints['default'] ||
+      _.find(SearchEndpoint.endpoints, endpoint => endpoint != null)
+    );
   }
 
   private handleBuildingQuery(data: IBuildingQueryEventArgs) {

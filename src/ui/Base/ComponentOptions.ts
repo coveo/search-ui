@@ -7,6 +7,8 @@ import { l } from '../../strings/Strings';
 import * as _ from 'underscore';
 import { SVGIcons } from '../../utils/SVGIcons';
 import { IStringMap } from '../../rest/GenericParam';
+import { IComponentOptionsTemplateOptionArgs, TemplateComponentOptions } from './TemplateComponentOptions';
+import { Template } from '../Templates/Template';
 
 /**
  * The `IFieldOption` interface declares a type for options that should contain a field to be used in a query.
@@ -274,6 +276,10 @@ const localizer = /([a-zA-Z\-]+)\s*:\s*(([^,]|,\s*(?!([a-zA-Z\-]+)\s*:))+)/g;
  * [`buildStringOption`]{@link ComponentOptions.buildStringOption}, etc.)
  */
 export class ComponentOptions {
+  static buildTemplateOption(optionArgs?: IComponentOptionsTemplateOptionArgs): Template {
+    return TemplateComponentOptions.buildTemplateOption(optionArgs);
+  }
+
   /**
    * Builds a boolean option.
    *
@@ -903,8 +909,11 @@ export class ComponentOptions {
         }
       });
       return attributeFound;
+    }
+    if (option.alias) {
+      return element.getAttribute(ComponentOptions.attrNameFromName(option.alias));
     } else {
-      return element.getAttribute(ComponentOptions.attrNameFromName(<string>option.alias));
+      return undefined;
     }
   }
 }

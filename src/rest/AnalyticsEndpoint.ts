@@ -129,8 +129,8 @@ export class AnalyticsEndpoint {
       this.handleAnalyticsEventResponse(results.data);
       return results.data;
     } catch (error) {
+      AnalyticsEndpoint.pendingRequest = null;
       if (this.options.accessToken.isExpired(error)) {
-        AnalyticsEndpoint.pendingRequest = null;
         const successfullyRenewed = await this.options.accessToken.doRenew();
         if (successfullyRenewed) {
           return this.sendToService<D, R>(data, path, paramName);
