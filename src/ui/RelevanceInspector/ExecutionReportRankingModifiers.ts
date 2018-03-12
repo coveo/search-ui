@@ -4,24 +4,22 @@ import { IQueryResult } from '../../rest/QueryResult';
 import { IRankingExpression } from '../../rest/RankingExpression';
 import { map, find } from 'underscore';
 import { GenericValueOutput } from './GenericValueOutput';
-import { QueryUtils, IResultsComponentBindings, QueryBuilder } from '../../Core';
+import { IResultsComponentBindings, QueryBuilder } from '../../Core';
 
 export class ExecutionReportRankingModifiers {
   public async build(results: IQueryResult[], rankingExpressions: IRankingExpression[], bindings: IResultsComponentBindings) {
     const { container, agGridElement } = ExecutionReport.standardSectionHeader('Ranking Modifiers & Machine Learning Boosts');
+
     const dataSourcePromises = map(rankingExpressions, async rankingExpression => {
-      const isMLBoostRegex = /^@permanentid=([a-z0-9]+)$/;
+      const isAutomaticBoostRegex = /^(@permanentid|@urihash)="?([a-zA-Z0-9]+)"?$/;
 
-      let thumbnailPreview: Record<string, ITableDataSource> = {
-        Document: new GenericValueOutput().output('-- N.A --')
-      };
-
-      let returnedByIndexForCurrentQuery = '-- N.A --';
+      let thumbnailPreview: Record<string, ITableDataSource> = TableBuilder.thumbnailCell(null, null);
+      let returnedByIndexForCurrentQuery = '-- NULL --';
       let result: IQueryResult = null;
 
-      const isMLBoost = rankingExpression.expression.match(isMLBoostRegex);
-      if (isMLBoost) {
-        const extracted = await this.extractDocumentInfoFromMLBoost(results, isMLBoost[1], rankingExpression, bindings);
+      const isAutomaticBoost = rankingExpression.expression.match(isAutomaticBoostRegex);
+      if (isAutomaticBoost) {
+        const extracted = await this.extractDocumentInfoFromBoost(results, isAutomaticBoost[2], rankingExpression, bindings);
         thumbnailPreview = TableBuilder.thumbnailCell(extracted.result, bindings);
         result = extracted.result;
         returnedByIndexForCurrentQuery = extracted.returnedByIndexForCurrentQuery.toString();
@@ -30,7 +28,7 @@ export class ExecutionReportRankingModifiers {
       return {
         ...thumbnailPreview,
         ReturnedByIndexForCurrentQuery: new GenericValueOutput().output(returnedByIndexForCurrentQuery),
-        IsRecommendation: new GenericValueOutput().output(result ? result.isRecommendation : '-- N.A --'),
+        IsRecommendation: new GenericValueOutput().output(result ? result.isRecommendation : '-- NULL --'),
         Expression: new GenericValueOutput().output(rankingExpression.expression),
         Modifier: new GenericValueOutput().output(rankingExpression.modifier)
       };
@@ -48,7 +46,7 @@ export class ExecutionReportRankingModifiers {
     };
   }
 
-  private async extractDocumentInfoFromMLBoost(
+  private async extractDocumentInfoFromBoost(
     results: IQueryResult[],
     permanentID: string,
     rankingExpression: IRankingExpression,
@@ -60,7 +58,7 @@ export class ExecutionReportRankingModifiers {
     };
 
     const resultInResultSet = find(results, result => {
-      return QueryUtils.getPermanentId(result).fieldValue == permanentID;
+      return result.raw.permanentid == permanentID || result.raw.urihash == permanentID;
     });
 
     if (resultInResultSet) {

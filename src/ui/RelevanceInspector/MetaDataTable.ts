@@ -1,12 +1,13 @@
 import { TableBuilder, ITableDataSource } from './TableBuilder';
-import { map, each } from 'underscore';
+import { map, each, find } from 'underscore';
 import agGridModule = require('ag-grid/main');
 import { IQueryResult } from '../../rest/QueryResult';
 import { IComponentBindings } from '../Base/ComponentBindings';
-import { $$, StringUtils } from '../../UtilsModules';
+import { $$, StringUtils, DateUtils } from '../../UtilsModules';
 import { IResultsComponentBindings } from '../Base/ResultsComponentBindings';
 import { IRelevanceInspectorTab } from './RelevanceInspector';
 import { TextInput } from '../FormWidgets/TextInput';
+import { IFieldDescription } from '../../rest/FieldDescription';
 
 export class MetaDataTable implements IRelevanceInspectorTab {
   public gridOptions: agGridModule.GridOptions;
@@ -17,6 +18,8 @@ export class MetaDataTable implements IRelevanceInspectorTab {
     if (!this.bindings.queryController) {
       return;
     }
+
+    const fieldsDescription = await this.bindings.queryController.getEndpoint().listFields();
 
     const container = $$('div', {
       className: 'metadata-table'
@@ -36,7 +39,7 @@ export class MetaDataTable implements IRelevanceInspectorTab {
       const fields: Record<string, ITableDataSource> = {};
 
       fields[`Fields Values`] = {
-        content: { result },
+        content: { result, fieldsDescription },
         cellRenderer: FieldValuesRenderer,
         width: 1000,
         getQuickFilterText: (params: agGridModule.GetQuickFilterTextParams) => {
@@ -154,20 +157,30 @@ export class FieldValuesRenderer implements agGridModule.ICellRendererComp {
         fieldInResult
       );
 
-      const fieldValue = $$(
+      let fieldValue = result.raw[fieldInResult].toString();
+      if (this.element.fieldsDescription) {
+        const matchingFieldDescription = find(this.element.fieldsDescription as IFieldDescription[], description => {
+          return description.name.replace('@', '').toLowerCase() == fieldInResult;
+        });
+        if (matchingFieldDescription && matchingFieldDescription.fieldType == 'Date') {
+          fieldValue = DateUtils.convertToStandardDate(fieldValue).toString();
+        }
+      }
+
+      const fieldValueElement = $$(
         'div',
         {
           className: 'coveo-relevance-inspector-metadata-value'
         },
-        result.raw[fieldInResult].toString()
+        fieldValue
       );
       if (this.currentFilter) {
         this.highlightSearch(fieldName.el, this.currentFilter);
-        this.highlightSearch(fieldValue.el, this.currentFilter);
+        this.highlightSearch(fieldValueElement.el, this.currentFilter);
       }
 
       inputGroup.append(fieldName.el);
-      inputGroup.append(fieldValue.el);
+      inputGroup.append(fieldValueElement.el);
 
       container.append(inputGroup.el);
     });

@@ -7,7 +7,6 @@ import { IQueryResult } from '../../rest/QueryResult';
 import { IResultsComponentBindings } from '../Base/ResultsComponentBindings';
 import ResultListModule = require('../ResultList/ResultList');
 import { ResultLink } from '../ResultLink/ResultLink';
-import { Logger } from '../../MiscModules';
 declare const agGrid: typeof agGridModule;
 
 export interface ITableDataSource extends agGridModule.ColDef {
@@ -166,7 +165,7 @@ export class ThumbnailHtmlRenderer implements agGridModule.ICellRendererComp {
       const thumbnail = this.thumbnail(this.element.result, this.element.bindings);
       cell.append(thumbnail.el);
     } else {
-      cell.append($$('p', undefined, 'N.A').el);
+      cell.append($$('p', undefined, '-- NULL --').el);
     }
     return cell.el;
   }
@@ -196,8 +195,7 @@ export class ThumbnailHtmlRenderer implements agGridModule.ICellRendererComp {
         this.highlightSearch(dom.el, this.currentFilter);
       }
     } else {
-      new Logger(this).error('No result available to render thumbnail');
-      dom = $$('div');
+      dom = $$('div', undefined, '-- NULL --');
     }
 
     return dom;
@@ -251,7 +249,7 @@ export class GenericHtmlRenderer implements agGridModule.ICellRendererComp {
     } else if (this.element) {
       return $$('div', undefined, this.element).el;
     } else {
-      return $$('div', undefined, 'N.A').el;
+      return $$('div', undefined, '-- NULL --').el;
     }
   }
 
