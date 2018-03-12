@@ -24,8 +24,7 @@ export interface ISortOptions {
   caption?: string;
 }
 /**
- * The Sort component renders a widget that the end user can interact with to sort query results according to a single
- * criterion or list of criteria.
+ * The `Sort` component renders a widget that the end user can interact with to select the criterion to use when sorting query results.
  */
 export class Sort extends Component {
   static ID = 'Sort';
@@ -43,23 +42,20 @@ export class Sort extends Component {
    */
   static options: ISortOptions = {
     /**
-     * Specifies the criterion (or criteria) for sorting.
+     * The sort criterion/criteria the end user can select/toggle between when interacting with this component instance.
      *
-     * The possible criteria are:
+     * The available sort criteria are:
      * - `relevancy`
-     * - `date`
+     * - `date ascending`/`date descending`
      * - `qre`
-     * - `@fieldname` (replace `fieldname` with an actual field name (e.g., `@size`)
+     * - `@field ascending`/`@field descending`, where you must replace `field` with the name of a sortable field in your index (e.g., `data-sort-criteria="@size ascending"`).
      *
-     * You can also specify a direction (`ascending` or `descending`), for example `date ascending`.
+     * You can specify a comma separated list of sort criteria to toggle between when interacting with this component instance (e.g., `data-sort-criteria="date descending,date ascending"`).
+     * Interacting with this compnent instance will cycle through those criteria in the order they are listed in.
+     * Typically, you should only specify a list of sort criteria when you want the end user to be able to to toggle the direction of a `date` or `@field` sort criteria.
+     * Otherwise, you should configure a distinct `Sort` component instance for each sort criterion you want to make available in your search page.
      *
-     * You can pass an array containing multiple criteria to the Sort component.
-     * If you specify multiple criteria, all criteria must have the same direction (either `ascending` or
-     * `descending`).
-     * You can only use the `date` and `@fieldname` criteria when specifying multiple criteria.
-     * Multiple criteria are evaluated in the order you specify them.
-     *
-     * It is necessary to specify a value for this option in order for this component to work.
+     * You must specify a valid value for this option in order for this component instance to work correctly.
      */
     sortCriteria: ComponentOptions.buildCustomListOption(
       (values: string[] | SortCriteria[]) => {
@@ -76,9 +72,9 @@ export class Sort extends Component {
     ),
 
     /**
-     * Specifies the caption to display on the element.
+     * The caption to display on this component instance.
      *
-     * If you do not specify a value for this option, the component uses the tag body of the element.
+     * By default, the component uses the text content of the element it is instanciated on.
      */
     caption: ComponentOptions.buildLocalizedStringOption({ required: true })
   };
@@ -88,9 +84,9 @@ export class Sort extends Component {
   private icon: HTMLElement;
 
   /**
-   * Creates a new Sort component.
+   * Creates a new `Sort` component instance.
    * @param element The HTMLElement on which to instantiate the component.
-   * @param options The options for the Sort component.
+   * @param options The options for this component instance.
    * @param bindings The bindings that the component requires to function normally. If not set, these will be
    * automatically resolved (with a slower execution time).
    */
@@ -132,9 +128,11 @@ export class Sort extends Component {
   }
 
   /**
-   * Selects the Sort component. Triggers a new query if selecting the component changes the current
-   * {@link Sort.options.sortCriteria} (if it is toggled).
-   * @param direction The sort direction. Can be either `ascending` or `descending`.
+   * Selects this `Sort` component.
+   *
+   * Triggers a query if selecting this component toggles its current [`sortCriteria`]{@link Sort.options.sortCriteria}.
+   *
+   * @param direction The sort direction. Can be one of: `ascending`, `descending`.
    */
   public select(direction?: string) {
     if (direction) {
@@ -164,7 +162,7 @@ export class Sort extends Component {
   }
 
   /**
-   * Gets the current {@link Sort.options.sortCriteria}.
+   * Gets the current [`sortCriteria`]{@link Sort.options.sortCriteria} of this `Sort` component.
    * @returns {SortCriteria}
    */
   public getCurrentCriteria(): SortCriteria {
@@ -172,7 +170,7 @@ export class Sort extends Component {
   }
 
   /**
-   * Indicates whether the name of any of the {@link Sort.options.sortCriteria} matches the argument.
+   * Indicates whether the name of any of the available [`sortCriteria`]{@link Sort.options.sortCriteria} of this `Sort` component matches the argument.
    * @param sortId The sort criteria name to look for (e.g., `date descending`).
    */
   public match(sortId: string) {
