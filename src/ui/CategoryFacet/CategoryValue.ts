@@ -5,6 +5,7 @@ import { CategoryFacet } from './CategoryFacet';
 
 export interface CategoryValueParent {
   categoryChildrenValueRenderer: CategoryChildrenValueRenderer;
+  renderChildren: () => void;
   getPath: (partialPath?: string[]) => string[];
 }
 
@@ -21,16 +22,17 @@ export class CategoryValue implements CategoryValueParent {
   constructor(
     private parentElement: Dom,
     private value: string,
+    private count: number,
     private parent: CategoryValueParent,
     private categoryFacetTemplates: CategoryFacetTemplates,
     private categoryFacet: CategoryFacet
   ) {
-    this.element = this.categoryFacetTemplates.buildListElement(this.value);
+    this.element = this.categoryFacetTemplates.buildListElement({ value: this.value, count: this.count });
     this.collapseArrow = this.categoryFacetTemplates.buildCollapseArrow();
     this.categoryChildrenValueRenderer = new CategoryChildrenValueRenderer(this.element, categoryFacetTemplates, this, this.categoryFacet);
 
     this.arrowOnClick = () => this.closeChildMenu();
-    this.captionOnClick = () => this.openChildMenu();
+    this.captionOnClick = () => this.renderChildren();
     this.getCaption().on('click', this.captionOnClick);
   }
 
@@ -43,7 +45,7 @@ export class CategoryValue implements CategoryValueParent {
   }
 
   public showSiblings() {
-    // this.parent.categoryChildrenValueRenderer.renderChildren();
+    this.parent.renderChildren();
   }
 
   public clear() {
@@ -68,9 +70,8 @@ export class CategoryValue implements CategoryValueParent {
     return this.value;
   }
 
-  private async openChildMenu() {
-    const values = await this.categoryFacet.categoryFacetQueryController.getValues(this.getPath());
-    this.categoryChildrenValueRenderer.renderChildren(values);
+  public async renderChildren() {
+    this.categoryChildrenValueRenderer.renderChildren();
     this.showCollapseArrow();
     this.hideSiblings();
   }
@@ -85,7 +86,7 @@ export class CategoryValue implements CategoryValueParent {
     if (!this.collapseArrow.el.parentElement) {
       this.collapseArrow.on('click', this.arrowOnClick);
       const label = this.element.find('label');
-      this.collapseArrow.insertBefore(label);
+      $$(label).prepend(this.collapseArrow.el);
     }
   }
   private hideCollapseArrow() {

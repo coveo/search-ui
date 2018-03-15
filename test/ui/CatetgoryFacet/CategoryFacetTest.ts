@@ -9,5 +9,6 @@ export function CategoryFacetTest() {
       categoryFacet.cmp.getChildren();
       expect(categoryFacet.cmp.getChildren).toHaveBeenCalled();
     });
+    it('doesnt crash when backing out to a state where there is still no value', () => {});
   });
 }

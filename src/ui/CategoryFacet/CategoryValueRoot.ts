@@ -8,8 +8,15 @@ export class CategoryValueRoot implements CategoryValueParent {
   private children: CategoryValue[] = [];
   public categoryChildrenValueRenderer: CategoryChildrenValueRenderer;
 
-  constructor(element: Dom, categoryFacetTemplates: CategoryFacetTemplates, categoryFacet: CategoryFacet) {
+  constructor(element: Dom, categoryFacetTemplates: CategoryFacetTemplates, private categoryFacet: CategoryFacet) {
     this.categoryChildrenValueRenderer = new CategoryChildrenValueRenderer(element, categoryFacetTemplates, this, categoryFacet);
+    this.categoryFacet.categoryFacetQueryController.getValues([], true).then(values => {
+      this.categoryChildrenValueRenderer.renderChildren(values);
+    });
+  }
+
+  public renderChildren() {
+    this.categoryChildrenValueRenderer.renderChildren();
   }
 
   public getPath(partialPath: string[] = []) {
