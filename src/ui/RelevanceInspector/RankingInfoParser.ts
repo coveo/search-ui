@@ -1,5 +1,6 @@
-import { object, map, keys } from 'underscore';
+import { object, map, keys, reduce } from 'underscore';
 import { StringUtils } from '../../utils/StringUtils';
+import { $$ } from '../../UtilsModules';
 
 export interface IRankingInfo {
   documentWeights: IListOfWeights | null;
@@ -43,6 +44,36 @@ export interface IWeightsPerTermPerDocument {
   Correlation: number;
   'TF-IDF': number;
 }
+
+export const buildListOfTermsElement = (weightPerTerm: IWeightsPerTermBreakdown) => {
+  const listItems = map(weightPerTerm, (value, key) => {
+    return {
+      dt: $$(
+        'dt',
+        {
+          className: 'coveo-relevance-inspector-dt'
+        },
+        `${key}`
+      ),
+      dd: $$(
+        'dd',
+        {
+          className: 'coveo-relevance-inspector-dd'
+        },
+        `${value}`
+      )
+    };
+  });
+  const total = reduce(weightPerTerm, (memo, value) => memo + value, 0);
+  const list = $$('dl');
+  listItems.forEach(item => {
+    list.append(item.dt.el);
+    list.append(item.dd.el);
+  });
+  list.append($$('dt', { className: 'coveo-relevance-inspector-dt' }, `Total`).el);
+  list.append($$('dd', { className: 'coveo-relevance-inspector-dd coveo-relevance-inspector-highlight' }, `${total}`).el);
+  return list;
+};
 
 export const parseRankingInfo = (value: string): IRankingInfo | null => {
   const REGEX_EXTRACT_DOCUMENT_WEIGHTS = /Document weights:\n((?:.)*?)\n+/g;

@@ -29,7 +29,7 @@ export class ExecutionReportRankingModifiers {
         ...thumbnailPreview,
         ReturnedByIndexForCurrentQuery: new GenericValueOutput().output(returnedByIndexForCurrentQuery),
         IsRecommendation: new GenericValueOutput().output(result ? result.isRecommendation : '-- NULL --'),
-        Expression: new GenericValueOutput().output(rankingExpression.expression),
+        Expression: { ...new GenericValueOutput().output(rankingExpression.expression), width: 150 },
         Modifier: new GenericValueOutput().output(rankingExpression.modifier)
       };
     });

@@ -1,4 +1,5 @@
 @import './Variables';
+@import './Animations';
 @import 'mixins/resultsHeaderElement';
 @import '../node_modules/coveo-styleguide/scss/common/palette.scss';
 @import '../node_modules/coveo-styleguide/scss/variables.scss';
@@ -15,23 +16,21 @@
   }
 }
 
-.ag-theme-fresh {
-  .ag-cell {
-    overflow: auto;
-  }
-  .ag-font-style {
-    user-select: auto;
+.relevance-inspector-modal {
+  .coveo-logo {
+    height: 64px;
+    width: 178px;
   }
 }
 
-@keyframes slideInLeft {
-  0% {
-    @include transform(translateX(-2000px));
-    opacity: 0;
+.ag-theme-fresh {
+  .ag-cell {
+    overflow: auto;
+    white-space: normal;
+    word-break: break-word;
   }
-  100% {
-    @include transform(translateX(0));
-    opacity: 1;
+  .ag-font-style {
+    user-select: auto;
   }
 }
 
@@ -41,7 +40,7 @@
 
 .coveo-relevance-inspector-tab-content {
   display: none;
-  &.coveo-active {
+  &.coveo-selected {
     display: block;
     @include animation(slideInLeft 0.3s ease-in);
   }
@@ -54,11 +53,12 @@
 }
 
 .coveo-relevance-inspector-highlight {
-  background-color: yellow;
+  display: inline-block;
+  font-weight: bold;
 }
 
 .coveo-relevance-inspector-result-thumbnail {
-  width: 500px;
+  min-width: 350px;
   white-space: normal;
 }
 
@@ -138,6 +138,8 @@
 
 .coveo-available-fields-table-button {
   overflow: hidden;
+  display: inline-block;
+  @include align();
 }
 
 .coveo-relevance-inspector-effective-query-collapsible {
@@ -175,4 +177,44 @@
       border-left: $table-selected-border-width solid transparent;
     }
   }
+}
+
+.coveo-relevance-inspector-inline-ranking {
+  @include defaultRoundedBorder();
+  @include display(flex);
+  @include flex-wrap(wrap);
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.coveo-relevance-inspector-inline-ranking-section {
+  margin: 10px;
+}
+
+.coveo-relevance-inspector-inline-ranking-terms {
+  display: none;
+  padding: 10px;
+  width: 100%;
+  &.coveo-active {
+    display: block;
+    @include animation(fadein 0.5s);
+  }
+  h2 {
+    border-bottom: $default-border;
+  }
+  dl {
+    @include display(flex);
+    @include flex-wrap(wrap);
+    @include align-items(center);
+  }
+  dt {
+    margin: 10px 20px;
+  }
+  dd {
+    margin-left: 0;
+  }
+}
+
+.coveo-relevance-inspector-inline-ranking-button {
+  height: 35px;
 }

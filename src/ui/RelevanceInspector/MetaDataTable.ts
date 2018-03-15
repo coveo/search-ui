@@ -163,7 +163,7 @@ export class FieldValuesRenderer implements agGridModule.ICellRendererComp {
           return description.name.replace('@', '').toLowerCase() == fieldInResult;
         });
         if (matchingFieldDescription && matchingFieldDescription.fieldType == 'Date') {
-          fieldValue = DateUtils.convertToStandardDate(fieldValue).toString();
+          fieldValue = `${DateUtils.convertToStandardDate(fieldValue).toString()} ( Epoch : ${fieldValue} )`;
         }
       }
 

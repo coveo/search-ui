@@ -2,11 +2,12 @@ import { loadAgGridLibrary } from './AgGrid';
 import { first, map, each, flatten, find } from 'underscore';
 
 import agGridModule = require('ag-grid/main');
-import { Dom, $$, DomUtils, StringUtils, StreamHighlightUtils } from '../../UtilsModules';
+import { Dom, $$, StringUtils, StreamHighlightUtils } from '../../UtilsModules';
 import { IQueryResult } from '../../rest/QueryResult';
 import { IResultsComponentBindings } from '../Base/ResultsComponentBindings';
 import ResultListModule = require('../ResultList/ResultList');
 import { ResultLink } from '../ResultLink/ResultLink';
+import { IComponentBindings } from '../Base/ComponentBindings';
 declare const agGrid: typeof agGridModule;
 
 export interface ITableDataSource extends agGridModule.ColDef {
@@ -31,38 +32,7 @@ export const defaultGridOptions: agGridModule.GridOptions = {
 };
 
 export class TableBuilder {
-  private inputGroup: Dom | undefined;
-  private inputSearch: Dom | undefined;
-  private resizeButton: Dom | undefined;
   private gridOptions: agGridModule.GridOptions | undefined;
-
-  public withSearch() {
-    const inputSearch = $$('input', {
-      type: 'search',
-      className: 'form-control'
-    });
-
-    const inputGroup = $$(
-      'div',
-      {
-        className: 'input-group py-3 w-50'
-      },
-      $$(
-        'div',
-        {
-          className: 'input-group-prepend'
-        },
-        $$('span', { className: 'input-group-text' }, 'Filter')
-      )
-    );
-
-    inputGroup.append(inputSearch.el);
-
-    this.inputGroup = inputGroup;
-    this.inputSearch = inputSearch;
-
-    return this;
-  }
 
   public async build(sources: Record<string, ITableDataSource>[], table: Dom, gridOptions = defaultGridOptions) {
     const firstData = first(sources) || {};
@@ -113,35 +83,18 @@ export class TableBuilder {
       ...gridOptions
     };
 
-    if (this.resizeButton) {
-      table.prepend(this.resizeButton.el);
-    }
-
-    if (this.inputSearch && this.inputGroup) {
-      this.inputSearch.on('change', () => {
-        this.gridOptions && this.gridOptions.api && this.inputSearch
-          ? this.gridOptions.api.setQuickFilter((this.inputSearch.el as HTMLInputElement).value)
-          : '';
-      });
-      table.prepend(this.inputGroup.el);
-    }
-
-    const loading = DomUtils.getBasicLoadingAnimation();
-    table.append(loading);
-
     await loadAgGridLibrary();
     const grid = new agGrid.Grid(table.el, this.gridOptions);
-    $$(loading).remove();
 
     return { grid, gridOptions: this.gridOptions };
   }
 
-  public static thumbnailCell(result: IQueryResult, bindings: IResultsComponentBindings): Record<string, ITableDataSource> {
+  public static thumbnailCell(result: IQueryResult, bindings: IComponentBindings): Record<string, ITableDataSource> {
     return {
       Document: {
         content: { result, bindings },
         cellRenderer: ThumbnailHtmlRenderer,
-        width: 300,
+        width: 400,
         getQuickFilterText: (params: agGridModule.GetQuickFilterTextParams) => {
           return '';
         }
@@ -154,9 +107,11 @@ export class ThumbnailHtmlRenderer implements agGridModule.ICellRendererComp {
   private element: any | undefined;
   private currentFilter: string | undefined;
 
-  public init(params: any) {
-    this.element = params.value;
-    this.currentFilter = params.api.filterManager.quickFilter;
+  public init(params?: { value: { result: IQueryResult; bindings: IComponentBindings }; api: any }) {
+    if (params) {
+      this.element = params.value;
+      this.currentFilter = params.api.filterManager.quickFilter;
+    }
   }
 
   public getGui(): HTMLElement {
@@ -239,9 +194,11 @@ export class GenericHtmlRenderer implements agGridModule.ICellRendererComp {
   private element: string | undefined;
   private currentFilter: string | undefined;
 
-  public init(params: any) {
-    this.element = params.value;
-    this.currentFilter = params.api.filterManager.quickFilter;
+  public init(params?: any) {
+    if (params && params.api) {
+      this.element = params.value;
+      this.currentFilter = params.api.filterManager.quickFilter;
+    }
   }
   public getGui(): HTMLElement {
     if (this.element && this.currentFilter) {

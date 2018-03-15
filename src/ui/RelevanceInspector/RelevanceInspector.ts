@@ -4,7 +4,7 @@ import { IComponentBindings } from '../Base/ComponentBindings';
 import { IAttributeChangedEventArg } from '../../models/Model';
 import { $$ } from '../../utils/Dom';
 import { ModalBox } from '../../ExternalModulesShim';
-import { QueryStateModel } from '../../Core';
+import { QueryStateModel, ResultListEvents, DomUtils } from '../../Core';
 import { RelevanceInspectorTabs } from './RelevanceInspectorTabs';
 
 import 'styling/_RelevanceInspector';
@@ -12,6 +12,8 @@ import { ExecutionReport } from './ExecutionReport';
 import { AvailableFieldsTable } from './AvailableFieldsTable';
 import agGridModule = require('ag-grid/main');
 import { debounce } from 'underscore';
+import { IDisplayedNewResultEventArgs } from '../../events/ResultListEvents';
+import { InlineRankingInfo } from './InlineRankingInfo';
 
 export interface IRelevanceInspectorConstructor {
   new (element: HTMLElement, bindings: IComponentBindings): RelevanceInspector;
@@ -34,6 +36,16 @@ export class RelevanceInspector {
       (e, args: IAttributeChangedEventArg) => this.toggleFromState(args.value)
     );
     $$(this.element).on('click', () => this.open());
+    $$(this.bindings.root).on(ResultListEvents.newResultDisplayed, (e, args: IDisplayedNewResultEventArgs) => {
+      if (this.bindings.queryStateModel.get(QueryStateModel.attributesEnum.debug)) {
+        $$(args.item).addClass('coveo-with-inline-ranking-info');
+        if ($$(args.item).hasClass('coveo-table-layout')) {
+          $$(args.item).append(new InlineRankingInfo(args.result).build().el);
+        } else {
+          $$(args.item).prepend(new InlineRankingInfo(args.result).build().el);
+        }
+      }
+    });
     this.bindings.queryStateModel.get(QueryStateModel.attributesEnum.debug) ? this.show() : this.hide();
   }
 
@@ -49,9 +61,15 @@ export class RelevanceInspector {
     if (this.opened) {
       return;
     }
-    const rows = await this.buildTabs();
-    ModalBox.open(rows.el, this.modalBoxOptions);
     this.opened = true;
+
+    const content = $$('div');
+    const animation = DomUtils.getBasicLoadingAnimation();
+    content.append(animation);
+    ModalBox.open(content.el, this.modalBoxOptions);
+    const rows = await this.buildTabs();
+    animation.remove();
+    content.append(rows.el);
   }
 
   private get modalBoxOptions() {
@@ -60,6 +78,7 @@ export class RelevanceInspector {
       titleClose: false,
       overlayClose: true,
       sizeMod: 'big',
+      className: 'relevance-inspector-modal',
       validation: () => {
         this.opened = false;
         return true;

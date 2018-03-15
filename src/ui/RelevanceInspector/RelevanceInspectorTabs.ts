@@ -85,8 +85,8 @@ export class RelevanceInspectorTabs {
 
   private activateTabContent(contentElement: Dom) {
     this.tabContentElements.forEach(element => {
-      element.removeClass('coveo-active');
+      element.removeClass('coveo-selected');
     });
-    contentElement.addClass('coveo-active');
+    contentElement.addClass('coveo-selected');
   }
 }

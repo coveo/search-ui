@@ -501,3 +501,27 @@ UrlUtilsTest();
 
 import { AccessTokenTest } from './rest/AccessTokenTest';
 AccessTokenTest();
+
+import { AgGridTest } from './ui/RelevanceInspector/AgGridTest';
+AgGridTest();
+
+import { GenericValueOutputTest } from './ui/RelevanceInspector/GenericValueOutputTest';
+GenericValueOutputTest();
+
+import { RankingInfoParserTest } from './ui/RelevanceInspector/RankingInfoParserTest';
+RankingInfoParserTest();
+
+import { InlineRankingInfoTest } from './ui/RelevanceInspector/InlineRankingInfoTest';
+InlineRankingInfoTest();
+
+import { RelevanceInspectorTabsTest } from './ui/RelevanceInspector/RelevanceInspectorTabsTest';
+RelevanceInspectorTabsTest();
+
+import { TableBuilderTest } from './ui/RelevanceInspector/TableBuilderTest';
+TableBuilderTest();
+
+import { ThumbnailHtmlRendererTest } from './ui/RelevanceInspector/ThumbnailHtmlRendererTest';
+ThumbnailHtmlRendererTest();
+
+import { GenericHtmlRendererTest } from './ui/RelevanceInspector/GenericHtmlRendererTest';
+GenericHtmlRendererTest();

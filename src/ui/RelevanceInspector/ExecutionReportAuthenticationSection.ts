@@ -50,7 +50,9 @@ export class ExecutionReportAuthenticationSection implements IExecutionReportSec
         }
       ];
 
-      const tableBuilder = await new TableBuilder().build(dataSource, agGridElement);
+      const tableBuilder = await new TableBuilder().build(dataSource, agGridElement, {
+        rowHeight: 150
+      });
       gridOptions = tableBuilder.gridOptions;
     }
 
@@ -82,7 +84,7 @@ export class ExecutionReportAuthenticationSection implements IExecutionReportSec
             'Query restriction': {
               children: this.queryRestrictions(authenticationSection.result.queryRestrictions)
             },
-            Roles: this.genericOutput(authenticationSection.result.roles),
+            Roles: { ...this.genericOutput(authenticationSection.result.roles), width: 200 },
             'User groups': this.genericOutput(authenticationSection.result.userGroups)
           }
         ]
@@ -97,7 +99,7 @@ export class ExecutionReportAuthenticationSection implements IExecutionReportSec
           children: [
             {
               ...{ Kind: this.genericOutput(userId.kind) },
-              ...{ Provider: this.genericOutput(userId.provider) },
+              ...{ Provider: { ...this.genericOutput(userId.provider), width: 150 } },
               ...{ Info: { content: userId.info } }
             }
           ]

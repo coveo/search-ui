@@ -1,5 +1,5 @@
-import { parseRankingInfo, IRankingInfo, IWeightsPerTermBreakdown } from './RankingInfoParser';
-import { map, reduce, each, uniq, contains } from 'underscore';
+import { parseRankingInfo, IRankingInfo, buildListOfTermsElement } from './RankingInfoParser';
+import { each, uniq, contains } from 'underscore';
 import { TableBuilder, ITableDataSource, GenericHtmlRenderer } from './TableBuilder';
 import { $$ } from '../../utils/Dom';
 import { IQueryResult } from '../../rest/QueryResult';
@@ -21,9 +21,11 @@ export class RankingInfoTable implements IRelevanceInspectorTab {
     container.append(agGridElement.el);
 
     let topLevelInfoThatHaveAtLeastANonZeroValue: string[] = [];
+    let containsKeywordRankingInfo = false;
 
     this.results.forEach(result => {
       const rankingInfo = parseRankingInfo(result.rankingInfo);
+      containsKeywordRankingInfo = rankingInfo.termsWeight != null;
       if (rankingInfo && rankingInfo.documentWeights) {
         each(rankingInfo.documentWeights, (value: number, key: string) => {
           if (value != 0) {
@@ -45,7 +47,7 @@ export class RankingInfoTable implements IRelevanceInspectorTab {
         each(rankingInfo.termsWeight || {}, (value, key) => {
           const builtKey = `Keyword: ${key}`;
           breakdownPerTerm[builtKey] = {
-            content: this.breakdownWeightsPerTerm(value.Weights).el.outerHTML,
+            content: buildListOfTermsElement(value.Weights).el.outerHTML,
             cellRenderer: GenericHtmlRenderer,
             width: 200
           };
@@ -63,7 +65,9 @@ export class RankingInfoTable implements IRelevanceInspectorTab {
     });
 
     const { gridOptions } = await new TableBuilder().build(data, agGridElement, {
-      rowHeight: 400,
+      getRowHeight: () => {
+        return containsKeywordRankingInfo ? 400 : 250;
+      },
       onGridReady: params => {
         setTimeout(() => {
           params ? params.api.sizeColumnsToFit() : null;
@@ -83,35 +87,5 @@ export class RankingInfoTable implements IRelevanceInspectorTab {
       if (contains(hasAtLeastOneNonZeroValue, key)) documentWeights[key] = { content: value || 0 };
     });
     return documentWeights;
-  }
-
-  private breakdownWeightsPerTerm(weightPerTerm: IWeightsPerTermBreakdown) {
-    const listItems = map(weightPerTerm, (value, key) => {
-      return {
-        dt: $$(
-          'dt',
-          {
-            className: 'coveo-relevance-inspector-dt'
-          },
-          `${key}`
-        ),
-        dd: $$(
-          'dd',
-          {
-            className: 'coveo-relevance-inspector-dd'
-          },
-          `${value}`
-        )
-      };
-    });
-    const total = reduce(weightPerTerm, (memo, value) => memo + value, 0);
-    const list = $$('dl', { className: 'row' });
-    listItems.forEach(item => {
-      list.append(item.dt.el);
-      list.append(item.dd.el);
-    });
-    list.append($$('dt', { className: 'coveo-relevance-inspector-dt' }, `Total`).el);
-    list.append($$('dd', { className: 'coveo-relevance-inspector-dd coveo-relevance-inspector-highlight' }, `${total}`).el);
-    return list;
   }
 }

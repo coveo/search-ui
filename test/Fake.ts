@@ -394,4 +394,15 @@ export class FakeResults {
       replaceCurrentExpression: () => {}
     };
   }
+
+  static createRankingInfoNoKeywords() {
+    return `Document weights:
+    Title: 0; Quality: 180; Date: 405; Adjacency: 0; Source: 500; Custom: 400; Collaborative rating: 0; QRE: 890; Ranking functions: 0; 
+    
+    Total weight: 2375`;
+  }
+
+  static createRankingInfoWithKeywords() {
+    return `Document weights:\nTitle: 800; Quality: 180; Date: 101; Adjacency: 0; Source: 500; Custom: 350; Collaborative rating: 0; QRE: 2500; Ranking functions: 0; \n\nTerms weights:\ntest: 100, 26; \nTitle: 800; Concept: 0; Summary: 300; URI: 500; Formatted: 0; Casing: 0; Relation: 200; Frequency: 1744; \n\nTotal weight: 7975`;
+  }
 }

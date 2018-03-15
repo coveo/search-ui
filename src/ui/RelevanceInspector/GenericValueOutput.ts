@@ -57,7 +57,7 @@ export class GenericValueOutput {
       };
     }
 
-    const list = $$('ul', { className: 'pl-1' });
+    const list = $$('ul');
     section.forEach(sectionValue => {
       if (isObject(sectionValue)) {
         list.append($$('li', undefined, this.objectJoined(sectionValue as any).content).el);

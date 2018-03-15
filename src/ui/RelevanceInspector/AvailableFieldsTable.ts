@@ -29,7 +29,7 @@ export class AvailableFieldsTable implements IRelevanceInspectorTab {
       const dataSource: Record<string, ITableDataSource>[] = map(allFieldsDescription, description => {
         return {
           Name: new GenericValueOutput().output(description.name),
-          Description: new GenericValueOutput().output(description.description),
+          Description: { ...new GenericValueOutput().output(description.description), width: 150 },
           'Default Value': new GenericValueOutput().output(description.defaultValue),
           'Field Type': new GenericValueOutput().output(description.fieldType),
           'Field Source Type': new GenericValueOutput().output(description.fieldSourceType),
@@ -59,7 +59,7 @@ export class AvailableFieldsTable implements IRelevanceInspectorTab {
         rowModelType: 'infinite',
         pagination: true,
         paginationPageSize: 25,
-        rowHeight: 35,
+        rowHeight: 100,
         enableServerSideFilter: true,
         enableServerSideSorting: true,
         datasource: new AvailableFieldsDatasource(dataSource)

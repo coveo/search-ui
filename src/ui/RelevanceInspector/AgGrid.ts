@@ -6,9 +6,20 @@ const agGridLibUrl = 'https://cdnjs.cloudflare.com/ajax/libs/ag-grid/16.0.1/ag-g
 const agGridStyleBaseUrl = 'https://cdnjs.cloudflare.com/ajax/libs/ag-grid/16.0.1/styles/ag-grid.css';
 const agGridStyleFreshUrl = 'https://cdnjs.cloudflare.com/ajax/libs/ag-grid/16.0.1/styles/ag-theme-fresh.css';
 
-export const loadAgGridLibrary = () => {
+declare const agGrid: any;
+
+// Should only be used for UT
+export const reset = (doc = document) => {
+  isAgGridLoaded = false;
+  isAgGridLoading = null;
+};
+
+export const loadAgGridLibrary = (doc = document) => {
   return new Promise((resolve, reject) => {
     if (isAgGridLoaded) {
+      resolve(true);
+    } else if (typeof agGrid !== 'undefined') {
+      isAgGridLoaded = true;
       resolve(true);
     } else {
       if (!isAgGridLoading) {
@@ -30,9 +41,9 @@ export const loadAgGridLibrary = () => {
           type: 'text/css'
         }).el as HTMLLinkElement;
 
-        document.head.appendChild(script);
-        document.head.appendChild(styleBase);
-        document.head.appendChild(style);
+        doc.head.appendChild(script);
+        doc.head.appendChild(styleBase);
+        doc.head.appendChild(style);
 
         isAgGridLoading = new Promise((resolveScriptLoaded, rejectScriptLoaded) => {
           script.onload = () => {
