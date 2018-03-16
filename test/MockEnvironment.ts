@@ -200,6 +200,7 @@ export function mockWindow(): Window {
       mockWindow.location.hash = '#' + mockWindow.location.hash;
     }
   };
+  spyOn(mockWindow.location, 'replace').and.callThrough();
   mockWindow.addEventListener = jasmine.createSpy('addEventListener');
   mockWindow.removeEventListener = jasmine.createSpy('removeEventListener');
   mockWindow.dispatchEvent = jasmine.createSpy('dispatchEvent');
