@@ -19,7 +19,7 @@ export class AvailableFieldsTable implements IRelevanceInspectorTab {
     const container = $$('div');
 
     const agGridElement = $$('div', {
-      className: 'ag-theme-fresh mh'
+      className: 'ag-theme-fresh'
     });
     container.append(agGridElement.el);
 
@@ -190,7 +190,7 @@ export class AvailableFieldsDatasource implements agGridModule.IDatasource {
       const merged: any = {};
 
       const extractContent = (value: ITableDataSource & agGridModule.ColGroupDef, key: string) => {
-        if (value.content) {
+        if (value.content != null) {
           merged[key] = value.content;
         } else if (value.children) {
           each(value.children, (child: any) => {
@@ -257,7 +257,13 @@ export class AvailableFieldsDatasource implements agGridModule.IDatasource {
     if (sortModels && sortModels[0]) {
       const sortModel = sortModels[0];
       return rows.sort((first, second) => {
-        return first[sortModel.colId].localeCompare(second[sortModel.colId]) * (sortModel.sort == 'asc' ? 1 : -1);
+        const firstValue = first[sortModel.colId];
+        const secondValue = second[sortModel.colId];
+        if (isNaN(firstValue) || isNaN(secondValue)) {
+          return firstValue.localeCompare(secondValue) * (sortModel.sort == 'asc' ? 1 : -1);
+        } else {
+          return (Number(firstValue) - Number(secondValue)) * (sortModel.sort == 'asc' ? 1 : -1);
+        }
       });
     }
     return rows;

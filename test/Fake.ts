@@ -11,6 +11,7 @@ import { IOmniboxDataRow } from '../src/ui/Omnibox/OmniboxInterface';
 import { IPopulateOmniboxEventArgs } from '../src/events/OmniboxEvents';
 import { mockSearchInterface } from './MockEnvironment';
 import _ = require('underscore');
+import { IFieldDescription } from '../src/rest/FieldDescription';
 
 export class FakeResults {
   static createFakeResults(count = 10, token = ''): IQueryResults {
@@ -404,5 +405,21 @@ export class FakeResults {
 
   static createRankingInfoWithKeywords() {
     return `Document weights:\nTitle: 800; Quality: 180; Date: 101; Adjacency: 0; Source: 500; Custom: 350; Collaborative rating: 0; QRE: 2500; Ranking functions: 0; \n\nTerms weights:\ntest: 100, 26; \nTitle: 800; Concept: 0; Summary: 300; URI: 500; Formatted: 0; Casing: 0; Relation: 200; Frequency: 1744; \n\nTotal weight: 7975`;
+  }
+
+  static createFieldDescription(): IFieldDescription {
+    return {
+      name: 'foo',
+      type: 'String',
+      splitGroupByField: false,
+      groupByField: true,
+      sortByField: true,
+      includeInResults: true,
+      includeInQuery: true,
+      fieldType: 'String',
+      fieldSourceType: null,
+      defaultValue: null,
+      description: 'a description'
+    };
   }
 }

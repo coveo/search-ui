@@ -525,3 +525,12 @@ ThumbnailHtmlRendererTest();
 
 import { GenericHtmlRendererTest } from './ui/RelevanceInspector/GenericHtmlRendererTest';
 GenericHtmlRendererTest();
+
+import { AvailableFieldsTableTest } from './ui/RelevanceInspector/AvailableFieldsTableTest';
+AvailableFieldsTableTest();
+
+import { AvailableFieldsSampleValueTest } from './ui/RelevanceInspector/AvailableFieldsSampleValueTest';
+AvailableFieldsSampleValueTest();
+
+import { AvailableFieldsDatasourceTest } from './ui/RelevanceInspector/AvailableFieldsDatasourceTest';
+AvailableFieldsDatasourceTest();
