@@ -89,7 +89,8 @@ export class HistoryController extends RootComponent {
     this.logger.trace('Update history hash');
 
     const hash = '#' + this.hashUtils.encodeValues(values);
-    this.ignoreNextHashChange = this.window.location.hash != hash;
+    const hashHasChanged = this.window.location.hash != hash;
+    this.ignoreNextHashChange = hashHasChanged;
 
     this.logger.trace('ignoreNextHashChange', this.ignoreNextHashChange);
     this.logger.trace('initialHashChange', this.initialHashChange);
@@ -97,8 +98,10 @@ export class HistoryController extends RootComponent {
 
     if (this.initialHashChange) {
       this.initialHashChange = false;
-      this.window.location.replace(hash);
-      this.logger.trace('History hash modified', hash);
+      if (hashHasChanged) {
+        this.window.location.replace(hash);
+        this.logger.trace('History hash modified', hash);
+      }
     } else if (this.ignoreNextHashChange) {
       this.window.location.hash = hash;
       this.logger.trace('History hash created', hash);
