@@ -44,6 +44,11 @@ export function HistoryControllerTest() {
       expect(historyController.windoh.location.hash).toBe('#c=notDefault&d=[1,2,3]');
     });
 
+    it('should not set the hash when it has not changed on the first hash change', () => {
+      $$(historyController.element).trigger(InitializationEvents.restoreHistoryState);
+      expect(historyController.window.location.replace).not.toHaveBeenCalled();
+    });
+
     it('keeps parsing hash values after one fails to parse', () => {
       let threwError = false;
       let hashUtils = jasmine.createSpyObj('hashUtils', ['getValue', 'getHash']);
