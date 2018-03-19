@@ -534,3 +534,18 @@ AvailableFieldsSampleValueTest();
 
 import { AvailableFieldsDatasourceTest } from './ui/RelevanceInspector/AvailableFieldsDatasourceTest';
 AvailableFieldsDatasourceTest();
+
+import { ExecutionReportGenericSectionTest } from './ui/RelevanceInspector/ExecutionReportGenericSectionTest';
+ExecutionReportGenericSectionTest();
+
+import { ExecutionReportEffectiveIndexQueryTest } from './ui/RelevanceInspector/ExecutionReportEffectiveIndexQuerySectionTest';
+ExecutionReportEffectiveIndexQueryTest();
+
+import { ExecutionReportSimpleSectionTest } from './ui/RelevanceInspector/ExecutionReportSimpleSectionTest';
+ExecutionReportSimpleSectionTest();
+
+import { ExecutionReportResolvedPipelineSectionTest } from './ui/RelevanceInspector/ExecutionReportResolvedPipelineSectionTest';
+ExecutionReportResolvedPipelineSectionTest();
+
+import { ExecutionReportRankingModifiersTest } from './ui/RelevanceInspector/ExecutionReportRankingModifiersTest';
+ExecutionReportRankingModifiersTest();

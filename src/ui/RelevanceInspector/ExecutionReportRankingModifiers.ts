@@ -4,10 +4,11 @@ import { IQueryResult } from '../../rest/QueryResult';
 import { IRankingExpression } from '../../rest/RankingExpression';
 import { map, find } from 'underscore';
 import { GenericValueOutput } from './GenericValueOutput';
-import { IResultsComponentBindings, QueryBuilder } from '../../Core';
+import { QueryBuilder } from '../../Core';
+import { IComponentBindings } from '../Base/ComponentBindings';
 
 export class ExecutionReportRankingModifiers {
-  public async build(results: IQueryResult[], rankingExpressions: IRankingExpression[], bindings: IResultsComponentBindings) {
+  public async build(results: IQueryResult[], rankingExpressions: IRankingExpression[], bindings: IComponentBindings) {
     const { container, agGridElement } = ExecutionReport.standardSectionHeader('Ranking Modifiers & Machine Learning Boosts');
 
     const dataSourcePromises = map(rankingExpressions, async rankingExpression => {
@@ -50,7 +51,7 @@ export class ExecutionReportRankingModifiers {
     results: IQueryResult[],
     permanentID: string,
     rankingExpression: IRankingExpression,
-    bindings: IResultsComponentBindings
+    bindings: IComponentBindings
   ) {
     let matchingResult = {
       result: null,

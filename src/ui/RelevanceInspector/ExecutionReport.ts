@@ -43,6 +43,7 @@ export interface IExecutionReportSection {
   result: Record<string, any>;
   description: string;
   children?: IExecutionReportSection[];
+  applied?: string[];
 }
 
 export interface IExecutionReportSectionBuilder {
