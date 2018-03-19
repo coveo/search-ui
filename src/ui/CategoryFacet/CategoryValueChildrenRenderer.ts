@@ -3,17 +3,22 @@ import { CategoryFacetTemplates } from './CategoryFacetTemplates';
 import { CategoryValue, CategoryValueParent } from './CategoryValue';
 import { CategoryFacet } from './CategoryFacet';
 import { ICategoryFacetValue } from '../../rest/CategoryFacetValue';
+import { IBuildingQueryEventArgs, IQuerySuccessEventArgs, QueryEvents } from '../../events/QueryEvents';
 
 export class CategoryChildrenValueRenderer {
   private children: CategoryValue[] = [];
-  private listOfChildValues: Dom | undefined;
+  private listOfChildValues: Dom;
+  private positionInQuery: number;
 
   constructor(
     private element: Dom,
     private categoryFacetTemplates: CategoryFacetTemplates,
     private categoryValue: CategoryValueParent,
     private categoryFacet: CategoryFacet
-  ) {}
+  ) {
+    this.categoryFacet.bind.onRootElement<IBuildingQueryEventArgs>(QueryEvents.buildingQuery, args => this.handleBuildingQuery(args));
+    this.categoryFacet.bind.onRootElement<IQuerySuccessEventArgs>(QueryEvents.querySuccess, args => this.handleQuerySuccess(args));
+  }
 
   public clearChildrenExceptOne(except: CategoryValue) {
     const newChildren = [];
@@ -36,12 +41,7 @@ export class CategoryChildrenValueRenderer {
     this.children = [];
   }
 
-  public async renderChildren(values?: ICategoryFacetValue[]) {
-    if (!values) {
-      this.categoryFacet.showWaitingAnimation();
-      values = await this.categoryFacet.categoryFacetQueryController.getValues(this.categoryValue.getPath());
-    }
-
+  public async renderChildren(values: ICategoryFacetValue[]) {
     if (!this.listOfChildValues) {
       this.listOfChildValues = this.categoryFacetTemplates.buildListRoot();
     }
@@ -63,5 +63,24 @@ export class CategoryChildrenValueRenderer {
       this.children.push(categoryValue);
     });
     this.categoryFacet.hideWaitAnimation();
+  }
+  private handleBuildingQuery(args: IBuildingQueryEventArgs) {
+    if (this.categoryValue.isActive) {
+      this.positionInQuery = args.queryBuilder.categoryFacets.length;
+      this.categoryFacet.categoryFacetQueryController.putCategoryFacetInQueryBuilder(args.queryBuilder, this.categoryValue.getPath());
+    }
+  }
+
+  private handleQuerySuccess(args: IQuerySuccessEventArgs) {
+    if (this.categoryValue.isActive) {
+      const categoryFacetResults = args.results.categoryFacets[this.positionInQuery];
+      if (categoryFacetResults.notImplemented) {
+        const errorMessage = 'Category Facets are not supported by your current search endpoint. Disabling this component.';
+        this.categoryFacet.logger.error(errorMessage);
+        this.categoryFacet.disable();
+      } else {
+        this.renderChildren(categoryFacetResults.values);
+      }
+    }
   }
 }

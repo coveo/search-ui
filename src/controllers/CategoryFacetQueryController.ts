@@ -12,10 +12,6 @@ export class CategoryFacetQueryController {
     this.categoryFacet.bind.oneRootElement<IBuildingQueryEventArgs>(QueryEvents.buildingQuery, args => {
       positionInQuery = args.queryBuilder.categoryFacets.length;
       this.putCategoryFacetInQueryBuilder(args.queryBuilder, path);
-
-      if (path.length != 0) {
-        args.queryBuilder.advancedExpression.addFieldExpression(this.categoryFacet.options.field as string, '==', [path.join('|')]);
-      }
     });
 
     const valuesPromise = new Promise<ICategoryFacetValue[]>((resolve, reject) => {
@@ -41,10 +37,15 @@ export class CategoryFacetQueryController {
     return valuesPromise;
   }
 
-  public putCategoryFacetInQueryBuilder(queryBuilder: QueryBuilder, path) {
+  public putCategoryFacetInQueryBuilder(queryBuilder: QueryBuilder, path): number {
+    const positionInQuery = queryBuilder.categoryFacets.length;
+    if (path.length != 0) {
+      queryBuilder.advancedExpression.addFieldExpression(this.categoryFacet.options.field as string, '==', [path.join('|')]);
+    }
     queryBuilder.categoryFacets.push({
       field: this.categoryFacet.options.field as string,
       path
     } as ICategoryFacetsRequest);
+    return positionInQuery;
   }
 }

@@ -5,18 +5,20 @@ import { CategoryChildrenValueRenderer } from './CategoryValueChildrenRenderer';
 import { CategoryFacet } from './CategoryFacet';
 
 export class CategoryValueRoot implements CategoryValueParent {
+  public isActive = true;
   private children: CategoryValue[] = [];
   public categoryChildrenValueRenderer: CategoryChildrenValueRenderer;
 
   constructor(element: Dom, categoryFacetTemplates: CategoryFacetTemplates, private categoryFacet: CategoryFacet) {
     this.categoryChildrenValueRenderer = new CategoryChildrenValueRenderer(element, categoryFacetTemplates, this, categoryFacet);
-    this.categoryFacet.categoryFacetQueryController.getValues([], true).then(values => {
-      this.categoryChildrenValueRenderer.renderChildren(values);
-    });
   }
 
   public renderChildren() {
-    this.categoryChildrenValueRenderer.renderChildren();
+    return this.categoryFacet.queryController.executeQuery();
+  }
+
+  public hideChildrenExceptOne(categoryValue: CategoryValue) {
+    this.categoryChildrenValueRenderer.clearChildrenExceptOne(categoryValue);
   }
 
   public getPath(partialPath: string[] = []) {
