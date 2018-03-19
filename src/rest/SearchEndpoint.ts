@@ -80,7 +80,8 @@ export class SearchEndpoint implements ISearchEndpoint {
         _.extend(
           {
             restUri: 'http://localhost:8100/rest/search',
-            searchAlertsUri: 'http://localhost:8088/rest/search/alerts/'
+            searchAlertsUri: 'http://localhost:8088/rest/search/alerts/',
+            accessToken: '52d806a2-0f64-4390-a3f2-e0f41a4a73ec'
           },
           otherOptions
         )
@@ -109,16 +110,19 @@ export class SearchEndpoint implements ISearchEndpoint {
    *
    * @param otherOptions A set of additional options to use when configuring this endpoint.
    */
-  static configureSampleEndpointV2(optionsOPtions?: ISearchEndpointOptions) {
+  static configureSampleEndpointV2(otherOptions?: ISearchEndpointOptions) {
     SearchEndpoint.endpoints['default'] = new SearchEndpoint(
-      _.extend({
-        restUri: 'https://platform.cloud.coveo.com/rest/search',
-        accessToken: 'xx564559b1-0045-48e1-953c-3addd1ee4457',
-        queryStringArguments: {
-          organizationId: 'searchuisamples',
-          viewAllContent: 1
-        }
-      })
+      _.extend(
+        {
+          restUri: 'https://platform.cloud.coveo.com/rest/search',
+          accessToken: 'xx564559b1-0045-48e1-953c-3addd1ee4457',
+          queryStringArguments: {
+            organizationId: 'searchuisamples',
+            viewAllContent: 1
+          }
+        },
+        otherOptions
+      )
     );
   }
 
