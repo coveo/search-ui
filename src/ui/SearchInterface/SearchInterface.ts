@@ -605,7 +605,7 @@ export class SearchInterface extends RootComponent implements IComponentBindings
   }
 
   private async handleDebugModeChange(args: IAttributeChangedEventArg) {
-    if (args.value && !this.relevanceInspector) {
+    if (args.value && !this.relevanceInspector && this.options.enableDebugInfo) {
       require.ensure(
         ['../RelevanceInspector/RelevanceInspector'],
         () => {
