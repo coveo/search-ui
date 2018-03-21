@@ -3,7 +3,9 @@ import { map, each, find } from 'underscore';
 import agGridModule = require('ag-grid/main');
 import { IQueryResult } from '../../rest/QueryResult';
 import { IComponentBindings } from '../Base/ComponentBindings';
-import { $$, StringUtils, DateUtils } from '../../UtilsModules';
+import { $$, Dom } from '../../utils/Dom';
+import { StringUtils } from '../../utils/StringUtils';
+import { DateUtils } from '../../utils/DateUtils';
 import { IResultsComponentBindings } from '../Base/ResultsComponentBindings';
 import { IRelevanceInspectorTab } from './RelevanceInspector';
 import { TextInput } from '../FormWidgets/TextInput';
@@ -14,7 +16,7 @@ export class MetaDataTable implements IRelevanceInspectorTab {
 
   constructor(public results: IQueryResult[], public bindings: IComponentBindings) {}
 
-  public async build() {
+  public async build(): Promise<Dom> {
     if (!this.bindings.queryController) {
       return;
     }

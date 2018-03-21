@@ -20,7 +20,6 @@ import { QueryEvents, IQuerySuccessEventArgs } from '../../events/QueryEvents';
 import { DebugForResult } from './DebugForResult';
 import { exportGlobally } from '../../GlobalExports';
 import { Template } from '../Templates/Template';
-import { DebugForQueryPipeline } from './DebugForQueryPipeline';
 
 export interface IDebugOptions {
   enableDebug?: boolean;
@@ -105,14 +104,9 @@ export class Debug extends RootComponent {
 
       const debugInfo = {
         ...new DebugForResult(this.bindings).generateDebugInfoForResult(args.result),
-        ...new DebugForQueryPipeline().generateDebugInfoForQueryPipeline(this.bindings.queryController.getLastResults()),
         findResult,
         template: this.templateToJson(template)
       };
-      /*const debugInfo = _.extend(new DebugForResult(this.bindings).generateDebugInfoForResult(args.result), {
-        findResult: findResult,
-        template: this.templateToJson(template)
-      });*/
 
       this.addInfoToDebugPanel(debugInfo);
       this.showDebugPanel();

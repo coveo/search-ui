@@ -10,13 +10,14 @@ import { ExecutionReportGenericSection } from './ExecutionReportGenericSection';
 import { TableBuilder } from './TableBuilder';
 import { GenericValueOutput } from './GenericValueOutput';
 import agGridModule = require('ag-grid/main');
+import { Dom } from '../../utils/Dom';
 
 export interface IExecutionReportQueryOverrideSection extends IExecutionReportSection {
   applied: string[];
 }
 
 export class ExecutionReportQueryOverrideSection implements IExecutionReportSectionBuilder {
-  public async build(executionReport: IExecutionReport) {
+  public async build(executionReport: IExecutionReport): Promise<{ container: Dom; gridOptions: agGridModule.GridOptions }> {
     const { container, agGridElement } = ExecutionReport.standardSectionHeader('Query Params Override');
     let gridOptions: agGridModule.GridOptions;
 

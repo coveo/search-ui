@@ -1,7 +1,7 @@
 import { parseRankingInfo, IRankingInfo, buildListOfTermsElement } from './RankingInfoParser';
 import { each, uniq, contains } from 'underscore';
 import { TableBuilder, ITableDataSource, GenericHtmlRenderer } from './TableBuilder';
-import { $$ } from '../../utils/Dom';
+import { $$, Dom } from '../../utils/Dom';
 import { IQueryResult } from '../../rest/QueryResult';
 import { IComponentBindings } from '../Base/ComponentBindings';
 import { IResultsComponentBindings } from '../Base/ResultsComponentBindings';
@@ -12,7 +12,7 @@ export class RankingInfoTable implements IRelevanceInspectorTab {
   public gridOptions: agGridModule.GridOptions;
   constructor(public results: IQueryResult[], public bindings: IComponentBindings) {}
 
-  public async build() {
+  public async build(): Promise<Dom> {
     const container = $$('div');
 
     const agGridElement = $$('div', {

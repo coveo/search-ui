@@ -4,11 +4,17 @@ import { IQueryResult } from '../../rest/QueryResult';
 import { IRankingExpression } from '../../rest/RankingExpression';
 import { map, find } from 'underscore';
 import { GenericValueOutput } from './GenericValueOutput';
-import { QueryBuilder } from '../../Core';
+import { Dom } from '../../utils/Dom';
 import { IComponentBindings } from '../Base/ComponentBindings';
+import agGridModule = require('ag-grid/main');
+import { QueryBuilder } from '../Base/QueryBuilder';
 
 export class ExecutionReportRankingModifiers {
-  public async build(results: IQueryResult[], rankingExpressions: IRankingExpression[], bindings: IComponentBindings) {
+  public async build(
+    results: IQueryResult[],
+    rankingExpressions: IRankingExpression[],
+    bindings: IComponentBindings
+  ): Promise<{ container: Dom; gridOptions: agGridModule.GridOptions }> {
     const { container, agGridElement } = ExecutionReport.standardSectionHeader('Ranking Modifiers & Machine Learning Boosts');
 
     const dataSourcePromises = map(rankingExpressions, async rankingExpression => {

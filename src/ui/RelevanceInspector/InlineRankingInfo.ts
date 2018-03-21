@@ -1,6 +1,6 @@
 import { IQueryResult } from '../../rest/QueryResult';
 import { parseRankingInfo, IRankingInfo, buildListOfTermsElement } from './RankingInfoParser';
-import { $$ } from '../../UtilsModules';
+import { $$, Dom } from '../../utils/Dom';
 import { each } from 'underscore';
 
 export class InlineRankingInfo {
@@ -9,7 +9,7 @@ export class InlineRankingInfo {
     this.rankingInfo = parseRankingInfo(result.rankingInfo);
   }
 
-  public build() {
+  public build(): Dom {
     const container = $$('div', {
       className: 'coveo-relevance-inspector-inline-ranking'
     });

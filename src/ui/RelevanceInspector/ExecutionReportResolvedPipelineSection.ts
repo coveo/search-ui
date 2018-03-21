@@ -10,6 +10,7 @@ import { ExecutionReportGenericSection } from './ExecutionReportGenericSection';
 import { TableBuilder } from './TableBuilder';
 import { GenericValueOutput } from './GenericValueOutput';
 import agGridModule = require('ag-grid/main');
+import { Dom } from '../../utils/Dom';
 
 export interface IExecutionReportResolvePipelineSection extends IExecutionReportSection {
   result: {
@@ -22,7 +23,7 @@ export interface IExecutionReportResolvePipelineSection extends IExecutionReport
 }
 
 export class ExecutionReportResolvedPipelineSection implements IExecutionReportSectionBuilder {
-  public async build(executionReport: IExecutionReport) {
+  public async build(executionReport: IExecutionReport): Promise<{ container: Dom; gridOptions: agGridModule.GridOptions }> {
     const { container, agGridElement } = ExecutionReport.standardSectionHeader('Pipeline');
     let gridOptions: agGridModule.GridOptions;
 

@@ -10,6 +10,7 @@ import { find, map } from 'underscore';
 import { ExecutionReportGenericSection } from './ExecutionReportGenericSection';
 import { GenericValueOutput, GenericValueOutputType } from './GenericValueOutput';
 import agGridModule = require('ag-grid/main');
+import { Dom } from '../../utils/Dom';
 
 export interface IUserIDExecutionReport {
   name: string;
@@ -34,7 +35,7 @@ export interface IExecutionReportAuthenticationSection extends IExecutionReportS
 }
 
 export class ExecutionReportAuthenticationSection implements IExecutionReportSectionBuilder {
-  public async build(executionReport: IExecutionReport) {
+  public async build(executionReport: IExecutionReport): Promise<{ container: Dom; gridOptions: agGridModule.GridOptions }> {
     const { container, agGridElement } = ExecutionReport.standardSectionHeader('Authentication');
     let gridOptions: agGridModule.GridOptions;
     const authenticationSection = find(executionReport.children, child => child.name == EXECUTION_REPORT_SECTION.PERFORM_AUTHENTICATION) as

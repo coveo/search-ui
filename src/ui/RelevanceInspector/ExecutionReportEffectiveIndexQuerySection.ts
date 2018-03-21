@@ -1,7 +1,7 @@
 import { IExecutionReport, IExecutionReportSectionBuilder, EXECUTION_REPORT_SECTION, ExecutionReport } from './ExecutionReport';
 import { findWhere, each, contains } from 'underscore';
 import { GenericValueOutput } from './GenericValueOutput';
-import { $$ } from '../../UtilsModules';
+import { $$, Dom } from '../../utils/Dom';
 
 export interface IExecutionReportEffectiveIndexQuerySection {
   result: {
@@ -12,7 +12,7 @@ export interface IExecutionReportEffectiveIndexQuerySection {
 const collapsibleSectionsInReport: string[] = ['Facets', 'RankingOverrides', 'RankingExpressions'];
 
 export class ExecutionReportEffectiveIndexQuerySection implements IExecutionReportSectionBuilder {
-  public async build(executionReport: IExecutionReport) {
+  public async build(executionReport: IExecutionReport): Promise<{ container: Dom }> {
     const { container } = ExecutionReport.standardSectionHeader('Query sent to index');
 
     const table = $$('table', {

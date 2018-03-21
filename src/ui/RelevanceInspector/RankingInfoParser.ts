@@ -1,6 +1,6 @@
 import { object, map, keys, reduce } from 'underscore';
 import { StringUtils } from '../../utils/StringUtils';
-import { $$ } from '../../UtilsModules';
+import { $$, Dom } from '../../utils/Dom';
 
 export interface IRankingInfo {
   documentWeights: IListOfWeights | null;
@@ -45,7 +45,7 @@ export interface IWeightsPerTermPerDocument {
   'TF-IDF': number;
 }
 
-export const buildListOfTermsElement = (weightPerTerm: IWeightsPerTermBreakdown) => {
+export const buildListOfTermsElement = (weightPerTerm: IWeightsPerTermBreakdown): Dom => {
   const listItems = map(weightPerTerm, (value, key) => {
     return {
       dt: $$(

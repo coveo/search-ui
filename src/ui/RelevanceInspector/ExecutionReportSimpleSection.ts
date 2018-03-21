@@ -10,6 +10,7 @@ import { ExecutionReportGenericSection } from './ExecutionReportGenericSection';
 import { GenericValueOutput } from './GenericValueOutput';
 import { TableBuilder } from './TableBuilder';
 import agGridModule = require('ag-grid/main');
+import { Dom } from '../../Core';
 
 export interface IExecutionReportSimpleSection extends IExecutionReportSection {
   applied: string[];
@@ -21,7 +22,8 @@ export class ExecutionReportSimpleSection implements IExecutionReportSectionBuil
     public secondLevelProperty: EXECUTION_REPORT_SECTION,
     public sectionTitle: string
   ) {}
-  public async build(executionReport: IExecutionReport) {
+
+  public async build(executionReport: IExecutionReport): Promise<{ container: Dom; gridOptions: agGridModule.GridOptions }> {
     const { container, agGridElement } = ExecutionReport.standardSectionHeader(this.sectionTitle);
     let gridOptions: agGridModule.GridOptions;
     const topLevelProperty = find(executionReport.children, child => {
