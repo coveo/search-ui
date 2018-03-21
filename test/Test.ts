@@ -561,3 +561,9 @@ ExecutionReportTest();
 
 import { RelevanceInspectorTest } from './ui/RelevanceInspector/RelevanceInspectorTest';
 RelevanceInspectorTest();
+
+import { FieldValuesRendererTest } from './ui/RelevanceInspector/FieldValuesRendererTest';
+FieldValuesRendererTest();
+
+import { MetaDataTableTest } from './ui/RelevanceInspector/MetaDataTableTest';
+MetaDataTableTest();

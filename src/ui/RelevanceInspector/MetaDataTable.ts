@@ -106,14 +106,14 @@ export class FieldValuesRenderer implements agGridModule.ICellRendererComp {
   public init(params: any) {
     this.element = params.value;
     this.params = params;
-    params.value.el = this.listAsInput(this.element.result);
     this.currentFilter = params.api.filterManager.quickFilter;
+    params.value.el = this.listAsInput(this.element.result);
   }
 
   public getGui(): HTMLElement {
     if (this.element) {
       const list = this.listAsInput(this.element.result);
-      this.params.eParentOfValue.append(list.el);
+      this.params.eParentOfValue.appendChild(list.el);
       const height = Math.max(list.height() + 50, 200);
       const maxHeight = Math.min(height, 5000);
       this.params.node.setRowHeight(maxHeight);
@@ -123,9 +123,7 @@ export class FieldValuesRenderer implements agGridModule.ICellRendererComp {
   }
 
   private listAsInput(result: IQueryResult) {
-    const container = $$('div', {
-      className: 'container'
-    });
+    const container = $$('div');
 
     each(result.raw, (value: string, fieldInResult: string) => {
       if (fieldInResult == 'allmetadatavalues' || fieldInResult.indexOf('sys') == 0) {
@@ -145,13 +143,10 @@ export class FieldValuesRenderer implements agGridModule.ICellRendererComp {
         }
       }
 
-      const inputGroup = $$('div', {
-        className: 'input-group row'
-      });
+      const inputGroup = $$('div', { className: 'coveo-relevance-inspector-input-group' });
       const fieldName = $$(
         'div',
         {
-          type: 'text',
           className: 'coveo-relevance-inspector-metadata-name'
         },
         fieldInResult
