@@ -20,7 +20,7 @@ export interface IUserIDExecutionReport {
 }
 
 export interface IExecutionReportAuthenticationSection extends IExecutionReportSection {
-  name: EXECUTION_REPORT_SECTION.PERFORM_AUTHENTICATION;
+  name: 'PerformAuthentication';
   configured: {
     primary: string;
     secondary: string[];

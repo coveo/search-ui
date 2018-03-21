@@ -3,9 +3,9 @@ import { StringUtils } from '../../utils/StringUtils';
 import { $$, Dom } from '../../utils/Dom';
 
 export interface IRankingInfo {
-  documentWeights: IListOfWeights | null;
-  totalWeight: number | null;
-  termsWeight: IListOfTermsWeights | null;
+  documentWeights: IListOfWeights;
+  totalWeight: number;
+  termsWeight: IListOfTermsWeights;
 }
 
 export interface IListOfWeights {
