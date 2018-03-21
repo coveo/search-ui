@@ -9,7 +9,7 @@ import { IComponentBindings } from '../Base/ComponentBindings';
 import { IRelevanceInspectorTab } from './RelevanceInspector';
 import agGridModule = require('ag-grid/main');
 import { ExecutionReportRankingModifiers } from './ExecutionReportRankingModifiers';
-import { IResultsComponentBindings } from '../../Core';
+import { IResultsComponentBindings, Logger } from '../../Core';
 
 export interface IExecutionReport {
   duration: number;
@@ -62,6 +62,7 @@ export class ExecutionReport implements IRelevanceInspectorTab {
       className: 'ag-theme-fresh'
     });
     container.append(agGridElement.el);
+
     return {
       container,
       agGridElement
@@ -69,6 +70,13 @@ export class ExecutionReport implements IRelevanceInspectorTab {
   }
 
   public async build() {
+    if (!this.results.executionReport) {
+      new Logger(this).error(
+        'Could not open execution report : Missing execution report on results. Try executing the query in debug mode.'
+      );
+      return $$('div');
+    }
+
     const container = $$('div', {
       className: 'execution-report-debug'
     });

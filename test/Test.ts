@@ -549,3 +549,15 @@ ExecutionReportResolvedPipelineSectionTest();
 
 import { ExecutionReportRankingModifiersTest } from './ui/RelevanceInspector/ExecutionReportRankingModifiersTest';
 ExecutionReportRankingModifiersTest();
+
+import { ExecutionReportQueryOverrideSectionTest } from './ui/RelevanceInspector/ExecutionReportQueryOverrideSectionTest';
+ExecutionReportQueryOverrideSectionTest();
+
+import { ExecutionReportAuthenticationSectionTest } from './ui/RelevanceInspector/ExecutionReportAuthenticationSectionTest';
+ExecutionReportAuthenticationSectionTest();
+
+import { ExecutionReportTest } from './ui/RelevanceInspector/ExecutionReportTest';
+ExecutionReportTest();
+
+import { RelevanceInspectorTest } from './ui/RelevanceInspector/RelevanceInspectorTest';
+RelevanceInspectorTest();

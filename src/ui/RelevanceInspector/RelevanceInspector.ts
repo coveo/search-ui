@@ -4,9 +4,8 @@ import { IComponentBindings } from '../Base/ComponentBindings';
 import { IAttributeChangedEventArg } from '../../models/Model';
 import { $$ } from '../../utils/Dom';
 import { ModalBox } from '../../ExternalModulesShim';
-import { QueryStateModel, ResultListEvents, DomUtils } from '../../Core';
+import { QueryStateModel, ResultListEvents, DomUtils, Logger } from '../../Core';
 import { RelevanceInspectorTabs } from './RelevanceInspectorTabs';
-
 import 'styling/_RelevanceInspector';
 import { ExecutionReport } from './ExecutionReport';
 import { AvailableFieldsTable } from './AvailableFieldsTable';
@@ -27,6 +26,7 @@ export class RelevanceInspector {
   private opened = false;
   private activeTab: string;
   private tabs: Record<string, IRelevanceInspectorTab>;
+  private modalBoxModule = ModalBox;
 
   constructor(public element: HTMLElement, public bindings: IComponentBindings) {
     $$(this.element).text('Relevance Inspector');
@@ -36,17 +36,18 @@ export class RelevanceInspector {
       (e, args: IAttributeChangedEventArg) => this.toggleFromState(args.value)
     );
     $$(this.element).on('click', () => this.open());
-    $$(this.bindings.root).on(ResultListEvents.newResultDisplayed, (e, args: IDisplayedNewResultEventArgs) => {
-      if (this.bindings.queryStateModel.get(QueryStateModel.attributesEnum.debug)) {
-        $$(args.item).addClass('coveo-with-inline-ranking-info');
-        if ($$(args.item).hasClass('coveo-table-layout')) {
-          $$(args.item).append(new InlineRankingInfo(args.result).build().el);
-        } else {
-          $$(args.item).prepend(new InlineRankingInfo(args.result).build().el);
-        }
-      }
-    });
+    $$(this.bindings.root).on(ResultListEvents.newResultDisplayed, (e, args: IDisplayedNewResultEventArgs) =>
+      this.handleNewResultDisplayed(args)
+    );
     this.bindings.queryStateModel.get(QueryStateModel.attributesEnum.debug) ? this.show() : this.hide();
+  }
+
+  public get modalBox() {
+    return this.modalBoxModule;
+  }
+
+  public set modalBox(modalBoxModule) {
+    this.modalBoxModule = modalBoxModule;
   }
 
   public hide() {
@@ -66,10 +67,25 @@ export class RelevanceInspector {
     const content = $$('div');
     const animation = DomUtils.getBasicLoadingAnimation();
     content.append(animation);
-    ModalBox.open(content.el, this.modalBoxOptions);
+    this.modalBox.open(content.el, this.modalBoxOptions);
     const rows = await this.buildTabs();
-    animation.remove();
-    content.append(rows.el);
+    if (rows) {
+      animation.remove();
+      content.append(rows.el);
+    } else {
+      this.modalBox.close();
+    }
+  }
+
+  private handleNewResultDisplayed(args: IDisplayedNewResultEventArgs) {
+    if (this.bindings.queryStateModel.get(QueryStateModel.attributesEnum.debug)) {
+      $$(args.item).addClass('coveo-with-inline-ranking-info');
+      if ($$(args.item).hasClass('coveo-table-layout')) {
+        $$(args.item).append(new InlineRankingInfo(args.result).build().el);
+      } else {
+        $$(args.item).prepend(new InlineRankingInfo(args.result).build().el);
+      }
+    }
   }
 
   private get modalBoxOptions() {
@@ -88,14 +104,30 @@ export class RelevanceInspector {
 
   private toggleFromState(stateValue: number) {
     stateValue != 0 ? this.show() : this.hide();
-    ModalBox.close();
+    this.modalBox.close();
   }
 
   private async buildTabs() {
+    const lastResults = this.bindings.queryController.getLastResults().results;
+    if (!lastResults || lastResults.length == 0) {
+      new Logger(this).error(
+        'Could not open Relevance Inspector because there is no results to display. Please execute a query beforehand',
+        lastResults
+      );
+      return;
+    }
+    if (!lastResults[0].rankingInfo) {
+      new Logger(this).error(
+        'Could not open Relevance Inspector because there is no ranking info returned on the results. Please execute a query in debug mode beforehad',
+        lastResults
+      );
+      return;
+    }
+
     const container = $$('div');
 
-    const rankingInfoTable = await new RankingInfoTable(this.bindings.queryController.getLastResults().results, this.bindings);
-    const metadataTable = await new MetaDataTable(this.bindings.queryController.getLastResults().results, this.bindings);
+    const rankingInfoTable = await new RankingInfoTable(lastResults, this.bindings);
+    const metadataTable = await new MetaDataTable(lastResults, this.bindings);
     const executionReport = await new ExecutionReport(this.bindings.queryController.getLastResults(), this.bindings);
     const availableFields = await new AvailableFieldsTable(this.bindings);
 
