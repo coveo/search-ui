@@ -471,7 +471,7 @@ export class Omnibox extends Component {
 
     this.magicBox.onclear = () => {
       this.updateQueryState();
-      if (this.options.triggerQueryOnClear) {
+      if (this.options.triggerQueryOnClear || this.options.enableSearchAsYouType) {
         this.triggerNewQuery(false, () => {
           this.usageAnalytics.logSearchEvent<IAnalyticsNoMeta>(analyticsActionCauseList.searchboxClear, {});
         });
@@ -768,7 +768,7 @@ export class Omnibox extends Component {
   private searchAsYouType(forceExecuteQuery = false) {
     this.clearSearchAsYouType();
     if (this.shouldExecuteQuery(true)) {
-      this.searchAsYouTypeTimeout = setTimeout(() => {
+      this.searchAsYouTypeTimeout = window.setTimeout(() => {
         if (this.suggestionShouldTriggerQuery() || forceExecuteQuery) {
           const suggestions = _.map(this.lastSuggestions, suggestion => suggestion.text);
           const index = _.indexOf(suggestions, this.magicBox.getWordCompletion());

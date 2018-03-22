@@ -7,6 +7,9 @@ import { Simulate } from '../Simulate';
 import { QueryBuilder } from '../../src/ui/Base/QueryBuilder';
 import { FakeResults } from '../Fake';
 import _ = require('underscore');
+import { Model } from '../../src/models/Model';
+import { QUERY_STATE_ATTRIBUTES } from '../../src/models/QueryStateModel';
+import { $$ } from '../../src/utils/Dom';
 
 export function RecommendationTest() {
   describe('Recommendation', () => {
@@ -18,11 +21,11 @@ export function RecommendationTest() {
     let store: CoveoAnalytics.HistoryStore;
 
     const isHidden = (test: Mock.IBasicComponentSetup<Recommendation>): boolean => {
-      return test.cmp.element.classList.contains('coveo-hidden');
+      return $$(test.cmp.element).hasClass('coveo-hidden');
     };
 
     beforeEach(() => {
-      mainSearchInterface = Mock.basicSearchInterfaceSetup(SearchInterface);
+      mainSearchInterface = Mock.basicSearchInterfaceSetup<SearchInterface>(SearchInterface);
       options = {
         mainSearchInterface: mainSearchInterface.env.root,
         userContext: {
@@ -70,6 +73,43 @@ export function RecommendationTest() {
       expect(mainSearchInterface.cmp.componentOptionsModel.getAttributes).toHaveBeenCalled();
       mainSearchInterface.cmp.componentOptionsModel.setMultiple({ resultLink: { alwaysOpenInNewWindow: true } });
       expect(mainSearchInterface.cmp.componentOptionsModel.getAttributes).toHaveBeenCalled();
+    });
+
+    describe('when propaging events', () => {
+      let recommendation: Recommendation;
+      beforeEach(() => {
+        mainSearchInterface.cmp.element.appendChild(test.cmp.element);
+        const div = $$('div').el;
+        new Mock.MockEnvironmentBuilder().withRoot(div);
+        recommendation = new Recommendation(div, options);
+      });
+
+      function addListenEventSpy(attributeName) {
+        const spy = jasmine.createSpy('spy');
+        const eventName = recommendation.getBindings().queryStateModel.getEventName(Model.eventTypes.change + attributeName);
+        const mainSearchInterfaceContainer = $$('div');
+        mainSearchInterfaceContainer.on(eventName, () => {
+          spy();
+        });
+        return { spy, eventName };
+      }
+
+      it('should prevent model events with atttributes from bubbling', () => {
+        const attributeName = QUERY_STATE_ATTRIBUTES.Q;
+        const { spy, eventName } = addListenEventSpy(attributeName);
+
+        $$(test.cmp.element).trigger(eventName);
+
+        expect(spy).not.toHaveBeenCalled();
+      });
+
+      it('should prevent model events without attributes from bubbling', () => {
+        const { spy, eventName } = addListenEventSpy('');
+
+        $$(test.cmp.element).trigger(eventName);
+
+        expect(spy).not.toHaveBeenCalled();
+      });
     });
 
     describe('when the mainInterface triggered a query', () => {

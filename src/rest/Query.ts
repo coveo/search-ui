@@ -174,10 +174,13 @@ export interface IQuery {
    */
   groupBy?: IGroupByRequest[];
   /**
-   * Setting this property to true will return more debugging information from both the index and the search API.
-   * Use this with care as this will negatively impact the performance of the query.
+   * Whether to include debug information from the Search API in the query response.
    *
-   * It should probably never be set to `true` in production mode...
+   * **Note:**
+   * > This debug information does not include ranking information.
+   *
+   * Setting this property to `true` can have an adverse effect on query performance, so it should always be left to
+   * `false` in a production environment.
    */
   debug?: boolean;
   timezone?: string;

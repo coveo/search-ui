@@ -67,13 +67,15 @@ export function SearchInterfaceTest() {
     });
 
     describe('usage analytics', () => {
-      let searchInterfaceDiv: HTMLDivElement;
-      let analyticsDiv: HTMLDivElement;
+      let searchInterfaceDiv: HTMLElement;
+      let analyticsDiv: HTMLElement;
 
       beforeEach(() => {
-        searchInterfaceDiv = document.createElement('div');
-        analyticsDiv = document.createElement('div');
-        analyticsDiv.className = 'CoveoAnalytics';
+        searchInterfaceDiv = $$('div').el;
+        analyticsDiv = $$('div', {
+          className: 'CoveoAnalytics',
+          'data-token': 'el-tokeno'
+        }).el;
       });
 
       afterEach(() => {
@@ -83,6 +85,7 @@ export function SearchInterfaceTest() {
 
       it('should initialize if found inside the root', () => {
         searchInterfaceDiv.appendChild(analyticsDiv);
+        analyticsDiv.setAttribute('data-token', 'el-tokeno');
         const searchInterface = new SearchInterface(searchInterfaceDiv);
         expect(searchInterface.usageAnalytics instanceof Coveo['LiveAnalyticsClient']).toBe(true);
       });

@@ -3,6 +3,10 @@ import { IResponsiveDropdownContent } from './ResponsiveDropdownContent';
 import { $$, Dom } from '../../../utils/Dom';
 import { EventsUtils } from '../../../utils/EventsUtils';
 import * as _ from 'underscore';
+export enum ResponsiveDropdownEvent {
+  OPEN = 'responsiveDropdownOpen',
+  CLOSE = 'responsiveDropdownClose'
+}
 
 type HandlerCall = { handler: Function; context: any };
 
@@ -48,6 +52,7 @@ export class ResponsiveDropdown {
       handlerCall.handler.apply(handlerCall.context);
     });
     this.showPopupBackground();
+    $$(this.dropdownHeader.element).trigger(ResponsiveDropdownEvent.OPEN);
   }
 
   public close() {
@@ -58,8 +63,8 @@ export class ResponsiveDropdown {
 
     this.dropdownHeader.close();
     this.dropdownContent.hideDropdown();
-
     this.hidePopupBackground();
+    $$(this.dropdownHeader.element).trigger(ResponsiveDropdownEvent.CLOSE);
   }
 
   public disablePopupBackground() {

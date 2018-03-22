@@ -3,6 +3,7 @@ import { IErrorResponse } from '../../src/rest/EndpointCaller';
 import { FakeResults } from '../Fake';
 import { IAPIAnalyticsSearchEventsResponse } from '../../src/rest/APIAnalyticsSearchEventsResponse';
 import { IAPIAnalyticsEventResponse } from '../../src/rest/APIAnalyticsEventResponse';
+import { AccessToken } from '../../src/rest/AccessToken';
 export function AnalyticsEndpointTest() {
   function buildUrl(endpoint: AnalyticsEndpoint, path: string) {
     return endpoint.options.serviceUrl + '/rest/' + AnalyticsEndpoint.DEFAULT_ANALYTICS_VERSION + path;
@@ -14,7 +15,7 @@ export function AnalyticsEndpointTest() {
     beforeEach(() => {
       endpoint = new AnalyticsEndpoint({
         serviceUrl: 'foo.com',
-        token: 'token',
+        accessToken: new AccessToken('token'),
         organization: 'organization'
       });
       jasmine.Ajax.install();
@@ -132,11 +133,18 @@ export function AnalyticsEndpointTest() {
         })
         .then(() => done());
 
-      expect(jasmine.Ajax.requests.mostRecent().url).toBe(
-        buildUrl(endpoint, '/stats/topQueries?org=organization&access_token=token&pageSize=10&queryText=foobar')
-      );
-      expect(jasmine.Ajax.requests.mostRecent().method).toBe('GET');
-      jasmine.Ajax.requests.mostRecent().respondWith({
+      const mostRecentRequest = jasmine.Ajax.requests.mostRecent();
+      const mostRecentUrl = mostRecentRequest.url;
+
+      expect(mostRecentUrl).toContain('/topQueries');
+      expect(mostRecentUrl).toContain('org=organization');
+      expect(mostRecentUrl).toContain('access_token=token');
+      expect(mostRecentUrl).toContain('pageSize=10');
+      expect(mostRecentUrl).toContain('queryText=foobar');
+
+      expect(mostRecentRequest.method).toBe('GET');
+
+      mostRecentRequest.respondWith({
         status: 200,
         response: ['foo', 'bar', 'foobar']
       });

@@ -20,7 +20,8 @@ import 'styling/_Quickview';
 import { SVGIcons } from '../../utils/SVGIcons';
 import { SVGDom } from '../../utils/SVGDom';
 import { analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
-import { Utils } from '../../UtilsModules';
+import { Utils } from '../../utils/Utils';
+import { TemplateComponentOptions } from '../Base/TemplateComponentOptions';
 
 export interface IQuickviewOptions {
   title?: string;
@@ -155,7 +156,7 @@ export class Quickview extends Component {
      *
      * If you do not specify a custom content template, the component uses its default template.
      */
-    contentTemplate: ComponentOptions.buildTemplateOption({
+    contentTemplate: TemplateComponentOptions.buildTemplateOption({
       selectorAttr: 'data-template-selector',
       idAttr: 'data-template-id'
     }),
@@ -198,7 +199,7 @@ export class Quickview extends Component {
         }
         const id = element.getAttribute('data-loading-animation-template-id');
         if (id != null) {
-          const loadingAnimationTemplate = ComponentOptions.loadResultTemplateFromId(id);
+          const loadingAnimationTemplate = TemplateComponentOptions.loadResultTemplateFromId(id);
           if (loadingAnimationTemplate) {
             return loadingAnimationTemplate.instantiateToElement(undefined, {
               checkCondition: false

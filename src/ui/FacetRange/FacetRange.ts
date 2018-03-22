@@ -146,7 +146,7 @@ export class FacetRange extends Facet implements IComponentBindings {
     this.options.enableMoreLess = false;
 
     if (this.options.valueCaption == null && this.options.dateField == true) {
-      this.options.valueCaption = 'date';
+      this.options.valueCaption = 'dateTime';
     }
   }
 

@@ -19,6 +19,7 @@ import * as Globalize from 'globalize';
 import * as _ from 'underscore';
 import { exportGlobally } from '../../GlobalExports';
 import 'styling/_Matrix';
+import { TemplateComponentOptions } from '../Base/TemplateComponentOptions';
 
 export interface IMatrixOptions {
   title?: string;
@@ -289,7 +290,7 @@ export class Matrix extends Component {
      * <div class='CoveoMatrix' data-template-selector='.templateSelector'></div>
      * ```
      */
-    previewTemplate: ComponentOptions.buildTemplateOption()
+    previewTemplate: TemplateComponentOptions.buildTemplateOption()
   };
 
   /**
@@ -836,7 +837,7 @@ export class Matrix extends Component {
 
   private handleHoverIn(rowNumber: number, columnNumber: number) {
     if (this.isHoverWorkingOnRow(rowNumber) && this.isHoverWorkingOnColumn(columnNumber)) {
-      this.previewTimeout = setTimeout(() => {
+      this.previewTimeout = window.setTimeout(() => {
         this.displayResultsPreview(rowNumber, columnNumber);
       }, this.options.previewDelay);
     }
