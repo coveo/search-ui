@@ -115,6 +115,7 @@ export class InitializationPlaceholder {
   public static NUMBER_OF_RESULTS = 10;
   public static NUMBER_OF_RESULTS_RECOMMENDATION = 5;
   public static INITIALIZATION_CLASS = 'coveo-during-initialization';
+  public static AFTER_INITIALIZATION_CLASS = 'coveo-after-initialization';
 
   private eventToRemovePlaceholder = InitializationEvents.afterComponentsInitialization;
 
@@ -129,6 +130,7 @@ export class InitializationPlaceholder {
     $$(this.root).addClass(InitializationPlaceholder.INITIALIZATION_CLASS);
     $$(this.root).one(this.eventToRemovePlaceholder, () => {
       $$(this.root).removeClass(InitializationPlaceholder.INITIALIZATION_CLASS);
+      $$(this.root).addClass(InitializationPlaceholder.AFTER_INITIALIZATION_CLASS);
     });
     return this;
   }
@@ -312,10 +314,7 @@ export class InitializationPlaceholder {
   }
 
   private getAllFacetsElements(): HTMLElement[] {
-    let facetElements = $$(this.root).findAll('.CoveoFacet');
-    facetElements = facetElements.concat($$(this.root).findAll('.CoveoFacetRange'));
-    facetElements = facetElements.concat($$(this.root).findAll('.CoveoFacetSlider'));
-    facetElements = facetElements.concat($$(this.root).findAll('.CoveoHierarchicalFacet'));
-    return facetElements;
+    const toSelect = ['.CoveoFacet', '.CoveoFacetRange', '.CoveoTimespanFacet', '.CoveoFacetSlider', '.CoveoHierarchicalFacet'].join(', ');
+    return $$(this.root).findAll(toSelect);
   }
 }

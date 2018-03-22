@@ -128,6 +128,31 @@ export class Utils {
     });
   }
 
+  static safeEncodeURIComponent(rawString: string) {
+    // yiiip...
+    // Explanation : https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/encodeURIComponent
+    // Solution : https://stackoverflow.com/a/17109094
+    // Basically some unicode character (low-high surrogate) will throw an "invalid malformed URI" error when being encoded as an URI component, and the pair of character is incomplete.
+    // This simply removes those pesky characters
+    if (_.isString(rawString)) {
+      return encodeURIComponent(
+        rawString
+          .replace(/[\uD800-\uDBFF](?![\uDC00-\uDFFF])/g, '')
+          .split('')
+          .reverse()
+          .join('')
+          .replace(/[\uDC00-\uDFFF](?![\uD800-\uDBFF])/g, '')
+          .split('')
+          .reverse()
+          .join('')
+      );
+    } else {
+      // If the passed value is not a string, we probably don't want to do anything here...
+      // The base browser function should be resilient enough
+      return encodeURIComponent(rawString);
+    }
+  }
+
   static arrayEqual(array1: any[], array2: any[], sameOrder: boolean = true): boolean {
     if (sameOrder) {
       return _.isEqual(array1, array2);
@@ -229,7 +254,7 @@ export class Utils {
         previous = now;
         result = func.apply(context, args);
       } else if (!timeout && options.trailing !== false) {
-        timeout = setTimeout(later, remaining);
+        timeout = window.setTimeout(later, remaining);
       }
       return result;
     };
@@ -247,7 +272,7 @@ export class Utils {
       _.each(src, (e, i, obj) => {
         if (typeof target[i] === 'undefined') {
           toReturn[i] = <any>e;
-        } else if (typeof e === 'object') {
+        } else if (typeof e === 'object' && !_.isElement(e)) {
           toReturn[i] = Utils.extendDeep(target[i], e);
         } else {
           if (target.indexOf(e) === -1) {
@@ -256,7 +281,7 @@ export class Utils {
         }
       });
     } else {
-      if (target && typeof target === 'object') {
+      if (target && typeof target === 'object' && !_.isElement(target)) {
         _.each(_.keys(target), key => {
           toReturn[key] = target[key];
         });
@@ -290,7 +315,7 @@ export class Utils {
     let stackTraceTimeout: number;
     return function(...args: any[]) {
       if (timeout == null) {
-        timeout = setTimeout(() => {
+        timeout = window.setTimeout(() => {
           timeout = null;
         }, wait);
         stackTraceTimeout = setTimeout(() => {
@@ -299,7 +324,7 @@ export class Utils {
         });
       } else if (stackTraceTimeout == null) {
         clearTimeout(timeout);
-        timeout = setTimeout(() => {
+        timeout = window.setTimeout(() => {
           func.apply(this, args);
           timeout = null;
         }, wait);

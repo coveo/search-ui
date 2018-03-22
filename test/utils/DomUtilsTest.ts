@@ -1,9 +1,10 @@
 import { DomUtils } from '../../src/utils/DomUtils';
 import { FakeResults } from '../Fake';
 import { MockEnvironmentBuilder } from '../MockEnvironment';
-import { $$, load, get } from '../Test';
+import { load, get } from '../Test';
 import { IQueryResult } from '../../src/rest/QueryResult';
 import { LazyInitialization } from '../../src/ui/Base/Initialization';
+import { $$ } from '../../src/utils/Dom';
 
 declare const Coveo;
 
@@ -22,6 +23,14 @@ export function DomUtilsTest() {
       await load('ResultLink');
       const link = $$(header).find('.CoveoResultLink');
       expect($$(get(link).element).text()).toEqual('foo');
+      done();
+    });
+
+    it('should use the result title as the quickview title when no title is passed', async done => {
+      const header = DomUtils.getQuickviewHeader(fakeResult, { title: undefined, showDate: true }, env.build());
+      await load('ResultLink');
+      const link = $$(header).find('.CoveoResultLink');
+      expect($$(get(link).element).text()).toEqual(fakeResult.title);
       done();
     });
 

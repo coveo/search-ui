@@ -98,10 +98,14 @@ export class DomUtils {
     const clickableLinkElement = $$('a', { className: 'coveo-quickview-pop-up-reminder' });
 
     const toLoad = Coveo['Salesforce'] ? 'SalesforceResultLink' : 'ResultLink';
+    const resultForResultLink = { ...result };
+    if (options.title) {
+      resultForResultLink.title = options.title;
+    }
 
     load(toLoad)
       .then(() => {
-        new Coveo[toLoad](clickableLinkElement.el, undefined, bindings, { ...result, title: options.title });
+        new Coveo[toLoad](clickableLinkElement.el, undefined, bindings, resultForResultLink);
       })
       .catch(err => {
         const logger = new Logger(this);
@@ -114,9 +118,5 @@ export class DomUtils {
       });
 
     return header;
-  }
-
-  static getCurrentScript(): HTMLScriptElement {
-    return <HTMLScriptElement>document.currentScript;
   }
 }

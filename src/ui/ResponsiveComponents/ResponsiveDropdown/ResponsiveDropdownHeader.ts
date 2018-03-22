@@ -1,5 +1,4 @@
 import { Dom, $$ } from '../../../utils/Dom';
-
 export class ResponsiveDropdownHeader {
   public static DEFAULT_CSS_CLASS_NAME = 'coveo-dropdown-header';
   public static ACTIVE_HEADER_CSS_CLASS_NAME: string = 'coveo-dropdown-header-active';

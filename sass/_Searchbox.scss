@@ -45,7 +45,7 @@
 .CoveoSearchInterface.coveo-waiting-for-query {
   .CoveoSearchbox {
     margin: 0;
-    @include mediaSelector(480) {
+    @include smallScreenWidth {
       margin: 0 20px;
     }
   }

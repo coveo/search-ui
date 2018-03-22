@@ -36,6 +36,12 @@ gulp.task(
   shell.task(['node --max_old_space_size=8192 node_modules/webpack/bin/webpack.js --env minimize'])
 );
 
+gulp.task(
+  'analyze',
+  ['addEolDependencies', 'setNodeProdEnv'],
+  shell.task(['node --max_old_space_size=8192 node_modules/webpack/bin/webpack.js --env minimize --env analyze'])
+);
+
 gulp.task('deprecatedDependencies', () => {
   gulp
     .src('./src/Dependencies.js')

@@ -148,7 +148,7 @@ export function FacetSearchParametersTest() {
           spy.and.returnValue(builder.build());
           const params = new FacetSearchParameters(mockFacet);
           expect(params.getQuery().enableQuerySyntax).toBe(true);
-          expect(params.getQuery().q).toBe('');
+          expect(params.getQuery().q).toBe('<@- @uri -@>');
           expect(params.getQuery().aq).toBe('@advanced');
           expect(params.getQuery().cq).toBe('@constant');
         });

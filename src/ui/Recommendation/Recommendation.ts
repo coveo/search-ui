@@ -139,7 +139,7 @@ export class Recommendation extends SearchInterface implements IComponentBinding
     /**
      * Specifies whether to hide the Recommendations component if no result or recommendation is available.
      *
-     * Default value is `false`.
+     * Default value is `true`.
      */
     hideIfNoResults: ComponentOptions.buildBooleanOption({ defaultValue: true }),
     autoTriggerQuery: ComponentOptions.buildBooleanOption({
@@ -212,6 +212,7 @@ export class Recommendation extends SearchInterface implements IComponentBinding
    */
   constructor(public element: HTMLElement, public options: IRecommendationOptions = {}, public analyticsOptions = {}, _window = window) {
     super(element, ComponentOptions.initComponentOptions(element, Recommendation, options), analyticsOptions, _window);
+    this.element.style.display = '';
     if (!this.options.id) {
       this.generateDefaultId();
     }
@@ -286,10 +287,10 @@ export class Recommendation extends SearchInterface implements IComponentBinding
     // add a mechanism that waits for the full search interface to be correctly initialized
     // then, set the needed values on the component options model.
     let searchInterfaceComponent = <SearchInterface>get(this.options.mainSearchInterface, SearchInterface);
-    let alreadyInitialized = searchInterfaceComponent != null;
+    const alreadyInitialized = searchInterfaceComponent != null;
 
-    let onceInitialized = () => {
-      let mainSearchInterfaceOptionsModel = <ComponentOptionsModel>searchInterfaceComponent.getBindings().componentOptionsModel;
+    const onceInitialized = () => {
+      const mainSearchInterfaceOptionsModel = <ComponentOptionsModel>searchInterfaceComponent.getBindings().componentOptionsModel;
       this.componentOptionsModel.setMultiple(mainSearchInterfaceOptionsModel.getAttributes());
       $$(this.options.mainSearchInterface).on(this.componentOptionsModel.getEventName(MODEL_EVENTS.ALL), () => {
         this.componentOptionsModel.setMultiple(mainSearchInterfaceOptionsModel.getAttributes());
@@ -387,16 +388,19 @@ export class Recommendation extends SearchInterface implements IComponentBinding
       return event;
     }
   ) {
-    for (let event in eventType) {
+    for (const event in eventType) {
       $$(this.root).on(eventName(event), (e: Event) => e.stopPropagation());
     }
   }
 
   private getAllModelEvents() {
-    let events = {};
+    const events = {};
+    const queryStateModel = this.getBindings().queryStateModel;
     _.each(_.values(Model.eventTypes), event => {
+      const eventName = queryStateModel.getEventName(event);
+      events[eventName] = eventName;
       _.each(_.values(QUERY_STATE_ATTRIBUTES), attribute => {
-        let eventName = this.getBindings().queryStateModel.getEventName(event + attribute);
+        const eventName = this.queryStateModel.getEventName(event + attribute);
         events[eventName] = eventName;
       });
     });

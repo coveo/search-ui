@@ -106,6 +106,7 @@ export class MockEnvironmentBuilder {
     this.searchInterface.queryStateModel = this.queryStateModel;
     this.searchInterface.componentStateModel = this.componentStateModel;
     this.searchInterface.componentOptionsModel = this.componentOptionsModel;
+    this.searchInterface.element = this.root;
 
     if (!this.searchEndpoint) {
       this.searchEndpoint = mockSearchEndpoint();
@@ -199,6 +200,7 @@ export function mockWindow(): Window {
       mockWindow.location.hash = '#' + mockWindow.location.hash;
     }
   };
+  spyOn(mockWindow.location, 'replace').and.callThrough();
   mockWindow.addEventListener = jasmine.createSpy('addEventListener');
   mockWindow.removeEventListener = jasmine.createSpy('removeEventListener');
   mockWindow.dispatchEvent = jasmine.createSpy('dispatchEvent');

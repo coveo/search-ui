@@ -13,6 +13,7 @@ import * as _ from 'underscore';
 import { exportGlobally } from '../../GlobalExports';
 
 import 'styling/_ResultAttachments';
+import { TemplateComponentOptions } from '../Base/TemplateComponentOptions';
 
 export interface IResultAttachmentsOptions {
   resultTemplate?: Template;
@@ -65,7 +66,7 @@ export class ResultAttachments extends Component {
      *
      * If you do not specify a custom folding template, the component uses the default result attachment template.
      */
-    resultTemplate: ComponentOptions.buildTemplateOption({
+    resultTemplate: TemplateComponentOptions.buildTemplateOption({
       defaultFunction: e => new DefaultResultAttachmentTemplate()
     }),
 
@@ -96,7 +97,7 @@ export class ResultAttachments extends Component {
      * By default, this option uses the same template you specify for the
      * [`resultTemplate`]{@link ResultAttachments.options.resultTemplate} option.
      */
-    subResultTemplate: ComponentOptions.buildTemplateOption({
+    subResultTemplate: TemplateComponentOptions.buildTemplateOption({
       postProcessing: (value: Template, options: IResultAttachmentsOptions) => (value != null ? value : options.resultTemplate)
     }),
 

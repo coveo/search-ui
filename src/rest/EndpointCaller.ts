@@ -6,6 +6,7 @@ import { DeviceUtils } from '../utils/DeviceUtils';
 import { Utils } from '../utils/Utils';
 import { JQueryUtils } from '../utils/JQueryutils';
 import * as _ from 'underscore';
+import { UrlUtils } from '../utils/UrlUtils';
 
 declare const XDomainRequest;
 
@@ -224,6 +225,7 @@ export class EndpointCaller {
       method: params.method
     };
     requestInfo.headers = this.buildRequestHeaders(requestInfo);
+
     if (_.isFunction(this.options.requestModifier)) {
       requestInfo = this.options.requestModifier(requestInfo);
     }
@@ -358,7 +360,7 @@ export class EndpointCaller {
       // XDomainRequest don't support including stuff in the header, so we must
       // put the access token in the query string if we have one.
       if (this.options.accessToken) {
-        queryString.push('access_token=' + encodeURIComponent(this.options.accessToken));
+        queryString.push('access_token=' + Utils.safeEncodeURIComponent(this.options.accessToken));
       }
 
       const xDomainRequest = new XDomainRequest();
@@ -407,7 +409,7 @@ export class EndpointCaller {
       // JSONP don't support including stuff in the header, so we must
       // put the access token in the query string if we have one.
       if (this.options.accessToken) {
-        queryString.push('access_token=' + encodeURIComponent(this.options.accessToken));
+        queryString.push('access_token=' + Utils.safeEncodeURIComponent(this.options.accessToken));
       }
 
       queryString.push('callback=?');
@@ -440,9 +442,9 @@ export class EndpointCaller {
     _.each(json, (value, key) => {
       if (value != null) {
         if (_.isObject(value)) {
-          result.push(key + '=' + encodeURIComponent(JSON.stringify(value)));
+          result.push(key + '=' + Utils.safeEncodeURIComponent(JSON.stringify(value)));
         } else {
-          result.push(key + '=' + encodeURIComponent(value.toString()));
+          result.push(key + '=' + Utils.safeEncodeURIComponent(value.toString()));
         }
       }
     });
@@ -481,12 +483,11 @@ export class EndpointCaller {
     error(queryError);
   }
 
-  private combineUrlAndQueryString(url: String, queryString: string[]): string {
-    let questionMark = '?';
-    if (url.match(/\?$/)) {
-      questionMark = '';
-    }
-    return url + (queryString.length > 0 ? questionMark + queryString.join('&') : '');
+  private combineUrlAndQueryString(url: string, queryString: string[]): string {
+    return UrlUtils.normalizeAsString({
+      paths: [url],
+      queryAsString: queryString
+    });
   }
 
   private isXDomainRequestSupported(): boolean {

@@ -460,6 +460,9 @@ PublicPathUtilsTest();
 import { DomUtilsTest } from './utils/DomUtilsTest';
 DomUtilsTest();
 
+import { UtilsTest } from './utils/UtilsTest';
+UtilsTest();
+
 import { CheckboxTest } from './ui/CheckboxTest';
 CheckboxTest();
 
@@ -489,3 +492,12 @@ SimpleFilterTest();
 
 import { DeviceUtilsTest } from './utils/DeviceUtilsTest';
 DeviceUtilsTest();
+
+import { TimespanFacetTest } from './ui/TimespanFacetTest';
+TimespanFacetTest();
+
+import { UrlUtilsTest } from './utils/UrlUtilsTest';
+UrlUtilsTest();
+
+import { AccessTokenTest } from './rest/AccessTokenTest';
+AccessTokenTest();

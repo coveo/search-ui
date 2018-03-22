@@ -170,6 +170,21 @@ export function InitializationTest() {
       expect(dummyCmp).toHaveBeenCalled();
     });
 
+    it('allows to registerAutoCreateComponent with aliases', () => {
+      const aliasedComponent: any = jasmine.createSpy('aliasedComponent');
+      aliasedComponent.ID = 'OriginalId';
+      aliasedComponent.aliases = ['AliasedId'];
+
+      const dummyElem = $$('div', { className: 'CoveoAliasedId' });
+      $$(root).append(dummyElem.el);
+
+      Initialization.registerAutoCreateComponent(aliasedComponent);
+      Initialization.initializeFramework(root, searchInterfaceOptions, () => {
+        return Initialization.initSearchInterface(root, searchInterfaceOptions);
+      });
+      expect(aliasedComponent).toHaveBeenCalled();
+    });
+
     it('allows to check if isComponentClassIdRegistered', () => {
       const dummyCmp: any = () => {};
       dummyCmp.ID = 'CheckRegistration';
@@ -290,12 +305,12 @@ export function InitializationTest() {
       Initialization.monkeyPatchComponentMethod('Querybox.submit', queryBox, patch);
       (<Querybox>Component.get(queryBox)).submit();
       expect(patch).toHaveBeenCalled();
+    });
 
-      it('allows to determine if a top level method is already registed', () => {
-        expect(Initialization.isNamedMethodRegistered('get')).toBe(true);
-        expect(Initialization.isNamedMethodRegistered('executeQuery')).toBe(true);
-        expect(Initialization.isNamedMethodRegistered('does not exist')).toBe(false);
-      });
+    it('allows to determine if a top level method is already registed', () => {
+      expect(Initialization.isNamedMethodRegistered('get')).toBe(true);
+      expect(Initialization.isNamedMethodRegistered('executeQuery')).toBe(true);
+      expect(Initialization.isNamedMethodRegistered('does not exist')).toBe(false);
     });
 
     it("should allow to init a box interface (and throw because it's only used in salesforce)", done => {

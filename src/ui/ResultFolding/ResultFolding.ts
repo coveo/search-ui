@@ -17,6 +17,7 @@ import { analyticsActionCauseList, IAnalyticsDocumentViewMeta } from '../Analyti
 import 'styling/_ResultFolding';
 import { SVGIcons } from '../../utils/SVGIcons';
 import { SVGDom } from '../../utils/SVGDom';
+import { TemplateComponentOptions } from '../Base/TemplateComponentOptions';
 
 export interface IResultFoldingOptions {
   resultTemplate?: Template;
@@ -73,7 +74,7 @@ export class ResultFolding extends Component {
      *
      * If you do not specify a custom folding template, the component uses the default result folding template.
      */
-    resultTemplate: ComponentOptions.buildTemplateOption({ defaultFunction: () => new DefaultFoldingTemplate() }),
+    resultTemplate: TemplateComponentOptions.buildTemplateOption({ defaultFunction: () => new DefaultFoldingTemplate() }),
 
     /**
      * Specifies the caption to display at the top of the child results when the folding result set is not expanded.

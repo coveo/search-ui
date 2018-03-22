@@ -12,7 +12,7 @@ import { exportGlobally } from '../../GlobalExports';
 import { get } from '../Base/RegisteredNamedMethods';
 import { SVGIcons } from '../../utils/SVGIcons';
 import { SVGDom } from '../../utils/SVGDom';
-import { Utils } from '../../UtilsModules';
+import { Utils } from '../../utils/Utils';
 
 export interface IYouTubeThumbnailOptions {
   width: string;
@@ -153,7 +153,7 @@ export class YouTubeThumbnail extends Component {
 
     this.modalbox = this.ModalBox.open(div.el, {
       overlayClose: true,
-      title: DomUtils.getQuickviewHeader(this.result, { showDate: true, title: this.result.title }, this.bindings).el.outerHTML,
+      title: DomUtils.getQuickviewHeader(this.result, { showDate: true, title: this.result.title }, this.bindings).el,
       className: 'coveo-youtube-player',
       validation: () => true,
       body: this.element.ownerDocument.body,

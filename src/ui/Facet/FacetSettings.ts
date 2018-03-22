@@ -35,7 +35,6 @@ export class FacetSettings extends FacetSort {
   private includedStateAttribute: string;
   private excludedStateAttribute: string;
   private operatorStateAttribute: string;
-  private settingsIcon: HTMLElement;
   private settingsButton: HTMLElement;
   private directionSection: HTMLElement[];
   private saveStateSection: HTMLElement;
@@ -61,11 +60,8 @@ export class FacetSettings extends FacetSort {
       className: 'coveo-facet-header-settings',
       title: l('Settings')
     }).el;
-
-    this.settingsIcon = $$('span', { className: 'coveo-facet-settings-more' }).el;
-    this.settingsIcon.innerHTML = SVGIcons.icons.more;
-    SVGDom.addClassToSVGInContainer(this.settingsIcon, 'coveo-facet-settings-more-svg');
-    this.settingsButton.appendChild(this.settingsIcon);
+    this.settingsButton.innerHTML = SVGIcons.icons.more;
+    SVGDom.addClassToSVGInContainer(this.settingsButton, 'coveo-facet-settings-more-svg');
 
     this.settingsPopup = $$('div', { className: 'coveo-facet-settings-popup' }).el;
 
@@ -446,7 +442,7 @@ export class FacetSettings extends FacetSort {
     $$(this.settingsButton).on('click', (e: Event) => this.handleClickSettingsButtons(e, sortSection));
 
     const mouseLeave = () => {
-      closeTimeout = setTimeout(() => {
+      closeTimeout = window.setTimeout(() => {
         this.close();
       }, 300);
     };
@@ -454,9 +450,9 @@ export class FacetSettings extends FacetSort {
       clearTimeout(closeTimeout);
     };
 
-    $$(this.settingsIcon).on('mouseleave', mouseLeave);
+    $$(this.settingsButton).on('mouseleave', mouseLeave);
     $$(this.settingsPopup).on('mouseleave', mouseLeave);
-    $$(this.settingsIcon).on('mouseenter', mouseEnter);
+    $$(this.settingsButton).on('mouseenter', mouseEnter);
     $$(this.settingsPopup).on('mouseenter', mouseEnter);
   }
 
