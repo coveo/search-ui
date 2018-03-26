@@ -119,7 +119,7 @@ export function FacetSettingsTest() {
       facetSettings = new FacetSettings(['score', 'alphaascending', 'alphadescending'], facet);
       facetSettings.build();
       facetSettings.open();
-      let ascendingSection = $$(facetSettings.settingsPopup).find('.coveo-facet-settings-item[data-direction="ascending"]');
+      const ascendingSection = $$(facetSettings.settingsPopup).find('.coveo-facet-settings-item[data-direction="ascending"]');
       expect($$(ascendingSection).hasClass('coveo-selected')).toBe(false);
       $$(facetSettings.getSortItem('alphaascending')).trigger('click');
       expect($$(ascendingSection).hasClass('coveo-selected')).toBe(true);
@@ -129,10 +129,39 @@ export function FacetSettingsTest() {
       facetSettings = new FacetSettings(['alphaascending', 'alphadescending', 'score'], facet);
       facetSettings.build();
       facetSettings.open();
-      let ascendingSection = $$(facetSettings.settingsPopup).find('.coveo-facet-settings-item[data-direction="ascending"]');
+      const ascendingSection = $$(facetSettings.settingsPopup).find('.coveo-facet-settings-item[data-direction="ascending"]');
       expect($$(ascendingSection).hasClass('coveo-selected')).toBe(true);
       $$(facetSettings.getSortItem('score')).trigger('click');
       expect($$(ascendingSection).hasClass('coveo-selected')).toBe(false);
+    });
+
+    describe('when closing the popup', () => {
+      beforeEach(() => {
+        facetSettings = new FacetSettings(['foo', 'bar'], facet);
+        spyOn(facetSettings, 'close');
+        facetSettings.build();
+        facetSettings.open();
+      });
+
+      it('should close the after a delay on mouseleave', done => {
+        $$(facetSettings.button).trigger('mouseleave');
+        setTimeout(() => {
+          expect(facetSettings.close).toHaveBeenCalled();
+          done();
+        }, 400);
+      });
+
+      it('should not close if there is a mouseenter following a mouseleave', done => {
+        $$(facetSettings.button).trigger('mouseleave');
+        setTimeout(() => {
+          $$(facetSettings.button).trigger('mouseenter');
+        }, 50);
+
+        setTimeout(() => {
+          expect(facetSettings.close).not.toHaveBeenCalled();
+          done();
+        }, 400);
+      });
     });
   });
 }

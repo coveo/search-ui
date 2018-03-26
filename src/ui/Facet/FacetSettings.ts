@@ -13,6 +13,7 @@ import * as _ from 'underscore';
 import 'styling/_FacetSettings';
 import { SVGIcons } from '../../utils/SVGIcons';
 import { SVGDom } from '../../utils/SVGDom';
+import { InitializationEvents } from '../../events/InitializationEvents';
 
 export interface IFacetSettingsKlass {
   new (sorts: string[], facet: Facet): FacetSettings;
@@ -35,7 +36,7 @@ export class FacetSettings extends FacetSort {
   private includedStateAttribute: string;
   private excludedStateAttribute: string;
   private operatorStateAttribute: string;
-  private settingsButton: HTMLElement;
+  public settingsButton: HTMLElement;
   private directionSection: HTMLElement[];
   private saveStateSection: HTMLElement;
   private clearStateSection: HTMLElement;
@@ -43,7 +44,7 @@ export class FacetSettings extends FacetSort {
   private showSection: HTMLElement;
   private sortSection: { element: HTMLElement; sortItems: HTMLElement[] };
   private customSortDirectionChange = false;
-
+  private onDocumentClick: (e: Event) => void;
   private enabledSortsIgnoreRenderBecauseOfPairs: IFacetSortDescription[] = [];
 
   constructor(public sorts: string[], public facet: Facet) {
@@ -183,6 +184,10 @@ export class FacetSettings extends FacetSort {
           .toLowerCase() == sortName.replace('ascending|descending', '').toLowerCase()
       );
     });
+  }
+
+  public get button() {
+    return this.settingsButton;
   }
 
   private buildSortSection() {
@@ -382,6 +387,7 @@ export class FacetSettings extends FacetSort {
   }
 
   private handleClickSettingsButtons(event: Event, sortSection?: { element: HTMLElement; sortItems: HTMLElement[] }) {
+    event.stopPropagation();
     if (!Utils.isNullOrUndefined(this.settingsPopup.parentElement)) {
       this.close();
     } else {
@@ -441,7 +447,7 @@ export class FacetSettings extends FacetSort {
     let closeTimeout: number;
     $$(this.settingsButton).on('click', (e: Event) => this.handleClickSettingsButtons(e, sortSection));
 
-    const mouseLeave = () => {
+    const mouseLeave = e => {
       closeTimeout = window.setTimeout(() => {
         this.close();
       }, 300);
@@ -449,6 +455,10 @@ export class FacetSettings extends FacetSort {
     const mouseEnter = () => {
       clearTimeout(closeTimeout);
     };
+
+    this.onDocumentClick = (e: Event) => this.close();
+    document.addEventListener('click', (e: Event) => this.onDocumentClick(e));
+    $$(this.facet.root).on(InitializationEvents.nuke, () => this.handleNuke());
 
     $$(this.settingsButton).on('mouseleave', mouseLeave);
     $$(this.settingsPopup).on('mouseleave', mouseLeave);
@@ -534,5 +544,9 @@ export class FacetSettings extends FacetSort {
     if (!Utils.isNullOrUndefined(toAppend)) {
       this.settingsPopup.appendChild(toAppend);
     }
+  }
+
+  private handleNuke() {
+    document.removeEventListener('click', this.onDocumentClick);
   }
 }
