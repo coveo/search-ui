@@ -30,7 +30,7 @@ export interface IFacetState {
  */
 export class FacetSettings extends FacetSort {
   public loadedFromSettings: { [attribute: string]: any };
-  private settingsPopup: HTMLElement;
+  public settingsPopup: HTMLElement;
 
   private facetStateLocalStorage: LocalStorageUtils<IFacetState>;
   private includedStateAttribute: string;
