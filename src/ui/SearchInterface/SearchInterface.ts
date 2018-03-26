@@ -32,6 +32,7 @@ import { ResponsiveComponents } from '../ResponsiveComponents/ResponsiveComponen
 import { Context, IPipelineContextProvider } from '../PipelineContext/PipelineGlobalExports';
 import { InitializationPlaceholder } from '../Base/InitializationPlaceholder';
 import { Debug } from '../Debug/Debug';
+import { FacetValueStateHandler } from './FacetValueStateHandler';
 
 import * as fastclick from 'fastclick';
 import * as jstz from 'jstimezonedetect';
@@ -41,7 +42,6 @@ import 'styling/Globals';
 import 'styling/_SearchInterface';
 import 'styling/_SearchModalBox';
 import 'styling/_SearchButton';
-import { FacetValueStateHandler } from './FacetValueStateHandler';
 
 export interface ISearchInterfaceOptions {
   enableHistory?: boolean;

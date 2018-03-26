@@ -87,16 +87,23 @@ export class FacetValueSuggestions extends Component {
 
     /**
      * Specifies whether to use query suggestions as keywords to get facet values suggestions.
+     *
+     * Default value is `true`.
      */
     useQuerySuggestions: ComponentOptions.buildBooleanOption({ defaultValue: true }),
 
     /**
      * Specifies whether to use the current value from the search box to get facet values suggestions.
+     *
+     * Default value is `false`.
      */
     useValueFromSearchbox: ComponentOptions.buildBooleanOption({ defaultValue: false }),
 
     /**
      * Specifies whether to display the number of results in the suggestion.
+     *
+     * Default value is `false`.
+     *
      * **Note:**
      * The number of results is an estimate.
      *
@@ -344,7 +351,11 @@ export class FacetValueSuggestions extends Component {
   }
 
   private removeFieldExpressionFromExpression(field: string, expression: string): string {
-    return expression.replace(new RegExp(`${field}==([^)]*)`, 'gi'), '').replace(new RegExp(`${field}==[^ ]*`, 'gi'), '');
+    const expressionWithParenthesis = '([^)]*)';
+    const expressionAsSingleValue = '[^ ]*';
+    return expression
+      .replace(new RegExp(`${field}==${expressionWithParenthesis}`, 'gi'), '')
+      .replace(new RegExp(`${field}==${expressionAsSingleValue}`, 'gi'), '');
   }
 }
 
