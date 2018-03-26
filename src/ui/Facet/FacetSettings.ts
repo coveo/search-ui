@@ -30,13 +30,13 @@ export interface IFacetState {
  */
 export class FacetSettings extends FacetSort {
   public loadedFromSettings: { [attribute: string]: any };
-  public settingsPopup: HTMLElement;
+  private settingsPopup: HTMLElement;
 
   private facetStateLocalStorage: LocalStorageUtils<IFacetState>;
   private includedStateAttribute: string;
   private excludedStateAttribute: string;
   private operatorStateAttribute: string;
-  public settingsButton: HTMLElement;
+  private settingsButton: HTMLElement;
   private directionSection: HTMLElement[];
   private saveStateSection: HTMLElement;
   private clearStateSection: HTMLElement;
@@ -447,7 +447,7 @@ export class FacetSettings extends FacetSort {
     let closeTimeout: number;
     $$(this.settingsButton).on('click', (e: Event) => this.handleClickSettingsButtons(e, sortSection));
 
-    const mouseLeave = e => {
+    const mouseLeave = () => {
       closeTimeout = window.setTimeout(() => {
         this.close();
       }, 300);
