@@ -182,6 +182,55 @@ export function SearchInterfaceTest() {
         mockWindow = null;
       });
 
+      describe('when modifying results per page', () => {
+        let searchInterface: SearchInterface;
+
+        beforeEach(() => {
+          searchInterface = new SearchInterface(div, undefined, undefined, mockWindow);
+        });
+
+        it('should adapt the query controller options', () => {
+          searchInterface.resultsPerPage = 1235;
+          expect(searchInterface.queryController.options.resultsPerPage).toBe(1235);
+        });
+
+        it('should tell correctly when the parameter has been overwritten by a query pipeline', () => {
+          // Component is configured to request 15 results, but receives only 7, meaning the setting was overwritten by the backend
+          searchInterface.resultsPerPage = 15;
+          let fakeResults = FakeResults.createFakeResults(7);
+          fakeResults.totalCountFiltered = fakeResults.totalCount = 999;
+          let builder = new QueryBuilder();
+          builder.numberOfResults = 15;
+
+          Simulate.query(
+            { element: searchInterface.root, result: null, searchEndpoint: null, ...searchInterface.getBindings() },
+            {
+              results: fakeResults,
+              query: builder.build()
+            }
+          );
+
+          expect(searchInterface.isResultsPerPageModifiedByPipeline).toBeTruthy();
+
+          // Component is configured to request 15 results, and exactly 15 results are returned
+          searchInterface.resultsPerPage = 15;
+          fakeResults = FakeResults.createFakeResults(15);
+          fakeResults.totalCountFiltered = fakeResults.totalCount = 999;
+          builder = new QueryBuilder();
+          builder.numberOfResults = 15;
+
+          Simulate.query(
+            { element: searchInterface.root, result: null, searchEndpoint: null, ...searchInterface.getBindings() },
+            {
+              results: fakeResults,
+              query: builder.build()
+            }
+          );
+
+          expect(searchInterface.isResultsPerPageModifiedByPipeline).toBeFalsy();
+        });
+      });
+
       it('should return undefined if no query context exists', () => {
         new SearchInterface(div, undefined, undefined, mockWindow);
         expect(cmp.getQueryContext()).toBeUndefined();

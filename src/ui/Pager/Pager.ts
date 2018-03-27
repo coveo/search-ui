@@ -7,8 +7,7 @@ import {
   INewQueryEventArgs,
   IBuildingQueryEventArgs,
   IQuerySuccessEventArgs,
-  INoResultsEventArgs,
-  IDoneBuildingQueryEventArgs
+  INoResultsEventArgs
 } from '../../events/QueryEvents';
 import { MODEL_EVENTS, IAttributeChangedEventArg } from '../../models/Model';
 import { QueryStateModel } from '../../models/QueryStateModel';
@@ -104,7 +103,6 @@ export class Pager extends Component {
    * The current page (1-based index).
    */
   public currentPage: number;
-  private lastNumberOfResultsPerPage: number;
   private listenToQueryStateChange = true;
   private ignoreNextQuerySuccess = false;
 
@@ -133,7 +131,6 @@ export class Pager extends Component {
 
     this.bind.onRootElement(QueryEvents.newQuery, (args: INewQueryEventArgs) => this.handleNewQuery(args));
     this.bind.onRootElement(QueryEvents.buildingQuery, (args: IBuildingQueryEventArgs) => this.handleBuildingQuery(args));
-    this.bind.onRootElement(QueryEvents.doneBuildingQuery, (args: IBuildingQueryEventArgs) => this.handleDoneBuildingQuery(args));
     this.bind.onRootElement(QueryEvents.querySuccess, (args: IQuerySuccessEventArgs) => this.handleQuerySuccess(args));
     this.bind.onRootElement(QueryEvents.queryError, () => this.handleQueryError());
     this.bind.onRootElement(QueryEvents.noResults, (args: INoResultsEventArgs) => this.handleNoResults(args));
@@ -185,7 +182,7 @@ export class Pager extends Component {
   }
 
   private getMaxNumberOfPagesForCurrentResultsPerPage() {
-    return Math.ceil(this.options.maximumNumberOfResultsFromIndex / this.getNumberOfResultsPerPage());
+    return Math.ceil(this.options.maximumNumberOfResultsFromIndex / this.searchInterface.resultsPerPage);
   }
 
   private handleNewQuery(data: INewQueryEventArgs) {
@@ -292,18 +289,10 @@ export class Pager extends Component {
     }
   }
 
-  private handleDoneBuildingQuery(data: IDoneBuildingQueryEventArgs) {
-    // This can change on every query, for example using the ResultsPerPage component or with external code.
-    this.lastNumberOfResultsPerPage = data.queryBuilder.numberOfResults;
-  }
-
-  private computePagerBoundary(
-    firstResult: number,
-    totalCount: number
-  ): { start: number; end: number; lastResultPage: number; currentPage: number } {
-    const resultPerPage: number = this.getNumberOfResultsPerPage();
+  private computePagerBoundary(firstResult: number, totalCount: number) {
+    const resultPerPage = this.searchInterface.resultsPerPage;
     const currentPage = Math.floor(firstResult / resultPerPage) + 1;
-    let lastPageNumber: number = Math.min(Math.ceil(totalCount / resultPerPage), this.getMaxNumberOfPagesForCurrentResultsPerPage());
+    let lastPageNumber = Math.min(Math.ceil(totalCount / resultPerPage), this.getMaxNumberOfPagesForCurrentResultsPerPage());
     lastPageNumber = Math.max(lastPageNumber, 1);
     const halfLength = Math.floor(this.options.numberOfPages / 2);
     let firstPageNumber = currentPage - halfLength;
@@ -373,26 +362,16 @@ export class Pager extends Component {
   }
 
   private fromFirstResultsToPageNumber(firstResult: number): number {
-    return firstResult / this.getNumberOfResultsPerPage() + 1;
-  }
-
-  private getNumberOfResultsPerPage() {
-    // If there was no query successful yet, we use the query controller value as a fallback.
-    // If it's 0 for some reason (someone wants no results .. ? ), then we fallback to 10 as the "standard" value.
-    // This ensure that we do not divide by 0 in the pager.
-    if (this.lastNumberOfResultsPerPage != null) {
-      return this.lastNumberOfResultsPerPage;
-    }
-    return this.queryController.options.resultsPerPage == 0 ? 10 : this.queryController.options.resultsPerPage;
+    return firstResult / this.searchInterface.resultsPerPage + 1;
   }
 
   private getFirstResultNumber(pageNumber: number = this.currentPage): number {
-    return (pageNumber - 1) * this.getNumberOfResultsPerPage();
+    return (pageNumber - 1) * this.searchInterface.resultsPerPage;
   }
 
   private getQueryEventArgs() {
     return {
-      count: this.getNumberOfResultsPerPage(),
+      count: this.searchInterface.resultsPerPage,
       first: this.getFirstResultNumber()
     };
   }
