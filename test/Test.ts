@@ -283,6 +283,9 @@ SearchAlertsTest();
 import { SearchButtonTest } from './ui/SearchButtonTest';
 SearchButtonTest();
 
+import { FacetValueStateHandlerTest } from './ui/FacetValueStateHandlerTest';
+FacetValueStateHandlerTest();
+
 import { SearchInterfaceTest } from './ui/SearchInterfaceTest';
 SearchInterfaceTest();
 
@@ -501,3 +504,6 @@ UrlUtilsTest();
 
 import { AccessTokenTest } from './rest/AccessTokenTest';
 AccessTokenTest();
+
+import { FacetValueSuggestionsTest } from './ui/FacetValueSuggestionsTest';
+FacetValueSuggestionsTest();

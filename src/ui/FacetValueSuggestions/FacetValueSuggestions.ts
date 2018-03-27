@@ -5,28 +5,16 @@ import { IComponentBindings } from '../Base/ComponentBindings';
 import { Assert } from '../../misc/Assert';
 import { Utils } from '../../utils/Utils';
 import { OmniboxEvents, IPopulateOmniboxSuggestionsEventArgs } from '../../events/OmniboxEvents';
-import { IIndexFieldValue } from '../../rest/FieldValue';
-import { IListFieldValuesRequest } from '../../rest/ListFieldValuesRequest';
 import { Initialization } from '../Base/Initialization';
 import { analyticsActionCauseList, IAnalyticsNoMeta } from '../Analytics/AnalyticsActionListMeta';
 import { $$ } from '../../utils/Dom';
 import { exportGlobally } from '../../GlobalExports';
 import 'styling/_FieldSuggestions';
-import { DomUtils } from '../../UtilsModules';
 import * as _ from 'underscore';
 import { SuggestionsCache } from '../Misc/SuggestionsCache';
 import { QueryStateModel } from '../../ModelsModules';
-
-interface IFacetValueSuggestionRow {
-  score: IFacetValueSuggestionScore;
-  value: string;
-  numberOfResults: number;
-  keyword: string;
-}
-
-interface IFacetValueSuggestionScore {
-  distanceFromTotalForField: number;
-}
+import { DomUtils } from '../../UtilsModules';
+import { IFacetValueSuggestionRow, FacetValueSuggestionsProvider, IFacetValueSuggestionsProvider } from './FacetValueSuggestionsProvider';
 
 export interface IFacetValueSuggestionsOptions {
   numberOfSuggestions: number;
@@ -36,21 +24,6 @@ export interface IFacetValueSuggestionsOptions {
   useValueFromSearchbox?: boolean;
   displayEstimateNumberOfResults?: boolean;
 }
-
-interface IFacetValueSuggestionsResponse {
-  responses: IFacetValueBatchResponse[];
-  reference: IFacetValueReference;
-}
-
-interface IFacetValueBatchResponse {
-  values: IIndexFieldValue[];
-  keyword: string;
-}
-
-type IFacetValueReference = {
-  fieldsTotal: { [value: string]: number };
-  smallestTotal: number;
-};
 
 /**
  * The `FieldSuggestions` component provides query suggestions based on a particular facet field. For example, you could
@@ -174,8 +147,9 @@ export class FacetValueSuggestions extends Component {
     })
   };
 
-  private queryStateFieldFacetId;
-  private fieldValueCache: SuggestionsCache<IFacetValueSuggestionsResponse> = new SuggestionsCache();
+  public fieldValueCache: SuggestionsCache<IFacetValueSuggestionRow[]> = new SuggestionsCache();
+
+  public facetValueSuggestionsProvider: IFacetValueSuggestionsProvider;
 
   /**
    * Creates a new `FieldSuggestions` component.
@@ -187,83 +161,25 @@ export class FacetValueSuggestions extends Component {
   constructor(element: HTMLElement, public options: IFacetValueSuggestionsOptions, bindings?: IComponentBindings) {
     super(element, FacetValueSuggestions.ID, bindings);
 
+    this.facetValueSuggestionsProvider = new FacetValueSuggestionsProvider(this.queryController, this.queryStateModel, {
+      field: <string>this.options.field
+    });
+
     this.options = ComponentOptions.initComponentOptions(element, FacetValueSuggestions, options);
 
     Assert.check(Utils.isCoveoField(<string>this.options.field), `${this.options.field} is not a valid field`);
 
-    this.queryStateFieldFacetId = `f:${this.options.field}`;
-
     $$(this.root).on(OmniboxEvents.populateOmniboxSuggestions, (e: Event, args: IPopulateOmniboxSuggestionsEventArgs) => {
-      args.suggestions.push(this.getSuggestion(args.omnibox));
+      args.suggestions.push(this.getSuggestions(args.omnibox));
     });
   }
 
-  public async getSuggestion(omnibox: Omnibox): Promise<IOmniboxSuggestion[]> {
+  public async getSuggestions(omnibox: Omnibox): Promise<IOmniboxSuggestion[]> {
     const text = omnibox.getText();
 
     const suggestions: IOmniboxSuggestion[] = await this.getFacetValueSuggestions(text, omnibox);
 
     return suggestions || [];
-  }
-
-  private async getFacetValueSuggestions(text: string, omnibox: Omnibox): Promise<IOmniboxSuggestion[]> {
-    const wordsToQuery = this.options.useValueFromSearchbox ? [text] : [];
-
-    const suggestions: string[] = await this.getQuerySuggestionsKeywords(omnibox);
-    const allWordsToQuery = _.unique(wordsToQuery.concat(suggestions));
-    try {
-      const response: IFacetValueSuggestionsResponse = await this.fieldValueCache.getSuggestions(`fv${text}`, () =>
-        this.listFieldValuesBatch(allWordsToQuery)
-      );
-
-      return this.filterCurrentlySelectedValuesFromResults(response.responses, response.reference).map(resultToShow => {
-        return <IOmniboxSuggestion>{
-          html: this.buildDisplayNameForRow(resultToShow, omnibox),
-          onSelect: () => this.onRowSelection(resultToShow, omnibox)
-        };
-      });
-    } catch (error) {
-      console.error(error, this);
-      return [];
-    }
-  }
-
-  private buildDisplayNameForRow(row: IFacetValueSuggestionRow, omnibox: Omnibox): string {
-    const keyword = DomUtils.highlightElement(row.keyword, omnibox.getText(), 'coveo-omnibox-hightlight2');
-    const facetValue = DomUtils.highlightElement(row.value, row.value, 'coveo-omnibox-hightlight');
-    const details = this.options.displayEstimateNumberOfResults ? ` (${row.numberOfResults} results)` : '';
-    return `${keyword} in ${facetValue}${details}`;
-  }
-
-  private filterCurrentlySelectedValuesFromResults(
-    fieldResponses: IFacetValueBatchResponse[],
-    fieldTotalReference: IFacetValueReference
-  ): IFacetValueSuggestionRow[] {
-    const currentSelectedValues: string[] = this.queryStateModel.get(this.queryStateFieldFacetId) || [];
-    const resultsWithoutSelectedValues: IFacetValueSuggestionRow[] = fieldResponses.reduce((allValues, fieldResponse) => {
-      // Remove suggestions that are already checked.
-      const filteredResults = fieldResponse.values.filter(result => !currentSelectedValues.some(value => value == result.value));
-
-      const suggestionRows = filteredResults.map(indexFieldValue => {
-        return <IFacetValueSuggestionRow>{
-          numberOfResults: indexFieldValue.numberOfResults,
-          keyword: fieldResponse.keyword,
-          value: indexFieldValue.value,
-          score: this.computeScoreForSuggestionRow(indexFieldValue, fieldTotalReference)
-        };
-      });
-      return allValues.concat(suggestionRows);
-    }, []);
-
-    this.logger.debug('FacetValue Suggestions Results', resultsWithoutSelectedValues);
-
-    const rankedResults = resultsWithoutSelectedValues.sort(
-      (a, b) => b.score.distanceFromTotalForField - a.score.distanceFromTotalForField
-    );
-    const preciseResults = rankedResults.splice(0, Math.ceil(this.options.numberOfSuggestions / 2));
-    const broadResults = rankedResults.slice(-1, Math.floor(this.options.numberOfSuggestions / 2));
-
-    return [].concat(preciseResults).concat(broadResults);
   }
 
   private async getQuerySuggestionsKeywords(omnibox: Omnibox): Promise<string[]> {
@@ -275,45 +191,45 @@ export class FacetValueSuggestions extends Component {
     }
   }
 
-  private computeScoreForSuggestionRow(fieldValue: IIndexFieldValue, reference: IFacetValueReference): IFacetValueSuggestionScore {
-    const totalNumberForFieldValue = reference.fieldsTotal[fieldValue.value] || reference.smallestTotal;
-    const distanceFromTotalForField: number = (totalNumberForFieldValue - fieldValue.numberOfResults) / totalNumberForFieldValue * 100;
-    return {
-      distanceFromTotalForField
+  private async getFacetValueSuggestions(text: string, omnibox: Omnibox): Promise<IOmniboxSuggestion[]> {
+    const wordsToQuery = this.options.useValueFromSearchbox ? [text] : [];
+
+    const suggestions: string[] = await this.getQuerySuggestionsKeywords(omnibox);
+    const allWordsToQuery = _.unique(wordsToQuery.concat(suggestions));
+    try {
+      const suggestions = await this.fieldValueCache.getSuggestions(`fv${allWordsToQuery.join('')}`, () =>
+        this.facetValueSuggestionsProvider.getSuggestions(allWordsToQuery)
+      );
+
+      this.logger.debug('FacetValue Suggestions Results', suggestions);
+
+      return this.rankSuggestionRows(suggestions).map(result => this.mapFacetValueSuggestion(result, omnibox));
+    } catch (error) {
+      console.error(error, this);
+      return [];
+    }
+  }
+
+  private rankSuggestionRows(suggestions: IFacetValueSuggestionRow[]): IFacetValueSuggestionRow[] {
+    const rankedResults = suggestions.sort((a, b) => b.score.distanceFromTotalForField - a.score.distanceFromTotalForField);
+    const preciseResults = rankedResults.splice(0, Math.ceil(this.options.numberOfSuggestions / 2));
+    const broadResults = rankedResults.slice(-1, Math.floor(this.options.numberOfSuggestions / 2));
+
+    return [].concat(preciseResults).concat(broadResults);
+  }
+
+  private mapFacetValueSuggestion(resultToShow: IFacetValueSuggestionRow, omnibox: Omnibox) {
+    return <IOmniboxSuggestion>{
+      html: this.buildDisplayNameForRow(resultToShow, omnibox),
+      onSelect: () => this.onRowSelection(resultToShow, omnibox)
     };
   }
 
-  private async listFieldValuesBatch(valuesToSearch: string[]): Promise<IFacetValueSuggestionsResponse> {
-    // The reference request will be used to get the maximum number of values for a given facet value.
-    const referenceValuesRequest = this.buildReferenceFieldValueRequest();
-    const queryParts = this.getQueryToExecuteParts();
-    const suggestionValuesRequests = valuesToSearch.map(value => this.buildListFieldValueRequest(queryParts.concat(value).join(' ')));
-    const requests = [].concat(suggestionValuesRequests).concat(referenceValuesRequest);
-    const values = await this.queryController.getEndpoint().listFieldValuesBatch({
-      batch: requests
-    });
-
-    const reference = this.computeReferenceFromBatch(values.pop());
-    const responses: IFacetValueBatchResponse[] = values.map((value, i) => {
-      return <IFacetValueBatchResponse>{
-        keyword: valuesToSearch[i],
-        values: value
-      };
-    });
-
-    return <IFacetValueSuggestionsResponse>{
-      responses,
-      reference
-    };
-  }
-
-  private computeReferenceFromBatch(batch: IIndexFieldValue[]): IFacetValueReference {
-    const fieldsTotal = {};
-    batch.forEach(value => (fieldsTotal[value.value] = value.numberOfResults));
-    return {
-      fieldsTotal: fieldsTotal,
-      smallestTotal: batch[batch.length - 1].numberOfResults
-    };
+  private buildDisplayNameForRow(row: IFacetValueSuggestionRow, omnibox: Omnibox): string {
+    const keyword = DomUtils.highlightElement(row.keyword, omnibox.getText(), 'coveo-omnibox-hightlight2');
+    const facetValue = DomUtils.highlightElement(row.value, row.value, 'coveo-omnibox-hightlight');
+    const details = this.options.displayEstimateNumberOfResults ? ` (${row.numberOfResults} results)` : '';
+    return `${keyword} in ${facetValue}${details}`;
   }
 
   private onRowSelection(row: IFacetValueSuggestionRow, omnibox: Omnibox): void {
@@ -325,37 +241,6 @@ export class FacetValueSuggestions extends Component {
     this.queryStateModel.set(QueryStateModel.attributesEnum.fv, fvState);
     this.usageAnalytics.logSearchEvent<IAnalyticsNoMeta>(analyticsActionCauseList.omniboxField, {});
     this.queryController.executeQuery();
-  }
-
-  private buildListFieldValueRequest(queryToExecute: string): IListFieldValuesRequest {
-    return {
-      field: <string>this.options.field,
-      ignoreAccents: true,
-      maximumNumberOfValues: 3,
-      queryOverride: queryToExecute
-    };
-  }
-
-  private buildReferenceFieldValueRequest(): IListFieldValuesRequest {
-    return {
-      field: <string>this.options.field
-    };
-  }
-
-  private getQueryToExecuteParts(): string[] {
-    const lastQuery = this.queryController.getLastQuery();
-    const aqWithoutCurrentField =
-      lastQuery && lastQuery.aq ? this.removeFieldExpressionFromExpression(this.options.field.toString(), lastQuery.aq) : '';
-
-    return [aqWithoutCurrentField, lastQuery.cq].filter(part => !!part);
-  }
-
-  private removeFieldExpressionFromExpression(field: string, expression: string): string {
-    const expressionWithParenthesis = '([^)]*)';
-    const expressionAsSingleValue = '[^ ]*';
-    return expression
-      .replace(new RegExp(`${field}==${expressionWithParenthesis}`, 'gi'), '')
-      .replace(new RegExp(`${field}==${expressionAsSingleValue}`, 'gi'), '');
   }
 }
 
