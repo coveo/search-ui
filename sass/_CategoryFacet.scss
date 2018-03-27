@@ -1,7 +1,8 @@
 @import 'Variables';
 
 .CoveoCategoryFacet {
-  &.coveo-disabled {
+  transition: height 0.4s $standard-transition-timing-function;
+  &.coveo-hidden {
     display: none;
   }
 

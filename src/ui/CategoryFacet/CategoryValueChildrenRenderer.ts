@@ -4,6 +4,7 @@ import { CategoryValue, CategoryValueParent } from './CategoryValue';
 import { CategoryFacet } from './CategoryFacet';
 import { ICategoryFacetValue } from '../../rest/CategoryFacetValue';
 import { IBuildingQueryEventArgs, IQuerySuccessEventArgs, QueryEvents } from '../../events/QueryEvents';
+import { Utils } from '../../utils/Utils';
 
 export class CategoryChildrenValueRenderer {
   private children: CategoryValue[] = [];
@@ -42,16 +43,15 @@ export class CategoryChildrenValueRenderer {
   }
 
   public async renderChildren(values: ICategoryFacetValue[]) {
-    if (!this.listOfChildValues) {
-      this.listOfChildValues = this.categoryFacetTemplates.buildListRoot();
-    }
+    this.categoryFacet.show();
+    const listOfChildValues = this.getListOfChildValues();
 
     this.clearChildren();
-    this.element.append(this.listOfChildValues.el);
+    this.element.append(listOfChildValues.el);
 
     values.forEach(value => {
       const categoryValue = new CategoryValue(
-        this.listOfChildValues,
+        listOfChildValues,
         value.value,
         value.numberOfResults,
         this.categoryValue,
@@ -64,6 +64,14 @@ export class CategoryChildrenValueRenderer {
     });
     this.categoryFacet.hideWaitAnimation();
   }
+
+  public getListOfChildValues() {
+    if (Utils.isNullOrUndefined(this.listOfChildValues)) {
+      this.listOfChildValues = this.categoryFacetTemplates.buildListRoot();
+    }
+    return this.listOfChildValues;
+  }
+
   private handleBuildingQuery(args: IBuildingQueryEventArgs) {
     if (this.categoryValue.isActive) {
       this.positionInQuery = args.queryBuilder.categoryFacets.length;
@@ -78,8 +86,10 @@ export class CategoryChildrenValueRenderer {
         const errorMessage = 'Category Facets are not supported by your current search endpoint. Disabling this component.';
         this.categoryFacet.logger.error(errorMessage);
         this.categoryFacet.disable();
-      } else {
+      } else if (categoryFacetResults.values.length != 0) {
         this.renderChildren(categoryFacetResults.values);
+      } else {
+        this.categoryFacet.hide();
       }
     }
   }

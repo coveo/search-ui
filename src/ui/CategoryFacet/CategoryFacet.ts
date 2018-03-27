@@ -9,17 +9,23 @@ import { CategoryFacetTemplates } from './CategoryFacetTemplates';
 import { CategoryValueRoot } from './CategoryValueRoot';
 import { CategoryValue } from './CategoryValue';
 import { CategoryFacetQueryController } from '../../controllers/CategoryFacetQueryController';
-import 'styling/_CategoryFacet';
 import { SVGDom } from '../../utils/SVGDom';
 import { SVGIcons } from '../../utils/SVGIcons';
+import { QueryStateModel } from '../../models/QueryStateModel';
+import 'styling/_CategoryFacet';
+import { IAttributesChangedEventArg, MODEL_EVENTS } from '../../models/Model';
+import { Utils } from '../../utils/Utils';
+import _ = require('underscore');
 
 export interface CategoryFacetOptions {
   field: IFieldOption;
   title?: string;
+  id: string;
 }
 
 export class CategoryFacet extends Component {
   public categoryFacetQueryController: CategoryFacetQueryController;
+  public listenToQueryStateChange = true;
 
   static doExport = () => {
     exportGlobally({
@@ -33,13 +39,15 @@ export class CategoryFacet extends Component {
     field: ComponentOptions.buildFieldOption({ required: true }),
     title: ComponentOptions.buildLocalizedStringOption({
       defaultValue: l('NoTitle')
-    })
+    }),
+    id: ComponentOptions.buildStringOption({ postProcessing: (value, options: CategoryFacetOptions) => value || (options.field as string) })
   };
 
   private categoryValueRoot: CategoryValueRoot;
   private categoryFacetTemplates: CategoryFacetTemplates;
   private facetHeader: Dom;
   private waitElement: Dom;
+  public queryStateAttribute: string;
 
   public categoryValueRootModule = CategoryValueRoot;
 
@@ -51,15 +59,24 @@ export class CategoryFacet extends Component {
     this.categoryFacetTemplates = new CategoryFacetTemplates();
     this.categoryValueRoot = new this.categoryValueRootModule($$(this.element), this.categoryFacetTemplates, this);
     this.buildFacetHeader();
+    this.initQueryStateEvents();
   }
 
   public getChildren(): CategoryValue[] {
-    return this.categoryValueRoot.getChildren();
+    return this.categoryValueRoot.children;
   }
 
   public disable() {
     super.disable();
-    $$(this.element).addClass('coveo-disabled');
+    $$(this.element).addClass('coveo-hidden');
+  }
+
+  public hide() {
+    $$(this.element).addClass('coveo-hidden');
+  }
+
+  public show() {
+    $$(this.element).removeClass('coveo-hidden');
   }
 
   public showWaitingAnimation() {
@@ -83,6 +100,30 @@ export class CategoryFacet extends Component {
     this.facetHeader = $$('div', { className: 'coveo-category-facet-header' }, titleSection);
     $$(this.element).prepend(this.facetHeader.el);
     this.facetHeader.append(this.waitElement.el);
+  }
+
+  private handleQueryStateChanged(data: IAttributesChangedEventArg) {
+    if (this.listenToQueryStateChange) {
+      let path = data.attributes[this.queryStateAttribute];
+      if (!Utils.isNullOrUndefined(path) && _.isArray(path)) {
+        path = path.slice(0);
+        this.rebuild(path);
+      }
+    }
+  }
+
+  private rebuild(path: string[]) {
+    this.categoryValueRoot = new CategoryValueRoot($$(this.element), this.categoryFacetTemplates, this);
+    // let categoryValue = this.categoryValueRoot;
+    // while (path.length != 0) {
+    // categoryValue = new CategoryValue(categoryValue.categoryChildrenValueRenderer.getListOfChildValues(), )
+    // }
+  }
+
+  private initQueryStateEvents() {
+    this.queryStateAttribute = QueryStateModel.getCategoryFacetId(this.options.id);
+    this.queryStateModel.registerNewAttribute(QueryStateModel.getCategoryFacetId(this.options.id), []);
+    this.bind.onQueryState<IAttributesChangedEventArg>(MODEL_EVENTS.CHANGE, undefined, data => this.handleQueryStateChanged(data));
   }
 }
 

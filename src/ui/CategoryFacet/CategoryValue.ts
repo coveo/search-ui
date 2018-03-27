@@ -77,6 +77,10 @@ export class CategoryValue implements CategoryValueParent {
   }
 
   public async renderChildren() {
+    this.categoryFacet.listenToQueryStateChange = false;
+    this.categoryFacet.queryStateModel.set(this.categoryFacet.queryStateAttribute, this.getPath());
+    this.categoryFacet.listenToQueryStateChange = true;
+
     this.parent.isActive = false;
     this.isActive = true;
     return this.categoryFacet.queryController.executeQuery().then(() => {
@@ -100,6 +104,7 @@ export class CategoryValue implements CategoryValueParent {
       $$(label).prepend(this.collapseArrow.el);
     }
   }
+
   private hideCollapseArrow() {
     if (this.collapseArrow.el.parentElement) {
       this.collapseArrow.off('click', this.arrowOnClick);

@@ -6,14 +6,15 @@ import { CategoryFacet } from './CategoryFacet';
 
 export class CategoryValueRoot implements CategoryValueParent {
   public isActive = true;
-  private children: CategoryValue[] = [];
   public categoryChildrenValueRenderer: CategoryChildrenValueRenderer;
+  public children: CategoryValue[] = [];
 
   constructor(element: Dom, categoryFacetTemplates: CategoryFacetTemplates, private categoryFacet: CategoryFacet) {
     this.categoryChildrenValueRenderer = new CategoryChildrenValueRenderer(element, categoryFacetTemplates, this, categoryFacet);
   }
 
   public renderChildren() {
+    this.isActive = true;
     return this.categoryFacet.queryController.executeQuery();
   }
 
@@ -23,9 +24,5 @@ export class CategoryValueRoot implements CategoryValueParent {
 
   public getPath(partialPath: string[] = []) {
     return partialPath;
-  }
-
-  public getChildren() {
-    return this.children;
   }
 }
