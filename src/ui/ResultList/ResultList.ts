@@ -67,7 +67,7 @@ export interface IResultListOptions {
  * The `ResultList` component is responsible for displaying query results by applying one or several result templates
  * (see [Result Templates](https://developers.coveo.com/x/aIGfAQ)).
  *
- * It is possible to include multiple `ResultList` components along with a single [`ResultLayout`]{@link ResultLayout}
+ * It is possible to include multiple `ResultList` components along with a single `ResultLayout`
  * component in a search page to provide different result layouts (see
  * [Result Layouts](https://developers.coveo.com/x/yQUvAg)).
  *
