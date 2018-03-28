@@ -313,13 +313,16 @@ export class Recommendation extends SearchInterface implements IComponentBinding
       this.mainInterfaceQuery = args;
       this.mainQuerySearchUID = args.results.searchUid;
       this.mainQueryPipeline = args.results.pipeline;
-      this.usageAnalytics.logSearchEvent<IAnalyticsNoMeta>(analyticsActionCauseList.recommendation, {});
-      this.queryController.executeQuery({
-        closeModalBox: false
-      });
+      if (args.results.results.length != 0) {
+        this.usageAnalytics.logSearchEvent<IAnalyticsNoMeta>(analyticsActionCauseList.recommendation, {});
+        this.queryController.executeQuery({
+          closeModalBox: false
+        });
+      }
     });
 
     $$(this.options.mainSearchInterface).on(QueryEvents.queryError, () => this.hide());
+    $$(this.options.mainSearchInterface).on(QueryEvents.noResults, () => this.hide());
   }
 
   private handleRecommendationBuildingQuery(data: IBuildingQueryEventArgs) {
