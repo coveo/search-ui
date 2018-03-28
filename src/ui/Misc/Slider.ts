@@ -843,19 +843,21 @@ class SliderGraph {
 
     const leftPositionForCurrentBand = this.x(d.start) - arbitraryOffsetForTooltip;
     const halfOfBandwidth = this.x.bandwidth() / 2;
-    const tooltipArrowOfffset = arbitraryOffsetForTooltip + halfOfBandwidth - tooltipArrowSize;
+    const tooltipArrowOffset = arbitraryOffsetForTooltip + halfOfBandwidth - tooltipArrowSize;
 
     this.tooltip.style.left = `${leftPositionForCurrentBand}px`;
     this.tooltip.style.top = `${this.y(d.y) - height}px`;
-    this.tooltipArrow.style.left = `${tooltipArrowOfffset}px`;
+    this.tooltipArrow.style.left = `${tooltipArrowOffset}px`;
 
     const tooltipRect = this.tooltip.getBoundingClientRect();
     const windowWidth = new Win(window).width();
 
-    if (tooltipRect.right > windowWidth - arbitraryOffsetForScrollbar) {
+    const tooltipOverflowsRightOfWindow = tooltipRect.right > windowWidth - arbitraryOffsetForScrollbar;
+
+    if (tooltipOverflowsRightOfWindow) {
       const offsetToPreventWindowOverflow = windowWidth - tooltipRect.right - arbitraryOffsetForScrollbar;
       this.tooltip.style.left = `${leftPositionForCurrentBand + offsetToPreventWindowOverflow}px`;
-      this.tooltipArrow.style.left = `${tooltipArrowOfffset - offsetToPreventWindowOverflow}px`;
+      this.tooltipArrow.style.left = `${tooltipArrowOffset - offsetToPreventWindowOverflow}px`;
     }
   }
 
