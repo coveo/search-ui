@@ -18,7 +18,7 @@ export interface IListOfWeights {
   'Ranking functions': number;
   Source: number;
   Title: number;
-  [key: string]: any;
+  [key: string]: number;
 }
 
 export type IListOfTermsWeights = Record<string, IWeightsPerTerm>;
@@ -37,7 +37,7 @@ export interface IWeightsPerTermBreakdown {
   Summary: number;
   Title: number;
   URI: number;
-  [key: string]: any;
+  [key: string]: number;
 }
 
 export interface IWeightsPerTermPerDocument {
@@ -111,7 +111,9 @@ const parseWeights = (value: string | null): IListOfWeights | null => {
           let weightGroup = weight.match(REGEX_EXTRACT_WEIGHT_GROUP);
 
           if (weightGroup) {
-            return [weightGroup[1], Number(weightGroup[2])];
+            const weightAppliedOn = weightGroup[1];
+            const weightValue = weightGroup[2];
+            return [weightAppliedOn, Number(weightValue)];
           }
           return null;
         })
@@ -142,7 +144,7 @@ const parseTermsWeights = (termsWeight: RegExpExecArray | null): IListOfTermsWei
             ];
           })
         );
-        let weights = parseWeights(term[2]);
+        const weights = parseWeights(term[2]);
         return [
           keys(words).join(', '),
           {

@@ -99,9 +99,9 @@ export class ExecutionReportAuthenticationSection implements IExecutionReportSec
         [userId.name]: {
           children: [
             {
-              ...{ Kind: this.genericOutput(userId.kind) },
-              ...{ Provider: { ...this.genericOutput(userId.provider), width: 150 } },
-              ...{ Info: { content: userId.info } }
+              Kind: this.genericOutput(userId.kind),
+              Provider: { ...this.genericOutput(userId.provider), width: 150 },
+              Info: { content: userId.info }
             }
           ]
         }

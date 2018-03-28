@@ -126,10 +126,10 @@ export class RelevanceInspector {
 
     const container = $$('div');
 
-    const rankingInfoTable = await new RankingInfoTable(lastResults, this.bindings);
-    const metadataTable = await new MetaDataTable(lastResults, this.bindings);
-    const executionReport = await new ExecutionReport(this.bindings.queryController.getLastResults(), this.bindings);
-    const availableFields = await new AvailableFieldsTable(this.bindings);
+    const rankingInfoTable = new RankingInfoTable(lastResults, this.bindings);
+    const metadataTable = new MetaDataTable(lastResults, this.bindings);
+    const executionReport = new ExecutionReport(this.bindings.queryController.getLastResults(), this.bindings);
+    const availableFields = new AvailableFieldsTable(this.bindings);
 
     this.tabs = {
       relevanceInspectorRankingInfo: rankingInfoTable,

@@ -8,7 +8,6 @@
   padding: 10px;
   line-height: 20px;
   height: 40px;
-  position: sticky;
   top: 0;
   z-index: 1000;
   &.coveo-hidden {
@@ -96,9 +95,8 @@
 }
 
 .coveo-relevance-inspector-metadata-value {
-  max-width: 75%;
-  min-width: 75%;
-  overflow: scroll;
+  width: 75%;
+  overflow: auto;
 }
 
 .coveo-relevance-inspector-input-group {

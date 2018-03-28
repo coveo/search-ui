@@ -22,41 +22,45 @@ export const loadAgGridLibrary = (doc = document) => {
       isAgGridLoaded = true;
       resolve(true);
     } else {
-      if (!isAgGridLoading) {
-        const script = $$('script', {
-          src: agGridLibUrl,
-          type: 'text/javascript',
-          async: true
-        }).el as HTMLScriptElement;
-
-        const styleBase = $$('link', {
-          href: agGridStyleBaseUrl,
-          rel: 'stylesheet',
-          type: 'text/css'
-        }).el as HTMLLinkElement;
-
-        const style = $$('link', {
-          href: agGridStyleFreshUrl,
-          rel: 'stylesheet',
-          type: 'text/css'
-        }).el as HTMLLinkElement;
-
-        doc.head.appendChild(script);
-        doc.head.appendChild(styleBase);
-        doc.head.appendChild(style);
-
-        isAgGridLoading = new Promise((resolveScriptLoaded, rejectScriptLoaded) => {
-          script.onload = () => {
-            resolveScriptLoaded(true);
-          };
-          script.onerror = () => {
-            isAgGridLoaded = false;
-            rejectScriptLoaded(false);
-          };
-        });
-      }
+      addAgGridScriptsToDocument(doc);
       isAgGridLoading.then(() => resolve(true));
       isAgGridLoading.catch(() => reject(false));
     }
   });
+};
+
+const addAgGridScriptsToDocument = (doc = document) => {
+  if (!isAgGridLoading) {
+    const script = $$('script', {
+      src: agGridLibUrl,
+      type: 'text/javascript',
+      async: true
+    }).el as HTMLScriptElement;
+
+    const styleBase = $$('link', {
+      href: agGridStyleBaseUrl,
+      rel: 'stylesheet',
+      type: 'text/css'
+    }).el as HTMLLinkElement;
+
+    const style = $$('link', {
+      href: agGridStyleFreshUrl,
+      rel: 'stylesheet',
+      type: 'text/css'
+    }).el as HTMLLinkElement;
+
+    doc.head.appendChild(script);
+    doc.head.appendChild(styleBase);
+    doc.head.appendChild(style);
+
+    isAgGridLoading = new Promise((resolveScriptLoaded, rejectScriptLoaded) => {
+      script.onload = () => {
+        resolveScriptLoaded(true);
+      };
+      script.onerror = () => {
+        isAgGridLoaded = false;
+        rejectScriptLoaded(false);
+      };
+    });
+  }
 };

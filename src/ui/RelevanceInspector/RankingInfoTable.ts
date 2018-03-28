@@ -70,8 +70,10 @@ export class RankingInfoTable implements IRelevanceInspectorTab {
       },
       onGridReady: params => {
         setTimeout(() => {
-          params ? params.api.sizeColumnsToFit() : null;
-          params ? params.api.setSortModel([{ colId: 'Total', sort: 'desc' }]) : null;
+          if (params) {
+            params.api.sizeColumnsToFit();
+            params.api.setSortModel([{ colId: 'Total', sort: 'desc' }]);
+          }
         }, 0);
       }
     });

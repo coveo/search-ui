@@ -59,10 +59,9 @@ export function AvailableFieldsTableTest() {
     it('should build the proper underlying ag grid structure', async done => {
       const fieldTable = new AvailableFieldsTable(bindings);
       await fieldTable.build();
-      expect(findWhere(fieldTable.gridOptions.columnDefs, { headerName: 'Name' })).toBeDefined();
-      expect(findWhere(fieldTable.gridOptions.columnDefs, { headerName: 'Description' })).toBeDefined();
-      expect(findWhere(fieldTable.gridOptions.columnDefs, { headerName: 'Include In Query' })).toBeDefined();
-      expect(findWhere(fieldTable.gridOptions.columnDefs, { headerName: 'Group By Field' })).toBeDefined();
+      ['Name', 'Description', 'Include In Query', 'Group By Field'].forEach(headerName => {
+        expect(findWhere(fieldTable.gridOptions.columnDefs, { headerName })).toBeDefined();
+      });
       expect(fieldTable.gridOptions.rowData[0].Name).toBe('foo');
       expect(fieldTable.gridOptions.rowData[1].Name).toBe('bar');
       done();

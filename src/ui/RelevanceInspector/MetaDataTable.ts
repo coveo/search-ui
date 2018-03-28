@@ -131,18 +131,9 @@ export class FieldValuesRenderer implements agGridModule.ICellRendererComp {
       if (fieldInResult == 'allmetadatavalues' || fieldInResult.indexOf('sys') == 0) {
         return;
       }
-      if (this.currentFilter) {
-        const matchInFieldName = fieldInResult.toLowerCase().indexOf(this.currentFilter.toLowerCase()) != -1;
-        const matchInFieldValue = value
-          ? value
-              .toString()
-              .toLowerCase()
-              .indexOf(this.currentFilter.toLowerCase()) != -1
-          : false;
 
-        if (!matchInFieldName && !matchInFieldValue) {
-          return;
-        }
+      if (this.isCurrentElementFilteredOut(value, fieldInResult)) {
+        return;
       }
 
       const inputGroup = $$('div', { className: 'coveo-relevance-inspector-input-group' });
@@ -154,15 +145,7 @@ export class FieldValuesRenderer implements agGridModule.ICellRendererComp {
         fieldInResult
       );
 
-      let fieldValue = result.raw[fieldInResult].toString();
-      if (this.element.fieldsDescription) {
-        const matchingFieldDescription = find(this.element.fieldsDescription as IFieldDescription[], description => {
-          return description.name.replace('@', '').toLowerCase() == fieldInResult;
-        });
-        if (matchingFieldDescription && matchingFieldDescription.fieldType == 'Date') {
-          fieldValue = `${DateUtils.convertToStandardDate(fieldValue).toString()} ( Epoch : ${fieldValue} )`;
-        }
-      }
+      const fieldValue = this.convertFieldValueToReadableFormat(result, fieldInResult);
 
       const fieldValueElement = $$(
         'div',
@@ -171,6 +154,7 @@ export class FieldValuesRenderer implements agGridModule.ICellRendererComp {
         },
         fieldValue
       );
+
       if (this.currentFilter) {
         this.highlightSearch(fieldName.el, this.currentFilter);
         this.highlightSearch(fieldValueElement.el, this.currentFilter);
@@ -178,11 +162,41 @@ export class FieldValuesRenderer implements agGridModule.ICellRendererComp {
 
       inputGroup.append(fieldName.el);
       inputGroup.append(fieldValueElement.el);
-
       container.append(inputGroup.el);
     });
 
     return container;
+  }
+
+  private isCurrentElementFilteredOut(value: string, fieldInResult: string) {
+    if (this.currentFilter) {
+      const matchInFieldName = fieldInResult.toLowerCase().indexOf(this.currentFilter.toLowerCase()) != -1;
+      const matchInFieldValue = value
+        ? value
+            .toString()
+            .toLowerCase()
+            .indexOf(this.currentFilter.toLowerCase()) != -1
+        : false;
+
+      if (!matchInFieldName && !matchInFieldValue) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+  private convertFieldValueToReadableFormat(result: IQueryResult, fieldInResult: string) {
+    let fieldValue = result.raw[fieldInResult].toString();
+    if (this.element.fieldsDescription) {
+      const matchingFieldDescription = find(this.element.fieldsDescription as IFieldDescription[], description => {
+        return description.name.replace('@', '').toLowerCase() == fieldInResult;
+      });
+      if (matchingFieldDescription && matchingFieldDescription.fieldType == 'Date') {
+        fieldValue = `${DateUtils.convertToStandardDate(fieldValue).toString()} ( Epoch : ${fieldValue} )`;
+      }
+    }
+    return fieldValue;
   }
 
   private highlightSearch(elementToSearch: HTMLElement, search: string) {

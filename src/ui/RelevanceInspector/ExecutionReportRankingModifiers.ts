@@ -26,7 +26,8 @@ export class ExecutionReportRankingModifiers {
 
       const isAutomaticBoost = rankingExpression.expression.match(isAutomaticBoostRegex);
       if (isAutomaticBoost) {
-        const extracted = await this.extractDocumentInfoFromBoost(results, isAutomaticBoost[2], rankingExpression, bindings);
+        const permanentIDUsedInAutomaticBoost = isAutomaticBoost[2];
+        const extracted = await this.extractDocumentInfoFromBoost(results, permanentIDUsedInAutomaticBoost, rankingExpression, bindings);
         thumbnailPreview = TableBuilder.thumbnailCell(extracted.result, bindings);
         result = extracted.result;
         returnedByIndexForCurrentQuery = extracted.returnedByIndexForCurrentQuery.toString();

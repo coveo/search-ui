@@ -89,6 +89,7 @@ export function GenericValueOutputTest() {
 
     it('should output array that contains object to a definition list', () => {
       const contentBuilt = new GenericValueOutput().output([1, 4, 6, { foo: 'bar' }]).content;
+      expect(contentBuilt).toContain('dl');
       checkArrayContent(contentBuilt);
       checkSimpleObjectContent(contentBuilt);
     });
@@ -99,7 +100,7 @@ export function GenericValueOutputTest() {
       checkSimpleObjectContent(contentBuilt);
     });
 
-    it('should output object that contains array values to a list', () => {
+    it('should output object that contains array values to a definition list', () => {
       const contentBuilt = new GenericValueOutput().output({ foo: [1, 4, 6] }).content;
       expect(contentBuilt).toContain('dl');
       expect(contentBuilt).toContain('<dt>foo</dt>');

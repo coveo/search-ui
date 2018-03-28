@@ -29,7 +29,7 @@ export class ExecutionReportQueryOverrideSection implements IExecutionReportSect
       const dataSource = [
         {
           ...new ExecutionReportGenericSection().build(queryOverrideSection),
-          ...{ Applied: new GenericValueOutput().output(queryOverrideSection.applied) }
+          Applied: new GenericValueOutput().output(queryOverrideSection.applied)
         }
       ];
 

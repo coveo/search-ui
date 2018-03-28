@@ -95,13 +95,13 @@ export class AvailableFieldsSampleValue implements agGridModule.ICellRendererCom
     );
 
     let popperElement: Dom | undefined;
-    let appendPopper = true;
+    let userHoveringButtonWithHisMouse = false;
 
     btn.on('mouseover', async () => {
-      appendPopper = true;
-      if (this.description && this.container && appendPopper) {
+      userHoveringButtonWithHisMouse = true;
+      if (this.description && this.container && userHoveringButtonWithHisMouse) {
         const values = await this.getFieldsValues(this.description);
-        if (appendPopper) {
+        if (userHoveringButtonWithHisMouse) {
           popperElement = this.renderFieldValues(values);
           this.container.append(popperElement.el);
           PopupUtils.positionPopup(popperElement.el, btn.el, document.body, {
@@ -109,7 +109,7 @@ export class AvailableFieldsSampleValue implements agGridModule.ICellRendererCom
             vertical: PopupVerticalAlignment.MIDDLE
           });
         }
-        appendPopper = false;
+        userHoveringButtonWithHisMouse = false;
       }
     });
 
@@ -117,33 +117,33 @@ export class AvailableFieldsSampleValue implements agGridModule.ICellRendererCom
       if (popperElement) {
         popperElement.remove();
       }
-      appendPopper = false;
+      userHoveringButtonWithHisMouse = false;
     });
 
     return btn.el;
   }
 
   private async getFieldsValues(fieldDesciption: IFieldDescription) {
-    if (this.bindings && this.description && this.bindings.queryController && this.container) {
-      if (fieldDesciption.groupByField) {
-        return this.bindings
-          ? await this.bindings.queryController.getEndpoint().listFieldValues({
-              field: this.description.name
-            })
-          : [];
-      } else {
-        const queryBuilder = new QueryBuilder();
-        queryBuilder.advancedExpression.add(fieldDesciption.name);
-        const queryResults = this.bindings ? await this.bindings.queryController.getEndpoint().search(queryBuilder.build()) : null;
-        if (queryResults) {
-          return map(queryResults.results, result => {
-            return { value: Utils.getFieldValue(result, fieldDesciption.name) } as IIndexFieldValue;
-          });
-        }
-      }
+    if (!this.bindings || !this.description || !this.bindings.queryController || !this.container) {
+      return [];
     }
 
-    return [];
+    if (fieldDesciption.groupByField) {
+      return await this.bindings.queryController.getEndpoint().listFieldValues({
+        field: this.description.name
+      });
+    } else {
+      const queryBuilder = new QueryBuilder();
+      queryBuilder.advancedExpression.add(fieldDesciption.name);
+      const queryResults = this.bindings ? await this.bindings.queryController.getEndpoint().search(queryBuilder.build()) : null;
+      if (queryResults) {
+        return map(queryResults.results, result => {
+          return { value: Utils.getFieldValue(result, fieldDesciption.name) } as IIndexFieldValue;
+        });
+      } else {
+        return [];
+      }
+    }
   }
 
   private renderFieldValues(fieldValues: IIndexFieldValue[]) {
@@ -259,10 +259,25 @@ export class AvailableFieldsDatasource implements agGridModule.IDatasource {
       return rows.sort((first, second) => {
         const firstValue = first[sortModel.colId];
         const secondValue = second[sortModel.colId];
+
+        const ascendingOrDescendingMultiplier = sortModel.sort == 'asc' ? 1 : -1;
+
+        if (Utils.isNullOrEmptyString(firstValue) && Utils.isNullOrEmptyString(secondValue)) {
+          return 0;
+        }
+
+        if (Utils.isNullOrEmptyString(firstValue)) {
+          return -1 * ascendingOrDescendingMultiplier;
+        }
+
+        if (Utils.isNullOrEmptyString(secondValue)) {
+          return 1 * ascendingOrDescendingMultiplier;
+        }
+
         if (isNaN(firstValue) || isNaN(secondValue)) {
-          return firstValue.localeCompare(secondValue) * (sortModel.sort == 'asc' ? 1 : -1);
+          return firstValue.localeCompare(secondValue) * ascendingOrDescendingMultiplier;
         } else {
-          return (Number(firstValue) - Number(secondValue)) * (sortModel.sort == 'asc' ? 1 : -1);
+          return (Number(firstValue) - Number(secondValue)) * ascendingOrDescendingMultiplier;
         }
       });
     }
