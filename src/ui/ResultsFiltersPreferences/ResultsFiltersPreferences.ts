@@ -149,6 +149,7 @@ export class ResultsFiltersPreferences extends Component {
   private advancedFiltersTextInputExpression: TextInput;
   private advancedFiltersTabSelect: MultiSelect;
   private advancedFilterFormValidate: HTMLFormElement;
+  private isFullBreadcrumbClear: boolean;
 
   /**
    * Creates a new `ResultsFiltersPreferences` component.
@@ -254,10 +255,12 @@ export class ResultsFiltersPreferences extends Component {
   }
 
   private handleClearBreadcrumb() {
+    this.isFullBreadcrumbClear = true;
     _.each(this.getActiveFilters(), filter => {
       filter.selected = false;
     });
     this.fromPreferencesToCheckboxInput();
+    this.isFullBreadcrumbClear = false;
   }
 
   private buildAdvancedFilters() {
@@ -387,10 +390,13 @@ export class ResultsFiltersPreferences extends Component {
         const checkbox = new Checkbox((checkbox: Checkbox) => {
           this.save();
           const filter = this.preferences[checkbox.getValue()];
-          this.fromFilterToAnalyticsEvent(filter, filter.selected ? 'selected' : 'unselected');
-          this.queryController.executeQuery({
-            closeModalBox: false
-          });
+
+          if (!this.queryController.firstQuery && !this.isFullBreadcrumbClear) {
+            this.fromFilterToAnalyticsEvent(filter, filter.selected ? 'selected' : 'unselected');
+            this.queryController.executeQuery({
+              closeModalBox: false
+            });
+          }
         }, filterToBuild.label);
         $$(checkbox.build()).addClass('coveo-choice-container');
         this.preferencePanelCheckboxInput[filterToBuild.label] = checkbox;
@@ -461,9 +467,6 @@ export class ResultsFiltersPreferences extends Component {
       filter.selected = false;
       this.fromFilterToAnalyticsEvent(filter, 'cleared from breadcrumb');
       this.fromPreferencesToCheckboxInput();
-      this.queryController.executeQuery({
-        closeModalBox: false
-      });
     });
 
     return elem.el;
