@@ -28,10 +28,7 @@ const watchHtmlPagesOnce = _.once(() => {
   glob('bin/*.html', (err, files) => {
     files.forEach(file => {
       fs.watch(file, () => {
-        server.sockets.forEach(socket => {
-          // Sending an "ok" message triggers a simple page reload in the client
-          socket.write(JSON.stringify({ type: 'ok' }));
-        });
+        server.sockets[0].write(JSON.stringify({ type: 'ok' }));
       });
     });
   });
