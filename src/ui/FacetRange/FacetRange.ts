@@ -175,11 +175,15 @@ export class FacetRange extends Facet implements IComponentBindings {
     let firstValue: string;
     let secondValue: string;
 
-    if (!startEndA && !startEndB) {
+    if (!startEndA) {
       firstValue = valueA.value;
-      secondValue = valueB.value;
     } else {
       firstValue = startEndA.start;
+    }
+
+    if (!startEndB) {
+      secondValue = valueB.value;
+    } else {
       secondValue = startEndB.start;
     }
 
