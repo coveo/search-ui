@@ -242,6 +242,12 @@ export class OmniboxResultList extends ResultList implements IComponentBindings 
     }
   }
 
+  protected handleChangeLayout() {
+    // Since OmniboxResultList does not allow multiple layout,
+    // we simply ignore the event change since the component does not have anything meaningful to do.
+    return;
+  }
+
   private setupOptions() {
     this.logger.info('Disabling infinite scroll for OmniboxResultList', this);
     this.options.enableInfiniteScroll = false;
