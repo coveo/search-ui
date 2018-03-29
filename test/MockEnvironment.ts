@@ -218,6 +218,7 @@ export function mockSearchInterface(): SearchInterface {
   m.options = {};
   m.options.originalOptionsObject = {};
   m.responsiveComponents = mockResponsiveComponents();
+  m.resultsPerPage = 10;
   return m;
 }
 
