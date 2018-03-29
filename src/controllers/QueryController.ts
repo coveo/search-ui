@@ -94,6 +94,7 @@ class DefaultQueryOptions implements IQueryOptions {
 export class QueryController extends RootComponent {
   static ID = 'QueryController';
   public historyStore: CoveoAnalytics.HistoryStore;
+  public firstQuery: boolean;
 
   private currentPendingQuery: Promise<IQueryResults>;
   private lastQueryBuilder: QueryBuilder;
@@ -102,7 +103,6 @@ export class QueryController extends RootComponent {
   private lastSearchUid: string;
   private lastQueryResults: IQueryResults;
   private currentError: any;
-  private firstQuery: boolean;
   private createdOneQueryBuilder: boolean;
   private showingExecutingQueryAnimation = false;
   private overrideEndpoint: SearchEndpoint;
