@@ -38,6 +38,13 @@ export function UrlUtilsTest() {
       expect(url).toBe('../a/b/c/d');
     });
 
+    it('should support relative url with .', () => {
+      const url = UrlUtils.normalizeAsString({
+        paths: ['./a', '/b', '//c', '///d']
+      });
+      expect(url).toBe('./a/b/c/d');
+    });
+
     it('should support passing in query string as an array of strings', () => {
       const url = UrlUtils.normalizeAsString({
         paths: ['https://a.com/'],
