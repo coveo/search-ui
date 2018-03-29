@@ -664,7 +664,7 @@ export class ResultList extends Component {
     }
   }
 
-  private handleChangeLayout(args: IChangeLayoutEventArgs) {
+  protected handleChangeLayout(args: IChangeLayoutEventArgs) {
     if (args.layout === this.options.layout) {
       this.enable();
       this.options.resultTemplate.layout = <ValidLayout>this.options.layout;

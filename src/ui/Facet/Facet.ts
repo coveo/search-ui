@@ -702,7 +702,8 @@ export class Facet extends Component {
 
     responsiveBreakpoint: ComponentOptions.buildNumberOption({
       defaultValue: 800,
-      deprecated: 'This option is exposed for legacy reasons. It is not recommended to use this option.'
+      deprecated:
+        'This option is exposed for legacy reasons. It is not recommended to use this option. Instead, use `ResponsiveComponents` methods exposed on the `SearchInterface`.'
     }),
 
     /**
