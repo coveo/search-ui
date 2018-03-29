@@ -137,30 +137,29 @@ export function FacetSettingsTest() {
 
     describe('when closing the popup', () => {
       beforeEach(() => {
+        jasmine.clock().install();
         facetSettings = new FacetSettings(['foo', 'bar'], facet);
         spyOn(facetSettings, 'close');
         facetSettings.build();
         facetSettings.open();
       });
 
-      it('should close the after a delay on mouseleave', done => {
-        $$(facetSettings.button).trigger('mouseleave');
-        setTimeout(() => {
-          expect(facetSettings.close).toHaveBeenCalled();
-          done();
-        }, 400);
+      afterEach(() => {
+        jasmine.clock().uninstall();
       });
 
-      it('should not close if there is a mouseenter following a mouseleave', done => {
+      it('should close the after a delay on mouseleave', () => {
         $$(facetSettings.button).trigger('mouseleave');
-        setTimeout(() => {
-          $$(facetSettings.button).trigger('mouseenter');
-        }, 50);
+        jasmine.clock().tick(400);
+        expect(facetSettings.close).toHaveBeenCalled();
+      });
 
-        setTimeout(() => {
-          expect(facetSettings.close).not.toHaveBeenCalled();
-          done();
-        }, 400);
+      it('should not close if there is a mouseenter following a mouseleave', () => {
+        $$(facetSettings.button).trigger('mouseleave');
+        jasmine.clock().tick(50);
+        $$(facetSettings.button).trigger('mouseenter');
+        jasmine.clock().tick(400);
+        expect(facetSettings.close).not.toHaveBeenCalled();
       });
     });
   });
