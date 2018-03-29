@@ -175,6 +175,13 @@ export function RecommendationTest() {
         expect(isHidden(test)).toBeTruthy();
       });
 
+      it('should hide if the main interface has no results', () => {
+        Simulate.query(mainSearchInterface.env, {
+          results: FakeResults.createFakeResults(0)
+        });
+        expect(isHidden(test)).toBeTruthy();
+      });
+
       describe('exposes option hideIfNoResults', () => {
         it('should hide the interface if there are no recommendations and the option is true', () => {
           options.hideIfNoResults = true;
