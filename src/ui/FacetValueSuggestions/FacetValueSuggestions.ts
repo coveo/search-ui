@@ -11,7 +11,7 @@ import { $$ } from '../../utils/Dom';
 import { exportGlobally } from '../../GlobalExports';
 import 'styling/_FieldSuggestions';
 import * as _ from 'underscore';
-import { SuggestionsCache } from '../Misc/SuggestionsCache';
+import { SuggestionsCache } from '../../Misc/SuggestionsCache';
 import { QueryStateModel } from '../../ModelsModules';
 import { DomUtils } from '../../UtilsModules';
 import { IFacetValueSuggestionRow, FacetValueSuggestionsProvider, IFacetValueSuggestionsProvider } from './FacetValueSuggestionsProvider';

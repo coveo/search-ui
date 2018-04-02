@@ -5,7 +5,7 @@ import { IQuerySuggestCompletion, IQuerySuggestRequest, IQuerySuggestResponse } 
 import { ComponentOptionsModel } from '../../models/ComponentOptionsModel';
 import { OmniboxEvents, IPopulateOmniboxSuggestionsEventArgs } from '../../events/OmniboxEvents';
 import { StringUtils } from '../../utils/StringUtils';
-import { SuggestionsCache } from '../Misc/SuggestionsCache';
+import { SuggestionsCache } from '../../Misc/SuggestionsCache';
 import * as _ from 'underscore';
 
 export class QuerySuggestAddon {

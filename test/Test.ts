@@ -507,3 +507,9 @@ AccessTokenTest();
 
 import { FacetValueSuggestionsTest } from './ui/FacetValueSuggestionsTest';
 FacetValueSuggestionsTest();
+
+import { FacetValueSuggestionsProviderTest } from './ui/FacetValueSuggestionsProviderTest';
+FacetValueSuggestionsProviderTest();
+
+import { SuggestionsCacheTest } from './misc/SuggestionsCacheTest';
+SuggestionsCacheTest();
