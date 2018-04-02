@@ -140,7 +140,7 @@ export class FacetValueSuggestions extends Component {
 
   public facetValueSuggestionsProvider: IFacetValueSuggestionsProvider;
 
-  static defaultTemplate(row: IFacetValueSuggestionRow, omnibox: Omnibox): string {
+  static defaultTemplate(this: FacetValueSuggestions, row: IFacetValueSuggestionRow, omnibox: Omnibox): string {
     const keyword = DomUtils.highlightElement(row.keyword, omnibox.getText(), 'coveo-omnibox-hightlight2');
     const facetValue = DomUtils.highlightElement(row.value, row.value, 'coveo-omnibox-hightlight');
     const details = this.options.displayEstimateNumberOfResults ? ` (${row.numberOfResults} results)` : '';
@@ -162,6 +162,9 @@ export class FacetValueSuggestions extends Component {
     });
 
     this.options = ComponentOptions.initComponentOptions(element, FacetValueSuggestions, options);
+    if (!this.options.templateHelper) {
+      this.options.templateHelper = FacetValueSuggestions.defaultTemplate;
+    }
 
     Assert.check(Utils.isCoveoField(<string>this.options.field), `${this.options.field} is not a valid field`);
 
@@ -222,19 +225,11 @@ export class FacetValueSuggestions extends Component {
   }
 
   private buildDisplayNameForRow(row: IFacetValueSuggestionRow, omnibox: Omnibox): string {
-    if (!!this.options.templateHelper) {
-      return this.applyTemplateFromOptions(row, omnibox);
-    } else {
-      return FacetValueSuggestions.defaultTemplate(row, omnibox);
-    }
-  }
-
-  private applyTemplateFromOptions(row: IFacetValueSuggestionRow, omnibox: Omnibox): string {
     try {
-      return this.options.templateHelper(row, omnibox);
+      return this.options.templateHelper.call(this, row, omnibox);
     } catch (ex) {
       console.error('Could not apply template from options for the given row. Will use default template.', this, ex, row, omnibox);
-      return FacetValueSuggestions.defaultTemplate(row, omnibox);
+      return FacetValueSuggestions.defaultTemplate.call(this, row, omnibox);
     }
   }
 
