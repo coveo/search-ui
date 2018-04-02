@@ -21,7 +21,7 @@ export function RecommendationTest() {
     let store: CoveoAnalytics.HistoryStore;
 
     const isHidden = (test: Mock.IBasicComponentSetup<Recommendation>): boolean => {
-      return test.cmp.element.classList.contains('coveo-hidden');
+      return $$(test.cmp.element).hasClass('coveo-hidden');
     };
 
     beforeEach(() => {
@@ -76,13 +76,17 @@ export function RecommendationTest() {
     });
 
     describe('when propaging events', () => {
+      let recommendation: Recommendation;
       beforeEach(() => {
         mainSearchInterface.cmp.element.appendChild(test.cmp.element);
+        const div = $$('div').el;
+        new Mock.MockEnvironmentBuilder().withRoot(div);
+        recommendation = new Recommendation(div, options);
       });
 
       function addListenEventSpy(attributeName) {
         const spy = jasmine.createSpy('spy');
-        const eventName = test.cmp.getBindings().queryStateModel.getEventName(Model.eventTypes.change + attributeName);
+        const eventName = recommendation.getBindings().queryStateModel.getEventName(Model.eventTypes.change + attributeName);
         const mainSearchInterfaceContainer = $$('div');
         mainSearchInterfaceContainer.on(eventName, () => {
           spy();
@@ -168,6 +172,13 @@ export function RecommendationTest() {
 
       it('should hide if the main interface has a query error', () => {
         Simulate.queryError(mainSearchInterface.env);
+        expect(isHidden(test)).toBeTruthy();
+      });
+
+      it('should hide if the main interface has no results', () => {
+        Simulate.query(mainSearchInterface.env, {
+          results: FakeResults.createFakeResults(0)
+        });
         expect(isHidden(test)).toBeTruthy();
       });
 

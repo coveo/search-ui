@@ -768,7 +768,7 @@ export class Omnibox extends Component {
   private searchAsYouType(forceExecuteQuery = false) {
     this.clearSearchAsYouType();
     if (this.shouldExecuteQuery(true)) {
-      this.searchAsYouTypeTimeout = setTimeout(() => {
+      this.searchAsYouTypeTimeout = window.setTimeout(() => {
         if (this.suggestionShouldTriggerQuery() || forceExecuteQuery) {
           const suggestions = _.map(this.lastSuggestions, suggestion => suggestion.text);
           const index = _.indexOf(suggestions, this.magicBox.getWordCompletion());

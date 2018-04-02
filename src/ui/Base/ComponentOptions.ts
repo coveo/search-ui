@@ -909,8 +909,11 @@ export class ComponentOptions {
         }
       });
       return attributeFound;
+    }
+    if (option.alias) {
+      return element.getAttribute(ComponentOptions.attrNameFromName(option.alias));
     } else {
-      return element.getAttribute(ComponentOptions.attrNameFromName(<string>option.alias));
+      return undefined;
     }
   }
 }

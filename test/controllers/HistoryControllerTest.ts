@@ -56,6 +56,11 @@ export function HistoryControllerTest() {
       expect(historyController.handleHashChange.bind(historyController)).not.toThrow();
     });
 
+    it('should not set the hash when it has not changed on the first hash change', () => {
+      $$(historyController.element).trigger(InitializationEvents.restoreHistoryState);
+      expect(historyController.window.location.replace).not.toHaveBeenCalled();
+    });
+
     describe('with a fake HashUtilsModule', () => {
       let fakeHashUtils;
       beforeEach(() => {

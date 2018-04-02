@@ -8,6 +8,7 @@ import { Template } from '../../src/ui/Templates/Template';
 import { get } from '../../src/ui/Base/RegisteredNamedMethods';
 import { Quickview } from '../../src/ui/Quickview/Quickview';
 import { ResultLink } from '../../src/ui/ResultLink/ResultLink';
+import { ResultListEvents } from '../../src/EventsModules';
 
 export function OmniboxResultListTest() {
   describe('OmniboxResultListTest', () => {
@@ -39,6 +40,14 @@ export function OmniboxResultListTest() {
         expect(element['no-text-suggestion']).toBeTruthy();
       });
       done();
+    });
+
+    it('should not disable itself on changing layout', () => {
+      test.cmp.options.layout = 'list';
+      $$(test.cmp.element).trigger(ResultListEvents.changeLayout, {
+        layout: 'list'
+      });
+      expect(test.cmp.disabled).toBeFalsy();
     });
 
     describe('when selecting an element', () => {

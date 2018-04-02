@@ -254,7 +254,7 @@ export class Utils {
         previous = now;
         result = func.apply(context, args);
       } else if (!timeout && options.trailing !== false) {
-        timeout = setTimeout(later, remaining);
+        timeout = window.setTimeout(later, remaining);
       }
       return result;
     };
@@ -315,7 +315,7 @@ export class Utils {
     let stackTraceTimeout: number;
     return function(...args: any[]) {
       if (timeout == null) {
-        timeout = setTimeout(() => {
+        timeout = window.setTimeout(() => {
           timeout = null;
         }, wait);
         stackTraceTimeout = setTimeout(() => {
@@ -324,7 +324,7 @@ export class Utils {
         });
       } else if (stackTraceTimeout == null) {
         clearTimeout(timeout);
-        timeout = setTimeout(() => {
+        timeout = window.setTimeout(() => {
           func.apply(this, args);
           timeout = null;
         }, wait);
