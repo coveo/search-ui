@@ -836,24 +836,28 @@ class SliderGraph {
     $$(this.tooltipCount).text(d.y.toString());
     $$(this.tooltip).show();
 
-    const gapBetweenEachBar = 0.2;
-    const offSetForOneBar = 5;
+    // rolled a dice and got those numbers
+    const arbitraryOffsetForTooltip = 50;
+    const arbitraryOffsetForScrollbar = 20;
+    const tooltipArrowSize = 5;
 
-    const leftPositionForCurrentBand = this.x(d.start) - gapBetweenEachBar * this.slider.options.graph.steps;
-    const halfOfBandwidth = this.x.bandwidth() / 2 - offSetForOneBar;
+    const leftPositionForCurrentBand = this.x(d.start) - arbitraryOffsetForTooltip;
+    const halfOfBandwidth = this.x.bandwidth() / 2;
+    const tooltipArrowOffset = arbitraryOffsetForTooltip + halfOfBandwidth - tooltipArrowSize;
 
     this.tooltip.style.left = `${leftPositionForCurrentBand}px`;
     this.tooltip.style.top = `${this.y(d.y) - height}px`;
+    this.tooltipArrow.style.left = `${tooltipArrowOffset}px`;
 
     const tooltipRect = this.tooltip.getBoundingClientRect();
     const windowWidth = new Win(window).width();
 
-    if (tooltipRect.right > windowWidth) {
-      const offset = windowWidth - tooltipRect.right;
-      this.tooltip.style.left = `${leftPositionForCurrentBand + offset}px`;
-      this.tooltipArrow.style.left = `${Math.abs(offset) + halfOfBandwidth}px`;
-    } else {
-      this.tooltipArrow.style.left = `${halfOfBandwidth}px`;
+    const tooltipOverflowsRightOfWindow = tooltipRect.right > windowWidth - arbitraryOffsetForScrollbar;
+
+    if (tooltipOverflowsRightOfWindow) {
+      const offsetToPreventWindowOverflow = windowWidth - tooltipRect.right - arbitraryOffsetForScrollbar;
+      this.tooltip.style.left = `${leftPositionForCurrentBand + offsetToPreventWindowOverflow}px`;
+      this.tooltipArrow.style.left = `${tooltipArrowOffset - offsetToPreventWindowOverflow}px`;
     }
   }
 

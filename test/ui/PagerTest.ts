@@ -10,7 +10,6 @@ import { QueryEvents, INoResultsEventArgs } from '../../src/events/QueryEvents';
 import { analyticsActionCauseList } from '../../src/ui/Analytics/AnalyticsActionListMeta';
 import { IPagerOptions } from '../../src/ui/Pager/Pager';
 import { Defer } from '../../src/misc/Defer';
-import { Component } from '../../src/ui/Base/Component';
 
 export function PagerTest() {
   describe('Pager', () => {
@@ -19,8 +18,6 @@ export function PagerTest() {
     beforeEach(() => {
       registerCustomMatcher();
       test = Mock.basicComponentSetup<Pager>(Pager);
-      test.env.queryController.options = {};
-      test.env.queryController.options.resultsPerPage = 10;
     });
 
     afterEach(() => {
@@ -116,92 +113,86 @@ export function PagerTest() {
       expect(test.cmp.currentPage).toBe(6);
     });
 
-    it('should adapt itself to the number of results on each new query', () => {
-      let builder = new QueryBuilder();
-      builder.numberOfResults = 10;
-      builder.firstResult = 0;
-      Simulate.query(test.env, {
-        query: builder.build(),
-        queryBuilder: builder,
-        results: FakeResults.createFakeResults(1000)
+    describe('when queries are performed', () => {
+      const execQuery = (
+        test: Mock.IBasicComponentSetup<Pager>,
+        resultsPerPage: number,
+        firstResult: number,
+        numberOfResults: number,
+        origin?
+      ) => {
+        test.env.searchInterface.resultsPerPage = resultsPerPage;
+        const queryBuilder = new QueryBuilder();
+        queryBuilder.numberOfResults = resultsPerPage;
+        queryBuilder.firstResult = firstResult;
+        const simulation = Simulate.query(test.env, {
+          query: queryBuilder.build(),
+          queryBuilder,
+          results: FakeResults.createFakeResults(numberOfResults),
+          origin
+        });
+
+        return {
+          test,
+          simulation
+        };
+      };
+
+      it('should adapt itself to the number of results on each new query', () => {
+        // 10 results per page : show full pager
+        // Page 1 to 5
+        execQuery(test, 10, 0, 1000);
+
+        let anchors = $$(test.cmp.element).findAll('a.coveo-pager-list-item-text');
+        expect($$(anchors[0]).text()).toBe('1');
+        expect($$(anchors[anchors.length - 1]).text()).toBe('5');
+
+        // 500 results per page : only 2 page available
+        // Page 1 to 2
+        execQuery(test, 500, 0, 1000);
+
+        anchors = $$(test.cmp.element).findAll('a.coveo-pager-list-item-text');
+        expect($$(anchors[0]).text()).toBe('1');
+        expect($$(anchors[anchors.length - 1]).text()).toBe('2');
       });
 
-      // 10 results per page : show full pager
-      // Page 1 to 5
-      let anchors = $$(test.cmp.element).findAll('a.coveo-pager-list-item-text');
-      expect($$(anchors[0]).text()).toBe('1');
-      expect($$(anchors[anchors.length - 1]).text()).toBe('5');
+      it('should return to the last valid page when there is no results', () => {
+        $$(test.env.root).on(QueryEvents.noResults, (e, args: INoResultsEventArgs) => {
+          expect(args.retryTheQuery).toBe(true);
+        });
+        test.cmp.currentPage = 101;
+        execQuery(test, 10, 1000, 0, test.cmp);
+        expect(test.cmp.currentPage).toBe(100);
+      });
 
-      // 500 results per page : only 2 page available
-      // Page 1 to 2
-      builder = new QueryBuilder();
-      builder.firstResult = 0;
-      builder.numberOfResults = 500;
-      Simulate.query(test.env, {
-        query: builder.build(),
-        queryBuilder: builder,
-        results: FakeResults.createFakeResults(1000)
-      });
-      anchors = $$(test.cmp.element).findAll('a.coveo-pager-list-item-text');
-      expect($$(anchors[0]).text()).toBe('1');
-      expect($$(anchors[anchors.length - 1]).text()).toBe('2');
-    });
+      it('should return to the last valid page when there is no results and the numberOfResults per page is no standard', () => {
+        $$(test.env.root).on(QueryEvents.noResults, (e, args: INoResultsEventArgs) => {
+          expect(args.retryTheQuery).toBe(true);
+        });
+        test.cmp.currentPage = 11;
+        execQuery(test, 100, 1000, 0, test.cmp);
 
-    it('should return to the last valid page when there is no results', () => {
-      let builder = new QueryBuilder();
-      test.cmp.currentPage = 101;
-      builder.numberOfResults = 10;
-      builder.firstResult = 1000;
-      $$(test.env.root).on(QueryEvents.noResults, (e, args: INoResultsEventArgs) => {
-        expect(args.retryTheQuery).toBe(true);
+        expect(test.cmp.currentPage).toBe(10);
       });
-      Simulate.query(test.env, {
-        query: builder.build(),
-        queryBuilder: builder,
-        results: FakeResults.createFakeResults(0),
-        origin: <Component>test.cmp
-      });
-      expect(test.cmp.currentPage).toBe(100);
-    });
 
-    it('should return to the last valid page when there is no results and the numberOfResults per page is no standard', () => {
-      let builder = new QueryBuilder();
-      test.cmp.currentPage = 11;
-      builder.numberOfResults = 100;
-      builder.firstResult = 1000;
-      $$(test.env.root).on(QueryEvents.noResults, (e, args: INoResultsEventArgs) => {
-        expect(args.retryTheQuery).toBe(true);
-      });
-      Simulate.query(test.env, {
-        query: builder.build(),
-        queryBuilder: builder,
-        results: FakeResults.createFakeResults(0),
-        origin: <Component>test.cmp
-      });
-      expect(test.cmp.currentPage).toBe(10);
-    });
+      it('should return to the last valid page when there are less results than expected', done => {
+        const { simulation } = execQuery(test, 10, 30, 0, test.cmp);
+        simulation.results.totalCountFiltered = 29;
+        simulation.results.totalCount = 29;
 
-    it('should return to the last valid page when there are less results than expected', done => {
-      let builder = new QueryBuilder();
-      test.cmp.currentPage = 4;
-      builder.numberOfResults = 10;
-      builder.firstResult = 30;
-      const results = FakeResults.createFakeResults(0);
-      results.totalCountFiltered = 29;
-      results.totalCount = 29;
-
-      Simulate.query(test.env, {
-        query: builder.build(),
-        queryBuilder: builder,
-        results: results,
-        origin: <Component>test.cmp
-      });
-      Defer.defer(() => {
-        // started at page 4
-        // expected to receive more than 30 results in total but received only 29
-        // Should go back to last valid page, which is page 3
-        expect(test.cmp.currentPage).toBe(3);
-        done();
+        Simulate.query(test.env, {
+          query: simulation.query,
+          queryBuilder: simulation.queryBuilder,
+          results: simulation.results,
+          origin: test.cmp
+        });
+        Defer.defer(() => {
+          // started at page 4
+          // expected to receive more than 30 results in total but received only 29
+          // Should go back to last valid page, which is page 3
+          expect(test.cmp.currentPage).toBe(3);
+          done();
+        });
       });
     });
 

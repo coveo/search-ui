@@ -416,9 +416,6 @@ export class SearchInterface extends RootComponent implements IComponentBindings
 
   public static SMALL_INTERFACE_CLASS_NAME = 'coveo-small-search-interface';
 
-  private attachedComponents: { [type: string]: BaseComponent[] };
-  private facetValueStateHandler: FacetValueStateHandler;
-
   public root: HTMLElement;
   public queryStateModel: QueryStateModel;
   public componentStateModel: ComponentStateModel;
@@ -431,6 +428,11 @@ export class SearchInterface extends RootComponent implements IComponentBindings
    * This is useful, amongst other, for {@link Facet}, {@link Tab} and {@link ResultList}
    */
   public responsiveComponents: ResponsiveComponents;
+  public isResultsPerPageModifiedByPipeline = false;
+
+  private attachedComponents: { [type: string]: BaseComponent[] };
+  private facetValueStateHandler: FacetValueStateHandler;
+  private queryPipelineConfigurationForResultsPerPage: number;
 
   /**
    * Creates a new SearchInterface. Initialize various singletons for the interface (e.g., usage analytics, query
@@ -495,6 +497,23 @@ export class SearchInterface extends RootComponent implements IComponentBindings
     this.element.style.display = element.style.display || 'block';
     this.setupDebugInfo();
     this.responsiveComponents = new ResponsiveComponents();
+  }
+
+  public set resultsPerPage(resultsPerPage: number) {
+    this.options.resultsPerPage = this.queryController.options.resultsPerPage = resultsPerPage;
+  }
+
+  public get resultsPerPage() {
+    if (this.queryPipelineConfigurationForResultsPerPage != null && this.queryPipelineConfigurationForResultsPerPage != 0) {
+      return this.queryPipelineConfigurationForResultsPerPage;
+    }
+    if (this.queryController.options.resultsPerPage != null && this.queryController.options.resultsPerPage != 0) {
+      return this.queryController.options.resultsPerPage;
+    }
+    // Things would get weird if somehow the number of results per page was set to 0 or not available.
+    // Specially for the pager component. As such, we try to cover that corner case.
+    this.logger.warn('Results per page is incoherent in the search interface.', this);
+    return 10;
   }
 
   /**
@@ -826,9 +845,28 @@ export class SearchInterface extends RootComponent implements IComponentBindings
   private handleQuerySuccess(data: IQuerySuccessEventArgs) {
     const noResults = data.results.results.length == 0;
     this.toggleSectionState('coveo-no-results', noResults);
+    this.handlePossiblyModifiedNumberOfResultsInQueryPipeline(data);
     const resultsHeader = $$(this.element).find('.coveo-results-header');
     if (resultsHeader) {
       $$(resultsHeader).removeClass('coveo-query-error');
+    }
+  }
+
+  private handlePossiblyModifiedNumberOfResultsInQueryPipeline(data: IQuerySuccessEventArgs) {
+    if (!data || !data.query || !data.results) {
+      return;
+    }
+
+    const numberOfRequestedResults = data.query.numberOfResults;
+    const numberOfResultsActuallyReturned = data.results.results.length;
+    const moreResultsAvailable = data.results.totalCountFiltered > numberOfResultsActuallyReturned;
+
+    if (numberOfRequestedResults != numberOfResultsActuallyReturned && moreResultsAvailable) {
+      this.isResultsPerPageModifiedByPipeline = true;
+      this.queryPipelineConfigurationForResultsPerPage = numberOfResultsActuallyReturned;
+    } else {
+      this.isResultsPerPageModifiedByPipeline = false;
+      this.queryPipelineConfigurationForResultsPerPage = null;
     }
   }
 
