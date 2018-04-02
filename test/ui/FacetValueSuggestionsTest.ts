@@ -87,6 +87,40 @@ export function FacetValueSuggestionsTest() {
       });
     });
 
+    describe('when a template helper is defined', () => {
+      let suggestionTemplate: jasmine.Spy;
+      beforeEach(() => {
+        suggestionTemplate = jasmine.createSpy('suggestionTemplate');
+        suggestionTemplate.and.returnValue(someSuggestionValue);
+        test.cmp.options.templateHelper = suggestionTemplate;
+        setUpSuggestionsFromProviderToReturn([getSuggestionValue()]);
+      });
+
+      it('should call the template helper', async done => {
+        const resultingArgs = await triggerPopulateOmniboxEvent();
+
+        firstSuggestion(resultingArgs).then(result => {
+          expect(suggestionTemplate).toHaveBeenCalledTimes(1);
+          expect(result[0].html).toBe(someSuggestionValue);
+          done();
+        });
+      });
+
+      it('should fallback to the default template when the template helper throws', async done => {
+        suggestionTemplate.and.throwError('my template helper is very bad');
+        const resultingArgs = await triggerPopulateOmniboxEvent();
+
+        firstSuggestion(resultingArgs).then(result => {
+          expect(suggestionTemplate).toHaveBeenCalledTimes(1);
+
+          expect(result[0].html).toBe(
+            `<span class='coveo-omnibox-hightlight2'>${aKeyword}</span> in <span class='coveo-omnibox-hightlight'>${someSuggestionValue}</span>`
+          );
+          done();
+        });
+      });
+    });
+
     describe('when the provider resolves suggestions', () => {
       beforeEach(() => {
         setUpSuggestionsFromProviderToReturn([getSuggestionValue()]);

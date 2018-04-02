@@ -1,12 +1,35 @@
 import { IIndexFieldValue } from '../../rest/FieldValue';
 import { IListFieldValuesRequest } from '../../rest/ListFieldValuesRequest';
 import { QueryController, QueryStateModel } from '../../Core';
+import { IFieldOption } from '../Base/ComponentOptions';
 
+/**
+ * Used to define a row returned by an [`IFacetValueSuggestionsProvider`]{@link IFacetValueSuggestionsProvider}.
+ */
 export interface IFacetValueSuggestionRow {
+  /**
+   * The score computed by the suggestions provider.
+   *
+   * A higher score means the results is more relevant.
+   */
   score: IFacetValueSuggestionScore;
+
+  /**
+   * The field value returned by the suggestion that should be used to filter the results.
+   */
   value: string;
+  /**
+   * The number of results matching the value for the given keyword.
+   */
   numberOfResults: number;
+  /**
+   * The keyword that was used in the query to retrieve results.
+   */
   keyword: string;
+  /**
+   * The field that was used for the suggestions.
+   */
+  field: IFieldOption;
 }
 
 interface IFacetValueSuggestionScore {
@@ -28,15 +51,21 @@ type IFacetValueReference = {
   smallestTotal: number;
 };
 
+/**
+ * Defines options for the [`FacetValueSuggestions`]{@link FacetValueSuggestions} component.
+ */
 export interface IFacetValueSuggestionsProviderOptions {
   field: string;
 }
 
+/**
+ * Provides suggestions for the [`FacetValueSuggestions`]{@link FacetValueSuggestions} component.
+ */
 export interface IFacetValueSuggestionsProvider {
   getSuggestions(valuesToSearch: string[]): Promise<IFacetValueSuggestionRow[]>;
 }
 
-export class FacetValueSuggestionsProvider {
+export class FacetValueSuggestionsProvider implements IFacetValueSuggestionsProvider {
   private queryStateFieldFacetId;
 
   constructor(
@@ -66,7 +95,8 @@ export class FacetValueSuggestionsProvider {
           numberOfResults: indexFieldValue.numberOfResults,
           keyword: fieldResponse.keyword,
           value: indexFieldValue.value,
-          score: this.computeScoreForSuggestionRow(indexFieldValue, fieldTotalReference)
+          score: this.computeScoreForSuggestionRow(indexFieldValue, fieldTotalReference),
+          field: this.options.field
         };
       });
       return allValues.concat(suggestionRows);

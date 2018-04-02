@@ -1,4 +1,4 @@
-import { SuggestionsCache } from '../../src/Misc/SuggestionsCache';
+import { SuggestionsCache } from '../../src/misc/SuggestionsCache';
 export function SuggestionsCacheTest() {
   const suggestionFetcher: () => Promise<string> = () => Promise.resolve((count++).toString());
   let count = 0;

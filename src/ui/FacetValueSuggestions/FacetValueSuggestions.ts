@@ -11,7 +11,7 @@ import { $$ } from '../../utils/Dom';
 import { exportGlobally } from '../../GlobalExports';
 import 'styling/_FieldSuggestions';
 import * as _ from 'underscore';
-import { SuggestionsCache } from '../../Misc/SuggestionsCache';
+import { SuggestionsCache } from '../../misc/SuggestionsCache';
 import { QueryStateModel } from '../../ModelsModules';
 import { DomUtils } from '../../UtilsModules';
 import { IFacetValueSuggestionRow, FacetValueSuggestionsProvider, IFacetValueSuggestionsProvider } from './FacetValueSuggestionsProvider';
@@ -19,15 +19,16 @@ import { IFacetValueSuggestionRow, FacetValueSuggestionsProvider, IFacetValueSug
 export interface IFacetValueSuggestionsOptions {
   numberOfSuggestions: number;
   field?: IFieldOption;
-  onSelect?: () => void;
   useQuerySuggestions?: boolean;
   useValueFromSearchbox?: boolean;
   displayEstimateNumberOfResults?: boolean;
+  templateHelper?: (row: IFacetValueSuggestionRow, omnibox: Omnibox) => string;
 }
 
 /**
- * The `FieldSuggestions` component provides query suggestions based on a particular facet field. For example, you could
- * use this component to provide auto-complete suggestions while the end user is typing the title of an item.
+ * The `FieldValueSuggestions` component provides query suggestions based on a particular field values.
+ *
+ * For example, if you use a `@category` field, this component will provide suggestions for categories that returns results for the given keywords.
  *
  * The query suggestions provided by this component appear in the [`Omnibox`]{@link Omnibox} component.
  */
@@ -47,7 +48,7 @@ export class FacetValueSuggestions extends Component {
     /**
      * Specifies the facet field from which to provide suggestions.
      *
-     * Specifying a value for this option is required for the `FieldSuggestions` component to work.
+     * Specifying a value for this option is required for the `FieldValueSuggestions` component to work.
      */
     field: ComponentOptions.buildFieldOption({ required: true }),
 
@@ -62,18 +63,25 @@ export class FacetValueSuggestions extends Component {
      * Specifies whether to use query suggestions as keywords to get facet values suggestions.
      *
      * Default value is `true`.
+     *
+     * **Note:**
+     * This option requires that the `enableQuerySuggestAddon` is set to `true` in the [`Omnibox`]{@link Omnibox} component.
      */
     useQuerySuggestions: ComponentOptions.buildBooleanOption({ defaultValue: true }),
 
     /**
      * Specifies whether to use the current value from the search box to get facet values suggestions.
      *
-     * Default value is `false`.
+     * Default value is `true` if [`useQuerySuggestions`]{@link useQuerySuggestions} is disabled, `false` otherwise.
      */
-    useValueFromSearchbox: ComponentOptions.buildBooleanOption({ defaultValue: false }),
+    useValueFromSearchbox: ComponentOptions.buildBooleanOption({
+      postProcessing: (value, options: IFacetValueSuggestionsOptions) => {
+        return value || !options.useQuerySuggestions;
+      }
+    }),
 
     /**
-     * Specifies whether to display the number of results in the suggestion.
+     * Specifies whether to display the number of results in each of the suggestions.
      *
      * Default value is `false`.
      *
@@ -82,14 +90,16 @@ export class FacetValueSuggestions extends Component {
      *
      * On a Standalone Search Interface, if you are redirecting on a Search Interface that has different filters,
      *  the number of results on the Standalone Search Interface will be inaccurate.
+     *
+     * Setting this option has no effect when the `templateHelper` options is set.
      */
     displayEstimateNumberOfResults: ComponentOptions.buildBooleanOption({ defaultValue: false }),
 
     /**
-     * Specifies the event handler function to execute when the end user selects a suggested value in the
-     * [`Omnibox`]{@link Omnibox}. By default, the query box text is replaced by what the end user selected and a new
-     * query is executed. You can, however, replace this default behavior by providing a callback function to execute
-     * when the value is selected.
+     * Specifies the helper function to execute when generating suggestions shown to the end user in the
+     * [`Omnibox`]{@link Omnibox}.
+     *
+     * If not specified, a default template will be used.
      *
      * **Note:**
      * > You cannot set this option directly in the component markup as an HTML attribute. You must either set it in the
@@ -102,47 +112,26 @@ export class FacetValueSuggestions extends Component {
      *
      * ```javascript
      *
-     * var myOnSelectFunction = function(selectedValue, populateOmniboxEventArgs) {
-     *
-     *   // Close the suggestion list when the user clicks a suggestion.
-     *   populateOmniboxEventArgs.closeOmnibox();
-     *
-     *   // Search for matching title results in the default endpoint.
-     *   Coveo.SearchEndpoint.endpoints["default"].search({
-     *     q: "@title=='" + selectedValue + "'"
-     *   }).done(function(results) {
-     *
-     *     // If more than one result is found, select a result that matches the selected title.
-     *     var foundResult = Coveo._.find(results.results, function(result) {
-     *       return selectedValue == result.raw.title;
-     *     });
-     *
-     *     // Open the found result in the current window, or log an error.
-     *     if (foundResult) {
-     *       window.location = foundResult.clickUri;
-     *     }
-     *     else {
-     *       new Coveo.Logger.warn("Selected suggested result '" + selectedValue + "' not found.");
-     *     }
-     *   });
+     * var suggestionTemplate = function(row, omnibox) {
+     *   return "Searching for " + row.keyword + " in category " + row.value;
      * };
      *
      * // You can set the option in the 'init' call:
      * Coveo.init(document.querySelector("#search"), {
-     *    FieldSuggestions : {
-     *      onSelect : myOnSelectFunction
+     *    FacetValueSuggestions : {
+     *      templateHelper : suggestionTemplate
      *    }
      * });
      *
      * // Or before the 'init' call, using the 'options' top-level function:
      * // Coveo.options(document.querySelector("#search"), {
-     * //   FieldSuggestions : {
-     * //     onSelect : myOnSelectFunction
+     * //   FacetValueSuggestions : {
+     * //     templateHelper : suggestionTemplate
      * //   }
      * // });
      * ```
      */
-    onSelect: ComponentOptions.buildCustomOption<() => void>(() => {
+    templateHelper: ComponentOptions.buildCustomOption<(row: IFacetValueSuggestionRow, omnibox: Omnibox) => string>(() => {
       return null;
     })
   };
@@ -150,6 +139,13 @@ export class FacetValueSuggestions extends Component {
   public fieldValueCache: SuggestionsCache<IFacetValueSuggestionRow[]> = new SuggestionsCache();
 
   public facetValueSuggestionsProvider: IFacetValueSuggestionsProvider;
+
+  static defaultTemplate(row: IFacetValueSuggestionRow, omnibox: Omnibox): string {
+    const keyword = DomUtils.highlightElement(row.keyword, omnibox.getText(), 'coveo-omnibox-hightlight2');
+    const facetValue = DomUtils.highlightElement(row.value, row.value, 'coveo-omnibox-hightlight');
+    const details = this.options.displayEstimateNumberOfResults ? ` (${row.numberOfResults} results)` : '';
+    return `${keyword} in ${facetValue}${details}`;
+  }
 
   /**
    * Creates a new `FieldSuggestions` component.
@@ -226,10 +222,20 @@ export class FacetValueSuggestions extends Component {
   }
 
   private buildDisplayNameForRow(row: IFacetValueSuggestionRow, omnibox: Omnibox): string {
-    const keyword = DomUtils.highlightElement(row.keyword, omnibox.getText(), 'coveo-omnibox-hightlight2');
-    const facetValue = DomUtils.highlightElement(row.value, row.value, 'coveo-omnibox-hightlight');
-    const details = this.options.displayEstimateNumberOfResults ? ` (${row.numberOfResults} results)` : '';
-    return `${keyword} in ${facetValue}${details}`;
+    if (!!this.options.templateHelper) {
+      return this.applyTemplateFromOptions(row, omnibox);
+    } else {
+      return FacetValueSuggestions.defaultTemplate(row, omnibox);
+    }
+  }
+
+  private applyTemplateFromOptions(row: IFacetValueSuggestionRow, omnibox: Omnibox): string {
+    try {
+      return this.options.templateHelper(row, omnibox);
+    } catch (ex) {
+      console.error('Could not apply template from options for the given row. Will use default template.', this, ex, row, omnibox);
+      return FacetValueSuggestions.defaultTemplate(row, omnibox);
+    }
   }
 
   private onRowSelection(row: IFacetValueSuggestionRow, omnibox: Omnibox): void {
