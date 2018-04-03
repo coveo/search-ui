@@ -1,4 +1,4 @@
-import { isArray, pairs, compact, uniq, rest } from 'underscore';
+import { isArray, pairs, compact, uniq, rest, first } from 'underscore';
 import { Utils } from './Utils';
 import { IEndpointCallParameters } from '../rest/EndpointCaller';
 
@@ -55,8 +55,24 @@ export class UrlUtils {
     return {
       pathsNormalized,
       queryNormalized,
-      path: this.addToUrlIfNotEmpty(pathsNormalized, '/', '')
+      path: this.addToUrlIfNotEmpty(pathsNormalized, '/', UrlUtils.getRelativePathLeadingCharacters(toNormalize))
     };
+  }
+
+  private static getRelativePathLeadingCharacters(toNormalize: IUrlNormalize) {
+    let leadingRelativeUrlCharacters = '';
+
+    const relativeUrlLeadingCharactersRegex = /^(([\/])+)/;
+    const firstPath = first(this.toArray(toNormalize.paths));
+
+    if (firstPath) {
+      const match = relativeUrlLeadingCharactersRegex.exec(firstPath);
+      if (match) {
+        leadingRelativeUrlCharacters = match[0];
+      }
+    }
+
+    return leadingRelativeUrlCharacters;
   }
 
   private static normalizePaths(toNormalize: IUrlNormalize) {
@@ -164,6 +180,7 @@ export class UrlUtils {
       value = this.removeAtStart(problematicChar, value);
       value = this.removeAtEnd(problematicChar, value);
     });
+
     return value;
   }
 
