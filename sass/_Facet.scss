@@ -17,7 +17,7 @@
   .coveo-bottomSpace.coveo-with-animation {
     @include transition(height 0.5s);
   }
-  &.coveo-hidden {
+  &.coveo-no-visible-facet {
     display: none;
   }
 }

@@ -14,11 +14,6 @@ import { ResponsiveComponents } from './ResponsiveComponents';
 import * as _ from 'underscore';
 
 import 'styling/_ResponsiveFacets';
-import { every } from 'underscore';
-
-export interface IAutoLayoutAdjustableInsideFacetColumn {
-  currentlyDisplayed: () => boolean;
-}
 
 export class ResponsiveFacetColumn implements IResponsiveComponent {
   public static DEBOUNCE_SCROLL_WAIT = 250;
@@ -26,9 +21,6 @@ export class ResponsiveFacetColumn implements IResponsiveComponent {
   private static DROPDOWN_MIN_WIDTH: number = 280;
   private static DROPDOWN_WIDTH_RATIO: number = 0.35; // Used to set the width relative to the coveo root.
   private static DROPDOWN_HEADER_LABEL_DEFAULT_VALUE = 'Filters';
-
-  private static autoLayoutAdjustmentHandlers: Map<HTMLElement, () => void> = new Map();
-  private static autoLayoutAdjustmentComponent: Map<HTMLElement, IAutoLayoutAdjustableInsideFacetColumn[]> = new Map();
 
   private searchInterface: SearchInterface;
   private componentsInFacetColumn: any[] = [];
@@ -47,43 +39,6 @@ export class ResponsiveFacetColumn implements IResponsiveComponent {
     ResponsiveComponentsManager.register(responsiveComponentConstructor, $$(root), ID, component, options);
   }
 
-  public static initializeAutoLayoutAdjustment(root: HTMLElement, component: IAutoLayoutAdjustableInsideFacetColumn) {
-    const column = this.findColumn(root);
-    if (!column) {
-      return;
-    }
-
-    if (!this.autoLayoutAdjustmentComponent.has(root)) {
-      this.autoLayoutAdjustmentComponent.set(root, []);
-    }
-
-    this.autoLayoutAdjustmentComponent.get(root).push(component);
-
-    if (this.autoLayoutAdjustmentHandlers.has(root)) {
-      return;
-    }
-
-    const handler = () =>
-      $$(root).on(QueryEvents.deferredQuerySuccess, () => {
-        const components = this.autoLayoutAdjustmentComponent.get(root);
-        const everyStandardComponentsAreInvisible = every(components, component => !component.currentlyDisplayed());
-        if (!everyStandardComponentsAreInvisible) {
-          $$(column).removeClass('coveo-hidden');
-          return;
-        }
-
-        $$(column).addClass('coveo-hidden');
-        const dropdownHeader = this.findDropdownHeader(root);
-        if (dropdownHeader) {
-          $$(dropdownHeader).addClass('coveo-hidden');
-        }
-      });
-
-    handler();
-
-    this.autoLayoutAdjustmentHandlers.set(root, handler);
-  }
-
   private static findColumn(root: HTMLElement) {
     const column = $$(root).find('.coveo-facet-column');
     if (!column) {
@@ -91,10 +46,6 @@ export class ResponsiveFacetColumn implements IResponsiveComponent {
       logger.info('No element with class coveo-facet-column. Responsive facets cannot be enabled');
     }
     return column;
-  }
-
-  private static findDropdownHeader(root: HTMLElement) {
-    return $$(root).find('.coveo-facet-dropdown-header');
   }
 
   constructor(public coveoRoot: Dom, public ID: string, options: IResponsiveComponentOptions, responsiveDropdown?: ResponsiveDropdown) {

@@ -49,7 +49,6 @@ import 'styling/_FacetFooter';
 import { SVGIcons } from '../../utils/SVGIcons';
 import { SVGDom } from '../../utils/SVGDom';
 import { IQueryResults } from '../../rest/QueryResults';
-import { ResponsiveFacetColumn } from '../ResponsiveComponents/ResponsiveFacetColumn';
 
 export interface IFacetOptions {
   title?: string;
@@ -801,20 +800,10 @@ export class Facet extends Component {
     this.bind.oneRootElement(QueryEvents.querySuccess, () => {
       this.firstQuery = false;
     });
-
-    ResponsiveFacetColumn.initializeAutoLayoutAdjustment(this.root, this);
   }
 
-  public currentlyDisplayed() {
-    if (this.element.style.display == 'none') {
-      return false;
-    }
-
-    if (this.element.style.visibility == 'hidden') {
-      return false;
-    }
-
-    if ($$(this.element).hasClass('coveo-tab-disabled')) {
+  public isCurrentlyDisplayed() {
+    if (!$$(this.element).isVisible()) {
       return false;
     }
 
