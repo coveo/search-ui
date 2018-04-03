@@ -33,7 +33,7 @@ export class FacetColumnAutoLayoutAdjustment {
         const column = this.findColumn(root);
         const dropDownHeader = this.findDropdownHeader(root);
 
-        if (this.everyStandardComponentsAreInvisible(root) && this.columnsContainsOnlyAutoAdjustableContent(column)) {
+        if (this.everyStandardComponentsAreInvisible(root) && this.columnsDoesNotContainVisibleCustomElement(column)) {
           column ? $$(column).addClass(hiddenClass) : null;
           dropDownHeader ? $$(dropDownHeader).addClass(hiddenClass) : null;
         } else {
@@ -47,7 +47,7 @@ export class FacetColumnAutoLayoutAdjustment {
     this.autoLayoutAdjustmentHandlers.set(root, handler);
   }
 
-  private static columnsContainsOnlyAutoAdjustableContent(column: HTMLElement) {
+  private static columnsDoesNotContainVisibleCustomElement(column: HTMLElement) {
     if (!column) {
       return true;
     }
@@ -55,7 +55,7 @@ export class FacetColumnAutoLayoutAdjustment {
     const childrens = $$(column).children();
     const shouldBeIgnored = ['coveo-facet-header-filter-by-container', 'coveo-topSpace', 'coveo-bottomSpace'];
 
-    const columnContainsOnlyAutoAdjustableContent = every(childrens, child => {
+    const columnDoesNotContainVisibleCustomElement = every(childrens, child => {
       const willBeIgnored = find(shouldBeIgnored, toIgnore => {
         return $$(child).hasClass(toIgnore);
       });
@@ -82,7 +82,7 @@ export class FacetColumnAutoLayoutAdjustment {
       return false;
     });
 
-    return columnContainsOnlyAutoAdjustableContent;
+    return columnDoesNotContainVisibleCustomElement;
   }
 
   private static everyStandardComponentsAreInvisible(root: HTMLElement) {
