@@ -32,6 +32,7 @@ import { ResponsiveComponents } from '../ResponsiveComponents/ResponsiveComponen
 import { Context, IPipelineContextProvider } from '../PipelineContext/PipelineGlobalExports';
 import { InitializationPlaceholder } from '../Base/InitializationPlaceholder';
 import { Debug } from '../Debug/Debug';
+import RelevanceInspectorModule = require('../RelevanceInspector/RelevanceInspector');
 
 import * as fastclick from 'fastclick';
 import * as jstz from 'jstimezonedetect';
@@ -430,6 +431,7 @@ export class SearchInterface extends RootComponent implements IComponentBindings
 
   private attachedComponents: { [type: string]: BaseComponent[] };
   private queryPipelineConfigurationForResultsPerPage: number;
+  private relevanceInspector: RelevanceInspectorModule.RelevanceInspector;
 
   /**
    * Creates a new SearchInterface. Initialize various singletons for the interface (e.g., usage analytics, query
@@ -473,6 +475,8 @@ export class SearchInterface extends RootComponent implements IComponentBindings
     $$(this.element).on(QueryEvents.buildingQuery, (e, args) => this.handleBuildingQuery(args));
     $$(this.element).on(QueryEvents.querySuccess, (e, args) => this.handleQuerySuccess(args));
     $$(this.element).on(QueryEvents.queryError, (e, args) => this.handleQueryError(args));
+    const debugChanged = this.queryStateModel.getEventName(Model.eventTypes.changeOne + QueryStateModel.attributesEnum.debug);
+    $$(this.element).on(debugChanged, (e, args: IAttributeChangedEventArg) => this.handleDebugModeChange(args));
 
     if (this.options.enableHistory) {
       if (!this.options.useLocalStorageForHistory) {
@@ -616,6 +620,23 @@ export class SearchInterface extends RootComponent implements IComponentBindings
       return analyticsRef.create(this.element, this.analyticsOptions, this.getBindings());
     }
     return new NoopAnalyticsClient();
+  }
+
+  private async handleDebugModeChange(args: IAttributeChangedEventArg) {
+    if (args.value && !this.relevanceInspector && this.options.enableDebugInfo) {
+      require.ensure(
+        ['../RelevanceInspector/RelevanceInspector'],
+        () => {
+          const loadedModule = require('../RelevanceInspector/RelevanceInspector.ts');
+          const relevanceInspectorCtor = loadedModule.RelevanceInspector as RelevanceInspectorModule.IRelevanceInspectorConstructor;
+          const relevanceInspectorElement = $$('btn');
+          $$(this.element).prepend(relevanceInspectorElement.el);
+          this.relevanceInspector = new relevanceInspectorCtor(relevanceInspectorElement.el, this.getBindings());
+        },
+        null,
+        'RelevanceInspector'
+      );
+    }
   }
 
   private initializeHistoryController() {
@@ -828,6 +849,20 @@ export class SearchInterface extends RootComponent implements IComponentBindings
     data.queryBuilder.enableDuplicateFiltering = this.options.enableDuplicateFiltering;
 
     data.queryBuilder.allowQueriesWithoutKeywords = this.options.allowQueriesWithoutKeywords;
+
+    const endpoint = this.queryController.getEndpoint();
+    if (endpoint != null && endpoint.options) {
+      const qsArguments = endpoint.options.queryStringArguments;
+      if (this.queryStateModel.get(QueryStateModel.attributesEnum.debug)) {
+        data.queryBuilder.maximumAge = 0;
+        data.queryBuilder.enableDebug = true;
+        qsArguments ? (qsArguments.debugRankingInformation = 1) : null;
+        data.queryBuilder.fieldsToExclude = ['allmetadatavalues'];
+        data.queryBuilder.fieldsToInclude = null;
+      } else {
+        qsArguments ? (qsArguments.debugRankingInformation = 0) : null;
+      }
+    }
   }
 
   private handleQuerySuccess(data: IQuerySuccessEventArgs) {

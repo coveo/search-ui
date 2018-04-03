@@ -84,7 +84,7 @@ export class Debug extends RootComponent {
     if (this.stackDebug == null) {
       this.stackDebug = {};
     }
-    this.stackDebug = _.extend({}, this.stackDebug, info);
+    this.stackDebug = { ...this.stackDebug, ...info };
   }
 
   private handleNewResultDisplayed(args: IDisplayedNewResultEventArgs) {
@@ -102,10 +102,11 @@ export class Debug extends RootComponent {
       const findResult = (results?: IQueryResults) =>
         results != null ? _.find(results.results, (result: IQueryResult) => result.index == index) : args.result;
 
-      const debugInfo = _.extend(new DebugForResult(this.bindings).generateDebugInfoForResult(args.result), {
-        findResult: findResult,
+      const debugInfo = {
+        ...new DebugForResult(this.bindings).generateDebugInfoForResult(args.result),
+        findResult,
         template: this.templateToJson(template)
-      });
+      };
 
       this.addInfoToDebugPanel(debugInfo);
       this.showDebugPanel();

@@ -7329,5 +7329,9 @@
   "WithinLastYear": {
     "en": "Within last year",
     "fr": "Depuis la dernière année"
+  },
+  "RelevanceInspector": {
+    "en": "Relevance Inspector",
+    "fr": "Inspecteur de Pertinence des Documents"
   }
 }
