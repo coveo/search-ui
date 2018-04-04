@@ -34,5 +34,17 @@ export function FacetValuesTest() {
       oldValues.updateCountsFromNewValues(newValues);
       expect(oldValues.get('@token9').occurrences).toEqual(0);
     });
+
+    it('should set the occurences to in new values if importing from another active list', () => {
+      const oldValues = new FacetValues(FakeResults.createFakeGroupByResult('@field', '@token', 10));
+      oldValues.getAll().forEach(oldValue => (oldValue.selected = true));
+      oldValues.get('@token9').occurrences = 999;
+
+      const newValues = new FacetValues(FakeResults.createFakeGroupByResult('@field', '@token', 9));
+      expect(newValues.get('@token9')).toBeUndefined();
+      newValues.importActiveValuesFromOtherList(oldValues);
+      expect(newValues.get('@token9')).toBeDefined();
+      expect(newValues.get('@token9').occurrences).toBe(0);
+    });
   });
 }
