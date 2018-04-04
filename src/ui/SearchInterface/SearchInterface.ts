@@ -32,6 +32,7 @@ import { ResponsiveComponents } from '../ResponsiveComponents/ResponsiveComponen
 import { Context, IPipelineContextProvider } from '../PipelineContext/PipelineGlobalExports';
 import { InitializationPlaceholder } from '../Base/InitializationPlaceholder';
 import { Debug } from '../Debug/Debug';
+import RelevanceInspectorModule = require('../RelevanceInspector/RelevanceInspector');
 
 import * as fastclick from 'fastclick';
 import * as jstz from 'jstimezonedetect';
@@ -415,9 +416,6 @@ export class SearchInterface extends RootComponent implements IComponentBindings
   };
 
   public static SMALL_INTERFACE_CLASS_NAME = 'coveo-small-search-interface';
-
-  private attachedComponents: { [type: string]: BaseComponent[] };
-
   public root: HTMLElement;
   public queryStateModel: QueryStateModel;
   public componentStateModel: ComponentStateModel;
@@ -430,6 +428,11 @@ export class SearchInterface extends RootComponent implements IComponentBindings
    * This is useful, amongst other, for {@link Facet}, {@link Tab} and {@link ResultList}
    */
   public responsiveComponents: ResponsiveComponents;
+  public isResultsPerPageModifiedByPipeline = false;
+
+  private attachedComponents: { [type: string]: BaseComponent[] };
+  private queryPipelineConfigurationForResultsPerPage: number;
+  private relevanceInspector: RelevanceInspectorModule.RelevanceInspector;
 
   /**
    * Creates a new SearchInterface. Initialize various singletons for the interface (e.g., usage analytics, query
@@ -474,6 +477,8 @@ export class SearchInterface extends RootComponent implements IComponentBindings
     $$(this.element).on(QueryEvents.querySuccess, (e, args) => this.handleQuerySuccess(args));
     $$(this.element).on(QueryEvents.queryError, (e, args) => this.handleQueryError(args));
     $$(this.element).on(InitializationEvents.afterComponentsInitialization, () => this.handleAfterComponentsInitialization());
+    const debugChanged = this.queryStateModel.getEventName(Model.eventTypes.changeOne + QueryStateModel.attributesEnum.debug);
+    $$(this.element).on(debugChanged, (e, args: IAttributeChangedEventArg) => this.handleDebugModeChange(args));
 
     if (this.options.enableHistory) {
       if (!this.options.useLocalStorageForHistory) {
@@ -492,6 +497,23 @@ export class SearchInterface extends RootComponent implements IComponentBindings
     this.element.style.display = element.style.display || 'block';
     this.setupDebugInfo();
     this.responsiveComponents = new ResponsiveComponents();
+  }
+
+  public set resultsPerPage(resultsPerPage: number) {
+    this.options.resultsPerPage = this.queryController.options.resultsPerPage = resultsPerPage;
+  }
+
+  public get resultsPerPage() {
+    if (this.queryPipelineConfigurationForResultsPerPage != null && this.queryPipelineConfigurationForResultsPerPage != 0) {
+      return this.queryPipelineConfigurationForResultsPerPage;
+    }
+    if (this.queryController.options.resultsPerPage != null && this.queryController.options.resultsPerPage != 0) {
+      return this.queryController.options.resultsPerPage;
+    }
+    // Things would get weird if somehow the number of results per page was set to 0 or not available.
+    // Specially for the pager component. As such, we try to cover that corner case.
+    this.logger.warn('Results per page is incoherent in the search interface.', this);
+    return 10;
   }
 
   /**
@@ -600,6 +622,23 @@ export class SearchInterface extends RootComponent implements IComponentBindings
       return analyticsRef.create(this.element, this.analyticsOptions, this.getBindings());
     }
     return new NoopAnalyticsClient();
+  }
+
+  private async handleDebugModeChange(args: IAttributeChangedEventArg) {
+    if (args.value && !this.relevanceInspector && this.options.enableDebugInfo) {
+      require.ensure(
+        ['../RelevanceInspector/RelevanceInspector'],
+        () => {
+          const loadedModule = require('../RelevanceInspector/RelevanceInspector.ts');
+          const relevanceInspectorCtor = loadedModule.RelevanceInspector as RelevanceInspectorModule.IRelevanceInspectorConstructor;
+          const relevanceInspectorElement = $$('btn');
+          $$(this.element).prepend(relevanceInspectorElement.el);
+          this.relevanceInspector = new relevanceInspectorCtor(relevanceInspectorElement.el, this.getBindings());
+        },
+        null,
+        'RelevanceInspector'
+      );
+    }
   }
 
   private initializeHistoryController() {
@@ -812,14 +851,47 @@ export class SearchInterface extends RootComponent implements IComponentBindings
     data.queryBuilder.enableDuplicateFiltering = this.options.enableDuplicateFiltering;
 
     data.queryBuilder.allowQueriesWithoutKeywords = this.options.allowQueriesWithoutKeywords;
+
+    const endpoint = this.queryController.getEndpoint();
+    if (endpoint != null && endpoint.options) {
+      const qsArguments = endpoint.options.queryStringArguments;
+      if (this.queryStateModel.get(QueryStateModel.attributesEnum.debug)) {
+        data.queryBuilder.maximumAge = 0;
+        data.queryBuilder.enableDebug = true;
+        qsArguments ? (qsArguments.debugRankingInformation = 1) : null;
+        data.queryBuilder.fieldsToExclude = ['allmetadatavalues'];
+        data.queryBuilder.fieldsToInclude = null;
+      } else {
+        qsArguments ? (qsArguments.debugRankingInformation = 0) : null;
+      }
+    }
   }
 
   private handleQuerySuccess(data: IQuerySuccessEventArgs) {
     const noResults = data.results.results.length == 0;
     this.toggleSectionState('coveo-no-results', noResults);
+    this.handlePossiblyModifiedNumberOfResultsInQueryPipeline(data);
     const resultsHeader = $$(this.element).find('.coveo-results-header');
     if (resultsHeader) {
       $$(resultsHeader).removeClass('coveo-query-error');
+    }
+  }
+
+  private handlePossiblyModifiedNumberOfResultsInQueryPipeline(data: IQuerySuccessEventArgs) {
+    if (!data || !data.query || !data.results) {
+      return;
+    }
+
+    const numberOfRequestedResults = data.query.numberOfResults;
+    const numberOfResultsActuallyReturned = data.results.results.length;
+    const moreResultsAvailable = data.results.totalCountFiltered > numberOfResultsActuallyReturned;
+
+    if (numberOfRequestedResults != numberOfResultsActuallyReturned && moreResultsAvailable) {
+      this.isResultsPerPageModifiedByPipeline = true;
+      this.queryPipelineConfigurationForResultsPerPage = numberOfResultsActuallyReturned;
+    } else {
+      this.isResultsPerPageModifiedByPipeline = false;
+      this.queryPipelineConfigurationForResultsPerPage = null;
     }
   }
 

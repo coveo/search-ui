@@ -1979,7 +1979,7 @@ export class Facet extends Component {
     // Crop those out, and adjust the nbAvailable values for the "search" and "show more";
     if (this.options.isMultiValueField) {
       _.each(this.values.getAll(), v => {
-        if (v.occurrences == 0) {
+        if (v.occurrences == 0 && !v.selected && !v.excluded) {
           this.values.remove(v.value);
         }
       });
