@@ -9,8 +9,8 @@ export interface IAutoLayoutAdjustableInsideFacetColumn {
 }
 
 export class FacetColumnAutoLayoutAdjustment {
-  private static autoLayoutAdjustmentHandlers: Map<HTMLElement, () => void> = new Map();
-  private static autoLayoutAdjustmentComponent: Map<HTMLElement, IAutoLayoutAdjustableInsideFacetColumn[]> = new Map();
+  public static autoLayoutAdjustmentComponent: Map<HTMLElement, IAutoLayoutAdjustableInsideFacetColumn[]> = new Map();
+  public static autoLayoutAdjustmentHandlers: Map<HTMLElement, () => void> = new Map();
 
   public static isAutoLayoutAdjustable(component: any): component is IAutoLayoutAdjustableInsideFacetColumn {
     return 'isCurrentlyDisplayed' in component;
@@ -71,15 +71,7 @@ export class FacetColumnAutoLayoutAdjustment {
         }
       } catch (e) {}
 
-      if (child.style.display == 'none') {
-        return true;
-      }
-
-      if (child.style.visibility == 'hidden') {
-        return true;
-      }
-
-      return false;
+      return !$$(child).isVisible();
     });
 
     return columnDoesNotContainVisibleCustomElement;
