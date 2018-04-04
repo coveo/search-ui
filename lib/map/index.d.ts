@@ -1,3 +1,6 @@
+interface IterableIterator<T> {}
+interface Iterable<T> {}
+
 interface Map<K, V> {
   clear(): void;
   delete(key: K): boolean;
@@ -9,8 +12,6 @@ interface Map<K, V> {
   set(key: K, value?: V): Map<K, V>;
   size: number;
   values(): IterableIterator<V>;
-  [Symbol.iterator](): IterableIterator<[K, V]>;
-  [Symbol.toStringTag]: string;
 }
 
 interface MapConstructor {
