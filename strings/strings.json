@@ -7333,5 +7333,13 @@
   "RelevanceInspector": {
     "en": "Relevance Inspector",
     "fr": "Inspecteur de Pertinence des Documents"
+  },
+  "KeywordInCategory": {
+    "en": "{0} in {1}",
+    "fr": "{0} dans {1}"
+  },
+  "ResultCount": {
+    "en": "{0} results",
+    "fr": "{0} résultats"
   }
 }

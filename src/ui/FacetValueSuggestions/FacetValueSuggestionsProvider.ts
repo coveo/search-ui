@@ -109,8 +109,8 @@ export class FacetValueSuggestionsProvider implements IFacetValueSuggestionsProv
     // The reference request will be used to get the maximum number of values for a given facet value.
     const referenceValuesRequest = this.buildReferenceFieldValueRequest();
     const queryParts = this.getQueryToExecuteParts();
-    const suggestionValuesRequests = valuesToSearch.map(value => this.buildListFieldValueRequest(queryParts.concat(value).join(' ')));
-    const requests = [].concat(suggestionValuesRequests).concat(referenceValuesRequest);
+    const suggestionValuesRequests = valuesToSearch.map(value => this.buildListFieldValueRequest([...queryParts, value].join(' ')));
+    const requests = [...suggestionValuesRequests, referenceValuesRequest];
     const values = await this.queryController.getEndpoint().listFieldValuesBatch({
       batch: requests
     });

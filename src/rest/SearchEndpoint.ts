@@ -8,7 +8,7 @@ import { IQuery } from '../rest/Query';
 import { IQueryResults } from '../rest/QueryResults';
 import { IQueryResult } from '../rest/QueryResult';
 import { version } from '../misc/Version';
-import { IListFieldValuesRequest, IListFieldValuesBatchRequest } from '../rest/ListFieldValuesRequest';
+import { IListFieldValuesRequest, IListFieldValuesBatchRequest, IFieldValueBatchResponse } from '../rest/ListFieldValuesRequest';
 import { IIndexFieldValue } from '../rest/FieldValue';
 import { IFieldDescription } from '../rest/FieldDescription';
 import { IListFieldsResult } from '../rest/ListFieldsResult';
@@ -649,10 +649,6 @@ export class SearchEndpoint implements ISearchEndpoint {
     };
 
     this.logger.info('Listing field batch values', request);
-
-    interface IFieldValueBatchResponse {
-      batch: IIndexFieldValue[][];
-    }
 
     return this.performOneCall<IFieldValueBatchResponse>(callParams, callOptions).then(data => {
       this.logger.info('REST list field batch values successful', data.batch, request);

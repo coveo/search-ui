@@ -2,8 +2,6 @@ import { Omnibox, IOmniboxSuggestion } from '../Omnibox/Omnibox';
 import { Component } from '../Base/Component';
 import { ComponentOptions, IFieldOption } from '../Base/ComponentOptions';
 import { IComponentBindings } from '../Base/ComponentBindings';
-import { Assert } from '../../misc/Assert';
-import { Utils } from '../../utils/Utils';
 import { OmniboxEvents, IPopulateOmniboxSuggestionsEventArgs } from '../../events/OmniboxEvents';
 import { Initialization } from '../Base/Initialization';
 import { analyticsActionCauseList, IAnalyticsNoMeta } from '../Analytics/AnalyticsActionListMeta';
@@ -15,6 +13,7 @@ import { SuggestionsCache } from '../../misc/SuggestionsCache';
 import { QueryStateModel } from '../../ModelsModules';
 import { DomUtils } from '../../UtilsModules';
 import { IFacetValueSuggestionRow, FacetValueSuggestionsProvider, IFacetValueSuggestionsProvider } from './FacetValueSuggestionsProvider';
+import { l } from '../../MiscModules';
 
 export interface IFacetValueSuggestionsOptions {
   numberOfSuggestions: number;
@@ -143,8 +142,8 @@ export class FacetValueSuggestions extends Component {
   static defaultTemplate(this: FacetValueSuggestions, row: IFacetValueSuggestionRow, omnibox: Omnibox): string {
     const keyword = DomUtils.highlightElement(row.keyword, omnibox.getText(), 'coveo-omnibox-hightlight2');
     const facetValue = DomUtils.highlightElement(row.value, row.value, 'coveo-omnibox-hightlight');
-    const details = this.options.displayEstimateNumberOfResults ? ` (${row.numberOfResults} results)` : '';
-    return `${keyword} in ${facetValue}${details}`;
+    const details = this.options.displayEstimateNumberOfResults ? ` (${l('ResultCount', row.numberOfResults)})` : '';
+    return `${l('KeywordInCategory', keyword, facetValue)}${details}`;
   }
 
   /**
@@ -165,8 +164,6 @@ export class FacetValueSuggestions extends Component {
     if (!this.options.templateHelper) {
       this.options.templateHelper = FacetValueSuggestions.defaultTemplate;
     }
-
-    Assert.check(Utils.isCoveoField(<string>this.options.field), `${this.options.field} is not a valid field`);
 
     $$(this.root).on(OmniboxEvents.populateOmniboxSuggestions, (e: Event, args: IPopulateOmniboxSuggestionsEventArgs) => {
       args.suggestions.push(this.getSuggestions(args.omnibox));
@@ -204,7 +201,7 @@ export class FacetValueSuggestions extends Component {
 
       return this.rankSuggestionRows(suggestions).map(result => this.mapFacetValueSuggestion(result, omnibox));
     } catch (error) {
-      console.error(error, this);
+      this.logger.error(error);
       return [];
     }
   }
@@ -214,7 +211,7 @@ export class FacetValueSuggestions extends Component {
     const preciseResults = rankedResults.splice(0, Math.ceil(this.options.numberOfSuggestions / 2));
     const broadResults = rankedResults.slice(-1, Math.floor(this.options.numberOfSuggestions / 2));
 
-    return [].concat(preciseResults).concat(broadResults);
+    return [...preciseResults, ...broadResults];
   }
 
   private mapFacetValueSuggestion(resultToShow: IFacetValueSuggestionRow, omnibox: Omnibox) {
@@ -228,15 +225,15 @@ export class FacetValueSuggestions extends Component {
     try {
       return this.options.templateHelper.call(this, row, omnibox);
     } catch (ex) {
-      console.error('Could not apply template from options for the given row. Will use default template.', this, ex, row, omnibox);
+      this.logger.error('Could not apply template from options for the given row. Will use default template.', ex, row, omnibox);
       return FacetValueSuggestions.defaultTemplate.call(this, row, omnibox);
     }
   }
 
   private onRowSelection(row: IFacetValueSuggestionRow, omnibox: Omnibox): void {
     omnibox.setText(row.keyword);
-    // Use .extendDeep here, else it will modify queryStateModel.defaultAttributes.fv.
-    const fvState: { [key: string]: string[] } = Utils.extendDeep({}, this.queryStateModel.get(QueryStateModel.attributesEnum.fv));
+    // Copy the state here, else it will directly modify queryStateModel.defaultAttributes.fv.
+    const fvState: { [key: string]: string[] } = { ...this.queryStateModel.get(QueryStateModel.attributesEnum.fv) };
     const existingValues: string[] = fvState[this.options.field.toString()] || [];
     fvState[this.options.field.toString()] = existingValues.concat([row.value]);
     this.queryStateModel.set(QueryStateModel.attributesEnum.fv, fvState);

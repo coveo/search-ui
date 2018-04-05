@@ -2,14 +2,10 @@ import { QueryStateModel } from '../../models/QueryStateModel';
 import { Component } from '../Base/Component';
 import { BaseComponent } from '../Base/BaseComponent';
 
-type QueryState = { [key: string]: any };
-type FacetValueState = { [key: string]: any };
-type ComponentsFetcher = (componentId: string) => Component[];
-
 export class FacetValueStateHandler {
-  constructor(private componentsFetcher: ComponentsFetcher) {}
+  constructor(private componentsFetcher: (componentId: string) => Component[]) {}
 
-  public handleFacetValueState(stateToSet: QueryState): void {
+  public handleFacetValueState(stateToSet: Record<string, any>): void {
     const facetRef = BaseComponent.getComponentRef('Facet');
     const allFacets: Component[] = facetRef ? this.componentsFetcher(facetRef.ID) : [];
     const fvState = stateToSet.fv;
@@ -27,7 +23,7 @@ export class FacetValueStateHandler {
 }
 
 class FacetValueStateToFacetStateTransformer {
-  constructor(private queryState: QueryState, private facetValueState: FacetValueState, private allFacets: Component[]) {}
+  constructor(private queryState: Record<string, any>, private facetValueState: Record<string, any>, private allFacets: Component[]) {}
 
   public tryTransform(fieldId: string, valueInState: string): boolean {
     const facetsWithField = this.allFacets.filter(facet => facet.options.field == fieldId);
@@ -42,7 +38,7 @@ class FacetValueStateToFacetStateTransformer {
 }
 
 class FacetValueStateToHiddenQueryTransformer {
-  constructor(private queryState: QueryState, private facetValueState: FacetValueState) {}
+  constructor(private queryState: Record<string, any>, private facetValueState: Record<string, any>) {}
 
   public transform(fieldIds: string[]): void {
     const valuesTransformedToHiddenQuery = fieldIds.map(fieldId => this.facetValueIntoQuery(fieldId));

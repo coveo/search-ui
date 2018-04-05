@@ -1,3 +1,5 @@
+import { IIndexFieldValue } from './FieldValue';
+
 /**
  * Describe a request to list the possible values of a field.
  */
@@ -48,4 +50,8 @@ export interface IListFieldValuesBatchRequest {
    * The list of fields to request.
    */
   batch: IListFieldValuesRequest[];
+}
+
+export interface IFieldValueBatchResponse {
+  batch: IIndexFieldValue[][];
 }

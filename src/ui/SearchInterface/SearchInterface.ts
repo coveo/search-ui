@@ -492,7 +492,7 @@ export class SearchInterface extends RootComponent implements IComponentBindings
       }
     } else {
       $$(this.element).on(InitializationEvents.restoreHistoryState, () =>
-        this.queryStateModel.setMultiple(Utils.extendDeep({}, this.queryStateModel.defaultAttributes))
+        this.queryStateModel.setMultiple({ ...this.queryStateModel.defaultAttributes })
       );
     }
 
@@ -655,7 +655,7 @@ export class SearchInterface extends RootComponent implements IComponentBindings
     }
   }
 
-  private handlePreprocessQueryStateModel(args: { [key: string]: any }) {
+  private handlePreprocessQueryStateModel(args: Record<string, any>) {
     const tgFromModel = this.queryStateModel.get(QueryStateModel.attributesEnum.tg);
     const tFromModel = this.queryStateModel.get(QueryStateModel.attributesEnum.t);
 

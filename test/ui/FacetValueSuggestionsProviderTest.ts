@@ -1,23 +1,20 @@
 import { FacetValueSuggestionsProvider } from '../../src/ui/FacetValueSuggestions/FacetValueSuggestionsProvider';
 import * as Mock from '../MockEnvironment';
 import { IFieldOption } from '../../src/ui/Base/ComponentOptions';
-import { QueryController, QueryStateModel, SearchEndpoint } from '../Test';
 import { IIndexFieldValue } from '../../src/rest/FieldValue';
 import { IListFieldValuesRequest } from '../../src/rest/ListFieldValuesRequest';
 
 export function FacetValueSuggestionsProviderTest() {
   describe('FacetValueSuggestionsProvider', () => {
     let test: FacetValueSuggestionsProvider;
-    let queryController: QueryController = Mock.mock(QueryController);
-    let queryStateModel: QueryStateModel = Mock.mock(QueryStateModel);
-    let searchEndpointMock: SearchEndpoint = Mock.mock(SearchEndpoint);
+    let environment: Mock.IMockEnvironment;
     const someField: IFieldOption = '@bloupbloup';
     const valueToSearch = 'cowboy';
     const referenceFieldNumberOfResults = 10;
     const suggestion = 'suggestion';
 
     const setUpLastQuery = (aq: string = '', cq: string = '') => {
-      (<jasmine.Spy>queryController.getLastQuery).and.returnValue({
+      (<jasmine.Spy>environment.queryController.getLastQuery).and.returnValue({
         aq,
         cq
       });
@@ -25,7 +22,7 @@ export function FacetValueSuggestionsProviderTest() {
 
     const setUpFieldValuesBatchResponse = (values: IIndexFieldValue[][]) => {
       const valuesWithReference: IIndexFieldValue[][] = [].concat(values).concat([getReferenceBatchResponse()]);
-      (<jasmine.Spy>searchEndpointMock.listFieldValuesBatch).and.returnValue(Promise.resolve(valuesWithReference));
+      (<jasmine.Spy>environment.searchEndpoint.listFieldValuesBatch).and.returnValue(Promise.resolve(valuesWithReference));
     };
 
     const getIndexFieldValue = (numberOfResults: number, value: string) => {
@@ -40,30 +37,25 @@ export function FacetValueSuggestionsProviderTest() {
     };
 
     beforeEach(() => {
-      queryController = Mock.mock(QueryController);
-      queryStateModel = Mock.mock(QueryStateModel);
-      searchEndpointMock = Mock.mock(SearchEndpoint);
-      queryController.getLastQuery = jasmine.createSpy('getLastQuery');
+      environment = new Mock.MockEnvironmentBuilder().build();
+      environment.queryController.getLastQuery = jasmine.createSpy('getLastQuery');
       setUpLastQuery();
-      queryController.getEndpoint = () => searchEndpointMock;
-      searchEndpointMock.listFieldValuesBatch = jasmine.createSpy('listFieldValuesBatch');
+      environment.searchEndpoint.listFieldValuesBatch = jasmine.createSpy('listFieldValuesBatch');
       setUpFieldValuesBatchResponse([]);
-      test = new FacetValueSuggestionsProvider(queryController, queryStateModel, {
+      test = new FacetValueSuggestionsProvider(environment.queryController, environment.queryStateModel, {
         field: <string>someField
       });
     });
 
     afterEach(() => {
       test = null;
-      queryController = null;
-      queryStateModel = null;
-      searchEndpointMock = null;
+      environment = null;
     });
 
     it('should execute listFieldValuesBatch with value to search and reference', async done => {
       await test.getSuggestions([valueToSearch]);
 
-      expect(searchEndpointMock.listFieldValuesBatch).toHaveBeenCalledWith({
+      expect(environment.searchEndpoint.listFieldValuesBatch).toHaveBeenCalledWith({
         batch: <IListFieldValuesRequest[]>[
           {
             field: someField,
@@ -102,7 +94,7 @@ export function FacetValueSuggestionsProviderTest() {
       });
 
       it('should exclude an already selected field value from suggestions', async done => {
-        queryStateModel.get = () => [suggestion];
+        environment.queryStateModel.get = () => [suggestion];
 
         const results = await test.getSuggestions([valueToSearch]);
 

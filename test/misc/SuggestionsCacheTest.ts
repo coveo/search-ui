@@ -4,12 +4,12 @@ export function SuggestionsCacheTest() {
   let count = 0;
   let cache: SuggestionsCache<string>;
 
-  beforeEach(() => {
-    count = 0;
-    cache = new SuggestionsCache<string>();
-  });
-
   describe('SuggestionsCache', function() {
+    beforeEach(() => {
+      count = 0;
+      cache = new SuggestionsCache<string>();
+    });
+
     it('should return null when the cache key is empty', async done => {
       const cacheResult = await cache.getSuggestions('', suggestionFetcher);
 
