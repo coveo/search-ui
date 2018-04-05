@@ -1,6 +1,6 @@
 import { IIndexFieldValue } from '../../rest/FieldValue';
 import { IListFieldValuesRequest } from '../../rest/ListFieldValuesRequest';
-import { QueryController, QueryStateModel } from '../../Core';
+import { QueryController } from '../../Core';
 import { IFieldOption } from '../Base/ComponentOptions';
 
 /**
@@ -66,31 +66,19 @@ export interface IFacetValueSuggestionsProvider {
 }
 
 export class FacetValueSuggestionsProvider implements IFacetValueSuggestionsProvider {
-  private queryStateFieldFacetId;
-
-  constructor(
-    private queryController: QueryController,
-    private queryStateModel: QueryStateModel,
-    private options: IFacetValueSuggestionsProviderOptions
-  ) {
-    this.queryStateFieldFacetId = `f:${this.options.field}`;
-  }
+  constructor(private queryController: QueryController, private options: IFacetValueSuggestionsProviderOptions) {}
 
   public async getSuggestions(valuesToSearch: string[]): Promise<IFacetValueSuggestionRow[]> {
     const fieldsToQuery = await this.getFieldValuesToQuery(valuesToSearch);
-    return this.getResultsExcludingSelectedValue(fieldsToQuery.responses, fieldsToQuery.reference);
+    return this.getAllSuggestionsRows(fieldsToQuery.responses, fieldsToQuery.reference);
   }
 
-  private getResultsExcludingSelectedValue(
+  private getAllSuggestionsRows(
     fieldResponses: IFacetValueBatchResponse[],
     fieldTotalReference: IFacetValueReference
   ): IFacetValueSuggestionRow[] {
-    const currentSelectedValues: string[] = this.queryStateModel.get(this.queryStateFieldFacetId) || [];
-    const resultsWithoutSelectedValues: IFacetValueSuggestionRow[] = fieldResponses.reduce((allValues, fieldResponse) => {
-      // Remove suggestions that are already checked.
-      const filteredResults = fieldResponse.values.filter(result => !currentSelectedValues.some(value => value == result.value));
-
-      const suggestionRows = filteredResults.map(indexFieldValue => {
+    return fieldResponses.reduce((allValues, fieldResponse) => {
+      const suggestionRows = fieldResponse.values.map(indexFieldValue => {
         return <IFacetValueSuggestionRow>{
           numberOfResults: indexFieldValue.numberOfResults,
           keyword: fieldResponse.keyword,
@@ -101,8 +89,6 @@ export class FacetValueSuggestionsProvider implements IFacetValueSuggestionsProv
       });
       return allValues.concat(suggestionRows);
     }, []);
-
-    return resultsWithoutSelectedValues;
   }
 
   private async getFieldValuesToQuery(valuesToSearch: string[]): Promise<IFacetValueSuggestionsResponse> {

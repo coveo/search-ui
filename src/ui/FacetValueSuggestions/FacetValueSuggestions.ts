@@ -139,10 +139,12 @@ export class FacetValueSuggestions extends Component {
 
   public facetValueSuggestionsProvider: IFacetValueSuggestionsProvider;
 
+  private queryStateFieldFacetId;
+
   static defaultTemplate(this: FacetValueSuggestions, row: IFacetValueSuggestionRow, omnibox: Omnibox): string {
     const keyword = DomUtils.highlightElement(row.keyword, omnibox.getText(), 'coveo-omnibox-hightlight2');
     const facetValue = DomUtils.highlightElement(row.value, row.value, 'coveo-omnibox-hightlight');
-    const details = this.options.displayEstimateNumberOfResults ? ` (${l('ResultCount', row.numberOfResults)})` : '';
+    const details = this.options.displayEstimateNumberOfResults ? ` (${l('ResultCount', row.numberOfResults.toString())})` : '';
     return `${l('KeywordInCategory', keyword, facetValue)}${details}`;
   }
 
@@ -156,11 +158,13 @@ export class FacetValueSuggestions extends Component {
   constructor(element: HTMLElement, public options: IFacetValueSuggestionsOptions, bindings?: IComponentBindings) {
     super(element, FacetValueSuggestions.ID, bindings);
 
-    this.facetValueSuggestionsProvider = new FacetValueSuggestionsProvider(this.queryController, this.queryStateModel, {
+    this.options = ComponentOptions.initComponentOptions(element, FacetValueSuggestions, options);
+
+    this.facetValueSuggestionsProvider = new FacetValueSuggestionsProvider(this.queryController, {
       field: <string>this.options.field
     });
+    this.queryStateFieldFacetId = `f:${this.options.field}`;
 
-    this.options = ComponentOptions.initComponentOptions(element, FacetValueSuggestions, options);
     if (!this.options.templateHelper) {
       this.options.templateHelper = FacetValueSuggestions.defaultTemplate;
     }
@@ -190,8 +194,8 @@ export class FacetValueSuggestions extends Component {
   private async getFacetValueSuggestions(text: string, omnibox: Omnibox): Promise<IOmniboxSuggestion[]> {
     const wordsToQuery = this.options.useValueFromSearchbox ? [text] : [];
 
-    const suggestions: string[] = await this.getQuerySuggestionsKeywords(omnibox);
-    const allWordsToQuery = _.unique(wordsToQuery.concat(suggestions));
+    const suggestionsKeywords: string[] = await this.getQuerySuggestionsKeywords(omnibox);
+    const allWordsToQuery = _.unique(wordsToQuery.concat(suggestionsKeywords));
     try {
       const suggestions = await this.fieldValueCache.getSuggestions(`fv${allWordsToQuery.join('')}`, () =>
         this.facetValueSuggestionsProvider.getSuggestions(allWordsToQuery)
@@ -199,15 +203,23 @@ export class FacetValueSuggestions extends Component {
 
       this.logger.debug('FacetValue Suggestions Results', suggestions);
 
-      return this.rankSuggestionRows(suggestions).map(result => this.mapFacetValueSuggestion(result, omnibox));
+      const currentSelectedValues: string[] = this.queryStateModel.get(this.queryStateFieldFacetId) || [];
+      const filteredSuggestions = suggestions.filter(suggestion =>
+        this.isSuggestionRowAlreadyCheckedInFacet(suggestion, currentSelectedValues)
+      );
+      return this.rankSuggestionRows(filteredSuggestions).map(result => this.mapFacetValueSuggestion(result, omnibox));
     } catch (error) {
       this.logger.error(error);
       return [];
     }
   }
 
+  private isSuggestionRowAlreadyCheckedInFacet(suggestion: IFacetValueSuggestionRow, currentlySelectedValues: string[]): boolean {
+    return !currentlySelectedValues.some(value => value == suggestion.value);
+  }
+
   private rankSuggestionRows(suggestions: IFacetValueSuggestionRow[]): IFacetValueSuggestionRow[] {
-    const rankedResults = suggestions.sort((a, b) => b.score.distanceFromTotalForField - a.score.distanceFromTotalForField);
+    const rankedResults = [...suggestions.sort((a, b) => b.score.distanceFromTotalForField - a.score.distanceFromTotalForField)];
     const preciseResults = rankedResults.splice(0, Math.ceil(this.options.numberOfSuggestions / 2));
     const broadResults = rankedResults.slice(-1, Math.floor(this.options.numberOfSuggestions / 2));
 

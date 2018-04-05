@@ -42,7 +42,7 @@ export function FacetValueSuggestionsProviderTest() {
       setUpLastQuery();
       environment.searchEndpoint.listFieldValuesBatch = jasmine.createSpy('listFieldValuesBatch');
       setUpFieldValuesBatchResponse([]);
-      test = new FacetValueSuggestionsProvider(environment.queryController, environment.queryStateModel, {
+      test = new FacetValueSuggestionsProvider(environment.queryController, {
         field: <string>someField
       });
     });
@@ -90,15 +90,6 @@ export function FacetValueSuggestionsProviderTest() {
         expect(results.length).toBe(1);
         expect(results[0].value).toBe(suggestion);
         expect(results[0].score.distanceFromTotalForField).not.toBeUndefined();
-        done();
-      });
-
-      it('should exclude an already selected field value from suggestions', async done => {
-        environment.queryStateModel.get = () => [suggestion];
-
-        const results = await test.getSuggestions([valueToSearch]);
-
-        expect(results.length).toBe(0);
         done();
       });
     });
