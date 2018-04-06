@@ -32,7 +32,7 @@ export interface IFacetValueSuggestionRow {
   field: IFieldOption;
 }
 
-interface IFacetValueSuggestionScore {
+export interface IFacetValueSuggestionScore {
   distanceFromTotalForField: number;
 }
 
