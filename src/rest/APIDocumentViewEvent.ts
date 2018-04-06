@@ -14,7 +14,6 @@ export interface IAPIDocumentViewEvent {
   queryPipeline: string;
   splitTestRunName: string;
   splitTestRunVersion: string;
-  collectionName: string;
   sourceName: string;
   documentPosition: number;
   customMetadatas: { [name: string]: string };

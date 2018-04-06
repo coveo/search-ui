@@ -5,7 +5,6 @@ export const fields = [
   'outlookuri',
   'connectortype',
   'urihash', // analytics
-  'collection', // analytics
   'source', // analytics
   'author' // analytics
 ];

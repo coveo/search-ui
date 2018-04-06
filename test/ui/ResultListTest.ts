@@ -423,13 +423,13 @@ export function ResultListTest() {
 
         const simulation = Simulate.query(test.env);
         expect(simulation.queryBuilder.build().fieldsToInclude).toEqual(
-          jasmine.arrayContaining(['author', 'language', 'urihash', 'objecttype', 'collection', 'source', 'language', 'permanentid'])
+          jasmine.arrayContaining(['author', 'language', 'urihash', 'objecttype', 'source', 'language', 'permanentid'])
         );
       });
 
       it('should allow to get the auto select fields to include', () => {
         expect(test.cmp.getAutoSelectedFieldsToInclude()).toEqual(
-          jasmine.arrayContaining(['author', 'language', 'urihash', 'objecttype', 'collection', 'source', 'language', 'permanentid'])
+          jasmine.arrayContaining(['author', 'language', 'urihash', 'objecttype', 'source', 'language', 'permanentid'])
         );
       });
 

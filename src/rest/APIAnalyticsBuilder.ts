@@ -32,7 +32,6 @@ export class APIAnalyticsBuilder {
 
   public static convertDocumentViewToAPI(documentView: IClickEvent): IAPIDocumentViewEvent {
     var apiDocumentView: IAPIDocumentViewEvent = {
-      collectionName: documentView.collectionName,
       device: documentView.device,
       documentPosition: documentView.documentPosition,
       title: documentView.documentTitle,

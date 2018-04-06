@@ -92,7 +92,6 @@ export class FakeResults {
         randomNumber: Math.random(),
         urihash: QueryUtils.createGuid(),
         source: 'the source',
-        collection: 'the collection',
         author: 'o.o'
       },
       childResults: [],
@@ -368,7 +367,6 @@ export class FakeResults {
       documentUrl: token + 'documentUrl',
       documentTitle: token + 'documentTitle',
       documentCategory: token + 'documentCategory',
-      collectionName: token + 'collectionName',
       sourceName: token + 'sourceName',
       documentPosition: 0,
       viewMethod: token + 'viewMethod',

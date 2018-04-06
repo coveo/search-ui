@@ -233,7 +233,6 @@ export class LiveAnalyticsClient implements IAnalyticsClient {
     this.checkToSendAnyPendingSearchAsYouType(actionCause);
     this.triggerChangeAnalyticsCustomData('ClickEvent', metaObject, event, { resultData: result });
     Assert.isNonEmptyString(event.searchQueryUid);
-    Assert.isNonEmptyString(event.collectionName);
     Assert.isNonEmptyString(event.sourceName);
     Assert.isNumber(event.documentPosition);
 
@@ -297,7 +296,6 @@ export class LiveAnalyticsClient implements IAnalyticsClient {
       documentTitle: result.title,
       documentCategory: QueryUtils.getObjectType(result),
       originLevel2: this.getOriginLevel2(element),
-      collectionName: QueryUtils.getCollection(result),
       sourceName: QueryUtils.getSource(result),
       documentPosition: result.index + 1,
       responseTime: 0,
