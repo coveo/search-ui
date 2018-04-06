@@ -283,6 +283,9 @@ SearchAlertsTest();
 import { SearchButtonTest } from './ui/SearchButtonTest';
 SearchButtonTest();
 
+import { FacetValueStateHandlerTest } from './ui/FacetValueStateHandlerTest';
+FacetValueStateHandlerTest();
+
 import { SearchInterfaceTest } from './ui/SearchInterfaceTest';
 SearchInterfaceTest();
 
@@ -501,6 +504,15 @@ UrlUtilsTest();
 
 import { AccessTokenTest } from './rest/AccessTokenTest';
 AccessTokenTest();
+
+import { FacetValueSuggestionsTest } from './ui/FacetValueSuggestionsTest';
+FacetValueSuggestionsTest();
+
+import { FacetValueSuggestionsProviderTest } from './ui/FacetValueSuggestionsProviderTest';
+FacetValueSuggestionsProviderTest();
+
+import { SuggestionsCacheTest } from './misc/SuggestionsCacheTest';
+SuggestionsCacheTest();
 
 import { AgGridTest } from './ui/RelevanceInspector/AgGridTest';
 AgGridTest();

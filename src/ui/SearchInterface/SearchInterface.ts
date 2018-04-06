@@ -32,6 +32,7 @@ import { ResponsiveComponents } from '../ResponsiveComponents/ResponsiveComponen
 import { Context, IPipelineContextProvider } from '../PipelineContext/PipelineGlobalExports';
 import { InitializationPlaceholder } from '../Base/InitializationPlaceholder';
 import { Debug } from '../Debug/Debug';
+import { FacetValueStateHandler } from './FacetValueStateHandler';
 import RelevanceInspectorModule = require('../RelevanceInspector/RelevanceInspector');
 
 import * as fastclick from 'fastclick';
@@ -415,6 +416,7 @@ export class SearchInterface extends RootComponent implements IComponentBindings
   };
 
   public static SMALL_INTERFACE_CLASS_NAME = 'coveo-small-search-interface';
+
   public root: HTMLElement;
   public queryStateModel: QueryStateModel;
   public componentStateModel: ComponentStateModel;
@@ -430,6 +432,7 @@ export class SearchInterface extends RootComponent implements IComponentBindings
   public isResultsPerPageModifiedByPipeline = false;
 
   private attachedComponents: { [type: string]: BaseComponent[] };
+  private facetValueStateHandler: FacetValueStateHandler;
   private queryPipelineConfigurationForResultsPerPage: number;
   private relevanceInspector: RelevanceInspectorModule.RelevanceInspector;
 
@@ -468,6 +471,7 @@ export class SearchInterface extends RootComponent implements IComponentBindings
     this.componentOptionsModel = new ComponentOptionsModel(element);
     this.usageAnalytics = this.initializeAnalytics();
     this.queryController = new QueryController(element, this.options, this.usageAnalytics, this);
+    this.facetValueStateHandler = new FacetValueStateHandler((componentId: string) => this.getComponents(componentId));
     new SentryLogger(this.queryController);
 
     const eventName = this.queryStateModel.getEventName(Model.eventTypes.preprocess);
@@ -478,6 +482,8 @@ export class SearchInterface extends RootComponent implements IComponentBindings
     const debugChanged = this.queryStateModel.getEventName(Model.eventTypes.changeOne + QueryStateModel.attributesEnum.debug);
     $$(this.element).on(debugChanged, (e, args: IAttributeChangedEventArg) => this.handleDebugModeChange(args));
 
+    this.queryStateModel.registerNewAttribute(QueryStateModel.attributesEnum.fv, {});
+
     if (this.options.enableHistory) {
       if (!this.options.useLocalStorageForHistory) {
         this.initializeHistoryController();
@@ -486,7 +492,7 @@ export class SearchInterface extends RootComponent implements IComponentBindings
       }
     } else {
       $$(this.element).on(InitializationEvents.restoreHistoryState, () =>
-        this.queryStateModel.setMultiple(this.queryStateModel.defaultAttributes)
+        this.queryStateModel.setMultiple({ ...this.queryStateModel.defaultAttributes })
       );
     }
 
@@ -649,7 +655,7 @@ export class SearchInterface extends RootComponent implements IComponentBindings
     }
   }
 
-  private handlePreprocessQueryStateModel(args: any) {
+  private handlePreprocessQueryStateModel(args: Record<string, any>) {
     const tgFromModel = this.queryStateModel.get(QueryStateModel.attributesEnum.tg);
     const tFromModel = this.queryStateModel.get(QueryStateModel.attributesEnum.t);
 
@@ -680,6 +686,12 @@ export class SearchInterface extends RootComponent implements IComponentBindings
 
     if (args && args.quickview !== undefined) {
       args.quickview = this.getQuickview(args.quickview);
+    }
+
+    // `fv:` states are intended to be redirected and used on a standard Search Interface,
+    // else the state gets transformed to `hd` before the redirection.
+    if (args && args.fv && !(this instanceof StandaloneSearchInterface)) {
+      this.facetValueStateHandler.handleFacetValueState(args);
     }
   }
 

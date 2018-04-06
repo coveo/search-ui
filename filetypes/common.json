@@ -425,7 +425,7 @@
       }
     },
     "rssitem": {
-      "icon": "file",
+      "icon": "salesforce-standard-feed",
       "captions": {
         "en": "RSS feed",
         "fr": "Flux RSS",
@@ -746,7 +746,7 @@
       }
     },
     "jiraissue": {
-      "icon": "custom",
+      "icon": "salesforce-standard-service-report",
       "captions": {
         "en": "Jira Issue",
         "fr": "Issue Jira"
