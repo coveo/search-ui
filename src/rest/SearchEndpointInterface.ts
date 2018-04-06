@@ -4,7 +4,7 @@ import { IQuery } from '../rest/Query';
 import { IQueryResults } from '../rest/QueryResults';
 import { IQueryResult } from '../rest/QueryResult';
 import { IIndexFieldValue } from '../rest/FieldValue';
-import { IListFieldValuesRequest } from '../rest/ListFieldValuesRequest';
+import { IListFieldValuesRequest, IListFieldValuesBatchRequest } from '../rest/ListFieldValuesRequest';
 import { IFieldDescription } from '../rest/FieldDescription';
 import { IExtension } from '../rest/Extension';
 import { IEndpointError } from '../rest/EndpointError';
@@ -98,6 +98,7 @@ export interface ISearchEndpoint {
   getDocumentHtml(documentUniqueID: string, callOptions?: IViewAsHtmlOptions): Promise<HTMLDocument>;
   getViewAsHtmlUri(documentUniqueID: string, callOptions?: IViewAsHtmlOptions): string;
   getViewAsDatastreamUri(documentUniqueID: string, dataStreamType: string, callOptions?: IViewAsHtmlOptions): string;
+  listFieldValuesBatch(request: IListFieldValuesBatchRequest, callOptions?: IEndpointCallOptions): Promise<IIndexFieldValue[][]>;
   listFieldValues(request: IListFieldValuesRequest, callOptions?: IEndpointCallOptions): Promise<IIndexFieldValue[]>;
   listFields(callOptions?: IEndpointCallOptions): Promise<IFieldDescription[]>;
   extensions(callOptions?: IEndpointCallOptions): Promise<IExtension[]> | Promise<IEndpointError>;

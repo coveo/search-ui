@@ -1416,6 +1416,20 @@
         "zh-cn": "协作组",
         "zh-tw": "協作組"
       }
+    },
+    "phonecall": {
+      "icon": "salesforce-standard-call",
+      "captions": {
+        "en": "Phone call",
+        "fr": "Appel téléphonique"
+      }
+    },
+    "appointment": {
+      "icon": "salesforce-standard-service-appointment",
+      "captions": {
+        "en": "Appointment",
+        "fr": "Rendez vous"
+      }
     }
   }
 }

@@ -187,7 +187,7 @@ export class HashUtils {
     if (_.isArray(val)) {
       encodedValue = HashUtils.encodeArray(val);
     } else if (_.isObject(val)) {
-      encodedValue = HashUtils.encodeObject(val);
+      encodedValue = JSON.stringify(val);
     } else if (_.isNumber(val) || _.isBoolean(val)) {
       encodedValue = Utils.safeEncodeURIComponent(val.toString());
     } else {
