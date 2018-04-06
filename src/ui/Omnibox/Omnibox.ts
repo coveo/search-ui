@@ -22,7 +22,7 @@ import { Initialization } from '../Base/Initialization';
 import { Querybox } from '../Querybox/Querybox';
 import { FieldAddon } from './FieldAddon';
 import { QueryExtensionAddon } from './QueryExtensionAddon';
-import { QuerySuggestAddon } from './QuerySuggestAddon';
+import { QuerySuggestAddon, IQuerySuggestAddon } from './QuerySuggestAddon';
 import { OldOmniboxAddon } from './OldOmniboxAddon';
 import { QueryboxQueryParameters } from '../Querybox/QueryboxQueryParameters';
 import { IAnalyticsActionCause } from '../Analytics/AnalyticsActionListMeta';
@@ -228,7 +228,7 @@ export class Omnibox extends Component {
   private searchAsYouTypeTimeout: number;
   private skipAutoSuggest = false;
 
-  public suggestionAddon: QuerySuggestAddon | void;
+  public suggestionAddon?: IQuerySuggestAddon;
 
   /**
    * Creates a new Omnibox component. Also enables necessary addons and binds events on various query events.

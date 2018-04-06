@@ -8,7 +8,11 @@ import { StringUtils } from '../../utils/StringUtils';
 import { SuggestionsCache } from '../../misc/SuggestionsCache';
 import * as _ from 'underscore';
 
-export class QuerySuggestAddon {
+export interface IQuerySuggestAddon {
+  getSuggestion(): Promise<IOmniboxSuggestion[]>;
+}
+
+export class QuerySuggestAddon implements IQuerySuggestAddon {
   static INDEX = 60;
 
   private static suggestiontHtml(suggestion: IQuerySuggestCompletion) {
