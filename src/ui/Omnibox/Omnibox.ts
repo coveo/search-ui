@@ -22,7 +22,7 @@ import { Initialization } from '../Base/Initialization';
 import { Querybox } from '../Querybox/Querybox';
 import { FieldAddon } from './FieldAddon';
 import { QueryExtensionAddon } from './QueryExtensionAddon';
-import { QuerySuggestAddon, IQuerySuggestAddon } from './QuerySuggestAddon';
+import { QuerySuggestAddon, IQuerySuggestAddon, VoidQuerySuggestAddon } from './QuerySuggestAddon';
 import { OldOmniboxAddon } from './OldOmniboxAddon';
 import { QueryboxQueryParameters } from '../Querybox/QueryboxQueryParameters';
 import { IAnalyticsActionCause } from '../Analytics/AnalyticsActionListMeta';
@@ -228,7 +228,7 @@ export class Omnibox extends Component {
   private searchAsYouTypeTimeout: number;
   private skipAutoSuggest = false;
 
-  public suggestionAddon?: IQuerySuggestAddon;
+  public suggestionAddon: IQuerySuggestAddon;
 
   /**
    * Creates a new Omnibox component. Also enables necessary addons and binds events on various query events.
@@ -245,9 +245,7 @@ export class Omnibox extends Component {
     const originalValueForQuerySyntax = this.options.enableQuerySyntax;
     this.options = _.extend({}, this.options, this.componentOptionsModel.get(ComponentOptionsModel.attributesEnum.searchBox));
 
-    if (this.options.enableQuerySuggestAddon) {
-      this.suggestionAddon = new QuerySuggestAddon(this);
-    }
+    this.suggestionAddon = this.options.enableQuerySuggestAddon ? new QuerySuggestAddon(this) : new VoidQuerySuggestAddon();
     new OldOmniboxAddon(this);
     this.createMagicBox();
 

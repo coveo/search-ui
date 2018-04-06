@@ -108,3 +108,9 @@ export class QuerySuggestAddon implements IQuerySuggestAddon {
       });
   }
 }
+
+export class VoidQuerySuggestAddon implements IQuerySuggestAddon {
+  getSuggestion(): Promise<IOmniboxSuggestion[]> {
+    return Promise.resolve([]);
+  }
+}
