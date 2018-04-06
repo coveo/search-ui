@@ -5,9 +5,14 @@ import { IQuerySuggestCompletion, IQuerySuggestRequest, IQuerySuggestResponse } 
 import { ComponentOptionsModel } from '../../models/ComponentOptionsModel';
 import { OmniboxEvents, IPopulateOmniboxSuggestionsEventArgs } from '../../events/OmniboxEvents';
 import { StringUtils } from '../../utils/StringUtils';
+import { SuggestionsCache } from '../../misc/SuggestionsCache';
 import * as _ from 'underscore';
 
-export class QuerySuggestAddon {
+export interface IQuerySuggestAddon {
+  getSuggestion(): Promise<IOmniboxSuggestion[]>;
+}
+
+export class QuerySuggestAddon implements IQuerySuggestAddon {
   static INDEX = 60;
 
   private static suggestiontHtml(suggestion: IQuerySuggestCompletion) {
@@ -45,7 +50,7 @@ export class QuerySuggestAddon {
     return _.every(_.last(parts, _.indexOf(parts, firstFail) - parts.length), (part: string[]) => part[1] != null);
   }
 
-  private cache: { [hash: string]: Promise<IOmniboxSuggestion[]> } = {};
+  private cache: SuggestionsCache<IOmniboxSuggestion[]> = new SuggestionsCache();
 
   constructor(public omnibox: Omnibox) {
     $$(this.omnibox.element).on(OmniboxEvents.populateOmniboxSuggestions, (e: Event, args: IPopulateOmniboxSuggestionsEventArgs) => {
@@ -54,22 +59,9 @@ export class QuerySuggestAddon {
   }
 
   public getSuggestion(): Promise<IOmniboxSuggestion[]> {
-    var text = this.omnibox.magicBox.getText();
+    const text = this.omnibox.magicBox.getText();
 
-    if (text.length == 0) {
-      return null;
-    }
-
-    if (this.cache[text] != null) {
-      return this.cache[text];
-    }
-
-    let promise = this.getQuerySuggest(text);
-    this.cache[text] = promise;
-    promise.catch(() => {
-      delete this.cache[text];
-    });
-    return this.cache[text];
+    return this.cache.getSuggestions(text, () => this.getQuerySuggest(text));
   }
 
   private getQuerySuggest(text: string): Promise<IOmniboxSuggestion[]> {
@@ -114,5 +106,11 @@ export class QuerySuggestAddon {
         });
         return results;
       });
+  }
+}
+
+export class VoidQuerySuggestAddon implements IQuerySuggestAddon {
+  getSuggestion(): Promise<IOmniboxSuggestion[]> {
+    return Promise.resolve([]);
   }
 }
