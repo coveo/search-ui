@@ -64,6 +64,7 @@ export class QueryStateModel extends Model {
   static defaultAttributes = {
     q: '',
     first: 0,
+    fv: '',
     t: '',
     hd: '',
     hq: '',
@@ -77,6 +78,7 @@ export class QueryStateModel extends Model {
   static attributesEnum = {
     q: 'q',
     first: 'first',
+    fv: 'fv',
     t: 't',
     sort: 'sort',
     layout: 'layout',
@@ -105,7 +107,7 @@ export class QueryStateModel extends Model {
    * @param attributes The state key-value store to instantiate the `QueryStateModel` with.
    */
   constructor(element: HTMLElement, attributes?: IStringMap<string>) {
-    let merged = _.extend({}, QueryStateModel.defaultAttributes, attributes);
+    const merged = { ...QueryStateModel.defaultAttributes, ...attributes };
     super(element, QueryStateModel.ID, merged);
   }
 

@@ -1,5 +1,7 @@
+import { IIndexFieldValue } from './FieldValue';
+
 /**
- * Descrobe a request to list the possible values of a field
+ * Describe a request to list the possible values of a field.
  */
 export interface IListFieldValuesRequest {
   /**
@@ -38,4 +40,18 @@ export interface IListFieldValuesRequest {
    * The type of the pattern (eg: regex)
    */
   patternType?: string;
+}
+
+/**
+ * Describe a request to list the possible values of multiple fields.
+ */
+export interface IListFieldValuesBatchRequest {
+  /**
+   * The list of fields to request.
+   */
+  batch: IListFieldValuesRequest[];
+}
+
+export interface IFieldValueBatchResponse {
+  batch: IIndexFieldValue[][];
 }
