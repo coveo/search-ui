@@ -228,7 +228,7 @@ export class Omnibox extends Component {
   private searchAsYouTypeTimeout: number;
   private skipAutoSuggest = false;
 
-  public suggestionAddon?: QuerySuggestAddon;
+  public suggestionAddon: QuerySuggestAddon | void;
 
   /**
    * Creates a new Omnibox component. Also enables necessary addons and binds events on various query events.
