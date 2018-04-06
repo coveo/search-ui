@@ -37,7 +37,7 @@ export class CategoryFacetQueryController {
     return valuesPromise;
   }
 
-  public putCategoryFacetInQueryBuilder(queryBuilder: QueryBuilder, path): number {
+  public putCategoryFacetInQueryBuilder(queryBuilder: QueryBuilder, path: string[]): number {
     const positionInQuery = queryBuilder.categoryFacets.length;
     if (path.length != 0) {
       queryBuilder.advancedExpression.addFieldExpression(this.categoryFacet.options.field as string, '==', [path.join('|')]);

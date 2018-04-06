@@ -9,9 +9,8 @@ export interface CategoryValueParent {
   renderChildren: () => Promise<void | IQueryResults>;
   getPath: (partialPath?: string[]) => string[];
   isActive: boolean;
+  categoryChildrenValueRenderer: CategoryChildrenValueRenderer;
 }
-
-export type CategoryJsonValues = { [key: string]: string[] };
 
 export class CategoryValue implements CategoryValueParent {
   private element: Dom;

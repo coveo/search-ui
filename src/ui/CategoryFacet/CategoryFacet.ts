@@ -63,7 +63,7 @@ export class CategoryFacet extends Component {
   }
 
   public getChildren(): CategoryValue[] {
-    return this.categoryValueRoot.children;
+    return this.categoryValueRoot.getChildren();
   }
 
   public disable() {
@@ -105,19 +105,14 @@ export class CategoryFacet extends Component {
   private handleQueryStateChanged(data: IAttributesChangedEventArg) {
     if (this.listenToQueryStateChange) {
       let path = data.attributes[this.queryStateAttribute];
-      if (!Utils.isNullOrUndefined(path) && _.isArray(path)) {
-        path = path.slice(0);
-        this.rebuild(path);
+      if (!Utils.isNullOrUndefined(path) && _.isArray(path) && path.length != 0) {
+        this.rebuild(path.slice(0));
       }
     }
   }
 
   private rebuild(path: string[]) {
-    this.categoryValueRoot = new CategoryValueRoot($$(this.element), this.categoryFacetTemplates, this);
-    // let categoryValue = this.categoryValueRoot;
-    // while (path.length != 0) {
-    // categoryValue = new CategoryValue(categoryValue.categoryChildrenValueRenderer.getListOfChildValues(), )
-    // }
+    this.categoryValueRoot.buildFromPath(path);
   }
 
   private initQueryStateEvents() {

@@ -21,6 +21,10 @@ export class CategoryChildrenValueRenderer {
     this.categoryFacet.bind.onRootElement<IQuerySuccessEventArgs>(QueryEvents.querySuccess, args => this.handleQuerySuccess(args));
   }
 
+  public getChildren() {
+    return this.children;
+  }
+
   public clearChildrenExceptOne(except: CategoryValue) {
     const newChildren = [];
     this.children.forEach(categoryValue => {
@@ -42,7 +46,7 @@ export class CategoryChildrenValueRenderer {
     this.children = [];
   }
 
-  public async renderChildren(values: ICategoryFacetValue[]) {
+  public renderChildren(values: ICategoryFacetValue[]) {
     this.categoryFacet.show();
     const listOfChildValues = this.getListOfChildValues();
 
@@ -88,8 +92,6 @@ export class CategoryChildrenValueRenderer {
         this.categoryFacet.disable();
       } else if (categoryFacetResults.values.length != 0) {
         this.renderChildren(categoryFacetResults.values);
-      } else {
-        this.categoryFacet.hide();
       }
     }
   }
