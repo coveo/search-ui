@@ -514,6 +514,9 @@ FacetValueSuggestionsProviderTest();
 import { SuggestionsCacheTest } from './misc/SuggestionsCacheTest';
 SuggestionsCacheTest();
 
+import { FacetColumnAutoLayoutAdjustmentTest } from './ui/FacetColumnAutoLayoutAdjustmentTest';
+FacetColumnAutoLayoutAdjustmentTest();
+
 import { AgGridTest } from './ui/RelevanceInspector/AgGridTest';
 AgGridTest();
 

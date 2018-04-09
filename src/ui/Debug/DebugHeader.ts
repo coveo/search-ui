@@ -2,12 +2,10 @@ import { IComponentBindings } from '../Base/ComponentBindings';
 import { Checkbox } from '../FormWidgets/Checkbox';
 import { COMPONENT_OPTIONS_ATTRIBUTES } from '../../models/ComponentOptionsModel';
 import { TextInput } from '../FormWidgets/TextInput';
-import { $$, Dom } from '../../utils/Dom';
+import { $$ } from '../../utils/Dom';
 import { ResultListEvents, IDisplayedNewResultEventArgs } from '../../events/ResultListEvents';
 import { QueryEvents, IDoneBuildingQueryEventArgs } from '../../events/QueryEvents';
-import { stringify } from 'circular-json';
 import * as _ from 'underscore';
-import { Utils } from '../../utils/Utils';
 
 export class DebugHeader {
   private debug = false;
@@ -15,7 +13,6 @@ export class DebugHeader {
   private highlightRecommendation = false;
   private requestAllFields = false;
   private search: HTMLElement;
-  private downloadLink: Dom;
   private widgets: HTMLElement[] = [];
 
   constructor(
@@ -30,7 +27,6 @@ export class DebugHeader {
     this.widgets.push(this.buildEnableQuerySyntaxCheckbox());
     this.widgets.push(this.buildRequestAllFieldsCheckbox());
     this.widgets.push(this.buildSearch());
-    this.widgets.push(this.buildDownloadLink());
     this.moveTo(element);
 
     $$(this.root).on(ResultListEvents.newResultDisplayed, (e, args: IDisplayedNewResultEventArgs) => this.handleNewResultDisplayed(args));
@@ -48,13 +44,6 @@ export class DebugHeader {
 
   public setNewInfoToDebug(newInfoToDebug) {
     this.infoToDebug = newInfoToDebug;
-    this.rebuildDownloadLink();
-  }
-
-  private rebuildDownloadLink() {
-    if (this.downloadLink) {
-      this.downloadLink.setAttribute('href', this.buildDownloadHref());
-    }
   }
 
   private handleNewResultDisplayed(args: IDisplayedNewResultEventArgs) {
@@ -78,19 +67,6 @@ export class DebugHeader {
     }, 'Search in debug');
     this.search = txtInput.build();
     return this.search;
-  }
-
-  private buildDownloadLink() {
-    const downloadLink = $$(
-      'a',
-      {
-        download: 'debug.json',
-        href: this.buildDownloadHref()
-      },
-      'Download'
-    );
-    this.downloadLink = downloadLink;
-    return downloadLink.el;
   }
 
   private buildEnableDebugCheckbox() {
@@ -151,17 +127,5 @@ export class DebugHeader {
       checkbox.select();
     }
     return checkbox.build();
-  }
-
-  private buildDownloadHref() {
-    const toDownload = {};
-    _.each(this.infoToDebug, (info, key) => {
-      if (info['bindings']) {
-        toDownload[key] = info['options'];
-      } else {
-        toDownload[key] = _.omit(info, 'state', 'searchInterface');
-      }
-    });
-    return 'data:text/json;charset=utf-8,' + Utils.safeEncodeURIComponent(stringify(toDownload));
   }
 }
