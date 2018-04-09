@@ -8,7 +8,7 @@ import { Utils } from '../../utils/Utils';
 import { QueryUtils } from '../../utils/QueryUtils';
 import { Initialization, IInitializationParameters, IInitResult } from '../Base/Initialization';
 import { Assert } from '../../misc/Assert';
-import { $$ } from '../../utils/Dom';
+import { $$, Win } from '../../utils/Dom';
 import { l } from '../../strings/Strings';
 import * as _ from 'underscore';
 import { exportGlobally } from '../../GlobalExports';
@@ -299,7 +299,7 @@ export class ResultFolding extends Component {
 
   private scrollToResultElement() {
     let resultElem = $$(this.element).closest('CoveoResult');
-    window.scrollTo(0, window.scrollY + resultElem.getBoundingClientRect().top);
+    window.scrollTo(0, new Win(window).scrollY() + resultElem.getBoundingClientRect().top);
   }
 
   private displayThoseResults(results: IQueryResult[]): Promise<boolean> {

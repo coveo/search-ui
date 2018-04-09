@@ -18,8 +18,8 @@ export class FileTypes {
     var objecttype = <string>Utils.getFieldValue(result, 'objecttype');
     var filetype = <string>Utils.getFieldValue(result, 'filetype');
 
-    // When @objecttype is File, Document, or ContentVersion we fallback on @filetype for icons and such
-    if (Utils.isNonEmptyString(objecttype) && !objecttype.match(/^(file|document|contentversion)$/i)) {
+    // When @objecttype is File, Item, Document, or ContentVersion we fallback on @filetype for icons and such
+    if (Utils.isNonEmptyString(objecttype) && !objecttype.match(/^(file|document|contentversion|item)$/i)) {
       return FileTypes.getObjectType(objecttype);
     } else if (Utils.isNonEmptyString(filetype)) {
       return FileTypes.getFileType(filetype);

@@ -32,7 +32,9 @@ const watchHtmlPagesOnce = _.once(() => {
   glob('bin/*.html', (err, files) => {
     files.forEach(file => {
       fs.watch(file, () => {
-        server.sockets[0].write(JSON.stringify({ type: 'ok' }));
+        if (server.sockets && server.sockets[0]) {
+          server.sockets[0].write(JSON.stringify({ type: 'ok' }));
+        }
       });
     });
   });
