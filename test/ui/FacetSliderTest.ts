@@ -10,34 +10,58 @@ import { FakeResults } from '../Fake';
 import { QueryEvents } from '../../src/events/QueryEvents';
 
 export function FacetSliderTest() {
-  describe('FacetSlider', function() {
+  describe('FacetSlider', () => {
     let test: Mock.IBasicComponentSetup<FacetSlider>;
     let facetSliderOptions: IFacetSliderOptions;
 
-    beforeEach(function() {
+    beforeEach(() => {
       facetSliderOptions = { start: 0, end: 100, field: '@foo' };
       test = Mock.optionsComponentSetup<FacetSlider, IFacetSliderOptions>(FacetSlider, facetSliderOptions);
       (<jasmine.Spy>test.env.queryStateModel.get).and.returnValue([0, 100]);
       (<jasmine.Spy>test.env.queryStateModel.getDefault).and.returnValue([0, 100]);
     });
 
-    afterEach(function() {
+    afterEach(() => {
       test = null;
     });
 
-    it("should not add a query expression if the slider is in it's default state", function() {
+    it('should be currentlyDisplayed by default', () => {
+      expect(test.cmp.isCurrentlyDisplayed()).toBeTruthy();
+    });
+
+    it('should not be currentlyDisplayed if display:none', () => {
+      test.cmp.element.style.display = 'none';
+      expect(test.cmp.isCurrentlyDisplayed()).toBeFalsy();
+    });
+
+    it('should not be currentlyDisplayed if visibility:hidden', () => {
+      test.cmp.element.style.visibility = 'hidden';
+      expect(test.cmp.isCurrentlyDisplayed()).toBeFalsy();
+    });
+
+    it('should not be currentlyDisplayed if disabled by a tab', () => {
+      test.cmp.element.className = 'coveo-tab-disabled';
+      expect(test.cmp.isCurrentlyDisplayed()).toBeFalsy();
+    });
+
+    it('should not be currentlyDisplayed if it is empty', () => {
+      test.cmp.element.className = 'coveo-disabled-empty';
+      expect(test.cmp.isCurrentlyDisplayed()).toBeFalsy();
+    });
+
+    it("should not add a query expression if the slider is in it's default state", () => {
       test.cmp.setSelectedValues([0, 100]);
       let simulation = Simulate.query(test.env);
       expect(simulation.queryBuilder.build().aq).toBeUndefined();
     });
 
-    it("should add a query expression if the slider is not in it's default state", function() {
+    it("should add a query expression if the slider is not in it's default state", () => {
       test.cmp.setSelectedValues([5, 25]);
       let simulation = Simulate.query(test.env);
       expect(simulation.queryBuilder.build().aq).toBe('@foo==5..25');
     });
 
-    it('should request a group by', function() {
+    it('should request a group by', () => {
       let simulation = Simulate.query(test.env);
       expect(simulation.queryBuilder.build().groupBy).toEqual(
         jasmine.arrayContaining([
@@ -49,16 +73,16 @@ export function FacetSliderTest() {
       );
     });
 
-    it("should return the correct selected values after a query, which is it's options", function() {
+    it("should return the correct selected values after a query, which is it's options", () => {
       Simulate.query(test.env);
       expect(test.cmp.getSelectedValues()).toEqual(jasmine.arrayContaining([0, 100]));
     });
 
-    it('should return undefined values if there has not been a query yet', function() {
+    it('should return undefined values if there has not been a query yet', () => {
       expect(test.cmp.getSelectedValues()).toEqual(jasmine.arrayContaining([undefined, undefined]));
     });
 
-    it('should return selected values from the query state if available', function() {
+    it('should return selected values from the query state if available', () => {
       let spy: jasmine.Spy = jasmine.createSpy('rangeState');
       spy.and.returnValue([60, 75]);
       test.env.queryStateModel.get = spy;
@@ -66,7 +90,7 @@ export function FacetSliderTest() {
       expect(test.cmp.getSelectedValues()).toEqual(jasmine.arrayContaining([60, 75]));
     });
 
-    it('should populate breadcrumb only if not in default state', function() {
+    it('should populate breadcrumb only if not in default state', () => {
       let breadcrumbs = [];
       $$(test.env.root).trigger(BreadcrumbEvents.populateBreadcrumb, <IPopulateBreadcrumbEventArgs>{ breadcrumbs: breadcrumbs });
       expect(breadcrumbs.length).toBe(0);
@@ -199,8 +223,8 @@ export function FacetSliderTest() {
       }
     });
 
-    describe('exposes options', function() {
-      it('dateField should change the query expression to a correct date expression', function() {
+    describe('exposes options', () => {
+      it('dateField should change the query expression to a correct date expression', () => {
         test = Mock.optionsComponentSetup<FacetSlider, IFacetSliderOptions>(FacetSlider, {
           start: '2000/01/01',
           end: '3000/01/01',
@@ -215,7 +239,7 @@ export function FacetSliderTest() {
         expect(simulation.queryBuilder.build().aq).toBe('@foo==2100/01/01@00:00:00..2200/01/01@00:00:00');
       });
 
-      it('queryOverride should output a query override in the group by request', function() {
+      it('queryOverride should output a query override in the group by request', () => {
         test = Mock.optionsComponentSetup<FacetSlider, IFacetSliderOptions>(FacetSlider, {
           start: 0,
           end: 100,
@@ -237,7 +261,7 @@ export function FacetSliderTest() {
         );
       });
 
-      it('title should modify the header', function() {
+      it('title should modify the header', () => {
         test = Mock.optionsComponentSetup<FacetSlider, IFacetSliderOptions>(FacetSlider, {
           start: 0,
           end: 100,

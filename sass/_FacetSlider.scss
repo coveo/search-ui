@@ -1,7 +1,5 @@
 @import 'mixins/slider';
-
 @include coveoSlider();
-
 .CoveoFacetSlider {
   &.coveo-disabled {
     .coveo-slider-line {
@@ -19,5 +17,11 @@
   }
   &.coveo-disabled-empty {
     display: none;
+  }
+}
+
+.coveo-executing-query {
+  .coveo-slider-container {
+    opacity: 0.5;
   }
 }
