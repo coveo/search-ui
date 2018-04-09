@@ -129,6 +129,39 @@ export function FacetColumnAutoLayoutAdjustmentTest() {
         });
       });
 
+      describe('with non component elements inside the facet column that should be ignored', () => {
+        let customElement: Dom;
+        let component;
+
+        beforeEach(() => {
+          customElement = $$('div');
+          column.append(customElement.el);
+          component = getAutoLayoutAdjustableComponent().component;
+          component.isCurrentlyDisplayed.and.returnValue(false);
+        });
+
+        it("should hide the facet column if it contains only an element with 'coveo-facet-header-filter-by-container'", () => {
+          customElement.addClass('coveo-facet-header-filter-by-container');
+          FacetColumnAutoLayoutAdjustment.initializeAutoLayoutAdjustment(root.el, component);
+          $$(root).trigger(QueryEvents.deferredQuerySuccess);
+          expect(isHidden()).toBeTruthy();
+        });
+
+        it("should hide the facet column if it contains only an element with 'coveo-topSpace'", () => {
+          customElement.addClass('coveo-topSpace');
+          FacetColumnAutoLayoutAdjustment.initializeAutoLayoutAdjustment(root.el, component);
+          $$(root).trigger(QueryEvents.deferredQuerySuccess);
+          expect(isHidden()).toBeTruthy();
+        });
+
+        it("should hide the facet column if it contains only an element with 'coveo-bottomSpace'", () => {
+          customElement.addClass('coveo-bottomSpace');
+          FacetColumnAutoLayoutAdjustment.initializeAutoLayoutAdjustment(root.el, component);
+          $$(root).trigger(QueryEvents.deferredQuerySuccess);
+          expect(isHidden()).toBeTruthy();
+        });
+      });
+
       it('should not hide the facet column if there is multiple component and some are currentlyDisplayed and some are not currentlyDisplayed', () => {
         const { component } = getAutoLayoutAdjustableComponent();
         component.isCurrentlyDisplayed.and.returnValue(false);

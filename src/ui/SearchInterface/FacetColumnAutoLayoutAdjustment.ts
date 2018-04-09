@@ -52,10 +52,10 @@ export class FacetColumnAutoLayoutAdjustment {
       return true;
     }
 
-    const childrens = $$(column).children();
+    const children = $$(column).children();
     const shouldBeIgnored = ['coveo-facet-header-filter-by-container', 'coveo-topSpace', 'coveo-bottomSpace'];
 
-    const columnDoesNotContainVisibleCustomElement = every(childrens, child => {
+    const columnDoesNotContainVisibleCustomElement = every(children, child => {
       const willBeIgnored = find(shouldBeIgnored, toIgnore => {
         return $$(child).hasClass(toIgnore);
       });

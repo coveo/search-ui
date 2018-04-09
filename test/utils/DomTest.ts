@@ -214,22 +214,22 @@ export function DomTests() {
         expect(new Dom(el).findClass('shouldNotBeFound').length).toBe(0);
       });
 
-      it('using isVisible should work if the element is display none', () => {
+      it('using isVisible should work if the element is display:none', () => {
         el.style.display = 'none';
         expect(new Dom(el).isVisible()).toBeFalsy();
       });
 
-      it('using isVisible should work if the element is visibility hidden', () => {
+      it('using isVisible should work if the element is visibility:hidden', () => {
         el.style.display = 'none';
         expect(new Dom(el).isVisible()).toBeFalsy();
       });
 
-      it('using isVisibile should work if the element has a specific css added by tab(s)', () => {
+      it("using isVisible should work if the element has 'coveo-tab-disabled' added by tab(s)", () => {
         el.className = 'coveo-tab-disabled';
         expect(new Dom(el).isVisible()).toBeFalsy();
       });
 
-      it('using isVisible should work if the element is not display none', () => {
+      it('using isVisible should work if the element is not display:none', () => {
         el.style.display = 'block';
         expect(new Dom(el).isVisible()).toBeTruthy();
       });

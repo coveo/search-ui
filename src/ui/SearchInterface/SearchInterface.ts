@@ -42,7 +42,7 @@ import 'styling/Globals';
 import 'styling/_SearchInterface';
 import 'styling/_SearchModalBox';
 import 'styling/_SearchButton';
-import { each, indexOf, isEmpty, chain, any, find, partition, first, forEach, tail } from 'underscore';
+import { each, indexOf, isEmpty, chain, any, find, partition, first, tail } from 'underscore';
 import { FacetColumnAutoLayoutAdjustment } from './FacetColumnAutoLayoutAdjustment';
 
 export interface ISearchInterfaceOptions {
@@ -814,11 +814,11 @@ export class SearchInterface extends RootComponent implements IComponentBindings
         const quickviewsPartition = partition(quickviews, quickview => quickview.getHashId() == args.value);
         if (quickviewsPartition[0].length != 0) {
           first(quickviewsPartition[0]).open();
-          forEach(tail(quickviewsPartition[0]), quickview => quickview.close());
+          each(tail(quickviewsPartition[0]), quickview => quickview.close());
         }
-        forEach(quickviewsPartition[1], quickview => quickview.close());
+        each(quickviewsPartition[1], quickview => quickview.close());
       } else {
-        forEach(quickviews, quickview => {
+        each(quickviews, quickview => {
           quickview.close();
         });
       }
