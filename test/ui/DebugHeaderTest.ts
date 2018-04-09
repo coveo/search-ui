@@ -10,13 +10,12 @@ export function DebugHeaderTest() {
     let env: IMockEnvironment;
     let elem: Dom;
     let searchSpy: jasmine.Spy;
-    let debugHeader: DebugHeader;
 
     beforeEach(() => {
       env = new MockEnvironmentBuilder().build();
       elem = $$('div');
       searchSpy = jasmine.createSpy('search');
-      debugHeader = new DebugHeader(env.root, elem.el, env, searchSpy, {
+      new DebugHeader(env.root, elem.el, env, searchSpy, {
         foo: 'bar'
       });
     });
@@ -40,23 +39,6 @@ export function DebugHeaderTest() {
     const getSearchInput = (elem: HTMLElement) => {
       return <HTMLInputElement>$$(elem).find('input[type="text"]');
     };
-
-    it('should create a download button', () => {
-      expect($$(elem.el).find('a[download="debug.json"]')).not.toBeNull();
-    });
-
-    it('should change the download button when providing new info', () => {
-      const firstLinkToDownload = $$(elem.el)
-        .find('a[download="debug.json"]')
-        .getAttribute('href');
-      debugHeader.setNewInfoToDebug({
-        baz: 'buzz'
-      });
-      const secondLinkToDownload = $$(elem.el)
-        .find('a[download="debug.json"]')
-        .getAttribute('href');
-      expect(firstLinkToDownload).not.toEqual(secondLinkToDownload);
-    });
 
     it('should create a debug checkbox', () => {
       expect(getDebugCheckbox(elem.el)).not.toBeNull();
