@@ -14,7 +14,7 @@ import { FacetUtils } from './FacetUtils';
 import { QueryEvents, INewQueryEventArgs, IQuerySuccessEventArgs, IDoneBuildingQueryEventArgs } from '../../events/QueryEvents';
 import { Assert } from '../../misc/Assert';
 import { ISearchEndpoint } from '../../rest/SearchEndpointInterface';
-import { $$ } from '../../utils/Dom';
+import { $$, Win } from '../../utils/Dom';
 import { IAnalyticsFacetMeta, analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
 import { Utils } from '../../utils/Utils';
 import { IIndexFieldValue } from '../../rest/FieldValue';
@@ -1841,7 +1841,7 @@ export class Facet extends Component {
       let offset = currentViewportPosition - this.pinnedViewportPosition;
       const scrollToOffset = () => {
         if (elementToScroll instanceof Window) {
-          window.scrollTo(0, window.scrollY + offset);
+          window.scrollTo(0, new Win(elementToScroll).scrollY() + offset);
         } else {
           (<HTMLElement>elementToScroll).scrollTop = elementToScroll.scrollTop + offset;
         }

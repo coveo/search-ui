@@ -37,6 +37,8 @@ gulp.task('cleanDefs', function() {
       .pipe(replace(/extends agGridModule\.[a-zA-Z]+/g, 'extends Object'))
       .pipe(replace(/implements agGridModule\.[a-zA-Z]+/g, 'implements Object'))
       .pipe(replace(/agGridModule\.[a-zA-Z]+/g, 'any'))
+      .pipe(replace(/\(this: [A-Za-z_-]+, /gm, '('))
+      .pipe(replace(/\| null/gm, '| void'))
       .pipe(gulp.dest('bin/ts/')) );
 });
 
