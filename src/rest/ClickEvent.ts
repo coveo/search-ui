@@ -10,6 +10,7 @@ export interface IClickEvent extends IAnalyticsEvent {
   documentUrl: string;
   documentTitle: string;
   documentCategory: string;
+  collectionName: string;
   sourceName: string;
   documentPosition: number;
   viewMethod: string;

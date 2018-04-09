@@ -114,6 +114,10 @@ export class QueryUtils {
     return result.raw['objecttype'];
   }
 
+  static getCollection(result: IQueryResult): string {
+    return result.raw['collection'] || 'default';
+  }
+
   static getSource(result: IQueryResult): string {
     return result.raw['source'];
   }
