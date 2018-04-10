@@ -7341,5 +7341,13 @@
   "ResultCount": {
     "en": "{0} results",
     "fr": "{0} résultats"
+  },
+  "ShowingResults": {
+    "en": "{0} result<pl>s</pl>",
+    "fr": "{0} résultat<pl>s</pl>"
+  },
+  "ShowingResultsWithQuery": {
+    "en": "{0} result<pl></pl> for {1}",
+    "fr": "{0} résultat<pl>s</pl> for {1}"
   }
 }
