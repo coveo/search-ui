@@ -582,3 +582,6 @@ FieldValuesRendererTest();
 
 import { MetaDataTableTest } from './ui/RelevanceInspector/MetaDataTableTest';
 MetaDataTableTest();
+
+import { QueryUtilsTest } from './utils/QueryUtilsTest';
+QueryUtilsTest();
