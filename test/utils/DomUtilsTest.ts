@@ -47,6 +47,13 @@ export function DomUtilsTest() {
         expect($$(time).text()).toBe('');
       });
 
+      it('should not display a date if none is available', () => {
+        fakeResult.raw.date = null;
+        const header = DomUtils.getQuickviewHeader(fakeResult, { title: 'title', showDate: true }, env.build());
+        const time = $$(header).find('.coveo-quickview-time');
+        expect($$(time).text()).toBe('');
+      });
+
       describe('with a salesforce namespace', () => {
         let spy: jasmine.Spy;
         beforeEach(() => {

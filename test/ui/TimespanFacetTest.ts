@@ -82,6 +82,30 @@ export function TimespanFacetTest() {
 
         expect(test.cmp.facet.options.id).toBe('@afield');
       });
+
+      it('should be currentlyDisplayed by default', () => {
+        expect(test.cmp.isCurrentlyDisplayed()).toBeTruthy();
+      });
+
+      it('should not be currentlyDisplayed if disabled', () => {
+        test.cmp.disable();
+        expect(test.cmp.isCurrentlyDisplayed()).toBeFalsy();
+      });
+
+      it('should not be currentlyDisplayed if the element is set to display:none', () => {
+        test.cmp.element.style.display = 'none';
+        expect(test.cmp.isCurrentlyDisplayed()).toBeFalsy();
+      });
+
+      it('should not be currentlyDisplayed if the element is set to visibility:hidden', () => {
+        test.cmp.element.style.visibility = 'hidden';
+        expect(test.cmp.isCurrentlyDisplayed()).toBeFalsy();
+      });
+
+      it('should not be currentlyDisplayed if the element has a specific css class set by tab(s)', () => {
+        test.cmp.element.className = 'coveo-tab-disabled';
+        expect(test.cmp.isCurrentlyDisplayed()).toBeFalsy();
+      });
     });
   });
 }

@@ -21,6 +21,7 @@ export class ResponsiveFacetColumn implements IResponsiveComponent {
   private static DROPDOWN_MIN_WIDTH: number = 280;
   private static DROPDOWN_WIDTH_RATIO: number = 0.35; // Used to set the width relative to the coveo root.
   private static DROPDOWN_HEADER_LABEL_DEFAULT_VALUE = 'Filters';
+
   private searchInterface: SearchInterface;
   private componentsInFacetColumn: any[] = [];
   private preservePositionOriginalValues: boolean[] = [];
@@ -29,13 +30,22 @@ export class ResponsiveFacetColumn implements IResponsiveComponent {
   private dropdownHeaderLabel: string;
 
   public static init(responsiveComponentConstructor, root: HTMLElement, component, options: IResponsiveComponentOptions, ID: string) {
-    if (!$$(root).find('.coveo-facet-column')) {
-      let logger = new Logger('ResponsiveFacets');
-      logger.info('No element with class coveo-facet-column. Responsive facets cannot be enabled');
+    const column = this.findColumn(root);
+    if (!column) {
       return;
     }
+
     ResponsiveComponentsManager.register(ResponsiveFacetColumn, $$(root), 'ResponsiveFacetColumn', component, options);
     ResponsiveComponentsManager.register(responsiveComponentConstructor, $$(root), ID, component, options);
+  }
+
+  private static findColumn(root: HTMLElement) {
+    const column = $$(root).find('.coveo-facet-column');
+    if (!column) {
+      const logger = new Logger('ResponsiveFacets');
+      logger.info('No element with class coveo-facet-column. Responsive facets cannot be enabled');
+    }
+    return column;
   }
 
   constructor(public coveoRoot: Dom, public ID: string, options: IResponsiveComponentOptions, responsiveDropdown?: ResponsiveDropdown) {

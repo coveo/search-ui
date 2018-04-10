@@ -460,12 +460,8 @@ export class Omnibox extends Component {
     };
 
     this.magicBox.onblur = () => {
-      if (this.options.enableSearchAsYouType && !this.options.inline) {
-        this.setText(this.lastQuery);
-      } else {
-        this.updateQueryState();
-      }
       if (this.isAutoSuggestion()) {
+        this.setText(this.getQuery(true));
         this.usageAnalytics.sendAllPendingEvents();
       }
     };

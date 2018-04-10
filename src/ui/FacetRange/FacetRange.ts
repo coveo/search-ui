@@ -165,8 +165,8 @@ export class FacetRange extends Facet implements IComponentBindings {
   protected processNewGroupByResults(groupByResults: IGroupByResult) {
     if (groupByResults != null && this.options.ranges == null) {
       groupByResults.values.sort((valueA, valueB) => this.sortRangeGroupByResults(valueA, valueB));
-      super.processNewGroupByResults(groupByResults);
     }
+    super.processNewGroupByResults(groupByResults);
   }
 
   private sortRangeGroupByResults(valueA: IGroupByValue, valueB: IGroupByValue) {
